@@ -17,14 +17,16 @@
 #define	MAX_OBJECTS_PER_ROOM		10
 #define	MAX_CONTROLLED_OBJECTS		200
 
-typedef enum {
+typedef enum
+{
 	GOAL_NONE,
 	GOAL_OBJECT,
 	GOAL_REGION,
 	NUM_GOAL_TYPES
 } GoalType;
 
-typedef enum {
+typedef enum
+{
 	GOAL_LINK_NONE,
 	GOAL_LINK_MOVE,
 	GOAL_LINK_CONTROLS,
@@ -32,11 +34,14 @@ typedef enum {
 	NUM_GOAL_LINK_TYPES
 } GoalLinkType;
 
-typedef union {
-	struct {
+typedef union
+{
+	struct
+	{
 		uint32_t		WID;
 	} object;
-	struct {
+	struct
+	{
 		int16_t				minRow;
 		int16_t				minCol;
 		int16_t				maxRow;
@@ -44,14 +49,16 @@ typedef union {
 	} region;
 } GoalInfo;
 
-typedef struct _GoalLink {
+typedef struct _GoalLink
+{
 	GoalObjectPtr			goalObject;
 	GoalLinkType			type;
 	int32_t					cost;
 	struct _GoalLink*		next;
 } GoalLink;
 
-typedef struct _GoalPathFindInfo {
+typedef struct _GoalPathFindInfo
+{
 	int32_t					cost;
 	int32_t					parent;
 	int32_t					fromIndex;
@@ -63,7 +70,8 @@ typedef struct _GoalPathFindInfo {
 
 typedef GoalLink* GoalLinkPtr;
 
-class GoalObject {
+class GoalObject
+{
 
 public:
 
@@ -80,32 +88,35 @@ public:
 
 public:
 
-	PVOID operator new (size_t ourSize);
+	PVOID operator new(size_t ourSize);
 
-	void operator delete (PVOID us);
+	void operator delete(PVOID us);
 
-	void init (void);
+	void init(void);
 
-	GoalObject (void) {
-		init (void);
+	GoalObject(void)
+	{
+		init(void);
 	}
 
-	void destroy (void);
+	void destroy(void);
 
-	~GoalObject (void)	{
+	~GoalObject(void)
+	{
 		destroy(void);
 	}
 
-	void initObject (PSTR name, GameObjectPtr obj);
+	void initObject(PSTR name, GameObjectPtr obj);
 
-	void initRegion (PSTR name, int32_t minRow, int32_t minCol, int32_t maxRow, int32_t maxCol);
+	void initRegion(PSTR name, int32_t minRow, int32_t minCol, int32_t maxRow, int32_t maxCol);
 
-	void addLink (GoalObjectPtr gobject, GoalLinkType linkType);
+	void addLink(GoalObjectPtr gobject, GoalLinkType linkType);
 
-	void addController (GoalObjectPtr gobject);
+	void addController(GoalObjectPtr gobject);
 };
 
-class GoalManager {
+class GoalManager
+{
 
 public:
 
@@ -120,51 +131,53 @@ public:
 
 public:
 
-	PVOID operator new (size_t ourSize);
+	PVOID operator new(size_t ourSize);
 
-	void operator delete (PVOID us);
+	void operator delete(PVOID us);
 
-	void init (void);
+	void init(void);
 
-	GoalManager (void) {
-		init (void);
+	GoalManager(void)
+	{
+		init(void);
 	}
 
-	void destroy (void);
+	void destroy(void);
 
-	~GoalManager (void)	{
+	~GoalManager(void)
+	{
 		destroy(void);
 	}
 
-	void setup (int32_t poolSize);
+	void setup(int32_t poolSize);
 
-	void build (void);
+	void build(void);
 
-	bool fillWallGateRegion (int32_t row, int32_t col, int32_t region);
+	bool fillWallGateRegion(int32_t row, int32_t col, int32_t region);
 
-	bool fillRegion (int32_t row, int32_t col, int32_t region);
+	bool fillRegion(int32_t row, int32_t col, int32_t region);
 
-	void calcRegions (void);
+	void calcRegions(void);
 
-	int32_t addLinks (GoalObjectPtr gobject, int32_t numObjs, GameObjectPtr* objList);
+	int32_t addLinks(GoalObjectPtr gobject, int32_t numObjs, GameObjectPtr* objList);
 
 	//int32_t setControl (GoalObjectPtr controller, GoalObjectPtr controllee);
 
-	GoalObjectPtr addRegion (GoalObjectPtr parent, GoalLinkType linkType, PSTR name, int32_t minRow, int32_t minCol, int32_t maxRow, int32_t maxCol);
+	GoalObjectPtr addRegion(GoalObjectPtr parent, GoalLinkType linkType, PSTR name, int32_t minRow, int32_t minCol, int32_t maxRow, int32_t maxCol);
 
-	GoalObjectPtr addObject (GoalObjectPtr parent, GoalLinkType linkType, PSTR name, GameObjectPtr object);
+	GoalObjectPtr addObject(GoalObjectPtr parent, GoalLinkType linkType, PSTR name, GameObjectPtr object);
 
-	void clear (void);
+	void clear(void);
 
-	GoalObjectPtr newGoalObject (void);
+	GoalObjectPtr newGoalObject(void);
 
-	GoalObjectPtr calcGoal (int32_t startCell[2], int32_t goalCell[2]);
+	GoalObjectPtr calcGoal(int32_t startCell[2], int32_t goalCell[2]);
 
-	GoalObjectPtr calcGoal (GameObjectPtr attacker, GameObjectPtr target);
+	GoalObjectPtr calcGoal(GameObjectPtr attacker, GameObjectPtr target);
 
-	GoalObjectPtr calcGoal (GameObjectPtr attacker, Stuff::Vector3D location);
+	GoalObjectPtr calcGoal(GameObjectPtr attacker, Stuff::Vector3D location);
 
-	GoalObjectPtr calcGoal (Stuff::Vector3D start, Stuff::Vector3D location);
+	GoalObjectPtr calcGoal(Stuff::Vector3D start, Stuff::Vector3D location);
 };
 
 #endif

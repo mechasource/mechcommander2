@@ -9,16 +9,17 @@
 
 // #include <mclib.h>
 
-class CPrefs {
+class CPrefs
+{
 public:
 	CPrefs(void);
-	int32_t load( PCSTR pFileName = "options");
+	int32_t load(PCSTR pFileName = "options");
 	int32_t save(void);
 	int32_t applyPrefs(bool bApplyResolution = 1);
 
-	void setNewName( PCSTR pNewName );
-	void setNewUnit( PCSTR pNewUnit );
-	void setNewIP( PCSTR pNewIP );
+	void setNewName(PCSTR pNewName);
+	void setNewUnit(PCSTR pNewUnit);
+	void setNewIP(PCSTR pNewIP);
 
 public:
 	int32_t DigitalMasterVolume;

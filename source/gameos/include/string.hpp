@@ -16,7 +16,7 @@
 //
 class FixedLengthString
 {
-	private:
+private:
 //
 // Data
 //
@@ -26,17 +26,17 @@ class FixedLengthString
 //
 // Visible stuff
 //
-	public:
+public:
 //
 // Constructor
 //
-	inline FixedLengthString(size_t Length )
+	inline FixedLengthString(size_t Length)
 	{
-		gosASSERT( Length!=0 );
-		Text=(PSTR)malloc(Length);
-		MaximumLength=Length;
-		CurrentSize=0;
-		if (Text) *Text=0;
+		gosASSERT(Length != 0);
+		Text = (PSTR)malloc(Length);
+		MaximumLength = Length;
+		CurrentSize = 0;
+		if(Text) *Text = 0;
 	}
 //
 // Destructor
@@ -55,10 +55,10 @@ class FixedLengthString
 //
 // Individual chars can be referenced
 //
-	inline char operator [] ( size_t Offset) const
+	inline char operator [](size_t Offset) const
 	{
-		if( Offset<=CurrentSize )
-			return *(Text+Offset);
+		if(Offset <= CurrentSize)
+			return *(Text + Offset);
 		else
 			return 0;
 	}
@@ -74,8 +74,8 @@ class FixedLengthString
 //
 	inline void Reset()
 	{
-		CurrentSize=0;
-		*Text=0;
+		CurrentSize = 0;
+		*Text = 0;
 	}
 //
 // Strings can be initialized by other FixedLengthStrings
@@ -89,18 +89,14 @@ class FixedLengthString
 //
 	inline FixedLengthString& operator = (PCSTR Source)
 	{
-		if( Source )
+		if(Source)
 		{
-			size_t Length=strlen(Source)+1;
-
-			if( Length>MaximumLength )
-				Length=MaximumLength;
-
-			memcpy( Text, Source, Length );
-
-			CurrentSize=Length-1;
-
-			*(Text+CurrentSize)=0;
+			size_t Length = strlen(Source) + 1;
+			if(Length > MaximumLength)
+				Length = MaximumLength;
+			memcpy(Text, Source, Length);
+			CurrentSize = Length - 1;
+			*(Text + CurrentSize) = 0;
 		}
 		return *this;
 	}
@@ -109,17 +105,12 @@ class FixedLengthString
 //
 	inline FixedLengthString& operator += (PSTR Source)
 	{
-		size_t Length=strlen(Source)+1;
-
-		if( CurrentSize+Length>MaximumLength )
-			Length=MaximumLength-CurrentSize;
-
-		memcpy( Text+CurrentSize, Source, Length );
-
-		CurrentSize+=Length-1;
-
-		*(Text+CurrentSize)=0;
-
+		size_t Length = strlen(Source) + 1;
+		if(CurrentSize + Length > MaximumLength)
+			Length = MaximumLength - CurrentSize;
+		memcpy(Text + CurrentSize, Source, Length);
+		CurrentSize += Length - 1;
+		*(Text + CurrentSize) = 0;
 		return *this;
 	}
 //
@@ -127,18 +118,14 @@ class FixedLengthString
 //
 	inline FixedLengthString& operator << (PSTR Source)
 	{
-		if( Source )
+		if(Source)
 		{
-			size_t Length=strlen(Source)+1;
-
-			if( CurrentSize+Length>MaximumLength )
-				Length=MaximumLength-CurrentSize;
-
-			memcpy( Text+CurrentSize, Source, Length );
-
-			CurrentSize+=Length-1;
-
-			*(Text+CurrentSize)=0;
+			size_t Length = strlen(Source) + 1;
+			if(CurrentSize + Length > MaximumLength)
+				Length = MaximumLength - CurrentSize;
+			memcpy(Text + CurrentSize, Source, Length);
+			CurrentSize += Length - 1;
+			*(Text + CurrentSize) = 0;
 		}
 		return *this;
 	}
@@ -148,20 +135,13 @@ class FixedLengthString
 	inline FixedLengthString& operator << (int32_t Value)
 	{
 		char Source[30];
-		
 		_itoa(Value, Source, 10);
-
-		size_t Length=strlen(Source)+1;
-
-		if( CurrentSize+Length>MaximumLength )
-			Length=MaximumLength-CurrentSize;
-
-		memcpy( Text+CurrentSize, Source, Length );
-
-		CurrentSize+=Length-1;
-
-		*(Text+CurrentSize)=0;
-
+		size_t Length = strlen(Source) + 1;
+		if(CurrentSize + Length > MaximumLength)
+			Length = MaximumLength - CurrentSize;
+		memcpy(Text + CurrentSize, Source, Length);
+		CurrentSize += Length - 1;
+		*(Text + CurrentSize) = 0;
 		return *this;
 	}
 //
@@ -170,20 +150,13 @@ class FixedLengthString
 	inline FixedLengthString& operator << (int16_t int32_t Value)
 	{
 		char Source[30];
-		
 		_itoa(Value, Source, 10);
-
-		size_t Length=strlen(Source)+1;
-
-		if( CurrentSize+Length>MaximumLength )
-			Length=MaximumLength-CurrentSize;
-
-		memcpy( Text+CurrentSize, Source, Length );
-
-		CurrentSize+=Length-1;
-
-		*(Text+CurrentSize)=0;
-
+		size_t Length = strlen(Source) + 1;
+		if(CurrentSize + Length > MaximumLength)
+			Length = MaximumLength - CurrentSize;
+		memcpy(Text + CurrentSize, Source, Length);
+		CurrentSize += Length - 1;
+		*(Text + CurrentSize) = 0;
 		return *this;
 	}
 };

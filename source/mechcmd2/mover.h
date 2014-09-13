@@ -90,12 +90,14 @@ extern float metersPerWorldUnit;
 
 //------------------------------------------------------------------------------
 // Enums
-typedef enum {
+typedef enum
+{
 	WEAPONSORT_ATTACKCHANCE,
 	NUM_WEAPONSORT_TYPES
 } WeaponSortType;
 
-typedef enum {
+typedef enum
+{
 	SPEED_STATE_STATIONARY,
 	SPEED_STATE_MOVING,
 	SPEED_STATE_MOVING_FAST,
@@ -117,70 +119,79 @@ enum DeathCause
 class MoveChunk;
 typedef MoveChunk* MoveChunkPtr;
 
-class MoveChunk {
+class MoveChunk
+{
 
-	public:
+public:
 
-		int32_t				stepPos[4][2];		// 0 = curPos, 1 thru 3 = next steps
-		int32_t				stepRelPos[3];		// delta for steps 1 thru 3
-		int32_t				numSteps;
-		bool				run;
-		bool				moving;
-		uint32_t		data;
-		static int32_t			err;
+	int32_t				stepPos[4][2];		// 0 = curPos, 1 thru 3 = next steps
+	int32_t				stepRelPos[3];		// delta for steps 1 thru 3
+	int32_t				numSteps;
+	bool				run;
+	bool				moving;
+	uint32_t		data;
+	static int32_t			err;
 
-	public:
+public:
 
-		PVOID operator new (size_t mySize);
+	PVOID operator new(size_t mySize);
 
-		void operator delete (PVOID us);
-		
-		void init (void) {
-			stepPos[0][0] = 0xFFFFFFFF;
-			stepPos[0][1] = 0xFFFFFFFF;
-			numSteps = 0;
-			run = false;
-			moving = false;
-			data = 0;
-		}
+	void operator delete(PVOID us);
 
-		void destroy (void) {
-		}
+	void init(void)
+	{
+		stepPos[0][0] = 0xFFFFFFFF;
+		stepPos[0][1] = 0xFFFFFFFF;
+		numSteps = 0;
+		run = false;
+		moving = false;
+		data = 0;
+	}
 
-		MoveChunk (void) {
-			init(void);
-		}
+	void destroy(void)
+	{
+	}
 
-		~MoveChunk (void) {
-			destroy(void);
-		}
+	MoveChunk(void)
+	{
+		init(void);
+	}
 
-		void build (MoverPtr mover, MovePath* path1, MovePath* path2 = nullptr);
+	~MoveChunk(void)
+	{
+		destroy(void);
+	}
 
-		void build (MoverPtr mover, Stuff::Vector3D jumpGoal);
+	void build(MoverPtr mover, MovePath* path1, MovePath* path2 = nullptr);
 
-		void pack (MoverPtr mover);
+	void build(MoverPtr mover, Stuff::Vector3D jumpGoal);
 
-		void unpack (MoverPtr mover);
+	void pack(MoverPtr mover);
 
-		bool equalTo (MoverPtr mover, MoveChunkPtr chunk);
+	void unpack(MoverPtr mover);
+
+	bool equalTo(MoverPtr mover, MoveChunkPtr chunk);
 };
 
 //---------------------------------------------------------------------------
 #define MAX_YAW		64
 
-typedef enum {
+typedef enum
+{
 	DYNAMICS_BASE,
 	DYNAMICS_MECH,
 	DYNAMICS_GROUNDVEHICLE,
 	DYNAMICS_ELEMENTAL
 } DynamicsType;
 
-typedef union {
-	struct {
+typedef union
+{
+	struct
+	{
 		int32_t	yawRate;			//Degrees per sec
 	} elemental;
-	struct {
+	struct
+	{
 		int32_t	yawRate;			//Degrees per sec
 		int32_t	turretYawRate;		//Degrees per sec
 		int32_t	pivotRate;			//Degrees per sec
@@ -188,87 +199,101 @@ typedef union {
 		float	speed;				//Meters per sec
 		int32_t	turretYaw;			//Degrees
 	} groundVehicle;
-	struct {
+	struct
+	{
 		int32_t	torsoYawRate;		//Degrees per sec
 		int32_t	torsoYaw;			//Degrees
 	} mech;
 } DynamicsLimits;
 
-class MoverDynamics {
+class MoverDynamics
+{
 
-	public:
+public:
 
-		DynamicsType			type;
-		DynamicsLimits			max;
+	DynamicsType			type;
+	DynamicsLimits			max;
 
-	public:
+public:
 
-		void operator = (MoverDynamics copy) {
-			type = copy.type;
-			max = copy.max;
-			//cur = copy.cur;
-		}
-		
-		virtual void init (void);
+	void operator = (MoverDynamics copy)
+	{
+		type = copy.type;
+		max = copy.max;
+		//cur = copy.cur;
+	}
 
-		MoverDynamics (void) {
-			init(void);
-		}
-			
-		virtual void destroy (void) {
-		}
+	virtual void init(void);
 
-		~MoverDynamics (void) {
-			destroy(void);
-		}
+	MoverDynamics(void)
+	{
+		init(void);
+	}
 
-		void init (DynamicsType newType);
+	virtual void destroy(void)
+	{
+	}
 
-		virtual void init (CSVFilePtr dynamicsFile);
+	~MoverDynamics(void)
+	{
+		destroy(void);
+	}
 
-		virtual void init (FitIniFilePtr dynamicsFile);
-													
-		void setType (DynamicsType newType) {
-			type = newType;
-		}
+	void init(DynamicsType newType);
 
-		DynamicsType getType (void) {
-			return(type);
-		}
+	virtual void init(CSVFilePtr dynamicsFile);
 
-		int32_t brake (void);
+	virtual void init(FitIniFilePtr dynamicsFile);
+
+	void setType(DynamicsType newType)
+	{
+		type = newType;
+	}
+
+	DynamicsType getType(void)
+	{
+		return(type);
+	}
+
+	int32_t brake(void);
 };
 
 //---------------------------------------------------------------------------
 
-typedef enum {
+typedef enum
+{
 	CONTROL_BASE,
 	CONTROL_PLAYER,
 	CONTROL_AI,
 	CONTROL_NET
 } ControlType;
 
-typedef enum {
+typedef enum
+{
 	CONTROL_DATA_BASE,
 	CONTROL_DATA_MECH,
 	CONTROL_DATA_GROUNDVEHICLE,
 	CONTROL_DATA_ELEMENTAL
 } ControlDataType;
 
-typedef union {
-	struct {
+typedef union
+{
+	struct
+	{
 		float	rotate;
 	} elemental;
-	struct {
-		char	throttle;			
+	struct
+	{
+		char	throttle;
 		float	rotate;
 		float	rotateTurret;
 		char	gestureGoal;
 		bool	pivot;
 		bool	isWalking;
 	} groundVehicle;
-	struct {
-		char	throttle;			
+	struct
+	{
+		char	throttle;
 		float	rotate;				//aka mechYaw
 		float	facingRotate;		//Direction mech is FACING, NOT MOVING!!!!!
 		float	rotateTorso;
@@ -281,67 +306,78 @@ typedef union {
 	} mech;
 } ControlSettings;
 
-class MoverControl {
+class MoverControl
+{
 
-	public:
+public:
 
-		ControlType			type;
-		ControlDataType		dataType;
-		ControlSettings		settings;
+	ControlType			type;
+	ControlDataType		dataType;
+	ControlSettings		settings;
 
-	public:
+public:
 
-		void operator = (MoverControl copy) {
-			type = copy.type;
-			dataType = copy.dataType;
-			settings = copy.settings;
-		}
+	void operator = (MoverControl copy)
+	{
+		type = copy.type;
+		dataType = copy.dataType;
+		settings = copy.settings;
+	}
 
-		virtual void init (void) {
-			type = CONTROL_BASE;
-			dataType = CONTROL_DATA_BASE;
-		}
+	virtual void init(void)
+	{
+		type = CONTROL_BASE;
+		dataType = CONTROL_DATA_BASE;
+	}
 
-		MoverControl (void) {
-			init(void);
-		}
-			
-		virtual void destroy (void) {
-		}
+	MoverControl(void)
+	{
+		init(void);
+	}
 
-		~MoverControl (void) {
-			destroy(void);
-		}
+	virtual void destroy(void)
+	{
+	}
 
-		void init (ControlType newType, ControlDataType newDataType) {
-			setType(newType);
-			setDataType(newDataType);
-		}
+	~MoverControl(void)
+	{
+		destroy(void);
+	}
 
-		virtual int32_t init (FitIniFilePtr controlFile);
+	void init(ControlType newType, ControlDataType newDataType)
+	{
+		setType(newType);
+		setDataType(newDataType);
+	}
 
-		void setType (ControlType newType) {
-			type = newType;
-		}
+	virtual int32_t init(FitIniFilePtr controlFile);
 
-		ControlType getType (void) {
-			return(type);
-		}
+	void setType(ControlType newType)
+	{
+		type = newType;
+	}
 
-		void setDataType (ControlDataType newDataType) {
-			dataType = newDataType;
-			reset(void);
-		}
+	ControlType getType(void)
+	{
+		return(type);
+	}
 
-		ControlDataType getDataType (void) {
-			return(dataType);
-		}
+	void setDataType(ControlDataType newDataType)
+	{
+		dataType = newDataType;
+		reset(void);
+	}
 
-		void reset (void);
+	ControlDataType getDataType(void)
+	{
+		return(dataType);
+	}
 
-		void brake (void);
+	void reset(void);
 
-		void update (MoverPtr mover);
+	void brake(void);
+
+	void update(MoverPtr mover);
 };
 
 //---------------------------------------------------------------------------
@@ -350,14 +386,16 @@ class MoverControl {
 
 typedef struct _InventoryItem* InventoryItemPtr;
 
-typedef struct _RangeRating {
+typedef struct _RangeRating
+{
 	float				accuracy;
 	float				adjAccuracy;
 } RangeRating;
 
 typedef struct _RangeRating* RangeRatingPtr;
 
-typedef struct _InventoryItem {
+typedef struct _InventoryItem
+{
 	//------------------
 	// general item info
 	uint8_t		masterID;		// master component ID
@@ -379,7 +417,8 @@ typedef struct _InventoryItem {
 
 #define	MAX_AMMO_TYPES			10
 
-typedef struct _AmmoTally {
+typedef struct _AmmoTally
+{
 	int32_t				masterId;		// ammo type's Master Component Id
 	int32_t				curAmount;		// current amount of this ammo type in inventory
 	int32_t				maxAmount;		// starting amount of this ammo type in inventory
@@ -391,12 +430,14 @@ typedef AmmoTally* AmmoTallyPtr;
 
 typedef struct _CriticalSpace* CriticalSpacePtr;
 
-typedef struct _CriticalSpace {
+typedef struct _CriticalSpace
+{
 
 	uint8_t		inventoryID;	// indexes into mech's inventory
 	bool				hit;			// TRUE, if this space has been hit
 
-	void operator = (struct _CriticalSpace copy) {
+	void operator = (struct _CriticalSpace copy)
+	{
 		inventoryID = copy.inventoryID;
 		hit = copy.hit;
 	}
@@ -407,42 +448,45 @@ typedef struct _CriticalSpace {
 
 #define	MAX_CRITSPACES_PER_BODYLOCATION		12
 
-class BodyLocation {
+class BodyLocation
+{
 
-	public:
+public:
 
-		bool				CASE;
-		int32_t				totalSpaces;
-		CriticalSpace		criticalSpaces[MAX_CRITSPACES_PER_BODYLOCATION];
-		float				curInternalStructure;
-		uint8_t		hotSpotNumber;
-		uint8_t		maxInternalStructure;
-		uint8_t		damageState;
+	bool				CASE;
+	int32_t				totalSpaces;
+	CriticalSpace		criticalSpaces[MAX_CRITSPACES_PER_BODYLOCATION];
+	float				curInternalStructure;
+	uint8_t		hotSpotNumber;
+	uint8_t		maxInternalStructure;
+	uint8_t		damageState;
 
-	public:
+public:
 
-		void operator = (BodyLocation copy) {
-			CASE = copy.CASE;
-			totalSpaces = copy.totalSpaces;
-			for (int32_t i = 0; i < MAX_CRITSPACES_PER_BODYLOCATION; i++)
-				criticalSpaces[i] = copy.criticalSpaces[i];
-			curInternalStructure = copy.curInternalStructure;
-			hotSpotNumber = copy.hotSpotNumber;
-			maxInternalStructure = copy.maxInternalStructure;
-			damageState = copy.damageState;
-		}
+	void operator = (BodyLocation copy)
+	{
+		CASE = copy.CASE;
+		totalSpaces = copy.totalSpaces;
+		for(size_t i = 0; i < MAX_CRITSPACES_PER_BODYLOCATION; i++)
+			criticalSpaces[i] = copy.criticalSpaces[i];
+		curInternalStructure = copy.curInternalStructure;
+		hotSpotNumber = copy.hotSpotNumber;
+		maxInternalStructure = copy.maxInternalStructure;
+		damageState = copy.damageState;
+	}
 };
 
 typedef BodyLocation* BodyLocationPtr;
 
 //---------------------------------------------------------------------------
 
-class ArmorLocation {
+class ArmorLocation
+{
 
-	public:
+public:
 
-		float			curArmor;
-		uint8_t	maxArmor;
+	float			curArmor;
+	uint8_t	maxArmor;
 };
 
 typedef ArmorLocation* ArmorLocationPtr;
@@ -475,7 +519,8 @@ typedef ArmorLocation* ArmorLocationPtr;
 #define	STATUSCHUNK_EJECTORDER_MASK		0x00000001
 #define	STATUSCHUNK_JUMPORDER_MASK		0x00000001
 
-typedef enum {
+typedef enum
+{
 	STATUSCHUNK_TARGET_NONE,
 	STATUSCHUNK_TARGET_MOVER,
 	STATUSCHUNK_TARGET_TERRAIN,
@@ -486,61 +531,65 @@ typedef enum {
 class StatusChunk;
 typedef StatusChunk* StatusChunkPtr;
 
-class StatusChunk {
+class StatusChunk
+{
 
-	public:
+public:
 
-		uint32_t		bodyState;
-		char				targetType;
-		int32_t				targetId;
-		int32_t				targetBlockOrTrainNumber;
-		int32_t				targetVertexOrCarNumber;
-		char				targetItemNumber;
-		int16_t				targetCellRC[2];
-		bool				ejectOrderGiven;
-		bool				jumpOrder;
+	uint32_t		bodyState;
+	char				targetType;
+	int32_t				targetId;
+	int32_t				targetBlockOrTrainNumber;
+	int32_t				targetVertexOrCarNumber;
+	char				targetItemNumber;
+	int16_t				targetCellRC[2];
+	bool				ejectOrderGiven;
+	bool				jumpOrder;
 
-		uint32_t		data;
+	uint32_t		data;
 
-	public:
+public:
 
-		PVOID operator new (size_t mySize);
+	PVOID operator new(size_t mySize);
 
-		void operator delete (PVOID us);
-		
-		void init (void) {
-			bodyState = 0;
-			targetType = 0;
-			targetId = 0;
-			targetBlockOrTrainNumber = 0;
-			targetVertexOrCarNumber = 0;
-			targetItemNumber = 0;
-			targetCellRC[0] = -1;
-			targetCellRC[1] = -1;
-			ejectOrderGiven = false;
-			jumpOrder = false;
+	void operator delete(PVOID us);
 
-			data = 0;
-		}
+	void init(void)
+	{
+		bodyState = 0;
+		targetType = 0;
+		targetId = 0;
+		targetBlockOrTrainNumber = 0;
+		targetVertexOrCarNumber = 0;
+		targetItemNumber = 0;
+		targetCellRC[0] = -1;
+		targetCellRC[1] = -1;
+		ejectOrderGiven = false;
+		jumpOrder = false;
+		data = 0;
+	}
 
-		void destroy (void) {
-		}
+	void destroy(void)
+	{
+	}
 
-		StatusChunk (void) {
-			init (void);
-		}
+	StatusChunk(void)
+	{
+		init(void);
+	}
 
-		~StatusChunk (void) {
-			destroy(void);
-		}
+	~StatusChunk(void)
+	{
+		destroy(void);
+	}
 
-		virtual void build (MoverPtr mover);
+	virtual void build(MoverPtr mover);
 
-		virtual void pack (MoverPtr mover);
+	virtual void pack(MoverPtr mover);
 
-		virtual void unpack (MoverPtr mover);
+	virtual void unpack(MoverPtr mover);
 
-		bool equalTo (StatusChunkPtr chunk);
+	bool equalTo(StatusChunkPtr chunk);
 };
 
 
@@ -561,10 +610,10 @@ typedef struct _MoverData : public GameObjectData
 {
 	bool				killed;
 	bool				lost;
-	Stuff::Vector3D		positionNormal;						
-	Stuff::Vector3D		velocity;							
-	char				name[MAXLEN_MOVER_NAME];			
-	uint8_t		chassis;							
+	Stuff::Vector3D		positionNormal;
+	Stuff::Vector3D		velocity;
+	char				name[MAXLEN_MOVER_NAME];
+	uint8_t		chassis;
 	bool				startDisabled;
 	float				creationTime;
 
@@ -574,46 +623,46 @@ typedef struct _MoverData : public GameObjectData
 
 	int32_t				lastMapCell[2];
 
-	float				damageRateTally;					
-	float				damageRateCheckTime;				
-	float				pilotCheckDamageTally;				
+	float				damageRateTally;
+	float				damageRateCheckTime;
+	float				pilotCheckDamageTally;
 
-	BodyLocation		body[MAX_MOVER_BODY_LOCATIONS];		
-	char				numBodyLocations;					
+	BodyLocation		body[MAX_MOVER_BODY_LOCATIONS];
+	char				numBodyLocations;
 	int32_t				fieldedCV;
 
-	int32_t				attackRange;						
+	int32_t				attackRange;
 
-	ArmorLocation		armor[MAX_MOVER_ARMOR_LOCATIONS];	
+	ArmorLocation		armor[MAX_MOVER_ARMOR_LOCATIONS];
 	char				numArmorLocations;
-	char				longName[MAXLEN_MECH_LONGNAME];		
+	char				longName[MAXLEN_MECH_LONGNAME];
 
 	InventoryItem		inventory[MAX_MOVER_INVENTORY_ITEMS];
 	uint8_t		numOther;
 	uint8_t		numWeapons;
 	uint8_t		numAmmos;
-	AmmoTally			ammoTypeTotal[MAX_AMMO_TYPES];	
-	char				numAmmoTypes;					
+	AmmoTally			ammoTypeTotal[MAX_AMMO_TYPES];
+	char				numAmmoTypes;
 	int32_t				pilotHandle;
 
-	uint8_t		cockpit;										
-	uint8_t		engine;											
-	uint8_t		lifeSupport;									
-	uint8_t		sensor;											
-	uint8_t		ecm;											
-	uint8_t		probe;											
-	uint8_t		jumpJets;										
-	uint8_t		nullSignature;									
-	float				maxWeaponEffectiveness;							
-	float				weaponEffectiveness;							
+	uint8_t		cockpit;
+	uint8_t		engine;
+	uint8_t		lifeSupport;
+	uint8_t		sensor;
+	uint8_t		ecm;
+	uint8_t		probe;
+	uint8_t		jumpJets;
+	uint8_t		nullSignature;
+	float				maxWeaponEffectiveness;
+	float				weaponEffectiveness;
 
-	float				minRange;										
-	float				maxRange;										
-	float				optimalRange;									
-	int32_t				numFunctionalWeapons;							
+	float				minRange;
+	float				maxRange;
+	float				optimalRange;
+	int32_t				numFunctionalWeapons;
 
-	char				numAntiMissileSystems;							
-	uint8_t		antiMissileSystem[MAX_ANTI_MISSILE_SYSTEMS];	
+	char				numAntiMissileSystems;
+	uint8_t		antiMissileSystem[MAX_ANTI_MISSILE_SYSTEMS];
 
 	float				engineBlowTime;
 	float				maxMoveSpeed;
@@ -624,41 +673,41 @@ typedef struct _MoverData : public GameObjectData
 	char				teamId;
 	char				groupId;
 	int32_t				squadId;
-	int32_t				selectionIndex;					
-	int32_t				teamRosterIndex;				
+	int32_t				selectionIndex;
+	int32_t				teamRosterIndex;
 	char				commanderId;
-	int32_t				unitGroup;						
-														
-	int32_t				iconPictureIndex;				
-	bool				suppressionFire;				
+	int32_t				unitGroup;
+
+	int32_t				iconPictureIndex;
+	bool				suppressionFire;
 
 	int32_t				pilotCheckModifier;
 	int32_t				prevPilotCheckModifier;
 	int32_t				prevPilotCheckDelta;
 	float				prevPilotCheckUpdate;
-	bool				failedPilotingCheck;			
-	float				lastWeaponEffectivenessCalc;	
-	float				lastOptimalRangeCalc;			
+	bool				failedPilotingCheck;
+	float				lastWeaponEffectivenessCalc;
+	float				lastOptimalRangeCalc;
 	GameObjectWatchID	challengerWID;
 
 	char				lastGesture;
 
-	MoverControl		control;						
-	MoverDynamics		dynamics;						
+	MoverControl		control;
+	MoverDynamics		dynamics;
 
 	int32_t				numWeaponHitsHandled;
-	float				timeLeft;						
+	float				timeLeft;
 	bool				exploding;
 	bool				withdrawing;
 
-	float				yieldTimeLeft;					
-	Stuff::Vector3D		lastValidPosition;				
-	char				pivotDirection;					
-	float				lastHustleTime;					
+	float				yieldTimeLeft;
+	Stuff::Vector3D		lastValidPosition;
+	char				pivotDirection;
+	float				lastHustleTime;
 
 	bool				salvageVehicle;
 
-	float				markDistanceMoved;				
+	float				markDistanceMoved;
 
 	GameObjectWatchID	refitBuddyWID;
 	GameObjectWatchID	recoverBuddyWID;
@@ -679,21 +728,21 @@ typedef struct _MoverData : public GameObjectData
 
 	float				timeSinceMoving;
 
-	float 				timeSinceFiredLast;				
+	float 				timeSinceFiredLast;
 
 	GameObjectWatchID	lastMovingTargetWID;
 
-	bool 				mechSalvage;					
+	bool 				mechSalvage;
 
-	Stuff::Vector3D		teleportPosition;				
+	Stuff::Vector3D		teleportPosition;
 	int32_t				debugPage;
 
-	bool				pathLocks;						
-	bool				isOnGui;						
+	bool				pathLocks;
+	bool				isOnGui;
 
-	int32_t				conStat;						
-	float				fadeTime;						
-	uint8_t				alphaValue;						
+	int32_t				conStat;
+	float				fadeTime;
+	uint8_t				alphaValue;
 	int32_t				causeOfDeath;
 
 	int32_t				lowestWeaponNodeID;
@@ -705,7 +754,8 @@ typedef struct _MoverData : public GameObjectData
 } MoverData;
 
 
-typedef enum {
+typedef enum
+{
 	MOVETYPE_GROUND,
 	MOVETYPE_AIR,
 	NUM_MOVETYPES
@@ -713,519 +763,561 @@ typedef enum {
 
 class LogisticsPilot;
 
-class Mover : public GameObject {
+class Mover : public GameObject
+{
 
 	//------------
 	//Data Members
-	
-	public:
 
-		Stuff::Vector3D		positionNormal;						// normal to terrain at current position
-		Stuff::Vector3D		velocity;							//How fast am I going?
-		char				name[MAXLEN_MOVER_NAME];		// Name of this particular mover
-		uint8_t		chassis;							// type of mover's chassis
-		bool				startDisabled;
-		float				creationTime;
+public:
 
-		bool				killed;							// used to record when the kill score has been awarded
-		bool				lost;							// used to record when the loss score has been awarded
-		int32_t				moveType;
-		int32_t				moveLevel;
-		bool				followRoads;
+	Stuff::Vector3D		positionNormal;						// normal to terrain at current position
+	Stuff::Vector3D		velocity;							//How fast am I going?
+	char				name[MAXLEN_MOVER_NAME];		// Name of this particular mover
+	uint8_t		chassis;							// type of mover's chassis
+	bool				startDisabled;
+	float				creationTime;
 
-		int32_t				lastMapCell[2];
-		
-		float				damageRateTally;					// damage points taken since last check
-		float				damageRateCheckTime;				// time (in game time) of next damage check
-		float				pilotCheckDamageTally;				// damage points taken since last pilot check
+	bool				killed;							// used to record when the kill score has been awarded
+	bool				lost;							// used to record when the loss score has been awarded
+	int32_t				moveType;
+	int32_t				moveLevel;
+	bool				followRoads;
 
-		BodyLocation		body[MAX_MOVER_BODY_LOCATIONS];		// body parts of this mech
-		char				numBodyLocations;					// should be set based upon mover type
-		int32_t				fieldedCV;
+	int32_t				lastMapCell[2];
 
-		int32_t				attackRange;						// attack range
+	float				damageRateTally;					// damage points taken since last check
+	float				damageRateCheckTime;				// time (in game time) of next damage check
+	float				pilotCheckDamageTally;				// damage points taken since last pilot check
 
-		bool				salvaged;
+	BodyLocation		body[MAX_MOVER_BODY_LOCATIONS];		// body parts of this mech
+	char				numBodyLocations;					// should be set based upon mover type
+	int32_t				fieldedCV;
 
-		// Armor
-		ArmorLocation		armor[MAX_MOVER_ARMOR_LOCATIONS];	// armor locations of this mover
-		char				numArmorLocations;
-		char				longName[MAXLEN_MECH_LONGNAME];		//Used by logistics (and the interface) to get int32_t name.
+	int32_t				attackRange;						// attack range
 
-		// Inventory
-		InventoryItem		inventory[MAX_MOVER_INVENTORY_ITEMS];
-		uint8_t		numOther;
-		uint8_t		numWeapons;
-		uint8_t		numAmmos;
-		AmmoTally			ammoTypeTotal[MAX_AMMO_TYPES];	// tracks total ammo per ammo type
-		char				numAmmoTypes;					// number of different ammo types
-		MechWarriorPtr		pilot;
-		int32_t				pilotHandle;
-		SensorSystemPtr		sensorSystem;
-		ContactInfoPtr		contactInfo;
+	bool				salvaged;
 
-		// Critical Component Indices
-		uint8_t		cockpit;										// cockpit inventory index
-		uint8_t		engine;											// engine inventory index
-		uint8_t		lifeSupport;									// life support inventory index
-		uint8_t		sensor;											// sensor inventory index
-		uint8_t		ecm;											// ecm inventory index
-		uint8_t		probe;											// probe inventory index
-		uint8_t		jumpJets;										// jump jets inventory index
-		uint8_t		nullSignature;									// null signature inventory index
-		float				maxWeaponEffectiveness;							// max total damage possible
-		float				weaponEffectiveness;							// basically, total damage possible
-		
-		float				minRange;										// current min attack range
-		float				maxRange;										// current max attack range
-		float				optimalRange;									// current optimum attack range
-		int32_t				numFunctionalWeapons;							// takes into account damage, etc.
+	// Armor
+	ArmorLocation		armor[MAX_MOVER_ARMOR_LOCATIONS];	// armor locations of this mover
+	char				numArmorLocations;
+	char				longName[MAXLEN_MECH_LONGNAME];		//Used by logistics (and the interface) to get int32_t name.
 
-		char				numAntiMissileSystems;							// number of anti-missile systems
-		uint8_t		antiMissileSystem[MAX_ANTI_MISSILE_SYSTEMS];	// anti-missile system list
+	// Inventory
+	InventoryItem		inventory[MAX_MOVER_INVENTORY_ITEMS];
+	uint8_t		numOther;
+	uint8_t		numWeapons;
+	uint8_t		numAmmos;
+	AmmoTally			ammoTypeTotal[MAX_AMMO_TYPES];	// tracks total ammo per ammo type
+	char				numAmmoTypes;					// number of different ammo types
+	MechWarriorPtr		pilot;
+	int32_t				pilotHandle;
+	SensorSystemPtr		sensorSystem;
+	ContactInfoPtr		contactInfo;
 
-		// Engine
-		float				engineBlowTime;
-		float				maxMoveSpeed;
-		bool				shutDownThisFrame;
-		bool				startUpThisFrame;
-		bool				disableThisFrame;
+	// Critical Component Indices
+	uint8_t		cockpit;										// cockpit inventory index
+	uint8_t		engine;											// engine inventory index
+	uint8_t		lifeSupport;									// life support inventory index
+	uint8_t		sensor;											// sensor inventory index
+	uint8_t		ecm;											// ecm inventory index
+	uint8_t		probe;											// probe inventory index
+	uint8_t		jumpJets;										// jump jets inventory index
+	uint8_t		nullSignature;									// null signature inventory index
+	float				maxWeaponEffectiveness;							// max total damage possible
+	float				weaponEffectiveness;							// basically, total damage possible
 
-		// Team
-		//MoverGroupPtr		group;							// what group am I a member of?
-		char				teamId;
-		char				groupId;
-		int32_t				squadId;
-		int32_t				selectionIndex;					// > 0 when in selected group
-		int32_t				teamRosterIndex;				// where am I in my team's roster?
-		char				commanderId;
-		int32_t				unitGroup;						// the thing the user sets by hitting ctrl and a number
-															// this is a field since they can belong to more than one
-		int32_t				iconPictureIndex;				// the little picture that shows arms and stuff falling off
-		bool				suppressionFire;				// is this guy permanently shooting at ground
-		char				prevTeamId;
-		char				prevCommanderId;
-		
+	float				minRange;										// current min attack range
+	float				maxRange;										// current max attack range
+	float				optimalRange;									// current optimum attack range
+	int32_t				numFunctionalWeapons;							// takes into account damage, etc.
 
-		// Update Info
-		int32_t				pilotCheckModifier;
-		int32_t				prevPilotCheckModifier;
-		int32_t				prevPilotCheckDelta;
-		float				prevPilotCheckUpdate;
-		bool				failedPilotingCheck;			// Passed or failed this frame...
+	char				numAntiMissileSystems;							// number of anti-missile systems
+	uint8_t		antiMissileSystem[MAX_ANTI_MISSILE_SYSTEMS];	// anti-missile system list
+
+	// Engine
+	float				engineBlowTime;
+	float				maxMoveSpeed;
+	bool				shutDownThisFrame;
+	bool				startUpThisFrame;
+	bool				disableThisFrame;
+
+	// Team
+	//MoverGroupPtr		group;							// what group am I a member of?
+	char				teamId;
+	char				groupId;
+	int32_t				squadId;
+	int32_t				selectionIndex;					// > 0 when in selected group
+	int32_t				teamRosterIndex;				// where am I in my team's roster?
+	char				commanderId;
+	int32_t				unitGroup;						// the thing the user sets by hitting ctrl and a number
+	// this is a field since they can belong to more than one
+	int32_t				iconPictureIndex;				// the little picture that shows arms and stuff falling off
+	bool				suppressionFire;				// is this guy permanently shooting at ground
+	char				prevTeamId;
+	char				prevCommanderId;
+
+
+	// Update Info
+	int32_t				pilotCheckModifier;
+	int32_t				prevPilotCheckModifier;
+	int32_t				prevPilotCheckDelta;
+	float				prevPilotCheckUpdate;
+	bool				failedPilotingCheck;			// Passed or failed this frame...
 //		BaseObjectPtr		collisionFreeFrom;
 //		float				collisionFreeTime;
-		float				lastWeaponEffectivenessCalc;	// time of last calc
-		float				lastOptimalRangeCalc;			// time of last calc
-		GameObjectWatchID	challengerWID;
+	float				lastWeaponEffectivenessCalc;	// time of last calc
+	float				lastOptimalRangeCalc;			// time of last calc
+	GameObjectWatchID	challengerWID;
 
-		char				lastGesture;
+	char				lastGesture;
 
 //		AppearancePtr		appearance;						// pointer to the Actor which is the appearance.
-		MoverControl		control;						// control settings for this mover
-		MoverDynamics		dynamics;						// dynamics settings for this mover
-		
-		// Network
-		//uint32_t				netPlayerId;
-		char				netPlayerName[MAXLEN_NET_PLAYER_NAME];	// netPlayerName is the player who owns this mover
-		int32_t				localMoverId;					// if >= 0, is locally controlled
-		int32_t				netRosterIndex;					// used for mover id in net packets
-		StatusChunk			statusChunk;					// last status chunk built/received
-		bool				newMoveChunk;					// set if last movechunk not yet processed
-		MoveChunk			moveChunk;						// last move chunk built/received
-		int32_t				numWeaponFireChunks[2];
-		uint32_t		weaponFireChunks[2][MAX_WEAPONFIRE_CHUNKS];
-		int32_t				numCriticalHitChunks[2];
-		uint8_t		criticalHitChunks[2][MAX_CRITICALHIT_CHUNKS];
-		int32_t				numRadioChunks[2];
-		uint8_t		radioChunks[2][MAX_RADIO_CHUNKS];
-		bool				ejectOrderGiven;
-															// Still awaiting final destruct orders from update.
-		int32_t				numWeaponHitsHandled;
-		float				timeLeft;						// How int32_t before we return FALSE to update.
-		bool				exploding;
-		bool				withdrawing;
-	
-		float				yieldTimeLeft;					// How much time do I have left to wait
-		Stuff::Vector3D		lastValidPosition;				// Last valid move path point I've been to
-		char				pivotDirection;					// Used in pivotTo(): -1 = not pivoting
-		float				lastHustleTime;					// last time we had to hustle (on bridge, etc.)
+	MoverControl		control;						// control settings for this mover
+	MoverDynamics		dynamics;						// dynamics settings for this mover
 
-		static int32_t			numMovers;
-		static SortListPtr	sortList;
+	// Network
+	//uint32_t				netPlayerId;
+	char				netPlayerName[MAXLEN_NET_PLAYER_NAME];	// netPlayerName is the player who owns this mover
+	int32_t				localMoverId;					// if >= 0, is locally controlled
+	int32_t				netRosterIndex;					// used for mover id in net packets
+	StatusChunk			statusChunk;					// last status chunk built/received
+	bool				newMoveChunk;					// set if last movechunk not yet processed
+	MoveChunk			moveChunk;						// last move chunk built/received
+	int32_t				numWeaponFireChunks[2];
+	uint32_t		weaponFireChunks[2][MAX_WEAPONFIRE_CHUNKS];
+	int32_t				numCriticalHitChunks[2];
+	uint8_t		criticalHitChunks[2][MAX_CRITICALHIT_CHUNKS];
+	int32_t				numRadioChunks[2];
+	uint8_t		radioChunks[2][MAX_RADIO_CHUNKS];
+	bool				ejectOrderGiven;
+	// Still awaiting final destruct orders from update.
+	int32_t				numWeaponHitsHandled;
+	float				timeLeft;						// How int32_t before we return FALSE to update.
+	bool				exploding;
+	bool				withdrawing;
 
-		bool				salvageVehicle;
-		
-		float				markDistanceMoved;				//Used to track distance object has moved since last mark of terrain visible.
+	float				yieldTimeLeft;					// How much time do I have left to wait
+	Stuff::Vector3D		lastValidPosition;				// Last valid move path point I've been to
+	char				pivotDirection;					// Used in pivotTo(): -1 = not pivoting
+	float				lastHustleTime;					// last time we had to hustle (on bridge, etc.)
 
-		GameObjectWatchID	refitBuddyWID;
-		GameObjectWatchID	recoverBuddyWID;
+	static int32_t			numMovers;
+	static SortListPtr	sortList;
 
-		int32_t				crashAvoidSelf;
-		int32_t				crashAvoidPath;
-		int32_t				crashBlockSelf;
-		int32_t				crashBlockPath;
-		float				crashYieldTime;
-		int32_t				pathLockLength;
-		int32_t				pathLockList[MAX_LOCK_RANGE][2];
-		Stuff::Vector3D		moveCenter;
-		float				moveRadius;
+	bool				salvageVehicle;
 
-		int32_t				overlayWeightClass;
+	float				markDistanceMoved;				//Used to track distance object has moved since last mark of terrain visible.
 
-		float				timeToClearSelection;
+	GameObjectWatchID	refitBuddyWID;
+	GameObjectWatchID	recoverBuddyWID;
 
-		float				timeSinceMoving;
+	int32_t				crashAvoidSelf;
+	int32_t				crashAvoidPath;
+	int32_t				crashBlockSelf;
+	int32_t				crashBlockPath;
+	float				crashYieldTime;
+	int32_t				pathLockLength;
+	int32_t				pathLockList[MAX_LOCK_RANGE][2];
+	Stuff::Vector3D		moveCenter;
+	float				moveRadius;
 
-		float 				timeSinceFiredLast;				//used to track when they stop revealing
+	int32_t				overlayWeightClass;
 
-		//GameObjectPtr		lastMovingTarget;
-		GameObjectWatchID	lastMovingTargetWID;
+	float				timeToClearSelection;
 
-		bool 				mechSalvage;					//As this guy dies, ONLY check once if he's salvagable!
+	float				timeSinceMoving;
 
-		Stuff::Vector3D		teleportPosition;				//debug feature :)
-		int32_t				debugPage;
+	float 				timeSinceFiredLast;				//used to track when they stop revealing
 
-		static float		newThreatMultiplier;
-		static float		marginOfError[2];
-		static float		refitRange;
-		static float		refitTime;
-		static float		refitCostArray[NUM_COSTS][NUM_FIXERS];
-		static float		refitAmount;
-		static float		recoverRange;
-		static float		recoverTime;
-		static float		recoverCost;
-		static float		recoverAmount;
-		static bool			inRecoverUpdate;
-		static char			optimalCells[MAX_ATTACK_CELLRANGE][MAX_ATTACK_INCREMENTS][2];
-		static int32_t			numOptimalIncrements;
-		static int16_t		rangedCellsIndices[MAX_ATTACK_CELLRANGE][2];
-		static char			rangedCells[RANGED_CELLS_DIM][2];
-		static int32_t			IndirectFireWeapons[20];
-		static int32_t			AreaEffectWeapons[20];
-		static uint32_t holdFireIconHandle;
-		
-		static TriggerAreaManager* triggerAreaMgr;
+	//GameObjectPtr		lastMovingTarget;
+	GameObjectWatchID	lastMovingTargetWID;
+
+	bool 				mechSalvage;					//As this guy dies, ONLY check once if he's salvagable!
+
+	Stuff::Vector3D		teleportPosition;				//debug feature :)
+	int32_t				debugPage;
+
+	static float		newThreatMultiplier;
+	static float		marginOfError[2];
+	static float		refitRange;
+	static float		refitTime;
+	static float		refitCostArray[NUM_COSTS][NUM_FIXERS];
+	static float		refitAmount;
+	static float		recoverRange;
+	static float		recoverTime;
+	static float		recoverCost;
+	static float		recoverAmount;
+	static bool			inRecoverUpdate;
+	static char			optimalCells[MAX_ATTACK_CELLRANGE][MAX_ATTACK_INCREMENTS][2];
+	static int32_t			numOptimalIncrements;
+	static int16_t		rangedCellsIndices[MAX_ATTACK_CELLRANGE][2];
+	static char			rangedCells[RANGED_CELLS_DIM][2];
+	static int32_t			IndirectFireWeapons[20];
+	static int32_t			AreaEffectWeapons[20];
+	static uint32_t holdFireIconHandle;
+
+	static TriggerAreaManager* triggerAreaMgr;
 
 
-		bool				pathLocks;						//For movers which can be stepped on.  They do NOT lock!
-		bool				isOnGui;						//For movers which start out on player team but not on gui.  Like raven in 0103
+	bool				pathLocks;						//For movers which can be stepped on.  They do NOT lock!
+	bool				isOnGui;						//For movers which start out on player team but not on gui.  Like raven in 0103
 
-		int32_t				conStat;						//Contact status stored for this frame, for this machine
-		float				fadeTime;						//Time between fade from LOS to non-LOS
-		uint8_t				alphaValue;						//Current Fade value;
-		int32_t				causeOfDeath;
+	int32_t				conStat;						//Contact status stored for this frame, for this machine
+	float				fadeTime;						//Time between fade from LOS to non-LOS
+	uint8_t				alphaValue;						//Current Fade value;
+	int32_t				causeOfDeath;
 
-		int32_t				lowestWeaponNodeID;
-		float				lowestWeaponNodeZ;
+	int32_t				lowestWeaponNodeID;
+	float				lowestWeaponNodeZ;
 
 	//----------------
 	//Member Functions
 
-	public:
+public:
 
-		virtual void set (Mover copy);
+	virtual void set(Mover copy);
 
-		virtual void init (bool create);
+	virtual void init(bool create);
 
-		Mover (void) {
-			init(true);
-		}
-			
-		virtual void destroy (void);
+	Mover(void)
+	{
+		init(true);
+	}
 
-		virtual void init (bool create, ObjectTypePtr objType) {
-			GameObject::init(create, objType);
-		}
+	virtual void destroy(void);
 
-		virtual int32_t init (FitIniFile* objProfile) {
-			return(NO_ERROR);
-		}
+	virtual void init(bool create, ObjectTypePtr objType)
+	{
+		GameObject::init(create, objType);
+	}
 
-		virtual int32_t init (uint32_t variantNum) {
-			return(NO_ERROR);
-		}
+	virtual int32_t init(FitIniFile* objProfile)
+	{
+		return(NO_ERROR);
+	}
 
-		virtual void release (void);
+	virtual int32_t init(uint32_t variantNum)
+	{
+		return(NO_ERROR);
+	}
 
-		//virtual int32_t update (void);
+	virtual void release(void);
 
-		//virtual void render (void);
+	//virtual int32_t update (void);
 
-		virtual void updateDebugWindow (GameDebugWindow* debugWindow);
+	//virtual void render (void);
 
-		virtual PSTR getName (void) {
-			return(name);
-		}
+	virtual void updateDebugWindow(GameDebugWindow* debugWindow);
 
-		virtual void setName (PSTR s) {
-			strncpy(name, s, MAXLEN_MOVER_NAME);
-		}
+	virtual PSTR getName(void)
+	{
+		return(name);
+	}
 
-		virtual void setControl (ControlType ctrlType) {
-		}
+	virtual void setName(PSTR s)
+	{
+		strncpy(name, s, MAXLEN_MOVER_NAME);
+	}
 
-		virtual void updateAIControl (void) {
-		}
+	virtual void setControl(ControlType ctrlType)
+	{
+	}
 
-		virtual void updateNetworkControl (void) {
-		}
+	virtual void updateAIControl(void)
+	{
+	}
 
-		virtual void updatePlayerControl (void) {
-		}
+	virtual void updateNetworkControl(void)
+	{
+	}
 
-		virtual void updateDynamics (void) {
-		}
+	virtual void updatePlayerControl(void)
+	{
+	}
 
-		virtual void setPartId (int32_t newPartId);
+	virtual void updateDynamics(void)
+	{
+	}
 
-		virtual void setPosition (Stuff::Vector3D& newPosition);
-		
-		virtual void setTeleportPosition (Stuff::Vector3D& newPos);
+	virtual void setPartId(int32_t newPartId);
 
-		ContactInfoPtr getContactInfo (void) {
-			return(contactInfo);
-		}
+	virtual void setPosition(Stuff::Vector3D& newPosition);
 
-		virtual void tradeRefresh (void);
+	virtual void setTeleportPosition(Stuff::Vector3D& newPos);
 
-		virtual void setMoveType (int32_t type);
+	ContactInfoPtr getContactInfo(void)
+	{
+		return(contactInfo);
+	}
 
-		virtual int32_t getMoveType (void) {
-			return(moveType);
-		}
+	virtual void tradeRefresh(void);
 
-		virtual void setMoveLevel (int32_t level) {
-			moveLevel = level;
-		}
+	virtual void setMoveType(int32_t type);
 
-		virtual int32_t getMoveLevel (void) {
-			return(moveLevel);
-		}
+	virtual int32_t getMoveType(void)
+	{
+		return(moveType);
+	}
 
-		virtual bool getFollowRoads (void) {
-			return(followRoads);
-		}
+	virtual void setMoveLevel(int32_t level)
+	{
+		moveLevel = level;
+	}
 
-		virtual void setFollowRoads (bool setting) {
-			followRoads = setting;
-		}
+	virtual int32_t getMoveLevel(void)
+	{
+		return(moveLevel);
+	}
 
-		virtual Stuff::Vector3D getVelocity (void) {
-			return(velocity);
-		}
+	virtual bool getFollowRoads(void)
+	{
+		return(followRoads);
+	}
 
-		virtual void setVelocity (Stuff::Vector3D& newVelocity) {
-			velocity = newVelocity;
-		}
+	virtual void setFollowRoads(bool setting)
+	{
+		followRoads = setting;
+	}
 
-		virtual float getSpeed (void) {
-			return(velocity.GetLength());
-		}
+	virtual Stuff::Vector3D getVelocity(void)
+	{
+		return(velocity);
+	}
 
-		virtual bool hasWeaponNode (void);
+	virtual void setVelocity(Stuff::Vector3D& newVelocity)
+	{
+		velocity = newVelocity;
+	}
 
-		Stuff::Vector3D getLOSPosition (void);
+	virtual float getSpeed(void)
+	{
+		return(velocity.GetLength());
+	}
 
-		virtual void rotate (float angle);
+	virtual bool hasWeaponNode(void);
 
-		virtual void rotate (float angle, float facingAngle);
-		
-		virtual void setAwake (bool state);
+	Stuff::Vector3D getLOSPosition(void);
 
-		virtual bool isMarine(void) 
-		{
-			return(pathLocks == false);
-		}
+	virtual void rotate(float angle);
 
-		void drawWaypointPath(void);
+	virtual void rotate(float angle, float facingAngle);
 
-		void updateDrawWaypointPath(void);
-		
+	virtual void setAwake(bool state);
+
+	virtual bool isMarine(void)
+	{
+		return(pathLocks == false);
+	}
+
+	void drawWaypointPath(void);
+
+	void updateDrawWaypointPath(void);
+
 //		virtual frame_of_ref getFrame (void)
 //		{
 //			return(frame);
 //		}
 
-		virtual int32_t getSpeedState (void) {
-			return(SPEED_STATE_STATIONARY);
-		}
+	virtual int32_t getSpeedState(void)
+	{
+		return(SPEED_STATE_STATIONARY);
+	}
 
-		virtual float getTerrainAngle (void);
+	virtual float getTerrainAngle(void);
 
-		virtual float getVelocityTilt (void);
+	virtual float getVelocityTilt(void);
 
 //		virtual void setFrame (frame_of_ref &newFrame)
 //		{
 //			frame = newFrame;
 //		}
-		
-		virtual Stuff::Vector3D relativePosition (float angle, float radius, uint32_t flags);
 
-		int32_t calcLineOfSightView (int32_t range);
-		
-		virtual void setSensorRange (float range);
-		
-		virtual Stuff::Vector3D getRotationVector (void) 
-		{
-			Stuff::Vector3D rotationVec;
-			rotationVec.x = 0.0f;
-			rotationVec.y = -1.0f;
-			rotationVec.z = 0.0f;
-			Rotate(rotationVec, -rotation);
-			return(rotationVec);
-		}
+	virtual Stuff::Vector3D relativePosition(float angle, float radius, uint32_t flags);
 
-		virtual bool hasActiveProbe (void);
+	int32_t calcLineOfSightView(int32_t range);
 
-		virtual float getEcmRange (void);
+	virtual void setSensorRange(float range);
 
-		virtual bool hasNullSignature (void);
+	virtual Stuff::Vector3D getRotationVector(void)
+	{
+		Stuff::Vector3D rotationVec;
+		rotationVec.x = 0.0f;
+		rotationVec.y = -1.0f;
+		rotationVec.z = 0.0f;
+		Rotate(rotationVec, -rotation);
+		return(rotationVec);
+	}
 
-		virtual void setSelected (bool set, int32_t newSelectionIndex = 0) {
-			GameObject::setSelected(set);
-			selectionIndex = newSelectionIndex;
-		}
+	virtual bool hasActiveProbe(void);
 
-		virtual int32_t handleTacticalOrder (TacticalOrder tacOrder, int32_t priority = 1, bool queuePlayerOrder = false);
+	virtual float getEcmRange(void);
 
-		virtual AppearancePtr getAppearance (void) {
-			return(appearance);
-		}
+	virtual bool hasNullSignature(void);
+
+	virtual void setSelected(bool set, int32_t newSelectionIndex = 0)
+	{
+		GameObject::setSelected(set);
+		selectionIndex = newSelectionIndex;
+	}
+
+	virtual int32_t handleTacticalOrder(TacticalOrder tacOrder, int32_t priority = 1, bool queuePlayerOrder = false);
+
+	virtual AppearancePtr getAppearance(void)
+	{
+		return(appearance);
+	}
 
 //		virtual float getAppearRadius (void)
 //		{
 //			return appearance->getRadius(void);
 //		}
 
-		virtual void reduceAntiMissileAmmo (int32_t numAntiMissiles);
+	virtual void reduceAntiMissileAmmo(int32_t numAntiMissiles);
 
-		virtual void pilotingCheck (uint32_t situation = 0, float modifier = 0.0);
+	virtual void pilotingCheck(uint32_t situation = 0, float modifier = 0.0);
 
-		virtual void forcePilotingCheck (void) {
-			if (pilotCheckModifier < 0)
-				pilotCheckModifier = 0;
-		}
+	virtual void forcePilotingCheck(void)
+	{
+		if(pilotCheckModifier < 0)
+			pilotCheckModifier = 0;
+	}
 
-		virtual bool canFireWeapons (void) {
-			return(true);
-		}
+	virtual bool canFireWeapons(void)
+	{
+		return(true);
+	}
 
-		virtual void updateDamageTakenRate (void);
+	virtual void updateDamageTakenRate(void);
 
-		virtual int32_t checkShortRangeCollision (void) {
-			return(NO_ACTION);
-		}
+	virtual int32_t checkShortRangeCollision(void)
+	{
+		return(NO_ACTION);
+	}
 
-		virtual void setOverlayWeightClass (int32_t overlayClass) {
-			overlayWeightClass = overlayClass;
-		}
+	virtual void setOverlayWeightClass(int32_t overlayClass)
+	{
+		overlayWeightClass = overlayClass;
+	}
 
-		virtual int32_t getOverlayWeightClass (void) {
-			return(overlayWeightClass);
-		}
+	virtual int32_t getOverlayWeightClass(void)
+	{
+		return(overlayWeightClass);
+	}
 
-		virtual void getStopInfo (float &stopTime, float &stopDistance) {}
+	virtual void getStopInfo(float& stopTime, float& stopDistance) {}
 
-		virtual bool getAdjacentCellPathLocked (int32_t level, int32_t cellRow, int32_t cellCol, int32_t dir);
+	virtual bool getAdjacentCellPathLocked(int32_t level, int32_t cellRow, int32_t cellCol, int32_t dir);
 
-		virtual void updatePathLock (bool set);
+	virtual void updatePathLock(bool set);
 
-		virtual bool getPathRangeLock (int32_t range, bool* reachedEnd = nullptr);
+	virtual bool getPathRangeLock(int32_t range, bool* reachedEnd = nullptr);
 
-		virtual int32_t setPathRangeLock (bool set, int32_t range = 0);
+	virtual int32_t setPathRangeLock(bool set, int32_t range = 0);
 
-		virtual bool getPathRangeBlocked (int32_t range, bool* reachedEnd = nullptr);
+	virtual bool getPathRangeBlocked(int32_t range, bool* reachedEnd = nullptr);
 
-		virtual bool crashAvoidanceSystem (void) {
-			return(false);
-		}
+	virtual bool crashAvoidanceSystem(void)
+	{
+		return(false);
+	}
 
-		void setLastHustleTime (float t) {
-			lastHustleTime = t;
-		}
+	void setLastHustleTime(float t)
+	{
+		lastHustleTime = t;
+	}
 
-		float getLastHustleTime (void) {
-			return(lastHustleTime);
-		}
+	float getLastHustleTime(void)
+	{
+		return(lastHustleTime);
+	}
 
-		virtual void updateHustleTime (void);
+	virtual void updateHustleTime(void);
 
-		virtual void mineCheck (void) {
-			//----------------------------
-			// Does nothing, be default...
-		}
+	virtual void mineCheck(void)
+	{
+		//----------------------------
+		// Does nothing, be default...
+	}
 
-		virtual void updateMovement (void) {}
+	virtual void updateMovement(void) {}
 
-		virtual int32_t bounceToAdjCell (void);
+	virtual int32_t bounceToAdjCell(void);
 
 #ifdef USE_MOVERCONTROLS
-		uint32_t getControlClass (void) {
-			return(control->getControlClass());
-		}
+	uint32_t getControlClass(void)
+	{
+		return(control->getControlClass());
+	}
 #endif
 
-		virtual void setSquadId (char newSquadId) {
-			squadId = newSquadId;
-		}
+	virtual void setSquadId(char newSquadId)
+	{
+		squadId = newSquadId;
+	}
 
-		virtual char getSquadId (void) {
-			return(squadId);
-		}
+	virtual char getSquadId(void)
+	{
+		return(squadId);
+	}
 
-		virtual int32_t setTeamId (int32_t _teamId, bool setup);
-		
-		virtual int32_t getTeamId (void) {
-			return(teamId);
-		}
+	virtual int32_t setTeamId(int32_t _teamId, bool setup);
 
-		virtual TeamPtr getTeam (void);
+	virtual int32_t getTeamId(void)
+	{
+		return(teamId);
+	}
 
-		virtual bool isFriendly (TeamPtr team);
+	virtual TeamPtr getTeam(void);
 
-		virtual bool isEnemy (TeamPtr team);
+	virtual bool isFriendly(TeamPtr team);
 
-		virtual bool isNeutral (TeamPtr team);
+	virtual bool isEnemy(TeamPtr team);
 
-		virtual int32_t setGroupId (int32_t _groupId, bool setup);
+	virtual bool isNeutral(TeamPtr team);
 
-		virtual int32_t getGroupId (void) {
-			return(groupId);
-		}
+	virtual int32_t setGroupId(int32_t _groupId, bool setup);
 
-		virtual MoverGroupPtr getGroup (void);
+	virtual int32_t getGroupId(void)
+	{
+		return(groupId);
+	}
 
-		virtual void setPilotHandle (int32_t _pilotHandle);
+	virtual MoverGroupPtr getGroup(void);
 
-		virtual void loadPilot (PSTR pilotFileName, PSTR brainFileName, LogisticsPilot *lPilot);
+	virtual void setPilotHandle(int32_t _pilotHandle);
 
-		virtual void setCommanderId (int32_t _commanderId);
+	virtual void loadPilot(PSTR pilotFileName, PSTR brainFileName, LogisticsPilot* lPilot);
 
-		virtual int32_t getCommanderId (void) {
-			return(commanderId);
-		}
+	virtual void setCommanderId(int32_t _commanderId);
 
-		virtual CommanderPtr getCommander (void);
-		
-		virtual MechWarriorPtr getPilot (void) {
-			return(pilot);
-		}
+	virtual int32_t getCommanderId(void)
+	{
+		return(commanderId);
+	}
 
-		MoverPtr getPoint (void);
+	virtual CommanderPtr getCommander(void);
 
-		void setTeamRosterIndex (int32_t index) {
-			teamRosterIndex = index;
-		}
+	virtual MechWarriorPtr getPilot(void)
+	{
+		return(pilot);
+	}
 
-		int32_t getTeamRosterIndex (void) {
-			return(teamRosterIndex);
-		}
+	MoverPtr getPoint(void);
 
-		virtual int32_t getContacts (int32_t* contactList, int32_t contactCriteria, int32_t sortType);
+	void setTeamRosterIndex(int32_t index)
+	{
+		teamRosterIndex = index;
+	}
 
-		int32_t getContactStatus (int32_t scanningTeamID, bool includingAllies);
+	int32_t getTeamRosterIndex(void)
+	{
+		return(teamRosterIndex);
+	}
+
+	virtual int32_t getContacts(int32_t* contactList, int32_t contactCriteria, int32_t sortType);
+
+	int32_t getContactStatus(int32_t scanningTeamID, bool includingAllies);
 
 //		void setNetPlayerId (uint32_t playerId) {
 //			netPlayerId = playerId;
@@ -1235,518 +1327,585 @@ class Mover : public GameObject {
 //			return(netPlayerId);
 //		}
 
-		void setNetPlayerName(PCSTR name) {
-			if (netPlayerName)
-				strncpy(netPlayerName,name,255);
-		}
+	void setNetPlayerName(PCSTR name)
+	{
+		if(netPlayerName)
+			strncpy(netPlayerName, name, 255);
+	}
 
-		PCSTR getNetPlayerName(void) {
-			return(netPlayerName);
-		}
+	PCSTR getNetPlayerName(void)
+	{
+		return(netPlayerName);
+	}
 
-		void setLocalMoverId (int32_t id) {
-			localMoverId = id;
-		}
+	void setLocalMoverId(int32_t id)
+	{
+		localMoverId = id;
+	}
 
-		int32_t getLocalMoverId (void) {
-			return(localMoverId);
-		}
+	int32_t getLocalMoverId(void)
+	{
+		return(localMoverId);
+	}
 
-		virtual int32_t getCBills (void) {
-			return(0);
-		}
+	virtual int32_t getCBills(void)
+	{
+		return(0);
+	}
 
-		void setNetRosterIndex (int32_t index) {
-			netRosterIndex = index;
-		}
+	void setNetRosterIndex(int32_t index)
+	{
+		netRosterIndex = index;
+	}
 
-		int32_t getNetRosterIndex (void) {
-			return(netRosterIndex);
-		}
+	int32_t getNetRosterIndex(void)
+	{
+		return(netRosterIndex);
+	}
 
-		int32_t getNumWeaponFireChunks (int32_t which) {
-			return(numWeaponFireChunks[which]);
-		}
+	int32_t getNumWeaponFireChunks(int32_t which)
+	{
+		return(numWeaponFireChunks[which]);
+	}
 
-		int32_t clearWeaponFireChunks (int32_t which);
+	int32_t clearWeaponFireChunks(int32_t which);
 
-		int32_t addWeaponFireChunk (int32_t which, WeaponFireChunkPtr chunk);
+	int32_t addWeaponFireChunk(int32_t which, WeaponFireChunkPtr chunk);
 
-		int32_t addWeaponFireChunks (int32_t which, uint32_t* packedChunkBuffer, int32_t numChunks);
+	int32_t addWeaponFireChunks(int32_t which, uint32_t* packedChunkBuffer, int32_t numChunks);
 
-		int32_t grabWeaponFireChunks (int32_t which, uint32_t* packedChunkBuffer, int32_t maxChunks);
+	int32_t grabWeaponFireChunks(int32_t which, uint32_t* packedChunkBuffer, int32_t maxChunks);
 
-		virtual int32_t updateWeaponFireChunks (int32_t which);
+	virtual int32_t updateWeaponFireChunks(int32_t which);
 
-		int32_t getNumCriticalHitChunks (int32_t which) {
-			return(numCriticalHitChunks[which]);
-		}
+	int32_t getNumCriticalHitChunks(int32_t which)
+	{
+		return(numCriticalHitChunks[which]);
+	}
 
-		int32_t clearCriticalHitChunks (int32_t which);
+	int32_t clearCriticalHitChunks(int32_t which);
 
-		int32_t addCriticalHitChunk (int32_t which, int32_t bodyLocation, int32_t criticalSpace);
+	int32_t addCriticalHitChunk(int32_t which, int32_t bodyLocation, int32_t criticalSpace);
 
-		int32_t addCriticalHitChunks (int32_t which, puint8_t packedChunkBuffer, int32_t numChunks);
+	int32_t addCriticalHitChunks(int32_t which, puint8_t packedChunkBuffer, int32_t numChunks);
 
-		int32_t grabCriticalHitChunks (int32_t which, puint8_t packedChunkBuffer);
+	int32_t grabCriticalHitChunks(int32_t which, puint8_t packedChunkBuffer);
 
-		virtual int32_t updateCriticalHitChunks (int32_t which);
+	virtual int32_t updateCriticalHitChunks(int32_t which);
 
-		int32_t getNumRadioChunks (int32_t which) {
-			return(numRadioChunks[which]);
-		}
+	int32_t getNumRadioChunks(int32_t which)
+	{
+		return(numRadioChunks[which]);
+	}
 
-		int32_t clearRadioChunks (int32_t which);
+	int32_t clearRadioChunks(int32_t which);
 
-		int32_t addRadioChunk (int32_t which, uint8_t msg);
+	int32_t addRadioChunk(int32_t which, uint8_t msg);
 
-		int32_t addRadioChunks (int32_t which, puint8_t packedChunkBuffer, int32_t numChunks);
+	int32_t addRadioChunks(int32_t which, puint8_t packedChunkBuffer, int32_t numChunks);
 
-		int32_t grabRadioChunks (int32_t which, puint8_t packedChunkBuffer);
+	int32_t grabRadioChunks(int32_t which, puint8_t packedChunkBuffer);
 
-		virtual int32_t updateRadioChunks (int32_t which);
+	virtual int32_t updateRadioChunks(int32_t which);
 
-		virtual StatusChunkPtr getStatusChunk (void) {
-			return(&statusChunk);
-		}
+	virtual StatusChunkPtr getStatusChunk(void)
+	{
+		return(&statusChunk);
+	}
 
-		virtual int32_t buildStatusChunk (void) {
-			return(NO_ERROR);
-		}
+	virtual int32_t buildStatusChunk(void)
+	{
+		return(NO_ERROR);
+	}
 
-		virtual int32_t handleStatusChunk (int32_t updateAge, uint32_t chunk) {
-			return(NO_ERROR);
-		}
+	virtual int32_t handleStatusChunk(int32_t updateAge, uint32_t chunk)
+	{
+		return(NO_ERROR);
+	}
 
-		virtual MoveChunkPtr getMoveChunk (void) {
-			return(&moveChunk);
-		}
+	virtual MoveChunkPtr getMoveChunk(void)
+	{
+		return(&moveChunk);
+	}
 
-		virtual int32_t buildMoveChunk (void) {
-			return(NO_ERROR);
-		}
+	virtual int32_t buildMoveChunk(void)
+	{
+		return(NO_ERROR);
+	}
 
-		virtual int32_t handleMoveChunk (uint32_t chunk) {
-			return(NO_ERROR);
-		}
+	virtual int32_t handleMoveChunk(uint32_t chunk)
+	{
+		return(NO_ERROR);
+	}
 
-		void setMoveChunk (MovePathPtr path, MoveChunkPtr chunk);
+	void setMoveChunk(MovePathPtr path, MoveChunkPtr chunk);
 
-		void playMessage (RadioMessageType messageId, bool propogateIfMultiplayer = false);
+	void playMessage(RadioMessageType messageId, bool propogateIfMultiplayer = false);
 
-		virtual int32_t calcCV (bool calcMax = false) {
-			return(0);
-		}
+	virtual int32_t calcCV(bool calcMax = false)
+	{
+		return(0);
+	}
 
-		void setFieldedCV (int32_t CV) {
-			fieldedCV = CV;
-		}
+	void setFieldedCV(int32_t CV)
+	{
+		fieldedCV = CV;
+	}
 
-		uint32_t getFieldedCV (void) {
-			return(fieldedCV);
-		}
+	uint32_t getFieldedCV(void)
+	{
+		return(fieldedCV);
+	}
 
-		virtual void setThreatRating (int16_t rating);
+	virtual void setThreatRating(int16_t rating);
 
-		virtual int32_t getThreatRating (void);
+	virtual int32_t getThreatRating(void);
 
 //		virtual void getDamageClass (int32_t& damageClass, bool& shutDown);
 
-		virtual bool refit (float pointsAvailable, float& pointsUsed, bool ammoOnly = false);
+	virtual bool refit(float pointsAvailable, float& pointsUsed, bool ammoOnly = false);
 
-		float calcRecoverPrice (void);
+	float calcRecoverPrice(void);
 
-		virtual bool recover (void);
+	virtual bool recover(void);
 
-		int32_t getInventoryDamage (int32_t itemIndex);
+	int32_t getInventoryDamage(int32_t itemIndex);
 
-		int32_t getInventoryMax (int32_t itemIndex) {
-			return(MasterComponent::masterList[inventory[itemIndex].masterID].getHealth());
-		}
+	int32_t getInventoryMax(int32_t itemIndex)
+	{
+		return(MasterComponent::masterList[inventory[itemIndex].masterID].getHealth());
+	}
 
-		virtual int32_t getBodyState (void) {
-			return(-1);
-		}
+	virtual int32_t getBodyState(void)
+	{
+		return(-1);
+	}
 
-		int32_t getSensorMax (void) {
-			if (sensor > -1)
-				return(MasterComponent::masterList[inventory[sensor].masterID].getHealth());
-			else
-				return(0);
-		}
+	int32_t getSensorMax(void)
+	{
+		if(sensor > -1)
+			return(MasterComponent::masterList[inventory[sensor].masterID].getHealth());
+		else
+			return(0);
+	}
 
-		int32_t getSensorHealth (void) {
-			if (sensor > -1)
-				return(inventory[sensor].health);
-			else
-				return(0);
-		}
+	int32_t getSensorHealth(void)
+	{
+		if(sensor > -1)
+			return(inventory[sensor].health);
+		else
+			return(0);
+	}
 
-		float getVisualRange (void);
+	float getVisualRange(void);
 
-		float getLastWeaponEffectivenessCalc (void) {
-			return(lastWeaponEffectivenessCalc);
-		}
+	float getLastWeaponEffectivenessCalc(void)
+	{
+		return(lastWeaponEffectivenessCalc);
+	}
 
-		float getLastOptimalRangeCalc (void) {
-			return(lastOptimalRangeCalc);
-		}
+	float getLastOptimalRangeCalc(void)
+	{
+		return(lastOptimalRangeCalc);
+	}
 
-		virtual float getTotalEffectiveness(void)
-		{
-			return (0.0);
-		}
-		
-		//ContactWatchPtr addContactWatch (GameObjectPtr who, ContactRecPtr contact) {
-		//	return(contactWatches.add(who, contact));
-		//}
+	virtual float getTotalEffectiveness(void)
+	{
+		return (0.0);
+	}
 
-		//void removeContactWatch (ContactWatchPtr watch) {
-		//	contactWatches.remove(watch);
-		//}
+	//ContactWatchPtr addContactWatch (GameObjectPtr who, ContactRecPtr contact) {
+	//	return(contactWatches.add(who, contact));
+	//}
 
-		void setChallenger (GameObjectPtr challenger);
-		
-		GameObjectPtr getChallenger (void);
+	//void removeContactWatch (ContactWatchPtr watch) {
+	//	contactWatches.remove(watch);
+	//}
 
-/*		void addContact (ContactRecPtr contact) {
-			sensorSystem.addContact(contact);
-		}
-*/
-		int32_t scanContact (int32_t contactType, uint32_t contactHandle);
+	void setChallenger(GameObjectPtr challenger);
 
-		int32_t analyzeContact (int32_t contactType, uint32_t contactHandle);
+	GameObjectPtr getChallenger(void);
 
-		int32_t scanBattlefield (int32_t quadrant, int32_t contactType, int32_t potentialContactType);
+	/*		void addContact (ContactRecPtr contact) {
+				sensorSystem.addContact(contact);
+			}
+	*/
+	int32_t scanContact(int32_t contactType, uint32_t contactHandle);
 
-		virtual Stuff::Vector3D calcOffsetMoveGoal (Stuff::Vector3D target);
+	int32_t analyzeContact(int32_t contactType, uint32_t contactHandle);
 
-		virtual int32_t calcGlobalPath (GlobalPathStep* globalPath, GameObjectPtr obj, Stuff::Vector3D* location, bool useClosedAreas);
+	int32_t scanBattlefield(int32_t quadrant, int32_t contactType, int32_t potentialContactType);
 
-		virtual int32_t calcMoveGoal (GameObjectPtr target,
-						  Stuff::Vector3D moveCenter,
-						  float moveRadius,
-						  Stuff::Vector3D moveGoal,
-						  int32_t selectionIndex,
-						  Stuff::Vector3D& newGoal,
-						  int32_t numValidAreas,
-						  pint16_t validAreas,
-						  uint32_t moveParams);
-								   
+	virtual Stuff::Vector3D calcOffsetMoveGoal(Stuff::Vector3D target);
 
-		virtual int32_t calcMovePath (MovePathPtr path,
-								   int32_t pathType,
+	virtual int32_t calcGlobalPath(GlobalPathStep* globalPath, GameObjectPtr obj, Stuff::Vector3D* location, bool useClosedAreas);
+
+	virtual int32_t calcMoveGoal(GameObjectPtr target,
+								 Stuff::Vector3D moveCenter,
+								 float moveRadius,
+								 Stuff::Vector3D moveGoal,
+								 int32_t selectionIndex,
+								 Stuff::Vector3D& newGoal,
+								 int32_t numValidAreas,
+								 pint16_t validAreas,
+								 uint32_t moveParams);
+
+
+	virtual int32_t calcMovePath(MovePathPtr path,
+								 int32_t pathType,
+								 Stuff::Vector3D start,
+								 Stuff::Vector3D goal,
+								 int32_t* goalCell,
+								 uint32_t moveParams = MOVEPARAM_NONE);
+
+	virtual int32_t calcEscapePath(MovePathPtr path,
 								   Stuff::Vector3D start,
 								   Stuff::Vector3D goal,
 								   int32_t* goalCell,
-								   uint32_t moveParams = MOVEPARAM_NONE);
+								   uint32_t moveParams,
+								   Stuff::Vector3D& escapeGoal);
 
-		virtual int32_t calcEscapePath (MovePathPtr path,
-									 Stuff::Vector3D start,
-									 Stuff::Vector3D goal,
-									 int32_t* goalCell,
-									 uint32_t moveParams,
-									 Stuff::Vector3D& escapeGoal);
+	virtual int32_t calcMovePath(MovePathPtr path,
+								 Stuff::Vector3D start,
+								 int32_t thruArea[2],
+								 int32_t goalDoor,
+								 Stuff::Vector3D finalGoal,
+								 Stuff::Vector3D* goalWorldPos,
+								 int32_t* goalCell,
+								 uint32_t moveParams = MOVEPARAM_NONE);
 
-		virtual int32_t calcMovePath (MovePathPtr path,
-								   Stuff::Vector3D start,
-								   int32_t thruArea[2],
-								   int32_t goalDoor,
-								   Stuff::Vector3D finalGoal,
-								   Stuff::Vector3D* goalWorldPos,
-								   int32_t* goalCell,
-								   uint32_t moveParams = MOVEPARAM_NONE);
+	virtual float weaponLocked(int32_t weaponIndex, Stuff::Vector3D targetPosition);
 
-		virtual float weaponLocked (int32_t weaponIndex, Stuff::Vector3D targetPosition);
+	virtual bool weaponInRange(int32_t weaponIndex, float metersToTarget, float buffer);
 
-		virtual bool weaponInRange (int32_t weaponIndex, float metersToTarget, float buffer);
+	virtual int32_t getWeaponsReady(int32_t* list, int32_t listSize);
 
-		virtual int32_t getWeaponsReady (int32_t* list, int32_t listSize);
+	virtual int32_t getWeaponsLocked(int32_t* list, int32_t listSize);
 
-		virtual int32_t getWeaponsLocked (int32_t* list, int32_t listSize);
+	virtual int32_t getWeaponsInRange(int32_t* list, int32_t listSize, float orderFireRange);
 
-		virtual int32_t getWeaponsInRange (int32_t* list, int32_t listSize, float orderFireRange);
+	virtual int32_t getWeaponShots(int32_t weaponIndex);
 
-		virtual int32_t getWeaponShots (int32_t weaponIndex);
-		
-		virtual bool getWeaponIndirectFire (int32_t weaponIndex);
+	virtual bool getWeaponIndirectFire(int32_t weaponIndex);
 
-		virtual bool getWeaponAreaEffect (int32_t weaponIndex);
-		
-		virtual float getWeaponAmmoLevel (int32_t weaponIndex);
+	virtual bool getWeaponAreaEffect(int32_t weaponIndex);
 
-		bool	getWeaponIsEnergy( int32_t weaponIndx );
+	virtual float getWeaponAmmoLevel(int32_t weaponIndex);
 
-		virtual void calcWeaponEffectiveness (bool setMax);
+	bool	getWeaponIsEnergy(int32_t weaponIndx);
 
-		virtual void calcAmmoTotals (void);
+	virtual void calcWeaponEffectiveness(bool setMax);
 
-		virtual int32_t calcFireRanges (void);
+	virtual void calcAmmoTotals(void);
 
-		virtual float getOrderedFireRange (int32_t* attackRange = nullptr);
+	virtual int32_t calcFireRanges(void);
 
-		virtual float getMinFireRange (void);
+	virtual float getOrderedFireRange(int32_t* attackRange = nullptr);
 
-		virtual float getMaxFireRange (void);
+	virtual float getMinFireRange(void);
 
-		virtual float getOptimalFireRange (void);
+	virtual float getMaxFireRange(void);
 
-		virtual bool isWeaponIndex (int32_t itemIndex);
+	virtual float getOptimalFireRange(void);
 
-		virtual bool isWeaponReady (int32_t weaponIndex);
+	virtual bool isWeaponIndex(int32_t itemIndex);
 
-		virtual bool isWeaponMissile (int32_t weaponIndex);
+	virtual bool isWeaponReady(int32_t weaponIndex);
 
-		virtual void startWeaponRecycle (int32_t weaponIndex);
+	virtual bool isWeaponMissile(int32_t weaponIndex);
 
-		virtual int32_t tallyAmmo (int32_t ammoMasterId);
+	virtual void startWeaponRecycle(int32_t weaponIndex);
 
-		virtual int32_t reduceAmmo (int32_t ammoMasterId, int32_t amount);
+	virtual int32_t tallyAmmo(int32_t ammoMasterId);
 
-		virtual int32_t getNumAmmoTypes (void) {
-			return(numAmmoTypes);
-		}
+	virtual int32_t reduceAmmo(int32_t ammoMasterId, int32_t amount);
 
-		bool hasNonAreaWeapon (void);
-	
-		virtual int32_t getAmmoType (int32_t ammoTypeIndex) {
-			return(ammoTypeTotal[ammoTypeIndex].masterId);
-		}
+	virtual int32_t getNumAmmoTypes(void)
+	{
+		return(numAmmoTypes);
+	}
 
-		virtual int32_t getAmmoTypeTotal (int32_t ammoTypeIndex) {
-			//--------------------------------------------------
-			// This assumes 0 <= ammoTypeIndex < numAmmoTypes...
-			return(ammoTypeTotal[ammoTypeIndex].curAmount);
-		}
+	bool hasNonAreaWeapon(void);
 
-		virtual int32_t getAmmoTypeStart (int32_t ammoTypeIndex) {
-			//--------------------------------------------------
-			// This assumes 0 <= ammoTypeIndex < numAmmoTypes...
-			return(ammoTypeTotal[ammoTypeIndex].maxAmount);
-		}
+	virtual int32_t getAmmoType(int32_t ammoTypeIndex)
+	{
+		return(ammoTypeTotal[ammoTypeIndex].masterId);
+	}
 
-		virtual void deductWeaponShot (int32_t weaponIndex, int32_t ammoAmount = 1);
+	virtual int32_t getAmmoTypeTotal(int32_t ammoTypeIndex)
+	{
+		//--------------------------------------------------
+		// This assumes 0 <= ammoTypeIndex < numAmmoTypes...
+		return(ammoTypeTotal[ammoTypeIndex].curAmount);
+	}
 
-		virtual bool needsRefit(void);
-		
-		virtual int32_t sortWeapons (int32_t* weaponList, int32_t* valueList, int32_t listSize, int32_t sortType, bool skillCheck);
+	virtual int32_t getAmmoTypeStart(int32_t ammoTypeIndex)
+	{
+		//--------------------------------------------------
+		// This assumes 0 <= ammoTypeIndex < numAmmoTypes...
+		return(ammoTypeTotal[ammoTypeIndex].maxAmount);
+	}
 
-		virtual float calcAttackChance (GameObjectPtr target, int32_t aimLocation, float targetTime, int32_t weaponIndex, float modifiers, int32_t* range, Stuff::Vector3D* targetPoint = nullptr);
+	virtual void deductWeaponShot(int32_t weaponIndex, int32_t ammoAmount = 1);
 
-		virtual float calcAttackModifier (GameObjectPtr target, int32_t weaponIndex, bool skillCheck) {
-			return(0.0);
-		}
+	virtual bool needsRefit(void);
 
-		MasterComponentPtr getMasterComponent (int32_t itemIndex) {
-			return(&MasterComponent::masterList[inventory[itemIndex].masterID]);
-		}
+	virtual int32_t sortWeapons(int32_t* weaponList, int32_t* valueList, int32_t listSize, int32_t sortType, bool skillCheck);
 
-		virtual bool hitInventoryItem (int32_t itemIndex, bool setupOnly = FALSE) {
-			return(false);
-		}
+	virtual float calcAttackChance(GameObjectPtr target, int32_t aimLocation, float targetTime, int32_t weaponIndex, float modifiers, int32_t* range, Stuff::Vector3D* targetPoint = nullptr);
 
-		bool isInventoryDisabled (int32_t itemIndex) {
-			return(inventory[itemIndex].disabled);
-		}
+	virtual float calcAttackModifier(GameObjectPtr target, int32_t weaponIndex, bool skillCheck)
+	{
+		return(0.0);
+	}
 
-		virtual void disable (uint32_t cause);
+	MasterComponentPtr getMasterComponent(int32_t itemIndex)
+	{
+		return(&MasterComponent::masterList[inventory[itemIndex].masterID]);
+	}
+
+	virtual bool hitInventoryItem(int32_t itemIndex, bool setupOnly = FALSE)
+	{
+		return(false);
+	}
+
+	bool isInventoryDisabled(int32_t itemIndex)
+	{
+		return(inventory[itemIndex].disabled);
+	}
+
+	virtual void disable(uint32_t cause);
+
+	virtual void shutDown(void);
+
+	virtual void startUp(void);
+
+	virtual void destroyBodyLocation(int32_t location) {}
+
+	virtual void calcCriticalHit(int32_t hitLocation) {}
+
+	virtual bool injureBodyLocation(int32_t bodyLocation, float damage)
+	{
+		return(false);
+	}
+
+	virtual void ammoExplosion(int32_t ammoIndex);
+
+	virtual int32_t fireWeapon(GameObjectPtr target, float targetTime, int32_t weaponIndex, int32_t attackType, int32_t aimLocation, Stuff::Vector3D* targetPoint, float& damageDone)
+	{
+		return(NO_ERROR);
+	}
+
+	virtual int32_t handleWeaponFire(int32_t weaponIndex,
+									 GameObjectPtr target,
+									 Stuff::Vector3D* targetPoint,
+									 bool hit,
+									 float entryAngle,
+									 int32_t numMissiles,
+									 int32_t hitLocation)
+	{
+		return(NO_ERROR);
+	}
+
+	virtual void printFireWeaponDebugInfo(GameObjectPtr target, Stuff::Vector3D* targetPoint, int32_t chance, int32_t aimLocation, int32_t roll, WeaponShotInfo* shotInfo);
+
+	virtual void printHandleWeaponHitDebugInfo(WeaponShotInfo* shotInfo);
+
+	virtual float relFacingDelta(Stuff::Vector3D goalPos, Stuff::Vector3D targetPos);
+
+	virtual float relFacingTo(Stuff::Vector3D goal, int32_t bodyLocation = -1);
+
+	virtual float relViewFacingTo(Stuff::Vector3D goal)
+	{
+		return(GameObject::relFacingTo(goal));
+	}
+
+	bool canMoveHere(Stuff::Vector3D worldPos);
+
+	void setLastValidPosition(Stuff::Vector3D pt)
+	{
+		lastValidPosition = pt;
+	}
+
+	Stuff::Vector3D getLastValidPosition(void)
+	{
+		return(lastValidPosition);
+	}
+
+	virtual bool canPowerUp(void)
+	{
+		return(true);
+	}
+
+	virtual bool canMove(void)
+	{
+		return(true);
+	}
+
+	virtual bool canJump(void)
+	{
+		return(false);
+	}
 
-		virtual void shutDown (void);
-		
-		virtual void startUp (void);
-
-		virtual void destroyBodyLocation (int32_t location) {}
-
-		virtual void calcCriticalHit (int32_t hitLocation) {}
-
-		virtual bool injureBodyLocation (int32_t bodyLocation, float damage) {
-			return(false);
-		}
-
-		virtual void ammoExplosion (int32_t ammoIndex);
-
-		virtual int32_t fireWeapon (GameObjectPtr target, float targetTime, int32_t weaponIndex, int32_t attackType, int32_t aimLocation, Stuff::Vector3D* targetPoint, float &damageDone) {
-			return(NO_ERROR);
-		}
-
-		virtual int32_t handleWeaponFire (int32_t weaponIndex,
-									   GameObjectPtr target,
-									   Stuff::Vector3D* targetPoint,
-									   bool hit,
-									   float entryAngle,
-									   int32_t numMissiles,
-									   int32_t hitLocation) {
-			return(NO_ERROR);
-		}
-
-		virtual void printFireWeaponDebugInfo (GameObjectPtr target, Stuff::Vector3D* targetPoint, int32_t chance, int32_t aimLocation, int32_t roll, WeaponShotInfo* shotInfo);
-
-		virtual void printHandleWeaponHitDebugInfo (WeaponShotInfo* shotInfo);
-
-		virtual float relFacingDelta (Stuff::Vector3D goalPos, Stuff::Vector3D targetPos);
-
-		virtual float relFacingTo (Stuff::Vector3D goal, int32_t bodyLocation = -1);
-
-		virtual float relViewFacingTo (Stuff::Vector3D goal) {
-			return(GameObject::relFacingTo(goal));
-		}
-
-		bool canMoveHere (Stuff::Vector3D worldPos);
-
-		void setLastValidPosition (Stuff::Vector3D pt) {
-			lastValidPosition = pt;
-		}
-
-		Stuff::Vector3D getLastValidPosition (void) {
-			return(lastValidPosition);
-		}
-
-		virtual bool canPowerUp (void) {
-			return(true);
-		}
-		
-		virtual bool canMove (void) {
-			return(true);
-		}
-		
-		virtual bool canJump (void) {
-			return(false);
-		}
-
-		virtual float getJumpRange (int32_t* numOffsets = nullptr, int32_t* jumpCost = nullptr) {
-			if (numOffsets)
-				*numOffsets = 8;
-			if (jumpCost)
-				*jumpCost = 0;
-			return(0.0);
-		}
-
-		virtual bool isJumping (Stuff::Vector3D* jumpGoal = nullptr) {
-			return(false);
-		}
-
-		virtual bool isMineSweeper (void) {
-			return(false);
-		}
-
-		virtual bool isMineLayer (void) {
-			return(false);
-		}
-
-		virtual bool isLayingMines (void) {
-			return(false);
-		}
-
-		virtual float getFireArc (void);
-
-		virtual float calcMaxSpeed (void) {
-			return(0.0);
-		}
-
-		virtual float calcSlowSpeed (void) {
-			return(0.0);
-		}
-
-		virtual float calcModerateSpeed (void) {
-			return(0.0);
-		}
-
-		virtual int32_t calcSpriteSpeed (float speed, uint32_t flags, int32_t& state, int32_t& throttle) {
-			state = 0;
-			throttle = 100;
-			return(-1);
-		}
-
-		virtual Stuff::Vector3D getPositionFromHS (int32_t weaponType) 
-		{
-			Stuff::Vector3D pos;
-			pos.Zero(void);
-			return(pos);
-		}
-
-		virtual float getGestureStopDistance (void) {
-			return 0.0;
-		}
-		
-		virtual bool handleEjection (void);
-
-		virtual bool isWithdrawing (void);
-		
-		virtual bool underPlayerControl (void) {
-			return (true);
-		}
-		
-		~Mover (void) {
-			destroy(void);
-		}
-
-		bool enemyRevealed (void);
-
-		virtual PSTR getIfaceName(void) {
-			return ("No Name");
-		}
-
-		void drawSensorTextHelp (float screenX, float screenY, int32_t resID, uint32_t color, bool drawBOLD);
-
-		virtual SensorSystem* getSensorSystem(){ return sensorSystem; }
-
-		
-		static int32_t loadGameSystem (FitIniFilePtr mechFile, float visualRange);
-
-		bool isCloseToFirstTacOrder( Stuff::Vector3D& pos );
-
-		void removeFromUnitGroup( int32_t id );
-		void addToUnitGroup( int32_t id );
-		bool isInUnitGroup( int32_t id );
-		virtual bool isRefit(){ return 0; }
-		virtual bool isRecover() { return 0; }
-
-		int32_t getIconPictureIndex(){ return iconPictureIndex; }
-
-		bool isWeaponWorking(int32_t index );
-
-		virtual void startShutDown (void)
-		{
-		
-		}
-		
-		virtual bool isMech (void)
-		{
-			return false;
-		}
-		
-		virtual bool isVehicle (void)
-		{
-			return false;
-		}
-		
-		virtual bool isGuardTower (void)
-		{
-			return false;
-		}
-
-		virtual bool isOnGUI (void)
-		{
-			return isOnGui;
-		}
-		
-		virtual void setOnGUI (bool onGui)
-		{
-			isOnGui = onGui;
-		}
-		
-		virtual void Save (PacketFilePtr file, int32_t packetNum);
-
-		void CopyTo (MoverData *data);
-
-		void Load (MoverData *data);
-
-		static void initOptimalCells (int32_t numIncrements);
+	virtual float getJumpRange(int32_t* numOffsets = nullptr, int32_t* jumpCost = nullptr)
+	{
+		if(numOffsets)
+			*numOffsets = 8;
+		if(jumpCost)
+			*jumpCost = 0;
+		return(0.0);
+	}
+
+	virtual bool isJumping(Stuff::Vector3D* jumpGoal = nullptr)
+	{
+		return(false);
+	}
+
+	virtual bool isMineSweeper(void)
+	{
+		return(false);
+	}
+
+	virtual bool isMineLayer(void)
+	{
+		return(false);
+	}
+
+	virtual bool isLayingMines(void)
+	{
+		return(false);
+	}
+
+	virtual float getFireArc(void);
+
+	virtual float calcMaxSpeed(void)
+	{
+		return(0.0);
+	}
+
+	virtual float calcSlowSpeed(void)
+	{
+		return(0.0);
+	}
+
+	virtual float calcModerateSpeed(void)
+	{
+		return(0.0);
+	}
+
+	virtual int32_t calcSpriteSpeed(float speed, uint32_t flags, int32_t& state, int32_t& throttle)
+	{
+		state = 0;
+		throttle = 100;
+		return(-1);
+	}
+
+	virtual Stuff::Vector3D getPositionFromHS(int32_t weaponType)
+	{
+		Stuff::Vector3D pos;
+		pos.Zero(void);
+		return(pos);
+	}
+
+	virtual float getGestureStopDistance(void)
+	{
+		return 0.0;
+	}
+
+	virtual bool handleEjection(void);
+
+	virtual bool isWithdrawing(void);
+
+	virtual bool underPlayerControl(void)
+	{
+		return (true);
+	}
+
+	~Mover(void)
+	{
+		destroy(void);
+	}
+
+	bool enemyRevealed(void);
+
+	virtual PSTR getIfaceName(void)
+	{
+		return ("No Name");
+	}
+
+	void drawSensorTextHelp(float screenX, float screenY, int32_t resID, uint32_t color, bool drawBOLD);
+
+	virtual SensorSystem* getSensorSystem()
+	{
+		return sensorSystem;
+	}
+
+
+	static int32_t loadGameSystem(FitIniFilePtr mechFile, float visualRange);
+
+	bool isCloseToFirstTacOrder(Stuff::Vector3D& pos);
+
+	void removeFromUnitGroup(int32_t id);
+	void addToUnitGroup(int32_t id);
+	bool isInUnitGroup(int32_t id);
+	virtual bool isRefit()
+	{
+		return 0;
+	}
+	virtual bool isRecover()
+	{
+		return 0;
+	}
+
+	int32_t getIconPictureIndex()
+	{
+		return iconPictureIndex;
+	}
+
+	bool isWeaponWorking(int32_t index);
+
+	virtual void startShutDown(void)
+	{
+	}
+
+	virtual bool isMech(void)
+	{
+		return false;
+	}
+
+	virtual bool isVehicle(void)
+	{
+		return false;
+	}
+
+	virtual bool isGuardTower(void)
+	{
+		return false;
+	}
+
+	virtual bool isOnGUI(void)
+	{
+		return isOnGui;
+	}
+
+	virtual void setOnGUI(bool onGui)
+	{
+		isOnGui = onGui;
+	}
+
+	virtual void Save(PacketFilePtr file, int32_t packetNum);
+
+	void CopyTo(MoverData* data);
+
+	void Load(MoverData* data);
+
+	static void initOptimalCells(int32_t numIncrements);
 };
 
 //---------------------------------------------------------------------------
 
-typedef struct _MoverInitData {
+typedef struct _MoverInitData
+{
 	char			pilotFileName[50];
 	bool			overrideLoadedPilot;
 	float			gunnerySkill;
@@ -1777,7 +1936,7 @@ typedef struct _MoverInitData {
 
 //---------------------------------------------------------------------------
 
-extern MoverPtr getMoverFromHandle (int32_t partId);
+extern MoverPtr getMoverFromHandle(int32_t partId);
 
 //******************************************************************************************
 

@@ -35,47 +35,45 @@ struct PolyElementData
 	puint8_t	textureMap;				//Pointer to Bitmap for Texture
 	int32_t	    width;					//Width of texture
 	int32_t		height;					//Height of texture
-	char		*hazePalette;			//Translucency/haze table
+	char*		hazePalette;			//Translucency/haze table
 
 
-	void init (void)
+	void init(void)
 	{
 		numVertices = 0;
-
 		correctTexture = FALSE;
 		isClipped = FALSE;
-
-		StatusBar=FALSE;
+		StatusBar = FALSE;
 		textureMap = 0;
 		width = 0;
 		height = 0;
 		hazePalette = nullptr;
 		drawTranslucent = FALSE;
 	}
-		
-	PolyElementData (void)
+
+	PolyElementData(void)
 	{
 		init(void);
 	}
 };
 
-typedef PolyElementData *PolyElementDataPtr;
+typedef PolyElementData* PolyElementDataPtr;
 
 //---------------------------------------------------------------------------
 class PolygonElement : public Element
 {
-	public:
+public:
 
-		PolyElementData		polyData;
-			
-	PolygonElement (void)
+	PolyElementData		polyData;
+
+	PolygonElement(void)
 	{
 		polyData.init(void);
 	}
 
-	PolygonElement (PolyElementDataPtr pData, int32_t depth);
+	PolygonElement(PolyElementDataPtr pData, int32_t depth);
 
-	virtual void draw (void);
+	virtual void draw(void);
 };
 
 //---------------------------------------------------------------------------

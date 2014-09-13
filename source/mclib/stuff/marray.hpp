@@ -12,11 +12,12 @@
 
 #include <stuff/memorystream.hpp>
 
-namespace Stuff {
+namespace Stuff
+{
 
-	//##########################################################################
-	//##########################    StaticArrayOf    ###########################
-	//##########################################################################
+//##########################################################################
+//##########################    StaticArrayOf    ###########################
+//##########################################################################
 
 	template <class T, size_t N> class StaticArrayOf
 #if defined(_ARMOR)
@@ -26,8 +27,8 @@ namespace Stuff {
 	public:
 		StaticArrayOf(void);
 		StaticArrayOf(const StaticArrayOf<T, N>&);
-		StaticArrayOf(const T &value);
-		StaticArrayOf(T *data, size_t length);
+		StaticArrayOf(const T& value);
+		StaticArrayOf(T* data, size_t length);
 		~StaticArrayOf(void);
 
 		void TestInstance(void) const
@@ -37,8 +38,8 @@ namespace Stuff {
 		StaticArrayOf<T, N>& operator=(const StaticArrayOf<T, N>&);
 		T& operator[](size_t i);
 		const T& operator[](size_t i) const;
-		void AssignValue(const T &value);
-		void AssignData(const T *data, size_t length);
+		void AssignValue(const T& value);
+		void AssignData(const T* data, size_t length);
 
 		size_t GetLength(void) const
 		{
@@ -62,102 +63,102 @@ namespace Stuff {
 #endif
 
 		friend MemoryStream&
-			MemoryStreamIO_Write(
-			MemoryStream *stream,
-			const StaticArrayOf<T, N> *array
-			);
+		MemoryStreamIO_Write(
+			MemoryStream* stream,
+			const StaticArrayOf<T, N>* array
+		);
 
 		friend MemoryStream&
-			MemoryStreamIO_Read(
-			MemoryStream *stream,
-			StaticArrayOf<T, N> *array
-			);
+		MemoryStreamIO_Read(
+			MemoryStream* stream,
+			StaticArrayOf<T, N>* array
+		);
 
 	private:
 		T data[N];
 	};
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 	template<class T, size_t N> inline
-		StaticArrayOf<T, N>::StaticArrayOf(void) 
-	{ 
+	StaticArrayOf<T, N>::StaticArrayOf(void)
+	{
 	}
 
 	template<class T, size_t N> inline
-		StaticArrayOf<T, N>::StaticArrayOf(const StaticArrayOf<T, N> &array) 
+	StaticArrayOf<T, N>::StaticArrayOf(const StaticArrayOf<T, N>& array)
 	{
 		AssignData(array.data, N);
 	}
 
 	template<class T, size_t N> inline
-		StaticArrayOf<T, N>::StaticArrayOf(const T &value) 
+	StaticArrayOf<T, N>::StaticArrayOf(const T& value)
 	{
 		AssignValue(value);
 	}
 
 	template<class T, size_t N> inline
-		StaticArrayOf<T, N>::StaticArrayOf(T *data_to_copy, size_t length) 
+	StaticArrayOf<T, N>::StaticArrayOf(T* data_to_copy, size_t length)
 	{
 		AssignData(data_to_copy, length);
 	}
 
 	template<class T, size_t N> inline
-		StaticArrayOf<T, N>::~StaticArrayOf(void) 
-	{ 
+	StaticArrayOf<T, N>::~StaticArrayOf(void)
+	{
 	}
 
-	template <class T, size_t N> StaticArrayOf<T, N>& 
-		StaticArrayOf<T, N>::operator=(const StaticArrayOf<T, N> &array)
-	{ 
-		if (this != &array)
+	template <class T, size_t N> StaticArrayOf<T, N>&
+	StaticArrayOf<T, N>::operator=(const StaticArrayOf<T, N>& array)
+	{
+		if(this != &array)
 		{
 			AssignData(&array.data[0], N);
-		} 
-		return *this; 
+		}
+		return *this;
 	}
 
 	template <class T, size_t N> inline T&
-		StaticArrayOf<T, N>::operator[](size_t i) 
+	StaticArrayOf<T, N>::operator[](size_t i)
 	{
-		Verify(i < N);  
-		return data[i]; 
+		Verify(i < N);
+		return data[i];
 	}
 
 	template <class T, size_t N> inline const T&
-		StaticArrayOf<T, N>::operator[](size_t i) const
+	StaticArrayOf<T, N>::operator[](size_t i) const
 	{
-		Verify(i < N);  
-		return data[i]; 
+		Verify(i < N);
+		return data[i];
 	}
 
 	template <class T, size_t N> void
-		StaticArrayOf<T, N>::AssignValue(const T &value) 
+	StaticArrayOf<T, N>::AssignValue(const T& value)
 	{
 		// Do not memcopy, object semantics may be required
-		for (int32_t i = 0; i < N; i++)
+		for(size_t i = 0; i < N; i++)
 			data[i] = value;
 	}
 
 	template <class T, size_t N> void
-		StaticArrayOf<T, N>::AssignData(const T *data_to_copy, size_t length) 
+	StaticArrayOf<T, N>::AssignData(const T* data_to_copy, size_t length)
 	{
 		Check_Pointer(data_to_copy);
 		Verify(length <= N);
 		// Do not memcopy, object semantics may be required
-		for (int32_t i = 0; i < length; i++)
+		for(size_t i = 0; i < length; i++)
 			data[i] = data_to_copy[i];
 	}
 
 #if 0
 	template <class T, size_t N> bool
-		StaticArrayOf<T, N>::Compare(const StaticArrayOf<T, N> &array) 
+	StaticArrayOf<T, N>::Compare(const StaticArrayOf<T, N>& array)
 	{
-		if (N != array.GetLength(void))
+		if(N != array.GetLength(void))
 			return false;
-		for (int32_t i = 0; i < N; i++)
+		for(size_t i = 0; i < N; i++)
 		{
-			if (data[i] != array.data[i])
+			if(data[i] != array.data[i])
 				return false;
 		}
 		return true;
@@ -165,10 +166,10 @@ namespace Stuff {
 #endif
 
 	template <class T, size_t N> MemoryStream&
-		MemoryStreamIO_Write(
-		MemoryStream *stream,
-		const StaticArrayOf<T, N> *array
-		)
+	MemoryStreamIO_Write(
+		MemoryStream* stream,
+		const StaticArrayOf<T, N>* array
+	)
 	{
 		Check_Object(stream);
 		Check_Pointer(array);
@@ -176,19 +177,19 @@ namespace Stuff {
 	}
 
 	template <class T, size_t N> MemoryStream&
-		MemoryStreamIO_Read(
-		MemoryStream *stream,
-		StaticArrayOf<T, N> *array
-		)
+	MemoryStreamIO_Read(
+		MemoryStream* stream,
+		StaticArrayOf<T, N>* array
+	)
 	{
 		Check_Object(stream);
 		Check_Pointer(array);
 		return stream->ReadBytes(&array->data[0], N * sizeof(T));
 	}
 
-	//##########################################################################
-	//#########################    DynamicArrayOf    ###########################
-	//##########################################################################
+//##########################################################################
+//#########################    DynamicArrayOf    ###########################
+//##########################################################################
 
 	template <class T> class DynamicArrayOf
 #if defined(_ARMOR)
@@ -199,8 +200,8 @@ namespace Stuff {
 		DynamicArrayOf(void);
 		DynamicArrayOf(const DynamicArrayOf<T>&);
 		DynamicArrayOf(size_t length);
-		DynamicArrayOf(const T &value, size_t length);
-		DynamicArrayOf(const T *data, size_t length);
+		DynamicArrayOf(const T& value, size_t length);
+		DynamicArrayOf(const T* data, size_t length);
 		~DynamicArrayOf(void);
 
 		void TestInstance(void) const
@@ -213,8 +214,8 @@ namespace Stuff {
 		DynamicArrayOf<T>& operator=(const DynamicArrayOf<T>&);
 		T& operator[](size_t i);
 		const T& operator[](size_t i) const;
-		void AssignValue(const T &value, size_t length);
-		void AssignData(const T *data, size_t length);
+		void AssignValue(const T& value, size_t length);
+		void AssignData(const T* data, size_t length);
 
 		size_t GetLength(void) const
 		{
@@ -239,36 +240,36 @@ namespace Stuff {
 #endif
 
 		friend MemoryStream&
-			MemoryStreamIO_Write<T>(
-			MemoryStream *stream,
-			const DynamicArrayOf<T> *array
-			);
+		MemoryStreamIO_Write<T>(
+			MemoryStream* stream,
+			const DynamicArrayOf<T>* array
+		);
 
 		friend MemoryStream&
-			MemoryStreamIO_Read<T>(
-			MemoryStream *stream,
-			DynamicArrayOf<T> *array
-			);
+		MemoryStreamIO_Read<T>(
+			MemoryStream* stream,
+			DynamicArrayOf<T>* array
+		);
 
 	private:
 		void SetStorageLength(size_t length);
 		void CopyArray(const DynamicArrayOf<T>&);
 
-		T *data;
+		T* data;
 		size_t length;
 	};
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 	template<class T>
-	DynamicArrayOf<T>::DynamicArrayOf(void) 
-	{ 
+	DynamicArrayOf<T>::DynamicArrayOf(void)
+	{
 		data = nullptr;
 		length = 0;
 	}
 
 	template<class T>
-	DynamicArrayOf<T>::DynamicArrayOf(const DynamicArrayOf<T> &array) 
+	DynamicArrayOf<T>::DynamicArrayOf(const DynamicArrayOf<T>& array)
 	{
 		data = nullptr;
 		length = 0;
@@ -276,14 +277,14 @@ namespace Stuff {
 	}
 
 	template<class T>
-	DynamicArrayOf<T>::DynamicArrayOf(size_t length_to_set) 
+	DynamicArrayOf<T>::DynamicArrayOf(size_t length_to_set)
 	{
 		data = nullptr;
 		length = 0;
 		SetStorageLength(length_to_set);
 		Verify(length == length_to_set);
 #if defined(_ARMOR)
-		if (length_to_set > 0)
+		if(length_to_set > 0)
 			Check_Pointer(data);
 		else
 			Verify(!data);
@@ -291,7 +292,7 @@ namespace Stuff {
 	}
 
 	template<class T>
-	DynamicArrayOf<T>::DynamicArrayOf(const T &value, size_t length_to_set) 
+	DynamicArrayOf<T>::DynamicArrayOf(const T& value, size_t length_to_set)
 	{
 		data = nullptr;
 		length = 0;
@@ -299,7 +300,7 @@ namespace Stuff {
 	}
 
 	template<class T>
-	DynamicArrayOf<T>::DynamicArrayOf(const T *data_to_copy, size_t length_to_set) 
+	DynamicArrayOf<T>::DynamicArrayOf(const T* data_to_copy, size_t length_to_set)
 	{
 		data = nullptr;
 		length = 0;
@@ -307,71 +308,71 @@ namespace Stuff {
 	}
 
 	template<class T>
-	DynamicArrayOf<T>::~DynamicArrayOf(void) 
-	{ 
-		if (data != nullptr)
+	DynamicArrayOf<T>::~DynamicArrayOf(void)
+	{
+		if(data != nullptr)
 		{
 			Unregister_Pointer(data);
 			delete[] data;
 		}
 	}
 
-	template <class T> DynamicArrayOf<T>& 
-		DynamicArrayOf<T>::operator=(const DynamicArrayOf<T> &array)
-	{ 
-		if (this != &array)
+	template <class T> DynamicArrayOf<T>&
+	DynamicArrayOf<T>::operator=(const DynamicArrayOf<T>& array)
+	{
+		if(this != &array)
 			CopyArray(array);
-		return *this; 
+		return *this;
 	}
 
 	template <class T> inline T&
-		DynamicArrayOf<T>::operator[](size_t i) 
+	DynamicArrayOf<T>::operator[](size_t i)
 	{
 		Check_Pointer(data);
-		Verify(i < length);  
-		return data[i]; 
+		Verify(i < length);
+		return data[i];
 	}
 
 	template <class T> inline const T&
-		DynamicArrayOf<T>::operator[](size_t i) const
+	DynamicArrayOf<T>::operator[](size_t i) const
 	{
 		Verify(i < length);
-		return data[i]; 
+		return data[i];
 	}
 
 	template <class T> void
-		DynamicArrayOf<T>::AssignValue(const T &value, size_t length_to_set) 
+	DynamicArrayOf<T>::AssignValue(const T& value, size_t length_to_set)
 	{
 		SetStorageLength(length_to_set);
 		// Do not memcopy, object semantics may be required
-		for (int32_t i = 0; i < length; i++)
+		for(size_t i = 0; i < length; i++)
 			data[i] = value;
 	}
 
 	template <class T> void
-		DynamicArrayOf<T>::AssignData(const T *data_to_copy, size_t length_to_set) 
+	DynamicArrayOf<T>::AssignData(const T* data_to_copy, size_t length_to_set)
 	{
 		Check_Pointer(data_to_copy);
 		SetStorageLength(length_to_set);
 		// Do not memcopy, object semantics may be required
-		for (int32_t i = 0; i < length; i++)
+		for(size_t i = 0; i < length; i++)
 			data[i] = data_to_copy[i];
 	}
 
-	template <class T> 
+	template <class T>
 	void DynamicArrayOf<T>::SetLength(size_t length_to_set)
 	{
-		if (length_to_set != length)
+		if(length_to_set != length)
 		{
-			if (length_to_set > 0)
+			if(length_to_set > 0)
 			{
 				T* new_data = new T[length_to_set];
 				Register_Pointer(new_data);
-				if (data != nullptr)
+				if(data)
 				{
 					// Do not memcopy, object semantics may be required
 					size_t i = Min(length_to_set, length);
-					while (i--)
+					while(i--)
 						new_data[i] = data[i];
 					Unregister_Pointer(data);
 					delete[] data;
@@ -390,13 +391,13 @@ namespace Stuff {
 
 #if 0
 	template <class T> void
-		DynamicArrayOf<T>::Compare(const DynamicArrayOf<T> &array) 
+	DynamicArrayOf<T>::Compare(const DynamicArrayOf<T>& array)
 	{
-		if (length != array.length)
+		if(length != array.length)
 			return false;
-		for (int32_t i = 0; i < length; i++)
+		for(size_t i = 0; i < length; i++)
 		{
-			if (data[i] != array.data[i])
+			if(data[i] != array.data[i])
 				return false;
 		}
 		return true;
@@ -404,13 +405,13 @@ namespace Stuff {
 #endif
 
 	template <class T> void
-		DynamicArrayOf<T>::SetStorageLength(size_t length_to_set)
+	DynamicArrayOf<T>::SetStorageLength(size_t length_to_set)
 	{
-		if (length_to_set != length)
+		if(length_to_set != length)
 		{
-			if (length_to_set > 0)
+			if(length_to_set > 0)
 			{
-				if (data != nullptr)
+				if(data != nullptr)
 				{
 					Unregister_Pointer(data);
 					delete[] data;
@@ -430,9 +431,9 @@ namespace Stuff {
 	}
 
 	template <class T> void
-		DynamicArrayOf<T>::CopyArray(const DynamicArrayOf<T> &array)
-	{ 
-		if (array.length > 0)
+	DynamicArrayOf<T>::CopyArray(const DynamicArrayOf<T>& array)
+	{
+		if(array.length > 0)
 		{
 			Check_Pointer(array.data);
 			AssignData(&array.data[0], array.length);
@@ -441,7 +442,7 @@ namespace Stuff {
 		{
 			Verify(array.length == 0);
 			Verify(array.data == nullptr);
-			if (data != nullptr)
+			if(data != nullptr)
 			{
 				Unregister_Pointer(data);
 				delete[] data;
@@ -451,25 +452,25 @@ namespace Stuff {
 	}
 
 	template <class T> MemoryStream&
-		MemoryStreamIO_Write(
-		MemoryStream *stream,
-		const DynamicArrayOf<T> *array
-		)
+	MemoryStreamIO_Write(
+		MemoryStream* stream,
+		const DynamicArrayOf<T>* array
+	)
 	{
 		Check_Object(stream);
 		Check_Pointer(array);
 		size_t length = array->length;
 		MemoryStreamIO::Write(stream, &length);
-		if (length > 0)
+		if(length > 0)
 			stream->WriteBytes(&array->data[0], length * sizeof(T));
 		return *stream;
 	}
 
 	template <class T> MemoryStream&
-		MemoryStreamIO_Read(
-		MemoryStream *stream,
-		DynamicArrayOf<T> *array
-		)
+	MemoryStreamIO_Read(
+		MemoryStream* stream,
+		DynamicArrayOf<T>* array
+	)
 	{
 		Check_Object(stream);
 		Check_Pointer(array);
@@ -477,7 +478,7 @@ namespace Stuff {
 		MemoryStreamIO::Read(stream, &length);
 		array->SetLength(length);
 		Verify(length == array->length);
-		if (length > 0)
+		if(length > 0)
 			stream->ReadBytes(&array->data[0], length * sizeof(T));
 		return *stream;
 	}

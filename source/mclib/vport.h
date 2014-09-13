@@ -19,8 +19,8 @@
 
 //---------------------------------------------------------------------------
 //Externs
-extern PANE *globalPane;
-extern WINDOW *globalWindow;
+extern PANE* globalPane;
+extern WINDOW* globalWindow;
 
 //---------------------------------------------------------------------------
 #endif

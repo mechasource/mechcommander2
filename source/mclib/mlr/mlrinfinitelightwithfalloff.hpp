@@ -9,11 +9,12 @@
 
 #include <mlr/mlrlight.hpp>
 
-namespace MidLevelRenderer {
+namespace MidLevelRenderer
+{
 
-	//##########################################################################
-	//##############    MLRInfiniteLightWithFalloff    #########################
-	//##########################################################################
+//##########################################################################
+//##############    MLRInfiniteLightWithFalloff    #########################
+//##########################################################################
 
 	class MLRInfiniteLightWithFalloff:
 		public MLRLight
@@ -22,29 +23,30 @@ namespace MidLevelRenderer {
 		static void __stdcall InitializeClass(void);
 		static void __stdcall TerminateClass(void);
 
-		MLRInfiniteLightWithFalloff(ClassData *class_data=MLRInfiniteLightWithFalloff::DefaultData);
+		MLRInfiniteLightWithFalloff(ClassData* class_data = MLRInfiniteLightWithFalloff::DefaultData);
 		MLRInfiniteLightWithFalloff(
-			ClassData *class_data,
-			Stuff::MemoryStream *stream,
-			uint32_t version
-			);
+			ClassData* class_data,
+			Stuff::MemoryStream* stream,
+			uint32_t version);
 		MLRInfiniteLightWithFalloff(
-			ClassData *class_data,
-			Stuff::Page *page
-			);
+			ClassData* class_data,
+			Stuff::Page* page
+		);
 		~MLRInfiniteLightWithFalloff(void);
 
 		void
-			Save(Stuff::MemoryStream *stream);
+		Save(Stuff::MemoryStream* stream);
 		void
-			Write(Stuff::Page *page);
+		Write(Stuff::Page* page);
 
-		virtual void
-			LightVertex(const MLRVertexData&);
+		virtual void LightVertex(const MLRVertexData&);
 
 		virtual LightType
-			GetLightType() 
-		{ Check_Object(this); return InfiniteLightWithFallOff; }
+		GetLightType()
+		{
+			Check_Object(this);
+			return InfiniteLightWithFallOff;
+		}
 
 		//
 		// light falloff.  The light is infinite if the GetFalloffDistance
@@ -52,45 +54,46 @@ namespace MidLevelRenderer {
 		// SetFalloffDistance is called
 		//
 		void
-			SetFalloffDistance(
+		SetFalloffDistance(
 			float n,
 			float f
-			);
+		);
 		bool
-			GetFalloffDistance(
+		GetFalloffDistance(
 			float& n,
 			float& f
-			);
+		);
 
 		inline float
-			GetFalloffNear()
-		{ Check_Object(this); return innerRadius; }
-
-		inline float
-			GetFalloffFar()
-		{ Check_Object(this); return outerRadius; }
-
-		bool
-			GetFalloff(const float& length, float& falloff)
+		GetFalloffNear()
 		{
 			Check_Object(this);
+			return innerRadius;
+		}
 
-			Verify(length>0.0f);
+		inline float
+		GetFalloffFar()
+		{
+			Check_Object(this);
+			return outerRadius;
+		}
 
+		bool
+		GetFalloff(const float& length, float& falloff)
+		{
+			Check_Object(this);
+			Verify(length > 0.0f);
 			if(length <= innerRadius)
 			{
 				falloff = 1.0f;
 				return true;
 			}
-
-			if (length >= outerRadius)
+			if(length >= outerRadius)
 			{
 				return false;
 			}
-
 			Verify(outerRadius - innerRadius > Stuff::SMALL);
 			falloff = (outerRadius - length) * oneOverDistance;
-
 			return true;
 		}
 
@@ -108,7 +111,7 @@ namespace MidLevelRenderer {
 
 	protected:
 		float
-			innerRadius, outerRadius, oneOverDistance;
+		innerRadius, outerRadius, oneOverDistance;
 
 	};
 }

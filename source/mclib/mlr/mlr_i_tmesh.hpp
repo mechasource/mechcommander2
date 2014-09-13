@@ -12,17 +12,19 @@
 
 //#include <mlr/mlr_i_pmesh.hpp>
 
-namespace Stuff{
+namespace Stuff
+{
 	class Plane;
 }
 
-namespace MidLevelRenderer{
+namespace MidLevelRenderer
+{
 
 	class MLR_I_PMesh;
 
-	//##########################################################################
-	//#### MLRIndexedTriMesh with no color no lighting one texture layer #####
-	//##########################################################################
+//##########################################################################
+//#### MLRIndexedTriMesh with no color no lighting one texture layer #####
+//##########################################################################
 
 
 	class MLR_I_TMesh:
@@ -40,33 +42,35 @@ namespace MidLevelRenderer{
 		//
 	protected:
 		MLR_I_TMesh(
-			ClassData *class_data,
-			Stuff::MemoryStream *stream,
-			uint32_t version
-			);
+			ClassData* class_data,
+			Stuff::MemoryStream* stream,
+			uint32_t version);
 		~MLR_I_TMesh(void);
 
 	public:
-		MLR_I_TMesh(ClassData *class_data=MLR_I_TMesh::DefaultData);
+		MLR_I_TMesh(ClassData* class_data = MLR_I_TMesh::DefaultData);
 
 		static MLR_I_TMesh*
-			Make(
-			Stuff::MemoryStream *stream,
-			uint32_t version
-			);
+		Make(
+			Stuff::MemoryStream* stream,
+			uint32_t version);
 
 		void
-			Save(Stuff::MemoryStream *stream);
+		Save(Stuff::MemoryStream* stream);
 
 	public:
-		virtual void InitializeDrawPrimitive(uint8_t, int32_t=0);
+		virtual void InitializeDrawPrimitive(uint8_t, int32_t = 0);
 
 		virtual size_t GetNumPrimitives(void)
-		{ Check_Object(this); return numOfTriangles; }
+		{
+			Check_Object(this);
+			return numOfTriangles;
+		}
 
 		virtual void SetSubprimitiveLengths(puint8_t length_array, size_t subprimitive_count)
 		{
-			Check_Object(this);(void)length_array;
+			Check_Object(this);
+			(void)length_array;
 			//Verify(gos_GetCurrentHeap() == Heap);
 			numOfTriangles = subprimitive_count;
 			testList.SetLength(numOfTriangles);
@@ -81,7 +85,6 @@ namespace MidLevelRenderer{
 		{
 			Check_Object(this);
 			Verify(index < facePlanes.GetLength());
-
 			return &facePlanes[index];
 		}
 
@@ -90,19 +93,25 @@ namespace MidLevelRenderer{
 		virtual void LightMapLighting(MLRLight*);
 
 #if COLOR_AS_DWORD
-		virtual void PaintMe(pcuint32_t paintMe) {(void)paintMe;};
+		virtual void PaintMe(pcuint32_t paintMe)
+		{
+			(void)paintMe;
+		};
 #else
-		virtual void PaintMe(const Stuff::RGBAColor* paintMe) {(void)paintMe;};
+		virtual void PaintMe(const Stuff::RGBAColor* paintMe)
+		{
+			(void)paintMe;
+		};
 #endif
 
-		virtual int32_t TransformAndClip(Stuff::Matrix4D *, MLRClippingState, GOSVertexPool*,bool=false);
+		virtual uint32_t TransformAndClip(Stuff::Matrix4D*, MLRClippingState, GOSVertexPool*, bool = false);
 
-		bool CastRay(Stuff::Line3D *line, Stuff::Normal3D *normal);
+		bool CastRay(Stuff::Line3D* line, Stuff::Normal3D* normal);
 
 		// void
 		// Transform(Stuff::Matrix4D*);
 
-		virtual void TransformNoClip(Stuff::Matrix4D*, GOSVertexPool*,bool=false);
+		virtual void TransformNoClip(Stuff::Matrix4D*, GOSVertexPool*, bool = false);
 
 		// Initializes the visibility test list
 		void ResetTestList(void);
@@ -110,7 +119,7 @@ namespace MidLevelRenderer{
 		// find which vertices are visible which not - returns nr of visible vertices
 		// the result is stored in the visibleIndexedVertices array
 		int32_t
-			FindVisibleVertices(void);
+		FindVisibleVertices(void);
 
 		bool Copy(MLR_I_PMesh*);
 
@@ -132,7 +141,6 @@ namespace MidLevelRenderer{
 			size_t ret = MLRIndexedPrimitiveBase::GetSize();
 			ret += testList.GetSize();
 			ret += facePlanes.GetSize();
-
 			return ret;
 		}
 

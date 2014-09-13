@@ -16,23 +16,27 @@ WaveDlg:
 **************************************************************************************************/
 class WaveDlg: public CDialog
 {
-	public:
+public:
 
-		WaveDlg() : CDialog(IDD_WAVES){}
-		virtual BOOL OnInitDialog(){ Init(void); return FALSE; }
-		virtual void Init(void);
-		void	UpdateData(void);
-		void	OnOK(void);
+	WaveDlg() : CDialog(IDD_WAVES) {}
+	virtual BOOL OnInitDialog()
+	{
+		Init(void);
+		return FALSE;
+	}
+	virtual void Init(void);
+	void	UpdateData(void);
+	void	OnOK(void);
 
 
-		float amplitude;
-		float frequency;
-		float elevation;
-		float shallowElevation;
-		float alphaElevation;
-		int32_t alphaShallow;
-		int32_t alphaMiddle;
-		int32_t alphaDeep;
+	float amplitude;
+	float frequency;
+	float elevation;
+	float shallowElevation;
+	float alphaElevation;
+	int32_t alphaShallow;
+	int32_t alphaMiddle;
+	int32_t alphaDeep;
 
 };
 

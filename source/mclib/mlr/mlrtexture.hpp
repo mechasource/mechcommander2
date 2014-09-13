@@ -11,11 +11,13 @@
 #include <stuff/mstring.hpp>
 #include <stuff/affinematrix.hpp>
 
-namespace Stuff {
+namespace Stuff
+{
 	class AffineMatrix4D;
 }
 
-namespace MidLevelRenderer{
+namespace MidLevelRenderer
+{
 
 	class MLRTexturePool;
 	class GOSImage;
@@ -27,35 +29,42 @@ namespace MidLevelRenderer{
 	{
 		friend class MLRTexturePool;
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// Constructors/Destructors
-	//
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		// Constructors/Destructors
+		//
 	protected:
 		MLRTexture(Stuff::MemoryStream* stream);
 
 	public:
-		MLRTexture(MLRTexturePool* pool, PCSTR name, int32_t instance, int32_t handle, int32_t hint=0);
-		MLRTexture(MLRTexturePool* pool, GOSImage* image, int32_t handle, int32_t hint=0);
+		MLRTexture(MLRTexturePool* pool, PCSTR name, int32_t instance, int32_t handle, int32_t hint = 0);
+		MLRTexture(MLRTexturePool* pool, GOSImage* image, int32_t handle, int32_t hint = 0);
 		MLRTexture(const MLRTexture&);
 		~MLRTexture(void);
 
-		static MLRTexture* Make(Stuff::MemoryStream *stream);
+		static MLRTexture* Make(Stuff::MemoryStream* stream);
 
-		void Save(Stuff::MemoryStream *stream);
+		void Save(Stuff::MemoryStream* stream);
 
-		GOSImage* GetImage(pint32_t h=nullptr)
+		GOSImage* GetImage(pint32_t h = nullptr)
 		{
-			Check_Object(this); if(h) { *h = hint; } return image;
+			Check_Object(this);
+			if(h)
+			{
+				*h = hint;
+			}
+			return image;
 		}
 
 		PCSTR GetTextureName(void)
 		{
-			Check_Object(this); return textureName;
+			Check_Object(this);
+			return textureName;
 		}
 
 		int32_t GetTextureHandle(void)
 		{
-			Check_Object(this); return textureHandle;
+			Check_Object(this);
+			return textureHandle;
 		}
 
 		int32_t GetImageNumber(void);
@@ -63,18 +72,20 @@ namespace MidLevelRenderer{
 
 		int32_t GetTextureInstance()
 		{
-			Check_Object(this); return instance;
+			Check_Object(this);
+			return instance;
 		}
 
 		bool GetAnimateTexture(void)
 		{
-			Check_Object(this); return !textureMatrixIsIdentity;
+			Check_Object(this);
+			return !textureMatrixIsIdentity;
 		}
 
 		void SetAnimateTexture(bool yesNo)
 		{
 			Check_Object(this);
-			if(yesNo==true)
+			if(yesNo == true)
 			{
 				textureMatrixIsIdentity = false;
 			}
@@ -87,18 +98,25 @@ namespace MidLevelRenderer{
 
 		Stuff::AffineMatrix4D& GetTextureMatrix()
 		{
-			Check_Object(this); return textureMatrix;
+			Check_Object(this);
+			return textureMatrix;
 		}
 
 		void SetHint(int32_t h)
-		{ Check_Object(this); hint = h; }
+		{
+			Check_Object(this);
+			hint = h;
+		}
 
 		int32_t GetHint()
-		{ Check_Object(this); return hint; }
+		{
+			Check_Object(this);
+			return hint;
+		}
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// Testing
-	//
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		// Testing
+		//
 	public:
 		void TestInstance(void) const;
 
@@ -111,7 +129,7 @@ namespace MidLevelRenderer{
 		bool textureMatrixIsIdentity;
 		Stuff::AffineMatrix4D textureMatrix;
 		GOSImage* image;
-		MLRTexturePool *thePool;
+		MLRTexturePool* thePool;
 	};
 
 }

@@ -71,137 +71,115 @@ extern bool drawExtents;
 //---------------------------------------------------------------------------
 // class GateType
 //---------------------------------------------------------------------------
-GameObjectPtr GateType::createInstance (void)
+GameObjectPtr GateType::createInstance(void)
 {
 	GatePtr result = new Gate;
-	if (!result)
+	if(!result)
 		return nullptr;
-
 	result->init(true, this);
-
 	return(result);
 }
 
 //---------------------------------------------------------------------------
-void GateType::destroy (void)
+void GateType::destroy(void)
 {
 	ObjectType::destroy();
 }
-		
+
 //---------------------------------------------------------------------------
-int32_t GateType::init (FilePtr objFile, uint32_t fileSize)
+int32_t GateType::init(FilePtr objFile, uint32_t fileSize)
 {
 	int32_t result = 0;
-	
 	FitIniFile bldgFile;
-	result = bldgFile.open(objFile,fileSize);
-	if (result != NO_ERROR)
+	result = bldgFile.open(objFile, fileSize);
+	if(result != NO_ERROR)
 		return(result);
-	
 	//------------------------------------------------------------------
 	// Read in the data needed for the Gates
 	result = bldgFile.seekBlock("GateData");
-	if (result != NO_ERROR)
+	if(result != NO_ERROR)
 		return(result);
-
-	result = bldgFile.readIdULong("DmgLevel",dmgLevel);
-	if (result != NO_ERROR)
+	result = bldgFile.readIdULong("DmgLevel", dmgLevel);
+	if(result != NO_ERROR)
 		return(result);
-
-	bldgFile.readIdULong("BlownEffectId",blownEffectId);
-	if (result != NO_ERROR)
+	bldgFile.readIdULong("BlownEffectId", blownEffectId);
+	if(result != NO_ERROR)
 		blownEffectId = -1;
-		
-	bldgFile.readIdULong("NormalEffectId",normalEffectId);
-	if (result != NO_ERROR)
+	bldgFile.readIdULong("NormalEffectId", normalEffectId);
+	if(result != NO_ERROR)
 		normalEffectId = -1;
-		
-	bldgFile.readIdULong("DamageEffectId",damageEffectId);
-	if (result != NO_ERROR)
+	bldgFile.readIdULong("DamageEffectId", damageEffectId);
+	if(result != NO_ERROR)
 		damageEffectId = -1;
-
-	result = bldgFile.readIdLong("BasePixelOffsetX",basePixelOffsetX);
-	if (result != NO_ERROR)
+	result = bldgFile.readIdLong("BasePixelOffsetX", basePixelOffsetX);
+	if(result != NO_ERROR)
 		basePixelOffsetX = 0;
-	
-	result = bldgFile.readIdLong("BasePixelOffsetY",basePixelOffsetY);
-	if (result != NO_ERROR)	
+	result = bldgFile.readIdLong("BasePixelOffsetY", basePixelOffsetY);
+	if(result != NO_ERROR)
 		basePixelOffsetY = 0;
-
-	result = bldgFile.readIdFloat("ExplosionRadius",explRad);
-	if (result != NO_ERROR)
+	result = bldgFile.readIdFloat("ExplosionRadius", explRad);
+	if(result != NO_ERROR)
 		explRad = 0.0;
-		
-	result = bldgFile.readIdFloat("ExplosionDamage",explDmg);
-	if (result != NO_ERROR)
+	result = bldgFile.readIdFloat("ExplosionDamage", explDmg);
+	if(result != NO_ERROR)
 		explDmg = 0.0;
-
-	result = bldgFile.readIdFloat("OpenRadius",openRadius);
-	if (result != NO_ERROR)
+	result = bldgFile.readIdFloat("OpenRadius", openRadius);
+	if(result != NO_ERROR)
 		return(result);
-
-	result = bldgFile.readIdFloat("LittleExtent",littleExtent);
-	if (result != NO_ERROR)
+	result = bldgFile.readIdFloat("LittleExtent", littleExtent);
+	if(result != NO_ERROR)
 		littleExtent = 20.0;
-
-	result = bldgFile.readIdLong ("BuildingName", gateTypeName);
-	if (result != NO_ERROR)
+	result = bldgFile.readIdLong("BuildingName", gateTypeName);
+	if(result != NO_ERROR)
 		gateTypeName = IDS_BLDOBJ_NAME;
-
-	result = bldgFile.readIdLong( "BuildingDescription", buildingDescriptionID );
-	if ( result != NO_ERROR )
-			buildingDescriptionID = -1;
-
-
-	result = bldgFile.readIdBoolean("BlocksLineOfFire",blocksLineOfFire);
-	if (result != NO_ERROR)
+	result = bldgFile.readIdLong("BuildingDescription", buildingDescriptionID);
+	if(result != NO_ERROR)
+		buildingDescriptionID = -1;
+	result = bldgFile.readIdBoolean("BlocksLineOfFire", blocksLineOfFire);
+	if(result != NO_ERROR)
 		blocksLineOfFire = FALSE;
-
 	//------------------------------------------------------------------
 	// Initialize the base object Type from the current file.
 	result = ObjectType::init(&bldgFile);
 	return(result);
 }
-	
+
 //---------------------------------------------------------------------------
-bool GateType::handleCollision (GameObjectPtr collidee, GameObjectPtr collider)
+bool GateType::handleCollision(GameObjectPtr collidee, GameObjectPtr collider)
 {
 	//---------------------------------------------------------------
 	// OK.  This handleCollision will open the gate if the
 	// Mech or Vehicle is of the correct alignment and close enough.
 	float closestRange = 119999999.99f;
-
 	GatePtr gate = (GatePtr)collidee;
 	//----------------------------------------------
 	// On my side.  Close Enough to Open?
-	switch (collider->getObjectClass())
+	switch(collider->getObjectClass())
 	{
 		case BATTLEMECH:
 		case GROUNDVEHICLE:
 		case ELEMENTAL:
 		{
 			Stuff::Vector3D colliderRangeV3;
-			colliderRangeV3.Subtract(gate->getPosition(),collider->getPosition());
+			colliderRangeV3.Subtract(gate->getPosition(), collider->getPosition());
 			float colliderRange = colliderRangeV3.x * colliderRangeV3.x + colliderRangeV3.y * colliderRangeV3.y;
-
-			if ((collider->getTeamId() == gate->getTeamId()) || (gate->getTeamId() == -1))
+			if((collider->getTeamId() == gate->getTeamId()) || (gate->getTeamId() == -1))
 			{
-				if (collider->isDisabled() || collider->isDestroyed())
+				if(collider->isDisabled() || collider->isDestroyed())
 				{
 					//--------------------------------------
 					// Don't Open, Its Dead!!
 				}
 				else
 				{
-					if (colliderRange < (openRadius * openRadius))
+					if(colliderRange < (openRadius * openRadius))
 						gate->reasonToOpen = true;
 				}
 			}
-
 			//------------------------------------------------
 			// Regardless of alignment, if I'm closest, mark me
 			// So if gate closes and Im too close.  BOOM
-			if ((colliderRange < closestRange) && (!collider->isDisabled() && !collider->isDestroyed()) && !((MoverPtr)collider)->isJumping())
+			if((colliderRange < closestRange) && (!collider->isDisabled() && !collider->isDestroyed()) && !((MoverPtr)collider)->isJumping())
 			{
 				gate->closestObject = (MoverPtr)collider;
 				closestRange = colliderRange * colliderRange;
@@ -209,12 +187,11 @@ bool GateType::handleCollision (GameObjectPtr collidee, GameObjectPtr collider)
 		}
 		break;
 	}
-	
 	return(TRUE);
 }
 
 //---------------------------------------------------------------------------
-bool GateType::handleDestruction (GameObjectPtr collidee, GameObjectPtr collider)
+bool GateType::handleDestruction(GameObjectPtr collidee, GameObjectPtr collider)
 {
 	return(FALSE);
 }
@@ -222,7 +199,7 @@ bool GateType::handleDestruction (GameObjectPtr collidee, GameObjectPtr collider
 //---------------------------------------------------------------------------
 // class Gate
 //---------------------------------------------------------------------------
-bool Gate::isVisible (CameraPtr camera)
+bool Gate::isVisible(CameraPtr camera)
 {
 	//----------------------------------------------------------------------
 	// This function is the meat and potatoes of the object cull system.
@@ -232,116 +209,102 @@ bool Gate::isVisible (CameraPtr camera)
 	// to see if they are in the viewport of each camera.  Returned value
 	// is number of windows that object can be seen in.
 	bool isVisible = false; //land->getVertexScreenPos(blockNumber, vertexNumber, screenPos);
-	if (appearance)
+	if(appearance)
 		isVisible = appearance->recalcBounds();
-
-	if (isVisible) 
+	if(isVisible)
 	{
 		windowsVisible = turn;
 		return(true);
 	}
-		
 	return(false);
 }
 
 //---------------------------------------------------------------------------
-int32_t Gate::update (void)
+int32_t Gate::update(void)
 {
-	if (getFlag(OBJECT_FLAG_JUSTCREATED)) 
+	if(getFlag(OBJECT_FLAG_JUSTCREATED))
 	{
 		setFlag(OBJECT_FLAG_JUSTCREATED, false);
-
 		//--------------------------------------------------------
 		// Figure out what the box should be for the tBuilding.
 		appearance->update();
 		appearance->recalcBounds();
 		appearance->setHighlightColor(0x00000000);
-		
 		//-----------------------------------------------------
 		// Check if ParentId is NOT 0xffffffff.
 		// if not, find parent in ObjMgr and get its pointer.
-		if ((parentId != 0xffffffff) && (parentId != 0))
+		if((parentId != 0xffffffff) && (parentId != 0))
 		{
-			parent = ObjectManager->findByCellPosition((parentId>>16),(parentId & 0x0000ffff))->getWatchID();
+			parent = ObjectManager->findByCellPosition((parentId >> 16), (parentId & 0x0000ffff))->getWatchID();
 			ObjectManager->getByWatchID(parent)->setFlag(OBJECT_FLAG_CAPTURABLE, true);
-
 			gosASSERT(parent != 0);
 		}
 	}
-	
-	for (int32_t i = 0; i < numSubAreas0; i++) {
+	for(size_t i = 0; i < numSubAreas0; i++)
+	{
 		GlobalMoveMap[0]->setAreaOwnerWID(subAreas0[i], getWatchID());
 		GlobalMoveMap[1]->setAreaOwnerWID(subAreas1[i], getWatchID());
-		if (status == OBJECT_STATUS_DESTROYED) {
+		if(status == OBJECT_STATUS_DESTROYED)
+		{
 			GlobalMoveMap[0]->setAreaTeamID(subAreas0[i], -1);
 			GlobalMoveMap[1]->setAreaTeamID(subAreas1[i], -1);
-			}
-		else {
+		}
+		else
+		{
 			GlobalMoveMap[0]->setAreaTeamID(subAreas0[i], teamId);
 			GlobalMoveMap[1]->setAreaTeamID(subAreas1[i], teamId);
 		}
 	}
-
 	//We can call update multiple times now since a gate will be updated
-	//every frame regardless AND it could also be near where the camera is looking!	
-	if (turn != updatedTurn)
+	//every frame regardless AND it could also be near where the camera is looking!
+	if(turn != updatedTurn)
 	{
 		updatedTurn = turn;
-		
 		//---------------------------------------
 		// Handle Building captured.
-		if (parent && 
-			!ObjectManager->getByWatchID(parent)->isDisabled() && 
-			!ObjectManager->getByWatchID(parent)->isDestroyed() && 
-			(ObjectManager->getByWatchID(parent)->getTeamId() != getTeamId())) 
+		if(parent &&
+				!ObjectManager->getByWatchID(parent)->isDisabled() &&
+				!ObjectManager->getByWatchID(parent)->isDestroyed() &&
+				(ObjectManager->getByWatchID(parent)->getTeamId() != getTeamId()))
 		{
-			if ((ObjectManager->getByWatchID(parent)->getTeamId() != Team::home->getId()) && (turn > 5) && (getTeamId() != -1))
+			if((ObjectManager->getByWatchID(parent)->getTeamId() != Team::home->getId()) && (turn > 5) && (getTeamId() != -1))
 				soundSystem->playBettySample(BETTY_BUILDING_RECAPTURED);
-
 			int32_t parentTeamID = ObjectManager->getByWatchID(parent)->getTeamId();
 			setTeamId(parentTeamID, false);
 		}
-	
-		if ( parent && 
-			 (!ObjectManager->getByWatchID(parent)->isDisabled()) && 
-			 ObjectManager->getByWatchID(parent)->getSelected() )
+		if(parent &&
+				(!ObjectManager->getByWatchID(parent)->isDisabled()) &&
+				ObjectManager->getByWatchID(parent)->getSelected())
 		{
-			setSelected( true );
+			setSelected(true);
 		}
-	
 		//-----------------------------------------------
 		// Handle parent disabled or destroyed or asleep
-		if (parent && 
-			(ObjectManager->getByWatchID(parent)->isDisabled() || 
-			 ObjectManager->getByWatchID(parent)->isDestroyed() || 
-			 !ObjectManager->getByWatchID(parent)->getAwake()))
+		if(parent &&
+				(ObjectManager->getByWatchID(parent)->isDisabled() ||
+				 ObjectManager->getByWatchID(parent)->isDestroyed() ||
+				 !ObjectManager->getByWatchID(parent)->getAwake()))
 		{
 			//--------------------------------------------------
 			// Lock gate CLOSED if its parent is dead
 			setLockedClose();
 		}
-	
 		openGate();		//Actually updates the gate states.
-		
 		closestObject = nullptr;		//reset everytime we've successfully gotten through openGate.
-									//was either not needed or now its dead.
-
+		//was either not needed or now its dead.
 		//MUST update appearance last.  Why?  If we have changed the gate state, the LOD is no longer valid.
 		// Make damned sure the LOD updates!!!!!
-		if (appearance)
+		if(appearance)
 		{
 			bool inView = appearance->recalcBounds();
-
 			// this has to be done before we set the object parameters.
-			if ( parent && 
-				 (!ObjectManager->getByWatchID(parent)->isDisabled()) && 
-				 ObjectManager->getByWatchID(parent)->getTargeted() )
+			if(parent &&
+					(!ObjectManager->getByWatchID(parent)->isDisabled()) &&
+					ObjectManager->getByWatchID(parent)->getTargeted())
 			{
-				setTargeted( true );
+				setTargeted(true);
 			}
-			
-			appearance->setObjectParameters(position,((ObjectAppearance*)appearance)->rotation,drawFlags,getTeamId(),Team::getRelation(getTeamId(), Team::home->getId()));
-	
+			appearance->setObjectParameters(position, ((ObjectAppearance*)appearance)->rotation, drawFlags, getTeamId(), Team::getRelation(getTeamId(), Team::home->getId()));
 			//------------------------------------------------
 			// MUST update appearance every frame or animation goes HINKY!
 			// Appearance update now checks inView and does NOT run transform math unless necessary!
@@ -349,87 +312,80 @@ int32_t Gate::update (void)
 			appearance->setInView(true);
 			appearance->update();
 			appearance->setInView(inView);
-			
-			if (inView)
+			if(inView)
 			{
 				windowsVisible = turn;
-	
 				float zPos = land->getTerrainElevation(position);
 				position.z = zPos;
 				setPosition(position);
 			}
 		}
 	}
-	
-  	int32_t result = true;
+	int32_t result = true;
 	return(result);
 }
 
 //---------------------------------------------------------------------------
-void Gate::blowAnyOffendingObject (void)
+void Gate::blowAnyOffendingObject(void)
 {
-	if (MPlayer && !MPlayer->isServer())
+	if(MPlayer && !MPlayer->isServer())
 		return;
-
-	if (closestObject)
+	if(closestObject)
 	{
 		Stuff::Vector3D objectRangeV3;
-		objectRangeV3.Subtract(getPosition(),closestObject->getPosition());
+		objectRangeV3.Subtract(getPosition(), closestObject->getPosition());
 		float objectRange = objectRangeV3.x * objectRangeV3.x + objectRangeV3.y * objectRangeV3.y;
 		float littleRadius = (getLittleExtent() + closestObject->getObjectType()->getExtentRadius());
 		littleRadius *= littleRadius;
-		if (objectRange < littleRadius)
+		if(objectRange < littleRadius)
 		{
 			//-------------------------------------------------------------
 			// Put about a million points of damage into the closestObject
 			WeaponShotInfo shot;
 			shot.init(nullptr, -3, 250.00, 0, 0);
-
-			for (int32_t i=0;i<10;i++)
+			for(size_t i = 0; i < 10; i++)
 			{
-				shot.hitLocation = closestObject->calcHitLocation(nullptr,-1,ATTACKSOURCE_ARTILLERY,0);
+				shot.hitLocation = closestObject->calcHitLocation(nullptr, -1, ATTACKSOURCE_ARTILLERY, 0);
 				closestObject->handleWeaponHit(&shot, (MPlayer != nullptr));
 			}
-
 			//--------------------
 			// Gate must die too.
-			shot.init(nullptr, -3, ((GateTypePtr)(ObjectManager->getObjectType(typeHandle)))->getDamageLvl()+5, 0, 0);
-
+			shot.init(nullptr, -3, ((GateTypePtr)(ObjectManager->getObjectType(typeHandle)))->getDamageLvl() + 5, 0, 0);
 			handleWeaponHit(&shot, (MPlayer != nullptr));
 		}
 	}
-}	
+}
 
 //---------------------------------------------------------------------------
 
 
-void Gate::openGate (void)
+void Gate::openGate(void)
 {
-	if (!isDestroyed())
+	if(!isDestroyed())
 	{
-		if (lockedClose || !reasonToOpen)
+		if(lockedClose || !reasonToOpen)
 		{
 			int32_t animState = appearance->getCurrentGestureId();
-			if (animState == -1)	//Never Updated - Closed by default
+			if(animState == -1)	//Never Updated - Closed by default
 			{
 				appearance->setGesture(0);
 				closed = true;
 				opened = closing = opening = false;
 			}
-			else if (animState == 0)	//If closed, we're done.
+			else if(animState == 0)	//If closed, we're done.
 			{
 				appearance->setGesture(0);
 				closed = true;
 				opened = closing = opening = false;
 			}
-			else if (animState == 1)	//Gate is opening.
+			else if(animState == 1)	//Gate is opening.
 			{
-				if (!appearance->getInTransition())	//If done opening, switch to closing.
+				if(!appearance->getInTransition())	//If done opening, switch to closing.
 				{
 					appearance->setGesture(3);
 					closing = true;
 					closed = opened = opening = false;
-					soundSystem->playDigitalSample(GATE_CLOSE,position,true);
+					soundSystem->playDigitalSample(GATE_CLOSE, position, true);
 				}
 				else	//Wait for done opening.
 				{
@@ -437,24 +393,22 @@ void Gate::openGate (void)
 					closed = closing = opened = false;
 				}
 			}
-			else if (animState == 2)	//Gate is Open.  Start it closing.
+			else if(animState == 2)	//Gate is Open.  Start it closing.
 			{
 				appearance->setGesture(3);
-				soundSystem->playDigitalSample(GATE_CLOSE,position,true);
-				
+				soundSystem->playDigitalSample(GATE_CLOSE, position, true);
 				closing = TRUE;
 				closed = opening = opened = false;
 			}
-			else if (animState == 3)	//Gate is closing.
+			else if(animState == 3)	//Gate is closing.
 			{
-				if (!appearance->getInTransition())
+				if(!appearance->getInTransition())
 				{
 					appearance->setGesture(0);
 					closed = true;
 					opened = closing = opening = false;
-					
 					blowAnyOffendingObject();		//Check if something is "inside" gate
-													//If so, blow it and the gate.
+					//If so, blow it and the gate.
 				}
 				else
 				{
@@ -463,26 +417,26 @@ void Gate::openGate (void)
 				}
 			}
 		}
-		else if (lockedOpen || reasonToOpen)
+		else if(lockedOpen || reasonToOpen)
 		{
 			int32_t animState = appearance->getCurrentGestureId();
-			if (animState == -1)	//Never Updated - Closed by default
+			if(animState == -1)	//Never Updated - Closed by default
 			{
 				appearance->setGesture(1);
-				soundSystem->playDigitalSample(GATE_OPEN,position,true);
+				soundSystem->playDigitalSample(GATE_OPEN, position, true);
 				opening = true;
 				closed = closing = opened = false;
 			}
-			if (animState == 0)
+			if(animState == 0)
 			{
 				appearance->setGesture(1);
-				soundSystem->playDigitalSample(GATE_OPEN,position,true);
+				soundSystem->playDigitalSample(GATE_OPEN, position, true);
 				opening = true;
 				closed = closing = opened = false;
 			}
-			else if (animState == 1)
+			else if(animState == 1)
 			{
-				if (!appearance->getInTransition())
+				if(!appearance->getInTransition())
 				{
 					appearance->setGesture(2);
 					opened = true;
@@ -494,19 +448,18 @@ void Gate::openGate (void)
 					closed = closing = opened = false;
 				}
 			}
-			else if (animState == 2)
+			else if(animState == 2)
 			{
 				appearance->setGesture(2);
 				opened = true;
 				opening = closing = closed = false;
 			}
-			else if (animState == 3)
+			else if(animState == 3)
 			{
-				if (!appearance->getInTransition())
+				if(!appearance->getInTransition())
 				{
 					appearance->setGesture(1);
-					soundSystem->playDigitalSample(GATE_OPEN,position,true);
-					
+					soundSystem->playDigitalSample(GATE_OPEN, position, true);
 					opening = true;
 					closed = closing = opened = false;
 				}
@@ -515,26 +468,22 @@ void Gate::openGate (void)
 					closing = true;
 					closed = opening = opened = false;
 				}
-
 				//blowAnyOffendingObject();		//Check if something is "inside" gate
-												//If so, blow it and the gate.
-												//NO.  If locked Open, NEVER blow anyone!
+				//If so, blow it and the gate.
+				//NO.  If locked Open, NEVER blow anyone!
 			}
 		}
-
-		if (opened && (turn >3))
+		if(opened && (turn > 3))
 		{
 			//-----------------------------------------------------------------------------------------
 			// MARK True when open so that the side pieces of the gate are still IMPASSABLE!!
 			// First mark ENTIRE block PASSABLE.
 			// THEN Use Height to mark out areas which are IMPASSABLE!
-			
 			//MUST use appearance here!!!!  Glenn's other way does NOT assume animation!
-			
 			openSubAreas();
 			lastMarkedOpen = true;
 		}
-		else if (!opened && (turn > 3))
+		else if(!opened && (turn > 3))
 		{
 			//----------------------------------------------------
 			// Any other state but Opened is Closed!!
@@ -544,82 +493,74 @@ void Gate::openGate (void)
 			appearance->markLOS();						//ONLY need to re-mark here.  Only need to clear when we open!
 			lastMarkedOpen = false;
 		}
-		
 		//GlobalMoveMap[0]->clearPathExistsTable();
 		//GlobalMoveMap[1]->clearPathExistsTable();
-
 		reasonToOpen = false;		//Always reset the electric eye
 	}
-}	
+}
 
 //---------------------------------------------------------------------------
-int32_t Gate::setTeamId (int32_t _teamId, bool setup) 
+int32_t Gate::setTeamId(int32_t _teamId, bool setup)
 {
-	if (MPlayer)
+	if(MPlayer)
 	{
 		teamId = _teamId;
 	}
 	else
 	{
-		if (_teamId == 2)		//Allies
+		if(_teamId == 2)		//Allies
 			teamId = 0;			//Same as PlayerTeam.
-		else if (_teamId > 2)
+		else if(_teamId > 2)
 			teamId = 1;			//Not ally.  ENEMY!!
 		else
 			teamId = _teamId;	//Otherwise we were set to either -1, 0 or 1.
 	}
-
 	static uint32_t highLight[8] = {0x00007f00, 0x007f0000,
-										  0x0000007f, 0x0000007f,
-										  0x0000007f, 0x0000007f,
-										  0x0000007f, 0x0000007f};
-
-	if (turn > 10)
-		appearance->flashBuilding(5.0,0.5,highLight[teamId]);
-
+									0x0000007f, 0x0000007f,
+									0x0000007f, 0x0000007f,
+									0x0000007f, 0x0000007f
+								   };
+	if(turn > 10)
+		appearance->flashBuilding(5.0, 0.5, highLight[teamId]);
 	setSubAreasTeamId(_teamId);
- 		
 	return(NO_ERROR);
 }
 
 //---------------------------------------------------------------------------
-void Gate::lightOnFire (float timeToBurn)
+void Gate::lightOnFire(float timeToBurn)
 {
 	//Gates have never burned
 }
 
 //---------------------------------------------------------------------------
-void Gate::render (void)
+void Gate::render(void)
 {
-	if (appearance->canBeSeen())
+	if(appearance->canBeSeen())
 	{
 		//--------------------------------------
-		if (getDrawBars())
+		if(getDrawBars())
 		{
 			GateTypePtr type = (GateTypePtr)getObjectType();
 			float barStatus = 1.0;
 			float totalDmgLvl = type->getDamageLvl();
-			if (totalDmgLvl > 0.0)
+			if(totalDmgLvl > 0.0)
 				barStatus -= getDamage() / totalDmgLvl;
-			
-			if (barStatus < 0.0)
+			if(barStatus < 0.0)
 				barStatus = 0.0;
-
 			uint32_t color = 0xff7f7f7f;
-			if ((teamId > -1) && (teamId < 8) && getTeam()) {
-				if (getTeam()->isFriendly(Team::home))
+			if((teamId > -1) && (teamId < 8) && getTeam())
+			{
+				if(getTeam()->isFriendly(Team::home))
 					color = SB_GREEN;
-				else if (getTeam()->isEnemy(Team::home))
+				else if(getTeam()->isEnemy(Team::home))
 					color = SB_RED;
 				else
 					color = SB_BLUE;
 			}
-				
 			appearance->setBarColor(color);
 			appearance->setBarStatus(barStatus);
 		}
-
-		if (((GateTypePtr)getObjectType())->gateTypeName < IDS_MC2_STRING_START)
+		if(((GateTypePtr)getObjectType())->gateTypeName < IDS_MC2_STRING_START)
 		{
 			appearance->setObjectNameId(((GateTypePtr)getObjectType())->gateTypeName + IDS_MC2_STRING_START);
 		}
@@ -627,23 +568,20 @@ void Gate::render (void)
 		{
 			appearance->setObjectNameId(((GateTypePtr)getObjectType())->gateTypeName);
 		}
-
-
 		windowsVisible = turn;
-		appearance->setVisibility(true,true);
+		appearance->setVisibility(true, true);
 		appearance->render();
 	}
-	
 	setSelected(false);		//ALWAYS reset the selected flags.  GUI needs this to work!
-	setTargeted( false );	//ALWAYS do it here, too!  Otherwise things may draw FUNNY!
+	setTargeted(false);	//ALWAYS do it here, too!  Otherwise things may draw FUNNY!
 }
 
 //---------------------------------------------------------------------------
-void Gate::destroy (void)
+void Gate::destroy(void)
 {
 	//-----------------------------------------------------
 	// This will free any memory the Building is using.
-	if (appearance)
+	if(appearance)
 	{
 		delete appearance;
 		appearance = nullptr;
@@ -651,99 +589,83 @@ void Gate::destroy (void)
 }
 
 //---------------------------------------------------------------------------
-void Gate::init (bool create, ObjectTypePtr _type)
+void Gate::init(bool create, ObjectTypePtr _type)
 {
 	//-------------------------------------------
 	// Initialize the Building Appearance here.
 	GameObject::init(create, _type);
-
 	setFlag(OBJECT_FLAG_JUSTCREATED, true);
-
 	//-------------------------------------------------------------
 	// The appearance is initialized here using data from the type
 	// Need an MLR appearance class
 	PSTR appearName = _type->getAppearanceTypeName();
-
 	//--------------------------------------------------------------
 	// New code!!!
 	// We need to append the sprite type to the appearance num now.
 	// The MechEdit tool does not assume a sprite type, nor should it.
 	// MechCmdr2 features much simpler objects which only use 1 type of sprite!
 	int32_t appearanceType = (BLDG_TYPE << 24);
-
 	AppearanceTypePtr buildingAppearanceType = nullptr;
-	if (!appearName)
+	if(!appearName)
 	{
 		//------------------------------------------------------
 		// LOAD a dummy appearance until real ones are available
 		// for this building!
 		appearanceType = (BLDG_TYPE << 24);
-		buildingAppearanceType = appearanceTypeList->getAppearance(appearanceType,"TESTBLDG");
+		buildingAppearanceType = appearanceTypeList->getAppearance(appearanceType, "TESTBLDG");
 	}
 	else
 	{
-		buildingAppearanceType = appearanceTypeList->getAppearance(appearanceType,appearName);
-		if (!buildingAppearanceType)
+		buildingAppearanceType = appearanceTypeList->getAppearance(appearanceType, appearName);
+		if(!buildingAppearanceType)
 		{
 			char msg[1024];
-			sprintf(msg,"No Building Appearance Named %s",appearName);
-			Fatal(0,msg);
+			sprintf(msg, "No Building Appearance Named %s", appearName);
+			Fatal(0, msg);
 		}
 	}
-	  
-   	appearance = new BldgAppearance;
+	appearance = new BldgAppearance;
 	gosASSERT(appearance != nullptr);
-
 	//--------------------------------------------------------------
 	// The only appearance type for buildings is MLR_APPEARANCE.
 	gosASSERT(buildingAppearanceType->getAppearanceClass() == BLDG_TYPE);
-	
 	appearance->init((BldgAppearanceType*)buildingAppearanceType, (GameObjectPtr)this);
-
 	objectClass = GATE;
 	reasonToOpen = false;		//Always reset the electric eye
 	lastMarkedOpen = false;
-	
-	if (((GateTypePtr)_type)->openRadius != 0.0)
+	if(((GateTypePtr)_type)->openRadius != 0.0)
 		_type->setExtentRadius(((GateTypePtr)_type)->openRadius);
-
-	if (_type->getExtentRadius() > 0.0)
+	if(_type->getExtentRadius() > 0.0)
 		setFlag(OBJECT_FLAG_TANGIBLE, true);
-	
 	explDamage = ((GateTypePtr)_type)->explDmg;
 	explRadius = ((GateTypePtr)_type)->explRad;
-}	
+}
 
 //---------------------------------------------------------------------------
-void Gate::setDamage (float newDamage) 
+void Gate::setDamage(float newDamage)
 {
 	damage = newDamage;
-
 	GateTypePtr type = (GateTypePtr)getObjectType();
-	if (damage >= type->getDamageLvl())
+	if(damage >= type->getDamageLvl())
 	{
 		setStatus(OBJECT_STATUS_DESTROYED);
 		appearance->setObjStatus(OBJECT_STATUS_DESTROYED);
 	}
 }
- 
+
 //---------------------------------------------------------------------------
-int32_t Gate::handleWeaponHit (WeaponShotInfoPtr shotInfo, bool addMultiplayChunk) 
+int32_t Gate::handleWeaponHit(WeaponShotInfoPtr shotInfo, bool addMultiplayChunk)
 {
-	if (!shotInfo)
+	if(!shotInfo)
 		return(NO_ERROR);
-
-	if (addMultiplayChunk)
+	if(addMultiplayChunk)
 		MPlayer->addWeaponHitChunk(this, shotInfo);
-
 	damage = getDamage() + shotInfo->damage;
-			
 	GateTypePtr type = (GateTypePtr)getObjectType();
-	if (damage >= type->getDamageLvl() && !isDestroyed())	
+	if(damage >= type->getDamageLvl() && !isDestroyed())
 	{
 		destroyGate();
 	}
-		
 	return(NO_ERROR);
 }
 
@@ -751,8 +673,7 @@ int32_t Gate::handleWeaponHit (WeaponShotInfoPtr shotInfo, bool addMultiplayChun
 void Gate::destroyGate(void)
 {
 	justDestroyed = false;
-		
-	if (!getFlag(OBJECT_FLAG_JUSTCREATED)) 
+	if(!getFlag(OBJECT_FLAG_JUSTCREATED))
 	{
 		//-----------------------------------------------------------------------------------------
 		// First, mark every occupied cell PASSABLE for original shape.
@@ -763,22 +684,21 @@ void Gate::destroyGate(void)
 		//----------------------------------------------------------
 		// Unmark these cells as gate cells, so it'll be passable...
 		pint16_t curCoord = cellsCovered;
-		for (int32_t i = 0; i < numCellsCovered; i++) {
+		for(size_t i = 0; i < numCellsCovered; i++)
+		{
 			int32_t r = *curCoord++;
 			int32_t c = *curCoord++;
 			GameMap->setGate(r, c, false);
 		}
 	}
-
-	if (appearance)
+	if(appearance)
 	{
 		appearance->markLOS(true);			//Need to clear out before we change to the destroyed shape!!
 		appearance->setObjStatus(OBJECT_STATUS_DESTROYED);
 		appearance->recalcBounds();
 		appearance->update();
 	}
-
-	if (!getFlag(OBJECT_FLAG_JUSTCREATED)) 
+	if(!getFlag(OBJECT_FLAG_JUSTCREATED))
 	{
 		//-----------------------------------------------------------------------------------------
 		// Regardless of what kind of gate, gate should be able to mark passable/impassable
@@ -786,73 +706,68 @@ void Gate::destroyGate(void)
 		openSubAreas();
 		appearance->markLOS();			//Now mark LOS for the destroyed shape!
 	}
-
 	opened = true;
 	closed = closing = opening = false;
-	
 	lockedOpen = true;
 	justDestroyed = false;
 	setFlag(OBJECT_FLAG_TANGIBLE, false);
-
 	//------------------------------------------------------
 	// Gate is dead.  You may no longer collide with it.
 	setStatus(OBJECT_STATUS_DESTROYED);
-	if (!getFlag(OBJECT_FLAG_JUSTCREATED)) 
+	if(!getFlag(OBJECT_FLAG_JUSTCREATED))
 	{
 		//-----------------------------------------------------
 		// Now, blow the building up using its type->explosion
 		// (this won't do anything if a building type doesn't have an explosion)
-		ObjectManager->createExplosion(BUILDING_EXPLOSION_ID,this,position,explDamage,explRadius);
+		ObjectManager->createExplosion(BUILDING_EXPLOSION_ID, this, position, explDamage, explRadius);
 	}
 }
 
 //---------------------------------------------------------------------------
-float Gate::getLittleExtent (void)
+float Gate::getLittleExtent(void)
 {
 	return (((GateTypePtr)(ObjectManager->getObjectType(typeHandle)))->littleExtent);
 }
 
 //---------------------------------------------------------------------------
-bool Gate::isLinked (void)
+bool Gate::isLinked(void)
 {
 	return (parent != 0);
 }
 
 //---------------------------------------------------------------------------
-GameObjectPtr Gate::getParent (void)
+GameObjectPtr Gate::getParent(void)
 {
 	return (ObjectManager->getByWatchID(parent));
 }
 
 //---------------------------------------------------------------------------
-void Gate::setParentId (uint32_t pId)
+void Gate::setParentId(uint32_t pId)
 {
 	parentId = pId;
 }
 
 //---------------------------------------------------------------------------
-TeamPtr Gate::getTeam (void) {
-
-	if (teamId == -1)
+TeamPtr Gate::getTeam(void)
+{
+	if(teamId == -1)
 		return(nullptr);
 	return(Team::teams[teamId]);
 }
 
 //***************************************************************************
-void Gate::Save (PacketFilePtr file, int32_t packetNum)
+void Gate::Save(PacketFilePtr file, int32_t packetNum)
 {
 	GateData data;
 	CopyTo(&data);
-
 	//PacketNum incremented in ObjectManager!!
-	file->writePacket(packetNum,(puint8_t)&data,sizeof(GateData),STORAGE_TYPE_ZLIB);
+	file->writePacket(packetNum, (puint8_t)&data, sizeof(GateData), STORAGE_TYPE_ZLIB);
 }
 
 //***************************************************************************
-void Gate::CopyTo (GateData *data)
-{																	   
+void Gate::CopyTo(GateData* data)
+{
 	data->teamId = teamId;
-
 	data->lockedOpen = lockedOpen;
 	data->lockedClose = lockedClose;
 	data->reasonToOpen = reasonToOpen;
@@ -861,27 +776,20 @@ void Gate::CopyTo (GateData *data)
 	data->closed = closed;
 	data->closing = closing;
 	data->justDestroyed = justDestroyed;
-
 	data->lastMarkedOpen = lastMarkedOpen;
-
 	data->closestObject = closestObject;
-
 	data->parentId = parentId;
 	data->parent = parent;
 	data->buildingDescriptionID = buildingDescriptionID;
-
 	data->updatedTurn = updatedTurn;
-
-	TerrainObject::CopyTo(dynamic_cast<TerrainObjectData *>(data));
+	TerrainObject::CopyTo(dynamic_cast<TerrainObjectData*>(data));
 }
 
 //---------------------------------------------------------------------------
-void Gate::Load (GateData *data)
+void Gate::Load(GateData* data)
 {
-	TerrainObject::Load(dynamic_cast<TerrainObjectData *>(data));
-
+	TerrainObject::Load(dynamic_cast<TerrainObjectData*>(data));
 	teamId = data->teamId;
-
 	lockedOpen = data->lockedOpen;
 	lockedClose = data->lockedClose;
 	reasonToOpen = data->reasonToOpen;
@@ -890,15 +798,11 @@ void Gate::Load (GateData *data)
 	closed = data->closed;
 	closing = data->closing;
 	justDestroyed = data->justDestroyed;
-
 	lastMarkedOpen = data->lastMarkedOpen;
-
 	closestObject = data->closestObject;
-
 	parentId = data->parentId;
 	parent = data->parent;
 	buildingDescriptionID = data->buildingDescriptionID;
-
 	updatedTurn = 0;
 }
 

@@ -31,11 +31,11 @@ GOSImagePool::~GOSImagePool()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void GOSImagePool::UnLoadImages (void)
+void GOSImagePool::UnLoadImages(void)
 {
 	HashIteratorOf<GOSImage*, MString> images(&imageHash);
-	GOSImage *image = images.ReadAndNext();
-	while (image)
+	GOSImage* image = images.ReadAndNext();
+	while(image)
 	{
 		RemoveImage(image);
 		image = images.ReadAndNext();
@@ -45,21 +45,18 @@ void GOSImagePool::UnLoadImages (void)
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 GOSImage*
-	GOSImagePool::GetImage(PCSTR image_name)
+GOSImagePool::GetImage(PCSTR image_name)
 {
 	Check_Object(this);
-
 	MString imageName = image_name;
 	Verify(imageName.GetLength() > 0);
-
 	//
 	//---------------------------
 	// Get the image for the name
 	//---------------------------
 	//
-	GOSImage *image;
-
-	if ((image = imageHash.Find(imageName)) == nullptr)
+	GOSImage* image;
+	if((image = imageHash.Find(imageName)) == nullptr)
 	{
 		gos_PushCurrentHeap(Heap);
 		image = new GOSImage(image_name);
@@ -68,28 +65,24 @@ GOSImage*
 		imageHash.AddValue(image, image->imageName);
 	}
 	Check_Object(image);
-
 	return image;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 GOSImage*
-	GOSImagePool::GetImage(PCSTR image_name, gos_TextureFormat format, int32_t size, gos_TextureHints hints)
+GOSImagePool::GetImage(PCSTR image_name, gos_TextureFormat format, int32_t size, gos_TextureHints hints)
 {
 	Check_Object(this);
-
 	MString imageName = image_name;
 	Verify(imageName.GetLength() > 0);
-
 	//
 	//---------------------------
 	// Get the image for the name
 	//---------------------------
 	//
-	GOSImage *image;
-
-	if ((image = imageHash.Find(imageName)) == nullptr)
+	GOSImage* image;
+	if((image = imageHash.Find(imageName)) == nullptr)
 	{
 		gos_PushCurrentHeap(Heap);
 		image = new GOSImage(image_name, hints);
@@ -102,16 +95,14 @@ GOSImage*
 	{
 	}
 #endif
-
 	Check_Object(image);
-
 	return image;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	GOSImagePool::RemoveImage(GOSImage *image)
+GOSImagePool::RemoveImage(GOSImage* image)
 {
 	Check_Object(this);
 	Unregister_Object(image);
@@ -128,25 +119,19 @@ TGAFilePool::TGAFilePool(PCSTR path)
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 bool
-	TGAFilePool::LoadImage(GOSImage *image, int32_t hint)
+TGAFilePool::LoadImage(GOSImage* image, int32_t hint)
 {
-	if( (image->flags & GOSImage::Loaded) != 0)
+	if((image->flags & GOSImage::Loaded) != 0)
 		return true;
-
 	MString file_name = texturePath;
 	file_name += image->imageName;
 	file_name += ".tga";
-
 	PSTR fFileName = file_name;
-	if (((fFileName[0] != 'F') || (fFileName[0] != 'f')) &&
-		((fFileName[1] != 'X') || (fFileName[1] != 'x')))
+	if(((fFileName[0] != 'F') || (fFileName[0] != 'f')) &&
+			((fFileName[1] != 'X') || (fFileName[1] != 'x')))
 		hint |= gosHint_DisableMipmap;
-
-	uint32_t nodeIndex = mcTextureManager->loadTexture(file_name,gos_Texture_Detect, hint);
-
+	uint32_t nodeIndex = mcTextureManager->loadTexture(file_name, gos_Texture_Detect, hint);
 	image->SetHandle(nodeIndex);
-	
 	image->flags |= GOSImage::Loaded;
-
 	return ((image->flags & GOSImage::Loaded) != 0);
 }

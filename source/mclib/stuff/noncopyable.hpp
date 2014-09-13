@@ -14,10 +14,10 @@ namespace Stuff
 {
 	class Noncopyable
 	{
-	  protected:
+	protected:
 		Noncopyable() {}
 
-	  private:
+	private:
 		Noncopyable(const Noncopyable&);
 		const Noncopyable& operator=(const Noncopyable&);
 	};

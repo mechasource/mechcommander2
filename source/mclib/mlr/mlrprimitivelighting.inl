@@ -9,7 +9,9 @@
 //#ifndef _MLRTRIANGLELIGHTING_HPP_
 //#define _MLRTRIANGLELIGHTING_HPP_
 
-void CLASSNAME::Lighting(MLRLight* const* lights, int32_t nrLights)
+#include <mlr/mlrlight.hpp>
+
+void CLASSNAME::Lighting(MLRLight* const* lights, uint32_t nrLights)
 {
 	Check_Object(this);
 
@@ -19,7 +21,7 @@ void CLASSNAME::Lighting(MLRLight* const* lights, int32_t nrLights)
 	//----------------------------------------------------------------------
 	//
 	actualColors = &colors;
-	int32_t state_mask = GetCurrentState().GetLightingMode(void);
+	uint32_t state_mask = GetCurrentState().GetLightingMode();
 	if (nrLights == 0 || normals.GetLength() == 0 || state_mask == MLRState::LightingOffMode)
 		return;
 	Check_Pointer(lights);
@@ -35,14 +37,14 @@ void CLASSNAME::Lighting(MLRLight* const* lights, int32_t nrLights)
 		Verify(normals.GetLength() == colors.GetLength());
 		Verify(coords.GetLength() == colors.GetLength());
 
-		int32_t i, k, len = colors.GetLength(void);
+		size_t i, k, len = colors.GetLength();
 
 		MLRVertexData vertexData;
 
 #if COLOR_AS_DWORD
 		TO_DO;
 #else
-		RGBAColor *color = &colors[0];
+		Stuff::RGBAColor *color = &colors[0];
 #endif
 
 		//
@@ -65,7 +67,7 @@ void CLASSNAME::Lighting(MLRLight* const* lights, int32_t nrLights)
 				{
 					MLRLight *light = lights[i];
 					Check_Object(light);
-					int32_t mask = state_mask & light->GetLightMask(void);
+					uint32_t mask = state_mask & light->GetLightMask();
 					if (!mask)
 						continue;
 					if (mask&MLRState::VertexLightingMode)

@@ -27,11 +27,9 @@ ObjectNameList::ObjectNameList(void)
 ObjectNameList::~ObjectNameList(void)
 {
 	Check_Object(this);
-
 	Entry
-		*next;
-
-	while (firstEntry)
+	*next;
+	while(firstEntry)
 	{
 		Check_Pointer(firstEntry);
 		next = firstEntry->nextEntry;
@@ -47,17 +45,13 @@ PCSTR ObjectNameList::AddEntry(PCSTR name, PVOID data)
 {
 	Check_Object(this);
 	Check_Pointer(name);
-
 	Entry
-		*entry;
-
-	entry = Cast_Pointer(Entry *, new char[sizeof(Entry) + strlen(name) + 1]);
+	*entry;
+	entry = Cast_Pointer(Entry*, new char[sizeof(Entry) + strlen(name) + 1]);
 	Register_Object(entry);
-
 	entry->dataReference = data;
 	entry->nextEntry = nullptr;
-
-	if (firstEntry)
+	if(firstEntry)
 	{
 		Check_Pointer(lastEntry);
 		lastEntry->nextEntry = entry;
@@ -67,9 +61,7 @@ PCSTR ObjectNameList::AddEntry(PCSTR name, PVOID data)
 		firstEntry = entry;
 	}
 	lastEntry = entry;
-
 	entry->SetName(name);
-
 	return entry->GetName();
 }
 
@@ -79,19 +71,17 @@ PVOID ObjectNameList::FindObject(PCSTR name)
 {
 	Check_Object(this);
 	Check_Pointer(name);
-
 	Entry
-		*entry;
-
-	for (entry = firstEntry; entry; entry = entry->nextEntry)
+	*entry;
+	for(entry = firstEntry; entry; entry = entry->nextEntry)
 	{
 		Check_Pointer(entry);
-		if (!strcmp(entry->GetName(), name))
+		if(!strcmp(entry->GetName(), name))
 		{
 			break;
 		}
 	}
-	return (entry)?entry->dataReference:nullptr;
+	return (entry) ? entry->dataReference : nullptr;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -100,24 +90,22 @@ void ObjectNameList::DeleteEntry(PCSTR name)
 {
 	Check_Object(this);
 	Check_Pointer(name);
-
 	Entry
-		*cur,
-		*prev,
-		*entry;
-
+	*cur,
+	*prev,
+	*entry;
 	//----------------------------------------------------
 	// ***** DANGEROUS!!! see notice in namelist.hh *****
 	//----------------------------------------------------
-	entry = Cast_Pointer(Entry *, const_cast<PSTR>(name - sizeof(Entry)));
+	entry = Cast_Pointer(Entry*, const_cast<PSTR>(name - sizeof(Entry)));
 	prev = nullptr;
-	for (cur=firstEntry; cur && cur != entry; cur = cur->nextEntry)
+	for(cur = firstEntry; cur && cur != entry; cur = cur->nextEntry)
 	{
 		Check_Pointer(cur);
 		prev = cur;
 	}
 	Verify(cur && cur == entry);
-	if (!prev)
+	if(!prev)
 	{
 		firstEntry = entry->nextEntry;
 	}
@@ -125,7 +113,7 @@ void ObjectNameList::DeleteEntry(PCSTR name)
 	{
 		prev->nextEntry = entry->nextEntry;
 	}
-	if (entry == lastEntry)
+	if(entry == lastEntry)
 	{
 		lastEntry = prev;
 	}
@@ -139,13 +127,11 @@ void ObjectNameList::DeleteEntry(PCSTR name)
 int32_t ObjectNameList::GetEntryCount(void) const
 {
 	Check_Object(this);
-
 	Entry
-		*entry = firstEntry;
+	*entry = firstEntry;
 	int32_t
-		count = 0;
-
-	while (entry)
+	count = 0;
+	while(entry)
 	{
 		Check_Pointer(entry);
 		count++;
@@ -157,26 +143,24 @@ int32_t ObjectNameList::GetEntryCount(void) const
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 int32_t ObjectNameList::BuildSubList(
-	const ObjectNameList &source_list, PCSTR prefix)
+	const ObjectNameList& source_list, PCSTR prefix)
 {
 	Check_Object(this);
 	Check_Object(&source_list);
 	Check_Pointer(prefix);
-
 	const size_t	length = strlen(prefix);
 	Entry*			entry = source_list.firstEntry;
 	PCSTR			name;
 	int32_t				count = 0;
-
 	//------------------------------------------------------
 	// add entries to SubList whose name begins with prefix
 	//------------------------------------------------------
-	while (entry)
+	while(entry)
 	{
 		Check_Pointer(entry);
 		name = entry->GetName();
 		Check_Pointer(name);
-		if (!strncmp(name, prefix, length))
+		if(!strncmp(name, prefix, length))
 		{
 			count++;
 			AddEntry(name, entry->dataReference);
@@ -200,7 +184,7 @@ void ObjectNameList::Entry::SetName(PCSTR name)
 	strcpy(
 		Cast_Pointer(PSTR, this) + sizeof(ObjectNameList::Entry),
 		name
-		);
+	);
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -209,8 +193,7 @@ bool ObjectNameList::Entry::IsName(PCSTR name) const
 {
 	Check_Object(this);
 	//do not check name here
-
-	if (name)
+	if(name)
 	{
 		Check_Pointer(name);
 		return strcmp(GetName(), name) == 0;
@@ -240,19 +223,17 @@ NameList::~NameList(void)
 PCSTR NameList::FindName(PVOID data)
 {
 	Check_Object(this);
-
 	Entry
-		*entry;
-
-	for (entry = firstEntry; entry; entry = entry->nextEntry)
+	*entry;
+	for(entry = firstEntry; entry; entry = entry->nextEntry)
 	{
 		Check_Pointer(entry);
-		if (entry->dataReference == data)
+		if(entry->dataReference == data)
 		{
 			break;
 		}
 	}
-	return (entry)?entry->GetName():nullptr;
+	return (entry) ? entry->GetName() : nullptr;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -261,14 +242,12 @@ NameList::Entry* NameList::FindEntry(PCSTR name)
 {
 	Check_Object(this);
 	Check_Pointer(name);
-
 	Entry
-		*entry;
-
-	for (entry = firstEntry; entry; entry = entry->nextEntry)
+	*entry;
+	for(entry = firstEntry; entry; entry = entry->nextEntry)
 	{
 		Check_Pointer(entry);
-		if (!_stricmp(entry->GetName(), name))
+		if(!_stricmp(entry->GetName(), name))
 		{
 			break;
 		}
@@ -282,17 +261,15 @@ int32_t NameList::FindEntryIndex(PCSTR name)
 {
 	Check_Object(this);
 	Check_Pointer(name);
-
 	Entry
-		*entry;
+	*entry;
 	int32_t
-		result = -1;
-
-	for (entry = firstEntry; entry; entry = entry->nextEntry)
+	result = -1;
+	for(entry = firstEntry; entry; entry = entry->nextEntry)
 	{
 		++result;
 		Check_Pointer(entry);
-		if (!strcmp(entry->GetName(), name))
+		if(!strcmp(entry->GetName(), name))
 		{
 			return result;
 		}
@@ -305,14 +282,12 @@ int32_t NameList::FindEntryIndex(PCSTR name)
 NameList::Entry* NameList::FindEntry(PVOID data)
 {
 	Check_Object(this);
-
 	Entry
-		*entry;
-
-	for (entry = firstEntry; entry; entry = entry->nextEntry)
+	*entry;
+	for(entry = firstEntry; entry; entry = entry->nextEntry)
 	{
 		Check_Pointer(entry);
-		if (entry->dataReference == data)
+		if(entry->dataReference == data)
 		{
 			break;
 		}
@@ -327,23 +302,21 @@ NameList::DeleteEntry(PCSTR name)
 {
 	Check_Object(this);
 	Check_Pointer(name);
-
 	Entry
-		*prev = nullptr,
-		*entry;
-
-	for (entry = firstEntry; entry; entry = entry->nextEntry)
+	*prev = nullptr,
+	 *entry;
+	for(entry = firstEntry; entry; entry = entry->nextEntry)
 	{
 		Check_Pointer(entry);
-		if (!strcmp(entry->GetName(), name))
+		if(!strcmp(entry->GetName(), name))
 		{
 			break;
 		}
 		prev = entry;
 	}
-	if (entry)
+	if(entry)
 	{
-		if (!prev)
+		if(!prev)
 		{
 			firstEntry = entry->nextEntry;
 		}
@@ -351,7 +324,7 @@ NameList::DeleteEntry(PCSTR name)
 		{
 			prev->nextEntry = entry->nextEntry;
 		}
-		if (entry == lastEntry)
+		if(entry == lastEntry)
 		{
 			lastEntry = prev;
 		}
@@ -365,40 +338,37 @@ NameList::DeleteEntry(PCSTR name)
 //
 MemoryStream&
 MemoryStreamIO::Write(
-	MemoryStream *stream, const NameList *names)
+	MemoryStream* stream, const NameList* names)
 {
 	Check_Object(names);
-
 	//
 	//------------------------------
 	// Write out the number of names
 	//------------------------------
 	//
 	int32_t i = 0;
-	const NameList::Entry *entry = names->GetFirstEntry();
-	while (entry)
+	const NameList::Entry* entry = names->GetFirstEntry();
+	while(entry)
 	{
 		Check_Object(entry);
 		++i;
 		entry = entry->GetNextEntry();
 	}
 	*stream << i;
-
 	//
 	//--------------------
 	// Write out the names
 	//--------------------
 	//
 	entry = names->GetFirstEntry();
-	while (entry)
+	while(entry)
 	{
 		Check_Object(entry);
 		PCSTR name = entry->GetName();
 		Check_Pointer(name);
-		stream->WriteBytes(name, strlen(name)+1);
+		stream->WriteBytes(name, strlen(name) + 1);
 		entry = entry->GetNextEntry();
 	}
-
 	return *stream;
 }
 
@@ -406,7 +376,7 @@ MemoryStreamIO::Write(
 //
 MemoryStream&
 MemoryStreamIO::Read(
-	MemoryStream *stream, NameList *names)
+	MemoryStream* stream, NameList* names)
 {
 	//
 	//---------------------------------------------------------------------
@@ -415,13 +385,12 @@ MemoryStreamIO::Read(
 	//
 	int32_t count;
 	*stream >> count;
-	while (count-- > 0)
+	while(count-- > 0)
 	{
 		PCSTR name = Cast_Pointer(PCSTR, stream->GetPointer());
 		names->AddEntry(name, nullptr);
-		stream->AdvancePointer(strlen(name)+1);
+		stream->AdvancePointer(strlen(name) + 1);
 	}
-
 	return *stream;
 }
 
@@ -445,22 +414,19 @@ PCSTR AlphaNameList::AddEntry(PCSTR name, PVOID data)
 {
 	Check_Object(this);
 	Check_Pointer(name);
-
 	Entry
-		*entry,
-		*next = firstEntry,
-		*prev = nullptr;
-
-	entry = Cast_Pointer(Entry *, new char[sizeof(Entry) + strlen(name) + 1]);
+	*entry,
+	*next = firstEntry,
+	 *prev = nullptr;
+	entry = Cast_Pointer(Entry*, new char[sizeof(Entry) + strlen(name) + 1]);
 	Register_Object(entry);
-
 	//-----------------------------------
 	// find location to insert new entry
 	//-----------------------------------
-	while (next)
+	while(next)
 	{
 		Check_Pointer(next);
-		if (strcmp(name, next->GetName()) < 0)
+		if(strcmp(name, next->GetName()) < 0)
 		{
 			break;
 		}
@@ -470,11 +436,11 @@ PCSTR AlphaNameList::AddEntry(PCSTR name, PVOID data)
 	//---------------------------------------------
 	// insert new entry after prev and before next
 	//---------------------------------------------
-	if (!next)
+	if(!next)
 	{
 		lastEntry = entry;
 	}
-	if (!prev)
+	if(!prev)
 	{
 		firstEntry = entry;
 	}
@@ -485,7 +451,6 @@ PCSTR AlphaNameList::AddEntry(PCSTR name, PVOID data)
 	entry->dataReference = data;
 	entry->nextEntry = next;
 	entry->SetName(name);
-
 	return entry->GetName();
 }
 

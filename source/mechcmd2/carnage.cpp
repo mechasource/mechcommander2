@@ -65,138 +65,115 @@ extern bool somethingOnFire;
 
 float Carnage::maxFireBurnTime = 5.0;
 
-extern MidLevelRenderer::MLRClipper * theClipper;
+extern MidLevelRenderer::MLRClipper* theClipper;
 extern bool MLRVertexLimitReached;
 //***************************************************************************
 // FIRE TYPE class
 //***************************************************************************
 
-GameObjectPtr FireType::createInstance (void) {
-
+GameObjectPtr FireType::createInstance(void)
+{
 	CarnagePtr newFire = new Carnage;
-	if (!newFire)
+	if(!newFire)
 		return(nullptr);
-
 	newFire->init(true, this);
-
 	return(newFire);
 }
 
 //---------------------------------------------------------------------------
 
-void FireType::destroy (void) 
+void FireType::destroy(void)
 {
-	if (fireOffsetX) 
+	if(fireOffsetX)
 	{
 		systemHeap->Free(fireOffsetX);
 		fireOffsetX = nullptr;
 	}
-
-	if (fireOffsetY) 
+	if(fireOffsetY)
 	{
 		systemHeap->Free(fireOffsetY);
 		fireOffsetY = nullptr;
 	}
-	
-	if (fireDelay) 
+	if(fireDelay)
 	{
 		systemHeap->Free(fireDelay);
 		fireDelay = nullptr;
 	}
-
-	if (fireRandomOffsetX) 
+	if(fireRandomOffsetX)
 	{
 		systemHeap->Free(fireRandomOffsetX);
 		fireRandomOffsetX = nullptr;
 	}
-
-	if (fireRandomOffsetY) 
+	if(fireRandomOffsetY)
 	{
 		systemHeap->Free(fireRandomOffsetY);
 		fireRandomOffsetY = nullptr;
 	}
-
-	if (fireRandomDelay) 
+	if(fireRandomDelay)
 	{
 		systemHeap->Free(fireRandomDelay);
 		fireRandomDelay = nullptr;
 	}
-
 	ObjectType::destroy();
 }
-		
+
 //---------------------------------------------------------------------------
 
-int32_t FireType::init (FilePtr objFile, uint32_t fileSize) {
-
+int32_t FireType::init(FilePtr objFile, uint32_t fileSize)
+{
 	int32_t result = 0;
-	
 	FitIniFile explFile;
-	result = explFile.open(objFile,fileSize);
-	if (result != NO_ERROR)
+	result = explFile.open(objFile, fileSize);
+	if(result != NO_ERROR)
 		return(result);
-	
 	result = explFile.seekBlock("FireData");
-	if (result != NO_ERROR)
+	if(result != NO_ERROR)
 		return(result);
-
 	uint32_t dmgLevel;
-	result = explFile.readIdULong("DmgLevel",dmgLevel);
-	if (result != NO_ERROR)
+	result = explFile.readIdULong("DmgLevel", dmgLevel);
+	if(result != NO_ERROR)
 		return(result);
 	damageLevel = dmgLevel;
-		
-	result = explFile.readIdULong("SoundEffectId",soundEffectId);
-	if (result != NO_ERROR)
+	result = explFile.readIdULong("SoundEffectId", soundEffectId);
+	if(result != NO_ERROR)
 		return(result);
-	
-	result = explFile.readIdULong("LightObjectId",lightObjectId);
-	if (result != NO_ERROR)
+	result = explFile.readIdULong("LightObjectId", lightObjectId);
+	if(result != NO_ERROR)
 		lightObjectId = -1;
-
-	result = explFile.readIdULong("startLoopFrame",startLoopFrame);
-	if (result != NO_ERROR)
+	result = explFile.readIdULong("startLoopFrame", startLoopFrame);
+	if(result != NO_ERROR)
 		return(result);
-
-	result = explFile.readIdULong("numLoops",numLoops);
-	if (result != NO_ERROR)
+	result = explFile.readIdULong("numLoops", numLoops);
+	if(result != NO_ERROR)
 		return(result);
-		
-	result = explFile.readIdULong("endLoopFrame",endLoopFrame);
-	if (result != NO_ERROR)
+	result = explFile.readIdULong("endLoopFrame", endLoopFrame);
+	if(result != NO_ERROR)
 		return(result);
-
-	result = explFile.readIdFloat("maxExtentRadius",maxExtent);
-	if (result != NO_ERROR)		
+	result = explFile.readIdFloat("maxExtentRadius", maxExtent);
+	if(result != NO_ERROR)
 		maxExtent = 0.0;
-	
-	result = explFile.readIdFloat("TimeToMaxExtent",timeToMax);
-	if (result != NO_ERROR)		
+	result = explFile.readIdFloat("TimeToMaxExtent", timeToMax);
+	if(result != NO_ERROR)
 		timeToMax = 0.0;
-
-	result = explFile.readIdLong("TotalFireShapes",totalFires);
-	if (result != NO_ERROR)
+	result = explFile.readIdLong("TotalFireShapes", totalFires);
+	if(result != NO_ERROR)
 		totalFires = 1;
-
 	//------------------------------------------------------------------
 	// Initialize the base object Type from the current file.
 	result = ObjectType::init(&explFile);
-
 	objectClass = FIRE;
-
 	return(result);
 }
-	
+
 //---------------------------------------------------------------------------
 
-bool FireType::handleCollision (GameObjectPtr collidee, GameObjectPtr collider) {
-
-	if (MPlayer && !MPlayer->isServer())
+bool FireType::handleCollision(GameObjectPtr collidee, GameObjectPtr collider)
+{
+	if(MPlayer && !MPlayer->isServer())
 		return(false);
-
-	if (!collider->isDestroyed()) 
+	if(!collider->isDestroyed())
 	{
-		switch (collider->getObjectClass()) 
+		switch(collider->getObjectClass())
 		{
 			case BATTLEMECH:
 				//-------------------------------------------------------------
@@ -208,25 +185,25 @@ bool FireType::handleCollision (GameObjectPtr collidee, GameObjectPtr collider) 
 				// Not anymore.  Fires are undefined at present.
 				break;
 			case TERRAINOBJECT:
-				if (((TerrainObjectPtr)collider)->getSubType() == TERROBJ_TREE) 
+				if(((TerrainObjectPtr)collider)->getSubType() == TERROBJ_TREE)
 				{
-					if (RollDice(10)) 
+					if(RollDice(10))
 					{
 						((TerrainObjectPtr)collider)->lightOnFire(15.0);
-						if (MPlayer)
+						if(MPlayer)
 							MPlayer->addLightOnFireChunk(collider, 15);
 					}
 				}
 				break;
 		}
 	}
-	
 	return(false);
 }
 
 //---------------------------------------------------------------------------
 
-bool FireType::handleDestruction (GameObjectPtr collidee, GameObjectPtr collider) {
+bool FireType::handleDestruction(GameObjectPtr collidee, GameObjectPtr collider)
+{
 	return(FALSE);
 }
 
@@ -234,144 +211,124 @@ bool FireType::handleDestruction (GameObjectPtr collidee, GameObjectPtr collider
 // EXPLOSION TYPE class
 //***************************************************************************
 
-GameObjectPtr ExplosionType::createInstance (void) {
-
+GameObjectPtr ExplosionType::createInstance(void)
+{
 	CarnagePtr newExplosion = new Carnage;
-	if (!newExplosion)
+	if(!newExplosion)
 		return(nullptr);
-
 	newExplosion->init(true, this);
-
 	return(newExplosion);
 }
 
 //---------------------------------------------------------------------------
 
-void ExplosionType::destroy (void) 
+void ExplosionType::destroy(void)
 {
 	ObjectType::destroy();
 }
-		
+
 //---------------------------------------------------------------------------
 
-int32_t ExplosionType::init (FilePtr objFile, uint32_t fileSize) {
-
+int32_t ExplosionType::init(FilePtr objFile, uint32_t fileSize)
+{
 	int32_t result = 0;
-	
 	FitIniFile explFile;
-	result = explFile.open(objFile,fileSize);
-	if (result != NO_ERROR)
+	result = explFile.open(objFile, fileSize);
+	if(result != NO_ERROR)
 		return(result);
-	
 	//------------------------------------------------------------------
 	// Read in the data needed to fire the laser
 	result = explFile.seekBlock("ExplosionData");
-	if (result != NO_ERROR)
+	if(result != NO_ERROR)
 		return(result);
-
 	uint32_t dmgLevel;
-	result = explFile.readIdULong("DmgLevel",dmgLevel);
-	if (result != NO_ERROR)
+	result = explFile.readIdULong("DmgLevel", dmgLevel);
+	if(result != NO_ERROR)
 		return(result);
 	damageLevel = dmgLevel;
-		
-	result = explFile.readIdULong("SoundEffectId",soundEffectId);
-	if (result != NO_ERROR)
+	result = explFile.readIdULong("SoundEffectId", soundEffectId);
+	if(result != NO_ERROR)
 		return(result);
-		
-	result = explFile.readIdLong("ExplosionRadius",explRadius);
-	if (result != NO_ERROR)
+	result = explFile.readIdLong("ExplosionRadius", explRadius);
+	if(result != NO_ERROR)
 		explRadius = 0;
-		
-	result = explFile.readIdULong("LightObjectId",lightObjectId);
-	if (result != NO_ERROR)
+	result = explFile.readIdULong("LightObjectId", lightObjectId);
+	if(result != NO_ERROR)
 		lightObjectId = -1;
-
-	result = explFile.readIdFloat("DamageChunkSize",chunkSize);
-	if (result != NO_ERROR)
+	result = explFile.readIdFloat("DamageChunkSize", chunkSize);
+	if(result != NO_ERROR)
 		chunkSize = 5.0;
-
-	result = explFile.readIdFloat("DelayUntilCollidable",delayUntilCollidable);
-	if (result != NO_ERROR)
+	result = explFile.readIdFloat("DelayUntilCollidable", delayUntilCollidable);
+	if(result != NO_ERROR)
 		delayUntilCollidable = EXPLOSION_TIME;
-
 	result = explFile.seekBlock("LightData");
-	if (result == NO_ERROR)
+	if(result == NO_ERROR)
 	{
-		result = explFile.readIdFloat("LightMinMaxRadius",lightMinMaxRadius);
-		if (result != NO_ERROR)
+		result = explFile.readIdFloat("LightMinMaxRadius", lightMinMaxRadius);
+		if(result != NO_ERROR)
 			STOP(("Light data for explosion BAD"));
-
-		result = explFile.readIdFloat("LightMaxMaxRadius",lightMaxMaxRadius);
-		if (result != NO_ERROR)
+		result = explFile.readIdFloat("LightMaxMaxRadius", lightMaxMaxRadius);
+		if(result != NO_ERROR)
 			STOP(("Light data for explosion BAD"));
-
-		result = explFile.readIdFloat("LightOutMinRadius",lightOutMinRadius);
-		if (result != NO_ERROR)
+		result = explFile.readIdFloat("LightOutMinRadius", lightOutMinRadius);
+		if(result != NO_ERROR)
 			STOP(("Light data for explosion BAD"));
-
-		result = explFile.readIdFloat("LightOutMaxRadius",lightOutMaxRadius);
-		if (result != NO_ERROR)
+		result = explFile.readIdFloat("LightOutMaxRadius", lightOutMaxRadius);
+		if(result != NO_ERROR)
 			STOP(("Light data for explosion BAD"));
-
-		result = explFile.readIdULong("LightRGB",lightRGB);
-		if (result != NO_ERROR)
+		result = explFile.readIdULong("LightRGB", lightRGB);
+		if(result != NO_ERROR)
 			STOP(("Light data for explosion BAD"));
-
-		result = explFile.readIdFloat("MaxIntensity",maxIntensity);
-		if (result != NO_ERROR)
+		result = explFile.readIdFloat("MaxIntensity", maxIntensity);
+		if(result != NO_ERROR)
 			STOP(("Light data for explosion BAD"));
-
-		result = explFile.readIdFloat("MinIntensity",minIntensity);
-		if (result != NO_ERROR)
+		result = explFile.readIdFloat("MinIntensity", minIntensity);
+		if(result != NO_ERROR)
 			STOP(("Light data for explosion BAD"));
-
-		result = explFile.readIdFloat("Duration",duration);
-		if (result != NO_ERROR)
+		result = explFile.readIdFloat("Duration", duration);
+		if(result != NO_ERROR)
 			STOP(("Light data for explosion BAD"));
 	}
-
 	//------------------------------------------------------------------
 	// Initialize the base object Type from the current file.
 	result = ObjectType::init(&explFile);
-
 	objectClass = EXPLOSION;
-
 	return(result);
 }
-	
+
 //---------------------------------------------------------------------------
 
-bool ExplosionType::handleCollision (GameObjectPtr collidee, GameObjectPtr collider) {
-
-	if (MPlayer && !MPlayer->isServer())
+bool ExplosionType::handleCollision(GameObjectPtr collidee, GameObjectPtr collider)
+{
+	if(MPlayer && !MPlayer->isServer())
 		return(false);
-
 	float damageLeft = collidee->getExplDmg();
-
 	//-------------------------------------------------------
 	// Explosions CAN damage objects around them if they have
 	// a damage level associated with them.
-	if (damageLeft != 0.0) {
+	if(damageLeft != 0.0)
+	{
 		float damageAmount = 0.0;
 		WeaponShotInfo shot;
-		if (damageLeft > ((CarnagePtr)collidee)->info.explosion.chunkSize)
+		if(damageLeft > ((CarnagePtr)collidee)->info.explosion.chunkSize)
 			damageAmount = ((CarnagePtr)collidee)->info.explosion.chunkSize;
 		else
 			damageAmount = damageLeft;
-
-		if (collider->isMover()) {
-			shot.init(nullptr, -1, damageAmount, 0, 0);		 
-			while (damageLeft > 0.0) {
-				shot.hitLocation = collider->calcHitLocation(collidee,-1,ATTACKSOURCE_ARTILLERY,0);
+		if(collider->isMover())
+		{
+			shot.init(nullptr, -1, damageAmount, 0, 0);
+			while(damageLeft > 0.0)
+			{
+				shot.hitLocation = collider->calcHitLocation(collidee, -1, ATTACKSOURCE_ARTILLERY, 0);
 				collider->handleWeaponHit(&shot, (MPlayer != nullptr));
 				damageLeft -= ((CarnagePtr)collidee)->info.explosion.chunkSize;
 			}
-			}
-		else {
-			switch (collider->getObjectClass()) 
+		}
+		else
+		{
+			switch(collider->getObjectClass())
 			{
-				case GATE: 
+				case GATE:
 				{
 					//---------------------------------------------------
 					// An explosion may NOT damage a gate or turret unless
@@ -379,17 +336,15 @@ bool ExplosionType::handleCollision (GameObjectPtr collidee, GameObjectPtr colli
 					Stuff::Vector3D distance = collider->getPosition();
 					distance -= collidee->getPosition();
 					float range = distance.GetLength();
-
-			 		float littleExtent = ((TurretPtr)collider)->getLittleExtent();
-					if (littleExtent < range) 
+					float littleExtent = ((TurretPtr)collider)->getLittleExtent();
+					if(littleExtent < range)
 					{
 						float realRange = range - littleExtent;
-						if (realRange > collidee->getExtentRadius())
+						if(realRange > collidee->getExtentRadius())
 							return(false);
 					}
-					
-					shot.init(nullptr, -1, damageAmount, 0, 0);		 
-					while (damageLeft > 0.0) 
+					shot.init(nullptr, -1, damageAmount, 0, 0);
+					while(damageLeft > 0.0)
 					{
 						shot.hitLocation = 0;
 						collider->handleWeaponHit(&shot, (MPlayer != nullptr));
@@ -397,8 +352,7 @@ bool ExplosionType::handleCollision (GameObjectPtr collidee, GameObjectPtr colli
 					}
 				}
 				break;
-
-				case TURRET: 
+				case TURRET:
 				{
 					//---------------------------------------------------
 					// An explosion may NOT damage a gate or turret unless
@@ -406,30 +360,25 @@ bool ExplosionType::handleCollision (GameObjectPtr collidee, GameObjectPtr colli
 					Stuff::Vector3D distance = collider->getPosition();
 					distance -= collidee->getPosition();
 					float range = distance.GetLength();
-
 					float littleExtent = ((TurretPtr)collider)->getLittleExtent();
-					if (littleExtent < range) 
+					if(littleExtent < range)
 					{
 						float realRange = range - littleExtent;
-						if (realRange > collidee->getExtentRadius())
+						if(realRange > collidee->getExtentRadius())
 							return(FALSE);
 					}
-					
 					float damageLeft = collidee->getExplDmg();
 					WeaponShotInfo shot;
-					shot.init(nullptr, -1, damageAmount, 0, 0);		 
-					while (damageLeft > 0.0) 
+					shot.init(nullptr, -1, damageAmount, 0, 0);
+					while(damageLeft > 0.0)
 					{
 						shot.hitLocation = 0;
 						collider->handleWeaponHit(&shot, (MPlayer != nullptr));
 						damageLeft -= chunkSize;
-
 					}
-							
-					}
-					break;
-
-				default: 
+				}
+				break;
+				default:
 				{
 					WeaponShotInfo shot;
 					shot.init(nullptr, -1, collidee->getExplDmg(), 0, 0);
@@ -438,26 +387,24 @@ bool ExplosionType::handleCollision (GameObjectPtr collidee, GameObjectPtr colli
 			}
 		}
 	}
-	
 	return(false);
 }
 
 //---------------------------------------------------------------------------
 
-bool ExplosionType::handleDestruction (GameObjectPtr collidee, GameObjectPtr collider) {
-
+bool ExplosionType::handleDestruction(GameObjectPtr collidee, GameObjectPtr collider)
+{
 	//-------------------------------------------------------
 	// The laser ceases to exist when its effect is done.
 	// always return FALSE or the collision will make it
 	// go away!
-	
 	return(false);
 }
 
 //***************************************************************************
 // CARNAGE class
 //***************************************************************************
-void Carnage::init (bool create) 
+void Carnage::init(bool create)
 {
 	carnageType = CARNAGE_NONE;
 	ownerWID = 0;
@@ -467,57 +414,52 @@ void Carnage::init (bool create)
 	info.explosion.timer = EXPLOSION_TIME;
 	info.explosion.chunkSize = 0.0;
 	gosEffect = nullptr;
-
 	intensity = 0.0f;
 	inRadius = 0.0f;
 	outRadius = 0.0f;
 	duration = 0.0f;
-
 	pointLight = nullptr;
 	lightId = 0xffffffff;
 }
 
 //---------------------------------------------------------------------------
-void Carnage::init (CarnageEnumType _carnageType) 
+void Carnage::init(CarnageEnumType _carnageType)
 {
 	//--------------------------------------------------------------------
 	// This function not only sets the carnage type, but also re-inits the
 	// object so it may be used again in the game without re-allocating
 	// it...
 	carnageType = _carnageType;
-	if (carnageType == CARNAGE_FIRE) 
+	if(carnageType == CARNAGE_FIRE)
 	{
-	
 	}
-	else if (carnageType == CARNAGE_EXPLOSION) 
+	else if(carnageType == CARNAGE_EXPLOSION)
 	{
 		intensity = 0.0f;
 		inRadius = 0.0f;
 		outRadius = 0.0f;
 		duration = 0.0f;
-
 		pointLight = nullptr;
 		lightId = 0xffffffff;
 	}
 }
 
 //---------------------------------------------------------------------------
-GameObjectPtr Carnage::getOwner (void) 
+GameObjectPtr Carnage::getOwner(void)
 {
 	return(ObjectManager->getByWatchID(ownerWID));
 }
 
 //---------------------------------------------------------------------------
-void Carnage::handleStaticCollision (void) 
+void Carnage::handleStaticCollision(void)
 {
-	if (getTangible()) 
+	if(getTangible())
 	{
 		//-----------------------------------------------------
 		// What is our block and vertex number?
 		int32_t blockNumber = 0;
 		int32_t vertexNumber = 0;
-		getBlockAndVertexNumber(blockNumber,vertexNumber);
-			
+		getBlockAndVertexNumber(blockNumber, vertexNumber);
 		//-------------------------------------------------------------------------
 		// We must now move out into other tiles for the artillery strike to work.
 		// Remember, Its pretty big!
@@ -525,18 +467,17 @@ void Carnage::handleStaticCollision (void)
 		int32_t topLeftBlockNumber = blockNumber - Terrain::blocksMapSide - 1;
 		int32_t currentBlockNumber = topLeftBlockNumber;
 		int32_t totalBlocks = Terrain::blocksMapSide * Terrain::blocksMapSide;
-
-		for (int32_t i = 0; i < 3; i++) 
+		for(size_t i = 0; i < 3; i++)
 		{
-			for (int32_t j = 0; j < 3; j++) 
+			for(auto j = 0; j < 3; j++)
 			{
-				if ((currentBlockNumber >= 0) && (currentBlockNumber < totalBlocks))
+				if((currentBlockNumber >= 0) && (currentBlockNumber < totalBlocks))
 				{
 					int32_t numObjectsInBlock = ObjectManager->getObjBlockNumObjects(currentBlockNumber);
-					for (int32_t objIndex = 0; objIndex < numObjectsInBlock; objIndex++) 
+					for(int32_t objIndex = 0; objIndex < numObjectsInBlock; objIndex++)
 					{
 						GameObjectPtr obj = ObjectManager->getObjBlockObject(currentBlockNumber, objIndex);
-						if (obj->getExists() && (obj->getObjectClass() != GATE) && (obj->getObjectClass() != TURRET)) 
+						if(obj->getExists() && (obj->getObjectClass() != GATE) && (obj->getObjectClass() != TURRET))
 							ObjectManager->detectStaticCollision(this, obj);
 					}
 				}
@@ -544,40 +485,36 @@ void Carnage::handleStaticCollision (void)
 			}
 			currentBlockNumber = topLeftBlockNumber + (Terrain::blocksMapSide * (i + 1));
 		}
-
 		//-------------------------------------------------------
 		// MUST figure out radius to set off mines in CELLS now.
 		// UNLESS WE ARE A MINE EXPLOSION!!!
 		// -fs
-		if ((effectId != MINE_EXPLOSION_ID) && (info.explosion.radius > 0.0f))
+		if((effectId != MINE_EXPLOSION_ID) && (info.explosion.radius > 0.0f))
 		{
 			int32_t CellRow, CellCol;
 			land->worldToCell(getPosition(), CellRow, CellCol);
-	
 			int32_t startCellRow = CellRow - 4;
 			int32_t startCellCol = CellCol - 4;
-				
-			for (i = startCellRow; i < startCellRow + 9; i++) 
+			for(i = startCellRow; i < startCellRow + 9; i++)
 			{
-				for (int32_t j = startCellCol; j < startCellCol + 9; j++) 
+				for(auto j = startCellCol; j < startCellCol + 9; j++)
 				{
-					if (GameMap->inBounds(i,j)) 
+					if(GameMap->inBounds(i, j))
 					{
 						int32_t mineResult = 0;
-						mineResult = GameMap->getMine(i,j);
-						
-						if (mineResult == 1)
+						mineResult = GameMap->getMine(i, j);
+						if(mineResult == 1)
 						{
 							Stuff::Vector3D minePosition;
-							land->cellToWorld(i,j,minePosition);
+							land->cellToWorld(i, j, minePosition);
 							Stuff::Vector3D distance;
-							distance.Subtract(getPosition(),minePosition);
+							distance.Subtract(getPosition(), minePosition);
 							distance.z = 0.0f;
 							float dist = distance.GetApproximateLength();
-							if (dist < info.explosion.radius)
+							if(dist < info.explosion.radius)
 							{
-								GameMap->setMine(i,j,2);
-								if (MPlayer) 
+								GameMap->setMine(i, j, 2);
+								if(MPlayer)
 								{
 									MPlayer->addMineChunk(i,
 														  j,
@@ -593,110 +530,97 @@ void Carnage::handleStaticCollision (void)
 			}
 		}
 	}
-}	
+}
 
 //---------------------------------------------------------------------------
-bool Carnage::onScreen (void) 
+bool Carnage::onScreen(void)
 {
 	//----------------------------------------------------------------------
 	// Need a real check here against the OBB Radius of the effect
-	
 	return(true);
 }
 
 //---------------------------------------------------------------------------
-void Carnage::finishNow (void) 
+void Carnage::finishNow(void)
 {
 	//When the fire goes out, it may spread.
-	if (carnageType == CARNAGE_FIRE) 
+	if(carnageType == CARNAGE_FIRE)
 	{
 		setFlag(OBJECT_FLAG_SPREAD, true);
 	}
-	else if (carnageType == CARNAGE_EXPLOSION) 
+	else if(carnageType == CARNAGE_EXPLOSION)
 	{
-		if (gosEffect)
+		if(gosEffect)
 		{
 			gosEffect->Kill();		//Effect is over.
 			delete gosEffect;
 			gosEffect = nullptr;
 		}
-
-		if (pointLight)
+		if(pointLight)
 		{
-			eye->removeWorldLight(lightId,pointLight);
+			eye->removeWorldLight(lightId, pointLight);
 			systemHeap->Free(pointLight);
 			pointLight = nullptr;
 		}
-
 		init(false);
 	}
-}	
-		
+}
+
 //---------------------------------------------------------------------------
-void Carnage::addTimeLeft (float timeLeft) 
+void Carnage::addTimeLeft(float timeLeft)
 {
-	if (carnageType == CARNAGE_FIRE) 
+	if(carnageType == CARNAGE_FIRE)
 	{
 	}
-	else if (carnageType == CARNAGE_EXPLOSION) 
+	else if(carnageType == CARNAGE_EXPLOSION)
 	{
 	}
 }
 
 //---------------------------------------------------------------------------
-int32_t Carnage::update (void) 
+int32_t Carnage::update(void)
 {
-	if (carnageType == CARNAGE_FIRE) 
+	if(carnageType == CARNAGE_FIRE)
 	{
 	}
-	else if (carnageType == CARNAGE_EXPLOSION) 
+	else if(carnageType == CARNAGE_EXPLOSION)
 	{
-		if (getFlag(OBJECT_FLAG_JUSTCREATED)) 
+		if(getFlag(OBJECT_FLAG_JUSTCREATED))
 		{
 			setFlag(OBJECT_FLAG_JUSTCREATED, false);
-				
 			Stuff::LinearMatrix4D 	shapeOrigin;
 			Stuff::LinearMatrix4D	localToWorld;
-				
 			Stuff::Point3D actualPosition;
 			actualPosition.x = -position.x;
 			actualPosition.y = position.z;
 			actualPosition.z = position.y;
-	
-			shapeOrigin.BuildRotation(Stuff::EulerAngles(0.0f,0.0f,0.0f));
+			shapeOrigin.BuildRotation(Stuff::EulerAngles(0.0f, 0.0f, 0.0f));
 			shapeOrigin.BuildTranslation(actualPosition);
-			
-			if (gosEffect && gosEffect->IsExecuted())
+			if(gosEffect && gosEffect->IsExecuted())
 			{
-				gosFX::Effect::ExecuteInfo info((Stuff::Time)scenarioTime,&shapeOrigin,nullptr);
+				gosFX::Effect::ExecuteInfo info((Stuff::Time)scenarioTime, &shapeOrigin, nullptr);
 				gosEffect->Start(&info);
 			}
-			
 			setExists(true);
-			
 			//------------------------------------------
 			// If just created, play our sound effect...
-			if (((ExplosionTypePtr)getObjectType())->soundEffectId != -1)
-				soundSystem->playDigitalSample(((ExplosionTypePtr)getObjectType())->soundEffectId,position,true);
-
-			if (((ExplosionTypePtr)getObjectType())->duration > 0.0f)
+			if(((ExplosionTypePtr)getObjectType())->soundEffectId != -1)
+				soundSystem->playDigitalSample(((ExplosionTypePtr)getObjectType())->soundEffectId, position, true);
+			if(((ExplosionTypePtr)getObjectType())->duration > 0.0f)
 			{
 				// Explosion Has Point Light Source
 				// Make and Init it here.
 				pointLight = (TG_LightPtr)systemHeap->Malloc(sizeof(TG_Light));
 				pointLight->init(TG_LIGHT_POINT);
-
 				pointLight->SetaRGB(((ExplosionTypePtr)getObjectType())->lightRGB);
 				intensity = ((ExplosionTypePtr)getObjectType())->maxIntensity;
 				outRadius = ((ExplosionTypePtr)getObjectType())->lightOutMaxRadius;
 				inRadius = ((ExplosionTypePtr)getObjectType())->lightMaxMaxRadius;
 				pointLight->SetIntensity(intensity);
-				pointLight->SetFalloffDistances(inRadius,outRadius);
-
+				pointLight->SetFalloffDistances(inRadius, outRadius);
 				lightId = eye->addWorldLight(pointLight);
 				duration = ((ExplosionTypePtr)getObjectType())->duration;
-
-				if (lightId == -1)
+				if(lightId == -1)
 				{
 					//NO LIGHT ALLOWED!  TOO Many in World!
 					// LightId is now -1 which will cause this to NEVER make a light!
@@ -706,154 +630,129 @@ int32_t Carnage::update (void)
 				}
 			}
 		}
-		
 		//------------------------------------------------
 		// Attach explosion to thing dying if we need to.
-		if (ownerWID)
+		if(ownerWID)
 		{
 			position = ObjectManager->getByWatchID(ownerWID)->getPosition();
 		}
-		
 		//------------------------------------------------
 		// Update pointLight if its not nullptr
-		if (pointLight)
+		if(pointLight)
 		{
-			if (duration > 0.0f)
+			if(duration > 0.0f)
 			{
 				float timeFactor = duration / ((ExplosionTypePtr)getObjectType())->duration;
-				intensity = ((ExplosionTypePtr)getObjectType())->minIntensity + 
+				intensity = ((ExplosionTypePtr)getObjectType())->minIntensity +
 							(((ExplosionTypePtr)getObjectType())->maxIntensity - ((ExplosionTypePtr)getObjectType())->minIntensity) * timeFactor;
-				outRadius = ((ExplosionTypePtr)getObjectType())->lightOutMinRadius + 
+				outRadius = ((ExplosionTypePtr)getObjectType())->lightOutMinRadius +
 							(((ExplosionTypePtr)getObjectType())->lightOutMaxRadius - ((ExplosionTypePtr)getObjectType())->lightOutMinRadius) * timeFactor;
-				inRadius = ((ExplosionTypePtr)getObjectType())->lightMinMaxRadius + 
-							(((ExplosionTypePtr)getObjectType())->lightMaxMaxRadius - ((ExplosionTypePtr)getObjectType())->lightMinMaxRadius) * timeFactor;
-
+				inRadius = ((ExplosionTypePtr)getObjectType())->lightMinMaxRadius +
+						   (((ExplosionTypePtr)getObjectType())->lightMaxMaxRadius - ((ExplosionTypePtr)getObjectType())->lightMinMaxRadius) * timeFactor;
 				pointLight->SetIntensity(intensity);
-				pointLight->SetFalloffDistances(inRadius,outRadius);
-
+				pointLight->SetFalloffDistances(inRadius, outRadius);
 				duration -= frameLength;
-				
 				Stuff::Point3D ourPosition;
 				ourPosition.x = -position.x;
 				ourPosition.y = position.z;
 				ourPosition.z = position.y;
-			
 				pointLight->direction = ourPosition;
-			
 				Stuff::LinearMatrix4D lightToWorldMatrix;
 				lightToWorldMatrix.BuildTranslation(ourPosition);
-				lightToWorldMatrix.BuildRotation(Stuff::EulerAngles(0.0f,0.0f,0.0f));
+				lightToWorldMatrix.BuildRotation(Stuff::EulerAngles(0.0f, 0.0f, 0.0f));
 				pointLight->SetLightToWorld(&lightToWorldMatrix);
 				pointLight->SetPosition(&position);
 			}
 			else
 			{
-				eye->removeWorldLight(lightId,pointLight);
+				eye->removeWorldLight(lightId, pointLight);
 				systemHeap->Free(pointLight);
 				pointLight = nullptr;
 			}
 		}
-
 		setFlag(OBJECT_FLAG_TANGIBLE, false);
-
-		if (info.explosion.timer > 0.0f)
+		if(info.explosion.timer > 0.0f)
 		{
 			info.explosion.timer -= frameLength;
-			if (info.explosion.timer <= 0.0f)
+			if(info.explosion.timer <= 0.0f)
 			{
 				setFlag(OBJECT_FLAG_TANGIBLE, true);
 			}
 		}
-
 		//------------------------------------------------
 		// Update GOSFX
-		if (gosEffect && gosEffect->IsExecuted())
+		if(gosEffect && gosEffect->IsExecuted())
 		{
 			Stuff::Point3D actualPosition;
 			actualPosition.x = -position.x;
 			actualPosition.y = position.z;
 			actualPosition.z = position.y;
-			
 			Stuff::LinearMatrix4D 	shapeOrigin;
 			Stuff::LinearMatrix4D 	localToWorld;
-			   
-			shapeOrigin.BuildRotation(Stuff::EulerAngles(0.0f,0.0f,0.0f));
+			shapeOrigin.BuildRotation(Stuff::EulerAngles(0.0f, 0.0f, 0.0f));
 			shapeOrigin.BuildTranslation(actualPosition);
-			localToWorld.Multiply(shapeOrigin,gosFX::Effect_Into_Motion);
-		
- 			Stuff::OBB boundingBox;
-			gosFX::Effect::ExecuteInfo info((Stuff::Time)scenarioTime,&shapeOrigin,&boundingBox);
-			
+			localToWorld.Multiply(shapeOrigin, gosFX::Effect_Into_Motion);
+			Stuff::OBB boundingBox;
+			gosFX::Effect::ExecuteInfo info((Stuff::Time)scenarioTime, &shapeOrigin, &boundingBox);
 			bool result = gosEffect->Execute(&info);
-			if (!result)
+			if(!result)
 			{
 				gosEffect->Kill();		//Effect is over.
 				delete gosEffect;
 				gosEffect = nullptr;
-
-				if (pointLight)
+				if(pointLight)
 				{
-					eye->removeWorldLight(lightId,pointLight);
+					eye->removeWorldLight(lightId, pointLight);
 					systemHeap->Free(pointLight);
 					pointLight = nullptr;
 				}
-		
 				return false;			//Tell the object system to stop updating, too.
 			}
 		}
-		else if (info.explosion.timer <= 0.0f)	//If we had no GosEffect, make sure we've collided and then move on.
+		else if(info.explosion.timer <= 0.0f)	//If we had no GosEffect, make sure we've collided and then move on.
 		{
-			if (pointLight)
+			if(pointLight)
 			{
-				eye->removeWorldLight(lightId,pointLight);
+				eye->removeWorldLight(lightId, pointLight);
 				systemHeap->Free(pointLight);
 				pointLight = nullptr;
 			}
-
 			return false;
 		}
 	}
-	
 	return (true);
 }
 
 //---------------------------------------------------------------------------
 
-void Carnage::render (void) 
+void Carnage::render(void)
 {
-	if (carnageType == CARNAGE_FIRE) 
+	if(carnageType == CARNAGE_FIRE)
 	{
 	}
-	else if (carnageType == CARNAGE_EXPLOSION) 
+	else if(carnageType == CARNAGE_EXPLOSION)
 	{
-		if (gosEffect && gosEffect->IsExecuted() && !getFlag(OBJECT_FLAG_JUSTCREATED))
+		if(gosEffect && gosEffect->IsExecuted() && !getFlag(OBJECT_FLAG_JUSTCREATED))
 		{
 			gosFX::Effect::DrawInfo drawInfo;
 			drawInfo.m_clipper = theClipper;
-			
 			MidLevelRenderer::MLRState mlrState;
 			mlrState.SetDitherOn();
 			mlrState.SetTextureCorrectionOn();
 			mlrState.SetZBufferCompareOn();
 			mlrState.SetZBufferWriteOn();
-	
 			drawInfo.m_state = mlrState;
 			drawInfo.m_clippingFlags = 0x0;
-	
 			Stuff::Point3D actualPosition;
 			actualPosition.x = -position.x;
 			actualPosition.y = position.z;
 			actualPosition.z = position.y;
-			
 			Stuff::LinearMatrix4D 	shapeOrigin;
 			Stuff::LinearMatrix4D	localToWorld;
-			
-			shapeOrigin.BuildRotation(Stuff::EulerAngles(0.0f,0.0f,0.0f));
+			shapeOrigin.BuildRotation(Stuff::EulerAngles(0.0f, 0.0f, 0.0f));
 			shapeOrigin.BuildTranslation(actualPosition);
-			
 			drawInfo.m_parentToWorld = &shapeOrigin;
-	 
-			if (!MLRVertexLimitReached)
+			if(!MLRVertexLimitReached)
 				gosEffect->Draw(&drawInfo);
 		}
 	}
@@ -861,24 +760,23 @@ void Carnage::render (void)
 
 //---------------------------------------------------------------------------
 
-void Carnage::destroy (void) 
+void Carnage::destroy(void)
 {
-	if (carnageType == CARNAGE_FIRE) 
+	if(carnageType == CARNAGE_FIRE)
 	{
 	}
-	else if (carnageType == CARNAGE_EXPLOSION) 
+	else if(carnageType == CARNAGE_EXPLOSION)
 	{
-		if (gosEffect)
+		if(gosEffect)
 		{
 			gosEffect->Kill();		//Effect is over.
 			delete gosEffect;
 			gosEffect = nullptr;
 		}
-
-		if (pointLight)
+		if(pointLight)
 		{
-			if (eye)
-				eye->removeWorldLight(lightId,pointLight);
+			if(eye)
+				eye->removeWorldLight(lightId, pointLight);
 			systemHeap->Free(pointLight);
 			pointLight = nullptr;
 		}
@@ -887,74 +785,62 @@ void Carnage::destroy (void)
 
 //---------------------------------------------------------------------------
 
-void Carnage::init (bool create, ObjectTypePtr _type) 
+void Carnage::init(bool create, ObjectTypePtr _type)
 {
 	GameObject::init(true, _type);
-
 	gosEffect = nullptr;
 	pointLight = nullptr;
 	setFlag(OBJECT_FLAG_JUSTCREATED, true);
-	
-	if (carnageType == CARNAGE_FIRE)
+	if(carnageType == CARNAGE_FIRE)
 	{
 	}
-	else if (carnageType == CARNAGE_EXPLOSION) 
+	else if(carnageType == CARNAGE_EXPLOSION)
 	{
-		info.explosion.chunkSize = ((ExplosionType *)_type)->chunkSize;
-		info.explosion.timer = ((ExplosionType *)_type)->delayUntilCollidable; 
-			
-		if (_stricmp(weaponEffects->GetEffectName(effectId),"NONE") != 0)
+		info.explosion.chunkSize = ((ExplosionType*)_type)->chunkSize;
+		info.explosion.timer = ((ExplosionType*)_type)->delayUntilCollidable;
+		if(_stricmp(weaponEffects->GetEffectName(effectId), "NONE") != 0)
 		{
 			//--------------------------------------------------------------
 			// We need to create the GOSFX we need for this explosion here.
 			// The name of the GOSFX is stored as the appearanceName in the Type.
 			// ONLY Execute.  Explosions just run once!
 			uint32_t flags = gosFX::Effect::ExecuteFlag;
-	
 			Check_Object(gosFX::EffectLibrary::Instance);
 			gosFX::Effect::Specification* gosEffectSpec = gosFX::EffectLibrary::Instance->Find(weaponEffects->GetEffectName(effectId));
-			
 			gosEffect = gosFX::EffectLibrary::Instance->MakeEffect(gosEffectSpec->m_effectID, flags);
 			gosASSERT(gosEffect != nullptr);
-			
 			MidLevelRenderer::MLRTexturePool::Instance->LoadImages();
 		}
-
 		setFlag(OBJECT_FLAG_TANGIBLE, false);
 	}
-}	
-
-//---------------------------------------------------------------------------
-void Carnage::Save (PacketFilePtr file, int32_t packetNum)
-{
-	CarnageData data;
-	CopyTo(&data);
-
-	//PacketNum incremented in ObjectManager!!
-	file->writePacket(packetNum,(puint8_t)&data,sizeof(CarnageData),STORAGE_TYPE_ZLIB);
 }
 
 //---------------------------------------------------------------------------
-void Carnage::CopyTo (CarnageData *data)
+void Carnage::Save(PacketFilePtr file, int32_t packetNum)
+{
+	CarnageData data;
+	CopyTo(&data);
+	//PacketNum incremented in ObjectManager!!
+	file->writePacket(packetNum, (puint8_t)&data, sizeof(CarnageData), STORAGE_TYPE_ZLIB);
+}
+
+//---------------------------------------------------------------------------
+void Carnage::CopyTo(CarnageData* data)
 {
 	data->carnageType = carnageType;
 	data->ownerWID = ownerWID;
 	data->info = info;
-
 	data->effectId = effectId;
-
-	GameObject::CopyTo(dynamic_cast<GameObjectData *>(data));
+	GameObject::CopyTo(dynamic_cast<GameObjectData*>(data));
 }
 
 //---------------------------------------------------------------------------
-void Carnage::Load (CarnageData *data)
+void Carnage::Load(CarnageData* data)
 {
-	GameObject::Load(dynamic_cast<GameObjectData *>(data)); 
-
+	GameObject::Load(dynamic_cast<GameObjectData*>(data));
 	carnageType = data->carnageType;
 	ownerWID = data->ownerWID;
 	info = data->info;
-
 	effectId = data->effectId;
 }
 

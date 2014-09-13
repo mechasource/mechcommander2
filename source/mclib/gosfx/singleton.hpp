@@ -12,20 +12,20 @@
 
 namespace gosFX
 {
-	//############################################################################
-	//########################  Singleton__Specification  #############################
-	//############################################################################
+//############################################################################
+//########################  Singleton__Specification  #############################
+//############################################################################
 
 	class Singleton__Specification:
 		public Effect__Specification
 	{
-	//----------------------------------------------------------------------
-	// Constructors/Destructors
-	//
+		//----------------------------------------------------------------------
+		// Constructors/Destructors
+		//
 	protected:
 		Singleton__Specification(
 			Stuff::RegisteredClass::ClassID class_id,
-			Stuff::MemoryStream *stream,
+			Stuff::MemoryStream* stream,
 			int32_t gfx_version
 		);
 
@@ -33,37 +33,37 @@ namespace gosFX
 		Singleton__Specification(Stuff::RegisteredClass::ClassID class_id);
 
 		void
-			Copy(Singleton__Specification *spec);
+		Copy(Singleton__Specification* spec);
 
 		void
-			Save(Stuff::MemoryStream *stream);
+		Save(Stuff::MemoryStream* stream);
 
-		void 
-			BuildDefaults(void);
-
-		bool 
-			IsDataValid(bool fix_data=false);
-
-	//-------------------------------------------------------------------------
-	// FCurves
-	//
-	public:
-		SeededCurveOf<ComplexCurve, LinearCurve,Curve::e_ComplexLinearType>
-			m_red,
-			m_green,
-			m_blue,
-			m_alpha;
-		SeededCurveOf<ComplexCurve, ComplexCurve,Curve::e_ComplexComplexType>
-			m_scale;
+		void
+		BuildDefaults(void);
 
 		bool
-			m_alignZUsingX,
-			m_alignZUsingY;
+		IsDataValid(bool fix_data = false);
+
+		//-------------------------------------------------------------------------
+		// FCurves
+		//
+	public:
+		SeededCurveOf<ComplexCurve, LinearCurve, Curve::e_ComplexLinearType>
+		m_red,
+		m_green,
+		m_blue,
+		m_alpha;
+		SeededCurveOf<ComplexCurve, ComplexCurve, Curve::e_ComplexComplexType>
+		m_scale;
+
+		bool
+		m_alignZUsingX,
+		m_alignZUsingY;
 	};
 
-	//############################################################################
-	//##############################  Singleton  #############################
-	//############################################################################
+//############################################################################
+//##############################  Singleton  #############################
+//############################################################################
 
 	class _declspec(novtable) Singleton:
 		public Effect
@@ -78,43 +78,43 @@ namespace gosFX
 
 	protected:
 		Stuff::DynamicArrayOf<char>
-			m_data;
+		m_data;
 
 		Singleton(
-			ClassData *class_data,
-			Specification *spec,
+			ClassData* class_data,
+			Specification* spec,
 			uint32_t flags
 		);
 
-	//----------------------------------------------------------------------------
-	// Class Data Support
-	//
+		//----------------------------------------------------------------------------
+		// Class Data Support
+		//
 	public:
 		Specification*
-			GetSpecification()
-				{
-					Check_Object(this);
-					return
-						Cast_Object(Specification*, m_specification);
-				}
+		GetSpecification()
+		{
+			Check_Object(this);
+			return
+				Cast_Object(Specification*, m_specification);
+		}
 
-	//----------------------------------------------------------------------------
-	// API
-	//
+		//----------------------------------------------------------------------------
+		// API
+		//
 	public:
 		bool
-			Execute(ExecuteInfo *info);
+		Execute(ExecuteInfo* info);
 
 	protected:
 		Stuff::RGBAColor
-			m_color;
+		m_color;
 		float
-			m_radius,
-			m_scale;
+		m_radius,
+		m_scale;
 
-	//----------------------------------------------------------------------------
-	// Testing
-	//
+		//----------------------------------------------------------------------------
+		// Testing
+		//
 	public:
 		void TestInstance(void) const;
 	};

@@ -25,7 +25,7 @@ float LogisticsComponent::MAX_RECYCLE = 10.75f;
 float LogisticsComponent::MAX_RANGE = 3.f;
 
 
-/*PSTR LogisticsComponent::ComponentFormString[NUM_COMPONENT_FORMS] = 
+/*PSTR LogisticsComponent::ComponentFormString[NUM_COMPONENT_FORMS] =
 {
 	"Simple",
 	"Cockpit",
@@ -53,7 +53,7 @@ LogisticsComponent::LogisticsComponent()
 {
 	name = nullptr;
 	ID = -1;
-	flavorText = nullptr;		
+	flavorText = nullptr;
 	bHead = bTorso = bLegs = 0;
 	iconFileName = 0;
 	pictureFileName = 0;
@@ -66,178 +66,144 @@ LogisticsComponent::LogisticsComponent()
 
 LogisticsComponent::~LogisticsComponent()
 {
-	if ( name )
+	if(name)
 		delete name;
-
-	if ( iconFileName )
+	if(iconFileName)
 		delete iconFileName;
-
-	if ( pictureFileName )
+	if(pictureFileName)
 		delete pictureFileName;
 }
 
-int32_t LogisticsComponent::init( PSTR dataLine )
+int32_t LogisticsComponent::init(PSTR dataLine)
 {
 	PSTR line = dataLine;
-
 	PSTR pLine = line;
-
 	char pBuffer[1025];
-
-	ID = (extractInt( pLine ));
-
+	ID = (extractInt(pLine));
 	// the type
-	extractString( pLine, pBuffer, 1024 );
+	extractString(pLine, pBuffer, 1024);
 	int32_t i;
-	for ( i = 0; i < NUM_COMPONENT_FORMS; ++i )
+	for(i = 0; i < NUM_COMPONENT_FORMS; ++i)
 	{
-		if ( 0 == _stricmp( ComponentFormString[i], pBuffer ) )
+		if(0 == _stricmp(ComponentFormString[i], pBuffer))
 		{
 			Type = i;
 			break;
 		}
 	}
-
-	if ( i == NUM_COMPONENT_FORMS )
+	if(i == NUM_COMPONENT_FORMS)
 		return -1;
-
 	// name, probably aren't going to use this, they should be in the RC.
-	extractString( pLine, pBuffer, 1024 );
-
+	extractString(pLine, pBuffer, 1024);
 	// name, probably aren't going to use this, they should be in the RC.
-	extractString( pLine, pBuffer, 1024 ); // ignore critical hits
-
-	recycleTime = extractFloat( pLine );
-	heat = extractFloat( pLine );
+	extractString(pLine, pBuffer, 1024);   // ignore critical hits
+	recycleTime = extractFloat(pLine);
+	heat = extractFloat(pLine);
 	// weight
-	weight = extractFloat( pLine );
-	damage = extractFloat( pLine );
+	weight = extractFloat(pLine);
+	damage = extractFloat(pLine);
 	// ignore battle rating
-	extractString( pLine, pBuffer, 1024 );
+	extractString(pLine, pBuffer, 1024);
 	// cost
-	cost = extractInt( pLine );
-
+	cost = extractInt(pLine);
 	// range
-	extractString( pLine, pBuffer, 1024 );
-	if ( !isWeapon() )
+	extractString(pLine, pBuffer, 1024);
+	if(!isWeapon())
 		rangeType = NO_RANGE;
-	else if ( !strcmp( pBuffer, "int32_t" ) )
+	else if(!strcmp(pBuffer, "int32_t"))
 		rangeType = int32_t;
-	else if ( !strcmp( pBuffer, "medium" ) )
+	else if(!strcmp(pBuffer, "medium"))
 		rangeType = MEDIUM;
 	else
 		rangeType = int16_t ;
-
 	// we need to figure out where things can go
-	extractString( pLine, pBuffer, 1024 );
-	bHead = _stricmp( pBuffer, "Yes" ) ? false : true;
-	
-	extractString( pLine, pBuffer, 1024 );
-	bTorso = _stricmp( pBuffer, "Yes" ) ? false : true;
-	
+	extractString(pLine, pBuffer, 1024);
+	bHead = _stricmp(pBuffer, "Yes") ? false : true;
+	extractString(pLine, pBuffer, 1024);
+	bTorso = _stricmp(pBuffer, "Yes") ? false : true;
 	// ignore the next 4 columns
-	for ( i = 0; i < 4; ++i )
-		extractString( pLine, pBuffer, 1024 );
-	
-	extractString( pLine, pBuffer, 1024 );
-	bLegs = _stricmp( pBuffer, "Yes" ) ? false : true;
-	
+	for(i = 0; i < 4; ++i)
+		extractString(pLine, pBuffer, 1024);
+	extractString(pLine, pBuffer, 1024);
+	bLegs = _stricmp(pBuffer, "Yes") ? false : true;
 	// ignore the next 4 columns
-	for ( i = 0; i < 4; ++i )
-		extractString( pLine, pBuffer, 1024 );
-
-	Ammo = extractInt( pLine );
-
+	for(i = 0; i < 4; ++i)
+		extractString(pLine, pBuffer, 1024);
+	Ammo = extractInt(pLine);
 	// now read in icon info
-	extractString( pLine, pBuffer, 1024 );
-	if ( *pBuffer && (pBuffer[0] != '0') )
+	extractString(pLine, pBuffer, 1024);
+	if(*pBuffer && (pBuffer[0] != '0'))
 	{
-		iconFileName = new char[strlen( pBuffer ) + 1];
-		strcpy( iconFileName, pBuffer );
+		iconFileName = new char[strlen(pBuffer) + 1];
+		strcpy(iconFileName, pBuffer);
 	}
 	else
 		return -1; // fail if no picture
-
-	extractString( pLine, pBuffer, 1024 );
-	if ( *pBuffer )
+	extractString(pLine, pBuffer, 1024);
+	if(*pBuffer)
 	{
-		pictureFileName = new char[strlen( pBuffer ) + 1];	//Forgot the nullptr all over the place did we?
-		strcpy( pictureFileName, pBuffer );
+		pictureFileName = new char[strlen(pBuffer) + 1];	//Forgot the nullptr all over the place did we?
+		strcpy(pictureFileName, pBuffer);
 	}
-
-	stringID = extractInt( pLine );
-	helpStringID = extractInt( pLine );
-	iconX = extractInt( pLine );
-	iconY = extractInt( pLine );
-	
+	stringID = extractInt(pLine);
+	helpStringID = extractInt(pLine);
+	iconX = extractInt(pLine);
+	iconY = extractInt(pLine);
 	char nameBuffer[256];
-	cLoadString( stringID, nameBuffer, 256 );
-
-	name = flavorText = new char[strlen( nameBuffer ) + 1];		//Lets not forget the nullptr!!!
-	strcpy( name, nameBuffer );
-
+	cLoadString(stringID, nameBuffer, 256);
+	name = flavorText = new char[strlen(nameBuffer) + 1];		//Lets not forget the nullptr!!!
+	strcpy(name, nameBuffer);
 	return ID;
 }
 
-int32_t LogisticsComponent::extractString( PSTR& pFileLine, PSTR pBuffer, int32_t bufferLength )
+int32_t LogisticsComponent::extractString(PSTR& pFileLine, PSTR pBuffer, int32_t bufferLength)
 {
 	*pBuffer = 0;
-
 	int32_t i;
-	for ( i = 0; i < 512; ++i )
+	for(i = 0; i < 512; ++i)
 	{
-		if ( pFileLine[i] == '\n' )
+		if(pFileLine[i] == '\n')
 			break;
-		else if ( pFileLine[i] == ',' )
+		else if(pFileLine[i] == ',')
 			break;
-		else if ( pFileLine[i] == nullptr )
+		else if(pFileLine[i] == nullptr)
 			break;
 	}
-
-	if ( i == 512 )
+	if(i == 512)
 		return false;
-
-	gosASSERT( i < bufferLength );
-	memcpy( pBuffer, pFileLine, i );
+	gosASSERT(i < bufferLength);
+	memcpy(pBuffer, pFileLine, i);
 	pBuffer[i] = nullptr;
 	bufferLength = i + 1;
 	pFileLine += i + 1;
-
 	return i;
-
 }
 
-int32_t LogisticsComponent::extractInt( PSTR& pFileLine )
+int32_t LogisticsComponent::extractInt(PSTR& pFileLine)
 {
 	char buffer[1024];
-
-	int32_t count = extractString( pFileLine, buffer, 1024 );
-
-	if ( count > 0 )
+	int32_t count = extractString(pFileLine, buffer, 1024);
+	if(count > 0)
 	{
-		return atoi( buffer );
+		return atoi(buffer);
 	}
-
 	return -1;
 }
 
-float LogisticsComponent::extractFloat( PSTR& pFileLine )
+float LogisticsComponent::extractFloat(PSTR& pFileLine)
 {
 	char buffer[1024];
-
-	int32_t count = extractString( pFileLine, buffer, 1024 );
-
-	if ( count > 0 )
+	int32_t count = extractString(pFileLine, buffer, 1024);
+	if(count > 0)
 	{
-		return atof( buffer );
+		return atof(buffer);
 	}
-
 	return -1;
 }
 
-bool LogisticsComponent::compare( LogisticsComponent* second, int32_t type )
+bool LogisticsComponent::compare(LogisticsComponent* second, int32_t type)
 {
-	switch( type )
+	switch(type)
 	{
 		case DAMAGE:
 			return second->damage > damage;
@@ -249,24 +215,21 @@ bool LogisticsComponent::compare( LogisticsComponent* second, int32_t type )
 			return second->heat > heat;
 			break;
 		case NAME:
-			return _stricmp( name, second->name ) > 0;
+			return _stricmp(name, second->name) > 0;
 			break;
 		case RANGE:
 			return second->damage > damage;
 			break;
-
 	}
-
 	return 0;
 }
 
 bool LogisticsComponent::isWeapon()
 {
 	return Type ==	COMPONENT_FORM_WEAPON ||
-		Type == COMPONENT_FORM_WEAPON_ENERGY ||
-		Type == COMPONENT_FORM_WEAPON_BALLISTIC ||
-		Type == COMPONENT_FORM_WEAPON_MISSILE;
-
+		   Type == COMPONENT_FORM_WEAPON_ENERGY ||
+		   Type == COMPONENT_FORM_WEAPON_BALLISTIC ||
+		   Type == COMPONENT_FORM_WEAPON_MISSILE;
 }
 
 

@@ -12,7 +12,8 @@
 
 #include <stuff/style.hpp>
 
-namespace Stuff {
+namespace Stuff
+{
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Random ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -30,9 +31,10 @@ namespace Stuff {
 		static int32_t Index; // the current entry within the table
 		static void Init(void);
 		static int32_t GetRandomInt(void);
-		Random(void) 
+		Random(void)
 		{
-			Verify(Index == -1); Init();
+			Verify(Index == -1);
+			Init();
 		}
 		static Random*	Instance;
 

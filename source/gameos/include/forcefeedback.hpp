@@ -17,26 +17,26 @@ struct FFEffectData
 	DIENVELOPE diEnvelope;
 	uint32_t rgdwAxes[12];
 	int32_t rglDirection[12];
-	FFEffectData * pNextEffect;
+	FFEffectData* pNextEffect;
 };
 
 struct gosForceEffect
 {
 public:
-	FFEffectData * ffEffectData;
+	FFEffectData* ffEffectData;
 	gosForce m_eType;
-	gosForceEffect * pNext;
+	gosForceEffect* pNext;
 	uint32_t dwStick;
 	double longestDuration;
 	double startTime;
 	bool bStatus;
 	bool fromFile;
 public:
-	gosForceEffect(gosJoystick_ForceEffect * fe, uint32_t joy);
+	gosForceEffect(gosJoystick_ForceEffect* fe, uint32_t joy);
 	gosForceEffect(PCSTR  fe, uint32_t joy);
 	void ReCreate(void);
 	~gosForceEffect(void);
 	void Play(uint32_t times);
 	void Stop(void);
-	void Update(gosJoystick_ForceEffect * fe);
+	void Update(gosJoystick_ForceEffect* fe);
 };

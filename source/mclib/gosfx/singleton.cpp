@@ -16,7 +16,7 @@
 //
 gosFX::Singleton__Specification::Singleton__Specification(
 	Stuff::RegisteredClass::ClassID class_id,
-	Stuff::MemoryStream *stream,
+	Stuff::MemoryStream* stream,
 	int32_t gfx_version
 ):
 	Effect__Specification(class_id, stream, gfx_version)
@@ -24,7 +24,6 @@ gosFX::Singleton__Specification::Singleton__Specification(
 	Check_Pointer(this);
 	Check_Object(stream);
 	//Verify(gos_GetCurrentHeap() == Heap);
-
 	//
 	//-------------------
 	// Load in the curves
@@ -52,12 +51,11 @@ gosFX::Singleton__Specification::Singleton__Specification(
 //------------------------------------------------------------------------------
 //
 void
-	gosFX::Singleton__Specification::Save(Stuff::MemoryStream *stream)
+gosFX::Singleton__Specification::Save(Stuff::MemoryStream* stream)
 {
 	Check_Object(this);
 	Check_Object(stream);
 	Effect__Specification::Save(stream);
-
 	//
 	//----------------
 	// Save our curves
@@ -73,67 +71,56 @@ void
 
 //------------------------------------------------------------------------------
 //
-void 
-	gosFX::Singleton__Specification::BuildDefaults()
+void
+gosFX::Singleton__Specification::BuildDefaults()
 {
-
 	Check_Object(this);
 	Effect__Specification::BuildDefaults();
-
 	m_red.m_ageCurve.SetCurve(1.0f);
 	m_red.m_seeded = false;
 	m_red.m_seedCurve.SetCurve(1.0f);
-
 	m_green.m_ageCurve.SetCurve(1.0f);
 	m_green.m_seeded = false;
 	m_green.m_seedCurve.SetCurve(1.0f);
-
 	m_blue.m_ageCurve.SetCurve(1.0f);
 	m_blue.m_seeded = false;
 	m_blue.m_seedCurve.SetCurve(1.0f);
-
 	m_alpha.m_ageCurve.SetCurve(1.0f);
 	m_alpha.m_seeded = false;
 	m_alpha.m_seedCurve.SetCurve(1.0f);
-
 	m_scale.m_ageCurve.SetCurve(1.0f);
 	m_scale.m_seeded = false;
 	m_scale.m_seedCurve.SetCurve(1.0f);
-
 }
 
 //------------------------------------------------------------------------------
 //
-bool 
-	gosFX::Singleton__Specification::IsDataValid(bool fix_data)
+bool
+gosFX::Singleton__Specification::IsDataValid(bool fix_data)
 {
-
 	Check_Object(this);
-	float min,max;
-	m_scale.ExpensiveComputeRange(&min,&max);
-	if( min<0.0f) 
+	float min, max;
+	m_scale.ExpensiveComputeRange(&min, &max);
+	if(min < 0.0f)
 		if(fix_data)
 		{
-		m_scale.m_ageCurve.SetCurve(1.0f);
-		m_scale.m_seeded = false;
-		m_scale.m_seedCurve.SetCurve(1.0f);
-		PAUSE(("Warning: Curve \"scale\" in Effect \"%s\" Is Out of Range and has been Reset",(PSTR )m_name));
-
+			m_scale.m_ageCurve.SetCurve(1.0f);
+			m_scale.m_seeded = false;
+			m_scale.m_seedCurve.SetCurve(1.0f);
+			PAUSE(("Warning: Curve \"scale\" in Effect \"%s\" Is Out of Range and has been Reset", (PSTR)m_name));
 		}
-			else
-		return false;
+		else
+			return false;
 	return Effect__Specification::IsDataValid(fix_data);
 }
 //------------------------------------------------------------------------------
 //
 void
-	gosFX::Singleton__Specification::Copy(Singleton__Specification *spec)
+gosFX::Singleton__Specification::Copy(Singleton__Specification* spec)
 {
 	Check_Object(this);
 	Check_Object(spec);
-
 	Effect__Specification::Copy(spec);
-
 	//
 	//----------------
 	// Copy the curves
@@ -155,30 +142,30 @@ void
 //############################################################################
 
 gosFX::Singleton::ClassData*
-	gosFX::Singleton::DefaultData = nullptr;
+gosFX::Singleton::DefaultData = nullptr;
 
 //------------------------------------------------------------------------------
 //
 void
-	gosFX::Singleton::InitializeClass()
+gosFX::Singleton::InitializeClass()
 {
 	Verify(!DefaultData);
 	//Verify(gos_GetCurrentHeap() == Heap);
 	DefaultData =
 		new ClassData(
-			SingletonClassID,
-			"gosFX::Singleton",
-			Effect::DefaultData,
-			nullptr,
-			nullptr
-		);
+		SingletonClassID,
+		"gosFX::Singleton",
+		Effect::DefaultData,
+		nullptr,
+		nullptr
+	);
 	Register_Object(DefaultData);
 }
 
 //------------------------------------------------------------------------------
 //
 void
-	gosFX::Singleton::TerminateClass()
+gosFX::Singleton::TerminateClass()
 {
 	Unregister_Object(DefaultData);
 	delete DefaultData;
@@ -188,8 +175,8 @@ void
 //------------------------------------------------------------------------------
 //
 gosFX::Singleton::Singleton(
-	ClassData *class_data,
-	Specification *spec,
+	ClassData* class_data,
+	Specification* spec,
 	uint32_t flags
 ):
 	Effect(class_data, spec, flags)
@@ -202,7 +189,7 @@ gosFX::Singleton::Singleton(
 //------------------------------------------------------------------------------
 //
 void
-	gosFX::Singleton::TestInstance(void) const
+gosFX::Singleton::TestInstance(void) const
 {
 	Verify(IsDerivedFrom(DefaultData));
 }
@@ -210,30 +197,26 @@ void
 //------------------------------------------------------------------------------
 //
 bool
-	gosFX::Singleton::Execute(ExecuteInfo *info)
+gosFX::Singleton::Execute(ExecuteInfo* info)
 {
 	Check_Object(this);
 	Check_Object(info);
-
-	if (!IsExecuted())
+	if(!IsExecuted())
 		return false;
-
 	//
 	//------------------------
 	// Do the effect animation
 	//------------------------
 	//
-	if (!Effect::Execute(info))
+	if(!Effect::Execute(info))
 		return false;
-
 	//
 	//-----------------------------------------
 	// Animate the parent then get our pointers
 	//-----------------------------------------
 	//
-	Specification *spec = GetSpecification();
+	Specification* spec = GetSpecification();
 	Check_Object(spec);
-
 	//
 	//------------------
 	// Animate the color
@@ -244,15 +227,14 @@ bool
 	m_color.blue = spec->m_blue.ComputeValue(m_age, m_seed);
 	m_color.alpha = spec->m_alpha.ComputeValue(m_age, m_seed);
 	m_scale = spec->m_scale.ComputeValue(m_age, m_seed);
-
 	//
 	//------------------------------
 	// Calculate the bounding volume
 	//------------------------------
 	//
 	Stuff::OBB bounds;
-	bounds.sphereRadius = m_radius*m_scale;
-	if (bounds.sphereRadius < Stuff::SMALL)
+	bounds.sphereRadius = m_radius * m_scale;
+	if(bounds.sphereRadius < Stuff::SMALL)
 		bounds.sphereRadius = 0.01f;
 	bounds.localToParent = m_localToParent;
 	bounds.axisExtents = Stuff::Vector3D::Identity;

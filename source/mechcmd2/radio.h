@@ -57,78 +57,80 @@ class Radio
 {
 	//Data Members
 	//-------------
-	protected:
-	
-		MechWarriorPtr	owner;
-		bool			enabled;
-		bool			ammoOutPlayed;
-		int32_t			radioID;
+protected:
 
-	public:		
-		static PacketFilePtr 	noiseFile;
-		static RadioPtr			radioList[MAX_RADIOS];		//Warriors no longer delete their radios.  We do when the
-															//SoundSystem Shutdown occurs.
+	MechWarriorPtr	owner;
+	bool			enabled;
+	bool			ammoOutPlayed;
+	int32_t			radioID;
 
-		static PacketFilePtr	messagesFile[MAX_RADIOS];	//Do these when the shutdown occurs too to avoid leaks
-														
-		static bool				messageInfoLoaded;
-		static bool				radioListGo;
-		static int32_t				currentRadio;
-		static UserHeapPtr		radioHeap;				//Only one Heap Per Game!!!
-	
+public:
+	static PacketFilePtr 	noiseFile;
+	static RadioPtr			radioList[MAX_RADIOS];		//Warriors no longer delete their radios.  We do when the
+	//SoundSystem Shutdown occurs.
+
+	static PacketFilePtr	messagesFile[MAX_RADIOS];	//Do these when the shutdown occurs too to avoid leaks
+
+	static bool				messageInfoLoaded;
+	static bool				radioListGo;
+	static int32_t				currentRadio;
+	static UserHeapPtr		radioHeap;				//Only one Heap Per Game!!!
+
 	//Member Functions
 	//-----------------
-	public:
-	
-		PVOID operator new (size_t mySize);
-		void operator delete (PVOID us);
+public:
 
-		void init (void)
-		{
-			enabled = TRUE;
-			ammoOutPlayed = false;
-			radioID = -1;
-		}
+	PVOID operator new(size_t mySize);
+	void operator delete(PVOID us);
 
-		void destroy (void)
-		{
-		}
+	void init(void)
+	{
+		enabled = TRUE;
+		ammoOutPlayed = false;
+		radioID = -1;
+	}
 
-		Radio (void)
-		{
-			init(void);
-		}
-	
-		~Radio (void)
-		{
-			destroy(void);
-		}
-	
-		int32_t init (PSTR fileName, uint32_t heapSize, PSTR movie);
+	void destroy(void)
+	{
+	}
 
-		void setOwner (MechWarriorPtr _owner)
-		{
-			owner = _owner;
-		}
-				
-		int32_t playMessage (RadioMessageType msgId);
+	Radio(void)
+	{
+		init(void);
+	}
 
-		void cancelMessage (RadioMessageType msgId);
-		
-		void turnOn (void) {
-			enabled = TRUE;
-		}
+	~Radio(void)
+	{
+		destroy(void);
+	}
 
-		void turnOff (void) {
-			enabled = FALSE;
-		}
-		
-		int32_t loadMessageInfo(void);
+	int32_t init(PSTR fileName, uint32_t heapSize, PSTR movie);
 
-		void resetAmmoMessage (void)
-		{
-			ammoOutPlayed = false;
-		}
+	void setOwner(MechWarriorPtr _owner)
+	{
+		owner = _owner;
+	}
+
+	int32_t playMessage(RadioMessageType msgId);
+
+	void cancelMessage(RadioMessageType msgId);
+
+	void turnOn(void)
+	{
+		enabled = TRUE;
+	}
+
+	void turnOff(void)
+	{
+		enabled = FALSE;
+	}
+
+	int32_t loadMessageInfo(void);
+
+	void resetAmmoMessage(void)
+	{
+		ammoOutPlayed = false;
+	}
 };
 
 //------------------------------------------------------------------------------------------

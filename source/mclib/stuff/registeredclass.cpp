@@ -19,18 +19,18 @@ using namespace Stuff;
 //#############################################################################
 
 RegisteredClass::ClassData*
-	RegisteredClass::DefaultData = nullptr;
+RegisteredClass::DefaultData = nullptr;
 
 RegisteredClass::ClassID
-	RegisteredClass::FirstTemporaryClassID = FirstTemporaryClassID;
+RegisteredClass::FirstTemporaryClassID = FirstTemporaryClassID;
 
 RegisteredClass::ClassData*
-	RegisteredClass::ClassDataArray[ClassIDCount];
+RegisteredClass::ClassDataArray[ClassIDCount];
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	RegisteredClass::InitializeClass()
+RegisteredClass::InitializeClass()
 {
 	Verify(!DefaultData);
 	DefaultData =
@@ -41,7 +41,7 @@ void
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	RegisteredClass::TerminateClass()
+RegisteredClass::TerminateClass()
 {
 	Unregister_Object(DefaultData);
 	delete DefaultData;
@@ -50,7 +50,7 @@ void
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-RegisteredClass::RegisteredClass(ClassData *class_data):
+RegisteredClass::RegisteredClass(ClassData* class_data):
 	classData(class_data)
 {
 	Check_Object(class_data);
@@ -59,10 +59,10 @@ RegisteredClass::RegisteredClass(ClassData *class_data):
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 PCSTR
-	RegisteredClass::GetClassString(void) const
+RegisteredClass::GetClassString(void) const
 {
 	Check_Object(this);
-	RegisteredClass__ClassData *data = GetClassData();
+	RegisteredClass__ClassData* data = GetClassData();
 	Check_Object(data);
 	return data->GetClassName();
 }
@@ -70,7 +70,7 @@ PCSTR
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	RegisteredClass::TestInstance(void) const
+RegisteredClass::TestInstance(void) const
 {
 	Check_Object(classData);
 }
@@ -84,7 +84,7 @@ void
 RegisteredClass__ClassData::RegisteredClass__ClassData(
 	RegisteredClass::ClassID class_id,
 	PCSTR name,
-	RegisteredClass__ClassData *parent
+	RegisteredClass__ClassData* parent
 )
 {
 	//
@@ -100,14 +100,13 @@ RegisteredClass__ClassData::RegisteredClass__ClassData(
 	parentClass = parent;
 	Verify(!RegisteredClass::ClassDataArray[class_id]);
 	RegisteredClass::ClassDataArray[class_id] = this;
-
 	//
 	//--------------------------------------------------------------------
 	// If this class has a parent, hook up to it, otherwise we must be the
 	// root class
 	//--------------------------------------------------------------------
 	//
-	if (parentClass)
+	if(parentClass)
 	{
 		Check_Object(parent);
 		parent->DeriveClass(this);
@@ -123,7 +122,6 @@ RegisteredClass__ClassData::RegisteredClass__ClassData(
 RegisteredClass__ClassData::~RegisteredClass__ClassData()
 {
 	Check_Object(this);
-
 	//
 	//----------------------------------------------------------------------
 	// Make sure there are no children left, then if this is the root class,
@@ -131,11 +129,10 @@ RegisteredClass__ClassData::~RegisteredClass__ClassData()
 	//----------------------------------------------------------------------
 	//
 	Verify(!firstChildClass);
-	if (classID == RegisteredClassClassID)
+	if(classID == RegisteredClassClassID)
 	{
 		Verify(!parentClass);
 	}
-
 	//
 	//-----------------------------------------------------------------------
 	// Otherwise, this is the a child class, so make sure it is it's parent's
@@ -150,7 +147,6 @@ RegisteredClass__ClassData::~RegisteredClass__ClassData()
 		Verify(parentClass->firstChildClass == this);
 		parentClass->firstChildClass = nextSiblingClass;
 	}
-
 	//
 	//-------------------------------------
 	// Remove this from the ClassData array
@@ -164,43 +160,40 @@ RegisteredClass__ClassData::~RegisteredClass__ClassData()
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 bool
-	RegisteredClass__ClassData::IsDerivedFrom(
-		RegisteredClass__ClassData* parent
-	)
+RegisteredClass__ClassData::IsDerivedFrom(
+	RegisteredClass__ClassData* parent
+)
 {
 	Check_Object(this);
-
 	//
 	//---------------------------
 	// Handle null parent pointer
 	//---------------------------
 	//
-	if (!parent)
+	if(!parent)
 	{
 		return false;
 	}
-
 	//
 	//------------------------------
 	// We are descended from ourself
 	//------------------------------
 	//
 	Check_Object(parent);
-	if (parent == this)
+	if(parent == this)
 	{
 		return true;
 	}
-
 	//
 	//-----------------------------------------------
 	// Spin up the chain looking for the parent class
 	//-----------------------------------------------
 	//
-	RegisteredClass__ClassData *class_data = parentClass;
-	while (class_data)
+	RegisteredClass__ClassData* class_data = parentClass;
+	while(class_data)
 	{
 		Check_Object(class_data);
-		if (class_data == parent)
+		if(class_data == parent)
 		{
 			return true;
 		}
@@ -212,21 +205,20 @@ bool
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 RegisteredClass__ClassData*
-	RegisteredClass__ClassData::FindClassData(PCSTR name)
+RegisteredClass__ClassData::FindClassData(PCSTR name)
 {
 	Check_Object(this);
-	if (!_stricmp(className, name))
+	if(!_stricmp(className, name))
 	{
 		return this;
 	}
-
-	RegisteredClass__ClassData *class_data = firstChildClass;
-	RegisteredClass__ClassData *result = nullptr;
-	while (class_data)
+	RegisteredClass__ClassData* class_data = firstChildClass;
+	RegisteredClass__ClassData* result = nullptr;
+	while(class_data)
 	{
 		Check_Object(class_data);
 		result = class_data->FindClassData(name);
-		if (result)
+		if(result)
 		{
 			Check_Object(result);
 			return result;
@@ -239,13 +231,12 @@ RegisteredClass__ClassData*
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	RegisteredClass__ClassData::DeriveClass(RegisteredClass__ClassData* child)
+RegisteredClass__ClassData::DeriveClass(RegisteredClass__ClassData* child)
 {
 	Check_Object(this);
 	Check_Object(child);
 	Verify(child->parentClass == this);
 	Verify(!child->nextSiblingClass);
-
 	child->nextSiblingClass = firstChildClass;
 	firstChildClass = child;
 }
@@ -253,11 +244,11 @@ void
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	RegisteredClass__ClassData::TestInstance()
+RegisteredClass__ClassData::TestInstance()
 {
-	RegisteredClass__ClassData *p = this;
-	RegisteredClass__ClassData *class_data = parentClass;
-	while (class_data)
+	RegisteredClass__ClassData* p = this;
+	RegisteredClass__ClassData* class_data = parentClass;
+	while(class_data)
 	{
 		Check_Signature(class_data);
 		p = class_data;

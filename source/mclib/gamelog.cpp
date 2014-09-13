@@ -32,38 +32,37 @@ bool isSetup = false;
 
 GameLogPtr GameLog::files[MAX_GAMELOGS] = {nullptr, nullptr, nullptr, nullptr, nullptr, nullptr};
 
-PVOID GameLog::operator new (size_t mySize) {
-
+PVOID GameLog::operator new(size_t mySize)
+{
 	PVOID result = nullptr;
-	
 	result = gos_Malloc(mySize);
-	
 	return(result);
 }
 
 //---------------------------------------------------------------------------
 
-void GameLog::operator delete (PVOID us) {
-
+void GameLog::operator delete(PVOID us)
+{
 	gos_Free(us);
 }
 
 //---------------------------------------------------------------------------
 
-void GameLog::dump (void) {
-
+void GameLog::dump(void)
+{
 	//----------------
 	// Dump to file...
-	for (int32_t i = 0; i < numLines; i++)
+	for(size_t i = 0; i < numLines; i++)
 		filePtr->writeString(lines[i]);
 	numLines = 0;
 }
 
 //---------------------------------------------------------------------------
 
-void GameLog::close (void) {
-
-	if (filePtr && inUse) {
+void GameLog::close(void)
+{
+	if(filePtr && inUse)
+	{
 		dump();
 		char s[512];
 		sprintf(s, "\nNum Total Lines = %d\n", totalLines);
@@ -77,36 +76,32 @@ void GameLog::close (void) {
 
 //---------------------------------------------------------------------------
 
-void GameLog::destroy (void) {
-
+void GameLog::destroy(void)
+{
 	close();
 }
 
 //---------------------------------------------------------------------------
 
-int32_t GameLog::open (PSTR fileName) {
-
+int32_t GameLog::open(PSTR fileName)
+{
 	numLines = 0;
 	totalLines = 0;
-	if (filePtr->create(fileName) != NO_ERROR)
+	if(filePtr->create(fileName) != NO_ERROR)
 		return(-1);
-
 	inUse = true;
 	return(0);
 }
 
 //---------------------------------------------------------------------------
 
-void GameLog::write (PSTR s) {
-
+void GameLog::write(PSTR s)
+{
 	static char buffer[MAX_GAMELOG_LINELEN];
-	
-	if (numLines == MAX_GAMELOG_LINES)
+	if(numLines == MAX_GAMELOG_LINES)
 		dump();
-	
-	if (strlen(s) > (MAX_GAMELOG_LINELEN - 1))
+	if(strlen(s) > (MAX_GAMELOG_LINELEN - 1))
 		s[MAX_GAMELOG_LINELEN - 1] = nullptr;
-
 	sprintf(buffer, "%s\n", s);
 	strncpy(lines[numLines], buffer, MAX_GAMELOG_LINELEN - 1);
 	numLines++;
@@ -115,15 +110,15 @@ void GameLog::write (PSTR s) {
 
 //---------------------------------------------------------------------------
 
-GameLog* GameLog::getNewFile (void) {
-
-	if (!isSetup)
+GameLog* GameLog::getNewFile(void)
+{
+	if(!isSetup)
 		setup();
-
 	int32_t fileHandle = -1;
 	int32_t i;
-	for (i = 0; i < MAX_GAMELOGS; i++)
-		if (!files[i]->inUse) {
+	for(i = 0; i < MAX_GAMELOGS; i++)
+		if(!files[i]->inUse)
+		{
 			fileHandle = i;
 			break;
 		}
@@ -132,13 +127,13 @@ GameLog* GameLog::getNewFile (void) {
 
 //---------------------------------------------------------------------------
 
-void GameLog::setup (void) {
-
-	if (isSetup)
+void GameLog::setup(void)
+{
+	if(isSetup)
 		return;
-
 	isSetup = true;
-	for (int32_t i = 0; i < MAX_GAMELOGS; i++) {
+	for(size_t i = 0; i < MAX_GAMELOGS; i++)
+	{
 		files[i] = new GameLog;
 		files[i]->init();
 		files[i]->handle = i;
@@ -150,14 +145,13 @@ void GameLog::setup (void) {
 
 //---------------------------------------------------------------------------
 
-void GameLog::cleanup (void) {
-
-	if (!isSetup)
+void GameLog::cleanup(void)
+{
+	if(!isSetup)
 		return;
-
-	for (int32_t i = 0; i < MAX_GAMELOGS; i++) 
+	for(size_t i = 0; i < MAX_GAMELOGS; i++)
 	{
-		if (files[i] && files[i]->inUse)
+		if(files[i] && files[i]->inUse)
 		{
 			files[i]->close();
 			files[i]->filePtr->close();

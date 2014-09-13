@@ -14,29 +14,32 @@
 #include <mlr/mlrstate.hpp>
 
 #ifndef _GAMEOS_HPP_
-typedef struct _gos_VERTEX {
-	float		x,y;				// Screen coords	- must be 0.0 to Environment.screenWidth/Height (no clipping occurs unless gos_State_Clipping is true)
+typedef struct _gos_VERTEX
+{
+	float		x, y;				// Screen coords	- must be 0.0 to Environment.screenWidth/Height (no clipping occurs unless gos_State_Clipping is true)
 	float		z;					// 0.0 to 0.99999	- Used for visibility check in ZBuffer (1.0 is not valid)
 	float		rhw;				// 0.0 to 1.0		- reciprocal of homogeneous w - Used for perspective correct textures, fog and clipping
 	uint32_t	argb;				// Vertex color and alpha (alpha of 255 means solid, 0=transparent)
 	uint32_t	frgb;				// Specular color and fog
-	float		u,v;				// Texture coordinates
+	float		u, v;				// Texture coordinates
 } gos_VERTEX;
 typedef gos_VERTEX* pgos_VERTEX;
 #endif
 
-namespace Stuff {
+namespace Stuff
+{
 	class Vector4D;
 	class RGBAColor;
 	class Point3D;
 	class Matrix4D;
 }
 
-namespace MidLevelRenderer {
+namespace MidLevelRenderer
+{
 
-	//##########################################################################
-	//####################    GOSVertex    ##############################
-	//##########################################################################
+//##########################################################################
+//####################    GOSVertex    ##############################
+//##########################################################################
 
 	class GOSVertex :
 		public gos_VERTEX
@@ -45,13 +48,12 @@ namespace MidLevelRenderer {
 		GOSVertex(void);
 
 		static float
-			farClipReciprocal;
+		farClipReciprocal;
 
 		inline GOSVertex&
-			operator=(const GOSVertex& V)
+		operator=(const GOSVertex& V)
 		{
 			Check_Pointer(this);
-
 			x = V.x;
 			y = V.y;
 			z = V.z;
@@ -60,93 +62,74 @@ namespace MidLevelRenderer {
 			frgb = V.frgb;
 			u = V.u;
 			v = V.v;
-
 			return *this;
 		};
 
 		inline GOSVertex&
-			operator=(const Stuff::Vector4D& v)
+		operator=(const Stuff::Vector4D& v)
 		{
 			Check_Pointer(this);
-
 			Verify(!Stuff::Small_Enough(v.w));
-
 			//					Tell_Value(v);
-
 			rhw = 1.0f / v.w;
-
 			x = v.x * rhw;
-			Verify(x>=0.0f && x<=1.0f);
-
+			Verify(x >= 0.0f && x <= 1.0f);
 			y = v.y * rhw;
-			Verify(y>=0.0f && y<=1.0f);
-
+			Verify(y >= 0.0f && y <= 1.0f);
 			z = v.z * rhw;
-			Verify(z>=0.0f && z<1.0f);
-
+			Verify(z >= 0.0f && z < 1.0f);
 			return *this;
 		}
 
 		inline GOSVertex&
-			operator=(const Stuff::RGBAColor& c)
+		operator=(const Stuff::RGBAColor& c)
 		{
 			Check_Pointer(this);
-
 			//					DEBUG_STREAM << "c = <" << c.alpha << ", " << c.red << ", ";
 			//					DEBUG_STREAM << c.green << ", " << c.blue << ">" << endl;
-
 			float f;
 			f = c.alpha * 255.99f;
 			Clamp(f, 0.0f, 255.f);
-			argb = Stuff::Round_Float_To_Byte (f);
-
+			argb = Stuff::Round_Float_To_Byte(f);
 			f = c.red * 255.99f;
 			Clamp(f, 0.0f, 255.f);
-			argb = (argb << 8) | Stuff::Round_Float_To_Byte (f);
-
+			argb = (argb << 8) | Stuff::Round_Float_To_Byte(f);
 			f = c.green * 255.99f;
 			Clamp(f, 0.0f, 255.f);
-			argb = (argb << 8) | Stuff::Round_Float_To_Byte (f);
-
+			argb = (argb << 8) | Stuff::Round_Float_To_Byte(f);
 			f = c.blue * 255.99f;
 			Clamp(f, 0.0f, 255.f);
-			argb = (argb << 8) | Stuff::Round_Float_To_Byte (f);
-
+			argb = (argb << 8) | Stuff::Round_Float_To_Byte(f);
 			//					DEBUG_STREAM << "0x" << hex << argb << dec << endl;
-
 			return *this;
 		}
 
 		inline GOSVertex&
-			operator=(cuint32_t c)
+		operator=(cuint32_t c)
 		{
 			Check_Pointer(this);
-
 			argb = c;
-
 			return *this;
 		}
 
 		inline GOSVertex&
-			operator=(const Stuff::Vector2DOf<float>& uv)
+		operator=(const Stuff::Vector2DOf<float>& uv)
 		{
 			Check_Pointer(this);
-
 			u = uv[0];
 			v = uv[1];
-
 			return *this;
 		}
 
 		inline void
-			GOSTransformNoClip(
+		GOSTransformNoClip(
 			const Stuff::Point3D& v,
 			const Stuff::Matrix4D& m,
-			float *uv
+			float* uv
 #if FOG_HACK
 			, int32_t foggy
 #endif
-			);
+		);
 
 #if FOG_HACK
 		static uint8_t	GOSVertex::fogTable[Limits::Max_Number_Of_FogStates][1024];
@@ -164,31 +147,31 @@ namespace MidLevelRenderer {
 		static float AddY;
 	};
 
-	//typedef Stuff::Vector2DOf<float> Vector2DScalar;
+//typedef Stuff::Vector2DOf<float> Vector2DScalar;
 
-	const float float_cheat = 12582912.0f/256.0f;
-	const float One_Over_256 = 1.0f/256.0f;
+	const float float_cheat = 12582912.0f / 256.0f;
+	const float One_Over_256 = 1.0f / 256.0f;
 
-	//#pragma warning (disable : 4725)
+//#pragma warning (disable : 4725)
 
 	void
-		GOSVertex::GOSTransformNoClip(
-		const Stuff::Point3D &_v,
-		const Stuff::Matrix4D &m,
-		float *uv
+	GOSVertex::GOSTransformNoClip(
+		const Stuff::Point3D& _v,
+		const Stuff::Matrix4D& m,
+		float* uv
 #if FOG_HACK
 		, int32_t foggy
 #endif
-		)
+	)
 
 	{
 		Check_Pointer(this);
 		Check_Object(&_v);
 		Check_Object(&m);
-
 #if USE_ASSEMBLER_CODE
-		float *f = &x;
-		_asm {
+		float* f = &x;
+		_asm
+		{
 			mov         edx, m
 			mov         eax, _v
 
@@ -201,83 +184,83 @@ namespace MidLevelRenderer {
 			fld         dword ptr [edx+34h]     //  m[1][3]
 			fmul        st, st(2)               //  v.y
 
-			fld         dword ptr [edx+38h]     //  m[2][3]
+			fld         dword ptr [edx + 38h]   //  m[2][3]
 			fmul        st, st(2)               //  v.z
 
 			fxch        st(1)
-			fadd        dword ptr [edx+3Ch]     //  m[3][3]
+			fadd        dword ptr [edx + 3Ch]   //  m[3][3]
 
-			fld         dword ptr [edx+30h]     //  m[0][3]
+			fld         dword ptr [edx + 30h]   //  m[0][3]
 			fmul        st, st(5)               //  v.x
 
 			fxch        st(2)
-			faddp       st(1),st
+			faddp       st(1), st
 
-			fld         dword ptr [edx+14h]     //  m[1][1]
+			fld         dword ptr [edx + 14h]   //  m[1][1]
 			fmul        st, st(4)               //  v.y
 
 			fxch        st(2)
-			faddp       st(1),st
+			faddp       st(1), st
 
-			fld         dword ptr [edx+18h]     //  m[2][1]
+			fld         dword ptr [edx + 18h]   //  m[2][1]
 			fmul        st, st(3)               //  v.z
 
 			fxch        st(1)
-			fstp        dword ptr [eax+0Ch]     //  w
+			fstp        dword ptr [eax + 0Ch]   //  w
 
-			fadd        dword ptr [edx+1Ch]     //  m[3][1]
+			fadd        dword ptr [edx + 1Ch]   //  m[3][1]
 
-			fld         dword ptr [edx+10h]     //  m[0][1]
+			fld         dword ptr [edx + 10h]   //  m[0][1]
 			fmul        st, st(5)               //  v.x
 
 			fxch        st(2)
-			faddp       st(1),st
+			faddp       st(1), st
 
-			fld         dword ptr [edx+24h]     //  m[1][2]
+			fld         dword ptr [edx + 24h]   //  m[1][2]
 			fmul        st, st(4)               //  v.y
 
 			fxch        st(2)
-			faddp       st(1),st
+			faddp       st(1), st
 
-			fld         dword ptr [edx+28h]     //  m[2][2]
+			fld         dword ptr [edx + 28h]   //  m[2][2]
 			fmul        st, st(3)               //  v.z
 
 			fxch        st(1)
-			fstp        dword ptr [eax+4]       //  y
+			fstp        dword ptr [eax + 4]     //  y
 
-			fadd        dword ptr [edx+2Ch]     //  m[3][2]
+			fadd        dword ptr [edx + 2Ch]   //  m[3][2]
 
-			fld         dword ptr [edx+20h]     //  m[0][2]
+			fld         dword ptr [edx + 20h]   //  m[0][2]
 			fmul        st, st(5)               //  v.x
 
 			fxch        st(2)
-			faddp       st(1),st
+			faddp       st(1), st
 
-			fld         dword ptr [edx+4]       //  m[1][0]
+			fld         dword ptr [edx + 4]     //  m[1][0]
 			fmul        st, st(4)               //  v.y
 
 			fxch        st(2)
-			faddp       st(1),st
+			faddp       st(1), st
 
-			fld         dword ptr [edx+8]       //  m[2][0]
+			fld         dword ptr [edx + 8]     //  m[2][0]
 			fmul        st, st(3)               //  v.z
 
 			fxch        st(1)
-			fstp        dword ptr [eax+8]       //  z
+			fstp        dword ptr [eax + 8]     //  z
 
-			fadd        dword ptr [edx+0Ch]     //  m[3][0]
+			fadd        dword ptr [edx + 0Ch]   //  m[3][0]
 
 			fld         dword ptr [edx]         //  m[0][0]
 			fmul        st, st(5)               //  v.x
 
 			fxch        st(2)
-			faddp       st(1),st
+			faddp       st(1), st
 
-			faddp       st(1),st
+			faddp       st(1), st
 
-	//      fld1
+			//      fld1
 
-	//      fdivrp      st(1),st
+			//      fdivrp      st(1),st
 
 			//  get rid of x, y, z
 			fstp        st(1)
@@ -288,15 +271,16 @@ namespace MidLevelRenderer {
 
 		}
 #else
-		x = _v.x*m(0,0) + _v.y*m(1,0) + _v.z*m(2,0) + m(3,0);
-		y = _v.x*m(0,1) + _v.y*m(1,1) + _v.z*m(2,1) + m(3,1);
-		z = _v.x*m(0,2) + _v.y*m(1,2) + _v.z*m(2,2) + m(3,2);
-		rhw = _v.x*m(0,3) + _v.y*m(1,3) + _v.z*m(2,3) + m(3,3);
+		x = _v.x * m(0, 0) + _v.y * m(1, 0) + _v.z * m(2, 0) + m(3, 0);
+		y = _v.x * m(0, 1) + _v.y * m(1, 1) + _v.z * m(2, 1) + m(3, 1);
+		z = _v.x * m(0, 2) + _v.y * m(1, 2) + _v.z * m(2, 2) + m(3, 2);
+		rhw = _v.x * m(0, 3) + _v.y * m(1, 3) + _v.z * m(2, 3) + m(3, 3);
 #endif
-
 #if 0	//USE_ASSEMBLER_CODE
-		_asm {
-	;       gos_vertices[0].w = 1.0f/coords[offset].w;
+		_asm
+		{
+			;
+			gos_vertices[0].w = 1.0f/coords[offset].w;
 
 			mov         ecx, f
 			fld1
@@ -305,72 +289,68 @@ namespace MidLevelRenderer {
 
 			fst         dword ptr [ecx+0Ch]
 
-	;       gos_vertices[0].x = coords[offset].x * gos_vertices[0].w;
+			;
+			gos_vertices[0].x = coords[offset].x * gos_vertices[0].w;
 			fld         st(0)
 			fmul        dword ptr [ecx]
 			fstp        dword ptr [ecx]
 
-	;       gos_vertices[0].y = coords[offset].y * gos_vertices[0].w;
-			fld         dword ptr [ecx+4]
-			fmul        st,st(1)
-			fstp        dword ptr [ecx+4]
-			;       gos_vertices[0].z = coords[offset].z * gos_vertices[0].w;
+			;
+			gos_vertices[0].y = coords[offset].y * gos_vertices[0].w;
+			fld         dword ptr [ecx + 4]
+			fmul        st, st(1)
+			fstp        dword ptr [ecx + 4]
+			;
+			gos_vertices[0].z = coords[offset].z * gos_vertices[0].w;
 
-	;       fld         dword ptr [ecx+8]
-			fmul        dword ptr [ecx+8]
+			;
+			fld         dword ptr [ecx + 8]
+			fmul        dword ptr [ecx + 8]
 
-			fstp        dword ptr [ecx+8]
-	;       fstp        st(0)
+			fstp        dword ptr [ecx + 8]
+			;
+			fstp        st(0)
 		}
 #else
 #if FOG_HACK
 		if(foggy)
 		{
-			*((puint8_t )&frgb + 3) =
-				fogTable[foggy-1][Stuff::Truncate_Float_To_Word(rhw)];
+			*((puint8_t)&frgb + 3) =
+				fogTable[foggy - 1][Stuff::Truncate_Float_To_Word(rhw)];
 		}
 		else
 		{
-			*((puint8_t )&frgb + 3) = 0xff;
+			*((puint8_t)&frgb + 3) = 0xff;
 		}
 #endif
-
-		rhw = 1.0f/rhw;
-
-		Verify(	MLRState::GetHasMaxUVs() ? (uv[0]<MLRState::GetMaxUV() && uv[0]>-MLRState::GetMaxUV()) : 1 );
-		Verify(	MLRState::GetHasMaxUVs() ? (uv[1]<MLRState::GetMaxUV() && uv[1]>-MLRState::GetMaxUV()) : 1 );
-
+		rhw = 1.0f / rhw;
+		Verify(MLRState::GetHasMaxUVs() ? (uv[0] < MLRState::GetMaxUV() && uv[0] > -MLRState::GetMaxUV()) : 1);
+		Verify(MLRState::GetHasMaxUVs() ? (uv[1] < MLRState::GetMaxUV() && uv[1] > -MLRState::GetMaxUV()) : 1);
 		u = uv[0];
 		v = uv[1];
-
 		x = x * rhw;
 		y = y * rhw;
 		z = z * rhw;
 #endif
-
 		Verify(rhw > Stuff::SMALL);
-
 		Verify(x >= 0.0f);
 		Verify(y >= 0.0f);
 		Verify(z >= 0.0f);
-
 		Verify(x <= 1.0f);
 		Verify(y <= 1.0f);
 		Verify(z < 1.0f);
-
-		x = x*ViewportScalars::MulX + ViewportScalars::AddX;
-		y = y*ViewportScalars::MulY + ViewportScalars::AddY;
+		x = x * ViewportScalars::MulX + ViewportScalars::AddX;
+		y = y * ViewportScalars::MulY + ViewportScalars::AddY;
 	}
 
-	//	create a dword color out of 4 rgba floats
+//	create a dword color out of 4 rgba floats
 	inline uint32_t GOSCopyColor(const Stuff::RGBAColor* color)
 	{
 		float f;
 		uint32_t argb;
-
 #if USE_ASSEMBLER_CODE
-
-		_asm {
+		_asm
+		{
 			fld     float_cheat
 
 			mov     esi, dword ptr [color]
@@ -434,9 +414,9 @@ namespace MidLevelRenderer {
 			or      ecx, ebx
 			mov     argb, ecx
 
-			fld     dword ptr [esi+4]
+			fld     dword ptr [esi + 4]
 
-			mov     ecx, dword ptr [esi+4]
+			mov     ecx, dword ptr [esi + 4]
 
 			fadd    st, st(1)
 			rcl     ecx, 1
@@ -465,11 +445,12 @@ namespace MidLevelRenderer {
 			or      ecx, ebx
 			mov     argb, ecx
 
-;           fld     dword ptr [esi+8]
+			;
+			fld     dword ptr [esi + 8]
 
-			mov     ecx, dword ptr [esi+8]
+			mov     ecx, dword ptr [esi + 8]
 
-			fadd    dword ptr [esi+8]
+			fadd    dword ptr [esi + 8]
 			rcl     ecx, 1
 			sbb     eax, eax
 			xor     eax, -1
@@ -496,27 +477,21 @@ namespace MidLevelRenderer {
 			or      ecx, ebx
 			mov     argb, ecx
 		}
-
 #else
 		// this code was left in broken state
 		// Positive_Float_To_Byte(), colors and gos_vertices variables missing
-
 		f = color->alpha * 255.99f;
 		Clamp(f, 0.0f, 255.f);
-		argb = Stuff::Positive_Float_To_Byte (f);
-
+		argb = Stuff::Positive_Float_To_Byte(f);
 		f = color->red * 255.99f;
 		Clamp(f, 0.0f, 255.f);
-		argb = (gos_vertices[0].argb << 8) | Stuff::Positive_Float_To_Byte (f);
-
+		argb = (gos_vertices[0].argb << 8) | Stuff::Positive_Float_To_Byte(f);
 		f = color->green * 255.99f;
 		Clamp(f, 0.0f, 255.f);
-		argb = (gos_vertices[0].argb << 8) | Stuff::Positive_Float_To_Byte (f);
-
+		argb = (gos_vertices[0].argb << 8) | Stuff::Positive_Float_To_Byte(f);
 		f = color->blue * 255.99f;
 		Clamp(f, 0.0f, 255.f);
-		argb = (gos_vertices[0].argb << 8) | Stuff::Positive_Float_To_Byte (f);
-
+		argb = (gos_vertices[0].argb << 8) | Stuff::Positive_Float_To_Byte(f);
 #endif
 		return argb;
 	}
@@ -524,24 +499,22 @@ namespace MidLevelRenderer {
 	inline uint32_t Color_DWORD_Lerp(uint32_t _from, uint32_t _to, float _lerp)
 	{
 		Stuff::RGBAColor from, to, lerp;
-
 		from.blue = (_from & 0xff) * One_Over_256;
-		_from = _from>>8;
+		_from = _from >> 8;
 		from.green = (_from & 0xff) * One_Over_256;
-		_from = _from>>8;
+		_from = _from >> 8;
 		from.red = (_from & 0xff) * One_Over_256;
-		_from = _from>>8;
+		_from = _from >> 8;
 		from.alpha = (_from & 0xff) * One_Over_256;
 		// ====
 		to.blue = (_to & 0xff) * One_Over_256;
-		_to = _to>>8;
+		_to = _to >> 8;
 		to.green = (_to & 0xff) * One_Over_256;
-		_to = _to>>8;
+		_to = _to >> 8;
 		to.red = (_to & 0xff) * One_Over_256;
-		_to = _to>>8;
+		_to = _to >> 8;
 		to.alpha = (_to & 0xff) * One_Over_256;
 		lerp.Lerp(from, to, _lerp);
-
 		return GOSCopyColor(&lerp);
 	}
 

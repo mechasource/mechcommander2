@@ -1,5 +1,5 @@
 /*************************************************************************************************\
-FogDlg.h			: Interface for the FractalDlg component.  Lets user change refractalize 
+FogDlg.h			: Interface for the FractalDlg component.  Lets user change refractalize
 						terrain settings
 //---------------------------------------------------------------------------//
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
@@ -16,21 +16,33 @@ FogDlg.h			: Interface for the FractalDlg component.  Lets user change refractal
 
 class FractalDlg : public CDialog
 {
-	public:
+public:
 // Construction
 	FractalDlg(CWnd* pParent = nullptr);   // standard constructor
 
-	uint8_t GetNoise(){ return m_noise; }
-	uint8_t GetThreshold(){ return m_threshold; }
+	uint8_t GetNoise()
+	{
+		return m_noise;
+	}
+	uint8_t GetThreshold()
+	{
+		return m_threshold;
+	}
 
-	void SetThreshold( uint8_t newThreshold ){ m_threshold = newThreshold; }
-	void SetNoise( uint8_t newNoise ){ m_noise = newNoise; }
-		
+	void SetThreshold(uint8_t newThreshold)
+	{
+		m_threshold = newThreshold;
+	}
+	void SetNoise(uint8_t newNoise)
+	{
+		m_noise = newNoise;
+	}
+
 	enum { IDD = IDD_FRACTAL };
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-	
-	private:
-	
+
+private:
+
 	uint8_t m_threshold;
 	uint8_t m_noise;
 };

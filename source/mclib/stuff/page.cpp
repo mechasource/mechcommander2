@@ -20,7 +20,7 @@ using namespace Stuff;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-Page::Page(NotationFile *notation_file):
+Page::Page(NotationFile* notation_file):
 	Plug(DefaultData),
 	m_notes(nullptr)
 {
@@ -41,16 +41,15 @@ Page::~Page()
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	Page::WriteNotes(MemoryStream *stream)
+Page::WriteNotes(MemoryStream* stream)
 {
 	Check_Object(this);
-
 	PCSTR name = m_name;
-	if (name)
+	if(name)
 		*stream << '[' << name << "]\r\n";
 	NoteIterator notes(&m_notes);
-	Note *note;
-	while ((note = notes.ReadAndNext()) != nullptr)
+	Note* note;
+	while((note = notes.ReadAndNext()) != nullptr)
 	{
 		Check_Object(note);
 		note->WriteNotation(stream);
@@ -61,17 +60,16 @@ void
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 Note*
-	Page::FindNote(PCSTR entryname)
+Page::FindNote(PCSTR entryname)
 {
 	Check_Object(this);
 	Check_Pointer(entryname);
-
 	NoteIterator notes(&m_notes);
-	Note *note;
-	while ((note = notes.ReadAndNext()) != nullptr)
+	Note* note;
+	while((note = notes.ReadAndNext()) != nullptr)
 	{
 		Check_Object(note);
-		if (!_stricmp(note->m_name, entryname))
+		if(!_stricmp(note->m_name, entryname))
 			return note;
 	}
 	return nullptr;
@@ -80,10 +78,9 @@ Note*
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 Note*
-	Page::GetNote(uint32_t i)
+Page::GetNote(uint32_t i)
 {
 	Check_Object(this);
-
 	NoteIterator notes(&m_notes);
 	return notes.GetNth(i);
 }
@@ -91,20 +88,19 @@ Note*
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 ChainOf<Note*>*
-	Page::MakeNoteChain(PCSTR entryname)
+Page::MakeNoteChain(PCSTR entryname)
 {
 	Check_Object(this);
 	Check_Pointer(entryname);
-
 	NoteIterator notes(&m_notes);
-	Note *note;
+	Note* note;
 	ChainOf<Note*>* chain = new ChainOf<Note*>(nullptr);
 	Check_Object(chain);
 	size_t len = strlen(entryname);
-	while ((note = notes.ReadAndNext()) != nullptr)
+	while((note = notes.ReadAndNext()) != nullptr)
 	{
 		Check_Object(note);
-		if (!_strnicmp(note->GetName(), entryname, len))
+		if(!_strnicmp(note->GetName(), entryname, len))
 			chain->Add(note);
 	}
 	return chain;
@@ -113,30 +109,27 @@ ChainOf<Note*>*
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 Note*
-	Page::AddNote(PCSTR entryname)
+Page::AddNote(PCSTR entryname)
 {
 	Check_Object(this);
 	Check_Pointer(entryname);
-
 	SetDirty();
-	Note *note = new Note(this);
+	Note* note = new Note(this);
 	Check_Object(note);
 	note->SetName(entryname);
 	m_notes.Add(note);
-
 	return note;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	Page::DeleteNote(PCSTR entryname)
+Page::DeleteNote(PCSTR entryname)
 {
 	Check_Object(this);
 	Check_Pointer(entryname);
-
-	Note *note = FindNote(entryname);
-	if (note)
+	Note* note = FindNote(entryname);
+	if(note)
 	{
 		Check_Object(note);
 		delete note;
@@ -147,13 +140,12 @@ void
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	Page::DeleteAllNotes()
+Page::DeleteAllNotes()
 {
 	Check_Object(this);
-
 	NoteIterator notes(&m_notes);
-	Note *note;
-	while ((note = notes.ReadAndNext()) != nullptr)
+	Note* note;
+	while((note = notes.ReadAndNext()) != nullptr)
 	{
 		Check_Object(note);
 		delete note;
@@ -163,48 +155,45 @@ void
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 bool
-	Page::GetEntry(
-		PCSTR entryname,
-		PCSTR *contents,
-		bool required
-	)
+Page::GetEntry(
+	PCSTR entryname,
+	PCSTR* contents,
+	bool required
+)
 {
 	Check_Object(this);
 	Check_Pointer(entryname);
 	Check_Pointer(contents);
-
-	Note *note = FindNote(entryname);
-	if (note)
+	Note* note = FindNote(entryname);
+	if(note)
 	{
 		Check_Object(note);
 		note->GetEntry(contents);
 		return true;
 	}
-
-	if (required)
+	if(required)
 		STOP((
-			"%s: [%s]%s is a required entry!",
-			m_notationFile->GetFileName(),
-			m_name,
-			entryname
-		));
+				 "%s: [%s]%s is a required entry!",
+				 m_notationFile->GetFileName(),
+				 m_name,
+				 entryname
+			 ));
 	return false;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	Page::SetEntry(
-		PCSTR entryname,
-		PCSTR contents
-	)
+Page::SetEntry(
+	PCSTR entryname,
+	PCSTR contents
+)
 {
 	Check_Object(this);
 	Check_Pointer(entryname);
 	Check_Pointer(contents);
-
-	Note *note = FindNote(entryname);
-	if (!note)
+	Note* note = FindNote(entryname);
+	if(!note)
 		note = AddNote(entryname);
 	Check_Object(note);
 	note->SetEntry(contents);
@@ -213,16 +202,15 @@ void
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	Page::AppendEntry(
-		PCSTR entryname,
-		PCSTR contents
-	)
+Page::AppendEntry(
+	PCSTR entryname,
+	PCSTR contents
+)
 {
 	Check_Object(this);
 	Check_Pointer(entryname);
 	Check_Pointer(contents);
-
-	Note *note = AddNote(entryname);
+	Note* note = AddNote(entryname);
 	Check_Object(note);
 	note->SetEntry(contents);
 }
@@ -230,47 +218,44 @@ void
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 bool
-	Page::GetEntry(
-		PCSTR entryname,
-		pint32_t contents,
-		bool required
-	)
+Page::GetEntry(
+	PCSTR entryname,
+	pint32_t contents,
+	bool required
+)
 {
 	Check_Object(this);
 	Check_Pointer(entryname);
 	Check_Pointer(contents);
-
-	Note *note = FindNote(entryname);
-	if (note)
+	Note* note = FindNote(entryname);
+	if(note)
 	{
 		Check_Object(note);
 		note->GetEntry(contents);
 		return true;
 	}
-
-	if (required)
+	if(required)
 		STOP((
-			"%s: [%s]%s is a required entry!",
-			m_notationFile->GetFileName(),
-			m_name,
-			entryname
-		));
+				 "%s: [%s]%s is a required entry!",
+				 m_notationFile->GetFileName(),
+				 m_name,
+				 entryname
+			 ));
 	return false;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	Page::SetEntry(
-		PCSTR entryname,
-		int32_t contents
-	)
+Page::SetEntry(
+	PCSTR entryname,
+	int32_t contents
+)
 {
 	Check_Object(this);
 	Check_Pointer(entryname);
-
-	Note *note = FindNote(entryname);
-	if (!note)
+	Note* note = FindNote(entryname);
+	if(!note)
 		note = AddNote(entryname);
 	Check_Object(note);
 	note->SetEntry(contents);
@@ -279,15 +264,14 @@ void
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	Page::AppendEntry(
-		PCSTR entryname,
-		int32_t contents
-	)
+Page::AppendEntry(
+	PCSTR entryname,
+	int32_t contents
+)
 {
 	Check_Object(this);
 	Check_Pointer(entryname);
-
-	Note *note = AddNote(entryname);
+	Note* note = AddNote(entryname);
 	Check_Object(note);
 	note->SetEntry(contents);
 }
@@ -295,47 +279,44 @@ void
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 bool
-	Page::GetEntry(
-		PCSTR entryname,
-		Scalar *contents,
-		bool required
-	)
+Page::GetEntry(
+	PCSTR entryname,
+	float* contents,
+	bool required
+)
 {
 	Check_Object(this);
 	Check_Pointer(entryname);
 	Check_Pointer(contents);
-
-	Note *note = FindNote(entryname);
-	if (note)
+	Note* note = FindNote(entryname);
+	if(note)
 	{
 		Check_Object(note);
 		note->GetEntry(contents);
 		return true;
 	}
-
-	if (required)
+	if(required)
 		STOP((
-			"%s: [%s]%s is a required entry!",
-			m_notationFile->GetFileName(),
-			m_name,
-			entryname
-		));
+				 "%s: [%s]%s is a required entry!",
+				 m_notationFile->GetFileName(),
+				 m_name,
+				 entryname
+			 ));
 	return false;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	Page::SetEntry(
-		PCSTR entryname,
-		Scalar value
-	)
+Page::SetEntry(
+	PCSTR entryname,
+	float value
+)
 {
 	Check_Object(this);
 	Check_Pointer(entryname);
-
-	Note *note = FindNote(entryname);
-	if (!note)
+	Note* note = FindNote(entryname);
+	if(!note)
 		note = AddNote(entryname);
 	Check_Object(note);
 	note->SetEntry(value);
@@ -344,15 +325,14 @@ void
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	Page::AppendEntry(
-		PCSTR entryname,
-		Scalar value
-	)
+Page::AppendEntry(
+	PCSTR entryname,
+	float value
+)
 {
 	Check_Object(this);
 	Check_Pointer(entryname);
-
-	Note *note = AddNote(entryname);
+	Note* note = AddNote(entryname);
 	Check_Object(note);
 	note->SetEntry(value);
 }
@@ -360,47 +340,44 @@ void
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 bool
-	Page::GetEntry(
-		PCSTR entryname,
-		bool *contents,
-		bool required
-	)
+Page::GetEntry(
+	PCSTR entryname,
+	bool* contents,
+	bool required
+)
 {
 	Check_Object(this);
 	Check_Pointer(entryname);
 	Check_Pointer(contents);
-
-	Note *note = FindNote(entryname);
-	if (note)
+	Note* note = FindNote(entryname);
+	if(note)
 	{
 		Check_Object(note);
 		note->GetEntry(contents);
 		return true;
 	}
-
-	if (required)
+	if(required)
 		STOP((
-			"%s: [%s]%s is a required entry!",
-			m_notationFile->GetFileName(),
-			m_name,
-			entryname
-		));
+				 "%s: [%s]%s is a required entry!",
+				 m_notationFile->GetFileName(),
+				 m_name,
+				 entryname
+			 ));
 	return false;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	Page::SetEntry(
-		PCSTR entryname,
-		bool value
-	)
+Page::SetEntry(
+	PCSTR entryname,
+	bool value
+)
 {
 	Check_Object(this);
 	Check_Pointer(entryname);
-
-	Note *note = FindNote(entryname);
-	if (!note)
+	Note* note = FindNote(entryname);
+	if(!note)
 		note = AddNote(entryname);
 	Check_Object(note);
 	note->SetEntry(value);
@@ -409,15 +386,14 @@ void
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	Page::AppendEntry(
-		PCSTR entryname,
-		bool value
-	)
+Page::AppendEntry(
+	PCSTR entryname,
+	bool value
+)
 {
 	Check_Object(this);
 	Check_Pointer(entryname);
-
-	Note *note = AddNote(entryname);
+	Note* note = AddNote(entryname);
 	Check_Object(note);
 	note->SetEntry(value);
 }
@@ -425,47 +401,44 @@ void
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 bool
-	Page::GetEntry(
-		PCSTR entryname,
-		Vector3D *contents,
-		bool required
-	)
+Page::GetEntry(
+	PCSTR entryname,
+	Vector3D* contents,
+	bool required
+)
 {
 	Check_Object(this);
 	Check_Pointer(entryname);
 	Check_Pointer(contents);
-
-	Note *note = FindNote(entryname);
-	if (note)
+	Note* note = FindNote(entryname);
+	if(note)
 	{
 		Check_Object(note);
 		note->GetEntry(contents);
 		return true;
 	}
-
-	if (required)
+	if(required)
 		STOP((
-			"%s: [%s]%s is a required entry!",
-			m_notationFile->GetFileName(),
-			m_name,
-			entryname
-		));
+				 "%s: [%s]%s is a required entry!",
+				 m_notationFile->GetFileName(),
+				 m_name,
+				 entryname
+			 ));
 	return false;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	Page::SetEntry(
-		PCSTR entryname,
-		const Vector3D &value
-	)
+Page::SetEntry(
+	PCSTR entryname,
+	const Vector3D& value
+)
 {
 	Check_Object(this);
 	Check_Pointer(entryname);
-
-	Note *note = FindNote(entryname);
-	if (!note)
+	Note* note = FindNote(entryname);
+	if(!note)
 		note = AddNote(entryname);
 	Check_Object(note);
 	note->SetEntry(value);
@@ -474,15 +447,14 @@ void
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	Page::AppendEntry(
-		PCSTR entryname,
-		const Vector3D &value
-	)
+Page::AppendEntry(
+	PCSTR entryname,
+	const Vector3D& value
+)
 {
 	Check_Object(this);
 	Check_Pointer(entryname);
-
-	Note *note = AddNote(entryname);
+	Note* note = AddNote(entryname);
 	Check_Object(note);
 	note->SetEntry(value);
 }
@@ -490,47 +462,44 @@ void
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 bool
-	Page::GetEntry(
-		PCSTR entryname,
-		YawPitchRoll *contents,
-		bool required
-	)
+Page::GetEntry(
+	PCSTR entryname,
+	YawPitchRoll* contents,
+	bool required
+)
 {
 	Check_Object(this);
 	Check_Pointer(entryname);
 	Check_Pointer(contents);
-
-	Note *note = FindNote(entryname);
-	if (note)
+	Note* note = FindNote(entryname);
+	if(note)
 	{
 		Check_Object(note);
 		note->GetEntry(contents);
 		return true;
 	}
-
-	if (required)
+	if(required)
 		STOP((
-			"%s: [%s]%s is a required entry!",
-			m_notationFile->GetFileName(),
-			m_name,
-			entryname
-		));
+				 "%s: [%s]%s is a required entry!",
+				 m_notationFile->GetFileName(),
+				 m_name,
+				 entryname
+			 ));
 	return false;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	Page::SetEntry(
-		PCSTR entryname,
-		const YawPitchRoll &value
-	)
+Page::SetEntry(
+	PCSTR entryname,
+	const YawPitchRoll& value
+)
 {
 	Check_Object(this);
 	Check_Pointer(entryname);
-
-	Note *note = FindNote(entryname);
-	if (!note)
+	Note* note = FindNote(entryname);
+	if(!note)
 		note = AddNote(entryname);
 	Check_Object(note);
 	note->SetEntry(value);
@@ -539,15 +508,14 @@ void
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	Page::AppendEntry(
-		PCSTR entryname,
-		const YawPitchRoll &value
-	)
+Page::AppendEntry(
+	PCSTR entryname,
+	const YawPitchRoll& value
+)
 {
 	Check_Object(this);
 	Check_Pointer(entryname);
-
-	Note *note = AddNote(entryname);
+	Note* note = AddNote(entryname);
 	Check_Object(note);
 	note->SetEntry(value);
 }
@@ -555,47 +523,44 @@ void
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 bool
-	Page::GetEntry(
-		PCSTR entryname,
-		UnitQuaternion *contents,
-		bool required
-	)
+Page::GetEntry(
+	PCSTR entryname,
+	UnitQuaternion* contents,
+	bool required
+)
 {
 	Check_Object(this);
 	Check_Pointer(entryname);
 	Check_Pointer(contents);
-
-	Note *note = FindNote(entryname);
-	if (note)
+	Note* note = FindNote(entryname);
+	if(note)
 	{
 		Check_Object(note);
 		note->GetEntry(contents);
 		return true;
 	}
-
-	if (required)
+	if(required)
 		STOP((
-			"%s: [%s]%s is a required entry!",
-			m_notationFile->GetFileName(),
-			m_name,
-			entryname
-		));
+				 "%s: [%s]%s is a required entry!",
+				 m_notationFile->GetFileName(),
+				 m_name,
+				 entryname
+			 ));
 	return false;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	Page::SetEntry(
-		PCSTR entryname,
-		const UnitQuaternion &value
-	)
+Page::SetEntry(
+	PCSTR entryname,
+	const UnitQuaternion& value
+)
 {
 	Check_Object(this);
 	Check_Pointer(entryname);
-
-	Note *note = FindNote(entryname);
-	if (!note)
+	Note* note = FindNote(entryname);
+	if(!note)
 		note = AddNote(entryname);
 	Check_Object(note);
 	note->SetEntry(value);
@@ -604,15 +569,14 @@ void
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	Page::AppendEntry(
-		PCSTR entryname,
-		const UnitQuaternion &value
-	)
+Page::AppendEntry(
+	PCSTR entryname,
+	const UnitQuaternion& value
+)
 {
 	Check_Object(this);
 	Check_Pointer(entryname);
-
-	Note *note = AddNote(entryname);
+	Note* note = AddNote(entryname);
 	Check_Object(note);
 	note->SetEntry(value);
 }
@@ -620,47 +584,44 @@ void
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 bool
-	Page::GetEntry(
-		PCSTR entryname,
-		Motion3D *contents,
-		bool required
-	)
+Page::GetEntry(
+	PCSTR entryname,
+	Motion3D* contents,
+	bool required
+)
 {
 	Check_Object(this);
 	Check_Pointer(entryname);
 	Check_Pointer(contents);
-
-	Note *note = FindNote(entryname);
-	if (note)
+	Note* note = FindNote(entryname);
+	if(note)
 	{
 		Check_Object(note);
 		note->GetEntry(contents);
 		return true;
 	}
-
-	if (required)
+	if(required)
 		STOP((
-			"%s: [%s]%s is a required entry!",
-			m_notationFile->GetFileName(),
-			m_name,
-			entryname
-		));
+				 "%s: [%s]%s is a required entry!",
+				 m_notationFile->GetFileName(),
+				 m_name,
+				 entryname
+			 ));
 	return false;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	Page::SetEntry(
-		PCSTR entryname,
-		const Motion3D &value
-	)
+Page::SetEntry(
+	PCSTR entryname,
+	const Motion3D& value
+)
 {
 	Check_Object(this);
 	Check_Pointer(entryname);
-
-	Note *note = FindNote(entryname);
-	if (!note)
+	Note* note = FindNote(entryname);
+	if(!note)
 		note = AddNote(entryname);
 	Check_Object(note);
 	note->SetEntry(value);
@@ -669,15 +630,14 @@ void
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	Page::AppendEntry(
-		PCSTR entryname,
-		const Motion3D &value
-	)
+Page::AppendEntry(
+	PCSTR entryname,
+	const Motion3D& value
+)
 {
 	Check_Object(this);
 	Check_Pointer(entryname);
-
-	Note *note = AddNote(entryname);
+	Note* note = AddNote(entryname);
 	Check_Object(note);
 	note->SetEntry(value);
 }
@@ -685,47 +645,44 @@ void
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 bool
-	Page::GetEntry(
-		PCSTR entryname,
-		RGBColor *contents,
-		bool required
-	)
+Page::GetEntry(
+	PCSTR entryname,
+	RGBColor* contents,
+	bool required
+)
 {
 	Check_Object(this);
 	Check_Pointer(entryname);
 	Check_Pointer(contents);
-
-	Note *note = FindNote(entryname);
-	if (note)
+	Note* note = FindNote(entryname);
+	if(note)
 	{
 		Check_Object(note);
 		note->GetEntry(contents);
 		return true;
 	}
-
-	if (required)
+	if(required)
 		STOP((
-			"%s: [%s]%s is a required entry!",
-			m_notationFile->GetFileName(),
-			m_name,
-			entryname
-		));
+				 "%s: [%s]%s is a required entry!",
+				 m_notationFile->GetFileName(),
+				 m_name,
+				 entryname
+			 ));
 	return false;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	Page::SetEntry(
-		PCSTR entryname,
-		const RGBColor &value
-	)
+Page::SetEntry(
+	PCSTR entryname,
+	const RGBColor& value
+)
 {
 	Check_Object(this);
 	Check_Pointer(entryname);
-
-	Note *note = FindNote(entryname);
-	if (!note)
+	Note* note = FindNote(entryname);
+	if(!note)
 		note = AddNote(entryname);
 	Check_Object(note);
 	note->SetEntry(value);
@@ -734,15 +691,14 @@ void
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	Page::AppendEntry(
-		PCSTR entryname,
-		const RGBColor &value
-	)
+Page::AppendEntry(
+	PCSTR entryname,
+	const RGBColor& value
+)
 {
 	Check_Object(this);
 	Check_Pointer(entryname);
-
-	Note *note = AddNote(entryname);
+	Note* note = AddNote(entryname);
 	Check_Object(note);
 	note->SetEntry(value);
 }
@@ -750,47 +706,44 @@ void
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 bool
-	Page::GetEntry(
-		PCSTR entryname,
-		RGBAColor *contents,
-		bool required
-	)
+Page::GetEntry(
+	PCSTR entryname,
+	RGBAColor* contents,
+	bool required
+)
 {
 	Check_Object(this);
 	Check_Pointer(entryname);
 	Check_Pointer(contents);
-
-	Note *note = FindNote(entryname);
-	if (note)
+	Note* note = FindNote(entryname);
+	if(note)
 	{
 		Check_Object(note);
 		note->GetEntry(contents);
 		return true;
 	}
-
-	if (required)
+	if(required)
 		STOP((
-			"%s: [%s]%s is a required entry!",
-			m_notationFile->GetFileName(),
-			m_name,
-			entryname
-		));
+				 "%s: [%s]%s is a required entry!",
+				 m_notationFile->GetFileName(),
+				 m_name,
+				 entryname
+			 ));
 	return false;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	Page::SetEntry(
-		PCSTR entryname,
-		const RGBAColor &value
-	)
+Page::SetEntry(
+	PCSTR entryname,
+	const RGBAColor& value
+)
 {
 	Check_Object(this);
 	Check_Pointer(entryname);
-
-	Note *note = FindNote(entryname);
-	if (!note)
+	Note* note = FindNote(entryname);
+	if(!note)
 		note = AddNote(entryname);
 	Check_Object(note);
 	note->SetEntry(value);
@@ -799,15 +752,14 @@ void
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	Page::AppendEntry(
-		PCSTR entryname,
-		const RGBAColor &value
-	)
+Page::AppendEntry(
+	PCSTR entryname,
+	const RGBAColor& value
+)
 {
 	Check_Object(this);
 	Check_Pointer(entryname);
-
-	Note *note = AddNote(entryname);
+	Note* note = AddNote(entryname);
 	Check_Object(note);
 	note->SetEntry(value);
 }
@@ -815,47 +767,44 @@ void
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 bool
-	Page::GetEntry(
-		PCSTR entryname,
-		NotationFile *contents,
-		bool required
-	)
+Page::GetEntry(
+	PCSTR entryname,
+	NotationFile* contents,
+	bool required
+)
 {
 	Check_Object(this);
 	Check_Pointer(entryname);
 	Check_Pointer(contents);
-
-	Note *note = FindNote(entryname);
-	if (note)
+	Note* note = FindNote(entryname);
+	if(note)
 	{
 		Check_Object(note);
 		note->GetEntry(contents);
 		return true;
 	}
-
-	if (required)
+	if(required)
 		STOP((
-			"%s: [%s]%s is a required entry!",
-			m_notationFile->GetFileName(),
-			(PSTR)m_name,
-			entryname
-		));
+				 "%s: [%s]%s is a required entry!",
+				 m_notationFile->GetFileName(),
+				 (PSTR)m_name,
+				 entryname
+			 ));
 	return false;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	Page::SetEntry(
-		PCSTR entryname,
-		NotationFile *value
-	)
+Page::SetEntry(
+	PCSTR entryname,
+	NotationFile* value
+)
 {
 	Check_Object(this);
 	Check_Pointer(entryname);
-
-	Note *note = FindNote(entryname);
-	if (!note)
+	Note* note = FindNote(entryname);
+	if(!note)
 		note = AddNote(entryname);
 	Check_Object(note);
 	note->SetEntry(value);
@@ -864,15 +813,14 @@ void
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	Page::AppendEntry(
-		PCSTR entryname,
-		NotationFile *value
-	)
+Page::AppendEntry(
+	PCSTR entryname,
+	NotationFile* value
+)
 {
 	Check_Object(this);
 	Check_Pointer(entryname);
-
-	Note *note = AddNote(entryname);
+	Note* note = AddNote(entryname);
 	Check_Object(note);
 	note->SetEntry(value);
 }
@@ -880,6 +828,6 @@ void
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	Page::TestInstance(void) const
+Page::TestInstance(void) const
 {
 }

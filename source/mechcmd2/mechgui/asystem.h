@@ -21,9 +21,11 @@
 class FitIniFile;
 
 
-namespace mechgui {
+namespace mechgui
+{
 
-	typedef enum __asystem_constants {
+	typedef enum __asystem_constants
+	{
 		MAX_CHILDREN					= 64,
 		aMSG_LEFTMOUSEDOWN              = 1,
 		aMSG_MIDDLEMOUSEDOWN			= 2,
@@ -50,7 +52,8 @@ namespace mechgui {
 	};
 
 #if _CONSIDERED_OBSOLETE
-	typedef enum WINDOW_ID {
+	typedef enum WINDOW_ID
+	{
 		UNDEFINEDWINDOW = -1,
 		GENERIC = 1,
 		STATIC,
@@ -61,7 +64,7 @@ namespace mechgui {
 		NUMBER_OF_WINDOWTYPES
 	} WINDOW_ID;
 
-	// Error codes, local to this file...
+// Error codes, local to this file...
 #define	DUPLICATE_INSTANCE			-1
 #define	FAILED_TO_CREATE_WINDOW		-2
 #define	DISPLAY_MISMATCH			-3
@@ -81,19 +84,19 @@ namespace mechgui {
 	{
 	public:
 
-		virtual void render(void){}
-		virtual void update(void){}
+		virtual void render(void) {}
+		virtual void update(void) {}
 	};
 
-	// base class aObject definition
+// base class aObject definition
 	class aObject: public aBaseObject
 	{
 
 	public:
 		aObject(void);
 		virtual ~aObject(void);
-		aObject( const aObject& src );
-		aObject& operator=( const aObject& src );
+		aObject(const aObject& src);
+		aObject& operator=(const aObject& src);
 
 		virtual int32_t init(int32_t xPos, int32_t yPos, int32_t w, int32_t h);
 		virtual void destroy(void);
@@ -111,12 +114,12 @@ namespace mechgui {
 		void removeChild(aObject* c);
 		void setParent(aObject* p);
 
-		void setTexture( PCSTR fileName );
-		void setTexture(uint32_t newHandle );
-		void setUVs( float u1, float v1, float u2, float v2 );
+		void setTexture(PCSTR fileName);
+		void setTexture(uint32_t newHandle);
+		void setUVs(float u1, float v1, float u2, float v2);
 		void setColor(uint32_t color, bool bRecurse = 0); // color the vertices
 
-		void init( FitIniFile* file, PCSTR block, uint32_t neverFlush = 0 ); // for statics
+		void init(FitIniFile* file, PCSTR block, uint32_t neverFlush = 0);   // for statics
 
 		aObject* getParent(void)
 		{
@@ -126,13 +129,22 @@ namespace mechgui {
 		int32_t numberOfChildren(void) const;
 		int32_t globalX(void) const;
 		int32_t globalY(void) const;
-		int32_t globalLeft(void) const { return globalX(void); }
-		int32_t globalTop(void) const { return globalY(void); }
+		int32_t globalLeft(void) const
+		{
+			return globalX(void);
+		}
+		int32_t globalTop(void) const
+		{
+			return globalY(void);
+		}
 		int32_t globalRight(void) const;
 		int32_t globalBottom(void) const;
 
 		virtual aObject* findObject(int32_t xPos, int32_t yPos);
-		virtual int32_t handleMessage( uint32_t, uint32_t ){ return 0; }
+		virtual int32_t handleMessage(uint32_t, uint32_t)
+		{
+			return 0;
+		}
 		virtual bool pointInside(int32_t xPos, int32_t yPos) const;
 		bool rectIntersect(int32_t top, int32_t left, int32_t bottom, int32_t right) const;
 		bool rectIntersect(const RECT& testRect) const;
@@ -145,24 +157,48 @@ namespace mechgui {
 		virtual void render(int32_t x, int32_t y);
 		virtual void update(void);
 
-		COLORREF getColor(void){ return location[0].argb; }
+		COLORREF getColor(void)
+		{
+			return location[0].argb;
+		}
 
 
-		void showGUIWindow(bool show) {showWindow = show;}
-		bool isShowing(void) const{return showWindow;}
+		void showGUIWindow(bool show)
+		{
+			showWindow = show;
+		}
+		bool isShowing(void) const
+		{
+			return showWindow;
+		}
 
 		void FillBox(int16_t left, int16_t top, int16_t bottom, int16_t right, char color);
 		void SetBit(int32_t xpos, int32_t ypos, char value);
-		void removeAllChildren( bool bDelete = 0);
-		virtual void move( float offsetX, float offsetY );
-		virtual void moveNoRecurse( float offsetX, float offsetY );
+		void removeAllChildren(bool bDelete = 0);
+		virtual void move(float offsetX, float offsetY);
+		virtual void moveNoRecurse(float offsetX, float offsetY);
 
-		void setFileWidth( float newWidth ){ fileWidth = newWidth; }
-		int32_t getID(void) const { return ID; }
-		void setID(int32_t newID){ ID = newID; }
+		void setFileWidth(float newWidth)
+		{
+			fileWidth = newWidth;
+		}
+		int32_t getID(void) const
+		{
+			return ID;
+		}
+		void setID(int32_t newID)
+		{
+			ID = newID;
+		}
 
-		void setHelpID( int32_t newID ) { helpID = newID; }
-		int32_t getHelpID(void) const{ return helpID; }
+		void setHelpID(int32_t newID)
+		{
+			helpID = newID;
+		}
+		int32_t getHelpID(void) const
+		{
+			return helpID;
+		}
 
 
 		float left(void)
@@ -200,7 +236,7 @@ namespace mechgui {
 
 		int32_t ID;
 
-		void copyData( const aObject& src );
+		void copyData(const aObject& src);
 
 		int32_t helpHeader;
 		int32_t helpID;
@@ -209,7 +245,7 @@ namespace mechgui {
 	};
 
 
-	//class aRect : public aBaseObject
+//class aRect : public aBaseObject
 	/* It may seem wasteful to derive from aObject instead of aBaseObject, but an aRect
 	needs to able to be a child of an aObject. Perhaps bounding box and parent/child support
 	should be part of aBaseObject. */
@@ -218,12 +254,12 @@ namespace mechgui {
 	public:
 
 		aRect(void);
-		virtual ~aRect(void){}
+		virtual ~aRect(void) {}
 
 		virtual void render(void);
 		virtual void render(int32_t x, int32_t y);
 
-		void init( FitIniFile* file, PCSTR blockName );
+		void init(FitIniFile* file, PCSTR blockName);
 
 		RECT getGUI_RECT(void);
 		RECT getGlobalGUI_RECT(void);
@@ -237,17 +273,17 @@ namespace mechgui {
 	public:
 
 		aText(void);
-		aText( const aText& src );
-		aText& operator=( const aText& src );
+		aText(const aText& src);
+		aText& operator=(const aText& src);
 
 		virtual ~aText(void);
 
 		virtual void render(void);
 		virtual void render(int32_t x, int32_t y);
-		void init( FitIniFile* file, PCSTR header );
+		void init(FitIniFile* file, PCSTR header);
 
-		void setText( const std::string& text );
-		void setText( int32_t resID );
+		void setText(const std::string& text);
+		void setText(int32_t resID);
 
 		std::string text;
 		int32_t alignment; // left, right, ala GOS
@@ -256,7 +292,7 @@ namespace mechgui {
 		virtual bool pointInside(int32_t xPos, int32_t yPos) const;
 
 	private:
-		void CopyData( const aText& src );
+		void CopyData(const aText& src);
 	};
 
 }

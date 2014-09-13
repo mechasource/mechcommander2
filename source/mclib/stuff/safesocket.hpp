@@ -12,10 +12,11 @@
 
 #include <stuff/socket.hpp>
 
-namespace Stuff {
-	
+namespace Stuff
+{
+
 	class SafeIterator;
-	
+
 	typedef int32_t IteratorMemo;
 
 	enum
@@ -25,7 +26,7 @@ namespace Stuff {
 		NextSafeSocketMemo
 	};
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~ SafeSocket ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~ SafeSocket ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 	class SafeSocket:
 		public Socket
@@ -37,19 +38,19 @@ namespace Stuff {
 		void TestInstance(void);
 
 	protected:
-		explicit SafeSocket(Node *node);
+		explicit SafeSocket(Node* node);
 
 		void
-			SendIteratorMemo(
-				IteratorMemo memo,
-				PVOID content
-			);
+		SendIteratorMemo(
+			IteratorMemo memo,
+			PVOID content
+		);
 
 	private:
-		SafeIterator *iteratorHead;
+		SafeIterator* iteratorHead;
 	};
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~ SafeIterator ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~ SafeIterator ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 	class SafeIterator:
 		public SocketIterator
@@ -61,17 +62,16 @@ namespace Stuff {
 		void TestInstance(void) const;
 
 	protected:
-		explicit SafeIterator(SafeSocket *safeSocket);
+		explicit SafeIterator(SafeSocket* safeSocket);
 
 	private:
-		virtual void
-			ReceiveMemo(
-				IteratorMemo memo,
-				PVOID content
-			);
+		virtual void ReceiveMemo(
+			IteratorMemo memo,
+			PVOID content
+		);
 
-		SafeIterator *nextIterator;
-		SafeIterator *prevIterator;
+		SafeIterator* nextIterator;
+		SafeIterator* prevIterator;
 	};
 
 }

@@ -25,7 +25,7 @@ extern bool s_bSensorMapEnabled;
 extern bool drawOldWay;
 extern bool useFog;
 
-extern MidLevelRenderer::MLRClipper * theClipper;
+extern MidLevelRenderer::MLRClipper* theClipper;
 
 bool useLOSAngle = false;
 
@@ -35,41 +35,40 @@ class EditorCamera : public Camera
 	//-------------
 public:
 
-		AppearancePtr			compass;
-		AppearancePtr			theSky;
-		bool					drawCompass;
-		float					lastShadowLightPitch;
-		int32_t					cameraLineChanged;
-		int32_t					oldSkyNumber;
+	AppearancePtr			compass;
+	AppearancePtr			theSky;
+	bool					drawCompass;
+	float					lastShadowLightPitch;
+	int32_t					cameraLineChanged;
+	int32_t					oldSkyNumber;
 
-		EditorCamera (void)
-		{
-			init(void);
-		}
+	EditorCamera(void)
+	{
+		init(void);
+	}
 
-		virtual void init (void)
-		{
-			Camera::init(void);
-			compass = nullptr;
-			drawCompass = true;
-			cameraLineChanged = 0;
-			theSky = nullptr;
-		}
+	virtual void init(void)
+	{
+		Camera::init(void);
+		compass = nullptr;
+		drawCompass = true;
+		cameraLineChanged = 0;
+		theSky = nullptr;
+	}
 
-	virtual void reset (void)
+	virtual void reset(void)
 	{
 		//Must toss these between map loads to clear out their texture memory!!
 		delete compass;
 		compass = nullptr;
-		
 		delete theSky;
 		theSky = nullptr;
 	}
-	
- 	virtual void render (void)
+
+	virtual void render(void)
 	{
 		//------------------------------------------------------
-		// At present, these actually draw.  Later they will 
+		// At present, these actually draw.  Later they will
 		// add elements to the draw list and sort and draw.
 		// The later time has arrived.  We begin sorting immediately.
 		// NO LONGER NEED TO SORT!
@@ -77,7 +76,6 @@ public:
 		// Everything SIMPLY draws at the execution point into the zBuffer
 		// at the correct depth.  Miracles occur at that point!
 		// Big code change but it removes a WHOLE bunch of code and memory!
-		
 		//--------------------------------------------------------
 		// Get new viewport values to scale stuff.  No longer uses
 		// VFX stuff for this.  ALL GOS NOW!
@@ -88,74 +86,54 @@ public:
 		screenResolution.x = viewMulX;
 		screenResolution.y = viewMulY;
 		calculateProjectionConstants(void);
-	
-		TG_Shape::SetViewport(viewMulX,viewMulY,viewAddX,viewAddY);
-	
-
+		TG_Shape::SetViewport(viewMulX, viewMulY, viewAddX, viewAddY);
 		globalScaleFactor = getScaleFactor(void);
 		globalScaleFactor *= viewMulX / Environment.screenWidth;		//Scale Mechs to ScreenRES
-		
 		//-----------------------------------------------
-		// Set Ambient for this pass of rendering	
-		uint32_t lightRGB = (ambientRed<<16)+(ambientGreen<<8)+ambientBlue;
-			
-		eye->setLightColor(1,lightRGB);
-		eye->setLightIntensity(1,1.0);
-	
+		// Set Ambient for this pass of rendering
+		uint32_t lightRGB = (ambientRed << 16) + (ambientGreen << 8) + ambientBlue;
+		eye->setLightColor(1, lightRGB);
+		eye->setLightIntensity(1, 1.0);
 		MidLevelRenderer::MLRState default_state;
 		default_state.SetBackFaceOn(void);
 		default_state.SetDitherOn(void);
 		default_state.SetTextureCorrectionOn(void);
 		default_state.SetZBufferCompareOn(void);
 		default_state.SetZBufferWriteOn(void);
-	
 		default_state.SetFilterMode(MidLevelRenderer::MLRState::BiLinearFilterMode);
-		
 		float z = 1.0f;
 		Stuff::RGBAColor fColor;
 		fColor.red = (float)((fogColor >> 16) & 0xff);
 		fColor.green = (float)((fogColor >> 8) & 0xff);
 		fColor.blue = (float)((fogColor) & 0xff);
-	
 		MidLevelRenderer::PerspectiveMode = usePerspective;
 		theClipper->StartDraw(cameraOrigin, cameraToClip, fColor, &fColor, default_state, &z);
-		MidLevelRenderer::GOSVertex::farClipReciprocal = (1.0f-cameraToClip(2, 2))/cameraToClip(3, 2);
-
-		if (active && turn > 1)
+		MidLevelRenderer::GOSVertex::farClipReciprocal = (1.0f - cameraToClip(2, 2)) / cameraToClip(3, 2);
+		if(active && turn > 1)
 		{
-			if (theSky)
+			if(theSky)
 				theSky->render(1);
-				
 			land->render(void);								//render the Terrain
-	
 			//If you ever want craters in the editor, just turn this on.  No way to save 'em though!
 			//craterManager->render(void);					//render the craters and footprints
-	
 			//Only the GameCamera knows about this.  Heidi, override this function in EditorCamera
 			//and have your objectManager draw.
-
-			if (!s_bSensorMapEnabled)
+			if(!s_bSensorMapEnabled)
 				EditorObjectMgr::instance()->render(void);		//render all other objects
-
 			land->renderWater(void);
-
-			if (!s_bSensorMapEnabled && useShadows)
+			if(!s_bSensorMapEnabled && useShadows)
 				EditorObjectMgr::instance()->renderShadows(void);	//render all other objects
-
-			if (!drawOldWay)
+			if(!drawOldWay)
 			{
-				if (compass && (turn > 3) && drawCompass)
+				if(compass && (turn > 3) && drawCompass)
 					compass->render(-1);		//Force this to zBuffer in front of everything
 			}
-
-			if (!drawOldWay)
+			if(!drawOldWay)
 				mcTextureManager->renderLists(void);
-
 			//theClipper->RenderNow(void);		//Draw the FX
-
 			/* The editor interface needs to be drawn last, as it draws things "on top" of the
 			rendered scene. */
-			if ( EditorInterface::instance() )
+			if(EditorInterface::instance())
 			{
 				EditorInterface::instance()->render(void);
 				/* We need to call renderLists() again to render the "object placement" cursor
@@ -166,147 +144,122 @@ public:
 				mcTextureManager->renderLists(void);
 			}
 		}
-	
-	 	//-----------------------------------------------------
-		if (drawOldWay)
+		//-----------------------------------------------------
+		if(drawOldWay)
 		{
-			gos_SetRenderState( gos_State_ZCompare, 0);
-			gos_SetRenderState(	gos_State_ZWrite, 0);
-			gos_SetRenderState( gos_State_Perspective, 1);
-	
-			if (compass && (turn > 3) && drawCompass)
+			gos_SetRenderState(gos_State_ZCompare, 0);
+			gos_SetRenderState(gos_State_ZWrite, 0);
+			gos_SetRenderState(gos_State_Perspective, 1);
+			if(compass && (turn > 3) && drawCompass)
 				compass->render(void);
 		}
- 	}
+	}
 
-	virtual int32_t activate (void)
+	virtual int32_t activate(void)
 	{
 		// If camera is already active, just return
-		if (ready && active)
+		if(ready && active)
 			return(NO_ERROR);
-		
 		//Can set initial position and stuff here.
 		//updateDaylight(true);
-		
 		lastShadowLightPitch = lightPitch;
-
 		allNormal(void);
-
 		return NO_ERROR;
 	}
 
-	virtual int32_t update (void)
+	virtual int32_t update(void)
 	{
-		// calculate new near and far plane distance based on 
+		// calculate new near and far plane distance based on
 		// Current altitude above terrain.
 		float anglePercent = (projectionAngle - MIN_PERSPECTIVE) / (MAX_PERSPECTIVE - MIN_PERSPECTIVE);
 		float testMax = Camera::AltitudeMaximumLo + ((Camera::AltitudeMaximumHi - Camera::AltitudeMaximumLo) * anglePercent);
-
 		float altitudePercent = (cameraAltitude - AltitudeMinimum) / (testMax - AltitudeMinimum);
 		Camera::NearPlaneDistance = MinNearPlane + ((MaxNearPlane - MinNearPlane) * altitudePercent);
 		Camera::FarPlaneDistance = MinFarPlane + ((MaxFarPlane - MinFarPlane) * altitudePercent);
-	
-		if (!compass && (turn > 3))	//Create it!
+		if(!compass && (turn > 3))	//Create it!
 		{
 			//Gotta check for the list too because a NEW map has no objects on it and this list
 			// Doesn't exist until objects are placed.  Strange but true...
-			if ( !appearanceTypeList )
+			if(!appearanceTypeList)
 			{
 				appearanceTypeList = new AppearanceTypeList;
 				gosASSERT(appearanceTypeList != nullptr);
-				
 				appearanceTypeList->init(2048000);
 			}
-
-			AppearanceType* appearanceType = appearanceTypeList->getAppearance( BLDG_TYPE << 24, "compass" );
+			AppearanceType* appearanceType = appearanceTypeList->getAppearance(BLDG_TYPE << 24, "compass");
 			compass = new BldgAppearance;
-			compass->init( appearanceType );
+			compass->init(appearanceType);
 		}
-		
-		if (!theSky && (turn > 3))
+		if(!theSky && (turn > 3))
 		{
 			//Startup the SKYBox
 			int32_t appearanceType = (GENERIC_APPR_TYPE << 24);
-		
 			AppearanceTypePtr genericAppearanceType = nullptr;
-			genericAppearanceType = appearanceTypeList->getAppearance(appearanceType,"skybox");
-			if (!genericAppearanceType)
+			genericAppearanceType = appearanceTypeList->getAppearance(appearanceType, "skybox");
+			if(!genericAppearanceType)
 			{
 				char msg[1024];
-				sprintf(msg,"No Generic Appearance Named %s","skybox");
-				Fatal(0,msg);
+				sprintf(msg, "No Generic Appearance Named %s", "skybox");
+				Fatal(0, msg);
 			}
-			  
 			theSky = new GenericAppearance;
 			gosASSERT(theSky != nullptr);
-		
 			//--------------------------------------------------------------
 			gosASSERT(genericAppearanceType->getAppearanceClass() == GENERIC_APPR_TYPE);
 			theSky->init((GenericAppearanceType*)genericAppearanceType, nullptr);
-			
 			theSky->setSkyNumber(EditorData::instance->TheSkyNumber());
 			oldSkyNumber = EditorData::instance->TheSkyNumber(void);
 		}
-
 		//Did they change the skyNumber on us?
-		if (theSky && (oldSkyNumber != EditorData::instance->TheSkyNumber()))
+		if(theSky && (oldSkyNumber != EditorData::instance->TheSkyNumber()))
 		{
 			theSky->setSkyNumber(EditorData::instance->TheSkyNumber());
 			oldSkyNumber = EditorData::instance->TheSkyNumber(void);
 		}
-		
 		int32_t result = Camera::update(void);
-
-		if ((cameraLineChanged + 10) < turn)
+		if((cameraLineChanged + 10) < turn)
 		{
-			if (userInput->getKeyDown(KEY_BACKSLASH) && !userInput->ctrl() && !userInput->alt() && !userInput->shift())
+			if(userInput->getKeyDown(KEY_BACKSLASH) && !userInput->ctrl() && !userInput->alt() && !userInput->shift())
 			{
 				drawCompass ^= true;
 				cameraLineChanged = turn;
 			}
 		}
-
-		#define MAX_SHADOW_PITCH_CHANGE	(5.0f)
+#define MAX_SHADOW_PITCH_CHANGE	(5.0f)
 		//Always recalc here or shadows never change in editor!!
 		forceShadowRecalc = true;
-
-		if (compass && (turn > 3))
-   		{
-   	   		bool oldFog = useFog;
-   			bool oldShadows = useShadows;
-   	   		useFog = false;
-   			useShadows = false;
-   	   		
-   	   		Stuff::Vector3D pos = getPosition(void);
-   	   		compass->setObjectParameters(pos,0.0f,false,0,0);
-   	   		compass->setMoverParameters(0.0f);
-   	   		compass->setGesture(0);
-   	   		compass->setObjStatus(OBJECT_STATUS_DESTROYED);
-   	   		compass->setInView(true);
-   	   		compass->setVisibility(true,true);
-   	   		compass->setFilterState(true);
-   			compass->setIsHudElement(void);
-   	   		compass->update(void);		   //Force it to try and draw or stuff will not work!
-			
-			if (theSky)
+		if(compass && (turn > 3))
+		{
+			bool oldFog = useFog;
+			bool oldShadows = useShadows;
+			useFog = false;
+			useShadows = false;
+			Stuff::Vector3D pos = getPosition(void);
+			compass->setObjectParameters(pos, 0.0f, false, 0, 0);
+			compass->setMoverParameters(0.0f);
+			compass->setGesture(0);
+			compass->setObjStatus(OBJECT_STATUS_DESTROYED);
+			compass->setInView(true);
+			compass->setVisibility(true, true);
+			compass->setFilterState(true);
+			compass->setIsHudElement(void);
+			compass->update(void);		   //Force it to try and draw or stuff will not work!
+			if(theSky)
 			{
 				Stuff::Vector3D pos = getPosition(void);
-				
-				theSky->setObjectParameters(pos,0.0f,false,0,0);
+				theSky->setObjectParameters(pos, 0.0f, false, 0, 0);
 				theSky->setMoverParameters(0.0f);
 				theSky->setGesture(0);
 				theSky->setObjStatus(OBJECT_STATUS_NORMAL);
 				theSky->setInView(true);
-				theSky->setVisibility(true,true);
+				theSky->setVisibility(true, true);
 				theSky->setFilterState(true);
 				theSky->setIsHudElement(void);
 				theSky->update(void);		   //Force it to try and draw or stuff will not work!
 			}
-					
-   	   		useFog = oldFog;
-   			useShadows = oldShadows;
-   		}
-
+			useFog = oldFog;
+			useShadows = oldShadows;
+		}
 		return result;
 	}
 

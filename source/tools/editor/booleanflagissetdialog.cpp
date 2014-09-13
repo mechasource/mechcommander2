@@ -38,13 +38,12 @@ void CBooleanFlagIsSetDialog::DoDataExchange(CDataExchange* pDX)
 	DDX_CBIndex(pDX, IDC_FLAG_IS_SET_VALUE_COMBO, m_Index);
 	//DDX_Text(pDX, IDC_FLAG_IS_SET_ID_EDIT, m_FlagID);
 	//}}AFX_DATA_MAP
-
 	HWND hWndCtrl = pDX->PrepareEditCtrl(IDC_FLAG_IS_SET_ID_EDIT);
-	if (pDX->m_bSaveAndValidate)
+	if(pDX->m_bSaveAndValidate)
 	{
 		size_t nLen = (size_t)::GetWindowTextLengthW(hWndCtrl);
-		std::vector<wchar_t> buffer(nLen+1);
-		::GetWindowTextW(hWndCtrl, buffer.data(), (int32_t)nLen+1);
+		std::vector<wchar_t> buffer(nLen + 1);
+		::GetWindowTextW(hWndCtrl, buffer.data(), (int32_t)nLen + 1);
 		m_FlagID.assign(buffer.data(), nLen);
 	}
 	else
@@ -55,7 +54,7 @@ void CBooleanFlagIsSetDialog::DoDataExchange(CDataExchange* pDX)
 
 BEGIN_MESSAGE_MAP(CBooleanFlagIsSetDialog, CDialog)
 	//{{AFX_MSG_MAP(CBooleanFlagIsSetDialog)
-		// NOTE: the ClassWizard will add message map macros here
+	// NOTE: the ClassWizard will add message map macros here
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 

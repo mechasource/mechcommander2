@@ -8,7 +8,7 @@
 #ifndef OBJSTATUS_H
 #define OBJSTATUS_H
 
-typedef enum 
+typedef enum
 {
 	OBJECT_STATUS_NORMAL,
 	OBJECT_STATUS_DISABLED,

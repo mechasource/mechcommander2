@@ -7,13 +7,14 @@
 
 #pragma once
 
-typedef struct gos_Video {
+typedef struct gos_Video
+{
 public:
 	PSTR						m_lpPath;
 
 	static HGOSHEAP m_videoHeap;
 	PIMULTIMEDIASTREAM			m_pMMStream;
-	PIMEDIASTREAM				m_pPrimaryVidStream;   
+	PIMEDIASTREAM				m_pPrimaryVidStream;
 	IBasicAudio*			   	m_pBasicAudio;
 	PIDIRECTDRAWMEDIASTREAM   	m_pDDStream;
 	LPDIRECTDRAWSURFACE			m_pSurface;
@@ -45,24 +46,24 @@ public:
 	gos_Video(PSTR  path, bool texture);
 	~gos_Video(void);
 	bool
-		Update(void);
+	Update(void);
 	void
-		Pause(void);
+	Pause(void);
 	void
-		Continue(void);
-	void 
-		Stop(void);
-	void 
-		FF(double time);
+	Continue(void);
 	void
-		Restore(void);
+	Stop(void);
 	void
-		Release(void);
-	void 
-		SetLocation(uint32_t, uint32_t);
+	FF(double time);
 	void
-		OpenMMStream(PCSTR pszFileName, IDirectDraw* pDD, IMultiMediaStream** ppMMStream);
-} gos_Video;			
+	Restore(void);
+	void
+	Release(void);
+	void
+	SetLocation(uint32_t, uint32_t);
+	void
+	OpenMMStream(PCSTR pszFileName, IDirectDraw* pDD, IMultiMediaStream** ppMMStream);
+} gos_Video;
 
 void __stdcall VideoManagerInstall(void);
 void __stdcall VideoManagerPause(void);
@@ -72,6 +73,6 @@ void __stdcall VideoManagerRestore(void);
 void __stdcall VideoManagerUninstall(void);
 void __stdcall VideoManagerUpdate(void);
 void __stdcall VideoManagerFF(double sec);
-void __stdcall OpenMMStream( PCSTR  pszFileName, IDirectDraw* pDD, IMultiMediaStream** ppMMStream, IBasicAudio** ppBasicAudio );
+void __stdcall OpenMMStream(PCSTR  pszFileName, IDirectDraw* pDD, IMultiMediaStream** ppMMStream, IBasicAudio** ppBasicAudio);
 
 

@@ -35,7 +35,7 @@
 UserHeapPtr systemHeap = nullptr;
 UserHeapPtr guiHeap = nullptr;
 
-FastFile 	**fastFiles = nullptr;
+FastFile**	 fastFiles = nullptr;
 int32_t 		numFastFiles = 0;
 int32_t		maxFastFiles = 0;
 
@@ -105,7 +105,7 @@ bool useRealLOS = true;
 
 //***************************************************************************
 
-PSTR GetGameInformation() 
+PSTR GetGameInformation()
 {
 	return(ExceptionGameMsg);
 }
@@ -117,44 +117,32 @@ PSTR GetGameInformation()
 void UpdateRenderers()
 {
 	hasGuardBand = gos_GetMachineInformation(gos_Info_HasGuardBandClipping) != 0;
-
 	//---------------------------------------------------------------------------------
 	//Doesn't work.  Always returns 0 for TNT in Win2K build 2183 with 3.55 detonator
 	//Assume worst case is +/- 8.0 for now.
 	//MaxMinUV = gos_GetMachineInformation(gos_Info_GetMaximumUVSize);
-
 	uint32_t bColor = 0x0;
-	if (eye)
+	if(eye)
 		bColor = eye->fogColor;
-		
-	gos_SetupViewport(1,1.0,1,bColor, 0.0, 0.0, 1.0, 1.0 );		//ALWAYS FULL SCREEN for now
-	gos_SetRenderState( gos_State_Filter, gos_FilterBiLinear );
-
-	gos_SetRenderState( gos_State_AlphaMode, gos_Alpha_AlphaInvAlpha );
-
-	gos_SetRenderState( gos_State_AlphaTest, TRUE );
-
-	gos_SetRenderState( gos_State_Clipping, TRUE);
-
-	gos_SetRenderState( gos_State_TextureAddress, gos_TextureClamp );
-
-	gos_SetRenderState( gos_State_Dither, 1);
-
-	if (logistics)
+	gos_SetupViewport(1, 1.0, 1, bColor, 0.0, 0.0, 1.0, 1.0);		//ALWAYS FULL SCREEN for now
+	gos_SetRenderState(gos_State_Filter, gos_FilterBiLinear);
+	gos_SetRenderState(gos_State_AlphaMode, gos_Alpha_AlphaInvAlpha);
+	gos_SetRenderState(gos_State_AlphaTest, TRUE);
+	gos_SetRenderState(gos_State_Clipping, TRUE);
+	gos_SetRenderState(gos_State_TextureAddress, gos_TextureClamp);
+	gos_SetRenderState(gos_State_Dither, 1);
+	if(logistics)
 	{
 		float viewMulX, viewMulY, viewAddX, viewAddY;
 		gos_GetViewport(&viewMulX, &viewMulY, &viewAddX, &viewAddY);
 		//userInput->setViewport(viewMulX,viewMulY,viewAddX,viewAddY);
-
 		logistics->render();
 	}
-
 	//------------------------------------------------------------
-	gos_SetRenderState( gos_State_Filter, gos_FilterNone );
+	gos_SetRenderState(gos_State_Filter, gos_FilterNone);
 	//userInput->render();
-
 	//------------------------------------------------------------
-	gos_SetRenderState( gos_State_Filter, gos_FilterNone );
+	gos_SetRenderState(gos_State_Filter, gos_FilterNone);
 }
 
 //---------------------------------------------------------------------------
@@ -163,143 +151,112 @@ void InitializeGameEngine()
 	//---------------------------------------------------------------------
 	float doubleClickThreshold = 0.2f;
 	int32_t dragThreshold = 10;
-
-	Environment.Key_Exit=-1; // so escape doesn't kill your app
-
+	Environment.Key_Exit = -1; // so escape doesn't kill your app
 	//--------------------------------------------------------------
 	// Read in System.CFG
 	FitIniFilePtr systemFile = new FitIniFile;
-
 #ifdef _DEBUG
-	int32_t systemOpenResult = 
+	int32_t systemOpenResult =
 #endif
 		systemFile->open("system.cfg");
-		   
 #ifdef _DEBUG
-	if( systemOpenResult != NO_ERROR)
+	if(systemOpenResult != NO_ERROR)
 	{
 		char Buffer[256];
-		gos_GetCurrentPath( Buffer, 256 );
-		STOP(( "Cannot find \"system.cfg\" file in %s",Buffer ));
+		gos_GetCurrentPath(Buffer, 256);
+		STOP(("Cannot find \"system.cfg\" file in %s", Buffer));
 	}
 #endif
-
 	{
 #ifdef _DEBUG
-		int32_t systemBlockResult = 
+		int32_t systemBlockResult =
 #endif
 			systemFile->seekBlock("systemHeap");
 		gosASSERT(systemBlockResult == NO_ERROR);
 		{
-			int32_t result = systemFile->readIdULong("systemHeapSize",systemHeapSize);
+			int32_t result = systemFile->readIdULong("systemHeapSize", systemHeapSize);
 			gosASSERT(result == NO_ERROR);
-
-			result = systemFile->readIdULong("guiHeapSize",guiHeapSize);
+			result = systemFile->readIdULong("guiHeapSize", guiHeapSize);
 			gosASSERT(result == NO_ERROR);
-
-			result = systemFile->readIdULong("logisticsHeapSize",logisticsHeapSize);
+			result = systemFile->readIdULong("logisticsHeapSize", logisticsHeapSize);
 			gosASSERT(result == NO_ERROR);
 		}
-
 #ifdef _DEBUG
-		int32_t systemPathResult = 
+		int32_t systemPathResult =
 #endif
 			systemFile->seekBlock("systemPaths");
 		gosASSERT(systemPathResult == NO_ERROR);
 		{
-			int32_t result = systemFile->readIdString("terrainPath",terrainPath,79);
+			int32_t result = systemFile->readIdString("terrainPath", terrainPath, 79);
 			gosASSERT(result == NO_ERROR);
-
-			result = systemFile->readIdString("artPath",artPath,79);
+			result = systemFile->readIdString("artPath", artPath, 79);
 			gosASSERT(result == NO_ERROR);
-
-			result = systemFile->readIdString("fontPath",fontPath,79);
+			result = systemFile->readIdString("fontPath", fontPath, 79);
 			gosASSERT(result == NO_ERROR);
-
-			result = systemFile->readIdString("savePath",savePath,79);
+			result = systemFile->readIdString("savePath", savePath, 79);
 			gosASSERT(result == NO_ERROR);
-
-			result = systemFile->readIdString("spritePath",spritePath,79);
+			result = systemFile->readIdString("spritePath", spritePath, 79);
 			gosASSERT(result == NO_ERROR);
-
-			result = systemFile->readIdString("shapesPath",shapesPath,79);
+			result = systemFile->readIdString("shapesPath", shapesPath, 79);
 			gosASSERT(result == NO_ERROR);
-
-			result = systemFile->readIdString("soundPath",soundPath,79);
+			result = systemFile->readIdString("soundPath", soundPath, 79);
 			gosASSERT(result == NO_ERROR);
-
-			result = systemFile->readIdString("objectPath",objectPath,79);
+			result = systemFile->readIdString("objectPath", objectPath, 79);
 			gosASSERT(result == NO_ERROR);
-
-			result = systemFile->readIdString("cameraPath",cameraPath,79);
+			result = systemFile->readIdString("cameraPath", cameraPath, 79);
 			gosASSERT(result == NO_ERROR);
-
-			result = systemFile->readIdString("tilePath",tilePath,79);
+			result = systemFile->readIdString("tilePath", tilePath, 79);
 			gosASSERT(result == NO_ERROR);
-
-			result = systemFile->readIdString("missionPath",missionPath,79);
+			result = systemFile->readIdString("missionPath", missionPath, 79);
 			gosASSERT(result == NO_ERROR);
-
-			result = systemFile->readIdString("warriorPath",warriorPath,79);
+			result = systemFile->readIdString("warriorPath", warriorPath, 79);
 			gosASSERT(result == NO_ERROR);
-
-			result = systemFile->readIdString("profilePath",profilePath,79);
+			result = systemFile->readIdString("profilePath", profilePath, 79);
 			gosASSERT(result == NO_ERROR);
-
-			result = systemFile->readIdString("interfacepath",interfacePath,79);
+			result = systemFile->readIdString("interfacepath", interfacePath, 79);
 			gosASSERT(result == NO_ERROR);
-
-			result = systemFile->readIdString("moviepath",moviePath,79);
+			result = systemFile->readIdString("moviepath", moviePath, 79);
 			gosASSERT(result == NO_ERROR);
-
-			result = systemFile->readIdString("CDsoundPath",CDsoundPath,79);
+			result = systemFile->readIdString("CDsoundPath", CDsoundPath, 79);
 			gosASSERT(result == NO_ERROR);
-
-			result = systemFile->readIdString("CDmoviepath",CDmoviePath,79);
+			result = systemFile->readIdString("CDmoviepath", CDmoviePath, 79);
 			gosASSERT(result == NO_ERROR);
-
-			result = systemFile->readIdString("CDspritePath",CDspritePath,79);
+			result = systemFile->readIdString("CDspritePath", CDspritePath, 79);
 			gosASSERT(result == NO_ERROR);
 		}
-
 #ifdef _DEBUG
-		int32_t fastFileResult = 
+		int32_t fastFileResult =
 #endif
 			systemFile->seekBlock("FastFiles");
 		gosASSERT(fastFileResult == NO_ERROR);
 		{
-			int32_t result = systemFile->readIdLong("NumFastFiles",maxFastFiles);
-			if (result != NO_ERROR)
+			int32_t result = systemFile->readIdLong("NumFastFiles", maxFastFiles);
+			if(result != NO_ERROR)
 				maxFastFiles = 0;
-
-			if (maxFastFiles)
+			if(maxFastFiles)
 			{
-				fastFiles = (FastFile **)malloc(maxFastFiles*sizeof(FastFile *));
-				memset(fastFiles,0,maxFastFiles*sizeof(FastFile *));
-
+				fastFiles = (FastFile**)malloc(maxFastFiles * sizeof(FastFile*));
+				memset(fastFiles, 0, maxFastFiles * sizeof(FastFile*));
 				int32_t fileNum = 0;
 				char fastFileId[10];
 				char fileName[100];
-				sprintf(fastFileId,"File%d",fileNum);
-	
-				while (systemFile->readIdString(fastFileId,fileName,99) == NO_ERROR)
+				sprintf(fastFileId, "File%d", fileNum);
+				while(systemFile->readIdString(fastFileId, fileName, 99) == NO_ERROR)
 				{
 					FastFileInit(fileName);
 					fileNum++;
-					sprintf(fastFileId,"File%d",fileNum);
+					sprintf(fastFileId, "File%d", fileNum);
 					numFastFiles++;
 				}
 			}
 		}
-		
 		int32_t result = systemFile->seekBlock("UseMusic");
-		if (result == NO_ERROR)
+		if(result == NO_ERROR)
 			useMusic = TRUE;
 		else
 			useMusic = FALSE;
-			
 		result = systemFile->seekBlock("UseSound");
-		if (result == NO_ERROR)
+		if(result == NO_ERROR)
 		{
 			useSound = TRUE;
 		}
@@ -309,138 +266,110 @@ void InitializeGameEngine()
 			useMusic = FALSE;
 		}
 	}
-
 	systemFile->close();
 	delete systemFile;
 	systemFile = nullptr;
-
 	//--------------------------------------------------------------
 	// Read in Prefs.cfg
 	FitIniFilePtr prefs = new FitIniFile;
-
 #ifdef _DEBUG
-	int32_t prefsOpenResult = 
+	int32_t prefsOpenResult =
 #endif
 		prefs->open("prefs.cfg");
-
-	gosASSERT (prefsOpenResult == NO_ERROR);
+	gosASSERT(prefsOpenResult == NO_ERROR);
 	{
 #ifdef _DEBUG
-		int32_t prefsBlockResult = 
+		int32_t prefsBlockResult =
 #endif
 			prefs->seekBlock("MechCommander2");
 		gosASSERT(prefsBlockResult == NO_ERROR);
 		{
 			int32_t filterSetting;
-			int32_t result = prefs->readIdLong("FilterState",filterSetting);
-			if (result == NO_ERROR)
+			int32_t result = prefs->readIdLong("FilterState", filterSetting);
+			if(result == NO_ERROR)
 			{
-				switch (filterSetting)
+				switch(filterSetting)
 				{
-				default:
+					default:
 					case 0:
 						FilterState = gos_FilterNone;
-					break;
-
+						break;
 					case 1:
 						FilterState = gos_FilterBiLinear;
-					break;
-
+						break;
 					case 2:
 						FilterState = gos_FilterTriLinear;
-					break;
+						break;
 				}
 			}
-
-			result = prefs->readIdLong("TerrainTextureRes",TERRAIN_TXM_SIZE);
-			if (result != NO_ERROR)
+			result = prefs->readIdLong("TerrainTextureRes", TERRAIN_TXM_SIZE);
+			if(result != NO_ERROR)
 				TERRAIN_TXM_SIZE = 64;
-
-			result = prefs->readIdLong("Resolution",resolution);
-			if (result != NO_ERROR)
+			result = prefs->readIdLong("Resolution", resolution);
+			if(result != NO_ERROR)
 				resolution = 0;
-
-			result = prefs->readIdLong("ObjectTextureRes",ObjectTextureSize);
-			if (result != NO_ERROR)
+			result = prefs->readIdLong("ObjectTextureRes", ObjectTextureSize);
+			if(result != NO_ERROR)
 				ObjectTextureSize = 128;
-
-			result = prefs->readIdLong("Difficulty",GameDifficulty);
-			if (result != NO_ERROR)
+			result = prefs->readIdLong("Difficulty", GameDifficulty);
+			if(result != NO_ERROR)
 				GameDifficulty = 1;
-
-			result = prefs->readIdLong("Brightness",gammaLevel);
-			if (result != NO_ERROR)
+			result = prefs->readIdLong("Brightness", gammaLevel);
+			if(result != NO_ERROR)
 				gammaLevel = 0;
-
-			// store volume settings in global variable since soundsystem 
+			// store volume settings in global variable since soundsystem
 			// does not exist yet.  These will be set in SoundSystem::init()
-			result = prefs->readIdLong("DigitalMasterVolume",DigitalMasterVolume);
-			if (result != NO_ERROR)
+			result = prefs->readIdLong("DigitalMasterVolume", DigitalMasterVolume);
+			if(result != NO_ERROR)
 				DigitalMasterVolume = 255;
-
-			result = prefs->readIdLong("MusicVolume",MusicVolume);
-			if (result != NO_ERROR)
+			result = prefs->readIdLong("MusicVolume", MusicVolume);
+			if(result != NO_ERROR)
 				MusicVolume = 64;
-
-			result = prefs->readIdLong("RadioVolume",RadioVolume);
-			if (result != NO_ERROR)
+			result = prefs->readIdLong("RadioVolume", RadioVolume);
+			if(result != NO_ERROR)
 				RadioVolume = 64;
-
-			result = prefs->readIdLong("SFXVolume",SFXVolume);
-			if (result != NO_ERROR)
+			result = prefs->readIdLong("SFXVolume", SFXVolume);
+			if(result != NO_ERROR)
 				SFXVolume = 64;
-
-			result = prefs->readIdFloat("DoubleClickThreshold",doubleClickThreshold);
-			if (result != NO_ERROR)
+			result = prefs->readIdFloat("DoubleClickThreshold", doubleClickThreshold);
+			if(result != NO_ERROR)
 				doubleClickThreshold = 0.2f;
-
-			result = prefs->readIdLong("DragThreshold",dragThreshold);
-			if (result != NO_ERROR)
+			result = prefs->readIdLong("DragThreshold", dragThreshold);
+			if(result != NO_ERROR)
 				dragThreshold = 10;
-				
-			result = prefs->readIdULong("BaseVertexColor",BaseVertexColor);
-			if (result != NO_ERROR)
+			result = prefs->readIdULong("BaseVertexColor", BaseVertexColor);
+			if(result != NO_ERROR)
 				BaseVertexColor = 0x00000000;
-				
-			result = prefs->readIdBoolean("UnlimitedAmmo",useUnlimitedAmmo);
-			if (result != NO_ERROR)
+			result = prefs->readIdBoolean("UnlimitedAmmo", useUnlimitedAmmo);
+			if(result != NO_ERROR)
 				useUnlimitedAmmo = true;
-				
-			result = prefs->readIdBoolean("RealLOS",useRealLOS);
-			if (result != NO_ERROR)
+			result = prefs->readIdBoolean("RealLOS", useRealLOS);
+			if(result != NO_ERROR)
 				useRealLOS = true;
 		}
 	}
-	
 	prefs->close();
-	
 	delete prefs;
 	prefs = nullptr;
 	//---------------------------------------------------------------------
-
-	switch (resolution)
+	switch(resolution)
 	{
 		case 0:			//640by480
-			gos_SetScreenMode(640,480);
+			gos_SetScreenMode(640, 480);
 			break;
-
 		case 1:			//800by600
-			gos_SetScreenMode(800,600);
+			gos_SetScreenMode(800, 600);
 			break;
-
 		case 2:			//1024by768
-			gos_SetScreenMode(1024,768);
+			gos_SetScreenMode(1024, 768);
 			break;
-
 		case 3:			//1280by1024
-			gos_SetScreenMode(1280,1024);
+			gos_SetScreenMode(1280, 1024);
 			break;
-
 		case 4:			//1600by1200
-			gos_SetScreenMode(1600,1200);
+			gos_SetScreenMode(1600, 1200);
 			break;
 	}
-
 	//--------------------------------------------------
 	// Setup Mouse Parameters from Prefs.CFG
 	//userInput = new UserInput;
@@ -448,50 +377,38 @@ void InitializeGameEngine()
 	//userInput->setMouseDoubleClickThreshold(doubleClickThreshold);
 	//userInput->setMouseDragThreshold(dragThreshold);
 	//--------------------------------------------------
-
 	gosResourceHandle = gos_OpenResourceDLL("mc2res.dll");
-
 	gosFontHandle = gos_LoadFont("assets\\graphics\\arial8.tga");
-
 	globalFloatHelp = new FloatHelp [MAX_FLOAT_HELPS];
-
 	//
 	//----------------------------------
 	// Start associated stuff.
 	//----------------------------------
 	Stuff::InitializeClasses();
-	
 	//--------------------------------------------------------------
 	// Start the GUI Heap.
 	systemHeap = new UserHeap;
 	gosASSERT(systemHeap != nullptr);
-	
-	systemHeap->init(systemHeapSize,"SYSTEM");
-	
+	systemHeap->init(systemHeapSize, "SYSTEM");
 	//--------------------------------------------------------------
 	// Start the GUI Heap.
 	guiHeap = new UserHeap;
 	gosASSERT(guiHeap != nullptr);
-	
-	guiHeap->init(guiHeapSize,"GUI");
-	
+	guiHeap->init(guiHeapSize, "GUI");
 	//------------------------------------------------
 	// Fire up the MC Texture Manager.
 	mcTextureManager = new MC_TextureManager;
 	mcTextureManager->start();
-
 	//--------------------------------------------------------------
 	// Load up the mouse cursors
 	//userInput->initMouseCursors("cursors");
 	//userInput->mouseOff();
 	//userInput->setMouseCursor(mState_NORMAL);
-
 	//------------------------------------------------
 	// Give the Sound System a Whirl!
 	//soundSystem = new GameSoundSystem;
 	//soundSystem->init();
 	//((SoundSystem *)soundSystem)->init("sound");
-	
 	//---------------------------------------------------------
 	// Start the Mission, Scenario and Logistics classes here
 	logistics = new Logistics;
@@ -503,16 +420,14 @@ void InitializeGameEngine()
 void TerminateGameEngine()
 {
 	gosScript_ShutdownProcessor();
-
 	//---------------------------------------------------------
 	// End the Mission, Operation and Logistics classes here
-	if (logistics)
+	if(logistics)
 	{
 		logistics->destroy();
 		delete logistics;
 		logistics = nullptr;
 	}
-
 	//-------------------------------------------------------------
 	// Shut down the soundSytem for a change!
 	//if (soundSystem)
@@ -522,53 +437,42 @@ void TerminateGameEngine()
 	//	delete soundSystem;
 	//	soundSystem = nullptr;
 	//}
-
 	//------------------------------------------------
 	// shutdown the MC Texture Manager.
-	if (mcTextureManager)
+	if(mcTextureManager)
 	{
 		mcTextureManager->destroy();
-
 		delete mcTextureManager;
 		mcTextureManager = nullptr;
 	}
-
 	//--------------------------------------------------------------
 	// End the SystemHeap and globalHeapList
-	if (systemHeap)
+	if(systemHeap)
 	{
 		systemHeap->destroy();
-
 		delete systemHeap;
 		systemHeap = nullptr;
 	}
-
-	if (globalHeapList)
+	if(globalHeapList)
 	{
 		globalHeapList->destroy();
-
 		delete globalHeapList;
 		globalHeapList = nullptr;
 	}
-
 	//----------------------------------------------------
 	// Shutdown the MLR and associated stuff libraries
 	//----------------------------------------------------
-
 	//
 	//-------------------
 	// Turn off libraries
 	//-------------------
 	//
 	Stuff::TerminateClasses();
-
 	//Redundant.  Something else is shutting this down.
 	//GOS sure does think its bad to delete something multiple times though.
 	//Even though it simply never is!
 	//gos_DeleteFont(gosFontHandle);
-
 	gos_CloseResourceDLL(gosResourceHandle);
-
 	//
 	//--------------------------
 	// Turn off the fast Files
@@ -584,43 +488,37 @@ void TerminateGameEngine()
 
 void DoGameLogic()
 {
-
 	//-------------------------------------
 	// Get me the current frameRate.
 	// Convert to frameLength and any other timing stuff.
 	//if (frameRate < 15.0)
 	//	frameRate = 15.0;
 	frameLength = 1.0 / frameRate;
-	if (frameLength > 0.25f)
+	if(frameLength > 0.25f)
 		frameLength = 0.25f;
-
 	//-------------------------------------
 	// Poll devices for this frame.
 	//userInput->update();
-
 	//----------------------------------------
 	// Update the Sound System for this frame
 	//soundSystem->update();
-		
 	//-----------------------------------------------------
 	// Update Mission and Logistics here.
-	if (logistics)
+	if(logistics)
 	{
 		int32_t result = logistics->update();
-		if (result == log_DONE)
+		if(result == log_DONE)
 		{
 			logistics->stop();
 		}
 	}
-
 	//---------------------------------------------------
 	// Update heap instrumentation.
-	if (turn > 3)
+	if(turn > 3)
 		globalHeapList->update();
-
 	//---------------------------------------------------------------
 	// Somewhere in all of the updates, we have asked to be excused!
-	if (quitGame)
+	if(quitGame)
 	{
 		//EnterWindowMode();				//Game crashes if _TerminateApp called from fullScreen
 		gos_TerminateApplication();
@@ -628,42 +526,40 @@ void DoGameLogic()
 }
 
 //---------------------------------------------------------------------------
-int32_t textToLong (PSTR num)
+int32_t textToLong(PSTR num)
 {
 	int32_t result = 0;
-	
 	//------------------------------------
 	// Check if Hex Number
-	PSTR hexOffset = strstr(num,"0x");
-	if (hexOffset == nullptr)
+	PSTR hexOffset = strstr(num, "0x");
+	if(hexOffset == nullptr)
 	{
 		result = atol(num);
 	}
 	else
 	{
 		hexOffset += 2;
-		int32_t numDigits = strlen(hexOffset)-1;
-		for (int32_t i=0; i<=numDigits; i++)
+		int32_t numDigits = strlen(hexOffset) - 1;
+		for(size_t i = 0; i <= numDigits; i++)
 		{
-			if (!isalnum(hexOffset[i]) || (isalpha(hexOffset[i]) && toupper(hexOffset[i]) > 'F'))
+			if(!isalnum(hexOffset[i]) || (isalpha(hexOffset[i]) && toupper(hexOffset[i]) > 'F'))
 			{
 				hexOffset[i] = 0;	// we've reach a "wrong" character. Either start of a comment or something illegal. Either way, stop evaluation here.
 				break;
 			}
 		}
-		numDigits = strlen(hexOffset)-1;
+		numDigits = strlen(hexOffset) - 1;
 		int32_t power = 0;
-		for (int32_t count = numDigits;count >= 0;count--,power++)
+		for(int32_t count = numDigits; count >= 0; count--, power++)
 		{
 			uint8_t currentDigit = toupper(hexOffset[count]);
-			
-			if (currentDigit >= 'A' && currentDigit <= 'F')
+			if(currentDigit >= 'A' && currentDigit <= 'F')
 			{
-				result += (currentDigit - 'A' + 10)<<(4*power);
+				result += (currentDigit - 'A' + 10) << (4 * power);
 			}
-			else if (currentDigit >= '0' && currentDigit <= '9')
+			else if(currentDigit >= '0' && currentDigit <= '9')
 			{
-				result += (currentDigit - '0')<<(4*power);
+				result += (currentDigit - '0') << (4 * power);
 			}
 			else
 			{
@@ -674,8 +570,6 @@ int32_t textToLong (PSTR num)
 			}
 		}
 	}
-
-	
 	return(result);
 }
 
@@ -687,28 +581,25 @@ void ParseCommandLine(PSTR command_line)
 	int32_t n_args = 0;
 	int32_t index = 0;
 	PSTR argv[30];
-	
 	char tempCommandLine[4096];
-	memset(tempCommandLine,0,4096);
-	strncpy(tempCommandLine,command_line,4095);
-
-	while (tempCommandLine[index] != '\0')  // until we null out
+	memset(tempCommandLine, 0, 4096);
+	strncpy(tempCommandLine, command_line, 4095);
+	while(tempCommandLine[index] != '\0')   // until we null out
 	{
 		argv[n_args] = tempCommandLine + index;
 		n_args++;
-		while (tempCommandLine[index] != ' ' && tempCommandLine[index] != '\0')
+		while(tempCommandLine[index] != ' ' && tempCommandLine[index] != '\0')
 		{
 			index++;
 		}
-		while (tempCommandLine[index] == ' ')
+		while(tempCommandLine[index] == ' ')
 		{
 			tempCommandLine[index] = '\0';
 			index++;
 		}
 	}
-
-	i=0;
-	while (i<n_args)
+	i = 0;
+	while(i < n_args)
 	{
 		i++;
 	}
@@ -719,24 +610,20 @@ bool notFirstTime = false;
 //
 // Setup the GameOS structure -- This tells GameOS what I am using
 //
-void GetGameOSEnvironment( PSTR CommandLine )
+void GetGameOSEnvironment(PSTR CommandLine)
 {
 	ParseCommandLine(CommandLine);
-
 	Environment.applicationName			= "MC2GOSScriptShell";
 	Environment.directoryPath			= "Logistics";
-
 	Environment.debugLog				= "";	//;		"DebugLog.txt";
 	Environment.spew					= "GameOS_ScriptsOUtput";			//"GameOS_Texture GameOS_DirectDraw GameOS_Direct3D ";
 	Environment.TimeStampSpew			= 0;
-
 	Environment.GetGameInformation		= GetGameInformation;
 	Environment.UpdateRenderers			= UpdateRenderers;
 	Environment.InitializeGameEngine	= InitializeGameEngine;
 	Environment.DoGameLogic				= DoGameLogic;
 	Environment.TerminateGameEngine		= TerminateGameEngine;
-	
-	if (useSound)
+	if(useSound)
 	{
 		Environment.soundDisable			= FALSE;
 		Environment.soundHiFi				= TRUE;
@@ -748,7 +635,6 @@ void GetGameOSEnvironment( PSTR CommandLine )
 		Environment.soundHiFi				= FALSE;
 		Environment.soundChannels			= 0;
 	}
-
 	//--------------------------
 	// Networking information...
 	// MechCommander GUID = {09608800-4815-11d2-92D2-0060973CFB2C}
@@ -771,7 +657,6 @@ void GetGameOSEnvironment( PSTR CommandLine )
 	Environment.NetworkGUID[13] = 0x3c;
 	Environment.NetworkGUID[14] = 0xfb;
 	Environment.NetworkGUID[15] = 0x2c;
-	
 	Environment.screenWidth				= 640;
 	Environment.screenHeight			= 480;
 	Environment.bitDepth				= 16;
@@ -788,19 +673,16 @@ void GetGameOSEnvironment( PSTR CommandLine )
 	Environment.Texture_S_64			= 0;
 	Environment.Texture_S_32			= 1;
 	Environment.Texture_S_16			= 5;
-
 	Environment.Texture_K_256			= 2;
 	Environment.Texture_K_128			= 5;
 	Environment.Texture_K_64			= 5;
 	Environment.Texture_K_32			= 5;
 	Environment.Texture_K_16			= 5;
-
 	Environment.Texture_A_256			= 0;
 	Environment.Texture_A_128			= 1;
 	Environment.Texture_A_64			= 5;
 	Environment.Texture_A_32			= 1;
 	Environment.Texture_A_16			= 0;
-
 	notFirstTime = true;
 }
 

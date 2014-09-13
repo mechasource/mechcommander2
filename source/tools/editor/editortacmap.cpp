@@ -20,7 +20,7 @@ EditorTacMap::EditorTacMap(CWnd* pParent /*=nullptr*/)
 	: CDialog(EditorTacMap::IDD, pParent)
 {
 	//{{AFX_DATA_INIT(EditorTacMap)
-		// NOTE: the ClassWizard will add member initialization here
+	// NOTE: the ClassWizard will add member initialization here
 	//}}AFX_DATA_INIT
 }
 
@@ -44,61 +44,51 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // EditorTacMap message handlers
 
-BOOL EditorTacMap::OnInitDialog() 
+BOOL EditorTacMap::OnInitDialog()
 {
 	CDialog::OnInitDialog();
-
-	int32_t borderSize = GetSystemMetrics( SM_CYSMCAPTION );
-	borderSize += GetSystemMetrics( SM_CYEDGE ) * 2;
+	int32_t borderSize = GetSystemMetrics(SM_CYSMCAPTION);
+	borderSize += GetSystemMetrics(SM_CYEDGE) * 2;
 	CPoint p(0, 0);
 	EditorInterface::instance()->ClientToScreen(&p);
-
-	SetWindowPos( nullptr, p.x, p.y + 32/*arbitrary*/,  (int32_t)TACMAP_SIZE, (int32_t)TACMAP_SIZE + borderSize, /*SWP_NOMOVE | */SWP_NOZORDER );
-	picture.SetWindowPos( nullptr, 0, 0, (int32_t)TACMAP_SIZE, (int32_t)TACMAP_SIZE, SWP_NOZORDER );
+	SetWindowPos(nullptr, p.x, p.y + 32/*arbitrary*/, (int32_t)TACMAP_SIZE, (int32_t)TACMAP_SIZE + borderSize, /*SWP_NOMOVE | */SWP_NOZORDER);
+	picture.SetWindowPos(nullptr, 0, 0, (int32_t)TACMAP_SIZE, (int32_t)TACMAP_SIZE, SWP_NOZORDER);
 	return TRUE;  // return TRUE unless you set the focus to a control
-	              // EXCEPTION: OCX Property Pages should return FALSE
+	// EXCEPTION: OCX Property Pages should return FALSE
 }
 
 
-void EditorTacMap::OnTga() 
+void EditorTacMap::OnTga()
 {
 	POINT pt;
-	GetCursorPos( &pt );	
-
-	picture.ScreenToClient( &pt );
+	GetCursorPos(&pt);
+	picture.ScreenToClient(&pt);
 	Stuff::Vector2DOf< int32_t > screen;
-	
 	screen.x = pt.x;
 	screen.y = pt.y;
-
-
 	Stuff::Vector3D world;
-
-	TacMap::tacMapToWorld( screen, (int32_t)TACMAP_SIZE, (int32_t)TACMAP_SIZE, world );
-
-	eye->setPosition( world, false );
+	TacMap::tacMapToWorld(screen, (int32_t)TACMAP_SIZE, (int32_t)TACMAP_SIZE, world);
+	eye->setPosition(world, false);
 	/* After calling eye->setPosition(), eye needs to be updated so that
 	the function eye->inverseProject() is current. That's why we call
 	SafeRunGameOSLogic(), although that might be overkill. */
 	EditorInterface::instance()->SafeRunGameOSLogic();
-
 	EditorInterface::instance()->syncScrollBars();
 	picture.InvalidateRect(nullptr);
-
 	EditorInterface::instance()->SetFocus();
 }
 
-BOOL EditorTacMap::OnEraseBkgnd(CDC* pDC) 
+BOOL EditorTacMap::OnEraseBkgnd(CDC* pDC)
 {
 	return 1;
 }
 
 void EditorTacMap::ReleaseFocus()
 {
-	if (EditorInterface::instance() && EditorInterface::instance()->m_hWnd)
+	if(EditorInterface::instance() && EditorInterface::instance()->m_hWnd)
 	{
 		static int32_t recursionDepth = 0;
-		if (1 > recursionDepth)
+		if(1 > recursionDepth)
 		{
 			recursionDepth += 1;
 			EditorInterface::instance()->SetFocus();
@@ -108,22 +98,21 @@ void EditorTacMap::ReleaseFocus()
 	return;
 }
 
-LRESULT EditorTacMap::WindowProc(uint32_t message, WPARAM wParam, LPARAM lParam) 
+LRESULT EditorTacMap::WindowProc(uint32_t message, WPARAM wParam, LPARAM lParam)
 {
 	/* if the left mouse button is not down, then we don't want focus */
-	CWnd *pCWnd = GetFocus();
+	CWnd* pCWnd = GetFocus();
 	HWND hwnd = ::GetFocus();
 	int16_t  val = GetAsyncKeyState(VK_LBUTTON);
-	if (/*(GetFocus() == this) &&*/ !(0x8000 && GetAsyncKeyState(VK_LBUTTON)))
+	if(/*(GetFocus() == this) &&*/ !(0x8000 && GetAsyncKeyState(VK_LBUTTON)))
 	{
 		ReleaseFocus();
 	}
-
-	switch (message)
+	switch(message)
 	{
-	case WM_COMMAND:
+		case WM_COMMAND:
 		{
-			if (IDC_TGA != wParam)
+			if(IDC_TGA != wParam)
 			{
 				/* default processing would've closed the dialog */
 				return 0;
@@ -131,6 +120,5 @@ LRESULT EditorTacMap::WindowProc(uint32_t message, WPARAM wParam, LPARAM lParam)
 		}
 		break;
 	}
-	
 	return CDialog::WindowProc(message, wParam, lParam);
 }

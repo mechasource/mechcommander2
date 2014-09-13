@@ -29,7 +29,7 @@ CLASSNAME::TransformNoClip(Matrix4D *mat, GOSVertexPool *vt, bool db)
 	int32_t stride;
 
 	bool textureAnimation = false;
-	Scalar deltaU=0.0f, deltaV=0.0f;
+	float deltaU=0.0f, deltaV=0.0f;
 
 	if(state.GetTextureHandle())
 	{
@@ -48,7 +48,7 @@ CLASSNAME::TransformNoClip(Matrix4D *mat, GOSVertexPool *vt, bool db)
 	int32_t i, j;
 
 #ifdef I_SAY_YES_TO_TERRAIN
-	Scalar terrainUV[2];
+	float terrainUV[2];
 #endif	//	I_SAY_YES_TO_TERRAIN
 
 #ifdef I_SAY_YES_TO_MULTI_TEXTURES
@@ -71,7 +71,7 @@ CLASSNAME::TransformNoClip(Matrix4D *mat, GOSVertexPool *vt, bool db)
 #endif	//	I_SAY_YES_TO_DUAL_TEXTURES
 
 #ifdef I_SAY_YES_TO_DETAIL_TEXTURES
-	Scalar detailTexCoords[2];
+	float detailTexCoords[2];
 #endif	//	I_SAY_YES_TO_DETAIL_TEXTURES
 
 #if defined(I_SAY_YES_TO_DUAL_TEXTURES) || defined(I_SAY_YES_TO_DETAIL_TEXTURES)
@@ -558,10 +558,10 @@ CLASSNAME::TransformAndClip(Matrix4D *mat, MLRClippingState clippingFlags, GOSVe
 	Start_Timer(Clipping_Time);
 
 	int32_t mask, k0, k1, ct=0;
-	Scalar a=0.0f;
+	float a=0.0f;
 
 	bool textureAnimation = false;
-	Scalar deltaU=0.0f, deltaV=0.0f;
+	float deltaU=0.0f, deltaV=0.0f;
 
 	if(state.GetTextureHandle())
 	{
@@ -580,7 +580,7 @@ CLASSNAME::TransformAndClip(Matrix4D *mat, MLRClippingState clippingFlags, GOSVe
 #if defined(I_SAY_YES_TO_DUAL_TEXTURES) || defined(I_SAY_YES_TO_DETAIL_TEXTURES)
 	gos_vertices2uv = vt->GetActualVertexPool2UV(db);
 	bool textureAnimation2 = false;
-	Scalar deltaU2=0.0f, deltaV2=0.0f;
+	float deltaU2=0.0f, deltaV2=0.0f;
 
 	if(state2.GetTextureHandle())
 	{

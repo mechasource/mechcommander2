@@ -15,7 +15,7 @@
 //------------------------------------------------------------------------------
 //
 gosFX::ShapeCloud__Specification::ShapeCloud__Specification(
-	Stuff::MemoryStream *stream,
+	Stuff::MemoryStream* stream,
 	int32_t gfx_version
 ):
 	SpinningCloud__Specification(gosFX::ShapeCloudClassID, stream, gfx_version)
@@ -25,7 +25,6 @@ gosFX::ShapeCloud__Specification::ShapeCloud__Specification(
 	//Verify(gos_GetCurrentHeap() == Heap);
 	m_particleClassSize = sizeof(gosFX::ShapeCloud::Particle);
 	m_totalParticleSize = sizeof(gosFX::ShapeCloud::Particle);
-
 	//
 	//---------------
 	// Load the shape
@@ -38,7 +37,6 @@ gosFX::ShapeCloud__Specification::ShapeCloud__Specification(
 		);
 	Register_Object(m_shape);
 	*stream >> m_radius;
-
 	//
 	//---------------------------------
 	// Make sure everything is in order
@@ -49,7 +47,7 @@ gosFX::ShapeCloud__Specification::ShapeCloud__Specification(
 //------------------------------------------------------------------------------
 //
 gosFX::ShapeCloud__Specification::ShapeCloud__Specification(
-	MidLevelRenderer::MLRShape *shape
+	MidLevelRenderer::MLRShape* shape
 ):
 	SpinningCloud__Specification(gosFX::ShapeCloudClassID)
 {
@@ -65,7 +63,7 @@ gosFX::ShapeCloud__Specification::ShapeCloud__Specification(
 gosFX::ShapeCloud__Specification::~ShapeCloud__Specification()
 {
 	Check_Object(this);
-	if (m_shape)
+	if(m_shape)
 	{
 		Check_Object(m_shape);
 		m_shape->DetachReference();
@@ -75,25 +73,23 @@ gosFX::ShapeCloud__Specification::~ShapeCloud__Specification()
 //------------------------------------------------------------------------------
 //
 gosFX::ShapeCloud__Specification*
-	gosFX::ShapeCloud__Specification::Make(
-		Stuff::MemoryStream *stream,
-		int32_t gfx_version
-	)
+gosFX::ShapeCloud__Specification::Make(
+	Stuff::MemoryStream* stream,
+	int32_t gfx_version
+)
 {
 	Check_Object(stream);
-
 	gos_PushCurrentHeap(Heap);
-	ShapeCloud__Specification *spec =
+	ShapeCloud__Specification* spec =
 		new gosFX::ShapeCloud__Specification(stream, gfx_version);
 	gos_PopCurrentHeap();
-
 	return spec;
 }
 
 //------------------------------------------------------------------------------
 //
 void
-	gosFX::ShapeCloud__Specification::Save(Stuff::MemoryStream *stream)
+gosFX::ShapeCloud__Specification::Save(Stuff::MemoryStream* stream)
 {
 	Check_Object(this);
 	Check_Object(stream);
@@ -106,18 +102,15 @@ void
 //------------------------------------------------------------------------------
 //
 void
-	gosFX::ShapeCloud__Specification::Copy(ShapeCloud__Specification *spec)
+gosFX::ShapeCloud__Specification::Copy(ShapeCloud__Specification* spec)
 {
 	Check_Object(this);
 	Check_Object(spec);
-
 	SpinningCloud__Specification::Copy(spec);
-
 	gos_PushCurrentHeap(Heap);
 	m_radius = spec->m_radius;
 	m_shape = spec->m_shape;
 	gos_PopCurrentHeap();
-
 	Check_Object(m_shape);
 	m_shape->AttachReference();
 }
@@ -125,32 +118,29 @@ void
 //------------------------------------------------------------------------------
 //
 void
-	gosFX::ShapeCloud__Specification::SetShape(MidLevelRenderer::MLRShape *shape)
+gosFX::ShapeCloud__Specification::SetShape(MidLevelRenderer::MLRShape* shape)
 {
 	Check_Object(this);
-
 	//
 	//------------------------------------
 	// Detach the old shape if it is there
 	//------------------------------------
 	//
-	if (m_shape)
+	if(m_shape)
 	{
 		Check_Object(m_shape);
 		m_shape->DetachReference();
 	}
-
 	//
 	//------------------------------------
 	// Attach the new shape if it is there
 	//------------------------------------
 	//
-	if (shape)
+	if(shape)
 	{
 		Check_Object(shape);
 		m_shape = shape;
 		m_shape->AttachReference();
-
 		//
 		//-----------------------------------------------------------------
 		// Get the radius of the bounding sphere.  This will be the largest
@@ -159,17 +149,17 @@ void
 		//
 		m_radius = 0.0f;
 		int32_t count = m_shape->GetNum();
-		for (int32_t i=0; i<count; ++i)
+		for(size_t i = 0; i < count; ++i)
 		{
-			MidLevelRenderer::MLRPrimitiveBase *primitive = m_shape->Find(i);
+			MidLevelRenderer::MLRPrimitiveBase* primitive = m_shape->Find(i);
 			Check_Object(primitive);
-			Stuff::Point3D *points;
+			Stuff::Point3D* points;
 			int32_t vertex_count;
 			primitive->GetCoordData(&points, &vertex_count);
-			for (int32_t v=0; v<vertex_count; ++v)
+			for(int32_t v = 0; v < vertex_count; ++v)
 			{
 				float len = points[v].GetLengthSquared();
-				if (len > m_radius)
+				if(len > m_radius)
 					m_radius = len;
 			}
 		}
@@ -182,30 +172,30 @@ void
 //############################################################################
 
 gosFX::ShapeCloud::ClassData*
-	gosFX::ShapeCloud::DefaultData = nullptr;
+gosFX::ShapeCloud::DefaultData = nullptr;
 
 //------------------------------------------------------------------------------
 //
 void
-	gosFX::ShapeCloud::InitializeClass()
+gosFX::ShapeCloud::InitializeClass()
 {
 	Verify(!DefaultData);
 	//Verify(gos_GetCurrentHeap() == Heap);
 	DefaultData =
 		new ClassData(
-			ShapeCloudClassID,
-			"gosFX::ShapeCloud",
-			SpinningCloud::DefaultData,
-			(Effect::Factory)&Make,
-			(Specification::Factory)&Specification::Make
-		);
+		ShapeCloudClassID,
+		"gosFX::ShapeCloud",
+		SpinningCloud::DefaultData,
+		(Effect::Factory)&Make,
+		(Specification::Factory)&Specification::Make
+	);
 	Register_Object(DefaultData);
 }
 
 //------------------------------------------------------------------------------
 //
 void
-	gosFX::ShapeCloud::TerminateClass()
+gosFX::ShapeCloud::TerminateClass()
 {
 	Unregister_Object(DefaultData);
 	delete DefaultData;
@@ -215,7 +205,7 @@ void
 //------------------------------------------------------------------------------
 //
 gosFX::ShapeCloud::ShapeCloud(
-	Specification *spec,
+	Specification* spec,
 	uint32_t flags
 ):
 	SpinningCloud(DefaultData, spec, flags)
@@ -226,39 +216,36 @@ gosFX::ShapeCloud::ShapeCloud(
 //------------------------------------------------------------------------------
 //
 gosFX::ShapeCloud*
-	gosFX::ShapeCloud::Make(
-		Specification *spec,
-		uint32_t flags
-	)
+gosFX::ShapeCloud::Make(
+	Specification* spec,
+	uint32_t flags
+)
 {
 	Check_Object(spec);
-
 	gos_PushCurrentHeap(Heap);
-	ShapeCloud *cloud = new gosFX::ShapeCloud(spec, flags);
+	ShapeCloud* cloud = new gosFX::ShapeCloud(spec, flags);
 	gos_PopCurrentHeap();
-
 	return cloud;
 }
 
 //------------------------------------------------------------------------------
 //
 void
-	gosFX::ShapeCloud::CreateNewParticle(
-		uint32_t index,
-		Stuff::Point3D *translation
-	)
+gosFX::ShapeCloud::CreateNewParticle(
+	uint32_t index,
+	Stuff::Point3D* translation
+)
 {
 	Check_Object(this);
-
 	//
 	//-------------------------------------------------------------------
 	// Let our parent do creation, then turn on the particle in the cloud
 	//-------------------------------------------------------------------
 	//
 	SpinningCloud::CreateNewParticle(index, translation);
-	Specification *spec = GetSpecification();
+	Specification* spec = GetSpecification();
 	Check_Object(spec);
-	Particle *particle = GetParticle(index);
+	Particle* particle = GetParticle(index);
 	Check_Object(particle);
 	particle->m_radius = spec->m_radius;
 }
@@ -266,29 +253,27 @@ void
 //------------------------------------------------------------------------------
 //
 bool
-	gosFX::ShapeCloud::AnimateParticle(
-		uint32_t index,
-		const Stuff::LinearMatrix4D *world_to_new_local,
-		Stuff::Time till
-	)
+gosFX::ShapeCloud::AnimateParticle(
+	uint32_t index,
+	const Stuff::LinearMatrix4D* world_to_new_local,
+	Stuff::Time till
+)
 {
 	Check_Object(this);
-
 	//
 	//-----------------------------------------
 	// Animate the parent then get our pointers
 	//-----------------------------------------
 	//
-	if (!SpinningCloud::AnimateParticle(index, world_to_new_local, till))
+	if(!SpinningCloud::AnimateParticle(index, world_to_new_local, till))
 		return false;
-	Set_Statistic(Shape_Count, Shape_Count+1);
-	Specification *spec = GetSpecification();
+	Set_Statistic(Shape_Count, Shape_Count + 1);
+	Specification* spec = GetSpecification();
 	Check_Object(spec);
-	Particle *particle = GetParticle(index);
+	Particle* particle = GetParticle(index);
 	Check_Object(particle);
 	float seed = particle->m_seed;
 	float age = particle->m_age;
-
 	//
 	//------------------
 	// Animate the color
@@ -303,24 +288,23 @@ bool
 
 //------------------------------------------------------------------------------
 //
-void gosFX::ShapeCloud::Draw(DrawInfo *info)
+void gosFX::ShapeCloud::Draw(DrawInfo* info)
 {
 	Check_Object(this);
 	Check_Object(info);
 	Check_Object(info->m_parentToWorld);
-
 	//
 	//----------------------------
 	// Set up the common draw info
 	//----------------------------
 	//
-	if (m_activeParticleCount)
+	if(m_activeParticleCount)
 	{
 		MidLevelRenderer::DrawScalableShapeInformation dinfo;
-		MidLevelRenderer::MLRShape *shape = GetSpecification()->m_shape;
+		MidLevelRenderer::MLRShape* shape = GetSpecification()->m_shape;
 		dinfo.clippingFlags.SetClippingState(0x3f);
 		dinfo.worldToShape = nullptr;
-		Specification *spec = GetSpecification();
+		Specification* spec = GetSpecification();
 		Check_Object(spec);
 		dinfo.state.Combine(info->m_state, spec->m_state);
 		dinfo.activeLights = nullptr;
@@ -328,16 +312,15 @@ void gosFX::ShapeCloud::Draw(DrawInfo *info)
 		dinfo.shape = shape;
 		Stuff::LinearMatrix4D local_to_world;
 		local_to_world.Multiply(m_localToParent, *info->m_parentToWorld);
-
 		//
 		//--------------------------------------------------------------
 		// Check the orientation mode.  The first case is XY orientation
 		//--------------------------------------------------------------
 		//
 		uint32_t i;
-		if (spec->m_alignZUsingX)
+		if(spec->m_alignZUsingX)
 		{
-			if (spec->m_alignZUsingY)
+			if(spec->m_alignZUsingY)
 			{
 				//
 				//-----------------------------------------
@@ -345,24 +328,23 @@ void gosFX::ShapeCloud::Draw(DrawInfo *info)
 				//-----------------------------------------
 				//
 				Stuff::Point3D
-					camera_in_world(info->m_clipper->GetCameraToWorldMatrix());
+				camera_in_world(info->m_clipper->GetCameraToWorldMatrix());
 				Stuff::Point3D camera_in_cloud;
 				camera_in_cloud.MultiplyByInverse(
 					camera_in_world,
 					local_to_world
 				);
-				for (uint32_t i = 0; i < m_activeParticleCount; i++)
+				for(uint32_t i = 0; i < m_activeParticleCount; i++)
 				{
-					Particle *particle = GetParticle(i);
+					Particle* particle = GetParticle(i);
 					Check_Object(particle);
-
 					//
 					//-----------------------------------------------------------------
 					// If the particle is still alive, concatenate into world space and
 					// issue the draw command
 					//-----------------------------------------------------------------
 					//
-					if (particle->m_age < 1.0f)
+					if(particle->m_age < 1.0f)
 					{
 						Stuff::Vector3D direction_in_cloud;
 						direction_in_cloud.Subtract(
@@ -385,18 +367,17 @@ void gosFX::ShapeCloud::Draw(DrawInfo *info)
 						);
 						dinfo.shapeToWorld = &shape_to_world;
 						Stuff::Vector3D
-							scale(
-								particle->m_scale,
-								particle->m_scale,
-								particle->m_scale
-							);
+						scale(
+							particle->m_scale,
+							particle->m_scale,
+							particle->m_scale
+						);
 						dinfo.scaling = &scale;
 						dinfo.paintMe = &particle->m_color;
-		 				info->m_clipper->DrawScalableShape(&dinfo);
+						info->m_clipper->DrawScalableShape(&dinfo);
 					}
 				}
 			}
-
 			//
 			//-----------------------
 			// Handle X-only rotation
@@ -410,24 +391,23 @@ void gosFX::ShapeCloud::Draw(DrawInfo *info)
 				//-----------------------------------------
 				//
 				Stuff::Point3D
-					camera_in_world(info->m_clipper->GetCameraToWorldMatrix());
+				camera_in_world(info->m_clipper->GetCameraToWorldMatrix());
 				Stuff::Point3D camera_in_cloud;
 				camera_in_cloud.MultiplyByInverse(
 					camera_in_world,
 					local_to_world
 				);
-				for (uint32_t i = 0; i < m_activeParticleCount; i++)
+				for(uint32_t i = 0; i < m_activeParticleCount; i++)
 				{
-					Particle *particle = GetParticle(i);
+					Particle* particle = GetParticle(i);
 					Check_Object(particle);
-
 					//
 					//-----------------------------------------------------------------
 					// If the particle is still alive, concatenate into world space and
 					// issue the draw command
 					//-----------------------------------------------------------------
 					//
-					if (particle->m_age < 1.0f)
+					if(particle->m_age < 1.0f)
 					{
 						Stuff::Vector3D direction_in_cloud;
 						direction_in_cloud.Subtract(
@@ -450,25 +430,24 @@ void gosFX::ShapeCloud::Draw(DrawInfo *info)
 						);
 						dinfo.shapeToWorld = &shape_to_world;
 						Stuff::Vector3D
-							scale(
-								particle->m_scale,
-								particle->m_scale,
-								particle->m_scale
-							);
+						scale(
+							particle->m_scale,
+							particle->m_scale,
+							particle->m_scale
+						);
 						dinfo.scaling = &scale;
 						dinfo.paintMe = &particle->m_color;
-		 				info->m_clipper->DrawScalableShape(&dinfo);
+						info->m_clipper->DrawScalableShape(&dinfo);
 					}
 				}
 			}
 		}
-
 		//
 		//-------------------------------------------------------
 		// Each matrix needs to be aligned to the camera around Y
 		//-------------------------------------------------------
 		//
-		else if (spec->m_alignZUsingY)
+		else if(spec->m_alignZUsingY)
 		{
 			//
 			//-----------------------------------------
@@ -476,24 +455,23 @@ void gosFX::ShapeCloud::Draw(DrawInfo *info)
 			//-----------------------------------------
 			//
 			Stuff::Point3D
-				camera_in_world(info->m_clipper->GetCameraToWorldMatrix());
+			camera_in_world(info->m_clipper->GetCameraToWorldMatrix());
 			Stuff::Point3D camera_in_cloud;
 			camera_in_cloud.MultiplyByInverse(
 				camera_in_world,
 				local_to_world
 			);
-			for (uint32_t i = 0; i < m_activeParticleCount; i++)
+			for(uint32_t i = 0; i < m_activeParticleCount; i++)
 			{
-				Particle *particle = GetParticle(i);
+				Particle* particle = GetParticle(i);
 				Check_Object(particle);
-
 				//
 				//-----------------------------------------------------------------
 				// If the particle is still alive, concatenate into world space and
 				// issue the draw command
 				//-----------------------------------------------------------------
 				//
-				if (particle->m_age < 1.0f)
+				if(particle->m_age < 1.0f)
 				{
 					Stuff::Vector3D direction_in_cloud;
 					direction_in_cloud.Subtract(
@@ -516,18 +494,17 @@ void gosFX::ShapeCloud::Draw(DrawInfo *info)
 					);
 					dinfo.shapeToWorld = &shape_to_world;
 					Stuff::Vector3D
-						scale(
-							particle->m_scale,
-							particle->m_scale,
-							particle->m_scale
-						);
+					scale(
+						particle->m_scale,
+						particle->m_scale,
+						particle->m_scale
+					);
 					dinfo.scaling = &scale;
 					dinfo.paintMe = &particle->m_color;
-		 			info->m_clipper->DrawScalableShape(&dinfo);
+					info->m_clipper->DrawScalableShape(&dinfo);
 				}
 			}
 		}
-
 		//
 		//---------------------------------------------------------------
 		// No alignment is necessary, so just multiply out all the active
@@ -536,18 +513,17 @@ void gosFX::ShapeCloud::Draw(DrawInfo *info)
 		//
 		else
 		{
-			for (i=0; i < m_activeParticleCount; i++)
+			for(i = 0; i < m_activeParticleCount; i++)
 			{
-				Particle *particle = GetParticle(i);
+				Particle* particle = GetParticle(i);
 				Check_Object(particle);
-
 				//
 				//-----------------------------------------------------------------
 				// If the particle is still alive, concatenate into world space and
 				// issue the draw command
 				//-----------------------------------------------------------------
 				//
-				if (particle->m_age < 1.0f)
+				if(particle->m_age < 1.0f)
 				{
 					Stuff::LinearMatrix4D shape_to_cloud;
 					shape_to_cloud.BuildTranslation(particle->m_localTranslation);
@@ -559,19 +535,18 @@ void gosFX::ShapeCloud::Draw(DrawInfo *info)
 					);
 					dinfo.shapeToWorld = &shape_to_world;
 					Stuff::Vector3D
-						scale(
-							particle->m_scale,
-							particle->m_scale,
-							particle->m_scale
-						);
+					scale(
+						particle->m_scale,
+						particle->m_scale,
+						particle->m_scale
+					);
 					dinfo.scaling = &scale;
 					dinfo.paintMe = &particle->m_color;
-		 			info->m_clipper->DrawScalableShape(&dinfo);
+					info->m_clipper->DrawScalableShape(&dinfo);
 				}
 			}
 		}
 	}
-
 	//
 	//----------------------------
 	// Let our parent do its thing
@@ -583,7 +558,7 @@ void gosFX::ShapeCloud::Draw(DrawInfo *info)
 //------------------------------------------------------------------------------
 //
 void
-	gosFX::ShapeCloud::TestInstance(void) const
+gosFX::ShapeCloud::TestInstance(void) const
 {
 	Verify(IsDerivedFrom(DefaultData));
 }

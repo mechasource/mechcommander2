@@ -19,18 +19,52 @@ static cint32_t GAME_MAX_PLAYERS = 8;
 class CTeam
 {
 public:
-	CTeam(int32_t alignment = 0) { Alignment(alignment); }
-	bool operator==(const CTeam &rhs) const;
-	void Clear() { m_objectives.Clear(void); }
-	int32_t Alignment() { return m_alignment; }
-	void Alignment(int32_t alignment) { m_alignment = alignment; m_objectives.Alignment(m_alignment); }
-	bool Read( FitIniFile* missionFile ) { return m_objectives.Read(missionFile); }
-	bool Save( FitIniFile* missionFile ) { return m_objectives.Save(missionFile); }
-	CObjectives &ObjectivesRef() { return m_objectives; }
-	void handleObjectInvalidation(const EditorObject *pObj) { m_objectives.handleObjectInvalidation(pObj); }
-	bool NoteThePositionsOfObjectsReferenced() { return m_objectives.NoteThePositionsOfObjectsReferenced(void); }
-	bool RestoreObjectPointerReferencesFromNotedPositions() { return m_objectives.RestoreObjectPointerReferencesFromNotedPositions(void); }
-	bool ThereAreObjectivesWithNoConditions() { return m_objectives.ThereAreObjectivesWithNoConditions(void); }
+	CTeam(int32_t alignment = 0)
+	{
+		Alignment(alignment);
+	}
+	bool operator==(const CTeam& rhs) const;
+	void Clear()
+	{
+		m_objectives.Clear(void);
+	}
+	int32_t Alignment()
+	{
+		return m_alignment;
+	}
+	void Alignment(int32_t alignment)
+	{
+		m_alignment = alignment;
+		m_objectives.Alignment(m_alignment);
+	}
+	bool Read(FitIniFile* missionFile)
+	{
+		return m_objectives.Read(missionFile);
+	}
+	bool Save(FitIniFile* missionFile)
+	{
+		return m_objectives.Save(missionFile);
+	}
+	CObjectives& ObjectivesRef()
+	{
+		return m_objectives;
+	}
+	void handleObjectInvalidation(const EditorObject* pObj)
+	{
+		m_objectives.handleObjectInvalidation(pObj);
+	}
+	bool NoteThePositionsOfObjectsReferenced()
+	{
+		return m_objectives.NoteThePositionsOfObjectsReferenced(void);
+	}
+	bool RestoreObjectPointerReferencesFromNotedPositions()
+	{
+		return m_objectives.RestoreObjectPointerReferencesFromNotedPositions(void);
+	}
+	bool ThereAreObjectivesWithNoConditions()
+	{
+		return m_objectives.ThereAreObjectivesWithNoConditions(void);
+	}
 private:
 	int32_t m_alignment;
 	CObjectives m_objectives;
@@ -40,13 +74,13 @@ class CTeams
 {
 public:
 	CTeams(void);
-	CTeams &operator=(const CTeams &master);
-	bool operator==(const CTeams &rhs) const;
+	CTeams& operator=(const CTeams& master);
+	bool operator==(const CTeams& rhs) const;
 	void Clear(void);
-	bool Read( FitIniFile* missionFile );
-	bool Save( FitIniFile* missionFile );
-	CTeam &TeamRef(int32_t i);
-	void handleObjectInvalidation(const EditorObject *pObj);
+	bool Read(FitIniFile* missionFile);
+	bool Save(FitIniFile* missionFile);
+	CTeam& TeamRef(int32_t i);
+	void handleObjectInvalidation(const EditorObject* pObj);
 	bool NoteThePositionsOfObjectsReferenced(void);
 	bool RestoreObjectPointerReferencesFromNotedPositions(void);
 	bool ThereAreObjectivesWithNoConditions(void);
@@ -57,12 +91,21 @@ private:
 class CPlayer
 {
 public:
-	CPlayer() { Clear(void); }
-	void Clear() { m_defaultTeam = 0; }
-	int32_t DefaultTeam() { return m_defaultTeam; }
+	CPlayer()
+	{
+		Clear(void);
+	}
+	void Clear()
+	{
+		m_defaultTeam = 0;
+	}
+	int32_t DefaultTeam()
+	{
+		return m_defaultTeam;
+	}
 	void DefaultTeam(int32_t team);
-	bool Read( FitIniFile* missionFile, int32_t playerNum );
-	bool Save( FitIniFile* missionFile, int32_t playerNum );
+	bool Read(FitIniFile* missionFile, int32_t playerNum);
+	bool Save(FitIniFile* missionFile, int32_t playerNum);
 private:
 	int32_t m_defaultTeam;
 };
@@ -71,268 +114,544 @@ class CPlayers
 {
 public:
 	void Clear(void);
-	CPlayer &PlayerRef(int32_t i) { return m_playerArray[i]; }
-	bool Read( FitIniFile* missionFile );
-	bool Save( FitIniFile* missionFile );
+	CPlayer& PlayerRef(int32_t i)
+	{
+		return m_playerArray[i];
+	}
+	bool Read(FitIniFile* missionFile);
+	bool Save(FitIniFile* missionFile);
 private:
-	CPlayers &operator=(const CPlayers &master) { /*not valid, do not use*/ }
+	CPlayers& operator=(const CPlayers& master)
+	{
+		/*not valid, do not use*/
+	}
 	CPlayer m_playerArray[GAME_MAX_PLAYERS];
 };
 
 class MissionSettings
 {
 public:
-	
+
 	int32_t largeArtillery;
 	int32_t smallArtillery;
 	int32_t cameraDrones;
 	int32_t sensors;
 	int32_t time;
 
-	void clear(){ largeArtillery = smallArtillery = cameraDrones = sensors = time = 0; }
-	MissionSettings(){ clear(void); }
+	void clear()
+	{
+		largeArtillery = smallArtillery = cameraDrones = sensors = time = 0;
+	}
+	MissionSettings()
+	{
+		clear(void);
+	}
 
-	bool save( FitIniFile* file );
+	bool save(FitIniFile* file);
 };
 
 class EditorData
 {
-	public:
+public:
 
-		static EditorData* instance;
+	static EditorData* instance;
 
-		EditorData(void);
-		~EditorData(void);
+	EditorData(void);
+	~EditorData(void);
 
-		// wipes all the data, the terrain, object etc.
-		static bool clear(void); 
-		
-		// makes a terrain from a height map.  
-		static bool initTerrainFromTGA( int32_t mapSize, int32_t min = 0, int32_t max = 512, int32_t terrain = 0 );
-		static bool initTerrainFromPCV( PCSTR fileName );
-		static bool	reassignHeightsFromTGA( PCSTR fileName, int32_t min, int32_t max );
+	// wipes all the data, the terrain, object etc.
+	static bool clear(void);
 
-		bool save( PCSTR fileName, bool quickSave = false );
-		bool quickSave( PCSTR fileName );
-		static bool saveHeightMap( File* file );
-		bool saveMissionFitFileStuff( FitIniFile &fitFile );
+	// makes a terrain from a height map.
+	static bool initTerrainFromTGA(int32_t mapSize, int32_t min = 0, int32_t max = 512, int32_t terrain = 0);
+	static bool initTerrainFromPCV(PCSTR fileName);
+	static bool	reassignHeightsFromTGA(PCSTR fileName, int32_t min, int32_t max);
 
-		static void setMapName( PCSTR name );
-		static PCSTR getMapName(){ return strlen( mapName ) ? mapName : 0; }
-		static void updateTitleBar(void);
+	bool save(PCSTR fileName, bool quickSave = false);
+	bool quickSave(PCSTR fileName);
+	static bool saveHeightMap(File* file);
+	bool saveMissionFitFileStuff(FitIniFile& fitFile);
 
-		EString MissionName() { return m_missionName; }
-		void MissionName(EString missionName) { m_missionName = missionName; }
+	static void setMapName(PCSTR name);
+	static PCSTR getMapName()
+	{
+		return strlen(mapName) ? mapName : 0;
+	}
+	static void updateTitleBar(void);
 
-		bool MissionNameUseResourceString() { return m_missionNameUseResourceString; }
-		void MissionNameUseResourceString(bool missionNameUseResourceString) { m_missionNameUseResourceString = missionNameUseResourceString; }
+	EString MissionName()
+	{
+		return m_missionName;
+	}
+	void MissionName(EString missionName)
+	{
+		m_missionName = missionName;
+	}
 
-		int32_t MissionNameResourceStringID() { return m_missionNameResourceStringID; }
-		void MissionNameResourceStringID(int32_t missionNameResourceStringID) { m_missionNameResourceStringID = missionNameResourceStringID; }
+	bool MissionNameUseResourceString()
+	{
+		return m_missionNameUseResourceString;
+	}
+	void MissionNameUseResourceString(bool missionNameUseResourceString)
+	{
+		m_missionNameUseResourceString = missionNameUseResourceString;
+	}
 
-		EString Author() { return m_author; }
-		void Author(EString author) { m_author = author; }
+	int32_t MissionNameResourceStringID()
+	{
+		return m_missionNameResourceStringID;
+	}
+	void MissionNameResourceStringID(int32_t missionNameResourceStringID)
+	{
+		m_missionNameResourceStringID = missionNameResourceStringID;
+	}
 
-		EString Blurb() { return m_blurb; }
-		void Blurb(EString blurb) { m_blurb = blurb; }
+	EString Author()
+	{
+		return m_author;
+	}
+	void Author(EString author)
+	{
+		m_author = author;
+	}
 
-		bool BlurbUseResourceString() { return m_blurbUseResourceString; }
-		void BlurbUseResourceString(bool blurbUseResourceString) { m_blurbUseResourceString = blurbUseResourceString; }
+	EString Blurb()
+	{
+		return m_blurb;
+	}
+	void Blurb(EString blurb)
+	{
+		m_blurb = blurb;
+	}
 
-		int32_t BlurbResourceStringID() { return m_blurbResourceStringID; }
-		void BlurbResourceStringID(int32_t blurbResourceStringID) { m_blurbResourceStringID = blurbResourceStringID; }
+	bool BlurbUseResourceString()
+	{
+		return m_blurbUseResourceString;
+	}
+	void BlurbUseResourceString(bool blurbUseResourceString)
+	{
+		m_blurbUseResourceString = blurbUseResourceString;
+	}
 
-		EString Blurb2() { return m_blurb2; }
-		void Blurb2(EString blurb2) { m_blurb2 = blurb2; }
+	int32_t BlurbResourceStringID()
+	{
+		return m_blurbResourceStringID;
+	}
+	void BlurbResourceStringID(int32_t blurbResourceStringID)
+	{
+		m_blurbResourceStringID = blurbResourceStringID;
+	}
 
-		bool Blurb2UseResourceString() { return m_blurb2UseResourceString; }
-		void Blurb2UseResourceString(bool blurb2UseResourceString) { m_blurb2UseResourceString = blurb2UseResourceString; }
+	EString Blurb2()
+	{
+		return m_blurb2;
+	}
+	void Blurb2(EString blurb2)
+	{
+		m_blurb2 = blurb2;
+	}
 
-		int32_t Blurb2ResourceStringID() { return m_blurb2ResourceStringID; }
-		void Blurb2ResourceStringID(int32_t blurb2ResourceStringID) { m_blurb2ResourceStringID = blurb2ResourceStringID; }
+	bool Blurb2UseResourceString()
+	{
+		return m_blurb2UseResourceString;
+	}
+	void Blurb2UseResourceString(bool blurb2UseResourceString)
+	{
+		m_blurb2UseResourceString = blurb2UseResourceString;
+	}
 
-		float TimeLimit() { return m_timeLimit; }
-		void TimeLimit(float timeLimit) { m_timeLimit = timeLimit; }
+	int32_t Blurb2ResourceStringID()
+	{
+		return m_blurb2ResourceStringID;
+	}
+	void Blurb2ResourceStringID(int32_t blurb2ResourceStringID)
+	{
+		m_blurb2ResourceStringID = blurb2ResourceStringID;
+	}
 
-		float DropWeightLimit() { return m_dropWeightLimit; }
-		void DropWeightLimit(float dropWeightLimit) { m_dropWeightLimit = dropWeightLimit; }
+	float TimeLimit()
+	{
+		return m_timeLimit;
+	}
+	void TimeLimit(float timeLimit)
+	{
+		m_timeLimit = timeLimit;
+	}
 
-		int32_t InitialResourcePoints() { return m_initialResourcePoints; }
-		void InitialResourcePoints(int32_t initialResourcePoints) { m_initialResourcePoints = initialResourcePoints; }
+	float DropWeightLimit()
+	{
+		return m_dropWeightLimit;
+	}
+	void DropWeightLimit(float dropWeightLimit)
+	{
+		m_dropWeightLimit = dropWeightLimit;
+	}
 
-		int32_t CBills() { return m_CBills; }
-		void CBills( int32_t newCBills ) { m_CBills = newCBills; }
+	int32_t InitialResourcePoints()
+	{
+		return m_initialResourcePoints;
+	}
+	void InitialResourcePoints(int32_t initialResourcePoints)
+	{
+		m_initialResourcePoints = initialResourcePoints;
+	}
 
-		bool IsSinglePlayer() { return m_isSinglePlayer; }
-		void IsSinglePlayer(bool isSinglePlayer) { m_isSinglePlayer = isSinglePlayer; }
+	int32_t CBills()
+	{
+		return m_CBills;
+	}
+	void CBills(int32_t newCBills)
+	{
+		m_CBills = newCBills;
+	}
 
-		int32_t MaxTeams() { return m_maxTeams; }
-		void MaxTeams(int32_t maxTeams) { m_maxTeams = maxTeams; /* Not finished. Need to check 2 <= param <= 8, disable menu items, etc.,. */}
+	bool IsSinglePlayer()
+	{
+		return m_isSinglePlayer;
+	}
+	void IsSinglePlayer(bool isSinglePlayer)
+	{
+		m_isSinglePlayer = isSinglePlayer;
+	}
 
-		int32_t MaxPlayers() { return m_maxPlayers; }
-		void MaxPlayers(int32_t maxPlayers);
-		//{ m_maxPlayers = maxPlayers; /* Not finished. Need to check 2 <= param <= 8, disable menu items, etc.,. */}
+	int32_t MaxTeams()
+	{
+		return m_maxTeams;
+	}
+	void MaxTeams(int32_t maxTeams)
+	{
+		m_maxTeams = maxTeams; /* Not finished. Need to check 2 <= param <= 8, disable menu items, etc.,. */
+	}
 
-		CTeams &TeamsRef() { return m_teams; }
-		CPlayers &PlayersRef() { return m_players; }
+	int32_t MaxPlayers()
+	{
+		return m_maxPlayers;
+	}
+	void MaxPlayers(int32_t maxPlayers);
+	//{ m_maxPlayers = maxPlayers; /* Not finished. Need to check 2 <= param <= 8, disable menu items, etc.,. */}
 
-		int32_t ScenarioTune() { return m_scenarioTune; }
-		void ScenarioTune(int32_t scenarioTune) { m_scenarioTune = scenarioTune; }
+	CTeams& TeamsRef()
+	{
+		return m_teams;
+	}
+	CPlayers& PlayersRef()
+	{
+		return m_players;
+	}
 
-		EString VideoFilename() { return m_videoFilename; }
-		void VideoFilename(EString videoFilename) { m_videoFilename = videoFilename; }
+	int32_t ScenarioTune()
+	{
+		return m_scenarioTune;
+	}
+	void ScenarioTune(int32_t scenarioTune)
+	{
+		m_scenarioTune = scenarioTune;
+	}
 
-		int32_t NumRandomRPbuildings() { return m_numRandomRPbuildings; }
-		void NumRandomRPbuildings(int32_t numRandomRPbuildings) { m_numRandomRPbuildings = numRandomRPbuildings; }
+	EString VideoFilename()
+	{
+		return m_videoFilename;
+	}
+	void VideoFilename(EString videoFilename)
+	{
+		m_videoFilename = videoFilename;
+	}
 
-		EString DownloadURL() { return m_downloadURL; }
-		void DownloadURL(EString downloadURL) { m_downloadURL = downloadURL; }
+	int32_t NumRandomRPbuildings()
+	{
+		return m_numRandomRPbuildings;
+	}
+	void NumRandomRPbuildings(int32_t numRandomRPbuildings)
+	{
+		m_numRandomRPbuildings = numRandomRPbuildings;
+	}
 
-		int32_t MissionType() { return m_missionType; }
-		void MissionType(int32_t missionType) { m_missionType = missionType; }
+	EString DownloadURL()
+	{
+		return m_downloadURL;
+	}
+	void DownloadURL(EString downloadURL)
+	{
+		m_downloadURL = downloadURL;
+	}
 
-		bool AirStrikesEnabledDefault() { return m_airStrikesEnabledDefault; }
-		void AirStrikesEnabledDefault(bool airStrikesEnabledDefault) { m_airStrikesEnabledDefault = airStrikesEnabledDefault; }
+	int32_t MissionType()
+	{
+		return m_missionType;
+	}
+	void MissionType(int32_t missionType)
+	{
+		m_missionType = missionType;
+	}
 
-		bool MineLayersEnabledDefault() { return m_mineLayersEnabledDefault; }
-		void MineLayersEnabledDefault(bool mineLayersEnabledDefault) { m_mineLayersEnabledDefault = mineLayersEnabledDefault; }
+	bool AirStrikesEnabledDefault()
+	{
+		return m_airStrikesEnabledDefault;
+	}
+	void AirStrikesEnabledDefault(bool airStrikesEnabledDefault)
+	{
+		m_airStrikesEnabledDefault = airStrikesEnabledDefault;
+	}
 
-		bool ScoutCoptersEnabledDefault() { return m_scoutCoptersEnabledDefault; }
-		void ScoutCoptersEnabledDefault(bool scoutCoptersEnabledDefault) { m_scoutCoptersEnabledDefault = scoutCoptersEnabledDefault; }
+	bool MineLayersEnabledDefault()
+	{
+		return m_mineLayersEnabledDefault;
+	}
+	void MineLayersEnabledDefault(bool mineLayersEnabledDefault)
+	{
+		m_mineLayersEnabledDefault = mineLayersEnabledDefault;
+	}
 
-		bool SensorProbesEnabledDefault() { return m_sensorProbesEnabledDefault; }
-		void SensorProbesEnabledDefault(bool sensorProbesEnabledDefault) { m_sensorProbesEnabledDefault = sensorProbesEnabledDefault; }
+	bool ScoutCoptersEnabledDefault()
+	{
+		return m_scoutCoptersEnabledDefault;
+	}
+	void ScoutCoptersEnabledDefault(bool scoutCoptersEnabledDefault)
+	{
+		m_scoutCoptersEnabledDefault = scoutCoptersEnabledDefault;
+	}
 
-		bool UnlimitedAmmoEnabledDefault() { return m_unlimitedAmmoEnabledDefault; }
-		void UnlimitedAmmoEnabledDefault(bool unlimitedAmmoEnabledDefault) { m_unlimitedAmmoEnabledDefault = unlimitedAmmoEnabledDefault; }
+	bool SensorProbesEnabledDefault()
+	{
+		return m_sensorProbesEnabledDefault;
+	}
+	void SensorProbesEnabledDefault(bool sensorProbesEnabledDefault)
+	{
+		m_sensorProbesEnabledDefault = sensorProbesEnabledDefault;
+	}
 
-		bool AllTechEnabledDefault() { return m_allTechEnabledDefault; }
-		void AllTechEnabledDefault(bool allTechEnabledDefault) { m_allTechEnabledDefault = allTechEnabledDefault; }
+	bool UnlimitedAmmoEnabledDefault()
+	{
+		return m_unlimitedAmmoEnabledDefault;
+	}
+	void UnlimitedAmmoEnabledDefault(bool unlimitedAmmoEnabledDefault)
+	{
+		m_unlimitedAmmoEnabledDefault = unlimitedAmmoEnabledDefault;
+	}
 
-		bool RepairVehicleEnabledDefault() { return m_repairVehicleEnabledDefault; }
-		void RepairVehicleEnabledDefault(bool repairVehicleEnabledDefault) { m_repairVehicleEnabledDefault = repairVehicleEnabledDefault; }
+	bool AllTechEnabledDefault()
+	{
+		return m_allTechEnabledDefault;
+	}
+	void AllTechEnabledDefault(bool allTechEnabledDefault)
+	{
+		m_allTechEnabledDefault = allTechEnabledDefault;
+	}
 
-		bool SalvageCraftEnabledDefault() { return m_salvageCraftEnabledDefault; }
-		void SalvageCraftEnabledDefault(bool salvageCraftEnabledDefault) { m_salvageCraftEnabledDefault = salvageCraftEnabledDefault; }
+	bool RepairVehicleEnabledDefault()
+	{
+		return m_repairVehicleEnabledDefault;
+	}
+	void RepairVehicleEnabledDefault(bool repairVehicleEnabledDefault)
+	{
+		m_repairVehicleEnabledDefault = repairVehicleEnabledDefault;
+	}
 
-		bool ResourceBuildingsEnabledDefault() { return m_resourceBuildingsEnabledDefault; }
-		void ResourceBuildingsEnabledDefault(bool resourceBuildingsEnabledDefault) { m_resourceBuildingsEnabledDefault = resourceBuildingsEnabledDefault; }
+	bool SalvageCraftEnabledDefault()
+	{
+		return m_salvageCraftEnabledDefault;
+	}
+	void SalvageCraftEnabledDefault(bool salvageCraftEnabledDefault)
+	{
+		m_salvageCraftEnabledDefault = salvageCraftEnabledDefault;
+	}
 
-		bool NoVariantsEnabledDefault() { return m_noVariantsEnabledDefault; }
-		void NoVariantsEnabledDefault(bool noVariantsEnabledDefault) { m_noVariantsEnabledDefault = noVariantsEnabledDefault; }
+	bool ResourceBuildingsEnabledDefault()
+	{
+		return m_resourceBuildingsEnabledDefault;
+	}
+	void ResourceBuildingsEnabledDefault(bool resourceBuildingsEnabledDefault)
+	{
+		m_resourceBuildingsEnabledDefault = resourceBuildingsEnabledDefault;
+	}
 
-		bool ArtilleryPieceEnabledDefault() { return m_artilleryPieceEnabledDefault; }
-		void ArtilleryPieceEnabledDefault(bool artilleryPieceEnabledDefault) { m_artilleryPieceEnabledDefault = artilleryPieceEnabledDefault; }
+	bool NoVariantsEnabledDefault()
+	{
+		return m_noVariantsEnabledDefault;
+	}
+	void NoVariantsEnabledDefault(bool noVariantsEnabledDefault)
+	{
+		m_noVariantsEnabledDefault = noVariantsEnabledDefault;
+	}
 
-		bool RPsForMechsEnabledDefault() { return m_rPsForMechsEnabledDefault; }
-		void RPsForMechsEnabledDefault(bool rPsForMechsEnabledDefault) { m_rPsForMechsEnabledDefault = rPsForMechsEnabledDefault; }
+	bool ArtilleryPieceEnabledDefault()
+	{
+		return m_artilleryPieceEnabledDefault;
+	}
+	void ArtilleryPieceEnabledDefault(bool artilleryPieceEnabledDefault)
+	{
+		m_artilleryPieceEnabledDefault = artilleryPieceEnabledDefault;
+	}
 
-		//weather
-		int32_t MaxRaindrops() { return m_maxRaindrops; }
-		void MaxRaindrops(int32_t maxRaindrops) { m_maxRaindrops = maxRaindrops; }
+	bool RPsForMechsEnabledDefault()
+	{
+		return m_rPsForMechsEnabledDefault;
+	}
+	void RPsForMechsEnabledDefault(bool rPsForMechsEnabledDefault)
+	{
+		m_rPsForMechsEnabledDefault = rPsForMechsEnabledDefault;
+	}
 
-		float StartingRainLevel() { return m_startingRainLevel; }
-		void StartingRainLevel(float startingRainLevel) { m_startingRainLevel = startingRainLevel; }
+	//weather
+	int32_t MaxRaindrops()
+	{
+		return m_maxRaindrops;
+	}
+	void MaxRaindrops(int32_t maxRaindrops)
+	{
+		m_maxRaindrops = maxRaindrops;
+	}
 
-		float ChanceOfRain() { return m_chanceOfRain; }
-		void ChanceOfRain(float chanceOfRain) { m_chanceOfRain = chanceOfRain; }
+	float StartingRainLevel()
+	{
+		return m_startingRainLevel;
+	}
+	void StartingRainLevel(float startingRainLevel)
+	{
+		m_startingRainLevel = startingRainLevel;
+	}
 
-		float BaseLightningChance() { return m_baseLightningChance; }
-		void BaseLightningChance(float baseLightningChance) { m_baseLightningChance = baseLightningChance; }
-		
-		int32_t TheSkyNumber() 
-		{
-			return m_theSkyNumber;
-		}
-		
-		void TheSkyNumber (int32_t theSkyNumber)
-		{
-			m_theSkyNumber = theSkyNumber;
-		}
+	float ChanceOfRain()
+	{
+		return m_chanceOfRain;
+	}
+	void ChanceOfRain(float chanceOfRain)
+	{
+		m_chanceOfRain = chanceOfRain;
+	}
 
-		bool MissionNeedsSaving() { return m_missionNeedsSaving; }
-		void MissionNeedsSaving(bool missionNeedsSaving) { m_missionNeedsSaving = missionNeedsSaving; }
+	float BaseLightningChance()
+	{
+		return m_baseLightningChance;
+	}
+	void BaseLightningChance(float baseLightningChance)
+	{
+		m_baseLightningChance = baseLightningChance;
+	}
 
-		bool DetailTextureNeedsSaving() { return m_detailTextureNeedsSaving; }
-		void DetailTextureNeedsSaving(bool detailTextureNeedsSaving) { m_detailTextureNeedsSaving = detailTextureNeedsSaving; }
+	int32_t TheSkyNumber()
+	{
+		return m_theSkyNumber;
+	}
 
-		bool WaterTextureNeedsSaving() { return m_waterTextureNeedsSaving; }
-		void WaterTextureNeedsSaving(bool waterTextureNeedsSaving) { m_waterTextureNeedsSaving = waterTextureNeedsSaving; }
+	void TheSkyNumber(int32_t theSkyNumber)
+	{
+		m_theSkyNumber = theSkyNumber;
+	}
 
-		bool WaterDetailTextureNeedsSaving() { return m_waterDetailTextureNeedsSaving; }
-		void WaterDetailTextureNeedsSaving(bool waterDetailTextureNeedsSaving) { m_waterDetailTextureNeedsSaving = waterDetailTextureNeedsSaving; }
+	bool MissionNeedsSaving()
+	{
+		return m_missionNeedsSaving;
+	}
+	void MissionNeedsSaving(bool missionNeedsSaving)
+	{
+		m_missionNeedsSaving = missionNeedsSaving;
+	}
 
-		bool saveObjectives( FitIniFile* file );
-		bool DoTeamDialog(int32_t team) { return TeamsRef().TeamRef(team).ObjectivesRef().EditDialog(void); }
-		void handleObjectInvalidation(const EditorObject *pObj) { TeamsRef().handleObjectInvalidation(pObj); }
+	bool DetailTextureNeedsSaving()
+	{
+		return m_detailTextureNeedsSaving;
+	}
+	void DetailTextureNeedsSaving(bool detailTextureNeedsSaving)
+	{
+		m_detailTextureNeedsSaving = detailTextureNeedsSaving;
+	}
 
-		void makeTacMap(puint8_t& pOutput, int32_t& dataSize, int32_t tacMapSize ); // this allocates memory, below just draws
-		void drawTacMap( puint8_t pDest, int32_t dataSize, int32_t tacMapSize );
-		void loadTacMap(PacketFile *file, puint8_t& pDest, int32_t dataSize, int32_t tacMapSize ); // this allocates memory.  Saves millions of CPU cycles on load 
+	bool WaterTextureNeedsSaving()
+	{
+		return m_waterTextureNeedsSaving;
+	}
+	void WaterTextureNeedsSaving(bool waterTextureNeedsSaving)
+	{
+		m_waterTextureNeedsSaving = waterTextureNeedsSaving;
+	}
 
-	private:
+	bool WaterDetailTextureNeedsSaving()
+	{
+		return m_waterDetailTextureNeedsSaving;
+	}
+	void WaterDetailTextureNeedsSaving(bool waterDetailTextureNeedsSaving)
+	{
+		m_waterDetailTextureNeedsSaving = waterDetailTextureNeedsSaving;
+	}
 
-		EditorData& operator=( const EditorData& editorData );
-		EditorData( const EditorData& editorData );
-		bool saveTacMap (PacketFile* file, int32_t whichPacket );
+	bool saveObjectives(FitIniFile* file);
+	bool DoTeamDialog(int32_t team)
+	{
+		return TeamsRef().TeamRef(team).ObjectivesRef().EditDialog(void);
+	}
+	void handleObjectInvalidation(const EditorObject* pObj)
+	{
+		TeamsRef().handleObjectInvalidation(pObj);
+	}
 
-		EString m_missionName;
-		bool m_missionNameUseResourceString;
-		int32_t m_missionNameResourceStringID;
-		EString m_author;
-		EString m_blurb;
-		bool m_blurbUseResourceString;
-		int32_t m_blurbResourceStringID;
-		EString m_blurb2;
-		bool m_blurb2UseResourceString;
-		int32_t m_blurb2ResourceStringID;
-		float m_timeLimit;
-		float m_dropWeightLimit;
-		int32_t m_initialResourcePoints;
-		int32_t	m_CBills;
-		bool m_isSinglePlayer;
-		int32_t m_maxTeams;
-		int32_t m_maxPlayers;
-		CTeams m_teams;
-		CPlayers m_players;
-		int32_t m_scenarioTune;
-		EString m_videoFilename;
-		int32_t m_numRandomRPbuildings;
-		EString m_downloadURL;
-		int32_t m_missionType;
+	void makeTacMap(puint8_t& pOutput, int32_t& dataSize, int32_t tacMapSize);  // this allocates memory, below just draws
+	void drawTacMap(puint8_t pDest, size_t dataSize, int32_t tacMapSize);
+	void loadTacMap(PacketFile* file, puint8_t& pDest, size_t dataSize, int32_t tacMapSize);  // this allocates memory.  Saves millions of CPU cycles on load
 
-		/*defaults for multiplayer options*/
-		bool m_airStrikesEnabledDefault;
-		bool m_mineLayersEnabledDefault;
-		bool m_scoutCoptersEnabledDefault;
-		bool m_sensorProbesEnabledDefault;
-		bool m_unlimitedAmmoEnabledDefault;
-		bool m_allTechEnabledDefault;
-		bool m_repairVehicleEnabledDefault;
-		bool m_salvageCraftEnabledDefault;
-		bool m_resourceBuildingsEnabledDefault;
-		bool m_noVariantsEnabledDefault;
-		bool m_artilleryPieceEnabledDefault;
-		bool m_rPsForMechsEnabledDefault;
+private:
 
-		static char mapName[256];
+	EditorData& operator=(const EditorData& editorData);
+	EditorData(const EditorData& editorData);
+	bool saveTacMap(PacketFile* file, int32_t whichPacket);
 
-		static uint32_t*	tacMapBmp; // tac map data, keep around so we can update
+	EString m_missionName;
+	bool m_missionNameUseResourceString;
+	int32_t m_missionNameResourceStringID;
+	EString m_author;
+	EString m_blurb;
+	bool m_blurbUseResourceString;
+	int32_t m_blurbResourceStringID;
+	EString m_blurb2;
+	bool m_blurb2UseResourceString;
+	int32_t m_blurb2ResourceStringID;
+	float m_timeLimit;
+	float m_dropWeightLimit;
+	int32_t m_initialResourcePoints;
+	int32_t	m_CBills;
+	bool m_isSinglePlayer;
+	int32_t m_maxTeams;
+	int32_t m_maxPlayers;
+	CTeams m_teams;
+	CPlayers m_players;
+	int32_t m_scenarioTune;
+	EString m_videoFilename;
+	int32_t m_numRandomRPbuildings;
+	EString m_downloadURL;
+	int32_t m_missionType;
 
-		MissionSettings	missionSettings;
+	/*defaults for multiplayer options*/
+	bool m_airStrikesEnabledDefault;
+	bool m_mineLayersEnabledDefault;
+	bool m_scoutCoptersEnabledDefault;
+	bool m_sensorProbesEnabledDefault;
+	bool m_unlimitedAmmoEnabledDefault;
+	bool m_allTechEnabledDefault;
+	bool m_repairVehicleEnabledDefault;
+	bool m_salvageCraftEnabledDefault;
+	bool m_resourceBuildingsEnabledDefault;
+	bool m_noVariantsEnabledDefault;
+	bool m_artilleryPieceEnabledDefault;
+	bool m_rPsForMechsEnabledDefault;
 
-		//weather info
-		int32_t m_maxRaindrops;
-		float m_startingRainLevel;
-		float m_chanceOfRain;
-		float m_baseLightningChance;
-		
-		int32_t m_theSkyNumber;
+	static char mapName[256];
 
-		bool m_missionNeedsSaving;
-		bool m_detailTextureNeedsSaving;
-		bool m_waterTextureNeedsSaving;
-		bool m_waterDetailTextureNeedsSaving;
+	static uint32_t*	tacMapBmp; // tac map data, keep around so we can update
+
+	MissionSettings	missionSettings;
+
+	//weather info
+	int32_t m_maxRaindrops;
+	float m_startingRainLevel;
+	float m_chanceOfRain;
+	float m_baseLightningChance;
+
+	int32_t m_theSkyNumber;
+
+	bool m_missionNeedsSaving;
+	bool m_detailTextureNeedsSaving;
+	bool m_waterTextureNeedsSaving;
+	bool m_waterDetailTextureNeedsSaving;
 };
 
 

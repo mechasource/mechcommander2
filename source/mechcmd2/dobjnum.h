@@ -14,7 +14,7 @@
 #define DOBJNUM_H
 //---------------------------------------------------------------------------
 // Include Files
-	
+
 //---------------------------------------------------------------------------
 // Macro Definitions
 // These are very important.  They are the basis that both the data files and

@@ -11,23 +11,26 @@
 #include <gosfx/spinningcloud.hpp>
 #include <mlr/mlr.hpp>
 
-namespace MidLevelRenderer {class MLRTriangleCloud;}
+namespace MidLevelRenderer
+{
+	class MLRTriangleCloud;
+}
 
 namespace gosFX
 {
-	//############################################################################
-	//########################  ShardCloud__Specification  #############################
-	//############################################################################
+//############################################################################
+//########################  ShardCloud__Specification  #############################
+//############################################################################
 
 	class ShardCloud__Specification:
 		public SpinningCloud__Specification
 	{
-	//----------------------------------------------------------------------
-	// Constructors/Destructors
-	//
+		//----------------------------------------------------------------------
+		// Constructors/Destructors
+		//
 	protected:
 		ShardCloud__Specification(
-			Stuff::MemoryStream *stream,
+			Stuff::MemoryStream* stream,
 			int32_t gfx_version
 		);
 
@@ -35,42 +38,42 @@ namespace gosFX
 		ShardCloud__Specification(void);
 
 		static ShardCloud__Specification*
-			Make(
-				Stuff::MemoryStream *stream,
-				int32_t gfx_version
-			);
+		Make(
+			Stuff::MemoryStream* stream,
+			int32_t gfx_version
+		);
 		void
-			Copy(ShardCloud__Specification *spec);
+		Copy(ShardCloud__Specification* spec);
 
 		void
-			Save(Stuff::MemoryStream *stream);
+		Save(Stuff::MemoryStream* stream);
 
-		void 
-			BuildDefaults(void);
+		void
+		BuildDefaults(void);
 
-		bool 
-			IsDataValid(bool fix_data=false);
+		bool
+		IsDataValid(bool fix_data = false);
 
-	//-------------------------------------------------------------------------
-	// FCurves
-	//
+		//-------------------------------------------------------------------------
+		// FCurves
+		//
 	public:
-		SeededCurveOf<ComplexCurve, SplineCurve,Curve::e_ComplexSplineType>
-			m_size;
-		SeededCurveOf<ConstantCurve, SplineCurve,Curve::e_ConstantSplineType>
-			m_angularity;
+		SeededCurveOf<ComplexCurve, SplineCurve, Curve::e_ComplexSplineType>
+		m_size;
+		SeededCurveOf<ConstantCurve, SplineCurve, Curve::e_ConstantSplineType>
+		m_angularity;
 	};
 
-	//############################################################################
-	//########################  SpinningCloud__Particle  #############################
-	//############################################################################
+//############################################################################
+//########################  SpinningCloud__Particle  #############################
+//############################################################################
 
 	class ShardCloud__Particle:
 		public SpinningCloud__Particle
 	{
 	public:
 		float
-			m_angle;
+		m_angle;
 	};
 
 //############################################################################
@@ -79,9 +82,9 @@ namespace gosFX
 
 	class ShardCloud : public SpinningCloud
 	{
-	//----------------------------------------------------------------------------
-	// Class Registration Support
-	//
+		//----------------------------------------------------------------------------
+		// Class Registration Support
+		//
 	public:
 		static void __stdcall InitializeClass(void);
 		static void __stdcall TerminateClass(void);
@@ -89,24 +92,25 @@ namespace gosFX
 		typedef ShardCloud__Specification Specification;
 		typedef ShardCloud__Particle Particle;
 
-		enum {
+		enum
+		{
 			ParticleSize =
 				sizeof(Particle)
-				 + 3*sizeof(Stuff::Point3D)
-				 + 3*sizeof(Stuff::RGBAColor)
+				+ 3 * sizeof(Stuff::Point3D)
+				+ 3 * sizeof(Stuff::RGBAColor)
 		};
 
 	protected:
-		MidLevelRenderer::MLRTriangleCloud * m_cloudImplementation;						// point to an MLR triangle cloud by Michael
-		Stuff::Point3D			*m_P_vertices;
-		Stuff::RGBAColor		*m_P_color;
+		MidLevelRenderer::MLRTriangleCloud* m_cloudImplementation;						// point to an MLR triangle cloud by Michael
+		Stuff::Point3D*			m_P_vertices;
+		Stuff::RGBAColor*		m_P_color;
 
-	//----------------------------------------------------------------------------
-	// Class Data Support
-	//
+		//----------------------------------------------------------------------------
+		// Class Data Support
+		//
 	protected:
 		ShardCloud(
-			Specification *spec,
+			Specification* spec,
 			uint32_t flags
 		);
 
@@ -114,57 +118,58 @@ namespace gosFX
 		~ShardCloud(void);
 
 		static ShardCloud*
-			Make(
-				Specification *spec,
-				uint32_t flags
-			);
+		Make(
+			Specification* spec,
+			uint32_t flags
+		);
 
 		Specification*
-			GetSpecification()
-				{
-					Check_Object(this);
-					return
-						Cast_Object(Specification*, m_specification);
-				}
+		GetSpecification()
+		{
+			Check_Object(this);
+			return
+				Cast_Object(Specification*, m_specification);
+		}
 		Particle*
-			GetParticle(uint32_t index)
-				{
-					Check_Object(this); Check_Object(GetSpecification());
-					return
-						Cast_Pointer(
-							Particle*,
-							&m_data[index*GetSpecification()->m_particleClassSize]
-						);
-				}
+		GetParticle(uint32_t index)
+		{
+			Check_Object(this);
+			Check_Object(GetSpecification());
+			return
+				Cast_Pointer(
+					Particle*,
+					&m_data[index * GetSpecification()->m_particleClassSize]
+				);
+		}
 
 		static ClassData* DefaultData;
 
-	//----------------------------------------------------------------------------
-	// Testing
-	//
+		//----------------------------------------------------------------------------
+		// Testing
+		//
 	public:
 		void TestInstance(void) const;
 
-	//----------------------------------------------------------------------------
-	// API
-	//
+		//----------------------------------------------------------------------------
+		// API
+		//
 	protected:
 		bool
-			AnimateParticle(
-				uint32_t index,
-				const Stuff::LinearMatrix4D *world_to_new_local,
-				Stuff::Time till
-			);
+		AnimateParticle(
+			uint32_t index,
+			const Stuff::LinearMatrix4D* world_to_new_local,
+			Stuff::Time till
+		);
 		void
-			CreateNewParticle(
-				uint32_t index,
-				Stuff::Point3D *translation
-			);
+		CreateNewParticle(
+			uint32_t index,
+			Stuff::Point3D* translation
+		);
 		void
-			DestroyParticle(uint32_t index);
+		DestroyParticle(uint32_t index);
 
 	public:
 		void
-			Draw(DrawInfo *info);
+		Draw(DrawInfo* info);
 	};
 }

@@ -33,12 +33,15 @@ class ComponentListItem : public aListItem
 {
 public:
 
-	ComponentListItem( LogisticsComponent* pComp );
+	ComponentListItem(LogisticsComponent* pComp);
 	virtual ~ComponentListItem(void);
 
-	static int32_t init( FitIniFile& file );
+	static int32_t init(FitIniFile& file);
 
-	LogisticsComponent* getComponent() { return pComponent; }
+	LogisticsComponent* getComponent()
+	{
+		return pComponent;
+	}
 
 	virtual void render(void);
 
@@ -66,8 +69,8 @@ private:
 
 	LogisticsComponent* pComponent;
 
-	static void assignAnimation( FitIniFile& file,
-		int32_t whichChild, char animNames[COMP_ANIMATION_COUNT][32], aObject* pObject );
+	static void assignAnimation(FitIniFile& file,
+								int32_t whichChild, char animNames[COMP_ANIMATION_COUNT][32], aObject* pObject);
 
 	void doAdd(void);
 	void setComponent(void);
@@ -83,7 +86,7 @@ class ComponentIconListBox : public aListBox
 public:
 	ComponentIconListBox(void);
 	virtual ~ComponentIconListBox(void);
-	void setType( int32_t Type, int32_t orThisType, int32_t orThis);
+	void setType(int32_t Type, int32_t orThisType, int32_t orThis);
 	virtual void update(void);
 
 	LogisticsComponent* getComponent(void);
@@ -93,14 +96,14 @@ public:
 
 private:
 
-	ComponentIconListBox( const ComponentIconListBox& src );
-	ComponentIconListBox& operator=( const ComponentIconListBox& src );
+	ComponentIconListBox(const ComponentIconListBox& src);
+	ComponentIconListBox& operator=(const ComponentIconListBox& src);
 
 	EList<ComponentListItem*, ComponentListItem*>	masterComponentList;
 
 	int32_t type;
 
-	void addSortedItem( ComponentListItem* pItem );
+	void addSortedItem(ComponentListItem* pItem);
 
 };
 

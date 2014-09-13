@@ -23,13 +23,19 @@ public:
 	//}}AFX_DATA
 
 	int32_t m_selectedTerrainType;
-	int32_t SelectedTerrainType() { return m_selectedTerrainType; }
-	void SelectedTerrainType(int32_t selectedTerrainType) { m_selectedTerrainType = selectedTerrainType; }
+	int32_t SelectedTerrainType()
+	{
+		return m_selectedTerrainType;
+	}
+	void SelectedTerrainType(int32_t selectedTerrainType)
+	{
+		m_selectedTerrainType = selectedTerrainType;
+	}
 
 // Overrides
 	// ClassWizard generated virtual function overrides
 	//{{AFX_VIRTUAL(SelectTerrainTypeDlg)
-	protected:
+protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	//}}AFX_VIRTUAL
 

@@ -55,77 +55,72 @@ typedef struct _CraterData
 	Stuff::Vector4D screenPos[4];
 } CraterData;
 
-typedef CraterData *CraterDataPtr;
+typedef CraterData* CraterDataPtr;
 //---------------------------------------------------------------------
 // class CraterManager
 class CraterManager
 {
 	//Data Members
 	//-------------
-	protected:
-		
-		HeapManagerPtr		craterPosHeap;
-		UserHeapPtr			craterShpHeap;
-		
-		uint32_t		craterPosHeapSize;
-		uint32_t		craterShpHeapSize;
-		
-		PacketFilePtr		craterFile;
-		
-		uint32_t		maxCraters;
-		uint32_t		currentCrater;
-		CraterDataPtr		craterList;
-		int32_t				numCraterTextures;
+protected:
 
-		uint32_t				*craterTextureIndices;
-		uint32_t				*craterTextureHandles;
-				
+	HeapManagerPtr		craterPosHeap;
+	UserHeapPtr			craterShpHeap;
+
+	uint32_t		craterPosHeapSize;
+	uint32_t		craterShpHeapSize;
+
+	PacketFilePtr		craterFile;
+
+	uint32_t		maxCraters;
+	uint32_t		currentCrater;
+	CraterDataPtr		craterList;
+	int32_t				numCraterTextures;
+
+	uint32_t*				craterTextureIndices;
+	uint32_t*				craterTextureHandles;
+
 	//Member Functions
 	//-----------------
-	protected:
-		
-	public:
-	
-		void init (void)
-		{
-			craterPosHeap = nullptr;
-			craterShpHeap = nullptr;
+protected:
 
-			craterPosHeapSize = craterShpHeapSize = 0;
-			
-			currentCrater = maxCraters = 0;
-			craterList = nullptr;
+public:
 
-			numCraterTextures = 0;
-			
-			craterTextureHandles = nullptr;
-			craterTextureIndices = nullptr;
-			
-			craterFile = nullptr;
-		}
-		
-		CraterManager (void)
-		{
-			init(void);
-		}
-		
-		int32_t init (int32_t numCraters, uint32_t craterTypeSize, PSTR craterFileName);
-		
-		~CraterManager (void)
-		{
-			destroy(void);
-		}
-		
-		void destroy (void);
-		
-		int32_t addCrater (int32_t craterType, Stuff::Vector3D &position, float rotation);
-		
-		int32_t update (void);
-		void render (void);
+	void init(void)
+	{
+		craterPosHeap = nullptr;
+		craterShpHeap = nullptr;
+		craterPosHeapSize = craterShpHeapSize = 0;
+		currentCrater = maxCraters = 0;
+		craterList = nullptr;
+		numCraterTextures = 0;
+		craterTextureHandles = nullptr;
+		craterTextureIndices = nullptr;
+		craterFile = nullptr;
+	}
+
+	CraterManager(void)
+	{
+		init(void);
+	}
+
+	int32_t init(int32_t numCraters, uint32_t craterTypeSize, PSTR craterFileName);
+
+	~CraterManager(void)
+	{
+		destroy(void);
+	}
+
+	void destroy(void);
+
+	int32_t addCrater(int32_t craterType, Stuff::Vector3D& position, float rotation);
+
+	int32_t update(void);
+	void render(void);
 };
 
 //---------------------------------------------------------------------
-typedef CraterManager *CraterManagerPtr;
+typedef CraterManager* CraterManagerPtr;
 extern CraterManagerPtr craterManager;
 
 //---------------------------------------------------------------------

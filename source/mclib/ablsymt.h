@@ -21,21 +21,24 @@
 //---------------------
 // DEFINITION structure
 
-typedef union {
+typedef union
+{
 	int32_t		integer;
 	char		character;
 	float		real;
 	PSTR		stringPtr;
 } Value;
 
-typedef enum {
+typedef enum
+{
 	VAR_TYPE_NORMAL,
 	VAR_TYPE_STATIC,
 	VAR_TYPE_ETERNAL,
 	VAR_TYPE_REGISTERED
 } VariableType;
 
-typedef enum {
+typedef enum
+{
 	DFN_UNDEFINED,
 	DFN_CONST,
 	DFN_TYPE,
@@ -47,7 +50,8 @@ typedef enum {
 	DFN_FUNCTION
 } DefinitionType;
 
-typedef enum {
+typedef enum
+{
 	RTN_DECLARED,
 	RTN_FORWARD,
 	RTN_RETURN,
@@ -63,11 +67,13 @@ typedef enum {
 typedef struct _SymTableNode*	SymTableNodePtr;
 typedef	struct _Type*			TypePtr;
 
-typedef struct {
+typedef struct
+{
 	Value					value;
 } Constant;
 
-typedef struct {
+typedef struct
+{
 	char					name[128];
 	SymTableNodePtr			state;
 } StateHandleInfo;
@@ -78,7 +84,8 @@ typedef StateHandleInfo* StateHandleInfoPtr;
 #define	ROUTINE_FLAG_FSM	2
 #define	ROUTINE_FLAG_STATE	4
 
-typedef struct _Routine {
+typedef struct _Routine
+{
 	RoutineKey				key;
 	uint8_t			flags;
 	uint16_t			orderCallIndex;
@@ -93,20 +100,23 @@ typedef struct _Routine {
 	int32_t					codeSegmentSize;
 } Routine;
 
-typedef struct {
+typedef struct
+{
 	VariableType			varType;
 	int32_t					offset;
 	PVOID					registeredData;
 	//SymTableNodePtr			recordIdPtr;		// Currently not implementing record structures...
 } Data;
 
-typedef union {
+typedef union
+{
 	Constant				constant;
 	Routine					routine;
 	Data					data;
 } DefinitionInfo;
 
-typedef struct {
+typedef struct
+{
 	DefinitionType			key;
 	DefinitionInfo			info;
 } Definition;
@@ -114,9 +124,10 @@ typedef struct {
 //***************************************************************************
 
 //------------------
-// SYMBOL TABLE node	
+// SYMBOL TABLE node
 
-typedef struct _SymTableNode {
+typedef struct _SymTableNode
+{
 	SymTableNodePtr		left;
 	SymTableNodePtr		parent;
 	SymTableNodePtr		right;
@@ -130,7 +141,8 @@ typedef struct _SymTableNode {
 	int32_t				labelIndex;		// really for compiling only...
 } SymTableNode;
 
-typedef enum {
+typedef enum
+{
 	PARAM_TYPE_ANYTHING,
 	PARAM_TYPE_CHAR,
 	PARAM_TYPE_INTEGER,
@@ -144,7 +156,8 @@ typedef enum {
 	NUM_PARAM_TYPES
 } FunctionParamType;
 
-typedef enum {
+typedef enum
+{
 	RETURN_TYPE_NONE,
 	RETURN_TYPE_INTEGER,
 	RETURN_TYPE_REAL,
@@ -155,7 +168,8 @@ typedef enum {
 #define	MAX_STANDARD_FUNCTIONS	256
 #define	MAX_FUNCTION_PARAMS		20
 
-typedef struct {
+typedef struct
+{
 	SymTableNodePtr			symbol;
 	int32_t					numParams;
 	FunctionParamType		params[MAX_FUNCTION_PARAMS];
@@ -167,7 +181,8 @@ typedef struct {
 //---------------
 // TYPE structure
 
-typedef enum {
+typedef enum
+{
 	FRM_NONE,
 	FRM_SCALAR,
 	FRM_ENUM,
@@ -179,17 +194,21 @@ typedef enum {
 // Currently, we are only supporting the basic types: arrays and simple
 // variables.
 
-typedef struct _Type {
+typedef struct _Type
+{
 	int32_t							numInstances;
 	FormType						form;
 	int32_t							size;
 	SymTableNodePtr					typeIdPtr;
-	union {
-		struct {
+	union
+	{
+		struct
+		{
 			SymTableNodePtr			constIdPtr;
 			int32_t					max;
 		} enumeration;
-		struct {
+		struct
+		{
 			TypePtr					indexTypePtr;		// should be Integer
 			TypePtr					elementTypePtr;		// should be Real, Integer, Char or array
 			int32_t					elementCount;
@@ -199,44 +218,44 @@ typedef struct _Type {
 		//	SymTableNodePtr		fieldSymTable;
 		//} record;
 	} info;
-} Type;	
+} Type;
 
 
 //***************************************************************************
 
-void searchLocalSymTable (SymTableNodePtr& IdPtr);
-SymTableNodePtr searchLocalSymTableForFunction (PSTR name);
-void searchThisSymTable (SymTableNodePtr& IdPtr, SymTableNodePtr thisTable);
-void searchAllSymTables (SymTableNodePtr& IdPtr);
-void enterLocalSymTable (SymTableNodePtr& IdPtr);
-void enterNameLocalSymTable (SymTableNodePtr& IdPtr, PSTR name);
-void searchAndFindAllSymTables (SymTableNodePtr& IdPtr);
-void searchAndEnterLocalSymTable (SymTableNodePtr& IdPtr);
-/*inline*/ void searchAndEnterThisTable (SymTableNodePtr& IdPtr, SymTableNodePtr thisTable);
-inline SymTableNodePtr symTableSuccessor (SymTableNodePtr nodeX);
+void searchLocalSymTable(SymTableNodePtr& IdPtr);
+SymTableNodePtr searchLocalSymTableForFunction(PSTR name);
+void searchThisSymTable(SymTableNodePtr& IdPtr, SymTableNodePtr thisTable);
+void searchAllSymTables(SymTableNodePtr& IdPtr);
+void enterLocalSymTable(SymTableNodePtr& IdPtr);
+void enterNameLocalSymTable(SymTableNodePtr& IdPtr, PSTR name);
+void searchAndFindAllSymTables(SymTableNodePtr& IdPtr);
+void searchAndEnterLocalSymTable(SymTableNodePtr& IdPtr);
+/*inline*/ void searchAndEnterThisTable(SymTableNodePtr& IdPtr, SymTableNodePtr thisTable);
+inline SymTableNodePtr symTableSuccessor(SymTableNodePtr nodeX);
 
-SymTableNodePtr searchSymTable (PSTR name, SymTableNodePtr nodePtr);
-SymTableNodePtr searchSymTableForFunction (PSTR name, SymTableNodePtr nodePtr);
-SymTableNodePtr searchSymTableForState (PSTR name, SymTableNodePtr nodePtr);
-SymTableNodePtr searchSymTableForString (PSTR name, SymTableNodePtr nodePtr);
-SymTableNodePtr searchSymTableDisplay (PSTR name);
-SymTableNodePtr enterSymTable (PSTR name, SymTableNodePtr* ptrToNodePtr);
-SymTableNodePtr insertSymTable (SymTableNodePtr* tableRoot, SymTableNodePtr newNode);
-SymTableNodePtr extractSymTable (SymTableNodePtr* tableRoot, SymTableNodePtr nodeKill);
-void enterStandardRoutine (PSTR name, int32_t routineKey, bool isOrder, PSTR paramList, PSTR returnType, void (*callback)(void));
-void enterScope (SymTableNodePtr symTableRoot);
-SymTableNodePtr exitScope (void);
-void initSymTable (void);
+SymTableNodePtr searchSymTable(PSTR name, SymTableNodePtr nodePtr);
+SymTableNodePtr searchSymTableForFunction(PSTR name, SymTableNodePtr nodePtr);
+SymTableNodePtr searchSymTableForState(PSTR name, SymTableNodePtr nodePtr);
+SymTableNodePtr searchSymTableForString(PSTR name, SymTableNodePtr nodePtr);
+SymTableNodePtr searchSymTableDisplay(PSTR name);
+SymTableNodePtr enterSymTable(PSTR name, SymTableNodePtr* ptrToNodePtr);
+SymTableNodePtr insertSymTable(SymTableNodePtr* tableRoot, SymTableNodePtr newNode);
+SymTableNodePtr extractSymTable(SymTableNodePtr* tableRoot, SymTableNodePtr nodeKill);
+void enterStandardRoutine(PSTR name, int32_t routineKey, bool isOrder, PSTR paramList, PSTR returnType, void (*callback)(void));
+void enterScope(SymTableNodePtr symTableRoot);
+SymTableNodePtr exitScope(void);
+void initSymTable(void);
 
-TypePtr createType (void);
-TypePtr setType (TypePtr type);
-void clearType (TypePtr& type);
+TypePtr createType(void);
+TypePtr setType(TypePtr type);
+void clearType(TypePtr& type);
 
 //***************************************************************************
 
 extern StandardFunctionInfo		FunctionInfoTable[MAX_STANDARD_FUNCTIONS];
 //extern PVOID					FunctionCallbackTable[MAX_STANDARD_FUNCTIONS];
-extern void						(*FunctionCallbackTable[MAX_STANDARD_FUNCTIONS])(void);
+extern void	(*FunctionCallbackTable[MAX_STANDARD_FUNCTIONS])(void);
 extern int32_t						NumStandardFunctions;
 
 #endif

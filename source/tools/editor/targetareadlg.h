@@ -17,7 +17,7 @@ TargetAreaDlg.h		: Interface for the TargetAreaDlg component.
 class TargetAreaDlg: public CDialog
 {
 public:
-	TargetAreaDlg( float &targetCenterX, float &targetCenterY, float &targetRadius );
+	TargetAreaDlg(float& targetCenterX, float& targetCenterY, float& targetRadius);
 
 	BOOL OnCommand(WPARAM wParam, LPARAM lParam); // called by child controls to inform of an event
 	void OnCancel(void);
@@ -32,16 +32,16 @@ private:
 
 	// suppressing these
 	inline TargetAreaDlg(void);
-	TargetAreaDlg& operator=( const TargetAreaDlg& lgUnitPtr );
+	TargetAreaDlg& operator=(const TargetAreaDlg& lgUnitPtr);
 
-	float *m_pTargetCenterX;
-	float *m_pTargetCenterY;
-	float *m_pTargetRadius;
-	CEdit *m_pTargetCenterXEditBox;
-	CEdit *m_pTargetCenterYEditBox;
-	CEdit *m_pTargetRadiusEditBox;
-	CButton *m_pCancelButton;
-	CButton *m_pOKButton;
+	float* m_pTargetCenterX;
+	float* m_pTargetCenterY;
+	float* m_pTargetRadius;
+	CEdit* m_pTargetCenterXEditBox;
+	CEdit* m_pTargetCenterYEditBox;
+	CEdit* m_pTargetRadiusEditBox;
+	CButton* m_pCancelButton;
+	CButton* m_pOKButton;
 };
 
 

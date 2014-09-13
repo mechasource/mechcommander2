@@ -15,74 +15,69 @@ TerrainBrush.h		: Interface for the TerrainBrush component. used to paint textur
 
 class TerrainBrush: public Brush
 {
-	public:
+public:
 
-		inline TerrainBrush( int32_t Type )
+	inline TerrainBrush(int32_t Type)
+	{
+		if(Type == -1)
+			Type = s_lastType;
+		terrainType = Type;
+		s_lastType = Type;
+		pAction = nullptr;
+	}
+	virtual ~TerrainBrush() {}
+
+	bool beginPaint()
+	{
+		if(pAction)
 		{
-			if ( Type == -1 )
-				Type = s_lastType;
-
-			terrainType = Type;
-			s_lastType = Type;
-			pAction = nullptr;
+			gosASSERT(false);
 		}
-		virtual ~TerrainBrush(){}
-
-		bool beginPaint()
+		pAction = new ActionPaintTile;
+		gosASSERT(pAction);
+		return true;
+	}
+	Action* endPaint()
+	{
+		Action* pRetAction = pAction;
+		pAction  = nullptr;
+		return pRetAction;
+	}
+	virtual bool paint(Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY)
+	{
+		int32_t tileC;
+		int32_t tileR;
+		Stuff::Vector2DOf<int32_t> screenPos(screenX, screenY);
+		eye->getClosestVertex(screenPos, tileR, tileC);
+		if(tileR < Terrain::realVerticesMapSide && tileR > -1
+				&& tileC < Terrain::realVerticesMapSide && tileC > -1)
 		{
-			if ( pAction )
-			{
-				gosASSERT( false );
-			}
-
-			pAction = new ActionPaintTile;
-
-			gosASSERT( pAction );
-
+			pAction->addChangedVertexInfo(tileR, tileC);	// for undo
+			land->setTerrain(tileR, tileC, terrainType);
 			return true;
 		}
-		Action* endPaint()
-		{
-			Action* pRetAction = pAction;
-			pAction  = nullptr;
-			return pRetAction;
-		}
-		virtual bool paint( Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY )
-		{
-			int32_t tileC;
-			int32_t tileR;
+		return false;
+	}
+	virtual bool canPaint(Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY, int32_t flags)
+	{
+		return true;
+	}
 
-			Stuff::Vector2DOf<int32_t> screenPos( screenX, screenY );
-
-			eye->getClosestVertex( screenPos, tileR, tileC );
-
-			if ( tileR < Terrain::realVerticesMapSide && tileR > -1 
-				&& tileC < Terrain::realVerticesMapSide && tileC > -1 )
-			{
-				pAction->addChangedVertexInfo( tileR, tileC );	// for undo
-				land->setTerrain( tileR, tileC, terrainType );
-				return true;
-			}
-
-			return false;
-		}
-		virtual bool canPaint( Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY, int32_t flags ) { return true; } 
-
-		virtual Action* applyToSelection(void);
+	virtual Action* applyToSelection(void);
 
 
 
-	private:
+private:
 
-		// SUPPRESS THESE!
-		TerrainBrush( const TerrainBrush& TerrainBrush );
-		TerrainBrush& operator=( const TerrainBrush& TerrainBrush );
+	// SUPPRESS THESE!
+	TerrainBrush(const TerrainBrush& TerrainBrush);
+	TerrainBrush& operator=(const TerrainBrush& TerrainBrush);
 
-		int32_t terrainType;
+	int32_t terrainType;
 
-		static int32_t s_lastType;
+	static int32_t s_lastType;
 
-		ActionPaintTile* pAction;
+	ActionPaintTile* pAction;
 };
 
 

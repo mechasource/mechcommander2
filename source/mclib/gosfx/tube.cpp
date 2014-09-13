@@ -16,7 +16,7 @@
 //------------------------------------------------------------------------------
 //
 gosFX::Tube__Specification::Tube__Specification(
-	Stuff::MemoryStream *stream,
+	Stuff::MemoryStream* stream,
 	int32_t gfx_version
 ):
 	Effect__Specification(TubeClassID, stream, gfx_version)
@@ -24,7 +24,6 @@ gosFX::Tube__Specification::Tube__Specification(
 	Check_Pointer(this);
 	Check_Object(stream);
 	//Verify(gos_GetCurrentHeap() == Heap);
-
 	//
 	//-------------------
 	// Load in the curves
@@ -38,7 +37,7 @@ gosFX::Tube__Specification::Tube__Specification(
 	m_minimumDeviation.Load(stream, gfx_version);
 	m_maximumDeviation.Load(stream, gfx_version);
 	m_pDisplacement.Load(stream, gfx_version);
-	if (gfx_version < 12)
+	if(gfx_version < 12)
 	{
 		m_pScale.m_ageCurve.SetCurve(1.0f);
 		m_pScale.m_seeded = false;
@@ -54,7 +53,6 @@ gosFX::Tube__Specification::Tube__Specification(
 	m_pVOffset.Load(stream, gfx_version);
 	m_pUSize.Load(stream, gfx_version);
 	m_pVSize.Load(stream, gfx_version);
-
 	int32_t type;
 	*stream >> m_maxProfileCount >> type >> m_insideOut;
 	m_profileType = static_cast<ProfileType>(type);
@@ -78,30 +76,27 @@ gosFX::Tube__Specification::Tube__Specification():
 //------------------------------------------------------------------------------
 //
 gosFX::Tube__Specification*
-	gosFX::Tube__Specification::Make(
-		Stuff::MemoryStream *stream,
-		int32_t gfx_version
-	)
+gosFX::Tube__Specification::Make(
+	Stuff::MemoryStream* stream,
+	int32_t gfx_version
+)
 {
 	Check_Object(stream);
-
 	gos_PushCurrentHeap(Heap);
-	Tube__Specification *spec =
+	Tube__Specification* spec =
 		new gosFX::Tube__Specification(stream, gfx_version);
 	gos_PopCurrentHeap();
-
 	return spec;
 }
 
 //------------------------------------------------------------------------------
 //
 void
-	gosFX::Tube__Specification::Save(Stuff::MemoryStream *stream)
+gosFX::Tube__Specification::Save(Stuff::MemoryStream* stream)
 {
 	Check_Object(this);
 	Check_Object(stream);
 	Effect__Specification::Save(stream);
-
 	//
 	//----------------
 	// Save our curves
@@ -124,70 +119,54 @@ void
 	m_pVOffset.Save(stream);
 	m_pUSize.Save(stream);
 	m_pVSize.Save(stream);
-
 	*stream << m_maxProfileCount << static_cast<int32_t>(m_profileType);
 	*stream << m_insideOut;
 }
 
 //------------------------------------------------------------------------------
 //
-void 
-	gosFX::Tube__Specification::BuildDefaults()
+void
+gosFX::Tube__Specification::BuildDefaults()
 {
-
 	Check_Object(this);
 	Effect__Specification::BuildDefaults();
-
 	m_profilesPerSecond.SetCurve(4.0f);
 	m_pLifeSpan.SetCurve(1.0f);
-
 	m_emitterSizeX.SetCurve(0.0f);
 	m_emitterSizeY.SetCurve(0.0f);
 	m_emitterSizeZ.SetCurve(0.0f);
-
 	m_minimumDeviation.SetCurve(0.0f);
 	m_maximumDeviation.SetCurve(0.0f);
-
 	m_pDisplacement.m_ageCurve.SetCurve(0.0f);
 	m_pDisplacement.m_seeded = false;
 	m_pDisplacement.m_seedCurve.SetCurve(1.0f);
-
 	m_pScale.m_ageCurve.SetCurve(1.0f);
 	m_pScale.m_seeded = false;
 	m_pScale.m_seedCurve.SetCurve(1.0f);
-
 	m_pRed.m_ageCurve.SetCurve(1.0f);
 	m_pRed.m_seeded = false;
 	m_pRed.m_seedCurve.SetCurve(1.0f);
-
 	m_pGreen.m_ageCurve.SetCurve(1.0f);
 	m_pGreen.m_seeded = false;
 	m_pGreen.m_seedCurve.SetCurve(1.0f);
-
 	m_pBlue.m_ageCurve.SetCurve(1.0f);
 	m_pBlue.m_seeded = false;
 	m_pBlue.m_seedCurve.SetCurve(1.0f);
-
 	m_pAlpha.m_ageCurve.SetCurve(1.0f);
 	m_pAlpha.m_seeded = false;
 	m_pAlpha.m_seedCurve.SetCurve(1.0f);
-
 	m_pUOffset.m_ageCurve.SetCurve(0.0f);
 	m_pUOffset.m_seeded = false;
 	m_pUOffset.m_seedCurve.SetCurve(1.0f);
-
 	m_pVOffset.m_ageCurve.SetCurve(0.0f);
 	m_pVOffset.m_seeded = false;
 	m_pVOffset.m_seedCurve.SetCurve(1.0f);
-
 	m_pUSize.m_ageCurve.SetCurve(1.0f);
 	m_pUSize.m_seeded = false;
 	m_pUSize.m_seedCurve.SetCurve(1.0f);
-
 	m_pVSize.m_ageCurve.SetCurve(1.0f);
 	m_pVSize.m_seeded = false;
 	m_pVSize.m_seedCurve.SetCurve(1.0f);
-
 	m_maxProfileCount = 2;
 	m_profileType = e_Triangle;
 	m_insideOut = false;
@@ -198,43 +177,37 @@ void
 
 //------------------------------------------------------------------------------
 //
-bool 
-	gosFX::Tube__Specification::IsDataValid(bool fix_data)
+bool
+gosFX::Tube__Specification::IsDataValid(bool fix_data)
 {
-
 	Check_Object(this);
-	if(m_maxProfileCount<2) 
+	if(m_maxProfileCount < 2)
 		if(fix_data)
 		{
-			m_maxProfileCount=2;
-				PAUSE(("Warning: Value \"maxProfileCount\" in Effect \"%s\" Is Out of Range and has been Reset",(PSTR )m_name));
-
+			m_maxProfileCount = 2;
+			PAUSE(("Warning: Value \"maxProfileCount\" in Effect \"%s\" Is Out of Range and has been Reset", (PSTR)m_name));
 		}
-			else
+		else
 			return false;
-	
-	float min,max;
-	m_pScale.ExpensiveComputeRange(&min,&max);
-	if(min<0.0f)
+	float min, max;
+	m_pScale.ExpensiveComputeRange(&min, &max);
+	if(min < 0.0f)
 		if(fix_data)
 		{
-		m_pScale.m_ageCurve.SetCurve(1.0f);
-		m_pScale.m_seeded = false;
-		m_pScale.m_seedCurve.SetCurve(1.0f);
-		PAUSE(("Warning: Curve \"pScale\" in Effect \"%s\" Is Out of Range and has been Reset",(PSTR )m_name));
-
+			m_pScale.m_ageCurve.SetCurve(1.0f);
+			m_pScale.m_seeded = false;
+			m_pScale.m_seedCurve.SetCurve(1.0f);
+			PAUSE(("Warning: Curve \"pScale\" in Effect \"%s\" Is Out of Range and has been Reset", (PSTR)m_name));
 		}
-			else
-		return false;
-
+		else
+			return false;
 	float max_offset, min_offset;
 	float max_scale, min_scale;
 	m_pUSize.ExpensiveComputeRange(&min_scale, &max_scale);
 	float lower = min_scale;
-	if (lower > 0.0f)
+	if(lower > 0.0f)
 		lower = 0.0f;
 	float upper = max_scale;
-
 	//
 	//------------------------------------
 	// Calculate the worst case UV offsets
@@ -243,27 +216,23 @@ bool
 	m_pVOffset.ExpensiveComputeRange(&min_offset, &max_offset);
 	lower += min_offset;
 	upper += max_offset;
-
-	if (upper > 99.0f || lower < -99.0f)
+	if(upper > 99.0f || lower < -99.0f)
 	{
-	if(fix_data)
+		if(fix_data)
 		{
-		m_pVOffset.m_ageCurve.SetCurve(0.0f);
-		m_pVOffset.m_seeded = false;
-		m_pVOffset.m_seedCurve.SetCurve(1.0f);
-		PAUSE(("Warning: Curve \"VOffset\" in Effect \"%s\" Is Out of Range and has been Reset",(PSTR )m_name));
-
+			m_pVOffset.m_ageCurve.SetCurve(0.0f);
+			m_pVOffset.m_seeded = false;
+			m_pVOffset.m_seedCurve.SetCurve(1.0f);
+			PAUSE(("Warning: Curve \"VOffset\" in Effect \"%s\" Is Out of Range and has been Reset", (PSTR)m_name));
 		}
 		else
 			return false;
 	}
-	
 	m_pVSize.ExpensiveComputeRange(&min_scale, &max_scale);
 	lower = min_scale;
-	if (lower > 0.0f)
+	if(lower > 0.0f)
 		lower = 0.0f;
 	upper = max_scale;
-
 	//
 	//------------------------------------
 	// Calculate the worst case UV offsets
@@ -273,36 +242,30 @@ bool
 	m_pUOffset.ExpensiveComputeRange(&min_offset, &max_offset);
 	lower += min_offset;
 	upper += max_offset;
-
-	if (upper > 99.0f || lower < -99.0f)
+	if(upper > 99.0f || lower < -99.0f)
 	{
-	if(fix_data)
+		if(fix_data)
 		{
-		m_pUOffset.m_ageCurve.SetCurve(0.0f);
-		m_pUOffset.m_seeded = false;
-		m_pUOffset.m_seedCurve.SetCurve(1.0f);
-		PAUSE(("Warning: Curve \"UOffset\" in Effect \"%s\" Is Out of Range and has been Reset",(PSTR )m_name));
-		
+			m_pUOffset.m_ageCurve.SetCurve(0.0f);
+			m_pUOffset.m_seeded = false;
+			m_pUOffset.m_seedCurve.SetCurve(1.0f);
+			PAUSE(("Warning: Curve \"UOffset\" in Effect \"%s\" Is Out of Range and has been Reset", (PSTR)m_name));
 		}
 		else
 			return false;
 	}
-
-
 	return Effect__Specification::IsDataValid(fix_data);
 }
 
 //------------------------------------------------------------------------------
 //
 void
-	gosFX::Tube__Specification::Copy(Tube__Specification *spec)
+gosFX::Tube__Specification::Copy(Tube__Specification* spec)
 {
 	Check_Object(this);
 	Check_Object(spec);
 	//Verify(gos_GetCurrentHeap() == Heap);
-
 	Effect__Specification::Copy(spec);
-
 	//
 	//----------------
 	// Copy the curves
@@ -338,133 +301,124 @@ void
 //------------------------------------------------------------------------------
 //
 void
-	gosFX::Tube__Specification::BuildTemplate()
+gosFX::Tube__Specification::BuildTemplate()
 {
 	Check_Object(this);
-
-	switch (m_profileType)
+	switch(m_profileType)
 	{
-	case e_Ribbon:
-	case e_AlignedRibbon:
-		m_vertices.SetLength(2);
-		m_vertices[0] = Stuff::Vector3D(1.0f, 0.0f, 0.0f);
-		m_vertices[1] = Stuff::Vector3D(-1.0f, 0.0f, 0.0f);
-		m_uvs.SetLength(2);
-		m_uvs[0] = Stuff::Vector2DOf<float>(0.0f, 0.0f);
-		m_uvs[1] = Stuff::Vector2DOf<float>(0.0f, 1.0f);
-		break;
-
-	case e_VerticalRibbon:
-		m_vertices.SetLength(2);
-		m_vertices[0] = Stuff::Vector3D(0.0f, 0.0f, -1.0f);
-		m_vertices[1] = Stuff::Vector3D(0.0f, 0.0f, 1.0f);
-		m_uvs.SetLength(2);
-		m_uvs[0] = Stuff::Vector2DOf<float>(0.0f, 0.0f);
-		m_uvs[1] = Stuff::Vector2DOf<float>(0.0f, 1.0f);
-		break;
-
-	case e_Triangle:
-		m_vertices.SetLength(4);
-		m_vertices[0] = Stuff::Vector3D(0.0f, 0.0f, 1.0f);
-		m_vertices[1] = Stuff::Vector3D(-0.8660254f, 0.0f, -0.5f);
-		m_vertices[2] = Stuff::Vector3D(0.8660254f, 0.0f, -0.5f);
-		m_vertices[3] = Stuff::Vector3D(0.0f, 0.0f, 1.0f);
-		m_uvs.SetLength(4);
-		m_uvs[0] = Stuff::Vector2DOf<float>(0.0f, 0.0f);
-		m_uvs[1] = Stuff::Vector2DOf<float>(0.0f, 1.0f/3.0f);
-		m_uvs[2] = Stuff::Vector2DOf<float>(0.0f, 2.0f/3.0f);
-		m_uvs[3] = Stuff::Vector2DOf<float>(0.0f, 1.0f);
-		break;
-
-	case e_Square:
-		m_vertices.SetLength(5);
-		m_vertices[0] = Stuff::Vector3D(0.0f, 0.0f, 1.0f);
-		m_vertices[1] = Stuff::Vector3D(-1.0f, 0.0f, 0.0f);
-		m_vertices[2] = Stuff::Vector3D(0.0f, 0.0f, -1.0f);
-		m_vertices[3] = Stuff::Vector3D(1.0f, 0.0f, 0.0f);
-		m_vertices[4] = Stuff::Vector3D(0.0f, 0.0f, 1.0f);
-		m_uvs.SetLength(5);
-		m_uvs[0] = Stuff::Vector2DOf<float>(0.0f, 0.0f);
-		m_uvs[1] = Stuff::Vector2DOf<float>(0.0f, 0.25f);
-		m_uvs[2] = Stuff::Vector2DOf<float>(0.0f, 0.5f);
-		m_uvs[3] = Stuff::Vector2DOf<float>(0.0f, 0.75f);
-		m_uvs[4] = Stuff::Vector2DOf<float>(0.0f, 1.0f);
-		break;
-
-	case e_Cross:
-		m_vertices.SetLength(5);
-		m_vertices[0] = Stuff::Vector3D(0.0f, 0.0f, 0.0f);
-		m_vertices[1] = Stuff::Vector3D(0.0f, 0.0f, 1.0f);
-		m_vertices[2] = Stuff::Vector3D(-1.0f, 0.0f, 0.0f);
-		m_vertices[3] = Stuff::Vector3D(0.0f, 0.0f, -1.0f);
-		m_vertices[4] = Stuff::Vector3D(1.0f, 0.0f, 0.0f);
-		m_uvs.SetLength(5);
-		m_uvs[0] = Stuff::Vector2DOf<float>(0.0f, 0.0f);
-		m_uvs[1] = Stuff::Vector2DOf<float>(0.0f, 1.0f);
-		m_uvs[2] = Stuff::Vector2DOf<float>(0.0f, 1.0f);
-		m_uvs[3] = Stuff::Vector2DOf<float>(0.0f, 1.0f);
-		m_uvs[4] = Stuff::Vector2DOf<float>(0.0f, 1.0f);
-		break;
-
-	case e_Pentagon:
-		m_vertices.SetLength(6);
-		m_vertices[0] = Stuff::Vector3D(0.0f, 0.0f, 1.0f);
-		m_vertices[1] = Stuff::Vector3D(-0.9510565f, 0.0f, 0.309017f);
-		m_vertices[2] = Stuff::Vector3D(-0.58778525f, 0.0f, -0.8090167f);
-		m_vertices[3] = Stuff::Vector3D(0.58778525f, 0.0f, -0.8090167f);
-		m_vertices[4] = Stuff::Vector3D(0.9510565f, 0.0f, 0.309017f);
-		m_vertices[5] = Stuff::Vector3D(0.0f, 0.0f, 1.0f);
-		m_uvs.SetLength(6);
-		m_uvs[0] = Stuff::Vector2DOf<float>(0.0f, 0.0f);
-		m_uvs[1] = Stuff::Vector2DOf<float>(0.0f, 0.2f);
-		m_uvs[2] = Stuff::Vector2DOf<float>(0.0f, 0.4f);
-		m_uvs[3] = Stuff::Vector2DOf<float>(0.0f, 0.6f);
-		m_uvs[4] = Stuff::Vector2DOf<float>(0.0f, 0.8f);
-		m_uvs[5] = Stuff::Vector2DOf<float>(0.0f, 1.0f);
-		break;
-
-	case e_Hexagon:
-		m_vertices.SetLength(7);
-		m_vertices[0] = Stuff::Vector3D(0.0f, 0.0f, 1.0f);
-		m_vertices[1] = Stuff::Vector3D(-0.8660254f, 0.0f, 0.5f);
-		m_vertices[2] = Stuff::Vector3D(-0.8660254f, 0.0f, -0.5f);
-		m_vertices[3] = Stuff::Vector3D(0.0f, 0.0f, -1.0f);
-		m_vertices[4] = Stuff::Vector3D(0.8660254f, 0.0f, -0.5f);
-		m_vertices[5] = Stuff::Vector3D(0.8660254f, 0.0f, 0.5f);
-		m_vertices[6] = Stuff::Vector3D(0.0f, 0.0f, 1.0f);
-		m_uvs.SetLength(7);
-		m_uvs[0] = Stuff::Vector2DOf<float>(0.0f, 0.0f);
-		m_uvs[1] = Stuff::Vector2DOf<float>(0.0f, 1.0f/6.0f);
-		m_uvs[2] = Stuff::Vector2DOf<float>(0.0f, 2.0f/6.0f);
-		m_uvs[3] = Stuff::Vector2DOf<float>(0.0f, 0.5f);
-		m_uvs[4] = Stuff::Vector2DOf<float>(0.0f, 4.0f/6.0f);
-		m_uvs[5] = Stuff::Vector2DOf<float>(0.0f, 5.0f/6.0f);
-		m_uvs[6] = Stuff::Vector2DOf<float>(0.0f, 1.0f);
-		break;
+		case e_Ribbon:
+		case e_AlignedRibbon:
+			m_vertices.SetLength(2);
+			m_vertices[0] = Stuff::Vector3D(1.0f, 0.0f, 0.0f);
+			m_vertices[1] = Stuff::Vector3D(-1.0f, 0.0f, 0.0f);
+			m_uvs.SetLength(2);
+			m_uvs[0] = Stuff::Vector2DOf<float>(0.0f, 0.0f);
+			m_uvs[1] = Stuff::Vector2DOf<float>(0.0f, 1.0f);
+			break;
+		case e_VerticalRibbon:
+			m_vertices.SetLength(2);
+			m_vertices[0] = Stuff::Vector3D(0.0f, 0.0f, -1.0f);
+			m_vertices[1] = Stuff::Vector3D(0.0f, 0.0f, 1.0f);
+			m_uvs.SetLength(2);
+			m_uvs[0] = Stuff::Vector2DOf<float>(0.0f, 0.0f);
+			m_uvs[1] = Stuff::Vector2DOf<float>(0.0f, 1.0f);
+			break;
+		case e_Triangle:
+			m_vertices.SetLength(4);
+			m_vertices[0] = Stuff::Vector3D(0.0f, 0.0f, 1.0f);
+			m_vertices[1] = Stuff::Vector3D(-0.8660254f, 0.0f, -0.5f);
+			m_vertices[2] = Stuff::Vector3D(0.8660254f, 0.0f, -0.5f);
+			m_vertices[3] = Stuff::Vector3D(0.0f, 0.0f, 1.0f);
+			m_uvs.SetLength(4);
+			m_uvs[0] = Stuff::Vector2DOf<float>(0.0f, 0.0f);
+			m_uvs[1] = Stuff::Vector2DOf<float>(0.0f, 1.0f / 3.0f);
+			m_uvs[2] = Stuff::Vector2DOf<float>(0.0f, 2.0f / 3.0f);
+			m_uvs[3] = Stuff::Vector2DOf<float>(0.0f, 1.0f);
+			break;
+		case e_Square:
+			m_vertices.SetLength(5);
+			m_vertices[0] = Stuff::Vector3D(0.0f, 0.0f, 1.0f);
+			m_vertices[1] = Stuff::Vector3D(-1.0f, 0.0f, 0.0f);
+			m_vertices[2] = Stuff::Vector3D(0.0f, 0.0f, -1.0f);
+			m_vertices[3] = Stuff::Vector3D(1.0f, 0.0f, 0.0f);
+			m_vertices[4] = Stuff::Vector3D(0.0f, 0.0f, 1.0f);
+			m_uvs.SetLength(5);
+			m_uvs[0] = Stuff::Vector2DOf<float>(0.0f, 0.0f);
+			m_uvs[1] = Stuff::Vector2DOf<float>(0.0f, 0.25f);
+			m_uvs[2] = Stuff::Vector2DOf<float>(0.0f, 0.5f);
+			m_uvs[3] = Stuff::Vector2DOf<float>(0.0f, 0.75f);
+			m_uvs[4] = Stuff::Vector2DOf<float>(0.0f, 1.0f);
+			break;
+		case e_Cross:
+			m_vertices.SetLength(5);
+			m_vertices[0] = Stuff::Vector3D(0.0f, 0.0f, 0.0f);
+			m_vertices[1] = Stuff::Vector3D(0.0f, 0.0f, 1.0f);
+			m_vertices[2] = Stuff::Vector3D(-1.0f, 0.0f, 0.0f);
+			m_vertices[3] = Stuff::Vector3D(0.0f, 0.0f, -1.0f);
+			m_vertices[4] = Stuff::Vector3D(1.0f, 0.0f, 0.0f);
+			m_uvs.SetLength(5);
+			m_uvs[0] = Stuff::Vector2DOf<float>(0.0f, 0.0f);
+			m_uvs[1] = Stuff::Vector2DOf<float>(0.0f, 1.0f);
+			m_uvs[2] = Stuff::Vector2DOf<float>(0.0f, 1.0f);
+			m_uvs[3] = Stuff::Vector2DOf<float>(0.0f, 1.0f);
+			m_uvs[4] = Stuff::Vector2DOf<float>(0.0f, 1.0f);
+			break;
+		case e_Pentagon:
+			m_vertices.SetLength(6);
+			m_vertices[0] = Stuff::Vector3D(0.0f, 0.0f, 1.0f);
+			m_vertices[1] = Stuff::Vector3D(-0.9510565f, 0.0f, 0.309017f);
+			m_vertices[2] = Stuff::Vector3D(-0.58778525f, 0.0f, -0.8090167f);
+			m_vertices[3] = Stuff::Vector3D(0.58778525f, 0.0f, -0.8090167f);
+			m_vertices[4] = Stuff::Vector3D(0.9510565f, 0.0f, 0.309017f);
+			m_vertices[5] = Stuff::Vector3D(0.0f, 0.0f, 1.0f);
+			m_uvs.SetLength(6);
+			m_uvs[0] = Stuff::Vector2DOf<float>(0.0f, 0.0f);
+			m_uvs[1] = Stuff::Vector2DOf<float>(0.0f, 0.2f);
+			m_uvs[2] = Stuff::Vector2DOf<float>(0.0f, 0.4f);
+			m_uvs[3] = Stuff::Vector2DOf<float>(0.0f, 0.6f);
+			m_uvs[4] = Stuff::Vector2DOf<float>(0.0f, 0.8f);
+			m_uvs[5] = Stuff::Vector2DOf<float>(0.0f, 1.0f);
+			break;
+		case e_Hexagon:
+			m_vertices.SetLength(7);
+			m_vertices[0] = Stuff::Vector3D(0.0f, 0.0f, 1.0f);
+			m_vertices[1] = Stuff::Vector3D(-0.8660254f, 0.0f, 0.5f);
+			m_vertices[2] = Stuff::Vector3D(-0.8660254f, 0.0f, -0.5f);
+			m_vertices[3] = Stuff::Vector3D(0.0f, 0.0f, -1.0f);
+			m_vertices[4] = Stuff::Vector3D(0.8660254f, 0.0f, -0.5f);
+			m_vertices[5] = Stuff::Vector3D(0.8660254f, 0.0f, 0.5f);
+			m_vertices[6] = Stuff::Vector3D(0.0f, 0.0f, 1.0f);
+			m_uvs.SetLength(7);
+			m_uvs[0] = Stuff::Vector2DOf<float>(0.0f, 0.0f);
+			m_uvs[1] = Stuff::Vector2DOf<float>(0.0f, 1.0f / 6.0f);
+			m_uvs[2] = Stuff::Vector2DOf<float>(0.0f, 2.0f / 6.0f);
+			m_uvs[3] = Stuff::Vector2DOf<float>(0.0f, 0.5f);
+			m_uvs[4] = Stuff::Vector2DOf<float>(0.0f, 4.0f / 6.0f);
+			m_uvs[5] = Stuff::Vector2DOf<float>(0.0f, 5.0f / 6.0f);
+			m_uvs[6] = Stuff::Vector2DOf<float>(0.0f, 1.0f);
+			break;
 	}
 }
 
 //------------------------------------------------------------------------------
 //
 bool
-	gosFX::Tube__Specification::CalculateUBias(bool adjust)
+gosFX::Tube__Specification::CalculateUBias(bool adjust)
 {
 	Check_Object(this);
-
 	//
 	//----------------------------------
 	// Calculate the worst case UV scale
 	//----------------------------------
 	//
-	int32_t max_index = m_maxProfileCount-1;
+	int32_t max_index = m_maxProfileCount - 1;
 	float max_scale, min_scale;
 Retry:
 	m_pUSize.ExpensiveComputeRange(&min_scale, &max_scale);
 	float lower = min_scale * max_index;
-	if (lower > 0.0f)
+	if(lower > 0.0f)
 		lower = 0.0f;
 	float upper = max_scale * max_index;
-
 	//
 	//------------------------------------
 	// Calculate the worst case UV offsets
@@ -474,26 +428,26 @@ Retry:
 	m_pUOffset.ExpensiveComputeRange(&min_offset, &max_offset);
 	lower += min_offset;
 	upper += max_offset;
-	if (upper - lower >= 198.0f)
+	if(upper - lower >= 198.0f)
 	{
-		if (!adjust)
+		if(!adjust)
 			return false;
 		lower = max_offset - min_offset;
-		float scale = static_cast<float>(floor((198.0f-lower)/max_index));
+		float scale = static_cast<float>(floor((198.0f - lower) / max_index));
 		m_pUSize.m_ageCurve.SetCurve(scale);
 		m_pUSize.m_seeded = false;
 		goto Retry;
 	}
 	lower += 99.0f;
-	if (lower < 0.0f)
+	if(lower < 0.0f)
 	{
-		m_UBias = static_cast<float>(floor(0.5f-lower));
+		m_UBias = static_cast<float>(floor(0.5f - lower));
 		return true;
 	}
 	upper -= 99.0f;
-	if (upper > 0.0f)
+	if(upper > 0.0f)
 	{
-		m_UBias = static_cast<float>(floor(0.5f-upper));
+		m_UBias = static_cast<float>(floor(0.5f - upper));
 		return true;
 	}
 	m_UBias = 0.0f;
@@ -505,30 +459,30 @@ Retry:
 //############################################################################
 
 gosFX::Tube::ClassData*
-	gosFX::Tube::DefaultData = nullptr;
+gosFX::Tube::DefaultData = nullptr;
 
 //------------------------------------------------------------------------------
 //
 void
-	gosFX::Tube::InitializeClass()
+gosFX::Tube::InitializeClass()
 {
 	Verify(!DefaultData);
 	//Verify(gos_GetCurrentHeap() == Heap);
 	DefaultData =
 		new ClassData(
-			TubeClassID,
-			"gosFX::Tube",
-			Effect::DefaultData,
-			(Effect::Factory)&Make,
-			(Specification::Factory)&Specification::Make
-		);
+		TubeClassID,
+		"gosFX::Tube",
+		Effect::DefaultData,
+		(Effect::Factory)&Make,
+		(Specification::Factory)&Specification::Make
+	);
 	Register_Object(DefaultData);
 }
 
 //------------------------------------------------------------------------------
 //
 void
-	gosFX::Tube::TerminateClass()
+gosFX::Tube::TerminateClass()
 {
 	Unregister_Object(DefaultData);
 	delete DefaultData;
@@ -538,7 +492,7 @@ void
 //------------------------------------------------------------------------------
 //
 gosFX::Tube::Tube(
-	Specification *spec,
+	Specification* spec,
 	uint32_t flags
 ):
 	Effect(DefaultData, spec, flags)
@@ -546,7 +500,6 @@ gosFX::Tube::Tube(
 	Check_Pointer(this);
 	Check_Object(spec);
 	//Verify(gos_GetCurrentHeap() == Heap);
-
 	//
 	//----------------------------------
 	// Figure out how much space we need
@@ -555,14 +508,13 @@ gosFX::Tube::Tube(
 	m_profiles.SetLength(spec->m_maxProfileCount);
 	uint32_t vertex_count = spec->m_vertices.GetLength();
 	Verify(vertex_count < 8);
-	uint32_t index_count = (vertex_count - 1)*6;
+	uint32_t index_count = (vertex_count - 1) * 6;
 	uint32_t size =
 		sizeof(Stuff::Point3D)
-		 + sizeof(Stuff::RGBAColor)
-		 + sizeof(Stuff::Vector2DOf<float>);
-	size *= vertex_count*spec->m_maxProfileCount;
-	size += sizeof(uint16_t)*(spec->m_maxProfileCount-1)*index_count;
-
+		+ sizeof(Stuff::RGBAColor)
+		+ sizeof(Stuff::Vector2DOf<float>);
+	size *= vertex_count * spec->m_maxProfileCount;
+	size += sizeof(uint16_t) * (spec->m_maxProfileCount - 1) * index_count;
 	//
 	//-----------------------
 	// Allocate the tube mesh
@@ -571,11 +523,10 @@ gosFX::Tube::Tube(
 	gos_PushCurrentHeap(MidLevelRenderer::Heap);
 	m_mesh =
 		new MidLevelRenderer::MLRIndexedTriangleCloud(
-			spec->m_maxProfileCount*(vertex_count-1)*2
-		);
+		spec->m_maxProfileCount * (vertex_count - 1) * 2
+	);
 	Register_Object(m_mesh);
 	gos_PopCurrentHeap();
-
 	//
 	//------------------------------------------------
 	// Set up the data pointers into the channel block
@@ -585,11 +536,11 @@ gosFX::Tube::Tube(
 	m_vertexCount = 0;
 	m_data.SetLength(size);
 	m_P_vertices = Cast_Pointer(Stuff::Point3D*, &m_data[0]);
-	size = spec->m_maxProfileCount*vertex_count*sizeof(Stuff::Point3D);
+	size = spec->m_maxProfileCount * vertex_count * sizeof(Stuff::Point3D);
 	m_P_colors = Cast_Pointer(Stuff::RGBAColor*, &m_data[size]);
-	size += spec->m_maxProfileCount*vertex_count*sizeof(Stuff::RGBAColor);
+	size += spec->m_maxProfileCount * vertex_count * sizeof(Stuff::RGBAColor);
 	m_P_uvs = Cast_Pointer(Stuff::Vector2DOf<float>*, &m_data[size]);
-	size += spec->m_maxProfileCount*vertex_count*sizeof(Stuff::Vector2DOf<float>);
+	size += spec->m_maxProfileCount * vertex_count * sizeof(Stuff::Vector2DOf<float>);
 	puint16_t mesh_indices = Cast_Pointer(puint16_t, &m_data[size]);
 	m_mesh->SetData(
 		&m_triangleCount,
@@ -600,7 +551,6 @@ gosFX::Tube::Tube(
 		m_P_uvs
 	);
 	BuildMesh(mesh_indices);
-
 	//
 	//-------------------------------
 	// Set up an empty profile cloud
@@ -615,78 +565,76 @@ gosFX::Tube::Tube(
 //------------------------------------------------------------------------------
 //
 void
-	gosFX::Tube::BuildMesh(puint16_t indices)
+gosFX::Tube::BuildMesh(puint16_t indices)
 {
 	Check_Object(this);
 	Check_Pointer(indices);
-
 	//
 	//--------------------------------------
 	// Figure out the parameters of the mesh
 	//--------------------------------------
 	//
-	Specification *spec = GetSpecification();
+	Specification* spec = GetSpecification();
 	Check_Object(spec);
 	uint32_t vertex_count = spec->m_vertices.GetLength();
 	Verify(vertex_count < 8);
-
 	//
 	//-------------------------------------------------
 	// Crosses are built different from everything else
 	//-------------------------------------------------
 	//
-	if (spec->m_profileType != Specification::e_Cross)
+	if(spec->m_profileType != Specification::e_Cross)
 	{
-		for (uint16_t profile=0; profile<spec->m_maxProfileCount-1; ++profile)
+		for(uint16_t profile = 0; profile < spec->m_maxProfileCount - 1; ++profile)
 		{
 			uint16_t base = static_cast<int16_t>(profile * vertex_count);
-			for (uint16_t panel=0; panel<vertex_count-1; ++panel)
+			for(uint16_t panel = 0; panel < vertex_count - 1; ++panel)
 			{
-				if (spec->m_insideOut)
+				if(spec->m_insideOut)
 				{
-					*indices++ = static_cast<int16_t>(base+panel+1);
-					*indices++ = static_cast<int16_t>(base+panel);
-					*indices++ = static_cast<int16_t>(base+panel+vertex_count+1);
-					*indices++ = static_cast<int16_t>(base+panel+vertex_count);
-					*indices++ = static_cast<int16_t>(base+panel+vertex_count+1);
-					*indices++ = static_cast<int16_t>(base+panel);
+					*indices++ = static_cast<int16_t>(base + panel + 1);
+					*indices++ = static_cast<int16_t>(base + panel);
+					*indices++ = static_cast<int16_t>(base + panel + vertex_count + 1);
+					*indices++ = static_cast<int16_t>(base + panel + vertex_count);
+					*indices++ = static_cast<int16_t>(base + panel + vertex_count + 1);
+					*indices++ = static_cast<int16_t>(base + panel);
 				}
 				else
 				{
-					*indices++ = static_cast<int16_t>(base+panel);
-					*indices++ = static_cast<int16_t>(base+panel+1);
-					*indices++ = static_cast<int16_t>(base+panel+vertex_count+1);
-					*indices++ = static_cast<int16_t>(base+panel+vertex_count+1);
-					*indices++ = static_cast<int16_t>(base+panel+vertex_count);
-					*indices++ = static_cast<int16_t>(base+panel);
+					*indices++ = static_cast<int16_t>(base + panel);
+					*indices++ = static_cast<int16_t>(base + panel + 1);
+					*indices++ = static_cast<int16_t>(base + panel + vertex_count + 1);
+					*indices++ = static_cast<int16_t>(base + panel + vertex_count + 1);
+					*indices++ = static_cast<int16_t>(base + panel + vertex_count);
+					*indices++ = static_cast<int16_t>(base + panel);
 				}
 			}
 		}
 	}
 	else
 	{
-		Verify(vertex_count==5);
-		for (uint16_t profile=0; profile<spec->m_maxProfileCount-1; ++profile)
+		Verify(vertex_count == 5);
+		for(uint16_t profile = 0; profile < spec->m_maxProfileCount - 1; ++profile)
 		{
 			uint16_t base = static_cast<int16_t>(profile * vertex_count);
-			for (uint16_t panel=0; panel<4; ++panel)
+			for(uint16_t panel = 0; panel < 4; ++panel)
 			{
-				if (spec->m_insideOut)
+				if(spec->m_insideOut)
 				{
-					*indices++ = static_cast<int16_t>(base+panel+1);
+					*indices++ = static_cast<int16_t>(base + panel + 1);
 					*indices++ = base;
-					*indices++ = static_cast<int16_t>(base+panel+6);
-					*indices++ = static_cast<int16_t>(base+5);
-					*indices++ = static_cast<int16_t>(base+panel+6);
+					*indices++ = static_cast<int16_t>(base + panel + 6);
+					*indices++ = static_cast<int16_t>(base + 5);
+					*indices++ = static_cast<int16_t>(base + panel + 6);
 					*indices++ = base;
 				}
 				else
 				{
 					*indices++ = base;
-					*indices++ = static_cast<int16_t>(base+panel+1);
-					*indices++ = static_cast<int16_t>(base+panel+6);
-					*indices++ = static_cast<int16_t>(base+panel+6);
-					*indices++ = static_cast<int16_t>(base+5);
+					*indices++ = static_cast<int16_t>(base + panel + 1);
+					*indices++ = static_cast<int16_t>(base + panel + 6);
+					*indices++ = static_cast<int16_t>(base + panel + 6);
+					*indices++ = static_cast<int16_t>(base + 5);
 					*indices++ = base;
 				}
 			}
@@ -705,35 +653,31 @@ gosFX::Tube::~Tube()
 //------------------------------------------------------------------------------
 //
 gosFX::Tube*
-	gosFX::Tube::Make(
-		Specification *spec,
-		uint32_t flags
-	)
+gosFX::Tube::Make(
+	Specification* spec,
+	uint32_t flags
+)
 {
 	Check_Object(spec);
-
 	gos_PushCurrentHeap(Heap);
-	Tube *tube = new gosFX::Tube(spec, flags);
+	Tube* tube = new gosFX::Tube(spec, flags);
 	gos_PopCurrentHeap();
-
 	return tube;
 }
 
 //------------------------------------------------------------------------------
 //
 void
-	gosFX::Tube::Start(ExecuteInfo *info)
+gosFX::Tube::Start(ExecuteInfo* info)
 {
 	Check_Object(this);
 	Check_Pointer(info);
-
 	//
 	//----------------------
 	// Let effect initialize
 	//----------------------
 	//
 	Effect::Start(info);
-
 	//
 	//--------------------------------------------------------------------------
 	// If the effect is off, we will create two profiles.  If they effect is on,
@@ -745,19 +689,17 @@ void
 
 //------------------------------------------------------------------------------
 //
-bool gosFX::Tube::Execute(ExecuteInfo *info)
+bool gosFX::Tube::Execute(ExecuteInfo* info)
 {
 	Check_Object(this);
 	Check_Object(info);
-
 	//
 	//----------------------------------------
 	// If we aren't supposed to execute, don't
 	//----------------------------------------
 	//
-	if (!IsExecuted())
+	if(!IsExecuted())
 		return false;
-
 	//
 	//----------------------------------------------------------------------
 	// Update the head of the tube to the current location, then compute the
@@ -768,20 +710,19 @@ bool gosFX::Tube::Execute(ExecuteInfo *info)
 	Stuff::LinearMatrix4D local_to_world;
 	local_to_world.Multiply(m_localToParent, *info->m_parentToWorld);
 	new_world_to_local.Invert(local_to_world);
-
 	//
 	//--------------------------
 	// Figure out the birth rate
 	//--------------------------
 	//
-	Specification *spec = GetSpecification();
+	Specification* spec = GetSpecification();
 	Check_Object(spec);
 	float dT =
 		static_cast<float>(info->m_time - m_lastRan);
 	Verify(dT >= 0.0f);
 	float prev_age = m_age;
 	m_age += dT * m_ageRate;
-	if (m_age >= 1.0f)
+	if(m_age >= 1.0f)
 		m_birthAccumulator = 0.0f;
 	else
 	{
@@ -789,7 +730,6 @@ bool gosFX::Tube::Execute(ExecuteInfo *info)
 			spec->m_profilesPerSecond.ComputeValue(m_age, m_seed);
 		Min_Clamp(new_life, 0.0f);
 		m_birthAccumulator += dT * new_life;
-
 		//
 		//------------------------------------------------------------------
 		// If it is time for a new child and there is room, move the head of
@@ -797,19 +737,19 @@ bool gosFX::Tube::Execute(ExecuteInfo *info)
 		// part of the accumulator - stacking up would look stupid
 		//------------------------------------------------------------------
 		//
-		if (m_birthAccumulator >= 1.0f && m_activeProfileCount < spec->m_maxProfileCount)
+		if(m_birthAccumulator >= 1.0f && m_activeProfileCount < spec->m_maxProfileCount)
 		{
-			if (!m_activeProfileCount)
+			if(!m_activeProfileCount)
 			{
 				m_headProfile = 1;
-				m_tailProfile = spec->m_maxProfileCount-1;
+				m_tailProfile = spec->m_maxProfileCount - 1;
 				CreateNewProfile(0, local_to_world);
 				m_activeProfileCount = 2;
 			}
 			else
 			{
 				m_profiles[m_headProfile].m_profileToWorld = local_to_world;
-				if (++m_headProfile == spec->m_maxProfileCount)
+				if(++m_headProfile == spec->m_maxProfileCount)
 					m_headProfile = 0;
 			}
 			CreateNewProfile(m_headProfile, local_to_world);
@@ -818,18 +758,16 @@ bool gosFX::Tube::Execute(ExecuteInfo *info)
 		else
 			m_profiles[m_headProfile].m_profileToWorld = local_to_world;
 	}
-
 	//
 	//--------------------------------------------------------------------
 	// If we don't have any profiles, just execute the children and return
 	//--------------------------------------------------------------------
 	//
-	if (!m_activeProfileCount)
+	if(!m_activeProfileCount)
 	{
 		m_age = prev_age;
 		return Effect::Execute(info);
 	}
-
 	//
 	//----------------------------------
 	// Deal with all the active profiles
@@ -847,23 +785,22 @@ bool gosFX::Tube::Execute(ExecuteInfo *info)
 		// the end of the tail
 		//----------------------------------------------------------------------
 		//
-		Profile *profile = GetProfile(i);
+		Profile* profile = GetProfile(i);
 		Check_Object(profile);
-		Verify (profile->m_age < 1.0f);
-		profile->m_age += dT*profile->m_ageRate;
+		Verify(profile->m_age < 1.0f);
+		profile->m_age += dT * profile->m_ageRate;
 		Stuff::Sphere bounds;
-		if (!AnimateProfile(i, profile_count, new_world_to_local, info->m_time, &bounds))
+		if(!AnimateProfile(i, profile_count, new_world_to_local, info->m_time, &bounds))
 		{
 			m_tailProfile = i;
 			break;
 		}
-
 		//
 		//---------------------
 		// Deal with the bounds
 		//---------------------
 		//
-		if (i == m_headProfile)
+		if(i == m_headProfile)
 		{
 			box.maxX = bounds.center.x + bounds.radius;
 			box.minX = bounds.center.x - bounds.radius;
@@ -883,27 +820,25 @@ bool gosFX::Tube::Execute(ExecuteInfo *info)
 			local_box.minZ = bounds.center.z - bounds.radius;
 			box.Union(box, local_box);
 		}
-
 		//
 		//---------------------------------------------------------------------------
 		// Move to the previous profile and wrap to the end of the list if necessary
 		//---------------------------------------------------------------------------
 		//
 		++profile_count;
-		if (--i < 0)
-			i = spec->m_maxProfileCount-1;
-	} while (i != m_tailProfile);
+		if(--i < 0)
+			i = spec->m_maxProfileCount - 1;
+	}
+	while(i != m_tailProfile);
 	m_activeProfileCount = profile_count;
-
 	//
 	//-----------------------------------------------
 	// Put the age back and run the base effect stuff
 	//-----------------------------------------------
 	//
 	m_age = prev_age;
-	if (!Effect::Execute(info))
+	if(!Effect::Execute(info))
 		return false;
-
 	//
 	//--------------------------------------------
 	// Now, build a info->m_bounds around this box
@@ -916,9 +851,9 @@ bool gosFX::Tube::Execute(ExecuteInfo *info)
 	local_bounds.axisExtents.x = 0.5f * (box.maxX - box.minX);
 	local_bounds.axisExtents.y = 0.5f * (box.maxY - box.minY);
 	local_bounds.axisExtents.z = 0.5f * (box.maxZ - box.minZ);
-	local_bounds.localToParent(3,0) = box.minX + local_bounds.axisExtents.x;
-	local_bounds.localToParent(3,1) = box.minY + local_bounds.axisExtents.y;
-	local_bounds.localToParent(3,2) = box.minZ + local_bounds.axisExtents.z;
+	local_bounds.localToParent(3, 0) = box.minX + local_bounds.axisExtents.x;
+	local_bounds.localToParent(3, 1) = box.minY + local_bounds.axisExtents.y;
+	local_bounds.localToParent(3, 2) = box.minZ + local_bounds.axisExtents.z;
 	local_bounds.sphereRadius = local_bounds.axisExtents.GetLength();
 	Stuff::OBB parent_bounds;
 	parent_bounds.Multiply(local_bounds, m_localToParent);
@@ -931,28 +866,27 @@ bool gosFX::Tube::Execute(ExecuteInfo *info)
 void gosFX::Tube::Kill()
 {
 	Check_Object(this);
-
 	//
 	//-------------------------------------------------------------
 	// Destroy all the profiles and set up an empty profile cloud
 	//-------------------------------------------------------------
 	//
-	Specification *spec = GetSpecification();
+	Specification* spec = GetSpecification();
 	Check_Object(spec);
-	if (m_activeProfileCount>0)
+	if(m_activeProfileCount > 0)
 	{
 		do
 		{
 			DestroyProfile(m_headProfile--);
-			if (m_headProfile<0)
-				m_headProfile = spec->m_maxProfileCount-1;
-		} while (m_headProfile != m_tailProfile);
+			if(m_headProfile < 0)
+				m_headProfile = spec->m_maxProfileCount - 1;
+		}
+		while(m_headProfile != m_tailProfile);
 	}
 	m_activeProfileCount = 0;
 	m_headProfile = -1;
 	m_tailProfile = -1;
 	m_birthAccumulator = 0.0f;
-
 	//
 	//----------------------------------------
 	// Now let the base effect handle stopping
@@ -972,22 +906,21 @@ bool gosFX::Tube::HasFinished()
 //------------------------------------------------------------------------------
 //
 void
-	gosFX::Tube::CreateNewProfile(
-		uint32_t index,
-		const Stuff::LinearMatrix4D &origin
-	)
+gosFX::Tube::CreateNewProfile(
+	uint32_t index,
+	const Stuff::LinearMatrix4D& origin
+)
 {
 	Check_Object(this);
 	Check_Object(&origin);
-
 	//
 	//----------------------------------------------------
 	// Figure out the age and age rate of the new profile
 	//----------------------------------------------------
 	//
-	Specification *spec = GetSpecification();
+	Specification* spec = GetSpecification();
 	Check_Object(spec);
-	Profile *profile = GetProfile(index);
+	Profile* profile = GetProfile(index);
 	Check_Object(profile);
 	profile->m_age = 0.0f;
 	float min_seed =
@@ -995,14 +928,13 @@ void
 	float seed_range =
 		spec->m_maximumChildSeed.ComputeValue(m_age, m_seed) - min_seed;
 	float seed =
-		Stuff::Random::GetFraction()*seed_range + min_seed;
+		Stuff::Random::GetFraction() * seed_range + min_seed;
 	Clamp(seed, 0.0f, 1.0f);
 	profile->m_seed = seed;
 	float lifetime =
 		spec->m_pLifeSpan.ComputeValue(m_age, seed);
 	Min_Clamp(lifetime, 0.0333333f);
 	profile->m_ageRate = 1.0f / lifetime;
-
 	//
 	//------------------------------------------------------------------
 	// Establish the base position and figure out the direction of drift
@@ -1013,7 +945,7 @@ void
 		spec->m_minimumDeviation.ComputeValue(m_age, seed);
 	float pitch_range =
 		spec->m_maximumDeviation.ComputeValue(m_age, seed) - pitch_min;
-	if (pitch_range < 0.0f)
+	if(pitch_range < 0.0f)
 		pitch_range = 0.0f;
 	Stuff::Radian angle = pitch_min + Stuff::Random::GetFraction() * pitch_range;
 	Stuff::SinCosPair xy(angle);
@@ -1026,51 +958,48 @@ void
 //------------------------------------------------------------------------------
 //
 bool
-	gosFX::Tube::AnimateProfile(
-		uint32_t index,
-		uint32_t profile_index,
-		const Stuff::LinearMatrix4D &world_to_new_local,
-		Stuff::Time till,
-		Stuff::Sphere *bounds
-	)
+gosFX::Tube::AnimateProfile(
+	uint32_t index,
+	uint32_t profile_index,
+	const Stuff::LinearMatrix4D& world_to_new_local,
+	Stuff::Time till,
+	Stuff::Sphere* bounds
+)
 {
 	Check_Object(this);
-
 	//
 	//----------------------------------------------------
 	// If the profile gets too old, don't do anything else
 	//----------------------------------------------------
 	//
-	Profile *profile = GetProfile(index);
+	Profile* profile = GetProfile(index);
 	Check_Object(profile);
 	float age = profile->m_age;
-	if (age >= 1.0f)
+	if(age >= 1.0f)
 		return false;
-
 	//
 	//--------------------------------------------------------------------
 	// Figure out the scale and displacement of the profile in world space
 	//--------------------------------------------------------------------
 	//
-	Set_Statistic(Profile_Count, Profile_Count+1);
+	Set_Statistic(Profile_Count, Profile_Count + 1);
 	float seed = profile->m_seed;
-	Specification *spec = GetSpecification();
+	Specification* spec = GetSpecification();
 	Check_Object(spec);
 	float scale = spec->m_pScale.ComputeValue(age, seed);
 	Verify(scale >= 0.0f);
 	float disp = spec->m_pDisplacement.ComputeValue(age, seed);
 	Stuff::Point3D offset;
 	offset.Multiply(profile->m_direction, disp);
-
 	//
 	//-------------------------------------------------
 	// Now build the template to new local space matrix
 	//-------------------------------------------------
 	//
 	Stuff::AffineMatrix4D template_to_profile(true);
-	template_to_profile(0,0) = scale;
-	template_to_profile(1,1) = scale;
-	template_to_profile(2,2) = scale;
+	template_to_profile(0, 0) = scale;
+	template_to_profile(1, 1) = scale;
+	template_to_profile(2, 2) = scale;
 	template_to_profile.BuildTranslation(offset);
 	Stuff::AffineMatrix4D template_to_world;
 	template_to_world.Multiply(template_to_profile, profile->m_profileToWorld);
@@ -1078,7 +1007,6 @@ bool
 	template_to_new_local.Multiply(template_to_world, world_to_new_local);
 	bounds->center = template_to_new_local;
 	bounds->radius = scale;
-
 	//
 	//------------------------------------------------------------------------
 	// Now we just multiply the template through to the vertices unless we are
@@ -1089,18 +1017,17 @@ bool
 	uint32_t vertex_count = spec->m_vertices.GetLength();
 	Verify(vertex_count < 8);
 	uint32_t vertex_index = profile_index * vertex_count;
-	if (spec->m_profileType != Specification::e_AlignedRibbon)
+	if(spec->m_profileType != Specification::e_AlignedRibbon)
 	{
 		Check_Pointer(m_P_vertices);
-		for (i=0; i<vertex_count; ++i)
+		for(i = 0; i < vertex_count; ++i)
 		{
-			m_P_vertices[vertex_index+i].Multiply(
+			m_P_vertices[vertex_index + i].Multiply(
 				spec->m_vertices[i],
 				template_to_new_local
 			);
 		}
 	}
-
 	//
 	//------------------------------
 	// Figure out the UV adjustments
@@ -1111,13 +1038,12 @@ bool
 	float v = spec->m_pVOffset.ComputeValue(age, seed);
 	float u2 = spec->m_pUSize.ComputeValue(age, seed);
 	float v2 = spec->m_pVSize.ComputeValue(age, seed);
-	u += u2*profile_index + spec->m_UBias;
-	for (i=0; i<vertex_count; ++i)
+	u += u2 * profile_index + spec->m_UBias;
+	for(i = 0; i < vertex_count; ++i)
 	{
-		m_P_uvs[vertex_index+i].x = u;
-		m_P_uvs[vertex_index+i].y = spec->m_uvs[i].y*v2 + v;
+		m_P_uvs[vertex_index + i].x = u;
+		m_P_uvs[vertex_index + i].y = spec->m_uvs[i].y * v2 + v;
 	}
-
 	//
 	//---------------------------
 	// Lastly, animate the colors
@@ -1129,8 +1055,8 @@ bool
 	color.green = spec->m_pGreen.ComputeValue(age, seed);
 	color.blue = spec->m_pBlue.ComputeValue(age, seed);
 	color.alpha = spec->m_pAlpha.ComputeValue(age, seed);
-	for (i=0; i<vertex_count; ++i)
-		m_P_colors[vertex_index+i] = color;
+	for(i = 0; i < vertex_count; ++i)
+		m_P_colors[vertex_index + i] = color;
 	return true;
 }
 
@@ -1138,28 +1064,27 @@ bool
 //
 void gosFX::Tube::DestroyProfile(uint32_t index)
 {
-	Profile *profile = GetProfile(index);
+	Profile* profile = GetProfile(index);
 	Check_Object(profile);
 	profile->m_age = 1.0f;
 }
 
 //------------------------------------------------------------------------------
 //
-void gosFX::Tube::Draw(DrawInfo *info)
+void gosFX::Tube::Draw(DrawInfo* info)
 {
 	Check_Object(this);
 	Check_Object(info);
-
 	//
 	//---------------------------------------------------------
 	// If we have active particles, set up the draw information
 	//---------------------------------------------------------
 	//
-	if (m_activeProfileCount>1)
+	if(m_activeProfileCount > 1)
 	{
 		MidLevelRenderer::DrawEffectInformation dInfo;
 		dInfo.effect = m_mesh;
-		Specification *spec = GetSpecification();
+		Specification* spec = GetSpecification();
 		Check_Object(spec);
 		dInfo.state.Combine(info->m_state, spec->m_state);
 		dInfo.clippingFlags = info->m_clippingFlags;
@@ -1168,25 +1093,23 @@ void gosFX::Tube::Draw(DrawInfo *info)
 		dInfo.effectToWorld = &local_to_world;
 		uint32_t vertex_count = spec->m_vertices.GetLength();
 		m_vertexCount = m_activeProfileCount * vertex_count;
-		m_triangleCount = 2 * (m_activeProfileCount-1) * (vertex_count-1);
-
+		m_triangleCount = 2 * (m_activeProfileCount - 1) * (vertex_count - 1);
 		//
 		//-------------------------------------------------------------------
 		// If we are doing the aligned ribbon, we will have to orient each of
 		// the profiles and then compute its vertex positions accordingly
 		//-------------------------------------------------------------------
 		//
-		if (spec->m_profileType == Specification::e_AlignedRibbon)
+		if(spec->m_profileType == Specification::e_AlignedRibbon)
 		{
 			int32_t i = m_headProfile;
 			int32_t vertex = 0;
 			uint32_t vertex_count = spec->m_vertices.GetLength();
 			Verify(vertex_count < 8);
 			Stuff::Point3D
-				camera_in_world(info->m_clipper->GetCameraToWorldMatrix());
+			camera_in_world(info->m_clipper->GetCameraToWorldMatrix());
 			Stuff::LinearMatrix4D world_to_local;
 			world_to_local.Invert(local_to_world);
-
 			//
 			//----------------------------------------------------------------
 			// go thru all the profiles and figure out where they are in local
@@ -1196,11 +1119,10 @@ void gosFX::Tube::Draw(DrawInfo *info)
 			Verify(i >= 0);
 			do
 			{
-				Profile *profile = GetProfile(i);
+				Profile* profile = GetProfile(i);
 				Check_Object(profile);
 				Stuff::Point3D camera_in_profile;
 				camera_in_profile.MultiplyByInverse(camera_in_world, profile->m_profileToWorld);
-
 				//
 				//---------------------------------------------------------
 				// Figure out the scale and displacement of the template in
@@ -1213,7 +1135,6 @@ void gosFX::Tube::Draw(DrawInfo *info)
 				float disp = spec->m_pDisplacement.ComputeValue(age, seed);
 				Stuff::Point3D offset_in_profile;
 				offset_in_profile.Multiply(profile->m_direction, disp);
-
 				//
 				//----------------------------------------------------------
 				// Figure out the direction that we want the profile to face
@@ -1229,66 +1150,62 @@ void gosFX::Tube::Draw(DrawInfo *info)
 					Stuff::Y_Axis,
 					-1
 				);
-
 				//
 				//-------------------------------------------------
 				// Now build the template to new local space matrix
 				//-------------------------------------------------
 				//
 				Stuff::AffineMatrix4D template_to_profile;
-				template_to_profile(0,0) = scale*template_rotation(0,0);
-				template_to_profile(0,1) = scale*template_rotation(0,1);
-				template_to_profile(0,2) = scale*template_rotation(0,2);
-				template_to_profile(1,0) = scale*template_rotation(1,0);
-				template_to_profile(1,1) = scale*template_rotation(1,1);
-				template_to_profile(1,2) = scale*template_rotation(1,2);
-				template_to_profile(2,0) = scale*template_rotation(2,0);
-				template_to_profile(2,1) = scale*template_rotation(2,1);
-				template_to_profile(2,2) = scale*template_rotation(2,2);
+				template_to_profile(0, 0) = scale * template_rotation(0, 0);
+				template_to_profile(0, 1) = scale * template_rotation(0, 1);
+				template_to_profile(0, 2) = scale * template_rotation(0, 2);
+				template_to_profile(1, 0) = scale * template_rotation(1, 0);
+				template_to_profile(1, 1) = scale * template_rotation(1, 1);
+				template_to_profile(1, 2) = scale * template_rotation(1, 2);
+				template_to_profile(2, 0) = scale * template_rotation(2, 0);
+				template_to_profile(2, 1) = scale * template_rotation(2, 1);
+				template_to_profile(2, 2) = scale * template_rotation(2, 2);
 				template_to_profile.BuildTranslation(offset_in_profile);
 				Stuff::AffineMatrix4D template_to_world;
 				template_to_world.Multiply(template_to_profile, profile->m_profileToWorld);
 				Stuff::AffineMatrix4D template_to_local;
 				template_to_local.Multiply(template_to_world, world_to_local);
-
 				//
 				//------------------------------------
 				// Multiply the points thru the matrix
 				//------------------------------------
 				//
-				for (int32_t v=0; v<vertex_count; ++v)
+				for(int32_t v = 0; v < vertex_count; ++v)
 				{
 					m_P_vertices[vertex++].Multiply(
 						spec->m_vertices[v],
 						template_to_local
 					);
 				}
-
 				//
 				//---------------------------------------------------------------------------
 				// Move to the previous profile and wrap to the end of the list if necessary
 				//---------------------------------------------------------------------------
 				//
-				if (--i < 0)
-					i = spec->m_maxProfileCount-1;
-			} while (i != m_tailProfile);
+				if(--i < 0)
+					i = spec->m_maxProfileCount - 1;
+			}
+			while(i != m_tailProfile);
 		}
-
 		//
 		//--------------------
 		// Now draw the effect
 		//--------------------
 		//
-	 	info->m_clipper->DrawEffect(&dInfo);
+		info->m_clipper->DrawEffect(&dInfo);
 	}
-
 	Effect::Draw(info);
 }
 
 //------------------------------------------------------------------------------
 //
 void
-	gosFX::Tube::TestInstance(void) const
+gosFX::Tube::TestInstance(void) const
 {
 	Verify(IsDerivedFrom(DefaultData));
 }

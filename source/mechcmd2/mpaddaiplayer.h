@@ -30,8 +30,12 @@ MPAddAIPlayer.h			: Interface for the MPAddAIPlayer component.
 class aStyle4TextListItem : public aTextListItem
 {
 public:
-	aStyle4TextListItem() { hasAnimation = false; normalColor = 0xff808080; }
-	virtual int32_t	init( FitIniFile* file, PCSTR blockName );
+	aStyle4TextListItem()
+	{
+		hasAnimation = false;
+		normalColor = 0xff808080;
+	}
+	virtual int32_t	init(FitIniFile* file, PCSTR blockName);
 	virtual void		render(void);
 
 protected:
@@ -43,18 +47,18 @@ protected:
 class MPAddAIPlayer : public LogisticsScreen
 {
 public:
-	
+
 	MPAddAIPlayer(void);
 	virtual ~MPAddAIPlayer(void);
-	
+
 	void init(FitIniFile* file);
 	bool isDone(void);
 	virtual void		begin(void);
 	virtual void		end(void);
- 	virtual void render( int32_t xOffset, int32_t yOffset );
+	virtual void render(int32_t xOffset, int32_t yOffset);
 	virtual void render(void);
 	virtual void update(void);
-	virtual int32_t			handleMessage( uint32_t, uint32_t );
+	virtual int32_t			handleMessage(uint32_t, uint32_t);
 
 private:
 	aEdit		nameEntry;

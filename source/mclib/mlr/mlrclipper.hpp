@@ -14,13 +14,15 @@
 #include <mlr/gosvertexpool.hpp>
 #include <mlr/mlrsorter.hpp>
 
-namespace Stuff {
+namespace Stuff
+{
 	class LinearMatrix4D;
 	class RGBAColor;
 	class Vector4D;
 }
 
-namespace MidLevelRenderer {
+namespace MidLevelRenderer
+{
 
 	typedef int32_t AndyDisplay;
 	class MLRSorter;
@@ -39,7 +41,7 @@ namespace MidLevelRenderer {
 		const Stuff::LinearMatrix4D*	shapeToWorld;
 		const Stuff::LinearMatrix4D*	worldToShape;
 
-		MLRLight* const *activeLights;
+		MLRLight* const* activeLights;
 		uint32_t nrOfActiveLights;
 
 		void TestInstance(void) const {}
@@ -71,7 +73,7 @@ namespace MidLevelRenderer {
 		const Stuff::LinearMatrix4D*	effectToWorld;
 
 #if 0 // for the time being no lights on the effects
-		MLRLight *const *activeLights;
+		MLRLight* const* activeLights;
 		int32_t	nrOfActiveLights;
 #endif
 		void TestInstance(void) const {}
@@ -97,9 +99,9 @@ namespace MidLevelRenderer {
 		void TestInstance(void) const {}
 	};
 
-	//##########################################################################
-	//#########################    MLRClipper   #################################
-	//##########################################################################
+//##########################################################################
+//#########################    MLRClipper   #################################
+//##########################################################################
 
 	class MLRClipper :
 		public Stuff::RegisteredClass
@@ -116,55 +118,82 @@ namespace MidLevelRenderer {
 		void StartDraw(
 			const Stuff::LinearMatrix4D& camera_to_world,
 			const Stuff::Matrix4D& clip_matrix,
-			const Stuff::RGBAColor &fog_color,		// NOT USED ANYMORE
-			const Stuff::RGBAColor *background_color,
-			const MLRState &default_state,
-			const float *z_value
-			);
+			const Stuff::RGBAColor& fog_color,		// NOT USED ANYMORE
+			const Stuff::RGBAColor* background_color,
+			const MLRState& default_state,
+			const float* z_value
+		);
 
 		//	add another shape
-		void DrawShape (DrawShapeInformation*);
+		void DrawShape(DrawShapeInformation*);
 
 		//	add another shape
-		void DrawScalableShape (DrawScalableShapeInformation*);
+		void DrawScalableShape(DrawScalableShapeInformation*);
 
 		//	add screen quads
-		void DrawScreenQuads (DrawScreenQuadsInformation*);
+		void DrawScreenQuads(DrawScreenQuadsInformation*);
 
 		//	add another effect
-		void DrawEffect (DrawEffectInformation*);
+		void DrawEffect(DrawEffectInformation*);
 
 		//	starts the action
-		void RenderNow ()
-		{ Check_Object(this); sorter->RenderNow(); }
+		void RenderNow()
+		{
+			Check_Object(this);
+			sorter->RenderNow();
+		}
 
 		//	clear the film
-		void Clear (uint32_t flags);
+		void Clear(uint32_t flags);
 
-		AndyDisplay* GetDisplay (void) const
-		{ Check_Object(this); return display; };
+		AndyDisplay* GetDisplay(void) const
+		{
+			Check_Object(this);
+			return display;
+		};
 
 		// statistics and time
-		uint32_t GetFrameRate (void) const
-		{ Check_Object(this); return frameRate; }
-		void SetTime (float t) 
-		{ Check_Object(this); nowTime = t; }
-		float GetTime (void) const
-		{ Check_Object(this); return nowTime; }
+		uint32_t GetFrameRate(void) const
+		{
+			Check_Object(this);
+			return frameRate;
+		}
+		void SetTime(float t)
+		{
+			Check_Object(this);
+			nowTime = t;
+		}
+		float GetTime(void) const
+		{
+			Check_Object(this);
+			return nowTime;
+		}
 
 		const Stuff::LinearMatrix4D&
-			GetCameraToWorldMatrix(void)
-		{Check_Object(this); return cameraToWorldMatrix;}
+		GetCameraToWorldMatrix(void)
+		{
+			Check_Object(this);
+			return cameraToWorldMatrix;
+		}
 		const Stuff::LinearMatrix4D&
-			GetWorldToCameraMatrix(void)
-		{Check_Object(this); return worldToCameraMatrix;}
+		GetWorldToCameraMatrix(void)
+		{
+			Check_Object(this);
+			return worldToCameraMatrix;
+		}
 		const Stuff::Matrix4D&
-			GetCameraToClipMatrix(void)
-		{Check_Object(this); return cameraToClipMatrix;}
+		GetCameraToClipMatrix(void)
+		{
+			Check_Object(this);
+			return cameraToClipMatrix;
+		}
 
 		void
-			ResetSorter(void)
-		{Check_Object(this); sorter->Reset();}
+		ResetSorter(void)
+		{
+			Check_Object(this);
+			sorter->Reset();
+		}
 
 		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		// Class Data Support
@@ -194,7 +223,7 @@ namespace MidLevelRenderer {
 		// this is the film
 		AndyDisplay*			display;
 
-		// this defines the sort order of the draw 
+		// this defines the sort order of the draw
 		MLRSorter*				sorter;
 
 		GOSVertexPool allVerticesToDraw;

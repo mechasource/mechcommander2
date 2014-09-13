@@ -9,11 +9,12 @@
 
 #include <mlr/mlreffect.hpp>
 
-namespace MidLevelRenderer {
+namespace MidLevelRenderer
+{
 
-	//##########################################################################
-	//#######################    MLRCardCloud    ###############################
-	//##########################################################################
+//##########################################################################
+//#######################    MLRCardCloud    ###############################
+//##########################################################################
 
 
 	class MLRCardCloud:
@@ -30,13 +31,13 @@ namespace MidLevelRenderer {
 		// Constructors/Destructors
 		//
 	public:
-		MLRCardCloud(int32_t);
+		MLRCardCloud(uint32_t);
 		~MLRCardCloud(void);
 
 		void SetData(
-			pcsize_t pcount, 
-			const Stuff::Point3D* point_data, 
-			const Stuff::RGBAColor* color_data, 
+			pcsize_t pcount,
+			const Stuff::Point3D* point_data,
+			const Stuff::RGBAColor* color_data,
 			const Stuff::Vector2DScalar* uv_data);
 
 		void SetData(
@@ -44,9 +45,9 @@ namespace MidLevelRenderer {
 			const Stuff::Point3D* point_data,
 			const Stuff::RGBAColor* color_data);
 
-		void Draw (DrawEffectInformation*, GOSVertexPool*, MLRSorter*);
+		void Draw(DrawEffectInformation*, GOSVertexPool*, MLRSorter*);
 
-		uint32_t Clip(MLRClippingState, GOSVertexPool*);		
+		uint32_t Clip(MLRClippingState, GOSVertexPool*);
 
 		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		// Class Data Support

@@ -12,7 +12,8 @@ using namespace MidLevelRenderer;
 //#########################    MLRClippingState    ############################
 //#############################################################################
 
-uint32_t MLRClippingState::numberBitsLookUpTable[MLRClippingState::ClipMask+1] = {
+uint32_t MLRClippingState::numberBitsLookUpTable[MLRClippingState::ClipMask + 1] =
+{
 	0,	1,	1,	2,	1,	2,	2,	3,
 	1,	2,	2,	3,	2,	3,	3,	4,
 	1,	2,	2,	3,	2,	3,	3,	4,
@@ -29,7 +30,6 @@ void MLRClippingState::Save(Stuff::MemoryStream* stream)
 {
 	Check_Object(this);
 	Check_Object(stream);
-
 	//
 	//-------------------------------------
 	// Save the clippingState to the stream
@@ -41,11 +41,10 @@ void MLRClippingState::Save(Stuff::MemoryStream* stream)
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	MLRClippingState::Load(Stuff::MemoryStream *stream)
+MLRClippingState::Load(Stuff::MemoryStream* stream)
 {
 	Check_Object(this);
 	Check_Object(stream);
-
 	//
 	//---------------------------------------
 	// Load the clippingState from the stream

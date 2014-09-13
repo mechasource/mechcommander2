@@ -9,11 +9,12 @@
 
 #include <mlr/mlreffect.hpp>
 
-namespace MidLevelRenderer{
+namespace MidLevelRenderer
+{
 
-	//##########################################################################
-	//####################### MLRLineCloud ##############################
-	//##########################################################################
+//##########################################################################
+//####################### MLRLineCloud ##############################
+//##########################################################################
 
 
 	class MLRLineCloud:
@@ -30,17 +31,20 @@ namespace MidLevelRenderer{
 		// Constructors/Destructors
 		//
 	public:
-		MLRLineCloud(uint32_t, uint32_t=0);
+		MLRLineCloud(uint32_t, uint32_t = 0);
 		~MLRLineCloud(void);
 
 
 		void SetData(
-			pcsize_t count, 
-			const Stuff::Point3D* point_data, 
-			const Stuff::RGBAColor *color_data);
+			pcsize_t count,
+			const Stuff::Point3D* point_data,
+			const Stuff::RGBAColor* color_data);
 
-		virtual uint32_t GetType(uint32_t){ return type; }
-		void Draw (DrawEffectInformation*, GOSVertexPool*, MLRSorter*);
+		virtual uint32_t GetType(uint32_t)
+		{
+			return type;
+		}
+		void Draw(DrawEffectInformation*, GOSVertexPool*, MLRSorter*);
 		void Transform(size_t, size_t);
 		uint32_t Clip(MLRClippingState, GOSVertexPool*);
 

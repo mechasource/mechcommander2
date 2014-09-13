@@ -2,24 +2,24 @@
  Copyright (c) 2011-2014, Jerker Back. All rights reserved.
 
  Permission to use, copy, modify, and distribute this software for any
- purpose with or without fee is hereby granted, provided that the following 
+ purpose with or without fee is hereby granted, provided that the following
  conditions are met (OSI approved BSD 2-clause license):
 
- 1. Redistributions of source code must retain the above copyright notice, 
+ 1. Redistributions of source code must retain the above copyright notice,
     this list of conditions and the following disclaimer.
- 2. Redistributions in binary form must reproduce the above copyright notice, 
-    this list of conditions and the following disclaimer in the documentation 
+ 2. Redistributions in binary form must reproduce the above copyright notice,
+    this list of conditions and the following disclaimer in the documentation
     and/or other materials provided with the distribution.
 
- THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" 
- AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE 
- IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE 
- DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE 
- FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL 
- DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR 
- SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER 
- CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, 
- OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE 
+ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+ FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 *******************************************************************************/
@@ -29,9 +29,9 @@
  MechCommander 2 source code
 
  2014-07-24 jerker_back, created
- 
+
  $LastChangedBy$
- 
+
 ================================================================================
  RcsID = $Id$ */
 
@@ -99,7 +99,7 @@ ATL_ADD_LIBRARY("atlthunk.lib")
 // _ARMOR;LAB_ONLY;USE_PROTOTYPES;STRICT;WIN32;_DEBUG;_WINDOWS;BUGLOG
 #define _ARMOR		1
 #define LAB_ONLY	1
-#else 
+#else
 // NDEBUG;_WINDOWS;WIN32;NOMINMAX;FINAL
 // NDEBUG;LAB_ONLY;_WINDOWS;WIN32;NOMINMAX;BUGLOG	- profile
 // #define LAB_ONLY 0
@@ -108,99 +108,100 @@ ATL_ADD_LIBRARY("atlthunk.lib")
 
 // #include <mclib.h>
 
-namespace Utilities {
+namespace Utilities
+{
 
 //HRESULT WINAPI FormatCLSID(_Out_writes_(nCharacters) PWCHAR pszCLSID,_In_ size_t nCharacters,_In_ REFGUID clsid);
 //HRESULT WINAPI PrivateUpdateRegistry(_In_ BOOL bRegister,_In_ uint32_t nID,_In_ REFGUID clsid,_In_ REFGUID libid,_In_opt_ uint32_t dwOleMisc,_In_opt_ ATL::_ATL_REGMAP_ENTRY* pregMap);
 
 // ModuleHelper - helper functions for ATL3 and ATL7 module classes (modified from WTL)
-namespace ModuleHelper
-{
-inline HINSTANCE GetModuleInstance(void)
-{
+	namespace ModuleHelper
+	{
+		inline HINSTANCE GetModuleInstance(void)
+		{
 #if (_ATL_VER >= 0x0700)
-	return ATL::_AtlBaseModule.GetModuleInstance(void);
+			return ATL::_AtlBaseModule.GetModuleInstance(void);
 #else
-	return ATL::_pModule->GetModuleInstance(void);
+			return ATL::_pModule->GetModuleInstance(void);
 #endif
-}
+		}
 
-inline HINSTANCE GetResourceInstance(void)
-{
+		inline HINSTANCE GetResourceInstance(void)
+		{
 #if (_ATL_VER >= 0x0700)
-	return ATL::_AtlBaseModule.GetResourceInstance(void);
+			return ATL::_AtlBaseModule.GetResourceInstance(void);
 #else
-	return ATL::_pModule->GetResourceInstance(void);
+			return ATL::_pModule->GetResourceInstance(void);
 #endif
-}
+		}
 
-inline HINSTANCE SetResourceInstance(_In_ HINSTANCE hInstance)
-{
+		inline HINSTANCE SetResourceInstance(_In_ HINSTANCE hInstance)
+		{
 #if (_ATL_VER >= 0x0700)
-	return ATL::_AtlBaseModule.SetResourceInstance(hInstance);
+			return ATL::_AtlBaseModule.SetResourceInstance(hInstance);
 #else
-	return ATL::_pModule->SetResourceInstance(hInstance);
+			return ATL::_pModule->SetResourceInstance(hInstance);
 #endif
-}
+		}
 
-inline void AddCreateWndData(_Inout_ ATL::_AtlCreateWndData* pData,_In_ PVOID pObject)
-{
+		inline void AddCreateWndData(_Inout_ ATL::_AtlCreateWndData* pData, _In_ PVOID pObject)
+		{
 #if (_ATL_VER >= 0x0700)
-	ATL::_AtlWinModule.AddCreateWndData(pData, pObject);
+			ATL::_AtlWinModule.AddCreateWndData(pData, pObject);
 #else
-	ATL::_pModule->AddCreateWndData(pData, pObject);
+			ATL::_pModule->AddCreateWndData(pData, pObject);
 #endif
-}
+		}
 
-inline PVOID ExtractCreateWndData(void)
-{
+		inline PVOID ExtractCreateWndData(void)
+		{
 #if (_ATL_VER >= 0x0700)
-	return ATL::_AtlWinModule.ExtractCreateWndData(void);
+			return ATL::_AtlWinModule.ExtractCreateWndData(void);
 #else
-	return ATL::_pModule->ExtractCreateWndData(void);
+			return ATL::_pModule->ExtractCreateWndData(void);
 #endif
-}
+		}
 
-inline void AtlTerminate(void)
-{
+		inline void AtlTerminate(void)
+		{
 #if (_ATL_VER >= 0x0700)
-	return ATL::_AtlWinModule.Term(void);
+			return ATL::_AtlWinModule.Term(void);
 #else
-	return ATL::_pModule->Term(void);
+			return ATL::_pModule->Term(void);
 #endif
-}
+		}
 
 #if (_ATL_VER >= 0x0700)
-inline ATL::CAtlModule* GetModulePtr(void)
-{
-	return ATL::_pAtlModule;
-}
+		inline ATL::CAtlModule* GetModulePtr(void)
+		{
+			return ATL::_pAtlModule;
+		}
 #else
-inline ATL::CComModule* GetModulePtr(void)
-{
-	return ATL::_pModule;
-}
+		inline ATL::CComModule* GetModulePtr(void)
+		{
+			return ATL::_pModule;
+		}
 #endif
 
-inline bool AtlInitFailed(void)
-{
+		inline bool AtlInitFailed(void)
+		{
 #if (_ATL_VER >= 0x0700)
-	return ATL::CAtlBaseModule::m_bInitFailed;
+			return ATL::CAtlBaseModule::m_bInitFailed;
 #else
-	return ATL::_bInitFailed;
+			return ATL::_bInitFailed;
 #endif
-}
+		}
 
-inline void AtlSetTraceLevel(_In_ uint32_t nLevel)
-{
+		inline void AtlSetTraceLevel(_In_ uint32_t nLevel)
+		{
 #if defined _DEBUG && (_ATL_VER >= 0x0700)
-	ATL::CTrace::SetLevel(nLevel);
+			ATL::CTrace::SetLevel(nLevel);
 #else
-	UNREFERENCED_PARAMETER(nLevel);
+			UNREFERENCED_PARAMETER(nLevel);
 #endif
-}
+		}
 
-};	// namespace ModuleHelper
+	};	// namespace ModuleHelper
 };	// namespace Utilities
 
 using namespace Utilities;

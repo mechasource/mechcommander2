@@ -23,68 +23,57 @@ MissionSelectionScreen.cpp			: Implementation of the MissionSelectionScreen comp
 #define LB_RECT 4
 #define RP_TEXT 4
 
-MissionSelectionScreen::MissionSelectionScreen(  )
+MissionSelectionScreen::MissionSelectionScreen()
 {
 	status = RUNNING;
 	LogisticsScreen::helpTextArrayID = 3;
 	bMovie = 0;
-
 	missionCount = 0;
-
-	memset( missionNames, 0, sizeof( PCSTR ) * MAX_MISSIONS_IN_GROUP );
+	memset(missionNames, 0, sizeof(PCSTR) * MAX_MISSIONS_IN_GROUP);
 	bStop = 0;
-
-	missionDescriptionListBox.setPressFX( -1 );
-	missionDescriptionListBox.setHighlightFX( -1 );
-	missionDescriptionListBox.setDisabledFX( -1 );
+	missionDescriptionListBox.setPressFX(-1);
+	missionDescriptionListBox.setHighlightFX(-1);
+	missionDescriptionListBox.setDisabledFX(-1);
 }
 
 MissionSelectionScreen::~MissionSelectionScreen()
 {
-	if (bMovie)
+	if(bMovie)
 	{
 		delete bMovie;
 		bMovie = nullptr;
 	}
-
 	missionDescriptionListBox.destroy();
 }
 
 //-------------------------------------------------------------------------------------------------
 
 
-void MissionSelectionScreen::init( FitIniFile* file )
+void MissionSelectionScreen::init(FitIniFile* file)
 {
-	LogisticsScreen::init( *file, "CMStatic", "CMTextEntry", "CMRect", "CMButton" );
-	for ( int32_t i= 0; i < buttonCount; i++ )
+	LogisticsScreen::init(*file, "CMStatic", "CMTextEntry", "CMRect", "CMButton");
+	for(auto i = 0; i < buttonCount; i++)
 		buttons[i].setMessageOnRelease();
-
 	missionCount = 0;
-
-	missionDescriptionListBox.init( rects[LB_RECT].left(), rects[LB_RECT].top(),
-		rects[LB_RECT].width(), rects[LB_RECT].height() );
-
+	missionDescriptionListBox.init(rects[LB_RECT].left(), rects[LB_RECT].top(),
+								   rects[LB_RECT].width(), rects[LB_RECT].height());
 	missionDescriptionListBox.setOrange(true);
-
-	getButton( MN_MSG_PLAY )->setPressFX( LOG_VIDEOBUTTONS );
-	getButton( MN_MSG_STOP )->setPressFX( LOG_VIDEOBUTTONS );
-	getButton( MN_MSG_PAUSE )->setPressFX( LOG_VIDEOBUTTONS );
-	getButton( MN_MSG_PLAY )->setHighlightFX( LOG_DIGITALHIGHLIGHT );
-	getButton( MN_MSG_STOP )->setHighlightFX( LOG_DIGITALHIGHLIGHT );
-	getButton( MN_MSG_PAUSE )->setHighlightFX( LOG_DIGITALHIGHLIGHT );
-
-
+	getButton(MN_MSG_PLAY)->setPressFX(LOG_VIDEOBUTTONS);
+	getButton(MN_MSG_STOP)->setPressFX(LOG_VIDEOBUTTONS);
+	getButton(MN_MSG_PAUSE)->setPressFX(LOG_VIDEOBUTTONS);
+	getButton(MN_MSG_PLAY)->setHighlightFX(LOG_DIGITALHIGHLIGHT);
+	getButton(MN_MSG_STOP)->setHighlightFX(LOG_DIGITALHIGHLIGHT);
+	getButton(MN_MSG_PAUSE)->setHighlightFX(LOG_DIGITALHIGHLIGHT);
 }
 
-void MissionSelectionScreen::render(int32_t xOffset, int32_t yOffset )
+void MissionSelectionScreen::render(int32_t xOffset, int32_t yOffset)
 {
-	if ( xOffset == 0 && yOffset == 0 )
+	if(xOffset == 0 && yOffset == 0)
 		missionDescriptionListBox.render();
-
 	//Renders the movie the old way.
 	//movie Now!
-	LogisticsScreen::render( xOffset, yOffset );
-	if ( !xOffset && !yOffset )
+	LogisticsScreen::render(xOffset, yOffset);
+	if(!xOffset && !yOffset)
 	{
 		/*
 		gos_VERTEX v[4];
@@ -111,338 +100,266 @@ void MissionSelectionScreen::render(int32_t xOffset, int32_t yOffset )
 		gos_DrawQuads( v, 4 );
 		gos_SetRenderState( gos_State_Texture,  0 );
 		*/
-
-		if (bMovie)
+		if(bMovie)
 			bMovie->render();
 	}
-
-
-	operationScreen.render( xOffset, yOffset );
-
-
+	operationScreen.render(xOffset, yOffset);
 }
 
 void MissionSelectionScreen::update()
 {
-	if (!playedLogisticsTune)
+	if(!playedLogisticsTune)
 	{
 		soundSystem->playDigitalMusic(LogisticsData::instance->getCurrentMissionTune());
 		playedLogisticsTune = true;
 	}
-
-	if ( bStop )
+	if(bStop)
 	{
-		if ( bMovie )
+		if(bMovie)
 			bMovie->stop();
 		bStop = false;
 	}
-
-	if ( bMovie )
+	if(bMovie)
 		bMovie->update();
-
 	LogisticsScreen::update();
 	operationScreen.update();
-
 	int32_t oldButton = -1;
 	int32_t highlightButton = -1;
-
 	int32_t mouseX = userInput->getMouseX();
 	int32_t mouseY = userInput->getMouseY();
-
 	uint32_t highlightColor = 0;
-
-	for ( int32_t i = 0; i < operationScreen.buttonCount; i++ )
+	for(auto i = 0; i < operationScreen.buttonCount; i++)
 	{
-		if ( operationScreen.buttons[i].isShowing() )
+		if(operationScreen.buttons[i].isShowing())
 		{
-			if ( operationScreen.buttons[i].pointInside( mouseX, mouseY ) )
+			if(operationScreen.buttons[i].pointInside(mouseX, mouseY))
 			{
 				highlightButton = i;
-				highlightColor = operationScreen.buttons[i].getColor( );
+				highlightColor = operationScreen.buttons[i].getColor();
 			}
-
-			if ( operationScreen.buttons[i].isPressed() && i != pressedButton )
+			if(operationScreen.buttons[i].isPressed() && i != pressedButton)
 			{
-				handleMessage( 0, operationScreen.buttons[i].getID() );
+				handleMessage(0, operationScreen.buttons[i].getID());
 				oldButton = pressedButton;
 				pressedButton = i;
 				break;
 			}
 		}
 	}
-
-	if ( oldButton != -1 )
-		operationScreen.buttons[oldButton].press( 0 );
-
+	if(oldButton != -1)
+		operationScreen.buttons[oldButton].press(0);
 	missionDescriptionListBox.update();
-
-	if ( pressedButton != -1 )
+	if(pressedButton != -1)
 	{
-		operationScreen.textObjects[0].setText( LogisticsData::instance->getMissionFriendlyName(
-			missionNames[pressedButton] ) );
+		operationScreen.textObjects[0].setText(LogisticsData::instance->getMissionFriendlyName(
+				missionNames[pressedButton]));
 //		if ( highlightColor )
 //			operationScreen.textObjects[0].setColor( highlightColor );
 	}
 	else
 	{
-		operationScreen.textObjects[0].setText( "" );
+		operationScreen.textObjects[0].setText("");
 	}
-
-	if ( LogisticsData::instance->skipLogistics() ) // the launch button
+	if(LogisticsData::instance->skipLogistics())    // the launch button
 	{
-		buttons[5].showGUIWindow( 1 );
+		buttons[5].showGUIWindow(1);
 	}
 	else
-		buttons[5].showGUIWindow( 0 );
-
-	
-
+		buttons[5].showGUIWindow(0);
 }
 
 void MissionSelectionScreen::begin()
 {
 	status = RUNNING;
 	playedLogisticsTune = false;
-
-	if ( fadeInTime )
-		operationScreen.beginFadeIn( fadeInTime );
-
+	if(fadeInTime)
+		operationScreen.beginFadeIn(fadeInTime);
 	// initialize the operation
 	PCSTR str = LogisticsData::instance->getCurrentOperationFileName();
-
 	FullPathFileName fileName;
-	fileName.init( artPath, str, ".fit" );
-
+	fileName.init(artPath, str, ".fit");
 	FitIniFile file;
-	if ( NO_ERROR != file.open( fileName ) )
+	if(NO_ERROR != file.open(fileName))
 	{
 		char errorStr[256];
-		sprintf( errorStr, "couldn't open file %s", fileName );
-		Assert( 0, 0, errorStr );
+		sprintf(errorStr, "couldn't open file %s", fileName);
+		Assert(0, 0, errorStr);
 	}
-	
-	operationScreen.moveTo( 0, 0 );
-	operationScreen.init( file, "Static", "Text", "Rect", "Button" );
-	
-	operationScreen.moveTo( rects[MAP_RECT].left(), 
-							rects[MAP_RECT].top() );
-
-
-	
+	operationScreen.moveTo(0, 0);
+	operationScreen.init(file, "Static", "Text", "Rect", "Button");
+	operationScreen.moveTo(rects[MAP_RECT].left(),
+						   rects[MAP_RECT].top());
 	str = LogisticsData::instance->getCurrentVideoFileName();
-	if ( str && strlen( str ) )
+	if(str && strlen(str))
 	{
 		FullPathFileName videoName;
-		videoName.init( moviePath, str, ".bik" );
-
-		if (fileExists(videoName) /* || fileExistsOnCD(videoName)*/)
+		videoName.init(moviePath, str, ".bik");
+		if(fileExists(videoName) /* || fileExistsOnCD(videoName)*/)
 		{
 			RECT movieRect;
-			movieRect.left = rects[VIDEO_RECT].left()+1;
-			movieRect.top = rects[VIDEO_RECT].top()+1;
-			movieRect.right = movieRect.left + rects[VIDEO_RECT].width()-2;
-			movieRect.bottom = movieRect.top + rects[VIDEO_RECT].height()-2;
-		
+			movieRect.left = rects[VIDEO_RECT].left() + 1;
+			movieRect.top = rects[VIDEO_RECT].top() + 1;
+			movieRect.right = movieRect.left + rects[VIDEO_RECT].width() - 2;
+			movieRect.bottom = movieRect.top + rects[VIDEO_RECT].height() - 2;
 			//If there is one already here, cause we loaded a savegame or something,
 			// Toss it to prevent leaking from the system Heap!
-			if (bMovie)
+			if(bMovie)
 			{
 				bMovie->stop();
 				delete bMovie;
 				bMovie = nullptr;
 			}
-
 			bMovie = new MC2Movie;
-			bMovie->init(videoName,movieRect,true);
-
-			if (Environment.Renderer == 3)
+			bMovie->init(videoName, movieRect, true);
+			if(Environment.Renderer == 3)
 			{
 				//DO NOT show the movies by default in software.
 				// It will still work, if they hit play.
 				bMovie->stop();
 			}
-
-			if ( LogisticsData::instance->getVideoShown() )
+			if(LogisticsData::instance->getVideoShown())
 				bMovie->stop();
-
-			LogisticsData::instance->setVideoShown( );
+			LogisticsData::instance->setVideoShown();
 		}
 	}
-
 	missionCount = MAX_MISSIONS_IN_GROUP;
-	int32_t result = LogisticsData::instance->getCurrentMissions( missionNames, missionCount );
-
+	int32_t result = LogisticsData::instance->getCurrentMissions(missionNames, missionCount);
 	EString selMissionName = LogisticsData::instance->getCurrentMission();
-	gosASSERT( result == NO_ERROR );
-
+	gosASSERT(result == NO_ERROR);
 	bool bPressed = 0;
-	for ( int32_t i = 0; i < missionCount; i++ )
+	for(auto i = 0; i < missionCount; i++)
 	{
-		if ( i > operationScreen.buttonCount )
+		if(i > operationScreen.buttonCount)
 		{
-			Assert( 0, 0, "not enough buttons on the operation screen" );
+			Assert(0, 0, "not enough buttons on the operation screen");
 		}
-		else 
+		else
 		{
-			operationScreen.buttons[i].setID( MSG_FIRST_MISSION + i );
-			operationScreen.buttons[i].setPressFX( LOG_SELECT );
-			if ( !LogisticsData::instance->getMissionAvailable( missionNames[i] ) )
-				operationScreen.buttons[i].disable( true );
-
-
+			operationScreen.buttons[i].setID(MSG_FIRST_MISSION + i);
+			operationScreen.buttons[i].setPressFX(LOG_SELECT);
+			if(!LogisticsData::instance->getMissionAvailable(missionNames[i]))
+				operationScreen.buttons[i].disable(true);
 			else
 			{
-				operationScreen.buttons[i].disable( false );
-				if ( selMissionName.Compare( missionNames[i], 0 ) == 0 )
+				operationScreen.buttons[i].disable(false);
+				if(selMissionName.Compare(missionNames[i], 0) == 0)
 				{
-					operationScreen.buttons[i].press( true );
-					handleMessage( 0, MSG_FIRST_MISSION + i );
+					operationScreen.buttons[i].press(true);
+					handleMessage(0, MSG_FIRST_MISSION + i);
 					bPressed = 1;
 					pressedButton = i;
-
 				}
-				if ( !bPressed && !selMissionName.Length()  )
+				if(!bPressed && !selMissionName.Length())
 				{
 					bPressed = 1;
 					pressedButton = i;
-					operationScreen.buttons[i].press( true );
-					handleMessage( 0, MSG_FIRST_MISSION + i );
+					operationScreen.buttons[i].press(true);
+					handleMessage(0, MSG_FIRST_MISSION + i);
 				}
 			}
 		}
-
 	}
-
-	for ( ; i < operationScreen.buttonCount; i++ )
+	for(; i < operationScreen.buttonCount; i++)
 	{
-		operationScreen.buttons[i].showGUIWindow( 0 );
+		operationScreen.buttons[i].showGUIWindow(0);
 	}
-
 	bStop = 0;
 }
 
 void MissionSelectionScreen::end()
 {
-	if ( bMovie )
+	if(bMovie)
 	{
 		bMovie->stop();
-
 		delete bMovie;
 		bMovie = nullptr;
 	}
-
-	beginFadeOut( 0 );
+	beginFadeOut(0);
 }
 
-int32_t MissionSelectionScreen::handleMessage( uint32_t msg, uint32_t who )
+int32_t MissionSelectionScreen::handleMessage(uint32_t msg, uint32_t who)
 {
-	if ( who >= MSG_FIRST_MISSION && who < MSG_FIRST_MISSION + MAX_MISSIONS_IN_GROUP )
+	if(who >= MSG_FIRST_MISSION && who < MSG_FIRST_MISSION + MAX_MISSIONS_IN_GROUP)
 	{
-		setMission( who - MSG_FIRST_MISSION );
+		setMission(who - MSG_FIRST_MISSION);
 	}
-	
-	switch( who )
+	switch(who)
 	{
-	case MB_MSG_NEXT:
-		status = NEXT;
-		break;
-
-	case MB_MSG_PREV:
-		status = PREVIOUS;
-		break;
-
-	case MN_MSG_PLAY:
-		if ( bMovie )
-			bMovie->restart();
-		getButton( MN_MSG_STOP )->press( 0 );
-		getButton( MN_MSG_PAUSE )->press( 0 );
-		break;
-	case MN_MSG_STOP:
-		if ( bMovie )
-			bMovie->stop();
-		bStop = true;
-		break;
-
-	case MN_MSG_PAUSE:
-		if ( !getButton( who )->isPressed() )
-		{
-			if ( bMovie )
-				bMovie->pause(0);
-			getButton( who )->press(false);
-		}
-		else
-		{
-			if ( bMovie )
-				bMovie->pause(1);
-			getButton( who )->press(true);
-		}
-
-
-		break;
-
-	case MB_MSG_MAINMENU:
-		status = MAINMENU;
-		break;
+		case MB_MSG_NEXT:
+			status = NEXT;
+			break;
+		case MB_MSG_PREV:
+			status = PREVIOUS;
+			break;
+		case MN_MSG_PLAY:
+			if(bMovie)
+				bMovie->restart();
+			getButton(MN_MSG_STOP)->press(0);
+			getButton(MN_MSG_PAUSE)->press(0);
+			break;
+		case MN_MSG_STOP:
+			if(bMovie)
+				bMovie->stop();
+			bStop = true;
+			break;
+		case MN_MSG_PAUSE:
+			if(!getButton(who)->isPressed())
+			{
+				if(bMovie)
+					bMovie->pause(0);
+				getButton(who)->press(false);
+			}
+			else
+			{
+				if(bMovie)
+					bMovie->pause(1);
+				getButton(who)->press(true);
+			}
+			break;
+		case MB_MSG_MAINMENU:
+			status = MAINMENU;
+			break;
 	}
-
 	return 0;
-
 }
 
-void MissionSelectionScreen::setMission( int32_t whichOne )
+void MissionSelectionScreen::setMission(int32_t whichOne)
 {
-	LogisticsData::instance->setCurrentMission( missionNames[whichOne] );
-
+	LogisticsData::instance->setCurrentMission(missionNames[whichOne]);
 	char text[64];
-	sprintf( text, "%ld ", LogisticsData::instance->getCBills() );
-	textObjects[RP_TEXT].setText( text );
-
-
-	updateListBox(); 
-
+	sprintf(text, "%ld ", LogisticsData::instance->getCBills());
+	textObjects[RP_TEXT].setText(text);
+	updateListBox();
 }
 
 void MissionSelectionScreen::updateListBox()
 {
-	missionDescriptionListBox.removeAllItems( true );
-
-	
-	aTextListItem* pEntry = new aTextListItem( IDS_MN_LB_FONT );
-	pEntry->resize( missionDescriptionListBox.width() - missionDescriptionListBox.getScrollBarWidth() - 2,
-		pEntry->height() );
-	pEntry->setText( IDS_MN_DIVIDER );
-	pEntry->setColor( 0xffC66600 );
-	missionDescriptionListBox.AddItem( pEntry );
-
-
-	pEntry = new aTextListItem( IDS_MN_LB_FONT );
-	pEntry->resize( missionDescriptionListBox.width() - missionDescriptionListBox.getScrollBarWidth() - 2,
-		pEntry->height() );
-	pEntry->setText( LogisticsData::instance->getCurrentMissionFriendlyName() );
-	pEntry->setColor( 0xffC66600 );
-	missionDescriptionListBox.AddItem( pEntry );
-
-	pEntry = new aTextListItem( IDS_MN_LB_FONT );
-	pEntry->resize( missionDescriptionListBox.width() - missionDescriptionListBox.getScrollBarWidth() - 2,
-		pEntry->height() );
-	pEntry->setText( IDS_MN_DIVIDER );
-	pEntry->setColor( 0xffC66600   );
-	missionDescriptionListBox.AddItem( pEntry );
-
-	pEntry = new aTextListItem( IDS_MN_LB_FONT );
-	pEntry->resize( missionDescriptionListBox.width() - missionDescriptionListBox.getScrollBarWidth() - 2,
-		pEntry->height() );
-	pEntry->setText( LogisticsData::instance->getCurrentMissionDescription() );
-	pEntry->setColor( 0xffC66600 );
+	missionDescriptionListBox.removeAllItems(true);
+	aTextListItem* pEntry = new aTextListItem(IDS_MN_LB_FONT);
+	pEntry->resize(missionDescriptionListBox.width() - missionDescriptionListBox.getScrollBarWidth() - 2,
+				   pEntry->height());
+	pEntry->setText(IDS_MN_DIVIDER);
+	pEntry->setColor(0xffC66600);
+	missionDescriptionListBox.AddItem(pEntry);
+	pEntry = new aTextListItem(IDS_MN_LB_FONT);
+	pEntry->resize(missionDescriptionListBox.width() - missionDescriptionListBox.getScrollBarWidth() - 2,
+				   pEntry->height());
+	pEntry->setText(LogisticsData::instance->getCurrentMissionFriendlyName());
+	pEntry->setColor(0xffC66600);
+	missionDescriptionListBox.AddItem(pEntry);
+	pEntry = new aTextListItem(IDS_MN_LB_FONT);
+	pEntry->resize(missionDescriptionListBox.width() - missionDescriptionListBox.getScrollBarWidth() - 2,
+				   pEntry->height());
+	pEntry->setText(IDS_MN_DIVIDER);
+	pEntry->setColor(0xffC66600);
+	missionDescriptionListBox.AddItem(pEntry);
+	pEntry = new aTextListItem(IDS_MN_LB_FONT);
+	pEntry->resize(missionDescriptionListBox.width() - missionDescriptionListBox.getScrollBarWidth() - 2,
+				   pEntry->height());
+	pEntry->setText(LogisticsData::instance->getCurrentMissionDescription());
+	pEntry->setColor(0xffC66600);
 	pEntry->sizeToText();
-	missionDescriptionListBox.AddItem( pEntry );
-
-
-
-
-
-
-
+	missionDescriptionListBox.AddItem(pEntry);
 }
 
 

@@ -14,11 +14,13 @@
 #include <stuff/memoryblock.hpp>
 #include <stuff/safesocket.hpp>
 
-namespace Stuff {
+namespace Stuff
+{
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ SafeChainLink ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-	enum {
+	enum
+	{
 		SafeChainLink_MemoryBlock_Allocation = 100
 	};
 
@@ -30,10 +32,10 @@ namespace Stuff {
 		friend class SafeChainIterator;
 
 		static void
-			InitializeClass(
+		InitializeClass(
 			size_t block_count = SafeChainLink_MemoryBlock_Allocation,
 			size_t block_delta = SafeChainLink_MemoryBlock_Allocation
-			);
+		);
 		static void __stdcall TerminateClass(void);
 
 	public:
@@ -42,20 +44,26 @@ namespace Stuff {
 
 	private:
 		SafeChainLink(
-			SafeChain *chain,
-			Plug *plug,
-			SafeChainLink *nextSafeChainLink,
-			SafeChainLink *prevSafeChainLink
-			);
+			SafeChain* chain,
+			Plug* plug,
+			SafeChainLink* nextSafeChainLink,
+			SafeChainLink* prevSafeChainLink
+		);
 
-		SafeChainLink *nextSafeChainLink;
-		SafeChainLink *prevSafeChainLink;
+		SafeChainLink* nextSafeChainLink;
+		SafeChainLink* prevSafeChainLink;
 
 	private:
 		static MemoryBlock*	AllocatedMemory;
 
-		PVOID operator new(size_t)			{return AllocatedMemory->New();}
-		void operator delete(PVOID where)	{AllocatedMemory->Delete(where);}
+		PVOID operator new(size_t)
+		{
+			return AllocatedMemory->New();
+		}
+		void operator delete(PVOID where)
+		{
+			AllocatedMemory->Delete(where);
+		}
 	};
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ SafeChain ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -67,96 +75,100 @@ namespace Stuff {
 		friend class SafeChainIterator;
 
 	public:
-	//
-	//-----------------------------------------------------------------------
-	//-----------------------------------------------------------------------
-	// Public interface
-	//-----------------------------------------------------------------------
-	//-----------------------------------------------------------------------
-	//
-		explicit SafeChain(Node *node);
+		//
+		//-----------------------------------------------------------------------
+		//-----------------------------------------------------------------------
+		// Public interface
+		//-----------------------------------------------------------------------
+		//-----------------------------------------------------------------------
+		//
+		explicit SafeChain(Node* node);
 		~SafeChain(void);
 
 		void TestInstance(void);
 		static void
-			TestClass(void);
+		TestClass(void);
 		static void
-			ProfileClass(void);
+		ProfileClass(void);
 
-	//
-	//-----------------------------------------------------------------------
-	// IsEmpty - Returns true if the socket contains no plugs.
-	//-----------------------------------------------------------------------
-	//
+		//
+		//-----------------------------------------------------------------------
+		// IsEmpty - Returns true if the socket contains no plugs.
+		//-----------------------------------------------------------------------
+		//
 		bool
-			IsEmpty(void);
+		IsEmpty(void);
 
 	protected:
-	//
-	//-----------------------------------------------------------------------
-	//-----------------------------------------------------------------------
-	// Protected interface
-	//-----------------------------------------------------------------------
-	//-----------------------------------------------------------------------
-	//
+		//
+		//-----------------------------------------------------------------------
+		//-----------------------------------------------------------------------
+		// Protected interface
+		//-----------------------------------------------------------------------
+		//-----------------------------------------------------------------------
+		//
 		void
-			AddImplementation(Plug *plug);
+		AddImplementation(Plug* plug);
 
 	private:
-	//
-	//-----------------------------------------------------------------------
-	// Private utilities
-	//-----------------------------------------------------------------------
-	//
+		//
+		//-----------------------------------------------------------------------
+		// Private utilities
+		//-----------------------------------------------------------------------
+		//
 		SafeChainLink*
-			InsertSafeChainLink(
-			Plug *plug,
-			SafeChainLink *link
-			);
+		InsertSafeChainLink(
+			Plug* plug,
+			SafeChainLink* link
+		);
 
-	//
-	//-----------------------------------------------------------------------
-	// Private data
-	//-----------------------------------------------------------------------
-	//
-		SafeChainLink *head;
-		SafeChainLink *tail;
+		//
+		//-----------------------------------------------------------------------
+		// Private data
+		//-----------------------------------------------------------------------
+		//
+		SafeChainLink* head;
+		SafeChainLink* tail;
 	};
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ SafeChainOf ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 	template <class T> class SafeChainOf:
-	public SafeChain
+		public SafeChain
 	{
 	public:
-	//
-	//--------------------------------------------------------------------
-	//--------------------------------------------------------------------
-	// Public interface
-	//--------------------------------------------------------------------
-	//--------------------------------------------------------------------
-	//
-		explicit SafeChainOf(Node *node);
+		//
+		//--------------------------------------------------------------------
+		//--------------------------------------------------------------------
+		// Public interface
+		//--------------------------------------------------------------------
+		//--------------------------------------------------------------------
+		//
+		explicit SafeChainOf(Node* node);
 		~SafeChainOf(void);
 
-	//
-	//--------------------------------------------------------------------
-	// Socket methods (see Socket for full listing)
-	//--------------------------------------------------------------------
-	//
+		//
+		//--------------------------------------------------------------------
+		// Socket methods (see Socket for full listing)
+		//--------------------------------------------------------------------
+		//
 		void
-			Add(T plug)
-		{AddImplementation(Cast_Pointer(Plug*, plug));}
+		Add(T plug)
+		{
+			AddImplementation(Cast_Pointer(Plug*, plug));
+		}
 		void
-			Remove(T plug)
-		{RemovePlug(Cast_Pointer(Plug*, plug));}
+		Remove(T plug)
+		{
+			RemovePlug(Cast_Pointer(Plug*, plug));
+		}
 	};
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~ SafeChainOf templates ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 	template <class T>
-	SafeChainOf<T>::SafeChainOf(Node *node):
-	SafeChain(node)
+	SafeChainOf<T>::SafeChainOf(Node* node):
+		SafeChain(node)
 	{
 	}
 
@@ -172,159 +184,169 @@ namespace Stuff {
 	{
 	public:
 		//
-	//--------------------------------------------------------------------
-	//--------------------------------------------------------------------
-	// Public interface
-	//--------------------------------------------------------------------
-	//--------------------------------------------------------------------
-	//
+		//--------------------------------------------------------------------
+		//--------------------------------------------------------------------
+		// Public interface
+		//--------------------------------------------------------------------
+		//--------------------------------------------------------------------
+		//
 
-	//
-	//--------------------------------------------------------------------
-	// Constructors, Destructor and testing
-	//--------------------------------------------------------------------
-	//
+		//
+		//--------------------------------------------------------------------
+		// Constructors, Destructor and testing
+		//--------------------------------------------------------------------
+		//
 		SafeChainIterator(
-			SafeChain *chain,
+			SafeChain* chain,
 			bool move_next_on_remove
-			);
-		SafeChainIterator(const SafeChainIterator &iterator);
+		);
+		SafeChainIterator(const SafeChainIterator& iterator);
 		~SafeChainIterator(void);
 
 		void TestInstance(void) const;
 
-	//
-	//--------------------------------------------------------------------
-	// Iterator methods (see Iterator for full listing)
-	//--------------------------------------------------------------------
-	//
+		//
+		//--------------------------------------------------------------------
+		// Iterator methods (see Iterator for full listing)
+		//--------------------------------------------------------------------
+		//
 		void
-			First(void);
+		First(void);
 		void
-			Last(void);
+		Last(void);
 		void
-			Next(void);
+		Next(void);
 		void
-			Previous(void);
+		Previous(void);
 		CollectionSize
-			GetSize(void);
+		GetSize(void);
 		void
-			Remove(void);
+		Remove(void);
 
 	protected:
-	//
-	//--------------------------------------------------------------------
-	//--------------------------------------------------------------------
-	// Protected interface
-	//--------------------------------------------------------------------
-	//--------------------------------------------------------------------
-	//
+		//
+		//--------------------------------------------------------------------
+		//--------------------------------------------------------------------
+		// Protected interface
+		//--------------------------------------------------------------------
+		//--------------------------------------------------------------------
+		//
 		PVOID
-			ReadAndNextImplementation(void);
+		ReadAndNextImplementation(void);
 		PVOID
-			ReadAndPreviousImplementation(void);
+		ReadAndPreviousImplementation(void);
 		PVOID
-			GetCurrentImplementation(void);
+		GetCurrentImplementation(void);
 		PVOID
-			GetNthImplementation(
+		GetNthImplementation(
 			CollectionSize index
-			);
+		);
 		void
-			InsertImplementation(Plug *plug);
+		InsertImplementation(Plug* plug);
 
 	private:
-	//
-	//--------------------------------------------------------------------
-	//--------------------------------------------------------------------
-	// Private interface
-	//--------------------------------------------------------------------
-	//--------------------------------------------------------------------
-	//
+		//
+		//--------------------------------------------------------------------
+		//--------------------------------------------------------------------
+		// Private interface
+		//--------------------------------------------------------------------
+		//--------------------------------------------------------------------
+		//
 		void
-			ReceiveMemo(
+		ReceiveMemo(
 			IteratorMemo memo,
 			PVOID content
-			);
+		);
 
-	//
-	//--------------------------------------------------------------------
-	// Private data
-	//--------------------------------------------------------------------
-	//
-		SafeChainLink *currentLink;
+		//
+		//--------------------------------------------------------------------
+		// Private data
+		//--------------------------------------------------------------------
+		//
+		SafeChainLink* currentLink;
 		bool moveNextOnRemove;
 	};
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~ SafeChainIteratorOf ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~ SafeChainIteratorOf ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 	template <class T> class SafeChainIteratorOf:
-	public SafeChainIterator
+		public SafeChainIterator
 	{
 	public:
-	//
-	//--------------------------------------------------------------------
-	//--------------------------------------------------------------------
-	// Public interface
-	//--------------------------------------------------------------------
-	//--------------------------------------------------------------------
-	//
+		//
+		//--------------------------------------------------------------------
+		//--------------------------------------------------------------------
+		// Public interface
+		//--------------------------------------------------------------------
+		//--------------------------------------------------------------------
+		//
 
-	//
-	//--------------------------------------------------------------------
-	// Constructors and Destructor
-	//--------------------------------------------------------------------
-	//
+		//
+		//--------------------------------------------------------------------
+		// Constructors and Destructor
+		//--------------------------------------------------------------------
+		//
 		SafeChainIteratorOf(
-			SafeChainOf<T> *chain,
-			bool move_next_on_remove=true
-			);
-		SafeChainIteratorOf(const SafeChainIteratorOf<T> &iterator);
+			SafeChainOf<T>* chain,
+			bool move_next_on_remove = true
+		);
+		SafeChainIteratorOf(const SafeChainIteratorOf<T>& iterator);
 		Iterator*
-			MakeClone(void);
+		MakeClone(void);
 
 		~SafeChainIteratorOf(void);
 
-	//
-	//--------------------------------------------------------------------
-	// Iterator methods (see Iterator for full listing)
-	//--------------------------------------------------------------------
-	//
+		//
+		//--------------------------------------------------------------------
+		// Iterator methods (see Iterator for full listing)
+		//--------------------------------------------------------------------
+		//
 		T
-			ReadAndNext()
-		{return (T)ReadAndNextImplementation(void);}
+		ReadAndNext()
+		{
+			return (T)ReadAndNextImplementation(void);
+		}
 		T
-			ReadAndPrevious()
-		{return (T)ReadAndPreviousImplementation(void);}
+		ReadAndPrevious()
+		{
+			return (T)ReadAndPreviousImplementation(void);
+		}
 		T
-			GetCurrent()
-		{return (T)GetCurrentImplementation(void);}
+		GetCurrent()
+		{
+			return (T)GetCurrentImplementation(void);
+		}
 		T
-			GetNth(CollectionSize index)
-		{return (T)GetNthImplementation(index);}
+		GetNth(CollectionSize index)
+		{
+			return (T)GetNthImplementation(index);
+		}
 		void
-			Insert(T plug)
-		{InsertImplementation(Cast_Object(Plug*,plug));}
+		Insert(T plug)
+		{
+			InsertImplementation(Cast_Object(Plug*, plug));
+		}
 	};
 
 //~~~~~~~~~~~~~~~~~~~~~~~ SafeChainIteratorOf templates ~~~~~~~~~~~~~~~~~~~~~~~
 
 	template <class T>
 	SafeChainIteratorOf<T>::SafeChainIteratorOf(
-		SafeChainOf<T> *chain,
+		SafeChainOf<T>* chain,
 		bool move_next_on_remove
-		):
-	SafeChainIterator(chain, move_next_on_remove)
+	):
+		SafeChainIterator(chain, move_next_on_remove)
 	{
 	}
 
 	template <class T>
-	SafeChainIteratorOf<T>::SafeChainIteratorOf(const SafeChainIteratorOf<T> &iterator):
-	SafeChainIterator(iterator)
+	SafeChainIteratorOf<T>::SafeChainIteratorOf(const SafeChainIteratorOf<T>& iterator):
+		SafeChainIterator(iterator)
 	{
 	}
 
 	template <class T> Iterator*
-		SafeChainIteratorOf<T>::MakeClone()
+	SafeChainIteratorOf<T>::MakeClone()
 	{
 		return new SafeChainIteratorOf<T>(*this);
 	}

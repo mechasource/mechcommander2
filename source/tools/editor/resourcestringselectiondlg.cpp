@@ -28,9 +28,8 @@ ResourceStringSelectionDlg::ResourceStringSelectionDlg(CWnd* pParent /*=nullptr*
 	m_BottomOfIDRange = 0;
 	m_TopOfIDRange = 65535;
 	m_SelectedResourceStringID = -1;
-
 	//{{AFX_DATA_INIT(ResourceStringSelectionDlg)
-		// NOTE: the ClassWizard will add member initialization here
+	// NOTE: the ClassWizard will add member initialization here
 	//}}AFX_DATA_INIT
 }
 
@@ -52,30 +51,33 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // ResourceStringSelectionDlg message handlers
 
-static BOOL CSLoadString(int32_t resourceID, CString &targetStr) {
+static BOOL CSLoadString(int32_t resourceID, CString& targetStr)
+{
 	char szTmp[16384/*max string length*/];
-	cLoadString( resourceID, szTmp, 16384/*max string length*/ );
+	cLoadString(resourceID, szTmp, 16384/*max string length*/);
 	targetStr = szTmp;
 	CString tmpStr;
 	tmpStr.Format("mc2res.dll:%d Not defined", resourceID);
-	if (0 == strcmp(tmpStr.GetBuffer(0), szTmp)) {
+	if(0 == strcmp(tmpStr.GetBuffer(0), szTmp))
+	{
 		return (0);
 	}
 	return (!0);
 }
 
-BOOL ResourceStringSelectionDlg::OnInitDialog() 
+BOOL ResourceStringSelectionDlg::OnInitDialog()
 {
 	CDialog::OnInitDialog();
-	
 	m_ResourceStringIDs.Clear();
 	m_Combo.ResetContent();
 	uint32_t i;
-	for (i = m_BottomOfIDRange; i <= (uint32_t)m_TopOfIDRange; i += 1) {
+	for(i = m_BottomOfIDRange; i <= (uint32_t)m_TopOfIDRange; i += 1)
+	{
 		CString tmpStr;
 		//BOOL result = tmpStr.LoadString(i);
 		BOOL result = CSLoadString(i, tmpStr);
-		if (0 != result) {
+		if(0 != result)
+		{
 			CString tmpStr2;
 			tmpStr2.Format("%d: ", i);
 			tmpStr2 += tmpStr;
@@ -83,28 +85,30 @@ BOOL ResourceStringSelectionDlg::OnInitDialog()
 			m_ResourceStringIDs.Append(i);
 		}
 	}
-	for (i = 0; i < m_ResourceStringIDs.Count(); i += 1) {
-		if (m_SelectedResourceStringID == m_ResourceStringIDs[i]) {
+	for(i = 0; i < m_ResourceStringIDs.Count(); i += 1)
+	{
+		if(m_SelectedResourceStringID == m_ResourceStringIDs[i])
+		{
 			m_Combo.SetCurSel(i);
 			break;
 		}
 	}
-	if (m_ResourceStringIDs.Count() == i) {
+	if(m_ResourceStringIDs.Count() == i)
+	{
 		m_SelectedResourceStringID = -1;
 		m_Combo.SetCurSel(-1);
 	}
-	
 	return TRUE;  // return TRUE unless you set the focus to a control
-	              // EXCEPTION: OCX Property Pages should return FALSE
+	// EXCEPTION: OCX Property Pages should return FALSE
 }
 
-void ResourceStringSelectionDlg::OnOK() 
+void ResourceStringSelectionDlg::OnOK()
 {
 	uint32_t selectionIndex = m_Combo.GetCurSel();
-	if (CB_ERR != selectionIndex) {
+	if(CB_ERR != selectionIndex)
+	{
 		assert(m_ResourceStringIDs.Count() > selectionIndex);
 		m_SelectedResourceStringID = m_ResourceStringIDs[selectionIndex];
 	}
-	
 	CDialog::OnOK();
 }

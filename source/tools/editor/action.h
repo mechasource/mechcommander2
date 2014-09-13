@@ -19,20 +19,23 @@ class ActionUndoMgr;
 class Action;
 
 // Abstract base class for all action objects
-class Action 
+class Action
 {
 
 public:
 
-	virtual ~Action(void){}
+	virtual ~Action(void) {}
 	virtual bool redo(void) = 0;
 	virtual bool undo(void) = 0;
-	Action& operator=( const Action& src );
-	PCWSTR getDescription(void) { return m_strDescription.c_str(void); }
+	Action& operator=(const Action& src);
+	PCWSTR getDescription(void)
+	{
+		return m_strDescription.c_str(void);
+	}
 
 protected:
 	std::wstring m_strDescription;
-	
+
 	// suppressed
 	Action(PCWSTR pStr)
 	{
@@ -40,12 +43,13 @@ protected:
 	}
 
 	// if you call this, make sure you set the description
-	Action(void){ }
+	Action(void) { }
 };
 
-typedef struct VertexInfo {
+typedef struct VertexInfo
+{
 	VertexInfo(uint32_t row, uint32_t column);
-	~VertexInfo(void){}
+	~VertexInfo(void) {}
 
 	uint32_t row;
 	uint32_t column;
@@ -55,41 +59,41 @@ typedef struct VertexInfo {
 
 private:
 	// make sure the list class doesn't try and use this
-	VertexInfo& operator=( const VertexInfo& );
+	VertexInfo& operator=(const VertexInfo&);
 
 } VertexInfo;
 
-// for undo redo buffer, since it deals with 
+// for undo redo buffer, since it deals with
 // the same stuff as the tile brush, I put
 // it here
 class ActionPaintTile : public Action
 {
-	public:
+public:
 
-		ActionPaintTile(void){}
+	ActionPaintTile(void) {}
 
-		// virtual overrides
-		virtual bool redo(void);
-		virtual bool undo(void);
-		
-		bool doRedo(void); // so we don't go through virtual functions
+	// virtual overrides
+	virtual bool redo(void);
+	virtual bool undo(void);
 
-		ActionPaintTile( PCWSTR pStr ) 
-			: Action( pStr ){}
+	bool doRedo(void); // so we don't go through virtual functions
 
-		void addChangedVertexInfo( uint32_t row, uint32_t column );
-		void addVertexInfo( VertexInfo& );
-		bool getOldHeight( uint32_t row, uint32_t column, float& oldHeight );
+	ActionPaintTile(PCWSTR pStr)
+		: Action(pStr) {}
 
-	private:
-		typedef std::list< VertexInfo /*, const VertexInfo& */ > VERTEX_INFO_LIST;
-		VERTEX_INFO_LIST	vertexInfoList;	
+	void addChangedVertexInfo(uint32_t row, uint32_t column);
+	void addVertexInfo(VertexInfo&);
+	bool getOldHeight(uint32_t row, uint32_t column, float& oldHeight);
+
+private:
+	typedef std::list< VertexInfo /*, const VertexInfo& */ > VERTEX_INFO_LIST;
+	VERTEX_INFO_LIST	vertexInfoList;
 };
 
 class ModifyBuildingAction : public Action
 {
 public:
-	
+
 	virtual ~ModifyBuildingAction(void);
 	virtual bool redo(void);
 	virtual bool undo(void);
@@ -117,11 +121,11 @@ private:
 class ActionUndoMgr
 {
 
-public:	
+public:
 	ActionUndoMgr(void);
 	~ActionUndoMgr(void);
-	
-	void AddAction( Action* pAction );
+
+	void AddAction(Action* pAction);
 	bool Redo(void);
 	bool Undo(void);
 	void Reset(void);

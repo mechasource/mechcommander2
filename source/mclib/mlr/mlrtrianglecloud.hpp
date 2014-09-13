@@ -9,11 +9,12 @@
 
 #include <mlr/mlreffect.hpp>
 
-namespace MidLevelRenderer {
+namespace MidLevelRenderer
+{
 
-	//##########################################################################
-	//#####################    MLRTriangleCloud    #############################
-	//##########################################################################
+//##########################################################################
+//#####################    MLRTriangleCloud    #############################
+//##########################################################################
 
 
 	class MLRTriangleCloud:
@@ -30,14 +31,14 @@ namespace MidLevelRenderer {
 		// Constructors/Destructors
 		//
 	public:
-		MLRTriangleCloud(int32_t);
+		MLRTriangleCloud(uint32_t);
 		~MLRTriangleCloud(void);
 
 		void SetData(
 			pcsize_t count,
-			const Stuff::Point3D *point_data,
-			const Stuff::RGBAColor *color_data
-			);
+			const Stuff::Point3D* point_data,
+			const Stuff::RGBAColor* color_data
+		);
 
 		// added due to warning C4263 in MLRIndexedTriangleCloud
 		virtual void SetData(
@@ -48,9 +49,9 @@ namespace MidLevelRenderer {
 			const Stuff::RGBAColor* color_data,
 			const Stuff::Vector2DScalar* uv_data);
 
-		void Draw (DrawEffectInformation*, GOSVertexPool*, MLRSorter*);
+		void Draw(DrawEffectInformation*, GOSVertexPool*, MLRSorter*);
 
-		uint32_t Clip(MLRClippingState, GOSVertexPool*);		
+		uint32_t Clip(MLRClippingState, GOSVertexPool*);
 
 		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		// Class Data Support
@@ -67,13 +68,13 @@ namespace MidLevelRenderer {
 	protected:
 		pcsize_t usedNrOfTriangles;
 
-		static Stuff::DynamicArrayOf<Stuff::RGBAColor> *clipExtraColors; // , Max_Number_Vertices_Per_Mesh
+		static Stuff::DynamicArrayOf<Stuff::RGBAColor>* clipExtraColors; // , Max_Number_Vertices_Per_Mesh
 
-		static Stuff::DynamicArrayOf<MLRClippingState> *clipPerVertex; // , Max_Number_Vertices_Per_Mesh
+		static Stuff::DynamicArrayOf<MLRClippingState>* clipPerVertex; // , Max_Number_Vertices_Per_Mesh
 
-		static Stuff::DynamicArrayOf<Stuff::Vector4D> *clipExtraCoords; // , Max_Number_Vertices_Per_Mesh
+		static Stuff::DynamicArrayOf<Stuff::Vector4D>* clipExtraCoords; // , Max_Number_Vertices_Per_Mesh
 
-		static Stuff::DynamicArrayOf<int32_t> *clipExtraLength; // , Max_Number_Primitives_Per_Frame
+		static Stuff::DynamicArrayOf<int32_t>* clipExtraLength; // , Max_Number_Primitives_Per_Frame
 	};
 }
 #endif

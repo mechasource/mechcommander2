@@ -25,22 +25,22 @@ LogisticsMechDisplay:
 **************************************************************************************************/
 class LogisticsMechDisplay : public LogisticsScreen
 {
-	public:
+public:
 
-		LogisticsMechDisplay(void);
+	LogisticsMechDisplay(void);
 
-		virtual ~LogisticsMechDisplay(void);
+	virtual ~LogisticsMechDisplay(void);
 
-		virtual void		update(void);
-		virtual void		render(int32_t xOffset, int32_t yOffset);
-		int32_t					init( );
-		void				setMech( LogisticsMech* pMech, bool bFromLB = 0 );
+	virtual void		update(void);
+	virtual void		render(int32_t xOffset, int32_t yOffset);
+	int32_t					init();
+	void				setMech(LogisticsMech* pMech, bool bFromLB = 0);
 
 private:
-		LogisticsMech*		pCurMech;
-		AttributeMeter		attributeMeters[3];
-		SimpleCamera		mechCamera;
-		ComponentListBox	componentListBox;
+	LogisticsMech*		pCurMech;
+	AttributeMeter		attributeMeters[3];
+	SimpleCamera		mechCamera;
+	ComponentListBox	componentListBox;
 
 
 };

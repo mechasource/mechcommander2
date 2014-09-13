@@ -57,12 +57,13 @@ extern TokenCodeType	statementEndList[];
 
 extern bool  EnterStateSymbol;
 extern ABLModulePtr		CurFSM;
-SymTableNodePtr forwardState (PSTR stateName);
+SymTableNodePtr forwardState(PSTR stateName);
 extern SymTableNodePtr	CurModuleIdPtr;
 
 //***************************************************************************
 
-TokenCodeType relationalOperatorList[] = {
+TokenCodeType relationalOperatorList[] =
+{
 	TKN_LT,
 	TKN_LE,
 	TKN_EQUALEQUAL,
@@ -72,14 +73,16 @@ TokenCodeType relationalOperatorList[] = {
 	TKN_NONE
 };
 
-TokenCodeType addOperatorList[] = {
+TokenCodeType addOperatorList[] =
+{
 	TKN_PLUS,
 	TKN_MINUS,
 	TKN_OR,
 	TKN_NONE
 };
 
-TokenCodeType multiplyOperatorList[] = {
+TokenCodeType multiplyOperatorList[] =
+{
 	TKN_STAR,
 	TKN_FSLASH,
 	TKN_DIV,		// we'll probably want to make this covered with FSLASH
@@ -92,18 +95,18 @@ TokenCodeType multiplyOperatorList[] = {
 // MISC
 //***************************************************************************
 
-inline bool integerOperands (TypePtr type1, TypePtr type2) {
-
+inline bool integerOperands(TypePtr type1, TypePtr type2)
+{
 	return((type1 == IntegerTypePtr) && (type2 == IntegerTypePtr));
 }
 
 //***************************************************************************
 
-inline bool realOperands (TypePtr type1, TypePtr type2) {
-
-	if (type1 == RealTypePtr)
+inline bool realOperands(TypePtr type1, TypePtr type2)
+{
+	if(type1 == RealTypePtr)
 		return((type2 == RealTypePtr) || (type2 == IntegerTypePtr));
-	else if (type2 == RealTypePtr)
+	else if(type2 == RealTypePtr)
 		return(type1 == IntegerTypePtr);
 	else
 		return(false);
@@ -111,24 +114,25 @@ inline bool realOperands (TypePtr type1, TypePtr type2) {
 
 //***************************************************************************
 
-inline bool booleanOperands (TypePtr type1, TypePtr type2) {
-
+inline bool booleanOperands(TypePtr type1, TypePtr type2)
+{
 	return((type1 == BooleanTypePtr) && (type2 == BooleanTypePtr));
 }
 
 //***************************************************************************
 
-void checkRelationalOpTypes (TypePtr type1, TypePtr type2) {
-
-	if (type1 && type2) {
-		if ((type1 == type2) && ((type1->form == FRM_SCALAR) || (type1->form == FRM_ENUM)))
+void checkRelationalOpTypes(TypePtr type1, TypePtr type2)
+{
+	if(type1 && type2)
+	{
+		if((type1 == type2) && ((type1->form == FRM_SCALAR) || (type1->form == FRM_ENUM)))
 			return;
-		if (((type1 == IntegerTypePtr) && (type2 == RealTypePtr)) ||
-			((type2 == IntegerTypePtr) && (type1 == RealTypePtr)))
+		if(((type1 == IntegerTypePtr) && (type2 == RealTypePtr)) ||
+				((type2 == IntegerTypePtr) && (type1 == RealTypePtr)))
 			return;
-		if ((type1->form == FRM_ARRAY) && (type2->form == FRM_ARRAY) &&
-			(type1->info.array.elementTypePtr == CharTypePtr) && (type2->info.array.elementTypePtr == CharTypePtr) &&
-			(type1->info.array.elementCount == type2->info.array.elementCount))
+		if((type1->form == FRM_ARRAY) && (type2->form == FRM_ARRAY) &&
+				(type1->info.array.elementTypePtr == CharTypePtr) && (type2->info.array.elementTypePtr == CharTypePtr) &&
+				(type1->info.array.elementCount == type2->info.array.elementCount))
 			return;
 	}
 	syntaxError(ABL_ERR_SYNTAX_INCOMPATIBLE_TYPES);
@@ -136,19 +140,16 @@ void checkRelationalOpTypes (TypePtr type1, TypePtr type2) {
 
 //***************************************************************************
 
-int32_t isAssignTypeCompatible (TypePtr type1, TypePtr type2) {
-
-	if (type1 == type2)
+int32_t isAssignTypeCompatible(TypePtr type1, TypePtr type2)
+{
+	if(type1 == type2)
 		return(1);
-		
-	if ((type1 == RealTypePtr) && (type2 == IntegerTypePtr))
+	if((type1 == RealTypePtr) && (type2 == IntegerTypePtr))
 		return(1);
-
-	if ((type1->form == FRM_ARRAY) && (type2->form == FRM_ARRAY) &&
-		(type1->info.array.elementTypePtr == CharTypePtr) && (type2->info.array.elementTypePtr == CharTypePtr) &&
-		(type1->info.array.elementCount >= type2->info.array.elementCount))
+	if((type1->form == FRM_ARRAY) && (type2->form == FRM_ARRAY) &&
+			(type1->info.array.elementTypePtr == CharTypePtr) && (type2->info.array.elementTypePtr == CharTypePtr) &&
+			(type1->info.array.elementCount >= type2->info.array.elementCount))
 		return(1);
-
 	return(0);
 }
 
@@ -156,14 +157,13 @@ int32_t isAssignTypeCompatible (TypePtr type1, TypePtr type2) {
 // EXPRESSION routines
 //***************************************************************************
 
-TypePtr variable (SymTableNodePtr variableIdPtr) {
-
+TypePtr variable(SymTableNodePtr variableIdPtr)
+{
 	TypePtr typePtr = (TypePtr)(variableIdPtr->typePtr);
 	DefinitionType defnKey = variableIdPtr->defn.key;
-
 	crunchSymTableNodePtr(variableIdPtr);
-
-	switch (defnKey) {
+	switch(defnKey)
+	{
 		case DFN_VAR:
 		case DFN_VALPARAM:
 		case DFN_REFPARAM:
@@ -175,73 +175,73 @@ TypePtr variable (SymTableNodePtr variableIdPtr) {
 			//syntaxError(ABL_ERR_SYNTAX_INVALID_IDENTIFIER_USAGE);
 			NODEFAULT;
 	}
-
 	getToken();
-
 	//---------------------------------------------------------------------
 	// There should not be a parameter list. However, if there is, parse it
 	// for error recovery...
-	if (curToken == TKN_LPAREN) {
+	if(curToken == TKN_LPAREN)
+	{
 		syntaxError(ABL_ERR_SYNTAX_UNEXPECTED_TOKEN);
 		actualParamList(variableIdPtr, 0);
 		return(typePtr);
 	}
-
 	//-----------
 	// Subscripts
-	while (curToken == TKN_LBRACKET) {
-		if (curToken == TKN_LBRACKET)
+	while(curToken == TKN_LBRACKET)
+	{
+		if(curToken == TKN_LBRACKET)
 			typePtr = arraySubscriptList(typePtr);
 	}
-
 	return(typePtr);
 }
 
 //***************************************************************************
 
-TypePtr arraySubscriptList (TypePtr typePtr) {
-
+TypePtr arraySubscriptList(TypePtr typePtr)
+{
 	TypePtr indexTypePtr = nullptr;
 	TypePtr elementTypePtr = nullptr;
 	TypePtr subscriptTypePtr = nullptr;
-
-	do {
-		if (typePtr->form == FRM_ARRAY) {
+	do
+	{
+		if(typePtr->form == FRM_ARRAY)
+		{
 			indexTypePtr = typePtr->info.array.indexTypePtr;
 			elementTypePtr = typePtr->info.array.elementTypePtr;
-
 			getToken();
 			subscriptTypePtr = expression();
-
 			//-------------------------------------------------------------
 			// If the subscript expression isn't assignment type compatible
 			// with its corresponding subscript type, we're screwed...
-			if (!isAssignTypeCompatible(indexTypePtr, subscriptTypePtr))
+			if(!isAssignTypeCompatible(indexTypePtr, subscriptTypePtr))
 				syntaxError(ABL_ERR_SYNTAX_INCOMPATIBLE_TYPES);
-
 			typePtr = elementTypePtr;
-			}
-		else {
+		}
+		else
+		{
 			syntaxError(ABL_ERR_SYNTAX_TOO_MANY_SUBSCRIPTS);
-			while ((curToken != TKN_RBRACKET) && !tokenIn(statementEndList))
+			while((curToken != TKN_RBRACKET) && !tokenIn(statementEndList))
 				getToken();
 		}
-	} while (curToken == TKN_COMMA);
-
+	}
+	while(curToken == TKN_COMMA);
 	ifTokenGetElseError(TKN_RBRACKET, ABL_ERR_SYNTAX_MISSING_RBRACKET);
 	return(typePtr);
 }
 
 //***************************************************************************
 
-TypePtr factor (void) {
-
+TypePtr factor(void)
+{
 	TypePtr thisType = nullptr;
-	switch (curToken) {
-		case TKN_IDENTIFIER: {
+	switch(curToken)
+	{
+		case TKN_IDENTIFIER:
+		{
 			SymTableNodePtr IdPtr = nullptr;
 			searchAndFindAllSymTables(IdPtr);
-			switch (IdPtr->defn.key) {
+			switch(IdPtr->defn.key)
+			{
 				case DFN_FUNCTION:
 					crunchSymTableNodePtr(IdPtr);
 					getToken();
@@ -256,53 +256,59 @@ TypePtr factor (void) {
 					thisType = (TypePtr)variable(IdPtr);
 					break;
 			}
-			}
-			break;
-		case TKN_NUMBER: {
+		}
+		break;
+		case TKN_NUMBER:
+		{
 			SymTableNodePtr thisNode = searchSymTable(tokenString, SymTableDisplay[1]);
-			if (!thisNode)
+			if(!thisNode)
 				thisNode = enterSymTable(tokenString, &SymTableDisplay[1]);
-			if (curLiteral.type == LIT_INTEGER) {
+			if(curLiteral.type == LIT_INTEGER)
+			{
 				thisNode->typePtr = IntegerTypePtr;
 				thisType = (TypePtr)(thisNode->typePtr);
 				thisNode->defn.info.constant.value.integer = curLiteral.value.integer;
-				}
-			else {
+			}
+			else
+			{
 				thisNode->typePtr = RealTypePtr;
 				thisType = (TypePtr)(thisNode->typePtr);
 				thisNode->defn.info.constant.value.real = curLiteral.value.real;
 			}
 			crunchSymTableNodePtr(thisNode);
 			getToken();
-			}
-			break;
-		case TKN_STRING: {
+		}
+		break;
+		case TKN_STRING:
+		{
 			int32_t length = strlen(curLiteral.value.string);
-			if (EnterStateSymbol) {
+			if(EnterStateSymbol)
+			{
 				SymTableNodePtr stateSymbol = searchSymTableForState(curLiteral.value.string, SymTableDisplay[1]);
-				if (!stateSymbol)
+				if(!stateSymbol)
 					forwardState(curLiteral.value.string);
 			}
 			SymTableNodePtr thisNode = searchSymTableForString(tokenString, SymTableDisplay[1]);
-			if (!thisNode)// {
+			if(!thisNode) // {
 				thisNode = enterSymTable(tokenString, &SymTableDisplay[1]);
-				if (length == 1) {
-					thisNode->defn.info.constant.value.character = curLiteral.value.string[0];
-					thisType = CharTypePtr;
-					}
-				else {
-					thisNode->typePtr = thisType = makeStringType(length);
-					thisNode->info = (PSTR)ABLSymbolMallocCallback(length + 1);
-					if (!thisNode->info)
-						ABL_Fatal(0, " ABL: Unable to AblSymTableHeap->malloc string literal ");
-					strcpy(thisNode->info, curLiteral.value.string);
-				}
+			if(length == 1)
+			{
+				thisNode->defn.info.constant.value.character = curLiteral.value.string[0];
+				thisType = CharTypePtr;
+			}
+			else
+			{
+				thisNode->typePtr = thisType = makeStringType(length);
+				thisNode->info = (PSTR)ABLSymbolMallocCallback(length + 1);
+				if(!thisNode->info)
+					ABL_Fatal(0, " ABL: Unable to AblSymTableHeap->malloc string literal ");
+				strcpy(thisNode->info, curLiteral.value.string);
+			}
 			//}
 			crunchSymTableNodePtr(thisNode);
-
 			getToken();
-			}
-			break;
+		}
+		break;
 		case TKN_NOT:
 			getToken();
 			thisType = factor();
@@ -323,49 +329,54 @@ TypePtr factor (void) {
 
 //***************************************************************************
 
-TypePtr term (void) {
-
+TypePtr term(void)
+{
 	//-------------------------
 	// Grab the first factor...
 	TypePtr resultType = factor();
-	
 	//------------------------------------------------------------------
 	// Now, continue grabbing factors separated by multiply operators...
-	while (tokenIn(multiplyOperatorList)) {
+	while(tokenIn(multiplyOperatorList))
+	{
 		TokenCodeType op = curToken;
-		
 		getToken();
 		TypePtr secondType = factor();
-		
-		switch (op) {
+		switch(op)
+		{
 			case TKN_STAR:
-				if (integerOperands(resultType, secondType)) {
+				if(integerOperands(resultType, secondType))
+				{
 					//---------------------------------------------------
 					// Both operands are integer, so result is integer...
 					resultType = IntegerTypePtr;
-					}
-				else if (realOperands(resultType, secondType)) {
+				}
+				else if(realOperands(resultType, secondType))
+				{
 					//----------------------------------------------------
 					// Both real operands, or mixed (real and integer)...
 					resultType = RealTypePtr;
-					}
-				else {
+				}
+				else
+				{
 					syntaxError(ABL_ERR_SYNTAX_INCOMPATIBLE_TYPES);
 					resultType = &DummyType;
 				}
 				break;
 			case TKN_FSLASH:
-				if (integerOperands(resultType, secondType)) {
+				if(integerOperands(resultType, secondType))
+				{
 					//---------------------------------------------------
 					// Both operands are integer, so result is integer...
 					resultType = IntegerTypePtr;
-					}
-				else if (realOperands(resultType, secondType)) {
+				}
+				else if(realOperands(resultType, secondType))
+				{
 					//----------------------------------------------------
 					// Both real operands, or mixed (real and integer)...
 					resultType = RealTypePtr;
-					}
-				else {
+				}
+				else
+				{
 					syntaxError(ABL_ERR_SYNTAX_INCOMPATIBLE_TYPES);
 					resultType = &DummyType;
 				}
@@ -374,14 +385,14 @@ TypePtr term (void) {
 			case TKN_MOD:
 				//----------------------------------------------------------
 				// Both operands should be integer, and result is integer...
-				if (!integerOperands(resultType, secondType))
+				if(!integerOperands(resultType, secondType))
 					syntaxError(ABL_ERR_SYNTAX_INCOMPATIBLE_TYPES);
 				resultType = IntegerTypePtr;
 				break;
 			case TKN_AND:
-				if (!booleanOperands(resultType, secondType))
+				if(!booleanOperands(resultType, secondType))
 					syntaxError(ABL_ERR_SYNTAX_INCOMPATIBLE_TYPES);
-				resultType = BooleanTypePtr;								
+				resultType = BooleanTypePtr;
 				break;
 		}
 	}
@@ -390,74 +401,73 @@ TypePtr term (void) {
 
 //***************************************************************************
 
-TypePtr simpleExpression (void) {
-
+TypePtr simpleExpression(void)
+{
 	bool usedUnaryOp = false;
 	TokenCodeType unaryOp = TKN_PLUS;
-	
-	if ((curToken == TKN_PLUS) || (curToken == TKN_MINUS)) {
+	if((curToken == TKN_PLUS) || (curToken == TKN_MINUS))
+	{
 		unaryOp = curToken;
 		usedUnaryOp = true;
 		getToken();
 	}
-	
 	//------------------------------------------------
 	// Grab the first term in the simple expression...
 	TypePtr resultType = term();
-	
-	if (usedUnaryOp && (resultType != IntegerTypePtr) && (resultType != RealTypePtr))
+	if(usedUnaryOp && (resultType != IntegerTypePtr) && (resultType != RealTypePtr))
 		syntaxError(ABL_ERR_SYNTAX_INCOMPATIBLE_TYPES);
-		
 	//---------------------------------------------------
 	// Continue to process all terms in the expression...
-	while (tokenIn(addOperatorList)) {
+	while(tokenIn(addOperatorList))
+	{
 		TokenCodeType op = curToken;
-		
 		getToken();
 		TypePtr secondType = term();
-		
-		switch (op) {
+		switch(op)
+		{
 			case TKN_PLUS:
 			case TKN_MINUS:
-				if (integerOperands(resultType, secondType)) {
+				if(integerOperands(resultType, secondType))
+				{
 					//---------------------------------------------------
 					// Both operands are integer, so result is integer...
 					resultType = IntegerTypePtr;
-					}
-				else if (realOperands(resultType, secondType)) {
+				}
+				else if(realOperands(resultType, secondType))
+				{
 					//----------------------------------------------------
 					// Both real operands, or mixed (real and integer)...
 					resultType = RealTypePtr;
-					}
-				else {
+				}
+				else
+				{
 					syntaxError(ABL_ERR_SYNTAX_INCOMPATIBLE_TYPES);
 					resultType = &DummyType;
 				}
 				break;
 			case TKN_OR:
-				if (!booleanOperands(resultType, secondType))
+				if(!booleanOperands(resultType, secondType))
 					syntaxError(ABL_ERR_SYNTAX_INCOMPATIBLE_TYPES);
 				resultType = BooleanTypePtr;
 				break;
 		}
 	}
 	return(resultType);
-}				
+}
 
 //***************************************************************************
 
-TypePtr expression (void) {
-
+TypePtr expression(void)
+{
 	//------------------------------------
 	// Grab the first simple expression...
 	TypePtr resultType = simpleExpression();
-
-	if (tokenIn(relationalOperatorList)) {
+	if(tokenIn(relationalOperatorList))
+	{
 		//---------------------------------------
 		// Snatch the second simple expression...
 		getToken();
 		TypePtr secondType = simpleExpression();
-
 		checkRelationalOpTypes(resultType, secondType);
 		resultType = BooleanTypePtr;
 	}

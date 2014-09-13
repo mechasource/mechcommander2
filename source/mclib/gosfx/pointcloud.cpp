@@ -17,7 +17,7 @@
 //------------------------------------------------------------------------------
 //
 gosFX::PointCloud__Specification::PointCloud__Specification(
-	Stuff::MemoryStream *stream,
+	Stuff::MemoryStream* stream,
 	int32_t gfx_version
 ):
 	ParticleCloud__Specification(gosFX::PointCloudClassID, stream, gfx_version)
@@ -43,18 +43,16 @@ gosFX::PointCloud__Specification::PointCloud__Specification():
 //------------------------------------------------------------------------------
 //
 gosFX::PointCloud__Specification*
-	gosFX::PointCloud__Specification::Make(
-		Stuff::MemoryStream *stream,
-		int32_t gfx_version
-	)
+gosFX::PointCloud__Specification::Make(
+	Stuff::MemoryStream* stream,
+	int32_t gfx_version
+)
 {
 	Check_Object(stream);
-
 	gos_PushCurrentHeap(Heap);
-	PointCloud__Specification *spec =
+	PointCloud__Specification* spec =
 		new gosFX::PointCloud__Specification(stream, gfx_version);
 	gos_PopCurrentHeap();
-
 	return spec;
 }
 
@@ -63,30 +61,30 @@ gosFX::PointCloud__Specification*
 //############################################################################
 
 gosFX::PointCloud::ClassData*
-	gosFX::PointCloud::DefaultData = nullptr;
+gosFX::PointCloud::DefaultData = nullptr;
 
 //------------------------------------------------------------------------------
 //
 void
-	gosFX::PointCloud::InitializeClass()
+gosFX::PointCloud::InitializeClass()
 {
 	Verify(!DefaultData);
 	//Verify(gos_GetCurrentHeap() == Heap);
 	DefaultData =
 		new ClassData(
-			PointCloudClassID,
-			"gosFX::PointCloud",
-			ParticleCloud::DefaultData,
-			(Effect::Factory)&Make,
-			(Specification::Factory)&Specification::Make
-		);
+		PointCloudClassID,
+		"gosFX::PointCloud",
+		ParticleCloud::DefaultData,
+		(Effect::Factory)&Make,
+		(Specification::Factory)&Specification::Make
+	);
 	Register_Object(DefaultData);
 }
 
 //------------------------------------------------------------------------------
 //
 void
-	gosFX::PointCloud::TerminateClass()
+gosFX::PointCloud::TerminateClass()
 {
 	Unregister_Object(DefaultData);
 	delete DefaultData;
@@ -96,25 +94,22 @@ void
 //------------------------------------------------------------------------------
 //
 gosFX::PointCloud::PointCloud(
-	Specification *spec,
+	Specification* spec,
 	uint32_t flags
 ):
 	ParticleCloud(DefaultData, spec, flags)
 {
 	Check_Object(spec);
 	//Verify(gos_GetCurrentHeap() == Heap);
-
 	gos_PushCurrentHeap(MidLevelRenderer::Heap);
 	m_cloudImplementation =
 		new MidLevelRenderer::MLRPointCloud(spec->m_maxParticleCount);
 	Register_Object(m_cloudImplementation);
 	gos_PopCurrentHeap();
-
-	uint32_t index = spec->m_maxParticleCount*sizeof(Particle);
+	uint32_t index = spec->m_maxParticleCount * sizeof(Particle);
 	m_P_localTranslation = Cast_Pointer(Stuff::Point3D*, &m_data[index]);
-	index += spec->m_maxParticleCount*sizeof(Stuff::Point3D);
+	index += spec->m_maxParticleCount * sizeof(Stuff::Point3D);
 	m_P_color = Cast_Pointer(Stuff::RGBAColor*, &m_data[index]);
-
 	m_cloudImplementation->SetData(
 		Cast_Pointer(pcsize_t, &m_activeParticleCount),
 		m_P_localTranslation,
@@ -133,67 +128,61 @@ gosFX::PointCloud::~PointCloud()
 //------------------------------------------------------------------------------
 //
 gosFX::PointCloud*
-	gosFX::PointCloud::Make(
-		Specification *spec,
-		uint32_t flags
-	)
+gosFX::PointCloud::Make(
+	Specification* spec,
+	uint32_t flags
+)
 {
 	Check_Object(spec);
-
 	gos_PushCurrentHeap(Heap);
-	PointCloud *cloud = new gosFX::PointCloud(spec, flags);
+	PointCloud* cloud = new gosFX::PointCloud(spec, flags);
 	gos_PopCurrentHeap();
-
 	return cloud;
 }
 
 //------------------------------------------------------------------------------
 //
 bool
-	gosFX::PointCloud::Execute(ExecuteInfo *info)
+gosFX::PointCloud::Execute(ExecuteInfo* info)
 {
 	Check_Object(this);
 	Check_Object(info);
-
 	//
 	//----------------------------------------
 	// If we aren't supposed to execute, don't
 	//----------------------------------------
 	//
-	if (!IsExecuted())
+	if(!IsExecuted())
 		return false;
-
 	//
 	//------------------------------------------------------------------
 	// Animate the particles.  If it is time for us to die, return false
 	//------------------------------------------------------------------
 	//
-	if (!ParticleCloud::Execute(info))
+	if(!ParticleCloud::Execute(info))
 		return false;
-
 	//
 	//-----------------------------------------------------------------------
 	// If there are active particles to animate, get the current center point
 	// of the bounds
 	//-----------------------------------------------------------------------
 	//
-	if (m_activeParticleCount > 0)
+	if(m_activeParticleCount > 0)
 	{
 		Stuff::ExtentBox box(Stuff::Point3D::Identity, Stuff::Point3D::Identity);
-		Stuff::Point3D *vertex = &m_P_localTranslation[0];
-		uint32_t i=0;
-
+		Stuff::Point3D* vertex = &m_P_localTranslation[0];
+		uint32_t i = 0;
 		//
 		//-------------------------------------------------------------------
 		// If there is no bounds yet, we need to create our extent box around
 		// the first legal point we find
 		//-------------------------------------------------------------------
 		//
-		while (i<m_activeParticleCount)
+		while(i < m_activeParticleCount)
 		{
-			Particle *particle = GetParticle(i);
+			Particle* particle = GetParticle(i);
 			Check_Object(particle);
-			if (particle->m_age < 1.0f)
+			if(particle->m_age < 1.0f)
 			{
 				Check_Object(vertex);
 				box.maxX = vertex->x;
@@ -209,38 +198,34 @@ bool
 			++vertex;
 			++i;
 		}
-
 		//
 		//-----------------------------
 		// Look for the other particles
 		//-----------------------------
 		//
-		while (i<m_activeParticleCount)
+		while(i < m_activeParticleCount)
 		{
-			Particle *particle = GetParticle(i);
+			Particle* particle = GetParticle(i);
 			Check_Object(particle);
-			if (particle->m_age < 1.0f)
+			if(particle->m_age < 1.0f)
 			{
 				Check_Object(vertex);
-				if (vertex->x > box.maxX)
+				if(vertex->x > box.maxX)
 					box.maxX = vertex->x;
-				else if (vertex->x < box.minX)
+				else if(vertex->x < box.minX)
 					box.minX = vertex->x;
-
-				if (vertex->y > box.maxY)
+				if(vertex->y > box.maxY)
 					box.maxY = vertex->y;
-				else if (vertex->y < box.minY)
+				else if(vertex->y < box.minY)
 					box.minY = vertex->y;
-
-				if (vertex->z > box.maxZ)
+				if(vertex->z > box.maxZ)
 					box.maxZ = vertex->z;
-				else if (vertex->z < box.minZ)
+				else if(vertex->z < box.minZ)
 					box.minZ = vertex->z;
 			}
 			++vertex;
 			++i;
 		}
-
 		//
 		//------------------------------------
 		// Now, build a info->m_bounds around this box
@@ -253,17 +238,16 @@ bool
 		local_bounds.axisExtents.x = 0.5f * (box.maxX - box.minX);
 		local_bounds.axisExtents.y = 0.5f * (box.maxY - box.minY);
 		local_bounds.axisExtents.z = 0.5f * (box.maxZ - box.minZ);
-		local_bounds.localToParent(3,0) = box.minX + local_bounds.axisExtents.x;
-		local_bounds.localToParent(3,1) = box.minY + local_bounds.axisExtents.y;
-		local_bounds.localToParent(3,2) = box.minZ + local_bounds.axisExtents.z;
+		local_bounds.localToParent(3, 0) = box.minX + local_bounds.axisExtents.x;
+		local_bounds.localToParent(3, 1) = box.minY + local_bounds.axisExtents.y;
+		local_bounds.localToParent(3, 2) = box.minZ + local_bounds.axisExtents.z;
 		local_bounds.sphereRadius = local_bounds.axisExtents.GetLength();
-		if (local_bounds.sphereRadius < Stuff::SMALL)
+		if(local_bounds.sphereRadius < Stuff::SMALL)
 			local_bounds.sphereRadius = 0.01f;
 		Stuff::OBB parent_bounds;
 		parent_bounds.Multiply(local_bounds, m_localToParent);
 		info->m_bounds->Union(*info->m_bounds, parent_bounds);
 	}
-
 	//
 	//----------------------------------------------
 	// Tell our caller that we get to keep executing
@@ -275,14 +259,13 @@ bool
 //------------------------------------------------------------------------------
 //
 void
-	gosFX::PointCloud::CreateNewParticle(
-		uint32_t index,
-		Stuff::Point3D *translation
-	)
+gosFX::PointCloud::CreateNewParticle(
+	uint32_t index,
+	Stuff::Point3D* translation
+)
 {
 	Check_Object(this);
 	Check_Pointer(translation);
-
 	//
 	//-----------------------------------------------------------------------
 	// Let our parent do creation, then turn on the particle in the cloud and
@@ -298,14 +281,13 @@ void
 //------------------------------------------------------------------------------
 //
 bool
-	gosFX::PointCloud::AnimateParticle(
-		uint32_t index,
-		const Stuff::LinearMatrix4D *world_to_new_local,
-		Stuff::Time till
-	)
+gosFX::PointCloud::AnimateParticle(
+	uint32_t index,
+	const Stuff::LinearMatrix4D* world_to_new_local,
+	Stuff::Time till
+)
 {
 	Check_Object(this);
-
 	//
 	//-----------------------------------------------------------------------
 	// If this cloud is unparented, we need to transform the point from local
@@ -313,16 +295,16 @@ bool
 	// to these temporary values
 	//-----------------------------------------------------------------------
 	//
-	Particle *particle = GetParticle(index);
+	Particle* particle = GetParticle(index);
 	Check_Object(particle);
 	float age = particle->m_age;
-	if (age >= 1.0f)
+	if(age >= 1.0f)
 		return false;
-	Set_Statistic(Point_Count, Point_Count+1);
-	Stuff::Vector3D *velocity = &particle->m_localLinearVelocity;
-	Stuff::Point3D *translation = &m_P_localTranslation[index];
+	Set_Statistic(Point_Count, Point_Count + 1);
+	Stuff::Vector3D* velocity = &particle->m_localLinearVelocity;
+	Stuff::Point3D* translation = &m_P_localTranslation[index];
 	int32_t sim_mode = GetSimulationMode();
-	if (sim_mode == DynamicWorldSpaceSimulationMode)
+	if(sim_mode == DynamicWorldSpaceSimulationMode)
 	{
 		Check_Object(translation);
 		Check_Object(velocity);
@@ -333,7 +315,6 @@ bool
 	}
 	Check_Object(translation);
 	Check_Object(velocity);
-
 	//
 	//------------------------------------------------------------------
 	// First, calculate the drag on the particle.  Drag can never assist
@@ -341,14 +322,13 @@ bool
 	//------------------------------------------------------------------
 	//
 	float seed = particle->m_seed;
-	Specification *spec = GetSpecification();
+	Specification* spec = GetSpecification();
 	Check_Object(spec);
 	Stuff::Vector3D ether;
 	ether.x = spec->m_pEtherVelocityX.ComputeValue(age, seed);
 	ether.y = spec->m_pEtherVelocityY.ComputeValue(age, seed);
 	ether.z = spec->m_pEtherVelocityZ.ComputeValue(age, seed);
 	Stuff::Vector3D accel(Stuff::Vector3D::Identity);
-
 	//
 	//-------------------------------------------------------------------
 	// Deal with pseudo-world simulation.  In this mode, we interpret the
@@ -358,7 +338,7 @@ bool
 	//
 	float drag = -spec->m_pDrag.ComputeValue(age, seed);
 	Max_Clamp(drag, 0.0f);
-	if (sim_mode == StaticWorldSpaceSimulationMode)
+	if(sim_mode == StaticWorldSpaceSimulationMode)
 	{
 		Stuff::LinearMatrix4D world_to_effect;
 		world_to_effect.Invert(m_localToWorld);
@@ -367,7 +347,6 @@ bool
 		Stuff::Vector3D rel_vel;
 		rel_vel.Subtract(*velocity, local_ether);
 		accel.Multiply(rel_vel, drag);
-
 		//
 		//-----------------------------------------
 		// Now, add in acceleration of the particle
@@ -381,7 +360,6 @@ bool
 		local_accel.Multiply(world_accel, world_to_effect);
 		accel += local_accel;
 	}
-
 	//
 	//----------------------------------------------------------------------
 	// Otherwise, just add the forces in the same space the particles are in
@@ -392,7 +370,6 @@ bool
 		Stuff::Vector3D rel_vel;
 		rel_vel.Subtract(*velocity, ether);
 		accel.Multiply(rel_vel, drag);
-
 		//
 		//-----------------------------------------
 		// Now, add in acceleration of the particle
@@ -402,7 +379,6 @@ bool
 		accel.y += spec->m_pAccelerationY.ComputeValue(age, seed);
 		accel.z += spec->m_pAccelerationZ.ComputeValue(age, seed);
 	}
-
 	//
 	//-------------------------------------------------
 	// Compute the particle's new velocity and position
@@ -412,14 +388,13 @@ bool
 		static_cast<float>(till - m_lastRan);
 	velocity->AddScaled(*velocity, accel, time_slice);
 	translation->AddScaled(*translation, *velocity, time_slice);
-
 	//
 	//---------------------------------------------------------------------
 	// If we are unparented, we need to transform the velocity and position
 	// data back into the NEW local space
 	//---------------------------------------------------------------------
 	//
-	if (sim_mode == DynamicWorldSpaceSimulationMode)
+	if(sim_mode == DynamicWorldSpaceSimulationMode)
 	{
 		Check_Object(world_to_new_local);
 		particle->m_localLinearVelocity.Multiply(
@@ -431,7 +406,6 @@ bool
 			*world_to_new_local
 		);
 	}
-
 	//
 	//------------------
 	// Animate the color
@@ -450,7 +424,6 @@ bool
 void gosFX::PointCloud::DestroyParticle(uint32_t index)
 {
 	Check_Object(this);
-
 	m_cloudImplementation->TurnOff(index);
 	Verify(!m_cloudImplementation->IsOn(index));
 	ParticleCloud::DestroyParticle(index);
@@ -458,24 +431,22 @@ void gosFX::PointCloud::DestroyParticle(uint32_t index)
 
 //------------------------------------------------------------------------------
 //
-void gosFX::PointCloud::Draw(DrawInfo *info)
+void gosFX::PointCloud::Draw(DrawInfo* info)
 {
 	Check_Object(this);
 	Check_Object(info);
-
-	if (m_activeParticleCount)
+	if(m_activeParticleCount)
 	{
 		MidLevelRenderer::DrawEffectInformation dInfo;
 		dInfo.effect = m_cloudImplementation;
-		Specification *spec = GetSpecification();
+		Specification* spec = GetSpecification();
 		Check_Object(spec);
 		dInfo.state.Combine(info->m_state, spec->m_state);
 		dInfo.clippingFlags = info->m_clippingFlags;
 		Stuff::LinearMatrix4D local_to_world;
 		local_to_world.Multiply(m_localToParent, *info->m_parentToWorld);
 		dInfo.effectToWorld = &local_to_world;
-	
-	 	info->m_clipper->DrawEffect(&dInfo);
+		info->m_clipper->DrawEffect(&dInfo);
 	}
 	ParticleCloud::Draw(info);
 }
@@ -483,7 +454,7 @@ void gosFX::PointCloud::Draw(DrawInfo *info)
 //------------------------------------------------------------------------------
 //
 void
-	gosFX::PointCloud::TestInstance(void) const
+gosFX::PointCloud::TestInstance(void) const
 {
 	Verify(IsDerivedFrom(DefaultData));
 }

@@ -13,7 +13,7 @@ extern gos_VERTEX* LineBuffer;
 
 
 
-extern uint8_t	ProfileFlags[32];			// Remember graphs activated 
+extern uint8_t	ProfileFlags[32];			// Remember graphs activated
 extern uint32_t DebuggerTextures;
 extern float PercentHistory[512];		// Used to remember cycles per frame
 extern bool NewPerformanceRegister;
@@ -29,7 +29,7 @@ typedef struct _Stat
 	gosType			Type;				// Type of variable
 	uint32_t			Count;				// Count for average
 	PVOID			pVariable;			// Pointer to the variable in question
-		
+
 	float			MaxPercentage;		// Max percentage
 	float			MinPercentage;		// Min percentage
 	float			TotalPercentage;	// Total percentage
@@ -46,15 +46,15 @@ typedef struct _Stat
 } Stat;
 
 
-cint32_t StatsInBlock=32;				// Number of stats in a single block
+cint32_t StatsInBlock = 32;				// Number of stats in a single block
 
-__inline float __stdcall GetHistory( Stat* pStat, int32_t GraphHead )
+__inline float __stdcall GetHistory(Stat* pStat, int32_t GraphHead)
 {
-	return pStat->History[GraphHead*StatsInBlock];
+	return pStat->History[GraphHead * StatsInBlock];
 }
-__inline void __stdcall SetHistory( Stat* pStat, int32_t GraphHead, float Value )
+__inline void __stdcall SetHistory(Stat* pStat, int32_t GraphHead, float Value)
 {
-	pStat->History[GraphHead*StatsInBlock]=Value;
+	pStat->History[GraphHead * StatsInBlock] = Value;
 }
 
 

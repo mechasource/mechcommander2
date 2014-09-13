@@ -8,7 +8,7 @@
 #pragma once
 
 void __stdcall Init_FileSystem(void);
-void __stdcall Destory_FileSystem( bool NoErrors );
+void __stdcall Destory_FileSystem(bool NoErrors);
 
 
 
@@ -18,7 +18,7 @@ void __stdcall Destory_FileSystem( bool NoErrors );
 //
 // Debugging information
 //
-extern char FileInfo[32][MAX_PATH+32];
+extern char FileInfo[32][MAX_PATH + 32];
 extern uint32_t CurrentFileInfo;
 #endif
 
@@ -48,12 +48,12 @@ typedef struct gosFileStream
 	char m_Filename[MAX_PATH];
 	struct gosFileStream* pNext;
 
-	gosFileStream( PCSTR FileName, gosEnum_FileWriteStatus fwstatus );
+	gosFileStream(PCSTR FileName, gosEnum_FileWriteStatus fwstatus);
 	~gosFileStream(void);
 
-	uint32_t Seek( int32_t where, gosEnum_FileSeekType from_end );
-	uint32_t Read( PVOIDbuffer, uint32_t length );
-	uint32_t Write( PCVOID buffer, uint32_t length );
+	uint32_t Seek(int32_t where, gosEnum_FileSeekType from_end);
+	uint32_t Read(PVOIDbuffer, uint32_t length);
+	uint32_t Write(PCVOID buffer, uint32_t length);
 
 	uint32_t BytesTransfered;
 } gosFileStream;

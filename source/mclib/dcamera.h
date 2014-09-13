@@ -14,7 +14,7 @@
 //---------------------------------------------------------------------------
 // Class Definitions
 class Camera;
-typedef Camera *CameraPtr;
+typedef Camera* CameraPtr;
 
 //---------------------------------------------------------------------------
 // Macro Definitions
@@ -25,7 +25,7 @@ enum CameraClass
 {
 	INVALID_CAMERA = -1,
 	BASE_CAMERA = 0,
-	OBJECT_CAMERA 
+	OBJECT_CAMERA
 };
 
 //---------------------------------------------------------------------------

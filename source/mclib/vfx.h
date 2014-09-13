@@ -100,7 +100,7 @@ typedef int32_t*	PFIXED30;	// 2:30 fixed-VFX_POINT type [-1.999,+1.999]
 
 //
 // VFX_line_draw() modes
-//  
+//
 #define LD_DRAW      0
 #define LD_TRANSLATE 1
 #define LD_EXECUTE   2
@@ -136,7 +136,8 @@ typedef int32_t*	PFIXED30;	// 2:30 fixed-VFX_POINT type [-1.999,+1.999]
 typedef uint8_t		STENCIL;
 typedef puint8_t	PSTENCIL;
 
-typedef struct _window {
+typedef struct _window
+{
 	puint8_t			buffer;
 	int32_t			x_max;
 	int32_t			y_max;
@@ -145,7 +146,8 @@ typedef struct _window {
 } WINDOW;
 typedef WINDOW*		PWINDOW;
 
-typedef struct _pane {
+typedef struct _pane
+{
 	PWINDOW			window;
 	int32_t			x0;
 	int32_t			y0;
@@ -154,21 +156,24 @@ typedef struct _pane {
 } PANE;
 typedef PANE*		PPANE;
 
-typedef struct _pane_list {
+typedef struct _pane_list
+{
 	PPANE			array;
 	puint32_t			flags;
 	size_t			size;
 } PANE_LIST;
 typedef PANE_LIST*	PPANE_LIST;
 
-typedef union _flex_ptr {
+typedef union _flex_ptr
+{
 	PVOID			v;
 	puint8_t		b;
 	puint16_t		w;
 	puint32_t		d;
 } FLEX_PTR;
 
-typedef struct _vfx_desc {
+typedef struct _vfx_desc
+{
 	int32_t			scrn_width;
 	int32_t			scrn_height;
 	int32_t			bytes_per_pixel;
@@ -177,26 +182,30 @@ typedef struct _vfx_desc {
 	uint32_t		flags;
 } VFX_DESC;
 
-typedef struct _vfx_rgb {
+typedef struct _vfx_rgb
+{
 	uint8_t			r;
 	uint8_t			g;
 	uint8_t			b;
 } VFX_RGB;
 typedef VFX_RGB*	PVFX_RGB;
 
-typedef struct _vfx_crgb {
+typedef struct _vfx_crgb
+{
 	uint8_t			color;
 	VFX_RGB			VFX_RGB;	// VFX_RGB VFX_RGB; ?
 } VFX_CRGB;
 typedef VFX_CRGB*	PVFX_CRGB;
 
-typedef struct _vfx_point {
+typedef struct _vfx_point
+{
 	int32_t			x;
 	int32_t			y;
 } VFX_POINT;
 typedef VFX_POINT*	PVFX_POINT;
 
-typedef struct _vfx_font {
+typedef struct _vfx_font
+{
 	int32_t			version;
 	int32_t			char_count;
 	int32_t			char_height;
@@ -204,17 +213,19 @@ typedef struct _vfx_font {
 } FONT;
 
 // Vertex structure used by polygon primitives
-typedef struct _scrnvertex {
+typedef struct _scrnvertex
+{
 	int32_t			x;		// Screen X
 	int32_t			y;		// Screen Y
 	FIXED16			c;		// Color/addition value used by some primitives
 	FIXED16			u;		// Texture source X
 	FIXED16			v;		// Texture source Y
 	FIXED30			w;		// Homogeneous perspective divisor (unused by VFX3D)
-} SCRNVERTEX;               
+} SCRNVERTEX;
 typedef SCRNVERTEX*	PSCRNVERTEX;
 
-typedef struct _vfx_rect {
+typedef struct _vfx_rect
+{
 	int32_t x0;
 	int32_t y0;
 	int32_t x1;
@@ -285,7 +296,7 @@ extern int32_t	VFX_CALL VFX_newShape_count(PVOID shape);
 extern void 	VFX_CALL VFX_shape_lookaside(puint8_t table);
 extern int32_t	VFX_CALL VFX_shape_translate_draw(PPANE pane, PVOID shape_table, int32_t shape_number, int32_t hotX, int32_t hotY);
 extern void 	VFX_CALL VFX_shape_remap_colors(PVOID shape_table, uint32_t shape_number);
-extern void 	VFX_CALL VFX_shape_visible_rectangle(PVOID shape_table, int32_t shape_number, int32_t hotX, int32_t hotY, int32_t mirror, int32_t *rectangle);
+extern void 	VFX_CALL VFX_shape_visible_rectangle(PVOID shape_table, int32_t shape_number, int32_t hotX, int32_t hotY, int32_t mirror, int32_t* rectangle);
 extern int32_t	VFX_CALL VFX_shape_scan(PPANE pane, COLORREF transparentColor, int32_t hotX, int32_t hotY, PVOID buffer);
 extern int32_t	VFX_CALL VFX_newShape_scan(PPANE shapePane, uint8_t xparentColor, uint8_t Hsx, uint8_t Hsy, puint8_t* shapeBuffer);
 extern int32_t	VFX_CALL VFX_deltaShape_scan(PPANE shapePane, uint8_t xparentColor, uint8_t Hsx, uint8_t Hsy, puint8_t* shapeBuffer);

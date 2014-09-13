@@ -14,14 +14,16 @@
 #include <stuff/memoryblock.hpp>
 #include <stuff/socket.hpp>
 
-namespace Stuff{
+namespace Stuff
+{
 
 	class Chain;
 	class ChainIterator;
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ChainLink ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ChainLink ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-	enum{
+	enum
+	{
 		ChainLink_MemoryBlock_Allocation = 1000
 	};
 
@@ -32,29 +34,29 @@ namespace Stuff{
 		friend class ChainIterator;
 
 		static void
-			InitializeClass(
+		InitializeClass(
 			size_t block_count = ChainLink_MemoryBlock_Allocation,
 			size_t block_delta = ChainLink_MemoryBlock_Allocation
-			);
+		);
 		static void __stdcall TerminateClass(void);
 
 	public:
 		~ChainLink(void);
 		void
-			TestInstance()
+		TestInstance()
 		{}
 
 	private:
 		ChainLink(
-			Chain *chain,
-			Plug *plug,
-			ChainLink *nextChainLink,
-			ChainLink *prevChainLink
-			);
+			Chain* chain,
+			Plug* plug,
+			ChainLink* nextChainLink,
+			ChainLink* prevChainLink
+		);
 
 		ChainLink
-			*nextChainLink,
-			*prevChainLink;
+		* nextChainLink,
+		*prevChainLink;
 
 	private:
 		static MemoryBlock* AllocatedMemory;
@@ -68,7 +70,7 @@ namespace Stuff{
 		}
 	};
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Chain ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Chain ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 	class Chain:
 		public Socket
@@ -90,16 +92,16 @@ namespace Stuff{
 		// Constructor, Destructor and testing
 		//--------------------------------------------------------------------
 		//
-		explicit Chain(Node *node);
+		explicit Chain(Node* node);
 		~Chain(void);
 
 		void
-			TestInstance()
+		TestInstance()
 		{}
 		static bool
-			TestClass(void);
+		TestClass(void);
 		static bool
-			ProfileClass(void);
+		ProfileClass(void);
 
 		//
 		//-----------------------------------------------------------------------
@@ -107,7 +109,7 @@ namespace Stuff{
 		//-----------------------------------------------------------------------
 		//
 		bool
-			IsEmpty(void);
+		IsEmpty(void);
 
 	protected:
 		//
@@ -118,7 +120,7 @@ namespace Stuff{
 		//--------------------------------------------------------------------
 		//
 		void
-			AddImplementation(Plug *plug);
+		AddImplementation(Plug* plug);
 
 	private:
 		//
@@ -127,10 +129,10 @@ namespace Stuff{
 		//--------------------------------------------------------------------
 		//
 		ChainLink*
-			InsertChainLink(
-			Plug *plug,
-			ChainLink *current_link
-			);
+		InsertChainLink(
+			Plug* plug,
+			ChainLink* current_link
+		);
 
 		//
 		//--------------------------------------------------------------------
@@ -138,14 +140,14 @@ namespace Stuff{
 		//--------------------------------------------------------------------
 		//
 		ChainLink
-			*head,
-			*tail;
+		* head,
+		*tail;
 	};
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ChainOf ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ChainOf ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 	template <class T> class ChainOf:
-	public Chain
+		public Chain
 	{
 	public:
 		//
@@ -155,7 +157,7 @@ namespace Stuff{
 		//--------------------------------------------------------------------
 		//--------------------------------------------------------------------
 		//
-		explicit ChainOf(Node *node);
+		explicit ChainOf(Node* node);
 		~ChainOf(void);
 
 		//
@@ -164,18 +166,22 @@ namespace Stuff{
 		//--------------------------------------------------------------------
 		//
 		void
-			Add(T plug)
-		{AddImplementation(Cast_Pointer(Plug*, plug));}
+		Add(T plug)
+		{
+			AddImplementation(Cast_Pointer(Plug*, plug));
+		}
 		void
-			Remove(T plug)
-		{RemovePlug(Cast_Pointer(Plug*, plug));}
+		Remove(T plug)
+		{
+			RemovePlug(Cast_Pointer(Plug*, plug));
+		}
 	};
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~ ChainOf templates ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~ ChainOf templates ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 	template <class T>
 	ChainOf<T>::ChainOf(Node* node):
-	Chain(node)
+		Chain(node)
 	{
 	}
 
@@ -184,7 +190,7 @@ namespace Stuff{
 	{
 	}
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~ ChainIterator ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~ ChainIterator ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 	class ChainIterator:
 		public SocketIterator
@@ -203,15 +209,17 @@ namespace Stuff{
 		// Constructors, Destructor and testing
 		//--------------------------------------------------------------------
 		//
-		explicit ChainIterator(Chain *chain) 
+		explicit ChainIterator(Chain* chain)
 			: SocketIterator(chain)
 		{
-			Check_Object(chain); currentLink = chain->head;
+			Check_Object(chain);
+			currentLink = chain->head;
 		}
-		ChainIterator(const ChainIterator &iterator)
+		ChainIterator(const ChainIterator& iterator)
 			: SocketIterator(iterator.socket)
 		{
-			Check_Object(&iterator); currentLink = iterator.currentLink;
+			Check_Object(&iterator);
+			currentLink = iterator.currentLink;
 		}
 		~ChainIterator() {}
 
@@ -255,20 +263,20 @@ namespace Stuff{
 
 	inline PVOID ChainIterator::ReadAndNextImplementation()
 	{
-		if (currentLink != nullptr)
+		if(currentLink != nullptr)
 		{
 			Check_Object(currentLink);
-			Plug *plug = currentLink->plug;
+			Plug* plug = currentLink->plug;
 			currentLink = currentLink->nextChainLink;
 			return plug;
 		}
 		return nullptr;
 	}
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~ ChainIteratorOf ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//~~~~~~~~~~~~~~~~~~~~~~~~~~ ChainIteratorOf ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 	template <class T> class ChainIteratorOf:
-	public ChainIterator
+		public ChainIterator
 	{
 	public:
 		//
@@ -284,8 +292,8 @@ namespace Stuff{
 		// Constructors and Destructor
 		//--------------------------------------------------------------------
 		//
-		ChainIteratorOf(ChainOf<T> *chain);
-		ChainIteratorOf(const ChainIteratorOf<T> &iterator);
+		ChainIteratorOf(ChainOf<T>* chain);
+		ChainIteratorOf(const ChainIteratorOf<T>& iterator);
 		Iterator* MakeClone(void);
 		~ChainIteratorOf(void);
 
@@ -294,28 +302,55 @@ namespace Stuff{
 		// Iterator methods (see Iterator for full listing)
 		//--------------------------------------------------------------------
 		//
-		T ReadAndNext(void) {return (T)ReadAndNextImplementation();}
-		T ReadAndPrevious(void) {return (T)ReadAndPreviousImplementation();}
-		T GetCurrent(void) {return (T)GetCurrentImplementation();}
-		T GetNth(CollectionSize index) {return (T)GetNthImplementation(index);}
-		void Insert(T plug){InsertImplementation(Cast_Object(Plug*,plug));}
+		T ReadAndNext(void)
+		{
+			return (T)ReadAndNextImplementation();
+		}
+		T ReadAndPrevious(void)
+		{
+			return (T)ReadAndPreviousImplementation();
+		}
+		T GetCurrent(void)
+		{
+			return (T)GetCurrentImplementation();
+		}
+		T GetNth(CollectionSize index)
+		{
+			return (T)GetNthImplementation(index);
+		}
+		void Insert(T plug)
+		{
+			InsertImplementation(Cast_Object(Plug*, plug));
+		}
 
-		ChainIteratorOf<T>& Begin(void) {return (ChainIteratorOf<T>&)BeginImplementation();}
-		ChainIteratorOf<T>& End(void) {return (ChainIteratorOf<T>&)EndImplementation();}
-		ChainIteratorOf<T>& Forward(void) {return (ChainIteratorOf<T>&)ForwardImplementation();}
-		ChainIteratorOf<T>& Backward(void) {return (ChainIteratorOf<T>&)BackwardImplementation();}
+		ChainIteratorOf<T>& Begin(void)
+		{
+			return (ChainIteratorOf<T>&)BeginImplementation();
+		}
+		ChainIteratorOf<T>& End(void)
+		{
+			return (ChainIteratorOf<T>&)EndImplementation();
+		}
+		ChainIteratorOf<T>& Forward(void)
+		{
+			return (ChainIteratorOf<T>&)ForwardImplementation();
+		}
+		ChainIteratorOf<T>& Backward(void)
+		{
+			return (ChainIteratorOf<T>&)BackwardImplementation();
+		}
 	};
 
-	//~~~~~~~~~~~~~~~~~~~~~~~ ChainIteratorOf templates ~~~~~~~~~~~~~~~~~~~~~~~~
+//~~~~~~~~~~~~~~~~~~~~~~~ ChainIteratorOf templates ~~~~~~~~~~~~~~~~~~~~~~~~
 
 	template <class T>
-	ChainIteratorOf<T>::ChainIteratorOf(ChainOf<T> *chain)
+	ChainIteratorOf<T>::ChainIteratorOf(ChainOf<T>* chain)
 		: ChainIterator(chain)
 	{
 	}
 
 	template <class T>
-	ChainIteratorOf<T>::ChainIteratorOf(const ChainIteratorOf<T> &iterator)
+	ChainIteratorOf<T>::ChainIteratorOf(const ChainIteratorOf<T>& iterator)
 		: ChainIterator(iterator)
 	{
 	}

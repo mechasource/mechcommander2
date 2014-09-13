@@ -14,24 +14,28 @@
 #include <stuff/point3d.hpp>
 #include <stuff/marray.hpp>
 
-namespace Stuff {class Plane;}
+namespace Stuff
+{
+	class Plane;
+}
 
 #if !defined(Spew)
 void
 Spew(
-	 PCSTR group,
-	 const Stuff::Plane& plane
-	 );
+	PCSTR group,
+	const Stuff::Plane& plane
+);
 #endif
 
-namespace Stuff {
+namespace Stuff
+{
 
 	class Sphere;
 	class ExtentBox;
 	class OBB;
 	class Line3D;
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Plane ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Plane ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 	class Plane
 	{
@@ -40,17 +44,17 @@ namespace Stuff {
 		// The plane equation is P*normal = offset, where P is a homogeneous
 		//
 		Normal3D	normal;
-		Scalar		offset;
+		float		offset;
 
 		//
 		// Constructors
 		//
 		Plane(void) {}
-		Plane(Scalar x, Scalar y, Scalar z, Scalar offset) 
-			: normal(x,y,z), offset(offset)
+		Plane(float x, float y, float z, float offset)
+			: normal(x, y, z), offset(offset)
 		{
 		}
-		Plane(const Normal3D& n, Scalar offset) 
+		Plane(const Normal3D& n, float offset)
 			: normal(n), offset(offset)
 		{
 		}
@@ -70,7 +74,7 @@ namespace Stuff {
 		{
 			Check_Object(this);
 			Plane t(*this);
-			return Multiply(t,m);
+			return Multiply(t, m);
 		}
 
 		//
@@ -84,35 +88,35 @@ namespace Stuff {
 		{
 			return ((normal * A_Point) > offset) ? true : false;
 		}
-		Scalar GetDistanceTo(const Point3D& A_Point) const
+		float GetDistanceTo(const Point3D& A_Point) const
 		{
 			return ((normal * A_Point) - offset);
 		}
 
-		Scalar GetDistanceTo(const Sphere& sphere) const;
-		Scalar GetDistanceTo(const OBB& box) const;
+		float GetDistanceTo(const Sphere& sphere) const;
+		float GetDistanceTo(const OBB& box) const;
 
 		//
 		// half-space containment functions
 		//
-		bool Contains(const Point3D &point, Scalar thickness=SMALL) const
+		bool Contains(const Point3D& point, float thickness = SMALL) const
 		{
 			Check_Object(this);
 			return normal * point <= offset + thickness;
 		}
-		bool ContainsSomeOf(const Sphere &sphere, Scalar thickness=SMALL) const;
-		bool ContainsAllOf(const Sphere &sphere, Scalar thickness=SMALL) const;
-		bool ContainsSomeOf(const ExtentBox &box, Scalar thickness=SMALL) const;
-		bool ContainsAllOf(const ExtentBox &box, Scalar thickness=SMALL) const;
-		bool ContainsSomeOf(const OBB &box, Scalar thickness=SMALL) const;
-		bool ContainsAllOf(const OBB &box, Scalar thickness=SMALL) const;
+		bool ContainsSomeOf(const Sphere& sphere, float thickness = SMALL) const;
+		bool ContainsAllOf(const Sphere& sphere, float thickness = SMALL) const;
+		bool ContainsSomeOf(const ExtentBox& box, float thickness = SMALL) const;
+		bool ContainsAllOf(const ExtentBox& box, float thickness = SMALL) const;
+		bool ContainsSomeOf(const OBB& box, float thickness = SMALL) const;
+		bool ContainsAllOf(const OBB& box, float thickness = SMALL) const;
 
 		//
 		// plane surface intersection functions
 		//
-		bool Intersects(const Sphere &sphere, Scalar thickness=SMALL) const;
-		bool Intersects(const ExtentBox &box, Scalar thickness=SMALL) const;
-		bool Intersects(const OBB &box, Scalar thickness=SMALL) const;
+		bool Intersects(const Sphere& sphere, float thickness = SMALL) const;
+		bool Intersects(const ExtentBox& box, float thickness = SMALL) const;
+		bool Intersects(const OBB& box, float thickness = SMALL) const;
 
 #if !defined(Spew)
 		friend void ::Spew(PCSTR group, const Plane& plane);
@@ -123,38 +127,41 @@ namespace Stuff {
 		//
 		// Equation solutions
 		//
-		Scalar CalculateX(Scalar y, Scalar z)
+		float CalculateX(float y, float z)
 		{
-			Check_Object(this); Verify(!Small_Enough(normal.x));
-			Scalar result = (offset - y*normal.y - z*normal.z) / normal.x;
+			Check_Object(this);
+			Verify(!Small_Enough(normal.x));
+			float result = (offset - y * normal.y - z * normal.z) / normal.x;
 			return result;
 		}
-		Scalar CalculateY(Scalar x, Scalar z)
+		float CalculateY(float x, float z)
 		{
-			Check_Object(this); Verify(!Small_Enough(normal.y));
-			Scalar result = (offset - x*normal.x - z*normal.z) / normal.y;
+			Check_Object(this);
+			Verify(!Small_Enough(normal.y));
+			float result = (offset - x * normal.x - z * normal.z) / normal.y;
 			return result;
 		}
-		Scalar CalculateZ(Scalar x, Scalar y)
+		float CalculateZ(float x, float y)
 		{
-			Check_Object(this); Verify(!Small_Enough(normal.z));
-			Scalar result = (offset - x*normal.x - y*normal.y) / normal.z;
+			Check_Object(this);
+			Verify(!Small_Enough(normal.z));
+			float result = (offset - x * normal.x - y * normal.y) / normal.z;
 			return result;
 		}
 
 		//
 		// Reflection code
 		//
-		void Reflect(Vector3D *vector)
+		void Reflect(Vector3D* vector)
 		{
 			Check_Object(this);
 			vector->AddScaled(
 				*vector,
 				normal,
 				-2.0f * ((*vector) * normal)
-				);
+			);
 		}
-		bool ComputeBestDividingPlane(Stuff::DynamicArrayOf<Stuff::Point3D> &points);
+		bool ComputeBestDividingPlane(Stuff::DynamicArrayOf<Stuff::Point3D>& points);
 	};
 
 }

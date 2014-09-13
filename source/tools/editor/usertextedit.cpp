@@ -29,7 +29,6 @@ CUserTextEdit::CUserTextEdit(CWnd* pParent /*=nullptr*/)
 {
 	m_UseResourceString = false;
 	m_ResourceStringID = 0;
-
 	//{{AFX_DATA_INIT(CUserTextEdit)
 	m_Edit = _T("");
 	m_ResourceStringIDEdit = _T("");
@@ -57,42 +56,51 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // CUserTextEdit message handlers
 
-static BOOL CSLoadString(int32_t resourceID, CString &targetStr) {
+static BOOL CSLoadString(int32_t resourceID, CString& targetStr)
+{
 	char szTmp[16384/*max string length*/];
-	cLoadString( resourceID, szTmp, 16384/*max string length*/ );
+	cLoadString(resourceID, szTmp, 16384/*max string length*/);
 	targetStr = szTmp;
 	CString tmpStr;
 	tmpStr.Format("mc2res.dll:%d Not defined", resourceID);
-	if (0 == strcmp(tmpStr.GetBuffer(0), szTmp)) {
+	if(0 == strcmp(tmpStr.GetBuffer(0), szTmp))
+	{
 		return (0);
 	}
 	return (!0);
 }
 
-void CUserTextEdit::UpdateTextDisplay() {
+void CUserTextEdit::UpdateTextDisplay()
+{
 	UpdateData(TRUE);
-	if (m_UseResourceString) {
+	if(m_UseResourceString)
+	{
 		m_ResourceStringIDEdit.Format("%d", m_ResourceStringID);
 		int32_t ret = CSLoadString(m_ResourceStringID, m_Edit);
-		if (0 == ret) {
+		if(0 == ret)
+		{
 			m_Edit = _TEXT("");
 		}
-	} else {
+	}
+	else
+	{
 		m_ResourceStringIDEdit = _TEXT("");
 		m_Edit = m_UnlocalizedText;
 	}
 	UpdateData(FALSE);
 }
 
-void CUserTextEdit::OnUserTextEditEnterTextButton() 
+void CUserTextEdit::OnUserTextEditEnterTextButton()
 {
 	TextMessageDlg textMessageDlg;
 	textMessageDlg.m_TextMessage = m_UnlocalizedText;
 	int32_t ret = textMessageDlg.DoModal();
-	if (IDOK == ret) {
+	if(IDOK == ret)
+	{
 		m_UnlocalizedText = textMessageDlg.m_TextMessage;
 		/*remove trailing "new line"s and "carriage return"s because the game doesn't like them*/
-		while (("\n" == m_UnlocalizedText.Right(1)) || ("\r" == m_UnlocalizedText.Right(1))) {
+		while(("\n" == m_UnlocalizedText.Right(1)) || ("\r" == m_UnlocalizedText.Right(1)))
+		{
 			m_UnlocalizedText = m_UnlocalizedText.Left(m_UnlocalizedText.GetLength() - 1);
 		}
 		m_UseResourceString = false;
@@ -100,24 +108,23 @@ void CUserTextEdit::OnUserTextEditEnterTextButton()
 	}
 }
 
-void CUserTextEdit::OnUserTextEditSelectResourceStringButton() 
+void CUserTextEdit::OnUserTextEditSelectResourceStringButton()
 {
 	ResourceStringSelectionDlg resourceStringSelectionDlg;
 	resourceStringSelectionDlg.m_SelectedResourceStringID = m_ResourceStringID;
 	int32_t ret = resourceStringSelectionDlg.DoModal();
-	if (IDOK == ret) {
+	if(IDOK == ret)
+	{
 		m_ResourceStringID = resourceStringSelectionDlg.m_SelectedResourceStringID;
 		m_UseResourceString = true;
 		UpdateTextDisplay();
 	}
 }
 
-BOOL CUserTextEdit::OnInitDialog() 
+BOOL CUserTextEdit::OnInitDialog()
 {
 	CDialog::OnInitDialog();
-	
 	UpdateTextDisplay();
-	
 	return TRUE;  // return TRUE unless you set the focus to a control
-	              // EXCEPTION: OCX Property Pages should return FALSE
+	// EXCEPTION: OCX Property Pages should return FALSE
 }

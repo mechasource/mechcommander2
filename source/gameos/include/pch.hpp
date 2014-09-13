@@ -149,10 +149,10 @@ typedef float			real;
 //
 // Faster float to int32_t  (Always rounds to nearest)  ie: -2.7 goes to 3
 //
-inline int32_t float2long( float fval )
+inline int32_t float2long(float fval)
 {
 	fval += 3 << 22;
-	return ((*(int32_t*)&fval)&0x007fffff) - 0x00400000;
+	return ((*(int32_t*)&fval) & 0x007fffff) - 0x00400000;
 }
 
 #include <winsock.h>

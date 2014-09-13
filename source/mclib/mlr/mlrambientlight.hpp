@@ -9,11 +9,12 @@
 
 #include <mlr/mlrlight.hpp>
 
-namespace MidLevelRenderer {
+namespace MidLevelRenderer
+{
 
-	//##########################################################################
-	//######################    MLRAmbientLight    #############################
-	//##########################################################################
+//##########################################################################
+//######################    MLRAmbientLight    #############################
+//##########################################################################
 
 	class MLRAmbientLight:
 		public MLRLight
@@ -24,18 +25,19 @@ namespace MidLevelRenderer {
 
 		MLRAmbientLight(void);
 		MLRAmbientLight(
-			Stuff::MemoryStream *stream,
-			uint32_t version
-			);
-		MLRAmbientLight(Stuff::Page *page);
+			Stuff::MemoryStream* stream,
+			uint32_t version);
+		MLRAmbientLight(Stuff::Page* page);
 		~MLRAmbientLight(void);
 
-		virtual void
-			LightVertex(const MLRVertexData&);
+		virtual void LightVertex(const MLRVertexData&);
 
 		virtual LightType
-			GetLightType() 
-		{ Check_Object(this); return AmbientLight; }
+		GetLightType()
+		{
+			Check_Object(this);
+			return AmbientLight;
+		}
 
 
 		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

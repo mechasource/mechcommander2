@@ -18,19 +18,15 @@
 #include <stuff/armoroff.hpp>
 #endif
 
-namespace Stuff {
+namespace Stuff
+{
 
 	extern int32_t ArmorLevel;
 
-	enum {
-		SNAN_NEGATIVE_LONG=0xffb1ffb1
+	enum
+	{
+		SNAN_NEGATIVE_LONG = 0xffb1ffb1
 	};
-
-#if defined(_M_IX86)
-#define USE_ASSEMBLER_CODE	1
-#else
-#define USE_ASSEMBLER_CODE	0
-#endif
 
 #define Register_Pointer(p) Check_Pointer(p)
 #define Unregister_Pointer(p) Check_Pointer(p)
@@ -86,9 +82,10 @@ namespace Stuff {
 		friend class MemoryRegister;
 
 	private:
-		enum Mark {
-			Valid=0x7B135795L,
-			Destroyed=0x4FED1231L
+		enum Mark
+		{
+			Valid = 0x7B135795L,
+			Destroyed = 0x4FED1231L
 		} mark;
 
 	protected:
@@ -103,7 +100,7 @@ namespace Stuff {
 
 	public:
 		friend void
-			Is_Signature_Bad(const volatile Signature* p);
+		Is_Signature_Bad(const volatile Signature* p);
 	};
 
 	inline void Is_Signature_Bad(const volatile void* p)
@@ -112,9 +109,9 @@ namespace Stuff {
 	}
 #endif
 
-	//##########~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	//# MACROS #
-	//##########
+//##########~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//# MACROS #
+//##########
 
 #define ELEMENTS(Array)	(sizeof(Array)/sizeof(*Array))
 
@@ -123,9 +120,9 @@ namespace Stuff {
 #define _strnicmp(s1, s2, n)		(strncasecmp(s1, s2, n))
 #endif
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// Spews
-	//
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// Spews
+//
 #if !defined(Spew)
 	inline void Spew(PCSTR group, int32_t value)
 	{
@@ -143,13 +140,13 @@ namespace Stuff {
 	}
 #endif
 
-	//#############~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	//# TEMPLATES #
-	//#############
+//#############~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//# TEMPLATES #
+//#############
 
 	extern float SMALL;
 
-#define Abs(value) ((value>0) ? value : -value)
+//#define abs(value) ((value>0) ? value : -value)
 #define Clamp(v,f,c) if (v<f) v=f; else if (v>c) v=c; else (void)0
 #define Max_Clamp(v,c) if (v>c) v=c; else (void)0
 #define Is_Many_Bits(value) (Lowbit(value)^value)
@@ -159,11 +156,11 @@ namespace Stuff {
 #define Min(a,b) ((a<b) ? a : b)
 #define Sgn(value) ((value<-SMALL) ? -1 : value>SMALL)
 
-	//############~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	//# TYPEDEFS #
-	//############
+//############~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//# TYPEDEFS #
+//############
 
-	enum {INT_BITS=32};
+	enum {INT_BITS = 32};
 
 }
 

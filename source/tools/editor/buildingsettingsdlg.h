@@ -18,7 +18,7 @@ class EditorObject;
 class BuildingSettingsDlg : public CDialog
 {
 public:
-	BuildingSettingsDlg(EList<EditorObject*, EditorObject*>&, ActionUndoMgr &undoMgr);   // standard constructor
+	BuildingSettingsDlg(EList<EditorObject*, EditorObject*>&, ActionUndoMgr& undoMgr);   // standard constructor
 
 	//{{AFX_DATA(BuildingSettingsDlg)
 	enum { IDD = IDD_BUILDINGSETTINGS };
@@ -33,14 +33,14 @@ public:
 
 
 	//{{AFX_VIRTUAL(BuildingSettingsDlg)
-	protected:
+protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	//}}AFX_VIRTUAL
 
 // Implementation
 protected:
 
-	void DoColorBox( CWnd* pWnd );
+	void DoColorBox(CWnd* pWnd);
 
 	//{{AFX_MSG(BuildingSettingsDlg)
 	afx_msg void OnSelchangeGroup(void);
@@ -52,13 +52,13 @@ protected:
 	DECLARE_MESSAGE_MAP()
 
 	void applyChanges(void);
-	ModifyBuildingAction *pAction;
+	ModifyBuildingAction* pAction;
 
 	typedef EList< EditorObject*, EditorObject* > EDITOROBJECT_LIST;
 	EDITOROBJECT_LIST& units;
 
 	void updateMemberVariables(void);
-	ActionUndoMgr *pUndoMgr;
+	ActionUndoMgr* pUndoMgr;
 };
 
 //{{AFX_INSERT_LOCATION}}

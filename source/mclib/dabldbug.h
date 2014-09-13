@@ -18,7 +18,7 @@ class Debugger;
 typedef BreakPointManager* BreakPointManagerPtr;
 typedef WatchManager* WatchManagerPtr;
 typedef Debugger* DebuggerPtr;
- 
+
 #endif
 
 //***************************************************************************

@@ -17,9 +17,10 @@
 #define	MAX_SYNTAX_ERRORS		1 //20
 #define	MAXLEN_ERROR_MESSAGE	256
 
-//#pragma warning( disable : 4514 )  
+//#pragma warning( disable : 4514 )
 
-typedef enum {
+typedef enum
+{
 	ABL_ERR_SYNTAX_NONE,									// 0
 	ABL_ERR_SYNTAX_ERROR,
 	ABL_ERR_SYNTAX_TOO_MANY_ERRORS,
@@ -91,7 +92,8 @@ typedef enum {
 	NUM_ABL_SYNTAX_ERRORS
 } SyntaxErrorType;
 
-typedef enum {
+typedef enum
+{
 	ABL_ERR_RUNTIME_STACK_OVERFLOW,
 	ABL_ERR_RUNTIME_INFINITE_LOOP,
 	ABL_ERR_RUNTIME_NESTED_FUNCTION_CALL,
@@ -107,10 +109,10 @@ typedef enum {
 
 //***************************************************************************
 
-void syntaxError (int32_t errCode);
-void runtimeError (int32_t errCode);
-void ABL_Fatal (int32_t errCode, PSTR s);
-void ABL_Assert (bool test, int32_t errCode, PSTR s);
+void syntaxError(int32_t errCode);
+void runtimeError(int32_t errCode);
+void ABL_Fatal(int32_t errCode, PSTR s);
+void ABL_Assert(bool test, int32_t errCode, PSTR s);
 
 //***************************************************************************
 

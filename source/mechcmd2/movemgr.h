@@ -22,7 +22,8 @@
 
 typedef struct _PathQueueRec* PathQueueRecPtr;
 
-typedef struct _PathQueueRec {
+typedef struct _PathQueueRec
+{
 	int32_t				num;
 	MechWarriorPtr		pilot;
 	int32_t				selectionIndex;
@@ -35,45 +36,48 @@ typedef struct _PathQueueRec {
 
 //---------------------------------------------------------------------------
 
-class MovePathManager {
+class MovePathManager
+{
 
-	public:
+public:
 
-		PathQueueRec		pool[MAX_MOVERS];
-		PathQueueRecPtr		queueFront;
-		PathQueueRecPtr		queueEnd;
-		PathQueueRecPtr		freeList;
-		static int32_t			numPaths;
-		static int32_t			peakPaths;
-		static int32_t			sourceTally[50];
+	PathQueueRec		pool[MAX_MOVERS];
+	PathQueueRecPtr		queueFront;
+	PathQueueRecPtr		queueEnd;
+	PathQueueRecPtr		freeList;
+	static int32_t			numPaths;
+	static int32_t			peakPaths;
+	static int32_t			sourceTally[50];
 
-	public:
+public:
 
-		PVOID operator new (size_t ourSize);
+	PVOID operator new(size_t ourSize);
 
-		void operator delete (PVOID us);
-		
-		MovePathManager (void) {
-			init(void);
-		}
-		
-		~MovePathManager (void) {
-			destroy(void);
-		}
-		
-		void destroy (void);
-		
-		int32_t init (void);
+	void operator delete(PVOID us);
 
-		void remove (PathQueueRecPtr rec);
+	MovePathManager(void)
+	{
+		init(void);
+	}
 
-		PathQueueRecPtr remove (MechWarriorPtr pilot);
+	~MovePathManager(void)
+	{
+		destroy(void);
+	}
 
-		void request (MechWarriorPtr pilot, int32_t selectionIndex, uint32_t moveParams, int32_t source);
+	void destroy(void);
 
-		void calcPath (void);
+	int32_t init(void);
 
-		void update (void);
+	void remove(PathQueueRecPtr rec);
+
+	PathQueueRecPtr remove(MechWarriorPtr pilot);
+
+	void request(MechWarriorPtr pilot, int32_t selectionIndex, uint32_t moveParams, int32_t source);
+
+	void calcPath(void);
+
+	void update(void);
 };
 
 typedef MovePathManager* MovePathManagerPtr;

@@ -21,7 +21,7 @@
 
 inline int32_t double2long(double _in)
 {
-	_in+=6755399441055744.0;
+	_in += 6755399441055744.0;
 	return(*(int32_t*)&_in);
 }
 
@@ -59,170 +59,172 @@ bool					ExitWithReturn = false;
 bool					ExitFromTacOrder = false;
 bool					SkipOrder = false;
 TokenCodeType			ExitRoutineCodeSegment[2] = {TKN_END_FUNCTION,
-													 TKN_SEMICOLON};
+													 TKN_SEMICOLON
+											};
 TokenCodeType			ExitOrderCodeSegment[2] = {TKN_END_ORDER,
-												   TKN_SEMICOLON};
+												   TKN_SEMICOLON
+										  };
 TokenCodeType			ExitStateCodeSegment[2] = {TKN_END_STATE,
-												   TKN_SEMICOLON};
+												   TKN_SEMICOLON
+										  };
 
 //***************************************************************************
 // USEFUL ABL HELP ROUTINES
 //***************************************************************************
 
-char ABLi_popChar (void) {
-
+char ABLi_popChar(void)
+{
 	getCodeToken();
 	execExpression();
 	char val = (char)tos->integer;
 	pop();
-	
 	return(val);
 }
 
 //---------------------------------------------------------------------------
 
-int32_t ABLi_popInteger (void) {
-
+int32_t ABLi_popInteger(void)
+{
 	getCodeToken();
 	execExpression();
 	int32_t val = tos->integer;
 	pop();
-	
 	return(val);
 }
 
 //---------------------------------------------------------------------------
 
-float ABLi_popReal (void) {
-
+float ABLi_popReal(void)
+{
 	getCodeToken();
 	execExpression();
 	float val = tos->real;
 	pop();
-
 	return(val);
 }
 
 //---------------------------------------------------------------------------
 
-float ABLi_popIntegerReal (void) {
-
+float ABLi_popIntegerReal(void)
+{
 	getCodeToken();
 	TypePtr paramTypePtr = execExpression();
 	float val = 0.0;
-	if (paramTypePtr == IntegerTypePtr)
+	if(paramTypePtr == IntegerTypePtr)
 		val = (float)tos->integer;
 	else
 		val = tos->real;
 	pop();
-
 	return(val);
 }
 
 //---------------------------------------------------------------------------
 
-bool ABLi_popBoolean (void) {
-
+bool ABLi_popBoolean(void)
+{
 	getCodeToken();
 	execExpression();
 	int32_t val = tos->integer;
 	pop();
-	
 	return(val == 1);
 }
 
 //---------------------------------------------------------------------------
 
-PSTR ABLi_popCharPtr (void) {
-
+PSTR ABLi_popCharPtr(void)
+{
 	//--------------------------
 	// Get destination string...
 	getCodeToken();
 	execExpression();
 	PSTR charPtr = (PSTR)tos->address;
 	pop();
-
 	return(charPtr);
 }
 
 //---------------------------------------------------------------------------
 
-int32_t* ABLi_popIntegerPtr (void) {
-
+int32_t* ABLi_popIntegerPtr(void)
+{
 	getCodeToken();
 	SymTableNodePtr idPtr = getCodeSymTableNodePtr();
 	execVariable(idPtr, USE_REFPARAM);
 	int32_t* integerPtr = (int32_t*)(&((StackItemPtr)tos->address)->integer);
 	pop();
-
 	return(integerPtr);
 }
 
 //---------------------------------------------------------------------------
 
-float* ABLi_popRealPtr (void) {
-
+float* ABLi_popRealPtr(void)
+{
 	getCodeToken();
 	SymTableNodePtr idPtr = getCodeSymTableNodePtr();
 	execVariable(idPtr, USE_REFPARAM);
 	float* realPtr = (float*)(&((StackItemPtr)tos->address)->real);
 	pop();
-
 	return(realPtr);
 }
 
 //---------------------------------------------------------------------------
 
-PSTR ABLi_popBooleanPtr (void) {
-
+PSTR ABLi_popBooleanPtr(void)
+{
 	//--------------------------
 	// Get destination string...
 	getCodeToken();
 	execExpression();
 	PSTR charPtr = (PSTR)tos->address;
 	pop();
-
 	return(charPtr);
 }
 
 //---------------------------------------------------------------------------
 
-int32_t ABLi_popAnything (ABLStackItem* value) {
-
+int32_t ABLi_popAnything(ABLStackItem* value)
+{
 	getCodeToken();
 	TypePtr paramTypePtr = execExpression();
-
 	int32_t type = -1;
-	if (paramTypePtr == IntegerTypePtr) {
+	if(paramTypePtr == IntegerTypePtr)
+	{
 		value->type = type = ABL_STACKITEM_INTEGER;
 		value->data.integer = tos->integer;
-		}
-	else if (paramTypePtr == BooleanTypePtr) {
+	}
+	else if(paramTypePtr == BooleanTypePtr)
+	{
 		value->type = type = ABL_STACKITEM_BOOLEAN;
 		value->data.boolean = (tos->integer ? true : false);
-		}
-	else if (paramTypePtr == CharTypePtr) {
+	}
+	else if(paramTypePtr == CharTypePtr)
+	{
 		value->type = type = ABL_STACKITEM_CHAR;
 		value->data.character  = tos->byte;
-		}
-	else if (paramTypePtr == RealTypePtr) {
+	}
+	else if(paramTypePtr == RealTypePtr)
+	{
 		value->type = type = ABL_STACKITEM_REAL;
 		value->data.real = tos->real;
-		}
-	else if (paramTypePtr->form == FRM_ARRAY) {
-		if (paramTypePtr->info.array.elementTypePtr == CharTypePtr) {
+	}
+	else if(paramTypePtr->form == FRM_ARRAY)
+	{
+		if(paramTypePtr->info.array.elementTypePtr == CharTypePtr)
+		{
 			value->type = type = ABL_STACKITEM_CHAR_PTR;
 			value->data.characterPtr = (PSTR)tos->address;
-			}
-		else if (paramTypePtr->info.array.elementTypePtr == IntegerTypePtr) {
+		}
+		else if(paramTypePtr->info.array.elementTypePtr == IntegerTypePtr)
+		{
 			value->type = type = ABL_STACKITEM_INTEGER_PTR;
 			value->data.integerPtr = (int32_t*)tos->address;
-			}
-		else if (paramTypePtr->info.array.elementTypePtr == RealTypePtr) {
+		}
+		else if(paramTypePtr->info.array.elementTypePtr == RealTypePtr)
+		{
 			value->type = type = ABL_STACKITEM_REAL_PTR;
 			value->data.realPtr = (float*)tos->address;
-			}
-		else if (paramTypePtr->info.array.elementTypePtr == BooleanTypePtr) {
+		}
+		else if(paramTypePtr->info.array.elementTypePtr == BooleanTypePtr)
+		{
 			value->type = type = ABL_STACKITEM_BOOLEAN_PTR;
 			value->data.booleanPtr = (bool*)tos->address;
 		}
@@ -233,52 +235,48 @@ int32_t ABLi_popAnything (ABLStackItem* value) {
 
 //---------------------------------------------------------------------------
 
-void ABLi_pushBoolean (bool value) {
-
+void ABLi_pushBoolean(bool value)
+{
 	StackItemPtr valuePtr = ++tos;
-
-	if (valuePtr >= &stack[MAXSIZE_STACK])
+	if(valuePtr >= &stack[MAXSIZE_STACK])
 		runtimeError(ABL_ERR_RUNTIME_STACK_OVERFLOW);
 	valuePtr->integer = value ? 1 : 0;
 }
 
 //---------------------------------------------------------------------------
 
-void ABLi_pushInteger (int32_t value) {
-
+void ABLi_pushInteger(int32_t value)
+{
 	StackItemPtr valuePtr = ++tos;
-
-	if (valuePtr >= &stack[MAXSIZE_STACK])
+	if(valuePtr >= &stack[MAXSIZE_STACK])
 		runtimeError(ABL_ERR_RUNTIME_STACK_OVERFLOW);
 	valuePtr->integer = value;
 }
 
 //---------------------------------------------------------------------------
 
-void ABLi_pushReal (float value) {
-
+void ABLi_pushReal(float value)
+{
 	StackItemPtr valuePtr = ++tos;
-
-	if (valuePtr >= &stack[MAXSIZE_STACK])
+	if(valuePtr >= &stack[MAXSIZE_STACK])
 		runtimeError(ABL_ERR_RUNTIME_STACK_OVERFLOW);
 	valuePtr->real = value;
 }
 
 //---------------------------------------------------------------------------
 
-void ABLi_pushChar (char value) {
-
+void ABLi_pushChar(char value)
+{
 	StackItemPtr valuePtr = ++tos;
-
-	if (valuePtr >= &stack[MAXSIZE_STACK])
+	if(valuePtr >= &stack[MAXSIZE_STACK])
 		runtimeError(ABL_ERR_RUNTIME_STACK_OVERFLOW);
 	valuePtr->integer = value;
 }
 
 //---------------------------------------------------------------------------
 
-int32_t ABLi_peekInteger (void) {
-
+int32_t ABLi_peekInteger(void)
+{
 	getCodeToken();
 	execExpression();
 	return(tos->integer);
@@ -286,8 +284,8 @@ int32_t ABLi_peekInteger (void) {
 
 //---------------------------------------------------------------------------
 
-float ABLi_peekReal (void) {
-
+float ABLi_peekReal(void)
+{
 	getCodeToken();
 	execExpression();
 	return(tos->real);
@@ -295,8 +293,8 @@ float ABLi_peekReal (void) {
 
 //---------------------------------------------------------------------------
 
-bool ABLi_peekBoolean (void) {
-
+bool ABLi_peekBoolean(void)
+{
 	getCodeToken();
 	execExpression();
 	return(tos->integer == 1);
@@ -304,8 +302,8 @@ bool ABLi_peekBoolean (void) {
 
 //---------------------------------------------------------------------------
 
-PSTR ABLi_peekCharPtr (void) {
-
+PSTR ABLi_peekCharPtr(void)
+{
 	getCodeToken();
 	execExpression();
 	return((PSTR)tos->address);
@@ -313,8 +311,8 @@ PSTR ABLi_peekCharPtr (void) {
 
 //---------------------------------------------------------------------------
 
-int32_t* ABLi_peekIntegerPtr (void) {
-
+int32_t* ABLi_peekIntegerPtr(void)
+{
 	getCodeToken();
 	SymTableNodePtr idPtr = getCodeSymTableNodePtr();
 	execVariable(idPtr, USE_REFPARAM);
@@ -323,8 +321,8 @@ int32_t* ABLi_peekIntegerPtr (void) {
 
 //---------------------------------------------------------------------------
 
-float* ABLi_peekRealPtr (void) {
-
+float* ABLi_peekRealPtr(void)
+{
 	getCodeToken();
 	SymTableNodePtr idPtr = getCodeSymTableNodePtr();
 	execVariable(idPtr, USE_REFPARAM);
@@ -333,78 +331,74 @@ float* ABLi_peekRealPtr (void) {
 
 //---------------------------------------------------------------------------
 
-void ABLi_pokeChar (int32_t val) {
-
+void ABLi_pokeChar(int32_t val)
+{
 	tos->integer = val;
 }
 
 //---------------------------------------------------------------------------
 
-void ABLi_pokeInteger (int32_t val) {
-
+void ABLi_pokeInteger(int32_t val)
+{
 	tos->integer = val;
 }
 
 //---------------------------------------------------------------------------
 
-void ABLi_pokeReal (float val) {
-
+void ABLi_pokeReal(float val)
+{
 	tos->real = val;
 }
 
 //---------------------------------------------------------------------------
 
-void ABLi_pokeBoolean (bool val) {
-
+void ABLi_pokeBoolean(bool val)
+{
 	tos->integer = val ? 1 : 0;
 }
 
 //***************************************************************************
 
-void execOrderReturn (int32_t returnVal) {
-
+void execOrderReturn(int32_t returnVal)
+{
 	//-----------------------------
 	// Assignment to function id...
 	StackFrameHeaderPtr headerPtr = (StackFrameHeaderPtr)stackFrameBasePtr;
 	int32_t delta = level - CurRoutineIdPtr->level - 1;
-	while (delta-- > 0)
+	while(delta-- > 0)
 		headerPtr = (StackFrameHeaderPtr)headerPtr->staticLink.address;
-
-	if (CurRoutineIdPtr->defn.info.routine.flags & ROUTINE_FLAG_STATE) {
+	if(CurRoutineIdPtr->defn.info.routine.flags & ROUTINE_FLAG_STATE)
+	{
 		//----------------------------------
 		// Return in a state function, so...
-		if (debugger)
+		if(debugger)
 			debugger->traceDataStore(CurRoutineIdPtr, CurRoutineIdPtr->typePtr, (StackItemPtr)headerPtr, CurRoutineIdPtr->typePtr);
-	
 		ExitWithReturn = true;
 		ExitFromTacOrder = true;
-
-		if (returnVal == 0) {
+		if(returnVal == 0)
+		{
 			//----------------------------------------------------------
 			// Use the "eject" code only if called for a failed Order...
 			codeSegmentPtr = (PSTR)ExitStateCodeSegment;
 			getCodeToken();
 		}
-		
-		}
-	else {
+	}
+	else
+	{
 		//-------------------------------------------------------------------------
 		// All Order functions (TacticalOrder/GeneralOrder/ActionOrder) must return
 		// an integer error code, so we assume the return type is IntegerTypePtr...
 		StackItemPtr targetPtr = (StackItemPtr)headerPtr;
 		targetPtr->integer = returnVal;
-
 		//----------------------------------------------------------------------
 		// Preserve the return value, in case we need it for the calling user...
 		memcpy(&returnValue, targetPtr, sizeof(StackItem));
-
-		if (debugger)
+		if(debugger)
 			debugger->traceDataStore(CurRoutineIdPtr, CurRoutineIdPtr->typePtr, (StackItemPtr)headerPtr, CurRoutineIdPtr->typePtr);
-	
 		ExitWithReturn = true;
 		ExitFromTacOrder = true;
-
-		if (returnVal == 0) {
+		if(returnVal == 0)
+		{
 			//----------------------------------------------------------
 			// Use the "eject" code only if called for a failed Order...
 			codeSegmentPtr = (PSTR)ExitOrderCodeSegment;
@@ -415,108 +409,102 @@ void execOrderReturn (int32_t returnVal) {
 
 //***************************************************************************
 
-void execStdReturn (void) {
-
+void execStdReturn(void)
+{
 	memset(&returnValue, 0, sizeof(StackItem));
-	if (CurRoutineIdPtr->typePtr) {
+	if(CurRoutineIdPtr->typePtr)
+	{
 		//-----------------------------
 		// Assignment to function id...
 		StackFrameHeaderPtr headerPtr = (StackFrameHeaderPtr)stackFrameBasePtr;
 		int32_t delta = level - CurRoutineIdPtr->level - 1;
-		while (delta-- > 0)
+		while(delta-- > 0)
 			headerPtr = (StackFrameHeaderPtr)headerPtr->staticLink.address;
-
 		StackItemPtr targetPtr = (StackItemPtr)headerPtr;
 		TypePtr targetTypePtr = (TypePtr)(CurRoutineIdPtr->typePtr);
 		getCodeToken();
-
 		//---------------------------------------------------------------
 		// Routine execExpression() leaves the expression value on top of
 		// stack...
 		getCodeToken();
 		TypePtr expressionTypePtr = execExpression();
-
 		//--------------------------
 		// Now, do the assignment...
-		if ((targetTypePtr == RealTypePtr) && (expressionTypePtr == IntegerTypePtr)) {
+		if((targetTypePtr == RealTypePtr) && (expressionTypePtr == IntegerTypePtr))
+		{
 			//-------------------------
 			// integer assigned to real
 			targetPtr->real = (float)(tos->integer);
-			}
-		else if (targetTypePtr->form == FRM_ARRAY) {
+		}
+		else if(targetTypePtr->form == FRM_ARRAY)
+		{
 			//-------------------------
 			// Copy the array/record...
 			PSTR dest = (PSTR)targetPtr;
 			PSTR src = tos->address;
 			int32_t size = targetTypePtr->size;
 			memcpy(dest, src, size);
-			}
-		else if ((targetTypePtr == IntegerTypePtr) || (targetTypePtr->form == FRM_ENUM)) {
+		}
+		else if((targetTypePtr == IntegerTypePtr) || (targetTypePtr->form == FRM_ENUM))
+		{
 			//------------------------------------------------------
 			// Range check assignment to integer or enum subrange...
 			targetPtr->integer = tos->integer;
-			}
-		else {
+		}
+		else
+		{
 			//-----------------------
 			// Assign real to real...
 			targetPtr->real = tos->real;
 		}
-
 		//-----------------------------
 		// Grab the expression value...
 		pop();
-
 		//----------------------------------------------------------------------
 		// Preserve the return value, in case we need it for the calling user...
 		memcpy(&returnValue, targetPtr, sizeof(StackItem));
-		
-		if (debugger)
+		if(debugger)
 			debugger->traceDataStore(CurRoutineIdPtr, CurRoutineIdPtr->typePtr, targetPtr, targetTypePtr);
 	}
-
 	//-----------------------
 	// Grab the semi-colon...
 	getCodeToken();
-
-	if (CurRoutineIdPtr->defn.info.routine.flags & ROUTINE_FLAG_ORDER)
+	if(CurRoutineIdPtr->defn.info.routine.flags & ROUTINE_FLAG_ORDER)
 		codeSegmentPtr = (PSTR)ExitOrderCodeSegment;
-	else if (CurRoutineIdPtr->defn.info.routine.flags & ROUTINE_FLAG_STATE)
+	else if(CurRoutineIdPtr->defn.info.routine.flags & ROUTINE_FLAG_STATE)
 		codeSegmentPtr = (PSTR)ExitStateCodeSegment;
 	else
 		codeSegmentPtr = (PSTR)ExitRoutineCodeSegment;
 	ExitWithReturn = true;
-
 	getCodeToken();
 }
 
 //***************************************************************************
 
-void execStdPrint (void) {
-
+void execStdPrint(void)
+{
 	//---------------------------
 	// Grab the opening LPAREN...
 	getCodeToken();
-
 	//----------------------------
 	// Get parameter expression...
 	getCodeToken();
 	TypePtr paramTypePtr = execExpression();
-
 	char buffer[20];
 	PSTR s = buffer;
-	if (paramTypePtr == IntegerTypePtr)
+	if(paramTypePtr == IntegerTypePtr)
 		sprintf(buffer, "%d", tos->integer);
-	else if (paramTypePtr == BooleanTypePtr)
+	else if(paramTypePtr == BooleanTypePtr)
 		sprintf(buffer, "%s", tos->integer ? "true" : "false");
-	else if (paramTypePtr == CharTypePtr)
+	else if(paramTypePtr == CharTypePtr)
 		sprintf(buffer, "%c", tos->byte);
-	else if (paramTypePtr == RealTypePtr)
+	else if(paramTypePtr == RealTypePtr)
 		sprintf(buffer, "%.4f", tos->real);
-	else if ((paramTypePtr->form == FRM_ARRAY) && (paramTypePtr->info.array.elementTypePtr == CharTypePtr))
+	else if((paramTypePtr->form == FRM_ARRAY) && (paramTypePtr->info.array.elementTypePtr == CharTypePtr))
 		s = (PSTR)tos->address;
 	pop();
-
-	if (debugger) {
+	if(debugger)
+	{
 		char message[512];
 		sprintf(message, "PRINT:  \"%s\"", s);
 		debugger->print(message);
@@ -526,18 +514,19 @@ void execStdPrint (void) {
 		debugger->print(message);
 		sprintf(message, "   LINE %d", execLineNumber);
 		debugger->print(message);
-		}
-/*	else if (TACMAP) {
-		aChatWindow* chatWin = TACMAP->getChatWindow();
-		if (chatWin)
-			chatWin->processChatString(0, s, -1);
-		else {
-#ifdef _DEBUG
-			OutputDebugString(s);
-#endif
-		}
-		}
-*/	else {
+	}
+	/*	else if (TACMAP) {
+			aChatWindow* chatWin = TACMAP->getChatWindow();
+			if (chatWin)
+				chatWin->processChatString(0, s, -1);
+			else {
+	#ifdef _DEBUG
+				OutputDebugString(s);
+	#endif
+			}
+			}
+	*/	else
+	{
 #ifdef _DEBUG
 		ABLDebugPrintCallback(s);
 #endif
@@ -549,68 +538,65 @@ void execStdPrint (void) {
 
 //***************************************************************************
 
-TypePtr execStdConcat (void) {
-
+TypePtr execStdConcat(void)
+{
 	//-------------------
 	// Grab the LPAREN...
 	getCodeToken();
-
 	//--------------------------
 	// Get destination string...
 	getCodeToken();
 	execExpression();
 	PSTR dest = (PSTR)tos->address;
 	pop();
-
 	//----------------------
 	// Get item to append...
 	getCodeToken();
 	TypePtr paramTypePtr = execExpression();
 	char buffer[20];
-	if (paramTypePtr == IntegerTypePtr) {
+	if(paramTypePtr == IntegerTypePtr)
+	{
 		sprintf(buffer, "%d", tos->integer);
 		strcat(dest, buffer);
-		}
-	else if (paramTypePtr == CharTypePtr) {
+	}
+	else if(paramTypePtr == CharTypePtr)
+	{
 		sprintf(buffer, "%c", tos->byte);
 		strcat(dest, buffer);
-		}
-	else if (paramTypePtr == RealTypePtr) {
+	}
+	else if(paramTypePtr == RealTypePtr)
+	{
 		sprintf(buffer, "%.2f", tos->real);
 		strcat(dest, buffer);
-		}
-	else if (paramTypePtr == BooleanTypePtr) {
+	}
+	else if(paramTypePtr == BooleanTypePtr)
+	{
 		sprintf(buffer, "%s", tos->integer ? "true" : "false");
 		strcat(dest, buffer);
-		}
-	else if ((paramTypePtr->form == FRM_ARRAY) && (paramTypePtr->info.array.elementTypePtr == CharTypePtr))
+	}
+	else if((paramTypePtr->form == FRM_ARRAY) && (paramTypePtr->info.array.elementTypePtr == CharTypePtr))
 		strcat(dest, (PSTR)tos->address);
-
 	tos->integer = 0;
-
 	getCodeToken();
 	return(IntegerTypePtr);
 }
 
 //***************************************************************************
 
-void execStdAbs (void) {
-
+void execStdAbs(void)
+{
 	float val = ABLi_popIntegerReal();
-
-	if (val < 0.0)
+	if(val < 0.0)
 		val = -val;
-
 	ABLi_pushReal(val);
 }
 
 //*****************************************************************************
 
-void execStdRound (void) {
-
+void execStdRound(void)
+{
 	float val = ABLi_popReal();
-
-	if (val > 0.0)
+	if(val > 0.0)
 		ABLi_pushInteger((int32_t)(val + 0.5));
 	else
 		ABLi_pushInteger((int32_t)(val - 0.5));
@@ -618,11 +604,10 @@ void execStdRound (void) {
 
 //***************************************************************************
 
-void execStdSqrt (void) {
-
+void execStdSqrt(void)
+{
 	float val = ABLi_popIntegerReal();
-
-	if (val < 0.0)
+	if(val < 0.0)
 		runtimeError(ABL_ERR_RUNTIME_INVALID_FUNCTION_ARGUMENT);
 	else
 		ABLi_pushReal((float)sqrt(val));
@@ -630,56 +615,53 @@ void execStdSqrt (void) {
 
 //***************************************************************************
 
-void execStdTrunc (void) {
-
+void execStdTrunc(void)
+{
 	float val = ABLi_popReal();
 	ABLi_pushInteger((int32_t)val);
 }
 
 //***************************************************************************
 
-void execStdFileOpen (void) {
-
+void execStdFileOpen(void)
+{
 	PSTR fileName = ABLi_popCharPtr();
-
 	int32_t fileHandle = -1;
 	UserFile* userFile = UserFile::getNewFile();
-	if (userFile) {
+	if(userFile)
+	{
 		int32_t err = userFile->open(fileName);
-		if (!err)
+		if(!err)
 			fileHandle = userFile->handle;
 	}
-
 	ABLi_pushInteger(fileHandle);
 }
 
 //---------------------------------------------------------------------------
 
-void execStdFileWrite (void) {
-
+void execStdFileWrite(void)
+{
 	int32_t fileHandle = ABLi_popInteger();
 	PSTR string = ABLi_popCharPtr();
-
 	UserFile* userFile = UserFile::files[fileHandle];
-	if (userFile->inUse)
+	if(userFile->inUse)
 		userFile->write(string);
 }
 
 //---------------------------------------------------------------------------
 
-void execStdFileClose (void) {
-
+void execStdFileClose(void)
+{
 	int32_t fileHandle = ABLi_popInteger();
-
 	UserFile* userFile = UserFile::files[fileHandle];
-	if (userFile->inUse)
+	if(userFile->inUse)
 		userFile->close();
 }
 
 //***************************************************************************
 
-void execStdGetModule (void) {
-
+void execStdGetModule(void)
+{
 	//----------------------------------------------------------
 	// Return the handle of the current module being executed...
 	PSTR curBuffer = ABLi_popCharPtr();
@@ -691,8 +673,8 @@ void execStdGetModule (void) {
 
 //***************************************************************************
 
-void execStdSetMaxLoops (void) {
-
+void execStdSetMaxLoops(void)
+{
 	//----------------------------------------------------------------------
 	//
 	//	SET MAX LOOPS function:
@@ -705,14 +687,13 @@ void execStdSetMaxLoops (void) {
 	//		RETURN: none
 	//
 	//----------------------------------------------------------------------
-
 	MaxLoopIterations = ABLi_popInteger() + 1;
 }
 
 //---------------------------------------------------------------------------
 
-void execStdFatal (void) {
-
+void execStdFatal(void)
+{
 	//----------------------------------------------------------------------
 	//
 	//	FATAL function:
@@ -728,12 +709,11 @@ void execStdFatal (void) {
 	//		RETURN: none
 	//
 	//----------------------------------------------------------------------
-
 	int32_t code = ABLi_popInteger();
 	PSTR s = ABLi_popCharPtr();
-
 	char message[512];
-	if (debugger) {
+	if(debugger)
+	{
 		sprintf(message, "FATAL:  [%d] \"%s\"", code, s);
 		debugger->print(message);
 		sprintf(message, "   MODULE (%d) %s", CurModule->getId(), CurModule->getName());
@@ -743,8 +723,9 @@ void execStdFatal (void) {
 		sprintf(message, "   LINE %d", execLineNumber);
 		debugger->print(message);
 		debugger->debugMode();
-		}
-	else {
+	}
+	else
+	{
 		sprintf(message, "ABL FATAL: [%d] %s", code, s);
 		ABL_Fatal(0, s);
 	}
@@ -752,8 +733,8 @@ void execStdFatal (void) {
 
 //---------------------------------------------------------------------------
 
-void execStdAssert (void) {
-
+void execStdAssert(void)
+{
 	//----------------------------------------------------------------------
 	//
 	//	ASSERT function:
@@ -773,14 +754,14 @@ void execStdAssert (void) {
 	//		RETURN: none
 	//
 	//----------------------------------------------------------------------
-
 	int32_t expression = ABLi_popInteger();
 	int32_t code = ABLi_popInteger();
 	PSTR s = ABLi_popCharPtr();
-
-	if (!expression) {
+	if(!expression)
+	{
 		char message[512];
-		if (debugger) {
+		if(debugger)
+		{
 			sprintf(message, "ASSERT:  [%d] \"%s\"", code, s);
 			debugger->print(message);
 			sprintf(message, "   MODULE (%d) %s", CurModule->getId(), CurModule->getName());
@@ -790,8 +771,9 @@ void execStdAssert (void) {
 			sprintf(message, "   LINE %d", execLineNumber);
 			debugger->print(message);
 			debugger->debugMode();
-			}
-		else {
+		}
+		else
+		{
 			sprintf(message, "ABL ASSERT: [%d] %s", code, s);
 			ABL_Fatal(0, message);
 		}
@@ -800,8 +782,8 @@ void execStdAssert (void) {
 
 //-----------------------------------------------------------------------------
 
-void execStdRandom (void) {
-
+void execStdRandom(void)
+{
 	int32_t n = ABLi_peekInteger();
 	//---------------------------------------------------------------------
 	// This is, like, a really bad number generator. But, you get the idea.
@@ -813,11 +795,10 @@ void execStdRandom (void) {
 
 //-----------------------------------------------------------------------------
 
-void execStdSeedRandom (void) {
-
+void execStdSeedRandom(void)
+{
 	int32_t seed  = ABLi_popInteger();
-
-	if (seed == -1)
+	if(seed == -1)
 		ABLSeedRandomCallback(time(nullptr));
 	else
 		ABLSeedRandomCallback(seed);
@@ -825,16 +806,17 @@ void execStdSeedRandom (void) {
 
 //-----------------------------------------------------------------------------
 
-void execStdResetOrders (void) {
-
+void execStdResetOrders(void)
+{
 	int32_t scope = ABLi_popInteger();
-
-	if (scope == 0)
+	if(scope == 0)
 		CurModule->resetOrderCallFlags();
-	else if (scope == 1) {
+	else if(scope == 1)
+	{
 		int32_t startIndex = CurRoutineIdPtr->defn.info.routine.orderCallIndex;
 		int32_t endIndex = startIndex + CurRoutineIdPtr->defn.info.routine.numOrderCalls;
-		for (int32_t i = startIndex; i < endIndex; i++) {
+		for(size_t i = startIndex; i < endIndex; i++)
+		{
 			uint8_t orderDWord = (uint8_t)(i / 32);
 			uint8_t orderBitMask = (uint8_t)(i % 32);
 			CurModule->clearOrderCallFlag(orderDWord, orderBitMask);
@@ -844,18 +826,17 @@ void execStdResetOrders (void) {
 
 //---------------------------------------------------------------------------
 
-void execStdGetStateHandle (void) {
-
+void execStdGetStateHandle(void)
+{
 	PSTR name = ABLi_popCharPtr();
-
 	int32_t stateHandle = CurFSM->findStateHandle(_strlwr(name));
 	ABLi_pushInteger(stateHandle);
 }
 
 //---------------------------------------------------------------------------
 
-void execStdGetCurrentStateHandle (void) {
-
+void execStdGetCurrentStateHandle(void)
+{
 	int32_t stateHandle = CurFSM->getStateHandle();
 	ABLi_pushInteger(stateHandle);
 }
@@ -866,11 +847,11 @@ extern ModuleEntryPtr ModuleRegistry;
 
 extern char	SetStateDebugStr[256];
 
-void execStdSetState (void) {
-
+void execStdSetState(void)
+{
 	uint32_t stateHandle = ABLi_popInteger();
-
-	if (stateHandle > 0) {
+	if(stateHandle > 0)
+	{
 		SymTableNodePtr stateFunction = ModuleRegistry[CurFSM->getHandle()].stateHandles[stateHandle].state;
 		CurFSM->setPrevState(CurFSM->getState());
 		CurFSM->setState(stateFunction);
@@ -881,12 +862,11 @@ void execStdSetState (void) {
 
 //---------------------------------------------------------------------------
 
-void execStdGetFunctionHandle (void) {
-
+void execStdGetFunctionHandle(void)
+{
 	PSTR name = ABLi_popCharPtr();
-
 	SymTableNodePtr function = CurModule->findFunction(name, false);
-	if (function)
+	if(function)
 		ABLi_pushInteger((uint32_t)function);
 	else
 		ABLi_pushInteger(0);
@@ -894,46 +874,42 @@ void execStdGetFunctionHandle (void) {
 
 //---------------------------------------------------------------------------
 
-void execStdSetFlag (void) {
-
+void execStdSetFlag(void)
+{
 	uint32_t bits = (uint32_t)ABLi_popInteger();
 	uint32_t flag = (uint32_t)ABLi_popInteger();
 	bool set = ABLi_popBoolean();
-
 	bits &= (flag ^ 0xFFFFFFFF);
-	if (set)
+	if(set)
 		bits |= flag;
-
 	ABLi_pushInteger(bits);
 }
 
 //---------------------------------------------------------------------------
 
-void execStdGetFlag (void) {
-
+void execStdGetFlag(void)
+{
 	uint32_t bits = (uint32_t)ABLi_popInteger();
 	uint32_t flag = (uint32_t)ABLi_popInteger();
-
 	bool set = ((bits & flag) != 0);
-
 	ABLi_pushInteger(set);
 }
 
 //---------------------------------------------------------------------------
 
-void execStdCallFunction (void) {
-
+void execStdCallFunction(void)
+{
 	uint32_t address = ABLi_popInteger();
-
-	if (address) {
+	if(address)
+	{
 //GLENN: Not functional, yet...
 	}
 }
 
 //***************************************************************************
 
-void initStandardRoutines (void) {
-
+void initStandardRoutines(void)
+{
 	//-------------------------------------------------------------
 	// Fatal and Assert will have hardcoded keys so we can look for
 	// 'em in the rest of the ABL code (example: ignore asserts if
@@ -941,7 +917,6 @@ void initStandardRoutines (void) {
 	enterStandardRoutine("fatal", RTN_FATAL, false, "iC", nullptr, execStdFatal);
 	enterStandardRoutine("assert", RTN_ASSERT, false, "biC", nullptr, execStdAssert);
 	enterStandardRoutine("getstatehandle", RTN_GET_STATE_HANDLE, false, "C", "i", execStdGetStateHandle);
-
 	enterStandardRoutine("getcurrentstatehandle", -1, false, nullptr, "i", execStdGetCurrentStateHandle);
 	enterStandardRoutine("abs", -1, false, "*", "r", execStdAbs);
 	enterStandardRoutine("sqrt", -1, false, "*", "r", execStdSqrt);
@@ -960,15 +935,15 @@ void initStandardRoutines (void) {
 	enterStandardRoutine("callfunction", -1, false, "i", nullptr, execStdCallFunction);
 	enterStandardRoutine("setflag", -1, false, "iib", "i", execStdSetFlag);
 	enterStandardRoutine("getflag", -1, false, "ii", "b", execStdGetFlag);
-
 }
 
 //-----------------------------------------------------------------------------
 
-TypePtr execStandardRoutineCall (SymTableNodePtr routineIdPtr, bool skipOrder) {
-
+TypePtr execStandardRoutineCall(SymTableNodePtr routineIdPtr, bool skipOrder)
+{
 	int32_t key = routineIdPtr->defn.info.routine.key;
-	switch (key) {
+	switch(key)
+	{
 		case RTN_RETURN:
 			execStdReturn();
 			return(nullptr);
@@ -977,26 +952,28 @@ TypePtr execStandardRoutineCall (SymTableNodePtr routineIdPtr, bool skipOrder) {
 			return(nullptr);
 		case RTN_CONCAT:
 			return(execStdConcat());
-		default: {
-			if (key >= NumStandardFunctions) {
+		default:
+		{
+			if(key >= NumStandardFunctions)
+			{
 				char err[255];
 				sprintf(err, " ABL: Undefined ABL RoutineKey in %s:%d", CurModule->getName(), execLineNumber);
 				ABL_Fatal(0, err);
 			}
-			if (FunctionInfoTable[key].numParams > 0)
+			if(FunctionInfoTable[key].numParams > 0)
 				getCodeToken();
 			SkipOrder = skipOrder;
-			if (FunctionCallbackTable[key])
+			if(FunctionCallbackTable[key])
 				(*FunctionCallbackTable[key])();
 			else
 			{
 				char err[255];
 				sprintf(err, " ABL: Undefined ABL RoutineKey %d in %s:%d", key, CurModule->getName(), execLineNumber);
-				ABL_Fatal(key,err);
+				ABL_Fatal(key, err);
 			}
-
 			getCodeToken();
-			switch (FunctionInfoTable[key].returnType) {
+			switch(FunctionInfoTable[key].returnType)
+			{
 				case RETURN_TYPE_NONE:
 					return(nullptr);
 				case RETURN_TYPE_INTEGER:

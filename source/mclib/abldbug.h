@@ -17,7 +17,8 @@
 
 //***************************************************************************
 
-typedef enum DebugCommandCode{
+typedef enum DebugCommandCode
+{
 	DEBUG_COMMAND_SET_MODULE,
 	DEBUG_COMMAND_TRACE,
 	DEBUG_COMMAND_STEP,
@@ -34,17 +35,19 @@ typedef enum DebugCommandCode{
 
 //***************************************************************************
 
-typedef struct _Watch{
+typedef struct _Watch
+{
 	SymTableNodePtr idPtr;
 	bool store;
 	bool breakOnStore;
 	bool fetch;
 	bool breakOnFetch;
-}Watch;
+} Watch;
 
 typedef Watch* WatchPtr;
 
-class WatchManager{
+class WatchManager
+{
 
 protected:
 
@@ -54,48 +57,52 @@ protected:
 
 public:
 
-	PVOID operator new (size_t mySize);
+	PVOID operator new(size_t mySize);
 
-	void operator delete (PVOID us);
+	void operator delete(PVOID us);
 
-	void init (void){
+	void init(void)
+	{
 		maxWatches = 0;
 		maxWatches = 0;
 		watches = nullptr;
 	}
 
-	int32_t init (int32_t max);
+	int32_t init(int32_t max);
 
-	void destroy (void);
+	void destroy(void);
 
-	WatchManager (void){
+	WatchManager(void)
+	{
 		init(void);
 	}
 
-	~WatchManager (void){
+	~WatchManager(void)
+	{
 		destroy(void);
 	}
 
-	WatchPtr add (SymTableNodePtr idPtr);
+	WatchPtr add(SymTableNodePtr idPtr);
 
-	int32_t remove (SymTableNodePtr idPtr);
+	int32_t remove(SymTableNodePtr idPtr);
 
-	int32_t removeAll (void);
+	int32_t removeAll(void);
 
-	int32_t setStore (SymTableNodePtr idPtr, bool state, bool breakToDebug = false);
+	int32_t setStore(SymTableNodePtr idPtr, bool state, bool breakToDebug = false);
 
-	int32_t setFetch (SymTableNodePtr idPtr, bool state, bool breakToDebug = false);
+	int32_t setFetch(SymTableNodePtr idPtr, bool state, bool breakToDebug = false);
 
-	bool getStore (SymTableNodePtr idPtr);
+	bool getStore(SymTableNodePtr idPtr);
 
-	bool getFetch (SymTableNodePtr idPtr);
+	bool getFetch(SymTableNodePtr idPtr);
 
-	void print (void);
+	void print(void);
 };
 
 //---------------------------------------------------------------------------
 
-class BreakPointManager{
+class BreakPointManager
+{
 
 protected:
 
@@ -105,37 +112,40 @@ protected:
 
 public:
 
-	PVOID operator new (size_t mySize);
+	PVOID operator new(size_t mySize);
 
-	void operator delete (PVOID us);
+	void operator delete(PVOID us);
 
-	void init (void){
+	void init(void)
+	{
 		maxBreakPoints = 0;
 		numBreakPoints = 0;
 		breakPoints = nullptr;
 	}
 
-	int32_t init (int32_t max);
+	int32_t init(int32_t max);
 
-	void destroy (void);
+	void destroy(void);
 
-	BreakPointManager (void){
+	BreakPointManager(void)
+	{
 		init(void);
 	}
 
-	~BreakPointManager (void){
+	~BreakPointManager(void)
+	{
 		destroy(void);
 	}
 
-	int32_t add (int32_t lineNumber);
+	int32_t add(int32_t lineNumber);
 
-	int32_t remove (int32_t lineNumber);
+	int32_t remove(int32_t lineNumber);
 
-	int32_t removeAll (void);
+	int32_t removeAll(void);
 
-	bool isBreakPoint (int32_t lineNumber);
+	bool isBreakPoint(int32_t lineNumber);
 
-	void print (void);
+	void print(void);
 };
 
 //---------------------------------------------------------------------------
@@ -146,7 +156,8 @@ public:
 #define WATCH_FETCH_ON 8
 #define WATCH_BREAK 16
 
-class Debugger{
+class Debugger
+{
 
 protected:
 
@@ -170,11 +181,12 @@ protected:
 
 public:
 
-	PVOID operator new (size_t mySize);
+	PVOID operator new(size_t mySize);
 
-	void operator delete (PVOID us);
+	void operator delete(PVOID us);
 
-	void init (void){
+	void init(void)
+	{
 		module = nullptr;
 		watchManager = nullptr;
 		breakPointManager = nullptr;
@@ -189,73 +201,79 @@ public:
 		printCallback = nullptr;
 	}
 
-	int32_t init (void (*callback)(PSTR s), ABLModulePtr _module);
+	int32_t init(void (*callback)(PSTR s), ABLModulePtr _module);
 
-	void destroy (void);
+	void destroy(void);
 
-	Debugger (void){
+	Debugger(void)
+	{
 		init(void);
 	}
 
-	~Debugger (void){
+	~Debugger(void)
+	{
 		destroy(void);
 	}
 
-	void enable (void){
+	void enable(void)
+	{
 		enabled = true;
 	}
 
-	void disable (void){
+	void disable(void)
+	{
 		enabled = false;
 	}
 
-	bool isEnabled (void){
+	bool isEnabled(void)
+	{
 		return(enabled);
 	}
 
-	int32_t print (PSTR s);
+	int32_t print(PSTR s);
 
-	void setModule (ABLModulePtr _module);
+	void setModule(ABLModulePtr _module);
 
-	int32_t setWatch (int32_t states);
+	int32_t setWatch(int32_t states);
 
-	int32_t addBreakPoint (void);
+	int32_t addBreakPoint(void);
 
-	int32_t removeBreakPoint (void);
+	int32_t removeBreakPoint(void);
 
-	void sprintStatement (PSTR dest);
+	void sprintStatement(PSTR dest);
 
-	void sprintLineNumber (PSTR dest);
+	void sprintLineNumber(PSTR dest);
 
-	void sprintDataValue (PSTR dest, StackItemPtr data, TypePtr dataType);
+	void sprintDataValue(PSTR dest, StackItemPtr data, TypePtr dataType);
 
-	int32_t sprintSimpleValue (PSTR dest, SymTableNodePtr symbol);
+	int32_t sprintSimpleValue(PSTR dest, SymTableNodePtr symbol);
 
-	int32_t sprintArrayValue (PSTR dest, SymTableNodePtr symbol, PSTR subscriptString);
+	int32_t sprintArrayValue(PSTR dest, SymTableNodePtr symbol, PSTR subscriptString);
 
-	int32_t sprintValue (PSTR dest, PSTR exprString);
+	int32_t sprintValue(PSTR dest, PSTR exprString);
 
-	int32_t traceStatementExecution (void);
+	int32_t traceStatementExecution(void);
 
-	int32_t traceRoutineEntry (SymTableNodePtr idPtr);
+	int32_t traceRoutineEntry(SymTableNodePtr idPtr);
 
-	int32_t traceRoutineExit (SymTableNodePtr idPtr);
+	int32_t traceRoutineExit(SymTableNodePtr idPtr);
 
-	int32_t traceDataStore (SymTableNodePtr id, TypePtr idType, StackItemPtr target, TypePtr targetType);
+	int32_t traceDataStore(SymTableNodePtr id, TypePtr idType, StackItemPtr target, TypePtr targetType);
 
-	int32_t traceDataFetch (SymTableNodePtr id, TypePtr idType, StackItemPtr data);
+	int32_t traceDataFetch(SymTableNodePtr id, TypePtr idType, StackItemPtr data);
 
-	void showValue (void);
+	void showValue(void);
 
-	void assignVariable (void);
+	void assignVariable(void);
 
-	void displayModuleInstanceRegistry (void);
+	void displayModuleInstanceRegistry(void);
 
-	void processCommand (int32_t commandId, PSTR strParam1, int32_t numParam1, ABLModulePtr moduleParam1);
+	void processCommand(int32_t commandId, PSTR strParam1, int32_t numParam1, ABLModulePtr moduleParam1);
 
-	void debugMode (void);
+	void debugMode(void);
 
-	ABLModulePtr getDebugModule (void){
+	ABLModulePtr getDebugModule(void)
+	{
 		return(debugModule);
 	}
 };

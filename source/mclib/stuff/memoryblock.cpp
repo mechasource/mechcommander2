@@ -55,7 +55,6 @@ MemoryBlockBase::MemoryBlockBase(
 	//-----------------------------------------------------------------
 	//
 	Verify(rec_size >= sizeof(MemoryBlockHeader));
-
 	//
 	//-------------------------------------------------------------------------
 	// Set up the blockSize variables for the blockMemory block, and figure out
@@ -63,53 +62,50 @@ MemoryBlockBase::MemoryBlockBase(
 	//-------------------------------------------------------------------------
 	//
 	blockHeap = gos_CreateMemoryHeap(const_cast<PSTR>(name), 0, parent);
-	recordSize = (rec_size+3)&~3;
+	recordSize = (rec_size + 3) & ~3;
 	blockSize = start * recordSize;
 	deltaSize = delta * recordSize;
 	blockName = name;
-
 	//
 	//-------------------------------------------------------------------------
 	// Allocate a block big enough for the requested blockMemory plus a link to
 	// the next blockMemory block, initializing this link to nullptr
 	//-------------------------------------------------------------------------
 	//
-	#if !defined(MEMORY_VERIFY)
-		blockMemory =
-			Cast_Pointer(
-				MemoryBlockHeader*,
-				new(blockHeap) uint8_t[sizeof(MemoryBlockHeader) + blockSize]
-			);
-		Check_Object(blockMemory);
-		blockMemory->nextBlock = nullptr;
-		blockMemory->blockSize = blockSize;
-
-		//
-		//--------------------------------------------------------------------
-		// Establish the beginning of the firstHeaderRecord record block, and
-		// point the freeRecord record pointer to the beginning.  There are no
-		// deletedRecord records yet, so make sure Deleted is nullptr
-		//--------------------------------------------------------------------
-		//
-		firstHeaderRecord = Cast_Pointer(puint8_t, blockMemory + 1);
-		Check_Pointer(firstHeaderRecord);
-		freeRecord = firstHeaderRecord;
-		deletedRecord = nullptr;
-	#endif
-
+#if !defined(MEMORY_VERIFY)
+	blockMemory =
+		Cast_Pointer(
+			MemoryBlockHeader*,
+			new(blockHeap) uint8_t[sizeof(MemoryBlockHeader) + blockSize]
+		);
+	Check_Object(blockMemory);
+	blockMemory->nextBlock = nullptr;
+	blockMemory->blockSize = blockSize;
+	//
+	//--------------------------------------------------------------------
+	// Establish the beginning of the firstHeaderRecord record block, and
+	// point the freeRecord record pointer to the beginning.  There are no
+	// deletedRecord records yet, so make sure Deleted is nullptr
+	//--------------------------------------------------------------------
+	//
+	firstHeaderRecord = Cast_Pointer(puint8_t, blockMemory + 1);
+	Check_Pointer(firstHeaderRecord);
+	freeRecord = firstHeaderRecord;
+	deletedRecord = nullptr;
+#endif
 	//
 	//--------------------------------------------------------------------------
 	// If this is the first memory block, set the first block pointer and
 	// initialize the ring.  If not, insert the new block at the end of the ring
 	//--------------------------------------------------------------------------
 	//
-	if (!firstBlock)
+	if(!firstBlock)
 	{
 		firstBlock = nextBlock = previousBlock = this;
 	}
 	else
 	{
-		MemoryBlockBase *block = firstBlock;
+		MemoryBlockBase* block = firstBlock;
 		Check_Object(block);
 		block = block->previousBlock;
 		Check_Object(block);
@@ -138,11 +134,9 @@ MemoryBlockBase::~MemoryBlockBase()
 	//------------------------------------------------------------------------
 	//
 	Check_Object(this);
-	MemoryBlockHeader *block = blockMemory;
-
-	while (block)
+	MemoryBlockHeader* block = blockMemory;
+	while(block)
 	{
-
 		//
 		//---------------------------------------------------------------------
 		// Save the address of the next blockMemory block, then delete this one
@@ -150,12 +144,11 @@ MemoryBlockBase::~MemoryBlockBase()
 		//---------------------------------------------------------------------
 		//
 		Check_Object(block);
-		MemoryBlockHeader *next_block = block->nextBlock;
+		MemoryBlockHeader* next_block = block->nextBlock;
 		delete block;
 		block = next_block;
 	}
 #endif
-
 	//
 	//------------------------------------------------------------------------
 	// Remove the block from the ring.  If the block is the first one, set the
@@ -164,9 +157,9 @@ MemoryBlockBase::~MemoryBlockBase()
 	// when we reach the first block, it should be the only one in the queue.
 	//------------------------------------------------------------------------
 	//
-	if (firstBlock == this)
+	if(firstBlock == this)
 	{
-		if (nextBlock == this)
+		if(nextBlock == this)
 		{
 			firstBlock = nullptr;
 		}
@@ -179,9 +172,9 @@ MemoryBlockBase::~MemoryBlockBase()
 	else
 	{
 Unlink:
-		MemoryBlockBase *next = nextBlock;
+		MemoryBlockBase* next = nextBlock;
 		Check_Object(next);
-		MemoryBlockBase *prev = previousBlock;
+		MemoryBlockBase* prev = previousBlock;
 		Check_Object(prev);
 		next->previousBlock = prev;
 		prev->nextBlock = next;
@@ -197,9 +190,9 @@ Unlink:
 //
 PVOID MemoryBlockBase::Grow(void)
 {
-	#if defined(MEMORY_VERIFY)
-		STOP(("MemoryBlockBase::Grow() not available!\n"));
-	#endif
+#if defined(MEMORY_VERIFY)
+	STOP(("MemoryBlockBase::Grow() not available!\n"));
+#endif
 	//
 	//------------------------------------------------------------------------
 	// If we have freeRecord space left in the firstHeaderRecord record block,
@@ -208,13 +201,12 @@ PVOID MemoryBlockBase::Grow(void)
 	//------------------------------------------------------------------------
 	//
 	Check_Object(this);
-	if (intptr_t(freeRecord - firstHeaderRecord) <= intptr_t(blockSize - recordSize))
+	if(intptr_t(freeRecord - firstHeaderRecord) <= intptr_t(blockSize - recordSize))
 	{
 		PVOID result = freeRecord;
 		freeRecord += recordSize;
 		return result;
 	}
-
 	//
 	//-------------------------------------------------------------------------
 	// Allocate a new block of records using the growth blockSize, and make the
@@ -227,19 +219,16 @@ PVOID MemoryBlockBase::Grow(void)
 	firstHeaderRecord -= sizeof(MemoryBlockHeader);
 	puint8_t new_block = new(blockHeap) uint8_t[blockSize + sizeof(MemoryBlockHeader)];
 	Check_Pointer(new_block);
-
-	MemoryBlockHeader *header =
+	MemoryBlockHeader* header =
 		Cast_Pointer(MemoryBlockHeader*, firstHeaderRecord);
 	Check_Object(header);
 	header->nextBlock = Cast_Pointer(MemoryBlockHeader*, new_block);
 	Check_Object(header->nextBlock);
-
 	firstHeaderRecord = new_block;
 	header = Cast_Pointer(MemoryBlockHeader*, firstHeaderRecord);
 	Check_Object(header);
 	header->nextBlock = nullptr;
 	header->blockSize = deltaSize;
-
 	//
 	//--------------------------------------------------------------------------
 	// Make firstHeaderRecord point to the first available address in the new
@@ -258,23 +247,23 @@ PVOID MemoryBlockBase::Grow(void)
 //#############################################################################
 //
 void
-	MemoryBlockBase::UsageReport()
+MemoryBlockBase::UsageReport()
 {
 #if !defined(MEMORY_VERIFY)
 	SPEW((GROUP_STUFF_MEMORY, " #Bytes  #Rcds  #Dels  #Free Use% Name"));
 	SPEW((GROUP_STUFF_MEMORY, "------- ------ ------ ------ ---- -------------------------------"));
-	MemoryBlockBase *block = firstBlock;
+	MemoryBlockBase* block = firstBlock;
 	do
 	{
 		Check_Object(block);
-		MemoryBlockHeader *header = block->blockMemory;
+		MemoryBlockHeader* header = block->blockMemory;
 		size_t byte_count = 0;
 		size_t record_count = 0;
 		size_t deletion_count = 0;
 		size_t unused_count =
 			block->blockSize - (block->freeRecord - block->firstHeaderRecord);
 		unused_count /= block->recordSize;
-		while (header)
+		while(header)
 		{
 			Check_Object(header);
 			record_count += header->blockSize / block->recordSize;
@@ -282,30 +271,30 @@ void
 			header = header->nextBlock;
 		}
 		puint8_t deletion = block->deletedRecord;
-		while (deletion)
+		while(deletion)
 		{
 			++deletion_count;
 			deletion = *Cast_Pointer(puint8_t*, deletion);
 		}
 		record_count -= deletion_count + unused_count;
-		if( record_count!=0 )
+		if(record_count != 0)
 		{
 			SPEW((
-			GROUP_STUFF_MEMORY,
-			"%7d%7d%7d%7d%4d%%+",
-			byte_count,
-			record_count,
-			deletion_count,
-			unused_count,
-			static_cast<int32_t>((1.0f - (deletion_count+unused_count)/(float)record_count)*100.0f)
-		));
+					 GROUP_STUFF_MEMORY,
+					 "%7d%7d%7d%7d%4d%%+",
+					 byte_count,
+					 record_count,
+					 deletion_count,
+					 unused_count,
+					 static_cast<int32_t>((1.0f - (deletion_count + unused_count) / (float)record_count) * 100.0f)
+				 ));
 		}
-		if (block->blockName)
+		if(block->blockName)
 			SPEW((GROUP_STUFF_MEMORY, " %s", block->blockName));
 		SPEW((GROUP_STUFF_MEMORY, ""));
 		block = block->nextBlock;
 	}
-	while (block != firstBlock);
+	while(block != firstBlock);
 	SPEW((GROUP_STUFF_MEMORY, ""));
 #endif
 }
@@ -315,20 +304,20 @@ void
 //#############################################################################
 //
 void
-	MemoryBlockBase::CollapseBlocks()
+MemoryBlockBase::CollapseBlocks()
 {
-	#if defined(LAB_ONLY)
-		SPEW((GROUP_STUFF_MEMORY, "MemoryBlock statistics prior to collapsing..."));
-		UsageReport();
-	#endif
-	MemoryBlockBase *block = firstBlock;
+#if defined(LAB_ONLY)
+	SPEW((GROUP_STUFF_MEMORY, "MemoryBlock statistics prior to collapsing..."));
+	UsageReport();
+#endif
+	MemoryBlockBase* block = firstBlock;
 	do
 	{
 		Check_Object(block);
 		block->Collapse();
 		block = block->nextBlock;
 	}
-	while (block != firstBlock);
+	while(block != firstBlock);
 }
 
 #if 0
@@ -337,7 +326,7 @@ void
 //#############################################################################
 //
 static int32_t
-	compare_function(PCVOID a, PCVOID b)
+compare_function(PCVOID a, PCVOID b)
 {
 	return static_cast<PCSTR>(a) - static_cast<PCSTR>(b);
 }
@@ -348,7 +337,7 @@ static int32_t
 //#############################################################################
 //
 void
-	MemoryBlockBase::Collapse()
+MemoryBlockBase::Collapse()
 {
 #if !defined(MEMORY_VERIFY)
 	//
@@ -358,17 +347,16 @@ void
 	//
 	puint8_t deletion = deletedRecord;
 	size_t deletion_count = 0;
-	while (deletion)
+	while(deletion)
 	{
 		Check_Pointer(deletion);
 		++deletion_count;
 		deletion = *Cast_Pointer(puint8_t*, deletion);
 	}
-	if (!deletion_count)
+	if(!deletion_count)
 	{
 		return;
 	}
-
 	//
 	//--------------------------------------------------------------------------
 	// Now, build a table of pointers that big and fill it in with the deletion
@@ -377,14 +365,14 @@ void
 	// the chain
 	//--------------------------------------------------------------------------
 	//
-	puint8_t* deletions = new(blockHeap) puint8_t[deletion_count+1];
+	puint8_t* deletions = new(blockHeap) puint8_t[deletion_count + 1];
 	deletion = deletedRecord;
-	size_t i = (deletion_count-1);
+	size_t i = (deletion_count - 1);
 	deletions[deletion_count] = reinterpret_cast<puint8_t>(SNAN_NEGATIVE_LONG);
 	deletions[i--] = deletion;
 	deletion = *Cast_Pointer(puint8_t*, deletion);
 	size_t j;
-	while (deletion)
+	while(deletion)
 	{
 		//
 		//---------------------------------------------------
@@ -392,26 +380,25 @@ void
 		//---------------------------------------------------
 		//
 		Check_Pointer(deletion);
-		j=i--;
-		while (deletions[j+1] < deletion)
+		j = i--;
+		while(deletions[j + 1] < deletion)
 		{
 			Verify(j < deletion_count);
-			deletions[j] = deletions[j+1];
+			deletions[j] = deletions[j + 1];
 			++j;
 		}
 		deletions[j] = deletion;
 		deletion = *Cast_Pointer(puint8_t*, deletion);
 	}
 	Verify(intptr_t(i) == -1);
-
 	//
 	//------------------------------------------------------------------------
 	// Now, step through each additional block and see if it can be eliminated
 	//------------------------------------------------------------------------
 	//
-	MemoryBlockHeader *last_real_block = blockMemory;
-	MemoryBlockHeader *header = blockMemory->nextBlock;
-	while (header)
+	MemoryBlockHeader* last_real_block = blockMemory;
+	MemoryBlockHeader* header = blockMemory->nextBlock;
+	while(header)
 	{
 		//
 		//--------------------------------------------------------------------
@@ -423,14 +410,14 @@ void
 		j = deletion_count - 1;
 		size_t m = 0;
 		puint8_t key = Cast_Pointer(puint8_t, header) + sizeof(*header);
-		while (i <= j)
+		while(i <= j)
 		{
 			m = (i + j) >> 1;
-			if (deletions[m] == key)
+			if(deletions[m] == key)
 			{
 				break;
 			}
-			else if (deletions[m] > key)
+			else if(deletions[m] > key)
 			{
 				j = m - 1;
 			}
@@ -439,14 +426,13 @@ void
 				i = m + 1;
 			}
 		}
-
 		//
 		//---------------------------------------------------------------------
 		// If the record wasn't found, then this block cannot be deleted, so it
 		// is marked as the last real block and is so linked
 		//---------------------------------------------------------------------
 		//
-		if (i > j)
+		if(i > j)
 		{
 Real_Block:
 			last_real_block->nextBlock = header;
@@ -454,7 +440,6 @@ Real_Block:
 			header = header->nextBlock;
 			continue;
 		}
-
 		//
 		//----------------------------------------------------------------------
 		// We found the beginning, so now we have to see if we can find the end.
@@ -462,8 +447,8 @@ Real_Block:
 		// ignore the unused space at the end of the block
 		//----------------------------------------------------------------------
 		//
-		puint8_t *start = &deletions[m];
-		if (header->nextBlock)
+		puint8_t* start = &deletions[m];
+		if(header->nextBlock)
 		{
 			i = (header->blockSize / recordSize);
 		}
@@ -472,7 +457,6 @@ Real_Block:
 			i = size_t(freeRecord - firstHeaderRecord);
 			i /= recordSize;
 		}
-
 		//
 		//---------------------------------------------------------------------
 		// Move the pointer to where the last entry for this block should be if
@@ -482,21 +466,19 @@ Real_Block:
 		//---------------------------------------------------------------------
 		//
 		puint8_t* end = (start + i - 1);
-		if (size_t(end - deletions) >= deletion_count || 
-			*end != Cast_Pointer(puint8_t, header) + sizeof(*header) + (i-1)*recordSize)
+		if(size_t(end - deletions) >= deletion_count ||
+				*end != Cast_Pointer(puint8_t, header) + sizeof(*header) + (i - 1)*recordSize)
 		{
 			goto Real_Block;
 		}
-
 		//
 		//------------------------------------------------------------------
 		// This block may now be killed, but save the next block address for
 		// further checking
 		//------------------------------------------------------------------
 		//
-		MemoryBlockHeader *next_block = header->nextBlock;
+		MemoryBlockHeader* next_block = header->nextBlock;
 		delete header;
-
 		//
 		//-----------------------------------------------------------------------
 		// Now, move everything following our section of deleted records to where
@@ -506,11 +488,10 @@ Real_Block:
 		++end;
 		j =	size_t(Cast_Pointer(puint8_t, &deletions[deletion_count]) - Cast_Pointer(puint8_t, end));
 		deletion_count -= i;
-		if (j>0)
+		if(j > 0)
 		{
 			memmove(start, end, j);
 		}
-
 		//
 		//----------------------------
 		// Check the next header block
@@ -518,7 +499,6 @@ Real_Block:
 		//
 		header = next_block;
 	}
-
 	//
 	//--------------------------------------------------------------------
 	// Now, clean up the deletion array and reset all the current deletion
@@ -526,7 +506,7 @@ Real_Block:
 	//--------------------------------------------------------------------
 	//
 	deletion = nullptr;
-	for (i=0; i<deletion_count; ++i)
+	for(i = 0; i < deletion_count; ++i)
 	{
 		Check_Pointer(deletions[i]);
 		*Cast_Pointer(puint8_t*, deletions[i]) = deletion;
@@ -534,7 +514,6 @@ Real_Block:
 	}
 	deletedRecord = deletion;
 	delete[] deletions;
-
 	//
 	//--------------------------------------------------------------------------
 	// Set the rest of the pointers to deal with this new last block if the last
@@ -543,9 +522,9 @@ Real_Block:
 	//--------------------------------------------------------------------------
 	//
 	last_real_block->nextBlock = nullptr;
-	if (
+	if(
 		firstHeaderRecord !=
-			Cast_Pointer(puint8_t, last_real_block) + sizeof(*last_real_block)
+		Cast_Pointer(puint8_t, last_real_block) + sizeof(*last_real_block)
 	)
 	{
 		blockSize = last_real_block->blockSize;
@@ -566,42 +545,40 @@ Real_Block:
 //#############################################################################
 //
 PVOID
-	MemoryBlock::New()
+MemoryBlock::New()
 {
 	PVOID result;
-	#if defined(MEMORY_VERIFY)
-		result = new(blockHeap) char[recordSize];
-	#else
-		//
-		//----------------------------------------------------------------------
-		// If we have a deletedRecord record, go ahead and reuse it, updating the next
-		// deletedRecord record value from the firstHeaderRecord one.  This chain is independant
-		// of the firstHeaderRecord record block.  If not, grow the blockMemory block by one
-		// record
-		//----------------------------------------------------------------------
-		//
-		Check_Object(this);
-		if (deletedRecord)
-		{
-			result = deletedRecord;
-			deletedRecord = *Cast_Pointer(puint8_t*, deletedRecord);
-		}
-		else
-		{
-			result = Grow();
-		}
-	#endif
-
+#if defined(MEMORY_VERIFY)
+	result = new(blockHeap) char[recordSize];
+#else
+	//
+	//----------------------------------------------------------------------
+	// If we have a deletedRecord record, go ahead and reuse it, updating the next
+	// deletedRecord record value from the firstHeaderRecord one.  This chain is independant
+	// of the firstHeaderRecord record block.  If not, grow the blockMemory block by one
+	// record
+	//----------------------------------------------------------------------
+	//
+	Check_Object(this);
+	if(deletedRecord)
+	{
+		result = deletedRecord;
+		deletedRecord = *Cast_Pointer(puint8_t*, deletedRecord);
+	}
+	else
+	{
+		result = Grow();
+	}
+#endif
 	//
 	//----------------------------------------------------------------------
 	// If we are checking for unassigned variables, initialize the allocated
 	// memory with NANs
 	//----------------------------------------------------------------------
 	//
-	#if defined(_ARMOR)
-		Flood_Memory_With_NAN(result, recordSize);
-	#endif
-
+#if defined(_ARMOR)
+	Flood_Memory_With_NAN(result, recordSize);
+#endif
 	//
 	//-------------------------------------
 	// Return the address of the new record
@@ -618,102 +595,93 @@ PVOID
 //#############################################################################
 //
 void
-	MemoryBlock::Delete(
-		PVOID where
-	)
+MemoryBlock::Delete(
+	PVOID where
+)
 {
-	#if defined(MEMORY_VERIFY)
-		delete where;
-	#else
+#if defined(MEMORY_VERIFY)
+	delete where;
+#else
+	//
+	//--------------------------------------------------------------------
+	// If we are in debug2 mode, check to see if the deletedRecord region really
+	// belongs to us
+	//--------------------------------------------------------------------
+	//
+	Check_Object(this);
+#if defined(MEMORY_BLOCK_VERIFY)
+	//
+	//--------------------------------------------------------------------
+	// Make sure the address of this record is not already in the deletion
+	// chain
+	//--------------------------------------------------------------------
+	//
+	PVOIDrecord;
+	for(
+		record = deletedRecord;
+		record;
+		record = *Cast_Pointer(puint8_t*, record)
+	)
+	{
+		if(record == where)
+		{
+			break;
+		}
+	}
+	Verify(!record);
+	//
+	//------------------------------------------------------------------
+	// Find the address of the first record block, then check each block
+	// until we come to the end of the chain
+	//------------------------------------------------------------------
+	//
+	uint32_t
+	offset;
+	MemoryBlockHeader*
+	block = blockMemory;
+	while(block)
+	{
 		//
-		//--------------------------------------------------------------------
-		// If we are in debug2 mode, check to see if the deletedRecord region really
-		// belongs to us
-		//--------------------------------------------------------------------
+		//---------------------------------------------------------------
+		// If the record is in this block and is positioned correctly, go
+		// ahead and break as we have found a legal place within a block
+		//---------------------------------------------------------------
 		//
-		Check_Object(this);
-
-		#if defined(MEMORY_BLOCK_VERIFY)
-
-			//
-			//--------------------------------------------------------------------
-			// Make sure the address of this record is not already in the deletion
-			// chain
-			//--------------------------------------------------------------------
-			//
-			PVOIDrecord;
-			for (
-				record = deletedRecord;
-				record;
-				record = *Cast_Pointer(puint8_t*, record)
-			)
-			{
-				if (record == where)
-				{
-					break;
-				}
-			}
-			Verify(!record);
-
-			//
-			//------------------------------------------------------------------
-			// Find the address of the first record block, then check each block
-			// until we come to the end of the chain
-			//------------------------------------------------------------------
-			//
-			uint32_t
-				offset;
-			MemoryBlockHeader*
-				block = blockMemory;
-
-			while (block)
-			{
-
-				//
-				//---------------------------------------------------------------
-				// If the record is in this block and is positioned correctly, go
-				// ahead and break as we have found a legal place within a block
-				//---------------------------------------------------------------
-				//
-				Check_Object(block);
-				offset =
-					static_cast<uint32_t>(
-						Cast_Pointer(puint8_t, where) - Cast_Pointer(puint8_t, block + 1)
-					);
-				if (offset < block->blockSize)
-				{
-					Verify(!(offset % recordSize));
-					break;
-				}
-
-				//
-				//---------------------
-				// Go to the next block
-				//---------------------
-				//
-				block = block->nextBlock;
-			}
-			Verify(block);
-
-			//
-			//-----------------------------------------------------------
-			// Now make sure that the address is not in our future region
-			//-----------------------------------------------------------
-			//
-			Verify(block->nextBlock || offset < freeRecord-firstHeaderRecord);
-
-		#endif
-
+		Check_Object(block);
+		offset =
+			static_cast<uint32_t>(
+				Cast_Pointer(puint8_t, where) - Cast_Pointer(puint8_t, block + 1)
+			);
+		if(offset < block->blockSize)
+		{
+			Verify(!(offset % recordSize));
+			break;
+		}
 		//
-		//----------------------------------------------------------------------
-		// Make the first few bytes of the record act as the link pointer to the
-		// beginning of the firstHeaderRecord deletedRecord chain, then make the first record
-		// available for reuse this one
-		//----------------------------------------------------------------------
+		//---------------------
+		// Go to the next block
+		//---------------------
 		//
-		*Cast_Pointer(puint8_t*, where) = deletedRecord;
-		deletedRecord = Cast_Pointer(puint8_t, where);
-	#endif
+		block = block->nextBlock;
+	}
+	Verify(block);
+	//
+	//-----------------------------------------------------------
+	// Now make sure that the address is not in our future region
+	//-----------------------------------------------------------
+	//
+	Verify(block->nextBlock || offset < freeRecord - firstHeaderRecord);
+#endif
+	//
+	//----------------------------------------------------------------------
+	// Make the first few bytes of the record act as the link pointer to the
+	// beginning of the firstHeaderRecord deletedRecord chain, then make the first record
+	// available for reuse this one
+	//----------------------------------------------------------------------
+	//
+	*Cast_Pointer(puint8_t*, where) = deletedRecord;
+	deletedRecord = Cast_Pointer(puint8_t, where);
+#endif
 }
 
 //
@@ -721,12 +689,11 @@ void
 //#############################################################################
 //
 PVOID
-	MemoryBlock::operator[](size_t index)
+MemoryBlock::operator[](size_t index)
 {
-	#if defined(MEMORY_VERIFY)
-		STOP(("MemoryBlock::operator[] not available!\n"));
-	#endif
-
+#if defined(MEMORY_VERIFY)
+	STOP(("MemoryBlock::operator[] not available!\n"));
+#endif
 	//
 	//------------------------------------------------------------------
 	// Find the address of the first record block, then check each block
@@ -735,8 +702,7 @@ PVOID
 	//
 	Check_Object(this);
 	MemoryBlockHeader* block = blockMemory;
-
-	while (block)
+	while(block)
 	{
 		//
 		//---------------------------------------------------------------
@@ -746,11 +712,10 @@ PVOID
 		Check_Object(block);
 		Verify(recordSize);
 		size_t records = (block->blockSize / recordSize);
-		if (index < records)
+		if(index < records)
 		{
 			return Cast_Pointer(puint8_t, block + 1) + index * recordSize;
 		}
-
 		//
 		//--------------------------------------------------------------------
 		// Save the address of the next blockMemory block, then delete this one and
@@ -760,7 +725,6 @@ PVOID
 		index -= records;
 		block = block->nextBlock;
 	}
-
 	//
 	//-----------------------------------------
 	// The record doesn't exist, so return nullptr
@@ -776,11 +740,10 @@ PVOID
 //#############################################################################
 //
 PVOID
-	MemoryStack::Push(PCVOID what)
+MemoryStack::Push(PCVOID what)
 {
 	Check_Object(this);
 	Check_Pointer(what);
-
 	puint8_t block = firstHeaderRecord;
 	topOfStack = freeRecord;
 	puint8_t target = static_cast<puint8_t>(Grow());
@@ -790,7 +753,7 @@ PVOID
 		recordSize,
 		blockSize - (target - firstHeaderRecord)
 	);
-	if (firstHeaderRecord != block)
+	if(firstHeaderRecord != block)
 	{
 		topOfStack = firstHeaderRecord;
 	}
@@ -802,14 +765,13 @@ PVOID
 //#############################################################################
 //
 PVOID
-	MemoryStack::Push()
+MemoryStack::Push()
 {
 	Check_Object(this);
 	puint8_t block = firstHeaderRecord;
 	topOfStack = freeRecord;
 	Grow();
-
-	if (firstHeaderRecord != block)
+	if(firstHeaderRecord != block)
 	{
 		topOfStack = firstHeaderRecord;
 	}
@@ -821,19 +783,18 @@ PVOID
 //###########################################################################
 //
 void
-	MemoryStack::Pop()
+MemoryStack::Pop()
 {
 	MemoryBlockHeader
-		*block,
-		*new_block;
-
+	*block,
+	*new_block;
 	//
 	//-----------------------------------------
 	// Make sure that something is in the stack
 	//-----------------------------------------
 	//
 	Check_Object(this);
-	if (topOfStack)
+	if(topOfStack)
 	{
 		//
 		//--------------------------------------------------------------------
@@ -841,7 +802,7 @@ void
 		// freeRecord and topOfStack pointers can move normally
 		//--------------------------------------------------------------------
 		//
-		if (topOfStack != firstHeaderRecord)
+		if(topOfStack != firstHeaderRecord)
 		{
 			//
 			//-------------------------------------------------------------------
@@ -849,12 +810,12 @@ void
 			// the block and update the variables to the previous block
 			//-------------------------------------------------------------------
 			//
-			if (freeRecord == firstHeaderRecord)
+			if(freeRecord == firstHeaderRecord)
 			{
 				new_block =
 					Cast_Pointer(MemoryBlockHeader*, firstHeaderRecord - 1);
 				Check_Object(new_block);
-				for (
+				for(
 					block = blockMemory;
 					block->nextBlock != new_block;
 					block = block->nextBlock
@@ -862,13 +823,11 @@ void
 				{
 					Check_Object(block);
 				}
-
 				delete new_block;
 				block->nextBlock = nullptr;
 				firstHeaderRecord = Cast_Pointer(puint8_t, block + 1);
 				blockSize = block->blockSize;
 			}
-
 			//
 			//-----------------------------------------------
 			// Move the topOfStack and freeRecord pointers back one record
@@ -877,7 +836,6 @@ void
 			freeRecord = topOfStack;
 			topOfStack -= recordSize;
 		}
-
 		//
 		//--------------------------------------------------------------------
 		// Otherwise, we have to wrap the top of the stack pointer back to the
@@ -885,11 +843,10 @@ void
 		// stack is empty
 		//--------------------------------------------------------------------
 		//
-		else if (!blockMemory->nextBlock)
+		else if(!blockMemory->nextBlock)
 		{
 			topOfStack = nullptr;
 		}
-
 		//
 		//--------------------------------------------------------------------
 		// Point the top of the stack to the last record of the previous block
@@ -899,7 +856,7 @@ void
 		{
 			new_block = Cast_Pointer(MemoryBlockHeader*, firstHeaderRecord - 1);
 			Check_Object(new_block);
-			for (
+			for(
 				block = blockMemory;
 				block->nextBlock != new_block;
 				block = block->nextBlock

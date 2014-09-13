@@ -20,7 +20,7 @@
 // Class Definitions
 
 class TerrainQuad;
-typedef TerrainQuad *TerrainQuadPtr;
+typedef TerrainQuad* TerrainQuadPtr;
 
 //---------------------------------------------------------------------------
 #endif

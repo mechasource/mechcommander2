@@ -22,7 +22,8 @@
 
 //---------------------------------------------------------------------------
 // enums
-typedef enum __inifile_constants {
+typedef enum __inifile_constants
+{
 	BLOCK_NOT_FOUND						= 0xFADA0000,
 	ID_NOT_FOUND						= 0xFADA0001,
 	DATA_NOT_CORRECT_TYPE				= 0xFADA0002,
@@ -69,7 +70,7 @@ protected:
 	size_t 							m_currentBlockSize;		//Length of current block
 
 public:
-	FitIniFile(void) : m_currentBlockId(nullptr), 
+	FitIniFile(void) : m_currentBlockId(nullptr),
 		m_totalBlocks(0), m_currentBlockOffset(0), m_currentBlockSize(0)
 	{
 	}
@@ -89,43 +90,43 @@ protected:
 
 	HRESULT getNextWord(PSTR& line, PSTR buffer, size_t bufLen);
 
-	float textToFloat (PCSTR num);
-	double textToDouble (PCSTR num);
+	float textToFloat(PCSTR num);
+	double textToDouble(PCSTR num);
 
-	int32_t textToLong (PCSTR num);
-	uint32_t textToULong (PCSTR num);
+	int32_t textToLong(PCSTR num);
+	uint32_t textToULong(PCSTR num);
 
-	int16_t textToShort (PCSTR num);
-	uint16_t textToUShort (PCSTR num);
+	int16_t textToShort(PCSTR num);
+	uint16_t textToUShort(PCSTR num);
 
-	int8_t textToChar (PCSTR num);
-	uint8_t textToUChar (PCSTR num);
+	int8_t textToChar(PCSTR num);
+	uint8_t textToUChar(PCSTR num);
 
-	bool booleanToLong (PCSTR num);
+	bool booleanToLong(PCSTR num);
 
-	float mathToFloat (PCSTR num);
+	float mathToFloat(PCSTR num);
 
-	int32_t mathToLong (PCSTR num);
-	size_t mathToULong (PCSTR num);
+	int32_t mathToLong(PCSTR num);
+	size_t mathToULong(PCSTR num);
 
-	int16_t mathToShort (PCSTR num);
-	uint16_t mathToUShort (PCSTR num);
+	int16_t mathToShort(PCSTR num);
+	uint16_t mathToUShort(PCSTR num);
 
-	char mathToChar (PCSTR num);
-	uint8_t mathToUChar (PCSTR num);
+	char mathToChar(PCSTR num);
+	uint8_t mathToUChar(PCSTR num);
 
-	int32_t floatToText (PSTR result, float num, size_t bufLen);
+	int32_t floatToText(PSTR result, float num, size_t bufLen);
 
-	int32_t longToTextDec (PSTR result, int32_t num, size_t bufLen);
-	int32_t longToTextHex (PSTR result, int32_t num, size_t bufLen);
+	int32_t longToTextDec(PSTR result, int32_t num, size_t bufLen);
+	int32_t longToTextHex(PSTR result, int32_t num, size_t bufLen);
 
-	int32_t shortToTextDec (PSTR result, int16_t num, size_t bufLen);
-	int32_t shortToTextHex (PSTR result, int16_t num, size_t bufLen);
+	int32_t shortToTextDec(PSTR result, int16_t num, size_t bufLen);
+	int32_t shortToTextHex(PSTR result, int16_t num, size_t bufLen);
 
-	int32_t byteToTextDec (PSTR result, byte num, size_t bufLen);	
-	int32_t byteToTextHex (PSTR result, byte num, size_t bufLen);
+	int32_t byteToTextDec(PSTR result, byte num, size_t bufLen);
+	int32_t byteToTextHex(PSTR result, byte num, size_t bufLen);
 
-	int32_t copyString (PSTR dest, PSTR src, size_t bufLen);
+	int32_t copyString(PSTR dest, PSTR src, size_t bufLen);
 
 public:
 
@@ -135,7 +136,7 @@ public:
 	virtual int32_t create(PCSTR fName);
 	virtual int32_t createWithCase(PSTR fName);
 
-	virtual void close (void);
+	virtual void close(void);
 
 	virtual FileClass getFileClass(void)
 	{
@@ -144,65 +145,65 @@ public:
 
 	HRESULT seekBlock(PCSTR blockId);
 
-	HRESULT readIdFloat (PCSTR varName, float &value);
-	HRESULT readIdDouble (PCSTR varName, double &value);
+	HRESULT readIdFloat(PCSTR varName, float& value);
+	HRESULT readIdDouble(PCSTR varName, double& value);
 
-	HRESULT readIdBoolean (PCSTR varName, bool& value);
-	HRESULT readIdLong (PCSTR varName, int32_t& value);
-	HRESULT readIdULong (PCSTR varName, uint32_t& value);
+	HRESULT readIdBoolean(PCSTR varName, bool& value);
+	HRESULT readIdLong(PCSTR varName, int32_t& value);
+	HRESULT readIdULong(PCSTR varName, uint32_t& value);
 
-	HRESULT readIdShort (PCSTR varName, int16_t& value);
-	HRESULT readIdUShort (PCSTR varName, uint16_t& value);
+	HRESULT readIdShort(PCSTR varName, int16_t& value);
+	HRESULT readIdUShort(PCSTR varName, uint16_t& value);
 
-	HRESULT readIdChar (PCSTR varName, int8_t& value);
-	HRESULT readIdUChar (PCSTR varName, uint8_t& value);
+	HRESULT readIdChar(PCSTR varName, int8_t& value);
+	HRESULT readIdUChar(PCSTR varName, uint8_t& value);
 
-	HRESULT readIdString (PCSTR varName, PSTR result, size_t bufferSize);
+	HRESULT readIdString(PCSTR varName, PSTR result, size_t bufferSize);
 
-	HRESULT getIdStringLength (PCSTR varName);
+	HRESULT getIdStringLength(PCSTR varName);
 
-	HRESULT readIdFloatArray (PCSTR varName, float* result, size_t numElements);
+	HRESULT readIdFloatArray(PCSTR varName, float* result, size_t numElements);
 
-	HRESULT readIdLongArray (PCSTR varName, pint32_t result, size_t numElements);
-	HRESULT readIdULongArray (PCSTR varName, puint32_t result, size_t numElements);
+	HRESULT readIdLongArray(PCSTR varName, pint32_t result, size_t numElements);
+	HRESULT readIdULongArray(PCSTR varName, puint32_t result, size_t numElements);
 
-	HRESULT readIdShortArray (PCSTR varName, pint16_t result, size_t numElements);
-	HRESULT readIdUShortArray (PCSTR varName, puint16_t result, size_t numElements);
+	HRESULT readIdShortArray(PCSTR varName, pint16_t result, size_t numElements);
+	HRESULT readIdUShortArray(PCSTR varName, puint16_t result, size_t numElements);
 
-	HRESULT readIdCharArray (PCSTR varName, pint8_t result, size_t numElements);
-	HRESULT readIdUCharArray (PCSTR varName, puint8_t result, size_t numElements);
+	HRESULT readIdCharArray(PCSTR varName, pint8_t result, size_t numElements);
+	HRESULT readIdUCharArray(PCSTR varName, puint8_t result, size_t numElements);
 
-	size_t getIdFloatArrayElements (PCSTR varName);
+	size_t getIdFloatArrayElements(PCSTR varName);
 
-	size_t getIdLongArrayElements (PCSTR varName);
-	size_t getIdULongArrayElements (PCSTR varName);
+	size_t getIdLongArrayElements(PCSTR varName);
+	size_t getIdULongArrayElements(PCSTR varName);
 
-	size_t getIdShortArrayElements (PCSTR varName);
-	size_t getIdUShortArrayElements (PCSTR varName);
+	size_t getIdShortArrayElements(PCSTR varName);
+	size_t getIdUShortArrayElements(PCSTR varName);
 
-	size_t getIdCharArrayElements (PCSTR varName);
-	size_t getIdUCharArrayElements (PCSTR varName);
+	size_t getIdCharArrayElements(PCSTR varName);
+	size_t getIdUCharArrayElements(PCSTR varName);
 
-	HRESULT writeBlock (PCSTR blockId);
+	HRESULT writeBlock(PCSTR blockId);
 
-	HRESULT writeIdFloat (PCSTR varName, float value);
+	HRESULT writeIdFloat(PCSTR varName, float value);
 
-	HRESULT writeIdBoolean (PCSTR varName, bool value);
-	HRESULT writeIdLong (PCSTR varName, int32_t value);
-	HRESULT writeIdULong (PCSTR varName, uint32_t value);
+	HRESULT writeIdBoolean(PCSTR varName, bool value);
+	HRESULT writeIdLong(PCSTR varName, int32_t value);
+	HRESULT writeIdULong(PCSTR varName, uint32_t value);
 
-	HRESULT writeIdShort (PCSTR varName, int16_t value);
-	HRESULT writeIdUShort (PCSTR varName, uint16_t value);
+	HRESULT writeIdShort(PCSTR varName, int16_t value);
+	HRESULT writeIdUShort(PCSTR varName, uint16_t value);
 
-	HRESULT writeIdChar (PCSTR varName, int8_t value);
-	HRESULT writeIdUChar (PCSTR varName, uint8_t value);
+	HRESULT writeIdChar(PCSTR varName, int8_t value);
+	HRESULT writeIdUChar(PCSTR varName, uint8_t value);
 
-	HRESULT writeIdString (PCSTR varName, PCSTR result);
+	HRESULT writeIdString(PCSTR varName, PCSTR result);
 
-	HRESULT writeIdFloatArray (PCSTR varName, float* array, size_t numElements);
-	HRESULT writeIdLongArray (PCSTR varName, pint32_t array, size_t numElements);
-	HRESULT writeIdUShortArray (PCSTR varName, puint16_t array, size_t numElements);
-	HRESULT writeIdUCharArray (PCSTR varName, puint8_t array, size_t numElements);
+	HRESULT writeIdFloatArray(PCSTR varName, float* array, size_t numElements);
+	HRESULT writeIdLongArray(PCSTR varName, pint32_t array, size_t numElements);
+	HRESULT writeIdUShortArray(PCSTR varName, puint16_t array, size_t numElements);
+	HRESULT writeIdUCharArray(PCSTR varName, puint8_t array, size_t numElements);
 };
 
 //---------------------------------------------------------------------------

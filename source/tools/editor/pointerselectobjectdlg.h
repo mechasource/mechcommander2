@@ -22,18 +22,18 @@ public:
 	virtual ~PointerSelectObjectDlg(void);
 
 	BOOL OnCommand(WPARAM wParam, LPARAM lParam); // called by child controls to inform of an event
-	virtual BOOL OnWndMsg( uint32_t message, WPARAM wParam, LPARAM lParam, LRESULT* pResult );
+	virtual BOOL OnWndMsg(uint32_t message, WPARAM wParam, LPARAM lParam, LRESULT* pResult);
 	BOOL OnInitDialog(void);
-	uint32_t OnNcHitTest( CPoint point );
+	uint32_t OnNcHitTest(CPoint point);
 
 private:
 	typedef CDialog inherited;
 
 	// suppressing these
 	//inline PointerSelectObjectDlg(void);
-	PointerSelectObjectDlg& operator=( const PointerSelectObjectDlg& lgUnitPtr );
+	PointerSelectObjectDlg& operator=(const PointerSelectObjectDlg& lgUnitPtr);
 
-	CButton *m_pButton;
+	CButton* m_pButton;
 };
 
 

@@ -11,7 +11,7 @@ using namespace MidLevelRenderer;
 //#############################################################################
 
 #if defined(TRACE_ENABLED) && defined(MLR_TRACE)
-	BitTrace *MLR_I_MT_PMesh_Clip;
+BitTrace* MLR_I_MT_PMesh_Clip;
 #endif
 
 //#############################################################################
@@ -19,80 +19,73 @@ using namespace MidLevelRenderer;
 //#############################################################################
 
 MLR_I_MT_PMesh::ClassData*
-	MLR_I_MT_PMesh::DefaultData = nullptr;
+MLR_I_MT_PMesh::DefaultData = nullptr;
 
 DynamicArrayOf<DynamicArrayOf<Stuff::Vector2DScalar> >
-	*MLR_I_MT_PMesh::clipExtraMultiTexCoords;
+* MLR_I_MT_PMesh::clipExtraMultiTexCoords;
 DynamicArrayOf<DynamicArrayOf<Stuff::Vector2DScalar> >
-	*MLR_I_MT_PMesh::extraMultiTexCoords;
+* MLR_I_MT_PMesh::extraMultiTexCoords;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	MLR_I_MT_PMesh::InitializeClass()
+MLR_I_MT_PMesh::InitializeClass()
 {
 	Verify(!DefaultData);
 	// Verify(gos_GetCurrentHeap() == StaticHeap);
 	DefaultData =
 		new ClassData(
-			MLR_I_MT_PMeshClassID,
-			"MidLevelRenderer::MLR_I_MT_PMesh",
-			MLR_I_PMesh::DefaultData,
-			(MLRPrimitiveBase::Factory)&Make
-		);
+		MLR_I_MT_PMeshClassID,
+		"MidLevelRenderer::MLR_I_MT_PMesh",
+		MLR_I_PMesh::DefaultData,
+		(MLRPrimitiveBase::Factory)&Make
+	);
 	Register_Object(DefaultData);
-	
 	clipExtraMultiTexCoords = new DynamicArrayOf<DynamicArrayOf<Stuff::Vector2DScalar> >;
 	Register_Object(clipExtraMultiTexCoords);
 	clipExtraMultiTexCoords->SetLength(Limits::Max_Number_Of_Multitextures);
-	
 	extraMultiTexCoords = new DynamicArrayOf<DynamicArrayOf<Stuff::Vector2DScalar> >;
 	Register_Object(extraMultiTexCoords);
 	extraMultiTexCoords->SetLength(Limits::Max_Number_Of_Multitextures);
-
-	for(int32_t i=0;i<clipExtraMultiTexCoords->GetLength();i++)
+	for(size_t i = 0; i < clipExtraMultiTexCoords->GetLength(); i++)
 	{
 		(*clipExtraMultiTexCoords)[i].SetLength(Limits::Max_Number_Vertices_Per_Mesh);
 		(*extraMultiTexCoords)[i].SetLength(Limits::Max_Number_Vertices_Per_Mesh);
 	}
-
-	#if defined(TRACE_ENABLED) && defined(MLR_TRACE)
-		MLR_I_MT_PMesh_Clip = new BitTrace("MLR_I_MT_PMesh_Clip");
-		Register_Object(MLR_I_MT_PMesh_Clip);
-	#endif
+#if defined(TRACE_ENABLED) && defined(MLR_TRACE)
+	MLR_I_MT_PMesh_Clip = new BitTrace("MLR_I_MT_PMesh_Clip");
+	Register_Object(MLR_I_MT_PMesh_Clip);
+#endif
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	MLR_I_MT_PMesh::TerminateClass()
+MLR_I_MT_PMesh::TerminateClass()
 {
-	for(int32_t i=0;i<clipExtraMultiTexCoords->GetLength();i++)
+	for(size_t i = 0; i < clipExtraMultiTexCoords->GetLength(); i++)
 	{
 		(*clipExtraMultiTexCoords)[i].SetLength(0);
 		(*extraMultiTexCoords)[i].SetLength(0);
 	}
 	Unregister_Object(clipExtraMultiTexCoords);
 	delete clipExtraMultiTexCoords;
-
 	Unregister_Object(extraMultiTexCoords);
 	delete extraMultiTexCoords;
-
 	Unregister_Object(DefaultData);
 	delete DefaultData;
 	DefaultData = nullptr;
-
-	#if defined(TRACE_ENABLED) && defined(MLR_TRACE)
-		Unregister_Object(MLR_I_MT_PMesh_Clip);
-		delete MLR_I_MT_PMesh_Clip;
-	#endif
+#if defined(TRACE_ENABLED) && defined(MLR_TRACE)
+	Unregister_Object(MLR_I_MT_PMesh_Clip);
+	delete MLR_I_MT_PMesh_Clip;
+#endif
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 MLR_I_MT_PMesh::MLR_I_MT_PMesh(
-	ClassData *class_data,
-	MemoryStream *stream,
+	ClassData* class_data,
+	MemoryStream* stream,
 	uint32_t version
 ):
 	MLR_I_PMesh(class_data, stream, version)
@@ -100,97 +93,71 @@ MLR_I_MT_PMesh::MLR_I_MT_PMesh(
 	Check_Pointer(this);
 	Check_Pointer(stream);
 	//Verify(gos_GetCurrentHeap() == Heap);
-
 	multiTexCoords.SetLength(Limits::Max_Number_Of_Multitextures);
 	multiTexCoordsPointers.SetLength(Limits::Max_Number_Of_Multitextures);
 	multiState.SetLength(Limits::Max_Number_Of_Multitextures);
 	multiReferenceState.SetLength(Limits::Max_Number_Of_Multitextures);
-
 	multiTexCoords[0] = &texCoords;
 	multiTexCoordsPointers[0] = texCoords.GetData();
-
 	multiReferenceState[0] = referenceState;
-
 	*stream >> passes;
-
-	for(int32_t i=1;i<passes;i++)
+	for(size_t i = 1; i < passes; i++)
 	{
 		multiReferenceState[i].Save(stream);
-
 		multiTexCoords[i] = new DynamicArrayOf<Stuff::Vector2DScalar>;
 		Register_Object(multiTexCoords[i]);
-
 		MemoryStreamIO_Read(stream, multiTexCoords[i]);
-
 		multiTexCoordsPointers[i] = multiTexCoords[i]->GetData();
 	}
-
 	currentNrOfPasses = passes;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLR_I_MT_PMesh::MLR_I_MT_PMesh(ClassData *class_data):
+MLR_I_MT_PMesh::MLR_I_MT_PMesh(ClassData* class_data):
 	MLR_I_PMesh(class_data)
 {
 	Check_Pointer(this);
 	//Verify(gos_GetCurrentHeap() == Heap);
-
 	multiTexCoords.SetLength(Limits::Max_Number_Of_Multitextures);
 	multiTexCoordsPointers.SetLength(Limits::Max_Number_Of_Multitextures);
-
 	multiTexCoords[0] = &texCoords;
 	multiTexCoordsPointers[0] = texCoords.GetData();
-
 	multiState.SetLength(Limits::Max_Number_Of_Multitextures);
 	multiReferenceState.SetLength(Limits::Max_Number_Of_Multitextures);
-
 	passes = 1;
-
 	currentNrOfPasses = passes;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	MLR_I_MT_PMesh::Copy(MLR_I_PMesh *pMesh)
+MLR_I_MT_PMesh::Copy(MLR_I_PMesh* pMesh)
 {
 	Check_Pointer(this);
 	//Verify(gos_GetCurrentHeap() == Heap);
-
 	int32_t num;
-	Point3D *points;
-
+	Point3D* points;
 	referenceState = pMesh->GetReferenceState();
 	multiReferenceState[0] = referenceState;
-
 	pMesh->GetCoordData(&points, &num);
 	SetCoordData(points, num);
-
-	Stuff::Vector2DScalar *tex;
+	Stuff::Vector2DScalar* tex;
 	pMesh->GetTexCoordData(&tex, &num);
 	SetTexCoordData(tex, num);
-
 	multiTexCoords[0] = &texCoords;
 	multiTexCoordsPointers[0] = texCoords.GetData();
-
 	puint8_t length_array;
 	pMesh->GetSubprimitiveLengths(&length_array, &num);
 	SetSubprimitiveLengths(length_array, num);
-
 	drawMode = pMesh->GetSortDataMode();
-
 	puint16_t index_array;
 	pMesh->GetIndexData(&index_array, &num);
 	SetIndexData(index_array, num);
-
 	facePlanes.SetLength(GetNumPrimitives());
 	testList.SetLength(GetNumPrimitives());
-
 	FindFacePlanes();
-
 	passes = 1;
-
 	currentNrOfPasses = passes;
 }
 
@@ -199,8 +166,7 @@ void
 MLR_I_MT_PMesh::~MLR_I_MT_PMesh()
 {
 	Check_Object(this);
-
-	for(int32_t i=1;i<passes;i++)
+	for(size_t i = 1; i < passes; i++)
 	{
 		Unregister_Object(multiTexCoords[i]);
 		delete multiTexCoords[i];
@@ -210,17 +176,15 @@ MLR_I_MT_PMesh::~MLR_I_MT_PMesh()
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 MLR_I_MT_PMesh*
-	MLR_I_MT_PMesh::Make(
-		MemoryStream *stream,
-		uint32_t version
-	)
+MLR_I_MT_PMesh::Make(
+	MemoryStream* stream,
+	uint32_t version
+)
 {
 	Check_Object(stream);
-
 	gos_PushCurrentHeap(Heap);
-	MLR_I_MT_PMesh *mesh = new MLR_I_MT_PMesh(DefaultData, stream, version);
+	MLR_I_MT_PMesh* mesh = new MLR_I_MT_PMesh(DefaultData, stream, version);
 	gos_PopCurrentHeap();
-
 	return mesh;
 }
 
@@ -228,27 +192,23 @@ MLR_I_MT_PMesh*
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	MLR_I_MT_PMesh::Save(MemoryStream *stream)
+MLR_I_MT_PMesh::Save(MemoryStream* stream)
 {
 	Check_Object(this);
 	Check_Object(stream);
-
 	MLR_I_PMesh::Save(stream);
-
 	*stream << passes;
-
-	for(int32_t i=1;i<passes;i++)
+	for(size_t i = 1; i < passes; i++)
 	{
 		multiReferenceState[i].Save(stream);
-
 		MemoryStreamIO_Write(stream, multiTexCoords[i]);
 	}
 }
- 
+
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	MLR_I_MT_PMesh::TestInstance(void) const
+MLR_I_MT_PMesh::TestInstance(void) const
 {
 	Verify(IsDerivedFrom(DefaultData));
 }
@@ -256,48 +216,41 @@ void
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	MLR_I_MT_PMesh::InitializeDrawPrimitive(uint8_t vis, int32_t parameter)
+MLR_I_MT_PMesh::InitializeDrawPrimitive(uint8_t vis, int32_t parameter)
 {
 	MLR_I_PMesh::InitializeDrawPrimitive(vis, parameter);
-
 	currentNrOfPasses = passes;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	MLR_I_MT_PMesh::SetTexCoordData(
-		const Stuff::Vector2DScalar *data,
-		int32_t dataSize,
-		int32_t pass
-	)
+MLR_I_MT_PMesh::SetTexCoordData(
+	const Stuff::Vector2DScalar* data,
+	size_t dataSize,
+	int32_t pass
+)
 {
-	Check_Object(this); 
+	Check_Object(this);
 	Check_Pointer(data);
-
-	Verify(pass>=0 && pass<Limits::Max_Number_Of_Multitextures);
+	Verify(pass >= 0 && pass < Limits::Max_Number_Of_Multitextures);
 	Verify(coords.GetLength() == 0 || dataSize == coords.GetLength());
-
 	if(pass == 0)
 	{
-		texCoords.AssignData((Stuff::Vector2DScalar *)data, dataSize);
-
+		texCoords.AssignData((Stuff::Vector2DScalar*)data, dataSize);
 		multiTexCoordsPointers[0] = texCoords.GetData();
 	}
 	else
 	{
 		if(pass == passes)
 		{
-			Verify(dataSize == multiTexCoords[pass-1]->GetLength());
-
+			Verify(dataSize == multiTexCoords[pass - 1]->GetLength());
 			gos_PushCurrentHeap(Heap);
 			multiTexCoords[pass] = new DynamicArrayOf<Stuff::Vector2DScalar>;
 			Register_Object(multiTexCoords[pass]);
-			multiTexCoords[pass]->AssignData((Stuff::Vector2DScalar *)data, dataSize);
+			multiTexCoords[pass]->AssignData((Stuff::Vector2DScalar*)data, dataSize);
 			gos_PopCurrentHeap();
-
 			multiTexCoordsPointers[pass] = multiTexCoords[pass]->GetData();
-			
 			passes++;
 			currentNrOfPasses++;
 		}
@@ -311,17 +264,15 @@ void
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	MLR_I_MT_PMesh::GetTexCoordData(
-		const Stuff::Vector2DScalar **data,
-		pint32_t dataSize,
-		int32_t pass
-	)
+MLR_I_MT_PMesh::GetTexCoordData(
+	const Stuff::Vector2DScalar** data,
+	psize_t dataSize,
+	int32_t pass
+)
 {
-	Check_Object(this); 
+	Check_Object(this);
 	Check_Pointer(data);
-
-	Verify(pass>=0 && pass<passes);
-
+	Verify(pass >= 0 && pass < passes);
 	*data = multiTexCoords[pass]->GetData();
 	*dataSize = multiTexCoords[pass]->GetLength();
 }
@@ -329,12 +280,10 @@ void
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	MLR_I_MT_PMesh::SetTexCoordDataPointer(const Stuff::Vector2DScalar *data)
+MLR_I_MT_PMesh::SetTexCoordDataPointer(const Stuff::Vector2DScalar* data)
 {
 	Check_Pointer(data);
-
-	Verify(currentNrOfPasses>=passes);
-
+	Verify(currentNrOfPasses >= passes);
 	multiTexCoordsPointers[currentNrOfPasses++] = data;
 }
 
@@ -346,11 +295,11 @@ void
 #define CLASSNAME MLR_I_MT_PMesh
 
 #if defined(TRACE_ENABLED) && defined(MLR_TRACE)
-	#define SET_MLR_PMESH_CLIP() MLR_I_MT_PMesh_Clip->Set()
-	#define CLEAR_MLR_PMESH_CLIP() MLR_I_MT_PMesh_Clip->Clear()
+#define SET_MLR_PMESH_CLIP() MLR_I_MT_PMesh_Clip->Set()
+#define CLEAR_MLR_PMESH_CLIP() MLR_I_MT_PMesh_Clip->Clear()
 #else
-	#define SET_MLR_PMESH_CLIP()
-	#define CLEAR_MLR_PMESH_CLIP()
+#define SET_MLR_PMESH_CLIP()
+#define CLEAR_MLR_PMESH_CLIP()
 #endif
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -367,88 +316,74 @@ void
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 MLRShape*
-	MidLevelRenderer::CreateIndexedIcosahedron_NoColor_NoLit_MultiTexture(
-		IcoInfo& icoInfo,
-		DynamicArrayOf<MLRState> *states
-	)
+MidLevelRenderer::CreateIndexedIcosahedron_NoColor_NoLit_MultiTexture(
+	IcoInfo& icoInfo,
+	DynamicArrayOf<MLRState>* states
+)
 {
 	gos_PushCurrentHeap(Heap);
-	MLRShape *ret = new MLRShape(20);
+	MLRShape* ret = new MLRShape(20);
 	Register_Object(ret);
-
 	int32_t i, j, k;
 	int32_t nrOfPasses = states->GetLength();
-	int32_t    nrTri = (int32_t) ceil (icoInfo.all * pow (4.0f, icoInfo.depth));
+	uint32_t nrTri = static_cast<uint32_t>(ceil(icoInfo.all * pow(4.0f, icoInfo.depth)));
 	Point3D v[3];
-
-	if(3*nrTri >= Limits::Max_Number_Vertices_Per_Mesh)
+	if(3 * nrTri >= Limits::Max_Number_Vertices_Per_Mesh)
 	{
-		nrTri = Limits::Max_Number_Vertices_Per_Mesh/3;
+		nrTri = Limits::Max_Number_Vertices_Per_Mesh / 3;
 	}
-
 	puint8_t lengths = new uint8_t [nrTri];
 	Register_Pointer(lengths);
-
-	for(i=0;i<nrTri;i++)
+	for(i = 0; i < nrTri; i++)
 	{
 		lengths[i] = 3;
 	}
-
-	Point3D *coords = new Point3D [nrTri*3];
+	Point3D* coords = new Point3D [nrTri * 3];
 	Register_Pointer(coords);
-	
-	Point3D *collapsedCoords = nullptr;
-	if(icoInfo.indexed==true)
+	Point3D* collapsedCoords = nullptr;
+	if(icoInfo.indexed == true)
 	{
-		collapsedCoords = new Point3D [nrTri*3];
+		collapsedCoords = new Point3D [nrTri * 3];
 		Register_Pointer(collapsedCoords);
 	}
-
-	DynamicArrayOf<Stuff::Vector2DScalar *> texCoords(nrOfPasses);
-	for(i=0;i<nrOfPasses;i++)
+	DynamicArrayOf<Stuff::Vector2DScalar*> texCoords(nrOfPasses);
+	for(i = 0; i < nrOfPasses; i++)
 	{
-		texCoords[i] = new Stuff::Vector2DScalar[nrTri*3];
+		texCoords[i] = new Stuff::Vector2DScalar[nrTri * 3];
 		Register_Pointer(texCoords[i]);
 	}
-
-	uint16_t	*index = new uint16_t [nrTri*3];
+	puint16_t index = new uint16_t [nrTri * 3];
 	Register_Pointer(index);
-
 	int32_t uniquePoints = 0;
-	for (k=0;k<20;k++)
+	for(k = 0; k < 20; k++)
 	{
 		triDrawn = 0;
-		MLR_I_MT_PMesh *mesh = new MLR_I_MT_PMesh();
+		MLR_I_MT_PMesh* mesh = new MLR_I_MT_PMesh();
 		Register_Object(mesh);
-
 // setup vertex position information
-	    for (j=0;j<3;j++)
+		for(j = 0; j < 3; j++)
 		{
 			v[j].x = vdata[tindices[k][j]][0];
 			v[j].y = vdata[tindices[k][j]][1];
 			v[j].z = vdata[tindices[k][j]][2];
 		}
-		subdivide (coords, v[0], v[1], v[2], icoInfo.depth, nrTri, icoInfo.radius);
-
+		subdivide(coords, v[0], v[1], v[2], icoInfo.depth, nrTri, icoInfo.radius);
 		mesh->SetSubprimitiveLengths(lengths, nrTri);
-
-
-		if(icoInfo.indexed==true)
+		if(icoInfo.indexed == true)
 		{
 			uniquePoints = 1;
 			collapsedCoords[0] = coords[0];
 			index[0] = 0;
-
-			for(i=1;i<nrTri*3;i++)
+			for(i = 1; i < nrTri * 3; i++)
 			{
-				for(j=0;j<uniquePoints;j++)
+				for(j = 0; j < uniquePoints; j++)
 				{
 					if(coords[i] == collapsedCoords[j])
 					{
 						break;
 					}
 				}
-				if(j==uniquePoints)
+				if(j == uniquePoints)
 				{
 					collapsedCoords[uniquePoints++] = coords[i];
 				}
@@ -458,85 +393,74 @@ MLRShape*
 		}
 		else
 		{
-			uniquePoints = nrTri*3;
-			for(i=0;i<nrTri*3;i++)
+			uniquePoints = nrTri * 3;
+			for(i = 0; i < nrTri * 3; i++)
 			{
 				index[i] = static_cast<uint16_t>(i);
 			}
-			mesh->SetCoordData(coords, nrTri*3);
+			mesh->SetCoordData(coords, nrTri * 3);
 		}
-
-		mesh->SetIndexData(index, nrTri*3);
-
+		mesh->SetIndexData(index, nrTri * 3);
 		mesh->FindFacePlanes();
-
-		for(j=0;j<nrOfPasses;j++)
+		for(j = 0; j < nrOfPasses; j++)
 		{
-			if(icoInfo.indexed==true)
+			if(icoInfo.indexed == true)
 			{
-				for(i=0;i<uniquePoints;i++)
+				for(i = 0; i < uniquePoints; i++)
 				{
-					texCoords[j][i] = 
+					texCoords[j][i] =
 						Stuff::Vector2DScalar(
-							(1.0f + collapsedCoords[i].x)/2.0f,
-							(1.0f + collapsedCoords[i].y)/2.0f
+							(1.0f + collapsedCoords[i].x) / 2.0f,
+							(1.0f + collapsedCoords[i].y) / 2.0f
 						);
 				}
 			}
 			else
 			{
-				for(i=0;i<nrTri;i++)
+				for(i = 0; i < nrTri; i++)
 				{
-					texCoords[j][3*i] = 
+					texCoords[j][3 * i] =
 						Stuff::Vector2DScalar(
-							(1.0f + coords[3*i].x)/2.0f,
-							(1.0f + coords[3*i].y)/2.0f
+							(1.0f + coords[3 * i].x) / 2.0f,
+							(1.0f + coords[3 * i].y) / 2.0f
 						);
-					texCoords[j][3*i+1] = 
+					texCoords[j][3 * i + 1] =
 						Stuff::Vector2DScalar(
-							(1.0f + coords[3*i+1].x)/2.0f,
-							(1.0f + coords[3*i+1].y)/2.0f
+							(1.0f + coords[3 * i + 1].x) / 2.0f,
+							(1.0f + coords[3 * i + 1].y) / 2.0f
 						);
-					texCoords[j][3*i+2] = 
+					texCoords[j][3 * i + 2] =
 						Stuff::Vector2DScalar(
-							(1.0f + coords[3*i+2].x)/2.0f,
-							(1.0f + coords[3*i+2].y)/2.0f
+							(1.0f + coords[3 * i + 2].x) / 2.0f,
+							(1.0f + coords[3 * i + 2].y) / 2.0f
 						);
 				}
 			}
 			mesh->SetTexCoordData(texCoords[j], uniquePoints, j);
 		}
-
-		for(i=0;i<nrOfPasses;i++)
+		for(i = 0; i < nrOfPasses; i++)
 		{
 			mesh->SetReferenceState((*states)[i], i);
 		}
-
 		ret->Add(mesh);
 		mesh->DetachReference();
 	}
-
-	for(i=0;i<nrOfPasses;i++)
+	for(i = 0; i < nrOfPasses; i++)
 	{
 		Unregister_Pointer(texCoords[i]);
 		delete [] texCoords[i];
 	}
-
 	Unregister_Pointer(index);
 	delete [] index;
-
-	if(icoInfo.indexed==true)
+	if(icoInfo.indexed == true)
 	{
 		Unregister_Pointer(collapsedCoords);
 		delete [] collapsedCoords;
 	}
-	
 	Unregister_Pointer(coords);
 	delete [] coords;
-	
 	Unregister_Pointer(lengths);
 	delete [] lengths;
-
 	gos_PopCurrentHeap();
 	return ret;
 }

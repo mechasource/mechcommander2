@@ -17,13 +17,15 @@
 
 #define	MAX_WEAPONS_PER_MOVER				32
 
-enum {
+enum
+{
 	REFIT_VEHICLE,
 	REFIT_BAY,
 	NUM_FIXERS
 };
 
-enum {
+enum
+{
 	ARMOR_REFIT_COST,
 	INTERNAL_REFIT_COST,
 	AMMO_REFIT_COST,
@@ -31,7 +33,7 @@ enum {
 };
 
 struct LocationNode;
-typedef LocationNode *LocationNodePtr;
+typedef LocationNode* LocationNodePtr;
 
 class Mover;
 typedef Mover* MoverPtr;

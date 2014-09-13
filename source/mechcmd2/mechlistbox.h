@@ -33,17 +33,23 @@ MechListBox:
 class MechListBoxItem : public aListItem
 {
 public:
-	
-	virtual ~MechListBoxItem(void);
-	MechListBoxItem( LogisticsMech* pMech, int32_t count );
 
-	static void init( FitIniFile& file );
+	virtual ~MechListBoxItem(void);
+	MechListBoxItem(LogisticsMech* pMech, int32_t count);
+
+	static void init(FitIniFile& file);
 
 	virtual void update(void);
 	virtual void render(void);
 
-	LogisticsMech* getMech( ){ return pMech; }
-	void	resetMech( ) {pMech = nullptr; }
+	LogisticsMech* getMech()
+	{
+		return pMech;
+	}
+	void	resetMech()
+	{
+		pMech = nullptr;
+	}
 	virtual bool		pointInside(int32_t xPos, int32_t yPos) const;
 
 	bool		bOrange;
@@ -51,13 +57,13 @@ public:
 
 
 
-	
+
 private:
 
 	static MechListBoxItem* s_templateItem;
-	
+
 	aAnimGroup		animations[2][ANIMATION_COUNT];
-	
+
 	aObject		mechIcon;
 	aText		chassisName;
 	aText		variantName;
@@ -78,14 +84,14 @@ private:
 
 	int32_t mechCount;
 
-	MechListBoxItem& operator=( const MechListBoxItem& src );
+	MechListBoxItem& operator=(const MechListBoxItem& src);
 
 	friend class MechListBox;
 
 	void setMech(void);
 	void doAdd(void);
 	void startDrag(void);
-	static void assignAnimation( FitIniFile& file, int32_t& curAnimation );
+	static void assignAnimation(FitIniFile& file, int32_t& curAnimation);
 
 
 	bool bDim;
@@ -102,39 +108,39 @@ public:
 
 	MechListBox(bool deleteIfNoInventory, bool bIncludeForceGroup);
 
-	
+
 	void	setScrollBarOrange(void);
 	void	setScrollBarGreen(void);
 
 	virtual ~MechListBox(void);
-	
+
 	static int32_t		init(void);
-	void	drawCBills( bool bDraw );
+	void	drawCBills(bool bDraw);
 
 	virtual void update(void);
 
 	LogisticsMech* getCurrentMech(void);
 
-	static void initIcon( LogisticsMech* pMec, aObject& icon );
+	static void initIcon(LogisticsMech* pMec, aObject& icon);
 
 	virtual int32_t		AddItem(aListItem* itemString);
 
-	void	dimItem( LogisticsMech* pMech, bool bDim );
+	void	dimItem(LogisticsMech* pMech, bool bDim);
 	void	undimAll(void);
 	void	disableItemsThatCostMoreThanRP(void);
 	void	disableItemsThatCanNotGoInFG(void);
 
-	void	setOrange( bool bOrange );
+	void	setOrange(bool bOrange);
 
 
-	
+
 
 private:
 
 	static bool	s_DrawCBills;
-	
-	MechListBox( const MechListBox& src );
-	MechListBox& operator=( const MechListBox& src );
+
+	MechListBox(const MechListBox& src);
+	MechListBox& operator=(const MechListBox& src);
 
 	friend class MechListBoxItem;
 
@@ -144,7 +150,7 @@ private:
 	bool		bOrange;
 
 
-	
+
 
 };
 

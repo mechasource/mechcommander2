@@ -48,37 +48,35 @@ extern bool useShadows;
 extern bool useFog;
 extern bool DisplayCameraAngle;
 
-extern MidLevelRenderer::MLRClipper * theClipper;
+extern MidLevelRenderer::MLRClipper* theClipper;
 
 #define MAX_SHADOW_PITCH_CHANGE	(5.0f)
 
 extern bool drawOldWay;
 
 extern bool useNonWeaponEffects;
-GenericAppearance *theSky = nullptr;
+GenericAppearance* theSky = nullptr;
 //---------------------------------------------------------------------------
-void GameCamera::destroy (void)
+void GameCamera::destroy(void)
 {
-	if (theSky)
+	if(theSky)
 	{
 		delete theSky;
 		theSky = nullptr;
 	}
-
-	if (compass)
+	if(compass)
 	{
 		delete compass;
 		compass = nullptr;
 	}
-
 	Camera::destroy();
 }
 
 //---------------------------------------------------------------------------
-void GameCamera::render (void)
+void GameCamera::render(void)
 {
 	//------------------------------------------------------
-	// At present, these actually draw.  Later they will 
+	// At present, these actually draw.  Later they will
 	// add elements to the draw list and sort and draw.
 	// The later time has arrived.  We begin sorting immediately.
 	// NO LONGER NEED TO SORT!
@@ -86,143 +84,111 @@ void GameCamera::render (void)
 	// Everything SIMPLY draws at the execution point into the zBuffer
 	// at the correct depth.  Miracles occur at that point!
 	// Big code change but it removes a WHOLE bunch of code and memory!
-	
 	//--------------------------------------------------------
 	// Get new viewport values to scale stuff.  No longer uses
 	// VFX stuff for this.  ALL GOS NOW!
 	gos_GetViewport(&viewMulX, &viewMulY, &viewAddX, &viewAddY);
-
 	MidLevelRenderer::MLRState default_state;
 	default_state.SetBackFaceOn();
 	default_state.SetDitherOn();
 	default_state.SetTextureCorrectionOn();
 	default_state.SetZBufferCompareOn();
 	default_state.SetZBufferWriteOn();
-
 	default_state.SetFilterMode(MidLevelRenderer::MLRState::BiLinearFilterMode);
-
 	float z = 1.0f;
 	Stuff::RGBAColor fColor;
 	fColor.red = ((fogColor >> 16) & 0xff);
 	fColor.green = ((fogColor >> 8) & 0xff);
 	fColor.blue = ((fogColor) & 0xff);
-
 	//--------------------------------------------------------
 	// Get new viewport values to scale stuff.  No longer uses
 	// VFX stuff for this.  ALL GOS NOW!
 	screenResolution.x = viewMulX;
 	screenResolution.y = viewMulY;
 	calculateProjectionConstants();
-
-	TG_Shape::SetViewport(viewMulX,viewMulY,viewAddX,viewAddY);
-
-	userInput->setViewport(viewMulX,viewMulY,viewAddX,viewAddY);
-
-	gos_TextSetRegion(viewAddX,viewAddY,viewMulX,viewMulY);
+	TG_Shape::SetViewport(viewMulX, viewMulY, viewAddX, viewAddY);
+	userInput->setViewport(viewMulX, viewMulY, viewAddX, viewAddY);
+	gos_TextSetRegion(viewAddX, viewAddY, viewMulX, viewMulY);
 	//--------------------------------------------------------
 	// Get new viewport values to scale stuff.  No longer uses
 	// VFX stuff for this.  ALL GOS NOW!
 	screenResolution.x = viewMulX;
 	screenResolution.y = viewMulY;
 	calculateProjectionConstants();
-
 	globalScaleFactor = getScaleFactor();
 	globalScaleFactor *= viewMulX / 640.0;		//Scale Mechs to ScreenRES
-	
 	//-----------------------------------------------
-	// Set Ambient for this pass of rendering	
-	uint32_t lightRGB = (ambientRed<<16)+(ambientGreen<<8)+ambientBlue;
-		
-	eye->setLightColor(1,lightRGB);
-	eye->setLightIntensity(1,1.0);
-
+	// Set Ambient for this pass of rendering
+	uint32_t lightRGB = (ambientRed << 16) + (ambientGreen << 8) + ambientBlue;
+	eye->setLightColor(1, lightRGB);
+	eye->setLightIntensity(1, 1.0);
 	MidLevelRenderer::PerspectiveMode = usePerspective;
 	theClipper->StartDraw(cameraOrigin, cameraToClip, fColor, &fColor, default_state, &z);
-	MidLevelRenderer::GOSVertex::farClipReciprocal = (1.0f-cameraToClip(2, 2))/cameraToClip(3, 2);
-
-	if (active && turn > 1)
+	MidLevelRenderer::GOSVertex::farClipReciprocal = (1.0f - cameraToClip(2, 2)) / cameraToClip(3, 2);
+	if(active && turn > 1)
 	{
 		//----------------------------------------------------------
 		// Turn stuff on line by line until perspective is working.
-		
-		if (Environment.Renderer != 3)
+		if(Environment.Renderer != 3)
 			theSky->render(1);
-		
 		land->render();								//render the Terrain
-
-		if (Environment.Renderer != 3)
+		if(Environment.Renderer != 3)
 			craterManager->render();					//render the craters and footprints
-		
 		ObjectManager->render(true, true, true);	//render all other objects
-
 		land->renderWater();						//Draw Water Last!
-
-		if (useShadows && Environment.Renderer != 3)
+		if(useShadows && Environment.Renderer != 3)
 			ObjectManager->renderShadows(true, true, true);
-
-		if (mission && mission->missionInterface)
+		if(mission && mission->missionInterface)
 			mission->missionInterface->drawVTOL();
-			
-		if (!drawOldWay && !inMovieMode)
+		if(!drawOldWay && !inMovieMode)
 		{
-			if (compass && (turn > 3) && drawCompass)
+			if(compass && (turn > 3) && drawCompass)
 				compass->render(-1);		//Force this to zBuffer in front of everything
 		}
-	
-		if (!drawOldWay)
+		if(!drawOldWay)
 			mcTextureManager->renderLists();			//This sends triangles down to the card.  All "rendering" to this point has been setting up tri lists
-
-		if (drawOldWay)
+		if(drawOldWay)
 		{
 			//Last thing drawn were shadows which are not Gouraud Shaded!!!
 			// MLR to be "efficient" doesn't set this state by default at startup!
-			gos_SetRenderState( gos_State_ShadeMode, gos_ShadeGouraud);
+			gos_SetRenderState(gos_State_ShadeMode, gos_ShadeGouraud);
 		}
-
 		theClipper->RenderNow();		//Draw the FX
-
-
-		if (useNonWeaponEffects)
+		if(useNonWeaponEffects)
 			weather->render();				//Draw the weather
 	}
-
-	if (drawOldWay && !inMovieMode)
+	if(drawOldWay && !inMovieMode)
 	{
-		gos_SetRenderState( gos_State_ZCompare, 0);
-		gos_SetRenderState(	gos_State_ZWrite, 0);
-		gos_SetRenderState( gos_State_Perspective, 1);
-
-		if (compass && (turn > 3) && drawCompass)
+		gos_SetRenderState(gos_State_ZCompare, 0);
+		gos_SetRenderState(gos_State_ZWrite, 0);
+		gos_SetRenderState(gos_State_Perspective, 1);
+		if(compass && (turn > 3) && drawCompass)
 			compass->render();
 	}
-	
-	//---------------------------------------------------------	
+	//---------------------------------------------------------
 	//Check if we are inMovieMode and should be letterboxed.
 	// draw letterboxes here.
-	if (inMovieMode && (letterBoxPos != 0.0f))
+	if(inMovieMode && (letterBoxPos != 0.0f))
 	{
 		//Figure out the two faces we need to draw based on letterBox Pos and Alpha
 		float barTopX = screenResolution.y * letterBoxPos;
 		float barBotX = screenResolution.y - barTopX;
-
-		gos_SetRenderState( gos_State_AlphaMode, gos_Alpha_AlphaInvAlpha);
-		gos_SetRenderState( gos_State_ShadeMode, gos_ShadeGouraud);
-		gos_SetRenderState( gos_State_MonoEnable, 0);
-		gos_SetRenderState( gos_State_Perspective, 0);
-		gos_SetRenderState( gos_State_Clipping, 1);
-		gos_SetRenderState( gos_State_AlphaTest, 1);
-		gos_SetRenderState( gos_State_Specular, 0);
-		gos_SetRenderState( gos_State_Dither, 1);
-		gos_SetRenderState( gos_State_TextureMapBlend, gos_BlendModulate);
-		gos_SetRenderState( gos_State_Filter, gos_FilterNone);
-		gos_SetRenderState( gos_State_TextureAddress, gos_TextureClamp );
-		gos_SetRenderState( gos_State_ZCompare, 0);
-		gos_SetRenderState(	gos_State_ZWrite, 0);
-		gos_SetRenderState( gos_State_Texture, 0);
-		
- 		//------------------------------------
+		gos_SetRenderState(gos_State_AlphaMode, gos_Alpha_AlphaInvAlpha);
+		gos_SetRenderState(gos_State_ShadeMode, gos_ShadeGouraud);
+		gos_SetRenderState(gos_State_MonoEnable, 0);
+		gos_SetRenderState(gos_State_Perspective, 0);
+		gos_SetRenderState(gos_State_Clipping, 1);
+		gos_SetRenderState(gos_State_AlphaTest, 1);
+		gos_SetRenderState(gos_State_Specular, 0);
+		gos_SetRenderState(gos_State_Dither, 1);
+		gos_SetRenderState(gos_State_TextureMapBlend, gos_BlendModulate);
+		gos_SetRenderState(gos_State_Filter, gos_FilterNone);
+		gos_SetRenderState(gos_State_TextureAddress, gos_TextureClamp);
+		gos_SetRenderState(gos_State_ZCompare, 0);
+		gos_SetRenderState(gos_State_ZWrite, 0);
+		gos_SetRenderState(gos_State_Texture, 0);
+		//------------------------------------
 		gos_VERTEX gVertex[4];
-
 		gVertex[0].x		= 0.0f;
 		gVertex[0].y		= 0.0f;
 		gVertex[0].z		= 0.00001f;
@@ -231,36 +197,31 @@ void GameCamera::render (void)
 		gVertex[0].v		= 0.0f;
 		gVertex[0].argb		= (letterBoxAlpha << 24);
 		gVertex[0].frgb		= 0xff000000;
-
 		gVertex[1].x		= 0.0f;
 		gVertex[1].y		= barTopX;
-		gVertex[1].z		= 0.00001f;               
-		gVertex[1].rhw		= 0.00001f;               
-		gVertex[1].u		= 0.0f;                  
-		gVertex[1].v		= 0.0f;                  
+		gVertex[1].z		= 0.00001f;
+		gVertex[1].rhw		= 0.00001f;
+		gVertex[1].u		= 0.0f;
+		gVertex[1].v		= 0.0f;
 		gVertex[1].argb		= (letterBoxAlpha << 24);
-		gVertex[1].frgb		= 0xff000000;            
-
+		gVertex[1].frgb		= 0xff000000;
 		gVertex[2].x		= screenResolution.x;
-		gVertex[2].y		= barTopX; 
-		gVertex[2].z		= 0.00001f;               
-		gVertex[2].rhw		= 0.00001f;               
-		gVertex[2].u		= 0.0f;                  
-		gVertex[2].v		= 0.0f;                  
+		gVertex[2].y		= barTopX;
+		gVertex[2].z		= 0.00001f;
+		gVertex[2].rhw		= 0.00001f;
+		gVertex[2].u		= 0.0f;
+		gVertex[2].v		= 0.0f;
 		gVertex[2].argb		= (letterBoxAlpha << 24);
-		gVertex[2].frgb		= 0xff000000;            
-
+		gVertex[2].frgb		= 0xff000000;
 		gVertex[3].x		= screenResolution.x;
 		gVertex[3].y		= 0.0f;
-		gVertex[3].z		= 0.00001f;               
-		gVertex[3].rhw		= 0.00001f;               
-		gVertex[3].u		= 0.0f;                  
-		gVertex[3].v		= 0.0f;                  
+		gVertex[3].z		= 0.00001f;
+		gVertex[3].rhw		= 0.00001f;
+		gVertex[3].u		= 0.0f;
+		gVertex[3].v		= 0.0f;
 		gVertex[3].argb		= (letterBoxAlpha << 24);
-		gVertex[3].frgb		= 0xff000000;            
-		
+		gVertex[3].frgb		= 0xff000000;
 		gos_DrawQuads(gVertex, 4);
-		
 		gVertex[0].x		= 0.0f;
 		gVertex[0].y		= barBotX;
 		gVertex[0].z		= 0.00001f;
@@ -269,58 +230,51 @@ void GameCamera::render (void)
 		gVertex[0].v		= 0.0f;
 		gVertex[0].argb		= (letterBoxAlpha << 24);
 		gVertex[0].frgb		= 0xff000000;
-
 		gVertex[1].x		= screenResolution.x;
 		gVertex[1].y		= barBotX;
-		gVertex[1].z		= 0.00001f;               
-		gVertex[1].rhw		= 0.00001f;               
-		gVertex[1].u		= 0.0f;                  
-		gVertex[1].v		= 0.0f;                  
+		gVertex[1].z		= 0.00001f;
+		gVertex[1].rhw		= 0.00001f;
+		gVertex[1].u		= 0.0f;
+		gVertex[1].v		= 0.0f;
 		gVertex[1].argb		= (letterBoxAlpha << 24);
-		gVertex[1].frgb		= 0xff000000;            
-
+		gVertex[1].frgb		= 0xff000000;
 		gVertex[2].x		= screenResolution.x;
-		gVertex[2].y		= screenResolution.y; 
-		gVertex[2].z		= 0.00001f;               
-		gVertex[2].rhw		= 0.00001f;               
-		gVertex[2].u		= 0.0f;                  
-		gVertex[2].v		= 0.0f;                  
+		gVertex[2].y		= screenResolution.y;
+		gVertex[2].z		= 0.00001f;
+		gVertex[2].rhw		= 0.00001f;
+		gVertex[2].u		= 0.0f;
+		gVertex[2].v		= 0.0f;
 		gVertex[2].argb		= (letterBoxAlpha << 24);
-		gVertex[2].frgb		= 0xff000000;            
-
-		gVertex[3].x		= 0.0f; 
+		gVertex[2].frgb		= 0xff000000;
+		gVertex[3].x		= 0.0f;
 		gVertex[3].y		= screenResolution.y;
-		gVertex[3].z		= 0.00001f;               
-		gVertex[3].rhw		= 0.00001f;               
-		gVertex[3].u		= 0.0f;                  
-		gVertex[3].v		= 0.0f;                  
+		gVertex[3].z		= 0.00001f;
+		gVertex[3].rhw		= 0.00001f;
+		gVertex[3].u		= 0.0f;
+		gVertex[3].v		= 0.0f;
 		gVertex[3].argb		= (letterBoxAlpha << 24);
-		gVertex[3].frgb		= 0xff000000;            
-		
+		gVertex[3].frgb		= 0xff000000;
 		gos_DrawQuads(gVertex, 4);
 	}
-
-	if (inMovieMode && (fadeAlpha != 0x0))
+	if(inMovieMode && (fadeAlpha != 0x0))
 	{
 		//We are fading to something other then clear screen.
-		gos_SetRenderState( gos_State_AlphaMode, gos_Alpha_AlphaInvAlpha);
-		gos_SetRenderState( gos_State_ShadeMode, gos_ShadeGouraud);
-		gos_SetRenderState( gos_State_MonoEnable, 0);
-		gos_SetRenderState( gos_State_Perspective, 0);
-		gos_SetRenderState( gos_State_Clipping, 1);
-		gos_SetRenderState( gos_State_AlphaTest, 1);
-		gos_SetRenderState( gos_State_Specular, 0);
-		gos_SetRenderState( gos_State_Dither, 1);
-		gos_SetRenderState( gos_State_TextureMapBlend, gos_BlendModulate);
-		gos_SetRenderState( gos_State_Filter, gos_FilterNone);
-		gos_SetRenderState( gos_State_TextureAddress, gos_TextureClamp );
-		gos_SetRenderState( gos_State_ZCompare, 0);
-		gos_SetRenderState(	gos_State_ZWrite, 0);
-		gos_SetRenderState( gos_State_Texture, 0);
-		
- 		//------------------------------------
+		gos_SetRenderState(gos_State_AlphaMode, gos_Alpha_AlphaInvAlpha);
+		gos_SetRenderState(gos_State_ShadeMode, gos_ShadeGouraud);
+		gos_SetRenderState(gos_State_MonoEnable, 0);
+		gos_SetRenderState(gos_State_Perspective, 0);
+		gos_SetRenderState(gos_State_Clipping, 1);
+		gos_SetRenderState(gos_State_AlphaTest, 1);
+		gos_SetRenderState(gos_State_Specular, 0);
+		gos_SetRenderState(gos_State_Dither, 1);
+		gos_SetRenderState(gos_State_TextureMapBlend, gos_BlendModulate);
+		gos_SetRenderState(gos_State_Filter, gos_FilterNone);
+		gos_SetRenderState(gos_State_TextureAddress, gos_TextureClamp);
+		gos_SetRenderState(gos_State_ZCompare, 0);
+		gos_SetRenderState(gos_State_ZWrite, 0);
+		gos_SetRenderState(gos_State_Texture, 0);
+		//------------------------------------
 		gos_VERTEX gVertex[4];
-
 		gVertex[0].x		= 0.0f;
 		gVertex[0].y		= 0.0f;
 		gVertex[0].z		= 0.00001f;
@@ -329,198 +283,166 @@ void GameCamera::render (void)
 		gVertex[0].v		= 0.0f;
 		gVertex[0].argb		= (fadeAlpha << 24) + (fadeColor & 0x00ffffff);
 		gVertex[0].frgb		= 0xff000000;
-
 		gVertex[1].x		= 0.0f;
 		gVertex[1].y		= screenResolution.y;
-		gVertex[1].z		= 0.00001f;               
-		gVertex[1].rhw		= 0.00001f;               
-		gVertex[1].u		= 0.0f;                  
-		gVertex[1].v		= 0.0f;                  
+		gVertex[1].z		= 0.00001f;
+		gVertex[1].rhw		= 0.00001f;
+		gVertex[1].u		= 0.0f;
+		gVertex[1].v		= 0.0f;
 		gVertex[1].argb		= (fadeAlpha << 24) + (fadeColor & 0x00ffffff);
-		gVertex[1].frgb		= 0xff000000;            
-
+		gVertex[1].frgb		= 0xff000000;
 		gVertex[2].x		= screenResolution.x;
-		gVertex[2].y		= screenResolution.y; 
-		gVertex[2].z		= 0.00001f;               
-		gVertex[2].rhw		= 0.00001f;               
-		gVertex[2].u		= 0.0f;                  
-		gVertex[2].v		= 0.0f;                  
+		gVertex[2].y		= screenResolution.y;
+		gVertex[2].z		= 0.00001f;
+		gVertex[2].rhw		= 0.00001f;
+		gVertex[2].u		= 0.0f;
+		gVertex[2].v		= 0.0f;
 		gVertex[2].argb		= (fadeAlpha << 24) + (fadeColor & 0x00ffffff);
-		gVertex[2].frgb		= 0xff000000;            
-
+		gVertex[2].frgb		= 0xff000000;
 		gVertex[3].x		= screenResolution.x;
 		gVertex[3].y		= 0.0f;
-		gVertex[3].z		= 0.00001f;               
-		gVertex[3].rhw		= 0.00001f;               
-		gVertex[3].u		= 0.0f;                  
-		gVertex[3].v		= 0.0f;                  
+		gVertex[3].z		= 0.00001f;
+		gVertex[3].rhw		= 0.00001f;
+		gVertex[3].u		= 0.0f;
+		gVertex[3].v		= 0.0f;
 		gVertex[3].argb		= (fadeAlpha << 24) + (fadeColor & 0x00ffffff);
-		gVertex[3].frgb		= 0xff000000;            
-		
+		gVertex[3].frgb		= 0xff000000;
 		gos_DrawQuads(gVertex, 4);
 	}
-	
 	//-----------------------------------------------------
-}	
+}
 
 //---------------------------------------------------------------------------
-int32_t GameCamera::activate (void)
+int32_t GameCamera::activate(void)
 {
 	//------------------------------------------
 	// If camera is already active, just return
-	if (ready && active)
+	if(ready && active)
 		return(NO_ERROR);
-	
 	//---------------------------------------------------------
 	// Camera always starts pointing at first mover in lists
 	// CANNOT be infinite because we don't allow missions without at least 1 player mech!!
 	MoverPtr firstMover = nullptr;
-	if (ObjectManager->getNumMovers() > 0) {
+	if(ObjectManager->getNumMovers() > 0)
+	{
 		int32_t i = 0;
 		firstMover = ObjectManager->getMover(i);
-		while (firstMover && ((firstMover->getCommander()->getId() != Commander::home->getId()) || !firstMover->isOnGUI()))
+		while(firstMover && ((firstMover->getCommander()->getId() != Commander::home->getId()) || !firstMover->isOnGUI()))
 		{
 			i++;
-			if (i == ObjectManager->getNumMovers())
+			if(i == ObjectManager->getNumMovers())
 				break;
-			firstMover = ObjectManager->getMover(i); 
+			firstMover = ObjectManager->getMover(i);
 		}
 	}
-	
-	if (firstMover)
+	if(firstMover)
 	{
 		Stuff::Vector3D newPosition(firstMover->getPosition());
 		setPosition(newPosition);
 	}
-
-	if (land)
+	if(land)
 	{
 		land->update();
 	}
-		
 	allNormal();
-	
 	//updateDaylight(true);
-	
 	lastShadowLightPitch = lightPitch;
-	
 	//Startup the SKYBox
 	int32_t appearanceType = (GENERIC_APPR_TYPE << 24);
-
 	AppearanceTypePtr genericAppearanceType = nullptr;
-	genericAppearanceType = appearanceTypeList->getAppearance(appearanceType,"skybox");
-	if (!genericAppearanceType)
+	genericAppearanceType = appearanceTypeList->getAppearance(appearanceType, "skybox");
+	if(!genericAppearanceType)
 	{
 		char msg[1024];
-		sprintf(msg,"No Generic Appearance Named %s","skybox");
-		Fatal(0,msg);
+		sprintf(msg, "No Generic Appearance Named %s", "skybox");
+		Fatal(0, msg);
 	}
-	  
-   	theSky = new GenericAppearance;
+	theSky = new GenericAppearance;
 	gosASSERT(theSky != nullptr);
-
 	//--------------------------------------------------------------
 	gosASSERT(genericAppearanceType->getAppearanceClass() == GENERIC_APPR_TYPE);
 	theSky->init((GenericAppearanceType*)genericAppearanceType, nullptr);
-	
 	theSky->setSkyNumber(mission->theSkyNumber);
-			
- 	return NO_ERROR;
+	return NO_ERROR;
 }
 
-inline GameObjectPtr getCamObject (int32_t partId, bool existsOnly) 
+inline GameObjectPtr getCamObject(int32_t partId, bool existsOnly)
 {
 	GameObjectPtr obj = nullptr;
-	if (partId == -1)
+	if(partId == -1)
 		obj = nullptr;
 	else
 		obj = ObjectManager->findByPartId(partId);
-
-	if (existsOnly) 
+	if(existsOnly)
 	{
-		if (obj && 
-			obj->getExists() && 
-			(obj->getCommanderId() == Commander::home->getId()) || 
-			(Team::home->teamLineOfSight(obj->getLOSPosition(),0.0f)))
+		if(obj &&
+				obj->getExists() &&
+				(obj->getCommanderId() == Commander::home->getId()) ||
+				(Team::home->teamLineOfSight(obj->getLOSPosition(), 0.0f)))
 			return(obj);
 		return(nullptr);
 	}
-
 	return(obj);
 }
 
 int32_t cameraLineChanged = 0;
 bool useLOSAngle = true;
 //---------------------------------------------------------------------------
-int32_t GameCamera::update (void)
+int32_t GameCamera::update(void)
 {
-	if (lookTargetObject != -1)
-		targetObject = getCamObject(lookTargetObject,true);
-		
-	if (targetObject && 
-		targetObject->getExists() && 
-		((targetObject->getCommanderId() == Commander::home->getId()) || 
-		!targetObject->isMover() ||
-		(targetObject->isMover() && ((Mover *)targetObject)->conStat >= CONTACT_SENSOR_QUALITY_1) ))
+	if(lookTargetObject != -1)
+		targetObject = getCamObject(lookTargetObject, true);
+	if(targetObject &&
+			targetObject->getExists() &&
+			((targetObject->getCommanderId() == Commander::home->getId()) ||
+			 !targetObject->isMover() ||
+			 (targetObject->isMover() && ((Mover*)targetObject)->conStat >= CONTACT_SENSOR_QUALITY_1)))
 	{
-		setPosition(targetObject->getPosition(),false);
+		setPosition(targetObject->getPosition(), false);
 	}
 	else
 	{
 		targetObject = nullptr;
 	}
-
-	//Force CameraAltitude to be less than max based on angle.  This keeps poly load relatively even	
+	//Force CameraAltitude to be less than max based on angle.  This keeps poly load relatively even
 	float anglePercent = (projectionAngle - MIN_PERSPECTIVE) / (MAX_PERSPECTIVE - MIN_PERSPECTIVE);
 	float testMax = Camera::AltitudeMaximumLo + ((Camera::AltitudeMaximumHi - Camera::AltitudeMaximumLo) * anglePercent);
-	
-	if (cameraAltitude > testMax)
+	if(cameraAltitude > testMax)
 		cameraAltitude = testMax;
-
-	if ((cameraAltitude < testMax) && (cameraAltitudeDesired > testMax))
+	if((cameraAltitude < testMax) && (cameraAltitudeDesired > testMax))
 		cameraAltitude = testMax;
-												  
-	// calculate new near and far plane distance based on 
+	// calculate new near and far plane distance based on
 	// Current altitude above terrain.
 	float altitudePercent = (cameraAltitude - AltitudeMinimum) / (testMax - AltitudeMinimum);
 	Camera::NearPlaneDistance = MinNearPlane + ((MaxNearPlane - MinNearPlane) * altitudePercent);
 	Camera::FarPlaneDistance = MinFarPlane + ((MaxFarPlane - MinFarPlane) * altitudePercent);
-	
-	if (userInput->getKeyDown(KEY_LBRACKET) && userInput->ctrl() && userInput->alt() && !userInput->shift())
+	if(userInput->getKeyDown(KEY_LBRACKET) && userInput->ctrl() && userInput->alt() && !userInput->shift())
 	{
 		useLOSAngle ^= true;
-	}		
-
+	}
 #ifdef DEBUG_CAMERA
-	if (userInput->getKeyDown(KEY_RBRACKET) && userInput->ctrl() && userInput->alt() && !userInput->shift())
+	if(userInput->getKeyDown(KEY_RBRACKET) && userInput->ctrl() && userInput->alt() && !userInput->shift())
 	{
 		Camera::NearPlaneDistance += 10.0f;
-	}		
-
-	if (userInput->getKeyDown(KEY_APOSTROPHE) && userInput->ctrl() && userInput->alt() && !userInput->shift())
+	}
+	if(userInput->getKeyDown(KEY_APOSTROPHE) && userInput->ctrl() && userInput->alt() && !userInput->shift())
 	{
 		Camera::FarPlaneDistance -= 1005.00f;
-	}		
-
-	if (userInput->getKeyDown(KEY_SEMICOLON) && userInput->ctrl() && userInput->alt() && !userInput->shift())
+	}
+	if(userInput->getKeyDown(KEY_SEMICOLON) && userInput->ctrl() && userInput->alt() && !userInput->shift())
 	{
 		Camera::FarPlaneDistance += 1005.0f;
-	}		
-
+	}
 	char text[1024];
-	sprintf(text,"Near Plane: %f     Far Plane: %f",Camera::NearPlaneDistance,Camera::FarPlaneDistance);
-
+	sprintf(text, "Near Plane: %f     Far Plane: %f", Camera::NearPlaneDistance, Camera::FarPlaneDistance);
 	uint32_t width, height;
 	Stuff::Vector4D moveHere;
 	moveHere.x = 10.0f;
 	moveHere.y = 10.0f;
-
-	gos_TextSetAttributes (gosFontHandle, 0, gosFontScale, false, true, false, false);
-	gos_TextStringLength(&width,&height,text);
-
+	gos_TextSetAttributes(gosFontHandle, 0, gosFontScale, false, true, false, false);
+	gos_TextStringLength(&width, &height, text);
 	moveHere.z = width;
 	moveHere.w = height;
-
 	globalFloatHelp[currentFloatHelp].setHelpText(text);
 	globalFloatHelp[currentFloatHelp].setScreenPos(moveHere);
 	globalFloatHelp[currentFloatHelp].setForegroundColor(SD_GREEN);
@@ -530,40 +452,30 @@ int32_t GameCamera::update (void)
 	globalFloatHelp[currentFloatHelp].setBold(false);
 	globalFloatHelp[currentFloatHelp].setItalic(false);
 	globalFloatHelp[currentFloatHelp].setWordWrap(false);
-
 	currentFloatHelp++;
-
 	gosASSERT(currentFloatHelp < MAX_FLOAT_HELPS);
 #endif
-
-	if (DisplayCameraAngle)
+	if(DisplayCameraAngle)
 	{
 		char text[1024];
-		sprintf(text,"Camera Angle: %f degrees    Camera Altitude: %f    CameraPosition: X=%f Y=%f Z=%f   CameraRotation: %f",projectionAngle,cameraAltitude,position.x,position.y,position.z,cameraRotation);
-		
+		sprintf(text, "Camera Angle: %f degrees    Camera Altitude: %f    CameraPosition: X=%f Y=%f Z=%f   CameraRotation: %f", projectionAngle, cameraAltitude, position.x, position.y, position.z, cameraRotation);
 		uint32_t width, height;
 		Stuff::Vector4D moveHere;
 		moveHere.x = 10.0f;
 		moveHere.y = 10.0f;
-
-		gos_TextSetAttributes (gosFontHandle, 0, gosFontScale, false, true, false, false);
-		gos_TextStringLength(&width,&height,text);
-
+		gos_TextSetAttributes(gosFontHandle, 0, gosFontScale, false, true, false, false);
+		gos_TextStringLength(&width, &height, text);
 		moveHere.z = width;
 		moveHere.w = height;
-
-		globalFloatHelp->setFloatHelp(text,moveHere,SD_GREEN,SD_BLACK,1.0f,true,false,false,false);
+		globalFloatHelp->setFloatHelp(text, moveHere, SD_GREEN, SD_BLACK, 1.0f, true, false, false, false);
 	}
-
-	if (!compass)	//Create it!
+	if(!compass)	//Create it!
 	{
-		AppearanceType* appearanceType = appearanceTypeList->getAppearance( BLDG_TYPE << 24, "compass" );
+		AppearanceType* appearanceType = appearanceTypeList->getAppearance(BLDG_TYPE << 24, "compass");
 		compass = new BldgAppearance;
-		compass->init( appearanceType );
+		compass->init(appearanceType);
 	}
-
 	int32_t result = Camera::update();
-	
 //	if ((day2NightTransitionTime > 0.0f) && !getIsNight() && (fabs(lastShadowLightPitch-lightPitch) > MAX_SHADOW_PITCH_CHANGE))
 //	{
 //		forceShadowRecalc = true;
@@ -573,48 +485,40 @@ int32_t GameCamera::update (void)
 //	{
 //		forceShadowRecalc = false;
 //	}
-	
 	//Always TRUE for right now.  Debugging....
 	//-fs
 	//forceShadowRecalc = true;
-	
 	bool oldFog = useFog;
 	bool oldShadows = useShadows;
 	useFog = false;
 	useShadows = false;
-		
-  	if (compass && (turn > 3))
+	if(compass && (turn > 3))
 	{
-  		
-   		compass->setObjectParameters(getPosition(),0.0f,false,0,0);
-   		compass->setMoverParameters(0.0f);
-   		compass->setGesture(0);
-   		compass->setObjStatus(OBJECT_STATUS_DESTROYED);
-   		compass->setInView(true);
-   		compass->setVisibility(true,true);
-   		compass->setFilterState(true);
+		compass->setObjectParameters(getPosition(), 0.0f, false, 0, 0);
+		compass->setMoverParameters(0.0f);
+		compass->setGesture(0);
+		compass->setObjStatus(OBJECT_STATUS_DESTROYED);
+		compass->setInView(true);
+		compass->setVisibility(true, true);
+		compass->setFilterState(true);
 		compass->setIsHudElement();
-   		compass->update();		   //Force it to try and draw or stuff will not work!
+		compass->update();		   //Force it to try and draw or stuff will not work!
 	}
-
-	if (theSky)
+	if(theSky)
 	{
 		Stuff::Vector3D pos = getPosition();
-		
-   		theSky->setObjectParameters(pos,0.0f,false,0,0);
-   		theSky->setMoverParameters(0.0f);
-   		theSky->setGesture(0);
-   		theSky->setObjStatus(OBJECT_STATUS_NORMAL);
-   		theSky->setInView(true);
-   		theSky->setVisibility(true,true);
-   		theSky->setFilterState(true);
+		theSky->setObjectParameters(pos, 0.0f, false, 0, 0);
+		theSky->setMoverParameters(0.0f);
+		theSky->setGesture(0);
+		theSky->setObjStatus(OBJECT_STATUS_NORMAL);
+		theSky->setInView(true);
+		theSky->setVisibility(true, true);
+		theSky->setFilterState(true);
 		theSky->setIsHudElement();
-   		theSky->update();		   //Force it to try and draw or stuff will not work!
+		theSky->update();		   //Force it to try and draw or stuff will not work!
 	}
-  
 	useFog = oldFog;
 	useShadows = oldShadows;
-	
 	return result;
 }
 

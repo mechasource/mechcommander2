@@ -18,29 +18,23 @@ extern uint32_t gameResourceHandle;		//Default handle must be used for mc2res.dl
 //----------------------------------------------------------------------
 void MapSizeDlg::Init()
 {
-	CListBox* pListBox = (CListBox*)GetDlgItem( IDC_MAPSIZE );
-
-	int32_t index = pListBox->AddString( "60x60" );
-	pListBox->SetItemData( index, 0 );
-
-	index = pListBox->AddString( "80x80" );
-	pListBox->SetItemData( index, 1 );
-
-	index = pListBox->AddString( "100x100" );
-	pListBox->SetItemData( index, 2 );
-
-	index = pListBox->AddString( "120x120" );
-	pListBox->SetItemData( index, 3 );
-
-	pListBox->SetCurSel( mapSize );
+	CListBox* pListBox = (CListBox*)GetDlgItem(IDC_MAPSIZE);
+	int32_t index = pListBox->AddString("60x60");
+	pListBox->SetItemData(index, 0);
+	index = pListBox->AddString("80x80");
+	pListBox->SetItemData(index, 1);
+	index = pListBox->AddString("100x100");
+	pListBox->SetItemData(index, 2);
+	index = pListBox->AddString("120x120");
+	pListBox->SetItemData(index, 3);
+	pListBox->SetCurSel(mapSize);
 }
 
 //----------------------------------------------------------------------
 void MapSizeDlg::OnOK()
 {
-	int32_t index = ((CListBox*)GetDlgItem( IDC_MAPSIZE ))->GetCurSel( );
-	mapSize = ((CListBox*)GetDlgItem( IDC_MAPSIZE ))->GetItemData( index );
-
+	int32_t index = ((CListBox*)GetDlgItem(IDC_MAPSIZE))->GetCurSel();
+	mapSize = ((CListBox*)GetDlgItem(IDC_MAPSIZE))->GetItemData(index);
 	CDialog::OnOK();
 }
 

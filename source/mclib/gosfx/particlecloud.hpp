@@ -12,20 +12,20 @@
 
 namespace gosFX
 {
-	//############################################################################
-	//########################  ParticleCloud__Specification  #############################
-	//############################################################################
+//############################################################################
+//########################  ParticleCloud__Specification  #############################
+//############################################################################
 
 	class ParticleCloud__Specification:
 		public Effect__Specification
 	{
-	//----------------------------------------------------------------------
-	// Constructors/Destructors
-	//
+		//----------------------------------------------------------------------
+		// Constructors/Destructors
+		//
 	protected:
 		ParticleCloud__Specification(
 			Stuff::RegisteredClass::ClassID class_id,
-			Stuff::MemoryStream *stream,
+			Stuff::MemoryStream* stream,
 			int32_t gfx_version
 		);
 
@@ -33,81 +33,81 @@ namespace gosFX
 		ParticleCloud__Specification(Stuff::RegisteredClass::ClassID class_id);
 
 		void
-			Copy(ParticleCloud__Specification *spec);
+		Copy(ParticleCloud__Specification* spec);
 
 		void
-			Save(Stuff::MemoryStream *stream);
-		
-		void 
-			BuildDefaults(void);
-	
-		bool 
-			IsDataValid(bool fix_data=false);
+		Save(Stuff::MemoryStream* stream);
 
-	//-------------------------------------------------------------------------
-	// FCurves
-	//
+		void
+		BuildDefaults(void);
+
+		bool
+		IsDataValid(bool fix_data = false);
+
+		//-------------------------------------------------------------------------
+		// FCurves
+		//
 	public:
 		ConstantCurve
-			m_startingPopulation;
+		m_startingPopulation;
 		ComplexCurve
-			m_particlesPerSecond;
+		m_particlesPerSecond;
 		LinearCurve
-			m_emitterSizeX,
-			m_emitterSizeY,
-			m_emitterSizeZ;
+		m_emitterSizeX,
+		m_emitterSizeY,
+		m_emitterSizeZ;
 		ConstantCurve
-			m_minimumDeviation;
+		m_minimumDeviation;
 		SplineCurve
-			m_maximumDeviation;
-		SeededCurveOf<ComplexCurve, ComplexCurve,Curve::e_ComplexComplexType>
-			m_startingSpeed;
-		SeededCurveOf<ComplexCurve, SplineCurve,Curve::e_ComplexSplineType>
-			m_pLifeSpan;
-		SeededCurveOf<ConstantCurve, LinearCurve,Curve::e_ConstantLinearType>
-			m_pEtherVelocityX,
-			m_pEtherVelocityY,
-			m_pEtherVelocityZ;
-		SeededCurveOf<SplineCurve, LinearCurve,Curve::e_SplineLinearType>
-			m_pAccelerationX,
-			m_pAccelerationY,
-			m_pAccelerationZ;
-		SeededCurveOf<ComplexCurve, ComplexCurve,Curve::e_ComplexComplexType>
-			m_pDrag;
-		SeededCurveOf<ComplexCurve, LinearCurve,Curve::e_ComplexLinearType>
-			m_pRed,
-			m_pGreen,
-			m_pBlue,
-			m_pAlpha;
+		m_maximumDeviation;
+		SeededCurveOf<ComplexCurve, ComplexCurve, Curve::e_ComplexComplexType>
+		m_startingSpeed;
+		SeededCurveOf<ComplexCurve, SplineCurve, Curve::e_ComplexSplineType>
+		m_pLifeSpan;
+		SeededCurveOf<ConstantCurve, LinearCurve, Curve::e_ConstantLinearType>
+		m_pEtherVelocityX,
+		m_pEtherVelocityY,
+		m_pEtherVelocityZ;
+		SeededCurveOf<SplineCurve, LinearCurve, Curve::e_SplineLinearType>
+		m_pAccelerationX,
+		m_pAccelerationY,
+		m_pAccelerationZ;
+		SeededCurveOf<ComplexCurve, ComplexCurve, Curve::e_ComplexComplexType>
+		m_pDrag;
+		SeededCurveOf<ComplexCurve, LinearCurve, Curve::e_ComplexLinearType>
+		m_pRed,
+		m_pGreen,
+		m_pBlue,
+		m_pAlpha;
 
-	//----------------------------------------------------------------------
-	// Data
-	//
+		//----------------------------------------------------------------------
+		// Data
+		//
 	public:
 		int32_t
-			m_maxParticleCount,
-			m_totalParticleSize,
-			m_particleClassSize;
+		m_maxParticleCount,
+		m_totalParticleSize,
+		m_particleClassSize;
 	};
 
-	//############################################################################
-	//########################  ParticleCloud__Particle  #############################
-	//############################################################################
+//############################################################################
+//########################  ParticleCloud__Particle  #############################
+//############################################################################
 
 	class ParticleCloud__Particle
 	{
 	public:
 		Stuff::Vector3D
-			m_localLinearVelocity,
-			m_worldLinearVelocity;
+		m_localLinearVelocity,
+		m_worldLinearVelocity;
 		float
-			m_seed,
-			m_age,
-			m_ageRate;
+		m_seed,
+		m_age,
+		m_ageRate;
 
 		void
-			TestInstance(void) const
-				{}
+		TestInstance(void) const
+		{}
 	};
 
 //############################################################################
@@ -128,78 +128,77 @@ namespace gosFX
 
 	protected:
 		int32_t
-			m_activeParticleCount;
-		float		
-			m_birthAccumulator;
+		m_activeParticleCount;
+		float
+		m_birthAccumulator;
 
 		Stuff::DynamicArrayOf<char>
-			m_data;
+		m_data;
 
 		ParticleCloud(
-			ClassData *class_data,
-			Specification *spec,
+			ClassData* class_data,
+			Specification* spec,
 			uint32_t flags
 		);
 
-	//----------------------------------------------------------------------------
-	// Class Data Support
-	//
+		//----------------------------------------------------------------------------
+		// Class Data Support
+		//
 	public:
 		Specification*
-			GetSpecification()
-				{
-					Check_Object(this);
-					return
-						Cast_Object(Specification*, m_specification);
-				}
+		GetSpecification()
+		{
+			Check_Object(this);
+			return
+				Cast_Object(Specification*, m_specification);
+		}
 		Particle*
-			GetParticle(uint32_t index)
-				{
-					Check_Object(this); Check_Object(GetSpecification());
-					return
-						Cast_Pointer(
-							Particle*,
-							&m_data[index*GetSpecification()->m_particleClassSize]
-						);
-				}
+		GetParticle(uint32_t index)
+		{
+			Check_Object(this);
+			Check_Object(GetSpecification());
+			return
+				Cast_Pointer(
+					Particle*,
+					&m_data[index * GetSpecification()->m_particleClassSize]
+				);
+		}
 
-	//----------------------------------------------------------------------------
-	// Testing
-	//
+		//----------------------------------------------------------------------------
+		// Testing
+		//
 	public:
 		void TestInstance(void) const;
 
-	//----------------------------------------------------------------------------
-	// API
-	//
+		//----------------------------------------------------------------------------
+		// API
+		//
 	protected:
 		bool
-			Execute(ExecuteInfo *info);
+		Execute(ExecuteInfo* info);
 		virtual bool
-			AnimateParticle(
-				uint32_t index,
-				const Stuff::LinearMatrix4D *world_to_new_local,
-				Stuff::Time till
-			)=0;
-		virtual void
-			CreateNewParticle(
-				uint32_t index,
-				Stuff::Point3D *translation
-			);
-		virtual void
-			DestroyParticle(uint32_t index);
+		AnimateParticle(
+			uint32_t index,
+			const Stuff::LinearMatrix4D* world_to_new_local,
+			Stuff::Time till
+		) = 0;
+		virtual void CreateNewParticle(
+			uint32_t index,
+			Stuff::Point3D* translation
+		);
+		virtual void DestroyParticle(uint32_t index);
 		void
-			ComputeNewLinearVelocity(
-				Particle *particle,
-				float time_slice
-			);
+		ComputeNewLinearVelocity(
+			Particle* particle,
+			float time_slice
+		);
 
 	public:
 		void
-			Start(ExecuteInfo *info);
+		Start(ExecuteInfo* info);
 		void
-			Kill(void);
+		Kill(void);
 		bool
-			HasFinished(void);
+		HasFinished(void);
 	};
 }

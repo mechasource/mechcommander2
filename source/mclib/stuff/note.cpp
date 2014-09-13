@@ -24,14 +24,13 @@ using namespace Stuff;
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	Note::WriteNotation(MemoryStream *stream)
+Note::WriteNotation(MemoryStream* stream)
 {
 	Check_Object(this);
 	Check_Object(stream);
-
-	if (m_name)
+	if(m_name)
 		*stream << (PCSTR)m_name;
-	if (m_text)
+	if(m_text)
 		*stream << '=' << (PCSTR)m_text;
 	*stream << "\r\n";
 }
@@ -39,11 +38,10 @@ void
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	Note::GetEntry(pint32_t value)
+Note::GetEntry(pint32_t value)
 {
 	Check_Object(this);
 	Check_Pointer(value);
-
 	PCSTR contents = nullptr;
 	GetEntry(&contents);
 	Check_Pointer(contents);
@@ -53,25 +51,22 @@ void
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	Note::SetEntry(int32_t value)
+Note::SetEntry(int32_t value)
 {
 	Check_Object(this);
-
 	char contents[12];
 	_itoa(value, contents, 10);
 	Verify(strlen(contents) < sizeof(contents));
-
 	SetEntry(contents);
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	Note::GetEntry(Scalar *value)
+Note::GetEntry(float* value)
 {
 	Check_Object(this);
 	Check_Pointer(value);
-
 	PCSTR contents = nullptr;
 	GetEntry(&contents);
 	Check_Pointer(contents);
@@ -81,25 +76,22 @@ void
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	Note::SetEntry(Scalar value)
+Note::SetEntry(float value)
 {
 	Check_Object(this);
-
 	char contents[32];
 	sprintf(contents, "%f", value);
 	Verify(strlen(contents) < sizeof(contents));
-
 	SetEntry(contents);
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	Note::GetEntry(bool *value)
+Note::GetEntry(bool* value)
 {
 	Check_Object(this);
 	Check_Pointer(value);
-
 	PCSTR contents = nullptr;
 	GetEntry(&contents);
 	Check_Pointer(contents);
@@ -109,21 +101,19 @@ void
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	Note::SetEntry(bool value)
+Note::SetEntry(bool value)
 {
 	Check_Object(this);
-
-	SetEntry((value)?"true":"false");
+	SetEntry((value) ? "true" : "false");
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	Note::GetEntry(Vector3D *value)
+Note::GetEntry(Vector3D* value)
 {
 	Check_Object(this);
 	Check_Pointer(value);
-
 	PCSTR contents = nullptr;
 	GetEntry(&contents);
 	Check_Pointer(contents);
@@ -135,39 +125,38 @@ void
 			&value->y,
 			&value->z
 		);
-	if (count != 3)
+	if(count != 3)
 	{
-		Page *page = m_page;
+		Page* page = m_page;
 		Check_Object(page);
-		NotationFile *file = page->m_notationFile;
+		NotationFile* file = page->m_notationFile;
 		Check_Object(file);
 		STOP((
-			"%s: {[%s]%s=%s} is not a Vector!",
-			file->GetFileName(),
-			page->m_name,
-			m_name,
-			contents
-		));
+				 "%s: {[%s]%s=%s} is not a Vector!",
+				 file->GetFileName(),
+				 page->m_name,
+				 m_name,
+				 contents
+			 ));
 	}
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	Note::SetEntry(const Vector3D &value)
+Note::SetEntry(const Vector3D& value)
 {
 	Check_Object(this);
-
 	static char contents[64];
 	int32_t temp;
 	temp = sprintf(
-		contents,
-		"%f %f %f",
-		value.x,
-		value.y,
-		value.z
-	);
-	Verify (temp <sizeof(contents));
+			   contents,
+			   "%f %f %f",
+			   value.x,
+			   value.y,
+			   value.z
+		   );
+	Verify(temp < sizeof(contents));
 	SetEntry(contents);
 }
 
@@ -177,29 +166,27 @@ void Note::GetEntry(YawPitchRoll* value)
 {
 	Check_Object(this);
 	Check_Pointer(value);
-
 	PCSTR contents = nullptr;
 	GetEntry(&contents);
 	Check_Pointer(contents);
-
 	// AFAIU we need pointers to float to avoid warning C6272
 	float fyaw = value->yaw;
 	float fpitch = value->pitch;
 	float froll = value->roll;
 	int32_t count = sscanf(contents, "%f %f %f", &fyaw, &fpitch, &froll);
-	if (count != 3)
+	if(count != 3)
 	{
-		Page *page = m_page;
+		Page* page = m_page;
 		Check_Object(page);
-		NotationFile *file = page->m_notationFile;
+		NotationFile* file = page->m_notationFile;
 		Check_Object(file);
 		STOP((
-			"%s: {[%s]%s=%s} is not a YawPitchRoll!",
-			file->GetFileName(),
-			page->m_name,
-			m_name,
-			contents
-		));
+				 "%s: {[%s]%s=%s} is not a YawPitchRoll!",
+				 file->GetFileName(),
+				 page->m_name,
+				 m_name,
+				 contents
+			 ));
 	}
 	value->yaw *= Radians_Per_Degree;
 	value->pitch *= Radians_Per_Degree;
@@ -209,12 +196,11 @@ void Note::GetEntry(YawPitchRoll* value)
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	Note::SetEntry(const YawPitchRoll &value)
+Note::SetEntry(const YawPitchRoll& value)
 {
 	Check_Object(this);
-
 	static char
-		contents[32];
+	contents[32];
 	sprintf(
 		contents,
 		"%f %f %f",
@@ -229,34 +215,32 @@ void
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	Note::GetEntry(UnitQuaternion *value)
+Note::GetEntry(UnitQuaternion* value)
 {
 	Check_Object(this);
 	Check_Pointer(value);
-
 	PCSTR contents = nullptr;
 	GetEntry(&contents);
 	Check_Pointer(contents);
-
 	// AFAIU we need pointers to float to avoid warning C6272
 	YawPitchRoll ypr;
 	float fyaw = ypr.yaw;
 	float fpitch = ypr.pitch;
 	float froll = ypr.roll;
 	int32_t count = sscanf(contents, "%f %f %f", &fyaw, &fpitch, &froll);
-	if (count != 3)
+	if(count != 3)
 	{
-		Page *page = m_page;
+		Page* page = m_page;
 		Check_Object(page);
-		NotationFile *file = page->m_notationFile;
+		NotationFile* file = page->m_notationFile;
 		Check_Object(file);
 		STOP((
-			"%s: {[%s]%s=%s} is not a UnitQuaternion!",
-			file->GetFileName(),
-			page->m_name,
-			m_name,
-			contents
-		));
+				 "%s: {[%s]%s=%s} is not a UnitQuaternion!",
+				 file->GetFileName(),
+				 page->m_name,
+				 m_name,
+				 contents
+			 ));
 	}
 	ypr.yaw *= Radians_Per_Degree;
 	ypr.pitch *= Radians_Per_Degree;
@@ -267,10 +251,9 @@ void
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	Note::SetEntry(const UnitQuaternion &value)
+Note::SetEntry(const UnitQuaternion& value)
 {
 	Check_Object(this);
-
 	static char contents[32] = {0};
 	YawPitchRoll ypr(value);
 	Verify(strlen(contents) < sizeof(contents));
@@ -287,11 +270,10 @@ void
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	Note::GetEntry(Motion3D *value)
+Note::GetEntry(Motion3D* value)
 {
 	Check_Object(this);
 	Check_Pointer(value);
-
 	PCSTR contents = nullptr;
 	GetEntry(&contents);
 	Check_Pointer(contents);
@@ -306,31 +288,30 @@ void
 			&value->angularMotion.y,
 			&value->angularMotion.z
 		);
-	if (count != 6)
+	if(count != 6)
 	{
-		Page *page = m_page;
+		Page* page = m_page;
 		Check_Object(page);
-		NotationFile *file = page->m_notationFile;
+		NotationFile* file = page->m_notationFile;
 		Check_Object(file);
 		STOP((
-			"%s: {[%s]%s=%s} is not a Motion!",
-			file->GetFileName(),
-			page->m_name,
-			m_name,
-			contents
-		));
+				 "%s: {[%s]%s=%s} is not a Motion!",
+				 file->GetFileName(),
+				 page->m_name,
+				 m_name,
+				 contents
+			 ));
 	}
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	Note::SetEntry(const Motion3D &value)
+Note::SetEntry(const Motion3D& value)
 {
 	Check_Object(this);
-
 	static char
-		contents[64];
+	contents[64];
 	sprintf(
 		contents,
 		"%f %f %f %f %f %f",
@@ -348,11 +329,10 @@ void
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	Note::GetEntry(RGBColor *value)
+Note::GetEntry(RGBColor* value)
 {
 	Check_Object(this);
 	Check_Pointer(value);
-
 	PCSTR contents = nullptr;
 	GetEntry(&contents);
 	Check_Pointer(contents);
@@ -364,31 +344,30 @@ void
 			&value->green,
 			&value->blue
 		);
-	if (count != 3)
+	if(count != 3)
 	{
-		Page *page = m_page;
+		Page* page = m_page;
 		Check_Object(page);
-		NotationFile *file = page->m_notationFile;
+		NotationFile* file = page->m_notationFile;
 		Check_Object(file);
 		STOP((
-			"%s: {[%s]%s=%s} is not an RGBColor!",
-			file->GetFileName(),
-			page->m_name,
-			m_name,
-			contents
-		));
+				 "%s: {[%s]%s=%s} is not an RGBColor!",
+				 file->GetFileName(),
+				 page->m_name,
+				 m_name,
+				 contents
+			 ));
 	}
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	Note::SetEntry(const RGBColor &value)
+Note::SetEntry(const RGBColor& value)
 {
 	Check_Object(this);
-
 	static char
-		contents[32];
+	contents[32];
 	sprintf(
 		contents,
 		"%f %f %f",
@@ -403,11 +382,10 @@ void
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	Note::GetEntry(RGBAColor *value)
+Note::GetEntry(RGBAColor* value)
 {
 	Check_Object(this);
 	Check_Pointer(value);
-
 	PCSTR contents = nullptr;
 	GetEntry(&contents);
 	Check_Pointer(contents);
@@ -420,33 +398,32 @@ void
 			&value->blue,
 			&value->alpha
 		);
-	if (count == 3)
+	if(count == 3)
 		value->alpha = 1.0f;
-	if (count < 3)
+	if(count < 3)
 	{
-		Page *page = m_page;
+		Page* page = m_page;
 		Check_Object(page);
-		NotationFile *file = page->m_notationFile;
+		NotationFile* file = page->m_notationFile;
 		Check_Object(file);
 		STOP((
-			"%s: {[%s]%s=%s} is not an RGBAColor!",
-			file->GetFileName(),
-			page->m_name,
-			m_name,
-			contents
-		));
+				 "%s: {[%s]%s=%s} is not an RGBAColor!",
+				 file->GetFileName(),
+				 page->m_name,
+				 m_name,
+				 contents
+			 ));
 	}
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	Note::SetEntry(const RGBAColor &value)
+Note::SetEntry(const RGBAColor& value)
 {
 	Check_Object(this);
-
 	static char
-		contents[48];
+	contents[48];
 	sprintf(
 		contents,
 		"%f %f %f %f",
@@ -462,28 +439,25 @@ void
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	Note::GetEntry(NotationFile *value)
+Note::GetEntry(NotationFile* value)
 {
 	Check_Object(this);
 	Check_Object(value);
-
 	PCSTR contents = nullptr;
 	GetEntry(&contents);
 	Check_Pointer(contents);
-
 	//
 	//-------------------------------------------------------
 	// If this is a file reference, open the file and read it
 	//-------------------------------------------------------
 	//
-	if (strncmp(contents, "{\r\n", 3))
+	if(strncmp(contents, "{\r\n", 3))
 	{
 		FileStream file(contents);
 		value->m_fileName = file.GetFileName();
 		value->m_fileDependencies.AddDependency(&file);
 		value->Read(&file, nullptr, nullptr, false);
 	}
-
 	//
 	//--------------------------------------------------------------------
 	// Otherwise, we are reading a nested file, so set up the dependencies
@@ -491,19 +465,18 @@ void
 	//
 	else
 	{
-		MemoryStream stream(const_cast<PSTR>(contents+3), strlen(contents)-3);
-		NotationFile *parent_file = m_page->GetNotationFile();
+		MemoryStream stream(const_cast<PSTR>(contents + 3), strlen(contents) - 3);
+		NotationFile* parent_file = m_page->GetNotationFile();
 		Check_Object(parent_file);
 		value->m_fileDependencies.AddDependencies(
 			parent_file->GetFileDependencies()
 		);
-
 		//
 		//-----------------------------------
 		// Figure out the name of the subfile
 		//-----------------------------------
 		//
-		if (parent_file->GetFileName())
+		if(parent_file->GetFileName())
 		{
 			MString name(parent_file->GetFileName());
 			name += '[';
@@ -511,7 +484,6 @@ void
 			name += ']';
 			value->m_fileName = name;
 		}
-
 		//
 		//--------------------
 		// Read the string now
@@ -524,20 +496,18 @@ void
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	Note::SetEntry(NotationFile *value)
+Note::SetEntry(NotationFile* value)
 {
 	Check_Object(this);
 	Check_Object(value);
-
 	//
 	//----------------------------------------------------
 	// If this isn't a nested file, write out the filename
 	//----------------------------------------------------
 	//
 	PCSTR name = value->GetFileName();
-	if (name && name[strlen(name)-1] != ']')
+	if(name && name[strlen(name) - 1] != ']')
 		SetEntry(name);
-
 	//
 	//-------------------------------------------------------------------------
 	// Otherwise, we need to write the notation file out to a memory stream and
@@ -559,6 +529,6 @@ void
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	Note::TestInstance(void) const
+Note::TestInstance(void) const
 {
 }

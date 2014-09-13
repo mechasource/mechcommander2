@@ -17,9 +17,9 @@ ChooseBuildingDlg.h		: Interface for the ChooseBuildingDlg component.
 class ChooseBuildingDlg: public CDialog
 {
 public:
-	typedef EditorObject *building_ptr_type;
+	typedef EditorObject* building_ptr_type;
 
-	ChooseBuildingDlg( building_ptr_type &buildingPtr );
+	ChooseBuildingDlg(building_ptr_type& buildingPtr);
 
 	BOOL OnCommand(WPARAM wParam, LPARAM lParam); // called by child controls to inform of an event
 	void OnUsePointer(void);
@@ -35,15 +35,15 @@ private:
 
 	// suppressing these
 	inline ChooseBuildingDlg(void);
-	ChooseBuildingDlg& operator=( const ChooseBuildingDlg& lgBuildingPtr );
+	ChooseBuildingDlg& operator=(const ChooseBuildingDlg& lgBuildingPtr);
 
-	building_ptr_type *m_pModifiedBuildingPtr;
-	building_ptr_type *m_pBuildingPtr;
-	CComboBox *m_pComboBox;
+	building_ptr_type* m_pModifiedBuildingPtr;
+	building_ptr_type* m_pBuildingPtr;
+	CComboBox* m_pComboBox;
 	EditorObjectMgr::BUILDING_LIST m_buildingList;
-	CButton *m_pUsingPointerButton;
-	CButton *m_pCancelButton;
-	CButton *m_pOKButton;
+	CButton* m_pUsingPointerButton;
+	CButton* m_pCancelButton;
+	CButton* m_pOKButton;
 };
 
 

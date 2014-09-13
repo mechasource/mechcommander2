@@ -15,7 +15,8 @@
 
 //---------------------------------------------------------------------------
 
-typedef enum {
+typedef enum
+{
 	CARNAGE_NONE,
 	CARNAGE_FIRE,
 	CARNAGE_EXPLOSION,
@@ -29,16 +30,16 @@ class Carnage;
 typedef Carnage* CarnagePtr;
 
 class Light;
-typedef Light *LightPtr;
+typedef Light* LightPtr;
 
 class FireType;
-typedef FireType *FireTypePtr;
+typedef FireType* FireTypePtr;
 
 class ExplosionType;
 typedef ExplosionType* ExplosionTypePtr;
 
 class LightType;
-typedef LightType *LightTypePtr;
+typedef LightType* LightTypePtr;
 
 //***************************************************************************
 

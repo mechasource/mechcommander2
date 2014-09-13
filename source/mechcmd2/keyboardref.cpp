@@ -19,9 +19,9 @@ KeyboardRef.cpp			: Implementation of the KeyboardRef component.
 #define WAYPT	0x20000000
 
 
-KeyboardRef::KeyboardRef(  )
-:	listItemTemplate( IDS_KEYBOARD_REF_FONT ),
-	listItemTemplate2( IDS_KEYBOARD_REF_FONT )
+KeyboardRef::KeyboardRef()
+	:	listItemTemplate(IDS_KEYBOARD_REF_FONT),
+		listItemTemplate2(IDS_KEYBOARD_REF_FONT)
 {
 }
 
@@ -36,56 +36,39 @@ int32_t KeyboardRef::init()
 {
 	// clear out old stuff first
 	clear();
-
 	FullPathFileName path;
-
-	switch( Environment.screenWidth )
+	switch(Environment.screenWidth)
 	{
-	case 640:
-		path.init( artPath, "mcui_keyref_640", ".fit" );
+		case 640:
+			path.init(artPath, "mcui_keyref_640", ".fit");
 			break;
-
-	case 800:
-		path.init( artPath, "mcui_keyref_800", ".fit" );
-		break;
-
-	case 1024:
-		path.init( artPath, "mcui_keyref_1024", ".fit" );
-		break;
-	case 1280:
-		path.init( artPath, "mcui_keyref_1280", ".fit" );
-		break;
-	case 1600:
-		path.init( artPath, "mcui_keyref_1600", ".fit" );
-		break;
-
-	default:
-		NODEFAULT;
-		//gosASSERT( !"Invalid resolution" );
-		return -1;
-
+		case 800:
+			path.init(artPath, "mcui_keyref_800", ".fit");
+			break;
+		case 1024:
+			path.init(artPath, "mcui_keyref_1024", ".fit");
+			break;
+		case 1280:
+			path.init(artPath, "mcui_keyref_1280", ".fit");
+			break;
+		case 1600:
+			path.init(artPath, "mcui_keyref_1600", ".fit");
+			break;
+		default:
+			NODEFAULT;
+			//gosASSERT( !"Invalid resolution" );
+			return -1;
 	}
-
 	FitIniFile file;
-	file.open( path );
-
-
-	LogisticsScreen::init( file, "Static", "Text", "Rect", "Button" );
-
-	listBox.init( rects[2].left(), rects[2].top(), rects[2].width(), rects[2].height() );
-
+	file.open(path);
+	LogisticsScreen::init(file, "Static", "Text", "Rect", "Button");
+	listBox.init(rects[2].left(), rects[2].top(), rects[2].width(), rects[2].height());
 	file.close();
-
-
-	path.init( artPath, "mcui_keyref_entry", ".fit" );
-	file.open( path );
-
-	listItemTemplate.init( file, "Text0" );
-	listItemTemplate2.init( file, "Text1" );
-
-	buttons[0].setMessageOnRelease( );
-
-
+	path.init(artPath, "mcui_keyref_entry", ".fit");
+	file.open(path);
+	listItemTemplate.init(file, "Text0");
+	listItemTemplate2.init(file, "Text1");
+	buttons[0].setMessageOnRelease();
 	return true;
 }
 
@@ -98,91 +81,73 @@ void KeyboardRef::update()
 void KeyboardRef::render()
 {
 	RECT rect = { 0, 0, Environment.screenWidth, Environment.screenHeight };
-	drawRect( rect, 0xff000000 );
-
+	drawRect(rect, 0xff000000);
 	listBox.render();
 	LogisticsScreen::render();
 }
 
-void KeyboardRef::reseed( MissionInterfaceManager::Command* commands )
+void KeyboardRef::reseed(MissionInterfaceManager::Command* commands)
 {
-	listBox.removeAllItems( true );
-
+	listBox.removeAllItems(true);
 	char shift[32];
 	char control[32];
 	char alt[32];
 	char descText[128];
 	char keysString[128];
-
-	cLoadString( IDS_SHIFT, shift, 31 );
-	cLoadString( IDS_CONTROL, control, 31 );
-	cLoadString( IDS_ALT, alt, 31 );
-
+	cLoadString(IDS_SHIFT, shift, 31);
+	cLoadString(IDS_CONTROL, control, 31);
+	cLoadString(IDS_ALT, alt, 31);
 	// first count the number of hotTexts
 	int32_t count = 0;
-	for ( int32_t i = 0; i < MAX_COMMAND; i++ )
+	for(auto i = 0; i < MAX_COMMAND; i++)
 	{
-		if ( commands[i].hotKeyDescriptionText != -1 )
+		if(commands[i].hotKeyDescriptionText != -1)
 		{
 			count++;
 		}
 	}
-
 	int32_t curCount = 0;
-
-	for ( i = 0; i < MAX_COMMAND; i++ )
+	for(i = 0; i < MAX_COMMAND; i++)
 	{
-		if ( commands[i].hotKeyDescriptionText != -1 )
+		if(commands[i].hotKeyDescriptionText != -1)
 		{
-			cLoadString( commands[i].hotKeyDescriptionText, descText, 127 );
+			cLoadString(commands[i].hotKeyDescriptionText, descText, 127);
 			int32_t key = commands[i].key;
-			PSTR pKey = gos_DescribeKey( (key & 0x000fffff) << 8 );
-			strcpy( keysString, pKey );
-
-			if ( ((key & SHIFT)) )
+			PSTR pKey = gos_DescribeKey((key & 0x000fffff) << 8);
+			strcpy(keysString, pKey);
+			if(((key & SHIFT)))
 			{
-				strcat( keysString, " + " );
-				strcat( keysString, shift );
+				strcat(keysString, " + ");
+				strcat(keysString, shift);
 			}
-		
-			if ( ((key & CTRL)) )
+			if(((key & CTRL)))
 			{
-				strcat( keysString, " + " );
-				strcat( keysString, control );
+				strcat(keysString, " + ");
+				strcat(keysString, control);
 			}
-				
-			if ( ((key & ALT)) )
+			if(((key & ALT)))
 			{
-				strcat( keysString, " + " );
-				strcat( keysString, alt );
+				strcat(keysString, " + ");
+				strcat(keysString, alt);
 			}
-
-			aTextListItem* item = new aTextListItem( IDS_KEYBOARD_REF_FONT );
+			aTextListItem* item = new aTextListItem(IDS_KEYBOARD_REF_FONT);
 			*item = listItemTemplate;
-			item->setText( keysString );
-			item->setAlignment( 1 );
-
-			listBox.AddItem( item );
-
+			item->setText(keysString);
+			item->setAlignment(1);
+			listBox.AddItem(item);
 			int32_t yVal = item->y();
-
-			item = new aTextListItem( IDS_KEYBOARD_REF_FONT );
+			item = new aTextListItem(IDS_KEYBOARD_REF_FONT);
 			*item = listItemTemplate2;
 			int32_t xVal = listItemTemplate2.left();
-			item->setText( descText );
-			item->setAlignment( 0 );
-
-			listBox.AddItem( item );
-
-			item->moveTo( xVal + listBox.left(), yVal );
-
-
-
+			item->setText(descText);
+			item->setAlignment(0);
+			listBox.AddItem(item);
+			item->moveTo(xVal + listBox.left(), yVal);
 		}
 	}
 }
 
-int32_t	KeyboardRef::handleMessage( uint32_t who, uint32_t )
+int32_t	KeyboardRef::handleMessage(uint32_t who, uint32_t)
 {
 	return MissionInterfaceManager::instance()->toggleHotKeys();
 }

@@ -9,12 +9,12 @@
 #include "gosFXHeaders.hpp"
 
 gosFX::EffectLibrary*
-	gosFX::EffectLibrary::Instance = nullptr;
+gosFX::EffectLibrary::Instance = nullptr;
 
 //------------------------------------------------------------------------------
 //
 void
-	gosFX::EffectLibrary::InitializeClass()
+gosFX::EffectLibrary::InitializeClass()
 {
 	Verify(!Instance);
 }
@@ -22,13 +22,13 @@ void
 //------------------------------------------------------------------------------
 //
 void
-	gosFX::EffectLibrary::TerminateClass()
+gosFX::EffectLibrary::TerminateClass()
 {
-	if (Instance)
+	if(Instance)
 	{
 		Unregister_Object(Instance);
 		delete Instance;
-		Instance=nullptr;
+		Instance = nullptr;
 	}
 }
 
@@ -43,9 +43,9 @@ gosFX::EffectLibrary::EffectLibrary()
 //
 gosFX::EffectLibrary::~EffectLibrary()
 {
-	for (uint32_t i=0; i<m_effects.GetLength(); ++i)
+	for(uint32_t i = 0; i < m_effects.GetLength(); ++i)
 	{
-		if (m_effects[i])
+		if(m_effects[i])
 		{
 			Unregister_Object(m_effects[i]);
 			delete m_effects[i];
@@ -56,7 +56,7 @@ gosFX::EffectLibrary::~EffectLibrary()
 //------------------------------------------------------------------------------
 //
 void
-	gosFX::EffectLibrary::Load(Stuff::MemoryStream* stream)
+gosFX::EffectLibrary::Load(Stuff::MemoryStream* stream)
 {
 	//Verify(gos_GetCurrentHeap() == Heap);
 	Verify(!m_effects.GetLength());
@@ -64,7 +64,7 @@ void
 	uint32_t len;
 	*stream >> len;
 	m_effects.SetLength(len);
-	for (uint32_t i=0; i<len; ++i)
+	for(uint32_t i = 0; i < len; ++i)
 	{
 		m_effects[i] = gosFX::Effect::Specification::Create(stream, version);
 		Check_Object(m_effects[i]);
@@ -75,11 +75,11 @@ void
 //------------------------------------------------------------------------------
 //
 void
-	gosFX::EffectLibrary::Save(Stuff::MemoryStream* stream)
+gosFX::EffectLibrary::Save(Stuff::MemoryStream* stream)
 {
 	WriteGFXVersion(stream);
 	*stream << m_effects.GetLength();
-	for (uint32_t i=0; i<m_effects.GetLength(); ++i)
+	for(uint32_t i = 0; i < m_effects.GetLength(); ++i)
 	{
 		Check_Object(m_effects[i]);
 		m_effects[i]->Save(stream);
@@ -89,17 +89,17 @@ void
 //------------------------------------------------------------------------------
 //
 gosFX::Effect::Specification*
-	gosFX::EffectLibrary::Find(PCSTR name)
+gosFX::EffectLibrary::Find(PCSTR name)
 {
-	for (uint32_t i=0; i<m_effects.GetLength(); ++i)
+	for(uint32_t i = 0; i < m_effects.GetLength(); ++i)
 	{
-		gosFX::Effect::Specification *spec = m_effects[i];
-		if (spec)
+		gosFX::Effect::Specification* spec = m_effects[i];
+		if(spec)
 		{
 			Check_Object(spec);
-			if (!_stricmp(spec->m_name, name))
+			if(!_stricmp(spec->m_name, name))
 			{
-				Verify( spec->m_effectID == i );
+				Verify(spec->m_effectID == i);
 				return spec;
 			}
 		}
@@ -110,16 +110,16 @@ gosFX::Effect::Specification*
 //------------------------------------------------------------------------------
 //
 gosFX::Effect*
-	gosFX::EffectLibrary::MakeEffect(
-		uint32_t index,
-		uint32_t flags
-	)
+gosFX::EffectLibrary::MakeEffect(
+	uint32_t index,
+	uint32_t flags
+)
 {
-	gosFX::Effect::Specification *spec = m_effects[index];
+	gosFX::Effect::Specification* spec = m_effects[index];
 	Check_Object(spec);
-	gosFX::Effect::ClassData *data =
+	gosFX::Effect::ClassData* data =
 		Cast_Pointer(
-			gosFX::Effect::ClassData*, 
+			gosFX::Effect::ClassData*,
 			Stuff::RegisteredClass::FindClassData(spec->GetClassID())
 		);
 	Check_Object(data);

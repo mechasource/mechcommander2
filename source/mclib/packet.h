@@ -59,77 +59,77 @@ class PacketFile : public File
 {
 	//Data Members
 	//-------------
-	protected:
-		int32_t numPackets;
-		int32_t currentPacket;
-		int32_t packetSize;
-		int32_t packetBase;
+protected:
+	int32_t numPackets;
+	int32_t currentPacket;
+	int32_t packetSize;
+	int32_t packetBase;
 
-		int32_t packetType;		
-		int32_t packetUnpackedSize;
+	int32_t packetType;
+	int32_t packetUnpackedSize;
 
-		int32_t *seekTable;
+	int32_t* seekTable;
 
-		bool usesCheckSum;
+	bool usesCheckSum;
 
 	//Member Functions
 	//-----------------
-	protected:
-		void clear (void);
-		void atClose (void);
-		int32_t afterOpen (void);
+protected:
+	void clear(void);
+	void atClose(void);
+	int32_t afterOpen(void);
 
-	public:
+public:
 
-		PacketFile (void);
-		~PacketFile (void);
-		
-		virtual int32_t open (PCSTR fName, FileMode _mode = READ, uint32_t numChildren = 50);
-		virtual int32_t open (FilePtr _parent, size_t fileSize, uint32_t numChildren = 50);
-		
-		virtual int32_t create (PCSTR fName);
-		virtual int32_t createWithCase( PSTR fName ); // don't strlwr for me please!
-		virtual void close (void);
+	PacketFile(void);
+	~PacketFile(void);
 
-		void forceUseCheckSum (void)
-		{
-			usesCheckSum = true;
-		}
+	virtual int32_t open(PCSTR fName, FileMode _mode = READ, uint32_t numChildren = 50);
+	virtual int32_t open(FilePtr _parent, size_t fileSize, uint32_t numChildren = 50);
 
-		int32_t readPacketOffset (int32_t packet, int32_t *lastType = 0);
-		int32_t readPacket (int32_t packet, puint8_t buffer);
-		int32_t readPackedPacket (int32_t packet, puint8_t buffer);
+	virtual int32_t create(PCSTR fName);
+	virtual int32_t createWithCase(PSTR fName);   // don't strlwr for me please!
+	virtual void close(void);
 
-		int32_t seekPacket (int32_t packet);
+	void forceUseCheckSum(void)
+	{
+		usesCheckSum = true;
+	}
 
-		void operator ++ (void);
-		void operator -- (void);
-		
-		int32_t getNumPackets (void);
-		int32_t getCurrentPacket (void);
-		int32_t getPacketOffset(void);
+	int32_t readPacketOffset(int32_t packet, int32_t* lastType = 0);
+	int32_t readPacket(int32_t packet, puint8_t buffer);
+	int32_t readPackedPacket(int32_t packet, puint8_t buffer);
 
-		int32_t getPacketSize (void)
-		{
-			return packetUnpackedSize;
-		}
+	int32_t seekPacket(int32_t packet);
 
-		int32_t getPackedPacketSize (void);
-		int32_t getStorageType (void);
+	void operator ++ (void);
+	void operator -- (void);
 
-		virtual FileClass getFileClass (void)
-		{
-			return PACKETFILE;
-		}
-			
-		int32_t checkSumFile (void);
+	int32_t getNumPackets(void);
+	int32_t getCurrentPacket(void);
+	int32_t getPacketOffset(void);
 
-		//-------------------------------------------
-		// Functions to Write Packet Files
-		void reserve (int32_t count, bool withCheckSum = FALSE);
-		int32_t writePacket (int32_t packet, puint8_t buffer, int32_t nbytes, uint8_t p_type = ANY_PACKET_TYPE);
-		int32_t insertPacket (int32_t packet, puint8_t buffer, int32_t nbytes, uint8_t p_type = ANY_PACKET_TYPE);
-		int32_t writePacket (int32_t packet, puint8_t buffer);
+	int32_t getPacketSize(void)
+	{
+		return packetUnpackedSize;
+	}
+
+	int32_t getPackedPacketSize(void);
+	int32_t getStorageType(void);
+
+	virtual FileClass getFileClass(void)
+	{
+		return PACKETFILE;
+	}
+
+	int32_t checkSumFile(void);
+
+	//-------------------------------------------
+	// Functions to Write Packet Files
+	void reserve(int32_t count, bool withCheckSum = FALSE);
+	int32_t writePacket(int32_t packet, puint8_t buffer, int32_t nbytes, uint8_t p_type = ANY_PACKET_TYPE);
+	int32_t insertPacket(int32_t packet, puint8_t buffer, int32_t nbytes, uint8_t p_type = ANY_PACKET_TYPE);
+	int32_t writePacket(int32_t packet, puint8_t buffer);
 };
 
 

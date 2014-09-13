@@ -22,34 +22,34 @@ MPStats:
 **************************************************************************************************/
 class MPStatsEntry : public LogisticsScreen
 {
-	public:
-		MPStatsEntry(void);
-		virtual ~MPStatsEntry(void);
+public:
+	MPStatsEntry(void);
+	virtual ~MPStatsEntry(void);
 
-		void init( );
-		void setData( const _MC2Player*, bool bShowScore );
-		virtual void render( int32_t x, int32_t y );
+	void init();
+	void setData(const _MC2Player*, bool bShowScore);
+	virtual void render(int32_t x, int32_t y);
 
-		int32_t	getPlayerHeadingX(void);
-		int32_t	getRankingX(void);
-		int32_t	getKillsX(void);
-		int32_t	getLossesX(void);
-		int32_t	overlayColor;
+	int32_t	getPlayerHeadingX(void);
+	int32_t	getRankingX(void);
+	int32_t	getKillsX(void);
+	int32_t	getLossesX(void);
+	int32_t	overlayColor;
 
-		
+
 
 };
 
 class MPStatsResultsEntry : public LogisticsScreen
 {
-	public:
-		MPStatsResultsEntry(void);
-		virtual ~MPStatsResultsEntry(void);
-		virtual void render( int32_t x, int32_t y );
+public:
+	MPStatsResultsEntry(void);
+	virtual ~MPStatsResultsEntry(void);
+	virtual void render(int32_t x, int32_t y);
 
-		void init( );
-		void setData( const _MC2Player*, uint32_t laurelColor, bool bShowScore );
-		int32_t	overlayColor;
+	void init();
+	void setData(const _MC2Player*, uint32_t laurelColor, bool bShowScore);
+	int32_t	overlayColor;
 
 };
 
@@ -58,34 +58,34 @@ class MPStatsResultsEntry : public LogisticsScreen
 
 class MPStats: public LogisticsScreen
 {
-	public:
+public:
 
-		MPStats(void);
-		virtual ~MPStats(void);
+	MPStats(void);
+	virtual ~MPStats(void);
 
-		virtual void render(int32_t xOffset, int32_t yOffset);
-		virtual void update(void);
+	virtual void render(int32_t xOffset, int32_t yOffset);
+	virtual void update(void);
 
-		virtual void begin(void);
-		virtual void end(void);
+	virtual void begin(void);
+	virtual void end(void);
 
-		virtual int32_t handleMessage( uint32_t what, uint32_t who );
+	virtual int32_t handleMessage(uint32_t what, uint32_t who);
 
-		int32_t init(void);
+	int32_t init(void);
 
-		void		setHostLeftDlg( PCSTR hostName );
+	void		setHostLeftDlg(PCSTR hostName);
 
-	private:
+private:
 
-		MPStats( const MPStats& src );
+	MPStats(const MPStats& src);
 
-		MPStatsResultsEntry		entries[MAX_MC_PLAYERS];
+	MPStatsResultsEntry		entries[MAX_MC_PLAYERS];
 
-		bool				bShowMainMenu;
-		bool				bSavingStats;
-		bool				bHostLeftDlg;
+	bool				bShowMainMenu;
+	bool				bSavingStats;
+	bool				bHostLeftDlg;
 
-		// HELPER FUNCTIONS
+	// HELPER FUNCTIONS
 
 };
 

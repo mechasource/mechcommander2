@@ -12,9 +12,10 @@
 
 #include <stuff/plug.hpp>
 
-namespace Stuff {
+namespace Stuff
+{
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Node ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Node ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 	typedef Plug__ClassData Node__ClassData;
 
@@ -27,29 +28,28 @@ namespace Stuff {
 
 		void TestInstance(void);
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// Constructor/Destructor
-	//
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		// Constructor/Destructor
+		//
 	public:
 		~Node(void);
 
 	protected:
-		explicit Node(ClassData *class_data);
+		explicit Node(ClassData* class_data);
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// Class Data Support
-	//
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		// Class Data Support
+		//
 	public:
 		typedef Node__ClassData ClassData;
 
 		static ClassData* DefaultData;
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// plug detachment
-	//
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		// plug detachment
+		//
 	public:
-		virtual void
-			ReleaseLinkHandler(Socket*, Plug*);
+		virtual void ReleaseLinkHandler(Socket*, Plug*);
 	};
 
 }

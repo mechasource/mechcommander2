@@ -18,13 +18,13 @@
 // Class declarations
 
 struct HeapBlock;
-typedef HeapBlock *HeapBlockPtr;
+typedef HeapBlock* HeapBlockPtr;
 
 class HeapManager;
-typedef HeapManager *HeapManagerPtr;
+typedef HeapManager* HeapManagerPtr;
 
 class UserHeap;
-typedef UserHeap *UserHeapPtr;
+typedef UserHeap* UserHeapPtr;
 
 //---------------------------------------------------------------------------
 #endif

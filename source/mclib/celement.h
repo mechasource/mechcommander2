@@ -23,16 +23,16 @@ public:
 	float		depth;
 	bool		drawNormal;
 
-	Element (void)
+	Element(void)
 	{
 		depth = 1.0;
 		drawNormal = TRUE;
 	}
 
-	Element (int32_t _depth);
-	Element (float _depth);
+	Element(int32_t _depth);
+	Element(float _depth);
 
-	virtual void draw (void) = 0;
+	virtual void draw(void) = 0;
 };
 
 //---------------------------------------------------------------------------

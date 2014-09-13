@@ -20,22 +20,22 @@ struct _LARGEBLOCKHEADER;
 // 255   = Unused
 //
 //
-cint32_t Magic_LargeBlock=253;					// Larger than 4k memory block (no in pools)
-cint32_t Magic_BeforeInit=254;					// Allocated before inited  (was 0xabadcafe)
+cint32_t Magic_LargeBlock = 253;					// Larger than 4k memory block (no in pools)
+cint32_t Magic_BeforeInit = 254;					// Allocated before inited  (was 0xabadcafe)
 
 //
 // This is the largest 'pool' size - blocks larger than this use the system allocator
 //
-cint32_t LargestMemoryBlock=1024;				// Largest memory block managed
+cint32_t LargestMemoryBlock = 1024;				// Largest memory block managed
 //
 // This is the total number of pools being managed
 //
-cint32_t MemoryPools=18;						// Number of memory pools (defined in PoolSizes[])
+cint32_t MemoryPools = 18;						// Number of memory pools (defined in PoolSizes[])
 
 //
 // Magic number placed after allocations in DEBUG/ARMOR
 //
-cint32_t MemoryEndMarker=0x7fb1deaf;			// Placed at the end of allocations in _ARMOR builds
+cint32_t MemoryEndMarker = 0x7fb1deaf;			// Placed at the end of allocations in _ARMOR builds
 
 
 
@@ -45,7 +45,8 @@ cint32_t MemoryEndMarker=0x7fb1deaf;			// Placed at the end of allocations in _A
 //
 // Information block for all blocks in pools with < 256 bytes
 //
-typedef struct SMALLPOOLBLOCK {
+typedef struct SMALLPOOLBLOCK
+{
 #if defined(LAB_ONLY)
 	uint8_t			Size;						// Size of block (note pools are always <64K)
 #endif
@@ -58,7 +59,8 @@ typedef struct SMALLPOOLBLOCK {
 //
 // Information block for all blocks in pools with >= 256 bytes
 //
-typedef struct POOLBLOCK {
+typedef struct POOLBLOCK
+{
 #if defined(LAB_ONLY)
 	uint16_t			Size;						// Size of block (note pools are always <64K)
 #endif
@@ -104,9 +106,9 @@ typedef struct _MEMORYPOOL
 	puint8_t				pMemoryPool;			// Pointer to the base of the memory blocks (pointer to header byte before allocation)
 	uint16_t				wBlockSize;				// what is the size of the individual blocks?
 	uint16_t				wTotalBlocks;			// Total blocks available
-	#if defined(LAB_ONLY)
+#if defined(LAB_ONLY)
 	uint16_t				wUserBytes;				// the amount of memory in the pool that is actual user data
-	#endif
+#endif
 	uint16_t				AllocCount[16];			// Number of blocks allocated in each 4K page (when 0, block can be decommitted)
 	uint16_t				FreeBlockPtr;			// Next available block in FreeBlockStack
 	uint16_t				FreeBlockStack[0];		// Free block offsets (from base of pool - pointer to header byte before allocation)
@@ -164,13 +166,13 @@ extern HGOSHEAP DefaultHeap;
 extern MEMORYPOOL* gMemoryPool[MemoryPools];
 
 
-void __stdcall gos_ChangeHeapSize( HGOSHEAP Heap, int32_t Change, uint8_t SystemAllocation=0 );
+void __stdcall gos_ChangeHeapSize(HGOSHEAP Heap, int32_t Change, uint8_t SystemAllocation = 0);
 void __stdcall MM_CheckRegistered(void);
 void __stdcall MM_Shutdown(void);
-void __stdcall MM_UpdateStatistics( HGOSHEAP Heap );
+void __stdcall MM_UpdateStatistics(HGOSHEAP Heap);
 void __stdcall MM_Startup(void);
 void __stdcall SetupVirtualMemory(void);
-void __stdcall AnalyzeWS( PSTR Title );
+void __stdcall AnalyzeWS(PSTR Title);
 
 
 extern PSAPI_WS_WATCH_INFORMATION* pMemBlockInfo;

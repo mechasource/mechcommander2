@@ -15,10 +15,10 @@
 
 class MainFrame : public CFrameWnd
 {
-	
+
 public:
 	MainFrame(void);
-protected: 
+protected:
 	DECLARE_DYNAMIC(MainFrame)
 
 // Attributes
@@ -30,10 +30,10 @@ public:
 // Overrides
 	// ClassWizard generated virtual function overrides
 	//{{AFX_VIRTUAL(MainFrame)
-	public:
+public:
 	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
 	virtual BOOL OnCmdMsg(uint32_t nID, int32_t nCode, PVOID pExtra, AFX_CMDHANDLERINFO* pHandlerInfo);
-	protected:
+protected:
 	virtual LRESULT WindowProc(uint32_t message, WPARAM wParam, LPARAM lParam);
 	//}}AFX_VIRTUAL
 
@@ -56,7 +56,7 @@ public:  // control bar embedded members
 protected:
 	//{{AFX_MSG(MainFrame)
 	afx_msg int32_t OnCreate(LPCREATESTRUCT lpCreateStruct);
-	afx_msg void OnSetFocus(CWnd *pOldWnd);
+	afx_msg void OnSetFocus(CWnd* pOldWnd);
 	afx_msg void OnClose(void);
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()

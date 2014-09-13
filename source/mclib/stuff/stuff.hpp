@@ -45,7 +45,8 @@
 //#pragma warning(push)
 //#pragma warning(pop)
 
-namespace Stuff {
+namespace Stuff
+{
 	void __stdcall InitializeClasses(void);
 	void __stdcall TerminateClasses(void);
 }

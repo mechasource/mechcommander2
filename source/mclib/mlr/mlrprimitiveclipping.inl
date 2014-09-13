@@ -21,7 +21,10 @@
 //#ifndef _MLRPRIMITIVECLIPPING_HPP_
 //#define _MLRPRIMITIVECLIPPING_HPP_
 
-//#include <mlr/mlrcliptrick.hpp>
+#include <mlr/mlrcliptrick.hpp>
+#include <mlr/gosvertexpool.hpp>
+#include <mlr/mlrtexture.hpp>
+#include <mlr/mlrtexturepool.hpp>
 
 extern uint32_t gEnableTextureSort, gShowClippedPolys;
 extern puint16_t indexOffset;	// [MidLevelRenderer::Max_Number_Vertices_Per_Mesh]
@@ -30,8 +33,7 @@ extern puint16_t indexOffset;	// [MidLevelRenderer::Max_Number_Vertices_Per_Mesh
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-CLASSNAME::TransformNoClip(Matrix4D *mat, GOSVertexPool *vt,bool db)
+void CLASSNAME::TransformNoClip(Stuff::Matrix4D *mat, GOSVertexPool *vt,bool db)
 {
 	Check_Object(this);
 	Check_Object(vt);
@@ -42,39 +44,39 @@ CLASSNAME::TransformNoClip(Matrix4D *mat, GOSVertexPool *vt,bool db)
 
 	uint16_t stride;
 	bool textureAnimation = false;
-	Scalar deltaU=0.0f, deltaV=0.0f;
+	float deltaU=0.0f, deltaV=0.0f;
 
 	if(state.GetTextureHandle())
 	{
 		MLRTexture *texture = (*MLRTexturePool::Instance)[state.GetTextureHandle()];
-		textureAnimation = texture->GetAnimateTexture(void);
+		textureAnimation = texture->GetAnimateTexture();
 		if(textureAnimation)
 		{
-			Stuff::AffineMatrix4D &textureMatrix = texture->GetTextureMatrix(void);
+			Stuff::AffineMatrix4D &textureMatrix = texture->GetTextureMatrix();
 			deltaU = textureMatrix(3, 0);
 			deltaV = textureMatrix(3, 1);
 		}
 	}
 
-	int32_t i, j, k, len = lengths.GetLength(void);
+	size_t i, j, k, len = lengths.GetLength();
 
 #ifdef I_SAY_YES_TO_DUAL_TEXTURES
-	int32_t tex2count = 0;
+	size_t tex2count = 0;
 #endif
 #ifdef I_SAY_YES_TO_MULTI_TEXTURES
-	int32_t m;
+	size_t m;
 	//	gos_PushCurrentHeap(StaticHeap);
-	//	static DynamicArrayOf<int32_t> *tex2count = new DynamicArrayOf<int32_t>(Limits::Max_Number_Of_Multitextures);
-	int32_t tex2count[Limits::Max_Number_Of_Multitextures];
+	//	static DynamicArrayOf<uint32_t> *tex2count = new DynamicArrayOf<uint32_t>(Limits::Max_Number_Of_Multitextures);
+	size_t tex2count[Limits::Max_Number_Of_Multitextures];
 	//	SPEW(("micgaert", "Michael!!! The new() on line 42 can cause memory leaks!"));
-	//	gos_PopCurrentHeap(void);
+	//	gos_PopCurrentHeap();
 	for(m=0;m<currentNrOfPasses;m++)
 	{
 		tex2count[m] = 0;
 	}
 #endif
 
-	uint32_t numVertices = GetNumVertices(void);
+	uint32_t numVertices = GetNumVertices();
 	gos_vertices = vt->GetActualVertexPool(db);
 	numGOSVertices = 0;
 
@@ -83,7 +85,7 @@ CLASSNAME::TransformNoClip(Matrix4D *mat, GOSVertexPool *vt,bool db)
 
 	if(visibleIndexedVerticesKey == false)
 	{
-		FindVisibleVertices(void);
+		FindVisibleVertices();
 	}
 
 	for(j=0,stride=0;j<numVertices;j++)
@@ -178,10 +180,10 @@ CLASSNAME::TransformNoClip(Matrix4D *mat, GOSVertexPool *vt,bool db)
 	if(state2.GetTextureHandle())
 	{
 		MLRTexture *texture = (*MLRTexturePool::Instance)[state.GetTextureHandle()];
-		textureAnimation = texture->GetAnimateTexture(void);
+		textureAnimation = texture->GetAnimateTexture();
 		if(textureAnimation)
 		{
-			Stuff::AffineMatrix4D &textureMatrix = texture->GetTextureMatrix(void);
+			Stuff::AffineMatrix4D &textureMatrix = texture->GetTextureMatrix();
 			deltaU = textureMatrix(3, 0);
 			deltaV = textureMatrix(3, 1);
 		}
@@ -208,7 +210,7 @@ CLASSNAME::TransformNoClip(Matrix4D *mat, GOSVertexPool *vt,bool db)
 
 	if(db==false)
 	{
-		vt->Increase(2*numGOSVertices);
+		vt->Increase(uint32_t(2*numGOSVertices));
 	}
 #else
 #ifdef I_SAY_YES_TO_DETAIL_TEXTURES
@@ -231,7 +233,7 @@ CLASSNAME::TransformNoClip(Matrix4D *mat, GOSVertexPool *vt,bool db)
 
 	if(db==false)
 	{
-		vt->Increase(2*numGOSVertices);
+		vt->Increase(uint32_t(2*numGOSVertices));
 	}
 #else
 	if(db==false)
@@ -284,7 +286,7 @@ CLASSNAME::TransformNoClip(Matrix4D *mat, GOSVertexPool *vt,bool db)
 			continue;
 		}
 
-		for(k=1;k<stride-1;k++)
+		for(k = 1; k < uint16_t(stride-1); k++)
 		{
 			if(db==false)
 			{
@@ -317,8 +319,7 @@ static MLRClippingState theAnd, theOr, theTest;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Now it gets serious
-int32_t
-CLASSNAME::TransformAndClip(Matrix4D *mat, MLRClippingState clippingFlags, GOSVertexPool *vt, bool db)
+uint32_t CLASSNAME::TransformAndClip(Stuff::Matrix4D *mat, MLRClippingState clippingFlags, GOSVertexPool *vt, bool db)
 {
 	Transform(mat);
 
@@ -327,8 +328,9 @@ CLASSNAME::TransformAndClip(Matrix4D *mat, MLRClippingState clippingFlags, GOSVe
 	Check_Object(this);
 
 	uint16_t l, stride;
-	int32_t i, j, k, ret = 0;
-	int32_t len = lengths.GetLength(void);
+	uint32_t  ret = 0;
+	size_t i, j, k;
+	size_t len = lengths.GetLength();
 
 	Verify(len == testList.GetLength());
 	Verify(clippingFlags.GetClippingState() != 0);
@@ -347,20 +349,21 @@ CLASSNAME::TransformAndClip(Matrix4D *mat, MLRClippingState clippingFlags, GOSVe
 		return visible;
 	}
 
-	int32_t mask, end, k0, k1, ct=0;
-	Scalar a=0.0f;
-	//	Scalar bc0=0.0f, bc1=0.0f;
+	uint32_t mask;
+	size_t end, k0, k1, ct=0;
+	float a=0.0f;
+	//	float bc0=0.0f, bc1=0.0f;
 
 	bool textureAnimation = false;
-	Scalar deltaU=0.0f, deltaV=0.0f;
+	float deltaU=0.0f, deltaV=0.0f;
 
 	if(state.GetTextureHandle())
 	{
 		MLRTexture *texture = (*MLRTexturePool::Instance)[state.GetTextureHandle()];
-		textureAnimation = texture->GetAnimateTexture(void);
+		textureAnimation = texture->GetAnimateTexture();
 		if(textureAnimation)
 		{
-			Stuff::AffineMatrix4D &textureMatrix = texture->GetTextureMatrix(void);
+			Stuff::AffineMatrix4D &textureMatrix = texture->GetTextureMatrix();
 			deltaU = textureMatrix(3, 0);
 			deltaV = textureMatrix(3, 1);
 		}
@@ -368,15 +371,15 @@ CLASSNAME::TransformAndClip(Matrix4D *mat, MLRClippingState clippingFlags, GOSVe
 
 #ifdef I_SAY_YES_TO_DUAL_TEXTURES
 	bool textureAnimation2 = false;
-	Scalar deltaU2=0.0f, deltaV2=0.0f;
+	float deltaU2=0.0f, deltaV2=0.0f;
 
 	if(state2.GetTextureHandle())
 	{
 		MLRTexture *texture = (*MLRTexturePool::Instance)[state.GetTextureHandle()];
-		textureAnimation2 = texture->GetAnimateTexture(void);
+		textureAnimation2 = texture->GetAnimateTexture();
 		if(textureAnimation2)
 		{
-			Stuff::AffineMatrix4D &textureMatrix = texture->GetTextureMatrix(void);
+			Stuff::AffineMatrix4D &textureMatrix = texture->GetTextureMatrix();
 			deltaU2 = textureMatrix(3, 0);
 			deltaV2 = textureMatrix(3, 1);
 		}
@@ -384,16 +387,16 @@ CLASSNAME::TransformAndClip(Matrix4D *mat, MLRClippingState clippingFlags, GOSVe
 #endif
 
 #ifdef I_SAY_YES_TO_DUAL_TEXTURES
-	int32_t tex2count = 0;
-	uint32_t numVertices = GetNumVertices(void);
+	size_t tex2count = 0;
+	uint32_t numVertices = GetNumVertices();
 #endif
 
 #ifdef I_SAY_YES_TO_MULTI_TEXTURES
-	int32_t m;
+	size_t m;
 	gos_PushCurrentHeap(StaticHeap);
-	static DynamicArrayOf<int32_t> *tex2count = new DynamicArrayOf<int32_t>(Limits::Max_Number_Of_Multitextures);
+	static DynamicArrayOf<uint32_t> *tex2count = new DynamicArrayOf<uint32_t>(Limits::Max_Number_Of_Multitextures);
 	SPEW(("micgaert", "Michael!!! The new() on line 316 can cause memory leaks!"));
-	gos_PopCurrentHeap(void);
+	gos_PopCurrentHeap();
 	for(m=0;m<currentNrOfPasses;m++)
 	{
 		tex2count[m] = 0;
@@ -401,7 +404,7 @@ CLASSNAME::TransformAndClip(Matrix4D *mat, MLRClippingState clippingFlags, GOSVe
 
 #endif
 
-	int32_t	myNumberUsedClipVertex, myNumberUsedClipIndex, myNumberUsedClipLength;
+	uint32_t myNumberUsedClipVertex, myNumberUsedClipIndex, myNumberUsedClipLength;
 
 	myNumberUsedClipVertex = 0;
 	myNumberUsedClipIndex = 0;
@@ -411,7 +414,7 @@ CLASSNAME::TransformAndClip(Matrix4D *mat, MLRClippingState clippingFlags, GOSVe
 
 	if(visibleIndexedVerticesKey == false)
 	{
-		FindVisibleVertices(void);
+		FindVisibleVertices();
 	}
 
 	//
@@ -517,8 +520,8 @@ CLASSNAME::TransformAndClip(Matrix4D *mat, MLRClippingState clippingFlags, GOSVe
 					// directly to the clipping buffer
 					//----------------------------------------------------
 					//
-					int32_t clipped_index =
-						myNumberUsedClipVertex + numberVerticesPerPolygon;
+					size_t clipped_index =
+						(myNumberUsedClipVertex + numberVerticesPerPolygon);
 					theTest = (*clipPerVertex)[k0];
 
 					if(theTest == 0)
@@ -833,17 +836,17 @@ CLASSNAME::TransformAndClip(Matrix4D *mat, MLRClippingState clippingFlags, GOSVe
 
 				Verify(texCoords.GetLength() > 0);
 
-				srcPolygon.coords = clipBuffer[dstBuffer].coords.GetData(void);
+				srcPolygon.coords = clipBuffer[dstBuffer].coords.GetData();
 #ifdef I_SAY_YES_TO_COLOR
 #ifdef I_SAY_YES_TO_LIGHTING
 				Verify((*actualColors).GetLength() > 0);
 #else
 				Verify(colors.GetLength() > 0);
 #endif
-				srcPolygon.colors = clipBuffer[dstBuffer].colors.GetData(void);
+				srcPolygon.colors = clipBuffer[dstBuffer].colors.GetData();
 #endif
-				srcPolygon.texCoords = clipBuffer[dstBuffer].texCoords.GetData(void);
-				srcPolygon.clipPerVertex = clipBuffer[dstBuffer].clipPerVertex.GetData(void);
+				srcPolygon.texCoords = clipBuffer[dstBuffer].texCoords.GetData();
+				srcPolygon.clipPerVertex = clipBuffer[dstBuffer].clipPerVertex.GetData();
 
 				//
 				//----------------------------------------------------------
@@ -852,7 +855,7 @@ CLASSNAME::TransformAndClip(Matrix4D *mat, MLRClippingState clippingFlags, GOSVe
 				//
 				for(k=j,l=0;k<end;k++,l++)
 				{
-					int32_t indexK = index[k];
+					size_t indexK = index[k];
 
 					srcPolygon.coords[l] = (*transformedCoords)[indexK];
 
@@ -889,12 +892,12 @@ CLASSNAME::TransformAndClip(Matrix4D *mat, MLRClippingState clippingFlags, GOSVe
 				//
 				dstBuffer = 0;
 
-				dstPolygon.coords = clipBuffer[dstBuffer].coords.GetData(void);
+				dstPolygon.coords = clipBuffer[dstBuffer].coords.GetData();
 #ifdef I_SAY_YES_TO_COLOR
-				dstPolygon.colors = clipBuffer[dstBuffer].colors.GetData(void);
+				dstPolygon.colors = clipBuffer[dstBuffer].colors.GetData();
 #endif
-				dstPolygon.texCoords = clipBuffer[dstBuffer].texCoords.GetData(void);
-				dstPolygon.clipPerVertex = clipBuffer[dstBuffer].clipPerVertex.GetData(void);
+				dstPolygon.texCoords = clipBuffer[dstBuffer].texCoords.GetData();
+				dstPolygon.clipPerVertex = clipBuffer[dstBuffer].clipPerVertex.GetData();
 				dstPolygon.length = 0;
 
 				//
@@ -1234,22 +1237,22 @@ CLASSNAME::TransformAndClip(Matrix4D *mat, MLRClippingState clippingFlags, GOSVe
 							// preparation for the next plane test
 							//-----------------------------------------------
 							//
-							srcPolygon.coords = clipBuffer[dstBuffer].coords.GetData(void);
+							srcPolygon.coords = clipBuffer[dstBuffer].coords.GetData();
 #ifdef I_SAY_YES_TO_COLOR
-							srcPolygon.colors = clipBuffer[dstBuffer].colors.GetData(void);
+							srcPolygon.colors = clipBuffer[dstBuffer].colors.GetData();
 #endif
-							srcPolygon.texCoords = clipBuffer[dstBuffer].texCoords.GetData(void);
-							srcPolygon.clipPerVertex = clipBuffer[dstBuffer].clipPerVertex.GetData(void);	
+							srcPolygon.texCoords = clipBuffer[dstBuffer].texCoords.GetData();
+							srcPolygon.clipPerVertex = clipBuffer[dstBuffer].clipPerVertex.GetData();	
 							srcPolygon.length = dstPolygon.length;
 
 							dstBuffer = !dstBuffer;
 
-							dstPolygon.coords = clipBuffer[dstBuffer].coords.GetData(void);
+							dstPolygon.coords = clipBuffer[dstBuffer].coords.GetData();
 #ifdef I_SAY_YES_TO_COLOR
-							dstPolygon.colors = clipBuffer[dstBuffer].colors.GetData(void);
+							dstPolygon.colors = clipBuffer[dstBuffer].colors.GetData();
 #endif
-							dstPolygon.texCoords = clipBuffer[dstBuffer].texCoords.GetData(void);
-							dstPolygon.clipPerVertex = clipBuffer[dstBuffer].clipPerVertex.GetData(void);
+							dstPolygon.texCoords = clipBuffer[dstBuffer].texCoords.GetData();
+							dstPolygon.clipPerVertex = clipBuffer[dstBuffer].clipPerVertex.GetData();
 							dstPolygon.length = 0;
 
 						}
@@ -1289,7 +1292,7 @@ CLASSNAME::TransformAndClip(Matrix4D *mat, MLRClippingState clippingFlags, GOSVe
 #endif
 				for(k=0;k<srcPolygon.length;k++)
 				{
-					int32_t clipped_index = myNumberUsedClipVertex + k;
+					size_t clipped_index = myNumberUsedClipVertex + k;
 #if HUNT_CLIP_ERROR
 					DEBUG_STREAM << setiosflags( ios::scientific) << setprecision(20) 
 						<< srcPolygon.coords[k].x << " "
@@ -1349,7 +1352,7 @@ CLASSNAME::TransformAndClip(Matrix4D *mat, MLRClippingState clippingFlags, GOSVe
 	gos_indices = vt->GetActualIndexPool(db);
 	numGOSIndices = 0;
 
-	k = visibleIndexedVertices.GetLength(void);
+	k = visibleIndexedVertices.GetLength();
 
 	for(j=0,stride=0;j<k;j++)
 	{
@@ -1362,11 +1365,11 @@ CLASSNAME::TransformAndClip(Matrix4D *mat, MLRClippingState clippingFlags, GOSVe
 			indexOffset[j] = stride;
 
 #if FOG_HACK
-			int32_t fogEntry = state.GetFogMode(void);
+			size_t fogEntry = state.GetFogMode();
 			if(fogEntry)
 			{
 				*((puint8_t )&gos_vertices[numGOSVertices].frgb + 3) =
-					GOSVertex::fogTable[fogEntry-1][Truncate_Float_To_Word((*transformedCoords)[j].w)];
+					GOSVertex::fogTable[fogEntry-1][Stuff::Truncate_Float_To_Word((*transformedCoords)[j].w)];
 			}
 			else
 			{
@@ -1428,7 +1431,7 @@ CLASSNAME::TransformAndClip(Matrix4D *mat, MLRClippingState clippingFlags, GOSVe
 			continue;
 		}
 
-		for(k=1;k<stride-1;k++)
+		for(k = 1;k < uint16_t(stride-1); k++)
 		{
 			if(db==false)
 			{
@@ -1493,7 +1496,7 @@ CLASSNAME::TransformAndClip(Matrix4D *mat, MLRClippingState clippingFlags, GOSVe
 				}
 			}
 #endif
-			for(k=1;k<stride-1;k++)
+			for(k = 1;k < uint16_t(stride-1); k++)
 			{
 				if(db==false)
 				{
@@ -1507,16 +1510,16 @@ CLASSNAME::TransformAndClip(Matrix4D *mat, MLRClippingState clippingFlags, GOSVe
 				}
 
 #if FOG_HACK
-				int32_t fogEntry = state.GetFogMode(void);
+				size_t fogEntry = state.GetFogMode();
 				if(fogEntry)
 				{
 					fogEntry--;
 					*((puint8_t )&gos_vertices[numGOSVertices].frgb + 3) =
-						GOSVertex::fogTable[fogEntry][Truncate_Float_To_Word((*clipExtraCoords)[j].w)];
+						GOSVertex::fogTable[fogEntry][Stuff::Truncate_Float_To_Word((*clipExtraCoords)[j].w)];
 					*((puint8_t )&gos_vertices[numGOSVertices+1].frgb + 3) =
-						GOSVertex::fogTable[fogEntry][Truncate_Float_To_Word((*clipExtraCoords)[j+k+1].w)];
+						GOSVertex::fogTable[fogEntry][Stuff::Truncate_Float_To_Word((*clipExtraCoords)[j+k+1].w)];
 					*((puint8_t )&gos_vertices[numGOSVertices+2].frgb + 3) =
-						GOSVertex::fogTable[fogEntry][Truncate_Float_To_Word((*clipExtraCoords)[j+k].w)];
+						GOSVertex::fogTable[fogEntry][Stuff::Truncate_Float_To_Word((*clipExtraCoords)[j+k].w)];
 				}
 				else
 				{
@@ -1656,7 +1659,7 @@ CLASSNAME::TransformAndClip(Matrix4D *mat, MLRClippingState clippingFlags, GOSVe
 
 	if(db==false)
 	{
-		vt->Increase(2*numGOSVertices);
+		vt->Increase(uint32_t(2*numGOSVertices));
 	}
 #else
 #ifdef I_SAY_YES_TO_DETAIL_TEXTURES
@@ -1679,7 +1682,7 @@ CLASSNAME::TransformAndClip(Matrix4D *mat, MLRClippingState clippingFlags, GOSVe
 
 	if(db==false)
 	{
-		vt->Increase(2*numGOSVertices);
+		vt->Increase(uint32_t(2*numGOSVertices));
 	}
 #else
 	if(db==false)

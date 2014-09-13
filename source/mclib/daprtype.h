@@ -39,10 +39,10 @@
 // Class definitions
 
 class AppearanceType;
-typedef AppearanceType *AppearanceTypePtr;
+typedef AppearanceType* AppearanceTypePtr;
 
 class AppearanceTypeList;
-typedef AppearanceTypeList *AppearanceTypeListPtr;
+typedef AppearanceTypeList* AppearanceTypeListPtr;
 
 //---------------------------------------------------------------------------
 #endif

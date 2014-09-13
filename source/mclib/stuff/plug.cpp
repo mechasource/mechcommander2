@@ -27,31 +27,29 @@ HGOSHEAP Stuff::ConnectionEngineHeap = nullptr;
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	Plug::InitializeClass()
+Plug::InitializeClass()
 {
 	Verify(!ConnectionEngineHeap);
 	ConnectionEngineHeap = gos_CreateMemoryHeap("ConnectionEngine");
 	Check_Pointer(ConnectionEngineHeap);
-
 	Verify(!DefaultData);
 	DefaultData =
 		new ClassData(
-			PlugClassID,
-			"Stuff::Plug",
-			RegisteredClass::DefaultData
-		);
+		PlugClassID,
+		"Stuff::Plug",
+		RegisteredClass::DefaultData
+	);
 	Register_Object(DefaultData);
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	Plug::TerminateClass()
+Plug::TerminateClass()
 {
 	Unregister_Object(DefaultData);
 	delete DefaultData;
 	DefaultData = nullptr;
-
 	Check_Pointer(ConnectionEngineHeap);
 	gos_DestroyMemoryHeap(ConnectionEngineHeap);
 	ConnectionEngineHeap = nullptr;
@@ -62,7 +60,7 @@ void
 // Plug
 //#############################################################################
 //
-Plug::Plug(ClassData *class_data):
+Plug::Plug(ClassData* class_data):
 	RegisteredClass(class_data)
 {
 	linkHead = nullptr;
@@ -76,11 +74,11 @@ Plug::Plug(ClassData *class_data):
 Plug::~Plug()
 {
 	Check_Object(this);
-	Link *link = linkHead;
-	while (link)
+	Link* link = linkHead;
+	while(link)
 	{
 		Check_Object(link);
-		Link *next = link->nextLink;
+		Link* next = link->nextLink;
 		Unregister_Object(link);
 		delete link;
 		link = next;
@@ -93,10 +91,10 @@ Plug::~Plug()
 //###########################################################################
 //
 void
-	Plug::TestInstance(void) const
+Plug::TestInstance(void) const
 {
 	Verify(IsDerivedFrom(DefaultData));
-	if (linkHead != nullptr)
+	if(linkHead != nullptr)
 	{
 		Check_Object(linkHead);
 	}
@@ -108,22 +106,20 @@ void
 //#############################################################################
 //
 void
-	Plug::RemoveSocket(Socket *socket)
+Plug::RemoveSocket(Socket* socket)
 {
 	Check_Object(this);
 	Check_Object(socket);
-
-	Link *link;
-
-	for (link = linkHead; link != nullptr; link = link->nextLink)
+	Link* link;
+	for(link = linkHead; link != nullptr; link = link->nextLink)
 	{
 		Check_Object(link);
-      if (link->GetSocket() == socket)
-      {
-         Unregister_Object(link);
-         delete link;
-         return;
-      }
+		if(link->GetSocket() == socket)
+		{
+			Unregister_Object(link);
+			delete link;
+			return;
+		}
 	}
 }
 
@@ -133,20 +129,18 @@ void
 //#############################################################################
 //
 bool
-	Plug::IsSocketMember(Socket *socket)
+Plug::IsSocketMember(Socket* socket)
 {
 	Check_Object(this);
 	Check_Object(socket);
-
-	Link *link;
-
-	for (link = linkHead; link != nullptr; link = link->nextLink)
+	Link* link;
+	for(link = linkHead; link != nullptr; link = link->nextLink)
 	{
 		Check_Object(link);
-      if (link->GetSocket() == socket)
-      {
-         return true;
-      }
+		if(link->GetSocket() == socket)
+		{
+			return true;
+		}
 	}
 	return false;
 }
@@ -157,14 +151,12 @@ bool
 //#############################################################################
 //
 CollectionSize
-	Plug::GetSocketCount()
+Plug::GetSocketCount()
 {
 	Check_Object(this);
-
 	CollectionSize socket_count = 0;
-	Link *link;
-
-	for (link = linkHead; link != nullptr; link = link->nextLink)
+	Link* link;
+	for(link = linkHead; link != nullptr; link = link->nextLink)
 	{
 		Check_Object(link);
 		socket_count++;
@@ -182,22 +174,22 @@ CollectionSize
 //#############################################################################
 //
 PlugIterator::PlugIterator(
-	Plug *plug,
-   RegisteredClass::ClassID class_to_iterate
+	Plug* plug,
+	RegisteredClass::ClassID class_to_iterate
 )
 {
 	Check_Object(plug);
 	this->plug = plug;
-   classToIterate = class_to_iterate;
+	classToIterate = class_to_iterate;
 	currentLink = plug->linkHead;
 	NextNode();
 }
 
-PlugIterator::PlugIterator(const PlugIterator &iterator)
+PlugIterator::PlugIterator(const PlugIterator& iterator)
 {
 	Check_Object(&iterator);
 	plug = iterator.plug;
-   classToIterate = iterator.classToIterate;
+	classToIterate = iterator.classToIterate;
 	currentLink = iterator.currentLink;
 	NextNode();
 }
@@ -218,9 +210,9 @@ PlugIterator::~PlugIterator()
 //#############################################################################
 //
 void
-	PlugIterator::TestInstance(void) const
+PlugIterator::TestInstance(void) const
 {
-	if (currentLink != nullptr)
+	if(currentLink != nullptr)
 	{
 		Check_Object(currentLink);
 	}
@@ -232,12 +224,12 @@ void
 //#############################################################################
 //
 void
-	PlugIterator::First()
+PlugIterator::First()
 {
 	Check_Object(this);
 	Check_Object(plug);
 	currentLink = plug->linkHead;
-   NextNode();
+	NextNode();
 }
 
 //
@@ -246,23 +238,22 @@ void
 //#############################################################################
 //
 void
-	PlugIterator::Last()
+PlugIterator::Last()
 {
 	Check_Object(this);
-	if (currentLink == nullptr)
+	if(currentLink == nullptr)
 	{
 		Check_Object(plug);
-		if ((currentLink = plug->linkHead) == nullptr)
+		if((currentLink = plug->linkHead) == nullptr)
 			return;
 	}
-
 	Check_Object(currentLink);
 	while(currentLink->nextLink != nullptr)
 	{
 		currentLink = currentLink->nextLink;
 		Check_Object(currentLink);
 	}
-   PreviousNode();
+	PreviousNode();
 }
 
 //
@@ -271,12 +262,12 @@ void
 //#############################################################################
 //
 void
-	PlugIterator::Next()
+PlugIterator::Next()
 {
 	Check_Object(this);
 	Check_Object(currentLink);
 	currentLink = currentLink->nextLink;
-   NextNode();
+	NextNode();
 }
 
 //
@@ -285,12 +276,12 @@ void
 //#############################################################################
 //
 void
-	PlugIterator::Previous()
+PlugIterator::Previous()
 {
 	Check_Object(this);
 	Check_Object(currentLink);
 	currentLink = currentLink->prevLink;
-   PreviousNode();
+	PreviousNode();
 }
 
 //
@@ -299,13 +290,12 @@ void
 //#############################################################################
 //
 PVOID
-	PlugIterator::ReadAndNextImplementation()
+PlugIterator::ReadAndNextImplementation()
 {
 	Check_Object(this);
-	if (currentLink != nullptr)
+	if(currentLink != nullptr)
 	{
-		Node *node;
-
+		Node* node;
 		Check_Object(currentLink);
 		Check_Object(currentLink->socket);
 		node = currentLink->socket->GetReleaseNode();
@@ -322,18 +312,17 @@ PVOID
 //#############################################################################
 //
 PVOID
-	PlugIterator::ReadAndPreviousImplementation()
+PlugIterator::ReadAndPreviousImplementation()
 {
 	Check_Object(this);
-	if (currentLink != nullptr)
+	if(currentLink != nullptr)
 	{
-		Node *node;
-
+		Node* node;
 		Check_Object(currentLink);
 		Check_Object(currentLink->socket);
 		node = currentLink->socket->GetReleaseNode();
 		currentLink = currentLink->prevLink;
-      PreviousNode();
+		PreviousNode();
 		return node;
 	}
 	return nullptr;
@@ -345,10 +334,10 @@ PVOID
 //#############################################################################
 //
 PVOID
-	PlugIterator::GetCurrentImplementation()
+PlugIterator::GetCurrentImplementation()
 {
 	Check_Object(this);
-	if (currentLink != nullptr)
+	if(currentLink != nullptr)
 	{
 		Check_Object(currentLink);
 		Check_Object(currentLink->socket);
@@ -363,16 +352,15 @@ PVOID
 //#############################################################################
 //
 CollectionSize
-	PlugIterator::GetSize()
+PlugIterator::GetSize()
 {
 	Check_Object(this);
 	CollectionSize i = 0;
-
 	First();
-	while (GetCurrentImplementation() != nullptr)
+	while(GetCurrentImplementation() != nullptr)
 	{
 		i++;
-      Next();
+		Next();
 	}
 	return i;
 }
@@ -383,20 +371,19 @@ CollectionSize
 //#############################################################################
 //
 PVOID
-	PlugIterator::GetNthImplementation(
-		CollectionSize index
-	)
+PlugIterator::GetNthImplementation(
+	CollectionSize index
+)
 {
 	Check_Object(this);
 	CollectionSize i = 0;
 	PVOID item;
-
 	First();
-	while ((item = GetCurrentImplementation()) != nullptr)
+	while((item = GetCurrentImplementation()) != nullptr)
 	{
-		if (i == index)
+		if(i == index)
 			return item;
-      Next();
+		Next();
 		i++;
 	}
 	return nullptr;
@@ -408,29 +395,28 @@ PVOID
 //#############################################################################
 //
 void
-	PlugIterator::NextNode()
+PlugIterator::NextNode()
 {
 	Check_Object(this);
-   while (currentLink != nullptr)
-   {
-		Node *node;
-
-   	Check_Object(currentLink);
-      Check_Object(currentLink->socket);
-		if ((node = currentLink->socket->GetReleaseNode()) != nullptr)
-      {
-      	Check_Object(node);
-         if (
+	while(currentLink != nullptr)
+	{
+		Node* node;
+		Check_Object(currentLink);
+		Check_Object(currentLink->socket);
+		if((node = currentLink->socket->GetReleaseNode()) != nullptr)
+		{
+			Check_Object(node);
+			if(
 				classToIterate == NullClassID ||
 				classToIterate == node->GetClassID()
-         )
-         {
-            return;
-         }
-      }
-      currentLink = currentLink->nextLink;
-   }
-   return;
+			)
+			{
+				return;
+			}
+		}
+		currentLink = currentLink->nextLink;
+	}
+	return;
 }
 
 //
@@ -439,29 +425,28 @@ void
 //###########################################################################
 //
 void
-	PlugIterator::PreviousNode()
+PlugIterator::PreviousNode()
 {
 	Check_Object(this);
-   while (currentLink != nullptr)
-   {
-		Node *node;
-
-   	Check_Object(currentLink);
-      Check_Object(currentLink->socket);
-		if ((node = currentLink->socket->GetReleaseNode()) != nullptr)
-      {
-      	Check_Object(node);
-         if (
+	while(currentLink != nullptr)
+	{
+		Node* node;
+		Check_Object(currentLink);
+		Check_Object(currentLink->socket);
+		if((node = currentLink->socket->GetReleaseNode()) != nullptr)
+		{
+			Check_Object(node);
+			if(
 				classToIterate == NullClassID ||
 				classToIterate == node->GetClassID()
-         )
-         {
-            return;
-         }
-      }
-      currentLink = currentLink->prevLink;
-   }
-   return;
+			)
+			{
+				return;
+			}
+		}
+		currentLink = currentLink->prevLink;
+	}
+	return;
 }
 
 //
@@ -470,16 +455,13 @@ void
 //###########################################################################
 //
 void
-	PlugIterator::Remove()
+PlugIterator::Remove()
 {
 	Check_Object(this);
-	Link *old_link;
-
+	Link* old_link;
 	Check_Object(currentLink);
-
 	old_link = currentLink;
 	currentLink = currentLink->nextLink;
-
 	Unregister_Object(old_link);
 	delete old_link;
 }

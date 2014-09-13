@@ -32,160 +32,146 @@
 //---------------------------------------------------------------------------
 class IDString
 {
-	protected:
+protected:
 
-		char id[ID_SIZE];					// 8 characters and a terminator...
+	char id[ID_SIZE];					// 8 characters and a terminator...
 
-	public:
+public:
 
-		void init (void)
-		{
-			memset(id,0,ID_SIZE);
-		}
+	void init(void)
+	{
+		memset(id, 0, ID_SIZE);
+	}
 
-		void init (PSTR new_id)
-		{
-			strncpy_s(id, ID_SIZE, new_id, ID_SIZE-1);   // pads unused ID with 0s!
-			id[ID_SIZE-1] = 0;
-		}
+	void init(PSTR new_id)
+	{
+		strncpy_s(id, ID_SIZE, new_id, ID_SIZE - 1); // pads unused ID with 0s!
+		id[ID_SIZE - 1] = 0;
+	}
 
-		void init (IDString & new_ids)
-		{
-			strncpy_s(id, ID_SIZE, new_ids.id, ID_SIZE-1);
-			id[ID_SIZE-1] = 0;
-		}
+	void init(IDString& new_ids)
+	{
+		strncpy_s(id, ID_SIZE, new_ids.id, ID_SIZE - 1);
+		id[ID_SIZE - 1] = 0;
+	}
 
-		IDString (void)
-		{
-			init(void);
-		}
+	IDString(void)
+	{
+		init(void);
+	}
 
-		IDString (PSTR  new_id)
-		{
-			init(new_id);
-		}
+	IDString(PSTR  new_id)
+	{
+		init(new_id);
+	}
 
-		IDString (IDString & new_ids)
-		{
-			init(new_ids);
-		}
+	IDString(IDString& new_ids)
+	{
+		init(new_ids);
+	}
 
-		inline operator PSTR  (void)
-		{
-			return id;
-		}
+	inline operator PSTR(void)
+	{
+		return id;
+	}
 
-		bool operator == (PSTR other_id)
-		{
-			if( other_id[0]!=id[0] )
-				return FALSE;
-			if( other_id[0]==0 )
-				return TRUE;
-
-			if( other_id[1]!=id[1] )
-				return FALSE;
-			if( other_id[1]==0 )
-				return TRUE;
-
-			if( other_id[2]!=id[2] )
-				return FALSE;
-			if( other_id[2]==0 )
-				return TRUE;
-
-			if( other_id[3]!=id[3] )
-				return FALSE;
-			if( other_id[3]==0 )
-				return TRUE;
-
-			if( other_id[4]!=id[4] )
-				return FALSE;
-			if( other_id[4]==0 )
-				return TRUE;
-
-			if( other_id[5]!=id[5] )
-				return FALSE;
-			if( other_id[5]==0 )
-				return TRUE;
-
-			if( other_id[6]!=id[6] )
-				return FALSE;
-			if( other_id[6]==0 )
-				return TRUE;
-
-			return (other_id[7]==id[7]);
+	bool operator == (PSTR other_id)
+	{
+		if(other_id[0] != id[0])
+			return FALSE;
+		if(other_id[0] == 0)
+			return TRUE;
+		if(other_id[1] != id[1])
+			return FALSE;
+		if(other_id[1] == 0)
+			return TRUE;
+		if(other_id[2] != id[2])
+			return FALSE;
+		if(other_id[2] == 0)
+			return TRUE;
+		if(other_id[3] != id[3])
+			return FALSE;
+		if(other_id[3] == 0)
+			return TRUE;
+		if(other_id[4] != id[4])
+			return FALSE;
+		if(other_id[4] == 0)
+			return TRUE;
+		if(other_id[5] != id[5])
+			return FALSE;
+		if(other_id[5] == 0)
+			return TRUE;
+		if(other_id[6] != id[6])
+			return FALSE;
+		if(other_id[6] == 0)
+			return TRUE;
+		return (other_id[7] == id[7]);
 //			return (strncmp(id,other_id,ID_SIZE-1) == 0);
-		}
+	}
 
-		bool operator == (IDString &other_ids)
-		{
-			if( other_ids.id[0]!=id[0] )
-				return FALSE;
-			if( other_ids.id[0]==0 )
-				return TRUE;
-
-			if( other_ids.id[1]!=id[1] )
-				return FALSE;
-			if( other_ids.id[1]==0 )
-				return TRUE;
-
-			if( other_ids.id[2]!=id[2] )
-				return FALSE;
-			if( other_ids.id[2]==0 )
-				return TRUE;
-
-			if( other_ids.id[3]!=id[3] )
-				return FALSE;
-			if( other_ids.id[3]==0 )
-				return TRUE;
-
-			if( other_ids.id[4]!=id[4] )
-				return FALSE;
-			if( other_ids.id[4]==0 )
-				return TRUE;
-
-			if( other_ids.id[5]!=id[5] )
-				return FALSE;
-			if( other_ids.id[5]==0 )
-				return TRUE;
-
-			if( other_ids.id[6]!=id[6] )
-				return FALSE;
-			if( other_ids.id[6]==0 )
-				return TRUE;
-
-			return (other_ids.id[7]==id[7]);
+	bool operator == (IDString& other_ids)
+	{
+		if(other_ids.id[0] != id[0])
+			return FALSE;
+		if(other_ids.id[0] == 0)
+			return TRUE;
+		if(other_ids.id[1] != id[1])
+			return FALSE;
+		if(other_ids.id[1] == 0)
+			return TRUE;
+		if(other_ids.id[2] != id[2])
+			return FALSE;
+		if(other_ids.id[2] == 0)
+			return TRUE;
+		if(other_ids.id[3] != id[3])
+			return FALSE;
+		if(other_ids.id[3] == 0)
+			return TRUE;
+		if(other_ids.id[4] != id[4])
+			return FALSE;
+		if(other_ids.id[4] == 0)
+			return TRUE;
+		if(other_ids.id[5] != id[5])
+			return FALSE;
+		if(other_ids.id[5] == 0)
+			return TRUE;
+		if(other_ids.id[6] != id[6])
+			return FALSE;
+		if(other_ids.id[6] == 0)
+			return TRUE;
+		return (other_ids.id[7] == id[7]);
 //			return (strncmp(id,other_ids.id,ID_SIZE-1) == 0);
-		}
+	}
 
-		bool operator != (PSTR other_id)
-		{
-			return !(*this == other_id);
-		}
+	bool operator != (PSTR other_id)
+	{
+		return !(*this == other_id);
+	}
 
-		bool operator != (IDString &other_ids)
-		{
-			return !(*this == other_ids);
-		}
+	bool operator != (IDString& other_ids)
+	{
+		return !(*this == other_ids);
+	}
 
-		void operator = (PSTR new_id)
-		{
-			init(new_id);
-		}
+	void operator = (PSTR new_id)
+	{
+		init(new_id);
+	}
 
-		void operator = (IDString & new_ids)
-		{
-			init(new_ids);
-		}
+	void operator = (IDString& new_ids)
+	{
+		init(new_ids);
+	}
 
-		bool isNull (void)
-		{
-	      return (id[0] == 0);
-		}
+	bool isNull(void)
+	{
+		return (id[0] == 0);
+	}
 
-		void standardize (void)
-		{
-			_strupr_s(id, ID_SIZE);
-		}
+	void standardize(void)
+	{
+		_strupr_s(id, ID_SIZE);
+	}
 };
 
 //--------------------------------------------------------------------------
@@ -194,51 +180,51 @@ class FullPathFileName
 	//Data items...
 	//-------------
 
-	private:
+private:
 
-	protected:
+protected:
 
-		PSTR fullName;
+	PSTR fullName;
 
-	public:
+public:
 
 	//Member functions...
 	//-------------------
 
-	private:
+private:
 
-	protected:
+protected:
 
-	public:
+public:
 
-		void init (void)
-		{
-			fullName = nullptr;
-		}
+	void init(void)
+	{
+		fullName = nullptr;
+	}
 
-		void init (PSTR dir_path, PCSTR name, PSTR ext);
+	void init(PSTR dir_path, PCSTR name, PSTR ext);
 
-		FullPathFileName (void)
-		{
-			init(void);
-		}
+	FullPathFileName(void)
+	{
+		init(void);
+	}
 
-		FullPathFileName (PSTR dir_path, PCSTR name, PSTR ext)
-		{
-			init(void);
-			init(dir_path, name, ext);
-		}
+	FullPathFileName(PSTR dir_path, PCSTR name, PSTR ext)
+	{
+		init(void);
+		init(dir_path, name, ext);
+	}
 
-		inline operator PSTR  (void)
-		{
-			return fullName;
-		}
+	inline operator PSTR(void)
+	{
+		return fullName;
+	}
 
-		void destroy (void);
+	void destroy(void);
 
-		void changeExt (PSTR from, PSTR to);
+	void changeExt(PSTR from, PSTR to);
 
-		~FullPathFileName (void);
+	~FullPathFileName(void);
 };
 
 //---------------------------------------------------------------------------

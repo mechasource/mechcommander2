@@ -39,74 +39,84 @@ typedef struct _StaticCommanderData
 
 } StaticCommanderData;
 
-class Commander {
+class Commander
+{
 
-	public:
+public:
 
-		int32_t					id;
-		TeamPtr					team;
-		MoverGroupPtr			groups[MAX_MOVERGROUPS];
+	int32_t					id;
+	TeamPtr					team;
+	MoverGroupPtr			groups[MAX_MOVERGROUPS];
 
-		static int32_t				numCommanders;
-		static CommanderPtr		commanders[MAX_COMMANDERS];
-		static CommanderPtr		home;
+	static int32_t				numCommanders;
+	static CommanderPtr		commanders[MAX_COMMANDERS];
+	static CommanderPtr		home;
 
-	public:
+public:
 
-		PVOID operator new (size_t ourSize);
-		void operator delete (PVOID us);
+	PVOID operator new(size_t ourSize);
+	void operator delete(PVOID us);
 
-		virtual void init (void);
-		
-		Commander (void) {
-			init(void);
-		}
-			
-		virtual void destroy (void);
+	virtual void init(void);
 
-		~Commander (void) {
-			destroy(void);
-		}
+	Commander(void)
+	{
+		init(void);
+	}
 
-		virtual int32_t getId (void) {
-			return(id);
-		}
+	virtual void destroy(void);
 
-		virtual void setId (int32_t _id) {
-			id = _id;
-			commanders[id] = this;
-		}
+	~Commander(void)
+	{
+		destroy(void);
+	}
 
-		virtual TeamPtr getTeam (void) {
-			return(team);
-		}
+	virtual int32_t getId(void)
+	{
+		return(id);
+	}
 
-		virtual void setTeam (TeamPtr _team) {
-			team = _team;
-		}
+	virtual void setId(int32_t _id)
+	{
+		id = _id;
+		commanders[id] = this;
+	}
 
-		virtual MoverGroupPtr getGroup (int32_t groupNumber) {
-			return(groups[groupNumber]);
-		}
+	virtual TeamPtr getTeam(void)
+	{
+		return(team);
+	}
 
-		int32_t setGroup (int32_t id, int32_t numMates, MoverPtr* moverList, int32_t point);
+	virtual void setTeam(TeamPtr _team)
+	{
+		team = _team;
+	}
 
-		void setLocalMoverId (int32_t localMoverId);
-		
-		void eject (void);
+	virtual MoverGroupPtr getGroup(int32_t groupNumber)
+	{
+		return(groups[groupNumber]);
+	}
 
-		void addToGUI (bool visible = true);
+	int32_t setGroup(int32_t id, int32_t numMates, MoverPtr* moverList, int32_t point);
 
-		void setHomeCommander (void) {
-			home = this;
-		}
+	void setLocalMoverId(int32_t localMoverId);
 
-		static CommanderPtr getCommander (int32_t _id) {
-			return(commanders[_id]);
-		}
+	void eject(void);
 
-		static int32_t Save (PacketFilePtr file, int32_t packetNum);
-		static int32_t Load (PacketFilePtr file, int32_t packetNum);
+	void addToGUI(bool visible = true);
+
+	void setHomeCommander(void)
+	{
+		home = this;
+	}
+
+	static CommanderPtr getCommander(int32_t _id)
+	{
+		return(commanders[_id]);
+	}
+
+	static int32_t Save(PacketFilePtr file, int32_t packetNum);
+	static int32_t Load(PacketFilePtr file, int32_t packetNum);
 };
 
 //***************************************************************************

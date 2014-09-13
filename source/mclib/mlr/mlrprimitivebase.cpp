@@ -10,7 +10,7 @@ using namespace MidLevelRenderer;
 
 //#############################################################################
 
-size_t clipTrick[6][2] = 
+size_t clipTrick[6][2] =
 {
 	{ 1, 1},
 	{ 1, 0},
@@ -29,7 +29,7 @@ void ClipPolygon2::Init(int32_t passes)
 	// Verify(gos_GetCurrentHeap() == StaticHeap);
 	coords.SetLength(Limits::Max_Number_Vertices_Per_Polygon);
 	colors.SetLength(Limits::Max_Number_Vertices_Per_Polygon);
-	texCoords.SetLength(passes*Limits::Max_Number_Vertices_Per_Polygon);
+	texCoords.SetLength(passes * Limits::Max_Number_Vertices_Per_Polygon);
 	clipPerVertex.SetLength(Limits::Max_Number_Vertices_Per_Polygon);
 }
 
@@ -46,73 +46,67 @@ void ClipPolygon2::Destroy()
 //#############################################################################
 
 MLRPrimitiveBase::ClassData*
-	MLRPrimitiveBase::DefaultData = nullptr;
+MLRPrimitiveBase::DefaultData = nullptr;
 
 DynamicArrayOf<Vector4D>
-	*MLRPrimitiveBase::transformedCoords;
+* MLRPrimitiveBase::transformedCoords;
 
 DynamicArrayOf<MLRClippingState>
-	*MLRPrimitiveBase::clipPerVertex;
+* MLRPrimitiveBase::clipPerVertex;
 DynamicArrayOf<Vector4D>
-	*MLRPrimitiveBase::clipExtraCoords;
+* MLRPrimitiveBase::clipExtraCoords;
 
 DynamicArrayOf<Stuff::Vector2DScalar>
-	*MLRPrimitiveBase::clipExtraTexCoords;
+* MLRPrimitiveBase::clipExtraTexCoords;
 
 #if COLOR_AS_DWORD
 DynamicArrayOf<uint32_t>
 #else
 DynamicArrayOf<RGBAColor>
 #endif
-	*MLR_I_C_PMesh::clipExtraColors;
+* MLR_I_C_PMesh::clipExtraColors;
 
 DynamicArrayOf<uint16_t>
-	*MLRPrimitiveBase::clipExtraLength;
+* MLRPrimitiveBase::clipExtraLength;
 
 ClipPolygon2
-	*MLRPrimitiveBase::clipBuffer;
+* MLRPrimitiveBase::clipBuffer;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	MLRPrimitiveBase::InitializeClass()
+MLRPrimitiveBase::InitializeClass()
 {
 	Verify(!DefaultData);
 	// Verify(gos_GetCurrentHeap() == StaticHeap);
 	DefaultData =
 		new ClassData(
-			MLRPrimitiveBaseClassID,
-			"MidLevelRenderer::MLRPrimitiveBase",
-			RegisteredClass::DefaultData,
-			nullptr
-		);
+		MLRPrimitiveBaseClassID,
+		"MidLevelRenderer::MLRPrimitiveBase",
+		RegisteredClass::DefaultData,
+		nullptr
+	);
 	Register_Object(DefaultData);
-
 	transformedCoords = new DynamicArrayOf<Vector4D> (Limits::Max_Number_Vertices_Per_Mesh);
 	Register_Object(transformedCoords);
-
 	clipPerVertex = new DynamicArrayOf<MLRClippingState> (Limits::Max_Number_Vertices_Per_Mesh);
 	Register_Object(clipPerVertex);
 	clipExtraCoords = new DynamicArrayOf<Vector4D> (Limits::Max_Number_Vertices_Per_Mesh);
 	Register_Object(clipExtraCoords);
 	clipExtraTexCoords = new DynamicArrayOf<Stuff::Vector2DScalar> (Limits::Max_Number_Vertices_Per_Mesh);
 	Register_Object(clipExtraTexCoords);
-
-	clipExtraColors = new DynamicArrayOf<
+	clipExtraColors = new DynamicArrayOf <
 #if COLOR_AS_DWORD
-		uint32_t
+	uint32_t
 #else
-		RGBAColor
+	RGBAColor
 #endif
 	> (Limits::Max_Number_Primitives_Per_Frame);
 	Register_Object(clipExtraColors);
-
 	clipExtraLength = new DynamicArrayOf<uint16_t> (Limits::Max_Number_Primitives_Per_Frame);
 	Register_Object(clipExtraLength);
-
 	clipBuffer = new ClipPolygon2 [2];
 	Register_Pointer(clipBuffer);
-
 	clipBuffer[0].Init(Limits::Max_Number_Of_Multitextures);
 	clipBuffer[1].Init(Limits::Max_Number_Of_Multitextures);
 }
@@ -120,16 +114,14 @@ void
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	MLRPrimitiveBase::TerminateClass()
+MLRPrimitiveBase::TerminateClass()
 {
 	clipBuffer[1].Destroy();
 	clipBuffer[0].Destroy();
 	Unregister_Pointer(clipBuffer);
 	delete [] clipBuffer;
-
 	Unregister_Object(transformedCoords);
 	delete transformedCoords;
-
 	Unregister_Object(clipPerVertex);
 	delete clipPerVertex;
 	Unregister_Object(clipExtraCoords);
@@ -140,8 +132,6 @@ void
 	delete clipExtraColors;
 	Unregister_Object(clipExtraLength);
 	delete clipExtraLength;
-
-
 	Unregister_Object(DefaultData);
 	delete DefaultData;
 	DefaultData = nullptr;
@@ -150,8 +140,8 @@ void
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 MLRPrimitiveBase::MLRPrimitiveBase(
-	ClassData *class_data,
-	MemoryStream *stream,
+	ClassData* class_data,
+	MemoryStream* stream,
 	uint32_t version
 ):
 	RegisteredClass(class_data)
@@ -159,7 +149,6 @@ MLRPrimitiveBase::MLRPrimitiveBase(
 	Check_Pointer(this);
 	Check_Object(stream);
 	//Verify(gos_GetCurrentHeap() == Heap);
-
 	switch(version)
 	{
 		case 1:
@@ -171,18 +160,13 @@ MLRPrimitiveBase::MLRPrimitiveBase(
 		default:
 		{
 			MemoryStreamIO_Read(stream, &coords);
-
 			MemoryStreamIO_Read(stream, &texCoords);
-
 			MemoryStreamIO_Read(stream, &lengths);
-
 			*stream >> drawMode;
-
 			referenceState.Load(stream, version);
 		}
 		break;
 	}
-
 	passes = 1;
 	referenceCount = 1;
 }
@@ -190,37 +174,28 @@ MLRPrimitiveBase::MLRPrimitiveBase(
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	MLRPrimitiveBase::Save(MemoryStream *stream)
+MLRPrimitiveBase::Save(MemoryStream* stream)
 {
 	Check_Object(this);
 	Check_Object(stream);
-
 	*stream << GetClassID();
-
 	MemoryStreamIO_Write(stream, &coords);
-
 	MemoryStreamIO_Write(stream, &texCoords);
-
 	MemoryStreamIO_Write(stream, &lengths);
-
 	*stream << static_cast<int32_t>(drawMode);
-
 	referenceState.Save(stream);
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLRPrimitiveBase::MLRPrimitiveBase(ClassData *class_data):
+MLRPrimitiveBase::MLRPrimitiveBase(ClassData* class_data):
 	RegisteredClass(class_data),
 	lengths(0),	texCoords(0), coords(0)
 {
 	//Verify(gos_GetCurrentHeap() == Heap);
 	referenceState = 0;
-	
 	state = 0;
-
 	passes = 1;
-
 	referenceCount = 1;
 }
 
@@ -228,13 +203,13 @@ MLRPrimitiveBase::MLRPrimitiveBase(ClassData *class_data):
 //
 MLRPrimitiveBase::~MLRPrimitiveBase()
 {
-	Verify(referenceCount==0);
+	Verify(referenceCount == 0);
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	MLRPrimitiveBase::TestInstance(void) const
+MLRPrimitiveBase::TestInstance(void) const
 {
 	Verify(IsDerivedFrom(DefaultData));
 }
@@ -242,36 +217,35 @@ void
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	MLRPrimitiveBase::InitializeDraw()
+MLRPrimitiveBase::InitializeDraw()
 {
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	MLRPrimitiveBase::InitializeDrawPrimitive(uint8_t vis, int32_t)
+MLRPrimitiveBase::InitializeDrawPrimitive(uint8_t vis, int32_t)
 {
 	gos_vertices = nullptr;
 	numGOSVertices = -1;
-
 	visible = vis;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	MLRPrimitiveBase::SetSubprimitiveLengths(puint8_t data, int32_t l)
+MLRPrimitiveBase::SetSubprimitiveLengths(puint8_t data, int32_t l)
 {
-	Check_Object(this); 
+	Check_Object(this);
 	lengths.AssignData(data, l);
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	MLRPrimitiveBase::GetSubprimitiveLengths(puint8_t *data, pint32_t len)
+MLRPrimitiveBase::GetSubprimitiveLengths(puint8_t* data, pint32_t len)
 {
-	Check_Object(this); 
+	Check_Object(this);
 	*data = lengths.GetData();
 	*len = lengths.GetLength();
 }
@@ -279,25 +253,23 @@ void
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 int32_t
-	MLRPrimitiveBase::GetSubprimitiveLength (int32_t i) const
-{ 
-	Check_Object(this); 
+MLRPrimitiveBase::GetSubprimitiveLength(int32_t i) const
+{
+	Check_Object(this);
 	return (lengths.GetLength() > 0 ? abs(lengths[i]) : 1);
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	MLRPrimitiveBase::SetCoordData(
-		const Point3D *data,
-		int32_t dataSize
-	)
+MLRPrimitiveBase::SetCoordData(
+	const Point3D* data,
+	size_t dataSize
+)
 {
-	Check_Object(this); 
+	Check_Object(this);
 	Check_Pointer(data);
-
 	Verify(texCoords.GetLength() == 0 || dataSize == texCoords.GetLength());
-
 #if defined (MAX_NUMBER_VERTICES)
 	Verify(dataSize <= MAX_NUMBER_VERTICES);
 #endif
@@ -307,13 +279,12 @@ void
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	MLRPrimitiveBase::GetCoordData(
-		Point3D **data,
-		pint32_t dataSize
-	)
+MLRPrimitiveBase::GetCoordData(
+	Point3D** data,
+	psize_t dataSize
+)
 {
 	Check_Object(this);
-
 	*data = coords.GetData();
 	*dataSize = coords.GetLength();
 }
@@ -321,28 +292,26 @@ void
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	MLRPrimitiveBase::SetTexCoordData(
-		const Stuff::Vector2DScalar *data,
-		int32_t dataSize
-	)
+MLRPrimitiveBase::SetTexCoordData(
+	const Stuff::Vector2DScalar* data,
+	size_t dataSize
+)
 {
-	Check_Object(this); 
+	Check_Object(this);
 	Check_Pointer(data);
-
 	Verify(coords.GetLength() == 0 || dataSize == coords.GetLength());
-
-	texCoords.AssignData((Vector2DScalar *)data, dataSize);
+	texCoords.AssignData((Vector2DScalar*)data, dataSize);
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	MLRPrimitiveBase::GetTexCoordData(
-		Vector2DScalar **data,
-		pint32_t dataSize
-	)
+MLRPrimitiveBase::GetTexCoordData(
+	Stuff::Vector2DScalar** data,
+	psize_t dataSize
+)
 {
-	Check_Object(this); 
+	Check_Object(this);
 	*data = texCoords.GetData();
 	*dataSize = texCoords.GetLength();
 }
@@ -350,40 +319,34 @@ void
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	MLRPrimitiveBase::Transform(Matrix4D *mat)
+MLRPrimitiveBase::Transform(Matrix4D* mat)
 {
 	Check_Object(this);
-
 	int32_t i, len = coords.GetLength();
-
-	for(i=0;i<len;i++)
+	for(i = 0; i < len; i++)
 	{
 		(*transformedCoords)[i].Multiply(coords[i], *mat);
 	}
-
-	#ifdef LAB_ONLY
-		Set_Statistic(TransformedVertices, TransformedVertices+len);
-	#endif
+#ifdef LAB_ONLY
+	Set_Statistic(TransformedVertices, TransformedVertices + len);
+#endif
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	MLRPrimitiveBase::GetExtend(Stuff::ExtentBox *box)
+MLRPrimitiveBase::GetExtend(Stuff::ExtentBox* box)
 {
 	Check_Object(this);
 	Check_Object(box);
-
-	if(coords.GetLength()==0)
+	if(coords.GetLength() == 0)
 	{
 		return;
 	}
-
 	box->minX = box->maxX = coords[0].x;
 	box->minY = box->maxY = coords[0].y;
 	box->minZ = box->maxZ = coords[0].z;
-
-	for(int32_t i=0;i<coords.GetLength();i++)
+	for(size_t i = 0; i < coords.GetLength(); i++)
 	{
 		if(coords[i].x < box->minX)
 		{
@@ -415,10 +378,10 @@ void
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 bool
-	MLRPrimitiveBase::CastRay(
-		Line3D *line,
-		Normal3D *normal
-	)
+MLRPrimitiveBase::CastRay(
+	Line3D* line,
+	Normal3D* normal
+)
 {
 	Check_Object(this);
 	Check_Object(line);
@@ -430,141 +393,141 @@ bool
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 MLRShape*
-	MidLevelRenderer::CreateIndexedIcosahedron(IcoInfo& icoInfo, Stuff::DynamicArrayOf<MLRState> *states)
+MidLevelRenderer::CreateIndexedIcosahedron(IcoInfo& icoInfo, Stuff::DynamicArrayOf<MLRState>* states)
 {
 	switch(icoInfo.type)
 	{
 		case MLR_I_PMeshClassID:
 			return CreateIndexedIcosahedron_NoColor_NoLit(icoInfo, &(*states)[0]);
-		break;
+			break;
 		case MLR_I_C_PMeshClassID:
 			return CreateIndexedIcosahedron_Color_NoLit(icoInfo, &(*states)[0]);
-		break;
+			break;
 		case MLR_I_L_PMeshClassID:
 			return CreateIndexedIcosahedron_Color_Lit(icoInfo, &(*states)[0]);
-		break;
+			break;
 		case MLR_I_DT_PMeshClassID:
 			return CreateIndexedIcosahedron_NoColor_NoLit_2Tex(icoInfo, &(*states)[0], &(*states)[1]);
-		break;
+			break;
 		case MLR_I_C_DT_PMeshClassID:
 			return CreateIndexedIcosahedron_Color_NoLit_2Tex(icoInfo, &(*states)[0], &(*states)[1]);
-		break;
+			break;
 		case MLR_I_L_DT_PMeshClassID:
 			return CreateIndexedIcosahedron_Color_Lit_2Tex(icoInfo, &(*states)[0], &(*states)[1]);
-		break;
+			break;
 		case MLR_I_MT_PMeshClassID:
 			return CreateIndexedIcosahedron_NoColor_NoLit_MultiTexture(icoInfo, states);
-		break;
+			break;
 		case MLR_I_DeT_PMeshClassID:
 			return CreateIndexedIcosahedron_NoColor_NoLit_DetTex(icoInfo, &(*states)[0], &(*states)[1]);
-		break;
+			break;
 		case MLR_I_C_DeT_PMeshClassID:
 			return CreateIndexedIcosahedron_Color_NoLit_DetTex(icoInfo, &(*states)[0], &(*states)[1]);
-		break;
+			break;
 		case MLR_I_L_DeT_PMeshClassID:
 			return CreateIndexedIcosahedron_Color_Lit_DetTex(icoInfo, &(*states)[0], &(*states)[1]);
-		break;
+			break;
 		case MLR_I_TMeshClassID:
 			return CreateIndexedTriIcosahedron_NoColor_NoLit(icoInfo, &(*states)[0]);
-		break;
+			break;
 		case MLR_I_C_TMeshClassID:
 			return CreateIndexedTriIcosahedron_Color_NoLit(icoInfo, &(*states)[0]);
-		break;
+			break;
 		case MLR_I_L_TMeshClassID:
 			return CreateIndexedTriIcosahedron_Color_Lit(icoInfo, &(*states)[0]);
-		break;
+			break;
 		case MLR_I_DeT_TMeshClassID:
 			return CreateIndexedTriIcosahedron_NoColor_NoLit_DetTex(icoInfo, &(*states)[0], &(*states)[1]);
-		break;
+			break;
 		case MLR_I_C_DeT_TMeshClassID:
 			return CreateIndexedTriIcosahedron_Color_NoLit_DetTex(icoInfo, &(*states)[0], &(*states)[1]);
-		break;
+			break;
 		case MLR_I_L_DeT_TMeshClassID:
 			return CreateIndexedTriIcosahedron_Color_Lit_DetTex(icoInfo, &(*states)[0], &(*states)[1]);
-		break;
+			break;
 		case MLR_I_DT_TMeshClassID:
 			return CreateIndexedTriIcosahedron_NoColor_NoLit_2Tex(icoInfo, &(*states)[0], &(*states)[1]);
-		break;
+			break;
 		case MLR_I_C_DT_TMeshClassID:
 			return CreateIndexedTriIcosahedron_Color_NoLit_2Tex(icoInfo, &(*states)[0], &(*states)[1]);
-		break;
+			break;
 		case MLR_I_L_DT_TMeshClassID:
 			return CreateIndexedTriIcosahedron_Color_Lit_2Tex(icoInfo, &(*states)[0], &(*states)[1]);
-		break;
+			break;
 		case MLR_TerrainClassID:
 			return CreateIndexedTriIcosahedron_TerrainTest(icoInfo, &(*states)[0], &(*states)[1]);
-		break;
+			break;
 	}
 	return nullptr;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-PCSTR 
-	MidLevelRenderer::IcoInfo::GetTypeName()
+PCSTR
+MidLevelRenderer::IcoInfo::GetTypeName()
 {
 	switch(type)
 	{
 		case MLR_I_PMeshClassID:
 			return "not colored, unlit mesh";
-		break;
+			break;
 		case MLR_I_C_PMeshClassID:
 			return "colored, unlit mesh";
-		break;
+			break;
 		case MLR_I_L_PMeshClassID:
 			return "colored, lit mesh";
-		break;
+			break;
 		case MLR_I_DT_PMeshClassID:
 			return "not colored, unlit mesh w/ 2 Tex";
-		break;
+			break;
 		case MLR_I_C_DT_PMeshClassID:
 			return "colored, unlit mesh w/ 2 Tex";
-		break;
+			break;
 		case MLR_I_L_DT_PMeshClassID:
 			return "colored, lit mesh w/ 2 Tex";
-		break;
+			break;
 		case MLR_I_MT_PMeshClassID:
 			return "not colored, unlit mesh w/ 4 Tex";
-		break;
+			break;
 		case MLR_I_DeT_PMeshClassID:
 			return "not colored, unlit mesh w/ DetTex";
-		break;
+			break;
 		case MLR_I_C_DeT_PMeshClassID:
 			return "colored, unlit mesh w/ DetTex";
-		break;
+			break;
 		case MLR_I_L_DeT_PMeshClassID:
 			return "colored, lit mesh w/ DetTex";
-		break;
+			break;
 		case MLR_I_TMeshClassID:
 			return "not colored, unlit tri. mesh";
-		break;
+			break;
 		case MLR_I_C_TMeshClassID:
 			return "colored, unlit tri. mesh";
-		break;
+			break;
 		case MLR_I_L_TMeshClassID:
 			return "colored, lit tri. mesh";
-		break;
+			break;
 		case MLR_I_DeT_TMeshClassID:
 			return "not colored, unlit tri. mesh w/ DetTex";
-		break;
+			break;
 		case MLR_I_C_DeT_TMeshClassID:
 			return "colored, unlit tri. mesh w/ DetTex";
-		break;
+			break;
 		case MLR_I_L_DeT_TMeshClassID:
 			return "colored, lit tri. mesh w/ DetTex";
-		break;
+			break;
 		case MLR_I_DT_TMeshClassID:
 			return "not colored, unlit tri. mesh w/ 2 Tex";
-		break;
+			break;
 		case MLR_I_C_DT_TMeshClassID:
 			return "colored, unlit tri. mesh w/ 2 Tex";
-		break;
+			break;
 		case MLR_I_L_DT_TMeshClassID:
 			return "colored, lit tri. mesh w/ 2 Tex";
-		break;
+			break;
 		case MLR_TerrainClassID:
 			return "not colored, unlit terrain w/ DetTex";
-		break;
+			break;
 	}
 	return "mesh";
 }
@@ -574,7 +537,7 @@ PCSTR
 //#############################################################################
 
 void
-	MLRPrimitiveBase__ClassData::TestInstance()
+MLRPrimitiveBase__ClassData::TestInstance()
 {
 	Verify(IsDerivedFrom(MLRPrimitiveBase::DefaultData));
 }

@@ -39,8 +39,8 @@ class SplashIntro : public LogisticsScreen
 {
 public:
 
-	SplashIntro(){}
-	virtual ~SplashIntro(){}
+	SplashIntro() {}
+	virtual ~SplashIntro() {}
 
 	void init(void);
 
@@ -49,67 +49,67 @@ public:
 
 class MainMenu: public LogisticsScreen
 {
-	public:
+public:
 
-		MainMenu(void);
-		virtual ~MainMenu(void);
-
-
-		int32_t init( FitIniFile& file );
-
-		virtual void begin(void);
-		virtual void end(void);
-		virtual void update(void);
-		virtual void render(void);
-
-		void setHostLeftDlg( PCSTR playerName );
-
-		void setDrawBackground( bool bDrawBackground );
-		void skipIntro(void);
-
-		virtual int32_t	handleMessage( uint32_t, uint32_t );
-		
-
-		static	bool	bDrawMechlopedia;
-
-	private:
-
-		MainMenu& operator=( const MainMenu& ainMenu );
-		MainMenu( const MainMenu& src );
+	MainMenu(void);
+	virtual ~MainMenu(void);
 
 
+	int32_t init(FitIniFile& file);
 
-		bool	bDrawBackground;
+	virtual void begin(void);
+	virtual void end(void);
+	virtual void update(void);
+	virtual void render(void);
 
-		LogisticsScreen	background;
+	void setHostLeftDlg(PCSTR playerName);
 
-		bool	promptToQuit;
-		bool	bOptions;
-		bool	bSave;
-		bool	bLoad;
-		bool	bLoadSingle;
-		bool	bLoadCampaign;
-		bool	promptToDisconnect;
-		bool	bLegal;
+	void setDrawBackground(bool bDrawBackground);
+	void skipIntro(void);
 
-		int32_t	tuneId;			//What music should I play here!
-		bool	musicStarted;	//Should I restart the tune?
+	virtual int32_t	handleMessage(uint32_t, uint32_t);
 
-		int32_t	endResult;
 
-		aAnimation	beginAnim;
-		aAnimation	endAnim;
+	static	bool	bDrawMechlopedia;
 
-		OptionsScreenWrapper*	optionsScreenWrapper;
-		Mechlopedia*			mechlopedia;
-		SplashIntro				intro;
-		bool					introOver;
-		MPLoadMap				singleLoadDlg;
-		bool					bHostLeftDlg;
+private:
 
-		MC2MoviePtr			introMovie;
-			
-		
+	MainMenu& operator=(const MainMenu& ainMenu);
+	MainMenu(const MainMenu& src);
+
+
+
+	bool	bDrawBackground;
+
+	LogisticsScreen	background;
+
+	bool	promptToQuit;
+	bool	bOptions;
+	bool	bSave;
+	bool	bLoad;
+	bool	bLoadSingle;
+	bool	bLoadCampaign;
+	bool	promptToDisconnect;
+	bool	bLegal;
+
+	int32_t	tuneId;			//What music should I play here!
+	bool	musicStarted;	//Should I restart the tune?
+
+	int32_t	endResult;
+
+	aAnimation	beginAnim;
+	aAnimation	endAnim;
+
+	OptionsScreenWrapper*	optionsScreenWrapper;
+	Mechlopedia*			mechlopedia;
+	SplashIntro				intro;
+	bool					introOver;
+	MPLoadMap				singleLoadDlg;
+	bool					bHostLeftDlg;
+
+	MC2MoviePtr			introMovie;
+
+
 
 };
 

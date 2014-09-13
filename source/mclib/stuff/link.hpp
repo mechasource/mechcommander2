@@ -12,14 +12,15 @@
 
 #include <stuff/style.hpp>
 
-namespace Stuff {
+namespace Stuff
+{
 
 	class Socket;
 	class Plug;
-	// class PlugIterator;
-	// class Node;
+// class PlugIterator;
+// class Node;
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Link ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Link ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 	class Link
 #if defined(_ARMOR)
@@ -41,8 +42,14 @@ namespace Stuff {
 		//--------------------------------------------------------------------
 		//--------------------------------------------------------------------
 		//
-		Socket* GetSocket(void)	{return socket;}
-		Plug* GetPlug(void)		{ return plug; }
+		Socket* GetSocket(void)
+		{
+			return socket;
+		}
+		Plug* GetPlug(void)
+		{
+			return plug;
+		}
 
 	protected:
 		//

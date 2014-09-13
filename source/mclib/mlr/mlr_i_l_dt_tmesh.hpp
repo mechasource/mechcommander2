@@ -9,13 +9,14 @@
 
 #include <mlr/mlr_i_c_dt_tmesh.hpp>
 
-namespace MidLevelRenderer {
+namespace MidLevelRenderer
+{
 
 	class MLR_I_L_DT_PMesh;
 
-	//##########################################################################
-	//#### MLRIndexedTriMesh with no color no lighting one texture layer  #####
-	//##########################################################################
+//##########################################################################
+//#### MLRIndexedTriMesh with no color no lighting one texture layer  #####
+//##########################################################################
 
 
 	class MLR_I_L_DT_TMesh:
@@ -33,67 +34,55 @@ namespace MidLevelRenderer {
 		//
 	protected:
 		MLR_I_L_DT_TMesh(
-			ClassData *class_data,
-			Stuff::MemoryStream *stream,
-			uint32_t version
-			);
+			ClassData* class_data,
+			Stuff::MemoryStream* stream,
+			uint32_t version);
 		~MLR_I_L_DT_TMesh(void);
 
 	public:
-		MLR_I_L_DT_TMesh(ClassData *class_data=MLR_I_L_DT_TMesh::DefaultData);
+		MLR_I_L_DT_TMesh(ClassData* class_data = MLR_I_L_DT_TMesh::DefaultData);
 
 		static MLR_I_L_DT_TMesh*
-			Make(
-			Stuff::MemoryStream *stream,
-			uint32_t version
-			);
+		Make(
+			Stuff::MemoryStream* stream,
+			uint32_t version);
 
 		void
-			Save(Stuff::MemoryStream *stream);
+		Save(Stuff::MemoryStream* stream);
 
 	public:
-		virtual void
-			SetNormalData(
-			const Stuff::Vector3D *array,
-			int32_t point_count
-			);
-		virtual void
-			GetNormalData(
-			Stuff::Vector3D **array,
-			pint32_t point_count
-			);
+		virtual void SetNormalData(
+			const Stuff::Vector3D* array,
+			size_t point_count);
+		virtual void GetNormalData(
+			Stuff::Vector3D** array,
+			psize_t point_count);
 
 #if COLOR_AS_DWORD
-		virtual void
-			SetColorData(
+		virtual void SetColorData(
 			pcuint32_t array,
-			int32_t point_count
-			);
+			size_t point_count);
 #else
-		virtual void
-			SetColorData(
-			const Stuff::RGBAColor *array,
-			int32_t point_count
-			);
+		virtual void SetColorData(
+			const Stuff::RGBAColor* array,
+			size_t point_count);
 #endif
 
 		virtual void	Lighting(MLRLight* const*, uint32_t nrLights);
 
 		virtual void
 #if COLOR_AS_DWORD
-			PaintMe(pcuint32_t paintMe);
+		PaintMe(pcuint32_t paintMe);
 #else
-			PaintMe(const Stuff::RGBAColor *paintMe);
+		PaintMe(const Stuff::RGBAColor* paintMe);
 #endif
 
-		virtual int32_t	
-			TransformAndClip(Stuff::Matrix4D *, MLRClippingState, GOSVertexPool*,bool=false);
+		virtual uint32_t TransformAndClip(Stuff::Matrix4D*, MLRClippingState, GOSVertexPool*, bool = false);
 
-		virtual void
-			TransformNoClip(Stuff::Matrix4D*, GOSVertexPool*,bool=false);
+		virtual void TransformNoClip(Stuff::Matrix4D*, GOSVertexPool*, bool = false);
 
 		bool
-			Copy(MLR_I_L_DT_PMesh*);
+		Copy(MLR_I_L_DT_PMesh*);
 
 		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		// Class Data Support
@@ -108,17 +97,16 @@ namespace MidLevelRenderer {
 		void TestInstance(void) const;
 
 		virtual size_t GetSize(void)
-		{ 
+		{
 			Check_Object(this);
 			size_t ret = MLR_I_C_DT_TMesh::GetSize();
 			ret += normals.GetSize();
 			ret += litColors.GetSize();
-
 			return ret;
 		}
 
 	protected:
-		Stuff::DynamicArrayOf<Stuff::Vector3D> normals;		// Base address of normal list 
+		Stuff::DynamicArrayOf<Stuff::Vector3D> normals;		// Base address of normal list
 
 #if COLOR_AS_DWORD
 		Stuff::DynamicArrayOf<uint32_t> litColors;
@@ -127,14 +115,14 @@ namespace MidLevelRenderer {
 #endif
 	};
 
-	//	MLR_I_L_DT_TMesh*
-	//		CreateIndexedTriCube_NoColor_NoLit(float, MLRState*);
+//	MLR_I_L_DT_TMesh*
+//		CreateIndexedTriCube_NoColor_NoLit(float, MLRState*);
 	MLRShape*
-		CreateIndexedTriIcosahedron_Color_Lit_2Tex(
+	CreateIndexedTriIcosahedron_Color_Lit_2Tex(
 		IcoInfo&,
 		MLRState*,
 		MLRState*
-		);
+	);
 
 }
 #endif

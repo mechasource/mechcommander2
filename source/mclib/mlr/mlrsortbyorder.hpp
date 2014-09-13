@@ -10,65 +10,67 @@
 #include <mlr/gosvertex.hpp>
 #include <mlr/mlrsorter.hpp>
 
-namespace MidLevelRenderer {
+namespace MidLevelRenderer
+{
 
 	class MLRState;
 
-	struct SortAlpha {
+	struct SortAlpha
+	{
 		float distance;
 		MLRState* state;
 		GOSVertex triangle[3];
 	};
 
-	//##########################################################################
-	//######################    MLRSortByOrder    ##############################
-	//##########################################################################
+//##########################################################################
+//######################    MLRSortByOrder    ##############################
+//##########################################################################
 
 	class MLRSortByOrder :
 		public MLRSorter
 	{
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// Initialization
-	//
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		// Initialization
+		//
 	public:
 		static void __stdcall InitializeClass(void);
 		static void __stdcall TerminateClass(void);
 		static ClassData* DefaultData;
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// Constructors/Destructors
-	//
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		// Constructors/Destructors
+		//
 	public:
 		MLRSortByOrder(MLRTexturePool*);
 		~MLRSortByOrder(void);
 
-		void AddPrimitive(MLRPrimitiveBase*, uint32_t=0);
+		void AddPrimitive(MLRPrimitiveBase*, uint32_t = 0);
 		void AddEffect(MLREffect*, const MLRState&);
 		void AddScreenQuads(GOSVertex*, const DrawScreenQuadsInformation*);
 
 		virtual void AddSortRawData(SortData*);
 
 		//	starts the action
-		void RenderNow (void);
+		void RenderNow(void);
 
 		//	resets the sorting
-		void Reset (void);
+		void Reset(void);
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// Testing
-	//
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		// Testing
+		//
 	public:
 		void TestInstance(void) const;
 
 	protected:
 		int32_t
-			lastUsedInBucket[MLRState::PriorityCount];
+		lastUsedInBucket[MLRState::PriorityCount];
 
 		Stuff::DynamicArrayOf<SortData*>  //, Max_Number_Primitives_Per_Frame + Max_Number_ScreenQuads_Per_Frame
-			priorityBuckets[MLRState::PriorityCount];
+		priorityBuckets[MLRState::PriorityCount];
 
 		Stuff::DynamicArrayOf<SortAlpha*>  //, Max_Number_Primitives_Per_Frame + Max_Number_ScreenQuads_Per_Frame
-			alphaSort;
+		alphaSort;
 	};
 
 }

@@ -43,89 +43,82 @@
 //***********************************************************************
 class GenericAppearanceType : public AppearanceType
 {
-	public:
-	
-		TG_TypeMultiShapePtr		genShape;
-		TG_TypeMultiShapePtr		genDmgShape;
-		
-		TG_AnimateShapePtr			genAnimData[MAX_GEN_ANIMATIONS];
-		bool						genAnimLoop[MAX_GEN_ANIMATIONS];
-		bool						genReverse[MAX_GEN_ANIMATIONS];
-		bool						genRandom[MAX_GEN_ANIMATIONS];
-		int32_t						genStartF[MAX_GEN_ANIMATIONS];
-		
-		char						rotationalNodeId[TG_NODE_ID];
-		char						textureName[50];
-		uint32_t						dotRGB;
-		
-	public:
-	
-		void init (void)
-		{
-			genShape = nullptr;
+public:
 
-			for (int32_t i=0;i<MAX_GEN_ANIMATIONS;i++)
-				genAnimData[i] = nullptr;
+	TG_TypeMultiShapePtr		genShape;
+	TG_TypeMultiShapePtr		genDmgShape;
 
-			textureName[0] = 0;
-			dotRGB = 0x00ffffff;
-		}
-	
-		GenericAppearanceType (void)
-		{
-			init(void);
-		}
+	TG_AnimateShapePtr			genAnimData[MAX_GEN_ANIMATIONS];
+	bool						genAnimLoop[MAX_GEN_ANIMATIONS];
+	bool						genReverse[MAX_GEN_ANIMATIONS];
+	bool						genRandom[MAX_GEN_ANIMATIONS];
+	int32_t						genStartF[MAX_GEN_ANIMATIONS];
 
-		~GenericAppearanceType (void)
-		{
-			destroy(void);
-		}
+	char						rotationalNodeId[TG_NODE_ID];
+	char						textureName[50];
+	uint32_t						dotRGB;
 
-		void setAnimation (TG_MultiShapePtr shape, uint32_t animationNum);
-		
-		int32_t getNumFrames (int32_t animationNum)
-		{
-			if ((animationNum >= 0) && (animationNum < MAX_GEN_ANIMATIONS) && (genAnimData[animationNum]))
-				return genAnimData[animationNum]->GetNumFrames(void);
+public:
 
-			return 0.0f;
-		}
+	void init(void)
+	{
+		genShape = nullptr;
+		for(size_t i = 0; i < MAX_GEN_ANIMATIONS; i++)
+			genAnimData[i] = nullptr;
+		textureName[0] = 0;
+		dotRGB = 0x00ffffff;
+	}
 
-		float getFrameRate (int32_t animationNum)
-		{
-			if ((animationNum >= 0) && (animationNum < MAX_GEN_ANIMATIONS) && (genAnimData[animationNum]))
-				return genAnimData[animationNum]->GetFrameRate(void);
+	GenericAppearanceType(void)
+	{
+		init(void);
+	}
 
-			return 0.0f;
-		}
+	~GenericAppearanceType(void)
+	{
+		destroy(void);
+	}
 
-		bool isReversed (int32_t animationNum)
-		{
-			if ((animationNum >= 0) && (animationNum < MAX_GEN_ANIMATIONS) && (genAnimData[animationNum]))
-				return genReverse[animationNum];
+	void setAnimation(TG_MultiShapePtr shape, uint32_t animationNum);
 
-			return false;
-		}
-		
-		bool isLooped (int32_t animationNum)
-		{
-			if ((animationNum >= 0) && (animationNum < MAX_GEN_ANIMATIONS) && (genAnimData[animationNum]))
-				return genAnimLoop[animationNum];
+	int32_t getNumFrames(int32_t animationNum)
+	{
+		if((animationNum >= 0) && (animationNum < MAX_GEN_ANIMATIONS) && (genAnimData[animationNum]))
+			return genAnimData[animationNum]->GetNumFrames(void);
+		return 0.0f;
+	}
 
-			return false;
-		}
-		
-		bool isRandom (int32_t animationNum)
-		{
-			if ((animationNum >= 0) && (animationNum < MAX_GEN_ANIMATIONS) && (genAnimData[animationNum]))
-				return genRandom[animationNum];
+	float getFrameRate(int32_t animationNum)
+	{
+		if((animationNum >= 0) && (animationNum < MAX_GEN_ANIMATIONS) && (genAnimData[animationNum]))
+			return genAnimData[animationNum]->GetFrameRate(void);
+		return 0.0f;
+	}
 
-			return false;
-		}
-		
-  		virtual void init (PSTR fileName);
-		
-		virtual void destroy (void);
+	bool isReversed(int32_t animationNum)
+	{
+		if((animationNum >= 0) && (animationNum < MAX_GEN_ANIMATIONS) && (genAnimData[animationNum]))
+			return genReverse[animationNum];
+		return false;
+	}
+
+	bool isLooped(int32_t animationNum)
+	{
+		if((animationNum >= 0) && (animationNum < MAX_GEN_ANIMATIONS) && (genAnimData[animationNum]))
+			return genAnimLoop[animationNum];
+		return false;
+	}
+
+	bool isRandom(int32_t animationNum)
+	{
+		if((animationNum >= 0) && (animationNum < MAX_GEN_ANIMATIONS) && (genAnimData[animationNum]))
+			return genRandom[animationNum];
+		return false;
+	}
+
+	virtual void init(PSTR fileName);
+
+	virtual void destroy(void);
 };
 
 //***********************************************************************
@@ -135,109 +128,109 @@ class GenericAppearanceType : public AppearanceType
 //***********************************************************************
 class GenericAppearance : public ObjectAppearance
 {
-	public:
+public:
 
-		GenericAppearanceType*						appearType;
-		TG_MultiShapePtr							genShape;
-		
-		int32_t										genAnimationState;
-		float										currentFrame;
-		float										genFrameRate;
-		bool										isReversed;
-		bool										isLooping;
-		bool										setFirstFrame;
-		bool										canTransition;
-		
-		float										hazeFactor;
-		float										pitch;
-		
-		int32_t										status;
-			
-		float										OBBRadius;
-		
-		int32_t										skyNumber;
-		
-	public:
+	GenericAppearanceType*						appearType;
+	TG_MultiShapePtr							genShape;
 
-		virtual void init (AppearanceTypePtr tree = nullptr, GameObjectPtr obj = nullptr);
+	int32_t										genAnimationState;
+	float										currentFrame;
+	float										genFrameRate;
+	bool										isReversed;
+	bool										isLooping;
+	bool										setFirstFrame;
+	bool										canTransition;
 
-		virtual AppearanceTypePtr getAppearanceType (void)
-		{
-			return appearType;
-		}
+	float										hazeFactor;
+	float										pitch;
 
-		void changeSkyToSkyNum (PSTR txmName, PSTR newName);
-		
-		GenericAppearance (void)
-		{
-			init(void);
-		}
+	int32_t										status;
 
-		virtual int32_t update (bool animate = true);
-		virtual int32_t render (int32_t depthFixup = 0);
+	float										OBBRadius;
 
-		virtual int32_t renderShadows (void);
+	int32_t										skyNumber;
 
-		virtual void destroy (void);
+public:
 
-		~GenericAppearance (void)
-		{
-			destroy(void);
-		}
+	virtual void init(AppearanceTypePtr tree = nullptr, GameObjectPtr obj = nullptr);
 
-		virtual bool recalcBounds (void);
-		
-		virtual bool getInTransition (void)
-		{
-			return (canTransition == false);
-		}
+	virtual AppearanceTypePtr getAppearanceType(void)
+	{
+		return appearType;
+	}
 
-		virtual void setGesture (size_t gestureId);
-		
-		virtual int32_t getCurrentGestureId (void)
-		{
-			return genAnimationState;
-		}
+	void changeSkyToSkyNum(PSTR txmName, PSTR newName);
 
-		virtual size_t getAppearanceClass (void)
-		{
-			return GENERIC_APPR_TYPE;
-		}
-			
-		virtual void setObjectNameId (int32_t objId)
-		{
-			objectNameId = objId;
-		}
+	GenericAppearance(void)
+	{
+		init(void);
+	}
 
-		virtual bool isMouseOver (float px, float py);
-		
-		virtual void setObjectParameters (Stuff::Vector3D &pos, float rot, int32_t selected, int32_t alignment, int32_t homeRelations);
-		
-		virtual void setMoverParameters (float turretRot, float lArmRot = 0.0f, float rArmRot = 0.0f, bool isAirborne = false);
-		
-		virtual void setObjStatus (int32_t oStatus);
-		
-		virtual void markTerrain (_ScenarioMapCellInfo* pInfo, int32_t type, int32_t counter);
-		
-		virtual void markMoveMap (bool passable);
+	virtual int32_t update(bool animate = true);
+	virtual int32_t render(int32_t depthFixup = 0);
 
-		virtual void setIsHudElement (void)
-		{
-			genShape->SetIsHudElement(void);
-		}
-		
- 		virtual void scale (float scaleFactor)
-		{
-			genShape->ScaleShape(scaleFactor);
-		}
-		
-		virtual Stuff::Point3D getRootNodeCenter (void)
-		{
-			Stuff::Point3D result = genShape->GetRootNodeCenter(void);
-			return result;
-		}
-		
-		virtual void setSkyNumber (int32_t skyNum);
+	virtual int32_t renderShadows(void);
+
+	virtual void destroy(void);
+
+	~GenericAppearance(void)
+	{
+		destroy(void);
+	}
+
+	virtual bool recalcBounds(void);
+
+	virtual bool getInTransition(void)
+	{
+		return (canTransition == false);
+	}
+
+	virtual void setGesture(size_t gestureId);
+
+	virtual int32_t getCurrentGestureId(void)
+	{
+		return genAnimationState;
+	}
+
+	virtual size_t getAppearanceClass(void)
+	{
+		return GENERIC_APPR_TYPE;
+	}
+
+	virtual void setObjectNameId(int32_t objId)
+	{
+		objectNameId = objId;
+	}
+
+	virtual bool isMouseOver(float px, float py);
+
+	virtual void setObjectParameters(Stuff::Vector3D& pos, float rot, int32_t selected, int32_t alignment, int32_t homeRelations);
+
+	virtual void setMoverParameters(float turretRot, float lArmRot = 0.0f, float rArmRot = 0.0f, bool isAirborne = false);
+
+	virtual void setObjStatus(int32_t oStatus);
+
+	virtual void markTerrain(_ScenarioMapCellInfo* pInfo, int32_t type, int32_t counter);
+
+	virtual void markMoveMap(bool passable);
+
+	virtual void setIsHudElement(void)
+	{
+		genShape->SetIsHudElement(void);
+	}
+
+	virtual void scale(float scaleFactor)
+	{
+		genShape->ScaleShape(scaleFactor);
+	}
+
+	virtual Stuff::Point3D getRootNodeCenter(void)
+	{
+		Stuff::Point3D result = genShape->GetRootNodeCenter(void);
+		return result;
+	}
+
+	virtual void setSkyNumber(int32_t skyNum);
 };
 
 //***************************************************************************

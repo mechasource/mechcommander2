@@ -12,24 +12,26 @@
 #include <stuff/marray.hpp>
 #include <mlr/mlrstate.hpp>
 
-namespace Stuff {
+namespace Stuff
+{
 	class LinearMatrix4D;
 	class Line3D;
 	class Normal3D;
 	class Point3D;
 }
 
-namespace MidLevelRenderer {
+namespace MidLevelRenderer
+{
 
 	class MLRPrimitiveBase;
 	class MLRClipper;
 	class MLRLight;
 
-	//##########################################################################
-	//##########################    MLRShape    ################################
-	//##########################################################################
-	// This class is a container for MLRPrimitve's. A shape has a Matrix and is
-	// attached to the hierarchy
+//##########################################################################
+//##########################    MLRShape    ################################
+//##########################################################################
+// This class is a container for MLRPrimitve's. A shape has a Matrix and is
+// attached to the hierarchy
 
 	class MLRShape :
 		public Stuff::Plug
@@ -48,39 +50,40 @@ namespace MidLevelRenderer {
 		//
 	protected:
 		MLRShape(
-			Stuff::MemoryStream *stream,
-			uint32_t version
-			);
+			Stuff::MemoryStream* stream,
+			uint32_t version);
 		~MLRShape(void);
 
 	public:
 		MLRShape(int32_t);
 
 		static MLRShape*
-			Make(
-			Stuff::MemoryStream *stream,
-			uint32_t version
-			);
+		Make(
+			Stuff::MemoryStream* stream,
+			uint32_t version);
 
 		void
-			Save(Stuff::MemoryStream *stream);
+		Save(Stuff::MemoryStream* stream);
 
 	public:
-		void Add (MLRPrimitiveBase*);
-		MLRPrimitiveBase* Find (int32_t);
-		int32_t Find (MLRPrimitiveBase*);
+		void Add(MLRPrimitiveBase*);
+		MLRPrimitiveBase* Find(int32_t);
+		int32_t Find(MLRPrimitiveBase*);
 
 		// use this functions with care --- they are slow
-		MLRPrimitiveBase *Remove(MLRPrimitiveBase*);
-		MLRPrimitiveBase *Remove(int32_t);
+		MLRPrimitiveBase* Remove(MLRPrimitiveBase*);
+		MLRPrimitiveBase* Remove(int32_t);
 		int32_t Insert(MLRPrimitiveBase*, int32_t);
 
 		bool
-			Replace(MLRPrimitiveBase*, MLRPrimitiveBase*);
+		Replace(MLRPrimitiveBase*, MLRPrimitiveBase*);
 
 		// returns the number of primitives in the container
 		size_t GetNum(void)
-		{ Check_Object(this); return numPrimitives; };
+		{
+			Check_Object(this);
+			return numPrimitives;
+		};
 
 		// returns the number of faces overall in the shape
 		size_t GetNumPrimitives(void);
@@ -88,8 +91,8 @@ namespace MidLevelRenderer {
 		// returns the number of drawn triangles in the shape
 		int32_t GetNumDrawnTriangles(void);
 
-		// is to call at begin of every frame 
-		void	InitializePrimitives(uint8_t, const MLRState& master, int32_t=0);
+		// is to call at begin of every frame
+		void	InitializePrimitives(uint8_t, const MLRState& master, int32_t = 0);
 
 		// clips the geometry and fills the data into the vertex pool
 		// the clipping states defines the planes against the shape might have be culled
@@ -115,13 +118,17 @@ namespace MidLevelRenderer {
 		//
 	public:
 		void
-			AttachReference()
-		{Check_Object(this); ++referenceCount;}
-		void
-			DetachReference()
+		AttachReference()
 		{
-			Check_Object(this); Verify(referenceCount > 0);
-			if ((--referenceCount) == 0)
+			Check_Object(this);
+			++referenceCount;
+		}
+		void
+		DetachReference()
+		{
+			Check_Object(this);
+			Verify(referenceCount > 0);
+			if((--referenceCount) == 0)
 			{
 				Unregister_Object(this);
 				delete this;
@@ -129,12 +136,14 @@ namespace MidLevelRenderer {
 		}
 
 		int32_t
-			GetReferenceCount()
-		{return referenceCount;}
+		GetReferenceCount()
+		{
+			return referenceCount;
+		}
 
 	protected:
 		int32_t
-			referenceCount;
+		referenceCount;
 
 		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		// Testing
@@ -143,9 +152,8 @@ namespace MidLevelRenderer {
 		void TestInstance(void) const {};
 		virtual size_t GetSize()
 		{
-			Check_Object(this); 
+			Check_Object(this);
 			size_t ret = allPrimitives.GetSize();
-
 			return ret;
 		}
 

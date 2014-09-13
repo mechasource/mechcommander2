@@ -19,7 +19,7 @@ SunDlg:
 class SunDlg: public CDialog
 {
 public:
-	
+
 	SunDlg(void);
 	virtual void Init(void);
 	void DoDataExchange(CDataExchange* pDX);
@@ -27,7 +27,7 @@ public:
 	//virtual	void OnCommand(Window *wnd,int32_t nCommand);
 	//virtual void OnOwnerDraw( ODSTRUCT* odStruct );
 
-	public:
+public:
 
 	float yaw;
 	float pitch;
@@ -63,9 +63,9 @@ protected:
 
 	virtual BOOL OnInitDialog(void);
 
-	void displayInHex( int32_t number, CEdit& edit );
-	int32_t getHexValue( CEdit& edit );
-	void DoColorDlg( CEdit& edit);
+	void displayInHex(int32_t number, CEdit& edit);
+	int32_t getHexValue(CEdit& edit);
+	void DoColorDlg(CEdit& edit);
 
 	void applyChanges(void);
 
@@ -73,7 +73,7 @@ protected:
 
 
 
-		
+
 };
 
 

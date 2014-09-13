@@ -12,62 +12,61 @@
 
 namespace gosFX
 {
-	//############################################################################
-	//############################  LightManager  ################################
-	//############################################################################
+//############################################################################
+//############################  LightManager  ################################
+//############################################################################
 
 	class Light;
 	class LightManager
-		#if defined(_ARMOR)
-			: public Stuff::Signature
-		#endif
+#if defined(_ARMOR)
+		: public Stuff::Signature
+#endif
 	{
 	public:
 		static LightManager* Instance;
 
 		virtual Light*
-			MakePointLight(PCSTR light_map=nullptr);
+		MakePointLight(PCSTR light_map = nullptr);
 
-		struct Info {
+		struct Info
+		{
 			Stuff::RGBColor
-				m_color;
+			m_color;
 			Stuff::LinearMatrix4D
-				m_origin;
+			m_origin;
 			float
-				m_intensity,
-				m_inner,
-				m_outer;
+			m_intensity,
+			m_inner,
+			m_outer;
 			Stuff::Radian
-				m_spread;
+			m_spread;
 		};
 
-		virtual void
-			ChangeLight(
-				Light *light,
-				Info *info
-			);
+		virtual void ChangeLight(
+			Light* light,
+			Info* info
+		);
 
-		virtual void
-			DeleteLight(Light *light);
+		virtual void DeleteLight(Light* light);
 
 		void
-			TestInstance(void) const
-				{}
+		TestInstance(void) const
+		{}
 	};
 
-	//############################################################################
-	//####################  PointLight__Specification  #########################
-	//############################################################################
+//############################################################################
+//####################  PointLight__Specification  #########################
+//############################################################################
 
 	class PointLight__Specification:
 		public Effect__Specification
 	{
-	//----------------------------------------------------------------------
-	// Constructors/Destructors
-	//
+		//----------------------------------------------------------------------
+		// Constructors/Destructors
+		//
 	protected:
 		PointLight__Specification(
-			Stuff::MemoryStream *stream,
+			Stuff::MemoryStream* stream,
 			int32_t gfx_version
 		);
 
@@ -75,44 +74,44 @@ namespace gosFX
 		PointLight__Specification(void);
 
 		void
-			Copy(PointLight__Specification *spec);
+		Copy(PointLight__Specification* spec);
 
 		void
-			Save(Stuff::MemoryStream *stream);
+		Save(Stuff::MemoryStream* stream);
 
-		void 
-			BuildDefaults(void);
+		void
+		BuildDefaults(void);
 
-		bool 
-			IsDataValid(bool fix_data=false);
+		bool
+		IsDataValid(bool fix_data = false);
 
 		static PointLight__Specification*
-			Make(
-				Stuff::MemoryStream *stream,
-				int32_t gfx_version
-			);
+		Make(
+			Stuff::MemoryStream* stream,
+			int32_t gfx_version
+		);
 
-	//-------------------------------------------------------------------------
-	// FCurves
-	//
+		//-------------------------------------------------------------------------
+		// FCurves
+		//
 	public:
 		ComplexCurve
-			m_red,
-			m_green,
-			m_blue,
-			m_intensity;
+		m_red,
+		m_green,
+		m_blue,
+		m_intensity;
 		SplineCurve
-			m_innerRadius,
-			m_outerRadius;
+		m_innerRadius,
+		m_outerRadius;
 
 		bool m_twoSided;
 		Stuff::MString	m_lightMap;
 		//std::wstring m_lightMap;
 	};
 
-	//############################################################################
-	//##############################  PointLight  #############################
-	//############################################################################
+//############################################################################
+//##############################  PointLight  #############################
+//############################################################################
 
 	class PointLight:
 		public Effect
@@ -126,48 +125,48 @@ namespace gosFX
 		typedef PointLight__Specification Specification;
 
 		static PointLight*
-			Make(
-				Specification *spec,
-				uint32_t flags
-			);
+		Make(
+			Specification* spec,
+			uint32_t flags
+		);
 
 		~PointLight(void);
 
 	protected:
 		PointLight(
-			Specification *spec,
+			Specification* spec,
 			uint32_t flags
 		);
 
 		Light
-			*m_light;
+		* m_light;
 
-	//----------------------------------------------------------------------------
-	// Class Data Support
-	//
+		//----------------------------------------------------------------------------
+		// Class Data Support
+		//
 	public:
 		Specification*
-			GetSpecification()
-				{
-					Check_Object(this);
-					return
-						Cast_Object(Specification*, m_specification);
-				}
+		GetSpecification()
+		{
+			Check_Object(this);
+			return
+				Cast_Object(Specification*, m_specification);
+		}
 
-	//----------------------------------------------------------------------------
-	// API
-	//
+		//----------------------------------------------------------------------------
+		// API
+		//
 	public:
 		void
-			Start(ExecuteInfo *info);
+		Start(ExecuteInfo* info);
 		bool
-			Execute(ExecuteInfo *info);
+		Execute(ExecuteInfo* info);
 		void
-			Kill(void);
+		Kill(void);
 
-	//----------------------------------------------------------------------------
-	// Testing
-	//
+		//----------------------------------------------------------------------------
+		// Testing
+		//
 	public:
 		void TestInstance(void) const;
 	};

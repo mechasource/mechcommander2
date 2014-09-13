@@ -13,7 +13,7 @@ class ForestDlg : public CDialog
 {
 
 public:
-	ForestDlg(CWnd* pParent = nullptr);   
+	ForestDlg(CWnd* pParent = nullptr);
 
 	//{{AFX_DATA(ForestDlg)
 	enum { IDD = IDD_FOREST_DLG };
@@ -45,12 +45,12 @@ public:
 	Forest		forest;
 
 	//{{AFX_VIRTUAL(ForestDlg)
-	protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    
+protected:
+	virtual void DoDataExchange(CDataExchange* pDX);
 	//}}AFX_VIRTUAL
 
-	afx_msg void OnEditChanged( uint32_t nID );
-	afx_msg void OnSliderChanged( uint32_t id, NMHDR * pNotifyStruct, LRESULT * result );
+	afx_msg void OnEditChanged(uint32_t nID);
+	afx_msg void OnSliderChanged(uint32_t id, NMHDR* pNotifyStruct, LRESULT* result);
 
 
 

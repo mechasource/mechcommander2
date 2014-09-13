@@ -28,8 +28,12 @@ class aButton;
 class aStyle3TextListItem : public aTextListItem
 {
 public:
-	aStyle3TextListItem() { hasAnimation = false; normalColor = 0xff808080; }
-	virtual int32_t	init( FitIniFile* file, PCSTR blockName );
+	aStyle3TextListItem()
+	{
+		hasAnimation = false;
+		normalColor = 0xff808080;
+	}
+	virtual int32_t	init(FitIniFile* file, PCSTR blockName);
 	virtual void		render(void);
 
 protected:
@@ -42,18 +46,21 @@ class aGameListItem : public aListItem
 {
 public:
 	aGameListItem(void);
-	virtual int32_t	init( FitIniFile* file, PCSTR blockName );
+	virtual int32_t	init(FitIniFile* file, PCSTR blockName);
 	virtual void update(void);
-	void setSessionInfo( _MC2Session* pSessions );
+	void setSessionInfo(_MC2Session* pSessions);
 
 	PCSTR		getSessionName(void);
 
-	PCSTR		getText( int32_t which );
+	PCSTR		getText(int32_t which);
 
-	const MC2Session* getSession (void) { return(&session); }
+	const MC2Session* getSession(void)
+	{
+		return(&session);
+	}
 
 
-	aGameListItem& operator=( const aGameListItem& );
+	aGameListItem& operator=(const aGameListItem&);
 
 protected:
 	MC2Session session;
@@ -73,18 +80,18 @@ protected:
 class MPGameBrowser : public LogisticsScreen
 {
 public:
-	
+
 	MPGameBrowser(void);
 	virtual ~MPGameBrowser(void);
-	
+
 	void init(FitIniFile* file);
 	bool isDone(void);
 	virtual void		begin(void);
 	virtual void		end(void);
- 	virtual void render( int32_t xOffset, int32_t yOffset );
+	virtual void render(int32_t xOffset, int32_t yOffset);
 	virtual void render(void);
 	virtual void update(void);
-	virtual int32_t			handleMessage( uint32_t, uint32_t );
+	virtual int32_t			handleMessage(uint32_t, uint32_t);
 
 
 private:

@@ -62,26 +62,23 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // WaterDlg message handlers
 
-BOOL WaterDlg::OnInitDialog() 
+BOOL WaterDlg::OnInitDialog()
 {
 	CDialog::OnInitDialog();
-
-	alphaDeep = (alphaDeep>>24)&0x000000ff;
-	alphaMiddle = (alphaMiddle>>24)&0x000000ff;
-	alphaShallow = (alphaShallow>>24)&0x000000ff;
+	alphaDeep = (alphaDeep >> 24) & 0x000000ff;
+	alphaMiddle = (alphaMiddle >> 24) & 0x000000ff;
+	alphaShallow = (alphaShallow >> 24) & 0x000000ff;
 	UpdateData(FALSE);
-	
 	return TRUE;  // return TRUE unless you set the focus to a control
-	              // EXCEPTION: OCX Property Pages should return FALSE
+	// EXCEPTION: OCX Property Pages should return FALSE
 }
 
-void WaterDlg::OnOK() 
+void WaterDlg::OnOK()
 {
 	UpdateData(TRUE);
 	alphaDeep <<= 24;
 	alphaMiddle <<= 24;
 	alphaShallow <<= 24;
 	UpdateData(FALSE);
-
 	CDialog::OnOK();
 }

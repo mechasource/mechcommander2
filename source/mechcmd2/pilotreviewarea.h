@@ -34,13 +34,16 @@ class PilotListBox : public aListBox
 public:
 
 	PilotListBox(void);
-	virtual int32_t AddItem( aListItem* item );
+	virtual int32_t AddItem(aListItem* item);
 	virtual void update(void);
 
-	bool isDone( ){ return bDone; }
+	bool isDone()
+	{
+		return bDone;
+	}
 
 private:
- 
+
 	float		timeSinceStart;
 	int32_t			curItem;
 	int32_t		oldScroll;
@@ -53,15 +56,15 @@ private:
 class PilotReviewScreen : public LogisticsScreen
 {
 public:
-	
+
 	PilotReviewScreen(void);
 	virtual ~PilotReviewScreen(void);
-	
+
 	void init(FitIniFile* file);
 	bool isDone(void);
 	virtual void render(void);
 	virtual void update(void);
-	virtual int32_t			handleMessage( uint32_t, uint32_t );
+	virtual int32_t			handleMessage(uint32_t, uint32_t);
 
 	void				updatePilots(void); // put into inventory, save??
 
@@ -110,17 +113,20 @@ public:
 
 	virtual ~DeadPilotListItem(void);
 
-	static void			init( FitIniFile* file );
+	static void			init(FitIniFile* file);
 
-	LogisticsPilot*		getPilot(){ return pPilot; }
+	LogisticsPilot*		getPilot()
+	{
+		return pPilot;
+	}
 
-	DeadPilotListItem( LogisticsPilot* pUnit );
+	DeadPilotListItem(LogisticsPilot* pUnit);
 
 private:
 	friend class PilotReviewScreen;
 
 	LogisticsPilot*		pPilot;
-	
+
 	static aText*		s_nameText;
 	static aText*		s_rankText;
 	static aText*		s_missionText;
@@ -129,7 +135,7 @@ private:
 	static aRect*		s_liveIconRect;
 	static aRect*		s_deadIconRect;
 	static int32_t			s_itemCount;
-	
+
 	aText				nameText;
 	aText				rankText;
 	aText				missionText;
@@ -139,7 +145,7 @@ private:
 	PilotIcon*			deadIcon;
 
 
-	
+
 };
 
 // pilots that weren't killed
@@ -153,8 +159,8 @@ public:
 
 	virtual ~ActivePilotListItem(void);
 
-	static void			init( FitIniFile* file );
-	ActivePilotListItem( LogisticsPilot* pUnit );
+	static void			init(FitIniFile* file);
+	ActivePilotListItem(LogisticsPilot* pUnit);
 	static int32_t			s_totalWidth;
 
 	float				flashTime(void);
@@ -186,7 +192,7 @@ protected:
 	static aAnimation*		s_skillAnim;
 	static aAnimation*		s_medalAwardedAnim;
 	static aAnimation*		s_pilotPromotedAnim;
-	
+
 	aObject		icons[4];
 	aText		nameText;
 	aText		missionText;
@@ -203,7 +209,7 @@ protected:
 	aText		promotionText;
 	aText		medalAwardedText;
 
-	
+
 	PilotIcon*	pilotIcon;
 	LogisticsPilot* pilot;
 
@@ -219,14 +225,17 @@ class PilotPromotionArea : public LogisticsScreen
 public:
 
 	bool isDone(void);
-	void init( FitIniFile& file );
+	void init(FitIniFile& file);
 	virtual void render(void);
 	virtual void update(void);
 	void setPilot(LogisticsPilot* pPilot, PilotIcon* pIcon);
-	virtual int32_t			handleMessage( uint32_t, uint32_t );
+	virtual int32_t			handleMessage(uint32_t, uint32_t);
 	virtual ~PilotPromotionArea(void);
 
-	aListBox*	getSkillListBox() { return &skillListBox; }
+	aListBox*	getSkillListBox()
+	{
+		return &skillListBox;
+	}
 
 private:
 
@@ -259,13 +268,13 @@ public:
 
 	virtual ~SpecialtyListItem(void);
 
-	static void			init( FitIniFile* file );
-	virtual int32_t			handleMessage( uint32_t message, uint32_t who );
+	static void			init(FitIniFile* file);
+	virtual int32_t			handleMessage(uint32_t message, uint32_t who);
 
 	virtual bool		isChecked(void);
-	virtual void		setCheck( bool );
+	virtual void		setCheck(bool);
 	int32_t					getID(void);
-	SpecialtyListItem( int32_t ID );
+	SpecialtyListItem(int32_t ID);
 
 private:
 	static aButton*	s_radioButton;
@@ -292,7 +301,7 @@ private:
 
 	friend class PilotPromotionArea;
 
-	
+
 };
 
 

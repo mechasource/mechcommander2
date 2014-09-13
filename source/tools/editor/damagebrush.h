@@ -22,20 +22,24 @@ DamageBrush:
 **************************************************************************************************/
 class DamageBrush: public Brush
 {
-	public:
-	
-	DamageBrush(bool bDamage ){ damage = bDamage; pAction = nullptr; }
-	virtual ~DamageBrush(){}
+public:
+
+	DamageBrush(bool bDamage)
+	{
+		damage = bDamage;
+		pAction = nullptr;
+	}
+	virtual ~DamageBrush() {}
 	virtual bool beginPaint(void);
 	virtual Action* endPaint(void);
-	virtual bool paint( Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY  );
-	virtual bool canPaint( Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY, int32_t flags ); 
-	virtual bool canPaintSelection( );
+	virtual bool paint(Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY);
+	virtual bool canPaint(Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY, int32_t flags);
+	virtual bool canPaintSelection();
 	virtual Action* applyToSelection(void);
 	bool	damage;
 
-	private:
-		ModifyBuildingAction* pAction;
+private:
+	ModifyBuildingAction* pAction;
 };
 
 

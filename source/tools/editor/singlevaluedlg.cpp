@@ -13,12 +13,11 @@ HeightDlg.cpp			: Implementation of the AssignHeight component.  This thing lets
 
 extern uint32_t gameResourceHandle;		//Default handle must be used for mc2res.dll due to shared game/editor code
 
-SingleValueDlg::SingleValueDlg( int32_t captionID, int32_t staticTextID, int32_t newVal)
-: CDialog( IDD_VALUE )
+SingleValueDlg::SingleValueDlg(int32_t captionID, int32_t staticTextID, int32_t newVal)
+	: CDialog(IDD_VALUE)
 {
-	cLoadString( captionID, caption, 256, gameResourceHandle );
-	cLoadString( staticTextID, staticText, 256, gameResourceHandle );
-	
+	cLoadString(captionID, caption, 256, gameResourceHandle);
+	cLoadString(staticTextID, staticText, 256, gameResourceHandle);
 	val = newVal;
 }
 
@@ -28,20 +27,17 @@ SingleValueDlg::~SingleValueDlg()
 void SingleValueDlg::Init()
 {
 	char minTxt[256];
-	itoa( val, minTxt, 10 );
-	
-	((CEdit*)GetDlgItem( IDC_HEIGHT ))->SetWindowText( minTxt );
-	((CStatic*)GetDlgItem( IDC_TEXT ))->SetWindowText( staticText );
-	SetWindowText( caption );
-
+	itoa(val, minTxt, 10);
+	((CEdit*)GetDlgItem(IDC_HEIGHT))->SetWindowText(minTxt);
+	((CStatic*)GetDlgItem(IDC_TEXT))->SetWindowText(staticText);
+	SetWindowText(caption);
 }
 
 void SingleValueDlg::OnOK()
 {
 	char wcsMinTxt[256];
-	((CEdit*)GetDlgItem( IDC_HEIGHT ))->GetWindowText( wcsMinTxt, 256 );
-	val = atoi( wcsMinTxt );
-
+	((CEdit*)GetDlgItem(IDC_HEIGHT))->GetWindowText(wcsMinTxt, 256);
+	val = atoi(wcsMinTxt);
 	CDialog::OnOK();
 }
 
@@ -66,12 +62,9 @@ void SingleValueDlg::OnOK()
 void SingleValueDlg::Update()
 {
 	char minTxt[256];
-	itoa( val, minTxt, 10 );
-
-	((CEdit*)GetDlgItem( IDC_HEIGHT ))->SetWindowText( minTxt );
-	((CStatic*)GetDlgItem( IDC_TEXT ))->SetWindowText( staticText );
-
-
+	itoa(val, minTxt, 10);
+	((CEdit*)GetDlgItem(IDC_HEIGHT))->SetWindowText(minTxt);
+	((CStatic*)GetDlgItem(IDC_TEXT))->SetWindowText(staticText);
 }
 
 

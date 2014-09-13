@@ -108,80 +108,78 @@ struct MiscObjectData
 
 #pragma pack()
 
-typedef ObjData *ObjDataPtr;
+typedef ObjData* ObjDataPtr;
 //---------------------------------------------------------------------------
 class ObjectBlockManager
 {
 	//Data Members
 	//-------------
-	protected:
-	
-		uint32_t		terrainObjectHeapSize;	//Size of TerrainObject Heap
-		UserHeapPtr			terrainObjectHeap;		//Pointer to Heap.
+protected:
 
-		ObjectQueueNodePtr	*objectQueues;			//Array of QueueNode Ptrs for each
-													//Active block of terrain.
+	uint32_t		terrainObjectHeapSize;	//Size of TerrainObject Heap
+	UserHeapPtr			terrainObjectHeap;		//Pointer to Heap.
 
-		uint32_t		numObjectsInDataBlock;	//Number of objects to be read/written
-		ObjDataPtr			objDataBlock;			//Block of object data to read/write
-		
-		PacketFilePtr		objectDataFile;			//Packet file with blocks in it.
-		
+	ObjectQueueNodePtr*	objectQueues;			//Array of QueueNode Ptrs for each
+	//Active block of terrain.
+
+	uint32_t		numObjectsInDataBlock;	//Number of objects to be read/written
+	ObjDataPtr			objDataBlock;			//Block of object data to read/write
+
+	PacketFilePtr		objectDataFile;			//Packet file with blocks in it.
+
 	//Member Functions
 	//-----------------
-	protected:
-	
-		int32_t setupObjectQueue (uint32_t blockNum, uint32_t blockSize);
+protected:
 
-	public:
-	
-		void init (void)
-		{
-		   terrainObjectHeapSize = 0;
-		   terrainObjectHeap = nullptr;
-		   
-		   objectQueues = nullptr;
-		   
-		   numObjectsInDataBlock = 0;
-		   objDataBlock = nullptr;
-		   
-		   objectDataFile = nullptr;
-		}
-		
-		ObjectBlockManager (void)
-		{
-			init(void);
-		}
-		
-		void destroy (void);
-		
-		int32_t init (PSTR packetFileName);
-		
-		~ObjectBlockManager (void)
-		{
-			destroy(void);
-		}
-		
-		PacketFilePtr getObjectDataFile (void) {
-			return(objectDataFile);
-		}
+	int32_t setupObjectQueue(uint32_t blockNum, uint32_t blockSize);
 
-		int32_t update (BOOL createAll = FALSE);
+public:
 
-		void updateAllObjects (void);
-		
-		void destroyAllObjects (void);
+	void init(void)
+	{
+		terrainObjectHeapSize = 0;
+		terrainObjectHeap = nullptr;
+		objectQueues = nullptr;
+		numObjectsInDataBlock = 0;
+		objDataBlock = nullptr;
+		objectDataFile = nullptr;
+	}
 
-		ObjectQueueNodePtr getObjectList (int32_t idNum)
-		{
-			return objectQueues[idNum];
-		}
-		
-		#ifdef TERRAINEDIT
-		int32_t addObject (ObjectTypeNumber objNum, vector_2d &pOffset, vector_2d &numbers, vector_3d &position, int32_t dmg = 0, int32_t expTime  = -1);
-		int32_t removeObject (BaseObjectPtr deadObject);
-		#endif
-			
+	ObjectBlockManager(void)
+	{
+		init(void);
+	}
+
+	void destroy(void);
+
+	int32_t init(PSTR packetFileName);
+
+	~ObjectBlockManager(void)
+	{
+		destroy(void);
+	}
+
+	PacketFilePtr getObjectDataFile(void)
+	{
+		return(objectDataFile);
+	}
+
+	int32_t update(BOOL createAll = FALSE);
+
+	void updateAllObjects(void);
+
+	void destroyAllObjects(void);
+
+	ObjectQueueNodePtr getObjectList(int32_t idNum)
+	{
+		return objectQueues[idNum];
+	}
+
+#ifdef TERRAINEDIT
+	int32_t addObject(ObjectTypeNumber objNum, vector_2d& pOffset, vector_2d& numbers, vector_3d& position, int32_t dmg = 0, int32_t expTime  = -1);
+	int32_t removeObject(BaseObjectPtr deadObject);
+#endif
+
 };
 
 //---------------------------------------------------------------------------

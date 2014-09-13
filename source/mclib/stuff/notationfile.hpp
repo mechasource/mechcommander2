@@ -18,14 +18,15 @@
 #include <stuff/filestreammanager.hpp>
 #include <stuff/tree.hpp>
 
-namespace Stuff {
+namespace Stuff
+{
 
 	class NotationFile;
 	class Page;
 	class Note;
 
 	class Macro;
-	typedef TreeOf<Macro *, MString> MacroTree;
+	typedef TreeOf<Macro*, MString> MacroTree;
 
 	class Macro:
 		public Plug
@@ -36,60 +37,60 @@ namespace Stuff {
 		bool m_inUse;
 
 		Macro(
-			MString *macro,
-			MString *replace
-			);
+			MString* macro,
+			MString* replace
+		);
 
 		static void
-			AddValue(
-			MacroTree *macro_tree,
+		AddValue(
+			MacroTree* macro_tree,
 			PCSTR name,
 			PCSTR value
-			);
+		);
 
 		static void
-			ReplaceMacros(
-			MacroTree *macro_tree,
+		ReplaceMacros(
+			MacroTree* macro_tree,
 			PCSTR buffer,
 			PSTR new_buf,
 			size_t new_buf_size
-			);
+		);
 	};
 
-	//=======================================================================
-	// Format of notation file:
-	//
-	// !include file1.txt
-	// !include=file1a.txt
-	// !include "file2.txt"
-	//
-	// !example_macro=Field2Data
-	//
-	// // comment
-	//
-	// [RecordName]	// comment
-	// FieldName=FieldData
-	// Field2Name=Field2Data
-	// Field3Name=test.ini
-	//
-	// [Record2Name]
-	// FieldName=FieldData
-	// Field4Name=$(example_macro)
-	// Field5Name={
-	//  [Record3Name]
-	//  Field6Name=Whatever
-	// }
-	//
-	// /* [Page3Name]
-	// Field7Name=Uhhm
-	// Field8Name=Uhhh */
-	// ...
-	//
-	//=======================================================================
+//=======================================================================
+// Format of notation file:
+//
+// !include file1.txt
+// !include=file1a.txt
+// !include "file2.txt"
+//
+// !example_macro=Field2Data
+//
+// // comment
+//
+// [RecordName]	// comment
+// FieldName=FieldData
+// Field2Name=Field2Data
+// Field3Name=test.ini
+//
+// [Record2Name]
+// FieldName=FieldData
+// Field4Name=$(example_macro)
+// Field5Name={
+//  [Record3Name]
+//  Field6Name=Whatever
+// }
+//
+// /* [Page3Name]
+// Field7Name=Uhhm
+// Field8Name=Uhhh */
+// ...
+//
+//=======================================================================
 
-	//##########################################################################
-	//##############    NotationFile    ########################################
-	//##########################################################################
+//##########################################################################
+//##############    NotationFile    ########################################
+//##########################################################################
 
 	class NotationFile
 #if defined(_ARMOR)
@@ -103,7 +104,8 @@ namespace Stuff {
 		// Constructor/Destructors
 		//
 	public:
-		enum Type {
+		enum Type
+		{
 			Standard,
 			NonEmpty,
 			Raw
@@ -111,126 +113,150 @@ namespace Stuff {
 
 		NotationFile(
 			PCSTR file_name,
-			Type type=Standard
-			);
+			Type type = Standard
+		);
 		NotationFile(
-			MemoryStream *stream=nullptr,
-			MacroTree *macro_tree=nullptr
-			);
+			MemoryStream* stream = nullptr,
+			MacroTree* macro_tree = nullptr
+		);
 
 		~NotationFile(void);
 
 		void TestInstance(void) const;
 		static bool
-			TestClass(void);
+		TestClass(void);
 
 	protected:
 		void
-			CommonConstruction(
-			MemoryStream *memory_stream,
-			TreeOf<Macro*, MString> *macro_tree
-			);
+		CommonConstruction(
+			MemoryStream* memory_stream,
+			TreeOf<Macro*, MString>* macro_tree
+		);
 
 		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		// Stream access
 		//
 	public:
 		const FileDependencies*
-			GetFileDependencies(void) const
-		{Check_Object(this); return &m_fileDependencies;}
+		GetFileDependencies(void) const
+		{
+			Check_Object(this);
+			return &m_fileDependencies;
+		}
 
 		PCSTR
-			GetFileName(void) const
-		{Check_Object(this); return m_fileName;}
+		GetFileName(void) const
+		{
+			Check_Object(this);
+			return m_fileName;
+		}
 
 		void
-			SaveAs(PCSTR file_name);
+		SaveAs(PCSTR file_name);
 		void
-			Save(void);
+		Save(void);
 
 		void
-			IgnoreChanges()
-		{Check_Object(this); m_dirtyFlag = false;}
+		IgnoreChanges()
+		{
+			Check_Object(this);
+			m_dirtyFlag = false;
+		}
 
 		bool
-			IsChanged(void) const
-		{Check_Object(this); return m_dirtyFlag;}
+		IsChanged(void) const
+		{
+			Check_Object(this);
+			return m_dirtyFlag;
+		}
 
 	protected:
 		void
-			Read(
-			MemoryStream *stream,
-			MacroTree *macro_tree,
-			Page **page,
+		Read(
+			MemoryStream* stream,
+			MacroTree* macro_tree,
+			Page** page,
 			bool nested
-			);
+		);
 		void
-			Write(MemoryStream *stream);
+		Write(MemoryStream* stream);
 
 		void
-			ProcessLine(
-			MemoryStream *stream,
-			MacroTree *macro_tree,
-			Page **notepage,
+		ProcessLine(
+			MemoryStream* stream,
+			MacroTree* macro_tree,
+			Page** notepage,
 			PSTR buffer
-			);
+		);
 
 		void
-			HandleBangStuff(
+		HandleBangStuff(
 			PSTR buffer,
-			MacroTree *macro_tree,
-			Page **page
-			);
+			MacroTree* macro_tree,
+			Page** page
+		);
 
 		void
-			SetDirty()
-		{ Check_Object(this); m_dirtyFlag = true; }
+		SetDirty()
+		{
+			Check_Object(this);
+			m_dirtyFlag = true;
+		}
 
 		Stuff::MString
-			m_fileName;
+		m_fileName;
 		bool
-			m_dirtyFlag;
+		m_dirtyFlag;
 		Type
-			m_type;
+		m_type;
 		FileDependencies
-			m_fileDependencies;
+		m_fileDependencies;
 
 		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		// Page access
 		//
 	public:
 		bool
-			IsEmpty()
-		{Check_Object(this); return m_pages.IsEmpty();}
+		IsEmpty()
+		{
+			Check_Object(this);
+			return m_pages.IsEmpty();
+		}
 
 		bool
-			DoesPageExist(PCSTR pagename)
-		{Check_Object(this); return FindPage(pagename) != nullptr;}
+		DoesPageExist(PCSTR pagename)
+		{
+			Check_Object(this);
+			return FindPage(pagename) != nullptr;
+		}
 		Page*
-			FindPage(PCSTR pagename);
+		FindPage(PCSTR pagename);
 		Page*
-			GetPage(uint32_t index);
+		GetPage(uint32_t index);
 		Page*
-			GetPage(PCSTR pagename);
+		GetPage(PCSTR pagename);
 
 		typedef ChainIteratorOf<Page*> PageIterator;
 		PageIterator*
-			MakePageIterator()
-		{Check_Object(this); return new PageIterator(&m_pages);}
+		MakePageIterator()
+		{
+			Check_Object(this);
+			return new PageIterator(&m_pages);
+		}
 
 		Page*
-			AddPage(PCSTR pagename);
+		AddPage(PCSTR pagename);
 		Page*
-			SetPage(PCSTR pagename);
+		SetPage(PCSTR pagename);
 
 		void
-			DeletePage(PCSTR pagename);
+		DeletePage(PCSTR pagename);
 		void
-			DeleteAllPages(void);
+		DeleteAllPages(void);
 
 	protected:
 		ChainOf<Page*>
-			m_pages;
+		m_pages;
 	};
 
 }

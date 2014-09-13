@@ -12,7 +12,10 @@
 
 #include <stuff/registeredclass.hpp>
 
-namespace Stuff {class MemoryStream;}
+namespace Stuff
+{
+	class MemoryStream;
+}
 
 namespace MemoryStreamIO
 {
@@ -20,18 +23,19 @@ namespace MemoryStreamIO
 		Stuff::MemoryStream* stream, const Stuff::MemoryStream* input_stream);
 }
 
-namespace Stuff {
+namespace Stuff
+{
 
 	class MemoryStream;
 	class DynamicMemoryStream;
 
-	//##########################################################################
-	//#######################    MemoryStream    ###############################
-	//##########################################################################
+//##########################################################################
+//#######################    MemoryStream    ###############################
+//##########################################################################
 
-	cint32_t End_Of_Stream=-1;
+	cint32_t End_Of_Stream = -1;
 
-	cint32_t Empty_Bit_Buffer=-20;
+	cint32_t Empty_Bit_Buffer = -20;
 
 
 	class MemoryStream :
@@ -51,11 +55,10 @@ namespace Stuff {
 		MemoryStream(
 			PVOID stream_start,
 			size_t stream_size,
-			size_t initial_offset=0)
+			size_t initial_offset = 0)
 			: RegisteredClass(DefaultData)
 		{
 			Check_Pointer(this);
-
 			streamStart = static_cast<puint8_t>(stream_start);
 			streamSize = stream_size;
 			Verify(initial_offset <= stream_size);
@@ -70,18 +73,17 @@ namespace Stuff {
 		void TestInstance(void) const;
 
 		static bool
-			TestClass(void);
+		TestClass(void);
 
 	protected:
 		MemoryStream(
 			ClassData* class_data,
 			PVOID stream_start,
 			size_t stream_size,
-			size_t initial_offset=0)
+			size_t initial_offset = 0)
 			: RegisteredClass(class_data)
 		{
 			Check_Pointer(this);
-
 			streamStart = static_cast<puint8_t>(stream_start);
 			streamSize = stream_size;
 			Verify(initial_offset <= stream_size);
@@ -101,55 +103,58 @@ namespace Stuff {
 	public:
 		virtual PVOID GetPointer(void) const
 		{
-			Check_Object(this); return currentPosition;
+			Check_Object(this);
+			return currentPosition;
 		}
 
 		size_t GetIndex(void) const
 		{
-			Check_Object(this); return size_t(currentPosition - streamStart);
+			Check_Object(this);
+			return size_t(currentPosition - streamStart);
 		}
 
 		size_t GetSize(void) const
 		{
-			Check_Object(this); return streamSize;
+			Check_Object(this);
+			return streamSize;
 		}
 
 		size_t GetBytesUsed(void) const
 		{
-			Check_Object(this); return size_t(currentPosition - streamStart);
+			Check_Object(this);
+			return size_t(currentPosition - streamStart);
 		}
 
 		virtual size_t GetBytesRemaining(void) const
 		{
-			Check_Object(this); return size_t(streamSize - GetBytesUsed());
+			Check_Object(this);
+			return size_t(streamSize - GetBytesUsed());
 		}
 
 		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		// Assignment methods
 		//
 	public:
-		virtual void
-			SetPointer(PVOID new_pointer)
+		virtual void SetPointer(PVOID new_pointer)
 		{
 			Check_Pointer(this);
 			currentPosition = Cast_Pointer(puint8_t, new_pointer);
 			Check_Object(this);
 		}
 		void
-			operator=(PVOID new_pointer)
+		operator=(PVOID new_pointer)
 		{
 			SetPointer(new_pointer);
 		}
 
-		virtual void
-			SetPointer(size_t index)
+		virtual void SetPointer(size_t index)
 		{
 			Check_Pointer(this);
 			currentPosition = streamStart + index;
 			Check_Object(this);
 		}
 		void
-			operator=(size_t index)
+		operator=(size_t index)
 		{
 			SetPointer(index);
 		}
@@ -159,193 +164,207 @@ namespace Stuff {
 		//
 	public:
 		void
-			Rewind(void)
+		Rewind(void)
 		{
-			SetPointer((size_t) 0U);currentBit = Empty_Bit_Buffer;
+			SetPointer((size_t) 0U);
+			currentBit = Empty_Bit_Buffer;
 		}
 
 		virtual bool
-			AllocateBytes(size_t count)
+		AllocateBytes(size_t count)
 		{
 			return GetBytesRemaining() <= count;
 		}
 
 		virtual MemoryStream&
-			AdvancePointer(size_t count)
+		AdvancePointer(size_t count)
 		{
 			Check_Object(this);
 			currentPosition += count;
-
 			Verify(currentPosition >= streamStart);
 			Verify(currentPosition <= streamStart + streamSize);
-
 			Check_Object(this);
 			return *this;
 		}
 
 		MemoryStream&
-			operator+=(size_t count)
+		operator+=(size_t count)
 		{
 			return AdvancePointer(count);
 		}
 
 		virtual MemoryStream&
-			RewindPointer(size_t count)
+		RewindPointer(size_t count)
 		{
 			Check_Object(this);
 			currentPosition -= count;
-
 			Verify(currentPosition >= streamStart);
 			Verify(currentPosition <= streamStart + streamSize);
-
 			Check_Object(this);
 			return *this;
 		}
 		MemoryStream&
-			operator-=(size_t count)
-		{return RewindPointer(count);}
+		operator-=(size_t count)
+		{
+			return RewindPointer(count);
+		}
 
 		virtual MemoryStream&
-			ReadBytes(
+		ReadBytes(
 			PVOID ptr,
 			size_t number_of_bytes
-			);
+		);
 
 		MemoryStream&
-			WriteBytes(
+		WriteBytes(
 			PCVOID ptr,
 			size_t number_of_bytes
-			)
+		)
 		{
 			Check_Object(this);
 			Check_Pointer(static_cast<PCVOID>(ptr));
 			Verify(number_of_bytes > 0);
-
-			Mem_Copy(GetPointer(), static_cast<PCVOID>(ptr), 
-				number_of_bytes, GetBytesRemaining());
+			Mem_Copy(GetPointer(), static_cast<PCVOID>(ptr),
+					 number_of_bytes, GetBytesRemaining());
 			AdvancePointer(number_of_bytes);
 			return *this;
 		}
 
 		MemoryStream&
-			ReadSwappedBytes(
+		ReadSwappedBytes(
 			PVOID ptr,
 			size_t number_of_bytes
-			);
+		);
 		MemoryStream&
-			WriteSwappedBytes(
+		WriteSwappedBytes(
 			PCVOID ptr,
 			size_t number_of_bytes
-			);
+		);
 
 		virtual int32_t
-			ReadChar(void);
+		ReadChar(void);
 
 		virtual bool
-			ReadLine(
+		ReadLine(
 			PSTR buffer,
 			size_t size_of_buffer,
 			char continuator = '\0'
-			);
+		);
 
 		MString
-			ReadString(
+		ReadString(
 			size_t size_of_buffer = 512,
 			char continuator = '\0'
-			);
+		);
 
 		void
-			WriteLine(PSTR buffer);
+		WriteLine(PSTR buffer);
 
 
 		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-		// Bit operators  
+		// Bit operators
 		//
 		// WARNING - DO NOT MIX AND MATCH WITH uint8_t METHODS!!!!!
 		//
 
 	private:
 		int32_t
-			currentBit;
+		currentBit;
 
 		uint8_t
-			workingBitBuffer;
+		workingBitBuffer;
 
 		MemoryStream&
-			ReadUnsafeBits(PVOID ptr, uint32_t number_of_bits);
+		ReadUnsafeBits(PVOID ptr, uint32_t number_of_bits);
 
 	public:
 		MemoryStream&
-			ReadBit(bool &bit_value);
+		ReadBit(bool& bit_value);
 
 		MemoryStream&
-			WriteBit(const bool &bit_value);
+		WriteBit(const bool& bit_value);
 
 
 		template <typename T>
-		MemoryStream& ReadBits(T *ptr, uint32_t number_of_bits)
+		MemoryStream& ReadBits(T* ptr, uint32_t number_of_bits)
 		{
 			Verify(number_of_bits <= 32);
-			Check_Object(this); Check_Pointer(ptr);
-			if(ptr)*ptr = 0; return ReadUnsafeBits(ptr, number_of_bits);
+			Check_Object(this);
+			Check_Pointer(ptr);
+			if(ptr)*ptr = 0;
+			return ReadUnsafeBits(ptr, number_of_bits);
 		}
 
 #if _CONSIDERED_OBSOLETE
 		MemoryStream&
-			ReadBits(pint32_t ptr, uint32_t number_of_bits)
+		ReadBits(pint32_t ptr, uint32_t number_of_bits)
 		{
 			Verify(number_of_bits <= 32);
-			Check_Object(this); Check_Pointer(ptr);
-			if(ptr)*ptr = 0; return ReadUnsafeBits(ptr, number_of_bits);
+			Check_Object(this);
+			Check_Pointer(ptr);
+			if(ptr)*ptr = 0;
+			return ReadUnsafeBits(ptr, number_of_bits);
 		}
 
 		MemoryStream&
-			ReadBits(uint8_t *ptr, uint32_t number_of_bits)
+		ReadBits(uint8_t* ptr, uint32_t number_of_bits)
 		{
 			Verify(number_of_bits <= 8);
-			Check_Object(this); Check_Pointer(ptr);
-			if(ptr)*ptr = 0; return ReadUnsafeBits(ptr, number_of_bits);
+			Check_Object(this);
+			Check_Pointer(ptr);
+			if(ptr)*ptr = 0;
+			return ReadUnsafeBits(ptr, number_of_bits);
 		}
 
 
 		MemoryStream&
-			ReadBits(puint16_t ptr, uint32_t number_of_bits)
+		ReadBits(puint16_t ptr, uint32_t number_of_bits)
 		{
 			Verify(number_of_bits <= 16);
-			Check_Object(this); Check_Pointer(ptr);
-			if(ptr)*ptr = 0; return ReadUnsafeBits(ptr, number_of_bits);
+			Check_Object(this);
+			Check_Pointer(ptr);
+			if(ptr)*ptr = 0;
+			return ReadUnsafeBits(ptr, number_of_bits);
 		}
 
 		MemoryStream&
-			ReadBits(uint32_t *ptr, uint32_t number_of_bits)
+		ReadBits(uint32_t* ptr, uint32_t number_of_bits)
 		{
 			Verify(number_of_bits <= 32);
-			Check_Object(this); Check_Pointer(ptr);
-			if(ptr)*ptr = 0; return ReadUnsafeBits(ptr, number_of_bits);
+			Check_Object(this);
+			Check_Pointer(ptr);
+			if(ptr)*ptr = 0;
+			return ReadUnsafeBits(ptr, number_of_bits);
 		}
 
 		MemoryStream&
-			ReadBits(size_t *ptr, uint32_t number_of_bits)
+		ReadBits(size_t* ptr, uint32_t number_of_bits)
 		{
 			Verify(number_of_bits <= 32);
-			Check_Object(this); Check_Pointer(ptr);
-			*ptr = 0; return ReadUnsafeBits(ptr, number_of_bits);
+			Check_Object(this);
+			Check_Pointer(ptr);
+			*ptr = 0;
+			return ReadUnsafeBits(ptr, number_of_bits);
 		}
 
 		MemoryStream&
-			ReadBits(float *ptr, uint32_t number_of_bits)
+		ReadBits(float* ptr, uint32_t number_of_bits)
 		{
 			Verify(number_of_bits == 32);
-			Check_Object(this); Check_Pointer(ptr);
-			*ptr = 0.0; return ReadUnsafeBits(ptr, number_of_bits);
+			Check_Object(this);
+			Check_Pointer(ptr);
+			*ptr = 0.0;
+			return ReadUnsafeBits(ptr, number_of_bits);
 		}
 
 		MemoryStream&
-			ReadBits(double *ptr, uint32_t number_of_bits)
+		ReadBits(double* ptr, uint32_t number_of_bits)
 		{
 			Verify(number_of_bits == 64);
-			Check_Object(this); Check_Pointer(ptr);
-			*ptr = 0.0; return ReadUnsafeBits(ptr, number_of_bits);
+			Check_Object(this);
+			Check_Pointer(ptr);
+			*ptr = 0.0;
+			return ReadUnsafeBits(ptr, number_of_bits);
 		}
 
 #endif
@@ -353,86 +372,86 @@ namespace Stuff {
 		MemoryStream& WriteBits(PCVOID ptr, uint32_t number_of_bits);
 
 		MemoryStream&
-			ReadBitsToScaledInt(int32_t &number, int32_t min, int32_t max,  uint32_t number_of_bits);
+		ReadBitsToScaledInt(int32_t& number, int32_t min, int32_t max,  uint32_t number_of_bits);
 
 		MemoryStream&
-			WriteScaledIntToBits(cint32_t &number, int32_t min, int32_t max,  uint32_t number_of_bits);
+		WriteScaledIntToBits(cint32_t& number, int32_t min, int32_t max,  uint32_t number_of_bits);
 
 		MemoryStream&
-			ReadBitsToScaledFloat(float &number, float min, float max,  uint32_t number_of_bits);
+		ReadBitsToScaledFloat(float& number, float min, float max,  uint32_t number_of_bits);
 
 		MemoryStream&
-			WriteScaledFloatToBits(const float &number, float min, float max,  uint32_t number_of_bits);
+		WriteScaledFloatToBits(const float& number, float min, float max,  uint32_t number_of_bits);
 
 		void
-			ByteAlign(void);
+		ByteAlign(void);
 
 		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		// Protected data
 		//
 	protected:
 		uint8_t
-			*streamStart,
-			*currentPosition;
+		* streamStart,
+		*currentPosition;
 		size_t
-			streamSize;
+		streamSize;
 	};
 
 	template <class T> inline MemoryStream&
-		Read_Swapped(
-		MemoryStream *stream,
+	Read_Swapped(
+		MemoryStream* stream,
 		T data
-		)
+	)
 	{
 		return stream->ReadSwappedBytes(data, sizeof(*data));
 	}
 
 	template <class T> inline MemoryStream&
-		Write_Swapped(
-		MemoryStream *stream,
+	Write_Swapped(
+		MemoryStream* stream,
 		const T data
-		)
+	)
 	{
 		return stream->WriteSwappedBytes(&data, sizeof(data));
 	}
 
-	//--------------------------------------------------------------------------
-	// Extraction operators
-	//
+//--------------------------------------------------------------------------
+// Extraction operators
+//
 	template <class T> inline MemoryStream&
-		operator>>(
-		MemoryStream &stream,
-		T &output
-		)
+	operator>>(
+		MemoryStream& stream,
+		T& output
+	)
 	{
 		return MemoryStreamIO::Read(&stream, &output);
 	}
 
-	//--------------------------------------------------------------------------
-	// Insertion operators
-	//
+//--------------------------------------------------------------------------
+// Insertion operators
+//
 	template <class T> inline MemoryStream&
-		operator<<(
-		MemoryStream &stream,
-		const T &input
-		)
+	operator<<(
+		MemoryStream& stream,
+		const T& input
+	)
 	{
 		return MemoryStreamIO::Write(&stream, &input);
 	}
 
 	inline MemoryStream&
-		operator<<(
+	operator<<(
 		MemoryStream& stream,
 		PCSTR input
-		)
+	)
 	{
 		Check_Pointer(input);
 		return stream.WriteBytes(static_cast<PCVOID>(input), strlen(input));
 	}
 
-	//##########################################################################
-	//###################    DynamicMemoryStream    ############################
-	//##########################################################################
+//##########################################################################
+//###################    DynamicMemoryStream    ############################
+//##########################################################################
 
 	class DynamicMemoryStream:
 		public MemoryStream
@@ -441,17 +460,17 @@ namespace Stuff {
 		// Construction, destruction, and testing
 		//
 	public:
-		DynamicMemoryStream(size_t stream_size=0);
+		DynamicMemoryStream(size_t stream_size = 0);
 		DynamicMemoryStream(
 			PVOID stream_start,
 			size_t stream_size,
-			size_t initial_offset=0
-			);
+			size_t initial_offset = 0
+		);
 		DynamicMemoryStream(const DynamicMemoryStream& otherStream);
 		~DynamicMemoryStream(void);
 
 		void
-			TestInstance(void) const
+		TestInstance(void) const
 		{
 			Verify((size_t)(currentPosition - streamStart) <= streamSize);
 			Verify(streamSize <= bufferSize);
@@ -462,14 +481,14 @@ namespace Stuff {
 		//
 	public:
 		size_t
-			GetBufferSize(void)
+		GetBufferSize(void)
 		{
 			Check_Object(this);
 			return bufferSize;
 		}
 
 		void
-			SetSize(size_t stream_length)
+		SetSize(size_t stream_length)
 		{
 			Check_Object(this);
 			Verify(stream_length <= bufferSize);
@@ -482,10 +501,10 @@ namespace Stuff {
 	public:
 
 		MemoryStream&
-			WriteBytes(
+		WriteBytes(
 			PCVOID ptr,
 			size_t number_of_bytes
-			);
+		);
 
 		bool	AllocateBytes(size_t count);
 
@@ -494,195 +513,196 @@ namespace Stuff {
 		//
 	private:
 		size_t
-			bufferSize;
+		bufferSize;
 		bool
-			ownsStream;
+		ownsStream;
 	};
 
 }
 
-namespace MemoryStreamIO {
+namespace MemoryStreamIO
+{
 
-	template<typename T> 
+	template<typename T>
 	inline Stuff::MemoryStream&
-		Read(
+	Read(
 		Stuff::MemoryStream* stream,
-		T *output
-		)
+		T* output
+	)
 	{
 		return stream->ReadBytes(output, sizeof(*output));
 	}
 
-	template<typename T> 
+	template<typename T>
 	inline Stuff::MemoryStream&
-		Write(
+	Write(
 		Stuff::MemoryStream* stream,
-		const T *input
-		)
+		const T* input
+	)
 	{
 		return stream->WriteBytes(input, sizeof(*input));
 	}
 
 #if  _CONSIDERED_OBSOLETE
 	inline Stuff::MemoryStream&
-		Read(
+	Read(
 		Stuff::MemoryStream* stream,
-		bool *output
-		)
+		bool* output
+	)
 	{
 		return stream->ReadBytes(output, sizeof(*output));
 	}
 
 	inline Stuff::MemoryStream&
-		Read(
+	Read(
 		Stuff::MemoryStream* stream,
 		pint8_t output
-		)
+	)
 	{
 		return stream->ReadBytes(output, sizeof(*output));
 	}
 
 	inline Stuff::MemoryStream&
-		Read(
+	Read(
 		Stuff::MemoryStream* stream,
 		puint8_t output
-		)
+	)
 	{
 		return stream->ReadBytes(output, sizeof(*output));
 	}
 
 	inline Stuff::MemoryStream&
-		Read(
+	Read(
 		Stuff::MemoryStream* stream,
 		pint16_t output
-		)
+	)
 	{
 		return stream->ReadBytes(output, sizeof(*output));
 	}
 
 	inline Stuff::MemoryStream&
-		Read(
+	Read(
 		Stuff::MemoryStream* stream,
 		puint16_t output
-		)
+	)
 	{
 		return stream->ReadBytes(output, sizeof(*output));
 	}
 
 	inline Stuff::MemoryStream&
-		Read(
+	Read(
 		Stuff::MemoryStream* stream,
 		pint32_t output
-		)
+	)
 	{
 		return stream->ReadBytes(output, sizeof(*output));
 	}
 
 	inline Stuff::MemoryStream&
-		Read(
+	Read(
 		Stuff::MemoryStream* stream,
 		puint32_t output
-		)
+	)
 	{
 		return stream->ReadBytes(output, sizeof(*output));
 	}
 
 	inline Stuff::MemoryStream&
-		Read(
+	Read(
 		Stuff::MemoryStream* stream,
-		int32_t *output
-		)
+		int32_t* output
+	)
 	{
 		return stream->ReadBytes(output, sizeof(*output));
 	}
 
 	inline Stuff::MemoryStream&
-		Read(
+	Read(
 		Stuff::MemoryStream* stream,
-		size_t *output
-		)
+		size_t* output
+	)
 	{
 		return stream->ReadBytes(output, sizeof(*output));
 	}
 
 	inline Stuff::MemoryStream&
-		Write(
+	Write(
 		Stuff::MemoryStream* stream,
-		const bool *input
-		)
+		const bool* input
+	)
 	{
 		return stream->WriteBytes(input, sizeof(*input));
 	}
 
 	inline Stuff::MemoryStream&
-		Write(
+	Write(
 		Stuff::MemoryStream* stream,
-		cint8_t *input
-		)
+		cint8_t* input
+	)
 	{
 		return stream->WriteBytes(input, sizeof(*input));
 	}
 
 	inline Stuff::MemoryStream&
-		Write(
+	Write(
 		Stuff::MemoryStream* stream,
-		cuint8_t *input
-		)
+		cuint8_t* input
+	)
 	{
 		return stream->WriteBytes(input, sizeof(*input));
 	}
 
 	inline Stuff::MemoryStream&
-		Write(
+	Write(
 		Stuff::MemoryStream* stream,
-		cint16_t *input
-		)
+		cint16_t* input
+	)
 	{
 		return stream->WriteBytes(input, sizeof(*input));
 	}
 
 	inline Stuff::MemoryStream&
-		Write(
+	Write(
 		Stuff::MemoryStream* stream,
-		cuint16_t *input
-		)
+		cuint16_t* input
+	)
 	{
 		return stream->WriteBytes(input, sizeof(*input));
 	}
 
 	inline Stuff::MemoryStream&
-		Write(
+	Write(
 		Stuff::MemoryStream* stream,
-		cint32_t *input
-		)
+		cint32_t* input
+	)
 	{
 		return stream->WriteBytes(input, sizeof(*input));
 	}
 
 
 	inline Stuff::MemoryStream&
-		Write(
+	Write(
 		Stuff::MemoryStream* stream,
-		cuint32_t *input
-		)
+		cuint32_t* input
+	)
 	{
 		return stream->WriteBytes(input, sizeof(*input));
 	}
 
 	inline Stuff::MemoryStream&
-		Write(
+	Write(
 		Stuff::MemoryStream* stream,
-		CLONG_PTR *input
-		)
+		CLONG_PTR* input
+	)
 	{
 		return stream->WriteBytes(input, sizeof(*input));
 	}
 
 	inline Stuff::MemoryStream&
-		Write(
+	Write(
 		Stuff::MemoryStream* stream,
-		CULONG_PTR *input
-		)
+		CULONG_PTR* input
+	)
 	{
 		return stream->WriteBytes(input, sizeof(*input));
 	}
@@ -690,10 +710,10 @@ namespace MemoryStreamIO {
 
 #if _CONSIDERED_OBSOLETE
 	inline Stuff::MemoryStream&
-		Write(
+	Write(
 		Stuff::MemoryStream* stream,
-		PCSTR const *input
-		)
+		PCSTR const* input
+	)
 	{
 		Check_Pointer(*input);
 		return stream->WriteBytes(*input, strlen(*input));
@@ -701,10 +721,10 @@ namespace MemoryStreamIO {
 #endif
 
 	Stuff::MemoryStream&
-		Write(
+	Write(
 		Stuff::MemoryStream* stream,
 		const Stuff::MemoryStream* input_stream
-		);
+	);
 
 }
 

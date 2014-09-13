@@ -14,10 +14,10 @@
 //---------------------------------------------------------------------------
 
 class ObjectBlockManager;
-typedef ObjectBlockManager *ObjectBlockManagerPtr;
+typedef ObjectBlockManager* ObjectBlockManagerPtr;
 
 struct ObjData;
-typedef ObjData *ObjDataPtr;
+typedef ObjData* ObjDataPtr;
 
 //***************************************************************************
 

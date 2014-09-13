@@ -11,32 +11,33 @@
 
 #include <stuff/ray.hpp>
 
-namespace Stuff {
+namespace Stuff
+{
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Line3D3D ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Line3D3D ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 	class Line3D:
 		public Ray3D
 	{
 	public:
-		Scalar
-			length;
+		float
+		length;
 
 		Line3D()
 		{}
 		Line3D(
-			const Ray3D &ray,
-			Scalar length
-			):
-		Ray3D(ray),
+			const Ray3D& ray,
+			float length
+		):
+			Ray3D(ray),
 			length(length)
 		{}
 		Line3D(
-			const Point3D &start,
-			const UnitVector3D &direction,
-			Scalar length
-			):
-		Ray3D(start,direction),
+			const Point3D& start,
+			const UnitVector3D& direction,
+			float length
+		):
+			Ray3D(start, direction),
 			length(length)
 		{}
 
@@ -44,30 +45,37 @@ namespace Stuff {
 		// Assignment operators
 		//
 		Line3D&
-			SetDirection(const Vector3D &vector);
+		SetDirection(const Vector3D& vector);
 
 		void
-			FindEnd(Point3D *result)
-		{Check_Object(this); Check_Pointer(result); Ray3D::Project(length, result);}
+		FindEnd(Point3D* result)
+		{
+			Check_Object(this);
+			Check_Pointer(result);
+			Ray3D::Project(length, result);
+		}
 
 		//
 		// Intersection functions
 		//
-		Scalar
-			GetDistanceTo(
-			const Plane &plane,
-			Scalar *product
-			) const
-		{Check_Object(this); return Ray3D::GetDistanceTo(plane, product);}
-		Scalar
-			GetDistanceTo(
-			const Sphere &sphere,
-			Scalar *penetration
-			) const;
-		Scalar
-			GetDistanceTo(const OBB& box);
-		Scalar
-			GetDistanceTo(
+		float
+		GetDistanceTo(
+			const Plane& plane,
+			float* product
+		) const
+		{
+			Check_Object(this);
+			return Ray3D::GetDistanceTo(plane, product);
+		}
+		float
+		GetDistanceTo(
+			const Sphere& sphere,
+			float* penetration
+		) const;
+		float
+		GetDistanceTo(const OBB& box);
+		float
+		GetDistanceTo(
 			const OBB& box,
 			size_t* axis);
 	};

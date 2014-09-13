@@ -13,15 +13,16 @@
 #include <stuff/stuff.hpp>
 #include <stuff/style.hpp>
 
-namespace Stuff {
+namespace Stuff
+{
 
 	class MString;
 	class RegisteredClass__ClassData;
 	class MemoryStream;
 
-	//##########################################################################
-	//#######################    RegisteredClass    ############################
-	//##########################################################################
+//##########################################################################
+//#######################    RegisteredClass    ############################
+//##########################################################################
 
 	class RegisteredClass
 #if defined(_ARMOR)
@@ -34,32 +35,35 @@ namespace Stuff {
 		static void InitializeClass(void);
 		static void TerminateClass(void);
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// ClassID enumeration
-	//
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		// ClassID enumeration
+		//
 	public:
 		typedef int32_t ClassID;
 		typedef RegisteredClass__ClassData ClassData;
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// Construction, destruction, saving
-	//
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		// Construction, destruction, saving
+		//
 	public:
 		virtual ~RegisteredClass(void) {}
 
 	protected:
-		explicit RegisteredClass(ClassData *class_data);
+		explicit RegisteredClass(ClassData* class_data);
 
 	private:
-		RegisteredClass(const RegisteredClass &);
+		RegisteredClass(const RegisteredClass&);
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// Class Data Support
-	//
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		// Class Data Support
+		//
 	public:
 		ClassData*
-			GetClassData(void) const
-		{Check_Object(this); return classData;}
+		GetClassData(void) const
+		{
+			Check_Object(this);
+			return classData;
+		}
 		bool IsDerivedFrom(ClassData* parent) const;
 		bool IsDerivedFrom(ClassID class_id) const;
 		bool IsDerivedFrom(PCSTR parent) const;
@@ -75,9 +79,9 @@ namespace Stuff {
 	protected:
 		ClassData*	classData;
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// Accessors
-	//
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		// Accessors
+		//
 	public:
 		ClassID GetClassID(void) const;
 		PCSTR GetClassString(void) const;
@@ -91,16 +95,16 @@ namespace Stuff {
 		static ClassData* ClassDataArray[ClassIDCount];
 		static ClassID FirstTemporaryClassID;
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// Test support
-	//
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		// Test support
+		//
 	public:
 		void TestInstance(void) const;
 	};
 
-	//##########################################################################
-	//#####################    Receiver::ClassData    ##########################
-	//##########################################################################
+//##########################################################################
+//#####################    Receiver::ClassData    ##########################
+//##########################################################################
 
 	class RegisteredClass__ClassData
 #if defined(_ARMOR)
@@ -109,30 +113,39 @@ namespace Stuff {
 	{
 		friend class RegisteredClass;
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// Construction, destruction, testing
-	//
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		// Construction, destruction, testing
+		//
 	public:
 		RegisteredClass__ClassData(
 			RegisteredClass::ClassID class_id,
 			PCSTR class_name,
-			RegisteredClass__ClassData *parent = nullptr
-			);
+			RegisteredClass__ClassData* parent = nullptr
+		);
 
 		~RegisteredClass__ClassData(void);
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// Inheritance stuff
-	//
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		// Inheritance stuff
+		//
 	public:
 		bool IsDerivedFrom(RegisteredClass__ClassData* parent);
 
 		RegisteredClass::ClassID GetClassID(void)
-		{Check_Object(this); return classID;}
+		{
+			Check_Object(this);
+			return classID;
+		}
 		PCSTR GetClassName(void)
-		{Check_Object(this); return className;}
+		{
+			Check_Object(this);
+			return className;
+		}
 		RegisteredClass__ClassData* GetParentClass(void)
-		{Check_Object(this); return parentClass;}
+		{
+			Check_Object(this);
+			return parentClass;
+		}
 
 	protected:
 		void DeriveClass(RegisteredClass__ClassData* child);
@@ -143,9 +156,9 @@ namespace Stuff {
 		PCSTR	className;
 
 		RegisteredClass__ClassData
-			*firstChildClass,
-			*nextSiblingClass,
-			*parentClass;
+		* firstChildClass,
+		*nextSiblingClass,
+		*parentClass;
 
 		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		// Test support
@@ -154,8 +167,8 @@ namespace Stuff {
 		void TestInstance(void);
 	};
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	//
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//
 	inline bool RegisteredClass::IsDerivedFrom(RegisteredClass__ClassData* parent) const
 	{
 		Check_Object(this);
@@ -163,8 +176,8 @@ namespace Stuff {
 		return classData->IsDerivedFrom(parent);
 	}
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	//
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//
 	inline bool RegisteredClass::IsDerivedFrom(ClassID class_id) const
 	{
 		Check_Object(this);
@@ -172,8 +185,8 @@ namespace Stuff {
 		return classData->IsDerivedFrom(FindClassData(class_id));
 	}
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	//
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//
 	inline bool RegisteredClass::IsDerivedFrom(PCSTR parent) const
 	{
 		Check_Object(this);
@@ -181,18 +194,18 @@ namespace Stuff {
 		return classData->IsDerivedFrom(FindClassData(parent));
 	}
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	//
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//
 	inline RegisteredClass::ClassID RegisteredClass::GetClassID(void) const
 	{
 		Check_Object(this);
-		RegisteredClass__ClassData *data = GetClassData();
+		RegisteredClass__ClassData* data = GetClassData();
 		Check_Object(data);
 		return data->GetClassID();
 	}
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	//
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//
 	inline RegisteredClass::ClassData* RegisteredClass::FindClassData(PCSTR name)
 	{
 		return DefaultData->FindClassData(name);

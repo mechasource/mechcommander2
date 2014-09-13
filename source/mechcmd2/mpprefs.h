@@ -25,41 +25,44 @@ MPPrefs:
 **************************************************************************************************/
 class MPPrefs: public LogisticsScreen
 {
-	public:
+public:
 
-		MPPrefs(void);
-		virtual ~MPPrefs(void);
-		
-		static MPPrefs* instance(){ return s_instance; }
-		int32_t init( FitIniFile& file );
-		virtual void update(void);
-		virtual void render( int32_t OffsetX, int32_t OffsetY );
-		virtual int32_t	handleMessage( uint32_t message, uint32_t who );
-		virtual void begin(void);
-		virtual void end(void);
-		void			initColors(void);
+	MPPrefs(void);
+	virtual ~MPPrefs(void);
 
-		void	saveSettings(void);
-		void	cancelSettings(void);
+	static MPPrefs* instance()
+	{
+		return s_instance;
+	}
+	int32_t init(FitIniFile& file);
+	virtual void update(void);
+	virtual void render(int32_t OffsetX, int32_t OffsetY);
+	virtual int32_t	handleMessage(uint32_t message, uint32_t who);
+	virtual void begin(void);
+	virtual void end(void);
+	void			initColors(void);
 
-		void setMechColors( uint32_t base, uint32_t highlight ); // called by MPlayer when it resets a color
+	void	saveSettings(void);
+	void	cancelSettings(void);
 
-	private:
-		MPPrefs( const MPPrefs& src );
-		MPPrefs& operator=( const MPPrefs& PPrefs );
+	void setMechColors(uint32_t base, uint32_t highlight);   // called by MPlayer when it resets a color
 
-		aComboBox		comboBox[3];
-		SimpleCamera	camera;
-		aObject			insigniaBmp; // the one inside the combo box...
+private:
+	MPPrefs(const MPPrefs& src);
+	MPPrefs& operator=(const MPPrefs& PPrefs);
 
-		// HELPERS
-		void	updateStripeColors(const _MC2Player* players, int32_t playerCount, bool bDrawRect );
-		void	updateBaseColors( const _MC2Player* players, int32_t playerCount, bool bDrawRect);
-		char	getColorIndex( uint32_t color );
-		void	setColor( uint32_t color );
-		void	setHighlightColor( uint32_t color );
+	aComboBox		comboBox[3];
+	SimpleCamera	camera;
+	aObject			insigniaBmp; // the one inside the combo box...
 
-		static MPPrefs* s_instance;
+	// HELPERS
+	void	updateStripeColors(const _MC2Player* players, int32_t playerCount, bool bDrawRect);
+	void	updateBaseColors(const _MC2Player* players, int32_t playerCount, bool bDrawRect);
+	char	getColorIndex(uint32_t color);
+	void	setColor(uint32_t color);
+	void	setHighlightColor(uint32_t color);
+
+	static MPPrefs* s_instance;
 
 
 };
@@ -68,9 +71,12 @@ class aBmpListItem : public aListItem
 {
 public:
 
-	int32_t setBmp( PCSTR pFileName );
-	PCSTR getBmp(){ return fileName; }
-	
+	int32_t setBmp(PCSTR pFileName);
+	PCSTR getBmp()
+	{
+		return fileName;
+	}
+
 private:
 
 	aObject		bmp;

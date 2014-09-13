@@ -85,13 +85,15 @@ public:
 #define	MPLAYER_ERR_BAD_VERSION			-7
 #define	MPLAYER_ERR_SESSION_FULL		-8
 
-typedef enum {
+typedef enum
+{
 	BASECOLOR_PREFERENCE,
 	BASECOLOR_SELF,
 	BASECOLOR_TEAM
 } BaseColorType;
 
-typedef enum {
+typedef enum
+{
 	MULTIPLAYER_MODE_NONE,
 	MULTIPLAYER_MODE_BROWSER,
 	MULTIPLAYER_MODE_PARAMETERS,
@@ -101,7 +103,8 @@ typedef enum {
 	MULTIPLAYER_MODE_RESULTS
 } MultiplayerMode;
 
-typedef enum {
+typedef enum
+{
 	MISSION_TYPE_ELIMINATION,
 	MISSION_TYPE_KING_OF_THE_HILL,
 	MISSION_TYPE_CAPTURE_BASE,
@@ -112,11 +115,13 @@ typedef enum {
 	NUM_MISSION_TYPES
 } MissionType;
 
-typedef enum {
+typedef enum
+{
 	GO_SESSION_SCREEN = 1
 };
 
-typedef enum {
+typedef enum
+{
 	MCMSG_GENERIC,
 	MCMSG_CHAT,
 	MCMSG_NEW_SERVER,
@@ -170,7 +175,8 @@ typedef enum {
 #define	MAXLEN_INSIGNIA_FILE		35
 #define MAX_COLORS					32
 
-typedef struct _MC2Session {
+typedef struct _MC2Session
+{
 	char			name[MAXLEN_SESSION_NAME];
 	char			maxPlayers;
 	char			numPlayers;
@@ -184,7 +190,8 @@ typedef struct _MC2Session {
 } MC2Session;
 
 #pragma pack(1)
-typedef struct _MC2SessionData {
+typedef struct _MC2SessionData
+{
 	char			map[MAXLEN_MAP_NAME];
 	bool			locked;
 	bool			inProgress;
@@ -195,18 +202,21 @@ typedef struct _MC2SessionData {
 } MC2SessionData;
 #pragma pack()
 
-typedef struct _TeamInfo {
+typedef struct _TeamInfo
+{
 	uint32_t id;
 	uint32_t team;
 } TeamInfo;
 
-typedef struct _MC2PlayerSlot {
+typedef struct _MC2PlayerSlot
+{
 	NETPLAYER		player;
 	char			commanderID;
 	char			name[MAXLEN_PLAYER_NAME];
 } MC2PlayerSlot;
 
-typedef struct _MC2Player {
+typedef struct _MC2Player
+{
 	bool			checkedIn;
 	NETPLAYER		player;
 	char			commanderID;
@@ -235,7 +245,8 @@ typedef struct _MC2Player {
 	bool			booted;
 } MC2Player;
 
-typedef struct _MissionSettings {
+typedef struct _MissionSettings
+{
 	char			map[MAXLEN_MAP_NAME];	// file name
 	char			name[MAXLEN_MAP_DESC];	// displayNmae
 	GUID			mapGuid;				// Insures maps are the same version!!
@@ -265,7 +276,8 @@ typedef struct _MissionSettings {
 	bool			inProgress;
 } MissionSettings;
 
-typedef struct _CompressedMech {
+typedef struct _CompressedMech
+{
 	bool			lastMech;
 	int32_t			objNumber;
 	char			commanderID;
@@ -289,84 +301,89 @@ typedef struct _CompressedMech {
 
 //------------------------------------------------------------------------------------------
 
-class WorldChunk {
+class WorldChunk
+{
 
-	public:
+public:
 
-		char				type;
-		int16_t				tileRC[2];
-		int32_t				objectId;
-		int32_t				objectBlockOrTrainNumber;
-		int32_t				objectVertexOrCarNumber;
-		char				objectItemNumber;
-		int32_t				param1;
-		int32_t				param2;
+	char				type;
+	int16_t				tileRC[2];
+	int32_t				objectId;
+	int32_t				objectBlockOrTrainNumber;
+	int32_t				objectVertexOrCarNumber;
+	char				objectItemNumber;
+	int32_t				param1;
+	int32_t				param2;
 
-		uint32_t		data;
+	uint32_t		data;
 
-	public:
+public:
 
-		PVOID operator new (size_t mySize);
+	PVOID operator new(size_t mySize);
 
-		void operator delete (PVOID us);
-		
-		void init (void) {
-			type = -1;
-			tileRC[0] = -1;
-			tileRC[1] = -1;
-			objectId = 0;
-			objectBlockOrTrainNumber = 0;
-			objectVertexOrCarNumber = 0;
-			objectItemNumber = 0;
-			param1 = 0;
-			param2 = 0;
-			data = 0;
-		}
+	void operator delete(PVOID us);
 
-		void destroy (void) {
-		}
+	void init(void)
+	{
+		type = -1;
+		tileRC[0] = -1;
+		tileRC[1] = -1;
+		objectId = 0;
+		objectBlockOrTrainNumber = 0;
+		objectVertexOrCarNumber = 0;
+		objectItemNumber = 0;
+		param1 = 0;
+		param2 = 0;
+		data = 0;
+	}
 
-		WorldChunk (void) {
-			init(void);
-		}
+	void destroy(void)
+	{
+	}
 
-		~WorldChunk (void) {
-			destroy(void);
-		}
+	WorldChunk(void)
+	{
+		init(void);
+	}
 
-		void buildMissionScriptMessage (int32_t messageCode,
-										int32_t messageParam);
+	~WorldChunk(void)
+	{
+		destroy(void);
+	}
 
-		void buildArtillery (int32_t artilleryType,
-							 int32_t teamId,
-							 Stuff::Vector3D location,
-							 int32_t seconds);
+	void buildMissionScriptMessage(int32_t messageCode,
+								   int32_t messageParam);
 
-		void buildMine (int32_t tileR,
-						int32_t tileC,
+	void buildArtillery(int32_t artilleryType,
 						int32_t teamId,
-						int32_t mineState,
-						int32_t explosionType);
+						Stuff::Vector3D location,
+						int32_t seconds);
 
-		void buildTerrainFire (GameObjectPtr object,
-							   int32_t seconds);
+	void buildMine(int32_t tileR,
+				   int32_t tileC,
+				   int32_t teamId,
+				   int32_t mineState,
+				   int32_t explosionType);
 
-		void buildPilotKillStat (int32_t moverIndex,
-								 int32_t vehicleClass);
+	void buildTerrainFire(GameObjectPtr object,
+						  int32_t seconds);
 
-		void buildScore (int32_t commanderID, int32_t score);
+	void buildPilotKillStat(int32_t moverIndex,
+							int32_t vehicleClass);
 
-		void buildKillLoss (int32_t killerCID, int32_t loserCID);
+	void buildScore(int32_t commanderID, int32_t score);
 
-		void buildEndMission (void);
+	void buildKillLoss(int32_t killerCID, int32_t loserCID);
 
-		void buildCaptureBuilding (BuildingPtr building, int32_t newCommanderID);
+	void buildEndMission(void);
 
-		void pack (void);
+	void buildCaptureBuilding(BuildingPtr building, int32_t newCommanderID);
 
-		void unpack (void);
+	void pack(void);
 
-		bool equalTo (WorldChunkPtr chunk);
+	void unpack(void);
+
+	bool equalTo(WorldChunkPtr chunk);
 };
 
 
@@ -378,15 +395,15 @@ class WorldChunk {
 class MCMSG_DeployForce: public FIGuaranteedMessageHeader
 {
 	private:
-		
-	// Keep the constructor private because we don't want 
-	// anyone to call it when there is an undefined size 
+
+	// Keep the constructor private because we don't want
+	// anyone to call it when there is an undefined size
 	// for the class.
 	MCMSG_DeployForce(void);
-	
+
 	uint8_t dataFlags;
 
-	enum 
+	enum
 	{
 		PartTypeBit	= 0,
 		TeamBit,
@@ -398,7 +415,7 @@ class MCMSG_DeployForce: public FIGuaranteedMessageHeader
 		SlotBits2
 	};
 
-	enum 
+	enum
 	{
 		PartTypeFlag = 1 << PartTypeBit,
 		TeamFlag = 1 << TeamBit,
@@ -447,7 +464,7 @@ class MCMSG_DeployForce: public FIGuaranteedMessageHeader
 			dataFlags |= PartTypeFlag;
 		}
 
-		
+
 		void SetVariant(int32_t variant)
 		{
 			if (variant > 3)
@@ -494,7 +511,7 @@ class MCMSG_DeployForce: public FIGuaranteedMessageHeader
 		{
 			return (dataFlags & TeamFlag);
 		}
-		
+
 		BOOL IsMech()
 		{
 			return (dataFlags & PartTypeFlag);
@@ -530,7 +547,7 @@ class MCMSG_JoinTeam:public FIGuaranteedMessageHeader
 /*
 class MCMSG_RemoveForce:public FIGuaranteedMessageHeader
 {
-	public:	
+	public:
 		void Init()
 		{
 			FIGuaranteedMessageHeader::Init(void);
@@ -546,361 +563,406 @@ class MCMSG_RemoveForce:public FIGuaranteedMessageHeader
 
 //---------------------------------------------------------------------------
 
-class MCMSG_Generic {
+class MCMSG_Generic
+{
 
-	public:
+public:
 
-		uint8_t		type;
+	uint8_t		type;
 
-	public:
+public:
 
-		MCMSG_Generic (void) {
-			init(void);
-		}
+	MCMSG_Generic(void)
+	{
+		init(void);
+	}
 
-		void init (void) {
-			type = MCMSG_GENERIC;
-		}
+	void init(void)
+	{
+		type = MCMSG_GENERIC;
+	}
 };
 
 //---------------------------------------------------------------------------
 
-class MCMSG_PlayerCID {
+class MCMSG_PlayerCID
+{
 
-	public:
+public:
 
-		uint8_t		type;
-		char				commanderID;
-		uint8_t		subType;
-		
-	public:
+	uint8_t		type;
+	char				commanderID;
+	uint8_t		subType;
 
-		MCMSG_PlayerCID (void) {
-			init(void);
-		}
+public:
 
-		void init (void) {
-			type = MCMSG_PLAYER_CID;
-			commanderID = -1;
-			subType = 0;
-		}
+	MCMSG_PlayerCID(void)
+	{
+		init(void);
+	}
+
+	void init(void)
+	{
+		type = MCMSG_PLAYER_CID;
+		commanderID = -1;
+		subType = 0;
+	}
 
 };
 
 //---------------------------------------------------------------------------
 
-class MCMSG_PlayerUpdate {
+class MCMSG_PlayerUpdate
+{
 
-	public:
+public:
 
-		uint8_t		type;
-		char				stage;
-		float				senderTime;
-		char				sessionIPAddress[16];
-		char				versionStamp[15];
-		MC2Player			info;
+	uint8_t		type;
+	char				stage;
+	float				senderTime;
+	char				sessionIPAddress[16];
+	char				versionStamp[15];
+	MC2Player			info;
 
-	public:
+public:
 
-		MCMSG_PlayerUpdate (void) {
-			init(void);
-		}
+	MCMSG_PlayerUpdate(void)
+	{
+		init(void);
+	}
 
-		void init (void) {
-			type = MCMSG_PLAYER_UPDATE;
-			senderTime = -1.0;
-			stage = 0;
-		}
+	void init(void)
+	{
+		type = MCMSG_PLAYER_UPDATE;
+		senderTime = -1.0;
+		stage = 0;
+	}
 };
 
 //---------------------------------------------------------------------------
 
-class MCMSG_MissionSettingsUpdate {
+class MCMSG_MissionSettingsUpdate
+{
 
-	public:
+public:
 
-		uint8_t		type;
-		MissionSettings		missionSettings;
+	uint8_t		type;
+	MissionSettings		missionSettings;
 
-	public:
+public:
 
-		MCMSG_MissionSettingsUpdate (void) {
-			init(void);
-		}
+	MCMSG_MissionSettingsUpdate(void)
+	{
+		init(void);
+	}
 
-		void init (void) {
-			type = MCMSG_MISSION_SETTINGS_UPDATE;
-		}
+	void init(void)
+	{
+		type = MCMSG_MISSION_SETTINGS_UPDATE;
+	}
 };
 
 //---------------------------------------------------------------------------
 
-class MCMSG_MissionSetup {
+class MCMSG_MissionSetup
+{
 
-	public:
+public:
 
-		uint8_t		type;
-		int32_t				randomSeed;
-		char				subType;
-		char				commandersToLoad[MAX_MC_PLAYERS][3];
-		CompressedMech		mechData;
+	uint8_t		type;
+	int32_t				randomSeed;
+	char				subType;
+	char				commandersToLoad[MAX_MC_PLAYERS][3];
+	CompressedMech		mechData;
 
-	public:
+public:
 
-		MCMSG_MissionSetup (void) {
-			init(void);
-		}
+	MCMSG_MissionSetup(void)
+	{
+		init(void);
+	}
 
-		void init (void) {
-			type = MCMSG_MISSION_SETUP;
-			subType = 0;
-		}
+	void init(void)
+	{
+		type = MCMSG_MISSION_SETUP;
+		subType = 0;
+	}
 };
 
 //---------------------------------------------------------------------------
 
-class MCMSG_PlayerInfo {
+class MCMSG_PlayerInfo
+{
 
-	public:
+public:
 
-		uint8_t		type;
-		char				commanderID;
+	uint8_t		type;
+	char				commanderID;
 
-	public:
+public:
 
-		MCMSG_PlayerInfo (void) {
-			init(void);
-		}
+	MCMSG_PlayerInfo(void)
+	{
+		init(void);
+	}
 
-		void init (void) {
-			type = MCMSG_PLAYER_INFO;
-			commanderID = -1;
-		}
+	void init(void)
+	{
+		type = MCMSG_PLAYER_INFO;
+		commanderID = -1;
+	}
 };
 
 //---------------------------------------------------------------------------
 
-class MCMSG_Chat {
+class MCMSG_Chat
+{
 
 	//GUARANTEED
 
-	public:
-	
-		uint8_t		type;
-		bool				allPlayers;
-		bool				isDeadChat;
-		bool				hideName;
-		char				string[];
-	
-	public:
+public:
 
-		MCMSG_Chat (void) {
-			init(void);
-		}
+	uint8_t		type;
+	bool				allPlayers;
+	bool				isDeadChat;
+	bool				hideName;
+	char				string[];
 
-		void init (void) {
-			type = MCMSG_CHAT;
-			allPlayers = false;
-			isDeadChat = false;
-			hideName = false;
-			string[0] = nullptr;
-		}
+public:
+
+	MCMSG_Chat(void)
+	{
+		init(void);
+	}
+
+	void init(void)
+	{
+		type = MCMSG_CHAT;
+		allPlayers = false;
+		isDeadChat = false;
+		hideName = false;
+		string[0] = nullptr;
+	}
 };
 
 //---------------------------------------------------------------------------
 
-class MCMSG_PlayerCheckIn {
+class MCMSG_PlayerCheckIn
+{
 
 	//GUARANTEED
 
-	public:
-	
-		uint8_t		type;
-		char				commanderID;
+public:
 
-	public:
+	uint8_t		type;
+	char				commanderID;
 
-		MCMSG_PlayerCheckIn (void) {
-			init(void);
-		}
+public:
 
-		void init (void) {
-			type = MCMSG_PLAYER_CHECK_IN;
-			commanderID = -1;
-		}
+	MCMSG_PlayerCheckIn(void)
+	{
+		init(void);
+	}
+
+	void init(void)
+	{
+		type = MCMSG_PLAYER_CHECK_IN;
+		commanderID = -1;
+	}
 };
 
 //---------------------------------------------------------------------------
 
-class MCMSG_PlayerSetup {
+class MCMSG_PlayerSetup
+{
 
 	//GUARANTEED
 
-	public:
+public:
 
-		uint8_t		type;
-		uint8_t		moverData[MAX_MULTIPLAYER_MOVERS];
+	uint8_t		type;
+	uint8_t		moverData[MAX_MULTIPLAYER_MOVERS];
 
-	public:
+public:
 
-		MCMSG_PlayerSetup (void) {
-			init(void);
-		}
+	MCMSG_PlayerSetup(void)
+	{
+		init(void);
+	}
 
-		void init (void) {
-			type = MCMSG_PLAYER_SETUP;
-			for (int32_t i = 0; i < MAX_MULTIPLAYER_MOVERS; i++)
-				moverData[i] = 0;
-		}
+	void init(void)
+	{
+		type = MCMSG_PLAYER_SETUP;
+		for(size_t i = 0; i < MAX_MULTIPLAYER_MOVERS; i++)
+			moverData[i] = 0;
+	}
 };
 
 //---------------------------------------------------------------------------
 
-class MCMSG_PlayerInsignia {
+class MCMSG_PlayerInsignia
+{
 
-	public:
+public:
 
-		uint8_t		type;
-		char				commanderID;
-		char				fileName[64];
-		int32_t				dataSize;
-		uint8_t		data[];
+	uint8_t		type;
+	char				commanderID;
+	char				fileName[64];
+	int32_t				dataSize;
+	uint8_t		data[];
 
-	public:
+public:
 
-		MCMSG_PlayerInsignia (void) {
-			init(void);
-		}
+	MCMSG_PlayerInsignia(void)
+	{
+		init(void);
+	}
 
-		void init (void) {
-			type = MCMSG_PLAYER_INSIGNIA;
-		}
+	void init(void)
+	{
+		type = MCMSG_PLAYER_INSIGNIA;
+	}
 };
 
 //---------------------------------------------------------------------------
 
-class MCMSG_StartMission {
+class MCMSG_StartMission
+{
 
 	//GUARANTEED
 
-	public:
+public:
 
-		uint8_t	type;
-		int32_t			huh;
-	
+	uint8_t	type;
+	int32_t			huh;
 
-	public:
 
-		MCMSG_StartMission (void) {
-			init(void);
-		}
+public:
 
-		void init (void) {
-			type = MCMSG_START_MISSION;
-			huh = 0;
-		}
+	MCMSG_StartMission(void)
+	{
+		init(void);
+	}
+
+	void init(void)
+	{
+		type = MCMSG_START_MISSION;
+		huh = 0;
+	}
 };
 
 //---------------------------------------------------------------------------
 
-class MCMSG_EndMission {
+class MCMSG_EndMission
+{
 
 	//GUARANTEED
 
-	public:
+public:
 
-		uint8_t	type;
-		int32_t			teamScore[MAX_MC_PLAYERS];
-		int32_t			playerScore[MAX_MC_PLAYERS];
-		int32_t			result;
+	uint8_t	type;
+	int32_t			teamScore[MAX_MC_PLAYERS];
+	int32_t			playerScore[MAX_MC_PLAYERS];
+	int32_t			result;
 
-	public:
+public:
 
-		MCMSG_EndMission (void) {
-			init(void);
-		}
+	MCMSG_EndMission(void)
+	{
+		init(void);
+	}
 
-		void init (void) {
-			type = MCMSG_END_MISSION;
-			result = -1;
-		}
+	void init(void)
+	{
+		type = MCMSG_END_MISSION;
+		result = -1;
+	}
 };
 
 //---------------------------------------------------------------------------
 
-class MCMSG_LeaveSession {
+class MCMSG_LeaveSession
+{
 
-	public:
+public:
 
-		uint8_t	type;
-		uint8_t	subType;
-		char			commanderID;
+	uint8_t	type;
+	uint8_t	subType;
+	char			commanderID;
 
-	public:
+public:
 
-		MCMSG_LeaveSession (void) {
-			init(void);
-		}
+	MCMSG_LeaveSession(void)
+	{
+		init(void);
+	}
 
-		void init (void) {
-			type = MCMSG_LEAVE_SESSION;
-			subType = 0;
-			commanderID = -1;
-		}
+	void init(void)
+	{
+		type = MCMSG_LEAVE_SESSION;
+		subType = 0;
+		commanderID = -1;
+	}
 };
 
 //---------------------------------------------------------------------------
 
-class MCMSG_PlayerOrder {
+class MCMSG_PlayerOrder
+{
 
 	//GUARANTEED
 
-	public:
+public:
 
-		uint8_t	type;
-		char			commanderID;
-		uint8_t	flags;
-		float			location[2];
-		uint32_t	tacOrderChunk[2];
+	uint8_t	type;
+	char			commanderID;
+	uint8_t	flags;
+	float			location[2];
+	uint32_t	tacOrderChunk[2];
 
-	public:
+public:
 
-		MCMSG_PlayerOrder (void) {
-			init(void);
-		}
+	MCMSG_PlayerOrder(void)
+	{
+		init(void);
+	}
 
-		void init (void) {
-			type = MCMSG_PLAYER_ORDER;
-			commanderID = -1;
-			flags = 0;
-			location[0] = 0.0;
-			location[1] = 0.0;
-			tacOrderChunk[0] = 0;
-			tacOrderChunk[1] = 0;
-		}
+	void init(void)
+	{
+		type = MCMSG_PLAYER_ORDER;
+		commanderID = -1;
+		flags = 0;
+		location[0] = 0.0;
+		location[1] = 0.0;
+		tacOrderChunk[0] = 0;
+		tacOrderChunk[1] = 0;
+	}
 };
 
 //---------------------------------------------------------------------------
 
-class MCMSG_HoldPosition {
+class MCMSG_HoldPosition
+{
 
-	public:
+public:
 
-		uint8_t	type;
-		char			commanderID;
-		uint16_t	flags;
+	uint8_t	type;
+	char			commanderID;
+	uint16_t	flags;
 
-	public:
+public:
 
-		MCMSG_HoldPosition (void) {
-			init(void);
-		}
+	MCMSG_HoldPosition(void)
+	{
+		init(void);
+	}
 
-		void init (void) {
-			type = MCMSG_HOLD_POSITION;
-			commanderID = -1;
-			flags = 0;
-		}
+	void init(void)
+	{
+		type = MCMSG_HOLD_POSITION;
+		commanderID = -1;
+		flags = 0;
+	}
 };
 
 //---------------------------------------------------------------------------
@@ -909,311 +971,348 @@ class MCMSG_HoldPosition {
 #define	MOVERGROUP_ACTION_HOLDPOSITION_OFF	1
 #define	MOVERGROUP_ACTION_HOLDPOSITION_ON	2
 
-class MCMSG_PlayerMoverGroup {
+class MCMSG_PlayerMoverGroup
+{
 
 	//GUARANTEED
 
-	public:
+public:
 
-		uint8_t		type;
-		uint8_t		action;
-		char				commanderID;
-		char				groupId;
-		uint16_t		moverGroupInfo;
+	uint8_t		type;
+	uint8_t		action;
+	char				commanderID;
+	char				groupId;
+	uint16_t		moverGroupInfo;
 
-	public:
+public:
 
-		MCMSG_PlayerMoverGroup (void) {
-			init(void);
-		}
+	MCMSG_PlayerMoverGroup(void)
+	{
+		init(void);
+	}
 
-		void init (void) {
-			type = MCMSG_PLAYER_MOVERGROUP;
-			commanderID = -1;
-			groupId = -1;
-			moverGroupInfo = 0;
-		}
+	void init(void)
+	{
+		type = MCMSG_PLAYER_MOVERGROUP;
+		commanderID = -1;
+		groupId = -1;
+		moverGroupInfo = 0;
+	}
 
 };
 
 //---------------------------------------------------------------------------
 
-class MCMSG_PlayerArtillery {
+class MCMSG_PlayerArtillery
+{
 
 	//GUARANTEED
 
-	public:
+public:
 
-		uint8_t		type;
-		float				location[2];
-		uint32_t		chunk;
+	uint8_t		type;
+	float				location[2];
+	uint32_t		chunk;
 
-		MCMSG_PlayerArtillery (void) {
-			init(void);
-		}
+	MCMSG_PlayerArtillery(void)
+	{
+		init(void);
+	}
 
-		void init (void) {
-			type = MCMSG_PLAYER_ARTILLERY;
-			location[0] = 0.0;
-			location[1] = 0.0;
-			chunk = 0;
-		}
+	void init(void)
+	{
+		type = MCMSG_PLAYER_ARTILLERY;
+		location[0] = 0.0;
+		location[1] = 0.0;
+		chunk = 0;
+	}
 };
 
 //---------------------------------------------------------------------------
 
-class MCMSG_MoverUpdate {
+class MCMSG_MoverUpdate
+{
 
-	public:
+public:
 
-		uint8_t		type;
-		int32_t				teamScore[MAX_MC_PLAYERS];
-		int32_t				playerScore[MAX_MC_PLAYERS];
-		//int32_t				resourcePoints[MAX_MC_PLAYERS];
-		uint16_t		updateId;
-		uint8_t		numRLEs;
-		uint8_t		moveData[];
+	uint8_t		type;
+	int32_t				teamScore[MAX_MC_PLAYERS];
+	int32_t				playerScore[MAX_MC_PLAYERS];
+	//int32_t				resourcePoints[MAX_MC_PLAYERS];
+	uint16_t		updateId;
+	uint8_t		numRLEs;
+	uint8_t		moveData[];
 
-	public:
+public:
 
-		MCMSG_MoverUpdate (void) {
-			init(void);
-		}
+	MCMSG_MoverUpdate(void)
+	{
+		init(void);
+	}
 
-		void init (void) {
-			type = MCMSG_MOVER_UPDATE;
-			updateId = 0xFFFF;
-			numRLEs = 0;
-		}
+	void init(void)
+	{
+		type = MCMSG_MOVER_UPDATE;
+		updateId = 0xFFFF;
+		numRLEs = 0;
+	}
 };
 
 //---------------------------------------------------------------------------
 
-class MCMSG_TurretUpdate {
+class MCMSG_TurretUpdate
+{
 
-	public:
+public:
 
-		uint8_t		type;
-		uint16_t		updateId;
-		char				targetList[];
+	uint8_t		type;
+	uint16_t		updateId;
+	char				targetList[];
 
-	public:
+public:
 
-		MCMSG_TurretUpdate (void) {
-			init(void);
-		}
+	MCMSG_TurretUpdate(void)
+	{
+		init(void);
+	}
 
-		void init (void) {
-			type = MCMSG_TURRET_UPDATE;
-			updateId = 0xFFFF;
-			for (int32_t i = 0; i < MAX_MULTIPLAYER_TURRETS; i++)
-				targetList[i] = 0;
-		}
+	void init(void)
+	{
+		type = MCMSG_TURRET_UPDATE;
+		updateId = 0xFFFF;
+		for(size_t i = 0; i < MAX_MULTIPLAYER_TURRETS; i++)
+			targetList[i] = 0;
+	}
 };
 
 //---------------------------------------------------------------------------
 
-class MCMSG_MoverWeaponFireUpdate {
+class MCMSG_MoverWeaponFireUpdate
+{
 
 	//GUARANTEED
 
-	public:
+public:
 
-		uint8_t		type;
-		uint8_t		numRLEs;
-		uint8_t		weaponFireData[];
+	uint8_t		type;
+	uint8_t		numRLEs;
+	uint8_t		weaponFireData[];
 
-	public:
+public:
 
-		MCMSG_MoverWeaponFireUpdate (void) {
-			init(void);
-		}
+	MCMSG_MoverWeaponFireUpdate(void)
+	{
+		init(void);
+	}
 
-		void init (void) {
-			type = MCMSG_MOVER_WEAPONFIRE_UPDATE;
-			numRLEs = 0;
-		}
+	void init(void)
+	{
+		type = MCMSG_MOVER_WEAPONFIRE_UPDATE;
+		numRLEs = 0;
+	}
 };
 
 //---------------------------------------------------------------------------
 
-class MCMSG_TurretWeaponFireUpdate {
+class MCMSG_TurretWeaponFireUpdate
+{
 
 	//GUARANTEED
 
-	public:
+public:
 
-		uint8_t		type;
-		char				numTurrets;
-		uint16_t		info[];
+	uint8_t		type;
+	char				numTurrets;
+	uint16_t		info[];
 
-	public:
+public:
 
-		MCMSG_TurretWeaponFireUpdate (void) {
-			init(void);
-		}
+	MCMSG_TurretWeaponFireUpdate(void)
+	{
+		init(void);
+	}
 
-		void init (void) {
-			type = MCMSG_TURRET_WEAPONFIRE_UPDATE;
-			numTurrets = 0;
-		}
+	void init(void)
+	{
+		type = MCMSG_TURRET_WEAPONFIRE_UPDATE;
+		numTurrets = 0;
+	}
 };
 
 //---------------------------------------------------------------------------
 
-class MCMSG_MoverCriticalUpdate {
+class MCMSG_MoverCriticalUpdate
+{
 
 	//GUARANTEED
 
-	public:
+public:
 
-		uint8_t		type;
-		uint8_t		numCritHitChunks[MAX_MULTIPLAYER_MOVERS];
-		uint8_t		numRadioChunks[MAX_MULTIPLAYER_MOVERS];
-		uint8_t		chunk[];
+	uint8_t		type;
+	uint8_t		numCritHitChunks[MAX_MULTIPLAYER_MOVERS];
+	uint8_t		numRadioChunks[MAX_MULTIPLAYER_MOVERS];
+	uint8_t		chunk[];
 
-	public:
+public:
 
-		MCMSG_MoverCriticalUpdate (void) {
-			init(void);
+	MCMSG_MoverCriticalUpdate(void)
+	{
+		init(void);
+	}
+
+	void init(void)
+	{
+		type = MCMSG_MOVER_CRITICAL_UPDATE;
+		for(size_t i = 0; i < MAX_MULTIPLAYER_MOVERS; i++)
+		{
+			numCritHitChunks[i] = 0;
+			numRadioChunks[i] = 0;
 		}
-
-		void init (void) {
-			type = MCMSG_MOVER_CRITICAL_UPDATE;
-			for (int32_t i = 0; i < MAX_MULTIPLAYER_MOVERS; i++) {
-				numCritHitChunks[i] = 0;
-				numRadioChunks[i] = 0;
-			}
-		}
+	}
 };
 
 //---------------------------------------------------------------------------
 
-class MCMSG_WeaponHitUpdate {
+class MCMSG_WeaponHitUpdate
+{
 
 	//GUARANTEED
 
-	public:
+public:
 
-		uint8_t		type;
-		uint8_t		numWeaponHits;
-		uint32_t		weaponHitChunk[];
+	uint8_t		type;
+	uint8_t		numWeaponHits;
+	uint32_t		weaponHitChunk[];
 
-	public:
+public:
 
-		MCMSG_WeaponHitUpdate (void) {
-			init(void);
-		}
+	MCMSG_WeaponHitUpdate(void)
+	{
+		init(void);
+	}
 
-		void init() {
-			type = MCMSG_WEAPONHIT_UPDATE;
-			numWeaponHits = 0;
-		}
+	void init()
+	{
+		type = MCMSG_WEAPONHIT_UPDATE;
+		numWeaponHits = 0;
+	}
 };
 
 //---------------------------------------------------------------------------
 
-class MCMSG_WorldUpdate {
+class MCMSG_WorldUpdate
+{
 
 	//GUARANTEED
 
-	public:
+public:
 
-		uint8_t		type;
-		uint8_t		numWorldChanges;
-		uint8_t		numArtilleryStrikes;
-		uint32_t		worldChunk[];
+	uint8_t		type;
+	uint8_t		numWorldChanges;
+	uint8_t		numArtilleryStrikes;
+	uint32_t		worldChunk[];
 
-	public:
+public:
 
-		MCMSG_WorldUpdate (void) {
-			init(void);
-		}
+	MCMSG_WorldUpdate(void)
+	{
+		init(void);
+	}
 
-		void init (void) {
-			type = MCMSG_WORLD_UPDATE;
-			numWorldChanges = 0;
-			numArtilleryStrikes = 0;
-		}
+	void init(void)
+	{
+		type = MCMSG_WORLD_UPDATE;
+		numWorldChanges = 0;
+		numArtilleryStrikes = 0;
+	}
 };
 
 //---------------------------------------------------------------------------
 
-class MCMSG_Reinforcement {
+class MCMSG_Reinforcement
+{
 
-	public:
+public:
 
-		uint8_t	type;
-		uint8_t	stage;
-		uint8_t	rosterIndex;
-		int32_t			vehicleID;
-		char			pilotName[24];
-		char			commanderID;
-		float			location[2];
+	uint8_t	type;
+	uint8_t	stage;
+	uint8_t	rosterIndex;
+	int32_t			vehicleID;
+	char			pilotName[24];
+	char			commanderID;
+	float			location[2];
 
-	public:
+public:
 
-		MCMSG_Reinforcement (void) {
-			init(void);
-		}
+	MCMSG_Reinforcement(void)
+	{
+		init(void);
+	}
 
-		void init (void) {
-			type = MCMSG_REINFORCEMENT;
-			stage = 0;
-			rosterIndex = 255;
-			vehicleID = 0;
-			pilotName[0] = nullptr;
-			commanderID = 0;
-			location[0] = 0.0;
-			location[1] = 0.0;
-		}
+	void init(void)
+	{
+		type = MCMSG_REINFORCEMENT;
+		stage = 0;
+		rosterIndex = 255;
+		vehicleID = 0;
+		pilotName[0] = nullptr;
+		commanderID = 0;
+		location[0] = 0.0;
+		location[1] = 0.0;
+	}
 };
 
 //---------------------------------------------------------------------------
 
-class MCMSG_NewServer {
+class MCMSG_NewServer
+{
 
-	public:
+public:
 
-		uint8_t	type;
-		char			ipAddress[16];
+	uint8_t	type;
+	char			ipAddress[16];
 
-	public:
+public:
 
-		MCMSG_NewServer (void) {
-			init(void);
-		}
+	MCMSG_NewServer(void)
+	{
+		init(void);
+	}
 
-		void init (void) {
-			type = MCMSG_NEW_SERVER;
-			ipAddress[0] = nullptr;
-		}
+	void init(void)
+	{
+		type = MCMSG_NEW_SERVER;
+		ipAddress[0] = nullptr;
+	}
 
 };
 
 //---------------------------------------------------------------------------
 
-class MCMSG_FileReport {
+class MCMSG_FileReport
+{
 
 	//GUARANTEED
 
-	public:
+public:
 
-		uint8_t		type;
-		uint32_t		checkSum;
-		GUID				fileGuid;
-		char				fileName[];
+	uint8_t		type;
+	uint32_t		checkSum;
+	GUID				fileGuid;
+	char				fileName[];
 
-		MCMSG_FileReport (void) {
-			init(void);
-		}
+	MCMSG_FileReport(void)
+	{
+		init(void);
+	}
 
-		void init() {
-			type = MCMSG_FILE_REPORT;
-			checkSum = 0;
-			fileName[0] = nullptr;
-			memset(&fileGuid,0,sizeof(GUID));
-		}
+	void init()
+	{
+		type = MCMSG_FILE_REPORT;
+		checkSum = 0;
+		fileName[0] = nullptr;
+		memset(&fileGuid, 0, sizeof(GUID));
+	}
 };
 
 //---------------------------------------------------------------------------
@@ -1244,562 +1343,581 @@ class MCMSG_PassValue {
 
 //***************************************************************************
 
-typedef enum {
+typedef enum
+{
 	VERSION_STATUS_UNKNOWN,
 	VERSION_STATUS_GOOD,
 	VERSION_STATUS_BAD,
 	NUM_VERSION_STATUS_TYPES
 } VersionStatus;
 
-class MultiPlayer {
-
-	public:
-
-		bool				onLAN;
-		bool				hostLeft;
-		VersionStatus		versionStatus;
-		int32_t				numSessions;
-		bool				availableCIDs[MAX_MC_PLAYERS];
-		MC2Session			sessionList[MAX_SESSIONS];
-		uint32_t		teamSeniority[MAX_TEAMS];
-		static int32_t			colors[MAX_COLORS];
-		char				colorsCID[MAX_COLORS];
-		char				sessionIPAddress[16];
-		bool				sessionScanning;
-		bool				sessionScanningError;
-		bool				sessionScanningPersistent;
-		bool				fitStart;
-		int32_t				numFitPlayers;
-		MissionSettings		missionSettings;
-		char				commandersToLoad[MAX_MC_PLAYERS][3];
-		CompressedMech		mechData[MAX_MC_PLAYERS][12];
-		bool				locked;
-		bool				inProgress;
-		bool				cancelled;
-		int32_t				randomSeed;
-		bool				startLogistics;
-		bool				startLoading;
-		bool				readyToLoad[MAX_MC_PLAYERS];
-		bool				mechDataReceived[MAX_MC_PLAYERS];
-		bool				missionDataLoaded[MAX_MC_PLAYERS];
-		bool				missionFullySetup[MAX_MC_PLAYERS];
-		bool				leaveSessionConfirmed[MAX_MC_PLAYERS];
-
-		int32_t				numAirStrikesUsed[MAX_MC_PLAYERS];
-		int32_t				numMinelayersUsed[MAX_MC_PLAYERS];
-		int32_t				numScoutCoptersUsed[MAX_MC_PLAYERS];
-		int32_t				numArtilleryPiecesUsed[MAX_MC_PLAYERS];
-		int32_t				numSensorProbesUsed[MAX_MC_PLAYERS];
-		int32_t				numRepairVehiclesUsed[MAX_MC_PLAYERS];
-		int32_t				numSalvageCraftUsed[MAX_MC_PLAYERS];
-
-		int32_t				numTeams;
-		int32_t				teamScore[MAX_TEAMS];
-		int32_t				winningTeam;
-		BuildingPtr			mainHqBuildings[MAX_TEAMS];
-		int32_t				numHqBuildings;
-		int32_t*				hqCIDs;
-		BuildingPtr*		hqBuildings;
-		int32_t				numResourceBuildings;
-		BuildingPtr*		resourceBuildings;
-		uint32_t		numRandomResourceBuildings;
-
-		int32_t				mode;
-		int32_t				sessionEntry;
-		puint8_t		msgBuffer;
-		int32_t				numLocalMovers;
-		int32_t				numMovers;
-		int32_t				numTurrets;
-		uint8_t		moverRosterRLE[MAX_MULTIPLAYER_MOVERS];
-		int32_t				numMoverRosterRLE;
-		MoverPtr			localMovers[MAX_LOCAL_MOVERS];
-		MoverPtr			moverRoster[MAX_MULTIPLAYER_MOVERS];
-		MoverPtr			playerMoverRoster[MAX_MC_PLAYERS][MAX_LOCAL_MOVERS];
-		TurretPtr			turretRoster[MAX_MULTIPLAYER_TURRETS];
-
-		bool				iAmHost;
-		//int32_t				serverCID;
-		NETPLAYER			myPlayer;
-		NETPLAYER			serverPlayer;
-
-		bool				inSession;
-		bool				hostDroppedOut;
-		int32_t				commanderID;			// same as commanderId
-		char				sessionName[80];
-		char				playerName[80];
-
-		//MC2Player			playerList[MAX_MC_PLAYERS];		// list of players--order doesn't matter
-		MC2PlayerSlot			playerList[MAX_MC_PLAYERS];
-		bool				insigniaList[MAX_MC_PLAYERS];		// list of insignia data
-		int32_t				insigniaSizeList[MAX_MC_PLAYERS];
-		//int32_t				maxPlayers;						// max number of players allowed in session
-		MC2Player			playerInfo[MAX_MC_PLAYERS];		// list of players--indexed by commanderID
-
-		bool				playerReady[MAX_MC_PLAYERS];
-		bool				inSessionScreen[MAX_MC_PLAYERS];
-		bool				startPlanning;
-		bool				setupMission;
-		bool				startMission;
-		bool				endMission;
-		bool				waitingToStartMission;
-		bool				preparingMission;
-		float				startTime;
-		bool				allUnitsDestroyed[MAX_MC_PLAYERS];
-		int32_t				missionStatus;
-
-		//TeamInfo			teamInfo[MAX_MC_PLAYERS];
-
-		// ChatMessageCallback is called when a chat message arrives.
-		//LPMESSAGECALLBACK ChatMessageCallback;
-
+class MultiPlayer
+{
+
+public:
+
+	bool				onLAN;
+	bool				hostLeft;
+	VersionStatus		versionStatus;
+	int32_t				numSessions;
+	bool				availableCIDs[MAX_MC_PLAYERS];
+	MC2Session			sessionList[MAX_SESSIONS];
+	uint32_t		teamSeniority[MAX_TEAMS];
+	static int32_t			colors[MAX_COLORS];
+	char				colorsCID[MAX_COLORS];
+	char				sessionIPAddress[16];
+	bool				sessionScanning;
+	bool				sessionScanningError;
+	bool				sessionScanningPersistent;
+	bool				fitStart;
+	int32_t				numFitPlayers;
+	MissionSettings		missionSettings;
+	char				commandersToLoad[MAX_MC_PLAYERS][3];
+	CompressedMech		mechData[MAX_MC_PLAYERS][12];
+	bool				locked;
+	bool				inProgress;
+	bool				cancelled;
+	int32_t				randomSeed;
+	bool				startLogistics;
+	bool				startLoading;
+	bool				readyToLoad[MAX_MC_PLAYERS];
+	bool				mechDataReceived[MAX_MC_PLAYERS];
+	bool				missionDataLoaded[MAX_MC_PLAYERS];
+	bool				missionFullySetup[MAX_MC_PLAYERS];
+	bool				leaveSessionConfirmed[MAX_MC_PLAYERS];
+
+	int32_t				numAirStrikesUsed[MAX_MC_PLAYERS];
+	int32_t				numMinelayersUsed[MAX_MC_PLAYERS];
+	int32_t				numScoutCoptersUsed[MAX_MC_PLAYERS];
+	int32_t				numArtilleryPiecesUsed[MAX_MC_PLAYERS];
+	int32_t				numSensorProbesUsed[MAX_MC_PLAYERS];
+	int32_t				numRepairVehiclesUsed[MAX_MC_PLAYERS];
+	int32_t				numSalvageCraftUsed[MAX_MC_PLAYERS];
+
+	int32_t				numTeams;
+	int32_t				teamScore[MAX_TEAMS];
+	int32_t				winningTeam;
+	BuildingPtr			mainHqBuildings[MAX_TEAMS];
+	int32_t				numHqBuildings;
+	int32_t*				hqCIDs;
+	BuildingPtr*		hqBuildings;
+	int32_t				numResourceBuildings;
+	BuildingPtr*		resourceBuildings;
+	uint32_t		numRandomResourceBuildings;
+
+	int32_t				mode;
+	int32_t				sessionEntry;
+	puint8_t		msgBuffer;
+	int32_t				numLocalMovers;
+	int32_t				numMovers;
+	int32_t				numTurrets;
+	uint8_t		moverRosterRLE[MAX_MULTIPLAYER_MOVERS];
+	int32_t				numMoverRosterRLE;
+	MoverPtr			localMovers[MAX_LOCAL_MOVERS];
+	MoverPtr			moverRoster[MAX_MULTIPLAYER_MOVERS];
+	MoverPtr			playerMoverRoster[MAX_MC_PLAYERS][MAX_LOCAL_MOVERS];
+	TurretPtr			turretRoster[MAX_MULTIPLAYER_TURRETS];
+
+	bool				iAmHost;
+	//int32_t				serverCID;
+	NETPLAYER			myPlayer;
+	NETPLAYER			serverPlayer;
+
+	bool				inSession;
+	bool				hostDroppedOut;
+	int32_t				commanderID;			// same as commanderId
+	char				sessionName[80];
+	char				playerName[80];
+
+	//MC2Player			playerList[MAX_MC_PLAYERS];		// list of players--order doesn't matter
+	MC2PlayerSlot			playerList[MAX_MC_PLAYERS];
+	bool				insigniaList[MAX_MC_PLAYERS];		// list of insignia data
+	int32_t				insigniaSizeList[MAX_MC_PLAYERS];
+	//int32_t				maxPlayers;						// max number of players allowed in session
+	MC2Player			playerInfo[MAX_MC_PLAYERS];		// list of players--indexed by commanderID
+
+	bool				playerReady[MAX_MC_PLAYERS];
+	bool				inSessionScreen[MAX_MC_PLAYERS];
+	bool				startPlanning;
+	bool				setupMission;
+	bool				startMission;
+	bool				endMission;
+	bool				waitingToStartMission;
+	bool				preparingMission;
+	float				startTime;
+	bool				allUnitsDestroyed[MAX_MC_PLAYERS];
+	int32_t				missionStatus;
+
+	//TeamInfo			teamInfo[MAX_MC_PLAYERS];
+
+	// ChatMessageCallback is called when a chat message arrives.
+	//LPMESSAGECALLBACK ChatMessageCallback;
+
+
+	// Server Data
+	float				pingUpdateTime;
+	float				pingUpdateFrequency;
+	float				moverUpdateTime;
+	float				moverUpdateFrequency;
+	uint16_t		moverUpdateId;
+	float				turretUpdateTime;
+	float				turretUpdateFrequency;
+	uint16_t		turretUpdateId;
+	float				worldUpdateTime;
+	float				worldUpdateFrequency;
+	float				lastServerUpdateTime;
+	int32_t				numWeaponHitChunks;
+	uint32_t		weaponHitChunks[MAX_WEAPONHIT_CHUNKS];
+	int32_t				numWorldChunks;
+	uint32_t		worldChunks[MAX_WORLD_CHUNKS];
+	uint32_t		serverOrder[MAX_MC_PLAYERS];
+	int32_t				reinforcements[MAX_MC_PLAYERS][2];	// index 0 = current reinforcement, index 1 = current recoverery
+	char				reinforcementPilot[MAX_MC_PLAYERS][32];
+
+	bool				isMPlayerGame;
+	int32_t				badSessionCounter;
+	float				warpFactor;
+
+	int32_t				totalLoad;
+	int32_t				moverWeaponFireLoad;
+	int32_t				turretWeaponFireLoad;
+	int32_t				moverCriticalLoad;
+	int32_t				weaponHitLoad;
+	int32_t				worldStateLoad;
+	int32_t				maxTotalLoad;
+	int32_t				maxMoverWeaponFireLoad;
+	int32_t				maxTurretWeaponFireLoad;
+	int32_t				maxMoverCriticalLoad;
+	int32_t				maxWeaponHitLoad;
+	int32_t				maxWorldLoad;
+	int32_t				maxReceiveLoad;
+	int32_t				maxReceiveSize;
+	int32_t				worldChunkTally[NUM_WORLDCHUNK_TYPES];
 
-		// Server Data
-		float				pingUpdateTime;
-		float				pingUpdateFrequency;
-		float				moverUpdateTime;
-		float				moverUpdateFrequency;
-		uint16_t		moverUpdateId;
-		float				turretUpdateTime;
-		float				turretUpdateFrequency;
-		uint16_t		turretUpdateId;
-		float				worldUpdateTime;
-		float				worldUpdateFrequency;
-		float				lastServerUpdateTime;
-		int32_t				numWeaponHitChunks;
-		uint32_t		weaponHitChunks[MAX_WEAPONHIT_CHUNKS];
-		int32_t				numWorldChunks;
-		uint32_t		worldChunks[MAX_WORLD_CHUNKS];
-		uint32_t		serverOrder[MAX_MC_PLAYERS];
-		int32_t				reinforcements[MAX_MC_PLAYERS][2];	// index 0 = current reinforcement, index 1 = current recoverery
-		char				reinforcementPilot[MAX_MC_PLAYERS][32];
-		
-		bool				isMPlayerGame;
-		int32_t				badSessionCounter;
-		float				warpFactor;
-
-		int32_t				totalLoad;
-		int32_t				moverWeaponFireLoad;
-		int32_t				turretWeaponFireLoad;
-		int32_t				moverCriticalLoad;
-		int32_t				weaponHitLoad;
-		int32_t				worldStateLoad;
-		int32_t				maxTotalLoad;
-		int32_t				maxMoverWeaponFireLoad;
-		int32_t				maxTurretWeaponFireLoad;
-		int32_t				maxMoverCriticalLoad;
-		int32_t				maxWeaponHitLoad;
-		int32_t				maxWorldLoad;
-		int32_t				maxReceiveLoad;
-		int32_t				maxReceiveSize;
-		int32_t				worldChunkTally[NUM_WORLDCHUNK_TYPES];
 
+	char				currentChatMessages[MAX_STORED_CHATS][MAX_CHAT_LENGTH];
+	int32_t				currentChatMessagePlayerIDs[MAX_STORED_CHATS];
+	int32_t				chatCount;
 
-		char				currentChatMessages[MAX_STORED_CHATS][MAX_CHAT_LENGTH];
-		int32_t				currentChatMessagePlayerIDs[MAX_STORED_CHATS];
-		int32_t				chatCount;
+	static bool			launchedFromLobby;
+	static bool			registerZone;
+	static int32_t			presetDropZones[MAX_MC_PLAYERS];
 
-		static bool			launchedFromLobby;
-		static bool			registerZone;
-		static int32_t			presetDropZones[MAX_MC_PLAYERS];
+public:
 
-	public:
+	PVOID operator new(size_t mySize);
 
-		PVOID operator new (size_t mySize);
+	void operator delete(PVOID us);
 
-		void operator delete (PVOID us);
-		
-		void init (void);
+	void init(void);
 
-		int32_t setup (void);
+	int32_t setup(void);
 
-		// initUpdateFrequencies initializes the update frequencies from the 
-		// prefs.cfg file if the entries exist.  Otherwise, it uses defaults.
-		void initUpdateFrequencies (void);
+	// initUpdateFrequencies initializes the update frequencies from the
+	// prefs.cfg file if the entries exist.  Otherwise, it uses defaults.
+	void initUpdateFrequencies(void);
 
-		// initStartupParameters is called by both init() and 
-		// leaveSession()
-		void initStartupParameters (bool fresh);
+	// initStartupParameters is called by both init() and
+	// leaveSession()
+	void initStartupParameters(bool fresh);
 
-		void resetForNewGame (void);
+	void resetForNewGame(void);
 
 
-		MultiPlayer (void) {
-			init(void);
-		}
-		
-		void destroy (void);
+	MultiPlayer(void)
+	{
+		init(void);
+	}
 
-		~MultiPlayer (void) {
-			destroy(void);
-		}
+	void destroy(void);
 
-		bool isServer (void) {
-				return(false);
-		}
+	~MultiPlayer(void)
+	{
+		destroy(void);
+	}
 
-		void setServer (NETPLAYER player, char playerIPAddress[16]);
+	bool isServer(void)
+	{
+		return(false);
+	}
 
-		bool isHost (void) {
-			return(isServer());
-		}
+	void setServer(NETPLAYER player, char playerIPAddress[16]);
 
-		void setMode (int32_t newMode) {
-			mode = newMode;
-		}
+	bool isHost(void)
+	{
+		return(isServer());
+	}
 
-		VersionStatus getVersionStatus (void) {
-			return(VERSION_STATUS_GOOD);
-		}
+	void setMode(int32_t newMode)
+	{
+		mode = newMode;
+	}
 
-		int32_t update (void);
+	VersionStatus getVersionStatus(void)
+	{
+		return(VERSION_STATUS_GOOD);
+	}
 
-		int32_t beginSessionScan (PSTR ipAddress, bool persistent = true);
+	int32_t update(void);
 
-		int32_t endSessionScan (void);
+	int32_t beginSessionScan(PSTR ipAddress, bool persistent = true);
 
-		bool getSessionScanFailed (void) {
-			return(false);
-		}
+	int32_t endSessionScan(void);
 
-		MC2Session* getSessions (int32_t& sessionCount);
+	bool getSessionScanFailed(void)
+	{
+		return(false);
+	}
 
-		// for read purposes
-		const MC2Player* getPlayers (int32_t& playerCount);
+	MC2Session* getSessions(int32_t& sessionCount);
 
-		// for write purposes....
-		MC2Player* getPlayerInfo( int32_t commanderID )
-		{
-			return nullptr;
-		}
+	// for read purposes
+	const MC2Player* getPlayers(int32_t& playerCount);
 
-		bool hostSession(PSTR sessionName, PSTR playerName, int32_t mxPlayers);
+	// for write purposes....
+	MC2Player* getPlayerInfo(int32_t commanderID)
+	{
+		return nullptr;
+	}
 
-		int32_t joinSession (MC2Session* session, PSTR playerName);
+	bool hostSession(PSTR sessionName, PSTR playerName, int32_t mxPlayers);
 
-		bool getOnLAN (void) {
-			return(onLAN);
-		}
+	int32_t joinSession(MC2Session* session, PSTR playerName);
 
-		bool isServerMissing (void);
+	bool getOnLAN(void)
+	{
+		return(onLAN);
+	}
 
-		void updateSessionData (MC2SessionData* sessionData);
+	bool isServerMissing(void);
 
-		void setLocked (bool set);
+	void updateSessionData(MC2SessionData* sessionData);
 
-		void setCancelled (bool set);
+	void setLocked(bool set);
 
-		void setInProgress (bool set);
+	void setCancelled(bool set);
 
-		bool getLocked (void) {
-			return(locked);
-		}
+	void setInProgress(bool set);
 
-		bool getLaunchedFromLobby (void) {
-			return(launchedFromLobby);
-		}
+	bool getLocked(void)
+	{
+		return(locked);
+	}
 
-		bool getInProgress (void) {
-			return(inProgress);
-		}
+	bool getLaunchedFromLobby(void)
+	{
+		return(launchedFromLobby);
+	}
 
-		void addTeamScore (int32_t teamID, int32_t score);
+	bool getInProgress(void)
+	{
+		return(inProgress);
+	}
 
-		int32_t closeSession (void);
+	void addTeamScore(int32_t teamID, int32_t score);
 
-		void logMessage (NETMESSAGE* message, bool sent);
-		
-		int32_t bootPlayer (NETPLAYER bootedPlayer);
+	int32_t closeSession(void);
 
-		void sendMessage (NETPLAYER player,
-						  PVOID data,
-						  int32_t dataSize,
-						  bool guaranteed,
-						  bool toSelf = true);
+	void logMessage(NETMESSAGE* message, bool sent);
 
-		bool hostGame (PSTR sessionName, PSTR playerName, int32_t nPlayers);
+	int32_t bootPlayer(NETPLAYER bootedPlayer);
 
-		int32_t joinGame (PSTR ipAddress, PSTR sessionName, PSTR playerName);
+	void sendMessage(NETPLAYER player,
+					 PVOID data,
+					 size_t dataSize,
+					 bool guaranteed,
+					 bool toSelf = true);
 
-		bool waitTillStartLoading (void);
+	bool hostGame(PSTR sessionName, PSTR playerName, int32_t nPlayers);
 
-		bool waitTillMechDataReceived (void);
+	int32_t joinGame(PSTR ipAddress, PSTR sessionName, PSTR playerName);
 
-		bool waitTillMissionLoaded (void);
+	bool waitTillStartLoading(void);
 
-		bool waitTillMissionSetup (void);
+	bool waitTillMechDataReceived(void);
 
-		bool waitForSessionEntry (void);
+	bool waitTillMissionLoaded(void);
 
-		bool playersReadyToLoad (void);
+	bool waitTillMissionSetup(void);
 
-		void handlePlayerLeftSession (NETPLAYER leftPlayer);
+	bool waitForSessionEntry(void);
 
-		void handleTerminateSession (void);
+	bool playersReadyToLoad(void);
 
-		bool launchBrowser (PCSTR link);
+	void handlePlayerLeftSession(NETPLAYER leftPlayer);
 
-		void initParametersScreen (void);
+	void handleTerminateSession(void);
 
-		void setDefaultPlayerInfo (void);
+	bool launchBrowser(PCSTR link);
 
-		void initSpecialBuildings (char commandersToLoad[8][3]);
+	void initParametersScreen(void);
 
-		PSTR getPlayerName (void) {
-			return(nullptr);
-		}
+	void setDefaultPlayerInfo(void);
 
-		void addToLocalMovers (MoverPtr mover);
+	void initSpecialBuildings(char commandersToLoad[8][3]);
 
-		void removeFromLocalMovers (MoverPtr mover);
+	PSTR getPlayerName(void)
+	{
+		return(nullptr);
+	}
 
-		void addToMoverRoster (MoverPtr mover);
+	void addToLocalMovers(MoverPtr mover);
 
-		bool canAddToMoverRoster (void)
-		{
-			return false;
-		}
+	void removeFromLocalMovers(MoverPtr mover);
 
-		void removeFromMoverRoster (MoverPtr mover);
+	void addToMoverRoster(MoverPtr mover);
 
-		void addToTurretRoster (TurretPtr turret);
+	bool canAddToMoverRoster(void)
+	{
+		return false;
+	}
 
-		void addToPlayerMoverRoster (int32_t playerCommanderID, MoverPtr mover);
+	void removeFromMoverRoster(MoverPtr mover);
 
-		void removeFromPlayerMoverRoster (MoverPtr mover);
+	void addToTurretRoster(TurretPtr turret);
 
-		int32_t getNumWorldChunks (void) {
-			return(numWorldChunks);
-		}
+	void addToPlayerMoverRoster(int32_t playerCommanderID, MoverPtr mover);
 
-		void clearWorldChunks (void) {
-			numWorldChunks = 0;
-		}
+	void removeFromPlayerMoverRoster(MoverPtr mover);
 
-		int32_t setClosestColor (int32_t colorIndex, int32_t commanderID);
+	int32_t getNumWorldChunks(void)
+	{
+		return(numWorldChunks);
+	}
 
-		int32_t setNextFreeColor (int32_t commanderID);
+	void clearWorldChunks(void)
+	{
+		numWorldChunks = 0;
+	}
 
-		void setColor (int32_t colorIndex, int32_t commanderID);
+	int32_t setClosestColor(int32_t colorIndex, int32_t commanderID);
 
-		void setPlayerBaseColor (int32_t commanderID, int32_t colorIndex);
+	int32_t setNextFreeColor(int32_t commanderID);
 
-		void setPlayerTeam (int32_t commanderID, int32_t teamID);
+	void setColor(int32_t colorIndex, int32_t commanderID);
 
-		void calcPlayerRanks (void);
+	void setPlayerBaseColor(int32_t commanderID, int32_t colorIndex);
 
-		int32_t addWorldChunk (WorldChunkPtr chunk);
+	void setPlayerTeam(int32_t commanderID, int32_t teamID);
 
-		int32_t addMissionScriptMessageChunk (int32_t code, int32_t param1);
+	void calcPlayerRanks(void);
+
+	int32_t addWorldChunk(WorldChunkPtr chunk);
+
+	int32_t addMissionScriptMessageChunk(int32_t code, int32_t param1);
 
 //		int32_t addTerrainAlignmentChunk (GameObjectPtr object, int32_t alignment);
 
-		int32_t addArtilleryChunk (int32_t artilleryType, int32_t teamId, Stuff::Vector3D location, int32_t seconds);
+	int32_t addArtilleryChunk(int32_t artilleryType, int32_t teamId, Stuff::Vector3D location, int32_t seconds);
 
-		int32_t addMineChunk (int32_t tileR, int32_t tileC, int32_t teamId, int32_t mineState, int32_t explosionType);
+	int32_t addMineChunk(int32_t tileR, int32_t tileC, int32_t teamId, int32_t mineState, int32_t explosionType);
 
-		int32_t addLightOnFireChunk (GameObjectPtr object, int32_t seconds);
+	int32_t addLightOnFireChunk(GameObjectPtr object, int32_t seconds);
 
-		int32_t addPilotKillStat (MoverPtr mover, int32_t vehicleClass);
+	int32_t addPilotKillStat(MoverPtr mover, int32_t vehicleClass);
 
-		int32_t addScoreChunk (int32_t commanderID, int32_t score);
+	int32_t addScoreChunk(int32_t commanderID, int32_t score);
 
-		int32_t addKillLossChunk (int32_t killerCID, int32_t loserCID);
+	int32_t addKillLossChunk(int32_t killerCID, int32_t loserCID);
 
-		int32_t addCaptureBuildingChunk (BuildingPtr building, int32_t prevCommanderID, int32_t newCommanderID);
+	int32_t addCaptureBuildingChunk(BuildingPtr building, int32_t prevCommanderID, int32_t newCommanderID);
 
-		int32_t addEndMissionChunk (void);
+	int32_t addEndMissionChunk(void);
 
-		int32_t grabWorldChunks (uint32_t* packedChunkBuffer);
+	int32_t grabWorldChunks(uint32_t* packedChunkBuffer);
 
-		int32_t updateWorldChunks (void);
+	int32_t updateWorldChunks(void);
 
-		int32_t getNumWeaponHitChunks (void) {
-			return(numWeaponHitChunks);
-		}
+	int32_t getNumWeaponHitChunks(void)
+	{
+		return(numWeaponHitChunks);
+	}
 
-		void clearWeaponHitChunks (void) {
-			numWeaponHitChunks = 0;
-		}
+	void clearWeaponHitChunks(void)
+	{
+		numWeaponHitChunks = 0;
+	}
 
-		int32_t addWeaponHitChunk (WeaponHitChunkPtr chunk);
+	int32_t addWeaponHitChunk(WeaponHitChunkPtr chunk);
 
-		int32_t addWeaponHitChunk (GameObjectPtr target, WeaponShotInfoPtr shotInfo, bool isRefit = false);
+	int32_t addWeaponHitChunk(GameObjectPtr target, WeaponShotInfoPtr shotInfo, bool isRefit = false);
 
-		void grabWeaponHitChunks (uint32_t* packedChunkBuffer, int32_t numChunks);
+	void grabWeaponHitChunks(uint32_t* packedChunkBuffer, int32_t numChunks);
 
-		int32_t updateWeaponHitChunks (void);
+	int32_t updateWeaponHitChunks(void);
 
-		int32_t getHomeTeamPlayers (uint32_t* playerIdList);
+	int32_t getHomeTeamPlayers(uint32_t* playerIdList);
 
-		int32_t getEnemyTeamPlayers (uint32_t* playerIdList);
+	int32_t getEnemyTeamPlayers(uint32_t* playerIdList);
 
-		bool processGameMessage (NETMESSAGE* msg);
+	bool processGameMessage(NETMESSAGE* msg);
 
-		void processMessages (void);
+	void processMessages(void);
 
-		int32_t findPlayer (NETPLAYER player) {
-			return(-1);
-		}
+	int32_t findPlayer(NETPLAYER player)
+	{
+		return(-1);
+	}
 
-		bool calcMissionStatus (void);
+	bool calcMissionStatus(void);
 
-		void handleChat (NETPLAYER sender, MCMSG_Chat* msg);
+	void handleChat(NETPLAYER sender, MCMSG_Chat* msg);
 
-		void handlePlayerCID (NETPLAYER sender, MCMSG_PlayerCID* msg);
+	void handlePlayerCID(NETPLAYER sender, MCMSG_PlayerCID* msg);
 
-		void handlePlayerUpdate (NETPLAYER sender, MCMSG_PlayerUpdate* msg);
+	void handlePlayerUpdate(NETPLAYER sender, MCMSG_PlayerUpdate* msg);
 
-		void handleMissionSettingsUpdate (NETPLAYER sender, MCMSG_MissionSettingsUpdate* msg);
+	void handleMissionSettingsUpdate(NETPLAYER sender, MCMSG_MissionSettingsUpdate* msg);
 
-		void handlePlayerInfo (NETPLAYER sender, MCMSG_PlayerInfo* msg);
+	void handlePlayerInfo(NETPLAYER sender, MCMSG_PlayerInfo* msg);
 
-		void handlePlayerCheckIn (NETPLAYER sender, MCMSG_PlayerCheckIn* msg);
+	void handlePlayerCheckIn(NETPLAYER sender, MCMSG_PlayerCheckIn* msg);
 
-		void handlePlayerSetup (NETPLAYER sender, MCMSG_PlayerSetup* msg);
+	void handlePlayerSetup(NETPLAYER sender, MCMSG_PlayerSetup* msg);
 
-		void handlePlayerInsignia (NETPLAYER sender, MCMSG_PlayerInsignia* msg);
+	void handlePlayerInsignia(NETPLAYER sender, MCMSG_PlayerInsignia* msg);
 
-		void handleMissionSetup (NETPLAYER sender, MCMSG_MissionSetup* msg);
+	void handleMissionSetup(NETPLAYER sender, MCMSG_MissionSetup* msg);
 
-		void handleStartPlanning (NETPLAYER sender);
+	void handleStartPlanning(NETPLAYER sender);
 
-		void handleReadyForBattle (NETPLAYER sender, MCMSG_PlayerCheckIn* msg);
+	void handleReadyForBattle(NETPLAYER sender, MCMSG_PlayerCheckIn* msg);
 
-		void handleStartMission (NETPLAYER sender);
-		
-		void handleEndMission (NETPLAYER sender, MCMSG_EndMission* msg);
-		
-		void handleReinforcement (NETPLAYER sender, MCMSG_Reinforcement* msg);
+	void handleStartMission(NETPLAYER sender);
 
-		void handleNewServer (NETPLAYER sender, MCMSG_NewServer* msg);
+	void handleEndMission(NETPLAYER sender, MCMSG_EndMission* msg);
 
-		void handleLeaveSession (NETPLAYER sender, MCMSG_LeaveSession* msg);
+	void handleReinforcement(NETPLAYER sender, MCMSG_Reinforcement* msg);
 
-		void handleHoldPosition (NETPLAYER sender, MCMSG_HoldPosition* msg);
+	void handleNewServer(NETPLAYER sender, MCMSG_NewServer* msg);
 
-		void handlePlayerOrder (NETPLAYER sender, MCMSG_PlayerOrder* msg);
+	void handleLeaveSession(NETPLAYER sender, MCMSG_LeaveSession* msg);
 
-		void handlePlayerMoverGroup (NETPLAYER sender, MCMSG_PlayerMoverGroup* msg);
-		
-		void handlePlayerArtillery (NETPLAYER sender, MCMSG_PlayerArtillery* msg);
+	void handleHoldPosition(NETPLAYER sender, MCMSG_HoldPosition* msg);
 
-		void handleMoverUpdate (NETPLAYER sender, MCMSG_MoverUpdate* msg);
+	void handlePlayerOrder(NETPLAYER sender, MCMSG_PlayerOrder* msg);
 
-		void handleTurretUpdate (NETPLAYER sender, MCMSG_TurretUpdate* msg);
+	void handlePlayerMoverGroup(NETPLAYER sender, MCMSG_PlayerMoverGroup* msg);
 
-		void handleMoverWeaponFireUpdate (NETPLAYER sender, MCMSG_MoverWeaponFireUpdate* msg);
+	void handlePlayerArtillery(NETPLAYER sender, MCMSG_PlayerArtillery* msg);
 
-		void handleTurretWeaponFireUpdate (NETPLAYER sender, MCMSG_TurretWeaponFireUpdate* msg);
+	void handleMoverUpdate(NETPLAYER sender, MCMSG_MoverUpdate* msg);
 
-		void handleMoverCriticalUpdate (NETPLAYER sender, MCMSG_MoverCriticalUpdate* msg);
+	void handleTurretUpdate(NETPLAYER sender, MCMSG_TurretUpdate* msg);
 
-		void handleWeaponHitUpdate (NETPLAYER sender, MCMSG_WeaponHitUpdate* msg);
+	void handleMoverWeaponFireUpdate(NETPLAYER sender, MCMSG_MoverWeaponFireUpdate* msg);
 
-		void handleWorldUpdate (NETPLAYER sender, MCMSG_WorldUpdate* msg);
+	void handleTurretWeaponFireUpdate(NETPLAYER sender, MCMSG_TurretWeaponFireUpdate* msg);
 
-		void sendChat (NETPLAYER receiver, char team, PSTR chatString);
-		void sendPlayerActionChat(NETPLAYER receiver, PCSTR playerName, uint32_t resID );
+	void handleMoverCriticalUpdate(NETPLAYER sender, MCMSG_MoverCriticalUpdate* msg);
 
-		void sendPlayerCID (NETPLAYER receiver, uint8_t subType, char CID);
+	void handleWeaponHitUpdate(NETPLAYER sender, MCMSG_WeaponHitUpdate* msg);
 
-		void sendPlayerUpdate (NETPLAYER receiver, int32_t stage, int32_t commanderID);
+	void handleWorldUpdate(NETPLAYER sender, MCMSG_WorldUpdate* msg);
 
-		void sendMissionSettingsUpdate (NETPLAYER receiver);
+	void sendChat(NETPLAYER receiver, char team, PSTR chatString);
+	void sendPlayerActionChat(NETPLAYER receiver, PCSTR playerName, uint32_t resID);
 
-		void sendPlayerInfo (NETPLAYER receiver);
+	void sendPlayerCID(NETPLAYER receiver, uint8_t subType, char CID);
 
-		void sendPlayerCheckIn (void);
+	void sendPlayerUpdate(NETPLAYER receiver, int32_t stage, int32_t commanderID);
 
-		void sendPlayerSetup (void);
+	void sendMissionSettingsUpdate(NETPLAYER receiver);
 
-		void sendPlayerInsignia (PSTR insigniaFileName, puint8_t insigniaData, int32_t insigniaDataSize);
+	void sendPlayerInfo(NETPLAYER receiver);
 
-		void sendMissionSetup (NETPLAYER receiver, int32_t stage, CompressedMech* mechData);
+	void sendPlayerCheckIn(void);
 
-		void sendStartPlanning (void);
+	void sendPlayerSetup(void);
 
-		void sendStartMission (void);
+	void sendPlayerInsignia(PSTR insigniaFileName, puint8_t insigniaData, int32_t insigniaDataSize);
 
-		void sendEndMission (int32_t result);
+	void sendMissionSetup(NETPLAYER receiver, int32_t stage, CompressedMech* mechData);
 
-		void sendReinforcement (int32_t vehicleID, int32_t rosterIndex, char pilotName[16], int32_t commanderID, Stuff::Vector3D pos, uint8_t stage);
+	void sendStartPlanning(void);
 
-		void sendNewServer (void);
+	void sendStartMission(void);
 
-		void sendLeaveSession (char subType, char commanderID);
+	void sendEndMission(int32_t result);
 
-		void sendPlayerOrder (TacticalOrderPtr tacOrder,
-							  bool needsSelection,
+	void sendReinforcement(int32_t vehicleID, int32_t rosterIndex, char pilotName[16], int32_t commanderID, Stuff::Vector3D pos, uint8_t stage);
+
+	void sendNewServer(void);
+
+	void sendLeaveSession(char subType, char commanderID);
+
+	void sendPlayerOrder(TacticalOrderPtr tacOrder,
+						 bool needsSelection,
+						 int32_t numMovers,
+						 MoverPtr* moverList,
+						 int32_t numGroups = 0,
+						 MoverGroupPtr* groupList = nullptr,
+						 bool queuedOrder = false);
+
+	void sendHoldPosition(void);
+
+	void sendPlayerMoverGroup(int32_t groupId,
 							  int32_t numMovers,
 							  MoverPtr* moverList,
-							  int32_t numGroups = 0,
-							  MoverGroupPtr* groupList = nullptr,
-  							  bool queuedOrder = false);
+							  int32_t point);
 
-		void sendHoldPosition (void);
+	void sendPlayerArtillery(int32_t strikeType, Stuff::Vector3D location, int32_t seconds);
 
-		void sendPlayerMoverGroup (int32_t groupId,
-								   int32_t numMovers,
-								   MoverPtr* moverList,
-								   int32_t point);
+	int32_t sendPing(void);
 
-		void sendPlayerArtillery (int32_t strikeType, Stuff::Vector3D location, int32_t seconds);
-			
-		int32_t sendPing(void);
+	void sendMoverUpdate(void);
 
-		void sendMoverUpdate (void);
+	void sendTurretUpdate(void);
 
-		void sendTurretUpdate (void);
+	void sendMoverWeaponFireUpdate(void);
 
-		void sendMoverWeaponFireUpdate (void);
+	void sendTurretWeaponFireUpdate(void);
 
-		void sendTurretWeaponFireUpdate (void);
+	void sendMoverCriticalUpdate(void);
 
-		void sendMoverCriticalUpdate (void);
+	void sendWeaponHitUpdate(void);
 
-		void sendWeaponHitUpdate (void);
+	void sendWorldUpdate(void);
 
-		void sendWorldUpdate (void);
+	void sendFile(PSTR path, PSTR fileName);
 
-		void sendFile (PSTR path, PSTR fileName);
+	void sendReadyForBattle(void);
 
-		void sendReadyForBattle (void);
+	void sendPrepareMission(void);
 
-		void sendPrepareMission (void);
+	void sendFileInquiry(PSTR filename);
 
-		void sendFileInquiry (PSTR filename);
+	int32_t updateServer(void);
 
-		int32_t updateServer (void);
+	void buildMoverRosterRLE(void);
 
-		void buildMoverRosterRLE (void);
+	int32_t updateClients(bool forceIt = false);
 
-		int32_t updateClients (bool forceIt = false);
+	bool isMyTeammate(uint32_t playerId);
 
-		bool isMyTeammate (uint32_t playerId);
+	bool allPlayersCheckedIn(void);
 
-		bool allPlayersCheckedIn (void);
+	bool allPlayersReady(void);
 
-		bool allPlayersReady (void);
+	void switchServers(void);
 
-		void switchServers (void);
+	void calcDropZones(char dropZonesCID[8], char hqs[MAX_TEAMS]);
 
-		void calcDropZones (char dropZonesCID[8], char hqs[MAX_TEAMS]);
+	int32_t saveTranscript(PCSTR fileName, bool debugging = false);
 
-		int32_t saveTranscript (PCSTR fileName, bool debugging = false);
+	void playerLeftGame(uint32_t playerId);
 
-		void playerLeftGame (uint32_t playerId);
+	// call this to exit the current session.
+	void leaveSession(void);
 
-		// call this to exit the current session.
-		void leaveSession (void);
+	void getChatMessages(PSTR* buffer, int32_t* playerIDs, int32_t& count);
 
-		void getChatMessages( PSTR* buffer, int32_t* playerIDs, int32_t& count );
-
-		void redistributeRP(void);
+	void redistributeRP(void);
 };
 
-bool StartupNetworking (void);
-void ResetNetworking (void);
-void ShutdownNetworking (void);
+bool StartupNetworking(void);
+void ResetNetworking(void);
+void ShutdownNetworking(void);
 
 extern MultiPlayer* MPlayer;
 

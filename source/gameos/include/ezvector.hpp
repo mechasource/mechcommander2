@@ -21,10 +21,10 @@ public:
 public:
 	EZVector(void);
 	EZVector(float, float, float);
-	EZVector(EZVector * v);
+	EZVector(EZVector* v);
 	~EZVector(void);
-	void Normalize(EZVector * );
-	void Add(EZVector *);
-	static float Dot(EZVector *, EZVector *);
-	static void Cross(EZVector *, EZVector *, EZVector *);
+	void Normalize(EZVector*);
+	void Add(EZVector*);
+	static float Dot(EZVector*, EZVector*);
+	static void Cross(EZVector*, EZVector*, EZVector*);
 };

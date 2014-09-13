@@ -27,25 +27,23 @@ bool DragTool::beginPaint()
 	lastX = lastY = -1;
 	return true;
 }
-		
+
 Action* DragTool::endPaint()
 {
 	return nullptr;
 }
 
-bool DragTool::paint( Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY  )
+bool DragTool::paint(Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY)
 {
-	if ( lastX != -1 )
+	if(lastX != -1)
 	{
-		eye->moveLeft( (screenX - lastX)/eye->getScaleFactor() );
-		eye->moveDown( (lastY - screenY)/eye->getScaleFactor() );
+		eye->moveLeft((screenX - lastX) / eye->getScaleFactor());
+		eye->moveDown((lastY - screenY) / eye->getScaleFactor());
 		EditorInterface::instance()->syncScrollBars();
 		EditorInterface::instance()->SafeRunGameOSLogic();
 	}
-	
 	lastX = screenX;
 	lastY = screenY;
-
 	return true;
 }
 

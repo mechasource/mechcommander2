@@ -9,12 +9,13 @@
 
 #include <mlr/mlrinfinitelightwithfalloff.hpp>
 
-namespace MidLevelRenderer {
+namespace MidLevelRenderer
+{
 
 
-	//##########################################################################
-	//######################    MLRPointLight    ###############################
-	//##########################################################################
+//##########################################################################
+//######################    MLRPointLight    ###############################
+//##########################################################################
 
 	class MLRPointLight:
 		public MLRInfiniteLightWithFalloff
@@ -25,30 +26,34 @@ namespace MidLevelRenderer {
 
 		MLRPointLight(void);
 		MLRPointLight(
-			Stuff::MemoryStream *stream,
-			uint32_t version
-			);
-		MLRPointLight(Stuff::Page *page);
+			Stuff::MemoryStream* stream,
+			uint32_t version);
+		MLRPointLight(Stuff::Page* page);
 		~MLRPointLight(void);
 
 		void
-			Save(Stuff::MemoryStream *stream);
+		Save(Stuff::MemoryStream* stream);
 		void
-			Write(Stuff::Page *page);
+		Write(Stuff::Page* page);
 
-		virtual void
-			LightVertex(const MLRVertexData&);
+		virtual void LightVertex(const MLRVertexData&);
 
 		virtual LightType
-			GetLightType() 
-		{ Check_Object(this); return PointLight; }
+		GetLightType()
+		{
+			Check_Object(this);
+			return PointLight;
+		}
 
 		void
-			SetLightMap(MLRLightMap *light_map);
+		SetLightMap(MLRLightMap* light_map);
 
-		virtual MLRLightMap *
-			GetLightMap()
-		{Check_Object(this); return lightMap; }
+		virtual MLRLightMap*
+		GetLightMap()
+		{
+			Check_Object(this);
+			return lightMap;
+		}
 
 		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		// Class Data Support
@@ -63,7 +68,7 @@ namespace MidLevelRenderer {
 		void TestInstance(void);
 
 	protected:
-		MLRLightMap *lightMap;
+		MLRLightMap* lightMap;
 	};
 
 }

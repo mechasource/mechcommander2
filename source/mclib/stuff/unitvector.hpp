@@ -12,9 +12,10 @@
 
 #include <stuff/vector3d.hpp>
 
-namespace Stuff {
+namespace Stuff
+{
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~ UnitVector3D ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//~~~~~~~~~~~~~~~~~~~~~~~~~~ UnitVector3D ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 	class LinearMatrix4D;
 
@@ -28,114 +29,139 @@ namespace Stuff {
 		UnitVector3D()
 		{}
 		UnitVector3D(
-			Scalar x,
-			Scalar y,
-			Scalar z
-			):
-		Vector3D(x,y,z)
+			float x,
+			float y,
+			float z
+		):
+			Vector3D(x, y, z)
 		{}
-		UnitVector3D(const UnitVector3D &v):
-		Vector3D(v)
+		UnitVector3D(const UnitVector3D& v):
+			Vector3D(v)
 		{}
-		explicit UnitVector3D(const Vector3D &v)
-		{*this = v;}
+		explicit UnitVector3D(const Vector3D& v)
+		{
+			*this = v;
+		}
 
 		static const UnitVector3D
-			Forward;
+		Forward;
 		static const UnitVector3D
-			Backward;
+		Backward;
 		static const UnitVector3D
-			Left;
+		Left;
 		static const UnitVector3D
-			Right;
+		Right;
 		static const UnitVector3D
-			Up;
+		Up;
 		static const UnitVector3D
-			Down;
+		Down;
 
 		//
 		// Assignment operators
 		//
 		UnitVector3D&
-			operator=(const UnitVector3D &vector)
-		{Check_Object(&vector); Vector3D::operator=(vector); return *this;}
+		operator=(const UnitVector3D& vector)
+		{
+			Check_Object(&vector);
+			Vector3D::operator=(vector);
+			return *this;
+		}
 		UnitVector3D&
-			operator=(const Vector3D& v)
-		{Vector3D::Normalize(v); return *this;}
+		operator=(const Vector3D& v)
+		{
+			Vector3D::Normalize(v);
+			return *this;
+		}
 
 		//
 		// Math operations
 		//
 		UnitVector3D&
-			Negate(const UnitVector3D &v)
-		{Check_Object(&v); Vector3D::Negate(v); return *this;}
+		Negate(const UnitVector3D& v)
+		{
+			Check_Object(&v);
+			Vector3D::Negate(v);
+			return *this;
+		}
 
-		Scalar
-			operator*(const Vector3D& v) const
-		{return Vector3D::operator*(v);}
+		float
+		operator*(const Vector3D& v) const
+		{
+			return Vector3D::operator*(v);
+		}
 
 		//
 		// Transforms
 		//
 		UnitVector3D& Multiply(
-			const UnitVector3D &v,
-			const LinearMatrix4D &m
-			);
+			const UnitVector3D& v,
+			const LinearMatrix4D& m
+		);
 		UnitVector3D&
-			operator*=(const LinearMatrix4D &m);
+		operator*=(const LinearMatrix4D& m);
 		UnitVector3D&
-			MultiplyByInverse(
-			const UnitVector3D &v,
-			const LinearMatrix4D &m
-			)
-		{Vector3D::MultiplyByInverse(v,m); return *this;}
+		MultiplyByInverse(
+			const UnitVector3D& v,
+			const LinearMatrix4D& m
+		)
+		{
+			Vector3D::MultiplyByInverse(v, m);
+			return *this;
+		}
 
 		//
 		// Template support
 		//
 		UnitVector3D&
-			Lerp(
+		Lerp(
 			const UnitVector3D& v1,
 			const UnitVector3D& v2,
-			Scalar t
-			);
+			float t
+		);
 
 		//
 		// Support functions
 		//
 		void TestInstance(void) const;
 		static bool
-			TestClass(void);
+		TestClass(void);
 
 	private:
 		static const UnitVector3D identity;
-		UnitVector3D& Negate(const Vector3D &V);
-		UnitVector3D& Add(const Vector3D& V1,const Vector3D& V2);
+		UnitVector3D& Negate(const Vector3D& V);
+		UnitVector3D& Add(const Vector3D& V1, const Vector3D& V2);
 		UnitVector3D& operator+=(const Vector3D& V);
-		UnitVector3D& Subtract(const Vector3D& V1,const Vector3D& V2);
+		UnitVector3D& Subtract(const Vector3D& V1, const Vector3D& V2);
 		UnitVector3D& operator-=(const Vector3D& V);
-		UnitVector3D& Cross(const Vector3D& V1,const Vector3D& V2);
-		UnitVector3D& Multiply(const Vector3D& V,Scalar Scale);
-		UnitVector3D& operator*=(Scalar Value);
-		UnitVector3D& Multiply(const Vector3D& V1,const Vector3D& V2);
-		UnitVector3D& operator*=(const Vector3D &V);
-		UnitVector3D& Multiply(const Vector3D &Source, const AffineMatrix4D &M);
-		UnitVector3D& MultiplyByInverse(const Vector3D &Source, const LinearMatrix4D &M);
-		UnitVector3D& Divide(const Vector3D& V,Scalar Scale);
-		UnitVector3D& operator/=(Scalar Value);
-		UnitVector3D& Combine(const Vector3D& V1,Scalar t1,const Vector3D& V2,Scalar t2);
+		UnitVector3D& Cross(const Vector3D& V1, const Vector3D& V2);
+		UnitVector3D& Multiply(const Vector3D& V, float Scale);
+		UnitVector3D& operator*=(float Value);
+		UnitVector3D& Multiply(const Vector3D& V1, const Vector3D& V2);
+		UnitVector3D& operator*=(const Vector3D& V);
+		UnitVector3D& Multiply(const Vector3D& Source, const AffineMatrix4D& M);
+		UnitVector3D& MultiplyByInverse(const Vector3D& Source, const LinearMatrix4D& M);
+		UnitVector3D& Divide(const Vector3D& V, float Scale);
+		UnitVector3D& operator/=(float Value);
+		UnitVector3D& Combine(const Vector3D& V1, float t1, const Vector3D& V2, float t2);
 	};
 
 	inline UnitVector3D&
-		UnitVector3D::Multiply(
-		const UnitVector3D &v,
-		const LinearMatrix4D &m
-		)
-	{Check_Object(&v); Vector3D::Multiply((Vector3D &) v, (AffineMatrix4D &) m); return *this;}
+	UnitVector3D::Multiply(
+		const UnitVector3D& v,
+		const LinearMatrix4D& m
+	)
+	{
+		Check_Object(&v);
+		Vector3D::Multiply((Vector3D&) v, (AffineMatrix4D&) m);
+		return *this;
+	}
 
 	inline UnitVector3D&
-		UnitVector3D::operator*=(const LinearMatrix4D &m)
-	{UnitVector3D src(*this); return Multiply(src, m);}
+	UnitVector3D::operator*=(const LinearMatrix4D& m)
+	{
+		UnitVector3D src(*this);
+		return Multiply(src, m);
+	}
 
 }
 #endif

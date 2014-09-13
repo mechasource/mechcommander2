@@ -18,10 +18,10 @@
 //---------------------------------------------------------------------------
 // Class Definitions
 class GateType;
-typedef GateType *GateTypePtr;
+typedef GateType* GateTypePtr;
 
 class Gate;
-typedef Gate *GatePtr;
+typedef Gate* GatePtr;
 
 //---------------------------------------------------------------------------
 // Macro Definitions

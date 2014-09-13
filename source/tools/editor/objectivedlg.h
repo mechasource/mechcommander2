@@ -46,8 +46,8 @@ public:
 	CActionSpeciesList failureActionComboBoxItems;
 
 	/* for persistent storage of miscellaneous working data*/
-	CObjectiveCondition *pNewCondition;
-	CObjectiveAction *pNewAction;
+	CObjectiveCondition* pNewCondition;
+	CObjectiveAction* pNewAction;
 
 // Dialog Data
 	//{{AFX_DATA(ObjectiveDlg)
@@ -87,7 +87,7 @@ public:
 // Overrides
 	// ClassWizard generated virtual function overrides
 	//{{AFX_VIRTUAL(ObjectiveDlg)
-	protected:
+protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	//}}AFX_VIRTUAL
 
@@ -124,8 +124,8 @@ protected:
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 
-	void DoColorBox( CWnd* pWnd );
-	void DoEditColorChange( int32_t ID );
+	void DoColorBox(CWnd* pWnd);
+	void DoEditColorChange(int32_t ID);
 
 	CBrush		baseBrush;
 	CBrush		brush1;

@@ -57,7 +57,8 @@ class PacketFile;
 
 #pragma pack(1)
 
-struct ObjData {
+struct ObjData
+{
 	int16_t				objTypeNum;		//Type number of object
 	uint16_t		vertexNumber;	//Vertex Number in Block.
 	uint16_t		blockNumber;	//Which terrain Block.
@@ -66,34 +67,36 @@ struct ObjData {
 	uint32_t		parentId;		//hOW AM i LINKED.
 };
 
-struct MiscObjectData {
+struct MiscObjectData
+{
 	int32_t				blockNumber;	//Terrain Block I occupy
 	int32_t				vertexNumber;	//Terrain Vertex I occupy
 	int32_t				objectTypeNum;	//ObjectTypeNumber for this overlay tile
 	int32_t				damaged;		//Is this overlay tile damaged or not
 };
 
-struct ObjDataLoader {
-		int32_t objTypeNum;
-		Stuff::Vector3D vector;
+struct ObjDataLoader
+{
+	int32_t objTypeNum;
+	Stuff::Vector3D vector;
 
-		float rotation;		
-		int32_t damage;
-		
-		int32_t teamId;
-		int32_t parentId;
+	float rotation;
+	int32_t damage;
 
-		// convert to block and vertex
-		int32_t tileCol;
-		int32_t tileRow;
-		
-		int32_t blockNumber;
-		int32_t vertexNumber;
+	int32_t teamId;
+	int32_t parentId;
+
+	// convert to block and vertex
+	int32_t tileCol;
+	int32_t tileRow;
+
+	int32_t blockNumber;
+	int32_t vertexNumber;
 };
 
 #pragma pack()
 
-typedef ObjData *ObjDataPtr;
+typedef ObjData* ObjDataPtr;
 
 //---------------------------------------------------------------------------
 
@@ -105,7 +108,8 @@ typedef ObjData *ObjDataPtr;
 
 #pragma pack(1)
 
-typedef struct _TeamObjectInfo {
+typedef struct _TeamObjectInfo
+{
 	int16_t		numMechs;
 	int16_t		numVehicles;
 	int16_t		numElementals;
@@ -121,7 +125,8 @@ typedef struct _TeamObjectInfo {
 
 #define	MAX_CAPTURES_PER_TEAM	30
 
-typedef struct _RemovedMoverRec {
+typedef struct _RemovedMoverRec
+{
 	uint32_t	turn;
 	int32_t			partID;
 } RemovedMoverRec;
@@ -145,397 +150,427 @@ typedef struct _ObjectManagerData
 	int32_t					nextWatchId;
 } ObjectManagerData;
 
-class GameObjectManager {
+class GameObjectManager
+{
 
-	public:
+public:
 
-		ObjectTypeManagerPtr	objTypeManager;
+	ObjectTypeManagerPtr	objTypeManager;
 
-		int32_t					numMechs;
-		int32_t					numVehicles;
-		int32_t					numElementals;
-		int32_t					numTerrainObjects;
-		int32_t					numBuildings;
-		int32_t					numTurrets;
-		int32_t					numWeapons;
-		int32_t					numCarnage;
-		int32_t					numLights;
-		int32_t					numArtillery;
-		int32_t					numGates;
-		int32_t					maxMechs;
-		int32_t					maxVehicles;
-		int32_t					maxMovers;
+	int32_t					numMechs;
+	int32_t					numVehicles;
+	int32_t					numElementals;
+	int32_t					numTerrainObjects;
+	int32_t					numBuildings;
+	int32_t					numTurrets;
+	int32_t					numWeapons;
+	int32_t					numCarnage;
+	int32_t					numLights;
+	int32_t					numArtillery;
+	int32_t					numGates;
+	int32_t					maxMechs;
+	int32_t					maxVehicles;
+	int32_t					maxMovers;
 
-		BattleMechPtr*			mechs;
-		GroundVehiclePtr*		vehicles;
-		ElementalPtr*			elementals;
-		TerrainObjectPtr*		terrainObjects;
-		BuildingPtr*			buildings;
-		WeaponBoltPtr*			weapons;
-		LightPtr*				lights;
-		CarnagePtr*				carnage;
-		ArtilleryPtr*			artillery;
-		TurretPtr*				turrets;
-		GatePtr*				gates;
-		
-		BuildingPtr				gateControls[MAX_GATE_CONTROLS];
-		BuildingPtr				turretControls[MAX_TURRET_CONTROLS];
-		BuildingPtr				powerGenerators[MAX_POWER_GENERATORS];
-		BuildingPtr				specialBuildings[MAX_SPECIAL_BUILDINGS];		//These must be updated EVERY FRAME.  Perimeter alarms, etc.
-		int32_t					numGateControls;
-		int32_t					numTurretControls;
-		int32_t					numPowerGenerators;
-		int32_t					numSpecialBuildings;
+	BattleMechPtr*			mechs;
+	GroundVehiclePtr*		vehicles;
+	ElementalPtr*			elementals;
+	TerrainObjectPtr*		terrainObjects;
+	BuildingPtr*			buildings;
+	WeaponBoltPtr*			weapons;
+	LightPtr*				lights;
+	CarnagePtr*				carnage;
+	ArtilleryPtr*			artillery;
+	TurretPtr*				turrets;
+	GatePtr*				gates;
 
-		PSTR					moverLineOfSightTable;
-		bool					useMoverLineOfSightTable;
+	BuildingPtr				gateControls[MAX_GATE_CONTROLS];
+	BuildingPtr				turretControls[MAX_TURRET_CONTROLS];
+	BuildingPtr				powerGenerators[MAX_POWER_GENERATORS];
+	BuildingPtr				specialBuildings[MAX_SPECIAL_BUILDINGS];		//These must be updated EVERY FRAME.  Perimeter alarms, etc.
+	int32_t					numGateControls;
+	int32_t					numTurretControls;
+	int32_t					numPowerGenerators;
+	int32_t					numSpecialBuildings;
 
-		GameObjectPtr*			objList;
-		GameObjectPtr*			collidableList;
-		MoverPtr				moverList[MAX_MOVERS];
-		MoverPtr				goodMoverList[MAX_MOVERS];
-		MoverPtr				badMoverList[MAX_MOVERS];
-		int32_t					numCollidables;
-		int32_t					numGoodMovers;
-		int32_t					numBadMovers;
-		int32_t					numMovers;
-		int32_t					nextReinforcementPartId;
-		int32_t					numRemoved;
-		RemovedMoverRec			moversRemoved[MAX_REMOVED];
-		uint32_t			nextWatchID;
-		GameObjectPtr			*watchList;
+	PSTR					moverLineOfSightTable;
+	bool					useMoverLineOfSightTable;
 
-		int32_t					currentWeaponsIndex;			//points to next entry in rotating weapon array.
-		int32_t					currentCarnageIndex;			//points to next entry in rotating carnage list		
-		int32_t					currentLightIndex;
-		int32_t					currentArtilleryIndex;
-		
-		bool					rebuildCollidableList;
+	GameObjectPtr*			objList;
+	GameObjectPtr*			collidableList;
+	MoverPtr				moverList[MAX_MOVERS];
+	MoverPtr				goodMoverList[MAX_MOVERS];
+	MoverPtr				badMoverList[MAX_MOVERS];
+	int32_t					numCollidables;
+	int32_t					numGoodMovers;
+	int32_t					numBadMovers;
+	int32_t					numMovers;
+	int32_t					nextReinforcementPartId;
+	int32_t					numRemoved;
+	RemovedMoverRec			moversRemoved[MAX_REMOVED];
+	uint32_t			nextWatchID;
+	GameObjectPtr*			watchList;
 
-		int32_t					numCaptures[MAX_TEAMS];
-		GameObjectWatchID		captureList[MAX_TEAMS][MAX_CAPTURES_PER_TEAM];
+	int32_t					currentWeaponsIndex;			//points to next entry in rotating weapon array.
+	int32_t					currentCarnageIndex;			//points to next entry in rotating carnage list
+	int32_t					currentLightIndex;
+	int32_t					currentArtilleryIndex;
 
-		int32_t					totalObjCount;
-		ObjDataLoader			*objData;						//Used to keep from loading twice!!
-		CollisionSystemPtr		collisionSystem;
+	bool					rebuildCollidableList;
 
-	private:
+	int32_t					numCaptures[MAX_TEAMS];
+	GameObjectWatchID		captureList[MAX_TEAMS][MAX_CAPTURES_PER_TEAM];
 
-		GameObjectPtr findObjectByMouse (int32_t mouseX,
-										 int32_t mouseY,
-										 GameObjectPtr* searchList,
-										 int32_t listSize,
-										 bool skipDisabled = false);
+	int32_t					totalObjCount;
+	ObjDataLoader*			objData;						//Used to keep from loading twice!!
+	CollisionSystemPtr		collisionSystem;
 
-		GameObjectPtr findMoverByMouse (int32_t mouseX,
-										int32_t mouseY,
-										int32_t teamId,
-										bool skipDisabled = false);
+private:
 
-		GameObjectPtr findTerrainObjectByMouse (int32_t mouseX,
-												int32_t mouseY,
-												bool skipDisabled = false);
+	GameObjectPtr findObjectByMouse(int32_t mouseX,
+									int32_t mouseY,
+									GameObjectPtr* searchList,
+									int32_t listSize,
+									bool skipDisabled = false);
 
-		void addObject(ObjDataLoader *objData, int32_t& objIndex, int32_t& buildIndex, 
-			int32_t &turretIndex, int32_t &gateIndex, int32_t& curCollideHandle, int32_t& curNonCollideHandle);
+	GameObjectPtr findMoverByMouse(int32_t mouseX,
+								   int32_t mouseY,
+								   int32_t teamId,
+								   bool skipDisabled = false);
 
-		void countObject( ObjDataLoader* objType);
+	GameObjectPtr findTerrainObjectByMouse(int32_t mouseX,
+										   int32_t mouseY,
+										   bool skipDisabled = false);
+
+	void addObject(ObjDataLoader* objData, int32_t& objIndex, int32_t& buildIndex,
+				   int32_t& turretIndex, int32_t& gateIndex, int32_t& curCollideHandle, int32_t& curNonCollideHandle);
+
+	void countObject(ObjDataLoader* objType);
 
 
-	public:
+public:
 
-		PVOID operator new (size_t mySize);
+	PVOID operator new(size_t mySize);
 
-		void operator delete (PVOID us);
-		
-		void init (void);
-		
-		GameObjectManager (void) {
-			init(void);
-		}
+	void operator delete(PVOID us);
 
-		void destroy (void);
+	void init(void);
 
-		~GameObjectManager (void) {
-			destroy(void);
-		}
-		
-		void init (PSTR objTypeDataFile, int32_t objTypeCacheSize, int32_t objCacheSize);
+	GameObjectManager(void)
+	{
+		init(void);
+	}
 
-		void setNumObjects (int32_t nMechs,
-							int32_t nVehicles,
-							int32_t nElementals,
-							int32_t nTerrainObjects,
-							int32_t nBuildings,
-							int32_t nTurrets,
-							int32_t nWeapons,
-							int32_t nCarnage,
-							int32_t nLights,
-							int32_t nArtillery,
-							int32_t nGates);
+	void destroy(void);
 
-		int32_t getNumObjects (void) {
-			return(numMechs +
-				   numVehicles +
-				   numElementals +
-				   numTerrainObjects +
-				   numBuildings +
-				   numTurrets +
-				   numWeapons +
-				   numCarnage +
-				   numLights +
-				   numArtillery + 
-				   numGates);
-		}
+	~GameObjectManager(void)
+	{
+		destroy(void);
+	}
 
-		int32_t getMaxObjects (void) {
-			return(maxMechs +
-				   maxVehicles +
-				   numElementals +
-				   numTerrainObjects +
-				   numBuildings +
-				   numTurrets +
-				   numWeapons +
-				   numCarnage +
-				   numLights +
-				   numArtillery + 
-				   numGates);
-		}
+	void init(PSTR objTypeDataFile, int32_t objTypeCacheSize, int32_t objCacheSize);
 
-		int32_t load (File* gameFile);
+	void setNumObjects(int32_t nMechs,
+					   int32_t nVehicles,
+					   int32_t nElementals,
+					   int32_t nTerrainObjects,
+					   int32_t nBuildings,
+					   int32_t nTurrets,
+					   int32_t nWeapons,
+					   int32_t nCarnage,
+					   int32_t nLights,
+					   int32_t nArtillery,
+					   int32_t nGates);
 
-		int32_t save (File* gameFile);
+	int32_t getNumObjects(void)
+	{
+		return(numMechs +
+			   numVehicles +
+			   numElementals +
+			   numTerrainObjects +
+			   numBuildings +
+			   numTurrets +
+			   numWeapons +
+			   numCarnage +
+			   numLights +
+			   numArtillery +
+			   numGates);
+	}
 
-		BattleMechPtr newMech (void);
+	int32_t getMaxObjects(void)
+	{
+		return(maxMechs +
+			   maxVehicles +
+			   numElementals +
+			   numTerrainObjects +
+			   numBuildings +
+			   numTurrets +
+			   numWeapons +
+			   numCarnage +
+			   numLights +
+			   numArtillery +
+			   numGates);
+	}
 
-		GroundVehiclePtr newVehicle (void);
+	int32_t load(File* gameFile);
 
-		void freeMover (MoverPtr mover);
-		
-		void tradeMover (MoverPtr mover, int32_t newTeamID, int32_t newCommanderID);
+	int32_t save(File* gameFile);
+
+	BattleMechPtr newMech(void);
+
+	GroundVehiclePtr newVehicle(void);
+
+	void freeMover(MoverPtr mover);
+
+	void tradeMover(MoverPtr mover, int32_t newTeamID, int32_t newCommanderID);
 
 #ifdef USE_ELEMENTAL
-		BattleMechPtr addElemental (void);
+	BattleMechPtr addElemental(void);
 #endif
 
-		BattleMechPtr getMech (int32_t mechIndex);
+	BattleMechPtr getMech(int32_t mechIndex);
 
-		GroundVehiclePtr getVehicle (int32_t vehicleIndex);
+	GroundVehiclePtr getVehicle(int32_t vehicleIndex);
 
-		GroundVehiclePtr getOpenVehicle (void);
+	GroundVehiclePtr getOpenVehicle(void);
 
-		ElementalPtr getElemental (int32_t elementalIndex);
+	ElementalPtr getElemental(int32_t elementalIndex);
 
-		TerrainObjectPtr getTerrainObject (int32_t terrainObjectIndex);
+	TerrainObjectPtr getTerrainObject(int32_t terrainObjectIndex);
 
-		BuildingPtr getBuilding (int32_t buildingIndex);
+	BuildingPtr getBuilding(int32_t buildingIndex);
 
-		TurretPtr getTurret (int32_t turretIndex);
-		
-		GatePtr	getGate (int32_t gateIndex);
-		
-		WeaponBoltPtr getWeapon (void);				//gets next available weapon.
+	TurretPtr getTurret(int32_t turretIndex);
 
-		CarnagePtr getCarnage (CarnageEnumType carnageType);
+	GatePtr	getGate(int32_t gateIndex);
 
-		void releaseCarnage (CarnagePtr obj);
+	WeaponBoltPtr getWeapon(void);				//gets next available weapon.
 
-		LightPtr getLight (void);
+	CarnagePtr getCarnage(CarnageEnumType carnageType);
 
-		void releaseLight (LightPtr obj);
+	void releaseCarnage(CarnagePtr obj);
 
-		ArtilleryPtr getArtillery (void);
+	LightPtr getLight(void);
 
-		int32_t getNumArtillery (void) {
-			return(numArtillery);
-		}
+	void releaseLight(LightPtr obj);
 
-		ArtilleryPtr getArtillery (int32_t artilleryIndex) {
-			return(artillery[artilleryIndex]);
-		}
+	ArtilleryPtr getArtillery(void);
 
-		int32_t getNumGateControls (void) {
-			return(numGateControls);
-		}
+	int32_t getNumArtillery(void)
+	{
+		return(numArtillery);
+	}
 
-		int32_t getNumTurretControls (void) {
-			return(numTurretControls);
-		}
+	ArtilleryPtr getArtillery(int32_t artilleryIndex)
+	{
+		return(artillery[artilleryIndex]);
+	}
 
-		BuildingPtr getGateControl (int32_t index) {
-			return(gateControls[index]);
-		}
+	int32_t getNumGateControls(void)
+	{
+		return(numGateControls);
+	}
 
-		BuildingPtr getTurretControl (int32_t index) {
-			return(turretControls[index]);
-		}
+	int32_t getNumTurretControls(void)
+	{
+		return(numTurretControls);
+	}
 
-		void countTerrainObjects (PacketFile* pFile, int32_t firstHandle);
+	BuildingPtr getGateControl(int32_t index)
+	{
+		return(gateControls[index]);
+	}
 
-		void loadTerrainObjects ( PacketFile* pFile, volatile float& progress, float progressRange );
+	BuildingPtr getTurretControl(int32_t index)
+	{
+		return(turretControls[index]);
+	}
 
-		int32_t getSpecificObjects (int32_t objClass, int32_t objSubType, GameObjectPtr* objects, int32_t maxObjects);
+	void countTerrainObjects(PacketFile* pFile, int32_t firstHandle);
 
-		GameObjectPtr getObjBlockObject (int32_t blockNumber, int32_t objLocalIndex) {
-			return(objList[Terrain::objBlockInfo[blockNumber].firstHandle + objLocalIndex]);
-		}
+	void loadTerrainObjects(PacketFile* pFile, volatile float& progress, float progressRange);
 
-		int32_t getObjBlockNumObjects (int32_t blockNumber) {
-			return(Terrain::objBlockInfo[blockNumber].numObjects);
-		}
+	int32_t getSpecificObjects(int32_t objClass, int32_t objSubType, GameObjectPtr* objects, int32_t maxObjects);
 
-		int32_t getObjBlockNumCollidables (int32_t blockNumber) {
-			return(Terrain::objBlockInfo[blockNumber].numCollidableObjects);
-		}
+	GameObjectPtr getObjBlockObject(int32_t blockNumber, int32_t objLocalIndex)
+	{
+		return(objList[Terrain::objBlockInfo[blockNumber].firstHandle + objLocalIndex]);
+	}
 
-		int32_t getObjBlockFirstHandle (int32_t blockNumber) {
-			return(Terrain::objBlockInfo[blockNumber].firstHandle);
-		}
+	int32_t getObjBlockNumObjects(int32_t blockNumber)
+	{
+		return(Terrain::objBlockInfo[blockNumber].numObjects);
+	}
 
-		int32_t getNumMechs (void) {
-			return(numMechs);
-		}
+	int32_t getObjBlockNumCollidables(int32_t blockNumber)
+	{
+		return(Terrain::objBlockInfo[blockNumber].numCollidableObjects);
+	}
 
-		int32_t getNumVehicles (void) {
-			return(numVehicles);
-		}
+	int32_t getObjBlockFirstHandle(int32_t blockNumber)
+	{
+		return(Terrain::objBlockInfo[blockNumber].firstHandle);
+	}
 
-		int32_t getNumMovers (void) {
-			return(numMovers);
-		}
+	int32_t getNumMechs(void)
+	{
+		return(numMechs);
+	}
 
-		int32_t getMaxMovers (void) {
-			return(maxMovers);
-		}
+	int32_t getNumVehicles(void)
+	{
+		return(numVehicles);
+	}
 
-		int32_t getNumGoodMovers (void) {
-			return(numGoodMovers);
-		}
+	int32_t getNumMovers(void)
+	{
+		return(numMovers);
+	}
 
-		int32_t getNumBadMovers (void) {
-			return(numBadMovers);
-		}
+	int32_t getMaxMovers(void)
+	{
+		return(maxMovers);
+	}
 
-		int32_t getNumTerrainObjects (void) {
-			return(numTerrainObjects);
-		}
+	int32_t getNumGoodMovers(void)
+	{
+		return(numGoodMovers);
+	}
 
-		int32_t getNumBuildings (void) {
-			return(numBuildings);
-		}
+	int32_t getNumBadMovers(void)
+	{
+		return(numBadMovers);
+	}
 
-		int32_t getNumTurrets (void) {
-			return(numTurrets);
-		}
+	int32_t getNumTerrainObjects(void)
+	{
+		return(numTerrainObjects);
+	}
 
-		int32_t getNumGates (void) {
-			return(numGates);
-		}
+	int32_t getNumBuildings(void)
+	{
+		return(numBuildings);
+	}
 
-		void render (bool terrain, bool movers, bool other);
+	int32_t getNumTurrets(void)
+	{
+		return(numTurrets);
+	}
 
-		void renderShadows (bool terrain, bool movers, bool other);
+	int32_t getNumGates(void)
+	{
+		return(numGates);
+	}
 
-		void update (bool terrain, bool movers, bool other);
-		void updateAppearancesOnly( bool terrain, bool mover, bool other);
+	void render(bool terrain, bool movers, bool other);
 
-		GameObjectPtr get (int32_t handle);
+	void renderShadows(bool terrain, bool movers, bool other);
 
-		GameObjectPtr getByWatchID (uint32_t watchID) {
-			if ((watchID > 0) && (watchID < nextWatchID))
-				return(watchList[watchID]);
-			return(nullptr);
-		}
+	void update(bool terrain, bool movers, bool other);
+	void updateAppearancesOnly(bool terrain, bool mover, bool other);
 
-		int32_t buildMoverLists (void);
+	GameObjectPtr get(int32_t handle);
 
-		bool modifyMoverLists (MoverPtr mover, int32_t action);
+	GameObjectPtr getByWatchID(uint32_t watchID)
+	{
+		if((watchID > 0) && (watchID < nextWatchID))
+			return(watchList[watchID]);
+		return(nullptr);
+	}
 
-		MoverPtr getMover (int32_t index) {
-			return(moverList[index]);
-		}
+	int32_t buildMoverLists(void);
 
-		MoverPtr getGoodMover (int32_t index) {
-			return(goodMoverList[index]);
-		}
+	bool modifyMoverLists(MoverPtr mover, int32_t action);
 
-		MoverPtr getBadMover (int32_t index) {
-			return(badMoverList[index]);
-		}
+	MoverPtr getMover(int32_t index)
+	{
+		return(moverList[index]);
+	}
 
-		GameObjectPtr findObject (Stuff::Vector3D position);
+	MoverPtr getGoodMover(int32_t index)
+	{
+		return(goodMoverList[index]);
+	}
 
-		GameObjectPtr findByPartId (int32_t partId);
+	MoverPtr getBadMover(int32_t index)
+	{
+		return(badMoverList[index]);
+	}
 
-		GameObjectPtr findByBlockVertex (int32_t blockNum, int32_t vertex);
+	GameObjectPtr findObject(Stuff::Vector3D position);
 
-		GameObjectPtr findByCellPosition (int32_t row, int32_t col);
+	GameObjectPtr findByPartId(int32_t partId);
 
-		GameObjectPtr findByUnitInfo (int32_t commander, int32_t group, int32_t mate);
+	GameObjectPtr findByBlockVertex(int32_t blockNum, int32_t vertex);
 
-		GameObjectPtr findObjectByTypeHandle (int32_t typeHandle);
+	GameObjectPtr findByCellPosition(int32_t row, int32_t col);
 
-		GameObjectPtr findObjectByMouse (int32_t mouseX, int32_t mouseY);
-		
-		bool moverInRect(int32_t index, Stuff::Vector3D &dStart, Stuff::Vector3D &dEnd);
+	GameObjectPtr findByUnitInfo(int32_t commander, int32_t group, int32_t mate);
 
-		ObjectTypePtr loadObjectType (ObjectTypeNumber typeHandle);
+	GameObjectPtr findObjectByTypeHandle(int32_t typeHandle);
 
-		ObjectTypePtr getObjectType (ObjectTypeNumber typeHandle);
+	GameObjectPtr findObjectByMouse(int32_t mouseX, int32_t mouseY);
 
-		void removeObjectType (ObjectTypeNumber typeHandle);
+	bool moverInRect(int32_t index, Stuff::Vector3D& dStart, Stuff::Vector3D& dEnd);
 
-		GameObjectHandle getHandle (GameObjectPtr obj);
+	ObjectTypePtr loadObjectType(ObjectTypeNumber typeHandle);
 
-		int32_t calcPartId (int32_t objectClass, int32_t param1 = 0, int32_t param2 = 0, int32_t param3 = 0);
+	ObjectTypePtr getObjectType(ObjectTypeNumber typeHandle);
 
-		void setPartId (GameObjectPtr obj, int32_t param1 = 0, int32_t param2 = 0, int32_t param3 = 0);
+	void removeObjectType(ObjectTypeNumber typeHandle);
 
-		int32_t buildCollidableList (void);
+	GameObjectHandle getHandle(GameObjectPtr obj);
 
-		int32_t initCollisionSystem (FitIniFile* missionFile);
+	int32_t calcPartId(int32_t objectClass, int32_t param1 = 0, int32_t param2 = 0, int32_t param3 = 0);
 
-		int32_t getCollidableList (GameObjectPtr*& objList);
+	void setPartId(GameObjectPtr obj, int32_t param1 = 0, int32_t param2 = 0, int32_t param3 = 0);
 
-		int32_t updateCollisions (void);
+	int32_t buildCollidableList(void);
 
-		void detectStaticCollision (GameObjectPtr obj1, GameObjectPtr obj2);
-		
-		void updateCaptureList (void);
+	int32_t initCollisionSystem(FitIniFile* missionFile);
 
-		bool GameObjectManager::isTeamCapturing (TeamPtr team, GameObjectWatchID targetWID);
+	int32_t getCollidableList(GameObjectPtr*& objList);
 
-		CarnagePtr createFire (ObjectTypeNumber fireObjTypeHandle,
+	int32_t updateCollisions(void);
+
+	void detectStaticCollision(GameObjectPtr obj1, GameObjectPtr obj2);
+
+	void updateCaptureList(void);
+
+	bool GameObjectManager::isTeamCapturing(TeamPtr team, GameObjectWatchID targetWID);
+
+	CarnagePtr createFire(ObjectTypeNumber fireObjTypeHandle,
+						  GameObjectPtr owner,
+						  Stuff::Vector3D& position,
+						  float tonnage);
+
+	CarnagePtr createExplosion(int32_t effectId,
 							   GameObjectPtr owner,
 							   Stuff::Vector3D& position,
-							   float tonnage);
+							   float dmg = 0.0,
+							   float radius = 0.0);
 
-		CarnagePtr createExplosion (int32_t effectId,
-									GameObjectPtr owner,
-									Stuff::Vector3D& position,
-									float dmg = 0.0,
-									float radius = 0.0);
+	LightPtr createLight(ObjectTypeNumber lightObjTypeHandle);
 
-		LightPtr createLight (ObjectTypeNumber lightObjTypeHandle);
+	WeaponBoltPtr createWeaponBolt(int32_t effectId);
 
-		WeaponBoltPtr createWeaponBolt (int32_t effectId);
+	ArtilleryPtr createArtillery(int32_t artilleryType, Stuff::Vector3D& position);
 
-		ArtilleryPtr createArtillery (int32_t artilleryType, Stuff::Vector3D& position);
+	RemovedMoverRec* getRemovedMovers(int32_t& numRemovedMovers)
+	{
+		numRemovedMovers = numRemoved;
+		return(moversRemoved);
+	}
 
-		RemovedMoverRec* getRemovedMovers (int32_t& numRemovedMovers) {
-			numRemovedMovers = numRemoved;
-			return(moversRemoved);
-		}
+	bool isRemoved(MoverPtr mover);
 
-		bool isRemoved (MoverPtr mover);
+	void setWatchID(GameObjectPtr obj);
 
-		void setWatchID (GameObjectPtr obj);
+	void CopyTo(ObjectManagerData* data);
+	void CopyFrom(ObjectManagerData* data);
 
-		void CopyTo (ObjectManagerData *data);
-		void CopyFrom (ObjectManagerData *data);
-
-		int32_t Save (PacketFilePtr file, int32_t packetNum);
-		int32_t Load (PacketFilePtr file, int32_t packetNum);
+	int32_t Save(PacketFilePtr file, int32_t packetNum);
+	int32_t Load(PacketFilePtr file, int32_t packetNum);
 };
 
 extern GameObjectManagerPtr ObjectManager;

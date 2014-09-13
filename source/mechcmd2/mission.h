@@ -64,11 +64,11 @@ struct Part
 	bool				captureable;		//Is this a capturable "enemy" mech?
 	uint32_t				variantNum;			//Variant number of the Part.
 
-	void Save (FitIniFilePtr file, int32_t partNum);
-	void Load (FitIniFilePtr file, int32_t partNum);
+	void Save(FitIniFilePtr file, int32_t partNum);
+	void Load(FitIniFilePtr file, int32_t partNum);
 };
 
-typedef Part *PartPtr;
+typedef Part* PartPtr;
 
 //----------------------------------------------------------------------------------
 // This is the struct definition for the Scenario Objectives.
@@ -108,7 +108,8 @@ typedef uint32_t	ObjectiveStatus;
 
 #define					MAX_OBJECTIVES			50
 
-typedef enum {
+typedef enum
+{
 	MISSION_LOAD_SP_QUICKSTART,
 	MISSION_LOAD_SP_LOGISTICS,
 	MISSION_LOAD_MP_QUICKSTART,
@@ -126,7 +127,7 @@ struct Objective
 	float				radius;
 };
 
-typedef Objective *ObjectivePtr;
+typedef Objective* ObjectivePtr;
 
 //----------------------------------------------------------------------------------
 // To operate, simply call init with the filename of the mission.
@@ -136,230 +137,224 @@ class Mission
 
 	//Data Members
 	//-------------
-	protected:
-	
-		FitIniFilePtr					missionFile;
-										
-		int32_t							operationId;		// aka operation id
-		int32_t							missionId;			// aka mission id
-										
-		char							missionFileName[80];
-		char							missionScriptName[80];
-		ABLModulePtr					missionBrain;
-		ABLParamPtr						missionParams;
-		SymTableNodePtr					missionBrainCallback;
-										
-		uint32_t					numParts;
-		PartPtr							parts;
-										
-		bool							active;
+protected:
 
-		static double					missionTerminationTime;
+	FitIniFilePtr					missionFile;
 
-										
-	public:								
+	int32_t							operationId;		// aka operation id
+	int32_t							missionId;			// aka mission id
 
-		static bool						terminationCounterStarted;
-		static uint32_t			terminationResult;
+	char							missionFileName[80];
+	char							missionScriptName[80];
+	ABLModulePtr					missionBrain;
+	ABLParamPtr						missionParams;
+	SymTableNodePtr					missionBrainCallback;
 
-		uint32_t					numObjectives;
-		ObjectivePtr					objectives;
-		float						m_timeLimit;
-		//CObjectives						missionObjectives;
-		//int32_t						numPrimaryObjectives;
-		uint32_t					duration;
-		bool							warning1;
-		bool							warning2;
-										
-		float							actualTime;
-		float							runningTime;
-										
-		int32_t 							numSmallStrikes;
-		int32_t 							numLargeStrikes;
-		int32_t 							numSensorStrikes;
-		int32_t 							numCameraStrikes;
-										
-		uint8_t					missionTuneNum;
-										
-		int32_t							missionScriptHandle;
-		ABLParam						*missionBrainParams;
-		
-		MissionInterfaceManagerPtr		missionInterface;
+	uint32_t					numParts;
+	PartPtr							parts;
 
-		Stuff::Vector3D					dropZone;
-		
-		int32_t							theSkyNumber;
+	bool							active;
 
-		static bool						statisticsInitialized;
+	static double					missionTerminationTime;
+
+
+public:
+
+	static bool						terminationCounterStarted;
+	static uint32_t			terminationResult;
+
+	uint32_t					numObjectives;
+	ObjectivePtr					objectives;
+	float						m_timeLimit;
+	//CObjectives						missionObjectives;
+	//int32_t						numPrimaryObjectives;
+	uint32_t					duration;
+	bool							warning1;
+	bool							warning2;
+
+	float							actualTime;
+	float							runningTime;
+
+	int32_t 							numSmallStrikes;
+	int32_t 							numLargeStrikes;
+	int32_t 							numSensorStrikes;
+	int32_t 							numCameraStrikes;
+
+	uint8_t					missionTuneNum;
+
+	int32_t							missionScriptHandle;
+	ABLParam*						missionBrainParams;
+
+	MissionInterfaceManagerPtr		missionInterface;
+
+	Stuff::Vector3D					dropZone;
+
+	int32_t							theSkyNumber;
+
+	static bool						statisticsInitialized;
 
 	//Member Functions
 	//-----------------
-	protected:
-	
-	public:
-	
-		void init (void)
-		{
-			missionFile = nullptr;
+protected:
 
-			operationId = missionId = -1;
+public:
 
-			missionBrain = nullptr;
-			missionParams = nullptr;
-			missionBrainCallback = nullptr;
+	void init(void)
+	{
+		missionFile = nullptr;
+		operationId = missionId = -1;
+		missionBrain = nullptr;
+		missionParams = nullptr;
+		missionBrainCallback = nullptr;
+		numParts = 0;
+		parts = nullptr;
+		numObjectives = 0;
+		objectives = nullptr;
+		duration = 0;
+		active = FALSE;
+		numSmallStrikes = 0;
+		numLargeStrikes = 0;
+		numSensorStrikes = 0;
+		numCameraStrikes = 0;
+		missionTuneNum = 0;
+		missionScriptHandle = -1;
+		missionInterface = nullptr;
+		missionFileName[0] = 0;
+		missionBrainParams = nullptr;
+	}
 
-			numParts = 0;
-			parts = nullptr;
+	Mission(void)
+	{
+		init(void);
+	}
 
-			numObjectives = 0;
-			objectives = nullptr;
+	bool calcComplexDropZones(PSTR missionName, char dropZoneList[MAX_MC_PLAYERS]);
 
-			duration = 0;
+	void init(PSTR missionName, int32_t loadType, int32_t dropZoneID, Stuff::Vector3D* dropZoneList, char commandersToLoad[8][3], int32_t numMoversPerCommander);
 
-			active = FALSE;
-			
-			numSmallStrikes = 0;			
-			numLargeStrikes = 0;
-			numSensorStrikes = 0;
-			numCameraStrikes = 0;
-			
-			missionTuneNum = 0;
-			
-			missionScriptHandle = -1;
-			
-			missionInterface = nullptr;
+	static void initBareMinimum(void);
 
-			missionFileName[0] = 0;
+	static void initTGLForMission(void);
+	static void initTGLForLogistics(void);
 
-			missionBrainParams = nullptr;
-		}
-		
-		Mission (void)
-		{
-			init(void);
-		}
+	void start(void);
 
-		bool calcComplexDropZones (PSTR missionName, char dropZoneList[MAX_MC_PLAYERS]);
+	Stuff::Vector3D getDropZone() const
+	{
+		return dropZone;
+	}
 
-		void init (PSTR missionName, int32_t loadType, int32_t dropZoneID, Stuff::Vector3D* dropZoneList, char commandersToLoad[8][3], int32_t numMoversPerCommander);
+	int32_t update(void);
+	int32_t render(void);
 
-		static void initBareMinimum(void);
-		
-		static void initTGLForMission(void);
-		static void initTGLForLogistics(void);
-		
-		void start (void);
+	void destroy(bool initLogistics = true);
 
-		Stuff::Vector3D getDropZone( ) const { return dropZone; }
-		
-		int32_t update (void);
-		int32_t render (void);
-		
-		void destroy (bool initLogistics = true);
-		
-		~Mission (void)
-		{
-			destroy(false);
-		}
+	~Mission(void)
+	{
+		destroy(false);
+	}
 
-		int32_t getStatus (void);
+	int32_t getStatus(void);
 
-		int32_t getNumParts (void) 
-		{
-			return(numParts);
-		}
+	int32_t getNumParts(void)
+	{
+		return(numParts);
+	}
 
-		PartPtr getPart (int32_t partNumber) 
-		{
-			return(&parts[partNumber]);
-		}
+	PartPtr getPart(int32_t partNumber)
+	{
+		return(&parts[partNumber]);
+	}
 
-		int32_t getPartTeamId (int32_t partNumber) 
-		{
-			return(parts[partNumber].teamId);
-		}
+	int32_t getPartTeamId(int32_t partNumber)
+	{
+		return(parts[partNumber].teamId);
+	}
 
-		GameObjectPtr getPartObject (int32_t partNumber)
-		{
-			if ((partNumber <= 0) || ((uint32_t)partNumber > numParts))
-				return nullptr;
-			if (!ObjectManager)
-				return(nullptr);
-			return ((GameObjectPtr) ObjectManager->getByWatchID(parts[partNumber].objectWID));
-		}
+	GameObjectPtr getPartObject(int32_t partNumber)
+	{
+		if((partNumber <= 0) || ((uint32_t)partNumber > numParts))
+			return nullptr;
+		if(!ObjectManager)
+			return(nullptr);
+		return ((GameObjectPtr) ObjectManager->getByWatchID(parts[partNumber].objectWID));
+	}
 
-		int32_t addMover (MoverInitData* moveSpec);
-		int32_t addMover (MoverInitData* moveSpec, LogisticsMech* mechData);
-		int32_t addMover (MoverInitData* moveSpec, CompressedMech* mechData);
-		
-		int32_t removeMover (MoverPtr mover);
+	int32_t addMover(MoverInitData* moveSpec);
+	int32_t addMover(MoverInitData* moveSpec, LogisticsMech* mechData);
+	int32_t addMover(MoverInitData* moveSpec, CompressedMech* mechData);
 
-		void tradeMover (MoverPtr mover, int32_t newTeamID, int32_t newCommanderID, PSTR pilotFileName, PSTR brainFileName);
+	int32_t removeMover(MoverPtr mover);
 
-		void createPartObject (int32_t objectId, MoverPtr mover);
-		
-		void createMissionObject (int32_t partId);		//Moves object from holding area to real world.
-		
-		ABLModulePtr getBrain (void) 
-		{
-			return(missionBrain);
-		}
+	void tradeMover(MoverPtr mover, int32_t newTeamID, int32_t newCommanderID, PSTR pilotFileName, PSTR brainFileName);
 
-		void handleMultiplayMessage (int32_t code, int32_t param1);
+	void createPartObject(int32_t objectId, MoverPtr mover);
 
-		//-----------------------------------------------------
-		// Objective Routines
-		void startObjectiveTimers (void);
-		
-		int32_t setObjectiveTimer (int32_t objectiveNum, float timeLeft);
-		float checkObjectiveTimer (int32_t objectiveNum);
-		
-		int32_t setObjectiveStatus (int32_t objectiveNum, ObjectiveStatus status);
-		ObjectiveStatus checkObjectiveStatus (int32_t objectiveNum);
-		
-		int32_t setObjectiveType (int32_t objectiveNum, ObjectiveType type);
-		ObjectiveType checkObjectiveType (int32_t objectiveNum);
-		
-		void setObjectivePos (int32_t objectiveNum, float realX, float realY, float realZ);
-		
-		void setupBonus (void);
-		
-		//Checks if any objective has succeeded or failed since we last checked.
-		bool checkObjectiveSuccess (void);
-		bool checkObjectiveFailed (void);
-		//-----------------------------------------------------
+	void createMissionObject(int32_t partId);		//Moves object from holding area to real world.
 
-		int32_t GetOperationID(void) 
-		{
-			return operationId;
-		}
+	ABLModulePtr getBrain(void)
+	{
+		return(missionBrain);
+	}
 
-		int32_t GetMissionID(void) 
-		{
-			return missionId;
-		}
+	void handleMultiplayMessage(int32_t code, int32_t param1);
 
-		PSTR  getMissionName (void)
-		{
-			return missionScriptName;
-		}
+	//-----------------------------------------------------
+	// Objective Routines
+	void startObjectiveTimers(void);
 
-		int32_t getMissionTuneId (void)
-		{
-			return missionTuneNum;
-		}
+	int32_t setObjectiveTimer(int32_t objectiveNum, float timeLeft);
+	float checkObjectiveTimer(int32_t objectiveNum);
 
-		PCSTR getMissionFileName(){ return missionFileName; }
-		
-		static void initializeStatistics(void);
+	int32_t setObjectiveStatus(int32_t objectiveNum, ObjectiveStatus status);
+	ObjectiveStatus checkObjectiveStatus(int32_t objectiveNum);
 
-		void load (PCSTR filename);
-		void save (PCSTR filename);
+	int32_t setObjectiveType(int32_t objectiveNum, ObjectiveType type);
+	ObjectiveType checkObjectiveType(int32_t objectiveNum);
 
-		bool isActive (void)
-		{
-			return active;
-		}
+	void setObjectivePos(int32_t objectiveNum, float realX, float realY, float realZ);
+
+	void setupBonus(void);
+
+	//Checks if any objective has succeeded or failed since we last checked.
+	bool checkObjectiveSuccess(void);
+	bool checkObjectiveFailed(void);
+	//-----------------------------------------------------
+
+	int32_t GetOperationID(void)
+	{
+		return operationId;
+	}
+
+	int32_t GetMissionID(void)
+	{
+		return missionId;
+	}
+
+	PSTR  getMissionName(void)
+	{
+		return missionScriptName;
+	}
+
+	int32_t getMissionTuneId(void)
+	{
+		return missionTuneNum;
+	}
+
+	PCSTR getMissionFileName()
+	{
+		return missionFileName;
+	}
+
+	static void initializeStatistics(void);
+
+	void load(PCSTR filename);
+	void save(PCSTR filename);
+
+	bool isActive(void)
+	{
+		return active;
+	}
 
 };
 
@@ -382,7 +377,7 @@ extern float globalMissionValues [];
 
 extern uint8_t godMode;
 
-extern Mission *mission;
+extern Mission* mission;
 extern uint32_t scenarioResult;
 
 extern UserHeapPtr missionHeap;

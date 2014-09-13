@@ -9,11 +9,12 @@
 
 #include <mlr/mlr_i_dt_pmesh.hpp>
 
-namespace MidLevelRenderer {
+namespace MidLevelRenderer
+{
 
-	//##########################################################################
-	//#### MLRIndexedPolyMesh with color but no lighting two texture layers ####
-	//##########################################################################
+//##########################################################################
+//#### MLRIndexedPolyMesh with color but no lighting two texture layers ####
+//##########################################################################
 
 
 	class MLR_I_C_DT_PMesh:
@@ -31,60 +32,45 @@ namespace MidLevelRenderer {
 		//
 	protected:
 		MLR_I_C_DT_PMesh(
-			ClassData *class_data,
-			Stuff::MemoryStream *stream,
-			uint32_t version
-			);
+			ClassData* class_data,
+			Stuff::MemoryStream* stream,
+			uint32_t version);
 		~MLR_I_C_DT_PMesh(void);
 
 	public:
-		MLR_I_C_DT_PMesh(ClassData *class_data=MLR_I_C_DT_PMesh::DefaultData);
+		MLR_I_C_DT_PMesh(ClassData* class_data = MLR_I_C_DT_PMesh::DefaultData);
 
 		static MLR_I_C_DT_PMesh*
-			Make(
-			Stuff::MemoryStream *stream,
-			uint32_t version
-			);
+		Make(
+			Stuff::MemoryStream* stream,
+			uint32_t version);
 
 		void
-			Save(Stuff::MemoryStream *stream);
+		Save(Stuff::MemoryStream* stream);
 
 	public:
 #if COLOR_AS_DWORD
-		virtual void
-			SetColorData(
-			pcuint32_t array,
-			int32_t point_count
-			);
-		virtual void
-			GetColorData(
-			uint32_t **array,
-			pint32_t point_count
-			);
+		virtual void SetColorData(
+			pcuint32_t array, size_t point_count);
+		virtual void GetColorData(
+			puint32_t* array, psize_t point_count);
 #else
-		virtual void
-			SetColorData(
-			const Stuff::RGBAColor *array,
-			int32_t point_count
-			);
-		virtual void
-			GetColorData(
-			Stuff::RGBAColor **array,
-			pint32_t point_count
-			);
+		virtual void SetColorData(
+			const Stuff::RGBAColor* array, size_t point_count);
+		virtual void GetColorData(
+			Stuff::RGBAColor** array, psize_t point_count);
 #endif
 
 		virtual void
 #if COLOR_AS_DWORD
-			PaintMe(pcuint32_t paintMe);
+		PaintMe(pcuint32_t paintMe);
 #else
-			PaintMe(const Stuff::RGBAColor *paintMe);
+		PaintMe(const Stuff::RGBAColor* paintMe);
 #endif
 
-		virtual int32_t	TransformAndClip(Stuff::Matrix4D *, MLRClippingState, GOSVertexPool*,bool=false);
+		virtual uint32_t TransformAndClip(Stuff::Matrix4D*, MLRClippingState, GOSVertexPool*, bool = false);
 
-		virtual void
-			TransformNoClip(Stuff::Matrix4D*, GOSVertexPool*,bool=false);
+		virtual void TransformNoClip(Stuff::Matrix4D*, GOSVertexPool*, bool = false);
 
 		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		// Class Data Support
@@ -99,29 +85,28 @@ namespace MidLevelRenderer {
 		void TestInstance(void) const;
 
 		virtual size_t GetSize(void)
-		{ 
+		{
 			Check_Object(this);
 			size_t ret = MLR_I_DT_PMesh::GetSize();
 			ret += colors.GetSize();
-
 			return ret;
 		}
 
 	protected:
 #if COLOR_AS_DWORD
-		Stuff::DynamicArrayOf<uint32_t> colors;	// Base address of color list 
+		Stuff::DynamicArrayOf<uint32_t> colors;	// Base address of color list
 #else
-		Stuff::DynamicArrayOf<Stuff::RGBAColor> colors;	// Base address of color list 
+		Stuff::DynamicArrayOf<Stuff::RGBAColor> colors;	// Base address of color list
 #endif
 	};
 
 	MLR_I_C_DT_PMesh*
-		CreateIndexedCube_Color_NoLit_2Tex(float, Stuff::RGBAColor*, MLRState*, MLRState*);
+	CreateIndexedCube_Color_NoLit_2Tex(float, Stuff::RGBAColor*, MLRState*, MLRState*);
 	MLRShape*
-		CreateIndexedIcosahedron_Color_NoLit_2Tex(
+	CreateIndexedIcosahedron_Color_NoLit_2Tex(
 		IcoInfo&,
 		MLRState*,
 		MLRState*
-		);
+	);
 }
 #endif

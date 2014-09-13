@@ -10,7 +10,7 @@
 #define DAPPEAR_H
 //---------------------------------------------------------------------------
 // Include Files
-	
+
 //---------------------------------------------------------------------------
 // Macro definitions
 #ifndef NO_ERROR
@@ -20,9 +20,9 @@
 //---------------------------------------------------------------------------
 // Class definitions
 class Appearance;
-typedef Appearance *AppearancePtr;
+typedef Appearance* AppearancePtr;
 
 class GameObject;
-typedef GameObject *GameObjectPtr;
+typedef GameObject* GameObjectPtr;
 //---------------------------------------------------------------------------
 #endif

@@ -1,6 +1,6 @@
 //===========================================================================//
 // File:	Database.cpp                                                     //
-// Contents: Database functionality											 //												 
+// Contents: Database functionality											 //
 //---------------------------------------------------------------------------//
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
@@ -22,8 +22,9 @@ using namespace Stuff;
 class Stuff::Database
 {
 public:
-	enum {
-		e_DataBlockSize=1021,
+	enum
+	{
+		e_DataBlockSize = 1021,
 		e_Tag = 'DBV#',
 		e_Version = 2
 	};
@@ -31,17 +32,19 @@ public:
 	Database();
 
 	uint32_t
-		m_tag,							// Magic number to identity file
-		m_version;						// Version number
+	m_tag,							// Magic number to identity file
+	m_version;						// Version number
 	uint32_t
-		m_numberOfRecords,				// Number of used records in database
-		m_nextRecordID;					// Sequential index assigned in ADD
+	m_numberOfRecords,				// Number of used records in database
+	m_nextRecordID;					// Sequential index assigned in ADD
 	uintptr_t	m_idOffsets[e_DataBlockSize];	// Offsets to DatabaseRecords ( sorted by index )
 	uintptr_t	m_nameOffsets[e_DataBlockSize];	// Offsets to DatabaseRecords ( sorted by HASH )
 
 	void
-		TestInstance(void) const
-			{Verify(m_tag == e_Tag && m_version <= e_Version);}
+	TestInstance(void) const
+	{
+		Verify(m_tag == e_Tag && m_version <= e_Version);
+	}
 
 	static int32_t FilesOpened;
 };
@@ -53,7 +56,7 @@ class Stuff::Record
 {
 public:
 	Record::Record(
-		const RecordHandle *handle,
+		const RecordHandle* handle,
 		uint32_t record_hash,
 		size_t name_length
 	);
@@ -62,8 +65,8 @@ public:
 	int64_t 	m_lastModified;			// Time record was last modifyed
 	uintptr_t	m_nextIDRecord;			// offset to chain of records that share the same hash
 	uintptr_t	m_nextNameRecord;		// offset to chain of records that share the same hash
-	size_t		m_length;				// If this is zero, the record has been 
-										// deleted (used to signify gaps before compressing)
+	size_t		m_length;				// If this is zero, the record has been
+	// deleted (used to signify gaps before compressing)
 	size_t		m_nameLength;
 	uint32_t	m_ID;					// ID
 	uint32_t	m_hash;					// Hash value
@@ -83,33 +86,31 @@ static HGOSHEAP Database_Heap = nullptr;
 //
 static uint32_t GenerateHash(PCSTR name)
 {
-	uint32_t hash=0;
-
-	while (*name)
+	uint32_t hash = 0;
+	while(*name)
 	{
-		hash=(hash<<4) + (*name&15);
-		if (hash&0xf0000000)
-			hash=hash^(hash>>28);
+		hash = (hash << 4) + (*name & 15);
+		if(hash & 0xf0000000)
+			hash = hash ^ (hash >> 28);
 		name++;
 	}
-	return hash|0x80000000;
+	return hash | 0x80000000;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 Record::Record(
-	const RecordHandle *handle,
+	const RecordHandle* handle,
 	uint32_t record_hash,
 	size_t name_length
 )
 {
 	Check_Pointer(this);
 	Check_Object(handle);
-	DatabaseHandle *db_handle = handle->m_databaseHandle;
+	DatabaseHandle* db_handle = handle->m_databaseHandle;
 	Check_Object(db_handle);
-	Database *db = db_handle->m_dataBase;
+	Database* db = db_handle->m_dataBase;
 	Check_Object(db);
-
 	//
 	//------------------
 	// Set up the record
@@ -121,23 +122,21 @@ Record::Record(
 	m_nameLength = name_length;
 	m_length = handle->m_length;
 	m_lastModified = gos_GetTimeDate();
-	memcpy(&m_name[name_length+1], handle->m_data, m_length);
-
+	memcpy(&m_name[name_length + 1], handle->m_data, m_length);
 	//
 	//------------------
 	// Store in database
 	//------------------
 	//
-	uint32_t index=m_ID % Database::e_DataBlockSize;
+	uint32_t index = m_ID % Database::e_DataBlockSize;
 	uintptr_t offset = (uintptr_t)this - db_handle->m_baseAddress;
 	m_nextIDRecord = db->m_idOffsets[index];
 	db->m_idOffsets[index] = offset;
 	Check_Pointer(handle->m_name);
-	memcpy(m_name, handle->m_name, name_length+1);
+	memcpy(m_name, handle->m_name, name_length + 1);
 	index = record_hash % Database::e_DataBlockSize;
 	m_nextNameRecord = db->m_nameOffsets[index];
 	db->m_nameOffsets[index] = offset;
-
 	//
 	//----------------------------
 	// Increase the database count
@@ -149,15 +148,14 @@ Record::Record(
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	Record::Unhook(const RecordHandle *handle)
+Record::Unhook(const RecordHandle* handle)
 {
 	Check_Pointer(this);
 	Check_Object(handle);
-	DatabaseHandle *db_handle = handle->m_databaseHandle;
+	DatabaseHandle* db_handle = handle->m_databaseHandle;
 	Check_Object(db_handle);
-	Database *db = db_handle->m_dataBase;
+	Database* db = db_handle->m_dataBase;
 	Check_Object(db);
-
 	//
 	//--------------------------------------------
 	// Make sure that we can find the record by ID
@@ -165,44 +163,42 @@ void
 	//
 	Record* record;
 	uint32_t index = m_ID % Database::e_DataBlockSize;
-	#ifdef _ARMOR
-		record = reinterpret_cast<Record*>(db->m_idOffsets[index]);
-		while (record)
-		{
-			record = reinterpret_cast<Record*>((uintptr_t)record + db_handle->m_baseAddress);
-			Check_Object(record);
-			if (record->m_ID == m_ID)
-				break;
-			record =
-				reinterpret_cast<Record*>(record->m_nextIDRecord);
-		}	
-		Verify(this == record);
-	#endif
-
+#ifdef _ARMOR
+	record = reinterpret_cast<Record*>(db->m_idOffsets[index]);
+	while(record)
+	{
+		record = reinterpret_cast<Record*>((uintptr_t)record + db_handle->m_baseAddress);
+		Check_Object(record);
+		if(record->m_ID == m_ID)
+			break;
+		record =
+			reinterpret_cast<Record*>(record->m_nextIDRecord);
+	}
+	Verify(this == record);
+#endif
 	//
 	//-------------------------------------------
 	// Now remove the record from the index database
 	//-------------------------------------------
 	//
 	record = reinterpret_cast<Record*>(db->m_idOffsets[index] + db_handle->m_baseAddress);
-	if (record == this)
+	if(record == this)
 		db->m_idOffsets[index] = m_nextIDRecord;
 	else
 	{
 		record = reinterpret_cast<Record*>(db->m_idOffsets[index]);
-		while (record)
+		while(record)
 		{
 			record = reinterpret_cast<Record*>((uintptr_t)record + db_handle->m_baseAddress);
 			Check_Object(record);
-			if ((uintptr_t)record->m_nextIDRecord+db_handle->m_baseAddress == (uintptr_t)this)
+			if((uintptr_t)record->m_nextIDRecord + db_handle->m_baseAddress == (uintptr_t)this)
 			{
 				record->m_nextIDRecord = m_nextIDRecord;
 				break;
 			}
 			record = reinterpret_cast<Record*>(record->m_nextIDRecord);
-		}	
+		}
 	}
-
 	//
 	//---------------------------------
 	// Now remove from hash index database
@@ -210,22 +206,22 @@ void
 	//
 	index = m_hash % Database::e_DataBlockSize;
 	record = reinterpret_cast<Record*>(db->m_nameOffsets[index] + db_handle->m_baseAddress);
-	if (record == this)
+	if(record == this)
 		db->m_nameOffsets[index] = m_nextNameRecord;
 	else
 	{
 		record = reinterpret_cast<Record*>(db->m_nameOffsets[index]);
-		while (record)
+		while(record)
 		{
 			record = reinterpret_cast<Record*>((uintptr_t)record + db_handle->m_baseAddress);
 			Check_Object(record);
-			if ((uintptr_t)record->m_nextNameRecord+db_handle->m_baseAddress == (uintptr_t)this)
+			if((uintptr_t)record->m_nextNameRecord + db_handle->m_baseAddress == (uintptr_t)this)
 			{
 				record->m_nextNameRecord = m_nextNameRecord;
 				break;
 			}
 			record = reinterpret_cast<Record*>(record->m_nextNameRecord);
-		}	
+		}
 	}
 	db->m_numberOfRecords--;
 }
@@ -233,11 +229,10 @@ void
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	RecordHandle::Add()
+RecordHandle::Add()
 {
 	Check_Object(this);
 	gos_PushCurrentHeap(Database_Heap);
-
 	//
 	//------------------
 	// Find our database
@@ -248,29 +243,26 @@ void
 	m_databaseHandle->m_dirtyFlag = true;
 	Database* db = m_databaseHandle->m_dataBase;
 	Check_Object(db);
-
 	//
 	//-------------------------------------------
 	// Make sure the record doesn't already exist
 	//-------------------------------------------
 	//
 	Verify(!m_record);
-	#ifdef _ARMOR
-		if (m_name)
-		{
-			RecordHandle dup_check = *this;
-			if (dup_check.FindName())
-				STOP(( "Duplicate Record" ));
-		}
-	#endif
-	
+#ifdef _ARMOR
+	if(m_name)
+	{
+		RecordHandle dup_check = *this;
+		if(dup_check.FindName())
+			STOP(("Duplicate Record"));
+	}
+#endif
 	//
 	//------------------
 	// Set the record index
 	//------------------
 	//
-	m_ID=db->m_nextRecordID++;
-
+	m_ID = db->m_nextRecordID++;
 	//
 	//---------------------------------------------------
 	// Figure out how int32_t the name is and its hash value
@@ -278,7 +270,7 @@ void
 	//
 	uint32_t record_hash;
 	size_t name_length;
-	if (m_name)
+	if(m_name)
 	{
 		record_hash = GenerateHash(m_name);
 		name_length = strlen(m_name);
@@ -289,45 +281,39 @@ void
 		record_hash = 0;
 		name_length = 0;
 	}
-
 	//
 	//------------------
 	// Set up the record
 	//------------------
 	//
 	Verify(!m_record);
-	Record* data = 
-		new(new uint8_t[sizeof(*m_record) + m_length + name_length]) 
-		Record(this, record_hash, name_length);
+	Record* data =
+		new(new uint8_t[sizeof(*m_record) + m_length + name_length])
+	Record(this, record_hash, name_length);
 	Check_Object(data);
-	if (data /*&& m_name*/)
+	if(data /*&& m_name*/)
 	{
-		m_data = &data->m_name[name_length+1];
+		m_data = &data->m_name[name_length + 1];
 		m_name = data->m_name;
 		m_timeStamp = data->m_lastModified;
 	}
-		
-	if (m_name)
-		
-	
-
-	//
-	//------------------
-	// Update statistics
-	//------------------
-	//
-	m_record = data;
+	if(m_name)
+		//
+		//------------------
+		// Update statistics
+		//------------------
+		//
+		m_record = data;
 	gos_PopCurrentHeap();
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	RecordHandle::Replace()
+RecordHandle::Replace()
 {
 	Check_Object(this);
 	gos_PushCurrentHeap(Database_Heap);
-
 	//
 	//------------------
 	// Find our database
@@ -336,7 +322,6 @@ void
 	Check_Object(m_databaseHandle);
 	Verify(!m_databaseHandle->m_readOnly);
 	m_databaseHandle->m_dirtyFlag = true;
-	
 	//
 	//----------------------
 	// Unhook the old record
@@ -344,7 +329,6 @@ void
 	//
 	Check_Object(m_record);
 	const_cast<Record*>(m_record)->Unhook(this);
-
 	//
 	//---------------------------------------------------
 	// Figure out how int32_t the name is and its hash value
@@ -352,7 +336,7 @@ void
 	//
 	uint32_t record_hash;
 	size_t name_length;
-	if (m_name)
+	if(m_name)
 	{
 		record_hash = GenerateHash(m_name);
 		name_length = strlen(m_name);
@@ -363,29 +347,27 @@ void
 		record_hash = 0;
 		name_length = 0;
 	}
-
 	//
 	//------------------
 	// Set up the record
 	//------------------
 	//
-	Record *data =
+	Record* data =
 		new(new uint8_t[sizeof(*m_record) + m_length + name_length])
-			Record(this, record_hash, name_length);
+	Record(this, record_hash, name_length);
 	Check_Object(data);
-	if (data)
+	if(data)
 	{
-		m_data = &data->m_name[name_length+1];
+		m_data = &data->m_name[name_length + 1];
 		m_name = data->m_name;
 		m_timeStamp = data->m_lastModified;
 	}
-
 	//
 	//------------------
 	// Update statistics
 	//------------------
 	//
-	if (m_record->m_mustFree)
+	if(m_record->m_mustFree)
 		delete const_cast<Record*>(m_record);
 	m_record = data;
 	gos_PopCurrentHeap();
@@ -394,10 +376,9 @@ void
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	RecordHandle::Delete()
+RecordHandle::Delete()
 {
 	Check_Object(this);
-
 	//
 	//------------------
 	// Find our database
@@ -406,7 +387,6 @@ void
 	Check_Object(m_databaseHandle);
 	Verify(!m_databaseHandle->m_readOnly);
 	m_databaseHandle->m_dirtyFlag = true;
-	
 	//
 	//----------------------
 	// Delete the old record
@@ -414,7 +394,7 @@ void
 	//
 	Check_Object(m_record);
 	const_cast<Record*>(m_record)->Unhook(this);
-	if (m_record->m_mustFree)
+	if(m_record->m_mustFree)
 		delete const_cast<Record*>(m_record);
 	m_record = nullptr;
 }
@@ -422,23 +402,22 @@ void
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 bool
-	RecordHandle::FindID()
+RecordHandle::FindID()
 {
 	Check_Object(this);
 	Check_Object(m_databaseHandle);
 	Database* db = m_databaseHandle->m_dataBase;
 	Check_Object(db);
-
-	uint32_t index=m_ID % Database::e_DataBlockSize;
+	uint32_t index = m_ID % Database::e_DataBlockSize;
 	Record* record = reinterpret_cast<Record*>(db->m_idOffsets[index]);
-	while (record)
+	while(record)
 	{
 		record =
 			reinterpret_cast<Record*>(
 				(uintptr_t)record + m_databaseHandle->m_baseAddress
 			);
 		Check_Object(record);
-		if (record->m_ID==m_ID)
+		if(record->m_ID == m_ID)
 		{
 			m_length = record->m_length;
 			m_data = &record->m_data[record->m_nameLength];
@@ -448,8 +427,7 @@ bool
 			return true;
 		}
 		record = reinterpret_cast<Record*>(record->m_nextIDRecord);
-	}	
-
+	}
 	m_record = nullptr;
 	return false;
 }
@@ -457,25 +435,23 @@ bool
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 bool
-	RecordHandle::FindName()
+RecordHandle::FindName()
 {
 	Check_Object(this);
 	Check_Object(m_databaseHandle);
 	Database* db = m_databaseHandle->m_dataBase;
 	Check_Object(db);
-
 	Check_Pointer(m_name);
 	uint32_t hash = GenerateHash(m_name);
 	uint32_t index = hash % Database::e_DataBlockSize;
-
 	Record* record = reinterpret_cast<Record*>(db->m_nameOffsets[index]);
-	while (record)
+	while(record)
 	{
 		record = reinterpret_cast<Record*>(
-			(uintptr_t)record + m_databaseHandle->m_baseAddress
-		);
+					 (uintptr_t)record + m_databaseHandle->m_baseAddress
+				 );
 		Check_Object(record);
-		if (record->m_hash == hash && !_stricmp(m_name,record->m_name))
+		if(record->m_hash == hash && !_stricmp(m_name, record->m_name))
 		{
 			m_length = record->m_length;
 			m_data = &record->m_data[record->m_nameLength];
@@ -486,8 +462,7 @@ bool
 			return true;
 		}
 		record = reinterpret_cast<Record*>(record->m_nextNameRecord);
-	}	
-
+	}
 	m_record = nullptr;
 	return false;
 }
@@ -495,17 +470,15 @@ bool
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 bool
-	RecordHandle::ReadAndNext()
+RecordHandle::ReadAndNext()
 {
 	Check_Object(this);
 	Check_Object(m_databaseHandle);
 	Database* db = m_databaseHandle->m_dataBase;
 	Check_Object(db);
-
 	Record* data;
-	if (!m_databaseHandle->m_currentPointer)
+	if(!m_databaseHandle->m_currentPointer)
 		return false;
-
 	Check_Object(m_databaseHandle->m_currentPointer);
 	m_ID = m_databaseHandle->m_currentPointer->m_ID;
 	m_length = m_databaseHandle->m_currentPointer->m_length;
@@ -513,17 +486,16 @@ bool
 	m_name = m_databaseHandle->m_currentPointer->m_name;
 	m_record = m_databaseHandle->m_currentPointer;
 	m_timeStamp = m_databaseHandle->m_currentPointer->m_lastModified;
-
-	m_databaseHandle->m_currentPointer = 
+	m_databaseHandle->m_currentPointer =
 		reinterpret_cast<Record*>(m_databaseHandle->m_currentPointer->m_nextIDRecord);
-	if (!m_databaseHandle->m_currentPointer)
+	if(!m_databaseHandle->m_currentPointer)
 	{
-		while (++m_databaseHandle->m_currentRecord < Database::e_DataBlockSize)
+		while(++m_databaseHandle->m_currentRecord < Database::e_DataBlockSize)
 		{
 			data = reinterpret_cast<Record*>(
-				db->m_idOffsets[m_databaseHandle->m_currentRecord]
-			);
-			if( data )
+					   db->m_idOffsets[m_databaseHandle->m_currentRecord]
+				   );
+			if(data)
 			{
 				m_databaseHandle->m_currentPointer =
 					reinterpret_cast<Record*>(
@@ -535,8 +507,7 @@ bool
 		m_databaseHandle->m_currentPointer = nullptr;
 		return true;
 	}
-
-	m_databaseHandle->m_currentPointer = 
+	m_databaseHandle->m_currentPointer =
 		reinterpret_cast<Record*>(
 			(uintptr_t)m_databaseHandle->m_currentPointer + m_databaseHandle->m_baseAddress
 		);
@@ -546,14 +517,14 @@ bool
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	RecordHandle::TestInstance(void) const
+RecordHandle::TestInstance(void) const
 {
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 int32_t
-	Database::FilesOpened = 0;
+Database::FilesOpened = 0;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
@@ -580,22 +551,21 @@ DatabaseHandle::DatabaseHandle(
 	//-----------------------------------------------------
 	//
 	m_fileName = filename;
-	if (!Database::FilesOpened++)
+	if(!Database::FilesOpened++)
 		Database_Heap = gos_CreateMemoryHeap("Database", 0);
 	gos_PushCurrentHeap(Database_Heap);
 	m_currentRecord = 0;
 	m_currentPointer = nullptr;
 	m_dirtyFlag = false;
-
 	//
 	//--------------------------------------------
 	// If the file is read only, our job is simple
 	//--------------------------------------------
 	//
 	m_readOnly = read_only;
-	if (m_readOnly)
+	if(m_readOnly)
 	{
-		if (gos_DoesFileExist(filename))
+		if(gos_DoesFileExist(filename))
 		{
 			FileStream::IsRedirected = false;
 			size_t size;
@@ -605,9 +575,9 @@ DatabaseHandle::DatabaseHandle(
 					reinterpret_cast<puint8_t*>(&m_dataBase),
 					&size
 				);
-			if (m_dataBase->m_tag != Database::e_Tag)
+			if(m_dataBase->m_tag != Database::e_Tag)
 				STOP(("Invalid database file \"%s\"", filename));
-			if (m_dataBase->m_version > Database::e_Version)
+			if(m_dataBase->m_version > Database::e_Version)
 				STOP(("Application must be recompiled to use database \"%s\"", filename));
 			m_baseAddress = reinterpret_cast<uintptr_t>(m_dataBase);
 			Check_Object(m_dataBase);
@@ -615,7 +585,6 @@ DatabaseHandle::DatabaseHandle(
 		else
 			STOP(("Database \"%s\" does not exist", filename));
 	}
-
 	//
 	//-------------------------------------------------------------
 	// The file is not read only, so see if we load it or create it
@@ -624,7 +593,7 @@ DatabaseHandle::DatabaseHandle(
 	else
 	{
 		m_handle = nullptr;
-		if (gos_DoesFileExist(filename))
+		if(gos_DoesFileExist(filename))
 		{
 			size_t size;
 			gos_GetFile(
@@ -634,7 +603,7 @@ DatabaseHandle::DatabaseHandle(
 			);
 			FileStream::IsRedirected = false;
 			Check_Pointer(m_dataBase);
-			if (m_dataBase->m_tag != Database::e_Tag || m_dataBase->m_version > Database::e_Version || m_dataBase->m_version == 1)
+			if(m_dataBase->m_tag != Database::e_Tag || m_dataBase->m_version > Database::e_Version || m_dataBase->m_version == 1)
 			{
 				gos_Free(m_dataBase);
 				PAUSE(("Bad database file!  Press 'Continue' to rebuild", filename));
@@ -647,7 +616,6 @@ DatabaseHandle::DatabaseHandle(
 				Check_Object(m_dataBase);
 			}
 		}
-
 		//
 		//------------------------------------------
 		// The file doesn't exist, so create it here
@@ -667,43 +635,39 @@ DatabaseHandle::DatabaseHandle(
 DatabaseHandle::~DatabaseHandle()
 {
 	Check_Object(this);
-
 	//
 	//---------------------------------------------------------------
 	// If we are closing a read only file, release the memmap handle,
 	// otherwise delete the database object
 	//---------------------------------------------------------------
 	//
-	if (m_readOnly)
+	if(m_readOnly)
 		gos_CloseMemoryMappedFile(m_handle);
 	else
 	{
 		Save();
 		Check_Object(m_dataBase);
-
 		//
 		//---------------------------------------------------------------------
 		// Now we need to go through and delete all the records in the database
 		//---------------------------------------------------------------------
 		//
-		for (uint32_t i=0; i<Database::e_DataBlockSize; ++i)
+		for(uint32_t i = 0; i < Database::e_DataBlockSize; ++i)
 		{
 			Record* record = reinterpret_cast<Record*>(m_dataBase->m_idOffsets[i]);
-			if (record)
+			if(record)
 			{
-				while (record)
+				while(record)
 				{
 					record = reinterpret_cast<Record*>((uintptr_t)record + m_baseAddress);
 					Check_Object(record);
 					Record* this_record = record;
-
 					record = reinterpret_cast<Record*>(record->m_nextIDRecord);
-					if (this_record->m_mustFree)
+					if(this_record->m_mustFree)
 						delete this_record;
 				}
 			}
 		}
-
 		//
 		//--------------------------------
 		// Now free up the database itself
@@ -711,13 +675,12 @@ DatabaseHandle::~DatabaseHandle()
 		//
 		gos_Free(m_dataBase);
 	}
-
 	//
 	//----------------------------------------------------
 	// Delete the memory heap if this is the last database
 	//----------------------------------------------------
 	//
-	if (--Database::FilesOpened == 0)
+	if(--Database::FilesOpened == 0)
 		gos_DestroyMemoryHeap(Database_Heap);
 }
 
@@ -727,17 +690,14 @@ void DatabaseHandle::Save()
 {
 	// warning C6262: Function uses '24724' bytes of stack:  exceeds /analyze:stacksize '16384'.
 	// Consider moving some data to heap.
-	
 	Check_Object(this);
-
 	//
 	//--------------------------------------
 	// If there were no changes, we are done
 	//--------------------------------------
 	//
-	if (m_readOnly || !m_dirtyFlag)
+	if(m_readOnly || !m_dirtyFlag)
 		return;
-
 	//
 	//----------------------------------------------------------------------
 	// We will need to adjust pointers as we write this thing out, so make a
@@ -747,7 +707,6 @@ void DatabaseHandle::Save()
 	Database output_db;
 	output_db.m_numberOfRecords = m_dataBase->m_numberOfRecords;
 	output_db.m_nextRecordID = m_dataBase->m_nextRecordID;
-
 	//
 	//----------------------------------------------------
 	// Build a table to deal with rethreading the database
@@ -761,11 +720,10 @@ void DatabaseHandle::Save()
 		uintptr_t	m_nextNameRecord;
 		Record*		m_data;
 	};
-	OutputRecord *new_records = new OutputRecord[m_dataBase->m_numberOfRecords];
+	OutputRecord* new_records = new OutputRecord[m_dataBase->m_numberOfRecords];
 	Check_Pointer(new_records);
 	size_t new_id_index[Database::e_DataBlockSize];
 	memset(new_id_index, 0, sizeof(new_id_index));
-
 	//
 	//---------------------------------------------------------
 	// Start filling in the block information from the database
@@ -774,48 +732,43 @@ void DatabaseHandle::Save()
 	size_t offset = sizeof(output_db);
 	OutputRecord* new_record = new_records;
 	size_t i;
-	for (i=0; i<Database::e_DataBlockSize; ++i)
+	for(i = 0; i < Database::e_DataBlockSize; ++i)
 	{
 		Record* old_record = reinterpret_cast<Record*>(m_dataBase->m_idOffsets[i]);
-		if (old_record)
+		if(old_record)
 		{
 			output_db.m_idOffsets[i] = offset;
 			new_id_index[i] = size_t(new_record - new_records);
-			while (old_record)
+			while(old_record)
 			{
 				old_record = reinterpret_cast<Record*>((uintptr_t)old_record + m_baseAddress);
 				Check_Object(old_record);
-
 				new_record->m_data = old_record;
 				new_record->m_ID = old_record->m_ID;
 				new_record->m_offset = offset;
 				new_record->m_nextIDRecord = 0;
 				new_record->m_nextNameRecord = 0;
-
 				offset +=
 					sizeof(*old_record) + old_record->m_length + old_record->m_nameLength;
-
 				old_record = reinterpret_cast<Record*>(old_record->m_nextIDRecord);
-				if (old_record)
+				if(old_record)
 					new_record->m_nextIDRecord = offset;
 				++new_record;
 			}
 		}
 	}
-
 	//
 	//-----------------------------------------
 	// Make sure Hash index table is up to date
 	//-----------------------------------------
 	//
-	for (i=0; i<Database::e_DataBlockSize; ++i)
+	for(i = 0; i < Database::e_DataBlockSize; ++i)
 	{
 		Record* old_record = reinterpret_cast<Record*>(m_dataBase->m_nameOffsets[i]);
-		if (old_record)
+		if(old_record)
 		{
 			old_record = reinterpret_cast<Record*>((uintptr_t)old_record + m_baseAddress);
 			Check_Object(old_record);
-
 			//
 			//---------------------------------
 			// Find this record in our new data
@@ -824,50 +777,47 @@ void DatabaseHandle::Save()
 			size_t index = old_record->m_ID % Database::e_DataBlockSize;
 			size_t j = new_id_index[index];
 			OutputRecord* recordptr = &new_records[j];
-			for (; j < m_dataBase->m_numberOfRecords; ++j, ++recordptr)
+			for(; j < m_dataBase->m_numberOfRecords; ++j, ++recordptr)
 			{
-				if (recordptr->m_ID == old_record->m_ID)
+				if(recordptr->m_ID == old_record->m_ID)
 					break;
 			}
 			Verify(j < m_dataBase->m_numberOfRecords);
-
 			//
 			//----------------------
 			// Set up the hash chain
 			//----------------------
 			//
 			output_db.m_nameOffsets[i] = recordptr->m_offset;
-			while (old_record)
+			while(old_record)
 			{
 				Check_Object(old_record);
-
 				//
 				//-----------------------------------------------------------
 				// Find the next record, and find where it is in our new data
 				//-----------------------------------------------------------
 				//
 				old_record = reinterpret_cast<Record*>(old_record->m_nextNameRecord);
-				Verify(j<m_dataBase->m_numberOfRecords);
-				if (old_record)
+				Verify(j < m_dataBase->m_numberOfRecords);
+				if(old_record)
 				{
 					old_record = reinterpret_cast<Record*>((uintptr_t)old_record + m_baseAddress);
 					Check_Object(old_record);
 					index = old_record->m_ID % Database::e_DataBlockSize;
 					j = new_id_index[index];
-					OutputRecord *next_record = &new_records[j];
-					for (; j<m_dataBase->m_numberOfRecords; ++j, ++next_record)
+					OutputRecord* next_record = &new_records[j];
+					for(; j < m_dataBase->m_numberOfRecords; ++j, ++next_record)
 					{
-						if (next_record->m_ID == old_record->m_ID)
+						if(next_record->m_ID == old_record->m_ID)
 							break;
 					}
-					Verify(j<m_dataBase->m_numberOfRecords);
+					Verify(j < m_dataBase->m_numberOfRecords);
 					recordptr->m_nextNameRecord = next_record->m_offset;
 					recordptr = next_record;
 				}
 			}
 		}
 	}
-
 	//
 	//------------------------------------------------
 	// This file was read/write, so write it out again
@@ -875,17 +825,15 @@ void DatabaseHandle::Save()
 	//
 	FileStream db_file(m_fileName, FileStream::WriteOnly);
 	db_file.WriteBytes(&output_db, sizeof(output_db));
-
 	//
 	//----------------------
 	// Write out each record
 	//----------------------
 	//
-	new_record=new_records;
-	for (i=0; i<m_dataBase->m_numberOfRecords; ++i, ++new_record)
+	new_record = new_records;
+	for(i = 0; i < m_dataBase->m_numberOfRecords; ++i, ++new_record)
 	{
 		Record* old_record = new_record->m_data;
-
 		//
 		//------------------------------------------------------------
 		// Save the old connection info, then replace it with the data
@@ -898,7 +846,6 @@ void DatabaseHandle::Save()
 		old_record->m_mustFree = false;
 		old_record->m_nextIDRecord = new_record->m_nextIDRecord;
 		old_record->m_nextNameRecord = new_record->m_nextNameRecord;
-
 		//
 		//------------------------------------------
 		// Write out the info, then restore the data
@@ -912,7 +859,6 @@ void DatabaseHandle::Save()
 		old_record->m_nextIDRecord = next_id;
 		old_record->m_nextNameRecord = next_name;
 	}
-
 	//
 	//---------
 	// Clean up
@@ -925,7 +871,7 @@ void DatabaseHandle::Save()
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 uint32_t
-	DatabaseHandle::GetNumberOfRecords()
+DatabaseHandle::GetNumberOfRecords()
 {
 	Check_Object(this);
 	return m_dataBase->m_numberOfRecords;
@@ -934,20 +880,18 @@ uint32_t
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	DatabaseHandle::First()
+DatabaseHandle::First()
 {
 	Check_Object(this);
-
 	m_currentRecord = 0;
 	m_currentPointer = nullptr;
-
-	for (uint32_t i=0; i<Database::e_DataBlockSize; i++)
+	for(uint32_t i = 0; i < Database::e_DataBlockSize; i++)
 	{
 		Record* data =
 			reinterpret_cast<Record*>(
 				m_dataBase->m_idOffsets[i] + m_baseAddress
 			);
-		if( data )
+		if(data)
 		{
 			m_currentRecord = i;
 			m_currentPointer = data;
@@ -959,6 +903,6 @@ void
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	DatabaseHandle::TestInstance(void) const
+DatabaseHandle::TestInstance(void) const
 {
 }

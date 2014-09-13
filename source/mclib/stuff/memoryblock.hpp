@@ -17,9 +17,10 @@ typedef struct gos_Heap* HGOSHEAP;
 extern HGOSHEAP ParentClientHeap;
 #endif
 
-namespace Stuff{
+namespace Stuff
+{
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~ MemoryBlockHeader ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~ MemoryBlockHeader ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 	class MemoryBlockHeader
 	{
@@ -29,7 +30,7 @@ namespace Stuff{
 		void TestInstance() {}
 	};
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ MemoryBlockBase ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ MemoryBlockBase ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 	class MemoryBlockBase
 #if defined(_ARMOR)
@@ -37,7 +38,10 @@ namespace Stuff{
 #endif
 	{
 	public:
-		void TestInstance(void){Verify(blockMemory != nullptr);}
+		void TestInstance(void)
+		{
+			Verify(blockMemory != nullptr);
+		}
 
 		static void UsageReport(void);
 		static void CollapseBlocks(void);
@@ -55,7 +59,7 @@ namespace Stuff{
 		puint8_t deletedRecord; // the next record to reuse
 
 		MemoryBlockBase(
-			size_t rec_size, size_t start, size_t delta, PCSTR name, 
+			size_t rec_size, size_t start, size_t delta, PCSTR name,
 			HGOSHEAP parent = ParentClientHeap);
 		~MemoryBlockBase(void);
 
@@ -69,7 +73,7 @@ namespace Stuff{
 		void Collapse(void);
 	};
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ MemoryBlock ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ MemoryBlock ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 	class MemoryBlock:
 		public MemoryBlockBase
@@ -77,8 +81,8 @@ namespace Stuff{
 	public:
 		static bool TestClass(void);
 
-		MemoryBlock(size_t rec_size, size_t start, size_t delta, PCSTR name, 
-			HGOSHEAP parent = ParentClientHeap) 
+		MemoryBlock(size_t rec_size, size_t start, size_t delta, PCSTR name,
+					HGOSHEAP parent = ParentClientHeap)
 			: MemoryBlockBase(rec_size, start, delta, name, parent) {}
 
 		PVOID New(void);
@@ -87,18 +91,24 @@ namespace Stuff{
 		PVOID operator[](size_t Index);
 	};
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ MemoryBlockOf ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ MemoryBlockOf ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 	template <class T> class MemoryBlockOf:
-	public MemoryBlock
+		public MemoryBlock
 	{
 	public:
-		MemoryBlockOf(size_t start, size_t delta, PCSTR name, 
-			HGOSHEAP parent = ParentClientHeap) 
+		MemoryBlockOf(size_t start, size_t delta, PCSTR name,
+					  HGOSHEAP parent = ParentClientHeap)
 			: MemoryBlock(sizeof(T), start, delta, name, parent) {}
 
-		T* New(void) {return Cast_Pointer(T*, MemoryBlock::New());}
-		void Delete(PVOID where) {MemoryBlock::Delete(where);}
+		T* New(void)
+		{
+			return Cast_Pointer(T*, MemoryBlock::New());
+		}
+		void Delete(PVOID where)
+		{
+			MemoryBlock::Delete(where);
+		}
 
 		T* operator[](size_t index)
 		{
@@ -106,7 +116,7 @@ namespace Stuff{
 		}
 	};
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ MemoryStack ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ MemoryStack ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 	class MemoryStack:
 		public MemoryBlockBase
@@ -117,29 +127,44 @@ namespace Stuff{
 	protected:
 		uint8_t* topOfStack;
 
-		MemoryStack(size_t rec_size, size_t start, size_t delta, PCSTR name, 
-			HGOSHEAP parent = ParentClientHeap)
-			: MemoryBlockBase(rec_size, start, delta, name, parent) { topOfStack = nullptr; }
+		MemoryStack(size_t rec_size, size_t start, size_t delta, PCSTR name,
+					HGOSHEAP parent = ParentClientHeap)
+			: MemoryBlockBase(rec_size, start, delta, name, parent)
+		{
+			topOfStack = nullptr;
+		}
 
 		PVOID Push(PCVOID What);
 		PVOID Push(void);
-		PVOID Peek(void) {return topOfStack;}
+		PVOID Peek(void)
+		{
+			return topOfStack;
+		}
 		void Pop(void);
 	};
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ MemoryStackOf ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ MemoryStackOf ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 	template <class T> class MemoryStackOf:
-	public MemoryStack
+		public MemoryStack
 	{
 	public:
-		MemoryStackOf(size_t start, size_t delta, PCSTR name, 
-			HGOSHEAP parent = ParentClientHeap) 
+		MemoryStackOf(size_t start, size_t delta, PCSTR name,
+					  HGOSHEAP parent = ParentClientHeap)
 			: MemoryStack(sizeof(T), start, delta, name, parent) {}
 
-		T* Push(const T *what) {return Cast_Pointer(T*, MemoryStack::Push(what));}
-		T* Peek(void) {return static_cast<T*>(MemoryStack::Peek());}
-		void Pop(void) {MemoryStack::Pop(void);}
+		T* Push(const T* what)
+		{
+			return Cast_Pointer(T*, MemoryStack::Push(what));
+		}
+		T* Peek(void)
+		{
+			return static_cast<T*>(MemoryStack::Peek());
+		}
+		void Pop(void)
+		{
+			MemoryStack::Pop(void);
+		}
 	};
 
 }

@@ -5,14 +5,14 @@
 //---------------------------------------------------------------------------//
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
-		
+
 
 
 
 struct hResource
 {
 	hResource*	pNext;
-	
+
 	HINSTANCE	hInstance;
 	char		Name[256];
 	uint32_t		ReferenceCount;
@@ -33,7 +33,7 @@ struct gos_CaretInfo
 	RECT		margins ;
 } ;
 
-void TextDrawDBCS(  PSTR Message );
+void TextDrawDBCS(PSTR Message);
 
 void InitLocalization(void);
 void DestroyLocalization(void);

@@ -24,27 +24,48 @@ AttributeMeter:
 **************************************************************************************************/
 class AttributeMeter
 {
-	public:
+public:
 
 	AttributeMeter(void);
 
 	void update(void);
 	void render(void);
-	void render( int32_t xOffset, int32_t yOffset );
+	void render(int32_t xOffset, int32_t yOffset);
 
-	void init( FitIniFile* file, PCSTR headerName );
+	void init(FitIniFile* file, PCSTR headerName);
 
-	void setValue( float val ){ percent = val < 0 ? 0 : val; }
-	void setAddedValue( float val ){ addedPercent = val < 0 ? 0 : val; }
-	void setColorMin( int32_t newColor ) { colorMin = newColor; }
-	void setColorMax( int32_t newColor ){ colorMax = newColor; }
-	void setAddedColorMin( int32_t newColor ){ addedColorMin = newColor; }
-	void setAddedColorMax( int32_t newColor ){ addedColorMax = newColor; }
-	void showGUIWindow( bool show ){ bShow = show; }
+	void setValue(float val)
+	{
+		percent = val < 0 ? 0 : val;
+	}
+	void setAddedValue(float val)
+	{
+		addedPercent = val < 0 ? 0 : val;
+	}
+	void setColorMin(int32_t newColor)
+	{
+		colorMin = newColor;
+	}
+	void setColorMax(int32_t newColor)
+	{
+		colorMax = newColor;
+	}
+	void setAddedColorMin(int32_t newColor)
+	{
+		addedColorMin = newColor;
+	}
+	void setAddedColorMax(int32_t newColor)
+	{
+		addedColorMax = newColor;
+	}
+	void showGUIWindow(bool show)
+	{
+		bShow = show;
+	}
 	bool pointInside(int32_t mouseX, int32_t mouseY) const;
 
 
-	private:
+private:
 
 	RECT	outsideRect;
 	int32_t		unitHeight;

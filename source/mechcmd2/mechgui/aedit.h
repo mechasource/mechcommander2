@@ -18,7 +18,8 @@ aEdit.h			: Interface for the aEdit component of the GUI library.
 #include <estring.h>
 #endif
 
-namespace mechgui {
+namespace mechgui
+{
 
 //*************************************************************************************************
 //Entry field styles
@@ -29,80 +30,119 @@ namespace mechgui {
 #define ES_EDITREADONLY   0x00200000  //Read only
 #define ES_EDITNOBLANK		0x00400000	//Ignore ' '
 
-/**************************************************************************************************
-CLASS DESCRIPTION
-aEdit:
-**************************************************************************************************/
-class aEdit: public aObject
-{
+	/**************************************************************************************************
+	CLASS DESCRIPTION
+	aEdit:
+	**************************************************************************************************/
+	class aEdit: public aObject
+	{
 	public:
 
-		aEdit( int32_t fontID );
+		aEdit(int32_t fontID);
 		virtual ~aEdit(void);
 		aEdit(void); // really need a font for this to work
-		aEdit& operator=( const aEdit& );
+		aEdit& operator=(const aEdit&);
 
 		virtual void update(void);
 		virtual void render(void);
 
 		void	renderWithDropShadow(void);
 
-	
+
 		void getEntry(EString& str);
 		void setEntry(const EString& str, uint8_t byHighlight = 0);
-		void limitEntry(int32_t nNewLimit) { nLimit = nNewLimit; }
+		void limitEntry(int32_t nNewLimit)
+		{
+			nLimit = nNewLimit;
+		}
 		void setFocus(bool bHasFocus);
-		void setFont( int32_t fontID );
-		void setTextColor( int32_t color ){ textColor = color; }
-		void setSelectedColor( int32_t color ){ selectedColor = color; }
-		bool hasFocus()const { return bFocus; }
+		void setFont(int32_t fontID);
+		void setTextColor(int32_t color)
+		{
+			textColor = color;
+		}
+		void setSelectedColor(int32_t color)
+		{
+			selectedColor = color;
+		}
+		bool hasFocus()const
+		{
+			return bFocus;
+		}
 
 
-		void init( FitIniFile* file, PCSTR header );
-		int32_t getHighlightColor( ) const { return highlightColor; }
-		int32_t getColor(void) const { return textColor; }
-		int32_t getCursorColor(void) const { return cursorColor; }
-		int32_t getSelectedColor(void) const { return selectedColor; }
+		void init(FitIniFile* file, PCSTR header);
+		int32_t getHighlightColor() const
+		{
+			return highlightColor;
+		}
+		int32_t getColor(void) const
+		{
+			return textColor;
+		}
+		int32_t getCursorColor(void) const
+		{
+			return cursorColor;
+		}
+		int32_t getSelectedColor(void) const
+		{
+			return selectedColor;
+		}
 
-		void allowWierdChars( bool bAllow ){ bWierdChars = bAllow; }
+		void allowWierdChars(bool bAllow)
+		{
+			bWierdChars = bAllow;
+		}
 
-		aFont* getFontObject() { return &font; }
+		aFont* getFontObject()
+		{
+			return &font;
+		}
 
-		void setReadOnly( bool bReadOnly )
-		{ 
-			if ( bReadOnly )
-				dwStyleFlags |= ES_EDITREADONLY; 
-			else 
+		void setReadOnly(bool bReadOnly)
+		{
+			if(bReadOnly)
+				dwStyleFlags |= ES_EDITREADONLY;
+			else
 				dwStyleFlags ^= ES_EDITREADONLY;
 		};
 
-		void setNoBlank( bool bNoBlank )
+		void setNoBlank(bool bNoBlank)
 		{
-			if ( bNoBlank )
-				dwStyleFlags |= ES_EDITNOBLANK; 
-			else 
+			if(bNoBlank)
+				dwStyleFlags |= ES_EDITNOBLANK;
+			else
 				dwStyleFlags ^= ES_EDITNOBLANK;
 		}
 
-		void setNumeric( bool bNoAlpha )
+		void setNumeric(bool bNoAlpha)
 		{
-			if ( bNoAlpha )
-				dwStyleFlags |= ES_EDITNUM; 
-			else 
+			if(bNoAlpha)
+				dwStyleFlags |= ES_EDITNUM;
+			else
 				dwStyleFlags ^= ES_EDITNUM;
 		}
 
-		int32_t getFont() { return font.getFontID(void); }
+		int32_t getFont()
+		{
+			return font.getFontID(void);
+		}
 
-		void initBufferSize( uint32_t newSize );
-		void setBufferSize( int32_t newSize ) { text.SetBufferSize( newSize ); }
+		void initBufferSize(uint32_t newSize);
+		void setBufferSize(int32_t newSize)
+		{
+			text.SetBufferSize(newSize);
+		}
 
-		void	allowIME( bool bAllow ){ bAllowIME = bAllow; }
+		void	allowIME(bool bAllow)
+		{
+			bAllowIME = bAllow;
+		}
 
 
 	private:
 
-		aEdit( const aEdit& );
+		aEdit(const aEdit&);
 
 		// HELPER FUNCTIONS
 		bool	clearSelection(void);
@@ -118,8 +158,8 @@ class aEdit: public aObject
 		void	handleMouse(void);
 		void	handleKeyboard(void);
 
-		int32_t charLength( int32_t index );
-		
+		int32_t charLength(int32_t index);
+
 
 		int32_t cursorColor;
 		int32_t highlightColor; // backdrop
@@ -127,7 +167,7 @@ class aEdit: public aObject
 		int32_t selectedColor; // selected text
 		int32_t outlineColor;
 		int32_t		nLimit;
-		int32_t		nInsertion1,nInsertion2; // beginning and ending highlight positions (when equal there is no highlight)
+		int32_t		nInsertion1, nInsertion2; // beginning and ending highlight positions (when equal there is no highlight)
 		bool	bCursorVisible;
 		int32_t		nLeftOffset;
 		float	cursorTime;
@@ -141,7 +181,7 @@ class aEdit: public aObject
 
 		bool bIMEInitialized;
 
-};
+	};
 
 
 //*************************************************************************************************

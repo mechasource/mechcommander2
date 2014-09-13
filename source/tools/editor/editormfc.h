@@ -23,7 +23,7 @@ public:
 // Overrides
 	// ClassWizard generated virtual function overrides
 	//{{AFX_VIRTUAL(EditorMFCApp)
-	public:
+public:
 	virtual BOOL InitInstance(void);
 	virtual BOOL OnIdle(int32_t lCount);
 	virtual int32_t ExitInstance(void);

@@ -13,42 +13,44 @@
 #include <stuff/filestream.hpp>
 #include <stuff/tree.hpp>
 
-namespace Stuff {
+namespace Stuff
+{
 
-	//##########################################################################
-	//#######################    FileDependencies    ###########################
-	//##########################################################################
+//##########################################################################
+//#######################    FileDependencies    ###########################
+//##########################################################################
 
 	class FileDependencies:
 		public Stuff::Plug
 	{
 	public:
 		FileDependencies(void);
-		FileDependencies(const FileDependencies &dependencies):
-		Plug(DefaultData)
+		FileDependencies(const FileDependencies& dependencies):
+			Plug(DefaultData)
 		{
-			Check_Object(this); Check_Object(&dependencies);
+			Check_Object(this);
+			Check_Object(&dependencies);
 			*this = dependencies;
 		}
 		~FileDependencies(void);
 
 		FileDependencies&
-			operator=(const FileDependencies &dependencies);
+		operator=(const FileDependencies& dependencies);
 
 		void
-			AddDependency(FileStream *stream);
+		AddDependency(FileStream* stream);
 		void
-			AddDependencies(const FileDependencies* dependencies);
+		AddDependencies(const FileDependencies* dependencies);
 		void
-			AddDependencies(MemoryStream *dependencies);
+		AddDependencies(MemoryStream* dependencies);
 
 		DynamicMemoryStream
-			m_fileNameStream;
+		m_fileNameStream;
 	};
 
-	//##########################################################################
-	//#######################    FileStreamManager    ##########################
-	//##########################################################################
+//##########################################################################
+//#######################    FileStreamManager    ##########################
+//##########################################################################
 
 	class FileStreamManager
 #if defined(_ARMOR)
@@ -65,34 +67,34 @@ namespace Stuff {
 
 		void TestInstance(void) {}
 		static void
-			TestClass(void);
+		TestClass(void);
 
 		static FileStreamManager
-			*Instance;
+		* Instance;
 
 		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		// Utility functions
 		//
 	public:
 		void
-			CleanUpAfterCompares(void);
+		CleanUpAfterCompares(void);
 
 		bool
-			CompareModificationDate(
-			const MString &file_name,
+		CompareModificationDate(
+			const MString& file_name,
 			int64_t time_stamp
-			);
+		);
 		void
-			PurgeFileCompareCache(void);
+		PurgeFileCompareCache(void);
 
 		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		// Private data
 		//
 	protected:
 		typedef Stuff::PlugOf<int64_t>
-			FileStatPlug;
+		FileStatPlug;
 		Stuff::TreeOf<FileStatPlug*, Stuff::MString>
-			compareCache;
+		compareCache;
 	};
 
 }

@@ -10,106 +10,115 @@
 
 #include <stuff/point3d.hpp>
 
-namespace Stuff {class Sphere;}
+namespace Stuff
+{
+	class Sphere;
+}
 
 #if !defined(Spew)
-	void
-		Spew(
-			PCSTR group,
-			const Stuff::Sphere& sphere
-		);
+void
+Spew(
+	PCSTR group,
+	const Stuff::Sphere& sphere
+);
 #endif
 
-namespace Stuff {
+namespace Stuff
+{
 
 	class Plane;
 	class OBB;
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Sphere ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Sphere ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 	class Sphere
 	{
-	 public:
+	public:
 		Point3D
-			center;
-		Scalar
-			radius;
+		center;
+		float
+		radius;
 
 		Sphere()
-			{}
+		{}
 		Sphere(
-			const Point3D &A_Point,
-			Scalar Radius
+			const Point3D& A_Point,
+			float Radius
 		):
 			center(A_Point),
 			radius(Radius)
-				{}
+		{}
 		Sphere(
-			Scalar X,
-			Scalar Y,
-			Scalar Z,
-			Scalar Radius
+			float X,
+			float Y,
+			float Z,
+			float Radius
 		):
-			center(X,Y,Z),
+			center(X, Y, Z),
 			radius(Radius)
-				{}
+		{}
 		Sphere(const Sphere& sphere):
 			center(sphere.center),
 			radius(sphere.radius)
-				{}
+		{}
 		explicit Sphere(const OBB& obb)
-			{*this = obb;}
+		{
+			*this = obb;
+		}
 
 		Sphere&
-			operator =(const Sphere &sphere)
+		operator =(const Sphere& sphere)
 		{
-			Check_Pointer(this); Check_Object(&sphere);
+			Check_Pointer(this);
+			Check_Object(&sphere);
 			center = sphere.center;
 			radius = sphere.radius;
 			return *this;
 		}
 		Sphere&
-			operator =(const OBB &obb);
+		operator =(const OBB& obb);
 
 		Sphere&
-			Union(
-				const Sphere& sphere1,
-				const Sphere& sphere2
-			);
+		Union(
+			const Sphere& sphere1,
+			const Sphere& sphere2
+		);
 
 		//
 		// Intersection functions
 		//
 		bool
-			Contains(const Point3D &point) const
-				{
-					Check_Object(this); Check_Object(&point);
-					Vector3D diff;
-					diff.Subtract(center, point);
-					return radius*radius - diff.GetLengthSquared() > -SMALL;
-				}
+		Contains(const Point3D& point) const
+		{
+			Check_Object(this);
+			Check_Object(&point);
+			Vector3D diff;
+			diff.Subtract(center, point);
+			return radius * radius - diff.GetLengthSquared() > -SMALL;
+		}
 		bool
-			Intersects(const Sphere &sphere) const
-				{
-					Check_Object(this); Check_Object(&sphere);
-					Scalar r = radius + sphere.radius;
-					Vector3D temp;
-					temp.Subtract(center, sphere.center);
-					return r*r - temp.GetLengthSquared() >= -SMALL;
-				}
+		Intersects(const Sphere& sphere) const
+		{
+			Check_Object(this);
+			Check_Object(&sphere);
+			float r = radius + sphere.radius;
+			Vector3D temp;
+			temp.Subtract(center, sphere.center);
+			return r * r - temp.GetLengthSquared() >= -SMALL;
+		}
 		bool
-			Intersects(const Plane &plane) const;
+		Intersects(const Plane& plane) const;
 
-		#if !defined(Spew)
-			friend void
-				::Spew(
-					PCSTR group,
-					const Sphere& sphere
-				);
-		#endif
+#if !defined(Spew)
+		friend void
+		::Spew(
+			PCSTR group,
+			const Sphere& sphere
+		);
+#endif
 		void
-			TestInstance(void) const
-				{}
+		TestInstance(void) const
+		{}
 	};
 
 }

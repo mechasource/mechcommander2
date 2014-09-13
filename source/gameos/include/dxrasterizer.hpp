@@ -42,35 +42,36 @@ extern void __stdcall CopyBackBuffer(LPDIRECTDRAWSURFACE7 Dest, LPDIRECTDRAWSURF
 //
 // Compatibility flags for different video cards
 //
-typedef enum __compatibilityconst {
-	SceneRenderer=1,				// Scene based renderer (PowerVR, Kyro etc...)
-	NoAlphaTest=1<<1,				// Disable alpha test (conflicts with other modes)
-	NoTriLinear=1<<2,				// Do not attempt trilinear filtering
-	NoTripleBuffer=1<<3,			// Do not attempt triple buffering
-	DefaultBltNotFlip=1<<4,			// In full screen mode, use BLT
-	NoFog=1<<5,						// Do not attempt fog
-	TextureOffset=1<<6,				// Riva 128 needs a texture offset for fonts
-	BrokenAlphaTest=1<<7,			// ATI Rage cards cannot do Alpha test without ALPHABLEND being enabled
-	RenderEqualZ=1<<8,				// Render bit depth must equal Z bit depth (nVidia cards)
-	NoParallelism=1<<9,				// Lock the back buffer after rendering (Voodoo3 - queueing up too many blits)
-	BadMouse=1<<10,					// Card can never used GDI mouse
-	LowEndCard=1<<11,				// This is a 'low end' card - the application can request this is not supported in hardware (Environment.DisableLowEndCard)
-	NoMipMap=1<<12,					// Disable mipmaps
-	Bad4444=1<<13,					// Disable 4444 textures  (Chromatic Mpact)
-	BadAGP=1<<14,					// Disable AGP textures   (Chromatic Mpact)
-	NoDisablePerspective=1<<15,		// Disable perspective correct disable.
-	LimitTextureSize=1<<16,			// Limit texture size to 256*256 to correct bad caps
-	ForceSquareTextures=1<<17,		// Do not allow non-square textures
-	NoStretchTexture=1<<18,			// Force system memory stretch blit to square up textures
-	AllowLowMemoryCard=1<<19,		// Allow card to bypass low texture memory test (Voodoo2)
-	NoMultitexture=1<<20,			// Disable multitexture blending modes
-	Disable1024x768=1<<21,			// Disable 1024*768 mode
-	DisableTextureDeletes=1<<22,	// Try not to delete textures
-	SlowDisplayModeChange=1<<23,    // Prevent video drivers that take a while before sending the WM_DISPLAYCHANGE msg from getting stuck in an endless loop of display mode changes
-	DisableColorControl=1<<24,		// Disable gamma and color controls
-	Limit500VidTextures=1<<25,		// Limit video memory textures to 500
-	Bad8888=1<<26,					// Disable 32 bit textures
-	Disable32BitRender=1<<27,		// Disable 32 bit rendering
+typedef enum __compatibilityconst
+{
+	SceneRenderer = 1,				// Scene based renderer (PowerVR, Kyro etc...)
+	NoAlphaTest = 1 << 1,				// Disable alpha test (conflicts with other modes)
+	NoTriLinear = 1 << 2,				// Do not attempt trilinear filtering
+	NoTripleBuffer = 1 << 3,			// Do not attempt triple buffering
+	DefaultBltNotFlip = 1 << 4,			// In full screen mode, use BLT
+	NoFog = 1 << 5,						// Do not attempt fog
+	TextureOffset = 1 << 6,				// Riva 128 needs a texture offset for fonts
+	BrokenAlphaTest = 1 << 7,			// ATI Rage cards cannot do Alpha test without ALPHABLEND being enabled
+	RenderEqualZ = 1 << 8,				// Render bit depth must equal Z bit depth (nVidia cards)
+	NoParallelism = 1 << 9,				// Lock the back buffer after rendering (Voodoo3 - queueing up too many blits)
+	BadMouse = 1 << 10,					// Card can never used GDI mouse
+	LowEndCard = 1 << 11,				// This is a 'low end' card - the application can request this is not supported in hardware (Environment.DisableLowEndCard)
+	NoMipMap = 1 << 12,					// Disable mipmaps
+	Bad4444 = 1 << 13,					// Disable 4444 textures  (Chromatic Mpact)
+	BadAGP = 1 << 14,					// Disable AGP textures   (Chromatic Mpact)
+	NoDisablePerspective = 1 << 15,		// Disable perspective correct disable.
+	LimitTextureSize = 1 << 16,			// Limit texture size to 256*256 to correct bad caps
+	ForceSquareTextures = 1 << 17,		// Do not allow non-square textures
+	NoStretchTexture = 1 << 18,			// Force system memory stretch blit to square up textures
+	AllowLowMemoryCard = 1 << 19,		// Allow card to bypass low texture memory test (Voodoo2)
+	NoMultitexture = 1 << 20,			// Disable multitexture blending modes
+	Disable1024x768 = 1 << 21,			// Disable 1024*768 mode
+	DisableTextureDeletes = 1 << 22,	// Try not to delete textures
+	SlowDisplayModeChange = 1 << 23, // Prevent video drivers that take a while before sending the WM_DISPLAYCHANGE msg from getting stuck in an endless loop of display mode changes
+	DisableColorControl = 1 << 24,		// Disable gamma and color controls
+	Limit500VidTextures = 1 << 25,		// Limit video memory textures to 500
+	Bad8888 = 1 << 26,					// Disable 32 bit textures
+	Disable32BitRender = 1 << 27,		// Disable 32 bit rendering
 };
 
 //
@@ -81,7 +82,8 @@ extern uint32_t Compatibility3D;
 //
 // Used to store all known video cards
 //
-typedef struct CardInfo {
+typedef struct CardInfo
+{
 	uint32_t VendorID;						// Vendor ID, ie: S3=0x5333
 	uint32_t DeviceID;						// Device ID, ie: ATI Rage=0x4750
 	uint32_t DriverH;						// High and Low dword of driver version number (Windows 9x)
@@ -98,17 +100,18 @@ extern CardInfo*	KnownCards;
 //
 // Used to store information about video cards in machine
 //
-typedef struct DeviceInfo {
+typedef struct DeviceInfo
+{
 	GUID				DeviceGUID;
 	DDDEVICEIDENTIFIER2	DDid;					// Use DDid.szDescription for the readable name
 	uint32_t				Empty;					// Bug in GetDeviceIdentifier - it overwrites the next 4 bytes!
 	DDCAPS				DDCaps;
 	D3DDEVICEDESC7		D3DCaps;
-	char				FourCC[16*4];			// First 16 FourCC codes
+	char				FourCC[16 * 4];			// First 16 FourCC codes
 	DDPIXELFORMAT		TextureFormats[16];		// First 16 texture formats (ends in 0)
-	uint16_t				Modes16[16*2];			// First 16, 16 bit screen modes above 640*480
+	uint16_t				Modes16[16 * 2];			// First 16, 16 bit screen modes above 640*480
 	uint16_t				Refresh16[16];			// Refresh rates for above modes
-	uint16_t				Modes32[16*2];			// First 16, 32 bit screen modes above 640*480
+	uint16_t				Modes32[16 * 2];			// First 16, 32 bit screen modes above 640*480
 	uint16_t				Refresh32[16];			// Refresh rates for above modes
 	DDPIXELFORMAT		ZFormats[16];			// First 16 Z Buffer formats
 	uint32_t				TotalVid;
@@ -161,7 +164,7 @@ extern uint32_t					BGColor;
 extern D3DDEVICEDESC7			CapsDirect3D;
 
 extern D3DVIEWPORT7				viewData;
-extern float					gosViewportMulX,gosViewportAddX,gosViewportMulY,gosViewportAddY;
+extern float					gosViewportMulX, gosViewportAddX, gosViewportMulY, gosViewportAddY;
 extern uint32_t					NumDevices;
 extern uint32_t					NumHWDevices;
 extern uint32_t					NumMonitors;

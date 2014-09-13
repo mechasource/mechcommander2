@@ -32,17 +32,17 @@ namespace Stuff
 	template <class T>
 	class Auto_Ptr
 	{
-	  public:
+	public:
 		Auto_Ptr()
 			: m_ptr(0)
 		{
-			Verify(sizeof(T*) == sizeof(size_t));	// 
+			Verify(sizeof(T*) == sizeof(size_t));	//
 		}
 
 		explicit Auto_Ptr(T* ptr, bool delete_as_array = DELETE_NORMAL)
 		{
 			Verify(sizeof(T*) == sizeof(size_t));
-			Set(ptr,true,delete_as_array);
+			Set(ptr, true, delete_as_array);
 		}
 
 		Auto_Ptr(Auto_Ptr const& src)
@@ -66,20 +66,19 @@ namespace Stuff
 		Auto_Ptr<T> Assimilate(T* ptr, bool delete_as_array = DELETE_NORMAL)
 		{
 			Auto_Ptr<T> temp(*this);
-			Set(ptr,true,delete_as_array);
+			Set(ptr, true, delete_as_array);
 			return (temp);
 		}
 
 		Auto_Ptr<T> Assimilate(Auto_Ptr<T>& src)
 		{
 			Auto_Ptr<T> temp;
-			if (&src != this)
+			if(&src != this)
 			{
 				temp = *this;
 				m_ptr = src.m_ptr;
 				src.SetAsOwner(false);
 			}
-
 			return (temp);
 		}
 
@@ -103,16 +102,15 @@ namespace Stuff
 
 		Auto_Ptr<T>& operator=(Auto_Ptr<T> const& src)
 		{
-			if (&src != this)
+			if(&src != this)
 			{
 				Delete(void);
 				m_ptr = src.m_ptr;
 				src.SetAsOwner(false);
 			}
-
 			return (*this);
 		}
-		
+
 		operator bool(void) const
 		{
 			return (GetPointer() != 0);
@@ -130,7 +128,7 @@ namespace Stuff
 
 		void Swap(Auto_Ptr<T>& src)
 		{
-			if (this != &src)
+			if(this != &src)
 			{
 				T* temp_ptr = src.m_ptr;
 				src.m_ptr = m_ptr;
@@ -140,9 +138,9 @@ namespace Stuff
 
 		void Delete()
 		{
-			if (IsOwner())
+			if(IsOwner())
 			{
-				if (IsArray())
+				if(IsArray())
 				{
 					m_bits &= POINTER_MASK;
 					delete [] m_ptr;
@@ -153,11 +151,10 @@ namespace Stuff
 					delete m_ptr;
 				}
 			}
-
 			m_ptr = 0;
 		}
 
-	  private:
+	private:
 		bool IsOwner(void) const
 		{
 			return ((m_bits & OWNER_MASK) == OWNER_MASK);
@@ -170,7 +167,7 @@ namespace Stuff
 
 		void SetAsOwner(bool fOwn) const
 		{
-			if (fOwn == true)
+			if(fOwn == true)
 			{
 				m_bits |= OWNER_MASK;
 			}
@@ -182,7 +179,7 @@ namespace Stuff
 
 		void SetAsArray(bool fArray)
 		{
-			if (fArray == true)
+			if(fArray == true)
 			{
 				m_bits |= ARRAY_MASK;
 			}
@@ -196,13 +193,11 @@ namespace Stuff
 		{
 			m_ptr = ptr;
 			Verify((m_bits & POINTER_MASK) == m_bits);
-
-			if (fIsOwner == true)
+			if(fIsOwner == true)
 			{
 				m_bits |= OWNER_MASK;
 			}
-
-			if (fIsArray == true)
+			if(fIsArray == true)
 			{
 				m_bits |= ARRAY_MASK;
 			}
@@ -210,7 +205,7 @@ namespace Stuff
 
 		mutable union
 		{
-			T *m_ptr;
+			T* m_ptr;
 			mutable int32_t uint32_t m_bits;
 		};
 

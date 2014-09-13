@@ -57,86 +57,81 @@ class WeaponEffects
 {
 	//Data Members
 	//-------------
-	protected:
-		EffectData			*effects;
-		int32_t				numEffects;
-	
+protected:
+	EffectData*			effects;
+	int32_t				numEffects;
+
 	//Member Functions
-	//----------------	
-	public:
-	
-		WeaponEffects (void)
+	//----------------
+public:
+
+	WeaponEffects(void)
+	{
+		init(void);
+	}
+
+	~WeaponEffects(void)
+	{
+		destroy(void);
+	}
+
+	void init(void)
+	{
+		effects = nullptr;
+		numEffects = 0;
+	}
+
+	void destroy(void);
+
+	void init(PSTR effectCSVFileName);
+
+	PSTR GetEffectName(int32_t effectId)
+	{
+		if((effectId >= 0) && (effectId < numEffects))
 		{
-			init(void);
+			return effects[effectId].effectName;
 		}
-		
-		~WeaponEffects (void)
+		return mc2_word_none;
+	}
+
+	PSTR GetEffectMuzzleFlashName(int32_t effectId)
+	{
+		if((effectId >= 0) && (effectId < numEffects))
 		{
-			destroy(void);
+			return effects[effectId].muzzleFlashName;
 		}
-		
-		void init (void)
+		return mc2_word_none;
+	}
+
+	PSTR GetEffectHitName(int32_t effectId)
+	{
+		if((effectId >= 0) && (effectId < numEffects))
 		{
-			effects = nullptr;
-			numEffects = 0;
+			return effects[effectId].hitEffectName;
 		}
-		
-		void destroy (void);
-		
-		void init (PSTR effectCSVFileName);
-		
-		PSTR GetEffectName (int32_t effectId)
+		return mc2_word_none;
+	}
+
+	PSTR GetEffectMissName(int32_t effectId)
+	{
+		if((effectId >= 0) && (effectId < numEffects))
 		{
-			if ((effectId >= 0) && (effectId < numEffects))
-			{
-				return effects[effectId].effectName;
-			}
-			
-			return mc2_word_none;
+			return effects[effectId].missEffectName;
 		}
-		
-		PSTR GetEffectMuzzleFlashName (int32_t effectId)
+		return mc2_word_none;
+	}
+
+	int32_t GetEffectObjNum(int32_t effectId)
+	{
+		if((effectId >= 0) && (effectId < numEffects))
 		{
-			if ((effectId >= 0) && (effectId < numEffects))
-			{
-				return effects[effectId].muzzleFlashName;
-			}
-			
-			return mc2_word_none;
+			return effects[effectId].effectObjNum;
 		}
-		
-		PSTR GetEffectHitName (int32_t effectId)
-		{
-			if ((effectId >= 0) && (effectId < numEffects))
-			{
-				return effects[effectId].hitEffectName;
-			}
-			
-			return mc2_word_none;
-		}
-		
-		PSTR GetEffectMissName (int32_t effectId)
-		{
-			if ((effectId >= 0) && (effectId < numEffects))
-			{
-				return effects[effectId].missEffectName;
-			}
-			
-			return mc2_word_none;
-		}
-		
- 		int32_t GetEffectObjNum (int32_t effectId)
-		{
-			if ((effectId >= 0) && (effectId < numEffects))
-			{
-				return effects[effectId].effectObjNum;
-			}
-			
-			return -1;
-		}
-	
+		return -1;
+	}
+
 };
 
-extern WeaponEffects *weaponEffects;
+extern WeaponEffects* weaponEffects;
 //---------------------------------------------------------------------------------
 #endif

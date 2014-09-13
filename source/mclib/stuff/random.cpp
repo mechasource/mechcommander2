@@ -22,7 +22,7 @@ Random*	Random::Instance = nullptr;
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	Random::InitializeClass()
+Random::InitializeClass()
 {
 	Verify(!Random::Instance);
 	Verify(Index == -1);
@@ -33,7 +33,7 @@ void
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	Random::TerminateClass()
+Random::TerminateClass()
 {
 	Unregister_Pointer(Random::Instance);
 	delete Random::Instance;
@@ -53,10 +53,9 @@ void Random::Init()
 	//------------------------------
 	//
 	int32_t i;
-	Index=0;
-	for (i=0; i<250; i++)
+	Index = 0;
+	for(i = 0; i < 250; i++)
 		Numbers[i] = gos_rand();
-
 	//
 	//--------------------------------------------------------------------
 	// In order to preserve a good random number mix for the XOR function,
@@ -67,11 +66,11 @@ void Random::Init()
 	int32_t mask = RAND_MAX >> 1;
 	int32_t msb = mask + 1;
 	int32_t rand_size;
-	for (rand_size=0; !(msb&(1<<rand_size)); ++rand_size);
+	for(rand_size = 0; !(msb & (1 << rand_size)); ++rand_size);
 	i = 14;
-	while (rand_size--)
+	while(rand_size--)
 	{
-		Verify(i<ELEMENTS(Numbers));
+		Verify(i < ELEMENTS(Numbers));
 		Numbers[i] &= mask;
 		Numbers[i] |= msb;
 		mask >>= 1;
@@ -85,21 +84,19 @@ void Random::Init()
 //###########################################################################
 //
 int32_t
-	Random::GetRandomInt()
+Random::GetRandomInt()
 {
 	int32_t
-		indent,
-		result;
-
+	indent,
+	result;
 	//
 	//------------------------------------------------------------------
 	// The random number generated will be the result of an XOR with the
 	// element 103 positions further (wrapping around) in the table
 	//------------------------------------------------------------------
 	//
-	indent = (Index>=147)?Index-147:Index+103;
-	result = Numbers[Index]^Numbers[indent];
-
+	indent = (Index >= 147) ? Index - 147 : Index + 103;
+	result = Numbers[Index] ^ Numbers[indent];
 	//
 	//------------------------------------------------------------------------
 	// Replace the current random number with the new one generated, increment
@@ -107,8 +104,8 @@ int32_t
 	//------------------------------------------------------------------------
 	//
 	Numbers[Index] = result;
-	if (++Index == ELEMENTS(Numbers))
-		Index=0;
+	if(++Index == ELEMENTS(Numbers))
+		Index = 0;
 	return result;
 }
 
@@ -116,14 +113,13 @@ int32_t
 //###########################################################################
 //###########################################################################
 //
-Scalar
-	Random::GetFraction()
+float
+Random::GetFraction()
 {
-	Scalar
-		result;
-
-	result = static_cast<Scalar>(GetRandomInt());
-	result /= static_cast<Scalar>(RAND_MAX + 1);
+	float
+	result;
+	result = static_cast<float>(GetRandomInt());
+	result /= static_cast<float>(RAND_MAX + 1);
 	return result;
 }
 
@@ -132,18 +128,18 @@ Scalar
 //###########################################################################
 //
 int32_t
-	Random::GetLessThan(int32_t range)
+Random::GetLessThan(int32_t range)
 {
 	int32_t
-		result,
-		max;
-
-	max = RAND_MAX - ((RAND_MAX + 1)%range);
+	result,
+	max;
+	max = RAND_MAX - ((RAND_MAX + 1) % range);
 	do
 	{
 		result = GetRandomInt();
-	} while (result>max);
-	return result%range;
+	}
+	while(result > max);
+	return result % range;
 }
 
 //
@@ -152,18 +148,18 @@ int32_t
 //
 Die::Die(int32_t n)
 {
-	dieSides = (n>1)?n:2;
-	highestRandom = RAND_MAX - ((RAND_MAX+1)%dieSides);
+	dieSides = (n > 1) ? n : 2;
+	highestRandom = RAND_MAX - ((RAND_MAX + 1) % dieSides);
 }
 
 //
 //###########################################################################
 //###########################################################################
 //
-Die::operator int32_t() {
+Die::operator int32_t()
+{
 	int32_t
-		result;
-
+	result;
 	//
 	//------------------------------------------------------------------------
 	// In order to not skew the probabilities to the low numbers, make sure
@@ -174,13 +170,13 @@ Die::operator int32_t() {
 	do
 	{
 		result = Random::GetInt();
-	} while (result>highestRandom);
-
+	}
+	while(result > highestRandom);
 	//
 	//-------------------------------------------------------------------
 	// Once the base random number is determined, do modulus division and
 	// increment by 1 to map into the die range.
 	//-------------------------------------------------------------------
 	//
-	return result%dieSides + 1;
+	return result % dieSides + 1;
 }

@@ -44,7 +44,7 @@ char texturePath[80]		= "data\\textures\\";
 char tglPath[80]			= "data\\tgl\\";
 char effectsPath[80]		= "data\\effects\\";
 char campaignPath[80]		= "data\\campaign\\";
-							
+
 char CDobjectPath[80]		= "data\\objects\\";
 char CDmissionPath[80]		= "data\\missions\\";
 char CDcameraPath[80]		= "data\\cameras\\";
@@ -52,7 +52,7 @@ char CDtilePath[80]			= "data\\tiles\\";
 char CDmoviePath[80]		= "data\\movies\\";
 char CDspritePath[80]		= "data\\sprites\\";
 char CDsoundPath[80]		= "data\\sound\\";
-							
+
 char transcriptsPath[80]	= "data\\multiplayer\\transcripts";
 
 //---------------------------------------------------------------------------
@@ -66,4 +66,3 @@ char transcriptsPath[80]	= "data\\multiplayer\\transcripts";
 
 
 
-	

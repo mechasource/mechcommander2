@@ -65,9 +65,9 @@ extern bool somethingOnFire;
 extern bool	useOldProject;
 extern bool MLRVertexLimitReached;
 
-inline float agsqrt( float _a, float _b )
+inline float agsqrt(float _a, float _b)
 {
-	return sqrt(_a*_a + _b*_b);
+	return sqrt(_a * _a + _b * _b);
 }
 
 #define TREE_FALL_RATE		15.0f
@@ -75,31 +75,28 @@ inline float agsqrt( float _a, float _b )
 
 char lastName[256];
 
-extern MidLevelRenderer::MLRClipper * theClipper;
+extern MidLevelRenderer::MLRClipper* theClipper;
 extern bool useNonWeaponEffects;
 //---------------------------------------------------------------------------
 // class TerrainObjectType
 //---------------------------------------------------------------------------
 
-GameObjectPtr TerrainObjectType::createInstance (void) {
-
+GameObjectPtr TerrainObjectType::createInstance(void)
+{
 	TerrainObjectPtr result = new TerrainObject;
-	if (!result)
+	if(!result)
 		return nullptr;
-
 	result->init(true, this);
 	//result->setIdNumber(NextIdNumber++);
-	
 	return(result);
 }
 
 //---------------------------------------------------------------------------
 
-void TerrainObjectType::init (void) {
-			
+void TerrainObjectType::init(void)
+{
 	objectTypeClass = TERRAINOBJECT_TYPE;
 	objectClass = TERRAINOBJECT;
-			
 	subType = TERROBJ_NONE;
 	damageLevel = 0.0;
 	collisionOffsetX = 0;
@@ -115,15 +112,15 @@ void TerrainObjectType::init (void) {
 
 //---------------------------------------------------------------------------
 
-void TerrainObjectType::destroy (void) 
+void TerrainObjectType::destroy(void)
 {
 	ObjectType::destroy();
 }
-		
+
 //---------------------------------------------------------------------------
 
-void TerrainObjectType::initMiscTerrObj (int32_t objTypeNum) {
-
+void TerrainObjectType::initMiscTerrObj(int32_t objTypeNum)
+{
 	//---------------------------------------------------------------------
 	// This function is here to maintain compatibility with MC1. The values
 	// used for the various miscTerrainTypes are hardcoded, based on
@@ -135,131 +132,124 @@ void TerrainObjectType::initMiscTerrObj (int32_t objTypeNum) {
 	keepMe = true;
 	iconNumber = -1;
 	teamId = -1;
-
-	if (objTypeNum == ObjectTypeManager::bridgeTypeHandle) {
+	if(objTypeNum == ObjectTypeManager::bridgeTypeHandle)
+	{
 		subType = TERROBJ_BRIDGE;
 		damageLevel = 100.0;
-		}
-	else if (objTypeNum == ObjectTypeManager::forestTypeHandle) {
+	}
+	else if(objTypeNum == ObjectTypeManager::forestTypeHandle)
+	{
 		subType = TERROBJ_FOREST;
 		damageLevel = 100.0;
 		fireTypeHandle = 1;
-		}
-	else if (objTypeNum == ObjectTypeManager::wallHeavyTypeHandle) {
+	}
+	else if(objTypeNum == ObjectTypeManager::wallHeavyTypeHandle)
+	{
 		subType = TERROBJ_WALL_HEAVY;
 		damageLevel = 100.0;
-		}
-	else if (objTypeNum == ObjectTypeManager::wallMediumTypeHandle) {
+	}
+	else if(objTypeNum == ObjectTypeManager::wallMediumTypeHandle)
+	{
 		subType = TERROBJ_WALL_MEDIUM;
 		damageLevel = 100.0;
-		}
-	else if (objTypeNum == ObjectTypeManager::wallLightTypeHandle) {
+	}
+	else if(objTypeNum == ObjectTypeManager::wallLightTypeHandle)
+	{
 		subType = TERROBJ_WALL_LIGHT;
 		damageLevel = 100.0;
-		}
+	}
 	else
 		Fatal(objTypeNum, " TerrainObjectType.init: bad MiscTerrainObj num ");
 }
 
 //---------------------------------------------------------------------------
 
-int32_t TerrainObjectType::init (FilePtr objFile, uint32_t fileSize) {
-
+int32_t TerrainObjectType::init(FilePtr objFile, uint32_t fileSize)
+{
 	int32_t result = 0;
-	
 	FitIniFile bldgFile;
 	result = bldgFile.open(objFile, fileSize);
-	if (result != NO_ERROR)
+	if(result != NO_ERROR)
 		return(result);
-	
 	//----------------------------------------------
 	// Read in the data needed for the TerrainObject
 	subType = TERROBJ_NONE;
 	result = bldgFile.seekBlock("TerrainObjectData");
-	if (result != NO_ERROR) {
+	if(result != NO_ERROR)
+	{
 		result = bldgFile.seekBlock("TreeData");
-		if (result != NO_ERROR)
+		if(result != NO_ERROR)
 			return(result);
 		subType = TERROBJ_TREE;
 		objectClass = TREE;
 	}
-
 	uint32_t dmgLevel;
-	result = bldgFile.readIdULong("DmgLevel",dmgLevel);
-	if (result != NO_ERROR)
+	result = bldgFile.readIdULong("DmgLevel", dmgLevel);
+	if(result != NO_ERROR)
 		return(result);
 	damageLevel = (float)dmgLevel;
-		
-	result = bldgFile.readIdLong("CollisionOffsetX",collisionOffsetX);
-	if (result != NO_ERROR)
+	result = bldgFile.readIdLong("CollisionOffsetX", collisionOffsetX);
+	if(result != NO_ERROR)
 		collisionOffsetX = 0;
-	
-	result = bldgFile.readIdLong("CollisionOffsetY",collisionOffsetY);
-	if (result != NO_ERROR)	
+	result = bldgFile.readIdLong("CollisionOffsetY", collisionOffsetY);
+	if(result != NO_ERROR)
 		collisionOffsetY = 0;
-
 	int32_t setImpass;
-	result = bldgFile.readIdLong("SetImpassable",setImpass);
+	result = bldgFile.readIdLong("SetImpassable", setImpass);
 	setImpassable = false;
-	if (result == NO_ERROR)
+	if(result == NO_ERROR)
 		setImpassable = setImpass ? true : false;
-		
-	result = bldgFile.readIdLong("XImpasse",xImpasse);
-	if (result != NO_ERROR)
+	result = bldgFile.readIdLong("XImpasse", xImpasse);
+	if(result != NO_ERROR)
 		xImpasse = 0;
-	
-	result = bldgFile.readIdLong("YImpasse",yImpasse);
-	if (result != NO_ERROR)	
+	result = bldgFile.readIdLong("YImpasse", yImpasse);
+	if(result != NO_ERROR)
 		yImpasse = 0;
-
 	float realExtent = 0.0;
 	result = bldgFile.readIdFloat("ExtentRadius", realExtent);
-	if (result != NO_ERROR)
+	if(result != NO_ERROR)
 		realExtent = -1.0;
-
-	result = bldgFile.readIdFloat("ExplosionRadius",explRad);
+	result = bldgFile.readIdFloat("ExplosionRadius", explRad);
 	//-----------------------------------------------------------------
 	// if this fails, explosion radius is not set and no splash damage.
-	if (result != NO_ERROR)
+	if(result != NO_ERROR)
 		explRad = 0.0;
-		
-	result = bldgFile.readIdFloat("ExplosionDamage",explDmg);
+	result = bldgFile.readIdFloat("ExplosionDamage", explDmg);
 	// if this fails, explosion damage is not set and no splash damage.
-	if (result != NO_ERROR)
+	if(result != NO_ERROR)
 		explDmg = 0.0;
-
 	//-------------------------------------------------------
 	// Initialize the base object Type from the current file.
 	result = ObjectType::init(&bldgFile);
 	extentRadius = realExtent;
-
 	return(result);
 }
-	
+
 //---------------------------------------------------------------------------
 
-bool TerrainObjectType::handleCollision (GameObjectPtr collidee, GameObjectPtr collider) {
-
-	if (MPlayer && !MPlayer->isServer())
+bool TerrainObjectType::handleCollision(GameObjectPtr collidee, GameObjectPtr collider)
+{
+	if(MPlayer && !MPlayer->isServer())
 		return(true);
-
-	switch (subType) {
+	switch(subType)
+	{
 		case TERROBJ_NONE:
 			//-------------------------------------------------------
 			// The Building ceases to exist when its effect is done.
 			// always return FALSE or the collision will make it
 			// go away!  We may want to play a sound effect here.
-			switch (collider->getObjectClass()) {
+			switch(collider->getObjectClass())
+			{
 				case EXPLOSION:
 				case BATTLEMECH:
 				case GROUNDVEHICLE:
-				if (!collider->isMover() || (collider->isMover() && ((MoverPtr)collider)->pathLocks))
-				{
-					WeaponShotInfo shot;
-					shot.init(0, -1, collidee->getDamageLevel(), 0, 0);
-					collidee->handleWeaponHit(&shot, (MPlayer != nullptr));
-				}
-				break;
+					if(!collider->isMover() || (collider->isMover() && ((MoverPtr)collider)->pathLocks))
+					{
+						WeaponShotInfo shot;
+						shot.init(0, -1, collidee->getDamageLevel(), 0, 0);
+						collidee->handleWeaponHit(&shot, (MPlayer != nullptr));
+					}
+					break;
 			}
 			break;
 		case TERROBJ_TREE:
@@ -271,23 +261,23 @@ bool TerrainObjectType::handleCollision (GameObjectPtr collidee, GameObjectPtr c
 			// When a tree falls, we change its frame_of_ref to match
 			// the direction it should fall in from the nominal world frame.
 			//
-			switch (collider->getObjectClass()) {
+			switch(collider->getObjectClass())
+			{
 				case EXPLOSION:
 				case BATTLEMECH:
 				case GROUNDVEHICLE:
-				if (!collider->isMover() || (collider->isMover() && ((MoverPtr)collider)->pathLocks))
-				{
-					TerrainObjectPtr tree = (TerrainObjectPtr)collidee;
-					if (!tree->getFlag(OBJECT_FLAG_FALLEN) && !tree->getFlag(OBJECT_FLAG_FALLING)) {
-						tree->setFlag(OBJECT_FLAG_FALLING, true);
-						
-						float fallAngle = collidee->relFacingTo(collider->getPosition());
-						collidee->rotate(fallAngle,0.0f);
-						
-						//------------------------------------------------------
-						// Tree has fallen.  You may no longer collide with it.
-						tree->setTangible(false);
-					}
+					if(!collider->isMover() || (collider->isMover() && ((MoverPtr)collider)->pathLocks))
+					{
+						TerrainObjectPtr tree = (TerrainObjectPtr)collidee;
+						if(!tree->getFlag(OBJECT_FLAG_FALLEN) && !tree->getFlag(OBJECT_FLAG_FALLING))
+						{
+							tree->setFlag(OBJECT_FLAG_FALLING, true);
+							float fallAngle = collidee->relFacingTo(collider->getPosition());
+							collidee->rotate(fallAngle, 0.0f);
+							//------------------------------------------------------
+							// Tree has fallen.  You may no longer collide with it.
+							tree->setTangible(false);
+						}
 					}
 					break;
 			}
@@ -298,33 +288,37 @@ bool TerrainObjectType::handleCollision (GameObjectPtr collidee, GameObjectPtr c
 		case TERROBJ_WALL_MEDIUM:
 			break;
 		case TERROBJ_WALL_LIGHT:
-			switch (collider->getObjectClass()) {
+			switch(collider->getObjectClass())
+			{
 				case BATTLEMECH:
-				case GROUNDVEHICLE: {
+				case GROUNDVEHICLE:
+				{
 					WeaponShotInfo shotInfo;
 					shotInfo.init(collider->getWatchID(), -1, 250.0, 0, 0);
-					if (MPlayer) {
-						if (MPlayer->isServer()) {
+					if(MPlayer)
+					{
+						if(MPlayer->isServer())
+						{
 							collidee->handleWeaponHit(&shotInfo, true);
 						}
-						}
+					}
 					else
 						collidee->handleWeaponHit(&shotInfo);
-					}
-					break;
+				}
+				break;
 			}
 			break;
 	}
-	
 	return(true);
 }
 
 //---------------------------------------------------------------------------
 
-bool TerrainObjectType::handleDestruction (GameObjectPtr collidee, GameObjectPtr collider) {
-
+bool TerrainObjectType::handleDestruction(GameObjectPtr collidee, GameObjectPtr collider)
+{
 	TerrainObjectPtr me = (TerrainObjectPtr)collidee;
-	if (me->getObjectType()->getSubType() == TERROBJ_FOREST) {
+	if(me->getObjectType()->getSubType() == TERROBJ_FOREST)
+	{
 		me->openSubAreas();
 	}
 	return(false);
@@ -333,23 +327,24 @@ bool TerrainObjectType::handleDestruction (GameObjectPtr collidee, GameObjectPtr
 //***************************************************************************
 // class TerrainObject
 //***************************************************************************
-void TerrainObject::rotate (float yaw, float pitch)
+void TerrainObject::rotate(float yaw, float pitch)
 {
 	rotation = yaw;
 	pitchAngle = pitch;
 }
 
-void TerrainObject::updateDebugWindow (GameDebugWindow* debugWindow) {
-
+void TerrainObject::updateDebugWindow(GameDebugWindow* debugWindow)
+{
 	debugWindow->clear();
 	char s[128];
 	//-------------------------------------------------------
 	// For now, show the floating help text if we have one...
-	if (((ObjectAppearance*)appearance)->objectNameId != -1) {
+	if(((ObjectAppearance*)appearance)->objectNameId != -1)
+	{
 		char myName[255];
 		cLoadString(((ObjectAppearance*)appearance)->objectNameId, myName, 254);
 		debugWindow->print(myName);
-		}
+	}
 	else
 		debugWindow->print("<no name>");
 	sprintf(s, "team: %d, handle: %d, partID: %d %s", getTeamId(), getHandle(), getPartId(), getFlag(OBJECT_FLAG_CAPTURABLE) ? "[C]" : " ");
@@ -362,15 +357,18 @@ void TerrainObject::updateDebugWindow (GameDebugWindow* debugWindow) {
 	debugWindow->print(s);
 	sprintf(s, "footprint:[%d,%d]:[%d,%d]", cellFootprint[0], cellFootprint[1], cellFootprint[2], cellFootprint[3]);
 	debugWindow->print(s);
-	if (numSubAreas0 > 0) {
+	if(numSubAreas0 > 0)
+	{
 		sprintf(s, "subAreas:");
-		for (int32_t i = 0; i < numSubAreas0; i++) {
+		for(size_t i = 0; i < numSubAreas0; i++)
+		{
 			char tempStr[15];
 			sprintf(tempStr, " %d", subAreas0[i]);
 			strcat(s, tempStr);
 		}
 		strcat(s, " *");
-		for (i = 0; i < numSubAreas1; i++) {
+		for(i = 0; i < numSubAreas1; i++)
+		{
 			char tempStr[15];
 			sprintf(tempStr, " %d", subAreas1[i]);
 			strcat(s, tempStr);
@@ -381,8 +379,8 @@ void TerrainObject::updateDebugWindow (GameDebugWindow* debugWindow) {
 
 //---------------------------------------------------------------------------
 
-bool TerrainObject::isVisible (void) {
-
+bool TerrainObject::isVisible(void)
+{
 	//----------------------------------------------------------------------
 	// This function is the meat and potatoes of the object cull system.
 	// Its job is to determine if the object is on screen or not.
@@ -391,10 +389,10 @@ bool TerrainObject::isVisible (void) {
 	// to see if they are in the viewport of each camera.  Returned value
 	// is number of windows that object can be seen in.
 	bool isVisible = false; //land->getVertexScreenPos(blockNumber, vertexNumber, screenPos);
-	if (appearance)
+	if(appearance)
 		isVisible = appearance->recalcBounds();
-	
-	if (isVisible) {
+	if(isVisible)
+	{
 		windowsVisible = turn;
 		return(true);
 	}
@@ -403,8 +401,8 @@ bool TerrainObject::isVisible (void) {
 
 //---------------------------------------------------------------------------
 
-PSTR TerrainObject::getName (void) {
-
+PSTR TerrainObject::getName(void)
+{
 	/*
 	static PSTR terrainObjectNames[NUM_TERROBJ_SUBTYPES] = {
 		"Nothing",
@@ -419,8 +417,8 @@ PSTR TerrainObject::getName (void) {
 	TerrainObjectTypePtr type = (TerrainObjectTypePtr)getObjectType();
 	return(terrainObjectNames[type->subType]);
 	*/
-
-	if (((ObjectAppearance*)appearance)->objectNameId != -1) {
+	if(((ObjectAppearance*)appearance)->objectNameId != -1)
+	{
 		cLoadString(((ObjectAppearance*)appearance)->objectNameId, lastName, 254);
 		return(lastName);
 	}
@@ -429,12 +427,12 @@ PSTR TerrainObject::getName (void) {
 
 //---------------------------------------------------------------------------
 
-float TerrainObject::getStatusRating (void) {
-
+float TerrainObject::getStatusRating(void)
+{
 	float curDamage = getDamage();
 	float maxHealth = getDamageLevel();
 	float rating = (maxHealth - curDamage) / maxHealth;
-	if (rating < 0.0)
+	if(rating < 0.0)
 		rating = 0.0;
 	return(rating);
 }
@@ -443,25 +441,24 @@ float TerrainObject::getStatusRating (void) {
 
 #define BRIDGE_OFFSET		60
 
-int32_t TerrainObject::update (void) {
-
-	if (getFlag(OBJECT_FLAG_JUSTCREATED)) 
+int32_t TerrainObject::update(void)
+{
+	if(getFlag(OBJECT_FLAG_JUSTCREATED))
 	{
 		setFlag(OBJECT_FLAG_JUSTCREATED, false);
 		setFlag(OBJECT_FLAG_TILECHANGED, false);
-
 		TerrainObjectTypePtr type = (TerrainObjectTypePtr)ObjectManager->getObjectType(typeHandle);
-
-		switch (type->subType) {
+		switch(type->subType)
+		{
 			case TERROBJ_NONE:
-			case TERROBJ_TREE: 
+			case TERROBJ_TREE:
 			{
 				setTangible(true);
 			}
 			break;
-			
 			case TERROBJ_BRIDGE:
-				if (!GameMap->getPassable(cellPositionRow, cellPositionCol)) {
+				if(!GameMap->getPassable(cellPositionRow, cellPositionCol))
+				{
 					damage = type->getDamageLevel();
 					setStatus(OBJECT_STATUS_DESTROYED);
 				}
@@ -470,69 +467,58 @@ int32_t TerrainObject::update (void) {
 			case TERROBJ_WALL_HEAVY:
 			case TERROBJ_WALL_MEDIUM:
 			case TERROBJ_WALL_LIGHT:
-				if (GameMap->getPassable(cellPositionRow, cellPositionCol)) {
+				if(GameMap->getPassable(cellPositionRow, cellPositionCol))
+				{
 					damage = type->getDamageLevel();
 					setStatus(OBJECT_STATUS_DESTROYED);
 				}
 				break;
 		}
-
 	}
-
 	//-------------------------------------------
 	// Handle power out.
-	if (powerSupply && (ObjectManager->getByWatchID(powerSupply)->getStatus() == OBJECT_STATUS_DESTROYED))
+	if(powerSupply && (ObjectManager->getByWatchID(powerSupply)->getStatus() == OBJECT_STATUS_DESTROYED))
 		appearance->setLightsOut(true);
-		
- 	if (appearance)
+	if(appearance)
 	{
-		if (getFlag(OBJECT_FLAG_FALLING))
+		if(getFlag(OBJECT_FLAG_FALLING))
 		{
-			if (fallRate == 0.0f)
+			if(fallRate == 0.0f)
 			{
-				if (useSound && soundSystem)
+				if(useSound && soundSystem)
 					soundSystem->playDigitalSample(TREEFALL, getPosition(), true);
-					
 				fallRate = TREE_FALL_RATE;
 			}
 			else
 				fallRate += TREE_FALL_ACCEL;
-				
 			pitchAngle -= (frameLength * fallRate);
-			if (pitchAngle < -85.0f)
+			if(pitchAngle < -85.0f)
 			{
-				setFlag(OBJECT_FLAG_FALLEN,true);
-				setFlag(OBJECT_FLAG_FALLING,false);
+				setFlag(OBJECT_FLAG_FALLEN, true);
+				setFlag(OBJECT_FLAG_FALLING, false);
 			}
 		}
-		
-		appearance->setObjectParameters(position,rotation,FALSE,getTeamId(),Team::getRelation(getTeamId(), Team::home->getId()));
+		appearance->setObjectParameters(position, rotation, FALSE, getTeamId(), Team::getRelation(getTeamId(), Team::home->getId()));
 		appearance->setMoverParameters(pitchAngle);
 		bool inView = appearance->recalcBounds();
-
-		if (inView)
+		if(inView)
 		{
 			windowsVisible = turn;
 			appearance->update();
-
-			if (bldgDustPoofEffect && bldgDustPoofEffect->IsExecuted())
+			if(bldgDustPoofEffect && bldgDustPoofEffect->IsExecuted())
 			{
 				Stuff::Point3D			actualPosition;
 				Stuff::LinearMatrix4D 	shapeOrigin;
 				Stuff::LinearMatrix4D 	localToWorld;
-					
 				actualPosition.x = -position.x;
 				actualPosition.y = position.z;
 				actualPosition.z = position.y;
-			
- 				shapeOrigin.BuildRotation(Stuff::EulerAngles(0.0f,0.0f,0.0f));
+				shapeOrigin.BuildRotation(Stuff::EulerAngles(0.0f, 0.0f, 0.0f));
 				shapeOrigin.BuildTranslation(actualPosition);
-		
 				Stuff::OBB boundingBox;
-				gosFX::Effect::ExecuteInfo info((Stuff::Time)scenarioTime,&shapeOrigin,&boundingBox);
-		
+				gosFX::Effect::ExecuteInfo info((Stuff::Time)scenarioTime, &shapeOrigin, &boundingBox);
 				bool result = bldgDustPoofEffect->Execute(&info);
-				if (!result)
+				if(!result)
 				{
 					bldgDustPoofEffect->Kill();
 					delete bldgDustPoofEffect;
@@ -541,123 +527,101 @@ int32_t TerrainObject::update (void) {
 			}
 		}
 	}
-
 	return(1);
 }
 
 //---------------------------------------------------------------------------
 
-void TerrainObject::render (void) {
-
-	if (!getFlag(OBJECT_FLAG_JUSTCREATED)) 
+void TerrainObject::render(void)
+{
+	if(!getFlag(OBJECT_FLAG_JUSTCREATED))
 	{
 	}
-
-	if (appearance->canBeSeen())
+	if(appearance->canBeSeen())
 	{
-		if (getSelected())
+		if(getSelected())
 		{
 			TerrainObjectTypePtr type = (TerrainObjectTypePtr)getObjectType();
 			float barStatus = 1.0;
 			float totalDmgLvl = type->getDamageLevel();
-			if (totalDmgLvl > 0.0)
+			if(totalDmgLvl > 0.0)
 				barStatus -= getDamage() / totalDmgLvl;
-			
-			if (barStatus < 0.0)
+			if(barStatus < 0.0)
 				barStatus = 0.0;
-
 			uint32_t color = 0xff7f7f7f;
-			
 			appearance->setBarColor(color);
 			appearance->setBarStatus(barStatus);
 		}
-
 		//For debug purposes only.  Will crash pause!!	Sorry Heidi!
 //		if (windowsVisible != turn)
 //			STOP(("Rendering without an update!"));
-
-		appearance->setVisibility(true,true);
+		appearance->setVisibility(true, true);
 		appearance->render();
-		
 		//------------------------------------------------
 		// Render GOSFX
 		gosFX::Effect::DrawInfo drawInfo;
 		drawInfo.m_clipper = theClipper;
-		
 		MidLevelRenderer::MLRState mlrState;
 		mlrState.SetDitherOn();
 		mlrState.SetTextureCorrectionOn();
 		mlrState.SetZBufferCompareOn();
 		mlrState.SetZBufferWriteOn();
-
 		drawInfo.m_state = mlrState;
 		drawInfo.m_clippingFlags = 0x0;
-		
-		if (bldgDustPoofEffect && bldgDustPoofEffect->IsExecuted())
+		if(bldgDustPoofEffect && bldgDustPoofEffect->IsExecuted())
 		{
 			Stuff::Point3D			actualPosition;
 			Stuff::LinearMatrix4D 	shapeOrigin;
 			Stuff::LinearMatrix4D	localToWorld;
-
 			actualPosition.x = -position.x;
 			actualPosition.y = position.z;
 			actualPosition.z = position.y;
-							
- 			shapeOrigin.BuildRotation(Stuff::EulerAngles(0.0f,0.0f,0.0f));
+			shapeOrigin.BuildRotation(Stuff::EulerAngles(0.0f, 0.0f, 0.0f));
 			shapeOrigin.BuildTranslation(actualPosition);
-				
 			drawInfo.m_parentToWorld = &shapeOrigin;
-	 
-			if (!MLRVertexLimitReached)
+			if(!MLRVertexLimitReached)
 				bldgDustPoofEffect->Draw(&drawInfo);
 		}
 	}
-	
 	setSelected(false);		//ALWAYS reset the selected flags.  GUI needs this to work!
-	setTargeted( false );	//ALWAYS do it here, too!  Otherwise things may draw FUNNY!
+	setTargeted(false);	//ALWAYS do it here, too!  Otherwise things may draw FUNNY!
 }
 
 //---------------------------------------------------------------------------
-void TerrainObject::renderShadows (void)
+void TerrainObject::renderShadows(void)
 {
-	if (getFlag(OBJECT_FLAG_FALLING) || getFlag(OBJECT_FLAG_FALLEN))
+	if(getFlag(OBJECT_FLAG_FALLING) || getFlag(OBJECT_FLAG_FALLEN))
 		return;			//No shadows on fallen trees.
-		
-	if (appearance->canBeSeen())
+	if(appearance->canBeSeen())
 	{
 		appearance->renderShadows();
 	}
-	
 	setSelected(false);		//ALWAYS reset the selected flags.  GUI needs this to work!
-	setTargeted( false );	//ALWAYS do it here, too!  Otherwise things may draw FUNNY!
-
-}	
+	setTargeted(false);	//ALWAYS do it here, too!  Otherwise things may draw FUNNY!
+}
 
 //---------------------------------------------------------------------------
-void TerrainObject::destroy (void) 
+void TerrainObject::destroy(void)
 {
-	if (cellsCovered) 
+	if(cellsCovered)
 	{
 		numCellsCovered = 0;
 		systemHeap->Free(cellsCovered);
 		cellsCovered = nullptr;
 	}
-
-	if (subAreas0)
+	if(subAreas0)
 	{
 		ObjectTypeManager::objectCache->Free(subAreas0);
 		subAreas0 = nullptr;
 	}
-
-	if (subAreas1)
+	if(subAreas1)
 	{
 		ObjectTypeManager::objectCache->Free(subAreas1);
 		subAreas1 = nullptr;
 	}
-
 	//-----------------------------------------------------
 	// This will free any memory the Building is using.
-	if (appearance) 
+	if(appearance)
 	{
 		delete appearance;
 		appearance = nullptr;
@@ -666,65 +630,55 @@ void TerrainObject::destroy (void)
 
 //---------------------------------------------------------------------------
 
-void TerrainObject::setDamage (int32_t newDamage) {
-
+void TerrainObject::setDamage(int32_t newDamage)
+{
 	damage = (float)newDamage;
-
 	TerrainObjectTypePtr type = (TerrainObjectTypePtr)getObjectType();
-
-	switch (type->subType) 
+	switch(type->subType)
 	{
 		case TERROBJ_TREE:
 		case TERROBJ_NONE:
-			
-		break;
+			break;
 	}
-
 	//---------------------------------------------
 	// Code needs to go in here to fix appearance
-	if (damage >= getDamageLevel())
+	if(damage >= getDamageLevel())
 	{
 		setStatus(OBJECT_STATUS_DESTROYED);
-		if (appearance)
+		if(appearance)
 			appearance->setObjStatus(OBJECT_STATUS_DESTROYED);
 	}
 }
-		
+
 //---------------------------------------------------------------------------
 
-void TerrainObject::init (bool create, ObjectTypePtr objType) {
-
+void TerrainObject::init(bool create, ObjectTypePtr objType)
+{
 	GameObject::init(true, objType);
-
 	setFlag(OBJECT_FLAG_JUSTCREATED, true);
-
-	if (((TerrainObjectTypePtr)objType)->subType == TERROBJ_TREE)
+	if(((TerrainObjectTypePtr)objType)->subType == TERROBJ_TREE)
 	{
 		//-------------------------------------------------------------
 		// The appearance is initialized here using data from the type
 		// Need an MLR appearance class
 		PSTR appearanceName = objType->getAppearanceTypeName();
-
 		//--------------------------------------------------------------
 		// New code!!!
 		// We need to append the sprite type to the appearance num now.
 		// The MechEdit tool does not assume a sprite type, nor should it.
 		// MechCmdr2 features much simpler objects which only use 1 type of sprite!
 		int32_t appearanceType = (TREED_TYPE << 24);
-
-		AppearanceTypePtr terrainObjectAppearanceType = appearanceTypeList->getAppearance(appearanceType,appearanceName);
-		if (!terrainObjectAppearanceType)
+		AppearanceTypePtr terrainObjectAppearanceType = appearanceTypeList->getAppearance(appearanceType, appearanceName);
+		if(!terrainObjectAppearanceType)
 		{
 			//------------------------------------------------------
 			// LOAD a dummy appearance until real ones are available
 			// for this building!
-			terrainObjectAppearanceType = appearanceTypeList->getAppearance(appearanceType,"TREE");
+			terrainObjectAppearanceType = appearanceTypeList->getAppearance(appearanceType, "TREE");
 			gosASSERT(terrainObjectAppearanceType != nullptr);
 		}
-		  
-	   	appearance = new TreeAppearance;
+		appearance = new TreeAppearance;
 		gosASSERT(appearance != nullptr);
-
 		appearance->init((TreeAppearanceType*)terrainObjectAppearanceType, (GameObjectPtr)this);
 	}
 	else
@@ -733,40 +687,35 @@ void TerrainObject::init (bool create, ObjectTypePtr objType) {
 		// The appearance is initialized here using data from the type
 		// Need an MLR appearance class
 		PSTR appearanceName = objType->getAppearanceTypeName();
-
 		//--------------------------------------------------------------
 		// New code!!!
 		// We need to append the sprite type to the appearance num now.
 		// The MechEdit tool does not assume a sprite type, nor should it.
 		// MechCmdr2 features much simpler objects which only use 1 type of sprite!
 		int32_t appearanceType = (BLDG_TYPE << 24);
-
-		AppearanceTypePtr terrainObjectAppearanceType = appearanceTypeList->getAppearance(appearanceType,appearanceName);
-		if (!terrainObjectAppearanceType)
+		AppearanceTypePtr terrainObjectAppearanceType = appearanceTypeList->getAppearance(appearanceType, appearanceName);
+		if(!terrainObjectAppearanceType)
 		{
 			//------------------------------------------------------
 			// LOAD a dummy appearance until real ones are available
 			// for this building!
-			terrainObjectAppearanceType = appearanceTypeList->getAppearance(appearanceType,"TESTOBJ");
+			terrainObjectAppearanceType = appearanceTypeList->getAppearance(appearanceType, "TESTOBJ");
 		}
-	  
-	   	appearance = new BldgAppearance;
+		appearance = new BldgAppearance;
 		gosASSERT(appearance != nullptr);
-
 		//--------------------------------------------------------------
 		// The only appearance type for buildings is MLR_APPEARANCE.
 		gosASSERT(terrainObjectAppearanceType->getAppearanceClass() == BLDG_TYPE);
-		
 		appearance->init((BldgAppearanceType*)terrainObjectAppearanceType, (GameObjectPtr)this);
 	}
-
-	if (objType->getExtentRadius() > 0.0)
+	if(objType->getExtentRadius() > 0.0)
 		setTangible(true);
-
 	objectClass = TERRAINOBJECT;
-	switch (((TerrainObjectTypePtr)objType)->subType) {
+	switch(((TerrainObjectTypePtr)objType)->subType)
+	{
 		case TERROBJ_NONE:
-			if (((TerrainObjectTypePtr)objType)->getDamageLevel() == 0.0) {
+			if(((TerrainObjectTypePtr)objType)->getDamageLevel() == 0.0)
+			{
 				//--------------------------------------------------------
 				// We are already destroyed.  Used for extraction Markers
 				setTangible(false);
@@ -786,106 +735,90 @@ void TerrainObject::init (bool create, ObjectTypePtr objType) {
 			objectClass = BRIDGE;
 			break;
 	}
-}	
-
-//---------------------------------------------------------------------------
-
-void TerrainObject::killFire (void) {
-
 }
 
 //---------------------------------------------------------------------------
 
-void TerrainObject::lightOnFire (float timeToBurn) 
+void TerrainObject::killFire(void)
+{
+}
+
+//---------------------------------------------------------------------------
+
+void TerrainObject::lightOnFire(float timeToBurn)
 {
 }
 
 #define DUST_POOF_ID		32
 //---------------------------------------------------------------------------
-int32_t TerrainObject::handleWeaponHit (WeaponShotInfoPtr shotInfo, bool addMultiplayChunk) {
-
-	if (!shotInfo)
+int32_t TerrainObject::handleWeaponHit(WeaponShotInfoPtr shotInfo, bool addMultiplayChunk)
+{
+	if(!shotInfo)
 		return(NO_ERROR);
-
-	if (addMultiplayChunk)
+	if(addMultiplayChunk)
 		MPlayer->addWeaponHitChunk(this, shotInfo);
-
-	if (!getFlag(OBJECT_FLAG_DAMAGED)) 
+	if(!getFlag(OBJECT_FLAG_DAMAGED))
 	{
 		float curDamage = getDamage();
 		TerrainObjectTypePtr type = (TerrainObjectTypePtr)getObjectType();
-		switch (type->subType) 
+		switch(type->subType)
 		{
 			case TERROBJ_NONE:
 				curDamage += shotInfo->damage;
-				if (curDamage > type->getDamageLevel())
+				if(curDamage > type->getDamageLevel())
 					curDamage = type->getDamageLevel();
 				setDamage(curDamage);
-				
-				if (curDamage >= type->getDamageLevel())
+				if(curDamage >= type->getDamageLevel())
 				{
 					setFlag(OBJECT_FLAG_DAMAGED, true);
 					curDamage = type->getDamageLevel();
 					setStatus(OBJECT_STATUS_DESTROYED);
 					setTangible(false);
-
 					appearance->markLOS(true);
 					appearance->setObjStatus(OBJECT_STATUS_DESTROYED);
 					appearance->setLightsOut(true);
 					appearance->recalcBounds();
 					appearance->update();
 					appearance->markLOS();
-					
-					if (!shotInfo->attackerWID && (shotInfo->masterId == -1))	//Somebody stepped on me.
+					if(!shotInfo->attackerWID && (shotInfo->masterId == -1))	//Somebody stepped on me.
 					{
 						//--------------------------------------------
 						//Play a Dust Poof.
-						if (useNonWeaponEffects)
+						if(useNonWeaponEffects)
 						{
 							uint32_t flags = gosFX::Effect::ExecuteFlag;
-					
 							Check_Object(gosFX::EffectLibrary::Instance);
 							gosFX::Effect::Specification* gosEffectSpec = gosFX::EffectLibrary::Instance->Find(weaponEffects->GetEffectName(DUST_POOF_ID));
-							
-							if (gosEffectSpec)
+							if(gosEffectSpec)
 							{
 								bldgDustPoofEffect = gosFX::EffectLibrary::Instance->MakeEffect(gosEffectSpec->m_effectID, flags);
 								gosASSERT(bldgDustPoofEffect != nullptr);
 							}
-								
 							MidLevelRenderer::MLRTexturePool::Instance->LoadImages();
 						}
-						
-						if (bldgDustPoofEffect)
+						if(bldgDustPoofEffect)
 						{
 							Stuff::Point3D			actualPosition;
 							Stuff::LinearMatrix4D 	shapeOrigin;
 							Stuff::LinearMatrix4D	localToWorld;
-							
 							actualPosition.x = -position.x;
 							actualPosition.y = position.z;
 							actualPosition.z = position.y;
-							
-							shapeOrigin.BuildRotation(Stuff::EulerAngles(0.0f,0.0f,0.0f));
+							shapeOrigin.BuildRotation(Stuff::EulerAngles(0.0f, 0.0f, 0.0f));
 							shapeOrigin.BuildTranslation(actualPosition);
-							
-							gosFX::Effect::ExecuteInfo info((Stuff::Time)scenarioTime,&shapeOrigin,nullptr);
+							gosFX::Effect::ExecuteInfo info((Stuff::Time)scenarioTime, &shapeOrigin, nullptr);
 							bldgDustPoofEffect->Start(&info);
 						}
 					}
 				}
-
-			break;
-
+				break;
 			case TERROBJ_TREE:
 				setDamage(curDamage + 1.0);
-				
-				if (curDamage > type->getDamageLevel())
+				if(curDamage > type->getDamageLevel())
 				{
 					setFlag(OBJECT_FLAG_DAMAGED, true);
 					curDamage = type->getDamageLevel();
 					setStatus(OBJECT_STATUS_DESTROYED);
-
 					appearance->markLOS(true);
 					appearance->setObjStatus(OBJECT_STATUS_DESTROYED);
 					appearance->setLightsOut(true);
@@ -894,10 +827,10 @@ int32_t TerrainObject::handleWeaponHit (WeaponShotInfoPtr shotInfo, bool addMult
 					appearance->markLOS();
 				}
 				break;
-			case TERROBJ_FOREST: 
+			case TERROBJ_FOREST:
 			{
 				curDamage += shotInfo->damage;
-				if (curDamage >= type->getDamageLevel()) 
+				if(curDamage >= type->getDamageLevel())
 				{
 					type->createExplosion(position, 0, 0);
 					setStatus(OBJECT_STATUS_DESTROYED);
@@ -906,37 +839,34 @@ int32_t TerrainObject::handleWeaponHit (WeaponShotInfoPtr shotInfo, bool addMult
 				setDamage(curDamage);
 			}
 			break;
-
 			case TERROBJ_WALL_HEAVY:
 			case TERROBJ_WALL_MEDIUM:
 			case TERROBJ_WALL_LIGHT:
 				curDamage += shotInfo->damage;
-				if (curDamage >= type->getDamageLevel()) 
+				if(curDamage >= type->getDamageLevel())
 				{
 					type->createExplosion(position, 0, 0);
 					setStatus(OBJECT_STATUS_DESTROYED);
-					if (type->subType == TERROBJ_WALL_LIGHT)
+					if(type->subType == TERROBJ_WALL_LIGHT)
 						soundSystem->playDigitalSample(BREAKINGFENCE, getPosition(), true);
 				}
 				setDamage(curDamage);
-			break;
+				break;
 		}
 	}
-	
 	return(NO_ERROR);
 }
 
 //---------------------------------------------------------------------------
 
-void TerrainObject::setTerrainPosition (const Stuff::Vector3D& position, const Stuff::Vector2DOf<int32_t>& numbers)
+void TerrainObject::setTerrainPosition(const Stuff::Vector3D& position, const Stuff::Vector2DOf<int32_t>& numbers)
 {
-	setPosition( position );
-				
+	setPosition(position);
 	vertexNumber = numbers.x;
 	blockNumber = numbers.y;
 }
 
-void TerrainObject::setRotation( float rot )
+void TerrainObject::setRotation(float rot)
 {
 	rotation = rot;
 	((ObjectAppearance*)appearance)->rotation = rot;
@@ -944,8 +874,8 @@ void TerrainObject::setRotation( float rot )
 
 //---------------------------------------------------------------------------
 
-void TerrainObject::calcCellFootprint (Stuff::Vector3D& pos) {
-
+void TerrainObject::calcCellFootprint(Stuff::Vector3D& pos)
+{
 	int16_t cellList[MAX_CELL_COORDS];
 	cellList[0] = MAX_CELL_COORDS;
 	int32_t numCoords = appearance->calcCellsCovered(pos, cellList);
@@ -954,20 +884,20 @@ void TerrainObject::calcCellFootprint (Stuff::Vector3D& pos) {
 	int32_t maxRow = 0;
 	int32_t maxCol = 0;
 	int32_t curCoord = 0;
-	while (curCoord < numCoords) {
-		if (cellList[curCoord] < minRow)
+	while(curCoord < numCoords)
+	{
+		if(cellList[curCoord] < minRow)
 			minRow = cellList[curCoord];
-		if (cellList[curCoord] > maxRow)
+		if(cellList[curCoord] > maxRow)
 			maxRow = cellList[curCoord];
 		curCoord++;
-		if (cellList[curCoord] < minCol)
+		if(cellList[curCoord] < minCol)
 			minCol = cellList[curCoord];
-		if (cellList[curCoord] > maxCol)
+		if(cellList[curCoord] > maxCol)
 			maxCol = cellList[curCoord];
 		curCoord++;
 	}
-	
-	if (numCoords)
+	if(numCoords)
 	{
 		cellFootprint[0] = minRow;
 		cellFootprint[1] = minCol;
@@ -984,7 +914,6 @@ void TerrainObject::calcCellFootprint (Stuff::Vector3D& pos) {
 		cellFootprint[1] = 0;
 		cellFootprint[2] = 0;
 		cellFootprint[3] = 0;
-
 		vectorFootprint[0].Zero();
 		vectorFootprint[1].Zero();
 		vectorFootprint[2].Zero();
@@ -994,206 +923,210 @@ void TerrainObject::calcCellFootprint (Stuff::Vector3D& pos) {
 
 //---------------------------------------------------------------------------
 
-int32_t TerrainObject::getLineOfSightNodes (int32_t eyeCellRow, int32_t eyeCellCol, int32_t* cells) {
-
+int32_t TerrainObject::getLineOfSightNodes(int32_t eyeCellRow, int32_t eyeCellCol, int32_t* cells)
+{
 	cells[0] = cellFootprint[0];
 	cells[1] = cellFootprint[1];
-
 	cells[2] = cellFootprint[0];
 	cells[3] = cellFootprint[3];
-
 	cells[4] = cellFootprint[2];
 	cells[5] = cellFootprint[3];
-
 	cells[6] = cellFootprint[2];
 	cells[7] = cellFootprint[1];
-
 	return(4);
 }
 
 //---------------------------------------------------------------------------
 
-void TerrainObject::calcSubAreas (int32_t numCells, int16_t cells[MAX_GAME_OBJECT_CELLS][2]) {
-
+void TerrainObject::calcSubAreas(int32_t numCells, int16_t cells[MAX_GAME_OBJECT_CELLS][2])
+{
 	numCellsCovered = numCells;
-	if (numCellsCovered) {
+	if(numCellsCovered)
+	{
 		cellsCovered = (pint16_t)systemHeap->Malloc(4 * numCellsCovered);
-		if (cellsCovered) {
+		if(cellsCovered)
+		{
 			pint16_t curCoord = cellsCovered;
-			for (int32_t j = 0; j < numCellsCovered; j++) {
+			for(auto j = 0; j < numCellsCovered; j++)
+			{
 				*curCoord++ = cells[j][0];
 				*curCoord++ = cells[j][1];
 			}
 		}
-	
 		numSubAreas0 = 0;
 		pint16_t curCoord = cellsCovered;
-		for (int32_t i = 0; i < numCellsCovered; i++) 
+		for(size_t i = 0; i < numCellsCovered; i++)
 		{
 			int32_t r = *curCoord++;
 			int32_t c = *curCoord++;
 			int32_t area = GlobalMoveMap[0]->calcArea(r, c);
 			bool addIt = true;
-			for (int32_t j = 0; j < numSubAreas0; j++)
-				if (subAreas0[j] == area) 
+			for(auto j = 0; j < numSubAreas0; j++)
+				if(subAreas0[j] == area)
 				{
 					addIt = false;
 					break;
 				}
-
-			if (addIt) 
+			if(addIt)
 			{
-				if (!subAreas0)
+				if(!subAreas0)
 				{
-					subAreas0 = (pint16_t )ObjectTypeManager::objectCache->Malloc(sizeof(int16_t) * MAX_SPECIAL_SUB_AREAS);
-					memset(subAreas0,0,sizeof(int16_t) * MAX_SPECIAL_SUB_AREAS);
+					subAreas0 = (pint16_t)ObjectTypeManager::objectCache->Malloc(sizeof(int16_t) * MAX_SPECIAL_SUB_AREAS);
+					memset(subAreas0, 0, sizeof(int16_t) * MAX_SPECIAL_SUB_AREAS);
 				}
-
 				subAreas0[numSubAreas0++] = area;
 			}
 		}
-
 		numSubAreas1 = 0;
 		curCoord = cellsCovered;
-		for (i = 0; i < numCellsCovered; i++) 
+		for(i = 0; i < numCellsCovered; i++)
 		{
 			int32_t r = *curCoord++;
 			int32_t c = *curCoord++;
 			int32_t area = GlobalMoveMap[1]->calcArea(r, c);
 			bool addIt = true;
-			for (int32_t j = 0; j < numSubAreas1; j++)
-				if (subAreas1[j] == area) 
+			for(auto j = 0; j < numSubAreas1; j++)
+				if(subAreas1[j] == area)
 				{
 					addIt = false;
 					break;
 				}
-
-			if (addIt) 
+			if(addIt)
 			{
-				if (!subAreas1)
+				if(!subAreas1)
 				{
-					subAreas1 = (pint16_t )ObjectTypeManager::objectCache->Malloc(sizeof(int16_t) * MAX_SPECIAL_SUB_AREAS);
-					memset(subAreas1,0,sizeof(int16_t) * MAX_SPECIAL_SUB_AREAS);
+					subAreas1 = (pint16_t)ObjectTypeManager::objectCache->Malloc(sizeof(int16_t) * MAX_SPECIAL_SUB_AREAS);
+					memset(subAreas1, 0, sizeof(int16_t) * MAX_SPECIAL_SUB_AREAS);
 				}
-
 				subAreas1[numSubAreas1++] = area;
 			}
 		}
-
-		for (i = 0; i < numSubAreas0; i++)
+		for(i = 0; i < numSubAreas0; i++)
 			GlobalMoveMap[0]->setAreaOwnerWID(subAreas0[i], getWatchID());
-
-		for (i = 0; i < numSubAreas1; i++)
+		for(i = 0; i < numSubAreas1; i++)
 			GlobalMoveMap[1]->setAreaOwnerWID(subAreas1[i], getWatchID());
 	}
 }
 
 //---------------------------------------------------------------------------
 
-void TerrainObject::markMoveMap (bool passable) {
-	
+void TerrainObject::markMoveMap(bool passable)
+{
 	pint16_t curCoord = cellsCovered;
-	for (int32_t i = 0; i < numCellsCovered; i++) {
+	for(size_t i = 0; i < numCellsCovered; i++)
+	{
 		int32_t r = *curCoord++;
 		int32_t c = *curCoord++;
 		GameMap->setPassable(r, c, passable);
-		if (passable)
+		if(passable)
 			GameMap->setLocalHeight(r, c, 0.0f);
 	}
 }
 
 //---------------------------------------------------------------------------
 
-void TerrainObject::openSubAreas (void) {
-
+void TerrainObject::openSubAreas(void)
+{
 	markMoveMap(true);
-	for (int32_t i = 0; i < numSubAreas0; i++)
+	for(size_t i = 0; i < numSubAreas0; i++)
 		GlobalMoveMap[0]->openArea(subAreas0[i]);
-	for (i = 0; i < numSubAreas1; i++)
+	for(i = 0; i < numSubAreas1; i++)
 		GlobalMoveMap[1]->openArea(subAreas1[i]);
 }
 
 //---------------------------------------------------------------------------
 
-void TerrainObject::closeSubAreas (void) {
-
+void TerrainObject::closeSubAreas(void)
+{
 	markMoveMap(false);
-	for (int32_t i = 0; i < numSubAreas0; i++)
+	for(size_t i = 0; i < numSubAreas0; i++)
 		GlobalMoveMap[0]->closeArea(subAreas0[i]);
-	for (i = 0; i < numSubAreas1; i++)
+	for(i = 0; i < numSubAreas1; i++)
 		GlobalMoveMap[1]->closeArea(subAreas1[i]);
 }
 
 //---------------------------------------------------------------------------
 
-void TerrainObject::setSubAreasTeamId (int32_t id) {
-
-	for (int32_t i = 0; i < numSubAreas0; i++)
+void TerrainObject::setSubAreasTeamId(int32_t id)
+{
+	for(size_t i = 0; i < numSubAreas0; i++)
 		GlobalMoveMap[0]->setAreaTeamID(subAreas0[i], id);
-	for (i = 0; i < numSubAreas1; i++)
+	for(i = 0; i < numSubAreas1; i++)
 		GlobalMoveMap[1]->setAreaTeamID(subAreas1[i], id);
 }
 
 //---------------------------------------------------------------------------
 
-bool TerrainObject::calcAdjacentAreaCell (int32_t moveLevel, int32_t areaID, int32_t& adjRow, int32_t& adjCol) {
-
-	if (areaID == -1) {
+bool TerrainObject::calcAdjacentAreaCell(int32_t moveLevel, int32_t areaID, int32_t& adjRow, int32_t& adjCol)
+{
+	if(areaID == -1)
+	{
 		pint16_t curCoord = cellsCovered;
-		for (int32_t i = 0; i < numCellsCovered; i++) {
+		for(size_t i = 0; i < numCellsCovered; i++)
+		{
 			int32_t cellRow = *curCoord++;
 			int32_t cellCol = *curCoord++;
 			int32_t adjArea = GlobalMoveMap[moveLevel]->calcArea(cellRow - 1, cellCol);
-			if (adjArea > -1) {
+			if(adjArea > -1)
+			{
 				adjRow = cellRow - 1;
 				adjCol = cellCol;
 				return(true);
 			}
 			adjArea = GlobalMoveMap[moveLevel]->calcArea(cellRow, cellCol + 1);
-			if (adjArea > -1) {
+			if(adjArea > -1)
+			{
 				adjRow = cellRow;
 				adjCol = cellCol + 1;
 				return(true);
 			}
 			adjArea = GlobalMoveMap[moveLevel]->calcArea(cellRow + 1, cellCol);
-			if (adjArea > -1) {
+			if(adjArea > -1)
+			{
 				adjRow = cellRow + 1;
 				adjCol = cellCol;
 				return(true);
 			}
 			adjArea = GlobalMoveMap[moveLevel]->calcArea(cellRow, cellCol - 1);
-			if (adjArea > -1) {
+			if(adjArea > -1)
+			{
 				adjRow = cellRow;
 				adjCol = cellCol - 1;
 				return(true);
 			}
 		}
-		}
-	else {
+	}
+	else
+	{
 		pint16_t curCoord = cellsCovered;
-		for (int32_t i = 0; i < numCellsCovered; i++) {
+		for(size_t i = 0; i < numCellsCovered; i++)
+		{
 			int32_t cellRow = *curCoord++;
 			int32_t cellCol = *curCoord++;
 			int32_t adjArea = GlobalMoveMap[moveLevel]->calcArea(cellRow - 1, cellCol);
-			if (adjArea == areaID) {
+			if(adjArea == areaID)
+			{
 				adjRow = cellRow - 1;
 				adjCol = cellCol;
 				return(true);
 			}
 			adjArea = GlobalMoveMap[moveLevel]->calcArea(cellRow, cellCol + 1);
-			if (adjArea == areaID) {
+			if(adjArea == areaID)
+			{
 				adjRow = cellRow;
 				adjCol = cellCol + 1;
 				return(true);
 			}
 			adjArea = GlobalMoveMap[moveLevel]->calcArea(cellRow + 1, cellCol);
-			if (adjArea == areaID) {
+			if(adjArea == areaID)
+			{
 				adjRow = cellRow + 1;
 				adjCol = cellCol;
 				return(true);
 			}
 			adjArea = GlobalMoveMap[moveLevel]->calcArea(cellRow, cellCol - 1);
-			if (adjArea == areaID) {
+			if(adjArea == areaID)
+			{
 				adjRow = cellRow;
 				adjCol = cellCol - 1;
 				return(true);
@@ -1204,17 +1137,16 @@ bool TerrainObject::calcAdjacentAreaCell (int32_t moveLevel, int32_t areaID, int
 }
 
 //***************************************************************************
-void TerrainObject::Save (PacketFilePtr file, int32_t packetNum)
+void TerrainObject::Save(PacketFilePtr file, int32_t packetNum)
 {
 	TerrainObjectData data;
 	CopyTo(&data);
-
 	//PacketNum incremented in ObjectManager!!
-	file->writePacket(packetNum,(puint8_t)&data,sizeof(TerrainObjectData),STORAGE_TYPE_ZLIB);
+	file->writePacket(packetNum, (puint8_t)&data, sizeof(TerrainObjectData), STORAGE_TYPE_ZLIB);
 }
 
 //***************************************************************************
-void TerrainObject::CopyTo (TerrainObjectData *data)
+void TerrainObject::CopyTo(TerrainObjectData* data)
 {
 	data->damage = damage;
 	data->vertexNumber = vertexNumber;
@@ -1222,67 +1154,56 @@ void TerrainObject::CopyTo (TerrainObjectData *data)
 	data->pitchAngle = pitchAngle;
 	data->fallRate = fallRate;
 	data->powerSupply = powerSupply;
-	memcpy(data->cellFootprint,cellFootprint,sizeof(int16_t) * 4);
-	memcpy(data->vectorFootprint,vectorFootprint,sizeof(Stuff::Vector3D) * 4);
+	memcpy(data->cellFootprint, cellFootprint, sizeof(int16_t) * 4);
+	memcpy(data->vectorFootprint, vectorFootprint, sizeof(Stuff::Vector3D) * 4);
 	data->numSubAreas0 = numSubAreas0;
 	data->numSubAreas1 = numSubAreas1;
-
-	if (subAreas0)
-		memcpy(data->subAreas0,subAreas0,sizeof(int16_t) * MAX_SPECIAL_SUB_AREAS);
+	if(subAreas0)
+		memcpy(data->subAreas0, subAreas0, sizeof(int16_t) * MAX_SPECIAL_SUB_AREAS);
 	else
-		memset(data->subAreas0,0,sizeof(int16_t) * MAX_SPECIAL_SUB_AREAS);
-
-	if (subAreas1)
-		memcpy(data->subAreas1,subAreas1,sizeof(int16_t) * MAX_SPECIAL_SUB_AREAS);
+		memset(data->subAreas0, 0, sizeof(int16_t) * MAX_SPECIAL_SUB_AREAS);
+	if(subAreas1)
+		memcpy(data->subAreas1, subAreas1, sizeof(int16_t) * MAX_SPECIAL_SUB_AREAS);
 	else
-		memset(data->subAreas1,0,sizeof(int16_t) * MAX_SPECIAL_SUB_AREAS);
-
+		memset(data->subAreas1, 0, sizeof(int16_t) * MAX_SPECIAL_SUB_AREAS);
 	data->listID = listID;
-
 	data->numCellsCovered = numCellsCovered;
-	if (numCellsCovered >= 162)
-		STOP(("Object %d covers too many cells in Save/Load!!",getObjectType()->getObjTypeNum()));
-
-	memcpy(data->cellsCovered,cellsCovered, sizeof(int16_t) * numCellsCovered * 2);
-
-	GameObject::CopyTo(dynamic_cast<GameObjectData *>(data));
+	if(numCellsCovered >= 162)
+		STOP(("Object %d covers too many cells in Save/Load!!", getObjectType()->getObjTypeNum()));
+	memcpy(data->cellsCovered, cellsCovered, sizeof(int16_t) * numCellsCovered * 2);
+	GameObject::CopyTo(dynamic_cast<GameObjectData*>(data));
 }
 
 //---------------------------------------------------------------------------
-void TerrainObject::Load (TerrainObjectData *data)
+void TerrainObject::Load(TerrainObjectData* data)
 {
-	GameObject::Load(dynamic_cast<GameObjectData *>(data)); 
-
+	GameObject::Load(dynamic_cast<GameObjectData*>(data));
 	damage = data->damage;
 	vertexNumber = data->vertexNumber;
 	blockNumber = data->blockNumber;
 	pitchAngle = data->pitchAngle;
 	fallRate = data->fallRate;
 	powerSupply = data->powerSupply;
-	memcpy(cellFootprint,data->cellFootprint,sizeof(int16_t) * 4);
-	memcpy(vectorFootprint,data->vectorFootprint,sizeof(Stuff::Vector3D) * 4);
+	memcpy(cellFootprint, data->cellFootprint, sizeof(int16_t) * 4);
+	memcpy(vectorFootprint, data->vectorFootprint, sizeof(Stuff::Vector3D) * 4);
 	numSubAreas0 = data->numSubAreas0;
 	numSubAreas1 = data->numSubAreas1;
-
-	if (numSubAreas0)
+	if(numSubAreas0)
 	{
-		subAreas0 = (pint16_t )ObjectTypeManager::objectCache->Malloc(sizeof(int16_t) * MAX_SPECIAL_SUB_AREAS);
-		memcpy(subAreas0,data->subAreas0,sizeof(int16_t) * MAX_SPECIAL_SUB_AREAS);
+		subAreas0 = (pint16_t)ObjectTypeManager::objectCache->Malloc(sizeof(int16_t) * MAX_SPECIAL_SUB_AREAS);
+		memcpy(subAreas0, data->subAreas0, sizeof(int16_t) * MAX_SPECIAL_SUB_AREAS);
 	}
-
-	if (numSubAreas1)
+	if(numSubAreas1)
 	{
-		subAreas1 = (pint16_t )ObjectTypeManager::objectCache->Malloc(sizeof(int16_t) * MAX_SPECIAL_SUB_AREAS);
-		memcpy(subAreas1,data->subAreas1,sizeof(int16_t) * MAX_SPECIAL_SUB_AREAS);
+		subAreas1 = (pint16_t)ObjectTypeManager::objectCache->Malloc(sizeof(int16_t) * MAX_SPECIAL_SUB_AREAS);
+		memcpy(subAreas1, data->subAreas1, sizeof(int16_t) * MAX_SPECIAL_SUB_AREAS);
 	}
-
 	listID = data->listID;
-
 	numCellsCovered = data->numCellsCovered;
-	if (numCellsCovered)
+	if(numCellsCovered)
 	{
 		cellsCovered = (pint16_t)systemHeap->Malloc(sizeof(int16_t) * numCellsCovered * 2);
-		memcpy(cellsCovered, data->cellsCovered,sizeof(int16_t) * numCellsCovered * 2);
+		memcpy(cellsCovered, data->cellsCovered, sizeof(int16_t) * numCellsCovered * 2);
 	}
 }
 

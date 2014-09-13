@@ -29,64 +29,67 @@ MechPurchaseScreen:
 **************************************************************************************************/
 class MechPurchaseScreen: public LogisticsScreen
 {
-	public:
+public:
 
-		static MechPurchaseScreen* instance() { return s_instance; }
+	static MechPurchaseScreen* instance()
+	{
+		return s_instance;
+	}
 
-		MechPurchaseScreen(void);
-		virtual				~MechPurchaseScreen(void);
+	MechPurchaseScreen(void);
+	virtual				~MechPurchaseScreen(void);
 
-		int32_t					init( FitIniFile& file );
+	int32_t					init(FitIniFile& file);
 
-		virtual void		begin(void);
-		virtual void		end(void);
-		virtual void		update(void);
-		virtual void		render(int32_t xOffset, int32_t yOffset);
+	virtual void		begin(void);
+	virtual void		end(void);
+	virtual void		update(void);
+	virtual void		render(int32_t xOffset, int32_t yOffset);
 
-		void				setMech( LogisticsMech* pMech, bool bFromLB = 0 );
-		void				beginDrag( LogisticsMech* pMech );
-		virtual int32_t			handleMessage( uint32_t, uint32_t );
+	void				setMech(LogisticsMech* pMech, bool bFromLB = 0);
+	void				beginDrag(LogisticsMech* pMech);
+	virtual int32_t			handleMessage(uint32_t, uint32_t);
 
-	private:
-	
-		MechPurchaseScreen( const MechPurchaseScreen& src );
-		MechPurchaseScreen& operator=( const MechPurchaseScreen& echPurchaseScreen );
+private:
 
-		MechListBox			inventoryListBox;
-		MechListBox			variantListBox;
-		LogisticsMechDisplay	mechDisplay;
+	MechPurchaseScreen(const MechPurchaseScreen& src);
+	MechPurchaseScreen& operator=(const MechPurchaseScreen& echPurchaseScreen);
 
-		LogisticsMech*		pDragMech;
-		aObject				dragIcon;
+	MechListBox			inventoryListBox;
+	MechListBox			variantListBox;
+	LogisticsMechDisplay	mechDisplay;
 
-		bool				acceptPressed;
+	LogisticsMech*		pDragMech;
+	aObject				dragIcon;
 
-
-		static MechPurchaseScreen* s_instance;
+	bool				acceptPressed;
 
 
-		bool				dragStartLeft;
+	static MechPurchaseScreen* s_instance;
 
-		
-		typedef EList<LogisticsMech, LogisticsMech > MECH_LIST;	
-		MECH_LIST		prevInventory;
 
-		float				countDownTime;
-		float				curCount;
-		float				previousAmount;
-		float				oldCBillsAmount;
+	bool				dragStartLeft;
 
-		float				flashTime;
+
+	typedef EList<LogisticsMech, LogisticsMech > MECH_LIST;
+	MECH_LIST		prevInventory;
+
+	float				countDownTime;
+	float				curCount;
+	float				previousAmount;
+	float				oldCBillsAmount;
+
+	float				flashTime;
 
 
 	// HELPER FUNCTIONS
 
-		void addSelectedMech(void);
-		void removeSelectedMech(void);
-		void addMech( LogisticsMech* pMech );
-		void removeMech( LogisticsMech* pMech );
-		void endDrag(void);
-		bool selectFirstBuyableMech(void);
+	void addSelectedMech(void);
+	void removeSelectedMech(void);
+	void addMech(LogisticsMech* pMech);
+	void removeMech(LogisticsMech* pMech);
+	void endDrag(void);
+	bool selectFirstBuyableMech(void);
 
 
 

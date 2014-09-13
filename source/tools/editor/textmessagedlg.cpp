@@ -40,7 +40,7 @@ void TextMessageDlg::DoDataExchange(CDataExchange* pDX)
 
 BEGIN_MESSAGE_MAP(TextMessageDlg, CDialog)
 	//{{AFX_MSG_MAP(TextMessageDlg)
-		// NOTE: the ClassWizard will add message map macros here
+	// NOTE: the ClassWizard will add message map macros here
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 

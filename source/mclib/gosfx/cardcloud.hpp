@@ -8,23 +8,26 @@
 #include <gosfx/spinningcloud.hpp>
 #include <mlr/mlr.hpp>
 
-namespace MidLevelRenderer {class MLRCardCloud;}
+namespace MidLevelRenderer
+{
+	class MLRCardCloud;
+}
 
 namespace gosFX
 {
-	//############################################################################
-	//########################  CardCloud__Specification  #############################
-	//############################################################################
+//############################################################################
+//########################  CardCloud__Specification  #############################
+//############################################################################
 
 	class CardCloud__Specification:
 		public SpinningCloud__Specification
 	{
-	//----------------------------------------------------------------------
-	// Constructors/Destructors
-	//
+		//----------------------------------------------------------------------
+		// Constructors/Destructors
+		//
 	protected:
 		CardCloud__Specification(
-			Stuff::MemoryStream *stream,
+			Stuff::MemoryStream* stream,
 			int32_t gfx_version
 		);
 
@@ -32,57 +35,57 @@ namespace gosFX
 		CardCloud__Specification(void);
 
 		static CardCloud__Specification*
-			Make(
-				Stuff::MemoryStream *stream,
-				int32_t gfx_version
-			);
+		Make(
+			Stuff::MemoryStream* stream,
+			int32_t gfx_version
+		);
 		void
-			Copy(CardCloud__Specification *spec);
+		Copy(CardCloud__Specification* spec);
 
 		void
-			Save(Stuff::MemoryStream *stream);
+		Save(Stuff::MemoryStream* stream);
 
-		void 
-			BuildDefaults(void);
-	
-		virtual bool 
-			IsDataValid(bool fix_data=false);
+		void
+		BuildDefaults(void);
 
-	//-------------------------------------------------------------------------
-	// FCurves
-	//
+		virtual bool
+		IsDataValid(bool fix_data = false);
+
+		//-------------------------------------------------------------------------
+		// FCurves
+		//
 	public:
-		SeededCurveOf<ComplexCurve, ComplexCurve,Curve::e_ComplexComplexType>
-			m_halfHeight,
-			m_aspectRatio;
-		SeededCurveOf<ComplexCurve, SplineCurve,Curve::e_ComplexSplineType>
-			m_pIndex;
+		SeededCurveOf<ComplexCurve, ComplexCurve, Curve::e_ComplexComplexType>
+		m_halfHeight,
+		m_aspectRatio;
+		SeededCurveOf<ComplexCurve, SplineCurve, Curve::e_ComplexSplineType>
+		m_pIndex;
 		ConstantCurve
-			m_UOffset,
-			m_VOffset,
-			m_USize,
-			m_VSize;
+		m_UOffset,
+		m_VOffset,
+		m_USize,
+		m_VSize;
 
 		bool
-			m_animated;
+		m_animated;
 		uint8_t
-			m_width;
+		m_width;
 
 		void
-			SetWidth(void);
+		SetWidth(void);
 	};
 
-	//############################################################################
-	//########################  SpinningCloud__Particle  #############################
-	//############################################################################
+//############################################################################
+//########################  SpinningCloud__Particle  #############################
+//############################################################################
 
 	class CardCloud__Particle:
 		public SpinningCloud__Particle
 	{
 	public:
 		float
-			m_halfX,
-			m_halfY;
+		m_halfX,
+		m_halfY;
 	};
 
 //############################################################################
@@ -91,9 +94,9 @@ namespace gosFX
 
 	class CardCloud : public SpinningCloud
 	{
-	//----------------------------------------------------------------------------
-	// Class Registration Support
-	//
+		//----------------------------------------------------------------------------
+		// Class Registration Support
+		//
 	public:
 		static void __stdcall InitializeClass(void);
 		static void __stdcall TerminateClass(void);
@@ -102,26 +105,27 @@ namespace gosFX
 		typedef CardCloud__Particle Particle;
 
 	public:
-		enum {
+		enum
+		{
 			ParticleSize =
 				sizeof(Particle)
-				 + 4*sizeof(Stuff::Point3D)
-				 + sizeof(Stuff::RGBAColor)
-				 + 4*sizeof(Stuff::Vector2DOf<float>)
+				+ 4 * sizeof(Stuff::Point3D)
+				+ sizeof(Stuff::RGBAColor)
+				+ 4 * sizeof(Stuff::Vector2DOf<float>)
 		};
 
 	protected:
-		MidLevelRenderer::MLRCardCloud * m_cloudImplementation;						// point to an MLR triangle cloud by Michael
-		Stuff::Point3D							*m_P_vertices;
-		Stuff::RGBAColor						*m_P_color;
-		Stuff::Vector2DOf<float>	*m_P_uvs;
+		MidLevelRenderer::MLRCardCloud* m_cloudImplementation;						// point to an MLR triangle cloud by Michael
+		Stuff::Point3D*							m_P_vertices;
+		Stuff::RGBAColor*						m_P_color;
+		Stuff::Vector2DOf<float>*	m_P_uvs;
 
-	//----------------------------------------------------------------------------
-	// Class Data Support
-	//
+		//----------------------------------------------------------------------------
+		// Class Data Support
+		//
 	protected:
 		CardCloud(
-			Specification *spec,
+			Specification* spec,
 			uint32_t flags
 		);
 
@@ -129,57 +133,58 @@ namespace gosFX
 		~CardCloud(void);
 
 		static CardCloud*
-			Make(
-				Specification *spec,
-				uint32_t flags
-			);
+		Make(
+			Specification* spec,
+			uint32_t flags
+		);
 
 		Specification*
-			GetSpecification()
-				{
-					Check_Object(this);
-					return
-						Cast_Object(Specification*, m_specification);
-				}
+		GetSpecification()
+		{
+			Check_Object(this);
+			return
+				Cast_Object(Specification*, m_specification);
+		}
 		Particle*
-			GetParticle(uint32_t index)
-				{
-					Check_Object(this); Check_Object(GetSpecification());
-					return
-						Cast_Pointer(
-							Particle*,
-							&m_data[index*GetSpecification()->m_particleClassSize]
-						);
-				}
+		GetParticle(uint32_t index)
+		{
+			Check_Object(this);
+			Check_Object(GetSpecification());
+			return
+				Cast_Pointer(
+					Particle*,
+					&m_data[index * GetSpecification()->m_particleClassSize]
+				);
+		}
 
 		static ClassData* DefaultData;
 
-	//----------------------------------------------------------------------------
-	// Testing
-	//
+		//----------------------------------------------------------------------------
+		// Testing
+		//
 	public:
 		void TestInstance(void) const;
 
-	//----------------------------------------------------------------------------
-	// API
-	//
+		//----------------------------------------------------------------------------
+		// API
+		//
 	protected:
 		bool
-			AnimateParticle(
-				uint32_t index,
-				const Stuff::LinearMatrix4D *world_to_new_local,
-				Stuff::Time till
-			);
+		AnimateParticle(
+			uint32_t index,
+			const Stuff::LinearMatrix4D* world_to_new_local,
+			Stuff::Time till
+		);
 		void
-			CreateNewParticle(
-				uint32_t index,
-				Stuff::Point3D *translation
-			);
+		CreateNewParticle(
+			uint32_t index,
+			Stuff::Point3D* translation
+		);
 		void
-			DestroyParticle(uint32_t index);
+		DestroyParticle(uint32_t index);
 
 	public:
 		void
-			Draw(DrawInfo *info);
+		Draw(DrawInfo* info);
 	};
 }

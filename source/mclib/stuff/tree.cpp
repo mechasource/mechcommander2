@@ -21,7 +21,7 @@ using namespace Stuff;
 // TreeNode
 //###########################################################################
 //
-TreeNode::TreeNode(Tree *tree, Plug *plug)
+TreeNode::TreeNode(Tree* tree, Plug* plug)
 	: Link(tree, plug)
 {
 	less = nullptr;
@@ -37,30 +37,26 @@ TreeNode::TreeNode(Tree *tree, Plug *plug)
 TreeNode::~TreeNode()
 {
 	Check_Object(this);
-	Tree *tree = Cast_Object(Tree*, socket);
+	Tree* tree = Cast_Object(Tree*, socket);
 	Check_Object(tree);
-
 	//
 	//-------------------------------------------
 	// Notify iterators that deletion is occuring
 	//-------------------------------------------
 	//
 	tree->SendIteratorMemo(PlugRemoved, this);
-
 	//
 	//-----------------------------------
 	// Tell the tree to release this node
 	//-----------------------------------
 	//
 	tree->SeverFromTreeNode(this);
-
 	//
 	//------------------------------------------
 	// Remove this link from any plug references
 	//------------------------------------------
 	//
 	ReleaseFromPlug();
-
 	//
 	//-------------------------------------------------------------
 	// Tell the node to release this link.  Note that this link
@@ -68,7 +64,7 @@ TreeNode::~TreeNode()
 	// time.
 	//-------------------------------------------------------------
 	//
-	if (tree->GetReleaseNode() != nullptr)
+	if(tree->GetReleaseNode() != nullptr)
 	{
 		Check_Object(tree->GetReleaseNode());
 		tree->GetReleaseNode()->ReleaseLinkHandler(tree, plug);
@@ -84,16 +80,15 @@ void
 TreeNode::TestInstance(void)
 {
 	Link::TestInstance();
-
-	if (less != nullptr)
+	if(less != nullptr)
 	{
 		Check_Signature(less);
 	}
-	if (greater != nullptr)
+	if(greater != nullptr)
 	{
 		Check_Signature(greater);
 	}
-	if (parent != nullptr)
+	if(parent != nullptr)
 	{
 		Check_Signature(parent);
 	}
@@ -104,7 +99,7 @@ TreeNode::TestInstance(void)
 // SetupTreeLinks
 //###########################################################################
 //
-void TreeNode::SetupTreeLinks(TreeNode *less, TreeNode *greater, TreeNode *parent)
+void TreeNode::SetupTreeLinks(TreeNode* less, TreeNode* greater, TreeNode* parent)
 {
 	Check_Object(this);
 	this->less = less;
@@ -119,7 +114,7 @@ void TreeNode::SetupTreeLinks(TreeNode *less, TreeNode *greater, TreeNode *paren
 // Tree
 //###########################################################################
 //
-Tree::Tree(Node *node, bool has_unique_entries)
+Tree::Tree(Node* node, bool has_unique_entries)
 	: SortedSocket(node, has_unique_entries)
 {
 	root = nullptr;
@@ -134,7 +129,7 @@ Tree::~Tree()
 {
 	Check_Object(this);
 	SetReleaseNode(nullptr);
-	while (root != nullptr)
+	while(root != nullptr)
 	{
 		Unregister_Object(root);
 		delete root;
@@ -150,11 +145,10 @@ void
 Tree::TestInstance()
 {
 	SortedSocket::TestInstance();
-
 	//
 	// Check root if not null
 	//
-	if (root != nullptr)
+	if(root != nullptr)
 	{
 		Check_Object(root);
 	}
@@ -167,11 +161,11 @@ Tree::TestInstance()
 //
 void
 Tree::AddImplementation(
-						Plug *plug
-						)
+	Plug* plug
+)
 {
 	Check_Object(this);
-	AddValueImplementation(plug, nullptr);	
+	AddValueImplementation(plug, nullptr);
 }
 
 //
@@ -181,26 +175,22 @@ Tree::AddImplementation(
 //
 void
 Tree::AddValueImplementation(
-							 Plug *plug,
-							 PCVOID value
-							 )
+	Plug* plug,
+	PCVOID value
+)
 {
 	Check_Object(this);
 	Check_Object(plug);
-
 	/*
 	* Verify that value has not been added
 	*/
 	Verify(HasUniqueEntries() ? SearchForValue(value) == nullptr : true);
-
 	/*
 	* Make new tree node
 	*/
-	TreeNode *node;
-
+	TreeNode* node;
 	node = MakeTreeNode(plug, value);
 	Register_Object(node);
-
 	/*
 	* Add to the tree and send iterators memo to
 	* update pointers
@@ -216,13 +206,12 @@ Tree::AddValueImplementation(
 //
 Plug*
 Tree::FindImplementation(
-						 PCVOID value
-						 )
+	PCVOID value
+)
 {
 	Check_Object(this);
-	TreeNode *node;
-
-	if ((node = SearchForValue(value)) != nullptr)
+	TreeNode* node;
+	if((node = SearchForValue(value)) != nullptr)
 	{
 		Check_Object(node);
 		return node->GetPlug();
@@ -249,9 +238,9 @@ Tree::IsEmpty()
 //
 TreeNode*
 Tree::MakeTreeNode(
-				   Plug*,
-				   PCVOID
-				   )
+	Plug*,
+	PCVOID
+)
 {
 	Check_Object(this);
 	STOP(("Tree::MakeTreeNode - Should never reach here"));
@@ -265,9 +254,9 @@ Tree::MakeTreeNode(
 //
 int32_t
 Tree::CompareTreeNodes(
-					   TreeNode*,
-					   TreeNode*
-					   )
+	TreeNode*,
+	TreeNode*
+)
 {
 	Check_Object(this);
 	STOP(("Tree::CompareTreeNodes - Should never reach here"));
@@ -281,9 +270,9 @@ Tree::CompareTreeNodes(
 //
 int32_t
 Tree::CompareValueToTreeNode(
-							 PCVOID,
-							 TreeNode*
-							 )
+	PCVOID,
+	TreeNode*
+)
 {
 	Check_Object(this);
 	STOP(("Tree::CompareValueToTreeNode - Should never reach here"));
@@ -297,52 +286,48 @@ Tree::CompareValueToTreeNode(
 //
 void
 Tree::AddTreeNode(
-				  TreeNode *newNode
-				  )
+	TreeNode* newNode
+)
 {
 	Check_Object(this);
 	Check_Object(newNode);
-
 	/*
 	* If root is nullptr this is the first item
 	*/
-	if (root == nullptr)
+	if(root == nullptr)
 	{
 		newNode->SetupTreeLinks(nullptr, nullptr, nullptr);
 		root = newNode;
 		return;
 	}
-
 	/*
 	* Search for insertion point
 	*/
-	TreeNode *node;
-
+	TreeNode* node;
 	node = root;
-	while (node != nullptr) 
+	while(node != nullptr)
 	{
 		Check_Object(node);
-
-		if (CompareTreeNodes(newNode, node) < 0) 
+		if(CompareTreeNodes(newNode, node) < 0)
 		{
-			if (node->less == nullptr) 
+			if(node->less == nullptr)
 			{
 				newNode->SetupTreeLinks(nullptr, nullptr, node);
 				node->less = newNode;
 				break;
 			}
-			else 
+			else
 				node = node->less;
 		}
-		else 
+		else
 		{
-			if (node->greater == nullptr) 
+			if(node->greater == nullptr)
 			{
 				newNode->SetupTreeLinks(nullptr, nullptr, node);
 				node->greater = newNode;
 				break;
 			}
-			else 
+			else
 				node = node->greater;
 		}
 	}
@@ -355,22 +340,21 @@ Tree::AddTreeNode(
 //
 void
 Tree::SeverFromTreeNode(
-						TreeNode *node
-						)
+	TreeNode* node
+)
 {
 	Check_Object(this);
 	Check_Object(node);
-
-	if (node->greater == nullptr)
+	if(node->greater == nullptr)
 	{
-		if (node->less == nullptr)
+		if(node->less == nullptr)
 		{
 			//
 			//--------------------------------------------------------------------
 			// The node has no subtrees
 			//--------------------------------------------------------------------
 			//
-			if (node == root)
+			if(node == root)
 			{
 				//
 				// Tree is now empty, set root to null
@@ -383,22 +367,21 @@ Tree::SeverFromTreeNode(
 				// Set appropiate branch to nullptr
 				//
 				Check_Object(node->parent);
-				if (node->parent->less == node)
+				if(node->parent->less == node)
 					node->parent->less = nullptr;
 				else
 					node->parent->greater = nullptr;
 			}
 		}
-		else 
-		{								
+		else
+		{
 			//
 			//--------------------------------------------------------------------
 			// The node has a less subtree
 			//--------------------------------------------------------------------
 			//
 			Check_Object(node->less);
-
-			if (node == root)
+			if(node == root)
 			{
 				//
 				// Node is root... Set subtree to new root
@@ -412,8 +395,8 @@ Tree::SeverFromTreeNode(
 				// Node is not root
 				// Set parents pointer to subtree
 				//
-				Check_Object( node->parent );
-				if (node->parent->less == node)
+				Check_Object(node->parent);
+				if(node->parent->less == node)
 				{
 					node->parent->less = node->less;
 				}
@@ -428,16 +411,17 @@ Tree::SeverFromTreeNode(
 			}
 		}
 	}
-	else {
-		if (node->less == nullptr)
+	else
+	{
+		if(node->less == nullptr)
 		{
 			//
 			//--------------------------------------------------------------------
 			// The node has a greater subtree
 			//--------------------------------------------------------------------
 			//
-			Check_Object( node->greater );
-			if (node == root)
+			Check_Object(node->greater);
+			if(node == root)
 			{
 				//
 				// Node is root
@@ -455,8 +439,8 @@ Tree::SeverFromTreeNode(
 				// Node is not root
 				// Set parents pointer to subtree
 				//
-				Check_Object( node->parent );
-				if (node->parent->less == node)
+				Check_Object(node->parent);
+				if(node->parent->less == node)
 					node->parent->less = node->greater;
 				else
 					node->parent->greater = node->greater;
@@ -473,44 +457,38 @@ Tree::SeverFromTreeNode(
 			// The node has lesser and greater sub-trees
 			//--------------------------------------------------------------------
 			//
-			TreeNode *successor;
-
+			TreeNode* successor;
 			Check_Object(node->less);
 			Check_Object(node->greater);
-
 			successor = node->greater;
-			while (successor->less != nullptr)
+			while(successor->less != nullptr)
 			{
 				successor = successor->less;
 				Check_Object(successor);
 			}
-
 			//
 			// Set successor's parent to subtree
 			//
 			Check_Object(successor->parent);
-			if (successor->parent->less == successor)
+			if(successor->parent->less == successor)
 				successor->parent->less = successor->greater;
 			else
 				successor->parent->greater = successor->greater;
-
 			//
 			// Set successor's subtree to parent
 			//
-			if (successor->greater != nullptr)
+			if(successor->greater != nullptr)
 			{
 				Check_Object(successor->greater);
 				successor->greater->parent = successor->parent;
 			}
-
 			//
 			// Place at node
 			//
 			successor->parent = node->parent;
 			successor->less = node->less;
 			successor->greater = node->greater;
-
-			if (root == node)
+			if(root == node)
 			{
 				//
 				// Node was root
@@ -523,21 +501,20 @@ Tree::SeverFromTreeNode(
 				// Set nodes parent to successor
 				//
 				Check_Object(successor->parent);
-				if (successor->parent->less == node)
+				if(successor->parent->less == node)
 					successor->parent->less = successor;
 				else
 					successor->parent->greater = successor;
 			}
-
 			//
 			// Set subtrees parent to successor
 			//
-			if (successor->greater != nullptr)
+			if(successor->greater != nullptr)
 			{
 				Check_Object(successor->greater);
 				successor->greater->parent = successor;
 			}
-			if (successor->less != nullptr)
+			if(successor->less != nullptr)
 			{
 				Check_Object(successor->less);
 				successor->less->parent = successor;
@@ -553,18 +530,17 @@ Tree::SeverFromTreeNode(
 //
 TreeNode*
 Tree::SearchForValue(
-					 PCVOID value
-					 )
+	PCVOID value
+)
 {
 	Check_Object(this);
-	TreeNode *node;
+	TreeNode* node;
 	int32_t ret;
-
 	node = root;
-	while (node != nullptr) 
+	while(node != nullptr)
 	{
 		Check_Object(node);
-		if ((ret = CompareValueToTreeNode(value, node)) == 0)
+		if((ret = CompareValueToTreeNode(value, node)) == 0)
 			break;
 		node = (ret < 0) ? node->less : node->greater;
 	}
@@ -576,8 +552,8 @@ Tree::SearchForValue(
 // TreeIterator
 //###########################################################################
 //
-TreeIterator::TreeIterator(Tree *tree):
-SortedIterator(tree)
+TreeIterator::TreeIterator(Tree* tree):
+	SortedIterator(tree)
 {
 	First();
 }
@@ -607,8 +583,7 @@ void
 TreeIterator::TestInstance()
 {
 	SortedIterator::TestInstance();
-
-	if (currentNode != nullptr) 
+	if(currentNode != nullptr)
 	{
 		Check_Object(currentNode);
 	}
@@ -622,18 +597,17 @@ TreeIterator::TestInstance()
 void
 TreeIterator::First()
 {
-	TreeNode *node;
-
+	TreeNode* node;
 	node = Cast_Object(Tree*, socket)->root;
-	if (node != nullptr) 
+	if(node != nullptr)
 	{
 		Check_Object(node);
-		while (node->less != nullptr) 
+		while(node->less != nullptr)
 		{
 			node = node->less;
 			Check_Object(node);
 		}
-	}	
+	}
 	currentNode = node;
 }
 
@@ -663,17 +637,15 @@ void TreeIterator::Last()
 void TreeIterator::Next()
 {
 	Check_Object(this);
-	TreeNode *node;
-
-	if ((node = currentNode) == nullptr)
+	TreeNode* node;
+	if((node = currentNode) == nullptr)
 		return;
-
 	Check_Object(node);
-	if (node->greater != nullptr) 
+	if(node->greater != nullptr)
 	{
 		node = node->greater;
 		Check_Object(node);
-		while (node->less != nullptr) 
+		while(node->less != nullptr)
 		{
 			node = node->less;
 			Check_Object(node);
@@ -681,12 +653,11 @@ void TreeIterator::Next()
 		currentNode = node;
 		return;
 	}
-
 	currentNode = nullptr;
-	while (node->parent != nullptr)
+	while(node->parent != nullptr)
 	{
 		Check_Object(node->parent);
-		if (node == node->parent->less) 
+		if(node == node->parent->less)
 		{
 			currentNode = node->parent;
 			return;
@@ -722,12 +693,11 @@ TreeIterator::Previous()
 //###########################################################################
 //
 void
-*TreeIterator::ReadAndNextImplementation()
+* TreeIterator::ReadAndNextImplementation()
 {
 	Check_Object(this);
 	PVOIDplug;
-
-	if ((plug = GetCurrentImplementation()) != nullptr)
+	if((plug = GetCurrentImplementation()) != nullptr)
 	{
 		Next();
 	}
@@ -742,7 +712,7 @@ void
 //###########################################################################
 //
 void
-*TreeIterator::ReadAndPreviousImplementation()
+* TreeIterator::ReadAndPreviousImplementation()
 {
 	Check_Object(this);
 #ifdef __BCPLUSPLUS__
@@ -760,10 +730,10 @@ void
 //###########################################################################
 //
 void
-*TreeIterator::GetCurrentImplementation()
+* TreeIterator::GetCurrentImplementation()
 {
 	Check_Object(this);
-	if (currentNode != nullptr)
+	if(currentNode != nullptr)
 	{
 		Check_Object(currentNode);
 		return currentNode->GetPlug();
@@ -782,8 +752,7 @@ TreeIterator::GetSize()
 	Check_Object(this);
 	TreeIterator	iterator(Cast_Object(Tree*, socket));
 	CollectionSize i = 0;
-
-	while (iterator.ReadAndNextImplementation() != nullptr)
+	while(iterator.ReadAndNextImplementation() != nullptr)
 	{
 		i++;
 	}
@@ -797,18 +766,17 @@ TreeIterator::GetSize()
 //###########################################################################
 //
 void
-*TreeIterator::GetNthImplementation(
-									CollectionSize index
-									)
+* TreeIterator::GetNthImplementation(
+	CollectionSize index
+)
 {
 	Check_Object(this);
 	CollectionSize i = 0;
-	void 				*plug;
-
+	void*				 plug;
 	First();
-	while ((plug = GetCurrentImplementation()) != nullptr)
+	while((plug = GetCurrentImplementation()) != nullptr)
 	{
-		if (i == index)
+		if(i == index)
 			return plug;
 		Next();
 		i++;
@@ -826,7 +794,7 @@ void
 TreeIterator::Remove()
 {
 	Check_Object(this);
-	if (currentNode != nullptr)
+	if(currentNode != nullptr)
 	{
 		Unregister_Object(currentNode);
 		delete currentNode;
@@ -840,13 +808,12 @@ TreeIterator::Remove()
 //
 Plug*
 TreeIterator::FindImplementation(
-								 PCVOID value
-								 )
+	PCVOID value
+)
 {
 	Check_Object(this);
-	TreeNode *node;
-
-	if ((node = Cast_Object(Tree*, socket)->SearchForValue(value)) != nullptr)
+	TreeNode* node;
+	if((node = Cast_Object(Tree*, socket)->SearchForValue(value)) != nullptr)
 	{
 		Check_Object(node);
 		return (currentNode = node)->GetPlug();
@@ -861,14 +828,14 @@ TreeIterator::FindImplementation(
 //
 void
 TreeIterator::ReceiveMemo(
-						  IteratorMemo memo,
-						  PVOID content
-						  )
+	IteratorMemo memo,
+	PVOID content
+)
 {
 	Check_Object(this);
-	if (memo == PlugRemoved)
+	if(memo == PlugRemoved)
 	{
-		if (content == currentNode)
+		if(content == currentNode)
 			Next();
 	}
 }

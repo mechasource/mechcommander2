@@ -36,7 +36,8 @@ const float TEXTURE_ADJUST_MAX	= (1.0f - TEXTURE_ADJUST_MIN);
 
 float averageFrameRate = 0.0f;
 int32_t currentFrameNum = 0;
-float last30Frames[30] = {
+float last30Frames[30] =
+{
 	0.0f, 0.0f, 0.0f, 0.0f, 0.0f,
 	0.0f, 0.0f, 0.0f, 0.0f, 0.0f,
 	0.0f, 0.0f, 0.0f, 0.0f, 0.0f,
@@ -52,41 +53,36 @@ void __stdcall ExitGameOS();
 
 //-----------------------------------------------------------------------
 // Class MC2Movie
-void MC2Movie::init (PSTR MC2Name, RECT mRect, bool useWaveFile)
+void MC2Movie::init(PSTR MC2Name, RECT mRect, bool useWaveFile)
 {
-		char MOVIEName[1024];
-		_splitpath(MC2Name,nullptr,nullptr,MOVIEName,nullptr);
-
-		m_MC2Name = new char [strlen(MOVIEName)+1];
-		memset(m_MC2Name,0,strlen(MOVIEName)+1);
-		strcpy(m_MC2Name,MOVIEName);
-
+	char MOVIEName[1024];
+	_splitpath(MC2Name, nullptr, nullptr, MOVIEName, nullptr);
+	m_MC2Name = new char [strlen(MOVIEName) + 1];
+	memset(m_MC2Name, 0, strlen(MOVIEName) + 1);
+	strcpy(m_MC2Name, MOVIEName);
 	//Set the volume based on master system volume.
 	// ONLY if we want silence!!!
-	if (useWaveFile && (prefs.DigitalMasterVolume != 0.0f))
+	if(useWaveFile && (prefs.DigitalMasterVolume != 0.0f))
 	{
 		separateWAVE = true;
 		soundStarted = false;
 		char MOVIEName[1024];
-		_splitpath(MC2Name,nullptr,nullptr,MOVIEName,nullptr);
-
-		waveName = new char [strlen(MOVIEName)+1];
-		memset(waveName,0,strlen(MOVIEName)+1);
-		strcpy(waveName,MOVIEName);
+		_splitpath(MC2Name, nullptr, nullptr, MOVIEName, nullptr);
+		waveName = new char [strlen(MOVIEName) + 1];
+		memset(waveName, 0, strlen(MOVIEName) + 1);
+		strcpy(waveName, MOVIEName);
 	}
-
-				numHigh = 1;
-
-			totalTexturesUsed = numWide * numHigh;
+	numHigh = 1;
+	totalTexturesUsed = numWide * numHigh;
 }
 
 //-----------------------------------------------------------------------
 //Changes rect.  If resize, calls malloc which will be QUITE painful during a MC2 playback
 // If just move, its awfully fast.
-void MC2Movie::setRect (RECT vRect)
+void MC2Movie::setRect(RECT vRect)
 {
-	if (((vRect.right - vRect.left) != (MC2Rect.right - MC2Rect.left)) ||
-		((vRect.bottom - vRect.top) != (MC2Rect.bottom - MC2Rect.top)))
+	if(((vRect.right - vRect.left) != (MC2Rect.right - MC2Rect.left)) ||
+			((vRect.bottom - vRect.top) != (MC2Rect.bottom - MC2Rect.top)))
 	{
 		//Size changed.  STOP for now to tell people this is bad!
 		// May be impossible to do when MC2 is running because MC2 counts on previous frame's contents not changing
@@ -101,46 +97,40 @@ void MC2Movie::setRect (RECT vRect)
 
 //-----------------------------------------------------------------------
 //Handles tickling MC2 to make sure we keep playing back
-bool MC2Movie::update (void)
+bool MC2Movie::update(void)
 {
-	if (!soundStarted && separateWAVE)
+	if(!soundStarted && separateWAVE)
 	{
 		soundStarted = true;
 		soundSystem->playDigitalStream(waveName);
 	}
-
-	if (
+	if(
 		stillPlaying)
 	{
-		if (forceStop)
+		if(forceStop)
 		{
 			stillPlaying = false;
-
-			if (separateWAVE)
+			if(separateWAVE)
 				soundSystem->stopSupportSample();
-
 			return true;
 		}
-	
 		return false;
 	}
-
 	return true;
 }
 
 //-----------------------------------------------------------------------
-//Actually moves frame data from MC2 to surface and/or texture(s) 
-void MC2Movie::BltMovieFrame (void)
+//Actually moves frame data from MC2 to surface and/or texture(s)
+void MC2Movie::BltMovieFrame(void)
 {
 }
 
 //-----------------------------------------------------------------------
 //Actually draws the MC2 texture using gos_DrawTriangle.
-void MC2Movie::render (void)
+void MC2Movie::render(void)
 {
-	if (!stillPlaying)
+	if(!stillPlaying)
 		return;
-
 }
 
 //--

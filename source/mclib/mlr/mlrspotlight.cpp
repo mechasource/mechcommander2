@@ -13,28 +13,28 @@ using namespace MidLevelRenderer;
 //#############################################################################
 
 MLRSpotLight::ClassData*
-	MLRSpotLight::DefaultData = nullptr;
+MLRSpotLight::DefaultData = nullptr;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	MLRSpotLight::InitializeClass()
+MLRSpotLight::InitializeClass()
 {
 	Verify(!DefaultData);
 	// Verify(gos_GetCurrentHeap() == StaticHeap);
 	DefaultData =
 		new ClassData(
-			MLRSpotLightClassID,
-			"MidLevelRenderer::MLRSpotLight",
-			MLRInfiniteLightWithFalloff::DefaultData
-		);
+		MLRSpotLightClassID,
+		"MidLevelRenderer::MLRSpotLight",
+		MLRInfiniteLightWithFalloff::DefaultData
+	);
 	Register_Object(DefaultData);
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	MLRSpotLight::TerminateClass()
+MLRSpotLight::TerminateClass()
 {
 	Unregister_Object(DefaultData);
 	delete DefaultData;
@@ -53,7 +53,7 @@ MLRSpotLight::MLRSpotLight() :
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 MLRSpotLight::MLRSpotLight(
-	Stuff::MemoryStream *stream,
+	Stuff::MemoryStream* stream,
 	uint32_t version
 ) :
 	MLRInfiniteLightWithFalloff(DefaultData, stream, version)
@@ -61,15 +61,15 @@ MLRSpotLight::MLRSpotLight(
 	Check_Object(stream);
 	//Verify(gos_GetCurrentHeap() == Heap);
 	lightMap = nullptr;
-	if (version > 7)
+	if(version > 7)
 	{
 		MString name;
 		*stream >> name;
-		if (name.GetLength() > 0)
+		if(name.GetLength() > 0)
 		{
 			Check_Object(MLRTexturePool::Instance);
-			MLRTexture *texture = (*MLRTexturePool::Instance)(name, 0);
-			if (!texture)
+			MLRTexture* texture = (*MLRTexturePool::Instance)(name, 0);
+			if(!texture)
 				texture = MLRTexturePool::Instance->Add(name, 0);
 			Check_Object(texture);
 			lightMap = new MLRLightMap(texture);
@@ -84,26 +84,26 @@ MLRSpotLight::MLRSpotLight(
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLRSpotLight::MLRSpotLight(Stuff::Page *page):
+MLRSpotLight::MLRSpotLight(Stuff::Page* page):
 	MLRInfiniteLightWithFalloff(DefaultData, page)
 {
 	Check_Object(page);
 	//Verify(gos_GetCurrentHeap() == Heap);
 	lightMap = nullptr;
 	PCSTR lightmap;
-	if (page->GetEntry("LightMap", &lightmap))
+	if(page->GetEntry("LightMap", &lightmap))
 	{
 		Check_Pointer(lightmap);
 		Check_Object(MLRTexturePool::Instance);
-		MLRTexture *texture = (*MLRTexturePool::Instance)(lightmap, 0);
-		if (!texture)
+		MLRTexture* texture = (*MLRTexturePool::Instance)(lightmap, 0);
+		if(!texture)
 			texture = MLRTexturePool::Instance->Add(lightmap, 0);
 		Check_Object(texture);
 		lightMap = new MLRLightMap(texture);
 		Check_Object(lightMap);
 		lightMask |= MLRState::LightMapLightingMode;
 	}
-	Degree angle=45.0;
+	Degree angle = 45.0;
 	page->GetEntry("Spread", &angle.angle);
 	SetSpreadAngle(angle);
 }
@@ -112,7 +112,7 @@ MLRSpotLight::MLRSpotLight(Stuff::Page *page):
 //
 MLRSpotLight::~MLRSpotLight()
 {
-	if (lightMap)
+	if(lightMap)
 	{
 		Check_Object(lightMap);
 		delete lightMap;
@@ -122,17 +122,16 @@ MLRSpotLight::~MLRSpotLight()
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	MLRSpotLight::Save(Stuff::MemoryStream *stream)
+MLRSpotLight::Save(Stuff::MemoryStream* stream)
 {
 	Check_Object(this);
 	Check_Object(stream);
-
 	MLRInfiniteLightWithFalloff::Save(stream);
-	if (lightMap)
+	if(lightMap)
 	{
 		Check_Object(lightMap);
 		uint32_t handle = lightMap->GetState().GetTextureHandle();
-		MLRTexture *texture = (*MLRTexturePool::Instance)[handle];
+		MLRTexture* texture = (*MLRTexturePool::Instance)[handle];
 		Check_Object(texture);
 		MString name = texture->GetTextureName();
 		*stream << name;
@@ -145,17 +144,16 @@ void
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	MLRSpotLight::Write(Stuff::Page *page)
+MLRSpotLight::Write(Stuff::Page* page)
 {
 	Check_Object(this);
 	Check_Object(page);
-
 	MLRInfiniteLightWithFalloff::Write(page);
-	if (lightMap)
+	if(lightMap)
 	{
 		Check_Object(lightMap);
 		uint32_t handle = lightMap->GetState().GetTextureHandle();
-		MLRTexture *texture = (*MLRTexturePool::Instance)[handle];
+		MLRTexture* texture = (*MLRTexturePool::Instance)[handle];
 		Check_Object(texture);
 		page->SetEntry("LightMap", texture->GetTextureName());
 	}
@@ -165,7 +163,7 @@ void
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	MLRSpotLight::TestInstance()
+MLRSpotLight::TestInstance()
 {
 	Verify(IsDerivedFrom(DefaultData));
 }
@@ -173,56 +171,46 @@ void
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	MLRSpotLight::SetSpreadAngle(const Radian &radian)
+MLRSpotLight::SetSpreadAngle(const Radian& radian)
 {
 	Check_Object(this);
-
 	spreadAngle = radian;
-
-	tanSpreadAngle = (Scalar)tan(spreadAngle);
-	cosSpreadAngle = (Scalar)cos(spreadAngle);
+	tanSpreadAngle = (float)tan(spreadAngle);
+	cosSpreadAngle = (float)cos(spreadAngle);
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	MLRSpotLight::SetSpreadAngle(const Degree &degree)
+MLRSpotLight::SetSpreadAngle(const Degree& degree)
 {
 	Check_Object(this);
-
 	spreadAngle = degree;
-
-	tanSpreadAngle = (Scalar)tan(spreadAngle);
-	cosSpreadAngle = (Scalar)cos(spreadAngle);
+	tanSpreadAngle = (float)tan(spreadAngle);
+	cosSpreadAngle = (float)cos(spreadAngle);
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 bool
-	MLRSpotLight::GetSpreadAngle(Radian *angle)
+MLRSpotLight::GetSpreadAngle(Radian* angle)
 {
 	Check_Object(this);
-
 	*angle = spreadAngle;
-
 	return true;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	MLRSpotLight::LightVertex(const MLRVertexData& vertexData)
+MLRSpotLight::LightVertex(const MLRVertexData& vertexData)
 {
 	UnitVector3D light_z;
 	RGBColor light_color(color);
 	Point3D vertex_to_light;
-
 	Verify(GetFalloffDistance(vertex_to_light.x, vertex_to_light.y));
-
 	GetInShapePosition(vertex_to_light);
-
 	vertex_to_light -= *vertexData.point;
-
 	//
 	//--------------------------------------------------------------
 	// If the distance to the vertex is zero, the light will not
@@ -230,9 +218,8 @@ void
 	// light level as appropriate to the distance
 	//--------------------------------------------------------------
 	//
-	Scalar length = vertex_to_light.GetApproximateLength();
-
-	Scalar falloff = 1.0f;
+	float length = vertex_to_light.GetApproximateLength();
+	float falloff = 1.0f;
 	if(GetFalloff(length, falloff))
 	{
 		light_color.red *= falloff;
@@ -243,44 +230,36 @@ void
 	{
 		return;
 	}
-
-	Scalar cos_spread_angle = GetCosSpreadAngle();
-
+	float cos_spread_angle = GetCosSpreadAngle();
 	GetInWorldDirection(light_z);
-
 	length = -1.0f / length;
 	vertex_to_light *= length;
-	
-	Scalar t = vertex_to_light * light_z;
-	
-	if (t <= cos_spread_angle)
+	float t = vertex_to_light * light_z;
+	if(t <= cos_spread_angle)
 	{
 		return;
 	}
+	/*	Verify(!Close_Enough(cos_spread_angle, 1.0f));
 
-/*	Verify(!Close_Enough(cos_spread_angle, 1.0f));
-	
-	spread = 1.0f - ((1.0f - t) / (1.0f - cos_spread_angle));
-	
-	light_color.red *= cos_spread_angle;
-	light_color.green *= cos_spread_angle;
-	light_color.blue *= cos_spread_angle;
-*/
+		spread = 1.0f - ((1.0f - t) / (1.0f - cos_spread_angle));
+
+		light_color.red *= cos_spread_angle;
+		light_color.green *= cos_spread_angle;
+		light_color.blue *= cos_spread_angle;
+	*/
 	light_z.x = vertex_to_light.x;
 	light_z.y = vertex_to_light.y;
 	light_z.z = vertex_to_light.z;
-
 	//
 	//-------------------------------------------------------------------
 	// Now we reduce the light level falling on the vertex based upon the
 	// cosine of the angle between light and normal
 	//-------------------------------------------------------------------
 	//
-	Scalar cosine = -(light_z * (*vertexData.normal)) * intensity;
-
+	float cosine = -(light_z * (*vertexData.normal)) * intensity;
 #if COLOR_AS_DWORD
 #else
-	if (cosine > SMALL)
+	if(cosine > SMALL)
 	{
 		light_color.red *= cosine;
 		light_color.green *= cosine;
@@ -295,17 +274,16 @@ void
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	MLRSpotLight::SetLightMap(MLRLightMap *light_map)
+MLRSpotLight::SetLightMap(MLRLightMap* light_map)
 {
 	Check_Object(this);
-	if (lightMap)
+	if(lightMap)
 	{
 		Check_Object(lightMap);
 		delete lightMap;
 	}
 	lightMap = light_map;
-
-	if (lightMap == nullptr)
+	if(lightMap == nullptr)
 	{
 		lightMask &= ~MLRState::LightMapLightingMode;
 	}

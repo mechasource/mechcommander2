@@ -25,31 +25,34 @@ class OptionsXScreen;
 
 class OptionsScreenWrapper
 {
-	public:
-		enum status_type
-		{
-			opt_INACTIVE, 
-			opt_ACTIVE, 
-			opt_DONE
-		};
+public:
+	enum status_type
+	{
+		opt_INACTIVE,
+		opt_ACTIVE,
+		opt_DONE
+	};
 
-		OptionsScreenWrapper(void);
-		~OptionsScreenWrapper(void);
+	OptionsScreenWrapper(void);
+	~OptionsScreenWrapper(void);
 
-		void init(void);
-		void destroy(void);
+	void init(void);
+	void destroy(void);
 
-		status_type update(void);
-		void render(void);
+	status_type update(void);
+	void render(void);
 
-		void begin(void);
-		void end(void);
-		bool isDone() { return (!isActive); }
+	void begin(void);
+	void end(void);
+	bool isDone()
+	{
+		return (!isActive);
+	}
 
-	private:
+private:
 
-		OptionsXScreen*		pOptionsScreen;
-		bool		isActive;
+	OptionsXScreen*		pOptionsScreen;
+	bool		isActive;
 
 };
 

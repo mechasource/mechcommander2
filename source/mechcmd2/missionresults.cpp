@@ -31,62 +31,53 @@ MissionResults::MissionResults()
 
 MissionResults::~MissionResults()
 {
-	if (pSalvageScreen)
+	if(pSalvageScreen)
 		delete pSalvageScreen;
 	pSalvageScreen = nullptr;
-
-	if (pPilotScreen)
+	if(pPilotScreen)
 		delete pPilotScreen;
 	pPilotScreen = nullptr;
 }
 
 void MissionResults::begin()
 {
-
-	if ( soundSystem )
+	if(soundSystem)
 		soundSystem->stopSupportSample();
-
-
-	if ( !MPlayer )
+	if(!MPlayer)
 	{
 		char path[256];
 		FitIniFile file;
-
-		if ( !LogisticsData::instance->skipSalvageScreen() )
+		if(!LogisticsData::instance->skipSalvageScreen())
 		{
 			pSalvageScreen = new SalvageMechScreen();
-			strcpy( path, artPath );
-			strcat( path, "mcui_mr_layout.fit" );
-			
-			if ( NO_ERROR != file.open( path ) )
+			strcpy(path, artPath);
+			strcat(path, "mcui_mr_layout.fit");
+			if(NO_ERROR != file.open(path))
 			{
 				char error[256];
-				sprintf( error, "couldn't open file %s", path );
-				Assert( 0, 0, error );
+				sprintf(error, "couldn't open file %s", path);
+				Assert(0, 0, error);
 				return;
 			}
-			pSalvageScreen->init( &file );
-			file.close();	
+			pSalvageScreen->init(&file);
+			file.close();
 			bDone = false;
 		}
-			
-		if ( !LogisticsData::instance->skipPilotReview() )
+		if(!LogisticsData::instance->skipPilotReview())
 		{
-		
-			strcpy( path, artPath );
-			strcat( path, "mcui_mr_layout.fit" );
-
+			strcpy(path, artPath);
+			strcat(path, "mcui_mr_layout.fit");
 			pPilotScreen = new PilotReviewScreen();
-			if ( NO_ERROR != file.open( path ) )
+			if(NO_ERROR != file.open(path))
 			{
 				char error[256];
-				sprintf( error, "couldn't open file %s", path );
-				Assert( 0, 0, error );
+				sprintf(error, "couldn't open file %s", path);
+				Assert(0, 0, error);
 				return;
 			}
-			pPilotScreen->init( &file );
+			pPilotScreen->init(&file);
 			bDone = 0;
-			if ( !LogisticsData::instance->skipSalvageScreen() )
+			if(!LogisticsData::instance->skipSalvageScreen())
 				bPilotStarted = 0;
 			else
 				bPilotStarted = 1;
@@ -94,22 +85,18 @@ void MissionResults::begin()
 	}
 	else
 	{
-		if ( !mpStats.staticCount )
+		if(!mpStats.staticCount)
 		{
 			mpStats.init();
-
 		}
-
-		if ( mpStats.getStatus() != LogisticsScreen::RUNNING )
+		if(mpStats.getStatus() != LogisticsScreen::RUNNING)
 			mpStats.begin();
-
 		bDone = false;
 	}
 }
 
 void MissionResults::init()
 {
-
 }
 
 void MissionResults::end()
@@ -117,76 +104,64 @@ void MissionResults::end()
 	//Need to save the game here so salvage and pilot promotion get saved as well!
 	// Pity we never call ::end!
 	PCSTR pMissionName = LogisticsData::instance->getLastMission();
-
-	if ( pMissionName && !LogisticsData::instance->isSingleMission() && !LogisticsData::instance->campaignOver() && !MPlayer )
+	if(pMissionName && !LogisticsData::instance->isSingleMission() && !LogisticsData::instance->campaignOver() && !MPlayer)
 	{
 		FitIniFile file;
 		char name[256];
-		cLoadString( IDS_AUTOSAVE_NAME, name, 255 );
+		cLoadString(IDS_AUTOSAVE_NAME, name, 255);
 		char fullName[256];
-		sprintf( fullName, name, pMissionName );
+		sprintf(fullName, name, pMissionName);
 		FullPathFileName path;
-		path.init( savePath, fullName, ".fit" );
-		if ( NO_ERROR == file.create( path ) )
-			LogisticsData::instance->save( file );
+		path.init(savePath, fullName, ".fit");
+		if(NO_ERROR == file.create(path))
+			LogisticsData::instance->save(file);
 	}
 }
 
 void MissionResults::update()
 {
-	userInput->setMouseCursor( mState_NORMAL );
+	userInput->setMouseCursor(mState_NORMAL);
 	userInput->mouseOn();
-
-	if ( MPlayer )
+	if(MPlayer)
 	{
 		mpStats.update();
-		if ( mpStats.getStatus() != LogisticsScreen::RUNNING )
+		if(mpStats.getStatus() != LogisticsScreen::RUNNING)
 			bDone = true;
 	}
-
-	else if ( !pSalvageScreen && !pPilotScreen )
+	else if(!pSalvageScreen && !pPilotScreen)
 		bDone = true;
-
-	if ( pSalvageScreen )
+	if(pSalvageScreen)
 	{
 		pSalvageScreen->update();
-		if ( pSalvageScreen->donePressed() )
+		if(pSalvageScreen->donePressed())
 		{
-			bPilotStarted = true;		
+			bPilotStarted = true;
 		}
-
-		if ( pSalvageScreen->isDone() )
+		if(pSalvageScreen->isDone())
 		{
 			pSalvageScreen->updateSalvage();
 			delete pSalvageScreen;
 			pSalvageScreen = nullptr;
-
-			if ( !pPilotScreen )
+			if(!pPilotScreen)
 			{
 				bDone = true;
 			}
 		}
-
 	}
-	if ( pPilotScreen && bPilotStarted)
+	if(pPilotScreen && bPilotStarted)
 	{
 		pPilotScreen->update();
-		if ( pPilotScreen->isDone() )
+		if(pPilotScreen->isDone())
 		{
 			pPilotScreen->updatePilots();
 			delete pPilotScreen;
 			pPilotScreen = 0;
 			// take this out!
-		 
 			bDone = true;
-
-
-
-			//Also should stop the support sample here. 
+			//Also should stop the support sample here.
 			soundSystem->stopSupportSample();
 		}
 	}
-
 //	if (!soundSystem->isDigitalMusicPlaying())
 	{
 		//We're done with the win or lose tune.
@@ -197,33 +172,29 @@ void MissionResults::update()
 
 void MissionResults::render()
 {
-
-	if ( MPlayer )
+	if(MPlayer)
 	{
 		mpStats.render(0, 0);
 	}
-
-	else if ( pSalvageScreen )
+	else if(pSalvageScreen)
 	{
 		pSalvageScreen->render();
-
 		//Tutorial -- ONLY do first time we get into the salvage screen.
-		if (FirstTimeResults)
+		if(FirstTimeResults)
 		{
 			soundSystem->playSupportSample(-1, "tut_4a");
 			FirstTimeResults = false;
 		}
 	}
-
-	if ( pPilotScreen && bPilotStarted )
+	if(pPilotScreen && bPilotStarted)
 		pPilotScreen->render();
 }
 
-void MissionResults::setHostLeftDlg( PCSTR pName )
+void MissionResults::setHostLeftDlg(PCSTR pName)
 {
-	if ( MPlayer && mpStats.getStatus() == LogisticsScreen::RUNNING )
+	if(MPlayer && mpStats.getStatus() == LogisticsScreen::RUNNING)
 	{
-		mpStats.setHostLeftDlg( pName );
+		mpStats.setHostLeftDlg(pName);
 	}
 }
 

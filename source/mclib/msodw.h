@@ -29,9 +29,9 @@
 
 #define DW_WHISTLER_EVENTLOG_SOURCE "Application Error"
 
-// the following are the fields that can be specified in a manifest file to 
+// the following are the fields that can be specified in a manifest file to
 // launch DW in a file based reporting mode
-#define DW_MANIFEST_TITLENAME    L"TitleName="  
+#define DW_MANIFEST_TITLENAME    L"TitleName="
 #define DW_MANIFEST_ERRORTEXT    L"ErrorText="
 #define DW_MANIFEST_HDRTEXT      L"HeaderText="
 #define DW_MANIFEST_ERRORSIG     L"ErrorSig="
@@ -61,7 +61,7 @@ enum // AssertActionCodes
 	DwAssertActionAlwaysIgnore,
 	DwAssertActionIgnoreAll,
 	DwAssertActionQuit,
-};	
+};
 #endif
 
 //  Caller is the app that has experienced an exception and launches DW
@@ -87,7 +87,7 @@ enum  // EMsoCrashHandlerFlags  // msochf
 
 	msochfUnused              = msoctdsUnused,  // THESE MUST BE THE SAME
 	msochfCanRecoverDocuments = msoctdsRecover,
-	
+
 	msochfObsoleteCanDebug    = 0x00010001,  // not used anymore
 	msochfCannotSneakyDebug   = 0x00010002,  // The "hidden" debug feature won't work
 	msochfDefaultDontReport   = 0x00010004,
@@ -95,7 +95,7 @@ enum  // EMsoCrashHandlerFlags  // msochf
 };
 
 
-// 
+//
 enum  // EMsoCrashHandlerResults  // msochr
 {
 	msochrNotHandled        = msoctdsNull,
@@ -127,67 +127,67 @@ typedef struct _DWSharedMem
 	uint32_t tid;                  // Id of excepting thread
 	DWORD_PTR eip;              // EIP of the excepting instruction
 	PEXCEPTION_POINTERS pep;    // Exception pointers given to the callee's
-	                            // exception handler
+	// exception handler
 	HANDLE hEventDone;          // event DW signals when done
-	                            // caller will also signal this if it things
-								// DW has hung and restarts itself 
+	// caller will also signal this if it things
+	// DW has hung and restarts itself
 	HANDLE hEventNotifyDone;    // App sets when it's done w/ notifcation phase
 	HANDLE hEventAlive;         // heartbeat event DW signals per EVENT_TIMEOUT
-	HANDLE hMutex;              // to protect the signaling of EventDone  
+	HANDLE hMutex;              // to protect the signaling of EventDone
 	HANDLE hProc;               // handle to the calling process (! in Assert)
-	
+
 	uint32_t bfDWBehaviorFlags;    // controls caller-specific behaviors
-	
+
 	uint32_t msoctdsResult;      // result from crash-time dialog
 	BOOL fReportProblem;      // did user approve reporting?
 	uint32_t bfmsoctdsOffer;     // bitfield of user choices to offer
-	                          // note that you must specify two of:
-							  // Quit, Restart, Recover, Ignore
-							  // The Debug choice is independent
+	// note that you must specify two of:
+	// Quit, Restart, Recover, Ignore
+	// The Debug choice is independent
 	uint32_t bfmsoctdsNotify;    // bitfield of user choices for which the
-	                          // app wants control back instead of simply being
-							  // terminated by DW.  The app will then be
-							  // responsible for pinging DW (if desired) with
-							  // hEventAlive and for notify DW it's ok to
-							  // terminate the app w/ hEventDone       
+	// app wants control back instead of simply being
+	// terminated by DW.  The app will then be
+	// responsible for pinging DW (if desired) with
+	// hEventAlive and for notify DW it's ok to
+	// terminate the app w/ hEventDone
 
 	uint32_t bfmsoctdsLetRun;    // bitfield of user choices for which the
-	                          // app wants control back instead of being
-							  // terminated by DW.  DW can then safely ignore
-							  // the app and exit.
+	// app wants control back instead of being
+	// terminated by DW.  DW can then safely ignore
+	// the app and exit.
 
 	int32_t iPingCurrent;         // current count for the recovery progress bar
 	int32_t iPingEnd;             // index for the end of the recovery progress bar
-	
+
 	char szFormalAppName[DW_APPNAME_LENGTH];   // the app name for display to user (ie "Microsoft Word")
 	char szInformalAppName[DW_APPNAME_LENGTH]; // the app name for display to user (ie "Word")
 	char szModuleFileName[DW_MAX_PATH];        // The result of GetModuleFileNameA(nullptr)
 	WCHAR wzErrorMessage[DW_MAX_ERROR_CWC];    // Error message to show user.
-	
+
 	char szServer[DW_MAX_SERVERNAME];  // name of server to try by default
 	char szLCIDKeyValue[DW_MAX_PATH];  // name of key value uint32_t containing the
-	                                   // PlugUI LCID, if this string fails to
-									   // be a valid key-value, DW will use the
-									   // system LCID, and if it can't find
-									   // an intl dll for that, will fall
-									   // back on US English (1033)
+	// PlugUI LCID, if this string fails to
+	// be a valid key-value, DW will use the
+	// system LCID, and if it can't find
+	// an intl dll for that, will fall
+	// back on US English (1033)
 	char szPIDRegKey[DW_MAX_PATH];     // name of the key that holds the PID
-	                                   // can be used by the Server for
-									   // spoof-detection
-	
+	// can be used by the Server for
+	// spoof-detection
+
 	char szRegSubPath[DW_MAX_REGSUBPATH]; // path to the key to contian the DW
-	                                      // registry hive from both
-									      // HKCU\Software and
-									      // HKCU\Software\Policies (for policy)
-	
+	// registry hive from both
+	// HKCU\Software and
+	// HKCU\Software\Policies (for policy)
+
 	WCHAR wzDotDataDlls[DW_MAX_PATH];  // contains the list of DLLs, terminated
-	                                   // by '\0' characters, that DW will
-									   // collect the .data sections into the
-									   // full minidump version
-									   // e.g. "mso9.dll\0outllib.dll\0"
+	// by '\0' characters, that DW will
+	// collect the .data sections into the
+	// full minidump version
+	// e.g. "mso9.dll\0outllib.dll\0"
 	WCHAR wzAdditionalFile[1024];      // File list, seperated by DW_FILESEP
-	                                   // each of these files gets added to the
-									   // cab at upload time
+	// each of these files gets added to the
+	// cab at upload time
 
 	char szBrand[DW_APPNAME_LENGTH];   // passed as a param to Privacy Policy link
 #ifdef DEBUG

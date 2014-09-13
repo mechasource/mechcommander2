@@ -28,28 +28,30 @@ int32_t GameDebugWindow::fontHeight = 0;
 //	GAME DEBUG WINDOW class
 //***************************************************************************
 
-PVOID GameDebugWindow::operator new (size_t ourSize) {
-
+PVOID GameDebugWindow::operator new(size_t ourSize)
+{
 	PVOID result = systemHeap->Malloc(ourSize);
 	return(result);
 }
 
 //---------------------------------------------------------------------------
 
-void GameDebugWindow::operator delete (PVOID us) {
-
+void GameDebugWindow::operator delete(PVOID us)
+{
 	systemHeap->Free(us);
-}	
+}
 
 //---------------------------------------------------------------------------
 
-void GameDebugWindow::setFont (PSTR fontFile) {
-
-	if (font) {
+void GameDebugWindow::setFont(PSTR fontFile)
+{
+	if(font)
+	{
 		gos_DeleteFont(font);
 		font = nullptr;
 	}
-	if (fontFile) {
+	if(fontFile)
+	{
 		font = gos_LoadFont(fontFile);
 		gos_TextSetAttributes(font, 0xffffffff, 1.0, true, true, false, false);
 	}
@@ -60,35 +62,37 @@ void GameDebugWindow::setFont (PSTR fontFile) {
 
 //---------------------------------------------------------------------------
 
-void GameDebugWindow::print (PSTR s) {
-	
-	if (numLines < MAX_DEBUG_WINDOW_LINES)
+void GameDebugWindow::print(PSTR s)
+{
+	if(numLines < MAX_DEBUG_WINDOW_LINES)
 		strcpy(textBuffer[numLines++], s);
-	else {
+	else
+	{
 		numLines++;
 		strcpy(textBuffer[linePos++], s);
-		if (linePos == MAX_DEBUG_WINDOW_LINES)
+		if(linePos == MAX_DEBUG_WINDOW_LINES)
 			linePos = 0;
 	}
 }
 
 //---------------------------------------------------------------------------
 
-void GameDebugWindow::render (void) {
-
-	if (!display)
+void GameDebugWindow::render(void)
+{
+	if(!display)
 		return;
-
 	int32_t i;
 	gos_TextSetAttributes(font, 0xffffffff, 1.0, true, true, false, false);
-	gos_TextSetRegion( 0, 0, Environment.screenWidth, Environment.screenHeight );
+	gos_TextSetRegion(0, 0, Environment.screenWidth, Environment.screenHeight);
 	int32_t curY = pos[1] + 5;
-	for (i = linePos; i < MAX_DEBUG_WINDOW_LINES; i++) {
+	for(i = linePos; i < MAX_DEBUG_WINDOW_LINES; i++)
+	{
 		gos_TextSetPosition(pos[0] + 5, curY);
 		curY += fontHeight;
 		gos_TextDraw(textBuffer[i]);
 	}
-	for (i = 0; i < linePos; i++) {
+	for(i = 0; i < linePos; i++)
+	{
 		gos_TextSetPosition(pos[0] + 5, curY);
 		curY += fontHeight;
 		gos_TextDraw(textBuffer[i]);

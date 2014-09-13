@@ -29,15 +29,19 @@ struct _MC2Player;
 class aStyle2TextListItem : public aTextListItem
 {
 public:
-	aStyle2TextListItem() { hasAnimation = false; normalColor = 0xff808080; }
-	virtual int32_t	init( FitIniFile* file, PCSTR blockName );
+	aStyle2TextListItem()
+	{
+		hasAnimation = false;
+		normalColor = 0xff808080;
+	}
+	virtual int32_t	init(FitIniFile* file, PCSTR blockName);
 	virtual void		render(void);
 
 protected:
 	bool hasAnimation;
 	aAnimGroup animGroup;
 	int32_t normalColor;
-	
+
 
 };
 
@@ -46,24 +50,30 @@ class aPlayerParams : public aObject
 public:
 	aPlayerParams(void);
 	~aPlayerParams(void);
-	aPlayerParams& operator=( const aPlayerParams& src );
+	aPlayerParams& operator=(const aPlayerParams& src);
 
 	virtual int32_t		init(int32_t xPos, int32_t yPos, int32_t w, int32_t h);
-	void				init( FitIniFile* file, PCSTR blockName );
+	void				init(FitIniFile* file, PCSTR blockName);
 
 	virtual void		destroy(void);
 	virtual void		render(void);
 	virtual void		update(void);
-	virtual int32_t			handleMessage( uint32_t message, uint32_t who );
-	virtual void		move( float offsetX, float offsetY );
+	virtual int32_t			handleMessage(uint32_t message, uint32_t who);
+	virtual void		move(float offsetX, float offsetY);
 
 	void				setData(const _MC2Player* data);
 
-	bool				hasFocus( );
+	bool				hasFocus();
 
-	bool				isSelected() { return bHasFocus; }
+	bool				isSelected()
+	{
+		return bHasFocus;
+	}
 
-	int32_t					getCommanderID( ) const { return commanderID; }
+	int32_t					getCommanderID() const
+	{
+		return commanderID;
+	}
 
 	void				disableReadyButton(void);
 
@@ -96,7 +106,7 @@ protected:
 	friend class MPParameterScreen;
 };
 
-class CListOfDropListPointers : public EList<aDropList *, aDropList *> {};
+class CListOfDropListPointers : public EList<aDropList*, aDropList*> {};
 
 class CFocusManager
 {
@@ -109,15 +119,15 @@ public:
 
 	CFocusManager(void);
 	void clear(void);
-	PVOID registerDropList(aDropList &DropList);
-	void unregisterDropList(aDropList &DropList);
+	PVOID registerDropList(aDropList& DropList);
+	void unregisterDropList(aDropList& DropList);
 	void update(void);
 	bool somebodyHasTheFocus(void); /*this is distinct from the keyboard input focus*/
 	aObject* pControlThatHasTheFocus(void);
 
 private:
 	control_species_data_type speciesOfTheControlWhichHasTheFocus;
-	aDropList *pDropListThatHasTheFocus;
+	aDropList* pDropListThatHasTheFocus;
 	CListOfDropListPointers listOfDropListPointers;
 };
 
@@ -125,37 +135,37 @@ private:
 class MPParameterScreen : public LogisticsScreen
 {
 public:
-	
+
 	MPParameterScreen(void);
 	virtual ~MPParameterScreen(void);
-	
+
 	void				init(FitIniFile* file);
 	virtual void		begin(void);
 	virtual void		end(void);
- 	virtual void		render( int32_t xOffset, int32_t yOffset );
+	virtual void		render(int32_t xOffset, int32_t yOffset);
 	virtual void		render(void);
 	virtual void		update(void);
-	virtual int32_t			handleMessage( uint32_t, uint32_t );
-	
+	virtual int32_t			handleMessage(uint32_t, uint32_t);
+
 	static void			resetCheckBoxes(void);
 
-	void				setHostLeftDlg( PCSTR playerName);
+	void				setHostLeftDlg(PCSTR playerName);
 
-	static GUID			getGUIDFromFile( PCSTR fileName );
+	static GUID			getGUIDFromFile(PCSTR fileName);
 
-	static void			initializeMap( PCSTR fileName );
+	static void			initializeMap(PCSTR fileName);
 
 	static MPParameterScreen* s_instance;
 
 
 private:
 	int32_t indexOfButtonWithID(int32_t id);
-	
+
 	int32_t					chatToSend;
 
-	void				setMission( PCSTR fileName, bool resetData = 1 );
-	void				setMissionClientOnly( PCSTR pNewMapName );
-	void				checkVersionClientOnly( PCSTR pNewMapName );
+	void				setMission(PCSTR fileName, bool resetData = 1);
+	void				setMissionClientOnly(PCSTR pNewMapName);
+	void				checkVersionClientOnly(PCSTR pNewMapName);
 
 
 
@@ -180,7 +190,7 @@ private:
 	bool			bHostLeftDlg;
 	bool			bWaitingToStart;
 
-	
+
 
 };
 

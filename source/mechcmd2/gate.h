@@ -19,7 +19,7 @@
 //#include "objtype.h"
 //#include "terrobj.h"
 //#include "dmover.h"
-					
+
 //---------------------------------------------------------------------------
 // Macro Definitions
 
@@ -28,78 +28,73 @@ class GateType : public ObjectType
 {
 	//Data Members
 	//-------------
-	protected:
-		uint32_t	dmgLevel;
+protected:
+	uint32_t	dmgLevel;
 
-	public:
-		uint32_t	blownEffectId;
-		uint32_t	normalEffectId;
-		uint32_t	damageEffectId;
-	
-		float			baseTonnage;
-		
-		int32_t			basePixelOffsetX;
-		int32_t			basePixelOffsetY;
-		
-		float			explDmg;
-		float			explRad;
+public:
+	uint32_t	blownEffectId;
+	uint32_t	normalEffectId;
+	uint32_t	damageEffectId;
 
-		float			openRadius;
-		
-		float			littleExtent;
-				
-		int32_t			gateTypeName;
+	float			baseTonnage;
 
-		bool			blocksLineOfFire;
+	int32_t			basePixelOffsetX;
+	int32_t			basePixelOffsetY;
 
-		int32_t			buildingDescriptionID;
+	float			explDmg;
+	float			explRad;
+
+	float			openRadius;
+
+	float			littleExtent;
+
+	int32_t			gateTypeName;
+
+	bool			blocksLineOfFire;
+
+	int32_t			buildingDescriptionID;
 
 	//Member Functions
 	//-----------------
-	public:
+public:
 
-		void init (void)
-		{
-			ObjectType::init(void);
-			
-			dmgLevel = 0;
+	void init(void)
+	{
+		ObjectType::init(void);
+		dmgLevel = 0;
+		blownEffectId = 0xFFFFFFFF;
+		normalEffectId = 0xFFFFFFFF;
+		damageEffectId = 0xFFFFFFFF;
+		explDmg = explRad = 0.0;
+		baseTonnage = 0.0;
+		gateTypeName = 0;
+		objectClass = GATE;
+	}
 
-			blownEffectId = 0xFFFFFFFF;
-			normalEffectId = 0xFFFFFFFF;
-			damageEffectId = 0xFFFFFFFF;
-		
-			explDmg = explRad = 0.0;
-			baseTonnage = 0.0;
-			
-			gateTypeName = 0;
-			
-			objectClass = GATE;
-		}
-		
-		GateType (void)
-		{
-			init(void);
-		}
-		
-		virtual int32_t init (FilePtr objFile, uint32_t fileSize);
-		int32_t init (FitIniFilePtr objFile);
-		
-		~GateType (void)
-		{
-			destroy(void);
-		}
-		
-		int32_t getDamageLvl (void)
-		{
-			return dmgLevel;
-		}
-			
-		virtual void destroy (void);
-		
-		virtual GameObjectPtr createInstance (void);
-		
-		virtual bool handleCollision (GameObjectPtr collidee, GameObjectPtr collider);
-		virtual bool handleDestruction (GameObjectPtr collidee, GameObjectPtr collider);
+	GateType(void)
+	{
+		init(void);
+	}
+
+	virtual int32_t init(FilePtr objFile, uint32_t fileSize);
+	int32_t init(FitIniFilePtr objFile);
+
+	~GateType(void)
+	{
+		destroy(void);
+	}
+
+	int32_t getDamageLvl(void)
+	{
+		return dmgLevel;
+	}
+
+	virtual void destroy(void);
+
+	virtual GameObjectPtr createInstance(void);
+
+	virtual bool handleCollision(GameObjectPtr collidee, GameObjectPtr collider);
+	virtual bool handleDestruction(GameObjectPtr collidee, GameObjectPtr collider);
 };
 
 //---------------------------------------------------------------------------
@@ -131,145 +126,145 @@ class Gate : public TerrainObject
 {
 	//Data Members
 	//-------------
-		public:
-			char					teamId;
-			
-			bool					lockedOpen;
-			bool					lockedClose;
-			bool					reasonToOpen;
-			bool					opened;
-			bool					opening;
-			bool					closed;
-			bool					closing;
-			bool					justDestroyed;
+public:
+	char					teamId;
 
-			bool					lastMarkedOpen;
+	bool					lockedOpen;
+	bool					lockedClose;
+	bool					reasonToOpen;
+	bool					opened;
+	bool					opening;
+	bool					closed;
+	bool					closing;
+	bool					justDestroyed;
 
-			MoverPtr				closestObject;
-			
-			uint32_t					parentId;
-			GameObjectWatchID		parent;
-			int32_t					buildingDescriptionID;
+	bool					lastMarkedOpen;
 
-			int32_t					updatedTurn;
+	MoverPtr				closestObject;
+
+	uint32_t					parentId;
+	GameObjectWatchID		parent;
+	int32_t					buildingDescriptionID;
+
+	int32_t					updatedTurn;
 
 	//Member Functions
 	//-----------------
-		public:
+public:
 
-		void init (bool create)
-		{
-		}
+	void init(bool create)
+	{
+	}
 
-	   	Gate (void) : TerrainObject()
-		{
-			init (true);
-			reasonToOpen = TRUE;
-			
-			lockedClose = FALSE;
-			lockedOpen = FALSE;
-			closed = TRUE;
-			closing = opening = opened = FALSE;
-			justDestroyed = FALSE;
-			lastMarkedOpen = false;
+	Gate(void) : TerrainObject()
+	{
+		init(true);
+		reasonToOpen = TRUE;
+		lockedClose = FALSE;
+		lockedOpen = FALSE;
+		closed = TRUE;
+		closing = opening = opened = FALSE;
+		justDestroyed = FALSE;
+		lastMarkedOpen = false;
+		closestObject = nullptr;
+		parentId = 0xffffffff;
+		parent = 0;
+		updatedTurn = -1;
+	}
 
-			closestObject = nullptr;
-			
-			parentId = 0xffffffff;
-			parent = 0;
+	~Gate(void)
+	{
+		destroy(void);
+	}
 
-			updatedTurn = -1;
-		}
+	virtual void destroy(void);
 
-		~Gate (void)
-		{
-			destroy(void);
-		}
+	virtual int32_t update(void);
+	virtual void render(void);
 
-		virtual void destroy (void);
-		
-		virtual int32_t update (void);
-		virtual void render (void);
-		
-		virtual void init (bool create, ObjectTypePtr _type);
+	virtual void init(bool create, ObjectTypePtr _type);
 
-		virtual int32_t handleWeaponHit (WeaponShotInfoPtr shotInfo, bool addMultiplayChunk = FALSE);
+	virtual int32_t handleWeaponHit(WeaponShotInfoPtr shotInfo, bool addMultiplayChunk = FALSE);
 
-		virtual int32_t setTeamId (int32_t _teamId, bool setup);
-		
-		virtual int32_t getTeamId (void) {
-			return(teamId);
-		}
+	virtual int32_t setTeamId(int32_t _teamId, bool setup);
 
-		TeamPtr getTeam (void); 
+	virtual int32_t getTeamId(void)
+	{
+		return(teamId);
+	}
 
-		void lightOnFire (float timeToBurn);
-			
-		virtual float getDestructLevel (void)
-		{
-			return ((GateTypePtr)getObjectType())->getDamageLvl() - damage;
-		}
+	TeamPtr getTeam(void);
 
-		virtual int32_t kill (void)
-		{
-			//Do nothing for now.  Later, Buildings may do something.
-			return NO_ERROR;
-		}
+	void lightOnFire(float timeToBurn);
 
-		bool isVisible (CameraPtr camera);
+	virtual float getDestructLevel(void)
+	{
+		return ((GateTypePtr)getObjectType())->getDamageLvl() - damage;
+	}
 
-		void blowAnyOffendingObject (void);
+	virtual int32_t kill(void)
+	{
+		//Do nothing for now.  Later, Buildings may do something.
+		return NO_ERROR;
+	}
 
-		virtual bool isBuilding(void)
-		{
-			return (TRUE);
-		}
+	bool isVisible(CameraPtr camera);
 
-		virtual void getBlockAndVertexNumber (int32_t &blockNum, int32_t &vertexNum)
-		{
-			blockNum = blockNumber;
-			vertexNum = vertexNumber;
-		}
-		
-		void openGate (void);
-		
-		void setLockedOpen()
-		{
-			lockedOpen = TRUE;
-			lockedClose = FALSE;
-		}
-		
-		void setLockedClose()
-		{
-			lockedOpen = FALSE;
-			lockedClose = TRUE;
-		}
+	void blowAnyOffendingObject(void);
 
-		void releaseLocks()
-		{
-			lockedOpen = FALSE;
-			lockedClose = FALSE;
-		}
+	virtual bool isBuilding(void)
+	{
+		return (TRUE);
+	}
 
-		float getLittleExtent (void);
+	virtual void getBlockAndVertexNumber(int32_t& blockNum, int32_t& vertexNum)
+	{
+		blockNum = blockNumber;
+		vertexNum = vertexNumber;
+	}
 
-		void destroyGate(void);
-		
-		virtual bool isLinked (void);
+	void openGate(void);
 
-		virtual GameObjectPtr getParent (void);
+	void setLockedOpen()
+	{
+		lockedOpen = TRUE;
+		lockedClose = FALSE;
+	}
 
-		virtual void setParentId (uint32_t pId);
+	void setLockedClose()
+	{
+		lockedOpen = FALSE;
+		lockedClose = TRUE;
+	}
 
-		virtual int32_t getDescription(){ return ((GateType*)getObjectType())->buildingDescriptionID; }
-		
-		virtual void setDamage (float newDamage);
+	void releaseLocks()
+	{
+		lockedOpen = FALSE;
+		lockedClose = FALSE;
+	}
 
-		virtual void Save (PacketFilePtr file, int32_t packetNum);
+	float getLittleExtent(void);
 
-		void CopyTo (GateData *data);
+	void destroyGate(void);
 
-		void Load (GateData *data);
+	virtual bool isLinked(void);
+
+	virtual GameObjectPtr getParent(void);
+
+	virtual void setParentId(uint32_t pId);
+
+	virtual int32_t getDescription()
+	{
+		return ((GateType*)getObjectType())->buildingDescriptionID;
+	}
+
+	virtual void setDamage(float newDamage);
+
+	virtual void Save(PacketFilePtr file, int32_t packetNum);
+
+	void CopyTo(GateData* data);
+
+	void Load(GateData* data);
 };
 
 //---------------------------------------------------------------------------

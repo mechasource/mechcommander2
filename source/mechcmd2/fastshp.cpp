@@ -11,7 +11,7 @@
 #include "vfx.h"
 #endif
 
-extern char AlphaTable[256*256];
+extern char AlphaTable[256 * 256];
 
 static int32_t			paneX0;
 static int32_t 		paneY0;
@@ -19,7 +19,7 @@ static int32_t 		paneX1;
 static int32_t 		paneY1;
 static int32_t			shapeInfo;
 static int32_t 		yOffsetTable;
-static int32_t 		DestWidth,pwYMax;
+static int32_t 		DestWidth, pwYMax;
 static int32_t 		scanLines;
 static int32_t 		scanCol;
 static int32_t 		topLeftX;
@@ -47,7 +47,7 @@ static int32_t 		leftClipX, rightClipX;
 
 
 
-int32_t fastShapeDraw (PANE* pane, PVOID shp, int32_t frameNum, int32_t hotX, int32_t hotY, puint8_t fadeTable)
+int32_t fastShapeDraw(PANE* pane, PVOID shp, int32_t frameNum, int32_t hotX, int32_t hotY, puint8_t fadeTable)
 {
 	//---------------------------------------------------------------------------------
 	// Format of tile shape header is.
@@ -67,7 +67,7 @@ int32_t fastShapeDraw (PANE* pane, PVOID shp, int32_t frameNum, int32_t hotX, in
 	//		REGS:
 	//			esi		Pointer to Shape Data
 	//			edi		Pointer to Screen Memory
-	//			
+	//
 	//---------------------------------------------------------------------------------
 	__asm
 	{
@@ -77,19 +77,19 @@ int32_t fastShapeDraw (PANE* pane, PVOID shp, int32_t frameNum, int32_t hotX, in
 		mov		edi, pane
 		xor		edx, edx
 
-		mov		eax,[esi+eax*4+8]
-		mov		leftClipX,edx
+		mov		eax, [esi+eax*4+8]
+		mov		leftClipX, edx
 
-		add		esi,eax								// ESI points at start of shape
+		add		esi, eax								// ESI points at start of shape
 		mov		ecx, [edi]							// Get window pointer from pane
 
 		mov		shapeInfo, esi
-		mov		edx,[esi+SCANLINE_OFFSET]			// SCANCOLUMN_OFFSET in high word
-	
-		mov		eax,edx
-		and		edx,0ffffh
-		
-		shr		eax,16
+		mov		edx, [esi+SCANLINE_OFFSET]			// SCANCOLUMN_OFFSET in high word
+
+		mov		eax, edx
+		and		edx, 0ffffh
+
+		shr		eax, 16
 		mov		scanLines, edx						// Got height of sprite
 
 		mov		scanCol, eax						// Got width of sprite
@@ -104,69 +104,69 @@ int32_t fastShapeDraw (PANE* pane, PVOID shp, int32_t frameNum, int32_t hotX, in
 		mov		DestWidth, ecx
 		dec		ecx									// Clip plane X1 and Y1 (without branches)
 
-		xor		ebx,ebx
-		sub		eax,ecx
+		xor		ebx, ebx
+		sub		eax, ecx
 
 		setge	bl
 
 		dec		ebx
 		nop
 
-		and		eax,ebx
+		and		eax, ebx
 		mov		ebx, [edi+Y1_OFFSET]
 
-		add		eax,ecx
-		xor		ecx,ecx
+		add		eax, ecx
+		xor		ecx, ecx
 
 		mov		paneX1, eax
-		sub		ebx,edx
+		sub		ebx, edx
 
 		setge	cl
 
 		dec		ecx
 		mov		eax, [edi+X0_OFFSET]
 
-		and		ebx,ecx
+		and		ebx, ecx
 		mov		ecx, [edi+Y0_OFFSET]				// Now clip pane X0 and Y0 to window
 
-		add		ebx,edx
-		mov		edx,ecx								// If less than 0, make 0
-		
+		add		ebx, edx
+		mov		edx, ecx								// If less than 0, make 0
+
 		mov		paneY1, ebx
-		mov		ebx,eax
+		mov		ebx, eax
 
-		sar		ebx,31
-		xor		edx,-1
+		sar		ebx, 31
+		xor		edx, -1
 
-		sar		edx,31
-		xor		ebx,-1
+		sar		edx, 31
+		xor		ebx, -1
 
-		and		eax,ebx
-		and		ecx,edx
+		and		eax, ebx
+		and		ecx, edx
 
-		mov		paneX0,eax
-		mov		paneY0,ecx
+		mov		paneX0, eax
+		mov		paneY0, ecx
 
-	//------------------------------------------------------------
-	// Calculate topLeft X and Y position on Screen from HotSpots
-	//int32_t topLeftX = (hotX + paneX0) - shapeInfo->HSX;
-	//int32_t topLeftY = (hotY + paneY0) - shapeInfo->HSY;
-	//
-	//puint8_t screenBuffer = pane->window->buffer;
-	//-----------------------------------------------------------
+		//------------------------------------------------------------
+		// Calculate topLeft X and Y position on Screen from HotSpots
+		//int32_t topLeftX = (hotX + paneX0) - shapeInfo->HSX;
+		//int32_t topLeftY = (hotY + paneY0) - shapeInfo->HSY;
+		//
+		//puint8_t screenBuffer = pane->window->buffer;
+		//-----------------------------------------------------------
 
-		mov		ebx,hotX
-		mov		edx,hotY
+		mov		ebx, hotX
+		mov		edx, hotY
 
-		add		eax,ebx
-		add		ecx,edx
+		add		eax, ebx
+		add		ecx, edx
 
-		movsx	ebx,word ptr [esi+HSX_OFFSET]
+		movsx	ebx, word ptr [esi+HSX_OFFSET]
 
-		movsx	edx,word ptr [esi+HSY_OFFSET]
+		movsx	edx, word ptr [esi+HSY_OFFSET]
 
-		sub		eax,ebx
-		sub		ecx,edx
+		sub		eax, ebx
+		sub		ecx, edx
 
 		mov		topLeftX, eax
 		mov		topLeftY, ecx
@@ -177,31 +177,31 @@ int32_t fastShapeDraw (PANE* pane, PVOID shp, int32_t frameNum, int32_t hotX, in
 		mov		ebx, scanCol
 		mov		edx, paneX0
 
-	//-----------------------------------------------------------
-	// Check topLeftX and topLeftY to see if shape is completely
-	// off of the screen.
-	//if (topLeftX < (paneX0 - scanCol))
-	//{
-	//	return(FULLY_CLIPPED);
-	//}
-	//
-	//if (topLeftY < (paneY0 - scanLines))
-	//{
-	//	return(FULLY_CLIPPED);
-	//}
-	//
-	//if (topLeftX > paneX1)
-	//{
-	//	return(FULLY_CLIPPED);
-	//}
-	//
-	//if (topLeftY > paneY1)
-	//{
-	//	return(FULLY_CLIPPED);
-	//}
-	//
-	// At this point, eax is topLeftX, ecx is topLeftY, edi is screenBuffer
-	//-----------------------------------------------------------
+		//-----------------------------------------------------------
+		// Check topLeftX and topLeftY to see if shape is completely
+		// off of the screen.
+		//if (topLeftX < (paneX0 - scanCol))
+		//{
+		//	return(FULLY_CLIPPED);
+		//}
+		//
+		//if (topLeftY < (paneY0 - scanLines))
+		//{
+		//	return(FULLY_CLIPPED);
+		//}
+		//
+		//if (topLeftX > paneX1)
+		//{
+		//	return(FULLY_CLIPPED);
+		//}
+		//
+		//if (topLeftY > paneY1)
+		//{
+		//	return(FULLY_CLIPPED);
+		//}
+		//
+		// At this point, eax is topLeftX, ecx is topLeftY, edi is screenBuffer
+		//-----------------------------------------------------------
 		cmp		eax, paneX1
 		jge		Exit
 
@@ -222,18 +222,18 @@ int32_t fastShapeDraw (PANE* pane, PVOID shp, int32_t frameNum, int32_t hotX, in
 
 		cmp		ecx, edx
 		jle		Exit
-				
-	//-----------------------------------------------------------
-	// Find pointer to screenBuffer where tile will start.
-	// Also find total Blt Length
-	//int32_t yOffset = paneY0;
-	//
-	//if (topLeftY > paneY0)
-	//	yOffset = topLeftY;
-	//	
-	//screenBuffer += (yOffset * DestWidth);
-	//puint8_t scanStart = screenBuffer;
-	//-----------------------------------------------------------
+
+		//-----------------------------------------------------------
+		// Find pointer to screenBuffer where tile will start.
+		// Also find total Blt Length
+		//int32_t yOffset = paneY0;
+		//
+		//if (topLeftY > paneY0)
+		//	yOffset = topLeftY;
+		//
+		//screenBuffer += (yOffset * DestWidth);
+		//puint8_t scanStart = screenBuffer;
+		//-----------------------------------------------------------
 
 		cmp		eax, paneX0			//eax is still topLeftX
 		jl		LEFTXCLIP
@@ -243,16 +243,16 @@ int32_t fastShapeDraw (PANE* pane, PVOID shp, int32_t frameNum, int32_t hotX, in
 
 		cmp		eax, paneX1
 		jg		RIGHTXCLIP
-		
-			
-FIND_BUF:		
+
+
+		FIND_BUF:
 		inc		ebx
 		mov 	eax, paneY0
 
 		mov		totalBlt, ebx
-		xor		ebx,ebx
+		xor		ebx, ebx
 
-		sub		eax,ecx
+		sub		eax, ecx
 		nop
 
 		setle	bl
@@ -260,51 +260,51 @@ FIND_BUF:
 		dec		ebx
 		nop
 
-		and		eax,ebx
+		and		eax, ebx
 		mov		ebx, scanLines
 
-		add		eax,ecx
+		add		eax, ecx
 		nop
 
 		mul		DestWidth
 
 		add		edi, eax
-		mov		eax,paneY0
-	//-----------------------------------------------------------
-	// Find scanLine Information
-	//if (topLeftY < paneY0)
-	//	firstScanOffset = paneY0 - topLeftY;
-	//
-	//int32_t lastScanOffset = scanLines;
-	//if ((topLeftY + scanLines) > paneY1)
-	//	lastScanOffset = paneY1 - topLeftY + 1;
-	//-----------------------------------------------------------
-		xor		edx,edx
-		sub		eax,ecx
+		mov		eax, paneY0
+		//-----------------------------------------------------------
+		// Find scanLine Information
+		//if (topLeftY < paneY0)
+		//	firstScanOffset = paneY0 - topLeftY;
+		//
+		//int32_t lastScanOffset = scanLines;
+		//if ((topLeftY + scanLines) > paneY1)
+		//	lastScanOffset = paneY1 - topLeftY + 1;
+		//-----------------------------------------------------------
+		xor		edx, edx
+		sub		eax, ecx
 
 		setl	dl
 
 		dec		edx
 		mov		scanStart, edi
 
-		and		edx,eax
+		and		edx, eax
 		mov		eax, ebx
 
-		mov		firstScanOffset,edx
+		mov		firstScanOffset, edx
 		add		eax, ecx
 
 		cmp		eax, paneY1
 		jg		OffBottom
 
-LINE311:
+		LINE311:
 		mov		edx, firstScanOffset
 		mov 	ecx, shapeInfo
 
 		mov		lastScanOffset, ebx
 		push	ebp
 
-		lea		ebx,[ecx+edx*2+12]
-		mov		ebp,fadeTable
+		lea		ebx, [ecx+edx*2+12]
+		mov		ebp, fadeTable
 
 		movzx	ecx, word ptr [ebx]
 
@@ -315,27 +315,30 @@ LINE311:
 // Now check for color 0 pixel in top left (alpha palette)
 //
 //
-		movzx	eax,word ptr [esi+12]		;Get offset 
-		add		eax,esi						;Get pointer to top left of sprite data
-		cmp		word ptr [eax],1			; Single pixel (01h), color 0 (00h)
+		movzx	eax, word ptr [esi+12]		;
+		Get offset
+		add		eax, esi						;
+		Get pointer to top left of sprite data
+		cmp		word ptr [eax], 1			;
+		Single pixel(01h), color 0(00h)
 		jz		AlphaBlit
 //
 // Check for fade table or not
 //
-		test	ebp,ebp
+		test	ebp, ebp
 		jnz		fade_loop
 
-		mov		ebp,totalBlt
+		mov		ebp, totalBlt
 		nop
 //
 //
 // Loop with no fade table
 //
 //
-LOOP_TOP:
+		LOOP_TOP:
 		cmp		edx, lastScanOffset
 		jge		ExitPop
-		
+
 		xor		ebx, ebx				//Setup for this scanline
 		xor		ecx, ecx
 
@@ -344,13 +347,13 @@ LOOP_TOP:
 
 		add		esi, eax
 		xor		eax, eax				//Clear Color Store
-										//Check if we need to skip pixels in (i.e. Left Clipped)
+		//Check if we need to skip pixels in (i.e. Left Clipped)
 		cmp		leftClipX, 0
 		jle		SKIP_IN					//We are on the correct scanLine of screen but must skip IN if not leftClipped
 
-SKIP_X:
+		SKIP_X:
 
-		xor		ecx,ecx
+		xor		ecx, ecx
 		mov		cl, byte ptr [esi]		//Get the first data byte.  This is a runLength for RLE or String
 
 		cmp		ecx, 0x80				//Check if Run or String
@@ -367,8 +370,8 @@ SKIP_X:
 
 		add		esi, ecx				//Otherwise, skip the string completely.
 		jmp		SKIP_X					//Onto the next one.
-	
-RLE1:
+
+		RLE1:
 		add		ebx, ecx				//Add to Total Run
 		inc		esi
 
@@ -380,7 +383,7 @@ RLE1:
 
 //We have skipped in enough.
 //Now we need to draw any remainder in the current String
-ENOUGH_SKIP_STR:
+		ENOUGH_SKIP_STR:
 
 		sub 	ebx, leftClipX			//How much do we need to draw
 		add		esi, ecx				//Skip to end of string.
@@ -396,30 +399,30 @@ ENOUGH_SKIP_STR:
 
 //We have skipped in enough.
 //Now we need to draw any remainder in the current RLE
-ENOUGH_SKIP_RLE:
+		ENOUGH_SKIP_RLE:
 
 		sub		ebx, leftClipX
 		mov		ecx, ebx
 		mov		al, byte ptr [esi]		//Get Byte
 		inc		esi
-		
+
 		add		edi, paneX0
 		cmp		al, 0xff
 		jne		DO_BLT1
 		add		edi, ecx
 		jmp		BLT
-	
-DO_BLT1:
+
+		DO_BLT1:
 		rep		stosb					//Store color on screen
 		jmp		BLT
 
 
 
 
-SKIP_IN:
+		SKIP_IN:
 		add		edi, topLeftX			//Skip in to the hotspot for this scanLine if NOT LeftClipped!
-	
-BLT:
+
+		BLT:
 		mov		cl, byte ptr [esi]		//Get the first data byte.  This is a runLength for RLE or String
 		inc		esi
 
@@ -430,15 +433,15 @@ BLT:
 		cmp		ebx, ebp				//See if we have reached the end of this scanline
 
 		jle		GO_STRING1
-		
+
 		sub		ebx, ebp				//Find out how many over we are
 		sub		ecx, ebx				//Shorten string by that amount
 		mov		ebx, ebp				//Force total Blted to totalBlt
-		
-GO_STRING1:
-		mov al,[esi]
+
+		GO_STRING1:
+		mov al, [esi]
 		inc esi
-		mov [edi],al
+		mov [edi], al
 		inc edi
 		dec ecx
 		jnz GO_STRING1
@@ -450,18 +453,18 @@ GO_STRING1:
 		jmp		BLT						//No, keep Blting
 
 
-BLT_RLE1:
-		lea		ebx,[ebx+ecx+128]		//Continue to update BltLength
-		add		ecx,128
+		BLT_RLE1:
+		lea		ebx, [ebx + ecx + 128]		//Continue to update BltLength
+		add		ecx, 128
 
 		cmp		ebx, ebp				//See if we have reached the end of this scanline
 		jle		GO_RLE1
-		
+
 		sub		ebx, ebp				//Find out how many over we are
 		sub		ecx, ebx				//Shorten string by that amount
 		mov		ebx, ebp				//Force total Blted to totalBlt
-		
-GO_RLE1:
+
+		GO_RLE1:
 		mov		al, byte ptr [esi]		//Get Byte
 		inc		esi						//Move ShapePtr
 
@@ -470,18 +473,18 @@ GO_RLE1:
 
 		add		edi, ecx
 		nop
-			
+
 		cmp		ebx, ebp				//Are we Done with this scanLine?
 		jne		BLT						//yes, next
 
-NEXT_SCANLINE:
-		mov		edi,scanStart			//Move Screen Buffer down to next scanline
-		mov		ebx,DestWidth
+		NEXT_SCANLINE:
+		mov		edi, scanStart			//Move Screen Buffer down to next scanline
+		mov		ebx, DestWidth
 
 		inc 	edx						//Move to next scanLine
-		add		edi,ebx
+		add		edi, ebx
 
-		mov		ebx, yOffsetTable		
+		mov		ebx, yOffsetTable
 		mov		scanStart, edi
 
 		movzx	ecx, word ptr [ebx]		//Get next yOffset
@@ -492,8 +495,8 @@ NEXT_SCANLINE:
 		mov		yOffsetTable, ebx
 		jmp		LOOP_TOP
 
-	
-DO_BLT2:
+
+		DO_BLT2:
 		rep		stosb					//Blt the run to the screen
 		cmp		ebx, ebp				//Are we Done with this scanLine?
 		jne		BLT						//yes, next
@@ -519,10 +522,10 @@ DO_BLT2:
 // Loop with a fade table
 //
 //
-fade_loop:
+		fade_loop:
 		cmp		edx, lastScanOffset
 		jge		ExitPop
-		
+
 		xor		ebx, ebx				//Setup for this scanline
 		xor		ecx, ecx
 
@@ -530,14 +533,14 @@ fade_loop:
 		mov		eax, currentOffset
 
 		add		esi, eax
-		xor		eax,eax
-										//Check if we need to skip pixels in (i.e. Left Clipped)
+		xor		eax, eax
+		//Check if we need to skip pixels in (i.e. Left Clipped)
 		cmp		leftClipX, 0
 		jle		fSKIP_IN				//We are on the correct scanLine of screen but must skip IN if not leftClipped
 
-fSKIP_X:
+		fSKIP_X:
 
-		xor		ecx,ecx
+		xor		ecx, ecx
 		mov		cl, byte ptr [esi]		//Get the first data byte.  This is a runLength for RLE or String
 
 		cmp		ecx, 0x80				//Check if Run or String
@@ -554,8 +557,8 @@ fSKIP_X:
 
 		add		esi, ecx				//Otherwise, skip the string completely.
 		jmp		fSKIP_X					//Onto the next one.
-	
-fRLE1:
+
+		fRLE1:
 
 		add		ebx, ecx				//Add to Total Run
 		inc		esi
@@ -568,7 +571,7 @@ fRLE1:
 
 //We have skipped in enough.
 //Now we need to draw any remainder in the current String
-fENOUGH_SKIP_STR:
+		fENOUGH_SKIP_STR:
 
 		sub 	ebx, leftClipX			//How much do we need to draw
 		add		esi, ecx				//Skip to end of string.
@@ -580,18 +583,19 @@ fENOUGH_SKIP_STR:
 		nop
 
 //fFADE_STRING_LOOP1:
-		test	cl,cl					//Check loop end
+		test	cl, cl					//Check loop end
 		je 		fBLT
 
-fd1:	mov		al, byte ptr [esi]		//Get Byte
+		fd1:
+		mov		al, byte ptr [esi]		//Get Byte
 		inc		esi
 
 		dec		cl						//stringLength--, shapeData++, ScreenBuffer++
 		inc		edi
 
-		mov		ch, byte ptr [eax+ebp]	//Get New Color
-		test	cl,cl
-		
+		mov		ch, byte ptr [eax + ebp]	//Get New Color
+		test	cl, cl
+
 		mov		byte ptr [edi], ch		//Put color on screen
 		jnz		fd1
 
@@ -600,15 +604,15 @@ fd1:	mov		al, byte ptr [esi]		//Get Byte
 
 //We have skipped in enough.
 //Now we need to draw any remainder in the current RLE
-fENOUGH_SKIP_RLE:
+		fENOUGH_SKIP_RLE:
 
 		sub		ebx, leftClipX
 		mov		al, byte ptr [esi]		//Get Byte
 
 		mov		ecx, ebx
 		inc		esi
-		
-		mov		al, byte ptr [eax+ebp]	//Get New Color
+
+		mov		al, byte ptr [eax + ebp]	//Get New Color
 		add		edi, paneX0
 
 		cmp		al, 0xff
@@ -616,19 +620,19 @@ fENOUGH_SKIP_RLE:
 
 		add		edi, ecx
 		jmp		fBLT
-	
-fDO_BLT1:
+
+		fDO_BLT1:
 		rep		stosb					//Store color on screen
 		jmp		fBLT
 
 
 
 
-fSKIP_IN:
+		fSKIP_IN:
 		add		edi, topLeftX			//Skip in to the hotspot for this scanLine if NOT LeftClipped!
-	
-fBLT:
-		xor		ecx,ecx
+
+		fBLT:
+		xor		ecx, ecx
 		mov		cl, byte ptr [esi]		//Get the first data byte.  This is a runLength for RLE or String
 
 		cmp		ecx, 128				//Check if Run or String
@@ -642,15 +646,15 @@ fBLT:
 
 		cmp		ebx, totalBlt			//See if we have reached the end of this scanline
 		jle		fFADE_STRING_LOOP2
-		
+
 		sub		ebx, totalBlt			//Find out how many over we are
 		sub		ecx, ebx				//Shorten string by that amount
 		mov		ebx, totalBlt			//Force total Blted to totalBlt
-		
-fFADE_STRING_LOOP2:
 
-		xor		eax,eax
-		test	cl,cl					//Check loop end
+		fFADE_STRING_LOOP2:
+
+		xor		eax, eax
+		test	cl, cl					//Check loop end
 
 		je 		fCHK_END_STRING
 		mov		al, byte ptr [esi]		//Get Byte
@@ -659,37 +663,37 @@ fFADE_STRING_LOOP2:
 		inc		esi
 
 		inc		edi
-		mov		ch, byte ptr [eax+ebp]	//Get New Color
+		mov		ch, byte ptr [eax + ebp]	//Get New Color
 
 		cmp		ch, 0xff
 		je		fFADE_STRING_LOOP2
 
-		mov		byte ptr [edi-1], ch	//Put color on screen
+		mov		byte ptr [edi - 1], ch	//Put color on screen
 		jmp 	fFADE_STRING_LOOP2		//Back to Loop Top
 
 
-fCHK_END_STRING:
+		fCHK_END_STRING:
 
 		cmp		ebx, totalBlt			//Are we Done with this scanLine?
 		je		fNEXT_SCANLINE			//yes, next
 		jmp		fBLT						//No, keep Blting
 
-fBLT_RLE1:
+		fBLT_RLE1:
 
 		add		ebx, ecx				//Continue to update BltLength
 		inc		esi
 
 		cmp		ebx, totalBlt			//See if we have reached the end of this scanline
 		jle		fGO_RLE1
-		
+
 		sub		ebx, totalBlt			//Find out how many over we are
 		sub		ecx, ebx				//Shorten string by that amount
 		mov		ebx, totalBlt			//Force total Blted to totalBlt
-		
-fGO_RLE1:
+
+		fGO_RLE1:
 		mov		al, byte ptr [esi]		//Get Byte
 		inc		esi						//Move ShapePtr
-		mov		al, byte ptr [eax+ebp]	//Get New Color
+		mov		al, byte ptr [eax + ebp]	//Get New Color
 		cmp		al, 0xff
 		jne		fDO_BLT2
 		add		edi, ecx
@@ -698,14 +702,14 @@ fGO_RLE1:
 		jne		fBLT					//yes, next
 
 
-fNEXT_SCANLINE:
-		mov		edi,scanStart			//Move Screen Buffer down to next scanline
-		mov		ebx,DestWidth
+		fNEXT_SCANLINE:
+		mov		edi, scanStart			//Move Screen Buffer down to next scanline
+		mov		ebx, DestWidth
 
 		inc 	edx						//Move to next scanLine
-		add		edi,ebx
+		add		edi, ebx
 
-		mov		ebx, yOffsetTable		
+		mov		ebx, yOffsetTable
 		mov		scanStart, edi
 
 		movzx	ecx, word ptr [ebx]		//Get next yOffset
@@ -716,7 +720,7 @@ fNEXT_SCANLINE:
 		mov		yOffsetTable, ebx
 		jmp		fade_loop
 
-fDO_BLT2:
+		fDO_BLT2:
 		rep		stosb					//Blt the run to the screen
 		cmp		ebx, totalBlt			//Are we Done with this scanLine?
 		je		fNEXT_SCANLINE			//yes, next
@@ -743,21 +747,21 @@ fDO_BLT2:
 //
 // Check for fade table or not
 //
-AlphaBlit:
-		test	ebp,ebp
+		AlphaBlit:
+		test	ebp, ebp
 		jnz		afade_loop
 
-		mov		ebp,totalBlt
+		mov		ebp, totalBlt
 		nop
 //
 //
 // Loop with no fade table
 //
 //
-aLOOP_TOP:
+		aLOOP_TOP:
 		cmp		edx, lastScanOffset
 		jge		ExitPop
-		
+
 		xor		ebx, ebx				//Setup for this scanline
 		xor		ecx, ecx
 
@@ -766,13 +770,13 @@ aLOOP_TOP:
 
 		add		esi, eax
 		xor		eax, eax				//Clear Color Store
-										//Check if we need to skip pixels in (i.e. Left Clipped)
+		//Check if we need to skip pixels in (i.e. Left Clipped)
 		cmp		leftClipX, 0
 		jle		aSKIP_IN					//We are on the correct scanLine of screen but must skip IN if not leftClipped
 
-aSKIP_X:
+		aSKIP_X:
 
-		xor		ecx,ecx
+		xor		ecx, ecx
 		mov		cl, byte ptr [esi]		//Get the first data byte.  This is a runLength for RLE or String
 
 		cmp		ecx, 0x80				//Check if Run or String
@@ -789,8 +793,8 @@ aSKIP_X:
 
 		add		esi, ecx				//Otherwise, skip the string completely.
 		jmp		aSKIP_X					//Onto the next one.
-	
-aRLE1:
+
+		aRLE1:
 		add		ebx, ecx				//Add to Total Run
 		inc		esi
 
@@ -802,7 +806,7 @@ aRLE1:
 
 //We have skipped in enough.
 //Now we need to draw any remainder in the current String
-aENOUGH_SKIP_STR:
+		aENOUGH_SKIP_STR:
 
 		sub 	ebx, leftClipX			//How much do we need to draw
 		add		esi, ecx				//Skip to end of string.
@@ -813,56 +817,58 @@ aENOUGH_SKIP_STR:
 		sub		esi, ecx				//Skip back to clip start
 		nop
 
-		test	ecx,ecx
+		test	ecx, ecx
 		jz		aBLT
-		xor		eax,eax
+		xor		eax, eax
 
-aes:	mov		ah,[esi]
+		aes:
+		mov		ah, [esi]
 		inc		esi
-		mov		al,[edi]
+		mov		al, [edi]
 		inc		edi
 		dec		ecx
-		mov		al,AlphaTable[eax]
-		mov		[edi-1],al
+		mov		al, AlphaTable[eax]
+		mov		[edi - 1], al
 		jnz		aes
 
 		jmp		aBLT
 
 //We have skipped in enough.
 //Now we need to draw any remainder in the current RLE
-aENOUGH_SKIP_RLE:
+		aENOUGH_SKIP_RLE:
 
 		sub		ebx, leftClipX
 		mov		ecx, ebx
-		xor		eax,eax
+		xor		eax, eax
 		mov		ah, byte ptr [esi]		//Get Byte
 		inc		esi
-		
+
 		add		edi, paneX0
 		cmp		ah, 0xff
 		jne		aDO_BLT1
 		add		edi, ecx
 		jmp		aBLT
-	
-aDO_BLT1:
-		test	ecx,ecx
+
+		aDO_BLT1:
+		test	ecx, ecx
 		jz		aBLT
-aes1:	mov		al,[edi]
+		aes1:
+		mov		al, [edi]
 		inc		edi
 		dec		ecx
-		mov		al,AlphaTable[eax]
-		mov		[edi-1],al
+		mov		al, AlphaTable[eax]
+		mov		[edi - 1], al
 		jnz		aes1
 		jmp		aBLT
 
 
 
 
-aSKIP_IN:
+		aSKIP_IN:
 		add		edi, topLeftX			//Skip in to the hotspot for this scanLine if NOT LeftClipped!
-	
-aBLT:
-		xor		ecx,ecx
+
+		aBLT:
+		xor		ecx, ecx
 		mov		cl, byte ptr [esi]		//Get the first data byte.  This is a runLength for RLE or String
 
 		cmp		ecx, 128				//Check if Run or String
@@ -872,23 +878,23 @@ aBLT:
 		inc		esi
 
 		add		ebx, ecx				//Continue to update BltLength
-		xor		eax,eax
+		xor		eax, eax
 
 		cmp		ebx, ebp				//See if we have reached the end of this scanline
 		jle		aGO_STRING1
-		
+
 		sub		ebx, ebp				//Find out how many over we are
 		sub		ecx, ebx				//Shorten string by that amount
 		mov		ebx, ebp				//Force total Blted to totalBlt
-		
-aGO_STRING1:
-		mov al,[edi]
+
+		aGO_STRING1:
+		mov al, [edi]
 		inc edi
-		mov ah,[esi]
+		mov ah, [esi]
 		inc esi
-		mov al,AlphaTable[eax]
+		mov al, AlphaTable[eax]
 		dec ecx
-		mov [edi-1],al
+		mov [edi - 1], al
 		jnz aGO_STRING1
 
 //aCHK_END_STRING:
@@ -898,19 +904,19 @@ aGO_STRING1:
 		jmp		aBLT						//No, keep Blting
 
 
-aBLT_RLE1:
+		aBLT_RLE1:
 		add		ebx, ecx				//Continue to update BltLength
 		inc		esi
 
 		cmp		ebx, ebp				//See if we have reached the end of this scanline
 		jle		aGO_RLE1
-		
+
 		sub		ebx, ebp				//Find out how many over we are
 		sub		ecx, ebx				//Shorten string by that amount
 		mov		ebx, ebp				//Force total Blted to totalBlt
-		
-aGO_RLE1:
-		xor		eax,eax
+
+		aGO_RLE1:
+		xor		eax, eax
 		mov		al, byte ptr [esi]		//Get Byte
 
 		cmp		al, 0xff
@@ -918,18 +924,18 @@ aGO_RLE1:
 
 		add		edi, ecx
 		inc		esi						//Move ShapePtr
-			
+
 		cmp		ebx, ebp				//Are we Done with this scanLine?
 		jne		aBLT						//yes, next
 
-aNEXT_SCANLINE:
-		mov		edi,scanStart			//Move Screen Buffer down to next scanline
-		mov		ebx,DestWidth
+		aNEXT_SCANLINE:
+		mov		edi, scanStart			//Move Screen Buffer down to next scanline
+		mov		ebx, DestWidth
 
 		inc 	edx						//Move to next scanLine
-		add		edi,ebx
+		add		edi, ebx
 
-		mov		ebx, yOffsetTable		
+		mov		ebx, yOffsetTable
 		mov		scanStart, edi
 
 		movzx	ecx, word ptr [ebx]		//Get next yOffset
@@ -940,20 +946,22 @@ aNEXT_SCANLINE:
 		mov		yOffsetTable, ebx
 		jmp		aLOOP_TOP
 
-	
-aDO_BLT2:
+
+		aDO_BLT2:
 		inc		esi						//Move ShapePtr
-		mov		ah,al
-		test ecx,ecx
+		mov		ah, al
+		test ecx, ecx
 		jz aes2
-aes3:	mov		al,[edi]
+		aes3:
+		mov		al, [edi]
 		inc		edi
 		dec		ecx
-		mov		al,AlphaTable[eax]
-		mov		[edi-1],al
+		mov		al, AlphaTable[eax]
+		mov		[edi - 1], al
 		jnz		aes3
 
-aes2:	cmp		ebx, ebp				//Are we Done with this scanLine?
+		aes2:
+		cmp		ebx, ebp				//Are we Done with this scanLine?
 		jne		aBLT						//yes, next
 		jmp		aNEXT_SCANLINE
 
@@ -962,10 +970,10 @@ aes2:	cmp		ebx, ebp				//Are we Done with this scanLine?
 // ALPHA Loop with a fade table
 //
 //
-afade_loop:
+		afade_loop:
 		cmp		edx, lastScanOffset
 		jge		ExitPop
-		
+
 		xor		ebx, ebx				//Setup for this scanline
 		xor		ecx, ecx
 
@@ -973,14 +981,14 @@ afade_loop:
 		mov		eax, currentOffset
 
 		add		esi, eax
-		xor		eax,eax
-										//Check if we need to skip pixels in (i.e. Left Clipped)
+		xor		eax, eax
+		//Check if we need to skip pixels in (i.e. Left Clipped)
 		cmp		leftClipX, 0
 		jle		afSKIP_IN				//We are on the correct scanLine of screen but must skip IN if not leftClipped
 
-afSKIP_X:
+		afSKIP_X:
 
-		xor		ecx,ecx
+		xor		ecx, ecx
 		mov		cl, byte ptr [esi]		//Get the first data byte.  This is a runLength for RLE or String
 
 		cmp		ecx, 0x80				//Check if Run or String
@@ -997,8 +1005,8 @@ afSKIP_X:
 
 		add		esi, ecx				//Otherwise, skip the string completely.
 		jmp		afSKIP_X					//Onto the next one.
-	
-afRLE1:
+
+		afRLE1:
 
 		add		ebx, ecx				//Add to Total Run
 		inc		esi
@@ -1011,7 +1019,7 @@ afRLE1:
 
 //We have skipped in enough.
 //Now we need to draw any remainder in the current String
-afENOUGH_SKIP_STR:
+		afENOUGH_SKIP_STR:
 
 		sub 	ebx, leftClipX			//How much do we need to draw
 		add		esi, ecx				//Skip to end of string.
@@ -1023,19 +1031,20 @@ afENOUGH_SKIP_STR:
 		nop
 
 //afFADE_STRING_LOOP1:
-		test	cl,cl					//Check loop end
+		test	cl, cl					//Check loop end
 		je 		afBLT
 
-afd1:	xor		eax,eax
+		afd1:
+		xor		eax, eax
 		mov		al, byte ptr [esi]		//Get Byte
 
 		inc		esi
 		inc		edi
 
-		mov		ah, byte ptr [eax+ebp]	//Get New Color
+		mov		ah, byte ptr [eax + ebp]	//Get New Color
 		dec		cl
-		mov		al,[edi]
-		mov		al,AlphaTable[eax]
+		mov		al, [edi]
+		mov		al, AlphaTable[eax]
 		mov		byte ptr [edi], al		//Put color on screen
 		jnz		afd1
 
@@ -1044,15 +1053,15 @@ afd1:	xor		eax,eax
 
 //We have skipped in enough.
 //Now we need to draw any remainder in the current RLE
-afENOUGH_SKIP_RLE:
+		afENOUGH_SKIP_RLE:
 
 		sub		ebx, leftClipX
 		mov		al, byte ptr [esi]		//Get Byte
 
 		mov		ecx, ebx
 		inc		esi
-		
-		mov		ah, byte ptr [eax+ebp]	//Get New Color
+
+		mov		ah, byte ptr [eax + ebp]	//Get New Color
 		add		edi, paneX0
 
 		cmp		ah, 0xff
@@ -1060,26 +1069,27 @@ afENOUGH_SKIP_RLE:
 
 		add		edi, ecx
 		jmp		afBLT
-	
-afDO_BLT1:
-		test	ecx,ecx
+
+		afDO_BLT1:
+		test	ecx, ecx
 		jz		afBLT
-aes4:	mov		al,[edi]
+		aes4:
+		mov		al, [edi]
 		inc		edi
 		dec		ecx
-		mov		al,AlphaTable[eax]
-		mov		[edi-1],al
+		mov		al, AlphaTable[eax]
+		mov		[edi - 1], al
 		jnz		aes4
 		jmp		afBLT
 
 
 
 
-afSKIP_IN:
+		afSKIP_IN:
 		add		edi, topLeftX			//Skip in to the hotspot for this scanLine if NOT LeftClipped!
-	
-afBLT:
-		xor		ecx,ecx
+
+		afBLT:
+		xor		ecx, ecx
 		mov		cl, byte ptr [esi]		//Get the first data byte.  This is a runLength for RLE or String
 
 		cmp		ecx, 128				//Check if Run or String
@@ -1093,59 +1103,59 @@ afBLT:
 
 		cmp		ebx, totalBlt			//See if we have reached the end of this scanline
 		jle		afFADE_STRING_LOOP2
-		
+
 		sub		ebx, totalBlt			//Find out how many over we are
 		sub		ecx, ebx				//Shorten string by that amount
 		mov		ebx, totalBlt			//Force total Blted to totalBlt
-		
-afFADE_STRING_LOOP2:
 
-		test	cl,cl					//Check loop end
+		afFADE_STRING_LOOP2:
+
+		test	cl, cl					//Check loop end
 		je 		afCHK_END_STRING
 
-		xor		eax,eax
+		xor		eax, eax
 		mov		al, byte ptr [esi]		//Get Byte
 
 		inc		esi
 		dec		cl						//stringLength--, shapeData++, ScreenBuffer++
 
 		inc		edi
-		mov		ah, byte ptr [eax+ebp]	//Get New Color
+		mov		ah, byte ptr [eax + ebp]	//Get New Color
 
 		cmp		ah, 0xff
 		je		afFADE_STRING_LOOP2
 
-		mov		al,[edi-1]
-		mov		al,AlphaTable[eax]
+		mov		al, [edi - 1]
+		mov		al, AlphaTable[eax]
 
-		mov		byte ptr [edi-1], al	//Put color on screen
+		mov		byte ptr [edi - 1], al	//Put color on screen
 		jmp 	afFADE_STRING_LOOP2		//Back to Loop Top
 
 
-afCHK_END_STRING:
+		afCHK_END_STRING:
 
 		cmp		ebx, totalBlt			//Are we Done with this scanLine?
 		je		afNEXT_SCANLINE			//yes, next
 		jmp		afBLT						//No, keep Blting
 
-afBLT_RLE1:
+		afBLT_RLE1:
 
 		add		ebx, ecx				//Continue to update BltLength
 		inc		esi
 
 		cmp		ebx, totalBlt			//See if we have reached the end of this scanline
 		jle		afGO_RLE1
-		
+
 		sub		ebx, totalBlt			//Find out how many over we are
 		sub		ecx, ebx				//Shorten string by that amount
 		mov		ebx, totalBlt			//Force total Blted to totalBlt
-		
-afGO_RLE1:
-		xor		eax,eax
+
+		afGO_RLE1:
+		xor		eax, eax
 		mov		al, byte ptr [esi]		//Get Byte
-		
+
 		inc		esi						//Move ShapePtr
-		mov		ah, byte ptr [eax+ebp]	//Get New Color
+		mov		ah, byte ptr [eax + ebp]	//Get New Color
 		cmp		ah, 0xff
 		jne		afDO_BLT2
 		add		edi, ecx
@@ -1154,14 +1164,14 @@ afGO_RLE1:
 		jne		afBLT					//yes, next
 
 
-afNEXT_SCANLINE:
-		mov		edi,scanStart			//Move Screen Buffer down to next scanline
-		mov		ebx,DestWidth
+		afNEXT_SCANLINE:
+		mov		edi, scanStart			//Move Screen Buffer down to next scanline
+		mov		ebx, DestWidth
 
 		inc 	edx						//Move to next scanLine
-		add		edi,ebx
+		add		edi, ebx
 
-		mov		ebx, yOffsetTable		
+		mov		ebx, yOffsetTable
 		mov		scanStart, edi
 
 		movzx	ecx, word ptr [ebx]		//Get next yOffset
@@ -1172,43 +1182,44 @@ afNEXT_SCANLINE:
 		mov		yOffsetTable, ebx
 		jmp		afade_loop
 
-afDO_BLT2:
-		test	ecx,ecx
+		afDO_BLT2:
+		test	ecx, ecx
 		jz		afBLT
-aes5:	mov		al,[edi]
+		aes5:
+		mov		al, [edi]
 		inc		edi
 		dec		ecx
-		mov		al,AlphaTable[eax]
-		mov		[edi-1],al
+		mov		al, AlphaTable[eax]
+		mov		[edi - 1], al
 		jnz		aes5
 		cmp		ebx, totalBlt			//Are we Done with this scanLine?
 		je		afNEXT_SCANLINE			//yes, next
 		jmp		afBLT						//No, keep Blting
 
-LEFTXCLIP:
+		LEFTXCLIP:
 		mov		eax, paneX0
 		sub		eax, topLeftX
 		sub		ebx, eax
 		mov		leftClipX, eax
 		jmp		FIND_BUF
 
-RIGHTXCLIP:
+		RIGHTXCLIP:
 		sub		eax, paneX1
 		mov		ebx, scanCol
 		sub		ebx, eax
 		jmp		FIND_BUF
 
-OffBottom:
+		OffBottom:
 		mov		ebx, paneY1
 		sub		ebx, ecx
 		inc 	ebx
 		jmp		LINE311
 
 
-ExitPop:
+		ExitPop:
 		pop ebp
 
-Exit:	
+		Exit:
 	}
 	return(0);
 }

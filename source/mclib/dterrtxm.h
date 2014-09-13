@@ -14,21 +14,21 @@
 //---------------------------------------------------------------------------
 // Class Definitions
 struct TerrainTXM;
-typedef TerrainTXM *TerrainTXMPtr;
+typedef TerrainTXM* TerrainTXMPtr;
 
 struct MC_TerrainType;
-typedef MC_TerrainType *MC_TerrainTypePtr;
+typedef MC_TerrainType* MC_TerrainTypePtr;
 
 struct MC_DetailType;
-typedef MC_DetailType *MC_DetailTypePtr;
+typedef MC_DetailType* MC_DetailTypePtr;
 
 struct MC_OverlayType;
-typedef MC_OverlayType *MC_OverlayTypePtr;
+typedef MC_OverlayType* MC_OverlayTypePtr;
 
 struct TransitionType;
-typedef TransitionType *TransitionTypePtr;
+typedef TransitionType* TransitionTypePtr;
 
 class TerrainTextures;
-typedef TerrainTextures *TerrainTexturesPtr;
+typedef TerrainTextures* TerrainTexturesPtr;
 //---------------------------------------------------------------------------
 #endif

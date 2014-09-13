@@ -17,7 +17,8 @@
 //#include <mlr/mlr.hpp>
 //#include <mlr/mlrstate.hpp>
 
-namespace MidLevelRenderer {
+namespace MidLevelRenderer
+{
 
 	struct EffectClipPolygon
 	{
@@ -33,11 +34,11 @@ namespace MidLevelRenderer {
 	class DrawEffectInformation;
 	class GOSVertex;
 	class GOSVertexPool;
-	class MLRSorter; 
+	class MLRSorter;
 
-	//##########################################################################
-	//#########################    MLREffect   #################################
-	//##########################################################################
+//##########################################################################
+//#########################    MLREffect   #################################
+//##########################################################################
 
 	class MLREffect :
 		public Stuff::RegisteredClass
@@ -46,7 +47,7 @@ namespace MidLevelRenderer {
 		static void __stdcall InitializeClass(void);
 		static void __stdcall TerminateClass(void);
 
-		MLREffect(uint32_t nr, ClassData *class_data);
+		MLREffect(uint32_t nr, ClassData* class_data);
 		~MLREffect(void);
 
 		virtual void SetData(
@@ -54,46 +55,64 @@ namespace MidLevelRenderer {
 			const Stuff::Point3D* point_data,
 			const Stuff::RGBAColor* color_data) = 0;
 
-		virtual uint32_t GetType(uint32_t) { return 0; }
+		virtual uint32_t GetType(uint32_t)
+		{
+			return 0;
+		}
 
 		//	add another effect
-		virtual void Draw (DrawEffectInformation*, GOSVertexPool*, MLRSorter*) = 0;
+		virtual void Draw(DrawEffectInformation*, GOSVertexPool*, MLRSorter*) = 0;
 		virtual void Transform(size_t, size_t);
 
 		// switches single/all effects on or off
 		void TurnAllOn(void);
 		void TurnAllOff(void);
 		void TurnOn(uint32_t nr)
-		{ 
-			Check_Object(this); Verify(nr < maxNrOf); testList[nr] |= 2;
+		{
+			Check_Object(this);
+			Verify(nr < maxNrOf);
+			testList[nr] |= 2;
 		}
 		void TurnOff(uint32_t nr)
 		{
-			Check_Object(this); Verify(nr<maxNrOf); testList[nr] &= ~2; 
+			Check_Object(this);
+			Verify(nr < maxNrOf);
+			testList[nr] &= ~2;
 		}
 		bool IsOn(size_t nr)
 		{
-			Check_Object(this); Verify(nr<maxNrOf); return (testList[nr] & 2)? true : false;
+			Check_Object(this);
+			Verify(nr < maxNrOf);
+			return (testList[nr] & 2) ? true : false;
 		}
 
-		virtual uint32_t Clip(MLRClippingState, GOSVertexPool*) = 0;		
+		virtual uint32_t Clip(MLRClippingState, GOSVertexPool*) = 0;
 
 		void SetEffectToClipMatrix(
-			const Stuff::LinearMatrix4D *effectToWorld,
-			const Stuff::Matrix4D *worldToClipMatrix)
+			const Stuff::LinearMatrix4D* effectToWorld,
+			const Stuff::Matrix4D* worldToClipMatrix)
 		{
 			Check_Object(this);
 			effectToClipMatrix.Multiply(*effectToWorld, *worldToClipMatrix);
 		}
 
 		GOSVertex* GetGOSVertices(void)
-		{ Check_Object(this); return gos_vertices; }
+		{
+			Check_Object(this);
+			return gos_vertices;
+		}
 
 		size_t GetNumGOSVertices(void)
-		{ Check_Object(this); return numGOSVertices; }
+		{
+			Check_Object(this);
+			return numGOSVertices;
+		}
 
-		int32_t GetSortDataMode(void)
-		{ Check_Object(this); return drawMode; }
+		uint32_t GetSortDataMode(void)
+		{
+			Check_Object(this);
+			return drawMode;
+		}
 
 		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		// Class Data Support
@@ -108,36 +127,37 @@ namespace MidLevelRenderer {
 		void TestInstance(void) const {};
 
 	protected:
-		static EffectClipPolygon *clipBuffer;
+		static EffectClipPolygon* clipBuffer;
 
 		void TurnAllVisible(void);
 		void TurnAllInVisible(void);
 		void TurnVisible(uint32_t nr)
-		{ 
-			Check_Object(this); Verify(nr<maxNrOf); testList[nr] |= 1;
+		{
+			Check_Object(this);
+			Verify(nr < maxNrOf);
+			testList[nr] |= 1;
 		}
 		void TurnInVisible(uint32_t nr)
 		{
-			Check_Object(this); Verify(nr<maxNrOf); testList[nr] &= ~1;
+			Check_Object(this);
+			Verify(nr < maxNrOf);
+			testList[nr] &= ~1;
 		}
-		int32_t visible;
+		uint32_t visible;
 		uint32_t maxNrOf;
 
-		const Stuff::Point3D *points;
-
-		const Stuff::RGBAColor *colors;
-
-		static Stuff::DynamicArrayOf<Stuff::Vector4D> *transformedCoords;
-
+		const Stuff::Point3D* points;
+		const Stuff::RGBAColor* colors;
+		static Stuff::DynamicArrayOf<Stuff::Vector4D>* transformedCoords;
 		Stuff::DynamicArrayOf<int32_t>	testList;
 
-		int32_t drawMode;
+		uint32_t drawMode;
 
 		Stuff::LinearMatrix4D worldToEffect;
 		Stuff::Matrix4D effectToClipMatrix;
 
-		GOSVertex *gos_vertices;
-		size_t numGOSVertices;
+		GOSVertex* gos_vertices;
+		uint16_t numGOSVertices;
 	};
 
 	struct EffectClipData

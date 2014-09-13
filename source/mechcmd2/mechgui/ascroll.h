@@ -10,9 +10,10 @@
 #include <mechgui/asystem.h>
 #include <mechgui/abutton.h>
 
-namespace mechgui {
+namespace mechgui
+{
 
-	class mcScrollButton : 
+	class mcScrollButton :
 		public aAnimButton
 	{
 	public:
@@ -34,20 +35,32 @@ namespace mechgui {
 		virtual void	update(void);
 		virtual void	render(void);
 
-		virtual int32_t		handleMessage( uint32_t message, uint32_t fromWho );
+		virtual int32_t		handleMessage(uint32_t message, uint32_t fromWho);
 
 		void			SetScrollMax(float newMax);
 		void			SetScrollPos(float newPos);
-		float			GetScrollMax(void){return scrollMax;};
-		float			GetScrollPos(void){return scrollPos;};
-		int32_t			SetSrollInc( int32_t newInc ){ scrollInc = newInc; } // amount you move for one arrow click
-		int32_t			SetScrollPage(int32_t newInc){ pageInc = newInc;} // amount you move if you click on the bar itself
+		float			GetScrollMax(void)
+		{
+			return scrollMax;
+		};
+		float			GetScrollPos(void)
+		{
+			return scrollPos;
+		};
+		int32_t			SetSrollInc(int32_t newInc)
+		{
+			scrollInc = newInc;    // amount you move for one arrow click
+		}
+		int32_t			SetScrollPage(int32_t newInc)
+		{
+			pageInc = newInc;   // amount you move if you click on the bar itself
+		}
 		void			ScrollUp(void);
 		void			ScrollPageUp(void);
 		void			ScrollDown(void);
 		void			ScrollPageDown(void);
-		void			SetScroll( int32_t newScrollPos );	
-		void			Enable( bool enable );
+		void			SetScroll(int32_t newScrollPos);
+		void			Enable(bool enable);
 
 	protected:
 
@@ -67,7 +80,7 @@ namespace mechgui {
 	class mcScrollBar : public aScrollBar
 	{
 	public:
-		int32_t init ( int32_t xPos, int32_t yPos, int32_t w, int32_t h  );
+		int32_t init(int32_t xPos, int32_t yPos, int32_t w, int32_t h);
 		virtual void	resize(int32_t w, int32_t h);
 
 		void setOrange(void);

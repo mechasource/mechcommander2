@@ -23,7 +23,7 @@ using namespace Stuff;
 //###########################################################################
 //
 
-TableEntry::TableEntry(Table *table, Plug *plug)
+TableEntry::TableEntry(Table* table, Plug* plug)
 	: Link(table, plug)
 {
 	Check_Object(this);
@@ -32,9 +32,8 @@ TableEntry::TableEntry(Table *table, Plug *plug)
 TableEntry::~TableEntry()
 {
 	Check_Object(this);
-	Table *table = Cast_Object(Table*, socket);
+	Table* table = Cast_Object(Table*, socket);
 	IteratorPosition index;
-
 	//
 	//--------------------------------------
 	// Find the link in the table and remove
@@ -42,21 +41,18 @@ TableEntry::~TableEntry()
 	//
 	index = table->SearchForTableEntry(this);
 	table->RemoveNthTableEntry(index);
-
 	//
 	//--------------------------------------------
 	// Notify iterators that link is being deleted
 	//--------------------------------------------
 	//
 	table->SendIteratorMemo(PlugRemoved, &index);
-
 	//
 	//------------------------------------------
 	// Remove this link from any plug references
 	//------------------------------------------
 	//
 	ReleaseFromPlug();
-
 	//
 	//-------------------------------------------------------------
 	// Tell the node to release this link.  Note that this link
@@ -64,7 +60,7 @@ TableEntry::~TableEntry()
 	// time.
 	//-------------------------------------------------------------
 	//
-	if (table->GetReleaseNode() != nullptr)
+	if(table->GetReleaseNode() != nullptr)
 	{
 		Check_Object(table->GetReleaseNode());
 		table->GetReleaseNode()->ReleaseLinkHandler(table, plug);
@@ -82,7 +78,7 @@ TableEntry::~TableEntry()
 // Table
 //###########################################################################
 //
-Table::Table(Node *node, bool has_unique_entries) 
+Table::Table(Node* node, bool has_unique_entries)
 	: SortedSocket(node, has_unique_entries)
 {
 	array = nullptr;
@@ -99,7 +95,7 @@ Table::~Table()
 	Check_Object(this);
 	SetReleaseNode(nullptr);
 	CollectionSize i = numItems;
-	while (i > 0) 
+	while(i > 0)
 	{
 		--i;
 		Unregister_Object(array[i]);
@@ -117,8 +113,7 @@ Table::~Table()
 void Table::TestInstance()
 {
 	SortedSocket::TestInstance();
-
-	if (numItems > 0 || array != nullptr) 
+	if(numItems > 0 || array != nullptr)
 	{
 		Verify(numItems > 0);
 		Verify(numItems <= maxItems);
@@ -131,7 +126,7 @@ void Table::TestInstance()
 // AddImplementation
 //###########################################################################
 //
-void Table::AddImplementation(Plug *plug)
+void Table::AddImplementation(Plug* plug)
 {
 	Check_Object(this);
 	AddValueImplementation(plug, nullptr);
@@ -142,22 +137,19 @@ void Table::AddImplementation(Plug *plug)
 // AddValueImplementation
 //###########################################################################
 //
-void Table::AddValueImplementation(Plug *plug, PCVOID value)
+void Table::AddValueImplementation(Plug* plug, PCVOID value)
 {
 	Check_Object(this);
-	TableEntry *link;
-
+	TableEntry* link;
 	/*
 	* Verify that value has not been added
 	*/
 	Verify(HasUniqueEntries() ? (SearchForValue(value) == TableNullIndex) : true);
-
 	/*
 	* Make new table entry
 	*/
 	link = MakeTableEntry(plug, value);
 	Register_Object(link);
-
 	/*
 	* Add, sort and send memo to iterators to update references
 	*/
@@ -175,13 +167,11 @@ Plug* Table::FindImplementation(PCVOID value)
 {
 	Check_Object(this);
 	IteratorPosition index;
-
-	if ((index = SearchForValue(value)) != TableNullIndex) 
+	if((index = SearchForValue(value)) != TableNullIndex)
 	{
 		Check_Pointer(array);
 		VERIFY_INDEX(index);
 		Check_Object(array[index]);
-
 		return array[index]->GetPlug();
 	}
 	return nullptr;
@@ -195,19 +185,16 @@ Plug* Table::FindImplementation(PCVOID value)
 //
 Plug*
 Table::FindCloseImplementation(
-							   PCVOID value
-							   )
+	PCVOID value
+)
 {
 	Check_Object(this);
 	IteratorPosition index;
-
 	index = SearchForCloseValue(value);
 	Verify(index != TableNullIndex);
-
 	Check_Pointer(array);
 	VERIFY_INDEX(index);
 	Check_Object(array[index]);
-
 	return array[index]->GetPlug();
 }
 #endif
@@ -231,9 +218,9 @@ Table::IsEmpty()
 //
 TableEntry*
 Table::MakeTableEntry(
-					  Plug*,
-					  PCVOID
-					  )
+	Plug*,
+	PCVOID
+)
 {
 	Check_Object(this);
 	STOP(("Table::MakeTableEntry - Should never reach here"));
@@ -247,9 +234,9 @@ Table::MakeTableEntry(
 //
 IteratorPosition
 Table::CompareTableEntries(
-						   TableEntry*,
-						   TableEntry*
-						   )
+	TableEntry*,
+	TableEntry*
+)
 {
 	Check_Object(this);
 	STOP(("Table::CompareTableEntries - Should never reach here"));
@@ -264,7 +251,7 @@ Table::CompareTableEntries(
 IteratorPosition Table::CompareValueToTableEntry(
 	PCVOID,
 	TableEntry*
-	)
+)
 {
 	Check_Object(this);
 	STOP(("Table::CompareValueToTableEntry - Should never reach here"));
@@ -278,30 +265,28 @@ IteratorPosition Table::CompareValueToTableEntry(
 //
 void
 Table::AddTableEntry(
-					 TableEntry *link
-					 )
+	TableEntry* link
+)
 {
 	Check_Object(link);
-
-	CollectionSize new_num_items = numItems+1;
-	if (array == nullptr)
+	CollectionSize new_num_items = numItems + 1;
+	if(array == nullptr)
 	{
 		Verify(new_num_items == 1);
 		array = new TableEntry*[new_num_items];
 		Register_Pointer(array);
 		maxItems = 1;
 	}
-	else if (new_num_items > maxItems)
+	else if(new_num_items > maxItems)
 	{
-		TableEntry **new_array = new TableEntry*[new_num_items];
+		TableEntry** new_array = new TableEntry*[new_num_items];
 		Register_Pointer(new_array);
-
 		Mem_Copy(
 			new_array,
 			array,
 			numItems * sizeof(TableEntry*),
 			new_num_items * sizeof(TableEntry*)
-			);
+		);
 		Unregister_Pointer(array);
 		delete[] array;
 		array = new_array;
@@ -322,29 +307,23 @@ Table::SortTableEntries()
 {
 	Check_Object(this);
 	size_t i, j;
-	TableEntry *temp;
-
-	for (i = 1; i < numItems; i++) 
+	TableEntry* temp;
+	for(i = 1; i < numItems; i++)
 	{
 		Check_Pointer(array);
 		Verify(i < numItems);
-
 		temp = array[i];
 		j = i;
-
-		Verify(j-1 < numItems);
-
-		while (CompareTableEntries(array[j-1], temp) > 0)
+		Verify(j - 1 < numItems);
+		while(CompareTableEntries(array[j - 1], temp) > 0)
 		{
 			Verify(j < numItems);
-			Verify(j-1 < numItems);
-
-			array[j] = array[j-1];
+			Verify(j - 1 < numItems);
+			array[j] = array[j - 1];
 			j--;
-			if (j < 1)
+			if(j < 1)
 				break;
 		}
-
 		Verify(j < numItems);
 		array[j] = temp;
 	}
@@ -357,26 +336,22 @@ Table::SortTableEntries()
 //
 IteratorPosition
 Table::SearchForValue(
-					  PCVOID value
-					  )
+	PCVOID value
+)
 {
 	Check_Object(this);
 	CollectionSize n = numItems;
 	size_t i = 0;
 	IteratorPosition j;
 	IteratorPosition k;
-
-	while (i < n) 
+	while(i < n)
 	{
 		j = (i + n - 1) >> 1;
-
 		Check_Pointer(array);
 		Verify(j < numItems);
-
-		if ((k = CompareValueToTableEntry(value, array[j])) == 0)
+		if((k = CompareValueToTableEntry(value, array[j])) == 0)
 			return j;
-
-		if (intptr_t(k) < 0)
+		if(intptr_t(k) < 0)
 			n = j;
 		else
 			i = j + 1;
@@ -392,25 +367,21 @@ Table::SearchForValue(
 //
 IteratorPosition
 Table::SearchForCloseValue(
-						   PCVOID value
-						   )
+	PCVOID value
+)
 {
 	Check_Object(this);
 	size_t n = numItems;
 	size_t i = 0, j;
 	IteratorPosition k;
-
-	while (i < n) 
+	while(i < n)
 	{
 		j = (i + n - 1) >> 1;
-
 		Check_Pointer(array);
 		Verify(j < numItems);
-
-		if ((k = CompareValueToTableEntry(value, array[j])) == 0)
+		if((k = CompareValueToTableEntry(value, array[j])) == 0)
 			break;
-
-		if (k < 0)
+		if(k < 0)
 			n = j;
 		else
 			i = j + 1;
@@ -424,17 +395,15 @@ Table::SearchForCloseValue(
 // SearchForTableEntry
 //###########################################################################
 //
-IteratorPosition Table::SearchForTableEntry(TableEntry *link)
+IteratorPosition Table::SearchForTableEntry(TableEntry* link)
 {
 	Check_Object(this);
 	CollectionSize i;
-
-	for (i = 0; i < numItems; i++) 
+	for(i = 0; i < numItems; i++)
 	{
 		Check_Pointer(array);
 		VERIFY_INDEX(i);
-
-		if (array[i] == link)
+		if(array[i] == link)
 			return i;
 	}
 	return TableNullIndex;
@@ -451,31 +420,26 @@ void Table::RemoveNthTableEntry(CollectionSize index)
 	PCHAR		itemPtr;
 	PCHAR		lastItem;
 	size_t		width;
-
 	Check_Pointer(array);
 	VERIFY_INDEX(index);
-
 	/*
 	* Find the location of the item
 	*/
 	itemPtr = Cast_Pointer(PCHAR, &array[index]);
-
 	/*
 	* Remove the item from the array
-	*/	
+	*/
 	width = sizeof(void*);
 	lastItem = Cast_Pointer(PCHAR, array) + (numItems - 1) * width;	// !!!!
-
-	if (itemPtr < lastItem) 
+	if(itemPtr < lastItem)
 	{
 		memmove(itemPtr, itemPtr + width, (size_t)(lastItem - itemPtr));
 	}
-
 	/*
 	* Resize the array
 	*/
-	CollectionSize new_num_items = numItems-1;
-	if (new_num_items == 0)
+	CollectionSize new_num_items = numItems - 1;
+	if(new_num_items == 0)
 	{
 		Unregister_Pointer(array);
 		delete[] array;
@@ -489,14 +453,13 @@ void Table::RemoveNthTableEntry(CollectionSize index)
 #if defined(_ARMOR)
 TableEntry*
 TableIterator::NthEntry(
-						CollectionSize index
-						)
+	CollectionSize index
+)
 {
 	Check_Object(this);
 	Check_Pointer(array);
 	Verify((0 <= intptr_t(index)) && (intptr_t(index) < intptr_t(numItems)));
 	Check_Object(array[index]);
-
 	return array[index];
 }
 #endif
@@ -506,13 +469,12 @@ TableIterator::NthEntry(
 // TableIterator
 //###########################################################################
 //
-TableIterator::TableIterator(Table *table):
-SortedIterator(table)
+TableIterator::TableIterator(Table* table):
+	SortedIterator(table)
 {
 	array = table->array;
 	numItems = table->numItems;
-
-	if (array != nullptr)
+	if(array != nullptr)
 		currentPosition = 0;
 	else
 		currentPosition = TableNullIndex;
@@ -535,8 +497,7 @@ void
 TableIterator::TestInstance()
 {
 	SortedIterator::TestInstance();
-
-	if (array != nullptr) 
+	if(array != nullptr)
 	{
 		Check_Pointer(array);
 		Verify(0 < numItems);
@@ -552,7 +513,7 @@ TableIterator::TestInstance()
 void
 TableIterator::First()
 {
-	if (array != nullptr)
+	if(array != nullptr)
 		currentPosition = 0;
 }
 
@@ -564,7 +525,7 @@ TableIterator::First()
 void
 TableIterator::Last()
 {
-	if (array != nullptr)
+	if(array != nullptr)
 		currentPosition = numItems - 1;
 }
 
@@ -596,12 +557,11 @@ TableIterator::Previous()
 //###########################################################################
 //
 void
-*TableIterator::ReadAndNextImplementation()
+* TableIterator::ReadAndNextImplementation()
 {
-	if (currentPosition != TableNullIndex) 
+	if(currentPosition != TableNullIndex)
 	{
-		Plug *plug;
-
+		Plug* plug;
 		plug = NthEntry(currentPosition)->GetPlug();
 		IncrementPosition();
 		return plug;
@@ -615,12 +575,11 @@ void
 //###########################################################################
 //
 void
-*TableIterator::ReadAndPreviousImplementation()
+* TableIterator::ReadAndPreviousImplementation()
 {
-	if (currentPosition != TableNullIndex) 
+	if(currentPosition != TableNullIndex)
 	{
-		Plug *plug;
-
+		Plug* plug;
 		plug = NthEntry(currentPosition)->GetPlug();
 		DecrementPosition();
 		return plug;
@@ -634,9 +593,9 @@ void
 //###########################################################################
 //
 void
-*TableIterator::GetCurrentImplementation()
+* TableIterator::GetCurrentImplementation()
 {
-	if (currentPosition != TableNullIndex) 
+	if(currentPosition != TableNullIndex)
 	{
 		return NthEntry(currentPosition)->GetPlug();
 	}
@@ -660,11 +619,11 @@ TableIterator::GetSize()
 //###########################################################################
 //
 void
-*TableIterator::GetNthImplementation(
-									 CollectionSize index
-									 )
+* TableIterator::GetNthImplementation(
+	CollectionSize index
+)
 {
-	if (index < numItems) 
+	if(index < numItems)
 	{
 		return NthEntry(currentPosition = index)->GetPlug();
 	}
@@ -679,7 +638,7 @@ void
 void
 TableIterator::Remove()
 {
-	if (currentPosition != TableNullIndex)
+	if(currentPosition != TableNullIndex)
 	{
 		Unregister_Object(NthEntry(currentPosition));
 		delete NthEntry(currentPosition);
@@ -692,21 +651,20 @@ TableIterator::Remove()
 //###########################################################################
 //
 Plug
-*TableIterator::FindImplementation(
-								   PCVOID value
-								   )
+* TableIterator::FindImplementation(
+	PCVOID value
+)
 {
 	IteratorPosition index;
-	Table *table = Cast_Object(Table*, socket);
-
-	if ((index = table->SearchForValue(value)) != TableNullIndex)
+	Table* table = Cast_Object(Table*, socket);
+	if((index = table->SearchForValue(value)) != TableNullIndex)
 	{
-		if (!table->HasUniqueEntries())
+		if(!table->HasUniqueEntries())
 		{
-			while (
-				intptr_t(index-1) >= 0 &&
-				table->CompareTableEntries(NthEntry(index-1), NthEntry(index)) == 0
-				)
+			while(
+				intptr_t(index - 1) >= 0 &&
+				table->CompareTableEntries(NthEntry(index - 1), NthEntry(index)) == 0
+			)
 			{
 				index--;
 			}
@@ -724,60 +682,53 @@ Plug
 //
 void
 TableIterator::ReceiveMemo(
-						   IteratorMemo memo,
-						   PVOID content
-						   )
+	IteratorMemo memo,
+	PVOID content
+)
 {
-	switch (memo)
+	switch(memo)
 	{
-	case PlugAdded:
+		case PlugAdded:
 		{
-			Table *table = Cast_Object(Table*, socket);
-
+			Table* table = Cast_Object(Table*, socket);
 			Check_Object(table);
 			array = table->array;
 			numItems = table->numItems;
-
 			//
 			// If a plug is added before or at the current position then
 			// the current position should be incremented one forward,
 			// otherwise, no action is necessary
 			//
-			TableEntry *link;
+			TableEntry* link;
 			IteratorPosition index;
-
 			link = Cast_Object(TableEntry*, content);
 			index = table->SearchForTableEntry(link);
 			VERIFY_INDEX(index);
-			if (index <= currentPosition)
+			if(index <= currentPosition)
 			{
 				currentPosition++;
 			}
 			Verify(TableNullIndex <= currentPosition && currentPosition < numItems);
 		}
 		break;
-
-	case PlugRemoved:
+		case PlugRemoved:
 		{
-			Table *table = Cast_Object(Table*, socket);
-
+			Table* table = Cast_Object(Table*, socket);
 			Check_Object(table);
 			array = table->array;
 			numItems = table->numItems;
-
 			//
 			// If a plug is removed before the current position then decrement
 			// the current position, else if the current position is at the end
 			// of the table then decrement the counter
 			//
 			IteratorPosition index;
-
-			index = *Cast_Pointer(IteratorPosition*,content);
-			if (index < currentPosition)
+			index = *Cast_Pointer(IteratorPosition*, content);
+			if(index < currentPosition)
 			{
 				currentPosition--;
 			}
-			else if (numItems <= currentPosition)
+			else if(numItems <= currentPosition)
 			{
 				currentPosition--;
 			}

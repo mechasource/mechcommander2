@@ -18,8 +18,8 @@
 // Error Handling routines
 //***************************************************************************
 
-void Fatal (int32_t errCode, PSTR errMessage) {
-
+void Fatal(int32_t errCode, PSTR errMessage)
+{
 	char msg[512];
 	sprintf(msg, " [FATAL %d] %s ", errCode, errMessage);
 	STOP((msg));
@@ -27,9 +27,10 @@ void Fatal (int32_t errCode, PSTR errMessage) {
 
 //---------------------------------------------------------------------------
 
-void Assert (bool test, int32_t errCode, PSTR errMessage) {
-
-	if (!test) {
+void Assert(bool test, int32_t errCode, PSTR errMessage)
+{
+	if(!test)
+	{
 		char msg[512];
 		sprintf(msg, " [ASSERT %d] %s ", errCode, errMessage);
 		STOP((msg));

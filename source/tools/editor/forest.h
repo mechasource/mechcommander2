@@ -25,50 +25,65 @@ class Forest
 
 public:
 
-	Forest( int32_t newID );
-	Forest( const Forest& src );
+	Forest(int32_t newID);
+	Forest(const Forest& src);
 
-	Forest& operator=( const Forest& src );
+	Forest& operator=(const Forest& src);
 
-	void init( );
-	void init( FitIniFile& file );
-	void save( );
-	void save( FitIniFile& file );
+	void init();
+	void init(FitIniFile& file);
+	void save();
+	void save(FitIniFile& file);
 
 
-	PCSTR getFileName(void) const { return fileName; }
-	void		setFileName( PCSTR newName ){ fileName = newName; }
+	PCSTR getFileName(void) const
+	{
+		return fileName;
+	}
+	void		setFileName(PCSTR newName)
+	{
+		fileName = newName;
+	}
 
-	PCSTR getName(void) const { return name;}
-	void		setName( PCSTR newName ){ name = newName; }
+	PCSTR getName(void) const
+	{
+		return name;
+	}
+	void		setName(PCSTR newName)
+	{
+		name = newName;
+	}
 
-	int32_t		getID(void) const { return ID; }
-	
+	int32_t		getID(void) const
+	{
+		return ID;
+	}
+
 
 private:
 
 
 
-		int32_t	ID;
-		CString fileName;
-		CString	name;
-		
-		bool	bRandom;
+	int32_t	ID;
+	CString fileName;
+	CString	name;
 
-		float	maxHeight;
-		float	minHeight;
-		float	maxDensity;
-		float	minDensity;
+	bool	bRandom;
 
-		float	percentages[FOREST_TYPES];
+	float	maxHeight;
+	float	minHeight;
+	float	maxDensity;
+	float	minDensity;
 
-		float	centerX;
-		float	centerY;
-		float	radius;
-	
+	float	percentages[FOREST_TYPES];
 
-		friend class EditorObjectMgr;
-		friend class ForestDlg;
+	float	centerX;
+	float	centerY;
+	float	radius;
+
+
+	friend class EditorObjectMgr;
+	friend class ForestDlg;
 
 };
 

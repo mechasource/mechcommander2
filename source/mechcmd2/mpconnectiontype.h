@@ -17,22 +17,23 @@ MPConnectionType.h			: Interface for the MPConnectionType component.
 //#include <mechgui/aanim.h>
 //#include "mphostgame.h"
 
-typedef enum __mpconnectiontype_const {
+typedef enum __mpconnectiontype_const
+{
 	ZONE_PANEL_FIRST_BUTTON_ID		= 1000100,
 	LAN_PANEL_FIRST_BUTTON_ID		= 1000200,
 	TCPIP_PANEL_FIRST_BUTTON_ID		= 1000300,
-}; 
+};
 
 class aZonePanel : public aObject
 {
 public:
 	void init(FitIniFile* pFile, LogisticsScreen* pParent);
-	virtual int32_t			handleMessage( uint32_t, uint32_t );
+	virtual int32_t			handleMessage(uint32_t, uint32_t);
 	virtual void		update(void);
 	virtual void		render(void);
 
 private:
-	LogisticsScreen *pParentScreen;
+	LogisticsScreen* pParentScreen;
 
 	aAnimButton button;
 	aText text;
@@ -43,15 +44,15 @@ private:
 class aLanPanel : public aObject
 {
 public:
-	aLanPanel(LogisticsScreen &refParentScreenParam)
+	aLanPanel(LogisticsScreen& refParentScreenParam)
 	{
 		pParentScreen = &refParentScreenParam;
 	}
 	void init(FitIniFile* pFile);
-	virtual int32_t			handleMessage( uint32_t, uint32_t );
+	virtual int32_t			handleMessage(uint32_t, uint32_t);
 	virtual void update(void);
 private:
-	LogisticsScreen *pParentScreen;
+	LogisticsScreen* pParentScreen;
 	aAnimButton button0;
 	aAnimButton button1;
 	aText text;
@@ -62,21 +63,21 @@ private:
 class aTcpipPanel : public aObject
 {
 public:
-	aTcpipPanel(LogisticsScreen &refParentScreenParam)
+	aTcpipPanel(LogisticsScreen& refParentScreenParam)
 	{
 		pParentScreen = &refParentScreenParam;
 		connectingTime = 0.f;
 	}
 	void init(FitIniFile* pFile);
 	virtual void destroy(void);
-	virtual int32_t			handleMessage( uint32_t, uint32_t );
+	virtual int32_t			handleMessage(uint32_t, uint32_t);
 	virtual void		update(void);
 	virtual void		render(void);
 	virtual void		begin(void);
 private:
 
-	int32_t		getNum( PSTR pStr, int32_t index1, int32_t index2 );
-	LogisticsScreen *pParentScreen;
+	int32_t		getNum(PSTR pStr, int32_t index1, int32_t index2);
+	LogisticsScreen* pParentScreen;
 	aAnimButton button0;
 	aAnimButton button1;
 	aText text0;
@@ -94,18 +95,18 @@ private:
 class MPConnectionType : public LogisticsScreen
 {
 public:
-	
+
 	MPConnectionType(void);
 	virtual ~MPConnectionType(void);
-	
+
 	void init(FitIniFile* file);
 	bool isDone(void);
 	virtual void		begin(void);
 	virtual void		end(void);
- 	virtual void render( int32_t xOffset, int32_t yOffset );
+	virtual void render(int32_t xOffset, int32_t yOffset);
 	virtual void render(void);
 	virtual void update(void);
-	virtual int32_t			handleMessage( uint32_t, uint32_t );
+	virtual int32_t			handleMessage(uint32_t, uint32_t);
 
 	bool				bDone;
 
@@ -121,7 +122,7 @@ private:
 	aZonePanel zonePanel;
 	aLanPanel lanPanel;
 	aTcpipPanel tcpipPanel;
-	aObject *pPanel;
+	aObject* pPanel;
 
 	MPHostGame	hostDlg;
 
@@ -131,25 +132,39 @@ private:
 class MPPlaceHolderScreen : public LogisticsScreen
 {
 public:
-	
+
 	//MPPlaceHolderScreen(void);
 	//virtual ~MPPlaceHolderScreen(void);
-	
-	virtual void		begin() { status = RUNNING; }
+
+	virtual void		begin()
+	{
+		status = RUNNING;
+	}
 	//virtual void		end(void);
- 	virtual void render( int32_t xOffset, int32_t yOffset ) {
+	virtual void render(int32_t xOffset, int32_t yOffset)
+	{
 		static int32_t lastXOffset = 0;
 		static int32_t lastYOffset = 0;
-		if ((0 == xOffset) && (0 == yOffset)) {
-			if (xOffset < lastXOffset) {
+		if((0 == xOffset) && (0 == yOffset))
+		{
+			if(xOffset < lastXOffset)
+			{
 				status = NEXT;
-			} else if (xOffset > lastXOffset) {
+			}
+			else if(xOffset > lastXOffset)
+			{
 				status = PREVIOUS;
-			} else if (yOffset > lastYOffset) {
+			}
+			else if(yOffset > lastYOffset)
+			{
 				status = UP;
-			} else if (yOffset < lastYOffset) {
+			}
+			else if(yOffset < lastYOffset)
+			{
 				status = DOWN;
-			} else {
+			}
+			else
+			{
 				assert(false);
 				status = NEXT;
 			}
@@ -157,7 +172,10 @@ public:
 		lastXOffset = xOffset;
 		lastYOffset = yOffset;
 	}
-	virtual void render() { render(0, 0); }
+	virtual void render()
+	{
+		render(0, 0);
+	}
 	//virtual void update(void);
 
 private:

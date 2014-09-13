@@ -11,13 +11,17 @@
 //#include <elist.h>
 //#include "inifile.h"
 
-class CMissionData {
+class CMissionData
+{
 public:
 	CMissionData(void);
-	bool operator==(const CMissionData &rhs) const;
-	bool operator!=(const CMissionData &rhs) const { return (!((*this) == rhs)); }
-	bool Save(FitIniFile &fitFile);
-	bool Read(FitIniFile &fitFile);
+	bool operator==(const CMissionData& rhs) const;
+	bool operator!=(const CMissionData& rhs) const
+	{
+		return (!((*this) == rhs));
+	}
+	bool Save(FitIniFile& fitFile);
+	bool Read(FitIniFile& fitFile);
 
 	CString	m_MissionFile;
 	CString	m_PurchaseFile;
@@ -31,13 +35,17 @@ public:
 
 class CMissionList : public EList<CMissionData, CMissionData> {};
 
-class CGroupData {
+class CGroupData
+{
 public:
 	CGroupData(void);
-	bool operator==(const CGroupData &rhs) const;
-	bool operator!=(const CGroupData &rhs) const { return (!((*this) == rhs)); }
-	bool Save(FitIniFile &fitFile, PCSTR groupName);
-	bool Read(FitIniFile &fitFile, PCSTR groupName);
+	bool operator==(const CGroupData& rhs) const;
+	bool operator!=(const CGroupData& rhs) const
+	{
+		return (!((*this) == rhs));
+	}
+	bool Save(FitIniFile& fitFile, PCSTR groupName);
+	bool Read(FitIniFile& fitFile, PCSTR groupName);
 
 	CMissionList	m_MissionList;
 	CString	m_OperationFile;
@@ -51,14 +59,22 @@ public:
 
 class CGroupList : public EList<CGroupData, CGroupData> {};
 
-class CCampaignData {
+class CCampaignData
+{
 public:
 	CCampaignData(void);
-	bool operator==(const CCampaignData &rhs) const;
-	bool operator!=(const CCampaignData &rhs) const { return (!((*this) == rhs)); }
+	bool operator==(const CCampaignData& rhs) const;
+	bool operator!=(const CCampaignData& rhs) const
+	{
+		return (!((*this) == rhs));
+	}
 	bool Save(CString pathName);
 	bool Read(CString pathName);
-	void Clear() { CCampaignData a; *this = a; }
+	void Clear()
+	{
+		CCampaignData a;
+		*this = a;
+	}
 
 	CString m_PathName;
 	CGroupList	m_GroupList;

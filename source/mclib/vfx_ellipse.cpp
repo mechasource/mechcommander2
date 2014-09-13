@@ -6,137 +6,157 @@ extern char SpecialColor[];
 //extern void AG_ellipse_draw(PANE *pane, int32_t xc, int32_t yc, int32_t width, int32_t height, int32_t color);
 //extern void AG_ellipse_fill(PANE *pane, int32_t xc, int32_t yc, int32_t width, int32_t height, int32_t color);
 
-static int32_t paneY0,paneY1,paneX0,paneX1,DestWidth,DestBuffer,x_top,y_top,Bsquared,TwoBsquared,Asquared,TwoAsquared,var_dx,var_dy,x_vector,line_left,line_right;
+static int32_t paneY0, paneY1, paneX0, paneX1, DestWidth, DestBuffer, x_top, y_top, Bsquared, TwoBsquared, Asquared, TwoAsquared, var_dx, var_dy, x_vector, line_left, line_right;
 static int32_t DrawRoutine;
 
 
 
 
 
-void AG_ellipse_draw(PANE *pane, int32_t xc, int32_t yc, int32_t width, int32_t height, int32_t color)
+void AG_ellipse_draw(PANE* pane, int32_t xc, int32_t yc, int32_t width, int32_t height, int32_t color)
 {
-	if( width==0 || height==0 )
+	if(width == 0 || height == 0)
 	{
-		VFX_line_draw( pane, xc-width, yc-height, xc+width, yc+height, 0, color );
+		VFX_line_draw(pane, xc - width, yc - height, xc + width, yc + height, 0, color);
 		return;
 	}
-
-	DestWidth = pane->window->x_max+1;
-
+	DestWidth = pane->window->x_max + 1;
 	int32_t paneX0 = (pane->x0 < 0) ? 0 : pane->x0;
 	int32_t paneY0 = (pane->y0 < 0) ? 0 : pane->y0;
 	int32_t paneX1 = (pane->x1 >= DestWidth) ? pane->window->x_max : pane->x1;
-	int32_t paneY1 = (pane->y1 >= (pane->window->y_max+1)) ? pane->window->y_max : pane->y1;
-
+	int32_t paneY1 = (pane->y1 >= (pane->window->y_max + 1)) ? pane->window->y_max : pane->y1;
 	puint8_t DestBuffer = pane->window->buffer;
+	xc += paneX0;
+	yc += paneY0;
+	_asm
+	{
 
-	xc+=paneX0;
-	yc+=paneY0;
-
-	_asm{
-
-		mov eax,color
-		mov ebx,offset ALPHA_ELLIPSE_PIXELS
-		cmp byte ptr SpecialColor[eax],1
+		mov eax, color
+		mov ebx, offset ALPHA_ELLIPSE_PIXELS
+		cmp byte ptr SpecialColor[eax], 1
 		jz ow1
-		mov ebx,offset ELLIPSE_PIXELS
-ow1:	mov DrawRoutine,ebx
-		
-		mov x_top,0
-		mov eax,height
-		mov y_top,eax
-		mul eax							;compute B squares
-		mov Bsquared,eax
-		shl eax,1
-		mov TwoBsquared,eax
+		mov ebx, offset ELLIPSE_PIXELS
+		ow1:	mov DrawRoutine, ebx
 
-		mov eax,width					;compute A squares
+		mov x_top, 0
+		mov eax, height
+		mov y_top, eax
+		mul eax							;
+		compute B squares
+		mov Bsquared, eax
+		shl eax, 1
+		mov TwoBsquared, eax
+
+		mov eax, width					;
+		compute A squares
 		mul eax
-		mov Asquared,eax
-		shl eax,1
-		mov TwoAsquared,eax
+		mov Asquared, eax
+		shl eax, 1
+		mov TwoAsquared, eax
 
-		mov var_dx,0
+		mov var_dx, 0
 
-		mov eax,TwoAsquared				;dy = TwoAsquared * b
+		mov eax, TwoAsquared				;
+		dy = TwoAsquared * b
 		mul height
-		mov var_dy,eax
+		mov var_dy, eax
 
-		mov eax,Asquared                
-		shr eax,2                       
-		add eax,Bsquared				;eax = Asquared/4 + Bsquared
-		mov x_vector,eax				;x_vector= a^2/4 + b^2
-		mov eax,Asquared
+		mov eax, Asquared
+		shr eax, 2
+		add eax, Bsquared				;
+		eax = Asquared/4 + Bsquared
+		mov x_vector, eax				;
+		x_vector= a^2/4 + b^2
+		mov eax, Asquared
 		mul height
-		sub x_vector,eax				;x_vector=a^2/4+b^2-a^2*b 
+		sub x_vector, eax				;
+		x_vector=a^2/4+b^2-a^2*b
 
-		mov ebx,height
+		mov ebx, height
 
-__until_pos:
-		mov eax,var_dx                  
-		sub eax,var_dy
-		jns __dx_ge_dy					;jmp if dx >= dy
+		__until_pos:
+		mov eax, var_dx
+		sub eax, var_dy
+		jns __dx_ge_dy					;
+		jmp if dx >= dy
 
 //__plot_neg:
 		call DrawRoutine
 
-		cmp x_vector,0                  
-		js __d_neg						;jmp if d < 0
+		cmp x_vector, 0
+		js __d_neg						;
+	jmp if d < 0
 
 		dec y_top
 		dec ebx
 
-		mov eax,var_dy
-		sub eax,TwoAsquared
-		mov var_dy,eax					;dy -= 2*a^2
+		mov eax, var_dy
+		sub eax, TwoAsquared
+		mov var_dy, eax					;
+	dy -= 2*a^2
 
-		sub x_vector,eax				;x_vector -= dy
+	sub x_vector, eax				;
+	x_vector -= dy
 
-__d_neg:
-        inc x_top               
+	__d_neg:
+	inc x_top
 
-		mov eax,var_dx                  
-		add eax,TwoBsquared
-		mov var_dx,eax					;dx += 2*b^2
+	mov eax, var_dx
+	add eax, TwoBsquared
+	mov var_dx, eax					;
+	dx += 2*b^2
 
-		add eax,Bsquared                
-		add x_vector,eax				;x_vector += dx + b^2
+	add eax, Bsquared
+	add x_vector, eax				;
+	x_vector += dx + b^2
 
-		jmp __until_pos
+	jmp __until_pos
 
-__dx_ge_dy:     
-		mov eax,Asquared
-		sub eax,Bsquared				;eax=a^2-b^2
-		mov edx,eax						;edx=a^2-b^2
-		sar eax,1						;eax=(a^2-b^2)/2
-		add eax,edx						;eax=3*(a^2-b^2)/2 
-		sub eax,var_dx					;eax=3*(a^2-b^2)/2 - dx 
-		sub eax,var_dy					;eax=3*(a^2-b^2)/2 - (dx+dy)
-		sar eax,1						; /2
+	__dx_ge_dy:
+	mov eax, Asquared
+	sub eax, Bsquared				;
+	eax=a^2-b^2
+	mov edx, eax						;
+	edx=a^2-b^2
+	sar eax, 1						;
+	eax=(a^2-b^2)/2
+		add eax, edx						;
+		eax = 3 * (a ^ 2 - b ^ 2) / 2
+		sub eax, var_dx					;
+		eax = 3 * (a ^ 2 - b ^ 2) / 2 - dx
+		sub eax, var_dy					;
+		eax = 3 * (a ^ 2 - b ^ 2) / 2 - (dx + dy)
+		sar eax, 1						;
+		/ 2
 
-		add x_vector,eax
+		add x_vector, eax
 
-__until_neg:
+		__until_neg:
 		call DrawRoutine
 
-		cmp x_vector,0
+		cmp x_vector, 0
 		jns __d_pos
 
 		inc x_top
 
-		mov eax,var_dx
-		add eax,TwoBsquared
-		mov var_dx,eax					;dx += 2*b^2
-		add x_vector,eax				;x_vector += dx
+		mov eax, var_dx
+		add eax, TwoBsquared
+		mov var_dx, eax					;
+		dx += 2 * b ^ 2
+		add x_vector, eax				;
+		x_vector += dx
 
-__d_pos:
-        dec y_top
+		__d_pos:
+		dec y_top
 
-		mov eax,var_dy                  
-		sub eax,TwoAsquared
-		mov var_dy,eax					;dy -= 2*a^2
-		sub eax,Asquared				;eax = dy - a^2
-		sub x_vector,eax				;x_vector += (-dy + a^2)
+		mov eax, var_dy
+		sub eax, TwoAsquared
+		mov var_dy, eax					;
+		dy -= 2 * a ^ 2
+		sub eax, Asquared				;
+		eax = dy - a ^ 2
+		sub x_vector, eax				;
+		x_vector += (-dy + a ^ 2)
 
 		dec ebx
 
@@ -144,165 +164,166 @@ __d_pos:
 		jmp __until_neg
 
 
-;
-;
-;
-ELLIPSE_PIXELS:
+		;
+		;
+		;
+		ELLIPSE_PIXELS:
 		push ebx
-		mov cl,byte ptr color
+		mov cl, byte ptr color
 
-		mov edi,xc
-		add edi,x_top
-		mov ebx,yc
-		add ebx,y_top
-		cmp edi,paneX0
+		mov edi, xc
+		add edi, x_top
+		mov ebx, yc
+		add ebx, y_top
+		cmp edi, paneX0
 		jl P1
-		cmp edi,paneX1
+		cmp edi, paneX1
 		jg P1
-		cmp ebx,paneY0
+		cmp ebx, paneY0
 		jl P1
-		cmp ebx,paneY1
+		cmp ebx, paneY1
 		jg P1
-		imul ebx,DestWidth
-		add ebx,DestBuffer
-		mov byte ptr [edi+ebx],cl
-P1:
-		mov edi,xc
-		add edi,x_top
-		mov ebx,yc
-		sub ebx,y_top
-		cmp edi,paneX0
+		imul ebx, DestWidth
+		add ebx, DestBuffer
+		mov byte ptr [edi + ebx], cl
+		P1:
+		mov edi, xc
+		add edi, x_top
+		mov ebx, yc
+		sub ebx, y_top
+		cmp edi, paneX0
 		jl P2
-		cmp edi,paneX1
+		cmp edi, paneX1
 		jg P2
-		cmp ebx,paneY0
+		cmp ebx, paneY0
 		jl P2
-		cmp ebx,paneY1
+		cmp ebx, paneY1
 		jg P2
-		imul ebx,DestWidth
-		add ebx,DestBuffer
-		mov byte ptr [edi+ebx],cl
-P2:
-		mov edi,xc
-		sub edi,x_top
-		mov ebx,yc
-		add ebx,y_top
-		cmp edi,paneX0
+		imul ebx, DestWidth
+		add ebx, DestBuffer
+		mov byte ptr [edi + ebx], cl
+		P2:
+		mov edi, xc
+		sub edi, x_top
+		mov ebx, yc
+		add ebx, y_top
+		cmp edi, paneX0
 		jl P3
-		cmp edi,paneX1
+		cmp edi, paneX1
 		jg P3
-		cmp ebx,paneY0
+		cmp ebx, paneY0
 		jl P3
-		cmp ebx,paneY1
+		cmp ebx, paneY1
 		jg P3
-		imul ebx,DestWidth
-		add ebx,DestBuffer
-		mov byte ptr [edi+ebx],cl
-P3:
-		mov edi,xc
-		sub edi,x_top
-		mov ebx,yc
-		sub ebx,y_top
-		cmp edi,paneX0
+		imul ebx, DestWidth
+		add ebx, DestBuffer
+		mov byte ptr [edi + ebx], cl
+		P3:
+		mov edi, xc
+		sub edi, x_top
+		mov ebx, yc
+		sub ebx, y_top
+		cmp edi, paneX0
 		jl P4
-		cmp edi,paneX1
+		cmp edi, paneX1
 		jg P4
-		cmp ebx,paneY0
+		cmp ebx, paneY0
 		jl P4
-		cmp ebx,paneY1
+		cmp ebx, paneY1
 		jg P4
-		imul ebx,DestWidth
-		add ebx,DestBuffer
-		mov byte ptr [edi+ebx],cl
-P4:
+		imul ebx, DestWidth
+		add ebx, DestBuffer
+		mov byte ptr [edi + ebx], cl
+		P4:
 		pop ebx
 		ret
-;
-;
-; Same as above, but allow alpha pixels
-;
-;
-ALPHA_ELLIPSE_PIXELS:
+		;
+		;
+		;
+		Same as above, but allow alpha pixels
+		;
+		;
+		ALPHA_ELLIPSE_PIXELS:
 		push ebx
-		xor ecx,ecx
-		mov ch,byte ptr color
+		xor ecx, ecx
+		mov ch, byte ptr color
 
-		mov edi,xc
-		add edi,x_top
-		mov ebx,yc
-		add ebx,y_top
-		cmp edi,paneX0
+		mov edi, xc
+		add edi, x_top
+		mov ebx, yc
+		add ebx, y_top
+		cmp edi, paneX0
 		jl TP1
-		cmp edi,paneX1
+		cmp edi, paneX1
 		jg TP1
-		cmp ebx,paneY0
+		cmp ebx, paneY0
 		jl TP1
-		cmp ebx,paneY1
+		cmp ebx, paneY1
 		jg TP1
-		imul ebx,DestWidth
-		add ebx,DestBuffer
-		mov cl,[edi+ebx]
-		mov cl,AlphaTable[ecx]
-		mov byte ptr [edi+ebx],cl
-TP1:
-		mov edi,xc
-		add edi,x_top
-		mov ebx,yc
-		sub ebx,y_top
-		cmp edi,paneX0
+		imul ebx, DestWidth
+		add ebx, DestBuffer
+		mov cl, [edi + ebx]
+		mov cl, AlphaTable[ecx]
+		mov byte ptr [edi + ebx], cl
+		TP1:
+		mov edi, xc
+		add edi, x_top
+		mov ebx, yc
+		sub ebx, y_top
+		cmp edi, paneX0
 		jl TP2
-		cmp edi,paneX1
+		cmp edi, paneX1
 		jg TP2
-		cmp ebx,paneY0
+		cmp ebx, paneY0
 		jl TP2
-		cmp ebx,paneY1
+		cmp ebx, paneY1
 		jg TP2
-		imul ebx,DestWidth
-		add ebx,DestBuffer
-		mov cl,[edi+ebx]
-		mov cl,AlphaTable[ecx]
-		mov byte ptr [edi+ebx],cl
-TP2:
-		mov edi,xc
-		sub edi,x_top
-		mov ebx,yc
-		add ebx,y_top
-		cmp edi,paneX0
+		imul ebx, DestWidth
+		add ebx, DestBuffer
+		mov cl, [edi + ebx]
+		mov cl, AlphaTable[ecx]
+		mov byte ptr [edi + ebx], cl
+		TP2:
+		mov edi, xc
+		sub edi, x_top
+		mov ebx, yc
+		add ebx, y_top
+		cmp edi, paneX0
 		jl TP3
-		cmp edi,paneX1
+		cmp edi, paneX1
 		jg TP3
-		cmp ebx,paneY0
+		cmp ebx, paneY0
 		jl TP3
-		cmp ebx,paneY1
+		cmp ebx, paneY1
 		jg TP3
-		imul ebx,DestWidth
-		add ebx,DestBuffer
-		mov cl,[edi+ebx]
-		mov cl,AlphaTable[ecx]
-		mov byte ptr [edi+ebx],cl
-TP3:
-		mov edi,xc
-		sub edi,x_top
-		mov ebx,yc
-		sub ebx,y_top
-		cmp edi,paneX0
+		imul ebx, DestWidth
+		add ebx, DestBuffer
+		mov cl, [edi + ebx]
+		mov cl, AlphaTable[ecx]
+		mov byte ptr [edi + ebx], cl
+		TP3:
+		mov edi, xc
+		sub edi, x_top
+		mov ebx, yc
+		sub ebx, y_top
+		cmp edi, paneX0
 		jl TP4
-		cmp edi,paneX1
+		cmp edi, paneX1
 		jg TP4
-		cmp ebx,paneY0
+		cmp ebx, paneY0
 		jl TP4
-		cmp ebx,paneY1
+		cmp ebx, paneY1
 		jg TP4
-		imul ebx,DestWidth
-		add ebx,DestBuffer
-		mov cl,[edi+ebx]
-		mov cl,AlphaTable[ecx]
-		mov byte ptr [edi+ebx],cl
-TP4:
+		imul ebx, DestWidth
+		add ebx, DestBuffer
+		mov cl, [edi + ebx]
+		mov cl, AlphaTable[ecx]
+		mov byte ptr [edi + ebx], cl
+		TP4:
 		pop ebx
 		ret
 
-__end_ellipse:  
+		__end_ellipse:
 	}
 }
 
@@ -310,121 +331,130 @@ __end_ellipse:
 
 
 
-void AG_ellipse_fill(PANE *pane, int32_t xc, int32_t yc, int32_t width, int32_t height, int32_t color)
+void AG_ellipse_fill(PANE* pane, int32_t xc, int32_t yc, int32_t width, int32_t height, int32_t color)
 {
-	if( width==0 || height==0 )
+	if(width == 0 || height == 0)
 	{
-		VFX_line_draw( pane, xc-width, yc-height, xc+width, yc+height, 0, color );
+		VFX_line_draw(pane, xc - width, yc - height, xc + width, yc + height, 0, color);
 		return;
 	}
-
-	DestWidth = pane->window->x_max+1;
-
+	DestWidth = pane->window->x_max + 1;
 	int32_t paneX0 = (pane->x0 < 0) ? 0 : pane->x0;
 	int32_t paneY0 = (pane->y0 < 0) ? 0 : pane->y0;
 	int32_t paneX1 = (pane->x1 >= DestWidth) ? pane->window->x_max : pane->x1;
-	int32_t paneY1 = (pane->y1 >= (pane->window->y_max+1)) ? pane->window->y_max : pane->y1;
-
+	int32_t paneY1 = (pane->y1 >= (pane->window->y_max + 1)) ? pane->window->y_max : pane->y1;
 	puint8_t DestBuffer = pane->window->buffer;
+	xc += paneX0;
+	yc += paneY0;
+	_asm
+	{
 
-	xc+=paneX0;
-	yc+=paneY0;
-
-	_asm{
-
-		mov eax,color
-		mov ebx,offset ALPHA_ELLIPSE_LINES
-		cmp byte ptr SpecialColor[eax],1
+		mov eax, color
+		mov ebx, offset ALPHA_ELLIPSE_LINES
+		cmp byte ptr SpecialColor[eax], 1
 		jz ow2
-		mov ebx,offset ELLIPSE_LINES
-ow2:	mov DrawRoutine,ebx
+		mov ebx, offset ELLIPSE_LINES
+		ow2:	mov DrawRoutine, ebx
 
-		mov x_top,0
-		mov eax,height
-		mov y_top,eax
-		mul eax                         ;compute B squares
-		mov Bsquared,eax
-		shl eax,1
-		mov TwoBsquared,eax
+		mov x_top, 0
+		mov eax, height
+		mov y_top, eax
+		mul eax                         ;
+		compute B squares
+		mov Bsquared, eax
+		shl eax, 1
+		mov TwoBsquared, eax
 
-		mov eax,width                 ;compute A squares
+		mov eax, width                 ;
+		compute A squares
 		mul eax
-		mov Asquared,eax
-		shl eax,1
-		mov TwoAsquared,eax
+		mov Asquared, eax
+		shl eax, 1
+		mov TwoAsquared, eax
 
-		mov var_dx,0
+		mov var_dx, 0
 
-		mov eax,TwoAsquared             ;dy = TwoAsquared * b
+		mov eax, TwoAsquared             ;
+		dy = TwoAsquared * b
 		mul height
-		mov var_dy,eax
+		mov var_dy, eax
 
-		mov eax,Asquared                
-		shr eax,2                       
-		add eax,Bsquared                ;eax = Asquared/4 + Bsquared
-		mov x_vector,eax                ;x_vector= a^2/4 + b^2
-		mov eax,Asquared
+		mov eax, Asquared
+		shr eax, 2
+		add eax, Bsquared                ;
+		eax = Asquared/4 + Bsquared
+		mov x_vector, eax                ;
+		x_vector= a^2/4 + b^2
+		mov eax, Asquared
 		mul height
-		sub x_vector,eax                ;x_vector=a^2/4+b^2-a^2*b 
+		sub x_vector, eax                ;
+		x_vector=a^2/4+b^2-a^2*b
 
-		mov ebx,height
+		mov ebx, height
 
-__until_pos:
-		mov eax,var_dx
-		sub eax,var_dy
+		__until_pos:
+		mov eax, var_dx
+		sub eax, var_dy
 		js __plot_neg
 		jmp __dx_ge_dy
 
-__plot_neg:
+		__plot_neg:
 		call DrawRoutine
 
-		cmp x_vector,0
+		cmp x_vector, 0
 		js __d_neg
 		dec y_top
 		dec ebx
-		mov eax,var_dy
-		sub eax,TwoAsquared
-		mov var_dy,eax
-		sub x_vector,eax
+		mov eax, var_dy
+		sub eax, TwoAsquared
+		mov var_dy, eax
+		sub x_vector, eax
 
-__d_neg:
+		__d_neg:
 		inc x_top
-		mov eax,var_dx
-		add eax,TwoBsquared
-		mov var_dx,eax
-		add eax,Bsquared
-		add x_vector,eax
+		mov eax, var_dx
+		add eax, TwoBsquared
+		mov var_dx, eax
+		add eax, Bsquared
+		add x_vector, eax
 		jmp __until_pos
 
-__dx_ge_dy:
-		mov eax,Asquared
-		sub eax,Bsquared                ;eax=a^2-b^2
-		mov edx,eax                     ;edx=a^2-b^2
-		sar eax,1                       ;eax=(a^2-b^2)/2
-		add eax,edx                     ;eax=3*(a^2-b^2)/2 
-		sub eax,var_dx                  ;eax=3*(a^2-b^2)/2 - dx 
-		sub eax,var_dy                  ;eax=3*(a^2-b^2)/2 - (dx+dy)
-		sar eax,1                       ; /2
-		add x_vector,eax
+		__dx_ge_dy:
+		mov eax, Asquared
+		sub eax, Bsquared                ;
+		eax=a^2-b^2
+		mov edx, eax                     ;
+		edx=a^2-b^2
+		sar eax, 1                       ;
+		eax=(a^2-b^2)/2
+		add eax, edx                     ;
+		eax = 3 * (a ^ 2 - b ^ 2) / 2
+		sub eax, var_dx                  ;
+		eax = 3 * (a ^ 2 - b ^ 2) / 2 - dx
+		sub eax, var_dy                  ;
+		eax = 3 * (a ^ 2 - b ^ 2) / 2 - (dx + dy)
+		sar eax, 1                       ;
+		/ 2
+		add x_vector, eax
 
-__until_neg:
+		__until_neg:
 		call DrawRoutine
 
-		cmp x_vector,0
+		cmp x_vector, 0
 		jns __d_pos
 		inc x_top
-		mov eax,var_dx
-		add eax,TwoBsquared
-		mov var_dx,eax
-		add x_vector,eax
+		mov eax, var_dx
+		add eax, TwoBsquared
+		mov var_dx, eax
+		add x_vector, eax
 
-__d_pos:
+		__d_pos:
 		dec y_top
-		mov eax,var_dy
-		sub eax,TwoAsquared
-		mov var_dy,eax
-		sub eax,Asquared
-		sub x_vector,eax
+		mov eax, var_dy
+		sub eax, TwoAsquared
+		mov var_dy, eax
+		sub eax, Asquared
+		sub x_vector, eax
 
 		dec ebx
 		js __end_ellipse
@@ -432,296 +462,318 @@ __d_pos:
 
 
 
-ELLIPSE_LINES:
-		mov edi,xc
-		add edi,x_top
-		cmp edi,paneX0
-		jl LN2                  ;;right end to left of window
+		ELLIPSE_LINES:
+		mov edi, xc
+		add edi, x_top
+		cmp edi, paneX0
+		jl LN2                  ;;
+		right end to left of window
 
-		cmp edi,paneX1
+		cmp edi, paneX1
 		jl TR1
 
-		mov edi,paneX1
+		mov edi, paneX1
 
-TR1:
-		mov line_right,edi
-		mov edi,xc
-		sub edi,x_top
-		cmp edi,paneX1
-		jg LN2                  ;;left end to right of window
+		TR1:
+		mov line_right, edi
+		mov edi, xc
+		sub edi, x_top
+		cmp edi, paneX1
+		jg LN2                  ;;
+		left end to right of window
 
-		cmp edi,paneX0
+		cmp edi, paneX0
 		jg TR2
 
-		mov edi,paneX0
+		mov edi, paneX0
 
-TR2:
-		mov line_left,edi
-		mov edx,yc
-		add edx,y_top
-		cmp edx,paneY0     
-		jl LN2                  ;;bottom line above window
+		TR2:
+		mov line_left, edi
+		mov edx, yc
+		add edx, y_top
+		cmp edx, paneY0
+		jl LN2                  ;;
+		bottom line above window
 
-		cmp edx,paneY1
+		cmp edx, paneY1
 		jg LN1
 
-		imul    edx,DestWidth
-		add     edx,DestBuffer
-		add edi,edx
+		imul    edx, DestWidth
+		add     edx, DestBuffer
+		add edi, edx
 
-		mov ecx,line_right
-		sub ecx,line_left
+		mov ecx, line_right
+		sub ecx, line_left
 		inc ecx
 
-		mov al,byte ptr color
-lo1:	mov byte ptr [edi],al
+		mov al, byte ptr color
+		lo1:
+		mov byte ptr [edi], al
 		inc edi
 		dec ecx
 		jnz lo1
 
-LN1:
-		mov edi,line_left
-		mov edx,yc
-		sub edx,y_top
-		cmp edx,paneY0     
+		LN1:
+		mov edi, line_left
+		mov edx, yc
+		sub edx, y_top
+		cmp edx, paneY0
 		jl LN2
 
-		cmp edx,paneY1
-		jg LN2                  ;;top line below window
+		cmp edx, paneY1
+		jg LN2                  ;;
+		top line below window
 
-		imul    edx,DestWidth
-		add     edx,DestBuffer
-		add edi,edx
+		imul    edx, DestWidth
+		add     edx, DestBuffer
+		add edi, edx
 
-		mov ecx,line_right
-		sub ecx,line_left
+		mov ecx, line_right
+		sub ecx, line_left
 		inc ecx
 
-		mov al,byte ptr color
-lo2:	mov byte ptr [edi],al
+		mov al, byte ptr color
+		lo2:
+		mov byte ptr [edi], al
 		inc edi
 		dec ecx
 		jnz lo2
 
-LN2:    
+		LN2:
 		ret
 
-;
-;
-; Same as above, but with Alpha pixels
-;
-;
-ALPHA_ELLIPSE_LINES:
-		mov edi,xc
-		add edi,x_top
-		cmp edi,paneX0
-		jl ALN2                  ;;right end to left of window
+		;
+		;
+		;
+		Same as above, but with Alpha pixels
+		;
+		;
+		ALPHA_ELLIPSE_LINES:
+		mov edi, xc
+		add edi, x_top
+		cmp edi, paneX0
+		jl ALN2                  ;;
+		right end to left of window
 
-		cmp edi,paneX1
+		cmp edi, paneX1
 		jl ATR1
 
-		mov edi,paneX1
+		mov edi, paneX1
 
-ATR1:
-		mov line_right,edi
-		mov edi,xc
-		sub edi,x_top
-		cmp edi,paneX1
-		jg ALN2                  ;;left end to right of window
+		ATR1:
+		mov line_right, edi
+		mov edi, xc
+		sub edi, x_top
+		cmp edi, paneX1
+		jg ALN2                  ;;
+		left end to right of window
 
-		cmp edi,paneX0
+		cmp edi, paneX0
 		jg ATR2
 
-		mov edi,paneX0
+		mov edi, paneX0
 
-ATR2:
-		mov line_left,edi
-		mov edx,yc
-		add edx,y_top
-		cmp edx,paneY0     
-		jl ALN2                  ;;bottom line above window
+		ATR2:
+		mov line_left, edi
+		mov edx, yc
+		add edx, y_top
+		cmp edx, paneY0
+		jl ALN2                  ;;
+		bottom line above window
 
-		cmp edx,paneY1
+		cmp edx, paneY1
 		jg ALN1
 
-		imul    edx,DestWidth
-		add     edx,DestBuffer
-		add edi,edx
+		imul    edx, DestWidth
+		add     edx, DestBuffer
+		add edi, edx
 
-		mov ecx,line_right
-		sub ecx,line_left
+		mov ecx, line_right
+		sub ecx, line_left
 		inc ecx
 
-		xor eax,eax
-		mov ah,byte ptr color
-Alo1:	mov al,[edi]
-		mov al,AlphaTable[eax]
-		mov byte ptr [edi],al
+		xor eax, eax
+		mov ah, byte ptr color
+		Alo1:
+		mov al, [edi]
+		mov al, AlphaTable[eax]
+		mov byte ptr [edi], al
 		inc edi
 		dec ecx
 		jnz Alo1
 
-ALN1:
-		mov edi,line_left
-		mov edx,yc
-		sub edx,y_top
-		cmp edx,paneY0     
+		ALN1:
+		mov edi, line_left
+		mov edx, yc
+		sub edx, y_top
+		cmp edx, paneY0
 		jl ALN2
 
-		cmp edx,paneY1
-		jg ALN2                  ;;top line below window
+		cmp edx, paneY1
+		jg ALN2                  ;;
+		top line below window
 
-		imul    edx,DestWidth
-		add     edx,DestBuffer
-		add edi,edx
+		imul    edx, DestWidth
+		add     edx, DestBuffer
+		add edi, edx
 
-		mov ecx,line_right
-		sub ecx,line_left
+		mov ecx, line_right
+		sub ecx, line_left
 		inc ecx
 
-		xor eax,eax
-		mov ah,byte ptr color
-Alo2:	mov al,[edi]
-		mov al,AlphaTable[eax]
-		mov byte ptr [edi],al
+		xor eax, eax
+		mov ah, byte ptr color
+		Alo2:
+		mov al, [edi]
+		mov al, AlphaTable[eax]
+		mov byte ptr [edi], al
 		inc edi
 		dec ecx
 		jnz Alo2
 
-ALN2:    
+		ALN2:
 		ret
 
 
 
 
-__end_ellipse:
+		__end_ellipse:
 	}
 }
 
-PANE *xorgPane = 0;
+PANE* xorgPane = 0;
 uint8_t gColor = 0;
 
-void orLineCallback (int32_t x, int32_t y)
+void orLineCallback(int32_t x, int32_t y)
 {
-	int32_t result = VFX_pixel_read(xorgPane,x,y);
+	int32_t result = VFX_pixel_read(xorgPane, x, y);
 	result |= gColor;
-	VFX_pixel_write(xorgPane,x,y,result);
+	VFX_pixel_write(xorgPane, x, y, result);
 }
 
-void AG_ellipse_fillOr(PANE *pane, int32_t xc, int32_t yc, int32_t width, int32_t height, int32_t color)
+void AG_ellipse_fillOr(PANE* pane, int32_t xc, int32_t yc, int32_t width, int32_t height, int32_t color)
 {
-	if( width==0 || height==0 )
+	if(width == 0 || height == 0)
 	{
 		xorgPane = pane;
 		gColor = (uint8_t)color;
-		VFX_line_draw( pane, xc-width, yc-height, xc+width, yc+height,LD_EXECUTE,(int32_t)(&orLineCallback) );
+		VFX_line_draw(pane, xc - width, yc - height, xc + width, yc + height, LD_EXECUTE, (int32_t)(&orLineCallback));
 		return;
 	}
-
-	DestWidth = pane->window->x_max+1;
-
+	DestWidth = pane->window->x_max + 1;
 	int32_t paneX0 = (pane->x0 < 0) ? 0 : pane->x0;
 	int32_t paneY0 = (pane->y0 < 0) ? 0 : pane->y0;
 	int32_t paneX1 = (pane->x1 >= DestWidth) ? pane->window->x_max : pane->x1;
-	int32_t paneY1 = (pane->y1 >= (pane->window->y_max+1)) ? pane->window->y_max : pane->y1;
-
+	int32_t paneY1 = (pane->y1 >= (pane->window->y_max + 1)) ? pane->window->y_max : pane->y1;
 	puint8_t DestBuffer = pane->window->buffer;
+	xc += paneX0;
+	yc += paneY0;
+	_asm
+	{
 
-	xc+=paneX0;
-	yc+=paneY0;
+		mov eax, color
+		mov ebx, offset XOR_ELLIPSE_LINES
+		mov DrawRoutine, ebx
 
-	_asm{
+		mov x_top, 0
+		mov eax, height
+		mov y_top, eax
+		mul eax                         ;
+		compute B squares
+		mov Bsquared, eax
+		shl eax, 1
+		mov TwoBsquared, eax
 
-		mov eax,color
-		mov ebx,offset XOR_ELLIPSE_LINES
-		mov DrawRoutine,ebx
-
-		mov x_top,0
-		mov eax,height
-		mov y_top,eax
-		mul eax                         ;compute B squares
-		mov Bsquared,eax
-		shl eax,1
-		mov TwoBsquared,eax
-
-		mov eax,width                 ;compute A squares
+		mov eax, width                 ;
+		compute A squares
 		mul eax
-		mov Asquared,eax
-		shl eax,1
-		mov TwoAsquared,eax
+		mov Asquared, eax
+		shl eax, 1
+		mov TwoAsquared, eax
 
-		mov var_dx,0
+		mov var_dx, 0
 
-		mov eax,TwoAsquared             ;dy = TwoAsquared * b
+		mov eax, TwoAsquared             ;
+		dy = TwoAsquared * b
 		mul height
-		mov var_dy,eax
+		mov var_dy, eax
 
-		mov eax,Asquared                
-		shr eax,2                       
-		add eax,Bsquared                ;eax = Asquared/4 + Bsquared
-		mov x_vector,eax                ;x_vector= a^2/4 + b^2
-		mov eax,Asquared
+		mov eax, Asquared
+		shr eax, 2
+		add eax, Bsquared                ;
+		eax = Asquared/4 + Bsquared
+		mov x_vector, eax                ;
+		x_vector= a^2/4 + b^2
+		mov eax, Asquared
 		mul height
-		sub x_vector,eax                ;x_vector=a^2/4+b^2-a^2*b 
+		sub x_vector, eax                ;
+		x_vector=a^2/4+b^2-a^2*b
 
-		mov ebx,height
+		mov ebx, height
 
-__until_pos:
-		mov eax,var_dx
-		sub eax,var_dy
+		__until_pos:
+		mov eax, var_dx
+		sub eax, var_dy
 		js __plot_neg
 		jmp __dx_ge_dy
 
-__plot_neg:
+		__plot_neg:
 		call DrawRoutine
 
-		cmp x_vector,0
+		cmp x_vector, 0
 		js __d_neg
 		dec y_top
 		dec ebx
-		mov eax,var_dy
-		sub eax,TwoAsquared
-		mov var_dy,eax
-		sub x_vector,eax
+		mov eax, var_dy
+		sub eax, TwoAsquared
+		mov var_dy, eax
+		sub x_vector, eax
 
-__d_neg:
+		__d_neg:
 		inc x_top
-		mov eax,var_dx
-		add eax,TwoBsquared
-		mov var_dx,eax
-		add eax,Bsquared
-		add x_vector,eax
+		mov eax, var_dx
+		add eax, TwoBsquared
+		mov var_dx, eax
+		add eax, Bsquared
+		add x_vector, eax
 		jmp __until_pos
 
-__dx_ge_dy:
-		mov eax,Asquared
-		sub eax,Bsquared                ;eax=a^2-b^2
-		mov edx,eax                     ;edx=a^2-b^2
-		sar eax,1                       ;eax=(a^2-b^2)/2
-		add eax,edx                     ;eax=3*(a^2-b^2)/2 
-		sub eax,var_dx                  ;eax=3*(a^2-b^2)/2 - dx 
-		sub eax,var_dy                  ;eax=3*(a^2-b^2)/2 - (dx+dy)
-		sar eax,1                       ; /2
-		add x_vector,eax
+		__dx_ge_dy:
+		mov eax, Asquared
+		sub eax, Bsquared                ;
+		eax=a^2-b^2
+		mov edx, eax                     ;
+		edx=a^2-b^2
+		sar eax, 1                       ;
+		eax=(a^2-b^2)/2
+		add eax, edx                     ;
+		eax = 3 * (a ^ 2 - b ^ 2) / 2
+		sub eax, var_dx                  ;
+		eax = 3 * (a ^ 2 - b ^ 2) / 2 - dx
+		sub eax, var_dy                  ;
+		eax = 3 * (a ^ 2 - b ^ 2) / 2 - (dx + dy)
+		sar eax, 1                       ;
+		/ 2
+		add x_vector, eax
 
-__until_neg:
+		__until_neg:
 		call DrawRoutine
 
-		cmp x_vector,0
+		cmp x_vector, 0
 		jns __d_pos
 		inc x_top
-		mov eax,var_dx
-		add eax,TwoBsquared
-		mov var_dx,eax
-		add x_vector,eax
+		mov eax, var_dx
+		add eax, TwoBsquared
+		mov var_dx, eax
+		add x_vector, eax
 
-__d_pos:
+		__d_pos:
 		dec y_top
-		mov eax,var_dy
-		sub eax,TwoAsquared
-		mov var_dy,eax
-		sub eax,Asquared
-		sub x_vector,eax
+		mov eax, var_dy
+		sub eax, TwoAsquared
+		mov var_dy, eax
+		sub eax, Asquared
+		sub x_vector, eax
 
 		dec ebx
 		js __end_ellipse
@@ -729,210 +781,224 @@ __d_pos:
 
 
 
-XOR_ELLIPSE_LINES:
-		mov edi,xc
-		add edi,x_top
-		cmp edi,paneX0
-		jl LN2                  ;;right end to left of window
+		XOR_ELLIPSE_LINES:
+		mov edi, xc
+		add edi, x_top
+		cmp edi, paneX0
+		jl LN2                  ;;
+		right end to left of window
 
-		cmp edi,paneX1
+		cmp edi, paneX1
 		jl TR1
 
-		mov edi,paneX1
+		mov edi, paneX1
 
-TR1:
-		mov line_right,edi
-		mov edi,xc
-		sub edi,x_top
-		cmp edi,paneX1
-		jg LN2                  ;;left end to right of window
+		TR1:
+		mov line_right, edi
+		mov edi, xc
+		sub edi, x_top
+		cmp edi, paneX1
+		jg LN2                  ;;
+		left end to right of window
 
-		cmp edi,paneX0
+		cmp edi, paneX0
 		jg TR2
 
-		mov edi,paneX0
+		mov edi, paneX0
 
-TR2:
-		mov line_left,edi
-		mov edx,yc
-		add edx,y_top
-		cmp edx,paneY0     
-		jl LN2                  ;;bottom line above window
+		TR2:
+		mov line_left, edi
+		mov edx, yc
+		add edx, y_top
+		cmp edx, paneY0
+		jl LN2                  ;;
+		bottom line above window
 
-		cmp edx,paneY1
+		cmp edx, paneY1
 		jg LN1
 
-		imul    edx,DestWidth
-		add     edx,DestBuffer
-		add edi,edx
+		imul    edx, DestWidth
+		add     edx, DestBuffer
+		add edi, edx
 
-		mov ecx,line_right
-		sub ecx,line_left
+		mov ecx, line_right
+		sub ecx, line_left
 		inc ecx
 
-lo1:	mov al, byte ptr [edi]
+		lo1:
+		mov al, byte ptr [edi]
 		or al, byte ptr color
-		mov byte ptr [edi],al
+		mov byte ptr [edi], al
 		inc edi
 		dec ecx
 		jnz lo1
 
-LN1:
-		mov edi,line_left
-		mov edx,yc
-		sub edx,y_top
-		cmp edx,paneY0     
+		LN1:
+		mov edi, line_left
+		mov edx, yc
+		sub edx, y_top
+		cmp edx, paneY0
 		jl LN2
 
-		cmp edx,paneY1
-		jg LN2                  ;;top line below window
+		cmp edx, paneY1
+		jg LN2                  ;;
+		top line below window
 
-		imul    edx,DestWidth
-		add     edx,DestBuffer
-		add edi,edx
+		imul    edx, DestWidth
+		add     edx, DestBuffer
+		add edi, edx
 
-		mov ecx,line_right
-		sub ecx,line_left
+		mov ecx, line_right
+		sub ecx, line_left
 		inc ecx
 
-lo2:	mov al, byte ptr [edi]
+		lo2:
+		mov al, byte ptr [edi]
 		or al, byte ptr color
-		mov byte ptr [edi],al
+		mov byte ptr [edi], al
 		inc edi
 		dec ecx
 		jnz lo2
 
-LN2:    
+		LN2:
 		ret
 
-__end_ellipse:
+		__end_ellipse:
 	}
 }
 
-void andLineCallback (int32_t x, int32_t y)
+void andLineCallback(int32_t x, int32_t y)
 {
-	int32_t result = VFX_pixel_read(xorgPane,x,y);
+	int32_t result = VFX_pixel_read(xorgPane, x, y);
 	result &= gColor;
-	VFX_pixel_write(xorgPane,x,y,result);
-}	
+	VFX_pixel_write(xorgPane, x, y, result);
+}
 
-void AG_ellipse_fillXor(PANE *pane, int32_t xc, int32_t yc, int32_t width, int32_t height, int32_t color)
+void AG_ellipse_fillXor(PANE* pane, int32_t xc, int32_t yc, int32_t width, int32_t height, int32_t color)
 {
 	int32_t xorResult = color ^ 0xff;
 	uint8_t xorColor = (uint8_t)xorResult;
-	
-	if( width==0 || height==0 )
+	if(width == 0 || height == 0)
 	{
 		xorgPane = pane;
 		gColor = (uint8_t)color;
-		VFX_line_draw( pane, xc-width, yc-height, xc+width, yc+height, LD_EXECUTE,(int32_t)(&andLineCallback) );
+		VFX_line_draw(pane, xc - width, yc - height, xc + width, yc + height, LD_EXECUTE, (int32_t)(&andLineCallback));
 		return;
 	}
-
-	DestWidth = pane->window->x_max+1;
-
+	DestWidth = pane->window->x_max + 1;
 	int32_t paneX0 = (pane->x0 < 0) ? 0 : pane->x0;
 	int32_t paneY0 = (pane->y0 < 0) ? 0 : pane->y0;
 	int32_t paneX1 = (pane->x1 >= DestWidth) ? pane->window->x_max : pane->x1;
-	int32_t paneY1 = (pane->y1 >= (pane->window->y_max+1)) ? pane->window->y_max : pane->y1;
-
+	int32_t paneY1 = (pane->y1 >= (pane->window->y_max + 1)) ? pane->window->y_max : pane->y1;
 	puint8_t DestBuffer = pane->window->buffer;
+	xc += paneX0;
+	yc += paneY0;
+	_asm
+	{
 
-	xc+=paneX0;
-	yc+=paneY0;
+		mov eax, color
+		mov ebx, offset XOR_ELLIPSE_LINES
+		mov DrawRoutine, ebx
 
-	_asm{
+		mov x_top, 0
+		mov eax, height
+		mov y_top, eax
+		mul eax                         ;
+		compute B squares
+		mov Bsquared, eax
+		shl eax, 1
+		mov TwoBsquared, eax
 
-		mov eax,color
-		mov ebx,offset XOR_ELLIPSE_LINES
-		mov DrawRoutine,ebx
-
-		mov x_top,0
-		mov eax,height
-		mov y_top,eax
-		mul eax                         ;compute B squares
-		mov Bsquared,eax
-		shl eax,1
-		mov TwoBsquared,eax
-
-		mov eax,width                 ;compute A squares
+		mov eax, width                 ;
+		compute A squares
 		mul eax
-		mov Asquared,eax
-		shl eax,1
-		mov TwoAsquared,eax
+		mov Asquared, eax
+		shl eax, 1
+		mov TwoAsquared, eax
 
-		mov var_dx,0
+		mov var_dx, 0
 
-		mov eax,TwoAsquared             ;dy = TwoAsquared * b
+		mov eax, TwoAsquared             ;
+		dy = TwoAsquared * b
 		mul height
-		mov var_dy,eax
+		mov var_dy, eax
 
-		mov eax,Asquared                
-		shr eax,2                       
-		add eax,Bsquared                ;eax = Asquared/4 + Bsquared
-		mov x_vector,eax                ;x_vector= a^2/4 + b^2
-		mov eax,Asquared
+		mov eax, Asquared
+		shr eax, 2
+		add eax, Bsquared                ;
+		eax = Asquared/4 + Bsquared
+		mov x_vector, eax                ;
+		x_vector= a^2/4 + b^2
+		mov eax, Asquared
 		mul height
-		sub x_vector,eax                ;x_vector=a^2/4+b^2-a^2*b 
+		sub x_vector, eax                ;
+		x_vector=a^2/4+b^2-a^2*b
 
-		mov ebx,height
+		mov ebx, height
 
-__until_pos:
-		mov eax,var_dx
-		sub eax,var_dy
+		__until_pos:
+		mov eax, var_dx
+		sub eax, var_dy
 		js __plot_neg
 		jmp __dx_ge_dy
 
-__plot_neg:
+		__plot_neg:
 		call DrawRoutine
 
-		cmp x_vector,0
+		cmp x_vector, 0
 		js __d_neg
 		dec y_top
 		dec ebx
-		mov eax,var_dy
-		sub eax,TwoAsquared
-		mov var_dy,eax
-		sub x_vector,eax
+		mov eax, var_dy
+		sub eax, TwoAsquared
+		mov var_dy, eax
+		sub x_vector, eax
 
-__d_neg:
+		__d_neg:
 		inc x_top
-		mov eax,var_dx
-		add eax,TwoBsquared
-		mov var_dx,eax
-		add eax,Bsquared
-		add x_vector,eax
+		mov eax, var_dx
+		add eax, TwoBsquared
+		mov var_dx, eax
+		add eax, Bsquared
+		add x_vector, eax
 		jmp __until_pos
 
-__dx_ge_dy:
-		mov eax,Asquared
-		sub eax,Bsquared                ;eax=a^2-b^2
-		mov edx,eax                     ;edx=a^2-b^2
-		sar eax,1                       ;eax=(a^2-b^2)/2
-		add eax,edx                     ;eax=3*(a^2-b^2)/2 
-		sub eax,var_dx                  ;eax=3*(a^2-b^2)/2 - dx 
-		sub eax,var_dy                  ;eax=3*(a^2-b^2)/2 - (dx+dy)
-		sar eax,1                       ; /2
-		add x_vector,eax
+		__dx_ge_dy:
+		mov eax, Asquared
+		sub eax, Bsquared                ;
+		eax=a^2-b^2
+		mov edx, eax                     ;
+		edx=a^2-b^2
+		sar eax, 1                       ;
+		eax=(a^2-b^2)/2
+		add eax, edx                     ;
+		eax = 3 * (a ^ 2 - b ^ 2) / 2
+		sub eax, var_dx                  ;
+		eax = 3 * (a ^ 2 - b ^ 2) / 2 - dx
+		sub eax, var_dy                  ;
+		eax = 3 * (a ^ 2 - b ^ 2) / 2 - (dx + dy)
+		sar eax, 1                       ;
+		/ 2
+		add x_vector, eax
 
-__until_neg:
+		__until_neg:
 		call DrawRoutine
 
-		cmp x_vector,0
+		cmp x_vector, 0
 		jns __d_pos
 		inc x_top
-		mov eax,var_dx
-		add eax,TwoBsquared
-		mov var_dx,eax
-		add x_vector,eax
+		mov eax, var_dx
+		add eax, TwoBsquared
+		mov var_dx, eax
+		add x_vector, eax
 
-__d_pos:
+		__d_pos:
 		dec y_top
-		mov eax,var_dy
-		sub eax,TwoAsquared
-		mov var_dy,eax
-		sub eax,Asquared
-		sub x_vector,eax
+		mov eax, var_dy
+		sub eax, TwoAsquared
+		mov var_dy, eax
+		sub eax, Asquared
+		sub x_vector, eax
 
 		dec ebx
 		js __end_ellipse
@@ -940,83 +1006,89 @@ __d_pos:
 
 
 
-XOR_ELLIPSE_LINES:
-		mov edi,xc
-		add edi,x_top
-		cmp edi,paneX0
-		jl LN2                  ;;right end to left of window
+		XOR_ELLIPSE_LINES:
+		mov edi, xc
+		add edi, x_top
+		cmp edi, paneX0
+		jl LN2                  ;;
+		right end to left of window
 
-		cmp edi,paneX1
+		cmp edi, paneX1
 		jl TR1
 
-		mov edi,paneX1
+		mov edi, paneX1
 
-TR1:
-		mov line_right,edi
-		mov edi,xc
-		sub edi,x_top
-		cmp edi,paneX1
-		jg LN2                  ;;left end to right of window
+		TR1:
+		mov line_right, edi
+		mov edi, xc
+		sub edi, x_top
+		cmp edi, paneX1
+		jg LN2                  ;;
+		left end to right of window
 
-		cmp edi,paneX0
+		cmp edi, paneX0
 		jg TR2
 
-		mov edi,paneX0
+		mov edi, paneX0
 
-TR2:
-		mov line_left,edi
-		mov edx,yc
-		add edx,y_top
-		cmp edx,paneY0     
-		jl LN2                  ;;bottom line above window
+		TR2:
+		mov line_left, edi
+		mov edx, yc
+		add edx, y_top
+		cmp edx, paneY0
+		jl LN2                  ;;
+		bottom line above window
 
-		cmp edx,paneY1
+		cmp edx, paneY1
 		jg LN1
 
-		imul    edx,DestWidth
-		add     edx,DestBuffer
-		add edi,edx
+		imul    edx, DestWidth
+		add     edx, DestBuffer
+		add edi, edx
 
-		mov ecx,line_right
-		sub ecx,line_left
+		mov ecx, line_right
+		sub ecx, line_left
 		inc ecx
 
-lo1:	mov al, byte ptr [edi]
+		lo1:
+		mov al, byte ptr [edi]
 		and al, xorColor
-		mov byte ptr [edi],al
+		mov byte ptr [edi], al
 		inc edi
 		dec ecx
 		jnz lo1
 
-LN1:
-		mov edi,line_left
-		mov edx,yc
-		sub edx,y_top
-		cmp edx,paneY0     
+		LN1:
+		mov edi, line_left
+		mov edx, yc
+		sub edx, y_top
+		cmp edx, paneY0
 		jl LN2
 
-		cmp edx,paneY1
-		jg LN2                  ;;top line below window
+		cmp edx, paneY1
+		jg LN2                  ;;
+		top line below window
 
-		imul    edx,DestWidth
-		add     edx,DestBuffer
-		add edi,edx
+		imul    edx, DestWidth
+		add     edx, DestBuffer
+		add edi, edx
 
-		mov ecx,line_right
-		sub ecx,line_left
+		mov ecx, line_right
+		sub ecx, line_left
 		inc ecx
 
-lo2:	mov al, byte ptr [edi]
+		lo2:
+		mov al, byte ptr [edi]
 		and al, xorColor
-		mov byte ptr [edi],al
+		mov byte ptr [edi], al
 		inc edi
 		dec ecx
 		jnz lo2
 
-LN2:    
+		LN2:
 		ret
 
-__end_ellipse:
+		__end_ellipse:
 	}
 }
 

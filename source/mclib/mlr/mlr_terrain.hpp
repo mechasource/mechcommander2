@@ -9,11 +9,12 @@
 
 #include <mlr/mlr_i_det_tmesh.hpp>
 
-namespace MidLevelRenderer {
+namespace MidLevelRenderer
+{
 
-	//##########################################################################
-	//#### MLRIndexedPolyMesh with no color no lighting w/ detail texture  #####
-	//##########################################################################
+//##########################################################################
+//#### MLRIndexedPolyMesh with no color no lighting w/ detail texture  #####
+//##########################################################################
 
 
 	class MLR_Terrain:
@@ -31,33 +32,29 @@ namespace MidLevelRenderer {
 		//
 	protected:
 		MLR_Terrain(
-			ClassData *class_data,
-			Stuff::MemoryStream *stream,
-			uint32_t version
-			);
+			ClassData* class_data,
+			Stuff::MemoryStream* stream,
+			uint32_t version);
 		~MLR_Terrain(void);
 
 	public:
-		MLR_Terrain(ClassData *class_data=MLR_Terrain::DefaultData);
+		MLR_Terrain(ClassData* class_data = MLR_Terrain::DefaultData);
 
 		static MLR_Terrain*
-			Make(
-			Stuff::MemoryStream *stream,
-			uint32_t version
-			);
+		Make(
+			Stuff::MemoryStream* stream,
+			uint32_t version);
 
 		void
-			Save(Stuff::MemoryStream *stream);
+		Save(Stuff::MemoryStream* stream);
 
 	public:
-		virtual int32_t
-			TransformAndClip(Stuff::Matrix4D *, MLRClippingState, GOSVertexPool*,bool=false);
+		virtual uint32_t TransformAndClip(Stuff::Matrix4D*, MLRClippingState, GOSVertexPool*, bool = false);
 
-		virtual void
-			TransformNoClip(Stuff::Matrix4D*, GOSVertexPool*,bool=false);
+		virtual void TransformNoClip(Stuff::Matrix4D*, GOSVertexPool*, bool = false);
 
 		void
-			SetUVData(float, float, float, float, float);
+		SetUVData(float, float, float, float, float);
 
 		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		// Class Data Support
@@ -72,10 +69,9 @@ namespace MidLevelRenderer {
 		void TestInstance(void) const;
 
 		virtual size_t GetSize(void)
-		{ 
+		{
 			Check_Object(this);
 			size_t ret = MLR_I_DeT_TMesh::GetSize();
-
 			return ret;
 		}
 
@@ -83,15 +79,15 @@ namespace MidLevelRenderer {
 		float borderPixelFun;
 		float xUVFac, zUVFac, minX, minZ;
 
-		static Stuff::DynamicArrayOf<Stuff::Vector2DScalar> *clipTexCoords;  // , Max_Number_Vertices_Per_Mesh
+		static Stuff::DynamicArrayOf<Stuff::Vector2DScalar>* clipTexCoords;  // , Max_Number_Vertices_Per_Mesh
 	};
 
 	MLRShape*
-		CreateIndexedTriIcosahedron_TerrainTest(
+	CreateIndexedTriIcosahedron_TerrainTest(
 		IcoInfo&,
 		MLRState*,
 		MLRState*
-		);
+	);
 
 }
 #endif

@@ -34,58 +34,61 @@ struct MoveInfo
 
 class PauseWindow
 {
-	public:
-		
-		PauseWindow(void);
-		~PauseWindow(void);
+public:
 
-		void update(void);
-		void render(void);
+	PauseWindow(void);
+	~PauseWindow(void);
 
-		void init( FitIniFile& file );
+	void update(void);
+	void render(void);
 
-		void handleClick( int32_t ID );
+	void init(FitIniFile& file);
 
-		bool inRect( int32_t mouseX, int32_t mouseY );
+	void handleClick(int32_t ID);
 
-		void begin(){ currentTime = 0.f; }
-		void end(void);
-		void begin(bool objectivesOn);
+	bool inRect(int32_t mouseX, int32_t mouseY);
 
-		enum PAUSEBUTTONS
-		{
-			OBJECTIVES = 0,
-			SAVE = 1,
-			LOAD = 2,
-			OPTIONS = 3,
-			RESTART = 4,
-			EXIT = 5,
-			RETURN = 6
-		};
+	void begin()
+	{
+		currentTime = 0.f;
+	}
+	void end(void);
+	void begin(bool objectivesOn);
 
-	private:
+	enum PAUSEBUTTONS
+	{
+		OBJECTIVES = 0,
+		SAVE = 1,
+		LOAD = 2,
+		OPTIONS = 3,
+		RESTART = 4,
+		EXIT = 5,
+		RETURN = 6
+	};
 
-		ControlButton* buttons;
-		ButtonData* buttonData;
-		int32_t		buttonCount;
-		StaticInfo* statics;
-		int32_t		staticCount;
-		RECT	backgrounds[2];
+private:
 
-		float		finalReference;
-		float		currentPos;
-		float		currentTime;
+	ControlButton* buttons;
+	ButtonData* buttonData;
+	int32_t		buttonCount;
+	StaticInfo* statics;
+	int32_t		staticCount;
+	RECT	backgrounds[2];
 
-		aFont	font;
-		aFont	headerFont;
+	float		finalReference;
+	float		currentPos;
+	float		currentTime;
 
-		bool wasDragging;
-		bool objectivesAlreadyOn;
+	aFont	font;
+	aFont	headerFont;
 
-		static MoveInfo moveInfo[8];
+	bool wasDragging;
+	bool objectivesAlreadyOn;
 
-		bool		bPromptToQuit;
-		bool		bPromptToAbort;
+	static MoveInfo moveInfo[8];
+
+	bool		bPromptToQuit;
+	bool		bPromptToAbort;
 
 };
 

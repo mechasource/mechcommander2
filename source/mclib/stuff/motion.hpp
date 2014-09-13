@@ -12,30 +12,34 @@
 
 #include <stuff/vector3d.hpp>
 
-namespace Stuff {class Motion3D;}
+namespace Stuff
+{
+	class Motion3D;
+}
 
 #if !defined(Spew)
 void
 Spew(
-	 PCSTR group,
-	 const Stuff::Motion3D& motion
-	 );
+	PCSTR group,
+	const Stuff::Motion3D& motion
+);
 #endif
 
-namespace Stuff {
+namespace Stuff
+{
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~ Motion3D ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~ Motion3D ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 	class Motion3D
 	{
 	public:
 		Vector3D
-			linearMotion;
+		linearMotion;
 		Vector3D
-			angularMotion;
+		angularMotion;
 
 		static const Motion3D
-			Identity;
+		Identity;
 
 		//
 		// Constructors
@@ -46,69 +50,83 @@ namespace Stuff {
 		Motion3D(
 			const Vector3D& t,
 			const Vector3D& q
-			)
-		{Check_Object(&t); Check_Object(&q); linearMotion = t; angularMotion = q;}
+		)
+		{
+			Check_Object(&t);
+			Check_Object(&q);
+			linearMotion = t;
+			angularMotion = q;
+		}
 
 		//
 		// Assignment operators
 		//
 		Motion3D&
-			operator=(const Motion3D& p);
+		operator=(const Motion3D& p);
 
 		friend bool
-			Close_Enough(
-			const Motion3D &a1,
-			const Motion3D &a2,
-			Scalar e=SMALL
-			);
+		Close_Enough(
+			const Motion3D& a1,
+			const Motion3D& a2,
+			float e = SMALL
+		);
 		bool
-			operator==(const Motion3D& a) const
-		{return Close_Enough(*this,a,SMALL);}
+		operator==(const Motion3D& a) const
+		{
+			return Close_Enough(*this, a, SMALL);
+		}
 		bool
-			operator!=(const Motion3D& a) const
-		{return !Close_Enough(*this,a,SMALL);}
+		operator!=(const Motion3D& a) const
+		{
+			return !Close_Enough(*this, a, SMALL);
+		}
 
 		//
 		// Origin3D motion
 		//
 		Motion3D&
-			AddScaled(
+		AddScaled(
 			const Motion3D& source,
 			const Motion3D& delta,
-			Scalar t
-			);
+			float t
+		);
 
 		//
 		// Support functions
 		//
 #if !defined(Spew)
 		friend void
-			::Spew(
+		::Spew(
 			PCSTR group,
 			const Motion3D& motion
-			);
+		);
 #endif
 		void TestInstance(void) const;
 		static bool
-			TestClass(void);
+		TestClass(void);
 	};
 
 }
 
-namespace MemoryStreamIO {
+namespace MemoryStreamIO
+{
 
 	inline Stuff::MemoryStream&
-		Read(
+	Read(
 		Stuff::MemoryStream* stream,
-		Stuff::Motion3D *output
-		)
-	{return stream->ReadBytes(output, sizeof(*output));}
+		Stuff::Motion3D* output
+	)
+	{
+		return stream->ReadBytes(output, sizeof(*output));
+	}
 	inline Stuff::MemoryStream&
-		Write(
+	Write(
 		Stuff::MemoryStream* stream,
-		const Stuff::Motion3D *input
-		)
-	{return stream->WriteBytes(input, sizeof(*input));}
+		const Stuff::Motion3D* input
+	)
+	{
+		return stream->WriteBytes(input, sizeof(*input));
+	}
 
 }
 #endif

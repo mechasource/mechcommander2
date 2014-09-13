@@ -50,7 +50,8 @@ extern float metersPerWorldUnit;
 #define MAX_TOADS			10
 #define MAX_SEATS			4
 
-typedef enum {
+typedef enum
+{
 	GROUNDVEHICLE_LOCATION_ANY = -1,
 	GROUNDVEHICLE_LOCATION_FRONT,
 	GROUNDVEHICLE_LOCATION_LEFT,
@@ -60,14 +61,16 @@ typedef enum {
 	NUM_GROUNDVEHICLE_LOCATIONS
 } VehicleLocationType;
 
-typedef enum {
+typedef enum
+{
 	GROUNDVEHICLE_CHASSIS_WHEELED,
 	GROUNDVEHICLE_CHASSIS_TRACKED,
 	GROUNDVEHICLE_CHASSIS_HOVER,
 	NUM_GROUNDVEHICLE_CHASSIS
 } GroundVehicleChassisType;
 
-typedef enum {
+typedef enum
+{
 	GROUNDVEHICLE_CRITICAL_NO_EFFECT,
 	GROUNDVEHICLE_CRITICAL_AMMO_POWER_HIT,
 	GROUNDVEHICLE_CRITICAL_FUEL_TANK_HIT,
@@ -84,94 +87,96 @@ typedef enum {
 
 //******************************************************************************************
 
-class GroundVehicleType : public ObjectType {
+class GroundVehicleType : public ObjectType
+{
 
 	//-------------
 	// Data Members
 
-	public:
+public:
 
-		uint8_t		chassis;
-		uint8_t		maxInternalStructure[NUM_GROUNDVEHICLE_LOCATIONS];
+	uint8_t		chassis;
+	uint8_t		maxInternalStructure[NUM_GROUNDVEHICLE_LOCATIONS];
 
-		MoverDynamics		dynamics;								// what dynamics do we use.
+	MoverDynamics		dynamics;								// what dynamics do we use.
 
-		int32_t				crashAvoidSelf;
-		int32_t				crashAvoidPath;
-		int32_t				crashBlockSelf;
-		int32_t				crashBlockPath;
-		float				crashYieldTime;
-		
-		float				explDmg;
-		float				explRad;
+	int32_t				crashAvoidSelf;
+	int32_t				crashAvoidPath;
+	int32_t				crashBlockSelf;
+	int32_t				crashBlockPath;
+	float				crashYieldTime;
 
-		// Special Vehicle Info
-		int32_t				refitPoints;						// number of refit points remaining
-		int32_t				recoverPoints;				
-		int32_t				resourcePoints;
-		bool				mineSweeper;
-		int32_t				mineLayer;
-		bool				aerospaceSpotter;
-		bool				hoverCraft;
+	float				explDmg;
+	float				explRad;
 
-		int32_t				moveType;
-		
-		bool				pathLocks;
-		bool				isSensorContact;
-		
-		float				LOSFactor;
+	// Special Vehicle Info
+	int32_t				refitPoints;						// number of refit points remaining
+	int32_t				recoverPoints;
+	int32_t				resourcePoints;
+	bool				mineSweeper;
+	int32_t				mineLayer;
+	bool				aerospaceSpotter;
+	bool				hoverCraft;
+
+	int32_t				moveType;
+
+	bool				pathLocks;
+	bool				isSensorContact;
+
+	float				LOSFactor;
 
 	//----------------
 	//Member Functions
 
-	public:
+public:
 
-		void init (void);
+	void init(void);
 
-		GroundVehicleType (void)
-		{
-			ObjectType::init(void);
-			init(void);
-		}
-		
-		virtual int32_t init (FilePtr objFile, uint32_t fileSize);
-		
-		int32_t loadHotSpots (FitIniFilePtr vehicleFile);
-	
-		virtual GameObjectPtr createInstance (void);
-		
-		virtual void destroy (void);
+	GroundVehicleType(void)
+	{
+		ObjectType::init(void);
+		init(void);
+	}
 
-		~GroundVehicleType (void) {
-			destroy(void);
-		}
+	virtual int32_t init(FilePtr objFile, uint32_t fileSize);
 
-		virtual bool handleCollision (GameObjectPtr collidee, GameObjectPtr collider);
-		virtual bool handleDestruction (GameObjectPtr collidee, GameObjectPtr collider);
+	int32_t loadHotSpots(FitIniFilePtr vehicleFile);
+
+	virtual GameObjectPtr createInstance(void);
+
+	virtual void destroy(void);
+
+	~GroundVehicleType(void)
+	{
+		destroy(void);
+	}
+
+	virtual bool handleCollision(GameObjectPtr collidee, GameObjectPtr collider);
+	virtual bool handleDestruction(GameObjectPtr collidee, GameObjectPtr collider);
 };
 
 //---------------------------------------------------------------------------
 typedef struct _GroundVehicleData : public MoverData
 {
-	float				accel;			
-	float				velocityMag;	
+	float				accel;
+	float				velocityMag;
 
 	float				suspension;
 	bool				movementEnabled;
 
 	bool				turretEnabled;
-	float				turretRotation;					
+	float				turretRotation;
 	bool				turretBlownThisFrame;
 
 	bool				captureable;
-	bool				deadByCrushed;					
+	bool				deadByCrushed;
 
-	bool				canRefit;						
+	bool				canRefit;
 	bool				canRecover;
-	bool				refitting;						
+	bool				refitting;
 	bool				recovering;
 	bool				mineSweeper;
-	float				sweepTime;						
+	float				sweepTime;
 	int32_t				mineLayer;
 	bool				aerospaceSpotter;
 	int32_t				cellColToMine;
@@ -179,11 +184,11 @@ typedef struct _GroundVehicleData : public MoverData
 
 	bool				notMineYet;
 
-	int32_t				battleRating;					
+	int32_t				battleRating;
 
-	int32_t				descID;							
+	int32_t				descID;
 
-	float				timeInCurrent;					
+	float				timeInCurrent;
 
 	Stuff::Vector3D		dVel;
 	Stuff::Vector3D		dRot;
@@ -197,317 +202,338 @@ typedef struct _GroundVehicleData : public MoverData
 
 } GroundVehicleData;
 
-class GroundVehicle : public Mover {
+class GroundVehicle : public Mover
+{
 
 	//------------
 	//Data Members
-	
-	public:
 
-		float				accel;			//Current acceleration of vehicle in meters per sec per sec
-		float				velocityMag;	//Current Speed of vehicle.  Not a vector quantity!! in M/s
+public:
 
-		float				suspension;
-		bool				movementEnabled;
-		
-		bool				turretEnabled;
-		float				turretRotation;					// Current Rotation of Turret in Degrees
-		bool				turretBlownThisFrame;
-		
-		bool				captureable;
-		bool				deadByCrushed;					//Were we stepped on to die?
+	float				accel;			//Current acceleration of vehicle in meters per sec per sec
+	float				velocityMag;	//Current Speed of vehicle.  Not a vector quantity!! in M/s
 
-		bool				canRefit;									
-		bool				canRecover;
-		bool				refitting;						// actually working, playing refit animation
-		bool				recovering;
-		bool				mineSweeper;
-		float				sweepTime;						// time since we last swept a mine
-		int32_t				mineLayer;
-		bool				aerospaceSpotter;
-		int32_t				cellColToMine;
-		int32_t 				cellRowToMine;
-		
-		bool				notMineYet;
-		
-		int32_t				battleRating;					// Override of BattleRating
+	float				suspension;
+	bool				movementEnabled;
 
-		int32_t				descID;							//Used by Logistics to Desc.		
+	bool				turretEnabled;
+	float				turretRotation;					// Current Rotation of Turret in Degrees
+	bool				turretBlownThisFrame;
 
-		float				timeInCurrent;					//Used by MineLayers to lay mines better
+	bool				captureable;
+	bool				deadByCrushed;					//Were we stepped on to die?
 
-		bool				isVehiclePilot;					//Is this a pilot running away?
-		
-		//Destruction Coolness
-		Stuff::Vector3D		dVel;
-		Stuff::Vector3D		dRot;
-		Stuff::Vector3D		dAcc;
-		Stuff::Vector3D		dRVel;
-		Stuff::Vector3D		dRacc;
-		float				dTime;
-		
+	bool				canRefit;
+	bool				canRecover;
+	bool				refitting;						// actually working, playing refit animation
+	bool				recovering;
+	bool				mineSweeper;
+	float				sweepTime;						// time since we last swept a mine
+	int32_t				mineLayer;
+	bool				aerospaceSpotter;
+	int32_t				cellColToMine;
+	int32_t 				cellRowToMine;
+
+	bool				notMineYet;
+
+	int32_t				battleRating;					// Override of BattleRating
+
+	int32_t				descID;							//Used by Logistics to Desc.
+
+	float				timeInCurrent;					//Used by MineLayers to lay mines better
+
+	bool				isVehiclePilot;					//Is this a pilot running away?
+
+	//Destruction Coolness
+	Stuff::Vector3D		dVel;
+	Stuff::Vector3D		dRot;
+	Stuff::Vector3D		dAcc;
+	Stuff::Vector3D		dRVel;
+	Stuff::Vector3D		dRacc;
+	float				dTime;
+
 	//----------------
 	//Member Functions
 
-	public:
-		
-		virtual void init (bool create);
-	
-		GroundVehicle (void) {
-			init(true);
-		}
-			
-		virtual void init (bool create, ObjectTypePtr objType);
+public:
 
-		virtual int32_t init (FitIniFile* vehicleFile);
-		
-		virtual void destroy (void);
+	virtual void init(bool create);
 
-		virtual void setControl (ControlType ctrlType);
+	GroundVehicle(void)
+	{
+		init(true);
+	}
 
-		virtual bool crashAvoidanceSystem (void);
+	virtual void init(bool create, ObjectTypePtr objType);
 
-		virtual void updateAIControl (void);
+	virtual int32_t init(FitIniFile* vehicleFile);
 
-		virtual void updatePlayerControl (void);
+	virtual void destroy(void);
 
-		virtual void updateNetworkControl (void);
+	virtual void setControl(ControlType ctrlType);
 
-		virtual void updateDynamics (void);
+	virtual bool crashAvoidanceSystem(void);
 
-		virtual int32_t update (void);
-		
-		virtual void render (void);
+	virtual void updateAIControl(void);
 
-		virtual void renderShadows (void);
-		
-		virtual float getStatusRating (void);
+	virtual void updatePlayerControl(void);
 
-		virtual int32_t calcHitLocation (GameObjectPtr attacker, int32_t weaponIndex, int32_t attackSource, int32_t attackType);
+	virtual void updateNetworkControl(void);
 
-		virtual int32_t handleWeaponHit (WeaponShotInfoPtr shotInfo, bool addMultiplayChunk = false);
+	virtual void updateDynamics(void);
 
-		virtual float weaponLocked (int32_t weaponIndex, Stuff::Vector3D targetPosition);
+	virtual int32_t update(void);
 
-		virtual void pilotingCheck (void);
+	virtual void render(void);
 
-		virtual void mineCheck (void);
+	virtual void renderShadows(void);
 
-		bool pivotTo (void);
+	virtual float getStatusRating(void);
 
-		void updateMoveStateGoal (void);
+	virtual int32_t calcHitLocation(GameObjectPtr attacker, int32_t weaponIndex, int32_t attackSource, int32_t attackType);
 
-		bool updateMovePath (float& newRotate, char& newThrottleSetting, int32_t& newMoveState, int32_t& minThrottle, int32_t& maxThrottle);
+	virtual int32_t handleWeaponHit(WeaponShotInfoPtr shotInfo, bool addMultiplayChunk = false);
 
-		bool netUpdateMovePath (float& newRotate, char& newThrottleSetting, int32_t& newMoveState, int32_t& minThrottle, int32_t& maxThrottle);
+	virtual float weaponLocked(int32_t weaponIndex, Stuff::Vector3D targetPosition);
 
-		void setNextMovePath (char& newThrottleSetting);
+	virtual void pilotingCheck(void);
 
-		void setControlSettings (float& newRotate, char& newThrottleSetting, int32_t& minThrottle, int32_t& maxThrottle);
+	virtual void mineCheck(void);
 
-		void updateTurret (float newRotate);
+	bool pivotTo(void);
 
-		virtual void updateMovement (void);
+	void updateMoveStateGoal(void);
 
-		virtual void netUpdateMovement (void);
+	bool updateMovePath(float& newRotate, char& newThrottleSetting, int32_t& newMoveState, int32_t& minThrottle, int32_t& maxThrottle);
 
-		virtual int32_t calcCV (bool calcMax = false);
+	bool netUpdateMovePath(float& newRotate, char& newThrottleSetting, int32_t& newMoveState, int32_t& minThrottle, int32_t& maxThrottle);
 
-		virtual float calcAttackChance (GameObjectPtr target, int32_t aimLocation, float targetTime, int32_t weaponIndex, float modifiers, int32_t* range, Stuff::Vector3D* targetPoint = nullptr);
+	void setNextMovePath(char& newThrottleSetting);
 
-		virtual float getTotalEffectiveness(void);
+	void setControlSettings(float& newRotate, char& newThrottleSetting, int32_t& minThrottle, int32_t& maxThrottle);
 
-		virtual bool hitInventoryItem (int32_t itemIndex, bool setupOnly = false);
+	void updateTurret(float newRotate);
 
-		virtual void destroyBodyLocation (int32_t location);
+	virtual void updateMovement(void);
 
-		virtual int32_t buildStatusChunk (void);
+	virtual void netUpdateMovement(void);
 
-		virtual int32_t handleStatusChunk (int32_t updateAge, uint32_t chunk);
+	virtual int32_t calcCV(bool calcMax = false);
 
-		virtual int32_t buildMoveChunk (void);
+	virtual float calcAttackChance(GameObjectPtr target, int32_t aimLocation, float targetTime, int32_t weaponIndex, float modifiers, int32_t* range, Stuff::Vector3D* targetPoint = nullptr);
 
-		virtual int32_t handleMoveChunk (uint32_t chunk);
+	virtual float getTotalEffectiveness(void);
 
-		void calcThrottleLimits (int32_t& minThrottle, int32_t& maxThrottle);
+	virtual bool hitInventoryItem(int32_t itemIndex, bool setupOnly = false);
 
-		virtual bool injureBodyLocation (int32_t bodyLocation, float damage);
+	virtual void destroyBodyLocation(int32_t location);
 
-		virtual int32_t handleWeaponFire (int32_t weaponIndex,
-									   GameObjectPtr target,
-									   Stuff::Vector3D* targetPoint,
-									   bool hit,
-									   float entryAngle,
-									   int32_t numMissiles,
-									   int32_t hitLocation);
+	virtual int32_t buildStatusChunk(void);
 
-		virtual int32_t fireWeapon (GameObjectPtr target, float targetTime, int32_t weaponIndex, int32_t attackType, int32_t aimLocation, Stuff::Vector3D* targetPoint, float &damageDone);
+	virtual int32_t handleStatusChunk(int32_t updateAge, uint32_t chunk);
 
-		virtual float relFacingTo (Stuff::Vector3D goal, int32_t bodyLocation = -1);
-		
-		virtual float relViewFacingTo (Stuff::Vector3D goal) {
-			return(relFacingTo(goal, GROUNDVEHICLE_LOCATION_TURRET));
-		}
+	virtual int32_t buildMoveChunk(void);
 
-		virtual Stuff::Vector3D getPositionFromHS (int32_t weaponType);
+	virtual int32_t handleMoveChunk(uint32_t chunk);
 
-		virtual bool canMove (void) {
-			return(movementEnabled && (dynamics.max.groundVehicle.speed != 0) );
-		}
+	void calcThrottleLimits(int32_t& minThrottle, int32_t& maxThrottle);
 
-		virtual int32_t getSpeedState (void);
+	virtual bool injureBodyLocation(int32_t bodyLocation, float damage);
 
-		virtual void disable (uint32_t cause);
-		
-		virtual float getDestructLevel (void)
+	virtual int32_t handleWeaponFire(int32_t weaponIndex,
+									 GameObjectPtr target,
+									 Stuff::Vector3D* targetPoint,
+									 bool hit,
+									 float entryAngle,
+									 int32_t numMissiles,
+									 int32_t hitLocation);
+
+	virtual int32_t fireWeapon(GameObjectPtr target, float targetTime, int32_t weaponIndex, int32_t attackType, int32_t aimLocation, Stuff::Vector3D* targetPoint, float& damageDone);
+
+	virtual float relFacingTo(Stuff::Vector3D goal, int32_t bodyLocation = -1);
+
+	virtual float relViewFacingTo(Stuff::Vector3D goal)
+	{
+		return(relFacingTo(goal, GROUNDVEHICLE_LOCATION_TURRET));
+	}
+
+	virtual Stuff::Vector3D getPositionFromHS(int32_t weaponType);
+
+	virtual bool canMove(void)
+	{
+		return(movementEnabled && (dynamics.max.groundVehicle.speed != 0));
+	}
+
+	virtual int32_t getSpeedState(void);
+
+	virtual void disable(uint32_t cause);
+
+	virtual float getDestructLevel(void)
+	{
+		float maxArmorLocation = 0.0f;
+		//Find MAX armor location.
+		for(int32_t curLocation = 0; curLocation < NUM_GROUNDVEHICLE_LOCATIONS; curLocation++)
 		{
-			float maxArmorLocation = 0.0f;
-
-			//Find MAX armor location.
-			for (int32_t curLocation = 0; curLocation < NUM_GROUNDVEHICLE_LOCATIONS; curLocation++) 
-			{
-				if (armor[curLocation].curArmor > maxArmorLocation)
-					maxArmorLocation = armor[curLocation].curArmor;
-
-			}
-
-			return maxArmorLocation + 1;	//Always assume you need one point more than the best armor to be sure.
+			if(armor[curLocation].curArmor > maxArmorLocation)
+				maxArmorLocation = armor[curLocation].curArmor;
 		}
+		return maxArmorLocation + 1;	//Always assume you need one point more than the best armor to be sure.
+	}
 
-		//----------------------------------------------
-		// Additional ground vehicle-specific routines...		
-		bool canRotateTurret (void) {
-			return(body[GROUNDVEHICLE_LOCATION_TURRET].damageState == IS_DAMAGE_NONE);
-		}
+	//----------------------------------------------
+	// Additional ground vehicle-specific routines...
+	bool canRotateTurret(void)
+	{
+		return(body[GROUNDVEHICLE_LOCATION_TURRET].damageState == IS_DAMAGE_NONE);
+	}
 
-		virtual int32_t getThrottle (void) {
-			return(control.settings.groundVehicle.throttle);
-		}
+	virtual int32_t getThrottle(void)
+	{
+		return(control.settings.groundVehicle.throttle);
+	}
 
-		bool isMoving (void) {
-			return(control.settings.groundVehicle.throttle != 0);
-		}
+	bool isMoving(void)
+	{
+		return(control.settings.groundVehicle.throttle != 0);
+	}
 
-		bool isReversing (void) {
-			return(control.settings.groundVehicle.throttle < 0);
-		}
+	bool isReversing(void)
+	{
+		return(control.settings.groundVehicle.throttle < 0);
+	}
 
-		virtual bool isLayingMines (void) {
-			return(pilot && (pilot->getCurTacOrder()->moveParams.mode == MOVE_MODE_MINELAYING));
-		}
+	virtual bool isLayingMines(void)
+	{
+		return(pilot && (pilot->getCurTacOrder()->moveParams.mode == MOVE_MODE_MINELAYING));
+	}
 
-		virtual bool isMineSweeper (void) {
-			return(mineSweeper);
-		}
+	virtual bool isMineSweeper(void)
+	{
+		return(mineSweeper);
+	}
 
-		virtual bool isMineLayer (void) {
-			return(mineLayer != 0);
-		}
+	virtual bool isMineLayer(void)
+	{
+		return(mineLayer != 0);
+	}
 
-		~GroundVehicle (void)
-		{
-			destroy(void);
-		}
+	~GroundVehicle(void)
+	{
+		destroy(void);
+	}
 
 #ifdef USE_SALVAGE
-		virtual bool isCaptureable (int32_t capturingTeamID) {
-			//return ((captureable || salvage != nullptr) && (getTeamId() != capturingTeamID) && !isDestroyed());
-			return ((getFlag(OBJECT_FLAG_CAPTURABLE) || (salvage != nullptr)) && (getTeamId() != capturingTeamID) && !isDestroyed());
-		}
+	virtual bool isCaptureable(int32_t capturingTeamID)
+	{
+		//return ((captureable || salvage != nullptr) && (getTeamId() != capturingTeamID) && !isDestroyed());
+		return ((getFlag(OBJECT_FLAG_CAPTURABLE) || (salvage != nullptr)) && (getTeamId() != capturingTeamID) && !isDestroyed());
+	}
 #else
-		virtual bool isCaptureable (int32_t capturingTeamID) {
-			//return (captureable && (getTeamId() != capturingTeamID) && !isDestroyed());
-			return (getFlag(OBJECT_FLAG_CAPTURABLE) && (getTeamId() != capturingTeamID) && !isDestroyed());
-		}
+	virtual bool isCaptureable(int32_t capturingTeamID)
+	{
+		//return (captureable && (getTeamId() != capturingTeamID) && !isDestroyed());
+		return (getFlag(OBJECT_FLAG_CAPTURABLE) && (getTeamId() != capturingTeamID) && !isDestroyed());
+	}
 #endif
-		
-		virtual void handleStaticCollision (void);
 
-		virtual PSTR getIfaceName(void) {
-			return(longName);
-		}
-		
-		void createVehiclePilot (void);
+	virtual void handleStaticCollision(void);
 
-		float getRefitPoints(void) {
-			if (canRefit)
-				return(armor[GROUNDVEHICLE_LOCATION_TURRET].curArmor);
-			else
-				return(0.0);
-		}
+	virtual PSTR getIfaceName(void)
+	{
+		return(longName);
+	}
 
-		float getTotalRefitPoints(void) {
-			if (canRefit)
-				return(armor[GROUNDVEHICLE_LOCATION_TURRET].maxArmor);
-			else
-				return(0.0);
-		}
+	void createVehiclePilot(void);
 
-		bool burnRefitPoints (float pointsToBurn); 
+	float getRefitPoints(void)
+	{
+		if(canRefit)
+			return(armor[GROUNDVEHICLE_LOCATION_TURRET].curArmor);
+		else
+			return(0.0);
+	}
 
-		float getRecoverPoints(void) {
-			if (canRecover)
-				return(armor[GROUNDVEHICLE_LOCATION_TURRET].curArmor);
-			else
-				return(0.0);
-		}
+	float getTotalRefitPoints(void)
+	{
+		if(canRefit)
+			return(armor[GROUNDVEHICLE_LOCATION_TURRET].maxArmor);
+		else
+			return(0.0);
+	}
 
-		float getTotalRecoverPoints(void) {
-			if (canRecover)
-				return(armor[GROUNDVEHICLE_LOCATION_TURRET].maxArmor);
-			else
-				return(0.0);
-		}
+	bool burnRefitPoints(float pointsToBurn);
 
-		bool burnRecoverPoints (float pointsToBurn) {
-			if (canRecover && pointsToBurn <= armor[GROUNDVEHICLE_LOCATION_TURRET].curArmor) {
-				armor[GROUNDVEHICLE_LOCATION_TURRET].curArmor -= pointsToBurn;
-				return(true);
-				}
-			else
-				return(false);
-		}
+	float getRecoverPoints(void)
+	{
+		if(canRecover)
+			return(armor[GROUNDVEHICLE_LOCATION_TURRET].curArmor);
+		else
+			return(0.0);
+	}
 
-		virtual bool isRefit(){ return canRefit; }
-		virtual bool isRecover() { return canRecover; }
+	float getTotalRecoverPoints(void)
+	{
+		if(canRecover)
+			return(armor[GROUNDVEHICLE_LOCATION_TURRET].maxArmor);
+		else
+			return(0.0);
+	}
 
-		static int32_t loadGameSystem (FitIniFilePtr sysFile);
-		
-		int32_t updateAnimations (void);
-		
-		virtual bool isMech (void)
+	bool burnRecoverPoints(float pointsToBurn)
+	{
+		if(canRecover && pointsToBurn <= armor[GROUNDVEHICLE_LOCATION_TURRET].curArmor)
 		{
-			return false;
+			armor[GROUNDVEHICLE_LOCATION_TURRET].curArmor -= pointsToBurn;
+			return(true);
 		}
-		
-		virtual bool isVehicle (void)
-		{
-			if (dynamics.max.groundVehicle.speed != 0.0) 
-				return true;
-			
-			return false;
-		}
-		
-		virtual bool isGuardTower (void)
-		{
-			if (dynamics.max.groundVehicle.speed != 0.0) 
-				return false;
-			
+		else
+			return(false);
+	}
+
+	virtual bool isRefit()
+	{
+		return canRefit;
+	}
+	virtual bool isRecover()
+	{
+		return canRecover;
+	}
+
+	static int32_t loadGameSystem(FitIniFilePtr sysFile);
+
+	int32_t updateAnimations(void);
+
+	virtual bool isMech(void)
+	{
+		return false;
+	}
+
+	virtual bool isVehicle(void)
+	{
+		if(dynamics.max.groundVehicle.speed != 0.0)
 			return true;
-		}
-		
-		virtual int32_t setTeamId (int32_t _teamId, bool setup);
-		
-		virtual float getLOSFactor (void)
-		{
-			return (((GroundVehicleType *)getObjectType())->LOSFactor);
-		}
+		return false;
+	}
 
-		virtual void Save (PacketFilePtr file, int32_t packetNum);
+	virtual bool isGuardTower(void)
+	{
+		if(dynamics.max.groundVehicle.speed != 0.0)
+			return false;
+		return true;
+	}
 
-		void CopyTo (GroundVehicleData *data);
+	virtual int32_t setTeamId(int32_t _teamId, bool setup);
 
-		void Load (GroundVehicleData *data);
+	virtual float getLOSFactor(void)
+	{
+		return (((GroundVehicleType*)getObjectType())->LOSFactor);
+	}
+
+	virtual void Save(PacketFilePtr file, int32_t packetNum);
+
+	void CopyTo(GroundVehicleData* data);
+
+	void Load(GroundVehicleData* data);
 };
 
 //******************************************************************************************

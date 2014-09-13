@@ -14,7 +14,8 @@ extern "C" void __cdecl InternalFunctionSpew(PCSTR Group, PCSTR Message, ...);
 #define SPEW(x)		InternalFunctionSpew x
 #endif
 
-namespace Stuff {
+namespace Stuff
+{
 
 #if !defined(NO_ANALYSIS)
 #define USE_TIME_ANALYSIS
@@ -40,9 +41,9 @@ namespace Stuff {
 #endif
 
 	template <class T> T
-		Cast_Pointer_Function(T p)
+	Cast_Pointer_Function(T p)
 	{
-		if (ArmorLevel>0)
+		if(ArmorLevel > 0)
 			Check_Pointer(p);
 		return p;
 	}
@@ -84,56 +85,51 @@ namespace Stuff {
 #define Check_Signature(p) Stuff::Is_Signature_Bad(p)
 
 	template <class T> void
-		Check_Object_Function(T *p)
+	Check_Object_Function(T* p)
 	{
-		switch (ArmorLevel)
+		switch(ArmorLevel)
 		{
-		case 1:
-			Check_Pointer(p);
-			break;
-
-		case 2:
-			Check_Signature(p);
-			break;
-
-		case 3:
-		case 4:
-			Check_Signature(p);
-			p->TestInstance();
-			break;
+			case 1:
+				Check_Pointer(p);
+				break;
+			case 2:
+				Check_Signature(p);
+				break;
+			case 3:
+			case 4:
+				Check_Signature(p);
+				p->TestInstance();
+				break;
 		}
 	}
 
 #define Check_Object(p) Stuff::Check_Object_Function(p)
 
-	//
-	// Cast_Object will only work for polymorphic objects,
-	// non-polymorphic objects use Cast_Pointer
-	//
+//
+// Cast_Object will only work for polymorphic objects,
+// non-polymorphic objects use Cast_Pointer
+//
 
 	template <class T> T
-		Cast_Object_Function(T p)
+	Cast_Object_Function(T p)
 	{
-		switch (ArmorLevel)
+		switch(ArmorLevel)
 		{
-		case 1:
-			Check_Pointer(p);
-			break;
-
-		case 2:
-			Check_Signature(p);
-			break;
-
-		case 3:
-			Check_Signature(p);
-			p->TestInstance();
-			break;
-
-		case 4:
-			Check_Signature(p);
-			p->TestInstance();
-			Verify(dynamic_cast<T>(p) != nullptr);
-			break;		
+			case 1:
+				Check_Pointer(p);
+				break;
+			case 2:
+				Check_Signature(p);
+				break;
+			case 3:
+				Check_Signature(p);
+				p->TestInstance();
+				break;
+			case 4:
+				Check_Signature(p);
+				p->TestInstance();
+				Verify(dynamic_cast<T>(p) != nullptr);
+				break;
 		}
 		return p;
 	}

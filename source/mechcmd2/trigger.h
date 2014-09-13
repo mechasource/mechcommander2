@@ -19,7 +19,8 @@
 
 #define	MAX_TRIGGER_AREAS			16
 
-typedef enum {
+typedef enum
+{
 	TRIGGER_AREA_NONE,
 	TRIGGER_AREA_MOVER,
 	TRIGGER_AREA_TEAM,
@@ -28,53 +29,58 @@ typedef enum {
 	NUM_TRIGGER_AREA_TYPES
 } TriggerAreaType;
 
-typedef struct {
+typedef struct
+{
 	char	type;
 	int32_t	param;
 	int32_t	dim[4];
 	bool	hit;
 } TriggerArea;
 
-class TriggerAreaManager {
+class TriggerAreaManager
+{
 
-	public:
+public:
 
-		TriggerArea				triggerAreas[MAX_TRIGGER_AREAS];
-		uint8_t			map[MAX_MAP_CELL_WIDTH / 3][MAX_MAP_CELL_WIDTH / 3];
-		
-	public:
+	TriggerArea				triggerAreas[MAX_TRIGGER_AREAS];
+	uint8_t			map[MAX_MAP_CELL_WIDTH / 3][MAX_MAP_CELL_WIDTH / 3];
 
-		PVOID operator new (size_t mySize);
+public:
 
-		void operator delete (PVOID us);
-			
-		void init (void) {
-			for (int32_t i = 0; i < MAX_TRIGGER_AREAS; i++)
-				triggerAreas[i].type = TRIGGER_AREA_NONE;
-			for (int32_t r = 0; r < MAX_MAP_CELL_WIDTH / 3; r++)
-				for (int32_t c = 0; c < MAX_MAP_CELL_WIDTH / 3; c++)
-					map[r][c] = 0;
-		}
+	PVOID operator new(size_t mySize);
 
-		TriggerAreaManager (void) {
-			init(void);
-		}
+	void operator delete(PVOID us);
 
-		void destroy (void);
+	void init(void)
+	{
+		for(size_t i = 0; i < MAX_TRIGGER_AREAS; i++)
+			triggerAreas[i].type = TRIGGER_AREA_NONE;
+		for(int32_t r = 0; r < MAX_MAP_CELL_WIDTH / 3; r++)
+			for(int32_t c = 0; c < MAX_MAP_CELL_WIDTH / 3; c++)
+				map[r][c] = 0;
+	}
 
-		~TriggerAreaManager (void) {
-			destroy(void);
-		}
+	TriggerAreaManager(void)
+	{
+		init(void);
+	}
 
-		int32_t add (int32_t ULrow, int32_t ULcol, int32_t LRrow, int32_t LRcol, int32_t type, int32_t param);
+	void destroy(void);
 
-		void remove (int32_t areaHandle);
+	~TriggerAreaManager(void)
+	{
+		destroy(void);
+	}
 
-		void reset (int32_t areaHandle);
+	int32_t add(int32_t ULrow, int32_t ULcol, int32_t LRrow, int32_t LRcol, int32_t type, int32_t param);
 
-		bool isHit (int32_t areaHandle);
+	void remove(int32_t areaHandle);
 
-		void setHit (MoverPtr mover);
+	void reset(int32_t areaHandle);
+
+	bool isHit(int32_t areaHandle);
+
+	void setHit(MoverPtr mover);
 };
 
 

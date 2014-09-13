@@ -18,7 +18,7 @@ class Unit;
 class UnitSettingsDlg : public CDialog
 {
 public:
-	UnitSettingsDlg(EList<Unit*, Unit*>&, ActionUndoMgr &undoMgr);   // standard constructor
+	UnitSettingsDlg(EList<Unit*, Unit*>&, ActionUndoMgr& undoMgr);   // standard constructor
 
 	//{{AFX_DATA(UnitSettingsDlg)
 	enum { IDD = IDD_UNITSETTINGS };
@@ -33,14 +33,14 @@ public:
 
 
 	//{{AFX_VIRTUAL(UnitSettingsDlg)
-	protected:
+protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	//}}AFX_VIRTUAL
 
 // Implementation
 protected:
 
-	void DoColorBox( CWnd* pWnd );
+	void DoColorBox(CWnd* pWnd);
 
 	//{{AFX_MSG(UnitSettingsDlg)
 	afx_msg void OnSelchangeGroup(void);
@@ -61,7 +61,7 @@ protected:
 	afx_msg void OnAlign1(uint32_t which);
 
 	void applyChanges(void);
-	ModifyBuildingAction *pAction;
+	ModifyBuildingAction* pAction;
 
 	typedef EList< Unit*, Unit* > UNIT_LIST;
 	UNIT_LIST& units;
@@ -71,10 +71,10 @@ protected:
 	CBrush		brush2;
 
 	void updatePossibiltyControls(void);
-	Unit *pFirstPossibility;
+	Unit* pFirstPossibility;
 	int32_t getPossibilityIndex(void);
 	void updateMemberVariables(void);
-	ActionUndoMgr *pUndoMgr;
+	ActionUndoMgr* pUndoMgr;
 };
 
 //{{AFX_INSERT_LOCATION}}

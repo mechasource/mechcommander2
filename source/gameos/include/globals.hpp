@@ -26,7 +26,7 @@ extern uint8_t CPUID1[16];		// CPUID 1 information
 extern uint8_t CPUID2[16];		// CPUID 2 information
 
 //
-// Global window 
+// Global window
 //
 extern uint8_t gActive;
 extern uint8_t gGotFocus;

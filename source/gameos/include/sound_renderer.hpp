@@ -23,7 +23,8 @@
 //
 // Used for sound device enumeration - Maximum of 8 devices
 //
-typedef struct SoundDeviceInfo {
+typedef struct SoundDeviceInfo
+{
 	GUID				Guid;
 	char				Description[128];
 	char				Driver[128];
@@ -37,22 +38,22 @@ typedef struct SoundDeviceInfo {
 typedef struct _srdata
 {
 	int32_t m_numChannels;
-	DS3DSoundChannel *
-		m_Channel[MAX_SOUNDCHANNELS];
-	DS3DSoundMixer *
-		m_Mixer;
-	int32_t 
-		m_RendererTimer;
+	DS3DSoundChannel*
+	m_Channel[MAX_SOUNDCHANNELS];
+	DS3DSoundMixer*
+	m_Mixer;
 	int32_t
-		m_isInitialized;
-    uint32_t 
-		m_Timer;
+	m_RendererTimer;
+	int32_t
+	m_isInitialized;
 	uint32_t
-		m_TimerRefCount;
-	int32_t 
-		m_TimerServicing;             // reentrancy semaphore
-	PSTR 
-		m_workBuffer;
+	m_Timer;
+	uint32_t
+	m_TimerRefCount;
+	int32_t
+	m_TimerServicing;             // reentrancy semaphore
+	PSTR
+	m_workBuffer;
 
 	SoundDeviceInfo m_DeviceArray[8];
 	uint32_t m_numDevices;
@@ -72,7 +73,7 @@ extern HGOSHEAP SoundHeap;
 void __stdcall SoundRendererInstall(int32_t);
 void __stdcall SoundRendererStartFrame(void);
 void __stdcall SoundRendererEndFrame(void);
-uint32_t __stdcall SoundRendererUpdate( PVOID ThreadParam );
+uint32_t __stdcall SoundRendererUpdate(PVOID ThreadParam);
 void __stdcall SoundRendererUninstall(void);
 void __stdcall SoundRendererCreateTimer(void);
 void __stdcall SoundRendererDestroyTimer(void);
@@ -81,12 +82,12 @@ void __stdcall SoundRendererContinue(void);
 void __stdcall SoundRendererFF(double sec);
 bool __stdcall IsValidSoundResource(HGOSAUDIO gosAudio);
 
-void __stdcall TimeFunc( 
-	uint32_t uTimerID, 
-	uint32_t uMsg, 
+void __stdcall TimeFunc(
+	uint32_t uTimerID,
+	uint32_t uMsg,
 	uint32_t dwUser,
-	uint32_t dw1, 
-	uint32_t dw2 
+	uint32_t dw1,
+	uint32_t dw2
 );
 
 void __stdcall SoundRendererNotify(void);

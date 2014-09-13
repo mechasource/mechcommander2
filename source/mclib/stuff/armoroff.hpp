@@ -13,7 +13,8 @@
 #define SPEW(x)		((void)0)
 #endif
 
-namespace Stuff {
+namespace Stuff
+{
 
 #if defined(LAB_ONLY) && !defined(NO_ANALYSIS)
 #define USE_TIME_ANALYSIS

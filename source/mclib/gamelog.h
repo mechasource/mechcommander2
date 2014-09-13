@@ -34,60 +34,64 @@
 #define	MAX_GAMELOG_LINELEN		200
 #define	MAXLEN_GAMELOG_NAME		128
 
-class GameLog {
+class GameLog
+{
 
-	public:
+public:
 
-		int32_t					handle;
-		bool					inUse;
-		char					fileName[MAXLEN_GAMELOG_NAME];
-		File*					filePtr;
-		int32_t					numLines;
-		int32_t					totalLines;
-		char					lines[MAX_GAMELOG_LINES][MAX_GAMELOG_LINELEN];
+	int32_t					handle;
+	bool					inUse;
+	char					fileName[MAXLEN_GAMELOG_NAME];
+	File*					filePtr;
+	int32_t					numLines;
+	int32_t					totalLines;
+	char					lines[MAX_GAMELOG_LINES][MAX_GAMELOG_LINELEN];
 
-		static GameLogPtr		files[MAX_GAMELOGS];
+	static GameLogPtr		files[MAX_GAMELOGS];
 
-	public:
+public:
 
-		PVOID operator new (size_t mySize);
+	PVOID operator new(size_t mySize);
 
-		void operator delete (PVOID us);
-			
-		void init (void) {
-			handle = -1;
-			inUse = false;
-			fileName[0] = nullptr;
-			filePtr = nullptr;
-			numLines = 0;
-			totalLines = 0;
-			for (int32_t i = 0; i < MAX_GAMELOG_LINES; i++)
-				lines[i][0] = nullptr;
-		}
+	void operator delete(PVOID us);
 
-		GameLog (void) {
-			init(void);
-		}
+	void init(void)
+	{
+		handle = -1;
+		inUse = false;
+		fileName[0] = nullptr;
+		filePtr = nullptr;
+		numLines = 0;
+		totalLines = 0;
+		for(size_t i = 0; i < MAX_GAMELOG_LINES; i++)
+			lines[i][0] = nullptr;
+	}
 
-		void destroy (void);
+	GameLog(void)
+	{
+		init(void);
+	}
 
-		~GameLog (void) {
-			destroy(void);
-		}
+	void destroy(void);
 
-		void dump (void);
+	~GameLog(void)
+	{
+		destroy(void);
+	}
 
-		void close (void);
+	void dump(void);
 
-		int32_t open (PSTR fileName);
+	void close(void);
 
-		void write (PSTR s);
+	int32_t open(PSTR fileName);
 
-		static void setup (void);
+	void write(PSTR s);
 
-		static void cleanup (void);
+	static void setup(void);
 
-		static GameLogPtr getNewFile (void);
+	static void cleanup(void);
+
+	static GameLogPtr getNewFile(void);
 };
 
 

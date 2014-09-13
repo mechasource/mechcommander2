@@ -14,7 +14,8 @@
 #include <mlr/mlrstate.hpp>
 #include <mlr/mlrclippingstate.hpp>
 
-namespace Stuff{
+namespace Stuff
+{
 	class Line3D;
 	class Normal3D;
 	class ExtentBox;
@@ -22,7 +23,8 @@ namespace Stuff{
 
 //#include <mlr/gosvertexpool.hpp>
 
-namespace MidLevelRenderer{
+namespace MidLevelRenderer
+{
 
 	class MLRState;
 	class MLRLight;
@@ -48,13 +50,13 @@ namespace MidLevelRenderer{
 
 	class MLRPrimitiveBase__ClassData;
 
-	//##########################################################################
-	//#################### MLRPrimitiveBase ##############################
-	//##########################################################################
-	// this is the abstract base class for all geometry. it has contains geometry
-	// with one and only one renderer state !!!
+//##########################################################################
+//#################### MLRPrimitiveBase ##############################
+//##########################################################################
+// this is the abstract base class for all geometry. it has contains geometry
+// with one and only one renderer state !!!
 
-	//typedef Stuff::Vector2DOf<float> Stuff::Vector2DScalar;
+//typedef Stuff::Vector2DOf<float> Stuff::Vector2DScalar;
 
 	class _declspec(novtable) MLRPrimitiveBase:
 		public Stuff::RegisteredClass
@@ -75,21 +77,16 @@ namespace MidLevelRenderer{
 		//
 	protected:
 		MLRPrimitiveBase(
-			ClassData *class_data,
-			Stuff::MemoryStream *stream,
-			uint32_t version
-			);
-
+			ClassData* class_data, Stuff::MemoryStream* stream, uint32_t version);
 		~MLRPrimitiveBase(void);
 
 	public:
-		MLRPrimitiveBase(ClassData *class_data);
+		MLRPrimitiveBase(ClassData* class_data);
 
-		typedef MLRPrimitiveBase* (*Factory)(Stuff::MemoryStream *stream, uint32_t version);
+		typedef MLRPrimitiveBase* (*Factory)(Stuff::MemoryStream* stream, uint32_t version);
 
-		static MLRPrimitiveBase* Make(Stuff::MemoryStream *stream, uint32_t version);
-
-		virtual void Save(Stuff::MemoryStream *stream);
+		static MLRPrimitiveBase* Make(Stuff::MemoryStream* stream, uint32_t version);
+		virtual void Save(Stuff::MemoryStream* stream);
 
 		// Subprimitves are units in which this geometry is split off
 		// ie. nr of polygons in a polygon mesh or number of tripstrips
@@ -101,35 +98,54 @@ namespace MidLevelRenderer{
 		// ARE IN THIS ORDER
 		virtual size_t GetNumPrimitives(void)
 		{
-			Check_Object(this); return lengths.GetLength();
+			Check_Object(this);
+			return lengths.GetLength();
 		}
 
 		virtual void SetSubprimitiveLengths(puint8_t length_array, size_t subprimitive_count) = 0;
 
 		// returns the number of subprimitives
-		void GetSubprimitiveLengths(puint8_t *length_array, pint32_t);
+		void GetSubprimitiveLengths(puint8_t* length_array, pint32_t);
 
 		int32_t GetSubprimitiveLength(int32_t i) const;
 
 		// ==============================================================
 
-		virtual void SetReferenceState(const MLRState& _state, size_t pass=0)
-		{ Check_Object(this); (void)pass; referenceState = _state; };
-		virtual const MLRState& GetReferenceState(size_t pass=0) const
-		{ Check_Object(this);(void)pass; return referenceState; };
-		virtual const MLRState& GetCurrentState(size_t pass=0) const
-		{ Check_Object(this); (void)pass; return state; };
+		virtual void SetReferenceState(const MLRState& _state, size_t pass = 0)
+		{
+			Check_Object(this);
+			(void)pass;
+			referenceState = _state;
+		};
+		virtual const MLRState& GetReferenceState(size_t pass = 0) const
+		{
+			Check_Object(this);
+			(void)pass;
+			return referenceState;
+		};
+		virtual const MLRState& GetCurrentState(size_t pass = 0) const
+		{
+			Check_Object(this);
+			(void)pass;
+			return state;
+		};
 
 		virtual void CombineStates(const MLRState& master)
-		{ Check_Object(this); state.Combine(master, referenceState); };
+		{
+			Check_Object(this);
+			state.Combine(master, referenceState);
+		};
 
 		size_t GetNumVertices(void)
-		{ Check_Object(this); return coords.GetLength(); }
+		{
+			Check_Object(this);
+			return coords.GetLength();
+		}
 
 		virtual void SetCoordData(const Stuff::Point3D* array, size_t point_count);
 		virtual void GetCoordData(Stuff::Point3D** array, psize_t point_count);
-		virtual void SetTexCoordData(const Stuff::Vector2DScalar* array, size_t point_count, size_t pass=0);
-		virtual void GetTexCoordData(Stuff::Vector2DScalar** array, psize_t point_count, size_t pass=0);
+		virtual void SetTexCoordData(const Stuff::Vector2DScalar* array, size_t point_count, size_t pass = 0);
+		virtual void GetTexCoordData(Stuff::Vector2DScalar** array, psize_t point_count, size_t pass = 0);
 
 		// is to call befor clipping, parameter: camera point
 		virtual int32_t FindBackFace(const Stuff::Point3D&) = 0;
@@ -138,66 +154,81 @@ namespace MidLevelRenderer{
 
 		static void InitializeDraw(void);
 
-		virtual void InitializeDrawPrimitive(uint8_t, int32_t=0);
+		virtual void InitializeDrawPrimitive(uint8_t, int32_t = 0);
 
-		int32_t GetVisible ()
-		{ Check_Object(this); return visible; }
-
-		virtual GOSVertex* GetGOSVertices(uint32_t=0)
+		int32_t GetVisible()
 		{
-			Check_Object(this); return gos_vertices;
+			Check_Object(this);
+			return visible;
+		}
+
+		virtual GOSVertex* GetGOSVertices(uint32_t = 0)
+		{
+			Check_Object(this);
+			return gos_vertices;
 		}
 
 		uint32_t GetNumGOSVertices(void)
 		{
-			Check_Object(this); return numGOSVertices;
+			Check_Object(this);
+			return numGOSVertices;
 		}
 
-		virtual GOSVertex2UV* GetGOSVertices2UV(uint32_t=0)
-		{ Check_Object(this); return nullptr; }
+		virtual GOSVertex2UV* GetGOSVertices2UV(uint32_t = 0)
+		{
+			Check_Object(this);
+			return nullptr;
+		}
 
 		int32_t
-			GetSortDataMode()
-		{ Check_Object(this); return drawMode; }
+		GetSortDataMode()
+		{
+			Check_Object(this);
+			return drawMode;
+		}
 
 		virtual bool
-			CastRay(
-			Stuff::Line3D *line,
-			Stuff::Normal3D *normal
-			);
+		CastRay(
+			Stuff::Line3D* line,
+			Stuff::Normal3D* normal
+		);
 
-		virtual void
-			PaintMe(const Stuff::RGBAColor *paintMe) = 0;
+		virtual void PaintMe(const Stuff::RGBAColor* paintMe) = 0;
 
-		virtual int32_t
-			TransformAndClip(Stuff::Matrix4D*, MLRClippingState, GOSVertexPool*,bool=false) = 0;
+		virtual uint32_t TransformAndClip(Stuff::Matrix4D*, MLRClippingState, GOSVertexPool*, bool = false) = 0;
 
-		virtual void
-			TransformNoClip(Stuff::Matrix4D*, GOSVertexPool*,bool=false) = 0;
+		virtual void TransformNoClip(Stuff::Matrix4D*, GOSVertexPool*, bool = false) = 0;
 
 		virtual uint32_t GetNumPasses(void)
-		{ Check_Object(this); return passes; }
+		{
+			Check_Object(this);
+			return passes;
+		}
 
 		virtual void HurtMe(const Stuff::LinearMatrix4D&, float /*radius*/)
-		{ Check_Object(this); }
+		{
+			Check_Object(this);
+		}
 
 		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		// This functions using the static buffers
 		//
 		void
-			SetClipCoord(Stuff::Point3D &point, size_t index)
+		SetClipCoord(Stuff::Point3D& point, size_t index)
 		{
-			Check_Object(this); Verify(clipExtraCoords->GetLength() > index);
+			Check_Object(this);
+			Verify(clipExtraCoords->GetLength() > index);
 			(*clipExtraCoords)[index].x = point.x;
 			(*clipExtraCoords)[index].y = point.y;
 			(*clipExtraCoords)[index].z = point.z;
 		}
 		void
-			FlashClipCoords(size_t num)
+		FlashClipCoords(size_t num)
 		{
-			Check_Object(this); Verify(clipExtraCoords->GetLength() > num);
+			Check_Object(this);
+			Verify(clipExtraCoords->GetLength() > num);
 			coords.SetLength(num);
-			for(size_t i=0;i<num;i++)
+			for(size_t i = 0; i < num; i++)
 			{
 				coords[i].x = (*clipExtraCoords)[i].x;
 				coords[i].y = (*clipExtraCoords)[i].y;
@@ -205,18 +236,18 @@ namespace MidLevelRenderer{
 			}
 		}
 		void
-			SetClipTexCoord(Stuff::Vector2DScalar &uvs, size_t index)
+		SetClipTexCoord(Stuff::Vector2DScalar& uvs, size_t index)
 		{
-			Check_Object(this); Verify(clipExtraTexCoords->GetLength() > index);
-			Verify( MLRState::GetHasMaxUVs() ? (uvs[0]>=-100.0 && uvs[0]<=100.0) : 1);
-			Verify( MLRState::GetHasMaxUVs() ? (uvs[1]>=-100.0 && uvs[1]<=100.0) : 1);
-
+			Check_Object(this);
+			Verify(clipExtraTexCoords->GetLength() > index);
+			Verify(MLRState::GetHasMaxUVs() ? (uvs[0] >= -100.0 && uvs[0] <= 100.0) : 1);
+			Verify(MLRState::GetHasMaxUVs() ? (uvs[1] >= -100.0 && uvs[1] <= 100.0) : 1);
 			(*clipExtraTexCoords)[index] = uvs;
 		}
-		void
-			FlashClipTexCoords(size_t num)
+		void FlashClipTexCoords(size_t num)
 		{
-			Check_Object(this); Verify(clipExtraTexCoords->GetLength() > num);
+			Check_Object(this);
+			Verify(clipExtraTexCoords->GetLength() > num);
 			texCoords.SetLength(num);
 			Mem_Copy(texCoords.GetData(), clipExtraTexCoords->GetData(), sizeof(Stuff::Vector2DScalar)*num, sizeof(Stuff::Vector2DScalar)*num);
 		}
@@ -225,21 +256,26 @@ namespace MidLevelRenderer{
 		// Reference counting
 		//
 	public:
-		void
-			AttachReference()
-		{Check_Object(this); ++referenceCount;}
-		void
-			DetachReference()
+		void AttachReference(void)
 		{
-			Check_Object(this); Verify(referenceCount > 0);
-			if ((--referenceCount) == 0)
+			Check_Object(this);
+			++referenceCount;
+		}
+		void DetachReference(void)
+		{
+			Check_Object(this);
+			Verify(referenceCount > 0);
+			if((--referenceCount) == 0)
 			{
 				Unregister_Object(this);
 				delete this;
 			}
 		}
 
-		size_t GetReferenceCount(void) {return referenceCount;}
+		size_t GetReferenceCount(void)
+		{
+			return referenceCount;
+		}
 
 	protected:
 		size_t referenceCount;
@@ -257,16 +293,15 @@ namespace MidLevelRenderer{
 			ret += coords.GetSize();
 			ret += texCoords.GetSize();
 			ret += lengths.GetSize();
-
 			return ret;
 		}
 
-		void GetExtend(Stuff::ExtentBox *box);
+		void GetExtend(Stuff::ExtentBox* box);
 
 	protected:
 		virtual void Transform(Stuff::Matrix4D*);
 
-		static ClipPolygon2 *clipBuffer;
+		static ClipPolygon2* clipBuffer;
 
 		uint8_t visible; // primitive visibilty per frame
 		uint8_t passes;
@@ -280,34 +315,33 @@ namespace MidLevelRenderer{
 		Stuff::DynamicArrayOf<Stuff::Point3D> coords; // Base address of coordinate list
 		Stuff::DynamicArrayOf<Stuff::Vector2DScalar> texCoords; // Base address of texture coordinate list
 
-		static Stuff::DynamicArrayOf<Stuff::Vector4D> *transformedCoords;
+		static Stuff::DynamicArrayOf<Stuff::Vector4D>*	transformedCoords;
 
 		Stuff::DynamicArrayOf<uint8_t> lengths; // List of strip lengths
 
 #if COLOR_AS_DWORD// clipExtraColors for the future generations !!!
-		static Stuff::DynamicArrayOf<uint32_t> *clipExtraColors; // , Max_Number_Vertices_Per_Mesh
+		static Stuff::DynamicArrayOf<uint32_t>* clipExtraColors; // , Max_Number_Vertices_Per_Mesh
 #else
-		static Stuff::DynamicArrayOf<Stuff::RGBAColor> *clipExtraColors; // , Max_Number_Vertices_Per_Mesh
+		static Stuff::DynamicArrayOf<Stuff::RGBAColor>* clipExtraColors; // , Max_Number_Vertices_Per_Mesh
 #endif
 
-		static Stuff::DynamicArrayOf<MLRClippingState> *clipPerVertex; // , Max_Number_Vertices_Per_Mesh
-
-		static Stuff::DynamicArrayOf<Stuff::Vector4D> *clipExtraCoords; // , Max_Number_Vertices_Per_Mesh
-		static Stuff::DynamicArrayOf<Stuff::Vector2DScalar> *clipExtraTexCoords; // , Max_Number_Vertices_Per_Mesh
-
-		static Stuff::DynamicArrayOf<uint16_t> *clipExtraLength; // , Max_Number_Primitives_Per_Frame
+		static Stuff::DynamicArrayOf<MLRClippingState>* clipPerVertex; // , Max_Number_Vertices_Per_Mesh
+		static Stuff::DynamicArrayOf<Stuff::Vector4D>* clipExtraCoords; // , Max_Number_Vertices_Per_Mesh
+		static Stuff::DynamicArrayOf<Stuff::Vector2DScalar>* clipExtraTexCoords; // , Max_Number_Vertices_Per_Mesh
+		static Stuff::DynamicArrayOf<uint16_t>* clipExtraLength; // , Max_Number_Primitives_Per_Frame
 
 		MLRState state, referenceState;
 
-		int32_t drawMode;
+		uint32_t drawMode;
 
 		GOSVertex* gos_vertices;
 		uint16_t numGOSVertices;
 	};
 
-	struct IcoInfo{
-		int32_t type;
-		int32_t depth;
+	struct IcoInfo
+	{
+		uint32_t type;
+		uint32_t depth;
 		bool indexed;
 		float radius;
 		float all;
@@ -315,15 +349,11 @@ namespace MidLevelRenderer{
 		PCSTR GetTypeName(void);
 	};
 
-	MLRShape*
-		CreateIndexedIcosahedron(
-		IcoInfo&,
-		Stuff::DynamicArrayOf<MLRState>*
-		);
+	MLRShape* CreateIndexedIcosahedron(IcoInfo&, Stuff::DynamicArrayOf<MLRState>*);
 
-	//##########################################################################
-	//################### MLRPrimitiveBase__ClassData ####################
-	//##########################################################################
+//##########################################################################
+//################### MLRPrimitiveBase__ClassData ####################
+//##########################################################################
 
 	class MLRPrimitiveBase__ClassData:
 		public Stuff::RegisteredClass::ClassData
@@ -334,10 +364,10 @@ namespace MidLevelRenderer{
 		MLRPrimitiveBase__ClassData(
 			Stuff::RegisteredClass::ClassID class_id,
 			PCSTR class_name,
-			Stuff::RegisteredClass::ClassData *parent_class,
-			MLRPrimitiveBase::Factory primitive_factory) 
-			: RegisteredClass__ClassData(class_id, class_name, parent_class), 
-			primitiveFactory(primitive_factory)
+			Stuff::RegisteredClass::ClassData* parent_class,
+			MLRPrimitiveBase::Factory primitive_factory)
+			: RegisteredClass__ClassData(class_id, class_name, parent_class),
+			  primitiveFactory(primitive_factory)
 		{
 		}
 
@@ -351,14 +381,14 @@ namespace MidLevelRenderer{
 
 	struct ClipData2
 	{
-		Stuff::Vector4D *coords;
+		Stuff::Vector4D* coords;
 #if COLOR_AS_DWORD
-		uint32_t *colors;
+		uint32_t* colors;
 #else
-		Stuff::RGBAColor *colors;
+		Stuff::RGBAColor* colors;
 #endif
-		Stuff::Vector2DScalar *texCoords;
-		MLRClippingState *clipPerVertex;
+		Stuff::Vector2DScalar* texCoords;
+		MLRClippingState* clipPerVertex;
 
 		uint16_t length;
 	};
@@ -367,95 +397,95 @@ namespace MidLevelRenderer{
 	{
 		switch(nr)
 		{
-		case 0:
-			return (v4d.w - v4d.y);
-		case 1:
-			return v4d.y;
-		case 2:
-			return (v4d.w - v4d.x);
-		case 3:
-			return v4d.x;
-		case 4:
-			return v4d.z;
-		case 5:
-			return (v4d.w - v4d.z);
+			case 0:
+				return (v4d.w - v4d.y);
+			case 1:
+				return v4d.y;
+			case 2:
+				return (v4d.w - v4d.x);
+			case 3:
+				return v4d.x;
+			case 4:
+				return v4d.z;
+			case 5:
+				return (v4d.w - v4d.z);
 		}
 		return 0.0f;
 	}
 
 	inline void GetDoubleBC(
-		uint32_t nr, float& result1, float& result2, const Stuff::Vector4D& v4d1, 
+		uint32_t nr, float& result1, float& result2, const Stuff::Vector4D& v4d1,
 		const Stuff::Vector4D& v4d2)
 	{
 		switch(nr)
 		{
-		case 0:
-			result1 = (v4d1.w - v4d1.y);
-			result2 = (v4d2.w - v4d2.y);
-			break;
-		case 1:
-			result1 = v4d1.y;
-			result2 = v4d2.y;
-			break;
-		case 2:
-			result1 = (v4d1.w - v4d1.x);
-			result2 = (v4d2.w - v4d2.x);
-			break;
-		case 3:
-			result1 = v4d1.x;
-			result2 = v4d2.x;
-			break;
-		case 4:
-			result1 = v4d1.z;
-			result2 = v4d2.z;
-			break;
-		case 5:
-			result1 = (v4d1.w - v4d1.z);
-			result2 = (v4d2.w - v4d2.z);
-			break;
+			case 0:
+				result1 = (v4d1.w - v4d1.y);
+				result2 = (v4d2.w - v4d2.y);
+				break;
+			case 1:
+				result1 = v4d1.y;
+				result2 = v4d2.y;
+				break;
+			case 2:
+				result1 = (v4d1.w - v4d1.x);
+				result2 = (v4d2.w - v4d2.x);
+				break;
+			case 3:
+				result1 = v4d1.x;
+				result2 = v4d2.x;
+				break;
+			case 4:
+				result1 = v4d1.z;
+				result2 = v4d2.z;
+				break;
+			case 5:
+				result1 = (v4d1.w - v4d1.z);
+				result2 = (v4d2.w - v4d2.z);
+				break;
 		}
 	}
 
-	inline float GetLerpFactor(uint32_t nr, const Stuff::Vector4D& v4d1, const Stuff::Vector4D& v4d2)
+	inline float GetLerpFactor(
+		uint32_t nr, const Stuff::Vector4D& v4d1, const Stuff::Vector4D& v4d2)
 	{
 		float result1 = 0.0f;
 		float result2 = 0.0f;
-
 		switch(nr)
 		{
-		case 0:
-			result1 = (v4d1.w - v4d1.y);
-			result2 = (v4d2.w - v4d2.y);
-			break;
-		case 1:
-			result1 = v4d1.y;
-			result2 = v4d2.y;
-			break;
-		case 2:
-			result1 = (v4d1.w - v4d1.x);
-			result2 = (v4d2.w - v4d2.x);
-			break;
-		case 3:
-			result1 = v4d1.x;
-			result2 = v4d2.x;
-			break;
-		case 4:
-			result1 = v4d1.z;
-			result2 = v4d2.z;
-			break;
-		case 5:
-			result1 = (v4d1.w - v4d1.z);
-			result2 = (v4d2.w - v4d2.z);
-			break;
-		default:
-			NODEFAULT;
-			break;
+			case 0:
+				result1 = (v4d1.w - v4d1.y);
+				result2 = (v4d2.w - v4d2.y);
+				break;
+			case 1:
+				result1 = v4d1.y;
+				result2 = v4d2.y;
+				break;
+			case 2:
+				result1 = (v4d1.w - v4d1.x);
+				result2 = (v4d2.w - v4d2.x);
+				break;
+			case 3:
+				result1 = v4d1.x;
+				result2 = v4d2.x;
+				break;
+			case 4:
+				result1 = v4d1.z;
+				result2 = v4d2.z;
+				break;
+			case 5:
+				result1 = (v4d1.w - v4d1.z);
+				result2 = (v4d2.w - v4d2.z);
+				break;
+			default:
+				NODEFAULT;
+				break;
 		}
 		if(result1 == 0.0f)
 		{
 			return 0.0f;
 		}
-		Verify(!Stuff::Close_Enough(result1, result2, Stuff::SMALL*0.1f));
+		Verify(!Stuff::Close_Enough(result1, result2, Stuff::SMALL * 0.1f));
 		return result1 / (result1 - result2);
 	}
 }

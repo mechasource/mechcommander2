@@ -51,27 +51,23 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // FogDlg message handlers
 
-void FogDlg::OnChangeBlue1() 
+void FogDlg::OnChangeBlue1()
 {
 	RedrawWindow();
 }
 
-HBRUSH FogDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, uint32_t nCtlColor) 
+HBRUSH FogDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, uint32_t nCtlColor)
 {
-	if ( CTLCOLOR_STATIC == nCtlColor && GetDlgItem( IDC_SOURCE_COLOR )->m_hWnd == pWnd->m_hWnd )
+	if(CTLCOLOR_STATIC == nCtlColor && GetDlgItem(IDC_SOURCE_COLOR)->m_hWnd == pWnd->m_hWnd)
 	{
-		UpdateData( );
-		if ( brush.m_hObject )
+		UpdateData();
+		if(brush.m_hObject)
 			brush.DeleteObject();
-
 		brush.CreateSolidBrush(RGB(m_red, m_green, m_blue));
 		return (HBRUSH)brush.m_hObject;
 	}
-	
 	HBRUSH hbr = CDialog ::OnCtlColor(pDC, pWnd, nCtlColor);
-	
 	// TODO: Change any attributes of the DC here
-	
 	// TODO: Return a different brush if the default is not desired
 	return hbr;
 }

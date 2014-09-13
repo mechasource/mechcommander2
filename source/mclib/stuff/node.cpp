@@ -19,22 +19,22 @@ Node::ClassData* Node::DefaultData = nullptr;
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	Node::InitializeClass()
+Node::InitializeClass()
 {
 	Verify(!DefaultData);
 	DefaultData =
 		new ClassData(
-			NodeClassID,
-			"Stuff::Node",
-			Plug::DefaultData
-		);
+		NodeClassID,
+		"Stuff::Node",
+		Plug::DefaultData
+	);
 	Register_Object(DefaultData);
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	Node::TerminateClass()
+Node::TerminateClass()
 {
 	Unregister_Object(DefaultData);
 	delete DefaultData;
@@ -43,7 +43,7 @@ void
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Node ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Node::Node(ClassData *class_data):
+Node::Node(ClassData* class_data):
 	Plug(class_data)
 {
 }
@@ -54,7 +54,7 @@ Node::~Node()
 }
 
 void
-	Node::ReleaseLinkHandler(Socket*, Plug*)
+Node::ReleaseLinkHandler(Socket*, Plug*)
 {
 	Check_Object(this);
 }
@@ -62,7 +62,7 @@ void
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	Node::TestInstance()
+Node::TestInstance()
 {
 	Verify(IsDerivedFrom(DefaultData));
 }

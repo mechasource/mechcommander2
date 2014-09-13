@@ -41,7 +41,10 @@ class MechBayScreen : public LogisticsScreen
 
 public:
 
-	static MechBayScreen* instance(){ return s_instance; }
+	static MechBayScreen* instance()
+	{
+		return s_instance;
+	}
 	MechBayScreen(void);
 	virtual ~MechBayScreen(void);
 
@@ -50,12 +53,12 @@ public:
 	virtual void update(void);
 	virtual void begin(void);
 	virtual void end(void);
-	
-	virtual int32_t			handleMessage( uint32_t, uint32_t );
-	void setMech( LogisticsMech* pMech, bool bCommandFromLB = true );	
-	void beginDrag( LogisticsMech* pMech );
 
-	
+	virtual int32_t			handleMessage(uint32_t, uint32_t);
+	void setMech(LogisticsMech* pMech, bool bCommandFromLB = true);
+	void beginDrag(LogisticsMech* pMech);
+
+
 private:
 
 	LogisticsMech*		pCurMech;
@@ -86,13 +89,13 @@ private:
 
 	void removeSelectedMech(void);
 	void addSelectedMech(void);
-	
+
 	void drawWeightMeter(int32_t xOffset, int32_t yOffset);
 	void reinitMechs(void);
 
 
-	MechBayScreen( const MechBayScreen& );
-	MechBayScreen& operator=( const MechBayScreen& );
+	MechBayScreen(const MechBayScreen&);
+	MechBayScreen& operator=(const MechBayScreen&);
 
 	void				unselectDeploymentTeam(void);
 	bool				selectFirstFGItem(void);

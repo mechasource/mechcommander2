@@ -13,10 +13,10 @@
 //----------------------------------------------------------------------------------
 // Class Definitions
 class BitFlag;
-typedef BitFlag *BitFlagPtr;
+typedef BitFlag* BitFlagPtr;
 
 class ByteFlag;
-typedef ByteFlag *ByteFlagPtr;
+typedef ByteFlag* ByteFlagPtr;
 
 //----------------------------------------------------------------------------------
 #endif

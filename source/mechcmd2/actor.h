@@ -29,9 +29,9 @@ enum ActorState
 {
 	ACTOR_STATE_INVALID = -1,
 	ACTOR_STATE_NORMAL = 0,
-	ACTOR_STATE_BLOWING_UP1,		//From Normal to Damaged 
+	ACTOR_STATE_BLOWING_UP1,		//From Normal to Damaged
 	ACTOR_STATE_DAMAGED,
-	ACTOR_STATE_BLOWING_UP2,		//From Damaged to Destroyed 
+	ACTOR_STATE_BLOWING_UP2,		//From Damaged to Destroyed
 	ACTOR_STATE_DESTROYED,
 	ACTOR_STATE_FALLEN_DMG,			//Used for Trees
 	MAX_ACTOR_STATES
@@ -58,56 +58,54 @@ struct ActorData
 //-----------------------------------------------------------------------
 class VFXAppearanceType : public AppearanceType
 {
-	public:
-	
-		ActorData			*actorStateData;
-		TGATexturePtr		*textureList;				//These go nullptr when a texture is cached out.
-		int32_t				numPackets;
-		uint32_t				textureMemoryHandle;
-		uint8_t		numStates;
+public:
 
-	public:
-	
-		void init (void)
-		{
-			actorStateData = nullptr;
-			textureList = nullptr;
-			numStates = 0;
-			numPackets = 0;
+	ActorData*			actorStateData;
+	TGATexturePtr*		textureList;				//These go nullptr when a texture is cached out.
+	int32_t				numPackets;
+	uint32_t				textureMemoryHandle;
+	uint8_t		numStates;
 
-			users = nullptr;
-			lastUser = nullptr;
-		}
-	
-		VFXAppearanceType (void)
-		{
-			init(void);
-		}
+public:
 
-		~VFXAppearanceType (void)
-		{
-			destroy(void);
-		}
+	void init(void)
+	{
+		actorStateData = nullptr;
+		textureList = nullptr;
+		numStates = 0;
+		numPackets = 0;
+		users = nullptr;
+		lastUser = nullptr;
+	}
 
-		void init (FilePtr appearFile, uint32_t fileSize);
-		
-		//----------------------------------------------
-		// This routine is where the magic happens.
-		TGATexturePtr getTexture (ActorState shapeId, int32_t rot, int32_t currFrame, float &frameRate, bool &mirror);
+	VFXAppearanceType(void)
+	{
+		init(void);
+	}
 
-		int32_t loadIniFile (FilePtr appearFile, uint32_t fileSize);
+	~VFXAppearanceType(void)
+	{
+		destroy(void);
+	}
 
-		void destroy (void);
+	void init(FilePtr appearFile, uint32_t fileSize);
 
-		virtual void removeTexture (TGATexture *shape);
+	//----------------------------------------------
+	// This routine is where the magic happens.
+	TGATexturePtr getTexture(ActorState shapeId, int32_t rot, int32_t currFrame, float& frameRate, bool& mirror);
 
-		int32_t getNumFrames (ActorState typeId)
-		{
-			if (actorStateData)
-				return actorStateData[typeId].numFrames;
-				
-			return 0;
-		}
+	int32_t loadIniFile(FilePtr appearFile, uint32_t fileSize);
+
+	void destroy(void);
+
+	virtual void removeTexture(TGATexture* shape);
+
+	int32_t getNumFrames(ActorState typeId)
+	{
+		if(actorStateData)
+			return actorStateData[typeId].numFrames;
+		return 0;
+	}
 };
 
 //***********************************************************************
@@ -119,96 +117,95 @@ class VFXAppearanceType : public AppearanceType
 //-----------------------------------------------------------------------
 class VFXAppearance : public Appearance
 {
-	public:
+public:
 
-		VFXAppearanceType*			appearType;
-		TGATexturePtr				currentTexture;		//OK because we make sure each frame before we draw it.
-		uint32_t				currentFrame;
-		float						currentRotation;
-		
-		float						lastInView;						//Time since last in view (s)
-		float						timeInFrame;
-		float						frameInc;
-		int32_t						lastWholeFrame;
-		
-		uint32_t				startFrame;
-		uint32_t				endFrame;
-			
-		ActorState					currentShapeTypeId;
-		puint8_t 					fadeTable;
-		bool 						realBuildingDamage;
-		bool						changedTypeId;
-		
-		float						lightIntensity;
-		float						topZ;
-		
-		Stuff::Vector2DOf<int32_t>		shapeMin;
-		Stuff::Vector2DOf<int32_t>		shapeMax;
+	VFXAppearanceType*			appearType;
+	TGATexturePtr				currentTexture;		//OK because we make sure each frame before we draw it.
+	uint32_t				currentFrame;
+	float						currentRotation;
 
-		Stuff::Vector3D				position;
-		float						rotation;
-		int32_t						selected;
-		int32_t						alignment;
-		
-	public:
+	float						lastInView;						//Time since last in view (s)
+	float						timeInFrame;
+	float						frameInc;
+	int32_t						lastWholeFrame;
 
-		virtual void init (AppearanceTypePtr tree = nullptr, GameObjectPtr obj = nullptr);
+	uint32_t				startFrame;
+	uint32_t				endFrame;
 
-		VFXAppearance (void)
+	ActorState					currentShapeTypeId;
+	puint8_t 					fadeTable;
+	bool 						realBuildingDamage;
+	bool						changedTypeId;
+
+	float						lightIntensity;
+	float						topZ;
+
+	Stuff::Vector2DOf<int32_t>		shapeMin;
+	Stuff::Vector2DOf<int32_t>		shapeMax;
+
+	Stuff::Vector3D				position;
+	float						rotation;
+	int32_t						selected;
+	int32_t						alignment;
+
+public:
+
+	virtual void init(AppearanceTypePtr tree = nullptr, GameObjectPtr obj = nullptr);
+
+	VFXAppearance(void)
+	{
+		init(void);
+	}
+
+	virtual int32_t update(void);
+	virtual int32_t render(int32_t depthFixup = 0);
+
+	virtual void destroy(void);
+
+	~VFXAppearance(void)
+	{
+		destroy(void);
+	}
+
+	virtual AppearanceTypePtr getAppearanceType(void)
+	{
+		return appearType;
+	}
+
+	virtual bool recalcBounds(void);
+
+	virtual void setTypeId(ActorState typeId)
+	{
+		if((typeId < appearType->numStates) && (typeId >= 0))
 		{
-			init(void);
+			currentShapeTypeId = typeId;
+			currentFrame = -1;
+			timeInFrame = 0.0;
+			lastWholeFrame = 0;
 		}
+		changedTypeId = TRUE;
+	}
 
-		virtual int32_t update (void);
-		virtual int32_t render (int32_t depthFixup = 0);
+	void loopFrames(int32_t sFrame, int32_t eFrame)
+	{
+		startFrame = sFrame;
+		endFrame = eFrame;
+	}
 
-		virtual void destroy (void);
+	virtual void setDamageLvl(uint32_t damage);
 
-		~VFXAppearance (void)
-		{
-			destroy(void);
-		}
+	void setFadeTable(puint8_t fTable)
+	{
+		fadeTable = fTable;
+	}
 
-		virtual AppearanceTypePtr getAppearanceType (void)
-		{
-			return appearType;
-		}
+	void setObjectParameters(Stuff::Vector3D& pos, float rot, int32_t selected);
 
-		virtual bool recalcBounds (void);
-		
-		virtual void setTypeId (ActorState typeId)
-		{
-			if ((typeId < appearType->numStates) && (typeId >= 0))
-			{
-				currentShapeTypeId = typeId;
-				currentFrame = -1;
-				timeInFrame = 0.0;
-				lastWholeFrame = 0;
-			}
-			
-			changedTypeId = TRUE;
-		}
+	int32_t stateExists(ActorState typeId);
 
-		void loopFrames (int32_t sFrame, int32_t eFrame)
-		{
-			startFrame = sFrame;
-			endFrame = eFrame;
-		}
-		
-		virtual void setDamageLvl (uint32_t damage);
-		
-		void setFadeTable (puint8_t fTable)
-		{
-			fadeTable = fTable;
-		}
-		
-		void setObjectParameters (Stuff::Vector3D &pos, float rot, int32_t selected);
-		
-		int32_t stateExists (ActorState typeId);
-		
-		void debugUpdate (void);
-		
-		virtual bool isMouseOver (float px, float py);
+	void debugUpdate(void);
+
+	virtual bool isMouseOver(float px, float py);
 };
 
 

@@ -17,8 +17,8 @@ using namespace Stuff;
 //###########################################################################
 // SafeSocket
 //###########################################################################
-//	
-SafeSocket::SafeSocket(Node *node):
+//
+SafeSocket::SafeSocket(Node* node):
 	Socket(node)
 {
 	iteratorHead = nullptr;
@@ -28,7 +28,7 @@ SafeSocket::SafeSocket(Node *node):
 //###########################################################################
 // ~SafeSocket
 //###########################################################################
-//	
+//
 SafeSocket::~SafeSocket()
 {
 	Check_Object(this);
@@ -41,10 +41,10 @@ SafeSocket::~SafeSocket()
 //###########################################################################
 //
 void
-	SafeSocket::TestInstance()
+SafeSocket::TestInstance()
 {
 	Socket::TestInstance();
-	if (iteratorHead != nullptr)
+	if(iteratorHead != nullptr)
 	{
 		Check_Signature(iteratorHead);
 	}
@@ -56,19 +56,19 @@ void
 //###########################################################################
 //
 void
-	SafeSocket::SendIteratorMemo(
-		IteratorMemo memo,
-		PVOID content
-	)
+SafeSocket::SendIteratorMemo(
+	IteratorMemo memo,
+	PVOID content
+)
 {
 	Check_Object(this);
-	SafeIterator *iterator;
-	
-	for (
+	SafeIterator* iterator;
+	for(
 		iterator = iteratorHead;
 		iterator != nullptr;
 		iterator = iterator->nextIterator
-	) {
+	)
+	{
 		Check_Object(iterator);
 		iterator->ReceiveMemo(memo, content);
 	}
@@ -79,14 +79,14 @@ void
 // SafeIterator
 //###########################################################################
 //
-SafeIterator::SafeIterator(SafeSocket *safeSocket):
+SafeIterator::SafeIterator(SafeSocket* safeSocket):
 	SocketIterator(safeSocket)
 {
 	//
 	// Link iterator into sockets set of iterators
 	//
-   Check_Object(safeSocket);
-	if ((nextIterator = safeSocket->iteratorHead) != nullptr)
+	Check_Object(safeSocket);
+	if((nextIterator = safeSocket->iteratorHead) != nullptr)
 	{
 		Check_Object(nextIterator);
 		nextIterator->prevIterator = this;
@@ -103,22 +103,21 @@ SafeIterator::SafeIterator(SafeSocket *safeSocket):
 SafeIterator::~SafeIterator()
 {
 	Check_Object(this);
-	SafeSocket *safeSocket = Cast_Object(SafeSocket*, socket);
-
+	SafeSocket* safeSocket = Cast_Object(SafeSocket*, socket);
 	//
 	// Remove iterator from sockets set of iterators
 	//
 	Check_Object(safeSocket);
-	if (safeSocket->iteratorHead == this)
+	if(safeSocket->iteratorHead == this)
 	{
 		safeSocket->iteratorHead = nextIterator;
 	}
-	if (prevIterator != nullptr) 
+	if(prevIterator != nullptr)
 	{
 		Check_Object(prevIterator);
 		prevIterator->nextIterator = nextIterator;
 	}
-	if (nextIterator != nullptr) 
+	if(nextIterator != nullptr)
 	{
 		Check_Object(nextIterator);
 		nextIterator->prevIterator = prevIterator;
@@ -131,15 +130,14 @@ SafeIterator::~SafeIterator()
 //###########################################################################
 //
 void
-	SafeIterator::TestInstance(void) const
+SafeIterator::TestInstance(void) const
 {
 	SocketIterator::TestInstance();
-
-	if (prevIterator != nullptr) 
+	if(prevIterator != nullptr)
 	{
 		Check_Signature(prevIterator);
 	}
-	if (nextIterator != nullptr) 
+	if(nextIterator != nullptr)
 	{
 		Check_Signature(nextIterator);
 	}
@@ -151,10 +149,10 @@ void
 //###########################################################################
 //
 void
-	SafeIterator::ReceiveMemo(
-      IteratorMemo,
-      PVOID
-   )
+SafeIterator::ReceiveMemo(
+	IteratorMemo,
+	PVOID
+)
 {
 	Check_Object(this);
 	STOP(("SafeIterator::ReceiveMemo - Should never reach here"));

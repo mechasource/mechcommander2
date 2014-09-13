@@ -20,12 +20,14 @@
 //--------------------------------
 // Structure and Class Definitions
 
-typedef struct _SortListNode {
+typedef struct _SortListNode
+{
 	float		value;			// sort value
-	uint32_t	id;				// item 
+	uint32_t	id;				// item
 } SortListNode;
 
-class SortList {
+class SortList
+{
 
 protected:
 	SortListNode*		list;
@@ -33,12 +35,14 @@ protected:
 
 public:
 
-	void init(void) {
+	void init(void)
+	{
 		list = nullptr;
 		numItems = 0;
 	}
 
-	SortList(void) {
+	SortList(void)
+	{
 		init(void);
 	}
 
@@ -46,13 +50,13 @@ public:
 
 	void setId(uint32_t index, uint32_t id)
 	{
-		if (/*(index >= 0) &&*/ (index < numItems))
+		if(/*(index >= 0) &&*/ (index < numItems))
 			list[index].id = id;
 	}
 
 	void setValue(uint32_t index, float value)
 	{
-		if (/*(index >= 0) &&*/ (index < numItems))
+		if(/*(index >= 0) &&*/ (index < numItems))
 			list[index].value = value;
 	}
 
@@ -77,7 +81,8 @@ public:
 
 	void destroy(void);
 
-	~SortList(void) {
+	~SortList(void)
+	{
 		destroy(void);
 	}
 };

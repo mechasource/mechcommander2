@@ -49,7 +49,7 @@ void CMissionDialog::DoDataExchange(CDataExchange* pDX)
 	DDX_Check(pDX, IDC_MI_PILOT_PROMOTION_CHECK, m_PilotPromotionCheck);
 	DDX_Check(pDX, IDC_MI_PURCHASING_CHECK, m_PurchasingCheck);
 	DDX_Check(pDX, IDC_MI_SALVAGE_CHECK, m_SalvageCheck);
-	DDX_Check(pDX, IDC_MI_SELECTION_SCREEN, m_SelectionScreenCheck );
+	DDX_Check(pDX, IDC_MI_SELECTION_SCREEN, m_SelectionScreenCheck);
 	//}}AFX_DATA_MAP
 }
 
@@ -64,41 +64,52 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // CMissionDialog message handlers
 
-void CMissionDialog::OnMiMissionFileBrowseButton() {
+void CMissionDialog::OnMiMissionFileBrowseButton()
+{
 	UpdateData(TRUE);
-	while (true) {
-		CFileDialog selectFileDialog(TRUE,_T("PAK"),_T("*.PAK"),
-						 OFN_HIDEREADONLY|OFN_OVERWRITEPROMPT|OFN_NOCHANGEDIR,
-						 _T("PAK File (*.PAK)|*.PAK|"));
+	while(true)
+	{
+		CFileDialog selectFileDialog(TRUE, _T("PAK"), _T("*.PAK"),
+									 OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT | OFN_NOCHANGEDIR,
+									 _T("PAK File (*.PAK)|*.PAK|"));
 		selectFileDialog.m_ofn.lpstrInitialDir = missionPath;
-		if( selectFileDialog.DoModal()==IDOK ) {
+		if(selectFileDialog.DoModal() == IDOK)
+		{
 			m_MissionFileEdit = selectFileDialog.GetFileTitle();
 			break;
-		} else {
+		}
+		else
+		{
 			break;
 		}
 	}
 	UpdateData(FALSE);
 }
 
-void CMissionDialog::OnMiPurchaseFileBrowseButton() {
+void CMissionDialog::OnMiPurchaseFileBrowseButton()
+{
 	UpdateData(TRUE);
-	while (true) {
-		CFileDialog selectFileDialog(TRUE,_T("FIT"),_T("*.FIT"),
-						 OFN_HIDEREADONLY|OFN_OVERWRITEPROMPT|OFN_NOCHANGEDIR,
-						 _T("FIT File (*.FIT)|*.FIT|"));
+	while(true)
+	{
+		CFileDialog selectFileDialog(TRUE, _T("FIT"), _T("*.FIT"),
+									 OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT | OFN_NOCHANGEDIR,
+									 _T("FIT File (*.FIT)|*.FIT|"));
 		selectFileDialog.m_ofn.lpstrInitialDir = missionPath;
-		if( selectFileDialog.DoModal()==IDOK ) {
+		if(selectFileDialog.DoModal() == IDOK)
+		{
 			CString purchasePath = selectFileDialog.GetPathName();
 			FitIniFile file;
 			int32_t result = 0;
-			result = file.open( (PSTR)(PCSTR)purchasePath );
-			if (NO_ERROR != result) {
+			result = file.open((PSTR)(PCSTR)purchasePath);
+			if(NO_ERROR != result)
+			{
 				AfxMessageBox(IDS_COULDNT_OPEN_PURCHASE_FILE);
-			} else {
+			}
+			else
+			{
 				int32_t result = 0;
 				result = file.seekBlock("Mechs");
-				if (NO_ERROR != result)
+				if(NO_ERROR != result)
 				{
 					AfxMessageBox(IDS_NOT_A_VALID_PURCHASE_FILE);
 				}
@@ -106,7 +117,9 @@ void CMissionDialog::OnMiPurchaseFileBrowseButton() {
 			}
 			m_PurchaseFileEdit = selectFileDialog.GetFileTitle();
 			break;
-		} else {
+		}
+		else
+		{
 			break;
 		}
 	}

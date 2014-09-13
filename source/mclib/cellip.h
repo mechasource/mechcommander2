@@ -25,30 +25,30 @@
 //---------------------------------------------------------------------------
 class EllipseElement : public Element
 {
-	public:
+public:
 
 	gos_VERTEX location[5];
 	RECT	clip;
-		
-	EllipseElement (void)
+
+	EllipseElement(void)
 	{
-		memset( location, 0, sizeof( location ) );
-		memset( &clip, 0, sizeof( clip ) );
+		memset(location, 0, sizeof(location));
+		memset(&clip, 0, sizeof(clip));
 	}
 
-	EllipseElement (Stuff::Vector2DOf<int32_t> &cnt, Stuff::Vector2DOf<int32_t> &ortho, int32_t clr, int32_t depth);
+	EllipseElement(Stuff::Vector2DOf<int32_t>& cnt, Stuff::Vector2DOf<int32_t>& ortho, int32_t clr, int32_t depth);
 
-	virtual void draw (void);
+	virtual void draw(void);
 
 	static void init(void); // gotta call this one time before you can draw
 
-	void setClip( const RECT& );
+	void setClip(const RECT&);
 
-	static void removeTextureHandle (void);
-	
-	private:
+	static void removeTextureHandle(void);
 
-		static	size_t s_textureHandle;
+private:
+
+	static	size_t s_textureHandle;
 };
 
 //---------------------------------------------------------------------------

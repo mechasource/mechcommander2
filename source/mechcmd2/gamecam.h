@@ -31,32 +31,30 @@ protected:
 
 public:
 
-	virtual void init (void)
+	virtual void init(void)
 	{
 		Camera::init(void);
 		targetObject = nullptr;
 		compass = nullptr;
 		lastShadowLightPitch = 0.0f;
-
 		uint32_t szData = sizeof(drawCompass);
 		gos_LoadDataFromRegistry("CompassStatus", &drawCompass, &szData);
-
 		//Check if data not in registry yet.  Goober!
-		if (!szData)
+		if(!szData)
 			drawCompass = true;
 	}
 
-	~GameCamera (void)
+	~GameCamera(void)
 	{
 		destroy(void);
 	}
 
-	void destroy (void);
+	void destroy(void);
 
-	virtual void render (void);
-	virtual int32_t activate (void);
+	virtual void render(void);
+	virtual int32_t activate(void);
 
-	virtual int32_t update (void);
+	virtual int32_t update(void);
 	virtual void moveLeft(float amount)
 	{
 		targetObject = nullptr;
@@ -81,10 +79,10 @@ public:
 		Camera::moveDown(amount);
 	}
 
-	virtual void setTarget (GameObjectPtr target)
+	virtual void setTarget(GameObjectPtr target)
 	{
 		targetObject = target;
-		if( target )
+		if(target)
 		{
 			//float newRotation = targetObject->getRotation(void);
 			//setCameraRotation(newRotation,newRotation);
@@ -96,18 +94,17 @@ public:
 		return targetObject;
 	}
 
-	virtual void allTight (void)
+	virtual void allTight(void)
 	{
-		int32_t i=0;
+		int32_t i = 0;
 		GameObjectPtr mvt = nullptr;
-		while (i<ObjectManager->getNumGoodMovers())
+		while(i < ObjectManager->getNumGoodMovers())
 		{
 			mvt = ObjectManager->getGoodMover(i);
-			if (!mvt->isDestroyed() && !mvt->isDisabled())
+			if(!mvt->isDestroyed() && !mvt->isDisabled())
 				break;
 			i++;
 		}
-
 		tiltNormal(void);
 		setTarget(mvt);
 		ZoomTight(void);
@@ -116,13 +113,12 @@ public:
 	void toggleCompass()
 	{
 		drawCompass ^= true;
-
 		//Save current Compass state to registry.
 		// Saves us having to put it into the prefs files.
 		uint32_t szData = sizeof(drawCompass);
-		gos_SaveDataToRegistry( "CompassStatus",  &drawCompass,  szData );
+		gos_SaveDataToRegistry("CompassStatus",  &drawCompass,  szData);
 	}
-};		
+};
 
 //---------------------------------------------------------------------------
 extern CameraPtr eye;		//Global Instance of the current camera

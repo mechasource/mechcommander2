@@ -28,15 +28,18 @@ LogisticsPilotListBox:
 class LogisticsPilotListBoxItem : public aListItem
 {
 public:
-	static int32_t LogisticsPilotListBoxItem::init( FitIniFile* file);
-	LogisticsPilotListBoxItem( LogisticsPilot* pPilot );
+	static int32_t LogisticsPilotListBoxItem::init(FitIniFile* file);
+	LogisticsPilotListBoxItem(LogisticsPilot* pPilot);
 
 	virtual ~LogisticsPilotListBoxItem(void);
 
 	virtual void  render(void);
 	virtual void update(void);
 
-	LogisticsPilot* getPilot(){ return pPilot; }
+	LogisticsPilot* getPilot()
+	{
+		return pPilot;
+	}
 
 private:
 
@@ -54,7 +57,7 @@ private:
 	LogisticsPilot* pPilot;
 	static LogisticsPilotListBoxItem* s_templateItem;
 
-	static void setAnimation( FitIniFile& file, int32_t whichOne );
+	static void setAnimation(FitIniFile& file, int32_t whichOne);
 
 
 	friend class LogisticsPilotListBox;
@@ -63,22 +66,22 @@ private:
 
 class LogisticsPilotListBox: public aListBox
 {
-	public:
+public:
 
 	LogisticsPilotListBox(void);
 	virtual ~LogisticsPilotListBox(void);
 
-	static void  makeUVs( LogisticsPilot* pPilot, aObject& pObject );
+	static void  makeUVs(LogisticsPilot* pPilot, aObject& pObject);
 
-	virtual int32_t AddItem( aListItem* pItem );
+	virtual int32_t AddItem(aListItem* pItem);
 	virtual void update(void);
 
 	void removePilot(LogisticsPilot* pPilot);
-	private:
-	
-		LogisticsPilotListBox( const LogisticsPilotListBox& src );
-		
-		// HELPER FUNCTIONS
+private:
+
+	LogisticsPilotListBox(const LogisticsPilotListBox& src);
+
+	// HELPER FUNCTIONS
 
 };
 

@@ -1,9 +1,16 @@
 //===========================================================================//
-// Copyright (C) Microsoft Corporation. All rights reserved.                 //
+// Copyright (C) Microsoft Corporation. All rights reserved. //
 //===========================================================================//
 
 #include "stdafx.h"
 
+#include <gameos.hpp>
+#include <mlr/gosvertex.hpp>
+#include <mlr/gosvertexpool.hpp>
+#include <mlr/mlrtexture.hpp>
+#include <mlr/mlrtexturepool.hpp>
+#include <mlr/mlrshape.hpp>
+#include <mlr/mlrcliptrick.hpp>
 #include <mlr/mlr_i_c_pmesh.hpp>
 
 using namespace MidLevelRenderer;
@@ -11,72 +18,68 @@ using namespace MidLevelRenderer;
 //#############################################################################
 
 #if defined(TRACE_ENABLED) && defined(MLR_TRACE)
-	BitTrace *MLR_I_C_PMesh_Clip;
+BitTrace* MLR_I_C_PMesh_Clip;
 #endif
 
 //#############################################################################
-//###### MLR_I_C_PMesh with color but no lighting one texture layer  #####
+//###### MLR_I_C_PMesh with color but no lighting one texture layer #####
 //#############################################################################
 
 MLR_I_C_PMesh::ClassData*
-	MLR_I_C_PMesh::DefaultData = nullptr;
+MLR_I_C_PMesh::DefaultData = nullptr;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	MLR_I_C_PMesh::InitializeClass()
+MLR_I_C_PMesh::InitializeClass()
 {
 	Verify(!DefaultData);
 	// Verify(gos_GetCurrentHeap() == StaticHeap);
 	DefaultData =
 		new ClassData(
-			MLR_I_C_PMeshClassID,
-			"MidLevelRenderer::MLR_I_C_PMesh",
-			MLR_I_PMesh::DefaultData,
-			(MLRPrimitiveBase::Factory)&Make
-		);
+		MLR_I_C_PMeshClassID,
+		"MidLevelRenderer::MLR_I_C_PMesh",
+		MLR_I_PMesh::DefaultData,
+		(MLRPrimitiveBase::Factory)&Make
+	);
 	Register_Object(DefaultData);
-
-	#if defined(TRACE_ENABLED) && defined(MLR_TRACE)
-		MLR_I_C_PMesh_Clip = new BitTrace("MLR_I_C_PMesh_Clip");
-		Register_Object(MLR_I_C_PMesh_Clip);
-	#endif
+#if defined(TRACE_ENABLED) && defined(MLR_TRACE)
+	MLR_I_C_PMesh_Clip = new BitTrace("MLR_I_C_PMesh_Clip");
+	Register_Object(MLR_I_C_PMesh_Clip);
+#endif
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	MLR_I_C_PMesh::TerminateClass()
+MLR_I_C_PMesh::TerminateClass()
 {
 	Unregister_Object(DefaultData);
 	delete DefaultData;
 	DefaultData = nullptr;
-
-	#if defined(TRACE_ENABLED) && defined(MLR_TRACE)
-		Unregister_Object(MLR_I_C_PMesh_Clip);
-		delete MLR_I_C_PMesh_Clip;
-	#endif
+#if defined(TRACE_ENABLED) && defined(MLR_TRACE)
+	Unregister_Object(MLR_I_C_PMesh_Clip);
+	delete MLR_I_C_PMesh_Clip;
+#endif
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 MLR_I_C_PMesh::MLR_I_C_PMesh(
-	ClassData *class_data,
-	MemoryStream *stream,
-	uint32_t version
-):
-	MLR_I_PMesh(class_data, stream, version)
+	ClassData* class_data,
+	Stuff::MemoryStream* stream,
+	uint32_t version)
+	: MLR_I_PMesh(class_data, stream, version)
 {
 	//Verify(gos_GetCurrentHeap() == Heap);
 	Check_Pointer(this);
 	Check_Pointer(stream);
-
 	switch(version)
 	{
 		case 1:
 		case 2:
 		{
-			STOP(("This class got created only after version 2 !"));
+			//STOP(("This class got created only after version 2 !"));
 		}
 		break;
 		default:
@@ -85,31 +88,19 @@ MLR_I_C_PMesh::MLR_I_C_PMesh(
 			MemoryStreamIO_Read(stream, &colors);
 #else
 			Stuff::DynamicArrayOf<uint32_t> smallColors;
-
 			MemoryStreamIO_Read(stream, &smallColors);
-		
-			int32_t i, len = smallColors.GetLength();
-
+			size_t i, len = smallColors.GetLength();
 			colors.SetLength(len);
-
 			uint32_t theColor;
-
-			for(i=0;i<len;i++)
+			for(i = 0; i < len; i++)
 			{
 				theColor = smallColors[i];
-
 				colors[i].blue = (theColor & 0xff) * One_Over_256;
-
-				theColor = theColor>>8;
-
+				theColor = theColor >> 8;
 				colors[i].green = (theColor & 0xff) * One_Over_256;
-
-				theColor = theColor>>8;
-
+				theColor = theColor >> 8;
 				colors[i].red = (theColor & 0xff) * One_Over_256;
-
-				theColor = theColor>>8;
-
+				theColor = theColor >> 8;
 				colors[i].alpha = (theColor & 0xff) * One_Over_256;
 			}
 #endif
@@ -120,7 +111,7 @@ MLR_I_C_PMesh::MLR_I_C_PMesh(
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLR_I_C_PMesh::MLR_I_C_PMesh(ClassData *class_data):
+MLR_I_C_PMesh::MLR_I_C_PMesh(ClassData* class_data):
 	MLR_I_PMesh(class_data), colors(0)
 {
 	Check_Pointer(this);
@@ -130,21 +121,21 @@ MLR_I_C_PMesh::MLR_I_C_PMesh(ClassData *class_data):
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /*
 void
-	MLR_I_C_PMesh::Copy(MLRIndexedPolyMesh *polyMesh)
+MLR_I_C_PMesh::Copy(MLRIndexedPolyMesh *polyMesh)
 {
-	Check_Pointer(this);
+Check_Pointer(this);
 
-	int32_t len;
+size_t len;
 #if COLOR_AS_DWORD
-	uint32_t *_colors;
+uint32_t *_colors;
 #else
-	RGBAColor *_colors;
+Stuff::RGBAColor *_colors;
 #endif
 
-	MLR_I_PMesh::Copy(polyMesh);
+MLR_I_PMesh::Copy(polyMesh);
 
-	polyMesh->GetColorData(&_colors, &len);
-	SetColorData(_colors, len);
+polyMesh->GetColorData(&_colors, &len);
+SetColorData(_colors, len);
 }
 */
 
@@ -157,18 +148,19 @@ MLR_I_C_PMesh::~MLR_I_C_PMesh()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLR_I_C_PMesh*
-	MLR_I_C_PMesh::Make(
-		MemoryStream *stream,
-		uint32_t version
-	)
+MLR_I_C_PMesh* MLR_I_C_PMesh::Make(
+	Stuff::MemoryStream* stream,
+	uint32_t version
+)
 {
 	Check_Object(stream);
-
+#if _CONSIDERED_OBSOLETE
 	gos_PushCurrentHeap(Heap);
-	MLR_I_C_PMesh *mesh = new MLR_I_C_PMesh(DefaultData, stream, version);
+	MLR_I_C_PMesh* mesh = new MLR_I_C_PMesh(DefaultData, stream, version);
 	gos_PopCurrentHeap();
-
+#else
+	MLR_I_C_PMesh* mesh = new MLR_I_C_PMesh(DefaultData, stream, version);
+#endif
 	return mesh;
 }
 
@@ -176,28 +168,22 @@ MLR_I_C_PMesh*
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	MLR_I_C_PMesh::Save(MemoryStream *stream)
+MLR_I_C_PMesh::Save(Stuff::MemoryStream* stream)
 {
 	Check_Object(this);
 	Check_Object(stream);
-
 	MLR_I_PMesh::Save(stream);
-
 #if COLOR_AS_DWORD
 	MemoryStreamIO_Write(stream, &colors);
 #else
 	Stuff::DynamicArrayOf<uint32_t> smallColors;
-	int32_t i, len = colors.GetLength();
-
-	const Stuff::RGBAColor *data = colors.GetData();
-
+	size_t i, len = colors.GetLength();
+	const Stuff::RGBAColor* data = colors.GetData();
 	smallColors.SetLength(len);
-
-	for(i=0;i<len;i++)
+	for(i = 0; i < len; i++)
 	{
-		smallColors[i] = GOSCopyColor(data+i);
+		smallColors[i] = GOSCopyColor(data + i);
 	}
-
 	MemoryStreamIO_Write(stream, &smallColors);
 #endif
 }
@@ -205,45 +191,42 @@ void
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	MLR_I_C_PMesh::TestInstance(void) const
+MLR_I_C_PMesh::TestInstance(void) const
 {
 	Verify(IsDerivedFrom(DefaultData));
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-	MLR_I_C_PMesh::SetColorData(
+void MLR_I_C_PMesh::SetColorData(
 #if COLOR_AS_DWORD
-		pcuint32_t data,
+	pcuint32_t data,
 #else
-		const RGBAColor *data,
+	const Stuff::RGBAColor* data,
 #endif
-		int32_t dataSize
-	)
+	size_t dataSize
+)
 {
-	Check_Object(this); 
+	Check_Object(this);
 	Check_Pointer(data);
-
 	Verify(coords.GetLength() == 0 || dataSize == coords.GetLength());
 	Verify(texCoords.GetLength() == 0 || dataSize == texCoords.GetLength());
-
 	colors.AssignData(data, dataSize);
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	MLR_I_C_PMesh::GetColorData(
+MLR_I_C_PMesh::GetColorData(
 #if COLOR_AS_DWORD
-		uint32_t **data,
+	puint32_t* data,
 #else
-		RGBAColor **data,
+	Stuff::RGBAColor** data,
 #endif
-		pint32_t dataSize
-	)
+	psize_t dataSize
+)
 {
-	Check_Object(this); 
+	Check_Object(this);
 	*data = colors.GetData();
 	*dataSize = colors.GetLength();
 }
@@ -251,29 +234,26 @@ void
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	MLR_I_C_PMesh::PaintMe(
+MLR_I_C_PMesh::PaintMe(
 #if COLOR_AS_DWORD
-		pcuint32_t paintMe
+	pcuint32_t paintMe
 #else
-		const RGBAColor *paintMe
+	const Stuff::RGBAColor* paintMe
 #endif
-		
-	)
+
+)
 {
 	Check_Object(this);
 	// original color is lost !!!;
-
-	int32_t k, len = colors.GetLength();
-
+	size_t k, len = colors.GetLength();
 #if COLOR_AS_DWORD
 	uint32_t argb = GOSCopyColor(paintMe);
-
-	for(k=0;k<len;k++)
+	for(k = 0; k < len; k++)
 	{
 		colors[k] = argb;
 	}
 #else
-	for(k=0;k<len;k++)
+	for(k = 0; k < len; k++)
 	{
 		colors[k] = *paintMe;
 	}
@@ -287,17 +267,17 @@ void
 #define CLASSNAME MLR_I_C_PMesh
 
 #if defined(TRACE_ENABLED) && defined(MLR_TRACE)
-	#define SET_MLR_PMESH_CLIP() MLR_I_C_PMesh_Clip->Set()
-	#define CLEAR_MLR_PMESH_CLIP() MLR_I_C_PMesh_Clip->Clear()
+#define SET_MLR_PMESH_CLIP() MLR_I_C_PMesh_Clip->Set()
+#define CLEAR_MLR_PMESH_CLIP() MLR_I_C_PMesh_Clip->Clear()
 #else
-	#define SET_MLR_PMESH_CLIP()
-	#define CLEAR_MLR_PMESH_CLIP()
+#define SET_MLR_PMESH_CLIP()
+#define CLEAR_MLR_PMESH_CLIP()
 #endif
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-//	This include contains follwing functions:
-//	void MLR_I_C_PMesh::TransformNoClip(Matrix4D*, GOSVertexPool*);
-//	int32_t MLR_I_C_PMesh::Clip(MLRClippingState, GOSVertexPool*);
+// This include contains follwing functions:
+// void MLR_I_C_PMesh::TransformNoClip(Matrix4D*, GOSVertexPool*);
+// int32_t MLR_I_C_PMesh::Clip(MLRClippingState, GOSVertexPool*);
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 #include <mlr/mlrprimitiveclipping.inl>
@@ -308,96 +288,77 @@ void
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 MLR_I_C_PMesh*
-	MidLevelRenderer::CreateIndexedCube_Color_NoLit(
-		Scalar half, 
-		RGBAColor *eightColors, 
-		MLRState *state
-	)
+MidLevelRenderer::CreateIndexedCube_Color_NoLit(
+	float half,
+	Stuff::RGBAColor* eightColors,
+	MLRState* state
+)
 {
 	gos_PushCurrentHeap(Heap);
-	MLR_I_C_PMesh *ret = new MLR_I_C_PMesh;
+	MLR_I_C_PMesh* ret = new MLR_I_C_PMesh;
 	Register_Object(ret);
-
-	Point3D *coords = new Point3D [8];
+	Stuff::Point3D* coords = new Stuff::Point3D [8];
 	Register_Pointer(coords);
-
-	coords[0] = Point3D( half, -half,  half);
-	coords[1] = Point3D(-half, -half,  half);
-	coords[2] = Point3D( half, -half, -half);
-	coords[3] = Point3D(-half, -half, -half);
-	coords[4] = Point3D(-half,  half,  half);
-	coords[5] = Point3D( half,  half,  half);
-	coords[6] = Point3D( half,  half, -half);
-	coords[7] = Point3D(-half,  half, -half);
-
+	coords[0] = Stuff::Point3D(half, -half, half);
+	coords[1] = Stuff::Point3D(-half, -half, half);
+	coords[2] = Stuff::Point3D(half, -half, -half);
+	coords[3] = Stuff::Point3D(-half, -half, -half);
+	coords[4] = Stuff::Point3D(-half, half, half);
+	coords[5] = Stuff::Point3D(half, half, half);
+	coords[6] = Stuff::Point3D(half, half, -half);
+	coords[7] = Stuff::Point3D(-half, half, -half);
 	puint8_t lengths = new uint8_t [6];
 	Register_Pointer(lengths);
-
-	int32_t i;
-
-	for(i=0;i<6;i++)
+	size_t i;
+	for(i = 0; i < 6; i++)
 	{
 		lengths[i] = 4;
 	}
-
 	ret->SetSubprimitiveLengths(lengths, 6);
 	Unregister_Pointer(lengths);
 	delete [] lengths;
-
 	ret->SetCoordData(coords, 8);
 	Unregister_Pointer(coords);
 	delete [] coords;
-
-	uint16_t	*index = new uint16_t [6*4];
+	puint16_t index = new uint16_t [6 * 4];
 	Register_Pointer(index);
-
 	index[0] = 0;
 	index[1] = 2;
 	index[2] = 6;
 	index[3] = 5;
-
 	index[4] = 0;
 	index[5] = 5;
 	index[6] = 4;
 	index[7] = 1;
-
 	index[8] = 5;
 	index[9] = 6;
 	index[10] = 7;
 	index[11] = 4;
-
 	index[12] = 2;
 	index[13] = 3;
 	index[14] = 7;
 	index[15] = 6;
-
 	index[16] = 1;
 	index[17] = 4;
 	index[18] = 7;
 	index[19] = 3;
-
 	index[20] = 0;
 	index[21] = 1;
 	index[22] = 3;
 	index[23] = 2;
-
-	ret->SetIndexData(index, 6*4);
+	ret->SetIndexData(index, 6 * 4);
 	Unregister_Pointer(index);
 	delete [] index;
-
 	ret->FindFacePlanes();
-
-	if(eightColors!=nullptr)
+	if(eightColors != nullptr)
 	{
 #if COLOR_AS_DWORD
-		uint32_t *dwColor = new uint32_t [8];
+		uint32_t* dwColor = new uint32_t [8];
 		Register_Pointer(dwColor);
-
-		for(i=0;i<8;i++)
+		for(i = 0; i < 8; i++)
 		{
-			dwColor[i] = GOSCopyColor(eightColors+i);
+			dwColor[i] = GOSCopyColor(eightColors + i);
 		}
-
 		ret->SetColorData(dwColor, 8);
 		Unregister_Pointer(dwColor);
 		delete [] dwColor;
@@ -405,20 +366,16 @@ MLR_I_C_PMesh*
 		ret->SetColorData(eightColors, 8);
 #endif
 	}
-
-	Stuff::Vector2DScalar *texCoords = new Stuff::Vector2DScalar[8];
+	Stuff::Vector2DScalar* texCoords = new Stuff::Vector2DScalar[8];
 	Register_Pointer(texCoords);
-
 	texCoords[0] = Stuff::Vector2DScalar(0.0f, 0.0f);
 	texCoords[1] = Stuff::Vector2DScalar(0.0f, 0.0f);
 	texCoords[2] = Stuff::Vector2DScalar(0.0f, 0.0f);
 	texCoords[3] = Stuff::Vector2DScalar(0.0f, 0.0f);
-
 	texCoords[4] = Stuff::Vector2DScalar(0.0f, 0.0f);
 	texCoords[5] = Stuff::Vector2DScalar(0.0f, 0.0f);
 	texCoords[6] = Stuff::Vector2DScalar(0.0f, 0.0f);
 	texCoords[7] = Stuff::Vector2DScalar(0.0f, 0.0f);
-
 	if(state != nullptr)
 	{
 		ret->SetReferenceState(*state);
@@ -428,7 +385,6 @@ MLR_I_C_PMesh*
 			texCoords[1] = Stuff::Vector2DScalar(1.0f, 0.0f);
 			texCoords[2] = Stuff::Vector2DScalar(0.25f, 0.25f);
 			texCoords[3] = Stuff::Vector2DScalar(0.75f, 0.25f);
-
 			texCoords[4] = Stuff::Vector2DScalar(1.0f, 1.0f);
 			texCoords[5] = Stuff::Vector2DScalar(0.0f, 1.0f);
 			texCoords[6] = Stuff::Vector2DScalar(0.25f, 0.75f);
@@ -438,7 +394,6 @@ MLR_I_C_PMesh*
 	ret->SetTexCoordData(texCoords, 8);
 	Unregister_Pointer(texCoords);
 	delete [] texCoords;
-
 	gos_PopCurrentHeap();
 	return ret;
 }
@@ -446,248 +401,195 @@ MLR_I_C_PMesh*
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 MLR_I_PMesh*
-	MidLevelRenderer::CreateIndexedViewFrustrum_Color_NoLit(
-		Scalar near_clip,
-		Scalar far_clip,
-		Scalar left_clip,
-		Scalar right_clip,
-		Scalar top_clip,
-		Scalar bottom_clip,
-		RGBAColor& color,
-		MLRState *state
-	)
+MidLevelRenderer::CreateIndexedViewFrustrum_Color_NoLit(
+	float near_clip,
+	float far_clip,
+	float left_clip,
+	float right_clip,
+	float top_clip,
+	float bottom_clip,
+	Stuff::RGBAColor& color,
+	MLRState* state
+)
 {
 	gos_PushCurrentHeap(Heap);
-	MLR_I_C_PMesh *ret = new MLR_I_C_PMesh();
+	MLR_I_C_PMesh* ret = new MLR_I_C_PMesh();
 	Register_Object(ret);
-
-	Point3D *coords = new Point3D [8];
+	Stuff::Point3D* coords = new Stuff::Point3D [8];
 	Register_Pointer(coords);
-
-	Scalar right_far, left_far, top_far, bottom_far;
-	Scalar fac = (near_clip + far_clip) / near_clip;
-
-	right_far = right_clip*fac;
-	left_far = left_clip*fac;
-	top_far = top_clip*fac;
-	bottom_far = bottom_clip*fac;
-
-	coords[0] = Point3D(left_far, bottom_far, far_clip);
-	coords[1] = Point3D(right_far, bottom_far, far_clip);
-	coords[2] = Point3D(left_clip, bottom_clip, near_clip);
-	coords[3] = Point3D(right_clip, bottom_clip, near_clip);
-	coords[4] = Point3D(right_far, top_far, far_clip);
-	coords[5] = Point3D(left_far, top_far, far_clip);
-	coords[6] = Point3D(left_clip, top_clip, near_clip);
-	coords[7] = Point3D(right_clip, top_clip, near_clip);
-
+	float right_far, left_far, top_far, bottom_far;
+	float fac = (near_clip + far_clip) / near_clip;
+	right_far = right_clip * fac;
+	left_far = left_clip * fac;
+	top_far = top_clip * fac;
+	bottom_far = bottom_clip * fac;
+	coords[0] = Stuff::Point3D(left_far, bottom_far, far_clip);
+	coords[1] = Stuff::Point3D(right_far, bottom_far, far_clip);
+	coords[2] = Stuff::Point3D(left_clip, bottom_clip, near_clip);
+	coords[3] = Stuff::Point3D(right_clip, bottom_clip, near_clip);
+	coords[4] = Stuff::Point3D(right_far, top_far, far_clip);
+	coords[5] = Stuff::Point3D(left_far, top_far, far_clip);
+	coords[6] = Stuff::Point3D(left_clip, top_clip, near_clip);
+	coords[7] = Stuff::Point3D(right_clip, top_clip, near_clip);
 	puint8_t lengths = new uint8_t [6];
 	Register_Pointer(lengths);
-
-	int32_t i;
-
-	for(i=0;i<6;i++)
+	size_t i;
+	for(i = 0; i < 6; i++)
 	{
 		lengths[i] = 4;
 	}
-
-//	ret->SetSubprimitiveLengths(lengths, 6);
+	// ret->SetSubprimitiveLengths(lengths, 6);
 	ret->SetSubprimitiveLengths(lengths, 5);
-
 	ret->SetCoordData(coords, 8);
-
-	uint16_t	*index = new uint16_t [6*4];
+	puint16_t index = new uint16_t [6 * 4];
 	Register_Pointer(index);
-
 	index[0] = 0;
 	index[1] = 5;
 	index[2] = 4;
 	index[3] = 1;
-
 	index[4] = 0;
 	index[5] = 1;
 	index[6] = 3;
 	index[7] = 2;
-
 	index[8] = 0;
 	index[9] = 2;
 	index[10] = 6;
 	index[11] = 5;
-
 	index[12] = 1;
 	index[13] = 4;
 	index[14] = 7;
 	index[15] = 3;
-
 	index[16] = 2;
 	index[17] = 3;
 	index[18] = 7;
 	index[19] = 6;
-
-//	index[20] = 5;
-//	index[21] = 6;
-//	index[22] = 7;
-//	index[23] = 4;
-
-//	ret->SetIndexData(index, 6*4);
-	ret->SetIndexData(index, 5*4);
-
+	// index[20] = 5;
+	// index[21] = 6;
+	// index[22] = 7;
+	// index[23] = 4;
+	// ret->SetIndexData(index, 6*4);
+	ret->SetIndexData(index, 5 * 4);
 	ret->FindFacePlanes();
-
 #if COLOR_AS_DWORD
-	uint32_t *colors = new uint32_t [8];
+	uint32_t* colors = new uint32_t [8];
 	Register_Pointer(colors);
-
 	colors[0] = GOSCopyColor(color);
-	for(i=1;i<8;i++)
+	for(i = 1; i < 8; i++)
 	{
 		colors[i] = colors[0];
 	}
-
 #else
-	RGBAColor *colors = new RGBAColor[8];
+	Stuff::RGBAColor* colors = new Stuff::RGBAColor[8];
 	Register_Pointer(colors);
-
-	for(i=0;i<8;i++)
+	for(i = 0; i < 8; i++)
 	{
 		colors[i] = color;
 	}
-
-	for(i=0;i<4;i++)
+	for(i = 0; i < 4; i++)
 	{
 		colors[i].red *= 0.8f;;
 		colors[i].green *= 0.8f;;
 		colors[i].blue *= 0.8f;;
-
-		colors[i+4].red *= 1.2f;;
-		colors[i+4].green *= 1.2f;;
-		colors[i+4].blue *= 1.2f;;
+		colors[i + 4].red *= 1.2f;;
+		colors[i + 4].green *= 1.2f;;
+		colors[i + 4].blue *= 1.2f;;
 	}
-
-
 #endif
 	ret->SetColorData(colors, 8);
-
-	Stuff::Vector2DScalar *texCoords = new Stuff::Vector2DScalar[8];
+	Stuff::Vector2DScalar* texCoords = new Stuff::Vector2DScalar[8];
 	Register_Pointer(texCoords);
-
 	texCoords[0] = Stuff::Vector2DScalar(0.0f, 0.0f);
 	texCoords[1] = Stuff::Vector2DScalar(0.0f, 0.0f);
 	texCoords[2] = Stuff::Vector2DScalar(0.0f, 0.0f);
 	texCoords[3] = Stuff::Vector2DScalar(0.0f, 0.0f);
-
 	texCoords[4] = Stuff::Vector2DScalar(0.0f, 0.0f);
 	texCoords[5] = Stuff::Vector2DScalar(0.0f, 0.0f);
 	texCoords[6] = Stuff::Vector2DScalar(0.0f, 0.0f);
 	texCoords[7] = Stuff::Vector2DScalar(0.0f, 0.0f);
-
 	ret->SetTexCoordData(texCoords, 8);
-
 	if(state != nullptr)
 	{
 		ret->SetReferenceState(*state);
 	}
-
 	Unregister_Pointer(texCoords);
 	delete [] texCoords;
-
 	Unregister_Pointer(colors);
 	delete [] colors;
-
 	Unregister_Pointer(index);
 	delete [] index;
-
 	Unregister_Pointer(lengths);
 	delete [] lengths;
-
 	Unregister_Pointer(coords);
 	delete [] coords;
-
 	gos_PopCurrentHeap();
 	return ret;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLRShape*
-	MidLevelRenderer::CreateIndexedIcosahedron_Color_NoLit(
-		IcoInfo& icoInfo,
-		MLRState *state
-	)
+MLRShape* MidLevelRenderer::CreateIndexedIcosahedron_Color_NoLit(
+	IcoInfo& icoInfo, MLRState* state)
 {
 	gos_PushCurrentHeap(Heap);
-	MLRShape *ret = new MLRShape(20);
+	MLRShape* ret = new MLRShape(20);
 	Register_Object(ret);
-
-	int32_t i, j, k;
-	int32_t    nrTri = (int32_t) ceil (icoInfo.all * pow (4.0f, icoInfo.depth));
-	Point3D v[3];
-
-	if(3*nrTri >= Limits::Max_Number_Vertices_Per_Mesh)
+	size_t i, j, k;
+	uint32_t nrTri = static_cast<uint32_t>(ceil(icoInfo.all * pow(4.0f, icoInfo.depth)));
+	Stuff::Point3D v[3];
+	if(3 * nrTri >= Limits::Max_Number_Vertices_Per_Mesh)
 	{
-		nrTri = Limits::Max_Number_Vertices_Per_Mesh/3;
+		nrTri = Limits::Max_Number_Vertices_Per_Mesh / 3;
 	}
-
 	puint8_t lengths = new uint8_t [nrTri];
 	Register_Pointer(lengths);
-
-	for(i=0;i<nrTri;i++)
+	for(i = 0; i < nrTri; i++)
 	{
 		lengths[i] = 3;
 	}
-
-	Point3D *coords = new Point3D [nrTri*3];
+	Stuff::Point3D* coords = new Stuff::Point3D [nrTri * 3];
 	Register_Pointer(coords);
-	
-	Point3D *collapsedCoords = nullptr;
-	if(icoInfo.indexed==true)
+	Stuff::Point3D* collapsedCoords = nullptr;
+	if(icoInfo.indexed == true)
 	{
-		collapsedCoords = new Point3D [nrTri*3];
+		collapsedCoords = new Stuff::Point3D [nrTri * 3];
 		Register_Pointer(collapsedCoords);
 	}
-
-	uint16_t	*index = new uint16_t [nrTri*3];
+	puint16_t index = new uint16_t [nrTri * 3];
 	Register_Pointer(index);
-	Stuff::Vector2DScalar *texCoords = new Stuff::Vector2DScalar[nrTri*3];
+	Stuff::Vector2DScalar* texCoords = new Stuff::Vector2DScalar[nrTri * 3];
 	Register_Pointer(texCoords);
-	RGBAColor *colors = new RGBAColor[nrTri*3];
+	Stuff::RGBAColor* colors = new Stuff::RGBAColor[nrTri * 3];
 	Register_Pointer(colors);
-
-	int32_t uniquePoints = 0;
-	for (k=0;k<20;k++)
+	size_t uniquePoints = 0;
+	for(k = 0; k < 20; k++)
 	{
 		MidLevelRenderer::triDrawn = 0;
-		MLR_I_C_PMesh *mesh = new MLR_I_C_PMesh();
+		MLR_I_C_PMesh* mesh = new MLR_I_C_PMesh();
 		Register_Object(mesh);
-
-// setup vertex position information
-	    for (j=0;j<3;j++)
+		// setup vertex position information
+		for(j = 0; j < 3; j++)
 		{
 			v[j].x = vdata[tindices[k][j]][0];
 			v[j].y = vdata[tindices[k][j]][1];
 			v[j].z = vdata[tindices[k][j]][2];
 		}
-		subdivide (coords, v[0], v[1], v[2], icoInfo.depth, nrTri, icoInfo.radius);
-
+		subdivide(coords, v[0], v[1], v[2], icoInfo.depth, nrTri, icoInfo.radius);
 		mesh->SetSubprimitiveLengths(lengths, nrTri);
-
-
-		if(icoInfo.indexed==true)
+		if(icoInfo.indexed == true)
 		{
 			uniquePoints = 1;
 			collapsedCoords[0] = coords[0];
 			index[0] = 0;
-
-			for(i=1;i<nrTri*3;i++)
+			for(i = 1; i < nrTri * 3; i++)
 			{
-				for(j=0;j<uniquePoints;j++)
+				for(j = 0; j < uniquePoints; j++)
 				{
 					if(coords[i] == collapsedCoords[j])
 					{
 						break;
 					}
 				}
-				if(j==uniquePoints)
+				if(j == uniquePoints)
 				{
 					collapsedCoords[uniquePoints++] = coords[i];
 				}
@@ -697,21 +599,18 @@ MLRShape*
 		}
 		else
 		{
-			uniquePoints = nrTri*3;
-			for(i=0;i<nrTri*3;i++)
+			uniquePoints = nrTri * 3;
+			for(i = 0; i < nrTri * 3; i++)
 			{
 				index[i] = static_cast<uint16_t>(i);
 			}
-			mesh->SetCoordData(coords, nrTri*3);
+			mesh->SetCoordData(coords, nrTri * 3);
 		}
-
-		mesh->SetIndexData(index, nrTri*3);
-
+		mesh->SetIndexData(index, nrTri * 3);
 		mesh->FindFacePlanes();
-
 		if(state == nullptr)
 		{
-			for(i=0;i<uniquePoints;i++)
+			for(i = 0; i < uniquePoints; i++)
 			{
 				texCoords[i] = Stuff::Vector2DScalar(0.0f, 0.0f);
 			}
@@ -721,102 +620,93 @@ MLRShape*
 			mesh->SetReferenceState(*state);
 			if(state->GetTextureHandle() > 0)
 			{
-				if(icoInfo.indexed==true)
+				if(icoInfo.indexed == true)
 				{
-					for(i=0;i<uniquePoints;i++)
+					for(i = 0; i < uniquePoints; i++)
 					{
-						texCoords[i] = 
+						texCoords[i] =
 							Stuff::Vector2DScalar(
-								(1.0f + collapsedCoords[i].x)/2.0f,
-								(1.0f + collapsedCoords[i].y)/2.0f
+								(1.0f + collapsedCoords[i].x) / 2.0f,
+								(1.0f + collapsedCoords[i].y) / 2.0f
 							);
 					}
 				}
 				else
 				{
-					for(i=0;i<nrTri;i++)
+					for(i = 0; i < nrTri; i++)
 					{
-						texCoords[3*i] = 
+						texCoords[3 * i] =
 							Stuff::Vector2DScalar(
-								(1.0f + coords[3*i].x)/2.0f,
-								(1.0f + coords[3*i].y)/2.0f
+								(1.0f + coords[3 * i].x) / 2.0f,
+								(1.0f + coords[3 * i].y) / 2.0f
 							);
-						texCoords[3*i+1] = 
+						texCoords[3 * i + 1] =
 							Stuff::Vector2DScalar(
-								(1.0f + coords[3*i+1].x)/2.0f,
-								(1.0f + coords[3*i+1].y)/2.0f
+								(1.0f + coords[3 * i + 1].x) / 2.0f,
+								(1.0f + coords[3 * i + 1].y) / 2.0f
 							);
-						texCoords[3*i+2] = 
+						texCoords[3 * i + 2] =
 							Stuff::Vector2DScalar(
-								(1.0f + coords[3*i+2].x)/2.0f,
-								(1.0f + coords[3*i+2].y)/2.0f
+								(1.0f + coords[3 * i + 2].x) / 2.0f,
+								(1.0f + coords[3 * i + 2].y) / 2.0f
 							);
 					}
 				}
 			}
 			else
 			{
-				for(i=0;i<uniquePoints;i++)
+				for(i = 0; i < uniquePoints; i++)
 				{
 					texCoords[i] = Stuff::Vector2DScalar(0.0f, 0.0f);
 				}
 			}
 		}
 		mesh->SetTexCoordData(texCoords, uniquePoints);
-
-		if(icoInfo.indexed==true)
+		if(icoInfo.indexed == true)
 		{
-			for(i=0;i<uniquePoints;i++)
+			for(i = 0; i < uniquePoints; i++)
 			{
-				colors[i] = 
-					RGBAColor(
-						(1.0f + collapsedCoords[i].x)/2.0f,
-						(1.0f + collapsedCoords[i].y)/2.0f,
-						(1.0f + collapsedCoords[i].z)/2.0f,
+				colors[i] =
+					Stuff::RGBAColor(
+						(1.0f + collapsedCoords[i].x) / 2.0f,
+						(1.0f + collapsedCoords[i].y) / 2.0f,
+						(1.0f + collapsedCoords[i].z) / 2.0f,
 						1.0f
 					);
 			}
 		}
 		else
 		{
-			for(i=0;i<uniquePoints;i++)
+			for(i = 0; i < uniquePoints; i++)
 			{
-				colors[i] = 
-					RGBAColor(
-						(1.0f + coords[i].x)/2.0f,
-						(1.0f + coords[i].y)/2.0f,
-						(1.0f + coords[i].z)/2.0f,
+				colors[i] =
+					Stuff::RGBAColor(
+						(1.0f + coords[i].x) / 2.0f,
+						(1.0f + coords[i].y) / 2.0f,
+						(1.0f + coords[i].z) / 2.0f,
 						1.0f
 					);
 			}
 		}
 		mesh->SetColorData(colors, uniquePoints);
-
 		ret->Add(mesh);
 		mesh->DetachReference();
 	}
-
 	Unregister_Pointer(colors);
 	delete [] colors;
-
 	Unregister_Pointer(texCoords);
 	delete [] texCoords;
-
 	Unregister_Pointer(index);
 	delete [] index;
-
-	if(icoInfo.indexed==true)
+	if(icoInfo.indexed == true)
 	{
 		Unregister_Pointer(collapsedCoords);
 		delete [] collapsedCoords;
 	}
-	
 	Unregister_Pointer(coords);
 	delete [] coords;
-	
 	Unregister_Pointer(lengths);
 	delete [] lengths;
-
 	gos_PopCurrentHeap();
 	return ret;
 }

@@ -11,7 +11,8 @@
 #include <mlr/mlrstate.hpp>
 #include <mlr/gosimagepool.hpp>
 
-namespace MidLevelRenderer{
+namespace MidLevelRenderer
+{
 
 	class MLRTexture;
 	class MLRState;
@@ -22,49 +23,49 @@ namespace MidLevelRenderer{
 		public Stuff::RegisteredClass
 
 	{
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// Initialization
-	//
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		// Initialization
+		//
 	public:
 		static void __stdcall InitializeClass(void);
 		static void TerminateClass(void);
 		static ClassData* DefaultData;
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// Constructors/Destructors
-	//
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		// Constructors/Destructors
+		//
 	protected:
 		MLRTexturePool(Stuff::MemoryStream* stream);
 
 	public:
 		// insDep == nr of lower bits used for image instancing
-		MLRTexturePool(GOSImagePool* image_pool, int32_t insDep=3);
+		MLRTexturePool(GOSImagePool* image_pool, int32_t insDep = 3);
 		~MLRTexturePool(void);
 
-		static MLRTexturePool* Make(Stuff::MemoryStream *stream);
-		void Save(Stuff::MemoryStream *stream);
-		MLRTexture* Add(PCSTR textureName, int32_t instance=0);
+		static MLRTexturePool* Make(Stuff::MemoryStream* stream);
+		void Save(Stuff::MemoryStream* stream);
+		MLRTexture* Add(PCSTR textureName, int32_t instance = 0);
 		MLRTexture* Add(GOSImage*);
 		MLRTexture* Add(PCSTR imageName, /*gos_TextureFormat*/ uint32_t format, size_t size, /*gos_TextureHints*/ uint32_t  hints)
 		{
-			return Add(imagePool->GetImage(imageName, format, size, hints) );
+			return Add(imagePool->GetImage(imageName, format, size, hints));
 		}
 
 		// only removes the texture from the texture pool, it doesnt destroy the texture
 		void Remove(MLRTexture*);
 		uint32_t LoadImages(void);
-		MLRTexture* operator() (PCSTR name, int32_t=0);
-		MLRTexture* operator[] (size_t index)
+		MLRTexture* operator()(PCSTR name, int32_t = 0);
+		MLRTexture* operator[](size_t index)
 		{
 			Check_Object(this);
-			Verify(index-1 < MLRState::TextureMask);
-			return textureArray[index-1];
+			Verify(index - 1 < MLRState::TextureMask);
+			return textureArray[index - 1];
 		}
 
-		MLRTexture* operator[] (const MLRState* state)
+		MLRTexture* operator[](const MLRState* state)
 		{
 			Check_Object(this);
-			return textureArray[state->GetTextureHandle()-1];
+			return textureArray[state->GetTextureHandle() - 1];
 		}
 
 		GOSImage* GetImage(PCSTR imageName)
@@ -85,8 +86,8 @@ namespace MidLevelRenderer{
 			return lastHandle;
 		}
 
-		void Stop (void);
-		void Restart (void);
+		void Stop(void);
+		void Restart(void);
 
 		uint32_t GetNumStoredTextures()
 		{
@@ -106,7 +107,7 @@ namespace MidLevelRenderer{
 		// Testing
 		//
 	public:
-		void TestInstance(void) const{}
+		void TestInstance(void) const {}
 
 	protected:
 		bool unLoadedImages;
@@ -117,7 +118,7 @@ namespace MidLevelRenderer{
 		uint32_t lastHandle;
 		uint32_t storedTextures;
 
-		Stuff::StaticArrayOf<MLRTexture*, MLRState::TextureMask+1> textureArray;
+		Stuff::StaticArrayOf < MLRTexture*, MLRState::TextureMask + 1 > textureArray;
 
 		pint32_t freeHandle;
 		int32_t firstFreeHandle;

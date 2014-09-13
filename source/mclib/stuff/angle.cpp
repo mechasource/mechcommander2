@@ -17,15 +17,15 @@ using namespace Stuff;
 //#############################################################################
 //#############################################################################
 //
-Scalar
-	Radian::Normalize(Scalar Value)
+float
+Radian::Normalize(float Value)
 {
-	Scalar temp = static_cast<Scalar>(fmod(Value,Two_Pi));
-	if (temp > Pi)
+	float temp = static_cast<float>(fmod(Value, Two_Pi));
+	if(temp > Pi)
 	{
 		temp -= Two_Pi;
 	}
-	else if (temp <= -Pi)
+	else if(temp <= -Pi)
 	{
 		temp += Two_Pi;
 	}
@@ -37,14 +37,16 @@ Scalar
 //#############################################################################
 //
 Radian&
-	Radian::Normalize()
+Radian::Normalize()
 {
 	Check_Object(this);
-	angle = static_cast<Scalar>(fmod(angle,Two_Pi));
-	if (angle > Pi) {
+	angle = static_cast<float>(fmod(angle, Two_Pi));
+	if(angle > Pi)
+	{
 		angle -= Two_Pi;
 	}
-	else if (angle < -Pi) {
+	else if(angle < -Pi)
+	{
 		angle += Two_Pi;
 	}
 	return *this;
@@ -55,19 +57,20 @@ Radian&
 //#############################################################################
 //
 Radian&
-	Radian::Lerp(const Radian &a,const Radian &b,Scalar t)
+Radian::Lerp(const Radian& a, const Radian& b, float t)
 {
-	Scalar a1,a2;
-
-   Check_Pointer(this);
+	float a1, a2;
+	Check_Pointer(this);
 	Check_Object(&a);
 	Check_Object(&b);
 	a1 = Radian::Normalize(a.angle);
 	a2 = Radian::Normalize(b.angle);
-	if (a2-a1 > Pi) {
+	if(a2 - a1 > Pi)
+	{
 		a2 -= Two_Pi;
 	}
-	else if (a2-a1 < -Pi) {
+	else if(a2 - a1 < -Pi)
+	{
 		a2 += Two_Pi;
 	}
 	angle = Stuff::Lerp(a1, a2, t);
@@ -76,14 +79,14 @@ Radian&
 
 #if 0
 SinCosPair&
-	SinCosPair::operator=(const Radian &radian)
+SinCosPair::operator=(const Radian& radian)
 {
 	Check_Pointer(this);
 	Check_Object(&radian);
-
 #if USE_ASSEMBLER_CODE
-	Scalar *f = &sine;
-	_asm {
+	float* f = &sine;
+	_asm
+	{
 		push	ebx
 		push	edx
 
@@ -98,14 +101,11 @@ SinCosPair&
 		pop		edx
 		pop		ebx
 	}
-
 #else
 	cosine = cos(radian);
 	sine = sin(radian);
 #endif
-	
 	Check_Object(this);
-	
 	return *this;
 }
 #endif
@@ -125,7 +125,7 @@ void Spew(PCSTR group, const Radian& angle)
 //#############################################################################
 //#############################################################################
 //
-void Spew(PCSTR group,const Degree& angle)
+void Spew(PCSTR group, const Degree& angle)
 {
 	Check_Object(&angle);
 	SPEW((group, "%f deg+", angle.angle));

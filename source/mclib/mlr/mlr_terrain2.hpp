@@ -9,11 +9,12 @@
 
 #include <mlr/mlr_i_det_tmesh.hpp>
 
-namespace MidLevelRenderer {
+namespace MidLevelRenderer
+{
 
-	//##########################################################################
-	//#### MLRIndexedPolyMesh with no color no lighting w/ detail texture  #####
-	//##########################################################################
+//##########################################################################
+//#### MLRIndexedPolyMesh with no color no lighting w/ detail texture  #####
+//##########################################################################
 
 
 	class MLR_Terrain2:
@@ -31,70 +32,93 @@ namespace MidLevelRenderer {
 		//
 	protected:
 		MLR_Terrain2(
-			ClassData *class_data,
-			Stuff::MemoryStream *stream,
-			uint32_t version
-			);
+			ClassData* class_data,
+			Stuff::MemoryStream* stream,
+			uint32_t version);
 		~MLR_Terrain2(void);
 
 	public:
-		MLR_Terrain2(ClassData *class_data=MLR_Terrain2::DefaultData);
+		MLR_Terrain2(ClassData* class_data = MLR_Terrain2::DefaultData);
 
 		static MLR_Terrain2*
-			Make(
-			Stuff::MemoryStream *stream,
-			uint32_t version
-			);
+		Make(
+			Stuff::MemoryStream* stream,
+			uint32_t version);
 
 		void
-			Save(Stuff::MemoryStream *stream);
+		Save(Stuff::MemoryStream* stream);
 
 	public:
-		virtual int32_t
-			TransformAndClip(Stuff::Matrix4D *, MLRClippingState, GOSVertexPool*,bool=false);
+		virtual uint32_t TransformAndClip(Stuff::Matrix4D*, MLRClippingState, GOSVertexPool*, bool = false);
 
-		virtual void
-			TransformNoClip(Stuff::Matrix4D*, GOSVertexPool*,bool=false);
+		virtual void TransformNoClip(Stuff::Matrix4D*, GOSVertexPool*, bool = false);
 
 		void
-			SetCurrentDepth(uint8_t d);
+		SetCurrentDepth(uint8_t d);
 
 		uint8_t
-			GetCurrentDepth()
-		{ Check_Object(this); return currentDepth; }
+		GetCurrentDepth()
+		{
+			Check_Object(this);
+			return currentDepth;
+		}
 
 		void
-			SetDepthData(uint8_t md, uint8_t mad)
-		{ Check_Object(this); maxDepth = md; maxAllDepth = mad; }
+		SetDepthData(uint8_t md, uint8_t mad)
+		{
+			Check_Object(this);
+			maxDepth = md;
+			maxAllDepth = mad;
+		}
 
 		void
-			SetTileData(uint8_t tx, uint8_t tz)
-		{ Check_Object(this); tileX = tx; tileZ = tz; }
+		SetTileData(uint8_t tx, uint8_t tz)
+		{
+			Check_Object(this);
+			tileX = tx;
+			tileZ = tz;
+		}
 
 		void
-			SetFrame(int32_t res, float xMin, float zMin, float xMax, float zMax)
-		{ Check_Object(this); frame[res][0] = xMin; frame[res][1] = zMin; frame[res][2] = xMax; frame[res][3] = zMax; }
+		SetFrame(int32_t res, float xMin, float zMin, float xMax, float zMax)
+		{
+			Check_Object(this);
+			frame[res][0] = xMin;
+			frame[res][1] = zMin;
+			frame[res][2] = xMax;
+			frame[res][3] = zMax;
+		}
 
 		float
-			GetFrame(int32_t res, int32_t p)
-		{ Check_Object(this); return frame[res][p]; }
+		GetFrame(int32_t res, int32_t p)
+		{
+			Check_Object(this);
+			return frame[res][p];
+		}
 
 		void
-			SetBorderPixel(float bp)
-		{ Check_Object(this); borderPixelFun = bp; }
+		SetBorderPixel(float bp)
+		{
+			Check_Object(this);
+			borderPixelFun = bp;
+		}
 
 		void
-			CalculateUVs(void);
+		CalculateUVs(void);
 
 		void
-			SetLevelTexture(int32_t lev, int32_t handle);
+		SetLevelTexture(int32_t lev, int32_t handle);
 
 		int32_t
-			GetLevelTexture(int32_t lev)
-		{ Check_Object(this); Verify(lev>=0 && lev<8); return textures[lev]; }
+		GetLevelTexture(int32_t lev)
+		{
+			Check_Object(this);
+			Verify(lev >= 0 && lev < 8);
+			return textures[lev];
+		}
 
 		void
-			LightMapLighting(MLRLight*);
+		LightMapLighting(MLRLight*);
 
 		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		// Class Data Support
@@ -109,10 +133,9 @@ namespace MidLevelRenderer {
 		void TestInstance(void) const;
 
 		virtual size_t GetSize(void)
-		{ 
+		{
 			Check_Object(this);
 			size_t ret = MLR_I_DeT_TMesh::GetSize();
-
 			return ret;
 		}
 
@@ -125,7 +148,7 @@ namespace MidLevelRenderer {
 
 		float borderPixelFun;
 
-		static Stuff::DynamicArrayOf<Stuff::Vector2DScalar> *detailTexCoords;	// Base address of texture coordinate list 
+		static Stuff::DynamicArrayOf<Stuff::Vector2DScalar>* detailTexCoords;	// Base address of texture coordinate list
 	};
 }
 #endif

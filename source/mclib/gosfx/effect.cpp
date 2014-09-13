@@ -20,7 +20,6 @@ gosFX::Event::Event(const Event& event):
 {
 	Check_Pointer(this);
 	//Verify(gos_GetCurrentHeap() == Heap);
-
 	m_time = event.m_time;
 	m_flags = event.m_flags;
 	m_effectID = event.m_effectID;
@@ -29,7 +28,7 @@ gosFX::Event::Event(const Event& event):
 //------------------------------------------------------------------------------
 //
 gosFX::Event::Event(
-	Stuff::MemoryStream *stream,
+	Stuff::MemoryStream* stream,
 	int32_t gfx_version
 ):
 	Plug(DefaultData)
@@ -37,31 +36,28 @@ gosFX::Event::Event(
 	Check_Pointer(this);
 	Check_Object(stream);
 	//Verify(gos_GetCurrentHeap() == Heap);
-
 	*stream >> m_time >> m_flags >> m_effectID >> m_localToParent;
 }
 
 //------------------------------------------------------------------------------
 //
 gosFX::Event*
-	gosFX::Event::Make(
-		Stuff::MemoryStream *stream,
-		int32_t gfx_version
-	)
+gosFX::Event::Make(
+	Stuff::MemoryStream* stream,
+	int32_t gfx_version
+)
 {
 	Check_Object(stream);
-
 	gos_PushCurrentHeap(Heap);
-	Event *event = new Event(stream, gfx_version);
+	Event* event = new Event(stream, gfx_version);
 	gos_PopCurrentHeap();
-
 	return event;
 }
 
 //------------------------------------------------------------------------------
 //
 void
-	gosFX::Event::Save(Stuff::MemoryStream *stream)
+gosFX::Event::Save(Stuff::MemoryStream* stream)
 {
 	Check_Object(this);
 	*stream << m_time << m_flags << m_effectID << m_localToParent;
@@ -75,7 +71,7 @@ void
 //
 gosFX::Effect__Specification::Effect__Specification(
 	Stuff::RegisteredClass::ClassID class_id,
-	Stuff::MemoryStream *stream,
+	Stuff::MemoryStream* stream,
 	int32_t gfx_version
 ):
 	m_events(nullptr)
@@ -83,13 +79,11 @@ gosFX::Effect__Specification::Effect__Specification(
 	Check_Pointer(this);
 	Check_Object(stream);
 	//Verify(gos_GetCurrentHeap() == Heap);
-
-	if (gfx_version < 9)
+	if(gfx_version < 9)
 	{
 		STOP(("This version of gosFX is no longer supported"));
 		return;
 	}
-
 	//
 	//--------------
 	// Read the name
@@ -97,7 +91,6 @@ gosFX::Effect__Specification::Effect__Specification(
 	//
 	m_class = class_id;
 	*stream >> m_name;
-
 	//
 	//--------------------------------------------------------------------
 	// Read the events.  If we are using an array, no events will be saved
@@ -105,13 +98,12 @@ gosFX::Effect__Specification::Effect__Specification(
 	//
 	uint32_t event_count;
 	*stream >> event_count;
-	while (event_count-- > 0)
+	while(event_count-- > 0)
 	{
-		Event *event = Event::Make(stream, gfx_version);
+		Event* event = Event::Make(stream, gfx_version);
 		Register_Object(event);
 		m_events.Add(event);
 	}
-
 	//
 	//--------------------------------------------------------
 	// Load the curves, variances, and MLRState if appropriate
@@ -121,13 +113,13 @@ gosFX::Effect__Specification::Effect__Specification(
 	m_minimumChildSeed.Load(stream, gfx_version);
 	m_maximumChildSeed.Load(stream, gfx_version);
 	m_state.Load(stream, MidLevelRenderer::ReadMLRVersion(stream));
-	if (gfx_version < 14)
+	if(gfx_version < 14)
 	{
 		m_state.SetRenderPermissionMask(
 			m_state.GetRenderPermissionMask() | MidLevelRenderer::MLRState::TextureMask
 		);
 	}
-	if (
+	if(
 		m_state.GetAlphaMode() != MidLevelRenderer::MLRState::OneZeroMode
 		&& m_state.GetPriority() < MidLevelRenderer::MLRState::AlphaPriority
 	)
@@ -151,7 +143,6 @@ gosFX::Effect__Specification::Effect__Specification(
 gosFX::Effect__Specification::~Effect__Specification()
 {
 	Check_Pointer(this);
-
 	Stuff::ChainIteratorOf<Event*> events(&m_events);
 	events.DeletePlugs();
 }
@@ -159,30 +150,26 @@ gosFX::Effect__Specification::~Effect__Specification()
 //------------------------------------------------------------------------------
 //
 gosFX::Effect__Specification*
-	gosFX::Effect__Specification::Make(
-		Stuff::MemoryStream *stream,
-		int32_t gfx_version
-	)
+gosFX::Effect__Specification::Make(
+	Stuff::MemoryStream* stream,
+	int32_t gfx_version
+)
 {
 	Check_Object(stream);
-
 	gos_PushCurrentHeap(Heap);
-	Effect__Specification *spec =
+	Effect__Specification* spec =
 		new gosFX::Effect__Specification(EffectClassID, stream, gfx_version);
 	gos_PopCurrentHeap();
-
 	return spec;
 }
 
 //------------------------------------------------------------------------------
 //
 
-void 
-	gosFX::Effect__Specification::BuildDefaults()
+void
+gosFX::Effect__Specification::BuildDefaults()
 {
-
 	Check_Object(this);
-	
 	m_lifeSpan.SetCurve(1.0f);
 	m_minimumChildSeed.SetCurve(0.0f);
 	m_maximumChildSeed.SetCurve(1.0f);
@@ -192,32 +179,30 @@ void
 //------------------------------------------------------------------------------
 //
 
-bool 
-	gosFX::Effect__Specification::IsDataValid(bool fix_data)
+bool
+gosFX::Effect__Specification::IsDataValid(bool fix_data)
 {
 	Check_Object(this);
-	float minv,maxv;
-m_lifeSpan.ExpensiveComputeRange(&minv,&maxv);
-if(minv<0.0f) 
-	if(fix_data)
-	{
-		m_lifeSpan.SetCurve(1.0f);
-	PAUSE(("Warning: Curve \"lifespan\" in Effect \"%s\" Is Out of Range and has been Reset",(PSTR )m_name));
-
-	}
-	else
-		return false;
-
-return true;
+	float minv, maxv;
+	m_lifeSpan.ExpensiveComputeRange(&minv, &maxv);
+	if(minv < 0.0f)
+		if(fix_data)
+		{
+			m_lifeSpan.SetCurve(1.0f);
+			PAUSE(("Warning: Curve \"lifespan\" in Effect \"%s\" Is Out of Range and has been Reset", (PSTR)m_name));
+		}
+		else
+			return false;
+	return true;
 }
 
 //------------------------------------------------------------------------------
 //
 gosFX::Effect__Specification*
-	gosFX::Effect__Specification::Create(
-		Stuff::MemoryStream *stream,
-		int32_t gfx_version
-	)
+gosFX::Effect__Specification::Create(
+	Stuff::MemoryStream* stream,
+	int32_t gfx_version
+)
 {
 	Check_Object(stream);
 	Stuff::RegisteredClass::ClassID class_id;
@@ -229,7 +214,7 @@ gosFX::Effect__Specification*
 		);
 	Check_Object(class_data);
 	Check_Pointer(class_data->specificationFactory);
-	gosFX::Effect__Specification *spec =
+	gosFX::Effect__Specification* spec =
 		(*class_data->specificationFactory)(stream, gfx_version);
 	Register_Object(spec);
 	return spec;
@@ -238,15 +223,15 @@ gosFX::Effect__Specification*
 //------------------------------------------------------------------------------
 //
 void
-	gosFX::Effect__Specification::Save(Stuff::MemoryStream *stream)
+gosFX::Effect__Specification::Save(Stuff::MemoryStream* stream)
 {
 	Check_Object(this);
 	*stream << m_class << m_name;
 	Stuff::ChainIteratorOf<Event*> events(&m_events);
 	uint32_t count = events.GetSize();
 	*stream << count;
-	Event *event;
-	while ((event = events.ReadAndNext()) != nullptr)
+	Event* event;
+	while((event = events.ReadAndNext()) != nullptr)
 	{
 		Check_Object(event);
 		event->Save(stream);
@@ -261,15 +246,13 @@ void
 //------------------------------------------------------------------------------
 //
 void
-	gosFX::Effect__Specification::Copy(Effect__Specification *spec)
+gosFX::Effect__Specification::Copy(Effect__Specification* spec)
 {
 	Check_Object(this);
 	Check_Object(spec);
 	gos_PushCurrentHeap(Heap);
-
 	Verify(spec->m_class == m_class);
 	m_name = spec->m_name;
-
 	//
 	//----------------------------------------------
 	// Copy the events after delete our current ones
@@ -279,14 +262,13 @@ void
 	old_events.DeletePlugs();
 	Stuff::ChainIteratorOf<Event*> new_events(&spec->m_events);
 	Event* event;
-	while ((event = new_events.ReadAndNext()) != nullptr)
+	while((event = new_events.ReadAndNext()) != nullptr)
 	{
 		Check_Object(event);
-		Event *new_event = new Event(*event);
+		Event* new_event = new Event(*event);
 		Register_Object(new_event);
 		AdoptEvent(new_event);
 	}
-
 	//
 	//---------------------------------------------------
 	// Now copy the curves, variance modes, and MLR state
@@ -296,31 +278,29 @@ void
 	m_minimumChildSeed = spec->m_minimumChildSeed;
 	m_maximumChildSeed = spec->m_maximumChildSeed;
 	m_state = spec->m_state;
-
 	gos_PopCurrentHeap();
 }
 
 //------------------------------------------------------------------------------
 //
 void
-	gosFX::Effect__Specification::AdoptEvent(Event *event)
+gosFX::Effect__Specification::AdoptEvent(Event* event)
 {
 	Check_Object(this);
 	Check_Object(event);
 	Verify(event->m_time >= 0.0f && event->m_time <= 1.0f);
 	//Verify(gos_GetCurrentHeap() == Heap);
-
 	//
 	//-----------------------------------------------------------
 	// The event must be inserted into the chain in order of time
 	//-----------------------------------------------------------
 	//
 	Stuff::ChainIteratorOf<Event*> events(&m_events);
-	Event *insert = nullptr;
-	while ((insert = events.GetCurrent()) != nullptr)
+	Event* insert = nullptr;
+	while((insert = events.GetCurrent()) != nullptr)
 	{
 		Check_Object(insert);
-		if (insert->m_time > event->m_time)
+		if(insert->m_time > event->m_time)
 		{
 			events.Insert(event);
 			return;
@@ -335,30 +315,30 @@ void
 //############################################################################
 
 gosFX::Effect::ClassData*
-	gosFX::Effect::DefaultData = nullptr;
+gosFX::Effect::DefaultData = nullptr;
 
 //------------------------------------------------------------------------------
 //
 void
-	gosFX::Effect::InitializeClass()
+gosFX::Effect::InitializeClass()
 {
 	Verify(!DefaultData);
 	//Verify(gos_GetCurrentHeap() == Heap);
 	DefaultData =
 		new ClassData(
-			EffectClassID,
-			"gosFX::Effect",
-			Node::DefaultData,
-			&Make,
-			&Specification::Make
-		);
+		EffectClassID,
+		"gosFX::Effect",
+		Node::DefaultData,
+		&Make,
+		&Specification::Make
+	);
 	Register_Object(DefaultData);
 }
 
 //------------------------------------------------------------------------------
 //
 void
-	gosFX::Effect::TerminateClass()
+gosFX::Effect::TerminateClass()
 {
 	Unregister_Object(DefaultData);
 	delete DefaultData;
@@ -368,8 +348,8 @@ void
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 gosFX::Effect::Effect(
-	ClassData *class_data,
-	Specification *spec,
+	ClassData* class_data,
+	Specification* spec,
 	uint32_t flags
 ):
 	Node(class_data),
@@ -399,24 +379,22 @@ gosFX::Effect::~Effect()
 //------------------------------------------------------------------------------
 //
 gosFX::Effect*
-	gosFX::Effect::Make(
-		Specification *spec,
-		uint32_t flags
-	)
+gosFX::Effect::Make(
+	Specification* spec,
+	uint32_t flags
+)
 {
 	Check_Object(spec);
-
 	gos_PushCurrentHeap(Heap);
-	Effect *effect = new gosFX::Effect(DefaultData, spec, flags);
+	Effect* effect = new gosFX::Effect(DefaultData, spec, flags);
 	gos_PopCurrentHeap();
-
 	return effect;
 }
 
 //------------------------------------------------------------------------------
 //
 void
-	gosFX::Effect::TestInstance(void) const
+gosFX::Effect::TestInstance(void) const
 {
 	Verify(IsDerivedFrom(DefaultData));
 }
@@ -424,22 +402,20 @@ void
 //------------------------------------------------------------------------------
 //
 void
-	gosFX::Effect::Start(ExecuteInfo *info)
+gosFX::Effect::Start(ExecuteInfo* info)
 {
 	Check_Object(this);
 	Check_Pointer(info);
 	gos_PushCurrentHeap(Heap);
-
 	//
 	//---------------------------------------------------------------------
 	// Don't override m_lastran if we are issuing a Start command while the
 	// effect is already running
 	//---------------------------------------------------------------------
 	//
-	if (!IsExecuted() || m_lastRan == -1.0)
+	if(!IsExecuted() || m_lastRan == -1.0)
 		m_lastRan = info->m_time;
 	SetExecuteOn();
-
 	//
 	//-------------------------------------------
 	// If no seed was provided, pick one randomly
@@ -447,7 +423,6 @@ void
 	//
 	m_seed = (info->m_seed == -1.0f) ? Stuff::Random::GetFraction() : info->m_seed;
 	Verify(m_seed >= 0.0f && m_seed <= 1.0f);
-
 	//
 	//--------------------------------------------------------------------
 	// Figure out how int32_t the emitter will live and its initial age based
@@ -455,7 +430,7 @@ void
 	//--------------------------------------------------------------------
 	//
 	Check_Object(m_specification);
-	if (info->m_age == -1.0f)
+	if(info->m_age == -1.0f)
 	{
 		float lifetime =
 			m_specification->m_lifeSpan.ComputeValue(m_seed, 0.0f);
@@ -469,7 +444,6 @@ void
 		m_ageRate = info->m_ageRate;
 		Verify(m_age >= 0.0f && m_age <= 1.0f);
 	}
-
 	//
 	//--------------------
 	// Set up the matrices
@@ -477,7 +451,6 @@ void
 	//
 	Check_Object(info->m_parentToWorld);
 	m_localToWorld.Multiply(m_localToParent, *info->m_parentToWorld);
-
 	//
 	//-------------------------
 	// Set up the event pointer
@@ -489,24 +462,22 @@ void
 
 //------------------------------------------------------------------------------
 //
-bool gosFX::Effect::Execute(ExecuteInfo *info)
+bool gosFX::Effect::Execute(ExecuteInfo* info)
 {
 	Check_Object(this);
 	Check_Pointer(info);
 	Verify(IsExecuted());
 	gos_PushCurrentHeap(Heap);
-
 	//
 	//-----------------------------------------------------
 	// If a new seed is provided, override the current seed
 	//-----------------------------------------------------
 	//
-	if (info->m_seed != -1.0f)
+	if(info->m_seed != -1.0f)
 	{
-		Verify(info->m_seed>=0.0f && info->m_seed<1.0f);
+		Verify(info->m_seed >= 0.0f && info->m_seed < 1.0f);
 		m_seed = info->m_seed;
 	}
-
 	//
 	//--------------------------------------------
 	// Figure out the new age and clear the bounds
@@ -516,7 +487,6 @@ bool gosFX::Effect::Execute(ExecuteInfo *info)
 		m_age + static_cast<float>(info->m_time - m_lastRan) * m_ageRate;
 	Verify(age >= 0.0f && age >= m_age);
 	*info->m_bounds = Stuff::OBB::Identity;
-
 	//
 	//--------------------------------
 	// Update the effectToWorld matrix
@@ -524,34 +494,31 @@ bool gosFX::Effect::Execute(ExecuteInfo *info)
 	//
 	Check_Object(info->m_parentToWorld);
 	m_localToWorld.Multiply(m_localToParent, *info->m_parentToWorld);
-
 	//
 	//--------------------------------------------------
 	// Check to see if the top event needs to be handled
 	//--------------------------------------------------
 	//
 	Check_Object(m_specification);
-	Event *event;
-	while ((event = m_event.GetCurrent()) != nullptr)
+	Event* event;
+	while((event = m_event.GetCurrent()) != nullptr)
 	{
 		Check_Object(event);
-		if (event->m_time > m_age)
+		if(event->m_time > m_age)
 			break;
-
 		//
 		//-------------------------------------------------------------
 		// This event needs to go, so spawn and bump the effect pointer
 		//-------------------------------------------------------------
 		//
 		uint32_t flags = ExecuteFlag;
-		if ((event->m_flags&SimulationModeMask) == ParentSimulationMode)
+		if((event->m_flags & SimulationModeMask) == ParentSimulationMode)
 		{
-			Verify((m_flags&SimulationModeMask) != ParentSimulationMode);
-			flags |= m_flags&SimulationModeMask;
+			Verify((m_flags & SimulationModeMask) != ParentSimulationMode);
+			flags |= m_flags & SimulationModeMask;
 		}
 		else
-			flags |= event->m_flags&SimulationModeMask;
-
+			flags |= event->m_flags & SimulationModeMask;
 		Effect* effect =
 			EffectLibrary::Instance->MakeEffect(
 				event->m_effectID,
@@ -560,7 +527,6 @@ bool gosFX::Effect::Execute(ExecuteInfo *info)
 		Register_Object(effect);
 		m_children.Add(effect);
 		m_event.Next();
-
 		//
 		//---------------------------------------------
 		// Now set the info for starting the new effect
@@ -572,42 +538,40 @@ bool gosFX::Effect::Execute(ExecuteInfo *info)
 		float seed_range =
 			m_specification->m_maximumChildSeed.ComputeValue(m_age, m_seed) - min_seed;
 		float seed =
-			Stuff::Random::GetFraction()*seed_range + min_seed;
+			Stuff::Random::GetFraction() * seed_range + min_seed;
 		Clamp(seed, 0.0f, 1.0f);
 		ExecuteInfo
-			local_info(
-				info->m_time,
-				&m_localToWorld,
-				nullptr,
-				seed
-			);
+		local_info(
+			info->m_time,
+			&m_localToWorld,
+			nullptr,
+			seed
+		);
 		effect->Start(&local_info);
 	}
-
 	//
 	//------------------------------------------------------------
 	// Execute all the children.  If any of them finish, kill them
 	//------------------------------------------------------------
 	//
 	Stuff::ChainIteratorOf<gosFX::Effect*> children(&m_children);
-	gosFX::Effect *child;
+	gosFX::Effect* child;
 	Stuff::OBB child_obb = Stuff::OBB::Identity;
 	ExecuteInfo
-		child_info(
-			info->m_time,
-			&m_localToWorld,
-			&child_obb
-		);
+	child_info(
+		info->m_time,
+		&m_localToWorld,
+		&child_obb
+	);
 	child_info.m_bounds = &child_obb;
-	while ((child = children.ReadAndNext()) != nullptr)
+	while((child = children.ReadAndNext()) != nullptr)
 	{
 		Check_Object(child);
-		if (!child->Execute(&child_info))
+		if(!child->Execute(&child_info))
 		{
 			Unregister_Object(child);
 			delete child;
 		}
-
 		//
 		//--------------------------------------------------------------
 		// Merge the bounding sphere of the child into the bounds of the
@@ -618,9 +582,7 @@ bool gosFX::Effect::Execute(ExecuteInfo *info)
 		parent_bounds.Multiply(child_obb, m_localToParent);
 		info->m_bounds->Union(*info->m_bounds, parent_bounds);
 	}
-
 	Check_Object(info->m_bounds);
-
 	//
 	//----------------------------------------------------------------------
 	// Set the new time, then if we have run the course of the effect, start
@@ -630,14 +592,13 @@ bool gosFX::Effect::Execute(ExecuteInfo *info)
 	//
 	m_lastRan = info->m_time;
 	m_age = age;
-	if (m_age >= 1.0f)
+	if(m_age >= 1.0f)
 	{
-		if (IsLooped())
+		if(IsLooped())
 			Start(info);
-		else if (HasFinished())
+		else if(HasFinished())
 			Kill();
 	}
-
 	//
 	//----------------------------------
 	// Tell our parent if we need to die
@@ -652,7 +613,6 @@ bool gosFX::Effect::Execute(ExecuteInfo *info)
 void gosFX::Effect::Stop()
 {
 	Check_Object(this);
-
 	//
 	//------------------------------------
 	// Stop the children then stop ourself
@@ -668,7 +628,6 @@ void gosFX::Effect::Stop()
 void gosFX::Effect::Kill()
 {
 	Check_Object(this);
-
 	//
 	//------------------------------------
 	// Kill the children then kill ourself
@@ -676,7 +635,7 @@ void gosFX::Effect::Kill()
 	//
 	Stuff::ChainIteratorOf<gosFX::Effect*> children(&m_children);
 	gosFX::Effect* child;
-	while ((child = children.ReadAndNext()) != nullptr)
+	while((child = children.ReadAndNext()) != nullptr)
 	{
 		Check_Object(child);
 		child->Kill();
@@ -686,11 +645,10 @@ void gosFX::Effect::Kill()
 
 //------------------------------------------------------------------------------
 //
-void gosFX::Effect::Draw(DrawInfo *info)
+void gosFX::Effect::Draw(DrawInfo* info)
 {
 	Check_Object(this);
 	Check_Pointer(info);
-
 	//
 	//-------------------------------------
 	// Make sure all the children get drawn
@@ -705,8 +663,8 @@ void gosFX::Effect::Draw(DrawInfo *info)
 	new_info.m_clipper = info->m_clipper;
 	new_info.m_clippingFlags = info->m_clippingFlags;
 	Stuff::ChainIteratorOf<gosFX::Effect*> children(&m_children);
-	gosFX::Effect *child;
-	while ((child = children.ReadAndNext()) != nullptr)
+	gosFX::Effect* child;
+	while((child = children.ReadAndNext()) != nullptr)
 	{
 		Check_Object(child);
 		child->Draw(&new_info);
@@ -718,15 +676,13 @@ void gosFX::Effect::Draw(DrawInfo *info)
 bool gosFX::Effect::HasFinished()
 {
 	Check_Object(this);
-
 	//
 	//-------------------------------------------------------------------------
 	// An effect is not finished if it is executing and its life hasn't expired
 	//-------------------------------------------------------------------------
 	//
-	if (IsExecuted() && m_age < 1.0f)
+	if(IsExecuted() && m_age < 1.0f)
 		return false;
-
 	//
 	//-----------------------------------------------
 	// It is also not finished if it has any children
@@ -741,7 +697,7 @@ bool gosFX::Effect::HasFinished()
 //#############################################################################
 
 void
-	gosFX::Effect__ClassData::TestInstance()
+gosFX::Effect__ClassData::TestInstance()
 {
 	Verify(IsDerivedFrom(gosFX::Effect::DefaultData));
 }

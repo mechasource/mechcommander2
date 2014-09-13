@@ -9,14 +9,15 @@
 
 #include <mlr/mlr_i_det_tmesh.hpp>
 
-namespace MidLevelRenderer {
+namespace MidLevelRenderer
+{
 
 	class MLR_I_C_TMesh;
 	class MLR_I_C_DeT_PMesh;
 
-	//##########################################################################
-	//###### MLRIndexedTriMesh with color no lighting and detail texture #######
-	//##########################################################################
+//##########################################################################
+//###### MLRIndexedTriMesh with color no lighting and detail texture #######
+//##########################################################################
 
 	class MLR_I_C_DeT_TMesh:
 		public MLR_I_DeT_TMesh
@@ -33,76 +34,64 @@ namespace MidLevelRenderer {
 		//
 	protected:
 		MLR_I_C_DeT_TMesh(
-			ClassData *class_data,
-			Stuff::MemoryStream *stream,
-			uint32_t version
-			);
+			ClassData* class_data,
+			Stuff::MemoryStream* stream,
+			uint32_t version);
 		~MLR_I_C_DeT_TMesh(void);
 
 	public:
-		MLR_I_C_DeT_TMesh(ClassData *class_data=MLR_I_C_DeT_TMesh::DefaultData);
+		MLR_I_C_DeT_TMesh(ClassData* class_data = MLR_I_C_DeT_TMesh::DefaultData);
 
 		static MLR_I_C_DeT_TMesh*
-			Make(
-			Stuff::MemoryStream *stream,
-			uint32_t version
-			);
+		Make(
+			Stuff::MemoryStream* stream,
+			uint32_t version);
 
 		void
-			Save(Stuff::MemoryStream *stream);
+		Save(Stuff::MemoryStream* stream);
 
 	public:
 #if COLOR_AS_DWORD
-		virtual void
-			SetColorData(
+		virtual void SetColorData(
 			pcuint32_t array,
-			int32_t point_count
-			);
-		virtual void
-			GetColorData(
-			uint32_t **array,
-			pint32_t point_count
-			);
+			size_t point_count);
+		virtual void GetColorData(
+			puint32_t* array,
+			psize_t point_count);
 #else
-		virtual void
-			SetColorData(
-			const Stuff::RGBAColor *array,
-			int32_t point_count
-			);
-		virtual void
-			GetColorData(
-			Stuff::RGBAColor **array,
-			pint32_t point_count
-			);
+		virtual void SetColorData(
+			const Stuff::RGBAColor* array,
+			size_t point_count);
+		virtual void GetColorData(
+			Stuff::RGBAColor** array,
+			psize_t point_count);
 #endif
 
 		virtual void
 #if COLOR_AS_DWORD
-			PaintMe(pcuint32_t paintMe);
+		PaintMe(pcuint32_t paintMe);
 #else
-			PaintMe(const Stuff::RGBAColor *paintMe);
+		PaintMe(const Stuff::RGBAColor* paintMe);
 #endif
 
-		virtual int32_t	TransformAndClip(Stuff::Matrix4D *, MLRClippingState, GOSVertexPool*,bool=false);
+		virtual uint32_t TransformAndClip(Stuff::Matrix4D*, MLRClippingState, GOSVertexPool*, bool = false);
 
-		virtual void
-			TransformNoClip(Stuff::Matrix4D*, GOSVertexPool*,bool=false);
+		virtual void TransformNoClip(Stuff::Matrix4D*, GOSVertexPool*, bool = false);
 
 		void
-			Copy(
+		Copy(
 			MLR_I_C_TMesh*,
 			MLRState detailState,
 			float xOff,
 			float yOff,
 			float xFac,
 			float yFac
-			);
+		);
 
 		bool
-			Copy(MLR_I_C_DeT_PMesh*);
+		Copy(MLR_I_C_DeT_PMesh*);
 
-		virtual void
-			HurtMe(const Stuff::LinearMatrix4D&, float radius);
+		virtual void HurtMe(const Stuff::LinearMatrix4D&, float radius);
 
 		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		// Class Data Support
@@ -117,32 +106,31 @@ namespace MidLevelRenderer {
 		void TestInstance(void) const;
 
 		virtual size_t GetSize(void)
-		{ 
+		{
 			Check_Object(this);
 			size_t ret = MLR_I_DeT_TMesh::GetSize();
 			ret += colors.GetSize();
-
 			return ret;
 		}
 
 	protected:
 #if COLOR_AS_DWORD
-		Stuff::DynamicArrayOf<uint32_t> colors;	// Base address of color list 
-		Stuff::DynamicArrayOf<uint32_t> *actualColors;
+		Stuff::DynamicArrayOf<uint32_t> colors;	// Base address of color list
+		Stuff::DynamicArrayOf<uint32_t>* actualColors;
 #else
-		Stuff::DynamicArrayOf<Stuff::RGBAColor> colors;	// Base address of color list 
-		Stuff::DynamicArrayOf<Stuff::RGBAColor> *actualColors;
+		Stuff::DynamicArrayOf<Stuff::RGBAColor> colors;	// Base address of color list
+		Stuff::DynamicArrayOf<Stuff::RGBAColor>* actualColors;
 #endif
 	};
 
 	MLR_I_C_DeT_TMesh*
-		CreateIndexedTriCube_Color_NoLit_DetTex(float, MLRState*);
+	CreateIndexedTriCube_Color_NoLit_DetTex(float, MLRState*);
 	MLRShape*
-		CreateIndexedTriIcosahedron_Color_NoLit_DetTex (
+	CreateIndexedTriIcosahedron_Color_NoLit_DetTex(
 		IcoInfo&,
 		MLRState*,
 		MLRState*
-		);
+	);
 
 }
 #endif

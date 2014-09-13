@@ -20,7 +20,7 @@ OptionsScreenWrapper::OptionsScreenWrapper()
 
 OptionsScreenWrapper::~OptionsScreenWrapper()
 {
-	if (pOptionsScreen && isActive)
+	if(pOptionsScreen && isActive)
 	{
 		end();
 	}
@@ -29,28 +29,26 @@ OptionsScreenWrapper::~OptionsScreenWrapper()
 void OptionsScreenWrapper::begin()
 {
 	isActive = true;
-	if (!pOptionsScreen)
+	if(!pOptionsScreen)
 	{
- 		pOptionsScreen = new OptionsXScreen();
+		pOptionsScreen = new OptionsXScreen();
 		char path[256];
-		strcpy( path, artPath );
-		strcat( path, "mcl_options.fit" );
-		
+		strcpy(path, artPath);
+		strcat(path, "mcl_options.fit");
 		FitIniFile file;
-		if ( NO_ERROR != file.open( path ) )
+		if(NO_ERROR != file.open(path))
 		{
 			char error[256];
-			sprintf( error, "couldn't open file %s", path );
-			Assert( 0, 0, error );
+			sprintf(error, "couldn't open file %s", path);
+			Assert(0, 0, error);
 			return;
 		}
-		pOptionsScreen->init( &file );
+		pOptionsScreen->init(&file);
 	}
 }
 
 void OptionsScreenWrapper::init()
 {
-
 }
 
 void OptionsScreenWrapper::destroy()
@@ -66,12 +64,11 @@ void OptionsScreenWrapper::end()
 
 OptionsScreenWrapper::status_type OptionsScreenWrapper::update()
 {
-	if ( pOptionsScreen && isActive)
-
+	if(pOptionsScreen && isActive)
 	{
-		userInput->setMouseCursor( mState_NORMAL );
+		userInput->setMouseCursor(mState_NORMAL);
 		pOptionsScreen->update();
-		if ( pOptionsScreen->isDone() )
+		if(pOptionsScreen->isDone())
 		{
 			pOptionsScreen->updateOptions();
 			isActive = 0;
@@ -90,7 +87,7 @@ OptionsScreenWrapper::status_type OptionsScreenWrapper::update()
 
 void OptionsScreenWrapper::render()
 {
-	if ( pOptionsScreen && isActive )
+	if(pOptionsScreen && isActive)
 		pOptionsScreen->render();
 }
 

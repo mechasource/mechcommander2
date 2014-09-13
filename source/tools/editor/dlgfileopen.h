@@ -19,52 +19,58 @@ DlgFileOpen:
 
 class DlgFileOpen: public CDialog
 {
-	public:
+public:
 
-		DlgFileOpen( PCSTR directoryName, PCSTR extension,  bool bSave );
-		DlgFileOpen( const DlgFileOpen& lgFileOpen );
+	DlgFileOpen(PCSTR directoryName, PCSTR extension,  bool bSave);
+	DlgFileOpen(const DlgFileOpen& lgFileOpen);
 
-		void OnCancel(void);
-		void OnOK(void);
-		//virtual void handleMessage (GObject *from, int32_t messageId, int32_t specificMsg);
-		
-		virtual ~DlgFileOpen(void);
+	void OnCancel(void);
+	void OnOK(void);
+	//virtual void handleMessage (GObject *from, int32_t messageId, int32_t specificMsg);
 
-		void Init(void);
+	virtual ~DlgFileOpen(void);
 
-		PCSTR getFileName(void) const { return fileName; }
-		PCSTR getExtension(void) const { return extension; }
+	void Init(void);
 
-	private:
+	PCSTR getFileName(void) const
+	{
+		return fileName;
+	}
+	PCSTR getExtension(void) const
+	{
+		return extension;
+	}
 
-		// HELPER FUNCTIONS
-		void init(void); // I think I'll hard wire the file name here
+private:
+
+	// HELPER FUNCTIONS
+	void init(void); // I think I'll hard wire the file name here
 
 
-		//{{AFX_DATA(DlgFileOpen)
-		enum { IDD = IDD_FILEOPEN };
-		//}}AFX_DATA
+	//{{AFX_DATA(DlgFileOpen)
+	enum { IDD = IDD_FILEOPEN };
+	//}}AFX_DATA
 
-		//{{AFX_VIRTUAL(DlgFileOpen)
-		//}}AFX_VIRTUAL
+	//{{AFX_VIRTUAL(DlgFileOpen)
+	//}}AFX_VIRTUAL
 
-	protected:
-		//{{AFX_MSG(DlgFileOpen)
-		virtual BOOL OnInitDialog(void);
+protected:
+	//{{AFX_MSG(DlgFileOpen)
+	virtual BOOL OnInitDialog(void);
 	afx_msg void OnSelchangeFileopenFilelist(void);
 	//}}AFX_MSG
-		DECLARE_MESSAGE_MAP()
+	DECLARE_MESSAGE_MAP()
 
 
-		// suppressing these
-		inline DlgFileOpen(void);
-		DlgFileOpen& operator=( const DlgFileOpen& lgFileOpen );
+	// suppressing these
+	inline DlgFileOpen(void);
+	DlgFileOpen& operator=(const DlgFileOpen& lgFileOpen);
 
-		char fileName[MAX_PATH];
-		char extension[8];
+	char fileName[MAX_PATH];
+	char extension[8];
 
-		char m_directory[MAX_PATH];
-		bool m_bSave;
+	char m_directory[MAX_PATH];
+	bool m_bSave;
 
 };
 

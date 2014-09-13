@@ -44,106 +44,107 @@ ATL_ADD_LIBRARY("atlthunk.lib")
 // _ARMOR;USE_PROTOTYPES;STRICT;WIN32;_DEBUG;_WINDOWS;VIEWER
 #define _ARMOR		1
 #define LAB_ONLY	1
-#else 
+#else
 // VIEWER;WIN32;NDEBUG;_WINDOWS
 #endif
 #ifndef VIEWER
 #define VIEWER		1
 #endif
 
-namespace Utilities {
+namespace Utilities
+{
 
 //HRESULT WINAPI FormatCLSID(_Out_writes_(nCharacters) PWCHAR pszCLSID,_In_ size_t nCharacters,_In_ REFGUID clsid);
 //HRESULT WINAPI PrivateUpdateRegistry(_In_ BOOL bRegister,_In_ UINT nID,_In_ REFGUID clsid,_In_ REFGUID libid,_In_opt_ ULONG dwOleMisc,_In_opt_ ATL::_ATL_REGMAP_ENTRY* pregMap);
 
 // ModuleHelper - helper functions for ATL3 and ATL7 module classes (modified from WTL)
-namespace ModuleHelper
-{
-inline HINSTANCE GetModuleInstance(void)
-{
+	namespace ModuleHelper
+	{
+		inline HINSTANCE GetModuleInstance(void)
+		{
 #if (_ATL_VER >= 0x0700)
-	return ATL::_AtlBaseModule.GetModuleInstance();
+			return ATL::_AtlBaseModule.GetModuleInstance();
 #else
-	return ATL::_pModule->GetModuleInstance();
+			return ATL::_pModule->GetModuleInstance();
 #endif
-}
+		}
 
-inline HINSTANCE GetResourceInstance(void)
-{
+		inline HINSTANCE GetResourceInstance(void)
+		{
 #if (_ATL_VER >= 0x0700)
-	return ATL::_AtlBaseModule.GetResourceInstance();
+			return ATL::_AtlBaseModule.GetResourceInstance();
 #else
-	return ATL::_pModule->GetResourceInstance();
+			return ATL::_pModule->GetResourceInstance();
 #endif
-}
+		}
 
-inline HINSTANCE SetResourceInstance(_In_ HINSTANCE hInstance)
-{
+		inline HINSTANCE SetResourceInstance(_In_ HINSTANCE hInstance)
+		{
 #if (_ATL_VER >= 0x0700)
-	return ATL::_AtlBaseModule.SetResourceInstance(hInstance);
+			return ATL::_AtlBaseModule.SetResourceInstance(hInstance);
 #else
-	return ATL::_pModule->SetResourceInstance(hInstance);
+			return ATL::_pModule->SetResourceInstance(hInstance);
 #endif
-}
+		}
 
-inline void AddCreateWndData(_Inout_ ATL::_AtlCreateWndData* pData,_In_ void* pObject)
-{
+		inline void AddCreateWndData(_Inout_ ATL::_AtlCreateWndData* pData, _In_ void* pObject)
+		{
 #if (_ATL_VER >= 0x0700)
-	ATL::_AtlWinModule.AddCreateWndData(pData, pObject);
+			ATL::_AtlWinModule.AddCreateWndData(pData, pObject);
 #else
-	ATL::_pModule->AddCreateWndData(pData, pObject);
+			ATL::_pModule->AddCreateWndData(pData, pObject);
 #endif
-}
+		}
 
-inline void* ExtractCreateWndData(void)
-{
+		inline void* ExtractCreateWndData(void)
+		{
 #if (_ATL_VER >= 0x0700)
-	return ATL::_AtlWinModule.ExtractCreateWndData();
+			return ATL::_AtlWinModule.ExtractCreateWndData();
 #else
-	return ATL::_pModule->ExtractCreateWndData();
+			return ATL::_pModule->ExtractCreateWndData();
 #endif
-}
+		}
 
-inline void AtlTerminate(void)
-{
+		inline void AtlTerminate(void)
+		{
 #if (_ATL_VER >= 0x0700)
-	return ATL::_AtlWinModule.Term();
+			return ATL::_AtlWinModule.Term();
 #else
-	return ATL::_pModule->Term();
+			return ATL::_pModule->Term();
 #endif
-}
+		}
 
 #if (_ATL_VER >= 0x0700)
-inline ATL::CAtlModule* GetModulePtr(void)
-{
-	return ATL::_pAtlModule;
-}
+		inline ATL::CAtlModule* GetModulePtr(void)
+		{
+			return ATL::_pAtlModule;
+		}
 #else
-inline ATL::CComModule* GetModulePtr(void)
-{
-	return ATL::_pModule;
-}
+		inline ATL::CComModule* GetModulePtr(void)
+		{
+			return ATL::_pModule;
+		}
 #endif
 
-inline bool AtlInitFailed(void)
-{
+		inline bool AtlInitFailed(void)
+		{
 #if (_ATL_VER >= 0x0700)
-	return ATL::CAtlBaseModule::m_bInitFailed;
+			return ATL::CAtlBaseModule::m_bInitFailed;
 #else
-	return ATL::_bInitFailed;
+			return ATL::_bInitFailed;
 #endif
-}
+		}
 
-inline void AtlSetTraceLevel(_In_ UINT nLevel)
-{
+		inline void AtlSetTraceLevel(_In_ UINT nLevel)
+		{
 #if defined _DEBUG && (_ATL_VER >= 0x0700)
-	ATL::CTrace::SetLevel(nLevel);
+			ATL::CTrace::SetLevel(nLevel);
 #else
-	UNREFERENCED_PARAMETER(nLevel);
+			UNREFERENCED_PARAMETER(nLevel);
 #endif
-}
+		}
 
-};	// namespace ModuleHelper
+	};	// namespace ModuleHelper
 };	// namespace Utilities
 
 using namespace Utilities;

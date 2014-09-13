@@ -38,123 +38,133 @@
 
 //***************************************************************************
 
-class ArtilleryChunk {
+class ArtilleryChunk
+{
 
-	public:
+public:
 
-		char				commanderId;
-		char				strikeType;
-		int32_t				cellRC[2];
-		char				secondsToImpact;
+	char				commanderId;
+	char				strikeType;
+	int32_t				cellRC[2];
+	char				secondsToImpact;
 
-		uint32_t		data;
+	uint32_t		data;
 
-	public:
+public:
 
-		PVOID operator new (size_t mySize);
+	PVOID operator new(size_t mySize);
 
-		void operator delete (PVOID us);
-		
-		void init (void) {
-			commanderId = -1;
-			strikeType = -1;
-			cellRC[0] = -1;
-			cellRC[1] = -1;
-			secondsToImpact = -1;
-			data = 0;
-		}
+	void operator delete(PVOID us);
 
-		void destroy (void) {
-		}
+	void init(void)
+	{
+		commanderId = -1;
+		strikeType = -1;
+		cellRC[0] = -1;
+		cellRC[1] = -1;
+		secondsToImpact = -1;
+		data = 0;
+	}
 
-		ArtilleryChunk (void) {
-			init(void);
-		}
+	void destroy(void)
+	{
+	}
 
-		~ArtilleryChunk (void) {
-			destroy(void);
-		}
+	ArtilleryChunk(void)
+	{
+		init(void);
+	}
 
-		void build (int32_t commanderId,
-					int32_t strikeType,
-					Stuff::Vector3D location,
-					int32_t seconds);
+	~ArtilleryChunk(void)
+	{
+		destroy(void);
+	}
 
-		void pack (void);
+	void build(int32_t commanderId,
+			   int32_t strikeType,
+			   Stuff::Vector3D location,
+			   int32_t seconds);
 
-		void unpack (void);
+	void pack(void);
 
-		bool equalTo (ArtilleryChunkPtr chunk);
+	void unpack(void);
+
+	bool equalTo(ArtilleryChunkPtr chunk);
 };
 
 //***************************************************************************
 
-class ArtilleryType : public ObjectType {
+class ArtilleryType : public ObjectType
+{
 
-	public:
+public:
 
-		puint8_t			frameList;				//Pointer to JMiles shape file binary 
-		uint32_t		frameCount;				//Number of frames in shape file
-		uint32_t		startFrame;				//Frame in List to start with.
-		float				frameRate;				//Speed at which frames playback
-		
-		float				nominalTimeToImpact;
-		float				nominalTimeToLaunch;
-		
-		float				nominalDamage;
-		float				nominalMajorRange;
-		float				nominalMajorHits;
-		float				nominalMinorRange;
-		float				nominalMinorHits;
-		
-		float				nominalSensorTime;	
-		float				nominalSensorRange;
-		
-		float				fontScale;
-		float				fontXOffset;
-		float				fontYOffset;
-		uint32_t		fontColor;
+	puint8_t			frameList;				//Pointer to JMiles shape file binary
+	uint32_t		frameCount;				//Number of frames in shape file
+	uint32_t		startFrame;				//Frame in List to start with.
+	float				frameRate;				//Speed at which frames playback
 
-		int32_t				numExplosions;
-		float*				explosionOffsetX;
-		float*				explosionOffsetY;
-		float*				explosionDelay;
+	float				nominalTimeToImpact;
+	float				nominalTimeToLaunch;
 
-		int32_t				numExplosionsPerExplosion;
-		int32_t				explosionRandomX;
-		int32_t				explosionRandomY;
+	float				nominalDamage;
+	float				nominalMajorRange;
+	float				nominalMajorHits;
+	float				nominalMinorRange;
+	float				nominalMinorHits;
 
-		int32_t				minArtilleryHeadRange;
-				
-	public:
+	float				nominalSensorTime;
+	float				nominalSensorRange;
 
-		void init (void);
-		
-		ArtilleryType (void) {
-			init(void);
-		}
-		
-		virtual int32_t init (FilePtr objFile, uint32_t fileSize);
-		
-		int32_t init (FitIniFilePtr objFile);
-		
-		~ArtilleryType (void) {
-			destroy(void);
-		}
-		
-		virtual void destroy (void);
-		
-		virtual GameObjectPtr createInstance (void);
-		
-		virtual bool handleCollision (GameObjectPtr collidee, GameObjectPtr collider);
+	float				fontScale;
+	float				fontXOffset;
+	float				fontYOffset;
+	uint32_t		fontColor;
 
-		virtual bool handleDestruction (GameObjectPtr collidee, GameObjectPtr collider);
+	int32_t				numExplosions;
+	float*				explosionOffsetX;
+	float*				explosionOffsetY;
+	float*				explosionDelay;
+
+	int32_t				numExplosionsPerExplosion;
+	int32_t				explosionRandomX;
+	int32_t				explosionRandomY;
+
+	int32_t				minArtilleryHeadRange;
+
+public:
+
+	void init(void);
+
+	ArtilleryType(void)
+	{
+		init(void);
+	}
+
+	virtual int32_t init(FilePtr objFile, uint32_t fileSize);
+
+	int32_t init(FitIniFilePtr objFile);
+
+	~ArtilleryType(void)
+	{
+		destroy(void);
+	}
+
+	virtual void destroy(void);
+
+	virtual GameObjectPtr createInstance(void);
+
+	virtual bool handleCollision(GameObjectPtr collidee, GameObjectPtr collider);
+
+	virtual bool handleDestruction(GameObjectPtr collidee, GameObjectPtr collider);
 };
 
 //***************************************************************************
 
-typedef union _ArtilleryInfo {
-	struct {
+typedef union _ArtilleryInfo
+{
+	struct
+	{
 		float				timeToImpact;		//Time until strike goes off.
 		float				timeToLaunch;		//Time until strike is launched (and unmoveable).
 		float				sensorRange;		//If I am a sensor round, how big a range.
@@ -180,155 +190,155 @@ typedef struct _ArtilleryData : public GameObjectData
 
 } ArtilleryData;
 
-class Artillery : public GameObject 
+class Artillery : public GameObject
 {
 	//-------------
 	// Data Members
 
-	public:
+public:
 
-		char				artilleryType;
-		char				teamId;
-		char				commanderId;
-		ArtilleryInfo		info;
-		int32_t				effectId;
-		
-		gosFX::Effect		*hitEffect;
-		gosFX::Effect		*rightContrail;
-		gosFX::Effect		*leftContrail;
-				
-		Appearance			*bomber;
-		bool				bombRunStarted;
-		
-		bool				inView;
+	char				artilleryType;
+	char				teamId;
+	char				commanderId;
+	ArtilleryInfo		info;
+	int32_t				effectId;
 
-		Stuff::Vector3D		iFacePosition;
-		
-		
+	gosFX::Effect*		hitEffect;
+	gosFX::Effect*		rightContrail;
+	gosFX::Effect*		leftContrail;
+
+	Appearance*			bomber;
+	bool				bombRunStarted;
+
+	bool				inView;
+
+	Stuff::Vector3D		iFacePosition;
+
+
 	//Member Functions
 	//-----------------
-		public:
+public:
 
-		virtual void init (bool create);
+	virtual void init(bool create);
 
-		virtual void init (bool create, int32_t _artilleryType);
+	virtual void init(bool create, int32_t _artilleryType);
 
-	   	Artillery (void) : GameObject() 
-		{
-			init(true);
-		}
+	Artillery(void) : GameObject()
+	{
+		init(true);
+	}
 
-		~Artillery (void) 
-		{
-			destroy(void);
-		}
+	~Artillery(void)
+	{
+		destroy(void);
+	}
 
-		bool recalcBounds (CameraPtr myEye);
-		
-		void setArtilleryData (float impactTime) 
-		{
-			info.strike.timeToImpact = impactTime;
-			info.strike.timeToLaunch = impactTime - 10;
-		}
+	bool recalcBounds(CameraPtr myEye);
 
-		virtual void setSensorRange (float range);
+	void setArtilleryData(float impactTime)
+	{
+		info.strike.timeToImpact = impactTime;
+		info.strike.timeToLaunch = impactTime - 10;
+	}
 
-		void setSensorData (TeamPtr team, float sensorTime = -1.0, float range = -1.0);
+	virtual void setSensorRange(float range);
 
-		void setJustCreated (void);
+	void setSensorData(TeamPtr team, float sensorTime = -1.0, float range = -1.0);
 
-		float getTimeToImpact (void) 
-		{
-			return(info.strike.timeToImpact);
-		}
-		
-		float getTimeToLaunch (void) 
-		{
-			return(info.strike.timeToLaunch);
-		}
+	void setJustCreated(void);
 
-		bool launched (void) 
-		{
-			return(info.strike.timeToLaunch <= 0);
-		}
-		
-		bool impacted(void) 
-		{
-			return(info.strike.timeToImpact <= 0);
-		}
-		
-		void drawSelectBox (uint8_t color);
+	float getTimeToImpact(void)
+	{
+		return(info.strike.timeToImpact);
+	}
 
-		bool isStrike (void) 
-		{
-			static bool lookup[NUM_ARTILLERY_TYPES] = {true, true, false};
-			return(lookup[artilleryType]);
-		}
+	float getTimeToLaunch(void)
+	{
+		return(info.strike.timeToLaunch);
+	}
 
-		bool isSensor (void) 
-		{
-			static bool lookup[NUM_ARTILLERY_TYPES] = {false, false, true};
-			return(lookup[artilleryType]);
-		}
+	bool launched(void)
+	{
+		return(info.strike.timeToLaunch <= 0);
+	}
 
-		virtual void destroy (void);
-		
-		virtual int32_t update (void);
+	bool impacted(void)
+	{
+		return(info.strike.timeToImpact <= 0);
+	}
 
-		virtual void render (void);
+	void drawSelectBox(uint8_t color);
 
-		virtual void init (bool create, ObjectTypePtr _type);
+	bool isStrike(void)
+	{
+		static bool lookup[NUM_ARTILLERY_TYPES] = {true, true, false};
+		return(lookup[artilleryType]);
+	}
 
-		virtual int32_t kill (void) 
-		{
-			return(NO_ERROR);
-		}
-		
-		virtual void setCommanderId (int32_t _commanderId);
-		virtual int32_t getCommanderId (void)
-		{
-			return commanderId;
-		}
+	bool isSensor(void)
+	{
+		static bool lookup[NUM_ARTILLERY_TYPES] = {false, false, true};
+		return(lookup[artilleryType]);
+	}
 
-		virtual int32_t setTeamId (int32_t _teamId, bool setup);
-		
-		virtual int32_t getTeamId (void) 
-		{
-			return(teamId);
-		}
+	virtual void destroy(void);
 
-		virtual bool isFriendly (TeamPtr team);
+	virtual int32_t update(void);
 
-		virtual bool isEnemy (TeamPtr team);
+	virtual void render(void);
 
-		virtual bool isNeutral (TeamPtr team);
+	virtual void init(bool create, ObjectTypePtr _type);
 
-		virtual TeamPtr getTeam (void);
+	virtual int32_t kill(void)
+	{
+		return(NO_ERROR);
+	}
 
-		virtual int32_t handleWeaponHit (WeaponShotInfoPtr shotInfo, bool addMultiplayChunk = false);
+	virtual void setCommanderId(int32_t _commanderId);
+	virtual int32_t getCommanderId(void)
+	{
+		return commanderId;
+	}
 
-		virtual void handleStaticCollision (void);
+	virtual int32_t setTeamId(int32_t _teamId, bool setup);
 
-		virtual void Save (PacketFilePtr file, int32_t packetNum);
+	virtual int32_t getTeamId(void)
+	{
+		return(teamId);
+	}
 
-		void Load (ArtilleryData *data);
+	virtual bool isFriendly(TeamPtr team);
 
-		void CopyTo (ArtilleryData *data);
+	virtual bool isEnemy(TeamPtr team);
+
+	virtual bool isNeutral(TeamPtr team);
+
+	virtual TeamPtr getTeam(void);
+
+	virtual int32_t handleWeaponHit(WeaponShotInfoPtr shotInfo, bool addMultiplayChunk = false);
+
+	virtual void handleStaticCollision(void);
+
+	virtual void Save(PacketFilePtr file, int32_t packetNum);
+
+	void Load(ArtilleryData* data);
+
+	void CopyTo(ArtilleryData* data);
 };
 
 //---------------------------------------------------------------------------
-extern void CallArtillery (int32_t commanderId,
-						   int32_t strikeType,
-						   Stuff::Vector3D strikeLoc,
-						   int32_t secondsToImpact,
-						   bool randomOffset);
+extern void CallArtillery(int32_t commanderId,
+						  int32_t strikeType,
+						  Stuff::Vector3D strikeLoc,
+						  int32_t secondsToImpact,
+						  bool randomOffset);
 
-extern void IfaceCallStrike (int32_t strikeID,
-							 Stuff::Vector3D* strikeLoc,
-							 GameObjectPtr strikeTarget,
-							 bool playerStrike = true,
-							 bool clanStrike = false,
-							 float timeToImpact = -1.00);
+extern void IfaceCallStrike(int32_t strikeID,
+							Stuff::Vector3D* strikeLoc,
+							GameObjectPtr strikeTarget,
+							bool playerStrike = true,
+							bool clanStrike = false,
+							float timeToImpact = -1.00);
 
 //---------------------------------------------------------------------------
 #endif

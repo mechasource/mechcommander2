@@ -14,9 +14,9 @@
 //---------------------------------------------------------------------------
 // Definitions
 class PacketFile;
-typedef PacketFile *PacketFilePtr;
+typedef PacketFile* PacketFilePtr;
 
 class mmPacketFile;
-typedef mmPacketFile *mmPacketFilePtr;
+typedef mmPacketFile* mmPacketFilePtr;
 //---------------------------------------------------------------------------
 #endif

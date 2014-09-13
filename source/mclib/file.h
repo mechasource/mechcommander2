@@ -27,7 +27,8 @@
 
 //---------------------------------------------------------------------------
 // enums
-typedef enum FileMode {
+typedef enum FileMode
+{
 	NOMODE = 0,
 	READ,
 	CREATE,
@@ -36,7 +37,8 @@ typedef enum FileMode {
 	RDWRITE
 } FileMode;
 
-typedef enum FileClass {
+typedef enum FileClass
+{
 	BASEFILE = 0,
 	INIFILE,
 	PACKETFILE,
@@ -53,7 +55,8 @@ bool	__stdcall file1OlderThan2(PSTR file1, PSTR file2);
 //---------------------------------------------------------------------------
 // Macro Definitions
 
-typedef enum __file_constants {
+typedef enum __file_constants
+{
 	DISK_FULL_ERR					= 0xBADF0001,
 	SHARE_ERR						= 0xBADF0002,
 	FILE_NOT_FOUND_ERR				= 0xBADF0003,
@@ -114,11 +117,11 @@ public:
 	// Member Functions
 	//------------------
 protected:
-	void setup (void);
+	void setup(void);
 
 public:
-	PVOID operator new (size_t mySize);
-	void operator delete (PVOID us);
+	PVOID operator new(size_t mySize);
+	void operator delete(PVOID us);
 
 	File(void);
 	virtual ~File(void);
@@ -129,89 +132,89 @@ public:
 	virtual int32_t open(FilePtr _parent, size_t fileSize, uint32_t numChildren = 50);
 	/*virtual*/ int32_t open(PCSTR buffer, size_t bufferLength); // for streaming from memory
 
-	virtual int32_t create (PCSTR fName);
+	virtual int32_t create(PCSTR fName);
 	virtual int32_t createWithCase(PSTR fName); // don't strlwr for me please!
 
-	virtual void close (void);
+	virtual void close(void);
 
 
-	void deleteFile (void);
+	void deleteFile(void);
 
-	int32_t seek (int32_t pos, int32_t from = SEEK_SET);
-	void seekEnd (void);
-	void skip (int32_t bytesToSkip);
+	int32_t seek(int32_t pos, int32_t from = SEEK_SET);
+	void seekEnd(void);
+	void skip(int32_t bytesToSkip);
 
-	int32_t read (size_t pos, puint8_t buffer, size_t length);
-	int32_t read (puint8_t buffer, size_t length);
+	int32_t read(size_t pos, puint8_t buffer, size_t length);
+	int32_t read(puint8_t buffer, size_t length);
 
 	//Used to dig the LZ data directly out of the fastfiles.
 	// For textures.
-	int32_t readRAW (size_t* &buffer, UserHeap* heap);
+	int32_t readRAW(size_t*& buffer, UserHeap* heap);
 
-	uint8_t readByte (void);
-	int16_t readWord (void);
-	int16_t readShort (void);
-	int32_t readLong (void);
-	float readFloat( void );
+	uint8_t readByte(void);
+	int16_t readWord(void);
+	int16_t readShort(void);
+	int32_t readLong(void);
+	float readFloat(void);
 
-	int32_t readString (puint8_t buffer);
-	int32_t readLine (puint8_t buffer, size_t maxLength);
-	int32_t readLineEx (puint8_t buffer, size_t maxLength);
+	int32_t readString(puint8_t buffer);
+	int32_t readLine(puint8_t buffer, size_t maxLength);
+	int32_t readLineEx(puint8_t buffer, size_t maxLength);
 
-	int32_t write (size_t pos, puint8_t buffer, size_t bytes);
-	int32_t write (puint8_t buffer, size_t bytes);
+	int32_t write(size_t pos, puint8_t buffer, size_t bytes);
+	int32_t write(puint8_t buffer, size_t bytes);
 
-	int32_t writeByte (uint8_t value);
-	int32_t writeWord (int16_t value);
-	int32_t writeShort (int16_t value);
-	int32_t writeLong (int32_t value);
-	int32_t writeFloat (float value);
+	int32_t writeByte(uint8_t value);
+	int32_t writeWord(int16_t value);
+	int32_t writeShort(int16_t value);
+	int32_t writeLong(int32_t value);
+	int32_t writeFloat(float value);
 
-	int32_t writeString (PSTR buffer);
-	int32_t writeLine (PSTR buffer);
+	int32_t writeString(PSTR buffer);
+	int32_t writeLine(PSTR buffer);
 
-	bool isOpen (void);
+	bool isOpen(void);
 
-	virtual FileClass getFileClass (void)
+	virtual FileClass getFileClass(void)
 	{
 		return BASEFILE;
 	}
 
-	PSTR getFilename (void);
+	PSTR getFilename(void);
 
-	size_t getLength (void);
-	size_t fileSize (void);
-	size_t getNumLines (void);
+	size_t getLength(void);
+	size_t fileSize(void);
+	size_t getNumLines(void);
 
-	HRESULT getLastError (void)
+	HRESULT getLastError(void)
 	{
 		return(lastError);
 	}
 
-	size_t getLogicalPosition (void)
+	size_t getLogicalPosition(void)
 	{
 		return logicalPosition;
 	}
 
-	FilePtr getParent (void)
+	FilePtr getParent(void)
 	{
 		return parent;
 	}
 
-	FileMode getFileMode (void)
+	FileMode getFileMode(void)
 	{
 		return(fileMode);
 	}
 
-	int32_t getFileHandle (void)
+	int32_t getFileHandle(void)
 	{
 		return(handle);
 	}
 
-	time_t getFileMTime (void);
+	time_t getFileMTime(void);
 
-	int32_t addChild (FilePtr child);
-	void removeChild (FilePtr child);
+	int32_t addChild(FilePtr child);
+	void removeChild(FilePtr child);
 
 };
 

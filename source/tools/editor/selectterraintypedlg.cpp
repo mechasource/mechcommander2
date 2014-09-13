@@ -27,7 +27,7 @@ SelectTerrainTypeDlg::SelectTerrainTypeDlg(CWnd* pParent /*=nullptr*/)
 	: CDialog(SelectTerrainTypeDlg::IDD, pParent)
 {
 	//{{AFX_DATA_INIT(SelectTerrainTypeDlg)
-		// NOTE: the ClassWizard will add member initialization here
+	// NOTE: the ClassWizard will add member initialization here
 	//}}AFX_DATA_INIT
 }
 
@@ -49,41 +49,35 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // SelectTerrainTypeDlg message handlers
 
-BOOL SelectTerrainTypeDlg::OnInitDialog() 
+BOOL SelectTerrainTypeDlg::OnInitDialog()
 {
 	CDialog::OnInitDialog();
-
 	m_terrainTypeList.ResetContent();
 	int32_t numTerrains = 0;
 	numTerrains = land->terrainTextures->getNumTypes();
 	int32_t i;
-	for ( i = 0; i < numTerrains; i++ )
+	for(i = 0; i < numTerrains; i++)
 	{
-		if ( land->terrainTextures->getTextureNameID(i) ) // if we start to repeat, quit
+		if(land->terrainTextures->getTextureNameID(i))    // if we start to repeat, quit
 		{
-
 			char buffer[256];
-			cLoadString( land->terrainTextures->getTextureNameID(i), buffer, 256 );
-
+			cLoadString(land->terrainTextures->getTextureNameID(i), buffer, 256);
 			CString newStr(buffer);
-
 			int32_t count = m_terrainTypeList.GetCount();
 			bool bPlaced = 0;
-			for ( int32_t j = 0; j < count; ++j )
+			for(auto j = 0; j < count; ++j)
 			{
 				CString tmp;
 				m_terrainTypeList.GetText(j, tmp);
-				if ( tmp > newStr )
+				if(tmp > newStr)
 				{
 					m_terrainTypeList.InsertString(j, newStr);
 					m_terrainTypeList.SetItemData(j, ID_TERRAINS_BLUEWATER + i);
 					bPlaced = 1;
 					break;
-
 				}
 			}
-
-			if ( !bPlaced )
+			if(!bPlaced)
 			{
 				int32_t j = m_terrainTypeList.GetCount();
 				m_terrainTypeList.InsertString(j, newStr);
@@ -91,11 +85,13 @@ BOOL SelectTerrainTypeDlg::OnInitDialog()
 			}
 		}
 	}
-
-	if (ID_TERRAINS_BLUEWATER <= SelectedTerrainType()) {
+	if(ID_TERRAINS_BLUEWATER <= SelectedTerrainType())
+	{
 		int32_t k;
-		for (k = 0; k < m_terrainTypeList.GetCount(); k++) {
-			if (SelectedTerrainType() == m_terrainTypeList.GetItemData(k)) {
+		for(k = 0; k < m_terrainTypeList.GetCount(); k++)
+		{
+			if(SelectedTerrainType() == m_terrainTypeList.GetItemData(k))
+			{
 				m_terrainTypeList.SetCurSel(k);
 				break;
 			}
@@ -103,21 +99,22 @@ BOOL SelectTerrainTypeDlg::OnInitDialog()
 	}
 	SelectedTerrainType(-1);
 	// TODO: Add extra initialization here
-	
 	return TRUE;  // return TRUE unless you set the focus to a control
-	              // EXCEPTION: OCX Property Pages should return FALSE
+	// EXCEPTION: OCX Property Pages should return FALSE
 }
 
-void SelectTerrainTypeDlg::OnOK() 
+void SelectTerrainTypeDlg::OnOK()
 {
 	int32_t curSelIndex = m_terrainTypeList.GetCurSel();
-	if (LB_ERR != curSelIndex) {
+	if(LB_ERR != curSelIndex)
+	{
 		int32_t terrainTypeID = m_terrainTypeList.GetItemData(curSelIndex);
 		SelectedTerrainType(terrainTypeID);
-	} else {
+	}
+	else
+	{
 		SelectedTerrainType(-1);
 	}
 	// TODO: Add extra validation here
-	
 	CDialog::OnOK();
 }

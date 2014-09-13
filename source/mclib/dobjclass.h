@@ -11,7 +11,8 @@
 #ifndef DOBJCLASS_H
 #define DOBJCLASS_H
 
-enum ObjectClass {
+enum ObjectClass
+{
 	INVALID = -1,
 	BASEOBJECT = 0,
 	TERRN,
@@ -47,7 +48,7 @@ enum ObjectClass {
 	GATE,
 	KLIEG_LIGHT,
 	WEAPONBOLT
-};	
+};
 
 //***************************************************************************
 

@@ -55,10 +55,10 @@ public:
 
 	// If receiving a message {receiverId} is accessed to see if the message was sent
 	// to a group in which the player belongs, to all players, or directly to this player.
-	// 
-	// When sending a message, {receiverId} is the GOSNETWORKID of the intended recipient.  
-	// If this message is for all players, the {receiverId} should be GOSALLPLAYERS.  If 
-	// this message is for the server, {server} should be true and {receiverId} will be ignored. 
+	//
+	// When sending a message, {receiverId} is the GOSNETWORKID of the intended recipient.
+	// If this message is for all players, the {receiverId} should be GOSALLPLAYERS.  If
+	// this message is for the server, {server} should be true and {receiverId} will be ignored.
 	uint32_t	receiverId;
 
 	// {senderId} is the GOSNETWORKID of the sender if this message is being received,
@@ -74,22 +74,22 @@ public:
 
 	// Number of bytes to be sent or number of bytes received.
 	uint32_t	messageSize;
-	
+
 	// Sending: {guaranteed} is false by default.  If true, this message is
 	// sent guaranteed.  Use this flag sparingly.
-	// 
+	//
 	// Receiving: tells us if the message arrived guaranteed.
 	bool			guaranteed;
-	
+
 	// Sending: {server} is false by default.
-	// If {server} is true, the message goes to the server only.  
+	// If {server} is true, the message goes to the server only.
 	// {receiverID} is not used if {server} is true!
 	//
 	// Receiving: Not used.
 	bool			server;
 
 
-	// Sending: Not used.  
+	// Sending: Not used.
 	//
 	// Receiving: User callback should look at {system} and interpret this as a
 	// system message if {system} is true.  Otherwise, this is an application
@@ -101,7 +101,7 @@ public:
 	uint32_t			priority;
 
 	NetworkMessageContainer(void);
-	
+
 	void Clear(void);
 };
 

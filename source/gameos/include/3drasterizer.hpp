@@ -10,11 +10,12 @@
 #ifndef _3DRASTERIZER_HPP_
 #define _3DRASTERIZER_HPP_
 
-typedef struct _SAVESTATE {
+typedef struct _SAVESTATE
+{
 	struct _SAVESTATE*	pNext;
 	uint32_t				SaveState[gos_MaxState];
 } SAVESTATE;
-typedef SAVESTATE *PSAVESTATE;
+typedef SAVESTATE* PSAVESTATE;
 
 extern SAVESTATE*	pStateStack;
 extern uint32_t		StackDepth;
@@ -22,7 +23,8 @@ extern uint32_t		StackDepth;
 //
 // Structure to hold information about vertex buffers created
 //
-typedef struct _VertexBuffer {
+typedef struct _VertexBuffer
+{
 	uint32_t					Magic;					// Magic number to verify handle valid
 	gosVERTEXTYPE			VertexType;				// Type of vertex the buffer contains
 	struct _VertexBuffer*	pNext;
@@ -38,7 +40,7 @@ typedef struct _VertexBuffer {
 	uint8_t					Lost;					// True when mode changed and buffer invalid
 	PVOID					Pointer;				// Pointer to start of data when locked
 } VertexBuffer;
-typedef VertexBuffer *PVertexBuffer;
+typedef VertexBuffer* PVertexBuffer;
 
 //
 // Variables that effect rendering
@@ -74,13 +76,13 @@ void __stdcall Save3DState(void);
 void __stdcall Restore3DState(void);
 void __stdcall ReInit3D(void);
 void __stdcall Destroy3D(void);
-void __stdcall CheckVertices( pgos_VERTEX pVertexArray, uint32_t NumberVertices, uint8_t PointsLines=0 );
-void __stdcall CheckVertices2( pgos_VERTEX_2UV pVertexArray, uint32_t NumberVertices );
-void __stdcall CheckVertices3( pgos_VERTEX_3UV pVertexArray, uint32_t NumberVertices );
-void __stdcall DebugTriangle( pgos_VERTEX v1, pgos_VERTEX v2, pgos_VERTEX v3 );
-void __stdcall DebugTriangle_2UV( pgos_VERTEX_2UV v1, pgos_VERTEX_2UV v2, pgos_VERTEX_2UV v3 );
-void __stdcall DebugTriangle_3UV( pgos_VERTEX_3UV v1, pgos_VERTEX_3UV v2, pgos_VERTEX_3UV v3 );
-uint32_t __stdcall GetMipmapColor( int32_t Mipmap );
+void __stdcall CheckVertices(pgos_VERTEX pVertexArray, uint32_t NumberVertices, uint8_t PointsLines = 0);
+void __stdcall CheckVertices2(pgos_VERTEX_2UV pVertexArray, uint32_t NumberVertices);
+void __stdcall CheckVertices3(pgos_VERTEX_3UV pVertexArray, uint32_t NumberVertices);
+void __stdcall DebugTriangle(pgos_VERTEX v1, pgos_VERTEX v2, pgos_VERTEX v3);
+void __stdcall DebugTriangle_2UV(pgos_VERTEX_2UV v1, pgos_VERTEX_2UV v2, pgos_VERTEX_2UV v3);
+void __stdcall DebugTriangle_3UV(pgos_VERTEX_3UV v1, pgos_VERTEX_3UV v2, pgos_VERTEX_3UV v3);
+uint32_t __stdcall GetMipmapColor(int32_t Mipmap);
 
 // clipping.cpp
 MECH_IMPEXP void MECH_CALL gos_ClipDrawQuad(pgos_VERTEX pVertices);
@@ -158,8 +160,9 @@ extern float MaxVCoord;			// The maximum v coord (for current texture)//
 extern float MinVCoord;			// The minimum v coord (for current texture)// Various renderstates based on the capabilities of the current video card
 
 // Various modes the renderer can be in
-typedef enum RenderModeType {
-	Normal=0,						// Normal rendering
+typedef enum RenderModeType
+{
+	Normal = 0,						// Normal rendering
 	WireframeGlobalColor,			// Only wireframe, no texture, global wireframe color
 	WireframeGlobalTexture,			// Global wireframe color ontop of texture
 	ExamineScene,					// Examine, zoom into scene mode

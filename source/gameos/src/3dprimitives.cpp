@@ -2,24 +2,24 @@
  Copyright (c) 2011-2014, Jerker Back. All rights reserved.
 
  Permission to use, copy, modify, and distribute this software for any
- purpose with or without fee is hereby granted, provided that the following 
+ purpose with or without fee is hereby granted, provided that the following
  conditions are met (OSI approved BSD 2-clause license):
 
- 1. Redistributions of source code must retain the above copyright notice, 
+ 1. Redistributions of source code must retain the above copyright notice,
     this list of conditions and the following disclaimer.
- 2. Redistributions in binary form must reproduce the above copyright notice, 
-    this list of conditions and the following disclaimer in the documentation 
+ 2. Redistributions in binary form must reproduce the above copyright notice,
+    this list of conditions and the following disclaimer in the documentation
     and/or other materials provided with the distribution.
 
- THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" 
- AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE 
- IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE 
- DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE 
- FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL 
- DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR 
- SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER 
- CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, 
- OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE 
+ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+ FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 *******************************************************************************/
@@ -29,9 +29,9 @@
  MechCommander 2 source code
 
  2014-07-24 jerker_back, created
- 
+
  $LastChangedBy$
- 
+
 ================================================================================
  RcsID = $Id$ */
 
@@ -48,14 +48,15 @@
 //-------------------------------------------------------------------------
 // Data declarations
 
-static uint16_t		SingleQuadIndexArray[] = {1,0,2,3};
+static uint16_t		SingleQuadIndexArray[] = {1, 0, 2, 3};
 static float		FanLength;
 static uint32_t		FanCalls;
 static float		StripLength;
 static uint32_t		StripCalls;
 
 // unrecognized DirectX vertex type
-typedef enum __3dprimitives_const {
+typedef enum __3dprimitives_const
+{
 	vertextype_unk1			= 0x1C4,
 	vertextype_unk2			= 0x2C4,
 	vertextype_unk3			= 0x3C4,
@@ -79,25 +80,23 @@ MECH_IMPEXP HRESULT MECH_CALL gos_RenderIndexedArray3(pgos_VERTEX_3UV pVertexArr
 //  (you must set the texture to 0 if you want to disable texture mapping on the points)
 #pragma endregion local info
 /// <summary>
-/// <c>gos_DrawPoints</c> 
+/// <c>gos_DrawPoints</c>
 /// </summary>
 /// <remarks>
 /// </remarks>
 /// <param name="Vertices"></param>
 /// <param name="NumVertices"></param>
 /// <returns>MECH_IMPEXP void MECH_CALL</returns>
-MECH_IMPEXP HRESULT MECH_CALL 
+MECH_IMPEXP HRESULT MECH_CALL
 gos_DrawPoints(pgos_VERTEX Vertices, uint32_t NumVertices)
 {
 	gos_VERTEX	vVertices;
 	int32_t			i;
-
 	gosASSERT(!RenderDevice && InsideBeginScene && Vertices && NumVertices);
-
-	if ( DirtyStates )
+	if(DirtyStates)
 		FlushRenderStates();
 	CheckVertices(Vertices, NumVertices, 1);
-	if ( !gDisableLinesPoints || InDebugger )
+	if(!gDisableLinesPoints || InDebugger)
 	{
 		PrimitivesRendered += NumVertices;
 		PointsRendered += NumVertices;
@@ -127,7 +126,7 @@ gos_DrawPoints(pgos_VERTEX Vertices, uint32_t NumVertices)
 //  (you must set the texture to 0 if you want to disable texture mapping on the points)
 #pragma endregion local info
 /// <summary>
-/// <c>gos_DrawLines</c> 
+/// <c>gos_DrawLines</c>
 /// </summary>
 /// <remarks>
 /// </remarks>
@@ -140,19 +139,17 @@ gos_DrawLines(pgos_VERTEX Vertices, uint32_t NumVertices)
 	gos_VERTEX	vVertices1;
 	gos_VERTEX	vVertices2;
 	int32_t			i;
-
-	gosASSERT(!RenderDevice && InsideBeginScene && Vertices && NumVertices && (NumVertices&1)==0);
-
-	if ( DirtyStates )
+	gosASSERT(!RenderDevice && InsideBeginScene && Vertices && NumVertices && (NumVertices & 1) == 0);
+	if(DirtyStates)
 		FlushRenderStates();
 	CheckVertices(Vertices, NumVertices, 1);
-	if ( !gDisableLinesPoints || InDebugger )
+	if(!gDisableLinesPoints || InDebugger)
 	{
 		PrimitivesRendered += NumVertices >> 1;
 		LinesRendered += NumVertices >> 1;
-		if ( ZoomMode )
+		if(ZoomMode)
 		{
-			for ( i = 0; i < NumVertices; i += 2 )
+			for(i = 0; i < NumVertices; i += 2)
 			{
 				memcpy(&vVertices1, &Vertices[i], sizeof(vVertices1));
 				memcpy(&vVertices2, &Vertices[i + 1], sizeof(vVertices2));
@@ -175,25 +172,23 @@ gos_DrawLines(pgos_VERTEX Vertices, uint32_t NumVertices)
 }
 
 #pragma region gos_DrawTriangles
-// Draw triangles, pass a pointer to an array of gos_VERTEX's - 
+// Draw triangles, pass a pointer to an array of gos_VERTEX's -
 // every three vertices is a new triangle
 #pragma endregion local info
 /// <summary>
-/// <c>gos_DrawTriangles</c> 
+/// <c>gos_DrawTriangles</c>
 /// </summary>
 /// <remarks>
 /// </remarks>
 /// <param name="Vertices"></param>
 /// <param name="NumVertices"></param>
 /// <returns>MECH_IMPEXP void MECH_CALL</returns>
-MECH_IMPEXP HRESULT MECH_CALL 
+MECH_IMPEXP HRESULT MECH_CALL
 gos_DrawTriangles(pgos_VERTEX Vertices, uint32_t NumVertices)
 {
 	int32_t i;
-
-	gosASSERT(InsideBeginScene && Vertices && NumVertices && (NumVertices%3)==0);
-
-	if ( RenderDevice )
+	gosASSERT(InsideBeginScene && Vertices && NumVertices && (NumVertices % 3) == 0);
+	if(RenderDevice)
 	{
 		//d3dDevice7->DrawPrimitive( dptPrimitiveType,dvtVertexType,lpvVertices,dwVertexCount,dwFlags )
 		RenderDevice->DrawPrimitive(
@@ -206,16 +201,16 @@ gos_DrawTriangles(pgos_VERTEX Vertices, uint32_t NumVertices)
 	}
 	else
 	{
-		if ( DirtyStates )
+		if(DirtyStates)
 			FlushRenderStates();
 		CheckVertices(Vertices, NumVertices, 0);
-		if ( !gDisablePrimitives || InDebugger )
+		if(!gDisablePrimitives || InDebugger)
 		{
 			PrimitivesRendered += NumVertices / 3;
 			TrianglesRendered += NumVertices / 3;
-			if ( RenderMode )
+			if(RenderMode)
 			{
-				for ( i = 0; i < NumVertices; i += 3 )
+				for(i = 0; i < NumVertices; i += 3)
 					DebugTriangle(&Vertices[i], &Vertices[i + 1], &Vertices[i + 2]);
 			}
 			else
@@ -234,7 +229,7 @@ gos_DrawTriangles(pgos_VERTEX Vertices, uint32_t NumVertices)
 // Draw quads, pass a pointer to an array of gos_VERTEX's - every four vertices is a new quad
 #pragma endregion local info
 /// <summary>
-/// <c>gos_DrawQuads</c> 
+/// <c>gos_DrawQuads</c>
 /// </summary>
 /// <remarks>
 /// </remarks>
@@ -245,20 +240,18 @@ MECH_IMPEXP HRESULT MECH_CALL
 gos_DrawQuads(pgos_VERTEX Vertices, uint32_t NumVertices)
 {
 	int32_t i;
-
-	gosASSERT(!RenderDevice && InsideBeginScene && Vertices && NumVertices && (NumVertices&3)==0);
-	gosASSERT((NumVertices+(NumVertices>>1))<128*6);
-
-	if ( DirtyStates )
+	gosASSERT(!RenderDevice && InsideBeginScene && Vertices && NumVertices && (NumVertices & 3) == 0);
+	gosASSERT((NumVertices + (NumVertices >> 1)) < 128 * 6);
+	if(DirtyStates)
 		FlushRenderStates();
 	CheckVertices(Vertices, NumVertices, 0);
-	if ( !gDisablePrimitives || InDebugger )
+	if(!gDisablePrimitives || InDebugger)
 	{
 		PrimitivesRendered += NumVertices >> 1;
 		QuadsRendered += NumVertices >> 2;
-		if ( RenderMode )
+		if(RenderMode)
 		{
-			for ( i = 0; i < NumVertices; i += 4 )
+			for(i = 0; i < NumVertices; i += 4)
 			{
 				DebugTriangle(&Vertices[i], &Vertices[i + 1], &Vertices[i + 2]);
 				DebugTriangle(&Vertices[i], &Vertices[i + 2], &Vertices[i + 3]);
@@ -266,11 +259,11 @@ gos_DrawQuads(pgos_VERTEX Vertices, uint32_t NumVertices)
 		}
 		else
 		{
-			if ( NumVertices >= 128 )
+			if(NumVertices >= 128)
 			{
 				do
 				{
-					if ( NumVertices < 128 )
+					if(NumVertices < 128)
 					{
 						wDrawIndexedPrimitive(
 							d3dDevice7,
@@ -298,7 +291,7 @@ gos_DrawQuads(pgos_VERTEX Vertices, uint32_t NumVertices)
 						Vertices += 128;
 					}
 				}
-				while ( NumVertices );
+				while(NumVertices);
 			}
 			else
 			{
@@ -325,31 +318,29 @@ gos_DrawQuads(pgos_VERTEX Vertices, uint32_t NumVertices)
 // the 2nd is a new triangle
 #pragma endregion local info
 /// <summary>
-/// <c>gos_DrawStrips</c> 
+/// <c>gos_DrawStrips</c>
 /// </summary>
 /// <remarks>
 /// </remarks>
 /// <param name="Vertices"></param>
 /// <param name="NumVertices"></param>
 /// <returns>MECH_IMPEXP HRESULT MECH_CALL</returns>
-MECH_IMPEXP HRESULT MECH_CALL 
+MECH_IMPEXP HRESULT MECH_CALL
 gos_DrawStrips(pgos_VERTEX Vertices, uint32_t NumVertices)
 {
 	int32_t i;
-
-	gosASSERT(!RenderDevice && InsideBeginScene && Vertices && NumVertices>=3);
-
-	if ( DirtyStates )
+	gosASSERT(!RenderDevice && InsideBeginScene && Vertices && NumVertices >= 3);
+	if(DirtyStates)
 		FlushRenderStates();
 	CheckVertices(Vertices, NumVertices, 0);
-	if ( !gDisablePrimitives || InDebugger )
+	if(!gDisablePrimitives || InDebugger)
 	{
 		PrimitivesRendered = PrimitivesRendered + NumVertices - 2;
 		StripLength = (double)(NumVertices - 2) + StripLength;
 		++StripCalls;
-		if ( RenderMode )
+		if(RenderMode)
 		{
-			for ( i = 0; i < NumVertices - 2; ++i )
+			for(i = 0; i < NumVertices - 2; ++i)
 				DebugTriangle(&Vertices[i], &Vertices[i + 1], &Vertices[i + 2]);
 		}
 		else
@@ -368,31 +359,29 @@ gos_DrawStrips(pgos_VERTEX Vertices, uint32_t NumVertices)
 // the 2nd is a new triangle
 #pragma endregion local info
 /// <summary>
-/// <c>gos_DrawFans</c> 
+/// <c>gos_DrawFans</c>
 /// </summary>
 /// <remarks>
 /// </remarks>
 /// <param name="Vertices"></param>
 /// <param name="NumVertices"></param>
 /// <returns>MECH_IMPEXP HRESULT MECH_CALL</returns>
-MECH_IMPEXP HRESULT MECH_CALL 
+MECH_IMPEXP HRESULT MECH_CALL
 gos_DrawFans(pgos_VERTEX Vertices, uint32_t NumVertices)
 {
 	int32_t i;
-
-	gosASSERT(!RenderDevice && InsideBeginScene && Vertices && NumVertices>=3);
-
-	if ( DirtyStates )
+	gosASSERT(!RenderDevice && InsideBeginScene && Vertices && NumVertices >= 3);
+	if(DirtyStates)
 		FlushRenderStates();
 	CheckVertices(Vertices, NumVertices, 0);
-	if ( !gDisablePrimitives || InDebugger )
+	if(!gDisablePrimitives || InDebugger)
 	{
 		PrimitivesRendered = PrimitivesRendered + NumVertices - 2;
 		FanLength = (double)(NumVertices - 2) + FanLength;
 		++FanCalls;
-		if ( RenderMode )
+		if(RenderMode)
 		{
-			for ( i = 0; i < NumVertices - 2; ++i )
+			for(i = 0; i < NumVertices - 2; ++i)
 				DebugTriangle(&Vertices[i + 1], &Vertices[i + 2], Vertices);
 		}
 		else
@@ -416,7 +405,7 @@ gos_DrawFans(pgos_VERTEX Vertices, uint32_t NumVertices)
 // not altered.
 #pragma endregion local info
 /// <summary>
-/// <c>gos_RenderIndexedArray</c> 
+/// <c>gos_RenderIndexedArray</c>
 /// </summary>
 /// <remarks>
 /// </remarks>
@@ -425,16 +414,14 @@ gos_DrawFans(pgos_VERTEX Vertices, uint32_t NumVertices)
 /// <param name="pwIndices"></param>
 /// <param name="NumberIndices"></param>
 /// <returns>MECH_IMPEXP HRESULT MECH_CALL</returns>
-MECH_IMPEXP HRESULT MECH_CALL 
+MECH_IMPEXP HRESULT MECH_CALL
 gos_RenderIndexedArray1(pgos_VERTEX pVertexArray, uint32_t NumberVertices, puint16_t pwIndices, uint32_t NumberIndices)
 {
 	uint32_t k;
 	uint32_t j;
 	uint32_t i;
-
-	gosASSERT(InsideBeginScene && NumberVertices>0 && NumberIndices>0 && (NumberIndices%3)==0);
-
-	if ( RenderDevice )
+	gosASSERT(InsideBeginScene && NumberVertices > 0 && NumberIndices > 0 && (NumberIndices % 3) == 0);
+	if(RenderDevice)
 	{
 		RenderDevice->DrawIndexedPrimitive(
 			RenderDevice,
@@ -443,40 +430,39 @@ gos_RenderIndexedArray1(pgos_VERTEX pVertexArray, uint32_t NumberVertices, puint
 			pVertexArray,
 			NumberVertices,
 			pwIndices,
-			NumberIndices,0);
+			NumberIndices, 0);
 	}
 	else
 	{
-		if ( DirtyStates )
+		if(DirtyStates)
 			FlushRenderStates();
-		if ( gShowVertexData )
+		if(gShowVertexData)
 		{
-			for ( i = 0; i < NumberIndices; i += 3 )
+			for(i = 0; i < NumberIndices; i += 3)
 				InternalFunctionSpew(
-				"GameOS_Direct3D",
-				"Indices %d,%d,%d",
-				pwIndices[i],
-				pwIndices[i + 1],
-				pwIndices[i + 2]);
+					"GameOS_Direct3D",
+					"Indices %d,%d,%d",
+					pwIndices[i],
+					pwIndices[i + 1],
+					pwIndices[i + 2]);
 		}
-		for ( j = 0; j < NumberIndices; ++j )
+		for(j = 0; j < NumberIndices; ++j)
 		{
 			gosASSERT(pwIndices[j] < NumberVertices);
-
 			CheckVertices(&pVertexArray[pwIndices[j]], 1u, 0);
 		}
-		if ( !gDisablePrimitives || InDebugger )
+		if(!gDisablePrimitives || InDebugger)
 		{
 			PrimitivesRendered += NumberIndices / 3;
 			IndexedTriangleLength = (double)(NumberIndices / 3) + IndexedTriangleLength;
 			++IndexedTriangleCalls;
-			if ( RenderMode )
+			if(RenderMode)
 			{
-				for ( k = 0; k < NumberIndices; k += 3 )
+				for(k = 0; k < NumberIndices; k += 3)
 					DebugTriangle(
-					&pVertexArray[pwIndices[k]],
-					&pVertexArray[pwIndices[k + 1]],
-					&pVertexArray[pwIndices[k + 2]]);
+						&pVertexArray[pwIndices[k]],
+						&pVertexArray[pwIndices[k + 1]],
+						&pVertexArray[pwIndices[k + 2]]);
 			}
 			else
 			{
@@ -504,7 +490,7 @@ gos_RenderIndexedArray1(pgos_VERTEX pVertexArray, uint32_t NumberVertices, puint
 */
 #pragma endregion local info
 /// <summary>
-/// <c>gos_RenderIndexedArray</c> 
+/// <c>gos_RenderIndexedArray</c>
 /// </summary>
 /// <remarks>
 /// </remarks>
@@ -513,34 +499,31 @@ gos_RenderIndexedArray1(pgos_VERTEX pVertexArray, uint32_t NumberVertices, puint
 /// <param name="pwIndices"></param>
 /// <param name="NumberIndices"></param>
 /// <returns>MECH_IMPEXP HRESULT MECH_CALL</returns>
-MECH_IMPEXP HRESULT MECH_CALL 
+MECH_IMPEXP HRESULT MECH_CALL
 gos_RenderIndexedArray2(pgos_VERTEX_2UV pVertexArray, uint32_t NumberVertices, puint16_t pwIndices, uint32_t NumberIndices)
 {
 	uint32_t j;
 	uint32_t i;
-
-	gosASSERT(!RenderDevice && InsideBeginScene && NumberVertices>0 && NumberIndices>0 && (NumberIndices%3)==0);
-
-	if ( DirtyStates )
+	gosASSERT(!RenderDevice && InsideBeginScene && NumberVertices > 0 && NumberIndices > 0 && (NumberIndices % 3) == 0);
+	if(DirtyStates)
 		FlushRenderStates();
-	for ( i = 0; i < NumberIndices; ++i )
+	for(i = 0; i < NumberIndices; ++i)
 	{
 		gosASSERT(pwIndices[i] < NumberVertices);
-
 		CheckVertices2(&pVertexArray[pwIndices[i]], 1u);
 	}
-	if ( !gDisablePrimitives || InDebugger )
+	if(!gDisablePrimitives || InDebugger)
 	{
 		PrimitivesRendered += NumberIndices / 3;
 		IndexedTriangleLength = (double)(NumberIndices / 3) + IndexedTriangleLength;
 		++IndexedTriangleCalls;
-		if ( RenderMode )
+		if(RenderMode)
 		{
-			for ( j = 0; j < NumberIndices; j += 3 )
+			for(j = 0; j < NumberIndices; j += 3)
 				DebugTriangle_2UV(
-				&pVertexArray[pwIndices[j]],
-				&pVertexArray[pwIndices[j + 1]],
-				&pVertexArray[pwIndices[j + 2]]);
+					&pVertexArray[pwIndices[j]],
+					&pVertexArray[pwIndices[j + 1]],
+					&pVertexArray[pwIndices[j + 2]]);
 		}
 		else
 		{
@@ -561,34 +544,31 @@ gos_RenderIndexedArray2(pgos_VERTEX_2UV pVertexArray, uint32_t NumberVertices, p
 	}
 }
 
-MECH_IMPEXP HRESULT MECH_CALL 
+MECH_IMPEXP HRESULT MECH_CALL
 gos_RenderIndexedArray3(pgos_VERTEX_3UV pVertexArray, uint32_t NumberVertices, puint16_t pwIndices, uint32_t NumberIndices)
 {
 	uint32_t j;
 	uint32_t i;
-
-	gosASSERT(!RenderDevice && InsideBeginScene && NumberVertices>0 && NumberIndices>0 && (NumberIndices%3)==0);
-
-	if ( DirtyStates )
+	gosASSERT(!RenderDevice && InsideBeginScene && NumberVertices > 0 && NumberIndices > 0 && (NumberIndices % 3) == 0);
+	if(DirtyStates)
 		FlushRenderStates();
-	for ( i = 0; i < NumberIndices; ++i )
+	for(i = 0; i < NumberIndices; ++i)
 	{
 		gosASSERT(pwIndices[i] < NumberVertices);
-
 		CheckVertices3(&pVertexArray[pwIndices[i]], 1u);
 	}
-	if ( !gDisablePrimitives || InDebugger )
+	if(!gDisablePrimitives || InDebugger)
 	{
 		PrimitivesRendered += NumberIndices / 3;
 		IndexedTriangleLength = (double)(NumberIndices / 3) + IndexedTriangleLength;
 		++IndexedTriangleCalls;
-		if ( RenderMode )
+		if(RenderMode)
 		{
-			for ( j = 0; j < NumberIndices; j += 3 )
+			for(j = 0; j < NumberIndices; j += 3)
 				DebugTriangle_3UV(
-				&pVertexArray[pwIndices[j]],
-				&pVertexArray[pwIndices[j + 1]],
-				&pVertexArray[pwIndices[j + 2]]);
+					&pVertexArray[pwIndices[j]],
+					&pVertexArray[pwIndices[j + 1]],
+					&pVertexArray[pwIndices[j + 2]]);
 		}
 		else
 		{

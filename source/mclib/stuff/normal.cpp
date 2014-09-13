@@ -27,19 +27,17 @@ const Normal3D Normal3D::Down(DOWN_X, DOWN_Y, DOWN_Z);
 //#############################################################################
 //
 Normal3D&
-	Normal3D::Multiply_Inverse(
-		const Normal3D &Source,
-		const AffineMatrix4D &M
-	)
+Normal3D::Multiply_Inverse(
+	const Normal3D& Source,
+	const AffineMatrix4D& M
+)
 {
 	Check_Object(this);
 	Check_Object(&Source);
 	Check_Object(&M);
-
-	x = Source.x*M(0,0) + Source.y*M(0,1) + Source.z*M(0,2);
-	y = Source.x*M(1,0) + Source.y*M(1,1) + Source.z*M(1,2);
-	z = Source.x*M(2,0) + Source.y*M(2,1) + Source.z*M(2,2);
-
+	x = Source.x * M(0, 0) + Source.y * M(0, 1) + Source.z * M(0, 2);
+	y = Source.x * M(1, 0) + Source.y * M(1, 1) + Source.z * M(1, 2);
+	z = Source.x * M(2, 0) + Source.y * M(2, 1) + Source.z * M(2, 2);
 	return *this;
 }
 
@@ -48,17 +46,16 @@ Normal3D&
 //#############################################################################
 //
 Normal3D&
-	Normal3D::Multiply(
-		const Normal3D &n,
-		const AffineMatrix4D &m
-	)
+Normal3D::Multiply(
+	const Normal3D& n,
+	const AffineMatrix4D& m
+)
 {
 	Check_Object(this);
 	Check_Object(&n);
 	Check_Object(&n);
 	Verify(this != &n);
-
 	AffineMatrix4D m2;
 	m2.Invert(m);
-	return Multiply_Inverse(n,m);
+	return Multiply_Inverse(n, m);
 }

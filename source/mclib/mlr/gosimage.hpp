@@ -10,7 +10,8 @@
 #include <stuff/plug.hpp>
 #include <stuff/mstring.hpp>
 
-namespace MidLevelRenderer {
+namespace MidLevelRenderer
+{
 
 	class GOSImage:
 		public Stuff::Plug
@@ -30,7 +31,7 @@ namespace MidLevelRenderer {
 		int32_t		GetHeight(void);
 
 		PCSTR	GetName(void)
-		{ 
+		{
 			Check_Object(this);
 			return imageName;
 		}
@@ -50,35 +51,35 @@ namespace MidLevelRenderer {
 		}
 
 		int32_t GetRef(void)
-		{ 
-			Check_Object(this); return instance; 
+		{
+			Check_Object(this);
+			return instance;
 		}
 
 		bool IsLoaded(void)
 		{
-			Check_Object(this); 
-			return ( (flags & Loaded) != 0);
+			Check_Object(this);
+			return ((flags & Loaded) != 0);
 		}
 
 		uint32_t GetHandle(void)
-		{ 
+		{
 			Check_Object(this);
 			uint32_t imageHandle = mcTextureManager->get_gosTextureHandle(mcTextureNodeIndex);
-
-			if (imageHandle == 0xffffffff)
+			if(imageHandle == 0xffffffff)
 				imageHandle = 0;
-
-			return imageHandle; 
+			return imageHandle;
 		}
 
-		void SetHandle (uint32_t handle)
+		void SetHandle(uint32_t handle)
 		{
 			//EVERY call to this must change from gos_load to our load
-			Check_Object(this);  
+			Check_Object(this);
 			mcTextureNodeIndex = handle;
 		}
 
-		enum {
+		enum
+		{
 			Loaded = 1,
 			Locked = 2
 		};
@@ -87,10 +88,10 @@ namespace MidLevelRenderer {
 		void	UnlockImage(void);
 		puint8_t	GetImagePtr(void)
 		{
-			return (puint8_t )ptr.pTexture;
+			return (puint8_t)ptr.pTexture;
 		}
 		int32_t		GetPitch(void)
-		{ 
+		{
 			return ptr.Pitch;
 		}
 

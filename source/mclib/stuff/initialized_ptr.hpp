@@ -21,8 +21,8 @@ namespace Stuff
 	template <class T>
 	class Initialized_Ptr
 	{
-	  public:
-		operator T*(void) const
+	public:
+		operator T* (void) const
 		{
 			return (m_ptr);
 		}
@@ -52,7 +52,7 @@ namespace Stuff
 			m_ptr = ptr;
 		}
 
-	  private:
+	private:
 		T* m_ptr;
 	};
 

@@ -21,7 +21,7 @@
 #endif
 
 
-class ListFriendlyDPID:public ListItem
+class ListFriendlyDPID: public ListItem
 {
 public:
 	DPID ID;
@@ -40,7 +40,7 @@ public:
 
 };
 
-class FIDPGroup:public ListItem
+class FIDPGroup: public ListItem
 {
 protected:
 	DPID				groupID;
@@ -48,27 +48,27 @@ protected:
 	char				shortName[64];
 	char				longName[256];
 	uint32_t		groupFlags;
-	
+
 	LPVOID		groupData;
-	uint32_t		dataSize;	
+	uint32_t		dataSize;
 	FLinkedList<ListFriendlyDPID> playerIDList;
 
 
 
 public:
-	
-	
+
+
 	// Constructor and destructor
 	FIDPGroup(void);
 	FIDPGroup(DPID id,
-		DPID parent_id,
-		LPCDPNAME name,
-		uint32_t flags);
+			  DPID parent_id,
+			  LPCDPNAME name,
+			  uint32_t flags);
 
 	virtual ~FIDPGroup(void);
 
 
-	inline FLinkedList<ListFriendlyDPID> *GetPlayerList()
+	inline FLinkedList<ListFriendlyDPID>* GetPlayerList()
 	{
 		return &playerIDList;
 	}
@@ -79,25 +79,25 @@ public:
 
 	inline void  SetShortName(PSTR name)
 	{
-		if (name != nullptr)
+		if(name != nullptr)
 		{
-			strncpy(shortName,name,64);		
+			strncpy(shortName, name, 64);
 		}
 		else
 		{
-			strcpy(shortName,"");
+			strcpy(shortName, "");
 		}
 	}
-	
+
 	inline void SetLongName(PSTR name)
 	{
-		if (name != nullptr)
+		if(name != nullptr)
 		{
-			strncpy(longName,name,255);		
+			strncpy(longName, name, 255);
 		}
 		else
 		{
-			strcpy(longName,"");
+			strcpy(longName, "");
 		}
 	}
 

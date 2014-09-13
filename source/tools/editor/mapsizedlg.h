@@ -17,15 +17,22 @@ TerrainDlg:
 **************************************************************************************************/
 class MapSizeDlg: public CDialog
 {
-	public:
+public:
 
-		MapSizeDlg() : CDialog( IDD_MAPSIZE ){ mapSize = 0;}
-		virtual ~MapSizeDlg(){}
-		virtual void Init(void);
-		virtual BOOL OnInitDialog(){ Init(void); return true; }
-		void OnOK(void);
+	MapSizeDlg() : CDialog(IDD_MAPSIZE)
+	{
+		mapSize = 0;
+	}
+	virtual ~MapSizeDlg() {}
+	virtual void Init(void);
+	virtual BOOL OnInitDialog()
+	{
+		Init(void);
+		return true;
+	}
+	void OnOK(void);
 
-		int32_t mapSize;
+	int32_t mapSize;
 };
 
 

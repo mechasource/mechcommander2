@@ -23,7 +23,7 @@ float	scenarioTime = 0.0;
 uint32_t	LastTimeGetTime = 0;
 bool dynamicFrameTiming = TRUE;
 
-PSTR monthName[12] = 
+PSTR monthName[12] =
 {
 	"Jan",
 	"Feb",
@@ -44,21 +44,20 @@ uint32_t MCTiming_GetTimeZoneInforation(PVOIDtimeData)
 {
 	// Get Time Zone information for this machine to calculate
 	// Astronomy correctly.
-	uint32_t daylightSavingsInfo = GetTimeZoneInformation((TIME_ZONE_INFORMATION *)timeData);
+	uint32_t daylightSavingsInfo = GetTimeZoneInformation((TIME_ZONE_INFORMATION*)timeData);
 	return daylightSavingsInfo;
 }
 
 //----------------------------------------------------------------------------------
-uint32_t MCTiming_GetTimeZoneInformationSize (void)
+uint32_t MCTiming_GetTimeZoneInformationSize(void)
 {
 	return sizeof(TIME_ZONE_INFORMATION);
 }
 
 //----------------------------------------------------------------------------------
-void MC_SYSTEMTIME::copyFromSystemTime (PVOIDsystemTime)
+void MC_SYSTEMTIME::copyFromSystemTime(PVOIDsystemTime)
 {
-	SYSTEMTIME *sysTime = (SYSTEMTIME *)systemTime;
-	
+	SYSTEMTIME* sysTime = (SYSTEMTIME*)systemTime;
 	dwYear		   =	sysTime->wYear;
 	dwMonth		   =	sysTime->wMonth;
 	dwDayOfWeek	   =	sysTime->wDayOfWeek;
@@ -70,19 +69,17 @@ void MC_SYSTEMTIME::copyFromSystemTime (PVOIDsystemTime)
 }
 
 //----------------------------------------------------------------------------------
-void MCTiming_GetUTCSystemTimeFromInformation(uint32_t daylightInfo, PVOIDtimeData, MC_SYSTEMTIME *systemTime)
+void MCTiming_GetUTCSystemTimeFromInformation(uint32_t daylightInfo, PVOIDtimeData, MC_SYSTEMTIME* systemTime)
 {
-	TIME_ZONE_INFORMATION *tzInfo = (TIME_ZONE_INFORMATION *)timeData;
-
+	TIME_ZONE_INFORMATION* tzInfo = (TIME_ZONE_INFORMATION*)timeData;
 	SYSTEMTIME sysTime;
 	GetSystemTime(&sysTime);
-
 	int32_t bias = tzInfo->Bias;
-	if (daylightInfo == TIME_ZONE_ID_STANDARD)
+	if(daylightInfo == TIME_ZONE_ID_STANDARD)
 	{
 		bias += tzInfo->StandardBias;
 	}
-	else if (daylightInfo == TIME_ZONE_ID_DAYLIGHT)
+	else if(daylightInfo == TIME_ZONE_ID_DAYLIGHT)
 	{
 		bias += tzInfo->DaylightBias;
 	}
@@ -90,7 +87,6 @@ void MCTiming_GetUTCSystemTimeFromInformation(uint32_t daylightInfo, PVOIDtimeDa
 	{
 		bias += tzInfo->StandardBias;
 	}
-
 	systemTime->copyFromSystemTime(&(sysTime));
 }
 

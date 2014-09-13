@@ -15,9 +15,10 @@
 #include <stuff/iterator.hpp>
 #include <stuff/sortedsocket.hpp>
 
-namespace Stuff {
+namespace Stuff
+{
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~ TableEntry ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~ TableEntry ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 	class Table;
 
@@ -26,34 +27,40 @@ namespace Stuff {
 	{
 	public:
 		TableEntry(
-			Table *table,
-			Plug *plug
-			);
+			Table* table,
+			Plug* plug
+		);
 		~TableEntry(void);
 	};
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~ TableEntryOf ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~ TableEntryOf ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-	enum {TableEntry_Memoryblock_Allocation=100};
+	enum {TableEntry_Memoryblock_Allocation = 100};
 
 	template <class V> class TableEntryOf:
-	public TableEntry
+		public TableEntry
 	{
 	public:
 		TableEntryOf(
-			Table *table,
-			Plug *plug,
-			const V &value
-			);
+			Table* table,
+			Plug* plug,
+			const V& value
+		);
 		~TableEntryOf(void);
 
 		PVOID
-			operator new(size_t);
+		operator new(size_t);
 		void
-			operator delete(PVOID where);
+		operator delete(PVOID where);
 
-		V	GetValue() { return value; }
-		V*	GetValuePointer() { return &value; }
+		V	GetValue()
+		{
+			return value;
+		}
+		V*	GetValuePointer()
+		{
+			return &value;
+		}
 
 	private:
 		static MemoryBlock*		allocatedMemory;
@@ -61,20 +68,20 @@ namespace Stuff {
 		V						value;
 	};
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~ TableEntryOf templates ~~~~~~~~~~~~~~~~~~~~~~~~
+//~~~~~~~~~~~~~~~~~~~~~~~~~~ TableEntryOf templates ~~~~~~~~~~~~~~~~~~~~~~~~
 
 	template <class V> MemoryBlock*
-		TableEntryOf<V>::allocatedMemory = nullptr;
+	TableEntryOf<V>::allocatedMemory = nullptr;
 	template <class V> CollectionSize
-		TableEntryOf<V>::allocationCount = 0;
+	TableEntryOf<V>::allocationCount = 0;
 
 	template <class V>
 	TableEntryOf<V>::TableEntryOf(
-		Table *table,
-		Plug *plug,
-		const V &value
-		):
-	TableEntry(table, plug)
+		Table* table,
+		Plug* plug,
+		const V& value
+	):
+		TableEntry(table, plug)
 	{
 		this->value = value;
 	}
@@ -85,10 +92,10 @@ namespace Stuff {
 	}
 
 	template <class V> PVOID
-		TableEntryOf<V>::operator new(size_t)
+	TableEntryOf<V>::operator new(size_t)
 	{
 		Verify(allocationCount >= 0);
-		if (allocationCount++ == 0)
+		if(allocationCount++ == 0)
 		{
 			allocatedMemory =
 				new MemoryBlock(
@@ -97,7 +104,7 @@ namespace Stuff {
 				TableEntry_Memoryblock_Allocation,
 				"Stuff::TableEntryOf",
 				Stuff::ConnectionEngineHeap
-				);
+			);
 			Register_Object(allocatedMemory);
 		}
 		Verify(allocationCount < INT_MAX);
@@ -106,11 +113,11 @@ namespace Stuff {
 	}
 
 	template <class V> void
-		TableEntryOf<V>::operator delete(PVOID where)
+	TableEntryOf<V>::operator delete(PVOID where)
 	{
 		Check_Object(allocatedMemory);
 		allocatedMemory->Delete(where);
-		if (--allocationCount == 0)
+		if(--allocationCount == 0)
 		{
 			Unregister_Object(allocatedMemory);
 			delete allocatedMemory;
@@ -119,7 +126,7 @@ namespace Stuff {
 		Verify(allocationCount >= 0);
 	}
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Table ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Table ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 	const IteratorPosition TableNullIndex = IteratorPosition(-1);
 
@@ -144,16 +151,16 @@ namespace Stuff {
 		//--------------------------------------------------------------------
 		//
 		Table(
-			Node *node,
+			Node* node,
 			bool has_unique_entries
-			);
+		);
 		~Table(void);
 
 		void TestInstance(void);
 		static bool
-			TestClass(void);
+		TestClass(void);
 		static bool
-			ProfileClass(void);
+		ProfileClass(void);
 
 		//
 		//-----------------------------------------------------------------------
@@ -161,7 +168,7 @@ namespace Stuff {
 		//-----------------------------------------------------------------------
 		//
 		bool
-			IsEmpty(void);
+		IsEmpty(void);
 
 	protected:
 		//
@@ -172,17 +179,17 @@ namespace Stuff {
 		//--------------------------------------------------------------------
 		//
 		void
-			AddImplementation(Plug *plug);
+		AddImplementation(Plug* plug);
 		void
-			AddValueImplementation(
-			Plug *plug,
+		AddValueImplementation(
+			Plug* plug,
 			PCVOID value
-			);
+		);
 		Plug
-			*FindImplementation(PCVOID value);
+		* FindImplementation(PCVOID value);
 #if 0
 		Plug
-			*FindCloseImplementation(PCVOID value);
+		* FindCloseImplementation(PCVOID value);
 #endif
 
 	private:
@@ -194,53 +201,53 @@ namespace Stuff {
 		//--------------------------------------------------------------------
 		//
 		virtual TableEntry
-			*MakeTableEntry(
-			Plug *plug,
+		* MakeTableEntry(
+			Plug* plug,
 			PCVOID value
-			);
+		);
 
 		virtual IteratorPosition
-			CompareTableEntries(
-			TableEntry *entry1,
-			TableEntry *entry2
-			);
+		CompareTableEntries(
+			TableEntry* entry1,
+			TableEntry* entry2
+		);
 
 		virtual IteratorPosition
-			CompareValueToTableEntry(
+		CompareValueToTableEntry(
 			PCVOID value,
-			TableEntry *entry
-			);
+			TableEntry* entry
+		);
 
 		void
-			AddTableEntry(TableEntry *entry);
+		AddTableEntry(TableEntry* entry);
 		void
-			SortTableEntries(void);
+		SortTableEntries(void);
 		IteratorPosition
-			SearchForValue(PCVOID value);
+		SearchForValue(PCVOID value);
 #if 0
 		IteratorPosition
-			SearchForCloseValue(PCVOID value);
+		SearchForCloseValue(PCVOID value);
 #endif
 		IteratorPosition
-			SearchForTableEntry(TableEntry *entry);
+		SearchForTableEntry(TableEntry* entry);
 		void
-			RemoveNthTableEntry(CollectionSize index);
+		RemoveNthTableEntry(CollectionSize index);
 
 		//
 		//--------------------------------------------------------------------
 		// Private data
 		//--------------------------------------------------------------------
 		//
-		TableEntry **array;
+		TableEntry** array;
 		CollectionSize
-			numItems,
-			maxItems;
+		numItems,
+		maxItems;
 	};
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ TableOf ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ TableOf ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 	template <class T, class V> class TableOf:
-	public Table
+		public Table
 	{
 	public:
 		//
@@ -251,9 +258,9 @@ namespace Stuff {
 		//--------------------------------------------------------------------
 		//
 		TableOf(
-			Node *node,
+			Node* node,
 			bool has_unique_entries
-			);
+		);
 		~TableOf(void);
 
 		//
@@ -262,21 +269,29 @@ namespace Stuff {
 		//--------------------------------------------------------------------
 		//
 		void
-			AddValue(
+		AddValue(
 			T plug,
-			const V &value
-			)
-		{AddValueImplementation(Cast_Object(Plug*,plug), &value);}
+			const V& value
+		)
+		{
+			AddValueImplementation(Cast_Object(Plug*, plug), &value);
+		}
 		void
-			Remove(T plug)
-		{RemovePlug(Cast_Object(Plug*,plug));}
+		Remove(T plug)
+		{
+			RemovePlug(Cast_Object(Plug*, plug));
+		}
 		T
-			Find(const V &value)
-		{return (T)FindImplementation(&value);}
+		Find(const V& value)
+		{
+			return (T)FindImplementation(&value);
+		}
 #if 0
 		T
-			FindClose(const V &value)
-		{return (T)FindCloseImplementation(&value);}
+		FindClose(const V& value)
+		{
+			return (T)FindCloseImplementation(&value);
+		}
 #endif
 
 	private:
@@ -288,40 +303,40 @@ namespace Stuff {
 		//--------------------------------------------------------------------
 		//
 		TableEntry*
-			MakeTableEntry(
-			Plug *plug,
+		MakeTableEntry(
+			Plug* plug,
 			PCVOID value
-			)
+		)
 		{
 			return
 				new TableEntryOf<V>(
-				this,
-				plug,
-				*Cast_Pointer(const V*, value)
+					this,
+					plug,
+					*Cast_Pointer(const V*, value)
 				);
 		}
 		IteratorPosition
-			CompareTableEntries(
-			TableEntry *entry1,
-			TableEntry *entry2
-			);
+		CompareTableEntries(
+			TableEntry* entry1,
+			TableEntry* entry2
+		);
 		IteratorPosition
-			CompareValueToTableEntry(
+		CompareValueToTableEntry(
 			PCVOID value,
-			TableEntry *entry
-			);
+			TableEntry* entry
+		);
 	};
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~ TableOf templates ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~ TableOf templates ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 	template <class T, class V>
 	TableOf<T, V>::TableOf(
-		Node *node,
+		Node* node,
 		bool has_unique_entries
-		):
-	Table(
-		node,
-		has_unique_entries
+	):
+		Table(
+			node,
+			has_unique_entries
 		)
 	{
 	}
@@ -332,41 +347,37 @@ namespace Stuff {
 	}
 
 	template <class T, class V> IteratorPosition
-		TableOf<T, V>::CompareTableEntries(
-		TableEntry *entry1,
-		TableEntry *entry2
-		)
+	TableOf<T, V>::CompareTableEntries(
+		TableEntry* entry1,
+		TableEntry* entry2
+	)
 	{
-		V *ptr1 = Cast_Object(TableEntryOf<V>*, entry1)->GetValuePointer(void);
-		V *ptr2 = Cast_Object(TableEntryOf<V>*, entry2)->GetValuePointer(void);
-
+		V* ptr1 = Cast_Object(TableEntryOf<V>*, entry1)->GetValuePointer(void);
+		V* ptr2 = Cast_Object(TableEntryOf<V>*, entry2)->GetValuePointer(void);
 		Check_Pointer(ptr1);
 		Check_Pointer(ptr2);
-
-		if (*ptr1 == *ptr2)
+		if(*ptr1 == *ptr2)
 			return 0;
 		else
 			return IteratorPosition((*ptr1 > *ptr2) ? 1 : -1);
 	}
 
 	template <class T, class V> IteratorPosition
-		TableOf<T, V>::CompareValueToTableEntry(
+	TableOf<T, V>::CompareValueToTableEntry(
 		PCVOID value,
-		TableEntry *link
-		)
+		TableEntry* link
+	)
 	{
 		Check_Pointer(value);
-
-		V *ptr = Cast_Object(TableEntryOf<V>*, link)->GetValuePointer(void);
+		V* ptr = Cast_Object(TableEntryOf<V>*, link)->GetValuePointer(void);
 		Check_Pointer(ptr);
-
-		if (*Cast_Pointer(const V*, value) == *ptr)
+		if(*Cast_Pointer(const V*, value) == *ptr)
 			return 0;
 		else
 			return IteratorPosition((*Cast_Pointer(const V*, value) > *ptr) ? 1 : -1);
 	}
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~ TableIterator ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~ TableIterator ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 	class TableIterator:
 		public SortedIterator
@@ -385,7 +396,7 @@ namespace Stuff {
 		// Constructors, Destructor and testing
 		//--------------------------------------------------------------------
 		//
-		explicit TableIterator(Table *table);
+		explicit TableIterator(Table* table);
 		~TableIterator(void);
 		void		TestInstance(void);
 
@@ -429,15 +440,15 @@ namespace Stuff {
 		//--------------------------------------------------------------------
 		//
 		void
-			ReceiveMemo(
+		ReceiveMemo(
 			IteratorMemo memo,
 			PVOID content
-			);
+		);
 
 		TableEntry*
-			NthEntry(CollectionSize index)
+		NthEntry(CollectionSize index)
 #if defined(_ARMOR)
-			;
+		;
 #else
 		{
 			return array[index];
@@ -446,12 +457,12 @@ namespace Stuff {
 
 		void IncrementPosition()
 		{
-			if (++currentPosition >= numItems) currentPosition = TableNullIndex;
+			if(++currentPosition >= numItems) currentPosition = TableNullIndex;
 		}
 
 		void DecrementPosition()
 		{
-			if (intptr_t(--currentPosition) < 0) currentPosition = TableNullIndex;
+			if(intptr_t(--currentPosition) < 0) currentPosition = TableNullIndex;
 		}
 
 		//
@@ -461,13 +472,13 @@ namespace Stuff {
 		//
 		TableEntry**		array;
 		CollectionSize		numItems;
-		IteratorPosition	currentPosition;			
+		IteratorPosition	currentPosition;
 	};
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~ TableIteratorOf ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~ TableIteratorOf ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 	template <class T, class V> class TableIteratorOf:
-	public TableIterator
+		public TableIterator
 	{
 	public:
 		//
@@ -483,9 +494,9 @@ namespace Stuff {
 		// Constructors and Destructor
 		//--------------------------------------------------------------------
 		//
-		explicit TableIteratorOf(TableOf<T, V> *table);
+		explicit TableIteratorOf(TableOf<T, V>* table);
 		Iterator*
-			MakeClone(void);
+		MakeClone(void);
 		~TableIteratorOf(void);
 
 		//
@@ -513,7 +524,7 @@ namespace Stuff {
 			return (T)GetNthImplementation(index);
 		}
 
-		T Find(const V &value)
+		T Find(const V& value)
 		{
 			return (T)FindImplementation(&value);
 		}
@@ -524,16 +535,16 @@ namespace Stuff {
 		}
 	};
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~ TableIteratorOf templates ~~~~~~~~~~~~~~~~~~~~~~~
+//~~~~~~~~~~~~~~~~~~~~~~~~ TableIteratorOf templates ~~~~~~~~~~~~~~~~~~~~~~~
 
 	template <class T, class V>
-	TableIteratorOf<T, V>::TableIteratorOf(TableOf<T, V> *table):
-	TableIterator(table)
+	TableIteratorOf<T, V>::TableIteratorOf(TableOf<T, V>* table):
+		TableIterator(table)
 	{
 	}
 
 	template <class T, class V> Iterator*
-		TableIteratorOf<T, V>::MakeClone()
+	TableIteratorOf<T, V>::MakeClone()
 	{
 		return new TableIteratorOf<T, V>(*this);
 	}

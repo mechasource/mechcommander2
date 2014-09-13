@@ -44,10 +44,10 @@
 //---------------------------------------------------------------------------
 // Class Definitions
 class Terrain;
-typedef Terrain *TerrainPtr;
+typedef Terrain* TerrainPtr;
 
 class TerrainWindow;
-typedef TerrainWindow *TerrainWindowPtr;
+typedef TerrainWindow* TerrainWindowPtr;
 
 //---------------------------------------------------------------------------
 #endif

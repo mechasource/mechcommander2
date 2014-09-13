@@ -2,24 +2,24 @@
  Copyright (c) 2011-2014, Jerker Back. All rights reserved.
 
  Permission to use, copy, modify, and distribute this software for any
- purpose with or without fee is hereby granted, provided that the following 
+ purpose with or without fee is hereby granted, provided that the following
  conditions are met (OSI approved BSD 2-clause license):
 
- 1. Redistributions of source code must retain the above copyright notice, 
+ 1. Redistributions of source code must retain the above copyright notice,
     this list of conditions and the following disclaimer.
- 2. Redistributions in binary form must reproduce the above copyright notice, 
-    this list of conditions and the following disclaimer in the documentation 
+ 2. Redistributions in binary form must reproduce the above copyright notice,
+    this list of conditions and the following disclaimer in the documentation
     and/or other materials provided with the distribution.
 
- THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" 
- AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE 
- IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE 
- DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE 
- FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL 
- DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR 
- SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER 
- CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, 
- OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE 
+ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+ FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 *******************************************************************************/
@@ -29,9 +29,9 @@
  MechCommander 2 source code
 
  2014-07-24 jerker_back, created
- 
+
  $LastChangedBy$
- 
+
 ================================================================================
  RcsID = $Id$ */
 
@@ -49,7 +49,7 @@ HRESULT __stdcall wACMStreamUnprepareHeader(HACMSTREAM has, PACMSTREAMHEADER pas
 HRESULT __stdcall wACMStreamClose(HACMSTREAM has, uint32_t fdwClose);
 HRESULT __stdcall wACMStreamOpen(PHACMSTREAM phas, HACMDRIVER had, const PWAVEFORMATEX pwfxSrc, const PWAVEFORMATEX pwfxDst, PWAVEFILTER pwfltr, ULONG_PTR dwCallback, ULONG_PTR dwInstance, uint32_t fdwOpen);
 HRESULT __stdcall wACMStreamSize(HACMSTREAM has, uint32_t cbInput, puint32_t pdwOutputBytes, uint32_t fdwSize);
-HRESULT __stdcall wACMFormatSuggest(HACMDRIVER had, const struct tWAVEFORMATEX *pwfxSrc, const struct tWAVEFORMATEX *pwfxDst, uint32_t cbwfxDst, uint32_t fdwSuggest);
+HRESULT __stdcall wACMFormatSuggest(HACMDRIVER had, const struct tWAVEFORMATEX* pwfxSrc, const struct tWAVEFORMATEX* pwfxDst, uint32_t cbwfxDst, uint32_t fdwSuggest);
 #endif
 
 #pragma region wACMStreamPrepareHeader
@@ -58,7 +58,7 @@ HRESULT __stdcall wACMFormatSuggest(HACMDRIVER had, const struct tWAVEFORMATEX *
 */
 #pragma endregion local info
 /// <summary>
-/// <c>wACMStreamPrepareHeader</c> 
+/// <c>wACMStreamPrepareHeader</c>
 /// </summary>
 /// <remarks>
 /// </remarks>
@@ -66,25 +66,24 @@ HRESULT __stdcall wACMFormatSuggest(HACMDRIVER had, const struct tWAVEFORMATEX *
 /// <param name="pash"></param>
 /// <param name="fdwPrepare"></param>
 /// <returns>HRESULT __stdcall</returns>
-HRESULT __stdcall 
+HRESULT __stdcall
 wACMStreamPrepareHeader(HACMSTREAM has, PACMSTREAMHEADER pash, uint32_t fdwPrepare)
 {
 	PSTR		pszErrorMessage;
 	MMRESULT	hResult;
-
 	InternalFunctionSpew("GameOS_DirectSound", "acmStreamPrepareHeader(0x%x, 0x%x, 0x%x)", has, pash, fdwPrepare);
 	hResult = acmStreamPrepareHeader(has, pash, fdwPrepare);
-	if (MMFAILED(hResult))
+	if(MMFAILED(hResult))
 	{
 		pszErrorMessage = ErrorNumberToMessage(hResult);
 		//PAUSE(
-		if ( InternalFunctionPause(
-			"FAILED (0x%x - %s) - acmStreamPrepareHeader(0x%x, 0x%x, 0x%x)",
-			hResult,
-			pszErrorMessage,
-			has,
-			pash,
-			fdwPrepare) )
+		if(InternalFunctionPause(
+					"FAILED (0x%x - %s) - acmStreamPrepareHeader(0x%x, 0x%x, 0x%x)",
+					hResult,
+					pszErrorMessage,
+					has,
+					pash,
+					fdwPrepare))
 			ENTER_DEBUGGER;
 	}
 	return hResult;
@@ -96,7 +95,7 @@ wACMStreamPrepareHeader(HACMSTREAM has, PACMSTREAMHEADER pash, uint32_t fdwPrepa
 */
 #pragma endregion local info
 /// <summary>
-/// <c>wACMStreamConvert</c> 
+/// <c>wACMStreamConvert</c>
 /// </summary>
 /// <remarks>
 /// </remarks>
@@ -104,25 +103,24 @@ wACMStreamPrepareHeader(HACMSTREAM has, PACMSTREAMHEADER pash, uint32_t fdwPrepa
 /// <param name="pash"></param>
 /// <param name="fdwConvert"></param>
 /// <returns>HRESULT __stdcall</returns>
-HRESULT __stdcall 
+HRESULT __stdcall
 wACMStreamConvert(HACMSTREAM has, PACMSTREAMHEADER pash, uint32_t fdwConvert)
 {
 	PSTR		pszErrorMessage;
 	MMRESULT	hResult;
-
 	InternalFunctionSpew("GameOS_DirectSound", "acmStreamConvert(0x%x, 0x%x, 0x%x)", has, pash, fdwConvert);
 	hResult = acmStreamConvert(has, pash, fdwConvert);
-	if (MMFAILED(hResult))
+	if(MMFAILED(hResult))
 	{
 		pszErrorMessage = ErrorNumberToMessage(hResult);
 		//PAUSE(
-		if ( InternalFunctionPause(
-			"FAILED (0x%x - %s) - acmStreamConvert(0x%x, 0x%x, 0x%x)",
-			hResult,
-			pszErrorMessage,
-			has,
-			pash,
-			fdwConvert) )
+		if(InternalFunctionPause(
+					"FAILED (0x%x - %s) - acmStreamConvert(0x%x, 0x%x, 0x%x)",
+					hResult,
+					pszErrorMessage,
+					has,
+					pash,
+					fdwConvert))
 			ENTER_DEBUGGER;
 	}
 	return hResult;
@@ -134,7 +132,7 @@ wACMStreamConvert(HACMSTREAM has, PACMSTREAMHEADER pash, uint32_t fdwConvert)
 */
 #pragma endregion local info
 /// <summary>
-/// <c>wACMStreamUnprepareHeader</c> 
+/// <c>wACMStreamUnprepareHeader</c>
 /// </summary>
 /// <remarks>
 /// </remarks>
@@ -142,25 +140,24 @@ wACMStreamConvert(HACMSTREAM has, PACMSTREAMHEADER pash, uint32_t fdwConvert)
 /// <param name="pash"></param>
 /// <param name="fdwUnprepare"></param>
 /// <returns>HRESULT __stdcall</returns>
-HRESULT __stdcall 
+HRESULT __stdcall
 wACMStreamUnprepareHeader(HACMSTREAM has, PACMSTREAMHEADER pash, uint32_t fdwUnprepare)
 {
 	PSTR		pszErrorMessage;
 	MMRESULT	hResult;
-
 	InternalFunctionSpew("GameOS_DirectSound", "acmStreamUnprepareHeader(0x%x, 0x%x, 0x%x)", has, pash, fdwUnprepare);
 	hResult = acmStreamUnprepareHeader(has, pash, fdwUnprepare);
-	if (MMFAILED(hResult))
+	if(MMFAILED(hResult))
 	{
 		pszErrorMessage = ErrorNumberToMessage(hResult);
 		//PAUSE(
-		if ( InternalFunctionPause(
-			"FAILED (0x%x - %s) - acmStreamUnprepareHeader(0x%x, 0x%x, 0x%x)",
-			hResult,
-			pszErrorMessage,
-			has,
-			pash,
-			fdwUnprepare) )
+		if(InternalFunctionPause(
+					"FAILED (0x%x - %s) - acmStreamUnprepareHeader(0x%x, 0x%x, 0x%x)",
+					hResult,
+					pszErrorMessage,
+					has,
+					pash,
+					fdwUnprepare))
 			ENTER_DEBUGGER;
 	}
 	return hResult;
@@ -172,30 +169,29 @@ wACMStreamUnprepareHeader(HACMSTREAM has, PACMSTREAMHEADER pash, uint32_t fdwUnp
 */
 #pragma endregion local info
 /// <summary>
-/// <c>wACMStreamClose</c> 
+/// <c>wACMStreamClose</c>
 /// </summary>
 /// <remarks>
 /// </remarks>
 /// <param name="has"></param>
 /// <param name="fdwClose"></param>
 /// <returns>HRESULT __stdcall</returns>
-HRESULT __stdcall 
+HRESULT __stdcall
 wACMStreamClose(HACMSTREAM has, uint32_t fdwClose)
 {
 	PSTR		pszErrorMessage;
 	MMRESULT	hResult;
-
 	InternalFunctionSpew("GameOS_DirectSound", "acmStreamClose(0x%x, 0x%x)", has, fdwClose);
 	hResult = acmStreamClose(has, fdwClose);
-	if (MMFAILED(hResult))
+	if(MMFAILED(hResult))
 	{
 		pszErrorMessage = ErrorNumberToMessage(hResult);
-		if ( InternalFunctionPause(
-			"FAILED (0x%x - %s) - acmStreamClose(0x%x, 0x%x, 0x%x)",
-			hResult,
-			pszErrorMessage,
-			has,
-			fdwClose) )
+		if(InternalFunctionPause(
+					"FAILED (0x%x - %s) - acmStreamClose(0x%x, 0x%x, 0x%x)",
+					hResult,
+					pszErrorMessage,
+					has,
+					fdwClose))
 			ENTER_DEBUGGER;
 	}
 	return hResult;
@@ -207,7 +203,7 @@ wACMStreamClose(HACMSTREAM has, uint32_t fdwClose)
 */
 #pragma endregion local info
 /// <summary>
-/// <c>wACMStreamOpen</c> 
+/// <c>wACMStreamOpen</c>
 /// </summary>
 /// <remarks>
 /// </remarks>
@@ -220,9 +216,9 @@ wACMStreamClose(HACMSTREAM has, uint32_t fdwClose)
 /// <param name="dwInstance"></param>
 /// <param name="fdwOpen"></param>
 /// <returns>HRESULT __stdcall</returns>
-HRESULT __stdcall 
-wACMStreamOpen(PHACMSTREAM phas, HACMDRIVER had, const PWAVEFORMATEX pwfxSrc, 
-			   const PWAVEFORMATEX pwfxDst, PWAVEFILTER pwfltr, ULONG_PTR dwCallback, 
+HRESULT __stdcall
+wACMStreamOpen(PHACMSTREAM phas, HACMDRIVER had, const PWAVEFORMATEX pwfxSrc,
+			   const PWAVEFORMATEX pwfxDst, PWAVEFILTER pwfltr, ULONG_PTR dwCallback,
 			   ULONG_PTR dwInstance, uint32_t fdwOpen)
 {
 	PSTR		pszwfDst;
@@ -231,7 +227,6 @@ wACMStreamOpen(PHACMSTREAM phas, HACMDRIVER had, const PWAVEFORMATEX pwfxSrc,
 	MMRESULT	hResult;
 	char		BUffer2[128];
 	char		Buffer[128];
-
 	pszwfDst = GetWaveFormat(Buffer, pwfxDst);
 	pszwfSrc = GetWaveFormat(BUffer2, pwfxSrc);
 	InternalFunctionSpew(
@@ -245,48 +240,46 @@ wACMStreamOpen(PHACMSTREAM phas, HACMDRIVER had, const PWAVEFORMATEX pwfxSrc,
 		dwCallback,
 		dwInstance,
 		fdwOpen);
-
 	hResult = acmStreamOpen(phas, had, pwfxSrc, pwfxDst, pwfltr, dwCallback, dwInstance, 1u);
-	if (MMFAILED(hResult))
+	if(MMFAILED(hResult))
 	{
 		pszwfDst = GetWaveFormat(Buffer, pwfxDst);
 		pszwfSrc = GetWaveFormat(BUffer2, pwfxSrc);
 		pszErrorMessage = ErrorNumberToMessage(hResult);
-		if ( InternalFunctionPause(
-			"FAILED (0x%x - %s) - acmStreamOpen(0x%x, 0x%x, %s, %s, 0x%x,0x%x, 0x%x, 0x%x)",
-			hResult,
-			pszErrorMessage,
-			phas,
-			had,
-			pszwfSrc,
-			pszwfDst,
-			pwfltr,
-			dwCallback,
-			dwInstance,
-			fdwOpen) )
+		if(InternalFunctionPause(
+					"FAILED (0x%x - %s) - acmStreamOpen(0x%x, 0x%x, %s, %s, 0x%x,0x%x, 0x%x, 0x%x)",
+					hResult,
+					pszErrorMessage,
+					phas,
+					had,
+					pszwfSrc,
+					pszwfDst,
+					pwfltr,
+					dwCallback,
+					dwInstance,
+					fdwOpen))
 			ENTER_DEBUGGER;
 	}
 	hResult = acmStreamOpen(phas, had, pwfxSrc, pwfxDst, pwfltr, dwCallback, dwInstance, fdwOpen);
-	if (MMFAILED(hResult))
+	if(MMFAILED(hResult))
 	{
 		pszwfDst = GetWaveFormat(Buffer, pwfxDst);
 		pszwfSrc = GetWaveFormat(BUffer2, pwfxSrc);
 		pszErrorMessage = ErrorNumberToMessage(hResult);
-		if ( InternalFunctionPause(
-			"FAILED (0x%x - %s) - acmStreamOpen(0x%x, 0x%x, %s, %s, 0x%x,0x%x, 0x%x, 0x%x)",
-			hResult,
-			pszErrorMessage,
-			phas,
-			had,
-			pszwfSrc,
-			pszwfDst,
-			pwfltr,
-			dwCallback,
-			dwInstance,
-			fdwOpen) )
+		if(InternalFunctionPause(
+					"FAILED (0x%x - %s) - acmStreamOpen(0x%x, 0x%x, %s, %s, 0x%x,0x%x, 0x%x, 0x%x)",
+					hResult,
+					pszErrorMessage,
+					phas,
+					had,
+					pszwfSrc,
+					pszwfDst,
+					pwfltr,
+					dwCallback,
+					dwInstance,
+					fdwOpen))
 			ENTER_DEBUGGER;
 	}
-
 	return hResult;
 }
 
@@ -296,7 +289,7 @@ wACMStreamOpen(PHACMSTREAM phas, HACMDRIVER had, const PWAVEFORMATEX pwfxSrc,
 */
 #pragma endregion local info
 /// <summary>
-/// <c>wACMStreamSize</c> 
+/// <c>wACMStreamSize</c>
 /// </summary>
 /// <remarks>
 /// </remarks>
@@ -305,12 +298,11 @@ wACMStreamOpen(PHACMSTREAM phas, HACMDRIVER had, const PWAVEFORMATEX pwfxSrc,
 /// <param name="pdwOutputBytes"></param>
 /// <param name="fdwSize"></param>
 /// <returns>HRESULT __stdcall</returns>
-HRESULT __stdcall 
+HRESULT __stdcall
 wACMStreamSize(HACMSTREAM has, uint32_t cbInput, puint32_t pdwOutputBytes, uint32_t fdwSize)
 {
 	PSTR		pszErrorMessage;
 	MMRESULT	hResult;
-
 	InternalFunctionSpew(
 		"GameOS_DirectSound",
 		"acmStreamSize(0x%x, 0x%x, 0x%x, 0x%x)",
@@ -319,20 +311,19 @@ wACMStreamSize(HACMSTREAM has, uint32_t cbInput, puint32_t pdwOutputBytes, uint3
 		pdwOutputBytes,
 		fdwSize);
 	hResult = acmStreamSize(has, cbInput, pdwOutputBytes, fdwSize);
-	if (MMFAILED(hResult))
+	if(MMFAILED(hResult))
 	{
 		pszErrorMessage = ErrorNumberToMessage(hResult);
-		if ( InternalFunctionPause(
-			"FAILED (0x%x - %s) - acmStreamSize(0x%x, 0x%x, 0x%x, 0x%x)",
-			hResult,
-			pszErrorMessage,
-			has,
-			cbInput,
-			pdwOutputBytes,
-			fdwSize) )
+		if(InternalFunctionPause(
+					"FAILED (0x%x - %s) - acmStreamSize(0x%x, 0x%x, 0x%x, 0x%x)",
+					hResult,
+					pszErrorMessage,
+					has,
+					cbInput,
+					pdwOutputBytes,
+					fdwSize))
 			ENTER_DEBUGGER;
 	}
-
 	return hResult;
 }
 
@@ -342,7 +333,7 @@ wACMStreamSize(HACMSTREAM has, uint32_t cbInput, puint32_t pdwOutputBytes, uint3
 */
 #pragma endregion local info
 /// <summary>
-/// <c>wACMFormatSuggest</c> 
+/// <c>wACMFormatSuggest</c>
 /// </summary>
 /// <remarks>
 /// </remarks>
@@ -352,8 +343,8 @@ wACMStreamSize(HACMSTREAM has, uint32_t cbInput, puint32_t pdwOutputBytes, uint3
 /// <param name="cbwfxDst"></param>
 /// <param name="fdwSuggest"></param>
 /// <returns>HRESULT __stdcall</returns>
-HRESULT __stdcall 
-wACMFormatSuggest(HACMDRIVER had, const PWAVEFORMATEX pwfxSrc, const PWAVEFORMATEX pwfxDst, 
+HRESULT __stdcall
+wACMFormatSuggest(HACMDRIVER had, const PWAVEFORMATEX pwfxSrc, const PWAVEFORMATEX pwfxDst,
 				  uint32_t cbwfxDst, uint32_t fdwSuggest)
 {
 	PSTR		pszwfDst;
@@ -362,7 +353,6 @@ wACMFormatSuggest(HACMDRIVER had, const PWAVEFORMATEX pwfxSrc, const PWAVEFORMAT
 	char		Buffer2[128];
 	char		Buffer[128];
 	MMRESULT	hResult;
-
 	pszwfDst = GetWaveFormat(Buffer, pwfxDst);
 	pszwfSrc = GetWaveFormat(Buffer2, pwfxSrc);
 	InternalFunctionSpew(
@@ -374,23 +364,22 @@ wACMFormatSuggest(HACMDRIVER had, const PWAVEFORMATEX pwfxSrc, const PWAVEFORMAT
 		cbwfxDst,
 		fdwSuggest);
 	hResult = acmFormatSuggest(had, pwfxSrc, pwfxDst, cbwfxDst, fdwSuggest);
-	if (MMFAILED(hResult))
+	if(MMFAILED(hResult))
 	{
 		pszwfDst = GetWaveFormat(Buffer, pwfxDst);
 		pszwfSrc = GetWaveFormat(Buffer2, pwfxSrc);
 		pszErrorMessage = ErrorNumberToMessage(hResult);
-		if ( InternalFunctionPause(
-			"FAILED (0x%x - %s) - acmFormatSuggest(0x%x, %s, %s, 0x%x, 0x%x)",
-			hResult,
-			pszErrorMessage,
-			had,
-			pszwfSrc,
-			pszwfDst,
-			cbwfxDst,
-			fdwSuggest) )
+		if(InternalFunctionPause(
+					"FAILED (0x%x - %s) - acmFormatSuggest(0x%x, %s, %s, 0x%x, 0x%x)",
+					hResult,
+					pszErrorMessage,
+					had,
+					pszwfSrc,
+					pszwfDst,
+					cbwfxDst,
+					fdwSuggest))
 			ENTER_DEBUGGER;
 	}
-
 	return hResult;
 }
 

@@ -25,12 +25,12 @@ public:
 
 	MissionSelectionScreen(void);
 	virtual ~MissionSelectionScreen(void);
-	virtual void render( int32_t xOffset, int32_t yOffset );
+	virtual void render(int32_t xOffset, int32_t yOffset);
 	virtual void begin(void);
 	virtual void end(void);
 	virtual void update(void);
-	void	init( FitIniFile* file );
-	virtual int32_t			handleMessage( uint32_t, uint32_t );
+	void	init(FitIniFile* file);
+	virtual int32_t			handleMessage(uint32_t, uint32_t);
 
 
 private:
@@ -46,7 +46,7 @@ private:
 	PCSTR			missionNames[MAX_MISSIONS_IN_GROUP];
 	int32_t				missionCount;
 
-	void				setMission( int32_t whichOne );
+	void				setMission(int32_t whichOne);
 
 	aListBox			missionDescriptionListBox;
 

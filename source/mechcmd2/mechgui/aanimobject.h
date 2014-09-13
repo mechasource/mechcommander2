@@ -15,40 +15,50 @@ aAnimObject.h			: Interface for the aAnimObject component of the GUI library.
 
 //*************************************************************************************************
 
-namespace mechgui {
-
-/**************************************************************************************************
-CLASS DESCRIPTION
-aAnimObject:
-**************************************************************************************************/
-class aAnimObject: public aObject
+namespace mechgui
 {
+
+	/**************************************************************************************************
+	CLASS DESCRIPTION
+	aAnimObject:
+	**************************************************************************************************/
+	class aAnimObject: public aObject
+	{
 	public:
 
 		aAnimObject(void);
 		virtual ~aAnimObject(void);
-		aAnimObject& operator=( const aAnimObject& AnimObject );
+		aAnimObject& operator=(const aAnimObject& AnimObject);
 
 
-		int32_t init( FitIniFile* file, PCSTR blockName, uint32_t neverFlush = 0);
+		int32_t init(FitIniFile* file, PCSTR blockName, uint32_t neverFlush = 0);
 
 		virtual void update(void);
 		virtual void render(void);
 
-		void begin() { animInfo.begin(void); }
+		void begin()
+		{
+			animInfo.begin(void);
+		}
 		void end(void);
-		void reverseBegin() { animInfo.reverseBegin(void); }
+		void reverseBegin()
+		{
+			animInfo.reverseBegin(void);
+		}
 
-		bool isDone() { return animInfo.isDone(void); }
+		bool isDone()
+		{
+			return animInfo.isDone(void);
+		}
 
 		aAnimation		animInfo;
 
 
 	private:
-	
-		aAnimObject( const aAnimObject& src );	
 
-};
+		aAnimObject(const aAnimObject& src);
+
+	};
 
 
 //*************************************************************************************************

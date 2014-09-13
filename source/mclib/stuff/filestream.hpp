@@ -19,14 +19,15 @@
 typedef struct gosFileStream* HGOSFILE;
 #endif
 
-namespace Stuff{
+namespace Stuff
+{
 
 	class FileStreamManager;
 	class FileStream;
 
-	//##########################################################################
-	//########################## Directory ###############################
-	//##########################################################################
+//##########################################################################
+//########################## Directory ###############################
+//##########################################################################
 
 	class Directory
 #if defined(_ARMOR)
@@ -34,7 +35,7 @@ namespace Stuff{
 #endif
 	{
 	public:
-		Directory(PSTR find_files, bool find_directories=false);
+		Directory(PSTR find_files, bool find_directories = false);
 		~Directory(void);
 
 		void TestInstance(void) const {}
@@ -58,9 +59,9 @@ namespace Stuff{
 		Stuff::SortedChainIteratorOf<DirectoryEntry*, Stuff::MString>* fileWalker;
 	};
 
-	//##########################################################################
-	//######################## FileStream ################################
-	//##########################################################################
+//##########################################################################
+//######################## FileStream ################################
+//##########################################################################
 
 	class FileStream:
 		public MemoryStream
@@ -82,7 +83,8 @@ namespace Stuff{
 		// Constructors
 		//
 	public:
-		enum WriteStatus{
+		enum WriteStatus
+		{
 			ReadOnly, WriteOnly
 		};
 
@@ -117,17 +119,22 @@ namespace Stuff{
 		virtual bool IsFileOpened(void);
 		PCSTR GetFileName(void)
 		{
-			Check_Object(this); return fileName;
+			Check_Object(this);
+			return fileName;
 		}
 
-		enum SeekType{
+		enum SeekType
+		{
 			FromBeginning, FromEnd
 		};
 
 		static char RedirectedName[256];
 		static bool IsRedirected;
 
-		static void IgnoreReadOnly(bool flag) {IgnoreReadOnlyFlag = flag;}
+		static void IgnoreReadOnly(bool flag)
+		{
+			IgnoreReadOnlyFlag = flag;
+		}
 
 	protected:
 		WriteStatus writeEnabled;
@@ -137,9 +144,9 @@ namespace Stuff{
 		static bool IgnoreReadOnlyFlag;
 	};
 
-	MString* __stdcall StripExtension(MString *file_name);
-	MString* __stdcall IsolateDirectory(MString *file_name);
-	MString* __stdcall StripDirectory(MString *file_name);
+	MString* __stdcall StripExtension(MString* file_name);
+	MString* __stdcall IsolateDirectory(MString* file_name);
+	MString* __stdcall StripDirectory(MString* file_name);
 
 	bool CreateDirectories(PCSTR directories);
 }

@@ -39,11 +39,13 @@ void PlayerSettingsDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_PLAYER_SETTINGS_PLAYER_EDIT, m_playerEdit);
 	DDV_MinMaxInt(pDX, m_playerEdit, 1, 8);
 	//}}AFX_DATA_MAP
-
 	m_newDefaultTeam = m_defaultTeamComboBox.GetCurSel();
-	if (0 >= m_newDefaultTeam) {
+	if(0 >= m_newDefaultTeam)
+	{
 		m_newDefaultTeam = m_defaultTeamComboBox.GetCurSel();
-	} else {
+	}
+	else
+	{
 		m_newDefaultTeam = m_defaultTeamComboBox.GetCurSel();
 	}
 }
@@ -57,25 +59,27 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // PlayerSettingsDlg message handlers
 
-BOOL PlayerSettingsDlg::OnInitDialog() 
+BOOL PlayerSettingsDlg::OnInitDialog()
 {
 	CDialog::OnInitDialog();
-
 	m_defaultTeamComboBox.SetCurSel(m_oldDefaultTeam);
-	if (0 < m_numTeams) {
+	if(0 < m_numTeams)
+	{
 		int32_t i;
-		for (i = m_defaultTeamComboBox.GetCount() - 1; i >= m_numTeams; i--) {
+		for(i = m_defaultTeamComboBox.GetCount() - 1; i >= m_numTeams; i--)
+		{
 			m_defaultTeamComboBox.DeleteString(i);
 		}
 	}
-
-	if (EditorData::instance->IsSinglePlayer() && (1 == m_playerEdit)) {
+	if(EditorData::instance->IsSinglePlayer() && (1 == m_playerEdit))
+	{
 		m_defaultTeamComboBox.EnableWindow(FALSE);
-	} else {
+	}
+	else
+	{
 		m_defaultTeamComboBox.EnableWindow(TRUE);
 	}
 	// TODO: Add extra initialization here
-	
 	return TRUE;  // return TRUE unless you set the focus to a control
-	              // EXCEPTION: OCX Property Pages should return FALSE
+	// EXCEPTION: OCX Property Pages should return FALSE
 }

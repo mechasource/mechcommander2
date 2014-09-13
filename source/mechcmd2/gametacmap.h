@@ -20,34 +20,37 @@ gameTacMap:
 **************************************************************************************************/
 class GameTacMap: public TacMap
 {
-	public:
+public:
 
 	GameTacMap(void);
 	~GameTacMap()
 	{
-		if (buildingPoints)
+		if(buildingPoints)
 		{
 			delete [] buildingPoints;
 			buildingPoints = nullptr;
 		}
 	}
 
-	void init( puint8_t bitmapData, int32_t dataSize );
+	void init(puint8_t bitmapData, size_t dataSize);
 	void update(void); // do not call these two functions from editor
 	void render(void);
-	
-	bool animate (int32_t objectiveId, int32_t nFlashes);
+
+	bool animate(int32_t objectiveId, int32_t nFlashes);
 
 	// if the world coords do not lie on the map, they will be changed.
-	void worldToTacMap( Stuff::Vector3D& world, gos_VERTEX& tac );	
+	void worldToTacMap(Stuff::Vector3D& world, gos_VERTEX& tac);
 
 
-	bool inRegion( int32_t x, int32_t y ){ return x > left && x < right && y > top && y < bottom; }
-	
-	void initBuildings( puint8_t data, int32_t size );
-	void setPos( const RECT& newPos );
-	
-	protected:
+	bool inRegion(int32_t x, int32_t y)
+	{
+		return x > left && x < right && y > top && y < bottom;
+	}
+
+	void initBuildings(puint8_t data, int32_t size);
+	void setPos(const RECT& newPos);
+
+protected:
 
 	int32_t		top;	// position
 	int32_t		left;
@@ -66,8 +69,8 @@ class GameTacMap: public TacMap
 	uint32_t navMarkerCount;
 	uint32_t curNavMarker;
 
-	void drawSensor( const Stuff::Vector3D& pos, float radius, int32_t color);
-	void drawBlip( const Stuff::Vector3D& pos, int32_t color, int32_t shape  );
+	void drawSensor(const Stuff::Vector3D& pos, float radius, int32_t color);
+	void drawBlip(const Stuff::Vector3D& pos, int32_t color, int32_t shape);
 
 	const static float s_blinkLength;
 	static float		s_lastBlinkTime;

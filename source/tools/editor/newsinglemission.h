@@ -19,14 +19,14 @@ public:
 // Dialog Data
 	//{{AFX_DATA(NewSingleMission)
 	enum { IDD = IDD_NEW_SINGLEPLAYER };
-		// NOTE: the ClassWizard will add data members here
+	// NOTE: the ClassWizard will add data members here
 	//}}AFX_DATA
 
 
 // Overrides
 	// ClassWizard generated virtual function overrides
 	//{{AFX_VIRTUAL(NewSingleMission)
-	protected:
+protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	//}}AFX_VIRTUAL
 

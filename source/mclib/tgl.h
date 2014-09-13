@@ -75,7 +75,7 @@ typedef  TG_ShadowVertex* TG_ShadowVertexPtr;
 typedef struct _TG_ShadowVertexTemp
 {
 	uint32_t    		fRGBFog;				//Vertex Fog and Specular Color.  Needed if shadow is fogged.
-											//Every frame for local light.  Once in a blue moon for infinite light.
+	//Every frame for local light.  Once in a blue moon for infinite light.
 
 	//Changes each call to Transform.
 	Stuff::Vector4D transformedPosition;	//ScreenCoords with Z depth.  Valid after Transform called.
@@ -106,7 +106,7 @@ typedef struct _TG_TypeTriangle
 	uint32_t    		Vertices[3];			//Indices into Vertex List.
 	uint32_t    		localTextureHandle;		//Index into texture List.
 	uint32_t    		renderStateFlags;		//Flags about render for this face.
-											//Bit 0 -- backFacing
+	//Bit 0 -- backFacing
 	TG_UVData  		uvdata;					//Texture UVs for this face.
 	Stuff::Vector3D faceNormal;				//Normal Vector to face
 } TG_TypeTriangle;
@@ -166,12 +166,12 @@ typedef struct _TG_Light
 {
 	uint32_t    				lightType;			//Ambient, directional, etc.
 	bool					active;				//Should this light be considered on?
-	
-	protected:
+
+protected:
 	uint32_t    				aRGB;				//Color
 	uint32_t					OEMaRGB;
-	
-	public:
+
+public:
 	float					intensity;			//How Bright
 	float    				closeDistance;		//Distance out light is constant
 	float    				farDistance;		//Distance at which light is off
@@ -182,10 +182,9 @@ typedef struct _TG_Light
 	Stuff::Point3D			spotDir;			//Direction of the actual Spotlight to help with shadows, etc.
 	float					maxSpotLength;		//Maximum length spotlight can be from target.
 
-	void init (uint32_t lType)
+	void init(uint32_t lType)
 	{
 		gosASSERT((lType != TG_LIGHT_NONE) && (lType >= TG_LIGHT_AMBIENT) && (lType <= TG_LIGHT_TERRAIN));
-
 		lightType = lType;
 		aRGB = OEMaRGB = 0xffffffff;
 		intensity = 1.0f;
@@ -199,68 +198,63 @@ typedef struct _TG_Light
 		active = false;
 	}
 
-	void SetaRGB (uint32_t newaRGB)
+	void SetaRGB(uint32_t newaRGB)
 	{
 		OEMaRGB = aRGB = newaRGB;
 	}
 
-	uint32_t GetaRGB (void)
+	uint32_t GetaRGB(void)
 	{
 		return aRGB;
 	}
-	
-	void SetLightToWorld (Stuff::LinearMatrix4D *l2w)
+
+	void SetLightToWorld(Stuff::LinearMatrix4D* l2w)
 	{
 		lightToWorld = *l2w;
 	}
 
-	void SetPosition (Stuff::Vector3D *pos)
+	void SetPosition(Stuff::Vector3D* pos)
 	{
 		position = *pos;
 	}
 
-	void SetFalloffDistances (float inner, float outer)
+	void SetFalloffDistances(float inner, float outer)
 	{
 		closeDistance = inner;
 		farDistance = outer;
-
-		oneOverDistance = 1.0f/(outer - inner);
+		oneOverDistance = 1.0f / (outer - inner);
 	}
 
-	void SetIntensity (float intensity)
+	void SetIntensity(float intensity)
 	{
-		if (intensity > 1.0f)
+		if(intensity > 1.0f)
 			intensity = 1.0f;
-
 		//Scale aRGB by intensity
-		uint32_t r,g,b;
+		uint32_t r, g, b;
 		r = (uint32_t)(intensity * ((OEMaRGB >> 16) & 0x000000ff));
 		g = (uint32_t)(intensity * ((OEMaRGB >> 8) & 0x000000ff));
 		b = (uint32_t)(intensity * ((OEMaRGB) & 0x000000ff));
-
 		aRGB = (0xff << 24) + (r << 16) + (g << 8) + (b);
 	}
 
-	bool GetFalloff(float length, float &falloff)
+	bool GetFalloff(float length, float& falloff)
 	{
-		if (length <= closeDistance)
+		if(length <= closeDistance)
 		{
 			falloff = 1.0f;
 			return true;
 		}
-
-		if (length >= farDistance)
+		if(length >= farDistance)
 		{
 			return false;
 		}
-
 		falloff = (farDistance - length) * oneOverDistance;
 		return true;
 	}
 
 } TG_Light;
 
-typedef  TG_Light *TG_LightPtr;
+typedef  TG_Light* TG_LightPtr;
 
 //-------------------------------------------------------------------------------
 // TG_Texture
@@ -295,15 +289,15 @@ typedef struct _TG_Animation
 	uint32_t						numFrames;				//Number of Frames of animation.
 	float 						frameRate;				//Number of Frames Per Second.
 	float						tickRate;				//Number of Ticks Per Second.
-	Stuff::UnitQuaternion		*quat;					//Stores animation offset in Quaternion rotation.
-	Stuff::Point3D				*pos;					//Stores Positional offsets if present.  OTHERWISE nullptr!!!!!!!!
-	
-	void SaveBinaryCopy (File *binFile);
-	void LoadBinaryCopy (File *binFile);
-	
+	Stuff::UnitQuaternion*		quat;					//Stores animation offset in Quaternion rotation.
+	Stuff::Point3D*				pos;					//Stores Positional offsets if present.  OTHERWISE nullptr!!!!!!!!
+
+	void SaveBinaryCopy(File* binFile);
+	void LoadBinaryCopy(File* binFile);
+
 } TG_Animation;
 
-typedef TG_Animation *TG_AnimationPtr;
+typedef TG_Animation* TG_AnimationPtr;
 
 //-------------------------------------------------------------------------------
 // TG_ShapeRec
@@ -316,10 +310,10 @@ typedef struct _TG_ShapeRec
 	int32_t						calcedThisFrame;		//Turn number this matrix is current for.
 	bool						processMe;				//Flag indicating if I should transform/draw this.  Used for arms off.
 	TG_AnimationPtr				currentAnimation;		//Animation data being applied to this shape.  OK if nullptr
-	_TG_ShapeRec				*parentNode;			//Parent Node.  OK if nullptr but only for ROOT node!
+	_TG_ShapeRec*				parentNode;			//Parent Node.  OK if nullptr but only for ROOT node!
 	Stuff::UnitQuaternion		baseRotation;			//Always ZERO unless set by appearance controlling this shape.
-	
-	_TG_ShapeRec &operator=(const _TG_ShapeRec &rec)
+
+	_TG_ShapeRec& operator=(const _TG_ShapeRec& rec)
 	{
 		node 				= rec.node;
 		calcedThisFrame		= -1;
@@ -327,13 +321,12 @@ typedef struct _TG_ShapeRec
 		currentAnimation	= nullptr;
 		parentNode			= rec.parentNode;
 		baseRotation		= rec.baseRotation;
-
 		return *this;
 	}
-	
+
 } TG_ShapeRec;
 
-typedef TG_ShapeRec *TG_ShapeRecPtr;
+typedef TG_ShapeRec* TG_ShapeRecPtr;
 
 #define TYPE_NODE			0
 #define SHAPE_NODE			1
@@ -342,140 +335,140 @@ class TG_TypeNode
 {
 	//---------------
 	// Data Members
-	protected:
-		Stuff::Point3D			nodeCenter;
-		Stuff::Point3D			relativeNodeCenter;
-		char					nodeId[TG_NODE_ID];
-		char					parentId[TG_NODE_ID];
-		
+protected:
+	Stuff::Point3D			nodeCenter;
+	Stuff::Point3D			relativeNodeCenter;
+	char					nodeId[TG_NODE_ID];
+	char					parentId[TG_NODE_ID];
+
 	//---------------------
 	// Member Functions
-	protected:
+protected:
 
-	public:
-		PVOID operator new (size_t mySize);
-		void operator delete (PVOID us);
-			
- 		virtual void init (void)
-		{
-			nodeId[0] = parentId[0] = '\0';
-			relativeNodeCenter.x = relativeNodeCenter.y = relativeNodeCenter.z = 0.0f;
-			nodeCenter.x = nodeCenter.y = nodeCenter.z = 0.0f;
-		}
-		
-		virtual void destroy (void);
-		
-		PSTR getNodeId (void)
-		{
-			return nodeId;
-		}
+public:
+	PVOID operator new(size_t mySize);
+	void operator delete(PVOID us);
 
-		PSTR getParentId (void)
-		{
-			return parentId;
-		}
+	virtual void init(void)
+	{
+		nodeId[0] = parentId[0] = '\0';
+		relativeNodeCenter.x = relativeNodeCenter.y = relativeNodeCenter.z = 0.0f;
+		nodeCenter.x = nodeCenter.y = nodeCenter.z = 0.0f;
+	}
 
-		Stuff::Point3D GetNodeCenter (void)
-		{
-			return nodeCenter;
-		}
+	virtual void destroy(void);
 
-		Stuff::Point3D GetRelativeNodeCenter (void)
-		{
-			return relativeNodeCenter;
-		}
+	PSTR getNodeId(void)
+	{
+		return nodeId;
+	}
 
-		void MoveNodeCenterRelative (Stuff::Point3D parent)
-		{
-			relativeNodeCenter = nodeCenter;
-			relativeNodeCenter -= parent;
-		}
-		
-		virtual void movePosRelativeCenterNode (void)
-		{
-		}
+	PSTR getParentId(void)
+	{
+		return parentId;
+	}
 
-		virtual int32_t GetNumTypeVertices (void)
-		{
-			return 0;
-		}
+	Stuff::Point3D GetNodeCenter(void)
+	{
+		return nodeCenter;
+	}
 
-		virtual int32_t GetNodeType (void)
-		{
-			return TYPE_NODE;
-		}
-		
-		//Function return 0 is OK.  -1 if file is not ASE Format or missing data.
-		//This function simply parses the ASE buffers handed to it.  This allows
-		//users to load the ase file themselves and manage their own memory for it.
-		//It allocates memory for internal Lists.  These are straight mallocs at present.
-		//
-		// NOTE: Only takes the first GEOMOBJECT from the ASE file.  Multi-object
-		// Files will require user intervention to parse!!
-		virtual int32_t ParseASEFile (puint8_t /*aseBuffer*/, PSTR /*filename*/)
-		{
-			return 0;
-		}
+	Stuff::Point3D GetRelativeNodeCenter(void)
+	{
+		return relativeNodeCenter;
+	}
 
-		//Function return 0 is OK.  -1 if file is not ASE Format or missing data.
-		//This function simply parses the ASE buffers handed to it.  This allows
-		//users to load the ase file themselves and manage their own memory for it.
-		//It allocates memory for internal Lists.  These are straight mallocs at present.
-		//
-		// NOTE: Only takes the first HELPEROBJECT from the ASE file.  Multi-object
-		// Files will require user intervention to parse!!
-		virtual int32_t MakeFromHelper (puint8_t aseBuffer, PSTR filename);
+	void MoveNodeCenterRelative(Stuff::Point3D parent)
+	{
+		relativeNodeCenter = nodeCenter;
+		relativeNodeCenter -= parent;
+	}
 
-		//Function returns 0 if OK.  -1 if file not found or file not ASE Format.		
-		//This function loads the ASE file into the TG_Triangle and TG_Vertex lists.
-		//It allocates memory.  These are straight mallocs at present.
-		//
-		// NOTE: Only takes the first GEOMOBJECT from the ASE file.  Multi-object
-		// Files will require user intervention to parse!!
-		virtual int32_t LoadTGShapeFromASE (PSTR /*fileName*/)
-		{
-			return 0;
-		}
+	virtual void movePosRelativeCenterNode(void)
+	{
+	}
 
-		//Function returns 0 if OK.  -1 if textureNum is out of range of numTextures.
-		//This function takes the gosTextureHandle passed in and assigns it to the
-		//textureNum entry of the listOfTextures;
-		virtual int32_t SetTextureHandle (uint32_t /*textureNum*/, uint32_t /*gosTextureHandle*/)
-		{
-			return 0;
-		}
+	virtual int32_t GetNumTypeVertices(void)
+	{
+		return 0;
+	}
 
-		//Function returns 0 if OK.  -1 if textureNum is out of range of numTextures.
-		//This function takes the gosTextureHandle passed in and assigns it to the
-		//textureNum entry of the listOfTextures;
-		virtual int32_t SetTextureAlpha (uint32_t /*textureNum*/, bool /*alphaFlag*/)
-		{
-			return 0;
-		}
+	virtual int32_t GetNodeType(void)
+	{
+		return TYPE_NODE;
+	}
 
-		//Need this so that Multi-Shapes can let each shape know texture info.
-		virtual void CreateListOfTextures (TG_TexturePtr /*list*/, uint32_t /*numTxms*/)
-		{
-		}
+	//Function return 0 is OK.  -1 if file is not ASE Format or missing data.
+	//This function simply parses the ASE buffers handed to it.  This allows
+	//users to load the ase file themselves and manage their own memory for it.
+	//It allocates memory for internal Lists.  These are straight mallocs at present.
+	//
+	// NOTE: Only takes the first GEOMOBJECT from the ASE file.  Multi-object
+	// Files will require user intervention to parse!!
+	virtual int32_t ParseASEFile(puint8_t /*aseBuffer*/, PSTR /*filename*/)
+	{
+		return 0;
+	}
 
-		//--------------------------------------------------------------
-		// Creates an instance of this shape for the game to muck with.
-		virtual TG_Shape *CreateFrom (void);
+	//Function return 0 is OK.  -1 if file is not ASE Format or missing data.
+	//This function simply parses the ASE buffers handed to it.  This allows
+	//users to load the ase file themselves and manage their own memory for it.
+	//It allocates memory for internal Lists.  These are straight mallocs at present.
+	//
+	// NOTE: Only takes the first HELPEROBJECT from the ASE file.  Multi-object
+	// Files will require user intervention to parse!!
+	virtual int32_t MakeFromHelper(puint8_t aseBuffer, PSTR filename);
 
-		virtual void SetAlphaTest (bool /*flag*/)
-		{
-		}
+	//Function returns 0 if OK.  -1 if file not found or file not ASE Format.
+	//This function loads the ASE file into the TG_Triangle and TG_Vertex lists.
+	//It allocates memory.  These are straight mallocs at present.
+	//
+	// NOTE: Only takes the first GEOMOBJECT from the ASE file.  Multi-object
+	// Files will require user intervention to parse!!
+	virtual int32_t LoadTGShapeFromASE(PSTR /*fileName*/)
+	{
+		return 0;
+	}
 
-		virtual void SetFilter (bool /*flag*/)
-		{
-		}
+	//Function returns 0 if OK.  -1 if textureNum is out of range of numTextures.
+	//This function takes the gosTextureHandle passed in and assigns it to the
+	//textureNum entry of the listOfTextures;
+	virtual int32_t SetTextureHandle(uint32_t /*textureNum*/, uint32_t /*gosTextureHandle*/)
+	{
+		return 0;
+	}
 
-		virtual void SetLightRGBs (uint32_t /*hPink*/, uint32_t /*hGreen*/, uint32_t /*hYellow*/)
-		{
-		}
-		
- 		virtual void LoadBinaryCopy (File &binFile);
-		virtual void SaveBinaryCopy (File &binFile);
+	//Function returns 0 if OK.  -1 if textureNum is out of range of numTextures.
+	//This function takes the gosTextureHandle passed in and assigns it to the
+	//textureNum entry of the listOfTextures;
+	virtual int32_t SetTextureAlpha(uint32_t /*textureNum*/, bool /*alphaFlag*/)
+	{
+		return 0;
+	}
+
+	//Need this so that Multi-Shapes can let each shape know texture info.
+	virtual void CreateListOfTextures(TG_TexturePtr /*list*/, uint32_t /*numTxms*/)
+	{
+	}
+
+	//--------------------------------------------------------------
+	// Creates an instance of this shape for the game to muck with.
+	virtual TG_Shape* CreateFrom(void);
+
+	virtual void SetAlphaTest(bool /*flag*/)
+	{
+	}
+
+	virtual void SetFilter(bool /*flag*/)
+	{
+	}
+
+	virtual void SetLightRGBs(uint32_t /*hPink*/, uint32_t /*hGreen*/, uint32_t /*hYellow*/)
+	{
+	}
+
+	virtual void LoadBinaryCopy(File& binFile);
+	virtual void SaveBinaryCopy(File& binFile);
 
 };
 
@@ -498,136 +491,131 @@ class TG_TypeShape : public TG_TypeNode
 	friend TG_TypeMultiShape;
 	friend TG_MultiShape;
 	friend TG_Shape;
-	
+
 	//-------------
 	//Data Members
-	protected:
-		uint32_t					numTypeVertices;			//Number of vertices in Shape
-		uint32_t					numTypeTriangles;			//NUmber of triangles in Shape
-		uint32_t					numTextures;				//Number of textures in Shape
+protected:
+	uint32_t					numTypeVertices;			//Number of vertices in Shape
+	uint32_t					numTypeTriangles;			//NUmber of triangles in Shape
+	uint32_t					numTextures;				//Number of textures in Shape
 
-		TG_TypeVertexPtr		listOfTypeVertices;			//Memory holding all vertex data
-		TG_TypeTrianglePtr		listOfTypeTriangles;		//Memory holding all triangle data
-		TG_TinyTexturePtr		listOfTextures;				//List of texture Structures for this shape.
+	TG_TypeVertexPtr		listOfTypeVertices;			//Memory holding all vertex data
+	TG_TypeTrianglePtr		listOfTypeTriangles;		//Memory holding all triangle data
+	TG_TinyTexturePtr		listOfTextures;				//List of texture Structures for this shape.
 
-		uint32_t					hotPinkRGB;					//Stores the value for this shape to replace hot Pink With
-		uint32_t					hotYellowRGB;				//Stores the value for this shape to replace hot Yellow With 
-		uint32_t					hotGreenRGB;            	//Stores the value for this shape to replace hot Green With 
+	uint32_t					hotPinkRGB;					//Stores the value for this shape to replace hot Pink With
+	uint32_t					hotYellowRGB;				//Stores the value for this shape to replace hot Yellow With
+	uint32_t					hotGreenRGB;            	//Stores the value for this shape to replace hot Green With
 
-		bool					alphaTestOn;				//Decides if we should draw alphaTest On or not!
-		bool					filterOn;					//Decides if we should filter the shape or not!
+	bool					alphaTestOn;				//Decides if we should draw alphaTest On or not!
+	bool					filterOn;					//Decides if we should filter the shape or not!
 
 	//-----------------
 	//Member Functions
-	protected:
+protected:
 
-	public:
-		virtual void init (void)
-		{
-			numTypeVertices = numTypeTriangles = numTextures = 0;
+public:
+	virtual void init(void)
+	{
+		numTypeVertices = numTypeTriangles = numTextures = 0;
+		listOfTypeVertices = nullptr;
+		listOfTypeTriangles = nullptr;
+		listOfTextures = nullptr;
+		alphaTestOn = false;
+		filterOn = true;
+		relativeNodeCenter.x = relativeNodeCenter.y = relativeNodeCenter.z = 0.0f;
+		nodeCenter.x = nodeCenter.y = nodeCenter.z = 0.0f;
+		hotPinkRGB = 0x00cbf0ff;
+		hotYellowRGB = 0x00FEfF91;
+		hotGreenRGB = 0x000081b6;
+	}
 
-			listOfTypeVertices = nullptr;
-			listOfTypeTriangles = nullptr;
-			listOfTextures = nullptr;
+	TG_TypeShape(void)
+	{
+		init(void);
+	}
 
-			alphaTestOn = false;
+	virtual void destroy(void);
 
-			filterOn = true;
+	~TG_TypeShape(void)
+	{
+		destroy(void);
+	}
 
-			relativeNodeCenter.x = relativeNodeCenter.y = relativeNodeCenter.z = 0.0f;
-			nodeCenter.x = nodeCenter.y = nodeCenter.z = 0.0f;
-			
-			hotPinkRGB = 0x00cbf0ff;
-			hotYellowRGB = 0x00FEfF91;
-			hotGreenRGB = 0x000081b6;
-		}
-		
-		TG_TypeShape (void)
-		{
-			init(void);
-		}
+	virtual int32_t GetNumTypeVertices(void)
+	{
+		return numTypeVertices;
+	}
 
-		virtual void destroy (void);
+	//Function return 0 is OK.  -1 if file is not ASE Format or missing data.
+	//This function simply parses the ASE buffers handed to it.  This allows
+	//users to load the ase file themselves and manage their own memory for it.
+	//It allocates memory for internal Lists.  These are straight mallocs at present.
+	//
+	// NOTE: Only takes the first GEOMOBJECT from the ASE file.  Multi-object
+	// Files will require user intervention to parse!!
+	virtual int32_t ParseASEFile(puint8_t aseBuffer, PSTR filename);	//filename for error reporting ONLY
 
-		~TG_TypeShape (void)
-		{
-			destroy(void);
-		}
+	//Function return 0 is OK.  -1 if file is not ASE Format or missing data.
+	//This function simply parses the ASE buffers handed to it.  This allows
+	//users to load the ase file themselves and manage their own memory for it.
+	//It allocates memory for internal Lists.  These are straight mallocs at present.
+	//
+	// NOTE: Only takes the first HELPEROBJECT from the ASE file.  Multi-object
+	// Files will require user intervention to parse!!
+	virtual int32_t MakeFromHelper(puint8_t aseBuffer, PSTR filename);
 
-		virtual int32_t GetNumTypeVertices (void)
-		{
-			return numTypeVertices;
-		}
-		
- 		//Function return 0 is OK.  -1 if file is not ASE Format or missing data.
-		//This function simply parses the ASE buffers handed to it.  This allows
-		//users to load the ase file themselves and manage their own memory for it.
-		//It allocates memory for internal Lists.  These are straight mallocs at present.
-		//
-		// NOTE: Only takes the first GEOMOBJECT from the ASE file.  Multi-object
-		// Files will require user intervention to parse!!
-		virtual int32_t ParseASEFile (puint8_t aseBuffer, PSTR filename);	//filename for error reporting ONLY
+	//Function returns 0 if OK.  -1 if file not found or file not ASE Format.
+	//This function loads the ASE file into the TG_Triangle and TG_Vertex lists.
+	//It allocates memory.  These are straight mallocs at present.
+	//
+	// NOTE: Only takes the first GEOMOBJECT from the ASE file.  Multi-object
+	// Files will require user intervention to parse!!
+	virtual int32_t LoadTGShapeFromASE(PSTR fileName);
 
-		//Function return 0 is OK.  -1 if file is not ASE Format or missing data.
-		//This function simply parses the ASE buffers handed to it.  This allows
-		//users to load the ase file themselves and manage their own memory for it.
-		//It allocates memory for internal Lists.  These are straight mallocs at present.
-		//
-		// NOTE: Only takes the first HELPEROBJECT from the ASE file.  Multi-object
-		// Files will require user intervention to parse!!
-		virtual int32_t MakeFromHelper (puint8_t aseBuffer, PSTR filename);
+	//Function returns 0 if OK.  -1 if textureNum is out of range of numTextures.
+	//This function takes the gosTextureHandle passed in and assigns it to the
+	//textureNum entry of the listOfTextures;
+	virtual int32_t SetTextureHandle(uint32_t textureNum, uint32_t gosTextureHandle);
 
-		//Function returns 0 if OK.  -1 if file not found or file not ASE Format.		
-		//This function loads the ASE file into the TG_Triangle and TG_Vertex lists.
-		//It allocates memory.  These are straight mallocs at present.
-		//
-		// NOTE: Only takes the first GEOMOBJECT from the ASE file.  Multi-object
-		// Files will require user intervention to parse!!
-		virtual int32_t LoadTGShapeFromASE (PSTR fileName);
+	//Function returns 0 if OK.  -1 if textureNum is out of range of numTextures.
+	//This function takes the gosTextureHandle passed in and assigns it to the
+	//textureNum entry of the listOfTextures;
+	virtual int32_t SetTextureAlpha(uint32_t textureNum, bool alphaFlag);
 
-		//Function returns 0 if OK.  -1 if textureNum is out of range of numTextures.
-		//This function takes the gosTextureHandle passed in and assigns it to the
-		//textureNum entry of the listOfTextures;
-		virtual int32_t SetTextureHandle (uint32_t textureNum, uint32_t gosTextureHandle);
+	//Need this so that Multi-Shapes can let each shape know texture info.
+	virtual void CreateListOfTextures(TG_TexturePtr list, uint32_t numTxms);
 
-		//Function returns 0 if OK.  -1 if textureNum is out of range of numTextures.
-		//This function takes the gosTextureHandle passed in and assigns it to the
-		//textureNum entry of the listOfTextures;
-		virtual int32_t SetTextureAlpha (uint32_t textureNum, bool alphaFlag);
+	virtual void movePosRelativeCenterNode(void);
 
-		//Need this so that Multi-Shapes can let each shape know texture info.
-		virtual void CreateListOfTextures (TG_TexturePtr list, uint32_t numTxms);
+	//--------------------------------------------------------------
+	// Creates an instance of this shape for the game to muck with.
+	virtual TG_Shape* CreateFrom(void);
 
- 		virtual void movePosRelativeCenterNode (void);
-		
-		//--------------------------------------------------------------
-		// Creates an instance of this shape for the game to muck with.
-		virtual TG_Shape *CreateFrom (void);
+	virtual void SetAlphaTest(bool flag)
+	{
+		alphaTestOn = flag;
+	}
 
-		virtual void SetAlphaTest (bool flag)
-		{
-			alphaTestOn = flag;
-		}
+	virtual void SetFilter(bool flag)
+	{
+		filterOn = flag;
+	}
 
-		virtual void SetFilter (bool flag)
-		{
-			filterOn = flag;
-		}
+	virtual void SetLightRGBs(uint32_t hPink, uint32_t hGreen, uint32_t hYellow)
+	{
+		hotPinkRGB = hPink;
+		hotGreenRGB = hGreen;
+		hotYellowRGB = hYellow;
+	}
 
-		virtual void SetLightRGBs (uint32_t hPink, uint32_t hGreen, uint32_t hYellow)
-		{
-			hotPinkRGB = hPink;
-			hotGreenRGB = hGreen;
-			hotYellowRGB = hYellow;
-		}
-		
-		virtual int32_t GetNodeType (void)
-		{
-			return SHAPE_NODE;
-		}
-		
- 		virtual void LoadBinaryCopy (File &binFile);
-		virtual void SaveBinaryCopy (File &binFile);
+	virtual int32_t GetNodeType(void)
+	{
+		return SHAPE_NODE;
+	}
+
+	virtual void LoadBinaryCopy(File& binFile);
+	virtual void SaveBinaryCopy(File& binFile);
 };
 
 typedef TG_TypeShape* TG_TypeShapePtr;
@@ -645,193 +633,184 @@ class TG_Shape
 	friend TG_TypeShape;
 	friend TG_TypeNode;
 	friend TG_TypeMultiShape;
-	
+
 	//-------------
 	//Data Members
-	protected:
-		TG_TypeNodePtr			myType;						//Pointer to the instance of the shape.
-		uint32_t					numVertices;				//Number of vertices in Shape
-		uint32_t					numTriangles;				//NUmber of triangles in Shape
-		uint32_t					numVisibleFaces;			//Number of non-backfaced non-clipped faces.
-		uint32_t					numVisibleShadows;			//Number of visible Shadow Faces.
+protected:
+	TG_TypeNodePtr			myType;						//Pointer to the instance of the shape.
+	uint32_t					numVertices;				//Number of vertices in Shape
+	uint32_t					numTriangles;				//NUmber of triangles in Shape
+	uint32_t					numVisibleFaces;			//Number of non-backfaced non-clipped faces.
+	uint32_t					numVisibleShadows;			//Number of visible Shadow Faces.
 
-		TG_Vertex *				listOfColors;				//Memory holding all unchanged or rarely changed color data.
-		gos_VERTEX * 			listOfVertices;				//Memory holding all vertex data
-		TG_TrianglePtr			listOfTriangles;			//Memory holding all triangle data
-		DWORDPtr				listOfVisibleFaces;			//Memory holding indices into listOfTriangles
-															//Draw in this order.  First entry with value 0xffffffff
-															//Means all done, no more to draw.
+	TG_Vertex* 				listOfColors;				//Memory holding all unchanged or rarely changed color data.
+	gos_VERTEX* 			listOfVertices;				//Memory holding all vertex data
+	TG_TrianglePtr			listOfTriangles;			//Memory holding all triangle data
+	DWORDPtr				listOfVisibleFaces;			//Memory holding indices into listOfTriangles
+	//Draw in this order.  First entry with value 0xffffffff
+	//Means all done, no more to draw.
 
-		TG_ShadowVertexPtr		listOfShadowVertices;		//Stores shadow vertex information for the shape.
-															//We just use existing listOfTriangles to draw!
-															
-		TG_ShadowVertexTempPtr	listOfShadowTVertices;		//Stores just the Volatile data.  Comes from a pool!!
-															
-		DWORDPtr				listOfVisibleShadows;		//Memory holding indices into listOfTriangles
-															//Draw in this order.  First entry with value 0xffffffff
-															//Means all done, no more to draw.
+	TG_ShadowVertexPtr		listOfShadowVertices;		//Stores shadow vertex information for the shape.
+	//We just use existing listOfTriangles to draw!
 
-		bool					shadowsVisible[MAX_SHADOWS];//Is this shadow worth drawing?
+	TG_ShadowVertexTempPtr	listOfShadowTVertices;		//Stores just the Volatile data.  Comes from a pool!!
 
-		uint32_t					aRGBHighlight;				//Color to add to vertices to make building stand out.
-		uint32_t					fogRGB;						//Color to make fog.
-		
-		float					shapeScalar;
+	DWORDPtr				listOfVisibleShadows;		//Memory holding indices into listOfTriangles
+	//Draw in this order.  First entry with value 0xffffffff
+	//Means all done, no more to draw.
 
-		bool					lightsOut;
-		bool					noShadow;
-		bool					recalcShadows;
-		bool					isWindow;
-		bool					isSpotlight;
+	bool					shadowsVisible[MAX_SHADOWS];//Is this shadow worth drawing?
 
-		uint32_t					lastTurnTransformed;
+	uint32_t					aRGBHighlight;				//Color to add to vertices to make building stand out.
+	uint32_t					fogRGB;						//Color to make fog.
 
-	public:
-		//Matrices used to transform the shapes.
-		static Stuff::LinearMatrix4D 	*cameraOrigin;
-		static Stuff::Matrix4D			*cameraToClip;
-		static Stuff::Matrix4D			worldToClip;
-		static Stuff::LinearMatrix4D	worldToCamera;
-		static TG_LightPtr				*listOfLights;		//List passed in a transform time
-		static uint32_t					numLights;
+	float					shapeScalar;
 
-		static float					viewMulX;
-		static float					viewAddX;
-		static float					viewMulY;
-		static float					viewAddY;
+	bool					lightsOut;
+	bool					noShadow;
+	bool					recalcShadows;
+	bool					isWindow;
+	bool					isSpotlight;
 
-		static uint32_t					fogColor;
-		static float					fogFull;
-		static float					fogStart;
+	uint32_t					lastTurnTransformed;
 
-		static Stuff::LinearMatrix4D 	lightToShape[MAX_LIGHTS_IN_WORLD];
-		static Stuff::Vector3D			lightDir[MAX_LIGHTS_IN_WORLD];
-		static Stuff::Vector3D			spotDir[MAX_LIGHTS_IN_WORLD];
-		static Stuff::Vector3D			rootLightDir[MAX_LIGHTS_IN_WORLD];
+public:
+	//Matrices used to transform the shapes.
+	static Stuff::LinearMatrix4D*	 cameraOrigin;
+	static Stuff::Matrix4D*			cameraToClip;
+	static Stuff::Matrix4D			worldToClip;
+	static Stuff::LinearMatrix4D	worldToCamera;
+	static TG_LightPtr*				listOfLights;		//List passed in a transform time
+	static uint32_t					numLights;
 
-		static UserHeapPtr 				tglHeap;		//Stores all TGL data so we don't need to go through the FREE merry go round of GOS!
-		
-		static uint32_t					lighteningLevel;
+	static float					viewMulX;
+	static float					viewAddX;
+	static float					viewMulY;
+	static float					viewAddY;
+
+	static uint32_t					fogColor;
+	static float					fogFull;
+	static float					fogStart;
+
+	static Stuff::LinearMatrix4D 	lightToShape[MAX_LIGHTS_IN_WORLD];
+	static Stuff::Vector3D			lightDir[MAX_LIGHTS_IN_WORLD];
+	static Stuff::Vector3D			spotDir[MAX_LIGHTS_IN_WORLD];
+	static Stuff::Vector3D			rootLightDir[MAX_LIGHTS_IN_WORLD];
+
+	static UserHeapPtr 				tglHeap;		//Stores all TGL data so we don't need to go through the FREE merry go round of GOS!
+
+	static uint32_t					lighteningLevel;
 
 	//-----------------
 	//Member Functions
-	protected:
+protected:
 
-	public:
-		PVOID operator new (size_t mySize);
-		void operator delete (PVOID us);
+public:
+	PVOID operator new(size_t mySize);
+	void operator delete(PVOID us);
 
-		void init (void)
-		{
-			numVertices = numTriangles = numVisibleFaces = 0;
+	void init(void)
+	{
+		numVertices = numTriangles = numVisibleFaces = 0;
+		listOfVertices = nullptr;
+		listOfTriangles = nullptr;
+		listOfLights = nullptr;
+		listOfVisibleFaces = nullptr;
+		listOfShadowVertices = nullptr;
+		listOfVisibleShadows = nullptr;
+		aRGBHighlight = 0x00000000;
+		shapeScalar = 0.0f;
+		lightsOut = false;
+		noShadow = false;
+		recalcShadows = true;
+		isWindow = isSpotlight = false;
+		for(size_t i = 0; i < MAX_SHADOWS; i++)
+			shadowsVisible[i] = false;
+	}
 
-			listOfVertices = nullptr;
-			listOfTriangles = nullptr;
-			listOfLights = nullptr;
-			listOfVisibleFaces = nullptr;
+	TG_Shape(void)
+	{
+		init(void);
+	}
 
-			listOfShadowVertices = nullptr;
-			listOfVisibleShadows = nullptr;
+	void destroy(void);
 
-			aRGBHighlight = 0x00000000;
-			
-			shapeScalar = 0.0f;
-			
-			lightsOut = false;
-			
-			noShadow = false;
-			
-			recalcShadows = true;
+	~TG_Shape(void)
+	{
+		destroy(void);
+	}
 
-			isWindow = isSpotlight = false;
+	//This function sets up the camera Matrices for this TG_Shape to transform
+	//itself with.  These matrices are static and only need to be set once per
+	//render pass if the camera does not change for that pass.
+	static void SetCameraMatrices(Stuff::LinearMatrix4D* camOrigin, Stuff::Matrix4D* camToClip);
 
-			for (int32_t i=0;i<MAX_SHADOWS;i++)
-				shadowsVisible[i] = false;
-		}
-		
-		TG_Shape (void)
-		{
-			init(void);
-		}
+	static void SetViewport(float mulX, float mulY, float addX, float addY);
 
-		void destroy (void);
+	static void SetFog(uint32_t fRGB, float fStart, float fFull);
 
-		~TG_Shape (void)
-		{
-			destroy(void);
-		}
+	//This function sets the list of lights used by the TransformShape function
+	//to light the shape.
+	//Function returns 0 if lightList entries are all OK.  -1 otherwise.
+	//
+	int32_t SetLightList(TG_LightPtr* lightList, uint32_t nLights);
 
-		//This function sets up the camera Matrices for this TG_Shape to transform
-		//itself with.  These matrices are static and only need to be set once per
-		//render pass if the camera does not change for that pass.
-		static void SetCameraMatrices (Stuff::LinearMatrix4D *camOrigin, Stuff::Matrix4D *camToClip);
+	//This function sets the fog values for the shape.  Straight fog right now.
+	void SetFogRGB(uint32_t fRGB);
 
-		static void SetViewport (float mulX, float mulY, float addX, float addY);
+	//This function does exactly what TranformShape does EXCEPT that the shapeToClip,
+	//Lighting and backface matrices have been calculated in the step above this one.
+	//This saves enormous processor cycles when matrices are the same and transforms
+	//Can just be run from the same matrices without recalcing them!
+	//Function returns -1 if all vertex screen positions are off screen.
+	//Function returns 0 if any one vertex screen position is off screen.
+	//Function returns 1 is all vertex screen positions are on screen.
+	// NOTE:  THIS IS NOT A RIGOROUS CLIP!!!!!!!!!
+	int32_t MultiTransformShape(Stuff::Matrix4D* shapeToClip, Stuff::Point3D* backFacePoint, TG_ShapeRecPtr parentNode, bool isHudElement, uint8_t alphaValue, bool isClamped);
 
-		static void SetFog (uint32_t fRGB, float fStart, float fFull);
+	//This function creates the list of shadows and transforms them in preparation to drawing.
+	//
+	void MultiTransformShadows(Stuff::Point3D* pos, Stuff::LinearMatrix4D* s2w, float rotation);
 
-		//This function sets the list of lights used by the TransformShape function
-		//to light the shape.
-		//Function returns 0 if lightList entries are all OK.  -1 otherwise.
-		//
-		int32_t SetLightList (TG_LightPtr *lightList, uint32_t nLights);
-		
-		//This function sets the fog values for the shape.  Straight fog right now.
-		void SetFogRGB (uint32_t fRGB);
+	//This function takes the current listOfVisibleFaces and draws them using
+	//gos_DrawTriangle.  Does clipping, too!
+	void Render(float forceZ = -1.0f, bool isHudElement = false, uint8_t alphaValue = 0xff, bool isClamped = false);
 
-		//This function does exactly what TranformShape does EXCEPT that the shapeToClip,
-		//Lighting and backface matrices have been calculated in the step above this one.
-		//This saves enormous processor cycles when matrices are the same and transforms
-		//Can just be run from the same matrices without recalcing them!
-		//Function returns -1 if all vertex screen positions are off screen.
-		//Function returns 0 if any one vertex screen position is off screen.
-		//Function returns 1 is all vertex screen positions are on screen.
-		// NOTE:  THIS IS NOT A RIGOROUS CLIP!!!!!!!!!
-		int32_t MultiTransformShape (Stuff::Matrix4D *shapeToClip, Stuff::Point3D *backFacePoint, TG_ShapeRecPtr parentNode, bool isHudElement, uint8_t alphaValue, bool isClamped);
+	//This function takes the current listOfShadowTriangles and draws them using
+	//gos_DrawTriangle.  Does clipping, too!
+	int32_t RenderShadows(int32_t startFace);
 
-		//This function creates the list of shadows and transforms them in preparation to drawing.
-		//
-		void MultiTransformShadows (Stuff::Point3D *pos, Stuff::LinearMatrix4D *s2w, float rotation);
+	void SetARGBHighLight(uint32_t argb)
+	{
+		aRGBHighlight = argb;
+	}
 
-		//This function takes the current listOfVisibleFaces and draws them using
-		//gos_DrawTriangle.  Does clipping, too!
-		void Render (float forceZ = -1.0f, bool isHudElement = false, uint8_t alphaValue = 0xff, bool isClamped = false);
+	void SetLightsOut(bool lightFlag)
+	{
+		lightsOut = lightFlag;
+	}
 
-		//This function takes the current listOfShadowTriangles and draws them using
-		//gos_DrawTriangle.  Does clipping, too!
-		int32_t RenderShadows (int32_t startFace);
+	PSTR  getNodeName(void)
+	{
+		return myType->getNodeId(void);
+	}
 
-		void SetARGBHighLight (uint32_t argb)
-		{
-			aRGBHighlight = argb;
-		}
+	Stuff::Point3D GetRelativeNodeCenter(void)
+	{
+		return myType->GetRelativeNodeCenter(void);
+	}
 
-		void SetLightsOut (bool lightFlag)
-		{
-			lightsOut = lightFlag;
-		}
-		
-		PSTR  getNodeName (void)
-		{
-			return myType->getNodeId(void);
-		}
-		
-		Stuff::Point3D GetRelativeNodeCenter (void)
-		{
-			return myType->GetRelativeNodeCenter(void);
-		}
-		
-		bool PerPolySelect (float mouseX, float mouseY);
-		
-		void SetRecalcShadows (bool flag)
-		{
-			recalcShadows = flag;
-		}
-		
-		virtual void ScaleShape (float scaleFactor)
-		{
-			shapeScalar = scaleFactor;
-		}
+	bool PerPolySelect(float mouseX, float mouseY);
+
+	void SetRecalcShadows(bool flag)
+	{
+		recalcShadows = flag;
+	}
+
+	virtual void ScaleShape(float scaleFactor)
+	{
+		shapeScalar = scaleFactor;
+	}
 };
 
 typedef TG_Shape* TG_ShapePtr;
@@ -840,305 +819,290 @@ typedef TG_Shape* TG_ShapePtr;
 
 class TG_VertexPool
 {
-	protected:
-		TG_Vertex 	*tgVertexPool;
-		TG_Vertex 	*nextVertex;
-		
-		uint32_t		totalVertices;
-		uint32_t		numVertices;
-		
-	public:
-		TG_VertexPool (void)
+protected:
+	TG_Vertex*	 tgVertexPool;
+	TG_Vertex*	 nextVertex;
+
+	uint32_t		totalVertices;
+	uint32_t		numVertices;
+
+public:
+	TG_VertexPool(void)
+	{
+		tgVertexPool = nextVertex = nullptr;
+		totalVertices = numVertices = 0;
+	}
+
+	~TG_VertexPool(void)
+	{
+		destroy(void);
+	}
+
+	void destroy(void)
+	{
+		TG_Shape::tglHeap->Free(tgVertexPool);
+		tgVertexPool = nextVertex = nullptr;
+		totalVertices = numVertices = 0;
+	}
+
+	void init(uint32_t maxVertices)
+	{
+		tgVertexPool = (TG_VertexPtr)TG_Shape::tglHeap->Malloc(sizeof(TG_Vertex) * maxVertices);
+		gosASSERT(tgVertexPool != nullptr);
+		nextVertex = tgVertexPool;
+		totalVertices = maxVertices;
+		numVertices = 0;
+	}
+
+	void reset(void)
+	{
+		nextVertex = tgVertexPool;
+		numVertices = 0;
+	}
+
+	TG_VertexPtr getColorsFromPool(uint32_t numRequested)
+	{
+		TG_VertexPtr result = nullptr;
+		numVertices += numRequested;
+		if(numVertices < totalVertices)
 		{
-			tgVertexPool = nextVertex = nullptr;
-			totalVertices = numVertices = 0;
+			result = nextVertex;
+			nextVertex += numRequested;
 		}
-		
-		~TG_VertexPool (void)
-		{
-			destroy(void);
-		}
-		
-		void destroy (void)
-		{
-			TG_Shape::tglHeap->Free(tgVertexPool);
-			tgVertexPool = nextVertex = nullptr;
-			totalVertices = numVertices = 0;
-		}
-		
-		void init (uint32_t maxVertices)
-		{
-			tgVertexPool = (TG_VertexPtr)TG_Shape::tglHeap->Malloc(sizeof(TG_Vertex) * maxVertices);
-			gosASSERT(tgVertexPool != nullptr);
-			
-			nextVertex = tgVertexPool;
-			
-			totalVertices = maxVertices;
-			numVertices = 0;
-		}
-		
-		void reset (void)
-		{
-			nextVertex = tgVertexPool;
-			numVertices = 0;
-		}
-		
-		TG_VertexPtr getColorsFromPool (uint32_t numRequested)
-		{
-			TG_VertexPtr result = nullptr;
-			numVertices += numRequested;
-			if (numVertices < totalVertices)
-			{
-				result = nextVertex;
-				nextVertex += numRequested;
-			}
-			
-			return result;
-		}
+		return result;
+	}
 };
 
 class TG_GOSVertexPool
 {
-	protected:
-		gos_VERTEX 	*gVertexPool;
-		gos_VERTEX 	*nextVertex;
-		
-		uint32_t		totalVertices;
-		uint32_t		numVertices;
-		
-	public:
-		TG_GOSVertexPool (void)
+protected:
+	gos_VERTEX*	 gVertexPool;
+	gos_VERTEX*	 nextVertex;
+
+	uint32_t		totalVertices;
+	uint32_t		numVertices;
+
+public:
+	TG_GOSVertexPool(void)
+	{
+		gVertexPool = nextVertex = nullptr;
+		totalVertices = numVertices = 0;
+	}
+
+	~TG_GOSVertexPool(void)
+	{
+		destroy(void);
+	}
+
+	void destroy(void)
+	{
+		TG_Shape::tglHeap->Free(gVertexPool);
+		gVertexPool = nextVertex = nullptr;
+		totalVertices = numVertices = 0;
+	}
+
+	void init(uint32_t maxVertices)
+	{
+		gVertexPool = (gos_VERTEX*)TG_Shape::tglHeap->Malloc(sizeof(gos_VERTEX) * maxVertices);
+		gosASSERT(gVertexPool != nullptr);
+		nextVertex = gVertexPool;
+		totalVertices = maxVertices;
+		numVertices = 0;
+	}
+
+	void reset(void)
+	{
+		nextVertex = gVertexPool;
+		numVertices = 0;
+	}
+
+	gos_VERTEX* getVerticesFromPool(uint32_t numRequested)
+	{
+		gos_VERTEX* result = nullptr;
+		numVertices += numRequested;
+		if(numVertices < totalVertices)
 		{
-			gVertexPool = nextVertex = nullptr;
-			totalVertices = numVertices = 0;
+			result = nextVertex;
+			nextVertex += numRequested;
 		}
-		
-		~TG_GOSVertexPool (void)
-		{
-			destroy(void);
-		}
-		
-		void destroy (void)
-		{
-			TG_Shape::tglHeap->Free(gVertexPool);
-			gVertexPool = nextVertex = nullptr;
-			totalVertices = numVertices = 0;
-		}
-		
-		void init (uint32_t maxVertices)
-		{
-			gVertexPool = (gos_VERTEX *)TG_Shape::tglHeap->Malloc(sizeof(gos_VERTEX) * maxVertices);
-			gosASSERT(gVertexPool != nullptr);
-			
-			nextVertex = gVertexPool;
-			
-			totalVertices = maxVertices;
-			numVertices = 0;
-		}
-		
-		void reset (void)
-		{
-			nextVertex = gVertexPool;
-			numVertices = 0;
-		}
-		
-		gos_VERTEX * getVerticesFromPool (uint32_t numRequested)
-		{
-			gos_VERTEX* result = nullptr;
-			numVertices += numRequested;
-			if (numVertices < totalVertices)
-			{
-				result = nextVertex;
-				nextVertex += numRequested;
-			}
-			
-			return result;
-		}
+		return result;
+	}
 };
 
 class TG_TrianglePool
 {
-	protected:
-		TG_Triangle *trianglePool;
-		TG_Triangle	*nextTriangle;
-		
-		uint32_t		totalTriangles;
-		uint32_t		numTriangles;
-		
-	public:
-		TG_TrianglePool (void)
+protected:
+	TG_Triangle* trianglePool;
+	TG_Triangle*	nextTriangle;
+
+	uint32_t		totalTriangles;
+	uint32_t		numTriangles;
+
+public:
+	TG_TrianglePool(void)
+	{
+		trianglePool = nextTriangle = nullptr;
+		totalTriangles = numTriangles = 0;
+	}
+
+	~TG_TrianglePool(void)
+	{
+		destroy(void);
+	}
+
+	void destroy(void)
+	{
+		TG_Shape::tglHeap->Free(trianglePool);
+		trianglePool = nextTriangle = nullptr;
+		totalTriangles = numTriangles = 0;
+	}
+
+	void init(uint32_t maxTriangles)
+	{
+		trianglePool = (TG_Triangle*)TG_Shape::tglHeap->Malloc(sizeof(TG_Triangle) * maxTriangles);
+		gosASSERT(trianglePool != nullptr);
+		nextTriangle = trianglePool;
+		totalTriangles = maxTriangles;
+		numTriangles = 0;
+	}
+
+	void reset(void)
+	{
+		nextTriangle = trianglePool;
+		numTriangles = 0;
+	}
+
+	TG_Triangle* getTrianglesFromPool(uint32_t numRequested)
+	{
+		TG_Triangle* result = nullptr;
+		numTriangles += numRequested;
+		if(numTriangles < totalTriangles)
 		{
-			trianglePool = nextTriangle = nullptr;
-			totalTriangles = numTriangles = 0;
+			result = nextTriangle;
+			nextTriangle += numRequested;
 		}
-		
-		~TG_TrianglePool (void)
-		{
-			destroy(void);
-		}
-		
-		void destroy (void)
-		{
-			TG_Shape::tglHeap->Free(trianglePool);
-			trianglePool = nextTriangle = nullptr;
-			totalTriangles = numTriangles = 0;
-		}
-		
-		void init (uint32_t maxTriangles)
-		{
-			trianglePool = (TG_Triangle *)TG_Shape::tglHeap->Malloc(sizeof(TG_Triangle) * maxTriangles);
-			gosASSERT(trianglePool != nullptr);
-			
-			nextTriangle = trianglePool;
-			
-			totalTriangles = maxTriangles;
-			numTriangles = 0;
-		}
-		
-		void reset (void)
-		{
-			nextTriangle = trianglePool;
-			numTriangles = 0;
-		}
-		
-		TG_Triangle * getTrianglesFromPool (uint32_t numRequested)
-		{
-			TG_Triangle* result = nullptr;
-			numTriangles += numRequested;
-			if (numTriangles < totalTriangles)
-			{
-				result = nextTriangle;
-				nextTriangle += numRequested;
-			}
-			
-			return result;
-		}
+		return result;
+	}
 };
 
 class TG_ShadowPool
 {
-	protected:
-		TG_ShadowVertexTemp 	*tVertexPool;
-		TG_ShadowVertexTemp 	*nextVertex;
-		
-		uint32_t					totalVertices;
-		uint32_t					numVertices;
-		
-	public:
-		TG_ShadowPool (void)
+protected:
+	TG_ShadowVertexTemp*	 tVertexPool;
+	TG_ShadowVertexTemp*	 nextVertex;
+
+	uint32_t					totalVertices;
+	uint32_t					numVertices;
+
+public:
+	TG_ShadowPool(void)
+	{
+		tVertexPool = nextVertex = nullptr;
+		totalVertices = numVertices = 0;
+	}
+
+	~TG_ShadowPool(void)
+	{
+		destroy(void);
+	}
+
+	void destroy(void)
+	{
+		TG_Shape::tglHeap->Free(tVertexPool);
+		tVertexPool = nextVertex = nullptr;
+		totalVertices = numVertices = 0;
+	}
+
+	void init(uint32_t maxVertices)
+	{
+		tVertexPool = (TG_ShadowVertexTempPtr)TG_Shape::tglHeap->Malloc(sizeof(TG_ShadowVertexTemp) * maxVertices);
+		gosASSERT(tVertexPool != nullptr);
+		nextVertex = tVertexPool;
+		totalVertices = maxVertices;
+		numVertices = 0;
+	}
+
+	void reset(void)
+	{
+		nextVertex = tVertexPool;
+		numVertices = 0;
+	}
+
+	TG_ShadowVertexTempPtr getShadowsFromPool(uint32_t numRequested)
+	{
+		TG_ShadowVertexTempPtr result = nullptr;
+		numVertices += numRequested;
+		if(numVertices < totalVertices)
 		{
-			tVertexPool = nextVertex = nullptr;
-			totalVertices = numVertices = 0;
+			result = nextVertex;
+			nextVertex += numRequested;
 		}
-		
-		~TG_ShadowPool (void)
-		{
-			destroy(void);
-		}
-		
-		void destroy (void)
-		{
-			TG_Shape::tglHeap->Free(tVertexPool);
-			tVertexPool = nextVertex = nullptr;
-			totalVertices = numVertices = 0;
-		}
-		
-		void init (uint32_t maxVertices)
-		{
-			tVertexPool = (TG_ShadowVertexTempPtr)TG_Shape::tglHeap->Malloc(sizeof(TG_ShadowVertexTemp) * maxVertices);
-			gosASSERT(tVertexPool != nullptr);
-			
-			nextVertex = tVertexPool;
-			
-			totalVertices = maxVertices;
-			numVertices = 0;
-		}
-		
-		void reset (void)
-		{
-			nextVertex = tVertexPool;
-			numVertices = 0;
-		}
-		
-		TG_ShadowVertexTempPtr getShadowsFromPool (uint32_t numRequested)
-		{
-			TG_ShadowVertexTempPtr result = nullptr;
-			numVertices += numRequested;
-			if (numVertices < totalVertices)
-			{
-				result = nextVertex;
-				nextVertex += numRequested;
-			}
-			
-			return result;
-		}
+		return result;
+	}
 };
 
 class TG_DWORDPool
 {
-	protected:
-		uint32_t 	*triPool;
-		uint32_t	*nextTri;
-		
-		uint32_t	totalTriangles;
-		uint32_t	numTriangles;
-		
-	public:
-		TG_DWORDPool (void)
+protected:
+	uint32_t*	 triPool;
+	uint32_t*	nextTri;
+
+	uint32_t	totalTriangles;
+	uint32_t	numTriangles;
+
+public:
+	TG_DWORDPool(void)
+	{
+		triPool = nextTri = nullptr;
+		totalTriangles = numTriangles = 0;
+	}
+
+	~TG_DWORDPool(void)
+	{
+		destroy(void);
+	}
+
+	void destroy(void)
+	{
+		TG_Shape::tglHeap->Free(triPool);
+		triPool = nextTri = nullptr;
+		totalTriangles = numTriangles = 0;
+	}
+
+	void init(uint32_t maxTriangles)
+	{
+		triPool = (uint32_t*)TG_Shape::tglHeap->Malloc(sizeof(uint32_t) * maxTriangles);
+		gosASSERT(triPool != nullptr);
+		nextTri = triPool;
+		totalTriangles = maxTriangles;
+		numTriangles = 0;
+	}
+
+	void reset(void)
+	{
+		nextTri = triPool;
+		numTriangles = 0;
+	}
+
+	uint32_t* getFacesFromPool(uint32_t numRequested)
+	{
+		uint32_t* result = nullptr;
+		numTriangles += numRequested;
+		if(numTriangles < totalTriangles)
 		{
-			triPool = nextTri = nullptr;
-			totalTriangles = numTriangles = 0;
+			result = nextTri;
+			nextTri += numRequested;
 		}
-		
-		~TG_DWORDPool (void)
-		{
-			destroy(void);
-		}
-		
-		void destroy (void)
-		{
-			TG_Shape::tglHeap->Free(triPool);
-			triPool = nextTri = nullptr;
-			totalTriangles = numTriangles = 0;
-		}
-		
-		void init (uint32_t maxTriangles)
-		{
-			triPool = (uint32_t *)TG_Shape::tglHeap->Malloc(sizeof(uint32_t) * maxTriangles);
-			gosASSERT(triPool != nullptr);
-			
-			nextTri = triPool;
-			
-			totalTriangles = maxTriangles;
-			numTriangles = 0;
-		}
-		
-		void reset (void)
-		{
-			nextTri = triPool;
-			numTriangles = 0;
-		}
-		
-		uint32_t * getFacesFromPool (uint32_t numRequested)
-		{
-			uint32_t* result = nullptr;
-			numTriangles += numRequested;
-			if (numTriangles < totalTriangles)
-			{
-				result = nextTri;
-				nextTri += numRequested;
-			}
-			
-			return result;
-		}
+		return result;
+	}
 };
 
 //-------------------------------------------------------------------------------
-extern TG_VertexPool 		*colorPool;
-extern TG_GOSVertexPool 	*vertexPool;
-extern TG_DWORDPool			*facePool;
-extern TG_ShadowPool		*shadowPool;
-extern TG_TrianglePool		*trianglePool;
+extern TG_VertexPool*		 colorPool;
+extern TG_GOSVertexPool*	 vertexPool;
+extern TG_DWORDPool*			facePool;
+extern TG_ShadowPool*		shadowPool;
+extern TG_TrianglePool*		trianglePool;
 
 //-------------------------------------------------------------------------------
 // ASE File Parse String Macros

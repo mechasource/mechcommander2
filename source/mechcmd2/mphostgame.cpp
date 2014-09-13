@@ -32,7 +32,6 @@ extern CPrefs prefs;
 MPHostGame::MPHostGame()
 {
 	bDone = 0;
-
 	status = RUNNING;
 }
 
@@ -43,9 +42,9 @@ MPHostGame::~MPHostGame()
 int32_t MPHostGame::indexOfButtonWithID(int32_t id)
 {
 	int32_t i;
-	for (i = 0; i < buttonCount; i++)
+	for(i = 0; i < buttonCount; i++)
 	{
-		if (buttons[i].getID() == id)
+		if(buttons[i].getID() == id)
 		{
 			return i;
 		}
@@ -57,86 +56,76 @@ void MPHostGame::init()
 {
 	FullPathFileName path;
 	FitIniFile file;
-	path.init( artPath, "mcl_mp_hostgamedialog", ".fit" );
-
-	if ( NO_ERROR != file.open( path ) )
+	path.init(artPath, "mcl_mp_hostgamedialog", ".fit");
+	if(NO_ERROR != file.open(path))
 	{
 		char error[256];
-		sprintf( error, "couldn't open file %s", path );
-		Assert( 0, 0, error );
-		return;		
+		sprintf(error, "couldn't open file %s", path);
+		Assert(0, 0, error);
+		return;
 	}
-
-	LogisticsScreen::init( file, "Static", "Text", "Rect", "Button" );
-
-	file.seekBlock( "InAnim" );
-	enterAnim.init( &file, "" );
-	file.seekBlock( "OutAnim" );
-	exitAnim.init( &file, "" );
-
-
-	if ( buttonCount )
+	LogisticsScreen::init(file, "Static", "Text", "Rect", "Button");
+	file.seekBlock("InAnim");
+	enterAnim.init(&file, "");
+	file.seekBlock("OutAnim");
+	exitAnim.init(&file, "");
+	if(buttonCount)
 	{
-		for ( int32_t i = 0; i < buttonCount; i++ )
+		for(auto i = 0; i < buttonCount; i++)
 		{
 			buttons[i].setMessageOnRelease();
-			if (buttons[i].getID() == 0)
+			if(buttons[i].getID() == 0)
 			{
 				buttons[i].setID(FIRST_BUTTON_ID + i);
 			}
 		}
 	}
-
-	edits[0].limitEntry( 24 );
-
-	edits[0].allowIME( false );
-
-
-/*	int32_t tmpX, tmpY;
-	file.seekBlock( "ComboBox0" );
-	file.readIdLong( "XLocation", tmpX );
-	file.readIdLong( "YLocation", tmpY );
+	edits[0].limitEntry(24);
+	edits[0].allowIME(false);
+	/*	int32_t tmpX, tmpY;
+		file.seekBlock( "ComboBox0" );
+		file.readIdLong( "XLocation", tmpX );
+		file.readIdLong( "YLocation", tmpY );
 
 
-	char tmpStr[256];
-	file.readIdString( "FileName", tmpStr, 255 );
-	{
-		FullPathFileName tmpPath;
-		tmpPath.init( artPath, tmpStr, ".fit" );
-			
-		FitIniFile PNfile;
-		if ( NO_ERROR != PNfile.open( tmpPath ) )
+		char tmpStr[256];
+		file.readIdString( "FileName", tmpStr, 255 );
 		{
-			char error[256];
-			sprintf( error, "couldn't open file %s", (PSTR)tmpPath );
-			Assert( 0, 0, error );
-			return;
+			FullPathFileName tmpPath;
+			tmpPath.init( artPath, tmpStr, ".fit" );
+
+			FitIniFile PNfile;
+			if ( NO_ERROR != PNfile.open( tmpPath ) )
+			{
+				char error[256];
+				sprintf( error, "couldn't open file %s", (PSTR)tmpPath );
+				Assert( 0, 0, error );
+				return;
+			}
+			numPlayersDropList.init( &PNfile, "ComboBox0");
+
+			aStyle5TextListItem *pTmp2;
+			int32_t i;
+			for (i = 2; i < MAX_MC_PLAYERS+1; i += 1)
+			{
+				pTmp2 = new aStyle5TextListItem;
+				pTmp2->init(&PNfile, "Text0");
+				char txt[32];
+				sprintf( txt, "%ld", i );
+				pTmp2->setText( txt );
+				pTmp2->sizeToText();
+				pTmp2->resize( numPlayersDropList.width() - numPlayersDropList.ListBox().getScrollBarWidth() + 5,
+					pTmp2->height() );
+				numPlayersDropList.AddItem(pTmp2);
+			}
+			numPlayersDropList.SelectItem(0);
 		}
-		numPlayersDropList.init( &PNfile, "ComboBox0");
 
-		aStyle5TextListItem *pTmp2;
-		int32_t i;
-		for (i = 2; i < MAX_MC_PLAYERS+1; i += 1)
-		{
-			pTmp2 = new aStyle5TextListItem;
-			pTmp2->init(&PNfile, "Text0");
-			char txt[32];
-			sprintf( txt, "%ld", i );
-			pTmp2->setText( txt );
-			pTmp2->sizeToText();
-			pTmp2->resize( numPlayersDropList.width() - numPlayersDropList.ListBox().getScrollBarWidth() + 5, 
-				pTmp2->height() );
-			numPlayersDropList.AddItem(pTmp2);
-		}
-		numPlayersDropList.SelectItem(0);
-	}
-
-	numPlayersDropList.moveTo( tmpX, tmpY );
-	numPlayersDropList.ListBox().setOrange( true );
-	numPlayersDropList.EditBox().limitEntry( 1 );
-	numPlayersDropList.EditBox().setNumeric( 1 );
-	numPlayersDropList.setReadOnly( 0 );*/ 
-
+		numPlayersDropList.moveTo( tmpX, tmpY );
+		numPlayersDropList.ListBox().setOrange( true );
+		numPlayersDropList.EditBox().limitEntry( 1 );
+		numPlayersDropList.EditBox().setNumeric( 1 );
+		numPlayersDropList.setReadOnly( 0 );*/
 }
 
 void MPHostGame::begin()
@@ -150,30 +139,24 @@ void MPHostGame::begin()
 void MPHostGame::end()
 {
 	bShowDlg = 0;
-
 	LogisticsDialog::end();
 }
 
-void MPHostGame::render(int32_t xOffset, int32_t yOffset )
+void MPHostGame::render(int32_t xOffset, int32_t yOffset)
 {
 	LogisticsDialog::render();
-
-	if ((0 == xOffset) && (0 == yOffset) && enterAnim.isDone() && !exitAnim.isAnimating() )
+	if((0 == xOffset) && (0 == yOffset) && enterAnim.isDone() && !exitAnim.isAnimating())
 	{
 //		numPlayersDropList.render();
-
-		for ( int32_t i = 0; i < staticCount; i++ )
+		for(auto i = 0; i < staticCount; i++)
 		{
 			statics[i].render(); // need to cover up droplist overflow...
 		}
 	}
-
-	if ( bShowDlg )
+	if(bShowDlg)
 	{
 		LogisticsOneButtonDialog::instance()->render();
 	}
-
-	
 }
 
 void MPHostGame::render()
@@ -181,34 +164,29 @@ void MPHostGame::render()
 	render(0, 0);
 }
 
-int32_t	MPHostGame::handleMessage( uint32_t message, uint32_t who)
+int32_t	MPHostGame::handleMessage(uint32_t message, uint32_t who)
 {
 	status = who;
 	exitAnim.begin();
 	enterAnim.end();
-
-	if ( status == YES )
+	if(status == YES)
 	{
 		EString tmp;
 //		numPlayersDropList.EditBox().getEntry(tmp);
 //		int32_t maxPlayers = atoi( tmp );
 		edits[0].getEntry(tmp);
 		MPlayer->setMode(MULTIPLAYER_MODE_PARAMETERS);
-		if ( !MPlayer->hostSession ((PSTR)(PCSTR)tmp, &prefs.playerName[0][0], 8) )
+		if(!MPlayer->hostSession((PSTR)(PCSTR)tmp, &prefs.playerName[0][0], 8))
 		{
 			MPlayer->setMode(MULTIPLAYER_MODE_NONE);
 			// need to pop dlg here
 			LogisticsOneButtonDialog::instance()->begin();
-			LogisticsOneButtonDialog::instance()->setText( IDS_ERROR_NOT_CONNECTED, IDS_DIALOG_OK, IDS_DIALOG_OK );
-			LogisticsOneButtonDialog::instance()->setFont( IDS_MP_CONNECT_ERROR_NO_CONNECTION_FONT );
+			LogisticsOneButtonDialog::instance()->setText(IDS_ERROR_NOT_CONNECTED, IDS_DIALOG_OK, IDS_DIALOG_OK);
+			LogisticsOneButtonDialog::instance()->setFont(IDS_MP_CONNECT_ERROR_NO_CONNECTION_FONT);
 			bShowDlg = true;
 		}
-
 	}
-
-
 	return 0;
-
 }
 
 bool MPHostGame::isDone()
@@ -218,10 +196,10 @@ bool MPHostGame::isDone()
 
 void MPHostGame::update()
 {
-	if ( bShowDlg )
+	if(bShowDlg)
 	{
 		LogisticsOneButtonDialog::instance()->update();
-		if ( LogisticsOneButtonDialog::instance()->isDone() )
+		if(LogisticsOneButtonDialog::instance()->isDone())
 		{
 			bShowDlg = 0;
 			status = NO;
@@ -229,49 +207,38 @@ void MPHostGame::update()
 		return;
 	}
 	LogisticsDialog::update();
-
- 
 	helpTextID = 0;
 	helpTextHeaderID = 0;
-
 	EString tmp;
 	edits[0].getEntry(tmp);
-
 	int32_t len = tmp.Length();
-
-
-	if ( len >= 1)
+	if(len >= 1)
 	{
-		getButton( YES )->disable( false );
+		getButton(YES)->disable(false);
 	}
 	else
-		getButton( YES )->disable( true );
-
-
-
+		getButton(YES)->disable(true);
 }
 
 
 
-int32_t aStyle5TextListItem::init( FitIniFile* file, PCSTR blockName )
+int32_t aStyle5TextListItem::init(FitIniFile* file, PCSTR blockName)
 {
-	file->seekBlock( blockName );
-
+	file->seekBlock(blockName);
 	int32_t fontResID = 0;
-	file->readIdLong( "Font", fontResID );
+	file->readIdLong("Font", fontResID);
 	int32_t textID = 0;
-	file->readIdLong( "TextID", textID );
+	file->readIdLong("TextID", textID);
 	aTextListItem::init(fontResID);
 	setText(textID);
 	int32_t color = 0xff808080;
-	file->readIdLong( "Color", color );
+	file->readIdLong("Color", color);
 	normalColor = color;
 	setColor(color);
-
 	char tmpStr[64];
 	strcpy(tmpStr, "");
-	file->readIdString( "Animation", tmpStr, 63 );
-	if (0 == strcmp("", tmpStr))
+	file->readIdString("Animation", tmpStr, 63);
+	if(0 == strcmp("", tmpStr))
 	{
 		hasAnimation = false;
 	}
@@ -280,18 +247,17 @@ int32_t aStyle5TextListItem::init( FitIniFile* file, PCSTR blockName )
 		hasAnimation = true;
 		animGroup.init(file, tmpStr);
 	}
-
 	return 0;
 }
 
 void aStyle5TextListItem::render()
 {
 	float color;
-	if (aListItem::SELECTED == getState())
+	if(aListItem::SELECTED == getState())
 	{
 		color = 0.33 * ((uint32_t)normalColor) + 0.67 * ((uint32_t)0xffffffff);
 	}
-	else if (aListItem::HIGHLITE == getState())
+	else if(aListItem::HIGHLITE == getState())
 	{
 		color = 0.67 * ((uint32_t)normalColor) + 0.33 * ((uint32_t)0xffffffff);
 	}
@@ -300,7 +266,6 @@ void aStyle5TextListItem::render()
 		color = normalColor;
 	}
 	aTextListItem::setColor((uint32_t)color);
-
 	aTextListItem::render();
 }
 

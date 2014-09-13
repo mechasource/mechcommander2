@@ -66,24 +66,30 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // CGroupDialog message handlers
 
-void CGroupDialog::OnGrOperationFileBrowseButton() {
+void CGroupDialog::OnGrOperationFileBrowseButton()
+{
 	UpdateData(TRUE);
-	while (true) {
-		CFileDialog selectFileDialog(TRUE,_T("FIT"),_T("*.FIT"),
-						 OFN_HIDEREADONLY|OFN_OVERWRITEPROMPT|OFN_NOCHANGEDIR,
-						 _T("FIT File (*.FIT)|*.FIT|"));
+	while(true)
+	{
+		CFileDialog selectFileDialog(TRUE, _T("FIT"), _T("*.FIT"),
+									 OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT | OFN_NOCHANGEDIR,
+									 _T("FIT File (*.FIT)|*.FIT|"));
 		selectFileDialog.m_ofn.lpstrInitialDir = artPath;
-		if( selectFileDialog.DoModal()==IDOK ) {
+		if(selectFileDialog.DoModal() == IDOK)
+		{
 			CString operationPath = selectFileDialog.GetPathName();
 			FitIniFile file;
 			int32_t result = 0;
-			result = file.open( (PSTR)(PCSTR)operationPath );
-			if (NO_ERROR != result) {
+			result = file.open((PSTR)(PCSTR)operationPath);
+			if(NO_ERROR != result)
+			{
 				AfxMessageBox(IDS_COULDNT_OPEN_OPERATION_FILE);
-			} else {
+			}
+			else
+			{
 				int32_t result = 0;
 				result = file.seekBlock("Button0");
-				if (NO_ERROR != result)
+				if(NO_ERROR != result)
 				{
 					AfxMessageBox(IDS_NOT_A_VALID_OPERATION_FILE);
 				}
@@ -91,51 +97,65 @@ void CGroupDialog::OnGrOperationFileBrowseButton() {
 			}
 			m_OperationFileEdit = selectFileDialog.GetFileTitle();
 			break;
-		} else {
+		}
+		else
+		{
 			break;
 		}
 	}
 	UpdateData(FALSE);
 }
 
-void CGroupDialog::OnGrPrevideoFileBrowseButton() {
+void CGroupDialog::OnGrPrevideoFileBrowseButton()
+{
 	UpdateData(TRUE);
-	while (true) {
-		CFileDialog selectFileDialog(TRUE,_T("AVI"),_T("*.AVI"),
-						 OFN_HIDEREADONLY|OFN_OVERWRITEPROMPT|OFN_NOCHANGEDIR,
-						 _T("Movie (*.AVI)|*.AVI|"));
+	while(true)
+	{
+		CFileDialog selectFileDialog(TRUE, _T("AVI"), _T("*.AVI"),
+									 OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT | OFN_NOCHANGEDIR,
+									 _T("Movie (*.AVI)|*.AVI|"));
 		selectFileDialog.m_ofn.lpstrInitialDir = moviePath;
-		if( selectFileDialog.DoModal()==IDOK ) {
+		if(selectFileDialog.DoModal() == IDOK)
+		{
 			m_PreVideoFileEdit = selectFileDialog.GetFileTitle();
 			break;
-		} else {
+		}
+		else
+		{
 			break;
 		}
 	}
 	UpdateData(FALSE);
 }
 
-void CGroupDialog::OnGrVideoFileBrowseButton() {
+void CGroupDialog::OnGrVideoFileBrowseButton()
+{
 	UpdateData(TRUE);
-	while (true) {
-		CFileDialog selectFileDialog(TRUE,_T("AVI"),_T("*.AVI"),
-						 OFN_HIDEREADONLY|OFN_OVERWRITEPROMPT|OFN_NOCHANGEDIR,
-						 _T("Movie (*.AVI)|*.AVI|"));
+	while(true)
+	{
+		CFileDialog selectFileDialog(TRUE, _T("AVI"), _T("*.AVI"),
+									 OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT | OFN_NOCHANGEDIR,
+									 _T("Movie (*.AVI)|*.AVI|"));
 		selectFileDialog.m_ofn.lpstrInitialDir = moviePath;
-		if( selectFileDialog.DoModal()==IDOK ) {
+		if(selectFileDialog.DoModal() == IDOK)
+		{
 			m_VideoFileEdit = selectFileDialog.GetFileTitle();
 			break;
-		} else {
+		}
+		else
+		{
 			break;
 		}
 	}
 	UpdateData(FALSE);
 }
 
-static void setMissionListBoxValues(CListBox &MissionListBox, const CMissionList &MissionList) {
+static void setMissionListBoxValues(CListBox& MissionListBox, const CMissionList& MissionList)
+{
 	MissionListBox.ResetContent();
 	CMissionList::EConstIterator it;
-	for (it = MissionList.Begin(); !it.IsDone(); it++) {
+	for(it = MissionList.Begin(); !it.IsDone(); it++)
+	{
 		CString tmpCStr;
 		tmpCStr = _TEXT("[");
 		tmpCStr += ((*it).m_MissionFile);
@@ -144,18 +164,17 @@ static void setMissionListBoxValues(CListBox &MissionListBox, const CMissionList
 	}
 }
 
-BOOL CGroupDialog::OnInitDialog() 
+BOOL CGroupDialog::OnInitDialog()
 {
 	CDialog::OnInitDialog();
-
 	setMissionListBoxValues(m_MissionListControl, m_MissionList);
 	m_TuneComboControl.SetCurSel(m_TuneNumber);
-	
 	return TRUE;  // return TRUE unless you set the focus to a control
-	              // EXCEPTION: OCX Property Pages should return FALSE
+	// EXCEPTION: OCX Property Pages should return FALSE
 }
 
-static void setMissionDialogValues(CMissionDialog &missionDialog, const CMissionData &missionData) {
+static void setMissionDialogValues(CMissionDialog& missionDialog, const CMissionData& missionData)
+{
 	missionDialog.m_MissionFileEdit = missionData.m_MissionFile;
 	missionDialog.m_PurchaseFileEdit = missionData.m_PurchaseFile;
 	missionDialog.m_LogisticsCheck = missionData.m_LogisticsEnabled;
@@ -165,7 +184,8 @@ static void setMissionDialogValues(CMissionDialog &missionDialog, const CMission
 	missionDialog.m_SalvageCheck = missionData.m_SalvageEnabled;
 }
 
-static void setMissionDataValues(CMissionData &missionData, const CMissionDialog &missionDialog) {
+static void setMissionDataValues(CMissionData& missionData, const CMissionDialog& missionDialog)
+{
 	missionData.m_MissionFile = missionDialog.m_MissionFileEdit;
 	missionData.m_PurchaseFile = missionDialog.m_PurchaseFileEdit;
 	missionData.m_LogisticsEnabled = missionDialog.m_LogisticsCheck;
@@ -175,13 +195,14 @@ static void setMissionDataValues(CMissionData &missionData, const CMissionDialog
 	missionData.m_SalvageEnabled = missionDialog.m_SalvageCheck;
 }
 
-void CGroupDialog::OnGrAddButton() 
+void CGroupDialog::OnGrAddButton()
 {
 	CMissionData missionData;
 	CMissionDialog missionDialog;
 	setMissionDialogValues(missionDialog, missionData);
 	int32_t ret = missionDialog.DoModal();
-	if (IDOK == ret) {
+	if(IDOK == ret)
+	{
 		setMissionDataValues(missionData, missionDialog);
 		m_MissionList.Append(missionData);
 		UpdateData(TRUE);
@@ -191,14 +212,16 @@ void CGroupDialog::OnGrAddButton()
 	}
 }
 
-void CGroupDialog::OnGrRemoveButton() 
+void CGroupDialog::OnGrRemoveButton()
 {
 	uint32_t selectedItemIndex = m_MissionListControl.GetCurSel();
-	if ((0 <= selectedItemIndex) && (m_MissionList.Count() > selectedItemIndex)) {
+	if((0 <= selectedItemIndex) && (m_MissionList.Count() > selectedItemIndex))
+	{
 		// should put up confirmation box here
 		CMissionList::EIterator it = m_MissionList.Begin();
 		uint32_t index;
-		for (index = 0; index < selectedItemIndex; index++) {
+		for(index = 0; index < selectedItemIndex; index++)
+		{
 			it++;
 			assert(!it.IsDone());
 		}
@@ -206,8 +229,10 @@ void CGroupDialog::OnGrRemoveButton()
 		UpdateData(TRUE);
 		int32_t selectedItemIndex = m_MissionListControl.GetCurSel();
 		setMissionListBoxValues(m_MissionListControl, m_MissionList);
-		if ((LB_ERR != selectedItemIndex) && (0 < m_MissionListControl.GetCount())) {
-			if (m_MissionListControl.GetCount() <= (int32_t)selectedItemIndex) {
+		if((LB_ERR != selectedItemIndex) && (0 < m_MissionListControl.GetCount()))
+		{
+			if(m_MissionListControl.GetCount() <= (int32_t)selectedItemIndex)
+			{
 				selectedItemIndex = m_MissionListControl.GetCount() - 1;
 			}
 			m_MissionListControl.SetCurSel(selectedItemIndex);
@@ -216,14 +241,16 @@ void CGroupDialog::OnGrRemoveButton()
 	}
 }
 
-void CGroupDialog::OnGrEditButton() 
+void CGroupDialog::OnGrEditButton()
 {
 	uint32_t selectedItemIndex = m_MissionListControl.GetCurSel();
-	if ((0 <= selectedItemIndex) && (m_MissionList.Count() > selectedItemIndex)) {
-		CMissionData &missionDataRef = m_MissionList[selectedItemIndex];
+	if((0 <= selectedItemIndex) && (m_MissionList.Count() > selectedItemIndex))
+	{
+		CMissionData& missionDataRef = m_MissionList[selectedItemIndex];
 		CMissionDialog missionDialog;
 		setMissionDialogValues(missionDialog, missionDataRef);
-		if (IDOK == missionDialog.DoModal()) {
+		if(IDOK == missionDialog.DoModal())
+		{
 			setMissionDataValues(missionDataRef, missionDialog);
 			UpdateData(TRUE);
 			setMissionListBoxValues(m_MissionListControl, m_MissionList);
@@ -232,12 +259,12 @@ void CGroupDialog::OnGrEditButton()
 	}
 }
 
-void CGroupDialog::OnOK() 
+void CGroupDialog::OnOK()
 {
 	int32_t tmpInt = m_TuneComboControl.GetCurSel();
-	if ((CB_ERR != tmpInt) && (0 <= tmpInt)) {
+	if((CB_ERR != tmpInt) && (0 <= tmpInt))
+	{
 		m_TuneNumber = m_TuneComboControl.GetCurSel();
 	}
-	
 	CDialog::OnOK();
 }

@@ -9,11 +9,12 @@
 
 #include <mlr/mlreffect.hpp>
 
-namespace MidLevelRenderer {
+namespace MidLevelRenderer
+{
 
-	//##########################################################################
-	//#####################    MLRNGonCloud    #############################
-	//##########################################################################
+//##########################################################################
+//#####################    MLRNGonCloud    #############################
+//##########################################################################
 
 
 	class MLRNGonCloud:
@@ -30,19 +31,16 @@ namespace MidLevelRenderer {
 		// Constructors/Destructors
 		//
 	public:
-		MLRNGonCloud(int32_t vertices, int32_t number);
+		MLRNGonCloud(uint32_t vertices, uint32_t number);
 		~MLRNGonCloud(void);
 
-		void
-			SetData(
+		void SetData(
 			pcsize_t count,
-			const Stuff::Point3D *point_data,
-			const Stuff::RGBAColor *color_data
-			);
+			const Stuff::Point3D* point_data,
+			const Stuff::RGBAColor* color_data);
 
-		void Draw (DrawEffectInformation*, GOSVertexPool*, MLRSorter*);
-
-		uint32_t Clip(MLRClippingState, GOSVertexPool*);		
+		void Draw(DrawEffectInformation*, GOSVertexPool*, MLRSorter*);
+		uint32_t Clip(MLRClippingState, GOSVertexPool*);
 
 		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		// Class Data Support
@@ -60,14 +58,14 @@ namespace MidLevelRenderer {
 		size_t numOfVertices;
 		pcsize_t usedNrOfNGons;
 
-		static Stuff::DynamicArrayOf<Stuff::RGBAColor> *clipExtraColors;
+		static Stuff::DynamicArrayOf<Stuff::RGBAColor>* clipExtraColors;
 		Stuff::DynamicArrayOf<Stuff::RGBAColor> specialClipColors;
 
-		static Stuff::DynamicArrayOf<MLRClippingState> *clipPerVertex;
+		static Stuff::DynamicArrayOf<MLRClippingState>* clipPerVertex;
 
-		static Stuff::DynamicArrayOf<Stuff::Vector4D> *clipExtraCoords;
+		static Stuff::DynamicArrayOf<Stuff::Vector4D>* clipExtraCoords;
 
-		static Stuff::DynamicArrayOf<int32_t> *clipExtraLength;
+		static Stuff::DynamicArrayOf<int32_t>* clipExtraLength;
 	};
 }
 #endif

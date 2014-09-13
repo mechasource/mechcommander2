@@ -14,11 +14,12 @@
 #define DRADIO_H
 
 class Radio;
-typedef Radio *RadioPtr;
+typedef Radio* RadioPtr;
 
 #define	MSG_TOTAL_MSGS 0
 
-enum RadioMessageType {
+enum RadioMessageType
+{
 	RADIO_ACK = MSG_TOTAL_MSGS,			//3 Types
 	RADIO_CALLED_SHOT,
 	RADIO_CANNOT_CAPTURE,
@@ -32,7 +33,7 @@ enum RadioMessageType {
 	RADIO_MECH_DEAD,					//2 Types
 	RADIO_MECH_SALVAGE,					//2 Types
 	RADIO_SENSOR_CONTACT,				//2 Types
-	RADIO_HITTING_MINES,				
+	RADIO_HITTING_MINES,
 	RADIO_UNDER_ATTACK,					//2 Types
 	RADIO_UNDER_AIRSTRIKE,
 	RADIO_MOVE_BLOCKED,

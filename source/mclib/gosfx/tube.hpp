@@ -10,23 +10,26 @@
 #include <gosfx/gosfx.hpp>
 #include <gosfx/effect.hpp>
 
-namespace MidLevelRenderer {class MLRIndexedTriangleCloud;}
+namespace MidLevelRenderer
+{
+	class MLRIndexedTriangleCloud;
+}
 
 namespace gosFX
 {
-	//############################################################################
-	//########################  Tube__Specification  #############################
-	//############################################################################
+//############################################################################
+//########################  Tube__Specification  #############################
+//############################################################################
 
 	class Tube__Specification:
 		public Effect__Specification
 	{
-	//----------------------------------------------------------------------
-	// Constructors/Destructors
-	//
+		//----------------------------------------------------------------------
+		// Constructors/Destructors
+		//
 	protected:
 		Tube__Specification(
-			Stuff::MemoryStream *stream,
+			Stuff::MemoryStream* stream,
 			int32_t gfx_version
 		);
 
@@ -34,64 +37,65 @@ namespace gosFX
 		Tube__Specification(void);
 
 		static Tube__Specification*
-			Make(
-				Stuff::MemoryStream *stream,
-				int32_t gfx_version
-			);
+		Make(
+			Stuff::MemoryStream* stream,
+			int32_t gfx_version
+		);
 
 		void
-			Copy(Tube__Specification *spec);
+		Copy(Tube__Specification* spec);
 
 		void
-			Save(Stuff::MemoryStream *stream);
-		
-		void 
-			BuildDefaults(void);
+		Save(Stuff::MemoryStream* stream);
 
-		bool 
-			IsDataValid(bool fix_data=false);
+		void
+		BuildDefaults(void);
 
 		bool
-			CalculateUBias(bool adjust);
+		IsDataValid(bool fix_data = false);
 
-	//-------------------------------------------------------------------------
-	// FCurves
-	//
+		bool
+		CalculateUBias(bool adjust);
+
+		//-------------------------------------------------------------------------
+		// FCurves
+		//
 	public:
 		ConstantCurve
-			m_profilesPerSecond,
-			m_pLifeSpan;
+		m_profilesPerSecond,
+		m_pLifeSpan;
 		LinearCurve
-			m_emitterSizeX,
-			m_emitterSizeY,
-			m_emitterSizeZ;
+		m_emitterSizeX,
+		m_emitterSizeY,
+		m_emitterSizeZ;
 		ConstantCurve
-			m_minimumDeviation;
+		m_minimumDeviation;
 		ComplexCurve
-			m_maximumDeviation;
-		SeededCurveOf<ComplexCurve, SplineCurve,Curve::e_ComplexSplineType>
-			m_pDisplacement,
-			m_pScale;
-		SeededCurveOf<ComplexCurve, LinearCurve,Curve::e_ComplexLinearType>
-			m_pRed,
-			m_pGreen,
-			m_pBlue,
-			m_pAlpha;
-		SeededCurveOf<ComplexCurve, SplineCurve,Curve::e_ComplexSplineType>
-			m_pUOffset,
-			m_pVOffset;
-		SeededCurveOf<SplineCurve, SplineCurve,Curve::e_SplineSplineType>
-			m_pUSize,
-			m_pVSize;
+		m_maximumDeviation;
+		SeededCurveOf<ComplexCurve, SplineCurve, Curve::e_ComplexSplineType>
+		m_pDisplacement,
+		m_pScale;
+		SeededCurveOf<ComplexCurve, LinearCurve, Curve::e_ComplexLinearType>
+		m_pRed,
+		m_pGreen,
+		m_pBlue,
+		m_pAlpha;
+		SeededCurveOf<ComplexCurve, SplineCurve, Curve::e_ComplexSplineType>
+		m_pUOffset,
+		m_pVOffset;
+		SeededCurveOf<SplineCurve, SplineCurve, Curve::e_SplineSplineType>
+		m_pUSize,
+		m_pVSize;
 
-	//----------------------------------------------------------------------
-	// Data
-	//
+		//----------------------------------------------------------------------
+		// Data
+		//
 	public:
 		int32_t
-			m_maxProfileCount;
+		m_maxProfileCount;
 
-		enum ProfileType {
+		enum ProfileType
+		{
 			e_Ribbon,
 			e_AlignedRibbon,
 			e_Triangle,
@@ -101,46 +105,46 @@ namespace gosFX
 			e_Hexagon,
 			e_VerticalRibbon
 		}
-			m_profileType;
+		m_profileType;
 		bool
-			m_insideOut;
+		m_insideOut;
 
 		Stuff::DynamicArrayOf<Stuff::Point3D>
-			m_vertices;
+		m_vertices;
 		Stuff::DynamicArrayOf<Stuff::Vector2DOf<float> >
-			m_uvs;
+		m_uvs;
 
 		float
-			m_UBias;
+		m_UBias;
 
 		void
-			BuildTemplate(void);
+		BuildTemplate(void);
 	};
 
-	//############################################################################
-	//########################  Tube__Profile  #############################
-	//############################################################################
+//############################################################################
+//########################  Tube__Profile  #############################
+//############################################################################
 
 	class Tube__Profile
 	{
 	public:
 		Stuff::LinearMatrix4D
-			m_profileToWorld;
+		m_profileToWorld;
 		Stuff::UnitVector3D
-			m_direction;
+		m_direction;
 		float
-			m_age,
-			m_ageRate,
-			m_seed;
+		m_age,
+		m_ageRate,
+		m_seed;
 
 		void
-			TestInstance(void) const
-				{}
+		TestInstance(void) const
+		{}
 	};
 
-	//############################################################################
-	//##############################  Tube  #############################
-	//############################################################################
+//############################################################################
+//##############################  Tube  #############################
+//############################################################################
 
 	class Tube:
 		public Effect
@@ -171,75 +175,76 @@ namespace gosFX
 
 		void BuildMesh(puint16_t indices);
 
-		Tube(Specification *spec, uint32_t flags);
+		Tube(Specification* spec, uint32_t flags);
 
-	//----------------------------------------------------------------------------
-	// Class Data Support
-	//
+		//----------------------------------------------------------------------------
+		// Class Data Support
+		//
 	public:
 		~Tube(void);
 
 		static Tube*
-			Make(
-				Specification *spec,
-				uint32_t flags
-			);
+		Make(
+			Specification* spec,
+			uint32_t flags
+		);
 
 		Specification*
-			GetSpecification()
-				{
-					Check_Object(this);
-					return
-						Cast_Object(Specification*, m_specification);
-				}
+		GetSpecification()
+		{
+			Check_Object(this);
+			return
+				Cast_Object(Specification*, m_specification);
+		}
 		Profile*
-			GetProfile(uint32_t index)
-				{
-					Check_Object(this); Check_Object(GetSpecification());
-					return &m_profiles[index];
-				}
+		GetProfile(uint32_t index)
+		{
+			Check_Object(this);
+			Check_Object(GetSpecification());
+			return &m_profiles[index];
+		}
 
-	//----------------------------------------------------------------------------
-	// Testing
-	//
+		//----------------------------------------------------------------------------
+		// Testing
+		//
 	public:
 		void TestInstance(void) const;
 
-	//----------------------------------------------------------------------------
-	// API
-	//
+		//----------------------------------------------------------------------------
+		// API
+		//
 	protected:
 		bool
-			Execute(ExecuteInfo *info);
+		Execute(ExecuteInfo* info);
 		bool
-			AnimateProfile(
-				uint32_t index,
-				uint32_t profile,
-				const Stuff::LinearMatrix4D &world_to_new_local,
-				Stuff::Time till,
-				Stuff::Sphere *sphere
-			);
+		AnimateProfile(
+			uint32_t index,
+			uint32_t profile,
+			const Stuff::LinearMatrix4D& world_to_new_local,
+			Stuff::Time till,
+			Stuff::Sphere* sphere
+		);
 		void
-			CreateNewProfile(
-				uint32_t index,
-				const Stuff::LinearMatrix4D &origin
-			);
+		CreateNewProfile(
+			uint32_t index,
+			const Stuff::LinearMatrix4D& origin
+		);
 		void
-			DestroyProfile(uint32_t index);
+		DestroyProfile(uint32_t index);
 		void
-			ComputeNewLinearVelocity(
-				Profile *particle,
-				float time_slice
-			);
+		ComputeNewLinearVelocity(
+			Profile* particle,
+			float time_slice
+		);
 
 	public:
 		void
-			Start(ExecuteInfo *info);
+		Start(ExecuteInfo* info);
 		void
-			Kill(void);
+		Kill(void);
 		bool
-			HasFinished(void);
+		HasFinished(void);
 		void
-			Draw(DrawInfo *info);
+		Draw(DrawInfo* info);
 	};
 }

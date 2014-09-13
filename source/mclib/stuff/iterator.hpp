@@ -12,17 +12,18 @@
 
 #include <stuff/style.hpp>
 
-namespace Stuff {
+namespace Stuff
+{
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Iterator ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Iterator ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 	typedef size_t CollectionSize;
 	typedef size_t IteratorPosition;
 
 	class _declspec(novtable) Iterator
-		#if defined(_ARMOR)
-			: public Stuff::Signature
-		#endif
+#if defined(_ARMOR)
+		: public Stuff::Signature
+#endif
 	{
 	public:
 		//
@@ -73,9 +74,18 @@ namespace Stuff {
 		// GetCurrentItem			- Returns current item
 		//--------------------------------------------------------------------
 		//
-		PVOID ReadAndNextItem(void)		{return ReadAndNextImplementation();}
-		PVOID ReadAndPreviousItem(void)	{return ReadAndPreviousImplementation();}
-		PVOID GetCurrentItem(void)		{return GetCurrentImplementation();}
+		PVOID ReadAndNextItem(void)
+		{
+			return ReadAndNextImplementation();
+		}
+		PVOID ReadAndPreviousItem(void)
+		{
+			return ReadAndPreviousImplementation();
+		}
+		PVOID GetCurrentItem(void)
+		{
+			return GetCurrentImplementation();
+		}
 
 		//
 		//--------------------------------------------------------------------
@@ -84,7 +94,10 @@ namespace Stuff {
 		//--------------------------------------------------------------------
 		//
 		virtual CollectionSize GetSize(void);
-		PVOID GetNthItem(CollectionSize index)	{return GetNthImplementation(index);}
+		PVOID GetNthItem(CollectionSize index)
+		{
+			return GetNthImplementation(index);
+		}
 
 		//
 		//--------------------------------------------------------------------
@@ -92,8 +105,14 @@ namespace Stuff {
 		// EndIterator				- Moves to last item and returns iterator
 		//--------------------------------------------------------------------
 		//
-		virtual Iterator& BeginIterator(void)	{return BeginImplementation();}
-		virtual Iterator& EndIterator(void)		{return EndImplementation();}
+		virtual Iterator& BeginIterator(void)
+		{
+			return BeginImplementation();
+		}
+		virtual Iterator& EndIterator(void)
+		{
+			return EndImplementation();
+		}
 
 		//
 		//--------------------------------------------------------------------
@@ -101,8 +120,14 @@ namespace Stuff {
 		// BackwardIterator	  	- Moves to previous item and returns iterator
 		//--------------------------------------------------------------------
 		//
-		virtual Iterator& ForwardIterator(void)		{return ForwardImplementation();}
-		virtual Iterator& BackwardIterator(void)	{return BackwardImplementation();}
+		virtual Iterator& ForwardIterator(void)
+		{
+			return ForwardImplementation();
+		}
+		virtual Iterator& BackwardIterator(void)
+		{
+			return BackwardImplementation();
+		}
 
 	protected:
 		//
@@ -124,10 +149,26 @@ namespace Stuff {
 		virtual PVOID GetCurrentImplementation(void);
 		virtual PVOID GetNthImplementation(CollectionSize index);
 
-		virtual Iterator& BeginImplementation(void)		{First(); return *this;}
-		virtual Iterator& EndImplementation(void)		{Last(); return *this;}
-		virtual Iterator& ForwardImplementation(void)	{Next(); return *this;}
-		virtual Iterator& BackwardImplementation(void)	{Previous(); return *this;}
+		virtual Iterator& BeginImplementation(void)
+		{
+			First();
+			return *this;
+		}
+		virtual Iterator& EndImplementation(void)
+		{
+			Last();
+			return *this;
+		}
+		virtual Iterator& ForwardImplementation(void)
+		{
+			Next();
+			return *this;
+		}
+		virtual Iterator& BackwardImplementation(void)
+		{
+			Previous();
+			return *this;
+		}
 	};
 
 }

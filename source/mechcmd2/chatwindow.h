@@ -25,10 +25,13 @@ public:
 
 	ChatMessageItem(void);
 	void		 setPlayerColor(int32_t color);
-	void		 setTextColor( int32_t color );
-	void		 setPlayerName( PCSTR name );
-	int32_t			 setText( PCSTR text ); // returns number of lines
-	int32_t		 getLineCount() { return lineCount; }
+	void		 setTextColor(int32_t color);
+	void		 setPlayerName(PCSTR name);
+	int32_t			 setText(PCSTR text);   // returns number of lines
+	int32_t		 getLineCount()
+	{
+		return lineCount;
+	}
 
 private:
 	aText		 name;
@@ -59,41 +62,44 @@ private:
 
 class ChatWindow: public LogisticsScreen
 {
-	public:
+public:
 
-		ChatWindow(void);
-		virtual ~ChatWindow(void);
+	ChatWindow(void);
+	virtual ~ChatWindow(void);
 
-		static void init(void);
-		static void destroy(void);
-		static ChatWindow* instance() { return s_instance; }
+	static void init(void);
+	static void destroy(void);
+	static ChatWindow* instance()
+	{
+		return s_instance;
+	}
 
-		int32_t initInstance(void);
+	int32_t initInstance(void);
 
-		virtual void update(void);
-		virtual void render( int32_t xOffset, int32_t yOffset );
-		int32_t handleMessage( uint32_t, uint32_t );
+	virtual void update(void);
+	virtual void render(int32_t xOffset, int32_t yOffset);
+	int32_t handleMessage(uint32_t, uint32_t);
 
-		virtual bool pointInside( int32_t xPos, int32_t yPos );
-		bool		 isExpanded(void);
-
-
-	private:
-
-		static ChatWindow*	s_instance;
-
-		aListBox		listBox;
-
-		aEdit			chatEdit;
-		ChatWidget		chatWidget;
-
-		ChatMessageItem	listItems[4];
-		int32_t			curItem;
-		int32_t			maxItems;
+	virtual bool pointInside(int32_t xPos, int32_t yPos);
+	bool		 isExpanded(void);
 
 
-		static void refillListBox( aListBox& listBox, PSTR* chatTexts, int32_t* playerIDs,  ChatMessageItem* pItems, 
-			int32_t& curItem, int32_t itemCount, int32_t maxCount );
+private:
+
+	static ChatWindow*	s_instance;
+
+	aListBox		listBox;
+
+	aEdit			chatEdit;
+	ChatWidget		chatWidget;
+
+	ChatMessageItem	listItems[4];
+	int32_t			curItem;
+	int32_t			maxItems;
+
+
+	static void refillListBox(aListBox& listBox, PSTR* chatTexts, int32_t* playerIDs,  ChatMessageItem* pItems,
+							  int32_t& curItem, int32_t itemCount, int32_t maxCount);
 
 
 

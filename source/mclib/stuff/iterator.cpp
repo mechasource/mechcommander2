@@ -20,7 +20,7 @@ using namespace Stuff;
 //###########################################################################
 //
 void
-	Iterator::First()
+Iterator::First()
 {
 	STOP(("Iterator::First - Should never reach here"));
 }
@@ -31,7 +31,7 @@ void
 //###########################################################################
 //
 void
-	Iterator::Last()
+Iterator::Last()
 {
 	STOP(("Iterator::Last - Should never reach here"));
 }
@@ -42,7 +42,7 @@ void
 //###########################################################################
 //
 void
-	Iterator::Next()
+Iterator::Next()
 {
 	STOP(("Iterator::Next - Should never reach here"));
 }
@@ -53,7 +53,7 @@ void
 //###########################################################################
 //
 void
-	Iterator::Previous()
+Iterator::Previous()
 {
 	STOP(("Iterator::Previous - Should never reach here"));
 }
@@ -64,18 +64,17 @@ void
 //###########################################################################
 //
 CollectionSize
-	Iterator::GetSize()
+Iterator::GetSize()
 {
 	CollectionSize i = 0;
 	PVOID item;
-
 	First();
-	while ((item = GetCurrentImplementation()) != nullptr)
+	while((item = GetCurrentImplementation()) != nullptr)
 	{
 		i++;
-      Next();
+		Next();
 	}
-   return i;
+	return i;
 }
 
 //
@@ -84,11 +83,10 @@ CollectionSize
 //###########################################################################
 //
 void
-	*Iterator::ReadAndNextImplementation()
+* Iterator::ReadAndNextImplementation()
 {
 	PVOID item;
-
-	if ((item = GetCurrentImplementation()) != nullptr)
+	if((item = GetCurrentImplementation()) != nullptr)
 	{
 		Next();
 	}
@@ -101,11 +99,10 @@ void
 //###########################################################################
 //
 void
-	*Iterator::ReadAndPreviousImplementation()
+* Iterator::ReadAndPreviousImplementation()
 {
 	PVOID item;
-
-	if ((item = GetCurrentImplementation()) != nullptr)
+	if((item = GetCurrentImplementation()) != nullptr)
 	{
 		Previous();
 	}
@@ -118,10 +115,10 @@ void
 //###########################################################################
 //
 PVOID
-	Iterator::GetCurrentImplementation()
+Iterator::GetCurrentImplementation()
 {
 	STOP(("Iterator::GetCurrentImplementation - Should never reach here"));
-   return nullptr;
+	return nullptr;
 }
 
 //
@@ -130,17 +127,16 @@ PVOID
 //###########################################################################
 //
 void
-	*Iterator::GetNthImplementation(CollectionSize index)
+* Iterator::GetNthImplementation(CollectionSize index)
 {
 	CollectionSize i = 0;
 	PVOID item;
-
 	First();
-	while ((item = GetCurrentImplementation()) != nullptr)
+	while((item = GetCurrentImplementation()) != nullptr)
 	{
-		if (i == index)
+		if(i == index)
 			return item;
-      Next();
+		Next();
 		i++;
 	}
 	return nullptr;

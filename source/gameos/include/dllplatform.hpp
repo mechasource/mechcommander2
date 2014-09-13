@@ -15,10 +15,10 @@
 // #include <platform.hpp>
 // #include <gameos.hpp>
 
-NTSTATUS	__stdcall ProcessException( PEXCEPTION_POINTERS pep);
-void		__stdcall InitExceptionHandler( PSTR pCmdLine);
-void		__stdcall InitGameOS( HINSTANCE hInstance, HWND hWindow, PSTR pCmdLine);
-LRESULT		__stdcall GameOSWinProc( HWND hWnd, uint32_t uMsg, WPARAM wParam, LPARAM lParam);
+NTSTATUS	__stdcall ProcessException(PEXCEPTION_POINTERS pep);
+void		__stdcall InitExceptionHandler(PSTR pCmdLine);
+void		__stdcall InitGameOS(HINSTANCE hInstance, HWND hWindow, PSTR pCmdLine);
+LRESULT		__stdcall GameOSWinProc(HWND hWnd, uint32_t uMsg, WPARAM wParam, LPARAM lParam);
 uint32_t		__stdcall RunGameOSLogic(void);
 void		__stdcall ExitGameOS(void);
 

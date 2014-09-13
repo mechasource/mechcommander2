@@ -15,14 +15,16 @@
 #include <stuff/socket.hpp>
 
 
-namespace Stuff {
+namespace Stuff
+{
 
 	class Slot;
 	class PLug;
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ SlotLink ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ SlotLink ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-	enum {
+	enum
+	{
 		SlotLink_MemoryBlock_Allocation = 100
 	};
 
@@ -33,10 +35,10 @@ namespace Stuff {
 
 	public:
 		static void
-			InitializeClass(
-				size_t block_count = SlotLink_MemoryBlock_Allocation,
-				size_t block_delta = SlotLink_MemoryBlock_Allocation
-			);
+		InitializeClass(
+			size_t block_count = SlotLink_MemoryBlock_Allocation,
+			size_t block_delta = SlotLink_MemoryBlock_Allocation
+		);
 		static void __stdcall TerminateClass(void);
 
 	public:
@@ -44,8 +46,8 @@ namespace Stuff {
 
 	private:
 		SlotLink(
-			Slot *slot,
-			Plug *plug
+			Slot* slot,
+			Plug* plug
 		);
 
 	private:
@@ -61,7 +63,7 @@ namespace Stuff {
 		}
 	};
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~ Slot ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~ Slot ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 	class Slot : public Socket
 	{
@@ -81,18 +83,18 @@ namespace Stuff {
 		// Constructor, Destructor and testing
 		//--------------------------------------------------------------------
 		//
-		explicit Slot(Node *node);
+		explicit Slot(Node* node);
 		~Slot(void);
 
 		void TestInstance(void);
-			
+
 		//
 		//--------------------------------------------------------------------
 		// Remove	- Remove the link
 		//--------------------------------------------------------------------
 		//
 		void
-			Remove(void);
+		Remove(void);
 
 	protected:
 		//
@@ -103,9 +105,9 @@ namespace Stuff {
 		//--------------------------------------------------------------------
 		//
 		void
-			AddImplementation(Plug *plug);
+		AddImplementation(Plug* plug);
 		Plug*
-			GetCurrentPlug(void);
+		GetCurrentPlug(void);
 
 	private:
 		//
@@ -114,10 +116,10 @@ namespace Stuff {
 		//--------------------------------------------------------------------
 		//
 		SlotLink
-			*slotLink;
+		* slotLink;
 	};
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~ SlotOf ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~ SlotOf ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 	template <class T> class SlotOf:
 		public Slot
@@ -130,7 +132,7 @@ namespace Stuff {
 		//--------------------------------------------------------------------
 		//--------------------------------------------------------------------
 		//
-		explicit SlotOf(Node *node);
+		explicit SlotOf(Node* node);
 		~SlotOf(void);
 
 		//
@@ -139,25 +141,29 @@ namespace Stuff {
 		//--------------------------------------------------------------------
 		//
 		void
-			Add(T plug)
-				{AddImplementation(Cast_Object(Plug*,plug));}
+		Add(T plug)
+		{
+			AddImplementation(Cast_Object(Plug*, plug));
+		}
 
 		T
-			GetCurrent()
-				{return (T)GetCurrentPlug(void);}
+		GetCurrent()
+		{
+			return (T)GetCurrentPlug(void);
+		}
 	};
 
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~ SlotOf templates ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~ SlotOf templates ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 	template <class T>
-		SlotOf<T>::SlotOf(Node *node):
-			Slot(node)
+	SlotOf<T>::SlotOf(Node* node):
+		Slot(node)
 	{
 	}
 
 	template <class T>
-		SlotOf<T>::~SlotOf()
+	SlotOf<T>::~SlotOf()
 	{
 	}
 

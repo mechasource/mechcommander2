@@ -32,47 +32,50 @@ ForceGroupBar:
 **************************************************************************************************/
 class ForceGroupBar
 {
-	public:
+public:
 
-		ForceGroupBar(void);
-		~ForceGroupBar(void);
+	ForceGroupBar(void);
+	~ForceGroupBar(void);
 
-		bool addMech( Mover* pMover );
-		bool addVehicle( Mover* pMover );
-		void removeMover (Mover* mover);
-		void update(void);
-		void render(void);
+	bool addMech(Mover* pMover);
+	bool addVehicle(Mover* pMover);
+	void removeMover(Mover* mover);
+	void update(void);
+	void render(void);
 
-		void removeAll(void);
+	void removeAll(void);
 
-		bool inRegion( int32_t x, int32_t y );
+	bool inRegion(int32_t x, int32_t y);
 
-		void init( FitIniFile& file, StaticInfo* pCoverIcon );
-		void swapResolutions(void);
-		int32_t  getIconCount(){ return iconCount; }
+	void init(FitIniFile& file, StaticInfo* pCoverIcon);
+	void swapResolutions(void);
+	int32_t  getIconCount()
+	{
+		return iconCount;
+	}
 
-		bool setPilotVideo( PCSTR pVideo, MechWarrior* pPilot );
-		bool isPlayingVideo(void);
+	bool setPilotVideo(PCSTR pVideo, MechWarrior* pPilot);
+	bool isPlayingVideo(void);
 
-		bool flashJumpers (int32_t numFlashes);
-		
-	private:
+	bool flashJumpers(int32_t numFlashes);
 
-		static float iconWidth;
-		static float iconHeight;
-		static int32_t	 iconsPerRow;
+private:
 
-		static StaticInfo* s_coverIcon;
+	static float iconWidth;
+	static float iconHeight;
+	static int32_t	 iconsPerRow;
 
-		//Tutorial
-		int32_t forceNumFlashes;
-		float forceFlashTime;
+	static StaticInfo* s_coverIcon;
+
+	//Tutorial
+	int32_t forceNumFlashes;
+	float forceFlashTime;
 
 
-		int32_t iconCount;
-		ForceGroupIcon*	icons[MAX_ICONS];
+	int32_t iconCount;
+	ForceGroupIcon*	icons[MAX_ICONS];
 
-		friend class ControlGui;
+	friend class ControlGui;
 
 };
 

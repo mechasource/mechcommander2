@@ -18,18 +18,18 @@
 #endif
 
 
-class FileTransferInfo:public ListItem  
+class FileTransferInfo: public ListItem
 {
 private:
 	PVOID			dataForMessages;
-	
+
 public:
 	// static data that must be initialized before this class
 	// can be used
 	static CHUNKSIZE;
 	//static char HomeDirectory[512];
 
-	typedef enum 
+	typedef enum
 	{
 		FTReceive = 0,
 		FTSend
@@ -37,15 +37,15 @@ public:
 
 
 	// data
-	FIDPMessage *	messageDescriptor;
+	FIDPMessage* 	messageDescriptor;
 	uint32_t	fileID;
-	FILE *			fileToTransfer;
+	FILE* 			fileToTransfer;
 	PSTR 			fileName;
 	PSTR 			relativeFilePath;
 	uint32_t	fileSize;
 	int32_t				percentDone;
-	
-	
+
+
 	LPFILESENT_CALLBACK callbackFunction;
 
 	// functions
@@ -53,7 +53,7 @@ public:
 	//PVOID operator new(size_t class_size);
 	//void operator delete(PVOID us);
 
-	
+
 	FileTransferInfo(
 		DPID this_player_id,
 		DPID receiver_id,
@@ -61,20 +61,20 @@ public:
 		PSTR file_path,
 		uint32_t size = 0,
 		TransferType transfer_direction = FTSend);
-	
+
 	virtual ~FileTransferInfo(void);
 
 	// PrepareNextMessage retrieves CHUNKSIZE bytes from the
-	// file and places them into messageInfo.  
+	// file and places them into messageInfo.
 	// Returns 0 if there are still more bytes to send.
-	// Returns 1 if this is the last of the file to send 
+	// Returns 1 if this is the last of the file to send
 	int32_t PrepareNextMessage(void);
 
-	// The addition operator allows the caller to add 
-	// bytes from a new message to the file.  
+	// The addition operator allows the caller to add
+	// bytes from a new message to the file.
 	// Returns 0 if there are still more bytes to receive.
 	// Returns 1 if the file is completely received.
-	int32_t AddBytes(PVOIDbytes,int32_t size); 
+	int32_t AddBytes(PVOIDbytes, int32_t size);
 
 
 	void SetID(int32_t id)
@@ -89,7 +89,7 @@ public:
 
 	// AllocateBeginTransferMessage creates a new message with information
 	// that tells the receiver that a message is on its way.
-	FIBeginFileTransferMessage *CreateBeginTransferMessage(int32_t& size);
+	FIBeginFileTransferMessage* CreateBeginTransferMessage(int32_t& size);
 
 };
 

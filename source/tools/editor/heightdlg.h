@@ -19,25 +19,41 @@ HeightDlg:
 **************************************************************************************************/
 class HeightDlg: public CDialog
 {
-	public:
+public:
 
-		HeightDlg( int32_t min = 0, int32_t max = 0);
-		void Init(void);
-		void OnOK(void);
-		//virtual	void OnCommand(Window *wnd,int32_t nCommand);
+	HeightDlg(int32_t min = 0, int32_t max = 0);
+	void Init(void);
+	void OnOK(void);
+	//virtual	void OnCommand(Window *wnd,int32_t nCommand);
 
-		int32_t GetMin(){ return min; }
-		int32_t GetMax(){ return max; }
+	int32_t GetMin()
+	{
+		return min;
+	}
+	int32_t GetMax()
+	{
+		return max;
+	}
 
-		void SetMin( int32_t newMin ){ min = newMin; }
-		void SetMax( int32_t newMax ){ max = newMax; }
-		virtual BOOL OnInitDialog(){ Init(void); return TRUE; }
+	void SetMin(int32_t newMin)
+	{
+		min = newMin;
+	}
+	void SetMax(int32_t newMax)
+	{
+		max = newMax;
+	}
+	virtual BOOL OnInitDialog()
+	{
+		Init(void);
+		return TRUE;
+	}
 
 
-	private:
+private:
 
-		int32_t min;
-		int32_t max;
+	int32_t min;
+	int32_t max;
 
 };
 

@@ -23,15 +23,15 @@
 //---------------------------------------------------------------------------
 class LineElement : public Element
 {
-	public:
+public:
 
-		Stuff::Vector4D			startPos;
-		Stuff::Vector4D			endPos;
-		int32_t					color;
-		int32_t					endColor;
-		puint8_t				fadeTable;
-		
-	LineElement (void) : Element()
+	Stuff::Vector4D			startPos;
+	Stuff::Vector4D			endPos;
+	int32_t					color;
+	int32_t					endColor;
+	puint8_t				fadeTable;
+
+	LineElement(void) : Element()
 	{
 		startPos.x = startPos.y = startPos.z = startPos.w = 0.0f;
 		endPos.x = endPos.y = endPos.z = endPos.w = 0.0f;
@@ -40,9 +40,9 @@ class LineElement : public Element
 		fadeTable = nullptr;
 	}
 
-	LineElement (Stuff::Vector4D &pos1, Stuff::Vector4D &pos2, int32_t clr, puint8_t fTable, int32_t endClr = -1);
+	LineElement(Stuff::Vector4D& pos1, Stuff::Vector4D& pos2, int32_t clr, puint8_t fTable, int32_t endClr = -1);
 
-	virtual void draw (void);
+	virtual void draw(void);
 };
 
 //---------------------------------------------------------------------------

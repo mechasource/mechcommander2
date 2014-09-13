@@ -9,8 +9,8 @@ HeightDlg.cpp			: Implementation of the HeightDlg component.
 #include "HeightDlg.h"
 #include "resource.h"
 
-HeightDlg::HeightDlg( int32_t minZ, int32_t maxZ)
-: CDialog( IDD_HEIGHT_DLG )
+HeightDlg::HeightDlg(int32_t minZ, int32_t maxZ)
+	: CDialog(IDD_HEIGHT_DLG)
 {
 	min = minZ;
 	max = maxZ;
@@ -19,21 +19,20 @@ void HeightDlg::Init()
 {
 	char minTxt[256];
 	char maxTxt[256];
-	itoa( min, minTxt, 10 );
-	itoa( max, maxTxt, 10 );
-	(GetDlgItem( IDC_MIN ))->SetWindowText( minTxt );
-	(GetDlgItem( IDC_MAX ))->SetWindowText( maxTxt );
+	itoa(min, minTxt, 10);
+	itoa(max, maxTxt, 10);
+	(GetDlgItem(IDC_MIN))->SetWindowText(minTxt);
+	(GetDlgItem(IDC_MAX))->SetWindowText(maxTxt);
 }
 
 void HeightDlg::OnOK()
 {
 	char minTxt[256];
 	char maxTxt[256];
-	(GetDlgItem( IDC_MIN ))->GetWindowText( minTxt, 256 );
-	(GetDlgItem( IDC_MAX ))->GetWindowText( maxTxt, 256 );
-	min = atoi( minTxt );
-	max = atoi( maxTxt );
-
+	(GetDlgItem(IDC_MIN))->GetWindowText(minTxt, 256);
+	(GetDlgItem(IDC_MAX))->GetWindowText(maxTxt, 256);
+	min = atoi(minTxt);
+	max = atoi(maxTxt);
 	CDialog::OnOK();
 }
 

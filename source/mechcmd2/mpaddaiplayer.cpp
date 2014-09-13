@@ -19,7 +19,7 @@ MPAddAIPlayer.cpp			: Implementation of the MPAddAIPlayer component.
 
 #define CHECK_BUTTON 200
 
-static CFocusManager *g_focusManager = nullptr;
+static CFocusManager* g_focusManager = nullptr;
 
 static cint32_t FIRST_BUTTON_ID = 1000010;
 static cint32_t OK_BUTTON_ID = 1000001;
@@ -39,9 +39,9 @@ MPAddAIPlayer::~MPAddAIPlayer()
 int32_t MPAddAIPlayer::indexOfButtonWithID(int32_t id)
 {
 	int32_t i;
-	for (i = 0; i < buttonCount; i++)
+	for(i = 0; i < buttonCount; i++)
 	{
-		if (buttons[i].getID() == id)
+		if(buttons[i].getID() == id)
 		{
 			return i;
 		}
@@ -51,60 +51,53 @@ int32_t MPAddAIPlayer::indexOfButtonWithID(int32_t id)
 
 void MPAddAIPlayer::init(FitIniFile* file)
 {
-	if (g_focusManager)
+	if(g_focusManager)
 	{
 		g_focusManager->registerDropList(experienceDropList);
 		g_focusManager->registerDropList(factionDropList);
 		int32_t row;
-		for (row = 0; row < 4; row += 1)
+		for(row = 0; row < 4; row += 1)
 		{
 			int32_t column;
-			for (column = 0; column < 3; column += 1)
+			for(column = 0; column < 3; column += 1)
 			{
 				g_focusManager->registerDropList(mechSelectionDropLists[row][column]);
 			}
 		}
 	}
-
-	LogisticsScreen::init( *file, "Static", "Text", "Rect", "Button" );
-
-	if ( buttonCount )
+	LogisticsScreen::init(*file, "Static", "Text", "Rect", "Button");
+	if(buttonCount)
 	{
-		for ( int32_t i = 0; i < buttonCount; i++ )
+		for(auto i = 0; i < buttonCount; i++)
 		{
 			buttons[i].setMessageOnRelease();
-			if (buttons[i].getID() == 0)
+			if(buttons[i].getID() == 0)
 			{
 				buttons[i].setID(FIRST_BUTTON_ID + i);
 			}
 		}
 	}
-
 	nameEntry.init(file, "EditBox0");
 	nameEntryOutline.init(file, "EditBoxRect0");
-
 	{
 		char path[256];
-		strcpy( path, artPath );
-		strcat( path, "mcl_mp_addai_combobox1.fit" );
-		
+		strcpy(path, artPath);
+		strcat(path, "mcl_mp_addai_combobox1.fit");
 		FitIniFile PNfile;
-		if ( NO_ERROR != PNfile.open( path ) )
+		if(NO_ERROR != PNfile.open(path))
 		{
 			char error[256];
-			sprintf( error, "couldn't open file %s", path );
-			Assert( 0, 0, error );
+			sprintf(error, "couldn't open file %s", path);
+			Assert(0, 0, error);
 			return;
 		}
 		experienceDropList.init(&PNfile, "ExperienceComboBox");
-
-		PNfile.seekBlock( "Texts" );
+		PNfile.seekBlock("Texts");
 		int32_t listItemCount = 0;
-		PNfile.readIdLong( "Textcount", listItemCount );
-
-		aStyle4TextListItem *pTmp2;
+		PNfile.readIdLong("Textcount", listItemCount);
+		aStyle4TextListItem* pTmp2;
 		int32_t i;
-		for (i = 0; i < listItemCount; i += 1)
+		for(i = 0; i < listItemCount; i += 1)
 		{
 			pTmp2 = new aStyle4TextListItem;
 			EString tmpStr;
@@ -114,29 +107,25 @@ void MPAddAIPlayer::init(FitIniFile* file)
 		}
 		experienceDropList.SelectItem(0);
 	}
-
 	{
 		char path[256];
-		strcpy( path, artPath );
-		strcat( path, "mcl_mp_addai_combobox2.fit" );
-		
+		strcpy(path, artPath);
+		strcat(path, "mcl_mp_addai_combobox2.fit");
 		FitIniFile PNfile;
-		if ( NO_ERROR != PNfile.open( path ) )
+		if(NO_ERROR != PNfile.open(path))
 		{
 			char error[256];
-			sprintf( error, "couldn't open file %s", path );
-			Assert( 0, 0, error );
+			sprintf(error, "couldn't open file %s", path);
+			Assert(0, 0, error);
 			return;
 		}
 		factionDropList.init(&PNfile, "FactionComboBox");
-
-		PNfile.seekBlock( "Texts" );
+		PNfile.seekBlock("Texts");
 		int32_t listItemCount = 0;
-		PNfile.readIdLong( "Textcount", listItemCount );
-
-		aStyle4TextListItem *pTmp2;
+		PNfile.readIdLong("Textcount", listItemCount);
+		aStyle4TextListItem* pTmp2;
 		int32_t i;
-		for (i = 0; i < listItemCount; i += 1)
+		for(i = 0; i < listItemCount; i += 1)
 		{
 			pTmp2 = new aStyle4TextListItem;
 			EString tmpStr;
@@ -146,35 +135,31 @@ void MPAddAIPlayer::init(FitIniFile* file)
 		}
 		factionDropList.SelectItem(0);
 	}
-
 	int32_t row;
-	for (row = 0; row < 4; row += 1)
+	for(row = 0; row < 4; row += 1)
 	{
 		int32_t column;
-		for (column = 0; column < 3; column += 1)
+		for(column = 0; column < 3; column += 1)
 		{
 			{
 				char path[256];
-				strcpy( path, artPath );
-				strcat( path, "mcl_mp_addai_combobox3.fit" );
-				
+				strcpy(path, artPath);
+				strcat(path, "mcl_mp_addai_combobox3.fit");
 				FitIniFile PNfile;
-				if ( NO_ERROR != PNfile.open( path ) )
+				if(NO_ERROR != PNfile.open(path))
 				{
 					char error[256];
-					sprintf( error, "couldn't open file %s", path );
-					Assert( 0, 0, error );
+					sprintf(error, "couldn't open file %s", path);
+					Assert(0, 0, error);
 					return;
 				}
 				mechSelectionDropLists[row][column].init(&PNfile, "MechSelectionComboBox");
-
-				PNfile.seekBlock( "Texts" );
+				PNfile.seekBlock("Texts");
 				int32_t listItemCount = 0;
-				PNfile.readIdLong( "Textcount", listItemCount );
-
-				aStyle4TextListItem *pTmp2;
+				PNfile.readIdLong("Textcount", listItemCount);
+				aStyle4TextListItem* pTmp2;
 				int32_t i;
-				for (i = 0; i < listItemCount; i += 1)
+				for(i = 0; i < listItemCount; i += 1)
 				{
 					pTmp2 = new aStyle4TextListItem;
 					EString tmpStr;
@@ -183,7 +168,6 @@ void MPAddAIPlayer::init(FitIniFile* file)
 					mechSelectionDropLists[row][column].AddItem(pTmp2);
 				}
 				mechSelectionDropLists[row][column].SelectItem(0);
-
 				mechSelectionDropLists[row][column].moveTo(126 + column * (176 + 10), 317 + row * (32 + 5));
 			}
 		}
@@ -200,30 +184,27 @@ void MPAddAIPlayer::end()
 {
 }
 
-void MPAddAIPlayer::render(int32_t xOffset, int32_t yOffset )
+void MPAddAIPlayer::render(int32_t xOffset, int32_t yOffset)
 {
 	LogisticsScreen::render(xOffset, yOffset);
-
-	if ((0 == xOffset) && (0 == yOffset))
+	if((0 == xOffset) && (0 == yOffset))
 	{
 		nameEntry.render();
 		nameEntryOutline.render();
 		experienceDropList.render();
 		factionDropList.render();
-
 		int32_t row;
-		for (row = 0; row < 4; row += 1)
+		for(row = 0; row < 4; row += 1)
 		{
 			int32_t column;
-			for (column = 0; column < 3; column += 1)
+			for(column = 0; column < 3; column += 1)
 			{
 				mechSelectionDropLists[row][column].render();
 			}
 		}
-
 		/*make sure that that the control that has the focus is not obscured*/
-		aObject *pControlThatHasTheFocus = focusManager.pControlThatHasTheFocus();
-		if (pControlThatHasTheFocus)
+		aObject* pControlThatHasTheFocus = focusManager.pControlThatHasTheFocus();
+		if(pControlThatHasTheFocus)
 		{
 			pControlThatHasTheFocus->render();
 		}
@@ -235,43 +216,41 @@ void MPAddAIPlayer::render()
 	render(0, 0);
 }
 
-int32_t	MPAddAIPlayer::handleMessage( uint32_t message, uint32_t who)
+int32_t	MPAddAIPlayer::handleMessage(uint32_t message, uint32_t who)
 {
-	if ( RUNNING == status )
+	if(RUNNING == status)
 	{
-		switch ( who )
+		switch(who)
 		{
-		case 57/*MB_MSG_MAINMENU*/:
+			case 57/*MB_MSG_MAINMENU*/:
 			{
-				getButton( 57/*MB_MSG_MAINMENU*/ )->press( 0 );
+				getButton(57/*MB_MSG_MAINMENU*/)->press(0);
 				status = MAINMENU;
 			}
 			break;
-		case 51/*MB_MSG_PREV*/:
+			case 51/*MB_MSG_PREV*/:
 			{
-				getButton( 51/*MB_MSG_PREV*/ )->press( 0 );
+				getButton(51/*MB_MSG_PREV*/)->press(0);
 				status = DOWN;
 			}
 			break;
-		case 50/*MB_MSG_NEXT*/:
+			case 50/*MB_MSG_NEXT*/:
 			{
-				getButton( 50/*MB_MSG_NEXT*/ )->press( 0 );
+				getButton(50/*MB_MSG_NEXT*/)->press(0);
 				//status = NEXT;
 				status = DOWN;
 			}
 			break;
 		}
 	}
-
 	return 0;
-
 }
 
 void MPAddAIPlayer::update()
 {
 	focusManager.update();
-	aObject *pControlThatHasTheFocus = focusManager.pControlThatHasTheFocus();
-	if (pControlThatHasTheFocus)
+	aObject* pControlThatHasTheFocus = focusManager.pControlThatHasTheFocus();
+	if(pControlThatHasTheFocus)
 	{
 		pControlThatHasTheFocus->update();
 	}
@@ -282,21 +261,18 @@ void MPAddAIPlayer::update()
 		nameEntryOutline.update();
 		experienceDropList.update();
 		factionDropList.update();
-
 		int32_t row;
-		for (row = 0; row < 4; row += 1)
+		for(row = 0; row < 4; row += 1)
 		{
 			int32_t column;
-			for (column = 0; column < 3; column += 1)
+			for(column = 0; column < 3; column += 1)
 			{
 				mechSelectionDropLists[row][column].update();
 			}
 		}
 	}
-
 	helpTextID = 0;
 	helpTextHeaderID = 0;
-
 	/*
 	for ( int32_t i = 0; i < buttonCount; i++ )
 	{
@@ -313,25 +289,23 @@ void MPAddAIPlayer::update()
 
 
 
-int32_t aStyle4TextListItem::init( FitIniFile* file, PCSTR blockName )
+int32_t aStyle4TextListItem::init(FitIniFile* file, PCSTR blockName)
 {
-	file->seekBlock( blockName );
-
+	file->seekBlock(blockName);
 	int32_t fontResID = 0;
-	file->readIdLong( "Font", fontResID );
+	file->readIdLong("Font", fontResID);
 	int32_t textID = 0;
-	file->readIdLong( "TextID", textID );
+	file->readIdLong("TextID", textID);
 	aTextListItem::init(fontResID);
 	setText(textID);
 	int32_t color = 0xff808080;
-	file->readIdLong( "Color", color );
+	file->readIdLong("Color", color);
 	normalColor = color;
 	setColor(color);
-
 	char tmpStr[64];
 	strcpy(tmpStr, "");
-	file->readIdString( "Animation", tmpStr, 63 );
-	if (0 == strcmp("", tmpStr))
+	file->readIdString("Animation", tmpStr, 63);
+	if(0 == strcmp("", tmpStr))
 	{
 		hasAnimation = false;
 	}
@@ -340,18 +314,17 @@ int32_t aStyle4TextListItem::init( FitIniFile* file, PCSTR blockName )
 		hasAnimation = true;
 		animGroup.init(file, tmpStr);
 	}
-
 	return 0;
 }
 
 void aStyle4TextListItem::render()
 {
 	float color;
-	if (aListItem::SELECTED == getState())
+	if(aListItem::SELECTED == getState())
 	{
 		color = 0.33 * ((uint32_t)normalColor) + 0.67 * ((uint32_t)0xffffffff);
 	}
-	else if (aListItem::HIGHLITE == getState())
+	else if(aListItem::HIGHLITE == getState())
 	{
 		color = 0.67 * ((uint32_t)normalColor) + 0.33 * ((uint32_t)0xffffffff);
 	}
@@ -360,7 +333,6 @@ void aStyle4TextListItem::render()
 		color = normalColor;
 	}
 	aTextListItem::setColor((uint32_t)color);
-
 	aTextListItem::render();
 }
 

@@ -31,110 +31,99 @@ class WeaponBoltType : public ObjectType
 {
 	//Data Members
 	//-------------
-	public:
-	
-		int32_t			fireSoundFX;
-		int32_t			hitEffectObjNum;
-		int32_t			missEffectObjNum;
-		int32_t			lightEffectObjNum;
-		int32_t			fireEffect;
-		int32_t			trailEffect;
-		
-		uint32_t           frontRGB;
-		uint32_t           backRGB;
-		uint32_t           middleRGB;
-		uint32_t           midEdgeRGB;
-		
-		float			projLength;
-		float			bulgeLength;
-		float			bulgeWidth;
-		float			velocity;
-		
-		uint8_t	boltAlpha;
-		uint8_t	edgeAlpha;
+public:
 
-		bool			lightSource;
-		float			maxRadius;
-		float			outRadius;
-		uint32_t			lightRGB;
-		float			intensity;
-		
-		bool			isBeam;
-		float			beamDuration;
-		float			beamWiggle;
-		char			*textureName;
-		float			uvAnimRate;
-		float			uvRepeat;
-		float			unitLength;
-		bool			mipTexture;
-		bool			arcEffect;
-		float			arcHeight;
-		float			afterHitTime;
-		float			areaEffectDmg;
-		float			areaEffectRad;
-		
+	int32_t			fireSoundFX;
+	int32_t			hitEffectObjNum;
+	int32_t			missEffectObjNum;
+	int32_t			lightEffectObjNum;
+	int32_t			fireEffect;
+	int32_t			trailEffect;
+
+	uint32_t           frontRGB;
+	uint32_t           backRGB;
+	uint32_t           middleRGB;
+	uint32_t           midEdgeRGB;
+
+	float			projLength;
+	float			bulgeLength;
+	float			bulgeWidth;
+	float			velocity;
+
+	uint8_t	boltAlpha;
+	uint8_t	edgeAlpha;
+
+	bool			lightSource;
+	float			maxRadius;
+	float			outRadius;
+	uint32_t			lightRGB;
+	float			intensity;
+
+	bool			isBeam;
+	float			beamDuration;
+	float			beamWiggle;
+	char*			textureName;
+	float			uvAnimRate;
+	float			uvRepeat;
+	float			unitLength;
+	bool			mipTexture;
+	bool			arcEffect;
+	float			arcHeight;
+	float			afterHitTime;
+	float			areaEffectDmg;
+	float			areaEffectRad;
+
 	//Member Functions
 	//-----------------
-	public:
+public:
 
-		void init (void)
-		{
-			ObjectType::init(void);
-		
-			objectTypeClass = WEAPONBOLT_TYPE;
-			objectClass = WEAPONBOLT;
+	void init(void)
+	{
+		ObjectType::init(void);
+		objectTypeClass = WEAPONBOLT_TYPE;
+		objectClass = WEAPONBOLT;
+		fireSoundFX = hitEffectObjNum = missEffectObjNum = lightEffectObjNum = fireEffect = trailEffect = 0;
+		frontRGB = middleRGB = backRGB = midEdgeRGB = 0;
+		projLength = bulgeLength = bulgeWidth = velocity = 0.0;
+		boltAlpha = edgeAlpha = 0xff;
+		lightSource = false;
+		maxRadius = outRadius = 0.0f;
+		lightRGB = 0x00000000;
+		intensity = 1.0;
+		isBeam = false;
+		beamDuration = 0.0f;
+		beamWiggle = 0.0f;
+		mipTexture = false;
+		textureName = nullptr;
+		arcEffect = false;
+		arcHeight = -1.0f;
+		afterHitTime = 0.0f;
+		areaEffectDmg = areaEffectRad = 0.0f;
+	}
 
-			fireSoundFX = hitEffectObjNum = missEffectObjNum = lightEffectObjNum = fireEffect = trailEffect = 0;
-				
-			frontRGB = middleRGB = backRGB = midEdgeRGB = 0;
-			
-			projLength = bulgeLength = bulgeWidth = velocity = 0.0;	
+	WeaponBoltType(void)
+	{
+		init(void);
+	}
 
-			boltAlpha = edgeAlpha = 0xff;
+	virtual int32_t init(FilePtr objFile, uint32_t fileSize);
+	int32_t init(FitIniFilePtr objFile);
 
-			lightSource = false;
-			maxRadius = outRadius = 0.0f;
-			lightRGB = 0x00000000;
-			intensity = 1.0;
-			
-			isBeam = false;
-			beamDuration = 0.0f;
-			beamWiggle = 0.0f;
-			mipTexture = false;
-			
-			textureName = nullptr;
-			
-			arcEffect = false;
-			arcHeight = -1.0f;
-			
-			afterHitTime = 0.0f;
-			
-			areaEffectDmg = areaEffectRad = 0.0f;
-		}
-		
-		WeaponBoltType (void)
-		{
-			init(void);
-		}
-		
-		virtual int32_t init (FilePtr objFile, uint32_t fileSize);
-		int32_t init (FitIniFilePtr objFile);
-		
-		~WeaponBoltType (void)
-		{
-			destroy(void);
-		}
-		
-		virtual void destroy (void);
-		
-		virtual GameObjectPtr createInstance (void);
+	~WeaponBoltType(void)
+	{
+		destroy(void);
+	}
 
-		//--------------------------------------------------
-		// This functions creates lights for the below bolts
-		TG_LightPtr getLight (void);
-		
-		virtual bool handleCollision (GameObjectPtr collidee, GameObjectPtr collider);
-		virtual bool handleDestruction (GameObjectPtr collidee, GameObjectPtr collider);
+	virtual void destroy(void);
+
+	virtual GameObjectPtr createInstance(void);
+
+	//--------------------------------------------------
+	// This functions creates lights for the below bolts
+	TG_LightPtr getLight(void);
+
+	virtual bool handleCollision(GameObjectPtr collidee, GameObjectPtr collider);
+	virtual bool handleDestruction(GameObjectPtr collidee, GameObjectPtr collider);
 };
 
 //---------------------------------------------------------------------------
@@ -172,192 +161,172 @@ class WeaponBolt : public GameObject
 {
 	//Data Members
 	//-------------
-		protected:
+protected:
 
-			GameObjectWatchID	ownerWID;
-			int32_t				hotSpotNumber;
-		
-			GameObjectWatchID	targetWID;
-			int32_t				targetHotSpot;
-			Stuff::Vector3D		*targetPosition;
-			float				distanceToTarget;
-			float				halfDistanceToTarget;
-			
-			WeaponShotInfo		weaponShot;
-			
-			Stuff::Vector3D		laserPosition;
-			Stuff::Vector3D		laserVertices[4];
-			Stuff::Vector3D		laserSide[4];
+	GameObjectWatchID	ownerWID;
+	int32_t				hotSpotNumber;
 
-			TG_LightPtr			pointLight;
-			uint32_t				lightId;
-			
-			int32_t				effectId;
-			bool 				hitTarget;
-			
-			//NEW  GOS FX
-			gosFX::Effect		*gosEffect;
-			gosFX::Effect		*muzzleEffect;
-			gosFX::Effect		*hitEffect;
-			gosFX::Effect		*missEffect;
-			gosFX::Effect		*waterMissEffect;
-			
-			float				timeLeft;
-			Stuff::Vector3D		hsPos;
-			
-			float				hitLeft;
-			uint32_t				mcTextureHandle;
-			uint32_t				gosTextureHandle;
-			float				startUV;
-			float				goalHeight;
-			
+	GameObjectWatchID	targetWID;
+	int32_t				targetHotSpot;
+	Stuff::Vector3D*		targetPosition;
+	float				distanceToTarget;
+	float				halfDistanceToTarget;
+
+	WeaponShotInfo		weaponShot;
+
+	Stuff::Vector3D		laserPosition;
+	Stuff::Vector3D		laserVertices[4];
+	Stuff::Vector3D		laserSide[4];
+
+	TG_LightPtr			pointLight;
+	uint32_t				lightId;
+
+	int32_t				effectId;
+	bool 				hitTarget;
+
+	//NEW  GOS FX
+	gosFX::Effect*		gosEffect;
+	gosFX::Effect*		muzzleEffect;
+	gosFX::Effect*		hitEffect;
+	gosFX::Effect*		missEffect;
+	gosFX::Effect*		waterMissEffect;
+
+	float				timeLeft;
+	Stuff::Vector3D		hsPos;
+
+	float				hitLeft;
+	uint32_t				mcTextureHandle;
+	uint32_t				gosTextureHandle;
+	float				startUV;
+	float				goalHeight;
+
 	//Member Functions
 	//-----------------
-		public:
+public:
 
-		virtual void init (bool create)
-		{
-		}
+	virtual void init(bool create)
+	{
+	}
 
-	   	WeaponBolt (void) : GameObject()
-		{
-			init(true);
-			hotSpotNumber = 0;
-			targetHotSpot = 0;
-			targetPosition = nullptr;
-			
-			distanceToTarget = 0.0;
-			
-			ownerWID = targetWID = 0;
+	WeaponBolt(void) : GameObject()
+	{
+		init(true);
+		hotSpotNumber = 0;
+		targetHotSpot = 0;
+		targetPosition = nullptr;
+		distanceToTarget = 0.0;
+		ownerWID = targetWID = 0;
+		pointLight = nullptr;
+		lightId = 0xffffffff;
+		gosEffect = nullptr;
+		muzzleEffect = nullptr;
+		hitEffect = nullptr;
+		missEffect = nullptr;
+		waterMissEffect = nullptr;
+		effectId = -1;
+		hitTarget = false;
+		timeLeft = 0.0;
+		hsPos.Zero(void);
+		hitLeft = 0.0f;
+		startUV = 0.0f;
+		mcTextureHandle = 0;
+		gosTextureHandle = 0xffffffff;
+		weaponShot.damage = 0.0f;
+		goalHeight = 0.0f;
+	}
 
-			pointLight = nullptr;
-			lightId = 0xffffffff;
-			
-			gosEffect = nullptr;
-			muzzleEffect = nullptr;
-			hitEffect = nullptr;
-			missEffect = nullptr;
-			waterMissEffect = nullptr;
-			
-			effectId = -1;
-			
-			hitTarget = false;
-			
-			timeLeft = 0.0;
-			hsPos.Zero(void);
-			
-			hitLeft = 0.0f;
-			
-			startUV = 0.0f;
-			mcTextureHandle = 0;
-			gosTextureHandle = 0xffffffff;
-			
-			weaponShot.damage = 0.0f;
-			
-			goalHeight = 0.0f;
-		}
+	~WeaponBolt(void)
+	{
+		destroy(void);
+	}
 
-		~WeaponBolt (void)
+	virtual void destroy(void);
+
+	virtual int32_t update(void);
+	virtual void render(void);
+
+	virtual void init(bool create, ObjectTypePtr _type);
+
+	virtual void init(int32_t fxId)
+	{
+		effectId = fxId;
+	}
+
+	virtual void setExists(bool set)
+	{
+		GameObject::setExists(set);
+		//If we are setting this effect to not existing, clean up its RAM!!
+		if(!set)
 		{
 			destroy(void);
 		}
+	}
 
-		virtual void destroy (void);
-		
-		virtual int32_t update (void);
-		virtual void render (void);
-		
-		virtual void init (bool create, ObjectTypePtr _type);
-		
-		virtual void init (int32_t fxId)
+	bool isVisible(void);
+
+	void setOwner(GameObjectPtr who);
+	void setTarget(GameObjectPtr who);
+	void setTargetPosition(Stuff::Vector3D pos);
+
+	void connect(GameObjectPtr source, GameObjectPtr dest, WeaponShotInfo* shotInfo = nullptr, int32_t sourceHS = 0, int32_t targetHS = 0)
+	{
+		ownerWID = source->getWatchID(void);
+		targetWID = dest->getWatchID(void);
+		hotSpotNumber = sourceHS;
+		targetHotSpot = targetHS;
+		if(dest->isMech())
 		{
-			effectId = fxId;
+			targetHotSpot = 0;
+			if(RollDice(50))
+				targetHotSpot = 1;
 		}
-
-		virtual void setExists (bool set)
+		else	//Vehicles need to know to use the hitnode for this hotspot and NOT the weaponNode!
 		{
-			GameObject::setExists(set);
-
-			//If we are setting this effect to not existing, clean up its RAM!!
-			if (!set)
-			{
-				destroy(void);
-			}
+			targetHotSpot = -1;
 		}
-
-		bool isVisible (void);
-		
-		void setOwner (GameObjectPtr who);
-		void setTarget (GameObjectPtr who);
-		void setTargetPosition (Stuff::Vector3D pos);
-
-		void connect (GameObjectPtr source, GameObjectPtr dest, WeaponShotInfo* shotInfo = nullptr, int32_t sourceHS = 0, int32_t targetHS = 0)
-		{
-			ownerWID = source->getWatchID(void);
-			targetWID = dest->getWatchID(void);
-			
-			hotSpotNumber = sourceHS;
-			targetHotSpot = targetHS;
-			
-			if (dest->isMech())
-			{
-				targetHotSpot = 0;
-				if (RollDice(50))
-					targetHotSpot = 1;
-			}
-			else	//Vehicles need to know to use the hitnode for this hotspot and NOT the weaponNode!
-			{
-				targetHotSpot = -1;
-			}
-
-			if (shotInfo)
-				weaponShot = *shotInfo;
-
-			//If this is an AreaEffect weapon, NO target WID, hit the target's CURRENT LOCATION!!!
-			if (((WeaponBoltTypePtr)getObjectType())->hitEffectObjNum &&
+		if(shotInfo)
+			weaponShot = *shotInfo;
+		//If this is an AreaEffect weapon, NO target WID, hit the target's CURRENT LOCATION!!!
+		if(((WeaponBoltTypePtr)getObjectType())->hitEffectObjNum &&
 				(((WeaponBoltTypePtr)getObjectType())->areaEffectDmg > 0.0f) &&
 				(((WeaponBoltTypePtr)getObjectType())->areaEffectRad > 0.0f))
-			{
-				Stuff::Vector3D targetLoc;
-				targetLoc = ObjectManager->getByWatchID(targetWID)->getPosition(void);
-				setTargetPosition(targetLoc);
-				targetWID = 0;
-			}
-
-			//Reset Node recycle time to either BASE or beam duration.
-			GameObjectPtr myOwner = ObjectManager->getByWatchID(ownerWID);
-			if (((WeaponBoltTypePtr)getObjectType())->isBeam)
-				myOwner->appearance->setWeaponNodeRecycle(sourceHS,((WeaponBoltTypePtr)getObjectType())->beamDuration);
-			else
-				myOwner->appearance->setWeaponNodeRecycle(sourceHS,BASE_NODE_RECYCLE_TIME);
-		}
-		
-		void connect (GameObjectPtr source, Stuff::Vector3D targetLoc, WeaponShotInfo* shotInfo = nullptr, int32_t sourceHS = 0)
 		{
-			ownerWID = source->getWatchID(void);
-			targetWID = 0;
-			hotSpotNumber = sourceHS;
-			
+			Stuff::Vector3D targetLoc;
+			targetLoc = ObjectManager->getByWatchID(targetWID)->getPosition(void);
 			setTargetPosition(targetLoc);
-			
-			if (shotInfo)
-				weaponShot = *shotInfo;
-				
-			//Reset Node recycle time to either BASE or beam duration.
-			GameObjectPtr myOwner = ObjectManager->getByWatchID(ownerWID);
-			if (((WeaponBoltTypePtr)getObjectType())->isBeam)
-				myOwner->appearance->setWeaponNodeRecycle(sourceHS,((WeaponBoltTypePtr)getObjectType())->beamDuration);
-			else
-				myOwner->appearance->setWeaponNodeRecycle(sourceHS,BASE_NODE_RECYCLE_TIME);
+			targetWID = 0;
 		}
+		//Reset Node recycle time to either BASE or beam duration.
+		GameObjectPtr myOwner = ObjectManager->getByWatchID(ownerWID);
+		if(((WeaponBoltTypePtr)getObjectType())->isBeam)
+			myOwner->appearance->setWeaponNodeRecycle(sourceHS, ((WeaponBoltTypePtr)getObjectType())->beamDuration);
+		else
+			myOwner->appearance->setWeaponNodeRecycle(sourceHS, BASE_NODE_RECYCLE_TIME);
+	}
 
-		virtual void Save (PacketFilePtr file, int32_t packetNum);
+	void connect(GameObjectPtr source, Stuff::Vector3D targetLoc, WeaponShotInfo* shotInfo = nullptr, int32_t sourceHS = 0)
+	{
+		ownerWID = source->getWatchID(void);
+		targetWID = 0;
+		hotSpotNumber = sourceHS;
+		setTargetPosition(targetLoc);
+		if(shotInfo)
+			weaponShot = *shotInfo;
+		//Reset Node recycle time to either BASE or beam duration.
+		GameObjectPtr myOwner = ObjectManager->getByWatchID(ownerWID);
+		if(((WeaponBoltTypePtr)getObjectType())->isBeam)
+			myOwner->appearance->setWeaponNodeRecycle(sourceHS, ((WeaponBoltTypePtr)getObjectType())->beamDuration);
+		else
+			myOwner->appearance->setWeaponNodeRecycle(sourceHS, BASE_NODE_RECYCLE_TIME);
+	}
 
-		void Load (WeaponBoltData *data);
+	virtual void Save(PacketFilePtr file, int32_t packetNum);
 
-		void CopyTo (WeaponBoltData *data);
+	void Load(WeaponBoltData* data);
 
-		void finishNow (void);
+	void CopyTo(WeaponBoltData* data);
+
+	void finishNow(void);
 };
 
 //---------------------------------------------------------------------------

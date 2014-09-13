@@ -26,38 +26,44 @@ Eraser:
 
 class Eraser: public Brush
 {
+public:
+
+	Eraser()
+	{
+		pCurAction = nullptr;
+	}
+
+	virtual bool beginPaint(void);
+	virtual Action* endPaint(void);
+	virtual bool paint(Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY);
+	virtual bool canPaint(Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY, int32_t flags);
+	virtual Action* applyToSelection(void);
+
+
+private:
+
+	class EraserAction : public ActionPaintTile
+	{
 	public:
-
-		Eraser(){ pCurAction = nullptr; }
-
-		virtual bool beginPaint(void);
-		virtual Action* endPaint(void);
-		virtual bool paint( Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY );
-		virtual bool canPaint( Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY, int32_t flags );
-		virtual Action* applyToSelection(void);
-
-
-	private:
-
-		class EraserAction : public ActionPaintTile
+		EraserAction()
 		{
-		public:
-			EraserAction() { teamsActionIsSet = false; }
+			teamsActionIsSet = false;
+		}
 
-			virtual bool undo(void);
-			virtual bool redo(void);
+		virtual bool undo(void);
+		virtual bool redo(void);
 
-			BuildingBrush::BuildingAction bldgAction;
-			LinkBrush::LinkAction linkAction;
-			/*deleting a building that is referred to by an objective condition requires a TeamAction
-			to record the objective change*/
-			bool teamsActionIsSet;
-			TeamsAction teamsAction;
+		BuildingBrush::BuildingAction bldgAction;
+		LinkBrush::LinkAction linkAction;
+		/*deleting a building that is referred to by an objective condition requires a TeamAction
+		to record the objective change*/
+		bool teamsActionIsSet;
+		TeamsAction teamsAction;
 
-		};
+	};
 
-		EraserAction* pCurAction;
-		
+	EraserAction* pCurAction;
+
 };
 
 

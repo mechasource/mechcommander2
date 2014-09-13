@@ -24,64 +24,61 @@ class GameSoundSystem : public SoundSystem
 {
 	//Data Members
 	//-------------
-	protected:
-		RadioData			*currentMessage;						//Radio message playing.
-		uint32_t		messagesInQueue;						//Radio messages waiting to play.
-		RadioData			*queue[MAX_QUEUED_MESSAGES];			//Radio message queue.
-		uint32_t		currentFragment;						//Which piece are we playing.
-		uint32_t		playingNoise;							//are we playing noise right now?
-		bool 				wholeMsgDone;							//Are all fragments played?
-		HGOSAUDIO			radioHandle;
+protected:
+	RadioData*			currentMessage;						//Radio message playing.
+	uint32_t		messagesInQueue;						//Radio messages waiting to play.
+	RadioData*			queue[MAX_QUEUED_MESSAGES];			//Radio message queue.
+	uint32_t		currentFragment;						//Which piece are we playing.
+	uint32_t		playingNoise;							//are we playing noise right now?
+	bool 				wholeMsgDone;							//Are all fragments played?
+	HGOSAUDIO			radioHandle;
 
-		float				generalAlarmTimer;						//How int32_t do we play the alarm buzzer?
-			
+	float				generalAlarmTimer;						//How int32_t do we play the alarm buzzer?
+
 	//Member Functions
 	//----------------
-	public:
-	
-		GameSoundSystem (void)
-		{
-			init(void);
-		}
-		
-		~GameSoundSystem (void)
-		{
-			destroy(void);
-		}
-		
-		void init (void)
-		{
-			SoundSystem::init(void);
+public:
 
-			wholeMsgDone = true;
-			currentMessage = nullptr;
-			messagesInQueue = 0;
-			currentFragment = 0;
-			playingNoise = false;
-			radioHandle = nullptr;
+	GameSoundSystem(void)
+	{
+		init(void);
+	}
 
-			//------------------------------------------------------------
-			// Startup the Radio Message Queue.
-			messagesInQueue = 0;
-			wholeMsgDone = true;
-			for (int32_t i=0;i<MAX_QUEUED_MESSAGES;i++)
-				queue[i] = nullptr;
+	~GameSoundSystem(void)
+	{
+		destroy(void);
+	}
 
-			generalAlarmTimer = 0.0f;
-		}
-		
-		virtual void update (void);
+	void init(void)
+	{
+		SoundSystem::init(void);
+		wholeMsgDone = true;
+		currentMessage = nullptr;
+		messagesInQueue = 0;
+		currentFragment = 0;
+		playingNoise = false;
+		radioHandle = nullptr;
+		//------------------------------------------------------------
+		// Startup the Radio Message Queue.
+		messagesInQueue = 0;
+		wholeMsgDone = true;
+		for(size_t i = 0; i < MAX_QUEUED_MESSAGES; i++)
+			queue[i] = nullptr;
+		generalAlarmTimer = 0.0f;
+	}
 
-		void purgeSoundSystem (void);					//This will shutdown all active sound.
-		void removeQueuedMessage (int32_t msgNumber);
-		bool checkMessage (MechWarriorPtr pilot, byte priority, uint32_t messageType);
-		int32_t queueRadioMessage (RadioData *msgData);
-		void moveFromQueueToPlaying (void);
-		void removeCurrentMessage (void);
+	virtual void update(void);
+
+	void purgeSoundSystem(void);					//This will shutdown all active sound.
+	void removeQueuedMessage(int32_t msgNumber);
+	bool checkMessage(MechWarriorPtr pilot, byte priority, uint32_t messageType);
+	int32_t queueRadioMessage(RadioData* msgData);
+	void moveFromQueueToPlaying(void);
+	void removeCurrentMessage(void);
 };
 
 //---------------------------------------------------------------------------
-extern GameSoundSystem *soundSystem;
+extern GameSoundSystem* soundSystem;
 
 extern bool useSound;
 extern bool useMusic;

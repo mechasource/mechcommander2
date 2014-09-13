@@ -28,81 +28,82 @@
 #define FASTFILE_VERSION_LZ		0xFADDECAF
 
 #pragma pack(1)
-typedef struct 
+typedef struct
 {
-    ptrdiff_t	offset;
-    size_t		size;						//LZ Compressed Size
+	ptrdiff_t	offset;
+	size_t		size;						//LZ Compressed Size
 	size_t		realSize;					//Uncompressed Size
 	uint32_t	hash;						//Hash Compare to weed out stinky files faster then StrCmp
-    char		name[MAX_PATH];
+	char		name[MAX_PATH];
 } FILEENTRY;
 #pragma pack()
 
-typedef struct FILE_HANDLE {
-    int32_t		inuse;
-    int32_t		pos;
-    FILEENTRY*	pfe;
+typedef struct FILE_HANDLE
+{
+	int32_t		inuse;
+	int32_t		pos;
+	FILEENTRY*	pfe;
 } FILE_HANDLE;
 
 //---------------------------------------------------------------------------
 // Class FastFile
 class FastFile
 {
-	protected:
-		size_t			numFiles;
-		FILE_HANDLE*	files;
-		char*			fileName;
-		FILE*			handle;
-		size_t 			length;
-		size_t 			logicalPosition;
-		bool			useLZCompress;
+protected:
+	size_t			numFiles;
+	FILE_HANDLE*	files;
+	char*			fileName;
+	FILE*			handle;
+	size_t 			length;
+	size_t 			logicalPosition;
+	bool			useLZCompress;
 
-	public:
-		FastFile (void);
-		~FastFile (void);
+public:
+	FastFile(void);
+	~FastFile(void);
 
-		PVOID operator new (size_t mySize);
-		void operator delete (PVOID us);
+	PVOID operator new(size_t mySize);
+	void operator delete(PVOID us);
 
-		int32_t open (PSTR fName);
-		void close (void);
+	int32_t open(PSTR fName);
+	void close(void);
 
-		bool isOpen (void)
+	bool isOpen(void)
+	{
+		return (handle != nullptr);
+	}
+
+	size_t fileSize(void)
+	{
+		if(isOpen() && (length == 0))
 		{
-			return (handle != nullptr);
+			struct _stat st;
+			_stat(fileName, &st);
+			length = size_t(st.st_size);
 		}
+		return length;
+	}
 
-		size_t fileSize (void)
-		{
-			if (isOpen() && (length == 0))
-			{
-				struct _stat st;
-				_stat(fileName, &st);
-				length = size_t(st.st_size);
-			}
-			return length;			
-		}
+	size_t getNumFiles(void)
+	{
+		return numFiles;
+	}
 
-		size_t getNumFiles (void)
-		{
-			return numFiles;
-		}
+	int32_t openFast(uint32_t hash, PSTR fName);
 
-		int32_t openFast (uint32_t hash, PSTR fName);
+	void closeFast(int32_t localHandle);
 
-		void closeFast (int32_t localHandle);
+	int32_t seekFast(int32_t fastFileHandle, int32_t off, int32_t from = SEEK_SET);
+	int32_t readFast(int32_t fastFileHandle, PVOID bfr, int32_t size);
+	int32_t readFastRAW(int32_t fastFileHandle, PVOID bfr, int32_t size);
+	int32_t tellFast(int32_t fastFileHandle);
+	int32_t sizeFast(int32_t fastFileHandle);
+	int32_t lzSizeFast(int32_t fastFileHandle);
 
-		int32_t seekFast (int32_t fastFileHandle, int32_t off, int32_t from = SEEK_SET);
-		int32_t readFast (int32_t fastFileHandle, PVOID bfr, int32_t size);
-		int32_t readFastRAW (int32_t fastFileHandle, PVOID bfr, int32_t size);
-		int32_t tellFast (int32_t fastFileHandle);
-		int32_t sizeFast (int32_t fastFileHandle);
-		int32_t lzSizeFast (int32_t fastFileHandle);
-
-		bool isLZCompressed (void)
-		{
-			return useLZCompress;
-		}
+	bool isLZCompressed(void)
+	{
+		return useLZCompress;
+	}
 };
 
 //---------------------------------------------------------------------------

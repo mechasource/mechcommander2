@@ -20,7 +20,7 @@ using namespace Stuff;
 // Socket
 //#############################################################################
 //
-Socket::Socket(Node *node)
+Socket::Socket(Node* node)
 {
 	socketsNode = node;
 }
@@ -41,7 +41,7 @@ Socket::~Socket()
 //#############################################################################
 //
 void
-   Socket::AddImplementation(Plug*)
+Socket::AddImplementation(Plug*)
 {
 	Check_Object(this);
 	STOP(("Socket::AddImplementation - virtual method with no override"));
@@ -53,7 +53,7 @@ void
 //#############################################################################
 //
 bool
-   Socket::IsEmpty()
+Socket::IsEmpty()
 {
 	Check_Object(this);
 	STOP(("Socket::IsEmpty - virtual method with no override"));
@@ -68,7 +68,7 @@ bool
 //#############################################################################
 //
 void
-	SocketIterator::Remove()
+SocketIterator::Remove()
 {
 	Check_Object(this);
 	STOP(("SocketIterator::Remove - Should never reach here"));
@@ -80,29 +80,26 @@ void
 //#############################################################################
 //
 void
-	SocketIterator::DeletePlugs(bool defeat_release_node)
+SocketIterator::DeletePlugs(bool defeat_release_node)
 {
 	Check_Object(this);
-	Plug *plug;
-	Node *save_release_node = nullptr;
-
-	if (defeat_release_node)
+	Plug* plug;
+	Node* save_release_node = nullptr;
+	if(defeat_release_node)
 	{
-   	Check_Object(socket);
+		Check_Object(socket);
 		save_release_node = socket->GetReleaseNode();
 		socket->SetReleaseNode(nullptr);
 	}
-
 	First();
-	while ((plug = ReadAndNextPlug()) != nullptr)
+	while((plug = ReadAndNextPlug()) != nullptr)
 	{
 		Unregister_Object(plug);
 		delete plug;
 	}
-
-	if (defeat_release_node)
+	if(defeat_release_node)
 	{
-   	Check_Object(socket);
+		Check_Object(socket);
 		socket->SetReleaseNode(save_release_node);
 	}
 }
@@ -113,7 +110,7 @@ void
 //#############################################################################
 //
 void
-	SocketIterator::InsertImplementation(Plug*)
+SocketIterator::InsertImplementation(Plug*)
 {
 	//
 	// Should never reach here

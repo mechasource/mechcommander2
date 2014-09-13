@@ -31,79 +31,84 @@
 #define MAX_TURRET_WEAPONS				4
 //---------------------------------------------------------------------------
 
-class TurretType : public ObjectType {
+class TurretType : public ObjectType
+{
 
-	protected:
+protected:
 
-		float			damageLevel;
-		//uint32_t	dmgLevelClosed;
+	float			damageLevel;
+	//uint32_t	dmgLevelClosed;
 
-	public:
-		
-		uint32_t	blownEffectId;
-		uint32_t	normalEffectId;
-		uint32_t	damageEffectId;
-		
-		float			baseTonnage;
-		
-		float			explDmg;
-		float			explRad;
-		
-		float			littleExtent;
-		float			LOSFactor;
-		
-		float			engageRadius;
-		float			turretYawRate;
-		int32_t			weaponMasterId[MAX_TURRET_WEAPONS];
-		int32_t			pilotSkill;
-		float			punch;
-		
-		int32_t			turretTypeName;
-		int32_t			buildingDescriptionID;
+public:
 
-	public:
+	uint32_t	blownEffectId;
+	uint32_t	normalEffectId;
+	uint32_t	damageEffectId;
 
-		void init (void) {
-			ObjectType::init(void);
-			objectTypeClass = TURRET_TYPE;
-			objectClass = TURRET;
-			damageLevel = 0.0;
-			blownEffectId = 0xFFFFFFFF;
-			normalEffectId = 0xFFFFFFFF;
-			damageEffectId = 0xFFFFFFFF;
-			explDmg = explRad = 0.0;
-			baseTonnage = 0.0;
-			weaponMasterId[0] = weaponMasterId[1] = weaponMasterId[2] = weaponMasterId[3] = -1;
-			pilotSkill = 0;
-			punch = 0.0;
-			turretYawRate = 0.0;
-			turretTypeName = 0;
-			LOSFactor = 1.0f;
-		}
-		
-		TurretType (void) {
-			init(void);
-		}
-		
-		virtual int32_t init (FilePtr objFile, uint32_t fileSize);
+	float			baseTonnage;
 
-		int32_t init (FitIniFilePtr objFile);
-		
-		~TurretType (void) {
-			destroy(void);
-		}
-		
-		float getDamageLevel (void) {
-			return(damageLevel);
-		}
-			
-		virtual void destroy (void);
-		
-		virtual GameObjectPtr createInstance (void);
-		
-		virtual bool handleCollision (GameObjectPtr collidee, GameObjectPtr collider);
-		
-		virtual bool handleDestruction (GameObjectPtr collidee, GameObjectPtr collider);
+	float			explDmg;
+	float			explRad;
+
+	float			littleExtent;
+	float			LOSFactor;
+
+	float			engageRadius;
+	float			turretYawRate;
+	int32_t			weaponMasterId[MAX_TURRET_WEAPONS];
+	int32_t			pilotSkill;
+	float			punch;
+
+	int32_t			turretTypeName;
+	int32_t			buildingDescriptionID;
+
+public:
+
+	void init(void)
+	{
+		ObjectType::init(void);
+		objectTypeClass = TURRET_TYPE;
+		objectClass = TURRET;
+		damageLevel = 0.0;
+		blownEffectId = 0xFFFFFFFF;
+		normalEffectId = 0xFFFFFFFF;
+		damageEffectId = 0xFFFFFFFF;
+		explDmg = explRad = 0.0;
+		baseTonnage = 0.0;
+		weaponMasterId[0] = weaponMasterId[1] = weaponMasterId[2] = weaponMasterId[3] = -1;
+		pilotSkill = 0;
+		punch = 0.0;
+		turretYawRate = 0.0;
+		turretTypeName = 0;
+		LOSFactor = 1.0f;
+	}
+
+	TurretType(void)
+	{
+		init(void);
+	}
+
+	virtual int32_t init(FilePtr objFile, uint32_t fileSize);
+
+	int32_t init(FitIniFilePtr objFile);
+
+	~TurretType(void)
+	{
+		destroy(void);
+	}
+
+	float getDamageLevel(void)
+	{
+		return(damageLevel);
+	}
+
+	virtual void destroy(void);
+
+	virtual GameObjectPtr createInstance(void);
+
+	virtual bool handleCollision(GameObjectPtr collidee, GameObjectPtr collider);
+
+	virtual bool handleDestruction(GameObjectPtr collidee, GameObjectPtr collider);
 };
 
 //---------------------------------------------------------------------------
@@ -127,177 +132,187 @@ typedef struct _TurretData : public TerrainObjectData
 	int32_t					currentWeaponNode;
 } TurretData;
 
-class Turret : public TerrainObject {
-	
-	public:
-	
-		char					teamId;
-		float					turretRotation;
-		bool					didReveal;
-		GameObjectWatchID		targetWID;
-		float					readyTime[MAX_TURRET_WEAPONS];
-		float					lastFireTime[MAX_TURRET_WEAPONS];
-		float					minRange;										// current min attack range
-		float					maxRange;										// current max attack range
-		int32_t					numFunctionalWeapons;							// takes into account damage, etc.
-		
-		int32_t					netRosterIndex;
-		int32_t					numWeaponFireChunks[2];
-		uint32_t			weaponFireChunks[2][MAX_TURRET_WEAPONFIRE_CHUNKS];
+class Turret : public TerrainObject
+{
 
-		TG_LightPtr				pointLight;
-		uint32_t					lightId;
-		float					idleWait;
-		Stuff::Vector3D			idlePosition;
-		Stuff::Vector3D			oldPosition;
-		uint32_t					parentId;
-		GameObjectWatchID		parent;
-		int32_t					currentWeaponNode;
+public:
 
-		static bool				turretsEnabled[MAX_TEAMS];
+	char					teamId;
+	float					turretRotation;
+	bool					didReveal;
+	GameObjectWatchID		targetWID;
+	float					readyTime[MAX_TURRET_WEAPONS];
+	float					lastFireTime[MAX_TURRET_WEAPONS];
+	float					minRange;										// current min attack range
+	float					maxRange;										// current max attack range
+	int32_t					numFunctionalWeapons;							// takes into account damage, etc.
 
-	public:
+	int32_t					netRosterIndex;
+	int32_t					numWeaponFireChunks[2];
+	uint32_t			weaponFireChunks[2][MAX_TURRET_WEAPONFIRE_CHUNKS];
 
-		void init (bool create);
+	TG_LightPtr				pointLight;
+	uint32_t					lightId;
+	float					idleWait;
+	Stuff::Vector3D			idlePosition;
+	Stuff::Vector3D			oldPosition;
+	uint32_t					parentId;
+	GameObjectWatchID		parent;
+	int32_t					currentWeaponNode;
 
-	   	Turret (void) : TerrainObject() {
-			init(true);
-		}
+	static bool				turretsEnabled[MAX_TEAMS];
 
-		~Turret (void) {
-			destroy(void);
-		}
+public:
 
-		virtual void updateDebugWindow (GameDebugWindow* debugWindow);
+	void init(bool create);
 
-		virtual int32_t setTeamId (int32_t _teamId, bool setup);
-		
-		virtual int32_t getTeamId (void) {
-			return(teamId);
-		}
+	Turret(void) : TerrainObject()
+	{
+		init(true);
+	}
 
-		virtual TeamPtr getTeam (void);
+	~Turret(void)
+	{
+		destroy(void);
+	}
 
-		virtual bool isFriendly (TeamPtr team);
+	virtual void updateDebugWindow(GameDebugWindow* debugWindow);
 
-		virtual bool isEnemy (TeamPtr team);
+	virtual int32_t setTeamId(int32_t _teamId, bool setup);
 
-		virtual bool isNeutral (TeamPtr team);
+	virtual int32_t getTeamId(void)
+	{
+		return(teamId);
+	}
 
-		virtual void destroy (void);
-		
-		virtual int32_t update (void);
-		
-		virtual void render (void);
-		
-		virtual void init (bool create, ObjectTypePtr _type);
+	virtual TeamPtr getTeam(void);
 
-		virtual int32_t handleWeaponHit (WeaponShotInfoPtr shotInfo, bool addMultiplayChunk = false);
+	virtual bool isFriendly(TeamPtr team);
 
-		int32_t getNetRosterIndex (void) {
-			return(netRosterIndex);
-		}
+	virtual bool isEnemy(TeamPtr team);
 
-		void setNetRosterIndex (int32_t index) {
-			netRosterIndex = index;
-		}
+	virtual bool isNeutral(TeamPtr team);
 
-		void lightOnFire (float timeToBurn);
+	virtual void destroy(void);
 
-		virtual int32_t kill (void) 
-		{
-			//Do nothing for now.  Later, Buildings may do something.
-			return NO_ERROR;
-		}
+	virtual int32_t update(void);
 
-		virtual bool isBuilding(void) 
-		{
-			return (true);
-		}
-		
-		virtual void getBlockAndVertexNumber (int32_t &blockNum, int32_t &vertexNum) {
-			blockNum = blockNumber;
-			vertexNum = vertexNumber;
-		}
-		
-		bool isWeaponReady (int32_t weaponId);
+	virtual void render(void);
 
-		bool isWeaponMissile (int32_t weaponId);
+	virtual void init(bool create, ObjectTypePtr _type);
 
-		bool isWeaponStreak (int32_t weaponId);
+	virtual int32_t handleWeaponHit(WeaponShotInfoPtr shotInfo, bool addMultiplayChunk = false);
 
-		float calcAttackChance (GameObjectPtr target, int32_t* range, int32_t weaponId);
-		
-		void recordWeaponFireTime (int32_t weaponId);
-		
-		void startWeaponRecycle (int32_t weaponId);
+	int32_t getNetRosterIndex(void)
+	{
+		return(netRosterIndex);
+	}
 
-		int32_t getNumWeaponFireChunks (int32_t which) 
-		{
-			return(numWeaponFireChunks[which]);
-		}
+	void setNetRosterIndex(int32_t index)
+	{
+		netRosterIndex = index;
+	}
 
-		int32_t clearWeaponFireChunks (int32_t which);
+	void lightOnFire(float timeToBurn);
 
-		int32_t addWeaponFireChunk (int32_t which, WeaponFireChunkPtr chunk);
+	virtual int32_t kill(void)
+	{
+		//Do nothing for now.  Later, Buildings may do something.
+		return NO_ERROR;
+	}
 
-		int32_t addWeaponFireChunks (int32_t which, uint32_t* packedChunkBuffer, int32_t numChunks);
+	virtual bool isBuilding(void)
+	{
+		return (true);
+	}
 
-		int32_t grabWeaponFireChunks (int32_t which, uint32_t* packedChunkBuffer);
+	virtual void getBlockAndVertexNumber(int32_t& blockNum, int32_t& vertexNum)
+	{
+		blockNum = blockNumber;
+		vertexNum = vertexNumber;
+	}
 
-		virtual int32_t updateWeaponFireChunks (int32_t which);
+	bool isWeaponReady(int32_t weaponId);
 
-		void fireWeapon (GameObjectPtr target, int32_t weaponId);
-		
-		virtual Stuff::Vector3D getPositionFromHS (int32_t weaponNum);
+	bool isWeaponMissile(int32_t weaponId);
 
-		virtual float relFacingTo (Stuff::Vector3D goal, int32_t bodyLocation = -1);
-		
-		int32_t handleWeaponFire (int32_t weaponIndex,
-							   GameObjectPtr target,
-							   Stuff::Vector3D* targetPoint,
-							   bool hit,
-							   float entryAngle,
-							   int32_t numMissiles,
-							   int32_t hitLocation);
+	bool isWeaponStreak(int32_t weaponId);
 
-		virtual void printFireWeaponDebugInfo (GameObjectPtr target, Stuff::Vector3D* targetPoint, int32_t chance, int32_t roll, WeaponShotInfo* shotInfo);
+	float calcAttackChance(GameObjectPtr target, int32_t* range, int32_t weaponId);
 
-		virtual void printHandleWeaponHitDebugInfo (WeaponShotInfo* shotInfo);
-		
-		float getLittleExtent (void) 
-		{
-			return (((TurretTypePtr)getObjectType())->littleExtent);
-		}
+	void recordWeaponFireTime(int32_t weaponId);
 
-		virtual bool isLinked (void);
+	void startWeaponRecycle(int32_t weaponId);
 
-		virtual GameObjectPtr getParent (void);
+	int32_t getNumWeaponFireChunks(int32_t which)
+	{
+		return(numWeaponFireChunks[which]);
+	}
 
-		virtual void setParentId (uint32_t pId);
+	int32_t clearWeaponFireChunks(int32_t which);
 
-		virtual int32_t getDescription(){ return ((TurretType*)getObjectType())->buildingDescriptionID; }
+	int32_t addWeaponFireChunk(int32_t which, WeaponFireChunkPtr chunk);
 
-		int32_t updateAnimations (void);
-		
-		virtual Stuff::Vector3D getLOSPosition (void);
-		
-		virtual float getDestructLevel (void)
-		{
-			return ((TurretTypePtr)getObjectType())->getDamageLevel() - damage;
-		}
+	int32_t addWeaponFireChunks(int32_t which, uint32_t* packedChunkBuffer, int32_t numChunks);
 
-		virtual void setDamage (float newDamage);
+	int32_t grabWeaponFireChunks(int32_t which, uint32_t* packedChunkBuffer);
 
-		virtual int32_t calcFireRanges (void);
+	virtual int32_t updateWeaponFireChunks(int32_t which);
 
-		virtual void Save (PacketFilePtr file, int32_t packetNum);
+	void fireWeapon(GameObjectPtr target, int32_t weaponId);
 
-		void CopyTo (TurretData *data);
+	virtual Stuff::Vector3D getPositionFromHS(int32_t weaponNum);
 
-		void Load (TurretData *data);
+	virtual float relFacingTo(Stuff::Vector3D goal, int32_t bodyLocation = -1);
 
-		virtual void renderShadows (void);
+	int32_t handleWeaponFire(int32_t weaponIndex,
+							 GameObjectPtr target,
+							 Stuff::Vector3D* targetPoint,
+							 bool hit,
+							 float entryAngle,
+							 int32_t numMissiles,
+							 int32_t hitLocation);
+
+	virtual void printFireWeaponDebugInfo(GameObjectPtr target, Stuff::Vector3D* targetPoint, int32_t chance, int32_t roll, WeaponShotInfo* shotInfo);
+
+	virtual void printHandleWeaponHitDebugInfo(WeaponShotInfo* shotInfo);
+
+	float getLittleExtent(void)
+	{
+		return (((TurretTypePtr)getObjectType())->littleExtent);
+	}
+
+	virtual bool isLinked(void);
+
+	virtual GameObjectPtr getParent(void);
+
+	virtual void setParentId(uint32_t pId);
+
+	virtual int32_t getDescription()
+	{
+		return ((TurretType*)getObjectType())->buildingDescriptionID;
+	}
+
+	int32_t updateAnimations(void);
+
+	virtual Stuff::Vector3D getLOSPosition(void);
+
+	virtual float getDestructLevel(void)
+	{
+		return ((TurretTypePtr)getObjectType())->getDamageLevel() - damage;
+	}
+
+	virtual void setDamage(float newDamage);
+
+	virtual int32_t calcFireRanges(void);
+
+	virtual void Save(PacketFilePtr file, int32_t packetNum);
+
+	void CopyTo(TurretData* data);
+
+	void Load(TurretData* data);
+
+	virtual void renderShadows(void);
 };
 
 //***************************************************************************

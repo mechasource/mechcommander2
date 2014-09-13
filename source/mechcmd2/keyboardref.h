@@ -22,30 +22,30 @@ KeyboardRef:
 **************************************************************************************************/
 class KeyboardRef: public LogisticsScreen
 {
-	public:
+public:
 
-		KeyboardRef(void);
-		virtual ~KeyboardRef(void);
+	KeyboardRef(void);
+	virtual ~KeyboardRef(void);
 
-		KeyboardRef& operator=( const KeyboardRef& eyboardRef );
-		int32_t init(void);
+	KeyboardRef& operator=(const KeyboardRef& eyboardRef);
+	int32_t init(void);
 
-		virtual void update(void);
-		virtual void render(void);
+	virtual void update(void);
+	virtual void render(void);
 
-		void reseed(MissionInterfaceManager::Command* );
+	void reseed(MissionInterfaceManager::Command*);
 
-		virtual int32_t			handleMessage( uint32_t, uint32_t );
+	virtual int32_t			handleMessage(uint32_t, uint32_t);
 
 
-	private:
+private:
 
-		KeyboardRef( const KeyboardRef& src );
-		// HELPER FUNCTIONS
+	KeyboardRef(const KeyboardRef& src);
+	// HELPER FUNCTIONS
 
-		aListBox		listBox;
-		aTextListItem	listItemTemplate;
-		aTextListItem	listItemTemplate2;
+	aListBox		listBox;
+	aTextListItem	listItemTemplate;
+	aTextListItem	listItemTemplate2;
 
 };
 

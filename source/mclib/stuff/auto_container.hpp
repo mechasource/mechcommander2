@@ -36,51 +36,103 @@ namespace Stuff
 		typedef const value_type* const_iterator;
 		typedef size_t size_type;
 
-		iterator begin()						{ return (m_Container.begin()); }
-		const_iterator begin(void) const			{ return (m_Container.begin()); }
+		iterator begin()
+		{
+			return (m_Container.begin());
+		}
+		const_iterator begin(void) const
+		{
+			return (m_Container.begin());
+		}
 
-		iterator end()							{ return (m_Container.end());	}
-		const_iterator end(void) const				{ return (m_Container.end());	}
+		iterator end()
+		{
+			return (m_Container.end());
+		}
+		const_iterator end(void) const
+		{
+			return (m_Container.end());
+		}
 
-		size_type size(void) const					{ return (m_Container.size());	}
+		size_type size(void) const
+		{
+			return (m_Container.size());
+		}
 
-		bool empty(void) const						{ return (m_Container.empty());	}
+		bool empty(void) const
+		{
+			return (m_Container.empty());
+		}
 
-		size_type max_size(void) const				{ return (m_Container.max_size());	}
+		size_type max_size(void) const
+		{
+			return (m_Container.max_size());
+		}
 
-		void swap(container_type& other_container)	{ m_Container.swap(other_container); }
+		void swap(container_type& other_container)
+		{
+			m_Container.swap(other_container);
+		}
 
-		reference at(size_type pos)				{ return (m_Container.at(pos));	}
-		const_reference at(size_type pos) const	{ return (m_Container.at(pos));	}
+		reference at(size_type pos)
+		{
+			return (m_Container.at(pos));
+		}
+		const_reference at(size_type pos) const
+		{
+			return (m_Container.at(pos));
+		}
 
-		reference operator[](size_type pos)		{ return (m_Container[pos]);	}
-		const_reference operator[](size_type pos) const	{ return (m_Container[pos]);	}
+		reference operator[](size_type pos)
+		{
+			return (m_Container[pos]);
+		}
+		const_reference operator[](size_type pos) const
+		{
+			return (m_Container[pos]);
+		}
 
-		void clear()							{ erase(begin(),end());	}
+		void clear()
+		{
+			erase(begin(), end());
+		}
 
-		reference back()						{ return (m_Container.back());	}
-		const_reference back(void) const			{ return (m_Container.back());	}
+		reference back()
+		{
+			return (m_Container.back());
+		}
+		const_reference back(void) const
+		{
+			return (m_Container.back());
+		}
 
-		reference front()						{ return (m_Container.front());	}
-		const_reference front(void) const			{ return (m_Container.front());	}
+		reference front()
+		{
+			return (m_Container.front());
+		}
+		const_reference front(void) const
+		{
+			return (m_Container.front());
+		}
 
 		iterator erase(iterator it)
 		{
 			iterator rv = m_Container.erase(it);
-			delete (*rv);
+			delete(*rv);
 			return (rv);
 		}
 
 		iterator erase(iterator first, iterator last)
 		{
-			{for (iterator i = first;
-			i != last;
-			++i)
 			{
-				delete (*i);
-			}}
-
-			return (m_Container.erase(first,last));
+				for(iterator i = first;
+						i != last;
+						++i)
+				{
+					delete(*i);
+				}
+			}
+			return (m_Container.erase(first, last));
 		}
 
 		Auto_Ptr<pointed_to> remove(iterator it)
@@ -104,7 +156,7 @@ namespace Stuff
 
 		iterator insert(iterator it, Auto_Ptr<pointed_to>& x)
 		{
-			return (m_Container.insert(it,x.ReleaseAndNull()));
+			return (m_Container.insert(it, x.ReleaseAndNull()));
 		}
 
 		const container_type& GetContainer(void) const
@@ -112,13 +164,12 @@ namespace Stuff
 			return (m_Container);
 		}
 
-		void MoveTo(Auto_Container<pointed_to,container_type>& dest)
+		void MoveTo(Auto_Container<pointed_to, container_type>& dest)
 		{
-			while (empty() == false)
+			while(empty() == false)
 			{
 				value_type value = m_Container.back(void);
 				dest.m_Container.push_back(value);
-
 				m_Container.pop_back(void);
 			}
 		}

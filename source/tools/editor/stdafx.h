@@ -55,7 +55,7 @@
 // WIN32;_DEBUG;_WINDOWS;LAB_ONLY;_ARMOR;WINVER=0x0501
 #define LAB_ONLY 1
 #define _ARMOR 1
-#else 
+#else
 // WIN32;NDEBUG;_WINDOWS;WINVER=0x0501
 // WIN32;NDEBUG;_WINDOWS;WINVER=0x0501 - profile
 #endif
@@ -78,7 +78,7 @@
 //..\GameOS\include;..\MCLIB;.\window;"$(VCInstallDir)PlatformSDK\Include\mfc";"$(VCInstallDir)PlatformSDK\Include\atl"
 //..\mclib\$(ConfigurationName)\mclib.lib
 //..\gameos\lib\$(ConfigurationName)\gameos.lib
-//..\gameos\lib\$(ConfigurationName)\mfcplatform.lib 
+//..\gameos\lib\$(ConfigurationName)\mfcplatform.lib
 //..\mclib\gosfx\$(ConfigurationName)\gosfx.lib
 //..\mclib\mlr\$(ConfigurationName)\mlr.lib
 //..\mclib\stuff\$(ConfigurationName)\stuff.lib

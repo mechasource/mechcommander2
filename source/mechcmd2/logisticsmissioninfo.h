@@ -23,180 +23,201 @@ LogisticsMissionInfo:
 **************************************************************************************************/
 class LogisticsMissionInfo
 {
-	public:
+public:
 
-		LogisticsMissionInfo(void);
-		~LogisticsMissionInfo(void);
-		
-		
-		int32_t init( FitIniFile& file ); // init campaign
-		void save( FitIniFile& file );
-		int32_t load( FitIniFile& file );// init previously saved stuff
+	LogisticsMissionInfo(void);
+	~LogisticsMissionInfo(void);
 
 
-		int32_t getAvailableMissions( PCSTR* missions, int32_t& numberOfEm );
-		int32_t getCurrentMissions( PCSTR* missions, int32_t& numberOfEm );
+	int32_t init(FitIniFile& file);   // init campaign
+	void save(FitIniFile& file);
+	int32_t load(FitIniFile& file);  // init previously saved stuff
 
-		bool getMissionAvailable( PCSTR missionName );
 
-		bool isMissionComplete( PCSTR missionName );
-		bool isSingleMission(void) const;
+	int32_t getAvailableMissions(PCSTR* missions, int32_t& numberOfEm);
+	int32_t getCurrentMissions(PCSTR* missions, int32_t& numberOfEm);
 
-		int32_t setNextMission( PCSTR missionName );
-		void setMissionComplete( );
+	bool getMissionAvailable(PCSTR missionName);
 
-		int32_t getCurrentLogisticsTuneId(void);
+	bool isMissionComplete(PCSTR missionName);
+	bool isSingleMission(void) const;
 
-		int32_t getCurrentMissionId(void);
-		
-		const EString& getCurrentPurchaseFile(void) const;
-		const EString& getCurrentMission(void) const { return currentMissionName; }
-		const EString& getLastMission(void) const { return lastMissionName; }
+	int32_t setNextMission(PCSTR missionName);
+	void setMissionComplete();
 
-		int32_t				getCurrentDropWeight(void) const;
-		PCSTR			getCurrentVideo(void) const;
-		PCSTR			getCurrentOperationFile(void) const;
-		PCSTR			getCurrentMissionDescription(void) const;
-		PCSTR			getCurrentMissionFriendlyName(void) const;
-		PCSTR			getMissionFriendlyName( PCSTR missionName ) const;
-		PCSTR			getCurrentABLScriptName(void) const;
+	int32_t getCurrentLogisticsTuneId(void);
 
-		int32_t					getCurrentRP(void) const;
-		int32_t					getCBills(void) const { return CBills; }
-		void				incrementCBills(int32_t amount) { CBills += amount; }
-		void				decrementCBills(int32_t amount) { CBills -= amount; }
+	int32_t getCurrentMissionId(void);
 
-		const EString& 		getCampaignName( ) const { return campaignName; }
-		const EString&		getCampaignDisplayName(void) const { return campaignDisplayName; }
+	const EString& getCurrentPurchaseFile(void) const;
+	const EString& getCurrentMission(void) const
+	{
+		return currentMissionName;
+	}
+	const EString& getLastMission(void) const
+	{
+		return lastMissionName;
+	}
 
-		bool				campaignOver(void) const;
+	int32_t				getCurrentDropWeight(void) const;
+	PCSTR			getCurrentVideo(void) const;
+	PCSTR			getCurrentOperationFile(void) const;
+	PCSTR			getCurrentMissionDescription(void) const;
+	PCSTR			getCurrentMissionFriendlyName(void) const;
+	PCSTR			getMissionFriendlyName(PCSTR missionName) const;
+	PCSTR			getCurrentABLScriptName(void) const;
 
-		PCSTR			getCurrentBigVideo(void) const;
-		PCSTR			getFinalVideo(void) const;
+	int32_t					getCurrentRP(void) const;
+	int32_t					getCBills(void) const
+	{
+		return CBills;
+	}
+	void				incrementCBills(int32_t amount)
+	{
+		CBills += amount;
+	}
+	void				decrementCBills(int32_t amount)
+	{
+		CBills -= amount;
+	}
 
-		void				setMultiplayer(void);
-		void				setPurchaseFile( PCSTR fileName );
+	const EString& 		getCampaignName() const
+	{
+		return campaignName;
+	}
+	const EString&		getCampaignDisplayName(void) const
+	{
+		return campaignDisplayName;
+	}
+
+	bool				campaignOver(void) const;
+
+	PCSTR			getCurrentBigVideo(void) const;
+	PCSTR			getFinalVideo(void) const;
+
+	void				setMultiplayer(void);
+	void				setPurchaseFile(PCSTR fileName);
 
 //		int32_t				getMaxTeams(void) const { return maxTeams; }
 //		int32_t				getMaxPlayers(void) const { return maxPlayers; }
 
-		int32_t					getAdditionalPurachaseFiles( PCSTR* list, int32_t& maxCount );
-		void				addBonusPurchaseFile( PCSTR fileName ); // extra bonus
+	int32_t					getAdditionalPurachaseFiles(PCSTR* list, int32_t& maxCount);
+	void				addBonusPurchaseFile(PCSTR fileName);   // extra bonus
 
-		bool				skipLogistics(void);
-		bool				showChooseMission(void);
+	bool				skipLogistics(void);
+	bool				showChooseMission(void);
 
-		bool				skipPilotReview(void);
-		bool				skipSalvageScreen(void);
-		bool				skipPurchasing(void);
+	bool				skipPilotReview(void);
+	bool				skipSalvageScreen(void);
+	bool				skipPurchasing(void);
 
-		void				setSingleMission( PCSTR pName );
+	void				setSingleMission(PCSTR pName);
 
-		bool				canHaveSalavageCraft(void);
-		bool				canHaveRepairTruck(void);
-		bool				canHaveScoutCopter(void);
-		bool				canHaveArtilleryPiece(void);
-		bool				canHaveAirStrike(void);
-		bool				canHaveSensorStrike(void);
-		bool				canHaveMineLayer(void);
-		bool				getVideoShown(void);
-		void				setVideoShown(void);
+	bool				canHaveSalavageCraft(void);
+	bool				canHaveRepairTruck(void);
+	bool				canHaveScoutCopter(void);
+	bool				canHaveArtilleryPiece(void);
+	bool				canHaveAirStrike(void);
+	bool				canHaveSensorStrike(void);
+	bool				canHaveMineLayer(void);
+	bool				getVideoShown(void);
+	void				setVideoShown(void);
 
-		int32_t				getCurrentMissionNumber()
-		{
-			return currentMission;
-		}
+	int32_t				getCurrentMissionNumber()
+	{
+		return currentMission;
+	}
 
-		void				setCurrentMissionNumber(int32_t cMission)
-		{
-			currentMission = cMission;
-		}
-
-
-	
-	private:
-
-	
-		class MissionInfo
-		{
-		public:
-			~MissionInfo(void);
-			EString missionDescriptiveName;
-			EString fileName;
-			EString description;
-			EString purchaseFileName;
-			EString videoName;
-			bool mandatory;
-			bool completePrevious;
-			bool completed;
-			int32_t resourcePoints;
-			int32_t additionalCBills;
-			int32_t dropWeight;
-			bool playLogistics;
-			bool playSalvage;
-			bool playPilotPromotion;
-			bool playPurchasing;
-			bool playMissionSelection;
-			bool hidden;
-			bool enableSalavageCraft;
-			bool enableRepairTruck;
-			bool enableScoutCopter;
-			bool enableArtilleryPiece;
-			bool enableAirStrike;
-			bool enableSensorStrike;
-			bool enableMineLayer;
-		};	
-
-		typedef EList<MissionInfo*, MissionInfo*> MISSION_LIST;
-		typedef EList< PSTR, PSTR > FILE_LIST;
-
-
-		class MissionGroup
-		{
-		public:
-			int32_t numberToBeCompleted;
-			EString videoFileName;
-			EString operationFileName;
-			EString bigVideoName;
-			EString ablBrainName;
-			int32_t logisticsTuneId;
-			MISSION_LIST infos;
-			bool	bigVideoShown;
-			bool	videoShown;
-		};
-
-
-		// DATA
-
-		EString					campaignName;
-		EString					campaignDisplayName;
-		EString					playerName;
-		EString					currentMissionName;
-		EString					finalVideoName;
-		int32_t					currentStage;
-		int32_t					currentMission;
-
-		int32_t					lastStage;
-		int32_t					lastMission;
-		EString					lastMissionName;
-
-		MissionGroup*			groups;
-		int32_t					groupCount;
-
-		int32_t					CBills;
-
-		void					clear(void);
-		bool					bMultiplayer;
-
-		FILE_LIST				additionalPurchaseFiles;
-
-		LogisticsMissionInfo::MissionInfo* getPreviousMission(void);
-		void readMissionInfo( FitIniFile& file, LogisticsMissionInfo::MissionInfo* pInfo );
+	void				setCurrentMissionNumber(int32_t cMission)
+	{
+		currentMission = cMission;
+	}
 
 
 
+private:
 
-		// HELPER FUNCTIONS
+
+	class MissionInfo
+	{
+	public:
+		~MissionInfo(void);
+		EString missionDescriptiveName;
+		EString fileName;
+		EString description;
+		EString purchaseFileName;
+		EString videoName;
+		bool mandatory;
+		bool completePrevious;
+		bool completed;
+		int32_t resourcePoints;
+		int32_t additionalCBills;
+		int32_t dropWeight;
+		bool playLogistics;
+		bool playSalvage;
+		bool playPilotPromotion;
+		bool playPurchasing;
+		bool playMissionSelection;
+		bool hidden;
+		bool enableSalavageCraft;
+		bool enableRepairTruck;
+		bool enableScoutCopter;
+		bool enableArtilleryPiece;
+		bool enableAirStrike;
+		bool enableSensorStrike;
+		bool enableMineLayer;
+	};
+
+	typedef EList<MissionInfo*, MissionInfo*> MISSION_LIST;
+	typedef EList< PSTR, PSTR > FILE_LIST;
+
+
+	class MissionGroup
+	{
+	public:
+		int32_t numberToBeCompleted;
+		EString videoFileName;
+		EString operationFileName;
+		EString bigVideoName;
+		EString ablBrainName;
+		int32_t logisticsTuneId;
+		MISSION_LIST infos;
+		bool	bigVideoShown;
+		bool	videoShown;
+	};
+
+
+	// DATA
+
+	EString					campaignName;
+	EString					campaignDisplayName;
+	EString					playerName;
+	EString					currentMissionName;
+	EString					finalVideoName;
+	int32_t					currentStage;
+	int32_t					currentMission;
+
+	int32_t					lastStage;
+	int32_t					lastMission;
+	EString					lastMissionName;
+
+	MissionGroup*			groups;
+	int32_t					groupCount;
+
+	int32_t					CBills;
+
+	void					clear(void);
+	bool					bMultiplayer;
+
+	FILE_LIST				additionalPurchaseFiles;
+
+	LogisticsMissionInfo::MissionInfo* getPreviousMission(void);
+	void readMissionInfo(FitIniFile& file, LogisticsMissionInfo::MissionInfo* pInfo);
+
+
+
+
+	// HELPER FUNCTIONS
 
 };
 

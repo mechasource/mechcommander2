@@ -11,23 +11,26 @@
 #include <gosfx/particlecloud.hpp>
 #include <mlr/mlr.hpp>
 
-namespace MidLevelRenderer {class MLRPointCloud;}
+namespace MidLevelRenderer
+{
+	class MLRPointCloud;
+}
 
 namespace gosFX
 {
-	//############################################################################
-	//########################  PointCloud__Specification  #############################
-	//############################################################################
+//############################################################################
+//########################  PointCloud__Specification  #############################
+//############################################################################
 
 	class PointCloud__Specification:
 		public ParticleCloud__Specification
 	{
-	//----------------------------------------------------------------------
-	// Constructors/Destructors
-	//
+		//----------------------------------------------------------------------
+		// Constructors/Destructors
+		//
 	protected:
 		PointCloud__Specification(
-			Stuff::MemoryStream *stream,
+			Stuff::MemoryStream* stream,
 			int32_t gfx_version
 		);
 
@@ -35,22 +38,22 @@ namespace gosFX
 		PointCloud__Specification(void);
 
 		static PointCloud__Specification*
-			Make(
-				Stuff::MemoryStream *stream,
-				int32_t gfx_version
-			);
+		Make(
+			Stuff::MemoryStream* stream,
+			int32_t gfx_version
+		);
 	};
 
-	//############################################################################
-	//########################  ParticleCloud__Particle  #############################
-	//############################################################################
+//############################################################################
+//########################  ParticleCloud__Particle  #############################
+//############################################################################
 
 	class PointCloud__Particle:
 		public ParticleCloud__Particle
 	{
 	public:
 		Stuff::Point3D
-			m_worldTranslation;
+		m_worldTranslation;
 	};
 
 //############################################################################
@@ -59,9 +62,9 @@ namespace gosFX
 
 	class PointCloud : public ParticleCloud
 	{
-	//----------------------------------------------------------------------------
-	// Class Registration Support
-	//
+		//----------------------------------------------------------------------------
+		// Class Registration Support
+		//
 	public:
 		static void __stdcall InitializeClass(void);
 		static void __stdcall TerminateClass(void);
@@ -71,24 +74,25 @@ namespace gosFX
 		typedef PointCloud__Specification Specification;
 		typedef PointCloud__Particle Particle;
 
-		enum {
+		enum
+		{
 			ParticleSize = sizeof(Particle) + sizeof(Stuff::Point3D) + sizeof(Stuff::RGBAColor)
 		};
 
 	protected:
 		MidLevelRenderer::MLRPointCloud
-			*m_cloudImplementation;
+		* m_cloudImplementation;
 		Stuff::Point3D
-			*m_P_localTranslation;
+		* m_P_localTranslation;
 		Stuff::RGBAColor
-			*m_P_color;
+		* m_P_color;
 
-	//----------------------------------------------------------------------------
-	// Constructor/Destructor
-	//
+		//----------------------------------------------------------------------------
+		// Constructor/Destructor
+		//
 	protected:
 		PointCloud(
-			Specification *spec,
+			Specification* spec,
 			uint32_t flags
 		);
 
@@ -96,57 +100,58 @@ namespace gosFX
 		~PointCloud(void);
 
 		static PointCloud*
-			Make(
-				Specification *spec,
-				uint32_t flags
-			);
+		Make(
+			Specification* spec,
+			uint32_t flags
+		);
 
 		Specification*
-			GetSpecification()
-				{
-					Check_Object(this);
-					return
-						Cast_Object(Specification*, m_specification);
-				}
+		GetSpecification()
+		{
+			Check_Object(this);
+			return
+				Cast_Object(Specification*, m_specification);
+		}
 		Particle*
-			GetParticle(uint32_t index)
-				{
-					Check_Object(this); Check_Object(GetSpecification());
-					return
-						Cast_Pointer(
-							Particle*,
-							&m_data[index*GetSpecification()->m_particleClassSize]
-						);
-				}
+		GetParticle(uint32_t index)
+		{
+			Check_Object(this);
+			Check_Object(GetSpecification());
+			return
+				Cast_Pointer(
+					Particle*,
+					&m_data[index * GetSpecification()->m_particleClassSize]
+				);
+		}
 
-	//----------------------------------------------------------------------------
-	// Testing
-	//
+		//----------------------------------------------------------------------------
+		// Testing
+		//
 	public:
 		void TestInstance(void) const;
 
-	//----------------------------------------------------------------------------
-	// API
-	//
+		//----------------------------------------------------------------------------
+		// API
+		//
 	protected:
 		bool
-			AnimateParticle(
-				uint32_t index,
-				const Stuff::LinearMatrix4D *world_to_new_local,
-				Stuff::Time till
-			);
+		AnimateParticle(
+			uint32_t index,
+			const Stuff::LinearMatrix4D* world_to_new_local,
+			Stuff::Time till
+		);
 		void
-			CreateNewParticle(
-				uint32_t index,
-				Stuff::Point3D *translation
-			);
+		CreateNewParticle(
+			uint32_t index,
+			Stuff::Point3D* translation
+		);
 		void
-			DestroyParticle(uint32_t index);
+		DestroyParticle(uint32_t index);
 
 	public:
 		bool
-			Execute(ExecuteInfo *info);
+		Execute(ExecuteInfo* info);
 		void
-			Draw(DrawInfo *info);
+		Draw(DrawInfo* info);
 	};
 }

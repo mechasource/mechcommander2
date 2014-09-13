@@ -31,7 +31,6 @@ ObjectivesDlg::ObjectivesDlg(CWnd* pParent /*=nullptr*/)
 	//{{AFX_DATA_INIT(ObjectivesDlg)
 	m_TeamEdit = 0;
 	//}}AFX_DATA_INIT
-
 	nSelectionIndex = -1;
 }
 
@@ -62,36 +61,52 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // ObjectivesDlg message handlers
 
-static void syncObjectivesListWithListBox(const CObjectives *pObjectives, CListBox *pList) {
+static void syncObjectivesListWithListBox(const CObjectives* pObjectives, CListBox* pList)
+{
 	pList->ResetContent();
 	CObjectives::EConstIterator it = pObjectives->Begin();
-	while (!it.IsDone())
+	while(!it.IsDone())
 	{
 		EString tmpEStr;
 		tmpEStr = _TEXT("[");
-		if (1 == (*it)->Priority()) {
+		if(1 == (*it)->Priority())
+		{
 			tmpEStr += _TEXT("*");
-		} else {
+		}
+		else
+		{
 			//tmpEStr += _TEXT(" ");
 		}
-		if ((*it)->PreviousPrimaryObjectiveMustBeComplete()) {
+		if((*it)->PreviousPrimaryObjectiveMustBeComplete())
+		{
 			tmpEStr += _TEXT("^");
-		} else {
+		}
+		else
+		{
 			//tmpEStr += _TEXT(" ");
 		}
-		if ((*it)->AllPreviousPrimaryObjectivesMustBeComplete()) {
+		if((*it)->AllPreviousPrimaryObjectivesMustBeComplete())
+		{
 			tmpEStr += _TEXT("A");
-		} else {
+		}
+		else
+		{
 			//tmpEStr += _TEXT(" ");
 		}
-		if ((*it)->IsHiddenTrigger()) {
+		if((*it)->IsHiddenTrigger())
+		{
 			tmpEStr += _TEXT("H");
-		} else {
+		}
+		else
+		{
 			//tmpEStr += _TEXT(" ");
 		}
-		if ((*it)->ActivateOnFlag()) {
+		if((*it)->ActivateOnFlag())
+		{
 			tmpEStr += _TEXT("F");
-		} else {
+		}
+		else
+		{
 			//tmpEStr += _TEXT(" ");
 		}
 		tmpEStr += _TEXT("] ");
@@ -101,74 +116,91 @@ static void syncObjectivesListWithListBox(const CObjectives *pObjectives, CListB
 	}
 }
 
-BOOL ObjectivesDlg::OnInitDialog() 
+BOOL ObjectivesDlg::OnInitDialog()
 {
 	CDialog::OnInitDialog();
 	m_TeamEdit = m_ModifiedObjectives.Alignment() + 1;
 	syncObjectivesListWithListBox(&m_ModifiedObjectives, &m_List);
 	m_List.SetCurSel(nSelectionIndex);
 	UpdateData(FALSE);
-	
-	if (EditorInterface::instance()->ObjectSelectOnlyMode()) {
-		if (CObjectivesEditState::ADD == EditorInterface::instance()->objectivesEditState.objectiveFunction) {
+	if(EditorInterface::instance()->ObjectSelectOnlyMode())
+	{
+		if(CObjectivesEditState::ADD == EditorInterface::instance()->objectivesEditState.objectiveFunction)
+		{
 			// post a message that the ADD button was pressed
 			PostMessage(WM_COMMAND, MAKEWPARAM(IDC_OBJECTIVES_ADD_BUTTON, BN_CLICKED), (LPARAM)((&m_AddButton)->m_hWnd));
-		} else if (CObjectivesEditState::EDIT == EditorInterface::instance()->objectivesEditState.objectiveFunction) {
+		}
+		else if(CObjectivesEditState::EDIT == EditorInterface::instance()->objectivesEditState.objectiveFunction)
+		{
 			// post a message that the EDIT button was pressed
 			PostMessage(WM_COMMAND, MAKEWPARAM(IDC_OBJECTIVES_EDIT_BUTTON, BN_CLICKED), (LPARAM)((&m_EditButton)->m_hWnd));
-		} else { assert(false); }
-	} else {
+		}
+		else
+		{
+			assert(false);
+		}
+	}
+	else
+	{
 		EditorInterface::instance()->objectivesEditState.alignment = m_ModifiedObjectives.Alignment();
 		EditorInterface::instance()->objectivesEditState.ModifiedObjectives = m_ModifiedObjectives;
 		EditorInterface::instance()->objectivesEditState.nSelectionIndex = m_List.GetCurSel();
 	}
-
 	return TRUE;  // return TRUE unless you set the focus to a control
-	              // EXCEPTION: OCX Property Pages should return FALSE
+	// EXCEPTION: OCX Property Pages should return FALSE
 }
 
-void ObjectivesDlg::OnObjectivesAddButton() 
+void ObjectivesDlg::OnObjectivesAddButton()
 {
-	CObjective *pNewObjective = new CObjective(m_ModifiedObjectives.Alignment());
+	CObjective* pNewObjective = new CObjective(m_ModifiedObjectives.Alignment());
 	assert(pNewObjective);
-
 	/* This call may set the editor into ObjectSelectOnlyMode (i.e.: set the  value of
 	EditorInterface::instance()->ObjectSelectOnlyMode() to true) */
 	bool result = pNewObjective->EditDialog();
-
-	if (EditorInterface::instance()->ObjectSelectOnlyMode()) {
+	if(EditorInterface::instance()->ObjectSelectOnlyMode())
+	{
 		/* close the dialog and enter ObjectSelectOnlyMode */
 		UpdateData(TRUE);
 		EditorInterface::instance()->objectivesEditState.objectiveFunction = CObjectivesEditState::ADD;
 		EditorInterface::instance()->objectivesEditState.alignment = m_ModifiedObjectives.Alignment();
 		EditorInterface::instance()->objectivesEditState.ModifiedObjectives = m_ModifiedObjectives;
 		EditorInterface::instance()->objectivesEditState.nSelectionIndex = m_List.GetCurSel();
-		delete pNewObjective; pNewObjective = 0;
+		delete pNewObjective;
+		pNewObjective = 0;
 		EndDialog(IDOK);
 		return;
-	} else {
-		if (true == result) {
+	}
+	else
+	{
+		if(true == result)
+		{
 			m_ModifiedObjectives.Append(pNewObjective);
 			m_List.SetCurSel(m_List.GetCount() - 1);
 			syncObjectivesListWithListBox(&m_ModifiedObjectives, &m_List);
 			nSelectionIndex = m_List.GetCurSel();
-		} else {
-			delete pNewObjective; pNewObjective = 0;
+		}
+		else
+		{
+			delete pNewObjective;
+			pNewObjective = 0;
 		}
 		return;
 	}
 }
 
-void ObjectivesDlg::OnObjectivesRemoveButton() 
+void ObjectivesDlg::OnObjectivesRemoveButton()
 {
 	nSelectionIndex = m_List.GetCurSel();
-	if ((0 <= nSelectionIndex) && (m_ModifiedObjectives.Count() > nSelectionIndex)) {
+	if((0 <= nSelectionIndex) && (m_ModifiedObjectives.Count() > nSelectionIndex))
+	{
 		// should put up confirmation box here
 		delete *(m_ModifiedObjectives.Iterator(nSelectionIndex));
 		m_ModifiedObjectives.Delete(nSelectionIndex);
 		syncObjectivesListWithListBox(&m_ModifiedObjectives, &m_List);
-		if (0 < m_List.GetCount()) {
-			if (m_List.GetCount() <= (int32_t)nSelectionIndex) {
+		if(0 < m_List.GetCount())
+		{
+			if(m_List.GetCount() <= (int32_t)nSelectionIndex)
+			{
 				nSelectionIndex = m_List.GetCount() - 1;
 			}
 			m_List.SetCurSel(nSelectionIndex);
@@ -177,28 +209,33 @@ void ObjectivesDlg::OnObjectivesRemoveButton()
 	nSelectionIndex = m_List.GetCurSel();
 }
 
-void ObjectivesDlg::OnObjectivesEditButton() 
+void ObjectivesDlg::OnObjectivesEditButton()
 {
-	CObjective *pSelectedObjective = 0;
-	if (!EditorInterface::instance()->ObjectSelectOnlyMode()) {
+	CObjective* pSelectedObjective = 0;
+	if(!EditorInterface::instance()->ObjectSelectOnlyMode())
+	{
 		nSelectionIndex = m_List.GetCurSel();
-		if ((0 <= nSelectionIndex) && (((int32_t)(m_ModifiedObjectives.Count())) > nSelectionIndex)) {
+		if((0 <= nSelectionIndex) && (((int32_t)(m_ModifiedObjectives.Count())) > nSelectionIndex))
+		{
 			pSelectedObjective = *(m_ModifiedObjectives.Iterator(nSelectionIndex));
-		} else {
+		}
+		else
+		{
 			return;
 		}
-	} else {
+	}
+	else
+	{
 		assert(CObjectivesEditState::EDIT == EditorInterface::instance()->objectivesEditState.objectiveFunction);
 		pSelectedObjective = *(m_ModifiedObjectives.Iterator(nSelectionIndex));
 	}
 	assert(0 != pSelectedObjective);
 	assert(0 <= nSelectionIndex);
-
 	/* This call may set the editor into ObjectSelectOnlyMode (i.e.: set the  value of
 	EditorInterface::instance()->ObjectSelectOnlyMode() to true) */
 	pSelectedObjective->EditDialog();
-
-	if (EditorInterface::instance()->ObjectSelectOnlyMode()) {
+	if(EditorInterface::instance()->ObjectSelectOnlyMode())
+	{
 		UpdateData(TRUE);
 		EditorInterface::instance()->objectivesEditState.objectiveFunction = CObjectivesEditState::EDIT;
 		EditorInterface::instance()->objectivesEditState.alignment = m_ModifiedObjectives.Alignment();
@@ -206,10 +243,13 @@ void ObjectivesDlg::OnObjectivesEditButton()
 		EditorInterface::instance()->objectivesEditState.nSelectionIndex = m_List.GetCurSel();
 		EndDialog(IDOK);
 		return;
-	} else {
+	}
+	else
+	{
 		nSelectionIndex = m_List.GetCurSel();
 		syncObjectivesListWithListBox(&m_ModifiedObjectives, &m_List);
-		if ((0 <= nSelectionIndex) && (m_List.GetCount() > nSelectionIndex)) {
+		if((0 <= nSelectionIndex) && (m_List.GetCount() > nSelectionIndex))
+		{
 			m_List.SetCurSel(nSelectionIndex);
 		}
 		nSelectionIndex = m_List.GetCurSel();
@@ -217,15 +257,15 @@ void ObjectivesDlg::OnObjectivesEditButton()
 	}
 }
 
-void ObjectivesDlg::OnObjectivesCopyButton() 
+void ObjectivesDlg::OnObjectivesCopyButton()
 {
 	nSelectionIndex = m_List.GetCurSel();
-	if ((0 <= nSelectionIndex) && (m_ModifiedObjectives.Count() > nSelectionIndex)) {
-		CObjective *pSelectedObjective = 0;
+	if((0 <= nSelectionIndex) && (m_ModifiedObjectives.Count() > nSelectionIndex))
+	{
+		CObjective* pSelectedObjective = 0;
 		pSelectedObjective = *(m_ModifiedObjectives.Iterator(nSelectionIndex));
 		assert(0 != pSelectedObjective);
-
-		CObjective *pNewObjective = new CObjective(pSelectedObjective->Alignment());
+		CObjective* pNewObjective = new CObjective(pSelectedObjective->Alignment());
 		pNewObjective->Init();
 		*pNewObjective = *pSelectedObjective;
 		m_ModifiedObjectives.Append(pNewObjective);
@@ -235,14 +275,14 @@ void ObjectivesDlg::OnObjectivesCopyButton()
 	}
 }
 
-void ObjectivesDlg::OnObjectivesMoveUpButton() 
+void ObjectivesDlg::OnObjectivesMoveUpButton()
 {
 	nSelectionIndex = m_List.GetCurSel();
-	if ((1 <= nSelectionIndex) && (m_ModifiedObjectives.Count() > nSelectionIndex)) {
-		CObjective *pSelectedObjective = 0;
+	if((1 <= nSelectionIndex) && (m_ModifiedObjectives.Count() > nSelectionIndex))
+	{
+		CObjective* pSelectedObjective = 0;
 		pSelectedObjective = *(m_ModifiedObjectives.Iterator(nSelectionIndex));
 		assert(0 != pSelectedObjective);
-
 		m_ModifiedObjectives.Delete(nSelectionIndex);
 		m_ModifiedObjectives.Insert(pSelectedObjective, nSelectionIndex - 1);
 		syncObjectivesListWithListBox(&m_ModifiedObjectives, &m_List);
@@ -251,18 +291,21 @@ void ObjectivesDlg::OnObjectivesMoveUpButton()
 	}
 }
 
-void ObjectivesDlg::OnObjectivesMoveDownButton() 
+void ObjectivesDlg::OnObjectivesMoveDownButton()
 {
 	nSelectionIndex = m_List.GetCurSel();
-	if ((0 <= nSelectionIndex) && (m_ModifiedObjectives.Count() - 1 > nSelectionIndex)) {
-		CObjective *pSelectedObjective = 0;
+	if((0 <= nSelectionIndex) && (m_ModifiedObjectives.Count() - 1 > nSelectionIndex))
+	{
+		CObjective* pSelectedObjective = 0;
 		pSelectedObjective = *(m_ModifiedObjectives.Iterator(nSelectionIndex));
 		assert(0 != pSelectedObjective);
-
 		m_ModifiedObjectives.Delete(nSelectionIndex);
-		if (m_ModifiedObjectives.Count() -1 == nSelectionIndex) {
+		if(m_ModifiedObjectives.Count() - 1 == nSelectionIndex)
+		{
 			m_ModifiedObjectives.Append(pSelectedObjective);
-		} else {
+		}
+		else
+		{
 			m_ModifiedObjectives.Insert(pSelectedObjective, nSelectionIndex + 1);
 		}
 		syncObjectivesListWithListBox(&m_ModifiedObjectives, &m_List);

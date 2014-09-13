@@ -23,7 +23,7 @@ NewSingleMission::NewSingleMission(CWnd* pParent /*=nullptr*/)
 	: CDialog(NewSingleMission::IDD, pParent)
 {
 	//{{AFX_DATA_INIT(NewSingleMission)
-		// NOTE: the ClassWizard will add member initialization here
+	// NOTE: the ClassWizard will add member initialization here
 	//}}AFX_DATA_INIT
 }
 
@@ -32,7 +32,7 @@ void NewSingleMission::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(NewSingleMission)
-		// NOTE: the ClassWizard will add DDX and DDV calls here
+	// NOTE: the ClassWizard will add DDX and DDV calls here
 	//}}AFX_DATA_MAP
 }
 
@@ -47,20 +47,18 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // NewSingleMission message handlers
 
-void NewSingleMission::OnLoadMission() 
+void NewSingleMission::OnLoadMission()
 {
-	EndDialog( ID_LOAD_MISSION );	
+	EndDialog(ID_LOAD_MISSION);
 }
 
-void NewSingleMission::OnNewmission() 
+void NewSingleMission::OnNewmission()
 {
-	EndDialog( ID_NEWMISSION );
-	
+	EndDialog(ID_NEWMISSION);
 }
 
-void NewSingleMission::OnCancel() 
+void NewSingleMission::OnCancel()
 {
 	// TODO: Add extra cleanup here
-	
 	CDialog::OnCancel();
 }

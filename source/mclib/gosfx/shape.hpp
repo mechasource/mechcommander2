@@ -11,13 +11,16 @@
 #include <gosfx/singleton.hpp>
 #include <mlr/mlr.hpp>
 
-namespace MidLevelRenderer {class MLRShape;}
+namespace MidLevelRenderer
+{
+	class MLRShape;
+}
 
 namespace gosFX
 {
-	//############################################################################
-	//########################  Shape__Specification  #############################
-	//############################################################################
+//############################################################################
+//########################  Shape__Specification  #############################
+//############################################################################
 
 	class Shape;
 
@@ -26,93 +29,93 @@ namespace gosFX
 	{
 		friend class Shape;
 
-	//----------------------------------------------------------------------
-	// Constructors/Destructors
-	//
+		//----------------------------------------------------------------------
+		// Constructors/Destructors
+		//
 	protected:
 		Shape__Specification(
-			Stuff::MemoryStream *stream,
+			Stuff::MemoryStream* stream,
 			int32_t gfx_version
 		);
 
 	public:
-		Shape__Specification(MidLevelRenderer::MLRShape *shape);
+		Shape__Specification(MidLevelRenderer::MLRShape* shape);
 		~Shape__Specification(void);
 
 		void
-			Save(Stuff::MemoryStream *stream);
+		Save(Stuff::MemoryStream* stream);
 
 		static Shape__Specification*
-			Make(
-				Stuff::MemoryStream *stream,
-				int32_t gfx_version
-			);
+		Make(
+			Stuff::MemoryStream* stream,
+			int32_t gfx_version
+		);
 
 		void
-			Copy(Shape__Specification *spec);
+		Copy(Shape__Specification* spec);
 
 		void
-			SetShape(MidLevelRenderer::MLRShape *shape);
+		SetShape(MidLevelRenderer::MLRShape* shape);
 
 	protected:
 		MidLevelRenderer::MLRShape
-			*m_shape;
+		* m_shape;
 		float
-			m_radius;
+		m_radius;
 	};
 
-	//############################################################################
-	//#############################  Shape  #################################
-	//############################################################################
+//############################################################################
+//#############################  Shape  #################################
+//############################################################################
 
 	class Shape : public Singleton
 	{
-	//----------------------------------------------------------------------------
-	// Class Registration Support
-	//
+		//----------------------------------------------------------------------------
+		// Class Registration Support
+		//
 	public:
 		static void __stdcall InitializeClass(void);
 		static void __stdcall TerminateClass(void);
 
 		typedef Shape__Specification Specification;
 
-	//----------------------------------------------------------------------------
-	// Class Data Support
-	//
+		//----------------------------------------------------------------------------
+		// Class Data Support
+		//
 	protected:
 		Shape(
-			Specification *spec,
+			Specification* spec,
 			uint32_t flags
 		);
 
 	public:
 		static Shape*
-			Make(
-				Specification *spec,
-				uint32_t flags
-			);
+		Make(
+			Specification* spec,
+			uint32_t flags
+		);
 
 		Specification*
-			GetSpecification()
-				{
-					Check_Object(this);
-					return
-						Cast_Object(Specification*, m_specification);
-				}
+		GetSpecification()
+		{
+			Check_Object(this);
+			return
+				Cast_Object(Specification*, m_specification);
+		}
 
 		static ClassData* DefaultData;
 
-	//----------------------------------------------------------------------------
-	// Testing
-	//
+		//----------------------------------------------------------------------------
+		// Testing
+		//
 	public:
 		void TestInstance(void) const;
 
-	//----------------------------------------------------------------------------
-	// API
-	//
+		//----------------------------------------------------------------------------
+		// API
+		//
 	public:
 		void
-			Draw(DrawInfo *info);
+		Draw(DrawInfo* info);
 	};
 }

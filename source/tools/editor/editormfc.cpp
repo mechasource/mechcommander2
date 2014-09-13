@@ -38,33 +38,23 @@ EditorMFCApp theApp;
 BOOL EditorMFCApp::InitInstance()
 {
 	// Standard initialization
-
 #ifdef _AFXDLL
 	Enable3dControls();			// Call this when using MFC in a shared DLL
 #else
 	Enable3dControlsStatic();	// Call this when linking to MFC statically
 #endif
-
 	// Change the registry key under which our settings are stored.
 	SetRegistryKey(_T("Local AppWizard-Generated Applications"));
-
 	MainFrame* pFrame = new MainFrame;
 	m_pMainWnd = pFrame;
-
-
 	// create and load the frame with its resources
-
-	pFrame->LoadFrame(IDR_EDITOR_MENU/*, WS_OVERLAPPED |WS_CAPTION | WS_SYSMENU | FWS_ADDTOTITLE*/  );
+	pFrame->LoadFrame(IDR_EDITOR_MENU/*, WS_OVERLAPPED |WS_CAPTION | WS_SYSMENU | FWS_ADDTOTITLE*/);
 	HICON editorIco = LoadIcon(IDI_ICON1);
-	pFrame->SetIcon(editorIco,true);
-	
+	pFrame->SetIcon(editorIco, true);
 	pFrame->ShowWindow(SW_SHOW);
 	pFrame->UpdateWindow();
-	
-	InitGameOS(  m_hInstance,	EditorInterface::instance()->m_hWnd, m_lpCmdLine );
-
+	InitGameOS(m_hInstance,	EditorInterface::instance()->m_hWnd, m_lpCmdLine);
 	pFrame->SetFocus();
-
 	return TRUE;
 }
 
@@ -90,14 +80,14 @@ public:
 
 	// ClassWizard generated virtual function overrides
 	//{{AFX_VIRTUAL(CAboutDlg)
-	protected:
+protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	//}}AFX_VIRTUAL
 
 // Implementation
 protected:
 	//{{AFX_MSG(CAboutDlg)
-		// No message handlers
+	// No message handlers
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };
@@ -117,7 +107,7 @@ void CAboutDlg::DoDataExchange(CDataExchange* pDX)
 
 BEGIN_MESSAGE_MAP(CAboutDlg, CDialog)
 	//{{AFX_MSG_MAP(CAboutDlg)
-		// No message handlers
+	// No message handlers
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -132,50 +122,44 @@ void EditorMFCApp::OnAppAbout()
 // EditorMFCApp message handlers
 
 
-BOOL EditorMFCApp::OnIdle(int32_t lCount) 
+BOOL EditorMFCApp::OnIdle(int32_t lCount)
 {
-	const CWnd *pW1 = this->GetMainWnd();
-	const CWnd *pW2 = EditorInterface::instance();
-
-	const CWnd *pW3 = CWnd::GetForegroundWindow();
-	const CWnd *pW4 = CWnd::GetActiveWindow();
-	const CWnd *pW5 = CWnd::GetFocus();
-
-	if (pW1 == pW3)
+	const CWnd* pW1 = this->GetMainWnd();
+	const CWnd* pW2 = EditorInterface::instance();
+	const CWnd* pW3 = CWnd::GetForegroundWindow();
+	const CWnd* pW4 = CWnd::GetActiveWindow();
+	const CWnd* pW5 = CWnd::GetFocus();
+	if(pW1 == pW3)
 	{
 		EditorInterface::instance()->InvalidateRect(nullptr, FALSE);
 	}
-
 	Sleep(2/*milliseconds*/); /* limits the framerate to 500fps */
-	
 	CWinApp::OnIdle(lCount);
-
 	return 1;
 }
 
 
-int32_t EditorMFCApp::ExitInstance() 
+int32_t EditorMFCApp::ExitInstance()
 {
 	{
 		Environment.TerminateGameEngine();
 		gos_PushCurrentHeap(0); // TerminateGameEngine() forgets to do this
 	}
-	if (false) {
+	if(false)
+	{
 		ExitGameOS();
-		if (!EditorInterface::instance()->m_hWnd)
+		if(!EditorInterface::instance()->m_hWnd)
 		{
 			/* ExitGameOS() shuts down directX which has the side effect of killing the
 			EditorInterface window, so we recreate the window here. The editor window
 			may not be referenced after this function is executed, but this is not the correct
 			place for the EditorInterface window to be destroyed. */
 			EditorInterface::instance()->Create(nullptr, nullptr, AFX_WS_DEFAULT_VIEW | WS_VSCROLL | WS_HSCROLL,
-				CRect(0, 0, 0, 0), m_pMainWnd, AFX_IDW_PANE_FIRST, nullptr);
+												CRect(0, 0, 0, 0), m_pMainWnd, AFX_IDW_PANE_FIRST, nullptr);
 		}
 	}
-
 	delete m_pMainWnd;
 	m_pMainWnd = 0;
-
 	return CWinApp::ExitInstance();
 }
 

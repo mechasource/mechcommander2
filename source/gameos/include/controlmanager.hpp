@@ -16,7 +16,7 @@
 void __stdcall CMCreateMouse(void);
 void __stdcall CMUpdateMouse(void);
 void __stdcall ReInitControlManager(void);
-gosEnum_KeyStatus __stdcall GetStatus( gosEnum_KeyIndex index );
+gosEnum_KeyStatus __stdcall GetStatus(gosEnum_KeyIndex index);
 
 extern uint32_t KeyBoardBuffer[256];
 extern uint32_t KeyCurrent;				// Where the next key to be read is
@@ -26,13 +26,14 @@ extern uint32_t dbKeyCurrent;				// Where the next key to be read is
 extern uint32_t dbKeyPressed;				// Where the next key pressed will go
 extern uint32_t LastWMDown;				// Last WM_KEYDOWN message scan code
 extern void __stdcall SaveOldKeyState(void);
-extern void __stdcall DoKeyReleased( uint32_t KeyCode );
-extern void __stdcall DealWithKey( uint32_t wParam, uint32_t lParam );
+extern void __stdcall DoKeyReleased(uint32_t KeyCode);
+extern void __stdcall DealWithKey(uint32_t wParam, uint32_t lParam);
 extern void __stdcall AddKeyEvent(uint32_t KeyEvent);
 
 #define MAX_DI_DEVICES 16
 
-typedef struct _cmd {
+typedef struct _cmd
+{
 	LPDIRECTINPUT7	m_lpDirectInput7;
 
 	LPDIRECTINPUTDEVICE7	m_lpSysMouse7;
@@ -74,7 +75,7 @@ void __stdcall CMAcquireControls(void);
 void __stdcall CMUnacquireControls(void);
 void __stdcall CMUpdate(void);
 void __stdcall CMCreateJoysticks(void);
-BOOL __stdcall CMCreateJoystick7( LPCDIDEVICEINSTANCE pdinst, PVOID pvRef );
+BOOL __stdcall CMCreateJoystick7(LPCDIDEVICEINSTANCE pdinst, PVOID pvRef);
 
 // This data structure holds all the information necessary for setting up, using,
 // and uninstalling joysticks, a keyboard, and a mouse.

@@ -19,7 +19,7 @@ static char szFITFilter[] = "FIT Files (*.FIT)|*.fit||";
 
 
 ForestDlg::ForestDlg(CWnd* pParent /*=nullptr*/)
-: CDialog(ForestDlg::IDD, pParent), forest( -1 )
+	: CDialog(ForestDlg::IDD, pParent), forest(-1)
 {
 	//{{AFX_DATA_INIT(ForestDlg)
 	m_maxDensity = 10.0f;
@@ -53,7 +53,6 @@ void ForestDlg::DoDataExchange(CDataExchange* pDX)
 {
 	float min = -land->mapTopLeft3d.y;
 	float max = land->mapTopLeft3d.y;
-
 	CDialog::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(ForestDlg)
 	DDX_Text(pDX, IDC_DENSITY_MAX, m_maxDensity);
@@ -100,7 +99,6 @@ void ForestDlg::DoDataExchange(CDataExchange* pDX)
 	//}}AFX_DATA_MAP
 //	DDV_MinMaxFloat(pDX, m_xLoc, land->mapTopLeft3d.x, -land->mapTopLeft3d.x);
 	DDV_MinMaxFloat(pDX, m_yLoc, min, max);
-
 }
 
 
@@ -109,75 +107,68 @@ BEGIN_MESSAGE_MAP(ForestDlg, CDialog)
 	ON_BN_CLICKED(IDSAVE, OnSave)
 	ON_BN_CLICKED(IDLOAD, OnLoad)
 	//}}AFX_MSG_MAP
-	ON_CONTROL_RANGE( EN_CHANGE, IDC_FOREST_EDIT1, IDC_FOREST_EDIT15, OnEditChanged )
-	ON_NOTIFY_RANGE( NM_RELEASEDCAPTURE, IDC_SLIDER1, IDC_SLIDER15, OnSliderChanged )
+	ON_CONTROL_RANGE(EN_CHANGE, IDC_FOREST_EDIT1, IDC_FOREST_EDIT15, OnEditChanged)
+	ON_NOTIFY_RANGE(NM_RELEASEDCAPTURE, IDC_SLIDER1, IDC_SLIDER15, OnSliderChanged)
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
 // ForestDlg message handlers
 
-void ForestDlg::OnSave() 
+void ForestDlg::OnSave()
 {
 	BOOL bRes = UpdateData(TRUE);
-	if (!bRes)
+	if(!bRes)
 	{
 		return;
 	}
-	CFileDialog dlg( 0, "fit", nullptr, OFN_OVERWRITEPROMPT | OFN_NOCHANGEDIR, szFITFilter, this );
+	CFileDialog dlg(0, "fit", nullptr, OFN_OVERWRITEPROMPT | OFN_NOCHANGEDIR, szFITFilter, this);
 	dlg.m_ofn.lpstrInitialDir = terrainPath;
 	int32_t retVal = dlg.DoModal();
-	if ( IDOK == retVal )
+	if(IDOK == retVal)
 	{
-			for ( int32_t i = IDC_FOREST_EDIT1; i < IDC_FOREST_EDIT15+1; i+= 2 )
+		for(auto i = IDC_FOREST_EDIT1; i < IDC_FOREST_EDIT15 + 1; i += 2)
+		{
+			CWnd* pWnd = GetDlgItem(i);
+			CEdit* pEdit = (CEdit*)(pWnd);
+			if(pEdit)
 			{
-				CWnd* pWnd = GetDlgItem( i );
-				CEdit* pEdit = (CEdit*)( pWnd );
-				if ( pEdit )
-				{
-					CString str;
-					pEdit->GetWindowText( str );
-
-					forest.percentages[(i-IDC_FOREST_EDIT1)/2] = atof( str );
-				}
+				CString str;
+				pEdit->GetWindowText(str);
+				forest.percentages[(i - IDC_FOREST_EDIT1) / 2] = atof(str);
 			}
-
-			forest.minDensity = m_minDensity;
-			forest.maxDensity = m_maxDensity;
-			forest.minHeight = m_minHeight;
-			forest.maxHeight = m_maxHeight;
-			forest.bRandom = m_randomPlacement;
-			forest.centerX = m_xLoc;
-			forest.centerY = m_yLoc;
-			forest.radius = m_radius;
-	
-		forest.setFileName( dlg.m_ofn.lpstrFile );
+		}
+		forest.minDensity = m_minDensity;
+		forest.maxDensity = m_maxDensity;
+		forest.minHeight = m_minHeight;
+		forest.maxHeight = m_maxHeight;
+		forest.bRandom = m_randomPlacement;
+		forest.centerX = m_xLoc;
+		forest.centerY = m_yLoc;
+		forest.radius = m_radius;
+		forest.setFileName(dlg.m_ofn.lpstrFile);
 		forest.save();
-
 		OnInitDialog();
 	}
 }
 
-void ForestDlg::OnOK() 
+void ForestDlg::OnOK()
 {
 	BOOL bRes = UpdateData(TRUE);
-	if (!bRes)
+	if(!bRes)
 	{
 		return;
 	}
-
-	for ( int32_t i = IDC_FOREST_EDIT1; i < IDC_FOREST_EDIT15+1; i+= 2 )
+	for(auto i = IDC_FOREST_EDIT1; i < IDC_FOREST_EDIT15 + 1; i += 2)
 	{
-		CWnd* pWnd = GetDlgItem( i );
-		CEdit* pEdit = (CEdit*)( pWnd );
-		if ( pEdit )
+		CWnd* pWnd = GetDlgItem(i);
+		CEdit* pEdit = (CEdit*)(pWnd);
+		if(pEdit)
 		{
 			CString str;
-			pEdit->GetWindowText( str );
-
-			forest.percentages[(i-IDC_FOREST_EDIT1)/2] = atof( str );
+			pEdit->GetWindowText(str);
+			forest.percentages[(i - IDC_FOREST_EDIT1) / 2] = atof(str);
 		}
 	}
-
 	forest.minDensity = m_minDensity;
 	forest.maxDensity = m_maxDensity;
 	forest.minHeight = m_minHeight;
@@ -187,144 +178,118 @@ void ForestDlg::OnOK()
 	forest.centerY = m_yLoc;
 	forest.radius = m_radius;
 	forest.name = m_Name;
-	
 	CDialog::OnOK();
 }
 
-void ForestDlg::OnCancel() 
+void ForestDlg::OnCancel()
 {
 	// TODO: Add extra cleanup here
-	
 	CDialog::OnCancel();
 }
 
-void ForestDlg::OnEditChanged( uint32_t nID )
+void ForestDlg::OnEditChanged(uint32_t nID)
 {
-	CWnd* pWnd = GetDlgItem( nID );
-	CEdit* pEdit = (CEdit*)( pWnd );
-	if ( pEdit )
+	CWnd* pWnd = GetDlgItem(nID);
+	CEdit* pEdit = (CEdit*)(pWnd);
+	if(pEdit)
 	{
 		CString text;
-		pEdit->GetWindowText( text );
-		double val = atof( text );
-
-		CSliderCtrl* pSlider = (CSliderCtrl*)( GetDlgItem( nID - 1 ) );
-		if ( pSlider )
+		pEdit->GetWindowText(text);
+		double val = atof(text);
+		CSliderCtrl* pSlider = (CSliderCtrl*)(GetDlgItem(nID - 1));
+		if(pSlider)
 		{
-			pSlider->SetRange( 0, 100 );
-			pSlider->SetPos( val );
+			pSlider->SetRange(0, 100);
+			pSlider->SetPos(val);
 		}
 	}
 }
 
-void ForestDlg::OnSliderChanged( uint32_t id, NMHDR * pNotifyStruct, LRESULT * result )
+void ForestDlg::OnSliderChanged(uint32_t id, NMHDR* pNotifyStruct, LRESULT* result)
 {
-	CWnd* pWnd = GetDlgItem( id );
-	CSliderCtrl* pSlider = (CSliderCtrl*)( pWnd );
-	if ( pSlider )
+	CWnd* pWnd = GetDlgItem(id);
+	CSliderCtrl* pSlider = (CSliderCtrl*)(pWnd);
+	if(pSlider)
 	{
 		int32_t Val = pSlider->GetPos();
-
-		
-		CEdit* pEdit = (CEdit*)( GetDlgItem( id + 1 ) );
-		if ( pEdit )
+		CEdit* pEdit = (CEdit*)(GetDlgItem(id + 1));
+		if(pEdit)
 		{
 			CString text;
-			text.Format( "%ld", Val );
-		
-			pEdit->SetWindowText( text );
+			text.Format("%ld", Val);
+			pEdit->SetWindowText(text);
 		}
 	}
-
 }
 
 
-BOOL ForestDlg::OnInitDialog() 
+BOOL ForestDlg::OnInitDialog()
 {
 	CDialog::OnInitDialog();
-
 	m_minDensity = forest.minDensity;
 	m_maxDensity = forest.maxDensity;
 	m_minHeight = forest.minHeight;
 	m_maxHeight = forest.maxHeight;
 	m_randomPlacement = forest.bRandom;
 	m_Name = forest.name;
-
-	if ( !m_xLoc )
+	if(!m_xLoc)
 	{
 		m_xLoc = forest.centerX;
 		m_yLoc = forest.centerY;
 		m_radius = forest.radius;
 	}
-
-	UpdateData( 0 );
-	
-	
-	for ( int32_t i = IDC_SLIDER1; i < IDC_SLIDER15; i+= 2 )
+	UpdateData(0);
+	for(auto i = IDC_SLIDER1; i < IDC_SLIDER15; i += 2)
 	{
-		CWnd* pWnd = GetDlgItem( i );
-		CSliderCtrl* pSlider = (CSliderCtrl*)( pWnd );
-		if ( pSlider )
+		CWnd* pWnd = GetDlgItem(i);
+		CSliderCtrl* pSlider = (CSliderCtrl*)(pWnd);
+		if(pSlider)
 		{
-			pSlider->SetRange( 0, 100 );
+			pSlider->SetRange(0, 100);
 		}
-
 	}
-
-	for ( i = IDC_FOREST_EDIT1; i < IDC_FOREST_EDIT15+1; i+= 2 )
+	for(i = IDC_FOREST_EDIT1; i < IDC_FOREST_EDIT15 + 1; i += 2)
 	{
-		CWnd* pWnd = GetDlgItem( i );
-		CEdit* pEdit = (CEdit*)( pWnd );
-		if ( pEdit )
+		CWnd* pWnd = GetDlgItem(i);
+		CEdit* pEdit = (CEdit*)(pWnd);
+		if(pEdit)
 		{
 			CString str;
-			str.Format( "%ld", (int32_t)forest.percentages[(i-IDC_FOREST_EDIT1)/2] );
-			pEdit->SetWindowText( str );
+			str.Format("%ld", (int32_t)forest.percentages[(i - IDC_FOREST_EDIT1) / 2]);
+			pEdit->SetWindowText(str);
 		}
-
-		CSliderCtrl* pSlider = (CSliderCtrl*)( GetDlgItem( i - 1 ) );
-		if ( pSlider )
+		CSliderCtrl* pSlider = (CSliderCtrl*)(GetDlgItem(i - 1));
+		if(pSlider)
 		{
-			pSlider->SetRange( 0, 100 );
-			pSlider->SetPos( forest.percentages[(i-IDC_FOREST_EDIT1)/2] );
+			pSlider->SetRange(0, 100);
+			pSlider->SetPos(forest.percentages[(i - IDC_FOREST_EDIT1) / 2]);
 		}
-
-
 	}
-
 	char tmp[256];
-	_splitpath( forest.getFileName(), nullptr, nullptr, tmp, 0 );
-
-	if (0 != strcmp("", tmp))
+	_splitpath(forest.getFileName(), nullptr, nullptr, tmp, 0);
+	if(0 != strcmp("", tmp))
 	{
-		SetWindowText( tmp );
+		SetWindowText(tmp);
 	}
-	
 	return TRUE;  // return TRUE unless you set the focus to a control
-	              // EXCEPTION: OCX Property Pages should return FALSE
+	// EXCEPTION: OCX Property Pages should return FALSE
 }
 
-void ForestDlg::OnLoad() 
+void ForestDlg::OnLoad()
 {
-	CFileDialog dlg( TRUE, "fit", nullptr, OFN_NOCHANGEDIR | OFN_FILEMUSTEXIST, szFITFilter, this );
+	CFileDialog dlg(TRUE, "fit", nullptr, OFN_NOCHANGEDIR | OFN_FILEMUSTEXIST, szFITFilter, this);
 	dlg.m_ofn.lpstrInitialDir = terrainPath;
-
-
-	if ( IDOK == dlg.DoModal() )
+	if(IDOK == dlg.DoModal())
 	{
 		CString str = dlg.GetFileName();
-//		Forest tmp( -1 );	
+//		Forest tmp( -1 );
 //		tmp.setFileName( dlg.m_ofn.lpstrFile );
 //		tmp.init();
-
 		EditorObjectMgr::instance()->unselectAll();
-
-//		int32_t ID = EditorObjectMgr::instance()->createForest( tmp );	
-		forest.setFileName( dlg.m_ofn.lpstrFile );
+//		int32_t ID = EditorObjectMgr::instance()->createForest( tmp );
+		forest.setFileName(dlg.m_ofn.lpstrFile);
 		forest.init();
 		//forest = tmp;
 		OnInitDialog();
 	}
-
-	
 }

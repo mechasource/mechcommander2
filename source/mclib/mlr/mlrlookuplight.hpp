@@ -10,11 +10,12 @@
 #include <stuff/point3d.hpp>
 #include <mlr/mlrinfinitelight.hpp>
 
-namespace MidLevelRenderer{
+namespace MidLevelRenderer
+{
 
-	//##########################################################################
-	//######################## MLRLookUpLight ############################
-	//##########################################################################
+//##########################################################################
+//######################## MLRLookUpLight ############################
+//##########################################################################
 
 	class MLRLookUpLight:
 		public MLRInfiniteLight
@@ -25,61 +26,95 @@ namespace MidLevelRenderer{
 
 		MLRLookUpLight(void);
 		MLRLookUpLight(
-			Stuff::MemoryStream *stream,
-			uint32_t version
-			);
-		MLRLookUpLight(Stuff::Page *page);
+			Stuff::MemoryStream* stream,
+			uint32_t version);
+		MLRLookUpLight(Stuff::Page* page);
 		~MLRLookUpLight(void);
 
 		void
-			Save(Stuff::MemoryStream *stream);
+		Save(Stuff::MemoryStream* stream);
 		void
-			Write(Stuff::Page *page);
+		Write(Stuff::Page* page);
 
 		virtual LightType
-			GetLightType(void)
-		{ Check_Object(this); return LookUpLight; }
+		GetLightType(void)
+		{
+			Check_Object(this);
+			return LookUpLight;
+		}
 
 
-		virtual void
-			LightVertex(const MLRVertexData&);
+		virtual void LightVertex(const MLRVertexData&);
 
 		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		// LookUp Light Specific
 		//
 		void SetMapOrigin(float x, float y, float z)
-		{ Check_Object(this); mapOrigin.x = x; mapOrigin.y = y; mapOrigin.z = z; }
+		{
+			Check_Object(this);
+			mapOrigin.x = x;
+			mapOrigin.y = y;
+			mapOrigin.z = z;
+		}
 
 		Stuff::Point3D GetMapOrigin(void)
-		{ Check_Object(this); return mapOrigin; }
+		{
+			Check_Object(this);
+			return mapOrigin;
+		}
 
 		void
-			SetMapSizeAndName(int32_t x, int32_t z, PCSTR name);
+		SetMapSizeAndName(int32_t x, int32_t z, PCSTR name);
 
 		int32_t
-			GetMapZoneCountX(void)
-		{ Check_Object(this); return mapZoneCountX; }
+		GetMapZoneCountX(void)
+		{
+			Check_Object(this);
+			return mapZoneCountX;
+		}
 		int32_t
-			GetMapZoneCountZ(void)
-		{ Check_Object(this); return mapZoneCountZ; }
+		GetMapZoneCountZ(void)
+		{
+			Check_Object(this);
+			return mapZoneCountZ;
+		}
 
 		PCSTR
-			GetMapName(void)
-		{ Check_Object(this); return mapName; }
+		GetMapName(void)
+		{
+			Check_Object(this);
+			return mapName;
+		}
 
 		void
-			SetMapZoneSizeX(float x)
-		{ Check_Object(this); zoneSizeX = x; Verify(x>Stuff::SMALL); one_Over_zoneSizeX = 1.0f/x; }
+		SetMapZoneSizeX(float x)
+		{
+			Check_Object(this);
+			zoneSizeX = x;
+			Verify(x > Stuff::SMALL);
+			one_Over_zoneSizeX = 1.0f / x;
+		}
 		void
-			SetMapZoneSizeZ(float z)
-		{ Check_Object(this); zoneSizeZ = z; Verify(z>Stuff::SMALL); one_Over_zoneSizeZ = 1.0f/z; }
+		SetMapZoneSizeZ(float z)
+		{
+			Check_Object(this);
+			zoneSizeZ = z;
+			Verify(z > Stuff::SMALL);
+			one_Over_zoneSizeZ = 1.0f / z;
+		}
 
 		float
-			GetMapZoneSizeX(void)
-		{ Check_Object(this); return zoneSizeX; }
+		GetMapZoneSizeX(void)
+		{
+			Check_Object(this);
+			return zoneSizeX;
+		}
 		float
-			GetMapZoneSizeZ(void)
-		{ Check_Object(this); return zoneSizeZ; }
+		GetMapZoneSizeZ(void)
+		{
+			Check_Object(this);
+			return zoneSizeZ;
+		}
 
 		void SetLightToShapeMatrix(const Stuff::LinearMatrix4D&);
 
@@ -97,7 +132,7 @@ namespace MidLevelRenderer{
 
 	protected:
 		bool
-			LoadMap(void);
+		LoadMap(void);
 
 		Stuff::Point3D mapOrigin;
 		float zoneSizeX, zoneSizeZ;
@@ -106,10 +141,10 @@ namespace MidLevelRenderer{
 		int32_t mapZoneCountX, mapZoneCountZ;
 		Stuff::MString mapName;
 
-		puint8_t *maps;
+		puint8_t* maps;
 
 		Stuff::LinearMatrix4D
-			shapeToWorld;
+		shapeToWorld;
 	};
 
 }

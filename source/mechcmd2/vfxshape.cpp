@@ -35,32 +35,30 @@
 // class Shape member functions
 //
 //****************************************************************************
-void Shape::destroy (void) 
+void Shape::destroy(void)
 {
 	//----------------------------------------------------------------
 	//-- First, tell our owner that we've gone away.
 	//-- Owner simply NULLs the corresponding entry in its shapeList.
-	if (owner)
+	if(owner)
 	{
 		owner->removeShape(this);
 	}
-
 	//----------------------------------------------------
 	// The header points to the start of the memory block
 	// all other pointer are internal to that block and do
 	// NOT need to be deleted.  Please don't delete them
 	// or the heap will fatal out!
-	if (stupidHeader)
+	if(stupidHeader)
 		spriteManager->freeShapeRAM(stupidHeader);
-	else	
+	else
 		spriteManager->freeShapeRAM(frameList);
-		
 	frameList = nullptr;
 }
 
 #define STUPID_OFFSET	6
 //----------------------------------------------------------------------------
-int32_t Shape::init (puint8_t fileBlock, AppearanceTypePtr myOwner, int32_t shapeSize)
+int32_t Shape::init(puint8_t fileBlock, AppearanceTypePtr myOwner, int32_t shapeSize)
 {
 	//-----------------------------------------------------------------
 	// Everything in the below comment is a LIE!!!
@@ -72,7 +70,7 @@ int32_t Shape::init (puint8_t fileBlock, AppearanceTypePtr myOwner, int32_t shap
 	//
 	// Truth begins here.
 	// This is simply the data holder for ALL shape types in the game EXCEPT mechs.
-	if ((*(pint32_t)fileBlock!=*(pint32_t)"1.10"))
+	if((*(pint32_t)fileBlock != *(pint32_t)"1.10"))
 	{
 		stupidHeader = fileBlock;
 		frameList = fileBlock + STUPID_OFFSET;		//You can talk to GDoren about this one!!!
@@ -82,33 +80,27 @@ int32_t Shape::init (puint8_t fileBlock, AppearanceTypePtr myOwner, int32_t shap
 		stupidHeader = nullptr;
 		frameList = fileBlock;
 	}
-	
 	int32_t numFrames = VFX_shape_count(frameList);
-
-	if (!numFrames)
+	if(!numFrames)
 	{
 		return(-1);		//There are no frames, this shape is nullptr!!
 	}
-
 	owner = myOwner;
-	
-	if (numFrames)
+	if(numFrames)
 	{
-		int32_t *testOffset = (int32_t *)(frameList + 8);
-		if (*testOffset >= shapeSize)
+		int32_t* testOffset = (int32_t*)(frameList + 8);
+		if(*testOffset >= shapeSize)
 		{
 			frameList = nullptr;
 			return(-3);
 		}
-		
 		int32_t minOffset = 8 + (numFrames * 8);		//The first shape MUST be this far in or WRONG
-		if (minOffset != *testOffset)
+		if(minOffset != *testOffset)
 		{
 			frameList = nullptr;
 			return(-4);
 		}
 	}
-	
 	return(NO_ERROR);
 }
 

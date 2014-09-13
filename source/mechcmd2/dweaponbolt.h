@@ -18,10 +18,10 @@
 //---------------------------------------------------------------------------
 // Class Definitions
 class WeaponBoltType;
-typedef WeaponBoltType *WeaponBoltTypePtr;
+typedef WeaponBoltType* WeaponBoltTypePtr;
 
 class WeaponBolt;
-typedef WeaponBolt *WeaponBoltPtr;
+typedef WeaponBolt* WeaponBoltPtr;
 
 //---------------------------------------------------------------------------
 // Macro Definitions

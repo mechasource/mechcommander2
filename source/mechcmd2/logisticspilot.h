@@ -49,110 +49,187 @@ enum Medals
 
 class LogisticsPilot
 {
-	public:
+public:
 
-		int32_t init( PSTR fileName );
-		LogisticsPilot(void);
-		~LogisticsPilot(void);
-
-
-		const EString&  getName(void) const { return name; }
-		const EString&	 getAudio(void) const { return audio; }
-		const EString& getVideo(void) const { return video; }
-		int32_t			getRank(void) const { return rank; }
-		const EString& getIconFile(void) const { return iconFile; }
-		float			getGunnery(void) const { return gunnery; }
-		float			getPiloting(void) const { return piloting; }
-		int32_t			getMechKills(void) const { return mechKills; }
-		int32_t			getVehicleKills(void) const { return vehicleKills; }
-		int32_t			getInfantryKills(void) const { return infantryKills; }
-		int32_t			getID(void) const { return id; }
-		int32_t			getFlavorTextID(void) const { return flavorTextID; }
-		int32_t			getNumberMissions(void) const;
-		bool		getMissionPlayed (int32_t missionNum)
-		{
-			if ((missionNum >= 0) && (missionNum < MAX_MISSIONS))
-				return (missionsPlayed[missionNum] == 1);
-
-			return false;
-		}
-
-		bool		isUsed(void) const{ return bIsUsed; }
-		void		setUsed( bool bUsed ){ bIsUsed = bUsed; }
-		int32_t			getNewGunnery(void) const { return newGunnery; }
-		int32_t			getNewPiloting(void) const { return newPiloting; }
-		
-		void		setDead(void);
-		bool		isAvailable(){ return (bAvailable&&!bDead); } // depends on purchasing file .... maybe should put dead checks and stuff
-		void		setAvailable( bool available ) { bAvailable = available; }
-		bool		isDead(void) const { return bDead; }
-		bool		justDied(void) const { return bJustDied; }
-		void		setJustDied( bool bdied){ bJustDied = bdied; }
-		int32_t		getPhotoIndex(void) const { return photoIndex; }
-
-		bool		promotePilot(void);
-		int32_t			turnAverageIntoRank( float avg);
+	int32_t init(PSTR fileName);
+	LogisticsPilot(void);
+	~LogisticsPilot(void);
 
 
+	const EString&  getName(void) const
+	{
+		return name;
+	}
+	const EString&	 getAudio(void) const
+	{
+		return audio;
+	}
+	const EString& getVideo(void) const
+	{
+		return video;
+	}
+	int32_t			getRank(void) const
+	{
+		return rank;
+	}
+	const EString& getIconFile(void) const
+	{
+		return iconFile;
+	}
+	float			getGunnery(void) const
+	{
+		return gunnery;
+	}
+	float			getPiloting(void) const
+	{
+		return piloting;
+	}
+	int32_t			getMechKills(void) const
+	{
+		return mechKills;
+	}
+	int32_t			getVehicleKills(void) const
+	{
+		return vehicleKills;
+	}
+	int32_t			getInfantryKills(void) const
+	{
+		return infantryKills;
+	}
+	int32_t			getID(void) const
+	{
+		return id;
+	}
+	int32_t			getFlavorTextID(void) const
+	{
+		return flavorTextID;
+	}
+	int32_t			getNumberMissions(void) const;
+	bool		getMissionPlayed(int32_t missionNum)
+	{
+		if((missionNum >= 0) && (missionNum < MAX_MISSIONS))
+			return (missionsPlayed[missionNum] == 1);
+		return false;
+	}
 
-		static		PCSTR getSkillText( int32_t skillID );
-		const EString&	getFileName(){ return fileName; }
+	bool		isUsed(void) const
+	{
+		return bIsUsed;
+	}
+	void		setUsed(bool bUsed)
+	{
+		bIsUsed = bUsed;
+	}
+	int32_t			getNewGunnery(void) const
+	{
+		return newGunnery;
+	}
+	int32_t			getNewPiloting(void) const
+	{
+		return newPiloting;
+	}
 
-		int32_t		save( FitIniFile& file, int32_t count );
-		int32_t		load( FitIniFile& file );
+	void		setDead(void);
+	bool		isAvailable()
+	{
+		return (bAvailable && !bDead);    // depends on purchasing file .... maybe should put dead checks and stuff
+	}
+	void		setAvailable(bool available)
+	{
+		bAvailable = available;
+	}
+	bool		isDead(void) const
+	{
+		return bDead;
+	}
+	bool		justDied(void) const
+	{
+		return bJustDied;
+	}
+	void		setJustDied(bool bdied)
+	{
+		bJustDied = bdied;
+	}
+	int32_t		getPhotoIndex(void) const
+	{
+		return photoIndex;
+	}
 
-		int32_t		update( MechWarrior* pWarrior );
-
-		int32_t			getSpecialtySkillCount(void) const;
-		int32_t			getSpecialtySkills( PCSTR* array, int32_t& count );
-		int32_t			getSpecialtySkills( pint32_t array, int32_t& count );
-		bool		*getSpecialtySkills() { return specialtySkills;}
-		void		setSpecialtySkill( int32_t skill, bool set );
-
-		const bool*			getNewMedalArray(void) const{ return medalsLastMission;}
-		const bool*			getMedalArray(void) const{ return medals;}
-
-
-		void		clearIcons(void);
-
-		
-		uint32_t	id;
-		EList< ForceGroupIcon*, ForceGroupIcon* >	killedIcons;
-
-
-
-	private:
-		EString		name;
-		EString		audio;
-		EString		video;
-		int32_t			rank;
-		EString		iconFile; // or file name?
-		float			gunnery;
-		float			piloting;
-		int32_t			mechKills;
-		int32_t			vehicleKills;
-		int32_t			infantryKills;
-		int32_t			missionsCompleted;
-		uint8_t	missionsPlayed[MAX_MISSIONS];
-		int32_t			flavorTextID;
-		bool			bIsUsed;
-		bool			bDead;
-		bool			bAvailable;
-		bool			bJustDied;
-		int32_t			photoIndex;
-		float			newPiloting;
-		float			newGunnery;
-		bool			specialtySkills[NUM_SPECIALTY_SKILLS];
-
-		static char skillTexts[][255];
-		EString		fileName;
-
-		bool		medals[MAX_MEDAL];
-		bool		medalsLastMission[MAX_MEDAL];
+	bool		promotePilot(void);
+	int32_t			turnAverageIntoRank(float avg);
 
 
-		// last second hack
-		friend class LogisticsData;
+
+	static		PCSTR getSkillText(int32_t skillID);
+	const EString&	getFileName()
+	{
+		return fileName;
+	}
+
+	int32_t		save(FitIniFile& file, int32_t count);
+	int32_t		load(FitIniFile& file);
+
+	int32_t		update(MechWarrior* pWarrior);
+
+	int32_t			getSpecialtySkillCount(void) const;
+	int32_t			getSpecialtySkills(PCSTR* array, int32_t& count);
+	int32_t			getSpecialtySkills(pint32_t array, int32_t& count);
+	bool*		getSpecialtySkills()
+	{
+		return specialtySkills;
+	}
+	void		setSpecialtySkill(int32_t skill, bool set);
+
+	const bool*			getNewMedalArray(void) const
+	{
+		return medalsLastMission;
+	}
+	const bool*			getMedalArray(void) const
+	{
+		return medals;
+	}
+
+
+	void		clearIcons(void);
+
+
+	uint32_t	id;
+	EList< ForceGroupIcon*, ForceGroupIcon* >	killedIcons;
+
+
+
+private:
+	EString		name;
+	EString		audio;
+	EString		video;
+	int32_t			rank;
+	EString		iconFile; // or file name?
+	float			gunnery;
+	float			piloting;
+	int32_t			mechKills;
+	int32_t			vehicleKills;
+	int32_t			infantryKills;
+	int32_t			missionsCompleted;
+	uint8_t	missionsPlayed[MAX_MISSIONS];
+	int32_t			flavorTextID;
+	bool			bIsUsed;
+	bool			bDead;
+	bool			bAvailable;
+	bool			bJustDied;
+	int32_t			photoIndex;
+	float			newPiloting;
+	float			newGunnery;
+	bool			specialtySkills[NUM_SPECIALTY_SKILLS];
+
+	static char skillTexts[][255];
+	EString		fileName;
+
+	bool		medals[MAX_MEDAL];
+	bool		medalsLastMission[MAX_MEDAL];
+
+
+	// last second hack
+	friend class LogisticsData;
 
 
 };

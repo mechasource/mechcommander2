@@ -14,11 +14,12 @@
 
 #include <stuff/page.hpp>
 
-namespace Stuff {
+namespace Stuff
+{
 
-	//##########################################################################
-	//##############    Note    ##############################
-	//##########################################################################
+//##########################################################################
+//##############    Note    ##############################
+//##########################################################################
 
 	class Note:
 		public Plug
@@ -30,49 +31,64 @@ namespace Stuff {
 		// Constructors
 		//
 	protected:
-		Note(Page *page):
-			 Plug(DefaultData)
-			 {m_page = page;}
+		Note(Page* page):
+			Plug(DefaultData)
+		{
+			m_page = page;
+		}
 
-			 Page
-				 *m_page;
+		Page
+		* m_page;
 
-			 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-			 // Note functions
-			 //
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		// Note functions
+		//
 	public:
 		void
-			SetName(PCSTR entryname)
-		{Check_Object(this); Check_Pointer(entryname); m_name = entryname;}
+		SetName(PCSTR entryname)
+		{
+			Check_Object(this);
+			Check_Pointer(entryname);
+			m_name = entryname;
+		}
 		PCSTR
-			GetName(void) const
-		{ Check_Object(this); return m_name; }
+		GetName(void) const
+		{
+			Check_Object(this);
+			return m_name;
+		}
 
 	protected:
 		MString
-			m_name,
-			m_text;
+		m_name,
+		m_text;
 
 		void SetDirty(void)
-		{Check_Object(this); Check_Object(m_page); m_page->SetDirty();}
+		{
+			Check_Object(this);
+			Check_Object(m_page);
+			m_page->SetDirty();
+		}
 
 		void
-			WriteNotation(MemoryStream *stream);
+		WriteNotation(MemoryStream* stream);
 
 		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		// string access
 		//
 	public:
 		void
-			GetEntry(PCSTR *contents)
+		GetEntry(PCSTR* contents)
 		{
-			Check_Object(this); Check_Pointer(contents);
-			if (contents) *contents = m_text;
+			Check_Object(this);
+			Check_Pointer(contents);
+			if(contents) *contents = m_text;
 		}
 		void
-			SetEntry(PCSTR contents)
+		SetEntry(PCSTR contents)
 		{
-			Check_Object(this); m_text = contents;
+			Check_Object(this);
+			m_text = contents;
 		}
 
 		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -80,90 +96,90 @@ namespace Stuff {
 		//
 	public:
 		void
-			GetEntry(pint32_t value);
+		GetEntry(pint32_t value);
 		void
-			SetEntry(int32_t value);
+		SetEntry(int32_t value);
 
 		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		// scalar access
 		//
 	public:
 		void
-			GetEntry(Scalar *value);
+		GetEntry(float* value);
 		void
-			SetEntry(Scalar value);
+		SetEntry(float value);
 
 		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		// bool access
 		//
 	public:
 		void
-			GetEntry(bool *value);
+		GetEntry(bool* value);
 		void
-			SetEntry(bool value);
+		SetEntry(bool value);
 
 		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		// Vector3D access
 		//
 	public:
 		void
-			GetEntry(Vector3D *value);
+		GetEntry(Vector3D* value);
 		void
-			SetEntry(const Vector3D &value);
+		SetEntry(const Vector3D& value);
 
 		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		// YawPitchRoll access
 		//
 	public:
 		void
-			GetEntry(YawPitchRoll *value);
+		GetEntry(YawPitchRoll* value);
 		void
-			SetEntry(const YawPitchRoll &value);
+		SetEntry(const YawPitchRoll& value);
 
 		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		// UnitQuaternion access
 		//
 	public:
 		void
-			GetEntry(UnitQuaternion *value);
+		GetEntry(UnitQuaternion* value);
 		void
-			SetEntry(const UnitQuaternion &value);
+		SetEntry(const UnitQuaternion& value);
 
 		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		// Motion3D access
 		//
 	public:
 		void
-			GetEntry(Motion3D *value);
+		GetEntry(Motion3D* value);
 		void
-			SetEntry(const Motion3D &value);
+		SetEntry(const Motion3D& value);
 
 		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		// RGBColor access
 		//
 	public:
 		void
-			GetEntry(RGBColor *value);
+		GetEntry(RGBColor* value);
 		void
-			SetEntry(const RGBColor &value);
+		SetEntry(const RGBColor& value);
 
 		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		// RGBAColor access
 		//
 	public:
 		void
-			GetEntry(RGBAColor *value);
+		GetEntry(RGBAColor* value);
 		void
-			SetEntry(const RGBAColor &value);
+		SetEntry(const RGBAColor& value);
 
 		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		// NotationFile access
 		//
 	public:
 		void
-			GetEntry(NotationFile *value);
+		GetEntry(NotationFile* value);
 		void
-			SetEntry(NotationFile *value);
+		SetEntry(NotationFile* value);
 
 	public:
 		void TestInstance(void) const;

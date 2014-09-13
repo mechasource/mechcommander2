@@ -14,45 +14,38 @@
 //###########################################################################
 //
 bool
-	Origin3D::TestClass()
+Origin3D::TestClass()
 {
 	SPEW((GROUP_STUFF_TEST, "Starting Origin3D test..."));
-
-	Point3D p(1.0f,2.0f,3.0f);
+	Point3D p(1.0f, 2.0f, 3.0f);
 	UnitQuaternion q(0.0f, 1.0f, 0.0f, 0.0f);
-
 	UnitQuaternion r;
 	r = q;
 	const Origin3D
-		a(p,r);
+	a(p, r);
 	Origin3D
-		b;
-
+	b;
 	UnitQuaternion t;
 	t = a.angularPosition;
 	Test_Assumption(
 		a.linearPosition == p
-		 && t.x == q.x
-		 && t.w == q.w
+		&& t.x == q.x
+		&& t.w == q.w
 	);
-
 	LinearMatrix4D
-		m;
-
+	m;
 	m = a;
 	b = m;
 	t = b;
 	Test_Assumption(
 		a.linearPosition == b.linearPosition
-		 && t.y == q.y
+		&& t.y == q.y
 	);
-
 #if 0
-	b = Point3D(3.0f,2.0f,1.0f);
+	b = Point3D(3.0f, 2.0f, 1.0f);
 	p = b;
-	Test_Assumption(p == Point3D(3.0f,2.0f,1.0f));
+	Test_Assumption(p == Point3D(3.0f, 2.0f, 1.0f));
 #endif
-
 	return true;
 }
 

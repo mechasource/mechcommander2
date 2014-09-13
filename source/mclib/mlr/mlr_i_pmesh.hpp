@@ -10,15 +10,17 @@
 #include <stuff/plane.hpp>
 #include <mlr/mlrindexedprimitivebase.hpp>
 
-namespace Stuff{
+namespace Stuff
+{
 	class Plane;
 }
 
-namespace MidLevelRenderer{
+namespace MidLevelRenderer
+{
 
-	//##########################################################################
-	//#### MLRIndexedPolyMesh with no color no lighting one texture layer #####
-	//##########################################################################
+//##########################################################################
+//#### MLRIndexedPolyMesh with no color no lighting one texture layer #####
+//##########################################################################
 
 
 	class MLR_I_PMesh:
@@ -36,28 +38,26 @@ namespace MidLevelRenderer{
 		//
 	protected:
 		MLR_I_PMesh(
-			ClassData *class_data,
-			Stuff::MemoryStream *stream,
-			uint32_t version
-			);
+			ClassData* class_data,
+			Stuff::MemoryStream* stream,
+			uint32_t version);
 		~MLR_I_PMesh(void);
 
 	public:
-		MLR_I_PMesh(ClassData *class_data=MLR_I_PMesh::DefaultData);
+		MLR_I_PMesh(ClassData* class_data = MLR_I_PMesh::DefaultData);
 
 		static MLR_I_PMesh*
-			Make(
-			Stuff::MemoryStream *stream,
-			uint32_t version
-			);
+		Make(
+			Stuff::MemoryStream* stream,
+			uint32_t version);
 
 		void
-			Save(Stuff::MemoryStream *stream);
+		Save(Stuff::MemoryStream* stream);
 
 	public:
 		// void Copy(MLRIndexedPolyMesh*);
 
-		virtual void InitializeDrawPrimitive(uint8_t, int32_t=0);
+		virtual void InitializeDrawPrimitive(uint8_t, int32_t = 0);
 
 		virtual void SetSubprimitiveLengths(puint8_t, size_t);
 		virtual void GetSubprimitiveLengths(puint8_t*, psize_t);
@@ -70,7 +70,6 @@ namespace MidLevelRenderer{
 		{
 			Check_Object(this);
 			Verify(index < facePlanes.GetLength());
-
 			return &facePlanes[index];
 		}
 
@@ -80,30 +79,35 @@ namespace MidLevelRenderer{
 
 		virtual void
 #if COLOR_AS_DWORD
-			PaintMe(pcuint32_t paintMe) {(void)paintMe;};
+		PaintMe(pcuint32_t paintMe)
+		{
+			(void)paintMe;
+		};
 #else
-			PaintMe(const Stuff::RGBAColor* paintMe) {(void)paintMe;};
+		PaintMe(const Stuff::RGBAColor* paintMe)
+		{
+			(void)paintMe;
+		};
 #endif
 
-		virtual int32_t TransformAndClip(Stuff::Matrix4D*, MLRClippingState, GOSVertexPool*,bool=false);
+		virtual uint32_t TransformAndClip(Stuff::Matrix4D*, MLRClippingState, GOSVertexPool*, bool = false);
 
 		bool
-			CastRay(
-			Stuff::Line3D *line,
-			Stuff::Normal3D *normal
-			);
+		CastRay(
+			Stuff::Line3D* line,
+			Stuff::Normal3D* normal
+		);
 
-		virtual void
-			TransformNoClip(Stuff::Matrix4D*, GOSVertexPool*,bool=false);
+		virtual void TransformNoClip(Stuff::Matrix4D*, GOSVertexPool*, bool = false);
 
 		// Initializes the visibility test list
 		void
-			ResetTestList(void);
+		ResetTestList(void);
 
 		// find which vertices are visible which not - returns nr of visible vertices
 		// the result is stored in the visibleIndexedVertices array
 		int32_t
-			FindVisibleVertices(void);
+		FindVisibleVertices(void);
 
 		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		// Class Data Support
@@ -123,13 +127,12 @@ namespace MidLevelRenderer{
 			size_t ret = MLRIndexedPrimitiveBase::GetSize();
 			ret += testList.GetSize();
 			ret += facePlanes.GetSize();
-
 			return ret;
 		}
 
 	protected:
 		void
-			Transform(Stuff::Matrix4D*);
+		Transform(Stuff::Matrix4D*);
 
 		Stuff::DynamicArrayOf<uint8_t> testList;
 
@@ -145,24 +148,22 @@ namespace MidLevelRenderer{
 
 	extern int32_t triDrawn;
 
-	void
-		subdivide (
-		Stuff::Point3D *coords,
+	void subdivide(
+		Stuff::Point3D* coords,
 		Stuff::Point3D& v1,
 		Stuff::Point3D& v2,
 		Stuff::Point3D& v3,
-		int32_t depth,
-		int32_t tri2draw,
-		float rad = 1.0f
-		);
+		uint32_t depth,
+		uint32_t tri2draw,
+		float rad = 1.0f);
 
 	MLR_I_PMesh*
-		CreateIndexedCube_NoColor_NoLit(float, MLRState*);
+	CreateIndexedCube_NoColor_NoLit(float, MLRState*);
 	MLRShape*
-		CreateIndexedIcosahedron_NoColor_NoLit(
+	CreateIndexedIcosahedron_NoColor_NoLit(
 		IcoInfo&,
 		MLRState*
-		);
+	);
 
 }
 #endif

@@ -17,7 +17,8 @@ LogisticsScreen.h			: Interface for the LogisticsScreen component.
 
 class FitIniFile;
 
-namespace mechgui {
+namespace mechgui
+{
 	class aObject;
 	class aRect;
 	class aText;
@@ -27,13 +28,14 @@ namespace mechgui {
 	class aAnimObject;
 }
 
-namespace mechgui {
+namespace mechgui
+{
 
 	/**************************************************************************************************
 	CLASS DESCRIPTION
 	LogisticsScreen:
 	**************************************************************************************************/
-	class LogisticsScreen : 
+	class LogisticsScreen :
 		public aObject
 	{
 		enum Status
@@ -61,34 +63,43 @@ namespace mechgui {
 	public:
 		LogisticsScreen(void);
 		virtual ~LogisticsScreen(void);
-		LogisticsScreen( const LogisticsScreen& src );
-		LogisticsScreen& operator=( const LogisticsScreen& src );
+		LogisticsScreen(const LogisticsScreen& src);
+		LogisticsScreen& operator=(const LogisticsScreen& src);
 
-	protected: 
-		void init(FitIniFile& file, PCSTR staticName, PCSTR textName, 
-			PCSTR rectName, PCSTR buttonName, PCSTR editName = "Edit", 
-			PCSTR animObjectName = "AnimObject", uint32_t neverFlush = 0);
+	protected:
+		void init(FitIniFile& file, PCSTR staticName, PCSTR textName,
+				  PCSTR rectName, PCSTR buttonName, PCSTR editName = "Edit",
+				  PCSTR animObjectName = "AnimObject", uint32_t neverFlush = 0);
 
 		virtual void update(void);
 		virtual void render(void);
 
 		virtual void begin(void);
-		virtual void end(void){}
+		virtual void end(void) {}
 
-		virtual void render( int32_t xOffset, int32_t yOffset );
+		virtual void render(int32_t xOffset, int32_t yOffset);
 
 		int32_t getStatus(void);
 
-		aButton* getButton( int32_t who );
-		aRect* getRect( int32_t who );
+		aButton* getButton(int32_t who);
+		aRect* getRect(int32_t who);
 
-		virtual void  moveTo( int32_t xPos, int32_t yPos );
-		virtual void  move( int32_t xPos, int32_t yPos );
+		virtual void  moveTo(int32_t xPos, int32_t yPos);
+		virtual void  move(int32_t xPos, int32_t yPos);
 
-		bool	inside( int32_t x, int32_t y);
+		bool	inside(int32_t x, int32_t y);
 
-		void	beginFadeIn( float fNewTime ){ fadeInTime = fNewTime; fadeOutTime = fadeTime = 0.f; }
-		void	beginFadeOut( float fNewTime ) { fadeInTime = 0.f; fadeOutTime = fNewTime; fadeTime = 0.f; }
+		void	beginFadeIn(float fNewTime)
+		{
+			fadeInTime = fNewTime;
+			fadeOutTime = fadeTime = 0.f;
+		}
+		void	beginFadeOut(float fNewTime)
+		{
+			fadeInTime = 0.f;
+			fadeOutTime = fNewTime;
+			fadeTime = 0.f;
+		}
 
 
 		void	clear(void); // remove everything
@@ -122,7 +133,7 @@ namespace mechgui {
 		int32_t				helpTextArrayID;
 
 	private:
-		void copyData( const LogisticsScreen& );
+		void copyData(const LogisticsScreen&);
 		void destroy(void);
 	};
 

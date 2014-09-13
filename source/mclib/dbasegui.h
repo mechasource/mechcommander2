@@ -13,7 +13,7 @@
 //
 // All drawing is done through gos_drawQuad and drawTriangle
 //
-// Basic cycle is 
+// Basic cycle is
 //		call gObject->update with this frame's events.
 //			This will check the events to see if any pertain to me.
 //			Draw anything to the texture plane that needs drawing.
@@ -21,7 +21,7 @@
 //		call gObject->render with this frame's events.
 //			This draws the object to the screen.
 //			called in order of depth.
-// 
+//
 //--------------------------------------------------------------------------------------
 
 #ifndef DBASEGUI_H

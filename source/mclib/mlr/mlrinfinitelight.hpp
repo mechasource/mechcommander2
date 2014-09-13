@@ -9,11 +9,12 @@
 
 #include <mlr/mlrlight.hpp>
 
-namespace MidLevelRenderer {
+namespace MidLevelRenderer
+{
 
-	//##########################################################################
-	//####################    MLRInfiniteLight    ##############################
-	//##########################################################################
+//##########################################################################
+//####################    MLRInfiniteLight    ##############################
+//##########################################################################
 
 	class MLRInfiniteLight:
 		public MLRLight
@@ -22,24 +23,25 @@ namespace MidLevelRenderer {
 		static void __stdcall InitializeClass(void);
 		static void __stdcall TerminateClass(void);
 
-		MLRInfiniteLight(ClassData *class_data=DefaultData);
+		MLRInfiniteLight(ClassData* class_data = DefaultData);
 		MLRInfiniteLight(
-			ClassData *class_data,
-			Stuff::MemoryStream *stream,
-			uint32_t version
-			);
+			ClassData* class_data,
+			Stuff::MemoryStream* stream,
+			uint32_t version);
 		MLRInfiniteLight(
-			ClassData *class_data,
-			Stuff::Page *page
-			);
+			ClassData* class_data,
+			Stuff::Page* page
+		);
 		~MLRInfiniteLight(void);
 
-		virtual void
-			LightVertex(const MLRVertexData&);
+		virtual void LightVertex(const MLRVertexData&);
 
 		virtual LightType
-			GetLightType() 
-		{ Check_Object(this); return InfiniteLight; }
+		GetLightType()
+		{
+			Check_Object(this);
+			return InfiniteLight;
+		}
 
 		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		// Class Data Support

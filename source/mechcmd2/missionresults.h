@@ -29,36 +29,39 @@ class PilotReviewScreen;
 
 class MissionResults
 {
-	public:
+public:
 
-		MissionResults(void);
-		~MissionResults(void);
+	MissionResults(void);
+	~MissionResults(void);
 
-		void init(void);
+	void init(void);
 
-		void update(void);
-		void render(void);
+	void update(void);
+	void render(void);
 
-		void begin(void);
-		void end(void);
-		bool isDone(){ return bDone; }
+	void begin(void);
+	void end(void);
+	bool isDone()
+	{
+		return bDone;
+	}
 
-		void setHostLeftDlg( PCSTR pName );
+	void setHostLeftDlg(PCSTR pName);
 
-		//Tutorial - Used to play Voice Over, first time in!!
-		// THIS must be added to savegame!!
-		//
-		static bool FirstTimeResults;	
+	//Tutorial - Used to play Voice Over, first time in!!
+	// THIS must be added to savegame!!
+	//
+	static bool FirstTimeResults;
 
-	private:
+private:
 
-		SalvageMechScreen*		pSalvageScreen;
-		PilotReviewScreen*		pPilotScreen;
-		MPStats					mpStats;
-		bool					bDone;
-		bool					bPilotStarted;
+	SalvageMechScreen*		pSalvageScreen;
+	PilotReviewScreen*		pPilotScreen;
+	MPStats					mpStats;
+	bool					bDone;
+	bool					bPilotStarted;
 
-		friend class Logistics;
+	friend class Logistics;
 
 };
 

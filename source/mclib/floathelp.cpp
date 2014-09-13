@@ -24,13 +24,12 @@ FloatHelp*	FloatHelp::floatHelps = nullptr;			//POinters to all of them.
 
 //-----------------------------------------------------------------------------------------
 // class FloatHelp
-void FloatHelp::init (int32_t maxHelps)
+void FloatHelp::init(int32_t maxHelps)
 {
-	floatHelps = (FloatHelp *)systemHeap->Malloc(sizeof(FloatHelp) * MAX_FLOAT_HELPS);
+	floatHelps = (FloatHelp*)systemHeap->Malloc(sizeof(FloatHelp) * MAX_FLOAT_HELPS);
 	gosASSERT(floatHelps != nullptr);
-	
-	FloatHelp *tmp = floatHelps;
-	for (int32_t i=0;i<MAX_FLOAT_HELPS;i++,tmp++)
+	FloatHelp* tmp = floatHelps;
+	for(size_t i = 0; i < MAX_FLOAT_HELPS; i++, tmp++)
 	{
 		tmp->text[0] = 0;
 		tmp->screenPos.x = tmp->screenPos.y = tmp->screenPos.z = tmp->screenPos.w = 0.0f;
@@ -40,12 +39,11 @@ void FloatHelp::init (int32_t maxHelps)
 		tmp->proportional = true;
 		tmp->bold = tmp->italic = tmp->wordWrap = false;
 	}
-	
 	currentFloatHelp = 0;
 }
-		
+
 //-----------------------------------------------------------------------------------------
-void FloatHelp::destroy (void)
+void FloatHelp::destroy(void)
 {
 	systemHeap->Free(floatHelps);
 	floatHelps = nullptr;
@@ -53,33 +51,32 @@ void FloatHelp::destroy (void)
 }
 
 //-----------------------------------------------------------------------------------------
-void FloatHelp::resetAll (void)
+void FloatHelp::resetAll(void)
 {
 	currentFloatHelp = 0;
-	
-	for (int32_t i=0;i<MAX_FLOAT_HELPS;i++)
+	for(size_t i = 0; i < MAX_FLOAT_HELPS; i++)
 		floatHelps[i].reset();
 }
 
 //-----------------------------------------------------------------------------------------
-void FloatHelp::renderAll (void)
+void FloatHelp::renderAll(void)
 {
-	for (int32_t i=0;i<MAX_FLOAT_HELPS;i++)
+	for(size_t i = 0; i < MAX_FLOAT_HELPS; i++)
 		floatHelps[i].render();
 }
 
 //-----------------------------------------------------------------------------------------
-void FloatHelp::setFloatHelp(PSTR  txt, 
-								Stuff::Vector4D screenPos, 
-								uint32_t fClr, 
-								uint32_t bClr, 
-								float scl,
-								bool proportional,
-								bool bold,
-								bool italic, 
-								bool wordWrap)
+void FloatHelp::setFloatHelp(PSTR  txt,
+							 Stuff::Vector4D screenPos,
+							 uint32_t fClr,
+							 uint32_t bClr,
+							 float scl,
+							 bool proportional,
+							 bool bold,
+							 bool italic,
+							 bool wordWrap)
 {
-	if (currentFloatHelp < MAX_FLOAT_HELPS)
+	if(currentFloatHelp < MAX_FLOAT_HELPS)
 	{
 		floatHelps[currentFloatHelp].setHelpText(txt);
 		floatHelps[currentFloatHelp].setScreenPos(screenPos);
@@ -90,30 +87,27 @@ void FloatHelp::setFloatHelp(PSTR  txt,
 		floatHelps[currentFloatHelp].setBold(bold);
 		floatHelps[currentFloatHelp].setItalic(italic);
 		floatHelps[currentFloatHelp].setWordWrap(wordWrap);
-		
 		currentFloatHelp++;
 	}
 }
 
 //-----------------------------------------------------------------------------------------
-void FloatHelp::getTextStringLength (PSTR  txt,                  
-										uint32_t fColor,
-										float scl,                
-										bool proportional,        
-										bool bold,                
-										bool italic,              
-										bool wordWrap,
-										uint32_t &width, uint32_t &height)
+void FloatHelp::getTextStringLength(PSTR  txt,
+									uint32_t fColor,
+									float scl,
+									bool proportional,
+									bool bold,
+									bool italic,
+									bool wordWrap,
+									uint32_t& width, uint32_t& height)
 {
 	// must use globalFloat Scale because of true type fonts
-	gos_TextSetAttributes (gosFontHandle, fColor, gosFontScale, wordWrap, proportional, bold, italic);
-
+	gos_TextSetAttributes(gosFontHandle, fColor, gosFontScale, wordWrap, proportional, bold, italic);
 	uint32_t gHeight = 0, gWidth = 0;
-	if (txt[0])
+	if(txt[0])
 	{
-		gos_TextStringLength(&gWidth,&gHeight,txt);
+		gos_TextStringLength(&gWidth, &gHeight, txt);
 	}
-
 	width = gWidth;
 	height = gHeight;
 }

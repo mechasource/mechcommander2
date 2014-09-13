@@ -16,7 +16,7 @@
 //
 gosFX::ParticleCloud__Specification::ParticleCloud__Specification(
 	Stuff::RegisteredClass::ClassID class_id,
-	Stuff::MemoryStream *stream,
+	Stuff::MemoryStream* stream,
 	int32_t gfx_version
 ):
 	Effect__Specification(class_id, stream, gfx_version)
@@ -24,7 +24,6 @@ gosFX::ParticleCloud__Specification::ParticleCloud__Specification(
 	Check_Pointer(this);
 	Check_Object(stream);
 	//Verify(gos_GetCurrentHeap() == Heap);
-
 	//
 	//-------------------
 	// Load in the curves
@@ -50,7 +49,6 @@ gosFX::ParticleCloud__Specification::ParticleCloud__Specification(
 	m_pGreen.Load(stream, gfx_version);
 	m_pBlue.Load(stream, gfx_version);
 	m_pAlpha.Load(stream, gfx_version);
-
 	*stream >> m_maxParticleCount;
 }
 
@@ -69,12 +67,11 @@ gosFX::ParticleCloud__Specification::ParticleCloud__Specification(
 //------------------------------------------------------------------------------
 //
 void
-	gosFX::ParticleCloud__Specification::Save(Stuff::MemoryStream *stream)
+gosFX::ParticleCloud__Specification::Save(Stuff::MemoryStream* stream)
 {
 	Check_Object(this);
 	Check_Object(stream);
 	Effect__Specification::Save(stream);
-
 	//
 	//----------------
 	// Save our curves
@@ -100,142 +97,114 @@ void
 	m_pGreen.Save(stream);
 	m_pBlue.Save(stream);
 	m_pAlpha.Save(stream);
-
 	*stream << m_maxParticleCount;
 }
 
 //------------------------------------------------------------------------------
 //
-void 
-	gosFX::ParticleCloud__Specification::BuildDefaults()
+void
+gosFX::ParticleCloud__Specification::BuildDefaults()
 {
-
 	Check_Object(this);
 	Effect__Specification::BuildDefaults();
-
 	m_startingPopulation.SetCurve(0.0f);
 	m_particlesPerSecond.SetCurve(5.0f);
-
 	m_emitterSizeX.SetCurve(0.0f);
 	m_emitterSizeY.SetCurve(0.0f);
 	m_emitterSizeZ.SetCurve(0.0f);
-
 	m_minimumDeviation.SetCurve(0.0f);
 	m_maximumDeviation.SetCurve(0.0f);
-
 	m_startingSpeed.m_ageCurve.SetCurve(1.0f);
 	m_startingSpeed.m_seeded = false;
 	m_startingSpeed.m_seedCurve.SetCurve(1.0f);
-
 	m_pLifeSpan.m_ageCurve.SetCurve(1.0f);
 	m_pLifeSpan.m_seeded = false;
 	m_pLifeSpan.m_seedCurve.SetCurve(1.0f);
-
 	m_pAccelerationX.m_ageCurve.SetCurve(0.0f);
 	m_pAccelerationX.m_seeded = false;
 	m_pAccelerationX.m_seedCurve.SetCurve(1.0f);
-
 	m_pAccelerationY.m_ageCurve.SetCurve(0.0f);
 	m_pAccelerationY.m_seeded = false;
 	m_pAccelerationY.m_seedCurve.SetCurve(1.0f);
-
 	m_pAccelerationZ.m_ageCurve.SetCurve(0.0f);
 	m_pAccelerationZ.m_seeded = false;
 	m_pAccelerationZ.m_seedCurve.SetCurve(1.0f);
-
 	m_pEtherVelocityX.m_ageCurve.SetCurve(0.0f);
 	m_pEtherVelocityX.m_seeded = false;
 	m_pEtherVelocityX.m_seedCurve.SetCurve(1.0f);
-
 	m_pEtherVelocityY.m_ageCurve.SetCurve(0.0f);
 	m_pEtherVelocityY.m_seeded = false;
 	m_pEtherVelocityY.m_seedCurve.SetCurve(1.0f);
-
 	m_pEtherVelocityZ.m_ageCurve.SetCurve(0.0f);
 	m_pEtherVelocityZ.m_seeded = false;
 	m_pEtherVelocityZ.m_seedCurve.SetCurve(1.0f);
-
 	m_pDrag.m_ageCurve.SetCurve(0.0f);
 	m_pDrag.m_seeded = false;
 	m_pDrag.m_seedCurve.SetCurve(1.0f);
-
 	m_pRed.m_ageCurve.SetCurve(1.0f);
 	m_pRed.m_seeded = false;
 	m_pRed.m_seedCurve.SetCurve(1.0f);
-
 	m_pGreen.m_ageCurve.SetCurve(1.0f);
 	m_pGreen.m_seeded = false;
 	m_pGreen.m_seedCurve.SetCurve(1.0f);
-
 	m_pBlue.m_ageCurve.SetCurve(1.0f);
 	m_pBlue.m_seeded = false;
 	m_pBlue.m_seedCurve.SetCurve(1.0f);
-
 	m_pAlpha.m_ageCurve.SetCurve(1.0f);
 	m_pAlpha.m_seeded = false;
 	m_pAlpha.m_seedCurve.SetCurve(1.0f);
-
 }
 
 
 //------------------------------------------------------------------------------
 //
-bool 
-	gosFX::ParticleCloud__Specification::IsDataValid(bool fix_data)
+bool
+gosFX::ParticleCloud__Specification::IsDataValid(bool fix_data)
 {
-
 	Check_Object(this);
-	float min,max;
-	  m_pLifeSpan.ExpensiveComputeRange(&min,&max);
-	  if(min<0.0f) 
-	  {
+	float min, max;
+	m_pLifeSpan.ExpensiveComputeRange(&min, &max);
+	if(min < 0.0f)
+	{
 		if(fix_data)
 		{
-		m_pLifeSpan.m_ageCurve.SetCurve(1.0f);
-		m_pLifeSpan.m_seeded = false;
-		m_pLifeSpan.m_seedCurve.SetCurve(1.0f);
-		PAUSE(("Warning: Curve \"pLifeSpan\" in Effect \"%s\" Is Out of Range and has been Reset",(PSTR )m_name));
-
-		}
-		else
-		return false;
-	  }
-	 
-	  m_startingPopulation.ExpensiveComputeRange(&min,&max);
-	  if(min<0.0f) 
-			if(fix_data)
-			{
-				m_startingPopulation.SetCurve(0.0f);
-				PAUSE(("Warning: Curve \"startingPopulation\" in Effect \"%s\" Is Out of Range and has been Reset",(PSTR )m_name));
-
-			}
-			else
-				return false;
-	
-	if(m_maxParticleCount<1) 
-		if(fix_data)
-		{
-			m_maxParticleCount=1;
-			PAUSE(("Warning: Value \"maxParticleCount\" in Effect \"%s\" Is Out of Range and has been Reset",(PSTR )m_name));
-
+			m_pLifeSpan.m_ageCurve.SetCurve(1.0f);
+			m_pLifeSpan.m_seeded = false;
+			m_pLifeSpan.m_seedCurve.SetCurve(1.0f);
+			PAUSE(("Warning: Curve \"pLifeSpan\" in Effect \"%s\" Is Out of Range and has been Reset", (PSTR)m_name));
 		}
 		else
 			return false;
-	
+	}
+	m_startingPopulation.ExpensiveComputeRange(&min, &max);
+	if(min < 0.0f)
+		if(fix_data)
+		{
+			m_startingPopulation.SetCurve(0.0f);
+			PAUSE(("Warning: Curve \"startingPopulation\" in Effect \"%s\" Is Out of Range and has been Reset", (PSTR)m_name));
+		}
+		else
+			return false;
+	if(m_maxParticleCount < 1)
+		if(fix_data)
+		{
+			m_maxParticleCount = 1;
+			PAUSE(("Warning: Value \"maxParticleCount\" in Effect \"%s\" Is Out of Range and has been Reset", (PSTR)m_name));
+		}
+		else
+			return false;
 	return	Effect__Specification::IsDataValid(fix_data);
 }
 
 //------------------------------------------------------------------------------
 //
 void
-	gosFX::ParticleCloud__Specification::Copy(ParticleCloud__Specification *spec)
+gosFX::ParticleCloud__Specification::Copy(ParticleCloud__Specification* spec)
 {
 	Check_Object(this);
 	Check_Object(spec);
 	//Verify(gos_GetCurrentHeap() == Heap);
-
 	Effect__Specification::Copy(spec);
-
 	//
 	//----------------
 	// Copy the curves
@@ -271,30 +240,30 @@ void
 //############################################################################
 
 gosFX::ParticleCloud::ClassData*
-	gosFX::ParticleCloud::DefaultData = nullptr;
+gosFX::ParticleCloud::DefaultData = nullptr;
 
 //------------------------------------------------------------------------------
 //
 void
-	gosFX::ParticleCloud::InitializeClass()
+gosFX::ParticleCloud::InitializeClass()
 {
 	Verify(!DefaultData);
 	//Verify(gos_GetCurrentHeap() == Heap);
 	DefaultData =
 		new ClassData(
-			ParticleCloudClassID,
-			"gosFX::ParticleCloud",
-			Effect::DefaultData,
-			nullptr,
-			nullptr
-		);
+		ParticleCloudClassID,
+		"gosFX::ParticleCloud",
+		Effect::DefaultData,
+		nullptr,
+		nullptr
+	);
 	Register_Object(DefaultData);
 }
 
 //------------------------------------------------------------------------------
 //
 void
-	gosFX::ParticleCloud::TerminateClass()
+gosFX::ParticleCloud::TerminateClass()
 {
 	Unregister_Object(DefaultData);
 	delete DefaultData;
@@ -304,8 +273,8 @@ void
 //------------------------------------------------------------------------------
 //
 gosFX::ParticleCloud::ParticleCloud(
-	ClassData *class_data,
-	Specification *spec,
+	ClassData* class_data,
+	Specification* spec,
 	uint32_t flags
 ):
 	Effect(class_data, spec, flags)
@@ -313,14 +282,12 @@ gosFX::ParticleCloud::ParticleCloud(
 	Check_Pointer(this);
 	Check_Object(spec);
 	//Verify(gos_GetCurrentHeap() == Heap);
-
 	//
 	//------------------------------------------------
 	// Set up the data pointers into the channel block
 	//------------------------------------------------
 	//
-	m_data.SetLength(spec->m_maxParticleCount*spec->m_totalParticleSize);
-
+	m_data.SetLength(spec->m_maxParticleCount * spec->m_totalParticleSize);
 	//
 	//-------------------------------
 	// Set up an empty particle cloud
@@ -333,18 +300,17 @@ gosFX::ParticleCloud::ParticleCloud(
 //------------------------------------------------------------------------------
 //
 void
-	gosFX::ParticleCloud::Start(ExecuteInfo *info)
+gosFX::ParticleCloud::Start(ExecuteInfo* info)
 {
 	Check_Object(this);
 	Check_Pointer(info);
-
 	//
 	//--------------------------------------------------------------------------
 	// Let effect initialize, then figure out how many particles we want to make
 	//--------------------------------------------------------------------------
 	//
 	Effect::Start(info);
-	Specification *spec = GetSpecification();
+	Specification* spec = GetSpecification();
 	Check_Object(spec);
 	float newbies =
 		spec->m_startingPopulation.ComputeValue(m_age, m_seed);
@@ -354,12 +320,11 @@ void
 
 //------------------------------------------------------------------------------
 //
-bool gosFX::ParticleCloud::Execute(ExecuteInfo *info)
+bool gosFX::ParticleCloud::Execute(ExecuteInfo* info)
 {
 	Check_Object(this);
 	Check_Object(info);
 	Verify(IsExecuted());
-
 	//
 	//--------------------------------------------------------------------
 	// If we were given a new matrix, see if we have a parent.  If so,
@@ -368,29 +333,28 @@ bool gosFX::ParticleCloud::Execute(ExecuteInfo *info)
 	//--------------------------------------------------------------------
 	//
 	Stuff::LinearMatrix4D new_world_to_local;
-	Stuff::LinearMatrix4D *matrix = nullptr;
+	Stuff::LinearMatrix4D* matrix = nullptr;
 	int32_t sim_mode = GetSimulationMode();
-	if (sim_mode == DynamicWorldSpaceSimulationMode)
+	if(sim_mode == DynamicWorldSpaceSimulationMode)
 	{
 		Stuff::LinearMatrix4D local_to_world;
 		local_to_world.Multiply(m_localToParent, *info->m_parentToWorld);
 		new_world_to_local.Invert(local_to_world);
 		matrix = &new_world_to_local;
 	}
-
 	//
 	//--------------------------------------------------------
 	// Figure out the birth rate and request the new particles
 	//--------------------------------------------------------
 	//
-	Specification *spec = GetSpecification();
+	Specification* spec = GetSpecification();
 	Check_Object(spec);
 	float dT =
 		static_cast<float>(info->m_time - m_lastRan);
 	Verify(dT >= 0.0f);
 	float prev_age = m_age;
 	m_age += dT * m_ageRate;
-	if (m_age >= 1.0f)
+	if(m_age >= 1.0f)
 		m_birthAccumulator = 0.0f;
 	else
 	{
@@ -399,7 +363,6 @@ bool gosFX::ParticleCloud::Execute(ExecuteInfo *info)
 		Min_Clamp(new_life, 0.0f);
 		m_birthAccumulator += dT * new_life;
 	}
-
 	//
 	//-----------------------------------
 	// Deal with all the active particles
@@ -407,7 +370,7 @@ bool gosFX::ParticleCloud::Execute(ExecuteInfo *info)
 	//
 	int32_t i;
 	int32_t last_real = -1;
-	for (i = 0; i < m_activeParticleCount; i++)
+	for(i = 0; i < m_activeParticleCount; i++)
 	{
 		//
 		//--------------------------------------------------------------------
@@ -415,29 +378,28 @@ bool gosFX::ParticleCloud::Execute(ExecuteInfo *info)
 		// go to the next particle, otherwise kill it
 		//--------------------------------------------------------------------
 		//
-		Particle *particle = GetParticle(i);
+		Particle* particle = GetParticle(i);
 		Check_Object(particle);
-		if (particle->m_age < 1.0f)
+		if(particle->m_age < 1.0f)
 		{
-			particle->m_age += dT*particle->m_ageRate;
-			if (AnimateParticle(i, matrix, info->m_time))
+			particle->m_age += dT * particle->m_ageRate;
+			if(AnimateParticle(i, matrix, info->m_time))
 			{
 				last_real = i;
 				continue;
 			}
 			DestroyParticle(i);
 		}
-
 		//
 		//--------------------------------------------------------------------
 		// If there are new particles to be born, go ahead and create them now
 		//--------------------------------------------------------------------
 		//
-		if (m_birthAccumulator >= 1.0f)
+		if(m_birthAccumulator >= 1.0f)
 		{
 			Stuff::Point3D translation;
 			CreateNewParticle(i, &translation);
-			if (AnimateParticle(i, matrix, info->m_time))
+			if(AnimateParticle(i, matrix, info->m_time))
 				last_real = i;
 			else
 				DestroyParticle(i);
@@ -445,36 +407,33 @@ bool gosFX::ParticleCloud::Execute(ExecuteInfo *info)
 		}
 	}
 	m_activeParticleCount = last_real + 1;
-
 	//
 	//----------------------------------------------------------------------
 	// If there are still new particles to be born, then we must try to grow
 	// the active particle count
 	//----------------------------------------------------------------------
 	//
-	while (
+	while(
 		m_birthAccumulator >= 1.0f
-		 && m_activeParticleCount < spec->m_maxParticleCount
+		&& m_activeParticleCount < spec->m_maxParticleCount
 	)
 	{
 		i = m_activeParticleCount++;
 		Stuff::Point3D translation;
 		CreateNewParticle(i, &translation);
-		if (!AnimateParticle(i, matrix, info->m_time))
+		if(!AnimateParticle(i, matrix, info->m_time))
 		{
 			DestroyParticle(i);
 			--m_activeParticleCount;
 		}
 		m_birthAccumulator -= 1.0f;
 	}
-
 	//
 	//---------------------------------------------------------
 	// Only allow fractional births to carry over to next frame
 	//---------------------------------------------------------
 	//
 	m_birthAccumulator -= static_cast<float>(floor(m_birthAccumulator));
-
 	//
 	//----------------------------
 	// Now let effect do its thing
@@ -497,17 +456,15 @@ bool gosFX::ParticleCloud::HasFinished()
 void gosFX::ParticleCloud::Kill()
 {
 	Check_Object(this);
-
 	//
 	//-------------------------------------------------------------
 	// Destroy all the particles and set up an empty particle cloud
 	//-------------------------------------------------------------
 	//
-	for(int32_t i=0; i < m_activeParticleCount; i++)
+	for(size_t i = 0; i < m_activeParticleCount; i++)
 		DestroyParticle(i);
 	m_activeParticleCount = 0;
 	m_birthAccumulator = 0.0f;
-
 	//
 	//----------------------------------------
 	// Now let the base effect handle stopping
@@ -519,21 +476,20 @@ void gosFX::ParticleCloud::Kill()
 //------------------------------------------------------------------------------
 //
 void
-	gosFX::ParticleCloud::CreateNewParticle(
-		uint32_t index,
-		Stuff::Point3D *translation
-	)
+gosFX::ParticleCloud::CreateNewParticle(
+	uint32_t index,
+	Stuff::Point3D* translation
+)
 {
 	Check_Object(this);
-
 	//
 	//----------------------------------------------------
 	// Figure out the age and age rate of the new particle
 	//----------------------------------------------------
 	//
-	Specification *spec = GetSpecification();
+	Specification* spec = GetSpecification();
 	Check_Object(spec);
-	Particle *particle = GetParticle(index);
+	Particle* particle = GetParticle(index);
 	Check_Object(particle);
 	particle->m_age = 0.0f;
 	float min_seed =
@@ -541,25 +497,24 @@ void
 	float seed_range =
 		spec->m_maximumChildSeed.ComputeValue(m_age, m_seed) - min_seed;
 	float seed =
-		Stuff::Random::GetFraction()*seed_range + min_seed;
+		Stuff::Random::GetFraction() * seed_range + min_seed;
 	Clamp(seed, 0.0f, 1.0f);
 	particle->m_seed = seed;
 	float lifetime =
 		spec->m_pLifeSpan.ComputeValue(m_age, seed);
 	Min_Clamp(lifetime, 0.0333333f);
 	particle->m_ageRate = 1.0f / lifetime;
-
 	//
 	//--------------------------------
 	// Figure out the initial position
 	//--------------------------------
 	//
 	Stuff::YawPitchRange
-		initial_p(
-			Stuff::Random::GetFraction() * Stuff::Two_Pi,
-			Stuff::Random::GetFraction() * Stuff::Pi - Stuff::Pi_Over_2,
-			Stuff::Random::GetFraction()
-		);
+	initial_p(
+		Stuff::Random::GetFraction() * Stuff::Two_Pi,
+		Stuff::Random::GetFraction() * Stuff::Pi - Stuff::Pi_Over_2,
+		Stuff::Random::GetFraction()
+	);
 	Stuff::Vector3D position(initial_p);
 	translation->x =
 		position.x * spec->m_emitterSizeX.ComputeValue(m_age, seed);
@@ -567,7 +522,6 @@ void
 		position.y * spec->m_emitterSizeY.ComputeValue(m_age, seed);
 	translation->z =
 		position.z * spec->m_emitterSizeZ.ComputeValue(m_age, seed);
-
 	//
 	//--------------------------------
 	// Figure out the initial velocity
@@ -577,16 +531,16 @@ void
 		spec->m_minimumDeviation.ComputeValue(m_age, seed);
 	float pitch_range =
 		spec->m_maximumDeviation.ComputeValue(m_age, seed) - pitch_min;
-	if (pitch_range < 0.0f)
+	if(pitch_range < 0.0f)
 		pitch_range = 0.0f;
 	pitch_min +=
 		pitch_range * Stuff::Random::GetFraction() - Stuff::Pi_Over_2;
 	Stuff::YawPitchRange
-		initial_v(
-			Stuff::Random::GetFraction() * Stuff::Two_Pi,
-			pitch_min,
-			spec->m_startingSpeed.ComputeValue(m_age, seed)
-		);
+	initial_v(
+		Stuff::Random::GetFraction() * Stuff::Two_Pi,
+		pitch_min,
+		spec->m_startingSpeed.ComputeValue(m_age, seed)
+	);
 	particle->m_localLinearVelocity = initial_v;
 }
 
@@ -594,7 +548,7 @@ void
 //
 void gosFX::ParticleCloud::DestroyParticle(uint32_t index)
 {
-	Particle *particle = GetParticle(index);
+	Particle* particle = GetParticle(index);
 	Check_Object(particle);
 	particle->m_age = 1.0f;
 }
@@ -602,7 +556,7 @@ void gosFX::ParticleCloud::DestroyParticle(uint32_t index)
 //------------------------------------------------------------------------------
 //
 void
-	gosFX::ParticleCloud::TestInstance(void) const
+gosFX::ParticleCloud::TestInstance(void) const
 {
 	Verify(IsDerivedFrom(DefaultData));
 }

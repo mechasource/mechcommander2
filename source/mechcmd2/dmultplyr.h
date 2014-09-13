@@ -55,7 +55,8 @@
 #define	WORLDCHUNK_SUBTYPE_MASK				0x00000003
 #define	WORLDCHUNK_CAPTURE_TIME_MASK		0x0003FFFF
 
-typedef enum {
+typedef enum
+{
 	WORLDCHUNK_MINE,
 	WORLDCHUNK_FIRE,
 	WORLDCHUNK_ARTILLERY_COMMANDER0,		// We pass the TEAM id now, NOT the commander

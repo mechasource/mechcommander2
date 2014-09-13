@@ -22,17 +22,17 @@
 // Static Data Members
 //---------------------------------------------------------------------------
 // Class Element
-Element::Element (int32_t _depth)
+Element::Element(int32_t _depth)
 {
 	depth = _depth;
 	drawNormal = TRUE;
 }
 //---------------------------------------------------------------------------
 // Class Element
-Element::Element (float _depth)
+Element::Element(float _depth)
 {
 	depth = _depth;
 	drawNormal = TRUE;
 }
-	
+
 //---------------------------------------------------------------------------

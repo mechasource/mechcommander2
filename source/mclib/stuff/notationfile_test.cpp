@@ -17,12 +17,10 @@
 //#############################################################################
 
 bool
-	NotationFile::TestClass()
+NotationFile::TestClass()
 {
 	SPEW((GROUP_STUFF_TEST, "Starting NotationFile test..."));
-
 	Check_Object(FileStreamManager::Instance);
-
 	PCSTR notation_snapshot = "notation.snapshot";
 	PCSTR page_1_name = "Page 1";
 	PCSTR page_2_name = "Page 2";
@@ -31,7 +29,6 @@ bool
 	PCSTR page_8_name = "Page 8";
 	PCSTR page_9_name = "Page9";
 	PCSTR sub_page_name = "SubPage1";
-
 	PCSTR note_1_name = "Entry 1";
 	PCSTR note_2_name = "Entry 2";
 	PCSTR note_3_name = "Entry 3";
@@ -39,7 +36,6 @@ bool
 	PCSTR note_5_name = "Entry 5";
 	PCSTR note_6_name = "Entry 6";
 	PCSTR note_9_name = "Entry 9";
-
 	PCSTR text_a = "Text Line A";
 	PCSTR text_b = "Text Line B";
 	PCSTR text_c = "Text Line C";
@@ -49,19 +45,16 @@ bool
 	PCSTR text_t = "yes";
 	PCSTR text_f = "no";
 	PCSTR string_value;
-
 	Page
-		*page,
-		*sub_page=nullptr,
-		*page_1=nullptr,
-		*page_2=nullptr,
-		*page_3=nullptr,
-		*page_5=nullptr,
-		*page_8=nullptr,
-		*page_9=nullptr;
-
-	PageIterator *pages;
-
+	*page,
+	*sub_page = nullptr,
+	 *page_1 = nullptr,
+	  *page_2 = nullptr,
+	   *page_3 = nullptr,
+		*page_5 = nullptr,
+		 *page_8 = nullptr,
+		  *page_9 = nullptr;
+	PageIterator* pages;
 	//
 	//----------------------------------------
 	// test NotationFile part 1 - create file
@@ -71,26 +64,21 @@ bool
 		NotationFile file;
 		Test_Assumption(file.IsEmpty());
 		Test_Assumption(!file.IsChanged());
-
 		pages = file.MakePageIterator();
 		Test_Assumption(pages);
 		Test_Assumption(pages->GetSize() == 0);
 		Check_Object(pages);
 		delete pages;
-
 		file.SaveAs(notation_snapshot);
-
 		page_2 = file.AddPage(page_2_name);
 		Test_Assumption(page_2);
 		page_2->SetEntry(note_4_name, text_a);
-
 		Test_Assumption(!file.FindPage(page_1_name));
 		page = file.FindPage(page_2_name);
 		Test_Assumption(page);
 		Test_Assumption(!page->GetEntry(note_2_name, &string_value));
 		Test_Assumption(page->GetEntry(note_4_name, &string_value));
 		Test_Assumption(!strcmp(string_value, text_a));
-
 		page_2->SetEntry(note_2_name, text_s);
 		page_1 = file.AddPage(page_1_name);
 		page_1->SetEntry(note_5_name, text_i);
@@ -104,13 +92,11 @@ bool
 		page_5 = file.AddPage(page_5_name);
 		page_5->SetEntry(note_5_name, text_a);
 		page_9->SetEntry(note_2_name, false);
-
 		NotationFile subfile;
 		sub_page = subfile.AddPage(sub_page_name);
 		Check_Object(sub_page);
 		sub_page->SetEntry(note_1_name, text_a);
 		page_1->SetEntry(note_2_name, &subfile);
-
 		page_8->DeleteNote(note_1_name);
 		page_1->DeleteNote(note_5_name);
 		page_9->SetEntry(note_1_name, text_t);
@@ -123,9 +109,7 @@ bool
 		page_9->AppendEntry(note_9_name, true);
 		page_8->SetEntry(note_2_name, text_i);
 		page_9->SetEntry(note_4_name, false);
-
 		file.SaveAs(notation_snapshot);
-
 		// notation file should look like this:
 		//			 (page_2_name, note_4_name, text_a)
 		//			 (page_2_name, note_2_name, text_s)
@@ -146,7 +130,6 @@ bool
 		//			 (page_8_name, note_2_name, text_i)
 		//			 (page_5_name, note_5_name, text_a)
 		//			 (page_5_name, note_5_name, text_b)
-
 		Test_Assumption(file.DoesPageExist("pAgE9"));
 		pages = file.MakePageIterator();
 		Test_Assumption(pages);
@@ -165,42 +148,38 @@ bool
 		Check_Object(pages);
 		delete pages;
 		Test_Assumption(!file.IsChanged());
-
 		pages = file.MakePageIterator();
 		Test_Assumption(pages);
 		Test_Assumption(pages->GetSize() == 5);
 		Check_Object(pages);
 		delete pages;
 //	}
-
-	//
-	//--------------------------------------
-	// Now we open up a second notation file
-	//--------------------------------------
-	//
+		//
+		//--------------------------------------
+		// Now we open up a second notation file
+		//--------------------------------------
+		//
 //	{
 		NotationFile file2(notation_snapshot);
 		Test_Assumption(!file2.IsChanged());
-
 		page_5 = file2.FindPage(page_5_name);
 		Test_Assumption(page_5);
-		Page::NoteIterator *notes = page_5->MakeNoteIterator();
+		Page::NoteIterator* notes = page_5->MakeNoteIterator();
 		Test_Assumption(notes);
 		Test_Assumption(notes->GetSize() == 2);
-		Note *note = notes->ReadAndNext();
+		Note* note = notes->ReadAndNext();
 		Test_Assumption(!strcmp(note->GetName(), note_5_name));
 		note = notes->ReadAndNext();
 		Test_Assumption(!strcmp(note->GetName(), note_5_name));
 		Check_Object(notes);
 		delete notes;
-
 		//
 		//-------------------------
 		// Test the integer readers
 		//-------------------------
 		//
 		int32_t integer_value;
-		Scalar scalar_value;
+		float scalar_value;
 		bool logical_value;
 		page_3 = file2.FindPage(page_3_name);
 		Test_Assumption(!page_3);
@@ -212,7 +191,7 @@ bool
 		Test_Assumption(page_1->GetEntry(note_1_name, &integer_value));
 		Test_Assumption(integer_value == atoi(text_i));
 		Test_Assumption(page_2->GetEntry(note_2_name, &scalar_value));
-		Test_Assumption(Close_Enough(scalar_value, (Scalar)AtoF(text_s)));
+		Test_Assumption(Close_Enough(scalar_value, (float)AtoF(text_s)));
 		Test_Assumption(page_1->GetEntry(note_4_name, &string_value));
 		Test_Assumption(!strcmp(string_value, text_b));
 		Test_Assumption(page_5->GetEntry(note_5_name, &string_value));
@@ -232,18 +211,15 @@ bool
 		Test_Assumption(page_9->GetEntry(note_4_name, &logical_value));
 		Test_Assumption(!logical_value);
 		Test_Assumption(!file2.IsChanged());
-
 		NotationFile subfile2;
 		Test_Assumption(page_1->GetEntry(note_2_name, &subfile2));
 		sub_page = subfile2.FindPage(sub_page_name);
 		Test_Assumption(sub_page);
 		Test_Assumption(sub_page->GetEntry(note_1_name, &string_value));
 		Test_Assumption(!strcmp(string_value, text_a));
-
 		file2.DeletePage(page_2_name);
 		Test_Assumption(file2.IsChanged());
 		Test_Assumption(!file2.DoesPageExist(page_2_name));
-
 		page_1->DeleteNote(note_1_name);
 		notes = page_1->MakeNoteIterator();
 		Test_Assumption(notes);
@@ -255,7 +231,6 @@ bool
 		delete note;
 		file2.IgnoreChanges();
 	}
-
 	//
 	// TESTING PRE-PROCESSOR STYLE COMMANDS
 	//
@@ -273,7 +248,6 @@ bool
 		page->SetEntry("Notes", notation_snapshot);
 		basefile.SaveAs(base_name);
 	}
-
 	{
 		NotationFile incfile;
 		page = incfile.AddPage("Page 22");
@@ -284,7 +258,6 @@ bool
 		page->SetEntry("!GOTHAM_HEROES", "$(Batman) + $(Robin)");
 		incfile.SaveAs(inc_name);
 	}
-
 	{
 		NotationFile rawfile(base_name, Raw);
 		page = rawfile.FindPage("Page 22");
@@ -294,7 +267,6 @@ bool
 		Test_Assumption(page->GetEntry("OurHeroes", &include_temp));
 		Test_Assumption(!strcmp(include_temp, "$(GOTHAM_HEROES)"));
 	}
-
 	{
 		NotationFile processed(base_name);
 		processed.SaveAs(notation_snapshot);
@@ -305,11 +277,9 @@ bool
 		Test_Assumption(page->GetEntry("OurHeroes", &include_temp));
 		Test_Assumption(!strcmp(include_temp, "BruceWayne + DickGrayson"));
 	}
-
 	gos_DeleteFile(base_name);
 	gos_DeleteFile(inc_name);
 	gos_DeleteFile(notation_snapshot);
-
 	return true;
 }
 

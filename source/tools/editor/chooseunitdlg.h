@@ -18,9 +18,9 @@ ChooseUnitDlg.h		: Interface for the ChooseUnitDlg component.
 class ChooseUnitDlg: public CDialog
 {
 public:
-	typedef Unit *unit_ptr_type;
+	typedef Unit* unit_ptr_type;
 
-	ChooseUnitDlg( unit_ptr_type &unitPtr, int32_t alignmentToExclude = -1 );
+	ChooseUnitDlg(unit_ptr_type& unitPtr, int32_t alignmentToExclude = -1);
 
 	BOOL OnCommand(WPARAM wParam, LPARAM lParam); // called by child controls to inform of an event
 	void OnUsePointer(void);
@@ -36,16 +36,16 @@ private:
 
 	// suppressing these
 	inline ChooseUnitDlg(void);
-	ChooseUnitDlg& operator=( const ChooseUnitDlg& lgUnitPtr );
+	ChooseUnitDlg& operator=(const ChooseUnitDlg& lgUnitPtr);
 
 	int32_t m_alignmentToExclude;
-	unit_ptr_type *m_pModifiedUnitPtr;
-	unit_ptr_type *m_pUnitPtr;
-	CComboBox *m_pComboBox;
+	unit_ptr_type* m_pModifiedUnitPtr;
+	unit_ptr_type* m_pUnitPtr;
+	CComboBox* m_pComboBox;
 	EditorObjectMgr::UNIT_LIST m_unitList;
-	CButton *m_pUsingPointerButton;
-	CButton *m_pCancelButton;
-	CButton *m_pOKButton;
+	CButton* m_pUsingPointerButton;
+	CButton* m_pCancelButton;
+	CButton* m_pOKButton;
 };
 
 

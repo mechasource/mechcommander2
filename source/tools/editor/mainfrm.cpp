@@ -45,16 +45,15 @@ MainFrame::~MainFrame()
 
 int32_t MainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 {
-	if (CFrameWnd::OnCreate(lpCreateStruct) == -1)
+	if(CFrameWnd::OnCreate(lpCreateStruct) == -1)
 		return -1;
 	// create a view to occupy the client area of the frame
-	if (!m_wndView.Create(nullptr, nullptr, AFX_WS_DEFAULT_VIEW | WS_VSCROLL | WS_HSCROLL,
-		CRect(0, 0, 0, 0), this, AFX_IDW_PANE_FIRST, nullptr))
+	if(!m_wndView.Create(nullptr, nullptr, AFX_WS_DEFAULT_VIEW | WS_VSCROLL | WS_HSCROLL,
+						 CRect(0, 0, 0, 0), this, AFX_IDW_PANE_FIRST, nullptr))
 	{
 		TRACE0("Failed to create view window\n");
 		return -1;
 	}
-	
 	/*
 	if (!m_wndToolBar.CreateEx(this) ||
 		!m_wndToolBar.LoadToolBar(IDR_EDITOR_MENU))
@@ -63,50 +62,44 @@ int32_t MainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 		return -1;      // fail to create
 	}
 	*/
-	if (!m_wndDlgBar.Create(this, IDR_EDITOR_MENU, 
-		CBRS_ALIGN_TOP, AFX_IDW_DIALOGBAR))
+	if(!m_wndDlgBar.Create(this, IDR_EDITOR_MENU,
+						   CBRS_ALIGN_TOP, AFX_IDW_DIALOGBAR))
 	{
 		TRACE0("Failed to create dialogbar\n");
 		return -1;		// fail to create
 	}
-
 	/* mh: rebars don't seem to be supported under win95 */
 #if 0
-	if (!m_wndReBar.Create(this) ||
-		/*!m_wndReBar.AddBar(&m_wndToolBar) ||*/
-		!m_wndReBar.AddBar(&m_wndDlgBar))
+	if(!m_wndReBar.Create(this) ||
+			/*!m_wndReBar.AddBar(&m_wndToolBar) ||*/
+			!m_wndReBar.AddBar(&m_wndDlgBar))
 	{
 		TRACE0("Failed to create rebar\n");
 		return -1;      // fail to create
 	}
 #endif
-
-	if (!m_wndStatusBar.Create(this) ||
-		!m_wndStatusBar.SetIndicators(indicators,
-		  sizeof(indicators)/sizeof(uint32_t)))
+	if(!m_wndStatusBar.Create(this) ||
+			!m_wndStatusBar.SetIndicators(indicators,
+										  sizeof(indicators) / sizeof(uint32_t)))
 	{
 		TRACE0("Failed to create status bar\n");
 		return -1;      // fail to create
 	}
-
 	/*
 	m_wndToolBar.SetBarStyle(m_wndToolBar.GetBarStyle() |
 		CBRS_TOOLTIPS | CBRS_FLYBY);
 		*/
-
-
 	return 0;
 }
 
 BOOL MainFrame::PreCreateWindow(CREATESTRUCT& cs)
 {
-	
-	if( !CFrameWnd::PreCreateWindow(cs) )
+	if(!CFrameWnd::PreCreateWindow(cs))
 		return FALSE;
 //	cs.dwExStyle &= ~WS_EX_CLIENTEDGE;
 	cs.lpszClass = AfxRegisterWndClass(0);
-	cs.cx = GetSystemMetrics( SM_CXFULLSCREEN );;
-	cs.cy = GetSystemMetrics( SM_CYFULLSCREEN );;
+	cs.cx = GetSystemMetrics(SM_CXFULLSCREEN);;
+	cs.cy = GetSystemMetrics(SM_CYFULLSCREEN);;
 	cs.x = 0;
 	cs.y = 0;
 	return TRUE;
@@ -133,7 +126,8 @@ void MainFrame::Dump(CDumpContext& dc) const
 void MainFrame::OnSetFocus(CWnd* pOldWnd)
 {
 	// forward focus to the view window
-	if (m_wndView.m_hWnd) {
+	if(m_wndView.m_hWnd)
+	{
 		m_wndView.SetFocus();
 	}
 }
@@ -141,46 +135,45 @@ void MainFrame::OnSetFocus(CWnd* pOldWnd)
 BOOL MainFrame::OnCmdMsg(uint32_t nID, int32_t nCode, PVOID pExtra, AFX_CMDHANDLERINFO* pHandlerInfo)
 {
 	// let the view have first crack at the command
-	if (m_wndView.OnCmdMsg(nID, nCode, pExtra, pHandlerInfo))
+	if(m_wndView.OnCmdMsg(nID, nCode, pExtra, pHandlerInfo))
 		return TRUE;
-
 	// otherwise, do default handling
 	return CFrameWnd::OnCmdMsg(nID, nCode, pExtra, pHandlerInfo);
 }
 
 
-LRESULT MainFrame::WindowProc(uint32_t message, WPARAM wParam, LPARAM lParam) 
+LRESULT MainFrame::WindowProc(uint32_t message, WPARAM wParam, LPARAM lParam)
 {
-	if ( message == WM_MOVE )
+	if(message == WM_MOVE)
 	{
 		POINT tmp;
-		tmp.x = LOWORD(lParam) + 30; 
-		tmp.y = HIWORD(lParam) + 30; 
-
-		EditorInterface::instance()->ScreenToClient( &tmp );
-
+		tmp.x = LOWORD(lParam) + 30;
+		tmp.y = HIWORD(lParam) + 30;
+		EditorInterface::instance()->ScreenToClient(&tmp);
 		LPARAM lNewParam = tmp.y << 16 | tmp.x;
-
-		EditorInterface::instance()->SendMessage( WM_MOVE, wParam, lNewParam );
-
+		EditorInterface::instance()->SendMessage(WM_MOVE, wParam, lNewParam);
 	}
 	return CFrameWnd::WindowProc(message, wParam, lParam);
 }
 
-void MainFrame::OnClose() 
+void MainFrame::OnClose()
 {
 	int32_t res = IDNO;
-	if (EditorInterface::instance() && EditorInterface::instance()->ThisIsInitialized()
-		&& EditorData::instance) {
+	if(EditorInterface::instance() && EditorInterface::instance()->ThisIsInitialized()
+			&& EditorData::instance)
+	{
 		res = EditorInterface::instance()->PromptAndSaveIfNecessary();
 	}
-	if (IDCANCEL != res) {
-		if (EditorInterface::instance()) {
+	if(IDCANCEL != res)
+	{
+		if(EditorInterface::instance())
+		{
 			EditorInterface::instance()->SetBusyMode();
 		}
 		gos_TerminateApplication();
 		PostQuitMessage(0);
-		if (EditorInterface::instance()) {
+		if(EditorInterface::instance())
+		{
 			EditorInterface::instance()->UnsetBusyMode();
 		}
 	}

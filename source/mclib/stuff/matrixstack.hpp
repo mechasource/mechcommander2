@@ -17,9 +17,10 @@ This header and class is not used
 #include <stuff/matrix.hpp>
 #include <stuff/linearmatrix.hpp>
 
-namespace Stuff {
+namespace Stuff
+{
 
-	//~~~~~~~~~~~~~~~~~~~~~~~ AffinerMatrix4DStack ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//~~~~~~~~~~~~~~~~~~~~~~~ AffinerMatrix4DStack ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 	class AffinerMatrix4DStack:
 		public MemoryStackOf<AffineMatrix4D>
@@ -29,21 +30,24 @@ namespace Stuff {
 			size_t start,
 			size_t delta,
 			PCSTR name
-			):
-		MemoryStackOf<AffineMatrix4D>(start, delta, name)
+		):
+			MemoryStackOf<AffineMatrix4D>(start, delta, name)
 		{}
 
 		AffinerMatrix4DStack&
-			Concatenate(const AffineMatrix4D& matrix);
+		Concatenate(const AffineMatrix4D& matrix);
 
 		AffineMatrix4D&
-			Push(const AffineMatrix4D& matrix);
+		Push(const AffineMatrix4D& matrix);
 
-		operator AffineMatrix4D&()
-		{Check_Object(this); return *Peek();}
+		operator AffineMatrix4D& ()
+		{
+			Check_Object(this);
+			return *Peek();
+		}
 	};
 
-	//~~~~~~~~~~~~~~~~~~~~~~~ LinearMatrix4DStack ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//~~~~~~~~~~~~~~~~~~~~~~~ LinearMatrix4DStack ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 	class LinearMatrix4DStack:
 		public MemoryStackOf<LinearMatrix4D>
@@ -53,21 +57,24 @@ namespace Stuff {
 			size_t start,
 			size_t delta,
 			PCSTR name
-			):
-		MemoryStackOf<LinearMatrix4D>(start, delta, name)
+		):
+			MemoryStackOf<LinearMatrix4D>(start, delta, name)
 		{}
 
 		LinearMatrix4DStack&
-			Concatenate(const LinearMatrix4D& matrix);
+		Concatenate(const LinearMatrix4D& matrix);
 
 		LinearMatrix4D&
-			Push(const LinearMatrix4D& matrix);
+		Push(const LinearMatrix4D& matrix);
 
-		operator LinearMatrix4D&(void)
-		{Check_Object(this); return *Peek();}
+		operator LinearMatrix4D& (void)
+		{
+			Check_Object(this);
+			return *Peek();
+		}
 	};
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~ Matrix4DStack ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//~~~~~~~~~~~~~~~~~~~~~~~~~~ Matrix4DStack ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 	class Matrix4DStack:
 		public MemoryStackOf<Matrix4D>
@@ -77,22 +84,25 @@ namespace Stuff {
 			size_t start,
 			size_t delta,
 			PCSTR name
-			):
-		MemoryStackOf<Matrix4D>(start, delta, name)
+		):
+			MemoryStackOf<Matrix4D>(start, delta, name)
 		{}
 
 		Matrix4DStack&
-			Concatenate(const Matrix4D& matrix);
+		Concatenate(const Matrix4D& matrix);
 		Matrix4DStack&
-			Concatenate(const AffineMatrix4D& matrix);
+		Concatenate(const AffineMatrix4D& matrix);
 
 		Matrix4D&
-			Push(const Matrix4D& matrix);
+		Push(const Matrix4D& matrix);
 		Matrix4D&
-			Push(const AffineMatrix4D& matrix);
+		Push(const AffineMatrix4D& matrix);
 
-		operator Matrix4D&(void)
-		{Check_Object(this); return *Peek();}
+		operator Matrix4D& (void)
+		{
+			Check_Object(this);
+			return *Peek();
+		}
 	};
 
 }

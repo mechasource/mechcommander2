@@ -30,13 +30,12 @@
 // Class PriorityQueue
 //***************************************************************************
 
-int32_t PriorityQueue::init (int32_t max, int32_t keyMinValue) {
-
+int32_t PriorityQueue::init(int32_t max, int32_t keyMinValue)
+{
 	//-------------------------
 	// Create the queue list...
 	pqList = (PQNode*)systemHeap->Malloc(sizeof(PQNode) * (max + 2));
-	gosASSERT (pqList != nullptr);
-
+	gosASSERT(pqList != nullptr);
 	//----------------------------------------------------------------------
 	// Note that two additional nodes are added, as the first and last nodes
 	// of the queue list are used as sentinels (to assist implementation
@@ -48,17 +47,17 @@ int32_t PriorityQueue::init (int32_t max, int32_t keyMinValue) {
 
 //---------------------------------------------------------------------------
 
-void PriorityQueue::upHeap (int32_t curIndex) {
-
+void PriorityQueue::upHeap(int32_t curIndex)
+{
 	PQNode startNode = pqList[curIndex];
 	int32_t stopKey = startNode.key;
 	pqList[0].key = keyMin;
 	pqList[0].id = 0xFFFFFFFF;
-	
 	//--------------------
 	// sort up the heap...
-	while (pqList[curIndex/2].key >= stopKey) {
-		pqList[curIndex] = pqList[curIndex/2];
+	while(pqList[curIndex / 2].key >= stopKey)
+	{
+		pqList[curIndex] = pqList[curIndex / 2];
 		curIndex /= 2;
 	}
 	pqList[curIndex] = startNode;
@@ -66,11 +65,10 @@ void PriorityQueue::upHeap (int32_t curIndex) {
 
 //---------------------------------------------------------------------------
 
-int32_t PriorityQueue::insert (PQNode& item) {
-
-	if (numItems == maxItems)
+int32_t PriorityQueue::insert(PQNode& item)
+{
+	if(numItems == maxItems)
 		return(1);
-
 	pqList[++numItems] = item;
 	upHeap(numItems);
 	return(0);
@@ -78,20 +76,20 @@ int32_t PriorityQueue::insert (PQNode& item) {
 
 //---------------------------------------------------------------------------
 
-void PriorityQueue::downHeap (int32_t curIndex) {
-
+void PriorityQueue::downHeap(int32_t curIndex)
+{
 	//----------------------------------
 	// Start at the top from curIndex...
 	PQNode startNode = pqList[curIndex];
 	int32_t stopKey = startNode.key;
-
 	//----------------------
 	// Sort down the heap...
-	while (curIndex <= numItems/2) {
+	while(curIndex <= numItems / 2)
+	{
 		int32_t nextIndex = curIndex << 1;
-		if ((nextIndex < numItems) && (pqList[nextIndex].key > pqList[nextIndex + 1].key))
+		if((nextIndex < numItems) && (pqList[nextIndex].key > pqList[nextIndex + 1].key))
 			nextIndex++;
-		if (stopKey <= pqList[nextIndex].key)
+		if(stopKey <= pqList[nextIndex].key)
 			break;
 		pqList[curIndex] = pqList[nextIndex];
 		curIndex = nextIndex;
@@ -101,8 +99,8 @@ void PriorityQueue::downHeap (int32_t curIndex) {
 
 //---------------------------------------------------------------------------
 
-void PriorityQueue::remove (PQNode& item) {
-
+void PriorityQueue::remove(PQNode& item)
+{
 	item = pqList[1];
 	pqList[1] = pqList[numItems--];
 	downHeap(1);
@@ -110,13 +108,15 @@ void PriorityQueue::remove (PQNode& item) {
 
 //---------------------------------------------------------------------------
 
-void PriorityQueue::change (int32_t itemIndex, int32_t newValue) {
-
-	if (newValue > pqList[itemIndex].key) {
+void PriorityQueue::change(int32_t itemIndex, int32_t newValue)
+{
+	if(newValue > pqList[itemIndex].key)
+	{
 		pqList[itemIndex].key = newValue;
 		downHeap(itemIndex);
-		}
-	else if (newValue < pqList[itemIndex].key) {
+	}
+	else if(newValue < pqList[itemIndex].key)
+	{
 		pqList[itemIndex].key = newValue;
 		upHeap(itemIndex);
 	}
@@ -124,18 +124,18 @@ void PriorityQueue::change (int32_t itemIndex, int32_t newValue) {
 
 //---------------------------------------------------------------------------
 
-int32_t PriorityQueue::find (int32_t id) {
-
-	for (int32_t index = 0; index <= numItems; index++)
-		if (pqList[index].id == (uint32_t)id)
+int32_t PriorityQueue::find(int32_t id)
+{
+	for(auto index = 0; index <= numItems; index++)
+		if(pqList[index].id == (uint32_t)id)
 			return(index);
 	return(0);
 }
 
 //---------------------------------------------------------------------------
-	
-void PriorityQueue::destroy (void) {
 
+void PriorityQueue::destroy(void)
+{
 	systemHeap->Free(pqList);
 	pqList = nullptr;
 	maxItems = 0;

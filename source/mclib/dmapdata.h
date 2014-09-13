@@ -47,10 +47,10 @@ typedef enum
 //---------------------------------------------------------------------------
 // Class Definitions
 struct PostcompVertex;
-typedef PostcompVertex *PostcompVertexPtr;
+typedef PostcompVertex* PostcompVertexPtr;
 
 class MapData;
-typedef MapData *MapDataPtr;
+typedef MapData* MapDataPtr;
 
 //---------------------------------------------------------------------------
 #endif

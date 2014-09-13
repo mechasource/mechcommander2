@@ -11,13 +11,16 @@
 #include <gosfx/spinningcloud.hpp>
 #include <mlr/mlr.hpp>
 
-namespace MidLevelRenderer {class MLRShape;}
+namespace MidLevelRenderer
+{
+	class MLRShape;
+}
 
 namespace gosFX
 {
-	//############################################################################
-	//#######################  DebrisCloud__Specification  #######################
-	//############################################################################
+//############################################################################
+//#######################  DebrisCloud__Specification  #######################
+//############################################################################
 
 	class DebrisCloud;
 
@@ -26,105 +29,105 @@ namespace gosFX
 	{
 		friend class DebrisCloud;
 
-	//----------------------------------------------------------------------
-	// Constructors/Destructors
-	//
+		//----------------------------------------------------------------------
+		// Constructors/Destructors
+		//
 	protected:
 		DebrisCloud__Specification(
-			Stuff::MemoryStream *stream, int32_t gfx_version);
+			Stuff::MemoryStream* stream, int32_t gfx_version);
 
 	public:
 		DebrisCloud__Specification(void);
 		~DebrisCloud__Specification(void);
 
 		void
-			Save(Stuff::MemoryStream *stream);
+		Save(Stuff::MemoryStream* stream);
 
 		static DebrisCloud__Specification*
-			Make(
-				Stuff::MemoryStream *stream,
-				int32_t gfx_version
-			);
+		Make(
+			Stuff::MemoryStream* stream,
+			int32_t gfx_version
+		);
 
 		void
-			Copy(DebrisCloud__Specification *spec);
+		Copy(DebrisCloud__Specification* spec);
 
 		void
-			Load(Stuff::MemoryStream *stream);
+		Load(Stuff::MemoryStream* stream);
 
 		void
-			LoadGeometry(Stuff::MemoryStream *stream);
+		LoadGeometry(Stuff::MemoryStream* stream);
 
-		void 
-			BuildDefaults(void);
-	
-		virtual bool 
-			IsDataValid(bool fix_data=false);
+		void
+		BuildDefaults(void);
 
-	//-------------------------------------------------------------------------
-	// FCurves
-	//
+		virtual bool
+		IsDataValid(bool fix_data = false);
+
+		//-------------------------------------------------------------------------
+		// FCurves
+		//
 	public:
 		ConstantCurve
-			m_minimumDeviation;
+		m_minimumDeviation;
 		SplineCurve
-			m_maximumDeviation;
-		SeededCurveOf<ComplexCurve, ComplexCurve,Curve::e_ComplexComplexType>
-			m_startingSpeed;
-		SeededCurveOf<ComplexCurve, SplineCurve,Curve::e_ComplexSplineType>
-			m_pLifeSpan;
-		SeededCurveOf<ConstantCurve, LinearCurve,Curve::e_ConstantLinearType>
-			m_pEtherVelocityY;
-		SeededCurveOf<SplineCurve, LinearCurve,Curve::e_SplineLinearType>
-			m_pAccelerationY;
-		SeededCurveOf<ComplexCurve, ComplexCurve,Curve::e_ComplexComplexType>
-			m_pDrag;
-		SeededCurveOf<ComplexCurve, LinearCurve,Curve::e_ComplexLinearType>
-			m_pAlpha;
-		SeededCurveOf<ConstantCurve, LinearCurve,Curve::e_ConstantLinearType>
-			m_pSpin;
+		m_maximumDeviation;
+		SeededCurveOf<ComplexCurve, ComplexCurve, Curve::e_ComplexComplexType>
+		m_startingSpeed;
+		SeededCurveOf<ComplexCurve, SplineCurve, Curve::e_ComplexSplineType>
+		m_pLifeSpan;
+		SeededCurveOf<ConstantCurve, LinearCurve, Curve::e_ConstantLinearType>
+		m_pEtherVelocityY;
+		SeededCurveOf<SplineCurve, LinearCurve, Curve::e_SplineLinearType>
+		m_pAccelerationY;
+		SeededCurveOf<ComplexCurve, ComplexCurve, Curve::e_ComplexComplexType>
+		m_pDrag;
+		SeededCurveOf<ComplexCurve, LinearCurve, Curve::e_ComplexLinearType>
+		m_pAlpha;
+		SeededCurveOf<ConstantCurve, LinearCurve, Curve::e_ConstantLinearType>
+		m_pSpin;
 
-	//-------------------------------------------------------------------------
-	// Data
-	//
+		//-------------------------------------------------------------------------
+		// Data
+		//
 		Stuff::Point3D
-			centerOfForce;
+		centerOfForce;
 
 		Stuff::DynamicArrayOf<MidLevelRenderer::MLRShape*>
-			debrisPieces;
+		debrisPieces;
 		Stuff::DynamicArrayOf<Stuff::Point3D>
-			debrisPositions;
+		debrisPositions;
 		Stuff::DynamicArrayOf<Stuff::Sphere>
-			debrisSpheres;
+		debrisSpheres;
 		Stuff::DynamicArrayOf<float>
-			debrisSeed;
+		debrisSeed;
 	};
 
-	//############################################################################
-	//#########################  DebrisCloud__Particle  #########################
-	//############################################################################
+//############################################################################
+//#########################  DebrisCloud__Particle  #########################
+//############################################################################
 
 	class DebrisCloud__Particle
 	{
 	public:
 		Stuff::LinearMatrix4D
-			m_localToParent;
+		m_localToParent;
 
 		float
-			m_age,
-			m_ageRate,
-			m_seed;
+		m_age,
+		m_ageRate,
+		m_seed;
 
 		Stuff::Vector3D
-			m_angularVelocity,
-			m_linearVelocity;
+		m_angularVelocity,
+		m_linearVelocity;
 
 		float
-			m_alpha;
+		m_alpha;
 
 		void
-			TestInstance(void) const
-				{}
+		TestInstance(void) const
+		{}
 	};
 
 //############################################################################
@@ -133,9 +136,9 @@ namespace gosFX
 
 	class DebrisCloud : public Effect
 	{
-	//----------------------------------------------------------------------------
-	// Class Registration Support
-	//
+		//----------------------------------------------------------------------------
+		// Class Registration Support
+		//
 	public:
 		static void __stdcall InitializeClass(void);
 		static void __stdcall TerminateClass(void);
@@ -143,81 +146,81 @@ namespace gosFX
 		typedef DebrisCloud__Specification Specification;
 		typedef DebrisCloud__Particle Particle;
 
-	//----------------------------------------------------------------------------
-	// Class Data Support
-	//
+		//----------------------------------------------------------------------------
+		// Class Data Support
+		//
 	protected:
 		DebrisCloud(
-			Specification *spec,
+			Specification* spec,
 			uint32_t flags
 		);
 
 	public:
 		static DebrisCloud*
-			Make(
-				Specification *spec,
-				uint32_t flags
-			);
+		Make(
+			Specification* spec,
+			uint32_t flags
+		);
 
 		Specification*
-			GetSpecification()
-				{
-					Check_Object(this);
-					return
-						Cast_Object(Specification*, m_specification);
-				}
+		GetSpecification()
+		{
+			Check_Object(this);
+			return
+				Cast_Object(Specification*, m_specification);
+		}
 		Particle*
-			GetParticle(uint32_t index)
-				{
-					Check_Object(this); Check_Object(GetSpecification());
-					return
-						Cast_Pointer(
-							Particle*,
-							&debrisPieces[index]
-						);
-				}
+		GetParticle(uint32_t index)
+		{
+			Check_Object(this);
+			Check_Object(GetSpecification());
+			return
+				Cast_Pointer(
+					Particle*,
+					&debrisPieces[index]
+				);
+		}
 
 
 		static ClassData* DefaultData;
 
-	//----------------------------------------------------------------------------
-	// Testing
-	//
+		//----------------------------------------------------------------------------
+		// Testing
+		//
 	public:
 		void TestInstance(void) const;
 
-	//----------------------------------------------------------------------------
-	// API
-	//
+		//----------------------------------------------------------------------------
+		// API
+		//
 	protected:
 		bool
-			Execute(ExecuteInfo *info);
+		Execute(ExecuteInfo* info);
 		bool
-			AnimateParticle(
-				uint32_t index,
-				const Stuff::LinearMatrix4D *world_to_new_local,
-				Stuff::Time till
-			);
-		virtual void
-			DestroyParticle(uint32_t index);
+		AnimateParticle(
+			uint32_t index,
+			const Stuff::LinearMatrix4D* world_to_new_local,
+			Stuff::Time till
+		);
+		virtual void DestroyParticle(uint32_t index);
 		void
-			ComputeNewLinearVelocity(
-				Particle *particle,
-				float time_slice
-			);
+		ComputeNewLinearVelocity(
+			Particle* particle,
+			float time_slice
+		);
 
 	public:
 		void
-			Start(ExecuteInfo *info);
+		Start(ExecuteInfo* info);
 		void
-			Kill(void);
+		Kill(void);
 		bool
-			HasFinished(void);
+		HasFinished(void);
 		void
-			Draw(DrawInfo *info);
+		Draw(DrawInfo* info);
 
 	protected:
 		Stuff::DynamicArrayOf<DebrisCloud__Particle>
-			debrisPieces;
+		debrisPieces;
 	};
 }

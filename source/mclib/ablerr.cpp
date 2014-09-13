@@ -44,7 +44,8 @@ extern char			wordString[];
 //----------------------
 // SYNTAX ERROR messages
 
-PSTR syntaxErrorMessages[] = {
+PSTR syntaxErrorMessages[] =
+{
 	"No syntax error",										// 0
 	"Syntax error",
 	"Too many errors",
@@ -120,7 +121,8 @@ PSTR syntaxErrorMessages[] = {
 //-----------------------
 // RUNTIME ERROR messages
 
-PSTR runtimeErrorMessages[] = {
+PSTR runtimeErrorMessages[] =
+{
 	"Runtime stack overflow",
 	"Infinite Loop",
 	"Nested function call",
@@ -144,34 +146,35 @@ extern DebuggerPtr debugger;
 
 //***************************************************************************
 
-void ABL_Fatal (int32_t errCode, PSTR s) {
-
+void ABL_Fatal(int32_t errCode, PSTR s)
+{
 	ABLFatalCallback(errCode, s);
 }
 
 //---------------------------------------------------------------------------
 
-void ABL_Assert (bool test, int32_t errCode, PSTR s) {
-
-	test; errCode; s;
+void ABL_Assert(bool test, int32_t errCode, PSTR s)
+{
+	test;
+	errCode;
+	s;
 #ifdef _DEBUG
-	if (!test)
+	if(!test)
 		ABLFatalCallback(errCode, s);
 #endif
 }
 
 //***************************************************************************
 
-void syntaxError (int32_t errCode) {
-
+void syntaxError(int32_t errCode)
+{
 	char errMessage[MAXLEN_ERROR_MESSAGE];
 	sprintf(errMessage, "SYNTAX ERROR %s [line %d] - (type %d) %s \"%s\"\n", SourceFiles[FileNumber], lineNumber, errCode, syntaxErrorMessages[errCode], wordString);
 	ABL_Fatal(0, errMessage);
-	
 	*tokenp = nullptr;
 	errorCount++;
-	
-	if (errorCount > MAX_SYNTAX_ERRORS) {
+	if(errorCount > MAX_SYNTAX_ERRORS)
+	{
 		sprintf(errMessage, "Way too many syntax errors. ABL aborted.\n");
 		ABL_Fatal(0, errMessage);
 	}
@@ -179,16 +182,16 @@ void syntaxError (int32_t errCode) {
 
 //---------------------------------------------------------------------------
 
-void runtimeError (int32_t errCode) {
-
+void runtimeError(int32_t errCode)
+{
 	char message[512];
-
-	if (debugger) {
+	if(debugger)
+	{
 		sprintf(message, "RUNTIME ERROR:  [%d] %s", errCode, runtimeErrorMessages[errCode]);
 		debugger->print(message);
 		sprintf(message, "MODULE %s", CurModule->getName());
 		debugger->print(message);
-		if (FileNumber > -1)
+		if(FileNumber > -1)
 			sprintf(message, "FILE %s", CurModule->getSourceFile(FileNumber));
 		else
 			sprintf(message, "FILE %s: unavailable");
@@ -197,7 +200,6 @@ void runtimeError (int32_t errCode) {
 		debugger->print(message);
 		debugger->debugMode();
 	}
-
 	sprintf(message, "ABL RUNTIME ERROR %s [line %d] - (type %d) %s\n", (FileNumber > -1) ? CurModule->getSourceFile(FileNumber) : "unavailable", execLineNumber, errCode, runtimeErrorMessages[errCode]);
 	ABL_Fatal(-ABL_ERR_RUNTIME_ABORT, message);
 }

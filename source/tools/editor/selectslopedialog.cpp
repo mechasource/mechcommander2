@@ -41,7 +41,7 @@ void SelectSlopeDialog::DoDataExchange(CDataExchange* pDX)
 
 BEGIN_MESSAGE_MAP(SelectSlopeDialog, CDialog)
 	//{{AFX_MSG_MAP(SelectSlopeDialog)
-		// NOTE: the ClassWizard will add message map macros here
+	// NOTE: the ClassWizard will add message map macros here
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 

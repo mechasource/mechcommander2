@@ -22,13 +22,12 @@ using namespace Stuff;
 //#############################################################################
 //
 Link::Link(
-	Socket *socket,
-	Plug *plug
+	Socket* socket,
+	Plug* plug
 )
 {
 	this->socket = socket;
 	this->plug = plug;
-
 	//
 	//----------------------------------------------------
 	// Add this new link to the plugs current set of links
@@ -62,7 +61,7 @@ Link::~Link()
 //#############################################################################
 //
 void
-	Link::TestInstance()
+Link::TestInstance()
 {
 	Check_Signature(socket);
 	Check_Signature(plug);
@@ -74,7 +73,7 @@ void
 //#############################################################################
 //
 void
-	Link::ReleaseFromPlug()
+Link::ReleaseFromPlug()
 {
 	Check_Object(this);
 	//
@@ -83,16 +82,16 @@ void
 	//-----------------------------------------------------
 	//
 	Check_Object(plug);
-	if (plug->linkHead == this)
+	if(plug->linkHead == this)
 	{
 		plug->linkHead = nextLink;
 	}
-	if (prevLink != nullptr)
+	if(prevLink != nullptr)
 	{
 		Check_Object(prevLink);
 		prevLink->nextLink = nextLink;
 	}
-	if (nextLink != nullptr)
+	if(nextLink != nullptr)
 	{
 		Check_Object(nextLink);
 		nextLink->prevLink = prevLink;
@@ -106,12 +105,11 @@ void
 //#############################################################################
 //
 void
-	Link::AddToPlug(Plug *plug)
+Link::AddToPlug(Plug* plug)
 {
 	Check_Object(this);
 	Check_Object(plug);
-
-	if ((nextLink = plug->linkHead) != nullptr)
+	if((nextLink = plug->linkHead) != nullptr)
 	{
 		Check_Object(nextLink);
 		nextLink->prevLink = this;

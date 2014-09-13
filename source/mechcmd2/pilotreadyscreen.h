@@ -24,24 +24,27 @@ class PilotReadyScreen : public LogisticsScreen
 
 public:
 
-	static PilotReadyScreen* instance(){ return s_instance; }
+	static PilotReadyScreen* instance()
+	{
+		return s_instance;
+	}
 	PilotReadyScreen(void);
 	virtual ~PilotReadyScreen(void);
 
 	void init(FitIniFile* file);
 	virtual void render(int32_t xOffset, int32_t yOffset);
 	virtual void update(void);
-	virtual int32_t			handleMessage( uint32_t, uint32_t );
-	
-	void beginDrag( LogisticsPilot* pPilot );
+	virtual int32_t			handleMessage(uint32_t, uint32_t);
+
+	void beginDrag(LogisticsPilot* pPilot);
 
 	virtual void begin(void);
 	virtual void end(void);
 
-	void setPilot( LogisticsPilot* pPilot );
-	void setMech( LogisticsMech* pMech );
+	void setPilot(LogisticsPilot* pPilot);
+	void setMech(LogisticsMech* pMech);
 	void addSelectedPilot(void);
-	
+
 
 private:
 
@@ -69,12 +72,12 @@ private:
 
 
 	void removeSelectedPilot(void);
-	
-	void putBackPilot( LogisticsPilot* pPilot );
-	void endDrag( LogisticsMechIcon* pIcon  );
-	
-	PilotReadyScreen( const PilotReadyScreen& );
-	PilotReadyScreen& operator=( const PilotReadyScreen& );
+
+	void putBackPilot(LogisticsPilot* pPilot);
+	void endDrag(LogisticsMechIcon* pIcon);
+
+	PilotReadyScreen(const PilotReadyScreen&);
+	PilotReadyScreen& operator=(const PilotReadyScreen&);
 
 	float				launchFadeTime;
 

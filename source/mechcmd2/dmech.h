@@ -16,10 +16,10 @@
 //---------------------------------------------------------------------------
 
 class BattleMechType;
-typedef BattleMechType *BattleMechTypePtr;
+typedef BattleMechType* BattleMechTypePtr;
 
 class BattleMech;
-typedef BattleMech *BattleMechPtr;
+typedef BattleMech* BattleMechPtr;
 
 //***************************************************************************
 

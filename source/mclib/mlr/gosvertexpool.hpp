@@ -13,11 +13,12 @@
 
 extern bool MLRVertexLimitReached;
 
-namespace MidLevelRenderer {
+namespace MidLevelRenderer
+{
 
-	//##########################################################################
-	//######################    GOSVertexPool    ###############################
-	//##########################################################################
+//##########################################################################
+//######################    GOSVertexPool    ###############################
+//##########################################################################
 
 	class GOSVertexPool
 	{
@@ -29,106 +30,105 @@ namespace MidLevelRenderer {
 		//
 		//------------------------------------------------------------------------------------------------------------
 		//
-		size_t GetLength(void) 
-		{ 
-			Check_Object(this); 
-			return vertices.GetLength()-1; 
+		size_t GetLength(void)
+		{
+			Check_Object(this);
+			return vertices.GetLength() - 1;
 		}
 
-		uint32_t GetLast(void) 
-		{ 
-			Check_Object(this); 
-			return lastUsed; 
+		uint32_t GetLast(void)
+		{
+			Check_Object(this);
+			return lastUsed;
 		}
 
-		uint32_t Increase (uint32_t add=1)
-		{ 
-			Check_Object(this); 
-			lastUsed += add; 
-			Verify(lastUsed<Limits::Max_Number_Vertices_Per_Frame);
+		uint32_t Increase(uint32_t add = 1)
+		{
+			Check_Object(this);
+			lastUsed += add;
+			Verify(lastUsed < Limits::Max_Number_Vertices_Per_Frame);
 			MLRVertexLimitReached = (lastUsed > (Limits::Max_Number_Vertices_Per_Frame - 2000));
 			return lastUsed;
 		}
 
 		GOSVertex*
-			GetActualVertexPool(bool db=false)
-		{ 
-			Check_Object(this); 
-
+		GetActualVertexPool(bool db = false)
+		{
+			Check_Object(this);
 			if(db)
 			{
-				return verticesDB.GetData(); 
+				return verticesDB.GetData();
 			}
 			else
 			{
-				return (GOSVertex*)((PSTR)(vertices.GetData() + lastUsed)+vertexAlignment); 
+				return (GOSVertex*)((PSTR)(vertices.GetData() + lastUsed) + vertexAlignment);
 			}
 		}
 
 		//
 		//------------------------------------------------------------------------------------------------------------
 		//
-		size_t GetLength2UV (void) 
-		{ 
-			Check_Object(this); 
-			return vertices2uv.GetLength()-1; 
+		size_t GetLength2UV(void)
+		{
+			Check_Object(this);
+			return vertices2uv.GetLength() - 1;
 		}
 
-		uint32_t GetLast2UV (void) 
-		{ 
-			Check_Object(this); 
-			return lastUsed2uv; 
+		uint32_t GetLast2UV(void)
+		{
+			Check_Object(this);
+			return lastUsed2uv;
 		}
 
-		uint32_t Increase2UV (uint32_t add=1)
-		{ 
-			Check_Object(this); 
-			lastUsed2uv += add; 
-			Verify(lastUsed2uv<Limits::Max_Number_Vertices_Per_Frame);
+		uint32_t Increase2UV(uint32_t add = 1)
+		{
+			Check_Object(this);
+			lastUsed2uv += add;
+			Verify(lastUsed2uv < Limits::Max_Number_Vertices_Per_Frame);
 			return lastUsed2uv;
 		}
 
 		GOSVertex2UV*
-			GetActualVertexPool2UV(bool db=false)
-		{ 
-			Check_Object(this); 
+		GetActualVertexPool2UV(bool db = false)
+		{
+			Check_Object(this);
 			if(db)
 			{
-				return vertices2uvDB.GetData(); 
+				return vertices2uvDB.GetData();
 			}
 			else
 			{
-				return (GOSVertex2UV*)((PSTR)(vertices2uv.GetData() + lastUsed2uv)+vertexAlignment); 
+				return (GOSVertex2UV*)((PSTR)(vertices2uv.GetData() + lastUsed2uv) + vertexAlignment);
 			}
 		}
 
 		//
 		//------------------------------------------------------------------------------------------------------------
 		//
-		uint32_t GetLastIndex (void) 
-		{ 
-			Check_Object(this); 
-			return lastUsedIndex; 
-		}
-
-		uint32_t IncreaseIndex (uint32_t add=1)
-		{ 
-			Check_Object(this); 
-			lastUsedIndex += add; 
-			Verify(lastUsedIndex<Limits::Max_Number_Vertices_Per_Frame);
+		uint32_t GetLastIndex(void)
+		{
+			Check_Object(this);
 			return lastUsedIndex;
 		}
 
-		puint16_t GetActualIndexPool(bool db=false)
-		{ 
-			Check_Object(this); 
+		uint32_t IncreaseIndex(uint32_t add = 1)
+		{
+			Check_Object(this);
+			lastUsedIndex += add;
+			Verify(lastUsedIndex < Limits::Max_Number_Vertices_Per_Frame);
+			return lastUsedIndex;
+		}
+
+		puint16_t GetActualIndexPool(bool db = false)
+		{
+			Check_Object(this);
 			if(db)
 			{
-				return indicesDB.GetData(); 
+				return indicesDB.GetData();
 			}
 			else
 			{
-				return (puint16_t)((char*)(indices.GetData() + lastUsedIndex)+indicesAlignment); 
+				return (puint16_t)((char*)(indices.GetData() + lastUsedIndex) + indicesAlignment);
 			}
 		}
 
@@ -136,7 +136,7 @@ namespace MidLevelRenderer {
 		//------------------------------------------------------------------------------------------------------------
 		//
 		void
-			TestInstance(void)
+		TestInstance(void)
 		{
 			Verify(lastUsed < Limits::Max_Number_Vertices_Per_Frame);
 			Verify(lastUsed2uv < Limits::Max_Number_Vertices_Per_Frame);
@@ -163,6 +163,6 @@ namespace MidLevelRenderer {
 		GOSVertexPool(const GOSVertexPool&);
 	};
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 }
 #endif

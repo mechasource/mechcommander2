@@ -33,10 +33,10 @@ public:
 
 	virtual ~LoadScreenWrapper(void);
 
-	void init( FitIniFile& file );
+	void init(FitIniFile& file);
 
 	virtual void update(void);
-	virtual void render( int32_t xOffset, int32_t yOffset );
+	virtual void render(int32_t xOffset, int32_t yOffset);
 
 	virtual void begin(void);
 
@@ -55,9 +55,9 @@ public:
 	LoadScreen(void);
 	virtual ~LoadScreen(void);
 
-	void init( FitIniFile& file, uint32_t neverFlush = 0 );
+	void init(FitIniFile& file, uint32_t neverFlush = 0);
 	virtual void update(void);
-	virtual void render( int32_t xOffset, int32_t yOffset );
+	virtual void render(int32_t xOffset, int32_t yOffset);
 
 	virtual void begin(void);
 
@@ -70,8 +70,8 @@ public:
 
 private:
 
-	LoadScreen( const LoadScreen& src );
-	LoadScreen& operator=( const LoadScreen& oadScreen );
+	LoadScreen(const LoadScreen& src);
+	LoadScreen& operator=(const LoadScreen& oadScreen);
 
 
 	static TGAFileHeader*	progressTextureMemory;
@@ -84,7 +84,7 @@ private:
 	static int32_t xWaitLoc;
 	static int32_t yWaitLoc;
 
-	friend void ProgressTimer( tagRECT& WinRect, _DDSURFACEDESC2&  );
+	friend void ProgressTimer(tagRECT& WinRect, _DDSURFACEDESC2&);
 	friend class Mission;
 
 	//Must needs be static cause we create a new one when the res changes!!

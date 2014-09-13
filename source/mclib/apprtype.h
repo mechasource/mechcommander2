@@ -41,75 +41,73 @@ class AppearanceType
 {
 	//Data Members
 	//-------------
-	public:
-	
-		size_t 		numUsers;			//Number of users using this appearanceType.
-		size_t		appearanceNum;		//What kind am I.
-		AppearanceTypePtr	next;				//Pointer to next type in list.
+public:
 
-		char 				*name;				//Appearance Base FileName.
-	
-		Stuff::Vector3D		typeUpperLeft;		//For Designer defined extents of objects
-		Stuff::Vector3D		typeLowerRight;		//For Designer defined extents of objects
+	size_t 		numUsers;			//Number of users using this appearanceType.
+	size_t		appearanceNum;		//What kind am I.
+	AppearanceTypePtr	next;				//Pointer to next type in list.
 
-		float				boundsUpperLeftX;
-		float				boundsUpperLeftY;
-		
-		float				boundsLowerRightX;
-		float				boundsLowerRightY;
-		
-		bool				designerTypeBounds;	//So I know not to change them if the designer typed them in.
-		
+	char*				 name;				//Appearance Base FileName.
+
+	Stuff::Vector3D		typeUpperLeft;		//For Designer defined extents of objects
+	Stuff::Vector3D		typeLowerRight;		//For Designer defined extents of objects
+
+	float				boundsUpperLeftX;
+	float				boundsUpperLeftY;
+
+	float				boundsLowerRightX;
+	float				boundsLowerRightY;
+
+	bool				designerTypeBounds;	//So I know not to change them if the designer typed them in.
+
 	//Member Functions
 	//-----------------
-	public:
-	
-		PVOID operator new (size_t memSize);
-		void operator delete (PVOID treePtr);
+public:
 
-		void init (void)
-		{
-			numUsers = 0;
-			next = nullptr;
-			appearanceNum = 0xffffffff;
+	PVOID operator new(size_t memSize);
+	void operator delete(PVOID treePtr);
 
-			name = nullptr;
+	void init(void)
+	{
+		numUsers = 0;
+		next = nullptr;
+		appearanceNum = 0xffffffff;
+		name = nullptr;
+		typeUpperLeft.Zero(void);
+		typeLowerRight.Zero(void);
+		designerTypeBounds = false;
+	}
 
-			typeUpperLeft.Zero(void);
-			typeLowerRight.Zero(void);
-			designerTypeBounds = false;
- 		}
+	AppearanceType(void)
+	{
+		init(void);
+	}
 
-		AppearanceType (void)
-		{
-			init(void);
-		}
+	virtual void init(PSTR fileName);
 
-		virtual void init (PSTR fileName);
-		
-		virtual void destroy (void);
+	virtual void destroy(void);
 
-		void reinit (void);
+	void reinit(void);
 
-		bool typeBoundExists (void)
-		{
-			return true;		//Always exists now
-		}
+	bool typeBoundExists(void)
+	{
+		return true;		//Always exists now
+	}
 
-		bool getDesignerTypeBounds (void)
-		{
-			return designerTypeBounds;
-		}
+	bool getDesignerTypeBounds(void)
+	{
+		return designerTypeBounds;
+	}
 
-		size_t getAppearanceClass (void)
-		{
-			return(appearanceNum >> 24);
-		}
-		
-		virtual ~AppearanceType (void)
-		{
-			destroy(void);
-		}
+	size_t getAppearanceClass(void)
+	{
+		return(appearanceNum >> 24);
+	}
+
+	virtual ~AppearanceType(void)
+	{
+		destroy(void);
+	}
 };
 
 //---------------------------------------------------------------------------
@@ -117,39 +115,39 @@ class AppearanceTypeList
 {
 	//Data Members
 	//-------------
-	protected:
-	
-		AppearanceTypePtr	head;
-		AppearanceTypePtr	last;
-		
-	public:
+protected:
 
-		static UserHeapPtr	appearanceHeap;
-		
+	AppearanceTypePtr	head;
+	AppearanceTypePtr	last;
+
+public:
+
+	static UserHeapPtr	appearanceHeap;
+
 	//Member Functions
 	//----------------
-	public:
-	
-		AppearanceTypeList (void)
-		{
-			head = last = nullptr;
-			appearanceHeap = nullptr;
-		}
+public:
 
-		void init (size_t heapSize);
+	AppearanceTypeList(void)
+	{
+		head = last = nullptr;
+		appearanceHeap = nullptr;
+	}
 
-		AppearanceTypePtr getAppearance (size_t apprNum, PSTR  apprFile);
-		
-		int32_t removeAppearance (AppearanceTypePtr which);
-		
-		void destroy (void);
-		
-		~AppearanceTypeList (void)
-		{
-			destroy(void);
-		}
+	void init(size_t heapSize);
 
-		bool pointerCanBeDeleted (PVOIDptr);
+	AppearanceTypePtr getAppearance(size_t apprNum, PSTR  apprFile);
+
+	int32_t removeAppearance(AppearanceTypePtr which);
+
+	void destroy(void);
+
+	~AppearanceTypeList(void)
+	{
+		destroy(void);
+	}
+
+	bool pointerCanBeDeleted(PVOIDptr);
 };
 
 extern AppearanceTypeListPtr appearanceTypeList;

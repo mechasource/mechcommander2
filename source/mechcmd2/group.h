@@ -31,7 +31,8 @@
 #define	GOALFLAG_NO_NEIGHBORS	8
 #define	GOALFLAG_MOVER_HERE		16
 
-typedef struct _GoalMapNode {
+typedef struct _GoalMapNode
+{
 	int16_t				cost;								// normal cost to travel here, based upon terrain
 	//int32_t				parent;								// where we came from (parent cell)
 	uint8_t		flags;								// CLOSED, OPEN, STEP flags
@@ -39,11 +40,13 @@ typedef struct _GoalMapNode {
 	//int32_t				hPrime;								// estimated cost from this node to GOAL
 	//int32_t				fPrime;								// = g + hPrime
 
-	void setFlag (uint8_t flag) {
+	void setFlag(uint8_t flag)
+	{
 		flags |= flag;
 	}
 
-	void clearFlag (uint8_t flag) {
+	void clearFlag(uint8_t flag)
+	{
 		flags &= (flag ^ 0xFFFFFFFF);
 	}
 } GoalMapNode;
@@ -58,146 +61,156 @@ typedef struct _MoverGroupData
 
 } MoverGroupData;
 
-class MoverGroup {
+class MoverGroup
+{
 
-	public:
+public:
 
-		int32_t					id;
-		int32_t					numMovers;
-		GameObjectWatchID		moverWIDs[MAX_MOVERGROUP_COUNT];
-		GameObjectWatchID		pointWID;
-		bool					disbandOnNoPoint;
+	int32_t					id;
+	int32_t					numMovers;
+	GameObjectWatchID		moverWIDs[MAX_MOVERGROUP_COUNT];
+	GameObjectWatchID		pointWID;
+	bool					disbandOnNoPoint;
 
-		static SortList			sortList;
-		static GoalMapNode*		goalMap;
+	static SortList			sortList;
+	static GoalMapNode*		goalMap;
 
-	public:
+public:
 
-		PVOID operator new (size_t ourSize);
-		void operator delete (PVOID us);
+	PVOID operator new(size_t ourSize);
+	void operator delete(PVOID us);
 
-		virtual void init (void) {
-			id = -1;
-			numMovers = 0;
-			pointWID = 0;
-			disbandOnNoPoint = false;
-			goalMap = nullptr;
-		}
-		
-		void init (MoverGroupData &data);
+	virtual void init(void)
+	{
+		id = -1;
+		numMovers = 0;
+		pointWID = 0;
+		disbandOnNoPoint = false;
+		goalMap = nullptr;
+	}
 
-		MoverGroup (void) {
-			init(void);
-		}
-			
-		virtual void destroy (void);
+	void init(MoverGroupData& data);
 
-		~MoverGroup (void) {
-			destroy(void);
-		}
+	MoverGroup(void)
+	{
+		init(void);
+	}
 
-		virtual int32_t getId (void) {
-			return(id);
-		}
+	virtual void destroy(void);
 
-		virtual void setId (int32_t _id) {
-			id = _id;
-		}
+	~MoverGroup(void)
+	{
+		destroy(void);
+	}
 
-		//int32_t calcRosterSize (BOOL checkUnits = TRUE);
+	virtual int32_t getId(void)
+	{
+		return(id);
+	}
 
-		//void addToRoster (TeamPtr team, int32_t* rosterIndex);
+	virtual void setId(int32_t _id)
+	{
+		id = _id;
+	}
 
-		int32_t getNumMovers (void) {
-			return(numMovers);
-		}
+	//int32_t calcRosterSize (BOOL checkUnits = TRUE);
 
-		void setNumMovers (int32_t num) {
-			numMovers = num;
-		}
+	//void addToRoster (TeamPtr team, int32_t* rosterIndex);
 
-		virtual bool add (MoverPtr mover);
+	int32_t getNumMovers(void)
+	{
+		return(numMovers);
+	}
 
-		virtual bool remove (MoverPtr mover);
+	void setNumMovers(int32_t num)
+	{
+		numMovers = num;
+	}
 
-		virtual bool isMember (MoverPtr mover);
+	virtual bool add(MoverPtr mover);
 
-		virtual int32_t disband (void);
+	virtual bool remove(MoverPtr mover);
 
-		virtual int32_t setPoint (MoverPtr mover);
+	virtual bool isMember(MoverPtr mover);
 
-		virtual MoverPtr getPoint (void);
+	virtual int32_t disband(void);
 
-		virtual void setDisbandOnNoPoint (bool setting) {
-			disbandOnNoPoint = setting;
-		}
+	virtual int32_t setPoint(MoverPtr mover);
 
-		virtual bool getDisbandOnNoPoint (void) {
-			return(disbandOnNoPoint);
-		}
+	virtual MoverPtr getPoint(void);
 
-		MoverPtr getMover (int32_t i);
+	virtual void setDisbandOnNoPoint(bool setting)
+	{
+		disbandOnNoPoint = setting;
+	}
 
-		MoverPtr selectPoint (bool excludePoint);
+	virtual bool getDisbandOnNoPoint(void)
+	{
+		return(disbandOnNoPoint);
+	}
 
-		virtual int32_t getMovers (MoverPtr* moverList);
+	MoverPtr getMover(int32_t i);
 
-		MechWarriorPtr getPointPilot (void);
+	MoverPtr selectPoint(bool excludePoint);
 
-		void statusCount (int32_t* statusTally);
+	virtual int32_t getMovers(MoverPtr* moverList);
 
-		void addToGUI (bool visible = true);
+	MechWarriorPtr getPointPilot(void);
 
-		int32_t calcMoveGoals (Stuff::Vector3D goal, Stuff::Vector3D* goalList);
+	void statusCount(int32_t* statusTally);
 
-		int32_t calcJumpGoals (Stuff::Vector3D goal, Stuff::Vector3D* goalList, GameObjectPtr DFATarget = nullptr);
+	void addToGUI(bool visible = true);
 
-		//----------------
-		// Tactical Orders
+	int32_t calcMoveGoals(Stuff::Vector3D goal, Stuff::Vector3D* goalList);
 
-		virtual int32_t handleTacticalOrder (TacticalOrder tacOrder, int32_t priority, Stuff::Vector3D* jumpGoalList = nullptr, bool queueGroupOrder = false);
+	int32_t calcJumpGoals(Stuff::Vector3D goal, Stuff::Vector3D* goalList, GameObjectPtr DFATarget = nullptr);
 
-		int32_t orderMoveToPoint (bool setTacOrder, int32_t origin, Stuff::Vector3D location, uint32_t params);
+	//----------------
+	// Tactical Orders
 
-		int32_t orderMoveToObject (bool setTacOrder, int32_t origin, GameObjectPtr target, int32_t fromArea, uint32_t params);
+	virtual int32_t handleTacticalOrder(TacticalOrder tacOrder, int32_t priority, Stuff::Vector3D* jumpGoalList = nullptr, bool queueGroupOrder = false);
 
-		int32_t orderTraversePath (int32_t origin, WayPathPtr wayPath, uint32_t params);
+	int32_t orderMoveToPoint(bool setTacOrder, int32_t origin, Stuff::Vector3D location, uint32_t params);
 
-		int32_t orderPatrolPath (int32_t origin, WayPathPtr wayPath);
+	int32_t orderMoveToObject(bool setTacOrder, int32_t origin, GameObjectPtr target, int32_t fromArea, uint32_t params);
 
-		int32_t orderPowerDown (int32_t origin);
+	int32_t orderTraversePath(int32_t origin, WayPathPtr wayPath, uint32_t params);
 
-		int32_t orderPowerUp (int32_t origin);
+	int32_t orderPatrolPath(int32_t origin, WayPathPtr wayPath);
 
-		int32_t orderAttackObject (int32_t origin, GameObjectPtr target, int32_t attackType, int32_t attackMethod, int32_t attackRange, int32_t aimLocation, int32_t fromArea, uint32_t params);
+	int32_t orderPowerDown(int32_t origin);
 
-		int32_t orderWithdraw (int32_t origin, Stuff::Vector3D location);
+	int32_t orderPowerUp(int32_t origin);
 
-		int32_t orderEject (int32_t origin);
+	int32_t orderAttackObject(int32_t origin, GameObjectPtr target, int32_t attackType, int32_t attackMethod, int32_t attackRange, int32_t aimLocation, int32_t fromArea, uint32_t params);
 
-		//--------------
-		// Combat Events
-		void triggerAlarm (int32_t alarmCode, uint32_t triggerId);
+	int32_t orderWithdraw(int32_t origin, Stuff::Vector3D location);
 
-		int32_t handleMateCrippled (uint32_t mateWID);
+	int32_t orderEject(int32_t origin);
 
-		int32_t handleMateDisabled (uint32_t mateWID);
+	//--------------
+	// Combat Events
+	void triggerAlarm(int32_t alarmCode, uint32_t triggerId);
 
-		int32_t handleMateDestroyed (uint32_t mateWID);
+	int32_t handleMateCrippled(uint32_t mateWID);
 
-		int32_t handleMateEjected (uint32_t mateWID);
+	int32_t handleMateDisabled(uint32_t mateWID);
 
-		void handleMateFiredWeapon (uint32_t mateWID);
+	int32_t handleMateDestroyed(uint32_t mateWID);
 
-		static void sortMovers (int32_t numMoversInGroup, MoverPtr* moverList, Stuff::Vector3D dest);
+	int32_t handleMateEjected(uint32_t mateWID);
 
-		static int32_t calcMoveGoals (Stuff::Vector3D goal, int32_t numMovers, Stuff::Vector3D* goalList);
+	void handleMateFiredWeapon(uint32_t mateWID);
 
-		static int32_t calcJumpGoals (Stuff::Vector3D goal, int32_t numMovers, Stuff::Vector3D* goalList, GameObjectPtr DFATarget);
+	static void sortMovers(int32_t numMoversInGroup, MoverPtr* moverList, Stuff::Vector3D dest);
 
-		//----------------
-		// Save Load
-		void copyTo (MoverGroupData &data);
+	static int32_t calcMoveGoals(Stuff::Vector3D goal, int32_t numMovers, Stuff::Vector3D* goalList);
+
+	static int32_t calcJumpGoals(Stuff::Vector3D goal, int32_t numMovers, Stuff::Vector3D* goalList, GameObjectPtr DFATarget);
+
+	//----------------
+	// Save Load
+	void copyTo(MoverGroupData& data);
 };
 
 //***************************************************************************

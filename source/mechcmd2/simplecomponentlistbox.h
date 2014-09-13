@@ -23,19 +23,19 @@ SimpleComponentListBox:
 **************************************************************************************************/
 class ComponentListBox: public aListBox
 {
-	public:
+public:
 
-		ComponentListBox(void);
-		~ComponentListBox(void);
-		void setMech( LogisticsVariant* pMech );
-		void setVehicle( LogisticsVehicle* pVehicle );
-		void setComponents( int32_t componentCount, LogisticsComponent** components );
+	ComponentListBox(void);
+	~ComponentListBox(void);
+	void setMech(LogisticsVariant* pMech);
+	void setVehicle(LogisticsVehicle* pVehicle);
+	void setComponents(int32_t componentCount, LogisticsComponent** components);
 
-	private:
+private:
 
-		ComponentListBox( const ComponentListBox& src );
-		ComponentListBox& operator=( const ComponentListBox& omponentListBox );
-		// HELPER FUNCTIONS
+	ComponentListBox(const ComponentListBox& src);
+	ComponentListBox& operator=(const ComponentListBox& omponentListBox);
+	// HELPER FUNCTIONS
 
 };
 

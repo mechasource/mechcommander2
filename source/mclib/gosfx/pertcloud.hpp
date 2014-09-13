@@ -11,23 +11,26 @@
 #include <gosfx/spinningcloud.hpp>
 #include <mlr/mlr.hpp>
 
-namespace MidLevelRenderer {class MLRNGonCloud;}
+namespace MidLevelRenderer
+{
+	class MLRNGonCloud;
+}
 
 namespace gosFX
 {
-	//############################################################################
-	//########################  PertCloud__Specification  #############################
-	//############################################################################
+//############################################################################
+//########################  PertCloud__Specification  #############################
+//############################################################################
 
 	class PertCloud__Specification:
 		public SpinningCloud__Specification
 	{
-	//----------------------------------------------------------------------
-	// Constructors/Destructors
-	//
+		//----------------------------------------------------------------------
+		// Constructors/Destructors
+		//
 	protected:
 		PertCloud__Specification(
-			Stuff::MemoryStream *stream,
+			Stuff::MemoryStream* stream,
 			int32_t gfx_version
 		);
 
@@ -35,52 +38,52 @@ namespace gosFX
 		PertCloud__Specification(uint32_t sides);
 
 		static PertCloud__Specification*
-			Make(
-				Stuff::MemoryStream *stream,
-				int32_t gfx_version
-			);
+		Make(
+			Stuff::MemoryStream* stream,
+			int32_t gfx_version
+		);
 
 		void
-			Copy(PertCloud__Specification *spec);
+		Copy(PertCloud__Specification* spec);
 
 		void
-			Save(Stuff::MemoryStream *stream);
+		Save(Stuff::MemoryStream* stream);
 
-		void 
-			BuildDefaults(void);
+		void
+		BuildDefaults(void);
 
-		bool 
-			IsDataValid(bool fix_data=false);
+		bool
+		IsDataValid(bool fix_data = false);
 
-	//-------------------------------------------------------------------------
-	// FCurves
-	//
+		//-------------------------------------------------------------------------
+		// FCurves
+		//
 	public:
-		SeededCurveOf<ComplexCurve, SplineCurve,Curve::e_ComplexSplineType>
-			m_size;
-		SeededCurveOf<ConstantCurve, SplineCurve,Curve::e_ConstantSplineType>
-			m_perturbation;
-		SeededCurveOf<ComplexCurve, LinearCurve,Curve::e_ComplexLinearType>
-			m_pCenterRed,
-			m_pCenterGreen,
-			m_pCenterBlue,
-			m_pCenterAlpha;
+		SeededCurveOf<ComplexCurve, SplineCurve, Curve::e_ComplexSplineType>
+		m_size;
+		SeededCurveOf<ConstantCurve, SplineCurve, Curve::e_ConstantSplineType>
+		m_perturbation;
+		SeededCurveOf<ComplexCurve, LinearCurve, Curve::e_ComplexLinearType>
+		m_pCenterRed,
+		m_pCenterGreen,
+		m_pCenterBlue,
+		m_pCenterAlpha;
 
 		uint32_t
-			m_vertices;
+		m_vertices;
 	};
 
 
-	//############################################################################
-	//########################  SpinningCloud__Particle  #############################
-	//############################################################################
+//############################################################################
+//########################  SpinningCloud__Particle  #############################
+//############################################################################
 
 	class PertCloud__Particle:
 		public SpinningCloud__Particle
 	{
 	public:
 		Stuff::Point3D
-			m_vertices[MidLevelRenderer::Limits::Max_Number_Of_NGon_Vertices];
+		m_vertices[MidLevelRenderer::Limits::Max_Number_Of_NGon_Vertices];
 	};
 
 //############################################################################
@@ -89,9 +92,9 @@ namespace gosFX
 
 	class PertCloud : public SpinningCloud
 	{
-	//----------------------------------------------------------------------------
-	// Class Registration Support
-	//
+		//----------------------------------------------------------------------------
+		// Class Registration Support
+		//
 	public:
 		static void __stdcall InitializeClass(void);
 		static void __stdcall TerminateClass(void);
@@ -100,16 +103,16 @@ namespace gosFX
 		typedef PertCloud__Particle Particle;
 
 	protected:
-		MidLevelRenderer::MLRNGonCloud * m_cloudImplementation;						// Pert to an MLR Pert cloud by Jim
-		Stuff::Point3D		*m_P_vertices;
-		Stuff::RGBAColor	*m_P_color;
+		MidLevelRenderer::MLRNGonCloud* m_cloudImplementation;						// Pert to an MLR Pert cloud by Jim
+		Stuff::Point3D*		m_P_vertices;
+		Stuff::RGBAColor*	m_P_color;
 
-	//----------------------------------------------------------------------------
-	// Class Data Support
-	//
+		//----------------------------------------------------------------------------
+		// Class Data Support
+		//
 	protected:
 		PertCloud(
-			Specification *spec,
+			Specification* spec,
 			uint32_t flags
 		);
 
@@ -117,57 +120,58 @@ namespace gosFX
 		~PertCloud(void);
 
 		static PertCloud*
-			Make(
-				Specification *spec,
-				uint32_t flags
-			);
+		Make(
+			Specification* spec,
+			uint32_t flags
+		);
 
 		Specification*
-			GetSpecification()
-				{
-					Check_Object(this);
-					return
-						Cast_Object(Specification*, m_specification);
-				}
+		GetSpecification()
+		{
+			Check_Object(this);
+			return
+				Cast_Object(Specification*, m_specification);
+		}
 		Particle*
-			GetParticle(uint32_t index)
-				{
-					Check_Object(this); Check_Object(GetSpecification());
-					return
-						Cast_Pointer(
-							Particle*,
-							&m_data[index*GetSpecification()->m_particleClassSize]
-						);
-				}
+		GetParticle(uint32_t index)
+		{
+			Check_Object(this);
+			Check_Object(GetSpecification());
+			return
+				Cast_Pointer(
+					Particle*,
+					&m_data[index * GetSpecification()->m_particleClassSize]
+				);
+		}
 
 		static ClassData* DefaultData;
 
-	//----------------------------------------------------------------------------
-	// Testing
-	//
+		//----------------------------------------------------------------------------
+		// Testing
+		//
 	public:
 		void TestInstance(void) const;
 
-	//----------------------------------------------------------------------------
-	// API
-	//
+		//----------------------------------------------------------------------------
+		// API
+		//
 	protected:
 		bool
-			AnimateParticle(
-				uint32_t index,
-				const Stuff::LinearMatrix4D *world_to_new_local,
-				Stuff::Time till
-			);
+		AnimateParticle(
+			uint32_t index,
+			const Stuff::LinearMatrix4D* world_to_new_local,
+			Stuff::Time till
+		);
 		void
-			CreateNewParticle(
-				uint32_t index,
-				Stuff::Point3D *translation
-			);
+		CreateNewParticle(
+			uint32_t index,
+			Stuff::Point3D* translation
+		);
 		void
-			DestroyParticle(uint32_t index);
+		DestroyParticle(uint32_t index);
 
 	public:
 		void
-			Draw(DrawInfo *info);
+		Draw(DrawInfo* info);
 	};
 }

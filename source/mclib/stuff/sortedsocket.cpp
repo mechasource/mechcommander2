@@ -14,7 +14,7 @@
 using namespace Stuff;
 
 
-SortedSocket::SortedSocket(Node *node, bool has_unique_entries)
+SortedSocket::SortedSocket(Node* node, bool has_unique_entries)
 	: SafeSocket(node)
 {
 	hasUniqueEntries = has_unique_entries;
@@ -38,8 +38,8 @@ Plug* SortedSocket::FindImplementation(PCVOID)
 	return nullptr;
 }
 
-SortedIterator::SortedIterator(SortedSocket *sortedSocket):
-SafeIterator(sortedSocket)
+SortedIterator::SortedIterator(SortedSocket* sortedSocket):
+	SafeIterator(sortedSocket)
 {
 }
 

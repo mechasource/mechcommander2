@@ -17,18 +17,21 @@ typedef struct	gos_Heap*		HGOSHEAP;
 
 namespace MidLevelRenderer
 {
-	typedef enum __mlr_version {
+	typedef enum __mlr_version
+	{
 		Current_MLR_Version = 9
 	};
 
-	struct Limits {
+	struct Limits
+	{
 		static uint32_t
-			Max_Number_Vertices_Per_Frame,
-			Max_Number_Primitives_Per_Frame,
-			Max_Number_ScreenQuads_Per_Frame,
-			Max_Size_Of_LightMap_MemoryStream;
+		Max_Number_Vertices_Per_Frame,
+		Max_Number_Primitives_Per_Frame,
+		Max_Number_ScreenQuads_Per_Frame,
+		Max_Size_Of_LightMap_MemoryStream;
 
-		typedef enum __mlr_hpp_constants {
+		typedef enum __mlr_hpp_constants
+		{
 			Max_Number_Vertices_Per_Mesh = 1024,
 			Max_Number_Vertices_Per_Polygon = 32,
 			Max_Number_Of_Texture_Bits = 14,
@@ -40,8 +43,8 @@ namespace MidLevelRenderer
 		};
 	};
 
-	uint32_t __stdcall ReadMLRVersion(Stuff::MemoryStream *erf_stream);
-	void __stdcall WriteMLRVersion(Stuff::MemoryStream *erf_stream);
+	uint32_t __stdcall ReadMLRVersion(Stuff::MemoryStream* erf_stream);
+	void __stdcall WriteMLRVersion(Stuff::MemoryStream* erf_stream);
 
 	void __stdcall InitializeClasses(
 		uint32_t Max_Number_Vertices_Per_Frame = 8192,
@@ -49,7 +52,7 @@ namespace MidLevelRenderer
 		uint32_t Max_Number_ScreenQuads_Per_Frame = 512,
 		uint32_t Max_Size_Of_LightMap_MemoryStream = 32768,
 		bool Convert_To_Triangle_Meshes = true
-		);
+	);
 	void __stdcall TerminateClasses(void);
 
 	extern HGOSHEAP Heap;

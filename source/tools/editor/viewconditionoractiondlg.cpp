@@ -39,7 +39,7 @@ void ViewConditionOrActionDlg::DoDataExchange(CDataExchange* pDX)
 
 BEGIN_MESSAGE_MAP(ViewConditionOrActionDlg, CDialog)
 	//{{AFX_MSG_MAP(ViewConditionOrActionDlg)
-		// NOTE: the ClassWizard will add message map macros here
+	// NOTE: the ClassWizard will add message map macros here
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 

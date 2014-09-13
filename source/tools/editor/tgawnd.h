@@ -22,10 +22,13 @@ class TGAWnd : public CStatic
 // Construction
 public:
 	TGAWnd(void);
-	void SetTGAFileName( const CString& str );
-	void SetTGAFileData( puint8_t data, int32_t size );
+	void SetTGAFileName(const CString& str);
+	void SetTGAFileData(puint8_t data, int32_t size);
 
-	PSTR GetImageData( ) { return m_pImage; }
+	PSTR GetImageData()
+	{
+		return m_pImage;
+	}
 
 	//{{AFX_VIRTUAL(TGAWnd)
 	//}}AFX_VIRTUAL
@@ -50,7 +53,7 @@ protected:
 	CPalette* m_Palette;
 	HBITMAP m_hSplashBitMap;
 	bool bThisIsInitialized;
-};	
+};
 
 
 //*************************************************************************************************

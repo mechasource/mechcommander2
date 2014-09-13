@@ -64,18 +64,18 @@
 #define	MIN_REINFORCEMENT_PART_ID	2050	//Reinforcements start here...
 #define	MAX_REINFORCEMENT_PART_ID	3550	//Only 1500 reinforcements allowed...
 #define MAX_MOVER_PART_ID			4095	//MIN_MOVER_PART_ID +
-											//MAX_COMMANDERS * MAX_MOVERGROUPS * MAX_MOVERGROUP_COUNT_START
+//MAX_COMMANDERS * MAX_MOVERGROUPS * MAX_MOVERGROUP_COUNT_START
 
 #define	MIN_TERRAIN_PART_ID		4096
 #define	MAX_TERRAIN_PART_ID		464895		//MIN_TERRAIN_PART_ID +
-											//block * (MAX_TERRAIN_BLOCK_VERTICES * MAX_TERRAIN_TILE_ITEMS) +
-											//vertex * MAX_TERRAIN_TILE_ITEMS +
-											//item
+//block * (MAX_TERRAIN_BLOCK_VERTICES * MAX_TERRAIN_TILE_ITEMS) +
+//vertex * MAX_TERRAIN_TILE_ITEMS +
+//item
 
 #define	MIN_TRAIN_PART_ID		512000
 #define	MAX_TRAIN_PART_ID		521999		//MIN_TRAIN_PART_ID +
-											//train * MAX_TRAIN_CARS +
-											//car
+//train * MAX_TRAIN_CARS +
+//car
 
 #define	MIN_CAMERA_DRONE_ID		525000
 #define	MAX_CAMERA_DRONE_ID		525999		//MIN_CAMERA_DRONE_ID + cameraDrone
@@ -89,7 +89,7 @@
 #define	MAX_TERRAIN_BLOCK_VERTICES	400
 #define	MAX_TERRAIN_TILE_ITEMS		8
 #define	MAX_CAMERA_DRONES			1000
-										
+
 //***************************************************************************
 
 #endif

@@ -11,22 +11,22 @@
 
 class EditorInterface;
 
-class MainMenu:public Window
+class MainMenu: public Window
 {
-  protected:
-		bool bEndModal;
-		EditorInterface *m_pEditorInterface;
-	
-	public:
-		Menu *pMenu;
+protected:
+	bool bEndModal;
+	EditorInterface* m_pEditorInterface;
 
-		MainMenu(EditorInterface *pEditorInterface);
-		
-		void DoModal(void);
+public:
+	Menu* pMenu;
 
-		void OnCommand(Window *wnd, int32_t nCommand);
+	MainMenu(EditorInterface* pEditorInterface);
+
+	void DoModal(void);
+
+	void OnCommand(Window* wnd, int32_t nCommand);
 };
 
-extern MainMenu *pMainMenu;
+extern MainMenu* pMainMenu;
 
 #endif

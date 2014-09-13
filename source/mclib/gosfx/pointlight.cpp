@@ -7,24 +7,24 @@
 #include <mlr/mlrpointlight.hpp>
 
 gosFX::LightManager
-	*gosFX::LightManager::Instance = nullptr;
+* gosFX::LightManager::Instance = nullptr;
 
 gosFX::Light*
-	gosFX::LightManager::MakePointLight(PCSTR light_map)
+gosFX::LightManager::MakePointLight(PCSTR light_map)
 {
 	return reinterpret_cast<Light*>(this);
 }
 
 void
-	gosFX::LightManager::ChangeLight(
-		Light *light,
-		Info *info
-	)
+gosFX::LightManager::ChangeLight(
+	Light* light,
+	Info* info
+)
 {
 }
 
 void
-	gosFX::LightManager::DeleteLight(Light *light)
+gosFX::LightManager::DeleteLight(Light* light)
 {
 }
 
@@ -35,7 +35,7 @@ void
 //------------------------------------------------------------------------------
 //
 gosFX::PointLight__Specification::PointLight__Specification(
-	Stuff::MemoryStream *stream,
+	Stuff::MemoryStream* stream,
 	int32_t gfx_version
 ):
 	Effect__Specification(PointLightClassID, stream, gfx_version)
@@ -43,16 +43,15 @@ gosFX::PointLight__Specification::PointLight__Specification(
 	Check_Pointer(this);
 	Verify(m_class == PointLightClassID);
 	//Verify(gos_GetCurrentHeap() == Heap);
-
 	m_red.Load(stream, gfx_version);
 	m_green.Load(stream, gfx_version);
 	m_blue.Load(stream, gfx_version);
 	m_intensity.Load(stream, gfx_version);
-	if (gfx_version>15)
+	if(gfx_version > 15)
 	{
 		m_innerRadius.Load(stream, gfx_version);
 		m_outerRadius.Load(stream, gfx_version);
-		if (gfx_version>16)
+		if(gfx_version > 16)
 			*stream >> m_lightMap;
 	}
 	else
@@ -60,7 +59,6 @@ gosFX::PointLight__Specification::PointLight__Specification(
 		m_innerRadius.SetCurve(0.0f);
 		m_outerRadius.SetCurve(25.0f);
 	}
-
 	*stream >> m_twoSided;
 }
 
@@ -77,57 +75,49 @@ gosFX::PointLight__Specification::PointLight__Specification():
 //------------------------------------------------------------------------------
 //
 gosFX::PointLight__Specification*
-	gosFX::PointLight__Specification::Make(
-		Stuff::MemoryStream *stream,
-		int32_t gfx_version
-	)
+gosFX::PointLight__Specification::Make(
+	Stuff::MemoryStream* stream,
+	int32_t gfx_version
+)
 {
 	Check_Object(stream);
-
 	gos_PushCurrentHeap(Heap);
-	PointLight__Specification *spec =
+	PointLight__Specification* spec =
 		new gosFX::PointLight__Specification(stream, gfx_version);
 	gos_PopCurrentHeap();
-
 	return spec;
 }
 
 //------------------------------------------------------------------------------
 //
 void
-	gosFX::PointLight__Specification::Save(Stuff::MemoryStream *stream)
+gosFX::PointLight__Specification::Save(Stuff::MemoryStream* stream)
 {
 	Check_Object(this);
 	Check_Object(stream);
 	Effect__Specification::Save(stream);
-
 	m_red.Save(stream);
 	m_green.Save(stream);
 	m_blue.Save(stream);
 	m_intensity.Save(stream);
 	m_innerRadius.Save(stream);
 	m_outerRadius.Save(stream);
-
 	*stream << m_lightMap << m_twoSided;
 }
 
 //------------------------------------------------------------------------------
 //
-void 
-	gosFX::PointLight__Specification::BuildDefaults()
+void
+gosFX::PointLight__Specification::BuildDefaults()
 {
-
 	Check_Object(this);
 	Effect__Specification::BuildDefaults();
-
 	m_red.SetCurve(1.0f);
 	m_green.SetCurve(1.0f);
 	m_blue.SetCurve(1.0f);
 	m_intensity.SetCurve(1.0f);
-
 	m_innerRadius.SetCurve(0.0f);
 	m_outerRadius.SetCurve(10.0f);
-
 	m_twoSided = false;
 }
 
@@ -135,35 +125,32 @@ void
 
 //------------------------------------------------------------------------------
 //
-bool 
-	gosFX::PointLight__Specification::IsDataValid(bool fix_data)
+bool
+gosFX::PointLight__Specification::IsDataValid(bool fix_data)
 {
-
 	Check_Object(this);
-return	Effect__Specification::IsDataValid(fix_data);
-/*
-	m_red.SetCurve(1.0f);
-	m_green.SetCurve(1.0f);
-	m_blue.SetCurve(1.0f);
-	m_intensity.SetCurve(1.0f);
+	return	Effect__Specification::IsDataValid(fix_data);
+	/*
+		m_red.SetCurve(1.0f);
+		m_green.SetCurve(1.0f);
+		m_blue.SetCurve(1.0f);
+		m_intensity.SetCurve(1.0f);
 
-	m_innerRadius.SetCurve(0.0f);
-	m_outerRadius.SetCurve(10.0f);
+		m_innerRadius.SetCurve(0.0f);
+		m_outerRadius.SetCurve(10.0f);
 
-	m_twoSided = false;
-*/
+		m_twoSided = false;
+	*/
 }
 
 //------------------------------------------------------------------------------
 //
 void
-	gosFX::PointLight__Specification::Copy(PointLight__Specification *spec)
+gosFX::PointLight__Specification::Copy(PointLight__Specification* spec)
 {
 	Check_Object(this);
 	Check_Object(spec);
-
 	Effect__Specification::Copy(spec);
-
 	gos_PushCurrentHeap(Heap);
 	m_red = spec->m_red;
 	m_green = spec->m_green;
@@ -179,32 +166,32 @@ void
 //############################################################################
 
 gosFX::PointLight::ClassData*
-	gosFX::PointLight::DefaultData = nullptr;
+gosFX::PointLight::DefaultData = nullptr;
 
 //------------------------------------------------------------------------------
 //
 void
-	gosFX::PointLight::InitializeClass()
+gosFX::PointLight::InitializeClass()
 {
 	Verify(!DefaultData);
 	//Verify(gos_GetCurrentHeap() == Heap);
 	DefaultData =
 		new ClassData(
-			PointLightClassID,
-			"gosFX::PointLight",
-			Effect::DefaultData,
-			(Effect::Factory)&Make,
-			(Specification::Factory)&Specification::Make
-		);
+		PointLightClassID,
+		"gosFX::PointLight",
+		Effect::DefaultData,
+		(Effect::Factory)&Make,
+		(Specification::Factory)&Specification::Make
+	);
 	Register_Object(DefaultData);
 }
 
 //------------------------------------------------------------------------------
 //
 void
-	gosFX::PointLight::TerminateClass()
+gosFX::PointLight::TerminateClass()
 {
-	if ( DefaultData )
+	if(DefaultData)
 	{
 		Unregister_Object(DefaultData);
 		delete DefaultData;
@@ -215,7 +202,7 @@ void
 //------------------------------------------------------------------------------
 //
 gosFX::PointLight::PointLight(
-	Specification *spec,
+	Specification* spec,
 	uint32_t flags
 ):
 	Effect(DefaultData, spec, flags)
@@ -228,7 +215,7 @@ gosFX::PointLight::PointLight(
 //
 gosFX::PointLight::~PointLight()
 {
-	if (m_light)
+	if(m_light)
 	{
 		Check_Pointer(m_light);
 		LightManager::Instance->DeleteLight(m_light);
@@ -238,30 +225,27 @@ gosFX::PointLight::~PointLight()
 //------------------------------------------------------------------------------
 //
 gosFX::PointLight*
-	gosFX::PointLight::Make(
-		Specification *spec,
-		uint32_t flags
-	)
+gosFX::PointLight::Make(
+	Specification* spec,
+	uint32_t flags
+)
 {
 	Check_Object(spec);
-
 	gos_PushCurrentHeap(Heap);
-	PointLight *obj = new gosFX::PointLight(spec, flags);
+	PointLight* obj = new gosFX::PointLight(spec, flags);
 	gos_PopCurrentHeap();
-
 	return obj;
 }
 
 //------------------------------------------------------------------------------
 //
 void
-	gosFX::PointLight::Start(ExecuteInfo *info)
+gosFX::PointLight::Start(ExecuteInfo* info)
 {
 	Check_Object(this);
 	Check_Object(info);
 	Effect::Start(info);
-
-	Specification *spec = GetSpecification();
+	Specification* spec = GetSpecification();
 	Check_Object(spec);
 	Check_Object(LightManager::Instance);
 	m_light = LightManager::Instance->MakePointLight(spec->m_lightMap);
@@ -271,37 +255,32 @@ void
 //------------------------------------------------------------------------------
 //
 bool
-	gosFX::PointLight::Execute(ExecuteInfo *info)
+gosFX::PointLight::Execute(ExecuteInfo* info)
 {
 	Check_Object(this);
 	Check_Object(info);
-
-	if (!IsExecuted())
+	if(!IsExecuted())
 		return false;
-
 	//
 	//------------------------
 	// Do the effect animation
 	//------------------------
 	//
-	if (!Effect::Execute(info))
+	if(!Effect::Execute(info))
 		return false;
-
 	//
 	//-----------------------------------------
 	// Animate the parent then get our pointers
 	//-----------------------------------------
 	//
-	Specification *spec = GetSpecification();
+	Specification* spec = GetSpecification();
 	Check_Object(spec);
-
 	//
 	//--------------------------------
 	// Animate the color and intensity
 	//--------------------------------
 	//
 	Stuff::LinearMatrix4D local_to_world;
-
 	//
 	//-----------------------------------------------------------
 	// Construct the info object and send it to the light manager
@@ -324,10 +303,9 @@ bool
 //------------------------------------------------------------------------------
 //
 void
-	gosFX::PointLight::Kill()
+gosFX::PointLight::Kill()
 {
 	Check_Object(this);
-
 	Effect::Kill();
 	Check_Pointer(m_light);
 	LightManager::Instance->DeleteLight(m_light);
@@ -337,7 +315,7 @@ void
 //------------------------------------------------------------------------------
 //
 void
-	gosFX::PointLight::TestInstance(void) const
+gosFX::PointLight::TestInstance(void) const
 {
 	Verify(IsDerivedFrom(DefaultData));
 }

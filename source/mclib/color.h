@@ -16,10 +16,10 @@
 #endif
 
 //----------------------------------------------------------------------------------
-void initColorTables (void);
+void initColorTables(void);
 
-void destroyColorTables (void);
+void destroyColorTables(void);
 
-uint32_t *getColorTable (int32_t tableNum);
+uint32_t* getColorTable(int32_t tableNum);
 //----------------------------------------------------------------------------------
 #endif

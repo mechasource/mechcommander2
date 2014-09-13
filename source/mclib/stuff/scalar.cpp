@@ -15,11 +15,11 @@ using namespace Stuff;
 
 
 int32_t
-	Stuff::Round(Scalar value)
+Stuff::Round(float value)
 {
 	int32_t whole_part = static_cast<int32_t>(floor(value));
-	Scalar fractional_part = value - whole_part;
-	if (fractional_part >= 0.5)
+	float fractional_part = value - whole_part;
+	if(fractional_part >= 0.5)
 	{
 		return whole_part + 1;
 	}
@@ -30,26 +30,24 @@ int32_t
 }
 
 void
-	Stuff::Find_Roots(
-		Scalar a,		// a*x*x + b*x + c = 0
-		Scalar b,
-		Scalar c,
-		Scalar *center,
-		Scalar *range
-	)
+Stuff::Find_Roots(
+	float a,		// a*x*x + b*x + c = 0
+	float b,
+	float c,
+	float* center,
+	float* range
+)
 {
-
 	//
 	//---------------------------------
 	// See if the quadratic is solvable
 	//---------------------------------
 	//
-	*range = b*b - 4.0f*a*c;
-	if (*range < 0.0f || Small_Enough(a))
+	*range = b * b - 4.0f * a * c;
+	if(*range < 0.0f || Small_Enough(a))
 	{
 		*range = -1.0f;
 	}
-
 	else
 	{
 		//
@@ -59,11 +57,10 @@ void
 		//
 		a *= 2.0f;
 		*center = -b / a;
-		if (*range < SMALL)
+		if(*range < SMALL)
 		{
 			*range = 0.0f;
 		}
-
 		//
 		//--------------------------
 		// Find the two-root extents
@@ -79,91 +76,63 @@ void
 
 
 uint32_t
-	Stuff::Scaled_Float_To_Bits(float in, float min, float max, uint32_t bits)
+Stuff::Scaled_Float_To_Bits(float in, float min, float max, uint32_t bits)
 {
 	Verify(bits < 32);
 	Verify(bits > 0);
-
 	Verify(min < max);
 	Verify(in <= max);
 	Verify(in >= min);
-	
-
-	uint32_t biggest_number = (0xffffffff>>(32-bits));
+	uint32_t biggest_number = (0xffffffff >> (32 - bits));
 	float local_in =  in - min;
-	float range = (max-min);
-
-	
-	uint32_t return_value = (uint32_t)((local_in/range) * (float)biggest_number);
-	
+	float range = (max - min);
+	uint32_t return_value = (uint32_t)((local_in / range) * (float)biggest_number);
 	//Verify((uint32_t)return_value >= 0x00000000);
 	Verify((uint32_t)return_value <= (uint32_t)biggest_number);
-
 	return return_value;
-
 }
 
 float
-	Stuff::Scaled_Float_From_Bits(uint32_t in, float min, float max, uint32_t bits)
+Stuff::Scaled_Float_From_Bits(uint32_t in, float min, float max, uint32_t bits)
 {
 	Verify(bits < 32);
 	Verify(bits > 0);
-
 	Verify(min < max);
-
-
-	in &= (0xffffffff>>(32-bits));
-
-	uint32_t biggest_number = (0xffffffff>>(32-bits));
-
-	float ratio = in/(float)biggest_number;
-	float range = (max-min);
-	float return_value = (ratio * range)+min;
-
-
+	in &= (0xffffffff >> (32 - bits));
+	uint32_t biggest_number = (0xffffffff >> (32 - bits));
+	float ratio = in / (float)biggest_number;
+	float range = (max - min);
+	float return_value = (ratio * range) + min;
 	return return_value;
 }
 
 uint32_t
-	Stuff::Scaled_Int_To_Bits(int32_t in, int32_t min, int32_t max, uint32_t bits)
+Stuff::Scaled_Int_To_Bits(int32_t in, int32_t min, int32_t max, uint32_t bits)
 {
-
 	Verify(bits < 32);
 	Verify(bits > 0);
-
 	Verify(min < max);
 	Verify(in <= max);
 	Verify(in >= min);
-
-	uint32_t biggest_number = (0xffffffff>>(32-bits));
+	uint32_t biggest_number = (0xffffffff >> (32 - bits));
 	int32_t local_in =  in - min;
-	int32_t range = (max-min);
-
-	
-	uint32_t return_value = (uint32_t)(((float)local_in/(float)range) * (float)biggest_number);
-	
+	int32_t range = (max - min);
+	uint32_t return_value = (uint32_t)(((float)local_in / (float)range) * (float)biggest_number);
 	//Verify((uint32_t)return_value >= 0x00000000);
 	Verify((uint32_t)return_value < (uint32_t)biggest_number);
-
 	return return_value;
-
 }
 
 int32_t
-	Stuff::Scaled_Int_From_Bits(uint32_t in, int32_t min, int32_t max, uint32_t bits)
+Stuff::Scaled_Int_From_Bits(uint32_t in, int32_t min, int32_t max, uint32_t bits)
 {
 	Verify(bits < 32);
 	Verify(bits > 0);
-
 	Verify(min < max);
-
-
-	uint32_t biggest_number = (0xffffffff>>(32-bits));
-
-	float ratio = (float)in/(float)biggest_number;
-	int32_t range = (max-min);
-	int32_t return_value = ((int32_t)(ratio * (float)range))+min;
-
+	uint32_t biggest_number = (0xffffffff >> (32 - bits));
+	float ratio = (float)in / (float)biggest_number;
+	int32_t range = (max - min);
+	int32_t return_value = ((int32_t)(ratio * (float)range)) + min;
 	return return_value;
 }
 

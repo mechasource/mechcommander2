@@ -36,7 +36,6 @@ MissionSettingsDlg::MissionSettingsDlg(CWnd* pParent /*=nullptr*/)
 	m_MissionNameResourceStringID = 0;
 	m_BlurbResourceStringID = 0;
 	m_Blurb2ResourceStringID = 0;
-
 	//{{AFX_DATA_INIT(MissionSettingsDlg)
 	m_AuthorEdit = _T("");
 	m_MaxPlayers = 0;
@@ -132,123 +131,146 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // MissionSettingsDlg message handlers
 
-static BOOL CSLoadString(int32_t resourceID, CString &targetStr) {
+static BOOL CSLoadString(int32_t resourceID, CString& targetStr)
+{
 	char szTmp[16384/*max string length*/];
-	cLoadString( resourceID, szTmp, 16384/*max string length*/ );
+	cLoadString(resourceID, szTmp, 16384/*max string length*/);
 	targetStr = szTmp;
 	CString tmpStr;
 	tmpStr.Format("mc2res.dll:%d Not defined", resourceID);
-	if (0 == strcmp(tmpStr.GetBuffer(0), szTmp)) {
+	if(0 == strcmp(tmpStr.GetBuffer(0), szTmp))
+	{
 		return (0);
 	}
 	return (!0);
 }
 
-void MissionSettingsDlg::UpdateMissionNameDisplay() {
+void MissionSettingsDlg::UpdateMissionNameDisplay()
+{
 	UpdateData(TRUE);
-	if (m_MissionNameUseResourceString) {
+	if(m_MissionNameUseResourceString)
+	{
 		m_MissionNameResourceStringIDEdit.Format("%d", m_MissionNameResourceStringID);
 		int32_t ret = CSLoadString(m_MissionNameResourceStringID, m_MissionNameEdit);
-		if (0 == ret) {
+		if(0 == ret)
+		{
 			m_MissionNameEdit = _TEXT("");
 		}
-	} else {
+	}
+	else
+	{
 		m_MissionNameResourceStringIDEdit = _TEXT("");
 		m_MissionNameEdit = m_MissionNameUnlocalizedText;
 	}
 	UpdateData(FALSE);
 }
 
-void MissionSettingsDlg::UpdateBlurbDisplay() {
+void MissionSettingsDlg::UpdateBlurbDisplay()
+{
 	UpdateData(TRUE);
-	if (m_BlurbUseResourceString) {
+	if(m_BlurbUseResourceString)
+	{
 		m_BlurbResourceStringIDEdit.Format("%d", m_BlurbResourceStringID);
 		int32_t ret = CSLoadString(m_BlurbResourceStringID, m_BlurbEdit);
-		if (0 == ret) {
+		if(0 == ret)
+		{
 			m_BlurbEdit = _TEXT("");
 		}
-	} else {
+	}
+	else
+	{
 		m_BlurbResourceStringIDEdit = _TEXT("");
 		m_BlurbEdit = m_BlurbUnlocalizedText;
 	}
 	UpdateData(FALSE);
 }
 
-void MissionSettingsDlg::UpdateBlurb2Display() {
+void MissionSettingsDlg::UpdateBlurb2Display()
+{
 	UpdateData(TRUE);
-	if (m_Blurb2UseResourceString) {
+	if(m_Blurb2UseResourceString)
+	{
 		m_Blurb2ResourceStringIDEdit.Format("%d", m_Blurb2ResourceStringID);
 		int32_t ret = CSLoadString(m_Blurb2ResourceStringID, m_Blurb2Edit);
-		if (0 == ret) {
+		if(0 == ret)
+		{
 			m_Blurb2Edit = _TEXT("");
 		}
-	} else {
+	}
+	else
+	{
 		m_Blurb2ResourceStringIDEdit = _TEXT("");
 		m_Blurb2Edit = m_Blurb2UnlocalizedText;
 	}
 	UpdateData(FALSE);
 }
 
-BOOL MissionSettingsDlg::OnInitDialog() 
+BOOL MissionSettingsDlg::OnInitDialog()
 {
 	CDialog::OnInitDialog();
-
 	m_MaxTeamsSpin.SetRange(2, GAME_MAX_PLAYERS);
 	m_MaxPlayersSpin.SetRange(2, GAME_MAX_PLAYERS);
 	m_NumRPBuildingsSpin.SetRange(0, 32/*max random RP buildings*/);
-
 	UpdateMissionNameDisplay();
 	UpdateBlurbDisplay();
 	UpdateBlurb2Display();
-
 	return TRUE;  // return TRUE unless you set the focus to a control
-	              // EXCEPTION: OCX Property Pages should return FALSE
+	// EXCEPTION: OCX Property Pages should return FALSE
 }
 
-void MissionSettingsDlg::OnBrowseButton() 
+void MissionSettingsDlg::OnBrowseButton()
 {
 	UpdateData(TRUE);
-	while (true) {
-		CFileDialog selectAVIFileDialog(TRUE,_T("AVI"),_T("*.AVI"),
-						 OFN_HIDEREADONLY|OFN_OVERWRITEPROMPT|OFN_NOCHANGEDIR,
-						 _T("Movie (*.AVI)|*.AVI|"));
+	while(true)
+	{
+		CFileDialog selectAVIFileDialog(TRUE, _T("AVI"), _T("*.AVI"),
+										OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT | OFN_NOCHANGEDIR,
+										_T("Movie (*.AVI)|*.AVI|"));
 		selectAVIFileDialog.m_ofn.lpstrInitialDir = moviePath;
-		if( selectAVIFileDialog.DoModal()==IDOK ) {
+		if(selectAVIFileDialog.DoModal() == IDOK)
+		{
 			CString pathname = selectAVIFileDialog.GetPathName();
 			int32_t CurrentDirectoryBufferLength = GetCurrentDirectory(0, 0);
 			assert(1 <= CurrentDirectoryBufferLength);
 			//TCHAR *CurrentDirectoryBuffer = new TCHAR[CurrentDirectoryBufferLength];
-			TCHAR *CurrentDirectoryBuffer = (TCHAR *)malloc(sizeof(TCHAR) * CurrentDirectoryBufferLength);
+			TCHAR* CurrentDirectoryBuffer = (TCHAR*)malloc(sizeof(TCHAR) * CurrentDirectoryBufferLength);
 			int32_t ret = GetCurrentDirectory(CurrentDirectoryBufferLength, CurrentDirectoryBuffer);
 			assert(CurrentDirectoryBufferLength - 1 == ret);
 			ret = -1;
-			if (pathname.GetLength() > (CurrentDirectoryBufferLength - 1)) {
+			if(pathname.GetLength() > (CurrentDirectoryBufferLength - 1))
+			{
 				ret = _tcsnicmp(CurrentDirectoryBuffer, pathname.GetBuffer(0), CurrentDirectoryBufferLength - 1);
 			}
 			//delete [] CurrentDirectoryBuffer; CurrentDirectoryBuffer = 0;
-			free(CurrentDirectoryBuffer); CurrentDirectoryBuffer = 0;
-			if (0 == ret) {
+			free(CurrentDirectoryBuffer);
+			CurrentDirectoryBuffer = 0;
+			if(0 == ret)
+			{
 				m_VideoFilename = (pathname.GetBuffer(0) + (CurrentDirectoryBufferLength - 1) + 1);
 				break;
-			} else {
+			}
+			else
+			{
 				AfxMessageBox(IDS_MUST_BE_IN_SUBDIRECTORY);
 			}
-		} else {
+		}
+		else
+		{
 			break;
 		}
 	}
-
 	UpdateData(FALSE);
 }
 
-void MissionSettingsDlg::OnMissionNameEditButton() 
+void MissionSettingsDlg::OnMissionNameEditButton()
 {
 	CUserTextEdit userTextEditDialog;
 	userTextEditDialog.m_UnlocalizedText = m_MissionNameUnlocalizedText;
 	userTextEditDialog.m_UseResourceString = m_MissionNameUseResourceString;
 	userTextEditDialog.m_ResourceStringID = m_MissionNameResourceStringID;
 	int32_t ret = userTextEditDialog.DoModal();
-	if (IDOK == ret) {
+	if(IDOK == ret)
+	{
 		m_MissionNameUnlocalizedText = userTextEditDialog.m_UnlocalizedText;
 		m_MissionNameUseResourceString = userTextEditDialog.m_UseResourceString;
 		m_MissionNameResourceStringID = userTextEditDialog.m_ResourceStringID;
@@ -256,14 +278,15 @@ void MissionSettingsDlg::OnMissionNameEditButton()
 	}
 }
 
-void MissionSettingsDlg::OnBlurbEditButton() 
+void MissionSettingsDlg::OnBlurbEditButton()
 {
 	CUserTextEdit userTextEditDialog;
 	userTextEditDialog.m_UnlocalizedText = m_BlurbUnlocalizedText;
 	userTextEditDialog.m_UseResourceString = m_BlurbUseResourceString;
 	userTextEditDialog.m_ResourceStringID = m_BlurbResourceStringID;
 	int32_t ret = userTextEditDialog.DoModal();
-	if (IDOK == ret) {
+	if(IDOK == ret)
+	{
 		m_BlurbUnlocalizedText = userTextEditDialog.m_UnlocalizedText;
 		m_BlurbUseResourceString = userTextEditDialog.m_UseResourceString;
 		m_BlurbResourceStringID = userTextEditDialog.m_ResourceStringID;
@@ -271,14 +294,15 @@ void MissionSettingsDlg::OnBlurbEditButton()
 	}
 }
 
-void MissionSettingsDlg::OnBlurb2EditButton() 
+void MissionSettingsDlg::OnBlurb2EditButton()
 {
 	CUserTextEdit userTextEditDialog;
 	userTextEditDialog.m_UnlocalizedText = m_Blurb2UnlocalizedText;
 	userTextEditDialog.m_UseResourceString = m_Blurb2UseResourceString;
 	userTextEditDialog.m_ResourceStringID = m_Blurb2ResourceStringID;
 	int32_t ret = userTextEditDialog.DoModal();
-	if (IDOK == ret) {
+	if(IDOK == ret)
+	{
 		m_Blurb2UnlocalizedText = userTextEditDialog.m_UnlocalizedText;
 		m_Blurb2UseResourceString = userTextEditDialog.m_UseResourceString;
 		m_Blurb2ResourceStringID = userTextEditDialog.m_ResourceStringID;

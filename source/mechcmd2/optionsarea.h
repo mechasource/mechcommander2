@@ -25,15 +25,15 @@ class CPrefs;
 class OptionsXScreen : public LogisticsScreen
 {
 public:
-	
+
 	OptionsXScreen(void);
 	virtual ~OptionsXScreen(void);
-	
+
 	void init(FitIniFile* file);
 	bool isDone(void);
 	virtual void render(void);
 	virtual void update(void);
-	virtual int32_t			handleMessage( uint32_t, uint32_t );
+	virtual int32_t			handleMessage(uint32_t, uint32_t);
 
 	void updateOptions(void); // put into inventory
 
@@ -56,29 +56,41 @@ class ScrollX : public aObject
 public:
 
 	ScrollX(void);
-	int32_t	init(aButton* pLeft, aButton* pRight, aButton* pTab );
+	int32_t	init(aButton* pLeft, aButton* pRight, aButton* pTab);
 	virtual void	update(void);
 
-	virtual int32_t		handleMessage( uint32_t message, uint32_t fromWho );
+	virtual int32_t		handleMessage(uint32_t message, uint32_t fromWho);
 
 	void			SetScrollMax(float newMax);
 	void			SetScrollPos(float newPos);
-	float			GetScrollMax(void){return scrollMax;};
-	float			GetScrollPos(void){return scrollPos;};
-	int32_t			SetSrollInc( int32_t newInc ){ scrollInc = (float)newInc; } // amount you move for one arrow click
-	int32_t			SetScrollPage(int32_t newInc){ pageInc = (float)newInc;} // amount you move if you click on the bar itself
+	float			GetScrollMax(void)
+	{
+		return scrollMax;
+	};
+	float			GetScrollPos(void)
+	{
+		return scrollPos;
+	};
+	int32_t			SetSrollInc(int32_t newInc)
+	{
+		scrollInc = (float)newInc;    // amount you move for one arrow click
+	}
+	int32_t			SetScrollPage(int32_t newInc)
+	{
+		pageInc = (float)newInc;   // amount you move if you click on the bar itself
+	}
 	void			ScrollUp(void);
 	void			ScrollPageUp(void);
 	void			ScrollDown(void);
 	void			ScrollPageDown(void);
-	void			SetScroll( int32_t newScrollPos );	
-	void			Enable( bool enable );
+	void			SetScroll(int32_t newScrollPos);
+	void			Enable(bool enable);
 
 private:
 
 	void ResizeAreas(void);
 
-	 
+
 	aButton*		buttons[3];
 	float			scrollMax;
 	float			scrollPos;
@@ -98,9 +110,9 @@ public:
 	virtual void update(void);
 	virtual void begin(void);
 	virtual void end(void);
-	void reset( const CPrefs& newPrefs);
+	void reset(const CPrefs& newPrefs);
 
-	virtual int32_t		handleMessage( uint32_t message, uint32_t fromWho );
+	virtual int32_t		handleMessage(uint32_t message, uint32_t fromWho);
 
 private:
 	aDropList		resolutionList;
@@ -111,19 +123,19 @@ private:
 
 class OptionsAudio : public LogisticsScreen
 {
-	public:
-		void init(int32_t xOffset, int32_t yOffset);
-		virtual void render(void);
-		virtual void update(void);
-		virtual void begin(void);
-		virtual void end(void);
-		void reset(const CPrefs& newPrefs);
+public:
+	void init(int32_t xOffset, int32_t yOffset);
+	virtual void render(void);
+	virtual void update(void);
+	virtual void begin(void);
+	virtual void end(void);
+	void reset(const CPrefs& newPrefs);
 
-		virtual int32_t		handleMessage( uint32_t message, uint32_t fromWho );
+	virtual int32_t		handleMessage(uint32_t message, uint32_t fromWho);
 
-	private:
+private:
 
-		ScrollX		scrollBars[5];
+	ScrollX		scrollBars[5];
 
 };
 
@@ -131,19 +143,19 @@ class OptionsHotKeys : public LogisticsScreen
 {
 
 public:
-		void init(int32_t xOffset, int32_t yOffset);
-		virtual void render(void);
-		virtual void update(void);
-		virtual void begin(void);
-		virtual void end(void);
-		void reset(bool bUseOld);
+	void init(int32_t xOffset, int32_t yOffset);
+	virtual void render(void);
+	virtual void update(void);
+	virtual void begin(void);
+	virtual void end(void);
+	void reset(bool bUseOld);
 
-		virtual int32_t		handleMessage( uint32_t message, uint32_t fromWho );
+	virtual int32_t		handleMessage(uint32_t message, uint32_t fromWho);
 
 private:
 
-	static void makeKeyString( int32_t hotKey, PSTR buffer );
-	static int32_t makeInputKeyString( int32_t& hotKey, PSTR buffer );
+	static void makeKeyString(int32_t hotKey, PSTR buffer);
+	static int32_t makeInputKeyString(int32_t& hotKey, PSTR buffer);
 
 
 	aListBox		hotKeyList;
@@ -161,11 +173,11 @@ public:
 	virtual void end(void);
 	void reset(const CPrefs& newPrefs);
 
-	virtual int32_t		handleMessage( uint32_t message, uint32_t fromWho );
+	virtual int32_t		handleMessage(uint32_t message, uint32_t fromWho);
 
 	void resetCamera(void);
 
-	private:
+private:
 
 	SimpleCamera	camera;
 };
@@ -177,18 +189,30 @@ public:
 	static void init(void);
 	virtual void render(void);
 	virtual void update(void);
-	
-	void setDescription( PCSTR pText );
-	void setKey( PCSTR pText );
 
-	HotKeyListItem( );
+	void setDescription(PCSTR pText);
+	void setKey(PCSTR pText);
+
+	HotKeyListItem();
 	~HotKeyListItem(void);
 
-	void	setHotKey( int32_t lNew ){ hotKey = lNew; }
-	void	setCommand( int32_t lCommand ) { command = lCommand; }
+	void	setHotKey(int32_t lNew)
+	{
+		hotKey = lNew;
+	}
+	void	setCommand(int32_t lCommand)
+	{
+		command = lCommand;
+	}
 
-	int32_t	getCommand(void) const { return command; }
-	int32_t	getHotKey(void) const { return hotKey; }
+	int32_t	getCommand(void) const
+	{
+		return command;
+	}
+	int32_t	getHotKey(void) const
+	{
+		return hotKey;
+	}
 
 private:
 
@@ -200,7 +224,7 @@ private:
 	int32_t		command;
 
 	static		HotKeyListItem* s_item;
-	
+
 };
 
 

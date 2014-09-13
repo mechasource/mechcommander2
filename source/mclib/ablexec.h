@@ -30,7 +30,8 @@
 #define	ABL_PARAM_INTEGER		1
 #define	ABL_PARAM_REAL			2
 
-typedef enum ABLStackItemType {
+typedef enum ABLStackItemType
+{
 	ABL_STACKITEM_CHAR,
 	ABL_STACKITEM_INTEGER,
 	ABL_STACKITEM_REAL,
@@ -42,7 +43,8 @@ typedef enum ABLStackItemType {
 	NUM_ABL_STACKITEMS
 } ABLStackItemType;
 
-typedef struct {
+typedef struct
+{
 	char		type;
 	int32_t		integer;
 	float		real;
@@ -53,7 +55,8 @@ typedef ABLParam* ABLParamPtr;
 //---------------
 // RUN-TIME STACK
 
-typedef union {
+typedef union
+{
 	int32_t			integer;
 	float			real;
 	uint8_t	byte;
@@ -62,9 +65,11 @@ typedef union {
 
 typedef StackItem* StackItemPtr;
 
-typedef struct {
+typedef struct
+{
 	int32_t			type;
-	union {
+	union
+	{
 		int32_t		integer;
 		float		real;
 		bool		boolean;
@@ -78,7 +83,8 @@ typedef struct {
 
 typedef ABLStackItem* ABLStackItemPtr;
 
-typedef struct {
+typedef struct
+{
 	StackItem	functionValue;
 	StackItem	staticLink;
 	StackItem	dynamicLink;
@@ -126,93 +132,93 @@ extern StackItemPtr		stackFrameBasePtr;
 //----------
 // FUNCTIONS
 
-SymTableNodePtr getSymTableCodePtr (void);
-TypePtr execRoutineCall (void);
-TypePtr execExpression (void);
-TypePtr execVariable (void);
+SymTableNodePtr getSymTableCodePtr(void);
+TypePtr execRoutineCall(void);
+TypePtr execExpression(void);
+TypePtr execVariable(void);
 
 //*************************
 // CRUNCH/DECRUNCH routines
 //*************************
 
-void crunchToken (void);
-void crunchSymTableNodePtr (SymTableNodePtr nodePtr);
-void crunchStatementMarker (void);
-void uncrunchStatementMarker (void);
-PSTR crunchAddressMarker (Address address);
-PSTR fixupAddressMarker (Address address);
-void crunchInteger (int32_t value);
-void crunchByte (uint8_t value);
-void crunchOffset (Address address);
-PSTR createCodeSegment (int32_t& codeSegmentSize);
-SymTableNodePtr getCodeSymTableNodePtr (void);
-int32_t getCodeStatementMarker (void);
-PSTR getCodeAddressMarker (void);
-int32_t getCodeInteger (void);
-uint8_t getCodeByte (void);
-PSTR getCodeAddress (void);
+void crunchToken(void);
+void crunchSymTableNodePtr(SymTableNodePtr nodePtr);
+void crunchStatementMarker(void);
+void uncrunchStatementMarker(void);
+PSTR crunchAddressMarker(Address address);
+PSTR fixupAddressMarker(Address address);
+void crunchInteger(int32_t value);
+void crunchByte(uint8_t value);
+void crunchOffset(Address address);
+PSTR createCodeSegment(int32_t& codeSegmentSize);
+SymTableNodePtr getCodeSymTableNodePtr(void);
+int32_t getCodeStatementMarker(void);
+PSTR getCodeAddressMarker(void);
+int32_t getCodeInteger(void);
+uint8_t getCodeByte(void);
+PSTR getCodeAddress(void);
 
 //***************
 // STACK routines
 //***************
 
-void pop (void);
-void getCodeToken (void);
-void pushInteger (int32_t value);
-void pushReal (float value);
-void pushByte (char value);
-void pushAddress (Address address);
-void pushBoolean (bool value);
-void pushStackFrameHeader (int32_t oldLevel, int32_t newLevel);
-void allocLocal (TypePtr typePtr);
-void freeData (SymTableNodePtr idPtr);
+void pop(void);
+void getCodeToken(void);
+void pushInteger(int32_t value);
+void pushReal(float value);
+void pushByte(char value);
+void pushAddress(Address address);
+void pushBoolean(bool value);
+void pushStackFrameHeader(int32_t oldLevel, int32_t newLevel);
+void allocLocal(TypePtr typePtr);
+void freeData(SymTableNodePtr idPtr);
 
 //*****************************
 // FUNCTION ENTRY/EXIT routines
 //*****************************
 
-void routineEntry (SymTableNodePtr routineIdPtr);
-void routineExit (SymTableNodePtr routineIdPtr);
-void execute (SymTableNodePtr routineIdPtr);
-void executeChild (SymTableNodePtr routineIdPtr, SymTableNodePtr childRoutineIdPtr);
+void routineEntry(SymTableNodePtr routineIdPtr);
+void routineExit(SymTableNodePtr routineIdPtr);
+void execute(SymTableNodePtr routineIdPtr);
+void executeChild(SymTableNodePtr routineIdPtr, SymTableNodePtr childRoutineIdPtr);
 
 //******************
 // EXECSTMT routines
 //******************
 
-void execStatement (void);
-void execAssignmentStatement (SymTableNodePtr idPtr);
-TypePtr execRoutineCall (SymTableNodePtr routineIdPtr, bool skipOrder);
-TypePtr execDeclaredRoutineCall (SymTableNodePtr routineIdPtr, bool skipOrder);
-void execActualParams (SymTableNodePtr routineIdPtr);
-void execCompoundStatement (void);
-void execCaseStatement (void);
-void execForStatement (void);
-void execIfStatement (void);
-void execRepeatStatement (void);
-void execWhileStatement (void);
-void execSwitchStatement (void);
-void execTransStatement (void);
-void execTransBackStatement (void);
+void execStatement(void);
+void execAssignmentStatement(SymTableNodePtr idPtr);
+TypePtr execRoutineCall(SymTableNodePtr routineIdPtr, bool skipOrder);
+TypePtr execDeclaredRoutineCall(SymTableNodePtr routineIdPtr, bool skipOrder);
+void execActualParams(SymTableNodePtr routineIdPtr);
+void execCompoundStatement(void);
+void execCaseStatement(void);
+void execForStatement(void);
+void execIfStatement(void);
+void execRepeatStatement(void);
+void execWhileStatement(void);
+void execSwitchStatement(void);
+void execTransStatement(void);
+void execTransBackStatement(void);
 
 //******************
 // EXECEXPR routines
 //******************
 
-TypePtr execField (void);
-TypePtr execSubscripts (TypePtr typePtr);
-TypePtr execConstant (SymTableNodePtr idPtr);
-TypePtr execVariable (SymTableNodePtr idPtr, UseType use);
-TypePtr execFactor (void);
-TypePtr execTerm (void);
-TypePtr execSimpleExpression (void);
-TypePtr execExpression (void);
+TypePtr execField(void);
+TypePtr execSubscripts(TypePtr typePtr);
+TypePtr execConstant(SymTableNodePtr idPtr);
+TypePtr execVariable(SymTableNodePtr idPtr, UseType use);
+TypePtr execFactor(void);
+TypePtr execTerm(void);
+TypePtr execSimpleExpression(void);
+TypePtr execExpression(void);
 
 //*****************
 // EXECSTD routines
 //*****************
 
-TypePtr execStandardRoutineCall (SymTableNodePtr routineIdPtr, bool skipOrder);
+TypePtr execStandardRoutineCall(SymTableNodePtr routineIdPtr, bool skipOrder);
 
 //***************************************************************************
 

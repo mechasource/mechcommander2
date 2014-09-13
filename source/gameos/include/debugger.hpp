@@ -29,7 +29,7 @@ extern uint32_t FrameAdvance;							// Used to step or fast forward through scri
 extern uint32_t OldFreeze;								// Old value of gFreezeLogic
 extern uint32_t OldRender;								// Old value of gStopRendering;
 extern uint32_t PerfCounterSelected;
-extern int32_t PerfYStart,PerfYEnd;
+extern int32_t PerfYStart, PerfYEnd;
 extern uint32_t DoUpdateWindow;
 extern uint32_t DoingAdvance;
 extern uint32_t OldgStopSystem;
@@ -50,18 +50,18 @@ extern uint32_t gShowALLUseage;
 extern gos_VERTEX Graph[512];
 extern uint32_t gScreenBMP;
 
-void	__stdcall WalkStack( uint32_t* RoutineAddresses, uint32_t NumberOfLevels, uint32_t IgnoreLevels );
-PSTR	__stdcall DecodeAddress( uint32_t Address, uint8_t brief = true );
-void	__stdcall DrawLines( int32_t X1, int32_t Y1, int32_t X2, int32_t Y2, uint32_t Color );
+void	__stdcall WalkStack(uint32_t* RoutineAddresses, uint32_t NumberOfLevels, uint32_t IgnoreLevels);
+PSTR	__stdcall DecodeAddress(uint32_t Address, uint8_t brief = true);
+void	__stdcall DrawLines(int32_t X1, int32_t Y1, int32_t X2, int32_t Y2, uint32_t Color);
 
 typedef struct _MenuItem
 {
 	struct _MenuItem*	pNext;
 	struct _MenuItem*	pSubMenu;							// Pointer to sub menu list, or nullptr
-	uint32_t	(__stdcall *Callback)(PSTR Name, uint32_t MenuFunction);
-	void	(__stdcall *Routine)(void);								// Sub menu list pointer
-	uint8_t	(__stdcall *Greyed)(void);
-	uint8_t	(__stdcall *CheckMark)(void);							// 0 When no check mark routine, 1 when sub menu
+	uint32_t	(__stdcall* Callback)(PSTR Name, uint32_t MenuFunction);
+	void	(__stdcall* Routine)(void);								// Sub menu list pointer
+	uint8_t	(__stdcall* Greyed)(void);
+	uint8_t	(__stdcall* CheckMark)(void);							// 0 When no check mark routine, 1 when sub menu
 	PSTR FullName;
 	PSTR Name;
 } MenuItem;
@@ -83,14 +83,15 @@ extern void __stdcall InitDebuggerMenus(void);
 //
 // Pie chart data
 //
-	extern gos_VERTEX PieData[103];	
+extern gos_VERTEX PieData[103];
 #endif
 
 
 //
 // Array of textures in texture heap display
 //
-typedef struct _TextureHeap {
+typedef struct _TextureHeap
+{
 	struct _TextureHeap*	pNext;
 	int32_t						X1;
 	int32_t						Y1;
@@ -108,7 +109,8 @@ uint8_t __stdcall CheckWindow(void);
 // Main Debugger Screens
 //
 
-typedef enum EDbgScreen {
+typedef enum EDbgScreen
+{
 	DbgS_Stat,					// 0
 	DbgS_Spew,					// 1
 	DbgS_Texture,				// 2
@@ -139,8 +141,9 @@ extern  EDbgScreen DebugDisplay;
 //
 // Framegraph information
 //
-typedef enum FrameGraphMode {
-	Graph_Chart=0,
+typedef enum FrameGraphMode
+{
+	Graph_Chart = 0,
 	Graph_30,
 	Graph_Pie30,
 	Graph_60,
@@ -177,9 +180,9 @@ extern uint32_t DebuggerAlpha;
 //
 // Mouse position
 //
-extern int32_t DBMouseX,DBMouseY;
+extern int32_t DBMouseX, DBMouseY;
 extern uint32_t DBMouseMoved;
-extern int32_t ExMouseX,ExMouseY;
+extern int32_t ExMouseX, ExMouseY;
 extern uint32_t DBButtons;
 
 extern uint32_t gEnableMulti;
@@ -227,8 +230,8 @@ extern uint32_t gDisableVertexBlending;
 //
 // Debugger window variables
 //
-extern int32_t DbTopX,DbTopY;
-extern int32_t DbMaxX,DbMaxY,DbMinX;
+extern int32_t DbTopX, DbTopY;
+extern int32_t DbMaxX, DbMaxY, DbMinX;
 
 extern uint32_t TopStatistics;
 
@@ -239,9 +242,9 @@ extern uint32_t TopStatistics;
 #define DbSizeY 342
 
 
-extern int32_t CurrentX,CurrentY;		// Current pixel position
-extern int32_t DbChrX,DbChrY;			// Current character x,y
-extern int32_t StartX,StartY;			// Current start of line
+extern int32_t CurrentX, CurrentY;		// Current pixel position
+extern int32_t DbChrX, DbChrY;			// Current character x,y
+extern int32_t StartX, StartY;			// Current start of line
 
 
 
@@ -249,14 +252,14 @@ void __stdcall UpdateDebugger(void);
 void __stdcall InitDebugger(void);
 void __stdcall EndRenderMode(void);
 void __stdcall DestroyDebugger(void);
-void __stdcall SpewToDebugger( PSTR Message );
-int32_t __stdcall GetMipmapUsed( uint32_t Handle, pgos_VERTEX Pickv1, pgos_VERTEX Pickv2, pgos_VERTEX Pickv3 );
+void __stdcall SpewToDebugger(PSTR Message);
+int32_t __stdcall GetMipmapUsed(uint32_t Handle, pgos_VERTEX Pickv1, pgos_VERTEX Pickv2, pgos_VERTEX Pickv3);
 void __stdcall ShowFrameGraphs(void);
 void __stdcall UpdateDebugMouse(void);
 void __stdcall UpdateDebugWindow(void);
 void __stdcall InitTextDisplay(void);
-void __stdcall DrawText( uint32_t Color, PSTR String );
-void __stdcall DrawSquare( int32_t TopX, int32_t TopY, int32_t Width, int32_t Height, uint32_t Color );
-void __stdcall DrawChr( char Chr );
+void __stdcall DrawText(uint32_t Color, PSTR String);
+void __stdcall DrawSquare(int32_t TopX, int32_t TopY, int32_t Width, int32_t Height, uint32_t Color);
+void __stdcall DrawChr(char Chr);
 
 #endif

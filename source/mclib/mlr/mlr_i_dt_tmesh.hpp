@@ -10,13 +10,14 @@
 #include <mlr/gosvertex.hpp>
 #include <mlr/mlr_i_tmesh.hpp>
 
-namespace MidLevelRenderer {
+namespace MidLevelRenderer
+{
 
 	class MLR_I_DT_PMesh;
 
-	//##########################################################################
-	//## MLRIndexedTriangleMesh with no color no lighting two texture layer  ###
-	//##########################################################################
+//##########################################################################
+//## MLRIndexedTriangleMesh with no color no lighting two texture layer  ###
+//##########################################################################
 
 
 	class MLR_I_DT_TMesh:
@@ -34,37 +35,35 @@ namespace MidLevelRenderer {
 		//
 	protected:
 		MLR_I_DT_TMesh(
-			ClassData *class_data,
-			Stuff::MemoryStream *stream,
-			uint32_t version
-			);
+			ClassData* class_data,
+			Stuff::MemoryStream* stream,
+			uint32_t version);
 		~MLR_I_DT_TMesh(void);
 
 	public:
-		MLR_I_DT_TMesh(ClassData *class_data=MLR_I_DT_TMesh::DefaultData);
+		MLR_I_DT_TMesh(ClassData* class_data = MLR_I_DT_TMesh::DefaultData);
 
 		static MLR_I_DT_TMesh*
-			Make(
-			Stuff::MemoryStream *stream,
-			uint32_t version
-			);
+		Make(
+			Stuff::MemoryStream* stream,
+			uint32_t version);
 
 		void
-			Save(Stuff::MemoryStream *stream);
+		Save(Stuff::MemoryStream* stream);
 
 	public:
 		bool
-			Copy(MLR_I_DT_PMesh *pmesh);
+		Copy(MLR_I_DT_PMesh* pmesh);
 
-		virtual int32_t	TransformAndClip(Stuff::Matrix4D *, MLRClippingState, GOSVertexPool*,bool=false);
+		virtual uint32_t TransformAndClip(Stuff::Matrix4D*, MLRClippingState, GOSVertexPool*, bool = false);
 
-		virtual void TransformNoClip(Stuff::Matrix4D*, GOSVertexPool*,bool=false);
-		void SetTexCoordData(const Stuff::Vector2DScalar* array, size_t point_count, size_t pass=0);
-		virtual void SetReferenceState(const MLRState& _state, size_t pass=0)
+		virtual void TransformNoClip(Stuff::Matrix4D*, GOSVertexPool*, bool = false);
+		void SetTexCoordData(const Stuff::Vector2DScalar* array, size_t point_count, size_t pass = 0);
+		virtual void SetReferenceState(const MLRState& _state, size_t pass = 0)
 		{
 			Check_Object(this);
-			Verify(pass<2);
-			if(pass==0)
+			Verify(pass < 2);
+			if(pass == 0)
 			{
 				referenceState = _state;
 			}
@@ -75,53 +74,55 @@ namespace MidLevelRenderer {
 			}
 		}
 		virtual const MLRState&
-			GetReferenceState(size_t pass=0) const
+		GetReferenceState(size_t pass = 0) const
 		{
-			Check_Object(this); 
-			if(pass==0)
+			Check_Object(this);
+			if(pass == 0)
 				return referenceState;
 			else
 				return referenceState2;
 		}
 		virtual const MLRState&
-			GetCurrentState(size_t pass=0) const
+		GetCurrentState(size_t pass = 0) const
 		{
 			Check_Object(this);
-			if(pass==0)
+			if(pass == 0)
 				return state;
 			else
 				return state2;
 		}
 
-		virtual void
-			CombineStates (const MLRState& master)
+		virtual void CombineStates(const MLRState& master)
 		{
 			Check_Object(this);
-			state.Combine(master, referenceState); 
+			state.Combine(master, referenceState);
 			state2.Combine(master, referenceState2);
 		};
 
-		virtual GOSVertex* GetGOSVertices(uint32_t pass=0)
+		virtual GOSVertex* GetGOSVertices(uint32_t pass = 0)
 		{
-			Check_Object(this); 
-			if(pass==0)
+			Check_Object(this);
+			if(pass == 0)
 				return gos_vertices;
 			else
-				return gos_vertices+numGOSVertices;
+				return gos_vertices + numGOSVertices;
 		}
 #if 0
 		virtual puint16_t
-			GetGOSIndices(size_t pass=0)
+		GetGOSIndices(size_t pass = 0)
 		{
 			Check_Object(this);
-			if(pass==0)
+			if(pass == 0)
 				return gos_indices;
 			else
 				return gos_indices2;
 		}
 #endif
-		GOSVertex2UV* GetGOSVertices2UV(uint32_t=0)
-		{ Check_Object(this); return gos_vertices2uv; }
+		GOSVertex2UV* GetGOSVertices2UV(uint32_t = 0)
+		{
+			Check_Object(this);
+			return gos_vertices2uv;
+		}
 
 		//		int32_t
 		//			GetNumGOSVertices2UV()
@@ -143,32 +144,31 @@ namespace MidLevelRenderer {
 		void TestInstance(void) const;
 
 		virtual size_t GetSize(void)
-		{ 
+		{
 			Check_Object(this);
 			size_t ret = MLR_I_TMesh::GetSize();
-
 			return ret;
 		}
 
 	protected:
 		MLRState	state2, referenceState2;
 
-		static Stuff::DynamicArrayOf<Stuff::Vector2DScalar> *texCoords2;	// Max_Number_Vertices_Per_Mesh
-		static Stuff::DynamicArrayOf<Stuff::Vector2DScalar> *clipExtraTexCoords2;	// Max_Number_Vertices_Per_Mesh
+		static Stuff::DynamicArrayOf<Stuff::Vector2DScalar>* texCoords2;	// Max_Number_Vertices_Per_Mesh
+		static Stuff::DynamicArrayOf<Stuff::Vector2DScalar>* clipExtraTexCoords2;	// Max_Number_Vertices_Per_Mesh
 
-		GOSVertex2UV *gos_vertices2uv;
+		GOSVertex2UV* gos_vertices2uv;
 		//		uint16_t	numGOSVertices2uv;
 	};
 
 	MLR_I_DT_TMesh*
-		CreateIndexedTriCube_NoColor_NoLit_2Tex(float, MLRState*, MLRState*);
+	CreateIndexedTriCube_NoColor_NoLit_2Tex(float, MLRState*, MLRState*);
 
 	MLRShape*
-		CreateIndexedTriIcosahedron_NoColor_NoLit_2Tex(
+	CreateIndexedTriIcosahedron_NoColor_NoLit_2Tex(
 		IcoInfo&,
 		MLRState*,
 		MLRState*
-		);
+	);
 
 }
 #endif

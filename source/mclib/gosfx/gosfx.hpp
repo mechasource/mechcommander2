@@ -11,12 +11,13 @@
 namespace gosFX
 {
 
-	//
-	//--------------
-	// gosFX classes
-	//--------------
-	//
-	typedef enum __gosFX_const {
+//
+//--------------
+// gosFX classes
+//--------------
+//
+	typedef enum __gosFX_const
+	{
 		EffectClassID = Stuff::FirstgosFXClassID,
 		ParticleCloudClassID,
 		PointCloudClassID,
@@ -37,16 +38,16 @@ namespace gosFX
 
 	enum {CurrentGFXVersion = 17};
 
-	int32_t __stdcall ReadGFXVersion(Stuff::MemoryStream *erf_stream);
-	void 	__stdcall WriteGFXVersion(Stuff::MemoryStream *erf_stream);
+	int32_t __stdcall ReadGFXVersion(Stuff::MemoryStream* erf_stream);
+	void 	__stdcall WriteGFXVersion(Stuff::MemoryStream* erf_stream);
 
 	void __stdcall InitializeClasses(void);
 	void __stdcall TerminateClasses(void);
 
 	extern HGOSHEAP Heap;
 
-	extern const Stuff::LinearMatrix4D &Effect_Into_Motion;
-	extern const Stuff::LinearMatrix4D &Effect_Against_Motion;
+	extern const Stuff::LinearMatrix4D& Effect_Into_Motion;
+	extern const Stuff::LinearMatrix4D& Effect_Against_Motion;
 
 	DECLARE_TIMER(extern, Animation_Time);
 	DECLARE_TIMER(extern, Draw_Time);

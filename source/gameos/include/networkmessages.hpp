@@ -16,156 +16,155 @@
 
 class FIMessageHeader
 {
-	protected: 
-		uint16_t	flags;
+protected:
+	uint16_t	flags;
 
 #ifdef _ARMOR
-	public:
-	
+public:
+
 	uint16_t packetNumber;
 #endif
 
-		enum 
-		{
-			TypeBits = 0,
-			MulticastBit = TypeBits+11,
-			GuaranteedBit
-		};
+	enum
+	{
+		TypeBits = 0,
+		MulticastBit = TypeBits + 11,
+		GuaranteedBit
+	};
 
-		enum 
-		{
-			TypeMask = 0x3FF, // 1st 10 bits
-			MulticastFlag = 1 << MulticastBit,
-			GuaranteedFlag = 1 << GuaranteedBit
-		};
+	enum
+	{
+		TypeMask = 0x3FF, // 1st 10 bits
+		MulticastFlag = 1 << MulticastBit,
+		GuaranteedFlag = 1 << GuaranteedBit
+	};
 
-	public:
+public:
 
-		FIMessageHeader()
-		{
-			flags = 0;
-		}
+	FIMessageHeader()
+	{
+		flags = 0;
+	}
 
-		void Init()
-		{
-			flags = 0;
-		}
+	void Init()
+	{
+		flags = 0;
+	}
 
-		// Accessors
-		inline bool IsMulticast()
-		{
-			if (flags & MulticastFlag)
-				return true;
-			else
-				return false;
-		}
+	// Accessors
+	inline bool IsMulticast()
+	{
+		if(flags & MulticastFlag)
+			return true;
+		else
+			return false;
+	}
 
-		inline bool IsGuaranteed()
-		{
-			if (flags & GuaranteedFlag)
-				return true;
-			else
-				return false;
+	inline bool IsGuaranteed()
+	{
+		if(flags & GuaranteedFlag)
+			return true;
+		else
+			return false;
+	}
 
-		}
+	// This message construct limits the application to
+	// 1024 unique types of messages.
+	inline int32_t GetType()
+	{
+		return flags & TypeMask;
+	}
 
-		// This message construct limits the application to
-		// 1024 unique types of messages.  
-		inline int32_t GetType()
-		{
-			return flags & TypeMask;
-		}
+	// Information setters
+	inline void SetMulticast()
+	{
+		flags |= MulticastFlag;
+	}
 
-		// Information setters
-		inline void SetMulticast()
-		{
-			flags |= MulticastFlag;
-		}
+	inline void SetUnicast()
+	{
+		flags &= ~MulticastFlag;
+	}
 
-		inline void SetUnicast()
-		{
-			flags &= ~MulticastFlag;
-		}
+	inline void SetGuaranteed()
+	{
+		flags |= GuaranteedFlag;
+	}
 
-		inline void SetGuaranteed()
-		{
-			flags |= GuaranteedFlag;
-		}
+	inline void SetNonGuaranteed()
+	{
+		flags &= ~GuaranteedFlag;
+	}
 
-		inline void SetNonGuaranteed()
-		{
-			flags &= ~GuaranteedFlag;
-		}
+	inline void SetType(uint32_t new_type)
+	{
+		gosASSERT(new_type < 0x3FF);
+		flags &= ~TypeMask; // clear the type
+		flags |= (new_type);
+	}
 
-		inline void SetType(uint32_t new_type)
-		{
-			gosASSERT(new_type < 0x3FF);
-			flags &= ~TypeMask; // clear the type
-			flags |= (new_type);
-		}
 
-		
 };
 
 class MessageTagger
 {
-	public:
-		uint8_t	sendCounts[MAXPLAYERS];
+public:
+	uint8_t	sendCounts[MAXPLAYERS];
 
-	
-		inline void Clear()
+
+	inline void Clear()
+	{
+		int32_t i;
+		for(i = 0; i < MAXPLAYERS; i++)
 		{
-			int32_t i;
-			for (i=0; i<MAXPLAYERS; i++)
-			{
-				sendCounts[i] = 255;
-			}
+			sendCounts[i] = 255;
 		}
+	}
 };
 
 
-class FIGuaranteedMessageHeader: public FIMessageHeader,public MessageTagger
+class FIGuaranteedMessageHeader: public FIMessageHeader, public MessageTagger
 {
-	public:
-		// Constructor just calls Clear
-		FIGuaranteedMessageHeader():FIMessageHeader(),MessageTagger()
-		{
-			SetGuaranteed(void);
-			Clear(void);
-		}
+public:
+	// Constructor just calls Clear
+	FIGuaranteedMessageHeader(): FIMessageHeader(), MessageTagger()
+	{
+		SetGuaranteed(void);
+		Clear(void);
+	}
 
-			
-		inline void Init()
-		{
-			Clear(void);
-			FIMessageHeader::Init(void);
-			SetGuaranteed(void);
-		}
+
+	inline void Init()
+	{
+		Clear(void);
+		FIMessageHeader::Init(void);
+		SetGuaranteed(void);
+	}
 };
 
 
 //#pragma warning (disable : 4200)
-class FIGenericGuaranteedMessage:public FIGuaranteedMessageHeader
+class FIGenericGuaranteedMessage: public FIGuaranteedMessageHeader
 {
 private:
-	// Keep the constructor private because we don't want 
-	// anyone to call it when there is an undefined size 
+	// Keep the constructor private because we don't want
+	// anyone to call it when there is an undefined size
 	// for the class.
-	FIGenericGuaranteedMessage():FIGuaranteedMessageHeader()
+	FIGenericGuaranteedMessage(): FIGuaranteedMessageHeader()
 	{}
 public:
 	uint8_t	buffer[0];
-	
+
 };
 
 
-class FIGenericMessage:public FIMessageHeader
+class FIGenericMessage: public FIMessageHeader
 {
 private:
-	// Keep the constructor private because we don't want 
-	// anyone to call it when there is an undefined size 
+	// Keep the constructor private because we don't want
+	// anyone to call it when there is an undefined size
 	// for the class.
-	FIGenericMessage():FIMessageHeader()
+	FIGenericMessage(): FIMessageHeader()
 	{}
 public:
 	uint8_t	buffer[0];
@@ -173,10 +172,10 @@ public:
 
 
 
-class FIVerifyCluster:public FIMessageHeader
+class FIVerifyCluster: public FIMessageHeader
 {
 protected:
-	FIVerifyCluster():FIMessageHeader()
+	FIVerifyCluster(): FIMessageHeader()
 	{}
 
 public:
@@ -192,13 +191,13 @@ public:
 };
 
 
-class FIPlayerIDMessage:public FIGuaranteedMessageHeader
+class FIPlayerIDMessage: public FIGuaranteedMessageHeader
 {
 public:
 	uint32_t playerID[MAXPLAYERS];
 	uint8_t serverIndex;
 
-	FIPlayerIDMessage():FIGuaranteedMessageHeader()
+	FIPlayerIDMessage(): FIGuaranteedMessageHeader()
 	{
 		SetType(FIDP_MSG_PLAYERID);
 	}
@@ -206,9 +205,9 @@ public:
 	int32_t GetPlayerNumber(uint32_t player_id)
 	{
 		int32_t i;
-		for(i=0;i<MAXPLAYERS;i++)
+		for(i = 0; i < MAXPLAYERS; i++)
 		{
-			if (playerID[i] == player_id)
+			if(playerID[i] == player_id)
 			{
 				return i;
 			}
@@ -226,13 +225,13 @@ public:
 
 
 
-class FIPlayersInGroupMessage:public FIGuaranteedMessageHeader
+class FIPlayersInGroupMessage: public FIGuaranteedMessageHeader
 {
 public:
 	uint32_t groupID;
 	uint32_t playerID[MAXPLAYERS];
 
-	FIPlayersInGroupMessage():FIGuaranteedMessageHeader()
+	FIPlayersInGroupMessage(): FIGuaranteedMessageHeader()
 	{
 		SetType(FIDP_MSG_PLAYERS_IN_GROUP);
 	}
@@ -240,12 +239,12 @@ public:
 };
 
 
-class FIServerIDMessage:public FIGuaranteedMessageHeader
+class FIServerIDMessage: public FIGuaranteedMessageHeader
 {
 public:
 	uint32_t serverID;
 
-	FIServerIDMessage(uint32_t server_id):FIGuaranteedMessageHeader()
+	FIServerIDMessage(uint32_t server_id): FIGuaranteedMessageHeader()
 	{
 		serverID = server_id;
 		SetType(FIDP_MSG_SERVERID);
@@ -265,7 +264,7 @@ public:
 
 
 
-class FIDPMessage:public NetworkMessageContainer, public ListItem
+class FIDPMessage: public NetworkMessageContainer, public ListItem
 {
 public:
 	uint32_t	time;
@@ -283,11 +282,11 @@ public:
 	int32_t			numTimesSent;
 
 	// Constructor and destructor
-	FIDPMessage(DPID player_id, uint32_t buf_size=MAXMESSAGESIZE);
+	FIDPMessage(DPID player_id, uint32_t buf_size = MAXMESSAGESIZE);
 
 	virtual ~FIDPMessage(void);
 
-   
+
 	// Member functions
 	//
 
@@ -321,9 +320,8 @@ public:
 	inline void SetTime(uint32_t new_time)
 	{
 		time = new_time;
-		if (!isResend)
+		if(!isResend)
 			originalTime = time;
-
 	}
 
 	inline void SetSenderID(DPID id)

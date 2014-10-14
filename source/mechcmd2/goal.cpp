@@ -137,8 +137,8 @@ void GoalManager::init(void)
 	goalObjects = nullptr;
 	goalObjectPool = nullptr;
 #ifdef USE_REGION_MAP
-	for(int32_t r = 0; r < GameMap->height; r++)
-		for(int32_t c = 0; c < GameMap->width; c++)
+	for(size_t r = 0; r < GameMap->height; r++)
+		for(size_t c = 0; c < GameMap->width; c++)
 			regionMap[r][c] = -1;
 #endif
 	numRegions = 0;
@@ -168,8 +168,8 @@ void GoalManager::clear(void)
 	for(size_t i = 0; i < goalObjectPoolSize; i++)
 		goalObjectPool[i].used = false;
 #ifdef USE_REGION_MAP
-	for(int32_t r = 0; r < GameMap->height; r++)
-		for(int32_t c = 0; c < GameMap->width; c++)
+	for(size_t r = 0; r < GameMap->height; r++)
+		for(size_t c = 0; c < GameMap->width; c++)
 			regionMap[r][c] = -1;
 #endif
 	numRegions = 0;
@@ -279,7 +279,7 @@ bool GoalManager::fillWallGateRegion(int32_t row, int32_t col, int32_t region)
 	if(!GameMap->getWall(row, col) && !GameMap->getGate(row, col))
 		return(false);
 	regionMap[row][col] = region;
-	for(int32_t dir = 0; dir < 4; dir ++)
+	for(size_t dir = 0; dir < 4; dir ++)
 	{
 		int32_t adjR = row + adjCell[dir][0];
 		int32_t adjC = col + adjCell[dir][1];
@@ -329,7 +329,7 @@ bool GoalManager::fillRegion(int32_t row, int32_t col, int32_t region)
 		if(filling)
 		{
 			regionMap[row][col] = region;
-			for(int32_t dir = 0; dir < 4; dir ++)
+			for(size_t dir = 0; dir < 4; dir ++)
 			{
 				int32_t adjR = row + adjCell[dir][0];
 				int32_t adjC = col + adjCell[dir][1];
@@ -365,7 +365,7 @@ bool GoalManager::fillRegion(int32_t row, int32_t col, int32_t region)
 		return(false);
 	}
 	regionMap[row][col] = region;
-	for(int32_t dir = 0; dir < 4; dir ++)
+	for(size_t dir = 0; dir < 4; dir ++)
 	{
 		int32_t adjR = row + adjCell[dir][0];
 		int32_t adjC = col + adjCell[dir][1];
@@ -383,8 +383,8 @@ void GoalManager::calcRegions(void)
 {
 	//----------------------------------------------------------------------
 	// This is the same method used in GlobalMap::calcAreas, so see notes...
-	for(int32_t r = 0; r < GameMap->height; r++)
-		for(int32_t c = 0; c < GameMap->width; c++)
+	for(size_t r = 0; r < GameMap->height; r++)
+		for(size_t c = 0; c < GameMap->width; c++)
 			if(regionMap[r][c] == -1)
 			{
 				recurseCount = 0;

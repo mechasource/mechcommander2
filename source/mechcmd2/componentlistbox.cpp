@@ -69,9 +69,9 @@ ComponentListItem::ComponentListItem(LogisticsComponent* pComp)
 		addChild(&disabledText);
 		if(s_templateItem)
 		{
-			for(auto i = 0; i < 6; i++)
+			for(size_t i = 0; i < 6; i++)
 			{
-				for(auto j = 0; j < COMP_ANIMATION_COUNT; j++)
+				for(size_t j = 0; j < COMP_ANIMATION_COUNT; j++)
 				{
 					if(s_templateItem->pChildAnims[i] == &s_templateItem->animations[j])
 					{
@@ -93,7 +93,7 @@ int32_t ComponentListItem::init(FitIniFile& file)
 	{
 		s_templateItem = new ComponentListItem(nullptr);
 		char animName[COMP_ANIMATION_COUNT][32];
-		for(auto i = 0; i < COMP_ANIMATION_COUNT; i++)
+		for(size_t i = 0; i < COMP_ANIMATION_COUNT; i++)
 		{
 			sprintf(animName[i], "Animation%ld", i);
 			s_templateItem->animations[i].init(&file, animName[i]);
@@ -123,7 +123,7 @@ void ComponentListItem::assignAnimation(FitIniFile& file, int32_t whichChild, ch
 	s_templateItem->pChildAnims[whichChild] = 0;
 	char tmpAnimName[32];
 	file.readIdString("Animation", tmpAnimName, 31);
-	for(auto i = 0; i < COMP_ANIMATION_COUNT; i++)
+	for(size_t i = 0; i < COMP_ANIMATION_COUNT; i++)
 	{
 		if(_stricmp(animNames[i], tmpAnimName) == 0)
 		{
@@ -145,7 +145,7 @@ void ComponentListItem::render()
 					   , globalY() + s_templateItem->iconOutline.top());
 	iconOutline.setColor(animations[0].getCurrentColor(animations[0].getState()));
 	iconOutline.render();
-	for(auto i = 0; i < 6; i++)
+	for(size_t i = 0; i < 6; i++)
 	{
 		if(pChildAnims[i])
 		{
@@ -164,7 +164,7 @@ void ComponentListItem::render()
 void	ComponentListItem::update()
 {
 	int32_t bCanAdd = MechLabScreen::instance()->canAddComponent(pComponent);
-	for(auto i = 0; i < COMP_ANIMATION_COUNT; i++)
+	for(size_t i = 0; i < COMP_ANIMATION_COUNT; i++)
 	{
 		animations[i].update();
 	}
@@ -186,7 +186,7 @@ void	ComponentListItem::update()
 		{
 			if(animations[0].getState() != aAnimGroup::PRESSED)
 			{
-				for(auto i = 0; i < COMP_ANIMATION_COUNT; i++)
+				for(size_t i = 0; i < COMP_ANIMATION_COUNT; i++)
 				{
 					animations[i].setState(aAnimGroup::PRESSED);
 				}
@@ -199,7 +199,7 @@ void	ComponentListItem::update()
 		}
 		else
 		{
-			for(auto i = 0; i < COMP_ANIMATION_COUNT; i++)
+			for(size_t i = 0; i < COMP_ANIMATION_COUNT; i++)
 				animations[i].setState(aAnimGroup::DISABLED);
 			if(COMPONENT_TOO_HOT == bCanAdd)
 			{
@@ -225,7 +225,7 @@ void	ComponentListItem::update()
 	{
 		if(animations[0].getState() != aAnimGroup::HIGHLIGHT)
 		{
-			for(auto i = 0; i < COMP_ANIMATION_COUNT; i++)
+			for(size_t i = 0; i < COMP_ANIMATION_COUNT; i++)
 			{
 				animations[i].setState(aAnimGroup::HIGHLIGHT);
 			}
@@ -237,7 +237,7 @@ void	ComponentListItem::update()
 	else if(!bCanAdd)
 	{
 		state = aListItem::ENABLED;
-		for(auto i = 0; i < COMP_ANIMATION_COUNT; i++)
+		for(size_t i = 0; i < COMP_ANIMATION_COUNT; i++)
 			animations[i].setState(aAnimGroup::NORMAL);
 		disabledText.setText("");
 	}
@@ -253,7 +253,7 @@ void	ComponentListItem::update()
 			setComponent();
 			soundSystem->playDigitalSample(LOG_WRONGBUTTON);
 		}
-		for(auto i = 0; i < COMP_ANIMATION_COUNT; i++)
+		for(size_t i = 0; i < COMP_ANIMATION_COUNT; i++)
 			animations[i].setState(aAnimGroup::DISABLED);
 		if(COMPONENT_TOO_HOT == bCanAdd)
 		{
@@ -306,7 +306,7 @@ void ComponentIconListBox::setType(int32_t newType, int32_t otherNewType, int32_
 		LogisticsData::instance->getAllComponents(pComp, count);
 		//for ( int32_t j = 0; j < 2048; j++ )
 		//{
-		for(auto i = 0; i < count; i++)
+		for(size_t i = 0; i < count; i++)
 		{
 			ComponentListItem* pItem = new ComponentListItem(pComp[i]);
 			masterComponentList.Append(pItem);
@@ -357,7 +357,7 @@ void ComponentIconListBox::update()
 int32_t ComponentIconListBox::selectFirstAvailableComponent()
 {
 	bool bFound = 0;
-	for(auto i = 0; i < itemCount; i++)
+	for(size_t i = 0; i < itemCount; i++)
 	{
 		if(items[i]->getState() != aListItem::DISABLED
 				&& !MechLabScreen::instance()->canAddComponent(
@@ -402,7 +402,7 @@ void ComponentIconListBox::addSortedItem(ComponentListItem* pItem)
 {
 	int32_t size = pItem->getComponent()->getComponentHeight() *
 				   pItem->getComponent()->getComponentWidth();
-	for(auto i = 0; i < itemCount; i++)
+	for(size_t i = 0; i < itemCount; i++)
 	{
 		LogisticsComponent* pTmp = ((ComponentListItem*)items[i])->getComponent();
 		int32_t tmpSize = pTmp->getComponentHeight() * pTmp->getComponentWidth();

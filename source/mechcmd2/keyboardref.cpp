@@ -99,7 +99,7 @@ void KeyboardRef::reseed(MissionInterfaceManager::Command* commands)
 	cLoadString(IDS_ALT, alt, 31);
 	// first count the number of hotTexts
 	int32_t count = 0;
-	for(auto i = 0; i < MAX_COMMAND; i++)
+	for(size_t i = 0; i < MAX_COMMAND; i++)
 	{
 		if(commands[i].hotKeyDescriptionText != -1)
 		{

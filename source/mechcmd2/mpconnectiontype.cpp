@@ -79,7 +79,7 @@ void MPConnectionType::init(FitIniFile* file)
 	LogisticsScreen::init(*file, "Static", "Text", "Rect", "Button");
 	if(buttonCount)
 	{
-		for(auto i = 0; i < buttonCount; i++)
+		for(size_t i = 0; i < buttonCount; i++)
 		{
 			buttons[i].setMessageOnRelease();
 			if(buttons[i].getID() == 0)
@@ -469,7 +469,7 @@ int32_t	aLanPanel::handleMessage(uint32_t message, uint32_t who)
 void aTcpipPanel::begin()
 {
 	comboBox.ListBox().removeAllItems(true);
-	for(auto i = 0; i < 10; i++)
+	for(size_t i = 0; i < 10; i++)
 	{
 		if(!strlen(prefs.ipAddresses[i]))
 			break;
@@ -530,7 +530,7 @@ void aTcpipPanel::init(FitIniFile* pFile)
 	comboBox.EditBox().setNoBlank(true);
 	comboBox.EditBox().allowIME(false);
 	addChild(&comboBox);
-	for(auto i = 0; i < 10; i++)
+	for(size_t i = 0; i < 10; i++)
 	{
 		if(!strlen(prefs.ipAddresses[i]))
 			break;
@@ -665,7 +665,7 @@ void aTcpipPanel::update()
 	{
 		// now look for 3 periods
 		int32_t dotIndex[5];
-		for(auto i = 0; i < 5; i++)
+		for(size_t i = 0; i < 5; i++)
 			dotIndex[i] = -1;
 		dotIndex[4] = str.Length();
 		int32_t tmp = -1;
@@ -700,7 +700,7 @@ void aTcpipPanel::update()
 			bValid = 1;
 			char tmp[256];
 			strcpy(tmp, str);
-			for(auto i = 0; i < 4; i++)
+			for(size_t i = 0; i < 4; i++)
 			{
 				int32_t num = getNum(tmp, dotIndex[i] + 1, dotIndex[i + 1]);
 				if(num < 0 || num > 255)

@@ -127,7 +127,7 @@ ForceGroupIcon::ForceGroupIcon()
 		memset(s_slotUsed, 0, 240 * sizeof(bool));
 	}
 	bool bFound = 0;
-	for(auto index = 0; index < 240; index++)
+	for(size_t index = 0; index < 240; index++)
 	{
 		if(!s_slotUsed[ index ])
 		{
@@ -206,7 +206,7 @@ void ForceGroupIcon::init(FitIniFile& file, int32_t which)
 	right   += ControlGui::hiResOffsetX;
 	top     += ControlGui::hiResOffsetY;
 	bottom  += ControlGui::hiResOffsetY;
-	for(auto i = 0; i < 4; i++)
+	for(size_t i = 0; i < 4; i++)
 	{
 		bmpLocation[which][i].x = left;
 		bmpLocation[which][i].y = top;
@@ -262,7 +262,7 @@ void MechIcon::setDrawBack(bool bSet)
 {
 	bDrawBack = bSet;
 	bool bFound = 0;
-	for(auto index = 0; index < 240; index++)
+	for(size_t index = 0; index < 240; index++)
 	{
 		if(!s_slotUsed[ index ])
 		{
@@ -302,15 +302,15 @@ void MechIcon::setDrawBack(bool bSet)
 	int32_t tmpOffset = ((s_MechTextures->width) * (offsetY) + offsetX);
 	pSrcRow += tmpOffset;
 	uint32_t* pSrcData = pSrcRow;
-	for(auto j = 0; j < unitIconY; ++j)
+	for(size_t j = 0; j < unitIconY; ++j)
 	{
 		pDestData = pDestRow;
 		pSrcData = pSrcRow;
-		for(auto i = 0; i < unitIconX; ++i)    // do four icons per row
+		for(size_t i = 0; i < unitIconX; ++i)    // do four icons per row
 		{
 			bool bDraw = 0;
 			// compare colors, only draw back ones which are 4, 5, 6, and 7
-			for(auto i = 0; i < 3; i++)
+			for(size_t i = 0; i < 3; i++)
 			{
 				int32_t compColor =  damageColors[0][i];
 				int32_t srcColor = *pSrcData;
@@ -442,11 +442,11 @@ bool MechIcon::init(int32_t whichIndex)
 	int32_t tmpOffset = ((s_MechTextures->width) * (offsetY) + offsetX);
 	pSrcRow += tmpOffset;
 	uint32_t* pSrcData = pSrcRow;
-	for(auto j = 0; j < unitIconY; ++j)
+	for(size_t j = 0; j < unitIconY; ++j)
 	{
 		pDestData = pDestRow;
 		pSrcData = pSrcRow;
-		for(auto i = 0; i < unitIconX; ++i)    // do four icons per row
+		for(size_t i = 0; i < unitIconX; ++i)    // do four icons per row
 		{
 			*pDestData++ = *pSrcData++;
 		}
@@ -454,7 +454,7 @@ bool MechIcon::init(int32_t whichIndex)
 		pDestRow += textureData.Width;
 	}
 	gos_UnLockTexture(s_textureHandle[textureIndex]);
-	for(auto i = 0; i < 5; ++i)
+	for(size_t i = 0; i < 5; ++i)
 	{
 		bmpLocation[locationIndex][i].argb = 0xffffffff;
 		bmpLocation[locationIndex][i].frgb = 0;
@@ -684,7 +684,7 @@ void MechIcon::doDraw(PSTR newDamage, PSTR oldDamage, uint32_t handle, uint32_t 
 			uint32_t oldColors[3];
 			uint32_t newColors[3];
 			// find the colors we're looking for
-			for(int32_t p = 0; p < 3; p++)
+			for(size_t p = 0; p < 3; p++)
 			{
 				int32_t tmp = damageColors[damage[i]][p];
 				int32_t redVal = (tmp >> 16) & 0x000000ff;
@@ -696,10 +696,10 @@ void MechIcon::doDraw(PSTR newDamage, PSTR oldDamage, uint32_t handle, uint32_t 
 				newColors[p] = (tmp & 0xff00ffff) | (redVal << 16);
 			}
 			// look through the entire bitmap, changing old colors to new colors
-			for(int32_t k = 0; k < unitIconY; ++k)
+			for(size_t k = 0; k < unitIconY; ++k)
 			{
 				pChange = pLine;
-				for(auto j = 0; j < unitIconX; ++j)
+				for(size_t j = 0; j < unitIconX; ++j)
 				{
 					if((*pChange) & 0xff000000)    // not transparent
 					{
@@ -742,7 +742,7 @@ void ForceGroupIcon::render()
 	if(!unit)
 		return;
 	int32_t forceGroup = -1;
-	for(auto i = 0; i < 10; ++i)
+	for(size_t i = 0; i < 10; ++i)
 	{
 		if(unit->isInUnitGroup(i))
 			forceGroup = i;
@@ -890,7 +890,7 @@ void ForceGroupIcon::renderUnitIconBack(float left, float top, float right, floa
 	gos_SetRenderState(gos_State_Filter, gos_FilterNone);
 	gos_SetRenderState(gos_State_AlphaTest, true);
 	gos_VERTEX vertices[5];
-	for(auto i = 0; i < 5; i++)
+	for(size_t i = 0; i < 5; i++)
 	{
 		vertices[i].argb = 0xffffffff;
 		vertices[i].frgb = 0;
@@ -977,11 +977,11 @@ bool VehicleIcon::init(Mover* pMover)
 	int32_t tmpOffset = ((s_VehicleTextures->width) * (offsetY) + offsetX);
 	pSrcRow += tmpOffset;
 	uint32_t* pSrcData = pSrcRow;
-	for(auto j = 0; j < unitIconY; ++j)
+	for(size_t j = 0; j < unitIconY; ++j)
 	{
 		pDestData = pDestRow;
 		pSrcData = pSrcRow;
-		for(auto i = 0; i < unitIconX; ++i)    // do four icons per row
+		for(size_t i = 0; i < unitIconX; ++i)    // do four icons per row
 		{
 			*pDestData++ = *pSrcData++;
 		}
@@ -990,7 +990,7 @@ bool VehicleIcon::init(Mover* pMover)
 	}
 	gos_UnLockTexture(s_textureHandle[texIndex]);
 	unit = pMover;
-	for(auto i = 0; i < 5; ++i)
+	for(size_t i = 0; i < 5; ++i)
 	{
 		bmpLocation[locationIndex][i].argb = 0xffffffff;
 		bmpLocation[locationIndex][i].frgb = 0;
@@ -1045,7 +1045,7 @@ void VehicleIcon::update()
 		newDamage[4] = 2;
 	else if(tmp < .6)
 		newDamage[4] = 1;
-	for(auto i = 0; i < 5; ++i)
+	for(size_t i = 0; i < 5; ++i)
 	{
 		if(newDamage[i] != damage[i])
 		{
@@ -1069,7 +1069,7 @@ void VehicleIcon::update()
 			uint32_t* pChange = pLine;
 			uint32_t oldColors[3];
 			uint32_t newColors[3];
-			for(int32_t p = 0; p < 3; p++)
+			for(size_t p = 0; p < 3; p++)
 			{
 				int32_t tmp = damageColors[damage[i]][p];
 				int32_t redVal = (tmp >> 16) & 0x000000ff;
@@ -1080,14 +1080,14 @@ void VehicleIcon::update()
 				redVal += i;
 				newColors[p] = (tmp & 0xff00ffff) | (redVal << 16);
 			}
-			for(int32_t k = 0; k < unitIconY; ++k)
+			for(size_t k = 0; k < unitIconY; ++k)
 			{
 				pChange = pLine;
-				for(auto j = 0; j < unitIconX; ++j)
+				for(size_t j = 0; j < unitIconX; ++j)
 				{
 					if((*pChange) & 0xff000000)    // not transparent
 					{
-						for(int32_t p = 0; p < 3; p++)
+						for(size_t p = 0; p < 3; p++)
 						{
 							if(oldColors[p] == *pChange)
 							{
@@ -1126,7 +1126,7 @@ int32_t ForceGroupIcon::sort(PCVOID p1, PCVOID p2)
 	ForceGroupIcon* m2 = *(ForceGroupIcon**)p2;
 	bool bv1 = dynamic_cast<VehicleIcon*>(m1) ? 1 : 0;
 	bool bv2 = dynamic_cast<VehicleIcon*>(m2) ? 1 : 0;
-	for(auto i = 1; i < 10; ++i)
+	for(size_t i = 1; i < 10; ++i)
 	{
 		bool bM1 =  m1->unit->isInUnitGroup(i == 10 ? 0 : i);
 		bool bM2 =  m2->unit->isInUnitGroup(i == 10 ? 0 : i);
@@ -1171,7 +1171,7 @@ void ForceGroupIcon::drawDeathEffect()
 	unit->setSelected(0);
 	bool bFinished = true;
 	deathAnimationTime += frameLength;
-	for(auto i = 0; i < NUM_DEATH_INFOS - 1; i++)
+	for(size_t i = 0; i < NUM_DEATH_INFOS - 1; i++)
 	{
 		if(animationInfos[i].time < deathAnimationTime &&
 				animationInfos[i + 1].time > deathAnimationTime)
@@ -1278,7 +1278,7 @@ PilotIcon::PilotIcon()
 void PilotIcon::render(float left, float top, float right, float bottom)
 {
 	gos_VERTEX pilotLocation[5];
-	for(auto i = 0; i < 5; i++)
+	for(size_t i = 0; i < 5; i++)
 	{
 		pilotLocation[i].argb = 0xffffffff;
 		pilotLocation[i].rhw = .5;

@@ -600,7 +600,7 @@ void Artillery::handleStaticCollision(void)
 		int32_t i = 0;
 		for(i = startCellRow; i < startCellRow + 9; i++)
 		{
-			for(auto j = startCellCol; j < startCellCol + 9; j++)
+			for(size_t j = startCellCol; j < startCellCol + 9; j++)
 			{
 				if(GameMap->inBounds(i, j))
 				{
@@ -640,12 +640,12 @@ void Artillery::handleStaticCollision(void)
 		int32_t totalBlocks = Terrain::blocksMapSide * Terrain::blocksMapSide;
 		for(i = 0; i < 3; i++)
 		{
-			for(auto j = 0; j < 3; j++)
+			for(size_t j = 0; j < 3; j++)
 			{
 				if((currentBlockNumber >= 0) && (currentBlockNumber < totalBlocks))
 				{
 					int32_t numObjectsInBlock = ObjectManager->getObjBlockNumObjects(currentBlockNumber);
-					for(int32_t objIndex = 0; objIndex < numObjectsInBlock; objIndex++)
+					for(size_t objIndex = 0; objIndex < numObjectsInBlock; objIndex++)
 					{
 						GameObjectPtr obj = ObjectManager->getObjBlockObject(currentBlockNumber, objIndex);
 						if(!obj)

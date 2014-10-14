@@ -233,7 +233,7 @@ int32_t Radio::playMessage(RadioMessageType msgType)
 	{
 		if(msgData)
 		{
-			for(auto j = 0; j < MAX_FRAGMENTS; j++)
+			for(size_t j = 0; j < MAX_FRAGMENTS; j++)
 			{
 				radioHeap->Free(msgData->data[j]);
 				msgData->data[j] = nullptr;

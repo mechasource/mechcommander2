@@ -1892,7 +1892,7 @@ void DoGameLogic()
 			currentFrameNum = 0;
 		last30Frames[currentFrameNum] = frameRate;
 		averageFrameRate = 0.0f;
-		for(int32_t fc = 0; fc < 30; fc++)
+		for(size_t fc = 0; fc < 30; fc++)
 			averageFrameRate += last30Frames[fc];
 		averageFrameRate /= 30.0f;
 		if(userInput->getKeyDown(KEY_R) && userInput->ctrl() && !userInput->alt() && !userInput->shift())
@@ -2192,7 +2192,7 @@ int32_t textToLong(PSTR num)
 		}
 		numDigits = strlen(hexOffset) - 1;
 		int32_t power = 0;
-		for(int32_t count = numDigits; count >= 0; count--, power++)
+		for(size_t count = numDigits; count >= 0; count--, power++)
 		{
 			uint8_t currentDigit = toupper(hexOffset[count]);
 			if(currentDigit >= 'A' && currentDigit <= 'F')
@@ -2440,7 +2440,7 @@ void ParseCommandLine(PSTR command_line)
 			if(i < n_args)
 			{
 				int32_t numPlayers = strlen(argv[i]);
-				for(auto j = 0; j < numPlayers; j++)
+				for(size_t j = 0; j < numPlayers; j++)
 					MultiPlayer::presetDropZones[j] = (argv[i][j] - '0');
 			}
 		}

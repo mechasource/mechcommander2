@@ -273,7 +273,7 @@ LoadScreen::~LoadScreen()
 
 void LoadScreen::begin()
 {
-	for(auto i = 0; i < animObjectsCount; i++)
+	for(size_t i = 0; i < animObjectsCount; i++)
 	{
 		//The assign below will overwrite the assign in defaultConstructor, leaking the memory
 		animObjects[i].animInfo.destroy();
@@ -315,7 +315,7 @@ void LoadScreen::init(FitIniFile& file, uint32_t neverFlush)
 	{
 		char blockName[256];
 		animIndices = new int32_t[animObjectsCount];
-		for(auto i = 0; i < animObjectsCount; i++)
+		for(size_t i = 0; i < animObjectsCount; i++)
 		{
 			sprintf(blockName, "AnimObject%ld", i);
 			file.seekBlock(blockName);
@@ -339,7 +339,7 @@ void LoadScreen::update()
 	status = RUNNING;
 	LogisticsScreen::update();
 	bool bDone = true;
-	for(auto i = 0; i < animObjectsCount; i++)
+	for(size_t i = 0; i < animObjectsCount; i++)
 	{
 		bDone &= animObjects[i].isDone();
 	}
@@ -347,7 +347,7 @@ void LoadScreen::update()
 	{
 		if(loadProgress < 99.f)
 		{
-			for(auto i = 0; i < animObjectsCount; i++)
+			for(size_t i = 0; i < animObjectsCount; i++)
 			{
 				//The assign below will overwrite the assign in begin, leaking the memory
 				animObjects[i].animInfo.destroy();
@@ -422,11 +422,11 @@ void ProgressTimer(RECT& WinRect, DDSURFACEDESC2& mouseSurfaceDesc)
 		int32_t* pLSrc = (int32_t*)(LoadScreen::progressBackground + 1);
 		int32_t* pLDest = (int32_t*)(LoadScreen::mergedTexture + 1);
 		// merge background and current progress together...
-		for(auto i = 0; i < 2; i++)
+		for(size_t i = 0; i < 2; i++)
 		{
-			for(int32_t y = 0; y < destHeight; y++)
+			for(size_t y = 0; y < destHeight; y++)
 			{
-				for(int32_t x = 0; x < LoadScreen::progressBackground->width; x++)
+				for(size_t x = 0; x < LoadScreen::progressBackground->width; x++)
 				{
 					if(x < destWidth)
 						*pLDest++ = *pLSrc++;
@@ -466,12 +466,12 @@ void ProgressTimer(RECT& WinRect, DDSURFACEDESC2& mouseSurfaceDesc)
 	// now put it on the screen...
 	int32_t destWidth = destRight - destX;
 	int32_t destHeight = destBottom - destY;
-	for(int32_t y = 0; y < destHeight; y++)
+	for(size_t y = 0; y < destHeight; y++)
 	{
 		puint8_t pSrc = pMem + y * srcWidth * srcDepth;
 		puint8_t pDest = (puint8_t)mouseSurfaceDesc.lpSurface + destX * mouseSurfaceDesc.ddpfPixelFormat.dwRGBBitCount / 8 +
 						 ((destY + y) * mouseSurfaceDesc.lPitch);
-		for(int32_t x = 0; x < destWidth; x++)
+		for(size_t x = 0; x < destWidth; x++)
 		{
 			uint32_t mColor = *(int32_t*)pSrc;
 			uint8_t baseAlpha 		= 0;
@@ -532,7 +532,7 @@ void ProgressTimer(RECT& WinRect, DDSURFACEDESC2& mouseSurfaceDesc)
 
 void LoadScreen::setupOutAnims()
 {
-	for(auto i = 0; i < animObjectsCount; i++)
+	for(size_t i = 0; i < animObjectsCount; i++)
 	{
 		//The assign below will overwrite the assign in begin, leaking the memory
 		animObjects[i].animInfo.destroy();

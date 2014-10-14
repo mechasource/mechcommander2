@@ -682,7 +682,7 @@ int32_t BattleMechType::init(FilePtr objFile, uint32_t fileSize)
 	// Now, read in the max internal structure for each body location...
 	// Reader reads rows from 1 just like spreadsheet.
 	// Row 4, Cols 2,4,6,8,10,12,14,16
-	for(int32_t curLocation = 0; curLocation < NUM_BODY_LOCATIONS; curLocation++)
+	for(size_t curLocation = 0; curLocation < NUM_BODY_LOCATIONS; curLocation++)
 	{
 		result = mechCSVFile.readUCHAR(17, stupidNewSageColumns[curLocation], maxInternalStructure[curLocation]);
 		if(result != NO_ERROR)
@@ -1143,7 +1143,7 @@ void BattleMech::init(bool create)
 	drawFlags = 0;
 	lowestWeaponNodeID = -2;
 	damageAfterDisabled = 0.0f;
-	for(int32_t l = 0; l < 6; l++)
+	for(size_t l = 0; l < 6; l++)
 		rotateValues[l] = 0;
 #ifdef USE_MECHDEBUGFILE
 	if(!MechDebugFile)
@@ -1180,7 +1180,7 @@ void BattleMech::init(bool create, ObjectTypePtr _type)
 	//-------------------------------------------------
 	// Set some mech traits based upon the Mech Type...
 	BattleMechTypePtr mechT = (BattleMechTypePtr)_type;
-	for(int32_t curLocation = 0; curLocation < NUM_BODY_LOCATIONS; curLocation++)
+	for(size_t curLocation = 0; curLocation < NUM_BODY_LOCATIONS; curLocation++)
 		body[curLocation].maxInternalStructure = mechT->maxInternalStructure[curLocation];
 	crashAvoidSelf = mechT->crashAvoidSelf;
 	crashAvoidPath = mechT->crashAvoidPath;
@@ -1359,7 +1359,7 @@ int32_t BattleMech::init(uint32_t variantNum)
 	int32_t realItemNum = 0;
 	memset(ItemLocationToInvLocation, 0xff, sizeof(int32_t)*MAX_MOVER_INVENTORY_ITEMS);
 	//Read in everything but weapons and AMMO
-	for(int32_t curItem = 0; curItem < MAX_MOVER_INVENTORY_ITEMS; curItem++)
+	for(size_t curItem = 0; curItem < MAX_MOVER_INVENTORY_ITEMS; curItem++)
 	{
 		mechFile->readUCHAR((26 + (97 * variantNum)) + curItem, 5, inventory[realItemNum].masterID);
 		if(inventory[realItemNum].masterID && (inventory[realItemNum].masterID != 255))
@@ -1533,7 +1533,7 @@ int32_t BattleMech::init(uint32_t variantNum)
 	}
 	//------------------------------------------------------------
 	// Now, read in the component layout for each body location...
-	for(int32_t curLocation = 0; curLocation < NUM_MECH_BODY_LOCATIONS; curLocation++)
+	for(size_t curLocation = 0; curLocation < NUM_MECH_BODY_LOCATIONS; curLocation++)
 	{
 		body[curLocation].CASE = true;	//ALL MC2 Mechs have CASE everywhere.
 		uint8_t internalStructure;
@@ -1550,7 +1550,7 @@ int32_t BattleMech::init(uint32_t variantNum)
 			body[curLocation].damageState = IS_DAMAGE_NONE;
 		int32_t numSpaces = NumLocationCriticalSpaces[curLocation];
 		body[curLocation].totalSpaces = 0;
-		for(int32_t curSpace = 0; curSpace < numSpaces; curSpace++)
+		for(size_t curSpace = 0; curSpace < numSpaces; curSpace++)
 		{
 			uint8_t spaceData;
 			mechFile->readUCHAR((102 + (97 * variantNum)) + curSpace, stupidNewSageColumns[curLocation], spaceData);
@@ -1646,12 +1646,12 @@ int32_t BattleMech::init(uint32_t variantNum)
 		}
 	}
 	calcAmmoTotals();
-	for(auto item = numOther; item < (numOther + numWeapons); item++)
+	for(size_t item = numOther; item < (numOther + numWeapons); item++)
 	{
 		//----------------------------------------------------------
 		// Each weapon should point to its appropriate ammo total in
 		// the ammo type total list...
-		for(int32_t ammoIndex = 0; ammoIndex < numAmmoTypes; ammoIndex++)
+		for(size_t ammoIndex = 0; ammoIndex < numAmmoTypes; ammoIndex++)
 		{
 			if((int32_t)MasterComponent::masterList[inventory[item].masterID].getWeaponAmmoMasterId() == ammoTypeTotal[ammoIndex].masterId)
 			{
@@ -1665,7 +1665,7 @@ int32_t BattleMech::init(uint32_t variantNum)
 		//----------------------------------------------------------
 		// Each weapon should point to its appropriate ammo total in
 		// the ammo type total list...
-		for(int32_t ammoIndex = 0; ammoIndex < numAmmoTypes; ammoIndex++)
+		for(size_t ammoIndex = 0; ammoIndex < numAmmoTypes; ammoIndex++)
 		{
 			if(inventory[item].masterID == ammoTypeTotal[ammoIndex].masterId)
 			{
@@ -1678,7 +1678,7 @@ int32_t BattleMech::init(uint32_t variantNum)
 	{
 		if((inventory[item].masterID == MasterComponent::clanAntiMissileSystemID) || (inventory[item].masterID == MasterComponent::innerSphereAntiMissileSystemID))
 		{
-			for(int32_t ammoIndex = 0; ammoIndex < numAmmoTypes; ammoIndex++)
+			for(size_t ammoIndex = 0; ammoIndex < numAmmoTypes; ammoIndex++)
 			{
 				if((int32_t)MasterComponent::masterList[inventory[item].masterID].getWeaponAmmoMasterId() == ammoTypeTotal[ammoIndex].masterId)
 				{
@@ -1854,7 +1854,7 @@ void BattleMech::resetComponents(int32_t totalComponents, int32_t* componentList
 	memset(localMasterComponentList, 0xff, sizeof(int32_t)*MAX_MOVER_INVENTORY_ITEMS);
 	//Copy current itemList to localLists
 	//Remove all logistics replacable components
-	for(auto item = 0; item < MAX_MOVER_INVENTORY_ITEMS; item++)
+	for(size_t item = 0; item < MAX_MOVER_INVENTORY_ITEMS; item++)
 	{
 		localMasterComponentList[item] = inventory[item].masterID;
 		if(inventory[item].masterID != 255)
@@ -1925,7 +1925,7 @@ void BattleMech::resetComponents(int32_t totalComponents, int32_t* componentList
 	int32_t numElectronics = 0;
 	int32_t numWeaponsAmmo = 0;
 	//Add Heidi's new Components to open locations.
-	for(int32_t newItems = 0; newItems < totalComponents; newItems++)
+	for(size_t newItems = 0; newItems < totalComponents; newItems++)
 	{
 		switch(MasterComponent::masterList[componentList[newItems]].getForm())
 		{
@@ -1984,7 +1984,7 @@ void BattleMech::resetComponents(int32_t totalComponents, int32_t* componentList
 	int32_t realItemNum = 0;
 	memset(ItemLocationToInvLocation, 0xff, sizeof(int32_t)*MAX_MOVER_INVENTORY_ITEMS);
 	//Read in everything but weapons and AMMO
-	for(int32_t curItem = 0; curItem < MAX_MOVER_INVENTORY_ITEMS; curItem++)
+	for(size_t curItem = 0; curItem < MAX_MOVER_INVENTORY_ITEMS; curItem++)
 	{
 		inventory[realItemNum].masterID = localMasterComponentList[curItem];
 		if(inventory[realItemNum].masterID && (inventory[realItemNum].masterID != 255))
@@ -2198,7 +2198,7 @@ void BattleMech::resetComponents(int32_t totalComponents, int32_t* componentList
 	jumpJets = 255;
 	//------------------------------------------------------------
 	// Now, read in the component layout for each body location...
-	for(int32_t curLocation = 0; curLocation < NUM_MECH_BODY_LOCATIONS; curLocation++)
+	for(size_t curLocation = 0; curLocation < NUM_MECH_BODY_LOCATIONS; curLocation++)
 	{
 		body[curLocation].CASE = true;	//ALL MC2 Mechs have CASE everywhere.
 		//Internal Structure is ALREADY set!
@@ -2206,11 +2206,11 @@ void BattleMech::resetComponents(int32_t totalComponents, int32_t* componentList
 		// Damage and states are already set.
 		int32_t numSpaces = NumLocationCriticalSpaces[curLocation];
 		body[curLocation].totalSpaces = 0;
-		for(int32_t curSpace = 0; curSpace < numSpaces; curSpace++)
+		for(size_t curSpace = 0; curSpace < numSpaces; curSpace++)
 		{
 			//Find out where in the space table this location lies.
 			uint8_t spaceData = 0xff;
-			for(int32_t curTable = 0; curTable < MAX_MOVER_INVENTORY_ITEMS; curTable++)
+			for(size_t curTable = 0; curTable < MAX_MOVER_INVENTORY_ITEMS; curTable++)
 			{
 				if((logisticsTable[curTable].bodyLocation == curLocation) &&
 						(logisticsTable[curTable].slotNumber == curSpace))
@@ -2320,7 +2320,7 @@ void BattleMech::resetComponents(int32_t totalComponents, int32_t* componentList
 		//----------------------------------------------------------
 		// Each weapon should point to its appropriate ammo total in
 		// the ammo type total list...
-		for(int32_t ammoIndex = 0; ammoIndex < numAmmoTypes; ammoIndex++)
+		for(size_t ammoIndex = 0; ammoIndex < numAmmoTypes; ammoIndex++)
 		{
 			if((int32_t)MasterComponent::masterList[inventory[item].masterID].getWeaponAmmoMasterId() == ammoTypeTotal[ammoIndex].masterId)
 			{
@@ -2334,7 +2334,7 @@ void BattleMech::resetComponents(int32_t totalComponents, int32_t* componentList
 		//----------------------------------------------------------
 		// Each weapon should point to its appropriate ammo total in
 		// the ammo type total list...
-		for(int32_t ammoIndex = 0; ammoIndex < numAmmoTypes; ammoIndex++)
+		for(size_t ammoIndex = 0; ammoIndex < numAmmoTypes; ammoIndex++)
 		{
 			if(inventory[item].masterID == ammoTypeTotal[ammoIndex].masterId)
 			{
@@ -2347,7 +2347,7 @@ void BattleMech::resetComponents(int32_t totalComponents, int32_t* componentList
 	{
 		if((inventory[item].masterID == MasterComponent::clanAntiMissileSystemID) || (inventory[item].masterID == MasterComponent::innerSphereAntiMissileSystemID))
 		{
-			for(int32_t ammoIndex = 0; ammoIndex < numAmmoTypes; ammoIndex++)
+			for(size_t ammoIndex = 0; ammoIndex < numAmmoTypes; ammoIndex++)
 			{
 				if((int32_t)MasterComponent::masterList[inventory[item].masterID].getWeaponAmmoMasterId() == ammoTypeTotal[ammoIndex].masterId)
 				{
@@ -2684,7 +2684,7 @@ int32_t BattleMech::init(FitIniFile* mechFile)
 	}
 	//------------------------------------------------------------
 	// Now, read in the component layout for each body location...
-	for(int32_t curLocation = 0; curLocation < NUM_MECH_BODY_LOCATIONS; curLocation++)
+	for(size_t curLocation = 0; curLocation < NUM_MECH_BODY_LOCATIONS; curLocation++)
 	{
 		result = mechFile->seekBlock(BodyLocationBlockString[curLocation]);
 		if(result != NO_ERROR)
@@ -2713,7 +2713,7 @@ int32_t BattleMech::init(FitIniFile* mechFile)
 			body[curLocation].damageState = IS_DAMAGE_NONE;
 		int32_t numSpaces = NumLocationCriticalSpaces[curLocation];
 		body[curLocation].totalSpaces = 0;
-		for(int32_t curSpace = 0; curSpace < numSpaces; curSpace++)
+		for(size_t curSpace = 0; curSpace < numSpaces; curSpace++)
 		{
 			char componentString[128];
 			sprintf(componentString, "Component:%d", curSpace);
@@ -2821,12 +2821,12 @@ int32_t BattleMech::init(FitIniFile* mechFile)
 		}
 	}
 	calcAmmoTotals();
-	for(auto item = numOther; item < (numOther + numWeapons); item++)
+	for(size_t item = numOther; item < (numOther + numWeapons); item++)
 	{
 		//----------------------------------------------------------
 		// Each weapon should point to its appropriate ammo total in
 		// the ammo type total list...
-		for(int32_t ammoIndex = 0; ammoIndex < numAmmoTypes; ammoIndex++)
+		for(size_t ammoIndex = 0; ammoIndex < numAmmoTypes; ammoIndex++)
 		{
 			if((int32_t)MasterComponent::masterList[inventory[item].masterID].getWeaponAmmoMasterId() == ammoTypeTotal[ammoIndex].masterId)
 			{
@@ -2840,7 +2840,7 @@ int32_t BattleMech::init(FitIniFile* mechFile)
 		//----------------------------------------------------------
 		// Each weapon should point to its appropriate ammo total in
 		// the ammo type total list...
-		for(int32_t ammoIndex = 0; ammoIndex < numAmmoTypes; ammoIndex++)
+		for(size_t ammoIndex = 0; ammoIndex < numAmmoTypes; ammoIndex++)
 		{
 			if(inventory[item].masterID == ammoTypeTotal[ammoIndex].masterId)
 			{
@@ -2853,7 +2853,7 @@ int32_t BattleMech::init(FitIniFile* mechFile)
 	{
 		if((inventory[item].masterID == MasterComponent::clanAntiMissileSystemID) || (inventory[item].masterID == MasterComponent::innerSphereAntiMissileSystemID))
 		{
-			for(int32_t ammoIndex = 0; ammoIndex < numAmmoTypes; ammoIndex++)
+			for(size_t ammoIndex = 0; ammoIndex < numAmmoTypes; ammoIndex++)
 			{
 				if((int32_t)MasterComponent::masterList[inventory[item].masterID].getWeaponAmmoMasterId() == ammoTypeTotal[ammoIndex].masterId)
 				{
@@ -2983,7 +2983,7 @@ int32_t BattleMech::calcHeatSinks(int32_t location, bool calcCurrent)
 	//--------------------------------------------------
 	// IMPORTANT: This needs to be properly implemented!
 	int32_t tally = 0;
-	for(auto item = 0; item < numOther; item++)
+	for(size_t item = 0; item < numOther; item++)
 	{
 		if(MasterComponent::masterList[inventory[item].masterID].getForm() == COMPONENT_FORM_HEATSINK)
 			if(inventory[item].bodyLocation == location)
@@ -3005,7 +3005,7 @@ int32_t BattleMech::calcCV(bool calcMax)
 	//-----------------------
 	// Total Component BRs...
 	int32_t numComponents = numWeapons + numAmmos + numOther;
-	for(auto itemIndex = 0; itemIndex < numComponents; itemIndex++)
+	for(size_t itemIndex = 0; itemIndex < numComponents; itemIndex++)
 		if(calcMax || !inventory[itemIndex].disabled)
 			totalCV += MasterComponent::masterList[inventory[itemIndex].masterID].getCV();
 	return((int32_t)totalCV);
@@ -3173,7 +3173,7 @@ void BattleMech::updateHeat(void)
 	}
 	//---------------------
 	// Apply weapon heat...
-	for(int32_t weaponIndex = numOther; weaponIndex < (numOther + numWeapons); weaponIndex++)
+	for(size_t weaponIndex = numOther; weaponIndex < (numOther + numWeapons); weaponIndex++)
 		if(inventory[weaponIndex].readyTime > scenarioTime)
 		{
 			//------------------------------------------
@@ -3242,7 +3242,7 @@ void BattleMech::updateHeat(void)
 				{
 					int32_t numExplodables = 0;
 					int32_t ammoList[100];
-					for(int32_t ammoIndex = numOther + numWeapons; ammoIndex < (numOther + numWeapons + numAmmos); ammoIndex++)
+					for(size_t ammoIndex = numOther + numWeapons; ammoIndex < (numOther + numWeapons + numAmmos); ammoIndex++)
 					{
 						if(!inventory[ammoIndex].disabled)
 							ammoList[numExplodables++] = ammoIndex;
@@ -6375,7 +6375,7 @@ void BattleMech::destroyBodyLocation(int32_t bodyLocation)
 	}
 	else if(bodyLocation == MECH_BODY_LOCATION_CTORSO)
 		calcTorsoStatus();
-	for(int32_t curSpace = 0; curSpace < NumLocationCriticalSpaces[bodyLocation]; curSpace++)
+	for(size_t curSpace = 0; curSpace < NumLocationCriticalSpaces[bodyLocation]; curSpace++)
 	{
 		if(!body[bodyLocation].criticalSpaces[curSpace].hit)
 			if(body[bodyLocation].criticalSpaces[curSpace].inventoryID != 255)
@@ -6445,7 +6445,7 @@ void BattleMech::calcCriticalHit(int32_t hitLocation)
 		numCriticalHits = 3;
 	if(numCriticalHits > 0)
 	{
-		for(int32_t curHit = 0; curHit < numCriticalHits; curHit++)
+		for(size_t curHit = 0; curHit < numCriticalHits; curHit++)
 		{
 			int32_t critHitRoll = RandomNumber(body[bodyLocation].totalSpaces);
 			int32_t hitSpace = 0;
@@ -6745,14 +6745,14 @@ bool weaponsLockedWithApproach(vector_3d goalPos, vector_3d targetPos, bool forw
 	int32_t numLocked = 0;
 	float fireArc = getFireArc();
 	if(listSize == -1)
-		for(auto item = numOther; item < (numOther + numWeapons); item++)
+		for(size_t item = numOther; item < (numOther + numWeapons); item++)
 		{
 			float relAngle = weaponLocked(item, targetPosition);
 			if((relAngle >= -fireArc) && (relAngle <= fireArc))
 				list[numLocked++] = item;
 		}
 	else
-		for(auto item = 0; item < listSize; item++)
+		for(size_t item = 0; item < listSize; item++)
 		{
 			float relAngle = weaponLocked(list[item], targetPosition);
 			if((relAngle >= -fireArc) && (relAngle <= fireArc))
@@ -8151,7 +8151,7 @@ bool BattleMech::isCaptureable(int32_t capturingTeamID)
 float BattleMech::calcMaxTargetDamage(void)
 {
 	float			damage = 0;
-	for(int32_t curWeapon = numOther; curWeapon < numWeapons + numOther; curWeapon++)
+	for(size_t curWeapon = numOther; curWeapon < numWeapons + numOther; curWeapon++)
 	{
 		int32_t	numClusters, clusterSize;
 		float	thisDamage;
@@ -8275,10 +8275,10 @@ float BattleMech::getTotalEffectiveness(void)
 //---------------------------------------------------------------------------
 void BattleMech::damageLoadedComponents(void)
 {
-	for(int32_t curLocation = 0; curLocation < NUM_MECH_BODY_LOCATIONS; curLocation++)
+	for(size_t curLocation = 0; curLocation < NUM_MECH_BODY_LOCATIONS; curLocation++)
 	{
 		int32_t numSpaces = NumLocationCriticalSpaces[curLocation];
-		for(int32_t curSpace = 0; curSpace < numSpaces; curSpace++)
+		for(size_t curSpace = 0; curSpace < numSpaces; curSpace++)
 		{
 			if(body[curLocation].criticalSpaces[curSpace].hit)
 				hitInventoryItem(body[curLocation].criticalSpaces[curSpace].inventoryID, true);
@@ -8413,17 +8413,17 @@ void BattleMech::repairAll(void)
 	armor[MECH_ARMOR_LOCATION_RRTORSO].curArmor = armor[MECH_ARMOR_LOCATION_RRTORSO].maxArmor;
 	//------------------------------------------------------------
 	// Now, read in the component layout for each body location...
-	for(int32_t curLocation = 0; curLocation < NUM_MECH_BODY_LOCATIONS; curLocation++)
+	for(size_t curLocation = 0; curLocation < NUM_MECH_BODY_LOCATIONS; curLocation++)
 	{
 		body[curLocation].curInternalStructure = body[curLocation].maxInternalStructure;
 		body[curLocation].damageState = IS_DAMAGE_NONE;
 		int32_t numSpaces = NumLocationCriticalSpaces[curLocation];
-		for(int32_t curSpace = 0; curSpace < numSpaces; curSpace++)
+		for(size_t curSpace = 0; curSpace < numSpaces; curSpace++)
 		{
 			body[curLocation].criticalSpaces[curSpace].hit = false;
 		}
 	}
-	for(int32_t curItem = 0; curItem < MAX_MOVER_INVENTORY_ITEMS; curItem++)
+	for(size_t curItem = 0; curItem < MAX_MOVER_INVENTORY_ITEMS; curItem++)
 	{
 		inventory[curItem].health = 255;
 		inventory[curItem].disabled = false;

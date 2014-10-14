@@ -616,7 +616,7 @@ void Mission::load(PCSTR loadFileName)
 	result = gameSystemFile->readIdFloatArray("OptimalRangePoints", OptimalRangePoints, 5);
 	gosASSERT(result == NO_ERROR);
 	for(size_t i = 0; i < 5; i++)
-		for(auto j = 0; j < 3; j++)
+		for(size_t j = 0; j < 3; j++)
 		{
 			OptimalRangePointInRange[i][j] = false;
 			if(OptimalRangePoints[i] > WeaponRanges[j][0])

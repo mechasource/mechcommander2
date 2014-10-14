@@ -415,7 +415,7 @@ int32_t _stdcall Logistics::beginMission(PVOID, int32_t, PVOID[])
 		//---------------------------
 		// Calc valid commanderIDs...
 		int32_t curCommanderID = 0;
-		for(int32_t CID = 0; CID < MAX_MC_PLAYERS; CID++)
+		for(size_t CID = 0; CID < MAX_MC_PLAYERS; CID++)
 		{
 			MPlayer->availableCIDs[CID] = true;
 			if(MPlayer->playerInfo[CID].player && (MPlayer->playerInfo[CID].commanderID > -1))
@@ -427,7 +427,7 @@ int32_t _stdcall Logistics::beginMission(PVOID, int32_t, PVOID[])
 					memcpy(&MPlayer->playerInfo[curCommanderID], &MPlayer->playerInfo[CID], sizeof(MC2Player));
 					MPlayer->playerInfo[CID].player = nullptr;
 					MPlayer->playerInfo[CID].commanderID = -1;
-					for(auto j = 0; j < MAX_MC_PLAYERS; j++)
+					for(size_t j = 0; j < MAX_MC_PLAYERS; j++)
 						if(MPlayer->playerList[j].player == MPlayer->playerInfo[curCommanderID].player)
 							MPlayer->playerList[j].commanderID = curCommanderID;
 					if(oldCommanderID == MPlayer->commanderID)
@@ -440,7 +440,7 @@ int32_t _stdcall Logistics::beginMission(PVOID, int32_t, PVOID[])
 		//----------------------
 		// Calc valid teamIDs...
 		int32_t curTeamID = 0;
-		for(int32_t teamID = 0; teamID < MAX_MC_PLAYERS; teamID++)
+		for(size_t teamID = 0; teamID < MAX_MC_PLAYERS; teamID++)
 		{
 			bool teamFound = false;
 			for(size_t i = 0; i < MAX_MC_PLAYERS; i++)
@@ -604,7 +604,7 @@ int32_t _stdcall Logistics::beginMission(PVOID, int32_t, PVOID[])
 			{
 				if(MPlayer->mechDataReceived[i])
 				{
-					for(auto j = 0; j < 12; j++)
+					for(size_t j = 0; j < 12; j++)
 					{
 						if(MPlayer->mechData[i][j].objNumber > -1)
 						{
@@ -632,7 +632,7 @@ int32_t _stdcall Logistics::beginMission(PVOID, int32_t, PVOID[])
 							strcpy(data.brainFileName, "pbrain");
 							strcpy(data.csvFileName, MPlayer->mechData[i][j].mechFile);
 							data.numComponents = MPlayer->mechData[i][j].numComponents;
-							for(int32_t k = 0; k < MPlayer->mechData[i][j].numComponents; k++)
+							for(size_t k = 0; k < MPlayer->mechData[i][j].numComponents; k++)
 								data.components[k] = MPlayer->mechData[i][j].components[k];
 							int32_t moverHandle = mission->addMover(&data);
 							if(moverHandle < 1)
@@ -655,7 +655,7 @@ int32_t _stdcall Logistics::beginMission(PVOID, int32_t, PVOID[])
 			int32_t count = 256;
 			LogisticsPilot* pilots[256];
 			LogisticsData::instance->getPilots(pilots, count);
-			for(auto i = 0; i < count; i++)
+			for(size_t i = 0; i < count; i++)
 			{
 				pilots[i]->setUsed(0);
 			}
@@ -810,7 +810,7 @@ void Logistics::initializeLogData()
 	Team* pTeam = Team::home;
 	if(pTeam)
 	{
-		for(auto i = pTeam->getRosterSize() - 1; i > -1; i--)
+		for(size_t i = pTeam->getRosterSize() - 1; i > -1; i--)
 		{
 			Mover* pMover = (Mover*)pTeam->getMover(i);
 			LogisticsPilot* pPilot = LogisticsData::instance->getPilot(pMover->getPilot()->getName());

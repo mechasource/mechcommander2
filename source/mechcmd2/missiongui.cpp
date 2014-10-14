@@ -736,7 +736,7 @@ void MissionInterfaceManager::update(void)
 	if(bLeftDouble && target && target->isMover() && target->getTeam() == Team::home)
 	{
 		int32_t forceGroup = -1;
-		for(auto i = 0; i < 10; i++)
+		for(size_t i = 0; i < 10; i++)
 		{
 			if(((Mover*)target)->isInUnitGroup(i))
 			{
@@ -824,7 +824,7 @@ void MissionInterfaceManager::updateVTol()
 	//We're probably going to use this alot!
 	int32_t commanderID = Commander::home->getId();
 	paintingMyVtol = paintingVtol[commanderID];
-	for(int32_t vtolNum = 0; vtolNum < MAX_TEAMS; vtolNum++)
+	for(size_t vtolNum = 0; vtolNum < MAX_TEAMS; vtolNum++)
 	{
 		// update the vtol, if it needs it
 		if(paintingVtol[vtolNum] && (!bPaused || MPlayer))
@@ -1073,7 +1073,7 @@ void MissionInterfaceManager::updateVTol()
 void MissionInterfaceManager::updateTarget(bool bGui)
 {
 	// unset anything that isn't targeted
-	for(auto i = 0; i < MAX_ICONS; i++)
+	for(size_t i = 0; i < MAX_ICONS; i++)
 	{
 		if(oldTargets[i])
 		{
@@ -1563,7 +1563,7 @@ int32_t MissionInterfaceManager::update(bool leftClickedClick, bool rightClicked
 	setTarget(pTarget);
 	if(!bRetVal)
 	{
-		for(auto j = KEY_0; j < KEY_9 + 1; j++)
+		for(size_t j = KEY_0; j < KEY_9 + 1; j++)
 		{
 			if(userInput->getKeyDown((gosEnum_KeyIndex)j)
 					&& gos_GetKeyStatus((gosEnum_KeyIndex)j) != KEY_HELD)
@@ -2580,7 +2580,7 @@ void HandlePlayerOrder(MoverPtr mover, TacticalOrderPtr tacOrder)
 //--------------------------------------------------------------------------------------
 void MissionInterfaceManager::drawVTOL(void)
 {
-	for(int32_t vtolNum = 0; vtolNum < MAX_TEAMS; vtolNum++)
+	for(size_t vtolNum = 0; vtolNum < MAX_TEAMS; vtolNum++)
 	{
 		if(paintingVtol[vtolNum] && vTol[vtolNum])
 		{
@@ -2793,7 +2793,7 @@ void MissionInterfaceManager::initTacMap(PacketFile* file, int32_t packet)
 	controlGui.initTacMap(mem, size);
 	delete mem;
 	swapTime = 0.f;
-	for(auto i = 0; i < MAX_ICONS; i++)
+	for(size_t i = 0; i < MAX_ICONS; i++)
 	{
 		oldTargets[i] = nullptr;
 	}
@@ -3389,7 +3389,7 @@ int32_t MissionInterfaceManager::makeTargetCursor(bool lineOfSight, int32_t move
 	}
 	else if(target->isCaptureable(Team::home->getId()) && moverCount)
 	{
-		for(auto i = 0; i < Team::home->getRosterSize(); i++)
+		for(size_t i = 0; i < Team::home->getRosterSize(); i++)
 		{
 			Mover* pMvr = Team::home->getMover(i);
 			if(pMvr->isSelected() && pMvr->getCommander()->getId() == Commander::home->getId())
@@ -4782,7 +4782,7 @@ bool MissionInterfaceManager::selectionIsHelicopters()
 int32_t MissionInterfaceManager::saveHotKeys(FitIniFile& file)
 {
 	file.writeBlock("Keyboard");
-	for(auto i = 0; i < MAX_COMMAND; i++)
+	for(size_t i = 0; i < MAX_COMMAND; i++)
 	{
 		char header[256];
 		sprintf(header, "Key%ld", i);
@@ -4796,14 +4796,14 @@ int32_t MissionInterfaceManager::loadHotKeys(FitIniFile& file)
 {
 	if(OldKeys[0] == -1)
 	{
-		for(auto i = 0; i < MAX_COMMAND; i++)
+		for(size_t i = 0; i < MAX_COMMAND; i++)
 		{
 			OldKeys[i] = commands[i].key;
 		}
 	}
 	if(NO_ERROR == file.seekBlock("Keyboard"))
 	{
-		for(auto i = 0; i < MAX_COMMAND; i++)
+		for(size_t i = 0; i < MAX_COMMAND; i++)
 		{
 			char header[256];
 			sprintf(header, "Key%ld", i);
@@ -4834,7 +4834,7 @@ int32_t MissionInterfaceManager::setHotKey(int32_t whichCommand, gosEnum_KeyInde
 	else
 	{
 		// change corresponding waypoint keys
-		for(auto i = 0; i < MAX_COMMAND; i++)
+		for(size_t i = 0; i < MAX_COMMAND; i++)
 		{
 			if(((commands[i].key & 0x0000ffff) == oldKey)  && (commands[i].key & WAYPT))
 			{

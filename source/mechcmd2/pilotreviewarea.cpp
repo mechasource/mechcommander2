@@ -108,7 +108,7 @@ PilotReviewScreen::~PilotReviewScreen()
 	LogisticsData::instance->getPilots(pPilots, count);
 	bool bDeadTextAdded = 0;
 	bool bFirst = 0;
-	for(auto i = 0; i < count; i++)
+	for(size_t i = 0; i < count; i++)
 	{
 		pPilots[i]->clearIcons();
 		pPilots[i]->setJustDied(0);
@@ -137,7 +137,7 @@ void PilotReviewScreen::init(FitIniFile* file)
 	LogisticsData::instance->getPilots(pPilots, count);
 	bool bDeadTextAdded = 0;
 	bool bFirst = 0;
-	for(auto i = 0; i < count; i++)
+	for(size_t i = 0; i < count; i++)
 	{
 		if(pPilots[i]->justDied() && pPilots[i]->isUsed())
 		{
@@ -249,7 +249,7 @@ void PilotReviewScreen::update()
 	}
 	if(entryAnim.isDone())
 		pilotListBox.update();
-	for(auto i = 0; i < buttonCount; i++)
+	for(size_t i = 0; i < buttonCount; i++)
 	{
 		buttons[i].update();
 		if(buttons[i].pointInside(userInput->getMouseX(), userInput->getMouseY())
@@ -465,7 +465,7 @@ void PilotListBox::update()
 		return;
 	if(this->curItem >= itemCount)
 	{
-		for(auto i = 0; i < itemCount; i++)
+		for(size_t i = 0; i < itemCount; i++)
 		{
 			GetItem(i)->showGUIWindow(true);
 			GetItem(i)->update();
@@ -473,7 +473,7 @@ void PilotListBox::update()
 		bDone = true;
 		return;
 	}// done
-	for(auto i = 0; i < itemCount; i++)
+	for(size_t i = 0; i < itemCount; i++)
 	{
 		bDone = 0;
 		aListItem* item = GetItem(i);
@@ -581,7 +581,7 @@ void	ActivePilotListItem::render()
 		if(currentTime - timeOffset > 1.5)
 		{
 			float tmpTime = currentTime - timeOffset - 1.5;
-			for(auto i = 0; i < medalCount; i++)
+			for(size_t i = 0; i < medalCount; i++)
 			{
 				if(tmpTime > 0.f)
 				{
@@ -599,7 +599,7 @@ void	ActivePilotListItem::render()
 	else
 	{
 		medalAwardedText.setColor(0);
-		for(auto i = 0; i < medalCount; i++)
+		for(size_t i = 0; i < medalCount; i++)
 		{
 			medalIcons[i]->showGUIWindow(0);
 			medalTexts[i]->showGUIWindow(0);
@@ -638,7 +638,7 @@ void	ActivePilotListItem::render()
 					  globalX() + s_iconRect->right(),
 					  globalY() + s_iconRect->bottom());
 	int32_t color = s_skillAnim->getColor(currentTime);
-	for(auto i = 0; i < 2; i++)
+	for(size_t i = 0; i < 2; i++)
 	{
 		attributeMeters[i].setAddedColorMax(color);
 		attributeMeters[i].setAddedColorMin(color);
@@ -730,7 +730,7 @@ ActivePilotListItem::~ActivePilotListItem()
 {
 	delete pilotIcon;
 	pilotIcon = nullptr;
-	for(auto i = 0; i < MAX_MEDAL; i++)
+	for(size_t i = 0; i < MAX_MEDAL; i++)
 	{
 		if(medalIcons[i])
 		{
@@ -831,7 +831,7 @@ void	ActivePilotListItem::init(FitIniFile* file)
 	s_pilotingText = new aText;
 	s_killIconRect = new aRect;
 	s_pilotPromotionArea = new PilotPromotionArea;
-	for(auto i = 0; i < MAX_MEDAL; i++)
+	for(size_t i = 0; i < MAX_MEDAL; i++)
 		s_medals[i] = new aObject;
 	s_promotionText = new aText;
 	s_medalText = new aText;
@@ -909,7 +909,7 @@ ActivePilotListItem::ActivePilotListItem(LogisticsPilot* pPilot)
 	if(killCount > 32)
 		offset = (killCount - 32) / 8 + 1;
 	offset *= s_killIconRect->height();
-	for(auto i = 0; i < MAX_MEDAL; i++)
+	for(size_t i = 0; i < MAX_MEDAL; i++)
 	{
 		if(pMedals[i])
 		{
@@ -1007,7 +1007,7 @@ ActivePilotListItem::ActivePilotListItem(LogisticsPilot* pPilot)
 	if(medalCount)
 	{
 		addChild(&medalAwardedText);
-		for(auto i = 0; i < medalCount; i++)
+		for(size_t i = 0; i < medalCount; i++)
 		{
 			addChild(medalIcons[i]);
 			addChild(medalTexts[i]);
@@ -1048,7 +1048,7 @@ void PilotPromotionArea::init(FitIniFile& file)
 	rightExitInfo.init(&file, "");
 	SpecialtyListItem::init(&file);
 	char buffer[32];
-	for(auto i = 0; i < 2; i++)
+	for(size_t i = 0; i < 2; i++)
 	{
 		sprintf(buffer, "PromoteGadgetLeftSkillMeter%ld", i);
 		attributeMeters[i].init(&file, buffer);
@@ -1072,7 +1072,7 @@ void PilotPromotionArea::render()
 	areaLeft.render(xOffset, yOffset);
 	pilotIcon->render(areaLeft.rects[3].left() + xOffset + 1, areaLeft.rects[3].top() + yOffset + 1,
 					  areaLeft.rects[3].right() + xOffset - 1, areaLeft.rects[3].bottom() + yOffset - 1);
-	for(auto i = 0; i < 2; i++)
+	for(size_t i = 0; i < 2; i++)
 		attributeMeters[i].render(xOffset, yOffset);
 	xOffset = rightInfo.getXDelta();
 	yOffset = rightInfo.getYDelta();
@@ -1096,7 +1096,7 @@ void PilotPromotionArea::update()
 	leftExitInfo.update();
 	areaLeft.update();
 	areaRight.update();
-	for(auto i = 0; i < areaRight.buttonCount; i++)
+	for(size_t i = 0; i < areaRight.buttonCount; i++)
 	{
 		if(areaRight.buttons[i].isPressed())
 		{
@@ -1159,7 +1159,7 @@ void PilotPromotionArea::setPilot(LogisticsPilot* pPilot, PilotIcon* pIcon)
 	sprintf(realText, tmpText, name);
 	areaLeft.textObjects[1].setText(realText);
 	int32_t rank = pPilot->getRank();
-	for(auto i = 12; i < 17; i++)
+	for(size_t i = 12; i < 17; i++)
 	{
 		if(i - 12 == rank)
 			areaLeft.statics[i].showGUIWindow(true);
@@ -1184,13 +1184,13 @@ void PilotPromotionArea::setPilot(LogisticsPilot* pPilot, PilotIcon* pIcon)
 		PCSTR tmp[NUM_SPECIALTY_SKILLS];
 		specSkills = 10;
 		pPilot->getSpecialtySkills(tmp, specSkills);
-		for(auto i = 0; i < specSkills; i++)
+		for(size_t i = 0; i < specSkills; i++)
 		{
 			if(8 + i < 12)
 				areaLeft.textObjects[8 + i].setText(tmp[i]);
 		}
 	}
-	for(auto j = specSkills; j < 4; j++)
+	for(size_t j = specSkills; j < 4; j++)
 	{
 		if(8 + j < 12)
 			areaLeft.textObjects[8 + j].setText("");
@@ -1266,7 +1266,7 @@ void PilotPromotionArea::setPilot(LogisticsPilot* pPilot, PilotIcon* pIcon)
 			skillListBox.AddItem(tmpItem);
 		}
 		bool bAdd = 1;
-		for(auto j = 0; j < specSkills; j++)
+		for(size_t j = 0; j < specSkills; j++)
 		{
 			if(skillArray[j] == i)
 			{
@@ -1374,7 +1374,7 @@ void SpecialtyListItem::deleteStatics()
 		if(s_outline)
 			delete s_outline;
 		s_outline = 0;
-		for(auto i = 0; i < 4; i++)
+		for(size_t i = 0; i < 4; i++)
 		{
 			if(s_skillIcons[i])
 				delete s_skillIcons[i];
@@ -1399,7 +1399,7 @@ void			SpecialtyListItem::init(FitIniFile* file)
 	s_outline = new aRect;
 	s_radioButton->init(*file, "PromoteGadgetRightRadioButton");
 	char buffer[64];
-	for(auto i = 0; i < 4; i++)
+	for(size_t i = 0; i < 4; i++)
 	{
 		s_skillIcons[i] = new aObject;
 		sprintf(buffer, "SkillTypeIcon%ld", i);

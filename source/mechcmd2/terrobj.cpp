@@ -947,7 +947,7 @@ void TerrainObject::calcSubAreas(int32_t numCells, int16_t cells[MAX_GAME_OBJECT
 		if(cellsCovered)
 		{
 			pint16_t curCoord = cellsCovered;
-			for(auto j = 0; j < numCellsCovered; j++)
+			for(size_t j = 0; j < numCellsCovered; j++)
 			{
 				*curCoord++ = cells[j][0];
 				*curCoord++ = cells[j][1];
@@ -961,7 +961,7 @@ void TerrainObject::calcSubAreas(int32_t numCells, int16_t cells[MAX_GAME_OBJECT
 			int32_t c = *curCoord++;
 			int32_t area = GlobalMoveMap[0]->calcArea(r, c);
 			bool addIt = true;
-			for(auto j = 0; j < numSubAreas0; j++)
+			for(size_t j = 0; j < numSubAreas0; j++)
 				if(subAreas0[j] == area)
 				{
 					addIt = false;
@@ -985,7 +985,7 @@ void TerrainObject::calcSubAreas(int32_t numCells, int16_t cells[MAX_GAME_OBJECT
 			int32_t c = *curCoord++;
 			int32_t area = GlobalMoveMap[1]->calcArea(r, c);
 			bool addIt = true;
-			for(auto j = 0; j < numSubAreas1; j++)
+			for(size_t j = 0; j < numSubAreas1; j++)
 				if(subAreas1[j] == area)
 				{
 					addIt = false;

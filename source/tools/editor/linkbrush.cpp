@@ -183,7 +183,7 @@ bool LinkBrush::LinkAction::undo()
 			if(!pBuilding)
 				return false;
 			int32_t align = pBuilding->getAlignment();
-			for(auto i = 0; i < LinkCount; ++i)
+			for(size_t i = 0; i < LinkCount; ++i)
 			{
 				const EditorObject* pObject = EditorObjectMgr::instance()->getObjectAtLocation(pPoints[i].x, pPoints[i].y);
 				if(pObject)

@@ -38,7 +38,7 @@ LogisticsMechIcon& LogisticsMechIcon::operator =(const LogisticsMechIcon& src)
 		icon = src.icon;
 		pilotIcon = src.pilotIcon;
 		outline = src.outline;
-		for(auto i = 0; i < ICON_ANIM_COUNT; i++)
+		for(size_t i = 0; i < ICON_ANIM_COUNT; i++)
 		{
 			animations[i] = src.animations[i];
 		}
@@ -79,7 +79,7 @@ int32_t LogisticsMechIcon::init(FitIniFile& file)
 		s_pTemplateIcon->pilotIcon.init(&file, "PilotIcon");
 		assignAnimation(file, s_pTemplateIcon->pilotIconID);
 		char blockName[64];
-		for(auto i = 0; i < ICON_ANIM_COUNT; i++)
+		for(size_t i = 0; i < ICON_ANIM_COUNT; i++)
 		{
 			sprintf(blockName, "Animation%ld", i);
 			s_pTemplateIcon->animations[i].init(&file, blockName);
@@ -94,7 +94,7 @@ void LogisticsMechIcon::assignAnimation(FitIniFile& file, int32_t& number)
 	char buffer[64];
 	if(NO_ERROR == file.readIdString("Animation", buffer, 63))
 	{
-		for(auto i = 0; i < strlen(buffer); i++)
+		for(size_t i = 0; i < strlen(buffer); i++)
 		{
 			if(isdigit(buffer[i]))
 			{
@@ -185,7 +185,7 @@ void LogisticsMechIcon::update()
 		return;
 	int32_t x = userInput->getMouseX();
 	int32_t y = userInput->getMouseY();
-	for(auto i = 0; i < ICON_ANIM_COUNT; i++)
+	for(size_t i = 0; i < ICON_ANIM_COUNT; i++)
 	{
 		animations[i].update();
 	}
@@ -194,7 +194,7 @@ void LogisticsMechIcon::update()
 		if((userInput->isLeftClick() || userInput->isLeftDoubleClick())
 				&& getMech())
 		{
-			for(auto i = 0; i < ICON_ANIM_COUNT; i++)
+			for(size_t i = 0; i < ICON_ANIM_COUNT; i++)
 			{
 				animations[i].setState(aAnimGroup::PRESSED);
 			}
@@ -205,7 +205,7 @@ void LogisticsMechIcon::update()
 		}
 		else if(state == aListItem::ENABLED || state == aListItem::HIGHLITE)
 		{
-			for(auto i = 0; i < ICON_ANIM_COUNT; i++)
+			for(size_t i = 0; i < ICON_ANIM_COUNT; i++)
 			{
 				animations[i].setState(aAnimGroup::HIGHLIGHT);
 			}
@@ -219,7 +219,7 @@ void LogisticsMechIcon::update()
 	}
 	else if(state != aListItem::SELECTED)
 	{
-		for(auto i = 0; i < ICON_ANIM_COUNT; i++)
+		for(size_t i = 0; i < ICON_ANIM_COUNT; i++)
 		{
 			animations[i].setState(aAnimGroup::NORMAL);
 		}
@@ -237,13 +237,13 @@ void LogisticsMechIcon::select(bool bSelect)
 	if(!bSelect || bDisabled)
 	{
 		state = aListItem::ENABLED;
-		for(auto i = 0; i < ICON_ANIM_COUNT; i++)
+		for(size_t i = 0; i < ICON_ANIM_COUNT; i++)
 			animations[i].setState(aAnimGroup::NORMAL);
 	}
 	else
 	{
 		state = aListItem::SELECTED;
-		for(auto i = 0; i < ICON_ANIM_COUNT; i++)
+		for(size_t i = 0; i < ICON_ANIM_COUNT; i++)
 			animations[i].setState(aAnimGroup::PRESSED);
 		bJustSelected = true;
 	}

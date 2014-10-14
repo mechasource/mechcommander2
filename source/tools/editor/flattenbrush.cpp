@@ -50,9 +50,9 @@ bool FlattenBrush::paint(Stuff::Vector3D& worldPos, int32_t screenX, int32_t scr
 	int32_t closestY = floor((land->mapTopLeft3d.y - worldPos.y) / land->worldUnitsPerVertex + .5);
 	float height = 0.f;
 	float viable = 0.f;
-	for(auto i = closestX - 1; i < closestX + 2; ++i)
+	for(size_t i = closestX - 1; i < closestX + 2; ++i)
 	{
-		for(auto j = closestY - 1; j < closestY + 2; ++j)
+		for(size_t j = closestY - 1; j < closestY + 2; ++j)
 		{
 			if(j < land->realVerticesMapSide && j > -1
 					&& i < land->realVerticesMapSide && i > -1)
@@ -81,9 +81,9 @@ float FlattenBrush::getAverageHeightOfSelection()
 {
 	float height = 0.f;
 	float count = 0.0f;
-	for(auto j = 0; j < land->realVerticesMapSide; ++j)
+	for(size_t j = 0; j < land->realVerticesMapSide; ++j)
 	{
-		for(auto i = 0; i < land->realVerticesMapSide; ++i)
+		for(size_t i = 0; i < land->realVerticesMapSide; ++i)
 		{
 			if(land->isVertexSelected(j, i))
 			{
@@ -100,9 +100,9 @@ float FlattenBrush::getAverageHeightOfSelection()
 Action* FlattenBrush::applyHeightToSelection(float height)
 {
 	beginPaint();
-	for(int32_t  j = 0; j < land->realVerticesMapSide; ++j)
+	for(size_t  j = 0; j < land->realVerticesMapSide; ++j)
 	{
-		for(auto i = 0; i < land->realVerticesMapSide; ++i)
+		for(size_t i = 0; i < land->realVerticesMapSide; ++i)
 		{
 			if(land->isVertexSelected(j, i))
 			{
@@ -128,9 +128,9 @@ void FlattenBrush::flattenVertex(int32_t row, int32_t col, float val)
 		}
 	}
 #else /*flattening without "area effect"*/
-	for(auto i = col - 1; i < col + 2; ++i)
+	for(size_t i = col - 1; i < col + 2; ++i)
 	{
-		for(auto j = row - 1; j < row + 2; ++j)
+		for(size_t j = row - 1; j < row + 2; ++j)
 		{
 			if(i > -1 && i < land->realVerticesMapSide
 					&& j > -1 && j < land->realVerticesMapSide)

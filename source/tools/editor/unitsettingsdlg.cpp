@@ -71,7 +71,7 @@ void UnitSettingsDlg::OnSelchangeGroup()
 	PCSTR MechNames[256];
 	int32_t count = 256;
 	EditorObjectMgr::instance()->getBuildingNamesInGroup(group, MechNames, count);
-	for(auto i = 0; i < count; ++i)
+	for(size_t i = 0; i < count; ++i)
 	{
 		m_Mech.AddString(MechNames[i]);
 	}
@@ -171,7 +171,7 @@ void UnitSettingsDlg::DoColorBox(CWnd* pWnd)
 		pWnd->GetWindowText(tmpStr);
 		tmpStr.Replace("0x", "");
 		int32_t base;
-		sscanf(tmpStr, "%x", &base);
+		sscanf_s(tmpStr, "%x", &base);
 		base &= 0x00ffffff;
 		CColorDialog dlg(reverseRGB(base), nullptr, this);
 		if(IDOK == dlg.DoModal())
@@ -266,7 +266,7 @@ void UnitSettingsDlg::applyChanges()
 		{
 			bBase = true;
 			tmpStr.Replace("0x", "");
-			sscanf(tmpStr, "%x", &base);
+			sscanf_s(tmpStr, "%x", &base);
 			base |= 0xff000000;
 		}
 	}
@@ -279,7 +279,7 @@ void UnitSettingsDlg::applyChanges()
 		{
 			bColor1 = true;
 			tmpStr.Replace("0x", "");
-			sscanf(tmpStr, "%x", &color1);
+			sscanf_s(tmpStr, "%x", &color1);
 			color1 |= 0xff000000;
 		}
 	}
@@ -292,7 +292,7 @@ void UnitSettingsDlg::applyChanges()
 		{
 			bColor2 = true;
 			tmpStr.Replace("0x", "");
-			sscanf(tmpStr, "%x", &color2);
+			sscanf_s(tmpStr, "%x", &color2);
 			color2 |= 0xff000000;
 		}
 	}
@@ -357,7 +357,7 @@ HBRUSH UnitSettingsDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, uint32_t nCtlColor)
 		pWnd->GetWindowText(tmpStr);
 		tmpStr.Replace("0x", "");
 		int32_t base;
-		sscanf(tmpStr, "%x", &base);
+		sscanf_s(tmpStr, "%x", &base);
 		base &= 0x00ffffff;
 		base = reverseRGB(base);
 		if(baseBrush.m_hObject)
@@ -374,7 +374,7 @@ HBRUSH UnitSettingsDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, uint32_t nCtlColor)
 		pWnd->GetWindowText(tmpStr);
 		tmpStr.Replace("0x", "");
 		int32_t base;
-		sscanf(tmpStr, "%x", &base);
+		sscanf_s(tmpStr, "%x", &base);
 		base &= 0x00ffffff;
 		base = reverseRGB(base);
 		if(brush1.m_hObject)
@@ -391,7 +391,7 @@ HBRUSH UnitSettingsDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, uint32_t nCtlColor)
 		pWnd->GetWindowText(tmpStr);
 		tmpStr.Replace("0x", "");
 		int32_t base;
-		sscanf(tmpStr, "%x", &base);
+		sscanf_s(tmpStr, "%x", &base);
 		base &= 0x00ffffff;
 		base = reverseRGB(base);
 		if(brush2.m_hObject)
@@ -418,7 +418,7 @@ void UnitSettingsDlg::OnSelchangeMech()
 	{
 		VariantNames = new PCSTR[varCount];
 		EditorObjectMgr::instance()->getVariantNames(group, indexInGroup, VariantNames, varCount);
-		for(int32_t v = 0; v < varCount; ++v)
+		for(size_t v = 0; v < varCount; ++v)
 		{
 			m_Variant.AddString(VariantNames[v]);
 		}
@@ -528,7 +528,7 @@ void UnitSettingsDlg::updateMemberVariables()
 	pint32_t		 groupIDs = new int32_t[groupCount];
 	m_Group.ResetContent();
 	pMgr->getUnitGroupNames(pGroups, groupIDs, groupCount);
-	for(auto i = 0; i < groupCount; ++i)
+	for(size_t i = 0; i < groupCount; ++i)
 	{
 		m_Group.AddString(pGroups[i]);
 		m_Group.SetItemData(i, groupIDs[i]);
@@ -555,7 +555,7 @@ void UnitSettingsDlg::updateMemberVariables()
 		int32_t count = 256;
 		m_Mech.ResetContent();
 		pMgr->getBuildingNamesInGroup(group, MechNames, count);
-		for(auto i = 0; i < count; ++i)
+		for(size_t i = 0; i < count; ++i)
 		{
 			m_Mech.AddString(MechNames[i]);
 		}
@@ -584,7 +584,7 @@ void UnitSettingsDlg::updateMemberVariables()
 				{
 					VariantNames = new PCSTR[varCount];
 					EditorObjectMgr::instance()->getVariantNames(group, indexInGroup, VariantNames, varCount);
-					for(int32_t v = 0; v < varCount; ++v)
+					for(size_t v = 0; v < varCount; ++v)
 					{
 						m_Variant.AddString(VariantNames[v]);
 					}
@@ -618,7 +618,7 @@ void UnitSettingsDlg::updateMemberVariables()
 	if(pInfo)
 	{
 		m_Pilot.ResetContent();
-		for(auto i = 0; i < *count; i++)
+		for(size_t i = 0; i < *count; i++)
 		{
 			m_Pilot.AddString(pInfo[i].name);
 			m_Pilot.SetItemDataPtr(i, (PVOID)pInfo[i].fileName);
@@ -678,7 +678,7 @@ void UnitSettingsDlg::OnAlign1(uint32_t whichID)
 	if(pInfo)
 	{
 		m_Pilot.ResetContent();
-		for(auto i = 0; i < *count; i++)
+		for(size_t i = 0; i < *count; i++)
 		{
 			m_Pilot.AddString(pInfo[i].name);
 		}

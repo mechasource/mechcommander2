@@ -67,7 +67,7 @@ int32_t ChatWindow::initInstance()
 	listBox.init(rects[1].left(), rects[1].top(), rects[1].width(), rects[1].height());
 	listBox.setSpaceBetweenItems(0);
 	chatWidget.init();
-	for(auto i = 0; i < buttonCount; i++)
+	for(size_t i = 0; i < buttonCount; i++)
 	{
 		buttons[i].setMessageOnRelease();
 		buttons[i].setPressFX(LOG_VIDEOBUTTONS);
@@ -211,12 +211,12 @@ void ChatWindow::update()
 void ChatWindow::refillListBox(aListBox& listBox, PSTR* chatTexts, int32_t* playerIDs, ChatMessageItem* pItems, int32_t& curItem, int32_t itemCount, int32_t maxCount)
 {
 	int32_t linesToAdd = 0;
-	for(auto i = 0; i < itemCount && i < maxCount; i++)
+	for(size_t i = 0; i < itemCount && i < maxCount; i++)
 	{
 		int32_t item = (curItem + i) % maxCount;
 		int32_t playerID = playerIDs[i] & 0x00ffffff;
 		MC2Player* player = &MPlayer->playerInfo[0];
-		for(auto j = 0; j < MAX_MC_PLAYERS; j++)
+		for(size_t j = 0; j < MAX_MC_PLAYERS; j++)
 		{
 			if(MPlayer->playerInfo[j].commanderID == playerID)
 			{
@@ -242,7 +242,7 @@ void ChatWindow::refillListBox(aListBox& listBox, PSTR* chatTexts, int32_t* play
 	}
 	if(curLinesInListBox + linesToAdd > maxCount)
 	{
-		for(auto i = 0; i < maxCount; i++)
+		for(size_t i = 0; i < maxCount; i++)
 		{
 			ChatMessageItem* pItem = (ChatMessageItem*)listBox.GetItem(0);
 			if(pItem)

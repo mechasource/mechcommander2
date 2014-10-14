@@ -724,7 +724,7 @@ void Pilot::load(FitIniFile* file, int32_t bGoodGuy)
 	bool bFound = 0;
 	if(NO_ERROR == result)
 	{
-		for(auto i = 0; i < goodCount; i++)
+		for(size_t i = 0; i < goodCount; i++)
 		{
 			if(_stricmp(buffer, s_GoodPilots[i].fileName) == 0)
 			{
@@ -735,7 +735,7 @@ void Pilot::load(FitIniFile* file, int32_t bGoodGuy)
 		}
 		if(!bFound)
 		{
-			for(auto i = 0; i < badCount; i++)
+			for(size_t i = 0; i < badCount; i++)
 			{
 				if(_stricmp(buffer, s_BadPilots[i].fileName) == 0)
 				{
@@ -772,7 +772,7 @@ void Pilot::initPilots()
 	strcpy(pilotFileName, "");
 	PilotInfo* infos = s_GoodPilots;
 	int32_t* counter = &goodCount;
-	for(auto i = 0; i < 2; i++)
+	for(size_t i = 0; i < 2; i++)
 	{
 		while(true)
 		{
@@ -841,7 +841,7 @@ void Pilot::initPilots()
 
 void Pilot::setName(PCSTR newName)
 {
-	for(auto i = 0; i < goodCount; i++)
+	for(size_t i = 0; i < goodCount; i++)
 	{
 		if(_stricmp(newName, s_GoodPilots[i].name) == 0)
 		{

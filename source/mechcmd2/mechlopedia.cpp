@@ -34,7 +34,7 @@ MechlopediaListItem* MechlopediaListItem::s_templateItem = nullptr;
 Mechlopedia::Mechlopedia()
 {
 	helpTextArrayID = 1;
-	for(auto i = 0; i < 6; i++)
+	for(size_t i = 0; i < 6; i++)
 	{
 		subScreens[i] = 0;
 	}
@@ -94,7 +94,7 @@ int32_t Mechlopedia::init()
 	pHistroyScreen->setIsHistory(true);
 	subScreens[5] = pHistroyScreen;
 	MechlopediaListItem::init();
-	for(auto i = ENCYCLO_MECHS; i < ENCYCLO_MM; i++)
+	for(size_t i = ENCYCLO_MECHS; i < ENCYCLO_MM; i++)
 	{
 		getButton(i)->setPressFX(LOG_VIDEOBUTTONS);
 		getButton(i)->setHighlightFX(LOG_DIGITALHIGHLIGHT);
@@ -106,7 +106,7 @@ int32_t Mechlopedia::init()
 int32_t			Mechlopedia::handleMessage(uint32_t, uint32_t who)
 {
 	// unpress all the others
-	for(auto i = ENCYCLO_MECHS; i < ENCYCLO_MM; i++)
+	for(size_t i = ENCYCLO_MECHS; i < ENCYCLO_MM; i++)
 		getButton(i)->press(0);
 	if(getButton(who))
 		getButton(who)->press(true);
@@ -120,7 +120,7 @@ int32_t			Mechlopedia::handleMessage(uint32_t, uint32_t who)
 	}
 	else
 	{
-		for(auto i = 0; i < 6; i++)
+		for(size_t i = 0; i < 6; i++)
 		{
 			subScreens[i]->end();
 		}
@@ -153,7 +153,7 @@ void Mechlopedia::render()
 int32_t Mechlopedia::SubScreen::init(FitIniFile& file)
 {
 	LogisticsScreen::init(file, "Static", "Text", "Rect", "Button");
-	for(auto i = 0; i < buttonCount; i++)
+	for(size_t i = 0; i < buttonCount; i++)
 		buttons[i].setMessageOnRelease();
 	descriptionListBox.init(rects[0].left(), rects[0].top(), rects[0].width(), rects[0].height());
 	descriptionListBox.move(285, 58);
@@ -317,7 +317,7 @@ void Mechlopedia::MechScreen::begin()
 			{
 				if(_stricmp(cur->getName(), pChassis[j]->getName()) < 0)
 				{
-					for(int32_t l = i - 1; l >= j; l--)
+					for(size_t l = i - 1; l >= j; l--)
 					{
 						pChassis[l + 1] = pChassis[l];
 					}
@@ -584,7 +584,7 @@ void Mechlopedia::WeaponScreen::begin()
 	int32_t count = 256;
 	LogisticsData::instance->getAllComponents(comps, count);
 	qsort(comps, count, sizeof(LogisticsComponent*), sortWeapon);
-	for(auto i = 0; i < count; i++)
+	for(size_t i = 0; i < count; i++)
 	{
 		MechlopediaListItem* pItem = new MechlopediaListItem();
 		EString text = comps[i]->getName();
@@ -745,7 +745,7 @@ void Mechlopedia::PersonalityScreen::begin()
 	groupListBox->removeAllItems(true);
 	int32_t FirstID = bIsHistory ? IDS_HISTORY_0 : IDS_PERSONALITY_0;
 	int32_t count = bIsHistory ? 5 : PERSONALITY_COUNT;
-	for(auto i = 0; i < count; i++)
+	for(size_t i = 0; i < count; i++)
 	{
 		MechlopediaListItem* pItem = new MechlopediaListItem();
 		char text[256];
@@ -758,7 +758,7 @@ void Mechlopedia::PersonalityScreen::begin()
 		bool bAdded = 0;
 		if(!bIsHistory)    // turns out we need to sort 'em
 		{
-			for(auto j = 0; j < groupListBox->GetItemCount(); j++)
+			for(size_t j = 0; j < groupListBox->GetItemCount(); j++)
 			{
 				MechlopediaListItem* pTmpItem = (MechlopediaListItem*)groupListBox->GetItem(j);
 				if(upper.Compare(pTmpItem->getText(), 1) < 0)
@@ -892,7 +892,7 @@ void Mechlopedia::BuildingScreen::begin()
 	LogisticsData::Building* pBldgs[256];
 	int32_t count = 255;
 	LogisticsData::instance->getBuildings(pBldgs, count);
-	for(auto i = 0; i < count; i++)
+	for(size_t i = 0; i < count; i++)
 	{
 		char tmp[256];
 		cLoadString(pBldgs[i]->nameID, tmp, 255);
@@ -903,7 +903,7 @@ void Mechlopedia::BuildingScreen::begin()
 		liao = "LIAO ";
 		str.Remove(liao);
 		bool bFound = 0;
-		for(auto j = 0; j < groupListBox->GetItemCount(); j++)
+		for(size_t j = 0; j < groupListBox->GetItemCount(); j++)
 		{
 			if(_stricmp(str, ((aTextListItem*)groupListBox->GetItem(j))->getText()) < 0)
 			{
@@ -959,7 +959,7 @@ void Mechlopedia::BuildingScreen::select(aTextListItem* pEntry)
 		LogisticsComponent* pComps[4];
 		compListBox.removeAllItems(true);
 		int32_t count = 0;
-		for(auto i = 0; i < 4; i++)
+		for(size_t i = 0; i < 4; i++)
 		{
 			int32_t ID = pBldg->componentIDs[i];
 			if(ID)

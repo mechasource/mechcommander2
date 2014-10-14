@@ -111,7 +111,7 @@ void SalvageMechScreen::init(FitIniFile* file)
 	LogisticsScreen::init(*file, "SalvageAreaStatic", "SalvageAreaText", "SalvageAreaRect",
 						  "SalvageAreaButton");
 	SalvageListItem::init(file);
-	for(auto i = 0; i < buttonCount; i++)
+	for(size_t i = 0; i < buttonCount; i++)
 	{
 		buttons[i].setMessageOnRelease();
 	}
@@ -228,7 +228,7 @@ void SalvageMechScreen::update()
 	textObjects[RP_TEXTID].setText(cBillText);
 	textObjects[RP_TEXTID].setColor(color);
 	salvageListBox.update();
-	for(auto i = 0; i < buttonCount; i++)
+	for(size_t i = 0; i < buttonCount; i++)
 	{
 		buttons[i].update();
 		/*		if ( buttons[i].pointInside( userInput->getMouseX(), userInput->getMouseY() )
@@ -247,7 +247,7 @@ void SalvageMechScreen::update()
 
 void SalvageMechScreen::updateSalvage()
 {
-	for(auto i = 0; i < salvageListBox.GetItemCount(); i++)
+	for(size_t i = 0; i < salvageListBox.GetItemCount(); i++)
 	{
 		SalvageListItem* item = (SalvageListItem*)salvageListBox.GetItem(i);
 		if(item && item->isChecked())
@@ -444,7 +444,7 @@ void SalvageListItem::render()
 		color = pressedAnim.getColor();
 	if(state == DISABLED)
 		color = 0xff373737;
-	for(auto i = 0; i < this->pNumberOfChildren; i++)
+	for(size_t i = 0; i < this->pNumberOfChildren; i++)
 	{
 		pChildren[i]->setColor(color, 1);
 	}
@@ -515,7 +515,7 @@ void SalvageMechArea::init(FitIniFile* file)
 	mechCamera.init(left, top, right, bottom);
 	LogisticsScreen::init(*file, 0, "SalvageAreaMechText", 0, 0);
 	char blockName[64];
-	for(auto i = 0; i < 3; i++)
+	for(size_t i = 0; i < 3; i++)
 	{
 		sprintf(blockName, "AttributeMeter%ld", i);
 		attributeMeters[i].init(file, blockName);
@@ -580,7 +580,7 @@ void SalvageMechArea::render(int32_t xOffset, int32_t yOffset)
 	loadoutListBox.move(-xOffset, -yOffset);
 	if(this->unit)
 	{
-		for(auto i = 0; i < textCount; i++)
+		for(size_t i = 0; i < textCount; i++)
 		{
 			textObjects[i].move(xOffset, yOffset);
 			textObjects[i].render();

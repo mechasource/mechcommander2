@@ -17,7 +17,7 @@ Forest::Forest(int32_t newID)
 {
 	centerX = centerY = 0;
 	radius = 1.0f;
-	for(auto i = 0; i < FOREST_TYPES; i++)
+	for(size_t i = 0; i < FOREST_TYPES; i++)
 	{
 		percentages[i] = 0;
 	}
@@ -48,7 +48,7 @@ Forest::Forest(const Forest& src)
 	minDensity = src.minDensity;
 	name = src.name;
 	radius = src.radius;
-	for(auto i = 0; i < FOREST_TYPES; i++)
+	for(size_t i = 0; i < FOREST_TYPES; i++)
 	{
 		percentages[i] = src.percentages[i];
 	}
@@ -68,7 +68,7 @@ Forest& Forest::operator=(const Forest& src)
 		maxDensity = src.maxDensity;
 		minDensity = src.minDensity;
 		radius = src.radius;
-		for(auto i = 0; i < FOREST_TYPES; i++)
+		for(size_t i = 0; i < FOREST_TYPES; i++)
 		{
 			percentages[i] = src.percentages[i];
 		}
@@ -95,7 +95,7 @@ void Forest::init()
 void Forest::init(FitIniFile& file)
 {
 	char headerName[256];
-	for(auto i = 0; i < FOREST_TYPES; i++)
+	for(size_t i = 0; i < FOREST_TYPES; i++)
 	{
 		sprintf(headerName, "TreeType%ld", i);
 		file.readIdFloat(headerName, percentages[i]);
@@ -135,7 +135,7 @@ void Forest::save()
 void Forest::save(FitIniFile& file)
 {
 	char headerName[256];
-	for(auto i = 0; i < FOREST_TYPES; i++)
+	for(size_t i = 0; i < FOREST_TYPES; i++)
 	{
 		sprintf(headerName, "TreeType%ld", i);
 		file.writeIdFloat(headerName, percentages[i]);

@@ -113,7 +113,7 @@ void PauseWindow::update()
 		float t0 = 0.f;
 		float t1 = 0.f;
 		// figure out position based on time
-		for(auto j = 0; j < 7; j++)
+		for(size_t j = 0; j < 7; j++)
 		{
 			if(moveInfo[j].time <= currentTime && moveInfo[j + 1].time > currentTime)
 			{
@@ -130,7 +130,7 @@ void PauseWindow::update()
 			float currentPosition = p0 + dT * ((p1 - p0) / (t1 - t0));
 			float delta = currentPosition - currentPos;
 			currentPos += delta;
-			for(auto i = 0; i < buttonCount; i++)
+			for(size_t i = 0; i < buttonCount; i++)
 			{
 				buttons[i].move(delta, 0);
 			}
@@ -146,7 +146,7 @@ void PauseWindow::update()
 			}
 		}
 	}
-	for(auto i = 0; i < buttonCount; i++)
+	for(size_t i = 0; i < buttonCount; i++)
 	{
 		if(buttons[i].location[0].x <= mouseX && mouseX <= buttons[i].location[2].x
 				&& mouseY >= buttons[i].location[0].y && mouseY <= buttons[i].location[1].y)
@@ -186,16 +186,16 @@ void PauseWindow::update()
 		currentTime = .0001f;
 		currentPos = -(800 - PauseWindow::moveInfo[0].position) + ((float)Environment.screenWidth);
 		float delta = backgrounds[0].left - currentPos;
-		for(auto i = 0; i < buttonCount; i++)
+		for(size_t i = 0; i < buttonCount; i++)
 		{
-			for(auto j = 0; j < 4; j++)
+			for(size_t j = 0; j < 4; j++)
 			{
 				buttons[i].location[j].x -= delta;
 			}
 		}
 		for(i = 0; i < staticCount; i++)
 		{
-			for(auto j = 0; j < 4; j++)
+			for(size_t j = 0; j < 4; j++)
 			{
 				statics[i].location[j].x -= delta;
 			}
@@ -230,7 +230,7 @@ void PauseWindow::render()
 		return;
 	drawRect(backgrounds[0], 0xff000000);
 	drawRect(backgrounds[1], 0xff000000);
-	for(auto i = 0; i < buttonCount; i++)
+	for(size_t i = 0; i < buttonCount; i++)
 	{
 		buttons[i].render();
 	}
@@ -271,7 +271,7 @@ void PauseWindow::init(FitIniFile& file)
 		font.init(IDS_PAUSEBUTTON800);
 		headerFont.init(IDS_PAUSEDFONT_800);
 		ControlButton::initButtons(file, buttonCount, buttons, buttonData, "PauseButton", &font);
-		for(auto i = 0; i < buttonCount; i++)
+		for(size_t i = 0; i < buttonCount; i++)
 		{
 			buttons[i].move(0, -ControlGui::hiResOffsetY);
 		}
@@ -280,7 +280,7 @@ void PauseWindow::init(FitIniFile& file)
 	{
 		statics = new StaticInfo[staticCount];
 		char buffer[256];
-		for(auto i = 0; i < staticCount; i++)
+		for(size_t i = 0; i < staticCount; i++)
 		{
 			sprintf(buffer, "PauseStatic%ld", i);
 			statics[i].init(file, buffer, ControlGui::hiResOffsetX, 0);

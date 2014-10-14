@@ -73,9 +73,9 @@ bool MineBrush::canPaintSelection()
 Action* MineBrush::applyToSelection()
 {
 	MineAction* pRetAction = new MineAction();
-	for(auto i = 0; i < land->realVerticesMapSide; ++i)
+	for(size_t i = 0; i < land->realVerticesMapSide; ++i)
 	{
-		for(auto j = 0; j < land->realVerticesMapSide; ++j)
+		for(size_t j = 0; j < land->realVerticesMapSide; ++j)
 		{
 			if(land->isVertexSelected(j, i))
 			{

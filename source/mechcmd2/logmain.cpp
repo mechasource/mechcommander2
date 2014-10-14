@@ -550,7 +550,7 @@ int32_t textToLong(PSTR num)
 		}
 		numDigits = strlen(hexOffset) - 1;
 		int32_t power = 0;
-		for(int32_t count = numDigits; count >= 0; count--, power++)
+		for(size_t count = numDigits; count >= 0; count--, power++)
 		{
 			uint8_t currentDigit = toupper(hexOffset[count]);
 			if(currentDigit >= 'A' && currentDigit <= 'F')

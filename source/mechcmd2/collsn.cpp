@@ -262,9 +262,9 @@ void CollisionGrid::createGrid(void)
 		}
 		g = g->next;
 	}
-	for(int32_t y = 0; y < (int32_t)yGridWidth; y++)
+	for(size_t y = 0; y < (int32_t)yGridWidth; y++)
 	{
-		for(int32_t x = 0; x < (int32_t)xGridWidth; x++)
+		for(size_t x = 0; x < (int32_t)xGridWidth; x++)
 		{
 			uint32_t gridIndex = x + y * xGridWidth;
 			CollisionGridNodePtr g = grid[gridIndex];

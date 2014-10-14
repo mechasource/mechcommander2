@@ -85,7 +85,7 @@ void aListBox::removeAllItems(bool bDelete)
 {
 	if(items)
 	{
-		for(auto i = 0; i < itemCount; i++)
+		for(size_t i = 0; i < itemCount; i++)
 		{
 			if(items[i] && bDelete)
 				delete items[i];
@@ -232,7 +232,7 @@ void aListBox::render()
 		int32_t topHeight = 0;
 		int32_t bottomHeight = 0;
 		bool bItemOutOfRange = 0;
-		for(auto i = 0; i < itemCount; i++)
+		for(size_t i = 0; i < itemCount; i++)
 		{
 			if(items[i]->globalBottom() > globalTop()
 					&& items[i]->globalTop() < globalBottom())
@@ -284,7 +284,7 @@ void aListBox::render()
 void aListBox::move(float offsetX, float offsetY)
 {
 	aObject::move(offsetX, offsetY);
-	for(auto i = 0; i < itemCount; i++)
+	for(size_t i = 0; i < itemCount; i++)
 	{
 		items[i]->move(offsetX, offsetY);
 	}
@@ -330,7 +330,7 @@ int32_t	aListBox::InsertItem(aListItem* itemString, int32_t where)
 	gosASSERT(itemString);
 	if(where >= itemCount)
 		where = itemCount;
-	for(auto i = itemCount - 1; i > where - 1; i--)
+	for(size_t i = itemCount - 1; i > where - 1; i--)
 	{
 		items[i + 1] = items[i];
 		items[i + 1]->move(0, itemString->height() + skipAmount);
@@ -372,7 +372,7 @@ int32_t	aListBox::RemoveItem(aListItem* item, bool bDelete)
 		return -1;
 	float height = item->height();
 	bool bFound = false;
-	for(auto i = 0; i < itemCount; i++)
+	for(size_t i = 0; i < itemCount; i++)
 	{
 		if(items[i] == item)
 		{
@@ -417,7 +417,7 @@ int32_t aListBox::SelectItem(int32_t itemNumber)
 {
 	if(itemNumber >= itemCount)
 		return ITEM_OUT_OF_RANGE;
-	for(auto i = 0; i < itemCount; i++)
+	for(size_t i = 0; i < itemCount; i++)
 	{
 		items[i]->deselect();
 	}
@@ -441,7 +441,7 @@ int32_t aListBox::SelectItem(int32_t itemNumber)
 
 void	aListBox::enableAllItems()
 {
-	for(auto i = 0; i < itemCount; i++)
+	for(size_t i = 0; i < itemCount; i++)
 	{
 		if(items[i]->getState() == aListItem::DISABLED)
 			items[i]->setState(aListItem::ENABLED);
@@ -464,7 +464,7 @@ void aListBox::scroll(int32_t amount)
 		return;
 	else if(amount > 0 && (items[itemCount - 1]->globalY() + items[itemCount - 1]->height()) < (globalY() + height()))
 		return;
-	for(auto i = 0; i < itemCount; i++)
+	for(size_t i = 0; i < itemCount; i++)
 	{
 		items[i]->move(0, -amount);
 	}
@@ -475,7 +475,7 @@ int32_t aListBox::GetCheckedItem(void) const
 	int32_t ret = -1;
 	if(items)
 	{
-		for(auto i = 0; i < itemCount; i++)
+		for(size_t i = 0; i < itemCount; i++)
 		{
 			if(items[i] && items[i]->isChecked())
 				return i;
@@ -536,7 +536,7 @@ aDropList& aDropList::operator=(const aDropList& src)
 	if(rectCount)
 	{
 		rects = new aRect[rectCount];
-		for(auto i = 0; i < rectCount; i++)
+		for(size_t i = 0; i < rectCount; i++)
 		{
 			addChild(&rects[i]);
 			rects[i] = src.rects[i];
@@ -571,7 +571,7 @@ int32_t aDropList::init(FitIniFile* file, PCSTR blockName)
 	if(rectCount)
 	{
 		rects = new aRect[rectCount];
-		for(auto i = 0; i < rectCount; i++)
+		for(size_t i = 0; i < rectCount; i++)
 		{
 			sprintf(tmpBlockName, "Rect%ld", i);
 			rects[i].init(file, tmpBlockName);
@@ -643,7 +643,7 @@ void aDropList::render()
 {
 	if(showWindow)
 	{
-		for(auto i = 0; i < pNumberOfChildren; i++)
+		for(size_t i = 0; i < pNumberOfChildren; i++)
 		{
 			pChildren[i]->render();
 		}
@@ -841,7 +841,7 @@ aComboBox& aComboBox::operator=(const aComboBox& src)
 	if(rectCount)
 	{
 		rects = new aRect[rectCount];
-		for(auto i = 0; i < rectCount; i++)
+		for(size_t i = 0; i < rectCount; i++)
 		{
 			addChild(&rects[i]);
 			rects[i] = src.rects[i];
@@ -871,7 +871,7 @@ int32_t aComboBox::init(FitIniFile* file, PCSTR blockName)
 		if(rectCount)
 		{
 			rects = new aRect[rectCount];
-			for(auto i = 0; i < rectCount; i++)
+			for(size_t i = 0; i < rectCount; i++)
 			{
 				sprintf(blockName, "Rect%ld", i);
 				rects[i].init(file, blockName);
@@ -902,7 +902,7 @@ int32_t aComboBox::init(FitIniFile* file, PCSTR blockName)
 	addChild(&listBox);
 	addChild(&entry);
 	addChild(&expandButton);
-	for(auto i = 0; i < rectCount; i++)
+	for(size_t i = 0; i < rectCount; i++)
 		addChild(&rects[i]);
 	templateItem.init(*file);
 	expandButton.setMessageOnRelease();
@@ -935,7 +935,7 @@ void aComboBox::render()
 {
 	if(showWindow)
 	{
-		for(auto i = 0; i < pNumberOfChildren; i++)
+		for(size_t i = 0; i < pNumberOfChildren; i++)
 		{
 			pChildren[i]->render();
 		}

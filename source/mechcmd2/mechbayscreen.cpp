@@ -71,9 +71,9 @@ void MechBayScreen::init(FitIniFile* file)
 	int32_t count = 0;
 	int32_t x = 0;
 	int32_t y = 0;
-	for(auto j = 0; j < ICON_COUNT_Y; j++)
+	for(size_t j = 0; j < ICON_COUNT_Y; j++)
 	{
-		for(auto i = 0; i < ICON_COUNT_X; i++)
+		for(size_t i = 0; i < ICON_COUNT_X; i++)
 		{
 			pIcons[count].setMech(0);
 			pIcons[count].move(x, y);
@@ -102,7 +102,7 @@ void MechBayScreen::init(FitIniFile* file)
 	removeWeightAnim.init(file, "");
 	file->seekBlock("FRectAnim");
 	mechCamera->init(rects[1].left(), rects[1].top(), rects[2].right(), rects[1].bottom());
-	for(auto i = 0; i < buttonCount; i++)
+	for(size_t i = 0; i < buttonCount; i++)
 		buttons[i].setMessageOnRelease();
 	textObjects[7].setText("");
 	textObjects[8].setText("");
@@ -138,7 +138,7 @@ void MechBayScreen::begin()
 		if(!(*iter)->getForceGroup())
 		{
 			bool bFound = 0;
-			for(auto i = 0; i < mechListBox.GetItemCount(); i++)
+			for(size_t i = 0; i < mechListBox.GetItemCount(); i++)
 			{
 				if(((MechListBoxItem*)mechListBox.GetItem(i))->getMech()->getVariant()
 						== (*iter)->getVariant())
@@ -168,7 +168,7 @@ void MechBayScreen::begin()
 		setMech(nullptr);   // need to make sure the guy is still running
 		setMech(pMech);
 		bool bFound = 0;
-		for(auto i = 0; i < mechListBox.GetItemCount(); i++)
+		for(size_t i = 0; i < mechListBox.GetItemCount(); i++)
 		{
 			MechListBoxItem* pItem = (MechListBoxItem*)mechListBox.GetItem(i);
 			if(pItem && pItem->getMech() == pCurMech)
@@ -179,7 +179,7 @@ void MechBayScreen::begin()
 		}
 		if(!bFound)
 		{
-			for(auto i = 0; i < ICON_COUNT; i++)
+			for(size_t i = 0; i < ICON_COUNT; i++)
 			{
 				if(pIcons[i].getMech() == pMech)
 				{
@@ -200,7 +200,7 @@ void MechBayScreen::render(int32_t xOffset, int32_t yOffset)
 	loadoutListBox.move(-xOffset, -yOffset);
 	if(!xOffset && !yOffset && pCurMech)
 		mechCamera->render();
-	for(auto i = 0; i < 3; i++)
+	for(size_t i = 0; i < 3; i++)
 	{
 		attributeMeters[i].render(xOffset, yOffset);
 	}
@@ -249,7 +249,7 @@ void MechBayScreen::drawWeightMeter(int32_t xOffset, int32_t yOffset)
 		numRemoveBars = percent + .5;
 	}
 	gos_VERTEX v[3];
-	for(auto i = 0; i < 3; i++)
+	for(size_t i = 0; i < 3; i++)
 	{
 		v[i].u = 0.f;
 		v[i].v = 0.f;
@@ -388,7 +388,7 @@ void MechBayScreen::update()
 	int32_t newSel = -1;
 	int32_t oldSel = -1;
 	int32_t removeMech = -1;
-	for(auto i = 0; i < ICON_COUNT; i++)
+	for(size_t i = 0; i < ICON_COUNT; i++)
 	{
 		pIcons[i].update();
 		if(pIcons[i].justSelected())
@@ -537,7 +537,7 @@ void MechBayScreen::addSelectedMech()
 		addWeightAnim.begin();
 		removeWeightAnim.end();
 		bool bFound = 0;
-		for(auto i = 0; i < mechListBox.GetItemCount(); i++)
+		for(size_t i = 0; i < mechListBox.GetItemCount(); i++)
 		{
 			if(LogisticsData::instance->canAddMechToForceGroup(
 						((MechListBoxItem*)mechListBox.GetItem(i))->getMech()))
@@ -555,7 +555,7 @@ void MechBayScreen::addSelectedMech()
 
 void MechBayScreen::removeSelectedMech()
 {
-	for(auto i = 0; i < ICON_COUNT; i++)
+	for(size_t i = 0; i < ICON_COUNT; i++)
 	{
 		if(pIcons[i].isSelected())
 		{
@@ -663,7 +663,7 @@ void MechBayScreen::setMech(LogisticsMech* pMech,  bool bCommandFromLB)
 		textObjects[11].setText("");
 		textObjects[12].setText("");
 		textObjects[14].setText("");
-		for(auto i = 0; i < 3; i++)
+		for(size_t i = 0; i < 3; i++)
 		{
 			attributeMeters[i].setValue(0);
 		}
@@ -699,7 +699,7 @@ void MechBayScreen::beginDrag(LogisticsMech* pMech)
 	}
 	else
 	{
-		for(auto i = 0; i < ICON_COUNT; i++)
+		for(size_t i = 0; i < ICON_COUNT; i++)
 		{
 			if(pIcons[i].pointInside(userInput->getMouseDragX(), userInput->getMouseDragY()))
 			{
@@ -744,9 +744,9 @@ void MechBayScreen::reinitMechs()
 		if(maxUnits > 12)
 			maxUnits = 12;
 	}
-	for(auto j = 0; j < ICON_COUNT_Y; j++)
+	for(size_t j = 0; j < ICON_COUNT_Y; j++)
 	{
-		for(auto i = 0; i < ICON_COUNT_X; i++)
+		for(size_t i = 0; i < ICON_COUNT_X; i++)
 		{
 			pIcons[count].setMech(0);
 			if(count >= maxUnits)
@@ -781,9 +781,9 @@ void MechBayScreen::reinitMechs()
 void	MechBayScreen::unselectDeploymentTeam()
 {
 	int32_t count = 0;
-	for(auto j = 0; j < ICON_COUNT_Y; j++)
+	for(size_t j = 0; j < ICON_COUNT_Y; j++)
 	{
-		for(auto i = 0; i < ICON_COUNT_X; i++)
+		for(size_t i = 0; i < ICON_COUNT_X; i++)
 		{
 			pIcons[count].select(0);
 			count++;
@@ -794,7 +794,7 @@ void	MechBayScreen::unselectDeploymentTeam()
 bool	MechBayScreen::selectFirstFGItem()
 {
 	bool bRetVal = false;
-	for(auto i = 0; i < ICON_COUNT_X * ICON_COUNT_Y; i++)
+	for(size_t i = 0; i < ICON_COUNT_X * ICON_COUNT_Y; i++)
 	{
 		if(pIcons[i].getMech() && !bRetVal)
 		{
@@ -808,7 +808,7 @@ bool	MechBayScreen::selectFirstFGItem()
 }
 bool	MechBayScreen::selectFirstViableLBMech()
 {
-	for(auto i = 0; i < mechListBox.GetItemCount(); i++)
+	for(size_t i = 0; i < mechListBox.GetItemCount(); i++)
 	{
 		if(mechListBox.GetItem(i)->getState() != aListItem::DISABLED)
 		{
@@ -821,7 +821,7 @@ bool	MechBayScreen::selectFirstViableLBMech()
 
 LogisticsMech* MechBayScreen::getFGSelMech()
 {
-	for(auto i = 0; i < ICON_COUNT_X * ICON_COUNT_Y; i++)
+	for(size_t i = 0; i < ICON_COUNT_X * ICON_COUNT_Y; i++)
 	{
 		if(pIcons[i].getMech() && pIcons[i].isSelected())
 			return pIcons[i].getMech();

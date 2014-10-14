@@ -69,7 +69,7 @@ int32_t MechPurchaseScreen::init(FitIniFile& file)
 	((aObject*)&variantListBox)->init(rects[1].left(), rects[1].top(),
 									  rects[1].width(), rects[1].height());
 	variantListBox.setScrollBarOrange();
-	for(auto i = 0; i < buttonCount; i++)
+	for(size_t i = 0; i < buttonCount; i++)
 		buttons[i].setMessageOnRelease();
 	return NO_ERROR;
 }
@@ -221,7 +221,7 @@ void MechPurchaseScreen::begin()
 			continue;
 		prevInventory.Append(*(*iter));
 		bool bFound = 0;
-		for(auto i = 0; i < inventoryListBox.GetItemCount(); i++)
+		for(size_t i = 0; i < inventoryListBox.GetItemCount(); i++)
 		{
 			if(((MechListBoxItem*)inventoryListBox.GetItem(i))->getMech()->getVariant()
 					== (*iter)->getVariant())
@@ -242,7 +242,7 @@ void MechPurchaseScreen::begin()
 	LogisticsVariant* pVariants[256];
 	int32_t count = 256;
 	LogisticsData::instance->getPurchasableMechs(pVariants, count);
-	for(auto i = 0; i < count; i++)
+	for(size_t i = 0; i < count; i++)
 	{
 		if(!MPlayer || MPlayer->missionSettings.variants || pVariants[i]->isDesignerMech())
 		{
@@ -431,7 +431,7 @@ void MechPurchaseScreen::addSelectedMech()
 void MechPurchaseScreen::addMech(LogisticsMech* pMech)
 {
 	LogisticsData::instance->purchaseMech(pMech->getVariant());
-	for(auto i = 0; i < inventoryListBox.GetItemCount(); i++)
+	for(size_t i = 0; i < inventoryListBox.GetItemCount(); i++)
 	{
 		if(((MechListBoxItem*)inventoryListBox.GetItem(i))->getMech()->getVariant()
 				== pMech->getVariant())
@@ -473,7 +473,7 @@ void MechPurchaseScreen::removeMech(LogisticsMech* pMech)
 
 bool MechPurchaseScreen::selectFirstBuyableMech()
 {
-	for(auto i = 0; i < variantListBox.GetItemCount(); i++)
+	for(size_t i = 0; i < variantListBox.GetItemCount(); i++)
 	{
 		if(NO_ERROR == LogisticsData::instance->canPurchaseMech(
 					((MechListBoxItem*)variantListBox.GetItem(i))->getMech()->getVariant()))

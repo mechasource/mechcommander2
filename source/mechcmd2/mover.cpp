@@ -1831,7 +1831,7 @@ int32_t Mover::loadGameSystem(FitIniFilePtr mechFile, float visualRange)
 	result = mechFile->readIdFloatArray("FireArc", FireArc, 3);
 	if(result != NO_ERROR)
 		return(result);
-	for(int32_t arc = 0; arc < 3; arc++)
+	for(size_t arc = 0; arc < 3; arc++)
 		FireArc[arc] /= 2.0;
 	result = mechFile->readIdLong("AimedFireAbort", AimedFireAbort);
 	if(result != NO_ERROR)
@@ -4081,8 +4081,8 @@ int32_t calcBestGoalFromTarget(int32_t targetPos[2], int32_t maxPos[2], float mi
 int32_t Mover::calcLineOfSightView(int32_t range)
 {
 	GameMap->clearCellDebugs(1);
-	for(int32_t r = cellPositionRow - range; r < cellPositionRow + range; r++)
-		for(int32_t c = cellPositionCol - range; c < cellPositionCol + range; c++)
+	for(size_t r = cellPositionRow - range; r < cellPositionRow + range; r++)
+		for(size_t c = cellPositionCol - range; c < cellPositionCol + range; c++)
 		{
 			if(GameMap->inBounds(r, c))
 			{
@@ -4229,8 +4229,8 @@ int32_t Mover::calcMoveGoal(GameObjectPtr target,
 	{
 		for(size_t i = 0; i < GOALMAP_CELL_DIM; i++)
 			goalMapRowStart[i] = i * GOALMAP_CELL_DIM;
-		for(int32_t r = 0; r < GOALMAP_CELL_DIM; r++)
-			for(int32_t c = 0; c < GOALMAP_CELL_DIM; c++)
+		for(size_t r = 0; r < GOALMAP_CELL_DIM; r++)
+			for(size_t c = 0; c < GOALMAP_CELL_DIM; c++)
 			{
 				int32_t index = r * GOALMAP_CELL_DIM + c;
 				goalMapRowCol[index][0] = r;
@@ -4429,8 +4429,8 @@ int32_t Mover::calcMoveGoal(GameObjectPtr target,
 	//--------------------------------------------------------------
 	// The closer we are to the goal, the better (within reason:)...
 	if(!playerMove)
-		for(int32_t cellR = -1; cellR < 2; cellR++)
-			for(int32_t cellC = -1; cellC < 2; cellC++)
+		for(size_t cellR = -1; cellR < 2; cellR++)
+			for(size_t cellC = -1; cellC < 2; cellC++)
 			{
 				int32_t r = goalCell[0] - mapCellUL[0] + cellR;
 				int32_t c = goalCell[1] - mapCellUL[1] + cellC;
@@ -4444,8 +4444,8 @@ int32_t Mover::calcMoveGoal(GameObjectPtr target,
 	//-------------------------------------
 	// Cells closer to the start cell get a
 	// slight bonus...
-	for(int32_t r = 0; r < GOALMAP_CELL_DIM; r++)
-		for(int32_t c = 0; c < GOALMAP_CELL_DIM; c++)
+	for(size_t r = 0; r < GOALMAP_CELL_DIM; r++)
+		for(size_t c = 0; c < GOALMAP_CELL_DIM; c++)
 		{
 			int32_t dist = 0;
 			if(r > startCell[0])
@@ -4508,7 +4508,7 @@ int32_t Mover::calcMoveGoal(GameObjectPtr target,
 	//-----------------------------------------
 	// Finally, lay down the terrain weights...
 	for(r = 0; r < GOALMAP_CELL_DIM; r++)
-		for(int32_t c = 0; c < GOALMAP_CELL_DIM; c++)
+		for(size_t c = 0; c < GOALMAP_CELL_DIM; c++)
 		{
 			int32_t curCellRow = mapCellUL[0] + r;
 			int32_t curCellCol = mapCellUL[1] + c;
@@ -4548,8 +4548,8 @@ int32_t Mover::calcMoveGoal(GameObjectPtr target,
 								int32_t numSteps = GlobalMoveMap[moveLevel]->calcPath(curArea, area, globalPath);
 								if(numSteps > 0)
 								{
-									for(auto j = 0; j < numSteps; j++)
-										for(int32_t k = 0; k < numSteps; k++)
+									for(size_t j = 0; j < numSteps; j++)
+										for(size_t k = 0; k < numSteps; k++)
 											GlobalMoveMap[moveLevel]->setPathExists(globalPath[j].thruArea, globalPath[k].thruArea, GLOBALPATH_EXISTS_TRUE);
 								}
 								else
@@ -4587,7 +4587,7 @@ int32_t Mover::calcMoveGoal(GameObjectPtr target,
 		//-----------------------------------------
 		// This assumes that MAX_MOVE_GOALS >= 2...
 		int32_t weight = goalMap[i];
-		for(auto j = MAX_MOVE_GOALS - 2; j > -1; j--)
+		for(size_t j = MAX_MOVE_GOALS - 2; j > -1; j--)
 			if(weight < goalList[j][1])
 				break;
 		if(j < (MAX_MOVE_GOALS - 2))
@@ -4603,7 +4603,7 @@ int32_t Mover::calcMoveGoal(GameObjectPtr target,
 		int32_t weight = goalMap[i];
 		if(weight > goalList[MAX_MOVE_GOALS - 1][1])
 		{
-			for(auto j = MAX_MOVE_GOALS - 2; j > -1; j--)
+			for(size_t j = MAX_MOVE_GOALS - 2; j > -1; j--)
 				if(weight < goalList[j][1])
 					break;
 			if(j < (MAX_MOVE_GOALS - 2))
@@ -5209,7 +5209,7 @@ int32_t Mover::bounceToAdjCell(void)
 {
 	//--------------------------------------------------------------------
 	// Bounces mover to an adjacent open cell. Convenient for collisions:)
-	for(int32_t dir = 0; dir < 8; dir++)
+	for(size_t dir = 0; dir < 8; dir++)
 	{
 		static int32_t adjCellTable[8][2] =
 		{
@@ -5388,7 +5388,7 @@ int32_t Mover::getWeaponsReady(int32_t* list, int32_t listSize)
 	// weapons!
 	int32_t numReady = 0;
 	if(listSize == -1)
-		for(auto item = numOther; item < (numOther + numWeapons); item++)
+		for(size_t item = numOther; item < (numOther + numWeapons); item++)
 		{
 			if(isWeaponReady(item))
 			{
@@ -5399,7 +5399,7 @@ int32_t Mover::getWeaponsReady(int32_t* list, int32_t listSize)
 			}
 		}
 	else
-		for(auto item = 0; item < listSize; item++)
+		for(size_t item = 0; item < listSize; item++)
 		{
 			if(isWeaponReady(list[item]))
 			{
@@ -5426,14 +5426,14 @@ int32_t Mover::getWeaponsLocked(int32_t* list, int32_t listSize)
 	int32_t numLocked = 0;
 	float fireArc = getFireArc();
 	if(listSize == -1)
-		for(auto item = numOther; item < (numOther + numWeapons); item++)
+		for(size_t item = numOther; item < (numOther + numWeapons); item++)
 		{
 			float relAngle = weaponLocked(item, targetPosition);
 			if((relAngle >= -fireArc) && (relAngle <= fireArc))
 				list[numLocked++] = item;
 		}
 	else
-		for(auto item = 0; item < listSize; item++)
+		for(size_t item = 0; item < listSize; item++)
 		{
 			float relAngle = weaponLocked(list[item], targetPosition);
 			if((relAngle >= -fireArc) && (relAngle <= fireArc))
@@ -5462,13 +5462,13 @@ int32_t Mover::getWeaponsInRange(int32_t* list, int32_t listSize, float fireRang
 	int32_t numInRange = 0;
 	if(listSize == -1)
 	{
-		for(auto item = numOther; item < (numOther + numWeapons); item++)
+		for(size_t item = numOther; item < (numOther + numWeapons); item++)
 			if(weaponInRange(item, rangeToTarget, MapCellDiagonal))
 				list[numInRange++] = item;
 	}
 	else
 	{
-		for(auto item = 0; item < listSize; item++)
+		for(size_t item = 0; item < listSize; item++)
 			if(weaponInRange(list[item], rangeToTarget, MapCellDiagonal))
 				list[numInRange++] = list[item];
 	}
@@ -5553,7 +5553,7 @@ void Mover::calcWeaponEffectiveness(bool setMax)
 	//Ammo is NOT part of weapon effectiveness anymore
 	// Per Mike Lee
 	// -fs
-	for(int32_t curWeapon = numOther; curWeapon < (numOther + numWeapons); curWeapon++)
+	for(size_t curWeapon = numOther; curWeapon < (numOther + numWeapons); curWeapon++)
 	{
 		if(setMax || (!inventory[curWeapon].disabled))
 			effectiveness += inventory[curWeapon].effectiveness * avgSkill;
@@ -5583,7 +5583,7 @@ void Mover::calcAmmoTotals(void)
 		{
 			int32_t weaponMasterId = inventory[i].masterID;
 			bool newAmmoType = true;
-			for(int32_t curAmmo = 0; curAmmo < (int32_t)numAmmoTypes; curAmmo++)
+			for(size_t curAmmo = 0; curAmmo < (int32_t)numAmmoTypes; curAmmo++)
 			{
 				if(totalList[curAmmo].masterId == (int32_t)MasterComponent::masterList[weaponMasterId].getWeaponAmmoMasterId())
 				{
@@ -5613,7 +5613,7 @@ void Mover::calcAmmoTotals(void)
 		{
 			int32_t ammoMasterId = inventory[i].masterID;
 			bool foundAmmoWeapon = false;
-			for(int32_t curAmmo = 0; curAmmo < numAmmoTypes; curAmmo++)
+			for(size_t curAmmo = 0; curAmmo < numAmmoTypes; curAmmo++)
 			{
 				if(totalList[curAmmo].masterId == ammoMasterId)
 				{
@@ -5651,7 +5651,7 @@ int32_t Mover::calcFireRanges(void)
 	maxRange = 0;
 	minRange = 1000000.0;
 	numFunctionalWeapons = 0;
-	for(int32_t curWeapon = numOther; curWeapon < (numOther + numWeapons); curWeapon++)
+	for(size_t curWeapon = numOther; curWeapon < (numOther + numWeapons); curWeapon++)
 	{
 		if(!inventory[curWeapon].disabled && (getWeaponShots(curWeapon) > 0))
 		{
@@ -5819,7 +5819,7 @@ int32_t Mover::tallyAmmo(int32_t ammoMasterId)
 {
 	int32_t tally = 0;
 	int32_t firstAmmo = numOther + numWeapons;
-	for(auto item = firstAmmo; item < firstAmmo + numAmmos; item++)
+	for(size_t item = firstAmmo; item < firstAmmo + numAmmos; item++)
 	{
 		if(inventory[item].masterID == ammoMasterId)
 			tally += inventory[item].amount;
@@ -5834,7 +5834,7 @@ bool Mover::needsRefit(void)
 	bool result = false;
 	if(!refitBuddyWID && getObjectClass() == BATTLEMECH)
 	{
-		for(int32_t loc = 0; loc < numArmorLocations; loc++)
+		for(size_t loc = 0; loc < numArmorLocations; loc++)
 		{
 			if(loc < numBodyLocations && (loc == MECH_ARMOR_LOCATION_LARM || loc == MECH_ARMOR_LOCATION_RARM) &&
 					body[loc].damageState == IS_DAMAGE_DESTROYED)
@@ -5847,7 +5847,7 @@ bool Mover::needsRefit(void)
 			}
 		}
 		if(!result)
-			for(int32_t ammo = 0; ammo < numAmmoTypes; ammo++)
+			for(size_t ammo = 0; ammo < numAmmoTypes; ammo++)
 				if(ammoTypeTotal[ammo].curAmount < ammoTypeTotal[ammo].maxAmount)
 				{
 					result = true;
@@ -5865,7 +5865,7 @@ int32_t Mover::reduceAmmo(int32_t ammoMasterId, int32_t amount)
 	//----------------------------------------------------------
 	// Deduct it from the first available ammo critical space...
 	int32_t firstAmmo = numOther + numWeapons;
-	for(auto item = firstAmmo; item < firstAmmo + numAmmos; item++)
+	for(size_t item = firstAmmo; item < firstAmmo + numAmmos; item++)
 	{
 		if(inventory[item].masterID == ammoMasterId)
 			if(inventory[item].amount > amount)
@@ -5882,7 +5882,7 @@ int32_t Mover::reduceAmmo(int32_t ammoMasterId, int32_t amount)
 	//-------------------------------------------------------------------
 	// Make sure the ammoTypeTotal list, in which we track total ammo for
 	// all of the ammo types this mover uses, is adjusted...
-	for(int32_t ammo = 0; ammo < numAmmoTypes; ammo++)
+	for(size_t ammo = 0; ammo < numAmmoTypes; ammo++)
 		if(ammoTypeTotal[ammo].masterId == ammoMasterId)
 		{
 			ammoTypeTotal[ammo].curAmount -= amountUsed;
@@ -5969,7 +5969,7 @@ int32_t Mover::sortWeapons(int32_t* weaponList, int32_t* valueList, int32_t list
 	sortList->clear();
 	if(listSize == -1)
 	{
-		for(auto item = numOther; item < (numOther + numWeapons); item++)
+		for(size_t item = numOther; item < (numOther + numWeapons); item++)
 		{
 			sortList->setId(item - numOther, item);
 			switch(sortType)
@@ -5993,7 +5993,7 @@ int32_t Mover::sortWeapons(int32_t* weaponList, int32_t* valueList, int32_t list
 	}
 	else
 	{
-		for(auto item = 0; item < listSize; item++)
+		for(size_t item = 0; item < listSize; item++)
 		{
 			sortList->setId(item, weaponList[item]);
 			float sortValue = 0.0;
@@ -6654,7 +6654,7 @@ bool Mover::recover(void)
 				}
 			}
 			for(i = 0; i < numBodyLocations; i++)
-				for(auto j = 0; j < NumLocationCriticalSpaces[i]; j++)
+				for(size_t j = 0; j < NumLocationCriticalSpaces[i]; j++)
 					if(body[i].criticalSpaces[j].inventoryID < 255)
 						body[i].criticalSpaces[j].hit = inventory[body[i].criticalSpaces[j].inventoryID].disabled;
 			if(getCommanderId() == Commander::home->getId())
@@ -6719,7 +6719,7 @@ void Mover::initOptimalCells(int32_t numIncrements)
 	double degreesToRadians = (double)DEGREES_TO_RADS;
 	double incrementDegrees = 360.0 / numOptimalIncrements;
 	double doptimalCells[MAX_ATTACK_CELLRANGE][MAX_ATTACK_INCREMENTS][2];
-	for(int32_t r = 0; r < MAX_ATTACK_CELLRANGE; r++)
+	for(size_t r = 0; r < MAX_ATTACK_CELLRANGE; r++)
 		for(size_t i = 0; i < numIncrements; i++)
 		{
 			double incrementRadians = incrementDegrees * (double)i * degreesToRadians;
@@ -6752,7 +6752,7 @@ void Mover::initOptimalCells(int32_t numIncrements)
 	// Now, initialize the tables for Ranged Areas...
 	char rangedMap[MAX_ATTACK_CELLRANGE * 2 + 1][MAX_ATTACK_CELLRANGE * 2 + 1];
 	for(r = 0; r < (MAX_ATTACK_CELLRANGE * 2 + 1); r++)
-		for(int32_t c = 0; c < (MAX_ATTACK_CELLRANGE * 2 + 1); c++)
+		for(size_t c = 0; c < (MAX_ATTACK_CELLRANGE * 2 + 1); c++)
 		{
 			Stuff::Vector3D start, goal;
 			start.x = c;
@@ -6765,11 +6765,11 @@ void Mover::initOptimalCells(int32_t numIncrements)
 			rangedMap[r][c] = (char)(dist + 0.5);
 		}
 	int32_t index = 0;
-	for(int32_t range = 0; range < MAX_ATTACK_CELLRANGE; range++)
+	for(size_t range = 0; range < MAX_ATTACK_CELLRANGE; range++)
 	{
 		rangedCellsIndices[range][0] = index;
-		for(int32_t r = 0; r < (MAX_ATTACK_CELLRANGE * 2 + 1); r++)
-			for(int32_t c = 0; c < (MAX_ATTACK_CELLRANGE * 2 + 1); c++)
+		for(size_t r = 0; r < (MAX_ATTACK_CELLRANGE * 2 + 1); r++)
+			for(size_t c = 0; c < (MAX_ATTACK_CELLRANGE * 2 + 1); c++)
 				if(rangedMap[r][c] == range)
 				{
 					rangedCells[index][0] = r - MAX_ATTACK_CELLRANGE;

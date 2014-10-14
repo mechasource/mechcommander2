@@ -132,7 +132,7 @@ void MPParameterScreen::init(FitIniFile* file)
 	LogisticsScreen::init(*file, "Static", "Text", "Rect", "Button");
 	if(buttonCount)
 	{
-		for(auto i = 0; i < buttonCount; i++)
+		for(size_t i = 0; i < buttonCount; i++)
 		{
 			int32_t id = buttons[i].getID();
 			if((id < MP_INCREMENT_DROPWEIGHT || id > MP_DECREMENT_RP)
@@ -153,7 +153,7 @@ void MPParameterScreen::init(FitIniFile* file)
 	}
 	int32_t curY = 0;
 	playerParameters[0].init(file, "PlayerParams");
-	for(auto i = 1; i < MAX_MC_PLAYERS; i++)
+	for(size_t i = 1; i < MAX_MC_PLAYERS; i++)
 	{
 		playerParameters[i] = playerParameters[0];
 		curY = i * (playerParameters[i].bottom() - playerParameters[i].top() + 5);
@@ -203,7 +203,7 @@ void MPParameterScreen::begin()
 	status = RUNNING;
 	bHostLeftDlg = 0;
 	bootPlayerID = -1;
-	for(auto i = 0; i < MAX_MC_PLAYERS; i++)
+	for(size_t i = 0; i < MAX_MC_PLAYERS; i++)
 	{
 		playerParameters[i].insigniaName.Empty();
 	}
@@ -262,7 +262,7 @@ void MPParameterScreen::render(int32_t xOffset, int32_t yOffset)
 	else if(!xOffset && !yOffset)
 	{
 		aPlayerParams* pFocus = 0;
-		for(auto i = 0; i < playerCount; i++)
+		for(size_t i = 0; i < playerCount; i++)
 		{
 			if(playerParameters[i].hasFocus())
 				pFocus = & playerParameters[i];
@@ -367,7 +367,7 @@ int32_t	MPParameterScreen::handleMessage(uint32_t message, uint32_t who)
 				break;
 			case MP_BOOTPLAYER:
 			{
-				for(auto i = 0; i < playerCount; i++)
+				for(size_t i = 0; i < playerCount; i++)
 				{
 					if(playerParameters[i].isSelected())
 					{
@@ -379,7 +379,7 @@ int32_t	MPParameterScreen::handleMessage(uint32_t message, uint32_t who)
 						char str[256];
 						cLoadString(IDS_MP_PARAMTERS_BOOT_PROMPT, str, 255);
 						char finalStr[256];
-						for(auto j = 0; j < MAX_MC_PLAYERS; j++)
+						for(size_t j = 0; j < MAX_MC_PLAYERS; j++)
 						{
 							if(MPlayer->playerList[j].commanderID
 									== playerParameters[i].getCommanderID())
@@ -848,7 +848,7 @@ void MPParameterScreen::update()
 				}
 				return;
 			}
-			for(auto i = MP_INCREMENT_DROPWEIGHT; i < MP_DECREMENT_RP + 1; i++)
+			for(size_t i = MP_INCREMENT_DROPWEIGHT; i < MP_DECREMENT_RP + 1; i++)
 			{
 				aButton* pButton = getButton(i);
 				if(pButton)
@@ -908,7 +908,7 @@ void MPParameterScreen::update()
 				MPlayer->missionSettings.defaultCBills = 50000;
 				MPlayer->redistributeRP();
 			}
-			for(auto i = MP_INCREMENT_DROPWEIGHT; i < MP_RP_FORMMECHS + 1; i++)
+			for(size_t i = MP_INCREMENT_DROPWEIGHT; i < MP_RP_FORMMECHS + 1; i++)
 			{
 				aButton* pButton = getButton(i);
 				if(pButton)
@@ -973,7 +973,7 @@ void MPParameterScreen::update()
 			}
 		}
 		int32_t oldEditFocus = -1;
-		for(auto i = 0; i < editCount; i++)
+		for(size_t i = 0; i < editCount; i++)
 		{
 			if(edits[i].hasFocus())
 				oldEditFocus = i;
@@ -1032,7 +1032,7 @@ void MPParameterScreen::update()
 				// new player... need to redistribute rp
 				int32_t maxCommander = -1;
 				int32_t teamID = -1;
-				for(auto i = 0; i < playerCount; i++)
+				for(size_t i = 0; i < playerCount; i++)
 				{
 					if(players[i].commanderID > maxCommander)
 					{
@@ -1043,7 +1043,7 @@ void MPParameterScreen::update()
 			}
 			bool bReady = true;
 			const MC2Player* sortedPlayers[MAX_MC_PLAYERS];
-			for(auto i = 0; i < playerCount; i++)
+			for(size_t i = 0; i < playerCount; i++)
 			{
 				sortedPlayers[i] = &players[i];
 			}
@@ -1242,7 +1242,7 @@ void MPParameterScreen::checkVersionClientOnly(PCSTR pNewMapName)
 		chatToSend = IDS_MAP_WRONG_VERSION_CHAT;
 		statics[15].setColor(0);
 		// need to disable the ready button
-		for(auto i = 0; i < MAX_MC_PLAYERS; i++)
+		for(size_t i = 0; i < MAX_MC_PLAYERS; i++)
 		{
 			if(playerParameters[i].getCommanderID() == MPlayer->commanderID)
 			{
@@ -1261,7 +1261,7 @@ void MPParameterScreen::resetCheckBoxes()
 	{
 		int32_t playerCount = 0;
 		const MC2Player* players = MPlayer->getPlayers(playerCount);
-		for(auto i = 0; i < playerCount; i++)
+		for(size_t i = 0; i < playerCount; i++)
 		{
 			MC2Player* pWrite = MPlayer->getPlayerInfo(players[i].commanderID);
 			if(pWrite->commanderID != MPlayer->commanderID)
@@ -1317,7 +1317,7 @@ aPlayerParams& aPlayerParams::operator=(const aPlayerParams& src)
 	if(staticCount)
 	{
 		statics = new aObject[staticCount];
-		for(auto i = 0; i < staticCount; i++)
+		for(size_t i = 0; i < staticCount; i++)
 		{
 			addChild(&statics[i]);
 			statics[i] = src.statics[i];
@@ -1327,7 +1327,7 @@ aPlayerParams& aPlayerParams::operator=(const aPlayerParams& src)
 	if(rectCount)
 	{
 		rects = new aRect[rectCount];
-		for(auto i = 0; i < rectCount; i++)
+		for(size_t i = 0; i < rectCount; i++)
 		{
 			addChild(&rects[i]);
 			rects[i] = src.rects[i];
@@ -1337,7 +1337,7 @@ aPlayerParams& aPlayerParams::operator=(const aPlayerParams& src)
 	if(textCount)
 	{
 		textObjects = new aText[textCount];
-		for(auto i = 0; i < textCount; i++)
+		for(size_t i = 0; i < textCount; i++)
 		{
 			addChild(&textObjects[i]);
 			textObjects[i] = src.textObjects[i];
@@ -1403,7 +1403,7 @@ void aPlayerParams::init(FitIniFile* pFile, PCSTR blockNameParam)
 			{
 				statics = new aObject[staticCount];
 				char blockName[128];
-				for(auto i = 0; i < staticCount; i++)
+				for(size_t i = 0; i < staticCount; i++)
 				{
 					sprintf(blockName, "%s%ld", staticName, i);
 					statics[i].init(&file, blockName);
@@ -1423,7 +1423,7 @@ void aPlayerParams::init(FitIniFile* pFile, PCSTR blockNameParam)
 			{
 				rects = new aRect[rectCount];
 				char blockName[128];
-				for(auto i = 0; i < rectCount; i++)
+				for(size_t i = 0; i < rectCount; i++)
 				{
 					sprintf(blockName, "%s%ld", rectName, i);
 					rects[i].init(&file, blockName);
@@ -1444,7 +1444,7 @@ void aPlayerParams::init(FitIniFile* pFile, PCSTR blockNameParam)
 			{
 				textObjects = new aText[textCount];
 				char blockName[64];
-				for(auto i = 0; i < textCount; i++)
+				for(size_t i = 0; i < textCount; i++)
 				{
 					sprintf(blockName, "%s%ld", textName, i);
 					textObjects[i].init(&file, blockName);
@@ -1598,7 +1598,7 @@ void aPlayerParams::update()
 	{
 		factionDropList.SelectItem(-1);
 		factionDropList.ListBox().removeAllItems(true);
-		for(auto i = 0; i < 4; i += 1)
+		for(size_t i = 0; i < 4; i += 1)
 		{
 			aStyle2TextListItem* pTmp2;
 			pTmp2 = new aStyle2TextListItem;
@@ -1809,7 +1809,7 @@ void	aPlayerParams::setData(const _MC2Player* data)
 		if(teamNumberDropList.ListBox().GetItemCount() != MPlayer->missionSettings.maxTeams)
 		{
 			teamNumberDropList.ListBox().removeAllItems(true);
-			for(auto i = 0; i <  MPlayer->missionSettings.maxTeams; i ++)
+			for(size_t i = 0; i <  MPlayer->missionSettings.maxTeams; i ++)
 			{
 				aStyle2TextListItem* pTmp2 = new aStyle2TextListItem;
 				char tmpStr[32];

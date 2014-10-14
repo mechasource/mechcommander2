@@ -132,7 +132,7 @@ void Commander::setLocalMoverId(int32_t localMoverId)
 {
 	if(getTeam())
 	{
-		for(auto j = 0; j < getTeam()->getRosterSize(); j++)
+		for(size_t j = 0; j < getTeam()->getRosterSize(); j++)
 			getTeam()->getMover(j)->setLocalMoverId(localMoverId);
 	}
 }
@@ -189,7 +189,7 @@ int32_t Commander::Save(PacketFilePtr file, int32_t packetNum)
 			data.teamId = commanders[i]->getTeam()->getId();
 		else
 			data.teamId = Team::home->getId();
-		for(auto j = 0; j < MAX_MOVERGROUPS; j++)
+		for(size_t j = 0; j < MAX_MOVERGROUPS; j++)
 			commanders[i]->groups[j]->copyTo(data.groups[j]);
 		file->writePacket(packetNum, (puint8_t)&data, sizeof(CommanderData), STORAGE_TYPE_RAW);
 		packetNum++;
@@ -215,12 +215,12 @@ int32_t Commander::Load(PacketFilePtr file, int32_t packetNum)
 		// Decrement here to maintain sanity.
 		numCommanders--;
 		commanders[i]->setId(data.id);
-		for(int32_t k = 0; k < MAX_TEAMS; k++)
+		for(size_t k = 0; k < MAX_TEAMS; k++)
 		{
 			if(Team::teams[k] && (Team::teams[k]->getId() == data.teamId))
 				commanders[i]->team = Team::teams[k];
 		}
-		for(auto j = 0; j < MAX_MOVERGROUPS; j++)
+		for(size_t j = 0; j < MAX_MOVERGROUPS; j++)
 		{
 //			commanders[i]->groups[j] = new MoverGroup;
 			commanders[i]->groups[j]->init(data.groups[j]);

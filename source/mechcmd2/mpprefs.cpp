@@ -44,7 +44,7 @@ MPPrefs::~MPPrefs()
 int32_t MPPrefs::init(FitIniFile& file)
 {
 	LogisticsScreen::init(file, "Static", "Text", "Rect", "Button");
-	for(auto i = 0; i < buttonCount; i++)
+	for(size_t i = 0; i < buttonCount; i++)
 	{
 		if(buttons[i].getID() != MP_PREFS_BASE &&
 				buttons[i].getID() != MP_PREFS_STRIPE)
@@ -105,7 +105,7 @@ void MPPrefs::begin()
 	status = RUNNING;
 	comboBox[0].ListBox().removeAllItems(true);
 	comboBox[0].SelectItem(-1);
-	for(auto i = 0; i < 10; i++)
+	for(size_t i = 0; i < 10; i++)
 	{
 		if(strlen(prefs.playerName[i]))
 		{
@@ -209,7 +209,7 @@ void MPPrefs::update()
 	bool bMostSenior = true;
 	int32_t playerCount;
 	const MC2Player* players = MPlayer->getPlayers(playerCount);
-	for(auto i = 0; i < playerCount; i++)
+	for(size_t i = 0; i < playerCount; i++)
 	{
 		if(players[i].teamSeniority > mySeniority && players[i].team == player->team)
 		{
@@ -260,7 +260,7 @@ void MPPrefs::update()
 	}
 	if(userInput->isLeftClick() && !bExpanded)
 	{
-		for(auto j = FIRST_COLOR_RECT; j < LAST_COLOR_RECT + 1; j++)
+		for(size_t j = FIRST_COLOR_RECT; j < LAST_COLOR_RECT + 1; j++)
 		{
 			if(rects[j].pointInside(userInput->getMouseX(), userInput->getMouseY()))
 			{
@@ -284,7 +284,7 @@ void MPPrefs::setColor(uint32_t color)
 {
 	int32_t playerCount;
 	const MC2Player* players = MPlayer->getPlayers(playerCount);
-	for(auto i = 0; i < playerCount; i++)
+	for(size_t i = 0; i < playerCount; i++)
 	{
 		if(MPlayer->colors[players[i].baseColor[BASECOLOR_SELF]] == color && i != MPlayer->commanderID)
 		{
@@ -311,7 +311,7 @@ void MPPrefs::setHighlightColor(uint32_t color)
 
 char MPPrefs::getColorIndex(uint32_t color)
 {
-	for(auto i = 0; i < MAX_COLORS; i++)
+	for(size_t i = 0; i < MAX_COLORS; i++)
 	{
 		if(MPlayer->colors[i] == color)
 			return i;
@@ -323,11 +323,11 @@ void MPPrefs::updateBaseColors(const MC2Player* players, int32_t playerCount, bo
 {
 	if(getButton(MP_PREFS_BASE)->isPressed())
 	{
-		for(auto i = 0; i < playerCount; i++)
+		for(size_t i = 0; i < playerCount; i++)
 		{
 			if(players[i].commanderID == MPlayer->commanderID)
 			{
-				for(auto j = FIRST_COLOR_RECT; j < LAST_COLOR_RECT + 1; j++)
+				for(size_t j = FIRST_COLOR_RECT; j < LAST_COLOR_RECT + 1; j++)
 				{
 					if(MPlayer->colors[players[i].baseColor[BASECOLOR_PREFERENCE]] == rects[j].getColor())
 					{
@@ -342,7 +342,7 @@ void MPPrefs::updateBaseColors(const MC2Player* players, int32_t playerCount, bo
 			}
 			else
 			{
-				for(auto j = FIRST_COLOR_RECT; j < LAST_COLOR_RECT + 1; j++)
+				for(size_t j = FIRST_COLOR_RECT; j < LAST_COLOR_RECT + 1; j++)
 				{
 					if(MPlayer->colors[players[i].baseColor[BASECOLOR_SELF]] == rects[j].getColor() && bDrawRect)
 					{
@@ -362,11 +362,11 @@ void MPPrefs::updateStripeColors(const MC2Player* players, int32_t playerCount, 
 {
 	if(getButton(MP_PREFS_STRIPE)->isPressed())
 	{
-		for(auto i = 0; i < playerCount; i++)
+		for(size_t i = 0; i < playerCount; i++)
 		{
 			if(players[i].commanderID == MPlayer->commanderID)
 			{
-				for(auto j = FIRST_COLOR_RECT; j < LAST_COLOR_RECT + 1; j++)
+				for(size_t j = FIRST_COLOR_RECT; j < LAST_COLOR_RECT + 1; j++)
 				{
 					if(MPlayer->colors[players[i].stripeColor] == rects[j].getColor())
 					{
@@ -394,7 +394,7 @@ void MPPrefs ::render(int32_t OffsetX, int32_t OffsetY)
 	if(OffsetX == 0 && OffsetY == 0)
 	{
 		camera.render();
-		for(auto i = 0; i < 3; i++)
+		for(size_t i = 0; i < 3; i++)
 		{
 			if(!comboBox[i].ListBox().isShowing())
 				comboBox[i].render();
@@ -502,7 +502,7 @@ void MPPrefs::cancelSettings()
 
 void MPPrefs::initColors()
 {
-	for(auto j = FIRST_COLOR_RECT; j < LAST_COLOR_RECT + 1; j++)
+	for(size_t j = FIRST_COLOR_RECT; j < LAST_COLOR_RECT + 1; j++)
 	{
 		if(MPlayer)
 			MPlayer->colors[j - FIRST_COLOR_RECT] = rects[j].getColor();

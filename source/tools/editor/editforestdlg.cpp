@@ -131,7 +131,7 @@ BOOL EditForestDlg::OnInitDialog()
 		char name[256];
 		cLoadString(IDS_UNNAMDE_FOREST, name, 255);
 		char final[256];
-		for(auto i = 0; i < count; i++)
+		for(size_t i = 0; i < count; i++)
 		{
 			PCSTR pName = pForests[i]->getName();
 			int32_t index = -1;

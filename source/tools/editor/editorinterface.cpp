@@ -618,7 +618,7 @@ void EditorInterface::terminate()
 		if(EditorObjectMgr::instance())
 		{
 			int32_t count = EditorObjectMgr:: instance()->getBuildingGroupCount();
-			for(auto i = 0; i < count + 1; ++i)
+			for(size_t i = 0; i < count + 1; ++i)
 			{
 				delete menus[i];
 				menus[i] = nullptr;
@@ -686,7 +686,7 @@ void EditorInterface::addBuildingsToNewMenu()
 	menus = (CMenu**) malloc(sizeof(CMenu*) * (groupCount + 2));
 	menus[0] = pMenu;
 	int32_t id = IDS_OBJECT_200;
-	for(auto i = 0; i < groupCount; ++i)
+	for(size_t i = 0; i < groupCount; ++i)
 	{
 		CMenu* pChildMenu = new CMenu;
 		pChildMenu->CreatePopupMenu();
@@ -695,12 +695,12 @@ void EditorInterface::addBuildingsToNewMenu()
 		int32_t buildingCount = pMgr->getNumberBuildingsInGroup(i);
 		PCSTR* pBuildingNames = (PCSTR*)malloc(sizeof(PCSTR) * buildingCount);
 		pMgr->getBuildingNamesInGroup(i, pBuildingNames, buildingCount);
-		for(auto j = 0; j < buildingCount; ++j, ++id)
+		for(size_t j = 0; j < buildingCount; ++j, ++id)
 		{
 			CString oldName;
 			bool bAdded = 0;
 			int32_t count = pChildMenu->GetMenuItemCount();
-			for(int32_t k = 0; k < count; ++k)
+			for(size_t k = 0; k < count; ++k)
 			{
 				pChildMenu->GetMenuString(k, oldName, MF_BYPOSITION);
 				if(oldName > pBuildingNames[j])
@@ -716,7 +716,7 @@ void EditorInterface::addBuildingsToNewMenu()
 		CString oldName;
 		bool bAdded = 0;
 		int32_t count =  pMenu->GetMenuItemCount();
-		for(int32_t k = 0; k < count; ++k)
+		for(size_t k = 0; k < count; ++k)
 		{
 			pMenu->GetMenuString(k, oldName, MF_BYPOSITION);
 			if(oldName > pNames[i])
@@ -761,7 +761,7 @@ void EditorInterface::addBuildingsToNewMenu()
 		int32_t count = pChildMenu->GetMenuItemCount();
 		bool bPlaced = 0;
 		CString newStr(buffer);
-		for(auto j = 0; j < count; ++j)
+		for(size_t j = 0; j < count; ++j)
 		{
 			CString tmp;
 			pChildMenu->GetMenuString(j, tmp, MF_BYPOSITION);
@@ -1886,13 +1886,13 @@ int32_t	EditorInterface::paintBuildings(int32_t message)
 	EditorObjectMgr* pMgr = EditorObjectMgr::instance();
 	int32_t groupCount = pMgr->getBuildingGroupCount();
 	int32_t id = IDS_OBJECT_200;
-	for(auto i = 0; i < groupCount; ++i)
+	for(size_t i = 0; i < groupCount; ++i)
 	{
 		int32_t buildCount = pMgr->getNumberBuildingsInGroup(i);
 		if(id <= message && message < id + buildCount)
 		{
 			int32_t alignment = EDITOR_TEAM2;
-			for(auto j = 0; j < 9; ++j)
+			for(size_t j = 0; j < 9; ++j)
 			{
 				if(GetParent()->GetMenu()->GetMenuState(ID_ALIGNMENT_TEAM1 + j, MF_BYCOMMAND) & MF_CHECKED)
 				{
@@ -2226,9 +2226,9 @@ int32_t EditorInterface::SelectSlopes()
 		int32_t top;
 		int32_t bottom;
 		land->unselectAll();
-		for(auto j = 0; j < land->realVerticesMapSide; ++j)
+		for(size_t j = 0; j < land->realVerticesMapSide; ++j)
 		{
-			for(auto i = 0; i < land->realVerticesMapSide; ++i)
+			for(size_t i = 0; i < land->realVerticesMapSide; ++i)
 			{
 				left = i > 0 ? i - 1 : 0;
 				right = i < land->realVerticesMapSide ? i + 1 : i;
@@ -2280,9 +2280,9 @@ int32_t EditorInterface::SelectAltitude()
 		float maxHeight = (float)dlg.GetMax();
 		float centerElv;
 		land->unselectAll();
-		for(auto j = 0; j < land->realVerticesMapSide; ++j)
+		for(size_t j = 0; j < land->realVerticesMapSide; ++j)
 		{
-			for(auto i = 0; i < land->realVerticesMapSide; ++i)
+			for(size_t i = 0; i < land->realVerticesMapSide; ++i)
 			{
 				centerElv = land->getVertexHeight(j * land->realVerticesMapSide + i);
 				if((centerElv >= minHeight) && (centerElv <= maxHeight))
@@ -2304,9 +2304,9 @@ int32_t EditorInterface::SelectTerrainType()
 	{
 		cint32_t selectedTerrainType = dlg.SelectedTerrainType() - ID_TERRAINS_BLUEWATER;
 		land->unselectAll();
-		for(auto j = 0; j < land->realVerticesMapSide; ++j)
+		for(size_t j = 0; j < land->realVerticesMapSide; ++j)
 		{
-			for(auto i = 0; i < land->realVerticesMapSide; ++i)
+			for(size_t i = 0; i < land->realVerticesMapSide; ++i)
 			{
 				int32_t tmp = land->getTerrain(j, i);
 				if(land->getTerrain(j, i) == selectedTerrainType)
@@ -2445,9 +2445,9 @@ int32_t EditorInterface::AssignElevation()
 		if(IDOK == dlg.DoModal())
 		{
 			ActionPaintTile* pAction = new ActionPaintTile;
-			for(int32_t  j = 0; j < land->realVerticesMapSide; ++j)
+			for(size_t  j = 0; j < land->realVerticesMapSide; ++j)
 			{
-				for(auto i = 0; i < land->realVerticesMapSide; ++i)
+				for(size_t i = 0; i < land->realVerticesMapSide; ++i)
 				{
 					if(land->isVertexSelected(j, i))
 					{
@@ -2483,7 +2483,7 @@ int32_t EditorInterface::SmoothRadius()
 
 int32_t EditorInterface::Alignment(int32_t specific)
 {
-	for(auto i = 0; i < 9; ++i)
+	for(size_t i = 0; i < 9; ++i)
 		GetParent()->GetMenu()->CheckMenuItem(ID_ALIGNMENT_TEAM1 + i, MF_BYCOMMAND | MF_UNCHECKED);
 	GetParent()->GetMenu()->CheckMenuItem(specific, MF_BYCOMMAND | MF_CHECKED);
 	if(currentBrushID >= IDS_OBJECT_200 && currentBrushID <= 30800)
@@ -3741,9 +3741,9 @@ void EditorInterface::OnForestTool()
 	float xAvg = 0;
 	float yAvg = 0;
 	// figure out selection
-	for(auto j = 0; j < land->realVerticesMapSide; ++j)
+	for(size_t j = 0; j < land->realVerticesMapSide; ++j)
 	{
-		for(auto i = 0; i < land->realVerticesMapSide; ++i)
+		for(size_t i = 0; i < land->realVerticesMapSide; ++i)
 		{
 			if(land->isVertexSelected(j, i))
 			{
@@ -3760,7 +3760,7 @@ void EditorInterface::OnForestTool()
 	float dist = 0;
 	for(j = 0; j < land->realVerticesMapSide; ++j)
 	{
-		for(auto i = 0; i < land->realVerticesMapSide; ++i)
+		for(size_t i = 0; i < land->realVerticesMapSide; ++i)
 		{
 			if(land->isVertexSelected(j, i))
 			{

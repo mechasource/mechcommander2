@@ -55,8 +55,8 @@ public:
 	{
 		for(size_t i = 0; i < MAX_TRIGGER_AREAS; i++)
 			triggerAreas[i].type = TRIGGER_AREA_NONE;
-		for(int32_t r = 0; r < MAX_MAP_CELL_WIDTH / 3; r++)
-			for(int32_t c = 0; c < MAX_MAP_CELL_WIDTH / 3; c++)
+		for(size_t r = 0; r < MAX_MAP_CELL_WIDTH / 3; r++)
+			for(size_t c = 0; c < MAX_MAP_CELL_WIDTH / 3; c++)
 				map[r][c] = 0;
 	}
 

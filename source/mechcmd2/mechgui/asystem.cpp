@@ -25,7 +25,7 @@ void aObject::update()
 		helpTextID = helpID;
 	}
 	// call update for the children
-	for(auto i = 0; i < pNumberOfChildren; i++)
+	for(size_t i = 0; i < pNumberOfChildren; i++)
 		pChildren[i]->update();
 }
 
@@ -38,7 +38,7 @@ aObject::aObject()
 	pParent = nullptr;
 	textureHandle = 0;
 	memset(location, 0, sizeof(gos_VERTEX) * 4);
-	for(auto i = 0; i < 4; i++)
+	for(size_t i = 0; i < 4; i++)
 		location[i].rhw = .5;
 	showWindow = 1;
 	helpID = 0;
@@ -61,7 +61,7 @@ int32_t aObject::init(int32_t xPos, int32_t yPos, int32_t w, int32_t h)
 	location[2].y = yPos + h;
 	location[3].x = xPos + w;
 	location[3].y = yPos;
-	for(auto i = 0; i < 4; i++)
+	for(size_t i = 0; i < 4; i++)
 	{
 		location[i].u = 0.f;
 		location[i].v = 0.f;
@@ -124,7 +124,7 @@ void aObject::init(FitIniFile* file, PCSTR blockName, uint32_t neverFlush)
 	file->readIdLong("UWidth", uWidth);
 	file->readIdLong("VHeight", vHeight);
 	file->readIdBoolean("texturesRotated", bRotated);
-	for(int32_t k = 0; k < 4; k++)
+	for(size_t k = 0; k < 4; k++)
 	{
 		location[k].argb = 0xffffffff;
 		location[k].frgb = 0;
@@ -251,12 +251,12 @@ void aObject::removeChild(aObject* c)
 		return;
 	if((c->getParent() == this) || (c->getParent() == nullptr))	//Normal situation
 	{
-		for(int32_t cc = 0; cc < pNumberOfChildren; cc++)
+		for(size_t cc = 0; cc < pNumberOfChildren; cc++)
 		{
 			if(pChildren[cc] == c)
 			{
 				// found the child, remove it and shift the rest of the children up
-				for(int32_t sc = cc; sc < pNumberOfChildren - 1; sc++)
+				for(size_t sc = cc; sc < pNumberOfChildren - 1; sc++)
 					pChildren[sc] = pChildren[sc + 1];
 				pChildren[pNumberOfChildren] = nullptr;
 				pNumberOfChildren--;
@@ -358,7 +358,7 @@ void aObject::move(float offsetX, float offsetY)
 
 void aObject::moveNoRecurse(float offsetX, float offsetY)
 {
-	for(auto i = 0; i < 4; i++)
+	for(size_t i = 0; i < 4; i++)
 	{
 		location[i].x += offsetX;
 		location[i].y += offsetY;
@@ -383,7 +383,7 @@ void aObject::render()
 		gos_SetRenderState(gos_State_ZCompare, 0);
 		gos_SetRenderState(gos_State_ZWrite, 0);
 		gos_DrawQuads(location, 4);
-		for(auto i = 0; i < pNumberOfChildren; i++)
+		for(size_t i = 0; i < pNumberOfChildren; i++)
 		{
 			pChildren[i]->render();
 		}
@@ -442,14 +442,14 @@ void	aObject::setTexture(uint32_t newHandle)
 
 void aObject::setColor(uint32_t newColor, bool bRecurse)
 {
-	for(auto i = 0; i < 4; i++)
+	for(size_t i = 0; i < 4; i++)
 	{
 		location[i].argb = newColor;
 	}
 	//set the kids?
 	if(bRecurse)
 	{
-		for(auto i = 0; i < this->pNumberOfChildren; i++)
+		for(size_t i = 0; i < this->pNumberOfChildren; i++)
 		{
 			pChildren[i]->setColor(newColor, 1);
 		}
@@ -466,7 +466,7 @@ void	aObject::setUVs(float u1, float v1, float u2, float v2)
 
 void aObject::removeAllChildren(bool bDelete)
 {
-	for(auto i = 0; i < pNumberOfChildren; i++)
+	for(size_t i = 0; i < pNumberOfChildren; i++)
 	{
 		pChildren[i]->setParent(0);
 		if(bDelete)
@@ -482,7 +482,7 @@ void aObject::copyData(const aObject& src)
 	{
 		if(src.textureHandle)
 			textureHandle = mcTextureManager->copyTexture(src.textureHandle);
-		for(auto i = 0; i < 4; i++)
+		for(size_t i = 0; i < 4; i++)
 			location[i] = src.location[i];
 		fileWidth = src.fileWidth;
 		showWindow = src.showWindow;
@@ -628,7 +628,7 @@ void aText::init(FitIniFile* file, PCSTR header)
 	aObject::init(left, top, width, height);
 	int32_t color;
 	file->readIdLong("Color", color);
-	for(auto i = 0; i < 4; i++)
+	for(size_t i = 0; i < 4; i++)
 		location[i].argb = color;
 	file->readIdLong("Alignment", alignment);
 	int32_t textID;

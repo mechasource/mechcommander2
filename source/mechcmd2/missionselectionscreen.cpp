@@ -52,7 +52,7 @@ MissionSelectionScreen::~MissionSelectionScreen()
 void MissionSelectionScreen::init(FitIniFile* file)
 {
 	LogisticsScreen::init(*file, "CMStatic", "CMTextEntry", "CMRect", "CMButton");
-	for(auto i = 0; i < buttonCount; i++)
+	for(size_t i = 0; i < buttonCount; i++)
 		buttons[i].setMessageOnRelease();
 	missionCount = 0;
 	missionDescriptionListBox.init(rects[LB_RECT].left(), rects[LB_RECT].top(),
@@ -128,7 +128,7 @@ void MissionSelectionScreen::update()
 	int32_t mouseX = userInput->getMouseX();
 	int32_t mouseY = userInput->getMouseY();
 	uint32_t highlightColor = 0;
-	for(auto i = 0; i < operationScreen.buttonCount; i++)
+	for(size_t i = 0; i < operationScreen.buttonCount; i++)
 	{
 		if(operationScreen.buttons[i].isShowing())
 		{
@@ -227,7 +227,7 @@ void MissionSelectionScreen::begin()
 	EString selMissionName = LogisticsData::instance->getCurrentMission();
 	gosASSERT(result == NO_ERROR);
 	bool bPressed = 0;
-	for(auto i = 0; i < missionCount; i++)
+	for(size_t i = 0; i < missionCount; i++)
 	{
 		if(i > operationScreen.buttonCount)
 		{

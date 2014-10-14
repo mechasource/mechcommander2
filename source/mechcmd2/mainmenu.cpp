@@ -105,7 +105,7 @@ int32_t MainMenu::init(FitIniFile& file)
 		Assert(0, 0, errorStr);
 	}
 	background.init(file2, "Static", "Text", "Rect", "Button");
-	for(auto i = 0; i < buttonCount; i++)
+	for(size_t i = 0; i < buttonCount; i++)
 	{
 		buttons[i].setMessageOnRelease();
 		buttons[i].setPressFX(LOG_VIDEOBUTTONS);

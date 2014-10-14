@@ -372,7 +372,7 @@ public:
 	{
 		float maxArmorLocation = 0.0f;
 		//Find MAX armor location.
-		for(int32_t curLocation = 0; curLocation < NUM_GROUNDVEHICLE_LOCATIONS; curLocation++)
+		for(size_t curLocation = 0; curLocation < NUM_GROUNDVEHICLE_LOCATIONS; curLocation++)
 		{
 			if(armor[curLocation].curArmor > maxArmorLocation)
 				maxArmorLocation = armor[curLocation].curArmor;

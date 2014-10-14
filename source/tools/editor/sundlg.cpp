@@ -72,7 +72,7 @@ int32_t SunDlg::getHexValue(CEdit& edit)
 	str.MakeLower();
 	str.Replace("0x", 0);
 	int32_t value;
-	sscanf(str, "%x", &value);
+	sscanf_s(str, "%x", &value);
 	return value;
 }
 

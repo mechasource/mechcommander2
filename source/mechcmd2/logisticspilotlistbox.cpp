@@ -29,7 +29,7 @@ LogisticsPilotListBox::~LogisticsPilotListBox()
 void LogisticsPilotListBox::update()
 {
 	aListBox::update();
-	for(auto i = 0; i < itemCount; i++)
+	for(size_t i = 0; i < itemCount; i++)
 	{
 		if(((LogisticsPilotListBoxItem*)items[i])->getPilot() &&
 				((LogisticsPilotListBoxItem*)items[i])->getPilot()->isUsed())
@@ -63,7 +63,7 @@ LogisticsPilotListBoxItem::LogisticsPilotListBoxItem(LogisticsPilot* pNewPilot)
 	rankText = s_templateItem->rankText;
 	rankIcon = s_templateItem->rankIcon;
 	icon = s_templateItem->icon;
-	for(auto i = 0; i < PILOT_LIST_BOX_CHILD_COUNT; i++)
+	for(size_t i = 0; i < PILOT_LIST_BOX_CHILD_COUNT; i++)
 	{
 		pChildAnimations[i] = s_templateItem->pChildAnimations[i];
 	}
@@ -118,7 +118,7 @@ void LogisticsPilotListBoxItem::setAnimation(FitIniFile& file, int32_t whichOne)
 	char animationText[64];
 	if(NO_ERROR == file.readIdString("Animation", animationText, 63))
 	{
-		for(auto i = 0; i < strlen(animationText); i++)
+		for(size_t i = 0; i < strlen(animationText); i++)
 		{
 			if(isdigit(animationText[i]))
 			{
@@ -133,7 +133,7 @@ void LogisticsPilotListBoxItem::setAnimation(FitIniFile& file, int32_t whichOne)
 
 void LogisticsPilotListBoxItem::render()
 {
-	for(auto i = 0; i < this->pNumberOfChildren; i++)
+	for(size_t i = 0; i < this->pNumberOfChildren; i++)
 	{
 		int32_t newColor = 0xffffffff;
 		if(pChildAnimations[i] != -1)
@@ -154,13 +154,13 @@ void LogisticsPilotListBoxItem::render()
 void LogisticsPilotListBoxItem::update()
 {
 	bool isInside = pointInside(userInput->getMouseX(), userInput->getMouseY());
-	for(auto i = 0; i < 3; i++)
+	for(size_t i = 0; i < 3; i++)
 		animations[i].update();
 	if(state == aListItem::SELECTED)
 	{
 		if(animations[0].getState() != aAnimGroup::PRESSED)
 		{
-			for(auto i = 0; i < 3; i++)
+			for(size_t i = 0; i < 3; i++)
 				animations[i].setState(aAnimGroup::PRESSED);
 		}
 		if(userInput->isLeftDoubleClick() && isInside)
@@ -185,7 +185,7 @@ void LogisticsPilotListBoxItem::update()
 	{
 		if(animations[0].getState() != aAnimGroup::HIGHLIGHT)
 		{
-			for(auto i = 0; i < 3; i++)
+			for(size_t i = 0; i < 3; i++)
 				animations[i].setState(aAnimGroup::HIGHLIGHT);
 		}
 	}
@@ -193,7 +193,7 @@ void LogisticsPilotListBoxItem::update()
 	{
 		if(animations[0].getState() != aAnimGroup::NORMAL)
 		{
-			for(auto i = 0; i < 3; i++)
+			for(size_t i = 0; i < 3; i++)
 				animations[i].setState(aAnimGroup::NORMAL);
 		}
 	}
@@ -229,7 +229,7 @@ int32_t LogisticsPilotListBox::AddItem(aListItem* pNewItem)
 	if(pItem)
 	{
 		LogisticsPilot* pPilot = pItem->getPilot();
-		for(auto i = 0; i < itemCount; i++)
+		for(size_t i = 0; i < itemCount; i++)
 		{
 			LogisticsPilotListBoxItem* pTmpItem = dynamic_cast<LogisticsPilotListBoxItem*>(items[i]);
 			if(pTmpItem)
@@ -265,7 +265,7 @@ int32_t LogisticsPilotListBox::AddItem(aListItem* pNewItem)
 
 void LogisticsPilotListBox::removePilot(LogisticsPilot* pPilot)
 {
-	for(auto i = 0; i < itemCount; i++)
+	for(size_t i = 0; i < itemCount; i++)
 	{
 		LogisticsPilotListBoxItem* pItem = dynamic_cast<LogisticsPilotListBoxItem*>(items[i]);
 		if(pItem && pItem->getPilot() == pPilot)

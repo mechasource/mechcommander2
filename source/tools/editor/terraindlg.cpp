@@ -20,7 +20,7 @@ void TerrainDlg::Init()
 {
 	CListBox* pListBox = (CListBox*)GetDlgItem(IDC_TERRAINS);
 	int32_t numTerrains = TerrainColorMap::getNumTypes();
-	for(auto i = 0; i < numTerrains; i++)
+	for(size_t i = 0; i < numTerrains; i++)
 	{
 		char buffer[256];
 		if(!TerrainColorMap::getTextureNameID(i))    // if we start to repeat, quit

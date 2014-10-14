@@ -1182,7 +1182,7 @@ void Building::createBuildingMarines(void)
 		// Scan the Pilot list for non-home team pilots WHICH are
 		// occupying a destroyed vehicle.
 		int32_t numPilots = scenario->getNumWarriors();
-		for(auto j = 0; j < numPilots; j++)
+		for(size_t j = 0; j < numPilots; j++)
 		{
 			MechWarriorPtr pilot = scenario->getWarrior(j);
 			if(pilot && (pilot->getAlignment() != homeTeam->getAlignment()))
@@ -1395,7 +1395,7 @@ int32_t Building::handleWeaponHit(WeaponShotInfoPtr shotInfo, bool addMultiplayC
 						int32_t c = *curCoord++;
 						//Traverse the moverLists and blow anyone standing on these cells which JUST went impassable
 						int32_t numMovers = ObjectManager->getNumMovers();
-						for(auto j = 0; j < numMovers; j += 1)
+						for(size_t j = 0; j < numMovers; j += 1)
 						{
 							MoverPtr pMover = ObjectManager->getMover(j);
 							if(pMover && pMover->getExists())
@@ -1405,7 +1405,7 @@ int32_t Building::handleWeaponHit(WeaponShotInfoPtr shotInfo, bool addMultiplayC
 								if((cellCol == c) && (cellRow == r))
 								{
 									//DIE DIE DIE
-									for(int32_t k = 0; k < 50; k++)
+									for(size_t k = 0; k < 50; k++)
 									{
 										WeaponShotInfo shotInfo;
 										shotInfo.init(nullptr, 160, 50.0f, pMover->calcHitLocation(nullptr, -1, ATTACKSOURCE_WEAPONFIRE, 0), 0);

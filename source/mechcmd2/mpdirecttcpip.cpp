@@ -54,7 +54,7 @@ void MPDirectTcpip::init(FitIniFile* file)
 	LogisticsScreen::init(*file, "Static", "Text", "Rect", "Button");
 	if(buttonCount)
 	{
-		for(auto i = 0; i < buttonCount; i++)
+		for(size_t i = 0; i < buttonCount; i++)
 		{
 			if(buttons[i].getID() == 0)
 			{

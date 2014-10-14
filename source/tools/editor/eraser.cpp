@@ -188,18 +188,18 @@ Action* Eraser::applyToSelection()
 		it++;
 	}
 	//EditorObjectMgr::instance()->deleteSelectedObjects();
-	for(auto i = 0; i < land->realVerticesMapSide; ++i)
+	for(size_t i = 0; i < land->realVerticesMapSide; ++i)
 	{
-		for(auto j = 0; j < land->realVerticesMapSide; ++j)
+		for(size_t j = 0; j < land->realVerticesMapSide; ++j)
 		{
 			if(land->isVertexSelected(j, i))
 			{
 				pRetAction->addChangedVertexInfo(j, i);
 				land->setOverlay(j, i, INVALID_OVERLAY, 0);
 				land->setTerrain(j, i, DEFAULT_TERRAIN);
-				for(auto icell = 0; icell < MAPCELL_DIM; icell++)
+				for(size_t icell = 0; icell < MAPCELL_DIM; icell++)
 				{
-					for(auto jcell = 0; jcell < MAPCELL_DIM; jcell++)
+					for(size_t jcell = 0; jcell < MAPCELL_DIM; jcell++)
 					{
 						int32_t cellRow = j * MAPCELL_DIM + jcell;
 						int32_t cellCol = i * MAPCELL_DIM + icell;

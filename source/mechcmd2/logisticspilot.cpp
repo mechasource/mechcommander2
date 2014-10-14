@@ -36,7 +36,7 @@ LogisticsPilot::LogisticsPilot()
 	if(!strlen(skillTexts[0]))
 	{
 		char tmp[256];
-		for(auto i = 0; i < NUM_SPECIALTY_SKILLS; i++)
+		for(size_t i = 0; i < NUM_SPECIALTY_SKILLS; i++)
 		{
 			cLoadString(IDS_SPECIALTY + i, tmp, 255);
 			strcpy(skillTexts[i], tmp);
@@ -249,7 +249,7 @@ int32_t LogisticsPilot::update(MechWarrior* pWarrior)
 	vehicleKills += pWarrior->numMechKills[VEHICLE_CLASS_GROUND][COMBAT_STAT_MISSION];
 	rank = pWarrior->getRank();
 	int32_t deadMechCount = 0;
-	for(auto i = 0; i < pWarrior->numKilled; i++)
+	for(size_t i = 0; i < pWarrior->numKilled; i++)
 	{
 		GameObject* pDead = ObjectManager->getByWatchID(pWarrior->killed[i]);
 		if(pDead->getObjectClass() == BATTLEMECH)
@@ -423,7 +423,7 @@ int32_t LogisticsPilot::turnAverageIntoRank(float avg)
 int32_t			LogisticsPilot::getSpecialtySkillCount(void) const
 {
 	int32_t count = 0;
-	for(auto i = 0; i < NUM_SPECIALTY_SKILLS; i++)
+	for(size_t i = 0; i < NUM_SPECIALTY_SKILLS; i++)
 	{
 		if(specialtySkills[i])
 			count++;
@@ -434,7 +434,7 @@ int32_t	LogisticsPilot::getSpecialtySkills(PCSTR* array, int32_t& count)
 {
 	int32_t max = count;
 	count = 0;
-	for(auto i = 0; i < NUM_SPECIALTY_SKILLS; i++)
+	for(size_t i = 0; i < NUM_SPECIALTY_SKILLS; i++)
 	{
 		if(count >= max)
 		{
@@ -453,7 +453,7 @@ int32_t		LogisticsPilot::getSpecialtySkills(pint32_t array, int32_t& count)
 {
 	int32_t max = count;
 	count = 0;
-	for(auto i = 0; i < NUM_SPECIALTY_SKILLS; i++)
+	for(size_t i = 0; i < NUM_SPECIALTY_SKILLS; i++)
 	{
 		if(i >= max)
 		{

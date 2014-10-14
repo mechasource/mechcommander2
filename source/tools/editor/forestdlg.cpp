@@ -126,7 +126,7 @@ void ForestDlg::OnSave()
 	int32_t retVal = dlg.DoModal();
 	if(IDOK == retVal)
 	{
-		for(auto i = IDC_FOREST_EDIT1; i < IDC_FOREST_EDIT15 + 1; i += 2)
+		for(size_t i = IDC_FOREST_EDIT1; i < IDC_FOREST_EDIT15 + 1; i += 2)
 		{
 			CWnd* pWnd = GetDlgItem(i);
 			CEdit* pEdit = (CEdit*)(pWnd);
@@ -158,7 +158,7 @@ void ForestDlg::OnOK()
 	{
 		return;
 	}
-	for(auto i = IDC_FOREST_EDIT1; i < IDC_FOREST_EDIT15 + 1; i += 2)
+	for(size_t i = IDC_FOREST_EDIT1; i < IDC_FOREST_EDIT15 + 1; i += 2)
 	{
 		CWnd* pWnd = GetDlgItem(i);
 		CEdit* pEdit = (CEdit*)(pWnd);
@@ -239,7 +239,7 @@ BOOL ForestDlg::OnInitDialog()
 		m_radius = forest.radius;
 	}
 	UpdateData(0);
-	for(auto i = IDC_SLIDER1; i < IDC_SLIDER15; i += 2)
+	for(size_t i = IDC_SLIDER1; i < IDC_SLIDER15; i += 2)
 	{
 		CWnd* pWnd = GetDlgItem(i);
 		CSliderCtrl* pSlider = (CSliderCtrl*)(pWnd);

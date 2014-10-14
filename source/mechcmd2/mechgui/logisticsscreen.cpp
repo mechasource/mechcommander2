@@ -94,7 +94,7 @@ void LogisticsScreen::init(FitIniFile& file, PCSTR staticName, PCSTR textName, P
 			{
 				statics = new aObject[staticCount];
 				char blockName[128];
-				for(auto i = 0; i < staticCount; i++)
+				for(size_t i = 0; i < staticCount; i++)
 				{
 					sprintf(blockName, "%s%ld", staticName, i);
 					statics[i].init(&file, blockName);
@@ -113,7 +113,7 @@ void LogisticsScreen::init(FitIniFile& file, PCSTR staticName, PCSTR textName, P
 			{
 				rects = new aRect[rectCount];
 				char blockName[128];
-				for(auto i = 0; i < rectCount; i++)
+				for(size_t i = 0; i < rectCount; i++)
 				{
 					sprintf(blockName, "%s%ld", rectName, i);
 					rects[i].init(&file, blockName);
@@ -132,7 +132,7 @@ void LogisticsScreen::init(FitIniFile& file, PCSTR staticName, PCSTR textName, P
 			{
 				char blockName[128];
 				buttons = new aAnimButton[buttonCount];
-				for(auto i = 0; i < buttonCount; i++)
+				for(size_t i = 0; i < buttonCount; i++)
 				{
 					sprintf(blockName, "%s%ld", buttonName, i);
 					buttons[i].init(file, blockName);
@@ -153,7 +153,7 @@ void LogisticsScreen::init(FitIniFile& file, PCSTR staticName, PCSTR textName, P
 			{
 				textObjects = new aText[textCount];
 				char blockName[64];
-				for(auto i = 0; i < textCount; i++)
+				for(size_t i = 0; i < textCount; i++)
 				{
 					sprintf(blockName, "%s%ld", textName, i);
 					textObjects[i].init(&file, blockName);
@@ -172,7 +172,7 @@ void LogisticsScreen::init(FitIniFile& file, PCSTR staticName, PCSTR textName, P
 			{
 				edits = new aEdit[editCount];
 				char blockName[64];
-				for(auto i = 0; i < editCount; i++)
+				for(size_t i = 0; i < editCount; i++)
 				{
 					sprintf(blockName, "%s%ld", editName, i);
 					edits[i].init(&file, blockName);
@@ -190,7 +190,7 @@ void LogisticsScreen::init(FitIniFile& file, PCSTR staticName, PCSTR textName, P
 			{
 				animObjects = new aAnimObject[animObjectsCount];
 				char blockName[64];
-				for(auto i = 0; i < animObjectsCount; i++)
+				for(size_t i = 0; i < animObjectsCount; i++)
 				{
 					sprintf(blockName, "%s%ld", animObjectName, i);
 					animObjects[i].init(&file, blockName, neverFlush);
@@ -202,7 +202,7 @@ void LogisticsScreen::init(FitIniFile& file, PCSTR staticName, PCSTR textName, P
 
 aButton* LogisticsScreen::getButton(int32_t who)
 {
-	for(auto i = 0; i < buttonCount; i++)
+	for(size_t i = 0; i < buttonCount; i++)
 	{
 		if(buttons[i].getID() == who)
 		{
@@ -457,7 +457,7 @@ void LogisticsScreen::copyData(const LogisticsScreen& src)
 		if(staticCount)
 		{
 			statics = new aObject[staticCount];
-			for(auto i = 0; i < staticCount; i++)
+			for(size_t i = 0; i < staticCount; i++)
 			{
 				statics[i] = src.statics[i];
 			}
@@ -466,7 +466,7 @@ void LogisticsScreen::copyData(const LogisticsScreen& src)
 		if(buttonCount)
 		{
 			buttons = new aAnimButton[buttonCount];
-			for(auto i = 0; i < buttonCount; i++)
+			for(size_t i = 0; i < buttonCount; i++)
 			{
 				buttons[i] = src.buttons[i];
 			}
@@ -475,7 +475,7 @@ void LogisticsScreen::copyData(const LogisticsScreen& src)
 		if(textCount)
 		{
 			textObjects = new aText[textCount];
-			for(auto i = 0; i < textCount; i++)
+			for(size_t i = 0; i < textCount; i++)
 			{
 				textObjects[i] = src.textObjects[i];
 			}
@@ -484,14 +484,14 @@ void LogisticsScreen::copyData(const LogisticsScreen& src)
 		if(animObjectsCount)
 		{
 			animObjects = new aAnimObject[animObjectsCount];
-			for(auto i = 0; i < animObjectsCount; i++)
+			for(size_t i = 0; i < animObjectsCount; i++)
 				animObjects[i] = src.animObjects[i];
 		}
 		editCount = src.editCount;
 		if(editCount)
 		{
 			edits = new aEdit[editCount];
-			for(auto i = 0; i < editCount; i++)
+			for(size_t i = 0; i < editCount; i++)
 				edits[i] = src.edits[i];
 		}
 	}
@@ -564,7 +564,7 @@ bool	LogisticsScreen::inside(int32_t x, int32_t y)
 
 void LogisticsScreen::begin()
 {
-	for(auto i = 0; i < animObjectsCount; i++)
+	for(size_t i = 0; i < animObjectsCount; i++)
 		animObjects[i].begin();
 	status = RUNNING;
 	gos_KeyboardFlush();

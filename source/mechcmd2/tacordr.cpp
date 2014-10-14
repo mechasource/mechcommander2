@@ -1624,7 +1624,7 @@ int32_t TacticalOrder::status(MechWarriorPtr warrior)
 						for(size_t i = 0; i < myGroup->getNumMovers(); i++)
 						{
 							((ElementalPtr)myGroup->getMover(i))->transport = (MoverPtr)target;
-							for(auto j = 0; j < MAX_TOADS; j++)
+							for(size_t j = 0; j < MAX_TOADS; j++)
 							{
 								if(((GroundVehiclePtr)target)->toads[j] == 0)
 								{

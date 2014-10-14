@@ -240,10 +240,10 @@ void calcAttackPlan(int32_t numAttackers, GameObjectPtr* attackers, int32_t numD
 	}
 	//-------------------------------------------------------------------------
 	// Calc who they should attack, trying to spread the wealth, so to speak...
-	for(int32_t a = 0; a < numAttackers; a++)
+	for(size_t a = 0; a < numAttackers; a++)
 	{
 		int32_t toughest = numDefenders - 1;
-		for(int32_t d = (numDefenders - 2); d > -1; d--)
+		for(size_t d = (numDefenders - 2); d > -1; d--)
 		{
 			if(attackRatio[d] < attackRatio[toughest])
 				toughest = d;
@@ -283,17 +283,17 @@ GameObjectPtr calcBestTarget(MoverPtr attacker, int32_t numAttackers, MoverPtr* 
 	}
 	//---------------------------------------------------------------
 	// First, find out who everyone else in our group is attacking...
-	for(int32_t a = 0; a < numAttackers; a++)
+	for(size_t a = 0; a < numAttackers; a++)
 	{
 		GameObjectPtr target = attackers[a]->getPilot()->getCurrentTarget();
-		for(int32_t d = 0; d < numDefenders; d++)
+		for(size_t d = 0; d < numDefenders; d++)
 			if(defenders[d] == target)
 			{
 				attackTotal[i] += attackers[a]->getThreatRating();
 				break;
 			}
 	}
-	for(int32_t d = 0; d < numDefenders; d++)
+	for(size_t d = 0; d < numDefenders; d++)
 		attackRatio[d] = attackTotal[d] / defenders[d]->getThreatRating();
 	//----------------------------------------------
 	// Now, find out who this pilot should attack...
@@ -5827,13 +5827,13 @@ void execIsGateOpen(void)
 			{
 				case 0:
 				{
-					for(int32_t curWeapon = mover->numOther; curWeapon < (mover->numOther + mover->numWeapons); curWeapon++)
+					for(size_t curWeapon = mover->numOther; curWeapon < (mover->numOther + mover->numWeapons); curWeapon++)
 						weaponList[numWpns++] = mover->inventory[curWeapon].masterID;
 				}
 				break;
 				case 1:
 				{
-					for(int32_t curWeapon = mover->numOther; curWeapon < (mover->numOther + mover->numWeapons); curWeapon++)
+					for(size_t curWeapon = mover->numOther; curWeapon < (mover->numOther + mover->numWeapons); curWeapon++)
 					{
 						if(!mover->inventory[curWeapon].disabled && (mover->getWeaponShots(curWeapon) > 0))
 							weaponList[numWpns++] = mover->inventory[curWeapon].masterID;

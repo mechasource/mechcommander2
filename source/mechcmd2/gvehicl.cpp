@@ -361,7 +361,7 @@ int32_t GroundVehicleType::init(FilePtr objFile, uint32_t fileSize)
 	result = vehicleFile.seekBlock("InternalStructure");
 	if(result != NO_ERROR)
 		Fatal(result, " GroundVehicle:Init - Unable to find InternalStructure Block ");
-	for(int32_t curLocation = 0; curLocation < NUM_GROUNDVEHICLE_LOCATIONS; curLocation++)
+	for(size_t curLocation = 0; curLocation < NUM_GROUNDVEHICLE_LOCATIONS; curLocation++)
 	{
 		result = vehicleFile.readIdUChar(bodyLocationString[curLocation], maxInternalStructure[curLocation]);
 		if(result != NO_ERROR)
@@ -799,7 +799,7 @@ void GroundVehicle::init(bool create, ObjectTypePtr objType)
 	//----------------------------------------------------
 	// Set some mech traits based upon the vehicle Type...
 	GroundVehicleTypePtr vehicleT = (GroundVehicleTypePtr)objType;
-	for(int32_t curLocation = 0; curLocation < NUM_GROUNDVEHICLE_LOCATIONS; curLocation++)
+	for(size_t curLocation = 0; curLocation < NUM_GROUNDVEHICLE_LOCATIONS; curLocation++)
 	{
 		body[curLocation].maxInternalStructure = vehicleT->maxInternalStructure[curLocation];
 		body[curLocation].CASE = false;
@@ -1030,7 +1030,7 @@ int32_t GroundVehicle::init(FitIniFile* vehicleFile)
 	}
 	//------------------------------------------------------------
 	// Now, read in the component layout for each body location...
-	for(int32_t curLocation = 0; curLocation < NUM_GROUNDVEHICLE_LOCATIONS; curLocation++)
+	for(size_t curLocation = 0; curLocation < NUM_GROUNDVEHICLE_LOCATIONS; curLocation++)
 	{
 		result = vehicleFile->seekBlock(BodyLocationBlockString[curLocation]);
 		if(result != NO_ERROR)
@@ -1061,12 +1061,12 @@ int32_t GroundVehicle::init(FitIniFile* vehicleFile)
 		body[curLocation].totalSpaces = 0;
 	}
 	calcAmmoTotals();
-	for(auto item = numOther; item < (numOther + numWeapons); item++)
+	for(size_t item = numOther; item < (numOther + numWeapons); item++)
 	{
 		//----------------------------------------------------------
 		// Each weapon should point to its appropriate ammo total in
 		// the ammo type total list...
-		for(int32_t ammoIndex = 0; ammoIndex < numAmmoTypes; ammoIndex++)
+		for(size_t ammoIndex = 0; ammoIndex < numAmmoTypes; ammoIndex++)
 		{
 			if((int32_t)MasterComponent::masterList[inventory[item].masterID].getWeaponAmmoMasterId() == ammoTypeTotal[ammoIndex].masterId)
 			{
@@ -1114,7 +1114,7 @@ int32_t GroundVehicle::calcCV(bool calcMax)
 	//----------------------------------------
 	// First, total the CV's of all weapons...
 	float weaponBR = 0.0;
-	for(int32_t weaponIndex = numOther; weaponIndex < (numOther + numWeapons); weaponIndex++)
+	for(size_t weaponIndex = numOther; weaponIndex < (numOther + numWeapons); weaponIndex++)
 		if(calcMax || !inventory[weaponIndex].disabled)
 			weaponBR += MasterComponent::masterList[inventory[weaponIndex].masterID].getCV();
 	//----------------------------------------------------------
@@ -1126,11 +1126,11 @@ int32_t GroundVehicle::calcCV(bool calcMax)
 	float defensiveBR = 0.0;
 	//-------------
 	// IS Factor...
-	for(int32_t bodyLocation = 0; bodyLocation < NUM_GROUNDVEHICLE_LOCATIONS; bodyLocation++)
+	for(size_t bodyLocation = 0; bodyLocation < NUM_GROUNDVEHICLE_LOCATIONS; bodyLocation++)
 		defensiveBR += (calcMax ? body[bodyLocation].maxInternalStructure : body[bodyLocation].curInternalStructure);
 	//----------------
 	// Armor Factor...
-	for(int32_t armorLocation = 0; armorLocation < NUM_GROUNDVEHICLE_LOCATIONS; armorLocation++)
+	for(size_t armorLocation = 0; armorLocation < NUM_GROUNDVEHICLE_LOCATIONS; armorLocation++)
 		defensiveBR += (calcMax ? armor[armorLocation].maxArmor : armor[armorLocation].curArmor);
 	//----------------------
 	// Add Tonnage Factor...
@@ -1153,7 +1153,7 @@ int32_t GroundVehicle::calcCV(bool calcMax)
 //	defensiveBR += heatFactor;
 	//--------------------------------
 	// Any other special Components..?
-	for(auto itemIndex = 0; itemIndex < numOther; itemIndex++)
+	for(size_t itemIndex = 0; itemIndex < numOther; itemIndex++)
 		if(calcMax || !inventory[itemIndex].disabled)
 			defensiveBR += MasterComponent::masterList[inventory[itemIndex].masterID].getCV();
 	return((int32_t)(weaponBR + defensiveBR));

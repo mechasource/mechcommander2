@@ -631,7 +631,7 @@ int32_t TargetPriorityList::calcTarget(MechWarriorPtr pilot, Stuff::Vector3D loc
 						//----------------------------------------------
 						// for now, return the closest enemy building...
 						float smallestDistance = 999999.0;
-						for(auto j = 0; j < ObjectManager->getNumBuildings(); j++)
+						for(size_t j = 0; j < ObjectManager->getNumBuildings(); j++)
 						{
 							BuildingPtr building = ObjectManager->getBuilding(j);
 							if(building->isEnemy(pilot->getTeam()))
@@ -911,7 +911,7 @@ void MechWarrior::init(bool create)
 	rank = WARRIOR_RANK_GREEN;
 	for(size_t i = 0; i < NUM_SKILLS; i++)
 	{
-		for(auto j = 0; j < NUM_COMBAT_STATS; j++)
+		for(size_t j = 0; j < NUM_COMBAT_STATS; j++)
 		{
 			numSkillUses[i][j] = 0;
 			numSkillSuccesses[i][j] = 0;
@@ -943,10 +943,10 @@ void MechWarrior::init(bool create)
 	numKilled = 0;
 	memset(killed, 0, sizeof(GameObject*) * MAX_MOVERS / 3);
 	for(i = 0; i < NUM_VEHICLE_CLASSES; i++)
-		for(auto j = 0; j < NUM_COMBAT_STATS; j++)
+		for(size_t j = 0; j < NUM_COMBAT_STATS; j++)
 			numMechKills[i][j] = 0;
 	for(i = 0; i < NUM_PHYSICAL_ATTACKS; i++)
-		for(auto j = 0; j < NUM_COMBAT_STATS; j++)
+		for(size_t j = 0; j < NUM_COMBAT_STATS; j++)
 			numPhysicalAttacks[i][j] = 0;
 	for(i = 0; i < NUM_SPECIALTY_SKILLS; i++)
 		specialtySkills[i] = false;
@@ -968,7 +968,7 @@ void MechWarrior::init(bool create)
 	brainUpdate = (float)(numWarriors % 30) * 0.2;
 	combatUpdate = (float)(numWarriors % 15) * 0.1;
 	movementUpdate = (float)(numWarriors % 15) * 0.2;
-	for(int32_t w = 0; w < MAX_WEAPONS_PER_MOVER; w++)
+	for(size_t w = 0; w < MAX_WEAPONS_PER_MOVER; w++)
 		weaponsStatus[w] = 0;
 	weaponsStatusResult = WEAPONS_STATUS_NO_TARGET;
 	useGoalPlan = false;
@@ -1069,7 +1069,7 @@ int32_t MechWarrior::init(FitIniFile* warriorFile)
 	if(result != NO_ERROR)
 		photoIndex = 0;
 	strcpy(callsign, name);
-	for(auto i = 0; i < strlen(callsign); i ++)
+	for(size_t i = 0; i < strlen(callsign); i ++)
 		CharUpper(callsign);
 	result = warriorFile->readIdUChar("OldPilot", oldPilot);
 	if(result != NO_ERROR)
@@ -1363,7 +1363,7 @@ void MechWarrior::clear(void)
 	rank = WARRIOR_RANK_GREEN;
 	for(size_t i = 0; i < NUM_SKILLS; i++)
 	{
-		for(auto j = 0; j < NUM_COMBAT_STATS; j++)
+		for(size_t j = 0; j < NUM_COMBAT_STATS; j++)
 		{
 			numSkillUses[i][j] = 0;
 			numSkillSuccesses[i][j] = 0;
@@ -1395,10 +1395,10 @@ void MechWarrior::clear(void)
 	numKilled = 0;
 	memset(killed, 0, sizeof(GameObject*) * MAX_MOVERS / 3);
 	for(i = 0; i < NUM_VEHICLE_CLASSES; i++)
-		for(auto j = 0; j < NUM_COMBAT_STATS; j++)
+		for(size_t j = 0; j < NUM_COMBAT_STATS; j++)
 			numMechKills[i][j] = 0;
 	for(i = 0; i < NUM_PHYSICAL_ATTACKS; i++)
-		for(auto j = 0; j < NUM_COMBAT_STATS; j++)
+		for(size_t j = 0; j < NUM_COMBAT_STATS; j++)
 			numPhysicalAttacks[i][j] = 0;
 	for(i = 0; i < NUM_SPECIALTY_SKILLS; i++)
 		specialtySkills[i] = false;
@@ -1421,7 +1421,7 @@ void MechWarrior::clear(void)
 	//brainUpdate = (float)(numWarriors % 30) * 0.2;
 	//combatUpdate = (float)(numWarriors % 15) * 0.1;
 	//movementUpdate = (float)(numWarriors % 15) * 0.2;
-	for(int32_t w = 0; w < MAX_WEAPONS_PER_MOVER; w++)
+	for(size_t w = 0; w < MAX_WEAPONS_PER_MOVER; w++)
 		weaponsStatus[w] = 0;
 	weaponsStatusResult = WEAPONS_STATUS_NO_TARGET;
 	newTacOrderReceived[ORDERSTATE_GENERAL] = false;
@@ -1432,7 +1432,7 @@ void MechWarrior::clear(void)
 	tacOrder[ORDERSTATE_ALARM].init();
 	lastTacOrder.init();
 	curTacOrder.init();
-	for(int32_t curAlarm = 0; curAlarm < NUM_PILOT_ALARMS; curAlarm++)
+	for(size_t curAlarm = 0; curAlarm < NUM_PILOT_ALARMS; curAlarm++)
 		clearAlarm(curAlarm);
 	alarmPriority = 0;
 	//tacOrderQueue = nullptr;
@@ -1641,7 +1641,7 @@ int32_t MechWarrior::peekQueuedTacOrder(int32_t index, TacticalOrderPtr tacOrder
 
 void MechWarrior::clearTacOrderQueue(void)
 {
-	for(auto i = 0; i < numTacOrdersQueued; i++)
+	for(size_t i = 0; i < numTacOrdersQueued; i++)
 		if(tacOrderQueue[i].marker)
 		{
 			delete tacOrderQueue[i].marker;
@@ -2632,7 +2632,7 @@ void MechWarrior::setMoveWayPath(WayPathPtr wayPath, bool patrol)
 {
 	if(wayPath)
 	{
-		for(int32_t curPt = 0; curPt < wayPath->numPoints; curPt++)
+		for(size_t curPt = 0; curPt < wayPath->numPoints; curPt++)
 		{
 			moveOrders.wayPath[curPt].x = wayPath->points[curPt * 3];
 			moveOrders.wayPath[curPt].y = wayPath->points[curPt * 3 + 1];
@@ -3358,7 +3358,7 @@ int32_t MechWarrior::calcWeaponsStatus(GameObjectPtr target, int32_t* weaponList
 	if((distanceToTarget <= myVehicle->getMinFireRange()) || (distanceToTarget >= myVehicle->getMaxFireRange()))
 		return(WEAPONS_STATUS_OUT_OF_RANGE);
 	int32_t numWeaponsWithShot = 0;
-	for(int32_t curWeapon = 0; curWeapon < myVehicle->numWeapons; curWeapon++)
+	for(size_t curWeapon = 0; curWeapon < myVehicle->numWeapons; curWeapon++)
 	{
 		int32_t weaponIndex = myVehicle->numOther + curWeapon;
 		if(!myVehicle->isWeaponReady(weaponIndex))
@@ -3431,7 +3431,7 @@ void MechWarrior::printWeaponsStatus(PSTR s)
 	{
 		int32_t tally[6] = {0, 0, 0, 0, 0, 0};
 		int32_t numWithChance = 0;
-		for(int32_t curWeapon = 0; curWeapon < getVehicle()->numWeapons; curWeapon++)
+		for(size_t curWeapon = 0; curWeapon < getVehicle()->numWeapons; curWeapon++)
 		{
 			if(weaponsStatus[curWeapon] < 0)
 				tally[weaponsStatus[curWeapon] + 6]++;
@@ -3635,7 +3635,7 @@ int32_t MechWarrior::combatDecisionTree(void)
 		// Track how much damage I've done to the target when weapons finally hit.
 		// If I've done enough to blow the target, STOP firing!!
 		float damageDoneToTarget = 0.0f;
-		for(int32_t curWeapon = 0; curWeapon < myVehicle->numWeapons; curWeapon++)
+		for(size_t curWeapon = 0; curWeapon < myVehicle->numWeapons; curWeapon++)
 		{
 			int32_t weaponIndex = myVehicle->numOther + curWeapon;
 			if(weaponsStatus[curWeapon] > 0)
@@ -3662,7 +3662,7 @@ int32_t MechWarrior::combatDecisionTree(void)
 	}
 	if(cantConserve)	// probably a lie
 	{
-		for(int32_t curWeapon = myVehicle->numOther; curWeapon < myVehicle->numOther + myVehicle->numWeapons; curWeapon++)
+		for(size_t curWeapon = myVehicle->numOther; curWeapon < myVehicle->numOther + myVehicle->numWeapons; curWeapon++)
 		{
 			if(myVehicle->getWeaponShots(curWeapon) == UNLIMITED_SHOTS && myVehicle->isWeaponWorking(curWeapon))
 			{
@@ -4734,7 +4734,7 @@ void MechWarrior::clearAlarm(int32_t alarmCode)
 
 void MechWarrior::clearAlarms(void)
 {
-	for(int32_t code = 0; code < NUM_PILOT_ALARMS; code++)
+	for(size_t code = 0; code < NUM_PILOT_ALARMS; code++)
 		clearAlarm(code);
 }
 
@@ -4749,7 +4749,7 @@ void MechWarrior::clearAlarmHistory(int32_t alarmCode)
 
 void MechWarrior::clearAlarmsHistory(void)
 {
-	for(int32_t code = 0; code < NUM_PILOT_ALARMS; code++)
+	for(size_t code = 0; code < NUM_PILOT_ALARMS; code++)
 		clearAlarmHistory(code);
 }
 
@@ -4769,7 +4769,7 @@ int32_t MechWarrior::checkAlarms(void)
 	}
 	//-----------------------
 	// Handle Alarm Events...
-	for(int32_t code = 0; code < NUM_PILOT_ALARMS; code++)
+	for(size_t code = 0; code < NUM_PILOT_ALARMS; code++)
 		if(alarm[code].numTriggers > 0)
 		{
 			switch(code)
@@ -7058,7 +7058,7 @@ int32_t MechWarrior::missionLog(FilePtr file, int32_t unitLevel)
 	char s[80];
 	sprintf(s, "MechWarrior: %s\n", name);
 	file->writeString(s);
-	for(int32_t skill = 0; skill < NUM_SKILLS; skill)
+	for(size_t skill = 0; skill < NUM_SKILLS; skill)
 	{
 		for(i = 0; i < ((unitLevel + 1) * 2); i++)
 		{
@@ -7276,7 +7276,7 @@ void MechWarrior::drawWaypointPath()
 				tmpPos = pos;
 			}
 		}
-		for(auto i = 0; i < numTacOrdersQueued; i++)
+		for(size_t i = 0; i < numTacOrdersQueued; i++)
 		{
 			tacOrderQueue[i].marker->render();
 			Stuff::Vector4D screenPos1;
@@ -7301,7 +7301,7 @@ void MechWarrior::updateDrawWaypointPath()
 {
 	if(tacOrderQueue)
 	{
-		for(auto i = 0; i < numTacOrdersQueued; i++)
+		for(size_t i = 0; i < numTacOrdersQueued; i++)
 		{
 			tacOrderQueue[i].marker->setObjectParameters(tacOrderQueue[i].point, ((ObjectAppearance*)tacOrderQueue[i].marker)->rotation, false, 0, 0);
 			tacOrderQueue[i].marker->recalcBounds();

@@ -1947,7 +1947,7 @@ int32_t Turret::calcFireRanges(void)
 	maxRange = 0;
 	minRange = 1000000.0;
 	numFunctionalWeapons = 0;
-	for(int32_t curWeapon = 0; curWeapon < MAX_TURRET_WEAPONS; curWeapon++)
+	for(size_t curWeapon = 0; curWeapon < MAX_TURRET_WEAPONS; curWeapon++)
 	{
 		int32_t weaponMasterId = ((TurretTypePtr)getObjectType())->weaponMasterId[curWeapon];
 		if(weaponMasterId != -1)

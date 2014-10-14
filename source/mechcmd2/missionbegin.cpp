@@ -62,9 +62,9 @@ MissionBegin::MissionBegin()
 
 MissionBegin::~MissionBegin()
 {
-	for(auto i = 0; i < 5; i++)
+	for(size_t i = 0; i < 5; i++)
 	{
-		for(auto j = 0; j < 3; j++)
+		for(size_t j = 0; j < 3; j++)
 		{
 			if(singlePlayerScreens[i][j])
 			{
@@ -318,9 +318,9 @@ void MissionBegin::begin()
 	singlePlayerScreens[2][0] = pPurchaseMechScreen;
 	singlePlayerScreens[2][2] = pMechLabScreen;
 	singlePlayerScreens[4][1] = pLoadScreen;
-	for(auto i = 0; i < 4; i++)
+	for(size_t i = 0; i < 4; i++)
 	{
-		for(auto j = 0; j < 4; j++)
+		for(size_t j = 0; j < 4; j++)
 		{
 			if(singlePlayerScreens[i][j])
 			{
@@ -938,9 +938,9 @@ void MissionBegin::beginMPlayer()
 	multiplayerScreens[2][0] = pMPPrefs;
 	pMPPrefs->initColors();
 	{
-		for(auto i = 0; i < 4; i++)
+		for(size_t i = 0; i < 4; i++)
 		{
-			for(auto j = 0; j < 4; j++)
+			for(size_t j = 0; j < 4; j++)
 			{
 				if(multiplayerScreens[i][j])
 				{

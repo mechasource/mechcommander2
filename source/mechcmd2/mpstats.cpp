@@ -48,7 +48,7 @@ int32_t MPStats::init()
 	entries[0].init();
 	entries[0].moveTo(rects[1].globalX(), rects[1].globalY());
 	entries[0].resize(rects[1].width(), rects[1].height());
-	for(auto i = 0; i < MAX_MC_PLAYERS - 1; i++)
+	for(size_t i = 0; i < MAX_MC_PLAYERS - 1; i++)
 	{
 		entries[i + 1] = entries[0];
 		entries[i + 1].move(0, (i + 1) * (entries[0].height() + 1));
@@ -87,7 +87,7 @@ void MPStats::begin()
 	bSavingStats = 0;
 	status = RUNNING;
 	beginFadeIn(.5);
-	for(auto i = 0; i < MAX_MC_PLAYERS; i++)
+	for(size_t i = 0; i < MAX_MC_PLAYERS; i++)
 		entries[i].showGUIWindow(0);
 	statics[15].setColor(0);
 	// need to set up map name
@@ -131,7 +131,7 @@ int32_t MPStats::handleMessage(uint32_t what, uint32_t who)
 void MPStats::render(int32_t xOffset, int32_t yOffset)
 {
 	LogisticsScreen::render(xOffset, yOffset);
-	for(auto i = 0; i < MAX_MC_PLAYERS; i++)
+	for(size_t i = 0; i < MAX_MC_PLAYERS; i++)
 	{
 		entries[i].render(0, 0);
 	}
@@ -158,7 +158,7 @@ void MPStats::update()
 		const MC2Player* players = MPlayer->getPlayers(playerCount);
 		const MC2Player* sorted[MAX_MC_PLAYERS];
 		int32_t winnerCount = 0;
-		for(auto j = 0; j < playerCount; j++)
+		for(size_t j = 0; j < playerCount; j++)
 		{
 			sorted[j] = &players[j];
 			if(sorted[j]->rank == 1)
@@ -170,7 +170,7 @@ void MPStats::update()
 		if(winnerCount > 1)
 			winnerColor = 0xffA6A6A6;
 		qsort(sorted, playerCount, sizeof(MC2Player*), sortStats);
-		for(auto i = 0; i < MAX_MC_PLAYERS; i++)
+		for(size_t i = 0; i < MAX_MC_PLAYERS; i++)
 		{
 			if(i < playerCount)
 			{

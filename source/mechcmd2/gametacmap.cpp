@@ -118,7 +118,7 @@ void GameTacMap::render()
 	gos_SetRenderState(gos_State_ZWrite, 0);
 	gos_SetRenderState(gos_State_ZCompare, 0);
 	gos_SetRenderState(gos_State_Texture, textureHandle);
-	for(auto i = 0; i < 4; ++i)
+	for(size_t i = 0; i < 4; ++i)
 	{
 		corners[i].rhw = 1.0f;
 		corners[i].argb = 0xffffffff;
@@ -237,7 +237,7 @@ void GameTacMap::render()
 		TeamSensorSystem* pSys = SensorManager->getTeamSensor(i);
 		if(pSys)
 		{
-			for(auto j = 0; j < pSys->numSensors; ++j)
+			for(size_t j = 0; j < pSys->numSensors; ++j)
 			{
 				SensorSystem* pSensor = pSys->sensors[j];
 				if(!pSensor)
@@ -345,9 +345,9 @@ void GameTacMap::render()
 		drawSensor(positions[i], ranges[i], ringColors[i]);
 	}
 	bool bSel = 0; // draw unselected first
-	for(auto j = 0; j < 2; j++)
+	for(size_t j = 0; j < 2; j++)
 	{
-		for(auto i = 0; i < count; i++)
+		for(size_t i = 0; i < count; i++)
 		{
 			if(selected[i] == bSel)
 			{
@@ -372,7 +372,7 @@ void GameTacMap::initBuildings(puint8_t data, int32_t size)
 		{
 			buildingPoints = new gos_VERTEX[buildingCount];
 			gos_VERTEX* pTmp = buildingPoints;
-			for(auto i = 0; i < buildingCount; ++i, pTmp++)
+			for(size_t i = 0; i < buildingCount; ++i, pTmp++)
 			{
 				pTmp->x = *pData++ + left;
 				pTmp->y = *pData++ + top;
@@ -395,7 +395,7 @@ void GameTacMap::drawSensor(const Stuff::Vector3D& pos, float radius, int32_t co
 	if(radius > 1)
 		radius += land->metersPerCell * 6.f; // a little fudge
 	radius *= ((float)(right - left)) / (land->metersPerCell * land->realVerticesMapSide * 3.f);
-	for(auto i = 0; i < 4; ++i)
+	for(size_t i = 0; i < 4; ++i)
 	{
 		sqare[i].z = 0;
 		sqare[i].rhw = .5;
@@ -435,7 +435,7 @@ void GameTacMap::drawBlip(const Stuff::Vector3D& pos, int32_t color, int32_t typ
 	gos_SetRenderState(gos_State_ZWrite, 0);
 	uint32_t gosID = mcTextureManager->get_gosTextureHandle(blipHandle);
 	gos_SetRenderState(gos_State_Texture, gosID);
-	for(auto i = 0; i < 4; ++i)
+	for(size_t i = 0; i < 4; ++i)
 	{
 		triangle[i].z = 0;
 		triangle[i].rhw = .5;

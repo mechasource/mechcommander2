@@ -122,7 +122,7 @@ EditorObjectMgr::~EditorObjectMgr()
 			Building teste = (*buildIter);
 			if((*buildIter).varNames)
 			{
-				for(auto i = 0; i < 16; i++)
+				for(size_t i = 0; i < 16; i++)
 				{
 					if((*buildIter).varNames[i])
 					{
@@ -321,7 +321,7 @@ void EditorObjectMgr::init(PCSTR bldgListFileName, PCSTR objectFileName)
 		if(NO_ERROR == csvFile.open(csvFileName))
 		{
 			bldg.varNames = (PSTR*) malloc(sizeof(PSTR) * 16);
-			for(auto i = 0; i < 16; ++i)
+			for(size_t i = 0; i < 16; ++i)
 			{
 				if(NO_ERROR == csvFile.readString(23 + 97 * i, 2, varName, 256) && strlen(varName))
 				{
@@ -364,7 +364,7 @@ void EditorObjectMgr::init(PCSTR bldgListFileName, PCSTR objectFileName)
 
 int32_t EditorObjectMgr::ExtractNextString(puint8_t& pFileLine, PSTR pBuffer, int32_t bufferLength)
 {
-	for(auto i = 0; i < 512; ++i)
+	for(size_t i = 0; i < 512; ++i)
 	{
 		if(pFileLine[i] == '\n')
 			break;
@@ -408,7 +408,7 @@ int32_t textToLong(PCSTR num)
 		}
 		numDigits = strlen(hexOffset) - 1;
 		int32_t power = 0;
-		for(int32_t count = numDigits; count >= 0; count--, power++)
+		for(size_t count = numDigits; count >= 0; count--, power++)
 		{
 			uint8_t currentDigit = toupper(hexOffset[count]);
 			if(currentDigit >= 'A' && currentDigit <= 'F')
@@ -1115,7 +1115,7 @@ bool EditorObjectMgr::load(PacketFile& PakFile, int32_t whichPacket)
 	File file;
 	file.open(pBuffer, size);
 	int32_t count = file.readLong();
-	for(auto i = 0; i < count; ++i)
+	for(size_t i = 0; i < count; ++i)
 	{
 		int32_t id = file.readLong();
 		uint32_t group, index;
@@ -1539,7 +1539,7 @@ bool  EditorObjectMgr::loadMechs(FitIniFile& file)
 	Stuff::Vector3D position;
 	position.x = position.y = position.z = 0;
 	char buffer[256];
-	for(auto i = 1; i < count + 1; ++i)
+	for(size_t i = 1; i < count + 1; ++i)
 	{
 		sprintf(buffer, "Part%ld", i);
 		file.seekBlock(buffer);
@@ -1596,7 +1596,7 @@ bool		EditorObjectMgr::saveMechs(FitIniFile& file)
 	}
 	UNIT_LIST reorderedUnits;
 	UNIT_LIST reorderedUnitsByPlayer[8/*max players*/];
-	for(int32_t playerNum = 0; 8/*max players*/ > playerNum; playerNum += 1)
+	for(size_t playerNum = 0; 8/*max players*/ > playerNum; playerNum += 1)
 	{
 		/*O(n-squared) sort. Who cares.*/
 		int32_t numUnitsOfThisPlayer = unitsByPlayer[playerNum].Count();
@@ -1640,7 +1640,7 @@ bool		EditorObjectMgr::saveMechs(FitIniFile& file)
 	{
 		/*When saving, each player's units need to be grouped into "lances" of 12 units
 		for historical reasons.*/
-		for(int32_t playerNum = 0; 8/*max players*/ > playerNum; playerNum += 1)
+		for(size_t playerNum = 0; 8/*max players*/ > playerNum; playerNum += 1)
 		{
 			int32_t lanceGroup = 0;
 			int32_t mateIndex = 0;
@@ -1669,7 +1669,7 @@ bool		EditorObjectMgr::saveMechs(FitIniFile& file)
 		if(EditorData::instance->IsSinglePlayer())
 		{
 			bool enemyUnitFound = false;
-			for(int32_t playerNum = 1/*first non-user player*/; 8/*max players*/ > playerNum; playerNum += 1)
+			for(size_t playerNum = 1/*first non-user player*/; 8/*max players*/ > playerNum; playerNum += 1)
 			{
 				if(0/*player1's (user's) team*/ != EditorData::instance->PlayersRef().PlayerRef(playerNum).DefaultTeam())
 				{
@@ -1691,7 +1691,7 @@ bool		EditorObjectMgr::saveMechs(FitIniFile& file)
 		}
 		else
 		{
-			for(int32_t playerNum = 0; EditorData::instance->MaxPlayers() > playerNum; playerNum += 1)
+			for(size_t playerNum = 0; EditorData::instance->MaxPlayers() > playerNum; playerNum += 1)
 			{
 				if(1 > reorderedUnitsByPlayer[playerNum].Count())
 				{
@@ -1764,7 +1764,7 @@ bool		EditorObjectMgr::saveMechs(FitIniFile& file)
 		/*When saving, each player's units need to be grouped into "lances" of 12 units
 		for historical reasons.*/
 		int32_t reorderedUnitIndex = 1; /*1-based indexing by convention*/
-		for(int32_t playerNum = 0; 8/*max players*/ > playerNum; playerNum += 1)
+		for(size_t playerNum = 0; 8/*max players*/ > playerNum; playerNum += 1)
 		{
 			int32_t reorderedUnitByPlayerIndex = 0;
 			int32_t lanceGroup = 0;
@@ -1941,7 +1941,7 @@ void EditorObjectMgr::doForest(const Forest& forest)
 	float minDensity = forest.minDensity / 9;
 	int32_t probabilities[FOREST_TYPES];
 	int32_t probabilityTotal = 0;
-	for(auto i = 0; i < FOREST_TYPES; i++)
+	for(size_t i = 0; i < FOREST_TYPES; i++)
 	{
 		probabilityTotal += forest.percentages[i];
 	}
@@ -1955,17 +1955,17 @@ void EditorObjectMgr::doForest(const Forest& forest)
 	}
 	float r2 = forest.radius; // temporary... calc real radius at some point
 	r2 *= r2; // square it
-	for(auto j = 0; j < land->realVerticesMapSide; j++)
+	for(size_t j = 0; j < land->realVerticesMapSide; j++)
 	{
-		for(auto i = 0; i < land->realVerticesMapSide; i++)
+		for(size_t i = 0; i < land->realVerticesMapSide; i++)
 		{
 			if(land->isVertexSelected(j, i))
 			{
 				int32_t cellI = i * 3;
 				int32_t cellJ = j * 3;
-				for(int32_t l = -1; l < 2; l++)
+				for(size_t l = -1; l < 2; l++)
 				{
-					for(int32_t m = -1; m < 2; m++)
+					for(size_t m = -1; m < 2; m++)
 					{
 						Stuff::Vector3D pos;
 						if(cellJ + l < 0 || cellJ + l > land->realVerticesMapSide * 3)
@@ -1993,13 +1993,13 @@ void EditorObjectMgr::doForest(const Forest& forest)
 						// OK, now we have the density randomly (if possible)
 						// populate the tile with these...
 						// might want to break down by cell
-						for(int32_t t = 0; t < count; t++)
+						for(size_t t = 0; t < count; t++)
 						{
 							// oh god, now we need to pick a tree
 							int32_t random = RandomNumber(100);
 							int32_t group = -1;
 							int32_t index = -1;
-							for(int32_t k = 0; k < FOREST_TYPES; k++)
+							for(size_t k = 0; k < FOREST_TYPES; k++)
 							{
 								if(random < probabilities[k])
 								{
@@ -2125,7 +2125,7 @@ bool EditorObjectMgr::saveDropZones(FitIniFile& file)
 	for(i = 1; i < count; ++i)
 	{
 		EditorObject* cur = pObjects[i];
-		for(auto j = 0; j < i; ++j)
+		for(size_t j = 0; j < i; ++j)
 		{
 			if((getFitID(cur->getID()) < getFitID(pObjects[j]->getID())) && j != i)
 			{
@@ -2366,7 +2366,7 @@ int32_t			EditorObjectMgr::getNumberOfVariants(int32_t group, int32_t indexInGro
 	Building bldg = groups[group].buildings[indexInGroup];
 	if(!bldg.varNames)
 		return 0;
-	for(auto i = 0; i < 16; ++i)
+	for(size_t i = 0; i < 16; ++i)
 	{
 		if(!bldg.varNames[i])
 			break;
@@ -2377,7 +2377,7 @@ int32_t			EditorObjectMgr::getNumberOfVariants(int32_t group, int32_t indexInGro
 void		EditorObjectMgr::getVariantNames(int32_t group, int32_t indexInGroup, PCSTR* names, int32_t& numberOfNames) const
 {
 	Building bldg = groups[group].buildings[indexInGroup];
-	for(auto i = 0; i < 16 && i < numberOfNames; ++i)
+	for(size_t i = 0; i < 16 && i < numberOfNames; ++i)
 	{
 		if(!bldg.varNames[i])
 			break;

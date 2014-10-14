@@ -269,7 +269,7 @@ public:
 
 	void	pressAirstrikeButton()
 	{
-		for(auto i = 0; i < LAST_VEHICLE; i++)
+		for(size_t i = 0; i < LAST_VEHICLE; i++)
 		{
 			if((vehicleButtons[i].ID == LARGE_AIRSTRIKE) &&
 					!(vehicleButtons[i].state & ControlButton::PRESSED))
@@ -284,7 +284,7 @@ public:
 	}
 	void	pressSensorStrikeButton()
 	{
-		for(auto i = 0; i < LAST_VEHICLE; i++)
+		for(size_t i = 0; i < LAST_VEHICLE; i++)
 		{
 			if((vehicleButtons[i].ID == SENSOR_PROBE) &&
 					!(vehicleButtons[i].state & ControlButton::PRESSED))

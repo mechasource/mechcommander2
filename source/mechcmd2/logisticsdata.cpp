@@ -773,7 +773,7 @@ PCSTR	LogisticsData::getBestPilot(int32_t mechWeight)
 	for(i = 1; i < count; ++i)
 	{
 		LogisticsPilot* cur = pPilots[i];
-		for(auto j = 0; j < i; ++j)
+		for(size_t j = 0; j < i; ++j)
 		{
 			if(comparePilots(cur, pPilots[j], mechWeight) > 0 && j != i)
 			{
@@ -813,7 +813,7 @@ bool		LogisticsData::gotPilotsLeft()
 	}
 #endif
 	int32_t count = counter;
-	for(auto i = 0; i < count; i++)
+	for(size_t i = 0; i < count; i++)
 	{
 		if(pPilots[i]->isAvailable() && !pPilots[i]->isUsed())
 		{
@@ -1028,7 +1028,7 @@ int32_t LogisticsData::loadVariant(FitIniFile& file)
 	// read number of components
 	file.readIdLong("ComponentCount", componentCount);
 	// add those components
-	for(auto i = 0; i < componentCount; i++)
+	for(size_t i = 0; i < componentCount; i++)
 	{
 		sprintf(tmp, "Component%ld", i);
 		file.readIdLong(tmp, id);
@@ -1102,7 +1102,7 @@ void	LogisticsData::setMissionCompleted()
 	int32_t ForceGroupCount = 1;
 	if(pTeam)
 	{
-		for(auto i = pTeam->getRosterSize() - 1; i > -1; i--)
+		for(size_t i = pTeam->getRosterSize() - 1; i > -1; i--)
 		{
 			Mover* pMover = (Mover*)pTeam->getMover(i);
 			//Must check if we ever linked up with the mech!!
@@ -1336,7 +1336,7 @@ int32_t LogisticsData::updateAvailability()
 				componentCount = 255;
 				bool bRight = true;
 				(*vIter)->getComponents(componentCount, componentArray);
-				for(auto i = 0; i < componentCount; i++)
+				for(size_t i = 0; i < componentCount; i++)
 				{
 					if(!available[componentArray[i]])    // unavailable componets
 					{
@@ -1403,7 +1403,7 @@ void LogisticsData::appendAvailability(PCSTR pFileName, bool* availableArray)
 		int32_t component;
 		bool bAll = 0;
 		file.readIdBoolean("AllComponents", bAll);
-		for(auto i = 0; i < 255; i++)
+		for(size_t i = 0; i < 255; i++)
 		{
 			{
 				sprintf(tmp, "Component%ld", i);
@@ -1456,7 +1456,7 @@ void LogisticsData::appendAvailability(PCSTR pFileName, bool* availableArray)
 				int32_t componentArray[256];
 				bool bRight = true;
 				(*vIter)->getComponents(componentCount, componentArray);
-				for(auto i = 0; i < componentCount; i++)
+				for(size_t i = 0; i < componentCount; i++)
 				{
 					LogisticsComponent* pComp = getComponent(componentArray[i]);
 					if(!pComp->isAvailable())    // unavailable componets
@@ -2124,7 +2124,7 @@ int32_t LogisticsData::addBuilding(int32_t fitID, PacketFile& objectFile, float 
 		{
 			char weaponNameStr[64];
 			strcpy(weaponNameStr, "WeaponType");
-			for(auto i = 0; i < 4; i++)
+			for(size_t i = 0; i < 4; i++)
 			{
 				file.readIdLong(weaponNameStr, bldg.componentIDs[i]);
 				sprintf(weaponNameStr, "WeaponType%ld", i + 1);
@@ -2132,7 +2132,7 @@ int32_t LogisticsData::addBuilding(int32_t fitID, PacketFile& objectFile, float 
 		}
 		else
 		{
-			for(auto i = 0; i < 4; i++)
+			for(size_t i = 0; i < 4; i++)
 			{
 				bldg.componentIDs[i] = 0;
 			}

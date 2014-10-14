@@ -611,7 +611,7 @@ bool EditorData::reassignHeightsFromTGA(PCSTR fileName, int32_t min, int32_t max
 	pTmp = tgaData + header->cm_length * header->cm_entry_size / 8 + sizeof(TGAFileHeader);
 	if(header->image_type == UNC_PAL || header->image_type == UNC_GRAY)
 	{
-		for(auto i = 0; i < header->width * header->width; ++i)
+		for(size_t i = 0; i < header->width * header->width; ++i)
 		{
 			float val = (float)(*pTmp++);
 			if(val > mapMax)
@@ -635,10 +635,10 @@ bool EditorData::reassignHeightsFromTGA(PCSTR fileName, int32_t min, int32_t max
 			flipTopToBottom(pTmp, header->pixel_depth, header->width, header->height);
 		}
 		puint8_t pLine = pTmp;
-		for(auto j = 0; j < header->height, j < land->realVerticesMapSide; ++j)
+		for(size_t j = 0; j < header->height, j < land->realVerticesMapSide; ++j)
 		{
 			pTmp = pLine + linePreAdd;
-			for(auto i = 0; i < header->width, i < land->realVerticesMapSide; ++i)
+			for(size_t i = 0; i < header->width, i < land->realVerticesMapSide; ++i)
 			{
 				float val = (float)(*pTmp);
 				pTmp += countIncrement;
@@ -834,9 +834,9 @@ bool EditorData::initTerrainFromTGA(int32_t mapSize, int32_t min, int32_t max, i
 	Terrain::mapData->waterDepth = Terrain::waterElevation = min - 1;
 	eye->fogStart = min - 1;
 	eye->fogFull = min - 2;
-	for(auto j = 0; j < land->realVerticesMapSide; ++j)
+	for(size_t j = 0; j < land->realVerticesMapSide; ++j)
 	{
-		for(auto i = 0; i < land->realVerticesMapSide; ++i)
+		for(size_t i = 0; i < land->realVerticesMapSide; ++i)
 		{
 			land->setVertexHeight(j * land->realVerticesMapSide + i, 0);
 		}
@@ -911,13 +911,13 @@ bool EditorData::save(PCSTR fileName, bool quickSave)
 		_ScenarioMapCellInfo* pInfo = (_ScenarioMapCellInfo*)malloc(sizeof(_ScenarioMapCellInfo) * land->realVerticesMapSide * land->realVerticesMapSide * 9);
 		memset(pInfo, 0, sizeof(_ScenarioMapCellInfo) * land->realVerticesMapSide * land->realVerticesMapSide * 9);
 		MissionMapCellInfo* pTmp = pInfo;
-		for(auto i = 0; i < land->realVerticesMapSide; ++i)
+		for(size_t i = 0; i < land->realVerticesMapSide; ++i)
 		{
-			for(int32_t cellI = 0; cellI < 3; ++cellI)
+			for(size_t cellI = 0; cellI < 3; ++cellI)
 			{
-				for(auto j = 0; j < land->realVerticesMapSide; ++j)
+				for(size_t j = 0; j < land->realVerticesMapSide; ++j)
 				{
-					for(int32_t cellJ = 0; cellJ < 3; ++cellJ)
+					for(size_t cellJ = 0; cellJ < 3; ++cellJ)
 					{
 						pTmp->terrain = MC_NONE_TYPE;
 						pTmp->overlay = (uint8_t)INVALID_OVERLAY;
@@ -1115,8 +1115,8 @@ bool EditorData::save(PCSTR fileName, bool quickSave)
 			specialAreaFootPrints[i].numCells = 0;
 		}
 		pTmp = pInfo;
-		for(int32_t r = 0; r < land->realVerticesMapSide * 3; r++)
-			for(int32_t c = 0; c < land->realVerticesMapSide * 3; c++)
+		for(size_t r = 0; r < land->realVerticesMapSide * 3; r++)
+			for(size_t c = 0; c < land->realVerticesMapSide * 3; c++)
 			{
 				if(pTmp->specialType != SPECIAL_NONE)
 				{
@@ -1615,9 +1615,9 @@ bool EditorData::saveHeightMap(File* file)
 	header.image_descriptor = 0;
 	file->write((puint8_t)&header, sizeof(header));
 	// now write image, upside down
-	for(auto j = land->realVerticesMapSide - 1; j >= 0; j--)
+	for(size_t j = land->realVerticesMapSide - 1; j >= 0; j--)
 	{
-		for(auto i = 0; i < land->realVerticesMapSide; i++)
+		for(size_t i = 0; i < land->realVerticesMapSide; i++)
 		{
 			float height = land->getTerrainElevation(j, i);
 			// turn this into 256 scale
@@ -1695,9 +1695,9 @@ void EditorData::drawTacMap(puint8_t pDest, size_t dataSize, int32_t tacMapSize)
 	{
 		land->terrainTextures2->getScaledColorMap((puint8_t)tacMapBmp, ((land->realVerticesMapSide) * MAPCELL_DIM));
 	}
-	for(int32_t y = 0; y < (land->realVerticesMapSide) * MAPCELL_DIM; y++)
+	for(size_t y = 0; y < (land->realVerticesMapSide) * MAPCELL_DIM; y++)
 	{
-		for(int32_t x = 0; x < (land->realVerticesMapSide) * MAPCELL_DIM; x++)
+		for(size_t x = 0; x < (land->realVerticesMapSide) * MAPCELL_DIM; x++)
 		{
 			//-----------------------------------------------
 			// Get the data needed to make this terrain quad
@@ -1731,7 +1731,7 @@ void EditorData::drawTacMap(puint8_t pDest, size_t dataSize, int32_t tacMapSize)
 	// now draw on the trees
 	for(i = 0; i < land->realVerticesMapSide * MAPCELL_DIM; i++)
 	{
-		for(auto j = 0; j < land->realVerticesMapSide * MAPCELL_DIM; j++)
+		for(size_t j = 0; j < land->realVerticesMapSide * MAPCELL_DIM; j++)
 		{
 			EditorObject* pObj = EditorObjectMgr::instance()->getObjectAtCell(j, i);
 			if(pObj && EditorObjectMgr::instance()->getAppearanceType(pObj->getID()) == TREED_TYPE)
@@ -1750,7 +1750,7 @@ void EditorData::drawTacMap(puint8_t pDest, size_t dataSize, int32_t tacMapSize)
 	// now draw on the Roads
 	for(y = 0; y < (land->realVerticesMapSide - 1); y++)
 	{
-		for(int32_t x = 0; x < (land->realVerticesMapSide - 1); x++)
+		for(size_t x = 0; x < (land->realVerticesMapSide - 1); x++)
 		{
 			//-----------------------------------------------
 			// Get the data needed to make this terrain quad
@@ -1883,7 +1883,7 @@ void EditorData::drawTacMap(puint8_t pDest, size_t dataSize, int32_t tacMapSize)
 	memset(tRecs, 0, sizeof(TGARecs) * 255);
 	for(i = 0; i < land->realVerticesMapSide * MAPCELL_DIM; i++)
 	{
-		for(auto j = 0; j < land->realVerticesMapSide * MAPCELL_DIM; j++)
+		for(size_t j = 0; j < land->realVerticesMapSide * MAPCELL_DIM; j++)
 		{
 			EditorObject* pObj = EditorObjectMgr::instance()->getObjectAtCell(i, j);
 			if(pObj && EditorObjectMgr::instance()->getTacMapColor(pObj->getID()))
@@ -1940,7 +1940,7 @@ void EditorData::drawTacMap(puint8_t pDest, size_t dataSize, int32_t tacMapSize)
 				int32_t recNum = -1;
 				puint8_t tgaRAM = nullptr;
 				int32_t tHeight = 0, tWidth = 0;
-				for(auto it = 0; it < 255; it++)
+				for(size_t it = 0; it < 255; it++)
 				{
 					if(tRecs[it].tgaData && strcmp(EditorObjectMgr::instance()->getTGAFileName(pObj->getID()), tRecs[it].fileName) == 0)
 					{
@@ -1972,7 +1972,7 @@ void EditorData::drawTacMap(puint8_t pDest, size_t dataSize, int32_t tacMapSize)
 						tgaFile.seek(0);
 						tgaRAM = (puint8_t)systemHeap->Malloc(header.width * header.height * sizeof(uint32_t));
 						loadTGATexture(&tgaFile, tgaRAM, header.width, header.height);
-						for(auto it = 0; it < 255; it++)
+						for(size_t it = 0; it < 255; it++)
 						{
 							if(!(tRecs[it].tgaData))
 							{
@@ -1989,7 +1989,7 @@ void EditorData::drawTacMap(puint8_t pDest, size_t dataSize, int32_t tacMapSize)
 				{
 					uint32_t* tmptBMP = tBMP;
 					uint32_t* tgaBMP = (uint32_t*)tgaRAM;
-					for(auto ib = 0; ib < tHeight; ib++)
+					for(size_t ib = 0; ib < tHeight; ib++)
 					{
 						if(((i - (tHeight >> 1)) >= 0) &&
 								(((tHeight >> 1) + i) < (land->realVerticesMapSide * MAPCELL_DIM)))
@@ -1999,7 +1999,7 @@ void EditorData::drawTacMap(puint8_t pDest, size_t dataSize, int32_t tacMapSize)
 							{
 								tmptBMP = tBMP + ((land->realVerticesMapSide * MAPCELL_DIM) * (ib - (tHeight >> 1)));
 								tmptBMP -= (tWidth >> 1);
-								for(auto jb = 0; jb < tWidth; jb++)
+								for(size_t jb = 0; jb < tWidth; jb++)
 								{
 									uint32_t tgaColor = *tgaBMP;
 									float tBlue = tgaColor & 0x000000ff;
@@ -2034,7 +2034,7 @@ void EditorData::drawTacMap(puint8_t pDest, size_t dataSize, int32_t tacMapSize)
 			tBMP++;
 		}
 	}
-	for(auto it = 0; it < 255; it++)
+	for(size_t it = 0; it < 255; it++)
 	{
 		if(tRecs[it].tgaData)
 		{
@@ -2051,7 +2051,7 @@ void EditorData::drawTacMap(puint8_t pDest, size_t dataSize, int32_t tacMapSize)
 	for(i = 0; i < tacMapSize; i++)
 	{
 		y = ((float)i * yRatio) + .5;
-		for(auto j = 0; j < tacMapSize; j++)
+		for(size_t j = 0; j < tacMapSize; j++)
 		{
 			int32_t x = ((float)j * xRatio) + .5;
 			uint32_t* tBMP = &(tacMapBmp[(x) + ((y) * land->realVerticesMapSide * 3)]);

@@ -55,7 +55,7 @@ void aAnimation::copyData(const aAnimation& src)
 		if(src.infoCount)
 		{
 			infos = new MoveInfo[infoCount];
-			for(auto i = 0; i < infoCount; i++)
+			for(size_t i = 0; i < infoCount; i++)
 			{
 				infos[i] = src.infos[i];
 			}
@@ -86,7 +86,7 @@ int32_t	aAnimation::init(FitIniFile* file, PCSTR headerName)
 	if(infoCount)
 	{
 		infos = new MoveInfo[infoCount];
-		for(auto i = 0; i < infoCount; i++)
+		for(size_t i = 0; i < infoCount; i++)
 		{
 			strToCheck.Format("%s%s%ld", headerName, "Time", i);
 			file->readIdFloat(strToCheck, infos[i].time);
@@ -176,7 +176,7 @@ float	aAnimation::getXDelta(void) const
 	t1 = p1 = t0 = p0 = 0.f;
 	float delta = 0.f;
 	// figure out where we are in animation
-	for(auto j = 0; j < infoCount - 1; j++)
+	for(size_t j = 0; j < infoCount - 1; j++)
 	{
 		if(infos[j].time <= currentTime && infos[j + 1].time > currentTime)
 		{
@@ -207,7 +207,7 @@ float	aAnimation::getYDelta(void) const
 	t1 = p1 = t0 = p0 = 0.f;
 	float delta = 0.f;
 	// figure out where we are in animation
-	for(auto j = 0; j < infoCount - 1; j++)
+	for(size_t j = 0; j < infoCount - 1; j++)
 	{
 		if(infos[j].time <= currentTime && infos[j + 1].time > currentTime)
 		{
@@ -238,7 +238,7 @@ float	aAnimation::getScaleX(void) const
 	t1 = p1 = t0 = p0 = 0.f;
 	float curScale = 1.0;
 	// figure out where we are in animation
-	for(auto j = 0; j < infoCount - 1; j++)
+	for(size_t j = 0; j < infoCount - 1; j++)
 	{
 		if(infos[j].time <= currentTime && infos[j + 1].time > currentTime)
 		{
@@ -268,7 +268,7 @@ float	aAnimation::getScaleY(void) const
 	t1 = p1 = t0 = p0 = 0.f;
 	float curScale = 1.0;
 	// figure out where we are in animation
-	for(auto j = 0; j < infoCount - 1; j++)
+	for(size_t j = 0; j < infoCount - 1; j++)
 	{
 		if(infos[j].time <= currentTime && infos[j + 1].time > currentTime)
 		{
@@ -312,7 +312,7 @@ uint32_t aAnimation::getColor(float time) const
 	uint32_t color1, color2;
 	color1 = color2 = 0;
 	// figure out where we are in animation
-	for(auto j = 0; j < infoCount - 1; j++)
+	for(size_t j = 0; j < infoCount - 1; j++)
 	{
 		if(infos[j].time <= time && infos[j + 1].time > time)
 		{

@@ -421,8 +421,8 @@ int32_t MoverGroup::calcMoveGoals(Stuff::Vector3D goal, int32_t numMovers, Stuff
 	land->worldToCell(goal, goalRow, goalCol);
 	int32_t topLeftRow = goalRow - GOALMAP_DIM / 2;
 	int32_t topLeftCol = goalCol - GOALMAP_DIM / 2;
-	for(int32_t r = 0; r < GOALMAP_DIM; r++)
-		for(int32_t c = 0; c < GOALMAP_DIM; c++)
+	for(size_t r = 0; r < GOALMAP_DIM; r++)
+		for(size_t c = 0; c < GOALMAP_DIM; c++)
 		{
 			if(!inMapBounds(topLeftRow + r, topLeftCol + c, GameMap->height, GameMap->width))
 				continue;
@@ -491,7 +491,7 @@ int32_t MoverGroup::calcMoveGoals(Stuff::Vector3D goal, int32_t numMovers, Stuff
 			}
 		}
 		int32_t bestNodeG = bestMapNode->g;
-		for(int32_t dir = 0; dir < 4; dir++)
+		for(size_t dir = 0; dir < 4; dir++)
 		{
 			//------------------------------------------------------------
 			// First, make sure this is a legit direction to go. We do NOT
@@ -552,8 +552,8 @@ int32_t MoverGroup::calcJumpGoals(Stuff::Vector3D goal, int32_t numMovers, Stuff
 	// -1 = OPEN
 	// -2 = BLOCKED
 	// 0 thru # = already selected for that # mover in the group
-	for(int32_t r = 0; r < JUMPMAP_CELL_DIM; r++)
-		for(int32_t c = 0; c < JUMPMAP_CELL_DIM; c++)
+	for(size_t r = 0; r < JUMPMAP_CELL_DIM; r++)
+		for(size_t c = 0; c < JUMPMAP_CELL_DIM; c++)
 		{
 			int32_t cellRow = mapCellUL[0] + r;
 			int32_t cellCol = mapCellUL[1] + c;
@@ -799,7 +799,7 @@ int32_t MoverGroup::handleTacticalOrder(TacticalOrder tacOrder, int32_t priority
 			// goal (of course, they won't due to terrain and crowding)...
 			GameObjectPtr target = ObjectManager->getByWatchID(tacOrder.targetWID);
 			if(jumpGoalList)
-				for(auto j = 0; j < numMovers; j++)
+				for(size_t j = 0; j < numMovers; j++)
 					goalList[j] = jumpGoalList[j];
 			else
 				calcJumpGoals(tacOrder.getWayPoint(0), goalList, target);

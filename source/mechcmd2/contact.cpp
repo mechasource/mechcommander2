@@ -725,7 +725,7 @@ void TeamSensorSystem::update(void)
 	{
 #if 0
 		//DEBUGGING
-		for(int32_t k = 0; k < numContacts; k++)
+		for(size_t k = 0; k < numContacts; k++)
 		{
 			MoverPtr mover = (MoverPtr)ObjectManager->get(contacts[k]);
 			Assert(mover->getContactInfo()->teams[teamId] == k, 0, " Bad teams/contact link ");
@@ -892,7 +892,7 @@ int32_t TeamSensorSystem::getContacts(GameObjectPtr looker, int32_t* contactList
 		if(sortType == CONTACT_SORT_DISTANCE)
 			descendSort = false;
 		SensorSystem::sortList->clear(descendSort);
-		for(int32_t contact = 0; contact < numValidContacts; contact++)
+		for(size_t contact = 0; contact < numValidContacts; contact++)
 		{
 			SensorSystem::sortList->setId(contact, handleList[contact]);
 			SensorSystem::sortList->setValue(contact, sortValues[contact]);
@@ -902,7 +902,7 @@ int32_t TeamSensorSystem::getContacts(GameObjectPtr looker, int32_t* contactList
 			contactList[contact] = SensorSystem::sortList->getId(contact);
 	}
 	else if(contactList)
-		for(int32_t contact = 0; contact < numValidContacts; contact++)
+		for(size_t contact = 0; contact < numValidContacts; contact++)
 			contactList[contact] = handleList[contact];
 	return(numValidContacts);
 }

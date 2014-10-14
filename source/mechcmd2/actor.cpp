@@ -84,7 +84,7 @@ int32_t VFXAppearanceType::loadIniFile(FilePtr apprFile, uint32_t fileSize)
 	gosASSERT(actorStateData != nullptr);
 	// memclear(actorStateData,sizeof(ActorData)*MAX_ACTOR_STATES);
 	memset(actorStateData, 0, sizeof(ActorData)*MAX_ACTOR_STATES);
-	for(int32_t curState = 0; curState < numStates; curState++)
+	for(size_t curState = 0; curState < numStates; curState++)
 	{
 		char stateBlockName[20];
 		sprintf(stateBlockName, "State%d", curState);

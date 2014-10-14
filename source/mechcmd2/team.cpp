@@ -818,7 +818,7 @@ bool Team::teamLineOfSight(Stuff::Vector3D tPos, float extRad)
 	}
 	//-------------------------------------------------------------------------
 	// Check the lookout towers now.  You can find them in special Buildings!!
-	for(int32_t spBuilding = 0; spBuilding < ObjectManager->numSpecialBuildings; spBuilding++)
+	for(size_t spBuilding = 0; spBuilding < ObjectManager->numSpecialBuildings; spBuilding++)
 	{
 		if(ObjectManager->specialBuildings[spBuilding] &&
 				ObjectManager->specialBuildings[spBuilding]->getExists() &&
@@ -1126,7 +1126,7 @@ bool Team::lineOfSight(float startLocal, int32_t mCellRow, int32_t mCellCol, flo
 			bool checkExtent = (extRad > Stuff::SMALL);
 			bool checkStart = (startExtRad > Stuff::SMALL);
 			extRad += HALF_CELL_DIST;
-			for(int32_t distIter = 0; distIter < maxDistIter; distIter++)
+			for(size_t distIter = 0; distIter < maxDistIter; distIter++)
 			{
 				bool outsideStartRadius = true;
 				if(checkStart)

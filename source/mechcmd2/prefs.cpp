@@ -167,7 +167,7 @@ int32_t CPrefs::load(PCSTR pFileName)
 			if(result != NO_ERROR)
 				useLeftRightMouseProfile = true;
 			char blockName[64];
-			for(auto i = 0; i < 10; i++)
+			for(size_t i = 0; i < 10; i++)
 			{
 				sprintf(blockName, "PlayerName%ld", i);
 				result = prefsFile->readIdString(blockName, &playerName[i][0], 255);
@@ -275,7 +275,7 @@ int32_t CPrefs::save()
 			result = prefsFile->writeIdLong("Brightness", gammaLevel);
 			result = prefsFile->writeIdBoolean("useLeftRightMouseProfile", useLeftRightMouseProfile);
 			char blockName[64];
-			for(auto i = 0; i < 10; i++)
+			for(size_t i = 0; i < 10; i++)
 			{
 				sprintf(blockName, "PlayerName%ld", i);
 				result = prefsFile->writeIdString(blockName, &playerName[i][0]);

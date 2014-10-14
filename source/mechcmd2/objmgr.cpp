@@ -764,7 +764,7 @@ void GameObjectManager::countTerrainObjects(PacketFile* terrainFile, int32_t fir
 		objData = nullptr;
 	}
 	ObjDataLoader* data = objData;
-	for(auto i = 0; i < totalObjCount; ++i)
+	for(size_t i = 0; i < totalObjCount; ++i)
 	{
 		data->objTypeNum = terrainObjectFile->readLong();
 		data->vector.x = terrainObjectFile->readFloat();
@@ -881,7 +881,7 @@ void GameObjectManager::loadTerrainObjects(PacketFile* terrainFile,
 	int32_t curGateIndex = 0;
 	//------------------------------------------------------------------
 	int32_t* handles = new int32_t[2 * Terrain::numObjBlocks];
-	for(auto i = 0; i < Terrain::numObjBlocks; ++i)
+	for(size_t i = 0; i < Terrain::numObjBlocks; ++i)
 	{
 		handles[2 * i] = Terrain::objBlockInfo[i].firstHandle;
 		handles[(2 * i) + 1] = Terrain::objBlockInfo[i].firstHandle + Terrain::objBlockInfo[i].numCollidableObjects;
@@ -976,7 +976,7 @@ void GameObjectManager::loadTerrainObjects(PacketFile* terrainFile,
 			int32_t generatorIndex = 0;
 			maxDist.Subtract(buildings[i]->getPosition(), powerGenerators[0]->getPosition());
 			float minDistance = maxDist.GetApproximateLength();
-			for(auto j = 1; j < numPowerGenerators; j++)
+			for(size_t j = 1; j < numPowerGenerators; j++)
 			{
 				maxDist.Subtract(buildings[i]->getPosition(), powerGenerators[j]->getPosition());
 				float newDistance = maxDist.GetApproximateLength();
@@ -994,7 +994,7 @@ void GameObjectManager::loadTerrainObjects(PacketFile* terrainFile,
 			int32_t generatorIndex = 0;
 			maxDist.Subtract(terrainObjects[i]->getPosition(), powerGenerators[0]->getPosition());
 			float minDistance = maxDist.GetApproximateLength();
-			for(auto j = 1; j < numPowerGenerators; j++)
+			for(size_t j = 1; j < numPowerGenerators; j++)
 			{
 				maxDist.Subtract(terrainObjects[i]->getPosition(), powerGenerators[j]->getPosition());
 				float newDistance = maxDist.GetApproximateLength();
@@ -1358,13 +1358,13 @@ void GameObjectManager::render(bool terrain, bool movers, bool other)
 	}
 	if(terrain && renderObjects)
 	{
-		for(int32_t terrainBlock = 0; terrainBlock < Terrain::numObjBlocks; terrainBlock++)
+		for(size_t terrainBlock = 0; terrainBlock < Terrain::numObjBlocks; terrainBlock++)
 		{
 			if(Terrain::objBlockInfo[terrainBlock].active)
 			{
 				int32_t numObjs = Terrain::objBlockInfo[terrainBlock].numObjects;
 				int32_t objIndex = Terrain::objBlockInfo[terrainBlock].firstHandle;
-				for(int32_t terrainObj = 0; terrainObj < numObjs; terrainObj++, objIndex++)
+				for(size_t terrainObj = 0; terrainObj < numObjs; terrainObj++, objIndex++)
 				{
 					if(objList[objIndex] &&
 							Terrain::objVertexActive[objList[objIndex]->getVertexNum()])
@@ -1492,13 +1492,13 @@ void GameObjectManager::renderShadows(bool terrain, bool movers, bool other)
 	}
 	if(terrain && renderObjects)
 	{
-		for(int32_t terrainBlock = 0; terrainBlock < Terrain::numObjBlocks; terrainBlock++)
+		for(size_t terrainBlock = 0; terrainBlock < Terrain::numObjBlocks; terrainBlock++)
 		{
 			if(Terrain::objBlockInfo[terrainBlock].active)
 			{
 				int32_t numObjs = Terrain::objBlockInfo[terrainBlock].numObjects;
 				int32_t objIndex = Terrain::objBlockInfo[terrainBlock].firstHandle;
-				for(int32_t terrainObj = 0; terrainObj < numObjs; terrainObj++, objIndex++)
+				for(size_t terrainObj = 0; terrainObj < numObjs; terrainObj++, objIndex++)
 				{
 					if(objList[objIndex] &&
 							Terrain::objVertexActive[objList[objIndex]->getVertexNum()])
@@ -1594,7 +1594,7 @@ void GameObjectManager::update(bool terrain, bool movers, bool other)
 #endif
 		//First Update all of the Special Buildings.
 		// They will mark themselves updated and not re-update below.
-		for(int32_t spBuilding = 0; spBuilding < numSpecialBuildings; spBuilding++)
+		for(size_t spBuilding = 0; spBuilding < numSpecialBuildings; spBuilding++)
 		{
 			if(specialBuildings[spBuilding] && specialBuildings[spBuilding]->getExists())
 			{
@@ -1618,7 +1618,7 @@ void GameObjectManager::update(bool terrain, bool movers, bool other)
 		//Then update all of the gates.
 		// They too will mark themselves and not re-update.
 		// MUST update every frame or they don't open!!
-		for(int32_t nGates = 0; nGates < numGates; nGates++)
+		for(size_t nGates = 0; nGates < numGates; nGates++)
 		{
 			if(gates[nGates] && gates[nGates]->getExists())
 			{
@@ -1639,13 +1639,13 @@ void GameObjectManager::update(bool terrain, bool movers, bool other)
 #endif
 			}
 		}
-		for(int32_t terrainBlock = 0; terrainBlock < Terrain::numObjBlocks; terrainBlock++)
+		for(size_t terrainBlock = 0; terrainBlock < Terrain::numObjBlocks; terrainBlock++)
 		{
 			if(Terrain::objBlockInfo[terrainBlock].active || (turn < 3))
 			{
 				int32_t numObjs = Terrain::objBlockInfo[terrainBlock].numObjects;
 				int32_t objIndex = Terrain::objBlockInfo[terrainBlock].firstHandle;
-				for(int32_t terrainObj = 0; terrainObj < numObjs; terrainObj++, objIndex++)
+				for(size_t terrainObj = 0; terrainObj < numObjs; terrainObj++, objIndex++)
 				{
 					if(objList[objIndex] &&
 							(Terrain::objVertexActive[objList[objIndex]->getVertexNum()] || (turn < 3)) &&
@@ -1982,7 +1982,7 @@ GameObjectPtr GameObjectManager::findObject(Stuff::Vector3D position)
 	float closestDistance = 10000.0;
 	GameObjectPtr closestObj = nullptr;
 	int32_t numObjects = getMaxObjects();
-	for(int32_t objIndex = 1; objIndex <= numObjects; objIndex++)
+	for(size_t objIndex = 1; objIndex <= numObjects; objIndex++)
 	{
 		GameObjectPtr obj = objList[objIndex];
 		Assert(obj != nullptr, objIndex, " GameObjectManager.findObject: nullptr obj ");
@@ -2007,7 +2007,7 @@ GameObjectPtr GameObjectManager::findObjectByTypeHandle(int32_t typeHandle)
 	//-------------------------------------------------
 	// This function was called findObjectId() in MC...
 	int32_t numObjects = getMaxObjects();
-	for(int32_t objIndex = 1; objIndex <= numObjects; objIndex++)
+	for(size_t objIndex = 1; objIndex <= numObjects; objIndex++)
 	{
 		GameObjectPtr obj = objList[objIndex];
 		if(obj->getExists() && (obj->getTypeHandle() == typeHandle))
@@ -2023,7 +2023,7 @@ GameObjectPtr GameObjectManager::findByPartId(int32_t partId)
 	if(partId == 0)
 		return(nullptr);
 	int32_t numObjects = getMaxObjects();
-	for(int32_t objIndex = 1; objIndex <= numObjects; objIndex++)
+	for(size_t objIndex = 1; objIndex <= numObjects; objIndex++)
 	{
 		GameObjectPtr obj = objList[objIndex];
 		if(obj && obj->getExists() && (obj->getPartId() == partId))
@@ -2051,7 +2051,7 @@ GameObjectPtr GameObjectManager::findByCellPosition(int32_t row, int32_t col)
 	// PLEASE DO NOT CALL EVERY FRAME. THIS ONE WILL BE SLOWER THEN CHRISTMAS!!!!!!!!!!!!
 	// Store the pointer if at all possible.  YOU HAVE BEEN WARNED!
 	int32_t numObjects = getMaxObjects();
-	for(int32_t objIndex = 1; objIndex <= numObjects; objIndex++)
+	for(size_t objIndex = 1; objIndex <= numObjects; objIndex++)
 	{
 		GameObjectPtr obj = objList[objIndex];
 		if(obj->getExists())
@@ -2085,7 +2085,7 @@ GameObjectPtr GameObjectManager::findObjectByMouse(int32_t mouseX,
 {
 	if(!searchList)
 		Fatal(0, " GameObjectManager.findObjectByMouse: nullptr searchList ");
-	for(int32_t objIndex = 0; objIndex < listSize; objIndex++)
+	for(size_t objIndex = 0; objIndex < listSize; objIndex++)
 	{
 		if(searchList[objIndex] && searchList[objIndex]->getExists())
 		{
@@ -2150,7 +2150,7 @@ GameObjectPtr GameObjectManager::findMoverByMouse(int32_t mouseX,
 	if(!searchList)
 		return(nullptr);
 	if(commanderId == -1)
-		for(int32_t objIndex = 0; objIndex < numMovers; objIndex++)
+		for(size_t objIndex = 0; objIndex < numMovers; objIndex++)
 		{
 			if(searchList[objIndex] && searchList[objIndex]->getExists())
 			{
@@ -2190,7 +2190,7 @@ GameObjectPtr GameObjectManager::findMoverByMouse(int32_t mouseX,
 			}
 		}
 	else
-		for(int32_t objIndex = 0; objIndex < numMovers; objIndex++)
+		for(size_t objIndex = 0; objIndex < numMovers; objIndex++)
 		{
 			if(searchList[objIndex] && searchList[objIndex]->getExists())
 			{
@@ -2239,7 +2239,7 @@ GameObjectPtr GameObjectManager::findTerrainObjectByMouse(int32_t mouseX,
 		int32_t mouseY,
 		bool skipDisabled)
 {
-	for(int32_t terrainBlock = 0; terrainBlock < Terrain::numObjBlocks; terrainBlock++)
+	for(size_t terrainBlock = 0; terrainBlock < Terrain::numObjBlocks; terrainBlock++)
 	{
 		if(Terrain::objBlockInfo[terrainBlock].active)
 		{
@@ -2515,7 +2515,7 @@ bool GameObjectManager::isTeamCapturing(TeamPtr team, GameObjectWatchID targetWI
 	}
 	else
 	{
-		for(int32_t teamID = 0; teamID < MAX_TEAMS; teamID++)
+		for(size_t teamID = 0; teamID < MAX_TEAMS; teamID++)
 			for(size_t i = 0; i < numCaptures[teamID]; i++)
 				if(targetWID == captureList[teamID][i])
 					return(true);
@@ -2668,13 +2668,13 @@ void GameObjectManager::updateAppearancesOnly(bool terrain, bool movers, bool ot
 {
 	if(terrain && renderObjects)
 	{
-		for(int32_t terrainBlock = 0; terrainBlock < Terrain::numObjBlocks; terrainBlock++)
+		for(size_t terrainBlock = 0; terrainBlock < Terrain::numObjBlocks; terrainBlock++)
 		{
 			if(Terrain::objBlockInfo[terrainBlock].active)
 			{
 				int32_t numObjs = Terrain::objBlockInfo[terrainBlock].numObjects;
 				int32_t objIndex = Terrain::objBlockInfo[terrainBlock].firstHandle;
-				for(int32_t terrainObj = 0; terrainObj < numObjs; terrainObj++, objIndex++)
+				for(size_t terrainObj = 0; terrainObj < numObjs; terrainObj++, objIndex++)
 				{
 					if(objList[objIndex] &&
 							(Terrain::objVertexActive[objList[objIndex]->getVertexNum()] || (turn < 3)) &&
@@ -2875,7 +2875,7 @@ int32_t GameObjectManager::Save(PacketFilePtr file, int32_t packetNum)
 			// If none, let it be.  It'll be zero already
 			// DO NOT CALL getWatchID!!!!!!!
 			// That will assign them to objects which don't have them!!!!
-			for(auto j = 0; j <= nextWatchID; j++)
+			for(size_t j = 0; j <= nextWatchID; j++)
 			{
 				if(watchList[j] == objList[i])
 				{
@@ -3370,7 +3370,7 @@ int32_t GameObjectManager::Load(PacketFilePtr file, int32_t packetNum)
 			int32_t generatorIndex = 0;
 			maxDist.Subtract(buildings[i]->getPosition(), powerGenerators[0]->getPosition());
 			float minDistance = maxDist.GetApproximateLength();
-			for(auto j = 1; j < numPowerGenerators; j++)
+			for(size_t j = 1; j < numPowerGenerators; j++)
 			{
 				maxDist.Subtract(buildings[i]->getPosition(), powerGenerators[j]->getPosition());
 				float newDistance = maxDist.GetApproximateLength();
@@ -3388,7 +3388,7 @@ int32_t GameObjectManager::Load(PacketFilePtr file, int32_t packetNum)
 			int32_t generatorIndex = 0;
 			maxDist.Subtract(terrainObjects[i]->getPosition(), powerGenerators[0]->getPosition());
 			float minDistance = maxDist.GetApproximateLength();
-			for(auto j = 1; j < numPowerGenerators; j++)
+			for(size_t j = 1; j < numPowerGenerators; j++)
 			{
 				maxDist.Subtract(terrainObjects[i]->getPosition(), powerGenerators[j]->getPosition());
 				float newDistance = maxDist.GetApproximateLength();
@@ -3411,7 +3411,7 @@ int32_t GameObjectManager::Load(PacketFilePtr file, int32_t packetNum)
 	// If none, let it be.  It'll be zero already
 	// DO NOT CALL getWatchID!!!!!!!
 	// That will assign them to objects which don't have them!!!!
-	for(auto j = 0; j < getMaxObjects(); j++)
+	for(size_t j = 0; j < getMaxObjects(); j++)
 	{
 		watchList[j] = objList[watchSave[j]];
 	}

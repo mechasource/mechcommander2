@@ -72,19 +72,19 @@ void TargetAreaDlg::OnOK()
 	int32_t result;
 	float tmpFloat;
 	m_pTargetCenterXEditBox->GetWindowText(tmpCStr);
-	result = sscanf(tmpCStr.GetBuffer(0), "%f", &tmpFloat);
+	result = sscanf_s(tmpCStr.GetBuffer(0), "%f", &tmpFloat);
 	if(1 == result)
 	{
 		(*m_pTargetCenterX) = tmpFloat;
 	}
 	m_pTargetCenterYEditBox->GetWindowText(tmpCStr);
-	result = sscanf(tmpCStr.GetBuffer(0), "%f", &tmpFloat);
+	result = sscanf_s(tmpCStr.GetBuffer(0), "%f", &tmpFloat);
 	if(1 == result)
 	{
 		(*m_pTargetCenterY) = tmpFloat;
 	}
 	m_pTargetRadiusEditBox->GetWindowText(tmpCStr);
-	result = sscanf(tmpCStr.GetBuffer(0), "%f", &tmpFloat);
+	result = sscanf_s(tmpCStr.GetBuffer(0), "%f", &tmpFloat);
 	if(1 == result)
 	{
 		(*m_pTargetRadius) = tmpFloat;

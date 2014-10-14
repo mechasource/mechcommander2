@@ -167,9 +167,9 @@ bool SelectionBrush::paint(Stuff::Vector3D& worldPos, int32_t screenX, int32_t s
 			{
 				//return paintSmooth( worldPos, screenX, screenY, 6 );
 				float delta = calcNewHeight(lastRow, lastCol, endPos.y - lastPos.y);
-				for(auto j = 0; j < land->realVerticesMapSide; ++j)
+				for(size_t j = 0; j < land->realVerticesMapSide; ++j)
 				{
-					for(auto i = 0; i < land->realVerticesMapSide; ++i)
+					for(size_t i = 0; i < land->realVerticesMapSide; ++i)
 					{
 						if(land->isVertexSelected(j, i))
 						{
@@ -286,9 +286,9 @@ void SelectionBrush::render(int32_t screenX, int32_t screenY)
 		if(!GetAsyncKeyState(KEY_LSHIFT) && !GetAsyncKeyState(KEY_LCONTROL))
 		{
 			// figure out if there is a selected vertex near here
-			for(auto i = 0; i < land->realVerticesMapSide; ++i)
+			for(size_t i = 0; i < land->realVerticesMapSide; ++i)
 			{
-				for(auto j = 0; j < land->realVerticesMapSide; ++j)
+				for(size_t j = 0; j < land->realVerticesMapSide; ++j)
 				{
 					if(land->isVertexSelected(j, i))
 					{
@@ -324,9 +324,9 @@ bool SelectionBrush::paintSmooth(Stuff::Vector3D& worldPos, int32_t screenX, int
 	int32_t maxI = 0;
 	int32_t minJ = INT_MAX;
 	int32_t maxJ = 0;
-	for(auto j = 0; j < land->realVerticesMapSide; ++j)
+	for(size_t j = 0; j < land->realVerticesMapSide; ++j)
 	{
-		for(auto i = 0; i < land->realVerticesMapSide; ++i)
+		for(size_t i = 0; i < land->realVerticesMapSide; ++i)
 		{
 			if(land->isVertexSelected(j, i))
 			{
@@ -380,11 +380,11 @@ bool   SelectionBrush::paintSmoothArea(Stuff::Vector3D& worldPos, int32_t screen
 			float a = radiusX * radiusX * land->worldUnitsPerVertex * land->worldUnitsPerVertex;
 			float b = radiusY * radiusY * land->worldUnitsPerVertex * land->worldUnitsPerVertex;
 			// now set surrounding vertices within radius
-			for(int32_t k = j - (int32_t)radiusY; k < j + (int32_t)radiusY + 1; ++k)
+			for(size_t k = j - (int32_t)radiusY; k < j + (int32_t)radiusY + 1; ++k)
 			{
 				if(k > -1 && k < land->realVerticesMapSide)
 				{
-					for(int32_t l = i - (int32_t)radiusX; l < i + (int32_t)radiusX + 1; ++l)
+					for(size_t l = i - (int32_t)radiusX; l < i + (int32_t)radiusX + 1; ++l)
 					{
 						if(l > -1 && l < land->realVerticesMapSide)
 						{

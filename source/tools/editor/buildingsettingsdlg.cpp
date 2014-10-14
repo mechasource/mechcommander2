@@ -67,7 +67,7 @@ void BuildingSettingsDlg::OnSelchangeGroup()
 	PCSTR MechNames[256];
 	int32_t count = 256;
 	EditorObjectMgr::instance()->getBuildingNamesInGroup(group, MechNames, count);
-	for(auto i = 0; i < count; ++i)
+	for(size_t i = 0; i < count; ++i)
 	{
 		m_Mech.AddString(MechNames[i]);
 	}
@@ -114,7 +114,7 @@ void BuildingSettingsDlg::applyChanges()
 		{
 			bBase = true;
 			tmpStr.Replace("0x", "");
-			sscanf(tmpStr, "%x", &base);
+			sscanf_s(tmpStr, "%x", &base);
 			base |= 0xff000000;
 		}
 	}
@@ -127,7 +127,7 @@ void BuildingSettingsDlg::applyChanges()
 		{
 			bColor1 = true;
 			tmpStr.Replace("0x", "");
-			sscanf(tmpStr, "%x", &color1);
+			sscanf_s(tmpStr, "%x", &color1);
 			color1 |= 0xff000000;
 		}
 	}
@@ -140,7 +140,7 @@ void BuildingSettingsDlg::applyChanges()
 		{
 			bColor2 = true;
 			tmpStr.Replace("0x", "");
-			sscanf(tmpStr, "%x", &color2);
+			sscanf_s(tmpStr, "%x", &color2);
 			color2 |= 0xff000000;
 		}
 	}
@@ -219,7 +219,7 @@ void BuildingSettingsDlg::updateMemberVariables()
 	m_Group.ResetContent();
 	pMgr->getBuildingGroupNames(pGroups, groupCount);
 	int32_t count = 0;
-	for(auto i = 0; i < groupCount; ++i)
+	for(size_t i = 0; i < groupCount; ++i)
 	{
 		if((4/*mech group*/ == i) || (6/*vehicle group*/ == i))
 		{
@@ -250,7 +250,7 @@ void BuildingSettingsDlg::updateMemberVariables()
 		int32_t count = 256;
 		m_Mech.ResetContent();
 		pMgr->getBuildingNamesInGroup(group, MechNames, count);
-		for(auto i = 0; i < count; ++i)
+		for(size_t i = 0; i < count; ++i)
 		{
 			m_Mech.AddString(MechNames[i]);
 		}

@@ -163,7 +163,7 @@ void aButton::render()
 			tmp.bottom = location[2].y;
 			drawEmptyRect(tmp, location[0].argb, location[0].argb);
 		}
-		for(auto i = 0; i < numberOfChildren(); i++)
+		for(size_t i = 0; i < numberOfChildren(); i++)
 		{
 			pChildren[i]->render();
 		}
@@ -297,7 +297,7 @@ void aButton::init(FitIniFile& buttonFile, PCSTR str, HGOSFONT3D font)
 	location[0].y = location[3].y = y;
 	location[2].x = location[3].x = x + width;
 	location[1].y = location[2].y = y + height;
-	for(auto j = 0; j < 4; j++)
+	for(size_t j = 0; j < 4; j++)
 	{
 		location[j].argb = 0xffffffff;
 		location[j].frgb = 0;
@@ -606,7 +606,7 @@ void aAnimButton::update(const aAnimation& animData)
 	move(xPos, yPos);
 	if(bAnimateChildren)
 	{
-		for(auto i = 0; i < numberOfChildren(); i++)
+		for(size_t i = 0; i < numberOfChildren(); i++)
 			pChildren[i]->setColor(color);
 	}
 	float fXcaleX = animData.getScaleX();

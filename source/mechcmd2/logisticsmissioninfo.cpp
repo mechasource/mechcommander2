@@ -42,7 +42,7 @@ void LogisticsMissionInfo::clear()
 {
 	if(groups)
 	{
-		for(auto i = 0; i < groupCount; i++)
+		for(size_t i = 0; i < groupCount; i++)
 		{
 			for(MISSION_LIST::EIterator iter = groups[i].infos.Begin();
 					!iter.IsDone(); iter++)
@@ -104,7 +104,7 @@ int32_t LogisticsMissionInfo::init(FitIniFile& file)
 	groups = new MissionGroup[groupCount];
 	currentStage = 0;
 	char blockName[32];
-	for(auto i = 0; i < groupCount; i++)
+	for(size_t i = 0; i < groupCount; i++)
 	{
 		groups[i].numberToBeCompleted = -1; // initialize
 		sprintf(blockName, "Group%ld", i);
@@ -146,7 +146,7 @@ int32_t LogisticsMissionInfo::init(FitIniFile& file)
 		int32_t missionCount;
 		// read the number of missions in the group
 		file.readIdLong("MissionCount", missionCount);
-		for(auto j = 0; j < missionCount; j++)
+		for(size_t j = 0; j < missionCount; j++)
 		{
 			MissionInfo* pInfo = new MissionInfo;
 			sprintf(blockName, "Group%ldMission%ld", i, j);
@@ -747,7 +747,7 @@ PCSTR	LogisticsMissionInfo::getCurrentMissionDescription(void) const
 bool LogisticsMissionInfo::getMissionAvailable(PCSTR missionName)
 {
 	MissionGroup* pGroup = &groups[currentStage];
-	for(auto i = 0; i < pGroup->infos.Count(); i++)
+	for(size_t i = 0; i < pGroup->infos.Count(); i++)
 	{
 		if(pGroup->infos[i]->fileName.Compare(missionName) == 0)
 		{
@@ -782,7 +782,7 @@ PCSTR LogisticsMissionInfo::getMissionFriendlyName(PCSTR missionName) const
 	if(currentStage >= groupCount)
 		return nullptr;
 	MissionGroup* pGroup = &groups[currentStage];
-	for(auto i = 0; i < pGroup->infos.Count(); i++)
+	for(size_t i = 0; i < pGroup->infos.Count(); i++)
 	{
 		if(pGroup->infos[i]->fileName.Compare(missionName) == 0)
 		{

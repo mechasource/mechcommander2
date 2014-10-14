@@ -49,7 +49,7 @@ void LogisticsMechDisplay::render(int32_t xOffset, int32_t yOffset)
 	componentListBox.move(-xOffset, -yOffset);
 	if(xOffset == 0 && yOffset == 0)    // don't draw until we're done animating in or out
 		mechCamera.render();
-	for(auto i = 0; i < 3; i++)
+	for(size_t i = 0; i < 3; i++)
 	{
 		attributeMeters[i].render(xOffset, yOffset);
 	}
@@ -73,7 +73,7 @@ int32_t	LogisticsMechDisplay::init()
 	mechCamera.init(rects[1].left(), rects[2].top(),
 					rects[2].left(), rects[2].bottom());
 	char blockName[64];
-	for(auto i = 0; i < 3; i++)
+	for(size_t i = 0; i < 3; i++)
 	{
 		sprintf(blockName, "AttributeMeter%ld", i);
 		attributeMeters[i].init(&file, blockName);
@@ -122,7 +122,7 @@ void LogisticsMechDisplay::setMech(LogisticsMech* pMech, bool bFromLB)
 		}
 		else
 		{
-			for(auto i = 0; i < 6; i++)
+			for(size_t i = 0; i < 6; i++)
 				textObjects[i].setText("");
 			attributeMeters[0].setValue(0);
 			attributeMeters[1].setValue(0);

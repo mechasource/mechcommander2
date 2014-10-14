@@ -63,7 +63,7 @@ int32_t LogisticsChassis::init(CSVFile* file, int32_t chassisID)
 	result = file->readLong(4, 2, houseID);
 	ID |= ((houseID << 8) & 0x0000ff00);
 	gosASSERT(result == NO_ERROR);
-	for(int32_t row = 9; row < 12; ++row)
+	for(size_t row = 9; row < 12; ++row)
 	{
 		result = file->readString(row, 2, buffer, 256);
 		gosASSERT(result == NO_ERROR);
@@ -94,7 +94,7 @@ int32_t LogisticsChassis::init(CSVFile* file, int32_t chassisID)
 	result = file->readLong(14, 2, componentAreaHeight);
 	gosASSERT(result == NO_ERROR);
 	int32_t ID = IDS_VERY_LIGHT;
-	for(auto i = 4; i > -1; --i)
+	for(size_t i = 4; i > -1; --i)
 	{
 		if(maxWeight > weightClasses[i])
 		{
@@ -212,7 +212,7 @@ LogisticsVariant::LogisticsVariant(const LogisticsVariant& src)
 	chassis = src.chassis;
 	availableToUser = src.availableToUser;
 	componentCount = src.componentCount;
-	for(auto i = 0; i < componentCount; ++i)
+	for(size_t i = 0; i < componentCount; ++i)
 	{
 		components[i] = src.components[i];
 	}
@@ -231,7 +231,7 @@ LogisticsVariant& LogisticsVariant::operator=(const LogisticsVariant& src)
 		chassis = src.chassis;
 		availableToUser = src.availableToUser;
 		componentCount = src.componentCount;
-		for(auto i = 0; i < componentCount; ++i)
+		for(size_t i = 0; i < componentCount; ++i)
 		{
 			components[i] = src.components[i];
 		}
@@ -252,7 +252,7 @@ bool LogisticsVariant::operator==(const LogisticsVariant& src)
 		return 0;
 	if(componentCount != src.componentCount)
 		return 0;
-	for(auto i = 0; i < componentCount; ++i)
+	for(size_t i = 0; i < componentCount; ++i)
 	{
 		if(components[i].component->getID() != src.components[i].component->getID())
 		{
@@ -352,14 +352,14 @@ bool LogisticsVariant::addComponent(int32_t idFromFitFile, int32_t& x, int32_t& 
 		int32_t componentHeight = pComponent->getComponentHeight();
 		if(x == -1 && y == -1)
 		{
-			for(auto j = 0; j < chassis->componentAreaHeight && x == -1; j++)
+			for(size_t j = 0; j < chassis->componentAreaHeight && x == -1; j++)
 			{
-				for(auto i = 0; i < chassis->componentAreaWidth && x == -1; i++)
+				for(size_t i = 0; i < chassis->componentAreaWidth && x == -1; i++)
 				{
 					bool bAdd = true;
-					for(int32_t l = 0; l < componentHeight; ++l)
+					for(size_t l = 0; l < componentHeight; ++l)
 					{
-						for(int32_t k = 0; k < componentWidth; ++k)
+						for(size_t k = 0; k < componentWidth; ++k)
 						{
 							if(getComponentAtLocation(i + k, j + l)
 									|| (i + k >= chassis->componentAreaWidth)
@@ -383,9 +383,9 @@ bool LogisticsVariant::addComponent(int32_t idFromFitFile, int32_t& x, int32_t& 
 			return 0;
 		if(x > -1)
 		{
-			for(auto i = 0; i < componentWidth; ++i)
+			for(size_t i = 0; i < componentWidth; ++i)
 			{
-				for(auto j = 0; j < componentHeight; ++j)
+				for(size_t j = 0; j < componentHeight; ++j)
 				{
 					if(getComponentAtLocation(x + i, y + j))
 					{
@@ -410,7 +410,7 @@ bool LogisticsVariant::addComponent(int32_t idFromFitFile, int32_t& x, int32_t& 
 int32_t LogisticsVariant::getCost() const
 {
 	int32_t cost = chassis->baseCost;
-	for(auto i = 0; i < componentCount; ++i)
+	for(size_t i = 0; i < componentCount; ++i)
 	{
 		cost += components[i].component->getCost();
 	}
@@ -421,7 +421,7 @@ int32_t LogisticsVariant::getWeight(void) const
 {
 	//Yup.  20% of base weight Plus 7 tons is used by armor and misc components which we do not explicitly track.
 	float baseWeight = (chassis->maxWeight * .20) + 7.0;
-	for(auto i = 0; i < componentCount; ++i)
+	for(size_t i = 0; i < componentCount; ++i)
 	{
 		baseWeight += components[i].component->getWeight();
 	}
@@ -442,7 +442,7 @@ int32_t			LogisticsVariant::getMaxJumpRange(void) const
 int32_t LogisticsVariant::getJumpRange(void) const
 {
 	int32_t jumpJetCount = 0;
-	for(auto i = 0; i < componentCount; ++i)
+	for(size_t i = 0; i < componentCount; ++i)
 	{
 		if(components[i].component->getType() == COMPONENT_FORM_JUMPJET)
 			jumpJetCount++;
@@ -455,7 +455,7 @@ int32_t LogisticsVariant::getJumpRange(void) const
 int32_t LogisticsVariant::getHeat(void) const
 {
 	int32_t retVal = 0;
-	for(auto i = 0; i < componentCount; ++i)
+	for(size_t i = 0; i < componentCount; ++i)
 	{
 		retVal += components[i].component->getHeat();
 	}
@@ -466,7 +466,7 @@ int32_t LogisticsVariant::getHeat(void) const
 int32_t LogisticsVariant::getArmor() const
 {
 	int32_t retArmor = chassis->baseArmor;
-	for(auto i = 0; i < componentCount; ++i)
+	for(size_t i = 0; i < componentCount; ++i)
 	{
 		if(components[i].component->getType() == COMPONENT_FORM_BULK)
 		{
@@ -488,7 +488,7 @@ int32_t LogisticsVariant::getDisplaySpeed(void) const
 int32_t		LogisticsVariant::getMaxHeat(void) const
 {
 	int32_t heat = 0;
-	for(auto i = 0; i < componentCount; i++)
+	for(size_t i = 0; i < componentCount; i++)
 	{
 		if(components[i].component->getType() == COMPONENT_FORM_HEATSINK)
 		{
@@ -521,9 +521,9 @@ int32_t LogisticsVariant::canAddComponent(LogisticsComponent* pComponent, int32_
 		return COMPONENT_SLOT_FULL;
 	if(x != -1 && y != -1)
 	{
-		for(auto i = 0; i < pComponent->getComponentWidth(); i++)
+		for(size_t i = 0; i < pComponent->getComponentWidth(); i++)
 		{
-			for(auto j = 0; j < pComponent->getComponentHeight(); j++)
+			for(size_t j = 0; j < pComponent->getComponentHeight(); j++)
 			{
 				if(getComponentAtLocation(x + i, y  + j)
 						|| x + i >= chassis->componentAreaWidth
@@ -534,16 +534,16 @@ int32_t LogisticsVariant::canAddComponent(LogisticsComponent* pComponent, int32_
 	}
 	else
 	{
-		for(auto j = 0; j < chassis->componentAreaHeight && x == -1; j++)
+		for(size_t j = 0; j < chassis->componentAreaHeight && x == -1; j++)
 		{
-			for(auto i = 0; i < chassis->componentAreaWidth && x == -1; i++)
+			for(size_t i = 0; i < chassis->componentAreaWidth && x == -1; i++)
 			{
 				if(!getComponentAtLocation(i, j))
 				{
 					bool bAdd = true;
-					for(int32_t l = 0; l < pComponent->getComponentHeight(); ++l)
+					for(size_t l = 0; l < pComponent->getComponentHeight(); ++l)
 					{
-						for(int32_t k = 0; k < pComponent->getComponentWidth(); ++k)
+						for(size_t k = 0; k < pComponent->getComponentWidth(); ++k)
 						{
 							if(getComponentAtLocation(i + k, j + l)
 									|| (i + k >= chassis->componentAreaWidth)
@@ -594,12 +594,12 @@ const LogisticsChassis::ComponentInfo* LogisticsVariant::getComponentAtLocation(
 {
 	if(x == -1 && y == -1)
 		return nullptr;
-	for(auto i = 0; i < componentCount; ++i)
+	for(size_t i = 0; i < componentCount; ++i)
 	{
 		LogisticsComponent* pComponent = components[i].component;
-		for(auto j = 0; j < pComponent->getComponentHeight(); ++j)
+		for(size_t j = 0; j < pComponent->getComponentHeight(); ++j)
 		{
-			for(int32_t k = 0; k < pComponent->getComponentWidth(); ++k)
+			for(size_t k = 0; k < pComponent->getComponentWidth(); ++k)
 			{
 				if(components[i].xCoord + k == x
 						&& components[i].yCoord + j == y)
@@ -614,7 +614,7 @@ const LogisticsChassis::ComponentInfo* LogisticsVariant::getComponentAtLocation(
 
 bool LogisticsVariant::hasJumpJets(void) const
 {
-	for(auto i = 0; i < componentCount; i++)
+	for(size_t i = 0; i < componentCount; i++)
 	{
 		if(components[i].component->getType() == COMPONENT_FORM_JUMPJET)
 			return true;
@@ -623,7 +623,7 @@ bool LogisticsVariant::hasJumpJets(void) const
 }
 bool LogisticsVariant::hasECM(void) const
 {
-	for(auto i = 0; i < componentCount; i++)
+	for(size_t i = 0; i < componentCount; i++)
 	{
 		if(components[i].component->getType() == COMPONENT_FORM_ECM)
 			return true;
@@ -632,7 +632,7 @@ bool LogisticsVariant::hasECM(void) const
 }
 bool LogisticsVariant::hasSensor(void) const
 {
-	for(auto i = 0; i < componentCount; i++)
+	for(size_t i = 0; i < componentCount; i++)
 	{
 		if(components[i].component->getType() == COMPONENT_FORM_SENSOR)
 			return true;
@@ -645,7 +645,7 @@ int32_t	LogisticsVariant::getComponentsWithLocation(int32_t& count, int32_t* IDA
 {
 	if(count < componentCount)
 		return NEED_BIGGER_ARRAY;
-	for(auto i = 0; i < componentCount; ++i)
+	for(size_t i = 0; i < componentCount; ++i)
 	{
 		IDArray[i] = components[i].component->getID();
 		xLocationArray[i] = components[i].xCoord;
@@ -657,7 +657,7 @@ int32_t	LogisticsVariant::getComponentsWithLocation(int32_t& count, int32_t* IDA
 
 int32_t	LogisticsVariant::getComponents(int32_t& count, int32_t* array)
 {
-	for(auto i = 0; i < componentCount; ++i)
+	for(size_t i = 0; i < componentCount; ++i)
 	{
 		array[i] = components[i].component->getID();
 	}
@@ -677,7 +677,7 @@ int32_t		LogisticsVariant::removeComponent(int32_t xCoord, int32_t yCoord)
 	}
 	if(!info)
 		return INVALID_LOCATION;
-	for(auto i = 0; i < componentCount; i++)
+	for(size_t i = 0; i < componentCount; i++)
 	{
 		if(&components[i] == info)
 		{
@@ -712,7 +712,7 @@ int32_t LogisticsVariant::save(FitIniFile& file, int32_t counter)
 	file.writeIdString("Chassis", chassis->fileName);
 	file.writeIdString("VariantName", variantName);
 	file.writeIdLong("ComponentCount", componentCount);
-	for(auto i = 0; i < componentCount; i++)
+	for(size_t i = 0; i < componentCount; i++)
 	{
 		sprintf(tmp, "Component%ld", i);
 		file.writeIdLong(tmp, components[i].component->getID());
@@ -738,7 +738,7 @@ int32_t	LogisticsVariant::getComponents(int32_t& count, LogisticsComponent** arr
 {
 	if(count < componentCount)
 		return NEED_BIGGER_ARRAY;
-	for(auto i = 0; i < componentCount; ++i)
+	for(size_t i = 0; i < componentCount; ++i)
 	{
 		array[i] = components[i].component;
 	}
@@ -770,7 +770,7 @@ int32_t	LogisticsVariant::getComponentLocation(LogisticsComponent* pComp, int32_
 	}
 	else
 	{
-		for(auto i = 0; i < componentCount; i++)
+		for(size_t i = 0; i < componentCount; i++)
 		{
 			if((components[i].component) == pComp)
 			{
@@ -819,7 +819,7 @@ bool		LogisticsVariant::allComponentsAvailable(void) const
 	// 06/05/01 hack, we wan't to hide this atlas for the whole game.
 	if(_stricmp("Renard's Atlas", variantName) == 0)
 		return 0;
-	for(auto i = 0; i < componentCount; i++)
+	for(size_t i = 0; i < componentCount; i++)
 	{
 		if(!components[i].component->isAvailable())
 			return false;
@@ -896,7 +896,7 @@ void LogisticsVehicle::init(FitIniFile& file)
 int32_t LogisticsVehicle::getComponents(int32_t& count, LogisticsComponent** array)
 {
 	gosASSERT(componentCount <= count);
-	for(auto i = 0; i < componentCount; ++i)
+	for(size_t i = 0; i < componentCount; ++i)
 	{
 		array[i] = components[i].component;
 	}

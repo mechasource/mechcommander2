@@ -53,8 +53,8 @@ int32_t TriggerAreaManager::add(int32_t ULrow, int32_t ULcol, int32_t LRrow, int
 		tileDims[1] = ULcol / 3 + 1;
 		tileDims[2] = LRrow / 3;
 		tileDims[3] = LRcol / 3 + 1;
-		for(int32_t r = tileDims[0]; r < tileDims[2]; r++)
-			for(int32_t c = tileDims[1]; c < tileDims[3]; c++)
+		for(size_t r = tileDims[0]; r < tileDims[2]; r++)
+			for(size_t c = tileDims[1]; c < tileDims[3]; c++)
 			{
 				//sert((map[r][c] == 0) || (map[r][c] == i), i," Duplicate Trigger ");
 				map[r][c] = i;
@@ -75,8 +75,8 @@ void TriggerAreaManager::remove(int32_t areaHandle)
 	tileDims[1] = triggerAreas[areaHandle].dim[1] / 3 + 1;
 	tileDims[2] = triggerAreas[areaHandle].dim[2] / 3;
 	tileDims[3] = triggerAreas[areaHandle].dim[3] / 3 + 1;
-	for(int32_t r = tileDims[0]; r < tileDims[2]; r++)
-		for(int32_t c = tileDims[1]; c < tileDims[3]; c++)
+	for(size_t r = tileDims[0]; r < tileDims[2]; r++)
+		for(size_t c = tileDims[1]; c < tileDims[3]; c++)
 			if(map[r][c] == areaHandle)
 				map[r][c] = 0;
 	triggerAreas[areaHandle].type = TRIGGER_AREA_NONE;

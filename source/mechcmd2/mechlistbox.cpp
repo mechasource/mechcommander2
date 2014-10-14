@@ -62,7 +62,7 @@ void MechListBox::update()
 	MechListBoxItem::bAddCalledThisFrame = false;
 	if(bDeleteIfNoInventory)
 	{
-		for(auto i = 0; i < itemCount; i++)
+		for(size_t i = 0; i < itemCount; i++)
 		{
 			if(((MechListBoxItem*)items[i])->mechCount == 0)
 			{
@@ -77,7 +77,7 @@ void MechListBox::update()
 				{
 					if(itemCount)
 					{
-						for(auto j = 0; j < itemCount; j++)
+						for(size_t j = 0; j < itemCount; j++)
 							if(items[j]->getState() != aListItem::DISABLED)
 							{
 								SelectItem(j);
@@ -211,7 +211,7 @@ void MechListBoxItem::init(FitIniFile& file)
 		s_templateItem->costText.init(&file, "Text4");
 		assignAnimation(file, curAnim);
 		char blockName[64];
-		for(auto i = 0; i < 4; i++)
+		for(size_t i = 0; i < 4; i++)
 		{
 			sprintf(blockName, "OrangeAnimation%ld", i);
 			s_templateItem->animations[1][i].init(&file, blockName);
@@ -227,7 +227,7 @@ void MechListBoxItem::assignAnimation(FitIniFile& file, int32_t& curAnim)
 	s_templateItem->animationIDs[curAnim] = -1;
 	if(NO_ERROR == file.readIdString("Animation", tmpStr, 63))
 	{
-		for(auto j = 0; j < strlen(tmpStr); j++)
+		for(size_t j = 0; j < strlen(tmpStr); j++)
 		{
 			if(isdigit(tmpStr[j]))
 			{
@@ -252,7 +252,7 @@ MechListBoxItem& MechListBoxItem::operator=(const MechListBoxItem& src)
 		weightIcon = src.weightIcon;
 		weightText = src.weightText;
 		countText = src.countText;
-		for(auto i = 0; i < ANIMATION_COUNT; i++)
+		for(size_t i = 0; i < ANIMATION_COUNT; i++)
 		{
 			animations[0][i] = src.animations[0][i];
 			animations[1][i] = src.animations[1][i];
@@ -295,11 +295,11 @@ void MechListBoxItem::update()
 			animTime = 0.f;
 	}
 	bool isInside = pointInside(userInput->getMouseX(), userInput->getMouseY());
-	for(auto i = 0; i < ANIMATION_COUNT; i++)
+	for(size_t i = 0; i < ANIMATION_COUNT; i++)
 		animations[bOrange][i].update();
 	if(state == aListItem::SELECTED)
 	{
-		for(auto i = 0; i < ANIMATION_COUNT; i++)
+		for(size_t i = 0; i < ANIMATION_COUNT; i++)
 			animations[bOrange][i].setState(aAnimGroup::PRESSED);
 		//	if ( userInput->isLeftClick() && isInside )
 		//		setMech();
@@ -309,7 +309,7 @@ void MechListBoxItem::update()
 	}
 	else if(state == aListItem::HIGHLITE)
 	{
-		for(auto i = 0; i < ANIMATION_COUNT; i++)
+		for(size_t i = 0; i < ANIMATION_COUNT; i++)
 			animations[bOrange][i].setState(aAnimGroup::HIGHLIGHT);
 	}
 	else if(state == aListItem::DISABLED &&  isShowing())
@@ -319,12 +319,12 @@ void MechListBoxItem::update()
 			soundSystem->playDigitalSample(LOG_WRONGBUTTON);
 			setMech(); // need to call explicitly
 		}
-		for(auto i = 0; i < ANIMATION_COUNT; i++)
+		for(size_t i = 0; i < ANIMATION_COUNT; i++)
 			animations[bOrange][i].setState(aAnimGroup::DISABLED);
 	}
 	else
 	{
-		for(auto i = 0; i < ANIMATION_COUNT; i++)
+		for(size_t i = 0; i < ANIMATION_COUNT; i++)
 			animations[bOrange][i].setState(aAnimGroup::NORMAL);
 	}
 	if(userInput->isLeftDoubleClick() && isInside && state != aListItem::DISABLED && isShowing())
@@ -346,7 +346,7 @@ void MechListBoxItem::render()
 		costText.showGUIWindow(1);
 		costIcon.showGUIWindow(1);
 	}
-	for(auto i = 0; i < this->pNumberOfChildren; i++)
+	for(size_t i = 0; i < this->pNumberOfChildren; i++)
 	{
 		int32_t index = animationIDs[i];
 		if(index != -1)
@@ -436,7 +436,7 @@ int32_t MechListBox::AddItem(aListItem* itemString)
 			pItem->countText.showGUIWindow(0);
 		}
 		EString chassisName;
-		for(auto i = 0; i < itemCount; i++)
+		for(size_t i = 0; i < itemCount; i++)
 		{
 			int32_t ID = ((MechListBoxItem*)items[i])->pMech->getChassisName();
 			char tmpChassisName[256];
@@ -472,7 +472,7 @@ int32_t MechListBox::AddItem(aListItem* itemString)
 
 void	MechListBox::dimItem(LogisticsMech* pMech, bool bDim)
 {
-	for(auto i = 0; i < itemCount; i++)
+	for(size_t i = 0; i < itemCount; i++)
 	{
 		if(((MechListBoxItem*)items[i])->pMech == pMech)
 		{
@@ -483,7 +483,7 @@ void	MechListBox::dimItem(LogisticsMech* pMech, bool bDim)
 
 void MechListBox::undimAll()
 {
-	for(auto i = 0; i < itemCount; i++)
+	for(size_t i = 0; i < itemCount; i++)
 	{
 		((MechListBoxItem*)items[i])->bDim = 0;
 	}
@@ -492,7 +492,7 @@ void MechListBox::undimAll()
 void MechListBox::disableItemsThatCostMoreThanRP()
 {
 	bool bDisabledSel = 0;
-	for(auto i = 0; i < itemCount; i++)
+	for(size_t i = 0; i < itemCount; i++)
 	{
 		if(((MechListBoxItem*)items[i])->pMech->getCost() > LogisticsData::instance->getCBills())
 		{
@@ -525,7 +525,7 @@ void MechListBox::disableItemsThatCostMoreThanRP()
 void MechListBox::disableItemsThatCanNotGoInFG()
 {
 	bool bDisabledSel = 0;
-	for(auto i = 0; i < itemCount; i++)
+	for(size_t i = 0; i < itemCount; i++)
 	{
 		if(!LogisticsData::instance->canAddMechToForceGroup(((MechListBoxItem*)items[i])->pMech))
 		{
@@ -558,7 +558,7 @@ void MechListBox::disableItemsThatCanNotGoInFG()
 void MechListBox::setOrange(bool bNewOrange)
 {
 	bOrange = bNewOrange ? 1 : 0;
-	for(auto i = 0; i < itemCount; i++)
+	for(size_t i = 0; i < itemCount; i++)
 	{
 		((MechListBoxItem*)items[i])->bOrange = bOrange;
 	}

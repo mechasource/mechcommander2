@@ -103,7 +103,7 @@ void InfoWindow::init(FitIniFile& file)
 {
 	if(NO_ERROR != file.seekBlock("Fonts"))
 		Assert(0, 0, "couldn't find the font block");
-	for(auto i = 0; i < 7; i++)
+	for(size_t i = 0; i < 7; i++)
 	{
 		if(skillInfos[i].textureHandle)
 		{
@@ -296,7 +296,7 @@ void InfoWindow::render()
 	drawScrollingStuff();
 	RECT tmpRect = { SCROLLBOXLEFT, SCROLLBOXBOTTOM, SCROLLBOXRIGHT, INFOTOP + INFOHEIGHT };
 	drawRect(tmpRect, 0xff000000);
-	for(auto i = 0; i < 2; i++)
+	for(size_t i = 0; i < 2; i++)
 	{
 		if(buttons[i].isEnabled())
 			buttons[i].render();
@@ -361,7 +361,7 @@ void InfoWindow::render()
 		v[0].y = v[3].y = HEALTHTOP;
 		v[1].y = v[2].y = HEALTHBOTTOM;
 		uint32_t dimColor = (color & 0xff7f7f7f);
-		for(auto i = 0; i < 4; i++)
+		for(size_t i = 0; i < 4; i++)
 			v[i].argb = dimColor;
 		gos_DrawQuads(v, 4);
 		v[2].x = v[3].x = HEALTHLEFT + (HEALTHRIGHT - HEALTHLEFT) * barStatus;
@@ -394,7 +394,7 @@ void InfoWindow::update()
 	int32_t mouseY = userInput->getMouseY();
 	if(icon)
 		icon->update();
-	for(auto i = 0; i < 2; i++)
+	for(size_t i = 0; i < 2; i++)
 	{
 		if(buttons[i].location[0].x <= mouseX && mouseX <= buttons[i].location[2].x
 				&& mouseY >= buttons[i].location[0].y && mouseY <= buttons[i].location[1].y)
@@ -501,11 +501,11 @@ void InfoWindow::drawScrollingStuff()
 	memset(bDraw, 0, sizeof(bool) * 4);
 	int32_t curComponentCount = 60;
 	int32_t i = 0;
-	for(int32_t curWeapon = pUnit->numOther; curWeapon < (pUnit->numOther + pUnit->numWeapons); curWeapon++)
+	for(size_t curWeapon = pUnit->numOther; curWeapon < (pUnit->numOther + pUnit->numWeapons); curWeapon++)
 	{
 		int32_t nName = pUnit->inventory[curWeapon].masterID;
 		bool bFound = 0;
-		for(auto j = 0; j < i; j++)
+		for(size_t j = 0; j < i; j++)
 		{
 			if(nName == names[j])
 			{
@@ -546,7 +546,7 @@ void InfoWindow::drawScrollingStuff()
 //	int32_t stringIDs[4] = { IDS_SHORT, IDS_MEDIUM, IDS_LONG, IDS_COMPONENT};
 //	int32_t headerColors[4] = { 0xFFC8E100, 0xff0091FF, 0xFFFF0000, 0xffFF8A00 };
 	EString capHeader;
-	for(auto j = 0; j < 3; j++)
+	for(size_t j = 0; j < 3; j++)
 	{
 		if(!bDraw[j])    // make sure we have one
 			continue;
@@ -736,7 +736,7 @@ void InfoWindow::drawDivider(float yVal)
 	gos_SetRenderState(gos_State_Texture, 0);
 	gos_SetRenderState(gos_State_Filter, gos_FilterNone);
 	memset(v, 0, sizeof(gos_VERTEX) * 2);
-	for(auto i = 0; i < 2; i++)
+	for(size_t i = 0; i < 2; i++)
 		v[i].rhw = .5f;
 	v[0].x = DIVIDERLEFT;
 	v[0].y = v[1].y = yVal;
@@ -766,7 +766,7 @@ void InfoWindow::drawSkillBar(int32_t skill, float yVal, float height)
 				  left  + InfoWindow::SKILLSKIP + SKILLUNITWIDTH, yVal + height - InfoWindow::SKILLSKIP + .5
 				};
 	drawEmptyRect(outSideRect, 0xff002f55, 0xff002f55);
-	for(auto i = 0; i < barCount; i++)
+	for(size_t i = 0; i < barCount; i++)
 	{
 		drawRect(rect, color);
 		color += redIncrement;

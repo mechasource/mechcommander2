@@ -278,7 +278,7 @@ void ControlGui::render(bool bPaused)
 		gos_SetRenderState(gos_State_Filter, gos_FilterNone);
 		gos_SetRenderState(gos_State_ZWrite, 0);
 		gos_SetRenderState(gos_State_ZCompare, 0);
-		for(auto i = 0; i < rectCount; i++)
+		for(size_t i = 0; i < rectCount; i++)
 		{
 			drawRect(rectInfos[i].rect, rectInfos[i].color);
 		}
@@ -310,7 +310,7 @@ void ControlGui::render(bool bPaused)
 	}
 	if(moviePlaying && bMovie)
 	{
-		for(auto i = 0; i < videoInfoCount; i++)
+		for(size_t i = 0; i < videoInfoCount; i++)
 			videoInfos[i].render();
 		bMovie->render();
 	}
@@ -412,13 +412,13 @@ void ControlGui::startObjectives(bool bStart)
 		int32_t playerCount = 0;
 		const MC2Player* players = MPlayer->getPlayers(playerCount);
 		const MC2Player* sorted[MAX_MC_PLAYERS];
-		for(auto j = 0; j < playerCount; j++)
+		for(size_t j = 0; j < playerCount; j++)
 		{
 			sorted[j] = &players[j];
 		}
 		qsort(sorted, playerCount, sizeof(MC2Player*), sortStats);
 		mpStats[0].setData(nullptr, 1);   // this is the header...
-		for(auto i = 1; i < MAX_MC_PLAYERS + 1; i++)
+		for(size_t i = 1; i < MAX_MC_PLAYERS + 1; i++)
 		{
 			if(i - 1 < playerCount)
 			{
@@ -443,7 +443,7 @@ void ControlGui::renderResults()
 		t1 = p1 = t0 = p0 = 0.f;
 		float delta = 0.f;
 		// figure out where we are in animation
-		for(auto j = 0; j < RESULTS_MOVE_COUNT - 1; j++)
+		for(size_t j = 0; j < RESULTS_MOVE_COUNT - 1; j++)
 		{
 			if(missionResultsMoveInfo[j].time <= resultsTime && missionResultsMoveInfo[j + 1].time > resultsTime)
 			{
@@ -470,7 +470,7 @@ void ControlGui::renderResults()
 			if(resultsTime < missionResultsMoveInfo[OBJECTVE_MOVE_COUNT - 1].time + .25)
 				startObjectives(1);
 		}
-		for(auto i = 0; i < missionStatusInfoCount; i++)
+		for(size_t i = 0; i < missionStatusInfoCount; i++)
 		{
 			missionStatusInfos[i].move(0, delta);
 			missionStatusInfos[i].render();
@@ -526,7 +526,7 @@ void ControlGui::RenderObjectives()
 		t1 = p1 = t0 = p0 = 0.f;
 		float delta = 0.f;
 		// figure out where we are in animation
-		for(auto j = 0; j < OBJECTVE_MOVE_COUNT - 1; j++)
+		for(size_t j = 0; j < OBJECTVE_MOVE_COUNT - 1; j++)
 		{
 			if(objectiveMoveInfo[j].time <= objectiveTime && objectiveMoveInfo[j + 1].time > objectiveTime)
 			{
@@ -549,7 +549,7 @@ void ControlGui::RenderObjectives()
 			delta = objectiveMoveInfo[OBJECTVE_MOVE_COUNT - 1].position - objectiveInfos[0].location[0].x;
 		}
 		// draw little edge pieces
-		for(auto i = 0; i < objectiveInfoCount - 3; i++)
+		for(size_t i = 0; i < objectiveInfoCount - 3; i++)
 		{
 			objectiveInfos[i].move(delta, 0);
 			objectiveInfos[i].render();
@@ -646,13 +646,13 @@ void ControlGui::renderPlayerStatus(float xDelta)
 	int32_t playerCount = 0;
 	const MC2Player* players = MPlayer->getPlayers(playerCount);
 	const MC2Player* sorted[MAX_MC_PLAYERS];
-	for(auto j = 0; j < playerCount; j++)
+	for(size_t j = 0; j < playerCount; j++)
 	{
 		sorted[j] = &players[j];
 	}
 	qsort(sorted, playerCount, sizeof(MC2Player*), sortStats);
 	mpStats[0].setData(nullptr, 1);   // this is the header...
-	for(auto i = 1; i < MAX_MC_PLAYERS + 1; i++)
+	for(size_t i = 1; i < MAX_MC_PLAYERS + 1; i++)
 	{
 		if(i - 1 < playerCount)
 		{
@@ -746,7 +746,7 @@ void ControlGui::renderObjective(CObjective* pObjective, int32_t xPos, int32_t y
 			numberOfDots = 3;
 		}
 		PSTR dots = (PSTR)_alloca(sizeof(char) * (numberOfDots + 1));
-		for(auto i = 0; i < numberOfDots - 2; i++)
+		for(size_t i = 0; i < numberOfDots - 2; i++)
 			dots[i] = '.';
 		dots[i] = 0;
 		float dotFinalLength = dotRealWidth * (float)(numberOfDots - 2);
@@ -813,7 +813,7 @@ void ControlGui::update(bool bPaused, bool bLOS)
 	float mouseX = userInput->getMouseX();
 	float mouseY = userInput->getMouseY();
 	// also going to initialize buttons here
-	for(auto i = LAST_COMMAND - 1; i > -1; i--)
+	for(size_t i = LAST_COMMAND - 1; i > -1; i--)
 	{
 		if(buttons[i].location[0].x <= mouseX && mouseX <= buttons[i].location[2].x
 				&& mouseY >= buttons[i].location[0].y && mouseY <= buttons[i].location[1].y)
@@ -1066,7 +1066,7 @@ bool ControlGui::isOverTacMap()
 
 bool ControlGui::inRegion(int32_t mouseX, int32_t mouseY, bool bPaused)
 {
-	for(auto i = 0; i < LAST_COMMAND; i++)
+	for(size_t i = 0; i < LAST_COMMAND; i++)
 	{
 		if((buttons[i].location[0].x)  <= mouseX &&
 				buttons[i].location[3].x >= mouseX &&
@@ -1117,7 +1117,7 @@ void ControlGui::initMechs()
 	Team* pTeam = Team::home;
 	if(!pTeam)
 		return;
-	for(auto i = 0; i < pTeam->getRosterSize(); ++i)
+	for(size_t i = 0; i < pTeam->getRosterSize(); ++i)
 	{
 		Mover* pMover = pTeam->getMover(i);
 		if(pMover && pMover->getExists() && pMover->isOnGUI())
@@ -1132,7 +1132,7 @@ void ControlGui::initMechs()
 	if(MPlayer)
 	{
 		mpStats[0].init();
-		for(auto i = 0; i < 8; i++)
+		for(size_t i = 0; i < 8; i++)
 		{
 			mpStats[i + 1] = mpStats[i];
 		}
@@ -1199,7 +1199,7 @@ void ControlGui::setRange(int32_t Range)
 {
 	// apply to all selected mechs
 	Team* pTeam = Team::home;
-	for(auto i = 0; i < pTeam->getRosterSize(); ++i)
+	for(size_t i = 0; i < pTeam->getRosterSize(); ++i)
 	{
 		Mover* pMover = pTeam->getMover(i);
 		if(pMover->isSelected() && pMover->getCommander()->getId() == Commander::home->getId())
@@ -1215,7 +1215,7 @@ int32_t		ControlGui::getCurrentRange()
 {
 	int32_t range = -1;
 	Team* pTeam = Team::home;
-	for(auto i = 0; i < pTeam->getRosterSize(); ++i)
+	for(size_t i = 0; i < pTeam->getRosterSize(); ++i)
 	{
 		Mover* pMover = pTeam->getMover(i);
 		if(pMover->isSelected() && pMover->getCommander()->getId() == Commander::home->getId())
@@ -1293,7 +1293,7 @@ bool ControlButton::isEnabled()
 
 void ControlButton::move(float deltaX, float deltaY)
 {
-	for(auto i = 0; i < 4; i++)
+	for(size_t i = 0; i < 4; i++)
 	{
 		location[i].x += deltaX;
 		location[i].y += deltaY;
@@ -1304,7 +1304,7 @@ void ControlButton::move(float deltaX, float deltaY)
 
 ControlButton*		ControlGui::getButton(int32_t ID)
 {
-	for(auto i = 0; i < LAST_COMMAND; i++)
+	for(size_t i = 0; i < LAST_COMMAND; i++)
 	{
 		if(buttons[i].ID == ID)
 			return &buttons[i];
@@ -1513,7 +1513,7 @@ void ControlButton::makeUVs(gos_VERTEX* vertices, int32_t State, ButtonData& dat
 
 void ControlGui::updateVehicleTab(int32_t mouseX, int32_t mouseY, bool bLOS)
 {
-	for(auto i = LAST_VEHICLE - 1; i > -1 ; i--)
+	for(size_t i = LAST_VEHICLE - 1; i > -1 ; i--)
 	{
 		if(getButton(VEHICLE_TAB)->state & ControlButton::PRESSED)
 		{
@@ -1623,7 +1623,7 @@ void ControlGui::renderVehicleTab()
 	int32_t cost = -1;
 	char buffer[256];
 	LogisticsData::instance->rpJustAdded = 0;
-	for(auto i = 0; i < LAST_VEHICLE; i++)
+	for(size_t i = 0; i < LAST_VEHICLE; i++)
 	{
 		vehicleButtons[i].render();
 		int32_t color = vehicleButtons[i].isEnabled() ?  0xff005392 : 0xff7f7f7f;
@@ -1693,7 +1693,7 @@ void ControlGui::handleVehicleClick(int32_t ID)
 		return;
 	}
 	int32_t oldID = -1;
-	for(auto i = 0; i < LAST_VEHICLE; i++)
+	for(size_t i = 0; i < LAST_VEHICLE; i++)
 	{
 		if(vehicleButtons[i].state & ControlButton::PRESSED)
 			oldID = vehicleButtons[i].ID;
@@ -1767,7 +1767,7 @@ void ControlGui::handleVehicleClick(int32_t ID)
 
 void ControlGui::unPressAllVehicleButtons()
 {
-	for(auto i = LARGE_AIRSTRIKE; i < MAX_VEHICLE; i++)
+	for(size_t i = LARGE_AIRSTRIKE; i < MAX_VEHICLE; i++)
 	{
 		getButton(i)->press(0);
 	}
@@ -1778,7 +1778,7 @@ void ControlGui::unPressAllVehicleButtons()
 
 void ControlGui::disableAllVehicleButtons()
 {
-	for(auto i = LARGE_AIRSTRIKE; i < MAX_VEHICLE - 1; i++)
+	for(size_t i = LARGE_AIRSTRIKE; i < MAX_VEHICLE - 1; i++)
 	{
 		getButton(i)->disable(1);
 	}
@@ -1788,7 +1788,7 @@ void ControlGui::disableAllVehicleButtons()
 
 PCSTR ControlGui::getVehicleName(int32_t& ID)
 {
-	for(auto i = GUARD_TOWER; i <= RECOVERY_TEAM; i++)
+	for(size_t i = GUARD_TOWER; i <= RECOVERY_TEAM; i++)
 	{
 		if(getButton(i)->state & ControlButton::PRESSED)
 		{
@@ -1911,7 +1911,7 @@ void ControlGui::setVehicleCommand(bool bSet)
 		Team* pTeam = Team::home;
 		if(pTeam)
 		{
-			for(auto i = 0; i < pTeam->getRosterSize(); ++i)
+			for(size_t i = 0; i < pTeam->getRosterSize(); ++i)
 			{
 				Mover* pMover = (Mover*)pTeam->getMover(i);
 				if(pMover->getCommander()->getId() != Commander::home->getId())
@@ -1946,7 +1946,7 @@ bool ControlGui::getVehicleCommand()
 void ControlButton::initButtons(FitIniFile& buttonFile, int32_t buttonCount, ControlButton* Buttons, ButtonData* Data, PCSTR str, aFont* font)
 {
 	char path[256];
-	for(auto i = 0; i < buttonCount; ++i)
+	for(size_t i = 0; i < buttonCount; ++i)
 	{
 		sprintf(path, "%s%ld", str, i);
 		Data[i].textureHandle = 0;
@@ -1984,7 +1984,7 @@ void ControlButton::initButtons(FitIniFile& buttonFile, int32_t buttonCount, Con
 		Buttons[i].location[0].y = Buttons[i].location[3].y = y;
 		Buttons[i].location[2].x = Buttons[i].location[3].x = x + width;
 		Buttons[i].location[1].y = Buttons[i].location[2].y = y + height;
-		for(auto j = 0; j < 4; j++)
+		for(size_t j = 0; j < 4; j++)
 		{
 			Buttons[i].location[j].argb = 0xffffffff;
 			Buttons[i].location[j].frgb = 0;
@@ -2064,7 +2064,7 @@ void ControlGui::initStatics(FitIniFile& file)
 	if(!staticCount)
 		return;
 	staticInfos = new StaticInfo[staticCount];
-	for(auto i = 0; i < staticCount; i++)
+	for(size_t i = 0; i < staticCount; i++)
 	{
 		char buffer[32];
 		sprintf(buffer, "Static%ld", i);
@@ -2221,7 +2221,7 @@ void ControlGui::initRects(FitIniFile& file)
 	{
 		rectInfos = new RectInfo[rectCount];
 		char buffer[32];
-		for(auto i = 0; i < rectCount; i++)
+		for(size_t i = 0; i < rectCount; i++)
 		{
 			sprintf(buffer, "Rect%ld", i);
 			if(NO_ERROR != file.seekBlock(buffer))
@@ -2307,7 +2307,7 @@ void ControlGui::swapResolutions(int32_t resolution)
 	// clean up old texture memeory
 	if(buttonData)
 	{
-		for(auto i = 0; i < buttonCount; i++)
+		for(size_t i = 0; i < buttonCount; i++)
 		{
 			uint32_t gosID = mcTextureManager->get_gosTextureHandle(buttonData[i].textureHandle);
 			mcTextureManager->removeTexture(gosID);
@@ -2315,7 +2315,7 @@ void ControlGui::swapResolutions(int32_t resolution)
 	}
 	if(vehicleData)
 	{
-		for(auto i = 0; i < LAST_VEHICLE; i++)
+		for(size_t i = 0; i < LAST_VEHICLE; i++)
 		{
 			uint32_t gosID = mcTextureManager->get_gosTextureHandle(vehicleData[i].textureHandle);
 			mcTextureManager->removeTexture(gosID);
@@ -2364,7 +2364,7 @@ void ControlGui::endPause()
 void ControlGui::switchTabs(int32_t direction)
 {
 	int32_t ID = TACMAP_TAB;
-	for(auto i = TACMAP_TAB; i < TACMAP_TAB + 3; i ++)
+	for(size_t i = TACMAP_TAB; i < TACMAP_TAB + 3; i ++)
 	{
 		if(getButton(i)->state & ControlButton::PRESSED)
 		{
@@ -2455,7 +2455,7 @@ bool ControlGui::resultsDone()
 
 void ControlButton::setColor(uint32_t newColor)
 {
-	for(auto i = 0; i < 4; i++)
+	for(size_t i = 0; i < 4; i++)
 		location[i].argb = newColor;
 }
 
@@ -2553,7 +2553,7 @@ void ControlGui::eatChatKey()
 
 void ControlGui::setChatText(PCSTR playerName, PCSTR message, uint32_t color, uint32_t chatColor)
 {
-	for(auto i = 0; i < MAX_CHAT_COUNT - 1; i++)
+	for(size_t i = 0; i < MAX_CHAT_COUNT - 1; i++)
 	{
 		memcpy(&chatInfos[i], &chatInfos[i + 1], sizeof(ChatInfo));
 	}
@@ -2604,7 +2604,7 @@ void ControlGui::renderChatText()
 	}
 	int32_t lineCount = 0;
 	int32_t curTime = scenarioTime;
-	for(auto i = MAX_CHAT_COUNT - 1; i > -1; i--)
+	for(size_t i = MAX_CHAT_COUNT - 1; i > -1; i--)
 	{
 		if(chatInfos[i].messageLength && curTime - chatInfos[i].time < CHAT_DISPLAY_TIME)
 		{

@@ -30,13 +30,13 @@ MissionBriefingScreen::MissionBriefingScreen()
 {
 	status = RUNNING;
 	LogisticsScreen::helpTextArrayID = 4;
-	for(auto i = 0; i < MAX_OBJECTIVES; i++)
+	for(size_t i = 0; i < MAX_OBJECTIVES; i++)
 		objectiveButtons[i] = nullptr;
 }
 
 MissionBriefingScreen::~MissionBriefingScreen()
 {
-	for(auto i = 0; i < MAX_OBJECTIVES; i++)
+	for(size_t i = 0; i < MAX_OBJECTIVES; i++)
 	{
 		if(objectiveButtons[i])
 		{
@@ -53,7 +53,7 @@ MissionBriefingScreen::~MissionBriefingScreen()
 void MissionBriefingScreen::init(FitIniFile* file)
 {
 	LogisticsScreen::init(*file, "Static", "Text", "Rect", "Button");
-	for(auto i = 0; i < buttonCount; i++)
+	for(size_t i = 0; i < buttonCount; i++)
 		buttons[i].setMessageOnRelease();
 	missionListBox.init(rects[1].left(), rects[1].top(),
 						rects[1].width(), rects[1].height());
@@ -74,7 +74,7 @@ void MissionBriefingScreen::render(int32_t xOffset, int32_t yOffset)
 	missionListBox.move(-xOffset, -yOffset);
 	camera.render();
 	LogisticsScreen::render(xOffset, yOffset);
-	for(auto i = 0; i < MAX_OBJECTIVES; i++)
+	for(size_t i = 0; i < MAX_OBJECTIVES; i++)
 	{
 		if(objectiveButtons[i])
 			objectiveButtons[i]->render(xOffset, yOffset);
@@ -98,13 +98,13 @@ void MissionBriefingScreen::update()
 	if(userInput->isLeftClick())
 	{
 		bClicked = true;
-		for(auto i = 0; i < MAX_OBJECTIVES; i++)
+		for(size_t i = 0; i < MAX_OBJECTIVES; i++)
 		{
 			if(objectiveButtons[i] &&
 					objectiveButtons[i]->pointInside(userInput->getMouseX(), userInput->getMouseY()))
 			{
 				// find the item that has this objective
-				for(auto j = 0; j < missionListBox.GetItemCount(); j++)
+				for(size_t j = 0; j < missionListBox.GetItemCount(); j++)
 				{
 					if(missionListBox.GetItem(j)->getID() == i)
 					{
@@ -124,7 +124,7 @@ void MissionBriefingScreen::update()
 	{
 		bClicked = true;
 		// set old selections back to white
-		for(auto i = 0; i < missionListBox.GetItemCount(); i++)
+		for(size_t i = 0; i < missionListBox.GetItemCount(); i++)
 		{
 			if(missionListBox.GetItem(i)->getID() != -1)
 			{
@@ -319,11 +319,11 @@ void MissionBriefingScreen::begin()
 	Objectives.Read(&fitFile);
 	gosASSERT(Objectives.Count() < MAX_OBJECTIVES);
 	int32_t buttonCount = 0;
-	for(auto j = 1; j < 3; j++)
+	for(size_t j = 1; j < 3; j++)
 	{
 		CObjectives::EIterator it = Objectives.Begin();
 		buttonCount = 0;
-		for(auto i = 0; i < Objectives.Count(); i++, it++)
+		for(size_t i = 0; i < Objectives.Count(); i++, it++)
 		{
 			CObjective* pObjective = (*it);
 			if((!pObjective->IsHiddenTrigger()) && (pObjective->IsActive()))
@@ -446,7 +446,7 @@ void MissionBriefingScreen::addObjectiveButton(float fX, float fY, int32_t count
 	pButtonText->setUVs(iIndex * textWidth, jIndex * textHeight + lineOffset,
 						(iIndex + 1) * textWidth, (jIndex + 1) * textHeight + lineOffset);
 	pButtonText->moveTo(xLoc, yLoc);
-	for(auto i = 0; i < MAX_OBJECTIVES; i++)
+	for(size_t i = 0; i < MAX_OBJECTIVES; i++)
 	{
 		if(!objectiveButtons[i])
 		{

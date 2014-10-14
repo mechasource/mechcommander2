@@ -67,9 +67,9 @@ void PilotReadyScreen::init(FitIniFile* file)
 	int32_t count = 0;
 	int32_t x = 0;
 	int32_t y = 0;
-	for(auto j = 0; j < ICON_COUNT_Y; j++)
+	for(size_t j = 0; j < ICON_COUNT_Y; j++)
 	{
-		for(auto i = 0; i < ICON_COUNT_X; i++)
+		for(size_t i = 0; i < ICON_COUNT_X; i++)
 		{
 			pIcons[count].setHelpID(IDS_HELP_DEPLOYTEAMMW);
 			pIcons[count].setMech(0);
@@ -87,7 +87,7 @@ void PilotReadyScreen::init(FitIniFile* file)
 	// initialize the attribute meeters
 	attributeMeters[0].init(file, "AttributeMeter0");
 	attributeMeters[1].init(file, "AttributeMeter1");
-	for(auto i = 0; i < buttonCount; i++)
+	for(size_t i = 0; i < buttonCount; i++)
 		buttons[i].setMessageOnRelease();
 	pilotListBox.init(rects[0].left(), rects[0].top(),
 					  rects[0].width(), rects[0].height());
@@ -155,7 +155,7 @@ void PilotReadyScreen::begin()
 		if(maxUnits > 12)
 			maxUnits = 12;
 	}
-	for(auto i = 0; i < 12; i++)
+	for(size_t i = 0; i < 12; i++)
 	{
 		pIcons[i].setMech(0);
 		pIcons[i].select(0);
@@ -235,7 +235,7 @@ void PilotReadyScreen::render(int32_t xOffset, int32_t yOffset)
 			LogisticsData::instance->setNewPilotsAcknowledged();
 		}
 	}
-	for(auto i = 0; i < 2; i++)
+	for(size_t i = 0; i < 2; i++)
 	{
 		attributeMeters[i].render(xOffset, yOffset);
 	}
@@ -288,7 +288,7 @@ void PilotReadyScreen::update()
 		// RP
 		sprintf(str, "%ld ", LogisticsData::instance->getCBills());
 		textObjects[1].setText(str);
-		for(auto i = 0; i < 4; i++)
+		for(size_t i = 0; i < 4; i++)
 			skillIcons[i].update();
 		// desel icons if necessary
 		bool bAllFull = 1;
@@ -385,7 +385,7 @@ void PilotReadyScreen::update()
 			dragIcon.moveTo(userInput->getMouseX() - dragIcon.width() / 2,
 							userInput->getMouseY() - dragIcon.height() / 2);
 			LogisticsMechIcon* pSelIcon = 0;
-			for(auto i = 0; i < ICON_COUNT; i++)
+			for(size_t i = 0; i < ICON_COUNT; i++)
 			{
 				if(pIcons[i].pointInside(userInput->getMouseX(), userInput->getMouseY())
 						&& pIcons[i].getMech())
@@ -456,7 +456,7 @@ void PilotReadyScreen::addSelectedPilot()
 		LogisticsPilot* pPilot = ((LogisticsPilotListBoxItem*)pItem)->getPilot();
 		if(pPilot)
 		{
-			for(auto i = 0; i < ICON_COUNT; i++)
+			for(size_t i = 0; i < ICON_COUNT; i++)
 			{
 				if(pIcons[i].isSelected())
 				{
@@ -502,7 +502,7 @@ void PilotReadyScreen::addSelectedPilot()
 
 void PilotReadyScreen::removeSelectedPilot()
 {
-	for(auto i = 0; i < ICON_COUNT; i++)
+	for(size_t i = 0; i < ICON_COUNT; i++)
 	{
 		if(pIcons[i].isSelected())
 		{
@@ -578,7 +578,7 @@ void PilotReadyScreen::endDrag(LogisticsMechIcon* pIcon)
 
 void PilotReadyScreen::putBackPilot(LogisticsPilot* pPilot)
 {
-	for(auto i = 0; i < ICON_COUNT; i++)
+	for(size_t i = 0; i < ICON_COUNT; i++)
 	{
 		if(pIcons[i].getPilot() == pPilot)
 		{
@@ -640,7 +640,7 @@ void PilotReadyScreen::setPilot(LogisticsPilot* pPilot)
 		pCurPilot->getSpecialtySkills(specialtySkills, count);
 		count = 32;
 		pCurPilot->getSpecialtySkills(skillIDs, count);
-		for(auto i = 0; i < 4; i++)
+		for(size_t i = 0; i < 4; i++)
 		{
 			if(i < count)
 			{
@@ -685,7 +685,7 @@ void PilotReadyScreen::setPilot(LogisticsPilot* pPilot)
 	}
 	else
 	{
-		for(auto i = 4; i < 13; i++)
+		for(size_t i = 4; i < 13; i++)
 			textObjects[i].setText("");
 		statics[staticCount - 1].setColor(0);
 	}

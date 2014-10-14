@@ -93,7 +93,7 @@ OptionsXScreen::OptionsXScreen()
 
 OptionsXScreen::~OptionsXScreen()
 {
-	for(auto i = 0; i < 4; i++)
+	for(size_t i = 0; i < 4; i++)
 		delete tabAreas[i];
 }
 
@@ -129,7 +129,7 @@ void OptionsXScreen::init(FitIniFile* file)
 	OptionsHotKeys* pKeys = new OptionsHotKeys;
 	tabAreas[3] = pKeys;
 	FullPathFileName path;
-	for(auto i = 0; i < 4; i++)
+	for(size_t i = 0; i < 4; i++)
 	{
 		path.init(artPath, fileNames[i], ".fit");
 		FitIniFile tmpFile;
@@ -222,7 +222,7 @@ int32_t	OptionsXScreen::handleMessage(uint32_t message, uint32_t who)
 			case MSB_TAB2:
 			case MSB_TAB3:
 			{
-				for(auto i = MSB_TAB0; i < MSB_TAB3 + 1; i++)
+				for(size_t i = MSB_TAB0; i < MSB_TAB3 + 1; i++)
 					getButton(i)->press(0);
 				getButton(who)->press(true);
 				curTab = who - MSB_TAB0;
@@ -232,7 +232,7 @@ int32_t	OptionsXScreen::handleMessage(uint32_t message, uint32_t who)
 			{
 				int32_t oldRes = prefs.resolution;
 				int32_t oldDepth = prefs.bitDepth;
-				for(auto i = 0; i < 4; i++)
+				for(size_t i = 0; i < 4; i++)
 					tabAreas[i]->end();
 				prefs.save();
 				prefs.applyPrefs(0);
@@ -335,7 +335,7 @@ void OptionsGraphics::init(int32_t xOffset, int32_t yOffset)
 	resolutionList.move(globalX(), globalY());
 	resolutionList.move(xOffset, yOffset);
 	resolutionList.ListBox().setOrange(true);
-	for(auto i = IDS_RESOLUTION0; i < IDS_RESOLUTION9 + 1; i++)
+	for(size_t i = IDS_RESOLUTION0; i < IDS_RESOLUTION9 + 1; i++)
 	{
 		if(1 != gos_GetMachineInformation(gos_Info_ValidMode,
 										  Environment.FullScreenDevice,
@@ -478,7 +478,7 @@ void OptionsGraphics::end()
 	if(sel > -1)
 	{
 		int32_t actualSel = -1;
-		for(auto i = IDS_RESOLUTION0; i < IDS_RESOLUTION9 + 1; i++)
+		for(size_t i = IDS_RESOLUTION0; i < IDS_RESOLUTION9 + 1; i++)
 		{
 			if(availableMode[i - IDS_RESOLUTION0])
 				actualSel++;
@@ -546,7 +546,7 @@ void OptionsGraphics::reset(const CPrefs& newPrefs)
 void OptionsAudio::init(int32_t xOffset, int32_t yOffset)
 {
 	getButton(MSG_RESET)->setMessageOnRelease();
-	for(auto i = 0; i < buttonCount; i++)
+	for(size_t i = 0; i < buttonCount; i++)
 	{
 		if(buttons[i].getID() != MSG_RESET)
 		{
@@ -580,7 +580,7 @@ int32_t		OptionsAudio::handleMessage(uint32_t message, uint32_t fromWho)
 void OptionsAudio::render()
 {
 	LogisticsScreen::render();
-	for(auto i = 0; i < 5; i++)
+	for(size_t i = 0; i < 5; i++)
 	{
 		scrollBars[i].render();
 	}
@@ -589,7 +589,7 @@ void OptionsAudio::render()
 void OptionsAudio::update()
 {
 	LogisticsScreen::update();
-	for(auto i = 0; i < 5; i++)
+	for(size_t i = 0; i < 5; i++)
 	{
 		scrollBars[i].update();
 	}
@@ -655,7 +655,7 @@ void OptionsGamePlay::init(int32_t xOffset, int32_t yOffset)
 	camera.setInMission();
 	getButton(MSG_BASE)->press(true);
 	getButton(MSG_ACCENT)->press(0);
-	for(auto i = 0; i < buttonCount; i++)
+	for(size_t i = 0; i < buttonCount; i++)
 	{
 		buttons[i].setPressFX(LOG_VIDEOBUTTONS);
 		buttons[i].setHighlightFX(LOG_DIGITALHIGHLIGHT);
@@ -669,7 +669,7 @@ int32_t		OptionsGamePlay::handleMessage(uint32_t message, uint32_t fromWho)
 {
 	if(fromWho >= MSG_GREEN && fromWho < MSG_ELITE + 1)
 	{
-		for(auto i = MSG_GREEN; i < MSG_ELITE + 1; i++)
+		for(size_t i = MSG_GREEN; i < MSG_ELITE + 1; i++)
 		{
 			getButton(i)->press(0);
 		}
@@ -695,7 +695,7 @@ void OptionsGamePlay::render()
 	LogisticsScreen::render();
 	int32_t colorToMatch = getButton(MSG_BASE)->isPressed() ?
 						   rects[36].getColor() : rects[37].getColor();
-	for(auto i = 4; i < 36; i++)
+	for(size_t i = 4; i < 36; i++)
 	{
 		if(rects[i].getColor() == colorToMatch)
 		{
@@ -722,7 +722,7 @@ void OptionsGamePlay::update()
 	bool bChanged = 0;
 	if(userInput->isLeftClick())
 	{
-		for(auto i = 4; i < 36; i++)
+		for(size_t i = 4; i < 36; i++)
 		{
 			if(rects[i].pointInside(userInput->getMouseX(),
 									userInput->getMouseY()))
@@ -758,7 +758,7 @@ void OptionsGamePlay::begin()
 
 void OptionsGamePlay::end()
 {
-	for(auto i  = MSG_GREEN; i < MSG_ELITE + 1; i++)
+	for(size_t i  = MSG_GREEN; i < MSG_ELITE + 1; i++)
 	{
 		if(getButton(i)->isPressed())
 			prefs.GameDifficulty = i - MSG_GREEN;
@@ -783,7 +783,7 @@ void OptionsGamePlay::end()
 }
 void OptionsGamePlay::reset(const CPrefs& newPrefs)
 {
-	for(auto i  = MSG_GREEN; i < MSG_ELITE + 1; i++)
+	for(size_t i  = MSG_GREEN; i < MSG_ELITE + 1; i++)
 	{
 		getButton(i)->press(0);
 	}
@@ -851,7 +851,7 @@ void OptionsHotKeys::update()
 				{
 					HotKeyListItem* pItemToSet = (HotKeyListItem*)hotKeyList.GetItem(index);
 					// now I've got to find the other one with th new key and set it to the old key
-					for(auto i = 0; i < hotKeyList.GetItemCount(); i++)
+					for(size_t i = 0; i < hotKeyList.GetItemCount(); i++)
 					{
 						HotKeyListItem* pTmpItem = (HotKeyListItem*)hotKeyList.GetItem(i);
 						if(pTmpItem->getHotKey() == curHotKey  && pTmpItem != pItemToSet)
@@ -859,7 +859,7 @@ void OptionsHotKeys::update()
 							// first we've got to see if we can set to the default
 							int32_t*	defaultKeys = MissionInterfaceManager::getOldKeys();
 							int32_t defaultKey = defaultKeys[pTmpItem->getCommand()];
-							for(auto j = 0; j < hotKeyList.GetItemCount(); j++)
+							for(size_t j = 0; j < hotKeyList.GetItemCount(); j++)
 							{
 								HotKeyListItem* pCheckItem = (HotKeyListItem*)hotKeyList.GetItem(j);
 								if(pCheckItem->getHotKey() == defaultKey)
@@ -906,7 +906,7 @@ void OptionsHotKeys::update()
 					return;
 				curHotKey = tmpKey;
 				// check and see if anyone else is using this one...
-				for(auto i = 0; i < hotKeyList.GetItemCount(); i++)
+				for(size_t i = 0; i < hotKeyList.GetItemCount(); i++)
 				{
 					HotKeyListItem* pTmpItem = (HotKeyListItem*)hotKeyList.GetItem(i);
 					if(pTmpItem->getHotKey() == curHotKey  && pTmpItem != pItem)
@@ -1002,7 +1002,7 @@ void OptionsHotKeys::begin()
 }
 void OptionsHotKeys::end()
 {
-	for(auto i = 0; i < hotKeyList.GetItemCount(); i++)
+	for(size_t i = 0; i < hotKeyList.GetItemCount(); i++)
 	{
 		HotKeyListItem* pItem = (HotKeyListItem*)hotKeyList.GetItem(i);
 		if(pItem)
@@ -1030,7 +1030,7 @@ void OptionsHotKeys::reset(bool useOld)
 	cLoadString(IDS_ALT, alt, 31);
 	MissionInterfaceManager::Command* commands = MissionInterfaceManager::getCommands();
 	int32_t*	oldKeys = MissionInterfaceManager::getOldKeys();
-	for(auto i = 0; i < MAX_COMMAND; i++)
+	for(size_t i = 0; i < MAX_COMMAND; i++)
 	{
 		if(commands[i].hotKeyDescriptionText != -1)
 		{
@@ -1070,7 +1070,7 @@ int32_t ScrollX::init(aButton* pLeft, aButton* pRight, aButton* pTab)
 	pLeft->setPressFX(-1);
 	pLeft->setHighlightFX(-1);
 	pLeft->setDisabledFX(-1);
-	for(auto i = 0; i < 3; i++)
+	for(size_t i = 0; i < 3; i++)
 		buttons[i]->setHoldTime(.01f);
 	pLeft->moveTo(0, 0);
 	pRight->moveTo(width() - pRight->width(), 0);
@@ -1241,7 +1241,7 @@ void HotKeyListItem::init()
 void HotKeyListItem::render()
 {
 	aAnimGroup::STATE curState = (aAnimGroup::STATE)getState();
-	for(auto i = 0; i < 3; i++)
+	for(size_t i = 0; i < 3; i++)
 	{
 		animations[i].setState(curState);
 		animations[i].update();
@@ -1274,7 +1274,7 @@ HotKeyListItem::HotKeyListItem()
 	{
 		description = s_item->description;
 		text = s_item->text;
-		for(auto i = 0; i < 3; i++)
+		for(size_t i = 0; i < 3; i++)
 			animations[i] = s_item->animations[i];
 		rects[0] = s_item->rects[0];
 		rects[1] = s_item->rects[1];

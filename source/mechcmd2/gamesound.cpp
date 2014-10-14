@@ -107,7 +107,7 @@ void GameSoundSystem::removeQueuedMessage(int32_t msgNumber)
 		if(messagesInQueue > 0)
 			messagesInQueue--;
 #ifdef _DEBUG
-		for(int32_t test = 0; test < (int32_t)messagesInQueue; test++)
+		for(size_t test = 0; test < (int32_t)messagesInQueue; test++)
 		{
 			if(queue[test])
 				continue;
@@ -171,7 +171,7 @@ void GameSoundSystem::removeCurrentMessage(void)
 		if(currentMessage->pilot)
 			currentMessage->pilot->clearMessagePlaying();
 		UserHeapPtr msgHeap = currentMessage->msgHeap;
-		for(auto j = 0; j < MAX_FRAGMENTS; j++)
+		for(size_t j = 0; j < MAX_FRAGMENTS; j++)
 		{
 			msgHeap->Free(currentMessage->data[j]);
 			currentMessage->data[j] = nullptr;
@@ -225,7 +225,7 @@ int32_t GameSoundSystem::queueRadioMessage(RadioData* msgData)
 		if(queue[i]->priority > msgData->priority)	// if this messages priority higher (a lower number: 1 is top priority)
 		{
 			// push things down to make room.
-			for(auto j = MAX_QUEUED_MESSAGES - 1; j > i; j--)
+			for(size_t j = MAX_QUEUED_MESSAGES - 1; j > i; j--)
 			{
 				queue[j] = queue[j - 1];
 			}
@@ -238,7 +238,7 @@ int32_t GameSoundSystem::queueRadioMessage(RadioData* msgData)
 		removeQueuedMessage(MAX_QUEUED_MESSAGES - 1);
 	queue[i] = msgData;
 #ifdef _DEBUG
-	for(int32_t test = 0; test < (int32_t)messagesInQueue; test++)
+	for(size_t test = 0; test < (int32_t)messagesInQueue; test++)
 	{
 		if(queue[test])
 			continue;

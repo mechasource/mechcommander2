@@ -65,7 +65,7 @@ BOOL SelectTerrainTypeDlg::OnInitDialog()
 			CString newStr(buffer);
 			int32_t count = m_terrainTypeList.GetCount();
 			bool bPlaced = 0;
-			for(auto j = 0; j < count; ++j)
+			for(size_t j = 0; j < count; ++j)
 			{
 				CString tmp;
 				m_terrainTypeList.GetText(j, tmp);

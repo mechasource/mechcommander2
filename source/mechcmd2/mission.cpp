@@ -1353,7 +1353,7 @@ int32_t Mission::update(void)
 //----------------------------------------------------------------------------
 	bool Mission::calcComplexDropZones(PSTR missionName, char dropZoneCID[MAX_MC_PLAYERS])
 	{
-		for(int32_t p = 0; p < MAX_MC_PLAYERS; p++)
+		for(size_t p = 0; p < MAX_MC_PLAYERS; p++)
 			dropZoneCID[p] = -1;
 		FullPathFileName missionFileName;
 		missionFileName.init(missionPath, missionName, ".fit");
@@ -1428,7 +1428,7 @@ int32_t Mission::update(void)
 		for(i = 0; i < MAX_MC_PLAYERS; i++)
 		{
 			int32_t index = RandomNumber(teamSize[MPlayer->playerInfo[i].team][0]--);
-			for(auto j = 0; j < MAX_MC_PLAYERS; j++)
+			for(size_t j = 0; j < MAX_MC_PLAYERS; j++)
 				if(dropZoneSetup[j] == MPlayer->playerInfo[i].team)
 				{
 					if(index == 0)
@@ -1502,7 +1502,7 @@ int32_t Mission::update(void)
 				{2, 2, 2, 2, 2, 2, 2, 0}
 			};
 			for(size_t i = 0; i < MAX_TEAMS; i++)
-				for(auto j = 0; j < MAX_TEAMS; j++)
+				for(size_t j = 0; j < MAX_TEAMS; j++)
 				{
 					Team::relations[i][j] = teamRelationsForSP[i][j];
 					TeamRelations[i][j] = teamRelationsForSP[i][j];
@@ -1522,7 +1522,7 @@ int32_t Mission::update(void)
 				{2, 2, 2, 2, 2, 2, 2, 0}
 			};
 			for(size_t i = 0; i < MAX_TEAMS; i++)
-				for(auto j = 0; j < MAX_TEAMS; j++)
+				for(size_t j = 0; j < MAX_TEAMS; j++)
 				{
 					Team::relations[i][j] = teamRelationsForMP[i][j];
 					TeamRelations[i][j] = teamRelationsForMP[i][j];
@@ -1576,7 +1576,7 @@ int32_t Mission::update(void)
 		result = gameSystemFile->readIdFloatArray("OptimalRangePoints", OptimalRangePoints, 5);
 		gosASSERT(result == NO_ERROR);
 		for(size_t i = 0; i < 5; i++)
-			for(auto j = 0; j < 3; j++)
+			for(size_t j = 0; j < 3; j++)
 			{
 				OptimalRangePointInRange[i][j] = false;
 				if(OptimalRangePoints[i] > WeaponRanges[j][0])
@@ -2168,7 +2168,7 @@ int32_t Mission::update(void)
 				squadMap[i] = -1;
 			int32_t maxAlternatives[MAX_SQUADS];
 			int32_t randomAlternative[MAX_SQUADS];
-			for(int32_t s = 0; s < MAX_SQUADS; s++)
+			for(size_t s = 0; s < MAX_SQUADS; s++)
 			{
 				maxAlternatives[s] = 0;
 				randomAlternative[s] = -1;
@@ -2421,7 +2421,7 @@ int32_t Mission::update(void)
 		// Load the mech objects...
 		int32_t curMech = 0;
 		int32_t curVehicle = 0;
-		for(int32_t t = 0; t < 8; t++)
+		for(size_t t = 0; t < 8; t++)
 			for(size_t i = 1; i < (numParts + 1); i++)
 			{
 				bool loadEm = true;
@@ -2528,7 +2528,7 @@ int32_t Mission::update(void)
 #endif
 		//----------------------------
 		// Read in Commander Groups...
-		for(int32_t curCommanderId = 0; curCommanderId < MAX_MC_PLAYERS; curCommanderId++)
+		for(size_t curCommanderId = 0; curCommanderId < MAX_MC_PLAYERS; curCommanderId++)
 		{
 			int32_t numGroups = 0;
 			char headingStr[128];
@@ -2544,7 +2544,7 @@ int32_t Mission::update(void)
 				int32_t groupMates[MAX_MOVERGROUP_COUNT_START];
 				result = missionFile->readIdLongArray("Mates", groupMates, MAX_MOVERGROUP_COUNT_START);
 				Assert(result == NO_ERROR, result, " could not find Mates in Group in Scenario File ");
-				for(int32_t curMate = 0; curMate < MAX_MOVERGROUP_COUNT_START; curMate++)
+				for(size_t curMate = 0; curMate < MAX_MOVERGROUP_COUNT_START; curMate++)
 				{
 					if((groupMates[curMate] > 0) && parts[groupMates[curMate]].objectWID)
 					{

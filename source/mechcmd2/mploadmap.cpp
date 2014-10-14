@@ -57,7 +57,7 @@ void MPLoadMap::init(FitIniFile* file)
 	LogisticsScreen::init(*file, "Static", "Text", "Rect", "Button");
 	if(buttonCount)
 	{
-		for(auto i = 0; i < buttonCount; i++)
+		for(size_t i = 0; i < buttonCount; i++)
 		{
 			buttons[i].setMessageOnRelease();
 			if(buttons[i].getID() == 0)
@@ -181,7 +181,7 @@ void MPLoadMap::addFile(PCSTR pFileName, bool bSeedSingle)
 					tmp.readIdULong("MissionType", type);
 					bool bFound = 0;
 					// now go looking for the appropriate header
-					for(auto i = 0; i < mapList.GetItemCount(); i++)
+					for(size_t i = 0; i < mapList.GetItemCount(); i++)
 					{
 						if(mapList.GetItem(i)->getID()  - IDS_MP_LM_TYPE0 == type)
 						{
@@ -306,7 +306,7 @@ void MPLoadMap::seedFromCampaign()
 			FitIniFile campaignFile;
 			if(NO_ERROR == campaignFile.open(campaignFileName))
 			{
-				for(auto i = 0; i < group + 1; i++)
+				for(size_t i = 0; i < group + 1; i++)
 				{
 					char blockName[64];
 					sprintf(blockName,  "Group%ld", i);
@@ -317,7 +317,7 @@ void MPLoadMap::seedFromCampaign()
 						{
 							campaignFile.readIdLong("MissionCount", count);
 						}
-						for(auto j = 0; j < count; j++)
+						for(size_t j = 0; j < count; j++)
 						{
 							sprintf(blockName, "Group%ldMission%ld", i, j);
 							if(NO_ERROR == campaignFile.seekBlock(blockName))

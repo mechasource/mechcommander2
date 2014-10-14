@@ -71,7 +71,7 @@ void MPHostGame::init()
 	exitAnim.init(&file, "");
 	if(buttonCount)
 	{
-		for(auto i = 0; i < buttonCount; i++)
+		for(size_t i = 0; i < buttonCount; i++)
 		{
 			buttons[i].setMessageOnRelease();
 			if(buttons[i].getID() == 0)
@@ -148,7 +148,7 @@ void MPHostGame::render(int32_t xOffset, int32_t yOffset)
 	if((0 == xOffset) && (0 == yOffset) && enterAnim.isDone() && !exitAnim.isAnimating())
 	{
 //		numPlayersDropList.render();
-		for(auto i = 0; i < staticCount; i++)
+		for(size_t i = 0; i < staticCount; i++)
 		{
 			statics[i].render(); // need to cover up droplist overflow...
 		}

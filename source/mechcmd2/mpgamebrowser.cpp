@@ -68,7 +68,7 @@ void MPGameBrowser::init(FitIniFile* file)
 	LogisticsScreen::init(*file, "Static", "Text", "Rect", "Button");
 	if(buttonCount)
 	{
-		for(auto i = 0; i < buttonCount; i++)
+		for(size_t i = 0; i < buttonCount; i++)
 		{
 			buttons[i].setMessageOnRelease();
 			if(buttons[i].getID() == 0)
@@ -98,7 +98,7 @@ void MPGameBrowser::init(FitIniFile* file)
 		gameList.init(rects[0].left(), rects[0].top(), rects[0].width(), rects[0].height());
 		gameList.setOrange(true);
 		templateItem.init(&PNfile, "GameListItem");
-		for(auto i = 0; i < 256; i++)
+		for(size_t i = 0; i < 256; i++)
 		{
 			items[i] = templateItem;
 		}
@@ -303,7 +303,7 @@ void MPGameBrowser::update()
 	}
 	int32_t oldSel = gameList.GetSelectedItem();
 	int32_t oldHighlight = -1;
-	for(auto i = 0; i < gameList.GetItemCount(); i++)
+	for(size_t i = 0; i < gameList.GetItemCount(); i++)
 	{
 		if(gameList.GetItem(i)->getState() == aListItem::HIGHLITE)
 			oldHighlight = i;
@@ -316,14 +316,14 @@ void MPGameBrowser::update()
 		MC2Session* pSessions =  MPlayer->getSessions(sessionCount);
 		gameList.removeAllItems(0);
 		// could easily do sort here.
-		for(auto i = 0; i < sessionCount; i++)
+		for(size_t i = 0; i < sessionCount; i++)
 		{
 			if(pSessions[i].cancelled)
 				continue;
 			items[i].setSessionInfo(&pSessions[i]);
 			items[i].moveTo(templateItem.globalX(), templateItem.globalY());
 			bool bAdded = 0;
-			for(auto j = 0; j < gameList.GetItemCount(); j++)
+			for(size_t j = 0; j < gameList.GetItemCount(); j++)
 			{
 				aGameListItem* pItem = (aGameListItem*)gameList.GetItem(j);
 				int32_t res = _stricmp(pItem->getText(sortOrder), items[i].getText(sortOrder));

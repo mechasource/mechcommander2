@@ -383,7 +383,7 @@ void ObjectiveDlg::SaveDialogValues()
 		if(tmpStr.GetLength())
 		{
 			tmpStr.Replace("0x", "");
-			sscanf(tmpStr, "%x", &base);
+			sscanf_s(tmpStr, "%x", &base);
 			base |= 0xff000000;
 			m_ModifiedObjective.BaseColor(base);
 		}
@@ -396,7 +396,7 @@ void ObjectiveDlg::SaveDialogValues()
 		if(tmpStr.GetLength())
 		{
 			tmpStr.Replace("0x", "");
-			sscanf(tmpStr, "%x", &highlight1);
+			sscanf_s(tmpStr, "%x", &highlight1);
 			highlight1 |= 0xff000000;
 			m_ModifiedObjective.HighlightColor(highlight1);
 		}
@@ -409,7 +409,7 @@ void ObjectiveDlg::SaveDialogValues()
 		if(tmpStr.GetLength())
 		{
 			tmpStr.Replace("0x", "");
-			sscanf(tmpStr, "%x", &highlight2);
+			sscanf_s(tmpStr, "%x", &highlight2);
 			highlight2 |= 0xff000000;
 			m_ModifiedObjective.HighlightColor2(highlight2);
 		}
@@ -433,7 +433,7 @@ BOOL ObjectiveDlg::OnInitDialog()
 	int32_t groupCount = pMgr->getBuildingGroupCount();
 	PCSTR* pGroups = new PCSTR[groupCount];
 	pMgr->getBuildingGroupNames(pGroups, groupCount);
-	for(auto i = 0; i < groupCount; ++i)
+	for(size_t i = 0; i < groupCount; ++i)
 	{
 		m_modelGroup.AddString(pGroups[i]);
 		m_modelGroup.SetItemData(i, (uint32_t)i);
@@ -721,7 +721,7 @@ void ObjectiveDlg::OnSelchangeGroup()
 	PCSTR MechNames[256];
 	int32_t count = 256;
 	EditorObjectMgr::instance()->getBuildingNamesInGroup(group, MechNames, count);
-	for(auto i = 0; i < count; ++i)
+	for(size_t i = 0; i < count; ++i)
 	{
 		m_Mech.AddString(MechNames[i]);
 	}
@@ -790,7 +790,7 @@ void ObjectiveDlg::DoColorBox(CWnd* pWnd)
 		pWnd->GetWindowText(tmpStr);
 		tmpStr.Replace("0x", "");
 		int32_t base;
-		sscanf(tmpStr, "%x", &base);
+		sscanf_s(tmpStr, "%x", &base);
 		base &= 0x00ffffff;
 		CColorDialog dlg(reverseRGB(base), nullptr, this);
 		if(IDOK == dlg.DoModal())
@@ -813,7 +813,7 @@ HBRUSH ObjectiveDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, uint32_t nCtlColor)
 		pWnd->GetWindowText(tmpStr);
 		tmpStr.Replace("0x", "");
 		int32_t base;
-		sscanf(tmpStr, "%x", &base);
+		sscanf_s(tmpStr, "%x", &base);
 		base &= 0x00ffffff;
 		base = reverseRGB(base);
 		if(baseBrush.m_hObject)
@@ -830,7 +830,7 @@ HBRUSH ObjectiveDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, uint32_t nCtlColor)
 		pWnd->GetWindowText(tmpStr);
 		tmpStr.Replace("0x", "");
 		int32_t base;
-		sscanf(tmpStr, "%x", &base);
+		sscanf_s(tmpStr, "%x", &base);
 		base &= 0x00ffffff;
 		base = reverseRGB(base);
 		if(brush1.m_hObject)
@@ -847,7 +847,7 @@ HBRUSH ObjectiveDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, uint32_t nCtlColor)
 		pWnd->GetWindowText(tmpStr);
 		tmpStr.Replace("0x", "");
 		int32_t base;
-		sscanf(tmpStr, "%x", &base);
+		sscanf_s(tmpStr, "%x", &base);
 		base &= 0x00ffffff;
 		base = reverseRGB(base);
 		if(brush2.m_hObject)

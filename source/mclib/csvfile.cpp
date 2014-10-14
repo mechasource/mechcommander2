@@ -204,7 +204,7 @@ int32_t CSVFile::textToLong(PSTR num)
 		}
 		numDigits = strlen(hexOffset) - 1;
 		int32_t power = 0;
-		for(int32_t count = numDigits; count >= 0; count--, power++)
+		for(size_t count = numDigits; count >= 0; count--, power++)
 		{
 			uint8_t currentDigit = toupper(hexOffset[count]);
 			if(currentDigit >= 'A' && currentDigit <= 'F')
@@ -253,7 +253,7 @@ int16_t CSVFile::textToShort(PSTR num)
 		}
 		numDigits = strlen(hexOffset) - 1;
 		int32_t power = 0;
-		for(int32_t count = numDigits; count >= 0; count--, power++)
+		for(size_t count = numDigits; count >= 0; count--, power++)
 		{
 			uint8_t currentDigit = toupper(hexOffset[count]);
 			if(currentDigit >= 'A' && currentDigit <= 'F')
@@ -302,7 +302,7 @@ char CSVFile::textToChar(PSTR num)
 		}
 		numDigits = strlen(hexOffset) - 1;
 		int32_t power = 0;
-		for(int32_t count = numDigits; count >= 0; count--, power++)
+		for(size_t count = numDigits; count >= 0; count--, power++)
 		{
 			uint8_t currentDigit = toupper(hexOffset[count]);
 			if(currentDigit >= 'A' && currentDigit <= 'F')
@@ -350,7 +350,7 @@ uint32_t CSVFile::textToULong(PSTR num)
 		}
 		numDigits = strlen(hexOffset) - 1;
 		int32_t power = 0;
-		for(int32_t count = numDigits; count >= 0; count--, power++)
+		for(size_t count = numDigits; count >= 0; count--, power++)
 		{
 			uint8_t currentDigit = toupper(hexOffset[count]);
 			if(currentDigit >= 'A' && currentDigit <= 'F')
@@ -399,7 +399,7 @@ uint16_t CSVFile::textToUShort(PSTR num)
 		}
 		numDigits = strlen(hexOffset) - 1;
 		int32_t power = 0;
-		for(int32_t count = numDigits; count >= 0; count--, power++)
+		for(size_t count = numDigits; count >= 0; count--, power++)
 		{
 			uint8_t currentDigit = toupper(hexOffset[count]);
 			if(currentDigit >= 'A' && currentDigit <= 'F')
@@ -448,7 +448,7 @@ uint8_t CSVFile::textToUCHAR(PSTR num)
 		}
 		numDigits = strlen(hexOffset) - 1;
 		int32_t power = 0;
-		for(int32_t count = numDigits; count >= 0; count--, power++)
+		for(size_t count = numDigits; count >= 0; count--, power++)
 		{
 			uint8_t currentDigit = toupper(hexOffset[count]);
 			if(currentDigit >= 'A' && currentDigit <= 'F')

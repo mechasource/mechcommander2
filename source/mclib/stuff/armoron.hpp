@@ -71,7 +71,7 @@ namespace Stuff
 	Check_Pointer(source);\
 	Verify((strlen(source) + 1) <= (available));\
 	Verify(size_t(abs(destination - source)) >= (strlen(source) + 1));\
-	strcpy(destination, source);\
+	strcpy_s(destination, available, source);\
 	} ATL_SUPPRESS_WARNING(4127) while (0)
 
 #define Str_Cat(destination, source, available)\

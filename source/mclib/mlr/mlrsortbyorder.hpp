@@ -63,14 +63,10 @@ namespace MidLevelRenderer
 		void TestInstance(void) const;
 
 	protected:
-		int32_t
-		lastUsedInBucket[MLRState::PriorityCount];
+		int32_t lastUsedInBucket[MLRState::PriorityCount];
 
-		Stuff::DynamicArrayOf<SortData*>  //, Max_Number_Primitives_Per_Frame + Max_Number_ScreenQuads_Per_Frame
-		priorityBuckets[MLRState::PriorityCount];
-
-		Stuff::DynamicArrayOf<SortAlpha*>  //, Max_Number_Primitives_Per_Frame + Max_Number_ScreenQuads_Per_Frame
-		alphaSort;
+		Stuff::DynamicArrayOf<SortData*> priorityBuckets[MLRState::PriorityCount]; //, Max_Number_Primitives_Per_Frame + Max_Number_ScreenQuads_Per_Frame
+		Stuff::DynamicArrayOf<SortAlpha*> alphaSort;  //, Max_Number_Primitives_Per_Frame + Max_Number_ScreenQuads_Per_Frame
 	};
 
 }

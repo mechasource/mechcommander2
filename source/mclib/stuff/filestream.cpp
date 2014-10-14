@@ -439,7 +439,7 @@ bool Stuff::CreateDirectories(PCSTR directory_path)
 			size_t length = size_t(next_slash - start_position);
 			new_string = new char[length + 1];
 			Check_Pointer(new_string);
-			strncpy(new_string, start_position, length);
+			strncpy_s(new_string, (length + 1), start_position, length);
 			new_string[length] = 0;
 		}
 		Verify(new_string != nullptr);

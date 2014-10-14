@@ -143,7 +143,7 @@ int32_t MasterComponent::initEXCEL(PSTR dataLine, float baseSensorRange)
 			Fatal(0, " MasterComponent.initEXCEL: bad weapon range type in compbase ");
 	}
 	field = strtok_s(nullptr, ",", &next_token);
-	for(int32_t location = 0; location < NUM_BODY_LOCATIONS; location++)
+	for(size_t location = 0; location < NUM_BODY_LOCATIONS; location++)
 	{
 		if(field)
 		{
@@ -287,7 +287,7 @@ int32_t MasterComponent::saveEXCEL(FilePtr componentFile, uint8_t masterId, floa
 	sprintf_s(piece, _countof(piece), "%d", resourcePoints);
 	strcat(dataLine, piece);
 	strcat(dataLine, comma);
-	for(int32_t location = 0; location < NUM_BODY_LOCATIONS; location++)
+	for(size_t location = 0; location < NUM_BODY_LOCATIONS; location++)
 	{
 		if(criticalSpacesReq[location] == -1)
 			sprintf_s(piece, _countof(piece), "No");
@@ -559,7 +559,7 @@ int32_t MasterComponent::loadMasterList(PSTR fileName, int32_t listSize, float b
 	}
 	numComponents = listSize;
 	masterList = (MasterComponentPtr)systemHeap->Malloc(sizeof(MasterComponent) * numComponents);
-	for(int32_t curComponent = 0; curComponent < numComponents; curComponent++)
+	for(size_t curComponent = 0; curComponent < numComponents; curComponent++)
 		masterList[curComponent].init();
 	armActuatorID = -1;
 	legActuatorID = -1;
@@ -577,7 +577,7 @@ int32_t MasterComponent::loadMasterList(PSTR fileName, int32_t listSize, float b
 	char dataLine[512];
 	int32_t lineLength;
 	lineLength = componentFile.readLine((puint8_t)dataLine, 511);
-	for(int32_t componentNum = 0; componentNum < numComponents; componentNum++)
+	for(size_t componentNum = 0; componentNum < numComponents; componentNum++)
 	{
 		//----------------------------------------
 		// Read in the line from the table file...
@@ -619,7 +619,7 @@ int32_t MasterComponent::saveMasterList(PSTR fileName, int32_t listSize, float b
 	componentFile.writeLine(dataLine);
 	sprintf(dataLine, "// Component Table,,abbr,type,crits,?,tons,RP,head,CT,LT,RT,LA,RA,LL,RL,Vehicle?,Fit both?,Side,Fit IS?,art,disable,BR,Damage,Recycle,heat,#miss,miss type,min,int16_t,med,int32_t,Type,Field,Master ID,Fields,4 = LBX 8 = artillery");
 	componentFile.writeLine(dataLine);
-	for(int32_t componentNum = 0; componentNum < listSize; componentNum++)
+	for(size_t componentNum = 0; componentNum < listSize; componentNum++)
 	{
 		masterList[componentNum].saveEXCEL(&componentFile, componentNum, baseSensorRange);
 	}

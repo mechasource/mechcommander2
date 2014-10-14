@@ -157,8 +157,7 @@ namespace Stuff
 		~Table(void);
 
 		void TestInstance(void);
-		static bool
-		TestClass(void);
+		static bool TestClass(void);
 		static bool
 		ProfileClass(void);
 

@@ -784,7 +784,7 @@ MLR_I_TMesh::CastRay(
 	//
 	int32_t poly_start = 0;
 	bool hit = false;
-	for(int32_t polygon = 0; polygon < numOfTriangles; poly_start += 3, ++polygon)
+	for(size_t polygon = 0; polygon < numOfTriangles; poly_start += 3, ++polygon)
 	{
 		//
 		//---------------------------------

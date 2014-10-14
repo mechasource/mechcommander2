@@ -216,12 +216,12 @@ void CALLBACK MouseTimer(uint32_t wTimerID, uint32_t msg, uint32_t dwUser, uint3
 				if(mouseSurfaceDesc.ddpfPixelFormat.dwRGBBitCount == 16)
 				{
 					puint8_t mBuffer = mouseBuffer;
-					for(int32_t y = mouseWASInRect.top; y < mouseWASInRect.bottom; y++)
+					for(size_t y = mouseWASInRect.top; y < mouseWASInRect.bottom; y++)
 					{
 						puint8_t screenPos = (puint8_t)mouseSurfaceDesc.lpSurface +
 											 ((mouseWASInRect.left << 1) +
 											  (y * mouseSurfaceDesc.lPitch));
-						for(int32_t x = mouseWASInRect.left; x < mouseWASInRect.right; x++)
+						for(size_t x = mouseWASInRect.left; x < mouseWASInRect.right; x++)
 						{
 							//Only copy bytes that are on screen.
 							if((x > WinRect.left) && (y > WinRect.top))
@@ -252,12 +252,12 @@ void CALLBACK MouseTimer(uint32_t wTimerID, uint32_t msg, uint32_t dwUser, uint3
 				else if(mouseSurfaceDesc.ddpfPixelFormat.dwRGBBitCount == 24)
 				{
 					puint8_t mBuffer = mouseBuffer;
-					for(int32_t y = mouseWASInRect.top; y < mouseWASInRect.bottom; y++)
+					for(size_t y = mouseWASInRect.top; y < mouseWASInRect.bottom; y++)
 					{
 						puint8_t screenPos = (puint8_t)mouseSurfaceDesc.lpSurface +
 											 ((mouseWASInRect.left * 3) +
 											  (y * mouseSurfaceDesc.lPitch));
-						for(int32_t x = mouseWASInRect.left; x < mouseWASInRect.right; x++)
+						for(size_t x = mouseWASInRect.left; x < mouseWASInRect.right; x++)
 						{
 							//Only copy bytes that are on screen.
 							if((x > WinRect.left) && (y > WinRect.top))
@@ -295,12 +295,12 @@ void CALLBACK MouseTimer(uint32_t wTimerID, uint32_t msg, uint32_t dwUser, uint3
 				else if(mouseSurfaceDesc.ddpfPixelFormat.dwRGBBitCount == 32)
 				{
 					puint8_t mBuffer = mouseBuffer;
-					for(int32_t y = mouseWASInRect.top; y < mouseWASInRect.bottom; y++)
+					for(size_t y = mouseWASInRect.top; y < mouseWASInRect.bottom; y++)
 					{
 						puint8_t screenPos = (puint8_t)mouseSurfaceDesc.lpSurface +
 											 ((mouseWASInRect.left << 2) +
 											  (y * mouseSurfaceDesc.lPitch));
-						for(int32_t x = mouseWASInRect.left; x < mouseWASInRect.right; x++)
+						for(size_t x = mouseWASInRect.left; x < mouseWASInRect.right; x++)
 						{
 							//Only copy bytes that are on screen.
 							if((x > WinRect.left) && (y > WinRect.top))
@@ -452,12 +452,12 @@ void CALLBACK MouseTimer(uint32_t wTimerID, uint32_t msg, uint32_t dwUser, uint3
 			if(mouseSurfaceDesc.ddpfPixelFormat.dwRGBBitCount == 16)
 			{
 				puint8_t mBuffer = mouseBuffer;
-				for(int32_t y = mouseWASInRect.top; y < mouseWASInRect.bottom; y++)
+				for(size_t y = mouseWASInRect.top; y < mouseWASInRect.bottom; y++)
 				{
 					puint8_t screenPos = (puint8_t)mouseSurfaceDesc.lpSurface +
 										 ((mouseWASInRect.left << 1) +
 										  (y * mouseSurfaceDesc.lPitch));
-					for(int32_t x = mouseWASInRect.left; x < mouseWASInRect.right; x++)
+					for(size_t x = mouseWASInRect.left; x < mouseWASInRect.right; x++)
 					{
 						//Only copy bytes that are on screen.
 						if((x > WinRect.left) && (y > WinRect.top))
@@ -488,12 +488,12 @@ void CALLBACK MouseTimer(uint32_t wTimerID, uint32_t msg, uint32_t dwUser, uint3
 			else if(mouseSurfaceDesc.ddpfPixelFormat.dwRGBBitCount == 24)
 			{
 				puint8_t mBuffer = mouseBuffer;
-				for(int32_t y = mouseWASInRect.top; y < mouseWASInRect.bottom; y++)
+				for(size_t y = mouseWASInRect.top; y < mouseWASInRect.bottom; y++)
 				{
 					puint8_t screenPos = (puint8_t)mouseSurfaceDesc.lpSurface +
 										 ((mouseWASInRect.left * 3) +
 										  (y * mouseSurfaceDesc.lPitch));
-					for(int32_t x = mouseWASInRect.left; x < mouseWASInRect.right; x++)
+					for(size_t x = mouseWASInRect.left; x < mouseWASInRect.right; x++)
 					{
 						//Only copy bytes that are on screen.
 						if((x > WinRect.left) && (y > WinRect.top))
@@ -531,12 +531,12 @@ void CALLBACK MouseTimer(uint32_t wTimerID, uint32_t msg, uint32_t dwUser, uint3
 			else if(mouseSurfaceDesc.ddpfPixelFormat.dwRGBBitCount == 32)
 			{
 				puint8_t mBuffer = mouseBuffer;
-				for(int32_t y = mouseWASInRect.top; y < mouseWASInRect.bottom; y++)
+				for(size_t y = mouseWASInRect.top; y < mouseWASInRect.bottom; y++)
 				{
 					puint8_t screenPos = (puint8_t)mouseSurfaceDesc.lpSurface +
 										 ((mouseWASInRect.left << 2) +
 										  (y * mouseSurfaceDesc.lPitch));
-					for(int32_t x = mouseWASInRect.left; x < mouseWASInRect.right; x++)
+					for(size_t x = mouseWASInRect.left; x < mouseWASInRect.right; x++)
 					{
 						//Only copy bytes that are on screen.
 						if((x > WinRect.left) && (y > WinRect.top))
@@ -605,12 +605,12 @@ void CALLBACK MouseTimer(uint32_t wTimerID, uint32_t msg, uint32_t dwUser, uint3
 				if(mouseSurfaceDesc.ddpfPixelFormat.dwRGBBitCount == 16)
 				{
 					uint32_t* mData = (uint32_t*)mc2MouseData;
-					for(int32_t y = mouseWASInRect.top; y < mouseWASInRect.bottom; y++)
+					for(size_t y = mouseWASInRect.top; y < mouseWASInRect.bottom; y++)
 					{
 						puint8_t screenPos = (puint8_t)mouseSurfaceDesc.lpSurface +
 											 ((mouseWASInRect.left << 1) +
 											  (y * mouseSurfaceDesc.lPitch));
-						for(int32_t x = mouseWASInRect.left; x < mouseWASInRect.right; x++)
+						for(size_t x = mouseWASInRect.left; x < mouseWASInRect.right; x++)
 						{
 							//We are pointing at the top left corner of where
 							// the mouse cursor will draw.  mc2MouseData is a 32bit
@@ -660,12 +660,12 @@ void CALLBACK MouseTimer(uint32_t wTimerID, uint32_t msg, uint32_t dwUser, uint3
 				else if(mouseSurfaceDesc.ddpfPixelFormat.dwRGBBitCount == 24)
 				{
 					uint32_t* mData = (uint32_t*)mc2MouseData;
-					for(int32_t y = mouseWASInRect.top; y < mouseWASInRect.bottom; y++)
+					for(size_t y = mouseWASInRect.top; y < mouseWASInRect.bottom; y++)
 					{
 						puint8_t screenPos = (puint8_t)mouseSurfaceDesc.lpSurface +
 											 ((mouseWASInRect.left * 3) +
 											  (y * mouseSurfaceDesc.lPitch));
-						for(int32_t x = mouseWASInRect.left; x < mouseWASInRect.right; x++)
+						for(size_t x = mouseWASInRect.left; x < mouseWASInRect.right; x++)
 						{
 							//We are pointing at the top left corner of where
 							// the mouse cursor will draw.  mc2MouseData is a 32bit
@@ -706,12 +706,12 @@ void CALLBACK MouseTimer(uint32_t wTimerID, uint32_t msg, uint32_t dwUser, uint3
 				else if(mouseSurfaceDesc.ddpfPixelFormat.dwRGBBitCount == 32)
 				{
 					uint32_t* mData = (uint32_t*)mc2MouseData;
-					for(int32_t y = mouseWASInRect.top; y < mouseWASInRect.bottom; y++)
+					for(size_t y = mouseWASInRect.top; y < mouseWASInRect.bottom; y++)
 					{
 						puint8_t screenPos = (puint8_t)mouseSurfaceDesc.lpSurface +
 											 ((mouseWASInRect.left << 2) +
 											  (y * mouseSurfaceDesc.lPitch));
-						for(int32_t x = mouseWASInRect.left; x < mouseWASInRect.right; x++)
+						for(size_t x = mouseWASInRect.left; x < mouseWASInRect.right; x++)
 						{
 							//We are pointing at the top left corner of where
 							// the mouse cursor will draw.  mc2MouseData is a 32bit

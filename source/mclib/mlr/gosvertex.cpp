@@ -43,7 +43,7 @@ GOSVertex::SetFogTableEntry(int32_t entry, float nearFog, float farFog, float fo
 	Verify(farFog > nearFog);
 	entry--;
 	GOSVertex::fogTable[entry][0] = 0;
-	for(int32_t t1 = 0; t1 < 1024; t1++)
+	for(size_t t1 = 0; t1 < 1024; t1++)
 	{
 		if(0.0f == fogDensity)
 		{

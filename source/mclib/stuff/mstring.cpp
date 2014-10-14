@@ -363,9 +363,12 @@ MStringRepresentation::GetNthToken(
 	size_t i;
 	PSTR ptr;
 	Check_Pointer(temp.stringText);
+	// suppress warning about unsafe strtok as a strtok_s implementation isn't straightforward
+	ATL_SUPPRESS_WARNING(4996)
 	ptr = strtok(temp.stringText, delimter_string);
 	for(i = 0; i < nth_token; i++)
 	{
+		ATL_SUPPRESS_WARNING(4996)
 		if((ptr = strtok(nullptr, delimter_string)) == nullptr)
 			break;
 	}

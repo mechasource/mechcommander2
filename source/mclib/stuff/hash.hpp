@@ -14,8 +14,7 @@
 
 namespace GetHashFunctions
 {
-	inline Stuff::IteratorPosition
-	GetHashValue(size_t value_to_hash)
+	inline Stuff::IteratorPosition GetHashValue(size_t value_to_hash)
 	{
 		return value_to_hash;
 	}
@@ -45,36 +44,27 @@ namespace Stuff
 		// Constructor, Destructor and Testing
 		//--------------------------------------------------------------------
 		//
-		Hash(
-			CollectionSize size,
-			Node* node,
-			bool has_unique_entries
-		);
+		Hash(CollectionSize size, Node* node, bool has_unique_entries);
 		~Hash(void);
 
 		void TestInstance(void);
-		static bool
-		TestClass(void);
-		static bool
-		ProfileClass(void);
+		static bool TestClass(void);
+		static bool ProfileClass(void);
 
 		//
 		//-----------------------------------------------------------------------
 		// IsEmpty - Returns true if the socket contains no plugs.
 		//-----------------------------------------------------------------------
 		//
-		bool
-		IsEmpty(void);
+		bool IsEmpty(void);
 
 		//
 		//-----------------------------------------------------------------------
 		// Unimplemented
 		//-----------------------------------------------------------------------
 		//
-		void
-		RemovePlug(Plug* plug);
-		bool
-		IsPlugMember(Plug* plug);
+		void RemovePlug(Plug* plug);
+		bool IsPlugMember(Plug* plug);
 
 	protected:
 		//
@@ -84,15 +74,9 @@ namespace Stuff
 		//--------------------------------------------------------------------
 		//--------------------------------------------------------------------
 		//
-		void
-		AddImplementation(Plug* plug);
-		void
-		AddValueImplementation(
-			Plug* plug,
-			PCVOID value
-		);
-		Plug
-		* FindImplementation(PCVOID value);
+		void AddImplementation(Plug* plug);
+		void AddValueImplementation(Plug* plug, PCVOID value);
+		Plug* FindImplementation(PCVOID value);
 
 		//
 		//--------------------------------------------------------------------
@@ -110,17 +94,10 @@ namespace Stuff
 		//--------------------------------------------------------------------
 		//--------------------------------------------------------------------
 		//
-		virtual SortedChain*
-		MakeSortedChain(void);
-
-		virtual IteratorPosition
-		GetHashIndex(PCVOID value);
-
-		void
-		BuildHashTable(void);
-
-		bool
-		CheckForPrimeSize(void);
+		virtual SortedChain* MakeSortedChain(void);
+		virtual IteratorPosition GetHashIndex(PCVOID value);
+		void BuildHashTable(void);
+		bool CheckForPrimeSize(void);
 	};
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Hash inlines ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -144,7 +121,7 @@ namespace Stuff
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ HashOf ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-	template <class T, class V> class HashOf:
+	template <class T, class V> class HashOf :
 		public Hash
 	{
 	public:
@@ -155,11 +132,7 @@ namespace Stuff
 		//--------------------------------------------------------------------
 		//--------------------------------------------------------------------
 		//
-		HashOf(
-			CollectionSize size,
-			Node* node,
-			bool has_unique_entries
-		);
+		HashOf(CollectionSize size, Node* node, bool has_unique_entries);
 		~HashOf(void);
 
 		//
@@ -167,11 +140,7 @@ namespace Stuff
 		// Socket methods (see Socket for full listing)
 		//--------------------------------------------------------------------
 		//
-		void
-		AddValue(
-			T plug,
-			const V& value
-		)
+		void AddValue(T plug, const V& value)
 		{
 			AddValueImplementation(Cast_Object(Plug*, plug), &value);
 		}
@@ -189,26 +158,15 @@ namespace Stuff
 		//--------------------------------------------------------------------
 		//--------------------------------------------------------------------
 		//
-		SortedChain*
-		MakeSortedChain(void);
-
-		IteratorPosition
-		GetHashIndex(PCVOID value);
+		SortedChain* MakeSortedChain(void);
+		IteratorPosition GetHashIndex(PCVOID value);
 	};
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~ HashOf templates ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 	template <class T, class V>
-	HashOf<T, V>::HashOf(
-		CollectionSize size,
-		Node* node,
-		bool has_unique_entries
-	):
-		Hash(
-			size,
-			node,
-			has_unique_entries
-		)
+	HashOf<T, V>::HashOf(CollectionSize size, Node* node, bool has_unique_entries) 
+		: Hash(size, node, has_unique_entries)
 	{
 	}
 
@@ -248,7 +206,7 @@ namespace Stuff
 		return (GetHashFunctions::GetHashValue(*Cast_Pointer(const V*, value)) % hashTableSize);
 	}
 
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ HashIterator ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ HashIterator ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 	class HashIterator:
 		public SortedIterator
@@ -268,8 +226,7 @@ namespace Stuff
 		//--------------------------------------------------------------------
 		//
 		explicit HashIterator(Hash* hash);
-		Iterator*
-		MakeClone(void);
+		Iterator* MakeClone(void);
 		~HashIterator(void);
 		void TestInstance(void);
 
@@ -278,18 +235,12 @@ namespace Stuff
 		// Iterator methods (see Iterator for full listing)
 		//--------------------------------------------------------------------
 		//
-		void
-		First(void);
-		void
-		Last(void);
-		void
-		Next(void);
-		void
-		Previous(void);
-		CollectionSize
-		GetSize(void);
-		void
-		Remove(void);
+		void First(void);
+		void Last(void);
+		void Next(void);
+		void Previous(void);
+		CollectionSize GetSize(void);
+		void Remove(void);
 
 	protected:
 		//
@@ -299,10 +250,8 @@ namespace Stuff
 		//--------------------------------------------------------------------
 		//--------------------------------------------------------------------
 		//
-		PVOID
-		GetCurrentImplementation(void);
-		Plug*
-		FindImplementation(PCVOID value);
+		PVOID GetCurrentImplementation(void);
+		Plug* FindImplementation(PCVOID value);
 
 	private:
 		//
@@ -312,34 +261,22 @@ namespace Stuff
 		//--------------------------------------------------------------------
 		//--------------------------------------------------------------------
 		//
-		void
-		ReceiveMemo(
-			IteratorMemo memo,
-			PVOID content
-		);
-
-		void
-		DeleteSortedChainIterator(void);
-
-		void
-		NextSortedChainIterator(IteratorPosition index);
+		void ReceiveMemo(IteratorMemo memo, PVOID content);
+		void DeleteSortedChainIterator(void);
+		void NextSortedChainIterator(IteratorPosition index);
 
 		//
 		//--------------------------------------------------------------------
 		// Private data
 		//--------------------------------------------------------------------
 		//
-		SortedChain
-		** hashTable;
-		CollectionSize
-		hashTableSize;
-		IteratorPosition
-		currentPosition;
-		SortedChainIterator
-		* vchainIterator;
+		SortedChain** hashTable;
+		CollectionSize hashTableSize;
+		IteratorPosition currentPosition;
+		SortedChainIterator* vchainIterator;
 	};
 
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~ HashIteratorOf ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~ HashIteratorOf ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 	template <class T, class V> class HashIteratorOf:
 		public HashIterator
@@ -359,8 +296,7 @@ namespace Stuff
 		//--------------------------------------------------------------------
 		//
 		explicit HashIteratorOf(HashOf<T, V>* hash);
-		Iterator*
-		MakeClone(void);
+		Iterator* MakeClone(void);
 		~HashIteratorOf(void);
 
 		//
@@ -368,34 +304,29 @@ namespace Stuff
 		// Iterator methods (see Iterator for full listing)
 		//--------------------------------------------------------------------
 		//
-		T
-		ReadAndNext()
+		T ReadAndNext()
 		{
 			return (T)ReadAndNextImplementation(void);
 		}
-		T
-		ReadAndPrevious()
+		T ReadAndPrevious()
 		{
 			return (T)ReadAndPreviousImplementation(void);
 		}
-		T
-		GetCurrent()
+		T GetCurrent()
 		{
 			return (T)GetCurrentImplementation(void);
 		}
-		T
-		GetNth(CollectionSize index)
+		T GetNth(CollectionSize index)
 		{
 			return (T)GetNthImplementation(index);
 		}
-		T
-		Find(const V& value)
+		T Find(const V& value)
 		{
 			return (T)FindImplementation(&value);
 		}
 	};
 
-//~~~~~~~~~~~~~~~~~~~~~~~~ HashIteratorOf templates ~~~~~~~~~~~~~~~~~~~~~~~~
+	//~~~~~~~~~~~~~~~~~~~~~~~~ HashIteratorOf templates ~~~~~~~~~~~~~~~~~~~~~~~~
 
 	template <class T, class V>
 	HashIteratorOf<T, V>::HashIteratorOf(HashOf<T, V>* hash):

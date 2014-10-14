@@ -137,7 +137,7 @@ void StaticInfo::render()
 void StaticInfo::showGUIWindow(bool bShow)
 {
 	int32_t mask = bShow ? 0xff000000 : 0x00ffffff;
-	for(auto i = 0; i < 4; i++)
+	for(size_t i = 0; i < 4; i++)
 	{
 		if(bShow)
 			location[i].argb |= mask;
@@ -183,10 +183,10 @@ void StaticInfo::getData(puint8_t  buffer)
 			gos_UnLockTexture(gosID);
 			return;
 		}
-		for(int32_t y = 0; y < vHeight; y++)
+		for(size_t y = 0; y < vHeight; y++)
 		{
 			uint32_t* textureMemory = textureData.pTexture + (localU + ((localV + y) * textureData.Width));
-			for(int32_t x = 0; x < uWidth; x++)
+			for(size_t x = 0; x < uWidth; x++)
 			{
 				*bufMem = *textureMemory;
 				bufMem++;
@@ -237,7 +237,7 @@ void StaticInfo::init(FitIniFile& file, PSTR blockName, int32_t hiResOffsetX, in
 	file.readIdLong("UWidth", uWidth);
 	file.readIdLong("VHeight", vHeight);
 	file.readIdBoolean("texturesRotated", bRotated);
-	for(int32_t k = 0; k < 4; k++)
+	for(size_t k = 0; k < 4; k++)
 	{
 		location[k].argb = 0xffffffff;
 		location[k].frgb = 0;
@@ -277,7 +277,7 @@ void StaticInfo::setLocation(float  newX, float newY)
 
 void StaticInfo::move(float deltaX, float deltaY)
 {
-	for(auto i = 0; i < 4; i++)
+	for(size_t i = 0; i < 4; i++)
 	{
 		location[i].x += deltaX;
 		location[i].y += deltaY;
@@ -286,7 +286,7 @@ void StaticInfo::move(float deltaX, float deltaY)
 
 void StaticInfo::setColor(int32_t newColor)
 {
-	for(auto i = 0; i < 4; i++)
+	for(size_t i = 0; i < 4; i++)
 		location[i].argb = newColor;
 }
 

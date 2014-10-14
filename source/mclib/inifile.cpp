@@ -267,7 +267,7 @@ int32_t FitIniFile::textToLong(PCSTR num)
 		}
 		numDigits = strlen(hexOffset) - 1;
 		int32_t power = 0;
-		for(int32_t count = numDigits; count >= 0; count--, power++)
+		for(size_t count = numDigits; count >= 0; count--, power++)
 		{
 			uint8_t currentDigit = toupper(hexOffset[count]);
 			if(currentDigit >= 'A' && currentDigit <= 'F')
@@ -316,7 +316,7 @@ int16_t FitIniFile::textToShort(PCSTR num)
 		}
 		numDigits = strlen(hexOffset) - 1;
 		int32_t power = 0;
-		for(int32_t count = numDigits; count >= 0; count--, power++)
+		for(size_t count = numDigits; count >= 0; count--, power++)
 		{
 			uint8_t currentDigit = toupper(hexOffset[count]);
 			if(currentDigit >= 'A' && currentDigit <= 'F')
@@ -365,7 +365,7 @@ char FitIniFile::textToChar(PCSTR num)
 		}
 		numDigits = strlen(hexOffset) - 1;
 		int32_t power = 0;
-		for(int32_t count = numDigits; count >= 0; count--, power++)
+		for(size_t count = numDigits; count >= 0; count--, power++)
 		{
 			uint8_t currentDigit = toupper(hexOffset[count]);
 			if(currentDigit >= 'A' && currentDigit <= 'F')
@@ -413,7 +413,7 @@ uint32_t FitIniFile::textToULong(PCSTR num)
 		}
 		numDigits = strlen(hexOffset) - 1;
 		int32_t power = 0;
-		for(int32_t count = numDigits; count >= 0; count--, power++)
+		for(size_t count = numDigits; count >= 0; count--, power++)
 		{
 			uint8_t currentDigit = toupper(hexOffset[count]);
 			if(currentDigit >= 'A' && currentDigit <= 'F')
@@ -462,7 +462,7 @@ uint16_t FitIniFile::textToUShort(PCSTR num)
 		}
 		numDigits = strlen(hexOffset) - 1;
 		int32_t power = 0;
-		for(int32_t count = numDigits; count >= 0; count--, power++)
+		for(size_t count = numDigits; count >= 0; count--, power++)
 		{
 			uint8_t currentDigit = toupper(hexOffset[count]);
 			if(currentDigit >= 'A' && currentDigit <= 'F')
@@ -511,7 +511,7 @@ uint8_t FitIniFile::textToUChar(PCSTR num)
 		}
 		numDigits = strlen(hexOffset) - 1;
 		int32_t power = 0;
-		for(int32_t count = numDigits; count >= 0; count--, power++)
+		for(size_t count = numDigits; count >= 0; count--, power++)
 		{
 			uint8_t currentDigit = toupper(hexOffset[count]);
 			if(currentDigit >= 'A' && currentDigit <= 'F')

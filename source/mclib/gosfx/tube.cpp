@@ -1175,7 +1175,7 @@ void gosFX::Tube::Draw(DrawInfo* info)
 				// Multiply the points thru the matrix
 				//------------------------------------
 				//
-				for(int32_t v = 0; v < vertex_count; ++v)
+				for(size_t v = 0; v < vertex_count; ++v)
 				{
 					m_P_vertices[vertex++].Multiply(
 						spec->m_vertices[v],

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="8,00"
-	Name="mclib"
-	ProjectGUID="{09582E8D-FAA3-4A07-AB43-74C33436CDDF}"
+	Version="9,00"
+	Name="mechcmd2"
+	ProjectGUID="{8FA46A42-5363-4C71-90D8-1106203F0DC7}"
 	RootNamespace="MechCommander"
 	Keyword="AtlProj"
 	>
@@ -65,6 +65,7 @@
 				WarningLevel="4"
 				DebugInformationFormat="3"
 				CallingConvention="2"
+				DisableSpecificWarnings="4100"
 				EnablePREfast="true"
 			/>
 			<Tool
@@ -160,6 +161,7 @@
 				WarningLevel="4"
 				DebugInformationFormat="3"
 				CallingConvention="2"
+				DisableSpecificWarnings="4100"
 				EnablePREfast="true"
 			/>
 			<Tool
@@ -259,6 +261,7 @@
 				WarningLevel="4"
 				DebugInformationFormat="3"
 				CallingConvention="2"
+				DisableSpecificWarnings="4100"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -357,6 +360,7 @@
 				WarningLevel="4"
 				DebugInformationFormat="3"
 				CallingConvention="2"
+				DisableSpecificWarnings="4100"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -418,409 +422,381 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<Filter
-				Name="mclib"
+				Name="mechcmd2"
 				>
+				<File
+					RelativePath="..\mechcmd2\dw.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\mechcmd2\mechcmd2.cpp"
+					>
+				</File>
 				<Filter
-					Name="lib"
+					Name="Object"
 					>
 					<File
-						RelativePath="..\mclib\alphapalette.cpp"
+						RelativePath="..\mechcmd2\artlry.cpp"
 						>
 					</File>
 					<File
-						RelativePath="..\mclib\bitflag.cpp"
+						RelativePath="..\mechcmd2\bldng.cpp"
 						>
 					</File>
 					<File
-						RelativePath="..\mclib\cident.cpp"
+						RelativePath="..\mechcmd2\carnage.cpp"
 						>
 					</File>
 					<File
-						RelativePath="..\mclib\cmponent.cpp"
+						RelativePath="..\mechcmd2\collsn.cpp"
 						>
 					</File>
 					<File
-						RelativePath="..\mclib\color.cpp"
+						RelativePath="..\mechcmd2\comndr.cpp"
 						>
 					</File>
 					<File
-						RelativePath="..\mclib\debugging.cpp"
+						RelativePath="..\mechcmd2\contact.cpp"
 						>
 					</File>
 					<File
-						RelativePath="..\mclib\err.cpp"
+						RelativePath="..\mechcmd2\gameobj.cpp"
 						>
 					</File>
 					<File
-						RelativePath="..\mclib\floathelp.cpp"
+						RelativePath="..\mechcmd2\gate.cpp"
 						>
 					</File>
 					<File
-						RelativePath="..\mclib\heap.cpp"
+						RelativePath="..\mechcmd2\goal.cpp"
 						>
 					</File>
 					<File
-						RelativePath="..\mclib\lzcomp.cpp"
-						>
-						<FileConfiguration
-							Name="Debug|Win32"
-							>
-							<Tool
-								Name="VCCLCompilerTool"
-								UsePrecompiledHeader="0"
-							/>
-						</FileConfiguration>
-					</File>
-					<File
-						RelativePath="..\mclib\lzdecomp.cpp"
-						>
-						<FileConfiguration
-							Name="Debug|Win32"
-							>
-							<Tool
-								Name="VCCLCompilerTool"
-								UsePrecompiledHeader="0"
-							/>
-						</FileConfiguration>
-					</File>
-					<File
-						RelativePath="..\mclib\mathfunc.cpp"
+						RelativePath="..\mechcmd2\group.cpp"
 						>
 					</File>
 					<File
-						RelativePath="..\mclib\mouse.cpp"
+						RelativePath="..\mechcmd2\gvehicl.cpp"
 						>
 					</File>
 					<File
-						RelativePath="..\mclib\msl.cpp"
+						RelativePath="..\mechcmd2\light.cpp"
 						>
 					</File>
 					<File
-						RelativePath="..\mclib\paths.cpp"
+						RelativePath="..\mechcmd2\mech.cpp"
 						>
 					</File>
 					<File
-						RelativePath="..\mclib\pqueue.cpp"
+						RelativePath="..\mechcmd2\mover.cpp"
 						>
 					</File>
 					<File
-						RelativePath="..\mclib\routines.cpp"
+						RelativePath="..\mechcmd2\objmgr.cpp"
 						>
 					</File>
 					<File
-						RelativePath="..\mclib\scale.cpp"
+						RelativePath="..\mechcmd2\objtype.cpp"
 						>
 					</File>
 					<File
-						RelativePath="..\mclib\sortlist.cpp"
+						RelativePath="..\mechcmd2\tacordr.cpp"
 						>
 					</File>
 					<File
-						RelativePath="..\mclib\tgainfo.cpp"
+						RelativePath="..\mechcmd2\team.cpp"
 						>
 					</File>
 					<File
-						RelativePath="..\mclib\tgl.cpp"
+						RelativePath="..\mechcmd2\terrobj.cpp"
 						>
 					</File>
 					<File
-						RelativePath="..\mclib\tglpp.cpp"
-						>
-						<FileConfiguration
-							Name="Debug|Win32"
-							ExcludedFromBuild="true"
-							>
-							<Tool
-								Name="VCCLCompilerTool"
-							/>
-						</FileConfiguration>
-						<FileConfiguration
-							Name="Debug|x64"
-							ExcludedFromBuild="true"
-							>
-							<Tool
-								Name="VCCLCompilerTool"
-							/>
-						</FileConfiguration>
-						<FileConfiguration
-							Name="Release|Win32"
-							ExcludedFromBuild="true"
-							>
-							<Tool
-								Name="VCCLCompilerTool"
-							/>
-						</FileConfiguration>
-						<FileConfiguration
-							Name="Release|x64"
-							ExcludedFromBuild="true"
-							>
-							<Tool
-								Name="VCCLCompilerTool"
-							/>
-						</FileConfiguration>
-					</File>
-					<File
-						RelativePath="..\mclib\timing.cpp"
+						RelativePath="..\mechcmd2\turret.cpp"
 						>
 					</File>
 					<File
-						RelativePath="..\mclib\txmmgr.cpp"
+						RelativePath="..\mechcmd2\warrior.cpp"
 						>
 					</File>
 					<File
-						RelativePath="..\mclib\userinput.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\vport.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\weaponfx.cpp"
+						RelativePath="..\mechcmd2\weaponbolt.cpp"
 						>
 					</File>
 				</Filter>
 				<Filter
-					Name="abl"
+					Name="Mission"
 					>
 					<File
-						RelativePath="..\mclib\abldbug.cpp"
+						RelativePath="..\mechcmd2\ablmc2.cpp"
 						>
 					</File>
 					<File
-						RelativePath="..\mclib\abldecl.cpp"
+						RelativePath="..\mechcmd2\gamecam.cpp"
 						>
 					</File>
 					<File
-						RelativePath="..\mclib\ablenv.cpp"
+						RelativePath="..\mechcmd2\mission.cpp"
 						>
 					</File>
 					<File
-						RelativePath="..\mclib\ablerr.cpp"
+						RelativePath="..\mechcmd2\mission2.cpp"
 						>
 					</File>
 					<File
-						RelativePath="..\mclib\ablexec.cpp"
+						RelativePath="..\mechcmd2\objective.cpp"
 						>
 					</File>
 					<File
-						RelativePath="..\mclib\ablexpr.cpp"
+						RelativePath="..\mechcmd2\saveload.cpp"
 						>
 					</File>
 					<File
-						RelativePath="..\mclib\ablrtn.cpp"
+						RelativePath="..\mechcmd2\trigger.cpp"
 						>
 					</File>
 					<File
-						RelativePath="..\mclib\ablscan.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\ablstd.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\ablstmt.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\ablsymt.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\ablxexpr.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\ablxstd.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\ablxstmt.cpp"
+						RelativePath="..\mechcmd2\weather.cpp"
 						>
 					</File>
 				</Filter>
 				<Filter
-					Name="appear"
+					Name="GUI"
 					>
 					<File
-						RelativePath="..\mclib\appear.cpp"
+						RelativePath="..\mechcmd2\attributemeter.cpp"
 						>
 					</File>
 					<File
-						RelativePath="..\mclib\apprtype.cpp"
+						RelativePath="..\mechcmd2\controlgui.cpp"
 						>
 					</File>
 					<File
-						RelativePath="..\mclib\bdactor.cpp"
+						RelativePath="..\mechcmd2\forcegroupbar.cpp"
 						>
 					</File>
 					<File
-						RelativePath="..\mclib\genactor.cpp"
+						RelativePath="..\mechcmd2\gametacmap.cpp"
 						>
 					</File>
 					<File
-						RelativePath="..\mclib\gvactor.cpp"
+						RelativePath="..\mechcmd2\infowindow.cpp"
 						>
 					</File>
 					<File
-						RelativePath="..\mclib\mech3d.cpp"
+						RelativePath="..\mechcmd2\keyboardref.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\mechcmd2\mechicon.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\mechcmd2\missiongui.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\mechcmd2\mpconnectiontype.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\mechcmd2\mpgamebrowser.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\mechcmd2\mphostgame.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\mechcmd2\mploadmap.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\mechcmd2\mpparameterscreen.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\mechcmd2\mpsetuparea.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\mechcmd2\optionsarea.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\mechcmd2\optionsscreenwrapper.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\mechcmd2\pausewindow.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\mechcmd2\prefs.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\mechcmd2\simplecamera.cpp"
 						>
 					</File>
 				</Filter>
 				<Filter
-					Name="camera"
+					Name="Logistics"
 					>
 					<File
-						RelativePath="..\mclib\camera.cpp"
+						RelativePath="..\mechcmd2\componentlistbox.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\mechcmd2\loadscreen.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\mechcmd2\logistics.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\mechcmd2\logisticscomponent.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\mechcmd2\logisticsdata.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\mechcmd2\logisticsdialog.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\mechcmd2\logisticsmech.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\mechcmd2\logisticsmechdisplay.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\mechcmd2\logisticsmechicon.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\mechcmd2\logisticsmissioninfo.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\mechcmd2\logisticspilot.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\mechcmd2\logisticspilotlistbox.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\mechcmd2\logisticsvariant.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\mechcmd2\mainmenu.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\mechcmd2\mechbayscreen.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\mechcmd2\mechlabscreen.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\mechcmd2\mechlistbox.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\mechcmd2\mechlopedia.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\mechcmd2\mechpurchasescreen.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\mechcmd2\missionbegin.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\mechcmd2\missionbriefingscreen.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\mechcmd2\missionresults.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\mechcmd2\missionselectionscreen.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\mechcmd2\mpprefs.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\mechcmd2\pilotreadyscreen.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\mechcmd2\pilotreviewarea.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\mechcmd2\salvagemecharea.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\mechcmd2\simplecomponentlistbox.cpp"
 						>
 					</File>
 				</Filter>
 				<Filter
-					Name="element"
+					Name="Sound"
 					>
 					<File
-						RelativePath="..\mclib\celement.cpp"
+						RelativePath="..\mechcmd2\gamesound.cpp"
 						>
 					</File>
 					<File
-						RelativePath="..\mclib\celine.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\cellip.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\cepane.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\cevfx.cpp"
+						RelativePath="..\mechcmd2\radio.cpp"
 						>
 					</File>
 				</Filter>
 				<Filter
-					Name="file"
+					Name="Movement"
 					>
 					<File
-						RelativePath="..\mclib\csvfile.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\fastfile.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\ffile.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\file.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\gamelog.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\inifile.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\packet.cpp"
+						RelativePath="..\mechcmd2\movemgr.cpp"
 						>
 					</File>
 				</Filter>
 				<Filter
-					Name="move"
+					Name="Multiplayer"
 					>
 					<File
-						RelativePath="..\mclib\move.cpp"
+						RelativePath="..\mechcmd2\chatwindow.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\mechcmd2\mpstats.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\mechcmd2\multplyr.cpp"
 						>
 					</File>
 				</Filter>
 				<Filter
-					Name="sound"
+					Name="Movie"
 					>
 					<File
-						RelativePath="..\mclib\soundsys.cpp"
-						>
-					</File>
-				</Filter>
-				<Filter
-					Name="vfx"
-					>
-					<File
-						RelativePath="..\mclib\vfx_ellipse.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\vfx_map_polygon.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\vfx_transform.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\vfx_translatedraw.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\vfxtile.cpp"
-						>
-					</File>
-				</Filter>
-				<Filter
-					Name="utilities"
-					>
-				</Filter>
-				<Filter
-					Name="terrain"
-					>
-					<File
-						RelativePath="..\mclib\clouds.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\crater.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\mapdata.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\quad.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\terrain.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\terrtxm.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\terrtxm2.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\txmconv.cpp"
-						>
-					</File>
-				</Filter>
-				<Filter
-					Name="misc"
-					>
-					<File
-						RelativePath="..\mclib\tacmap.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\utilities.cpp"
+						RelativePath="..\mechcmd2\mc2movie.cpp"
 						>
 					</File>
 				</Filter>
@@ -828,6 +804,258 @@
 			<Filter
 				Name="extra"
 				>
+				<File
+					RelativePath="..\mechcmd2\actor.cpp"
+					>
+					<FileConfiguration
+						Name="Debug|Win32"
+						ExcludedFromBuild="true"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug|x64"
+						ExcludedFromBuild="true"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|Win32"
+						ExcludedFromBuild="true"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|x64"
+						ExcludedFromBuild="true"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\mechcmd2\debugging.cpp"
+					>
+					<FileConfiguration
+						Name="Debug|Win32"
+						ExcludedFromBuild="true"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug|x64"
+						ExcludedFromBuild="true"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|Win32"
+						ExcludedFromBuild="true"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|x64"
+						ExcludedFromBuild="true"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\mechcmd2\fastshp.cpp"
+					>
+					<FileConfiguration
+						Name="Debug|Win32"
+						ExcludedFromBuild="true"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug|x64"
+						ExcludedFromBuild="true"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|Win32"
+						ExcludedFromBuild="true"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|x64"
+						ExcludedFromBuild="true"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\mechcmd2\logmain.cpp"
+					>
+					<FileConfiguration
+						Name="Debug|Win32"
+						ExcludedFromBuild="true"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug|x64"
+						ExcludedFromBuild="true"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|Win32"
+						ExcludedFromBuild="true"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|x64"
+						ExcludedFromBuild="true"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\mechcmd2\mpaddaiplayer.cpp"
+					>
+					<FileConfiguration
+						Name="Debug|Win32"
+						ExcludedFromBuild="true"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug|x64"
+						ExcludedFromBuild="true"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|Win32"
+						ExcludedFromBuild="true"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|x64"
+						ExcludedFromBuild="true"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\mechcmd2\mpdirecttcpip.cpp"
+					>
+					<FileConfiguration
+						Name="Debug|Win32"
+						ExcludedFromBuild="true"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug|x64"
+						ExcludedFromBuild="true"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|Win32"
+						ExcludedFromBuild="true"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|x64"
+						ExcludedFromBuild="true"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\mechcmd2\vfxshape.cpp"
+					>
+					<FileConfiguration
+						Name="Debug|Win32"
+						ExcludedFromBuild="true"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug|x64"
+						ExcludedFromBuild="true"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|Win32"
+						ExcludedFromBuild="true"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|x64"
+						ExcludedFromBuild="true"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+						/>
+					</FileConfiguration>
+				</File>
 			</Filter>
 		</Filter>
 		<Filter
@@ -836,443 +1064,503 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<Filter
-				Name="mclib"
+				Name="extra"
 				>
 				<File
-					RelativePath="..\mclib\mclib.h"
+					RelativePath="..\mechcmd2\actor.h"
 					>
 				</File>
 				<File
-					RelativePath="..\mclib\msodw.h"
+					RelativePath="..\mechcmd2\dcarnage.h"
 					>
 				</File>
 				<File
-					RelativePath="..\mclib\objectappearance.h"
+					RelativePath="..\mechcmd2\debugging.h"
 					>
 				</File>
 				<File
-					RelativePath="..\mclib\tacmap.h"
+					RelativePath="..\mechcmd2\dturret.h"
 					>
 				</File>
 				<File
-					RelativePath="..\mclib\utilities.h"
+					RelativePath="..\mechcmd2\mpaddaiplayer.h"
 					>
 				</File>
+				<File
+					RelativePath="..\mechcmd2\mpdirecttcpip.h"
+					>
+				</File>
+				<File
+					RelativePath="..\mechcmd2\objblck.h"
+					>
+				</File>
+				<File
+					RelativePath="..\mechcmd2\vfxshape.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="mechcmd2"
+				>
 				<Filter
-					Name="move"
+					Name="GUI"
 					>
 					<File
-						RelativePath="..\mclib\dmovemgr.h"
+						RelativePath="..\mechcmd2\attributemeter.h"
 						>
 					</File>
 					<File
-						RelativePath="..\mclib\dobjblck.h"
+						RelativePath="..\mechcmd2\controlgui.h"
 						>
 					</File>
 					<File
-						RelativePath="..\mclib\dobjclass.h"
+						RelativePath="..\mechcmd2\forcegroupbar.h"
 						>
 					</File>
 					<File
-						RelativePath="..\mclib\move.h"
+						RelativePath="..\mechcmd2\gametacmap.h"
+						>
+					</File>
+					<File
+						RelativePath="..\mechcmd2\infowindow.h"
+						>
+					</File>
+					<File
+						RelativePath="..\mechcmd2\keyboardref.h"
+						>
+					</File>
+					<File
+						RelativePath="..\mechcmd2\mechicon.h"
+						>
+					</File>
+					<File
+						RelativePath="..\mechcmd2\missiongui.h"
+						>
+					</File>
+					<File
+						RelativePath="..\mechcmd2\mpconnectiontype.h"
+						>
+					</File>
+					<File
+						RelativePath="..\mechcmd2\mpgamebrowser.h"
+						>
+					</File>
+					<File
+						RelativePath="..\mechcmd2\mphostgame.h"
+						>
+					</File>
+					<File
+						RelativePath="..\mechcmd2\mploadmap.h"
+						>
+					</File>
+					<File
+						RelativePath="..\mechcmd2\mpparameterscreen.h"
+						>
+					</File>
+					<File
+						RelativePath="..\mechcmd2\mpsetuparea.h"
+						>
+					</File>
+					<File
+						RelativePath="..\mechcmd2\optionsarea.h"
+						>
+					</File>
+					<File
+						RelativePath="..\mechcmd2\optionsscreenwrapper.h"
+						>
+					</File>
+					<File
+						RelativePath="..\mechcmd2\pausewindow.h"
+						>
+					</File>
+					<File
+						RelativePath="..\mechcmd2\prefs.h"
+						>
+					</File>
+					<File
+						RelativePath="..\mechcmd2\simplecamera.h"
 						>
 					</File>
 				</Filter>
 				<Filter
-					Name="sound"
+					Name="Logistics"
 					>
 					<File
-						RelativePath="..\mclib\sounds.h"
+						RelativePath="..\mechcmd2\componentlistbox.h"
 						>
 					</File>
 					<File
-						RelativePath="..\mclib\soundsys.h"
+						RelativePath="..\mechcmd2\loadscreen.h"
+						>
+					</File>
+					<File
+						RelativePath="..\mechcmd2\logistics.h"
+						>
+					</File>
+					<File
+						RelativePath="..\mechcmd2\logisticscomponent.h"
+						>
+					</File>
+					<File
+						RelativePath="..\mechcmd2\logisticsdata.h"
+						>
+					</File>
+					<File
+						RelativePath="..\mechcmd2\logisticsdialog.h"
+						>
+					</File>
+					<File
+						RelativePath="..\mechcmd2\logisticserrors.h"
+						>
+					</File>
+					<File
+						RelativePath="..\mechcmd2\logisticsmech.h"
+						>
+					</File>
+					<File
+						RelativePath="..\mechcmd2\logisticsmechdisplay.h"
+						>
+					</File>
+					<File
+						RelativePath="..\mechcmd2\logisticsmechicon.h"
+						>
+					</File>
+					<File
+						RelativePath="..\mechcmd2\logisticsmissioninfo.h"
+						>
+					</File>
+					<File
+						RelativePath="..\mechcmd2\logisticspilot.h"
+						>
+					</File>
+					<File
+						RelativePath="..\mechcmd2\logisticspilotlistbox.h"
+						>
+					</File>
+					<File
+						RelativePath="..\mechcmd2\logisticsvariant.h"
+						>
+					</File>
+					<File
+						RelativePath="..\mechcmd2\mainmenu.h"
+						>
+					</File>
+					<File
+						RelativePath="..\mechcmd2\mechbayscreen.h"
+						>
+					</File>
+					<File
+						RelativePath="..\mechcmd2\mechlabscreen.h"
+						>
+					</File>
+					<File
+						RelativePath="..\mechcmd2\mechlistbox.h"
+						>
+					</File>
+					<File
+						RelativePath="..\mechcmd2\mechlopedia.h"
+						>
+					</File>
+					<File
+						RelativePath="..\mechcmd2\mechpurchasescreen.h"
+						>
+					</File>
+					<File
+						RelativePath="..\mechcmd2\missionbegin.h"
+						>
+					</File>
+					<File
+						RelativePath="..\mechcmd2\missionbriefingscreen.h"
+						>
+					</File>
+					<File
+						RelativePath="..\mechcmd2\missionresults.h"
+						>
+					</File>
+					<File
+						RelativePath="..\mechcmd2\missionselectionscreen.h"
+						>
+					</File>
+					<File
+						RelativePath="..\mechcmd2\mpprefs.h"
+						>
+					</File>
+					<File
+						RelativePath="..\mechcmd2\pilotreadyscreen.h"
+						>
+					</File>
+					<File
+						RelativePath="..\mechcmd2\pilotreviewarea.h"
+						>
+					</File>
+					<File
+						RelativePath="..\mechcmd2\salvagemecharea.h"
+						>
+					</File>
+					<File
+						RelativePath="..\mechcmd2\simplecomponentlistbox.h"
 						>
 					</File>
 				</Filter>
 				<Filter
-					Name="lib"
+					Name="Mission"
 					>
 					<File
-						RelativePath="..\mclib\bitflag.h"
+						RelativePath="..\mechcmd2\gamecam.h"
 						>
 					</File>
 					<File
-						RelativePath="..\mclib\cident.h"
+						RelativePath="..\mechcmd2\mission.h"
 						>
 					</File>
 					<File
-						RelativePath="..\mclib\clip.h"
+						RelativePath="..\mechcmd2\objective.h"
 						>
 					</File>
 					<File
-						RelativePath="..\mclib\cmponent.h"
+						RelativePath="..\mechcmd2\trigger.h"
 						>
 					</File>
 					<File
-						RelativePath="..\mclib\color.h"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\dbitflag.h"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\debugging.h"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\dheap.h"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\dident.h"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\dstd.h"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\err.h"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\floathelp.h"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\heap.h"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\lz.h"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\mathfunc.h"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\msl.h"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\objstatus.h"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\paths.h"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\pqueue.h"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\scale.h"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\sortlist.h"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\tgainfo.h"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\tgl.h"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\timing.h"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\txmmgr.h"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\userinput.h"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\vfx.h"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\vport.h"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\weaponfx.h"
+						RelativePath="..\mechcmd2\weather.h"
 						>
 					</File>
 				</Filter>
 				<Filter
-					Name="abl"
+					Name="Movement"
 					>
 					<File
-						RelativePath="..\mclib\abl.h"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\abldbug.h"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\ablenv.h"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\ablerr.h"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\ablexec.h"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\ablgen.h"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\ablparse.h"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\ablscan.h"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\ablsymt.h"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\dabldbug.h"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\dablenv.h"
+						RelativePath="..\mechcmd2\movemgr.h"
 						>
 					</File>
 				</Filter>
 				<Filter
-					Name="appear"
+					Name="Movie"
 					>
 					<File
-						RelativePath="..\mclib\appear.h"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\apprtype.h"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\bdactor.h"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\dappear.h"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\daprtype.h"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\genactor.h"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\gvactor.h"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\mech3d.h"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\mstates.h"
+						RelativePath="..\mechcmd2\mc2movie.h"
 						>
 					</File>
 				</Filter>
 				<Filter
-					Name="camera"
+					Name="Multiplayer"
 					>
 					<File
-						RelativePath="..\mclib\camera.h"
+						RelativePath="..\mechcmd2\chatwindow.h"
 						>
 					</File>
 					<File
-						RelativePath="..\mclib\dcamera.h"
+						RelativePath="..\mechcmd2\dmultplyr.h"
+						>
+					</File>
+					<File
+						RelativePath="..\mechcmd2\mpstats.h"
+						>
+					</File>
+					<File
+						RelativePath="..\mechcmd2\multplyr.h"
 						>
 					</File>
 				</Filter>
 				<Filter
-					Name="element"
+					Name="Object"
 					>
 					<File
-						RelativePath="..\mclib\celement.h"
+						RelativePath="..\mechcmd2\artlry.h"
 						>
 					</File>
 					<File
-						RelativePath="..\mclib\celine.h"
+						RelativePath="..\mechcmd2\bldng.h"
 						>
 					</File>
 					<File
-						RelativePath="..\mclib\cellip.h"
+						RelativePath="..\mechcmd2\carnage.h"
 						>
 					</File>
 					<File
-						RelativePath="..\mclib\cepane.h"
+						RelativePath="..\mechcmd2\collsn.h"
 						>
 					</File>
 					<File
-						RelativePath="..\mclib\cepoly.h"
+						RelativePath="..\mechcmd2\comndr.h"
 						>
 					</File>
 					<File
-						RelativePath="..\mclib\cevfx.h"
+						RelativePath="..\mechcmd2\contact.h"
+						>
+					</File>
+					<File
+						RelativePath="..\mechcmd2\dartlry.h"
+						>
+					</File>
+					<File
+						RelativePath="..\mechcmd2\dbldng.h"
+						>
+					</File>
+					<File
+						RelativePath="..\mechcmd2\dcollsn.h"
+						>
+					</File>
+					<File
+						RelativePath="..\mechcmd2\dcomndr.h"
+						>
+					</File>
+					<File
+						RelativePath="..\mechcmd2\dcontact.h"
+						>
+					</File>
+					<File
+						RelativePath="..\mechcmd2\delemntl.h"
+						>
+					</File>
+					<File
+						RelativePath="..\mechcmd2\dgameobj.h"
+						>
+					</File>
+					<File
+						RelativePath="..\mechcmd2\dgate.h"
+						>
+					</File>
+					<File
+						RelativePath="..\mechcmd2\dgoal.h"
+						>
+					</File>
+					<File
+						RelativePath="..\mechcmd2\dgroup.h"
+						>
+					</File>
+					<File
+						RelativePath="..\mechcmd2\dgvehicl.h"
+						>
+					</File>
+					<File
+						RelativePath="..\mechcmd2\dmech.h"
+						>
+					</File>
+					<File
+						RelativePath="..\mechcmd2\dmover.h"
+						>
+					</File>
+					<File
+						RelativePath="..\mechcmd2\dobjmgr.h"
+						>
+					</File>
+					<File
+						RelativePath="..\mechcmd2\dobjnum.h"
+						>
+					</File>
+					<File
+						RelativePath="..\mechcmd2\dobjtype.h"
+						>
+					</File>
+					<File
+						RelativePath="..\mechcmd2\dtacordr.h"
+						>
+					</File>
+					<File
+						RelativePath="..\mechcmd2\dteam.h"
+						>
+					</File>
+					<File
+						RelativePath="..\mechcmd2\dterrobj.h"
+						>
+					</File>
+					<File
+						RelativePath="..\mechcmd2\dwarrior.h"
+						>
+					</File>
+					<File
+						RelativePath="..\mechcmd2\dweaponbolt.h"
+						>
+					</File>
+					<File
+						RelativePath="..\mechcmd2\gameobj.h"
+						>
+					</File>
+					<File
+						RelativePath="..\mechcmd2\gate.h"
+						>
+					</File>
+					<File
+						RelativePath="..\mechcmd2\goal.h"
+						>
+					</File>
+					<File
+						RelativePath="..\mechcmd2\group.h"
+						>
+					</File>
+					<File
+						RelativePath="..\mechcmd2\gvehicl.h"
+						>
+					</File>
+					<File
+						RelativePath="..\mechcmd2\light.h"
+						>
+					</File>
+					<File
+						RelativePath="..\mechcmd2\mech.h"
+						>
+					</File>
+					<File
+						RelativePath="..\mechcmd2\mechclass.h"
+						>
+					</File>
+					<File
+						RelativePath="..\mechcmd2\mover.h"
+						>
+					</File>
+					<File
+						RelativePath="..\mechcmd2\objmgr.h"
+						>
+					</File>
+					<File
+						RelativePath="..\mechcmd2\objtype.h"
+						>
+					</File>
+					<File
+						RelativePath="..\mechcmd2\tacordr.h"
+						>
+					</File>
+					<File
+						RelativePath="..\mechcmd2\team.h"
+						>
+					</File>
+					<File
+						RelativePath="..\mechcmd2\terrobj.h"
+						>
+					</File>
+					<File
+						RelativePath="..\mechcmd2\turret.h"
+						>
+					</File>
+					<File
+						RelativePath="..\mechcmd2\unitdesg.h"
+						>
+					</File>
+					<File
+						RelativePath="..\mechcmd2\warrior.h"
+						>
+					</File>
+					<File
+						RelativePath="..\mechcmd2\weaponbolt.h"
 						>
 					</File>
 				</Filter>
 				<Filter
-					Name="file"
+					Name="Sound"
 					>
 					<File
-						RelativePath="..\mclib\csvfile.h"
+						RelativePath="..\mechcmd2\dradio.h"
 						>
 					</File>
 					<File
-						RelativePath="..\mclib\dcsvfile.h"
+						RelativePath="..\mechcmd2\gamesound.h"
 						>
 					</File>
 					<File
-						RelativePath="..\mclib\dffile.h"
+						RelativePath="..\mechcmd2\radio.h"
 						>
 					</File>
-					<File
-						RelativePath="..\mclib\dfile.h"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\dgamelog.h"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\dinifile.h"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\dpacket.h"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\fastfile.h"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\ffent.h"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\ffile.h"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\file.h"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\gamelog.h"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\inifile.h"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\packet.h"
-						>
-					</File>
-				</Filter>
-				<Filter
-					Name="gui"
-					>
-					<File
-						RelativePath="..\mclib\dbasegui.h"
-						>
-					</File>
-				</Filter>
-				<Filter
-					Name="terrain"
-					>
-					<File
-						RelativePath="..\mclib\clouds.h"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\crater.h"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\dmapdata.h"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\dquad.h"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\dterrain.h"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\dterrtxm.h"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\dvertex.h"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\mapdata.h"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\quad.h"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\resizeimage.h"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\terrain.h"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\terrtxm.h"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\terrtxm2.h"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\txmconv.h"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\vertex.h"
-						>
-					</File>
-				</Filter>
-				<Filter
-					Name="utilities"
-					>
 				</Filter>
 			</Filter>
 			<Filter
@@ -1294,14 +1582,14 @@
 			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}"
 			>
 			<Filter
-				Name="mclib"
+				Name="mechcmd2"
 				>
 				<File
-					RelativePath="..\mclib\$(TargetName).rc"
+					RelativePath="..\mechcmd2\mechcmd2.rc"
 					>
 				</File>
 				<File
-					RelativePath="..\mclib\resource.h"
+					RelativePath="..\mechcmd2\resource.h"
 					>
 				</File>
 			</Filter>
@@ -1317,7 +1605,7 @@
 				Name="precompiled"
 				>
 				<File
-					RelativePath="..\mclib\stdafx.cpp"
+					RelativePath="..\mechcmd2\stdafx.cpp"
 					>
 					<FileConfiguration
 						Name="Debug|Win32"
@@ -1353,7 +1641,7 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\mclib\stdafx.h"
+					RelativePath="..\mechcmd2\stdafx.h"
 					>
 				</File>
 			</Filter>
@@ -1361,7 +1649,7 @@
 				Name="DLL"
 				>
 				<File
-					RelativePath="..\mclib\$(TargetName).def"
+					RelativePath="..\mechcmd2\$(TargetName).def"
 					>
 				</File>
 			</Filter>

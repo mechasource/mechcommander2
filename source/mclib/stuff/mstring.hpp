@@ -432,8 +432,7 @@ namespace Stuff
 		~MString(void);
 
 		void TestInstance(void) const;
-		static bool
-		TestClass(void);
+		static bool TestClass(void);
 
 		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		// Length, Size

@@ -286,7 +286,7 @@ bool MultipleBitStreamTest(size_t total_sections_to_write)
 		{
 			number_of_bytes += 1;
 		}
-		for(int32_t byte_count = 0; byte_count < number_of_bytes; ++byte_count)
+		for(size_t byte_count = 0; byte_count < number_of_bytes; ++byte_count)
 		{
 			byte_array[byte_count] = (uint8_t)Random::GetLessThan(256);
 			//byte_array[byte_count] = 0xff;
@@ -344,7 +344,7 @@ bool MultipleBitStreamTest(size_t total_sections_to_write)
 		for(byte_count = 0; byte_count < 8; ++byte_count)
 		{
 			//Test_Assumption(source_byte_array == copy_byte_array);
-			for(int32_t bit_count = 7; bit_count > -1; --bit_count)
+			for(size_t bit_count = 7; bit_count > -1; --bit_count)
 			{
 				uint8_t bit_value = (uint8_t)(source_byte_array[byte_count] >> bit_count);
 				bit_value &= 0x01;
@@ -374,7 +374,7 @@ bool MultipleBitStreamTest(size_t total_sections_to_write)
 		text = "\t---- Dst Bit Value : ";
 		for(byte_count = 0; byte_count < 8; ++byte_count)
 		{
-			for(int32_t bit_count = 7; bit_count > -1; --bit_count)
+			for(size_t bit_count = 7; bit_count > -1; --bit_count)
 			{
 				uint8_t bit_value = (uint8_t)(copy_byte_array[byte_count] >> bit_count);
 				bit_value &= 0x01;

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="8,00"
-	Name="ablt"
-	ProjectGUID="{533EB470-9743-48C3-A77F-1490873B7CBB}"
+	Version="9,00"
+	Name="viewer"
+	ProjectGUID="{D6A172C0-ACCD-4F05-BADA-D8DEBD36B666}"
 	RootNamespace="MechCommander"
 	Keyword="AtlProj"
 	>
@@ -73,7 +73,7 @@
 			<Tool
 				Name="VCResourceCompilerTool"
 				PreprocessorDefinitions="_DEBUG"
-				AdditionalIncludeDirectories="&quot;$(IntDir)&quot;"
+				AdditionalIncludeDirectories="$(IntDir)"
 			/>
 			<Tool
 				Name="VCPreLinkEventTool"
@@ -85,7 +85,7 @@
 				AdditionalOptions=" -ignore:4199 -pdbcompress -dynamicbase -nxcompat"
 				Version="1.1"
 				LinkIncremental="1"
-				ModuleDefinitionFile=""
+				ModuleDefinitionFile="$(TargetName).def"
 				GenerateDebugInformation="true"
 				SubSystem="2"
 				SetChecksum="true"
@@ -182,7 +182,7 @@
 				AdditionalOptions=" -ignore:4199 -pdbcompress -dynamicbase -nxcompat"
 				Version="1.1"
 				LinkIncremental="1"
-				ModuleDefinitionFile=""
+				ModuleDefinitionFile="$(TargetName).def"
 				GenerateDebugInformation="true"
 				SubSystem="2"
 				SetChecksum="true"
@@ -282,7 +282,7 @@
 				AdditionalOptions=" -ignore:4199 -pdbcompress -dynamicbase -nxcompat"
 				Version="1.1"
 				LinkIncremental="1"
-				ModuleDefinitionFile=""
+				ModuleDefinitionFile="$(TargetName).def"
 				GenerateDebugInformation="true"
 				SubSystem="2"
 				OptimizeReferences="2"
@@ -382,7 +382,7 @@
 				AdditionalOptions=" -ignore:4199 -pdbcompress -dynamicbase -nxcompat"
 				Version="1.1"
 				LinkIncremental="1"
-				ModuleDefinitionFile=""
+				ModuleDefinitionFile="$(TargetName).def"
 				GenerateDebugInformation="true"
 				SubSystem="2"
 				OptimizeReferences="2"
@@ -426,124 +426,80 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<Filter
-				Name="ablt"
+				Name="viewer"
 				>
 				<File
-					RelativePath="..\tools\ablt\ablmc2.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\tools\ablt\ablt.cpp"
+					RelativePath="..\tools\viewer\view.cpp"
 					>
 				</File>
 			</Filter>
 			<Filter
-				Name="abl"
+				Name="external dependencies"
 				>
 				<File
-					RelativePath="..\mclib\abldbug.cpp"
+					RelativePath="..\mechcmd2\mechgui\aanimobject.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\mclib\abldecl.cpp"
+					RelativePath="..\mechcmd2\gamesound.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\mclib\ablenv.cpp"
+					RelativePath="..\mechcmd2\logisticscomponent.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\mclib\ablerr.cpp"
+					RelativePath="..\mechcmd2\logisticsdata.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\mclib\ablexec.cpp"
+					RelativePath="..\mechcmd2\logisticsmech.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\mclib\ablexpr.cpp"
+					RelativePath="..\mechcmd2\logisticsmissioninfo.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\mclib\ablrtn.cpp"
+					RelativePath="..\mechcmd2\logisticspilot.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\mclib\ablscan.cpp"
+					RelativePath="..\mechcmd2\logisticsvariant.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\mclib\ablstd.cpp"
+					RelativePath="..\mechcmd2\mechlopedia.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\mclib\ablstmt.cpp"
+					RelativePath="..\mechcmd2\mission2.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\mclib\ablsymt.cpp"
+					RelativePath="..\mechcmd2\prefs.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\mclib\ablxexpr.cpp"
+					RelativePath="..\mechcmd2\radio.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\mclib\ablxstd.cpp"
+					RelativePath="..\mechcmd2\simplecamera.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\mclib\ablxstmt.cpp"
+					RelativePath="..\mechcmd2\simplecomponentlistbox.cpp"
 					>
 				</File>
-				<Filter
-					Name="headers"
+			</Filter>
+			<Filter
+				Name="gameplatform"
+				>
+				<File
+					RelativePath="..\gameos\src\startup\gameplatform.cpp"
 					>
-					<File
-						RelativePath="..\mclib\abl.h"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\abldbug.h"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\ablenv.h"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\ablerr.h"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\ablexec.h"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\ablgen.h"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\ablparse.h"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\ablscan.h"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\ablsymt.h"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\dabldbug.h"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\dablenv.h"
-						>
-					</File>
-				</Filter>
+				</File>
 			</Filter>
 		</Filter>
 		<Filter
@@ -552,7 +508,11 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<Filter
-				Name="ablt"
+				Name="viewer"
+				>
+			</Filter>
+			<Filter
+				Name="extra"
 				>
 			</Filter>
 			<Filter
@@ -574,14 +534,18 @@
 			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}"
 			>
 			<Filter
-				Name="ablt"
+				Name="viewer"
 				>
 				<File
-					RelativePath="..\tools\ablt\ablt.rc"
+					RelativePath="..\tools\viewer\mechlopedia.ico"
 					>
 				</File>
 				<File
-					RelativePath="..\tools\ablt\resource.h"
+					RelativePath="..\tools\viewer\resource.h"
+					>
+				</File>
+				<File
+					RelativePath="..\tools\viewer\viewer.rc"
 					>
 				</File>
 			</Filter>
@@ -597,7 +561,7 @@
 				Name="precompiled"
 				>
 				<File
-					RelativePath="..\ABLT\stdafx.cpp"
+					RelativePath="..\tools\viewer\stdafx.cpp"
 					>
 					<FileConfiguration
 						Name="Debug|Win32"
@@ -633,7 +597,7 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\ABLT\stdafx.h"
+					RelativePath="..\tools\viewer\stdafx.h"
 					>
 				</File>
 			</Filter>

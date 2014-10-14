@@ -178,8 +178,7 @@ namespace Stuff
 		~SortedChain(void);
 
 		void TestInstance(void);
-		static bool
-		TestClass(void);
+		static bool TestClass(void);
 		static bool
 		ProfileClass(void);
 

@@ -102,8 +102,7 @@ namespace Stuff
 		);
 #endif
 		void TestInstance(void) const;
-		static bool
-		TestClass(void);
+		static bool TestClass(void);
 	};
 
 }

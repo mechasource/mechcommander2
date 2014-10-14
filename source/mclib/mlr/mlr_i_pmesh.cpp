@@ -769,7 +769,7 @@ MLR_I_PMesh::CastRay(
 	//
 	int32_t poly_start = 0, numPrimitives = GetNumPrimitives();
 	bool hit = false;
-	for(int32_t polygon = 0; polygon < numPrimitives; ++polygon)
+	for(size_t polygon = 0; polygon < numPrimitives; ++polygon)
 	{
 		int32_t stride = lengths[polygon];
 		Verify(stride > 2);

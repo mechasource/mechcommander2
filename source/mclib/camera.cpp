@@ -731,9 +731,9 @@ uint32_t Camera::inverseProject(Stuff::Vector2DOf<int32_t>& screenPos, Stuff::Ve
 		int32_t VerticesMapSideDivTwo = Terrain::realVerticesMapSide / 2;
 		int32_t MetersMapSideDivTwo = VerticesMapSideDivTwo * float2long(Terrain::worldUnitsPerVertex);
 		int32_t dx, dy, cd = 1 << 30, dist, tvx = screenPos.x, tvy = screenPos.y;
-		for(int32_t cellC = 0; cellC < 3; cellC++)
+		for(size_t cellC = 0; cellC < 3; cellC++)
 		{
-			for(int32_t cellR = 0; cellR < 3; cellR++)
+			for(size_t cellR = 0; cellR < 3; cellR++)
 			{
 				point.x = closestVertex->vx;
 				point.y = closestVertex->vy;
@@ -793,9 +793,9 @@ uint32_t Camera::inverseProject(Stuff::Vector2DOf<int32_t>& screenPos, Stuff::Ve
 				}
 			}
 		}*/
-		for(int32_t column = 0; column < land->realVerticesMapSide; column ++)
+		for(size_t column = 0; column < land->realVerticesMapSide; column ++)
 		{
-			for(int32_t row = 0; row < land->realVerticesMapSide; row++/*row += land->realVerticesMapSide - 1*/)
+			for(size_t row = 0; row < land->realVerticesMapSide; row++/*row += land->realVerticesMapSide - 1*/)
 			{
 				tmpWorld.x = land->tileColToWorldCoord[column];
 				tmpWorld.y = land->tileRowToWorldCoord[row];

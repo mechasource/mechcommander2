@@ -142,7 +142,7 @@ SortData::DrawPointCloud()
 		//
 		// Warning! - These points need clipping!
 		//
-		for(auto i = numVertices; i; i--)
+		for(size_t i = numVertices; i; i--)
 		{
 			pArray[Triangle + 0] = *((GOSVertex*)vertices + Vertex);
 			pArray[Triangle + 1] = *((GOSVertex*)vertices + Vertex);

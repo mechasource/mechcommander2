@@ -28,7 +28,7 @@ namespace Stuff
 #define Mem_Copy(destination, source, length, available)\
 	memcpy(destination, source, length)
 #define Str_Copy(destination, source, available)\
-	strcpy(destination, source)
+	strcpy_s(destination, available, source)
 #define Str_Cat(destination, source, available)\
 	strcat(destination, source)
 

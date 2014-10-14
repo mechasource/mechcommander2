@@ -1263,9 +1263,9 @@ void Terrain::selectVerticesInRect(const Stuff::Vector4D& topLeft, const Stuff::
 		yMin = bottomRight.y;
 		yMax = topLeft.y;
 	}
-	for(auto i = 0; i < realVerticesMapSide; ++i)
+	for(size_t i = 0; i < realVerticesMapSide; ++i)
 	{
-		for(auto j = 0; j < realVerticesMapSide; ++j)
+		for(size_t j = 0; j < realVerticesMapSide; ++j)
 		{
 			worldPos.y = tileRowToWorldCoord[j];
 			worldPos.x = tileColToWorldCoord[i];
@@ -1308,7 +1308,7 @@ bool Terrain::selectVertex(int32_t tileR, int32_t tileC, bool bSelect)
 float Terrain::getHighestVertex(int32_t& tileR, int32_t& tileC)
 {
 	float highest = -9999999.; // an absurdly small number
-	for(auto i = 0; i < realVerticesMapSide * realVerticesMapSide; ++i)
+	for(size_t i = 0; i < realVerticesMapSide * realVerticesMapSide; ++i)
 	{
 		float tmp = getVertexHeight(i);
 		if(tmp > highest)
@@ -1325,7 +1325,7 @@ float Terrain::getHighestVertex(int32_t& tileR, int32_t& tileC)
 float Terrain::getLowestVertex(int32_t& tileR, int32_t& tileC)
 {
 	float lowest = 9999999.; // an absurdly big number
-	for(auto i = 0; i < realVerticesMapSide * realVerticesMapSide; ++i)
+	for(size_t i = 0; i < realVerticesMapSide * realVerticesMapSide; ++i)
 	{
 		float tmp = getVertexHeight(i);
 		if(tmp < lowest)

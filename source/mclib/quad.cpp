@@ -125,9 +125,9 @@ void TerrainQuad::setupTextures(void)
 				{
 					mineResult.init();
 					int32_t cellPos = 0;
-					for(int32_t cellR = 0; cellR < MAPCELL_DIM; cellR++)
+					for(size_t cellR = 0; cellR < MAPCELL_DIM; cellR++)
 					{
-						for(int32_t cellC = 0; cellC < MAPCELL_DIM; cellC++, cellPos++)
+						for(size_t cellC = 0; cellC < MAPCELL_DIM; cellC++, cellPos++)
 						{
 							int32_t actualCellRow = tileR * MAPCELL_DIM + cellR;
 							int32_t actualCellCol = tileC * MAPCELL_DIM + cellC;
@@ -189,9 +189,9 @@ void TerrainQuad::setupTextures(void)
 				{
 					int32_t cellPos = 0;
 					mineResult.init();
-					for(int32_t cellR = 0; cellR < MAPCELL_DIM; cellR++)
+					for(size_t cellR = 0; cellR < MAPCELL_DIM; cellR++)
 					{
-						for(int32_t cellC = 0; cellC < MAPCELL_DIM; cellC++, cellPos++)
+						for(size_t cellC = 0; cellC < MAPCELL_DIM; cellC++, cellPos++)
 						{
 							int32_t actualCellRow = tileR * MAPCELL_DIM + cellR;
 							int32_t actualCellCol = tileC * MAPCELL_DIM + cellC;
@@ -284,9 +284,9 @@ void TerrainQuad::setupTextures(void)
 				{
 					int32_t cellPos = 0;
 					mineResult.init();
-					for(int32_t cellR = 0; cellR < MAPCELL_DIM; cellR++)
+					for(size_t cellR = 0; cellR < MAPCELL_DIM; cellR++)
 					{
-						for(int32_t cellC = 0; cellC < MAPCELL_DIM; cellC++, cellPos++)
+						for(size_t cellC = 0; cellC < MAPCELL_DIM; cellC++, cellPos++)
 						{
 							int32_t actualCellRow = tileR * MAPCELL_DIM + cellR;
 							int32_t actualCellCol = tileC * MAPCELL_DIM + cellC;
@@ -370,9 +370,9 @@ void TerrainQuad::setupTextures(void)
 				{
 					int32_t cellPos = 0;
 					mineResult.init();
-					for(int32_t cellR = 0; cellR < MAPCELL_DIM; cellR++)
+					for(size_t cellR = 0; cellR < MAPCELL_DIM; cellR++)
 					{
-						for(int32_t cellC = 0; cellC < MAPCELL_DIM; cellC++, cellPos++)
+						for(size_t cellC = 0; cellC < MAPCELL_DIM; cellC++, cellPos++)
 						{
 							int32_t actualCellRow = tileR * MAPCELL_DIM + cellR;
 							int32_t actualCellCol = tileC * MAPCELL_DIM + cellC;
@@ -2354,9 +2354,9 @@ void TerrainQuad::drawLine(void)
 		int32_t tileC = rowCol & 0x0000ffff;
 		if(GameMap)
 		{
-			for(int32_t cellR = 0; cellR < MAPCELL_DIM; cellR++)
+			for(size_t cellR = 0; cellR < MAPCELL_DIM; cellR++)
 			{
-				for(int32_t cellC = 0; cellC < MAPCELL_DIM; cellC++)
+				for(size_t cellC = 0; cellC < MAPCELL_DIM; cellC++)
 				{
 					int32_t actualCellRow = tileR * MAPCELL_DIM + cellR;
 					int32_t actualCellCol = tileC * MAPCELL_DIM + cellC;
@@ -2454,7 +2454,7 @@ void TerrainQuad::drawLine(void)
 		int32_t tileC = rowCol & 0x0000ffff;
 		int32_t cellR = tileR * MAPCELL_DIM;
 		int32_t cellC = tileC * MAPCELL_DIM;
-		for(int32_t currentDoor = 0; currentDoor < GlobalMoveMap[0]->numDoors; currentDoor++)
+		for(size_t currentDoor = 0; currentDoor < GlobalMoveMap[0]->numDoors; currentDoor++)
 		{
 			if((GlobalMoveMap[0]->doors[currentDoor].row >= cellR) &&
 					(GlobalMoveMap[0]->doors[currentDoor].row < (cellR + MAPCELL_DIM)) &&
@@ -2538,9 +2538,9 @@ void TerrainQuad::drawLOSLine(void)
 		int32_t tileC = rowCol & 0x0000ffff;
 		if(GameMap)
 		{
-			for(int32_t cellR = 0; cellR < MAPCELL_DIM; cellR++)
+			for(size_t cellR = 0; cellR < MAPCELL_DIM; cellR++)
 			{
-				for(int32_t cellC = 0; cellC < MAPCELL_DIM; cellC++)
+				for(size_t cellC = 0; cellC < MAPCELL_DIM; cellC++)
 				{
 					int32_t actualCellRow = tileR * MAPCELL_DIM + cellR;
 					int32_t actualCellCol = tileC * MAPCELL_DIM + cellC;
@@ -2761,9 +2761,9 @@ void TerrainQuad::drawDebugCellLine(void)
 		int32_t tileC = rowCol & 0x0000ffff;
 		if(GameMap)
 		{
-			for(int32_t cellR = 0; cellR < MAPCELL_DIM; cellR++)
+			for(size_t cellR = 0; cellR < MAPCELL_DIM; cellR++)
 			{
-				for(int32_t cellC = 0; cellC < MAPCELL_DIM; cellC++)
+				for(size_t cellC = 0; cellC < MAPCELL_DIM; cellC++)
 				{
 					int32_t actualCellRow = tileR * MAPCELL_DIM + cellR;
 					int32_t actualCellCol = tileC * MAPCELL_DIM + cellC;
@@ -2856,9 +2856,9 @@ void TerrainQuad::drawMine(void)
 	{
 		int32_t cellPos = 0;
 		float cellWidth = Terrain::worldUnitsPerCell;
-		for(int32_t cellR = 0; cellR < MAPCELL_DIM; cellR++)
+		for(size_t cellR = 0; cellR < MAPCELL_DIM; cellR++)
 		{
-			for(int32_t cellC = 0; cellC < MAPCELL_DIM; cellC++, cellPos++)
+			for(size_t cellC = 0; cellC < MAPCELL_DIM; cellC++, cellPos++)
 			{
 				//--------------------------------------------------------------------
 				bool drawMine = false;

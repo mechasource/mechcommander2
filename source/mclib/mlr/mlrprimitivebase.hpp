@@ -149,14 +149,11 @@ namespace MidLevelRenderer
 
 		// is to call befor clipping, parameter: camera point
 		virtual int32_t FindBackFace(const Stuff::Point3D&) = 0;
-
 		virtual void Lighting(MLRLight* const*, uint32_t nrLights) = 0;
-
 		static void InitializeDraw(void);
-
 		virtual void InitializeDrawPrimitive(uint8_t, int32_t = 0);
 
-		int32_t GetVisible()
+		uint8_t GetVisible(void)
 		{
 			Check_Object(this);
 			return visible;
@@ -180,23 +177,15 @@ namespace MidLevelRenderer
 			return nullptr;
 		}
 
-		int32_t
-		GetSortDataMode()
+		uint32_t GetSortDataMode(void)
 		{
 			Check_Object(this);
 			return drawMode;
 		}
 
-		virtual bool
-		CastRay(
-			Stuff::Line3D* line,
-			Stuff::Normal3D* normal
-		);
-
+		virtual bool CastRay(Stuff::Line3D* line, Stuff::Normal3D* normal);
 		virtual void PaintMe(const Stuff::RGBAColor* paintMe) = 0;
-
 		virtual uint32_t TransformAndClip(Stuff::Matrix4D*, MLRClippingState, GOSVertexPool*, bool = false) = 0;
-
 		virtual void TransformNoClip(Stuff::Matrix4D*, GOSVertexPool*, bool = false) = 0;
 
 		virtual uint32_t GetNumPasses(void)
@@ -213,8 +202,7 @@ namespace MidLevelRenderer
 		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		// This functions using the static buffers
 		//
-		void
-		SetClipCoord(Stuff::Point3D& point, size_t index)
+		void SetClipCoord(Stuff::Point3D& point, size_t index)
 		{
 			Check_Object(this);
 			Verify(clipExtraCoords->GetLength() > index);
@@ -222,8 +210,7 @@ namespace MidLevelRenderer
 			(*clipExtraCoords)[index].y = point.y;
 			(*clipExtraCoords)[index].z = point.z;
 		}
-		void
-		FlashClipCoords(size_t num)
+		void FlashClipCoords(size_t num)
 		{
 			Check_Object(this);
 			Verify(clipExtraCoords->GetLength() > num);
@@ -235,8 +222,7 @@ namespace MidLevelRenderer
 				coords[i].z = (*clipExtraCoords)[i].z;
 			}
 		}
-		void
-		SetClipTexCoord(Stuff::Vector2DScalar& uvs, size_t index)
+		void SetClipTexCoord(Stuff::Vector2DScalar& uvs, size_t index)
 		{
 			Check_Object(this);
 			Verify(clipExtraTexCoords->GetLength() > index);
@@ -271,7 +257,6 @@ namespace MidLevelRenderer
 				delete this;
 			}
 		}
-
 		size_t GetReferenceCount(void)
 		{
 			return referenceCount;

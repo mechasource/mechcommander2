@@ -452,7 +452,7 @@ int32_t TG_TypeMultiShape::LoadTGMultiShapeFromASE(PSTR fileName, bool forceMake
 		int32_t numMaterials = atol(numberData);
 		numTextures = 0;
 		puint8_t aseBuffer = aseContents;
-		for(int32_t nmt = 0; nmt < numMaterials; nmt++)
+		for(size_t nmt = 0; nmt < numMaterials; nmt++)
 		{
 			sprintf(textureId, ASE_MATERIAL_CLASS);
 			textureData = strstr((PSTR)aseBuffer, textureId);
@@ -1168,7 +1168,7 @@ int32_t TG_MultiShape::TransformMultiShape(Stuff::Point3D* pos, Stuff::UnitQuate
 			// Setup Lighting here.
 			if(Environment.Renderer != 3)
 			{
-				for(auto iLight = 0; iLight < TG_Shape::numLights; iLight++)
+				for(size_t iLight = 0; iLight < TG_Shape::numLights; iLight++)
 				{
 					if((TG_Shape::listOfLights[iLight] != nullptr) && (TG_Shape::listOfLights[iLight]->active))
 					{
@@ -1318,7 +1318,7 @@ void TG_MultiShape::Render(bool refreshTextures, float forceZ)
 			// Only need to due for unique instance items like mechs
 			if(refreshTextures)
 			{
-				for(auto j = 0; j < myMultiType->numTextures; j++)
+				for(size_t j = 0; j < myMultiType->numTextures; j++)
 				{
 					listOfShapes[i].node->myType->SetTextureHandle(j, myMultiType->listOfTextures[j].mcTextureNodeIndex);
 					listOfShapes[i].node->myType->SetTextureAlpha(j, myMultiType->listOfTextures[j].textureAlpha);
@@ -1343,7 +1343,7 @@ void TG_MultiShape::RenderShadows(bool refreshTextures)
 			// Only need to due for unique instance items like mechs
 			if(refreshTextures)
 			{
-				for(auto j = 0; j < myMultiType->numTextures; j++)
+				for(size_t j = 0; j < myMultiType->numTextures; j++)
 				{
 					listOfShapes[i].node->myType->SetTextureHandle(j, myMultiType->listOfTextures[j].mcTextureNodeIndex);
 					listOfShapes[i].node->myType->SetTextureAlpha(j, myMultiType->listOfTextures[j].textureAlpha);
@@ -1378,7 +1378,7 @@ void TG_MultiShape::StopUsing(PSTR nodeName)
 		}
 		Stuff::Point3D zero;
 		zero.x = zero.y = zero.z = 0.0f;
-		for(auto j = curChild; j >= 0; j--)
+		for(size_t j = curChild; j >= 0; j--)
 		{
 			if(_stricmp(childChain[j]->node->getNodeName(), nodeName) == 0)
 			{
@@ -1421,7 +1421,7 @@ TG_MultiShapePtr TG_MultiShape::Detach(PSTR nodeName)
 		}
 		Stuff::Point3D zero;
 		zero.x = zero.y = zero.z = 0.0f;
-		for(auto j = curChild; j >= 0; j--)
+		for(size_t j = curChild; j >= 0; j--)
 		{
 			if(_stricmp(childChain[j]->node->getNodeName(), nodeName) == 0)
 			{
@@ -1448,7 +1448,7 @@ TG_MultiShapePtr TG_MultiShape::Detach(PSTR nodeName)
 		resultShape->listOfShapes[i] = *detachables[i];
 		if(_stricmp(resultShape->listOfShapes[i].node->getNodeName(), nodeName) == 0)
 			resultShape->listOfShapes[i].parentNode = nullptr;		//Set new top O heirarchy.
-		for(auto j = 0; j < numTG_Shapes; j++)
+		for(size_t j = 0; j < numTG_Shapes; j++)
 		{
 			if(&listOfShapes[j] == detachables[i])
 			{
@@ -1463,7 +1463,7 @@ TG_MultiShapePtr TG_MultiShape::Detach(PSTR nodeName)
 	{
 		//----------------------------------------------------------------------------------
 		// For each shape, look for another node whose NodeId matches this shape's parentId
-		for(auto j = 0; j < resultShape->numTG_Shapes; j++)
+		for(size_t j = 0; j < resultShape->numTG_Shapes; j++)
 		{
 			if(strcmp(resultShape->listOfShapes[i].node->myType->getParentId(), resultShape->listOfShapes[j].node->myType->getNodeId()) == 0)
 			{
@@ -1499,7 +1499,7 @@ TG_MultiShapePtr TG_MultiShape::Detach(PSTR nodeName)
 	{
 		//----------------------------------------------------------------------------------
 		// For each shape, look for another node whose NodeId matches this shape's parentId
-		for(auto j = 0; j < numTG_Shapes; j++)
+		for(size_t j = 0; j < numTG_Shapes; j++)
 		{
 			if(strcmp(listOfShapes[i].node->myType->getParentId(), listOfShapes[j].node->myType->getNodeId()) == 0)
 			{
@@ -1535,7 +1535,7 @@ bool TG_MultiShape::isChildOf(PSTR nodeName, PSTR parentName)
 		}
 		Stuff::Point3D zero;
 		zero.x = zero.y = zero.z = 0.0f;
-		for(auto j = curChild; j >= 0; j--)
+		for(size_t j = curChild; j >= 0; j--)
 		{
 			if(_stricmp(childChain[j]->node->getNodeName(), parentName) == 0)
 			{
@@ -1679,7 +1679,7 @@ void TG_AnimateShape::destroy(void)
 {
 	if(listOfAnimation)
 	{
-		for(auto i = 0; i < count; ++i)
+		for(size_t i = 0; i < count; ++i)
 		{
 			TG_Shape::tglHeap->Free(listOfAnimation[i].pos);
 			listOfAnimation[i].pos = nullptr;
@@ -1899,7 +1899,7 @@ int32_t TG_AnimateShape::LoadTGMultiShapeAnimationFromASE(PSTR fileName, TG_Type
 						char LineData[1024];
 						GetNextLine(animScan, LineData);
 						animScan += strlen(LineData) + 1;
-						for(auto j = 0; j < listOfAnimation[i].numFrames; j++)
+						for(size_t j = 0; j < listOfAnimation[i].numFrames; j++)
 						{
 							PSTR scanData;
 							sprintf(nodeName, "%s %d", ASE_ANIM_POS_SAMPLE, (int32_t)timeStamp);
@@ -1957,7 +1957,7 @@ int32_t TG_AnimateShape::LoadTGMultiShapeAnimationFromASE(PSTR fileName, TG_Type
 						char LineData[1024];
 						GetNextLine(animScan, LineData);
 						animScan += strlen(LineData) + 1;
-						for(auto j = 0; j < listOfAnimation[i].numFrames; j++)
+						for(size_t j = 0; j < listOfAnimation[i].numFrames; j++)
 						{
 							PSTR scanData;
 							sprintf(nodeName, "%s %d", ASE_ANIM_ROT_SAMPLE, (int32_t)timeStamp);
@@ -2030,7 +2030,7 @@ void TG_AnimateShape::SetAnimationState(TG_MultiShapePtr shape)
 	shape->ClearAnimation();
 	if(!shapeIdsSet)
 	{
-		for(auto j = 0; j < count; j++)
+		for(size_t j = 0; j < count; j++)
 		{
 			bool foundNode = false;
 			for(i = 0; i < shape->GetNumShapes(); i++)
@@ -2050,7 +2050,7 @@ void TG_AnimateShape::SetAnimationState(TG_MultiShapePtr shape)
 	}
 	else
 	{
-		for(auto j = 0; j < count; j++)
+		for(size_t j = 0; j < count; j++)
 		{
 			if(listOfAnimation[j].shapeId != 0xffffffff)
 				shape->SetCurrentAnimation(listOfAnimation[j].shapeId, &listOfAnimation[j]);

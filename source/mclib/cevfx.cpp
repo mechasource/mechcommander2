@@ -476,7 +476,7 @@ void VFXShapeElement::drawShape(void)
 	{
 		for(i = 0; i < textureWidth; i++)
 		{
-			for(auto j = 0; j < textureWidth; j++)
+			for(size_t j = 0; j < textureWidth; j++)
 			{
 				*textureMemory = fadeTable[*bufferMemory];
 				bufferMemory++;

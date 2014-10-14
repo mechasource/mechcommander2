@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="8,00"
-	Name="mechgui"
-	ProjectGUID="{97985315-F026-4AB8-A765-2DBE7B78CC6C}"
+	Version="9,00"
+	Name="aseconv"
+	ProjectGUID="{8D87B501-FAB3-4468-A67E-72CE3F4D21AE}"
 	RootNamespace="MechCommander"
 	Keyword="AtlProj"
 	>
@@ -22,11 +22,10 @@
 			Name="Debug|Win32"
 			OutputDirectory="..\..\bin\$(PlatformName)_$(ConfigurationName)\"
 			IntermediateDirectory="$(TEMP)\$(SolutionName)\$(ProjectName)\$(PlatformName)_$(ConfigurationName)\"
-			ConfigurationType="4"
+			ConfigurationType="1"
 			InheritedPropertySheets=".\mechcommander.vsprops"
 			UseOfATL="0"
 			CharacterSet="1"
-			WholeProgramOptimization="0"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -57,18 +56,15 @@
 				Name="VCCLCompilerTool"
 				AdditionalOptions="-sdl -MP -Wall"
 				Optimization="0"
-				AdditionalIncludeDirectories="$(mechcmd2_dir)"
 				PreprocessorDefinitions="WIN32;_WINDOWS;_DEBUG"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
 				EnableFunctionLevelLinking="true"
-				UsePrecompiledHeader="2"
 				PrecompiledHeaderThrough="stdafx.h"
 				WarningLevel="4"
 				DebugInformationFormat="3"
 				CallingConvention="2"
 				EnablePREfast="true"
-				OmitDefaultLibName="true"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -82,10 +78,23 @@
 				Name="VCPreLinkEventTool"
 			/>
 			<Tool
-				Name="VCLibrarianTool"
+				Name="VCLinkerTool"
+				RegisterOutput="true"
+				IgnoreImportLibrary="true"
+				AdditionalOptions=" -ignore:4199 -pdbcompress -dynamicbase -nxcompat"
+				Version="1.1"
+				LinkIncremental="1"
+				ModuleDefinitionFile="$(TargetName).def"
+				GenerateDebugInformation="true"
+				SubSystem="2"
+				SetChecksum="true"
+				SupportUnloadOfDelayLoadedDLL="true"
 			/>
 			<Tool
 				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCManifestTool"
 			/>
 			<Tool
 				Name="VCXDCMakeTool"
@@ -95,6 +104,12 @@
 			/>
 			<Tool
 				Name="VCFxCopTool"
+			/>
+			<Tool
+				Name="VCAppVerifierTool"
+			/>
+			<Tool
+				Name="VCWebDeploymentTool"
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
@@ -104,11 +119,10 @@
 			Name="Debug|x64"
 			OutputDirectory="..\..\bin\$(PlatformName)_$(ConfigurationName)\"
 			IntermediateDirectory="$(TEMP)\$(SolutionName)\$(ProjectName)\$(PlatformName)_$(ConfigurationName)\"
-			ConfigurationType="4"
+			ConfigurationType="1"
 			InheritedPropertySheets=".\mechcommander.vsprops"
 			UseOfATL="0"
 			CharacterSet="1"
-			WholeProgramOptimization="0"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -138,18 +152,15 @@
 				Name="VCCLCompilerTool"
 				AdditionalOptions="-sdl -MP -Wall"
 				Optimization="0"
-				AdditionalIncludeDirectories="$(mechcmd2_dir)"
 				PreprocessorDefinitions="WIN32;_WINDOWS;_DEBUG"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
 				EnableFunctionLevelLinking="true"
-				UsePrecompiledHeader="2"
 				PrecompiledHeaderThrough="stdafx.h"
 				WarningLevel="4"
 				DebugInformationFormat="3"
 				CallingConvention="2"
 				EnablePREfast="true"
-				OmitDefaultLibName="true"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -163,10 +174,24 @@
 				Name="VCPreLinkEventTool"
 			/>
 			<Tool
-				Name="VCLibrarianTool"
+				Name="VCLinkerTool"
+				RegisterOutput="true"
+				IgnoreImportLibrary="true"
+				AdditionalOptions=" -ignore:4199 -pdbcompress -dynamicbase -nxcompat"
+				Version="1.1"
+				LinkIncremental="1"
+				ModuleDefinitionFile="$(TargetName).def"
+				GenerateDebugInformation="true"
+				SubSystem="2"
+				SetChecksum="true"
+				SupportUnloadOfDelayLoadedDLL="true"
+				TargetMachine="17"
 			/>
 			<Tool
 				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCManifestTool"
 			/>
 			<Tool
 				Name="VCXDCMakeTool"
@@ -178,6 +203,12 @@
 				Name="VCFxCopTool"
 			/>
 			<Tool
+				Name="VCAppVerifierTool"
+			/>
+			<Tool
+				Name="VCWebDeploymentTool"
+			/>
+			<Tool
 				Name="VCPostBuildEventTool"
 			/>
 		</Configuration>
@@ -185,11 +216,11 @@
 			Name="Release|Win32"
 			OutputDirectory="..\..\bin\$(PlatformName)_$(ConfigurationName)\"
 			IntermediateDirectory="$(TEMP)\$(SolutionName)\$(ProjectName)\$(PlatformName)_$(ConfigurationName)\"
-			ConfigurationType="4"
+			ConfigurationType="1"
 			InheritedPropertySheets=".\mechcommander.vsprops"
 			UseOfATL="0"
 			CharacterSet="1"
-			WholeProgramOptimization="0"
+			WholeProgramOptimization="1"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -221,17 +252,14 @@
 				AdditionalOptions="-sdl -MP -Wall"
 				Optimization="3"
 				FavorSizeOrSpeed="2"
-				AdditionalIncludeDirectories="$(mechcmd2_dir)"
 				PreprocessorDefinitions="WIN32;_WINDOWS;NDEBUG"
 				StringPooling="true"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
-				UsePrecompiledHeader="2"
 				PrecompiledHeaderThrough="stdafx.h"
 				WarningLevel="4"
 				DebugInformationFormat="3"
 				CallingConvention="2"
-				OmitDefaultLibName="true"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -245,10 +273,25 @@
 				Name="VCPreLinkEventTool"
 			/>
 			<Tool
-				Name="VCLibrarianTool"
+				Name="VCLinkerTool"
+				RegisterOutput="true"
+				IgnoreImportLibrary="true"
+				AdditionalOptions=" -ignore:4199 -pdbcompress -dynamicbase -nxcompat"
+				Version="1.1"
+				LinkIncremental="1"
+				ModuleDefinitionFile="$(TargetName).def"
+				GenerateDebugInformation="true"
+				SubSystem="2"
+				OptimizeReferences="2"
+				EnableCOMDATFolding="2"
+				SetChecksum="true"
+				SupportUnloadOfDelayLoadedDLL="true"
 			/>
 			<Tool
 				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCManifestTool"
 			/>
 			<Tool
 				Name="VCXDCMakeTool"
@@ -260,6 +303,12 @@
 				Name="VCFxCopTool"
 			/>
 			<Tool
+				Name="VCAppVerifierTool"
+			/>
+			<Tool
+				Name="VCWebDeploymentTool"
+			/>
+			<Tool
 				Name="VCPostBuildEventTool"
 			/>
 		</Configuration>
@@ -267,11 +316,11 @@
 			Name="Release|x64"
 			OutputDirectory="..\..\bin\$(PlatformName)_$(ConfigurationName)\"
 			IntermediateDirectory="$(TEMP)\$(SolutionName)\$(ProjectName)\$(PlatformName)_$(ConfigurationName)\"
-			ConfigurationType="4"
+			ConfigurationType="1"
 			InheritedPropertySheets=".\mechcommander.vsprops"
 			UseOfATL="0"
 			CharacterSet="1"
-			WholeProgramOptimization="0"
+			WholeProgramOptimization="1"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -302,17 +351,14 @@
 				AdditionalOptions="-sdl -MP -Wall"
 				Optimization="3"
 				FavorSizeOrSpeed="2"
-				AdditionalIncludeDirectories="$(mechcmd2_dir)"
 				PreprocessorDefinitions="WIN32;_WINDOWS;NDEBUG"
 				StringPooling="true"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
-				UsePrecompiledHeader="2"
 				PrecompiledHeaderThrough="stdafx.h"
 				WarningLevel="4"
 				DebugInformationFormat="3"
 				CallingConvention="2"
-				OmitDefaultLibName="true"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -326,10 +372,26 @@
 				Name="VCPreLinkEventTool"
 			/>
 			<Tool
-				Name="VCLibrarianTool"
+				Name="VCLinkerTool"
+				RegisterOutput="true"
+				IgnoreImportLibrary="true"
+				AdditionalOptions=" -ignore:4199 -pdbcompress -dynamicbase -nxcompat"
+				Version="1.1"
+				LinkIncremental="1"
+				ModuleDefinitionFile="$(TargetName).def"
+				GenerateDebugInformation="true"
+				SubSystem="2"
+				OptimizeReferences="2"
+				EnableCOMDATFolding="2"
+				SetChecksum="true"
+				SupportUnloadOfDelayLoadedDLL="true"
+				TargetMachine="17"
 			/>
 			<Tool
 				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCManifestTool"
 			/>
 			<Tool
 				Name="VCXDCMakeTool"
@@ -339,6 +401,12 @@
 			/>
 			<Tool
 				Name="VCFxCopTool"
+			/>
+			<Tool
+				Name="VCAppVerifierTool"
+			/>
+			<Tool
+				Name="VCWebDeploymentTool"
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
@@ -354,42 +422,10 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<Filter
-				Name="mechgui"
+				Name="aseconv"
 				>
 				<File
-					RelativePath="..\mechcmd2\mechgui\aanim.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\mechcmd2\mechgui\aanimobject.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\mechcmd2\mechgui\abutton.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\mechcmd2\mechgui\aedit.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\mechcmd2\mechgui\afont.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\mechcmd2\mechgui\alistbox.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\mechcmd2\mechgui\ascroll.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\mechcmd2\mechgui\asystem.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\mechcmd2\mechgui\logisticsscreen.cpp"
+					RelativePath="..\tools\aseconv\ase2tgl.cpp"
 					>
 				</File>
 			</Filter>
@@ -400,44 +436,8 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<Filter
-				Name="mechgui"
+				Name="aseconv"
 				>
-				<File
-					RelativePath="..\mechcmd2\mechgui\aanim.h"
-					>
-				</File>
-				<File
-					RelativePath="..\mechcmd2\mechgui\aanimobject.h"
-					>
-				</File>
-				<File
-					RelativePath="..\mechcmd2\mechgui\abutton.h"
-					>
-				</File>
-				<File
-					RelativePath="..\mechcmd2\mechgui\aedit.h"
-					>
-				</File>
-				<File
-					RelativePath="..\mechcmd2\mechgui\afont.h"
-					>
-				</File>
-				<File
-					RelativePath="..\mechcmd2\mechgui\alistbox.h"
-					>
-				</File>
-				<File
-					RelativePath="..\mechcmd2\mechgui\ascroll.h"
-					>
-				</File>
-				<File
-					RelativePath="..\mechcmd2\mechgui\asystem.h"
-					>
-				</File>
-				<File
-					RelativePath="..\mechcmd2\mechgui\logisticsscreen.h"
-					>
-				</File>
 			</Filter>
 			<Filter
 				Name="common"
@@ -458,8 +458,16 @@
 			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}"
 			>
 			<Filter
-				Name="mechgui"
+				Name="aseconv"
 				>
+				<File
+					RelativePath="..\tools\aseconv\aseconv.rc"
+					>
+				</File>
+				<File
+					RelativePath="..\tools\aseconv\resource.h"
+					>
+				</File>
 			</Filter>
 		</Filter>
 		<Filter
@@ -473,43 +481,7 @@
 				Name="precompiled"
 				>
 				<File
-					RelativePath="..\mechcmd2\stdafx.cpp"
-					>
-					<FileConfiguration
-						Name="Debug|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							UsePrecompiledHeader="1"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Debug|x64"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							UsePrecompiledHeader="1"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Release|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							UsePrecompiledHeader="1"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Release|x64"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							UsePrecompiledHeader="1"
-						/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath="..\mechcmd2\stdafx.h"
+					RelativePath="..\tools\aseconv\stdafx.h"
 					>
 				</File>
 			</Filter>

@@ -253,7 +253,7 @@ int32_t TerrainTextures::init(PSTR fileName, PSTR baseName)
 		overlays[i].overlayData = (puint8_t*)tileRAMHeap->Malloc(sizeof(puint8_t) * overlays[i].numTextures * MC_MAX_MIP_LEVELS);
 		gosASSERT(overlays[i].overlayData != nullptr);
 		memset(overlays[i].overlayData, 0, sizeof(puint8_t) * overlays[i].numTextures * MC_MAX_MIP_LEVELS);
-		for(auto j = 0; j < overlays[i].numTextures; j++)
+		for(size_t j = 0; j < overlays[i].numTextures; j++)
 		{
 			int32_t overlayTextureIndex = initOverlay(i, j, overlays[i].overlayName);
 			if(!j)
@@ -293,7 +293,7 @@ int32_t TerrainTextures::init(PSTR fileName, PSTR baseName)
 		details[i].detailData = (puint8_t*)tileRAMHeap->Malloc(sizeof(puint8_t) * details[i].numDetails * MC_MAX_MIP_LEVELS);
 		gosASSERT(details[i].detailData != nullptr);
 		memset(details[i].detailData, 0, sizeof(puint8_t) * details[i].numDetails * MC_MAX_MIP_LEVELS);
-		for(auto j = 0; j < details[i].numDetails; j++)
+		for(size_t j = 0; j < details[i].numDetails; j++)
 		{
 			int32_t detailTextureIndex = initDetail(i, j);
 			if(j == 0)
@@ -376,7 +376,7 @@ int32_t TerrainTextures::initDetail(int32_t typeNum, int32_t detailNum)
 	// It then copies the raw TGA texture to GOS Texture Memory.
 	// We now control the MIP levels.  Load all MIP levels here!
 	int32_t txmResult = -1;
-	for(auto j = 0; j < MC_MAX_MIP_LEVELS; j++)
+	for(size_t j = 0; j < MC_MAX_MIP_LEVELS; j++)
 	{
 		//---------------------------------------------
 		// Change Texture Path to reflect texture size
@@ -420,7 +420,7 @@ int32_t TerrainTextures::initTexture(int32_t typeNum)
 	// It then copies the raw TGA texture to GOS Texture Memory.
 	// We now control the MIP levels.  Load all MIP levels here!
 	int32_t txmResult = -1;
-	for(auto j = 0; j < MC_MAX_MIP_LEVELS; j++)
+	for(size_t j = 0; j < MC_MAX_MIP_LEVELS; j++)
 	{
 		//---------------------------------------------
 		// Change Texture Path to reflect texture size
@@ -504,7 +504,7 @@ void TerrainTextures::initMask(int32_t typeNum)
 				mipSize = (TERRAIN_TXM_SIZE >> 3);
 				break;
 		}
-		for(auto j = 0; j < MC_MASK_NUM; j++)
+		for(size_t j = 0; j < MC_MASK_NUM; j++)
 		{
 			char tmpy[512];
 			sprintf(tmpy, "%s%04d", types[typeNum].maskName, j);
@@ -529,7 +529,7 @@ void TerrainTextures::initMask(int32_t typeNum)
 int32_t TerrainTextures::initOverlay(int32_t overlayNum, int32_t txmNum, PSTR txmName)
 {
 	int32_t txmResult = -1;
-	for(auto j = 0; j < MC_MAX_MIP_LEVELS; j++)
+	for(size_t j = 0; j < MC_MAX_MIP_LEVELS; j++)
 	{
 		//---------------------------------------------
 		// Change Texture Path to reflect texture size
@@ -653,7 +653,7 @@ void TerrainTextures::getOverlayInfoFromHandle(int32_t handle, Overlays& id, uin
 {
 	id = INVALID_OVERLAY;
 	Offset = -1;
-	for(auto i = 0; i < numOverlays; ++i)
+	for(size_t i = 0; i < numOverlays; ++i)
 	{
 		if((handle >> 16) >= overlays[i].baseTXMIndex
 				&& (handle >> 16) < overlays[i].baseTXMIndex + overlays[i].numTextures * MC_MAX_MIP_LEVELS)
@@ -971,7 +971,7 @@ int32_t TerrainTextures::createTransition(uint32_t typeInfo, uint32_t overlayInf
 		}
 		//---------------------------------
 		// No transition yet.  Make it go!
-		for(int32_t kmp = 0; kmp < MC_MAX_MIP_LEVELS; kmp++)
+		for(size_t kmp = 0; kmp < MC_MAX_MIP_LEVELS; kmp++)
 		{
 			//---------------------------------------------
 			// Change Texture Path to reflect texture size
@@ -1012,7 +1012,7 @@ int32_t TerrainTextures::createTransition(uint32_t typeInfo, uint32_t overlayInf
 			// Sort types by priority.
 			for(i = 0; i < 4; i++)
 			{
-				for(auto j = i; j < 4; j++)
+				for(size_t j = i; j < 4; j++)
 				{
 					if(types[priTypes[j]].terrainPriority < types[priTypes[i]].terrainPriority)
 					{

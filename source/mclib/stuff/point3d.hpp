@@ -266,8 +266,7 @@ namespace Stuff
 			return *this;
 		}
 
-		static bool
-		TestClass(void);
+		static bool TestClass(void);
 	};
 
 }

@@ -55,8 +55,8 @@ Note::SetEntry(int32_t value)
 {
 	Check_Object(this);
 	char contents[12];
-	_itoa(value, contents, 10);
-	Verify(strlen(contents) < sizeof(contents));
+	_itoa_s(value, contents,_countof(contents), 10);
+	Verify(strlen(contents) < (_countof(contents)));
 	SetEntry(contents);
 }
 
@@ -80,7 +80,7 @@ Note::SetEntry(float value)
 {
 	Check_Object(this);
 	char contents[32];
-	sprintf(contents, "%f", value);
+	sprintf_s(contents, _countof(contents), "%f", value);
 	Verify(strlen(contents) < sizeof(contents));
 	SetEntry(contents);
 }
@@ -117,8 +117,7 @@ Note::GetEntry(Vector3D* value)
 	PCSTR contents = nullptr;
 	GetEntry(&contents);
 	Check_Pointer(contents);
-	int32_t count =
-		sscanf(
+	int32_t count = sscanf_s(
 			contents,
 			"%f %f %f",
 			&value->x,
@@ -149,8 +148,9 @@ Note::SetEntry(const Vector3D& value)
 	Check_Object(this);
 	static char contents[64];
 	int32_t temp;
-	temp = sprintf(
+	temp = sprintf_s(
 			   contents,
+			   _countof(contents),
 			   "%f %f %f",
 			   value.x,
 			   value.y,
@@ -173,7 +173,7 @@ void Note::GetEntry(YawPitchRoll* value)
 	float fyaw = value->yaw;
 	float fpitch = value->pitch;
 	float froll = value->roll;
-	int32_t count = sscanf(contents, "%f %f %f", &fyaw, &fpitch, &froll);
+	int32_t count = sscanf_s(contents, "%f %f %f", &fyaw, &fpitch, &froll);
 	if(count != 3)
 	{
 		Page* page = m_page;
@@ -201,8 +201,9 @@ Note::SetEntry(const YawPitchRoll& value)
 	Check_Object(this);
 	static char
 	contents[32];
-	sprintf(
+	sprintf_s(
 		contents,
+		_countof(contents),
 		"%f %f %f",
 		value.yaw * Degrees_Per_Radian,
 		value.pitch * Degrees_Per_Radian,
@@ -227,7 +228,7 @@ Note::GetEntry(UnitQuaternion* value)
 	float fyaw = ypr.yaw;
 	float fpitch = ypr.pitch;
 	float froll = ypr.roll;
-	int32_t count = sscanf(contents, "%f %f %f", &fyaw, &fpitch, &froll);
+	int32_t count = sscanf_s(contents, "%f %f %f", &fyaw, &fpitch, &froll);
 	if(count != 3)
 	{
 		Page* page = m_page;
@@ -257,8 +258,9 @@ Note::SetEntry(const UnitQuaternion& value)
 	static char contents[32] = {0};
 	YawPitchRoll ypr(value);
 	Verify(strlen(contents) < sizeof(contents));
-	sprintf(
+	sprintf_s(
 		contents,
+		_countof(contents),
 		"%f %f %f",
 		ypr.yaw * Degrees_Per_Radian,
 		ypr.pitch * Degrees_Per_Radian,
@@ -277,17 +279,15 @@ Note::GetEntry(Motion3D* value)
 	PCSTR contents = nullptr;
 	GetEntry(&contents);
 	Check_Pointer(contents);
-	int32_t count =
-		sscanf(
-			contents,
-			"%f %f %f %f %f %f",
-			&value->linearMotion.x,
-			&value->linearMotion.y,
-			&value->linearMotion.z,
-			&value->angularMotion.x,
-			&value->angularMotion.y,
-			&value->angularMotion.z
-		);
+	int32_t count = sscanf_s(
+		contents,
+		"%f %f %f %f %f %f",
+		&value->linearMotion.x,
+		&value->linearMotion.y,
+		&value->linearMotion.z,
+		&value->angularMotion.x,
+		&value->angularMotion.y,
+		&value->angularMotion.z);
 	if(count != 6)
 	{
 		Page* page = m_page;
@@ -312,8 +312,9 @@ Note::SetEntry(const Motion3D& value)
 	Check_Object(this);
 	static char
 	contents[64];
-	sprintf(
+	sprintf_s(
 		contents,
+		_countof(contents),
 		"%f %f %f %f %f %f",
 		value.linearMotion.x,
 		value.linearMotion.y,
@@ -337,7 +338,7 @@ Note::GetEntry(RGBColor* value)
 	GetEntry(&contents);
 	Check_Pointer(contents);
 	int32_t count =
-		sscanf(
+		sscanf_s(
 			contents,
 			"%f %f %f",
 			&value->red,
@@ -368,8 +369,9 @@ Note::SetEntry(const RGBColor& value)
 	Check_Object(this);
 	static char
 	contents[32];
-	sprintf(
+	sprintf_s(
 		contents,
+		_countof(contents),
 		"%f %f %f",
 		value.red,
 		value.green,
@@ -390,7 +392,7 @@ Note::GetEntry(RGBAColor* value)
 	GetEntry(&contents);
 	Check_Pointer(contents);
 	int32_t count =
-		sscanf(
+		sscanf_s(
 			contents,
 			"%f %f %f %f",
 			&value->red,
@@ -424,8 +426,9 @@ Note::SetEntry(const RGBAColor& value)
 	Check_Object(this);
 	static char
 	contents[48];
-	sprintf(
+	sprintf_s(
 		contents,
+		_countof(contents),
 		"%f %f %f %f",
 		value.red,
 		value.green,

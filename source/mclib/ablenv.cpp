@@ -362,7 +362,7 @@ void destroyModuleRegistry(void)
 		ABLStackFreeCallback(ModuleRegistry[i].fileName);
 		ModuleRegistry[i].fileName = nullptr;
 		ModuleRegistry[i].moduleIdPtr = nullptr;
-		for(auto j = 0; j < ModuleRegistry[i].numSourceFiles; j++)
+		for(size_t j = 0; j < ModuleRegistry[i].numSourceFiles; j++)
 		{
 			ABLStackFreeCallback(ModuleRegistry[i].sourceFiles[j]);
 			ModuleRegistry[i].sourceFiles[j] = nullptr;

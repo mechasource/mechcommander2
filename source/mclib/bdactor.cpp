@@ -140,7 +140,7 @@ void BldgAppearanceType::init(PSTR  fileName)
 	}
 	char aseFileName[512];
 	result = iniFile.readIdString("FileName", aseFileName, 511);
-	int32_t i;
+	auto i;
 	if(result != NO_ERROR)
 	{
 		//Check for LOD filenames instead
@@ -148,8 +148,8 @@ void BldgAppearanceType::init(PSTR  fileName)
 		{
 			char baseName[256];
 			char baseLODDist[256];
-			sprintf(baseName, "FileName%d", i);
-			sprintf(baseLODDist, "Distance%d", i);
+			sprintf_s(baseName, _countof(baseName), "FileName%d", i);
+			sprintf_s(baseLODDist, _countof(baseLODDist), "Distance%d", i);
 			result = iniFile.readIdString(baseName, aseFileName, 511);
 			if(result == NO_ERROR)
 			{
@@ -1142,7 +1142,7 @@ bool BldgAppearance::recalcBounds(void)
 								appearType->setAnimation(bldgShape, bdAnimationState);
 							//-------------------------------------------------
 							// Load the texture and store its handle.
-							for(auto j = 0; j < bldgShape->GetNumTextures(); j++)
+							for(size_t j = 0; j < bldgShape->GetNumTextures(); j++)
 							{
 								char txmName[1024];
 								bldgShape->GetTextureName(j, txmName, 256);
@@ -2059,7 +2059,7 @@ int32_t BldgAppearance::calcCellsCovered(Stuff::Vector3D& pos, pint16_t cellList
 		//Check if the artists meant for this piece to NOT block passability!!
 		if(strnicmp(bldgShape->GetNodeId(i), "_PAB", 4) != 0)
 		{
-			for(auto j = 0; j < bldgShape->GetNumVerticesInShape(i); j++)
+			for(size_t j = 0; j < bldgShape->GetNumVerticesInShape(i); j++)
 			{
 				Stuff::Vector3D vertexPos, worldPos;
 				vertexPos = bldgShape->GetShapeVertexInEditor(i, j, -rotation);
@@ -2123,7 +2123,7 @@ void BldgAppearance::markTerrain(_ScenarioMapCellInfo* pInfo, int32_t type, int3
 			//Check if the artists meant for this piece to NOT block passability!!
 			if(strnicmp(bldgShape->GetNodeId(i), "_PAB", 4) != 0)
 			{
-				for(auto j = 0; j < bldgShape->GetNumVerticesInShape(i); j++)
+				for(size_t j = 0; j < bldgShape->GetNumVerticesInShape(i); j++)
 				{
 					Stuff::Vector3D vertexPos, worldPos;
 					vertexPos = bldgShape->GetShapeVertexInEditor(i, j, -rotation);
@@ -2275,7 +2275,7 @@ void BldgAppearance::markTerrain(_ScenarioMapCellInfo* pInfo, int32_t type, int3
 			//Check if the artists meant for this piece to NOT block passability!!
 			if(strnicmp(bldgShape->GetNodeId(i), "_PAB", 4) != 0)
 			{
-				for(auto j = 0; j < bldgShape->GetNumVerticesInShape(i); j++)
+				for(size_t j = 0; j < bldgShape->GetNumVerticesInShape(i); j++)
 				{
 					Stuff::Vector3D vertexPos, worldPos;
 					vertexPos = bldgShape->GetShapeVertexInEditor(i, j, -rotation);
@@ -2359,7 +2359,7 @@ int32_t BldgAppearance::markMoveMap(bool passable, int32_t* lineOfSightRect, boo
 			//Check if the artists meant for this piece to NOT block passability!!
 			if(strnicmp(tempBldgShape->GetNodeId(i), "_PAB", 4) != 0)
 			{
-				for(auto j = 0; j < tempBldgShape->GetNumVerticesInShape(i); j++)
+				for(size_t j = 0; j < tempBldgShape->GetNumVerticesInShape(i); j++)
 				{
 					Stuff::Vector3D vertexPos, worldPos;
 					vertexPos = tempBldgShape->GetShapeVertexInWorld(i, j, -rotation);
@@ -2400,7 +2400,7 @@ int32_t BldgAppearance::markMoveMap(bool passable, int32_t* lineOfSightRect, boo
 			//Check if the artists meant for this piece to NOT block passability!!
 			if(strnicmp(tempBldgShape->GetNodeId(i), "_PAB", 4) != 0)
 			{
-				for(auto j = 0; j < tempBldgShape->GetNumVerticesInShape(i); j++)
+				for(size_t j = 0; j < tempBldgShape->GetNumVerticesInShape(i); j++)
 				{
 					Stuff::Vector3D vertexPos, worldPos;
 					vertexPos = tempBldgShape->GetShapeVertexInWorld(i, j, -rotation);
@@ -2477,7 +2477,7 @@ void BldgAppearance::markLOS(bool clearIt)
 		if((strnicmp(tempBldgShape->GetNodeId(i), "LOS_", 4) != 0) &&
 				(strnicmp(tempBldgShape->GetNodeId(i), "SpotLight_", 10) != 0))
 		{
-			for(auto j = 0; j < tempBldgShape->GetNumVerticesInShape(i); j++)
+			for(size_t j = 0; j < tempBldgShape->GetNumVerticesInShape(i); j++)
 			{
 				Stuff::Vector3D vertexPos, worldPos;
 				vertexPos = tempBldgShape->GetShapeVertexInEditor(i, j, -rotation);
@@ -2538,7 +2538,7 @@ void BldgAppearance::calcAdjCell(int32_t& row, int32_t& col)
 	int32_t numVert = 0;
 	for(size_t i = 0; i < bldgShape->GetNumShapes(); i++)
 	{
-		for(auto j = 0; j < bldgShape->GetNumVerticesInShape(i); j++)
+		for(size_t j = 0; j < bldgShape->GetNumVerticesInShape(i); j++)
 		{
 			Stuff::Vector3D vertexPos, worldPos;
 			vertexPos = bldgShape->GetShapeVertexInWorld(i, j, -rotation);
@@ -3203,7 +3203,7 @@ bool TreeAppearance::recalcBounds(void)
 						treeShape = appearType->treeShape[currentLOD]->CreateFrom();
 						//-------------------------------------------------
 						// Load the texture and store its handle.
-						for(auto j = 0; j < treeShape->GetNumTextures(); j++)
+						for(size_t j = 0; j < treeShape->GetNumTextures(); j++)
 						{
 							char txmName[1024];
 							treeShape->GetTextureName(j, txmName, 256);
@@ -3540,7 +3540,7 @@ void TreeAppearance::markTerrain(_ScenarioMapCellInfo* pInfo, int32_t type, int3
 		//Check if the artists meant for this piece to NOT block passability!!
 		if(strnicmp(treeShape->GetNodeId(i), "_PAB", 4) != 0)
 		{
-			for(auto j = 0; j < treeShape->GetNumVerticesInShape(i); j++)
+			for(size_t j = 0; j < treeShape->GetNumVerticesInShape(i); j++)
 			{
 				Stuff::Vector3D vertexPos, worldPos;
 				vertexPos = treeShape->GetShapeVertexInEditor(i, j, -rotation);
@@ -3589,7 +3589,7 @@ void TreeAppearance::markLOS(bool clearIt)
 		if((strnicmp(treeShape->GetNodeId(i), "LOS_", 4) != 0) &&
 				(strnicmp(treeShape->GetNodeId(i), "SpotLight_", 10) != 0))
 		{
-			for(auto j = 0; j < treeShape->GetNumVerticesInShape(i); j++)
+			for(size_t j = 0; j < treeShape->GetNumVerticesInShape(i); j++)
 			{
 				Stuff::Vector3D vertexPos, worldPos;
 				vertexPos = treeShape->GetShapeVertexInEditor(i, j, -rotation);

@@ -123,8 +123,7 @@ namespace Stuff
 		// Support functions
 		//
 		void TestInstance(void) const;
-		static bool
-		TestClass(void);
+		static bool TestClass(void);
 
 	private:
 		static const UnitVector3D identity;

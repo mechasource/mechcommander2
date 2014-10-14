@@ -1357,7 +1357,7 @@ void Mech3DAppearance::setPaintScheme(void)
 		uint32_t* textureMemory = textureData.pTexture;
 		for(size_t i = 0; i < textureData.Height; i++)
 		{
-			for(auto j = 0; j < textureData.Height; j++)
+			for(size_t j = 0; j < textureData.Height; j++)
 			{
 				//---------------------------------------------
 				// Make Color from PaintScheme.

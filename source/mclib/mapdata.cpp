@@ -120,7 +120,7 @@ void MapData::newInit(uint32_t numVertices)
 	blocks = (PostcompVertexPtr)start;
 	PostcompVertex* pTmp = blocks;
 	// gotta set all of the z's to 1
-	for(auto i = 0; i < numVertices; ++i)
+	for(size_t i = 0; i < numVertices; ++i)
 	{
 		pTmp->vertexNormal.z = 1.0;
 		pTmp->terrainType = MC_MUD_TYPE;
@@ -154,9 +154,9 @@ void MapData::highlightAllTransitionsOver2(void)
 	PostcompVertexPtr currentVertex = blocks;
 	//--------------------------------------------------------------------------
 	// This pass is used to mark the transitions over the value of 2
-	for(int32_t y = 0; y < (Terrain::realVerticesMapSide - 1); y++)
+	for(size_t y = 0; y < (Terrain::realVerticesMapSide - 1); y++)
 	{
-		for(int32_t x = 0; x < (Terrain::realVerticesMapSide - 1); x++)
+		for(size_t x = 0; x < (Terrain::realVerticesMapSide - 1); x++)
 		{
 			//-----------------------------------------------
 			// Get the data needed to make this terrain quad
@@ -190,9 +190,9 @@ void MapData::calcTransitions()
 	PostcompVertexPtr currentVertex = blocks;
 	//--------------------------------------------------------------------------
 	// This pass is used to calc the transitions.
-	for(int32_t y = 0; y < (Terrain::realVerticesMapSide - 1); y++)
+	for(size_t y = 0; y < (Terrain::realVerticesMapSide - 1); y++)
 	{
-		for(int32_t x = 0; x < (Terrain::realVerticesMapSide - 1); x++)
+		for(size_t x = 0; x < (Terrain::realVerticesMapSide - 1); x++)
 		{
 			//-----------------------------------------------
 			// Get the data needed to make this terrain quad
@@ -243,9 +243,9 @@ void MapData::calcWater(float wDepth, float sDepth, float aDepth)
 	bool odd1 = false;
 	bool odd2 = false;
 	uint8_t marker = 0;
-	for(int32_t y = 0; y < (Terrain::realVerticesMapSide - 1); y++)
+	for(size_t y = 0; y < (Terrain::realVerticesMapSide - 1); y++)
 	{
-		for(int32_t x = 0; x < (Terrain::realVerticesMapSide - 1); x++)
+		for(size_t x = 0; x < (Terrain::realVerticesMapSide - 1); x++)
 		{
 			if(currentVertex->elevation < wDepth)
 			{
@@ -278,9 +278,9 @@ void MapData::recalcWater(void)
 	bool odd1 = false;
 	bool odd2 = false;
 	uint8_t marker = 0;
-	for(int32_t y = 0; y < (Terrain::realVerticesMapSide - 1); y++)
+	for(size_t y = 0; y < (Terrain::realVerticesMapSide - 1); y++)
 	{
-		for(int32_t x = 0; x < (Terrain::realVerticesMapSide - 1); x++)
+		for(size_t x = 0; x < (Terrain::realVerticesMapSide - 1); x++)
 		{
 			if(currentVertex->elevation < waterDepth)
 			{
@@ -652,7 +652,7 @@ void MapData::makeLists(VertexPtr vertexList, int32_t& numVerts, TerrainQuadPtr 
 	int32_t y;
 	for(y = 0; y < Terrain::visibleVerticesPerSide; y++)
 	{
-		for(int32_t x = 0; x < Terrain::visibleVerticesPerSide; x++)
+		for(size_t x = 0; x < Terrain::visibleVerticesPerSide; x++)
 		{
 			if((topLeftX < 0) || (topLeftX >= Terrain::realVerticesMapSide) ||
 					(topLeftY < 0) || (topLeftY >= Terrain::realVerticesMapSide))
@@ -710,7 +710,7 @@ void MapData::makeLists(VertexPtr vertexList, int32_t& numVerts, TerrainQuadPtr 
 	maxX = maxY = Terrain::visibleVerticesPerSide - 1;
 	for(y = 0; y < maxY; y++)
 	{
-		for(int32_t x = 0; x < maxX; x++)
+		for(size_t x = 0; x < maxX; x++)
 		{
 			VertexPtr v0, v1, v2 , v3;
 			v0 = currentVertex;
@@ -827,7 +827,7 @@ void MapData::setTerrain(int32_t indexY, int32_t indexX, int32_t Type)
 	Vertices[2][y] = indexY  > 0 ? indexY - 1 : 0;
 	Vertices[3][x] = indexX;
 	Vertices[3][y] = indexY > 0 ? indexY - 1 : 0;
-	for(auto i = 0; i < 4; ++i)
+	for(size_t i = 0; i < 4; ++i)
 	{
 		if((indexX > -1 && indexX < Terrain::realVerticesMapSide - 1) &&
 				(indexY > -1 && indexY < Terrain::realVerticesMapSide - 1))
@@ -1493,7 +1493,7 @@ float MapData::terrainElevation(Stuff::Vector3D& position)
 //---------------------------------------------------------------------------
 void MapData::unselectAll()
 {
-	for(auto i = 0; i < Terrain::realVerticesMapSide * Terrain::realVerticesMapSide; ++i)
+	for(size_t i = 0; i < Terrain::realVerticesMapSide * Terrain::realVerticesMapSide; ++i)
 	{
 		blocks[i].selected = false;
 	}
@@ -1503,7 +1503,7 @@ void MapData::unselectAll()
 //---------------------------------------------------------------------------
 void MapData::unhighlightAll()
 {
-	for(auto i = 0; i < Terrain::realVerticesMapSide * Terrain::realVerticesMapSide; ++i)
+	for(size_t i = 0; i < Terrain::realVerticesMapSide * Terrain::realVerticesMapSide; ++i)
 	{
 		blocks[i].highlighted = false;
 	}

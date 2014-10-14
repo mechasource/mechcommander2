@@ -148,7 +148,7 @@ gosFX::Shape__Specification::SetShape(MidLevelRenderer::MLRShape* shape)
 			Stuff::Point3D* points;
 			int32_t vertex_count;
 			primitive->GetCoordData(&points, &vertex_count);
-			for(int32_t v = 0; v < vertex_count; ++v)
+			for(size_t v = 0; v < vertex_count; ++v)
 			{
 				float len = points[v].GetLengthSquared();
 				if(len > m_radius)

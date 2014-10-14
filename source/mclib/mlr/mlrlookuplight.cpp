@@ -98,17 +98,17 @@ MLRLookUpLight::MLRLookUpLight(Stuff::Page* page):
 	mapOrigin.z = 0.0f;
 	if(page->GetEntry("MapOrigin", &data))
 	{
-		sscanf(data, "%f %f %f", &mapOrigin.x, &mapOrigin.y, &mapOrigin.z);
+		sscanf_s(data, "%f %f %f", &mapOrigin.x, &mapOrigin.y, &mapOrigin.z);
 	}
 	mapZoneCountX = 1, mapZoneCountZ = 1;
 	if(page->GetEntry("MapSize", &data))
 	{
-		sscanf(data, "%d %d", &mapZoneCountX, &mapZoneCountZ);
+		sscanf_s(data, "%d %d", &mapZoneCountX, &mapZoneCountZ);
 	}
 	zoneSizeX = 1280.0f, zoneSizeZ = 1280.0f;
 	if(page->GetEntry("ZoneSize", &data))
 	{
-		sscanf(data, "%f %f", &zoneSizeX, &zoneSizeX);
+		sscanf_s(data, "%f %f", &zoneSizeX, &zoneSizeX);
 	}
 	one_Over_zoneSizeX = 1.0f / zoneSizeX;
 	one_Over_zoneSizeZ = 1.0f / zoneSizeZ;

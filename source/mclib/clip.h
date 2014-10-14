@@ -214,7 +214,7 @@ inline void yTopEdgeclip(gos_VERTEX* vertices, uint32_t& numVertices, float topE
 	//----------------------------
 	//process points in edge order
 	//----------------------------
-	for(int32_t s = 0; s < numVertices; s++, second++)
+	for(size_t s = 0; s < numVertices; s++, second++)
 	{
 		float clipEdgeTest = points[first].y;
 		//----------------------------------------------------------------
@@ -296,7 +296,7 @@ inline void yBottomEdgeclip(gos_VERTEX* vertices, uint32_t& numVertices, float b
 	//----------------------------
 	//process points in edge order
 	//----------------------------
-	for(int32_t s = 0; s < numVertices; s++, second++)
+	for(size_t s = 0; s < numVertices; s++, second++)
 	{
 		float clipEdgeTest = points[first].y;
 		//----------------------------------------------------------------

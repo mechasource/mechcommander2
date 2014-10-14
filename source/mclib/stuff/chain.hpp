@@ -1,8 +1,8 @@
 //===========================================================================//
-// File: chain.hh //
-// Contents: Interface specification of Chains and their iterators //
+// File: chain.hh                                                            //
+// Contents: Interface specification of Chains and their iterators           //
 //---------------------------------------------------------------------------//
-// Copyright (C) Microsoft Corporation. All rights reserved. //
+// Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
 #pragma once
@@ -20,7 +20,7 @@ namespace Stuff
 	class Chain;
 	class ChainIterator;
 
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ChainLink ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ChainLink ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 	enum
 	{
@@ -70,7 +70,7 @@ namespace Stuff
 		}
 	};
 
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Chain ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Chain ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 	class Chain:
 		public Socket
@@ -98,8 +98,7 @@ namespace Stuff
 		void
 		TestInstance()
 		{}
-		static bool
-		TestClass(void);
+		static bool TestClass(void);
 		static bool
 		ProfileClass(void);
 

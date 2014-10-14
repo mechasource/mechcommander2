@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="8,00"
+	Version="9,00"
 	Name="gameos"
 	ProjectGUID="{B4EA2124-2ABF-442E-9B3E-0E503A4DAF8B}"
 	RootNamespace="MechCommander"

@@ -367,7 +367,7 @@ void UserHeap::dumpRecordLog(void)
 				PSTR addressName = DecodeAddress(recordArray[i].stack[0], false);
 				sprintf(msg, "Call stack: %08X : %s", recordArray[i].stack[0], addressName);
 				log.writeLine(msg);
-				for(auto j = 1; j < 12; j++)
+				for(size_t j = 1; j < 12; j++)
 				{
 					if(recordArray[i].stack[j] == 0x0)
 						break;
@@ -1604,7 +1604,7 @@ uint32_t textToLong(PSTR num)
 	hexOffset += 2;
 	int32_t numDigits = strlen(hexOffset) - 1;
 	int32_t power = 0;
-	for(int32_t count = numDigits; count >= 0; count--, power++)
+	for(size_t count = numDigits; count >= 0; count--, power++)
 	{
 		uint8_t currentDigit = toupper(hexOffset[count]);
 		if(currentDigit >= 'A' && currentDigit <= 'F')

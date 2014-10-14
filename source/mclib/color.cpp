@@ -59,7 +59,7 @@ void initColorTables(void)
 		colorRGBLookup[i] = (uint32_t*)systemHeap->Malloc(sizeof(uint32_t) * MAX_COLOR_ENTRIES);
 		gosASSERT(colorRGBLookup[i] != nullptr);
 		uint32_t* table = colorRGBLookup[i];
-		for(auto j = 0; j < MAX_COLOR_ENTRIES; j++)
+		for(size_t j = 0; j < MAX_COLOR_ENTRIES; j++)
 		{
 			char colorBlock[256];
 			sprintf(colorBlock, "Color%d", j);

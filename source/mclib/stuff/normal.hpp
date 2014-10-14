@@ -93,8 +93,7 @@ namespace Stuff
 		//
 		// Support functions
 		//
-		static bool
-		TestClass(void);
+		static bool TestClass(void);
 
 	private:
 		static const Normal3D identity;

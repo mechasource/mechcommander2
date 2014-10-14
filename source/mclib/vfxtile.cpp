@@ -276,7 +276,7 @@ int32_t VFX_nTile_draw(PANE* pane, PVOIDtile, int32_t hotX, int32_t hotY, puint8
 	{
 		uint32_t currentOffset = *yOffsetTable++;
 		uint32_t nextOffset=*yOffsetTable++;
-		for(int32_t scanLine = firstScanOffset; scanLine<lastScanOffset; scanLine++)
+		for(size_t scanLine = firstScanOffset; scanLine<lastScanOffset; scanLine++)
 		{
 			__asm
 			{

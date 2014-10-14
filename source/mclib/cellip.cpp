@@ -27,7 +27,7 @@ uint32_t EllipseElement::s_textureHandle = 0;
 //---------------------------------------------------------------------------
 EllipseElement::EllipseElement(Stuff::Vector2DOf<int32_t>& cntr, Stuff::Vector2DOf<int32_t>& ortho, int32_t clr, int32_t depth) : Element(depth)
 {
-	for(auto i = 0; i < 5; ++i)
+	for(size_t i = 0; i < 5; ++i)
 	{
 		location[i].argb = clr;
 		location[i].frgb = 0;
@@ -59,7 +59,7 @@ void EllipseElement::draw(void)
 	if(clip.left != 0 || clip.right != 0 || clip.top != 0 || clip.bottom != 0)
 	{
 		gos_VERTEX newLocation[4];
-		for(auto i = 0; i < 4; ++i)
+		for(size_t i = 0; i < 4; ++i)
 		{
 			newLocation[i] = location[i];
 		}

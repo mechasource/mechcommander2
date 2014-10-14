@@ -89,9 +89,9 @@ void InitAlphaLookup(VFX_RGB* Palette)
 //
 // Now generate the 64K alpha value lookup table
 //
-	for(int32_t source = 0; source < NUM_ALPHACOLORS; source++)
+	for(size_t source = 0; source < NUM_ALPHACOLORS; source++)
 	{
-		for(int32_t dest = 0; dest < 256; dest++)
+		for(size_t dest = 0; dest < 256; dest++)
 		{
 			if(source == 255 || source == 0)		// Color 255 and 0 - dest color remains the same (totally transparent)
 			{
@@ -151,7 +151,7 @@ uint8_t FindClosest(VFX_RGB* Palette, int32_t r, int32_t g, int32_t b)
 	uint8_t Closest = 10;
 	int32_t Distance = 255 * 255 * 255;
 	int32_t tempR, tempG, tempB, tdist;
-	for(int32_t t1 = 10; t1 < 246; t1++)
+	for(size_t t1 = 10; t1 < 246; t1++)
 	{
 		tempR = r - Palette[t1].r;
 		tempG = g - Palette[t1].g;

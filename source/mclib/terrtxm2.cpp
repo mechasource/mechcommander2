@@ -160,9 +160,9 @@ inline void fractalPass(float* heightMap, int32_t edgeSize, int32_t THRESHOLD, i
 	// If there is a Height Difference between the points, Add noise based on difference.
 	// If there is NO height difference, DO NOT ADD NOISE.  Let smooth be smooth!
 	float* noiseMap = (float*) malloc(sizeof(float) * edgeSize * edgeSize);
-	for(int32_t y = THRESHOLD; y < (edgeSize - THRESHOLD); y++)
+	for(size_t y = THRESHOLD; y < (edgeSize - THRESHOLD); y++)
 	{
-		for(int32_t x = THRESHOLD; x < (edgeSize - THRESHOLD); x++)
+		for(size_t x = THRESHOLD; x < (edgeSize - THRESHOLD); x++)
 		{
 			if(RandomNumber(THRESHOLD) == 0)
 			{
@@ -203,7 +203,7 @@ void TerrainColorMap::refractalizeBaseMesh(PSTR fileName, int32_t Threshold, int
 	int32_t y;
 	for(y = 0; y < Terrain::realVerticesMapSide; y++)
 	{
-		for(int32_t x = 0; x < Terrain::realVerticesMapSide; x++)
+		for(size_t x = 0; x < Terrain::realVerticesMapSide; x++)
 		{
 			float currentElevation = land->getTerrainElevation(y, x);
 			if(currentElevation < minVertex)
@@ -225,7 +225,7 @@ void TerrainColorMap::refractalizeBaseMesh(PSTR fileName, int32_t Threshold, int
 	memset(srcData, 0, sizeof(float) * Terrain::realVerticesMapSide * Terrain::realVerticesMapSide);
 	for(y = 0; y < Terrain::realVerticesMapSide; y++)
 	{
-		for(int32_t x = 0; x < Terrain::realVerticesMapSide; x++)
+		for(size_t x = 0; x < Terrain::realVerticesMapSide; x++)
 		{
 			float currentElevation = land->getTerrainElevation(y, x);
 			float scaledValue = (currentElevation - minVertex) * scalar;
@@ -481,10 +481,10 @@ void TerrainColorMap::burnInShadows(bool doBumpPass, PSTR fileName)
 	else
 	{
 		int32_t skipLong = 1;
-		for(int32_t y = 0; y < pixelWidth; y++)
+		for(size_t y = 0; y < pixelWidth; y++)
 		{
 			float startX = Terrain::mapTopLeft3d.x;
-			for(int32_t x = 0; x < pixelWidth; x++)
+			for(size_t x = 0; x < pixelWidth; x++)
 			{
 				Stuff::Vector3D pos;
 				pos.x = startX;
@@ -519,9 +519,9 @@ void TerrainColorMap::burnInShadows(bool doBumpPass, PSTR fileName)
 	highPoint *= ShadowEnhance;
 	float* thisHeight = heightMap;
 	float* thisShadow = shadowMap;
-	for(int32_t y = 0; y < pixelWidth; y++)
+	for(size_t y = 0; y < pixelWidth; y++)
 	{
-		for(int32_t x = 0; x < pixelWidth; x++)
+		for(size_t x = 0; x < pixelWidth; x++)
 		{
 			//---------------------------------------------
 			// No problem
@@ -920,7 +920,7 @@ void TerrainColorMap::resetWaterDetailTextures(PSTR fileName)
 		{
 			if(!i)		//If we found the first one OK, erase the current ones!!
 			{
-				for(auto j = 0; j < MAX_WATER_DETAIL_TEXTURES; j++)
+				for(size_t j = 0; j < MAX_WATER_DETAIL_TEXTURES; j++)
 				{
 					mcTextureManager->removeTextureNode(waterDetailNodeIndex[j]);
 					waterDetailNodeIndex[j] = 0xffffffff;

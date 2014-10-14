@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="8,00"
+	Version="9,00"
 	Name="mc2res"
 	ProjectGUID="{CFE8A9D5-80DF-4ACC-B91F-64AB2167BC3A}"
 	RootNamespace="MechCommander"

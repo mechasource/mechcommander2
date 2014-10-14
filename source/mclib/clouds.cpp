@@ -106,7 +106,7 @@ void Clouds::update(void)
 		int32_t y;
 		for(y = 0; y < gridSize; y++)
 		{
-			for(int32_t x = 0; x < gridSize; x++)
+			for(size_t x = 0; x < gridSize; x++)
 			{
 				cloudVertices[x + (y * gridSize)].vx = tLeftX - (cloudInc * x);
 				cloudVertices[x + (y * gridSize)].vy = tLeftY - (cloudInc * y);
@@ -200,7 +200,7 @@ void Clouds::update(void)
 		}
 		for(y = 0; y < (gridSize - 1); y++)
 		{
-			for(int32_t x = 0; x < (gridSize - 1); x++)
+			for(size_t x = 0; x < (gridSize - 1); x++)
 			{
 				CloudVertexPtr cloudVertex0 = &(cloudVertices[x     + (y    * gridSize)]);
 				CloudVertexPtr cloudVertex1 = &(cloudVertices[(x + 1) + (y    * gridSize)]);
@@ -231,9 +231,9 @@ void Clouds::render(void)
 {
 	if(!renderClouds)
 		return;
-	for(int32_t y = 0; y < (gridSize - 1); y++)
+	for(size_t y = 0; y < (gridSize - 1); y++)
 	{
-		for(int32_t x = 0; x < (gridSize - 1); x++)
+		for(size_t x = 0; x < (gridSize - 1); x++)
 		{
 			CloudVertexPtr cloudVertex0 = &(cloudVertices[x     + (y    * gridSize)]);
 			CloudVertexPtr cloudVertex1 = &(cloudVertices[(x + 1) + (y    * gridSize)]);

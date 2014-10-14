@@ -1083,7 +1083,7 @@ int32_t TG_TypeShape::LoadTGShapeFromASE(PSTR fileName)
 	int32_t numMaterials = atol(numberData);
 	numTextures = 0;
 	puint8_t aseBuffer = aseContents;
-	for(int32_t nmt = 0; nmt < numMaterials; nmt++)
+	for(size_t nmt = 0; nmt < numMaterials; nmt++)
 	{
 		sprintf(textureId, ASE_MATERIAL_CLASS);
 		textureData = strstr((PSTR)aseBuffer, textureId);
@@ -2021,7 +2021,7 @@ void TG_Shape::Render(float forceZ, bool isHudElement, uint8_t alphaValue, bool 
 	}
 	if(isSpotlight && !isNight)
 		return;
-	for(auto j = 0; j < numVisibleFaces; j++)
+	for(size_t j = 0; j < numVisibleFaces; j++)
 	{
 		if(listOfVisibleFaces[j] < numTriangles)
 		{
@@ -2153,7 +2153,7 @@ bool TG_Shape::PerPolySelect(float mouseX, float mouseY)
 			return false;
 	}
 	TG_TypeShapePtr theShape = (TG_TypeShapePtr)myType;
-	for(auto j = 0; j < numVisibleFaces; j++)
+	for(size_t j = 0; j < numVisibleFaces; j++)
 	{
 		if(listOfVisibleFaces[j] < numTriangles)
 		{
@@ -2264,7 +2264,7 @@ void TG_Shape::MultiTransformShadows(Stuff::Point3D* pos, Stuff::LinearMatrix4D*
 					{
 						Stuff::Vector3D lightDir = rootLightDir[i];
 						RotateLight(lightDir, rotation);
-						for(auto j = 0; j < numVertices; j++)
+						for(size_t j = 0; j < numVertices; j++)
 						{
 							int32_t index = j + (shadowNum * numVertices);
 							//if (!recalcShadows)
@@ -2395,7 +2395,7 @@ void TG_Shape::MultiTransformShadows(Stuff::Point3D* pos, Stuff::LinearMatrix4D*
 						//Lights do not cast a shadow unless they are intense enough!!
 						if(listOfLights[i]->GetFalloff(length, falloff) && (falloff > 0.5f))
 						{
-							for(auto j = 0; j < numVertices; j++)
+							for(size_t j = 0; j < numVertices; j++)
 							{
 								int32_t index = j + (shadowNum * numVertices);
 								Stuff::Point3D post = theShape->listOfTypeVertices[j].position;
@@ -2512,12 +2512,12 @@ void TG_Shape::MultiTransformShadows(Stuff::Point3D* pos, Stuff::LinearMatrix4D*
 			// So, find out what texture this face is using and mark that texture as needing 3 more vertices.
 			if(theShape->listOfTextures[triType.localTextureHandle + (theShape->numTextures >> 1)].gosTextureHandle != 0xffffffff)
 			{
-				for(int32_t k = 0; k < totalShadows; k++)
+				for(size_t k = 0; k < totalShadows; k++)
 					mcTextureManager->addTriangle(theShape->listOfTextures[triType.localTextureHandle + (theShape->numTextures >> 1)].mcTextureNodeIndex, MC2_DRAWALPHA | MC2_ISSHADOWS);
 			}
 			else
 			{
-				for(int32_t k = 0; k < totalShadows; k++)
+				for(size_t k = 0; k < totalShadows; k++)
 					mcTextureManager->addTriangle(theShape->listOfTextures[triType.localTextureHandle].mcTextureNodeIndex, MC2_DRAWALPHA | MC2_ISSHADOWS);
 			}
 		}
@@ -2559,7 +2559,7 @@ int32_t TG_Shape::RenderShadows(int32_t startFace)
 	{
 		if(shadowsVisible[i])
 		{
-			for(auto j = 0; j < numVisibleShadows && listOfShadowTVertices; j++)
+			for(size_t j = 0; j < numVisibleShadows && listOfShadowTVertices; j++)
 			{
 				uint32_t realStart = (j + startFace) % 64;
 				if(listOfVisibleShadows[j] < numTriangles)

@@ -365,7 +365,7 @@ void Appearance::drawIcon(uint32_t bmpHandle, uint32_t bmpWidth,
 	float			Y = upperLeft.y - offset - trueHeight -  2 * bmpHeight;
 	float			X = (upperLeft.x + lowerRight.x) / 2.f - bmpWidth / 2.f;
 	gos_VERTEX v[4];
-	for(auto i = 0; i < 4; i ++)
+	for(size_t i = 0; i < 4; i ++)
 	{
 		v[i].argb = color;
 		v[i].frgb = 0;

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="8,00"
-	Name="mlr"
-	ProjectGUID="{6CFC313D-C849-4753-8EAA-3244D0515C7A}"
+	Version="9,00"
+	Name="gosfx"
+	ProjectGUID="{FDA65357-68F7-4567-89C0-A4D15FB27CDB}"
 	RootNamespace="MechCommander"
 	Keyword="AtlProj"
 	>
@@ -350,268 +350,100 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<Filter
-				Name="mlr"
+				Name="gosfx"
 				>
 				<File
-					RelativePath="..\mclib\mlr\mlr.cpp"
+					RelativePath="..\mclib\gosfx\gosfx.cpp"
 					>
 				</File>
-				<Filter
-					Name="Geometries"
-					>
-					<File
-						RelativePath="..\mclib\mlr\mlrindexedprimitivebase.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\mlr\mlrprimitivebase.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\mlr\mlrshape.cpp"
-						>
-					</File>
-					<Filter
-						Name="Indexed Polygon Meshes"
-						>
-						<File
-							RelativePath="..\mclib\mlr\mlr_i_c_det_pmesh.cpp"
-							>
-						</File>
-						<File
-							RelativePath="..\mclib\mlr\mlr_i_c_dt_pmesh.cpp"
-							>
-						</File>
-						<File
-							RelativePath="..\mclib\mlr\mlr_i_c_pmesh.cpp"
-							>
-						</File>
-						<File
-							RelativePath="..\mclib\mlr\mlr_i_det_pmesh.cpp"
-							>
-						</File>
-						<File
-							RelativePath="..\mclib\mlr\mlr_i_dt_pmesh.cpp"
-							>
-						</File>
-						<File
-							RelativePath="..\mclib\mlr\mlr_i_l_det_pmesh.cpp"
-							>
-						</File>
-						<File
-							RelativePath="..\mclib\mlr\mlr_i_l_dt_pmesh.cpp"
-							>
-						</File>
-						<File
-							RelativePath="..\mclib\mlr\mlr_i_l_pmesh.cpp"
-							>
-						</File>
-						<File
-							RelativePath="..\mclib\mlr\mlr_i_mt_pmesh.cpp"
-							>
-						</File>
-						<File
-							RelativePath="..\mclib\mlr\mlr_i_pmesh.cpp"
-							>
-						</File>
-					</Filter>
-					<Filter
-						Name="Indexed Triangle Meshes"
-						>
-						<File
-							RelativePath="..\mclib\mlr\mlr_i_c_det_tmesh.cpp"
-							>
-						</File>
-						<File
-							RelativePath="..\mclib\mlr\mlr_i_c_dt_tmesh.cpp"
-							>
-						</File>
-						<File
-							RelativePath="..\mclib\mlr\mlr_i_c_tmesh.cpp"
-							>
-						</File>
-						<File
-							RelativePath="..\mclib\mlr\mlr_i_det_tmesh.cpp"
-							>
-						</File>
-						<File
-							RelativePath="..\mclib\mlr\mlr_i_dt_tmesh.cpp"
-							>
-						</File>
-						<File
-							RelativePath="..\mclib\mlr\mlr_i_l_det_tmesh.cpp"
-							>
-						</File>
-						<File
-							RelativePath="..\mclib\mlr\mlr_i_l_dt_tmesh.cpp"
-							>
-						</File>
-						<File
-							RelativePath="..\mclib\mlr\mlr_i_l_tmesh.cpp"
-							>
-						</File>
-						<File
-							RelativePath="..\mclib\mlr\mlr_i_tmesh.cpp"
-							>
-						</File>
-					</Filter>
-					<Filter
-						Name="Terrain"
-						>
-						<File
-							RelativePath="..\mclib\mlr\mlr_terrain.cpp"
-							>
-						</File>
-						<File
-							RelativePath="..\mclib\mlr\mlr_terrain2.cpp"
-							>
-						</File>
-					</Filter>
-				</Filter>
-				<Filter
-					Name="Lighting"
-					>
-					<File
-						RelativePath="..\mclib\mlr\mlrambientlight.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\mlr\mlrinfinitelight.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\mlr\mlrinfinitelightwithfalloff.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\mlr\mlrlight.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\mlr\mlrlightmap.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\mlr\mlrlookuplight.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\mlr\mlrpointlight.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\mlr\mlrspotlight.cpp"
-						>
-					</File>
-				</Filter>
-				<Filter
-					Name="Sorting"
-					>
-					<File
-						RelativePath="..\mclib\mlr\mlrsortbyorder.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\mlr\mlrsorter.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\mlr\mlrstate.cpp"
-						>
-					</File>
-				</Filter>
-				<Filter
-					Name="Texture"
-					>
-					<File
-						RelativePath="..\mclib\mlr\mlrtexture.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\mlr\mlrtexturepool.cpp"
-						>
-					</File>
-				</Filter>
-				<Filter
-					Name="Rasterizer"
-					>
-					<File
-						RelativePath="..\mclib\mlr\gosimage.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\mlr\gosimagepool.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\mlr\gosvertex.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\mlr\gosvertex2uv.cpp"
-						>
-					</File>
-				</Filter>
-				<Filter
-					Name="Clipping"
-					>
-					<File
-						RelativePath="..\mclib\mlr\mlrclipper.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\mlr\mlrclippingstate.cpp"
-						>
-					</File>
-				</Filter>
 				<Filter
 					Name="Effects"
 					>
 					<File
-						RelativePath="..\mclib\mlr\mlrcardcloud.cpp"
+						RelativePath="..\mclib\gosfx\effect.cpp"
 						>
 					</File>
 					<File
-						RelativePath="..\mclib\mlr\mlreffect.cpp"
+						RelativePath="..\mclib\gosfx\effectlibrary.cpp"
 						>
 					</File>
 					<File
-						RelativePath="..\mclib\mlr\mlrindexedtrianglecloud.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\mlr\mlrlinecloud.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\mlr\mlrngoncloud.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\mlr\mlrpointcloud.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\mlr\mlrtrianglecloud.cpp"
+						RelativePath="..\mclib\gosfx\fcurve.cpp"
 						>
 					</File>
 				</Filter>
-			</Filter>
-			<Filter
-				Name="extra"
-				>
-				<File
-					RelativePath=".\junktest.cpp"
+				<Filter
+					Name="Cloud Effects"
 					>
-					<FileConfiguration
-						Name="Debug|Win32"
+					<File
+						RelativePath="..\mclib\gosfx\cardcloud.cpp"
 						>
-						<Tool
-							Name="VCCLCompilerTool"
-							BasicRuntimeChecks="0"
-						/>
-					</FileConfiguration>
-				</File>
+					</File>
+					<File
+						RelativePath="..\mclib\gosfx\debriscloud.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\mclib\gosfx\effectcloud.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\mclib\gosfx\particlecloud.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\mclib\gosfx\pertcloud.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\mclib\gosfx\pointcloud.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\mclib\gosfx\shapecloud.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\mclib\gosfx\shardcloud.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\mclib\gosfx\spinningcloud.cpp"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name="Singletons"
+					>
+					<File
+						RelativePath="..\mclib\gosfx\card.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\mclib\gosfx\shape.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\mclib\gosfx\singleton.cpp"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name="Geometry Extrusion"
+					>
+					<File
+						RelativePath="..\mclib\gosfx\tube.cpp"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name="Lights"
+					>
+					<File
+						RelativePath="..\mclib\gosfx\pointlight.cpp"
+						>
+					</File>
+				</Filter>
 			</Filter>
 		</Filter>
 		<Filter
@@ -620,302 +452,110 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<Filter
-				Name="mlr"
+				Name="gosfx"
 				>
 				<File
-					RelativePath="..\mclib\mlr\mlr.hpp"
+					RelativePath="..\mclib\gosfx\gosfx.hpp"
 					>
 				</File>
-				<Filter
-					Name="Geometries"
-					>
-					<File
-						RelativePath="..\mclib\mlr\mlrcliptrick.hpp"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\mlr\mlrindexedprimitivebase.hpp"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\mlr\mlrprimitivebase.hpp"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\mlr\mlrshape.hpp"
-						>
-					</File>
-					<Filter
-						Name="Indexed Polygon Meshes"
-						>
-						<File
-							RelativePath="..\mclib\mlr\mlr_i_c_det_pmesh.hpp"
-							>
-						</File>
-						<File
-							RelativePath="..\mclib\mlr\mlr_i_c_dt_pmesh.hpp"
-							>
-						</File>
-						<File
-							RelativePath="..\mclib\mlr\mlr_i_c_pmesh.hpp"
-							>
-						</File>
-						<File
-							RelativePath="..\mclib\mlr\mlr_i_det_pmesh.hpp"
-							>
-						</File>
-						<File
-							RelativePath="..\mclib\mlr\mlr_i_dt_pmesh.hpp"
-							>
-						</File>
-						<File
-							RelativePath="..\mclib\mlr\mlr_i_l_det_pmesh.hpp"
-							>
-						</File>
-						<File
-							RelativePath="..\mclib\mlr\mlr_i_l_dt_pmesh.hpp"
-							>
-						</File>
-						<File
-							RelativePath="..\mclib\mlr\mlr_i_l_pmesh.hpp"
-							>
-						</File>
-						<File
-							RelativePath="..\mclib\mlr\mlr_i_mt_pmesh.hpp"
-							>
-						</File>
-						<File
-							RelativePath="..\mclib\mlr\mlr_i_pmesh.hpp"
-							>
-						</File>
-					</Filter>
-					<Filter
-						Name="Indexed Triangle Meshes"
-						>
-						<File
-							RelativePath="..\mclib\mlr\mlr_i_c_det_tmesh.hpp"
-							>
-						</File>
-						<File
-							RelativePath="..\mclib\mlr\mlr_i_c_dt_tmesh.hpp"
-							>
-						</File>
-						<File
-							RelativePath="..\mclib\mlr\mlr_i_c_tmesh.hpp"
-							>
-						</File>
-						<File
-							RelativePath="..\mclib\mlr\mlr_i_det_tmesh.hpp"
-							>
-						</File>
-						<File
-							RelativePath="..\mclib\mlr\mlr_i_dt_tmesh.hpp"
-							>
-						</File>
-						<File
-							RelativePath="..\mclib\mlr\mlr_i_l_det_tmesh.hpp"
-							>
-						</File>
-						<File
-							RelativePath="..\mclib\mlr\mlr_i_l_dt_tmesh.hpp"
-							>
-						</File>
-						<File
-							RelativePath="..\mclib\mlr\mlr_i_l_tmesh.hpp"
-							>
-						</File>
-						<File
-							RelativePath="..\mclib\mlr\mlr_i_tmesh.hpp"
-							>
-						</File>
-					</Filter>
-					<Filter
-						Name="Terrain"
-						>
-						<File
-							RelativePath="..\mclib\mlr\mlr_terrain.hpp"
-							>
-						</File>
-						<File
-							RelativePath="..\mclib\mlr\mlr_terrain2.hpp"
-							>
-						</File>
-					</Filter>
-				</Filter>
-				<Filter
-					Name="Lighting"
-					>
-					<File
-						RelativePath="..\mclib\mlr\mlrambientlight.hpp"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\mlr\mlrinfinitelight.hpp"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\mlr\mlrinfinitelightwithfalloff.hpp"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\mlr\mlrlight.hpp"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\mlr\mlrlightmap.hpp"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\mlr\mlrlookuplight.hpp"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\mlr\mlrpointlight.hpp"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\mlr\mlrspotlight.hpp"
-						>
-					</File>
-				</Filter>
-				<Filter
-					Name="Sorting"
-					>
-					<File
-						RelativePath="..\mclib\mlr\mlrsortbyorder.hpp"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\mlr\mlrsorter.hpp"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\mlr\mlrstate.hpp"
-						>
-					</File>
-				</Filter>
-				<Filter
-					Name="Texture"
-					>
-					<File
-						RelativePath="..\mclib\mlr\mlrtexture.hpp"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\mlr\mlrtexturepool.hpp"
-						>
-					</File>
-				</Filter>
-				<Filter
-					Name="Rasterizer"
-					>
-					<File
-						RelativePath="..\mclib\mlr\gosimage.hpp"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\mlr\gosimagepool.hpp"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\mlr\gosvertex.hpp"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\mlr\gosvertex2uv.hpp"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\mlr\gosvertexpool.hpp"
-						>
-					</File>
-				</Filter>
-				<Filter
-					Name="Clipping"
-					>
-					<File
-						RelativePath="..\mclib\mlr\mlrclipper.hpp"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\mlr\mlrclippingstate.hpp"
-						>
-					</File>
-				</Filter>
 				<Filter
 					Name="Effects"
 					>
 					<File
-						RelativePath="..\mclib\mlr\mlrcardcloud.hpp"
+						RelativePath="..\mclib\gosfx\effect.hpp"
 						>
 					</File>
 					<File
-						RelativePath="..\mclib\mlr\mlreffect.hpp"
+						RelativePath="..\mclib\gosfx\effectlibrary.hpp"
 						>
 					</File>
 					<File
-						RelativePath="..\mclib\mlr\mlrindexedtrianglecloud.hpp"
+						RelativePath="..\mclib\gosfx\fcurve.hpp"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name="Cloud Effects"
+					>
+					<File
+						RelativePath="..\mclib\gosfx\cardcloud.hpp"
 						>
 					</File>
 					<File
-						RelativePath="..\mclib\mlr\mlrlinecloud.hpp"
+						RelativePath="..\mclib\gosfx\debriscloud.hpp"
 						>
 					</File>
 					<File
-						RelativePath="..\mclib\mlr\mlrngoncloud.hpp"
+						RelativePath="..\mclib\gosfx\effectcloud.hpp"
 						>
 					</File>
 					<File
-						RelativePath="..\mclib\mlr\mlrpointcloud.hpp"
+						RelativePath="..\mclib\gosfx\particlecloud.hpp"
 						>
 					</File>
 					<File
-						RelativePath="..\mclib\mlr\mlrtrianglecloud.hpp"
+						RelativePath="..\mclib\gosfx\pertcloud.hpp"
+						>
+					</File>
+					<File
+						RelativePath="..\mclib\gosfx\pointcloud.hpp"
+						>
+					</File>
+					<File
+						RelativePath="..\mclib\gosfx\shapecloud.hpp"
+						>
+					</File>
+					<File
+						RelativePath="..\mclib\gosfx\shardcloud.hpp"
+						>
+					</File>
+					<File
+						RelativePath="..\mclib\gosfx\spinningcloud.hpp"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name="Singletons"
+					>
+					<File
+						RelativePath="..\mclib\gosfx\card.hpp"
+						>
+					</File>
+					<File
+						RelativePath="..\mclib\gosfx\shape.hpp"
+						>
+					</File>
+					<File
+						RelativePath="..\mclib\gosfx\singleton.hpp"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name="Geometry Extrusion"
+					>
+					<File
+						RelativePath="..\mclib\gosfx\tube.hpp"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name="Lights"
+					>
+					<File
+						RelativePath="..\mclib\gosfx\pointlight.hpp"
 						>
 					</File>
 				</Filter>
 			</Filter>
 			<Filter
-				Name="extra"
-				>
-			</Filter>
-			<Filter
 				Name="common"
 				>
-				<File
-					RelativePath="..\include\mechclassids.h"
-					>
-				</File>
 				<File
 					RelativePath="..\include\mechresources.h"
 					>
 				</File>
 				<File
 					RelativePath="..\include\mechtypes.h"
-					>
-				</File>
-			</Filter>
-			<Filter
-				Name="inlines"
-				>
-				<File
-					RelativePath="..\mclib\mlr\gosvertexmanipulation.inl"
-					>
-				</File>
-				<File
-					RelativePath="..\mclib\mlr\mlrprimitiveclipping.inl"
-					>
-				</File>
-				<File
-					RelativePath="..\mclib\mlr\mlrprimitivelighting.inl"
-					>
-				</File>
-				<File
-					RelativePath="..\mclib\mlr\mlrtriangleclipping.inl"
-					>
-				</File>
-				<File
-					RelativePath="..\mclib\mlr\mlrtrianglelighting.inl"
 					>
 				</File>
 			</Filter>
@@ -926,7 +566,7 @@
 			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}"
 			>
 			<Filter
-				Name="mlr"
+				Name="gosfx"
 				>
 			</Filter>
 		</Filter>
@@ -941,7 +581,7 @@
 				Name="precompiled"
 				>
 				<File
-					RelativePath="..\mclib\mlr\mlrheaders.cpp"
+					RelativePath="..\mclib\gosfx\gosfxheaders.cpp"
 					>
 					<FileConfiguration
 						Name="Debug|Win32"
@@ -977,7 +617,7 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\mclib\mlr\mlrheaders.hpp"
+					RelativePath="..\mclib\gosfx\gosfxheaders.hpp"
 					>
 				</File>
 				<File

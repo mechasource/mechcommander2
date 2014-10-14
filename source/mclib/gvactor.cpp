@@ -973,7 +973,7 @@ void GVAppearance::setPaintScheme(void)
 		uint32_t* textureMemory = textureData.pTexture;
 		for(size_t i = 0; i < textureData.Height; i++)
 		{
-			for(auto j = 0; j < textureData.Height; j++)
+			for(size_t j = 0; j < textureData.Height; j++)
 			{
 				//---------------------------------------------
 				// Make Color from PaintScheme.
@@ -1514,7 +1514,7 @@ bool GVAppearance::recalcBounds(void)
 							gvShape->SetAlphaValue(alphaValue);
 							//-------------------------------------------------
 							// Load the texture and store its handle.
-							for(auto j = 0; j < gvShape->GetNumTextures(); j++)
+							for(size_t j = 0; j < gvShape->GetNumTextures(); j++)
 							{
 								char txmName[1024];
 								gvShape->GetTextureName(j, txmName, 256);

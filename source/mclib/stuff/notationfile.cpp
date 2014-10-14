@@ -334,16 +334,22 @@ NotationFile::Read(
 			{
 				if(!comment_mode)
 				{
+					// suppress warning about unsafe strcpy as a strcpy_s implementation isn't straightforward
+					ATL_SUPPRESS_WARNING(4996)
 					strcpy(p - 1, p + 1);
 					--p;
 				}
 				else if(!comment_start)
 				{
+					// suppress warning about unsafe strcpy as a strcpy_s implementation isn't straightforward
+					ATL_SUPPRESS_WARNING(4996)
 					strcpy(buffer, p + 1);
 					p = buffer;
 				}
 				else
 				{
+					// suppress warning about unsafe strcpy as a strcpy_s implementation isn't straightforward
+					ATL_SUPPRESS_WARNING(4996)
 					strcpy(comment_start, p + 1);
 					p = comment_start;
 				}

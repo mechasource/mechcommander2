@@ -126,7 +126,7 @@ void PriorityQueue::change(int32_t itemIndex, int32_t newValue)
 
 int32_t PriorityQueue::find(int32_t id)
 {
-	for(auto index = 0; index <= numItems; index++)
+	for(size_t index = 0; index <= numItems; index++)
 		if(pqList[index].id == (uint32_t)id)
 			return(index);
 	return(0);

@@ -25,7 +25,7 @@ void aObject::update()
 		helpTextID = helpID;
 	}
 	// call update for the children
-	for(size_t i = 0; i < pNumberOfChildren; i++)
+	for(size_t i = 0; i < nNumberOfChildren; i++)
 		pChildren[i]->update();
 }
 
@@ -34,7 +34,7 @@ void aObject::update()
 
 aObject::aObject()
 {
-	pNumberOfChildren = 0;
+	nNumberOfChildren = 0;
 	pParent = nullptr;
 	textureHandle = 0;
 	memset(location, 0, sizeof(gos_VERTEX) * 4);
@@ -71,7 +71,7 @@ int32_t aObject::init(int32_t xPos, int32_t yPos, int32_t w, int32_t h)
 		location[i].frgb = 0;
 	}
 	showWindow = TRUE;
-	pNumberOfChildren = 0;
+	nNumberOfChildren = 0;
 	pParent = nullptr;
 	return (NO_ERROR);
 }
@@ -207,7 +207,7 @@ aObject* aObject::findObject(int32_t xPos, int32_t yPos)
 	aObject* target;
 	if(showWindow)
 	{
-		for(size_t i = pNumberOfChildren; i > 0; i--)
+		for(size_t i = nNumberOfChildren; i > 0; i--)
 		{
 			target = pChildren[i - 1]->findObject(xPos, yPos);
 			if(target)
@@ -229,19 +229,19 @@ void aObject::setParent(aObject* p)
 
 int32_t aObject::numberOfChildren(void) const
 {
-	return pNumberOfChildren;
+	return nNumberOfChildren;
 }
 
 void aObject::addChild(aObject* c)
 {
-	Assert(pNumberOfChildren < MAX_CHILDREN, pNumberOfChildren + 1, "Too many children!");
+	Assert(nNumberOfChildren < MAX_CHILDREN, nNumberOfChildren + 1, "Too many children!");
 	Assert(c->getParent() == nullptr || c->getParent() == this, 0, " Adding child that's someone else's ");
 	if(!c)
 		return;
 	removeChild(c);	//	make sure this isn't already my child (Duplicate children screws up bringToFront())
 	c->setParent(this);
-	pChildren[pNumberOfChildren] = c;
-	pNumberOfChildren++;
+	pChildren[nNumberOfChildren] = c;
+	nNumberOfChildren++;
 	c->move(x(), y());
 }
 
@@ -251,15 +251,15 @@ void aObject::removeChild(aObject* c)
 		return;
 	if((c->getParent() == this) || (c->getParent() == nullptr))	//Normal situation
 	{
-		for(size_t cc = 0; cc < pNumberOfChildren; cc++)
+		for(size_t cc = 0; cc < nNumberOfChildren; cc++)
 		{
 			if(pChildren[cc] == c)
 			{
 				// found the child, remove it and shift the rest of the children up
-				for(size_t sc = cc; sc < pNumberOfChildren - 1; sc++)
+				for(size_t sc = cc; sc < nNumberOfChildren - 1; sc++)
 					pChildren[sc] = pChildren[sc + 1];
-				pChildren[pNumberOfChildren] = nullptr;
-				pNumberOfChildren--;
+				pChildren[nNumberOfChildren] = nullptr;
+				nNumberOfChildren--;
 				c->setParent(nullptr);
 				return;
 			}
@@ -275,7 +275,7 @@ void aObject::removeChild(aObject* c)
 
 aObject* aObject::child(int32_t w)
 {
-	if(w > pNumberOfChildren - 1)
+	if(w > nNumberOfChildren - 1)
 		return nullptr;
 	return pChildren[w];
 }
@@ -350,7 +350,7 @@ void aObject::move(float offsetX, float offsetY)
 		location[i].x += offsetX;
 		location[i].y += offsetY;
 	}
-	for(i = 0; i < pNumberOfChildren; i++)
+	for(i = 0; i < nNumberOfChildren; i++)
 	{
 		pChildren[i]->move(offsetX, offsetY);
 	}
@@ -383,7 +383,7 @@ void aObject::render()
 		gos_SetRenderState(gos_State_ZCompare, 0);
 		gos_SetRenderState(gos_State_ZWrite, 0);
 		gos_DrawQuads(location, 4);
-		for(size_t i = 0; i < pNumberOfChildren; i++)
+		for(size_t i = 0; i < nNumberOfChildren; i++)
 		{
 			pChildren[i]->render();
 		}
@@ -466,14 +466,14 @@ void	aObject::setUVs(float u1, float v1, float u2, float v2)
 
 void aObject::removeAllChildren(bool bDelete)
 {
-	for(size_t i = 0; i < pNumberOfChildren; i++)
+	for(size_t i = 0; i < nNumberOfChildren; i++)
 	{
 		pChildren[i]->setParent(0);
 		if(bDelete)
 			delete pChildren[i];
 	}
 	memset(pChildren, 0, sizeof(aObject*)* MAX_CHILDREN);
-	pNumberOfChildren = 0;
+	nNumberOfChildren = 0;
 }
 
 void aObject::copyData(const aObject& src)
@@ -486,7 +486,7 @@ void aObject::copyData(const aObject& src)
 			location[i] = src.location[i];
 		fileWidth = src.fileWidth;
 		showWindow = src.showWindow;
-		pNumberOfChildren = 0; // not copying the kids.
+		nNumberOfChildren = 0; // not copying the kids.
 		ID = src.ID;
 	}
 }

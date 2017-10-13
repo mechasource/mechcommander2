@@ -120,18 +120,18 @@ namespace Utilities
 		inline HINSTANCE GetModuleInstance(void)
 		{
 #if (_ATL_VER >= 0x0700)
-			return ATL::_AtlBaseModule.GetModuleInstance(void);
+			return ATL::_AtlBaseModule.GetModuleInstance();
 #else
-			return ATL::_pModule->GetModuleInstance(void);
+			return ATL::_pModule->GetModuleInstance();
 #endif
 		}
 
 		inline HINSTANCE GetResourceInstance(void)
 		{
 #if (_ATL_VER >= 0x0700)
-			return ATL::_AtlBaseModule.GetResourceInstance(void);
+			return ATL::_AtlBaseModule.GetResourceInstance();
 #else
-			return ATL::_pModule->GetResourceInstance(void);
+			return ATL::_pModule->GetResourceInstance();
 #endif
 		}
 
@@ -156,18 +156,18 @@ namespace Utilities
 		inline PVOID ExtractCreateWndData(void)
 		{
 #if (_ATL_VER >= 0x0700)
-			return ATL::_AtlWinModule.ExtractCreateWndData(void);
+			return ATL::_AtlWinModule.ExtractCreateWndData();
 #else
-			return ATL::_pModule->ExtractCreateWndData(void);
+			return ATL::_pModule->ExtractCreateWndData();
 #endif
 		}
 
 		inline void AtlTerminate(void)
 		{
 #if (_ATL_VER >= 0x0700)
-			return ATL::_AtlWinModule.Term(void);
+			return ATL::_AtlWinModule.Term();
 #else
-			return ATL::_pModule->Term(void);
+			return ATL::_pModule->Term();
 #endif
 		}
 

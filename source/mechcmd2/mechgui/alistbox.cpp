@@ -643,7 +643,7 @@ void aDropList::render()
 {
 	if(showWindow)
 	{
-		for(size_t i = 0; i < pNumberOfChildren; i++)
+		for(size_t i = 0; i < nNumberOfChildren; i++)
 		{
 			pChildren[i]->render();
 		}
@@ -935,7 +935,7 @@ void aComboBox::render()
 {
 	if(showWindow)
 	{
-		for(size_t i = 0; i < pNumberOfChildren; i++)
+		for(size_t i = 0; i < nNumberOfChildren; i++)
 		{
 			pChildren[i]->render();
 		}

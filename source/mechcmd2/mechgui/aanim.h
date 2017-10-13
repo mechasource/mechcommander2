@@ -21,8 +21,6 @@ namespace mechgui
 		~aAnimation(void);
 		aAnimation(const aAnimation&);
 
-
-
 		aAnimation& operator=(const aAnimation& src);
 
 		int32_t	init(FitIniFile* file, PCSTR prependName);
@@ -80,20 +78,15 @@ namespace mechgui
 		};
 
 		MoveInfo*	infos;
-		int32_t			infoCount;
-
+		size_t		infoCount;
 		float		refX;
 		float		refY;
-
 		float		direction;
-
 		bool		bLoops;
 
 	private:
 
 		void copyData(const aAnimation&);
-
-
 
 	};
 
@@ -126,17 +119,10 @@ namespace mechgui
 		int32_t getXDelta(STATE) const;
 		int32_t getYDelta(STATE) const;
 		float getCurrnetScale(STATE) const;
-
 		void update(void);
 
-
-
-
 	private:
-
-
 		aAnimation		animations[MAX_ANIMATION_STATE];
-
 		STATE			curState;
 	};
 

@@ -7,9 +7,9 @@
 #ifndef ABUTTON_H
 #define ABUTTON_H
 
-#include <mechgui/asystem.h>
-#include <mechgui/afont.h>
-#include <mechgui/aanim.h>
+//#include <mechgui/asystem.h>
+//#include <mechgui/afont.h>
+//#include <mechgui/aanim.h>
 
 namespace mechgui
 {

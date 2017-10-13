@@ -4,12 +4,12 @@
 
 #include "stdafx.h"
 #include <mechgui/aanim.h>
-#include <mclib.h>
-#include <estring.h>
+//#include <mclib.h>
+//#include <estring.h>
 
 extern float frameRate;
 
-aAnimation::aAnimation()
+aAnimation::aAnimation(void)
 {
 	currentTime = -1.f;
 	infoCount = 0;
@@ -20,7 +20,7 @@ aAnimation::aAnimation()
 	direction = 1.0;
 }
 
-aAnimation::~aAnimation()
+aAnimation::~aAnimation(void)
 {
 	destroy();
 }

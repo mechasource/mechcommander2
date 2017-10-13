@@ -231,15 +231,15 @@ namespace mechgui
 
 
 		aObject* pChildren[MAX_CHILDREN];
-		int32_t pNumberOfChildren;
+		size_t nNumberOfChildren;
 		aObject* pParent;
 
-		int32_t ID;
+		uint32_t ID;
 
 		void copyData(const aObject& src);
 
 		int32_t helpHeader;
-		int32_t helpID;
+		uint32_t helpID;
 
 
 	};

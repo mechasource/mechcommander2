@@ -32,7 +32,6 @@ class LightType : public ObjectType
 {
 
 public:
-
 	bool		oneShotFlag;
 	float		altitudeOffset;
 
@@ -49,7 +48,6 @@ public:
 	}
 
 	virtual int32_t init(FilePtr objFile, uint32_t fileSize);
-
 	int32_t init(FitIniFilePtr objFile);
 
 	~LightType(void)
@@ -58,11 +56,8 @@ public:
 	}
 
 	virtual void destroy(void);
-
 	virtual GameObjectPtr createInstance(void);
-
 	virtual bool handleCollision(GameObjectPtr collidee, GameObjectPtr collider);
-
 	virtual bool handleDestruction(GameObjectPtr collidee, GameObjectPtr collider);
 };
 
@@ -72,7 +67,6 @@ class Light : public GameObject
 {
 
 public:
-
 	virtual void init(bool create);
 
 	Light(void) : GameObject()
@@ -86,13 +80,9 @@ public:
 	}
 
 	virtual void destroy(void);
-
 	virtual int32_t update(void);
-
 	virtual void render(void);
-
 	virtual void init(bool create, ObjectTypePtr _type);
-
 	virtual int32_t kill(void)
 	{
 		return(NO_ERROR);

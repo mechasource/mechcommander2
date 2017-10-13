@@ -9,9 +9,7 @@
 //***************************************************************************
 #include "stdafx.h"
 
-#ifndef MCLIB_H
-#include <mclib.h>
-#endif
+// #include <mclib.h>
 
 #ifndef WARRIOR_H
 #include "warrior.h"
@@ -41,10 +39,7 @@
 #include "comndr.h"
 #endif
 
-#ifndef MOVER_H
 #include "mover.h"
-#endif
-
 #ifndef MOVEMGR_H
 #include "movemgr.h"
 #endif
@@ -75,9 +70,7 @@
 #include "tacordr.h"
 #endif
 
-#ifndef RADIO_H
 #include "radio.h"
-#endif
 
 #ifndef MULTPLYR_H
 #include "multplyr.h"

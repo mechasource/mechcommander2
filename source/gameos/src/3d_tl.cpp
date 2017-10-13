@@ -24,7 +24,7 @@
 
 *******************************************************************************/
 /*******************************************************************************
- 3d_tl.cpp - gameos
+ 3d_tl.cpp - gameos reference pseudo code
 
  MechCommander 2 source code
 
@@ -36,8 +36,27 @@
  RcsID = $Id$ */
 
 #include "stdafx.h"
+
 #include <gameos.hpp>
 #include <directx.hpp>
+#include <dxrasterizer.hpp>
+
+// -----------------------------------------------------------------------------
+// Global data exported from this module
+
+// global referenced data not listed in headers
+
+// local data
+
+// -----------------------------------------------------------------------------
+// global implemented functions in this module listed in headers
+
+// global implemented functions not listed in headers
+
+// local functions
+
+// -----------------------------------------------------------------------------
+// externals referenced in this file not specified in headers
 
 #pragma region gos_SetTransform
 // Sets the WORLD/VIEW or PROJECTION matrix

@@ -9,9 +9,7 @@
 
 //---------------------------------------------------------------------------
 // Include Files
-#ifndef MCLIB_H
-#include <mclib.h>
-#endif
+// #include <mclib.h>
 
 #ifndef OBJTYPE_H
 #include "objtype.h"

@@ -1,5 +1,5 @@
 //===========================================================================//
-// Copyright (C) Microsoft Corporation. All rights reserved. //
+// Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 // Viewer.cpp : Defines the class behaviors for the application.
 //

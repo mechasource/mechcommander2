@@ -10,9 +10,7 @@
 
 #include "stdafx.h"
 
-#ifndef MCLIB_H
-#include <mclib.h>
-#endif
+// #include <mclib.h>
 
 #ifndef WARRIOR_H
 #include "warrior.h"
@@ -22,10 +20,7 @@
 #include "contact.h"
 #endif
 
-#ifndef MOVER_H
 #include "mover.h"
-#endif
-
 //#ifndef GVEHICL_H
 //#include "gvehicl.h"
 //#endif

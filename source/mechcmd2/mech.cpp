@@ -9,9 +9,7 @@
 //===========================================================================//
 #include "stdafx.h"
 
-#ifndef MCLIB_H
-#include <mclib.h>
-#endif
+// #include <mclib.h>
 
 #ifndef GAMEOBJ_H
 #include "gameobj.h"
@@ -57,10 +55,7 @@
 #include "tacordr.h"
 #endif
 
-#ifndef GAMESOUND_H
 #include "gamesound.h"
-#endif
-
 #ifndef SOUNDS_H
 #include "sounds.h"
 #endif

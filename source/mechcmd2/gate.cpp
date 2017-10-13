@@ -15,9 +15,7 @@
 #include "gate.h"
 #endif
 
-#ifndef MCLIB_H
-#include <mclib.h>
-#endif
+// #include <mclib.h>
 
 #ifndef SOUNDS_H
 #include "sounds.h"
@@ -47,10 +45,7 @@
 #include "multplyr.h"
 #endif
 
-#ifndef GAMESOUND_H
 #include "gamesound.h"
-#endif
-
 #ifndef WEAPONFX_H
 #include "weaponfx.h"
 #endif

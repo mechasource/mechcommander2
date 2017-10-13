@@ -11,9 +11,7 @@
 #include "stdafx.h"
 
 //=============
-#ifndef MCLIB_H
-#include <mclib.h>
-#endif
+// #include <mclib.h>
 
 #ifndef DOBJMGR_H
 #include "dobjmgr.h"

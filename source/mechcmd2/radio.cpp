@@ -9,23 +9,10 @@
 //===========================================================================//
 #include "stdafx.h"
 
-//------------------------------------------------------------------------------------------
-// Include Files
-#ifndef MCLIB_H
-#include <mclib.h>
-#endif
-
-#ifndef RADIO_H
+// #include <mclib.h>
 #include "radio.h"
-#endif
-
-#ifndef GAMESOUND_H
 #include "gamesound.h"
-#endif
-
-#ifndef MOVER_H
 #include "mover.h"
-#endif
 
 //------------------------------------------------------------------------------------------
 // Macro Definitions
@@ -44,7 +31,7 @@ RadioMessageInfo	messageInfo[RADIO_MESSAGE_COUNT];
 //------------------------------------------------------------------------------------------
 // Class Radio
 //------------------------------------------------------------------------------------------
-PVOIDRadio::operator new(size_t mySize)
+PVOID Radio::operator new(size_t mySize)
 {
 	if(!radioListGo)
 	{

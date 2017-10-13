@@ -1,5 +1,5 @@
 //===========================================================================//
-// Copyright (C) Microsoft Corporation. All rights reserved. //
+// Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
 // ..\..\mclib\$(ConfigurationName)\mclib.lib

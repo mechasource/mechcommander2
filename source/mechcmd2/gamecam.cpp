@@ -19,10 +19,7 @@
 #include "objmgr.h"
 #endif
 
-#ifndef MOVER_H
 #include "mover.h"
-#endif
-
 #ifndef MISSION_H
 #include "mission.h"
 #endif

@@ -23,10 +23,7 @@ MPParameterScreen.cpp			: Implementation of the MPParameterScreen component.
 
 extern bool quitGame;
 
-#ifndef GAMESOUND_H
 #include "gamesound.h"
-#endif
-
 #define	MP_PLAYER_PREFS 120
 #define MAP_INFO		121
 

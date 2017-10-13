@@ -10,18 +10,13 @@
 
 #include "stdafx.h"
 
-#ifndef MCLIB_H
-#include <mclib.h>
-#endif
+// #include <mclib.h>
 
 #ifndef CARNAGE_H
 #include "carnage.h"
 #endif
 
-#ifndef GAMESOUND_H
 #include "gamesound.h"
-#endif
-
 #ifndef BLDNG_H
 #include "bldng.h"
 #endif

@@ -14,10 +14,7 @@ MPHostGame.cpp			: Implementation of the MPHostGame component.
 #include "..\resource.h"
 #include "multplyr.h"
 
-#ifndef GAMESOUND_H
 #include "gamesound.h"
-#endif
-
 #define CHECK_BUTTON 200
 
 static int32_t connectionType = 0;

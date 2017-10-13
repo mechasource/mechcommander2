@@ -9,18 +9,13 @@
 //===========================================================================//*
 #include "stdafx.h"
 
-#ifndef MCLIB_H
-#include <mclib.h>
-#endif
+// #include <mclib.h>
 
 #ifndef OBJMGR_H
 #include "objmgr.h"
 #endif
 
-#ifndef MOVER_H
 #include "mover.h"
-#endif
-
 #ifdef USE_MECHS
 #ifndef MECH_H
 #include <mech.h>

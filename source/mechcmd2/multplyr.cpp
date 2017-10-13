@@ -7,9 +7,7 @@
 //===========================================================================//
 #include "stdafx.h"
 
-#ifndef MCLIB_H
-#include <mclib.h>
-#endif
+// #include <mclib.h>
 
 #include "crtdbg.h"
 
@@ -21,10 +19,7 @@
 #include "team.h"
 #endif
 
-#ifndef MOVER_H
 #include "mover.h"
-#endif
-
 #ifndef TURRET_H
 #include "turret.h"
 #endif

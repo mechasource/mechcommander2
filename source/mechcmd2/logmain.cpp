@@ -9,18 +9,13 @@
 
 //-----------------------------------
 // Include Files
-#ifndef MCLIB_H
-#include <mclib.h>
-#endif
+// #include <mclib.h>
 
 #ifndef LOGISTICS_H
 #include "logistics.h"
 #endif
 
-#ifndef GAMESOUND_H
 #include "gamesound.h"
-#endif
-
 #ifndef VERSION_H
 #include "version.h"
 #endif

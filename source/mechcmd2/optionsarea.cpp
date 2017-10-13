@@ -18,10 +18,7 @@ OptionsArea.cpp			: Implementation of the OptionsArea component.
 #include "gameSound.h"
 #include "LoadScreen.h"
 
-#ifndef GAMESOUND_H
 #include "gamesound.h"
-#endif
-
 static bool bShadows = true;
 static bool bDetailTexture = true;
 static int32_t objectDetail = 0;

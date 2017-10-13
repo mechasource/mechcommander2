@@ -7,10 +7,7 @@
 #include "trigger.h"
 #endif
 
-#ifndef MOVER_H
 #include "mover.h"
-#endif
-
 //***************************************************************************
 
 PVOID TriggerAreaManager::operator new(size_t ourSize)

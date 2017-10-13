@@ -53,10 +53,7 @@
 #include "multplyr.h"
 #endif
 
-#ifndef GAMESOUND_H
 #include "gamesound.h"
-#endif
-
 #ifndef SOUNDS_H
 #include "sounds.h"
 #endif

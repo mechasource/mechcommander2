@@ -14,10 +14,7 @@
 #include "weather.h"
 #endif
 
-#ifndef GAMESOUND_H
 #include "gamesound.h"
-#endif
-
 #ifndef QUAD_H
 #include "quad.h"
 #endif

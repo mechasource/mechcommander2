@@ -6,18 +6,13 @@
 //===========================================================================//
 #include "stdafx.h"
 
-#ifndef MCLIB_H
-#include <mclib.h>
-#endif
+// #include <mclib.h>
 
 #ifndef GAMEOBJ_H
 #include "gameobj.h"
 #endif
 
-#ifndef MOVER_H
 #include "mover.h"
-#endif
-
 #ifndef COLLSN_H
 #include "collsn.h"
 #endif
@@ -80,10 +75,7 @@
 #include "unitdesg.h"
 #endif
 
-#ifndef GAMESOUND_H
 #include "gamesound.h"
-#endif
-
 #ifndef TEAM_H
 #include "team.h"
 #endif

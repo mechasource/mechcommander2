@@ -21,10 +21,7 @@
 #include "objmgr.h"
 #endif
 
-#ifndef MOVER_H
 #include "mover.h"
-#endif
-
 #ifndef MOVE_H
 #include "move.h"
 #endif
@@ -63,10 +60,7 @@
 #include "tacordr.h"
 #endif
 
-#ifndef GAMESOUND_H
 #include "gamesound.h"
-#endif
-
 //#ifndef SOUNDSYS_H
 //#include "soundsys.h"
 //#endif

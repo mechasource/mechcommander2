@@ -62,10 +62,7 @@
 #include "bldng.h"
 #endif
 
-#ifndef GAMESOUND_H
 #include "gamesound.h"
-#endif
-
 #ifndef MISSION_H
 #include "mission.h"
 #endif

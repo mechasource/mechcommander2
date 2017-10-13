@@ -10,10 +10,7 @@
 
 //---------------------------------------------------------------------------
 // Include files
-#ifndef GAMESOUND_H
 #include "gamesound.h"
-#endif
-
 #ifndef WARRIOR_H
 #include "warrior.h"
 #endif

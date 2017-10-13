@@ -9,9 +9,7 @@
 
 //---------------------------------------------------------------------------
 // Include files
-#ifndef MCLIB_H
-#include <mclib.h>
-#endif
+// #include <mclib.h>
 
 #ifndef ACTOR_H
 #include "actor.h"

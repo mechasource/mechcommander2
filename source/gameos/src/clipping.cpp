@@ -24,7 +24,7 @@
 
 *******************************************************************************/
 /*******************************************************************************
- clipping.cpp  - gameos
+ clipping.cpp - gameos reference pseudo code
 
  MechCommander 2 source code
 
@@ -37,12 +37,29 @@
 
 #include "stdafx.h"
 
-// MechCommander gameos headers
 #include <gameos.hpp>
 #include <directx.hpp>
 #include <3drasterizer.hpp>
 #include <dxrasterizer.hpp>
-#include <texture manager.hpp>
+#include <texture_manager.hpp>
+
+// -----------------------------------------------------------------------------
+// Global data exported from this module
+
+// global referenced data not listed in headers
+
+// local data
+
+// -----------------------------------------------------------------------------
+// global implemented functions in this module listed in headers
+
+// global implemented functions not listed in headers
+
+// local functions
+
+// -----------------------------------------------------------------------------
+// externals referenced in this file not specified in headers
+
 
 #pragma region gos_ClipDrawQuad
 /*
@@ -61,9 +78,10 @@ gos_ClipDrawQuad(pgos_VERTEX pVertices)
 {
 	double fWidth;
 	double fHeight;
-	if(Compatibility3D & 0x40)
+	CTexInfo texinfo;
+	if (Compatibility3D & 0x40)
 	{
-		if(RenderStates[1])
+		if (RenderStates[1])
 		{
 			fWidth  = 0.0625 / (double)CTexInfo::Width();
 			fHeight = 0.0625 / (double)CTexInfo::Height();
@@ -90,20 +108,20 @@ gos_ClipDrawQuad(pgos_VERTEX pVertices)
 	}
 	fWidth = (double)Environment.screenWidth;
 	fHeight = (double)Environment.screenHeight;
-	if(Environment.Renderer == 3 && RenderStates[19] & 0x100)
+	if (Environment.Renderer == 3 && RenderStates[19] & 0x100)
 	{
 		fWidth = fWidth / 2.0;
 		fHeight = fHeight / 2.0;
 	}
-	if(fWidth > (double)pVertices[1].x && pVertices[3].x > 0.0 && fHeight > (double)pVertices[3].y && pVertices[1].y > 0.0)
+	if (fWidth > (double)pVertices[1].x && pVertices[3].x > 0.0 && fHeight > (double)pVertices[3].y && pVertices[1].y > 0.0)
 	{
-		if(DirtyStates)
+		if (DirtyStates)
 			FlushRenderStates();
-		if(pVertices[1].x < 0.0 || fWidth < (double)pVertices[3].x || pVertices[3].y < 0.0 || fHeight < (double)pVertices[1].y)
+		if (pVertices[1].x < 0.0 || fWidth < (double)pVertices[3].x || pVertices[3].y < 0.0 || fHeight < (double)pVertices[1].y)
 		{
 			PrimitivesRendered += 2;
 			++QuadsRendered;
-			if(HasGuardBandClipping)
+			if (HasGuardBandClipping)
 			{
 				++NumGuardBandClipped;
 				wDrawPrimitive(d3dDevice7, D3DPT_TRIANGLEFAN, 0x1C4u, pVertices, 4u, 0);

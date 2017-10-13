@@ -15,10 +15,7 @@ MPGameBrowser.cpp			: Implementation of the MPGameBrowser component.
 #include "Multplyr.h"
 #include "MechBayScreen.h"
 
-#ifndef GAMESOUND_H
 #include "gamesound.h"
-#endif
-
 #define CHECK_BUTTON 200
 
 static int32_t connectionType = 0;

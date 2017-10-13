@@ -15,10 +15,7 @@ MPLoadMap.cpp			: Implementation of the MPLoadMap component.
 #include <windows.h>
 #include "MissionBriefingScreen.h"
 
-#ifndef GAMESOUND_H
 #include "gamesound.h"
-#endif
-
 #define CHECK_BUTTON 200
 
 static int32_t connectionType = 0;

@@ -9,9 +9,7 @@
 #include "stdafx.h"
 
 // Include Files
-#ifndef MCLIB_H
-#include <mclib.h>
-#endif
+// #include <mclib.h>
 
 #ifndef COLLSN_H
 #include "collsn.h"

@@ -15,10 +15,7 @@
 #include "file.h"
 #endif
 
-#ifndef GAMESOUND_H
 #include "gamesound.h"
-#endif
-
 #ifndef PREFS_H
 #include "prefs.h"
 #endif

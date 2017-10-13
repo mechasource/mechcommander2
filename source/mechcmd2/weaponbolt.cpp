@@ -11,18 +11,13 @@
 
 //---------------------------------------------------------------------------
 // Include Files
-#ifndef MCLIB_H
-#include <mclib.h>
-#endif
+// #include <mclib.h>
 
 #ifndef WEAPONBOLT_H
 #include "weaponbolt.h"
 #endif
 
-#ifndef GAMESOUND_H
 #include "gamesound.h"
-#endif
-
 #ifndef OBJMGR_H
 #include "objmgr.h"
 #endif

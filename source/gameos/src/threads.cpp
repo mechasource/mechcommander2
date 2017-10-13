@@ -24,7 +24,7 @@
 
 *******************************************************************************/
 /*******************************************************************************
- threads.cpp  - gameos
+ threads.cpp - gameos reference pseudo code
 
  MechCommander 2 source code
 
@@ -36,5 +36,35 @@
  RcsID = $Id$ */
 
 #include "stdafx.h"
+
+#include <gameos.hpp>
+#include <globals.hpp>
+#include <toolos.hpp>
+
+// -----------------------------------------------------------------------------
+// Global data exported from this module
+
+// global referenced data not listed in headers
+
+// local data
+struct _gosThreadInfo* ListofThreads;
+
+// -----------------------------------------------------------------------------
+// global implemented functions in this module listed in headers
+void __stdcall CheckThreads(void);
+void __stdcall DestroyThreads(void);
+uint32_t __stdcall gos_CreateThread(void (__stdcall* ThreadRoutine)(PVOID));
+void __stdcall gos_SetThreadPriority(uint32_t ThreadHandle, gosThreadPriority Priority);
+void __stdcall gos_DeleteThread(uint32_t ThreadHandle);
+void __stdcall gos_TriggerThread(uint32_t ThreadHandle, bool* ThreadFinished, PVOID Context);
+
+// global implemented functions not listed in headers
+
+// local functions
+uint32_t __stdcall WorkerThread(PVOID);
+
+// -----------------------------------------------------------------------------
+// externals referenced in this file not specified in headers
+extern void __stdcall gosSetThreadName(uint32_t, PSTR);
 
 

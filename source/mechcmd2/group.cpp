@@ -9,9 +9,7 @@
 //===========================================================================//
 #include "stdafx.h"
 
-#ifndef MCLIB_H
-#include <mclib.h>
-#endif
+// #include <mclib.h>
 
 #ifndef GROUP_H
 #include "group.h"
@@ -21,10 +19,7 @@
 #include "gameobj.h"
 #endif
 
-#ifndef MOVER_H
 #include "mover.h"
-#endif
-
 #ifndef OBJMGR_H
 #include "objmgr.h"
 #endif

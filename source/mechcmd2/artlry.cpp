@@ -9,9 +9,7 @@
 //===========================================================================//
 #include "stdafx.h"
 
-#ifndef MCLIB_H
-#include <mclib.h>
-#endif
+// #include <mclib.h>
 
 #ifndef ARTLRY_H
 #include "artlry.h"
@@ -57,10 +55,7 @@
 #include "gate.h"
 #endif
 
-#ifndef GAMESOUND_H
 #include "gamesound.h"
-#endif
-
 #ifndef MULTPLYR_H
 #include "multplyr.h"
 #endif

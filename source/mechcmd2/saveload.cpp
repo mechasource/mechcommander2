@@ -11,9 +11,7 @@
 
 //----------------------------------------------------------------------------------
 // Include Files
-#ifndef MCLIB_H
-#include <mclib.h>
-#endif
+// #include <mclib.h>
 
 #ifndef MISSION_H
 #include "mission.h"
@@ -23,10 +21,7 @@
 #include "movemgr.h"
 #endif
 
-#ifndef GAMESOUND_H
 #include "gamesound.h"
-#endif
-
 #ifndef SOUNDS_H
 #include "sounds.h"
 #endif
@@ -43,10 +38,7 @@
 #include "objmgr.h"
 #endif
 
-#ifndef MOVER_H
 #include "mover.h"
-#endif
-
 #ifndef MECH_H
 #include "mech.h"
 #endif

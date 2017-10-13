@@ -24,7 +24,7 @@
 
 *******************************************************************************/
 /*******************************************************************************
- perf.cpp  - gameos
+ perf.cpp - gameos reference pseudo code
 
  MechCommander 2 source code
 
@@ -38,3 +38,19 @@
 #include "stdafx.h"
 
 
+// -----------------------------------------------------------------------------
+// Global data exported from this module
+
+// global referenced data not listed in headers
+
+// local data
+
+// -----------------------------------------------------------------------------
+// global implemented functions in this module listed in headers
+
+// global implemented functions not listed in headers
+
+// local functions
+
+// -----------------------------------------------------------------------------
+// externals referenced in this file not specified in headers

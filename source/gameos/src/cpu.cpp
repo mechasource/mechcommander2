@@ -24,7 +24,7 @@
 
 *******************************************************************************/
 /*******************************************************************************
- cpu.cpp - gameos
+ cpu.cpp - gameos reference pseudo code
 
  MechCommander 2 source code
 
@@ -37,36 +37,39 @@
 
 #include "stdafx.h"
 
-int sprintf(PSTR buffer, PCSTR format, ...);
+// -----------------------------------------------------------------------------
+// Global data exported from this module
 
-sprintf
-free
-wGetCaps(IDirectDraw7*, _DDCAPS_DX7*, _DDCAPS_DX7*)                                UNDEF 000021F8 00000004                   R . . . . T .
-wRelease(IUnknown*)                                                                UNDEF 000021FC 00000004                   R . . . . T .
-wUnlock(IDirectDrawSurface7*, tagRECT*)                                            UNDEF 00002200 00000004                   R . . . . T .
-BOOL __stdcall IsBadReadPtr(PCVOID lp, uintptr_t ucb);
-UNDEF 00002204 00000004 00000000 00000000 R . . . . T .
-wLock(IDirectDrawSurface7*, tagRECT*, _DDSURFACEDESC2*, ulong, void*)               UNDEF 00002208 00000004                   R . . . . T .
-wCreateSurface(IDirectDraw7*, _DDSURFACEDESC2*, IDirectDrawSurface7**, IUnknown*) UNDEF 0000220C 00000004                   R . . . . T .
-_memset                                                                             UNDEF 00002210 00000004                   R . . . . T .
-wSetCooperativeLevel(IDirectDraw7*, HWND__*, ulong)                                 UNDEF 00002214 00000004                   R . . . . T .
-wDirectDrawCreateEx(_GUID*, void**, _GUID const&, IUnknown*)                      UNDEF 0000221C 00000004                   R . . . . T .
-BOOL __stdcall QueryPerformanceCounter(PLARGE_INTEGER pPerformanceCount);
-BOOL __stdcall QueryPerformanceFrequency(PLARGE_INTEGER pFrequency);
+// global referenced data not listed in headers
 
-UNDEF 0000222C 00000004 00000000 00000000 R . . . . T .
-UNDEF 00002230 00000004 00000000 00000000 R . . . . T .
-SetThreadPriority(x, x)                                                              UNDEF 00002234 00000004 00000000 00000000 R . . . . T .
-SetPriorityClass(x, x)                                                               UNDEF 00002238 00000004 00000000 00000000 R . . . . T .
-Sleep(x)                                                                            UNDEF 0000223C 00000004 00000000 00000000 R . . . . T .
-GetPriorityClass(x)                                                                 UNDEF 00002240 00000004 00000000 00000000 R . . . . T .
-GetThreadPriority(x)                                                                UNDEF 00002244 00000004 00000000 00000000 R . . . . T .
-GetCurrentProcess()                                                                 UNDEF 00002248 00000004                   R . . . . T .
-GetCurrentThread()                                                                  UNDEF 0000224C 00000004                   R . . . . T .
-__imp__malloc                                                                       UNDEF 00002250 00000004                   R . . . . T .
-__alldiv                                                                            UNDEF 00002258 00000004                   R . . . . . .
-GetSystemInfo(x)                                                                    UNDEF 0000225C 00000004 00000000 00000000 R . . . . T .
-_strcat                                                                             UNDEF 0000226C 00000004                   R . . . . T .
-_strcpy                                                                             UNDEF 00002270 00000004                   R . . . . T .
-__imp__strncmp                                                                      UNDEF 00002274 00000004                   R . . . . T .
-__security_check_cookie(x)                                                          UNDEF 0000228C 00000004                   R . . . . . .
+// local data
+
+// -----------------------------------------------------------------------------
+// global implemented functions in this module listed in headers
+
+// global implemented functions not listed in headers
+
+// local functions
+
+// -----------------------------------------------------------------------------
+// externals referenced in this file not specified in headers
+
+
+// considered utterly obsolete
+
+#if _CONSIDERED_OBSOLETE || _CONSIDERED_UNUSED
+
+void __stdcall InitProcessorSpeed(void)
+{
+}
+
+PSTR __stdcall GetProcessor(void)
+{
+	return nullptr;
+}
+
+void __stdcall GetProcessorInfo(void)
+{
+}
+
+#endif

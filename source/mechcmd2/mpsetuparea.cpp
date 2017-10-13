@@ -13,10 +13,7 @@ MPSetupArea.cpp			: Implementation of the MPSetupArea component.
 #include "../MCLib/UserInput.h"
 #include "..\resource.h"
 
-#ifndef GAMESOUND_H
 #include "gamesound.h"
-#endif
-
 #define CHECK_BUTTON 200
 
 static int32_t connectionType = 0;

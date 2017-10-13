@@ -61,7 +61,7 @@ namespace Stuff
 		ClassData*
 		GetClassData(void) const
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return classData;
 		}
 		bool IsDerivedFrom(ClassData* parent) const;
@@ -133,17 +133,17 @@ namespace Stuff
 
 		RegisteredClass::ClassID GetClassID(void)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return classID;
 		}
 		PCSTR GetClassName(void)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return className;
 		}
 		RegisteredClass__ClassData* GetParentClass(void)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return parentClass;
 		}
 
@@ -171,7 +171,7 @@ namespace Stuff
 //
 	inline bool RegisteredClass::IsDerivedFrom(RegisteredClass__ClassData* parent) const
 	{
-		Check_Object(this);
+		// Check_Object(this);
 		Check_Object(classData);
 		return classData->IsDerivedFrom(parent);
 	}
@@ -180,7 +180,7 @@ namespace Stuff
 //
 	inline bool RegisteredClass::IsDerivedFrom(ClassID class_id) const
 	{
-		Check_Object(this);
+		// Check_Object(this);
 		Check_Object(classData);
 		return classData->IsDerivedFrom(FindClassData(class_id));
 	}
@@ -189,7 +189,7 @@ namespace Stuff
 //
 	inline bool RegisteredClass::IsDerivedFrom(PCSTR parent) const
 	{
-		Check_Object(this);
+		// Check_Object(this);
 		Check_Object(classData);
 		return classData->IsDerivedFrom(FindClassData(parent));
 	}
@@ -198,7 +198,7 @@ namespace Stuff
 //
 	inline RegisteredClass::ClassID RegisteredClass::GetClassID(void) const
 	{
-		Check_Object(this);
+		// Check_Object(this);
 		RegisteredClass__ClassData* data = GetClassData();
 		Check_Object(data);
 		return data->GetClassID();

@@ -57,13 +57,13 @@ namespace Stuff
 		const float&
 		operator[](int32_t index) const
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return (&minX)[index];
 		}
 		float&
 		operator[](int32_t index)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return (&minX)[index];
 		}
 

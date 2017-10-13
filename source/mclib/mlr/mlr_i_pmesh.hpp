@@ -1,5 +1,5 @@
 //===========================================================================//
-// Copyright (C) Microsoft Corporation. All rights reserved. //
+// Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
 #pragma once
@@ -37,22 +37,14 @@ namespace MidLevelRenderer
 		// Constructors/Destructors
 		//
 	protected:
-		MLR_I_PMesh(
-			ClassData* class_data,
-			Stuff::MemoryStream* stream,
-			uint32_t version);
+		MLR_I_PMesh(ClassData* class_data, Stuff::MemoryStream* stream, uint32_t version);
 		~MLR_I_PMesh(void);
 
 	public:
 		MLR_I_PMesh(ClassData* class_data = MLR_I_PMesh::DefaultData);
 
-		static MLR_I_PMesh*
-		Make(
-			Stuff::MemoryStream* stream,
-			uint32_t version);
-
-		void
-		Save(Stuff::MemoryStream* stream);
+		static MLR_I_PMesh* Make(Stuff::MemoryStream* stream, uint32_t version);
+		void Save(Stuff::MemoryStream* stream);
 
 	public:
 		// void Copy(MLRIndexedPolyMesh*);
@@ -68,7 +60,7 @@ namespace MidLevelRenderer
 
 		const Stuff::Plane* GetPolygonPlane(size_t index)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			Verify(index < facePlanes.GetLength());
 			return &facePlanes[index];
 		}
@@ -77,37 +69,22 @@ namespace MidLevelRenderer
 
 		virtual void LightMapLighting(MLRLight*);
 
-		virtual void
 #if COLOR_AS_DWORD
-		PaintMe(pcuint32_t paintMe)
-		{
-			(void)paintMe;
-		};
+		virtual void PaintMe(pcuint32_t paintMe) { (void)paintMe; };
 #else
-		PaintMe(const Stuff::RGBAColor* paintMe)
-		{
-			(void)paintMe;
-		};
+		virtual void PaintMe(const Stuff::RGBAColor* paintMe) { (void)paintMe; };
 #endif
 
 		virtual uint32_t TransformAndClip(Stuff::Matrix4D*, MLRClippingState, GOSVertexPool*, bool = false);
-
-		bool
-		CastRay(
-			Stuff::Line3D* line,
-			Stuff::Normal3D* normal
-		);
-
+		bool CastRay(Stuff::Line3D* line, Stuff::Normal3D* normal);
 		virtual void TransformNoClip(Stuff::Matrix4D*, GOSVertexPool*, bool = false);
 
 		// Initializes the visibility test list
-		void
-		ResetTestList(void);
+		void ResetTestList(void);
 
 		// find which vertices are visible which not - returns nr of visible vertices
 		// the result is stored in the visibleIndexedVertices array
-		int32_t
-		FindVisibleVertices(void);
+		uint32_t FindVisibleVertices(void);
 
 		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		// Class Data Support
@@ -121,9 +98,9 @@ namespace MidLevelRenderer
 	public:
 		void TestInstance(void) const;
 
-		virtual size_t GetSize()
+		virtual size_t GetSize(void)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			size_t ret = MLRIndexedPrimitiveBase::GetSize();
 			ret += testList.GetSize();
 			ret += facePlanes.GetSize();
@@ -131,13 +108,9 @@ namespace MidLevelRenderer
 		}
 
 	protected:
-		void
-		Transform(Stuff::Matrix4D*);
-
+		void Transform(Stuff::Matrix4D*);
 		Stuff::DynamicArrayOf<uint8_t> testList;
-
 		Stuff::DynamicArrayOf<Stuff::Plane> facePlanes;
-
 	};
 
 #define ICO_X 0.525731112119133606f
@@ -146,7 +119,7 @@ namespace MidLevelRenderer
 	extern float vdata[12][3];
 	extern uint32_t tindices [20][3];
 
-	extern int32_t triDrawn;
+	extern uint32_t triDrawn;
 
 	void subdivide(
 		Stuff::Point3D* coords,
@@ -157,13 +130,8 @@ namespace MidLevelRenderer
 		uint32_t tri2draw,
 		float rad = 1.0f);
 
-	MLR_I_PMesh*
-	CreateIndexedCube_NoColor_NoLit(float, MLRState*);
-	MLRShape*
-	CreateIndexedIcosahedron_NoColor_NoLit(
-		IcoInfo&,
-		MLRState*
-	);
+	MLR_I_PMesh* CreateIndexedCube_NoColor_NoLit(float, MLRState*);
+	MLRShape* CreateIndexedIcosahedron_NoColor_NoLit(IcoInfo&, MLRState*);
 
 }
 #endif

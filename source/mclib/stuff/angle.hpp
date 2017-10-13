@@ -64,13 +64,13 @@ namespace Stuff
 		//
 		Radian& operator=(float angle)
 		{
-			Check_Pointer(this);
+			//Check_Pointer(this);
 			this->angle = angle;
 			return *this;
 		}
 		Radian& operator=(const Radian& radian)
 		{
-			Check_Pointer(this);
+			//Check_Pointer(this);
 			Check_Object(&radian);
 			angle = radian.angle;
 			return *this;
@@ -83,13 +83,13 @@ namespace Stuff
 		//
 		operator float(void) const
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return angle;
 		}
 
 		float getdata(void) const
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return angle;
 		}
 		//
@@ -99,31 +99,31 @@ namespace Stuff
 		//
 		bool operator!(void) const
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return Small_Enough(angle);
 		}
 
 		bool operator==(const Radian& r) const
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			Check_Object(&r);
 			return Close_Enough(angle, r.angle);
 		}
 		bool operator==(float r) const
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return Close_Enough(angle, r);
 		}
 
 		bool operator!=(const Radian& r) const
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			Check_Object(&r);
 			return !Close_Enough(angle, r.angle);
 		}
 		bool operator!=(float r) const
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return !Close_Enough(angle, r);
 		}
 
@@ -132,46 +132,46 @@ namespace Stuff
 		//
 		Radian& Negate(float r)
 		{
-			Check_Pointer(this);
+			//Check_Pointer(this);
 			angle = -r;
 			return *this;
 		}
 
 		Radian& Add(float r1, float r2)
 		{
-			Check_Pointer(this);
+			//Check_Pointer(this);
 			angle = r1 + r2;
 			return *this;
 		}
 		Radian& operator+=(float r)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			angle += r;
 			return *this;
 		}
 
 		Radian& Subtract(float r1, float r2)
 		{
-			Check_Pointer(this);
+			//Check_Pointer(this);
 			angle = r1 - r2;
 			return *this;
 		}
 		Radian& operator-=(float r)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			angle -= r;
 			return *this;
 		}
 
 		Radian& Multiply(float r1, float r2)
 		{
-			Check_Pointer(this);
+			//Check_Pointer(this);
 			angle = r1 * r2;
 			return *this;
 		}
 		Radian& operator*=(float r)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			angle *= r;
 			return *this;
 		}
@@ -179,7 +179,7 @@ namespace Stuff
 		Radian&
 		Divide(float r1, float r2)
 		{
-			Check_Pointer(this);
+			//Check_Pointer(this);
 			Verify(!Small_Enough(r2));
 			angle = r1 / r2;
 			return *this;
@@ -187,7 +187,7 @@ namespace Stuff
 		Radian&
 		operator/=(float r)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			Verify(!Small_Enough(r));
 			angle /= r;
 			return *this;
@@ -254,7 +254,7 @@ namespace Stuff
 		Degree&
 		operator=(const Degree& degree)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			Check_Object(&degree);
 			angle = degree.angle;
 			return *this;
@@ -262,14 +262,14 @@ namespace Stuff
 		Degree&
 		operator=(float angle)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			this->angle = angle;
 			return *this;
 		}
 		Degree&
 		operator=(const Radian& radian)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			Check_Object(&radian);
 			angle = radian.angle * Degrees_Per_Radian;
 			return *this;
@@ -292,7 +292,7 @@ namespace Stuff
 	inline Radian&
 	Radian::operator=(const Degree& degree)
 	{
-		Check_Pointer(this);
+		//Check_Pointer(this);
 		Check_Object(&degree);
 		angle = degree.angle * Radians_Per_Degree;
 		return *this;
@@ -314,14 +314,14 @@ namespace Stuff
 		{}
 		SinCosPair(float sin, float cos)
 		{
-			Check_Pointer(this);
+			//Check_Pointer(this);
 			sine = sin;
 			cosine = cos;
-			Check_Object(this);
+			// Check_Object(this);
 		}
 		SinCosPair(const SinCosPair& pair)
 		{
-			Check_Pointer(this);
+			//Check_Pointer(this);
 			Check_Object(&pair);
 			sine = pair.sine;
 			cosine = pair.cosine;
@@ -337,7 +337,7 @@ namespace Stuff
 		SinCosPair&
 		operator=(const SinCosPair& pair)
 		{
-			Check_Pointer(this);
+			//Check_Pointer(this);
 			Check_Object(&pair);
 			sine = pair.sine;
 			cosine = pair.cosine;
@@ -346,7 +346,7 @@ namespace Stuff
 		SinCosPair&
 		operator=(const Radian& radian)
 		{
-			Check_Pointer(this);
+			//Check_Pointer(this);
 			Check_Object(&radian);
 			(void)radian;	// 4100
 #if USE_ASSEMBLER_CODE
@@ -371,7 +371,7 @@ namespace Stuff
 			cosine = cos(radian);
 			sine = sin(radian);
 #endif
-			Check_Object(this);
+			// Check_Object(this);
 			return *this;
 		}
 
@@ -392,7 +392,7 @@ namespace Stuff
 	inline Radian&
 	Radian::operator=(const SinCosPair& pair)
 	{
-		Check_Pointer(this);
+		//Check_Pointer(this);
 		Check_Object(&pair);
 		angle = Arctan(pair.sine, pair.cosine);
 		return *this;

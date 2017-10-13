@@ -1,5 +1,5 @@
 //===========================================================================//
-// Copyright (C) Microsoft Corporation. All rights reserved. //
+// Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
 #include "stdafx.h"
@@ -89,7 +89,7 @@ GOSVertexPool::GOSVertexPool(void)
 
 void GOSVertexPool::Reset(void)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	lastUsed = 0;
 	lastUsed2uv = 0;
 	lastUsedIndex = 0;

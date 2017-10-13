@@ -7,8 +7,8 @@
 
 #pragma once
 
-#include <gosfx/gosfx.hpp>
-#include <gosfx/effect.hpp>
+//#include <gosfx/gosfx.hpp>
+//#include <gosfx/effect.hpp>
 
 namespace gosFX
 {
@@ -65,20 +65,14 @@ namespace gosFX
 		Stuff::DynamicArrayOf<Effect::Specification*>
 		m_effects;
 
-		Effect::Specification*
-		Find(PCSTR name);
-		Effect*
-		MakeEffect(
-			uint32_t index,
-			uint32_t flags
-		);
+		Effect::Specification* Find(std::wstring& name);
+		Effect* MakeEffect(uint32_t index, uint32_t flags);
 
 		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		// Testing
 		//
 	public:
 		void
-		TestInstance(void) const
-		{}
+		TestInstance(void) const {}
 	};
 }

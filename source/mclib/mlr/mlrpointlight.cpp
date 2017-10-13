@@ -118,7 +118,7 @@ MLRPointLight::~MLRPointLight()
 void
 MLRPointLight::Save(Stuff::MemoryStream* stream)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Object(stream);
 	MLRInfiniteLightWithFalloff::Save(stream);
 	if(lightMap)
@@ -139,7 +139,7 @@ MLRPointLight::Save(Stuff::MemoryStream* stream)
 void
 MLRPointLight::Write(Stuff::Page* page)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Object(page);
 	MLRInfiniteLightWithFalloff::Write(page);
 	if(lightMap)
@@ -218,7 +218,7 @@ MLRPointLight::LightVertex(const MLRVertexData& vertexData)
 void
 MLRPointLight::SetLightMap(MLRLightMap* light_map)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	if(lightMap)
 	{
 		Check_Object(lightMap);

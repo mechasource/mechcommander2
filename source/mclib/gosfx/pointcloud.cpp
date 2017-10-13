@@ -18,11 +18,11 @@
 //
 gosFX::PointCloud__Specification::PointCloud__Specification(
 	Stuff::MemoryStream* stream,
-	int32_t gfx_version
+	uint32_t gfx_version
 ):
 	ParticleCloud__Specification(gosFX::PointCloudClassID, stream, gfx_version)
 {
-	Check_Pointer(this);
+	//Check_Pointer(this);
 	Verify(m_class == PointCloudClassID);
 	//Verify(gos_GetCurrentHeap() == Heap);
 	m_totalParticleSize = gosFX::PointCloud::ParticleSize;
@@ -34,7 +34,7 @@ gosFX::PointCloud__Specification::PointCloud__Specification(
 gosFX::PointCloud__Specification::PointCloud__Specification():
 	ParticleCloud__Specification(gosFX::PointCloudClassID)
 {
-	Check_Pointer(this);
+	//Check_Pointer(this);
 	//Verify(gos_GetCurrentHeap() == Heap);
 	m_totalParticleSize = gosFX::PointCloud::ParticleSize;
 	m_particleClassSize = sizeof(gosFX::PointCloud::Particle);
@@ -45,14 +45,16 @@ gosFX::PointCloud__Specification::PointCloud__Specification():
 gosFX::PointCloud__Specification*
 gosFX::PointCloud__Specification::Make(
 	Stuff::MemoryStream* stream,
-	int32_t gfx_version
+	uint32_t gfx_version
 )
 {
 	Check_Object(stream);
-	gos_PushCurrentHeap(Heap);
+	#ifdef _GAMEOS_HPP_
+	// gos_PushCurrentHeap(Heap);
+#endif
 	PointCloud__Specification* spec =
 		new gosFX::PointCloud__Specification(stream, gfx_version);
-	gos_PopCurrentHeap();
+	// gos_PopCurrentHeap();
 	return spec;
 }
 
@@ -101,11 +103,11 @@ gosFX::PointCloud::PointCloud(
 {
 	Check_Object(spec);
 	//Verify(gos_GetCurrentHeap() == Heap);
-	gos_PushCurrentHeap(MidLevelRenderer::Heap);
+	// gos_PushCurrentHeap(MidLevelRenderer::Heap);
 	m_cloudImplementation =
 		new MidLevelRenderer::MLRPointCloud(spec->m_maxParticleCount);
 	Register_Object(m_cloudImplementation);
-	gos_PopCurrentHeap();
+	// gos_PopCurrentHeap();
 	uint32_t index = spec->m_maxParticleCount * sizeof(Particle);
 	m_P_localTranslation = Cast_Pointer(Stuff::Point3D*, &m_data[index]);
 	index += spec->m_maxParticleCount * sizeof(Stuff::Point3D);
@@ -134,9 +136,11 @@ gosFX::PointCloud::Make(
 )
 {
 	Check_Object(spec);
-	gos_PushCurrentHeap(Heap);
+	#ifdef _GAMEOS_HPP_
+	// gos_PushCurrentHeap(Heap);
+#endif
 	PointCloud* cloud = new gosFX::PointCloud(spec, flags);
-	gos_PopCurrentHeap();
+	// gos_PopCurrentHeap();
 	return cloud;
 }
 
@@ -145,7 +149,7 @@ gosFX::PointCloud::Make(
 bool
 gosFX::PointCloud::Execute(ExecuteInfo* info)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Object(info);
 	//
 	//----------------------------------------
@@ -264,7 +268,7 @@ gosFX::PointCloud::CreateNewParticle(
 	Stuff::Point3D* translation
 )
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Pointer(translation);
 	//
 	//-----------------------------------------------------------------------
@@ -287,7 +291,7 @@ gosFX::PointCloud::AnimateParticle(
 	Stuff::Time till
 )
 {
-	Check_Object(this);
+	// Check_Object(this);
 	//
 	//-----------------------------------------------------------------------
 	// If this cloud is unparented, we need to transform the point from local
@@ -423,7 +427,7 @@ gosFX::PointCloud::AnimateParticle(
 //
 void gosFX::PointCloud::DestroyParticle(uint32_t index)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	m_cloudImplementation->TurnOff(index);
 	Verify(!m_cloudImplementation->IsOn(index));
 	ParticleCloud::DestroyParticle(index);
@@ -433,7 +437,7 @@ void gosFX::PointCloud::DestroyParticle(uint32_t index)
 //
 void gosFX::PointCloud::Draw(DrawInfo* info)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Object(info);
 	if(m_activeParticleCount)
 	{

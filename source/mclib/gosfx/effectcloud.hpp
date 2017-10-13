@@ -7,8 +7,8 @@
 //
 #pragma once
 
-#include <gosfx/gosfx.hpp>
-#include <gosfx/spinningcloud.hpp>
+//#include <gosfx/gosfx.hpp>
+//#include <gosfx/spinningcloud.hpp>
 
 namespace gosFX
 {
@@ -25,7 +25,7 @@ namespace gosFX
 	protected:
 		EffectCloud__Specification(
 			Stuff::MemoryStream* stream,
-			int32_t gfx_version
+			uint32_t gfx_version
 		);
 
 	public:
@@ -34,7 +34,7 @@ namespace gosFX
 		static EffectCloud__Specification*
 		Make(
 			Stuff::MemoryStream* stream,
-			int32_t gfx_version
+			uint32_t gfx_version
 		);
 
 		void
@@ -102,14 +102,14 @@ namespace gosFX
 		Specification*
 		GetSpecification()
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return
 				Cast_Object(Specification*, m_specification);
 		}
 		Particle*
 		GetParticle(uint32_t index)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			Check_Object(GetSpecification());
 			return
 				Cast_Pointer(

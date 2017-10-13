@@ -36,7 +36,7 @@ TreeNode::TreeNode(Tree* tree, Plug* plug)
 //
 TreeNode::~TreeNode()
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Tree* tree = Cast_Object(Tree*, socket);
 	Check_Object(tree);
 	//
@@ -101,7 +101,7 @@ TreeNode::TestInstance(void)
 //
 void TreeNode::SetupTreeLinks(TreeNode* less, TreeNode* greater, TreeNode* parent)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	this->less = less;
 	this->greater = greater;
 	this->parent = parent;
@@ -127,7 +127,7 @@ Tree::Tree(Node* node, bool has_unique_entries)
 //
 Tree::~Tree()
 {
-	Check_Object(this);
+	// Check_Object(this);
 	SetReleaseNode(nullptr);
 	while(root != nullptr)
 	{
@@ -164,7 +164,7 @@ Tree::AddImplementation(
 	Plug* plug
 )
 {
-	Check_Object(this);
+	// Check_Object(this);
 	AddValueImplementation(plug, nullptr);
 }
 
@@ -179,7 +179,7 @@ Tree::AddValueImplementation(
 	PCVOID value
 )
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Object(plug);
 	/*
 	* Verify that value has not been added
@@ -209,7 +209,7 @@ Tree::FindImplementation(
 	PCVOID value
 )
 {
-	Check_Object(this);
+	// Check_Object(this);
 	TreeNode* node;
 	if((node = SearchForValue(value)) != nullptr)
 	{
@@ -227,7 +227,7 @@ Tree::FindImplementation(
 bool
 Tree::IsEmpty()
 {
-	Check_Object(this);
+	// Check_Object(this);
 	return (root == nullptr);
 }
 
@@ -242,7 +242,7 @@ Tree::MakeTreeNode(
 	PCVOID
 )
 {
-	Check_Object(this);
+	// Check_Object(this);
 	STOP(("Tree::MakeTreeNode - Should never reach here"));
 	return nullptr;
 }
@@ -258,7 +258,7 @@ Tree::CompareTreeNodes(
 	TreeNode*
 )
 {
-	Check_Object(this);
+	// Check_Object(this);
 	STOP(("Tree::CompareTreeNodes - Should never reach here"));
 	return 0;
 }
@@ -274,7 +274,7 @@ Tree::CompareValueToTreeNode(
 	TreeNode*
 )
 {
-	Check_Object(this);
+	// Check_Object(this);
 	STOP(("Tree::CompareValueToTreeNode - Should never reach here"));
 	return 0;
 }
@@ -289,7 +289,7 @@ Tree::AddTreeNode(
 	TreeNode* newNode
 )
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Object(newNode);
 	/*
 	* If root is nullptr this is the first item
@@ -343,7 +343,7 @@ Tree::SeverFromTreeNode(
 	TreeNode* node
 )
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Object(node);
 	if(node->greater == nullptr)
 	{
@@ -533,7 +533,7 @@ Tree::SearchForValue(
 	PCVOID value
 )
 {
-	Check_Object(this);
+	// Check_Object(this);
 	TreeNode* node;
 	int32_t ret;
 	node = root;
@@ -561,7 +561,7 @@ TreeIterator::TreeIterator(Tree* tree):
 Iterator*
 TreeIterator::MakeClone()
 {
-	Check_Object(this);
+	// Check_Object(this);
 	return new TreeIterator(*this);
 }
 
@@ -571,7 +571,7 @@ TreeIterator::MakeClone()
 //
 TreeIterator::~TreeIterator()
 {
-	Check_Object(this);
+	// Check_Object(this);
 }
 
 //
@@ -618,7 +618,7 @@ TreeIterator::First()
 //
 void TreeIterator::Last()
 {
-	Check_Object(this);
+	// Check_Object(this);
 	//
 	// Should never reach here
 	//
@@ -636,7 +636,7 @@ void TreeIterator::Last()
 //
 void TreeIterator::Next()
 {
-	Check_Object(this);
+	// Check_Object(this);
 	TreeNode* node;
 	if((node = currentNode) == nullptr)
 		return;
@@ -675,7 +675,7 @@ void TreeIterator::Next()
 void
 TreeIterator::Previous()
 {
-	Check_Object(this);
+	// Check_Object(this);
 	//
 	// Should never reach here
 	//
@@ -695,7 +695,7 @@ TreeIterator::Previous()
 void
 * TreeIterator::ReadAndNextImplementation()
 {
-	Check_Object(this);
+	// Check_Object(this);
 	PVOIDplug;
 	if((plug = GetCurrentImplementation()) != nullptr)
 	{
@@ -714,7 +714,7 @@ void
 void
 * TreeIterator::ReadAndPreviousImplementation()
 {
-	Check_Object(this);
+	// Check_Object(this);
 #ifdef __BCPLUSPLUS__
 #pragma warn -ccc
 	Verify(False);
@@ -732,7 +732,7 @@ void
 void
 * TreeIterator::GetCurrentImplementation()
 {
-	Check_Object(this);
+	// Check_Object(this);
 	if(currentNode != nullptr)
 	{
 		Check_Object(currentNode);
@@ -749,7 +749,7 @@ void
 CollectionSize
 TreeIterator::GetSize()
 {
-	Check_Object(this);
+	// Check_Object(this);
 	TreeIterator	iterator(Cast_Object(Tree*, socket));
 	CollectionSize i = 0;
 	while(iterator.ReadAndNextImplementation() != nullptr)
@@ -770,7 +770,7 @@ void
 	CollectionSize index
 )
 {
-	Check_Object(this);
+	// Check_Object(this);
 	CollectionSize i = 0;
 	void*				 plug;
 	First();
@@ -793,7 +793,7 @@ void
 void
 TreeIterator::Remove()
 {
-	Check_Object(this);
+	// Check_Object(this);
 	if(currentNode != nullptr)
 	{
 		Unregister_Object(currentNode);
@@ -811,7 +811,7 @@ TreeIterator::FindImplementation(
 	PCVOID value
 )
 {
-	Check_Object(this);
+	// Check_Object(this);
 	TreeNode* node;
 	if((node = Cast_Object(Tree*, socket)->SearchForValue(value)) != nullptr)
 	{
@@ -832,7 +832,7 @@ TreeIterator::ReceiveMemo(
 	PVOID content
 )
 {
-	Check_Object(this);
+	// Check_Object(this);
 	if(memo == PlugRemoved)
 	{
 		if(content == currentNode)

@@ -71,52 +71,52 @@ namespace Stuff
 		LinearMatrix4D& operator=(const LinearMatrix4D& m)
 		{
 			AffineMatrix4D::operator=(m);
-			Check_Object(this);
+			// Check_Object(this);
 			return *this;
 		}
 		LinearMatrix4D& operator=(const Origin3D& p)
 		{
 			AffineMatrix4D::operator=(p);
-			Check_Object(this);
+			// Check_Object(this);
 			return *this;
 		}
 		LinearMatrix4D& operator=(const AffineMatrix4D& m)
 		{
 			AffineMatrix4D::operator=(m);
-			Check_Object(this);
+			// Check_Object(this);
 			return *this;
 		}
 		LinearMatrix4D& operator=(const Matrix4D& m)
 		{
 			AffineMatrix4D::operator=(m);
-			Check_Object(this);
+			// Check_Object(this);
 			return *this;
 		}
 		LinearMatrix4D& operator=(const EulerAngles& angles)
 		{
 			AffineMatrix4D::operator=(angles);
-			Check_Object(this);
+			// Check_Object(this);
 			return *this;
 		}
 		LinearMatrix4D&
 		operator=(const YawPitchRoll& angles)
 		{
 			AffineMatrix4D::operator=(angles);
-			Check_Object(this);
+			// Check_Object(this);
 			return *this;
 		}
 		LinearMatrix4D&
 		operator=(const UnitQuaternion& q)
 		{
 			AffineMatrix4D::operator=(q);
-			Check_Object(this);
+			// Check_Object(this);
 			return *this;
 		}
 		LinearMatrix4D&
 		operator=(const Point3D& p)
 		{
 			AffineMatrix4D::operator=(p);
-			Check_Object(this);
+			// Check_Object(this);
 			return *this;
 		}
 
@@ -156,14 +156,14 @@ namespace Stuff
 		//
 		void GetLocalForwardInWorld(UnitVector3D* v) const
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			Check_Pointer(v);
 			AffineMatrix4D::GetLocalForwardInWorld(v);
 			Check_Object(v);
 		}
 		void GetWorldForwardInLocal(UnitVector3D* v) const
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			Check_Pointer(v);
 			AffineMatrix4D::GetWorldForwardInLocal(v);
 			Check_Object(v);
@@ -171,14 +171,14 @@ namespace Stuff
 
 		void GetLocalBackwardInWorld(UnitVector3D* v) const
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			Check_Pointer(v);
 			AffineMatrix4D::GetLocalBackwardInWorld(v);
 			Check_Object(v);
 		}
 		void GetWorldBackwardInLocal(UnitVector3D* v) const
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			Check_Pointer(v);
 			AffineMatrix4D::GetWorldBackwardInLocal(v);
 			Check_Object(v);
@@ -186,14 +186,14 @@ namespace Stuff
 
 		void GetLocalRightInWorld(UnitVector3D* v) const
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			Check_Pointer(v);
 			AffineMatrix4D::GetLocalRightInWorld(v);
 			Check_Object(v);
 		}
 		void GetWorldRightInLocal(UnitVector3D* v) const
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			Check_Pointer(v);
 			AffineMatrix4D::GetWorldRightInLocal(v);
 			Check_Object(v);
@@ -201,14 +201,14 @@ namespace Stuff
 
 		void GetLocalLeftInWorld(UnitVector3D* v) const
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			Check_Pointer(v);
 			AffineMatrix4D::GetLocalLeftInWorld(v);
 			Check_Object(v);
 		}
 		void GetWorldLeftInLocal(UnitVector3D* v) const
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			Check_Pointer(v);
 			AffineMatrix4D::GetWorldLeftInLocal(v);
 			Check_Object(v);
@@ -216,14 +216,14 @@ namespace Stuff
 
 		void GetLocalUpInWorld(UnitVector3D* v) const
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			Check_Pointer(v);
 			AffineMatrix4D::GetLocalUpInWorld(v);
 			Check_Object(v);
 		}
 		void GetWorldUpInLocal(UnitVector3D* v) const
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			Check_Pointer(v);
 			AffineMatrix4D::GetWorldUpInLocal(v);
 			Check_Object(v);
@@ -231,14 +231,14 @@ namespace Stuff
 
 		void GetLocalDownInWorld(UnitVector3D* v) const
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			Check_Pointer(v);
 			AffineMatrix4D::GetLocalDownInWorld(v);
 			Check_Object(v);
 		}
 		void GetWorldDownInLocal(UnitVector3D* v) const
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			Check_Pointer(v);
 			AffineMatrix4D::GetWorldDownInLocal(v);
 			Check_Object(v);
@@ -276,7 +276,7 @@ namespace Stuff
 		//
 		LinearMatrix4D& Multiply(const LinearMatrix4D& m, const UnitQuaternion& q)
 		{
-			Check_Pointer(this);
+			//Check_Pointer(this);
 			Check_Object(&m);
 			Check_Object(&q);
 			AffineMatrix4D::Multiply(m, q);
@@ -284,13 +284,13 @@ namespace Stuff
 		}
 		LinearMatrix4D& operator*=(const UnitQuaternion& q)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			LinearMatrix4D m(*this);
 			return Multiply(m, q);
 		}
 		LinearMatrix4D& Multiply(const LinearMatrix4D& m, const Point3D& p)
 		{
-			Check_Pointer(this);
+			//Check_Pointer(this);
 			Check_Object(&m);
 			Check_Object(&p);
 			AffineMatrix4D::Multiply(m, p);
@@ -298,7 +298,7 @@ namespace Stuff
 		}
 		LinearMatrix4D& operator*=(const Point3D& p)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			LinearMatrix4D m(*this);
 			return Multiply(m, p);
 		}

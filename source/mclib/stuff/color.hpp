@@ -63,17 +63,17 @@ namespace Stuff
 		Close_Enough(const RGBColor& c1, const RGBColor& c2, float e = SMALL);
 		bool operator==(const RGBColor& color) const
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return Close_Enough(*this, color, SMALL);
 		}
 		bool operator!=(const RGBColor& color) const
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return !Close_Enough(*this, color, SMALL);
 		}
 		RGBColor& operator=(const RGBColor& color)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			Check_Object(&color);
 			red = color.red;
 			green = color.green;
@@ -86,13 +86,13 @@ namespace Stuff
 
 		float Infrared(void) const
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return 0.3f * red + 0.5f * green + 0.2f * blue;
 		}
 
 		RGBColor& Combine(const RGBColor& c1, float t1, const RGBColor& c2, float t2)
 		{
-			Check_Pointer(this);
+			//Check_Pointer(this);
 			Check_Object(&c1);
 			Check_Object(&c2);
 			red = c1.red * t1 + c2.red * t2;
@@ -103,7 +103,7 @@ namespace Stuff
 
 		RGBColor& Lerp(const RGBColor& c1, const RGBColor& c2, float t)
 		{
-			Check_Pointer(this);
+			//Check_Pointer(this);
 			Check_Object(&c1);
 			Check_Object(&c2);
 			red = c1.red + t * (c2.red - c1.red);
@@ -166,7 +166,7 @@ namespace Stuff
 		RGBAColor&
 		operator=(const RGBAColor& color)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			Check_Object(&color);
 			red = color.red;
 			green = color.green;
@@ -185,7 +185,7 @@ namespace Stuff
 			float t2
 		)
 		{
-			Check_Pointer(this);
+			//Check_Pointer(this);
 			Check_Object(&c1);
 			Check_Object(&c2);
 			red = c1.red * t1 + c2.red * t2;
@@ -202,7 +202,7 @@ namespace Stuff
 			float t
 		)
 		{
-			Check_Pointer(this);
+			//Check_Pointer(this);
 			Check_Object(&c1);
 			Check_Object(&c2);
 			red = c1.red + t * (c2.red - c1.red);
@@ -266,13 +266,13 @@ namespace Stuff
 		bool
 		operator==(const HSVColor& color) const
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return Close_Enough(*this, color, SMALL);
 		}
 		bool
 		operator!=(const HSVColor& color) const
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return !Close_Enough(*this, color, SMALL);
 		}
 
@@ -281,7 +281,7 @@ namespace Stuff
 		HSVColor&
 		operator=(const HSVColor& color)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			Check_Object(&color);
 			hue = color.hue;
 			saturation = color.saturation;
@@ -301,7 +301,7 @@ namespace Stuff
 			float t2
 		)
 		{
-			Check_Pointer(this);
+			//Check_Pointer(this);
 			Check_Object(&c1);
 			Check_Object(&c2);
 			hue = c1.hue * t1 + c2.hue * t2;
@@ -317,7 +317,7 @@ namespace Stuff
 			float t
 		)
 		{
-			Check_Pointer(this);
+			//Check_Pointer(this);
 			Check_Object(&c1);
 			Check_Object(&c2);
 			hue = c1.hue + t * (c2.hue - c1.hue);
@@ -389,7 +389,7 @@ namespace Stuff
 		HSVAColor&
 		operator=(const RGBAColor& color)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			Check_Object(&color);
 			HSVColor::operator=(color);
 			alpha = color.alpha;
@@ -398,7 +398,7 @@ namespace Stuff
 		HSVAColor&
 		operator=(const HSVAColor& color)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			Check_Object(&color);
 			hue = color.hue;
 			saturation = color.saturation;
@@ -415,7 +415,7 @@ namespace Stuff
 			float t2
 		)
 		{
-			Check_Pointer(this);
+			//Check_Pointer(this);
 			Check_Object(&c1);
 			Check_Object(&c2);
 			hue = c1.hue * t1 + c2.hue * t2;
@@ -432,7 +432,7 @@ namespace Stuff
 			float t
 		)
 		{
-			Check_Pointer(this);
+			//Check_Pointer(this);
 			Check_Object(&c1);
 			Check_Object(&c2);
 			hue = c1.hue + t * (c2.hue - c1.hue);
@@ -456,7 +456,7 @@ namespace Stuff
 
 	inline RGBAColor& RGBAColor::operator=(const HSVAColor& color)
 	{
-		Check_Object(this);
+		// Check_Object(this);
 		Check_Object(&color);
 		RGBColor::operator=(color);
 		alpha = color.alpha;

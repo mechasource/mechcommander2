@@ -20,11 +20,7 @@ namespace Stuff
 }
 
 #if !defined(Spew)
-void
-Spew(
-	PCSTR group,
-	const Stuff::Plane& plane
-);
+void Spew(PCSTR group, const Stuff::Plane& plane);
 #endif
 
 namespace Stuff
@@ -72,7 +68,7 @@ namespace Stuff
 
 		Plane& operator*=(const LinearMatrix4D& m)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			Plane t(*this);
 			return Multiply(t, m);
 		}
@@ -101,7 +97,7 @@ namespace Stuff
 		//
 		bool Contains(const Point3D& point, float thickness = SMALL) const
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return normal * point <= offset + thickness;
 		}
 		bool ContainsSomeOf(const Sphere& sphere, float thickness = SMALL) const;
@@ -129,21 +125,21 @@ namespace Stuff
 		//
 		float CalculateX(float y, float z)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			Verify(!Small_Enough(normal.x));
 			float result = (offset - y * normal.y - z * normal.z) / normal.x;
 			return result;
 		}
 		float CalculateY(float x, float z)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			Verify(!Small_Enough(normal.y));
 			float result = (offset - x * normal.x - z * normal.z) / normal.y;
 			return result;
 		}
 		float CalculateZ(float x, float y)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			Verify(!Small_Enough(normal.z));
 			float result = (offset - x * normal.x - y * normal.y) / normal.z;
 			return result;
@@ -154,7 +150,7 @@ namespace Stuff
 		//
 		void Reflect(Vector3D* vector)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			vector->AddScaled(
 				*vector,
 				normal,

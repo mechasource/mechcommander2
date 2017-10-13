@@ -32,39 +32,39 @@ namespace MidLevelRenderer
 
 		PCSTR	GetName(void)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return imageName;
 		}
 
 		int32_t Ref(void)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			instance++;
 			return instance;
 		}
 
 		int32_t DeRef(void)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			instance--;
 			return instance;
 		}
 
 		int32_t GetRef(void)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return instance;
 		}
 
 		bool IsLoaded(void)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return ((flags & Loaded) != 0);
 		}
 
 		uint32_t GetHandle(void)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			uint32_t imageHandle = mcTextureManager->get_gosTextureHandle(mcTextureNodeIndex);
 			if(imageHandle == 0xffffffff)
 				imageHandle = 0;
@@ -74,7 +74,7 @@ namespace MidLevelRenderer
 		void SetHandle(uint32_t handle)
 		{
 			//EVERY call to this must change from gos_load to our load
-			Check_Object(this);
+			// Check_Object(this);
 			mcTextureNodeIndex = handle;
 		}
 

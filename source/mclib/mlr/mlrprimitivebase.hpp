@@ -1,5 +1,5 @@
 //===========================================================================//
-// Copyright (C) Microsoft Corporation. All rights reserved. //
+// Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
 #pragma once
@@ -98,7 +98,7 @@ namespace MidLevelRenderer
 		// ARE IN THIS ORDER
 		virtual size_t GetNumPrimitives(void)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return lengths.GetLength();
 		}
 
@@ -113,32 +113,32 @@ namespace MidLevelRenderer
 
 		virtual void SetReferenceState(const MLRState& _state, size_t pass = 0)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			(void)pass;
 			referenceState = _state;
 		};
 		virtual const MLRState& GetReferenceState(size_t pass = 0) const
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			(void)pass;
 			return referenceState;
 		};
 		virtual const MLRState& GetCurrentState(size_t pass = 0) const
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			(void)pass;
 			return state;
 		};
 
 		virtual void CombineStates(const MLRState& master)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			state.Combine(master, referenceState);
 		};
 
 		size_t GetNumVertices(void)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return coords.GetLength();
 		}
 
@@ -155,31 +155,31 @@ namespace MidLevelRenderer
 
 		uint8_t GetVisible(void)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return visible;
 		}
 
 		virtual GOSVertex* GetGOSVertices(uint32_t = 0)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return gos_vertices;
 		}
 
 		uint32_t GetNumGOSVertices(void)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return numGOSVertices;
 		}
 
 		virtual GOSVertex2UV* GetGOSVertices2UV(uint32_t = 0)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return nullptr;
 		}
 
 		uint32_t GetSortDataMode(void)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return drawMode;
 		}
 
@@ -190,13 +190,13 @@ namespace MidLevelRenderer
 
 		virtual uint32_t GetNumPasses(void)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return passes;
 		}
 
 		virtual void HurtMe(const Stuff::LinearMatrix4D&, float /*radius*/)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 		}
 
 		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -204,7 +204,7 @@ namespace MidLevelRenderer
 		//
 		void SetClipCoord(Stuff::Point3D& point, size_t index)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			Verify(clipExtraCoords->GetLength() > index);
 			(*clipExtraCoords)[index].x = point.x;
 			(*clipExtraCoords)[index].y = point.y;
@@ -212,7 +212,7 @@ namespace MidLevelRenderer
 		}
 		void FlashClipCoords(size_t num)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			Verify(clipExtraCoords->GetLength() > num);
 			coords.SetLength(num);
 			for(size_t i = 0; i < num; i++)
@@ -224,7 +224,7 @@ namespace MidLevelRenderer
 		}
 		void SetClipTexCoord(Stuff::Vector2DScalar& uvs, size_t index)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			Verify(clipExtraTexCoords->GetLength() > index);
 			Verify(MLRState::GetHasMaxUVs() ? (uvs[0] >= -100.0 && uvs[0] <= 100.0) : 1);
 			Verify(MLRState::GetHasMaxUVs() ? (uvs[1] >= -100.0 && uvs[1] <= 100.0) : 1);
@@ -232,9 +232,10 @@ namespace MidLevelRenderer
 		}
 		void FlashClipTexCoords(size_t num)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			Verify(clipExtraTexCoords->GetLength() > num);
 			texCoords.SetLength(num);
+			// TODO: solve V501 warning
 			Mem_Copy(texCoords.GetData(), clipExtraTexCoords->GetData(), sizeof(Stuff::Vector2DScalar)*num, sizeof(Stuff::Vector2DScalar)*num);
 		}
 
@@ -244,12 +245,12 @@ namespace MidLevelRenderer
 	public:
 		void AttachReference(void)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			++referenceCount;
 		}
 		void DetachReference(void)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			Verify(referenceCount > 0);
 			if((--referenceCount) == 0)
 			{
@@ -273,7 +274,7 @@ namespace MidLevelRenderer
 
 		virtual size_t GetSize(void)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			size_t ret = 0;
 			ret += coords.GetSize();
 			ret += texCoords.GetSize();

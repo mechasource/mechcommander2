@@ -41,7 +41,7 @@ namespace MidLevelRenderer
 		virtual LightType
 		GetLightType()
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return PointLight;
 		}
 
@@ -51,7 +51,7 @@ namespace MidLevelRenderer
 		virtual MLRLightMap*
 		GetLightMap()
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return lightMap;
 		}
 

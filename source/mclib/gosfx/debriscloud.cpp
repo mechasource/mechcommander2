@@ -16,11 +16,11 @@
 //
 gosFX::DebrisCloud__Specification::DebrisCloud__Specification(
 	Stuff::MemoryStream* stream,
-	int32_t gfx_version
+	uint32_t gfx_version
 ):
 	Effect__Specification(gosFX::DebrisCloudClassID, stream, gfx_version)
 {
-	Check_Pointer(this);
+	//Check_Pointer(this);
 	Verify(m_class == DebrisCloudClassID);
 	//Verify(gos_GetCurrentHeap() == Heap);
 	m_minimumDeviation.Load(stream, gfx_version);	//	ConstantCurve
@@ -41,7 +41,7 @@ gosFX::DebrisCloud__Specification::DebrisCloud__Specification(
 gosFX::DebrisCloud__Specification::DebrisCloud__Specification():
 	Effect__Specification(gosFX::DebrisCloudClassID)
 {
-	Check_Pointer(this);
+	//Check_Pointer(this);
 	//Verify(gos_GetCurrentHeap() == Heap);
 	debrisPieces.SetLength(0);
 	debrisPositions.SetLength(0);
@@ -53,7 +53,7 @@ gosFX::DebrisCloud__Specification::DebrisCloud__Specification():
 //
 gosFX::DebrisCloud__Specification::~DebrisCloud__Specification()
 {
-	Check_Object(this);
+	// Check_Object(this);
 	int32_t i, nrOfParticles = debrisPieces.GetLength();
 	for(i = 0; i < nrOfParticles; i++)
 	{
@@ -71,14 +71,16 @@ gosFX::DebrisCloud__Specification::~DebrisCloud__Specification()
 gosFX::DebrisCloud__Specification*
 gosFX::DebrisCloud__Specification::Make(
 	Stuff::MemoryStream* stream,
-	int32_t gfx_version
+	uint32_t gfx_version
 )
 {
 	Check_Object(stream);
-	gos_PushCurrentHeap(Heap);
+	#ifdef _GAMEOS_HPP_
+	// gos_PushCurrentHeap(Heap);
+#endif
 	DebrisCloud__Specification* spec =
 		new gosFX::DebrisCloud__Specification(stream, gfx_version);
-	gos_PopCurrentHeap();
+	// gos_PopCurrentHeap();
 	return spec;
 }
 
@@ -87,7 +89,7 @@ gosFX::DebrisCloud__Specification::Make(
 void
 gosFX::DebrisCloud__Specification::Save(Stuff::MemoryStream* stream)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Object(stream);
 	Effect__Specification::Save(stream);
 	m_minimumDeviation.Save(stream);	//	ConstantCurve
@@ -118,10 +120,12 @@ gosFX::DebrisCloud__Specification::Save(Stuff::MemoryStream* stream)
 void
 gosFX::DebrisCloud__Specification::Copy(DebrisCloud__Specification* spec)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Object(spec);
 	Effect__Specification::Copy(spec);
-	gos_PushCurrentHeap(Heap);
+	#ifdef _GAMEOS_HPP_
+	// gos_PushCurrentHeap(Heap);
+#endif
 	m_minimumDeviation = spec->m_minimumDeviation;	//	ConstantCurve
 	m_maximumDeviation = spec->m_maximumDeviation;	//	SplineCurve
 	m_startingSpeed = spec->m_startingSpeed;		//	SeededCurveOf<ComplexCurve, ComplexCurve,Curve::e_ComplexComplexType>
@@ -146,7 +150,7 @@ gosFX::DebrisCloud__Specification::Copy(DebrisCloud__Specification* spec)
 		debrisPieces[i]->AttachReference();
 		debrisSeed[i] = spec->debrisSeed[i];
 	}
-	gos_PopCurrentHeap();
+	// gos_PopCurrentHeap();
 }
 
 
@@ -200,7 +204,7 @@ gosFX::DebrisCloud__Specification::LoadGeometry(Stuff::MemoryStream* stream)
 void
 gosFX::DebrisCloud__Specification::BuildDefaults()
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Effect__Specification::BuildDefaults();
 	centerOfForce = Stuff::Point3D(0.0f, 00.0f, 0.0f);
 	m_lifeSpan.SetCurve(20.0f);
@@ -235,7 +239,7 @@ gosFX::DebrisCloud__Specification::BuildDefaults()
 bool
 gosFX::DebrisCloud__Specification::IsDataValid(bool fix_data)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	return	Effect__Specification::IsDataValid(fix_data);
 	/*
 		centerOfForce = Stuff::Point3D(0.0f, 00.0f, 0.0f);
@@ -333,9 +337,11 @@ gosFX::DebrisCloud::Make(
 )
 {
 	Check_Object(spec);
-	gos_PushCurrentHeap(Heap);
+	#ifdef _GAMEOS_HPP_
+	// gos_PushCurrentHeap(Heap);
+#endif
 	DebrisCloud* cloud = new gosFX::DebrisCloud(spec, flags);
-	gos_PopCurrentHeap();
+	// gos_PopCurrentHeap();
 	return cloud;
 }
 
@@ -344,7 +350,7 @@ gosFX::DebrisCloud::Make(
 void
 gosFX::DebrisCloud::Start(struct gosFX::Effect::ExecuteInfo* info)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Pointer(info);
 	//
 	//--------------------------------------------------------------------------
@@ -391,7 +397,7 @@ gosFX::DebrisCloud::Start(struct gosFX::Effect::ExecuteInfo* info)
 bool
 gosFX::DebrisCloud::Execute(struct gosFX::Effect::ExecuteInfo* info)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Object(info);
 	//
 	//----------------------------------------
@@ -538,7 +544,7 @@ gosFX::DebrisCloud::Execute(struct gosFX::Effect::ExecuteInfo* info)
 bool
 gosFX::DebrisCloud::HasFinished(void)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	return Effect::HasFinished();
 }
 
@@ -547,7 +553,7 @@ gosFX::DebrisCloud::HasFinished(void)
 void
 gosFX::DebrisCloud::Kill(void)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	//
 	//-------------------------------------------------------------
 	// Destroy all the particles and set up an empty particle cloud
@@ -574,7 +580,7 @@ gosFX::DebrisCloud::AnimateParticle(
 	Stuff::Time till
 )
 {
-	Check_Object(this);
+	// Check_Object(this);
 	//
 	//-----------------------------------------
 	// Animate the parent then get our pointers
@@ -685,7 +691,7 @@ gosFX::DebrisCloud::DestroyParticle(uint32_t index)
 //
 void gosFX::DebrisCloud::Draw(DrawInfo* info)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Object(info);
 	Check_Object(info->m_parentToWorld);
 	//

@@ -1,5 +1,5 @@
 //===========================================================================//
-// Copyright (C) Microsoft Corporation. All rights reserved. //
+// Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
 #include "stdafx.h"
@@ -67,7 +67,7 @@ MLR_I_L_DeT_PMesh::MLR_I_L_DeT_PMesh(
 	ClassData* class_data, Stuff::MemoryStream* stream, uint32_t version)
 	: MLR_I_C_DeT_PMesh(DefaultData, stream, version)
 {
-	Check_Pointer(this);
+	//Check_Pointer(this);
 	(void)class_data;
 	Check_Pointer(stream);
 	//Verify(gos_GetCurrentHeap() == Heap);
@@ -94,7 +94,7 @@ MLR_I_L_DeT_PMesh::MLR_I_L_DeT_PMesh(
 MLR_I_L_DeT_PMesh::MLR_I_L_DeT_PMesh(ClassData* class_data):
 	MLR_I_C_DeT_PMesh(class_data), normals(0)
 {
-	Check_Pointer(this);
+	//Check_Pointer(this);
 	//Verify(gos_GetCurrentHeap() == Heap);
 	actualColors = &colors;
 }
@@ -103,7 +103,7 @@ MLR_I_L_DeT_PMesh::MLR_I_L_DeT_PMesh(ClassData* class_data):
 //
 MLR_I_L_DeT_PMesh::~MLR_I_L_DeT_PMesh()
 {
-	Check_Object(this);
+	// Check_Object(this);
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -112,7 +112,9 @@ MLR_I_L_DeT_PMesh* MLR_I_L_DeT_PMesh::Make(
 	Stuff::MemoryStream* stream, uint32_t version)
 {
 	Check_Object(stream);
+	#ifdef _GAMEOS_HPP_
 	gos_PushCurrentHeap(Heap);
+#endif
 	MLR_I_L_DeT_PMesh* mesh = new MLR_I_L_DeT_PMesh(DefaultData, stream, version);
 	gos_PopCurrentHeap();
 	return mesh;
@@ -124,7 +126,7 @@ MLR_I_L_DeT_PMesh* MLR_I_L_DeT_PMesh::Make(
 void
 MLR_I_L_DeT_PMesh::Save(Stuff::MemoryStream* stream)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Object(stream);
 	MLR_I_C_DeT_PMesh::Save(stream);
 	MemoryStreamIO_Write(stream, &normals);
@@ -142,7 +144,7 @@ MLR_I_L_DeT_PMesh::TestInstance(void) const
 //
 void MLR_I_L_DeT_PMesh::SetNormalData(const Stuff::Vector3D* data, size_t dataSize)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Pointer(data);
 	Verify(coords.GetLength() == 0 || dataSize == coords.GetLength());
 	Verify(colors.GetLength() == 0 || dataSize == colors.GetLength());
@@ -154,7 +156,7 @@ void MLR_I_L_DeT_PMesh::SetNormalData(const Stuff::Vector3D* data, size_t dataSi
 //
 void MLR_I_L_DeT_PMesh::GetNormalData(Stuff::Vector3D** data, psize_t dataSize)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	*data = normals.GetData();
 	*dataSize = normals.GetLength();
 }
@@ -171,7 +173,7 @@ MLR_I_L_DeT_PMesh::SetColorData(
 	size_t dataSize
 )
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Pointer(data);
 	//Verify(gos_GetCurrentHeap() == Heap);
 	Verify(coords.GetLength() == 0 || dataSize == coords.GetLength());
@@ -192,7 +194,7 @@ MLR_I_L_DeT_PMesh::PaintMe(
 
 )
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Verify(colors.GetLength() == litColors.GetLength());
 	size_t k, len = litColors.GetLength();
 #if COLOR_AS_DWORD
@@ -257,7 +259,9 @@ MidLevelRenderer::CreateIndexedIcosahedron_Color_Lit_DetTex(
 	MLRState* stateDet
 )
 {
+	#ifdef _GAMEOS_HPP_
 	gos_PushCurrentHeap(Heap);
+#endif
 	MLRShape* ret = new MLRShape(20);
 	Register_Object(ret);
 	size_t i, j, k;

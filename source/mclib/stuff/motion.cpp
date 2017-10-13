@@ -18,7 +18,7 @@ const Motion3D Motion3D::Identity(Vector3D(0.0f, 0.0f, 0.0f), Vector3D(0.0f, 0.0
 
 Motion3D::Motion3D(const Motion3D& motion)
 {
-	Check_Pointer(this);
+	//Check_Pointer(this);
 	Check_Object(&motion);
 	angularMotion = motion.angularMotion;
 	linearMotion = motion.linearMotion;
@@ -31,7 +31,7 @@ Motion3D::Motion3D(const Motion3D& motion)
 Motion3D&
 Motion3D::operator=(const Motion3D& motion)
 {
-	Check_Pointer(this);
+	//Check_Pointer(this);
 	Check_Object(&motion);
 	angularMotion = motion.angularMotion;
 	linearMotion = motion.linearMotion;
@@ -65,7 +65,7 @@ Motion3D::AddScaled(
 	float t
 )
 {
-	Check_Pointer(this);
+	//Check_Pointer(this);
 	Check_Object(&source);
 	Check_Object(&delta);
 	Verify(t >= 0.0f);

@@ -31,7 +31,7 @@ SafeSocket::SafeSocket(Node* node):
 //
 SafeSocket::~SafeSocket(void)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Verify(iteratorHead == nullptr);
 }
 
@@ -61,7 +61,7 @@ SafeSocket::SendIteratorMemo(
 	PVOID content
 )
 {
-	Check_Object(this);
+	// Check_Object(this);
 	SafeIterator* iterator;
 	for(
 		iterator = iteratorHead;
@@ -102,7 +102,7 @@ SafeIterator::SafeIterator(SafeSocket* safeSocket):
 //
 SafeIterator::~SafeIterator(void)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	SafeSocket* safeSocket = Cast_Object(SafeSocket*, socket);
 	//
 	// Remove iterator from sockets set of iterators
@@ -151,7 +151,7 @@ SafeIterator::TestInstance(void) const
 void
 SafeIterator::ReceiveMemo(IteratorMemo, PVOID)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	STOP(("SafeIterator::ReceiveMemo - Should never reach here"));
 }
 

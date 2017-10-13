@@ -68,12 +68,12 @@ MLR_I_TMesh::TerminateClass()
 //
 MLR_I_TMesh::MLR_I_TMesh(
 	ClassData* class_data,
-	MemoryStream* stream,
+	Stuff::MemoryStream* stream,
 	uint32_t version
 ):
 	MLRIndexedPrimitiveBase(class_data, stream, version)
 {
-	Check_Pointer(this);
+	//Check_Pointer(this);
 	Check_Pointer(stream);
 	//Verify(gos_GetCurrentHeap() == Heap);
 	numOfTriangles = index.GetLength() / 3;
@@ -87,7 +87,7 @@ MLR_I_TMesh::MLR_I_TMesh(
 MLR_I_TMesh::MLR_I_TMesh(ClassData* class_data):
 	MLRIndexedPrimitiveBase(class_data)
 {
-	Check_Pointer(this);
+	//Check_Pointer(this);
 	//Verify(gos_GetCurrentHeap() == Heap);
 	drawMode = SortData::TriIndexedList;
 }
@@ -96,19 +96,21 @@ MLR_I_TMesh::MLR_I_TMesh(ClassData* class_data):
 //
 MLR_I_TMesh::~MLR_I_TMesh()
 {
-	Check_Object(this);
+	// Check_Object(this);
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 MLR_I_TMesh*
 MLR_I_TMesh::Make(
-	MemoryStream* stream,
+	Stuff::MemoryStream* stream,
 	uint32_t version
 )
 {
 	Check_Object(stream);
+	#ifdef _GAMEOS_HPP_
 	gos_PushCurrentHeap(Heap);
+#endif
 	MLR_I_TMesh* mesh = new MLR_I_TMesh(DefaultData, stream, version);
 	gos_PopCurrentHeap();
 	return mesh;
@@ -117,9 +119,9 @@ MLR_I_TMesh::Make(
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-MLR_I_TMesh::Save(MemoryStream* stream)
+MLR_I_TMesh::Save(Stuff::MemoryStream* stream)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Object(stream);
 	MLRIndexedPrimitiveBase::Save(stream);
 }
@@ -137,7 +139,7 @@ MLR_I_TMesh::TestInstance(void) const
 bool
 MLR_I_TMesh::Copy(MLR_I_PMesh* pMesh)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Object(pMesh);
 	//Verify(gos_GetCurrentHeap() == Heap);
 	size_t len;
@@ -177,7 +179,7 @@ MLR_I_TMesh::InitializeDrawPrimitive(uint8_t vis, int32_t parameter)
 void
 MLR_I_TMesh::FindFacePlanes()
 {
-	Check_Object(this);
+	// Check_Object(this);
 	int32_t i, j, numPrimitives = GetNumPrimitives();
 	Vector3D v;
 	Verify(index.GetLength() > 0);
@@ -197,7 +199,7 @@ MLR_I_TMesh::FindFacePlanes()
 int32_t
 MLR_I_TMesh::FindBackFace(const Point3D& u)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	int32_t ret = 0;
 	puint8_t iPtr;
 	Plane* p;
@@ -247,7 +249,7 @@ MLR_I_TMesh::ResetTestList()
 int32_t
 MLR_I_TMesh::FindVisibleVertices()
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Verify(index.GetLength() > 0);
 	int32_t ret, i, j;
 	uint32_t* indices = (uint32_t*)index.GetData();
@@ -291,7 +293,7 @@ extern uint32_t gEnableTextureSort, gEnableAlphaSort;
 void
 	MLR_I_TMesh::Transform(Matrix4D *mat)
 {
-	Check_Object(this);
+	// Check_Object(this);
 
 	Verify(index.GetLength() > 0);
 	int32_t i, len = coords.GetLength();
@@ -773,7 +775,7 @@ MLR_I_TMesh::CastRay(
 	Normal3D* normal
 )
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Object(line);
 	Check_Pointer(normal);
 	//
@@ -1034,7 +1036,9 @@ MidLevelRenderer::CreateIndexedTriIcosahedron_NoColor_NoLit(
 	MLRState* state
 )
 {
+	#ifdef _GAMEOS_HPP_
 	gos_PushCurrentHeap(Heap);
+#endif
 	MLRShape* ret = new MLRShape(20);
 	Register_Object(ret);
 	int32_t i, j, k;

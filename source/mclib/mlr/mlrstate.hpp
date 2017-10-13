@@ -185,7 +185,7 @@ namespace MidLevelRenderer
 		void
 		SetTextureHandle(uint32_t texture)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			renderState &= ~TextureMask;
 			renderDeltaMask |= TextureMask;
 			Verify(texture <= TextureMask);
@@ -193,13 +193,13 @@ namespace MidLevelRenderer
 		}
 		uint32_t GetTextureHandle(void) const
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return renderState & TextureMask;
 		}
 		void
 		SetAlphaMode(AlphaMode alpha)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			renderState &= ~AlphaMask;
 			renderState |= alpha;
 			renderDeltaMask |= AlphaMask;
@@ -207,14 +207,14 @@ namespace MidLevelRenderer
 		AlphaMode
 		GetAlphaMode(void) const
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return static_cast<AlphaMode>(renderState & AlphaMask);
 		}
 
 		void
 		SetFilterMode(FilterMode filter)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			renderState &= ~FilterMask;
 			renderState |= filter;
 			renderDeltaMask |= FilterMask;
@@ -222,47 +222,47 @@ namespace MidLevelRenderer
 		FilterMode
 		GetFilterMode(void) const
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return static_cast<FilterMode>(renderState & FilterMask);
 		}
 		void SetFogMode(int32_t fog)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			renderState &= ~FogMask;
 			renderState |= (fog << FogBit);
 			renderDeltaMask |= FogMask;
 		}
 		uint32_t GetFogMode(void) const
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return (renderState & FogMask) >> FogBit;
 		}
 
 		void
 		SetSpecularOn(void)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			renderState |= SpecularOnMode;
 			renderDeltaMask |= SpecularMask;
 		}
 		void
 		SetSpecularOff(void)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			renderState &= ~SpecularOnMode;
 			renderDeltaMask |= SpecularMask;
 		}
 		SpecularMode
 		GetSpecularMode(void) const
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return static_cast<SpecularMode>(renderState & SpecularMask);
 		}
 
 		void
 		SetTextureWrapMode(TextureWrapMode TextureWrap)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			renderState &= ~TextureWrapMask;
 			renderState |= TextureWrap;
 			renderDeltaMask |= TextureWrapMask;
@@ -270,56 +270,56 @@ namespace MidLevelRenderer
 		TextureWrapMode
 		GetTextureWrapMode(void) const
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return static_cast<TextureWrapMode>(renderState & TextureWrapMask);
 		}
 
 		void
 		SetDitherOn(void)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			renderState |= DitherOnMode;
 			renderDeltaMask |= DitherMask;
 		}
 		void
 		SetDitherOff(void)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			renderState &= ~DitherOnMode;
 			renderDeltaMask |= DitherMask;
 		}
 		DitherMode
 		GetDitherMode(void) const
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return static_cast<DitherMode>(renderState & DitherMask);
 		}
 
 		void
 		SetTextureCorrectionOn(void)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			renderState |= TextureCorrectionOnMode;
 			renderDeltaMask |= TextureCorrectionMask;
 		}
 		void
 		SetTextureCorrectionOff(void)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			renderState &= ~TextureCorrectionOnMode;
 			renderDeltaMask |= TextureCorrectionMask;
 		}
 		TextureCorrectionMode
 		GetTextureCorrectionMode(void) const
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return static_cast<TextureCorrectionMode>(renderState & TextureCorrectionMask);
 		}
 
 		void
 		SetWireFrameMode(WireFrameMode wire)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			renderState &= ~WireFrameMask;
 			renderState |= wire;
 			renderDeltaMask |= WireFrameMask;
@@ -327,96 +327,96 @@ namespace MidLevelRenderer
 		WireFrameMode
 		GetWireFrameMode(void) const
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return static_cast<WireFrameMode>(renderState & WireFrameMask);
 		}
 
 		void
 		SetZBufferWriteOn(void)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			renderState |= ZBufferWriteOnMode;
 			renderDeltaMask |= ZBufferWriteMask;
 		}
 		void
 		SetZBufferWriteOff(void)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			renderState &= ~ZBufferWriteOnMode;
 			renderDeltaMask |= ZBufferWriteMask;
 		}
 		ZBufferWriteMode
 		GetZBufferWriteMode(void) const
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return static_cast<ZBufferWriteMode>(renderState & ZBufferWriteMask);
 		}
 
 		void
 		SetZBufferCompareOn(void)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			renderState |= ZBufferCompareOnMode;
 			renderDeltaMask |= ZBufferCompareMask;
 		}
 		void
 		SetZBufferCompareOff(void)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			renderState &= ~ZBufferCompareOnMode;
 			renderDeltaMask |= ZBufferCompareMask;
 		}
 		ZBufferCompareMode
 		GetZBufferCompareMode(void) const
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return static_cast<ZBufferCompareMode>(renderState & ZBufferCompareMask);
 		}
 
 		void
 		SetFlatColoringOn(void)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			renderState |= FlatColoringOnMode;
 			renderDeltaMask |= FlatColoringMask;
 		}
 		void
 		SetFlatColoringOff(void)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			renderState &= ~FlatColoringOnMode;
 			renderDeltaMask |= FlatColoringMask;
 		}
 		FlatColoringMode
 		GetFlatColoringMode(void) const
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return static_cast<FlatColoringMode>(renderState & FlatColoringMask);
 		}
 
 		void SetRenderDeltaMask(uint32_t mask)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			renderDeltaMask = mask;
 		}
 		uint32_t GetRenderDeltaMask(void) const
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return renderDeltaMask;
 		}
 		void SetRenderPermissionMask(uint32_t mask)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			renderPermissionMask = mask;
 		}
 		uint32_t GetRenderPermissionMask(void) const
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return renderPermissionMask;
 		}
 		uint32_t GetRenderStateFlags(void) const
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return renderState;
 		}
 
@@ -493,27 +493,27 @@ namespace MidLevelRenderer
 		void
 		SetBackFaceOn(void)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			processState |= BackFaceOnMode;
 			processDeltaMask |= BackFaceMask;
 		}
 		void
 		SetBackFaceOff(void)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			processState &= ~BackFaceOnMode;
 			processDeltaMask |= BackFaceMask;
 		}
 		BackFaceMode
 		GetBackFaceMode(void) const
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return static_cast<BackFaceMode>(processState & BackFaceOnMode);
 		}
 
 		void SetPriority(uint32_t priority)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			processState &= ~PriorityMask;
 			processDeltaMask |= PriorityMask;
 			Verify(priority < PriorityCount);
@@ -521,13 +521,13 @@ namespace MidLevelRenderer
 		}
 		uint32_t GetPriority(void) const
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return processState & PriorityMask;
 		}
 
 		void SetLightingMode(uint32_t lighting)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			processState &= ~LightingMask;
 			processState |= lighting;
 			processDeltaMask |= LightingMask;
@@ -535,14 +535,14 @@ namespace MidLevelRenderer
 
 		uint32_t GetLightingMode(void) const
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return static_cast<LightingMode>(processState & LightingMask);
 		}
 
 		void
 		SetMultiTextureMode(MultiTextureMode multiTex)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			processState &= ~MultitextureMask;
 			processState |= multiTex;
 			processDeltaMask |= MultitextureMask;
@@ -551,55 +551,55 @@ namespace MidLevelRenderer
 		MultiTextureMode
 		GetMultiTextureMode(void) const
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return static_cast<MultiTextureMode>(processState & MultitextureMask);
 		}
 
 		void
 		SetDrawNowOn(void)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			processState |= DrawNowOnMode;
 			processDeltaMask |= DrawNowMask;
 		}
 		void
 		SetDrawNowOff(void)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			processState &= ~DrawNowOnMode;
 			processDeltaMask |= DrawNowMask;
 		}
 		DrawNowMode
 		GetDrawNowMode(void) const
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return static_cast<DrawNowMode>(processState & DrawNowOnMode);
 		}
 
 		void SetProcessDeltaMask(uint32_t mask)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			processDeltaMask = mask;
 		}
 		uint32_t GetProcessDeltaMask(void) const
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return processDeltaMask;
 		}
 		void SetProcessPermissionMask(uint32_t mask)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			processPermissionMask = mask;
 		}
 		uint32_t GetProcessPermissionMask(void) const
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return processPermissionMask;
 		}
 
 		uint32_t GetProcessStateFlags(void) const
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return processState;
 		}
 
@@ -687,20 +687,20 @@ namespace MidLevelRenderer
 		//
 		MLRState& operator=(cuint32_t& s)
 		{
-			Check_Pointer(this);
+			//Check_Pointer(this);
 			renderState = s;
 			return *this;
 		}
 		bool operator==(const MLRState& s) const
 		{
-			Check_Pointer(this);
+			//Check_Pointer(this);
 			return (renderState == s.renderState) && (processState == s.processState);
 		}
 
 		bool
 		operator>(const MLRState& s) const
 		{
-			Check_Pointer(this);
+			//Check_Pointer(this);
 			return
 				(renderState > s.renderState) ||
 				(renderState == s.renderState) &&
@@ -709,7 +709,7 @@ namespace MidLevelRenderer
 
 		bool operator!=(const MLRState& s) const
 		{
-			Check_Pointer(this);
+			//Check_Pointer(this);
 			return
 				(renderState != s.renderState) ||
 				(processState != s.processState);

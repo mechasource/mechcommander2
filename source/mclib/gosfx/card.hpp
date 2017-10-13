@@ -4,9 +4,9 @@
 
 #pragma once
 
-#include <gosfx/gosfx.hpp>
-#include <gosfx/singleton.hpp>
-#include <mlr/mlr.hpp>
+//#include <gosfx/gosfx.hpp>
+//#include <gosfx/singleton.hpp>
+//#include <mlr/mlr.hpp>
 
 namespace MidLevelRenderer
 {
@@ -32,54 +32,33 @@ namespace gosFX
 	protected:
 		Card__Specification(
 			Stuff::MemoryStream* stream,
-			int32_t gfx_version
+			uint32_t gfx_version
 		);
 
 	public:
 		Card__Specification(void);
 
-		void
-		Save(Stuff::MemoryStream* stream);
-
-		void
-		BuildDefaults(void);
-
-
-		bool
-		IsDataValid(bool fix_data = false);
-
-
-		static Card__Specification*
-		Make(
-			Stuff::MemoryStream* stream,
-			int32_t gfx_version
-		);
-
-		void
-		Copy(Card__Specification* spec);
+		void Save(Stuff::MemoryStream* stream);
+		void BuildDefaults(void);
+		bool IsDataValid(bool fix_data = false);
+		static Card__Specification* Make(Stuff::MemoryStream* stream, uint32_t gfx_version);
+		void Copy(Card__Specification* spec);
 
 		//-------------------------------------------------------------------------
 		// FCurves
 		//
 	public:
-		SeededCurveOf<ConstantCurve, ComplexCurve, Curve::e_ConstantComplexType>
-		m_halfHeight,
-		m_aspectRatio;
-		SeededCurveOf<ComplexCurve, SplineCurve, Curve::e_ComplexSplineType>
-		m_index;
-		ConstantCurve
-		m_UOffset,
-		m_VOffset,
-		m_USize,
-		m_VSize;
+		SeededCurveOf<ConstantCurve, ComplexCurve, Curve::e_ConstantComplexType>	m_halfHeight;
+		SeededCurveOf<ConstantCurve, ComplexCurve, Curve::e_ConstantComplexType>	m_aspectRatio;
+		SeededCurveOf<ComplexCurve, SplineCurve, Curve::e_ComplexSplineType>		m_index;
+		ConstantCurve m_UOffset;
+		ConstantCurve m_VOffset;
+		ConstantCurve m_USize;
+		ConstantCurve m_VSize;
+		bool m_animated;
+		uint8_t m_width;
 
-		bool
-		m_animated;
-		uint8_t
-		m_width;
-
-		void
-		SetWidth(void);
+		void SetWidth(void);
 	};
 
 //############################################################################
@@ -101,38 +80,23 @@ namespace gosFX
 		// Class Data Support
 		//
 	protected:
-		Card(
-			Specification* spec,
-			uint32_t flags
-		);
+		Card(Specification* spec, uint32_t flags);
 		~Card(void);
 
-		float
-		m_halfX,
-		m_halfY;
-		MidLevelRenderer::MLRCardCloud
-		* m_cardCloud;
-		Stuff::Point3D
-		m_vertices[4];
-		Stuff::RGBAColor
-		m_colors[4];
-		Stuff::Vector2DOf<float>
-		m_uvs[4];
-		pcsize_t m_cardCount;
+		float m_halfX;
+		float m_halfY;
+		MidLevelRenderer::MLRCardCloud* m_cardCloud;
+		Stuff::Point3D				m_vertices[4];
+		Stuff::RGBAColor			m_colors[4];
+		Stuff::Vector2DOf<float>	m_uvs[4];
+		pcsize_t					m_cardCount;
 
 	public:
-		static Card*
-		Make(
-			Specification* spec,
-			uint32_t flags
-		);
-
-		Specification*
-		GetSpecification()
+		static Card* Make(Specification* spec, uint32_t flags);
+		Specification* GetSpecification(void)
 		{
-			Check_Object(this);
-			return
-				Cast_Object(Specification*, m_specification);
+			// Check_Object(this);
+			return Cast_Object(Specification*, m_specification);
 		}
 
 		static ClassData* DefaultData;
@@ -147,13 +111,9 @@ namespace gosFX
 		// API
 		//
 	public:
-		void
-		Start(ExecuteInfo* info);
-		bool
-		Execute(ExecuteInfo* info);
-		void
-		Draw(DrawInfo* info);
-		void
-		Kill(void);
+		void Start(ExecuteInfo* info);
+		bool Execute(ExecuteInfo* info);
+		void Draw(DrawInfo* info);
+		void Kill(void);
 	};
 }

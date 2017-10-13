@@ -1,5 +1,5 @@
 //===========================================================================//
-// Copyright (C) Microsoft Corporation. All rights reserved. //
+// Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
 #include "stdafx.h"
@@ -34,7 +34,7 @@ MLRIndexedTriangleCloud::ClassData*	MLRIndexedTriangleCloud::DefaultData = nullp
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-MLRIndexedTriangleCloud::InitializeClass()
+MLRIndexedTriangleCloud::InitializeClass(void)
 {
 	Verify(!DefaultData);
 	// Verify(gos_GetCurrentHeap() == StaticHeap);
@@ -56,7 +56,7 @@ MLRIndexedTriangleCloud::InitializeClass()
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-MLRIndexedTriangleCloud::TerminateClass()
+MLRIndexedTriangleCloud::TerminateClass(void)
 {
 	Unregister_Pointer(clipExtraIndex);
 	delete clipExtraIndex;
@@ -71,20 +71,20 @@ MLRIndexedTriangleCloud::TerminateClass()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLRIndexedTriangleCloud::MLRIndexedTriangleCloud(int32_t nr):
+MLRIndexedTriangleCloud::MLRIndexedTriangleCloud(uint32_t nr):
 	MLRTriangleCloud(nr)
 {
 	//Verify(gos_GetCurrentHeap() == Heap);
 	usedNrOfPoints = nullptr;
-	Check_Pointer(this);
+	//Check_Pointer(this);
 	drawMode = SortData::TriIndexedList;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLRIndexedTriangleCloud::~MLRIndexedTriangleCloud()
+MLRIndexedTriangleCloud::~MLRIndexedTriangleCloud(void)
 {
-	Check_Object(this);
+	// Check_Object(this);
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -100,7 +100,7 @@ MLRIndexedTriangleCloud::SetData
 	const Stuff::Vector2DScalar* uv_data
 )
 {
-	Check_Pointer(this);
+	//Check_Pointer(this);
 	usedNrOfTriangles = tri_count;
 	usedNrOfPoints = point_count;
 	Verify(*usedNrOfTriangles <= maxNrOf);
@@ -115,7 +115,7 @@ MLRIndexedTriangleCloud::SetData
 void
 MLRIndexedTriangleCloud::Draw(DrawEffectInformation* dInfo, GOSVertexPool* allVerticesToDraw, MLRSorter* sorter)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	worldToEffect.Invert(*dInfo->effectToWorld);
 	Stuff::Vector4D* v4 = transformedCoords->GetData();
 	for(size_t k = 0; k < *usedNrOfPoints; k++, v4++)

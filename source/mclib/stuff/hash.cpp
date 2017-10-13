@@ -57,7 +57,7 @@ Hash::Hash(
 //
 Hash::~Hash()
 {
-	Check_Object(this);
+	// Check_Object(this);
 	size_t i;
 	for(i = 0; i < hashTableSize; i++)
 	{
@@ -96,7 +96,7 @@ Hash::TestInstance()
 void
 Hash::AddImplementation(Plug* /*plug*/)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	STOP(("Hash::AddImplementation - Must add with value"));
 }
 
@@ -111,7 +111,7 @@ Hash::AddValueImplementation(
 	PCVOID value
 )
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Object(plug);
 	Check_Pointer(value);
 	//
@@ -160,7 +160,7 @@ Hash::FindImplementation(
 	PCVOID value
 )
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Pointer(value);
 	//
 	//-------------------------------------------------------------
@@ -198,7 +198,7 @@ Hash::FindImplementation(
 bool
 Hash::IsEmpty()
 {
-	Check_Object(this);
+	// Check_Object(this);
 	size_t i;
 	for(i = 0; i < hashTableSize; i++)
 	{
@@ -223,7 +223,7 @@ Hash::IsEmpty()
 SortedChain*
 Hash::MakeSortedChain()
 {
-	Check_Object(this);
+	// Check_Object(this);
 	STOP(("Hash::MakeSortedChain - Should never reach here"));
 	return nullptr;
 }
@@ -236,7 +236,7 @@ Hash::MakeSortedChain()
 IteratorPosition
 Hash::GetHashIndex(PCVOID)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	STOP(("Hash::GetHashIndex - Should never reach here"));
 	return 0;
 }
@@ -303,13 +303,13 @@ HashIterator::HashIterator(Hash* hash):
 Iterator*
 HashIterator::MakeClone()
 {
-	Check_Object(this);
+	// Check_Object(this);
 	return new HashIterator(*this);
 }
 
 HashIterator::~HashIterator()
 {
-	Check_Object(this);
+	// Check_Object(this);
 	hashTable = nullptr;
 	hashTableSize = 0;
 	currentPosition = HashIteratorNullPosition;
@@ -341,7 +341,7 @@ HashIterator::TestInstance()
 void
 HashIterator::First()
 {
-	Check_Object(this);
+	// Check_Object(this);
 	NextSortedChainIterator(0);
 }
 
@@ -353,7 +353,7 @@ HashIterator::First()
 void
 HashIterator::Last()
 {
-	Check_Object(this);
+	// Check_Object(this);
 	STOP(("Shouldn't reach here"));
 }
 
@@ -365,7 +365,7 @@ HashIterator::Last()
 void
 HashIterator::Next()
 {
-	Check_Object(this);
+	// Check_Object(this);
 	if(vchainIterator != nullptr)
 	{
 		Check_Object(vchainIterator);
@@ -394,7 +394,7 @@ HashIterator::Next()
 void
 HashIterator::Previous()
 {
-	Check_Object(this);
+	// Check_Object(this);
 	STOP(("Not implemented"));
 }
 
@@ -406,7 +406,7 @@ HashIterator::Previous()
 void
 * HashIterator::GetCurrentImplementation()
 {
-	Check_Object(this);
+	// Check_Object(this);
 	if(vchainIterator != nullptr)
 	{
 		Check_Object(vchainIterator);
@@ -436,7 +436,7 @@ void
 CollectionSize
 HashIterator::GetSize()
 {
-	Check_Object(this);
+	// Check_Object(this);
 	HashIterator	iterator(Cast_Object(Hash*, socket));
 	CollectionSize i = 0;
 	while(iterator.ReadAndNextImplementation() != nullptr)
@@ -454,7 +454,7 @@ HashIterator::GetSize()
 void
 HashIterator::Remove()
 {
-	Check_Object(this);
+	// Check_Object(this);
 	if(vchainIterator != nullptr)
 	{
 		Check_Object(vchainIterator);
@@ -486,7 +486,7 @@ Plug
 	PCVOID
 )
 {
-	Check_Object(this);
+	// Check_Object(this);
 	STOP(("Not implemented"));
 	return nullptr;
 }
@@ -502,7 +502,7 @@ HashIterator::ReceiveMemo(
 	PVOID
 )
 {
-	Check_Object(this);
+	// Check_Object(this);
 }
 
 //
@@ -527,7 +527,7 @@ HashIterator::DeleteSortedChainIterator()
 void
 HashIterator::NextSortedChainIterator(IteratorPosition index)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	size_t i;
 	DeleteSortedChainIterator();
 	currentPosition = HashIteratorNullPosition;

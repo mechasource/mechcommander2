@@ -10,11 +10,11 @@
 //
 gosFX::CardCloud__Specification::CardCloud__Specification(
 	Stuff::MemoryStream* stream,
-	int32_t gfx_version
+	uint32_t gfx_version
 ):
 	SpinningCloud__Specification(gosFX::CardCloudClassID, stream, gfx_version)
 {
-	Check_Pointer(this);
+	//Check_Pointer(this);
 	Check_Object(stream);
 	Verify(m_class == CardCloudClassID);
 	//Verify(gos_GetCurrentHeap() == Heap);
@@ -66,7 +66,7 @@ gosFX::CardCloud__Specification::CardCloud__Specification(
 gosFX::CardCloud__Specification::CardCloud__Specification():
 	SpinningCloud__Specification(gosFX::CardCloudClassID)
 {
-	Check_Pointer(this);
+	//Check_Pointer(this);
 	//Verify(gos_GetCurrentHeap() == Heap);
 	m_animated = false;
 	m_width = 1;
@@ -79,14 +79,16 @@ gosFX::CardCloud__Specification::CardCloud__Specification():
 gosFX::CardCloud__Specification*
 gosFX::CardCloud__Specification::Make(
 	Stuff::MemoryStream* stream,
-	int32_t gfx_version
+	uint32_t gfx_version
 )
 {
 	Check_Object(stream);
-	gos_PushCurrentHeap(Heap);
+	#ifdef _GAMEOS_HPP_
+	// gos_PushCurrentHeap(Heap);
+#endif
 	CardCloud__Specification* spec =
 		new gosFX::CardCloud__Specification(stream, gfx_version);
-	gos_PopCurrentHeap();
+	// gos_PopCurrentHeap();
 	return spec;
 }
 
@@ -95,7 +97,7 @@ gosFX::CardCloud__Specification::Make(
 void
 gosFX::CardCloud__Specification::Save(Stuff::MemoryStream* stream)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Object(stream);
 	SpinningCloud__Specification::Save(stream);
 	m_halfHeight.Save(stream);
@@ -113,7 +115,7 @@ gosFX::CardCloud__Specification::Save(Stuff::MemoryStream* stream)
 void
 gosFX::CardCloud__Specification::BuildDefaults()
 {
-	Check_Object(this);
+	// Check_Object(this);
 	SpinningCloud__Specification::BuildDefaults();
 	m_halfHeight.m_ageCurve.SetCurve(1.0f);
 	m_halfHeight.m_seeded = false;
@@ -138,7 +140,7 @@ gosFX::CardCloud__Specification::BuildDefaults()
 bool
 gosFX::CardCloud__Specification::IsDataValid(bool fix_data)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	float max_offset, min_offset;
 	float max_scale, min_scale;
 	m_USize.ExpensiveComputeRange(&min_scale, &max_scale);
@@ -159,7 +161,7 @@ gosFX::CardCloud__Specification::IsDataValid(bool fix_data)
 		if(fix_data)
 		{
 			m_VOffset.SetCurve(0.0f);
-			PAUSE(("Warning: Curve \"VOffset\" in Effect \"%s\" Is Out of Range and has been Reset", (PSTR)m_name));
+			// PAUSE(("Warning: Curve \"VOffset\" in Effect \"%s\" Is Out of Range and has been Reset", (PSTR)m_name));
 		}
 		else
 			return false;
@@ -183,7 +185,7 @@ gosFX::CardCloud__Specification::IsDataValid(bool fix_data)
 		if(fix_data)
 		{
 			m_UOffset.SetCurve(0.0f);
-			PAUSE(("Warning: Curve \"UOffset\" in Effect \"%s\" Is Out of Range and has been Reset", (PSTR)m_name));
+			// PAUSE(("Warning: Curve \"UOffset\" in Effect \"%s\" Is Out of Range and has been Reset", (PSTR)m_name));
 		}
 		else
 			return false;
@@ -197,10 +199,12 @@ gosFX::CardCloud__Specification::IsDataValid(bool fix_data)
 void
 gosFX::CardCloud__Specification::Copy(CardCloud__Specification* spec)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Object(spec);
 	SpinningCloud__Specification::Copy(spec);
-	gos_PushCurrentHeap(Heap);
+	#ifdef _GAMEOS_HPP_
+	// gos_PushCurrentHeap(Heap);
+#endif
 	m_halfHeight = spec->m_halfHeight;
 	m_aspectRatio = spec->m_aspectRatio;
 	m_pIndex = spec->m_pIndex;
@@ -210,7 +214,7 @@ gosFX::CardCloud__Specification::Copy(CardCloud__Specification* spec)
 	m_VSize = spec->m_VSize;
 	m_animated = spec->m_animated;
 	m_width = spec->m_width;
-	gos_PopCurrentHeap();
+	// gos_PopCurrentHeap();
 }
 
 //------------------------------------------------------------------------------
@@ -267,11 +271,11 @@ gosFX::CardCloud::CardCloud(
 {
 	Check_Object(spec);
 	//Verify(gos_GetCurrentHeap() == Heap);
-	gos_PushCurrentHeap(MidLevelRenderer::Heap);
+	// gos_PushCurrentHeap(MidLevelRenderer::Heap);
 	m_cloudImplementation =
 		new MidLevelRenderer::MLRCardCloud(spec->m_maxParticleCount);
 	Register_Object(m_cloudImplementation);
-	gos_PopCurrentHeap();
+	// gos_PopCurrentHeap();
 	uint32_t index = spec->m_maxParticleCount * sizeof(Particle);
 	m_P_vertices = Cast_Pointer(Stuff::Point3D*, &m_data[index]);
 	index += 4 * spec->m_maxParticleCount * sizeof(Stuff::Point3D);
@@ -303,9 +307,11 @@ gosFX::CardCloud::Make(
 )
 {
 	Check_Object(spec);
-	gos_PushCurrentHeap(Heap);
+	#ifdef _GAMEOS_HPP_
+	// gos_PushCurrentHeap(Heap);
+#endif
 	CardCloud* cloud = new gosFX::CardCloud(spec, flags);
-	gos_PopCurrentHeap();
+	// gos_PopCurrentHeap();
 	return cloud;
 }
 
@@ -317,7 +323,7 @@ gosFX::CardCloud::CreateNewParticle(
 	Stuff::Point3D* translation
 )
 {
-	Check_Object(this);
+	// Check_Object(this);
 	//
 	//-------------------------------------------------------------------
 	// Let our parent do creation, then turn on the particle in the cloud
@@ -355,7 +361,7 @@ gosFX::CardCloud::AnimateParticle(
 	Stuff::Time till
 )
 {
-	Check_Object(this);
+	// Check_Object(this);
 	//
 	//-----------------------------------------
 	// Animate the parent then get our pointers
@@ -428,7 +434,7 @@ gosFX::CardCloud::AnimateParticle(
 //
 void gosFX::CardCloud::DestroyParticle(uint32_t index)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	m_cloudImplementation->TurnOff(index);
 	Verify(!m_cloudImplementation->IsOn(index));
 	SpinningCloud::DestroyParticle(index);
@@ -438,7 +444,7 @@ void gosFX::CardCloud::DestroyParticle(uint32_t index)
 //
 void gosFX::CardCloud::Draw(DrawInfo* info)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Object(info);
 	//
 	//---------------------------------------------------------

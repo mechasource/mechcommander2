@@ -60,12 +60,12 @@ MLRIndexedPrimitiveBase::TerminateClass()
 //
 MLRIndexedPrimitiveBase::MLRIndexedPrimitiveBase(
 	ClassData* class_data,
-	MemoryStream* stream,
+	Stuff::MemoryStream* stream,
 	uint32_t version
 ):
 	MLRPrimitiveBase(class_data, stream, version)
 {
-	Check_Pointer(this);
+	//Check_Pointer(this);
 	Check_Object(stream);
 	//Verify(gos_GetCurrentHeap() == Heap);
 	switch(version)
@@ -89,9 +89,9 @@ MLRIndexedPrimitiveBase::MLRIndexedPrimitiveBase(
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-MLRIndexedPrimitiveBase::Save(MemoryStream* stream)
+MLRIndexedPrimitiveBase::Save(Stuff::MemoryStream* stream)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Object(stream);
 	MLRPrimitiveBase::Save(stream);
 	MemoryStreamIO_Write(stream, &index);
@@ -143,7 +143,7 @@ MLRIndexedPrimitiveBase::SetCoordData(
 	size_t dataSize
 )
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Pointer(data);
 	//Verify(gos_GetCurrentHeap() == Heap);
 	Verify(texCoords.GetLength() == 0 || dataSize == texCoords.GetLength());
@@ -165,7 +165,7 @@ MLRIndexedPrimitiveBase::SetIndexData(
 	int32_t index_count
 )
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Pointer(index_array);
 	//Verify(gos_GetCurrentHeap() == Heap);
 	if(coords.GetLength() > 0)
@@ -190,7 +190,7 @@ MLRIndexedPrimitiveBase::GetIndexData(
 	pint32_t index_count
 )
 {
-	Check_Object(this);
+	// Check_Object(this);
 	*index_array = index.GetData();
 	*index_count = index.GetLength();
 }
@@ -200,7 +200,7 @@ MLRIndexedPrimitiveBase::GetIndexData(
 void
 MLRIndexedPrimitiveBase::Transform(Matrix4D* mat)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	int32_t i, len = coords.GetLength();
 	for(i = 0; i < len; i++)
 	{

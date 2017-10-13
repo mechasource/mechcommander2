@@ -13,6 +13,8 @@
 #ifndef INIFILE_H
 #define INIFILE_H
 
+/* !!! to be replaced by XML (using xmllite) !!! */
+
 //#include "dstd.h"
 //#include "dinifile.h"
 #include <file.h>
@@ -200,10 +202,10 @@ public:
 
 	HRESULT writeIdString(PCSTR varName, PCSTR result);
 
-	HRESULT writeIdFloatArray(PCSTR varName, float* array, size_t numElements);
-	HRESULT writeIdLongArray(PCSTR varName, pint32_t array, size_t numElements);
-	HRESULT writeIdUShortArray(PCSTR varName, puint16_t array, size_t numElements);
-	HRESULT writeIdUCharArray(PCSTR varName, puint8_t array, size_t numElements);
+	HRESULT writeIdFloatArray(PCSTR varName, float* parray, size_t numElements);
+	HRESULT writeIdLongArray(PCSTR varName, pint32_t parray, size_t numElements);
+	HRESULT writeIdUShortArray(PCSTR varName, puint16_t parray, size_t numElements);
+	HRESULT writeIdUCharArray(PCSTR varName, puint8_t parray, size_t numElements);
 };
 
 //---------------------------------------------------------------------------

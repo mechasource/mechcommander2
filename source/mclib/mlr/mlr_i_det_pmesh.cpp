@@ -1,5 +1,5 @@
 //===========================================================================//
-// Copyright (C) Microsoft Corporation. All rights reserved. //
+// Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
 #include "stdafx.h"
@@ -73,7 +73,7 @@ MLR_I_DeT_PMesh::MLR_I_DeT_PMesh(
 ):
 	MLR_I_PMesh(class_data, stream, version)
 {
-	Check_Pointer(this);
+	//Check_Pointer(this);
 	Check_Pointer(stream);
 	//Verify(gos_GetCurrentHeap() == Heap);
 	referenceState2.Load(stream, version);
@@ -96,7 +96,7 @@ MLR_I_DeT_PMesh::MLR_I_DeT_PMesh(
 MLR_I_DeT_PMesh::MLR_I_DeT_PMesh(ClassData* class_data):
 	MLR_I_PMesh(class_data)
 {
-	Check_Pointer(this);
+	//Check_Pointer(this);
 	//Verify(gos_GetCurrentHeap() == Heap);
 	noDetailDistance = -1.0f;
 	detTextureVisible = true;
@@ -113,7 +113,7 @@ void MLR_I_DeT_PMesh::Copy(
 	float xFac,
 	float yFac)
 {
-	Check_Pointer(this);
+	//Check_Pointer(this);
 	(void)xOff;
 	(void)yOff;
 	(void)xFac;
@@ -126,7 +126,7 @@ void MLR_I_DeT_PMesh::Copy(
 //
 MLR_I_DeT_PMesh::~MLR_I_DeT_PMesh()
 {
-	Check_Object(this);
+	// Check_Object(this);
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -149,7 +149,7 @@ MLR_I_DeT_PMesh* MLR_I_DeT_PMesh::Make(
 //
 void MLR_I_DeT_PMesh::Save(Stuff::MemoryStream* stream)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Object(stream);
 	MLR_I_PMesh::Save(stream);
 	referenceState2.Save(stream);
@@ -160,7 +160,7 @@ void MLR_I_DeT_PMesh::Save(Stuff::MemoryStream* stream)
 //
 uint32_t MLR_I_DeT_PMesh::GetNumPasses()
 {
-	Check_Object(this);
+	// Check_Object(this);
 	if(gEnableDetailTexture == 0 || detTextureVisible == false)
 		return 1;
 	return passes;
@@ -212,7 +212,9 @@ MidLevelRenderer::CreateIndexedCube_NoColor_NoLit_DetTex(
 	float yFac
 )
 {
+	#ifdef _GAMEOS_HPP_
 	gos_PushCurrentHeap(Heap);
+#endif
 	MLR_I_DeT_PMesh* ret = new MLR_I_DeT_PMesh();
 	Register_Object(ret);
 	ret->SetDetailData(xOff, yOff, xFac, yFac);
@@ -334,7 +336,9 @@ MidLevelRenderer::CreateIndexedIcosahedron_NoColor_NoLit_DetTex(
 	MLRState* stateDet
 )
 {
+	#ifdef _GAMEOS_HPP_
 	gos_PushCurrentHeap(Heap);
+#endif
 	MLRShape* ret = new MLRShape(20);
 	Register_Object(ret);
 	size_t i, j, k;

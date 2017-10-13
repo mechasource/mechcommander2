@@ -39,7 +39,7 @@ Radian::Normalize(float Value)
 Radian&
 Radian::Normalize()
 {
-	Check_Object(this);
+	// Check_Object(this);
 	angle = static_cast<float>(fmod(angle, Two_Pi));
 	if(angle > Pi)
 	{
@@ -60,7 +60,7 @@ Radian&
 Radian::Lerp(const Radian& a, const Radian& b, float t)
 {
 	float a1, a2;
-	Check_Pointer(this);
+	//Check_Pointer(this);
 	Check_Object(&a);
 	Check_Object(&b);
 	a1 = Radian::Normalize(a.angle);
@@ -81,7 +81,7 @@ Radian::Lerp(const Radian& a, const Radian& b, float t)
 SinCosPair&
 SinCosPair::operator=(const Radian& radian)
 {
-	Check_Pointer(this);
+	//Check_Pointer(this);
 	Check_Object(&radian);
 #if USE_ASSEMBLER_CODE
 	float* f = &sine;
@@ -105,7 +105,7 @@ SinCosPair::operator=(const Radian& radian)
 	cosine = cos(radian);
 	sine = sin(radian);
 #endif
-	Check_Object(this);
+	// Check_Object(this);
 	return *this;
 }
 #endif

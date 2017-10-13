@@ -1,5 +1,5 @@
 //===========================================================================//
-// Copyright (C) Microsoft Corporation. All rights reserved. //
+// Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
 #pragma once
@@ -63,13 +63,13 @@ namespace MidLevelRenderer
 
 		virtual size_t GetNumPrimitives(void)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return numOfTriangles;
 		}
 
 		virtual void SetSubprimitiveLengths(puint8_t length_array, size_t subprimitive_count)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			(void)length_array;
 			//Verify(gos_GetCurrentHeap() == Heap);
 			numOfTriangles = subprimitive_count;
@@ -83,7 +83,7 @@ namespace MidLevelRenderer
 
 		const Stuff::Plane* GetTrianglePlane(size_t index)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			Verify(index < facePlanes.GetLength());
 			return &facePlanes[index];
 		}
@@ -137,7 +137,7 @@ namespace MidLevelRenderer
 
 		virtual size_t GetSize(void)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			size_t ret = MLRIndexedPrimitiveBase::GetSize();
 			ret += testList.GetSize();
 			ret += facePlanes.GetSize();
@@ -155,7 +155,7 @@ namespace MidLevelRenderer
 
 	extern float vdata[12][3];
 	extern uint32_t tindices [20][3];
-	extern int32_t triDrawn;
+	extern uint32_t triDrawn;
 	MLR_I_TMesh* CreateIndexedTriCube_NoColor_NoLit(float, MLRState*);
 	MLRShape* CreateIndexedTriIcosahedron_NoColor_NoLit(IcoInfo&, MLRState*);
 }

@@ -51,7 +51,7 @@ namespace Stuff
 		}
 		Matrix4D(const Matrix4D& matrix)
 		{
-			Check_Pointer(this);
+			//Check_Pointer(this);
 			Check_Object(&matrix);
 			memcpy(entries, matrix.entries, sizeof(entries));
 		}
@@ -85,7 +85,7 @@ namespace Stuff
 		//
 		Matrix4D& operator=(const Matrix4D& m)
 		{
-			Check_Pointer(this);
+			//Check_Pointer(this);
 			Check_Object(&m);
 			memcpy(entries, m.entries, sizeof(m.entries));
 			return *this;
@@ -120,14 +120,14 @@ namespace Stuff
 		//
 		float& operator()(size_t row, size_t column)
 		{
-			Check_Pointer(this);
+			//Check_Pointer(this);
 			Verify((row) <= W_Axis);
 			Verify((column) <= W_Axis);
 			return entries[(column << 2) + row];
 		}
 		const float& operator()(size_t row, size_t column) const
 		{
-			Check_Pointer(this);
+			//Check_Pointer(this);
 			Verify((row) <= W_Axis);
 			Verify((column) <= W_Axis);
 			return entries[(column << 2) + row];
@@ -150,7 +150,7 @@ namespace Stuff
 		}
 		inline Matrix4D& Multiply(const AffineMatrix4D& Source1, const Matrix4D& Source2)
 		{
-			Check_Pointer(this);
+			//Check_Pointer(this);
 			Check_Object(&Source1);
 			Check_Object(&Source2);
 			(void)Source1;

@@ -70,7 +70,7 @@ protected:
 
 	inline uint32_t GetTickDelta(uint32_t now, uint32_t then)
 	{
-		if(now >= then)
+		if (now >= then)
 		{
 			return now - then;
 		}
@@ -82,7 +82,7 @@ protected:
 
 	inline uint32_t Get13BitTickDelta(uint32_t now, uint32_t then)
 	{
-		if(now >= then)
+		if (now >= then)
 		{
 			return now - then;
 		}

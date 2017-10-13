@@ -162,7 +162,7 @@ NotationFile::NotationFile(
 ):
 	m_pages(nullptr)
 {
-	Check_Pointer(this);
+	//Check_Pointer(this);
 	Check_Pointer(file_name);
 	//
 	//-----------------------------------------
@@ -202,7 +202,7 @@ NotationFile::NotationFile(
 ):
 	m_pages(nullptr)
 {
-	Check_Pointer(this);
+	//Check_Pointer(this);
 	//
 	//--------------------------------------------------------------------
 	// If we were given a stream and it was a file, get the dependency and
@@ -231,7 +231,7 @@ NotationFile::NotationFile(
 //
 NotationFile::~NotationFile()
 {
-	Check_Object(this);
+	// Check_Object(this);
 	//
 	//------------------------
 	// Clear out the notepages
@@ -257,7 +257,7 @@ NotationFile::CommonConstruction(
 	MacroTree* macro_tree
 )
 {
-	Check_Pointer(this);
+	//Check_Pointer(this);
 	//
 	//-------------------
 	// Read the stream in
@@ -269,7 +269,7 @@ NotationFile::CommonConstruction(
 		Read(memory_stream, macro_tree, nullptr, false);
 	}
 	m_dirtyFlag = false;
-	Check_Object(this);
+	// Check_Object(this);
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -282,7 +282,7 @@ NotationFile::Read(
 	bool nested
 )
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Pointer(stream);
 	//
 	//------------------------------------------------------------------
@@ -492,7 +492,7 @@ Parse:
 void
 NotationFile::Write(MemoryStream* stream)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Object(stream);
 	//
 	//----------------------------------
@@ -513,7 +513,7 @@ NotationFile::Write(MemoryStream* stream)
 void
 NotationFile::Save()
 {
-	Check_Object(this);
+	// Check_Object(this);
 	//
 	//------------------------------------------------------
 	// If the file is dirty and has a filename, write it out
@@ -532,7 +532,7 @@ NotationFile::Save()
 void
 NotationFile::SaveAs(PCSTR file_name)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	//
 	//------------------------------------------------------
 	// If the file is dirty and has a filename, write it out
@@ -554,7 +554,7 @@ NotationFile::ProcessLine(
 	PSTR buffer
 )
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Object(stream);
 	Check_Object(macro_tree);
 	Check_Pointer(buffer);
@@ -773,7 +773,7 @@ NotationFile::HandleBangStuff(
 Page*
 NotationFile::FindPage(PCSTR pagename)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Pointer(pagename);
 	PageIterator pages(&m_pages);
 	Page* page;
@@ -807,7 +807,7 @@ NotationFile::GetPage(PCSTR pagename)
 Page*
 NotationFile::SetPage(PCSTR pagename)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Pointer(pagename);
 	Page* page = FindPage(pagename);
 	if(!page)
@@ -821,7 +821,7 @@ NotationFile::SetPage(PCSTR pagename)
 Page*
 NotationFile::AddPage(PCSTR pagename)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Pointer(pagename);
 	SetDirty();
 	Page* page = new Page(this);
@@ -836,7 +836,7 @@ NotationFile::AddPage(PCSTR pagename)
 void
 NotationFile::DeletePage(PCSTR pagename)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Pointer(pagename);
 	Page* page = FindPage(pagename);
 	if(page)
@@ -852,7 +852,7 @@ NotationFile::DeletePage(PCSTR pagename)
 void
 NotationFile::DeleteAllPages()
 {
-	Check_Object(this);
+	// Check_Object(this);
 	PageIterator pages(&m_pages);
 	Page* page;
 	while((page = pages.ReadAndNext()) != nullptr)

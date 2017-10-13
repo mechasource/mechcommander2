@@ -75,7 +75,7 @@ Link::TestInstance()
 void
 Link::ReleaseFromPlug()
 {
-	Check_Object(this);
+	// Check_Object(this);
 	//
 	//-----------------------------------------------------
 	// Remove this link from the plugs current set of links
@@ -107,7 +107,7 @@ Link::ReleaseFromPlug()
 void
 Link::AddToPlug(Plug* plug)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Object(plug);
 	if((nextLink = plug->linkHead) != nullptr)
 	{

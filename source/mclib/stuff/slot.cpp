@@ -69,7 +69,7 @@ SlotLink::SlotLink(
 //
 SlotLink::~SlotLink()
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Slot* slot = Cast_Object(Slot*, socket);
 	//
 	//-------------------------------------------------
@@ -119,7 +119,7 @@ Slot::Slot(
 //
 Slot::~Slot()
 {
-	Check_Object(this);
+	// Check_Object(this);
 	SetReleaseNode(nullptr);
 	if(slotLink != nullptr)
 	{
@@ -151,7 +151,7 @@ Slot::TestInstance()
 void
 Slot::Remove()
 {
-	Check_Object(this);
+	// Check_Object(this);
 	if(slotLink != nullptr)
 	{
 		Unregister_Object(slotLink);
@@ -170,7 +170,7 @@ Slot::AddImplementation(
 	Plug* plug
 )
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Verify(slotLink == nullptr);
 	slotLink = new SlotLink(this, plug);
 	Register_Object(slotLink);
@@ -184,7 +184,7 @@ Slot::AddImplementation(
 Plug*
 Slot::GetCurrentPlug()
 {
-	Check_Object(this);
+	// Check_Object(this);
 	if(slotLink != nullptr)
 	{
 		Check_Object(slotLink);

@@ -116,7 +116,9 @@ MLRLight::Make(
 	uint32_t version
 )
 {
+	#ifdef _GAMEOS_HPP_
 	gos_PushCurrentHeap(Heap);
+#endif
 	int32_t type;
 	MLRLight* light = nullptr;
 	*stream >> type;
@@ -149,7 +151,9 @@ MLRLight::Make(
 MLRLight*
 MLRLight::Make(Stuff::Page* page)
 {
+	#ifdef _GAMEOS_HPP_
 	gos_PushCurrentHeap(Heap);
+#endif
 	PCSTR type;
 	page->GetEntry("LightType", &type, true);
 	MLRLight* light = nullptr;
@@ -174,7 +178,7 @@ MLRLight::Make(Stuff::Page* page)
 void
 MLRLight::Save(Stuff::MemoryStream* stream)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Object(stream);
 	*stream << static_cast<int32_t>(GetLightType());
 	*stream << intensity << color << lightToWorld;
@@ -186,7 +190,7 @@ MLRLight::Save(Stuff::MemoryStream* stream)
 void
 MLRLight::Write(Stuff::Page* page)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Object(page);
 	switch(GetLightType())
 	{
@@ -228,7 +232,7 @@ MLRLight::TestInstance()
 void
 MLRLight::SetLightToShapeMatrix(const LinearMatrix4D& worldToShape)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	lightToShape.Multiply(lightToWorld, worldToShape);
 }
 
@@ -237,7 +241,7 @@ MLRLight::SetLightToShapeMatrix(const LinearMatrix4D& worldToShape)
 void
 MLRLight::SetLightToWorldMatrix(const LinearMatrix4D& matrix)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	lightToWorld = matrix;
 }
 
@@ -254,7 +258,7 @@ MLRLight::SetColor(float r, float g, float b)
 void
 MLRLight::GetColor(float& r, float& g, float& b)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	r = color.red;
 	g = color.green;
 	b = color.blue;

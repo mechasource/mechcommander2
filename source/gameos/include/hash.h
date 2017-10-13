@@ -192,12 +192,12 @@ CHash<T, K>::CHash(PFHASHFUNC HashFunc, PFCOMPAREFUNC CompareFunc, PFGETFUNC Get
 	// Force the number of buckets to a power of 2 so we can replace
 	// MOD with an AND.
 	//
-	for(i = 15; i >= 0; i--)
+	for (i = 15; i >= 0; i--)
 	{
 		m_BucketMask = (1 << i);
-		if(NumBuckets & m_BucketMask)
+		if (NumBuckets & m_BucketMask)
 		{
-			if(NumBuckets ^ m_BucketMask)
+			if (NumBuckets ^ m_BucketMask)
 			{
 				i++;
 				m_BucketMask = (1 << i);
@@ -211,12 +211,12 @@ CHash<T, K>::CHash(PFHASHFUNC HashFunc, PFCOMPAREFUNC CompareFunc, PFGETFUNC Get
 	//
 	// Allocate and initialize buckets
 	//
-	if(m_NumBuckets <= (sizeof(m_PreAllocatedBuckets) / sizeof(CMTListNode)))
+	if (m_NumBuckets <= (sizeof(m_PreAllocatedBuckets) / sizeof(CMTListNode)))
 		m_Buckets = m_PreAllocatedBuckets;
 	else
 		m_Buckets = new CMTListNode[ m_NumBuckets ];
 	ASSERT(m_Buckets != nullptr);
-	for(i = 0; i < m_NumBuckets; i++)
+	for (i = 0; i < m_NumBuckets; i++)
 	{
 		pBucket = &m_Buckets[i];
 		pBucket->m_Next = pBucket;
@@ -237,16 +237,16 @@ CHash<T, K>::~CHash()
 	CMTListNode* next;
 	uint16_t i;
 	// delete buckets
-	for(i = 0; i < m_NumBuckets; i++)
+	for (i = 0; i < m_NumBuckets; i++)
 	{
 		pBucket = &m_Buckets[i];
-		for(node = pBucket->m_Next; node != pBucket; node = next)
+		for (node = pBucket->m_Next; node != pBucket; node = next)
 		{
 			next = node->m_Next;
 			delete node ;
 		}
 	}
-	if(m_NumBuckets > (sizeof(m_PreAllocatedBuckets) / sizeof(CMTListNode)))
+	if (m_NumBuckets > (sizeof(m_PreAllocatedBuckets) / sizeof(CMTListNode)))
 		delete [] m_Buckets;
 	m_Buckets = nullptr;
 }
@@ -259,7 +259,7 @@ MTListNodeHandle CHash<T, K>::Add(K Key, T* Object)
 	uint16_t idx = (uint16_t) m_HashFunc(Key) & m_BucketMask;
 	CMTListNode* pBucket = &m_Buckets[ idx ];
 	node = new CMTListNode;
-	if(!node)
+	if (!node)
 		return nullptr;
 	node->m_Data = Object;
 	CLEAR_NODE_DELETED(node);
@@ -283,17 +283,17 @@ T* CHash<T, K>::Get(K Key)
 	CMTListNode* pBucket = &m_Buckets[ idx ];
 	// look for object in bucket list
 	Found = nullptr;
-	for(node = pBucket->m_Next; node != pBucket; node = node->m_Next)
+	for (node = pBucket->m_Next; node != pBucket; node = node->m_Next)
 	{
 		ASSERT(GET_NODE_IDX(node) == idx);
 		// skip deleted nodes
-		if(IS_NODE_DELETED(node))
+		if (IS_NODE_DELETED(node))
 			continue;
 		// node we're looking for?
 		Object = (T*)(node->m_Data);
-		if(m_CompareFunc(Object, Key))
+		if (m_CompareFunc(Object, Key))
 		{
-			if(m_GetFunc)
+			if (m_GetFunc)
 			{
 				m_GetFunc(Object);
 			}
@@ -315,12 +315,12 @@ T* CHash<T, K>::Delete(K Key)
 	uint16_t idx = (uint16_t)m_HashFunc(Key) & m_BucketMask;
 	CMTListNode* pBucket = &m_Buckets[ idx ];
 	Found = nullptr;
-	for(node = pBucket->m_Next; node != pBucket; node = next)
+	for (node = pBucket->m_Next; node != pBucket; node = next)
 	{
 		ASSERT(GET_NODE_IDX(node) == idx);
 		next = node->m_Next;
 		// remove deleted objects
-		if(IS_NODE_DELETED(node))
+		if (IS_NODE_DELETED(node))
 		{
 			node->m_Prev->m_Next = next;
 			next->m_Prev = node->m_Prev;
@@ -331,10 +331,10 @@ T* CHash<T, K>::Delete(K Key)
 		}
 		// node we're looking for?
 		Object = (T*)(node->m_Data);
-		if(m_CompareFunc(Object, Key))
+		if (m_CompareFunc(Object, Key))
 		{
 			Found = Object;
-			if(m_Recursion == 0)
+			if (m_Recursion == 0)
 			{
 				node->m_Prev->m_Next = next;
 				next->m_Prev = node->m_Prev;
@@ -358,7 +358,7 @@ template<class T, class K> inline
 void CHash<T, K>::DeleteNode(MTListNodeHandle node, PFDELFUNC pfDelete, PVOID Cookie)
 {
 	ASSERT(GET_NODE_IDX(node) < m_NumBuckets);
-	if(pfDelete && node->m_Data)
+	if (pfDelete && node->m_Data)
 	{
 		pfDelete((T*) node->m_Data, Cookie);
 		node->m_Data = nullptr;
@@ -375,10 +375,10 @@ void CHash<T, K>::DeleteNode(MTListNodeHandle node, PFDELFUNC pfDelete, PVOID Co
 template<class T, class K> inline
 void CHash<T, K>::MarkNodeDeleted(MTListNodeHandle node, PFDELFUNC pfDelete, PVOID Cookie)
 {
-	if(!IS_NODE_DELETED(node))
+	if (!IS_NODE_DELETED(node))
 	{
 		MARK_NODE_DELETED(node);
-		if(pfDelete && node->m_Data)
+		if (pfDelete && node->m_Data)
 		{
 			pfDelete((T*) node->m_Data, Cookie);
 		}
@@ -395,16 +395,16 @@ bool CHash<T, K>::ForEach(PFITERCALLBACK pfCallback, PVOID Cookie)
 	CMTListNode* node;
 	uint16_t idx;
 	m_Recursion++;
-	for(idx = 0; idx < m_NumBuckets; idx++)
+	for (idx = 0; idx < m_NumBuckets; idx++)
 	{
 		// step through bucket
 		pBucket = &m_Buckets[ idx ];
-		for(node = pBucket->m_Next; node != pBucket; node = node->m_Next)
+		for (node = pBucket->m_Next; node != pBucket; node = node->m_Next)
 		{
 			// skip deleted nodes
-			if(IS_NODE_DELETED(node))
+			if (IS_NODE_DELETED(node))
 				continue;
-			if(!pfCallback((T*) node->m_Data, node, Cookie))
+			if (!pfCallback((T*) node->m_Data, node, Cookie))
 			{
 				m_Recursion--;
 				return false;
@@ -423,12 +423,12 @@ void CHash<T, K>::RemoveAll(PFDELFUNC pfDelete, PVOID Cookie)
 	CMTListNode* node;
 	CMTListNode* next;
 	uint16_t idx;
-	for(idx = 0; idx < m_NumBuckets; idx++)
+	for (idx = 0; idx < m_NumBuckets; idx++)
 	{
 		pBucket = &m_Buckets[ idx ];
-		for(node = pBucket->m_Next; node != pBucket; node = next)
+		for (node = pBucket->m_Next; node != pBucket; node = next)
 		{
-			if(pfDelete && node->m_Data)
+			if (pfDelete && node->m_Data)
 			{
 				pfDelete((T*) node->m_Data, Cookie);
 				node->m_Data = nullptr;
@@ -452,15 +452,15 @@ void CHash<T, K>::TrashDay()
 	CMTListNode* node;
 	CMTListNode* next;
 	uint16_t idx;
-	for(idx = 0; idx < m_NumBuckets; idx++)
+	for (idx = 0; idx < m_NumBuckets; idx++)
 	{
 		// step through buckets deleting marked nodes
 		pBucket = &m_Buckets[ idx ];
-		for(node = pBucket->m_Next; node != pBucket; node = next)
+		for (node = pBucket->m_Next; node != pBucket; node = next)
 		{
 			ASSERT(GET_NODE_IDX(node) == idx);
 			next = node->m_Next;
-			if(IS_NODE_DELETED(node))
+			if (IS_NODE_DELETED(node))
 			{
 				node->m_Prev->m_Next = next;
 				next->m_Prev = node->m_Prev;

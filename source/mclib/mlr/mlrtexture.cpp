@@ -14,10 +14,10 @@ using namespace MidLevelRenderer;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLRTexture::MLRTexture(MemoryStream* stream)
+MLRTexture::MLRTexture(Stuff::MemoryStream* stream)
 {
 	//Verify(gos_GetCurrentHeap() == Heap);
-	Check_Pointer(this);
+	//Check_Pointer(this);
 	Check_Object(stream);
 	hint = 0;
 }
@@ -96,10 +96,12 @@ MLRTexture::~MLRTexture()
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 MLRTexture*
-MLRTexture::Make(MemoryStream* stream)
+MLRTexture::Make(Stuff::MemoryStream* stream)
 {
 	Check_Object(stream);
+	#ifdef _GAMEOS_HPP_
 	gos_PushCurrentHeap(Heap);
+#endif
 	MLRTexture* texture = new MLRTexture(stream);
 	gos_PopCurrentHeap();
 	return texture;
@@ -108,7 +110,7 @@ MLRTexture::Make(MemoryStream* stream)
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-MLRTexture::Save(MemoryStream* stream)
+MLRTexture::Save(Stuff::MemoryStream* stream)
 {
 }
 
@@ -117,7 +119,7 @@ MLRTexture::Save(MemoryStream* stream)
 int32_t
 MLRTexture::GetImageNumber()
 {
-	Check_Object(this);
+	// Check_Object(this);
 	return ((textureHandle - 1) >> (thePool->GetInstanceDepth()));
 }
 
@@ -126,7 +128,7 @@ MLRTexture::GetImageNumber()
 int32_t
 MLRTexture::GetInstanceNumber()
 {
-	Check_Object(this);
+	// Check_Object(this);
 	return ((textureHandle - 1) & ~((1 << thePool->GetInstanceDepth()) - 1));
 }
 

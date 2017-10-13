@@ -3,27 +3,27 @@
 //===========================================================================//
 
 #include "stdafx.h"
-#include "gosfxheaders.hpp"
 
-HGOSHEAP gosFX::Heap = nullptr;
+#include <gosfx/gosfx.hpp>
+#include <stuff/linearmatrix.hpp>
+#include <gosfx/effect.hpp>
+
+// HGOSHEAP gosFX::Heap = nullptr;
 
 DEFINE_TIMER(gosFX, Animation_Time);
 DEFINE_TIMER(gosFX, Draw_Time);
-uint32_t
-gosFX::Point_Count,
-	  gosFX::Shard_Count,
-	  gosFX::Pert_Count,
-	  gosFX::Card_Count,
-	  gosFX::Shape_Count,
-	  gosFX::Profile_Count;
 
-static Stuff::LinearMatrix4D
-Effect_Into_Motion_data(true),
-						Effect_Against_Motion_data(true);
-const Stuff::LinearMatrix4D&
-gosFX::Effect_Into_Motion = Effect_Into_Motion_data;
-const Stuff::LinearMatrix4D&
-gosFX::Effect_Against_Motion = Effect_Against_Motion_data;
+uint32_t gosFX::Point_Count;
+uint32_t gosFX::Shard_Count;
+uint32_t gosFX::Pert_Count;
+uint32_t gosFX::Card_Count;
+uint32_t gosFX::Shape_Count;
+uint32_t gosFX::Profile_Count;
+
+static Stuff::LinearMatrix4D Effect_Into_Motion_data(true);
+static Stuff::LinearMatrix4D Effect_Against_Motion_data(true);
+const Stuff::LinearMatrix4D& gosFX::Effect_Into_Motion = Effect_Into_Motion_data;
+const Stuff::LinearMatrix4D& gosFX::Effect_Against_Motion = Effect_Against_Motion_data;
 
 //-----------------------------------------------------------------------------
 //
@@ -31,10 +31,11 @@ gosFX::Effect_Against_Motion = Effect_Against_Motion_data;
 void __stdcall gosFX::InitializeClasses(void)
 {
 	Verify(FirstFreegosFXClassID <= Stuff::LastgosFXClassID);
-	Verify(!Heap);
-	Heap = gos_CreateMemoryHeap("gosFX");
-	Check_Pointer(Heap);
-	gos_PushCurrentHeap(Heap);
+	// Verify(!Heap);
+	// Heap = gos_CreateMemoryHeap("gosFX", 0, ParentClientHeap);
+	// Check_Pointer(Heap);
+	// gos_PushCurrentHeap(Heap);
+
 	Effect::InitializeClass();
 	ParticleCloud::InitializeClass();
 	PointCloud::InitializeClass();
@@ -59,7 +60,7 @@ void __stdcall gosFX::InitializeClasses(void)
 	Effect_Against_Motion_data(1, 2) = -1.0f;
 	Effect_Against_Motion_data(2, 1) = 1.0f;
 	Effect_Against_Motion_data(2, 2) = 0.0f;
-	gos_PopCurrentHeap();
+	// gos_PopCurrentHeap();
 	StatisticFormat("");
 	StatisticFormat("gosFX");
 	StatisticFormat("=====");
@@ -97,9 +98,9 @@ void __stdcall gosFX::TerminateClasses(void)
 	PointCloud::TerminateClass();
 	ParticleCloud::TerminateClass();
 	Effect::TerminateClass();
-	Check_Pointer(Heap);
-	gos_DestroyMemoryHeap(Heap, true);
-	Heap = nullptr;
+	//Check_Pointer(Heap);
+	//gos_DestroyMemoryHeap(Heap, true);
+	//Heap = nullptr;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

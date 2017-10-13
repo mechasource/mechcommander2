@@ -1,5 +1,5 @@
-//=======================================================================//
-// File:		line.hpp                                                 //
+//===========================================================================//
+// File:		line.hpp                                                     //
 //---------------------------------------------------------------------------//
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
@@ -13,8 +13,7 @@
 
 namespace Stuff
 {
-
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Line3D3D ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Line3D3D ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 	class Line3D:
 		public Ray3D
@@ -50,7 +49,7 @@ namespace Stuff
 		void
 		FindEnd(Point3D* result)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			Check_Pointer(result);
 			Ray3D::Project(length, result);
 		}
@@ -64,7 +63,7 @@ namespace Stuff
 			float* product
 		) const
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return Ray3D::GetDistanceTo(plane, product);
 		}
 		float

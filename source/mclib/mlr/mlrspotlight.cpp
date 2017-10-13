@@ -124,7 +124,7 @@ MLRSpotLight::~MLRSpotLight()
 void
 MLRSpotLight::Save(Stuff::MemoryStream* stream)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Object(stream);
 	MLRInfiniteLightWithFalloff::Save(stream);
 	if(lightMap)
@@ -146,7 +146,7 @@ MLRSpotLight::Save(Stuff::MemoryStream* stream)
 void
 MLRSpotLight::Write(Stuff::Page* page)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Object(page);
 	MLRInfiniteLightWithFalloff::Write(page);
 	if(lightMap)
@@ -173,7 +173,7 @@ MLRSpotLight::TestInstance()
 void
 MLRSpotLight::SetSpreadAngle(const Radian& radian)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	spreadAngle = radian;
 	tanSpreadAngle = (float)tan(spreadAngle);
 	cosSpreadAngle = (float)cos(spreadAngle);
@@ -184,7 +184,7 @@ MLRSpotLight::SetSpreadAngle(const Radian& radian)
 void
 MLRSpotLight::SetSpreadAngle(const Degree& degree)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	spreadAngle = degree;
 	tanSpreadAngle = (float)tan(spreadAngle);
 	cosSpreadAngle = (float)cos(spreadAngle);
@@ -195,7 +195,7 @@ MLRSpotLight::SetSpreadAngle(const Degree& degree)
 bool
 MLRSpotLight::GetSpreadAngle(Radian* angle)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	*angle = spreadAngle;
 	return true;
 }
@@ -276,7 +276,7 @@ MLRSpotLight::LightVertex(const MLRVertexData& vertexData)
 void
 MLRSpotLight::SetLightMap(MLRLightMap* light_map)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	if(lightMap)
 	{
 		Check_Object(lightMap);

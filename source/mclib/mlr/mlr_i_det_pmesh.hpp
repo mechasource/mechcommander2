@@ -87,7 +87,7 @@ namespace MidLevelRenderer
 			float yFac
 		)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			xOffset = xOff;
 			yOffset = yOff;
 			xScale = xFac;
@@ -102,7 +102,7 @@ namespace MidLevelRenderer
 			float& yFac
 		)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			xOff = xOffset;
 			yOff = yOffset;
 			xFac = xScale;
@@ -115,7 +115,7 @@ namespace MidLevelRenderer
 
 		virtual void SetReferenceState(const MLRState& _state, size_t pass = 0)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			Verify((intptr_t(pass) >= 0) && pass < 2);
 			if(pass == 0)
 			{
@@ -130,7 +130,7 @@ namespace MidLevelRenderer
 		virtual const MLRState&
 		GetReferenceState(size_t pass = 0) const
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			if(pass == 0)
 				return referenceState;
 			else
@@ -139,7 +139,7 @@ namespace MidLevelRenderer
 		virtual const MLRState&
 		GetCurrentState(size_t pass = 0) const
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			if(pass == 0)
 				return state;
 			else
@@ -148,14 +148,14 @@ namespace MidLevelRenderer
 
 		virtual void CombineStates(const MLRState& master)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			state.Combine(master, referenceState);
 			state2.Combine(master, referenceState2);
 		};
 
 		virtual GOSVertex* GetGOSVertices(uint32_t pass = 0)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			if(pass == 0)
 				return gos_vertices;
 			else
@@ -178,7 +178,7 @@ namespace MidLevelRenderer
 
 		virtual size_t GetSize(void)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			size_t ret = MLR_I_PMesh::GetSize();
 			return ret;
 		}

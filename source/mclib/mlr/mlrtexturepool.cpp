@@ -49,7 +49,7 @@ MLRTexturePool::TerminateClass()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLRTexturePool::MLRTexturePool(MemoryStream* stream):
+MLRTexturePool::MLRTexturePool(Stuff::MemoryStream* stream):
 	RegisteredClass(DefaultData)
 {
 	//Verify(gos_GetCurrentHeap() == Heap);
@@ -142,10 +142,12 @@ MLRTexturePool::~MLRTexturePool()
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 MLRTexturePool*
-MLRTexturePool::Make(MemoryStream* stream)
+MLRTexturePool::Make(Stuff::MemoryStream* stream)
 {
 	Check_Object(stream);
+	#ifdef _GAMEOS_HPP_
 	gos_PushCurrentHeap(Heap);
+#endif
 	MLRTexturePool* pool = new MLRTexturePool(stream);
 	gos_PopCurrentHeap();
 	return pool;
@@ -154,7 +156,7 @@ MLRTexturePool::Make(MemoryStream* stream)
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-MLRTexturePool::Save(MemoryStream* stream)
+MLRTexturePool::Save(Stuff::MemoryStream* stream)
 {
 	STOP(("Not implemented"));
 }
@@ -194,7 +196,9 @@ MLRTexturePool::Add(PCSTR tn, int32_t instance)
 		{
 			if(!textureArray[j])
 			{
+#ifdef _GAMEOS_HPP_
 				gos_PushCurrentHeap(Heap);
+#endif
 				textureArray[j] =
 					new MLRTexture(
 					this,
@@ -203,7 +207,9 @@ MLRTexturePool::Add(PCSTR tn, int32_t instance)
 					j + 1
 				);
 				Register_Object(textureArray[j]);
+#ifdef _GAMEOS_HPP_
 				gos_PopCurrentHeap();
+#endif
 				storedTextures++;
 				unLoadedImages = true;
 				return textureArray[j];
@@ -212,7 +218,9 @@ MLRTexturePool::Add(PCSTR tn, int32_t instance)
 		STOP(("Asked for too much image instances !"));
 	}
 	int32_t newHandle;
+#ifdef _GAMEOS_HPP_
 	gos_PushCurrentHeap(Heap);
+#endif
 	if(firstFreeHandle < lastFreeHandle)
 	{
 		newHandle = (freeHandle[firstFreeHandle & (handleMax - 1)]) << instanceDepth;
@@ -269,7 +277,9 @@ MLRTexturePool::Add(GOSImage* image)
 		}
 	}
 	int32_t newHandle;
+#ifdef _GAMEOS_HPP_
 	gos_PushCurrentHeap(Heap);
+#endif
 	if(firstFreeHandle < lastFreeHandle)
 	{
 		newHandle = (freeHandle[firstFreeHandle & (handleMax - 1)]) << instanceDepth;
@@ -331,7 +341,7 @@ MLRTexturePool::Remove(MLRTexture* tex)
 MLRTexture*
 MLRTexturePool::operator()(PCSTR tn, int32_t instance)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	MString textureName = tn;
 	int32_t i, j, textureNameHashValue = textureName.GetHashValue();
 	for(i = 0; i < lastHandle; i++)

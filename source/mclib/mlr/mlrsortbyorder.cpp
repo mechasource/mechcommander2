@@ -81,7 +81,7 @@ MLRSortByOrder::~MLRSortByOrder()
 void
 MLRSortByOrder::Reset()
 {
-	Check_Object(this);
+	// Check_Object(this);
 	int32_t i;
 	for(i = 0; i < MLRState::PriorityCount; i++)
 	{
@@ -94,7 +94,7 @@ MLRSortByOrder::Reset()
 //
 void MLRSortByOrder::AddPrimitive(MLRPrimitiveBase* pt, uint32_t pass)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Object(pt);
 	SortData* sd = nullptr;
 	switch(pt->GetSortDataMode())
@@ -116,7 +116,7 @@ void MLRSortByOrder::AddPrimitive(MLRPrimitiveBase* pt, uint32_t pass)
 void
 MLRSortByOrder::AddEffect(MLREffect* ef, const MLRState& state)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Object(ef);
 	SortData* sd = nullptr;
 	switch(ef->GetSortDataMode())
@@ -197,7 +197,7 @@ MLRSortByOrder::AddScreenQuads
 void
 MLRSortByOrder::AddSortRawData(SortData* sd)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	if(sd == nullptr)
 	{
 		return;
@@ -211,7 +211,7 @@ MLRSortByOrder::AddSortRawData(SortData* sd)
 void
 MLRSortByOrder::RenderNow()
 {
-	Check_Object(this);
+	// Check_Object(this);
 //
 // So GameOS knows how int32_t the transform and clip and lighting took of update renderers
 //

@@ -53,7 +53,7 @@ namespace MidLevelRenderer
 		inline GOSVertex&
 		operator=(const GOSVertex& V)
 		{
-			Check_Pointer(this);
+			//Check_Pointer(this);
 			x = V.x;
 			y = V.y;
 			z = V.z;
@@ -68,7 +68,7 @@ namespace MidLevelRenderer
 		inline GOSVertex&
 		operator=(const Stuff::Vector4D& v)
 		{
-			Check_Pointer(this);
+			//Check_Pointer(this);
 			Verify(!Stuff::Small_Enough(v.w));
 			//					Tell_Value(v);
 			rhw = 1.0f / v.w;
@@ -84,7 +84,7 @@ namespace MidLevelRenderer
 		inline GOSVertex&
 		operator=(const Stuff::RGBAColor& c)
 		{
-			Check_Pointer(this);
+			//Check_Pointer(this);
 			//					DEBUG_STREAM << "c = <" << c.alpha << ", " << c.red << ", ";
 			//					DEBUG_STREAM << c.green << ", " << c.blue << ">" << endl;
 			float f;
@@ -107,7 +107,7 @@ namespace MidLevelRenderer
 		inline GOSVertex&
 		operator=(cuint32_t c)
 		{
-			Check_Pointer(this);
+			//Check_Pointer(this);
 			argb = c;
 			return *this;
 		}
@@ -115,7 +115,7 @@ namespace MidLevelRenderer
 		inline GOSVertex&
 		operator=(const Stuff::Vector2DOf<float>& uv)
 		{
-			Check_Pointer(this);
+			//Check_Pointer(this);
 			u = uv[0];
 			v = uv[1];
 			return *this;
@@ -127,7 +127,7 @@ namespace MidLevelRenderer
 			const Stuff::Matrix4D& m,
 			float* uv
 #if FOG_HACK
-			, int32_t foggy
+			, uint32_t foggy
 #endif
 		);
 
@@ -160,12 +160,12 @@ namespace MidLevelRenderer
 		const Stuff::Matrix4D& m,
 		float* uv
 #if FOG_HACK
-		, int32_t foggy
+		, uint32_t foggy
 #endif
 	)
 
 	{
-		Check_Pointer(this);
+		//Check_Pointer(this);
 		Check_Object(&_v);
 		Check_Object(&m);
 #if USE_ASSEMBLER_CODE
@@ -347,7 +347,7 @@ namespace MidLevelRenderer
 	inline uint32_t GOSCopyColor(const Stuff::RGBAColor* color)
 	{
 		float f;
-		uint32_t argb;
+		uint32_t argb  = 0;
 #if USE_ASSEMBLER_CODE
 		_asm
 		{
@@ -478,8 +478,11 @@ namespace MidLevelRenderer
 			mov     argb, ecx
 		}
 #else
-		// this code was left in broken state
+		// !!! this code was left in broken state !!!
 		// Positive_Float_To_Byte(), colors and gos_vertices variables missing
+		// GOSVertex* gos_vertices;
+
+#if _CONSIDERED_UNSUPPORTED
 		f = color->alpha * 255.99f;
 		Clamp(f, 0.0f, 255.f);
 		argb = Stuff::Positive_Float_To_Byte(f);
@@ -492,6 +495,10 @@ namespace MidLevelRenderer
 		f = color->blue * 255.99f;
 		Clamp(f, 0.0f, 255.f);
 		argb = (gos_vertices[0].argb << 8) | Stuff::Positive_Float_To_Byte(f);
+#else
+		(void)color; (void)f; (void)argb;
+#pragma message("this code was left in broken state")
+#endif
 #endif
 		return argb;
 	}

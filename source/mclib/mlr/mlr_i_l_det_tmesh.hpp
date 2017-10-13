@@ -8,7 +8,6 @@
 #define MLR_MLR_I_L_DET_TMESH_HPP
 
 #include <mlr/mlr_i_c_det_tmesh.hpp>
-//#include <mlr/mlr_i_l_det_pmesh.hpp>
 
 namespace MidLevelRenderer
 {
@@ -110,7 +109,7 @@ namespace MidLevelRenderer
 
 		virtual size_t GetSize(void)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			size_t ret = MLR_I_C_DeT_TMesh::GetSize();
 			ret += normals.GetSize();
 			ret += litColors.GetSize();

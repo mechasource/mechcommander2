@@ -82,27 +82,27 @@ namespace Stuff
 		size_t GetEntryCount(void) const;	// (implementation assumes infrequent use)
 		bool IsEmpty(void) const
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return firstEntry == nullptr && lastEntry == nullptr;
 		}
 		Entry* GetFirstEntry(void)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return firstEntry;
 		}
 		const Entry* GetFirstEntry(void) const
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return firstEntry;
 		}
 		Entry* GetLastEntry()
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return lastEntry;
 		}
 		const Entry* GetLastEntry(void) const
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return lastEntry;
 		}
 		int32_t BuildSubList(const ObjectNameList& source_list, PCSTR prefix);
@@ -133,61 +133,61 @@ namespace Stuff
 	public:
 		PCSTR GetName(void) const
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return &(Cast_Pointer(PCSTR, this)[sizeof(ObjectNameList::Entry)]);
 		}
 		bool IsName(PCSTR name) const;
 		PVOID GetObject(void)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return dataReference;
 		}
 		PVOID GetData(void)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return dataReference;
 		}
 		PCVOID GetData(void) const
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return dataReference;
 		}
 		PSTR GetChar(void)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return Cast_Pointer(PSTR , dataReference);
 		}
 		PCSTR GetChar(void) const
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return Cast_Pointer(PCSTR , dataReference);
 		}
 		int32_t GetAtoi(void) const
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			Check_Pointer(dataReference);
 			return atoi(Cast_Pointer(PCSTR , dataReference));
 		}
 		int32_t GetAtol(void) const
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			Check_Pointer(dataReference);
 			return atol(Cast_Pointer(PCSTR , dataReference));
 		}
 		float GetAtof(void) const
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			Check_Pointer(dataReference);
 			return float(atof(Cast_Pointer(PCSTR, dataReference)));
 		}
 		ObjectNameList::Entry* GetNextEntry()
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return nextEntry;
 		}
 		const ObjectNameList::Entry* GetNextEntry(void) const
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return nextEntry;
 		}
 		void TestInstance(void) const {}

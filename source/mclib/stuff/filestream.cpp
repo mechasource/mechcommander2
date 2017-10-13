@@ -1,5 +1,5 @@
 //===========================================================================//
-// Copyright (C) Microsoft Corporation. All rights reserved. //
+// Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
 #include "stdafx.h"
@@ -71,7 +71,7 @@ Directory::Directory(PSTR find_files, bool directories)
 //
 Directory::~Directory(void)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Object(fileWalker);
 	fileWalker->DeletePlugs();
 	Check_Object(fileWalker);
@@ -89,7 +89,7 @@ Directory::~Directory(void)
 //
 PSTR Directory::GetCurrentFileName(void)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Object(fileWalker);
 	DirectoryEntry* entry;
 	if((entry = fileWalker->GetCurrent()) != nullptr)
@@ -104,7 +104,7 @@ PSTR Directory::GetCurrentFileName(void)
 //
 void Directory::AdvanceCurrentFile(void)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Object(fileWalker);
 	fileWalker->Next();
 }
@@ -113,7 +113,7 @@ void Directory::AdvanceCurrentFile(void)
 //
 PSTR Directory::GetCurrentFolderName(void)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	if(folderWalker == nullptr)
 		STOP(("Directory class was instantiated without directory support:\n Set the <directories> parameter to true to enable."));
 	Check_Object(folderWalker);
@@ -130,7 +130,7 @@ PSTR Directory::GetCurrentFolderName(void)
 //
 void Directory::AdvanceCurrentFolder(void)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	if(folderWalker == nullptr)
 		STOP(("Directory class was instantiated without directory support:\n Set the <directories> parameter to true to enable."));
 	Check_Object(folderWalker);
@@ -219,7 +219,7 @@ FileStream::Open(
 	WriteStatus writable
 )
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Pointer(file_name);
 	writeEnabled = writable;
 	currentPosition = streamStart = nullptr;
@@ -289,7 +289,7 @@ FileStream::Open(
 void
 FileStream::Close(void)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	//
 	//---------------------------------
 	// If the file was opened, close it
@@ -318,7 +318,7 @@ FileStream::Close(void)
 void
 FileStream::SetPointer(size_t index)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Verify(IsFileOpened());
 	Verify(writeEnabled == ReadOnly);
 	MemoryStream::SetPointer(index);
@@ -329,7 +329,7 @@ FileStream::SetPointer(size_t index)
 MemoryStream&
 FileStream::AdvancePointer(size_t index)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Verify(IsFileOpened());
 	Verify(writeEnabled == ReadOnly);
 	return MemoryStream::AdvancePointer(index);
@@ -340,7 +340,7 @@ FileStream::AdvancePointer(size_t index)
 MemoryStream&
 FileStream::RewindPointer(size_t index)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Verify(IsFileOpened());
 	Verify(writeEnabled == ReadOnly);
 	return MemoryStream::RewindPointer(index);
@@ -354,7 +354,7 @@ FileStream::ReadBytes(
 	size_t number_of_bytes
 )
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Verify(IsFileOpened());
 	Verify(writeEnabled == ReadOnly);
 	return MemoryStream::ReadBytes(ptr, number_of_bytes);
@@ -368,7 +368,7 @@ FileStream::WriteBytes(
 	size_t number_of_bytes
 )
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Verify(IsFileOpened());
 	Verify(writeEnabled == WriteOnly);
 	size_t written = gos_WriteFile(
@@ -383,7 +383,7 @@ FileStream::WriteBytes(
 bool
 FileStream::IsFileOpened(void)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	return isOpen;
 }
 

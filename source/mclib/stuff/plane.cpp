@@ -73,7 +73,7 @@ Plane::Multiply(
 	const LinearMatrix4D& m
 )
 {
-	Check_Pointer(this);
+	//Check_Pointer(this);
 	Check_Object(&p);
 	Check_Object(&m);
 	Verify(this != &p);
@@ -92,7 +92,7 @@ Plane::Multiply(
 float
 Plane::GetDistanceTo(const Sphere& sphere) const
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Object(&sphere);
 	//
 	//-----------------------------------------------------------------------
@@ -115,7 +115,7 @@ Plane::GetDistanceTo(const Sphere& sphere) const
 float
 Plane::GetDistanceTo(const OBB& box) const
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Object(&box);
 	//
 	//-------------------------------------------------
@@ -196,7 +196,7 @@ Plane::ContainsSomeOf(
 	float thickness
 ) const
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Object(&box);
 	Point3D test;
 	test.x = (normal.x > 0.0f) ? box.minX : box.maxX;
@@ -215,7 +215,7 @@ Plane::ContainsAllOf(
 	float thickness
 ) const
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Object(&box);
 	Point3D test;
 	test.x = (normal.x < 0.0f) ? box.minX : box.maxX;
@@ -367,7 +367,7 @@ Plane::ComputeBestDividingPlane(DynamicArrayOf<Point3D>& points)
 	normal = direction;
 	sum *= t;
 	offset = normal * sum;
-	Check_Object(this);
+	// Check_Object(this);
 	//
 	//-----------------------------------------------------------------------
 	// Now make sure that a coincident set didn't get through due to rounding

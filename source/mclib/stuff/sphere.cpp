@@ -23,7 +23,7 @@ Sphere::Union(
 	const Sphere& sphere2
 )
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Object(&sphere1);
 	Check_Object(&sphere2);
 	//

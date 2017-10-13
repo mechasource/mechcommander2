@@ -61,7 +61,7 @@ RegisteredClass::RegisteredClass(ClassData* class_data):
 PCSTR
 RegisteredClass::GetClassString(void) const
 {
-	Check_Object(this);
+	// Check_Object(this);
 	RegisteredClass__ClassData* data = GetClassData();
 	Check_Object(data);
 	return data->GetClassName();
@@ -121,7 +121,7 @@ RegisteredClass__ClassData::RegisteredClass__ClassData(
 //
 RegisteredClass__ClassData::~RegisteredClass__ClassData()
 {
-	Check_Object(this);
+	// Check_Object(this);
 	//
 	//----------------------------------------------------------------------
 	// Make sure there are no children left, then if this is the root class,
@@ -164,7 +164,7 @@ RegisteredClass__ClassData::IsDerivedFrom(
 	RegisteredClass__ClassData* parent
 )
 {
-	Check_Object(this);
+	// Check_Object(this);
 	//
 	//---------------------------
 	// Handle null parent pointer
@@ -207,7 +207,7 @@ RegisteredClass__ClassData::IsDerivedFrom(
 RegisteredClass__ClassData*
 RegisteredClass__ClassData::FindClassData(PCSTR name)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	if(!_stricmp(className, name))
 	{
 		return this;
@@ -233,7 +233,7 @@ RegisteredClass__ClassData::FindClassData(PCSTR name)
 void
 RegisteredClass__ClassData::DeriveClass(RegisteredClass__ClassData* child)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Object(child);
 	Verify(child->parentClass == this);
 	Verify(!child->nextSiblingClass);

@@ -28,7 +28,7 @@ uint32_t MLRClippingState::numberBitsLookUpTable[MLRClippingState::ClipMask + 1]
 //
 void MLRClippingState::Save(Stuff::MemoryStream* stream)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Object(stream);
 	//
 	//-------------------------------------
@@ -43,7 +43,7 @@ void MLRClippingState::Save(Stuff::MemoryStream* stream)
 void
 MLRClippingState::Load(Stuff::MemoryStream* stream)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Object(stream);
 	//
 	//---------------------------------------

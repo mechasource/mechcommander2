@@ -141,12 +141,12 @@ MLRPrimitiveBase::TerminateClass()
 //
 MLRPrimitiveBase::MLRPrimitiveBase(
 	ClassData* class_data,
-	MemoryStream* stream,
+	Stuff::MemoryStream* stream,
 	uint32_t version
 ):
 	RegisteredClass(class_data)
 {
-	Check_Pointer(this);
+	//Check_Pointer(this);
 	Check_Object(stream);
 	//Verify(gos_GetCurrentHeap() == Heap);
 	switch(version)
@@ -174,9 +174,9 @@ MLRPrimitiveBase::MLRPrimitiveBase(
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-MLRPrimitiveBase::Save(MemoryStream* stream)
+MLRPrimitiveBase::Save(Stuff::MemoryStream* stream)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Object(stream);
 	*stream << GetClassID();
 	MemoryStreamIO_Write(stream, &coords);
@@ -236,7 +236,7 @@ MLRPrimitiveBase::InitializeDrawPrimitive(uint8_t vis, int32_t)
 void
 MLRPrimitiveBase::SetSubprimitiveLengths(puint8_t data, int32_t l)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	lengths.AssignData(data, l);
 }
 
@@ -245,7 +245,7 @@ MLRPrimitiveBase::SetSubprimitiveLengths(puint8_t data, int32_t l)
 void
 MLRPrimitiveBase::GetSubprimitiveLengths(puint8_t* data, pint32_t len)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	*data = lengths.GetData();
 	*len = lengths.GetLength();
 }
@@ -255,7 +255,7 @@ MLRPrimitiveBase::GetSubprimitiveLengths(puint8_t* data, pint32_t len)
 int32_t
 MLRPrimitiveBase::GetSubprimitiveLength(int32_t i) const
 {
-	Check_Object(this);
+	// Check_Object(this);
 	return (lengths.GetLength() > 0 ? abs(lengths[i]) : 1);
 }
 
@@ -267,7 +267,7 @@ MLRPrimitiveBase::SetCoordData(
 	size_t dataSize
 )
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Pointer(data);
 	Verify(texCoords.GetLength() == 0 || dataSize == texCoords.GetLength());
 #if defined (MAX_NUMBER_VERTICES)
@@ -284,7 +284,7 @@ MLRPrimitiveBase::GetCoordData(
 	psize_t dataSize
 )
 {
-	Check_Object(this);
+	// Check_Object(this);
 	*data = coords.GetData();
 	*dataSize = coords.GetLength();
 }
@@ -297,7 +297,7 @@ MLRPrimitiveBase::SetTexCoordData(
 	size_t dataSize
 )
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Pointer(data);
 	Verify(coords.GetLength() == 0 || dataSize == coords.GetLength());
 	texCoords.AssignData((Vector2DScalar*)data, dataSize);
@@ -311,7 +311,7 @@ MLRPrimitiveBase::GetTexCoordData(
 	psize_t dataSize
 )
 {
-	Check_Object(this);
+	// Check_Object(this);
 	*data = texCoords.GetData();
 	*dataSize = texCoords.GetLength();
 }
@@ -321,7 +321,7 @@ MLRPrimitiveBase::GetTexCoordData(
 void
 MLRPrimitiveBase::Transform(Matrix4D* mat)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	int32_t i, len = coords.GetLength();
 	for(i = 0; i < len; i++)
 	{
@@ -337,7 +337,7 @@ MLRPrimitiveBase::Transform(Matrix4D* mat)
 void
 MLRPrimitiveBase::GetExtend(Stuff::ExtentBox* box)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Object(box);
 	if(coords.GetLength() == 0)
 	{
@@ -383,7 +383,7 @@ MLRPrimitiveBase::CastRay(
 	Normal3D* normal
 )
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Object(line);
 	Check_Pointer(normal);
 	STOP(("Not implemented"));

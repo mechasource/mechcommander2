@@ -219,7 +219,7 @@ namespace Stuff
 
 		Iterator* MakeClone(void)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return new PlugIteratorOf<T>(*this);
 		}
 

@@ -52,7 +52,7 @@ MLRLineCloud::MLRLineCloud(uint32_t nr, uint32_t _type) :
 {
 	//Verify(gos_GetCurrentHeap() == Heap);
 	usedNrOfVertices = 0;
-	Check_Pointer(this);
+	//Check_Pointer(this);
 	drawMode = SortData::LineCloud;
 }
 
@@ -60,7 +60,7 @@ MLRLineCloud::MLRLineCloud(uint32_t nr, uint32_t _type) :
 //
 MLRLineCloud::~MLRLineCloud()
 {
-	Check_Object(this);
+	// Check_Object(this);
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -72,7 +72,7 @@ MLRLineCloud::SetData(
 	const Stuff::RGBAColor* color_data
 )
 {
-	Check_Pointer(this);
+	//Check_Pointer(this);
 	usedNrOfVertices = count;
 	Verify(*usedNrOfVertices <= maxNrOf);
 	points = point_data;
@@ -84,7 +84,7 @@ MLRLineCloud::SetData(
 void
 MLRLineCloud::Draw(DrawEffectInformation* dInfo, GOSVertexPool* allVerticesToDraw, MLRSorter* sorter)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	worldToEffect.Invert(*dInfo->effectToWorld);
 	Transform(*usedNrOfVertices, 1);
 #if 0
@@ -101,7 +101,7 @@ MLRLineCloud::Draw(DrawEffectInformation* dInfo, GOSVertexPool* allVerticesToDra
 void
 MLRLineCloud::Transform(size_t, size_t)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Start_Timer(Transform_Time);
 	size_t i;
 	for(i = 0; i < *usedNrOfVertices; i++)

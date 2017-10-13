@@ -88,7 +88,7 @@ namespace Stuff
 		Origin3D&
 		BuildTranslation(const Point3D& p)
 		{
-			Check_Pointer(this);
+			//Check_Pointer(this);
 			Check_Object(&p);
 			linearPosition = p;
 			return *this;
@@ -96,7 +96,7 @@ namespace Stuff
 		Origin3D&
 		BuildRotation(const EulerAngles& q)
 		{
-			Check_Pointer(this);
+			//Check_Pointer(this);
 			Check_Object(&q);
 			angularPosition = q;
 			return *this;
@@ -104,7 +104,7 @@ namespace Stuff
 		Origin3D&
 		BuildRotation(const YawPitchRoll& q)
 		{
-			Check_Pointer(this);
+			//Check_Pointer(this);
 			Check_Object(&q);
 			angularPosition = q;
 			return *this;
@@ -112,7 +112,7 @@ namespace Stuff
 		Origin3D&
 		BuildRotation(const UnitQuaternion& q)
 		{
-			Check_Pointer(this);
+			//Check_Pointer(this);
 			Check_Object(&q);
 			angularPosition = q;
 			return *this;

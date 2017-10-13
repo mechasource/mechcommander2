@@ -7,8 +7,10 @@
 
 #pragma once
 
-#include <gosfx/gosfx.hpp>
-#include <mlr/mlr.hpp>
+#include <stuff/plug.hpp>
+
+//#include <gosfx/gosfx.hpp>
+//#include <mlr/mlr.hpp>
 
 namespace MidLevelRenderer
 {
@@ -37,7 +39,7 @@ namespace gosFX
 		static Event*
 		Make(
 			Stuff::MemoryStream* stream,
-			int32_t gfx_version
+			uint32_t gfx_version
 		);
 
 		void
@@ -54,7 +56,7 @@ namespace gosFX
 	protected:
 		Event(
 			Stuff::MemoryStream* stream,
-			int32_t gfx_version
+			uint32_t gfx_version
 		);
 	};
 
@@ -74,7 +76,7 @@ namespace gosFX
 		Effect__Specification(
 			Stuff::RegisteredClass::ClassID class_id,
 			Stuff::MemoryStream* stream,
-			int32_t gfx_version
+			uint32_t gfx_version
 		);
 
 	public:
@@ -84,19 +86,19 @@ namespace gosFX
 		static Effect__Specification*
 		Create(
 			Stuff::MemoryStream* stream,
-			int32_t gfx_version
+			uint32_t gfx_version
 		);
 
 		typedef Effect__Specification*
 		(*Factory)(
 			Stuff::MemoryStream* stream,
-			int32_t gfx_version
+			uint32_t gfx_version
 		);
 
 		static Effect__Specification*
 		Make(
 			Stuff::MemoryStream* stream,
-			int32_t gfx_version
+			uint32_t gfx_version
 		);
 
 		virtual void Save(Stuff::MemoryStream* stream);
@@ -110,14 +112,13 @@ namespace gosFX
 		Stuff::RegisteredClass::ClassID
 		GetClassID()
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return m_class;
 		}
 
 		virtual void Copy(Effect__Specification* spec);
 
-		Stuff::MString m_name;
-		//std::wstring  m_name;
+		std::wstring  m_name;	// Stuff::MString m_name;
 		uint32_t m_effectID;
 
 	protected:
@@ -175,16 +176,12 @@ namespace gosFX
 	public:
 		struct ExecuteInfo
 		{
-			Stuff::Time
-			m_time;
-			float
-			m_seed,					// 0 <= m_seed <= 1
-			m_age,
-			m_ageRate;
-			const Stuff::LinearMatrix4D
-			* m_parentToWorld;
-			Stuff::OBB
-			* m_bounds;
+			Stuff::Time m_time;
+			float m_seed;					// 0 <= m_seed <= 1
+			float m_age;
+			float m_ageRate;
+			const Stuff::LinearMatrix4D* m_parentToWorld;
+			Stuff::OBB* m_bounds;
 
 			ExecuteInfo(
 				Stuff::Time time,
@@ -263,7 +260,7 @@ namespace gosFX
 		Specification*
 		GetSpecification()
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return m_specification;
 		}
 
@@ -317,72 +314,72 @@ namespace gosFX
 		void
 		SetExecuteOn()
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			m_flags |= ExecuteFlag;
 		}
 		void
 		SetExecuteOff()
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			m_flags &= ~ExecuteFlag;
 		}
 		bool
 		IsExecuted()
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return (m_flags & ExecuteFlag) != 0;
 		}
 
 		void
 		SetLoopOn()
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			m_flags |= LoopFlag;
 		}
 		void
 		SetLoopOff()
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			m_flags &= ~LoopFlag;
 		}
 		bool
 		IsLooped()
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return (m_flags & LoopFlag) != 0;
 		}
 
 		void
 		UseLocalSpaceSimulation()
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			m_flags &= ~SimulationModeMask;
 		}
 		void
 		UseStaticWorldSpaceSimulation()
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			m_flags &= ~SimulationModeMask;
 			m_flags |= StaticWorldSpaceSimulationMode;
 		}
 		void
 		UseDynamicWorldSpaceSimulation()
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			m_flags &= ~SimulationModeMask;
 			m_flags |= DynamicWorldSpaceSimulationMode;
 		}
 		int32_t
 		GetSimulationMode()
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return m_flags & SimulationModeMask;
 		}
 
 		int32_t
 		GetSimulationFlags()
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return m_flags;
 		}
 

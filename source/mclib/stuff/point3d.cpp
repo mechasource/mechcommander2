@@ -27,7 +27,7 @@ const Point3D Point3D::Identity(0.0f, 0.0f, 0.0f);
 Point3D&
 Point3D::operator=(const Vector4D& v)
 {
-	Check_Pointer(this);
+	//Check_Pointer(this);
 	Check_Object(&v);
 	Verify(!Small_Enough(v.w));
 	float scale = 1.0f / v.w;
@@ -44,7 +44,7 @@ Point3D::operator=(const Vector4D& v)
 Point3D&
 Point3D::Multiply(const Point3D& p, const AffineMatrix4D& m)
 {
-	Check_Pointer(this);
+	//Check_Pointer(this);
 	Check_Object(&p);
 	Check_Object(&m);
 	Verify(this != &p);
@@ -64,7 +64,7 @@ Point3D::MultiplyByInverse(
 	const LinearMatrix4D& m
 )
 {
-	Check_Pointer(this);
+	//Check_Pointer(this);
 	Check_Object(&p);
 	Check_Object(&m);
 	Verify(this != &p);

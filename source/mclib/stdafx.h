@@ -63,7 +63,7 @@
 
 // temporary disable warnings when compiling with -Wall
 #pragma warning(push)
-#pragma warning(disable: 4191 4350 4365)
+#pragma warning(disable: 4091 4191 4350 4365 5029)
 #include <cstddef>
 #include <cstdint>
 #include <string>

@@ -48,7 +48,7 @@ TestHost::names;
 //
 TestHost::TestHost(PCSTR a_name)
 {
-	Check_Pointer(this);
+	//Check_Pointer(this);
 	Check_Pointer(a_name);
 	name = names.AddEntry(a_name, this);
 	next = nullptr;
@@ -58,7 +58,7 @@ TestHost::TestHost(PCSTR a_name)
 //
 TestHost::~TestHost()
 {
-	Check_Object(this);
+	// Check_Object(this);
 	names.DeleteEntry(name);
 }
 

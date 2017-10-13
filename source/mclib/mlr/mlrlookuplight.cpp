@@ -143,7 +143,7 @@ MLRLookUpLight::~MLRLookUpLight()
 void
 MLRLookUpLight::Save(Stuff::MemoryStream* stream)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Object(stream);
 	MLRInfiniteLight::Save(stream);
 	*stream << mapOrigin;
@@ -161,7 +161,7 @@ MLRLookUpLight::Save(Stuff::MemoryStream* stream)
 void
 MLRLookUpLight::Write(Stuff::Page* page)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Object(page);
 	MLRInfiniteLight::Write(page);
 	char data[256];
@@ -182,7 +182,7 @@ MLRLookUpLight::Write(Stuff::Page* page)
 void
 MLRLookUpLight::SetMapSizeAndName(int32_t x, int32_t z, PCSTR name)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	if(maps != nullptr)
 	{
 		for(size_t i = 0; i < mapZoneCountX * mapZoneCountZ; i++)
@@ -206,7 +206,7 @@ MLRLookUpLight::SetMapSizeAndName(int32_t x, int32_t z, PCSTR name)
 bool
 MLRLookUpLight::LoadMap()
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Stuff::FileStream element_stream(mapName);
 	puint8_t map = new uint8_t [mapZoneCountX * mapZoneCountZ * 256 * 256];
 	Check_Pointer(map);
@@ -246,7 +246,7 @@ MLRLookUpLight::LoadMap()
 void
 MLRLookUpLight::SetLightToShapeMatrix(const LinearMatrix4D& worldToShape)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	lightToShape.Multiply(lightToWorld, worldToShape);
 	shapeToWorld.Invert(worldToShape);
 }

@@ -24,7 +24,7 @@ ExtentBox::ExtentBox(
 	const Vector3D& max
 )
 {
-	Check_Pointer(this);
+	//Check_Pointer(this);
 	Check_Object(&min);
 	Check_Object(&max);
 	if(min.x <= max.x)
@@ -63,7 +63,7 @@ ExtentBox::ExtentBox(
 //
 ExtentBox::ExtentBox(const ExtentBox& box)
 {
-	Check_Pointer(this);
+	//Check_Pointer(this);
 	Check_Object(&box);
 	minX = box.minX;
 	maxX = box.maxX;
@@ -77,7 +77,7 @@ ExtentBox::ExtentBox(const ExtentBox& box)
 //
 ExtentBox::ExtentBox(const OBB& obb)
 {
-	Check_Pointer(this);
+	//Check_Pointer(this);
 	Check_Object(&obb);
 	Point3D center(obb.localToParent);
 	minX = center.x - obb.sphereRadius;
@@ -96,7 +96,7 @@ ExtentBox::Intersect(
 	const ExtentBox& box_2
 )
 {
-	Check_Pointer(this);
+	//Check_Pointer(this);
 	Check_Object(&box_1);
 	Check_Object(&box_2);
 	Verify(box_1.minX <= box_2.maxX);
@@ -122,7 +122,7 @@ ExtentBox::Union(
 	const ExtentBox& box_2
 )
 {
-	Check_Pointer(this);
+	//Check_Pointer(this);
 	Check_Object(&box_1);
 	Check_Object(&box_2);
 	minX = Min(box_1.minX, box_2.minX);
@@ -131,7 +131,7 @@ ExtentBox::Union(
 	maxY = Max(box_1.maxY, box_2.maxY);
 	minZ = Min(box_1.minZ, box_2.minZ);
 	maxZ = Max(box_1.maxZ, box_2.maxZ);
-	Check_Object(this);
+	// Check_Object(this);
 	return *this;
 }
 
@@ -143,7 +143,7 @@ ExtentBox::Union(
 	const Vector3D& point
 )
 {
-	Check_Pointer(this);
+	//Check_Pointer(this);
 	Check_Object(&box);
 	Check_Object(&point);
 	minX = Min(box.minX, point.x);
@@ -160,7 +160,7 @@ ExtentBox::Union(
 Vector3D*
 ExtentBox::Constrain(Vector3D* point) const
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Object(point);
 	Clamp(point->x, minX, maxX);
 	Clamp(point->y, minY, maxY);
@@ -173,7 +173,7 @@ ExtentBox::Constrain(Vector3D* point) const
 bool
 ExtentBox::Contains(const Vector3D& point) const
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Object(&point);
 	return
 		minX <= point.x && maxX >= point.x
@@ -186,7 +186,7 @@ ExtentBox::Contains(const Vector3D& point) const
 bool
 ExtentBox::Contains(const ExtentBox& box) const
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Object(&box);
 	return
 		minX <= box.minX && maxX >= box.maxX
@@ -199,7 +199,7 @@ ExtentBox::Contains(const ExtentBox& box) const
 bool
 ExtentBox::Intersects(const ExtentBox& box) const
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Object(&box);
 	return
 		minX <= box.maxX && maxX >= box.minX
@@ -212,7 +212,7 @@ ExtentBox::Intersects(const ExtentBox& box) const
 void
 ExtentBox::GetCenterpoint(Point3D* point) const
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Pointer(point);
 	point->x = 0.5f * (minX + maxX);
 	point->y = 0.5f * (minY + maxY);

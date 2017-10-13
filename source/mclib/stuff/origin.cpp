@@ -25,7 +25,7 @@ const Origin3D Origin3D::Identity(
 Origin3D&
 Origin3D::operator=(const Origin3D& origin)
 {
-	Check_Pointer(this);
+	//Check_Pointer(this);
 	Check_Object(&origin);
 	angularPosition = origin.angularPosition;
 	linearPosition = origin.linearPosition;
@@ -39,7 +39,7 @@ Origin3D::operator=(const Origin3D& origin)
 Origin3D&
 Origin3D::operator=(const LinearMatrix4D& matrix)
 {
-	Check_Pointer(this);
+	//Check_Pointer(this);
 	Check_Object(&matrix);
 	angularPosition = matrix;
 	linearPosition = matrix;
@@ -74,7 +74,7 @@ Origin3D::AddScaled(
 	float t
 )
 {
-	Check_Pointer(this);
+	//Check_Pointer(this);
 	Check_Object(&source);
 	Check_Object(&delta);
 	Verify(t >= 0.0f);
@@ -95,12 +95,12 @@ Origin3D::Lerp(
 	float t
 )
 {
-	Check_Pointer(this);
+	//Check_Pointer(this);
 	Check_Object(&start);
 	Check_Object(&end);
 	linearPosition.Lerp(start.linearPosition, end.linearPosition, t);
 	angularPosition.Lerp(start.angularPosition, end.angularPosition, t);
-	Check_Object(this);
+	// Check_Object(this);
 	return *this;
 }
 

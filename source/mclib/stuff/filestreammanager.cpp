@@ -35,7 +35,7 @@ FileDependencies::~FileDependencies(void)
 //
 FileDependencies& FileDependencies::operator=(const FileDependencies& dependencies)
 {
-	Check_Pointer(this);
+	//Check_Pointer(this);
 	Check_Object(&dependencies);
 	m_fileNameStream.Rewind();
 	size_t len = dependencies.m_fileNameStream.GetBytesUsed();
@@ -55,7 +55,7 @@ FileDependencies& FileDependencies::operator=(const FileDependencies& dependenci
 //
 void FileDependencies::AddDependency(FileStream* stream)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Object(stream);
 	//
 	//---------------------
@@ -92,7 +92,7 @@ void FileDependencies::AddDependency(FileStream* stream)
 //
 void FileDependencies::AddDependencies(MemoryStream* dependencies)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Object(dependencies);
 	size_t old_len = m_fileNameStream.GetBytesUsed();
 	dependencies->Rewind();
@@ -131,7 +131,7 @@ void FileDependencies::AddDependencies(MemoryStream* dependencies)
 //
 void FileDependencies::AddDependencies(const FileDependencies* dependencies)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Object(dependencies);
 	AddDependencies((MemoryStream*)&dependencies->m_fileNameStream);
 }
@@ -160,7 +160,7 @@ FileStreamManager::~FileStreamManager(void)
 bool FileStreamManager::CompareModificationDate(
 	const MString& file_name, int64_t time_stamp)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Object(&file_name);
 	//
 	//------------------------------
@@ -205,7 +205,7 @@ bool FileStreamManager::CompareModificationDate(
 //
 void FileStreamManager::PurgeFileCompareCache(void)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	TreeIteratorOf<FileStatPlug*, MString> cache(&compareCache);
 	cache.DeletePlugs();
 }

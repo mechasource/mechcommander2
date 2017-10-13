@@ -13,9 +13,7 @@
 
 //--------------
 // Include Files
-#ifndef MCLIB_H
-#include <mclib.h>
-#endif
+// #include <mclib.h>
 
 #ifndef DMOVEMGR_H
 #include "dmovemgr.h"

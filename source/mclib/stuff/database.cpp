@@ -105,7 +105,7 @@ Record::Record(
 	size_t name_length
 )
 {
-	Check_Pointer(this);
+	//Check_Pointer(this);
 	Check_Object(handle);
 	DatabaseHandle* db_handle = handle->m_databaseHandle;
 	Check_Object(db_handle);
@@ -150,7 +150,7 @@ Record::Record(
 void
 Record::Unhook(const RecordHandle* handle)
 {
-	Check_Pointer(this);
+	//Check_Pointer(this);
 	Check_Object(handle);
 	DatabaseHandle* db_handle = handle->m_databaseHandle;
 	Check_Object(db_handle);
@@ -231,7 +231,7 @@ Record::Unhook(const RecordHandle* handle)
 void
 RecordHandle::Add()
 {
-	Check_Object(this);
+	// Check_Object(this);
 	gos_PushCurrentHeap(Database_Heap);
 	//
 	//------------------
@@ -312,7 +312,7 @@ RecordHandle::Add()
 void
 RecordHandle::Replace()
 {
-	Check_Object(this);
+	// Check_Object(this);
 	gos_PushCurrentHeap(Database_Heap);
 	//
 	//------------------
@@ -378,7 +378,7 @@ RecordHandle::Replace()
 void
 RecordHandle::Delete()
 {
-	Check_Object(this);
+	// Check_Object(this);
 	//
 	//------------------
 	// Find our database
@@ -404,7 +404,7 @@ RecordHandle::Delete()
 bool
 RecordHandle::FindID()
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Object(m_databaseHandle);
 	Database* db = m_databaseHandle->m_dataBase;
 	Check_Object(db);
@@ -437,7 +437,7 @@ RecordHandle::FindID()
 bool
 RecordHandle::FindName()
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Object(m_databaseHandle);
 	Database* db = m_databaseHandle->m_dataBase;
 	Check_Object(db);
@@ -472,7 +472,7 @@ RecordHandle::FindName()
 bool
 RecordHandle::ReadAndNext()
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Object(m_databaseHandle);
 	Database* db = m_databaseHandle->m_dataBase;
 	Check_Object(db);
@@ -540,10 +540,7 @@ Database::Database()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-DatabaseHandle::DatabaseHandle(
-	PCSTR filename,
-	bool read_only
-)
+DatabaseHandle::DatabaseHandle(PCSTR filename, bool read_only)
 {
 	//
 	//-----------------------------------------------------
@@ -552,7 +549,7 @@ DatabaseHandle::DatabaseHandle(
 	//
 	m_fileName = filename;
 	if(!Database::FilesOpened++)
-		Database_Heap = gos_CreateMemoryHeap("Database", 0);
+		Database_Heap = gos_CreateMemoryHeap("Database", 0, ParentClientHeap);
 	gos_PushCurrentHeap(Database_Heap);
 	m_currentRecord = 0;
 	m_currentPointer = nullptr;
@@ -634,7 +631,7 @@ DatabaseHandle::DatabaseHandle(
 //
 DatabaseHandle::~DatabaseHandle()
 {
-	Check_Object(this);
+	// Check_Object(this);
 	//
 	//---------------------------------------------------------------
 	// If we are closing a read only file, release the memmap handle,
@@ -690,7 +687,7 @@ void DatabaseHandle::Save()
 {
 	// warning C6262: Function uses '24724' bytes of stack:  exceeds /analyze:stacksize '16384'.
 	// Consider moving some data to heap.
-	Check_Object(this);
+	// Check_Object(this);
 	//
 	//--------------------------------------
 	// If there were no changes, we are done
@@ -873,7 +870,7 @@ void DatabaseHandle::Save()
 uint32_t
 DatabaseHandle::GetNumberOfRecords()
 {
-	Check_Object(this);
+	// Check_Object(this);
 	return m_dataBase->m_numberOfRecords;
 }
 
@@ -882,7 +879,7 @@ DatabaseHandle::GetNumberOfRecords()
 void
 DatabaseHandle::First()
 {
-	Check_Object(this);
+	// Check_Object(this);
 	m_currentRecord = 0;
 	m_currentPointer = nullptr;
 	for(uint32_t i = 0; i < Database::e_DataBlockSize; i++)

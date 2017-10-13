@@ -4,9 +4,9 @@
 
 #pragma once
 
-#include <gosfx/gosfx.hpp>
-#include <gosfx/spinningcloud.hpp>
-#include <mlr/mlr.hpp>
+//#include <gosfx/gosfx.hpp>
+//#include <gosfx/spinningcloud.hpp>
+//#include <mlr/mlr.hpp>
 
 namespace MidLevelRenderer
 {
@@ -26,53 +26,33 @@ namespace gosFX
 		// Constructors/Destructors
 		//
 	protected:
-		CardCloud__Specification(
-			Stuff::MemoryStream* stream,
-			int32_t gfx_version
-		);
+		CardCloud__Specification(Stuff::MemoryStream* stream, uint32_t gfx_version);
 
 	public:
 		CardCloud__Specification(void);
 
-		static CardCloud__Specification*
-		Make(
-			Stuff::MemoryStream* stream,
-			int32_t gfx_version
-		);
-		void
-		Copy(CardCloud__Specification* spec);
-
-		void
-		Save(Stuff::MemoryStream* stream);
-
-		void
-		BuildDefaults(void);
-
-		virtual bool
-		IsDataValid(bool fix_data = false);
+		static CardCloud__Specification* Make(Stuff::MemoryStream* stream, uint32_t gfx_version);
+		void Copy(CardCloud__Specification* spec);
+		void Save(Stuff::MemoryStream* stream);
+		void BuildDefaults(void);
+		virtual bool IsDataValid(bool fix_data = false);
 
 		//-------------------------------------------------------------------------
 		// FCurves
 		//
 	public:
-		SeededCurveOf<ComplexCurve, ComplexCurve, Curve::e_ComplexComplexType>
-		m_halfHeight,
-		m_aspectRatio;
-		SeededCurveOf<ComplexCurve, SplineCurve, Curve::e_ComplexSplineType>
-		m_pIndex;
-		ConstantCurve
-		m_UOffset,
-		m_VOffset,
-		m_USize,
-		m_VSize;
+		SeededCurveOf<ComplexCurve, ComplexCurve, Curve::e_ComplexComplexType> m_halfHeight;
+		SeededCurveOf<ComplexCurve, ComplexCurve, Curve::e_ComplexComplexType> m_aspectRatio;
+		SeededCurveOf<ComplexCurve, SplineCurve, Curve::e_ComplexSplineType> m_pIndex;
+		ConstantCurve m_UOffset;
+		ConstantCurve m_VOffset;
+		ConstantCurve m_USize;
+		ConstantCurve m_VSize;
 
-		bool
-		m_animated;
-		uint8_t
-		m_width;
+		bool m_animated;
+		uint8_t m_width;
 
-		void
-		SetWidth(void);
+		void SetWidth(void);
 	};
 
 //############################################################################
@@ -141,14 +121,14 @@ namespace gosFX
 		Specification*
 		GetSpecification()
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return
 				Cast_Object(Specification*, m_specification);
 		}
 		Particle*
 		GetParticle(uint32_t index)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			Check_Object(GetSpecification());
 			return
 				Cast_Pointer(

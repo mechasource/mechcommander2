@@ -47,7 +47,7 @@ void GOSImagePool::UnLoadImages(void)
 GOSImage*
 GOSImagePool::GetImage(PCSTR image_name)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	MString imageName = image_name;
 	Verify(imageName.GetLength() > 0);
 	//
@@ -58,7 +58,9 @@ GOSImagePool::GetImage(PCSTR image_name)
 	GOSImage* image;
 	if((image = imageHash.Find(imageName)) == nullptr)
 	{
-		gos_PushCurrentHeap(Heap);
+		#ifdef _GAMEOS_HPP_
+	gos_PushCurrentHeap(Heap);
+#endif
 		image = new GOSImage(image_name);
 		Register_Object(image);
 		gos_PopCurrentHeap();
@@ -73,7 +75,7 @@ GOSImagePool::GetImage(PCSTR image_name)
 GOSImage*
 GOSImagePool::GetImage(PCSTR image_name, gos_TextureFormat format, int32_t size, gos_TextureHints hints)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	MString imageName = image_name;
 	Verify(imageName.GetLength() > 0);
 	//
@@ -84,7 +86,9 @@ GOSImagePool::GetImage(PCSTR image_name, gos_TextureFormat format, int32_t size,
 	GOSImage* image;
 	if((image = imageHash.Find(imageName)) == nullptr)
 	{
-		gos_PushCurrentHeap(Heap);
+		#ifdef _GAMEOS_HPP_
+	gos_PushCurrentHeap(Heap);
+#endif
 		image = new GOSImage(image_name, hints);
 		Register_Object(image);
 		gos_PopCurrentHeap();
@@ -104,7 +108,7 @@ GOSImagePool::GetImage(PCSTR image_name, gos_TextureFormat format, int32_t size,
 void
 GOSImagePool::RemoveImage(GOSImage* image)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Unregister_Object(image);
 	delete image;
 }

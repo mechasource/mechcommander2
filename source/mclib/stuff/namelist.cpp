@@ -18,7 +18,7 @@ using namespace Stuff;
 
 ObjectNameList::ObjectNameList(void)
 {
-	Check_Pointer(this);
+	//Check_Pointer(this);
 	firstEntry = lastEntry = nullptr;
 }
 
@@ -26,7 +26,7 @@ ObjectNameList::ObjectNameList(void)
 //
 ObjectNameList::~ObjectNameList(void)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Entry* next;
 	while(firstEntry)
 	{
@@ -42,7 +42,7 @@ ObjectNameList::~ObjectNameList(void)
 //
 PCSTR ObjectNameList::AddEntry(PCSTR name, PVOID data)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Pointer(name);
 	Entry* entry;
 	entry = Cast_Pointer(Entry*, new char[sizeof(Entry) + strlen(name) + 1]);
@@ -67,7 +67,7 @@ PCSTR ObjectNameList::AddEntry(PCSTR name, PVOID data)
 //
 PVOID ObjectNameList::FindObject(PCSTR name)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Pointer(name);
 	Entry
 	*entry;
@@ -86,7 +86,7 @@ PVOID ObjectNameList::FindObject(PCSTR name)
 //
 void ObjectNameList::DeleteEntry(PCSTR name)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Pointer(name);
 	Entry
 	*cur,
@@ -124,7 +124,7 @@ void ObjectNameList::DeleteEntry(PCSTR name)
 //
 size_t ObjectNameList::GetEntryCount(void) const
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Entry* entry = firstEntry;
 	size_t count = 0;
 	while(entry)
@@ -141,7 +141,7 @@ size_t ObjectNameList::GetEntryCount(void) const
 int32_t ObjectNameList::BuildSubList(
 	const ObjectNameList& source_list, PCSTR prefix)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Object(&source_list);
 	Check_Pointer(prefix);
 	const size_t length = strlen(prefix);
@@ -175,7 +175,7 @@ int32_t ObjectNameList::BuildSubList(
 
 void ObjectNameList::Entry::SetName(PCSTR name)
 {
-	Check_Pointer(this);
+	//Check_Pointer(this);
 	Check_Pointer(name);
 	// suppress warning about unsafe strcpy as a strcpy_s implementation isn't straightforward
 	ATL_SUPPRESS_WARNING(4996)
@@ -186,7 +186,7 @@ void ObjectNameList::Entry::SetName(PCSTR name)
 //
 bool ObjectNameList::Entry::IsName(PCSTR name) const
 {
-	Check_Object(this);
+	// Check_Object(this);
 	//do not check name here
 	if(name)
 	{
@@ -217,7 +217,7 @@ NameList::~NameList(void)
 //
 PCSTR NameList::FindName(PVOID data)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Entry
 	*entry;
 	for(entry = firstEntry; entry; entry = entry->nextEntry)
@@ -235,7 +235,7 @@ PCSTR NameList::FindName(PVOID data)
 //
 NameList::Entry* NameList::FindEntry(PCSTR name)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Pointer(name);
 	Entry
 	*entry;
@@ -254,7 +254,7 @@ NameList::Entry* NameList::FindEntry(PCSTR name)
 //
 size_t NameList::FindEntryIndex(PCSTR name)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Pointer(name);
 	Entry* entry;
 	size_t result = static_cast<size_t>(-1);
@@ -274,7 +274,7 @@ size_t NameList::FindEntryIndex(PCSTR name)
 //
 NameList::Entry* NameList::FindEntry(PVOID data)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Entry
 	*entry;
 	for(entry = firstEntry; entry; entry = entry->nextEntry)
@@ -293,7 +293,7 @@ NameList::Entry* NameList::FindEntry(PVOID data)
 void
 NameList::DeleteEntry(PCSTR name)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Pointer(name);
 	Entry
 	*prev = nullptr,
@@ -405,7 +405,7 @@ AlphaNameList::~AlphaNameList(void)
 //
 PCSTR AlphaNameList::AddEntry(PCSTR name, PVOID data)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Pointer(name);
 	Entry
 	*entry,

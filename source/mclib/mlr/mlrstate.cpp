@@ -23,12 +23,12 @@ MLRState::fogColor;
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 MLRState::MLRState(
-	MemoryStream* stream,
+	Stuff::MemoryStream* stream,
 	uint32_t version
 )
 {
 	//Verify(gos_GetCurrentHeap() == Heap);
-	Check_Pointer(this);
+	//Check_Pointer(this);
 	Check_Object(stream);
 	Load(stream, version);
 }
@@ -70,12 +70,14 @@ MLRState::MLRState(const MLRState& mState)
 //
 MLRState*
 MLRState::Make(
-	MemoryStream* stream,
+	Stuff::MemoryStream* stream,
 	uint32_t version
 )
 {
 	Check_Object(stream);
+	#ifdef _GAMEOS_HPP_
 	gos_PushCurrentHeap(Heap);
+#endif
 	MLRState* state = new MLRState(stream, version);
 	gos_PopCurrentHeap();
 	return state;
@@ -84,9 +86,9 @@ MLRState::Make(
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-MLRState::Save(MemoryStream* stream)
+MLRState::Save(Stuff::MemoryStream* stream)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Object(stream);
 	//
 	//-----------------------------
@@ -114,11 +116,11 @@ MLRState::Save(MemoryStream* stream)
 //
 void
 MLRState::Load(
-	MemoryStream* stream,
+	Stuff::MemoryStream* stream,
 	uint32_t version
 )
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Object(stream);
 	//
 	//-------------------------------------
@@ -189,7 +191,7 @@ MLRState::Combine(
 	const MLRState& slave
 )
 {
-	Check_Pointer(this);
+	//Check_Pointer(this);
 	Check_Object(&master);
 	Check_Object(&slave);
 	renderPermissionMask = master.renderPermissionMask & slave.renderPermissionMask;
@@ -285,7 +287,7 @@ void
 void
 MLRState::SetRendererState(MLRTexturePool* texturePool)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Object(texturePool);
 	if(renderState & MLRState::TextureMask)
 		gos_SetRenderState(

@@ -13,11 +13,11 @@
 //
 gosFX::PertCloud__Specification::PertCloud__Specification(
 	Stuff::MemoryStream* stream,
-	int32_t gfx_version
+	uint32_t gfx_version
 ):
 	SpinningCloud__Specification(gosFX::PertCloudClassID, stream, gfx_version)
 {
-	Check_Pointer(this);
+	//Check_Pointer(this);
 	Verify(m_class == gosFX::PertCloudClassID);
 	//Verify(gos_GetCurrentHeap() == Heap);
 	m_size.Load(stream, gfx_version);
@@ -40,7 +40,7 @@ gosFX::PertCloud__Specification::PertCloud__Specification(
 gosFX::PertCloud__Specification::PertCloud__Specification(uint32_t sides):
 	SpinningCloud__Specification(gosFX::PertCloudClassID)
 {
-	Check_Pointer(this);
+	//Check_Pointer(this);
 	//Verify(gos_GetCurrentHeap() == Heap);
 	m_particleClassSize = sizeof(gosFX::PertCloud::Particle);
 	m_vertices = sides + 2;
@@ -55,14 +55,16 @@ gosFX::PertCloud__Specification::PertCloud__Specification(uint32_t sides):
 gosFX::PertCloud__Specification*
 gosFX::PertCloud__Specification::Make(
 	Stuff::MemoryStream* stream,
-	int32_t gfx_version
+	uint32_t gfx_version
 )
 {
 	Check_Object(stream);
-	gos_PushCurrentHeap(Heap);
+	#ifdef _GAMEOS_HPP_
+	// gos_PushCurrentHeap(Heap);
+#endif
 	PertCloud__Specification* spec =
 		new gosFX::PertCloud__Specification(stream, gfx_version);
-	gos_PopCurrentHeap();
+	// gos_PopCurrentHeap();
 	return spec;
 }
 
@@ -71,7 +73,7 @@ gosFX::PertCloud__Specification::Make(
 void
 gosFX::PertCloud__Specification::Save(Stuff::MemoryStream* stream)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Object(stream);
 	SpinningCloud__Specification::Save(stream);
 	m_size.Save(stream);
@@ -88,7 +90,7 @@ gosFX::PertCloud__Specification::Save(Stuff::MemoryStream* stream)
 void
 gosFX::PertCloud__Specification::BuildDefaults()
 {
-	Check_Object(this);
+	// Check_Object(this);
 	SpinningCloud__Specification::BuildDefaults();
 	m_pCenterRed.m_ageCurve.SetCurve(1.0f);
 	m_pCenterRed.m_seeded = false;
@@ -116,7 +118,7 @@ gosFX::PertCloud__Specification::BuildDefaults()
 bool
 gosFX::PertCloud__Specification::IsDataValid(bool fix_data)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	return	SpinningCloud__Specification::IsDataValid(fix_data);
 	/*
 		m_pCenterRed.m_ageCurve.SetCurve(1.0f);
@@ -150,10 +152,12 @@ gosFX::PertCloud__Specification::IsDataValid(bool fix_data)
 void
 gosFX::PertCloud__Specification::Copy(PertCloud__Specification* spec)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Object(spec);
 	SpinningCloud__Specification::Copy(spec);
-	gos_PushCurrentHeap(Heap);
+	#ifdef _GAMEOS_HPP_
+	// gos_PushCurrentHeap(Heap);
+#endif
 	m_size = spec->m_size;
 	m_perturbation = spec->m_perturbation;
 	m_pCenterRed = spec->m_pCenterRed;
@@ -161,7 +165,7 @@ gosFX::PertCloud__Specification::Copy(PertCloud__Specification* spec)
 	m_pCenterBlue = spec->m_pCenterBlue;
 	m_pCenterAlpha = spec->m_pCenterAlpha;
 	m_vertices = spec->m_vertices;
-	gos_PopCurrentHeap();
+	// gos_PopCurrentHeap();
 }
 
 //############################################################################
@@ -208,14 +212,14 @@ gosFX::PertCloud::PertCloud(
 {
 	Check_Object(spec);
 	//Verify(gos_GetCurrentHeap() == Heap);
-	gos_PushCurrentHeap(MidLevelRenderer::Heap);
+	// gos_PushCurrentHeap(MidLevelRenderer::Heap);
 	m_cloudImplementation =
 		new MidLevelRenderer::MLRNGonCloud(
 		spec->m_vertices,
 		spec->m_maxParticleCount
 	);
 	Register_Object(m_cloudImplementation);
-	gos_PopCurrentHeap();
+	// gos_PopCurrentHeap();
 	uint32_t index = spec->m_maxParticleCount * sizeof(Particle);
 	m_P_vertices = Cast_Pointer(Stuff::Point3D*, &m_data[index]);
 	index +=
@@ -245,9 +249,11 @@ gosFX::PertCloud::Make(
 )
 {
 	Check_Object(spec);
-	gos_PushCurrentHeap(Heap);
+	#ifdef _GAMEOS_HPP_
+	// gos_PushCurrentHeap(Heap);
+#endif
 	PertCloud* cloud = new gosFX::PertCloud(spec, flags);
-	gos_PopCurrentHeap();
+	// gos_PopCurrentHeap();
 	return cloud;
 }
 
@@ -260,7 +266,7 @@ gosFX::PertCloud::AnimateParticle(
 	Stuff::Time till
 )
 {
-	Check_Object(this);
+	// Check_Object(this);
 	//
 	//-----------------------------------------
 	// Animate the parent then get our pointers
@@ -302,7 +308,7 @@ gosFX::PertCloud::CreateNewParticle(
 	Stuff::Point3D* translation
 )
 {
-	Check_Object(this);
+	// Check_Object(this);
 	//
 	//-------------------------------------------------------------------
 	// Let our parent do creation, then turn on the particle in the cloud
@@ -365,7 +371,7 @@ void gosFX::PertCloud::DestroyParticle(uint32_t index)
 //
 void gosFX::PertCloud::Draw(DrawInfo* info)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Object(info);
 	//
 	//---------------------------------------------------------

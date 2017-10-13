@@ -26,12 +26,12 @@ using namespace Stuff;
 TableEntry::TableEntry(Table* table, Plug* plug)
 	: Link(table, plug)
 {
-	Check_Object(this);
+	// Check_Object(this);
 }
 
 TableEntry::~TableEntry()
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Table* table = Cast_Object(Table*, socket);
 	IteratorPosition index;
 	//
@@ -92,7 +92,7 @@ Table::Table(Node* node, bool has_unique_entries)
 //
 Table::~Table()
 {
-	Check_Object(this);
+	// Check_Object(this);
 	SetReleaseNode(nullptr);
 	CollectionSize i = numItems;
 	while(i > 0)
@@ -128,7 +128,7 @@ void Table::TestInstance()
 //
 void Table::AddImplementation(Plug* plug)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	AddValueImplementation(plug, nullptr);
 }
 
@@ -139,7 +139,7 @@ void Table::AddImplementation(Plug* plug)
 //
 void Table::AddValueImplementation(Plug* plug, PCVOID value)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	TableEntry* link;
 	/*
 	* Verify that value has not been added
@@ -165,7 +165,7 @@ void Table::AddValueImplementation(Plug* plug, PCVOID value)
 //
 Plug* Table::FindImplementation(PCVOID value)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	IteratorPosition index;
 	if((index = SearchForValue(value)) != TableNullIndex)
 	{
@@ -188,7 +188,7 @@ Table::FindCloseImplementation(
 	PCVOID value
 )
 {
-	Check_Object(this);
+	// Check_Object(this);
 	IteratorPosition index;
 	index = SearchForCloseValue(value);
 	Verify(index != TableNullIndex);
@@ -207,7 +207,7 @@ Table::FindCloseImplementation(
 bool
 Table::IsEmpty()
 {
-	Check_Object(this);
+	// Check_Object(this);
 	return (numItems == (CollectionSize)0);
 }
 
@@ -222,7 +222,7 @@ Table::MakeTableEntry(
 	PCVOID
 )
 {
-	Check_Object(this);
+	// Check_Object(this);
 	STOP(("Table::MakeTableEntry - Should never reach here"));
 	return nullptr;
 }
@@ -238,7 +238,7 @@ Table::CompareTableEntries(
 	TableEntry*
 )
 {
-	Check_Object(this);
+	// Check_Object(this);
 	STOP(("Table::CompareTableEntries - Should never reach here"));
 	return 0;
 }
@@ -253,7 +253,7 @@ IteratorPosition Table::CompareValueToTableEntry(
 	TableEntry*
 )
 {
-	Check_Object(this);
+	// Check_Object(this);
 	STOP(("Table::CompareValueToTableEntry - Should never reach here"));
 	return 0;
 }
@@ -305,7 +305,7 @@ Table::AddTableEntry(
 void
 Table::SortTableEntries()
 {
-	Check_Object(this);
+	// Check_Object(this);
 	size_t i, j;
 	TableEntry* temp;
 	for(i = 1; i < numItems; i++)
@@ -339,7 +339,7 @@ Table::SearchForValue(
 	PCVOID value
 )
 {
-	Check_Object(this);
+	// Check_Object(this);
 	CollectionSize n = numItems;
 	size_t i = 0;
 	IteratorPosition j;
@@ -370,7 +370,7 @@ Table::SearchForCloseValue(
 	PCVOID value
 )
 {
-	Check_Object(this);
+	// Check_Object(this);
 	size_t n = numItems;
 	size_t i = 0, j;
 	IteratorPosition k;
@@ -397,7 +397,7 @@ Table::SearchForCloseValue(
 //
 IteratorPosition Table::SearchForTableEntry(TableEntry* link)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	CollectionSize i;
 	for(i = 0; i < numItems; i++)
 	{
@@ -416,7 +416,7 @@ IteratorPosition Table::SearchForTableEntry(TableEntry* link)
 //
 void Table::RemoveNthTableEntry(CollectionSize index)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	PCHAR		itemPtr;
 	PCHAR		lastItem;
 	size_t		width;
@@ -456,7 +456,7 @@ TableIterator::NthEntry(
 	CollectionSize index
 )
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Pointer(array);
 	Verify((0 <= intptr_t(index)) && (intptr_t(index) < intptr_t(numItems)));
 	Check_Object(array[index]);

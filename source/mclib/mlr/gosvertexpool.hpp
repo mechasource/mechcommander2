@@ -32,29 +32,28 @@ namespace MidLevelRenderer
 		//
 		size_t GetLength(void)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return vertices.GetLength() - 1;
 		}
 
 		uint32_t GetLast(void)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return lastUsed;
 		}
 
 		uint32_t Increase(uint32_t add = 1)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			lastUsed += add;
 			Verify(lastUsed < Limits::Max_Number_Vertices_Per_Frame);
 			MLRVertexLimitReached = (lastUsed > (Limits::Max_Number_Vertices_Per_Frame - 2000));
 			return lastUsed;
 		}
 
-		GOSVertex*
-		GetActualVertexPool(bool db = false)
+		GOSVertex* GetActualVertexPool(bool db = false)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			if(db)
 			{
 				return verticesDB.GetData();
@@ -70,19 +69,19 @@ namespace MidLevelRenderer
 		//
 		size_t GetLength2UV(void)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return vertices2uv.GetLength() - 1;
 		}
 
 		uint32_t GetLast2UV(void)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return lastUsed2uv;
 		}
 
 		uint32_t Increase2UV(uint32_t add = 1)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			lastUsed2uv += add;
 			Verify(lastUsed2uv < Limits::Max_Number_Vertices_Per_Frame);
 			return lastUsed2uv;
@@ -91,7 +90,7 @@ namespace MidLevelRenderer
 		GOSVertex2UV*
 		GetActualVertexPool2UV(bool db = false)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			if(db)
 			{
 				return vertices2uvDB.GetData();
@@ -107,13 +106,13 @@ namespace MidLevelRenderer
 		//
 		uint32_t GetLastIndex(void)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return lastUsedIndex;
 		}
 
 		uint32_t IncreaseIndex(uint32_t add = 1)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			lastUsedIndex += add;
 			Verify(lastUsedIndex < Limits::Max_Number_Vertices_Per_Frame);
 			return lastUsedIndex;
@@ -121,7 +120,7 @@ namespace MidLevelRenderer
 
 		puint16_t GetActualIndexPool(bool db = false)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			if(db)
 			{
 				return indicesDB.GetData();

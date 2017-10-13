@@ -45,7 +45,7 @@ namespace Stuff
 		NotationFile*
 		GetNotationFile(void)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return m_notationFile;
 		}
 
@@ -56,13 +56,13 @@ namespace Stuff
 		void
 		SetName(PCSTR pagename)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			m_name = pagename;
 		}
 		PCSTR
 		GetName(void) const
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return m_name;
 		}
 
@@ -76,7 +76,7 @@ namespace Stuff
 		void
 		SetDirty(void)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			Check_Object(m_notationFile);
 			m_notationFile->SetDirty();
 		}
@@ -88,14 +88,14 @@ namespace Stuff
 		bool
 		IsEmpty(void)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return m_notes.IsEmpty();
 		}
 
 		bool
 		DoesNoteExist(PCSTR entryname)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return FindNote(entryname) != nullptr;
 		}
 		Note*
@@ -107,7 +107,7 @@ namespace Stuff
 		NoteIterator*
 		MakeNoteIterator(void)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return new NoteIterator(&m_notes);
 		}
 

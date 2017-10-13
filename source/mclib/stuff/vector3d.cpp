@@ -59,7 +59,7 @@ Stuff::Close_Enough(
 Vector3D&
 Vector3D::operator=(const UnitQuaternion& q)
 {
-	Check_Pointer(this);
+	//Check_Pointer(this);
 	Check_Object(&q);
 	float sine_of_half = Sqrt(q.x * q.x + q.y * q.y + q.z * q.z);
 	if(Small_Enough(sine_of_half))
@@ -83,7 +83,7 @@ Vector3D::operator=(const UnitQuaternion& q)
 Vector3D&
 Vector3D::operator=(const YawPitchRange& polar)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Object(&polar);
 	Verify(
 		Vector3D::Forward.z == 1.0f
@@ -106,7 +106,7 @@ Vector3D::operator=(const YawPitchRange& polar)
 Vector3D&
 Vector3D::Multiply(const Vector3D& v, const AffineMatrix4D& m)
 {
-	Check_Pointer(this);
+	//Check_Pointer(this);
 	Check_Object(&v);
 	Check_Object(&m);
 	Verify(this != &v);
@@ -126,7 +126,7 @@ Vector3D::MultiplyByInverse(
 	const LinearMatrix4D& m
 )
 {
-	Check_Pointer(this);
+	//Check_Pointer(this);
 	Check_Object(&v);
 	Check_Object(&m);
 	Verify(this != &v);

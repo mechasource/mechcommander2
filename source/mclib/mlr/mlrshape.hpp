@@ -81,7 +81,7 @@ namespace MidLevelRenderer
 		// returns the number of primitives in the container
 		size_t GetNum(void)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return numPrimitives;
 		};
 
@@ -120,13 +120,13 @@ namespace MidLevelRenderer
 		void
 		AttachReference()
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			++referenceCount;
 		}
 		void
 		DetachReference()
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			Verify(referenceCount > 0);
 			if((--referenceCount) == 0)
 			{
@@ -152,7 +152,7 @@ namespace MidLevelRenderer
 		void TestInstance(void) const {};
 		virtual size_t GetSize()
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			size_t ret = allPrimitives.GetSize();
 			return ret;
 		}

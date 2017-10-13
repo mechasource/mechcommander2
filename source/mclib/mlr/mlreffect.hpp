@@ -69,19 +69,19 @@ namespace MidLevelRenderer
 		void TurnAllOff(void);
 		void TurnOn(uint32_t nr)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			Verify(nr < maxNrOf);
 			testList[nr] |= 2;
 		}
 		void TurnOff(uint32_t nr)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			Verify(nr < maxNrOf);
 			testList[nr] &= ~2;
 		}
 		bool IsOn(size_t nr)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			Verify(nr < maxNrOf);
 			return (testList[nr] & 2) ? true : false;
 		}
@@ -92,25 +92,25 @@ namespace MidLevelRenderer
 			const Stuff::LinearMatrix4D* effectToWorld,
 			const Stuff::Matrix4D* worldToClipMatrix)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			effectToClipMatrix.Multiply(*effectToWorld, *worldToClipMatrix);
 		}
 
 		GOSVertex* GetGOSVertices(void)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return gos_vertices;
 		}
 
 		size_t GetNumGOSVertices(void)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return numGOSVertices;
 		}
 
 		uint32_t GetSortDataMode(void)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return drawMode;
 		}
 
@@ -133,13 +133,13 @@ namespace MidLevelRenderer
 		void TurnAllInVisible(void);
 		void TurnVisible(uint32_t nr)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			Verify(nr < maxNrOf);
 			testList[nr] |= 1;
 		}
 		void TurnInVisible(uint32_t nr)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			Verify(nr < maxNrOf);
 			testList[nr] &= ~1;
 		}

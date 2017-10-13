@@ -1,5 +1,5 @@
 //===========================================================================//
-// Copyright (C) Microsoft Corporation. All rights reserved. //
+// Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
 #include "stdafx.h"
@@ -67,12 +67,12 @@ MLR_Terrain::TerminateClass()
 //
 MLR_Terrain::MLR_Terrain(
 	ClassData* class_data,
-	MemoryStream* stream,
+	Stuff::MemoryStream* stream,
 	uint32_t version
 ):
 	MLR_I_DeT_TMesh(class_data, stream, version)
 {
-	Check_Pointer(this);
+	//Check_Pointer(this);
 	Check_Pointer(stream);
 	//Verify(gos_GetCurrentHeap() == Heap);
 	texCoords.SetLength(0);
@@ -83,7 +83,7 @@ MLR_Terrain::MLR_Terrain(
 MLR_Terrain::MLR_Terrain(ClassData* class_data):
 	MLR_I_DeT_TMesh(class_data)
 {
-	Check_Pointer(this);
+	//Check_Pointer(this);
 	//Verify(gos_GetCurrentHeap() == Heap);
 	texCoords.SetLength(0);
 }
@@ -92,19 +92,21 @@ MLR_Terrain::MLR_Terrain(ClassData* class_data):
 //
 MLR_Terrain::~MLR_Terrain()
 {
-	Check_Object(this);
+	// Check_Object(this);
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 MLR_Terrain*
 MLR_Terrain::Make(
-	MemoryStream* stream,
+	Stuff::MemoryStream* stream,
 	uint32_t version
 )
 {
 	Check_Object(stream);
+	#ifdef _GAMEOS_HPP_
 	gos_PushCurrentHeap(Heap);
+#endif
 	MLR_Terrain* terrain = new MLR_Terrain(DefaultData, stream, version);
 	gos_PopCurrentHeap();
 	return terrain;
@@ -114,9 +116,9 @@ MLR_Terrain::Make(
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-MLR_Terrain::Save(MemoryStream* stream)
+MLR_Terrain::Save(Stuff::MemoryStream* stream)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Object(stream);
 	MLR_I_DeT_TMesh::Save(stream);
 }
@@ -189,7 +191,9 @@ MidLevelRenderer::CreateIndexedTriIcosahedron_TerrainTest(
 	MLRState* stateDet
 )
 {
+	#ifdef _GAMEOS_HPP_
 	gos_PushCurrentHeap(Heap);
+#endif
 	MLRShape* ret = new MLRShape(20);
 	Register_Object(ret);
 	int32_t i, j, k;

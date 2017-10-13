@@ -38,7 +38,7 @@ UnitVector3D::Lerp(
 	float t
 )
 {
-	Check_Pointer(this);
+	//Check_Pointer(this);
 	Check_Object(&v1);
 	Check_Object(&v2);
 	//
@@ -49,7 +49,7 @@ UnitVector3D::Lerp(
 	Vector3D result;
 	result.Lerp(v1, v2, t);
 	Normalize(result);
-	Check_Object(this);
+	// Check_Object(this);
 	return *this;
 }
 

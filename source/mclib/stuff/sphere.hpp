@@ -69,7 +69,7 @@ namespace Stuff
 		Sphere&
 		operator =(const Sphere& sphere)
 		{
-			Check_Pointer(this);
+			//Check_Pointer(this);
 			Check_Object(&sphere);
 			center = sphere.center;
 			radius = sphere.radius;
@@ -90,7 +90,7 @@ namespace Stuff
 		bool
 		Contains(const Point3D& point) const
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			Check_Object(&point);
 			Vector3D diff;
 			diff.Subtract(center, point);
@@ -99,7 +99,7 @@ namespace Stuff
 		bool
 		Intersects(const Sphere& sphere) const
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			Check_Object(&sphere);
 			float r = radius + sphere.radius;
 			Vector3D temp;

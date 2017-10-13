@@ -149,20 +149,20 @@ namespace Stuff
 		bool
 		IsTraceOn()
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return traceUp > 0;
 		}
 
 		int64_t
 		GetLastUpTime()
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return lastUpTime;
 		}
 		int64_t
 		GetTotalUpTime()
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return totalUpTime;
 		}
 
@@ -233,7 +233,7 @@ namespace Stuff
 	template <class T> void
 	TraceOf<T>::DumpTraceStatus()
 	{
-		Check_Object(this);
+		// Check_Object(this);
 		Spew(GROUP_STUFF_TRACE, currentValue);
 	}
 
@@ -254,7 +254,7 @@ namespace Stuff
 	template <class T> void
 	TraceOf<T>::StartTiming()
 	{
-		Check_Object(this);
+		// Check_Object(this);
 		weightedSum = 0.0;
 	}
 
@@ -278,7 +278,7 @@ namespace Stuff
 	template <class T> void
 	TraceOf<T>::PrintUsage(float usage)
 	{
-		Check_Object(this);
+		// Check_Object(this);
 		Spew(GROUP_STUFF_TRACE, usage);
 	}
 
@@ -289,7 +289,7 @@ namespace Stuff
 	template <class T> void
 	TraceOf<T>::TakeSnapshot(const T& value)
 	{
-		Check_Object(this);
+		// Check_Object(this);
 #if defined(USE_TIME_ANALYSIS) || defined(USE_TRACE_LOG)
 		int64_t now = gos_GetHiResTime(void);
 #endif
@@ -359,7 +359,7 @@ namespace Stuff
 		uint8_t
 		GetTraceCount()
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return traceCount;
 		}
 		void
@@ -370,7 +370,7 @@ namespace Stuff
 		uint32_t
 		GetBitTraceStatus()
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return activeBits;
 		}
 		PCSTR
@@ -412,7 +412,7 @@ namespace Stuff
 	inline MemoryStream*
 	Trace::GetTraceLog()
 	{
-		Check_Object(this);
+		// Check_Object(this);
 		Check_Object(TraceManager::Instance);
 		return TraceManager::Instance->activeTraceLog;
 	}
@@ -420,7 +420,7 @@ namespace Stuff
 	inline void
 	Trace::IncrementSampleCount()
 	{
-		Check_Object(this);
+		// Check_Object(this);
 		Check_Object(TraceManager::Instance);
 		if(!TraceManager::Instance->activeTraceLog)
 		{

@@ -58,7 +58,7 @@ namespace Stuff
 			size_t initial_offset = 0)
 			: RegisteredClass(DefaultData)
 		{
-			Check_Pointer(this);
+			//Check_Pointer(this);
 			streamStart = static_cast<puint8_t>(stream_start);
 			streamSize = stream_size;
 			Verify(initial_offset <= stream_size);
@@ -82,7 +82,7 @@ namespace Stuff
 			size_t initial_offset = 0)
 			: RegisteredClass(class_data)
 		{
-			Check_Pointer(this);
+			//Check_Pointer(this);
 			streamStart = static_cast<puint8_t>(stream_start);
 			streamSize = stream_size;
 			Verify(initial_offset <= stream_size);
@@ -102,31 +102,31 @@ namespace Stuff
 	public:
 		virtual PVOID GetPointer(void) const
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return currentPosition;
 		}
 
 		size_t GetIndex(void) const
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return size_t(currentPosition - streamStart);
 		}
 
 		size_t GetSize(void) const
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return streamSize;
 		}
 
 		size_t GetBytesUsed(void) const
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return size_t(currentPosition - streamStart);
 		}
 
 		virtual size_t GetBytesRemaining(void) const
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return size_t(streamSize - GetBytesUsed());
 		}
 
@@ -136,9 +136,9 @@ namespace Stuff
 	public:
 		virtual void SetPointer(PVOID new_pointer)
 		{
-			Check_Pointer(this);
+			//Check_Pointer(this);
 			currentPosition = Cast_Pointer(puint8_t, new_pointer);
-			Check_Object(this);
+			// Check_Object(this);
 		}
 		void
 		operator=(PVOID new_pointer)
@@ -148,9 +148,9 @@ namespace Stuff
 
 		virtual void SetPointer(size_t index)
 		{
-			Check_Pointer(this);
+			//Check_Pointer(this);
 			currentPosition = streamStart + index;
-			Check_Object(this);
+			// Check_Object(this);
 		}
 		void
 		operator=(size_t index)
@@ -178,11 +178,11 @@ namespace Stuff
 		virtual MemoryStream&
 		AdvancePointer(size_t count)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			currentPosition += count;
 			Verify(currentPosition >= streamStart);
 			Verify(currentPosition <= streamStart + streamSize);
-			Check_Object(this);
+			// Check_Object(this);
 			return *this;
 		}
 
@@ -195,11 +195,11 @@ namespace Stuff
 		virtual MemoryStream&
 		RewindPointer(size_t count)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			currentPosition -= count;
 			Verify(currentPosition >= streamStart);
 			Verify(currentPosition <= streamStart + streamSize);
-			Check_Object(this);
+			// Check_Object(this);
 			return *this;
 		}
 		MemoryStream&
@@ -220,7 +220,7 @@ namespace Stuff
 			size_t number_of_bytes
 		)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			Check_Pointer(static_cast<PCVOID>(ptr));
 			Verify(number_of_bytes > 0);
 			Mem_Copy(GetPointer(), static_cast<PCVOID>(ptr),
@@ -288,7 +288,7 @@ namespace Stuff
 		MemoryStream& ReadBits(T* ptr, uint32_t number_of_bits)
 		{
 			Verify(number_of_bits <= 32);
-			Check_Object(this);
+			// Check_Object(this);
 			Check_Pointer(ptr);
 			if(ptr)*ptr = 0;
 			return ReadUnsafeBits(ptr, number_of_bits);
@@ -299,7 +299,7 @@ namespace Stuff
 		ReadBits(pint32_t ptr, uint32_t number_of_bits)
 		{
 			Verify(number_of_bits <= 32);
-			Check_Object(this);
+			// Check_Object(this);
 			Check_Pointer(ptr);
 			if(ptr)*ptr = 0;
 			return ReadUnsafeBits(ptr, number_of_bits);
@@ -309,7 +309,7 @@ namespace Stuff
 		ReadBits(uint8_t* ptr, uint32_t number_of_bits)
 		{
 			Verify(number_of_bits <= 8);
-			Check_Object(this);
+			// Check_Object(this);
 			Check_Pointer(ptr);
 			if(ptr)*ptr = 0;
 			return ReadUnsafeBits(ptr, number_of_bits);
@@ -320,7 +320,7 @@ namespace Stuff
 		ReadBits(puint16_t ptr, uint32_t number_of_bits)
 		{
 			Verify(number_of_bits <= 16);
-			Check_Object(this);
+			// Check_Object(this);
 			Check_Pointer(ptr);
 			if(ptr)*ptr = 0;
 			return ReadUnsafeBits(ptr, number_of_bits);
@@ -330,7 +330,7 @@ namespace Stuff
 		ReadBits(uint32_t* ptr, uint32_t number_of_bits)
 		{
 			Verify(number_of_bits <= 32);
-			Check_Object(this);
+			// Check_Object(this);
 			Check_Pointer(ptr);
 			if(ptr)*ptr = 0;
 			return ReadUnsafeBits(ptr, number_of_bits);
@@ -340,7 +340,7 @@ namespace Stuff
 		ReadBits(size_t* ptr, uint32_t number_of_bits)
 		{
 			Verify(number_of_bits <= 32);
-			Check_Object(this);
+			// Check_Object(this);
 			Check_Pointer(ptr);
 			*ptr = 0;
 			return ReadUnsafeBits(ptr, number_of_bits);
@@ -350,7 +350,7 @@ namespace Stuff
 		ReadBits(float* ptr, uint32_t number_of_bits)
 		{
 			Verify(number_of_bits == 32);
-			Check_Object(this);
+			// Check_Object(this);
 			Check_Pointer(ptr);
 			*ptr = 0.0;
 			return ReadUnsafeBits(ptr, number_of_bits);
@@ -360,7 +360,7 @@ namespace Stuff
 		ReadBits(double* ptr, uint32_t number_of_bits)
 		{
 			Verify(number_of_bits == 64);
-			Check_Object(this);
+			// Check_Object(this);
 			Check_Pointer(ptr);
 			*ptr = 0.0;
 			return ReadUnsafeBits(ptr, number_of_bits);
@@ -482,14 +482,14 @@ namespace Stuff
 		size_t
 		GetBufferSize(void)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return bufferSize;
 		}
 
 		void
 		SetSize(size_t stream_length)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			Verify(stream_length <= bufferSize);
 			streamSize = stream_length;
 		}

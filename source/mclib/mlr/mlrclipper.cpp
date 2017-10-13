@@ -1,5 +1,5 @@
 //===========================================================================//
-// Copyright (C) Microsoft Corporation. All rights reserved. //
+// Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
 #include "stdafx.h"
@@ -124,7 +124,7 @@ void MLRClipper::StartDraw(
 	const MLRState& default_state,
 	const float* z_value)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	(void)fog_color;
 	//
 	// No detail under software rasterizer
@@ -152,7 +152,9 @@ void MLRClipper::StartDraw(
 	//
 	// Make viewport the whole screen
 	//
+	#ifdef _GAMEOS_HPP_
 	gos_PushCurrentHeap(Heap);
+#endif
 	float z = 1.0f;
 	uint32_t back_color = 0;
 	bool fill = false;
@@ -343,11 +345,13 @@ static Stuff::AffineMatrix4D scaledShapeToWorld;
 //
 void MLRClipper::DrawShape(DrawShapeInformation* dInfo)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	//
 	// Statistic timing function
 	//
+	#ifdef _GAMEOS_HPP_
 	gos_PushCurrentHeap(Heap);
+#endif
 	MLRShape* shape = dInfo->shape;
 	MLRPrimitiveBase* primitive = nullptr;
 	if(dInfo->nrOfActiveLights > Limits::Max_Number_Of_Lights_Per_Primitive)
@@ -357,7 +361,8 @@ void MLRClipper::DrawShape(DrawShapeInformation* dInfo)
 	shape->shapeToClipMatrix.Multiply(*dInfo->shapeToWorld, worldToClipMatrix);
 	shape->worldToShape = dInfo->worldToShape;
 	shape->InitializePrimitives(true, dInfo->state);
-	size_t i, j;
+	size_t i;
+	uint32_t j;
 	Stuff::Point3D sp;
 	int32_t nrOfLightMaps = 0;
 	sp.Multiply(cameraPosition, *shape->worldToShape);
@@ -453,9 +458,9 @@ void MLRClipper::DrawShape(DrawShapeInformation* dInfo)
 					puint16_t indices;
 					size_t nr;
 					(Cast_Pointer(MLRIndexedPrimitiveBase*, primitive))->GetIndexData(&indices, &nr);
-					NumAllIndices += nr;
+					NumAllIndices += (uint32_t)nr;
 					primitive->GetCoordData(&coords, &nr);
-					NumAllVertices += nr;
+					NumAllVertices += (uint32_t)nr;
 					Set_Statistic(Index_Over_Vertex_Ratio, (float)NumAllIndices / (float)NumAllVertices);
 				}
 #endif
@@ -477,7 +482,7 @@ void MLRClipper::DrawShape(DrawShapeInformation* dInfo)
 void
 MLRClipper::DrawScalableShape(DrawScalableShapeInformation* dInfo)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	//
 	// Statistic timing function
 	//
@@ -565,7 +570,7 @@ MLRClipper::DrawEffect(DrawEffectInformation* dInfo)
 	//
 	// Statistic timing function
 	//
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Object(dInfo);
 	Check_Object(dInfo->effect);
 #ifdef LAB_ONLY
@@ -591,7 +596,7 @@ MLRClipper::DrawScreenQuads(DrawScreenQuadsInformation* dInfo)
 	//
 	// Statistic timing function
 	//
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Object(dInfo);
 	gos_GetViewport(&ViewportScalars::MulX, &ViewportScalars::MulY, &ViewportScalars::AddX, &ViewportScalars::AddY);
 	GOSVertex* vertices = allVerticesToDraw.GetActualVertexPool();
@@ -620,7 +625,7 @@ MLRClipper::DrawScreenQuads(DrawScreenQuadsInformation* dInfo)
 	}
 	if(j > 0)
 	{
-		allVerticesToDraw.Increase(j);
+		allVerticesToDraw.Increase((uint32_t)j);
 		sorter->AddScreenQuads(vertices, dInfo);
 	}
 	//
@@ -633,5 +638,5 @@ MLRClipper::DrawScreenQuads(DrawScreenQuadsInformation* dInfo)
 void
 MLRClipper::Clear(uint32_t /*flags*/)
 {
-	Check_Object(this);
+	// Check_Object(this);
 }

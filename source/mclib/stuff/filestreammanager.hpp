@@ -28,7 +28,7 @@ namespace Stuff
 		FileDependencies(const FileDependencies& dependencies):
 			Plug(DefaultData)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			Check_Object(&dependencies);
 			*this = dependencies;
 		}

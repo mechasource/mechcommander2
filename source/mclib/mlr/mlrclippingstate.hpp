@@ -72,100 +72,100 @@ namespace MidLevelRenderer
 
 		bool IsFarClipped(void)
 		{
-			Check_Pointer(this);
+			//Check_Pointer(this);
 			return (clippingState & FarClipFlag) != 0;
 		}
 		void SetFarClip(void)
 		{
-			Check_Pointer(this);
+			//Check_Pointer(this);
 			clippingState |= FarClipFlag;
 		}
 		void ClearFarClip(void)
 		{
-			Check_Pointer(this);
+			//Check_Pointer(this);
 			clippingState &= ~FarClipFlag;
 		}
 		bool IsNearClipped(void)
 		{
-			Check_Pointer(this);
+			//Check_Pointer(this);
 			return (clippingState & NearClipFlag) != 0;
 		}
 		void SetNearClip(void)
 		{
-			Check_Pointer(this);
+			//Check_Pointer(this);
 			clippingState |= NearClipFlag;
 		}
 		void ClearNearClip(void)
 		{
-			Check_Pointer(this);
+			//Check_Pointer(this);
 			clippingState &= ~NearClipFlag;
 		}
 		bool IsTopClipped(void)
 		{
-			Check_Pointer(this);
+			//Check_Pointer(this);
 			return clippingState & TopClipFlag;
 		}
 		void SetTopClip(void)
 		{
-			Check_Pointer(this);
+			//Check_Pointer(this);
 			clippingState |= TopClipFlag;
 		}
 		void ClearTopClip(void)
 		{
-			Check_Pointer(this);
+			//Check_Pointer(this);
 			clippingState &= ~TopClipFlag;
 		}
 
 		bool IsBottomClipped(void)
 		{
-			Check_Pointer(this);
+			//Check_Pointer(this);
 			return (clippingState & BottomClipFlag) != 0;
 		}
 		void SetBottomClip(void)
 		{
-			Check_Pointer(this);
+			//Check_Pointer(this);
 			clippingState |= BottomClipFlag;
 		}
 		void ClearBottomClip(void)
 		{
-			Check_Pointer(this);
+			//Check_Pointer(this);
 			clippingState &= ~BottomClipFlag;
 		}
 		bool IsLeftClipped(void)
 		{
-			Check_Pointer(this);
+			//Check_Pointer(this);
 			return (clippingState & LeftClipFlag) != 0;
 		}
 		void SetLeftClip(void)
 		{
-			Check_Pointer(this);
+			//Check_Pointer(this);
 			clippingState |= LeftClipFlag;
 		}
 		void ClearLeftClip(void)
 		{
-			Check_Pointer(this);
+			//Check_Pointer(this);
 			clippingState &= ~LeftClipFlag;
 		}
 
 		bool IsRightClipped(void)
 		{
-			Check_Pointer(this);
+			//Check_Pointer(this);
 			return (clippingState & RightClipFlag) != 0;
 		}
 		void SetRightClip(void)
 		{
-			Check_Pointer(this);
+			//Check_Pointer(this);
 			clippingState |= RightClipFlag;
 		}
 		void ClearRightClip(void)
 		{
-			Check_Pointer(this);
+			//Check_Pointer(this);
 			clippingState &= ~RightClipFlag;
 		}
 
 		void SetClip(uint32_t mask, uint32_t flag)
 		{
-			Check_Pointer(this);
+			//Check_Pointer(this);
 #if USE_ASSEMBLER_CODE
 			_asm
 			{
@@ -193,22 +193,22 @@ namespace MidLevelRenderer
 
 		bool IsClipped(uint32_t mask)
 		{
-			Check_Pointer(this);
+			//Check_Pointer(this);
 			return (clippingState & mask) != 0;
 		}
 		uint32_t GetClippingState(void)
 		{
-			Check_Pointer(this);
+			//Check_Pointer(this);
 			return (clippingState & ClipMask);
 		}
 		void SetClippingState(uint32_t state)
 		{
-			Check_Pointer(this);
+			//Check_Pointer(this);
 			clippingState = state & ClipMask;
 		}
 		uint32_t GetNumberOfSetBits(void)
 		{
-			Check_Pointer(this);
+			//Check_Pointer(this);
 			Verify(clippingState <= ClipMask);
 			return numberBitsLookUpTable[clippingState];
 		}
@@ -220,7 +220,7 @@ namespace MidLevelRenderer
 		MLRClippingState&
 		operator=(const MLRClippingState& s)
 		{
-			Check_Pointer(this);
+			//Check_Pointer(this);
 			clippingState = s.clippingState;
 			return *this;
 		}
@@ -228,7 +228,7 @@ namespace MidLevelRenderer
 		MLRClippingState&
 		operator&=(const MLRClippingState& s)
 		{
-			Check_Pointer(this);
+			//Check_Pointer(this);
 			clippingState &= s.clippingState;
 			return *this;
 		}
@@ -236,7 +236,7 @@ namespace MidLevelRenderer
 		MLRClippingState&
 		operator|=(const MLRClippingState& s)
 		{
-			Check_Pointer(this);
+			//Check_Pointer(this);
 			clippingState |= s.clippingState;
 			return *this;
 		}
@@ -244,26 +244,26 @@ namespace MidLevelRenderer
 		bool
 		operator==(const MLRClippingState& s)
 		{
-			Check_Pointer(this);
+			//Check_Pointer(this);
 			return (clippingState == s.clippingState);
 		}
 
 		bool operator==(cuint32_t& s)
 		{
-			Check_Pointer(this);
+			//Check_Pointer(this);
 			return (clippingState == s);
 		}
 
 		bool
 		operator!=(const MLRClippingState& s)
 		{
-			Check_Pointer(this);
+			//Check_Pointer(this);
 			return (clippingState != s.clippingState);
 		}
 
 		bool operator!=(cuint32_t& s)
 		{
-			Check_Pointer(this);
+			//Check_Pointer(this);
 			return (clippingState != s);
 		}
 

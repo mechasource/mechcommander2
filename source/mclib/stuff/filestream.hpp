@@ -119,7 +119,7 @@ namespace Stuff
 		virtual bool IsFileOpened(void);
 		PCSTR GetFileName(void)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return fileName;
 		}
 

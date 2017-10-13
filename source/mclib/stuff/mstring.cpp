@@ -135,7 +135,7 @@ MStringRepresentation::TestInstance(void) const
 void
 MStringRepresentation::AllocateLength(size_t length)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	if(stringText != nullptr)
 	{
 #if defined(_ARMOR)
@@ -166,7 +166,7 @@ MStringRepresentation::AllocateLength(size_t length)
 MStringRepresentation
 MStringRepresentation::operator = (const MStringRepresentation& str)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	if(this == &str)
 		return *this;
 	if(stringText != nullptr)
@@ -200,7 +200,7 @@ MStringRepresentation::operator = (const MStringRepresentation& str)
 MStringRepresentation
 MStringRepresentation::operator = (PCSTR cstr)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	if(stringText != nullptr)
 	{
 #if defined(_ARMOR)
@@ -315,7 +315,7 @@ Stuff::operator + (const MStringRepresentation& str, char ch)
 int32_t
 MStringRepresentation::Compare(const MStringRepresentation& str) const
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Object(&str);
 	// handle special cases where one string is empty
 	if(stringText == nullptr)
@@ -341,7 +341,7 @@ MStringRepresentation::GetNthToken(
 	size_t nth_token,
 	PSTR delimiters) const
 {
-	Check_Object(this);
+	// Check_Object(this);
 	//
 	// Which delimters to use
 	//
@@ -388,7 +388,7 @@ MStringRepresentation::GetNthToken(
 void
 MStringRepresentation::ToUpper()
 {
-	Check_Object(this);
+	// Check_Object(this);
 	if(stringText != nullptr)
 	{
 		for(size_t i = 0; i < stringLength; i++)
@@ -404,7 +404,7 @@ MStringRepresentation::ToUpper()
 //
 void MStringRepresentation::ToLower()
 {
-	Check_Object(this);
+	// Check_Object(this);
 	if(stringText != nullptr)
 	{
 		// CharLowerA(stringText);
@@ -494,7 +494,7 @@ Stuff::Convert_From_Ascii(
 MString&
 MString::operator = (const MString& str)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Object(&str);
 	if(this == &str)
 		return *this;

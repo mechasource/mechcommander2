@@ -16,7 +16,7 @@
 bool
 gosFX::Curve::IsComplex()
 {
-	Check_Object(this);
+	// Check_Object(this);
 	return
 		m_type == e_ComplexLinearType     ||
 		m_type == e_ComplexComplexType	||
@@ -31,7 +31,7 @@ gosFX::Curve::IsComplex()
 void
 gosFX::Curve::Save(Stuff::MemoryStream* stream)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	switch(m_type)
 	{
 		case e_ComplexLinearType:
@@ -90,10 +90,10 @@ gosFX::Curve::Save(Stuff::MemoryStream* stream)
 void
 gosFX::Curve::Load(
 	Stuff::MemoryStream* stream,
-	int32_t gfx_version
+	uint32_t gfx_version
 )
 {
-	Check_Object(this);
+	// Check_Object(this);
 	switch(m_type)
 	{
 		case e_ComplexLinearType:
@@ -152,7 +152,7 @@ gosFX::Curve::Load(
 void
 gosFX::Curve::SetSeedFlagIfComplex(bool vflag)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	switch(m_type)
 	{
 		case e_ComplexLinearType:
@@ -211,7 +211,7 @@ gosFX::Curve::SetSeedFlagIfComplex(bool vflag)
 int32_t
 gosFX::Curve::GetSeedFlagIfComplex()
 {
-	Check_Object(this);
+	// Check_Object(this);
 	switch(m_type)
 	{
 		case e_ComplexLinearType:
@@ -274,7 +274,7 @@ gosFX::Curve::GetSeedFlagIfComplex()
 float
 gosFX::Curve::ExpensiveCompute(float tme, int32_t curvenum)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	switch(m_type)
 	{
 		case e_ConstantType:
@@ -386,7 +386,7 @@ gosFX::Curve::ExpensiveComputeRange(
 	int32_t curvenum
 )
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Pointer(low);
 	Check_Pointer(hi);
 	switch(m_type)
@@ -498,7 +498,7 @@ gosFX::Curve::ExpensiveComputeRange(
 	float* hi
 )
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Pointer(low);
 	Check_Pointer(hi);
 	switch(m_type)
@@ -592,7 +592,7 @@ gosFX::Curve::Mid(int32_t curvenum)
 void
 gosFX::Curve::TranslateTo(float pos, int32_t curvenum)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	switch(m_type)
 	{
 		case e_ConstantType:
@@ -725,7 +725,7 @@ gosFX::Curve::TranslateTo(float pos, int32_t curvenum)
 void
 gosFX::Curve::TranslateBy(float delta, int32_t curvenum)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	switch(m_type)
 	{
 		case e_ConstantType:
@@ -857,14 +857,14 @@ gosFX::Curve::TranslateBy(float delta, int32_t curvenum)
 void
 gosFX::Curve::LocalScale(float sfactor, int32_t curvenum)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	AxisScale(sfactor, Mid(curvenum), curvenum);
 }
 
 void
 gosFX::Curve::AxisScale(float sfactor, float axis, int32_t curvenum)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	switch(m_type)
 	{
 		case e_ConstantType:
@@ -1001,7 +1001,7 @@ gosFX::Curve::AxisScale(float sfactor, float axis, int32_t curvenum)
 gosFX::Curve*
 gosFX::Curve::GetSubCurve(int32_t curvenum)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	switch(m_type)
 	{
 		case e_ConstantType:
@@ -1104,7 +1104,7 @@ gosFX::Curve::GetSubCurve(int32_t curvenum)
 void
 gosFX::ConstantCurve::Save(Stuff::MemoryStream* stream)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Object(stream);
 	*stream << m_value;
 }
@@ -1114,10 +1114,10 @@ gosFX::ConstantCurve::Save(Stuff::MemoryStream* stream)
 void
 gosFX::ConstantCurve::Load(
 	Stuff::MemoryStream* stream,
-	int32_t gfx_version
+	uint32_t gfx_version
 )
 {
-	Check_Pointer(this);
+	//Check_Pointer(this);
 	Check_Object(stream);
 	*stream >> m_value;
 }
@@ -1131,7 +1131,7 @@ gosFX::ConstantCurve::Load(
 void
 gosFX::LinearCurve::Save(Stuff::MemoryStream* stream)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Object(stream);
 	ConstantCurve::Save(stream);
 	*stream << m_slope;
@@ -1142,10 +1142,10 @@ gosFX::LinearCurve::Save(Stuff::MemoryStream* stream)
 void
 gosFX::LinearCurve::Load(
 	Stuff::MemoryStream* stream,
-	int32_t gfx_version
+	uint32_t gfx_version
 )
 {
-	Check_Pointer(this);
+	//Check_Pointer(this);
 	Check_Object(stream);
 	ConstantCurve::Load(stream, gfx_version);
 	*stream >> m_slope;
@@ -1156,7 +1156,7 @@ gosFX::LinearCurve::Load(
 bool
 gosFX::LinearCurve::SetCurve(float v)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	m_slope = 0.0f;
 	m_value = v;
 	return true;
@@ -1170,7 +1170,7 @@ gosFX::LinearCurve::SetCurve(
 	float v1
 )
 {
-	Check_Object(this);
+	// Check_Object(this);
 	m_slope = v1 - v0;
 	m_value = v0;
 	return Stuff::Close_Enough(m_slope + v0, v1);
@@ -1184,7 +1184,7 @@ gosFX::LinearCurve::ComputeRange(
 	float* hi
 )
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Pointer(low);
 	Check_Pointer(hi);
 	//
@@ -1222,7 +1222,7 @@ gosFX::SplineCurve::operator=(const SplineCurve& curve)
 void
 gosFX::SplineCurve::Save(Stuff::MemoryStream* stream)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Object(stream);
 	LinearCurve::Save(stream);
 	*stream << m_b << m_a;
@@ -1233,10 +1233,10 @@ gosFX::SplineCurve::Save(Stuff::MemoryStream* stream)
 void
 gosFX::SplineCurve::Load(
 	Stuff::MemoryStream* stream,
-	int32_t gfx_version
+	uint32_t gfx_version
 )
 {
-	Check_Pointer(this);
+	//Check_Pointer(this);
 	Check_Object(stream);
 	LinearCurve::Load(stream, gfx_version);
 	*stream >> m_b >> m_a;
@@ -1247,7 +1247,7 @@ gosFX::SplineCurve::Load(
 bool
 gosFX::SplineCurve::SetCurve(float v)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	m_a = m_b = m_slope = 0.0f;
 	m_value = v;
 	return true;
@@ -1261,7 +1261,7 @@ gosFX::SplineCurve::SetCurve(
 	float v1
 )
 {
-	Check_Object(this);
+	// Check_Object(this);
 	m_a = 0.0f;
 	m_b = 0.0f;
 	m_slope = v1 - v0;
@@ -1279,7 +1279,7 @@ gosFX::SplineCurve::SetCurve(
 	float s1
 )
 {
-	Check_Object(this);
+	// Check_Object(this);
 	m_a = (s1 + s0) + 2.0f * (v0 - v1);
 	m_b = (s1 - s0 - 3.0f * m_a) * 0.5f;
 	m_slope = s0;
@@ -1298,7 +1298,7 @@ gosFX::SplineCurve::ComputeRange(
 	float* hi
 )
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Pointer(low);
 	Check_Pointer(hi);
 	//
@@ -1388,7 +1388,7 @@ gosFX::CurveKey::SetConstantKey(
 	float v
 )
 {
-	Check_Object(this);
+	// Check_Object(this);
 	m_time = key_time;
 	m_slope = 0.0f;
 	m_value = v;
@@ -1405,7 +1405,7 @@ gosFX::CurveKey::SetLinearKey(
 	float dt
 )
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Verify(dt > Stuff::SMALL);
 	m_time = key_time;
 	m_slope = (v1 - v0) / dt;
@@ -1422,7 +1422,7 @@ gosFX::CurveKey::ComputeRange(
 	float dt
 )
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Pointer(low);
 	Check_Pointer(hi);
 	//
@@ -1446,7 +1446,7 @@ gosFX::CurveKey::ComputeRange(
 gosFX::ComplexCurve::ComplexCurve():
 	Curve(e_ComplexType)
 {
-	Check_Pointer(this);
+	//Check_Pointer(this);
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -1454,7 +1454,7 @@ gosFX::ComplexCurve::ComplexCurve():
 gosFX::ComplexCurve::ComplexCurve(const ComplexCurve& fcurve):
 	Curve(e_ComplexType)
 {
-	Check_Pointer(this);
+	//Check_Pointer(this);
 	m_keys = fcurve.m_keys;
 }
 
@@ -1462,11 +1462,11 @@ gosFX::ComplexCurve::ComplexCurve(const ComplexCurve& fcurve):
 //
 gosFX::ComplexCurve::ComplexCurve(
 	Stuff::MemoryStream* stream,
-	int32_t gfx_version
+	uint32_t gfx_version
 ):
 	Curve(e_ComplexType)
 {
-	Check_Pointer(this);
+	//Check_Pointer(this);
 	Check_Object(stream);
 	Load(stream, gfx_version);
 }
@@ -1476,7 +1476,7 @@ gosFX::ComplexCurve::ComplexCurve(
 gosFX::ComplexCurve&
 gosFX::ComplexCurve::operator=(const ComplexCurve& fcurve)
 {
-	Check_Pointer(this);
+	//Check_Pointer(this);
 	m_keys = fcurve.m_keys;
 	return *this;
 }
@@ -1486,7 +1486,7 @@ gosFX::ComplexCurve::operator=(const ComplexCurve& fcurve)
 void
 gosFX::ComplexCurve::Save(Stuff::MemoryStream* stream)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Object(stream);
 	Stuff::MemoryStreamIO_Write(stream, &m_keys);
 }
@@ -1496,10 +1496,10 @@ gosFX::ComplexCurve::Save(Stuff::MemoryStream* stream)
 void
 gosFX::ComplexCurve::Load(
 	Stuff::MemoryStream* stream,
-	int32_t gfx_version
+	uint32_t gfx_version
 )
 {
-	Check_Pointer(this);
+	//Check_Pointer(this);
 	Check_Object(stream);
 	if(gfx_version < 15)
 	{
@@ -1534,8 +1534,10 @@ gosFX::ComplexCurve::Load(
 int32_t
 gosFX::ComplexCurve::InsertKey(float m_time)
 {
-	Check_Object(this);
-	gos_PushCurrentHeap(Heap);
+	// Check_Object(this);
+	#ifdef _GAMEOS_HPP_
+	// gos_PushCurrentHeap(Heap);
+#endif
 	//
 	//-----------------------------------------------------------------------
 	// Figure out where to insert the next key, then increase the size of the
@@ -1595,7 +1597,7 @@ gosFX::ComplexCurve::InsertKey(float m_time)
 	// Return the new key index
 	//-------------------------
 	//
-	gos_PopCurrentHeap();
+	// gos_PopCurrentHeap();
 	return before;
 }
 
@@ -1604,9 +1606,11 @@ gosFX::ComplexCurve::InsertKey(float m_time)
 void
 gosFX::ComplexCurve::DeleteKey(int32_t index)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Verify(index > 0 && index < m_keys.GetLength());
-	gos_PushCurrentHeap(Heap);
+	#ifdef _GAMEOS_HPP_
+	// gos_PushCurrentHeap(Heap);
+#endif
 	//
 	//---------------------------------------------------
 	// If this is the last key, we just resize and return
@@ -1616,7 +1620,7 @@ gosFX::ComplexCurve::DeleteKey(int32_t index)
 	if(index == key_count - 1)
 	{
 		m_keys.SetLength(index);
-		gos_PopCurrentHeap();
+		// gos_PopCurrentHeap();
 		return;
 	}
 	//
@@ -1643,7 +1647,7 @@ gosFX::ComplexCurve::DeleteKey(int32_t index)
 		key[1].m_time - key->m_time
 	);
 	m_keys.SetLength(key_count - 1);
-	gos_PopCurrentHeap();
+	// gos_PopCurrentHeap();
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -1651,11 +1655,13 @@ gosFX::ComplexCurve::DeleteKey(int32_t index)
 void
 gosFX::ComplexCurve::SetCurve(float m_value)
 {
-	Check_Object(this);
-	gos_PushCurrentHeap(Heap);
+	// Check_Object(this);
+	#ifdef _GAMEOS_HPP_
+	// gos_PushCurrentHeap(Heap);
+#endif
 	m_keys.SetLength(1);
 	m_keys[0].SetConstantKey(0.0f, m_value);
-	gos_PopCurrentHeap();
+	// gos_PopCurrentHeap();
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -1666,16 +1672,18 @@ gosFX::ComplexCurve::SetCurve(
 	float ending_value
 )
 {
-	Check_Object(this);
+	// Check_Object(this);
 	//
 	//-----------------------------------------------------------------------
 	// Build the linear step, then the constant m_value at the end of the curve
 	//-----------------------------------------------------------------------
 	//
-	gos_PushCurrentHeap(Heap);
+	#ifdef _GAMEOS_HPP_
+	// gos_PushCurrentHeap(Heap);
+#endif
 	m_keys.SetLength(1);
 	m_keys[0].SetLinearKey(0.0f, starting_value, ending_value, 1.0f);
-	gos_PopCurrentHeap();
+	// gos_PopCurrentHeap();
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -1686,7 +1694,7 @@ gosFX::ComplexCurve::ComputeRange(
 	float* hi
 )
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Pointer(low);
 	Check_Pointer(hi);
 	//

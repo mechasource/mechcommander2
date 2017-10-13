@@ -26,7 +26,7 @@ YawPitchRange::Identity(0.0f, 0.0f, 0.0f);
 YawPitchRange&
 YawPitchRange::operator=(const Vector3D& vector)
 {
-	Check_Pointer(this);
+	//Check_Pointer(this);
 	Check_Object(&vector);
 	//
 	//------------------------------------------------------------------------

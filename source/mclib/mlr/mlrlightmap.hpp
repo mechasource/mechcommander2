@@ -60,67 +60,67 @@ namespace MidLevelRenderer
 
 		void SetState(MLRState new_state)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			state = new_state;
 		}
 		MLRState GetState(void)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return state;
 		}
 
 		inline void SetPolygonMarker(int32_t type)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			Check_Object(stream);
 			*stream << (type ? ((int32_t)((MemoryStreamData)PolygonWithColor))
 						: ((int32_t)((MemoryStreamData)Polygon)));
 		}
 		inline void AddColor(Stuff::RGBAColor color)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			Check_Object(stream);
 			*stream << color;
 		}
 
 		inline void AddColor(float red, float green, float blue, float alpha)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			Check_Object(stream);
 			*stream << red << green << blue << alpha;
 		}
 
 		inline void AddCoord(Stuff::Point3D coord)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			Check_Object(stream);
 			*stream << coord;
 		}
 
 		inline void AddUVs(float u, float v)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			Check_Object(stream);
 			*stream << u << v;
 		}
 
 		inline void AddInt(int32_t i)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			Check_Object(stream);
 			*stream << i;
 		}
 
 		inline void AddUShort(uint16_t i)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			Check_Object(stream);
 			*stream << i;
 		}
 
 		inline void AddState(uint32_t priority)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			Check_Object(stream);
 			*stream << (int32_t)LightMapRenderState;
 			state.SetPriority(priority);
@@ -129,7 +129,7 @@ namespace MidLevelRenderer
 
 		const Stuff::Vector2DScalar* GetCurrentUVPointer(void)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			Check_Object(stream);
 			return Cast_Pointer(Stuff::Vector2DScalar*, stream->GetPointer());
 		}

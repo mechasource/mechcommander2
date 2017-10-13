@@ -76,7 +76,7 @@ MLRNGonCloud::MLRNGonCloud(uint32_t vertices, uint32_t nr) :
 	//Verify(gos_GetCurrentHeap() == Heap);
 	usedNrOfNGons = nullptr;
 	numOfVertices = vertices;
-	Check_Pointer(this);
+	//Check_Pointer(this);
 	Verify(vertices * nr <= Limits::Max_Number_Vertices_Per_Mesh);
 	specialClipColors.SetLength(vertices);
 	drawMode = SortData::TriList;
@@ -86,7 +86,7 @@ MLRNGonCloud::MLRNGonCloud(uint32_t vertices, uint32_t nr) :
 //
 MLRNGonCloud::~MLRNGonCloud()
 {
-	Check_Object(this);
+	// Check_Object(this);
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -99,7 +99,7 @@ MLRNGonCloud::SetData
 	const Stuff::RGBAColor* color_data
 )
 {
-	Check_Pointer(this);
+	//Check_Pointer(this);
 	usedNrOfNGons = count;
 	Verify(*usedNrOfNGons <= maxNrOf);
 	points = point_data;
@@ -111,7 +111,7 @@ MLRNGonCloud::SetData
 void
 MLRNGonCloud::Draw(DrawEffectInformation* dInfo, GOSVertexPool* allVerticesToDraw, MLRSorter* sorter)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	worldToEffect.Invert(*dInfo->effectToWorld);
 	Transform(*usedNrOfNGons, numOfVertices);
 	if(Clip(dInfo->clippingFlags, allVerticesToDraw))
@@ -126,7 +126,7 @@ static MLRClippingState theAnd, theOr, theTest;
 //
 uint32_t MLRNGonCloud::Clip(MLRClippingState clippingFlags, GOSVertexPool* vt)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	size_t i, j, k;
 	size_t end, len = *usedNrOfNGons, ret = 0;
 #if	EFECT_CLIPPED				// this effect gets not clipped

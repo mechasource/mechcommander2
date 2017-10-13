@@ -1,5 +1,5 @@
 //===========================================================================//
-// Copyright (C) Microsoft Corporation. All rights reserved. //
+// Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
 #include "stdafx.h"
@@ -79,7 +79,7 @@ MLR_I_DT_PMesh::MLR_I_DT_PMesh(
 	ClassData* class_data, Stuff::MemoryStream* stream, uint32_t version)
 	: MLR_I_PMesh(class_data, stream, version)
 {
-	Check_Pointer(this);
+	//Check_Pointer(this);
 	Check_Pointer(stream);
 	//Verify(gos_GetCurrentHeap() == Heap);
 	referenceState2.Load(stream, version);
@@ -99,7 +99,7 @@ MLR_I_DT_PMesh::MLR_I_DT_PMesh(
 MLR_I_DT_PMesh::MLR_I_DT_PMesh(ClassData* class_data)
 	: MLR_I_PMesh(class_data)
 {
-	Check_Pointer(this);
+	//Check_Pointer(this);
 	//Verify(gos_GetCurrentHeap() == Heap);
 	passes = 2;
 }
@@ -108,7 +108,7 @@ MLR_I_DT_PMesh::MLR_I_DT_PMesh(ClassData* class_data)
 //
 MLR_I_DT_PMesh::~MLR_I_DT_PMesh()
 {
-	Check_Object(this);
+	// Check_Object(this);
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -116,7 +116,9 @@ MLR_I_DT_PMesh::~MLR_I_DT_PMesh()
 MLR_I_DT_PMesh* MLR_I_DT_PMesh::Make(Stuff::MemoryStream* stream, uint32_t version)
 {
 	Check_Object(stream);
+	#ifdef _GAMEOS_HPP_
 	gos_PushCurrentHeap(Heap);
+#endif
 	MLR_I_DT_PMesh* mesh = new MLR_I_DT_PMesh(DefaultData, stream, version);
 	gos_PopCurrentHeap();
 	return mesh;
@@ -128,7 +130,7 @@ MLR_I_DT_PMesh* MLR_I_DT_PMesh::Make(Stuff::MemoryStream* stream, uint32_t versi
 void
 MLR_I_DT_PMesh::Save(Stuff::MemoryStream* stream)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Object(stream);
 	MLR_I_PMesh::Save(stream);
 	referenceState2.Save(stream);
@@ -147,7 +149,7 @@ MLR_I_DT_PMesh::TestInstance(void) const
 void MLR_I_DT_PMesh::SetTexCoordData(
 	const Stuff::Vector2DScalar* data, size_t dataSize, size_t pass)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	(void)pass;
 	Check_Pointer(data);
 	Verify(coords.GetLength() == 0 || dataSize == 2 * coords.GetLength());
@@ -186,7 +188,9 @@ MLR_I_DT_PMesh* MidLevelRenderer::CreateIndexedCube_NoColor_NoLit_2Tex(
 	MLRState* state,
 	MLRState* state2)
 {
+	#ifdef _GAMEOS_HPP_
 	gos_PushCurrentHeap(Heap);
+#endif
 	MLR_I_DT_PMesh* ret = new MLR_I_DT_PMesh();
 	Register_Object(ret);
 	Stuff::Point3D* coords = new Stuff::Point3D [8];
@@ -305,7 +309,9 @@ MLRShape* MidLevelRenderer::CreateIndexedIcosahedron_NoColor_NoLit_2Tex(
 	MLRState* state,
 	MLRState* state2)
 {
+	#ifdef _GAMEOS_HPP_
 	gos_PushCurrentHeap(Heap);
+#endif
 	MLRShape* ret = new MLRShape(20);
 	Register_Object(ret);
 	size_t i, j, k;

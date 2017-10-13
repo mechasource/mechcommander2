@@ -54,7 +54,7 @@ Vector4D::Multiply(
 	const AffineMatrix4D& m
 )
 {
-	Check_Pointer(this);
+	//Check_Pointer(this);
 	Check_Object(&v);
 	Check_Object(&m);
 	Verify(this != &v);
@@ -75,7 +75,7 @@ Vector4D::Multiply(
 	const Matrix4D& m
 )
 {
-	Check_Pointer(this);
+	//Check_Pointer(this);
 	Check_Object(&v);
 	Check_Object(&m);
 	Verify(this != &v);
@@ -96,7 +96,7 @@ Vector4D::Multiply(
 	const Matrix4D& m
 )
 {
-	Check_Pointer(this);
+	//Check_Pointer(this);
 	Check_Object(&v);
 	Check_Object(&m);
 	x = v.x * m(0, 0) + v.y * m(1, 0) + v.z * m(2, 0);
@@ -117,7 +117,7 @@ Vector4D::Multiply(
 	const Matrix4D& m
 )
 {
-	Check_Pointer(this);
+	//Check_Pointer(this);
 	Check_Object(&v);
 	Check_Object(&m);
 	x = v.x * m(0, 0) + v.y * m(1, 0) + v.z * m(2, 0) + m(3, 0);
@@ -148,10 +148,10 @@ Vector4D&
 Vector4D::MultiplySetClip(
 	const Point3D& v,
 	const Matrix4D& m,
-	pint32_t clipper
+	puint32_t clipper
 )
 {
-	Check_Pointer(this);
+	//Check_Pointer(this);
 	Check_Object(&v);
 	Check_Object(&m);
 #if USE_ASSEMBLER_CODE

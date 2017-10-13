@@ -17,11 +17,11 @@
 gosFX::SpinningCloud__Specification::SpinningCloud__Specification(
 	Stuff::RegisteredClass::ClassID class_id,
 	Stuff::MemoryStream* stream,
-	int32_t gfx_version
+	uint32_t gfx_version
 ):
 	ParticleCloud__Specification(class_id, stream, gfx_version)
 {
-	Check_Pointer(this);
+	//Check_Pointer(this);
 	//Verify(gos_GetCurrentHeap() == Heap);
 	//
 	//-----------------
@@ -50,7 +50,7 @@ gosFX::SpinningCloud__Specification::SpinningCloud__Specification(
 ):
 	ParticleCloud__Specification(class_id)
 {
-	Check_Pointer(this);
+	//Check_Pointer(this);
 	//Verify(gos_GetCurrentHeap() == Heap);
 	m_randomStartingRotation = false;
 	m_alignZUsingX = false;
@@ -63,7 +63,7 @@ gosFX::SpinningCloud__Specification::SpinningCloud__Specification(
 void
 gosFX::SpinningCloud__Specification::Save(Stuff::MemoryStream* stream)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Object(stream);
 	ParticleCloud__Specification::Save(stream);
 	m_pSpin.Save(stream);
@@ -77,7 +77,7 @@ gosFX::SpinningCloud__Specification::Save(Stuff::MemoryStream* stream)
 void
 gosFX::SpinningCloud__Specification::BuildDefaults()
 {
-	Check_Object(this);
+	// Check_Object(this);
 	ParticleCloud__Specification::BuildDefaults();
 	m_randomStartingRotation = false;
 	m_alignZUsingX = false;
@@ -97,7 +97,7 @@ gosFX::SpinningCloud__Specification::BuildDefaults()
 bool
 gosFX::SpinningCloud__Specification::IsDataValid(bool fix_data)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	float min, max;
 	m_pScale.ExpensiveComputeRange(&min, &max);
 	if(min < 0.0f)
@@ -106,7 +106,7 @@ gosFX::SpinningCloud__Specification::IsDataValid(bool fix_data)
 			m_pScale.m_ageCurve.SetCurve(1.0f);
 			m_pScale.m_seeded = false;
 			m_pScale.m_seedCurve.SetCurve(1.0f);
-			PAUSE(("Warning: Curve \"pScale\" in Effect \"%s\" Is Out of Range and has been Reset", (PSTR)m_name));
+			// PAUSE(("Warning: Curve \"pScale\" in Effect \"%s\" Is Out of Range and has been Reset", (PSTR)m_name));
 		}
 		else
 			return false;
@@ -118,17 +118,19 @@ gosFX::SpinningCloud__Specification::IsDataValid(bool fix_data)
 void
 gosFX::SpinningCloud__Specification::Copy(SpinningCloud__Specification* spec)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Object(spec);
 	ParticleCloud__Specification::Copy(spec);
-	gos_PushCurrentHeap(Heap);
+	#ifdef _GAMEOS_HPP_
+	// gos_PushCurrentHeap(Heap);
+#endif
 	m_pSpin = spec->m_pSpin;
 	m_pScale = spec->m_pScale;
 	m_randomStartingRotation = spec->m_randomStartingRotation;
 	m_alignZUsingX = spec->m_alignZUsingX;
 	m_alignZUsingY = spec->m_alignZUsingY;
 	m_alignYUsingVelocity = spec->m_alignYUsingVelocity;
-	gos_PopCurrentHeap();
+	// gos_PopCurrentHeap();
 }
 
 //############################################################################
@@ -183,7 +185,7 @@ gosFX::SpinningCloud::SpinningCloud(
 bool
 gosFX::SpinningCloud::Execute(ExecuteInfo* info)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Object(info);
 	//
 	//----------------------------------------
@@ -383,7 +385,7 @@ gosFX::SpinningCloud::AnimateParticle(
 	Stuff::Time till
 )
 {
-	Check_Object(this);
+	// Check_Object(this);
 	//
 	//-----------------------------------------------------------------------
 	// If this cloud is unparented, we need to transform the point from local

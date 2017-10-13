@@ -61,7 +61,7 @@ namespace MidLevelRenderer
 
 		virtual void SetReferenceState(const MLRState& _state, size_t pass = 0)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			Verify((intptr_t(pass) >= 0) && (pass < Limits::Max_Number_Of_Multitextures));
 			if(pass == 0)
 			{
@@ -72,20 +72,20 @@ namespace MidLevelRenderer
 
 		virtual const MLRState& GetReferenceState(size_t pass = 0) const
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			Verify((intptr_t(pass) >= 0) && pass < Limits::Max_Number_Of_Multitextures);
 			return multiReferenceState[pass];
 		}
 		virtual const MLRState& GetCurrentState(size_t pass = 0) const
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			Verify((intptr_t(pass) >= 0) && pass < Limits::Max_Number_Of_Multitextures);
 			return multiState[pass];
 		}
 
 		virtual void CombineStates(const MLRState& master)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			state.Combine(master, referenceState);
 			for(size_t i = 0; i < currentNrOfPasses; i++)
 			{
@@ -95,7 +95,7 @@ namespace MidLevelRenderer
 
 		virtual GOSVertex* GetGOSVertices(uint32_t pass = 0)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			Verify((intptr_t(pass) >= 0) && pass < Limits::Max_Number_Of_Multitextures);
 			return gos_vertices + pass * numGOSVertices;
 		}
@@ -105,7 +105,7 @@ namespace MidLevelRenderer
 
 		uint32_t GetNumPasses(void)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return currentNrOfPasses;
 		}
 
@@ -123,7 +123,7 @@ namespace MidLevelRenderer
 
 		virtual size_t GetSize(void)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			size_t ret = MLR_I_PMesh::GetSize();
 			return ret;
 		}

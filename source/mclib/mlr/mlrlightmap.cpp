@@ -114,7 +114,7 @@ MLRLightMap::MLRLightMap(MLRTexture* tex) :
 //
 MLRLightMap::~MLRLightMap()
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Object(stream);
 }
 
@@ -1218,7 +1218,9 @@ MLRShape*
 MLRLightMap::CreateLightMapShape()
 {
 	Check_Object(stream);
+	#ifdef _GAMEOS_HPP_
 	gos_PushCurrentHeap(Heap);
+#endif
 	MLRShape* ret = new MLRShape(20);
 	Register_Object(ret);
 	MLR_I_C_TMesh* ctmesh = nullptr;

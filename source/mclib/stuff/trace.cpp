@@ -41,7 +41,7 @@ Stuff::Trace::Trace(PCSTR name, Type type)
 void
 Stuff::Trace::PrintUsage(float usage)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	SPEW((GROUP_STUFF_TRACE, "%f+", usage));
 }
 #endif
@@ -74,7 +74,7 @@ Stuff::BitTrace::BitTrace(PCSTR name) : Trace(name, BitType)
 //
 void Stuff::BitTrace::DumpTraceStatus()
 {
-	Check_Object(this);
+	// Check_Object(this);
 	SPEW((
 			 GROUP_STUFF_TRACE,
 			 "%d = %d+",
@@ -104,7 +104,7 @@ void Stuff::BitTrace::ResetTrace()
 //
 void Stuff::BitTrace::StartTiming()
 {
-	Check_Object(this);
+	// Check_Object(this);
 	totalUpTime = 0;
 }
 
@@ -125,7 +125,7 @@ float Stuff::BitTrace::CalculateUsage(int64_t when, int64_t sample_time)
 //
 void Stuff::BitTrace::PrintUsage(float usage)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	SPEW((GROUP_STUFF_TRACE, "%4f%% CPU+", (usage * 100.0f)));
 #if defined(USE_ACTIVE_PROFILE)
 	SPEW((GROUP_STUFF_TRACE, " (active on line %d)", static_cast<int32_t>(activeLine)));
@@ -138,7 +138,7 @@ void Stuff::BitTrace::PrintUsage(float usage)
 //
 void Stuff::BitTrace::Set(void)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	if(!traceUp++)
 	{
 #if defined(USE_ACTIVE_PROFILE)
@@ -173,7 +173,7 @@ void Stuff::BitTrace::Set(void)
 //
 void Stuff::BitTrace::Clear(void)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	if(--traceUp == 0)
 	{
 		Stuff::TraceManager::Instance->activeBits &= ~bitFlag;
@@ -258,7 +258,7 @@ Stuff::TraceManager::TraceManager(void) : traceChain(nullptr)
 //
 Stuff::TraceManager::~TraceManager()
 {
-	Check_Object(this);
+	// Check_Object(this);
 	if(allocatedTraceLog)
 	{
 		Check_Object(allocatedTraceLog);
@@ -278,7 +278,7 @@ Stuff::TraceManager::~TraceManager()
 void
 Stuff::TraceManager::Add(Trace* trace)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	traceCount = (uint8_t)(traceCount + 1);
 	traceChain.Add(trace);
 }
@@ -418,7 +418,7 @@ Stuff::TraceManager::SnapshotTimingAnalysis(bool print)
 void Stuff::TraceManager::CreateTraceLog(
 	size_t max_trace_count, bool start_logging)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Verify(!allocatedTraceLog);
 	TraceSample* samples = new TraceSample[max_trace_count];
 	Register_Pointer(samples);
@@ -435,7 +435,7 @@ void Stuff::TraceManager::CreateTraceLog(
 //
 void Stuff::TraceManager::SaveTraceLog(PCSTR filename)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	if(allocatedTraceLog)
 	{
 		Check_Object(allocatedTraceLog);
@@ -513,7 +513,7 @@ void Stuff::TraceManager::SaveTraceLog(PCSTR filename)
 void
 Stuff::TraceManager::MarkTraceLog()
 {
-	Check_Object(this);
+	// Check_Object(this);
 	if(activeTraceLog)
 	{
 		Check_Object(activeTraceLog);
@@ -533,7 +533,7 @@ Stuff::TraceManager::MarkTraceLog()
 void
 Stuff::TraceManager::SuspendTraceLogging()
 {
-	Check_Object(this);
+	// Check_Object(this);
 	if(activeTraceLog)
 	{
 		Check_Object(activeTraceLog);
@@ -554,7 +554,7 @@ Stuff::TraceManager::SuspendTraceLogging()
 void
 Stuff::TraceManager::ResumeTraceLogging()
 {
-	Check_Object(this);
+	// Check_Object(this);
 	if(allocatedTraceLog && !activeTraceLog)
 	{
 		Check_Object(allocatedTraceLog);

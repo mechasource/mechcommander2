@@ -1,5 +1,5 @@
 //===========================================================================//
-// Copyright (C) Microsoft Corporation. All rights reserved. //
+// Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
 #pragma once
@@ -39,7 +39,7 @@ namespace MidLevelRenderer
 		virtual LightType
 		GetLightType(void)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return LookUpLight;
 		}
 
@@ -51,7 +51,7 @@ namespace MidLevelRenderer
 		//
 		void SetMapOrigin(float x, float y, float z)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			mapOrigin.x = x;
 			mapOrigin.y = y;
 			mapOrigin.z = z;
@@ -59,7 +59,7 @@ namespace MidLevelRenderer
 
 		Stuff::Point3D GetMapOrigin(void)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return mapOrigin;
 		}
 
@@ -69,27 +69,27 @@ namespace MidLevelRenderer
 		int32_t
 		GetMapZoneCountX(void)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return mapZoneCountX;
 		}
 		int32_t
 		GetMapZoneCountZ(void)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return mapZoneCountZ;
 		}
 
 		PCSTR
 		GetMapName(void)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return mapName;
 		}
 
 		void
 		SetMapZoneSizeX(float x)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			zoneSizeX = x;
 			Verify(x > Stuff::SMALL);
 			one_Over_zoneSizeX = 1.0f / x;
@@ -97,7 +97,7 @@ namespace MidLevelRenderer
 		void
 		SetMapZoneSizeZ(float z)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			zoneSizeZ = z;
 			Verify(z > Stuff::SMALL);
 			one_Over_zoneSizeZ = 1.0f / z;
@@ -106,13 +106,13 @@ namespace MidLevelRenderer
 		float
 		GetMapZoneSizeX(void)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return zoneSizeX;
 		}
 		float
 		GetMapZoneSizeZ(void)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return zoneSizeZ;
 		}
 

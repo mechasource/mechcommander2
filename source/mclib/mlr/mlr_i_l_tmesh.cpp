@@ -60,12 +60,12 @@ MLR_I_L_TMesh::TerminateClass()
 //
 MLR_I_L_TMesh::MLR_I_L_TMesh(
 	ClassData* class_data,
-	MemoryStream* stream,
+	Stuff::MemoryStream* stream,
 	uint32_t version
 ):
 	MLR_I_C_TMesh(class_data, stream, version)
 {
-	Check_Pointer(this);
+	//Check_Pointer(this);
 	Check_Pointer(stream);
 	//Verify(gos_GetCurrentHeap() == Heap);
 	switch(version)
@@ -90,7 +90,7 @@ MLR_I_L_TMesh::MLR_I_L_TMesh(
 MLR_I_L_TMesh::MLR_I_L_TMesh(ClassData* class_data):
 	MLR_I_C_TMesh(class_data), normals(0)
 {
-	Check_Pointer(this);
+	//Check_Pointer(this);
 	//Verify(gos_GetCurrentHeap() == Heap);
 }
 
@@ -98,19 +98,21 @@ MLR_I_L_TMesh::MLR_I_L_TMesh(ClassData* class_data):
 //
 MLR_I_L_TMesh::~MLR_I_L_TMesh()
 {
-	Check_Object(this);
+	// Check_Object(this);
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 MLR_I_L_TMesh*
 MLR_I_L_TMesh::Make(
-	MemoryStream* stream,
+	Stuff::MemoryStream* stream,
 	uint32_t version
 )
 {
 	Check_Object(stream);
+	#ifdef _GAMEOS_HPP_
 	gos_PushCurrentHeap(Heap);
+#endif
 	MLR_I_L_TMesh* mesh = new MLR_I_L_TMesh(DefaultData, stream, version);
 	gos_PopCurrentHeap();
 	return mesh;
@@ -119,9 +121,9 @@ MLR_I_L_TMesh::Make(
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-MLR_I_L_TMesh::Save(MemoryStream* stream)
+MLR_I_L_TMesh::Save(Stuff::MemoryStream* stream)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Object(stream);
 	MLR_I_C_TMesh::Save(stream);
 	MemoryStreamIO_Write(stream, &normals);
@@ -132,7 +134,7 @@ MLR_I_L_TMesh::Save(MemoryStream* stream)
 bool
 MLR_I_L_TMesh::Copy(MLR_I_L_PMesh* pMesh)
 {
-	Check_Pointer(this);
+	//Check_Pointer(this);
 	Check_Object(pMesh);
 	size_t len;
 	Vector3D* _normals;
@@ -150,7 +152,7 @@ MLR_I_L_TMesh::SetNormalData(
 	size_t dataSize
 )
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Pointer(data);
 	Verify(coords.GetLength() == 0 || dataSize == coords.GetLength());
 	Verify(colors.GetLength() == 0 || dataSize == colors.GetLength());
@@ -166,7 +168,7 @@ MLR_I_L_TMesh::GetNormalData(
 	psize_t dataSize
 )
 {
-	Check_Object(this);
+	// Check_Object(this);
 	*data = normals.GetData();
 	*dataSize = normals.GetLength();
 }
@@ -183,7 +185,7 @@ MLR_I_L_TMesh::SetColorData(
 	size_t dataSize
 )
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Pointer(data);
 	//Verify(gos_GetCurrentHeap() == Heap);
 	Verify(coords.GetLength() == 0 || dataSize == coords.GetLength());
@@ -204,7 +206,7 @@ MLR_I_L_TMesh::PaintMe(
 
 )
 {
-	Check_Object(this);
+	// Check_Object(this);
 #if 1
 	Verify(colors.GetLength() == litColors.GetLength());
 #else
@@ -282,7 +284,9 @@ MidLevelRenderer::CreateIndexedTriIcosahedron_Color_Lit(
 	MLRState* state
 )
 {
+	#ifdef _GAMEOS_HPP_
 	gos_PushCurrentHeap(Heap);
+#endif
 	MLRShape* ret = new MLRShape(20);
 	Register_Object(ret);
 	int32_t i, j, k;

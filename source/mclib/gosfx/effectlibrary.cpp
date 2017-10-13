@@ -88,16 +88,16 @@ gosFX::EffectLibrary::Save(Stuff::MemoryStream* stream)
 
 //------------------------------------------------------------------------------
 //
-gosFX::Effect::Specification*
-gosFX::EffectLibrary::Find(PCSTR name)
+gosFX::Effect::Specification* 
+gosFX::EffectLibrary::Find(std::wstring& name)
 {
-	for(uint32_t i = 0; i < m_effects.GetLength(); ++i)
+	for(auto i = 0; i < m_effects.GetLength(); ++i)
 	{
 		gosFX::Effect::Specification* spec = m_effects[i];
 		if(spec)
 		{
 			Check_Object(spec);
-			if(!_stricmp(spec->m_name, name))
+			if(spec->m_name == name) // if(!_stricmp(spec->m_name, name))
 			{
 				Verify(spec->m_effectID == i);
 				return spec;

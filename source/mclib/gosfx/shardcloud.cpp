@@ -13,11 +13,11 @@
 //
 gosFX::ShardCloud__Specification::ShardCloud__Specification(
 	Stuff::MemoryStream* stream,
-	int32_t gfx_version
+	uint32_t gfx_version
 ):
 	SpinningCloud__Specification(gosFX::ShardCloudClassID, stream, gfx_version)
 {
-	Check_Pointer(this);
+	//Check_Pointer(this);
 	Check_Object(stream);
 	//Verify(gos_GetCurrentHeap() == Heap);
 	Verify(m_class == ShardCloudClassID);
@@ -32,7 +32,7 @@ gosFX::ShardCloud__Specification::ShardCloud__Specification(
 gosFX::ShardCloud__Specification::ShardCloud__Specification():
 	SpinningCloud__Specification(gosFX::ShardCloudClassID)
 {
-	Check_Pointer(this);
+	//Check_Pointer(this);
 	//Verify(gos_GetCurrentHeap() == Heap);
 	m_totalParticleSize = gosFX::ShardCloud::ParticleSize;
 	m_particleClassSize = sizeof(gosFX::ShardCloud::Particle);
@@ -43,14 +43,16 @@ gosFX::ShardCloud__Specification::ShardCloud__Specification():
 gosFX::ShardCloud__Specification*
 gosFX::ShardCloud__Specification::Make(
 	Stuff::MemoryStream* stream,
-	int32_t gfx_version
+	uint32_t gfx_version
 )
 {
 	Check_Object(stream);
-	gos_PushCurrentHeap(Heap);
+	#ifdef _GAMEOS_HPP_
+	// gos_PushCurrentHeap(Heap);
+#endif
 	ShardCloud__Specification* spec =
 		new gosFX::ShardCloud__Specification(stream, gfx_version);
-	gos_PopCurrentHeap();
+	// gos_PopCurrentHeap();
 	return spec;
 }
 
@@ -59,7 +61,7 @@ gosFX::ShardCloud__Specification::Make(
 void
 gosFX::ShardCloud__Specification::Save(Stuff::MemoryStream* stream)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Object(stream);
 	SpinningCloud__Specification::Save(stream);
 	m_size.Save(stream);
@@ -71,7 +73,7 @@ gosFX::ShardCloud__Specification::Save(Stuff::MemoryStream* stream)
 void
 gosFX::ShardCloud__Specification::BuildDefaults()
 {
-	Check_Object(this);
+	// Check_Object(this);
 	SpinningCloud__Specification::BuildDefaults();
 	m_size.m_ageCurve.SetCurve(1.0f);
 	m_size.m_seeded = false;
@@ -86,7 +88,7 @@ gosFX::ShardCloud__Specification::BuildDefaults()
 bool
 gosFX::ShardCloud__Specification::IsDataValid(bool fix_data)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	return		SpinningCloud__Specification::IsDataValid(fix_data);
 	/*
 		m_size.m_ageCurve.SetCurve(1.0f);
@@ -104,13 +106,15 @@ gosFX::ShardCloud__Specification::IsDataValid(bool fix_data)
 void
 gosFX::ShardCloud__Specification::Copy(ShardCloud__Specification* spec)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Object(spec);
 	SpinningCloud__Specification::Copy(spec);
-	gos_PushCurrentHeap(Heap);
+	#ifdef _GAMEOS_HPP_
+	// gos_PushCurrentHeap(Heap);
+#endif
 	m_size = spec->m_size;
 	m_angularity = spec->m_angularity;
-	gos_PopCurrentHeap();
+	// gos_PopCurrentHeap();
 }
 
 //############################################################################
@@ -158,11 +162,11 @@ gosFX::ShardCloud::ShardCloud(
 {
 	Check_Object(spec);
 	//Verify(gos_GetCurrentHeap() == Heap);
-	gos_PushCurrentHeap(MidLevelRenderer::Heap);
+	// gos_PushCurrentHeap(MidLevelRenderer::Heap);
 	m_cloudImplementation =
 		new MidLevelRenderer::MLRTriangleCloud(spec->m_maxParticleCount);
 	Register_Object(m_cloudImplementation);
-	gos_PopCurrentHeap();
+	// gos_PopCurrentHeap();
 	uint32_t index = spec->m_maxParticleCount * sizeof(Particle);
 	m_P_vertices = Cast_Pointer(Stuff::Point3D*, &m_data[index]);
 	index += 3 * spec->m_maxParticleCount * sizeof(Stuff::Point3D);
@@ -191,9 +195,11 @@ gosFX::ShardCloud::Make(
 )
 {
 	Check_Object(spec);
-	gos_PushCurrentHeap(Heap);
+	#ifdef _GAMEOS_HPP_
+	// gos_PushCurrentHeap(Heap);
+#endif
 	ShardCloud* cloud = new gosFX::ShardCloud(spec, flags);
-	gos_PopCurrentHeap();
+	// gos_PopCurrentHeap();
 	return cloud;
 }
 
@@ -206,7 +212,7 @@ gosFX::ShardCloud::AnimateParticle(
 	Stuff::Time till
 )
 {
-	Check_Object(this);
+	// Check_Object(this);
 	//
 	//-----------------------------------------
 	// Animate the parent then get our pointers
@@ -244,7 +250,7 @@ gosFX::ShardCloud::CreateNewParticle(
 	Stuff::Point3D* translation
 )
 {
-	Check_Object(this);
+	// Check_Object(this);
 	//
 	//-------------------------------------------------------------------
 	// Let our parent do creation, then turn on the particle in the cloud
@@ -271,7 +277,7 @@ gosFX::ShardCloud::CreateNewParticle(
 //
 void gosFX::ShardCloud::DestroyParticle(uint32_t index)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	m_cloudImplementation->TurnOff(index);
 	Verify(!m_cloudImplementation->IsOn(index));
 	SpinningCloud::DestroyParticle(index);
@@ -281,7 +287,7 @@ void gosFX::ShardCloud::DestroyParticle(uint32_t index)
 //
 void gosFX::ShardCloud::Draw(DrawInfo* info)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Object(info);
 	//
 	//---------------------------------------------------------

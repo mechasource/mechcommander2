@@ -47,7 +47,7 @@ Stuff::Close_Enough(
 RGBColor&
 RGBColor::operator=(const HSVColor& color)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Object(&color);
 	Verify(color.saturation >= 0.0 && color.saturation <= 1.0f);
 	//
@@ -228,7 +228,7 @@ Stuff::Close_Enough(
 HSVColor&
 HSVColor::operator=(const RGBColor& color)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Object(&color);
 	Verify(color.red >= 0.0f && color.red <= 1.0f);
 	Verify(color.green >= 0.0f && color.green <= 1.0f);

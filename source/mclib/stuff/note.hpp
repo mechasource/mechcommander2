@@ -47,14 +47,14 @@ namespace Stuff
 		void
 		SetName(PCSTR entryname)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			Check_Pointer(entryname);
 			m_name = entryname;
 		}
 		PCSTR
 		GetName(void) const
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return m_name;
 		}
 
@@ -65,7 +65,7 @@ namespace Stuff
 
 		void SetDirty(void)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			Check_Object(m_page);
 			m_page->SetDirty();
 		}
@@ -80,14 +80,14 @@ namespace Stuff
 		void
 		GetEntry(PCSTR* contents)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			Check_Pointer(contents);
 			if(contents) *contents = m_text;
 		}
 		void
 		SetEntry(PCSTR contents)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			m_text = contents;
 		}
 

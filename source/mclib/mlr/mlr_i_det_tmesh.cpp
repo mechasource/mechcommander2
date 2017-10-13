@@ -4,6 +4,8 @@
 
 #include "stdafx.h"
 
+#include <gameos.hpp>
+#include <mlr/mlrshape.hpp>
 #include <mlr/mlr_i_det_tmesh.hpp>
 
 using namespace MidLevelRenderer;
@@ -20,8 +22,7 @@ BitTrace* MLR_I_DeT_TMesh_Clip;
 //###### MLRIndexedPolyMesh with no color no lighting two texture layer  ######
 //#############################################################################
 
-MLR_I_DeT_TMesh::ClassData*
-MLR_I_DeT_TMesh::DefaultData = nullptr;
+MLR_I_DeT_TMesh::ClassData* MLR_I_DeT_TMesh::DefaultData = nullptr;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
@@ -62,12 +63,12 @@ MLR_I_DeT_TMesh::TerminateClass()
 //
 MLR_I_DeT_TMesh::MLR_I_DeT_TMesh(
 	ClassData* class_data,
-	MemoryStream* stream,
+	Stuff::MemoryStream* stream,
 	uint32_t version
 ):
 	MLR_I_TMesh(class_data, stream, version)
 {
-	Check_Pointer(this);
+	//Check_Pointer(this);
 	Check_Pointer(stream);
 	//Verify(gos_GetCurrentHeap() == Heap);
 	referenceState2.Load(stream, version);
@@ -91,7 +92,7 @@ MLR_I_DeT_TMesh::MLR_I_DeT_TMesh(
 MLR_I_DeT_TMesh::MLR_I_DeT_TMesh(ClassData* class_data):
 	MLR_I_TMesh(class_data)
 {
-	Check_Pointer(this);
+	//Check_Pointer(this);
 	//Verify(gos_GetCurrentHeap() == Heap);
 	fadeDetailStart = 0.0f;
 	fadeDetailEnd = 1.0f;
@@ -112,13 +113,15 @@ MLR_I_DeT_TMesh::Copy(
 	float yFac
 )
 {
-	Check_Object(this);
+	(void)yOff;
+	// Check_Object(this);
 	Check_Object(tMesh);
 	//Verify(gos_GetCurrentHeap() == Heap);
 	size_t len;
 	puint16_t _index;
-	Point3D* _coords;
+	Stuff::Point3D* _coords;
 	Stuff::Vector2DScalar* _texCoords;
+	
 	tMesh->GetCoordData(&_coords, &len);
 	SetCoordData(_coords, len);
 	tMesh->GetIndexData(&_index, &len);
@@ -141,21 +144,23 @@ MLR_I_DeT_TMesh::Copy(
 //
 MLR_I_DeT_TMesh::~MLR_I_DeT_TMesh()
 {
-	Check_Object(this);
+	// Check_Object(this);
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLR_I_DeT_TMesh*
-MLR_I_DeT_TMesh::Make(
-	MemoryStream* stream,
-	uint32_t version
-)
+MLR_I_DeT_TMesh* MLR_I_DeT_TMesh::Make(
+	Stuff::MemoryStream* stream, uint32_t version)
 {
 	Check_Object(stream);
+#ifdef _GAMEOS_HPP_
 	gos_PushCurrentHeap(Heap);
+#endif
 	MLR_I_DeT_TMesh* mesh = new MLR_I_DeT_TMesh(DefaultData, stream, version);
+#ifdef _GAMEOS_HPP_
 	gos_PopCurrentHeap();
+#endif
+
 	return mesh;
 }
 
@@ -163,9 +168,9 @@ MLR_I_DeT_TMesh::Make(
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-MLR_I_DeT_TMesh::Save(MemoryStream* stream)
+MLR_I_DeT_TMesh::Save(Stuff::MemoryStream* stream)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Object(stream);
 	MLR_I_TMesh::Save(stream);
 	referenceState2.Save(stream);
@@ -186,7 +191,7 @@ MLR_I_DeT_TMesh::SetDetailData(
 
 )
 {
-	Check_Object(this);
+	// Check_Object(this);
 	xOffset = xOff;
 	yOffset = yOff;
 	xScale = xFac;
@@ -200,11 +205,10 @@ MLR_I_DeT_TMesh::SetDetailData(
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-int32_t
-MLR_I_DeT_TMesh::GetNumPasses()
+uint32_t MLR_I_DeT_TMesh::GetNumPasses(void)
 {
-	Check_Object(this);
-	Check_Object(this);
+	// Check_Object(this);
+	// Check_Object(this);
 	if(gEnableDetailTexture == 0 || detTextureVisible == false)
 	{
 		return 1;
@@ -252,30 +256,28 @@ MLR_I_DeT_TMesh::TestInstance(void) const
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLR_I_DeT_TMesh*
-MidLevelRenderer::CreateIndexedTriCube_NoColor_NoLit_DetTex(
-	float half,
-	MLRState* state,
-	MLRState* state1
-)
+MLR_I_DeT_TMesh* MidLevelRenderer::CreateIndexedTriCube_NoColor_NoLit_DetTex(
+	float half, MLRState* state, MLRState* state1)
 {
+	(void)half; (void)state; (void)state1;
+
 #if 0
 	gos_PushCurrentHeap(Heap);
 	MLR_I_TMesh* ret = new MLR_I_TMesh();
 	Register_Object(ret);
-	Point3D* coords = new Point3D [8];
+	Stuff::Point3D* coords = new Stuff::Point3D [8];
 	Register_Object(coords);
-	coords[0] = Point3D(half, -half,  half);
-	coords[1] = Point3D(-half, -half,  half);
-	coords[2] = Point3D(half, -half, -half);
-	coords[3] = Point3D(-half, -half, -half);
-	coords[4] = Point3D(-half,  half,  half);
-	coords[5] = Point3D(half,  half,  half);
-	coords[6] = Point3D(half,  half, -half);
-	coords[7] = Point3D(-half,  half, -half);
+	coords[0] = Stuff::Point3D(half, -half,  half);
+	coords[1] = Stuff::Point3D(-half, -half,  half);
+	coords[2] = Stuff::Point3D(half, -half, -half);
+	coords[3] = Stuff::Point3D(-half, -half, -half);
+	coords[4] = Stuff::Point3D(-half,  half,  half);
+	coords[5] = Stuff::Point3D(half,  half,  half);
+	coords[6] = Stuff::Point3D(half,  half, -half);
+	coords[7] = Stuff::Point3D(-half,  half, -half);
 	puint8_t lengths = new uint8_t [6];
 	Register_Pointer(lengths);
-	int32_t i;
+	size_t i;
 	for(i = 0; i < 6; i++)
 	{
 		lengths[i] = 4;
@@ -352,36 +354,34 @@ MidLevelRenderer::CreateIndexedTriCube_NoColor_NoLit_DetTex(
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLRShape*
-MidLevelRenderer::CreateIndexedTriIcosahedron_NoColor_NoLit_DetTex(
-	IcoInfo& icoInfo,
-	MLRState* state,
-	MLRState* stateDet
-)
+MLRShape* MidLevelRenderer::CreateIndexedTriIcosahedron_NoColor_NoLit_DetTex(
+	IcoInfo& icoInfo, MLRState* state, MLRState* stateDet)
 {
+#ifdef _GAMEOS_HPP_
 	gos_PushCurrentHeap(Heap);
+#endif
 	MLRShape* ret = new MLRShape(20);
 	Register_Object(ret);
-	int32_t i, j, k;
+	size_t i, j, k;
 	uint32_t nrTri = static_cast<uint32_t>(ceil(icoInfo.all * pow(4.0f, icoInfo.depth)));
-	Point3D v[3];
+	Stuff::Point3D v[3];
 	if(3 * nrTri >= Limits::Max_Number_Vertices_Per_Mesh)
 	{
 		nrTri = Limits::Max_Number_Vertices_Per_Mesh / 3;
 	}
-	Point3D* coords = new Point3D [nrTri * 3];
+	Stuff::Point3D* coords = new Stuff::Point3D [nrTri * 3];
 	Register_Pointer(coords);
-	Point3D* collapsedCoords = nullptr;
+	Stuff::Point3D* collapsedCoords = nullptr;
 	if(icoInfo.indexed == true)
 	{
-		collapsedCoords = new Point3D [nrTri * 3];
+		collapsedCoords = new Stuff::Point3D [nrTri * 3];
 		Register_Pointer(collapsedCoords);
 	}
 	puint16_t index = new uint16_t [nrTri * 3];
 	Register_Pointer(index);
 	Stuff::Vector2DScalar* texCoords = new Stuff::Vector2DScalar[nrTri * 3];
 	Register_Pointer(texCoords);
-	int32_t uniquePoints = 0;
+	uint32_t uniquePoints = 0;
 	for(k = 0; k < 20; k++)
 	{
 		triDrawn = 0;
@@ -501,6 +501,9 @@ MidLevelRenderer::CreateIndexedTriIcosahedron_NoColor_NoLit_DetTex(
 	}
 	Unregister_Pointer(coords);
 	delete [] coords;
+#ifdef _GAMEOS_HPP_
 	gos_PopCurrentHeap();
+#endif
+
 	return ret;
 }

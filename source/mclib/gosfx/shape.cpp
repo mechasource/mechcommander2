@@ -16,11 +16,11 @@
 //
 gosFX::Shape__Specification::Shape__Specification(
 	Stuff::MemoryStream* stream,
-	int32_t gfx_version
+	uint32_t gfx_version
 ):
 	Singleton__Specification(gosFX::ShapeClassID, stream, gfx_version)
 {
-	Check_Pointer(this);
+	//Check_Pointer(this);
 	Verify(m_class == ShapeClassID);
 	//Verify(gos_GetCurrentHeap() == Heap);
 	//
@@ -44,7 +44,7 @@ gosFX::Shape__Specification::Shape__Specification(
 ):
 	Singleton__Specification(gosFX::ShapeClassID)
 {
-	Check_Pointer(this);
+	//Check_Pointer(this);
 	//Verify(gos_GetCurrentHeap() == Heap);
 	m_shape = nullptr;
 	SetShape(shape);
@@ -54,7 +54,7 @@ gosFX::Shape__Specification::Shape__Specification(
 //
 gosFX::Shape__Specification::~Shape__Specification()
 {
-	Check_Object(this);
+	// Check_Object(this);
 	if(m_shape)
 	{
 		Check_Object(m_shape);
@@ -67,14 +67,16 @@ gosFX::Shape__Specification::~Shape__Specification()
 gosFX::Shape__Specification*
 gosFX::Shape__Specification::Make(
 	Stuff::MemoryStream* stream,
-	int32_t gfx_version
+	uint32_t gfx_version
 )
 {
 	Check_Object(stream);
-	gos_PushCurrentHeap(Heap);
+	#ifdef _GAMEOS_HPP_
+	// gos_PushCurrentHeap(Heap);
+#endif
 	Shape__Specification* spec =
 		new gosFX::Shape__Specification(stream, gfx_version);
-	gos_PopCurrentHeap();
+	// gos_PopCurrentHeap();
 	return spec;
 }
 
@@ -83,7 +85,7 @@ gosFX::Shape__Specification::Make(
 void
 gosFX::Shape__Specification::Save(Stuff::MemoryStream* stream)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Object(stream);
 	Singleton__Specification::Save(stream);
 	MidLevelRenderer::WriteMLRVersion(stream);
@@ -96,13 +98,15 @@ gosFX::Shape__Specification::Save(Stuff::MemoryStream* stream)
 void
 gosFX::Shape__Specification::Copy(Shape__Specification* spec)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Object(spec);
 	Singleton__Specification::Copy(spec);
-	gos_PushCurrentHeap(Heap);
+	#ifdef _GAMEOS_HPP_
+	// gos_PushCurrentHeap(Heap);
+#endif
 	m_radius = spec->m_radius;
 	m_shape = spec->m_shape;
-	gos_PopCurrentHeap();
+	// gos_PopCurrentHeap();
 	Check_Object(m_shape);
 	m_shape->AttachReference();
 }
@@ -112,7 +116,7 @@ gosFX::Shape__Specification::Copy(Shape__Specification* spec)
 void
 gosFX::Shape__Specification::SetShape(MidLevelRenderer::MLRShape* shape)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	//
 	//------------------------------------
 	// Detach the old shape if it is there
@@ -215,9 +219,11 @@ gosFX::Shape::Make(
 )
 {
 	Check_Object(spec);
-	gos_PushCurrentHeap(Heap);
+	#ifdef _GAMEOS_HPP_
+	// gos_PushCurrentHeap(Heap);
+#endif
 	Shape* cloud = new gosFX::Shape(spec, flags);
-	gos_PopCurrentHeap();
+	// gos_PopCurrentHeap();
 	return cloud;
 }
 
@@ -225,7 +231,7 @@ gosFX::Shape::Make(
 //
 void gosFX::Shape::Draw(DrawInfo* info)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Object(info);
 	Check_Object(info->m_parentToWorld);
 	//

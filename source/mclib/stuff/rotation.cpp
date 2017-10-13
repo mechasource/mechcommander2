@@ -52,7 +52,7 @@ static void __stdcall Activate_UseFastNormalize(void)
 EulerAngles&
 EulerAngles::operator=(const YawPitchRoll& angles)
 {
-	Check_Pointer(this);
+	//Check_Pointer(this);
 	Check_Object(&angles);
 	LinearMatrix4D m;
 	m.BuildRotation(angles);
@@ -67,7 +67,7 @@ EulerAngles::operator=(const YawPitchRoll& angles)
 EulerAngles&
 EulerAngles::operator=(const UnitQuaternion& quaternion)
 {
-	Check_Pointer(this);
+	//Check_Pointer(this);
 	Check_Object(&quaternion);
 	LinearMatrix4D m;
 	m.BuildRotation(quaternion);
@@ -81,7 +81,7 @@ EulerAngles::operator=(const UnitQuaternion& quaternion)
 EulerAngles&
 EulerAngles::operator=(const LinearMatrix4D& matrix)
 {
-	Check_Pointer(this);
+	//Check_Pointer(this);
 	Check_Object(&matrix);
 	Verify(
 		Vector3D::Forward.z == 1.0f && Vector3D::Right.x == -1.0f && Vector3D::Up.y == 1.0f
@@ -198,7 +198,7 @@ EulerAngles::Lerp(
 	float t
 )
 {
-	Check_Pointer(this);
+	//Check_Pointer(this);
 	Check_Object(&a1);
 	Check_Object(&a2);
 	pitch = Stuff::Lerp(a1.pitch, a2.pitch, t);
@@ -214,7 +214,7 @@ EulerAngles::Lerp(
 EulerAngles&
 EulerAngles::Normalize()
 {
-	Check_Pointer(this);
+	//Check_Pointer(this);
 	pitch.Normalize();
 	yaw.Normalize();
 	roll.Normalize();
@@ -255,7 +255,7 @@ YawPitchRoll::Identity(0.0f, 0.0f, 0.0f);
 YawPitchRoll&
 YawPitchRoll::operator=(const EulerAngles& angles)
 {
-	Check_Pointer(this);
+	//Check_Pointer(this);
 	Check_Object(&angles);
 	LinearMatrix4D m;
 	m.BuildRotation(angles);
@@ -270,7 +270,7 @@ YawPitchRoll::operator=(const EulerAngles& angles)
 YawPitchRoll&
 YawPitchRoll::operator=(const UnitQuaternion& quaternion)
 {
-	Check_Pointer(this);
+	//Check_Pointer(this);
 	Check_Object(&quaternion);
 	LinearMatrix4D m;
 	m.BuildRotation(quaternion);
@@ -284,7 +284,7 @@ YawPitchRoll::operator=(const UnitQuaternion& quaternion)
 YawPitchRoll&
 YawPitchRoll::operator=(const LinearMatrix4D& matrix)
 {
-	Check_Pointer(this);
+	//Check_Pointer(this);
 	Check_Object(&matrix);
 	Verify(
 		Vector3D::Forward.z == 1.0f && Vector3D::Right.x == -1.0f && Vector3D::Up.y == 1.0f
@@ -394,7 +394,7 @@ YawPitchRoll::Lerp(
 	float t
 )
 {
-	Check_Pointer(this);
+	//Check_Pointer(this);
 	Check_Object(&a1);
 	Check_Object(&a2);
 	yaw = Stuff::Lerp(a1.yaw, a2.yaw, t);
@@ -410,7 +410,7 @@ YawPitchRoll::Lerp(
 YawPitchRoll&
 YawPitchRoll::Normalize()
 {
-	Check_Pointer(this);
+	//Check_Pointer(this);
 	yaw.Normalize();
 	pitch.Normalize();
 	roll.Normalize();
@@ -530,7 +530,7 @@ UnitQuaternion::TerminateClass()
 UnitQuaternion&
 UnitQuaternion::operator=(const EulerAngles& angles)
 {
-	Check_Pointer(this);
+	//Check_Pointer(this);
 	Check_Object(&angles);
 	LinearMatrix4D m;
 	m.BuildRotation(angles);
@@ -557,7 +557,7 @@ UnitQuaternion::operator=(const YawPitchRoll& angles)
 UnitQuaternion&
 UnitQuaternion::operator=(const LinearMatrix4D& matrix)
 {
-	Check_Pointer(this);
+	//Check_Pointer(this);
 	Check_Object(&matrix);
 	//
 	//------------------------------------------------------------------------
@@ -630,7 +630,7 @@ UnitQuaternion::operator=(const LinearMatrix4D& matrix)
 UnitQuaternion&
 UnitQuaternion::operator=(const Vector3D& v)
 {
-	Check_Pointer(this);
+	//Check_Pointer(this);
 	Check_Object(&v);
 	//
 	//---------------------------------------------------------------
@@ -656,7 +656,7 @@ UnitQuaternion::operator=(const Vector3D& v)
 	y = v.y * rotation;
 	z = v.z * rotation;
 	w = half_angle.cosine;
-	Check_Object(this);
+	// Check_Object(this);
 	return *this;
 }
 
@@ -684,7 +684,7 @@ Stuff::Close_Enough(
 float
 UnitQuaternion::GetAngle()
 {
-	Check_Object(this);
+	// Check_Object(this);
 	float sine_of_half = Sqrt(x * x + y * y + z * z);
 	if(Small_Enough(sine_of_half))
 	{
@@ -703,7 +703,7 @@ UnitQuaternion::GetAngle()
 void
 UnitQuaternion::GetAxis(UnitVector3D* axis)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Pointer(axis);
 	float len = Sqrt(x * x + y * y + z * z);
 	if(Small_Enough(len))
@@ -729,7 +729,7 @@ UnitQuaternion::GetAxis(UnitVector3D* axis)
 UnitQuaternion&
 UnitQuaternion::Multiply(const UnitQuaternion& q2, const UnitQuaternion& q1)
 {
-	Check_Pointer(this);
+	//Check_Pointer(this);
 	Check_Object(&q1);
 	Check_Object(&q2);
 	Verify(this != &q1 && this != &q2);
@@ -737,7 +737,7 @@ UnitQuaternion::Multiply(const UnitQuaternion& q2, const UnitQuaternion& q1)
 	y = q1.w * q2.y + q2.w * q1.y + q1.z * q2.x - q1.x * q2.z;
 	z = q1.w * q2.z + q2.w * q1.z + q1.x * q2.y - q1.y * q2.x;
 	w = q1.w * q2.w - q1.x * q2.x - q1.y * q2.y - q1.z * q2.z;
-	Check_Object(this);
+	// Check_Object(this);
 	return *this;
 }
 
@@ -748,7 +748,7 @@ UnitQuaternion::Multiply(const UnitQuaternion& q2, const UnitQuaternion& q1)
 UnitQuaternion&
 UnitQuaternion::Multiply(const UnitQuaternion& q, const LinearMatrix4D& m)
 {
-	Check_Pointer(this);
+	//Check_Pointer(this);
 	Check_Object(&q);
 	Check_Object(&m);
 	LinearMatrix4D t1;
@@ -756,7 +756,7 @@ UnitQuaternion::Multiply(const UnitQuaternion& q, const LinearMatrix4D& m)
 	LinearMatrix4D t2;
 	t2.Multiply(t1, m);
 	*this = t2;
-	Check_Object(this);
+	// Check_Object(this);
 	return *this;
 }
 
@@ -770,7 +770,7 @@ UnitQuaternion::Multiply(
 	float t
 )
 {
-	Check_Pointer(this);
+	//Check_Pointer(this);
 	Check_Object(&q);
 	//
 	//---------------------------------------------------------
@@ -798,7 +798,7 @@ UnitQuaternion::Multiply(
 	x = q.x * sine_of_half;
 	y = q.y * sine_of_half;
 	z = q.z * sine_of_half;
-	Check_Object(this);
+	// Check_Object(this);
 	return *this;
 }
 
@@ -813,7 +813,7 @@ UnitQuaternion::MultiplyScaled(
 	float t
 )
 {
-	Check_Pointer(this);
+	//Check_Pointer(this);
 	Verify(this != &q1);
 	Check_Object(&q1);
 	Check_Object(&q2);
@@ -821,7 +821,7 @@ UnitQuaternion::MultiplyScaled(
 	UnitQuaternion scaled_quat;
 	scaled_quat.Multiply(q2, t);
 	Multiply(q1, scaled_quat);
-	Check_Object(this);
+	// Check_Object(this);
 	return *this;
 }
 
@@ -905,7 +905,7 @@ UnitQuaternion::Subtract(
 	const UnitQuaternion& start
 )
 {
-	Check_Pointer(this);
+	//Check_Pointer(this);
 	Check_Object(&start);
 	Check_Object(&end);
 	UnitQuaternion inverse(start);
@@ -924,7 +924,7 @@ UnitQuaternion::Subtract(
 	const UnitVector3D& start
 )
 {
-	Check_Pointer(this);
+	//Check_Pointer(this);
 	Check_Object(&start);
 	Check_Object(&end);
 	Vector3D 	axis;
@@ -1035,7 +1035,7 @@ UnitQuaternion::Subtract(
 	const Vector3D& start
 )
 {
-	Check_Pointer(this);
+	//Check_Pointer(this);
 	Check_Object(&start);
 	Check_Object(&end);
 	UnitVector3D

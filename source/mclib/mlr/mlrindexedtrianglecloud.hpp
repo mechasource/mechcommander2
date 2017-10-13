@@ -49,14 +49,14 @@ namespace MidLevelRenderer
 		virtual puint16_t
 		GetGOSIndices(int32_t = 0)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return gos_indices;
 		}
 
 		int32_t
 		GetNumGOSIndices()
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return numGOSIndices;
 		}
 

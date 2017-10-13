@@ -94,7 +94,7 @@ namespace MidLevelRenderer
 		SetClipColor(Stuff::RGBAColor& color, size_t index)
 #endif
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			Verify(clipExtraColors->GetLength() > index);
 			(*clipExtraColors)[index] = color;
 		}
@@ -102,7 +102,7 @@ namespace MidLevelRenderer
 		void
 		FlashClipColors(size_t num)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			Verify(clipExtraTexCoords->GetLength() > num);
 			colors.SetLength(num);
 			visibleIndexedVertices.SetLength(num);
@@ -128,7 +128,7 @@ namespace MidLevelRenderer
 
 		virtual size_t GetSize(void)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			size_t ret = MLR_I_TMesh::GetSize();
 			ret += colors.GetSize();
 			return ret;

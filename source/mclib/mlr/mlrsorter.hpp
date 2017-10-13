@@ -1,5 +1,5 @@
 //===========================================================================//
-// Copyright (C) Microsoft Corporation. All rights reserved. //
+// Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
 #pragma once
@@ -136,7 +136,7 @@ namespace MidLevelRenderer
 
 		void SetTexturePool(MLRTexturePool* tp)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			Check_Object(tp);
 			texturePool = tp;
 		}
@@ -167,19 +167,19 @@ namespace MidLevelRenderer
 		void
 		SetFarClipReciprocal(float fcr)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			farClipReciprocal = fcr * (1.0f - Stuff::SMALL);
 		}
 
 #ifdef CalDraw
 		ToBeDrawnPrimitive* GetCurrentTBDP(void)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return &drawData[lastUsedDraw];
 		}
 		ToBeDrawnPrimitive* GetCurrentTBDP(size_t index)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			Verify(index < lastUsedDraw);
 			return &drawData[index];
 		}

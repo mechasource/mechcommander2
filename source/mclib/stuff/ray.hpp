@@ -54,7 +54,7 @@ namespace Stuff
 			Point3D* result
 		)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			Check_Object(result);
 			Vector3D temp;
 			temp.Multiply(direction, length);
@@ -63,7 +63,7 @@ namespace Stuff
 		float
 		GetLengthToClosestPointTo(const Point3D& point)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			Check_Object(&point);
 			Vector3D temp;
 			temp.Subtract(point, origin);
@@ -75,7 +75,7 @@ namespace Stuff
 			Point3D* result
 		)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			Check_Object(result);
 			Check_Object(&point);
 			Project(GetLengthToClosestPointTo(point), result);
@@ -89,7 +89,7 @@ namespace Stuff
 		Ray3D&
 		SetOrigin(const Point3D& point)
 		{
-			Check_Pointer(this);
+			//Check_Pointer(this);
 			origin = point;
 			return *this;
 		}

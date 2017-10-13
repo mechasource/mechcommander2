@@ -1,5 +1,5 @@
 //===========================================================================//
-// Copyright (C) Microsoft Corporation. All rights reserved. //
+// Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
 #pragma once
@@ -51,13 +51,13 @@ namespace MidLevelRenderer
 
 		virtual puint16_t GetGOSIndices(int32_t = 0)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return gos_indices;
 		}
 
 		int32_t GetNumGOSIndices(void)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return numGOSIndices;
 		}
 
@@ -67,7 +67,7 @@ namespace MidLevelRenderer
 
 		void TheIndexer(size_t num)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			index.SetLength(num);
 			for(uint16_t i = 0; i < num; i++)
 			{
@@ -83,7 +83,7 @@ namespace MidLevelRenderer
 
 		virtual size_t GetSize(void)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			size_t ret = MLRPrimitiveBase::GetSize();
 			ret += visibleIndexedVertices.GetSize();
 			ret += index.GetSize();

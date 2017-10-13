@@ -98,7 +98,7 @@ namespace MidLevelRenderer
 
 		virtual size_t GetSize(void)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			size_t ret = MLR_I_C_TMesh::GetSize();
 			ret += normals.GetSize();
 			ret += litColors.GetSize();

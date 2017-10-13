@@ -139,7 +139,7 @@ namespace MidLevelRenderer
 		//	starts the action
 		void RenderNow()
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			sorter->RenderNow();
 		}
 
@@ -148,50 +148,50 @@ namespace MidLevelRenderer
 
 		AndyDisplay* GetDisplay(void) const
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return display;
 		};
 
 		// statistics and time
 		uint32_t GetFrameRate(void) const
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return frameRate;
 		}
 		void SetTime(float t)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			nowTime = t;
 		}
 		float GetTime(void) const
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return nowTime;
 		}
 
 		const Stuff::LinearMatrix4D&
 		GetCameraToWorldMatrix(void)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return cameraToWorldMatrix;
 		}
 		const Stuff::LinearMatrix4D&
 		GetWorldToCameraMatrix(void)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return worldToCameraMatrix;
 		}
 		const Stuff::Matrix4D&
 		GetCameraToClipMatrix(void)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return cameraToClipMatrix;
 		}
 
 		void
 		ResetSorter(void)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			sorter->Reset();
 		}
 

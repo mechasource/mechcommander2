@@ -99,13 +99,13 @@ SortData::DrawTriIndexedList()
 		{
 			if(texture2 == 0)
 			{
-				void __stdcall gos_RenderIndexedArray(
-					PVOID pVertexArray,
-					uint32_t NumberVertices,
-					puint16_t lpwIndices,
-					uint32_t NumberIndices,
-					gosVERTEXTYPE VertexType,
-					gosPRIMITIVETYPE PrimitiveType = PRIMITIVE_TRIANGLELIST);
+				//void __stdcall gos_RenderIndexedArray(
+				//	PVOID pVertexArray,
+				//	uint32_t NumberVertices,
+				//	puint16_t lpwIndices,
+				//	uint32_t NumberIndices,
+				//	gosVERTEXTYPE VertexType,
+				//	gosPRIMITIVETYPE PrimitiveType = PRIMITIVE_TRIANGLELIST);
 				gos_RenderIndexedArray((GOSVertex*)vertices, numVertices, newIndicies, startIndex);
 			}
 			else
@@ -398,7 +398,7 @@ MLRSorter::Reset()
 //
 void MLRSorter::DrawPrimitive(MLRPrimitiveBase* pt, uint32_t pass)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Object(pt);
 	SortData* sd = nullptr;
 	switch(pt->GetSortDataMode())
@@ -453,7 +453,7 @@ MLRSorter::SetRawData
 	int32_t tex2
 )
 {
-	Check_Object(this);
+	// Check_Object(this);
 	SortData* sd = rawDrawData.GetData();
 	Verify(lastUsedRaw < Limits::Max_Number_Primitives_Per_Frame);
 	Verify(vertices != nullptr);
@@ -483,7 +483,7 @@ MLRSorter::SetRawIndexedData
 	int32_t tex2
 )
 {
-	Check_Object(this);
+	// Check_Object(this);
 	SortData* sd = rawDrawData.GetData();
 	Verify(lastUsedRaw < Limits::Max_Number_Primitives_Per_Frame);
 	Verify(vertices != nullptr);
@@ -504,7 +504,7 @@ MLRSorter::SetRawIndexedData
 SortData*
 MLRSorter::SetRawData(MLRPrimitiveBase* pt, int32_t pass)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Object(pt);
 	int32_t drawMode = pt->GetSortDataMode();
 	switch(drawMode)
@@ -548,7 +548,7 @@ MLRSorter::SetRawData(MLRPrimitiveBase* pt, int32_t pass)
 void
 MLRSorter::IncreaseTBDPCounter()
 {
-	Check_Object(this);
+	// Check_Object(this);
 	int32_t priority = drawData[lastUsedDraw].primitive->GetReferenceState().GetPriority();
 	priorityBucketsNotDrawn[priority][lastUsedInBucketNotDrawn[priority]++] = &drawData[lastUsedDraw];
 	lastUsedDraw++;

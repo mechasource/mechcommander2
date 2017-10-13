@@ -53,7 +53,7 @@ OBB::Multiply(
 	const LinearMatrix4D& matrix
 )
 {
-	Check_Pointer(this);
+	//Check_Pointer(this);
 	Check_Object(&obb);
 	Check_Object(&matrix);
 	localToParent.Multiply(obb.localToParent, matrix);
@@ -72,7 +72,7 @@ OBB::MultiplySphereOnly(
 	const LinearMatrix4D& matrix
 )
 {
-	Check_Pointer(this);
+	//Check_Pointer(this);
 	Check_Object(&obb);
 	Check_Object(&matrix);
 #if USE_ASSEMBLER_CODE
@@ -173,7 +173,7 @@ OBB::MultiplySphereOnly(
 OBB::SeparatingAxis
 OBB::FindSeparatingAxis(const OBB& box) const
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Object(&box);
 	Verify(axisExtents.x >= 0.0f);
 	Verify(axisExtents.y >= 0.0f);
@@ -537,7 +537,7 @@ OBB::Union(
 	const OBB& second
 )
 {
-	Check_Pointer(this);
+	//Check_Pointer(this);
 	Check_Object(&first);
 	Check_Object(&second);
 	//

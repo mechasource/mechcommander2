@@ -24,7 +24,7 @@ Page::Page(NotationFile* notation_file):
 	Plug(DefaultData),
 	m_notes(nullptr)
 {
-	Check_Pointer(this);
+	//Check_Pointer(this);
 	Check_Object(notation_file);
 	m_notationFile = notation_file;
 }
@@ -33,7 +33,7 @@ Page::Page(NotationFile* notation_file):
 //
 Page::~Page()
 {
-	Check_Object(this);
+	// Check_Object(this);
 	NoteIterator notes(&m_notes);
 	notes.DeletePlugs();
 }
@@ -43,7 +43,7 @@ Page::~Page()
 void
 Page::WriteNotes(MemoryStream* stream)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	PCSTR name = m_name;
 	if(name)
 		*stream << '[' << name << "]\r\n";
@@ -62,7 +62,7 @@ Page::WriteNotes(MemoryStream* stream)
 Note*
 Page::FindNote(PCSTR entryname)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Pointer(entryname);
 	NoteIterator notes(&m_notes);
 	Note* note;
@@ -80,7 +80,7 @@ Page::FindNote(PCSTR entryname)
 Note*
 Page::GetNote(uint32_t i)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	NoteIterator notes(&m_notes);
 	return notes.GetNth(i);
 }
@@ -90,7 +90,7 @@ Page::GetNote(uint32_t i)
 ChainOf<Note*>*
 Page::MakeNoteChain(PCSTR entryname)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Pointer(entryname);
 	NoteIterator notes(&m_notes);
 	Note* note;
@@ -111,7 +111,7 @@ Page::MakeNoteChain(PCSTR entryname)
 Note*
 Page::AddNote(PCSTR entryname)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Pointer(entryname);
 	SetDirty();
 	Note* note = new Note(this);
@@ -126,7 +126,7 @@ Page::AddNote(PCSTR entryname)
 void
 Page::DeleteNote(PCSTR entryname)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Pointer(entryname);
 	Note* note = FindNote(entryname);
 	if(note)
@@ -142,7 +142,7 @@ Page::DeleteNote(PCSTR entryname)
 void
 Page::DeleteAllNotes()
 {
-	Check_Object(this);
+	// Check_Object(this);
 	NoteIterator notes(&m_notes);
 	Note* note;
 	while((note = notes.ReadAndNext()) != nullptr)
@@ -161,7 +161,7 @@ Page::GetEntry(
 	bool required
 )
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Pointer(entryname);
 	Check_Pointer(contents);
 	Note* note = FindNote(entryname);
@@ -189,7 +189,7 @@ Page::SetEntry(
 	PCSTR contents
 )
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Pointer(entryname);
 	Check_Pointer(contents);
 	Note* note = FindNote(entryname);
@@ -207,7 +207,7 @@ Page::AppendEntry(
 	PCSTR contents
 )
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Pointer(entryname);
 	Check_Pointer(contents);
 	Note* note = AddNote(entryname);
@@ -224,7 +224,7 @@ Page::GetEntry(
 	bool required
 )
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Pointer(entryname);
 	Check_Pointer(contents);
 	Note* note = FindNote(entryname);
@@ -252,7 +252,7 @@ Page::SetEntry(
 	int32_t contents
 )
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Pointer(entryname);
 	Note* note = FindNote(entryname);
 	if(!note)
@@ -269,7 +269,7 @@ Page::AppendEntry(
 	int32_t contents
 )
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Pointer(entryname);
 	Note* note = AddNote(entryname);
 	Check_Object(note);
@@ -285,7 +285,7 @@ Page::GetEntry(
 	bool required
 )
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Pointer(entryname);
 	Check_Pointer(contents);
 	Note* note = FindNote(entryname);
@@ -313,7 +313,7 @@ Page::SetEntry(
 	float value
 )
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Pointer(entryname);
 	Note* note = FindNote(entryname);
 	if(!note)
@@ -330,7 +330,7 @@ Page::AppendEntry(
 	float value
 )
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Pointer(entryname);
 	Note* note = AddNote(entryname);
 	Check_Object(note);
@@ -346,7 +346,7 @@ Page::GetEntry(
 	bool required
 )
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Pointer(entryname);
 	Check_Pointer(contents);
 	Note* note = FindNote(entryname);
@@ -374,7 +374,7 @@ Page::SetEntry(
 	bool value
 )
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Pointer(entryname);
 	Note* note = FindNote(entryname);
 	if(!note)
@@ -391,7 +391,7 @@ Page::AppendEntry(
 	bool value
 )
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Pointer(entryname);
 	Note* note = AddNote(entryname);
 	Check_Object(note);
@@ -407,7 +407,7 @@ Page::GetEntry(
 	bool required
 )
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Pointer(entryname);
 	Check_Pointer(contents);
 	Note* note = FindNote(entryname);
@@ -435,7 +435,7 @@ Page::SetEntry(
 	const Vector3D& value
 )
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Pointer(entryname);
 	Note* note = FindNote(entryname);
 	if(!note)
@@ -452,7 +452,7 @@ Page::AppendEntry(
 	const Vector3D& value
 )
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Pointer(entryname);
 	Note* note = AddNote(entryname);
 	Check_Object(note);
@@ -468,7 +468,7 @@ Page::GetEntry(
 	bool required
 )
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Pointer(entryname);
 	Check_Pointer(contents);
 	Note* note = FindNote(entryname);
@@ -496,7 +496,7 @@ Page::SetEntry(
 	const YawPitchRoll& value
 )
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Pointer(entryname);
 	Note* note = FindNote(entryname);
 	if(!note)
@@ -513,7 +513,7 @@ Page::AppendEntry(
 	const YawPitchRoll& value
 )
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Pointer(entryname);
 	Note* note = AddNote(entryname);
 	Check_Object(note);
@@ -529,7 +529,7 @@ Page::GetEntry(
 	bool required
 )
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Pointer(entryname);
 	Check_Pointer(contents);
 	Note* note = FindNote(entryname);
@@ -557,7 +557,7 @@ Page::SetEntry(
 	const UnitQuaternion& value
 )
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Pointer(entryname);
 	Note* note = FindNote(entryname);
 	if(!note)
@@ -574,7 +574,7 @@ Page::AppendEntry(
 	const UnitQuaternion& value
 )
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Pointer(entryname);
 	Note* note = AddNote(entryname);
 	Check_Object(note);
@@ -590,7 +590,7 @@ Page::GetEntry(
 	bool required
 )
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Pointer(entryname);
 	Check_Pointer(contents);
 	Note* note = FindNote(entryname);
@@ -618,7 +618,7 @@ Page::SetEntry(
 	const Motion3D& value
 )
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Pointer(entryname);
 	Note* note = FindNote(entryname);
 	if(!note)
@@ -635,7 +635,7 @@ Page::AppendEntry(
 	const Motion3D& value
 )
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Pointer(entryname);
 	Note* note = AddNote(entryname);
 	Check_Object(note);
@@ -651,7 +651,7 @@ Page::GetEntry(
 	bool required
 )
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Pointer(entryname);
 	Check_Pointer(contents);
 	Note* note = FindNote(entryname);
@@ -679,7 +679,7 @@ Page::SetEntry(
 	const RGBColor& value
 )
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Pointer(entryname);
 	Note* note = FindNote(entryname);
 	if(!note)
@@ -696,7 +696,7 @@ Page::AppendEntry(
 	const RGBColor& value
 )
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Pointer(entryname);
 	Note* note = AddNote(entryname);
 	Check_Object(note);
@@ -712,7 +712,7 @@ Page::GetEntry(
 	bool required
 )
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Pointer(entryname);
 	Check_Pointer(contents);
 	Note* note = FindNote(entryname);
@@ -740,7 +740,7 @@ Page::SetEntry(
 	const RGBAColor& value
 )
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Pointer(entryname);
 	Note* note = FindNote(entryname);
 	if(!note)
@@ -757,7 +757,7 @@ Page::AppendEntry(
 	const RGBAColor& value
 )
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Pointer(entryname);
 	Note* note = AddNote(entryname);
 	Check_Object(note);
@@ -773,7 +773,7 @@ Page::GetEntry(
 	bool required
 )
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Pointer(entryname);
 	Check_Pointer(contents);
 	Note* note = FindNote(entryname);
@@ -801,7 +801,7 @@ Page::SetEntry(
 	NotationFile* value
 )
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Pointer(entryname);
 	Note* note = FindNote(entryname);
 	if(!note)
@@ -818,7 +818,7 @@ Page::AppendEntry(
 	NotationFile* value
 )
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Pointer(entryname);
 	Note* note = AddNote(entryname);
 	Check_Object(note);

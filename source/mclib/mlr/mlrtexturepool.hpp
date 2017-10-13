@@ -1,5 +1,5 @@
 //===========================================================================//
-// Copyright (C) Microsoft Corporation. All rights reserved. //
+// Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
 #pragma once
@@ -57,32 +57,32 @@ namespace MidLevelRenderer
 		MLRTexture* operator()(PCSTR name, int32_t = 0);
 		MLRTexture* operator[](size_t index)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			Verify(index - 1 < MLRState::TextureMask);
 			return textureArray[index - 1];
 		}
 
 		MLRTexture* operator[](const MLRState* state)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return textureArray[state->GetTextureHandle() - 1];
 		}
 
 		GOSImage* GetImage(PCSTR imageName)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return imagePool->GetImage(imageName);
 		}
 
 		const GOSImagePool* GetGOSImagePool()
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return imagePool;
 		}
 
 		uint32_t GetLastHandle()
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return lastHandle;
 		}
 
@@ -91,13 +91,13 @@ namespace MidLevelRenderer
 
 		uint32_t GetNumStoredTextures()
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return storedTextures;
 		}
 
 		int32_t GetInstanceDepth(void) const
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return instanceDepth;
 		}
 

@@ -26,7 +26,7 @@ using namespace Stuff;
 void
 Note::WriteNotation(MemoryStream* stream)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Object(stream);
 	if(m_name)
 		*stream << (PCSTR)m_name;
@@ -40,7 +40,7 @@ Note::WriteNotation(MemoryStream* stream)
 void
 Note::GetEntry(pint32_t value)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Pointer(value);
 	PCSTR contents = nullptr;
 	GetEntry(&contents);
@@ -53,7 +53,7 @@ Note::GetEntry(pint32_t value)
 void
 Note::SetEntry(int32_t value)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	char contents[12];
 	_itoa_s(value, contents,_countof(contents), 10);
 	Verify(strlen(contents) < (_countof(contents)));
@@ -65,7 +65,7 @@ Note::SetEntry(int32_t value)
 void
 Note::GetEntry(float* value)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Pointer(value);
 	PCSTR contents = nullptr;
 	GetEntry(&contents);
@@ -78,7 +78,7 @@ Note::GetEntry(float* value)
 void
 Note::SetEntry(float value)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	char contents[32];
 	sprintf_s(contents, _countof(contents), "%f", value);
 	Verify(strlen(contents) < sizeof(contents));
@@ -90,7 +90,7 @@ Note::SetEntry(float value)
 void
 Note::GetEntry(bool* value)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Pointer(value);
 	PCSTR contents = nullptr;
 	GetEntry(&contents);
@@ -103,7 +103,7 @@ Note::GetEntry(bool* value)
 void
 Note::SetEntry(bool value)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	SetEntry((value) ? "true" : "false");
 }
 
@@ -112,7 +112,7 @@ Note::SetEntry(bool value)
 void
 Note::GetEntry(Vector3D* value)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Pointer(value);
 	PCSTR contents = nullptr;
 	GetEntry(&contents);
@@ -145,7 +145,7 @@ Note::GetEntry(Vector3D* value)
 void
 Note::SetEntry(const Vector3D& value)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	static char contents[64];
 	int32_t temp;
 	temp = sprintf_s(
@@ -164,7 +164,7 @@ Note::SetEntry(const Vector3D& value)
 //
 void Note::GetEntry(YawPitchRoll* value)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Pointer(value);
 	PCSTR contents = nullptr;
 	GetEntry(&contents);
@@ -198,7 +198,7 @@ void Note::GetEntry(YawPitchRoll* value)
 void
 Note::SetEntry(const YawPitchRoll& value)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	static char
 	contents[32];
 	sprintf_s(
@@ -218,7 +218,7 @@ Note::SetEntry(const YawPitchRoll& value)
 void
 Note::GetEntry(UnitQuaternion* value)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Pointer(value);
 	PCSTR contents = nullptr;
 	GetEntry(&contents);
@@ -254,7 +254,7 @@ Note::GetEntry(UnitQuaternion* value)
 void
 Note::SetEntry(const UnitQuaternion& value)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	static char contents[32] = {0};
 	YawPitchRoll ypr(value);
 	Verify(strlen(contents) < sizeof(contents));
@@ -274,7 +274,7 @@ Note::SetEntry(const UnitQuaternion& value)
 void
 Note::GetEntry(Motion3D* value)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Pointer(value);
 	PCSTR contents = nullptr;
 	GetEntry(&contents);
@@ -309,7 +309,7 @@ Note::GetEntry(Motion3D* value)
 void
 Note::SetEntry(const Motion3D& value)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	static char
 	contents[64];
 	sprintf_s(
@@ -332,7 +332,7 @@ Note::SetEntry(const Motion3D& value)
 void
 Note::GetEntry(RGBColor* value)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Pointer(value);
 	PCSTR contents = nullptr;
 	GetEntry(&contents);
@@ -366,7 +366,7 @@ Note::GetEntry(RGBColor* value)
 void
 Note::SetEntry(const RGBColor& value)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	static char
 	contents[32];
 	sprintf_s(
@@ -386,7 +386,7 @@ Note::SetEntry(const RGBColor& value)
 void
 Note::GetEntry(RGBAColor* value)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Pointer(value);
 	PCSTR contents = nullptr;
 	GetEntry(&contents);
@@ -423,7 +423,7 @@ Note::GetEntry(RGBAColor* value)
 void
 Note::SetEntry(const RGBAColor& value)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	static char
 	contents[48];
 	sprintf_s(
@@ -444,7 +444,7 @@ Note::SetEntry(const RGBAColor& value)
 void
 Note::GetEntry(NotationFile* value)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Object(value);
 	PCSTR contents = nullptr;
 	GetEntry(&contents);
@@ -501,7 +501,7 @@ Note::GetEntry(NotationFile* value)
 void
 Note::SetEntry(NotationFile* value)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Object(value);
 	//
 	//----------------------------------------------------

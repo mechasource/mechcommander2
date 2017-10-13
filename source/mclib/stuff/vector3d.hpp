@@ -134,7 +134,7 @@ namespace Stuff
 		//
 		Vector3D& operator=(const Vector3D& vector)
 		{
-			Check_Pointer(this);
+			//Check_Pointer(this);
 			Check_Object(&vector);
 			x = vector.x;
 			y = vector.y;
@@ -180,45 +180,45 @@ namespace Stuff
 
 		const float& operator[](size_t index) const
 		{
-			Check_Pointer(this);
+			//Check_Pointer(this);
 			Verify(static_cast<uint32_t>(index) <= Z_Axis);
 			return (&x)[index];
 		}
 		float& operator[](size_t index)
 		{
-			Check_Pointer(this);
+			//Check_Pointer(this);
 			Verify(static_cast<uint32_t>(index) <= Z_Axis);
 			return (&x)[index];
 		}
 
 		float GetForwardComponent(void)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return APPLY_FORWARD_SIGN((*this)[FORWARD_AXIS]);
 		}
 		float GetBackwardComponent(void)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return APPLY_BACKWARD_SIGN((*this)[BACKWARD_AXIS]);
 		}
 		float GetUpComponent(void)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return APPLY_UP_SIGN((*this)[UP_AXIS]);
 		}
 		float GetDownComponent(void)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return APPLY_DOWN_SIGN((*this)[DOWN_AXIS]);
 		}
 		float GetRightComponent(void)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return APPLY_RIGHT_SIGN((*this)[RIGHT_AXIS]);
 		}
 		float GetLeftComponent(void)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return APPLY_LEFT_SIGN((*this)[LEFT_AXIS]);
 		}
 
@@ -228,7 +228,7 @@ namespace Stuff
 		//
 		Vector3D& Negate(const Vector3D& v)
 		{
-			Check_Pointer(this);
+			//Check_Pointer(this);
 			Check_Object(&v);
 			x = -v.x;
 			y = -v.y;
@@ -238,7 +238,7 @@ namespace Stuff
 
 		Vector3D& Add(const Vector3D& v1, const Vector3D& v2)
 		{
-			Check_Pointer(this);
+			//Check_Pointer(this);
 			Check_Object(&v1);
 			Check_Object(&v2);
 			x = v1.x + v2.x;
@@ -248,7 +248,7 @@ namespace Stuff
 		}
 		Vector3D& AddScaled(const Vector3D& v1, const Vector3D& v2, float scale)
 		{
-			Check_Pointer(this);
+			//Check_Pointer(this);
 			Check_Object(&v1);
 			Check_Object(&v2);
 			x = v1.x + v2.x * scale;
@@ -262,7 +262,7 @@ namespace Stuff
 		}
 		Vector3D& Subtract(const Vector3D& v1, const Vector3D& v2)
 		{
-			Check_Pointer(this);
+			//Check_Pointer(this);
 			Check_Object(&v1);
 			Check_Object(&v2);
 			x = v1.x - v2.x;
@@ -277,14 +277,14 @@ namespace Stuff
 
 		float operator*(const Vector3D& v) const
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			Check_Object(&v);
 			return x * v.x + y * v.y + z * v.z;
 		}
 
 		Vector3D& Cross(const Vector3D& v1, const Vector3D& v2)
 		{
-			Check_Pointer(this);
+			//Check_Pointer(this);
 			Check_Object(&v1);
 			Check_Object(&v2);
 			Verify(this != &v1);
@@ -307,7 +307,7 @@ namespace Stuff
 			const Vector3D& p2, // v2 = p3 - p2
 			const Vector3D& p3)
 		{
-			Check_Pointer(this);
+			//Check_Pointer(this);
 			Check_Object(&p1);
 			Check_Object(&p2);
 			Check_Object(&p3);
@@ -329,7 +329,7 @@ namespace Stuff
 
 		Vector3D& Multiply(const Vector3D& v, float scale)
 		{
-			Check_Pointer(this);
+			//Check_Pointer(this);
 			Check_Object(&v);
 			x = v.x * scale;
 			y = v.y * scale;
@@ -342,7 +342,7 @@ namespace Stuff
 		}
 		Vector3D& Multiply(const Vector3D& v1, const Vector3D& v2)
 		{
-			Check_Pointer(this);
+			//Check_Pointer(this);
 			Check_Object(&v1);
 			Check_Object(&v2);
 			x = v1.x * v2.x;
@@ -357,7 +357,7 @@ namespace Stuff
 
 		Vector3D& Divide(const Vector3D& v, float scale)
 		{
-			Check_Pointer(this);
+			//Check_Pointer(this);
 			Check_Object(&v);
 			Verify(!Small_Enough(scale));
 			scale = 1.0f / scale;
@@ -373,7 +373,7 @@ namespace Stuff
 
 		Vector3D& Divide(const Vector3D& v1, const Vector3D& v2)
 		{
-			Check_Pointer(this);
+			//Check_Pointer(this);
 			Check_Object(&v1);
 			Check_Object(&v2);
 			Verify(!Small_Enough(v2.x));
@@ -405,7 +405,7 @@ namespace Stuff
 		//
 		float GetLengthSquared(void) const
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return x * x + y * y + z * z;
 		}
 		float GetLength(void) const
@@ -420,7 +420,7 @@ namespace Stuff
 
 		Vector3D& Normalize(const Vector3D& v)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			Check_Object(&v);
 			float len = v.GetLength();
 			Verify(!Small_Enough(len));
@@ -433,7 +433,7 @@ namespace Stuff
 
 		Vector3D& Combine(const Vector3D& v1, float t1, const Vector3D& v2, float t2)
 		{
-			Check_Pointer(this);
+			//Check_Pointer(this);
 			Check_Object(&v1);
 			Check_Object(&v2);
 			x = t1 * v1.x + t2 * v2.x;
@@ -452,7 +452,7 @@ namespace Stuff
 		//
 		Vector3D& Lerp(const Vector3D& v1, const Vector3D& v2, float t)
 		{
-			Check_Pointer(this);
+			//Check_Pointer(this);
 			Check_Object(&v1);
 			Check_Object(&v2);
 			x = v1.x + t * (v2.x - v1.x);

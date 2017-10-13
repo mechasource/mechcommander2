@@ -22,7 +22,7 @@ LinearMatrix4D::Identity(true);
 void LinearMatrix4D::AlignLocalAxisToWorldVector(
 	const Vector3D& world_target, size_t pointing_axis, size_t rotating_axis, size_t minor_axis)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Object(&world_target);
 	Verify(static_cast<uint32_t>(pointing_axis) <= Z_Axis);
 	Verify(static_cast<uint32_t>(rotating_axis) <= Z_Axis);
@@ -152,7 +152,7 @@ void LinearMatrix4D::AlignLocalAxisToWorldVector(
 	(*this)(minor_axis, X_Axis) = minor_vector.x;
 	(*this)(minor_axis, Y_Axis) = minor_vector.y;
 	(*this)(minor_axis, Z_Axis) = minor_vector.z;
-	Check_Object(this);
+	// Check_Object(this);
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -160,7 +160,7 @@ void LinearMatrix4D::AlignLocalAxisToWorldVector(
 LinearMatrix4D&
 LinearMatrix4D::Invert(const LinearMatrix4D& m)
 {
-	Check_Pointer(this);
+	//Check_Pointer(this);
 	Check_Object(&m);
 	Verify(this != &m);
 	//
@@ -193,7 +193,7 @@ LinearMatrix4D::Invert(const LinearMatrix4D& m)
 LinearMatrix4D&
 LinearMatrix4D::Normalize()
 {
-	Check_Pointer(this);
+	//Check_Pointer(this);
 #if defined(LEFT_HANDED_COORDINATES)
 #error Right handed coordinate dependancy!
 #endif

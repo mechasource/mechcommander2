@@ -1,5 +1,5 @@
 //===========================================================================//
-// Copyright (C) Microsoft Corporation. All rights reserved. //
+// Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
 #pragma once
@@ -47,7 +47,7 @@ namespace MidLevelRenderer
 
 		GOSImage* GetImage(pint32_t h = nullptr)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			if(h)
 			{
 				*h = hint;
@@ -57,13 +57,13 @@ namespace MidLevelRenderer
 
 		PCSTR GetTextureName(void)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return textureName;
 		}
 
 		int32_t GetTextureHandle(void)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return textureHandle;
 		}
 
@@ -72,19 +72,19 @@ namespace MidLevelRenderer
 
 		int32_t GetTextureInstance()
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return instance;
 		}
 
 		bool GetAnimateTexture(void)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return !textureMatrixIsIdentity;
 		}
 
 		void SetAnimateTexture(bool yesNo)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			if(yesNo == true)
 			{
 				textureMatrixIsIdentity = false;
@@ -98,19 +98,19 @@ namespace MidLevelRenderer
 
 		Stuff::AffineMatrix4D& GetTextureMatrix()
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return textureMatrix;
 		}
 
 		void SetHint(int32_t h)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			hint = h;
 		}
 
 		int32_t GetHint()
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return hint;
 		}
 

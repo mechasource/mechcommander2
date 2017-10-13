@@ -44,7 +44,7 @@ namespace MidLevelRenderer
 		virtual LightType
 		GetLightType()
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return InfiniteLightWithFallOff;
 		}
 
@@ -67,21 +67,20 @@ namespace MidLevelRenderer
 		inline float
 		GetFalloffNear()
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return innerRadius;
 		}
 
 		inline float
 		GetFalloffFar()
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return outerRadius;
 		}
 
-		bool
-		GetFalloff(const float& length, float& falloff)
+		bool GetFalloff(const float& length, float& falloff)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			Verify(length > 0.0f);
 			if(length <= innerRadius)
 			{

@@ -50,13 +50,13 @@ Node::Node(ClassData* class_data):
 
 Node::~Node()
 {
-	Check_Object(this);
+	// Check_Object(this);
 }
 
 void
 Node::ReleaseLinkHandler(Socket*, Plug*)
 {
-	Check_Object(this);
+	// Check_Object(this);
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

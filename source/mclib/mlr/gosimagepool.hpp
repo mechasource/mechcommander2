@@ -39,7 +39,7 @@ namespace MidLevelRenderer
 		void UnLoadImages(void);
 		void GetTexturePath(Stuff::MString* pName) const
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			*pName = texturePath;
 		}
 

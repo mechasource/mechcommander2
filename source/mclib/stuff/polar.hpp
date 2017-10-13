@@ -48,14 +48,14 @@ namespace Stuff
 			const float r
 		)
 		{
-			Check_Pointer(this);
+			//Check_Pointer(this);
 			pitch = p;
 			yaw = y;
 			range = r;
 		}
 		YawPitchRange(const YawPitchRange& polar)
 		{
-			Check_Pointer(this);
+			//Check_Pointer(this);
 			pitch = polar.pitch;
 			yaw = polar.yaw;
 			range = polar.range;
@@ -71,7 +71,7 @@ namespace Stuff
 		YawPitchRange&
 		operator=(const YawPitchRange& angles)
 		{
-			Check_Pointer(this);
+			//Check_Pointer(this);
 			Check_Object(&angles);
 			pitch = angles.pitch;
 			yaw = angles.yaw;

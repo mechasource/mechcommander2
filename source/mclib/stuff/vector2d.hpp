@@ -52,13 +52,13 @@ namespace Stuff
 
 		const T& operator[](size_t index) const
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			Verify(static_cast<uint32_t>(index) <= Y_Axis);
 			return (&x)[index];
 		}
 		T& operator[](size_t index)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			Verify(static_cast<uint32_t>(index) <= Y_Axis);
 			return (&x)[index];
 		}
@@ -71,7 +71,7 @@ namespace Stuff
 		//
 		Vector2DOf<T>& Negate(const Vector2DOf<T>& v)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			Check_Object(&v);
 			x = -v.x;
 			y = -v.y;
@@ -80,7 +80,7 @@ namespace Stuff
 
 		Vector2DOf<T>& Add(const Vector2DOf<T>& v1, const Vector2DOf<T>& v2)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			Check_Object(&v1);
 			Check_Object(&v2);
 			x = v1.x + v2.x;
@@ -94,7 +94,7 @@ namespace Stuff
 		}
 		Vector2DOf<T>& Subtract(const Vector2DOf<T>& v1, const Vector2DOf<T>& v2)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			Check_Object(&v1);
 			Check_Object(&v2);
 			x = v1.x - v2.x;
@@ -109,14 +109,14 @@ namespace Stuff
 
 		T operator*(const Vector2DOf<T>& v) const
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			Check_Object(&v);
 			return x * v.x + y * v.y;
 		}
 
 		Vector2DOf<T>& Multiply(const Vector2DOf<T>& v, T scale)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			Check_Object(&v);
 			x = v.x * scale;
 			y = v.y * scale;
@@ -129,7 +129,7 @@ namespace Stuff
 		}
 		Vector2DOf<T>& Multiply(const Vector2DOf<T>& v1, const Vector2DOf<T>& v2)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			Check_Object(&v1);
 			Check_Object(&v2);
 			x = v1.x * v2.x;
@@ -143,7 +143,7 @@ namespace Stuff
 		}
 		Vector2DOf<T>& Divide(const Vector2DOf<T>& v, T scale)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			Check_Object(&v);
 			Verify(!Small_Enough(static_cast<float>(scale)));
 			x = v.x / scale;
@@ -157,7 +157,7 @@ namespace Stuff
 		}
 		Vector2DOf<T>& Divide(const Vector2DOf<T>& v1, const Vector2DOf<T>& v2)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			Check_Object(&v1);
 			Check_Object(&v2);
 			Verify(!Small_Enough(static_cast<float>(v2.x)));
@@ -173,24 +173,24 @@ namespace Stuff
 		}
 		T GetLengthSquared(void) const
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return operator*(*this);
 		}
 		float GetLength(void) const
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return Sqrt(static_cast<float>(GetLengthSquared()));
 		}
 
 		float GetApproximateLength(void) const
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return SqrtApproximate(static_cast<float>(GetLengthSquared()));
 		}
 
 		Vector2DOf<T>& Normalize(const Vector2DOf<T>& v)
 		{
-			Check_Pointer(this);
+			//Check_Pointer(this);
 			Check_Object(&v);
 			float len = v.GetLength(void);
 			Verify(!Small_Enough(len));
@@ -202,7 +202,7 @@ namespace Stuff
 		Vector2DOf<T>& Combine(
 			const Vector2DOf<T>& v1, float t1, const Vector2DOf<T>& v2, float t2)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			Check_Object(&v1);
 			Check_Object(&v2);
 			x = static_cast<T>(v1.x * t1 + v2.x * t2);
@@ -217,7 +217,7 @@ namespace Stuff
 
 		Vector2DOf<T>& Lerp(const Vector2DOf<T>& v1, const Vector2DOf<T>& v2, float t)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			Check_Object(&v1);
 			Check_Object(&v2);
 			x = static_cast<T>(v1.x + t * (v2.x - v1.x));
@@ -256,7 +256,7 @@ namespace Stuff
 #if !defined(Spew)
 template <class T> void Spew(PCSTR group, const Stuff::Vector2DOf<T>& vector)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	SPEW((group, "<+"));
 	Spew(group, vector.x);
 	SPEW((group, ",+"));

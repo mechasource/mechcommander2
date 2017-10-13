@@ -92,7 +92,7 @@ namespace Stuff
 		EulerAngles&
 		operator=(const EulerAngles& angles)
 		{
-			Check_Pointer(this);
+			//Check_Pointer(this);
 			Check_Object(&angles);
 			pitch = angles.pitch;
 			yaw = angles.yaw;
@@ -150,14 +150,14 @@ namespace Stuff
 		const Radian&
 		operator[](size_t index) const
 		{
-			Check_Pointer(this);
+			//Check_Pointer(this);
 			Verify(static_cast<uint32_t>(index) <= Z_Axis);
 			return (&pitch)[index];
 		}
 		Radian&
 		operator[](size_t index)
 		{
-			Check_Pointer(this);
+			//Check_Pointer(this);
 			Verify(static_cast<uint32_t>(index) <= Z_Axis);
 			return (&pitch)[index];
 		}
@@ -254,7 +254,7 @@ namespace Stuff
 		YawPitchRoll&
 		operator=(const YawPitchRoll& angles)
 		{
-			Check_Pointer(this);
+			//Check_Pointer(this);
 			Check_Object(&angles);
 			pitch = angles.pitch;
 			yaw = angles.yaw;
@@ -279,14 +279,14 @@ namespace Stuff
 		const Radian&
 		operator[](size_t index) const
 		{
-			Check_Pointer(this);
+			//Check_Pointer(this);
 			Verify(static_cast<uint32_t>(index) <= Z_Axis);
 			return (&yaw)[index];
 		}
 		Radian&
 		operator[](size_t index)
 		{
-			Check_Pointer(this);
+			//Check_Pointer(this);
 			Verify(static_cast<uint32_t>(index) <= Z_Axis);
 			return (&yaw)[index];
 		}
@@ -389,12 +389,12 @@ namespace Stuff
 			float w
 		)
 		{
-			Check_Pointer(this);
+			//Check_Pointer(this);
 			this->x = x;
 			this->y = y;
 			this->z = z;
 			this->w = w;
-			Check_Object(this);
+			// Check_Object(this);
 		}
 
 		//
@@ -403,7 +403,7 @@ namespace Stuff
 		UnitQuaternion&
 		operator=(const UnitQuaternion& q)
 		{
-			Check_Pointer(this);
+			//Check_Pointer(this);
 			Check_Object(&q);
 			x = q.x;
 			y = q.y;
@@ -464,14 +464,14 @@ namespace Stuff
 		const float&
 		operator[](size_t index) const
 		{
-			Check_Pointer(this);
+			//Check_Pointer(this);
 			Verify(static_cast<uint32_t>(index) <= W_Axis);
 			return (&x)[index];
 		}
 		float&
 		operator[](size_t index)
 		{
-			Check_Pointer(this);
+			//Check_Pointer(this);
 			Verify(static_cast<uint32_t>(index) <= W_Axis);
 			return (&x)[index];
 		}

@@ -99,7 +99,7 @@ MLRInfiniteLightWithFalloff::~MLRInfiniteLightWithFalloff()
 void
 MLRInfiniteLightWithFalloff::Save(Stuff::MemoryStream* stream)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Object(stream);
 	MLRLight::Save(stream);
 	*stream << innerRadius << outerRadius;
@@ -110,7 +110,7 @@ MLRInfiniteLightWithFalloff::Save(Stuff::MemoryStream* stream)
 void
 MLRInfiniteLightWithFalloff::Write(Stuff::Page* page)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Object(page);
 	MLRLight::Write(page);
 	page->SetEntry("InnerRadius", innerRadius);
@@ -130,7 +130,7 @@ MLRInfiniteLightWithFalloff::TestInstance()
 void
 MLRInfiniteLightWithFalloff::SetFalloffDistance(float ir, float or)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	innerRadius = ir;
 	outerRadius = or;
 	oneOverDistance = 1.0f / (outerRadius - innerRadius);
@@ -142,7 +142,7 @@ MLRInfiniteLightWithFalloff::SetFalloffDistance(float ir, float or)
 bool
 MLRInfiniteLightWithFalloff::GetFalloffDistance(float& ir, float& or)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	ir = innerRadius;
 	or = outerRadius;
 	return true;

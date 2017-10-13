@@ -1,5 +1,5 @@
 //===========================================================================//
-// Copyright (C) Microsoft Corporation. All rights reserved. //
+// Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
 
@@ -174,11 +174,11 @@ void MidLevelRenderer::InitializeClasses(
 	Verify(FirstFreeMLRClassID <= Stuff::LastMLRClassID);
 #if _CONSIDERED_OBSOLETE
 	Verify(!StaticHeap);
-	StaticHeap = gos_CreateMemoryHeap("MLR Static");
+	StaticHeap = gos_CreateMemoryHeap("MLR Static", 0, ParentClientHeap);
 	Check_Pointer(StaticHeap);
 	gos_PushCurrentHeap(StaticHeap);
 	Verify(!Heap);
-	Heap = gos_CreateMemoryHeap("MLR");
+	Heap = gos_CreateMemoryHeap("MLR", 0, ParentClientHeap);
 	Check_Pointer(Heap);
 #endif
 	Limits::Max_Number_Vertices_Per_Frame = Max_Number_Vertices_Per_Frame;

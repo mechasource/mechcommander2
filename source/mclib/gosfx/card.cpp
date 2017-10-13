@@ -1,5 +1,5 @@
 //===========================================================================//
-// Copyright (C) Microsoft Corporation. All rights reserved. //
+// Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
 #include "stdafx.h"
@@ -14,11 +14,11 @@
 //
 gosFX::Card__Specification::Card__Specification(
 	Stuff::MemoryStream* stream,
-	int32_t gfx_version
+	uint32_t gfx_version
 ):
 	Singleton__Specification(gosFX::CardClassID, stream, gfx_version)
 {
-	Check_Pointer(this);
+	//Check_Pointer(this);
 	Verify(m_class == CardClassID);
 	//Verify(gos_GetCurrentHeap() == Heap);
 	m_halfHeight.Load(stream, gfx_version);
@@ -67,7 +67,7 @@ gosFX::Card__Specification::Card__Specification(
 gosFX::Card__Specification::Card__Specification():
 	Singleton__Specification(gosFX::CardClassID)
 {
-	Check_Pointer(this);
+	//Check_Pointer(this);
 	//Verify(gos_GetCurrentHeap() == Heap);
 	m_animated = false;
 	m_width = 1;
@@ -78,14 +78,14 @@ gosFX::Card__Specification::Card__Specification():
 gosFX::Card__Specification*
 gosFX::Card__Specification::Make(
 	Stuff::MemoryStream* stream,
-	int32_t gfx_version
+	uint32_t gfx_version
 )
 {
 	Check_Object(stream);
 #if _CONSIDERED_OBSOLETE
-	gos_PushCurrentHeap(Heap);
+	// gos_PushCurrentHeap(Heap);
 	Card__Specification* spec = new gosFX::Card__Specification(stream, gfx_version);
-	gos_PopCurrentHeap();
+	// gos_PopCurrentHeap();
 #else
 	Card__Specification* spec = new gosFX::Card__Specification(stream, gfx_version);
 #endif
@@ -97,7 +97,7 @@ gosFX::Card__Specification::Make(
 void
 gosFX::Card__Specification::Save(Stuff::MemoryStream* stream)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Object(stream);
 	Singleton__Specification::Save(stream);
 	m_halfHeight.Save(stream);
@@ -115,7 +115,7 @@ gosFX::Card__Specification::Save(Stuff::MemoryStream* stream)
 void
 gosFX::Card__Specification::BuildDefaults()
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Singleton__Specification::BuildDefaults();
 	m_alignZUsingX = false;
 	m_alignZUsingY = false;
@@ -142,7 +142,7 @@ gosFX::Card__Specification::BuildDefaults()
 bool
 gosFX::Card__Specification::IsDataValid(bool fix_data)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	float max_offset, min_offset;
 	float max_scale, min_scale;
 	m_USize.ExpensiveComputeRange(&min_scale, &max_scale);
@@ -163,7 +163,7 @@ gosFX::Card__Specification::IsDataValid(bool fix_data)
 		if(fix_data)
 		{
 			m_VOffset.SetCurve(0.0f);
-			PAUSE(("Warning: Curve \"VOffset\" in Effect \"%s\" Is Out of Range and has been Reset", (PSTR)m_name));
+			// PAUSE(("Warning: Curve \"VOffset\" in Effect \"%s\" Is Out of Range and has been Reset", (PSTR)m_name));
 		}
 		else
 			return false;
@@ -187,7 +187,7 @@ gosFX::Card__Specification::IsDataValid(bool fix_data)
 		if(fix_data)
 		{
 			m_UOffset.SetCurve(0.0f);
-			PAUSE(("Warning: Curve \"UOffset\" in Effect \"%s\" Is Out of Range and has been Reset", (PSTR)m_name));
+			// PAUSE(("Warning: Curve \"UOffset\" in Effect \"%s\" Is Out of Range and has been Reset", (PSTR)m_name));
 		}
 		else
 			return false;
@@ -201,11 +201,11 @@ gosFX::Card__Specification::IsDataValid(bool fix_data)
 void
 gosFX::Card__Specification::Copy(Card__Specification* spec)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Object(spec);
 	Singleton__Specification::Copy(spec);
 #if _CONSIDERED_OBSOLETE
-	gos_PushCurrentHeap(Heap);
+	// gos_PushCurrentHeap(Heap);
 	m_halfHeight = spec->m_halfHeight;
 	m_aspectRatio = spec->m_aspectRatio;
 	m_index = spec->m_index;
@@ -215,7 +215,7 @@ gosFX::Card__Specification::Copy(Card__Specification* spec)
 	m_VSize = spec->m_VSize;
 	m_animated = spec->m_animated;
 	m_width = spec->m_width;
-	gos_PopCurrentHeap();
+	// gos_PopCurrentHeap();
 #endif
 }
 
@@ -270,10 +270,10 @@ gosFX::Card::Card(
 {
 	Check_Object(spec);
 	//Verify(gos_GetCurrentHeap() == Heap);
-	gos_PushCurrentHeap(MidLevelRenderer::Heap);
+	// gos_PushCurrentHeap(MidLevelRenderer::Heap);
 	m_cardCloud = new MidLevelRenderer::MLRCardCloud(1);
 	Register_Object(m_cardCloud);
-	gos_PopCurrentHeap();
+	// gos_PopCurrentHeap();
 	m_cardCloud->SetData(
 		&m_cardCount,
 		m_vertices,
@@ -300,9 +300,9 @@ gosFX::Card::Make(
 {
 	Check_Object(spec);
 #if _CONSIDERED_OBSOLETE
-	gos_PushCurrentHeap(Heap);
+	// gos_PushCurrentHeap(Heap);
 	Card* cloud = new gosFX::Card(spec, flags);
-	gos_PopCurrentHeap();
+	// gos_PopCurrentHeap();
 #else
 	Card* cloud = new gosFX::Card(spec, flags);
 #endif
@@ -314,7 +314,7 @@ gosFX::Card::Make(
 void
 gosFX::Card::Start(ExecuteInfo* info)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Object(info);
 	Singleton::Start(info);
 	Specification* spec = GetSpecification();
@@ -330,7 +330,7 @@ gosFX::Card::Start(ExecuteInfo* info)
 bool
 gosFX::Card::Execute(ExecuteInfo* info)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Object(info);
 	if(!IsExecuted())
 		return false;
@@ -423,7 +423,7 @@ gosFX::Card::Execute(ExecuteInfo* info)
 void
 gosFX::Card::Kill()
 {
-	Check_Object(this);
+	// Check_Object(this);
 	m_cardCloud->TurnOff(0);
 	Singleton::Kill();
 }
@@ -432,7 +432,7 @@ gosFX::Card::Kill()
 //
 void gosFX::Card::Draw(DrawInfo* info)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Object(info);
 	//
 	//----------------------------

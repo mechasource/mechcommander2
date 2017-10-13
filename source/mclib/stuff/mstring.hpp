@@ -266,7 +266,7 @@ namespace Stuff
 	inline size_t
 	MStringRepresentation::GetLength(void) const
 	{
-		Check_Object(this);
+		// Check_Object(this);
 		Verify(
 			(stringText != nullptr) ?
 			(stringLength == strlen(stringText)) :
@@ -278,7 +278,7 @@ namespace Stuff
 	inline void
 	MStringRepresentation::SetLength(size_t length)
 	{
-		Check_Object(this);
+		// Check_Object(this);
 		Verify(length < GetSize());
 		stringLength = length;
 		Verify(strlen(stringText) == stringLength);
@@ -287,7 +287,7 @@ namespace Stuff
 	inline size_t
 	MStringRepresentation::GetSize(void) const
 	{
-		Check_Object(this);
+		// Check_Object(this);
 		return stringSize;
 	}
 
@@ -296,7 +296,7 @@ namespace Stuff
 	inline
 	MStringRepresentation::operator PSTR(void) const
 	{
-		Check_Object(this);
+		// Check_Object(this);
 		//		Verify(stringText != nullptr);
 		return stringText;
 	}
@@ -305,14 +305,14 @@ namespace Stuff
 	inline void
 	MStringRepresentation::operator += (const MStringRepresentation& str)
 	{
-		Check_Object(this);
+		// Check_Object(this);
 		*this = *this + str;
 	}
 
 	inline void
 	MStringRepresentation::operator += (char ch)
 	{
-		Check_Object(this);
+		// Check_Object(this);
 		*this = *this + ch;
 	}
 
@@ -363,7 +363,7 @@ namespace Stuff
 	inline char
 	MStringRepresentation::operator [](size_t pos) const
 	{
-		Check_Object(this);
+		// Check_Object(this);
 		return (pos >= stringLength) ? ('\x00') : (stringText[pos]);
 	}
 
@@ -371,7 +371,7 @@ namespace Stuff
 	inline void
 	MStringRepresentation::IncrementReferenceCount()
 	{
-		Check_Object(this);
+		// Check_Object(this);
 		Verify(referenceCount >= 0);
 		referenceCount++;
 	}
@@ -379,7 +379,7 @@ namespace Stuff
 	inline void
 	MStringRepresentation::DecrementReferenceCount()
 	{
-		Check_Object(this);
+		// Check_Object(this);
 		Verify(referenceCount > 0);
 		if(--referenceCount == 0)
 		{
@@ -698,7 +698,7 @@ namespace Stuff
 	inline void
 	MString::operator += (const MString& str)
 	{
-		Check_Object(this);
+		// Check_Object(this);
 		Check_Object(&str);
 		*this = *this + str;
 	}
@@ -706,7 +706,7 @@ namespace Stuff
 	inline void
 	MString::operator += (char ch)
 	{
-		Check_Object(this);
+		// Check_Object(this);
 		*this = *this + ch;
 	}
 

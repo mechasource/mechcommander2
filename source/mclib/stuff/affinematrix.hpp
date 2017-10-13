@@ -84,7 +84,7 @@ namespace Stuff
 		//
 		AffineMatrix4D& operator=(const AffineMatrix4D& m)
 		{
-			Check_Pointer(this);
+			//Check_Pointer(this);
 			Check_Object(&m);
 			memcpy(entries, m.entries, sizeof(m.entries));
 			return *this;
@@ -102,7 +102,7 @@ namespace Stuff
 		AffineMatrix4D& BuildRotation(const Vector3D& angles);
 		AffineMatrix4D& BuildTranslation(const Point3D& p)
 		{
-			Check_Pointer(this);
+			//Check_Pointer(this);
 			Check_Object(&p);
 			(*this)(W_Axis, X_Axis) = p.x;
 			(*this)(W_Axis, Y_Axis) = p.y;
@@ -136,7 +136,7 @@ namespace Stuff
 		float&
 		operator()(size_t row, size_t column)
 		{
-			Check_Pointer(this);
+			//Check_Pointer(this);
 			Verify(static_cast<uint32_t>(row) <= W_Axis);
 			Verify(static_cast<uint32_t>(column) <= Z_Axis);
 			return entries[(column << 2) + row];
@@ -144,7 +144,7 @@ namespace Stuff
 		const float&
 		operator()(size_t row, size_t column) const
 		{
-			Check_Pointer(this);
+			//Check_Pointer(this);
 			Verify(static_cast<uint32_t>(row) <= W_Axis);
 			Verify(static_cast<uint32_t>(column) <= Z_Axis);
 			return entries[(column << 2) + row];
@@ -155,7 +155,7 @@ namespace Stuff
 		//
 		void GetLocalForwardInWorld(Vector3D* v) const
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			Check_Pointer(v);
 			if(v)
 			{
@@ -166,7 +166,7 @@ namespace Stuff
 		}
 		void GetWorldForwardInLocal(Vector3D* v) const
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			Check_Pointer(v);
 			if(v)
 			{
@@ -178,7 +178,7 @@ namespace Stuff
 
 		void GetLocalBackwardInWorld(Vector3D* v) const
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			Check_Pointer(v);
 			if(v)
 			{
@@ -190,7 +190,7 @@ namespace Stuff
 		void
 		GetWorldBackwardInLocal(Vector3D* v) const
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			Check_Pointer(v);
 			if(v)
 			{
@@ -203,7 +203,7 @@ namespace Stuff
 		void
 		GetLocalRightInWorld(Vector3D* v) const
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			Check_Pointer(v);
 			if(v)
 			{
@@ -215,7 +215,7 @@ namespace Stuff
 		void
 		GetWorldRightInLocal(Vector3D* v) const
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			Check_Pointer(v);
 			if(v)
 			{
@@ -228,7 +228,7 @@ namespace Stuff
 		void
 		GetLocalLeftInWorld(Vector3D* v) const
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			Check_Pointer(v);
 			if(v)
 			{
@@ -240,7 +240,7 @@ namespace Stuff
 		void
 		GetWorldLeftInLocal(Vector3D* v) const
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			Check_Pointer(v);
 			if(v)
 			{
@@ -253,7 +253,7 @@ namespace Stuff
 		void
 		GetLocalUpInWorld(Vector3D* v) const
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			Check_Pointer(v);
 			if(v)
 			{
@@ -265,7 +265,7 @@ namespace Stuff
 		void
 		GetWorldUpInLocal(Vector3D* v) const
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			Check_Pointer(v);
 			if(v)
 			{
@@ -278,7 +278,7 @@ namespace Stuff
 		void
 		GetLocalDownInWorld(Vector3D* v) const
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			Check_Pointer(v);
 			if(v)
 			{
@@ -290,7 +290,7 @@ namespace Stuff
 		void
 		GetWorldDownInLocal(Vector3D* v) const
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			Check_Pointer(v);
 			if(v)
 			{
@@ -309,7 +309,7 @@ namespace Stuff
 			const AffineMatrix4D& Source2
 		)
 		{
-			Check_Pointer(this);
+			//Check_Pointer(this);
 			Check_Object(&Source1);
 			Check_Object(&Source2);
 			Verify(this != &Source1);
@@ -685,12 +685,12 @@ namespace Stuff
 	inline Point3D&
 	Point3D::operator=(const AffineMatrix4D& m)
 	{
-		Check_Pointer(this);
+		//Check_Pointer(this);
 		Check_Object(&m);
 		x = m(W_Axis, X_Axis);
 		y = m(W_Axis, Y_Axis);
 		z = m(W_Axis, Z_Axis);
-		Check_Object(this);
+		// Check_Object(this);
 		return *this;
 	}
 

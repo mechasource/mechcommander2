@@ -1,5 +1,5 @@
 //===========================================================================//
-// Copyright (C) Microsoft Corporation. All rights reserved. //
+// Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
 #include "stdafx.h"
@@ -65,7 +65,7 @@ MLR_I_C_DeT_PMesh::MLR_I_C_DeT_PMesh(
 	ClassData* class_data, Stuff::MemoryStream* stream, uint32_t version)
 	: MLR_I_DeT_PMesh(class_data, stream, version)
 {
-	Check_Pointer(this);
+	//Check_Pointer(this);
 	Check_Pointer(stream);
 	//Verify(gos_GetCurrentHeap() == Heap);
 	switch(version)
@@ -108,7 +108,7 @@ MLR_I_C_DeT_PMesh::MLR_I_C_DeT_PMesh(
 MLR_I_C_DeT_PMesh::MLR_I_C_DeT_PMesh(ClassData* class_data):
 	MLR_I_DeT_PMesh(class_data), colors(0)
 {
-	Check_Pointer(this);
+	//Check_Pointer(this);
 	//Verify(gos_GetCurrentHeap() == Heap);
 }
 
@@ -116,7 +116,7 @@ MLR_I_C_DeT_PMesh::MLR_I_C_DeT_PMesh(ClassData* class_data):
 //
 MLR_I_C_DeT_PMesh::~MLR_I_C_DeT_PMesh()
 {
-	Check_Object(this);
+	// Check_Object(this);
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -126,7 +126,9 @@ MLR_I_C_DeT_PMesh* MLR_I_C_DeT_PMesh::Make(
 {
 	Check_Object(stream);
 #if _CONSIDERED_OBSOLETE
+	#ifdef _GAMEOS_HPP_
 	gos_PushCurrentHeap(Heap);
+#endif
 	MLR_I_C_DeT_PMesh* mesh = new MLR_I_C_DeT_PMesh(DefaultData, stream, version);
 	gos_PopCurrentHeap();
 #else
@@ -141,7 +143,7 @@ MLR_I_C_DeT_PMesh* MLR_I_C_DeT_PMesh::Make(
 void
 MLR_I_C_DeT_PMesh::Save(Stuff::MemoryStream* stream)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Object(stream);
 	MLR_I_DeT_PMesh::Save(stream);
 #if COLOR_AS_DWORD
@@ -172,7 +174,7 @@ MLR_I_C_DeT_PMesh::TestInstance(void) const
 void MLR_I_C_DeT_PMesh::Copy(
 	MLR_I_C_PMesh*, MLRState detailState, float xOff, float yOff, float xFac, float yFac)
 {
-	Check_Pointer(this);
+	//Check_Pointer(this);
 	(void)xOff;
 	(void)yOff;
 	(void)xFac;
@@ -190,7 +192,7 @@ void MLR_I_C_DeT_PMesh::SetColorData(
 #endif
 	size_t dataSize)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Pointer(data);
 	Verify(coords.GetLength() == 0 || dataSize == coords.GetLength());
 	Verify(texCoords.GetLength() == 0 || dataSize == texCoords.GetLength());
@@ -207,7 +209,7 @@ void MLR_I_C_DeT_PMesh::GetColorData(
 #endif
 	psize_t dataSize)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	*data = colors.GetData();
 	*dataSize = colors.GetLength();
 }
@@ -222,7 +224,7 @@ MLR_I_C_DeT_PMesh::PaintMe(
 #endif
 )
 {
-	Check_Object(this);
+	// Check_Object(this);
 	// original color is lost !!!;
 	size_t k, len = colors.GetLength();
 #if COLOR_AS_DWORD
@@ -272,7 +274,9 @@ MLR_I_C_DeT_PMesh* MidLevelRenderer::CreateIndexedCube_Color_NoLit_DetTex(
 	float half, Stuff::RGBAColor* eightColors, MLRState* state, MLRState* state1,
 	float xOff, float yOff, float xFac, float yFac)
 {
+	#ifdef _GAMEOS_HPP_
 	gos_PushCurrentHeap(Heap);
+#endif
 	MLR_I_C_DeT_PMesh* ret = new MLR_I_C_DeT_PMesh;
 	Register_Object(ret);
 	ret->SetDetailData(xOff, yOff, xFac, yFac);
@@ -379,7 +383,9 @@ MLR_I_C_DeT_PMesh* MidLevelRenderer::CreateIndexedCube_Color_NoLit_DetTex(
 MLRShape* MidLevelRenderer::CreateIndexedIcosahedron_Color_NoLit_DetTex(
 	IcoInfo& icoInfo, MLRState* state, MLRState* stateDet)
 {
+	#ifdef _GAMEOS_HPP_
 	gos_PushCurrentHeap(Heap);
+#endif
 	MLRShape* ret = new MLRShape(20);
 	Register_Object(ret);
 	size_t i, j, k;

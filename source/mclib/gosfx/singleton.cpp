@@ -17,11 +17,11 @@
 gosFX::Singleton__Specification::Singleton__Specification(
 	Stuff::RegisteredClass::ClassID class_id,
 	Stuff::MemoryStream* stream,
-	int32_t gfx_version
+	uint32_t gfx_version
 ):
 	Effect__Specification(class_id, stream, gfx_version)
 {
-	Check_Pointer(this);
+	//Check_Pointer(this);
 	Check_Object(stream);
 	//Verify(gos_GetCurrentHeap() == Heap);
 	//
@@ -44,7 +44,7 @@ gosFX::Singleton__Specification::Singleton__Specification(
 ):
 	Effect__Specification(class_id)
 {
-	Check_Pointer(this);
+	//Check_Pointer(this);
 	//Verify(gos_GetCurrentHeap() == Heap);
 }
 
@@ -53,7 +53,7 @@ gosFX::Singleton__Specification::Singleton__Specification(
 void
 gosFX::Singleton__Specification::Save(Stuff::MemoryStream* stream)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Object(stream);
 	Effect__Specification::Save(stream);
 	//
@@ -74,7 +74,7 @@ gosFX::Singleton__Specification::Save(Stuff::MemoryStream* stream)
 void
 gosFX::Singleton__Specification::BuildDefaults()
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Effect__Specification::BuildDefaults();
 	m_red.m_ageCurve.SetCurve(1.0f);
 	m_red.m_seeded = false;
@@ -98,7 +98,7 @@ gosFX::Singleton__Specification::BuildDefaults()
 bool
 gosFX::Singleton__Specification::IsDataValid(bool fix_data)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	float min, max;
 	m_scale.ExpensiveComputeRange(&min, &max);
 	if(min < 0.0f)
@@ -107,7 +107,7 @@ gosFX::Singleton__Specification::IsDataValid(bool fix_data)
 			m_scale.m_ageCurve.SetCurve(1.0f);
 			m_scale.m_seeded = false;
 			m_scale.m_seedCurve.SetCurve(1.0f);
-			PAUSE(("Warning: Curve \"scale\" in Effect \"%s\" Is Out of Range and has been Reset", (PSTR)m_name));
+			// PAUSE(("Warning: Curve \"scale\" in Effect \"%s\" Is Out of Range and has been Reset", (PSTR)m_name));
 		}
 		else
 			return false;
@@ -118,7 +118,7 @@ gosFX::Singleton__Specification::IsDataValid(bool fix_data)
 void
 gosFX::Singleton__Specification::Copy(Singleton__Specification* spec)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Object(spec);
 	Effect__Specification::Copy(spec);
 	//
@@ -126,7 +126,9 @@ gosFX::Singleton__Specification::Copy(Singleton__Specification* spec)
 	// Copy the curves
 	//----------------
 	//
-	gos_PushCurrentHeap(Heap);
+#ifdef _GAMEOS_HPP_
+	// gos_PushCurrentHeap(Heap);
+#endif
 	m_red = spec->m_red;
 	m_green = spec->m_green;
 	m_blue = spec->m_blue;
@@ -134,7 +136,7 @@ gosFX::Singleton__Specification::Copy(Singleton__Specification* spec)
 	m_scale = spec->m_scale;
 	m_alignZUsingX = spec->m_alignZUsingX;
 	m_alignZUsingY = spec->m_alignZUsingY;
-	gos_PopCurrentHeap();
+	// gos_PopCurrentHeap();
 }
 
 //############################################################################
@@ -181,7 +183,7 @@ gosFX::Singleton::Singleton(
 ):
 	Effect(class_data, spec, flags)
 {
-	Check_Pointer(this);
+	//Check_Pointer(this);
 	Check_Object(spec);
 	//Verify(gos_GetCurrentHeap() == Heap);
 }
@@ -199,7 +201,7 @@ gosFX::Singleton::TestInstance(void) const
 bool
 gosFX::Singleton::Execute(ExecuteInfo* info)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Object(info);
 	if(!IsExecuted())
 		return false;

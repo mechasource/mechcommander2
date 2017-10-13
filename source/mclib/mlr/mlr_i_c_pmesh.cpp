@@ -1,5 +1,5 @@
 //===========================================================================//
-// Copyright (C) Microsoft Corporation. All rights reserved. //
+// Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
 #include "stdafx.h"
@@ -72,7 +72,7 @@ MLR_I_C_PMesh::MLR_I_C_PMesh(
 	: MLR_I_PMesh(class_data, stream, version)
 {
 	//Verify(gos_GetCurrentHeap() == Heap);
-	Check_Pointer(this);
+	//Check_Pointer(this);
 	Check_Pointer(stream);
 	switch(version)
 	{
@@ -114,7 +114,7 @@ MLR_I_C_PMesh::MLR_I_C_PMesh(
 MLR_I_C_PMesh::MLR_I_C_PMesh(ClassData* class_data):
 	MLR_I_PMesh(class_data), colors(0)
 {
-	Check_Pointer(this);
+	//Check_Pointer(this);
 	//Verify(gos_GetCurrentHeap() == Heap);
 }
 
@@ -123,7 +123,7 @@ MLR_I_C_PMesh::MLR_I_C_PMesh(ClassData* class_data):
 void
 MLR_I_C_PMesh::Copy(MLRIndexedPolyMesh *polyMesh)
 {
-Check_Pointer(this);
+//Check_Pointer(this);
 
 size_t len;
 #if COLOR_AS_DWORD
@@ -143,7 +143,7 @@ SetColorData(_colors, len);
 //
 MLR_I_C_PMesh::~MLR_I_C_PMesh()
 {
-	Check_Object(this);
+	// Check_Object(this);
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -170,7 +170,7 @@ MLR_I_C_PMesh* MLR_I_C_PMesh::Make(
 void
 MLR_I_C_PMesh::Save(Stuff::MemoryStream* stream)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Object(stream);
 	MLR_I_PMesh::Save(stream);
 #if COLOR_AS_DWORD
@@ -207,7 +207,7 @@ void MLR_I_C_PMesh::SetColorData(
 	size_t dataSize
 )
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Pointer(data);
 	Verify(coords.GetLength() == 0 || dataSize == coords.GetLength());
 	Verify(texCoords.GetLength() == 0 || dataSize == texCoords.GetLength());
@@ -226,7 +226,7 @@ MLR_I_C_PMesh::GetColorData(
 	psize_t dataSize
 )
 {
-	Check_Object(this);
+	// Check_Object(this);
 	*data = colors.GetData();
 	*dataSize = colors.GetLength();
 }
@@ -243,7 +243,7 @@ MLR_I_C_PMesh::PaintMe(
 
 )
 {
-	Check_Object(this);
+	// Check_Object(this);
 	// original color is lost !!!;
 	size_t k, len = colors.GetLength();
 #if COLOR_AS_DWORD
@@ -294,7 +294,9 @@ MidLevelRenderer::CreateIndexedCube_Color_NoLit(
 	MLRState* state
 )
 {
+	#ifdef _GAMEOS_HPP_
 	gos_PushCurrentHeap(Heap);
+#endif
 	MLR_I_C_PMesh* ret = new MLR_I_C_PMesh;
 	Register_Object(ret);
 	Stuff::Point3D* coords = new Stuff::Point3D [8];
@@ -412,7 +414,9 @@ MidLevelRenderer::CreateIndexedViewFrustrum_Color_NoLit(
 	MLRState* state
 )
 {
+	#ifdef _GAMEOS_HPP_
 	gos_PushCurrentHeap(Heap);
+#endif
 	MLR_I_C_PMesh* ret = new MLR_I_C_PMesh();
 	Register_Object(ret);
 	Stuff::Point3D* coords = new Stuff::Point3D [8];
@@ -530,7 +534,9 @@ MidLevelRenderer::CreateIndexedViewFrustrum_Color_NoLit(
 MLRShape* MidLevelRenderer::CreateIndexedIcosahedron_Color_NoLit(
 	IcoInfo& icoInfo, MLRState* state)
 {
+	#ifdef _GAMEOS_HPP_
 	gos_PushCurrentHeap(Heap);
+#endif
 	MLRShape* ret = new MLRShape(20);
 	Register_Object(ret);
 	size_t i, j, k;

@@ -23,7 +23,7 @@ using namespace Stuff;
 Ray3D&
 Ray3D::SetDirection(const Vector3D& vector)
 {
-	Check_Pointer(this);
+	//Check_Pointer(this);
 	Check_Object(&vector);
 	//
 	//---------------------------------------
@@ -54,7 +54,7 @@ Ray3D::GetDistanceTo(
 	float* product
 ) const
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Object(&plane);
 	Check_Pointer(product);
 	*product = direction * plane.normal;

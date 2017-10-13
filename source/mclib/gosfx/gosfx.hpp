@@ -6,7 +6,13 @@
 
 #pragma once
 
-#include <stuff/stuff.hpp>
+#include <stuff/style.hpp>
+
+namespace Stuff
+{
+	class MemoryStream;
+	class LinearMatrix4D;
+}
 
 namespace gosFX
 {
@@ -44,7 +50,7 @@ namespace gosFX
 	void __stdcall InitializeClasses(void);
 	void __stdcall TerminateClasses(void);
 
-	extern HGOSHEAP Heap;
+	// extern HGOSHEAP Heap;
 
 	extern const Stuff::LinearMatrix4D& Effect_Into_Motion;
 	extern const Stuff::LinearMatrix4D& Effect_Against_Motion;
@@ -59,4 +65,4 @@ namespace gosFX
 	extern uint32_t Profile_Count;
 }
 
-#include <gosfx/fcurve.hpp>
+//#include <gosfx/fcurve.hpp>

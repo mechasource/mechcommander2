@@ -44,12 +44,12 @@ MLRShape::TerminateClass()
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 MLRShape::MLRShape(
-	MemoryStream* stream,
+	Stuff::MemoryStream* stream,
 	uint32_t version
 ):
 	Plug(DefaultData)
 {
-	Check_Pointer(this);
+	//Check_Pointer(this);
 	Check_Object(stream);
 	//Verify(gos_GetCurrentHeap() == Heap);
 	*stream >> numPrimitives;
@@ -259,12 +259,14 @@ MLRShape::~MLRShape()
 //
 MLRShape*
 MLRShape::Make(
-	MemoryStream* stream,
+	Stuff::MemoryStream* stream,
 	uint32_t version
 )
 {
 	Check_Object(stream);
+	#ifdef _GAMEOS_HPP_
 	gos_PushCurrentHeap(Heap);
+#endif
 	MLRShape* shape = new MLRShape(stream, version);
 	gos_PopCurrentHeap();
 	return shape;
@@ -273,9 +275,9 @@ MLRShape::Make(
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-MLRShape::Save(MemoryStream* stream)
+MLRShape::Save(Stuff::MemoryStream* stream)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Object(stream);
 	*stream << numPrimitives;
 	int32_t i;
@@ -291,10 +293,12 @@ MLRShape::Save(MemoryStream* stream)
 void
 MLRShape::Add(MLRPrimitiveBase* p)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	if(numPrimitives >= allPrimitives.GetLength() || allPrimitives.GetLength() == 0)
 	{
-		gos_PushCurrentHeap(Heap);
+		#ifdef _GAMEOS_HPP_
+	gos_PushCurrentHeap(Heap);
+#endif
 		allPrimitives.SetLength(numPrimitives + 4);
 		gos_PopCurrentHeap();
 	}
@@ -347,7 +351,7 @@ MLRShape::GetNumDrawnTriangles()
 MLRPrimitiveBase*
 MLRShape::Find(int32_t i)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Verify(i < numPrimitives);
 	return allPrimitives[i];
 }
@@ -357,7 +361,7 @@ MLRShape::Find(int32_t i)
 int32_t
 MLRShape::Find(MLRPrimitiveBase* p)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Object(p);
 	int32_t i;
 	for(i = 0; i < numPrimitives; i++)
@@ -376,7 +380,7 @@ MLRShape::Find(MLRPrimitiveBase* p)
 bool
 MLRShape::Replace(MLRPrimitiveBase* pout, MLRPrimitiveBase* pin)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Object(pout);
 	Check_Object(pin);
 	int32_t num = Find(pout);
@@ -398,7 +402,7 @@ MLRShape::Replace(MLRPrimitiveBase* pout, MLRPrimitiveBase* pin)
 MLRPrimitiveBase*
 MLRShape::Remove(MLRPrimitiveBase* p)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Object(p);
 	int32_t i, nr = Find(p);
 	if(nr < 0)
@@ -420,7 +424,7 @@ MLRShape::Remove(MLRPrimitiveBase* p)
 MLRPrimitiveBase*
 MLRShape::Remove(int32_t nr)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	int32_t i;
 	MLRPrimitiveBase* p = Find(nr);
 	if(nr < 0 || nr >= numPrimitives)
@@ -442,7 +446,7 @@ MLRShape::Remove(int32_t nr)
 int32_t
 MLRShape::Insert(MLRPrimitiveBase* p, int32_t nr)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	if(nr >= numPrimitives)
 	{
 		Add(p);
@@ -450,7 +454,9 @@ MLRShape::Insert(MLRPrimitiveBase* p, int32_t nr)
 	}
 	if(numPrimitives >= allPrimitives.GetLength() || allPrimitives.GetLength() == 0)
 	{
-		gos_PushCurrentHeap(Heap);
+		#ifdef _GAMEOS_HPP_
+	gos_PushCurrentHeap(Heap);
+#endif
 		allPrimitives.SetLength(numPrimitives + 4);
 		gos_PopCurrentHeap();
 	}
@@ -470,7 +476,7 @@ MLRShape::Insert(MLRPrimitiveBase* p, int32_t nr)
 void
 MLRShape::InitializePrimitives(uint8_t vis, const MLRState& master, int32_t parameter)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	int32_t i;
 	for(i = 0; i < numPrimitives; i++)
 	{
@@ -497,7 +503,7 @@ MLRShape::HurtMe(const Stuff::LinearMatrix4D& pain, float radius)
 int32_t
 MLRShape::FindBackFace(const Point3D& p)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	int32_t i, ret = 0;
 	Point3D sp;
 	sp.Multiply(p, *worldToShape);
@@ -514,7 +520,7 @@ MLRShape::FindBackFace(const Point3D& p)
 void
 	MLRShape::Transform(Matrix4D *mat)
 {
-	Check_Object(this);
+	// Check_Object(this);
 
 	 int32_t i;
 
@@ -532,7 +538,7 @@ void
 void
 	MLRShape::Transform()
 {
-	Check_Object(this);
+	// Check_Object(this);
 
 	 int32_t i;
 
@@ -549,7 +555,7 @@ void
 int32_t
 	MLRShape::Clip(MLRClippingState clippingFlags, GOSVertexPool *vp)
 {
-	Check_Object(this);
+	// Check_Object(this);
 
 	int32_t i, ret = 0;
 
@@ -575,7 +581,7 @@ MLRShape::Lighting(
 	int32_t nrLights
 )
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Object(&WorldToShape);
 	if(nrLights == 0)
 	{
@@ -601,7 +607,7 @@ MLRShape::CastRay(
 	Normal3D* normal
 )
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Object(line);
 	Check_Pointer(normal);
 	bool result = false;

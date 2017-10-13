@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include <gosfx/gosfx.hpp>
+//#include <gosfx/gosfx.hpp>
 
 namespace gosFX
 {
@@ -58,7 +58,7 @@ namespace gosFX
 		void
 		Load(
 			Stuff::MemoryStream* stream,
-			int32_t gfx_version
+			uint32_t gfx_version
 		);
 
 		float
@@ -120,7 +120,7 @@ namespace gosFX
 		void
 		Load(
 			Stuff::MemoryStream* stream,
-			int32_t gfx_version
+			uint32_t gfx_version
 		);
 
 		//------------------------------------------------------
@@ -129,7 +129,7 @@ namespace gosFX
 		bool
 		SetCurve(float v)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			m_value = v;
 			return true;
 		}
@@ -137,13 +137,13 @@ namespace gosFX
 		float
 		ComputeValue(float, float)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return m_value;
 		}
 		float
 		ComputeSlope(float)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return 0.0f;
 		}
 
@@ -153,7 +153,7 @@ namespace gosFX
 			float* hi
 		)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			Check_Pointer(low);
 			Check_Pointer(hi);
 			if(hi && low) *hi = *low = m_value;
@@ -188,38 +188,27 @@ namespace gosFX
 		void
 		Load(
 			Stuff::MemoryStream* stream,
-			int32_t gfx_version
+			uint32_t gfx_version
 		);
 
 		//------------------------------------------------------
 		// for Set...Key(), true=math good, false=math unstable
 		//------------------------------------------------------
-		bool
-		SetCurve(float v);
-		bool
-		SetCurve(
-			float v0,
-			float v1
-		);
+		bool SetCurve(float v);
+		bool SetCurve(float v0, float v1);
 
-		float
-		ComputeValue(float t, float)
+		float ComputeValue(float t, float)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return m_slope * t + m_value;
 		}
-		float
-		ComputeSlope(float)
+		float ComputeSlope(float)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return m_slope;
 		}
 
-		void
-		ComputeRange(
-			float* low,
-			float* hi
-		);
+		void ComputeRange(float* low, float* hi);
 	};
 
 //######################################################################
@@ -241,50 +230,28 @@ namespace gosFX
 		SplineCurve&
 		operator=(const SplineCurve& curve);
 
-		void
-		Save(Stuff::MemoryStream* stream);
-		void
-		Load(
-			Stuff::MemoryStream* stream,
-			int32_t gfx_version
-		);
+		void Save(Stuff::MemoryStream* stream);
+		void Load(Stuff::MemoryStream* stream, uint32_t gfx_version);
 
 		//------------------------------------------------------
 		// for Set...Key(), true=math good, false=math unstable
 		//------------------------------------------------------
-		bool
-		SetCurve(float v);
-		bool
-		SetCurve(
-			float v0,
-			float v1
-		);
-		bool
-		SetCurve(
-			float v0,
-			float s0,
-			float v1,
-			float s1
-		);
+		bool SetCurve(float v);
+		bool SetCurve(float v0, float v1);
+		bool SetCurve(float v0, float s0, float v1, float s1);
 
-		float
-		ComputeValue(float t, float)
+		float ComputeValue(float t, float)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return ((m_a * t + m_b) * t + m_slope) * t + m_value;
 		}
-		float
-		ComputeSlope(float t)
+		float ComputeSlope(float t)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return (3.0f * m_a * t + 2.0f * m_b) * t + m_slope;
 		}
 
-		void
-		ComputeRange(
-			float* low,
-			float* hi
-		);
+		void ComputeRange(float* low, float* hi);
 	};
 
 //######################################################################
@@ -302,42 +269,23 @@ namespace gosFX
 		//------------------------------------------------------
 		// for Set...Key(), true=math good, false=math unstable
 		//------------------------------------------------------
-		bool
-		SetConstantKey(
-			float key_time,
-			float v
-		);
-		bool
-		SetLinearKey(
-			float key_time,
-			float v0,
-			float v1,
-			float dt
-		);
+		bool SetConstantKey(float key_time, float v);
+		bool SetLinearKey(float key_time, float v0, float v1, float dt);
 
-		float
-		ComputeValue(float t)
+		float ComputeValue(float t)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return m_slope * t + m_value;
 		}
-		float
-		ComputeSlope(float)
+		float ComputeSlope(float)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return m_slope;
 		}
 
-		void
-		ComputeRange(
-			float* low,
-			float* hi,
-			float dt
-		);
+		void ComputeRange(float* low, float* hi, float dt);
 
-		void
-		TestInstance(void) const
-		{}
+		void TestInstance(void) const {}
 	};
 
 //######################################################################
@@ -348,151 +296,104 @@ namespace gosFX
 		public Curve
 	{
 	protected:
-		Stuff::DynamicArrayOf<CurveKey>
-		m_keys;
+		Stuff::DynamicArrayOf<CurveKey> m_keys;
 
 	public:
 		ComplexCurve(void);
 		ComplexCurve(const ComplexCurve& fcurve);
-		ComplexCurve(
-			Stuff::MemoryStream* stream,
-			int32_t gfx_version
-		);
+		ComplexCurve(Stuff::MemoryStream* stream, uint32_t gfx_version);
 
-		ComplexCurve&
-		operator=(const ComplexCurve& fcurve);
+		ComplexCurve& operator=(const ComplexCurve& fcurve);
 
-		void
-		Save(Stuff::MemoryStream* stream);
-		void
-		Load(
-			Stuff::MemoryStream* stream,
-			int32_t gfx_version
-		);
+		void Save(Stuff::MemoryStream* stream);
+		void Load(Stuff::MemoryStream* stream, uint32_t gfx_version);
 
 		//-----------------------------------------------------------------
 		// Warning:  both index of and pointer to CurveKey's are volitile
 		//           client code should store neither between transactions
 		//-----------------------------------------------------------------
 
-		CurveKey&
-		operator[](int32_t index)
+		CurveKey& operator[](int32_t index)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return m_keys[index];
 		}
-		size_t
-		GetKeyCount()
+		size_t GetKeyCount()
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return m_keys.GetLength(void);
 		}
-		int32_t
-		GetKeyIndex(float time)
+		int32_t GetKeyIndex(float time)
 		{
-			Check_Object(this);
-			int32_t i;
-			for(i = 0; i < (int32_t)m_keys.GetLength(void); ++i)
+			// Check_Object(this);
+			for(auto i = 0; i < m_keys.GetLength(); ++i)
 				if(m_keys[i].m_time > time)
 					break;
 			return --i;
 		}
 
-		int32_t
-		InsertKey(float time);
-		void
-		DeleteKey(int32_t index);
+		int32_t InsertKey(float time);
+		void DeleteKey(int32_t index);
 
-		void
-		SetCurve(float v);
-		void
-		SetCurve(
-			float starting_value,
-			float ending_value
-		);
+		void SetCurve(float v);
+		void SetCurve(float starting_value, float ending_value);
 
-		float
-		ComputeValue(float time, float)
+		float ComputeValue(float time, float)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			CurveKey& key = (*this)[GetKeyIndex(time)];
 			return key.ComputeValue(time - key.m_time);
 		}
-		float
-		ComputeSlope(float time)
+		float ComputeSlope(float time)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			CurveKey& key = (*this)[GetKeyIndex(time)];
 			return key.ComputeSlope(time - key.m_time);
 		}
 
-		void
-		ComputeRange(
-			float* low,
-			float* hi
-		);
+		void ComputeRange(float* low, float* hi);
 	};
 
 //######################################################################
 //#####################    SeededCurveOf    ############################
 //######################################################################
 
-	template <class C, class S, Curve::CurveType type> class SeededCurveOf:
+	template <class C, class S, Curve::CurveType type>
+	class SeededCurveOf :
 		public Curve
 	{
 	public:
-		C
-		m_ageCurve;
-		S
-		m_seedCurve;
-		bool
-		m_seeded;
+		C m_ageCurve;
+		S m_seedCurve;
+		bool m_seeded;
 
-		SeededCurveOf():
-			Curve(type)
-		{}
+		SeededCurveOf() : Curve(type) {}
 
-		SeededCurveOf<C, S, type>&
-		operator=(const SeededCurveOf<C, S, type>& curve);
-		void
-		Save(Stuff::MemoryStream* stream);
-		void
-		Load(
-			Stuff::MemoryStream* stream,
-			int32_t gfx_version
-		);
+		SeededCurveOf<C, S, type>& operator=(const SeededCurveOf<C, S, type>& curve);
+		void Save(Stuff::MemoryStream* stream);
+		void Load(Stuff::MemoryStream* stream, uint32_t gfx_version);
 
-		float
-		ComputeValue(
-			float age,
-			float seed
-		)
+		float ComputeValue(float age, float seed)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			float result = m_ageCurve.ComputeValue(age, 0.0f);
 			if(m_seeded)
 				result *= m_seedCurve.ComputeValue(seed, 0.0f);
 			return result;
 		}
-		void
-		ComputeRange(
-			float* low,
-			float* hi
-		);
+		void ComputeRange(float* low, float* hi);
 
 		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		// Testing
 		//
 	public:
-		void
-		TestInstance(void) const
-		{}
+		void TestInstance(void) const {}
 	};
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-	template <class C, class S, Curve::CurveType type> SeededCurveOf<C, S, type>&
-	SeededCurveOf<C, S, type>::operator=(const SeededCurveOf<C, S, type>& curve)
+	template <class C, class S, Curve::CurveType type>
+	SeededCurveOf<C, S, type>& SeededCurveOf<C, S, type>::operator=(const SeededCurveOf<C, S, type>& curve)
 	{
 		m_ageCurve = curve.m_ageCurve;
 		m_seedCurve = curve.m_seedCurve;
@@ -502,8 +403,8 @@ namespace gosFX
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-	template <class C, class S, Curve::CurveType type> void
-	SeededCurveOf<C, S, type>::Save(Stuff::MemoryStream* stream)
+	template <class C, class S, Curve::CurveType type>
+	void SeededCurveOf<C, S, type>::Save(Stuff::MemoryStream* stream)
 	{
 		m_ageCurve.Save(stream);
 		m_seedCurve.Save(stream);
@@ -512,11 +413,8 @@ namespace gosFX
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-	template <class C, class S, Curve::CurveType type> void
-	SeededCurveOf<C, S, type>::Load(
-		Stuff::MemoryStream* stream,
-		int32_t gfx_version
-	)
+	template <class C, class S, Curve::CurveType type>
+	void SeededCurveOf<C, S, type>::Load(Stuff::MemoryStream* stream, uint32_t gfx_version)
 	{
 		m_ageCurve.Load(stream, gfx_version);
 		m_seedCurve.Load(stream, gfx_version);
@@ -525,11 +423,8 @@ namespace gosFX
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-	template <class C, class S, Curve::CurveType type> void
-	SeededCurveOf<C, S, type>::ComputeRange(
-		float* low,
-		float* hi
-	)
+	template <class C, class S, Curve::CurveType type>
+	void SeededCurveOf<C, S, type>::ComputeRange(float* low, float* hi)
 	{
 		float low_age, hi_age;
 		m_ageCurve.ComputeRange(&low_age, &hi_age);

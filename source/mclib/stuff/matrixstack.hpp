@@ -42,7 +42,7 @@ namespace Stuff
 
 		operator AffineMatrix4D& ()
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return *Peek();
 		}
 	};
@@ -69,7 +69,7 @@ namespace Stuff
 
 		operator LinearMatrix4D& (void)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return *Peek();
 		}
 	};
@@ -100,7 +100,7 @@ namespace Stuff
 
 		operator Matrix4D& (void)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return *Peek();
 		}
 	};

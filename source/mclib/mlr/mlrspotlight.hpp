@@ -38,7 +38,7 @@ namespace MidLevelRenderer
 		virtual LightType
 		GetLightType()
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return SpotLight;
 		}
 
@@ -57,14 +57,14 @@ namespace MidLevelRenderer
 		float
 		GetTanSpreadAngle()
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return tanSpreadAngle;
 		}
 
 		float
 		GetCosSpreadAngle()
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return cosSpreadAngle;
 		}
 
@@ -76,7 +76,7 @@ namespace MidLevelRenderer
 		MLRLightMap*
 		GetLightMap()
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return lightMap;
 		}
 

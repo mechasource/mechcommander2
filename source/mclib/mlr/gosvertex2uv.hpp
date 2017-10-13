@@ -50,7 +50,7 @@ namespace MidLevelRenderer
 		inline GOSVertex2UV&
 		operator=(const GOSVertex2UV& V)
 		{
-			Check_Pointer(this);
+			//Check_Pointer(this);
 			x = V.x;
 			y = V.y;
 			z = V.z;
@@ -67,7 +67,7 @@ namespace MidLevelRenderer
 		inline GOSVertex2UV&
 		operator=(const Stuff::Vector4D& v)
 		{
-			Check_Pointer(this);
+			//Check_Pointer(this);
 			Verify(!Stuff::Small_Enough(v.w));
 			//					Tell_Value(v);
 			rhw = 1.0f / v.w;
@@ -83,7 +83,7 @@ namespace MidLevelRenderer
 		inline GOSVertex2UV&
 		operator=(const Stuff::RGBAColor& c)
 		{
-			Check_Pointer(this);
+			//Check_Pointer(this);
 			//					DEBUG_STREAM << "c = <" << c.alpha << ", " << c.red << ", ";
 			//					DEBUG_STREAM << c.green << ", " << c.blue << ">" << endl;
 			float f;
@@ -106,7 +106,7 @@ namespace MidLevelRenderer
 		inline GOSVertex2UV&
 		operator=(cuint32_t c)
 		{
-			Check_Pointer(this);
+			//Check_Pointer(this);
 			argb = c;
 			return *this;
 		}
@@ -118,7 +118,7 @@ namespace MidLevelRenderer
 			float* uv1,
 			float* uv2
 #if FOG_HACK
-			, int32_t foggy
+			, uint32_t foggy
 #endif
 		);
 	protected:
@@ -132,11 +132,11 @@ namespace MidLevelRenderer
 		float* uv1,
 		float* uv2
 #if FOG_HACK
-		, int32_t foggy
+		, uint32_t foggy
 #endif
 	)
 	{
-		Check_Pointer(this);
+		//Check_Pointer(this);
 		Check_Object(&_v);
 		Check_Object(&m);
 #if USE_ASSEMBLER_CODE

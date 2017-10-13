@@ -9,8 +9,7 @@
 gosFX::LightManager
 * gosFX::LightManager::Instance = nullptr;
 
-gosFX::Light*
-gosFX::LightManager::MakePointLight(PCSTR light_map)
+gosFX::Light* gosFX::LightManager::MakePointLight(PCSTR light_map)
 {
 	return reinterpret_cast<Light*>(this);
 }
@@ -36,11 +35,11 @@ gosFX::LightManager::DeleteLight(Light* light)
 //
 gosFX::PointLight__Specification::PointLight__Specification(
 	Stuff::MemoryStream* stream,
-	int32_t gfx_version
+	uint32_t gfx_version
 ):
 	Effect__Specification(PointLightClassID, stream, gfx_version)
 {
-	Check_Pointer(this);
+	//Check_Pointer(this);
 	Verify(m_class == PointLightClassID);
 	//Verify(gos_GetCurrentHeap() == Heap);
 	m_red.Load(stream, gfx_version);
@@ -67,7 +66,7 @@ gosFX::PointLight__Specification::PointLight__Specification(
 gosFX::PointLight__Specification::PointLight__Specification():
 	Effect__Specification(PointLightClassID)
 {
-	Check_Pointer(this);
+	//Check_Pointer(this);
 	//Verify(gos_GetCurrentHeap() == Heap);
 	m_twoSided = false;
 }
@@ -77,14 +76,16 @@ gosFX::PointLight__Specification::PointLight__Specification():
 gosFX::PointLight__Specification*
 gosFX::PointLight__Specification::Make(
 	Stuff::MemoryStream* stream,
-	int32_t gfx_version
+	uint32_t gfx_version
 )
 {
 	Check_Object(stream);
-	gos_PushCurrentHeap(Heap);
+	#ifdef _GAMEOS_HPP_
+	// gos_PushCurrentHeap(Heap);
+#endif
 	PointLight__Specification* spec =
 		new gosFX::PointLight__Specification(stream, gfx_version);
-	gos_PopCurrentHeap();
+	// gos_PopCurrentHeap();
 	return spec;
 }
 
@@ -93,7 +94,7 @@ gosFX::PointLight__Specification::Make(
 void
 gosFX::PointLight__Specification::Save(Stuff::MemoryStream* stream)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Object(stream);
 	Effect__Specification::Save(stream);
 	m_red.Save(stream);
@@ -110,7 +111,7 @@ gosFX::PointLight__Specification::Save(Stuff::MemoryStream* stream)
 void
 gosFX::PointLight__Specification::BuildDefaults()
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Effect__Specification::BuildDefaults();
 	m_red.SetCurve(1.0f);
 	m_green.SetCurve(1.0f);
@@ -128,7 +129,7 @@ gosFX::PointLight__Specification::BuildDefaults()
 bool
 gosFX::PointLight__Specification::IsDataValid(bool fix_data)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	return	Effect__Specification::IsDataValid(fix_data);
 	/*
 		m_red.SetCurve(1.0f);
@@ -148,17 +149,19 @@ gosFX::PointLight__Specification::IsDataValid(bool fix_data)
 void
 gosFX::PointLight__Specification::Copy(PointLight__Specification* spec)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Object(spec);
 	Effect__Specification::Copy(spec);
-	gos_PushCurrentHeap(Heap);
+	#ifdef _GAMEOS_HPP_
+	// gos_PushCurrentHeap(Heap);
+#endif
 	m_red = spec->m_red;
 	m_green = spec->m_green;
 	m_blue = spec->m_blue;
 	m_intensity = spec->m_intensity;
 	m_twoSided = spec->m_twoSided;
 	m_lightMap = spec->m_lightMap;
-	gos_PopCurrentHeap();
+	// gos_PopCurrentHeap();
 }
 
 //############################################################################
@@ -231,9 +234,11 @@ gosFX::PointLight::Make(
 )
 {
 	Check_Object(spec);
-	gos_PushCurrentHeap(Heap);
+	#ifdef _GAMEOS_HPP_
+	// gos_PushCurrentHeap(Heap);
+#endif
 	PointLight* obj = new gosFX::PointLight(spec, flags);
-	gos_PopCurrentHeap();
+	// gos_PopCurrentHeap();
 	return obj;
 }
 
@@ -242,7 +247,7 @@ gosFX::PointLight::Make(
 void
 gosFX::PointLight::Start(ExecuteInfo* info)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Object(info);
 	Effect::Start(info);
 	Specification* spec = GetSpecification();
@@ -257,7 +262,7 @@ gosFX::PointLight::Start(ExecuteInfo* info)
 bool
 gosFX::PointLight::Execute(ExecuteInfo* info)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Object(info);
 	if(!IsExecuted())
 		return false;
@@ -305,7 +310,7 @@ gosFX::PointLight::Execute(ExecuteInfo* info)
 void
 gosFX::PointLight::Kill()
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Effect::Kill();
 	Check_Pointer(m_light);
 	LightManager::Instance->DeleteLight(m_light);

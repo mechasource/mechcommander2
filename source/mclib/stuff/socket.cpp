@@ -32,7 +32,7 @@ Socket::Socket(Node* node)
 //
 Socket::~Socket()
 {
-	Check_Object(this);
+	// Check_Object(this);
 }
 
 //
@@ -43,7 +43,7 @@ Socket::~Socket()
 void
 Socket::AddImplementation(Plug*)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	STOP(("Socket::AddImplementation - virtual method with no override"));
 }
 
@@ -55,7 +55,7 @@ Socket::AddImplementation(Plug*)
 bool
 Socket::IsEmpty()
 {
-	Check_Object(this);
+	// Check_Object(this);
 	STOP(("Socket::IsEmpty - virtual method with no override"));
 	return true;
 }
@@ -70,7 +70,7 @@ Socket::IsEmpty()
 void
 SocketIterator::Remove()
 {
-	Check_Object(this);
+	// Check_Object(this);
 	STOP(("SocketIterator::Remove - Should never reach here"));
 }
 
@@ -82,7 +82,7 @@ SocketIterator::Remove()
 void
 SocketIterator::DeletePlugs(bool defeat_release_node)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Plug* plug;
 	Node* save_release_node = nullptr;
 	if(defeat_release_node)
@@ -115,6 +115,6 @@ SocketIterator::InsertImplementation(Plug*)
 	//
 	// Should never reach here
 	//
-	Check_Object(this);
+	// Check_Object(this);
 	STOP(("SocketIterator::InsertImplementation - Should never reach here"));
 }

@@ -139,14 +139,14 @@ namespace Stuff
 		const FileDependencies*
 		GetFileDependencies(void) const
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return &m_fileDependencies;
 		}
 
 		PCSTR
 		GetFileName(void) const
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return m_fileName;
 		}
 
@@ -158,14 +158,14 @@ namespace Stuff
 		void
 		IgnoreChanges()
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			m_dirtyFlag = false;
 		}
 
 		bool
 		IsChanged(void) const
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return m_dirtyFlag;
 		}
 
@@ -198,7 +198,7 @@ namespace Stuff
 		void
 		SetDirty()
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			m_dirtyFlag = true;
 		}
 
@@ -218,14 +218,14 @@ namespace Stuff
 		bool
 		IsEmpty()
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return m_pages.IsEmpty();
 		}
 
 		bool
 		DoesPageExist(PCSTR pagename)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return FindPage(pagename) != nullptr;
 		}
 		Page*
@@ -239,7 +239,7 @@ namespace Stuff
 		PageIterator*
 		MakePageIterator()
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return new PageIterator(&m_pages);
 		}
 

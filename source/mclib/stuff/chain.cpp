@@ -85,7 +85,7 @@ ChainLink::ChainLink(
 //
 ChainLink::~ChainLink()
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Chain* chain = Cast_Object(Chain*, socket);
 	//
 	//--------------------------------------
@@ -154,7 +154,7 @@ Chain::Chain(Node* node):
 //
 Chain::~Chain()
 {
-	Check_Object(this);
+	// Check_Object(this);
 	SetReleaseNode(nullptr);
 	ChainLink* link = head;
 	while(link)
@@ -175,7 +175,7 @@ Chain::~Chain()
 void
 Chain::AddImplementation(Plug* plug)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	tail = new ChainLink(this, plug, nullptr, tail);
 	Register_Object(tail);
 	if(head == nullptr)
@@ -192,7 +192,7 @@ Chain::AddImplementation(Plug* plug)
 bool
 Chain::IsEmpty()
 {
-	Check_Object(this);
+	// Check_Object(this);
 	return (head == nullptr);
 }
 
@@ -207,7 +207,7 @@ Chain::InsertChainLink(
 	ChainLink* current_link
 )
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Object(plug);
 	Check_Object(current_link);
 	ChainLink* new_link =
@@ -236,7 +236,7 @@ Chain::InsertChainLink(
 void
 ChainIterator::First()
 {
-	Check_Object(this);
+	// Check_Object(this);
 	currentLink = Cast_Object(Chain*, socket)->head;
 }
 
@@ -248,7 +248,7 @@ ChainIterator::First()
 void
 ChainIterator::Last()
 {
-	Check_Object(this);
+	// Check_Object(this);
 	currentLink = Cast_Object(Chain*, socket)->tail;
 }
 
@@ -260,7 +260,7 @@ ChainIterator::Last()
 void
 ChainIterator::Next()
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Object(currentLink);
 	currentLink = currentLink->nextChainLink;
 }
@@ -273,7 +273,7 @@ ChainIterator::Next()
 void
 ChainIterator::Previous()
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Object(currentLink);
 	currentLink = currentLink->prevChainLink;
 }
@@ -286,7 +286,7 @@ ChainIterator::Previous()
 PVOID
 ChainIterator::ReadAndPreviousImplementation()
 {
-	Check_Object(this);
+	// Check_Object(this);
 	if(currentLink != nullptr)
 	{
 		Plug* plug;
@@ -306,7 +306,7 @@ ChainIterator::ReadAndPreviousImplementation()
 PVOID
 ChainIterator::GetCurrentImplementation()
 {
-	Check_Object(this);
+	// Check_Object(this);
 	if(currentLink != nullptr)
 	{
 		Check_Object(currentLink);
@@ -323,7 +323,7 @@ ChainIterator::GetCurrentImplementation()
 CollectionSize
 ChainIterator::GetSize()
 {
-	Check_Object(this);
+	// Check_Object(this);
 	ChainLink* link;
 	CollectionSize count;
 	count = 0;
@@ -347,7 +347,7 @@ ChainIterator::GetSize()
 PVOID
 ChainIterator::GetNthImplementation(CollectionSize index)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	ChainLink* link;
 	CollectionSize count;
 	count = 0;
@@ -376,7 +376,7 @@ ChainIterator::GetNthImplementation(CollectionSize index)
 void
 ChainIterator::Remove()
 {
-	Check_Object(this);
+	// Check_Object(this);
 	ChainLink* oldLink = currentLink;
 	Check_Object(currentLink);
 	currentLink = currentLink->nextChainLink;
@@ -392,7 +392,7 @@ ChainIterator::Remove()
 void
 ChainIterator::InsertImplementation(Plug* plug)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	currentLink =
 		Cast_Object(Chain*, socket)->InsertChainLink(plug, currentLink);
 	Check_Object(currentLink);

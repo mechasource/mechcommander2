@@ -1,5 +1,5 @@
 //===========================================================================//
-// Copyright (C) Microsoft Corporation. All rights reserved. //
+// Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
 #include "stdafx.h"
@@ -31,8 +31,7 @@ MLRCardCloud::ClassData* MLRCardCloud::DefaultData = nullptr;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLRCardCloud::InitializeClass()
+void MLRCardCloud::InitializeClass(void)
 {
 	Verify(!DefaultData);
 	// Verify(gos_GetCurrentHeap() == StaticHeap);
@@ -53,8 +52,7 @@ MLRCardCloud::InitializeClass()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLRCardCloud::TerminateClass()
+void MLRCardCloud::TerminateClass(void)
 {
 	Unregister_Object(clipPerVertex);
 	delete clipPerVertex;
@@ -77,15 +75,15 @@ MLRCardCloud::MLRCardCloud(uint32_t nr) : MLREffect(nr, DefaultData)
 {
 	//Verify(gos_GetCurrentHeap() == Heap);
 	usedNrOfCards = nullptr;
-	Check_Pointer(this);
+	//Check_Pointer(this);
 	drawMode = SortData::TriList;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLRCardCloud::~MLRCardCloud()
+MLRCardCloud::~MLRCardCloud(void)
 {
-	Check_Object(this);
+	// Check_Object(this);
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -95,7 +93,7 @@ void MLRCardCloud::SetData(
 	const Stuff::Point3D* point_data,
 	const Stuff::RGBAColor* color_data)
 {
-	Check_Pointer(this);
+	//Check_Pointer(this);
 	usedNrOfCards = count;
 	Verify(*usedNrOfCards <= maxNrOf);
 	points = point_data;
@@ -113,7 +111,7 @@ void MLRCardCloud::SetData
 	const Stuff::Vector2DScalar* uv_data
 )
 {
-	Check_Pointer(this);
+	//Check_Pointer(this);
 	usedNrOfCards = count;
 	Verify(*usedNrOfCards <= maxNrOf);
 	texCoords = uv_data;
@@ -124,7 +122,7 @@ void MLRCardCloud::SetData
 //
 void MLRCardCloud::Draw(DrawEffectInformation* dInfo, GOSVertexPool* allVerticesToDraw, MLRSorter* sorter)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	worldToEffect.Invert(*dInfo->effectToWorld);
 	Transform(*usedNrOfCards, 4);
 	if(Clip(dInfo->clippingFlags, allVerticesToDraw))
@@ -139,7 +137,7 @@ static MLRClippingState theAnd, theOr, theTest;
 //
 uint32_t MLRCardCloud::Clip(MLRClippingState clippingFlags, GOSVertexPool* vt)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	size_t i, j, k, l;
 	size_t end, len = *usedNrOfCards;
 	size_t k1, ct = 0, ret = 0;
@@ -181,7 +179,7 @@ uint32_t MLRCardCloud::Clip(MLRClippingState clippingFlags, GOSVertexPool* vt)
 					true
 				);
 				uint32_t tmpColor = GOSCopyColor(&colors[i]);
-				for(k = numGOSVertices; k < numGOSVertices + 3; k++)
+				for(k = numGOSVertices; k < numGOSVertices + 3u; k++)
 				{
 					gos_vertices[k].argb = tmpColor;
 				}

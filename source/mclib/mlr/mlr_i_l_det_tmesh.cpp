@@ -4,6 +4,10 @@
 
 #include "stdafx.h"
 
+#include <gameos.hpp>
+#include <mlr/mlrshape.hpp>
+#include <mlr/mlr_i_l_tmesh.hpp>
+#include <mlr/mlr_i_l_det_pmesh.hpp>
 #include <mlr/mlr_i_l_det_tmesh.hpp>
 
 using namespace MidLevelRenderer;
@@ -18,23 +22,17 @@ BitTrace* MLR_I_L_DeT_TMesh;
 //###### MLRIndexedTriMesh with color but no lighting one texture layer  ######
 //#############################################################################
 
-MLR_I_L_DeT_TMesh::ClassData*
-MLR_I_L_DeT_TMesh::DefaultData = nullptr;
+MLR_I_L_DeT_TMesh::ClassData* MLR_I_L_DeT_TMesh::DefaultData = nullptr;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLR_I_L_DeT_TMesh::InitializeClass()
+void MLR_I_L_DeT_TMesh::InitializeClass(void)
 {
 	Verify(!DefaultData);
 	// Verify(gos_GetCurrentHeap() == StaticHeap);
-	DefaultData =
-		new ClassData(
-		MLR_I_L_DeT_TMeshClassID,
-		"MidLevelRenderer::MLR_I_L_DeT_TMesh",
-		MLR_I_C_DeT_TMesh::DefaultData,
-		(MLRPrimitiveBase::Factory)&Make
-	);
+	DefaultData = new ClassData(
+		MLR_I_L_DeT_TMeshClassID, "MidLevelRenderer::MLR_I_L_DeT_TMesh",
+		MLR_I_C_DeT_TMesh::DefaultData, (MLRPrimitiveBase::Factory)&Make);
 	Register_Object(DefaultData);
 #if defined(TRACE_ENABLED) && defined(MLR_TRACE)
 	MLR_I_L_DeT_TMesh = new BitTrace("MLR_I_L_DeT_TMesh");
@@ -50,6 +48,7 @@ MLR_I_L_DeT_TMesh::TerminateClass()
 	Unregister_Object(DefaultData);
 	delete DefaultData;
 	DefaultData = nullptr;
+
 #if defined(TRACE_ENABLED) && defined(MLR_TRACE)
 	Unregister_Object(MLR_I_L_DeT_TMesh);
 	delete MLR_I_L_DeT_TMesh;
@@ -60,12 +59,12 @@ MLR_I_L_DeT_TMesh::TerminateClass()
 //
 MLR_I_L_DeT_TMesh::MLR_I_L_DeT_TMesh(
 	ClassData* class_data,
-	MemoryStream* stream,
+	Stuff::MemoryStream* stream,
 	uint32_t version
 ):
 	MLR_I_C_DeT_TMesh(class_data, stream, version)
 {
-	Check_Pointer(this);
+	//Check_Pointer(this);
 	Check_Pointer(stream);
 	//Verify(gos_GetCurrentHeap() == Heap);
 	switch(version)
@@ -73,7 +72,9 @@ MLR_I_L_DeT_TMesh::MLR_I_L_DeT_TMesh(
 		case 1:
 		case 2:
 		{
+#ifdef _GAMEOS_HPP_
 			STOP(("This class got created only after version 2 !"));
+#endif
 		}
 		break;
 		default:
@@ -90,7 +91,7 @@ MLR_I_L_DeT_TMesh::MLR_I_L_DeT_TMesh(
 MLR_I_L_DeT_TMesh::MLR_I_L_DeT_TMesh(ClassData* class_data):
 	MLR_I_C_DeT_TMesh(class_data), normals(0)
 {
-	Check_Pointer(this);
+	//Check_Pointer(this);
 	//Verify(gos_GetCurrentHeap() == Heap);
 }
 
@@ -98,30 +99,35 @@ MLR_I_L_DeT_TMesh::MLR_I_L_DeT_TMesh(ClassData* class_data):
 //
 MLR_I_L_DeT_TMesh::~MLR_I_L_DeT_TMesh()
 {
-	Check_Object(this);
+	// Check_Object(this);
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 MLR_I_L_DeT_TMesh*
 MLR_I_L_DeT_TMesh::Make(
-	MemoryStream* stream,
+	Stuff::MemoryStream* stream,
 	uint32_t version
 )
 {
 	Check_Object(stream);
+#ifdef _GAMEOS_HPP_
 	gos_PushCurrentHeap(Heap);
+#endif
 	MLR_I_L_DeT_TMesh* mesh = new MLR_I_L_DeT_TMesh(DefaultData, stream, version);
+#ifdef _GAMEOS_HPP_
 	gos_PopCurrentHeap();
+#endif
+
 	return mesh;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-MLR_I_L_DeT_TMesh::Save(MemoryStream* stream)
+MLR_I_L_DeT_TMesh::Save(Stuff::MemoryStream* stream)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Object(stream);
 	MLR_I_C_DeT_TMesh::Save(stream);
 	MemoryStreamIO_Write(stream, &normals);
@@ -132,10 +138,10 @@ MLR_I_L_DeT_TMesh::Save(MemoryStream* stream)
 bool
 MLR_I_L_DeT_TMesh::Copy(MLR_I_L_DeT_PMesh* pMesh)
 {
-	Check_Pointer(this);
+	//Check_Pointer(this);
 	Check_Object(pMesh);
 	size_t len;
-	Vector3D* _normals;
+	Stuff::Vector3D* _normals;
 	MLR_I_C_DeT_TMesh::Copy(pMesh);
 	pMesh->GetNormalData(&_normals, &len);
 	SetNormalData(_normals, len);
@@ -144,21 +150,15 @@ MLR_I_L_DeT_TMesh::Copy(MLR_I_L_DeT_PMesh* pMesh)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLR_I_L_DeT_TMesh::Copy(
-	MLR_I_L_TMesh* tMesh,
-	MLRState detailState,
-	float xOff,
-	float yOff,
-	float xFac,
-	float yFac
-)
+void MLR_I_L_DeT_TMesh::Copy(
+	MLR_I_L_TMesh* tMesh, MLRState detailState, 
+	float xOff, float yOff, float xFac, float yFac)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Object(tMesh);
 	//Verify(gos_GetCurrentHeap() == Heap);
 	size_t len;
-	Vector3D* _normals;
+	Stuff::Vector3D* _normals;
 	MLR_I_C_DeT_TMesh::Copy(tMesh, detailState, xOff, yOff, xFac, yFac);
 	tMesh->GetNormalData(&_normals, &len);
 	SetNormalData(_normals, len);
@@ -168,11 +168,11 @@ MLR_I_L_DeT_TMesh::Copy(
 //
 void
 MLR_I_L_DeT_TMesh::SetNormalData(
-	const Vector3D* data,
+	const Stuff::Vector3D* data,
 	size_t dataSize
 )
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Pointer(data);
 	Verify(coords.GetLength() == 0 || dataSize == coords.GetLength());
 	Verify(colors.GetLength() == 0 || dataSize == colors.GetLength());
@@ -184,11 +184,11 @@ MLR_I_L_DeT_TMesh::SetNormalData(
 //
 void
 MLR_I_L_DeT_TMesh::GetNormalData(
-	Vector3D** data,
+	Stuff::Vector3D** data,
 	psize_t dataSize
 )
 {
-	Check_Object(this);
+	// Check_Object(this);
 	*data = normals.GetData();
 	*dataSize = normals.GetLength();
 }
@@ -200,12 +200,11 @@ MLR_I_L_DeT_TMesh::SetColorData(
 #if COLOR_AS_DWORD
 	pcuint32_t data,
 #else
-	const RGBAColor* data,
+	const Stuff::RGBAColor* data,
 #endif
-	size_t dataSize
-)
+	size_t dataSize)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Pointer(data);
 	//Verify(gos_GetCurrentHeap() == Heap);
 	Verify(coords.GetLength() == 0 || dataSize == coords.GetLength());
@@ -221,12 +220,12 @@ MLR_I_L_DeT_TMesh::PaintMe(
 #if COLOR_AS_DWORD
 	pcuint32_t paintMe
 #else
-	const RGBAColor* paintMe
+	const Stuff::RGBAColor* paintMe
 #endif
 
 )
 {
-	Check_Object(this);
+	// Check_Object(this);
 #if 1
 	Verify(colors.GetLength() == litColors.GetLength());
 #else
@@ -235,7 +234,7 @@ MLR_I_L_DeT_TMesh::PaintMe(
 		litColors.SetLength(colors.GetLength());
 	}
 #endif
-	int32_t k, len = litColors.GetLength();
+	size_t k, len = litColors.GetLength();
 #if COLOR_AS_DWORD
 	uint32_t argb = GOSCopyColor(paintMe);
 	for(k = 0; k < len; k++)
@@ -307,33 +306,35 @@ MidLevelRenderer::CreateIndexedTriIcosahedron_Color_Lit_DetTex(
 	MLRState* stateDet
 )
 {
+	#ifdef _GAMEOS_HPP_
 	gos_PushCurrentHeap(Heap);
+#endif
 	MLRShape* ret = new MLRShape(20);
 	Register_Object(ret);
-	int32_t i, j, k;
+	size_t i, j, k;
 	uint32_t nrTri = static_cast<uint32_t>(ceil(icoInfo.all * pow(4.0f, icoInfo.depth)));
-	Point3D v[3];
+	Stuff::Point3D v[3];
 	if(3 * nrTri >= Limits::Max_Number_Vertices_Per_Mesh)
 	{
 		nrTri = Limits::Max_Number_Vertices_Per_Mesh / 3;
 	}
-	Point3D* coords = new Point3D [nrTri * 3];
+	Stuff::Point3D* coords = new Stuff::Point3D [nrTri * 3];
 	Register_Pointer(coords);
-	Point3D* collapsedCoords = nullptr;
+	Stuff::Point3D* collapsedCoords = nullptr;
 	if(icoInfo.indexed == true)
 	{
-		collapsedCoords = new Point3D [nrTri * 3];
+		collapsedCoords = new Stuff::Point3D [nrTri * 3];
 		Register_Pointer(collapsedCoords);
 	}
 	puint16_t index = new uint16_t [nrTri * 3];
 	Register_Pointer(index);
 	Stuff::Vector2DScalar* texCoords = new Stuff::Vector2DScalar[nrTri * 3];
 	Register_Pointer(texCoords);
-	RGBAColor* colors = new RGBAColor[nrTri * 3];
+	Stuff::RGBAColor* colors = new Stuff::RGBAColor[nrTri * 3];
 	Register_Pointer(colors);
-	Vector3D* normals = new Vector3D[nrTri * 3];
+	Stuff::Vector3D* normals = new Stuff::Vector3D[nrTri * 3];
 	Register_Pointer(normals);
-	int32_t uniquePoints = 0;
+	uint32_t uniquePoints = 0;
 	for(k = 0; k < 20; k++)
 	{
 		triDrawn = 0;
@@ -442,7 +443,7 @@ MidLevelRenderer::CreateIndexedTriIcosahedron_Color_Lit_DetTex(
 			for(i = 0; i < uniquePoints; i++)
 			{
 				colors[i] =
-					RGBAColor(
+					Stuff::RGBAColor(
 						(1.0f + collapsedCoords[i].x) / 2.0f,
 						(1.0f + collapsedCoords[i].y) / 2.0f,
 						(1.0f + collapsedCoords[i].z) / 2.0f,
@@ -456,7 +457,7 @@ MidLevelRenderer::CreateIndexedTriIcosahedron_Color_Lit_DetTex(
 			for(i = 0; i < uniquePoints; i++)
 			{
 				colors[i] =
-					RGBAColor(
+					Stuff::RGBAColor(
 						(1.0f + coords[i].x) / 2.0f,
 						(1.0f + coords[i].y) / 2.0f,
 						(1.0f + coords[i].z) / 2.0f,
@@ -487,6 +488,9 @@ MidLevelRenderer::CreateIndexedTriIcosahedron_Color_Lit_DetTex(
 	}
 	Unregister_Pointer(coords);
 	delete [] coords;
+#ifdef _GAMEOS_HPP_
 	gos_PopCurrentHeap();
+#endif
+
 	return ret;
 }

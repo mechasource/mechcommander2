@@ -87,7 +87,7 @@ namespace Stuff
 		OBB&
 		operator =(const OBB& obb)
 		{
-			Check_Pointer(this);
+			//Check_Pointer(this);
 			Check_Object(&obb);
 			localToParent = obb.localToParent;
 			axisExtents = obb.axisExtents;
@@ -98,7 +98,7 @@ namespace Stuff
 		OBB&
 		BuildSphere(const Sphere& sphere)
 		{
-			Check_Pointer(this);
+			//Check_Pointer(this);
 			Check_Object(&sphere);
 			sphereRadius = sphere.radius;
 			localToParent.BuildTranslation(sphere.center);
@@ -120,7 +120,7 @@ namespace Stuff
 			const LinearMatrix4D& matrix
 		)
 		{
-			Check_Pointer(this);
+			//Check_Pointer(this);
 			Check_Object(&obb);
 			Check_Object(&matrix);
 #if USE_ASSEMBLER_CODE
@@ -259,7 +259,7 @@ namespace Stuff
 	inline Sphere&
 	Sphere::operator =(const OBB& obb)
 	{
-		Check_Pointer(this);
+		//Check_Pointer(this);
 		Check_Object(&obb);
 		center = obb.localToParent;
 		radius = obb.sphereRadius;

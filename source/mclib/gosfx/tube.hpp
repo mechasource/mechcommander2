@@ -7,8 +7,8 @@
 //
 #pragma once
 
-#include <gosfx/gosfx.hpp>
-#include <gosfx/effect.hpp>
+//#include <gosfx/gosfx.hpp>
+//#include <gosfx/effect.hpp>
 
 namespace MidLevelRenderer
 {
@@ -30,7 +30,7 @@ namespace gosFX
 	protected:
 		Tube__Specification(
 			Stuff::MemoryStream* stream,
-			int32_t gfx_version
+			uint32_t gfx_version
 		);
 
 	public:
@@ -39,7 +39,7 @@ namespace gosFX
 		static Tube__Specification*
 		Make(
 			Stuff::MemoryStream* stream,
-			int32_t gfx_version
+			uint32_t gfx_version
 		);
 
 		void
@@ -192,14 +192,14 @@ namespace gosFX
 		Specification*
 		GetSpecification()
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return
 				Cast_Object(Specification*, m_specification);
 		}
 		Profile*
 		GetProfile(uint32_t index)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			Check_Object(GetSpecification());
 			return &m_profiles[index];
 		}

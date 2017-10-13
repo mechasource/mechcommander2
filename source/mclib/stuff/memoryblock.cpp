@@ -133,7 +133,7 @@ MemoryBlockBase::~MemoryBlockBase()
 	// come to the end of the chain
 	//------------------------------------------------------------------------
 	//
-	Check_Object(this);
+	// Check_Object(this);
 	MemoryBlockHeader* block = blockMemory;
 	while(block)
 	{
@@ -200,7 +200,7 @@ PVOID MemoryBlockBase::Grow(void)
 	// pointer
 	//------------------------------------------------------------------------
 	//
-	Check_Object(this);
+	// Check_Object(this);
 	if(intptr_t(freeRecord - firstHeaderRecord) <= intptr_t(blockSize - recordSize))
 	{
 		PVOID result = freeRecord;
@@ -559,7 +559,7 @@ MemoryBlock::New()
 	// record
 	//----------------------------------------------------------------------
 	//
-	Check_Object(this);
+	// Check_Object(this);
 	if(deletedRecord)
 	{
 		result = deletedRecord;
@@ -608,7 +608,7 @@ MemoryBlock::Delete(
 	// belongs to us
 	//--------------------------------------------------------------------
 	//
-	Check_Object(this);
+	// Check_Object(this);
 #if defined(MEMORY_BLOCK_VERIFY)
 	//
 	//--------------------------------------------------------------------
@@ -700,7 +700,7 @@ MemoryBlock::operator[](size_t index)
 	// until we come to the end of the chain
 	//------------------------------------------------------------------
 	//
-	Check_Object(this);
+	// Check_Object(this);
 	MemoryBlockHeader* block = blockMemory;
 	while(block)
 	{
@@ -742,7 +742,7 @@ MemoryBlock::operator[](size_t index)
 PVOID
 MemoryStack::Push(PCVOID what)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Pointer(what);
 	puint8_t block = firstHeaderRecord;
 	topOfStack = freeRecord;
@@ -767,7 +767,7 @@ MemoryStack::Push(PCVOID what)
 PVOID
 MemoryStack::Push()
 {
-	Check_Object(this);
+	// Check_Object(this);
 	puint8_t block = firstHeaderRecord;
 	topOfStack = freeRecord;
 	Grow();
@@ -793,7 +793,7 @@ MemoryStack::Pop()
 	// Make sure that something is in the stack
 	//-----------------------------------------
 	//
-	Check_Object(this);
+	// Check_Object(this);
 	if(topOfStack)
 	{
 		//

@@ -35,7 +35,7 @@ namespace MidLevelRenderer
 		virtual LightType
 		GetLightType()
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return AmbientLight;
 		}
 

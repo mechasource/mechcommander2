@@ -22,7 +22,7 @@ using namespace Stuff;
 Line3D&
 Line3D::SetDirection(const Vector3D& vector)
 {
-	Check_Pointer(this);
+	//Check_Pointer(this);
 	Check_Object(&vector);
 	//
 	//---------------------------------------
@@ -51,7 +51,7 @@ Line3D::GetDistanceTo(
 	float* penetration
 ) const
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Object(&sphere);
 	Check_Pointer(penetration);
 	//
@@ -109,7 +109,7 @@ Line3D::GetDistanceTo(
 float
 Line3D::GetDistanceTo(const OBB& box)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Object(&box);
 	//
 	//------------------------------------------------------------------------
@@ -199,7 +199,7 @@ Line3D::GetDistanceTo(
 	size_t* first_axis
 )
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Object(&box);
 	Check_Pointer(first_axis);
 	//

@@ -17,11 +17,11 @@
 //
 gosFX::Tube__Specification::Tube__Specification(
 	Stuff::MemoryStream* stream,
-	int32_t gfx_version
+	uint32_t gfx_version
 ):
 	Effect__Specification(TubeClassID, stream, gfx_version)
 {
-	Check_Pointer(this);
+	//Check_Pointer(this);
 	Check_Object(stream);
 	//Verify(gos_GetCurrentHeap() == Heap);
 	//
@@ -70,7 +70,7 @@ gosFX::Tube__Specification::Tube__Specification():
 	m_profileType = e_Ribbon;
 	m_insideOut = false;
 	m_UBias = 0.0f;
-	Check_Pointer(this);
+	//Check_Pointer(this);
 }
 
 //------------------------------------------------------------------------------
@@ -78,14 +78,16 @@ gosFX::Tube__Specification::Tube__Specification():
 gosFX::Tube__Specification*
 gosFX::Tube__Specification::Make(
 	Stuff::MemoryStream* stream,
-	int32_t gfx_version
+	uint32_t gfx_version
 )
 {
 	Check_Object(stream);
-	gos_PushCurrentHeap(Heap);
+	#ifdef _GAMEOS_HPP_
+	// gos_PushCurrentHeap(Heap);
+#endif
 	Tube__Specification* spec =
 		new gosFX::Tube__Specification(stream, gfx_version);
-	gos_PopCurrentHeap();
+	// gos_PopCurrentHeap();
 	return spec;
 }
 
@@ -94,7 +96,7 @@ gosFX::Tube__Specification::Make(
 void
 gosFX::Tube__Specification::Save(Stuff::MemoryStream* stream)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Object(stream);
 	Effect__Specification::Save(stream);
 	//
@@ -128,7 +130,7 @@ gosFX::Tube__Specification::Save(Stuff::MemoryStream* stream)
 void
 gosFX::Tube__Specification::BuildDefaults()
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Effect__Specification::BuildDefaults();
 	m_profilesPerSecond.SetCurve(4.0f);
 	m_pLifeSpan.SetCurve(1.0f);
@@ -180,12 +182,12 @@ gosFX::Tube__Specification::BuildDefaults()
 bool
 gosFX::Tube__Specification::IsDataValid(bool fix_data)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	if(m_maxProfileCount < 2)
 		if(fix_data)
 		{
 			m_maxProfileCount = 2;
-			PAUSE(("Warning: Value \"maxProfileCount\" in Effect \"%s\" Is Out of Range and has been Reset", (PSTR)m_name));
+			//PAUSE(("Warning: Value \"maxProfileCount\" in Effect \"%s\" Is Out of Range and has been Reset", (PSTR)m_name));
 		}
 		else
 			return false;
@@ -197,7 +199,7 @@ gosFX::Tube__Specification::IsDataValid(bool fix_data)
 			m_pScale.m_ageCurve.SetCurve(1.0f);
 			m_pScale.m_seeded = false;
 			m_pScale.m_seedCurve.SetCurve(1.0f);
-			PAUSE(("Warning: Curve \"pScale\" in Effect \"%s\" Is Out of Range and has been Reset", (PSTR)m_name));
+			//PAUSE(("Warning: Curve \"pScale\" in Effect \"%s\" Is Out of Range and has been Reset", (PSTR)m_name));
 		}
 		else
 			return false;
@@ -223,7 +225,7 @@ gosFX::Tube__Specification::IsDataValid(bool fix_data)
 			m_pVOffset.m_ageCurve.SetCurve(0.0f);
 			m_pVOffset.m_seeded = false;
 			m_pVOffset.m_seedCurve.SetCurve(1.0f);
-			PAUSE(("Warning: Curve \"VOffset\" in Effect \"%s\" Is Out of Range and has been Reset", (PSTR)m_name));
+			//PAUSE(("Warning: Curve \"VOffset\" in Effect \"%s\" Is Out of Range and has been Reset", (PSTR)m_name));
 		}
 		else
 			return false;
@@ -249,7 +251,7 @@ gosFX::Tube__Specification::IsDataValid(bool fix_data)
 			m_pUOffset.m_ageCurve.SetCurve(0.0f);
 			m_pUOffset.m_seeded = false;
 			m_pUOffset.m_seedCurve.SetCurve(1.0f);
-			PAUSE(("Warning: Curve \"UOffset\" in Effect \"%s\" Is Out of Range and has been Reset", (PSTR)m_name));
+			//PAUSE(("Warning: Curve \"UOffset\" in Effect \"%s\" Is Out of Range and has been Reset", (PSTR)m_name));
 		}
 		else
 			return false;
@@ -262,7 +264,7 @@ gosFX::Tube__Specification::IsDataValid(bool fix_data)
 void
 gosFX::Tube__Specification::Copy(Tube__Specification* spec)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Object(spec);
 	//Verify(gos_GetCurrentHeap() == Heap);
 	Effect__Specification::Copy(spec);
@@ -271,7 +273,9 @@ gosFX::Tube__Specification::Copy(Tube__Specification* spec)
 	// Copy the curves
 	//----------------
 	//
-	gos_PushCurrentHeap(Heap);
+	#ifdef _GAMEOS_HPP_
+	// gos_PushCurrentHeap(Heap);
+#endif
 	m_profilesPerSecond = spec->m_profilesPerSecond;
 	m_pLifeSpan = spec->m_pLifeSpan;
 	m_emitterSizeX = spec->m_emitterSizeX;
@@ -295,7 +299,7 @@ gosFX::Tube__Specification::Copy(Tube__Specification* spec)
 	m_uvs = spec->m_uvs;
 	m_insideOut = spec->m_insideOut;
 	m_UBias = spec->m_UBias;
-	gos_PopCurrentHeap();
+	// gos_PopCurrentHeap();
 }
 
 //------------------------------------------------------------------------------
@@ -303,7 +307,7 @@ gosFX::Tube__Specification::Copy(Tube__Specification* spec)
 void
 gosFX::Tube__Specification::BuildTemplate()
 {
-	Check_Object(this);
+	// Check_Object(this);
 	switch(m_profileType)
 	{
 		case e_Ribbon:
@@ -405,7 +409,7 @@ gosFX::Tube__Specification::BuildTemplate()
 bool
 gosFX::Tube__Specification::CalculateUBias(bool adjust)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	//
 	//----------------------------------
 	// Calculate the worst case UV scale
@@ -497,7 +501,7 @@ gosFX::Tube::Tube(
 ):
 	Effect(DefaultData, spec, flags)
 {
-	Check_Pointer(this);
+	//Check_Pointer(this);
 	Check_Object(spec);
 	//Verify(gos_GetCurrentHeap() == Heap);
 	//
@@ -520,13 +524,13 @@ gosFX::Tube::Tube(
 	// Allocate the tube mesh
 	//-----------------------
 	//
-	gos_PushCurrentHeap(MidLevelRenderer::Heap);
+	// gos_PushCurrentHeap(MidLevelRenderer::Heap);
 	m_mesh =
 		new MidLevelRenderer::MLRIndexedTriangleCloud(
 		spec->m_maxProfileCount * (vertex_count - 1) * 2
 	);
 	Register_Object(m_mesh);
-	gos_PopCurrentHeap();
+	// gos_PopCurrentHeap();
 	//
 	//------------------------------------------------
 	// Set up the data pointers into the channel block
@@ -567,7 +571,7 @@ gosFX::Tube::Tube(
 void
 gosFX::Tube::BuildMesh(puint16_t indices)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Pointer(indices);
 	//
 	//--------------------------------------
@@ -659,9 +663,11 @@ gosFX::Tube::Make(
 )
 {
 	Check_Object(spec);
-	gos_PushCurrentHeap(Heap);
+	#ifdef _GAMEOS_HPP_
+	// gos_PushCurrentHeap(Heap);
+#endif
 	Tube* tube = new gosFX::Tube(spec, flags);
-	gos_PopCurrentHeap();
+	// gos_PopCurrentHeap();
 	return tube;
 }
 
@@ -670,7 +676,7 @@ gosFX::Tube::Make(
 void
 gosFX::Tube::Start(ExecuteInfo* info)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Pointer(info);
 	//
 	//----------------------
@@ -691,7 +697,7 @@ gosFX::Tube::Start(ExecuteInfo* info)
 //
 bool gosFX::Tube::Execute(ExecuteInfo* info)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Object(info);
 	//
 	//----------------------------------------
@@ -865,7 +871,7 @@ bool gosFX::Tube::Execute(ExecuteInfo* info)
 //
 void gosFX::Tube::Kill()
 {
-	Check_Object(this);
+	// Check_Object(this);
 	//
 	//-------------------------------------------------------------
 	// Destroy all the profiles and set up an empty profile cloud
@@ -899,7 +905,7 @@ void gosFX::Tube::Kill()
 //
 bool gosFX::Tube::HasFinished()
 {
-	Check_Object(this);
+	// Check_Object(this);
 	return Effect::HasFinished() && (m_activeProfileCount == 0);
 }
 
@@ -911,7 +917,7 @@ gosFX::Tube::CreateNewProfile(
 	const Stuff::LinearMatrix4D& origin
 )
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Object(&origin);
 	//
 	//----------------------------------------------------
@@ -966,7 +972,7 @@ gosFX::Tube::AnimateProfile(
 	Stuff::Sphere* bounds
 )
 {
-	Check_Object(this);
+	// Check_Object(this);
 	//
 	//----------------------------------------------------
 	// If the profile gets too old, don't do anything else
@@ -1073,7 +1079,7 @@ void gosFX::Tube::DestroyProfile(uint32_t index)
 //
 void gosFX::Tube::Draw(DrawInfo* info)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Object(info);
 	//
 	//---------------------------------------------------------

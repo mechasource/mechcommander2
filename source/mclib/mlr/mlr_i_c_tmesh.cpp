@@ -4,6 +4,11 @@
 
 #include "stdafx.h"
 
+#include <gameos.hpp>
+#include <stuff/linearmatrix.hpp>
+#include <mlr/gosvertex.hpp>
+#include <mlr/mlrshape.hpp>
+#include <mlr/mlr_i_c_pmesh.hpp>
 #include <mlr/mlr_i_c_tmesh.hpp>
 
 using namespace MidLevelRenderer;
@@ -60,12 +65,12 @@ MLR_I_C_TMesh::TerminateClass()
 //
 MLR_I_C_TMesh::MLR_I_C_TMesh(
 	ClassData* class_data,
-	MemoryStream* stream,
+	Stuff::MemoryStream* stream,
 	uint32_t version
 ):
 	MLR_I_TMesh(class_data, stream, version)
 {
-	Check_Pointer(this);
+	//Check_Pointer(this);
 	Check_Pointer(stream);
 	//Verify(gos_GetCurrentHeap() == Heap);
 	switch(version)
@@ -73,7 +78,9 @@ MLR_I_C_TMesh::MLR_I_C_TMesh(
 		case 1:
 		case 2:
 		{
+#ifdef _GAMEOS_HPP_
 			STOP(("This class got created only after version 2 !"));
+#endif
 		}
 		break;
 		default:
@@ -83,7 +90,7 @@ MLR_I_C_TMesh::MLR_I_C_TMesh(
 #else
 			Stuff::DynamicArrayOf<uint32_t> smallColors;
 			MemoryStreamIO_Read(stream, &smallColors);
-			int32_t i, len = smallColors.GetLength();
+			size_t i, len = smallColors.GetLength();
 			colors.SetLength(len);
 			uint32_t theColor;
 			for(i = 0; i < len; i++)
@@ -109,7 +116,7 @@ MLR_I_C_TMesh::MLR_I_C_TMesh(
 MLR_I_C_TMesh::MLR_I_C_TMesh(ClassData* class_data):
 	MLR_I_TMesh(class_data), colors(0)
 {
-	Check_Pointer(this);
+	//Check_Pointer(this);
 	//Verify(gos_GetCurrentHeap() == Heap);
 	actualColors = &colors;
 }
@@ -118,37 +125,39 @@ MLR_I_C_TMesh::MLR_I_C_TMesh(ClassData* class_data):
 //
 MLR_I_C_TMesh::~MLR_I_C_TMesh()
 {
-	Check_Object(this);
+	// Check_Object(this);
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLR_I_C_TMesh*
-MLR_I_C_TMesh::Make(
-	MemoryStream* stream,
-	uint32_t version
-)
+MLR_I_C_TMesh* MLR_I_C_TMesh::Make(
+	Stuff::MemoryStream* stream, uint32_t version)
 {
 	Check_Object(stream);
+#ifdef _GAMEOS_HPP_
 	gos_PushCurrentHeap(Heap);
+#endif
 	MLR_I_C_TMesh* mesh = new MLR_I_C_TMesh(DefaultData, stream, version);
+#ifdef _GAMEOS_HPP_
 	gos_PopCurrentHeap();
+#endif
+
 	return mesh;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-MLR_I_C_TMesh::Save(MemoryStream* stream)
+MLR_I_C_TMesh::Save(Stuff::MemoryStream* stream)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Object(stream);
 	MLR_I_TMesh::Save(stream);
 #if COLOR_AS_DWORD
 	MemoryStreamIO_Write(stream, &colors);
 #else
 	Stuff::DynamicArrayOf<uint32_t> smallColors;
-	int32_t i, len = colors.GetLength();
+	size_t i, len = colors.GetLength();
 	const Stuff::RGBAColor* data = colors.GetData();
 	smallColors.SetLength(len);
 	for(i = 0; i < len; i++)
@@ -164,13 +173,13 @@ MLR_I_C_TMesh::Save(MemoryStream* stream)
 bool
 MLR_I_C_TMesh::Copy(MLR_I_C_PMesh* pMesh)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Object(pMesh);
 	size_t len;
 #if COLOR_AS_DWORD
 	uint32_t* _colors;
 #else
-	RGBAColor* _colors;
+	Stuff::RGBAColor* _colors;
 #endif
 	MLR_I_TMesh::Copy(pMesh);
 	pMesh->GetColorData(&_colors, &len);
@@ -185,12 +194,12 @@ MLR_I_C_TMesh::SetColorData(
 #if COLOR_AS_DWORD
 	pcuint32_t data,
 #else
-	const RGBAColor* data,
+	const Stuff::RGBAColor* data,
 #endif
 	size_t dataSize
 )
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Pointer(data);
 	Verify(coords.GetLength() == 0 || dataSize == coords.GetLength());
 	Verify(texCoords.GetLength() == 0 || dataSize == texCoords.GetLength());
@@ -204,12 +213,12 @@ MLR_I_C_TMesh::GetColorData(
 #if COLOR_AS_DWORD
 	puint32_t* data,
 #else
-	RGBAColor** data,
+	Stuff::RGBAColor** data,
 #endif
 	psize_t dataSize
 )
 {
-	Check_Object(this);
+	// Check_Object(this);
 	*data = colors.GetData();
 	*dataSize = colors.GetLength();
 }
@@ -221,14 +230,14 @@ MLR_I_C_TMesh::PaintMe(
 #if COLOR_AS_DWORD
 	pcuint32_t paintMe
 #else
-	const RGBAColor* paintMe
+	const Stuff::RGBAColor* paintMe
 #endif
 
 )
 {
-	Check_Object(this);
+	// Check_Object(this);
 	// original color is lost !!!;
-	int32_t k, len = colors.GetLength();
+	size_t k, len = colors.GetLength();
 #if COLOR_AS_DWORD
 	uint32_t argb = GOSCopyColor(paintMe);
 	for(k = 0; k < len; k++)
@@ -248,13 +257,14 @@ MLR_I_C_TMesh::PaintMe(
 void
 MLR_I_C_TMesh::HurtMe(const Stuff::LinearMatrix4D& pain, float radius)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Verify(colors.GetLength() == coords.GetLength());
-	int32_t i, len = colors.GetLength();
-	Point3D painpoint;
-	Vector3D diff;
-	UnitVector3D up, left, forward;
+	size_t i, len = colors.GetLength();
+	Stuff::Point3D painpoint;
+	Stuff::Vector3D diff;
+	Stuff::UnitVector3D up, left, forward;
 	float x, y, sqRadius = radius * radius;
+
 	painpoint = pain;
 	pain.GetLocalLeftInWorld(&left);
 	pain.GetLocalUpInWorld(&up);
@@ -322,26 +332,25 @@ extern uint32_t gEnableTextureSort, gEnableAlphaSort;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLR_I_C_TMesh*
-MidLevelRenderer::CreateIndexedTriCube_Color_NoLit(
-	float half,
-	MLRState* state
-)
+MLR_I_C_TMesh* MidLevelRenderer::CreateIndexedTriCube_Color_NoLit(
+	float half, MLRState* state)
 {
+	(void)half; (void)state;
+
 #if 0
 	gos_PushCurrentHeap(Heap);
 	MLR_I_C_TMesh* ret = new MLR_I_C_TMesh();
 	Register_Object(ret);
-	Point3D* coords = new Point3D [8];
+	Stuff::Point3D* coords = new Stuff::Point3D [8];
 	Register_Object(coords);
-	coords[0] = Point3D(half, -half,  half);
-	coords[1] = Point3D(-half, -half,  half);
-	coords[2] = Point3D(half, -half, -half);
-	coords[3] = Point3D(-half, -half, -half);
-	coords[4] = Point3D(-half,  half,  half);
-	coords[5] = Point3D(half,  half,  half);
-	coords[6] = Point3D(half,  half, -half);
-	coords[7] = Point3D(-half,  half, -half);
+	coords[0] = Stuff::Point3D(half, -half,  half);
+	coords[1] = Stuff::Point3D(-half, -half,  half);
+	coords[2] = Stuff::Point3D(half, -half, -half);
+	coords[3] = Stuff::Point3D(-half, -half, -half);
+	coords[4] = Stuff::Point3D(-half,  half,  half);
+	coords[5] = Stuff::Point3D(half,  half,  half);
+	coords[6] = Stuff::Point3D(half,  half, -half);
+	coords[7] = Stuff::Point3D(-half,  half, -half);
 	puint8_t lengths = new uint8_t [6];
 	Register_Pointer(lengths);
 	int32_t i;
@@ -427,31 +436,33 @@ MidLevelRenderer::CreateIndexedTriIcosahedron_Color_NoLit(
 	MLRState* state
 )
 {
+	#ifdef _GAMEOS_HPP_
 	gos_PushCurrentHeap(Heap);
+#endif
 	MLRShape* ret = new MLRShape(20);
 	Register_Object(ret);
-	int32_t i, j, k;
+	size_t i, j, k;
 	uint32_t nrTri = static_cast<uint32_t>(ceil(icoInfo.all * pow(4.0f, icoInfo.depth)));
-	Point3D v[3];
+	Stuff::Point3D v[3];
 	if(3 * nrTri >= Limits::Max_Number_Vertices_Per_Mesh)
 	{
 		nrTri = Limits::Max_Number_Vertices_Per_Mesh / 3;
 	}
-	Point3D* coords = new Point3D [nrTri * 3];
+	Stuff::Point3D* coords = new Stuff::Point3D [nrTri * 3];
 	Register_Pointer(coords);
-	Point3D* collapsedCoords = nullptr;
+	Stuff::Point3D* collapsedCoords = nullptr;
 	if(icoInfo.indexed == true)
 	{
-		collapsedCoords = new Point3D [nrTri * 3];
+		collapsedCoords = new Stuff::Point3D [nrTri * 3];
 		Register_Pointer(collapsedCoords);
 	}
 	puint16_t index = new uint16_t [nrTri * 3];
 	Register_Pointer(index);
 	Stuff::Vector2DScalar* texCoords = new Stuff::Vector2DScalar[nrTri * 3];
 	Register_Pointer(texCoords);
-	RGBAColor* colors = new RGBAColor[nrTri * 3];
+	Stuff::RGBAColor* colors = new Stuff::RGBAColor[nrTri * 3];
 	Register_Pointer(colors);
-	int32_t uniquePoints = 0;
+	uint32_t uniquePoints = 0;
 	for(k = 0; k < 20; k++)
 	{
 		triDrawn = 0;
@@ -558,7 +569,7 @@ MidLevelRenderer::CreateIndexedTriIcosahedron_Color_NoLit(
 			for(i = 0; i < uniquePoints; i++)
 			{
 				colors[i] =
-					RGBAColor(
+					Stuff::RGBAColor(
 						(1.0f + collapsedCoords[i].x) / 2.0f,
 						(1.0f + collapsedCoords[i].y) / 2.0f,
 						(1.0f + collapsedCoords[i].z) / 2.0f,
@@ -571,7 +582,7 @@ MidLevelRenderer::CreateIndexedTriIcosahedron_Color_NoLit(
 			for(i = 0; i < uniquePoints; i++)
 			{
 				colors[i] =
-					RGBAColor(
+					Stuff::RGBAColor(
 						(1.0f + coords[i].x) / 2.0f,
 						(1.0f + coords[i].y) / 2.0f,
 						(1.0f + coords[i].z) / 2.0f,
@@ -596,6 +607,9 @@ MidLevelRenderer::CreateIndexedTriIcosahedron_Color_NoLit(
 	}
 	Unregister_Pointer(coords);
 	delete [] coords;
+#ifdef _GAMEOS_HPP_
 	gos_PopCurrentHeap();
+#endif
+
 	return ret;
 }

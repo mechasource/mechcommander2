@@ -59,14 +59,14 @@ namespace MidLevelRenderer
 		uint8_t
 		GetCurrentDepth()
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return currentDepth;
 		}
 
 		void
 		SetDepthData(uint8_t md, uint8_t mad)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			maxDepth = md;
 			maxAllDepth = mad;
 		}
@@ -74,7 +74,7 @@ namespace MidLevelRenderer
 		void
 		SetTileData(uint8_t tx, uint8_t tz)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			tileX = tx;
 			tileZ = tz;
 		}
@@ -82,7 +82,7 @@ namespace MidLevelRenderer
 		void
 		SetFrame(int32_t res, float xMin, float zMin, float xMax, float zMax)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			frame[res][0] = xMin;
 			frame[res][1] = zMin;
 			frame[res][2] = xMax;
@@ -92,14 +92,14 @@ namespace MidLevelRenderer
 		float
 		GetFrame(int32_t res, int32_t p)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return frame[res][p];
 		}
 
 		void
 		SetBorderPixel(float bp)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			borderPixelFun = bp;
 		}
 
@@ -112,7 +112,7 @@ namespace MidLevelRenderer
 		int32_t
 		GetLevelTexture(int32_t lev)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			Verify(lev >= 0 && lev < 8);
 			return textures[lev];
 		}
@@ -134,7 +134,7 @@ namespace MidLevelRenderer
 
 		virtual size_t GetSize(void)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			size_t ret = MLR_I_DeT_TMesh::GetSize();
 			return ret;
 		}

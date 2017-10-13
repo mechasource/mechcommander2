@@ -7,9 +7,9 @@
 //
 #pragma once
 
-#include <gosfx/gosfx.hpp>
-#include <gosfx/singleton.hpp>
-#include <mlr/mlr.hpp>
+//#include <gosfx/gosfx.hpp>
+//#include <gosfx/singleton.hpp>
+//#include <mlr/mlr.hpp>
 
 namespace MidLevelRenderer
 {
@@ -33,35 +33,20 @@ namespace gosFX
 		// Constructors/Destructors
 		//
 	protected:
-		Shape__Specification(
-			Stuff::MemoryStream* stream,
-			int32_t gfx_version
-		);
+		Shape__Specification(Stuff::MemoryStream* stream, uint32_t gfx_version);
 
 	public:
 		Shape__Specification(MidLevelRenderer::MLRShape* shape);
 		~Shape__Specification(void);
 
-		void
-		Save(Stuff::MemoryStream* stream);
-
-		static Shape__Specification*
-		Make(
-			Stuff::MemoryStream* stream,
-			int32_t gfx_version
-		);
-
-		void
-		Copy(Shape__Specification* spec);
-
-		void
-		SetShape(MidLevelRenderer::MLRShape* shape);
+		void Save(Stuff::MemoryStream* stream);
+		static Shape__Specification* Make(Stuff::MemoryStream* stream, uint32_t gfx_version);
+		void Copy(Shape__Specification* spec);
+		void SetShape(MidLevelRenderer::MLRShape* shape);
 
 	protected:
-		MidLevelRenderer::MLRShape
-		* m_shape;
-		float
-		m_radius;
+		MidLevelRenderer::MLRShape* m_shape;
+		float m_radius;
 	};
 
 //############################################################################
@@ -83,24 +68,15 @@ namespace gosFX
 		// Class Data Support
 		//
 	protected:
-		Shape(
-			Specification* spec,
-			uint32_t flags
-		);
+		Shape(Specification* spec, uint32_t flags);
 
 	public:
-		static Shape*
-		Make(
-			Specification* spec,
-			uint32_t flags
-		);
+		static Shape* Make(Specification* spec, uint32_t flags);
 
-		Specification*
-		GetSpecification()
+		Specification* GetSpecification(void)
 		{
-			Check_Object(this);
-			return
-				Cast_Object(Specification*, m_specification);
+			// Check_Object(this);
+			return Cast_Object(Specification*, m_specification);
 		}
 
 		static ClassData* DefaultData;
@@ -115,7 +91,6 @@ namespace gosFX
 		// API
 		//
 	public:
-		void
-		Draw(DrawInfo* info);
+		void Draw(DrawInfo* info);
 	};
 }

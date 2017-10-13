@@ -32,7 +32,7 @@ Normal3D::Multiply_Inverse(
 	const AffineMatrix4D& M
 )
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Object(&Source);
 	Check_Object(&M);
 	x = Source.x * M(0, 0) + Source.y * M(0, 1) + Source.z * M(0, 2);
@@ -51,7 +51,7 @@ Normal3D::Multiply(
 	const AffineMatrix4D& m
 )
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Object(&n);
 	Check_Object(&n);
 	Verify(this != &n);

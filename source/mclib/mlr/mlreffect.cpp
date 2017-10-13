@@ -105,7 +105,7 @@ MLREffect::~MLREffect(void)
 //
 void MLREffect::Transform(size_t nrOfUsedEffects, size_t nrOfVertices)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Start_Timer(Transform_Time);
 	size_t i, j, k;
 	for(i = 0, j = 0; i < nrOfUsedEffects; i++, j += nrOfVertices)
@@ -127,7 +127,7 @@ void MLREffect::Transform(size_t nrOfUsedEffects, size_t nrOfVertices)
 //
 void MLREffect::TurnAllOn(void)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	size_t i;
 	for(i = 0; i < maxNrOf; i++)
 	{
@@ -139,7 +139,7 @@ void MLREffect::TurnAllOn(void)
 //
 void MLREffect::TurnAllOff(void)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	size_t i;
 	for(i = 0; i < maxNrOf; i++)
 	{
@@ -151,7 +151,7 @@ void MLREffect::TurnAllOff(void)
 //
 void MLREffect::TurnAllVisible(void)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	size_t i;
 	for(i = 0; i < maxNrOf; i++)
 	{
@@ -163,7 +163,7 @@ void MLREffect::TurnAllVisible(void)
 //
 void MLREffect::TurnAllInVisible(void)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	size_t i;
 	for(i = 0; i < maxNrOf; i++)
 	{

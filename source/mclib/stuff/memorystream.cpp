@@ -59,7 +59,7 @@ MemoryStream::MemoryStream(
 ):
 	RegisteredClass(DefaultData)
 {
-	Check_Pointer(this);
+	//Check_Pointer(this);
 	streamStart = static_cast<puint8_t>(stream_start);
 	streamSize = stream_size;
 	Verify(initial_offset <= stream_size);
@@ -77,7 +77,7 @@ MemoryStream::MemoryStream(
 ):
 	RegisteredClass(class_data)
 {
-	Check_Pointer(this);
+	//Check_Pointer(this);
 	streamStart = static_cast<puint8_t>(stream_start);
 	streamSize = stream_size;
 	Verify(initial_offset <= stream_size);
@@ -100,7 +100,7 @@ MemoryStream::ReadBytes(
 	size_t number_of_bytes
 )
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Pointer(ptr);
 	Verify(number_of_bytes > 0);
 #if defined(_ARMOR)
@@ -117,7 +117,7 @@ MemoryStream::ReadBytes(
 int32_t
 MemoryStream::ReadChar()
 {
-	Check_Object(this);
+	// Check_Object(this);
 	size_t bytes_remaining = GetBytesRemaining();
 	if(bytes_remaining > 0)
 	{
@@ -137,7 +137,7 @@ MemoryStream::ReadLine(
 	char continuator
 )
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Pointer(buffer);
 	Verify(max_number_of_bytes > 0);
 	(void)continuator;
@@ -210,7 +210,7 @@ MemoryStream::ReadString(
 	char continuator
 )
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Verify(size_of_buffer > 0);
 	static char buffer[1024];
 	Verify(size_of_buffer < sizeof(buffer));
@@ -230,7 +230,7 @@ MemoryStream::ReadSwappedBytes(
 	size_t number_of_bytes
 )
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Pointer(ptr);
 	Verify(number_of_bytes > 0);
 	Verify(GetBytesRemaining() >= number_of_bytes);
@@ -251,7 +251,7 @@ MemoryStream::ReadSwappedBytes(
 void
 MemoryStream::WriteLine(PSTR buffer)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Pointer(buffer);
 	WriteBytes(buffer, strlen(buffer));
 	WriteBytes("\r\n", 2);
@@ -266,7 +266,7 @@ MemoryStream::WriteBytes(
 	size_t number_of_bytes
 )
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Pointer(ptr);
 	Verify(number_of_bytes > 0);
 	Mem_Copy(GetPointer(), ptr, number_of_bytes, GetBytesRemaining());
@@ -283,7 +283,7 @@ MemoryStream::WriteSwappedBytes(
 	size_t number_of_bytes
 )
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Pointer(ptr);
 	Verify(number_of_bytes > 0);
 	Verify(GetBytesRemaining() >= number_of_bytes);
@@ -405,7 +405,7 @@ MemoryStream::ByteAlign()
 	{
 		return;
 	}
-	Check_Object(this);
+	// Check_Object(this);
 	//SPEW(("jerryeds", "WRITE : %x", workingBitBuffer));
 	WriteBytes(&workingBitBuffer, 1);
 	workingBitBuffer = 0x00;
@@ -418,7 +418,7 @@ MemoryStream::ByteAlign()
 MemoryStream&
 MemoryStream::ReadBit(bool& bit_value)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	int32_t result = 0;
 	if(currentBit == Empty_Bit_Buffer)
 	{
@@ -446,7 +446,7 @@ MemoryStream::ReadBit(bool& bit_value)
 MemoryStream&
 MemoryStream::WriteBit(const bool& bit_value)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	int32_t int_bit_value = (bit_value) ? 1 : 0;
 	if(currentBit == Empty_Bit_Buffer)
 	{
@@ -476,7 +476,7 @@ MemoryStream::ReadUnsafeBits(
 	uint32_t number_of_bits
 )
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Pointer(ptr);
 	if(currentBit == Empty_Bit_Buffer)
 	{
@@ -544,7 +544,7 @@ MemoryStream::ReadUnsafeBits(
 MemoryStream&
 MemoryStream::WriteBits(PCVOID ptr, uint32_t number_of_bits)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Pointer(ptr);
 	if(currentBit == Empty_Bit_Buffer)
 	{
@@ -617,7 +617,7 @@ MemoryStream::ReadBitsToScaledInt(int32_t& number, int32_t min, int32_t max,  ui
 MemoryStream&
 MemoryStream::WriteScaledIntToBits(cint32_t& number, int32_t min, int32_t max,  uint32_t number_of_bits)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	uint32_t buffer;
 	buffer = Scaled_Int_To_Bits(number, min, max, number_of_bits);
 	WriteBits(&buffer, number_of_bits);
@@ -630,7 +630,7 @@ MemoryStream::WriteScaledIntToBits(cint32_t& number, int32_t min, int32_t max,  
 MemoryStream&
 MemoryStream::ReadBitsToScaledFloat(float& number, float min, float max,  uint32_t number_of_bits)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	uint32_t buffer = 0x0;
 	ReadBits(&buffer, number_of_bits);
 	number = Scaled_Float_From_Bits(buffer, min, max, number_of_bits);
@@ -643,7 +643,7 @@ MemoryStream::ReadBitsToScaledFloat(float& number, float min, float max,  uint32
 MemoryStream&
 MemoryStream::WriteScaledFloatToBits(const float& number, float min, float max,  uint32_t number_of_bits)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	uint32_t buffer;
 	buffer = Scaled_Float_To_Bits(number, min, max, number_of_bits);
 	WriteBits(&buffer, number_of_bits);
@@ -675,7 +675,7 @@ static inline size_t Calculate_Buffer_Size(size_t needed)
 DynamicMemoryStream::DynamicMemoryStream(size_t stream_size):
 	MemoryStream(nullptr, stream_size)
 {
-	Check_Pointer(this);
+	//Check_Pointer(this);
 	bufferSize = Calculate_Buffer_Size(stream_size);
 	streamStart = new uint8_t[bufferSize];
 	Check_Pointer(streamStart);
@@ -689,7 +689,7 @@ DynamicMemoryStream::DynamicMemoryStream(size_t stream_size):
 DynamicMemoryStream::DynamicMemoryStream(const DynamicMemoryStream& otherStream):
 	MemoryStream(nullptr, otherStream.GetSize())
 {
-	Check_Pointer(this);
+	//Check_Pointer(this);
 	Check_Pointer(&otherStream);
 	bufferSize = otherStream.bufferSize;
 	streamStart = new uint8_t[bufferSize];
@@ -710,7 +710,7 @@ DynamicMemoryStream::DynamicMemoryStream(
 ):
 	MemoryStream(stream_start, stream_size, initial_offset)
 {
-	Check_Pointer(this);
+	//Check_Pointer(this);
 	ownsStream = false;
 	bufferSize = stream_size;
 }
@@ -719,7 +719,7 @@ DynamicMemoryStream::DynamicMemoryStream(
 //
 DynamicMemoryStream::~DynamicMemoryStream()
 {
-	Check_Object(this);
+	// Check_Object(this);
 	if(ownsStream)
 	{
 		Check_Pointer(streamStart);
@@ -732,7 +732,7 @@ DynamicMemoryStream::~DynamicMemoryStream()
 bool
 DynamicMemoryStream::AllocateBytes(size_t count)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	size_t current_offset = size_t(currentPosition - streamStart);
 	size_t new_stream_size = current_offset + count;
 	if(ownsStream && bufferSize - current_offset < count)
@@ -760,7 +760,7 @@ DynamicMemoryStream::WriteBytes(
 	size_t number_of_bytes
 )
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Pointer(ptr);
 	Verify(number_of_bytes > 0);
 	//

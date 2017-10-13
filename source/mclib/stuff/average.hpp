@@ -159,7 +159,7 @@ namespace Stuff
 	template <class T> void
 	AverageOf<T>::Add(T value)
 	{
-		Check_Object(this);
+		// Check_Object(this);
 		Check_Pointer(array);
 		Verify(next < size);
 		array[next] = value;
@@ -175,7 +175,7 @@ namespace Stuff
 	template <class T> T
 	AverageOf<T>::CalculateAverage()
 	{
-		Check_Object(this);
+		// Check_Object(this);
 		size_t i;
 		T accumulate;
 		for(i = 0, accumulate = (T)0; i < size; i++)
@@ -192,7 +192,7 @@ namespace Stuff
 	template <class T> T
 	AverageOf<T>::CalculateOlympicAverage()
 	{
-		Check_Object(this);
+		// Check_Object(this);
 		size_t i;
 		T accumulate, min_value, max_value;
 		Verify(0 < size);
@@ -216,7 +216,7 @@ namespace Stuff
 	template <class T> float
 	AverageOf<T>::CalculateTrend()
 	{
-		Check_Object(this);
+		// Check_Object(this);
 		size_t i;
 		float f = 0.0f;
 		float fx = 0.0f;
@@ -244,7 +244,7 @@ namespace Stuff
 	template <class T> T
 	AverageOf<T>::CalculateLowerBound()
 	{
-		Check_Object(this);
+		// Check_Object(this);
 		size_t i;
 		T min_value;
 		Verify(0 < size);
@@ -262,7 +262,7 @@ namespace Stuff
 	template <class T> T
 	AverageOf<T>::CalculateUpperBound()
 	{
-		Check_Object(this);
+		// Check_Object(this);
 		size_t i;
 		T max_value;
 		Verify(0 < size);
@@ -309,7 +309,7 @@ namespace Stuff
 		void
 		Add(T value)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			size++;
 			total += value;
 		}
@@ -322,7 +322,7 @@ namespace Stuff
 		T
 		CalculateAverage()
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return (size == 0) ? ((T)0) : (total / (T)size);
 		}
 
@@ -334,7 +334,7 @@ namespace Stuff
 		size_t
 		GetSize()
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return size;
 		}
 

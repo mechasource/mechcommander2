@@ -17,11 +17,11 @@
 gosFX::ParticleCloud__Specification::ParticleCloud__Specification(
 	Stuff::RegisteredClass::ClassID class_id,
 	Stuff::MemoryStream* stream,
-	int32_t gfx_version
+	uint32_t gfx_version
 ):
 	Effect__Specification(class_id, stream, gfx_version)
 {
-	Check_Pointer(this);
+	//Check_Pointer(this);
 	Check_Object(stream);
 	//Verify(gos_GetCurrentHeap() == Heap);
 	//
@@ -61,7 +61,7 @@ gosFX::ParticleCloud__Specification::ParticleCloud__Specification(
 {
 	//Verify(gos_GetCurrentHeap() == Heap);
 	m_maxParticleCount = 0;
-	Check_Pointer(this);
+	//Check_Pointer(this);
 }
 
 //------------------------------------------------------------------------------
@@ -69,7 +69,7 @@ gosFX::ParticleCloud__Specification::ParticleCloud__Specification(
 void
 gosFX::ParticleCloud__Specification::Save(Stuff::MemoryStream* stream)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Object(stream);
 	Effect__Specification::Save(stream);
 	//
@@ -105,7 +105,7 @@ gosFX::ParticleCloud__Specification::Save(Stuff::MemoryStream* stream)
 void
 gosFX::ParticleCloud__Specification::BuildDefaults()
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Effect__Specification::BuildDefaults();
 	m_startingPopulation.SetCurve(0.0f);
 	m_particlesPerSecond.SetCurve(5.0f);
@@ -161,7 +161,7 @@ gosFX::ParticleCloud__Specification::BuildDefaults()
 bool
 gosFX::ParticleCloud__Specification::IsDataValid(bool fix_data)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	float min, max;
 	m_pLifeSpan.ExpensiveComputeRange(&min, &max);
 	if(min < 0.0f)
@@ -171,7 +171,7 @@ gosFX::ParticleCloud__Specification::IsDataValid(bool fix_data)
 			m_pLifeSpan.m_ageCurve.SetCurve(1.0f);
 			m_pLifeSpan.m_seeded = false;
 			m_pLifeSpan.m_seedCurve.SetCurve(1.0f);
-			PAUSE(("Warning: Curve \"pLifeSpan\" in Effect \"%s\" Is Out of Range and has been Reset", (PSTR)m_name));
+			// PAUSE(("Warning: Curve \"pLifeSpan\" in Effect \"%s\" Is Out of Range and has been Reset", (PSTR)m_name));
 		}
 		else
 			return false;
@@ -181,7 +181,7 @@ gosFX::ParticleCloud__Specification::IsDataValid(bool fix_data)
 		if(fix_data)
 		{
 			m_startingPopulation.SetCurve(0.0f);
-			PAUSE(("Warning: Curve \"startingPopulation\" in Effect \"%s\" Is Out of Range and has been Reset", (PSTR)m_name));
+			// PAUSE(("Warning: Curve \"startingPopulation\" in Effect \"%s\" Is Out of Range and has been Reset", (PSTR)m_name));
 		}
 		else
 			return false;
@@ -189,7 +189,7 @@ gosFX::ParticleCloud__Specification::IsDataValid(bool fix_data)
 		if(fix_data)
 		{
 			m_maxParticleCount = 1;
-			PAUSE(("Warning: Value \"maxParticleCount\" in Effect \"%s\" Is Out of Range and has been Reset", (PSTR)m_name));
+			// PAUSE(("Warning: Value \"maxParticleCount\" in Effect \"%s\" Is Out of Range and has been Reset", (PSTR)m_name));
 		}
 		else
 			return false;
@@ -201,7 +201,7 @@ gosFX::ParticleCloud__Specification::IsDataValid(bool fix_data)
 void
 gosFX::ParticleCloud__Specification::Copy(ParticleCloud__Specification* spec)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Object(spec);
 	//Verify(gos_GetCurrentHeap() == Heap);
 	Effect__Specification::Copy(spec);
@@ -210,7 +210,9 @@ gosFX::ParticleCloud__Specification::Copy(ParticleCloud__Specification* spec)
 	// Copy the curves
 	//----------------
 	//
-	gos_PushCurrentHeap(Heap);
+	#ifdef _GAMEOS_HPP_
+	// gos_PushCurrentHeap(Heap);
+#endif
 	m_startingPopulation = spec->m_startingPopulation;
 	m_particlesPerSecond = spec->m_particlesPerSecond;
 	m_emitterSizeX = spec->m_emitterSizeX;
@@ -232,7 +234,7 @@ gosFX::ParticleCloud__Specification::Copy(ParticleCloud__Specification* spec)
 	m_pBlue = spec->m_pBlue;
 	m_pAlpha = spec->m_pAlpha;
 	m_maxParticleCount = spec->m_maxParticleCount;
-	gos_PopCurrentHeap();
+	// gos_PopCurrentHeap();
 }
 
 //############################################################################
@@ -279,7 +281,7 @@ gosFX::ParticleCloud::ParticleCloud(
 ):
 	Effect(class_data, spec, flags)
 {
-	Check_Pointer(this);
+	//Check_Pointer(this);
 	Check_Object(spec);
 	//Verify(gos_GetCurrentHeap() == Heap);
 	//
@@ -302,7 +304,7 @@ gosFX::ParticleCloud::ParticleCloud(
 void
 gosFX::ParticleCloud::Start(ExecuteInfo* info)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Pointer(info);
 	//
 	//--------------------------------------------------------------------------
@@ -322,7 +324,7 @@ gosFX::ParticleCloud::Start(ExecuteInfo* info)
 //
 bool gosFX::ParticleCloud::Execute(ExecuteInfo* info)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Object(info);
 	Verify(IsExecuted());
 	//
@@ -447,7 +449,7 @@ bool gosFX::ParticleCloud::Execute(ExecuteInfo* info)
 //
 bool gosFX::ParticleCloud::HasFinished()
 {
-	Check_Object(this);
+	// Check_Object(this);
 	return Effect::HasFinished() && (m_activeParticleCount == 0);
 }
 
@@ -455,7 +457,7 @@ bool gosFX::ParticleCloud::HasFinished()
 //
 void gosFX::ParticleCloud::Kill()
 {
-	Check_Object(this);
+	// Check_Object(this);
 	//
 	//-------------------------------------------------------------
 	// Destroy all the particles and set up an empty particle cloud
@@ -481,7 +483,7 @@ gosFX::ParticleCloud::CreateNewParticle(
 	Stuff::Point3D* translation
 )
 {
-	Check_Object(this);
+	// Check_Object(this);
 	//
 	//----------------------------------------------------
 	// Figure out the age and age rate of the new particle

@@ -72,12 +72,12 @@ MLR_Terrain2::TerminateClass()
 //
 MLR_Terrain2::MLR_Terrain2(
 	ClassData* class_data,
-	MemoryStream* stream,
+	Stuff::MemoryStream* stream,
 	uint32_t version
 ):
 	MLR_I_DeT_TMesh(class_data, stream, version)
 {
-	Check_Pointer(this);
+	//Check_Pointer(this);
 	Check_Pointer(stream);
 	//Verify(gos_GetCurrentHeap() == Heap);
 	*stream >> tileX >> tileZ;
@@ -186,7 +186,7 @@ MLR_Terrain2::MLR_Terrain2(
 MLR_Terrain2::MLR_Terrain2(ClassData* class_data):
 	MLR_I_DeT_TMesh(class_data)
 {
-	Check_Pointer(this);
+	//Check_Pointer(this);
 	//Verify(gos_GetCurrentHeap() == Heap);
 	tileX = 0;
 	tileZ = 0;
@@ -209,19 +209,21 @@ MLR_Terrain2::MLR_Terrain2(ClassData* class_data):
 //
 MLR_Terrain2::~MLR_Terrain2()
 {
-	Check_Object(this);
+	// Check_Object(this);
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 MLR_Terrain2*
 MLR_Terrain2::Make(
-	MemoryStream* stream,
+	Stuff::MemoryStream* stream,
 	uint32_t version
 )
 {
 	Check_Object(stream);
+	#ifdef _GAMEOS_HPP_
 	gos_PushCurrentHeap(Heap);
+#endif
 	MLR_Terrain2* terrain = new MLR_Terrain2(DefaultData, stream, version);
 	gos_PopCurrentHeap();
 	return terrain;
@@ -231,9 +233,9 @@ MLR_Terrain2::Make(
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-MLR_Terrain2::Save(MemoryStream* stream)
+MLR_Terrain2::Save(Stuff::MemoryStream* stream)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Check_Object(stream);
 	texCoords.SetLength(0);
 	MLR_I_DeT_TMesh::Save(stream);
@@ -329,7 +331,7 @@ MLR_Terrain2::SetCurrentDepth(uint8_t d)
 void
 MLR_Terrain2::SetLevelTexture(int32_t lev, int32_t handle)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	Verify(lev >= 0 && lev < 8);
 	textures[lev] = handle;
 	if(lev == currentDepth)
@@ -345,7 +347,9 @@ MLR_Terrain2::CalculateUVs()
 {
 	if(texCoords.GetLength() != coords.GetLength())
 	{
-		gos_PushCurrentHeap(Heap);
+		#ifdef _GAMEOS_HPP_
+	gos_PushCurrentHeap(Heap);
+#endif
 		texCoords.SetLength(coords.GetLength());
 		gos_PopCurrentHeap();
 	}
@@ -396,8 +400,7 @@ MLR_Terrain2::CalculateUVs()
 #undef CLASSNAME
 
 extern RGBAColor errorColor;
-extern bool
-CheckForBigTriangles(DynamicArrayOf<Stuff::Vector2DScalar>* lightMapUVs, int32_t stride);
+extern bool CheckForBigTriangles(DynamicArrayOf<Stuff::Vector2DScalar>* lightMapUVs, uint32_t stride);
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //

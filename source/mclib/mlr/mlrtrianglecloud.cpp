@@ -75,7 +75,7 @@ MLRTriangleCloud::MLRTriangleCloud(uint32_t nr) :
 {
 	//Verify(gos_GetCurrentHeap() == Heap);
 	usedNrOfTriangles = nullptr;
-	Check_Pointer(this);
+	//Check_Pointer(this);
 	drawMode = SortData::TriList;
 }
 
@@ -83,7 +83,7 @@ MLRTriangleCloud::MLRTriangleCloud(uint32_t nr) :
 //
 MLRTriangleCloud::~MLRTriangleCloud()
 {
-	Check_Object(this);
+	// Check_Object(this);
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -96,7 +96,7 @@ MLRTriangleCloud::SetData
 	const Stuff::RGBAColor* color_data
 )
 {
-	Check_Pointer(this);
+	//Check_Pointer(this);
 	usedNrOfTriangles = count;
 	Verify(*usedNrOfTriangles <= maxNrOf);
 	points = point_data;
@@ -108,7 +108,7 @@ MLRTriangleCloud::SetData
 void
 MLRTriangleCloud::Draw(DrawEffectInformation* dInfo, GOSVertexPool* allVerticesToDraw, MLRSorter* sorter)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	worldToEffect.Invert(*dInfo->effectToWorld);
 	Transform(*usedNrOfTriangles, 3);
 #if 0
@@ -126,7 +126,7 @@ static MLRClippingState theAnd, theOr, theTest;
 //
 uint32_t MLRTriangleCloud::Clip(MLRClippingState clippingFlags, GOSVertexPool* vt)
 {
-	Check_Object(this);
+	// Check_Object(this);
 	size_t i, j, k;
 	size_t end, len = *usedNrOfTriangles;
 	uint32_t ret = 0;

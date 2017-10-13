@@ -72,7 +72,7 @@ namespace Stuff
 		//
 		Vector4D& operator=(const Vector4D& v)
 		{
-			Check_Pointer(this);
+			//Check_Pointer(this);
 			Check_Object(&v);
 			x = v.x;
 			y = v.y;
@@ -82,7 +82,7 @@ namespace Stuff
 		}
 		Vector4D& operator=(const Vector3D& v)
 		{
-			Check_Pointer(this);
+			//Check_Pointer(this);
 			Check_Object(&v);
 			x = v.x;
 			y = v.y;
@@ -92,7 +92,7 @@ namespace Stuff
 		}
 		Vector4D& operator=(const Point3D& p)
 		{
-			Check_Pointer(this);
+			//Check_Pointer(this);
 			Check_Object(&p);
 			x = p.x;
 			y = p.y;
@@ -106,13 +106,13 @@ namespace Stuff
 		//
 		const float& operator[](size_t index) const
 		{
-			Check_Pointer(this);
+			//Check_Pointer(this);
 			Verify(/*static_cast<uint32_t>*/(index) <= W_Axis);
 			return (&x)[index];
 		}
 		float& operator[](size_t index)
 		{
-			Check_Pointer(this);
+			//Check_Pointer(this);
 			Verify(/*static_cast<uint32_t>*/(index) <= W_Axis);
 			return (&x)[index];
 		}
@@ -149,7 +149,7 @@ namespace Stuff
 		Vector4D&
 		Negate(const Vector4D& v)
 		{
-			Check_Pointer(this);
+			//Check_Pointer(this);
 			Check_Object(&v);
 			x = -v.x;
 			y = -v.y;
@@ -164,7 +164,7 @@ namespace Stuff
 			const Vector4D& v2
 		)
 		{
-			Check_Pointer(this);
+			//Check_Pointer(this);
 			Check_Object(&v1);
 			Check_Object(&v2);
 			x = v1.x + v2.x;
@@ -185,7 +185,7 @@ namespace Stuff
 			const Vector4D& v2
 		)
 		{
-			Check_Pointer(this);
+			//Check_Pointer(this);
 			Check_Object(&v1);
 			Check_Object(&v2);
 			x = v1.x - v2.x;
@@ -203,7 +203,7 @@ namespace Stuff
 		float
 		operator*(const Vector4D& v) const
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			return x * v.x + y * v.y + z * v.z + w * v.w;
 		}
 
@@ -213,7 +213,7 @@ namespace Stuff
 			float scale
 		)
 		{
-			Check_Pointer(this);
+			//Check_Pointer(this);
 			Check_Object(&v);
 			x = v.x * scale;
 			y = v.y * scale;
@@ -233,7 +233,7 @@ namespace Stuff
 			const Vector4D& v2
 		)
 		{
-			Check_Pointer(this);
+			//Check_Pointer(this);
 			Check_Object(&v1);
 			Check_Object(&v2);
 			x = v1.x * v2.x;
@@ -254,7 +254,7 @@ namespace Stuff
 			float scale
 		)
 		{
-			Check_Pointer(this);
+			//Check_Pointer(this);
 			Check_Object(&v);
 			Verify(!Small_Enough(scale));
 			scale = 1.0f / scale;
@@ -276,7 +276,7 @@ namespace Stuff
 			const Vector4D& v2
 		)
 		{
-			Check_Pointer(this);
+			//Check_Pointer(this);
 			Check_Object(&v1);
 			Check_Object(&v2);
 			Verify(!Small_Enough(v1.x));
@@ -313,7 +313,7 @@ namespace Stuff
 		Vector4D& Multiply(const Vector3D& v, const Matrix4D& m);
 		Vector4D& Multiply(const Point3D& v, const Matrix4D& m)
 		{
-			Check_Pointer(this);
+			//Check_Pointer(this);
 			Check_Object(&v);
 			Check_Object(&m);
 #if USE_ASSEMBLER_CODE
@@ -427,11 +427,10 @@ namespace Stuff
 		Vector4D& MultiplySetClip(
 			const Point3D& v,
 			const Matrix4D& m,
-			pint32_t clipper
-		);
+			puint32_t clipper);
 		/*
 		{
-		Check_Pointer(this);
+		//Check_Pointer(this);
 		Check_Object(&v);
 		Check_Object(&m);
 
@@ -603,7 +602,7 @@ namespace Stuff
 			float t2
 		)
 		{
-			Check_Pointer(this);
+			//Check_Pointer(this);
 			Check_Object(&v1);
 			Check_Object(&v2);
 			x = v1.x * t1 + v2.x * t2;
@@ -620,7 +619,7 @@ namespace Stuff
 			float t
 		)
 		{
-			Check_Pointer(this);
+			//Check_Pointer(this);
 			Check_Object(&v1);
 			Check_Object(&v2);
 			x = v1.x + t * (v2.x - v1.x);

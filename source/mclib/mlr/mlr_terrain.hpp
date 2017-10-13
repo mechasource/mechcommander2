@@ -70,7 +70,7 @@ namespace MidLevelRenderer
 
 		virtual size_t GetSize(void)
 		{
-			Check_Object(this);
+			// Check_Object(this);
 			size_t ret = MLR_I_DeT_TMesh::GetSize();
 			return ret;
 		}

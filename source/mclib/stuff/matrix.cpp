@@ -52,7 +52,7 @@ Matrix4D::BuildIdentity()
 Matrix4D&
 Matrix4D::operator=(const AffineMatrix4D& m)
 {
-	Check_Pointer(this);
+	//Check_Pointer(this);
 	Check_Object(&m);
 	Mem_Copy(entries, m.entries, sizeof(m.entries), sizeof(entries));
 	(*this)(0, 3) = 0.0f;
@@ -69,7 +69,7 @@ Matrix4D::operator=(const AffineMatrix4D& m)
 Matrix4D&
 Matrix4D::operator=(const Origin3D& p)
 {
-	Check_Pointer(this);
+	//Check_Pointer(this);
 	Check_Object(&p);
 	BuildRotation(p.angularPosition);
 	BuildTranslation(p.linearPosition);
@@ -87,7 +87,7 @@ Matrix4D::operator=(const Origin3D& p)
 Matrix4D&
 Matrix4D::BuildRotation(const EulerAngles& angles)
 {
-	Check_Pointer(this);
+	//Check_Pointer(this);
 	Check_Object(&angles);
 	SinCosPair
 	x,
@@ -105,7 +105,7 @@ Matrix4D::BuildRotation(const EulerAngles& angles)
 	(*this)(2, 0) = x.cosine * y.sine * z.cosine + x.sine * z.sine;
 	(*this)(2, 1) = x.cosine * y.sine * z.sine - x.sine * z.cosine;
 	(*this)(2, 2) = x.cosine * y.cosine;
-	Check_Object(this);
+	// Check_Object(this);
 	return *this;
 }
 
@@ -116,7 +116,7 @@ Matrix4D::BuildRotation(const EulerAngles& angles)
 Matrix4D&
 Matrix4D::operator=(const EulerAngles& angles)
 {
-	Check_Pointer(this);
+	//Check_Pointer(this);
 	Check_Object(&angles);
 	(*this)(3, 0) = 0.0f;
 	(*this)(3, 1) = 0.0f;
@@ -135,7 +135,7 @@ Matrix4D::operator=(const EulerAngles& angles)
 Matrix4D&
 Matrix4D::BuildRotation(const UnitQuaternion& q)
 {
-	Check_Pointer(this);
+	//Check_Pointer(this);
 	Check_Object(&q);
 	float
 	a = q.x * q.y,
@@ -167,7 +167,7 @@ Matrix4D::BuildRotation(const UnitQuaternion& q)
 Matrix4D&
 Matrix4D::operator=(const Point3D& p)
 {
-	Check_Pointer(this);
+	//Check_Pointer(this);
 	Check_Object(&p);
 	(*this)(0, 0) = 1.0f;
 	(*this)(1, 0) = 0.0f;
@@ -195,7 +195,7 @@ Matrix4D::operator=(const Point3D& p)
 Matrix4D&
 Matrix4D::BuildTranslation(const Point3D& p)
 {
-	Check_Pointer(this);
+	//Check_Pointer(this);
 	Check_Object(&p);
 	(*this)(3, 0) = p.x;
 	(*this)(3, 1) = p.y;
@@ -407,7 +407,7 @@ Matrix4D::Multiply(
 	const Matrix4D& Source2
 )
 {
-	Check_Pointer(this);
+	//Check_Pointer(this);
 	Check_Object(&Source1);
 	Check_Object(&Source2);
 #if USE_ASSEMBLER_CODE

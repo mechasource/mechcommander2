@@ -1,0 +1,233 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+1 VERSIONINFO
+ FILEVERSION 1,0,0,0
+ PRODUCTVERSION 1,0,0,0
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x40004L
+ FILETYPE 0x2L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904b0"
+        BEGIN
+            VALUE "CompanyName", "Microsoft"
+            VALUE "FileDescription", "GameOS Text"
+            VALUE "FileVersion", "1"
+        END
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE 
+BEGIN
+    0                       "English"
+    1                       "Arial.ttf"
+    2                       "1033"
+END
+
+STRINGTABLE 
+BEGIN
+    101                     "0xffffffff"
+    102                     "0xff000000"
+    103                     "0"
+    110                     "24"
+    111                     "0"
+END
+
+STRINGTABLE 
+BEGIN
+    112                     "0"
+    113                     "0xa0"
+    114                     "0xff000000"
+    120                     "0x00ffff00"
+    121                     "0x000000ff"
+    122                     "0x0000ff00"
+    123                     "0x00ff0000"
+    124                     "0x00ff0000"
+    125                     "0x80"
+    126                     "0"
+END
+
+STRINGTABLE 
+BEGIN
+    140                     "MS Sans Serif"
+    141                     "Courier New"
+    142                     "8"
+    143                     "Full Screen"
+END
+
+STRINGTABLE 
+BEGIN
+    144                     "Retry"
+    145                     "Continue"
+    146                     "Exit"
+    147                     "More Details..."
+    148                     "Save"
+    149                     "Save bmp"
+    150                     "Save log"
+    151                     "Replay"
+    152                     "Raid"
+    153                     "Email"
+    154                     "Debug"
+    155                     "Ignore"
+    156                     "More Error Details..."
+    157                     "Leave without saving or emailing?"
+    158                     "Notes"
+END
+
+STRINGTABLE 
+BEGIN
+    1010                    "Left Mouse"
+    1011                    "Right Mouse"
+    1012                    "Middle Mouse"
+    1020                    "Please select a color depth of 16 bit or 32 bit from the settings tab of the display properties dialog located in the control panel."
+    1021                    "Desktop is in %1 mode. Hardware acceleration will not be available when running in a window"
+    1022                    "256 color"
+    1023                    "24 bit color"
+END
+
+STRINGTABLE 
+BEGIN
+    1030                    "Netmeeting"
+END
+
+STRINGTABLE 
+BEGIN
+    10015                   "Could not play movie. Is DirectShow installed?"
+END
+
+STRINGTABLE 
+BEGIN
+    10017                   "Netmeeting is preventing use of full screen mode. Please stop Netmeeting."
+    10018                   "Another application is preventing use of full screen mode."
+    10022                   "Blade can only render to a 16 bit surface"
+    10030                   "Requires DirectX 8 or later, found %s"
+    10031                   "Cannot find ddraw.dll, this file is required"
+END
+
+STRINGTABLE 
+BEGIN
+    10033                   "Cannot find blade.dll in %s\\assets\\binaries or %s, this file is required"
+    10035                   "Cannot find ijl10.dll in %s\\assets\\binaries or %s, this file is required"
+    10036                   "Cannot load DirectSound dll"
+    10038                   "Cannot load DirectInput dll"
+    10040                   "DirectX Media not installed"
+    10041                   "Intel Indeo not installed"
+    10042                   "Microsoft audio compression not installed"
+    10043                   "Please install DirectX Media 6.0 or later"
+    10047                   "More virtual memory is required to run. There may be problems if you continue."
+END
+
+STRINGTABLE 
+BEGIN
+    10050                   "GameOS did not exit properly last time, system unstable"
+    10051                   "Cannot find dsetup.dll in %s\\assets\\binaries or %s, this file is required"
+    10052                   "No video or unsupported video format '%s'"
+    10053                   "Problem reading file '%s'"
+    10054                   "Cannot find file '%s'"
+    10061                   "File not found '%s'"
+    10062                   "Could not map file '%s'"
+    10063                   "Cannot create '%s'"
+END
+
+STRINGTABLE 
+BEGIN
+    10064                   "Cannot create or open '%s'"
+    10066                   "File not opened for writing! '%s'"
+    10067                   "WARNING: Your %s %s driver is version %s.\nThis driver is known to make the game behave unpredictably! See the MechCommander 2 Readme file for information on 3D cards and drivers.\n\nClick Cancel to exit the game now, click OK to continue."
+    10068                   "Your video card has %d bytes of video RAM. MechCommander 2 requires a video card with at least %d bytes of video RAM. Click OK to try and continue, or click Cancel to exit."
+    10069                   "Video Device Driver Warning"
+    10070                   "Video Card Below Min Spec"
+END
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////////////////////////////////////////
+// Swedish resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_SVE)
+#ifdef _WIN32
+LANGUAGE LANG_SWEDISH, SUBLANG_DEFAULT
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+#endif    // Swedish resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

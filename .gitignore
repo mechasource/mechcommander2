@@ -70,6 +70,11 @@ ipch/
 *.vsp
 *.vspx
 
+# project parsers
+.vs/
+.vscode/
+.idea/
+
 # TFS 2012 Local Workspace
 $tf/
 
@@ -196,3 +201,5 @@ source/gameos/lib/x86/gameos/
 .svn/
 .clang/
 .codelite/
+/source/build.vs/junktest.cpp
+/.project

@@ -1,5 +1,5 @@
 
-* text=auto
+* text=input
 
 *.h text eol=lf
 *.hpp text eol=lf
@@ -19,6 +19,7 @@ resource.h text eol=crlf
 *.filters text eol=crlf
 *.vsprops text eol=crlf
 *.props text eol=crlf
+CMakeLists.txt text eol=lf
 *.rtf text eol=crlf
 *.txt text eol=crlf
 *.cmd text eol=crlf

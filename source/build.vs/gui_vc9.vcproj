@@ -6,6 +6,7 @@
 	ProjectGUID="{97985315-F026-4AB8-A765-2DBE7B78CC6C}"
 	RootNamespace="MechCommander"
 	Keyword="AtlProj"
+	TargetFrameworkVersion="0"
 	>
 	<Platforms>
 		<Platform

@@ -315,7 +315,7 @@ int32_t UserHeap::init(uint32_t memSize, PSTR heapId, bool useGOS)
 	}
 	else
 	{
-		gosHeap = gos_CreateMemoryHeap(heapId, memSize);
+		gosHeap = gos_CreateMemoryHeap(heapId, memSize, ParentClientHeap);
 		useGOSGuardPage = true;
 		heapStart = nullptr;
 		heapEnd = nullptr;
@@ -569,7 +569,10 @@ PVOID UserHeap::Malloc(uint32_t memSize)
 	{
 		gos_PushCurrentHeap(gosHeap);
 		result = gos_Malloc(memSize);
-		gos_PopCurrentHeap();
+		#ifdef _GAMEOS_HPP_
+	gos_PopCurrentHeap();
+#endif
+
 		return result;
 	}
 	HeapBlockPtr blockOffs = nullptr;
@@ -953,7 +956,10 @@ int32_t UserHeap::Free(PVOIDmemBlock)
 	{
 		gos_PushCurrentHeap(gosHeap);
 		gos_Free(memBlock);
-		gos_PopCurrentHeap();
+		#ifdef _GAMEOS_HPP_
+	gos_PopCurrentHeap();
+#endif
+
 		return 0;
 	}
 	HeapBlockPtr blockOffs = (HeapBlockPtr)memBlock;

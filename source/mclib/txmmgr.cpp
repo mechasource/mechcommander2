@@ -160,7 +160,10 @@ void MC_TextureManager::destroy(void)
 	MidLevelRenderer::MLRTexturePool::Instance = nullptr;
 	delete theClipper;
 	theClipper = nullptr;
+	#ifdef _GAMEOS_HPP_
 	gos_PopCurrentHeap();
+#endif
+
 	//------------------------------------------------------
 	// Shutdown the GOS FX and MLR.
 	gos_PushCurrentHeap(gosFX::Heap);
@@ -170,7 +173,10 @@ void MC_TextureManager::destroy(void)
 	effectStream = nullptr;
 	delete gosFX::LightManager::Instance;
 	gosFX::LightManager::Instance = nullptr;
+	#ifdef _GAMEOS_HPP_
 	gos_PopCurrentHeap();
+#endif
+
 	//------------------------------------------
 	// free SystemHeap Memory
 	systemHeap->Free(masterTextureNodes);
@@ -227,7 +233,10 @@ void MC_TextureManager::flush(bool justTextures)
 	MidLevelRenderer::MLRTexturePool::Instance = nullptr;
 	delete theClipper;
 	theClipper = nullptr;
+	#ifdef _GAMEOS_HPP_
 	gos_PopCurrentHeap();
+#endif
+
 	//------------------------------------------------------
 	// Shutdown the GOS FX and MLR.
 	gos_PushCurrentHeap(gosFX::Heap);
@@ -237,7 +246,10 @@ void MC_TextureManager::flush(bool justTextures)
 	effectStream = nullptr;
 	delete gosFX::LightManager::Instance;
 	gosFX::LightManager::Instance = nullptr;
+	#ifdef _GAMEOS_HPP_
 	gos_PopCurrentHeap();
+#endif
+
 	//------------------------------------------------------
 	//Restart MLR and the GOSFx
 	gos_PushCurrentHeap(MidLevelRenderer::Heap);
@@ -245,7 +257,10 @@ void MC_TextureManager::flush(bool justTextures)
 	MidLevelRenderer::MLRTexturePool::Instance = new MidLevelRenderer::MLRTexturePool(pool);
 	MidLevelRenderer::MLRSortByOrder* cameraSorter = new MidLevelRenderer::MLRSortByOrder(MidLevelRenderer::MLRTexturePool::Instance);
 	theClipper = new MidLevelRenderer::MLRClipper(0, cameraSorter);
+	#ifdef _GAMEOS_HPP_
 	gos_PopCurrentHeap();
+#endif
+
 	//------------------------------------------------------
 	// ReStart the GOS FX.
 	gos_PushCurrentHeap(gosFX::Heap);
@@ -264,7 +279,10 @@ void MC_TextureManager::flush(bool justTextures)
 	effectStream = new Stuff::MemoryStream(effectsData, effectsSize);
 	gosFX::EffectLibrary::Instance->Load(effectStream);
 	gosFX::LightManager::Instance = new gosFX::LightManager();
+	#ifdef _GAMEOS_HPP_
 	gos_PopCurrentHeap();
+#endif
+
 	systemHeap->Free(effectsData);
 }
 

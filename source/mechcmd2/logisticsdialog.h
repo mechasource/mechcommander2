@@ -20,235 +20,172 @@ LogisticsDialog.h			: Interface for the LogisticsDialog component.
 CLASS DESCRIPTION
 LogisticsDialog:
 **************************************************************************************************/
-class LogisticsDialog: public LogisticsScreen
+class LogisticsDialog : public LogisticsScreen
 {
-public:
-
-	virtual void		render(void);
-	virtual void		update(void);
+  public:
+	virtual void render(void);
+	virtual void update(void);
 
 	void begin(void);
 	void end(void);
 
-	bool				isDone()
-	{
-		return bDone;
-	}
+	bool isDone() { return bDone; }
 
-	void	setFont(int32_t newFontResID);
+	void setFont(int32_t newFontResID);
 
 	LogisticsDialog(void);
 
-
-
-
-protected:
-
-	aAnimation	enterAnim;
-	aAnimation	exitAnim;
-	bool		bDone;
-	int32_t								oldFont;
-
+  protected:
+	aAnimation enterAnim;
+	aAnimation exitAnim;
+	bool bDone;
+	int32_t oldFont;
 };
 
 class LogisticsOKDialog : public LogisticsDialog
 {
-public:
-
-	static LogisticsOKDialog* instance()
-	{
-		return s_instance;
-	}
-
+  public:
+	static LogisticsOKDialog* instance() { return s_instance; }
 
 	LogisticsOKDialog(void);
 
-
-	virtual int32_t			handleMessage(uint32_t, uint32_t);
+	virtual int32_t handleMessage(uint32_t, uint32_t);
 
 	static int32_t init(FitIniFile& file);
 
-	void				setText(int32_t textID, int32_t CancelButton, int32_t OKButton);
-	void				setText(PCSTR mainText);
+	void setText(int32_t textID, int32_t CancelButton, int32_t OKButton);
+	void setText(PCSTR mainText);
 
-
-
-private:
-
+  private:
 	LogisticsOKDialog(const LogisticsOKDialog& src);
 	virtual ~LogisticsOKDialog(void);
 	LogisticsOKDialog& operator=(const LogisticsOKDialog& ogisticsDialog);
 
-
-	static LogisticsOKDialog*		s_instance;
+	static LogisticsOKDialog* s_instance;
 
 	friend void endDialogs(void);
 };
 
 class LogisticsOneButtonDialog : public LogisticsDialog
 {
-public:
-
-	static LogisticsOneButtonDialog* instance()
-	{
-		return s_instance;
-	}
-
+  public:
+	static LogisticsOneButtonDialog* instance() { return s_instance; }
 
 	LogisticsOneButtonDialog(void);
 
-
-	virtual int32_t			handleMessage(uint32_t, uint32_t);
+	virtual int32_t handleMessage(uint32_t, uint32_t);
 
 	static int32_t init(FitIniFile& file);
 
-	void				setText(int32_t textID, int32_t CancelButton, int32_t OKButton);
-	void				setText(PCSTR mainText);
+	void setText(int32_t textID, int32_t CancelButton, int32_t OKButton);
+	void setText(PCSTR mainText);
 
-
-
-protected:
-
+  protected:
 	LogisticsOneButtonDialog(const LogisticsOneButtonDialog& src);
 	virtual ~LogisticsOneButtonDialog(void);
-	LogisticsOneButtonDialog& operator=(const LogisticsOneButtonDialog& ogisticsDialog);
+	LogisticsOneButtonDialog& operator=(
+		const LogisticsOneButtonDialog& ogisticsDialog);
 
-
-	static LogisticsOneButtonDialog*		s_instance;
+	static LogisticsOneButtonDialog* s_instance;
 
 	friend void endDialogs(void);
 };
 
 class LogisticsLegalDialog : public LogisticsOneButtonDialog
 {
-public:
-
-	static LogisticsLegalDialog* instance()
-	{
-		return s_instance;
-	}
+  public:
+	static LogisticsLegalDialog* instance() { return s_instance; }
 	static int32_t init(FitIniFile& file);
 
 	LogisticsLegalDialog() {}
 
-private:
-
+  private:
 	LogisticsLegalDialog(const LogisticsLegalDialog& src);
 	virtual ~LogisticsLegalDialog() {}
 	LogisticsLegalDialog& operator=(const LogisticsLegalDialog& ogisticsDialog);
 
-	static LogisticsLegalDialog*		s_instance;
+	static LogisticsLegalDialog* s_instance;
 
 	friend void endDialogs(void);
-
 };
-
-
 
 class LogisticsSaveDialog : public LogisticsDialog
 {
-public:
-
-	static LogisticsSaveDialog* instance()
-	{
-		return s_instance;
-	}
-
+  public:
+	static LogisticsSaveDialog* instance() { return s_instance; }
 
 	LogisticsSaveDialog(void);
 
 	virtual void begin(void);
 	virtual void beginLoad(void);
-	void		 beginCampaign(void);
+	void beginCampaign(void);
 
 	virtual void end(void);
 	virtual void update(void);
 	virtual void render(void);
 
 	static int32_t init(FitIniFile& file);
-	virtual int32_t			handleMessage(uint32_t, uint32_t);
+	virtual int32_t handleMessage(uint32_t, uint32_t);
 
-	const EString& getFileName()
-	{
-		return selectedName;
-	}
+	const EString& getFileName() { return selectedName; }
 
-
-
-private:
-
+  private:
 	LogisticsSaveDialog(const LogisticsSaveDialog& src);
 	virtual ~LogisticsSaveDialog(void);
 	LogisticsSaveDialog& operator=(const LogisticsSaveDialog& ogisticsDialog);
 
-	static LogisticsSaveDialog*		s_instance;
+	static LogisticsSaveDialog* s_instance;
 
-	aListBox	gameListBox;
+	aListBox gameListBox;
 
-	EString		selectedName;
+	EString selectedName;
 
-	void	initDialog(PCSTR path, bool bCampaign);
-	void	updateCampaignMissionInfo(void);
-	void	setMission(PCSTR path);
-	void	readCampaignNameFromFile(PSTR fileName, PSTR resultName, int32_t len);
-	bool	isCorrectVersionSaveGame(PSTR fileName);
+	void initDialog(PCSTR path, bool bCampaign);
+	void updateCampaignMissionInfo(void);
+	void setMission(PCSTR path);
+	void readCampaignNameFromFile(PSTR fileName, PSTR resultName, int32_t len);
+	bool isCorrectVersionSaveGame(PSTR fileName);
 
-
-
-	bool	bPromptOverwrite;
-	bool	bDeletePrompt;
-	bool	bLoad;
-	bool	bCampaign;
+	bool bPromptOverwrite;
+	bool bDeletePrompt;
+	bool bLoad;
+	bool bCampaign;
 
 	void updateMissionInfo(void);
 	aLocalizedListItem templateItem;
 
-
 	friend void endDialogs(void);
-
 };
 
 class LogisticsVariantDialog : public LogisticsDialog
 {
-public:
-
+  public:
 	LogisticsVariantDialog(void);
 	~LogisticsVariantDialog(void);
-	static LogisticsVariantDialog* instance()
-	{
-		return s_instance;
-	}
+	static LogisticsVariantDialog* instance() { return s_instance; }
 
 	virtual void begin(void);
-	void	beginTranscript(void);
+	void beginTranscript(void);
 	virtual void end(void);
 	virtual void update(void);
 	virtual void render(void);
 
 	int32_t init(FitIniFile& file);
-	virtual int32_t			handleMessage(uint32_t, uint32_t);
+	virtual int32_t handleMessage(uint32_t, uint32_t);
 
-	const EString& getFileName()
-	{
-		return selectedName;
-	}
+	const EString& getFileName() { return selectedName; }
 
+  protected:
+	static LogisticsVariantDialog* s_instance;
+	aListBox gameListBox;
+	EString selectedName;
 
+	bool bPromptOverwrite;
+	bool bDeletePrompt;
+	bool bTranscript;
 
-protected:
-
-	static LogisticsVariantDialog*		s_instance;
-	aListBox	gameListBox;
-	EString		selectedName;
-
-	bool	bPromptOverwrite;
-	bool	bDeletePrompt;
-	bool	bTranscript;
-
-
-	void	initVariantList(void);
-	void	initTranscript(void);
-
+	void initVariantList(void);
+	void initTranscript(void);
 
 	aAnimTextListItem templateItem;
 
@@ -257,7 +194,7 @@ protected:
 
 class LogisticsAcceptVariantDialog : public LogisticsVariantDialog
 {
-public:
+  public:
 	LogisticsAcceptVariantDialog(void);
 	~LogisticsAcceptVariantDialog(void);
 	virtual void begin(void);
@@ -266,18 +203,16 @@ public:
 	virtual void render(void);
 
 	int32_t init(FitIniFile& file);
-	virtual int32_t			handleMessage(uint32_t, uint32_t);
+	virtual int32_t handleMessage(uint32_t, uint32_t);
 
-private:
-
-	EString		selectedName;
-	bool		bNameUsedPrompt;
-
+  private:
+	EString selectedName;
+	bool bNameUsedPrompt;
 };
 
 class LogisticsMapInfoDialog : public LogisticsDialog
 {
-public:
+  public:
 	LogisticsMapInfoDialog(void);
 	~LogisticsMapInfoDialog(void);
 	virtual void end(void);
@@ -285,13 +220,10 @@ public:
 	void setMap(PCSTR pFileName);
 
 	int32_t init();
-	virtual int32_t			handleMessage(uint32_t, uint32_t);
+	virtual int32_t handleMessage(uint32_t, uint32_t);
 
-private:
-
-
-
+  private:
 };
 
 //*************************************************************************************************
-#endif  // end of file ( LogisticsDialog.h )
+#endif // end of file ( LogisticsDialog.h )

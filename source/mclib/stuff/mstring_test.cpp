@@ -5,19 +5,17 @@
 #include "stdafx.h"
 #include "stuffheaders.hpp"
 
-
 #define TEST_STRING "Test String"
 #define TEST_STRING_2 "Test StringTest String"
 #define TEST_STRING_3 "Test StringZ"
 
-bool
-MString::TestClass()
+bool MString::TestClass()
 {
 #if 1
 	MString string_a;
-	//Verify(string_a.stringSize == 0);
-	//Verify(string_a.stringLength == 0);
-	//Verify(string_a.stringText == nullptr);
+	// Verify(string_a.stringSize == 0);
+	// Verify(string_a.stringLength == 0);
+	// Verify(string_a.stringText == nullptr);
 	MString string_b(TEST_STRING);
 	MString string_c(string_b);
 	Verify(string_b.GetLength() == strlen(TEST_STRING));
@@ -65,4 +63,3 @@ MString::TestClass()
 #endif
 	return true;
 }
-

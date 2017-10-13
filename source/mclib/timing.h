@@ -13,110 +13,87 @@
 // #include "dstd.h"
 
 //----------------------------------------------------------------------------------
-extern bool		gamePaused;			//Is the game paused?
-extern int32_t 	turn;				//What frame of the scenario is it?
-extern float	frameLength;		//Duration of last frame in seconds.
-extern float	scenarioTime;		//Time scenario has been running.
-extern uint32_t	LastTimeGetTime;	//Stores Interval since timeGetTime last called.
-extern bool		dynamicFrameTiming;	//This flag determines if we are using frameLength
-//To time a frame.  This is FALSE when something
-//puches a frame length dramatically over 4fps.
-//Like a cache hit.  It insures all frames get played.
+extern bool gamePaused;	// Is the game paused?
+extern int32_t turn;	   // What frame of the scenario is it?
+extern float frameLength;  // Duration of last frame in seconds.
+extern float scenarioTime; // Time scenario has been running.
+extern uint32_t
+	LastTimeGetTime; // Stores Interval since timeGetTime last called.
+extern bool
+	dynamicFrameTiming; // This flag determines if we are using frameLength
+// To time a frame.  This is FALSE when something
+// puches a frame length dramatically over 4fps.
+// Like a cache hit.  It insures all frames get played.
 
 //----------------------------------------------------------------------------------
 // Macro Definitions
-#define MAX_TIMERS			32
+#define MAX_TIMERS 32
 
 //----------------------------------------------------------------------------------
 class Timer
 {
-protected:
+  protected:
 	float startTime;
 	float currentTime;
 	bool expired;
 	bool updateWhilePaused;
 
-public:
+  public:
+	Timer(void) { init(void); }
 
-	Timer(void)
-	{
-		init(void);
-	}
-
-	~Timer(void)
-	{
-		destroy(void);
-	}
+	~Timer(void) { destroy(void); }
 
 	void init(void)
 	{
-		startTime = 0.0;
-		currentTime = 0.0;
-		expired = TRUE;
+		startTime		  = 0.0;
+		currentTime		  = 0.0;
+		expired			  = TRUE;
 		updateWhilePaused = FALSE;
 	}
 
-	void destroy(void)
-	{
-	}
+	void destroy(void) {}
 
 	void update(void)
 	{
-		if(updateWhilePaused || !gamePaused)
+		if (updateWhilePaused || !gamePaused)
 		{
 			currentTime -= frameLength;
-			if(currentTime < 0.0)
+			if (currentTime < 0.0)
 				expired = TRUE;
 			else
 				expired = FALSE;
 		}
 	}
 
-	bool isExpired(void)
-	{
-		return expired;
-	}
+	bool isExpired(void) { return expired; }
 
 	void setTimer(float newTime)
 	{
-		startTime = newTime;
+		startTime   = newTime;
 		currentTime = newTime;
-		expired = (newTime > 0.0);
+		expired		= (newTime > 0.0);
 	}
 
-	void setUpdateWhilePaused(bool val)
-	{
-		updateWhilePaused = val;
-	}
+	void setUpdateWhilePaused(bool val) { updateWhilePaused = val; }
 
-	float getCurrentTime(void)
-	{
-		return currentTime;
-	}
+	float getCurrentTime(void) { return currentTime; }
 };
 
 typedef Timer* TimerPtr;
 //----------------------------------------------------------------------------------
 class TimerManager
 {
-protected:
-	Timer					timers[MAX_TIMERS];
+  protected:
+	Timer timers[MAX_TIMERS];
 
-public:
+  public:
+	TimerManager(void) { init(void); }
 
-	TimerManager(void)
-	{
-		init(void);
-	}
-
-	~TimerManager(void)
-	{
-		destroy(void);
-	}
+	~TimerManager(void) { destroy(void); }
 
 	void init(void)
 	{
-		for(size_t i = 0; i < MAX_TIMERS; i++)
+		for (size_t i = 0; i < MAX_TIMERS; i++)
 		{
 			timers[i].init(void);
 		}
@@ -124,7 +101,7 @@ public:
 
 	void destroy(void)
 	{
-		for(size_t i = 0; i < MAX_TIMERS; i++)
+		for (size_t i = 0; i < MAX_TIMERS; i++)
 		{
 			timers[i].init(void);
 		}
@@ -132,14 +109,14 @@ public:
 
 	TimerPtr getTimer(int32_t index)
 	{
-		if((index >= 0) && (index < MAX_TIMERS))
+		if ((index >= 0) && (index < MAX_TIMERS))
 			return &(timers[index]);
 		return nullptr;
 	}
 
 	void update(void)
 	{
-		for(size_t i = 0; i < MAX_TIMERS; i++)
+		for (size_t i = 0; i < MAX_TIMERS; i++)
 		{
 			timers[i].update(void);
 		}
@@ -172,6 +149,7 @@ uint32_t MCTiming_GetTimeZoneInforation(PVOID timeData);
 
 uint32_t MCTiming_GetTimeZoneInformationSize(void);
 
-void MCTiming_GetUTCSystemTimeFromInformation(uint32_t daylightInfo, PVOID timeData, MC_SYSTEMTIME* systemTime);
+void MCTiming_GetUTCSystemTimeFromInformation(
+	uint32_t daylightInfo, PVOID timeData, MC_SYSTEMTIME* systemTime);
 //----------------------------------------------------------------------------------
 #endif

@@ -38,55 +38,44 @@ CLASS DESCRIPTION
 mechlopedia:
 **************************************************************************************************/
 
-
-
 class Mechlopedia : public LogisticsScreen
 {
-public:
-
+  public:
 	Mechlopedia(void);
 	virtual ~Mechlopedia(void);
 
 	int32_t init(void);
-	virtual int32_t			handleMessage(uint32_t, uint32_t);
-	virtual void		update(void);
-	virtual void		render(void);
-	virtual void		begin(void);
+	virtual int32_t handleMessage(uint32_t, uint32_t);
+	virtual void update(void);
+	virtual void render(void);
+	virtual void begin(void);
 
-private:
-
-	LogisticsScreen*	subScreens[6];
-	int32_t					currentScreen;
-	aListBox			listBox;
+  private:
+	LogisticsScreen* subScreens[6];
+	int32_t currentScreen;
+	aListBox listBox;
 
 	class SubScreen : public LogisticsScreen
 	{
-	public:
-
-		void setListBox(aListBox* pLB)
-		{
-			groupListBox = pLB;
-		}
+	  public:
+		void setListBox(aListBox* pLB) { groupListBox = pLB; }
 		int32_t init(FitIniFile& file);
 		virtual void update(void);
 		virtual void select(aTextListItem* pEntry) {}
 		virtual void end(void);
 
-		virtual void setVehicle(bool bVehicle) { }
+		virtual void setVehicle(bool bVehicle) {}
 
-	protected:
-		aListBox*			groupListBox;
-		aListBox			descriptionListBox;
-		SimpleCamera		camera;
-
-
+	  protected:
+		aListBox* groupListBox;
+		aListBox descriptionListBox;
+		SimpleCamera camera;
 	};
-
 
 	class MechScreen : public SubScreen
 	{
 
-	public:
+	  public:
 		void init(void);
 		virtual void update(void);
 		virtual void render(void);
@@ -95,22 +84,19 @@ private:
 		virtual void select(aTextListItem* pEntry);
 		void setMech(LogisticsVariant* pChassis, bool bShowJump);
 		// set this before you call begin
-		virtual void setVehicle(bool bVehicle)
-		{
-			bIsVehicle = bVehicle;
-		}
+		virtual void setVehicle(bool bVehicle) { bIsVehicle = bVehicle; }
 		void setVehicle(LogisticsVehicle* pVehicle);
 
-	private:
-		ComponentListBox	compListBox;
-		aListBox			statsListBox;
-		bool				bIsVehicle;
+	  private:
+		ComponentListBox compListBox;
+		aListBox statsListBox;
+		bool bIsVehicle;
 	};
 
 	class WeaponScreen : public SubScreen
 	{
 
-	public:
+	  public:
 		void init(void);
 		virtual void update(void);
 		virtual void render(void);
@@ -119,14 +105,13 @@ private:
 		virtual void select(aTextListItem* pEntry);
 		void setWeapon(LogisticsComponent* pWeapon);
 
-	private:
-		aListBox			statsListBox;
-
+	  private:
+		aListBox statsListBox;
 	};
 
 	class PersonalityScreen : public SubScreen
 	{
-	public:
+	  public:
 		void init(void);
 		virtual void update(void);
 		virtual void render(void);
@@ -134,20 +119,15 @@ private:
 
 		virtual void select(aTextListItem* pEntry);
 
-		void setIsHistory(bool bTrue)
-		{
-			bIsHistory = bTrue;
-		}
+		void setIsHistory(bool bTrue) { bIsHistory = bTrue; }
 
-	private:
+	  private:
 		bool bIsHistory;
-
 	};
 
 	class BuildingScreen : public SubScreen
 	{
-	public:
-
+	  public:
 		void init(void);
 		virtual void update(void);
 		virtual void render(void);
@@ -155,37 +135,28 @@ private:
 
 		virtual void select(aTextListItem* pEntry);
 
-	private:
-		ComponentListBox	compListBox;
-
+	  private:
+		ComponentListBox compListBox;
 	};
 
-
 	// HELPER FUNCTIONS
-
 };
 
 /////////////////////////////////////////////////////
-class MechlopediaListItem: public aAnimTextListItem
+class MechlopediaListItem : public aAnimTextListItem
 {
-public:
-
+  public:
 	MechlopediaListItem(void);
 	virtual void render(void);
 
 	static void init();
 
+  private:
+	aObject bmp;
+	aAnimGroup bmpAnim;
 
-private:
-	aObject		bmp;
-	aAnimGroup	bmpAnim;
-
-	static	MechlopediaListItem* s_templateItem;
-
+	static MechlopediaListItem* s_templateItem;
 };
 
-
-
-
 //*************************************************************************************************
-#endif  // end of file ( mechlopedia.h )
+#endif // end of file ( mechlopedia.h )

@@ -13,109 +13,85 @@
 namespace gosFX
 {
 //############################################################################
-//########################  Singleton__Specification  #############################
+//########################  Singleton__Specification
+//#############################
 //############################################################################
 
-	class Singleton__Specification:
-		public Effect__Specification
-	{
-		//----------------------------------------------------------------------
-		// Constructors/Destructors
-		//
-	protected:
-		Singleton__Specification(
-			Stuff::RegisteredClass::ClassID class_id,
-			Stuff::MemoryStream* stream,
-			uint32_t gfx_version
-		);
+class Singleton__Specification : public Effect__Specification
+{
+	//----------------------------------------------------------------------
+	// Constructors/Destructors
+	//
+  protected:
+	Singleton__Specification(Stuff::RegisteredClass::ClassID class_id,
+		Stuff::MemoryStream* stream, uint32_t gfx_version);
 
-	public:
-		Singleton__Specification(Stuff::RegisteredClass::ClassID class_id);
+  public:
+	Singleton__Specification(Stuff::RegisteredClass::ClassID class_id);
 
-		void
-		Copy(Singleton__Specification* spec);
+	void Copy(Singleton__Specification* spec);
 
-		void
-		Save(Stuff::MemoryStream* stream);
+	void Save(Stuff::MemoryStream* stream);
 
-		void
-		BuildDefaults(void);
+	void BuildDefaults(void);
 
-		bool
-		IsDataValid(bool fix_data = false);
+	bool IsDataValid(bool fix_data = false);
 
-		//-------------------------------------------------------------------------
-		// FCurves
-		//
-	public:
-		SeededCurveOf<ComplexCurve, LinearCurve, Curve::e_ComplexLinearType>
-		m_red,
-		m_green,
-		m_blue,
-		m_alpha;
-		SeededCurveOf<ComplexCurve, ComplexCurve, Curve::e_ComplexComplexType>
+	//-------------------------------------------------------------------------
+	// FCurves
+	//
+  public:
+	SeededCurveOf<ComplexCurve, LinearCurve, Curve::e_ComplexLinearType> m_red,
+		m_green, m_blue, m_alpha;
+	SeededCurveOf<ComplexCurve, ComplexCurve, Curve::e_ComplexComplexType>
 		m_scale;
 
-		bool
-		m_alignZUsingX,
-		m_alignZUsingY;
-	};
+	bool m_alignZUsingX, m_alignZUsingY;
+};
 
 //############################################################################
 //##############################  Singleton  #############################
 //############################################################################
 
-	class _declspec(novtable) Singleton:
-		public Effect
+class _declspec(novtable) Singleton : public Effect
+{
+  public:
+	static void __stdcall InitializeClass(void);
+	static void __stdcall TerminateClass(void);
+
+	static ClassData* DefaultData;
+
+	typedef Singleton__Specification Specification;
+
+  protected:
+	Stuff::DynamicArrayOf<char> m_data;
+
+	Singleton(ClassData* class_data, Specification* spec, uint32_t flags);
+
+	//----------------------------------------------------------------------------
+	// Class Data Support
+	//
+  public:
+	Specification* GetSpecification()
 	{
-	public:
-		static void __stdcall InitializeClass(void);
-		static void __stdcall TerminateClass(void);
+		// Check_Object(this);
+		return Cast_Object(Specification*, m_specification);
+	}
 
-		static ClassData* DefaultData;
+	//----------------------------------------------------------------------------
+	// API
+	//
+  public:
+	bool Execute(ExecuteInfo* info);
 
-		typedef Singleton__Specification Specification;
+  protected:
+	Stuff::RGBAColor m_color;
+	float m_radius, m_scale;
 
-	protected:
-		Stuff::DynamicArrayOf<char>
-		m_data;
-
-		Singleton(
-			ClassData* class_data,
-			Specification* spec,
-			uint32_t flags
-		);
-
-		//----------------------------------------------------------------------------
-		// Class Data Support
-		//
-	public:
-		Specification*
-		GetSpecification()
-		{
-			// Check_Object(this);
-			return
-				Cast_Object(Specification*, m_specification);
-		}
-
-		//----------------------------------------------------------------------------
-		// API
-		//
-	public:
-		bool
-		Execute(ExecuteInfo* info);
-
-	protected:
-		Stuff::RGBAColor
-		m_color;
-		float
-		m_radius,
-		m_scale;
-
-		//----------------------------------------------------------------------------
-		// Testing
-		//
-	public:
-		void TestInstance(void) const;
-	};
+	//----------------------------------------------------------------------------
+	// Testing
+	//
+  public:
+	void TestInstance(void) const;
+};
 }

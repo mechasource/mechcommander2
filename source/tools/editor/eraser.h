@@ -24,48 +24,38 @@ CLASS DESCRIPTION
 Eraser:
 **************************************************************************************************/
 
-class Eraser: public Brush
+class Eraser : public Brush
 {
-public:
-
-	Eraser()
-	{
-		pCurAction = nullptr;
-	}
+  public:
+	Eraser() { pCurAction = nullptr; }
 
 	virtual bool beginPaint(void);
 	virtual Action* endPaint(void);
-	virtual bool paint(Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY);
-	virtual bool canPaint(Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY, int32_t flags);
+	virtual bool paint(
+		Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY);
+	virtual bool canPaint(Stuff::Vector3D& worldPos, int32_t screenX,
+		int32_t screenY, int32_t flags);
 	virtual Action* applyToSelection(void);
 
-
-private:
-
+  private:
 	class EraserAction : public ActionPaintTile
 	{
-	public:
-		EraserAction()
-		{
-			teamsActionIsSet = false;
-		}
+	  public:
+		EraserAction() { teamsActionIsSet = false; }
 
 		virtual bool undo(void);
 		virtual bool redo(void);
 
 		BuildingBrush::BuildingAction bldgAction;
 		LinkBrush::LinkAction linkAction;
-		/*deleting a building that is referred to by an objective condition requires a TeamAction
-		to record the objective change*/
+		/*deleting a building that is referred to by an objective condition
+		requires a TeamAction to record the objective change*/
 		bool teamsActionIsSet;
 		TeamsAction teamsAction;
-
 	};
 
 	EraserAction* pCurAction;
-
 };
 
-
 //*************************************************************************************************
-#endif  // end of file ( Eraser.h )
+#endif // end of file ( Eraser.h )

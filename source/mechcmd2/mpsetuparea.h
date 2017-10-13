@@ -21,66 +21,58 @@ MPSetupArea.h			: Interface for the MPSetupArea component.
 
 class aButton;
 
-
 class aColorPicker : public aObject
 {
-public:
-
+  public:
 	aColorPicker(void);
 
-	virtual int32_t		init(int32_t xPos, int32_t yPos, int32_t w, int32_t h);
-	void				init(FitIniFile* file, PCSTR blockName);
+	virtual int32_t init(int32_t xPos, int32_t yPos, int32_t w, int32_t h);
+	void init(FitIniFile* file, PCSTR blockName);
 
-	virtual void		destroy(void);
-	virtual void		render(void);
-	virtual void		update(void);
-	virtual int32_t			handleMessage(uint32_t message, uint32_t who);
-	virtual void		move(float offsetX, float offsetY);
-	void				setColor0(int32_t color);
-	int32_t				getColor0(void) const
-	{
-		return color0;
-	}
-	void				setColor1(int32_t color);
-	int32_t				getColor1(void) const
-	{
-		return color1;
-	}
+	virtual void destroy(void);
+	virtual void render(void);
+	virtual void update(void);
+	virtual int32_t handleMessage(uint32_t message, uint32_t who);
+	virtual void move(float offsetX, float offsetY);
+	void setColor0(int32_t color);
+	int32_t getColor0(void) const { return color0; }
+	void setColor1(int32_t color);
+	int32_t getColor1(void) const { return color1; }
 
-protected:
-	aRect		mainRect;
+  protected:
+	aRect mainRect;
 
-	aText		tab0text;
-	aRect		tab0ColorOutlineRect;
-	aRect		tab0ColorRect;
-	aButton		tab0Button;
+	aText tab0text;
+	aRect tab0ColorOutlineRect;
+	aRect tab0ColorRect;
+	aButton tab0Button;
 
-	aText		tab1text;
-	aRect		tab1ColorOutlineRect;
-	aRect		tab1ColorRect;
-	aButton		tab1Button;
+	aText tab1text;
+	aRect tab1ColorOutlineRect;
+	aRect tab1ColorRect;
+	aButton tab1Button;
 
-	aObject		colorPlaneStatic;
-	aRect		intensityGradientRect;
-	mcScrollBar		intesitySliderScrollBar;
-	aObject		colorPlaneCursorStatic;
-	int32_t		color0;
-	int32_t		color1;
-	int32_t		activeTab;
+	aObject colorPlaneStatic;
+	aRect intensityGradientRect;
+	mcScrollBar intesitySliderScrollBar;
+	aObject colorPlaneCursorStatic;
+	int32_t color0;
+	int32_t color1;
+	int32_t activeTab;
 };
 
 class aStyle1TextListItem : public aTextListItem
 {
-public:
+  public:
 	aStyle1TextListItem()
 	{
 		hasAnimation = false;
-		normalColor = 0xff808080;
+		normalColor  = 0xff808080;
 	}
-	virtual int32_t	init(FitIniFile* file, PCSTR blockName);
-	virtual void		render(void);
+	virtual int32_t init(FitIniFile* file, PCSTR blockName);
+	virtual void render(void);
 
-protected:
+  protected:
 	bool hasAnimation;
 	aAnimGroup animGroup;
 	int32_t normalColor;
@@ -88,61 +80,54 @@ protected:
 
 class aInsigniaListItem : public aListItem
 {
-public:
-	aInsigniaListItem()
-	{
-		;
-	}
-	virtual int32_t	init(FitIniFile* file, PCSTR blockName);
+  public:
+	aInsigniaListItem() { ; }
+	virtual int32_t init(FitIniFile* file, PCSTR blockName);
 	virtual void update(void);
 
-protected:
+  protected:
 	aObject graphic;
 	aStyle1TextListItem text;
 };
 
 class MPSetupXScreen : public LogisticsScreen
 {
-public:
-
+  public:
 	MPSetupXScreen(void);
 	virtual ~MPSetupXScreen(void);
 
 	void init(FitIniFile* file);
 	bool isDone(void);
-	virtual void		begin(void);
-	virtual void		end(void);
+	virtual void begin(void);
+	virtual void end(void);
 	virtual void render(int32_t xOffset, int32_t yOffset);
 	virtual void render(void);
 	virtual void update(void);
-	virtual int32_t			handleMessage(uint32_t, uint32_t);
+	virtual int32_t handleMessage(uint32_t, uint32_t);
 
 	void updateMPSetup(void); // put into inventory
 
-	bool				bDone;
+	bool bDone;
 
-	PVOID*	ppConnectionScreen;
-	PVOID	pLocalBrowserScreen;
-	PVOID	pDirectTcpipScreen;
-	PVOID	pModem2ModemScreen;
+	PVOID* ppConnectionScreen;
+	PVOID pLocalBrowserScreen;
+	PVOID pDirectTcpipScreen;
+	PVOID pModem2ModemScreen;
 
-private:
-
+  private:
 	int32_t indexOfButtonWithID(int32_t id);
 
-	aComboBox				playerNameComboBox;
-	aComboBox				unitNameComboBox;
-	aDropList				insigniaDropList;
+	aComboBox playerNameComboBox;
+	aComboBox unitNameComboBox;
+	aDropList insigniaDropList;
 
-	aColorPicker		colorPicker;
-	int32_t		baseColor;
-	int32_t		stripeColor;
+	aColorPicker colorPicker;
+	int32_t baseColor;
+	int32_t stripeColor;
 
-	SimpleCamera		mechCamera;
+	SimpleCamera mechCamera;
 	bool bPaintSchemeInitialized;
 };
 
-
-
 //*************************************************************************************************
-#endif  // end of file ( MPSetupArea.h )
+#endif // end of file ( MPSetupArea.h )

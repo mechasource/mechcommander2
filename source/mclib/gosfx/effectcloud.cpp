@@ -11,14 +11,13 @@
 //------------------------------------------------------------------------------
 //
 gosFX::EffectCloud__Specification::EffectCloud__Specification(
-	Stuff::MemoryStream* stream,
-	uint32_t gfx_version
-):
-	SpinningCloud__Specification(gosFX::EffectCloudClassID, stream, gfx_version)
+	Stuff::MemoryStream* stream, uint32_t gfx_version)
+	: SpinningCloud__Specification(
+		  gosFX::EffectCloudClassID, stream, gfx_version)
 {
-	//Check_Pointer(this);
+	// Check_Pointer(this);
 	Check_Object(stream);
-	//Verify(gos_GetCurrentHeap() == Heap);
+	// Verify(gos_GetCurrentHeap() == Heap);
 	Verify(m_class == EffectCloudClassID);
 	m_totalParticleSize = gosFX::EffectCloud::ParticleSize;
 	m_particleClassSize = sizeof(gosFX::EffectCloud::Particle);
@@ -27,23 +26,23 @@ gosFX::EffectCloud__Specification::EffectCloud__Specification(
 
 //------------------------------------------------------------------------------
 //
-gosFX::EffectCloud__Specification::EffectCloud__Specification():
-	SpinningCloud__Specification(gosFX::EffectCloudClassID)
+gosFX::EffectCloud__Specification::EffectCloud__Specification()
+	: SpinningCloud__Specification(gosFX::EffectCloudClassID)
 {
-	//Check_Pointer(this);
-	//Verify(gos_GetCurrentHeap() == Heap);
+	// Check_Pointer(this);
+	// Verify(gos_GetCurrentHeap() == Heap);
 	m_totalParticleSize = gosFX::EffectCloud::ParticleSize;
 	m_particleClassSize = sizeof(gosFX::EffectCloud::Particle);
 }
 
 //------------------------------------------------------------------------------
 //
-gosFX::EffectCloud__Specification* 
-gosFX::EffectCloud__Specification::Make(Stuff::MemoryStream* stream, uint32_t gfx_version)
+gosFX::EffectCloud__Specification* gosFX::EffectCloud__Specification::Make(
+	Stuff::MemoryStream* stream, uint32_t gfx_version)
 {
 	Check_Object(stream);
 
-//	// gos_PushCurrentHeap(Heap);
+	//	// gos_PushCurrentHeap(Heap);
 	EffectCloud__Specification* spec =
 		new gosFX::EffectCloud__Specification(stream, gfx_version);
 	// gos_PopCurrentHeap();
@@ -52,8 +51,7 @@ gosFX::EffectCloud__Specification::Make(Stuff::MemoryStream* stream, uint32_t gf
 
 //------------------------------------------------------------------------------
 //
-void
-gosFX::EffectCloud__Specification::Save(Stuff::MemoryStream* stream)
+void gosFX::EffectCloud__Specification::Save(Stuff::MemoryStream* stream)
 {
 	// Check_Object(this);
 	Check_Object(stream);
@@ -63,8 +61,7 @@ gosFX::EffectCloud__Specification::Save(Stuff::MemoryStream* stream)
 
 //------------------------------------------------------------------------------
 //
-void
-gosFX::EffectCloud__Specification::Copy(EffectCloud__Specification* spec)
+void gosFX::EffectCloud__Specification::Copy(EffectCloud__Specification* spec)
 {
 	// Check_Object(this);
 	Check_Object(spec);
@@ -73,34 +70,27 @@ gosFX::EffectCloud__Specification::Copy(EffectCloud__Specification* spec)
 }
 
 //############################################################################
-//##############################  gosFX::EffectCloud  ################################
+//##############################  gosFX::EffectCloud
+//################################
 //############################################################################
 
-gosFX::EffectCloud::ClassData*
-gosFX::EffectCloud::DefaultData = nullptr;
+gosFX::EffectCloud::ClassData* gosFX::EffectCloud::DefaultData = nullptr;
 
 //------------------------------------------------------------------------------
 //
-void
-gosFX::EffectCloud::InitializeClass()
+void gosFX::EffectCloud::InitializeClass()
 {
 	Verify(!DefaultData);
-	//Verify(gos_GetCurrentHeap() == Heap);
-	DefaultData =
-		new ClassData(
-		EffectCloudClassID,
-		"gosFX::EffectCloud",
-		SpinningCloud::DefaultData,
-		(Effect::Factory)&Make,
-		(Specification::Factory)&Specification::Make
-	);
+	// Verify(gos_GetCurrentHeap() == Heap);
+	DefaultData = new ClassData(EffectCloudClassID, "gosFX::EffectCloud",
+		SpinningCloud::DefaultData, (Effect::Factory)&Make,
+		(Specification::Factory)&Specification::Make);
 	Check_Object(DefaultData);
 }
 
 //------------------------------------------------------------------------------
 //
-void
-gosFX::EffectCloud::TerminateClass()
+void gosFX::EffectCloud::TerminateClass()
 {
 	Check_Object(DefaultData);
 	delete DefaultData;
@@ -109,27 +99,24 @@ gosFX::EffectCloud::TerminateClass()
 
 //------------------------------------------------------------------------------
 //
-gosFX::EffectCloud::EffectCloud(
-	Specification* spec,
-	uint32_t flags
-):
-	SpinningCloud(DefaultData, spec, flags)
+gosFX::EffectCloud::EffectCloud(Specification* spec, uint32_t flags)
+	: SpinningCloud(DefaultData, spec, flags)
 {
 	Check_Object(spec);
-	//Verify(gos_GetCurrentHeap() == Heap);
+	// Verify(gos_GetCurrentHeap() == Heap);
 }
 
 //------------------------------------------------------------------------------
 //
 gosFX::EffectCloud::~EffectCloud()
 {
-	if(m_activeParticleCount)
+	if (m_activeParticleCount)
 	{
-		for(size_t i = 0; i < m_activeParticleCount; i++)
+		for (size_t i = 0; i < m_activeParticleCount; i++)
 		{
 			Particle* particle = GetParticle(i);
 			Check_Object(particle);
-			if(particle->m_effect)
+			if (particle->m_effect)
 			{
 				Check_Object(particle->m_effect);
 				delete particle->m_effect;
@@ -140,14 +127,11 @@ gosFX::EffectCloud::~EffectCloud()
 
 //------------------------------------------------------------------------------
 //
-gosFX::EffectCloud*
-gosFX::EffectCloud::Make(
-	Specification* spec,
-	uint32_t flags
-)
+gosFX::EffectCloud* gosFX::EffectCloud::Make(
+	Specification* spec, uint32_t flags)
 {
 	Check_Object(spec);
-	#ifdef _GAMEOS_HPP_
+#ifdef _GAMEOS_HPP_
 	// gos_PushCurrentHeap(Heap);
 #endif
 	EffectCloud* cloud = new gosFX::EffectCloud(spec, flags);
@@ -157,11 +141,8 @@ gosFX::EffectCloud::Make(
 
 //------------------------------------------------------------------------------
 //
-void
-gosFX::EffectCloud::CreateNewParticle(
-	uint32_t index,
-	Stuff::Point3D* translation
-)
+void gosFX::EffectCloud::CreateNewParticle(
+	uint32_t index, Stuff::Point3D* translation)
 {
 	// Check_Object(this);
 	//
@@ -180,10 +161,8 @@ gosFX::EffectCloud::CreateNewParticle(
 	Particle* particle = GetParticle(index);
 	Check_Object(particle);
 	particle->m_effect =
-		EffectLibrary::Instance->MakeEffect(
-			spec->m_particleEffectID,
-			ExecuteFlag | DynamicWorldSpaceSimulationMode
-		);
+		EffectLibrary::Instance->MakeEffect(spec->m_particleEffectID,
+			ExecuteFlag | DynamicWorldSpaceSimulationMode);
 	Effect* effect = particle->m_effect;
 	Check_Object(effect);
 	particle->m_radius = 0.0f;
@@ -194,26 +173,17 @@ gosFX::EffectCloud::CreateNewParticle(
 	//
 	effect->m_localToParent.BuildTranslation(particle->m_localTranslation);
 	effect->m_localToParent.BuildRotation(particle->m_localRotation);
-	ExecuteInfo
-	local_info(
-		m_lastRan,
-		&m_localToWorld,
-		nullptr,
-		particle->m_seed
-	);
-	local_info.m_age = particle->m_age;
+	ExecuteInfo local_info(
+		m_lastRan, &m_localToWorld, nullptr, particle->m_seed);
+	local_info.m_age	 = particle->m_age;
 	local_info.m_ageRate = particle->m_ageRate;
 	effect->Start(&local_info);
 }
 
 //------------------------------------------------------------------------------
 //
-bool
-gosFX::EffectCloud::AnimateParticle(
-	uint32_t index,
-	const Stuff::LinearMatrix4D* world_to_new_local,
-	Stuff::Time till
-)
+bool gosFX::EffectCloud::AnimateParticle(uint32_t index,
+	const Stuff::LinearMatrix4D* world_to_new_local, Stuff::Time till)
 {
 	// Check_Object(this);
 	//
@@ -224,7 +194,7 @@ gosFX::EffectCloud::AnimateParticle(
 	//
 	Particle* particle = GetParticle(index);
 	Check_Object(particle);
-	if(particle->m_age >= 1.0f)
+	if (particle->m_age >= 1.0f)
 		particle->m_age = 1.0f - Stuff::SMALL;
 	SpinningCloud::AnimateParticle(index, world_to_new_local, till);
 	//
@@ -242,13 +212,8 @@ gosFX::EffectCloud::AnimateParticle(
 	//-----------------------
 	//
 	Stuff::OBB bounds;
-	ExecuteInfo
-	info(
-		till,
-		&m_localToWorld,
-		&bounds
-	);
-	if(effect->Execute(&info))
+	ExecuteInfo info(till, &m_localToWorld, &bounds);
+	if (effect->Execute(&info))
 	{
 		Stuff::Point3D center(bounds.localToParent);
 		particle->m_radius = center.GetLength() + bounds.sphereRadius;
@@ -267,7 +232,7 @@ void gosFX::EffectCloud::DestroyParticle(uint32_t index)
 	// Check_Object(this);
 	Particle* particle = GetParticle(index);
 	Check_Object(particle);
-	if(particle->m_effect)
+	if (particle->m_effect)
 	{
 		Check_Object(particle->m_effect);
 		delete particle->m_effect;
@@ -287,9 +252,9 @@ void gosFX::EffectCloud::Draw(DrawInfo* info)
 	// If we have active particles, set up the draw information
 	//---------------------------------------------------------
 	//
-	if(m_activeParticleCount)
+	if (m_activeParticleCount)
 	{
-		for(size_t i = 0; i < m_activeParticleCount; i++)
+		for (size_t i = 0; i < m_activeParticleCount; i++)
 		{
 			Particle* particle = GetParticle(i);
 			Check_Object(particle);
@@ -299,9 +264,9 @@ void gosFX::EffectCloud::Draw(DrawInfo* info)
 			// issue the draw command
 			//-----------------------------------------------------------------
 			//
-			if(particle->m_age < 1.0f)
+			if (particle->m_age < 1.0f)
 			{
-				if(particle->m_effect)
+				if (particle->m_effect)
 				{
 					Check_Object(particle->m_effect);
 					particle->m_effect->Draw(info);
@@ -314,8 +279,7 @@ void gosFX::EffectCloud::Draw(DrawInfo* info)
 
 //------------------------------------------------------------------------------
 //
-void
-gosFX::EffectCloud::TestInstance(void) const
+void gosFX::EffectCloud::TestInstance(void) const
 {
 	Verify(IsDerivedFrom(DefaultData));
 }

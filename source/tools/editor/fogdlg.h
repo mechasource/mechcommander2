@@ -1,6 +1,6 @@
 /*************************************************************************************************\
-FogDlg.h			: Interface for the FogDlg component.  This thing lets the user input fog
-						settings
+FogDlg.h			: Interface for the FogDlg component.  This thing lets the
+user input fog settings
 //---------------------------------------------------------------------------//
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
@@ -16,31 +16,32 @@ FogDlg.h			: Interface for the FogDlg component.  This thing lets the user input
 
 class FogDlg : public CDialog
 {
-// Construction
-public:
-	FogDlg(CWnd* pParent = nullptr);   // standard constructor
+	// Construction
+  public:
+	FogDlg(CWnd* pParent = nullptr); // standard constructor
 
-// Dialog Data
+	// Dialog Data
 	//{{AFX_DATA(FogDlg)
-	enum { IDD = IDD_FOG };
-	uint8_t	m_blue;
-	uint8_t	m_green;
-	uint8_t	m_red;
-	float	m_start;
-	float	m_end;
+	enum
+	{
+		IDD = IDD_FOG
+	};
+	uint8_t m_blue;
+	uint8_t m_green;
+	uint8_t m_red;
+	float m_start;
+	float m_end;
 	//}}AFX_DATA
 
-
-// Overrides
+	// Overrides
 	// ClassWizard generated virtual function overrides
 	//{{AFX_VIRTUAL(FogDlg)
-protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-	//}}AFX_VIRTUAL
+  protected:
+	virtual void DoDataExchange(CDataExchange* pDX); // DDX/DDV support
+													 //}}AFX_VIRTUAL
 
-// Implementation
-protected:
-
+	// Implementation
+  protected:
 	// Generated message map functions
 	//{{AFX_MSG(FogDlg)
 	afx_msg void OnChangeBlue1(void);
@@ -51,5 +52,4 @@ protected:
 	CBrush brush;
 };
 
-
-#endif  // end of file ( FogDlg.h )
+#endif // end of file ( FogDlg.h )

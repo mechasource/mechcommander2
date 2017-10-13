@@ -18,22 +18,18 @@ DropZoneBrush.h			: Interface for the DropZoneBrush component.
 CLASS DESCRIPTION
 DropZoneBrush:
 **************************************************************************************************/
-class DropZoneBrush: public BuildingBrush
+class DropZoneBrush : public BuildingBrush
 {
-public:
-
+  public:
 	DropZoneBrush(int32_t alignment = 0, bool bVTol = 0);
-	virtual bool paint(Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY);
-	virtual bool canPaint(Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY, int32_t flags);
+	virtual bool paint(
+		Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY);
+	virtual bool canPaint(Stuff::Vector3D& worldPos, int32_t screenX,
+		int32_t screenY, int32_t flags);
 
-private:
-
+  private:
 	bool bVTol;
-
-
-
 };
 
-
 //*************************************************************************************************
-#endif  // end of file ( DropZoneBrush.h )
+#endif // end of file ( DropZoneBrush.h )

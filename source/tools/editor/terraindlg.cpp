@@ -13,17 +13,19 @@ TerrainDlg.cpp		: Implementation of the TerrainDlg component.
 #include "utilities.h"
 #include "terrtxm2.h"
 
-extern uint32_t gameResourceHandle;		//Default handle must be used for mc2res.dll due to shared game/editor code
+extern uint32_t gameResourceHandle; // Default handle must be used for
+									// mc2res.dll due to shared game/editor code
 
 //----------------------------------------------------------------------
 void TerrainDlg::Init()
 {
-	CListBox* pListBox = (CListBox*)GetDlgItem(IDC_TERRAINS);
+	CListBox* pListBox  = (CListBox*)GetDlgItem(IDC_TERRAINS);
 	int32_t numTerrains = TerrainColorMap::getNumTypes();
-	for(size_t i = 0; i < numTerrains; i++)
+	for (size_t i = 0; i < numTerrains; i++)
 	{
 		char buffer[256];
-		if(!TerrainColorMap::getTextureNameID(i))    // if we start to repeat, quit
+		if (!TerrainColorMap::getTextureNameID(
+				i)) // if we start to repeat, quit
 			break;
 		cLoadString(TerrainColorMap::getTextureNameID(i), buffer, 256);
 		int32_t index = pListBox->AddString(buffer);
@@ -36,7 +38,7 @@ void TerrainDlg::Init()
 void TerrainDlg::OnOK()
 {
 	int32_t index = ((CListBox*)GetDlgItem(IDC_TERRAINS))->GetCurSel();
-	terrain = ((CListBox*)GetDlgItem(IDC_TERRAINS))->GetItemData(index);
+	terrain		  = ((CListBox*)GetDlgItem(IDC_TERRAINS))->GetItemData(index);
 	CDialog::OnOK();
 }
 

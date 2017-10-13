@@ -21,7 +21,6 @@ MissionResults:
 #include <mechgui/alistbox.h>
 #include "mpstats.h"
 
-
 class SalvageMechScreen;
 class MechIcon;
 class BattleMech;
@@ -29,8 +28,7 @@ class PilotReviewScreen;
 
 class MissionResults
 {
-public:
-
+  public:
 	MissionResults(void);
 	~MissionResults(void);
 
@@ -41,33 +39,24 @@ public:
 
 	void begin(void);
 	void end(void);
-	bool isDone()
-	{
-		return bDone;
-	}
+	bool isDone() { return bDone; }
 
 	void setHostLeftDlg(PCSTR pName);
 
-	//Tutorial - Used to play Voice Over, first time in!!
+	// Tutorial - Used to play Voice Over, first time in!!
 	// THIS must be added to savegame!!
 	//
 	static bool FirstTimeResults;
 
-private:
-
-	SalvageMechScreen*		pSalvageScreen;
-	PilotReviewScreen*		pPilotScreen;
-	MPStats					mpStats;
-	bool					bDone;
-	bool					bPilotStarted;
+  private:
+	SalvageMechScreen* pSalvageScreen;
+	PilotReviewScreen* pPilotScreen;
+	MPStats mpStats;
+	bool bDone;
+	bool bPilotStarted;
 
 	friend class Logistics;
-
 };
 
-
-
-
-
 //*************************************************************************************************
-#endif  // end of file ( MissionResults.h )
+#endif // end of file ( MissionResults.h )

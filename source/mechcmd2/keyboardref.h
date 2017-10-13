@@ -20,10 +20,9 @@ KeyboardRef.h			: Interface for the KeyboardRef component.
 CLASS DESCRIPTION
 KeyboardRef:
 **************************************************************************************************/
-class KeyboardRef: public LogisticsScreen
+class KeyboardRef : public LogisticsScreen
 {
-public:
-
+  public:
 	KeyboardRef(void);
 	virtual ~KeyboardRef(void);
 
@@ -35,20 +34,16 @@ public:
 
 	void reseed(MissionInterfaceManager::Command*);
 
-	virtual int32_t			handleMessage(uint32_t, uint32_t);
+	virtual int32_t handleMessage(uint32_t, uint32_t);
 
-
-private:
-
+  private:
 	KeyboardRef(const KeyboardRef& src);
 	// HELPER FUNCTIONS
 
-	aListBox		listBox;
-	aTextListItem	listItemTemplate;
-	aTextListItem	listItemTemplate2;
-
+	aListBox listBox;
+	aTextListItem listItemTemplate;
+	aTextListItem listItemTemplate2;
 };
 
-
 //*************************************************************************************************
-#endif  // end of file ( KeyboardRef.h )
+#endif // end of file ( KeyboardRef.h )

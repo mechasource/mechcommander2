@@ -22,7 +22,6 @@
 
 using namespace Stuff;
 
-
 //#include "trace.cpp"
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -32,7 +31,7 @@ void __stdcall Stuff::Flood_Memory_With_NAN(PVOID where, size_t how_much)
 	Verify(!(reinterpret_cast<intptr_t>(where) & 3));
 	Check_Pointer(where);
 	pint32_t filler = Cast_Pointer(pint32_t, where);
-	for(size_t i = how_much >> 2; i; --i)
+	for (size_t i = how_much >> 2; i; --i)
 	{
 		*filler++ = SNAN_NEGATIVE_LONG;
 	}
@@ -40,10 +39,7 @@ void __stdcall Stuff::Flood_Memory_With_NAN(PVOID where, size_t how_much)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void __cdecl Terminate_Handler(void)
-{
-	STOP(("Unhandled exception"));
-}
+void __cdecl Terminate_Handler(void) { STOP(("Unhandled exception")); }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
@@ -68,26 +64,11 @@ static uint8_t __stdcall Check_4(void)
 	return uint8_t((ArmorLevel == 4) ? 1 : 0);
 }
 
-static void __stdcall Activate_0(void)
-{
-	ArmorLevel = 0;
-}
-static void __stdcall Activate_1(void)
-{
-	ArmorLevel = 1;
-}
-static void __stdcall Activate_2(void)
-{
-	ArmorLevel = 2;
-}
-static void __stdcall Activate_3(void)
-{
-	ArmorLevel = 3;
-}
-static void __stdcall Activate_4(void)
-{
-	ArmorLevel = 4;
-}
+static void __stdcall Activate_0(void) { ArmorLevel = 0; }
+static void __stdcall Activate_1(void) { ArmorLevel = 1; }
+static void __stdcall Activate_2(void) { ArmorLevel = 2; }
+static void __stdcall Activate_3(void) { ArmorLevel = 3; }
+static void __stdcall Activate_4(void) { ArmorLevel = 4; }
 
 static uint8_t __stdcall Greyed(void)
 {
@@ -167,14 +148,22 @@ void __stdcall Stuff::InitializeClasses(void)
 	// Add the armor menu
 	//-------------------
 	//
-	AddDebuggerMenuItem("Libraries\\Stuff\\Armor Level 0", Check_0, Activate_0, Greyed);
-	AddDebuggerMenuItem("Libraries\\Stuff\\Armor Level 1", Check_1, Activate_1, Greyed);
-	AddDebuggerMenuItem("Libraries\\Stuff\\Armor Level 2", Check_2, Activate_2, Greyed);
-	AddDebuggerMenuItem("Libraries\\Stuff\\Armor Level 3", Check_3, Activate_3, Greyed);
-	AddDebuggerMenuItem("Libraries\\Stuff\\Armor Level 4", Check_4, Activate_4, Greyed);
-	AddDebuggerMenuItem("Libraries\\Stuff\\4hz min", Check_4hz, Activate_4hz, nullptr);
-	AddDebuggerMenuItem("Libraries\\Stuff\\40hz min", Check_40hz, Activate_40hz, nullptr);
-	AddDebuggerMenuItem("Libraries\\Stuff\\400hz min", Check_400hz, Activate_400hz, nullptr);
+	AddDebuggerMenuItem(
+		"Libraries\\Stuff\\Armor Level 0", Check_0, Activate_0, Greyed);
+	AddDebuggerMenuItem(
+		"Libraries\\Stuff\\Armor Level 1", Check_1, Activate_1, Greyed);
+	AddDebuggerMenuItem(
+		"Libraries\\Stuff\\Armor Level 2", Check_2, Activate_2, Greyed);
+	AddDebuggerMenuItem(
+		"Libraries\\Stuff\\Armor Level 3", Check_3, Activate_3, Greyed);
+	AddDebuggerMenuItem(
+		"Libraries\\Stuff\\Armor Level 4", Check_4, Activate_4, Greyed);
+	AddDebuggerMenuItem(
+		"Libraries\\Stuff\\4hz min", Check_4hz, Activate_4hz, nullptr);
+	AddDebuggerMenuItem(
+		"Libraries\\Stuff\\40hz min", Check_40hz, Activate_40hz, nullptr);
+	AddDebuggerMenuItem(
+		"Libraries\\Stuff\\400hz min", Check_400hz, Activate_400hz, nullptr);
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -186,7 +175,8 @@ void __stdcall Stuff::TerminateClasses(void)
 	// First, terminate all of the registered classes
 	//-----------------------------------------------
 	//
-	if(!FileStream::DefaultData)    // yet again, nobody every checks for nullptr pointers
+	if (!FileStream::DefaultData) // yet again, nobody every checks for nullptr
+								  // pointers
 		return;
 	UnitQuaternion::TerminateClass();
 #if defined(TRACE_ENABLED)

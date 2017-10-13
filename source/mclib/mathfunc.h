@@ -12,17 +12,14 @@
 // DESCRIBES A COORDINATE SYSTEM, OR FRAME OR REFERENCE
 class frameOfRef
 {
-public:
+  public:
 	Stuff::Vector3D i;
 	Stuff::Vector3D j;
 	Stuff::Vector3D k;
 
 	frameOfRef(void);
 
-	frameOfRef(frameOfRef& copy)
-	{
-		*this = copy;
-	}
+	frameOfRef(frameOfRef& copy) { *this = copy; }
 
 	frameOfRef& set_i(Stuff::Vector3D& new_i)
 	{
@@ -42,12 +39,9 @@ public:
 		return *this;
 	}
 
-	frameOfRef& operator =(frameOfRef& fr);
+	frameOfRef& operator=(frameOfRef& fr);
 
-	frameOfRef& orthonormalize()
-	{
-		return orthonormalize_on_yaxis(void);
-	}
+	frameOfRef& orthonormalize() { return orthonormalize_on_yaxis(void); }
 
 	frameOfRef& orthonormalize_on_xaxis(void);
 
@@ -65,9 +59,7 @@ public:
 	frameOfRef& rotate_about_j_orthonormal(float& angle);
 	frameOfRef& rotate_about_k_orthonormal(float& angle);
 
-	frameOfRef& rotate(float& i_angle,
-					   float& j_angle,
-					   float& k_angle);
+	frameOfRef& rotate(float& i_angle, float& j_angle, float& k_angle);
 
 	frameOfRef& rotate(Stuff::Vector3D& rotation_vector);
 
@@ -103,7 +95,8 @@ float angle_from(Stuff::Vector3D& v1, Stuff::Vector3D& v2);
 
 float world_angle_between(Stuff::Vector3D& v1, Stuff::Vector3D& v2);
 
-Stuff::Vector3D relativePositionToPoint(Stuff::Vector3D point, float angle, float distance, uint32_t flags);
+Stuff::Vector3D relativePositionToPoint(
+	Stuff::Vector3D point, float angle, float distance, uint32_t flags);
 
 int32_t RandomNumber(int32_t range);
 
@@ -113,7 +106,8 @@ bool RollDice(int32_t percent);
 
 inline int32_t float2long(float val)
 {
-	//_ftol TRUNCS not rounds.  Processor wants to round.  Surely there is some flag to not have this happen?
+	//_ftol TRUNCS not rounds.  Processor wants to round.  Surely there is some
+	//flag to not have this happen?
 	// There is but BOY is it slow.  We will try Andy's Magical formula instead.
 	// Doesn't work either.  Major bug in Intel's FPU.
 	// Will simply call int32_t here now to insure working ok and address later.
@@ -152,10 +146,10 @@ inline int32_t float2long(float val)
 //---------------------------------------------------------------------------
 inline float mc2_atan2(float f1, float f2)
 {
-	//Return atan of f1/f2;
+	// Return atan of f1/f2;
 	float result = 1.570796f;
-	//f2 is always assumed positive here!!!
-	if(f2 > Stuff::SMALL)
+	// f2 is always assumed positive here!!!
+	if (f2 > Stuff::SMALL)
 	{
 		__asm
 		{
@@ -173,7 +167,7 @@ inline float mc2_atan2(float f1, float f2)
 #if _CONSIDERED_OBSOLETE
 inline float fmax(float f1, float f2)
 {
-	if(f1 > f2)
+	if (f1 > f2)
 		return f1;
 	else
 		return f2;
@@ -182,7 +176,7 @@ inline float fmax(float f1, float f2)
 //---------------------------------------------------------------------------
 inline float fmin(float f1, float f2)
 {
-	if(f1 < f2)
+	if (f1 < f2)
 		return f1;
 	else
 		return f2;
@@ -192,7 +186,7 @@ inline float fmin(float f1, float f2)
 //---------------------------------------------------------------------------
 inline float sign(float f1)
 {
-	if(f1 < 0.0f)
+	if (f1 < 0.0f)
 		return -1.0f;
 	return 0.0f;
 }

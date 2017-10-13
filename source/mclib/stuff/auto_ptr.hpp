@@ -28,215 +28,185 @@ namespace Stuff
 // It also allows you to specify whether or not to use array deletion;
 // this also is stored in the extra bits of the pointer.
 
-
-	template <class T>
-	class Auto_Ptr
+template <class T> class Auto_Ptr
+{
+  public:
+	Auto_Ptr() : m_ptr(0)
 	{
-	public:
-		Auto_Ptr()
-			: m_ptr(0)
-		{
-			Verify(sizeof(T*) == sizeof(size_t));	//
-		}
+		Verify(sizeof(T*) == sizeof(size_t)); //
+	}
 
-		explicit Auto_Ptr(T* ptr, bool delete_as_array = DELETE_NORMAL)
-		{
-			Verify(sizeof(T*) == sizeof(size_t));
-			Set(ptr, true, delete_as_array);
-		}
+	explicit Auto_Ptr(T* ptr, bool delete_as_array = DELETE_NORMAL)
+	{
+		Verify(sizeof(T*) == sizeof(size_t));
+		Set(ptr, true, delete_as_array);
+	}
 
-		Auto_Ptr(Auto_Ptr const& src)
+	Auto_Ptr(Auto_Ptr const& src)
+	{
+		Verify(sizeof(T*) == sizeof(size_t));
+		m_ptr = src.m_ptr;
+		src.SetAsOwner(false);
+	}
+
+	~Auto_Ptr() { Delete(void); }
+
+	enum deletion_type
+	{
+		DELETE_AS_ARRAY = true,
+		DELETE_NORMAL   = false
+	};
+
+	Auto_Ptr<T> Assimilate(T* ptr, bool delete_as_array = DELETE_NORMAL)
+	{
+		Auto_Ptr<T> temp(*this);
+		Set(ptr, true, delete_as_array);
+		return (temp);
+	}
+
+	Auto_Ptr<T> Assimilate(Auto_Ptr<T>& src)
+	{
+		Auto_Ptr<T> temp;
+		if (&src != this)
 		{
-			Verify(sizeof(T*) == sizeof(size_t));
+			temp  = *this;
 			m_ptr = src.m_ptr;
 			src.SetAsOwner(false);
 		}
+		return (temp);
+	}
 
-		~Auto_Ptr()
+	T* GetPointer(void) const { return ((T*)(m_bits & POINTER_MASK)); }
+
+	T* Release(void) const
+	{
+		SetAsOwner(false);
+		return (GetPointer());
+	}
+
+	T* ReleaseAndNull()
+	{
+		T* rv = GetPointer(void);
+		m_ptr = 0;
+		return (rv);
+	}
+
+	Auto_Ptr<T>& operator=(Auto_Ptr<T> const& src)
+	{
+		if (&src != this)
 		{
 			Delete(void);
+			m_ptr = src.m_ptr;
+			src.SetAsOwner(false);
 		}
+		return (*this);
+	}
 
-		enum deletion_type
-		{
-			DELETE_AS_ARRAY = true,
-			DELETE_NORMAL = false
-		};
+	operator bool(void) const { return (GetPointer() != 0); }
 
-		Auto_Ptr<T> Assimilate(T* ptr, bool delete_as_array = DELETE_NORMAL)
+	T& operator*(void)const { return (*GetPointer()); }
+
+	T* operator->(void)const { return (GetPointer()); }
+
+	void Swap(Auto_Ptr<T>& src)
+	{
+		if (this != &src)
 		{
-			Auto_Ptr<T> temp(*this);
-			Set(ptr, true, delete_as_array);
-			return (temp);
+			T* temp_ptr = src.m_ptr;
+			src.m_ptr   = m_ptr;
+			m_ptr		= temp_ptr;
 		}
+	}
 
-		Auto_Ptr<T> Assimilate(Auto_Ptr<T>& src)
+	void Delete()
+	{
+		if (IsOwner())
 		{
-			Auto_Ptr<T> temp;
-			if(&src != this)
+			if (IsArray())
 			{
-				temp = *this;
-				m_ptr = src.m_ptr;
-				src.SetAsOwner(false);
-			}
-			return (temp);
-		}
-
-		T* GetPointer(void) const
-		{
-			return ((T*)(m_bits & POINTER_MASK));
-		}
-
-		T* Release(void) const
-		{
-			SetAsOwner(false);
-			return (GetPointer());
-		}
-
-		T* ReleaseAndNull()
-		{
-			T* rv = GetPointer(void);
-			m_ptr = 0;
-			return (rv);
-		}
-
-		Auto_Ptr<T>& operator=(Auto_Ptr<T> const& src)
-		{
-			if(&src != this)
-			{
-				Delete(void);
-				m_ptr = src.m_ptr;
-				src.SetAsOwner(false);
-			}
-			return (*this);
-		}
-
-		operator bool(void) const
-		{
-			return (GetPointer() != 0);
-		}
-
-		T& operator*(void) const
-		{
-			return (*GetPointer());
-		}
-
-		T* operator->(void) const
-		{
-			return (GetPointer());
-		}
-
-		void Swap(Auto_Ptr<T>& src)
-		{
-			if(this != &src)
-			{
-				T* temp_ptr = src.m_ptr;
-				src.m_ptr = m_ptr;
-				m_ptr = temp_ptr;
-			}
-		}
-
-		void Delete()
-		{
-			if(IsOwner())
-			{
-				if(IsArray())
-				{
-					m_bits &= POINTER_MASK;
-					delete [] m_ptr;
-				}
-				else
-				{
-					m_bits &= POINTER_MASK;
-					delete m_ptr;
-				}
-			}
-			m_ptr = 0;
-		}
-
-	private:
-		bool IsOwner(void) const
-		{
-			return ((m_bits & OWNER_MASK) == OWNER_MASK);
-		}
-
-		bool IsArray(void) const
-		{
-			return ((m_bits & ARRAY_MASK) == ARRAY_MASK);
-		}
-
-		void SetAsOwner(bool fOwn) const
-		{
-			if(fOwn == true)
-			{
-				m_bits |= OWNER_MASK;
+				m_bits &= POINTER_MASK;
+				delete[] m_ptr;
 			}
 			else
 			{
-				m_bits &= ~OWNER_MASK;
+				m_bits &= POINTER_MASK;
+				delete m_ptr;
 			}
 		}
+		m_ptr = 0;
+	}
 
-		void SetAsArray(bool fArray)
+  private:
+	bool IsOwner(void) const { return ((m_bits & OWNER_MASK) == OWNER_MASK); }
+
+	bool IsArray(void) const { return ((m_bits & ARRAY_MASK) == ARRAY_MASK); }
+
+	void SetAsOwner(bool fOwn) const
+	{
+		if (fOwn == true)
 		{
-			if(fArray == true)
-			{
-				m_bits |= ARRAY_MASK;
-			}
-			else
-			{
-				m_bits &= ~ARRAY_MASK;
-			}
+			m_bits |= OWNER_MASK;
 		}
-
-		void Set(T* ptr, bool fIsOwner, bool fIsArray)
+		else
 		{
-			m_ptr = ptr;
-			Verify((m_bits & POINTER_MASK) == m_bits);
-			if(fIsOwner == true)
-			{
-				m_bits |= OWNER_MASK;
-			}
-			if(fIsArray == true)
-			{
-				m_bits |= ARRAY_MASK;
-			}
+			m_bits &= ~OWNER_MASK;
 		}
+	}
 
-		mutable union
+	void SetAsArray(bool fArray)
+	{
+		if (fArray == true)
 		{
-			T* m_ptr;
-			mutable int32_t uint32_t m_bits;
-		};
+			m_bits |= ARRAY_MASK;
+		}
+		else
+		{
+			m_bits &= ~ARRAY_MASK;
+		}
+	}
 
-		enum
+	void Set(T* ptr, bool fIsOwner, bool fIsArray)
+	{
+		m_ptr = ptr;
+		Verify((m_bits & POINTER_MASK) == m_bits);
+		if (fIsOwner == true)
 		{
-			OWNER_MASK = 1,
-			ARRAY_MASK = 2,
-			POINTER_MASK = ~3
-		};
+			m_bits |= OWNER_MASK;
+		}
+		if (fIsArray == true)
+		{
+			m_bits |= ARRAY_MASK;
+		}
+	}
+
+	mutable union {
+		T* m_ptr;
+		mutable int32_t uint32_t m_bits;
 	};
 
-	template<class T>
-	inline bool operator==(const Auto_Ptr<T>& a,
-						   const Auto_Ptr<T>& b)
+	enum
 	{
-		return (a.GetPointer() == b.GetPointer());
-	}
+		OWNER_MASK   = 1,
+		ARRAY_MASK   = 2,
+		POINTER_MASK = ~3
+	};
+};
 
-	template<class T>
-	inline bool operator==(const T* a,
-						   const Auto_Ptr<T>& b)
-	{
-		return (a == b.GetPointer());
-	}
+template <class T>
+inline bool operator==(const Auto_Ptr<T>& a, const Auto_Ptr<T>& b)
+{
+	return (a.GetPointer() == b.GetPointer());
+}
 
-	template<class T>
-	inline bool operator==(const Auto_Ptr<T>& a,
-						   const T* b)
-	{
-		return (a.GetPointer() == b);
-	}
+template <class T> inline bool operator==(const T* a, const Auto_Ptr<T>& b)
+{
+	return (a == b.GetPointer());
+}
+
+template <class T> inline bool operator==(const Auto_Ptr<T>& a, const T* b)
+{
+	return (a.GetPointer() == b);
+}
 
 }; // namespace Stuff
 #endif

@@ -11,7 +11,7 @@ using namespace MidLevelRenderer;
 //#############################################################################
 
 #if defined(TRACE_ENABLED) && defined(MLR_TRACE)
-BitTrace*	MLR_Terrain2_Clip;
+BitTrace* MLR_Terrain2_Clip;
 #endif
 
 extern uint32_t gEnableLightMaps;
@@ -20,31 +20,25 @@ extern uint32_t gEnableLightMaps;
 //## MLRTerrain with no color no lighting w/ detail texture, uv's from xyz  ###
 //#############################################################################
 
-DynamicArrayOf<Stuff::Vector2DScalar>
-* MLR_Terrain2::detailTexCoords;
+DynamicArrayOf<Stuff::Vector2DScalar>* MLR_Terrain2::detailTexCoords;
 
-MLR_Terrain2::ClassData*
-MLR_Terrain2::DefaultData = nullptr;
+MLR_Terrain2::ClassData* MLR_Terrain2::DefaultData = nullptr;
 
 extern DynamicArrayOf<Stuff::Vector2DScalar>* lightMapUVs;
 extern DynamicArrayOf<float>* lightMapSqFalloffs;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLR_Terrain2::InitializeClass()
+void MLR_Terrain2::InitializeClass()
 {
 	Verify(!DefaultData);
 	// Verify(gos_GetCurrentHeap() == StaticHeap);
 	DefaultData =
-		new ClassData(
-		MLR_Terrain2ClassID,
-		"MidLevelRenderer::MLR_Terrain2",
-		MLR_I_DeT_TMesh::DefaultData,
-		(MLRPrimitiveBase::Factory)&Make
-	);
+		new ClassData(MLR_Terrain2ClassID, "MidLevelRenderer::MLR_Terrain2",
+			MLR_I_DeT_TMesh::DefaultData, (MLRPrimitiveBase::Factory)&Make);
 	Register_Object(DefaultData);
-	detailTexCoords = new DynamicArrayOf<Stuff::Vector2DScalar> (Limits::Max_Number_Vertices_Per_Mesh);
+	detailTexCoords = new DynamicArrayOf<Stuff::Vector2DScalar>(
+		Limits::Max_Number_Vertices_Per_Mesh);
 	Register_Object(detailTexCoords);
 #if defined(TRACE_ENABLED) && defined(MLR_TRACE)
 	MLR_Terrain2_Clip = new BitTrace("MLR_Terrain2_Clip");
@@ -54,8 +48,7 @@ MLR_Terrain2::InitializeClass()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLR_Terrain2::TerminateClass()
+void MLR_Terrain2::TerminateClass()
 {
 	Unregister_Object(DefaultData);
 	delete DefaultData;
@@ -71,21 +64,18 @@ MLR_Terrain2::TerminateClass()
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 MLR_Terrain2::MLR_Terrain2(
-	ClassData* class_data,
-	Stuff::MemoryStream* stream,
-	uint32_t version
-):
-	MLR_I_DeT_TMesh(class_data, stream, version)
+	ClassData* class_data, Stuff::MemoryStream* stream, uint32_t version)
+	: MLR_I_DeT_TMesh(class_data, stream, version)
 {
-	//Check_Pointer(this);
+	// Check_Pointer(this);
 	Check_Pointer(stream);
-	//Verify(gos_GetCurrentHeap() == Heap);
+	// Verify(gos_GetCurrentHeap() == Heap);
 	*stream >> tileX >> tileZ;
 	*stream >> maxDepth >> maxAllDepth;
-	if(version > 4)
+	if (version > 4)
 	{
 		float* fptr = &frame[0][0];
-		for(size_t i = 0; i < 32; i++)
+		for (size_t i = 0; i < 32; i++)
 		{
 			*stream >> *fptr++;
 		}
@@ -104,7 +94,7 @@ MLR_Terrain2::MLR_Terrain2(
 		frame[1][2] = frame[1][0] + 4 * xGrid;
 		frame[1][3] = frame[1][1] + 4 * zGrid;
 		int32_t i;
-		for(i = 2; i < 8; i++)
+		for (i = 2; i < 8; i++)
 		{
 			frame[i][0] = xOffset + tileX * xGrid;
 			frame[i][1] = zOffset + tileZ * zGrid;
@@ -115,9 +105,9 @@ MLR_Terrain2::MLR_Terrain2(
 	*stream >> borderPixelFun;
 	uint8_t textureFlags, mask = 1;
 	*stream >> textureFlags;
-	for(size_t i = 0; i < 8; i++)
+	for (size_t i = 0; i < 8; i++)
 	{
-		if(textureFlags | mask)
+		if (textureFlags | mask)
 		{
 			textures[i] = 1;
 		}
@@ -128,27 +118,30 @@ MLR_Terrain2::MLR_Terrain2(
 		mask <<= 1;
 	}
 	Check_Object(MLRTexturePool::Instance);
-	MLRTexture* orgTexture = (*MLRTexturePool::Instance)[referenceState.GetTextureHandle()];
+	MLRTexture* orgTexture =
+		(*MLRTexturePool::Instance)[referenceState.GetTextureHandle()];
 	Check_Object(orgTexture);
 	PCSTR texName = orgTexture->GetTextureName();
 	char texRoot[1024], name[1024];
 	size_t len;
-	if((len = strlen(texName)) > 0)
+	if ((len = strlen(texName)) > 0)
 	{
 		Verify(len > 8);
 		int32_t i, d = texName[len - 6] - '0';
 		strncpy(texRoot, texName, len - 7);
 		texRoot[len - 7] = '\0';
-		textures[d] = referenceState.GetTextureHandle();
+		textures[d]		 = referenceState.GetTextureHandle();
 		MLRTexture* texture;
 		uint8_t mask = 1;
-		for(i = 0; i < 8; i++)
+		for (i = 0; i < 8; i++)
 		{
-			if(textureFlags & mask)
+			if (textureFlags & mask)
 			{
-				sprintf(name, "%s_%1d_%02x%02x", texRoot, i, (7 - tileX) / (1 << (maxAllDepth - i)), (7 - tileZ) / (1 << (maxAllDepth - i)));
+				sprintf(name, "%s_%1d_%02x%02x", texRoot, i,
+					(7 - tileX) / (1 << (maxAllDepth - i)),
+					(7 - tileZ) / (1 << (maxAllDepth - i)));
 				texture = (*MLRTexturePool::Instance)(name, 0);
-				if(!texture)
+				if (!texture)
 				{
 					texture = MLRTexturePool::Instance->Add(name, 0);
 				}
@@ -163,14 +156,14 @@ MLR_Terrain2::MLR_Terrain2(
 			mask <<= 1;
 		}
 		i++;
-		for(; i < 8; i++)
+		for (; i < 8; i++)
 		{
 			textures[i] = 0;
 		}
 	}
 	else
 	{
-		for(size_t i = 0; i < 8; i++)
+		for (size_t i = 0; i < 8; i++)
 		{
 			textures[i] = 0;
 		}
@@ -183,23 +176,22 @@ MLR_Terrain2::MLR_Terrain2(
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLR_Terrain2::MLR_Terrain2(ClassData* class_data):
-	MLR_I_DeT_TMesh(class_data)
+MLR_Terrain2::MLR_Terrain2(ClassData* class_data) : MLR_I_DeT_TMesh(class_data)
 {
-	//Check_Pointer(this);
-	//Verify(gos_GetCurrentHeap() == Heap);
-	tileX = 0;
-	tileZ = 0;
-	maxDepth = 0;
-	maxAllDepth = 0;
+	// Check_Pointer(this);
+	// Verify(gos_GetCurrentHeap() == Heap);
+	tileX		   = 0;
+	tileZ		   = 0;
+	maxDepth	   = 0;
+	maxAllDepth	= 0;
 	borderPixelFun = 0.0f;
-	float* fptr = &frame[0][0];
+	float* fptr	= &frame[0][0];
 	int32_t i;
-	for(i = 0; i < 32; i++)
+	for (i = 0; i < 32; i++)
 	{
 		*fptr++ = 0.0f;
 	}
-	for(i = 0; i < 8; i++)
+	for (i = 0; i < 8; i++)
 	{
 		textures[i] = 0;
 	}
@@ -214,14 +206,10 @@ MLR_Terrain2::~MLR_Terrain2()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLR_Terrain2*
-MLR_Terrain2::Make(
-	Stuff::MemoryStream* stream,
-	uint32_t version
-)
+MLR_Terrain2* MLR_Terrain2::Make(Stuff::MemoryStream* stream, uint32_t version)
 {
 	Check_Object(stream);
-	#ifdef _GAMEOS_HPP_
+#ifdef _GAMEOS_HPP_
 	gos_PushCurrentHeap(Heap);
 #endif
 	MLR_Terrain2* terrain = new MLR_Terrain2(DefaultData, stream, version);
@@ -229,11 +217,9 @@ MLR_Terrain2::Make(
 	return terrain;
 }
 
-
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLR_Terrain2::Save(Stuff::MemoryStream* stream)
+void MLR_Terrain2::Save(Stuff::MemoryStream* stream)
 {
 	// Check_Object(this);
 	Check_Object(stream);
@@ -243,18 +229,18 @@ MLR_Terrain2::Save(Stuff::MemoryStream* stream)
 	*stream << tileX << tileZ;
 	*stream << maxDepth << maxAllDepth;
 	float* fptr = &frame[0][0];
-	for(size_t i = 0; i < 32; i++)
+	for (size_t i = 0; i < 32; i++)
 	{
 		*stream << *fptr++;
 	}
 	*stream << borderPixelFun;
 	uint8_t textureFlags = 0;
-//	HACK
+	//	HACK
 	/*
 		Check_Object(MLRTexturePool::Instance);
-		MLRTexture *orgTexture = (*MLRTexturePool::Instance)[referenceState.GetTextureHandle()];
-		PCSTR texName = orgTexture->GetTextureName();
-		char texRoot[1024], name[1024];
+		MLRTexture *orgTexture =
+	(*MLRTexturePool::Instance)[referenceState.GetTextureHandle()]; PCSTR
+	texName = orgTexture->GetTextureName(); char texRoot[1024], name[1024];
 
 		size_t len;
 		if((len = strlen(texName)) > 0)
@@ -272,7 +258,8 @@ MLR_Terrain2::Save(Stuff::MemoryStream* stream)
 			uint8_t mask = 1;
 			for(i=0;i<d;i++)
 			{
-				sprintf(name, "%s_%1d_%02x%02x", texRoot, i, tileX/(1<<(maxAllDepth-i)), tileZ/(1<<(maxAllDepth-i)));
+				sprintf(name, "%s_%1d_%02x%02x", texRoot, i,
+	tileX/(1<<(maxAllDepth-i)), tileZ/(1<<(maxAllDepth-i)));
 
 				Verify((1<<i)>(tileX/(1<<(maxAllDepth-i))));
 				Verify((1<<i)>(tileZ/(1<<(maxAllDepth-i))));
@@ -290,24 +277,22 @@ MLR_Terrain2::Save(Stuff::MemoryStream* stream)
 		Verify(textures[0]!=0);
 	*/
 	textureFlags = 3;
-//	HACK
+	//	HACK
 	*stream << textureFlags;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLR_Terrain2::TestInstance(void) const
+void MLR_Terrain2::TestInstance(void) const
 {
 	Verify(IsDerivedFrom(DefaultData));
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLR_Terrain2::SetCurrentDepth(uint8_t d)
+void MLR_Terrain2::SetCurrentDepth(uint8_t d)
 {
-	if(d == currentDepth)
+	if (d == currentDepth)
 	{
 		return;
 	}
@@ -316,7 +301,7 @@ MLR_Terrain2::SetCurrentDepth(uint8_t d)
 		Verify(d <= maxAllDepth);
 		uint8_t dt;
 		dt = d < maxDepth ? d : maxDepth;
-		while(dt > 0 && textures[dt] == 0)
+		while (dt > 0 && textures[dt] == 0)
 		{
 			dt--;
 		}
@@ -328,13 +313,12 @@ MLR_Terrain2::SetCurrentDepth(uint8_t d)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLR_Terrain2::SetLevelTexture(int32_t lev, int32_t handle)
+void MLR_Terrain2::SetLevelTexture(int32_t lev, int32_t handle)
 {
 	// Check_Object(this);
 	Verify(lev >= 0 && lev < 8);
 	textures[lev] = handle;
-	if(lev == currentDepth)
+	if (lev == currentDepth)
 	{
 		referenceState.SetTextureHandle(textures[currentDepth]);
 	}
@@ -342,25 +326,26 @@ MLR_Terrain2::SetLevelTexture(int32_t lev, int32_t handle)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLR_Terrain2::CalculateUVs()
+void MLR_Terrain2::CalculateUVs()
 {
-	if(texCoords.GetLength() != coords.GetLength())
+	if (texCoords.GetLength() != coords.GetLength())
 	{
-		#ifdef _GAMEOS_HPP_
-	gos_PushCurrentHeap(Heap);
+#ifdef _GAMEOS_HPP_
+		gos_PushCurrentHeap(Heap);
 #endif
 		texCoords.SetLength(coords.GetLength());
 		gos_PopCurrentHeap();
 	}
-	float maxX = frame[currentDepth][2];
-	float maxZ = frame[currentDepth][3];
+	float maxX	 = frame[currentDepth][2];
+	float maxZ	 = frame[currentDepth][3];
 	float OneOverX = 1.0f / (frame[currentDepth][2] - frame[currentDepth][0]);
 	float OneOverZ = 1.0f / (frame[currentDepth][3] - frame[currentDepth][1]);
-	for(size_t i = 0; i < texCoords.GetLength(); i++)
+	for (size_t i = 0; i < texCoords.GetLength(); i++)
 	{
-		texCoords[i][0] = borderPixelFun + (1.0f - 2 * borderPixelFun) * (maxX - coords[i].x) * OneOverX;
-		texCoords[i][1] = borderPixelFun + (1.0f - 2 * borderPixelFun) * (maxZ - coords[i].z) * OneOverZ;
+		texCoords[i][0] = borderPixelFun + (1.0f - 2 * borderPixelFun) *
+											   (maxX - coords[i].x) * OneOverX;
+		texCoords[i][1] = borderPixelFun + (1.0f - 2 * borderPixelFun) *
+											   (maxZ - coords[i].z) * OneOverZ;
 		Verify(texCoords[i][0] >= 0.0 && texCoords[i][0] <= 1.0);
 		Verify(texCoords[i][1] >= 0.0 && texCoords[i][1] <= 1.0);
 	}
@@ -400,14 +385,14 @@ MLR_Terrain2::CalculateUVs()
 #undef CLASSNAME
 
 extern RGBAColor errorColor;
-extern bool CheckForBigTriangles(DynamicArrayOf<Stuff::Vector2DScalar>* lightMapUVs, uint32_t stride);
+extern bool CheckForBigTriangles(
+	DynamicArrayOf<Stuff::Vector2DScalar>* lightMapUVs, uint32_t stride);
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLR_Terrain2::LightMapLighting(MLRLight* light)
+void MLR_Terrain2::LightMapLighting(MLRLight* light)
 {
-	if(!gEnableLightMaps)
+	if (!gEnableLightMaps)
 	{
 		return;
 	}
@@ -416,59 +401,60 @@ MLR_Terrain2::LightMapLighting(MLRLight* light)
 	Point3D lightPosInShape, hitPoint;
 	UnitVector3D up, left, forward;
 	bool lm;
-	float falloff = 1.0f, distance;
+	float falloff		  = 1.0f, distance;
 	MLRLightMap* lightMap = light->GetLightMap();
-	if((!lightMap) || (!gEnableLightMaps))
+	if ((!lightMap) || (!gEnableLightMaps))
 	{
 		return;
 	}
 	int32_t tooBig = 0;
-	float bigUV = MLRState::GetMaxUV();
-	switch(light->GetLightType())
+	float bigUV	= MLRState::GetMaxUV();
+	switch (light->GetLightType())
 	{
-		case MLRLight::PointLight:
+	case MLRLight::PointLight:
+	{
+		Check_Object(lightMap);
+		lightMap->AddState(referenceState.GetPriority() + 1);
+		light->GetInShapePosition(lightPosInShape);
+		float n, f;
+		Cast_Object(MLRPointLight*, light)->GetFalloffDistance(n, f);
+		float One_Over_Falloff = 1.0f / (3.0f * f);
+		for (i = 0, j = 0, k = 0; i < len; i++, j += 3)
 		{
-			Check_Object(lightMap);
-			lightMap->AddState(referenceState.GetPriority() + 1);
-			light->GetInShapePosition(lightPosInShape);
-			float n, f;
-			Cast_Object(MLRPointLight*, light)->GetFalloffDistance(n, f);
-			float One_Over_Falloff = 1.0f / (3.0f * f);
-			for(i = 0, j = 0, k = 0; i < len; i++, j += 3)
+			if (testList[i] == 0)
 			{
-				if(testList[i] == 0)
+				continue;
+			}
+			f	  = facePlanes[i].GetDistanceTo(lightPosInShape);
+			lm	 = false;
+			tooBig = 0;
+			for (k = 0; k < 3; k++)
+			{
+				Vector3D vec(coords[index[k + j]]);
+				vec -= lightPosInShape;
+				(*lightMapUVs)[k][0] = vec.x * One_Over_Falloff;
+				(*lightMapUVs)[k][1] = vec.z * One_Over_Falloff;
+				falloff				 = 1.0f;
+				if ((*lightMapUVs)[k][0] >= -0.5f &&
+					(*lightMapUVs)[k][0] <= 0.5f &&
+					(*lightMapUVs)[k][1] >= -0.5f &&
+					(*lightMapUVs)[k][1] <= 0.5f)
 				{
-					continue;
+					lm = true;
 				}
-				f = facePlanes[i].GetDistanceTo(lightPosInShape);
-				lm = false;
-				tooBig = 0;
-				for(k = 0; k < 3; k++)
+				if ((*lightMapUVs)[k][0] < -bigUV ||
+					(*lightMapUVs)[k][0] > bigUV ||
+					(*lightMapUVs)[k][1] < -bigUV ||
+					(*lightMapUVs)[k][1] > bigUV)
 				{
-					Vector3D vec(coords[index[k + j]]);
-					vec -= lightPosInShape;
-					(*lightMapUVs)[k][0] = vec.x * One_Over_Falloff;
-					(*lightMapUVs)[k][1] = vec.z * One_Over_Falloff;
-					falloff = 1.0f;
-					if(
-						(*lightMapUVs)[k][0] >= -0.5f && (*lightMapUVs)[k][0] <= 0.5f &&
-						(*lightMapUVs)[k][1] >= -0.5f && (*lightMapUVs)[k][1] <= 0.5f
-					)
-					{
-						lm = true;
-					}
-					if(
-						(*lightMapUVs)[k][0] < -bigUV || (*lightMapUVs)[k][0] > bigUV ||
-						(*lightMapUVs)[k][1] < -bigUV || (*lightMapUVs)[k][1] > bigUV
-					)
-					{
-						tooBig++;
-					}
+					tooBig++;
 				}
-				if(tooBig == 0 && (lm == true || CheckForBigTriangles(lightMapUVs, 3) == true))
-				{
-					lightMap->SetPolygonMarker(0);
-					lightMap->AddUShort(3);
+			}
+			if (tooBig == 0 &&
+				(lm == true || CheckForBigTriangles(lightMapUVs, 3) == true))
+			{
+				lightMap->SetPolygonMarker(0);
+				lightMap->AddUShort(3);
 #if 0
 					Vector3D vec(coords[index[j]]);
 					SPEW(("micgaert", "\nvertex1 = %f,%f,%f", vec.x, vec.y, vec.z));
@@ -483,278 +469,296 @@ MLR_Terrain2::LightMapLighting(MLRLight* light)
 					SPEW(("micgaert", "light = %f,%f,%f", lightPosInShape.x, lightPosInShape.y, lightPosInShape.z));
 					SPEW(("micgaert", "projection = %f,%f,%f", hitPoint.x, hitPoint.y, hitPoint.z));
 #endif
-					float sq_falloff
-						= falloff * falloff * light->GetIntensity();
-					RGBAColor color;
-					light->GetColor(color);
-					color.red *= sq_falloff;
-					color.green *= sq_falloff;
-					color.blue *= sq_falloff;
-					color.alpha = 1.0f;
-					lightMap->AddColor(color);
-					for(k = 0; k < 3; k++)
-					{
-						lightMap->AddCoord(coords[index[k + j]]);
-					}
-					for(k = 0; k < 3; k++)
-					{
-						lightMap->AddUVs((*lightMapUVs)[k][0] + 0.5f, (*lightMapUVs)[k][1] + 0.5f);
-						//				DEBUG_STREAM << k << " " << lightMapUVs[k][0] << " " << lightMapUVs[k][0] << "\n";
-					}
+				float sq_falloff = falloff * falloff * light->GetIntensity();
+				RGBAColor color;
+				light->GetColor(color);
+				color.red *= sq_falloff;
+				color.green *= sq_falloff;
+				color.blue *= sq_falloff;
+				color.alpha = 1.0f;
+				lightMap->AddColor(color);
+				for (k = 0; k < 3; k++)
+				{
+					lightMap->AddCoord(coords[index[k + j]]);
+				}
+				for (k = 0; k < 3; k++)
+				{
+					lightMap->AddUVs((*lightMapUVs)[k][0] + 0.5f,
+						(*lightMapUVs)[k][1] + 0.5f);
+					//				DEBUG_STREAM << k << " " << lightMapUVs[k][0] << "
+					//" << lightMapUVs[k][0] << "\n";
 				}
 			}
 		}
-		break;
-		case MLRLight::SpotLight:
+	}
+	break;
+	case MLRLight::SpotLight:
+	{
+		int32_t behindCount = 0, falloffCount = 0;
+		Check_Object(lightMap);
+		lightMap->AddState(referenceState.GetPriority() + 1);
+		light->GetInShapePosition(matrix);
+		lightPosInShape = matrix;
+		float tanSpeadAngle =
+			Cast_Object(MLRSpotLight*, light)->GetTanSpreadAngle();
+#ifndef TOP_DOWN_ONLY
+		matrix.GetLocalLeftInWorld(&left);
+		matrix.GetLocalUpInWorld(&up);
+		matrix.GetLocalForwardInWorld(&forward);
+#else
+		forward = UnitVector3D(0.0f, -1.0f, 0.0);
+		up		= UnitVector3D(1.0f, 0.0f, 0.0);
+		left	= UnitVector3D(0.0f, 0.0f, 1.0);
+#endif
+		Verify(Small_Enough(up * left));
+		for (i = 0, j = 0, k = 0; i < len; i++, j += 3)
 		{
-			int32_t behindCount = 0, falloffCount = 0;
-			Check_Object(lightMap);
-			lightMap->AddState(referenceState.GetPriority() + 1);
-			light->GetInShapePosition(matrix);
-			lightPosInShape = matrix;
-			float tanSpeadAngle = Cast_Object(MLRSpotLight*, light)->GetTanSpreadAngle();
-#ifndef TOP_DOWN_ONLY
-			matrix.GetLocalLeftInWorld(&left);
-			matrix.GetLocalUpInWorld(&up);
-			matrix.GetLocalForwardInWorld(&forward);
-#else
-			forward = UnitVector3D(0.0f, -1.0f, 0.0);
-			up = UnitVector3D(1.0f, 0.0f, 0.0);
-			left = UnitVector3D(0.0f, 0.0f, 1.0);
-#endif
-			Verify(Small_Enough(up * left));
-			for(i = 0, j = 0, k = 0; i < len; i++, j += 3)
+			behindCount  = 0;
+			falloffCount = 0;
+			if (testList[i] == 0)
 			{
-				behindCount = 0;
-				falloffCount = 0;
-				if(testList[i] == 0)
-				{
-					continue;
-				}
-				lm = false;
-				if(!facePlanes[i].IsSeenBy(lightPosInShape))
-				{
-					continue;
-				}
+				continue;
+			}
+			lm = false;
+			if (!facePlanes[i].IsSeenBy(lightPosInShape))
+			{
+				continue;
+			}
 #if SPEW_AWAY
-				float maxX, maxZ;
-				float minX, minZ;
-				minX = maxX = coords[index[j]].x;
-				minZ = maxZ = coords[index[j]].z;
-				if(minX > coords[index[j + 1]].x)
-				{
-					minX = coords[index[j + 1]].x;
-				}
-				if(minX > coords[index[j + 2]].x)
-				{
-					minX = coords[index[j + 2]].x;
-				}
-				if(minZ > coords[index[j + 1]].z)
-				{
-					minZ = coords[index[j + 1]].z;
-				}
-				if(minX > coords[index[j + 2]].z)
-				{
-					minZ = coords[index[j + 2]].z;
-				}
-				if(maxX < coords[index[j + 1]].x)
-				{
-					maxX = coords[index[j + 1]].x;
-				}
-				if(maxX < coords[index[j + 2]].x)
-				{
-					maxX = coords[index[j + 2]].x;
-				}
-				if(maxZ < coords[index[j + 1]].z)
-				{
-					maxZ = coords[index[j + 1]].z;
-				}
-				if(maxX < coords[index[j + 2]].z)
-				{
-					maxZ = coords[index[j + 2]].z;
-				}
-				if(lightPosInShape.x > minX && lightPosInShape.x < maxX && lightPosInShape.z > minZ && lightPosInShape.z < maxZ)
-				{
-					SPEW(("micgaert", "On Target !!"));
-				}
+			float maxX, maxZ;
+			float minX, minZ;
+			minX = maxX = coords[index[j]].x;
+			minZ = maxZ = coords[index[j]].z;
+			if (minX > coords[index[j + 1]].x)
+			{
+				minX = coords[index[j + 1]].x;
+			}
+			if (minX > coords[index[j + 2]].x)
+			{
+				minX = coords[index[j + 2]].x;
+			}
+			if (minZ > coords[index[j + 1]].z)
+			{
+				minZ = coords[index[j + 1]].z;
+			}
+			if (minX > coords[index[j + 2]].z)
+			{
+				minZ = coords[index[j + 2]].z;
+			}
+			if (maxX < coords[index[j + 1]].x)
+			{
+				maxX = coords[index[j + 1]].x;
+			}
+			if (maxX < coords[index[j + 2]].x)
+			{
+				maxX = coords[index[j + 2]].x;
+			}
+			if (maxZ < coords[index[j + 1]].z)
+			{
+				maxZ = coords[index[j + 1]].z;
+			}
+			if (maxX < coords[index[j + 2]].z)
+			{
+				maxZ = coords[index[j + 2]].z;
+			}
+			if (lightPosInShape.x > minX && lightPosInShape.x < maxX &&
+				lightPosInShape.z > minZ && lightPosInShape.z < maxZ)
+			{
+				SPEW(("micgaert", "On Target !!"));
+			}
 #endif
-				tooBig = 0;
-				for(k = 0; k < 3; k++)
-				{
-					Vector3D vec;
-					float oneOver;
-					vec.Subtract(coords[index[k + j]], lightPosInShape);
+			tooBig = 0;
+			for (k = 0; k < 3; k++)
+			{
+				Vector3D vec;
+				float oneOver;
+				vec.Subtract(coords[index[k + j]], lightPosInShape);
 #ifndef TOP_DOWN_ONLY
-					distance = (vec * forward);
+				distance = (vec * forward);
 #else
-					distance = -vec.y;
+				   distance = -vec.y;
 #endif
 #if SPEW_AWAY
-					SPEW(("micgaert", "vertex%d = %f,%f,%f", k, coords[index[k + j]].x, coords[index[k + j]].y, coords[index[k + j]].z));
-					SPEW(("micgaert", "distance = %f", distance));
+				SPEW(("micgaert", "vertex%d = %f,%f,%f", k,
+					coords[index[k + j]].x, coords[index[k + j]].y,
+					coords[index[k + j]].z));
+				SPEW(("micgaert", "distance = %f", distance));
 #endif
-					if(distance > SMALL)
+				if (distance > SMALL)
+				{
+					if (Cast_Object(MLRInfiniteLightWithFalloff*, light)
+							->GetFalloff(distance, falloff) == false)
 					{
-						if(Cast_Object(MLRInfiniteLightWithFalloff*, light)->GetFalloff(distance, falloff) == false)
-						{
-							falloffCount++;
-						}
-						(*lightMapSqFalloffs)[k] = falloff * falloff * light->GetIntensity();
-						oneOver
+						falloffCount++;
+					}
+					(*lightMapSqFalloffs)[k] =
+						falloff * falloff * light->GetIntensity();
+					oneOver
 #if 0
 							= 1.0f / (2.0f * distance * tanSpeadAngle);
 #else
-							= OneOverApproximate(2.0f * distance * tanSpeadAngle);
+						   = OneOverApproximate(2.0f * distance * tanSpeadAngle);
 #endif
-					}
-					else
-					{
-						behindCount++;
-						oneOver = 1.0f / 50.0f;
-						(*lightMapSqFalloffs)[k] = 0.0f;
+				}
+				else
+				{
+					behindCount++;
+					oneOver					 = 1.0f / 50.0f;
+					(*lightMapSqFalloffs)[k] = 0.0f;
 #if SPEW_AWAY
-						SPEW(("micgaert", "Behind"));
+					SPEW(("micgaert", "Behind"));
 #endif
-					}
+				}
 #ifndef TOP_DOWN_ONLY
-					(*lightMapUVs)[k][0] = (left * vec) * oneOver;
-					(*lightMapUVs)[k][1] = -(up * vec) * oneOver;
+				(*lightMapUVs)[k][0] = (left * vec) * oneOver;
+				(*lightMapUVs)[k][1] = -(up * vec) * oneOver;
 #else
-					(*lightMapUVs)[k][0] = vec.x * oneOver;
-					(*lightMapUVs)[k][1] = -vec.z * oneOver;
+				   (*lightMapUVs)[k][0] = vec.x * oneOver;
+				   (*lightMapUVs)[k][1] = -vec.z * oneOver;
 #endif
 #if SPEW_AWAY
-					SPEW(("micgaert", "uv%d = %f,%f", k, (*lightMapUVs)[k][0], (*lightMapUVs)[k][1]));
+				SPEW(("micgaert", "uv%d = %f,%f", k, (*lightMapUVs)[k][0],
+					(*lightMapUVs)[k][1]));
 #endif
-					if(
-						(*lightMapUVs)[k][0] >= -0.5f && (*lightMapUVs)[k][0] <= 0.5f &&
-						(*lightMapUVs)[k][1] >= -0.5f && (*lightMapUVs)[k][1] <= 0.5f
-					)
-					{
-						lm = true;
-					}
-					if(
-						(*lightMapUVs)[k][0] < -bigUV || (*lightMapUVs)[k][0] > bigUV ||
-						(*lightMapUVs)[k][1] < -bigUV || (*lightMapUVs)[k][1] > bigUV
-					)
-					{
-						tooBig++;
-					}
+				if ((*lightMapUVs)[k][0] >= -0.5f &&
+					(*lightMapUVs)[k][0] <= 0.5f &&
+					(*lightMapUVs)[k][1] >= -0.5f &&
+					(*lightMapUVs)[k][1] <= 0.5f)
+				{
+					lm = true;
 				}
+				if ((*lightMapUVs)[k][0] < -bigUV ||
+					(*lightMapUVs)[k][0] > bigUV ||
+					(*lightMapUVs)[k][1] < -bigUV ||
+					(*lightMapUVs)[k][1] > bigUV)
+				{
+					tooBig++;
+				}
+			}
 #if 1
-				if(
-					tooBig == 0
-					&& behindCount < 3
-					&& falloffCount < 3
-					&& ((lm == true)	|| CheckForBigTriangles(lightMapUVs, 3) == true)
-				)
+			if (tooBig == 0 && behindCount < 3 && falloffCount < 3 &&
+				((lm == true) || CheckForBigTriangles(lightMapUVs, 3) == true))
+			{
+				lightMap->SetPolygonMarker(1);
+				lightMap->AddUShort(3);
+				for (k = 0; k < 3; k++)
 				{
-					lightMap->SetPolygonMarker(1);
-					lightMap->AddUShort(3);
-					for(k = 0; k < 3; k++)
-					{
-						lightMap->AddCoord(coords[index[k + j]]);
-					}
-					for(k = 0; k < 3; k++)
-					{
-						lightMap->AddColor((*lightMapSqFalloffs)[k], (*lightMapSqFalloffs)[k], (*lightMapSqFalloffs)[k], 1.0f);
-					}
-					for(k = 0; k < 3; k++)
-					{
-						lightMap->AddUVs((*lightMapUVs)[k][0] + 0.5f, (*lightMapUVs)[k][1] + 0.5f);
-						//				DEBUG_STREAM << k << " " << lightMapUVs[k][0] << " " << lightMapUVs[k][0] << "\n";
-					}
-#if SPEW_AWAY
-					SPEW(("micgaert", "See the Light !"));
-#endif
+					lightMap->AddCoord(coords[index[k + j]]);
+				}
+				for (k = 0; k < 3; k++)
+				{
+					lightMap->AddColor((*lightMapSqFalloffs)[k],
+						(*lightMapSqFalloffs)[k], (*lightMapSqFalloffs)[k],
+						1.0f);
+				}
+				for (k = 0; k < 3; k++)
+				{
+					lightMap->AddUVs((*lightMapUVs)[k][0] + 0.5f,
+						(*lightMapUVs)[k][1] + 0.5f);
+					//				DEBUG_STREAM << k << " " << lightMapUVs[k][0] << "
+					//" << lightMapUVs[k][0] << "\n";
 				}
 #if SPEW_AWAY
-				Vector3D vec = facePlanes[i].normal;
-				SPEW(("micgaert", "normal = %f,%f,%f", vec.x, vec.y, vec.z));
-				SPEW(("micgaert", "forward = %f,%f,%f", forward.x, forward.y, forward.z));
-				SPEW(("micgaert", "left = %f,%f,%f", left.x, left.y, left.z));
-				SPEW(("micgaert", "up = %f,%f,%f", up.x, up.y, up.z));
-				SPEW(("micgaert", "light = %f,%f,%f\n", lightPosInShape.x, lightPosInShape.y, lightPosInShape.z));
-#endif
-#else
-				if(tooBig != 0)
-				{
-					lightMap->SetPolygonMarker(1);
-					lightMap->AddUShort(3);
-					for(k = 0; k < 3; k++)
-					{
-						lightMap->AddCoord(coords[index[k + j]]);
-					}
-					for(k = 0; k < 3; k++)
-					{
-						lightMap->AddColor(RGBAColor(0.0f, 0.0f, 0.5f, 1.0f));
-					}
-					for(k = 0; k < 3; k++)
-					{
-						lightMap->AddUVs(0.5f, 0.5f);
-						//				DEBUG_STREAM << k << " " << lightMapUVs[k][0] << " " << lightMapUVs[k][0] << "\n";
-					}
-				}
-				else if(behindCount != 0)
-				{
-					lightMap->SetPolygonMarker(1);
-					lightMap->AddUShort(3);
-					for(k = 0; k < 3; k++)
-					{
-						lightMap->AddCoord(coords[index[k + j]]);
-					}
-					for(k = 0; k < 3; k++)
-					{
-						lightMap->AddColor(RGBAColor(0.5f, 0.0f, 0.0f, 1.0f));
-					}
-					for(k = 0; k < 3; k++)
-					{
-						lightMap->AddUVs(0.5f, 0.5f);
-						//				DEBUG_STREAM << k << " " << lightMapUVs[k][0] << " " << lightMapUVs[k][0] << "\n";
-					}
-				}
-				else	if(behindCount == 0 && (lm == true || CheckForBigTriangles(&lightMapUVs, 3) == true))
-				{
-					lightMap->SetPolygonMarker(1);
-					lightMap->AddUShort(3);
-					for(k = 0; k < 3; k++)
-					{
-						lightMap->AddCoord(coords[index[k + j]]);
-					}
-					for(k = 0; k < 3; k++)
-					{
-						lightMap->AddColor(lightMapSqFalloffs[k], lightMapSqFalloffs[k], lightMapSqFalloffs[k], 1.0f);
-					}
-					for(k = 0; k < 3; k++)
-					{
-						lightMap->AddUVs(lightMapUVs[k][0] + 0.5f, lightMapUVs[k][1] + 0.5f);
-						//				DEBUG_STREAM << k << " " << lightMapUVs[k][0] << " " << lightMapUVs[k][0] << "\n";
-					}
-				}
-				else if(CheckForBigTriangles(&lightMapUVs, 3) == false)
-				{
-					lightMap->SetPolygonMarker(1);
-					lightMap->AddUShort(3);
-					for(k = 0; k < 3; k++)
-					{
-						lightMap->AddCoord(coords[index[k + j]]);
-					}
-					for(k = 0; k < 3; k++)
-					{
-						lightMap->AddColor(errorColor);
-					}
-					for(k = 0; k < 3; k++)
-					{
-						lightMap->AddUVs(0.5f, 0.5f);
-						//				DEBUG_STREAM << k << " " << lightMapUVs[k][0] << " " << lightMapUVs[k][0] << "\n";
-					}
-				}
+				SPEW(("micgaert", "See the Light !"));
 #endif
 			}
+#if SPEW_AWAY
+			Vector3D vec = facePlanes[i].normal;
+			SPEW(("micgaert", "normal = %f,%f,%f", vec.x, vec.y, vec.z));
+			SPEW(("micgaert", "forward = %f,%f,%f", forward.x, forward.y,
+				forward.z));
+			SPEW(("micgaert", "left = %f,%f,%f", left.x, left.y, left.z));
+			SPEW(("micgaert", "up = %f,%f,%f", up.x, up.y, up.z));
+			SPEW(("micgaert", "light = %f,%f,%f\n", lightPosInShape.x,
+				lightPosInShape.y, lightPosInShape.z));
+#endif
+#else
+			if (tooBig != 0)
+			{
+				lightMap->SetPolygonMarker(1);
+				lightMap->AddUShort(3);
+				for (k = 0; k < 3; k++)
+				{
+					lightMap->AddCoord(coords[index[k + j]]);
+				}
+				for (k = 0; k < 3; k++)
+				{
+					lightMap->AddColor(RGBAColor(0.0f, 0.0f, 0.5f, 1.0f));
+				}
+				for (k = 0; k < 3; k++)
+				{
+					lightMap->AddUVs(0.5f, 0.5f);
+					//				DEBUG_STREAM << k << " " << lightMapUVs[k][0] << "
+					//" << lightMapUVs[k][0] << "\n";
+				}
+			}
+			else if (behindCount != 0)
+			{
+				lightMap->SetPolygonMarker(1);
+				lightMap->AddUShort(3);
+				for (k = 0; k < 3; k++)
+				{
+					lightMap->AddCoord(coords[index[k + j]]);
+				}
+				for (k = 0; k < 3; k++)
+				{
+					lightMap->AddColor(RGBAColor(0.5f, 0.0f, 0.0f, 1.0f));
+				}
+				for (k = 0; k < 3; k++)
+				{
+					lightMap->AddUVs(0.5f, 0.5f);
+					//				DEBUG_STREAM << k << " " << lightMapUVs[k][0] << "
+					//" << lightMapUVs[k][0] << "\n";
+				}
+			}
+			else if (behindCount == 0 &&
+					 (lm == true ||
+						 CheckForBigTriangles(&lightMapUVs, 3) == true))
+			{
+				lightMap->SetPolygonMarker(1);
+				lightMap->AddUShort(3);
+				for (k = 0; k < 3; k++)
+				{
+					lightMap->AddCoord(coords[index[k + j]]);
+				}
+				for (k = 0; k < 3; k++)
+				{
+					lightMap->AddColor(lightMapSqFalloffs[k],
+						lightMapSqFalloffs[k], lightMapSqFalloffs[k], 1.0f);
+				}
+				for (k = 0; k < 3; k++)
+				{
+					lightMap->AddUVs(
+						lightMapUVs[k][0] + 0.5f, lightMapUVs[k][1] + 0.5f);
+					//				DEBUG_STREAM << k << " " << lightMapUVs[k][0] << "
+					//" << lightMapUVs[k][0] << "\n";
+				}
+			}
+			else if (CheckForBigTriangles(&lightMapUVs, 3) == false)
+			{
+				lightMap->SetPolygonMarker(1);
+				lightMap->AddUShort(3);
+				for (k = 0; k < 3; k++)
+				{
+					lightMap->AddCoord(coords[index[k + j]]);
+				}
+				for (k = 0; k < 3; k++)
+				{
+					lightMap->AddColor(errorColor);
+				}
+				for (k = 0; k < 3; k++)
+				{
+					lightMap->AddUVs(0.5f, 0.5f);
+					//				DEBUG_STREAM << k << " " << lightMapUVs[k][0] << "
+					//" << lightMapUVs[k][0] << "\n";
+				}
+			}
+#endif
 		}
+	}
+	break;
+	default:
+		STOP(("MLR_I_PMesh::LightMapLighting: What you want me to do ?"));
 		break;
-		default:
-			STOP(("MLR_I_PMesh::LightMapLighting: What you want me to do ?"));
-			break;
 	}
 }

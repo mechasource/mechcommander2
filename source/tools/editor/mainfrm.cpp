@@ -10,23 +10,21 @@
 
 #include "MainFrm.h"
 
-
 /////////////////////////////////////////////////////////////////////////////
 // MainFrame
 
 IMPLEMENT_DYNAMIC(MainFrame, CFrameWnd)
 
 BEGIN_MESSAGE_MAP(MainFrame, CFrameWnd)
-	//{{AFX_MSG_MAP(MainFrame)
-	ON_WM_CREATE()
-	ON_WM_SETFOCUS()
-	ON_WM_CLOSE()
-	//}}AFX_MSG_MAP
+//{{AFX_MSG_MAP(MainFrame)
+ON_WM_CREATE()
+ON_WM_SETFOCUS()
+ON_WM_CLOSE()
+//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
-static uint32_t indicators[] =
-{
-	ID_SEPARATOR,           // status line indicator
+static uint32_t indicators[] = {
+	ID_SEPARATOR, // status line indicator
 	ID_INDICATOR_CAPS,
 	ID_INDICATOR_NUM,
 	ID_INDICATOR_SCRL,
@@ -35,21 +33,18 @@ static uint32_t indicators[] =
 /////////////////////////////////////////////////////////////////////////////
 // MainFrame construction/destruction
 
-MainFrame::MainFrame()
-{
-}
+MainFrame::MainFrame() {}
 
-MainFrame::~MainFrame()
-{
-}
+MainFrame::~MainFrame() {}
 
 int32_t MainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 {
-	if(CFrameWnd::OnCreate(lpCreateStruct) == -1)
+	if (CFrameWnd::OnCreate(lpCreateStruct) == -1)
 		return -1;
 	// create a view to occupy the client area of the frame
-	if(!m_wndView.Create(nullptr, nullptr, AFX_WS_DEFAULT_VIEW | WS_VSCROLL | WS_HSCROLL,
-						 CRect(0, 0, 0, 0), this, AFX_IDW_PANE_FIRST, nullptr))
+	if (!m_wndView.Create(nullptr, nullptr,
+			AFX_WS_DEFAULT_VIEW | WS_VSCROLL | WS_HSCROLL, CRect(0, 0, 0, 0),
+			this, AFX_IDW_PANE_FIRST, nullptr))
 	{
 		TRACE0("Failed to create view window\n");
 		return -1;
@@ -62,11 +57,11 @@ int32_t MainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 		return -1;      // fail to create
 	}
 	*/
-	if(!m_wndDlgBar.Create(this, IDR_EDITOR_MENU,
-						   CBRS_ALIGN_TOP, AFX_IDW_DIALOGBAR))
+	if (!m_wndDlgBar.Create(
+			this, IDR_EDITOR_MENU, CBRS_ALIGN_TOP, AFX_IDW_DIALOGBAR))
 	{
 		TRACE0("Failed to create dialogbar\n");
-		return -1;		// fail to create
+		return -1; // fail to create
 	}
 	/* mh: rebars don't seem to be supported under win95 */
 #if 0
@@ -78,12 +73,12 @@ int32_t MainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 		return -1;      // fail to create
 	}
 #endif
-	if(!m_wndStatusBar.Create(this) ||
-			!m_wndStatusBar.SetIndicators(indicators,
-										  sizeof(indicators) / sizeof(uint32_t)))
+	if (!m_wndStatusBar.Create(this) ||
+		!m_wndStatusBar.SetIndicators(
+			indicators, sizeof(indicators) / sizeof(uint32_t)))
 	{
 		TRACE0("Failed to create status bar\n");
-		return -1;      // fail to create
+		return -1; // fail to create
 	}
 	/*
 	m_wndToolBar.SetBarStyle(m_wndToolBar.GetBarStyle() |
@@ -94,12 +89,14 @@ int32_t MainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 BOOL MainFrame::PreCreateWindow(CREATESTRUCT& cs)
 {
-	if(!CFrameWnd::PreCreateWindow(cs))
+	if (!CFrameWnd::PreCreateWindow(cs))
 		return FALSE;
-//	cs.dwExStyle &= ~WS_EX_CLIENTEDGE;
+	//	cs.dwExStyle &= ~WS_EX_CLIENTEDGE;
 	cs.lpszClass = AfxRegisterWndClass(0);
-	cs.cx = GetSystemMetrics(SM_CXFULLSCREEN);;
-	cs.cy = GetSystemMetrics(SM_CYFULLSCREEN);;
+	cs.cx		 = GetSystemMetrics(SM_CXFULLSCREEN);
+	;
+	cs.cy = GetSystemMetrics(SM_CYFULLSCREEN);
+	;
 	cs.x = 0;
 	cs.y = 0;
 	return TRUE;
@@ -109,15 +106,9 @@ BOOL MainFrame::PreCreateWindow(CREATESTRUCT& cs)
 // MainFrame diagnostics
 
 #ifdef _DEBUG
-void MainFrame::AssertValid(void) const
-{
-	CFrameWnd::AssertValid();
-}
+void MainFrame::AssertValid(void) const { CFrameWnd::AssertValid(); }
 
-void MainFrame::Dump(CDumpContext& dc) const
-{
-	CFrameWnd::Dump(dc);
-}
+void MainFrame::Dump(CDumpContext& dc) const { CFrameWnd::Dump(dc); }
 
 #endif //_DEBUG
 
@@ -126,25 +117,25 @@ void MainFrame::Dump(CDumpContext& dc) const
 void MainFrame::OnSetFocus(CWnd* pOldWnd)
 {
 	// forward focus to the view window
-	if(m_wndView.m_hWnd)
+	if (m_wndView.m_hWnd)
 	{
 		m_wndView.SetFocus();
 	}
 }
 
-BOOL MainFrame::OnCmdMsg(uint32_t nID, int32_t nCode, PVOID pExtra, AFX_CMDHANDLERINFO* pHandlerInfo)
+BOOL MainFrame::OnCmdMsg(
+	uint32_t nID, int32_t nCode, PVOID pExtra, AFX_CMDHANDLERINFO* pHandlerInfo)
 {
 	// let the view have first crack at the command
-	if(m_wndView.OnCmdMsg(nID, nCode, pExtra, pHandlerInfo))
+	if (m_wndView.OnCmdMsg(nID, nCode, pExtra, pHandlerInfo))
 		return TRUE;
 	// otherwise, do default handling
 	return CFrameWnd::OnCmdMsg(nID, nCode, pExtra, pHandlerInfo);
 }
 
-
 LRESULT MainFrame::WindowProc(uint32_t message, WPARAM wParam, LPARAM lParam)
 {
-	if(message == WM_MOVE)
+	if (message == WM_MOVE)
 	{
 		POINT tmp;
 		tmp.x = LOWORD(lParam) + 30;
@@ -159,20 +150,21 @@ LRESULT MainFrame::WindowProc(uint32_t message, WPARAM wParam, LPARAM lParam)
 void MainFrame::OnClose()
 {
 	int32_t res = IDNO;
-	if(EditorInterface::instance() && EditorInterface::instance()->ThisIsInitialized()
-			&& EditorData::instance)
+	if (EditorInterface::instance() &&
+		EditorInterface::instance()->ThisIsInitialized() &&
+		EditorData::instance)
 	{
 		res = EditorInterface::instance()->PromptAndSaveIfNecessary();
 	}
-	if(IDCANCEL != res)
+	if (IDCANCEL != res)
 	{
-		if(EditorInterface::instance())
+		if (EditorInterface::instance())
 		{
 			EditorInterface::instance()->SetBusyMode();
 		}
 		gos_TerminateApplication();
 		PostQuitMessage(0);
-		if(EditorInterface::instance())
+		if (EditorInterface::instance())
 		{
 			EditorInterface::instance()->UnsetBusyMode();
 		}

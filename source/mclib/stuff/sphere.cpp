@@ -14,14 +14,9 @@
 
 using namespace Stuff;
 
-
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-Sphere&
-Sphere::Union(
-	const Sphere& sphere1,
-	const Sphere& sphere2
-)
+Sphere& Sphere::Union(const Sphere& sphere1, const Sphere& sphere2)
 {
 	// Check_Object(this);
 	Check_Object(&sphere1);
@@ -39,7 +34,7 @@ Sphere::Union(
 	// If the sphere is contained in the old sphere, move on
 	//------------------------------------------------------
 	//
-	if(len + sphere1.radius <= sphere2.radius)
+	if (len + sphere1.radius <= sphere2.radius)
 	{
 		*this = sphere2;
 		return *this;
@@ -49,7 +44,7 @@ Sphere::Union(
 	// If the new sphere contains the old sphere, use it instead
 	//----------------------------------------------------------
 	//
-	if(len + sphere2.radius <= sphere1.radius)
+	if (len + sphere2.radius <= sphere1.radius)
 	{
 		*this = sphere1;
 		return *this;
@@ -63,11 +58,7 @@ Sphere::Union(
 	UnitVector3D direction;
 	direction.Normalize(dist);
 	len *= 0.5f;
-	center.AddScaled(
-		sphere2.center,
-		direction,
-		len - sphere2.radius
-	);
+	center.AddScaled(sphere2.center, direction, len - sphere2.radius);
 	radius = len;
 	return *this;
 }
@@ -77,11 +68,7 @@ Sphere::Union(
 //###########################################################################
 //
 #if !defined(Spew)
-void
-Spew(
-	PCSTR group,
-	const Sphere& sphere
-)
+void Spew(PCSTR group, const Sphere& sphere)
 {
 	Check_Object(&sphere);
 	SPEW((group, "\n\tSphere Centerpoint: +"));

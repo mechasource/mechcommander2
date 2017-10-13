@@ -6,10 +6,10 @@
  conditions are met (OSI approved BSD 2-clause license):
 
  1. Redistributions of source code must retain the above copyright notice,
-    this list of conditions and the following disclaimer.
+	this list of conditions and the following disclaimer.
  2. Redistributions in binary form must reproduce the above copyright notice,
-    this list of conditions and the following disclaimer in the documentation
-    and/or other materials provided with the distribution.
+	this list of conditions and the following disclaimer in the documentation
+	and/or other materials provided with the distribution.
 
  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -73,7 +73,8 @@ void __stdcall gos_SetTransform(
 	D3DTRANSFORMSTATETYPE TransformType, LPD3DMATRIX pMatrixData)
 {
 	gosASSERT(InsideBeginScene);
-	gosASSERT(TransformType >= D3DTRANSFORMSTATE_WORLD && TransformType <= D3DTRANSFORMSTATE_WORLD1);
+	gosASSERT(TransformType >= D3DTRANSFORMSTATE_WORLD &&
+			  TransformType <= D3DTRANSFORMSTATE_WORLD1);
 	wSetTransform(d3dDevice7, TransformType, pMatrixData);
 	GameOSFPU();
 }
@@ -94,7 +95,8 @@ void __stdcall gos_MultiplyTransform(
 	D3DTRANSFORMSTATETYPE TransformType, LPD3DMATRIX pMatrixData)
 {
 	gosASSERT(InsideBeginScene);
-	gosASSERT(TransformType >= D3DTRANSFORMSTATE_WORLD && TransformType <= D3DTRANSFORMSTATE_WORLD1);
+	gosASSERT(TransformType >= D3DTRANSFORMSTATE_WORLD &&
+			  TransformType <= D3DTRANSFORMSTATE_WORLD1);
 	wMultiplyTransform(d3dDevice7, TransformType, pMatrixData);
 	GameOSFPU();
 }
@@ -103,7 +105,8 @@ void __stdcall gos_MultiplyTransform(
 // Sets the parameters of a light (LightNumber can be any number)
 #pragma endregion local info
 /// <summary>
-/// <c>gos_SetLight</c> sets the parameters of a light (LightNumber can be any number)
+/// <c>gos_SetLight</c> sets the parameters of a light (LightNumber can be any
+/// number)
 /// </summary>
 /// <remarks>
 /// </remarks>
@@ -118,7 +121,8 @@ void __stdcall gos_SetLight(uint32_t LightNumber, LPD3DLIGHT7 pLightData)
 }
 
 #pragma region gos_LightEnable
-// Enables / Disables a light (Maximum of gos_GetMachineInformation( gos_Info_GetMaximumActiveLights ) lights enabled at once)
+// Enables / Disables a light (Maximum of gos_GetMachineInformation(
+// gos_Info_GetMaximumActiveLights ) lights enabled at once)
 #pragma endregion local info
 /// <summary>
 /// <c>gos_LightEnable</c> enables or disables a light

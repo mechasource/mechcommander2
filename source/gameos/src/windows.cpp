@@ -6,10 +6,10 @@
  conditions are met (OSI approved BSD 2-clause license):
 
  1. Redistributions of source code must retain the above copyright notice,
-    this list of conditions and the following disclaimer.
+	this list of conditions and the following disclaimer.
  2. Redistributions in binary form must reproduce the above copyright notice,
-    this list of conditions and the following disclaimer in the documentation
-    and/or other materials provided with the distribution.
+	this list of conditions and the following disclaimer in the documentation
+	and/or other materials provided with the distribution.
 
  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -45,7 +45,8 @@
 #include <errorhandler.hpp>
 #include <windows.hpp>
 
-#pragma warning(disable:4191)	// 'type cast' : unsafe conversion from 'FARPROC'
+#pragma warning(                                                               \
+	disable : 4191) // 'type cast' : unsafe conversion from 'FARPROC'
 
 // -----------------------------------------------------------------------------
 // Global data exported from this module
@@ -64,14 +65,15 @@
 // -----------------------------------------------------------------------------
 // externals referenced in this file not specified in headers
 
-
-
 // -----------------------------------------------------------------------------
 // Global data exported from this module
 
-MECH_IMPEXP EXECUTION_STATE(__stdcall* _SetThreadExecutionState)(EXECUTION_STATE);
-MECH_IMPEXP int32_t (__stdcall* _GetFileAttributesEx)(PCSTR, GET_FILEEX_INFO_LEVELS, PVOID);
-MECH_IMPEXP int32_t (__stdcall* _GetDiskFreeSpaceEx)(PCSTR, PULARGE_INTEGER, PULARGE_INTEGER, PULARGE_INTEGER);
+MECH_IMPEXP EXECUTION_STATE(__stdcall* _SetThreadExecutionState)(
+	EXECUTION_STATE);
+MECH_IMPEXP int32_t(__stdcall* _GetFileAttributesEx)(
+	PCSTR, GET_FILEEX_INFO_LEVELS, PVOID);
+MECH_IMPEXP int32_t(__stdcall* _GetDiskFreeSpaceEx)(
+	PCSTR, PULARGE_INTEGER, PULARGE_INTEGER, PULARGE_INTEGER);
 
 MECH_IMPEXP HANDLE hMappedFile;
 MECH_IMPEXP MSG msg;
@@ -100,10 +102,12 @@ MECH_IMPEXP bool __stdcall AlreadyRunning(void);
 MECH_IMPEXP void __stdcall InitializeWindows(void);
 MECH_IMPEXP void __stdcall DestroyWindows(void);
 MECH_IMPEXP void __stdcall Update(void);
-MECH_IMPEXP size_t __stdcall gos_GetClipboardText(PSTR Buffer, size_t BufferSize);
+MECH_IMPEXP size_t __stdcall gos_GetClipboardText(
+	PSTR Buffer, size_t BufferSize);
 MECH_IMPEXP void __stdcall gos_SetClipboardText(PSTR Text);
 
-static BOOL __stdcall EnumIcons(HMODULE hModule, PCSTR pszType, PSTR pszName, LONG_PTR lParam);
+static BOOL __stdcall EnumIcons(
+	HMODULE hModule, PCSTR pszType, PSTR pszName, LONG_PTR lParam);
 
 // -----------------------------------------------------------------------------
 // externals not specified in headers
@@ -111,7 +115,7 @@ extern bool RunFullScreen;
 extern bool gDumpMachineInfo;
 extern bool gNoDialogs;
 extern uint32_t gLanguageDLL;
-extern int32_t LoseFocusBehavior;	// enum?
+extern int32_t LoseFocusBehavior; // enum?
 extern bool WindowsPause;
 
 void __stdcall InitializeIME(HWND hWnd);
@@ -121,7 +125,7 @@ bool __stdcall IgnoreImeHotKey(PMSG pmsg);
 
 #pragma region AlreadyRunning
 /*
-*/
+ */
 #pragma endregion AlreadyRunning
 /// <summary>
 /// <c>AlreadyRunning</c>
@@ -130,12 +134,12 @@ bool __stdcall IgnoreImeHotKey(PMSG pmsg);
 /// </remarks>
 /// <param name=""></param>
 /// <returns></returns>
-MECH_IMPEXP bool __stdcall
-AlreadyRunning(void)
+MECH_IMPEXP bool __stdcall AlreadyRunning(void)
 {
 	WINDOWPLACEMENT wndpl;
 	HWND hWnd;
-	hWnd = ::FindWindowA(Environment.applicationName, Environment.applicationName);
+	hWnd =
+		::FindWindowA(Environment.applicationName, Environment.applicationName);
 	if (hWnd)
 	{
 		wndpl.length = sizeof(wndpl);
@@ -145,8 +149,8 @@ AlreadyRunning(void)
 			::ShowWindow(hWnd, SW_RESTORE);
 		return true;
 	}
-	hMappedFile = ::CreateFileMappingA(
-					  INVALID_HANDLE_VALUE, nullptr, SEC_RESERVE | PAGE_READONLY, 0, 4u, ApplicationName);
+	hMappedFile = ::CreateFileMappingA(INVALID_HANDLE_VALUE, nullptr,
+		SEC_RESERVE | PAGE_READONLY, 0, 4u, ApplicationName);
 	if (hMappedFile && (GetLastError() == ERROR_ALREADY_EXISTS))
 	{
 		::CloseHandle(hMappedFile);
@@ -168,7 +172,7 @@ static BOOL __stdcall EnumIcons(
 
 #pragma region InitializeWindows
 /*
-*/
+ */
 #pragma endregion InitializeWindows
 /// <summary>
 /// <c>InitializeWindows</c>
@@ -176,8 +180,7 @@ static BOOL __stdcall EnumIcons(
 /// <remarks>
 /// </remarks>
 /// <returns></returns>
-MECH_IMPEXP void __stdcall
-InitializeWindows(void)
+MECH_IMPEXP void __stdcall InitializeWindows(void)
 {
 	HMODULE hKernel32;
 	PCSTR pszMessage;
@@ -193,19 +196,27 @@ InitializeWindows(void)
 	OSVERSIONINFOA VersionInformation;
 #endif
 	InternalFunctionSpew("GameOS_Core", "InitializeWindows()");
-	ArrowCursor = LoadCursor(nullptr, IDC_ARROW); // LoadCursorA(nullptr, MAKEINTRESOURCEA(32512) /*IDC_ARROW*/);
+	ArrowCursor = LoadCursor(nullptr, IDC_ARROW); // LoadCursorA(nullptr,
+												  // MAKEINTRESOURCEA(32512)
+												  // /*IDC_ARROW*/);
 	DesktopBpp = static_cast<uint32_t>(GetDeviceCaps(DesktopDC, BITSPIXEL));
-	DesktopRes = static_cast<uint32_t>((GetDeviceCaps(DesktopDC, VERTRES) << 16) + GetDeviceCaps(DesktopDC, HORZRES));
+	DesktopRes =
+		static_cast<uint32_t>((GetDeviceCaps(DesktopDC, VERTRES) << 16) +
+							  GetDeviceCaps(DesktopDC, HORZRES));
 	// _SetThreadExecutionState = nullptr;
 	hKernel32 = GetModuleHandleA("kernel32.dll");
-	_SetThreadExecutionState = reinterpret_cast<EXECUTION_STATE(__stdcall*)(EXECUTION_STATE)>(
-								   GetProcAddress(hKernel32, "SetThreadExecutionState"));
-	_GetFileAttributesEx = reinterpret_cast<int32_t (__stdcall*)(PCSTR, GET_FILEEX_INFO_LEVELS, PVOID)>(
-							   GetProcAddress(hKernel32, "GetFileAttributesExA"));
-	_GetDiskFreeSpaceEx = reinterpret_cast<int32_t (__stdcall*)(PCSTR, PULARGE_INTEGER, PULARGE_INTEGER, PULARGE_INTEGER)>(
-							  GetProcAddress(hKernel32, "GetDiskFreeSpaceExA"));
+	_SetThreadExecutionState =
+		reinterpret_cast<EXECUTION_STATE(__stdcall*)(EXECUTION_STATE)>(
+			GetProcAddress(hKernel32, "SetThreadExecutionState"));
+	_GetFileAttributesEx =
+		reinterpret_cast<int32_t(__stdcall*)(PCSTR, GET_FILEEX_INFO_LEVELS,
+			PVOID)>(GetProcAddress(hKernel32, "GetFileAttributesExA"));
+	_GetDiskFreeSpaceEx = reinterpret_cast<int32_t(__stdcall*)(
+		PCSTR, PULARGE_INTEGER, PULARGE_INTEGER, PULARGE_INTEGER)>(
+		GetProcAddress(hKernel32, "GetDiskFreeSpaceExA"));
 	if (_SetThreadExecutionState)
-		_SetThreadExecutionState(ES_SYSTEM_REQUIRED | ES_DISPLAY_REQUIRED | ES_CONTINUOUS);
+		_SetThreadExecutionState(
+			ES_SYSTEM_REQUIRED | ES_DISPLAY_REQUIRED | ES_CONTINUOUS);
 	SystemParametersInfo(SPI_GETSCREENSAVEACTIVE, 0, &bScreenSaver, 0);
 	SystemParametersInfo(SPI_SETSCREENSAVEACTIVE, 0, nullptr, SPIF_SENDCHANGE);
 	StoredScreenSaverSetting = true;
@@ -213,9 +224,10 @@ InitializeWindows(void)
 	VersionInformation.dwOSVersionInfoSize = sizeof(OSVERSIONINFOA);
 	GetVersionExA(&VersionInformation);
 	if (VersionInformation.dwPlatformId == VER_PLATFORM_WIN32_NT &&
-			VersionInformation.dwMajorVersion == 5 &&
-			VersionInformation.dwBuildNumber < 0x893 &&
-			InternalFunctionPause("Please upgrade to Windows 2000 RTM (Build 2195)"))
+		VersionInformation.dwMajorVersion == 5 &&
+		VersionInformation.dwBuildNumber < 0x893 &&
+		InternalFunctionPause(
+			"Please upgrade to Windows 2000 RTM (Build 2195)"))
 		ENTER_DEBUGGER;
 #else
 	if (IsWindowsVersionOrGreater(5, 0, 0) == FALSE)
@@ -228,23 +240,27 @@ InitializeWindows(void)
 #endif
 	if (Platform == Platform_Game)
 	{
-		if ((DesktopBpp == 1) || ((RunFullScreen == false) && (DesktopBpp != 16) && (DesktopBpp != 32)))
+		if ((DesktopBpp == 1) || ((RunFullScreen == false) &&
+									 (DesktopBpp != 16) && (DesktopBpp != 32)))
 		{
 			// pszMessage = gos_GetResourceString(gLanguageDLL, 1020u);
-			pszMessage = "Please select a color depth of 16 bit or 32 bit from the settings tab of the display properties dialog located in the control panel.";
+			pszMessage = "Please select a color depth of 16 bit or 32 bit from "
+						 "the settings tab of the display properties dialog "
+						 "located in the control panel.";
 			MessageBoxA(0, pszMessage, ApplicationName, MB_ICONEXCLAMATION);
 			status = AfterExit;
 			ExitGameOS();
 			// ??? the code below must surely be dead
 			Arguments = Buffer2;
 			// pszFormat = gos_GetResourceString(gLanguageDLL, 1021u);
-			pszFormat = "Desktop is in %1 mode. Hardware acceleration will not be available when running in a window";
+			pszFormat = "Desktop is in %1 mode. Hardware acceleration will not "
+						"be available when running in a window";
 			FormatMessageA(
 				FORMAT_MESSAGE_ARGUMENT_ARRAY | FORMAT_MESSAGE_FROM_STRING,
 				pszMessage, 0, 0, Buffer1, _countof(Buffer1), &Arguments);
 #if _CONSIDERED_UNSUPPORTED
-			// Pointer to local array Buffer1 is stored outside the scope of this array.
-			// Such a pointer will become invalid
+			// Pointer to local array Buffer1 is stored outside the scope of
+			// this array. Such a pointer will become invalid
 			ErrorMessageTitle = Buffer1;
 #endif
 			if (gNoDialogs == false)
@@ -258,38 +274,40 @@ InitializeWindows(void)
 					RunFullScreen = true;
 			}
 		}
-		widthX = Environment.screenWidth;
+		widthX  = Environment.screenWidth;
 		heightY = Environment.screenHeight;
-		wndClass.style = CS_BYTEALIGNCLIENT | CS_OWNDC | CS_HREDRAW | CS_VREDRAW;
+		wndClass.style =
+			CS_BYTEALIGNCLIENT | CS_OWNDC | CS_HREDRAW | CS_VREDRAW;
 		if (Environment.allowDoubleClicks)
 			wndClass.style |= CS_DBLCLKS;
 		wndClass.lpfnWndProc = (WNDPROC)&GameOSWinProc;
-		wndClass.cbClsExtra = 0;
-		wndClass.cbWndExtra = 0;
-		wndClass.hInstance = hInstance;
+		wndClass.cbClsExtra  = 0;
+		wndClass.cbWndExtra  = 0;
+		wndClass.hInstance   = hInstance;
 		EnumResourceNamesA(hInstance, "Windows()", EnumIcons, 0);
 		if (IconName)
-			wndClass.hIcon = LoadIconA(hInstance,/*static_cast<PCSTR>*/(IconName));
+			wndClass.hIcon =
+				LoadIconA(hInstance, /*static_cast<PCSTR>*/ (IconName));
 		else
 			wndClass.hIcon = nullptr;
 		wndClass.hCursor = nullptr;
-		wndClass.hbrBackground = static_cast<HBRUSH>(GetStockObject(BLACK_BRUSH));
-		wndClass.lpszMenuName = Environment.applicationName;
+		wndClass.hbrBackground =
+			static_cast<HBRUSH>(GetStockObject(BLACK_BRUSH));
+		wndClass.lpszMenuName  = Environment.applicationName;
 		wndClass.lpszClassName = Environment.applicationName;
-		atom = RegisterClassA(&wndClass);
-		Rect.left = 0;
-		Rect.top = 0;
-		Rect.right = widthX;
-		Rect.bottom = heightY;
-		dwStyle = WS_CAPTION | WS_SYSMENU | WS_GROUP | WS_TABSTOP;
+		atom				   = RegisterClassA(&wndClass);
+		Rect.left			   = 0;
+		Rect.top			   = 0;
+		Rect.right			   = widthX;
+		Rect.bottom			   = heightY;
+		dwStyle  = WS_CAPTION | WS_SYSMENU | WS_GROUP | WS_TABSTOP;
 		bSuccess = AdjustWindowRect(&Rect, dwStyle, FALSE) == TRUE;
 		if (atom && bSuccess)
 		{
-			hWindow = CreateWindowExA(
-						  0, Environment.applicationName, Environment.applicationName,
-						  dwStyle, WindowStartX, WindowStartY,
-						  Rect.right - Rect.left, Rect.bottom - Rect.top,
-						  nullptr, nullptr, hInstance, nullptr);
+			hWindow = CreateWindowExA(0, Environment.applicationName,
+				Environment.applicationName, dwStyle, WindowStartX,
+				WindowStartY, Rect.right - Rect.left, Rect.bottom - Rect.top,
+				nullptr, nullptr, hInstance, nullptr);
 			if (hWindow)
 			{
 				if (gDumpMachineInfo == false)
@@ -308,7 +326,7 @@ InitializeWindows(void)
 
 #pragma region DestroyWindows
 /*
-*/
+ */
 #pragma endregion DestroyWindows
 /// <summary>
 /// <c>DestroyWindows</c>
@@ -317,14 +335,14 @@ InitializeWindows(void)
 /// </remarks>
 /// <param name=""></param>
 /// <returns></returns>
-MECH_IMPEXP void __stdcall
-DestroyWindows(void)
+MECH_IMPEXP void __stdcall DestroyWindows(void)
 {
 	if (_SetThreadExecutionState)
 		_SetThreadExecutionState(ES_CONTINUOUS);
 	if (StoredScreenSaverSetting)
 	{
-		SystemParametersInfo(SPI_SETSCREENSAVEACTIVE, static_cast<uint32_t>(bScreenSaver), nullptr, SPIF_SENDCHANGE);
+		SystemParametersInfo(SPI_SETSCREENSAVEACTIVE,
+			static_cast<uint32_t>(bScreenSaver), nullptr, SPIF_SENDCHANGE);
 		StoredScreenSaverSetting = false;
 	}
 	if (wndClass.hIcon)
@@ -338,7 +356,7 @@ DestroyWindows(void)
 
 #pragma region Update
 /*
-*/
+ */
 #pragma endregion Update
 /// <summary>
 /// <c>Update</c>
@@ -347,8 +365,7 @@ DestroyWindows(void)
 /// </remarks>
 /// <param name=""></param>
 /// <returns></returns>
-MECH_IMPEXP void __stdcall
-Update(void)
+MECH_IMPEXP void __stdcall Update(void)
 {
 	HWND hDlg;
 	if (WindowsPause)
@@ -388,7 +405,7 @@ Update(void)
 			uint64_t timeelapsed;
 			uint64_t timenow;
 			// ????
-			timenow = gos_GetHiResTime();
+			timenow		= gos_GetHiResTime();
 			timeelapsed = (0.01666666666666667 - (timenow - timeLastTime));
 			if (timeelapsed > 0)
 				Sleep((timeelapsed * 1000u));
@@ -420,8 +437,8 @@ Gets a pointer to text data in the windows clip board (0=No text)
 /// <param name="Buffer"></param>
 /// <param name="BufferSize"></param>
 /// <returns></returns>
-MECH_IMPEXP size_t __stdcall
-gos_GetClipboardText(PSTR Buffer, size_t BufferSize)
+MECH_IMPEXP size_t __stdcall gos_GetClipboardText(
+	PSTR Buffer, size_t BufferSize)
 {
 	size_t nstringsize;
 	PCSTR Source;
@@ -468,8 +485,7 @@ Sets the windows clipboard to the current text string
 /// </remarks>
 /// <param name="pszText"></param>
 /// <returns></returns>
-MECH_IMPEXP void __stdcall
-gos_SetClipboardText(PSTR pszText)
+MECH_IMPEXP void __stdcall gos_SetClipboardText(PSTR pszText)
 {
 	size_t nsizetext;
 	PVOID ClipboardData;
@@ -479,12 +495,12 @@ gos_SetClipboardText(PSTR pszText)
 		EmptyClipboard();
 		if (*pszText)
 		{
-			nsizetext = strlen(pszText);
+			nsizetext	  = strlen(pszText);
 			hClipboardData = GlobalAlloc(GMEM_SHARE, nsizetext + 1);
 			if (hClipboardData)
 			{
 				ClipboardData = GlobalLock(hClipboardData);
-				nsizetext = strlen(pszText);
+				nsizetext	 = strlen(pszText);
 				if (ClipboardData)
 					memcpy(ClipboardData, pszText, nsizetext + 1);
 				GlobalUnlock(hClipboardData);

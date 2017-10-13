@@ -15,14 +15,10 @@ mapsizedlg.h			: Interface for the MapSizeDlg component.
 CLASS DESCRIPTION
 TerrainDlg:
 **************************************************************************************************/
-class MapSizeDlg: public CDialog
+class MapSizeDlg : public CDialog
 {
-public:
-
-	MapSizeDlg() : CDialog(IDD_MAPSIZE)
-	{
-		mapSize = 0;
-	}
+  public:
+	MapSizeDlg() : CDialog(IDD_MAPSIZE) { mapSize = 0; }
 	virtual ~MapSizeDlg() {}
 	virtual void Init(void);
 	virtual BOOL OnInitDialog()
@@ -35,7 +31,5 @@ public:
 	int32_t mapSize;
 };
 
-
 //*************************************************************************************************
-#endif  // end of file ( TerrainDlg.h )
-
+#endif // end of file ( TerrainDlg.h )

@@ -1,5 +1,5 @@
 //===========================================================================//
-//ChatWindow.h			: Interface for the ChatWindow component.
+// ChatWindow.h			: Interface for the ChatWindow component.
 //---------------------------------------------------------------------------//
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
@@ -21,58 +21,46 @@ ChatWindow:
 
 class ChatMessageItem : public aListItem
 {
-public:
-
+  public:
 	ChatMessageItem(void);
-	void		 setPlayerColor(int32_t color);
-	void		 setTextColor(int32_t color);
-	void		 setPlayerName(PCSTR name);
-	int32_t			 setText(PCSTR text);   // returns number of lines
-	int32_t		 getLineCount()
-	{
-		return lineCount;
-	}
+	void setPlayerColor(int32_t color);
+	void setTextColor(int32_t color);
+	void setPlayerName(PCSTR name);
+	int32_t setText(PCSTR text); // returns number of lines
+	int32_t getLineCount() { return lineCount; }
 
-private:
-	aText		 name;
-	aText		 playerText;
-	aRect		 playerRect;
-	int32_t		 lineCount;
+  private:
+	aText name;
+	aText playerText;
+	aRect playerRect;
+	int32_t lineCount;
 };
 
-class ChatWidget : public LogisticsScreen  // the one that obscures....
+class ChatWidget : public LogisticsScreen // the one that obscures....
 {
-public:
-
+  public:
 	ChatWidget(void);
 	virtual ~ChatWidget(void);
 
 	void init(void);
 
-private:
-
+  private:
 	friend class ChatWindow;
-	aListBox		listBox;
+	aListBox listBox;
 
-	ChatMessageItem	listItems[128];
-	int32_t			curItem;
-
-
+	ChatMessageItem listItems[128];
+	int32_t curItem;
 };
 
-class ChatWindow: public LogisticsScreen
+class ChatWindow : public LogisticsScreen
 {
-public:
-
+  public:
 	ChatWindow(void);
 	virtual ~ChatWindow(void);
 
 	static void init(void);
 	static void destroy(void);
-	static ChatWindow* instance()
-	{
-		return s_instance;
-	}
+	static ChatWindow* instance() { return s_instance; }
 
 	int32_t initInstance(void);
 
@@ -81,36 +69,24 @@ public:
 	int32_t handleMessage(uint32_t, uint32_t);
 
 	virtual bool pointInside(int32_t xPos, int32_t yPos);
-	bool		 isExpanded(void);
+	bool isExpanded(void);
 
+  private:
+	static ChatWindow* s_instance;
 
-private:
+	aListBox listBox;
 
-	static ChatWindow*	s_instance;
+	aEdit chatEdit;
+	ChatWidget chatWidget;
 
-	aListBox		listBox;
+	ChatMessageItem listItems[4];
+	int32_t curItem;
+	int32_t maxItems;
 
-	aEdit			chatEdit;
-	ChatWidget		chatWidget;
-
-	ChatMessageItem	listItems[4];
-	int32_t			curItem;
-	int32_t			maxItems;
-
-
-	static void refillListBox(aListBox& listBox, PSTR* chatTexts, int32_t* playerIDs,  ChatMessageItem* pItems,
-							  int32_t& curItem, int32_t itemCount, int32_t maxCount);
-
-
-
-
-
+	static void refillListBox(aListBox& listBox, PSTR* chatTexts,
+		int32_t* playerIDs, ChatMessageItem* pItems, int32_t& curItem,
+		int32_t itemCount, int32_t maxCount);
 };
 
-
-
-
-
-
 //*************************************************************************************************
-#endif  // end of file ( ChatWindow.h )
+#endif // end of file ( ChatWindow.h )

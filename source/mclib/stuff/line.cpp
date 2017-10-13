@@ -15,14 +15,11 @@
 
 using namespace Stuff;
 
-
-
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-Line3D&
-Line3D::SetDirection(const Vector3D& vector)
+Line3D& Line3D::SetDirection(const Vector3D& vector)
 {
-	//Check_Pointer(this);
+	// Check_Pointer(this);
 	Check_Object(&vector);
 	//
 	//---------------------------------------
@@ -45,11 +42,7 @@ Line3D::SetDirection(const Vector3D& vector)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-float
-Line3D::GetDistanceTo(
-	const Sphere& sphere,
-	float* penetration
-) const
+float Line3D::GetDistanceTo(const Sphere& sphere, float* penetration) const
 {
 	// Check_Object(this);
 	Check_Object(&sphere);
@@ -74,12 +67,12 @@ Line3D::GetDistanceTo(
 	//-------------------------------------------------------------------------
 	//
 	*penetration = b * b - 4.0f * c;
-	if(*penetration < -SMALL)
+	if (*penetration < -SMALL)
 	{
 		return -1.0f;
 	}
 	b *= -0.5f;
-	if(*penetration < SMALL)
+	if (*penetration < SMALL)
 	{
 		*penetration = 0.0f;
 		Min_Clamp(b, 0.0f);
@@ -91,12 +84,12 @@ Line3D::GetDistanceTo(
 	//-------------------------------------------------------------
 	//
 	*penetration = 0.5f * Sqrt(*penetration);
-	if(b + *penetration < -SMALL)
+	if (b + *penetration < -SMALL)
 	{
 		return -1.0f;
 	}
 	b -= *penetration;
-	if(b > length)
+	if (b > length)
 	{
 		return -1.0f;
 	}
@@ -106,8 +99,7 @@ Line3D::GetDistanceTo(
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-float
-Line3D::GetDistanceTo(const OBB& box)
+float Line3D::GetDistanceTo(const OBB& box)
 {
 	// Check_Object(this);
 	Check_Object(&box);
@@ -129,14 +121,10 @@ Line3D::GetDistanceTo(const OBB& box)
 	//
 	float enters = -100.0f - length;
 	float leaves = length + 100.0f;
-	for(axis = X_Axis; axis <= Z_Axis; ++axis)
+	for (axis = X_Axis; axis <= Z_Axis; ++axis)
 	{
-		UnitVector3D
-		normal(
-			box.localToParent(axis, X_Axis),
-			box.localToParent(axis, Y_Axis),
-			box.localToParent(axis, Z_Axis)
-		);
+		UnitVector3D normal(box.localToParent(axis, X_Axis),
+			box.localToParent(axis, Y_Axis), box.localToParent(axis, Z_Axis));
 		//
 		//----------------------------------------------------------------------
 		// Now, we have to calculate how far the line moves along the normal per
@@ -146,24 +134,24 @@ Line3D::GetDistanceTo(const OBB& box)
 		//
 		float drift = direction * normal;
 		float distance;
-		if(Small_Enough(drift))
+		if (Small_Enough(drift))
 		{
 			distance = delta * normal;
-			if(Fabs(distance) > box.axisExtents[axis])
+			if (Fabs(distance) > box.axisExtents[axis])
 				return -1.0f;
 			else
 				continue;
 		}
 		//
 		//--------------------------------------------------------------------
-		// We know the line is not parallel, so we will now calculate how int32_t
-		// the line will stay inside the box.  We also will calculate how far
-		// from the origin to the centerplane of the OBB
+		// We know the line is not parallel, so we will now calculate how
+		// int32_t the line will stay inside the box.  We also will calculate
+		// how far from the origin to the centerplane of the OBB
 		//--------------------------------------------------------------------
 		//
-		drift = 1.0f / drift;
+		drift	  = 1.0f / drift;
 		float span = box.axisExtents[axis] * Fabs(drift);
-		distance = (delta * normal) * drift;
+		distance   = (delta * normal) * drift;
 		//
 		//--------------------------------------------------------------------
 		// Now adjust where the line can enter and leave the OBB, and if it is
@@ -172,11 +160,11 @@ Line3D::GetDistanceTo(const OBB& box)
 		//
 		float enter = distance - span;
 		float leave = distance + span;
-		if(enter > enters)
+		if (enter > enters)
 			enters = enter;
-		if(leave < leaves)
+		if (leave < leaves)
 			leaves = leave;
-		if(enters > leaves)
+		if (enters > leaves)
 			return -1.0f;
 	}
 	//
@@ -185,7 +173,7 @@ Line3D::GetDistanceTo(const OBB& box)
 	// to make sure it hits it within the allowed span of the line
 	//-------------------------------------------------------------------------
 	//
-	if(leaves < 0.0f || enters > length)
+	if (leaves < 0.0f || enters > length)
 		return -1.0f;
 	Min_Clamp(enters, 0.0f);
 	return enters;
@@ -193,11 +181,7 @@ Line3D::GetDistanceTo(const OBB& box)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-float
-Line3D::GetDistanceTo(
-	const OBB& box,
-	size_t* first_axis
-)
+float Line3D::GetDistanceTo(const OBB& box, size_t* first_axis)
 {
 	// Check_Object(this);
 	Check_Object(&box);
@@ -220,14 +204,10 @@ Line3D::GetDistanceTo(
 	//
 	float enters = -100.0f - length;
 	float leaves = length + 100.0f;
-	for(axis = X_Axis; axis <= Z_Axis; ++axis)
+	for (axis = X_Axis; axis <= Z_Axis; ++axis)
 	{
-		UnitVector3D
-		normal(
-			box.localToParent(axis, X_Axis),
-			box.localToParent(axis, Y_Axis),
-			box.localToParent(axis, Z_Axis)
-		);
+		UnitVector3D normal(box.localToParent(axis, X_Axis),
+			box.localToParent(axis, Y_Axis), box.localToParent(axis, Z_Axis));
 		//
 		//----------------------------------------------------------------------
 		// Now, we have to calculate how far the line moves along the normal per
@@ -237,24 +217,24 @@ Line3D::GetDistanceTo(
 		//
 		float drift = direction * normal;
 		float distance;
-		if(Small_Enough(drift))
+		if (Small_Enough(drift))
 		{
 			distance = delta * normal;
-			if(Fabs(distance) > box.axisExtents[axis])
+			if (Fabs(distance) > box.axisExtents[axis])
 				return -1.0f;
 			else
 				continue;
 		}
 		//
 		//--------------------------------------------------------------------
-		// We know the line is not parallel, so we will now calculate how int32_t
-		// the line will stay inside the box.  We also will calculate how far
-		// from the origin to the centerplane of the OBB
+		// We know the line is not parallel, so we will now calculate how
+		// int32_t the line will stay inside the box.  We also will calculate
+		// how far from the origin to the centerplane of the OBB
 		//--------------------------------------------------------------------
 		//
-		drift = 1.0f / drift;
+		drift	  = 1.0f / drift;
 		float span = box.axisExtents[axis] * Fabs(drift);
-		distance = (delta * normal) * drift;
+		distance   = (delta * normal) * drift;
 		//
 		//--------------------------------------------------------------------
 		// Now adjust where the line can enter and leave the OBB, and if it is
@@ -263,14 +243,14 @@ Line3D::GetDistanceTo(
 		//
 		float enter = distance - span;
 		float leave = distance + span;
-		if(enter > enters)
+		if (enter > enters)
 		{
 			*first_axis = axis;
-			enters = enter;
+			enters		= enter;
 		}
-		if(leave < leaves)
+		if (leave < leaves)
 			leaves = leave;
-		if(enters > leaves)
+		if (enters > leaves)
 			return -1.0f;
 	}
 	//
@@ -279,7 +259,7 @@ Line3D::GetDistanceTo(
 	// to make sure it hits it within the allowed span of the line
 	//-------------------------------------------------------------------------
 	//
-	if(leaves < 0.0f || enters > length)
+	if (leaves < 0.0f || enters > length)
 		return -1.0f;
 	Min_Clamp(enters, 0.0f);
 	return enters;

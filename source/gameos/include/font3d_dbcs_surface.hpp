@@ -9,8 +9,7 @@
 
 class DBCSSurface
 {
-public:
-
+  public:
 	int32_t m_height;
 	int32_t m_width;
 	int32_t m_offsety;
@@ -22,4 +21,3 @@ public:
 	PVOID GetDataPointer(void);
 	void Clear(uint32_t color);
 };
-

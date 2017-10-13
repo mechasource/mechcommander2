@@ -1,6 +1,6 @@
 /*************************************************************************************************\
-ControlGui.h			: Interface for the ControlGui component.  This thing holds the tac map
-and everything else on the left hand side of the screen.
+ControlGui.h			: Interface for the ControlGui component.  This thing
+holds the tac map and everything else on the left hand side of the screen.
 //---------------------------------------------------------------------------//
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
@@ -25,39 +25,39 @@ class CObjective;
 class InfoWindow;
 class PauseWindow;
 
-#define LAST_VEHICLE			(MAX_VEHICLE - LARGE_AIRSTRIKE)
+#define LAST_VEHICLE (MAX_VEHICLE - LARGE_AIRSTRIKE)
 
 /**************************************************************************************************
 CLASS DESCRIPTION
 ControlGui:
 **************************************************************************************************/
 
-struct	ButtonData
+struct ButtonData
 {
-	uint32_t		ID;
-	int32_t			helpTextHeader;
-	int32_t			helpTextID;
-	int32_t			textID;
-	int32_t			textColors[4];
-	aFont			textFont;
-	char			fileName[32];
-	int32_t			stateCoords[4][2];
-	int32_t			textureWidth;
-	int32_t			textureHeight;
-	int32_t				fileWidth;
-	int32_t				fileHeight;
-	uint32_t	textureHandle;
-	bool			textureRotated;
+	uint32_t ID;
+	int32_t helpTextHeader;
+	int32_t helpTextID;
+	int32_t textID;
+	int32_t textColors[4];
+	aFont textFont;
+	char fileName[32];
+	int32_t stateCoords[4][2];
+	int32_t textureWidth;
+	int32_t textureHeight;
+	int32_t fileWidth;
+	int32_t fileHeight;
+	uint32_t textureHandle;
+	bool textureRotated;
 };
 
 class ControlButton
 {
-public:
-	gos_VERTEX		location[4];
+  public:
+	gos_VERTEX location[4];
 	int32_t ID;
 
-	ButtonData*			data;
-	int32_t					state;
+	ButtonData* data;
+	int32_t state;
 
 	void render(void);
 	void press(bool);
@@ -71,8 +71,8 @@ public:
 	static void makeUVs(gos_VERTEX* vertices, int32_t State, ButtonData& data);
 
 	static void initButtons(FitIniFile& file, int32_t buttonCount,
-							ControlButton* buttons, ButtonData* buttonData, PCSTR str, aFont* font = 0);
-
+		ControlButton* buttons, ButtonData* buttonData, PCSTR str,
+		aFont* font = 0);
 
 	enum States
 	{
@@ -87,12 +87,11 @@ public:
 class ControlGui
 {
 
-public:
+  public:
+	static ControlGui* instance;
 
-	static ControlGui*	instance;
-
-	static int32_t			hiResOffsetX;
-	static int32_t			hiResOffsetY;
+	static int32_t hiResOffsetX;
+	static int32_t hiResOffsetY;
 
 	ControlGui(void);
 	~ControlGui(void);
@@ -103,16 +102,13 @@ public:
 	{
 		tacMap.initBuildings(data, size);
 	}
-	void initTacMap(puint8_t data, int32_t size)
-	{
-		tacMap.init(data, size);
-	}
+	void initTacMap(puint8_t data, int32_t size) { tacMap.init(data, size); }
 	void initMechs(void);
 	void unPressAllVehicleButtons(void);
 	void disableAllVehicleButtons(void);
 	void addMover(MoverPtr mover);
 	void removeMover(MoverPtr mover);
-	int32_t  updateChat(void);
+	int32_t updateChat(void);
 
 	void beginPause(void);
 	void endPause(void);
@@ -120,10 +116,7 @@ public:
 	bool resultsDone(void);
 
 	void startObjectives(bool bStart);
-	bool objectivesStarted()
-	{
-		return renderObjectives;
-	}
+	bool objectivesStarted() { return renderObjectives; }
 
 	void setInfoWndMover(Mover* pMover);
 	void setVehicleCommand(bool);
@@ -138,13 +131,11 @@ public:
 
 	bool isOverTacMap(void);
 
-	bool isChatting()
-	{
-		return bChatting;
-	}
+	bool isChatting() { return bChatting; }
 
-	//TUTORIAL
-	bool animateTacMap(int32_t buttonId, float timeToScroll, int32_t numFlashes);
+	// TUTORIAL
+	bool animateTacMap(
+		int32_t buttonId, float timeToScroll, int32_t numFlashes);
 	bool pushButton(int32_t buttonId);
 	bool flashRPTotal(int32_t numFlashes);
 
@@ -152,25 +143,23 @@ public:
 	PCSTR getVehicleNameFromID(int32_t ID);
 	void swapResolutions(int32_t newResolution);
 
-	GameTacMap						tacMap;
-	ForceGroupBar					forceGroupBar;
+	GameTacMap tacMap;
+	ForceGroupBar forceGroupBar;
 
-	bool				mouseInVehicleStopButton;
-
-
+	bool mouseInVehicleStopButton;
 
 	typedef enum __controlgui_const
 	{
-		OBJECTVE_MOVE_COUNT			= 2,
-		RESULTS_MOVE_COUNT			= 3,
-		MAX_CHAT_COUNT				= 5,
-		RPTOTAL_CALLOUT				= 21185,
+		OBJECTVE_MOVE_COUNT = 2,
+		RESULTS_MOVE_COUNT  = 3,
+		MAX_CHAT_COUNT		= 5,
+		RPTOTAL_CALLOUT		= 21185,
 	};
 
 	enum Commands
 	{
 		DEFAULT_RANGE = 0,
-		SHORT_RANGE ,
+		SHORT_RANGE,
 		MED_RANGE,
 		LONG_RANGE,
 		JUMP_COMMAND,
@@ -206,104 +195,80 @@ public:
 		MAX_VEHICLE
 	};
 
-	bool	isDefaultSpeed(void);
-	void	toggleDefaultSpeed();
-	void	toggleJump();
-	bool	getJump();
-	bool	getWalk();
-	bool	getRun();
-	void	toggleGuard();
-	bool	getGuard();
-	void	setDefaultSpeed(void);
-	void	toggleHoldPosition(void);
+	bool isDefaultSpeed(void);
+	void toggleDefaultSpeed();
+	void toggleJump();
+	bool getJump();
+	bool getWalk();
+	bool getRun();
+	void toggleGuard();
+	bool getGuard();
+	void setDefaultSpeed(void);
+	void toggleHoldPosition(void);
 
-	void	setRange(int32_t Range);
-	void	doStop(void);
-	void	toggleFireFromCurrentPos(void);
-	bool	getFireFromCurrentPos()
-	{
-		return fireFromCurrentPos;
-	}
-	void    setFireFromCurrentPos(bool bset)
-	{
-		fireFromCurrentPos = bset;
-	}
-	bool	isAddingVehicle()
-	{
-		return addingVehicle;
-	}
-	bool	isAddingAirstrike()
-	{
-		return addingArtillery;
-	}
-	bool	isAddingSalvage()
-	{
-		return addingSalvage;
-	}
-	bool	isButtonPressed(int32_t ID)
+	void setRange(int32_t Range);
+	void doStop(void);
+	void toggleFireFromCurrentPos(void);
+	bool getFireFromCurrentPos() { return fireFromCurrentPos; }
+	void setFireFromCurrentPos(bool bset) { fireFromCurrentPos = bset; }
+	bool isAddingVehicle() { return addingVehicle; }
+	bool isAddingAirstrike() { return addingArtillery; }
+	bool isAddingSalvage() { return addingSalvage; }
+	bool isButtonPressed(int32_t ID)
 	{
 		return getButton(ID)->state & ControlButton::PRESSED;
 	}
-	bool	getMines(void);
-	bool	getSalvage(void);
-	bool	getRepair(void);
-	bool	getGuardTower(void);
-	void	switchTabs(int32_t direction);
-	void	renderObjective(CObjective* pObjective, int32_t xPos, int32_t yPos, bool bDrawTotal);
-	void	renderMissionStatus(bool bRender)
-	{
-		renderStatusInfo = bRender;
-	}
+	bool getMines(void);
+	bool getSalvage(void);
+	bool getRepair(void);
+	bool getGuardTower(void);
+	void switchTabs(int32_t direction);
+	void renderObjective(
+		CObjective* pObjective, int32_t xPos, int32_t yPos, bool bDrawTotal);
+	void renderMissionStatus(bool bRender) { renderStatusInfo = bRender; }
 
-	int32_t		getCurrentRange(void);
-	void	pressInfoButton()
-	{
-		handleClick(INFO_COMMAND);
-	}
-	bool	infoButtonPressed()
+	int32_t getCurrentRange(void);
+	void pressInfoButton() { handleClick(INFO_COMMAND); }
+	bool infoButtonPressed()
 	{
 		return getButton(INFO_COMMAND)->state & ControlButton::PRESSED;
 	}
 
-	void	showServerMissing(void);
+	void showServerMissing(void);
 
-	void	pressAirstrikeButton()
+	void pressAirstrikeButton()
 	{
-		for(size_t i = 0; i < LAST_VEHICLE; i++)
+		for (size_t i = 0; i < LAST_VEHICLE; i++)
 		{
-			if((vehicleButtons[i].ID == LARGE_AIRSTRIKE) &&
-					!(vehicleButtons[i].state & ControlButton::PRESSED))
+			if ((vehicleButtons[i].ID == LARGE_AIRSTRIKE) &&
+				!(vehicleButtons[i].state & ControlButton::PRESSED))
 			{
 				handleVehicleClick(LARGE_AIRSTRIKE);
 			}
 		}
 	}
-	void	pressLargeAirstrikeButton()
+	void pressLargeAirstrikeButton() { handleVehicleClick(LARGE_AIRSTRIKE); }
+	void pressSensorStrikeButton()
 	{
-		handleVehicleClick(LARGE_AIRSTRIKE);
-	}
-	void	pressSensorStrikeButton()
-	{
-		for(size_t i = 0; i < LAST_VEHICLE; i++)
+		for (size_t i = 0; i < LAST_VEHICLE; i++)
 		{
-			if((vehicleButtons[i].ID == SENSOR_PROBE) &&
-					!(vehicleButtons[i].state & ControlButton::PRESSED))
+			if ((vehicleButtons[i].ID == SENSOR_PROBE) &&
+				!(vehicleButtons[i].state & ControlButton::PRESSED))
 			{
 				handleVehicleClick(SENSOR_PROBE);
 			}
 		}
 	}
 
-	void	setRolloverHelpText(uint32_t textID);
+	void setRolloverHelpText(uint32_t textID);
 
-
-	void	setChatText(PCSTR playerName, PCSTR message, uint32_t backgroundColor,
-						uint32_t textColor);
-	void	toggleChat(bool setTeamOnly);
+	void setChatText(PCSTR playerName, PCSTR message, uint32_t backgroundColor,
+		uint32_t textColor);
+	void toggleChat(bool setTeamOnly);
 	void eatChatKey(void);
-	void	cancelInfo(void);
+	void cancelInfo(void);
 
-	ControlButton*		getButton(int32_t ID);
+	ControlButton* getButton(int32_t ID);
 
 	struct RectInfo
 	{
@@ -311,8 +276,7 @@ public:
 		int32_t color;
 	};
 
-private:
-
+  private:
 	struct ChatInfo
 	{
 		char playerName[32];
@@ -323,47 +287,46 @@ private:
 		uint32_t chatTextColor;
 	};
 
-	ChatInfo		chatInfos[MAX_CHAT_COUNT]; // max five lines -- could change
+	ChatInfo chatInfos[MAX_CHAT_COUNT]; // max five lines -- could change
 
-	RectInfo*		rectInfos;
-	int32_t			rectCount;
+	RectInfo* rectInfos;
+	int32_t rectCount;
 
-	//static	ButtonFile		vehicleFileData[LAST_VEHICLE];
+	// static	ButtonFile		vehicleFileData[LAST_VEHICLE];
 	static uint32_t RUN;
 	static uint32_t WALK;
 	static uint32_t GUARD;
 	static uint32_t JUMP;
 
-	ControlButton*		buttons;
-	ControlButton*		vehicleButtons;
-	static ButtonData*	buttonData;
-	static ButtonData*	vehicleData;
-	static PCSTR	vehicleNames[5];
-	static int32_t			vehicleIDs[5];
-	static PCSTR	vehiclePilots[5];
+	ControlButton* buttons;
+	ControlButton* vehicleButtons;
+	static ButtonData* buttonData;
+	static ButtonData* vehicleData;
+	static PCSTR vehicleNames[5];
+	static int32_t vehicleIDs[5];
+	static PCSTR vehiclePilots[5];
 
+	static int32_t vehicleCosts[LAST_VEHICLE];
 
-	static int32_t			vehicleCosts[LAST_VEHICLE];
+	InfoWindow* infoWnd;
+	PauseWindow* pauseWnd;
 
-	InfoWindow*			infoWnd;
-	PauseWindow*		pauseWnd;
+	StaticInfo* staticInfos;
+	int32_t staticCount;
 
-	StaticInfo*			staticInfos;
-	int32_t				staticCount;
+	StaticInfo* objectiveInfos; // 2nd to last one is check, last is x
+	int32_t objectiveInfoCount;
 
-	StaticInfo*			objectiveInfos; //2nd to last one is check, last is x
-	int32_t				objectiveInfoCount;
+	StaticInfo* missionStatusInfos;
+	int32_t missionStatusInfoCount;
+	RectInfo missionStatusRect;
 
-	StaticInfo*			missionStatusInfos;
-	int32_t				missionStatusInfoCount;
-	RectInfo			missionStatusRect;
+	bool renderStatusInfo;
+	float resultsTime;
+	bool renderObjectives;
+	float objectiveTime;
 
-	bool				renderStatusInfo;
-	float				resultsTime;
-	bool				renderObjectives;
-	float				objectiveTime;
-
-	float				tabFlashTime;
+	float tabFlashTime;
 	static int32_t OBJECTIVESTOP;
 	static int32_t OBJECTIVESLEFT;
 	static int32_t OBJECTIVESSKIP;
@@ -382,44 +345,44 @@ private:
 	static MoveInfo objectiveMoveInfo[OBJECTVE_MOVE_COUNT];
 	static MoveInfo missionResultsMoveInfo[RESULTS_MOVE_COUNT];
 
-	StaticInfo*			videoInfos;
-	int32_t				videoInfoCount;
-	RECT			videoRect;
-	RECT			videoTextRect;
-	MC2MoviePtr			bMovie;
+	StaticInfo* videoInfos;
+	int32_t videoInfoCount;
+	RECT videoRect;
+	RECT videoTextRect;
+	MC2MoviePtr bMovie;
 
-	StaticInfo*			timerInfos;
-	int32_t				timerInfoCount;
-	RectInfo			timerRect;
+	StaticInfo* timerInfos;
+	int32_t timerInfoCount;
+	RectInfo timerRect;
 
-	//TUTORIAL!!
-	RectInfo			rpCallout;
-	int32_t				rpNumFlashes;
-	float				rpFlashTime;
-	int32_t				buttonToPress;
+	// TUTORIAL!!
+	RectInfo rpCallout;
+	int32_t rpNumFlashes;
+	float rpFlashTime;
+	int32_t buttonToPress;
 
-	uint32_t		curOrder;
-	bool				fireFromCurrentPos;
-	bool				addingVehicle;
-	bool				addingArtillery;
-	bool				addingSalvage;
-	bool				wasLayingMines;
+	uint32_t curOrder;
+	bool fireFromCurrentPos;
+	bool addingVehicle;
+	bool addingArtillery;
+	bool addingSalvage;
+	bool wasLayingMines;
 
-	bool				moviePlaying;
-	bool				twoMinWarningPlayed;
-	bool				thirtySecondWarningPlayed;
-	bool				bChatting;
+	bool moviePlaying;
+	bool twoMinWarningPlayed;
+	bool thirtySecondWarningPlayed;
+	bool bChatting;
 
-	int32_t					idToUnPress;
-	aFont					guiFont;
-	aFont					helpFont;
-	aFont					vehicleFont;
-	aFont					timerFont;
-	aFont					missionResultsFont;
+	int32_t idToUnPress;
+	aFont guiFont;
+	aFont helpFont;
+	aFont vehicleFont;
+	aFont timerFont;
+	aFont missionResultsFont;
 
-	aText					chatEdit;
-	aEdit					playerNameEdit;
-	aEdit					personalEdit;
+	aText chatEdit;
+	aEdit playerNameEdit;
+	aEdit personalEdit;
 
 	void handleClick(int32_t ID);
 	void updateVehicleTab(int32_t mouseX, int32_t mouseY, bool bLOS);
@@ -436,28 +399,25 @@ private:
 
 	void renderPlayerStatus(float delta);
 
-	MPStatsEntry			mpStats[9];
+	MPStatsEntry mpStats[9];
 
-	bool					chatIsTeamOnly;
-	bool					bServerWarningShown;
+	bool chatIsTeamOnly;
+	bool bServerWarningShown;
 
-public:
-
+  public:
 	RectInfo* getRect(int32_t id)
 	{
-		if((id >= 0) && (id < rectCount))
+		if ((id >= 0) && (id < rectCount))
 		{
 			return &(rectInfos[id]);
 		}
-		if(id == RPTOTAL_CALLOUT)
+		if (id == RPTOTAL_CALLOUT)
 		{
 			return &rpCallout;
 		}
 		return nullptr;
 	}
-
 };
 
-
 //*************************************************************************************************
-#endif  // end of file ( ControlGui.h )
+#endif // end of file ( ControlGui.h )

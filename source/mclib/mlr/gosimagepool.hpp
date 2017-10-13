@@ -13,63 +13,61 @@
 namespace MidLevelRenderer
 {
 
-	class GOSImage;
+class GOSImage;
 
-	class GOSImagePool
+class GOSImagePool
 #if defined(_ARMOR)
-		: public Stuff::Signature
+	: public Stuff::Signature
 #endif
+{
+	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	// Constructors/Destructors
+	//
+  public:
+	GOSImagePool(void);
+	virtual ~GOSImagePool(void);
+
+	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	// Image handling
+	//
+  public:
+	GOSImage* GetImage(PCSTR imageName);
+	GOSImage* GetImage(PCSTR imageName, /*gos_TextureFormat*/ uint32_t format,
+		size_t size, /*gos_TextureHints*/ uint32_t hints);
+
+	virtual bool LoadImage(GOSImage* image, int32_t = 0) = 0;
+	void RemoveImage(GOSImage* image);
+	void UnLoadImages(void);
+	void GetTexturePath(Stuff::MString* pName) const
 	{
-		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-		// Constructors/Destructors
-		//
-	public:
-		GOSImagePool(void);
-		virtual ~GOSImagePool(void);
+		// Check_Object(this);
+		*pName = texturePath;
+	}
 
-		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-		// Image handling
-		//
-	public:
-		GOSImage* GetImage(PCSTR imageName);
-		GOSImage* GetImage(PCSTR imageName, /*gos_TextureFormat*/ uint32_t format, size_t size, /*gos_TextureHints*/ uint32_t hints);
+	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	// Testing
+	//
+  public:
+	void TestInstance(void) const {}
 
-		virtual bool LoadImage(GOSImage* image, int32_t = 0) = 0;
-		void RemoveImage(GOSImage* image);
-		void UnLoadImages(void);
-		void GetTexturePath(Stuff::MString* pName) const
-		{
-			// Check_Object(this);
-			*pName = texturePath;
-		}
+  protected:
+	Stuff::HashOf<GOSImage*, Stuff::MString> imageHash;
+	Stuff::MString texturePath;
+};
 
-		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-		// Testing
-		//
-	public:
-		void TestInstance(void) const
-		{
-		}
+class TGAFilePool : public GOSImagePool
+{
+	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	// Constructors/Destructors
+	//
+  public:
+	TGAFilePool(PCSTR path);
 
-	protected:
-		Stuff::HashOf<GOSImage*, Stuff::MString> imageHash;
-		Stuff::MString texturePath;
-	};
-
-	class TGAFilePool:
-		public GOSImagePool
-	{
-		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-		// Constructors/Destructors
-		//
-	public:
-		TGAFilePool(PCSTR path);
-
-		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-		// Image handling
-		//
-	public:
-		bool LoadImage(GOSImage* image, int32_t = 0);
-	};
+	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	// Image handling
+	//
+  public:
+	bool LoadImage(GOSImage* image, int32_t = 0);
+};
 }
 #endif

@@ -6,10 +6,10 @@
  conditions are met (OSI approved BSD 2-clause license):
 
  1. Redistributions of source code must retain the above copyright notice,
-    this list of conditions and the following disclaimer.
+	this list of conditions and the following disclaimer.
  2. Redistributions in binary form must reproduce the above copyright notice,
-    this list of conditions and the following disclaimer in the documentation
-    and/or other materials provided with the distribution.
+	this list of conditions and the following disclaimer in the documentation
+	and/or other materials provided with the distribution.
 
  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -42,11 +42,11 @@
 
 // char versionStamp[1024] = "00.06.01.0614";
 
-#define MC2_VERSION_MAJOR			1
-#define MC2_VERSION_MINOR			1
-#define MC2_VERSION_RELEASE			1
-#define MC2_VERSION_BUILD			1		// if 0 release or repository snapshot release
-#define MC2_VERSION_BETA			1		// TRUE 1  or FALSE 0
-#define MC2_VERSION_BUILD_COMMENT	L"MechCommander 2 first patched beta build"
+#define MC2_VERSION_MAJOR 1
+#define MC2_VERSION_MINOR 1
+#define MC2_VERSION_RELEASE 1
+#define MC2_VERSION_BUILD 1 // if 0 release or repository snapshot release
+#define MC2_VERSION_BETA 1  // TRUE 1  or FALSE 0
+#define MC2_VERSION_BUILD_COMMENT L"MechCommander 2 first patched beta build"
 
 #endif

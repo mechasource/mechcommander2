@@ -12,20 +12,21 @@
 
 int32_t ffLastError = 0;
 
-#define NO_ERROR		0
+#define NO_ERROR 0
 //-----------------------------------------------------------------------------------
 bool FastFileInit(PSTR fname)
 {
-	if(numFastFiles == maxFastFiles)
+	if (numFastFiles == maxFastFiles)
 	{
 		ffLastError = -1;
 		return FALSE;
 	}
 	//-----------------------------------------------------------------------------
-	//-- Open this fast file, add it to the list O pointers and return TRUE if OK!
+	//-- Open this fast file, add it to the list O pointers and return TRUE if
+	//OK!
 	fastFiles[numFastFiles] = new FastFile;
-	int32_t result = fastFiles[numFastFiles]->open(fname);
-	if(result == FASTFILE_VERSION)
+	int32_t result			= fastFiles[numFastFiles]->open(fname);
+	if (result == FASTFILE_VERSION)
 	{
 		ffLastError = result;
 		return FALSE;
@@ -37,12 +38,12 @@ bool FastFileInit(PSTR fname)
 //-----------------------------------------------------------------------------------
 void FastFileFini(void)
 {
-	if(fastFiles)
+	if (fastFiles)
 	{
 		int32_t currentFastFile = 0;
-		while(currentFastFile < maxFastFiles)
+		while (currentFastFile < maxFastFiles)
 		{
-			if(fastFiles[currentFastFile])
+			if (fastFiles[currentFastFile])
 			{
 				fastFiles[currentFastFile]->close();
 				delete fastFiles[currentFastFile];
@@ -52,22 +53,22 @@ void FastFileFini(void)
 		}
 	}
 	free(fastFiles);
-	fastFiles = nullptr;
+	fastFiles	= nullptr;
 	numFastFiles = 0;
 }
 
 //-----------------------------------------------------------------------------------
 FastFile* FastFileFind(PSTR fname, int32_t& fastFileHandle)
 {
-	if(fastFiles)
+	if (fastFiles)
 	{
-		uint32_t thisHash = elfHash(fname);
+		uint32_t thisHash		= elfHash(fname);
 		int32_t currentFastFile = 0;
-		int32_t tempHandle = -1;
-		while(currentFastFile < numFastFiles)
+		int32_t tempHandle		= -1;
+		while (currentFastFile < numFastFiles)
 		{
 			tempHandle = fastFiles[currentFastFile]->openFast(thisHash, fname);
-			if(tempHandle != -1)
+			if (tempHandle != -1)
 			{
 				fastFileHandle = tempHandle;
 				return fastFiles[currentFastFile];
@@ -81,11 +82,11 @@ FastFile* FastFileFind(PSTR fname, int32_t& fastFileHandle)
 //------------------------------------------------------------------
 uint32_t elfHash(PSTR name)
 {
-	uint32_t   h = 0, g;
-	while(*name)
+	uint32_t h = 0, g;
+	while (*name)
 	{
 		h = (h << 4) + *name++;
-		if((g = h & 0xF0000000) != 0)
+		if ((g = h & 0xF0000000) != 0)
 			h ^= g >> 24;
 		h &= ~g;
 	}
@@ -93,7 +94,3 @@ uint32_t elfHash(PSTR name)
 }
 
 //-----------------------------------------------------------------------------------
-
-
-
-

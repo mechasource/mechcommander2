@@ -21,8 +21,7 @@
 
 //#include <gameos.hpp>
 
-
-int32_t MovePathManager::numPaths = 0;
+int32_t MovePathManager::numPaths  = 0;
 int32_t MovePathManager::peakPaths = 0;
 int32_t MovePathManager::sourceTally[50];
 MovePathManagerPtr PathManager = nullptr;
@@ -34,31 +33,28 @@ MovePathManagerPtr PathManager = nullptr;
 PVOID MovePathManager::operator new(size_t mySize)
 {
 	PVOID result = systemHeap->Malloc(mySize);
-	return(result);
+	return (result);
 }
 
 //---------------------------------------------------------------------------
 
-void MovePathManager::operator delete(PVOID us)
-{
-	systemHeap->Free(us);
-}
+void MovePathManager::operator delete(PVOID us) { systemHeap->Free(us); }
 
 //---------------------------------------------------------------------------
 
 int32_t MovePathManager::init(void)
 {
 	int32_t i;
-	for(i = 0; i < MAX_MOVERS; i++)
+	for (i = 0; i < MAX_MOVERS; i++)
 	{
-		pool[i].pilot = nullptr;
+		pool[i].pilot		   = nullptr;
 		pool[i].selectionIndex = 0;
-		pool[i].moveParams = 0;
-		if(i > 0)
+		pool[i].moveParams	 = 0;
+		if (i > 0)
 			pool[i].prev = &pool[i - 1];
 		else
 			pool[i].prev = nullptr;
-		if(i < (MAX_MOVERS - 1))
+		if (i < (MAX_MOVERS - 1))
 			pool[i].next = &pool[i + 1];
 		else
 			pool[i].next = nullptr;
@@ -66,20 +62,18 @@ int32_t MovePathManager::init(void)
 	//------------------------------
 	// All start on the free list...
 	queueFront = nullptr;
-	queueEnd = nullptr;
-	freeList = &pool[0];
-	numPaths = 0;
-	peakPaths = 0;
-	for(i = 0; i < 50; i++)
+	queueEnd   = nullptr;
+	freeList   = &pool[0];
+	numPaths   = 0;
+	peakPaths  = 0;
+	for (i = 0; i < 50; i++)
 		sourceTally[i] = 0;
-	return(NO_ERROR);
+	return (NO_ERROR);
 }
 
 //---------------------------------------------------------------------------
 
-void MovePathManager::destroy(void)
-{
-}
+void MovePathManager::destroy(void) {}
 
 //---------------------------------------------------------------------------
 
@@ -87,11 +81,11 @@ void MovePathManager::remove(PathQueueRecPtr rec)
 {
 	//------------------------------------
 	// Remove it from the pending queue...
-	if(rec->prev)
+	if (rec->prev)
 		rec->prev->next = rec->next;
 	else
 		queueFront = rec->next;
-	if(rec->next)
+	if (rec->next)
 		rec->next->prev = rec->prev;
 	else
 		queueEnd = rec->prev;
@@ -99,7 +93,7 @@ void MovePathManager::remove(PathQueueRecPtr rec)
 	// Return the QRec to the free list...
 	rec->prev = nullptr;
 	rec->next = freeList;
-	freeList = rec;
+	freeList  = rec;
 	sourceTally[rec->num]--;
 	numPaths--;
 }
@@ -109,25 +103,26 @@ void MovePathManager::remove(PathQueueRecPtr rec)
 PathQueueRecPtr MovePathManager::remove(MechWarriorPtr pilot)
 {
 	PathQueueRecPtr rec = pilot->getMovePathRequest();
-	if(rec)
+	if (rec)
 	{
 		remove(rec);
 		pilot->setMovePathRequest(nullptr);
-		return(rec);
+		return (rec);
 	}
-	return(nullptr);
+	return (nullptr);
 }
 
 //---------------------------------------------------------------------------
 
-#define	DEBUG_MOVEPATH_QUEUE	0
+#define DEBUG_MOVEPATH_QUEUE 0
 
-void MovePathManager::request(MechWarriorPtr pilot, int32_t selectionIndex, uint32_t moveParams, int32_t source)
+void MovePathManager::request(MechWarriorPtr pilot, int32_t selectionIndex,
+	uint32_t moveParams, int32_t source)
 {
 	//-----------------------------------------------------
 	// If the pilot is already awaiting a calc, purge it...
 	remove(pilot);
-	if(!freeList)
+	if (!freeList)
 		Fatal(0, " Too many pilots calcing paths ");
 	//---------------------------------------------
 	// Grab the first free move path rec in line...
@@ -135,20 +130,20 @@ void MovePathManager::request(MechWarriorPtr pilot, int32_t selectionIndex, uint
 	//-----------------------------------------
 	// Cut the new record from the free list...
 	freeList = freeList->next;
-	if(freeList)
+	if (freeList)
 		freeList->prev = nullptr;
 	//---------------------------------------------------
 	// New record has no next. Already has no previous...
-	pathQRec->num = source;
-	pathQRec->pilot = pilot;
+	pathQRec->num			 = source;
+	pathQRec->pilot			 = pilot;
 	pathQRec->selectionIndex = selectionIndex;
-	pathQRec->moveParams = moveParams;
-	if(queueEnd)
+	pathQRec->moveParams	 = moveParams;
+	if (queueEnd)
 	{
 		queueEnd->next = pathQRec;
 		pathQRec->prev = queueEnd;
 		pathQRec->next = nullptr;
-		queueEnd = pathQRec;
+		queueEnd	   = pathQRec;
 	}
 	else
 	{
@@ -159,7 +154,7 @@ void MovePathManager::request(MechWarriorPtr pilot, int32_t selectionIndex, uint
 	pilot->setMovePathRequest(pathQRec);
 	numPaths++;
 	sourceTally[source]++;
-	if(numPaths > peakPaths)
+	if (numPaths > peakPaths)
 		peakPaths = numPaths;
 }
 
@@ -167,7 +162,7 @@ void MovePathManager::request(MechWarriorPtr pilot, int32_t selectionIndex, uint
 
 void MovePathManager::calcPath(void)
 {
-	if(queueFront)
+	if (queueFront)
 	{
 		//------------------------------
 		// Grab the next in the queue...
@@ -178,9 +173,10 @@ void MovePathManager::calcPath(void)
 		MechWarriorPtr pilot = curQRec->pilot;
 		pilot->setMovePathRequest(nullptr);
 		MoverPtr mover = pilot->getVehicle();
-		if(!mover)
+		if (!mover)
 			return;
-		/*int32_t err = */pilot->calcMovePath(curQRec->selectionIndex, curQRec->moveParams);
+		/*int32_t err = */ pilot->calcMovePath(
+			curQRec->selectionIndex, curQRec->moveParams);
 	}
 }
 
@@ -202,11 +198,11 @@ extern int64_t MCTimeCalcGoal6Update;
 void MovePathManager::update(void)
 {
 #ifdef LAB_ONLY
-	MCTimePath1Update = 0;
-	MCTimePath2Update = 0;
-	MCTimePath3Update = 0;
-	MCTimePath4Update = 0;
-	MCTimePath5Update = 0;
+	MCTimePath1Update	 = 0;
+	MCTimePath2Update	 = 0;
+	MCTimePath3Update	 = 0;
+	MCTimePath4Update	 = 0;
+	MCTimePath5Update	 = 0;
 	MCTimeCalcGoal1Update = 0;
 	MCTimeCalcGoal2Update = 0;
 	MCTimeCalcGoal3Update = 0;
@@ -218,11 +214,11 @@ void MovePathManager::update(void)
 	QueryPerformanceCounter(startCk);
 #endif
 	int32_t numPathsToProcess = 6;
-	//if (numPaths > 15)
+	// if (numPaths > 15)
 	//	numPathsToProcess = 10;
-	for(size_t i = 0; i < numPathsToProcess; i++)
+	for (size_t i = 0; i < numPathsToProcess; i++)
 	{
-		if(!queueFront)
+		if (!queueFront)
 			break;
 		calcPath();
 	}

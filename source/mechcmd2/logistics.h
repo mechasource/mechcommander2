@@ -18,52 +18,41 @@
 
 //----------------------------------------------------------------------------------
 // Macro Definitions
-#define log_DONE						0
-#define log_STARTMISSIONFROMCMDLINE		1
-#define log_SPLASH						2
-#define log_RESULTS						3
-#define log_ZONE						4
+#define log_DONE 0
+#define log_STARTMISSIONFROMCMDLINE 1
+#define log_SPLASH 2
+#define log_RESULTS 3
+#define log_ZONE 4
 
 class MissionResults;
 class MissionBegin;
 
-
 //----------------------------------------------------------------------------------
 class Logistics
 {
-protected:
+  protected:
+	bool active; // Am I currently in control?
 
+	int32_t logisticsState;
+	int32_t prevState; // Used to cleanup previous state
 
-	bool							active;						//Am I currently in control?
+	LogisticsData logisticsData;
 
-	int32_t							logisticsState;
-	int32_t							prevState;					//Used to cleanup previous state
+	MissionResults* missionResults;
+	MissionBegin* missionBegin;
 
-	LogisticsData					logisticsData;
+  public:
+	Logistics(void) { init(void); }
 
-
-	MissionResults*					missionResults;
-	MissionBegin*					missionBegin;
-
-public:
-
-	Logistics(void)
-	{
-		init(void);
-	}
-
-	~Logistics(void)
-	{
-		destroy(void);
-	}
+	~Logistics(void) { destroy(void); }
 
 	void init(void)
 	{
-		active = FALSE;
+		active		   = FALSE;
 		missionResults = 0;
-		missionBegin = 0;
+		missionBegin   = 0;
 		logisticsState = log_SPLASH;
-		bMovie = nullptr;
+		bMovie		   = nullptr;
 	}
 
 	void destroy(void);
@@ -71,8 +60,9 @@ public:
 	void initSplashScreen(PSTR screenFile, PSTR artFile);
 	void destroySplashScreen(void);
 
-	void start(int32_t logState);		//Actually Starts execution of logistics in state Specified
-	void stop(void);				//Guess what this does!
+	void start(int32_t logState); // Actually Starts execution of logistics in
+								  // state Specified
+	void stop(void); // Guess what this does!
 
 	int32_t update(void);
 
@@ -82,30 +72,23 @@ public:
 
 	void setLogisticsState(int32_t state)
 	{
-		prevState = logisticsState;
+		prevState	  = logisticsState;
 		logisticsState = state;
 	}
 
-	MissionBegin* getMissionBegin(void)
-	{
-		return missionBegin;
-	}
+	MissionBegin* getMissionBegin(void) { return missionBegin; }
 
 	static int32_t _stdcall beginMission(PVOID, int32_t, PVOID[]);
 
 	int32_t DoBeginMission(void);
 	void playFullScreenVideo(PCSTR fileName);
 
-	MC2MoviePtr	bMovie;
+	MC2MoviePtr bMovie;
 
-
-private:
-
-
-
+  private:
 	void initializeLogData(void);
-	bool		bMissionLoaded;
-	int32_t		lastMissionResult;
+	bool bMissionLoaded;
+	int32_t lastMissionResult;
 };
 
 extern Logistics* logistics;

@@ -8,13 +8,8 @@
 #include "stdafx.h"
 #include "stuffheaders.hpp"
 
-
 //
 //###########################################################################
 //###########################################################################
 //
-bool LinearMatrix4D::TestClass()
-{
-	return false;
-}
-
+bool LinearMatrix4D::TestClass() { return false; }

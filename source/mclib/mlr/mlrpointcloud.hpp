@@ -16,56 +16,46 @@ namespace MidLevelRenderer
 //#######################    MLRPointCloud    ##############################
 //##########################################################################
 
+class MLRPointCloud : public MLREffect
+{
+	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	// Initialization
+	//
+  public:
+	static void __stdcall InitializeClass(void);
+	static void __stdcall TerminateClass(void);
 
-	class MLRPointCloud:
-		public MLREffect
-	{
-		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-		// Initialization
-		//
-	public:
-		static void __stdcall InitializeClass(void);
-		static void __stdcall TerminateClass(void);
+	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	// Constructors/Destructors
+	//
+  public:
+	MLRPointCloud(uint32_t, uint32_t = 0);
+	~MLRPointCloud(void);
 
-		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-		// Constructors/Destructors
-		//
-	public:
-		MLRPointCloud(uint32_t, uint32_t = 0);
-		~MLRPointCloud(void);
+	void SetData(pcsize_t count, const Stuff::Point3D* point_data,
+		const Stuff::RGBAColor* color_data);
+	virtual uint32_t GetType(uint32_t) { return type; }
+	void Draw(DrawEffectInformation*, GOSVertexPool*, MLRSorter*);
 
-		void
-		SetData(
-			pcsize_t count,
-			const Stuff::Point3D* point_data,
-			const Stuff::RGBAColor* color_data
-		);
-		virtual uint32_t GetType(uint32_t)
-		{
-			return type;
-		}
-		void Draw(DrawEffectInformation*, GOSVertexPool*, MLRSorter*);
+	void Transform(size_t, size_t);
 
-		void Transform(size_t, size_t);
+	uint32_t Clip(MLRClippingState, GOSVertexPool*);
 
-		uint32_t Clip(MLRClippingState, GOSVertexPool*);
+	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	// Class Data Support
+	//
+  public:
+	static ClassData* DefaultData;
 
-		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-		// Class Data Support
-		//
-	public:
-		static ClassData* DefaultData;
+	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	// Testing
+	//
+  public:
+	void TestInstance(void) const;
 
-		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-		// Testing
-		//
-	public:
-		void TestInstance(void) const;
-
-	protected:
-		uint32_t type;
-		pcsize_t usedNrOfVertices;
-	};
-
+  protected:
+	uint32_t type;
+	pcsize_t usedNrOfVertices;
+};
 }
 #endif

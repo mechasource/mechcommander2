@@ -1,6 +1,6 @@
 /*************************************************************************************************\
-HeightDlg.cpp			: Implementation of the AssignHeight component.  This thing lets you assign
-							a particular elevation to selected vertices
+HeightDlg.cpp			: Implementation of the AssignHeight component.  This
+thing lets you assign a particular elevation to selected vertices
 //---------------------------------------------------------------------------//
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
@@ -11,9 +11,11 @@ HeightDlg.cpp			: Implementation of the AssignHeight component.  This thing lets
 #include <mclib.h>
 #include "utilities.h"
 
-extern uint32_t gameResourceHandle;		//Default handle must be used for mc2res.dll due to shared game/editor code
+extern uint32_t gameResourceHandle; // Default handle must be used for
+									// mc2res.dll due to shared game/editor code
 
-SingleValueDlg::SingleValueDlg(int32_t captionID, int32_t staticTextID, int32_t newVal)
+SingleValueDlg::SingleValueDlg(
+	int32_t captionID, int32_t staticTextID, int32_t newVal)
 	: CDialog(IDD_VALUE)
 {
 	cLoadString(captionID, caption, 256, gameResourceHandle);
@@ -21,9 +23,7 @@ SingleValueDlg::SingleValueDlg(int32_t captionID, int32_t staticTextID, int32_t 
 	val = newVal;
 }
 
-SingleValueDlg::~SingleValueDlg()
-{
-}
+SingleValueDlg::~SingleValueDlg() {}
 void SingleValueDlg::Init()
 {
 	char minTxt[256];
@@ -66,8 +66,6 @@ void SingleValueDlg::Update()
 	((CEdit*)GetDlgItem(IDC_HEIGHT))->SetWindowText(minTxt);
 	((CStatic*)GetDlgItem(IDC_TEXT))->SetWindowText(staticText);
 }
-
-
 
 //*************************************************************************************************
 // end of file ( HeightDlg.cpp )

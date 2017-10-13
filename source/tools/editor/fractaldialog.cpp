@@ -15,7 +15,7 @@ FractalDlg::FractalDlg(CWnd* pParent) : CDialog(FractalDlg::IDD, pParent)
 {
 	//{{AFX_DATA_INIT(FogDlg)
 	m_threshold = 1;
-	m_noise = 0;
+	m_noise		= 0;
 	//}}AFX_DATA_INIT
 }
 
@@ -28,6 +28,4 @@ void FractalDlg::DoDataExchange(CDataExchange* pDX)
 	//}}AFX_DATA_MAP
 }
 
-
 /////////////////////////////////////////////////////////////////////////////
-

@@ -10,8 +10,8 @@
 
 namespace Stuff
 {
-	class MemoryStream;
-	class LinearMatrix4D;
+class MemoryStream;
+class LinearMatrix4D;
 }
 
 namespace gosFX
@@ -22,47 +22,50 @@ namespace gosFX
 // gosFX classes
 //--------------
 //
-	typedef enum __gosFX_const
-	{
-		EffectClassID = Stuff::FirstgosFXClassID,
-		ParticleCloudClassID,
-		PointCloudClassID,
-		SpinningCloudClassID,
-		ShardCloudClassID,
-		PertCloudClassID,
-		CardCloudClassID,
-		ShapeCloudClassID,
-		EffectCloudClassID,
-		SingletonClassID,
-		CardClassID,
-		ShapeClassID,
-		TubeClassID,
-		DebrisCloudClassID,
-		PointLightClassID,
-		FirstFreegosFXClassID,
-	};
+typedef enum __gosFX_const
+{
+	EffectClassID = Stuff::FirstgosFXClassID,
+	ParticleCloudClassID,
+	PointCloudClassID,
+	SpinningCloudClassID,
+	ShardCloudClassID,
+	PertCloudClassID,
+	CardCloudClassID,
+	ShapeCloudClassID,
+	EffectCloudClassID,
+	SingletonClassID,
+	CardClassID,
+	ShapeClassID,
+	TubeClassID,
+	DebrisCloudClassID,
+	PointLightClassID,
+	FirstFreegosFXClassID,
+};
 
-	enum {CurrentGFXVersion = 17};
+enum
+{
+	CurrentGFXVersion = 17
+};
 
-	int32_t __stdcall ReadGFXVersion(Stuff::MemoryStream* erf_stream);
-	void 	__stdcall WriteGFXVersion(Stuff::MemoryStream* erf_stream);
+int32_t __stdcall ReadGFXVersion(Stuff::MemoryStream* erf_stream);
+void __stdcall WriteGFXVersion(Stuff::MemoryStream* erf_stream);
 
-	void __stdcall InitializeClasses(void);
-	void __stdcall TerminateClasses(void);
+void __stdcall InitializeClasses(void);
+void __stdcall TerminateClasses(void);
 
-	// extern HGOSHEAP Heap;
+// extern HGOSHEAP Heap;
 
-	extern const Stuff::LinearMatrix4D& Effect_Into_Motion;
-	extern const Stuff::LinearMatrix4D& Effect_Against_Motion;
+extern const Stuff::LinearMatrix4D& Effect_Into_Motion;
+extern const Stuff::LinearMatrix4D& Effect_Against_Motion;
 
-	DECLARE_TIMER(extern, Animation_Time);
-	DECLARE_TIMER(extern, Draw_Time);
-	extern uint32_t Point_Count;
-	extern uint32_t Shard_Count;
-	extern uint32_t Pert_Count;
-	extern uint32_t Card_Count;
-	extern uint32_t Shape_Count;
-	extern uint32_t Profile_Count;
+DECLARE_TIMER(extern, Animation_Time);
+DECLARE_TIMER(extern, Draw_Time);
+extern uint32_t Point_Count;
+extern uint32_t Shard_Count;
+extern uint32_t Pert_Count;
+extern uint32_t Card_Count;
+extern uint32_t Shape_Count;
+extern uint32_t Profile_Count;
 }
 
 //#include <gosfx/fcurve.hpp>

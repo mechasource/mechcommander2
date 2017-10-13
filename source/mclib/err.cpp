@@ -29,7 +29,7 @@ void Fatal(int32_t errCode, PSTR errMessage)
 
 void Assert(bool test, int32_t errCode, PSTR errMessage)
 {
-	if(!test)
+	if (!test)
 	{
 		char msg[512];
 		sprintf(msg, " [ASSERT %d] %s ", errCode, errMessage);

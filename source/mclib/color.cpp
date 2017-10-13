@@ -34,7 +34,7 @@
 puint32_t* colorRGBLookup = nullptr;
 int32_t numColorRGBTables = 0;
 
-#define MAX_COLOR_ENTRIES		56
+#define MAX_COLOR_ENTRIES 56
 //----------------------------------------------------------------------------------
 void initColorTables(void)
 {
@@ -47,19 +47,21 @@ void initColorTables(void)
 	gosASSERT(result == NO_ERROR);
 	result = colorFile.readIdLong("NumTables", numColorRGBTables);
 	gosASSERT(result == NO_ERROR);
-	colorRGBLookup = (puint32_t*)systemHeap->Malloc(sizeof(uint32_t*) * numColorRGBTables);
+	colorRGBLookup =
+		(puint32_t*)systemHeap->Malloc(sizeof(uint32_t*) * numColorRGBTables);
 	gosASSERT(colorRGBLookup != nullptr);
 	memset(colorRGBLookup, 0, sizeof(uint32_t*) * numColorRGBTables);
-	for(size_t i = 0; i < numColorRGBTables; i++)
+	for (size_t i = 0; i < numColorRGBTables; i++)
 	{
 		char tableBlock[256];
 		sprintf(tableBlock, "Table%d", i);
 		result = colorFile.seekBlock(tableBlock);
 		gosASSERT(result == NO_ERROR);
-		colorRGBLookup[i] = (uint32_t*)systemHeap->Malloc(sizeof(uint32_t) * MAX_COLOR_ENTRIES);
+		colorRGBLookup[i] =
+			(uint32_t*)systemHeap->Malloc(sizeof(uint32_t) * MAX_COLOR_ENTRIES);
 		gosASSERT(colorRGBLookup[i] != nullptr);
 		uint32_t* table = colorRGBLookup[i];
-		for(size_t j = 0; j < MAX_COLOR_ENTRIES; j++)
+		for (size_t j = 0; j < MAX_COLOR_ENTRIES; j++)
 		{
 			char colorBlock[256];
 			sprintf(colorBlock, "Color%d", j);
@@ -73,12 +75,12 @@ void initColorTables(void)
 //----------------------------------------------------------------------------------
 void destroyColorTables(void)
 {
-	for(size_t i = 0; i < numColorRGBTables; i++)
+	for (size_t i = 0; i < numColorRGBTables; i++)
 	{
 		systemHeap->Free(colorRGBLookup[i]);
 		colorRGBLookup[i] = nullptr;
 	}
-	if(colorRGBLookup)
+	if (colorRGBLookup)
 		systemHeap->Free(colorRGBLookup);
 	colorRGBLookup = nullptr;
 }
@@ -86,11 +88,11 @@ void destroyColorTables(void)
 //----------------------------------------------------------------------------------
 uint32_t* getColorTable(int32_t tableNum)
 {
-	if((tableNum >= 0) && (tableNum < numColorRGBTables))
+	if ((tableNum >= 0) && (tableNum < numColorRGBTables))
 	{
-		return(colorRGBLookup[tableNum]);
+		return (colorRGBLookup[tableNum]);
 	}
-	return(nullptr);
+	return (nullptr);
 }
 
 //----------------------------------------------------------------------------------

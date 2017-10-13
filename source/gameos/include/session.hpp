@@ -10,17 +10,17 @@
 
 #define MAXNAMELEN 64
 
-class FIDPSession: public ListItem
+class FIDPSession : public ListItem
 {
-protected:
+  protected:
 	DPSESSIONDESC2 SessionDescriptor;
 	char Name[MAXNAMELEN];
 	char Password[MAXNAMELEN];
 
-public:
+  public:
 	int32_t ID;
 
-public:
+  public:
 	FIDPSession(int32_t id = 0);
 	FIDPSession(DPSESSIONDESC2 sdesc, int32_t id);
 	FIDPSession(FIDPSession& session);
@@ -29,11 +29,7 @@ public:
 
 	void Initialize(DPSESSIONDESC2 sdesc);
 
-
-	DPSESSIONDESC2* GetSessionDescriptor()
-	{
-		return &SessionDescriptor;
-	}
+	DPSESSIONDESC2* GetSessionDescriptor() { return &SessionDescriptor; }
 
 	inline void SetNumPlayers(int32_t nplayers)
 	{
@@ -54,26 +50,13 @@ public:
 		return SessionDescriptor.dwCurrentPlayers;
 	}
 
-	inline int32_t GetMaxPlayers()
-	{
-		return SessionDescriptor.dwMaxPlayers;
-	}
+	inline int32_t GetMaxPlayers() { return SessionDescriptor.dwMaxPlayers; }
 
-	inline PCSTR GetName()
-	{
-		return SessionDescriptor.lpszSessionNameA;
-	}
+	inline PCSTR GetName() { return SessionDescriptor.lpszSessionNameA; }
 
-	inline PCSTR GetPassword()
-	{
-		return SessionDescriptor.lpszPasswordA;
-	}
+	inline PCSTR GetPassword() { return SessionDescriptor.lpszPasswordA; }
 
-	inline LPGUID GetGuidInstance()
-	{
-		return &SessionDescriptor.guidInstance;
-	}
-
+	inline LPGUID GetGuidInstance() { return &SessionDescriptor.guidInstance; }
 
 	inline BOOL IsPasswordRequired()
 	{
@@ -95,15 +78,4 @@ public:
 	}
 
 	void PropagateSettings(void);
-
-
 };
-
-
-
-
-
-
-
-
-

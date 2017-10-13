@@ -22,8 +22,8 @@ Stuff::Vector3D UnitK(0.0f, 0.0f, 1.0f);
 
 void Rotate(Stuff::Vector2DOf<float>& vec, float angle)
 {
-	float tx = vec.x;
-	float sine = sin(angle * DEGREES_TO_RADS);
+	float tx	 = vec.x;
+	float sine   = sin(angle * DEGREES_TO_RADS);
 	float cosine = cos(angle * DEGREES_TO_RADS);
 	vec.x *= cosine;
 	vec.x += (vec.y * sine);
@@ -33,8 +33,8 @@ void Rotate(Stuff::Vector2DOf<float>& vec, float angle)
 
 void Rotate(Stuff::Vector3D& vec, float angle)
 {
-	float tx = vec.x;
-	float sine = sin(angle * DEGREES_TO_RADS);
+	float tx	 = vec.x;
+	float sine   = sin(angle * DEGREES_TO_RADS);
 	float cosine = cos(angle * DEGREES_TO_RADS);
 	vec.x *= cosine;
 	vec.x += (vec.y * sine);
@@ -44,8 +44,8 @@ void Rotate(Stuff::Vector3D& vec, float angle)
 
 void RotateLight(Stuff::Vector3D& vec, float angle)
 {
-	float tx = vec.x;
-	float sine = sin(angle);
+	float tx	 = vec.x;
+	float sine   = sin(angle);
 	float cosine = cos(angle);
 	vec.x *= cosine;
 	vec.x += (vec.z * sine);
@@ -55,8 +55,8 @@ void RotateLight(Stuff::Vector3D& vec, float angle)
 
 void OppRotate(Stuff::Vector3D& vec, float angle)
 {
-	float tx = vec.x;
-	float sine = sin(angle * DEGREES_TO_RADS);
+	float tx	 = vec.x;
+	float sine   = sin(angle * DEGREES_TO_RADS);
 	float cosine = cos(angle * DEGREES_TO_RADS);
 	vec.x *= cosine;
 	vec.x -= (vec.y * sine);
@@ -67,9 +67,9 @@ void OppRotate(Stuff::Vector3D& vec, float angle)
 float distance_from(Stuff::Vector3D& v1, Stuff::Vector3D& v2)
 {
 	Stuff::Vector3D result;
-	result.x = v2.x - v1.x;
-	result.y = v2.y - v1.y;
-	result.z = v2.z - v1.z;
+	result.x   = v2.x - v1.x;
+	result.y   = v2.y - v1.y;
+	result.z   = v2.z - v1.z;
 	float dist = result.GetLength();
 	return (dist);
 }
@@ -83,18 +83,18 @@ float my_acos(float val)
 	// maybe, 0.00001). This can be used to check if it's
 	// most likely a round-off error, or if it's actually out
 	// of the domain range...
-	if(val < -1.0)
+	if (val < -1.0)
 		val = -1.0;
-	if(val > 1.0)
+	if (val > 1.0)
 		val = 1.0;
-	return(acos(val));
+	return (acos(val));
 }
 
 float angle_from(Stuff::Vector2DOf<float>& v1, Stuff::Vector2DOf<float>& v2)
 {
 	float mag_product = v1.GetLength() * v2.GetLength();
-	if(mag_product == 0.0)
-		return mag_product;	// 0;
+	if (mag_product == 0.0)
+		return mag_product; // 0;
 	else
 	{
 		float vecResult = v1 * v2;
@@ -105,8 +105,8 @@ float angle_from(Stuff::Vector2DOf<float>& v1, Stuff::Vector2DOf<float>& v2)
 float angle_from(Stuff::Vector3D& v1, Stuff::Vector3D& v2)
 {
 	float mag_product = v1.GetLength() * v2.GetLength();
-	if(mag_product == 0.0)
-		return mag_product;	// 0;
+	if (mag_product == 0.0)
+		return mag_product; // 0;
 	else
 	{
 		float vecResult = v1 * v2;
@@ -124,17 +124,14 @@ float world_angle_between(Stuff::Vector3D& v1, Stuff::Vector3D& v2)
 	//--------------------------------
 	// Get sign of relative angle.
 	float z = (facingVec.x * goalVec.y) - (facingVec.y * goalVec.x);
-	if(z > 0.0f)
+	if (z > 0.0f)
 		angle = -angle;
-	return(angle);
+	return (angle);
 }
 
 //---------------------------------------------------------------------------
 // Class frameOfRef
-frameOfRef::frameOfRef()
-{
-	reset_to_world_frame();
-}
+frameOfRef::frameOfRef() { reset_to_world_frame(); }
 
 frameOfRef& frameOfRef::reset_to_world_frame()
 {
@@ -144,7 +141,7 @@ frameOfRef& frameOfRef::reset_to_world_frame()
 	return *this;
 }
 
-frameOfRef& frameOfRef::operator = (frameOfRef& fr)
+frameOfRef& frameOfRef::operator=(frameOfRef& fr)
 {
 	i = fr.i;
 	j = fr.j;
@@ -165,13 +162,13 @@ frameOfRef& frameOfRef::rotate_about_i(float& angle)
 	float cosine, sine;
 	Stuff::Vector3D oldj, oldK;
 	cosine = cos(angle * DEGREES_TO_RADS);
-	sine = sin(angle * DEGREES_TO_RADS);
-	oldj = j;
-	oldK = k;
-	j *= cosine;	// j = J*cos + K*sin
+	sine   = sin(angle * DEGREES_TO_RADS);
+	oldj   = j;
+	oldK   = k;
+	j *= cosine; // j = J*cos + K*sin
 	oldK *= sine;
 	j += oldK;
-	k *= cosine;	// k = K*cos - J*sin
+	k *= cosine; // k = K*cos - J*sin
 	oldj *= sine;
 	k -= oldj;
 	return *this;
@@ -182,13 +179,13 @@ frameOfRef& frameOfRef::rotate_about_j(float& angle)
 	float cosine, sine;
 	Stuff::Vector3D oldi, oldK;
 	cosine = cos(angle * DEGREES_TO_RADS);
-	sine = sin(angle * DEGREES_TO_RADS);
-	oldi = i;
-	oldK = k;
-	i *= cosine;	// i = I*cos - K*sin
+	sine   = sin(angle * DEGREES_TO_RADS);
+	oldi   = i;
+	oldK   = k;
+	i *= cosine; // i = I*cos - K*sin
 	oldK *= sine;
 	i -= oldK;
-	k *= cosine;	// k = K*cos + I*sin
+	k *= cosine; // k = K*cos + I*sin
 	oldi *= sine;
 	k += oldi;
 	return *this;
@@ -199,9 +196,9 @@ frameOfRef& frameOfRef::rotate_about_k(float& angle)
 	float cosine, sine;
 	Stuff::Vector3D oldi, oldJ;
 	cosine = cos(angle * DEGREES_TO_RADS);
-	sine = sin(angle * DEGREES_TO_RADS);
-	oldi = i;
-	oldJ = j;
+	sine   = sin(angle * DEGREES_TO_RADS);
+	oldi   = i;
+	oldJ   = j;
 	i *= cosine;
 	oldJ *= sine;
 	i += oldJ;
@@ -283,5 +280,3 @@ frameOfRef& frameOfRef::orthonormalize_on_zaxis()
 }
 
 /* ---------------------------------------------------------------------- */
-
-

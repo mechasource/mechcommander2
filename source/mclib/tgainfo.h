@@ -56,9 +56,12 @@ struct TGAFileHeader
 
 void tgaDecomp(puint8_t dest, puint8_t source, TGAFileHeader* tga_header);
 
-void loadTGATexture(FilePtr tgaFile, puint8_t ourRAM, int32_t width, int32_t height);
-void loadTGAMask(FilePtr tgaFile, puint8_t ourRAM, int32_t width, int32_t height);
+void loadTGATexture(
+	FilePtr tgaFile, puint8_t ourRAM, int32_t width, int32_t height);
+void loadTGAMask(
+	FilePtr tgaFile, puint8_t ourRAM, int32_t width, int32_t height);
 
-void flipTopToBottom(puint8_t buffer, uint8_t depth, int32_t width, int32_t height);
+void flipTopToBottom(
+	puint8_t buffer, uint8_t depth, int32_t width, int32_t height);
 //---------------------------------------------------------------------------
 #endif

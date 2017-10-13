@@ -4,7 +4,8 @@
 
 #pragma once
 
-#if !defined(AFX_CAMPAIGNDIALOG_H__911BFC1D_2B46_40F8_A288_1E0BDB371BDE__INCLUDED_)
+#if !defined(                                                                  \
+	AFX_CAMPAIGNDIALOG_H__911BFC1D_2B46_40F8_A288_1E0BDB371BDE__INCLUDED_)
 #define AFX_CAMPAIGNDIALOG_H__911BFC1D_2B46_40F8_A288_1E0BDB371BDE__INCLUDED_
 
 //#include "campaigneditor.h"
@@ -15,9 +16,9 @@
 
 class CCampaignDialog : public CDialog
 {
-// Construction
-public:
-	CCampaignDialog(CWnd* pParent = nullptr);   // standard constructor
+	// Construction
+  public:
+	CCampaignDialog(CWnd* pParent = nullptr); // standard constructor
 
 	CCampaignData m_CampaignData;
 	CCampaignData m_LastSavedCampaignData;
@@ -31,27 +32,28 @@ public:
 	bool m_NameUseResourceString;
 	int32_t m_NameResourceStringID;
 
-// Dialog Data
+	// Dialog Data
 	//{{AFX_DATA(CCampaignDialog)
-	enum { IDD = IDD_CAMPAIGN };
-	CListBox	m_GroupListControl;
-	int32_t		m_CBillsEdit;
-	CString	m_FinalVideoEdit;
-	CString	m_NameEdit;
-	CString	m_NameResourceStringIDEdit;
+	enum
+	{
+		IDD = IDD_CAMPAIGN
+	};
+	CListBox m_GroupListControl;
+	int32_t m_CBillsEdit;
+	CString m_FinalVideoEdit;
+	CString m_NameEdit;
+	CString m_NameResourceStringIDEdit;
 	//}}AFX_DATA
 
-
-// Overrides
+	// Overrides
 	// ClassWizard generated virtual function overrides
 	//{{AFX_VIRTUAL(CCampaignDialog)
-protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-	//}}AFX_VIRTUAL
+  protected:
+	virtual void DoDataExchange(CDataExchange* pDX); // DDX/DDV support
+													 //}}AFX_VIRTUAL
 
-// Implementation
-protected:
-
+	// Implementation
+  protected:
 	// Generated message map functions
 	//{{AFX_MSG(CCampaignDialog)
 	afx_msg void OnCaFinalVideoBrowseButton(void);
@@ -72,6 +74,7 @@ protected:
 };
 
 //{{AFX_INSERT_LOCATION}}
-// Microsoft Visual C++ will insert additional declarations immediately before the previous line.
+// Microsoft Visual C++ will insert additional declarations immediately before
+// the previous line.
 
 #endif // !defined(AFX_CAMPAIGNDIALOG_H__911BFC1D_2B46_40F8_A288_1E0BDB371BDE__INCLUDED_)

@@ -17,15 +17,14 @@ TacMap:
 **************************************************************************************************/
 class TacMap
 {
-public:
-
+  public:
 	TacMap(void);
 
-	static void worldToTacMap(Stuff::Vector3D& world, int32_t xOffset, int32_t yOffset, int32_t xSize, int32_t ySize, gos_VERTEX& tac);
-	static void tacMapToWorld(const Stuff::Vector2DOf<int32_t>& screen, int32_t xSize, int32_t ySize,  Stuff::Vector3D& world);
-
+	static void worldToTacMap(Stuff::Vector3D& world, int32_t xOffset,
+		int32_t yOffset, int32_t xSize, int32_t ySize, gos_VERTEX& tac);
+	static void tacMapToWorld(const Stuff::Vector2DOf<int32_t>& screen,
+		int32_t xSize, int32_t ySize, Stuff::Vector3D& world);
 };
 
-
 //*************************************************************************************************
-#endif  // end of file ( TacMap.h )
+#endif // end of file ( TacMap.h )

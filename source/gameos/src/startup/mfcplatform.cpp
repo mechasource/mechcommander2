@@ -6,10 +6,10 @@
  conditions are met (OSI approved BSD 2-clause license):
 
  1. Redistributions of source code must retain the above copyright notice,
-    this list of conditions and the following disclaimer.
+	this list of conditions and the following disclaimer.
  2. Redistributions in binary form must reproduce the above copyright notice,
-    this list of conditions and the following disclaimer in the documentation
-    and/or other materials provided with the distribution.
+	this list of conditions and the following disclaimer in the documentation
+	and/or other materials provided with the distribution.
 
  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -39,8 +39,8 @@
 #include <platform.hpp>
 #include <mfcplatform.hpp>
 
-extern "C" void WINAPI
-InitGameOS(HINSTANCE hInstance, HWND hWindow, PSTR CommandLine)
+extern "C" void WINAPI InitGameOS(
+	HINSTANCE hInstance, HWND hWindow, PSTR CommandLine)
 {
 	Platform = Platform_MFC;
 	RunFromOtherApp(hInstance, hWindow, CommandLine);
@@ -54,11 +54,8 @@ PVOID __cdecl operator new(size_t nSize, HGOSHEAP HeapBlock)
 
 PVOID __cdecl operator new(size_t nSize)
 {
-	return gos_Malloc(nSize, (HGOSHEAP) - 1);
+	return gos_Malloc(nSize, (HGOSHEAP)-1);
 }
 
-void __cdecl operator delete(PVOID block)
-{
-	gos_Free(block);
-}
+void __cdecl operator delete(PVOID block) { gos_Free(block); }
 #endif

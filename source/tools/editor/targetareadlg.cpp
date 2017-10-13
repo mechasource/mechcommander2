@@ -18,18 +18,19 @@ TargetAreaDlg.cpp			: Implementation of the TargetAreaDlg component.
 
 #include "EditorInterface.h"
 
-
 //-------------------------------------------------------------------------------------------------
-TargetAreaDlg::TargetAreaDlg(float& targetCenterX, float& targetCenterY, float& targetRadius): CDialog(IDD_TARGET_AREA)
+TargetAreaDlg::TargetAreaDlg(
+	float& targetCenterX, float& targetCenterY, float& targetRadius)
+	: CDialog(IDD_TARGET_AREA)
 {
-	m_pTargetCenterX = &targetCenterX;
-	m_pTargetCenterY = &targetCenterY;
-	m_pTargetRadius = &targetRadius;
+	m_pTargetCenterX		= &targetCenterX;
+	m_pTargetCenterY		= &targetCenterY;
+	m_pTargetRadius			= &targetRadius;
 	m_pTargetCenterXEditBox = 0;
 	m_pTargetCenterYEditBox = 0;
-	m_pTargetRadiusEditBox = 0;
-	m_pCancelButton = 0;
-	m_pOKButton = 0;
+	m_pTargetRadiusEditBox  = 0;
+	m_pCancelButton			= 0;
+	m_pOKButton				= 0;
 }
 
 BOOL TargetAreaDlg::OnInitDialog()
@@ -54,17 +55,15 @@ BOOL TargetAreaDlg::OnInitDialog()
 	return 1;
 }
 
-BOOL TargetAreaDlg::OnCommand(WPARAM wParam, LPARAM lParam) // called by child controls to inform of an event
+BOOL TargetAreaDlg::OnCommand(WPARAM wParam,
+	LPARAM lParam) // called by child controls to inform of an event
 {
 	assert(m_pCancelButton);
 	assert(m_pOKButton);
 	return inherited::OnCommand(wParam, lParam);
 }
 
-void TargetAreaDlg::OnCancel()
-{
-	EndDialog(IDCANCEL);
-}
+void TargetAreaDlg::OnCancel() { EndDialog(IDCANCEL); }
 
 void TargetAreaDlg::OnOK()
 {
@@ -73,32 +72,28 @@ void TargetAreaDlg::OnOK()
 	float tmpFloat;
 	m_pTargetCenterXEditBox->GetWindowText(tmpCStr);
 	result = sscanf_s(tmpCStr.GetBuffer(0), "%f", &tmpFloat);
-	if(1 == result)
+	if (1 == result)
 	{
 		(*m_pTargetCenterX) = tmpFloat;
 	}
 	m_pTargetCenterYEditBox->GetWindowText(tmpCStr);
 	result = sscanf_s(tmpCStr.GetBuffer(0), "%f", &tmpFloat);
-	if(1 == result)
+	if (1 == result)
 	{
 		(*m_pTargetCenterY) = tmpFloat;
 	}
 	m_pTargetRadiusEditBox->GetWindowText(tmpCStr);
 	result = sscanf_s(tmpCStr.GetBuffer(0), "%f", &tmpFloat);
-	if(1 == result)
+	if (1 == result)
 	{
 		(*m_pTargetRadius) = tmpFloat;
 	}
 	EndDialog(IDOK);
 }
 
-
 //-------------------------------------------------------------------------------------------------
 
-TargetAreaDlg::~TargetAreaDlg()
-{
-}
-
+TargetAreaDlg::~TargetAreaDlg() {}
 
 //*************************************************************************************************
 // end of file ( TargetAreaDlg.cpp )

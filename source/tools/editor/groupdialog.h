@@ -14,36 +14,37 @@
 
 class CGroupDialog : public CDialog
 {
-// Construction
-public:
-	CGroupDialog(CWnd* pParent = nullptr);   // standard constructor
+	// Construction
+  public:
+	CGroupDialog(CWnd* pParent = nullptr); // standard constructor
 
 	int32_t m_TuneNumber;
 	CMissionList m_MissionList;
 
-// Dialog Data
+	// Dialog Data
 	//{{AFX_DATA(CGroupDialog)
-	enum { IDD = IDD_GROUP };
-	CComboBox	m_TuneComboControl;
-	CListBox	m_MissionListControl;
-	CString	m_OperationFileEdit;
-	CString	m_PreVideoFileEdit;
-	CString	m_VideoFileEdit;
-	CString	m_LabelEdit;
-	int32_t		m_NumMissionsToCompleteEdit;
+	enum
+	{
+		IDD = IDD_GROUP
+	};
+	CComboBox m_TuneComboControl;
+	CListBox m_MissionListControl;
+	CString m_OperationFileEdit;
+	CString m_PreVideoFileEdit;
+	CString m_VideoFileEdit;
+	CString m_LabelEdit;
+	int32_t m_NumMissionsToCompleteEdit;
 	//}}AFX_DATA
 
-
-// Overrides
+	// Overrides
 	// ClassWizard generated virtual function overrides
 	//{{AFX_VIRTUAL(CGroupDialog)
-protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-	//}}AFX_VIRTUAL
+  protected:
+	virtual void DoDataExchange(CDataExchange* pDX); // DDX/DDV support
+													 //}}AFX_VIRTUAL
 
-// Implementation
-protected:
-
+	// Implementation
+  protected:
 	// Generated message map functions
 	//{{AFX_MSG(CGroupDialog)
 	afx_msg void OnGrOperationFileBrowseButton(void);
@@ -59,6 +60,7 @@ protected:
 };
 
 //{{AFX_INSERT_LOCATION}}
-// Microsoft Visual C++ will insert additional declarations immediately before the previous line.
+// Microsoft Visual C++ will insert additional declarations immediately before
+// the previous line.
 
 #endif // !defined(AFX_GROUPDIALOG_H__E1CC8418_9550_4243_8187_6746DEF69E20__INCLUDED_)

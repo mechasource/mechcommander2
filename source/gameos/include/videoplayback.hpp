@@ -9,60 +9,53 @@
 
 typedef struct gos_Video
 {
-public:
-	PSTR						m_lpPath;
+  public:
+	PSTR m_lpPath;
 
 	static HGOSHEAP m_videoHeap;
-	PIMULTIMEDIASTREAM			m_pMMStream;
-	PIMEDIASTREAM				m_pPrimaryVidStream;
-	IBasicAudio*			   	m_pBasicAudio;
-	PIDIRECTDRAWMEDIASTREAM   	m_pDDStream;
-	LPDIRECTDRAWSURFACE			m_pSurface;
-	IDirectDrawStreamSample*  	m_pSample;
-	LPDIRECTDRAWSURFACE			m_hDestSurf;
-	LPDIRECTDRAWSURFACE			m_hSrcSurf;
+	PIMULTIMEDIASTREAM m_pMMStream;
+	PIMEDIASTREAM m_pPrimaryVidStream;
+	IBasicAudio* m_pBasicAudio;
+	PIDIRECTDRAWMEDIASTREAM m_pDDStream;
+	LPDIRECTDRAWSURFACE m_pSurface;
+	IDirectDrawStreamSample* m_pSample;
+	LPDIRECTDRAWSURFACE m_hDestSurf;
+	LPDIRECTDRAWSURFACE m_hSrcSurf;
 	//
-	// Surface that is used to decompress the video to (DirectX 1 surface) and it's description
+	// Surface that is used to decompress the video to (DirectX 1 surface) and
+	// it's description
 	//
-	LPDIRECTDRAWSURFACE			m_pMMStreamSurface;
-	LPDIRECTDRAWSURFACE7		m_pMMStreamSurface7;
-	DDSURFACEDESC2				m_pMMStreamSurfaceDesc;
+	LPDIRECTDRAWSURFACE m_pMMStreamSurface;
+	LPDIRECTDRAWSURFACE7 m_pMMStreamSurface7;
+	DDSURFACEDESC2 m_pMMStreamSurfaceDesc;
 
-	gosVideo_PlayMode			m_videoStatus, m_videoPlayMode;
-	RECT						m_videoSrcRect, m_videoRect;
+	gosVideo_PlayMode m_videoStatus, m_videoPlayMode;
+	RECT m_videoSrcRect, m_videoRect;
 
-	int32_t							m_videoLocX, m_videoLocY;
+	int32_t m_videoLocX, m_videoLocY;
 
-	float						m_scaleX, m_scaleY;
-	float						m_volume, m_panning;
+	float m_scaleX, m_scaleY;
+	float m_volume, m_panning;
 
-	uint32_t						m_texture;
+	uint32_t m_texture;
 
-	STREAM_TIME					m_duration;
-	STREAM_TIME					m_lastKnownTime;
-	STREAM_TIME					m_nextFrameTime;
+	STREAM_TIME m_duration;
+	STREAM_TIME m_lastKnownTime;
+	STREAM_TIME m_nextFrameTime;
 
-public:
-	gos_Video(PSTR  path, bool texture);
+  public:
+	gos_Video(PSTR path, bool texture);
 	~gos_Video(void);
-	bool
-	Update(void);
-	void
-	Pause(void);
-	void
-	Continue(void);
-	void
-	Stop(void);
-	void
-	FF(double time);
-	void
-	Restore(void);
-	void
-	Release(void);
-	void
-	SetLocation(uint32_t, uint32_t);
-	void
-	OpenMMStream(PCSTR pszFileName, IDirectDraw* pDD, IMultiMediaStream** ppMMStream);
+	bool Update(void);
+	void Pause(void);
+	void Continue(void);
+	void Stop(void);
+	void FF(double time);
+	void Restore(void);
+	void Release(void);
+	void SetLocation(uint32_t, uint32_t);
+	void OpenMMStream(
+		PCSTR pszFileName, IDirectDraw* pDD, IMultiMediaStream** ppMMStream);
 } gos_Video;
 
 void __stdcall VideoManagerInstall(void);
@@ -73,6 +66,5 @@ void __stdcall VideoManagerRestore(void);
 void __stdcall VideoManagerUninstall(void);
 void __stdcall VideoManagerUpdate(void);
 void __stdcall VideoManagerFF(double sec);
-void __stdcall OpenMMStream(PCSTR  pszFileName, IDirectDraw* pDD, IMultiMediaStream** ppMMStream, IBasicAudio** ppBasicAudio);
-
-
+void __stdcall OpenMMStream(PCSTR pszFileName, IDirectDraw* pDD,
+	IMultiMediaStream** ppMMStream, IBasicAudio** ppBasicAudio);

@@ -1,5 +1,6 @@
 /*************************************************************************************************\
-TerrainBrush.h		: Interface for the TerrainBrush component. used to paint textures
+TerrainBrush.h		: Interface for the TerrainBrush component. used to paint
+textures
 //---------------------------------------------------------------------------//
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
@@ -13,23 +14,22 @@ TerrainBrush.h		: Interface for the TerrainBrush component. used to paint textur
 //#include "brush.h"
 //#include "action.h"
 
-class TerrainBrush: public Brush
+class TerrainBrush : public Brush
 {
-public:
-
+  public:
 	inline TerrainBrush(int32_t Type)
 	{
-		if(Type == -1)
+		if (Type == -1)
 			Type = s_lastType;
 		terrainType = Type;
-		s_lastType = Type;
-		pAction = nullptr;
+		s_lastType  = Type;
+		pAction		= nullptr;
 	}
 	virtual ~TerrainBrush() {}
 
 	bool beginPaint()
 	{
-		if(pAction)
+		if (pAction)
 		{
 			gosASSERT(false);
 		}
@@ -40,35 +40,34 @@ public:
 	Action* endPaint()
 	{
 		Action* pRetAction = pAction;
-		pAction  = nullptr;
+		pAction			   = nullptr;
 		return pRetAction;
 	}
-	virtual bool paint(Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY)
+	virtual bool paint(
+		Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY)
 	{
 		int32_t tileC;
 		int32_t tileR;
 		Stuff::Vector2DOf<int32_t> screenPos(screenX, screenY);
 		eye->getClosestVertex(screenPos, tileR, tileC);
-		if(tileR < Terrain::realVerticesMapSide && tileR > -1
-				&& tileC < Terrain::realVerticesMapSide && tileC > -1)
+		if (tileR < Terrain::realVerticesMapSide && tileR > -1 &&
+			tileC < Terrain::realVerticesMapSide && tileC > -1)
 		{
-			pAction->addChangedVertexInfo(tileR, tileC);	// for undo
+			pAction->addChangedVertexInfo(tileR, tileC); // for undo
 			land->setTerrain(tileR, tileC, terrainType);
 			return true;
 		}
 		return false;
 	}
-	virtual bool canPaint(Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY, int32_t flags)
+	virtual bool canPaint(Stuff::Vector3D& worldPos, int32_t screenX,
+		int32_t screenY, int32_t flags)
 	{
 		return true;
 	}
 
 	virtual Action* applyToSelection(void);
 
-
-
-private:
-
+  private:
 	// SUPPRESS THESE!
 	TerrainBrush(const TerrainBrush& TerrainBrush);
 	TerrainBrush& operator=(const TerrainBrush& TerrainBrush);
@@ -80,6 +79,5 @@ private:
 	ActionPaintTile* pAction;
 };
 
-
 //*************************************************************************************************
-#endif  // end of file ( TerrainBrush.h )
+#endif // end of file ( TerrainBrush.h )

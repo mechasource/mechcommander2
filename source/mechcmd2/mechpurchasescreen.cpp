@@ -1,5 +1,6 @@
 /*************************************************************************************************\
-MechPurchaseScreen.cpp			: Implementation of the MechPurchaseScreen component.
+MechPurchaseScreen.cpp			: Implementation of the MechPurchaseScreen
+component.
 //---------------------------------------------------------------------------//
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
@@ -22,8 +23,7 @@ MechPurchaseScreen.cpp			: Implementation of the MechPurchaseScreen component.
 MechPurchaseScreen* MechPurchaseScreen::s_instance = nullptr;
 
 #define INVENTORY_ID 88
-#define VARIANT_ID	89
-
+#define VARIANT_ID 89
 
 //-------------------------------------------------------------------------------------------------
 
@@ -32,18 +32,18 @@ MechPurchaseScreen::MechPurchaseScreen()
 {
 	status = RUNNING;
 	gosASSERT(!s_instance);
-	s_instance = this;
-	acceptPressed = 0;
-	pDragMech = nullptr;
-	dragStartLeft = 0;
+	s_instance		= this;
+	acceptPressed   = 0;
+	pDragMech		= nullptr;
+	dragStartLeft   = 0;
 	helpTextArrayID = 4;
 	inventoryListBox.setID(INVENTORY_ID);
 	variantListBox.setID(VARIANT_ID);
-	countDownTime = .5;
-	curCount = 0.0;
-	previousAmount = 0;
-	oldCBillsAmount  = 0;
-	flashTime = 0.f;
+	countDownTime   = .5;
+	curCount		= 0.0;
+	previousAmount  = 0;
+	oldCBillsAmount = 0;
+	flashTime		= 0.f;
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -55,7 +55,6 @@ MechPurchaseScreen::~MechPurchaseScreen()
 	inventoryListBox.destroy();
 }
 
-
 //-------------------------------------------------------------------------------------------------
 
 int32_t MechPurchaseScreen::init(FitIniFile& file)
@@ -63,13 +62,15 @@ int32_t MechPurchaseScreen::init(FitIniFile& file)
 	MechListBox::init();
 	mechDisplay.init();
 	LogisticsScreen::init(file, "Static", "Text", "Rect", "Button");
-	((aObject*)&inventoryListBox)->init(rects[0].left(), rects[0].top(),
-										rects[0].width(), rects[0].height());
+	((aObject*)&inventoryListBox)
+		->init(rects[0].left(), rects[0].top(), rects[0].width(),
+			rects[0].height());
 	inventoryListBox.setScrollBarOrange();
-	((aObject*)&variantListBox)->init(rects[1].left(), rects[1].top(),
-									  rects[1].width(), rects[1].height());
+	((aObject*)&variantListBox)
+		->init(rects[1].left(), rects[1].top(), rects[1].width(),
+			rects[1].height());
 	variantListBox.setScrollBarOrange();
-	for(size_t i = 0; i < buttonCount; i++)
+	for (size_t i = 0; i < buttonCount; i++)
 		buttons[i].setMessageOnRelease();
 	return NO_ERROR;
 }
@@ -77,40 +78,41 @@ int32_t MechPurchaseScreen::init(FitIniFile& file)
 
 void MechPurchaseScreen::update()
 {
-	if(!MPlayer || !ChatWindow::instance()->pointInside(userInput->getMouseX(), userInput->getMouseY()))
+	if (!MPlayer || !ChatWindow::instance()->pointInside(
+						userInput->getMouseX(), userInput->getMouseY()))
 		LogisticsScreen::update();
 	// update CBills
 	int32_t amount = LogisticsData::instance->getCBills();
-	int32_t color = 0xff005392;
-	if(amount != oldCBillsAmount)
+	int32_t color  = 0xff005392;
+	if (amount != oldCBillsAmount)
 	{
-		previousAmount = oldCBillsAmount - amount;
-		curCount = .00001f;
+		previousAmount  = oldCBillsAmount - amount;
+		curCount		= .00001f;
 		oldCBillsAmount = amount;
-		if(previousAmount < 0)
+		if (previousAmount < 0)
 			soundSystem->playDigitalSample(WINDOW_OPEN);
 		else
 			soundSystem->playDigitalSample(WINDOW_CLOSE);
 	}
-	if(curCount && curCount + frameLength < countDownTime)
+	if (curCount && curCount + frameLength < countDownTime)
 	{
 		curCount += frameLength;
-		float curAmount = previousAmount - (curCount / countDownTime * previousAmount);
+		float curAmount =
+			previousAmount - (curCount / countDownTime * previousAmount);
 		amount += curAmount;
 		color = 0xffc8e100;
-		if(curAmount > 0)
+		if (curAmount > 0)
 			color = 0xffa21600;
 	}
-	else if(flashTime)
+	else if (flashTime)
 	{
 		flashTime += frameLength;
-		if(flashTime < .125
-				|| (flashTime > .25 && flashTime < .3875)
-				|| (flashTime > .5 && flashTime < .6625))
+		if (flashTime < .125 || (flashTime > .25 && flashTime < .3875) ||
+			(flashTime > .5 && flashTime < .6625))
 		{
 			color = 0xff000000;
 		}
-		else if(flashTime > .75)
+		else if (flashTime > .75)
 		{
 			flashTime = 0;
 		}
@@ -126,53 +128,53 @@ void MechPurchaseScreen::update()
 	int32_t oldSell = inventoryListBox.GetSelectedItem();
 	inventoryListBox.update();
 	int32_t newSell = inventoryListBox.GetSelectedItem();
-	if(oldSell != newSell && newSell != -1)
+	if (oldSell != newSell && newSell != -1)
 	{
 		variantListBox.SelectItem(-1);
 	}
 	oldSell = variantListBox.GetSelectedItem();
 	variantListBox.update();
 	newSell = variantListBox.GetSelectedItem();
-	if(oldSell != newSell  && newSell != -1)
+	if (oldSell != newSell && newSell != -1)
 	{
 		inventoryListBox.SelectItem(-1);
 	}
 	variantListBox.disableItemsThatCostMoreThanRP();
 	LogisticsMech* pCurSell = inventoryListBox.getCurrentMech();
-	LogisticsMech* pCurBuy = variantListBox.getCurrentMech();
+	LogisticsMech* pCurBuy  = variantListBox.getCurrentMech();
 	// disable the sell button
 	buttons[2].disable(pCurSell ? 0 : 1);
-	if(pCurBuy)
+	if (pCurBuy)
 	{
-		if(pCurBuy->getCost() > LogisticsData::instance->getCBills())
+		if (pCurBuy->getCost() > LogisticsData::instance->getCBills())
 		{
 			pCurBuy = nullptr;
 		}
 		setMech(pCurBuy);
 	}
-	else if(pCurSell)
+	else if (pCurSell)
 		setMech(pCurSell);
 	buttons[1].disable(pCurBuy ? 0 : 1);
-	if(!pCurBuy &&
-			userInput->isLeftClick() && buttons[1].pointInside(userInput->getMouseX(), userInput->getMouseY()))
+	if (!pCurBuy && userInput->isLeftClick() &&
+		buttons[1].pointInside(userInput->getMouseX(), userInput->getMouseY()))
 	{
-		if(!flashTime)
+		if (!flashTime)
 			flashTime = .0001f;
 	}
 	// drag and drop
 	// update drag and drop
-	if(pDragMech)
+	if (pDragMech)
 	{
 		dragIcon.moveTo(userInput->getMouseX() - dragIcon.width() / 2,
-						userInput->getMouseY() - dragIcon.height() / 2);
-		if(userInput->leftMouseReleased())
+			userInput->getMouseY() - dragIcon.height() / 2);
+		if (userInput->leftMouseReleased())
 		{
 			endDrag();
 		}
 	}
 	mechDisplay.update();
 	inventoryListBox.enableAllItems();
-	if(MPlayer && ChatWindow::instance())
+	if (MPlayer && ChatWindow::instance())
 		ChatWindow::instance()->update();
 }
 
@@ -180,9 +182,10 @@ void MechPurchaseScreen::update()
 
 void MechPurchaseScreen::render(int32_t xOffset, int32_t yOffset)
 {
-	if(!xOffset && !yOffset)
+	if (!xOffset && !yOffset)
 	{
-		if(!MPlayer && !LogisticsData::instance->isSingleMission() && LogisticsData::instance->newMechsAvailable())
+		if (!MPlayer && !LogisticsData::instance->isSingleMission() &&
+			LogisticsData::instance->newMechsAvailable())
 		{
 			soundSystem->playBettySample(BETTY_NEW_MECHS);
 			LogisticsData::instance->setNewMechsAcknowledged();
@@ -196,9 +199,9 @@ void MechPurchaseScreen::render(int32_t xOffset, int32_t yOffset)
 	variantListBox.move(-xOffset, -yOffset);
 	mechDisplay.render(xOffset, yOffset);
 	LogisticsScreen::render(xOffset, yOffset);
-	if(pDragMech)
+	if (pDragMech)
 		dragIcon.render();
-	if(MPlayer && ChatWindow::instance())
+	if (MPlayer && ChatWindow::instance())
 		ChatWindow::instance()->render(xOffset, yOffset);
 }
 
@@ -209,32 +212,34 @@ void MechPurchaseScreen::begin()
 	variantListBox.removeAllItems(true);
 	inventoryListBox.removeAllItems(true);
 	// initialize both the inventory and icon lists
-	EList< LogisticsMech*, LogisticsMech* > mechList;
+	EList<LogisticsMech*, LogisticsMech*> mechList;
 	LogisticsData::instance->getInventory(mechList);
 	prevInventory.Clear();
 	LogisticsMech* pSelMech = 0;
-	oldCBillsAmount = LogisticsData::instance->getCBills();
-	for(EList< LogisticsMech*, LogisticsMech* >::EIterator iter = mechList.Begin();
-			!iter.IsDone(); iter++)
+	oldCBillsAmount			= LogisticsData::instance->getCBills();
+	for (EList<LogisticsMech*, LogisticsMech*>::EIterator iter =
+			 mechList.Begin();
+		 !iter.IsDone(); iter++)
 	{
-		if((*iter)->getForceGroup())
+		if ((*iter)->getForceGroup())
 			continue;
 		prevInventory.Append(*(*iter));
 		bool bFound = 0;
-		for(size_t i = 0; i < inventoryListBox.GetItemCount(); i++)
+		for (size_t i = 0; i < inventoryListBox.GetItemCount(); i++)
 		{
-			if(((MechListBoxItem*)inventoryListBox.GetItem(i))->getMech()->getVariant()
-					== (*iter)->getVariant())
+			if (((MechListBoxItem*)inventoryListBox.GetItem(i))
+					->getMech()
+					->getVariant() == (*iter)->getVariant())
 				bFound = true;
 		}
-		if(!bFound)
+		if (!bFound)
 		{
 			MechListBoxItem* item = new MechListBoxItem((*iter), 1);
 			inventoryListBox.AddItem(item);
 		}
 	}
 	MechListBoxItem* item = (MechListBoxItem*)inventoryListBox.GetItem(0);
-	if(item)
+	if (item)
 	{
 		inventoryListBox.SelectItem(0);
 		pSelMech = item->getMech();
@@ -242,25 +247,26 @@ void MechPurchaseScreen::begin()
 	LogisticsVariant* pVariants[256];
 	int32_t count = 256;
 	LogisticsData::instance->getPurchasableMechs(pVariants, count);
-	for(size_t i = 0; i < count; i++)
+	for (size_t i = 0; i < count; i++)
 	{
-		if(!MPlayer || MPlayer->missionSettings.variants || pVariants[i]->isDesignerMech())
+		if (!MPlayer || MPlayer->missionSettings.variants ||
+			pVariants[i]->isDesignerMech())
 		{
-			LogisticsMech* pMech = new LogisticsMech(pVariants[i], -1);
+			LogisticsMech* pMech  = new LogisticsMech(pVariants[i], -1);
 			MechListBoxItem* item = new MechListBoxItem(pMech, 1);
 			variantListBox.AddItem(item);
 		}
 	}
-	if(!pSelMech)
+	if (!pSelMech)
 	{
 		MechListBoxItem* item = (MechListBoxItem*)variantListBox.GetItem(0);
-		if(item)
+		if (item)
 		{
 			variantListBox.SelectItem(0);
 			pSelMech = item->getMech();
 		}
 	}
-	status = RUNNING;
+	status		  = RUNNING;
 	acceptPressed = 0;
 	inventoryListBox.drawCBills(1);
 	variantListBox.drawCBills(1);
@@ -273,21 +279,23 @@ void MechPurchaseScreen::begin()
 
 void MechPurchaseScreen::end()
 {
-	if(!acceptPressed && status != MAINMENU)
+	if (!acceptPressed && status != MAINMENU)
 	{
 		// sell all current stuff
-		EList< LogisticsMech*, LogisticsMech* > list;
+		EList<LogisticsMech*, LogisticsMech*> list;
 		LogisticsData::instance->getInventory(list);
-		for(EList< LogisticsMech*, LogisticsMech* >::EIterator iter = list.End(); !iter.IsDone(); iter--)
+		for (EList<LogisticsMech*, LogisticsMech*>::EIterator iter = list.End();
+			 !iter.IsDone(); iter--)
 		{
 			LogisticsData::instance->sellMech((*iter));
 		}
 		uint32_t base, color1, color2;
-		for(MECH_LIST::EIterator pIter = prevInventory.Begin(); !pIter.IsDone(); pIter++)
+		for (MECH_LIST::EIterator pIter = prevInventory.Begin();
+			 !pIter.IsDone(); pIter++)
 		{
 			(*pIter).getColors(base, color1, color2);
-			LogisticsData::instance->addMechToInventory((*pIter).getVariant(), (*pIter).getPilot(),
-					(*pIter).getForceGroup(), true);
+			LogisticsData::instance->addMechToInventory((*pIter).getVariant(),
+				(*pIter).getPilot(), (*pIter).getForceGroup(), true);
 		}
 	}
 	variantListBox.removeAllItems(true);
@@ -299,14 +307,14 @@ void MechPurchaseScreen::end()
 
 void MechPurchaseScreen::setMech(LogisticsMech* pMech, bool FromLB)
 {
-	if(status == RUNNING)
+	if (status == RUNNING)
 	{
-		if(FromLB)    // clicked on a disabled item
+		if (FromLB) // clicked on a disabled item
 		{
-			if(!flashTime)
+			if (!flashTime)
 				flashTime = .000001f;
 		}
-		if(FromLB)    // clicked on a disabled item
+		if (FromLB) // clicked on a disabled item
 		{
 			inventoryListBox.SelectItem(-1);
 			variantListBox.SelectItem(-1);
@@ -319,15 +327,15 @@ void MechPurchaseScreen::setMech(LogisticsMech* pMech, bool FromLB)
 
 void MechPurchaseScreen::beginDrag(LogisticsMech* pMech)
 {
-	if(status != RUNNING)
+	if (status != RUNNING)
 		return;
-	if(!pDragMech)
+	if (!pDragMech)
 	{
 		pDragMech = pMech;
 	}
 	MechListBox::initIcon(pMech, dragIcon);
-	if(inventoryListBox.pointInside(userInput->getMouseDragX(),
-									userInput->getMouseDragY()))
+	if (inventoryListBox.pointInside(
+			userInput->getMouseDragX(), userInput->getMouseDragY()))
 	{
 		dragStartLeft = true;
 		inventoryListBox.dimItem(pMech, true);
@@ -341,19 +349,19 @@ void MechPurchaseScreen::beginDrag(LogisticsMech* pMech)
 
 void MechPurchaseScreen::endDrag()
 {
-	if(pDragMech)
+	if (pDragMech)
 	{
-		if(inventoryListBox.pointInside(userInput->getMouseX(),
-										userInput->getMouseY()))
+		if (inventoryListBox.pointInside(
+				userInput->getMouseX(), userInput->getMouseY()))
 		{
-			if(!dragStartLeft)
+			if (!dragStartLeft)
 			{
 				addMech(pDragMech);
 			}
 		}
 		else
 		{
-			if(dragStartLeft)
+			if (dragStartLeft)
 				removeMech(pDragMech);
 		}
 	}
@@ -362,49 +370,53 @@ void MechPurchaseScreen::endDrag()
 	pDragMech = nullptr;
 }
 
-
 //-------------------------------------------------------------------------------------------------
 
-int32_t	MechPurchaseScreen::handleMessage(uint32_t what, uint32_t who)
+int32_t MechPurchaseScreen::handleMessage(uint32_t what, uint32_t who)
 {
-	if(status == RUNNING)
+	if (status == RUNNING)
 	{
-		switch(who)
+		switch (who)
 		{
-			case MB_MSG_ADD:
-				if(INVENTORY_ID == what)
+		case MB_MSG_ADD:
+			if (INVENTORY_ID == what)
+			{
+				int32_t index = inventoryListBox.GetSelectedItem();
+				if (index != -1)
 				{
-					int32_t index = inventoryListBox.GetSelectedItem();
-					if(index != -1)
+					aListItem* pItem = inventoryListBox.GetItem(index);
+					if (pItem)
 					{
-						aListItem* pItem = inventoryListBox.GetItem(index);
-						if(pItem)
-						{
-							LogisticsMech* pMech = ((MechListBoxItem*)pItem)->getMech();
-							int32_t oldCount = LogisticsData::instance->getVariantsInInventory(pMech->getVariant(), true);
-							if(NO_ERROR == LogisticsData::instance->sellMech(pMech) && (oldCount < 2))
-								((MechListBoxItem*)pItem)->resetMech();
-							soundSystem->playDigitalSample(LOG_SELECT);
-						}
+						LogisticsMech* pMech =
+							((MechListBoxItem*)pItem)->getMech();
+						int32_t oldCount =
+							LogisticsData::instance->getVariantsInInventory(
+								pMech->getVariant(), true);
+						if (NO_ERROR ==
+								LogisticsData::instance->sellMech(pMech) &&
+							(oldCount < 2))
+							((MechListBoxItem*)pItem)->resetMech();
+						soundSystem->playDigitalSample(LOG_SELECT);
 					}
 				}
-				else
-					addSelectedMech();
-				soundSystem->playDigitalSample(LOG_SELECT);
-				break;
-			case MB_MSG_REMOVE:
-				removeSelectedMech();
-				break;
-			case MB_MSG_NEXT:
-				acceptPressed = true;
-				status = DOWN;
-				break;
-			case MB_MSG_PREV:
-				status = DOWN;
-				break;
-			case MB_MSG_MAINMENU:
-				status = MAINMENU;
-				break;
+			}
+			else
+				addSelectedMech();
+			soundSystem->playDigitalSample(LOG_SELECT);
+			break;
+		case MB_MSG_REMOVE:
+			removeSelectedMech();
+			break;
+		case MB_MSG_NEXT:
+			acceptPressed = true;
+			status		  = DOWN;
+			break;
+		case MB_MSG_PREV:
+			status = DOWN;
+			break;
+		case MB_MSG_MAINMENU:
+			status = MAINMENU;
+			break;
 		}
 	}
 	return 0;
@@ -415,13 +427,13 @@ int32_t	MechPurchaseScreen::handleMessage(uint32_t what, uint32_t who)
 void MechPurchaseScreen::addSelectedMech()
 {
 	LogisticsMech* pMech = variantListBox.getCurrentMech();
-	if(pMech)
+	if (pMech)
 	{
 		addMech(pMech);
 	}
 	variantListBox.disableItemsThatCostMoreThanRP();
 	int32_t curSel = variantListBox.GetSelectedItem();
-	if(curSel == -1)
+	if (curSel == -1)
 	{
 		variantListBox.SelectItem(-1);
 		inventoryListBox.SelectItem(0);
@@ -431,10 +443,11 @@ void MechPurchaseScreen::addSelectedMech()
 void MechPurchaseScreen::addMech(LogisticsMech* pMech)
 {
 	LogisticsData::instance->purchaseMech(pMech->getVariant());
-	for(size_t i = 0; i < inventoryListBox.GetItemCount(); i++)
+	for (size_t i = 0; i < inventoryListBox.GetItemCount(); i++)
 	{
-		if(((MechListBoxItem*)inventoryListBox.GetItem(i))->getMech()->getVariant()
-				== pMech->getVariant())
+		if (((MechListBoxItem*)inventoryListBox.GetItem(i))
+				->getMech()
+				->getVariant() == pMech->getVariant())
 		{
 			return;
 		}
@@ -448,7 +461,7 @@ void MechPurchaseScreen::addMech(LogisticsMech* pMech)
 void MechPurchaseScreen::removeSelectedMech()
 {
 	LogisticsMech* pMech = inventoryListBox.getCurrentMech();
-	if(pMech)
+	if (pMech)
 	{
 		removeMech(pMech);
 	}
@@ -456,27 +469,30 @@ void MechPurchaseScreen::removeSelectedMech()
 
 void MechPurchaseScreen::removeMech(LogisticsMech* pMech)
 {
-	int32_t index = inventoryListBox.GetSelectedItem();
+	int32_t index	= inventoryListBox.GetSelectedItem();
 	aListItem* pItem = inventoryListBox.GetItem(index);
-	int32_t oldCount = LogisticsData::instance->getVariantsInInventory(pMech->getVariant(), true);
-	if(NO_ERROR == LogisticsData::instance->sellMech(pMech) && (oldCount < 2))
+	int32_t oldCount = LogisticsData::instance->getVariantsInInventory(
+		pMech->getVariant(), true);
+	if (NO_ERROR == LogisticsData::instance->sellMech(pMech) && (oldCount < 2))
 	{
 		inventoryListBox.RemoveItem(pItem, true);
 	}
-	if(!inventoryListBox.GetItemCount())
+	if (!inventoryListBox.GetItemCount())
 	{
 		selectFirstBuyableMech();
 	}
-	else if(-1 == inventoryListBox.GetSelectedItem())
+	else if (-1 == inventoryListBox.GetSelectedItem())
 		inventoryListBox.SelectItem(0);
 }
 
 bool MechPurchaseScreen::selectFirstBuyableMech()
 {
-	for(size_t i = 0; i < variantListBox.GetItemCount(); i++)
+	for (size_t i = 0; i < variantListBox.GetItemCount(); i++)
 	{
-		if(NO_ERROR == LogisticsData::instance->canPurchaseMech(
-					((MechListBoxItem*)variantListBox.GetItem(i))->getMech()->getVariant()))
+		if (NO_ERROR == LogisticsData::instance->canPurchaseMech(
+							((MechListBoxItem*)variantListBox.GetItem(i))
+								->getMech()
+								->getVariant()))
 		{
 			variantListBox.SelectItem(i);
 			return true;
@@ -484,9 +500,6 @@ bool MechPurchaseScreen::selectFirstBuyableMech()
 	}
 	return false;
 }
-
-
-
 
 //*************************************************************************************************
 // end of file ( MechPurchaseScreen.cpp )

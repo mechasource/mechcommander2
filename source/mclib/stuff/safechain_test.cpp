@@ -11,23 +11,19 @@
 
 #define TEST_COUNT 50
 
-class SafeChainTestPlug:
-	public Plug
+class SafeChainTestPlug : public Plug
 {
-public:
+  public:
 	int32_t value;
 
 	SafeChainTestPlug(int32_t value);
 	~SafeChainTestPlug();
 };
 
-class SafeChainTestNode:
-	public Node
+class SafeChainTestNode : public Node
 {
-public:
-	SafeChainOf<SafeChainTestPlug*>
-	chain1,
-	chain2;
+  public:
+	SafeChainOf<SafeChainTestPlug*> chain1, chain2;
 
 	SafeChainTestNode();
 	~SafeChainTestNode();
@@ -36,24 +32,19 @@ public:
 	bool RunTest();
 };
 
-SafeChainTestPlug::SafeChainTestPlug(int32_t value):
-	Plug(DefaultData)
+SafeChainTestPlug::SafeChainTestPlug(int32_t value) : Plug(DefaultData)
 {
 	this->value = value;
 }
 
-SafeChainTestPlug::~SafeChainTestPlug()
+SafeChainTestPlug::~SafeChainTestPlug() {}
+
+SafeChainTestNode::SafeChainTestNode()
+	: Node(DefaultData), chain1(this), chain2(this)
 {
 }
 
-SafeChainTestNode::SafeChainTestNode():
-	Node(DefaultData), chain1(this), chain2(this)
-{
-}
-
-SafeChainTestNode::~SafeChainTestNode()
-{
-}
+SafeChainTestNode::~SafeChainTestNode() {}
 
 //
 //###########################################################################
@@ -61,8 +52,7 @@ SafeChainTestNode::~SafeChainTestNode()
 //###########################################################################
 //
 
-void
-SafeChain::ProfileClass()
+void SafeChain::ProfileClass()
 {
 	SafeChainTestNode testNode;
 #if defined(_ARMOR)
@@ -70,11 +60,8 @@ SafeChain::ProfileClass()
 #endif
 	Test_Message("SafeChain::ProfileClass");
 	testNode.RunProfile();
-	SPEW((
-			 GROUP_STUFF_TEST,
-			 "SafeChain::ProfileClass elapsed = %f",
-			 gos_GetHiResTime() - startTicks
-		 ));
+	SPEW((GROUP_STUFF_TEST, "SafeChain::ProfileClass elapsed = %f",
+		gos_GetHiResTime() - startTicks));
 }
 
 //
@@ -83,20 +70,18 @@ SafeChain::ProfileClass()
 //###########################################################################
 //
 
-void
-SafeChain::TestClass()
+void SafeChain::TestClass()
 {
 	SPEW((GROUP_STUFF_TEST, "Starting SafeChain test..."));
 	SafeChainTestNode testNode;
 	testNode.RunTest();
 }
 
-bool
-SafeChainTestNode::RunProfile()
+bool SafeChainTestNode::RunProfile()
 {
-	SafeChainTestPlug*	testPlug1;
-	int32_t 				i;
-	Time 		startTicks;
+	SafeChainTestPlug* testPlug1;
+	int32_t i;
+	Time startTicks;
 	//
 	//--------------------------------------------------------------------
 	// Run timing tests
@@ -106,18 +91,15 @@ SafeChainTestNode::RunProfile()
 	 * Create plugs and add to both sockets
 	 */
 	startTicks = gos_GetHiResTime();
-	for(i = 0; i < TEST_COUNT; i++)
+	for (i = 0; i < TEST_COUNT; i++)
 	{
 		testPlug1 = new SafeChainTestPlug(i);
 		Register_Object(testPlug1);
 		chain1.Add(testPlug1);
 		chain2.Add(testPlug1);
 	}
-	SPEW((
-			 GROUP_STUFF_TEST,
-			 "SafeChainTestNode::RunTest Create = %f",
-			 gos_GetHiResTime() - startTicks
-		 ));
+	SPEW((GROUP_STUFF_TEST, "SafeChainTestNode::RunTest Create = %f",
+		gos_GetHiResTime() - startTicks));
 	/*
 	 * Iterate over both sockets
 	 */
@@ -128,25 +110,22 @@ SafeChainTestNode::RunProfile()
 		Test_Assumption(iterator1.GetSize() == TEST_COUNT);
 		Test_Assumption(iterator2.GetSize() == TEST_COUNT);
 		i = 0;
-		while((testPlug1 = iterator1.ReadAndNext()) != nullptr)
+		while ((testPlug1 = iterator1.ReadAndNext()) != nullptr)
 		{
 			Test_Assumption(testPlug1->value == i);
 			i++;
 		}
 		Test_Assumption(i == TEST_COUNT);
 		i = 0;
-		while((testPlug1 = iterator2.ReadAndNext()) != nullptr)
+		while ((testPlug1 = iterator2.ReadAndNext()) != nullptr)
 		{
 			Test_Assumption(testPlug1->value == i);
 			i++;
 		}
 		Test_Assumption(i == TEST_COUNT);
 	}
-	SPEW((
-			 GROUP_STUFF_TEST,
-			 "SafeChainTestNode::RunTest Iterate = %f",
-			 gos_GetHiResTime() - startTicks
-		 ));
+	SPEW((GROUP_STUFF_TEST, "SafeChainTestNode::RunTest Iterate = %f",
+		gos_GetHiResTime() - startTicks));
 	/*
 	 * Destroy from chain1, verify with chain2
 	 */
@@ -157,31 +136,27 @@ SafeChainTestNode::RunProfile()
 		Test_Assumption(iterator1.GetSize() == TEST_COUNT);
 		Test_Assumption(iterator2.GetSize() == TEST_COUNT);
 		i = 0;
-		while((testPlug1 = iterator1.ReadAndNext()) != nullptr)
+		while ((testPlug1 = iterator1.ReadAndNext()) != nullptr)
 		{
 			Test_Assumption(testPlug1->value == i);
 			i++;
 			Unregister_Object(testPlug1);
-			delete(testPlug1);
+			delete (testPlug1);
 		}
 		Test_Assumption(i == TEST_COUNT);
 		Test_Assumption(iterator1.GetSize() == 0);
 		Test_Assumption(iterator2.GetSize() == 0);
 	}
-	SPEW((
-			 GROUP_STUFF_TEST,
-			 "SafeChainTestNode::RunTest Destroy = %f",
-			 gos_GetHiResTime() - startTicks
-		 ));
+	SPEW((GROUP_STUFF_TEST, "SafeChainTestNode::RunTest Destroy = %f",
+		gos_GetHiResTime() - startTicks));
 	return true;
 }
 
-bool
-SafeChainTestNode::RunTest()
+bool SafeChainTestNode::RunTest()
 {
-	SafeChainTestPlug*	testPlug1, *testPlug2;
-	int32_t 			i, j;
-//	Time 		startTicks;
+	SafeChainTestPlug *testPlug1, *testPlug2;
+	int32_t i, j;
+	//	Time 		startTicks;
 	//
 	//--------------------------------------------------------------------
 	// Stress tests
@@ -190,7 +165,7 @@ SafeChainTestNode::RunTest()
 	/*
 	 * Create plugs and add to both sockets
 	 */
-	for(i = 0; i < TEST_COUNT; i++)
+	for (i = 0; i < TEST_COUNT; i++)
 	{
 		testPlug1 = new SafeChainTestPlug(i);
 		Register_Object(testPlug1);
@@ -229,7 +204,7 @@ SafeChainTestNode::RunTest()
 		Test_Assumption(iterator1.GetSize() == TEST_COUNT);
 		Test_Assumption(iterator2.GetSize() == TEST_COUNT);
 		i = 0;
-		while((testPlug1 = iterator1.GetCurrent()) != nullptr)
+		while ((testPlug1 = iterator1.GetCurrent()) != nullptr)
 		{
 			testPlug2 = iterator2.GetCurrent();
 			Test_Assumption(testPlug1 == testPlug2);
@@ -243,7 +218,7 @@ SafeChainTestNode::RunTest()
 		iterator1.Last();
 		iterator2.Last();
 		i = TEST_COUNT - 1;
-		while((testPlug1 = iterator1.GetCurrent()) != nullptr)
+		while ((testPlug1 = iterator1.GetCurrent()) != nullptr)
 		{
 			testPlug2 = iterator2.GetCurrent();
 			Test_Assumption(testPlug1 == testPlug2);
@@ -264,7 +239,7 @@ SafeChainTestNode::RunTest()
 		Test_Assumption(iterator1.GetSize() == TEST_COUNT);
 		Test_Assumption(iterator2.GetSize() == TEST_COUNT);
 		i = 0;
-		while((testPlug1 = iterator1.ReadAndNext()) != nullptr)
+		while ((testPlug1 = iterator1.ReadAndNext()) != nullptr)
 		{
 			testPlug2 = iterator2.ReadAndNext();
 			Test_Assumption(testPlug1 == testPlug2);
@@ -276,7 +251,7 @@ SafeChainTestNode::RunTest()
 		iterator1.Last();
 		iterator2.Last();
 		i = TEST_COUNT - 1;
-		while((testPlug1 = iterator1.ReadAndPrevious()) != nullptr)
+		while ((testPlug1 = iterator1.ReadAndPrevious()) != nullptr)
 		{
 			testPlug2 = iterator2.ReadAndPrevious();
 			Test_Assumption(testPlug1 == testPlug2);
@@ -294,7 +269,7 @@ SafeChainTestNode::RunTest()
 		SafeChainIteratorOf<SafeChainTestPlug*> iterator2(&chain2);
 		Test_Assumption(iterator1.GetSize() == TEST_COUNT);
 		Test_Assumption(iterator2.GetSize() == TEST_COUNT);
-		for(i = 0; i < TEST_COUNT; i++)
+		for (i = 0; i < TEST_COUNT; i++)
 		{
 			testPlug1 = iterator1.GetNth(i);
 			testPlug2 = iterator2.GetNth(i);
@@ -312,7 +287,7 @@ SafeChainTestNode::RunTest()
 		Test_Assumption(iterator1.GetSize() == TEST_COUNT);
 		Test_Assumption(iterator2.GetSize() == TEST_COUNT);
 		i = 0;
-		while((testPlug1 = iterator1.GetCurrent()) != nullptr)
+		while ((testPlug1 = iterator1.GetCurrent()) != nullptr)
 		{
 			Test_Assumption(testPlug1->value == i);
 			iterator1.Remove();
@@ -320,7 +295,7 @@ SafeChainTestNode::RunTest()
 			Test_Assumption(testPlug2->value == i);
 			Test_Assumption(testPlug1 == testPlug2);
 			Unregister_Object(testPlug2);
-			delete(testPlug2);
+			delete (testPlug2);
 			i++;
 		}
 		Test_Assumption(i == TEST_COUNT);
@@ -338,7 +313,7 @@ SafeChainTestNode::RunTest()
 		SafeChainIteratorOf<SafeChainTestPlug*> iterator2(&chain2);
 		Test_Assumption(iterator1.GetSize() == 0);
 		Test_Assumption(iterator2.GetSize() == 0);
-		for(i = 0; i < TEST_COUNT; i++)
+		for (i = 0; i < TEST_COUNT; i++)
 		{
 			testPlug1 = new SafeChainTestPlug(i);
 			Register_Object(testPlug1);
@@ -356,15 +331,15 @@ SafeChainTestNode::RunTest()
 		Test_Assumption(iterator1.GetSize() == TEST_COUNT);
 		Test_Assumption(iterator2.GetSize() == TEST_COUNT);
 		i = 0;
-		while((size = iterator1.GetSize()) != 0)
+		while ((size = iterator1.GetSize()) != 0)
 		{
-			index = Random::GetLessThan(size);
+			index	 = Random::GetLessThan(size);
 			testPlug1 = iterator1.GetNth(index);
 			iterator1.Remove();
 			testPlug2 = iterator2.GetNth(index);
 			Test_Assumption(testPlug1 == testPlug2);
 			Unregister_Object(testPlug2);
-			delete(testPlug2);
+			delete (testPlug2);
 			i++;
 		}
 		Test_Assumption(i == TEST_COUNT);
@@ -377,11 +352,11 @@ SafeChainTestNode::RunTest()
 	{
 		SafeChainIteratorOf<SafeChainTestPlug*> iterator1(&chain1);
 		Test_Assumption(iterator1.GetSize() == 0);
-		for(i = 0; i < TEST_COUNT; i++)
+		for (i = 0; i < TEST_COUNT; i++)
 		{
 			testPlug1 = new SafeChainTestPlug(i);
 			Register_Object(testPlug1);
-			if(i == 0)
+			if (i == 0)
 			{
 				chain1.Add(testPlug1);
 			}
@@ -391,7 +366,7 @@ SafeChainTestNode::RunTest()
 				iterator1.Insert(testPlug1);
 			}
 		}
-		for(i = 0, j = TEST_COUNT - 1; i < TEST_COUNT; i++, j--)
+		for (i = 0, j = TEST_COUNT - 1; i < TEST_COUNT; i++, j--)
 		{
 			testPlug1 = iterator1.GetNth(i);
 			Test_Assumption(testPlug1->value == j);
@@ -401,11 +376,11 @@ SafeChainTestNode::RunTest()
 	{
 		SafeChainIteratorOf<SafeChainTestPlug*> iterator1(&chain1);
 		Test_Assumption(iterator1.GetSize() == 0);
-		for(i = 0; i < TEST_COUNT; i++)
+		for (i = 0; i < TEST_COUNT; i++)
 		{
 			testPlug1 = new SafeChainTestPlug(i);
 			Register_Object(testPlug1);
-			if(i == 0)
+			if (i == 0)
 			{
 				chain1.Add(testPlug1);
 			}
@@ -415,10 +390,10 @@ SafeChainTestNode::RunTest()
 				iterator1.Insert(testPlug1);
 			}
 		}
-		for(i = 0; i < TEST_COUNT; i++)
+		for (i = 0; i < TEST_COUNT; i++)
 		{
 			testPlug1 = iterator1.GetNth(i);
-			if(i == TEST_COUNT - 1)
+			if (i == TEST_COUNT - 1)
 			{
 				Test_Assumption(testPlug1->value == 0);
 			}
@@ -431,4 +406,3 @@ SafeChainTestNode::RunTest()
 	}
 	return true;
 }
-

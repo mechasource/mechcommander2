@@ -12,29 +12,23 @@ using namespace MidLevelRenderer;
 //#########################    MLRSpotLight    ################################
 //#############################################################################
 
-MLRSpotLight::ClassData*
-MLRSpotLight::DefaultData = nullptr;
+MLRSpotLight::ClassData* MLRSpotLight::DefaultData = nullptr;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLRSpotLight::InitializeClass()
+void MLRSpotLight::InitializeClass()
 {
 	Verify(!DefaultData);
 	// Verify(gos_GetCurrentHeap() == StaticHeap);
 	DefaultData =
-		new ClassData(
-		MLRSpotLightClassID,
-		"MidLevelRenderer::MLRSpotLight",
-		MLRInfiniteLightWithFalloff::DefaultData
-	);
+		new ClassData(MLRSpotLightClassID, "MidLevelRenderer::MLRSpotLight",
+			MLRInfiniteLightWithFalloff::DefaultData);
 	Register_Object(DefaultData);
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLRSpotLight::TerminateClass()
+void MLRSpotLight::TerminateClass()
 {
 	Unregister_Object(DefaultData);
 	delete DefaultData;
@@ -43,33 +37,29 @@ MLRSpotLight::TerminateClass()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLRSpotLight::MLRSpotLight() :
-	MLRInfiniteLightWithFalloff(DefaultData)
+MLRSpotLight::MLRSpotLight() : MLRInfiniteLightWithFalloff(DefaultData)
 {
-	//Verify(gos_GetCurrentHeap() == Heap);
+	// Verify(gos_GetCurrentHeap() == Heap);
 	lightMap = nullptr;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLRSpotLight::MLRSpotLight(
-	Stuff::MemoryStream* stream,
-	uint32_t version
-) :
-	MLRInfiniteLightWithFalloff(DefaultData, stream, version)
+MLRSpotLight::MLRSpotLight(Stuff::MemoryStream* stream, uint32_t version)
+	: MLRInfiniteLightWithFalloff(DefaultData, stream, version)
 {
 	Check_Object(stream);
-	//Verify(gos_GetCurrentHeap() == Heap);
+	// Verify(gos_GetCurrentHeap() == Heap);
 	lightMap = nullptr;
-	if(version > 7)
+	if (version > 7)
 	{
 		MString name;
 		*stream >> name;
-		if(name.GetLength() > 0)
+		if (name.GetLength() > 0)
 		{
 			Check_Object(MLRTexturePool::Instance);
 			MLRTexture* texture = (*MLRTexturePool::Instance)(name, 0);
-			if(!texture)
+			if (!texture)
 				texture = MLRTexturePool::Instance->Add(name, 0);
 			Check_Object(texture);
 			lightMap = new MLRLightMap(texture);
@@ -84,19 +74,19 @@ MLRSpotLight::MLRSpotLight(
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLRSpotLight::MLRSpotLight(Stuff::Page* page):
-	MLRInfiniteLightWithFalloff(DefaultData, page)
+MLRSpotLight::MLRSpotLight(Stuff::Page* page)
+	: MLRInfiniteLightWithFalloff(DefaultData, page)
 {
 	Check_Object(page);
-	//Verify(gos_GetCurrentHeap() == Heap);
+	// Verify(gos_GetCurrentHeap() == Heap);
 	lightMap = nullptr;
 	PCSTR lightmap;
-	if(page->GetEntry("LightMap", &lightmap))
+	if (page->GetEntry("LightMap", &lightmap))
 	{
 		Check_Pointer(lightmap);
 		Check_Object(MLRTexturePool::Instance);
 		MLRTexture* texture = (*MLRTexturePool::Instance)(lightmap, 0);
-		if(!texture)
+		if (!texture)
 			texture = MLRTexturePool::Instance->Add(lightmap, 0);
 		Check_Object(texture);
 		lightMap = new MLRLightMap(texture);
@@ -112,7 +102,7 @@ MLRSpotLight::MLRSpotLight(Stuff::Page* page):
 //
 MLRSpotLight::~MLRSpotLight()
 {
-	if(lightMap)
+	if (lightMap)
 	{
 		Check_Object(lightMap);
 		delete lightMap;
@@ -121,16 +111,15 @@ MLRSpotLight::~MLRSpotLight()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLRSpotLight::Save(Stuff::MemoryStream* stream)
+void MLRSpotLight::Save(Stuff::MemoryStream* stream)
 {
 	// Check_Object(this);
 	Check_Object(stream);
 	MLRInfiniteLightWithFalloff::Save(stream);
-	if(lightMap)
+	if (lightMap)
 	{
 		Check_Object(lightMap);
-		uint32_t handle = lightMap->GetState().GetTextureHandle();
+		uint32_t handle		= lightMap->GetState().GetTextureHandle();
 		MLRTexture* texture = (*MLRTexturePool::Instance)[handle];
 		Check_Object(texture);
 		MString name = texture->GetTextureName();
@@ -143,16 +132,15 @@ MLRSpotLight::Save(Stuff::MemoryStream* stream)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLRSpotLight::Write(Stuff::Page* page)
+void MLRSpotLight::Write(Stuff::Page* page)
 {
 	// Check_Object(this);
 	Check_Object(page);
 	MLRInfiniteLightWithFalloff::Write(page);
-	if(lightMap)
+	if (lightMap)
 	{
 		Check_Object(lightMap);
-		uint32_t handle = lightMap->GetState().GetTextureHandle();
+		uint32_t handle		= lightMap->GetState().GetTextureHandle();
 		MLRTexture* texture = (*MLRTexturePool::Instance)[handle];
 		Check_Object(texture);
 		page->SetEntry("LightMap", texture->GetTextureName());
@@ -162,38 +150,31 @@ MLRSpotLight::Write(Stuff::Page* page)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLRSpotLight::TestInstance()
-{
-	Verify(IsDerivedFrom(DefaultData));
-}
+void MLRSpotLight::TestInstance() { Verify(IsDerivedFrom(DefaultData)); }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLRSpotLight::SetSpreadAngle(const Radian& radian)
+void MLRSpotLight::SetSpreadAngle(const Radian& radian)
 {
 	// Check_Object(this);
-	spreadAngle = radian;
+	spreadAngle	= radian;
 	tanSpreadAngle = (float)tan(spreadAngle);
 	cosSpreadAngle = (float)cos(spreadAngle);
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLRSpotLight::SetSpreadAngle(const Degree& degree)
+void MLRSpotLight::SetSpreadAngle(const Degree& degree)
 {
 	// Check_Object(this);
-	spreadAngle = degree;
+	spreadAngle	= degree;
 	tanSpreadAngle = (float)tan(spreadAngle);
 	cosSpreadAngle = (float)cos(spreadAngle);
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-bool
-MLRSpotLight::GetSpreadAngle(Radian* angle)
+bool MLRSpotLight::GetSpreadAngle(Radian* angle)
 {
 	// Check_Object(this);
 	*angle = spreadAngle;
@@ -202,8 +183,7 @@ MLRSpotLight::GetSpreadAngle(Radian* angle)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLRSpotLight::LightVertex(const MLRVertexData& vertexData)
+void MLRSpotLight::LightVertex(const MLRVertexData& vertexData)
 {
 	UnitVector3D light_z;
 	RGBColor light_color(color);
@@ -218,9 +198,9 @@ MLRSpotLight::LightVertex(const MLRVertexData& vertexData)
 	// light level as appropriate to the distance
 	//--------------------------------------------------------------
 	//
-	float length = vertex_to_light.GetApproximateLength();
+	float length  = vertex_to_light.GetApproximateLength();
 	float falloff = 1.0f;
-	if(GetFalloff(length, falloff))
+	if (GetFalloff(length, falloff))
 	{
 		light_color.red *= falloff;
 		light_color.green *= falloff;
@@ -235,7 +215,7 @@ MLRSpotLight::LightVertex(const MLRVertexData& vertexData)
 	length = -1.0f / length;
 	vertex_to_light *= length;
 	float t = vertex_to_light * light_z;
-	if(t <= cos_spread_angle)
+	if (t <= cos_spread_angle)
 	{
 		return;
 	}
@@ -259,7 +239,7 @@ MLRSpotLight::LightVertex(const MLRVertexData& vertexData)
 	float cosine = -(light_z * (*vertexData.normal)) * intensity;
 #if COLOR_AS_DWORD
 #else
-	if(cosine > SMALL)
+	if (cosine > SMALL)
 	{
 		light_color.red *= cosine;
 		light_color.green *= cosine;
@@ -273,17 +253,16 @@ MLRSpotLight::LightVertex(const MLRVertexData& vertexData)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLRSpotLight::SetLightMap(MLRLightMap* light_map)
+void MLRSpotLight::SetLightMap(MLRLightMap* light_map)
 {
 	// Check_Object(this);
-	if(lightMap)
+	if (lightMap)
 	{
 		Check_Object(lightMap);
 		delete lightMap;
 	}
 	lightMap = light_map;
-	if(lightMap == nullptr)
+	if (lightMap == nullptr)
 	{
 		lightMask &= ~MLRState::LightMapLightingMode;
 	}

@@ -22,7 +22,7 @@
 typedef enum __net_header_const
 {
 	PACKET_OVERHEAD = 42,
-	MAX_DP_OBJECTS	= 8
+	MAX_DP_OBJECTS  = 8
 };
 
 //
@@ -32,18 +32,18 @@ typedef enum __net_header_const
 //
 typedef struct _PacketBuffer
 {
-	struct _PacketBuffer*	pNext;
-	size_t					Size;			// Size of buffer
-	size_t					PacketSize;
-	uint32_t				FromID;
-	uint32_t				ToID;
-	uint64_t				TimeStamp;
+	struct _PacketBuffer* pNext;
+	size_t Size; // Size of buffer
+	size_t PacketSize;
+	uint32_t FromID;
+	uint32_t ToID;
+	uint64_t TimeStamp;
 #if _CONSIDERED_OBSOLETE
-	uint8_t					Encrypted;		// changed from bool due to packing
+	uint8_t Encrypted; // changed from bool due to packing
 #else
-	uint32_t				Encrypted;
+	uint32_t Encrypted;
 #endif
-	uint8_t					Data[0];		// Data follows
+	uint8_t Data[0]; // Data follows
 } PacketBuffer;
 
 //
@@ -51,11 +51,11 @@ typedef struct _PacketBuffer
 //
 typedef struct _ListOfNames
 {
-	struct _ListOfNames*	pNext;				// Pointer to next in chain
-	uint32_t				Data;				// Data that is list dependent
-	uint32_t				PacketsReceived;	// NUmber of packets received from a player
-	uint64_t				LastTime;			// Time last packet received
-	char					Name[1];			// Name
+	struct _ListOfNames* pNext; // Pointer to next in chain
+	uint32_t Data;				// Data that is list dependent
+	uint32_t PacketsReceived;   // NUmber of packets received from a player
+	uint64_t LastTime;			// Time last packet received
+	char Name[1];				// Name
 } ListOfNames;
 typedef ListOfNames* PListOfNames;
 
@@ -64,11 +64,11 @@ typedef ListOfNames* PListOfNames;
 //
 typedef struct _ListOfGames
 {
-	struct _ListOfGames*	pNext;				// Pointer to next in chain
-	DPSESSIONDESC2			SessionDescriptor;	// Session description
-	ListOfNames*			pPlayers;			// Pointer to list of player names
-	bool					bIPX;				// whether the game is hosted with IPX or not (TCP/IP)
-	char					Name[1];			// Name
+	struct _ListOfGames* pNext;		  // Pointer to next in chain
+	DPSESSIONDESC2 SessionDescriptor; // Session description
+	ListOfNames* pPlayers;			  // Pointer to list of player names
+	bool bIPX;	// whether the game is hosted with IPX or not (TCP/IP)
+	char Name[1]; // Name
 } ListOfGames;
 
 //
@@ -76,8 +76,8 @@ typedef struct _ListOfGames
 //
 typedef struct _Messages
 {
-	struct _Messages*	pNext;
-	NetPacket			Data;
+	struct _Messages* pNext;
+	NetPacket Data;
 } Messages;
 
 //
@@ -88,8 +88,8 @@ extern HGOSHEAP Heap_Network;
 //
 // Interfaces
 //
-extern IDirectPlayLobby3*		dplobby3;	// Lobby interface
-extern IDirectPlay4*			dplay4;	// Direct Play interface
+extern IDirectPlayLobby3* dplobby3; // Lobby interface
+extern IDirectPlay4* dplay4;		// Direct Play interface
 
 //
 // Current joined or opened session description
@@ -106,7 +106,7 @@ extern bool WaitingForEnum;
 // Protocols
 //
 extern bool hasTCP;
-extern bool hasIPX;							// True when protcol is valid
+extern bool hasIPX; // True when protcol is valid
 extern bool hasModem;
 extern bool hasSerial;
 extern bool hasZoneMatch;
@@ -154,12 +154,13 @@ extern ListOfNames* ModemNames;
 //
 // Points to a list of the current game names found on the network
 //
-extern ListOfGames*	GameNames;
+extern ListOfGames* GameNames;
 
 extern PSTR* ListOfPassworded;
 
 //
-// Points to a list of the current game names found on the network being enumerated
+// Points to a list of the current game names found on the network being
+// enumerated
 //
 extern ListOfGames* EnumNames;
 
@@ -182,14 +183,11 @@ extern uint32_t MessageBufferSize;
 //
 // Points to a list of messages that the Application will pull message from
 //
-extern Messages*	pMessages;
+extern Messages* pMessages;
 //
 // Points to the last message read by the Application (will be freed)
 //
-extern Messages*	pLastMessage;
-
-
-
+extern Messages* pLastMessage;
 
 //
 // Linked list of sent/recieved packets
@@ -197,20 +195,20 @@ extern Messages*	pLastMessage;
 typedef struct _PacketLogging
 {
 	_PacketLogging* pNext;
-	double			TimeStamp;							// When packet was added to list
-	uint32_t			FrameNumber;						// Frame number added
-	char			Type[11];							// Type of packet
-	char			Player[11];							// From or To player name
-	uint32_t			FromID;								// ID of FROM player
-	uint32_t			ToID;								// ID of TO player
-	uint32_t			Size;								// Size of packet
-	uint8_t			Data[8];							// 1st 8 bytes
+	double TimeStamp;	 // When packet was added to list
+	uint32_t FrameNumber; // Frame number added
+	char Type[11];		  // Type of packet
+	char Player[11];	  // From or To player name
+	uint32_t FromID;	  // ID of FROM player
+	uint32_t ToID;		  // ID of TO player
+	uint32_t Size;		  // Size of packet
+	uint8_t Data[8];	  // 1st 8 bytes
 
 } PacketLogging;
 //
 // Pointer to latest packet
 //
-extern PacketLogging*	pPacketLog;
+extern PacketLogging* pPacketLog;
 //
 // Exact time network stats were grabbed
 //
@@ -218,33 +216,28 @@ extern double NetworkDebugTime;
 //
 // Pointer to log at start of frame
 //
-extern PacketLogging*	pDebugPacketLog;
-
-
-
-
+extern PacketLogging* pDebugPacketLog;
 
 //
 // Structure sent with all network packets
 //
-#pragma pack(push,1)
+#pragma pack(push, 1)
 #ifdef OUTBOUND_WINDOW
 typedef struct _PacketHeader
 {
-	uint8_t	Type;										// User defined type (224-> system messages)
-	uint16_t	ThisPacketNumber;
-	uint16_t	LastPacketReceived;
+	uint8_t Type; // User defined type (224-> system messages)
+	uint16_t ThisPacketNumber;
+	uint16_t LastPacketReceived;
 
 } PacketHeader;
 #else
 typedef struct _PacketHeader
 {
-	uint8_t	Type;										// User defined type (224-> system messages)
+	uint8_t Type; // User defined type (224-> system messages)
 
 } PacketHeader;
 #endif
 #pragma pack(pop)
-
 
 //
 // Routine's
@@ -253,19 +246,25 @@ void __stdcall CheckProtocols(void);
 void __stdcall ReceivePackets(void);
 void __stdcall GetCurrentPlayers(void);
 void __stdcall AddGOSMessage(Messages* pMessage);
-BOOL __stdcall EnumSessionsCallback(LPCDPSESSIONDESC2 lpSessionDesc, puint32_t lpdwTimeOut, uint32_t dwFlags, PVOID lpContext);
-BOOL __stdcall EnumJoinSessionCallback(LPCDPSESSIONDESC2 lpSessionDesc, puint32_t lpdwTimeOut, uint32_t dwFlags, PVOID lpContext);
-BOOL __stdcall EnumPlayersCallback(DPID dpId, uint32_t dwPlayerType, LPCDPNAME lpName, uint32_t dwFlags, LPVOID lpContext);
-BOOL __stdcall ModemCallback(REFGUID guidDataType, uint32_t dwDataSize, LPCVOID lpData, PVOID lpContext);
-BOOL __stdcall TCPIPCallback(REFGUID guidDataType, uint32_t dwDataSize, LPCVOID lpData, PVOID lpContext);
+BOOL __stdcall EnumSessionsCallback(LPCDPSESSIONDESC2 lpSessionDesc,
+	puint32_t lpdwTimeOut, uint32_t dwFlags, PVOID lpContext);
+BOOL __stdcall EnumJoinSessionCallback(LPCDPSESSIONDESC2 lpSessionDesc,
+	puint32_t lpdwTimeOut, uint32_t dwFlags, PVOID lpContext);
+BOOL __stdcall EnumPlayersCallback(DPID dpId, uint32_t dwPlayerType,
+	LPCDPNAME lpName, uint32_t dwFlags, LPVOID lpContext);
+BOOL __stdcall ModemCallback(
+	REFGUID guidDataType, uint32_t dwDataSize, LPCVOID lpData, PVOID lpContext);
+BOOL __stdcall TCPIPCallback(
+	REFGUID guidDataType, uint32_t dwDataSize, LPCVOID lpData, PVOID lpContext);
 void __stdcall WaitTillQueueEmpty(void);
-void __stdcall AddPlayerToGame(ListOfNames** pListOfPlayers, PSTR Name, DPID dpId);
-void __stdcall RemovePlayerFromGame(ListOfNames** pListOfPlayers, PSTR Name, DPID dpId);
+void __stdcall AddPlayerToGame(
+	ListOfNames** pListOfPlayers, PSTR Name, DPID dpId);
+void __stdcall RemovePlayerFromGame(
+	ListOfNames** pListOfPlayers, PSTR Name, DPID dpId);
 PSTR __stdcall GetName10(uint32_t Id);
 void __stdcall UpdateNetworkDebugInfo(void);
 PSTR __stdcall DecodeIPAddress(DPLCONNECTION* pConnection);
 uint16_t __stdcall DecodePORTAddress(DPLCONNECTION* pConnection);
-
 
 //
 // Receive packet thread variables
@@ -291,11 +290,9 @@ extern uint32_t __stdcall EnumThread(PVOID);
 //
 // Used to hold list of packets to pass data between threads
 //
-extern PacketBuffer* pEmptyList;		// List of spare blocks
-extern PacketBuffer* pPackets;			// List of received packets
-extern PacketBuffer* pLastPacket;		// End of list of received packets
-
-
+extern PacketBuffer* pEmptyList;  // List of spare blocks
+extern PacketBuffer* pPackets;	// List of received packets
+extern PacketBuffer* pLastPacket; // End of list of received packets
 
 //
 // Functions used initialize game list drivers
@@ -306,22 +303,18 @@ int32_t InitGUNGames(void);
 void GUNDestroyNetworking(void);
 void CheckForInternet(void);
 
-
 // InternalJoinGame(void) needs this for joining GUN Games.
 void PushGameList(void);
-bool GUNPrepareDPlay(PCSTR  GameName);
+bool GUNPrepareDPlay(PCSTR GameName);
 
-HRESULT QuickEnum(bool async);   // quickly begin dplay enumeration of sessions.
-
-
+HRESULT QuickEnum(bool async); // quickly begin dplay enumeration of sessions.
 
 #ifdef OUTBOUND_WINDOW
 typedef struct tagPACKETQUEUE
 {
-	NetPacket*				pPacket;
-	struct tagPACKETQUEUE*	pNext;
+	NetPacket* pPacket;
+	struct tagPACKETQUEUE* pNext;
 } PACKETQUEUE;
-
 
 //========================================================================
 // OutboundWindow
@@ -346,45 +339,36 @@ typedef struct tagPACKETQUEUE
 //========================================================================
 class OutboundWindow
 {
-public:
+  public:
 	static cint32_t m_WindowSize;
 	static const double m_ResendTime;
 
-	// we only have one constructor: you MUST supply the DPID when you create one!!!
+	// we only have one constructor: you MUST supply the DPID when you create
+	// one!!!
 	OutboundWindow(DPID);
 
-	static bool __stdcall Synchronize(void);	// call every frame
+	static bool __stdcall Synchronize(void); // call every frame
 	static bool __stdcall CleanAll(void);
 	static OutboundWindow* Find(DPID dpid);
 	bool __stdcall Add(void);
 	bool __stdcall Remove(void);
-	PVOID operator new(size_t size)
-	{
-		return gos_Malloc(size, Heap_Network);
-	}
-	void operator delete(PVOID ptr)
-	{
-		gos_Free(ptr);
-	}
-	void operator delete[](PVOID ptr)
-	{
-		gos_Free(ptr);
-	}
+	PVOID operator new(size_t size) { return gos_Malloc(size, Heap_Network); }
+	void operator delete(PVOID ptr) { gos_Free(ptr); }
+	void operator delete[](PVOID ptr) { gos_Free(ptr); }
 
+  public:
+	double m_TimeLastPacketSent;
+	uint16_t m_NextPacketNumberToSend;
+	uint16_t m_LastPacketWeReceived;
+	uint16_t m_LastPacketTheyReceived;
+	PACKETQUEUE* m_PacketQueue;
+	DPID m_dpid; // the dpid of the associated remote machine
+	OutboundWindow* m_pNext;
 
-public:
-	double					m_TimeLastPacketSent;
-	uint16_t					m_NextPacketNumberToSend;
-	uint16_t					m_LastPacketWeReceived;
-	uint16_t					m_LastPacketTheyReceived;
-	PACKETQUEUE* 			m_PacketQueue;
-	DPID					m_dpid;			// the dpid of the associated remote machine
-	OutboundWindow* 		m_pNext;
+	static OutboundWindow* m_pHead;
 
-	static OutboundWindow* 	m_pHead;
-
-	//PacketLogging* pThis=(PacketLogging*)gos_Malloc( sizeof(PacketLogging), Heap_Network );
-
+	// PacketLogging* pThis=(PacketLogging*)gos_Malloc( sizeof(PacketLogging),
+	// Heap_Network );
 };
 
 #endif // OUTBOUND_WINDOW

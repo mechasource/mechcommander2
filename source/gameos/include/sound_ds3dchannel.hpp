@@ -11,7 +11,7 @@
 //
 class DS3DSoundChannel
 {
-public:
+  public:
 	LPDIRECTSOUNDBUFFER m_Buffer;
 	LPDIRECTSOUND3DBUFFER m_Buffer3D;
 	DSBCAPS m_dsbCaps;
@@ -29,13 +29,13 @@ public:
 	uint32_t m_playPosition;
 
 	bool m_bLoopFlag;
-	bool m_fCued;                  // semaphore (stream cued)
-	bool m_fPlaying;               // semaphore (stream playing)
-	bool m_fPaused;               // semaphore (stream playing)
-	uint32_t m_cbBufOffset;            // last write position
-	uint32_t m_nBufLength;             // length of sound buffer in msec
-	uint32_t m_cbBufSize;              // size of sound buffer in bytes
-	float m_fDuration;              // duration of wave file
+	bool m_fCued;			// semaphore (stream cued)
+	bool m_fPlaying;		// semaphore (stream playing)
+	bool m_fPaused;			// semaphore (stream playing)
+	uint32_t m_cbBufOffset; // last write position
+	uint32_t m_nBufLength;  // length of sound buffer in msec
+	uint32_t m_cbBufSize;   // size of sound buffer in bytes
+	float m_fDuration;		// duration of wave file
 	uint32_t m_myEnum;
 	bool playPending;
 
@@ -45,7 +45,7 @@ public:
 	gosAudio_ResourceType m_resourceType;
 	char m_resourceName[128];
 
-public:
+  public:
 	DS3DSoundChannel(void);
 	~DS3DSoundChannel(void);
 	void Reset(uint32_t chan);
@@ -72,10 +72,9 @@ public:
 	bool IsPlaying(void);
 	uint32_t GetBytesPlayed(void);
 	void SpewCaps(void);
-	void ReturnFormattedDebugData(PSTR  dst, uint32_t maxlen);
+	void ReturnFormattedDebugData(PSTR dst, uint32_t maxlen);
 	void SetConeAngles(uint32_t min, uint32_t max);
 	void SetConeOrientation(float x, float y, float z);
 	void SetAllParameters(void);
 	void ReleaseCurrent(void);
 };
-

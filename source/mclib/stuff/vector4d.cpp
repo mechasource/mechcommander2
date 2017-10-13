@@ -24,8 +24,7 @@ const Vector4D Vector4D::Identity(0.0f, 0.0f, 0.0f, 0.0f);
 //###########################################################################
 //###########################################################################
 //
-bool
-Stuff::Small_Enough(const Vector4D& V, float e)
+bool Stuff::Small_Enough(const Vector4D& V, float e)
 {
 	Check_Object(&V);
 	return V.x * V.x + V.y * V.y + V.z * V.z + V.w * V.w <= e;
@@ -35,8 +34,7 @@ Stuff::Small_Enough(const Vector4D& V, float e)
 //###########################################################################
 //###########################################################################
 //
-bool
-Stuff::Close_Enough(const Vector4D& V1, const Vector4D& V2, float e)
+bool Stuff::Close_Enough(const Vector4D& V1, const Vector4D& V2, float e)
 {
 	Check_Object(&V1);
 	Check_Object(&V2);
@@ -48,13 +46,9 @@ Stuff::Close_Enough(const Vector4D& V1, const Vector4D& V2, float e)
 //###########################################################################
 //###########################################################################
 //
-Vector4D&
-Vector4D::Multiply(
-	const Vector4D& v,
-	const AffineMatrix4D& m
-)
+Vector4D& Vector4D::Multiply(const Vector4D& v, const AffineMatrix4D& m)
 {
-	//Check_Pointer(this);
+	// Check_Pointer(this);
 	Check_Object(&v);
 	Check_Object(&m);
 	Verify(this != &v);
@@ -69,13 +63,9 @@ Vector4D::Multiply(
 //###########################################################################
 //###########################################################################
 //
-Vector4D&
-Vector4D::Multiply(
-	const Vector4D& v,
-	const Matrix4D& m
-)
+Vector4D& Vector4D::Multiply(const Vector4D& v, const Matrix4D& m)
 {
-	//Check_Pointer(this);
+	// Check_Pointer(this);
 	Check_Object(&v);
 	Check_Object(&m);
 	Verify(this != &v);
@@ -90,13 +80,9 @@ Vector4D::Multiply(
 //###########################################################################
 //###########################################################################
 //
-Vector4D&
-Vector4D::Multiply(
-	const Vector3D& v,
-	const Matrix4D& m
-)
+Vector4D& Vector4D::Multiply(const Vector3D& v, const Matrix4D& m)
 {
-	//Check_Pointer(this);
+	// Check_Pointer(this);
 	Check_Object(&v);
 	Check_Object(&m);
 	x = v.x * m(0, 0) + v.y * m(1, 0) + v.z * m(2, 0);
@@ -133,25 +119,17 @@ Vector4D::Multiply(
 //###########################################################################
 //
 #if !defined(Spew)
-void
-Spew(
-	PCSTR group,
-	const Vector4D& vector
-)
+void Spew(PCSTR group, const Vector4D& vector)
 {
 	Check_Object(&vector);
 	SPEW((group, "<%4f,%4f,%4f,%4f>", vector.x, vector.y, vector.z, vector.w));
 }
 #endif
 
-Vector4D&
-Vector4D::MultiplySetClip(
-	const Point3D& v,
-	const Matrix4D& m,
-	puint32_t clipper
-)
+Vector4D& Vector4D::MultiplySetClip(
+	const Point3D& v, const Matrix4D& m, puint32_t clipper)
 {
-	//Check_Pointer(this);
+	// Check_Pointer(this);
 	Check_Object(&v);
 	Check_Object(&m);
 #if USE_ASSEMBLER_CODE
@@ -160,98 +138,98 @@ Vector4D::MultiplySetClip(
 	{
 		mov         edi, v
 
-		fld			dword ptr [edi]			//	v.x
+		fld			dword ptr [edi] //	v.x
 
 		mov         esi, m
 
-		fld			dword ptr [edi+4]		//	v.y
-		fld			dword ptr [edi+8]		//	v.z
+		fld			dword ptr [edi+4] //	v.y
+		fld			dword ptr [edi+8] //	v.z
 
 		mov         edi, f
 
-		fld         dword ptr [esi+34h]		//	m[1][3]
-		fmul        st, st(2)				//	v.y
+		fld         dword ptr [esi+34h] //	m[1][3]
+		fmul        st, st(2) //	v.y
 
-		fld         dword ptr [esi + 38h]		//	m[2][3]
-		fmul        st, st(2)				//	v.z
-
-		fxch		st(1)
-		fadd        dword ptr [esi + 3Ch]		//	m[3][3]
-
-		fld         dword ptr [esi + 30h]		//	m[0][3]
-		fmul        st, st(5)				//	v.x
-
-		fxch		st(2)
-		faddp       st(1), st
-
-		fld         dword ptr [esi + 14h]		//	m[1][1]
-		fmul        st, st(4)				//	v.y
-
-		fxch		st(2)
-		faddp       st(1), st
-
-		fld         dword ptr [esi + 18h]		//	m[2][1]
-		fmul        st, st(3)				//	v.z
+		fld         dword ptr [esi + 38h] //	m[2][3]
+		fmul        st, st(2) //	v.z
 
 		fxch		st(1)
-		fstp        dword ptr [edi + 0Ch]		//	w
+		fadd        dword ptr [esi + 3Ch] //	m[3][3]
 
-		fadd        dword ptr [esi + 1Ch]		//	m[3][1]
-
-		fld         dword ptr [esi + 10h]		//	m[0][1]
-		fmul        st, st(5)				//	v.x
+		fld         dword ptr [esi + 30h] //	m[0][3]
+		fmul        st, st(5) //	v.x
 
 		fxch		st(2)
 		faddp       st(1), st
 
-		fld         dword ptr [esi + 24h]		//	m[1][2]
-		fmul        st, st(4)				//	v.y
+		fld         dword ptr [esi + 14h] //	m[1][1]
+		fmul        st, st(4) //	v.y
 
 		fxch		st(2)
 		faddp       st(1), st
 
-		fld         dword ptr [esi + 28h]		//	m[2][2]
-		fmul        st, st(3)				//	v.z
+		fld         dword ptr [esi + 18h] //	m[2][1]
+		fmul        st, st(3) //	v.z
 
 		fxch		st(1)
-		fstp        dword ptr [edi + 4]		//	y
+		fstp        dword ptr [edi + 0Ch] //	w
 
-		fadd        dword ptr [esi + 2Ch]		//	m[3][2]
+		fadd        dword ptr [esi + 1Ch] //	m[3][1]
 
-		fld         dword ptr [esi + 20h]		//	m[0][2]
-		fmul        st, st(5)				//	v.x
-
-		fxch		st(2)
-		faddp       st(1), st
-
-		fld         dword ptr [esi + 4]		//	m[1][0]
-		fmul        st, st(4)				//	v.y
+		fld         dword ptr [esi + 10h] //	m[0][1]
+		fmul        st, st(5) //	v.x
 
 		fxch		st(2)
 		faddp       st(1), st
 
-		fld         dword ptr [esi + 8]		//	m[2][0]
-		fmul        st, st(3)				//	v.z
+		fld         dword ptr [esi + 24h] //	m[1][2]
+		fmul        st, st(4) //	v.y
+
+		fxch		st(2)
+		faddp       st(1), st
+
+		fld         dword ptr [esi + 28h] //	m[2][2]
+		fmul        st, st(3) //	v.z
 
 		fxch		st(1)
-		fstp        dword ptr [edi + 8]		//	z
+		fstp        dword ptr [edi + 4] //	y
 
-		fadd        dword ptr [esi + 0Ch]		//	m[3][0]
+		fadd        dword ptr [esi + 2Ch] //	m[3][2]
 
-		fld         dword ptr [esi]			//	m[0][0]
-		fmul        st, st(5)				//	v.x
+		fld         dword ptr [esi + 20h] //	m[0][2]
+		fmul        st, st(5) //	v.x
+
+		fxch		st(2)
+		faddp       st(1), st
+
+		fld         dword ptr [esi + 4] //	m[1][0]
+		fmul        st, st(4) //	v.y
+
+		fxch		st(2)
+		faddp       st(1), st
+
+		fld         dword ptr [esi + 8] //	m[2][0]
+		fmul        st, st(3) //	v.z
+
+		fxch		st(1)
+		fstp        dword ptr [edi + 8] //	z
+
+		fadd        dword ptr [esi + 0Ch] //	m[3][0]
+
+		fld         dword ptr [esi] //	m[0][0]
+		fmul        st, st(5) //	v.x
 
 		fxch		st(2)
 		faddp       st(1), st
 
 		faddp       st(1), st
 
-		//	get rid of x, y, z
+			//	get rid of x, y, z
 		fstp		st(1)
 		fstp		st(1)
 		fstp		st(1)
 
-		fstp        dword ptr [edi]			//	x
+		fstp        dword ptr [edi] //	x
 
 	}
 #else
@@ -261,27 +239,27 @@ Vector4D::MultiplySetClip(
 	w = v.x * m(0, 3) + v.y * m(1, 3) + v.z * m(2, 3) + m(3, 3);
 #endif
 	*clipper = 0;
-	if(w <= z)
+	if (w <= z)
 	{
 		*clipper |= 32;
 	}
-	if(z < 0.0f)
+	if (z < 0.0f)
 	{
 		*clipper |= 16;
 	}
-	if(x < 0.0f)
+	if (x < 0.0f)
 	{
 		*clipper |= 8;
 	}
-	if(w < x)
+	if (w < x)
 	{
 		*clipper |= 4;
 	}
-	if(y < 0.0f)
+	if (y < 0.0f)
 	{
 		*clipper |= 2;
 	}
-	if(w < y)
+	if (w < y)
 	{
 		*clipper |= 1;
 	}

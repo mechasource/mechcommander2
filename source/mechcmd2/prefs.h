@@ -11,7 +11,7 @@
 
 class CPrefs
 {
-public:
+  public:
 	CPrefs(void);
 	int32_t load(PCSTR pFileName = "options");
 	int32_t save(void);
@@ -21,7 +21,7 @@ public:
 	void setNewUnit(PCSTR pNewUnit);
 	void setNewIP(PCSTR pNewIP);
 
-public:
+  public:
 	int32_t DigitalMasterVolume;
 	int32_t MusicVolume;
 	int32_t sfxVolume;
@@ -48,15 +48,15 @@ public:
 	char playerName[10][256];
 	char ipAddresses[10][24];
 
-	bool	pilotVideos;
-	bool	useNonWeaponEffects;
-	bool	useLocalShadows;
-	bool	asyncMouse;
-	int32_t	fogPos;
-	char	bitDepth; // 0 == 16, 1 == 32
+	bool pilotVideos;
+	bool useNonWeaponEffects;
+	bool useLocalShadows;
+	bool asyncMouse;
+	int32_t fogPos;
+	char bitDepth; // 0 == 16, 1 == 32
 
-	bool	saveTranscripts;
-	bool	tutorials;
+	bool saveTranscripts;
+	bool tutorials;
 
 #if 0
 	int32_t FilterState;

@@ -12,67 +12,56 @@
 
 namespace gosFX
 {
-	class EffectLibrary
+class EffectLibrary
 #if defined(_ARMOR)
-		: public Stuff::Signature
+	: public Stuff::Signature
 #endif
+{
+	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	// Initialization
+	//
+  public:
+	static void __stdcall InitializeClass(void);
+	static void __stdcall TerminateClass(void);
+
+	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	// Constructors/Destructors
+	//
+  public:
+	EffectLibrary(void);
+	~EffectLibrary(void);
+
+	void Load(Stuff::MemoryStream* stream);
+	void Save(Stuff::MemoryStream* stream);
+
+	enum MergeMode
 	{
-		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-		// Initialization
-		//
-	public:
-		static void __stdcall InitializeClass(void);
-		static void __stdcall TerminateClass(void);
-
-		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-		// Constructors/Destructors
-		//
-	public:
-		EffectLibrary(void);
-		~EffectLibrary(void);
-
-		void
-		Load(Stuff::MemoryStream* stream);
-		void
-		Save(Stuff::MemoryStream* stream);
-
-		enum MergeMode
-		{
-			OnlyAddNewEffects,
-			ReplaceMatchingEffects,
-			ReplaceNamedEffects
-		};
-
-		void
-		Merge(
-			EffectLibrary& source,
-			MergeMode merge_mode = (MergeMode)OnlyAddNewEffects
-		);
-
-		static EffectLibrary*
-		Instance;
-
-	protected:
-		EffectLibrary(EffectLibrary& /*source*/)
-		{
-			STOP(("Shouldn't be called"));
-		}
-
-		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-		// Effect management
-		//
-	public:
-		Stuff::DynamicArrayOf<Effect::Specification*>
-		m_effects;
-
-		Effect::Specification* Find(std::wstring& name);
-		Effect* MakeEffect(uint32_t index, uint32_t flags);
-
-		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-		// Testing
-		//
-	public:
-		void
-		TestInstance(void) const {}
+		OnlyAddNewEffects,
+		ReplaceMatchingEffects,
+		ReplaceNamedEffects
 	};
+
+	void Merge(EffectLibrary& source,
+		MergeMode merge_mode = (MergeMode)OnlyAddNewEffects);
+
+	static EffectLibrary* Instance;
+
+  protected:
+	EffectLibrary(EffectLibrary& /*source*/) { STOP(("Shouldn't be called")); }
+
+	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	// Effect management
+	//
+  public:
+	Stuff::DynamicArrayOf<Effect::Specification*> m_effects;
+
+	Effect::Specification* Find(std::wstring& name);
+	Effect* MakeEffect(uint32_t index, uint32_t flags);
+
+	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	// Testing
+	//
+  public:
+	void TestInstance(void) const {}
+};
 }

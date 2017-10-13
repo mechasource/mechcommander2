@@ -8,12 +8,9 @@
 #include "stdafx.h"
 #include "stuffheaders.hpp"
 
-
-bool
-Ray3D::TestClass()
+bool Ray3D::TestClass()
 {
 	SPEW((GROUP_STUFF_TEST, "Starting Ray3D test..."));
 	SPEW((GROUP_STUFF_TEST, "  Ray3D::TestClass is stubbed out!"));
 	return true;
 }
-

@@ -1,6 +1,7 @@
 //---------------------------------------------------------------------------
 //
-// DTerrain.h -- File contains definitions for Terrain and Terrain Window classes
+// DTerrain.h -- File contains definitions for Terrain and Terrain Window
+// classes
 //
 //---------------------------------------------------------------------------//
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
@@ -39,7 +40,7 @@
 #define VERTICAL		0
 #define HORIZONTAL		1
 */
-#define	TILESPERSIDE	(Terrain::visibleVerticesPerSide - 1)
+#define TILESPERSIDE (Terrain::visibleVerticesPerSide - 1)
 
 //---------------------------------------------------------------------------
 // Class Definitions
@@ -57,4 +58,3 @@ typedef TerrainWindow* TerrainWindowPtr;
 // Edit Log
 //
 //---------------------------------------------------------------------------
-

@@ -17,41 +17,39 @@ namespace Stuff
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Node ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-	typedef Plug__ClassData Node__ClassData;
+typedef Plug__ClassData Node__ClassData;
 
-	class Node:
-		public Plug
-	{
-	public:
-		static void __stdcall InitializeClass(void);
-		static void __stdcall TerminateClass(void);
+class Node : public Plug
+{
+  public:
+	static void __stdcall InitializeClass(void);
+	static void __stdcall TerminateClass(void);
 
-		void TestInstance(void);
+	void TestInstance(void);
 
-		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-		// Constructor/Destructor
-		//
-	public:
-		~Node(void);
+	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	// Constructor/Destructor
+	//
+  public:
+	~Node(void);
 
-	protected:
-		explicit Node(ClassData* class_data);
+  protected:
+	explicit Node(ClassData* class_data);
 
-		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-		// Class Data Support
-		//
-	public:
-		typedef Node__ClassData ClassData;
+	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	// Class Data Support
+	//
+  public:
+	typedef Node__ClassData ClassData;
 
-		static ClassData* DefaultData;
+	static ClassData* DefaultData;
 
-		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-		// plug detachment
-		//
-	public:
-		virtual void ReleaseLinkHandler(Socket*, Plug*);
-	};
-
+	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	// plug detachment
+	//
+  public:
+	virtual void ReleaseLinkHandler(Socket*, Plug*);
+};
 }
 
 #endif

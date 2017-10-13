@@ -4,7 +4,8 @@
 
 #pragma once
 
-#if !defined(AFX_TEXTMESSAGEDLG_H__0B7C2BD0_F277_4D66_9FF8_2169FF65ABC2__INCLUDED_)
+#if !defined(                                                                  \
+	AFX_TEXTMESSAGEDLG_H__0B7C2BD0_F277_4D66_9FF8_2169FF65ABC2__INCLUDED_)
 #define AFX_TEXTMESSAGEDLG_H__0B7C2BD0_F277_4D66_9FF8_2169FF65ABC2__INCLUDED_
 
 /////////////////////////////////////////////////////////////////////////////
@@ -12,27 +13,28 @@
 
 class TextMessageDlg : public CDialog
 {
-// Construction
-public:
-	TextMessageDlg(CWnd* pParent = nullptr);   // standard constructor
+	// Construction
+  public:
+	TextMessageDlg(CWnd* pParent = nullptr); // standard constructor
 
-// Dialog Data
+	// Dialog Data
 	//{{AFX_DATA(TextMessageDlg)
-	enum { IDD = IDD_TEXT_MESSAGE };
-	CString	m_TextMessage;
+	enum
+	{
+		IDD = IDD_TEXT_MESSAGE
+	};
+	CString m_TextMessage;
 	//}}AFX_DATA
 
-
-// Overrides
+	// Overrides
 	// ClassWizard generated virtual function overrides
 	//{{AFX_VIRTUAL(TextMessageDlg)
-protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-	//}}AFX_VIRTUAL
+  protected:
+	virtual void DoDataExchange(CDataExchange* pDX); // DDX/DDV support
+													 //}}AFX_VIRTUAL
 
-// Implementation
-protected:
-
+	// Implementation
+  protected:
 	// Generated message map functions
 	//{{AFX_MSG(TextMessageDlg)
 	// NOTE: the ClassWizard will add member functions here
@@ -41,6 +43,7 @@ protected:
 };
 
 //{{AFX_INSERT_LOCATION}}
-// Microsoft Visual C++ will insert additional declarations immediately before the previous line.
+// Microsoft Visual C++ will insert additional declarations immediately before
+// the previous line.
 
 #endif // !defined(AFX_TEXTMESSAGEDLG_H__0B7C2BD0_F277_4D66_9FF8_2169FF65ABC2__INCLUDED_)

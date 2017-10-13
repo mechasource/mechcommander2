@@ -7,12 +7,8 @@
 
 #include "directx.hpp"
 
-
 // thisAppGUID is the one and only GUID for this application.
 extern GUID thisAppGUID;
 
 // The number of ticks per millisecond.  Used in determining time.
-extern uint32_t	TicksPerMS;
-
-
-
+extern uint32_t TicksPerMS;

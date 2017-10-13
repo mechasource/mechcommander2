@@ -22,69 +22,53 @@
 
 typedef struct _SortListNode
 {
-	float		value;			// sort value
-	uint32_t	id;				// item
+	float value; // sort value
+	uint32_t id; // item
 } SortListNode;
 
 class SortList
 {
 
-protected:
-	SortListNode*		list;
-	uint32_t			numItems;
+  protected:
+	SortListNode* list;
+	uint32_t numItems;
 
-public:
-
+  public:
 	void init(void)
 	{
-		list = nullptr;
+		list	 = nullptr;
 		numItems = 0;
 	}
 
-	SortList(void)
-	{
-		init(void);
-	}
+	SortList(void) { init(void); }
 
 	int32_t init(uint32_t numItems);
 
 	void setId(uint32_t index, uint32_t id)
 	{
-		if(/*(index >= 0) &&*/ (index < numItems))
+		if (/*(index >= 0) &&*/ (index < numItems))
 			list[index].id = id;
 	}
 
 	void setValue(uint32_t index, float value)
 	{
-		if(/*(index >= 0) &&*/ (index < numItems))
+		if (/*(index >= 0) &&*/ (index < numItems))
 			list[index].value = value;
 	}
 
-	uint32_t getId(uint32_t index)
-	{
-		return(list[index].id);
-	}
+	uint32_t getId(uint32_t index) { return (list[index].id); }
 
-	float getValue(uint32_t index)
-	{
-		return(list[index].value);
-	}
+	float getValue(uint32_t index) { return (list[index].value); }
 
 	void clear(bool setToMin = true);
 
-	uint32_t getNumItems(void)
-	{
-		return(numItems);
-	}
+	uint32_t getNumItems(void) { return (numItems); }
 
 	void sort(bool descendingOrder = true);
 
 	void destroy(void);
 
-	~SortList(void)
-	{
-		destroy(void);
-	}
+	~SortList(void) { destroy(void); }
 };
 
 typedef SortList* SortListPtr;

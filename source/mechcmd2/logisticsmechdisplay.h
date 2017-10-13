@@ -1,5 +1,6 @@
 /*************************************************************************************************\
-LogisticsMechDisplay.h			: Interface for the LogisticsMechDisplay component.
+LogisticsMechDisplay.h			: Interface for the LogisticsMechDisplay
+component.
 //---------------------------------------------------------------------------//
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
@@ -25,26 +26,22 @@ LogisticsMechDisplay:
 **************************************************************************************************/
 class LogisticsMechDisplay : public LogisticsScreen
 {
-public:
-
+  public:
 	LogisticsMechDisplay(void);
 
 	virtual ~LogisticsMechDisplay(void);
 
-	virtual void		update(void);
-	virtual void		render(int32_t xOffset, int32_t yOffset);
-	int32_t					init();
-	void				setMech(LogisticsMech* pMech, bool bFromLB = 0);
+	virtual void update(void);
+	virtual void render(int32_t xOffset, int32_t yOffset);
+	int32_t init();
+	void setMech(LogisticsMech* pMech, bool bFromLB = 0);
 
-private:
-	LogisticsMech*		pCurMech;
-	AttributeMeter		attributeMeters[3];
-	SimpleCamera		mechCamera;
-	ComponentListBox	componentListBox;
-
-
+  private:
+	LogisticsMech* pCurMech;
+	AttributeMeter attributeMeters[3];
+	SimpleCamera mechCamera;
+	ComponentListBox componentListBox;
 };
 
-
 //*************************************************************************************************
-#endif  // end of file ( LogisticsMechDisplay.h )
+#endif // end of file ( LogisticsMechDisplay.h )

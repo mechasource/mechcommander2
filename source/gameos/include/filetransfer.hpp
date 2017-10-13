@@ -8,7 +8,6 @@
 #if !defined(FILETRANSFER_HPP)
 #define FILETRANSFER_HPP
 
-
 #ifndef FLINKEDLIST_HPP
 #include "flinkedlist.hpp"
 #endif
@@ -17,17 +16,16 @@
 #include "networkmessages.hpp"
 #endif
 
-
-class FileTransferInfo: public ListItem
+class FileTransferInfo : public ListItem
 {
-private:
-	PVOID			dataForMessages;
+  private:
+	PVOID dataForMessages;
 
-public:
+  public:
 	// static data that must be initialized before this class
 	// can be used
 	static CHUNKSIZE;
-	//static char HomeDirectory[512];
+	// static char HomeDirectory[512];
 
 	typedef enum
 	{
@@ -35,31 +33,24 @@ public:
 		FTSend
 	} TransferType;
 
-
 	// data
-	FIDPMessage* 	messageDescriptor;
-	uint32_t	fileID;
-	FILE* 			fileToTransfer;
-	PSTR 			fileName;
-	PSTR 			relativeFilePath;
-	uint32_t	fileSize;
-	int32_t				percentDone;
-
+	FIDPMessage* messageDescriptor;
+	uint32_t fileID;
+	FILE* fileToTransfer;
+	PSTR fileName;
+	PSTR relativeFilePath;
+	uint32_t fileSize;
+	int32_t percentDone;
 
 	LPFILESENT_CALLBACK callbackFunction;
 
 	// functions
 
-	//PVOID operator new(size_t class_size);
-	//void operator delete(PVOID us);
+	// PVOID operator new(size_t class_size);
+	// void operator delete(PVOID us);
 
-
-	FileTransferInfo(
-		DPID this_player_id,
-		DPID receiver_id,
-		PSTR file_name,
-		PSTR file_path,
-		uint32_t size = 0,
+	FileTransferInfo(DPID this_player_id, DPID receiver_id, PSTR file_name,
+		PSTR file_path, uint32_t size = 0,
 		TransferType transfer_direction = FTSend);
 
 	virtual ~FileTransferInfo(void);
@@ -76,11 +67,7 @@ public:
 	// Returns 1 if the file is completely received.
 	int32_t AddBytes(PVOIDbytes, int32_t size);
 
-
-	void SetID(int32_t id)
-	{
-		fileID = id;
-	}
+	void SetID(int32_t id) { fileID = id; }
 
 	void SetCallback(LPFILESENT_CALLBACK callback)
 	{
@@ -90,7 +77,6 @@ public:
 	// AllocateBeginTransferMessage creates a new message with information
 	// that tells the receiver that a message is on its way.
 	FIBeginFileTransferMessage* CreateBeginTransferMessage(int32_t& size);
-
 };
 
 #endif // !defined(FILETRANSFER_HPP)

@@ -17,12 +17,11 @@ using namespace Stuff;
 int32_t Random::Numbers[250];
 int32_t Random::Index = -1;
 
-Random*	Random::Instance = nullptr;
+Random* Random::Instance = nullptr;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-Random::InitializeClass()
+void Random::InitializeClass()
 {
 	Verify(!Random::Instance);
 	Verify(Index == -1);
@@ -32,13 +31,12 @@ Random::InitializeClass()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-Random::TerminateClass()
+void Random::TerminateClass()
 {
 	Unregister_Pointer(Random::Instance);
 	delete Random::Instance;
 	Random::Instance = nullptr;
-	Index = -1;
+	Index			 = -1;
 }
 
 //
@@ -54,7 +52,7 @@ void Random::Init()
 	//
 	int32_t i;
 	Index = 0;
-	for(i = 0; i < 250; i++)
+	for (i = 0; i < 250; i++)
 		Numbers[i] = gos_rand();
 	//
 	//--------------------------------------------------------------------
@@ -64,11 +62,12 @@ void Random::Init()
 	//--------------------------------------------------------------------
 	//
 	int32_t mask = RAND_MAX >> 1;
-	int32_t msb = mask + 1;
+	int32_t msb  = mask + 1;
 	int32_t rand_size;
-	for(rand_size = 0; !(msb & (1 << rand_size)); ++rand_size);
+	for (rand_size = 0; !(msb & (1 << rand_size)); ++rand_size)
+		;
 	i = 14;
-	while(rand_size--)
+	while (rand_size--)
 	{
 		Verify(i < ELEMENTS(Numbers));
 		Numbers[i] &= mask;
@@ -83,12 +82,9 @@ void Random::Init()
 //###########################################################################
 //###########################################################################
 //
-int32_t
-Random::GetRandomInt()
+int32_t Random::GetRandomInt()
 {
-	int32_t
-	indent,
-	result;
+	int32_t indent, result;
 	//
 	//------------------------------------------------------------------
 	// The random number generated will be the result of an XOR with the
@@ -104,7 +100,7 @@ Random::GetRandomInt()
 	//------------------------------------------------------------------------
 	//
 	Numbers[Index] = result;
-	if(++Index == ELEMENTS(Numbers))
+	if (++Index == ELEMENTS(Numbers))
 		Index = 0;
 	return result;
 }
@@ -113,11 +109,9 @@ Random::GetRandomInt()
 //###########################################################################
 //###########################################################################
 //
-float
-Random::GetFraction()
+float Random::GetFraction()
 {
-	float
-	result;
+	float result;
 	result = static_cast<float>(GetRandomInt());
 	result /= static_cast<float>(RAND_MAX + 1);
 	return result;
@@ -127,18 +121,14 @@ Random::GetFraction()
 //###########################################################################
 //###########################################################################
 //
-int32_t
-Random::GetLessThan(int32_t range)
+int32_t Random::GetLessThan(int32_t range)
 {
-	int32_t
-	result,
-	max;
+	int32_t result, max;
 	max = RAND_MAX - ((RAND_MAX + 1) % range);
 	do
 	{
 		result = GetRandomInt();
-	}
-	while(result > max);
+	} while (result > max);
 	return result % range;
 }
 
@@ -148,7 +138,7 @@ Random::GetLessThan(int32_t range)
 //
 Die::Die(int32_t n)
 {
-	dieSides = (n > 1) ? n : 2;
+	dieSides	  = (n > 1) ? n : 2;
 	highestRandom = RAND_MAX - ((RAND_MAX + 1) % dieSides);
 }
 
@@ -158,8 +148,7 @@ Die::Die(int32_t n)
 //
 Die::operator int32_t()
 {
-	int32_t
-	result;
+	int32_t result;
 	//
 	//------------------------------------------------------------------------
 	// In order to not skew the probabilities to the low numbers, make sure
@@ -170,8 +159,7 @@ Die::operator int32_t()
 	do
 	{
 		result = Random::GetInt();
-	}
-	while(result > highestRandom);
+	} while (result > highestRandom);
 	//
 	//-------------------------------------------------------------------
 	// Once the base random number is determined, do modulus division and

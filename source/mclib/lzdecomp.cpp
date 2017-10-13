@@ -13,16 +13,16 @@
 
 typedef enum __lzdecomp_const
 {
-	HASH_CLEAR				= 256,               //clear hash table command code
-	HASH_EOF				= 257,               //End Of Data command code
-	HASH_FREE				= 258,               //First Hash Table Chain Offset Value
-	BASE_BITS				= 9,
-	MAX_BIT_INDEX			= (1 << BASE_BITS),
-	NO_RAM_FOR_LZ_DECOMP	= 0xCBCB0002,
+	HASH_CLEAR = 256,	// clear hash table command code
+	HASH_EOF	  = 257, // End Of Data command code
+	HASH_FREE	 = 258, // First Hash Table Chain Offset Value
+	BASE_BITS	 = 9,
+	MAX_BIT_INDEX = (1 << BASE_BITS),
+	NO_RAM_FOR_LZ_DECOMP = 0xCBCB0002,
 };
 
 #ifndef nullptr
-#define nullptr			0
+#define nullptr 0
 #endif
 
 typedef uint8_t* puint8_t;
@@ -32,18 +32,17 @@ typedef struct HashStruct
 	uint16_t Chain;
 	uint8_t Suffix;
 } HashStruct;
-typedef HashStruct*	HashStructPtr;
+typedef HashStruct* HashStructPtr;
 
-HashStructPtr	LZOldChain = nullptr;			//Old Chain Value Found
-HashStructPtr	LZChain = nullptr;				//Current Chain Value Found
-uint32_t	LZMaxIndex = 0;				//Max index value in Hash Table
-uint32_t	LZCodeMask = 0;
-uint32_t	LZFreeIndex = 0;			//Current Free index into Hash Table
-puint8_t		LZSrcBufEnd = nullptr;			//ptr to 3rd from last byte in src buffer
-puint8_t		LZOrigDOSBuf = nullptr;		//original offset to start of src buffer
-char			LZHashBuffer[16384];
-char			LZOldSuffix = 0;			//Current Suffix Value found
-
+HashStructPtr LZOldChain = nullptr; // Old Chain Value Found
+HashStructPtr LZChain = nullptr;	// Current Chain Value Found
+uint32_t LZMaxIndex = 0;			// Max index value in Hash Table
+uint32_t LZCodeMask = 0;
+uint32_t LZFreeIndex = 0;		 // Current Free index into Hash Table
+puint8_t LZSrcBufEnd  = nullptr; // ptr to 3rd from last byte in src buffer
+puint8_t LZOrigDOSBuf = nullptr; // original offset to start of src buffer
+char LZHashBuffer[16384];
+char LZOldSuffix = 0; // Current Suffix Value found
 
 //-----------------------------
 
@@ -54,15 +53,14 @@ char			LZOldSuffix = 0;			//Current Suffix Value found
 size_t LZDecomp(puint8_t dest, puint8_t src, size_t srcLen)
 {
 	size_t result = 0;
-	__asm
-	{
+	__asm {
 		mov		esi, src
 		mov		ebx, srcLen
 
 		mov		edi, dest
 		xor		eax, eax
 
-		xor		ecx, ecx							// CH and CL used
+		xor		ecx, ecx // CH and CL used
 		lea		ebx, [ebx+esi-3]
 
 		mov		LZOldChain, eax
@@ -75,27 +73,28 @@ size_t LZDecomp(puint8_t dest, puint8_t src, size_t srcLen)
 		mov		LZFreeIndex, eax
 
 		mov		LZCodeMask, MAX_BIT_INDEX-1
-		mov		LZMaxIndex, MAX_BIT_INDEX		//max index for 9 bits == 512
+		mov		LZMaxIndex, MAX_BIT_INDEX // max index for 9 bits == 512
 
-		mov		LZFreeIndex, HASH_FREE			//set index to 258
+		mov		LZFreeIndex, HASH_FREE	 // set index to 258
 		mov		LZOldSuffix, al
 
 		mov		ch, BASE_BITS
 		jmp		GetCode
 
-//--------------------------------------------------------------------------
-//
-// ClearHash restarts decompression assuming that it is starting from the
-//           beginning
-//
-//--------------------------------------------------------------------------
+			//--------------------------------------------------------------------------
+			//
+			// ClearHash restarts decompression assuming that it is starting
+			// from the
+			//           beginning
+			//
+			//--------------------------------------------------------------------------
 
 		ClearHash:
-		mov		ch, BASE_BITS		        	//set up for nine bit codes
+		mov		ch, BASE_BITS	 // set up for nine bit codes
 		mov		LZCodeMask, MAX_BIT_INDEX-1
 
-		mov		LZMaxIndex, MAX_BIT_INDEX    	//max index for 9 bits == 512
-		mov		LZFreeIndex, HASH_FREE       	//set index to 258
+		mov		LZMaxIndex, MAX_BIT_INDEX // max index for 9 bits == 512
+		mov		LZFreeIndex, HASH_FREE	 // set index to 258
 
 		cmp		esi, LZSrcBufEnd
 		ja		error
@@ -117,18 +116,18 @@ size_t LZDecomp(puint8_t dest, puint8_t src, size_t srcLen)
 		add		esi, ebx
 		nop
 
-		mov		LZOldChain, eax      	//previous Chain Offset.
+		mov		LZOldChain, eax			  // previous Chain Offset.
 		mov		LZOldSuffix, al
 
 		mov		[edi], al
 		inc		edi
-//-------------------------------------------------------------------------
-// ReadCode gets the next hash code (9 BITS) from LZDOSBuff
-//         this WILL ReadFile more data if the buffer is empty
-//-------------------------------------------------------------------------
+			//-------------------------------------------------------------------------
+			// ReadCode gets the next hash code (9 BITS) from LZDOSBuff
+			//         this WILL ReadFile more data if the buffer is empty
+			//-------------------------------------------------------------------------
 		GetCode:
 		cmp		esi, LZSrcBufEnd
-		ja		error						// Read Passed End?
+		ja		error // Read Passed End?
 
 		mov		eax, [esi+0]
 		xor		ebx, ebx
@@ -150,55 +149,56 @@ size_t LZDecomp(puint8_t dest, puint8_t src, size_t srcLen)
 		cmp		eax, HASH_EOF
 		je		eof
 
-		cmp		eax, HASH_CLEAR         		//are we to clear out hash table?
+		cmp		eax, HASH_CLEAR // are we to clear out hash table?
 		je		ClearHash
-//---------------------------------------------------------------------------
-//
-// Handle Chain acts on two types of Codes, A previously tabled one and a new
-// one. On a previously tabled one, the chain value and suffix for that code
-// are preserved into OldSuffix and OldChain. The block operates on searching
-// backward in the chains until a chain offset of 0-255 is found (meaning the
-// terminal character has been reached.) Each character in the chain is saved
-// on the stack.
-//
-//---------------------------------------------------------------------------
+				//---------------------------------------------------------------------------
+				//
+				// Handle Chain acts on two types of Codes, A previously tabled
+				// one and a new one. On a previously tabled one, the chain
+				// value and suffix for that code are preserved into OldSuffix
+				// and OldChain. The block operates on searching backward in the
+				// chains until a chain offset of 0-255 is found (meaning the
+				// terminal character has been reached.) Each character in the
+				// chain is saved on the stack.
+				//
+				//---------------------------------------------------------------------------
 
-//HandleChain:
+					// HandleChain:
 		mov		edx, esp
 		dec		esp
 
-		mov		LZChain, eax        				//Save new chain as well
+		mov		LZChain, eax				// Save new chain as well
 		lea		ebx, [LZHashBuffer+eax+eax*2]
 
-		cmp		eax, LZFreeIndex					//is code in HASH TABLE already?
-		jl		InTable      					//if yes, then process chain
+		cmp		eax, LZFreeIndex		// is code in HASH TABLE already?
+		jl		InTable  // if yes, then process chain
 
-		mov		al, LZOldSuffix					//get back the old suffix and plant it
-		mov		[esp], al                   		//onto the stack for processing later
+		mov		al, LZOldSuffix		// get back the old suffix and plant it
+		mov		[esp], al				// onto the stack for processing later
 		dec		esp
 		mov		[ebx+2], al
-		mov		eax, LZOldChain     				//get Old chain for creation of Old Chain
+		mov		eax, LZOldChain		// get Old chain for creation of Old Chain
 		mov		[ebx], ax
 		lea		ebx, [LZHashBuffer+eax+eax*2]
 
 		InTable:
-		test	ah, ah							//(ax<255) is current chain a character?
-		jz		ChainEnd   						//if yes, then begin Print out
+		test	ah, ah //(ax<255) is current chain a character?
+		jz		ChainEnd // if yes, then begin Print out
 
-		mov		al, [ebx+2]		 				//push suffix onto stack
-		mov		[esp], al                   		//onto the stack for processing later
+		mov		al, [ebx+2]		// push suffix onto stack
+		mov		[esp], al				// onto the stack for processing later
 
 		dec		esp
-		movzx	eax, word ptr [ebx]				//get chain to this code
+		movzx	eax, word ptr [ebx]   // get chain to this code
 		lea		ebx, [LZHashBuffer+eax+eax*2]
-		jmp   InTable            				//and keep filling up
+		jmp   InTable // and keep filling up
 
 		ChainEnd:
-		mov		LZOldSuffix, al				//save last character in chain
-		mov		[esp], al                   		//onto the stack for processing later
+		mov		LZOldSuffix, al			// save last character in chain
+		mov		[esp], al			// onto the stack for processing later
 
 		sub		edx, esp
-		mov		ebx, LZFreeIndex    				//get new code number index
+		mov		ebx, LZFreeIndex // get new code number index
 
 		send_bytes:
 		mov		al, [esp]
@@ -210,12 +210,12 @@ size_t LZDecomp(puint8_t dest, puint8_t src, size_t srcLen)
 		dec		edx
 		jnz		send_bytes
 
-//---------------------------------------------------------------------------
-//
-// Here we add another chain to the hash table so that we continually use it
-// for more decompressions.
-//
-//---------------------------------------------------------------------------
+				//---------------------------------------------------------------------------
+				//
+				// Here we add another chain to the hash table so that we
+				// continually use it for more decompressions.
+				//
+				//---------------------------------------------------------------------------
 
 		mov		al, LZOldSuffix
 		mov		edx, LZOldChain
@@ -257,5 +257,5 @@ size_t LZDecomp(puint8_t dest, puint8_t src, size_t srcLen)
 		sub		edi, dest
 		mov		result, edi
 	}
-	return(result);
+	return (result);
 }

@@ -16,21 +16,21 @@ extern uint32_t gameResourceHandle;
 Forest::Forest(int32_t newID)
 {
 	centerX = centerY = 0;
-	radius = 1.0f;
-	for(size_t i = 0; i < FOREST_TYPES; i++)
+	radius			  = 1.0f;
+	for (size_t i = 0; i < FOREST_TYPES; i++)
 	{
 		percentages[i] = 0;
 	}
 	ID = newID;
-	if((-1 == newID) && (EditorObjectMgr::instance()))
+	if ((-1 == newID) && (EditorObjectMgr::instance()))
 	{
 		ID = EditorObjectMgr::instance()->getNextAvailableForestID();
 	}
 	maxDensity = 7.f;
 	minDensity = .001f;
-	maxHeight = 1.25;
-	minHeight = .75;
-	bRandom = true;
+	maxHeight  = 1.25;
+	minHeight  = .75;
+	bRandom	= true;
 	char tmp[256];
 	cLoadString(IDS_UNNAMDE_FOREST, tmp, 255, gameResourceHandle);
 	name.Format(tmp, ID);
@@ -38,17 +38,17 @@ Forest::Forest(int32_t newID)
 
 Forest::Forest(const Forest& src)
 {
-	centerX =  src.centerX;
-	centerY = src.centerY;
-	fileName = src.fileName;
-	bRandom = src.bRandom;
-	maxHeight = src.maxHeight;
-	minHeight = src.minHeight;
+	centerX	= src.centerX;
+	centerY	= src.centerY;
+	fileName   = src.fileName;
+	bRandom	= src.bRandom;
+	maxHeight  = src.maxHeight;
+	minHeight  = src.minHeight;
 	maxDensity = src.maxDensity;
 	minDensity = src.minDensity;
-	name = src.name;
-	radius = src.radius;
-	for(size_t i = 0; i < FOREST_TYPES; i++)
+	name	   = src.name;
+	radius	 = src.radius;
+	for (size_t i = 0; i < FOREST_TYPES; i++)
 	{
 		percentages[i] = src.percentages[i];
 	}
@@ -57,22 +57,22 @@ Forest::Forest(const Forest& src)
 
 Forest& Forest::operator=(const Forest& src)
 {
-	if(&src != this)
+	if (&src != this)
 	{
-		centerX =  src.centerX;
-		centerY = src.centerY;
-		fileName = src.fileName;
-		bRandom = src.bRandom;
-		maxHeight = src.maxHeight;
-		minHeight = src.minHeight;
+		centerX	= src.centerX;
+		centerY	= src.centerY;
+		fileName   = src.fileName;
+		bRandom	= src.bRandom;
+		maxHeight  = src.maxHeight;
+		minHeight  = src.minHeight;
 		maxDensity = src.maxDensity;
 		minDensity = src.minDensity;
-		radius = src.radius;
-		for(size_t i = 0; i < FOREST_TYPES; i++)
+		radius	 = src.radius;
+		for (size_t i = 0; i < FOREST_TYPES; i++)
 		{
 			percentages[i] = src.percentages[i];
 		}
-		ID = src.ID; // this is a bit worisome
+		ID   = src.ID; // this is a bit worisome
 		name = src.name;
 	}
 	return *this;
@@ -81,7 +81,7 @@ Forest& Forest::operator=(const Forest& src)
 void Forest::init()
 {
 	FitIniFile file;
-	if(NO_ERROR != file.open(fileName))
+	if (NO_ERROR != file.open(fileName))
 	{
 		char errorString[256];
 		sprintf(errorString, "Couldn't open file %s", (PCSTR)fileName);
@@ -95,7 +95,7 @@ void Forest::init()
 void Forest::init(FitIniFile& file)
 {
 	char headerName[256];
-	for(size_t i = 0; i < FOREST_TYPES; i++)
+	for (size_t i = 0; i < FOREST_TYPES; i++)
 	{
 		sprintf(headerName, "TreeType%ld", i);
 		file.readIdFloat(headerName, percentages[i]);
@@ -111,17 +111,16 @@ void Forest::init(FitIniFile& file)
 	file.readIdBoolean("Random", bRandom);
 	file.readIdFloat("Radius", radius);
 	file.readIdString("Name", tmp, 255);
-	name = tmp;
+	name   = tmp;
 	tmp[0] = 0;
 	file.readIdString("FileName", tmp, 255);
 	fileName = tmp;
 }
 
-
 void Forest::save()
 {
 	FitIniFile file;
-	if(NO_ERROR != file.create((PSTR)(PCSTR)fileName))
+	if (NO_ERROR != file.create((PSTR)(PCSTR)fileName))
 	{
 		char errorString[256];
 		sprintf(errorString, "Couldn't create file %s", (PCSTR)fileName);
@@ -135,7 +134,7 @@ void Forest::save()
 void Forest::save(FitIniFile& file)
 {
 	char headerName[256];
-	for(size_t i = 0; i < FOREST_TYPES; i++)
+	for (size_t i = 0; i < FOREST_TYPES; i++)
 	{
 		sprintf(headerName, "TreeType%ld", i);
 		file.writeIdFloat(headerName, percentages[i]);
@@ -151,8 +150,6 @@ void Forest::save(FitIniFile& file)
 	file.writeIdString("Name", name);
 	file.writeIdString("FileName", fileName);
 }
-
-
 
 //*************************************************************************************************
 // end of file ( forest.cpp )

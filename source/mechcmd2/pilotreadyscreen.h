@@ -22,19 +22,15 @@ class LogisticsMechIcon;
 class PilotReadyScreen : public LogisticsScreen
 {
 
-public:
-
-	static PilotReadyScreen* instance()
-	{
-		return s_instance;
-	}
+  public:
+	static PilotReadyScreen* instance() { return s_instance; }
 	PilotReadyScreen(void);
 	virtual ~PilotReadyScreen(void);
 
 	void init(FitIniFile* file);
 	virtual void render(int32_t xOffset, int32_t yOffset);
 	virtual void update(void);
-	virtual int32_t			handleMessage(uint32_t, uint32_t);
+	virtual int32_t handleMessage(uint32_t, uint32_t);
 
 	void beginDrag(LogisticsPilot* pPilot);
 
@@ -45,31 +41,28 @@ public:
 	void setMech(LogisticsMech* pMech);
 	void addSelectedPilot(void);
 
+  private:
+	LogisticsPilot* pCurPilot;
+	LogisticsPilot* pDragPilot;
+	LogisticsMechIcon* pIcons;
+	aObject dragIcon;
+	bool dragLeft;
+	int32_t forceGroupCount;
 
-private:
+	aObject specialtySkillIcons[4];
+	RECT skillLocations[4];
+	aObject skillIcons[4];
+	aObject medalIcons[16];
+	RECT medalLocations[16];
 
-	LogisticsPilot*		pCurPilot;
-	LogisticsPilot*		pDragPilot;
-	LogisticsMechIcon*	pIcons;
-	aObject				dragIcon;
-	bool				dragLeft;
-	int32_t				forceGroupCount;
+	AttributeMeter attributeMeters[2];
+	LogisticsPilotListBox pilotListBox;
+	LogisticsMechDisplay mechDisplay;
+	bool mechSelected;
 
-	aObject				specialtySkillIcons[4];
-	RECT			skillLocations[4];
-	aObject				skillIcons[4];
-	aObject				medalIcons[16];
-	RECT			medalLocations[16];
+	aObject rankIcons[5];
 
-	AttributeMeter		attributeMeters[2];
-	LogisticsPilotListBox	pilotListBox;
-	LogisticsMechDisplay	mechDisplay;
-	bool					mechSelected;
-
-	aObject				rankIcons[5];
-
-	static	PilotReadyScreen*	s_instance;
-
+	static PilotReadyScreen* s_instance;
 
 	void removeSelectedPilot(void);
 
@@ -79,10 +72,7 @@ private:
 	PilotReadyScreen(const PilotReadyScreen&);
 	PilotReadyScreen& operator=(const PilotReadyScreen&);
 
-	float				launchFadeTime;
-
-
-
+	float launchFadeTime;
 };
 
 #endif

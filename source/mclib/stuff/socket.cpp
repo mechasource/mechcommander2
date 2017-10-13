@@ -20,10 +20,7 @@ using namespace Stuff;
 // Socket
 //#############################################################################
 //
-Socket::Socket(Node* node)
-{
-	socketsNode = node;
-}
+Socket::Socket(Node* node) { socketsNode = node; }
 
 //
 //#############################################################################
@@ -40,8 +37,7 @@ Socket::~Socket()
 // AddImplementation
 //#############################################################################
 //
-void
-Socket::AddImplementation(Plug*)
+void Socket::AddImplementation(Plug*)
 {
 	// Check_Object(this);
 	STOP(("Socket::AddImplementation - virtual method with no override"));
@@ -52,8 +48,7 @@ Socket::AddImplementation(Plug*)
 // IsEmpty
 //#############################################################################
 //
-bool
-Socket::IsEmpty()
+bool Socket::IsEmpty()
 {
 	// Check_Object(this);
 	STOP(("Socket::IsEmpty - virtual method with no override"));
@@ -67,8 +62,7 @@ Socket::IsEmpty()
 // Remove
 //#############################################################################
 //
-void
-SocketIterator::Remove()
+void SocketIterator::Remove()
 {
 	// Check_Object(this);
 	STOP(("SocketIterator::Remove - Should never reach here"));
@@ -79,25 +73,24 @@ SocketIterator::Remove()
 // DeletePlugs
 //#############################################################################
 //
-void
-SocketIterator::DeletePlugs(bool defeat_release_node)
+void SocketIterator::DeletePlugs(bool defeat_release_node)
 {
 	// Check_Object(this);
 	Plug* plug;
 	Node* save_release_node = nullptr;
-	if(defeat_release_node)
+	if (defeat_release_node)
 	{
 		Check_Object(socket);
 		save_release_node = socket->GetReleaseNode();
 		socket->SetReleaseNode(nullptr);
 	}
 	First();
-	while((plug = ReadAndNextPlug()) != nullptr)
+	while ((plug = ReadAndNextPlug()) != nullptr)
 	{
 		Unregister_Object(plug);
 		delete plug;
 	}
-	if(defeat_release_node)
+	if (defeat_release_node)
 	{
 		Check_Object(socket);
 		socket->SetReleaseNode(save_release_node);
@@ -109,8 +102,7 @@ SocketIterator::DeletePlugs(bool defeat_release_node)
 // InsertImplementation
 //#############################################################################
 //
-void
-SocketIterator::InsertImplementation(Plug*)
+void SocketIterator::InsertImplementation(Plug*)
 {
 	//
 	// Should never reach here

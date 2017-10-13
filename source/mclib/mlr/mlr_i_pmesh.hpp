@@ -12,7 +12,7 @@
 
 namespace Stuff
 {
-	class Plane;
+class Plane;
 }
 
 namespace MidLevelRenderer
@@ -22,116 +22,110 @@ namespace MidLevelRenderer
 //#### MLRIndexedPolyMesh with no color no lighting one texture layer #####
 //##########################################################################
 
+class MLR_I_PMesh : public MLRIndexedPrimitiveBase
+{
+	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	// Initialization
+	//
+  public:
+	static void __stdcall InitializeClass(void);
+	static void __stdcall TerminateClass(void);
 
-	class MLR_I_PMesh:
-		public MLRIndexedPrimitiveBase
+	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	// Constructors/Destructors
+	//
+  protected:
+	MLR_I_PMesh(
+		ClassData* class_data, Stuff::MemoryStream* stream, uint32_t version);
+	~MLR_I_PMesh(void);
+
+  public:
+	MLR_I_PMesh(ClassData* class_data = MLR_I_PMesh::DefaultData);
+
+	static MLR_I_PMesh* Make(Stuff::MemoryStream* stream, uint32_t version);
+	void Save(Stuff::MemoryStream* stream);
+
+  public:
+	// void Copy(MLRIndexedPolyMesh*);
+
+	virtual void InitializeDrawPrimitive(uint8_t, int32_t = 0);
+
+	virtual void SetSubprimitiveLengths(puint8_t, size_t);
+	virtual void GetSubprimitiveLengths(puint8_t*, psize_t);
+
+	void FindFacePlanes(void);
+
+	virtual int32_t FindBackFace(const Stuff::Point3D&);
+
+	const Stuff::Plane* GetPolygonPlane(size_t index)
 	{
-		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-		// Initialization
-		//
-	public:
-		static void __stdcall InitializeClass(void);
-		static void __stdcall TerminateClass(void);
+		// Check_Object(this);
+		Verify(index < facePlanes.GetLength());
+		return &facePlanes[index];
+	}
 
-		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-		// Constructors/Destructors
-		//
-	protected:
-		MLR_I_PMesh(ClassData* class_data, Stuff::MemoryStream* stream, uint32_t version);
-		~MLR_I_PMesh(void);
+	virtual void Lighting(MLRLight* const*, uint32_t nrLights);
 
-	public:
-		MLR_I_PMesh(ClassData* class_data = MLR_I_PMesh::DefaultData);
-
-		static MLR_I_PMesh* Make(Stuff::MemoryStream* stream, uint32_t version);
-		void Save(Stuff::MemoryStream* stream);
-
-	public:
-		// void Copy(MLRIndexedPolyMesh*);
-
-		virtual void InitializeDrawPrimitive(uint8_t, int32_t = 0);
-
-		virtual void SetSubprimitiveLengths(puint8_t, size_t);
-		virtual void GetSubprimitiveLengths(puint8_t*, psize_t);
-
-		void FindFacePlanes(void);
-
-		virtual int32_t FindBackFace(const Stuff::Point3D&);
-
-		const Stuff::Plane* GetPolygonPlane(size_t index)
-		{
-			// Check_Object(this);
-			Verify(index < facePlanes.GetLength());
-			return &facePlanes[index];
-		}
-
-		virtual void Lighting(MLRLight* const*, uint32_t nrLights);
-
-		virtual void LightMapLighting(MLRLight*);
+	virtual void LightMapLighting(MLRLight*);
 
 #if COLOR_AS_DWORD
-		virtual void PaintMe(pcuint32_t paintMe) { (void)paintMe; };
+	virtual void PaintMe(pcuint32_t paintMe) { (void)paintMe; };
 #else
-		virtual void PaintMe(const Stuff::RGBAColor* paintMe) { (void)paintMe; };
+	virtual void PaintMe(const Stuff::RGBAColor* paintMe) { (void)paintMe; };
 #endif
 
-		virtual uint32_t TransformAndClip(Stuff::Matrix4D*, MLRClippingState, GOSVertexPool*, bool = false);
-		bool CastRay(Stuff::Line3D* line, Stuff::Normal3D* normal);
-		virtual void TransformNoClip(Stuff::Matrix4D*, GOSVertexPool*, bool = false);
+	virtual uint32_t TransformAndClip(
+		Stuff::Matrix4D*, MLRClippingState, GOSVertexPool*, bool = false);
+	bool CastRay(Stuff::Line3D* line, Stuff::Normal3D* normal);
+	virtual void TransformNoClip(
+		Stuff::Matrix4D*, GOSVertexPool*, bool = false);
 
-		// Initializes the visibility test list
-		void ResetTestList(void);
+	// Initializes the visibility test list
+	void ResetTestList(void);
 
-		// find which vertices are visible which not - returns nr of visible vertices
-		// the result is stored in the visibleIndexedVertices array
-		uint32_t FindVisibleVertices(void);
+	// find which vertices are visible which not - returns nr of visible
+	// vertices the result is stored in the visibleIndexedVertices array
+	uint32_t FindVisibleVertices(void);
 
-		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-		// Class Data Support
-		//
-	public:
-		static ClassData* DefaultData;
+	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	// Class Data Support
+	//
+  public:
+	static ClassData* DefaultData;
 
-		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-		// Testing
-		//
-	public:
-		void TestInstance(void) const;
+	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	// Testing
+	//
+  public:
+	void TestInstance(void) const;
 
-		virtual size_t GetSize(void)
-		{
-			// Check_Object(this);
-			size_t ret = MLRIndexedPrimitiveBase::GetSize();
-			ret += testList.GetSize();
-			ret += facePlanes.GetSize();
-			return ret;
-		}
+	virtual size_t GetSize(void)
+	{
+		// Check_Object(this);
+		size_t ret = MLRIndexedPrimitiveBase::GetSize();
+		ret += testList.GetSize();
+		ret += facePlanes.GetSize();
+		return ret;
+	}
 
-	protected:
-		void Transform(Stuff::Matrix4D*);
-		Stuff::DynamicArrayOf<uint8_t> testList;
-		Stuff::DynamicArrayOf<Stuff::Plane> facePlanes;
-	};
+  protected:
+	void Transform(Stuff::Matrix4D*);
+	Stuff::DynamicArrayOf<uint8_t> testList;
+	Stuff::DynamicArrayOf<Stuff::Plane> facePlanes;
+};
 
 #define ICO_X 0.525731112119133606f
 #define ICO_Z 0.850650808352039932f
 
-	extern float vdata[12][3];
-	extern uint32_t tindices [20][3];
+extern float vdata[12][3];
+extern uint32_t tindices[20][3];
 
-	extern uint32_t triDrawn;
+extern uint32_t triDrawn;
 
-	void subdivide(
-		Stuff::Point3D* coords,
-		Stuff::Point3D& v1,
-		Stuff::Point3D& v2,
-		Stuff::Point3D& v3,
-		uint32_t depth,
-		uint32_t tri2draw,
-		float rad = 1.0f);
+void subdivide(Stuff::Point3D* coords, Stuff::Point3D& v1, Stuff::Point3D& v2,
+	Stuff::Point3D& v3, uint32_t depth, uint32_t tri2draw, float rad = 1.0f);
 
-	MLR_I_PMesh* CreateIndexedCube_NoColor_NoLit(float, MLRState*);
-	MLRShape* CreateIndexedIcosahedron_NoColor_NoLit(IcoInfo&, MLRState*);
-
+MLR_I_PMesh* CreateIndexedCube_NoColor_NoLit(float, MLRState*);
+MLRShape* CreateIndexedIcosahedron_NoColor_NoLit(IcoInfo&, MLRState*);
 }
 #endif

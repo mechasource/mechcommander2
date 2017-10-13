@@ -1,5 +1,6 @@
 /*************************************************************************************************\
-ComponentListBox.cpp			: Implementation of the ComponentListBox component.
+ComponentListBox.cpp			: Implementation of the ComponentListBox
+component.
 //---------------------------------------------------------------------------//
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
@@ -23,17 +24,14 @@ ComponentListItem* ComponentListItem::s_templateItem = nullptr;
 
 ComponentIconListBox* ComponentIconListBox::s_instance = nullptr;
 
-
-
 ///////////////////////////////////////////////////////
-
 
 ComponentListItem::ComponentListItem(LogisticsComponent* pComp)
 {
-	if(s_templateItem)
+	if (s_templateItem)
 		*this = *s_templateItem;
 	pComponent = pComp;
-	if(pComp)
+	if (pComp)
 	{
 		name.setText(pComponent->getName());
 		char numericText[32];
@@ -43,11 +41,12 @@ ComponentListItem::ComponentListItem(LogisticsComponent* pComp)
 		heatText.setText(numericText);
 		int32_t sizeX = pComponent->getComponentWidth();
 		int32_t sizeY = pComponent->getComponentHeight();
-		PCSTR pFile = pComponent->getIconFileName();
+		PCSTR pFile   = pComponent->getIconFileName();
 		FullPathFileName path;
 		path.init(artPath, pFile, "tga");
 		icon.setTexture(path);
-		icon.resize(sizeX * LogisticsComponent::XICON_FACTOR, sizeY * LogisticsComponent::YICON_FACTOR);
+		icon.resize(sizeX * LogisticsComponent::XICON_FACTOR,
+			sizeY * LogisticsComponent::YICON_FACTOR);
 		icon.setUVs(0.f, 0.f, sizeX * 48.f, sizeY * 32.f);
 		// figure out the difference between this thing's size and
 		// the template objects
@@ -55,11 +54,13 @@ ComponentListItem::ComponentListItem(LogisticsComponent* pComp)
 		int32_t deltaX = icon.width() - s_templateItem->icon.width();
 		// resize outlines and icon outlines
 		outline.resize(outline.width(), outline.height() + deltaY);
-		iconOutline.resize(iconOutline.width() + deltaX, iconOutline.height() + deltaY);
+		iconOutline.resize(
+			iconOutline.width() + deltaX, iconOutline.height() + deltaY);
 		disabledText.resize(outline.width(), outline.height());
 		disabledText.moveTo(0, 0);
 		disabledText.alignment = 3;
-		aObject::init(outline.left(), outline.top(), outline.width(), outline.height());
+		aObject::init(
+			outline.left(), outline.top(), outline.width(), outline.height());
 		addChild(&icon);
 		addChild(&name);
 		addChild(&costText);
@@ -67,13 +68,14 @@ ComponentListItem::ComponentListItem(LogisticsComponent* pComp)
 		addChild(&costIcon);
 		addChild(&heatIcon);
 		addChild(&disabledText);
-		if(s_templateItem)
+		if (s_templateItem)
 		{
-			for(size_t i = 0; i < 6; i++)
+			for (size_t i = 0; i < 6; i++)
 			{
-				for(size_t j = 0; j < COMP_ANIMATION_COUNT; j++)
+				for (size_t j = 0; j < COMP_ANIMATION_COUNT; j++)
 				{
-					if(s_templateItem->pChildAnims[i] == &s_templateItem->animations[j])
+					if (s_templateItem->pChildAnims[i] ==
+						&s_templateItem->animations[j])
 					{
 						pChildAnims[i] = &animations[j];
 					}
@@ -83,17 +85,15 @@ ComponentListItem::ComponentListItem(LogisticsComponent* pComp)
 	}
 }
 
-ComponentListItem::~ComponentListItem()
-{
-}
+ComponentListItem::~ComponentListItem() {}
 
 int32_t ComponentListItem::init(FitIniFile& file)
 {
-	if(!s_templateItem)
+	if (!s_templateItem)
 	{
 		s_templateItem = new ComponentListItem(nullptr);
 		char animName[COMP_ANIMATION_COUNT][32];
-		for(size_t i = 0; i < COMP_ANIMATION_COUNT; i++)
+		for (size_t i = 0; i < COMP_ANIMATION_COUNT; i++)
 		{
 			sprintf(animName[i], "Animation%ld", i);
 			s_templateItem->animations[i].init(&file, animName[i]);
@@ -117,17 +117,18 @@ int32_t ComponentListItem::init(FitIniFile& file)
 	return 0;
 }
 
-void ComponentListItem::assignAnimation(FitIniFile& file, int32_t whichChild, char animNames[COMP_ANIMATION_COUNT][32],
-										aObject* object)
+void ComponentListItem::assignAnimation(FitIniFile& file, int32_t whichChild,
+	char animNames[COMP_ANIMATION_COUNT][32], aObject* object)
 {
 	s_templateItem->pChildAnims[whichChild] = 0;
 	char tmpAnimName[32];
 	file.readIdString("Animation", tmpAnimName, 31);
-	for(size_t i = 0; i < COMP_ANIMATION_COUNT; i++)
+	for (size_t i = 0; i < COMP_ANIMATION_COUNT; i++)
 	{
-		if(_stricmp(animNames[i], tmpAnimName) == 0)
+		if (_stricmp(animNames[i], tmpAnimName) == 0)
 		{
-			s_templateItem->pChildAnims[whichChild] = &s_templateItem->animations[i];
+			s_templateItem->pChildAnims[whichChild] =
+				&s_templateItem->animations[i];
 			break;
 		}
 	}
@@ -141,19 +142,21 @@ void ComponentListItem::render()
 	outline.moveTo(globalX(), globalY());
 	outline.setColor(animations[0].getCurrentColor(animations[0].getState()));
 	outline.render();
-	iconOutline.moveTo(globalX() + s_templateItem->iconOutline.left()
-					   , globalY() + s_templateItem->iconOutline.top());
-	iconOutline.setColor(animations[0].getCurrentColor(animations[0].getState()));
+	iconOutline.moveTo(globalX() + s_templateItem->iconOutline.left(),
+		globalY() + s_templateItem->iconOutline.top());
+	iconOutline.setColor(
+		animations[0].getCurrentColor(animations[0].getState()));
 	iconOutline.render();
-	for(size_t i = 0; i < 6; i++)
+	for (size_t i = 0; i < 6; i++)
 	{
-		if(pChildAnims[i])
+		if (pChildAnims[i])
 		{
-			int32_t color = pChildAnims[i]->getCurrentColor(pChildAnims[i]->getState());
+			int32_t color =
+				pChildAnims[i]->getCurrentColor(pChildAnims[i]->getState());
 			child(i)->setColor(color);
 		}
 	}
-	if(MechLabScreen::instance()->canAddComponent(pComponent))
+	if (MechLabScreen::instance()->canAddComponent(pComponent))
 	{
 		icon.setColor(0xff404040);
 	}
@@ -161,37 +164,39 @@ void ComponentListItem::render()
 		icon.setColor(0xffffffff);
 }
 
-void	ComponentListItem::update()
+void ComponentListItem::update()
 {
 	int32_t bCanAdd = MechLabScreen::instance()->canAddComponent(pComponent);
-	for(size_t i = 0; i < COMP_ANIMATION_COUNT; i++)
+	for (size_t i = 0; i < COMP_ANIMATION_COUNT; i++)
 	{
 		animations[i].update();
 	}
 	bool isInside = pointInside(userInput->getMouseX(), userInput->getMouseY());
-	if(state == aListItem::SELECTED)
+	if (state == aListItem::SELECTED)
 	{
-		if((userInput->isLeftClick() && isInside)
-				|| (animations[0].getState() != aAnimGroup::PRESSED)
-				&& ComponentIconListBox::s_instance->pointInside(userInput->getMouseX(), userInput->getMouseY()))
+		if ((userInput->isLeftClick() && isInside) ||
+			(animations[0].getState() != aAnimGroup::PRESSED) &&
+				ComponentIconListBox::s_instance->pointInside(
+					userInput->getMouseX(), userInput->getMouseY()))
 		{
 			setComponent();
-			if(bCanAdd)
+			if (bCanAdd)
 			{
 				soundSystem->playDigitalSample(LOG_WRONGBUTTON);
 			}
 			::helpTextID = IDS_HELP_COMP0 + pComponent->getID();
 		}
-		if(!bCanAdd)
+		if (!bCanAdd)
 		{
-			if(animations[0].getState() != aAnimGroup::PRESSED)
+			if (animations[0].getState() != aAnimGroup::PRESSED)
 			{
-				for(size_t i = 0; i < COMP_ANIMATION_COUNT; i++)
+				for (size_t i = 0; i < COMP_ANIMATION_COUNT; i++)
 				{
 					animations[i].setState(aAnimGroup::PRESSED);
 				}
 			}
-			if(isInside && ComponentIconListBox::s_instance->pointInside(userInput->getMouseX(), userInput->getMouseY()))
+			if (isInside && ComponentIconListBox::s_instance->pointInside(
+								userInput->getMouseX(), userInput->getMouseY()))
 			{
 				::helpTextID = IDS_HELP_COMP0 + pComponent->getID();
 			}
@@ -199,79 +204,83 @@ void	ComponentListItem::update()
 		}
 		else
 		{
-			for(size_t i = 0; i < COMP_ANIMATION_COUNT; i++)
+			for (size_t i = 0; i < COMP_ANIMATION_COUNT; i++)
 				animations[i].setState(aAnimGroup::DISABLED);
-			if(COMPONENT_TOO_HOT == bCanAdd)
+			if (COMPONENT_TOO_HOT == bCanAdd)
 			{
 				disabledText.setText(IDS_MC_COMPONENT_TOO_HOT);
 			}
-			else if(NO_MORE_ARMOR == bCanAdd)
+			else if (NO_MORE_ARMOR == bCanAdd)
 			{
 				disabledText.setText(IDS_MC_COMPONENT_TOO_MUCH_ARMOR);
 			}
 			else
 				disabledText.setText("");
 		}
-		if(!bCanAdd)
+		if (!bCanAdd)
 		{
-			if(userInput->isLeftDrag() && isInside &&
-					pointInside(userInput->getMouseDragX(), userInput->getMouseDragY())
-					&& ComponentIconListBox::s_instance->pointInside(userInput->getMouseX(), userInput->getMouseY()))
+			if (userInput->isLeftDrag() && isInside &&
+				pointInside(
+					userInput->getMouseDragX(), userInput->getMouseDragY()) &&
+				ComponentIconListBox::s_instance->pointInside(
+					userInput->getMouseX(), userInput->getMouseY()))
 				startDrag();
 		}
 	}
-	else if(isInside && !bCanAdd
-			&& ComponentIconListBox::s_instance->pointInside(userInput->getMouseX(), userInput->getMouseY()))
+	else if (isInside && !bCanAdd &&
+			 ComponentIconListBox::s_instance->pointInside(
+				 userInput->getMouseX(), userInput->getMouseY()))
 	{
-		if(animations[0].getState() != aAnimGroup::HIGHLIGHT)
+		if (animations[0].getState() != aAnimGroup::HIGHLIGHT)
 		{
-			for(size_t i = 0; i < COMP_ANIMATION_COUNT; i++)
+			for (size_t i = 0; i < COMP_ANIMATION_COUNT; i++)
 			{
 				animations[i].setState(aAnimGroup::HIGHLIGHT);
 			}
 			soundSystem->playDigitalSample(LOG_HIGHLIGHTBUTTONS);
 		}
-		state = aListItem::HIGHLITE;
+		state		 = aListItem::HIGHLITE;
 		::helpTextID = IDS_HELP_COMP0 + pComponent->getID();
 	}
-	else if(!bCanAdd)
+	else if (!bCanAdd)
 	{
 		state = aListItem::ENABLED;
-		for(size_t i = 0; i < COMP_ANIMATION_COUNT; i++)
+		for (size_t i = 0; i < COMP_ANIMATION_COUNT; i++)
 			animations[i].setState(aAnimGroup::NORMAL);
 		disabledText.setText("");
 	}
 	else
 	{
 		state = DISABLED;
-		if(isInside
-				&& ComponentIconListBox::s_instance->pointInside(userInput->getMouseX(), userInput->getMouseY()))
+		if (isInside && ComponentIconListBox::s_instance->pointInside(
+							userInput->getMouseX(), userInput->getMouseY()))
 			::helpTextID = IDS_HELP_COMP0 + pComponent->getID();
-		if((userInput->isLeftClick() && isInside
-				&& ComponentIconListBox::s_instance->pointInside(userInput->getMouseX(), userInput->getMouseY())))
+		if ((userInput->isLeftClick() && isInside &&
+				ComponentIconListBox::s_instance->pointInside(
+					userInput->getMouseX(), userInput->getMouseY())))
 		{
 			setComponent();
 			soundSystem->playDigitalSample(LOG_WRONGBUTTON);
 		}
-		for(size_t i = 0; i < COMP_ANIMATION_COUNT; i++)
+		for (size_t i = 0; i < COMP_ANIMATION_COUNT; i++)
 			animations[i].setState(aAnimGroup::DISABLED);
-		if(COMPONENT_TOO_HOT == bCanAdd)
+		if (COMPONENT_TOO_HOT == bCanAdd)
 		{
 			disabledText.setText(IDS_MC_COMPONENT_TOO_HOT);
 		}
-		else if(NO_MORE_ARMOR == bCanAdd)
+		else if (NO_MORE_ARMOR == bCanAdd)
 		{
 			disabledText.setText(IDS_MC_COMPONENT_TOO_MUCH_ARMOR);
 		}
 		else
 			disabledText.setText("");
 	}
-	if(userInput->isLeftDoubleClick() && isInside
-			&& ComponentIconListBox::s_instance->pointInside(userInput->getMouseX(), userInput->getMouseY()))
+	if (userInput->isLeftDoubleClick() && isInside &&
+		ComponentIconListBox::s_instance->pointInside(
+			userInput->getMouseX(), userInput->getMouseY()))
 		doAdd();
 	aObject::update();
 }
-
 
 void ComponentListItem::doAdd()
 {
@@ -291,28 +300,29 @@ void ComponentListItem::startDrag()
 }
 //*************************************************************************************************
 
-void ComponentIconListBox::setType(int32_t newType, int32_t otherNewType, int32_t orThis)
+void ComponentIconListBox::setType(
+	int32_t newType, int32_t otherNewType, int32_t orThis)
 {
-	if(newType == type && itemCount)
+	if (newType == type && itemCount)
 		return;
 	type = newType;
 	scrollBar->setGreen();
 	removeAllItems(0);
 	itemSelected = -1;
-	if(!masterComponentList.Count())
+	if (!masterComponentList.Count())
 	{
 		int32_t count = 256;
 		LogisticsComponent* pComp[256];
 		LogisticsData::instance->getAllComponents(pComp, count);
-		//for ( int32_t j = 0; j < 2048; j++ )
+		// for ( int32_t j = 0; j < 2048; j++ )
 		//{
-		for(size_t i = 0; i < count; i++)
+		for (size_t i = 0; i < count; i++)
 		{
 			ComponentListItem* pItem = new ComponentListItem(pComp[i]);
 			masterComponentList.Append(pItem);
 		}
-		//	for ( EList< ComponentListItem*, ComponentListItem* >::EIterator iter = masterComponentList.Begin();
-		//	!iter.IsDone(); iter++ )
+		//	for ( EList< ComponentListItem*, ComponentListItem* >::EIterator
+		//iter = masterComponentList.Begin(); 	!iter.IsDone(); iter++ )
 		//	{
 		///		delete *iter;
 		//		turn++;
@@ -320,16 +330,17 @@ void ComponentIconListBox::setType(int32_t newType, int32_t otherNewType, int32_
 		//	masterComponentList.Clear();
 		//	}
 	}
-	for(EList< ComponentListItem*, ComponentListItem* >::EIterator iter = masterComponentList.Begin();
-			!iter.IsDone(); iter++)
+	for (EList<ComponentListItem*, ComponentListItem*>::EIterator iter =
+			 masterComponentList.Begin();
+		 !iter.IsDone(); iter++)
 	{
-		if((*iter)->getComponent()->isAvailable())
+		if ((*iter)->getComponent()->isAvailable())
 		{
-			if((*iter)->getComponent()->getType() == type ||
-					(*iter)->getComponent()->getType() == otherNewType ||
-					(*iter)->getComponent()->getType() == orThis)
+			if ((*iter)->getComponent()->getType() == type ||
+				(*iter)->getComponent()->getType() == otherNewType ||
+				(*iter)->getComponent()->getType() == orThis)
 			{
-				if((*iter)->globalX() > globalX())
+				if ((*iter)->globalX() > globalX())
 				{
 					(*iter)->move(-globalX(), 0);
 				}
@@ -343,11 +354,11 @@ void ComponentIconListBox::setType(int32_t newType, int32_t otherNewType, int32_
 void ComponentIconListBox::update()
 {
 	aListBox::update();
-	if(itemSelected != -1)
+	if (itemSelected != -1)
 	{
-		if(items[itemSelected]->getState() == aListItem::DISABLED
-				|| MechLabScreen::instance()->canAddComponent(
-					((ComponentListItem*)items[itemSelected])->getComponent()))
+		if (items[itemSelected]->getState() == aListItem::DISABLED ||
+			MechLabScreen::instance()->canAddComponent(
+				((ComponentListItem*)items[itemSelected])->getComponent()))
 		{
 			selectFirstAvailableComponent();
 		}
@@ -357,11 +368,11 @@ void ComponentIconListBox::update()
 int32_t ComponentIconListBox::selectFirstAvailableComponent()
 {
 	bool bFound = 0;
-	for(size_t i = 0; i < itemCount; i++)
+	for (size_t i = 0; i < itemCount; i++)
 	{
-		if(items[i]->getState() != aListItem::DISABLED
-				&& !MechLabScreen::instance()->canAddComponent(
-					((ComponentListItem*)items[i])->getComponent()))
+		if (items[i]->getState() != aListItem::DISABLED &&
+			!MechLabScreen::instance()->canAddComponent(
+				((ComponentListItem*)items[i])->getComponent()))
 		{
 			SelectItem(i);
 			((ComponentListItem*)items[i])->setComponent();
@@ -369,7 +380,7 @@ int32_t ComponentIconListBox::selectFirstAvailableComponent()
 			return i;
 		}
 	}
-	if(!bFound)
+	if (!bFound)
 		SelectItem(-1);
 	return -1;
 }
@@ -377,7 +388,7 @@ int32_t ComponentIconListBox::selectFirstAvailableComponent()
 ComponentIconListBox::ComponentIconListBox()
 {
 	skipAmount = 5;
-	type = -1;
+	type	   = -1;
 	s_instance = this;
 }
 
@@ -391,7 +402,7 @@ ComponentIconListBox::~ComponentIconListBox()
 
 LogisticsComponent* ComponentIconListBox::getComponent()
 {
-	if(itemSelected != -1)
+	if (itemSelected != -1)
 	{
 		return ((ComponentListItem*)items[itemSelected])->pComponent;
 	}
@@ -402,17 +413,19 @@ void ComponentIconListBox::addSortedItem(ComponentListItem* pItem)
 {
 	int32_t size = pItem->getComponent()->getComponentHeight() *
 				   pItem->getComponent()->getComponentWidth();
-	for(size_t i = 0; i < itemCount; i++)
+	for (size_t i = 0; i < itemCount; i++)
 	{
-		LogisticsComponent* pTmp = ((ComponentListItem*)items[i])->getComponent();
-		int32_t tmpSize = pTmp->getComponentHeight() * pTmp->getComponentWidth();
-		if(size > tmpSize)
+		LogisticsComponent* pTmp =
+			((ComponentListItem*)items[i])->getComponent();
+		int32_t tmpSize =
+			pTmp->getComponentHeight() * pTmp->getComponentWidth();
+		if (size > tmpSize)
 		{
 			InsertItem(pItem, i);
 			return;
 		}
-		else if(size == tmpSize &&
-				_stricmp(pItem->getComponent()->getName(), pTmp->getName()) < 0)
+		else if (size == tmpSize && _stricmp(pItem->getComponent()->getName(),
+										pTmp->getName()) < 0)
 		{
 			InsertItem(pItem, i);
 			return;
@@ -420,9 +433,6 @@ void ComponentIconListBox::addSortedItem(ComponentListItem* pItem)
 	}
 	aListBox::AddItem(pItem);
 }
-
-
-
 
 //*************************************************************************************************
 // end of file ( ComponentListBox.cpp )

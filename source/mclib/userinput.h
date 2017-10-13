@@ -28,91 +28,93 @@
 #include <gameos.hpp>
 
 //---------------------------------------------------------------------------
-#define MC2_MOUSE_UP		0
-#define MC2_MOUSE_DOWN		1
+#define MC2_MOUSE_UP 0
+#define MC2_MOUSE_DOWN 1
 
-#define MOUSE_WIDTH			32
+#define MOUSE_WIDTH 32
 
-#define MAX_MOUSE_STATES			256
+#define MAX_MOUSE_STATES 256
 
-#define mState_MOVE					0
-#define mState_MOVE_LOS				1
-#define mState_RUN					2
-#define mState_RUN_LOS				3
-#define mState_JUMP					4
-#define mState_JUMP_LOS				5
-#define mState_WALKWAYPT			6
-#define mState_WALKWAYPT_LOS		7
-#define mState_RUNWAYPT				8
-#define mState_RUNWAYPT_LOS			9
-#define mState_JUMPWAYPT			10
-#define mState_JUMPWAYPT_LOS		11
-#define mState_LINK					12
-#define mState_GENERIC_ATTACK		13
-#define mState_ATTACK_LOS			14
-#define mState_CURPOS_ATTACK		15
-#define mState_CURPOS_ATTACK_LOS	16
-#define mState_ENERGY_WEAPONS		17
-#define mState_ENERGY_WEAPONS_LOS	18
-#define mState_AIMED_ATTACK			19
-#define mState_AIMED_ATTACK_LOS		20
-#define mState_NORMAL				21
-#define mState_INFO					22
-#define mState_LAYMINES				23
-#define mState_ROTATE_CAMERA		24
-#define mState_UNCERTAIN_AIRSTRIKE	25
-#define mState_AIRSTRIKE			26
-#define mState_SENSORSTRIKE			27
-#define mState_VEHICLE				28
-#define mState_CANTVEHICLE			29
-#define mState_DONT					30
-#define mState_REPAIR				31
-#define mState_XREPAIR				32
-#define mState_EJECT				33
-#define mState_XEJECT				34
-#define mState_CAPTURE				35
-#define mState_XCAPTURE				36
-#define mState_SALVAGE				37
-#define mState_XSALVAGE				38
-#define mState_GUARD				39
-#define mState_GUARD_LOS			39
-#define mState_GUARDTOWER			40
-#define mState_GUARDTOWER_LOS		41
-#define mState_XMINES				42
-#define mState_LOGISTICS			43
-#define mState_TUTORIALS			44
-#define mState_LONGRNG_ATTACK		45
-#define mState_SHRTRNG_ATTACK		46
-#define mState_MEDRNG_ATTACK		47
-#define mState_WALK1				48
-#define mState_WALKLOS1				80
-#define mState_RUN1					112
-#define mState_RUNLOS1				144
-#define mState_JUMP1				176
-#define mState_JUMPLOS1				208
-#define mState_LONGRNG_LOS			240
-#define mState_MEDRNG_LOS			241
-#define mState_SHRTRNG_LOS			242
+#define mState_MOVE 0
+#define mState_MOVE_LOS 1
+#define mState_RUN 2
+#define mState_RUN_LOS 3
+#define mState_JUMP 4
+#define mState_JUMP_LOS 5
+#define mState_WALKWAYPT 6
+#define mState_WALKWAYPT_LOS 7
+#define mState_RUNWAYPT 8
+#define mState_RUNWAYPT_LOS 9
+#define mState_JUMPWAYPT 10
+#define mState_JUMPWAYPT_LOS 11
+#define mState_LINK 12
+#define mState_GENERIC_ATTACK 13
+#define mState_ATTACK_LOS 14
+#define mState_CURPOS_ATTACK 15
+#define mState_CURPOS_ATTACK_LOS 16
+#define mState_ENERGY_WEAPONS 17
+#define mState_ENERGY_WEAPONS_LOS 18
+#define mState_AIMED_ATTACK 19
+#define mState_AIMED_ATTACK_LOS 20
+#define mState_NORMAL 21
+#define mState_INFO 22
+#define mState_LAYMINES 23
+#define mState_ROTATE_CAMERA 24
+#define mState_UNCERTAIN_AIRSTRIKE 25
+#define mState_AIRSTRIKE 26
+#define mState_SENSORSTRIKE 27
+#define mState_VEHICLE 28
+#define mState_CANTVEHICLE 29
+#define mState_DONT 30
+#define mState_REPAIR 31
+#define mState_XREPAIR 32
+#define mState_EJECT 33
+#define mState_XEJECT 34
+#define mState_CAPTURE 35
+#define mState_XCAPTURE 36
+#define mState_SALVAGE 37
+#define mState_XSALVAGE 38
+#define mState_GUARD 39
+#define mState_GUARD_LOS 39
+#define mState_GUARDTOWER 40
+#define mState_GUARDTOWER_LOS 41
+#define mState_XMINES 42
+#define mState_LOGISTICS 43
+#define mState_TUTORIALS 44
+#define mState_LONGRNG_ATTACK 45
+#define mState_SHRTRNG_ATTACK 46
+#define mState_MEDRNG_ATTACK 47
+#define mState_WALK1 48
+#define mState_WALKLOS1 80
+#define mState_RUN1 112
+#define mState_RUNLOS1 144
+#define mState_JUMP1 176
+#define mState_JUMPLOS1 208
+#define mState_LONGRNG_LOS 240
+#define mState_MEDRNG_LOS 241
+#define mState_SHRTRNG_LOS 242
 
-#define mState_NUMMOUSESTATES		243		//Add states BETWEEN this one and above!!!
-//Used to keep from setting cursor to STUPID!!
+#define mState_NUMMOUSESTATES 243 // Add states BETWEEN this one and above!!!
+// Used to keep from setting cursor to STUPID!!
 
-#define mouseFrameRate		0.10
+#define mouseFrameRate 0.10
 
 extern volatile char mc2MouseHotSpotX;
 extern volatile char mc2MouseHotSpotY;
 extern volatile char mc2MouseWidth;
 extern volatile char mc2MouseHeight;
 
-extern volatile bool mc2UseAsyncMouse;		//Should mouse draw and update in separate thread?
-extern volatile bool mc2MouseThreadStarted;	//Has the thread starting running yet?
+extern volatile bool
+	mc2UseAsyncMouse; // Should mouse draw and update in separate thread?
+extern volatile bool
+	mc2MouseThreadStarted; // Has the thread starting running yet?
 
 extern volatile puint8_t mc2MouseData;
 
 //---------------------------------------------------------------------------
 class MouseCursorData
 {
-protected:
+  protected:
 	//---------------------------------------------------------------
 	// Mouse textures are assumed 32x32.  Animating mice are stored
 	// on the smallest texture that will hold their shape.  Thus if
@@ -121,7 +123,8 @@ protected:
 
 	int32_t numCursors;
 
-	StaticInfo*	cursorInfos;	// gotta be pointer, so destructor is called before texmgr quits
+	StaticInfo* cursorInfos; // gotta be pointer, so destructor is called before
+							 // texmgr quits
 
 	char mouseHS[MAX_MOUSE_STATES][2];
 	uint32_t numFrames[MAX_MOUSE_STATES];
@@ -129,50 +132,42 @@ protected:
 
 	friend class UserInput;
 
-public:
-	MouseCursorData(void)
-	{
-		init(void);
-	}
+  public:
+	MouseCursorData(void) { init(void); }
 
-	~MouseCursorData(void)
-	{
-		destroy(void);
-	}
+	~MouseCursorData(void) { destroy(void); }
 
 	void destroy(void);
 
 	void init(void)
 	{
-		numCursors = 0;
+		numCursors  = 0;
 		cursorInfos = 0;
 		memset(mouseHS, 0, sizeof(mouseHS));
 		memset(numFrames, 0, sizeof(numFrames));
 		memset(frameLengths, 0, sizeof(frameLengths));
 	}
 
-
 	int32_t getNumFrames(int32_t state)
 	{
-		if((state >= 0) && (state < numCursors))
+		if ((state >= 0) && (state < numCursors))
 			return numFrames[state]; // no animating for now
 		return 0;
 	}
 
 	char getMouseHSX(int32_t state)
 	{
-		if((state >= 0) && (state < numCursors))
+		if ((state >= 0) && (state < numCursors))
 			return mouseHS[state][0];
 		return 0;
 	}
 
 	char getMouseHSY(int32_t state)
 	{
-		if((state >= 0) && (state < numCursors))
+		if ((state >= 0) && (state < numCursors))
 			return mouseHS[state][1];
 		return 0;
 	}
-
 
 	void initCursors(PSTR cursorFile);
 };
@@ -180,125 +175,117 @@ public:
 //---------------------------------------------------------------------------
 class UserInput
 {
-protected:
-
+  protected:
 	//--------------------
 	// Mouse Information
-	float mouseXPosition;					//Current Mouse X Position.
-	float mouseYPosition;					//Current Mouse Y position.
+	float mouseXPosition; // Current Mouse X Position.
+	float mouseYPosition; // Current Mouse Y position.
 
-	int32_t mouseXDelta;						//Amount mouse has moved in x since last poll
-	int32_t mouseYDelta;						//Amount mouse has moved in y since last poll
+	int32_t mouseXDelta; // Amount mouse has moved in x since last poll
+	int32_t mouseYDelta; // Amount mouse has moved in y since last poll
 
-	int32_t mouseWheelDelta;					//Amount Mouse wheel has moved since last poll
+	int32_t mouseWheelDelta; // Amount Mouse wheel has moved since last poll
 
-	int32_t leftMouseButtonState;				//Mouse Current Left Button State
-	int32_t rightMouseButtonState;				//Mouse Current Right Button State
-	int32_t middleMouseButtonState;			//Mouse Current Middle Button State
+	int32_t leftMouseButtonState;   // Mouse Current Left Button State
+	int32_t rightMouseButtonState;  // Mouse Current Right Button State
+	int32_t middleMouseButtonState; // Mouse Current Middle Button State
 
-	bool leftClick;							//Mouse has been left clicked
-	bool rightClick;						//Mouse has been right clicked
-	bool leftDoubleClick;					//Mouse has been left double clicked
-	bool rightDoubleClick;					//Mouse has been right double clicked
-	bool middleClick;						//Mouse has been middle clicked
-	bool middleDoubleClick;					//Mouse has been middle Double Clicked
+	bool leftClick;			// Mouse has been left clicked
+	bool rightClick;		// Mouse has been right clicked
+	bool leftDoubleClick;   // Mouse has been left double clicked
+	bool rightDoubleClick;  // Mouse has been right double clicked
+	bool middleClick;		// Mouse has been middle clicked
+	bool middleDoubleClick; // Mouse has been middle Double Clicked
 
-	bool leftMouseDrag;						//Mouse is left Dragging
-	bool rightMouseDrag;					//Mouse is right Dragging
+	bool leftMouseDrag;  // Mouse is left Dragging
+	bool rightMouseDrag; // Mouse is right Dragging
 
-	bool wasLeftMouseDrag;					//Mouse is left Dragging
-	bool wasRightMouseDrag;					//Mouse is right Dragging
+	bool wasLeftMouseDrag;  // Mouse is left Dragging
+	bool wasRightMouseDrag; // Mouse is right Dragging
 
-	float mouseDragX;						//Where we started Dragging
-	float mouseDragY;						//Where we started Dragging;
+	float mouseDragX; // Where we started Dragging
+	float mouseDragY; // Where we started Dragging;
 
-	float mouseDragThreshold;				//Distance mouse MUST move before a drag is assumed.
-	float mouseDblClickThreshold;			//Time between clicks maximum to assume double click.
+	float mouseDragThreshold; // Distance mouse MUST move before a drag is
+							  // assumed.
+	float mouseDblClickThreshold; // Time between clicks maximum to assume
+								  // double click.
 
-	float mouseLeftUpTime;					//Time since last left mouse up.
-	float mouseRightUpTime;					//Time since last right mouse up.
-	float mouseMiddleUpTime;				//Time since last right mouse up.
+	float mouseLeftUpTime;   // Time since last left mouse up.
+	float mouseRightUpTime;  // Time since last right mouse up.
+	float mouseMiddleUpTime; // Time since last right mouse up.
 
-	float mouseLeftHeldTime;					//How int32_t the mouse has been down
-	float mouseRightHeldTime;					//How int32_t the mouse has been down
+	float mouseLeftHeldTime;  // How int32_t the mouse has been down
+	float mouseRightHeldTime; // How int32_t the mouse has been down
 
+	int32_t lastLeftMouseButtonState;   // Last Left Mouse Button State
+	int32_t lastRightMouseButtonState;  // Last Right Mouse Button State
+	int32_t lastMiddleMouseButtonState; // Last Middle Mouse Button State
 
+	float lastMouseXPosition; // Last Mouse X Position.
+	float lastMouseYPosition; // Last Mouse Y Position.
 
+	MouseCursorData* cursors; // Stores the actual cursor data and Info
 
-	int32_t lastLeftMouseButtonState;			//Last Left Mouse Button State
-	int32_t lastRightMouseButtonState;			//Last Right Mouse Button State
-	int32_t lastMiddleMouseButtonState;		//Last Middle Mouse Button State
-
-	float lastMouseXPosition;				//Last Mouse X Position.
-	float lastMouseYPosition;				//Last Mouse Y Position.
-
-	MouseCursorData* cursors;				//Stores the actual cursor data and Info
-
-	bool drawTerrainPointer;				//Draw an inverse project cross
-	int32_t mouseState;						//Which cursor should I draw?
-	int32_t mouseFrame;						//current Mouse Frame
-	uint32_t mouseTextureHandle;				//current Mouse Texture handle.
-	float mouseFrameLength;					//Time in Current Mouse Frame
-	float mouseScale;						//Scale factor for cursor for depth cueing.
+	bool drawTerrainPointer;	 // Draw an inverse project cross
+	int32_t mouseState;			 // Which cursor should I draw?
+	int32_t mouseFrame;			 // current Mouse Frame
+	uint32_t mouseTextureHandle; // current Mouse Texture handle.
+	float mouseFrameLength;		 // Time in Current Mouse Frame
+	float mouseScale;			 // Scale factor for cursor for depth cueing.
 
 	float viewMulX;
 	float viewAddX;
 	float viewMulY;
 	float viewAddY;
 
-	bool leftMouseJustUp;					// leftButtonUp message equivalent
-	bool rightMouseJustUp;					// right up equivalent
+	bool leftMouseJustUp;  // leftButtonUp message equivalent
+	bool rightMouseJustUp; // right up equivalent
 
-	uint32_t	attilaIndex;					// Set to 0xffffffff if no Attila Present.
+	uint32_t attilaIndex; // Set to 0xffffffff if no Attila Present.
 
-public:
+  public:
+	// Need to have the mouse draw here
+	static volatile bool drawMouse; // Should I draw the Mouse Cursor?
 
-	//Need to have the mouse draw here
-	static volatile bool drawMouse;			//Should I draw the Mouse Cursor?
+	UserInput(void) { init(void); }
 
-	UserInput(void)
-	{
-		init(void);
-	}
-
-	~UserInput(void)
-	{
-		destroy(void);
-	}
+	~UserInput(void) { destroy(void); }
 
 	void init(void)
 	{
-		mouseScale = 1.0f;
+		mouseScale	 = 1.0f;
 		mouseXPosition = mouseYPosition = 0.0;
-		mouseXDelta = mouseYDelta =
-						  mouseWheelDelta = 0;
+		mouseXDelta = mouseYDelta = mouseWheelDelta = 0;
 		leftClick = rightClick = middleClick = false;
-		leftMouseButtonState = rightMouseButtonState = middleMouseButtonState = MC2_MOUSE_UP;
+		leftMouseButtonState = rightMouseButtonState = middleMouseButtonState =
+			MC2_MOUSE_UP;
 		leftMouseDrag = rightMouseDrag = false;
 		leftDoubleClick = rightDoubleClick = middleDoubleClick = false;
-		mouseDragThreshold = 0.0166667f;
-		mouseDblClickThreshold = 0.2f;
+		mouseDragThreshold									   = 0.0166667f;
+		mouseDblClickThreshold								   = 0.2f;
 		mouseLeftUpTime = mouseRightUpTime = mouseMiddleUpTime = 0.0;
-		mouseDragX = mouseDragY = 0.0;
-		lastLeftMouseButtonState = lastRightMouseButtonState = lastMiddleMouseButtonState = MC2_MOUSE_UP;
+		mouseDragX = mouseDragY		   = 0.0;
+		lastLeftMouseButtonState	   = lastRightMouseButtonState =
+			lastMiddleMouseButtonState = MC2_MOUSE_UP;
 		lastMouseYPosition = lastMouseXPosition = 0.0;
-		drawTerrainPointer = false;
-		mouseState = -1;
-		mouseFrameLength = 0.0;
+		drawTerrainPointer						= false;
+		mouseState								= -1;
+		mouseFrameLength						= 0.0;
 		viewMulX = viewMulY = viewAddX = viewAddY = 0.0f;
-		leftMouseJustUp = 0;
-		rightMouseJustUp = 0;
-		attilaIndex = 0xffffffff;
-		mouseLeftHeldTime = 0.f;
-		mouseRightHeldTime = 0.f;
-		cursors = nullptr;
+		leftMouseJustUp							  = 0;
+		rightMouseJustUp						  = 0;
+		attilaIndex								  = 0xffffffff;
+		mouseLeftHeldTime						  = 0.f;
+		mouseRightHeldTime						  = 0.f;
+		cursors									  = nullptr;
 	}
 
 	void initMouseCursors(PSTR mouseFile);
 
 	void destroy(void)
 	{
-		if(cursors)
+		if (cursors)
 		{
 			delete cursors;
 			cursors = nullptr;
@@ -318,55 +305,29 @@ public:
 	// Keyboard Functionality
 	bool getKeyDown(gosEnum_KeyIndex index)
 	{
-		if((gos_GetKeyStatus(index) == KEY_HELD) || (gos_GetKeyStatus(index) == KEY_PRESSED))
+		if ((gos_GetKeyStatus(index) == KEY_HELD) ||
+			(gos_GetKeyStatus(index) == KEY_PRESSED))
 			return true;
-		return(false);
+		return (false);
 	}
 
-	bool leftShift(void)
-	{
-		return (getKeyDown(KEY_LSHIFT));
-	}
+	bool leftShift(void) { return (getKeyDown(KEY_LSHIFT)); }
 
-	bool rightShift(void)
-	{
-		return (getKeyDown(KEY_RSHIFT));
-	}
+	bool rightShift(void) { return (getKeyDown(KEY_RSHIFT)); }
 
-	bool shift(void)
-	{
-		return (leftShift() || rightShift());
-	}
+	bool shift(void) { return (leftShift() || rightShift()); }
 
-	bool leftAlt(void)
-	{
-		return (getKeyDown(KEY_LMENU));
-	}
+	bool leftAlt(void) { return (getKeyDown(KEY_LMENU)); }
 
-	bool rightAlt(void)
-	{
-		return (getKeyDown(KEY_RMENU));
-	}
+	bool rightAlt(void) { return (getKeyDown(KEY_RMENU)); }
 
-	bool alt(void)
-	{
-		return (leftAlt() || rightAlt());
-	}
+	bool alt(void) { return (leftAlt() || rightAlt()); }
 
-	bool leftCtrl(void)
-	{
-		return (getKeyDown(KEY_LCONTROL));
-	}
+	bool leftCtrl(void) { return (getKeyDown(KEY_LCONTROL)); }
 
-	bool rightCtrl(void)
-	{
-		return (getKeyDown(KEY_RCONTROL));
-	}
+	bool rightCtrl(void) { return (getKeyDown(KEY_RCONTROL)); }
 
-	bool ctrl(void)
-	{
-		return (leftCtrl() || rightCtrl());
-	}
+	bool ctrl(void) { return (leftCtrl() || rightCtrl()); }
 
 	//---------------------------------
 	// Mouse Functionality
@@ -380,32 +341,19 @@ public:
 		mouseDragThreshold = distance;
 	}
 
-	int32_t getMouseX(void)
-	{
-		return float2long(mouseXPosition * viewMulX);
-	}
+	int32_t getMouseX(void) { return float2long(mouseXPosition * viewMulX); }
 
-	int32_t getMouseY(void)
-	{
-		return float2long(mouseYPosition * viewMulY);
-	}
+	int32_t getMouseY(void) { return float2long(mouseYPosition * viewMulY); }
 
-	float realMouseX(void)
-	{
-		return (mouseXPosition * viewMulX);
-	}
+	float realMouseX(void) { return (mouseXPosition * viewMulX); }
 
-	float realMouseY(void)
-	{
-		return (mouseYPosition * viewMulY);
-	}
+	float realMouseY(void) { return (mouseYPosition * viewMulY); }
 
 	void setMousePos(float x, float y)
 	{
 		float xRes = 0.0f;
 		float yRes = 0.0f;
-		if((fabs(viewMulX) > Stuff::SMALL) &&
-				(fabs(viewMulY) > Stuff::SMALL))
+		if ((fabs(viewMulX) > Stuff::SMALL) && (fabs(viewMulY) > Stuff::SMALL))
 		{
 			xRes = x / viewMulX;
 			yRes = y / viewMulY;
@@ -413,185 +361,106 @@ public:
 		gos_SetMousePosition(xRes, yRes);
 	}
 
-	int32_t getMouseXDelta(void)
-	{
-		return mouseXDelta;
-	}
+	int32_t getMouseXDelta(void) { return mouseXDelta; }
 
-	int32_t getMouseYDelta(void)
-	{
-		return mouseYDelta;
-	}
+	int32_t getMouseYDelta(void) { return mouseYDelta; }
 
-	int32_t getMouseWheelDelta(void)
-	{
-		return mouseWheelDelta;
-	}
+	int32_t getMouseWheelDelta(void) { return mouseWheelDelta; }
 
-	int32_t getMouseLeftButtonState(void)
-	{
-		return leftMouseButtonState;
-	}
+	int32_t getMouseLeftButtonState(void) { return leftMouseButtonState; }
 
-	int32_t getMouseRightButtonState(void)
-	{
-		return rightMouseButtonState;
-	}
+	int32_t getMouseRightButtonState(void) { return rightMouseButtonState; }
 
-	bool isLeftDrag(void)
-	{
-		return leftMouseDrag;
-	}
+	bool isLeftDrag(void) { return leftMouseDrag; }
 
-	bool isRightDrag(void)
-	{
-		return rightMouseDrag;
-	}
+	bool isRightDrag(void) { return rightMouseDrag; }
 
-	bool wasLeftDrag(void)
-	{
-		return wasLeftMouseDrag;
-	}
+	bool wasLeftDrag(void) { return wasLeftMouseDrag; }
 
-	bool wasRightDrag(void)
-	{
-		return wasRightMouseDrag;
-	}
+	bool wasRightDrag(void) { return wasRightMouseDrag; }
 
-	float getMouseDragX(void)
-	{
-		return mouseDragX * viewMulX;
-	}
+	float getMouseDragX(void) { return mouseDragX * viewMulX; }
 
-	float getMouseDragY(void)
-	{
-		return mouseDragY * viewMulY;
-	}
+	float getMouseDragY(void) { return mouseDragY * viewMulY; }
 
-	bool isLeftClick(void)
-	{
-		return(leftClick);
-	}
+	bool isLeftClick(void) { return (leftClick); }
 
-	bool isRightClick(void)
-	{
-		return(rightClick);
-	}
+	bool isRightClick(void) { return (rightClick); }
 
-//		bool isLeftHeld() {
-//			return isLeftClick && lastLeftMouseButtonState == MC2_MOUSE_DOWN;
-//		}
+	//		bool isLeftHeld() {
+	//			return isLeftClick && lastLeftMouseButtonState ==
+	//MC2_MOUSE_DOWN;
+	//		}
 
-	bool isLeftDoubleClick(void)
-	{
-		return leftDoubleClick;
-	}
+	bool isLeftDoubleClick(void) { return leftDoubleClick; }
 
-	bool isRightDoubleClick(void)
-	{
-		return rightDoubleClick;
-	}
+	bool isRightDoubleClick(void) { return rightDoubleClick; }
 
-	bool isMiddleClick(void)
-	{
-		return middleClick;
-	}
+	bool isMiddleClick(void) { return middleClick; }
 
-	bool isMiddleDoubleClick(void)
-	{
-		return middleDoubleClick;
-	}
+	bool isMiddleDoubleClick(void) { return middleDoubleClick; }
 
 	void setMouseCursor(int32_t state);
 
-	int32_t getMouseCursor(void)
-	{
-		return (mouseState);
-	}
+	int32_t getMouseCursor(void) { return (mouseState); }
 
-	void setMouseFrame(int32_t frameNum)
-	{
-		mouseFrame = frameNum;
-	}
+	void setMouseFrame(int32_t frameNum) { mouseFrame = frameNum; }
 
-	int32_t getMouseFrame(void)
-	{
-		return (mouseFrame);
-	}
+	int32_t getMouseFrame(void) { return (mouseFrame); }
 
-	void mouseOn(void);				//Draw Mouse Cursor
-	void mouseOff(void);				//Don't Draw Mouse Cursor
+	void mouseOn(void);  // Draw Mouse Cursor
+	void mouseOff(void); // Don't Draw Mouse Cursor
 
-	void pointerOn(void)
-	{
-		drawTerrainPointer = true;
-	}
+	void pointerOn(void) { drawTerrainPointer = true; }
 
-	void pointerOff(void)
-	{
-		drawTerrainPointer = false;
-	}
+	void pointerOff(void) { drawTerrainPointer = false; }
 
-	bool leftMouseReleased()
-	{
-		return leftMouseJustUp;
-	}
+	bool leftMouseReleased() { return leftMouseJustUp; }
 
-	bool rightMouseReleased()
-	{
-		return rightMouseJustUp;
-	}
+	bool rightMouseReleased() { return rightMouseJustUp; }
 
 	//------------------------------------------------------------------------------------
-	// Used to make mouse move off into distance in perspective to help depth perception
+	// Used to make mouse move off into distance in perspective to help depth
+	// perception
 	void setMouseScale(float scaleFactor);
 
 	//----------------------------------------------------------
 	// Attila Functionality.
-	void addAttila(uint32_t joyIndex)
-	{
-		attilaIndex = joyIndex;
-	}
+	void addAttila(uint32_t joyIndex) { attilaIndex = joyIndex; }
 
-	float getAttilaXAxis(void)		//Left/Right Scroll
+	float getAttilaXAxis(void) // Left/Right Scroll
 	{
 		float result = 0.0f;
-		if(attilaIndex != 0xffffffff)
+		if (attilaIndex != 0xffffffff)
 			result = gosJoystick_GetAxis(attilaIndex, JOY_XAXIS);
 		return result;
 	}
 
-	float getAttilaYAxis(void)		//Up/Down Scroll
+	float getAttilaYAxis(void) // Up/Down Scroll
 	{
 		float result = 0.0f;
-		if(attilaIndex != 0xffffffff)
+		if (attilaIndex != 0xffffffff)
 			result = gosJoystick_GetAxis(attilaIndex, JOY_YAXIS);
 		return result;
 	}
 
-	float getAttilaRAxis(void)	//Camera Rotation
+	float getAttilaRAxis(void) // Camera Rotation
 	{
 		float result = 0.0f;
-		if(attilaIndex != 0xffffffff)
+		if (attilaIndex != 0xffffffff)
 			result = gosJoystick_GetAxis(attilaIndex, JOY_RZAXIS);
 		return result;
 	}
 
-	float getMouseRightHeld()
-	{
-		return mouseRightHeldTime;
-	}
+	float getMouseRightHeld() { return mouseRightHeldTime; }
 
-	float getMouseLeftHeld()
-	{
-		return mouseLeftHeldTime;
-	}
+	float getMouseLeftHeld() { return mouseLeftHeldTime; }
 
 	//------------------------
 	// Poller
 	void update(void);
 
-	void render(void);						//Last thing rendered.  Draws Mouse.
+	void render(void); // Last thing rendered.  Draws Mouse.
 };
 
 extern UserInput* userInput;

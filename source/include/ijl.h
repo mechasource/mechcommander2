@@ -25,8 +25,7 @@
 #ifndef __IJL_H__
 #define __IJL_H__
 
-
-#if defined( __cplusplus )
+#if defined(__cplusplus)
 extern "C" {
 #endif
 
@@ -47,70 +46,56 @@ extern "C" {
 //#define WIN32_LEAN_AND_MEAN
 //#include <windows.h>
 
-
 #ifdef _MSC_VER
-#  pragma pack (8)
+#pragma pack(8)
 #endif
-
 
 /* /////////////////////////////////////////////////////////////////////////
 // Macros/Constants */
 
-#define IJL_NONE    0
-#define IJL_OTHER   255
-#define JBUFSIZE    4096    // Size of file I/O buffer (4K).
-
+#define IJL_NONE 0
+#define IJL_OTHER 255
+#define JBUFSIZE 4096 // Size of file I/O buffer (4K).
 
 #ifndef INT64
-#define INT64       __int64
+#define INT64 __int64
 #endif
 #ifndef UINT64
-#define UINT64      unsigned INT64
+#define UINT64 unsigned INT64
 #endif
 #ifndef WINAPI
-#define WINAPI      __stdcall
+#define WINAPI __stdcall
 #endif
 
+#if defined(_IJL_STDIMP_)
 
-
-
-#if defined( _IJL_STDIMP_ )
-
-#  define   IJLAPI(type,name,arg)  \
-              extern type WINAPI name arg
+#define IJLAPI(type, name, arg) extern type WINAPI name arg
 
 #else
 
-#  if !defined( _IJL_API_ )
+#if !defined(_IJL_API_)
 
-#    define IJLAPI(type,name,arg)  \
-              extern __declspec(dllimport) type WINAPI name arg
+#define IJLAPI(type, name, arg)                                                \
+	extern __declspec(dllimport) type WINAPI name arg
 
-#  else
+#else
 
-#    define IJLAPI(type,name,arg)   \
-              extern __declspec(dllexport) type WINAPI name arg
+#define IJLAPI(type, name, arg)                                                \
+	extern __declspec(dllexport) type WINAPI name arg
 
-#  endif // _IJL_API_
+#endif // _IJL_API_
 
 #endif //_IJL_STDIMP_
 
-
-
-
 #define IJL_DIB_ALIGN (sizeof(DWORD) - 1)
 
-#define IJL_DIB_UWIDTH(width,nchannels) \
-  ((width) * (nchannels))
+#define IJL_DIB_UWIDTH(width, nchannels) ((width) * (nchannels))
 
-#define IJL_DIB_AWIDTH(width,nchannels) \
-  ( ((IJL_DIB_UWIDTH(width,nchannels) + IJL_DIB_ALIGN) & (~IJL_DIB_ALIGN)) )
+#define IJL_DIB_AWIDTH(width, nchannels)                                       \
+	(((IJL_DIB_UWIDTH(width, nchannels) + IJL_DIB_ALIGN) & (~IJL_DIB_ALIGN)))
 
-#define IJL_DIB_PAD_BYTES(width,nchannels) \
-  ( IJL_DIB_AWIDTH(width,nchannels) - IJL_DIB_UWIDTH(width,nchannels) )
-
-
-
+#define IJL_DIB_PAD_BYTES(width, nchannels)                                    \
+	(IJL_DIB_AWIDTH(width, nchannels) - IJL_DIB_UWIDTH(width, nchannels))
 
 /*D*
 ////////////////////////////////////////////////////////////////////////////
@@ -135,17 +120,16 @@ extern "C" {
 
 typedef struct _IJLibVersion
 {
-  int     major;
-  int     minor;
-  int     build;
-  LPCTSTR Name;
-  LPCTSTR Version;
-  LPCTSTR InternalVersion;
-  LPCTSTR BuildDate;
-  LPCTSTR CallConv;
+	int major;
+	int minor;
+	int build;
+	LPCTSTR Name;
+	LPCTSTR Version;
+	LPCTSTR InternalVersion;
+	LPCTSTR BuildDate;
+	LPCTSTR CallConv;
 
 } IJLibVersion;
-
 
 /*D*
 ////////////////////////////////////////////////////////////////////////////
@@ -167,59 +151,56 @@ typedef struct _IJLibVersion
 
 typedef enum
 {
-  IJL_SETUP                   = -1,
+	IJL_SETUP = -1,
 
+	// Read JPEG parameters (i.e., height, width, channels,
+	// sampling, etc.) from a JPEG bit stream.
+	IJL_JFILE_READPARAMS = 0,
+	IJL_JBUFF_READPARAMS = 1,
 
-  // Read JPEG parameters (i.e., height, width, channels,
-  // sampling, etc.) from a JPEG bit stream.
-  IJL_JFILE_READPARAMS        =  0,
-  IJL_JBUFF_READPARAMS        =  1,
+	// Read a JPEG Interchange Format image.
+	IJL_JFILE_READWHOLEIMAGE = 2,
+	IJL_JBUFF_READWHOLEIMAGE = 3,
 
-  // Read a JPEG Interchange Format image.
-  IJL_JFILE_READWHOLEIMAGE    =  2,
-  IJL_JBUFF_READWHOLEIMAGE    =  3,
+	// Read JPEG tables from a JPEG Abbreviated Format bit stream.
+	IJL_JFILE_READHEADER = 4,
+	IJL_JBUFF_READHEADER = 5,
 
-  // Read JPEG tables from a JPEG Abbreviated Format bit stream.
-  IJL_JFILE_READHEADER        =  4,
-  IJL_JBUFF_READHEADER        =  5,
+	// Read image info from a JPEG Abbreviated Format bit stream.
+	IJL_JFILE_READENTROPY = 6,
+	IJL_JBUFF_READENTROPY = 7,
 
-  // Read image info from a JPEG Abbreviated Format bit stream.
-  IJL_JFILE_READENTROPY       =  6,
-  IJL_JBUFF_READENTROPY       =  7,
+	// Write an entire JFIF bit stream.
+	IJL_JFILE_WRITEWHOLEIMAGE = 8,
+	IJL_JBUFF_WRITEWHOLEIMAGE = 9,
 
-  // Write an entire JFIF bit stream.
-  IJL_JFILE_WRITEWHOLEIMAGE   =  8,
-  IJL_JBUFF_WRITEWHOLEIMAGE   =  9,
+	// Write a JPEG Abbreviated Format bit stream.
+	IJL_JFILE_WRITEHEADER = 10,
+	IJL_JBUFF_WRITEHEADER = 11,
 
-  // Write a JPEG Abbreviated Format bit stream.
-  IJL_JFILE_WRITEHEADER       = 10,
-  IJL_JBUFF_WRITEHEADER       = 11,
+	// Write image info to a JPEG Abbreviated Format bit stream.
+	IJL_JFILE_WRITEENTROPY = 12,
+	IJL_JBUFF_WRITEENTROPY = 13,
 
-  // Write image info to a JPEG Abbreviated Format bit stream.
-  IJL_JFILE_WRITEENTROPY      = 12,
-  IJL_JBUFF_WRITEENTROPY      = 13,
+	// Scaled Decoding Options:
 
+	// Reads a JPEG image scaled to 1/2 size.
+	IJL_JFILE_READONEHALF = 14,
+	IJL_JBUFF_READONEHALF = 15,
 
-  // Scaled Decoding Options:
+	// Reads a JPEG image scaled to 1/4 size.
+	IJL_JFILE_READONEQUARTER = 16,
+	IJL_JBUFF_READONEQUARTER = 17,
 
-  // Reads a JPEG image scaled to 1/2 size.
-  IJL_JFILE_READONEHALF       = 14,
-  IJL_JBUFF_READONEHALF       = 15,
+	// Reads a JPEG image scaled to 1/8 size.
+	IJL_JFILE_READONEEIGHTH = 18,
+	IJL_JBUFF_READONEEIGHTH = 19,
 
-  // Reads a JPEG image scaled to 1/4 size.
-  IJL_JFILE_READONEQUARTER    = 16,
-  IJL_JBUFF_READONEQUARTER    = 17,
-
-  // Reads a JPEG image scaled to 1/8 size.
-  IJL_JFILE_READONEEIGHTH     = 18,
-  IJL_JBUFF_READONEEIGHTH     = 19,
-
-  // Reads an embedded thumbnail from a JFIF bit stream.
-  IJL_JFILE_READTHUMBNAIL     = 20,
-  IJL_JBUFF_READTHUMBNAIL     = 21
+	// Reads an embedded thumbnail from a JFIF bit stream.
+	IJL_JFILE_READTHUMBNAIL = 20,
+	IJL_JBUFF_READTHUMBNAIL = 21
 
 } IJLIOTYPE;
-
 
 /*D*
 ////////////////////////////////////////////////////////////////////////////
@@ -241,22 +222,21 @@ typedef enum
 
 typedef enum
 {
-  IJL_RGB         = 1,    // Red-Green-Blue color space.
-  IJL_BGR         = 2,    // Reversed channel ordering from IJL_RGB.
-  IJL_YCBCR       = 3,    // Luminance-Chrominance color space as defined
-                          // by CCIR Recommendation 601.
-  IJL_G           = 4,    // Grayscale color space.
-  IJL_RGBA_FPX    = 5,    // FlashPix RGB 4 channel color space that
-                          // has pre-multiplied opacity.
-  IJL_YCBCRA_FPX  = 6     // FlashPix YCbCr 4 channel color space that
-                          // has pre-multiplied opacity.
+	IJL_RGB   = 1,	 // Red-Green-Blue color space.
+	IJL_BGR   = 2,	 // Reversed channel ordering from IJL_RGB.
+	IJL_YCBCR = 3,	 // Luminance-Chrominance color space as defined
+					   // by CCIR Recommendation 601.
+	IJL_G		 = 4,  // Grayscale color space.
+	IJL_RGBA_FPX = 5,  // FlashPix RGB 4 channel color space that
+					   // has pre-multiplied opacity.
+	IJL_YCBCRA_FPX = 6 // FlashPix YCbCr 4 channel color space that
+					   // has pre-multiplied opacity.
 
-//  IJL_OTHER             // Some other color space not defined by the IJL.
-                          // (This means no color space conversion will
-                          //  be done by the IJL.)
+	//  IJL_OTHER             // Some other color space not defined by the IJL.
+	// (This means no color space conversion will
+	//  be done by the IJL.)
 
 } IJL_COLOR;
-
 
 /*D*
 ////////////////////////////////////////////////////////////////////////////
@@ -271,19 +251,18 @@ typedef enum
 
 typedef enum
 {
-  IJL_411     = 1,    // Valid on a JPEG w/ 3 channels.
-  IJL_422     = 2,    // Valid on a JPEG w/ 3 channels.
+	IJL_411 = 1, // Valid on a JPEG w/ 3 channels.
+	IJL_422 = 2, // Valid on a JPEG w/ 3 channels.
 
-  IJL_4114    = 3,    // Valid on a JPEG w/ 4 channels.
-  IJL_4224    = 4     // Valid on a JPEG w/ 4 channels.
+	IJL_4114 = 3, // Valid on a JPEG w/ 4 channels.
+	IJL_4224 = 4  // Valid on a JPEG w/ 4 channels.
 
-//  IJL_NONE    = Corresponds to "No Subsampling".
-//                Valid on a JPEG w/ any number of channels.
+	//  IJL_NONE    = Corresponds to "No Subsampling".
+	//                Valid on a JPEG w/ any number of channels.
 
-//  IJL_OTHER   = Valid entry, but only used internally to the IJL.
+	//  IJL_OTHER   = Valid entry, but only used internally to the IJL.
 
 } IJL_JPGSUBSAMPLING;
-
 
 /*D*
 ////////////////////////////////////////////////////////////////////////////
@@ -298,10 +277,9 @@ typedef enum
 
 typedef enum
 {
-//  IJL_NONE    = Corresponds to "No Subsampling".
+	//  IJL_NONE    = Corresponds to "No Subsampling".
 
 } IJL_DIBSUBSAMPLING;
-
 
 /*D*
 ////////////////////////////////////////////////////////////////////////////
@@ -328,16 +306,15 @@ typedef enum
 
 typedef struct _HUFFMAN_TABLE
 {
-  int             huff_class;
-  int             ident;
-  unsigned int    huffelem[256];
-  unsigned short  huffval[256];
-  unsigned short  mincode[17];
-  unsigned short  maxcode[18];
-  unsigned short  valptr[17];
+	int huff_class;
+	int ident;
+	unsigned int huffelem[256];
+	unsigned short huffval[256];
+	unsigned short mincode[17];
+	unsigned short maxcode[18];
+	unsigned short valptr[17];
 
 } HUFFMAN_TABLE;
-
 
 /*D*
 ////////////////////////////////////////////////////////////////////////////
@@ -361,13 +338,12 @@ typedef struct _HUFFMAN_TABLE
 
 typedef struct
 {
-  unsigned char*  bits;
-  unsigned char*  vals;
-  unsigned char   hclass;
-  unsigned char   ident;
+	unsigned char* bits;
+	unsigned char* vals;
+	unsigned char hclass;
+	unsigned char ident;
 
 } JPEGHuffTable;
-
 
 /*D*
 ////////////////////////////////////////////////////////////////////////////
@@ -394,13 +370,12 @@ typedef struct
 
 typedef struct _QUANT_TABLE
 {
-  int     precision;
-  int     ident;
-  short*  elements;
-  short   elarray [84];
+	int precision;
+	int ident;
+	short* elements;
+	short elarray[84];
 
 } QUANT_TABLE;
-
 
 /*D*
 ////////////////////////////////////////////////////////////////////////////
@@ -422,11 +397,10 @@ typedef struct _QUANT_TABLE
 
 typedef struct
 {
-  unsigned char* quantizer;
-  unsigned char  ident;
+	unsigned char* quantizer;
+	unsigned char ident;
 
 } JPEGQuantTable;
-
 
 /*D*
 ////////////////////////////////////////////////////////////////////////////
@@ -452,13 +426,12 @@ typedef struct
 
 typedef struct _FRAME_COMPONENT
 {
-  int ident;
-  int hsampling;
-  int vsampling;
-  int quant_sel;
+	int ident;
+	int hsampling;
+	int vsampling;
+	int quant_sel;
 
 } FRAME_COMPONENT;
-
 
 /*D*
 ////////////////////////////////////////////////////////////////////////////
@@ -491,23 +464,22 @@ typedef struct _FRAME_COMPONENT
 
 typedef struct _FRAME
 {
-  int              precision;
-  int              width;
-  int              height;
-  int              MCUheight;
-  int              MCUwidth;
-  int              max_hsampling;
-  int              max_vsampling;
-  int              ncomps;
-  int              horMCU;
-  long             totalMCU;
-  FRAME_COMPONENT* comps;
-  int              restart_interv;
-  int              SeenAllDCScans;
-  int              SeenAllACScans;
+	int precision;
+	int width;
+	int height;
+	int MCUheight;
+	int MCUwidth;
+	int max_hsampling;
+	int max_vsampling;
+	int ncomps;
+	int horMCU;
+	long totalMCU;
+	FRAME_COMPONENT* comps;
+	int restart_interv;
+	int SeenAllDCScans;
+	int SeenAllACScans;
 
 } FRAME;
-
 
 /*D*
 ////////////////////////////////////////////////////////////////////////////
@@ -531,15 +503,14 @@ typedef struct _FRAME
 
 typedef struct
 {
-  int            comp;
-  int            hsampling;
-  int            vsampling;
-  HUFFMAN_TABLE* dc_table;
-  HUFFMAN_TABLE* ac_table;
-  QUANT_TABLE*   quant_table;
+	int comp;
+	int hsampling;
+	int vsampling;
+	HUFFMAN_TABLE* dc_table;
+	HUFFMAN_TABLE* ac_table;
+	QUANT_TABLE* quant_table;
 
 } SCAN_COMPONENT;
-
 
 /*D*
 ////////////////////////////////////////////////////////////////////////////
@@ -571,20 +542,19 @@ typedef struct
 
 typedef struct _SCAN
 {
-  int             ncomps;
-  int             gray_scale;
-  int             start_spec;
-  int             end_spec;
-  int             approx_high;
-  int             approx_low;
-  UINT            restart_interv;
-  DWORD           curxMCU;
-  DWORD           curyMCU;
-  int             dc_diff[4];
-  SCAN_COMPONENT* comps;
+	int ncomps;
+	int gray_scale;
+	int start_spec;
+	int end_spec;
+	int approx_high;
+	int approx_low;
+	UINT restart_interv;
+	DWORD curxMCU;
+	DWORD curyMCU;
+	int dc_diff[4];
+	SCAN_COMPONENT* comps;
 
 } SCAN;
-
 
 /*D*
 ////////////////////////////////////////////////////////////////////////////
@@ -602,10 +572,9 @@ typedef struct _SCAN
 
 typedef enum
 {
-  IJL_AAN = 0
+	IJL_AAN = 0
 
 } DCTTYPE;
-
 
 /*D*
 ////////////////////////////////////////////////////////////////////////////
@@ -652,14 +621,13 @@ typedef enum
 
 typedef enum
 {
-  IJL_OTHER_PROC              = 0,
-  IJL_PENTIUM_PROC            = 1,
-  IJL_PENTIUM_PRO_PROC        = 2,
-  IJL_PENTIUM_PROC_MMX_TECH   = 3,
-  IJL_PENTIUM_II_PROC         = 4
+	IJL_OTHER_PROC			  = 0,
+	IJL_PENTIUM_PROC		  = 1,
+	IJL_PENTIUM_PRO_PROC	  = 2,
+	IJL_PENTIUM_PROC_MMX_TECH = 3,
+	IJL_PENTIUM_II_PROC		  = 4
 
 } PROCESSOR_TYPE;
-
 
 /*D*
 ////////////////////////////////////////////////////////////////////////////
@@ -697,17 +665,16 @@ typedef enum
 
 typedef struct
 {
-  DWORD   offset;
-  int     dcval1;
-  int     dcval2;
-  int     dcval3;
-  int     dcval4;
-  UINT64  bit_buffer_64;
-  int     bitbuf_bits_valid;
-  BYTE    unread_marker;
+	DWORD offset;
+	int dcval1;
+	int dcval2;
+	int dcval3;
+	int dcval4;
+	UINT64 bit_buffer_64;
+	int bitbuf_bits_valid;
+	BYTE unread_marker;
 
 } ENTROPYSTRUCT;
-
 
 /*D*
 ////////////////////////////////////////////////////////////////////////////
@@ -758,32 +725,31 @@ typedef struct
 
 typedef struct _STATE
 {
-  // Bit buffer.
-  UINT64          bit_buffer_64;
-  DWORD           bit_buffer_32; // !dudnik: unused field
-  int             bitbuf_bits_valid;
+	// Bit buffer.
+	UINT64 bit_buffer_64;
+	DWORD bit_buffer_32; // !dudnik: unused field
+	int bitbuf_bits_valid;
 
-  // Entropy.
-  BYTE*           cur_entropy_ptr;
-  BYTE*           start_entropy_ptr;
-  BYTE*           end_entropy_ptr;
-  long            entropy_bytes_processed;
-  long            entropy_buf_maxsize;
-  int             entropy_bytes_left;
-  int             Prog_EndOfBlock_Run;
+	// Entropy.
+	BYTE* cur_entropy_ptr;
+	BYTE* start_entropy_ptr;
+	BYTE* end_entropy_ptr;
+	long entropy_bytes_processed;
+	long entropy_buf_maxsize;
+	int entropy_bytes_left;
+	int Prog_EndOfBlock_Run;
 
-  // Input or output DIB.
-  BYTE*           DIB_ptr;
+	// Input or output DIB.
+	BYTE* DIB_ptr;
 
-  // Control.
-  BYTE            unread_marker;
-  PROCESSOR_TYPE  processor_type;
-  int             cur_scan_comp;
-  HANDLE          file;
-  BYTE            JPGBuffer [JBUFSIZE];
+	// Control.
+	BYTE unread_marker;
+	PROCESSOR_TYPE processor_type;
+	int cur_scan_comp;
+	HANDLE file;
+	BYTE JPGBuffer[JBUFSIZE];
 
 } STATE;
-
 
 /*D*
 ////////////////////////////////////////////////////////////////////////////
@@ -803,31 +769,30 @@ typedef struct _STATE
 
 typedef enum
 {
-  IJL_NO_CC_OR_US                     = 0,
+	IJL_NO_CC_OR_US = 0,
 
-  IJL_111_YCBCR_111_RGB               = 1,
-  IJL_111_YCBCR_111_BGR               = 2,
+	IJL_111_YCBCR_111_RGB = 1,
+	IJL_111_YCBCR_111_BGR = 2,
 
-  IJL_411_YCBCR_111_RGB               = 3,
-  IJL_411_YCBCR_111_BGR               = 4,
+	IJL_411_YCBCR_111_RGB = 3,
+	IJL_411_YCBCR_111_BGR = 4,
 
-  IJL_422_YCBCR_111_RGB               = 5,
-  IJL_422_YCBCR_111_BGR               = 6,
+	IJL_422_YCBCR_111_RGB = 5,
+	IJL_422_YCBCR_111_BGR = 6,
 
-  IJL_111_YCBCR_1111_RGBA_FPX         = 7,
-  IJL_411_YCBCR_1111_RGBA_FPX         = 8,
-  IJL_422_YCBCR_1111_RGBA_FPX         = 9,
+	IJL_111_YCBCR_1111_RGBA_FPX = 7,
+	IJL_411_YCBCR_1111_RGBA_FPX = 8,
+	IJL_422_YCBCR_1111_RGBA_FPX = 9,
 
-  IJL_1111_YCBCRA_FPX_1111_RGBA_FPX   = 10,
-  IJL_4114_YCBCRA_FPX_1111_RGBA_FPX   = 11,
-  IJL_4224_YCBCRA_FPX_1111_RGBA_FPX   = 12,
+	IJL_1111_YCBCRA_FPX_1111_RGBA_FPX = 10,
+	IJL_4114_YCBCRA_FPX_1111_RGBA_FPX = 11,
+	IJL_4224_YCBCRA_FPX_1111_RGBA_FPX = 12,
 
-  IJL_111_RGB_1111_RGBA_FPX           = 13,
+	IJL_111_RGB_1111_RGBA_FPX = 13,
 
-  IJL_1111_RGBA_FPX_1111_RGBA_FPX     = 14
+	IJL_1111_RGBA_FPX_1111_RGBA_FPX = 14
 
 } FAST_MCU_PROCESSING_TYPE;
-
 
 /*D*
 ////////////////////////////////////////////////////////////////////////////
@@ -962,98 +927,97 @@ typedef enum
 
 typedef struct
 {
-  // Compression/Decompression control.
-  IJLIOTYPE                iotype;               // default = IJL_SETUP
-  RECT                     roi;                  // default = 0
-  DCTTYPE                  dcttype;              // default = IJL_AAN
-  FAST_MCU_PROCESSING_TYPE fast_processing;      // default = IJL_NO_CC_OR_US
-  DWORD                    interrupt;            // default = FALSE
+	// Compression/Decompression control.
+	IJLIOTYPE iotype;						  // default = IJL_SETUP
+	RECT roi;								  // default = 0
+	DCTTYPE dcttype;						  // default = IJL_AAN
+	FAST_MCU_PROCESSING_TYPE fast_processing; // default = IJL_NO_CC_OR_US
+	DWORD interrupt;						  // default = FALSE
 
-  // DIB specific I/O data specifiers.
-  BYTE*                    DIBBytes;             // default = NULL
-  DWORD                    DIBWidth;             // default = 0
-  int                      DIBHeight;            // default = 0
-  DWORD                    DIBPadBytes;          // default = 0
-  DWORD                    DIBChannels;          // default = 3
-  IJL_COLOR                DIBColor;             // default = IJL_BGR
-  IJL_DIBSUBSAMPLING       DIBSubsampling;       // default = IJL_NONE
-  int                      DIBLineBytes;         // default = 0
+	// DIB specific I/O data specifiers.
+	BYTE* DIBBytes;					   // default = NULL
+	DWORD DIBWidth;					   // default = 0
+	int DIBHeight;					   // default = 0
+	DWORD DIBPadBytes;				   // default = 0
+	DWORD DIBChannels;				   // default = 3
+	IJL_COLOR DIBColor;				   // default = IJL_BGR
+	IJL_DIBSUBSAMPLING DIBSubsampling; // default = IJL_NONE
+	int DIBLineBytes;				   // default = 0
 
-  // JPEG specific I/O data specifiers.
-  LPTSTR                   JPGFile;              // default = NULL
-  BYTE*                    JPGBytes;             // default = NULL
-  DWORD                    JPGSizeBytes;         // default = 0
-  DWORD                    JPGWidth;             // default = 0
-  DWORD                    JPGHeight;            // default = 0
-  DWORD                    JPGChannels;          // default = 3
-  IJL_COLOR                JPGColor;             // default = IJL_YCBCR
-  IJL_JPGSUBSAMPLING       JPGSubsampling;       // default = IJL_411
-  DWORD                    JPGThumbWidth;        // default = 0
-  DWORD                    JPGThumbHeight;       // default = 0
+	// JPEG specific I/O data specifiers.
+	LPTSTR JPGFile;					   // default = NULL
+	BYTE* JPGBytes;					   // default = NULL
+	DWORD JPGSizeBytes;				   // default = 0
+	DWORD JPGWidth;					   // default = 0
+	DWORD JPGHeight;				   // default = 0
+	DWORD JPGChannels;				   // default = 3
+	IJL_COLOR JPGColor;				   // default = IJL_YCBCR
+	IJL_JPGSUBSAMPLING JPGSubsampling; // default = IJL_411
+	DWORD JPGThumbWidth;			   // default = 0
+	DWORD JPGThumbHeight;			   // default = 0
 
-  // JPEG conversion properties.
-  DWORD                    cconversion_reqd;     // default = TRUE
-  DWORD                    upsampling_reqd;      // default = TRUE
-  DWORD                    jquality;             // default = 75
-  DWORD                    jinterleaveType;      // default = 0
-  DWORD                    numxMCUs;             // default = 0
-  DWORD                    numyMCUs;             // default = 0
+	// JPEG conversion properties.
+	DWORD cconversion_reqd; // default = TRUE
+	DWORD upsampling_reqd;  // default = TRUE
+	DWORD jquality;			// default = 75
+	DWORD jinterleaveType;  // default = 0
+	DWORD numxMCUs;			// default = 0
+	DWORD numyMCUs;			// default = 0
 
-  // Tables.
-  DWORD                    nqtables;
-  DWORD                    maxquantindex;
-  DWORD                    nhuffActables;
-  DWORD                    nhuffDctables;
-  DWORD                    maxhuffindex;
+	// Tables.
+	DWORD nqtables;
+	DWORD maxquantindex;
+	DWORD nhuffActables;
+	DWORD nhuffDctables;
+	DWORD maxhuffindex;
 
-  QUANT_TABLE              jFmtQuant[4];
-  HUFFMAN_TABLE            jFmtAcHuffman[4];
-  HUFFMAN_TABLE            jFmtDcHuffman[4];
+	QUANT_TABLE jFmtQuant[4];
+	HUFFMAN_TABLE jFmtAcHuffman[4];
+	HUFFMAN_TABLE jFmtDcHuffman[4];
 
-  short*                   jEncFmtQuant[4];
-  HUFFMAN_TABLE*           jEncFmtAcHuffman[4];
-  HUFFMAN_TABLE*           jEncFmtDcHuffman[4];
+	short* jEncFmtQuant[4];
+	HUFFMAN_TABLE* jEncFmtAcHuffman[4];
+	HUFFMAN_TABLE* jEncFmtDcHuffman[4];
 
-  // Allow user-defined tables.
-  DWORD                    use_default_qtables;
-  DWORD                    use_default_htables;
+	// Allow user-defined tables.
+	DWORD use_default_qtables;
+	DWORD use_default_htables;
 
-  JPEGQuantTable           rawquanttables[4];
-  JPEGHuffTable            rawhufftables[8];
-  BYTE                     HuffIdentifierAC[4];
-  BYTE                     HuffIdentifierDC[4];
+	JPEGQuantTable rawquanttables[4];
+	JPEGHuffTable rawhufftables[8];
+	BYTE HuffIdentifierAC[4];
+	BYTE HuffIdentifierDC[4];
 
-  // Frame specific members.
-  FRAME                    jframe;
-  int                      needframe;
+	// Frame specific members.
+	FRAME jframe;
+	int needframe;
 
-  // SCAN persistent members.
-  SCAN*                    jscan;
+	// SCAN persistent members.
+	SCAN* jscan;
 
-  // State members.
-  STATE                    state;
-  DWORD                    SawAdobeMarker;
-  DWORD                    AdobeXform;
+	// State members.
+	STATE state;
+	DWORD SawAdobeMarker;
+	DWORD AdobeXform;
 
-  // ROI decoder members.
-  ENTROPYSTRUCT*           rowoffsets;
+	// ROI decoder members.
+	ENTROPYSTRUCT* rowoffsets;
 
-  // Intermediate buffers.
-  BYTE*                    MCUBuf;
-  BYTE                     tMCUBuf[720*2];       // ???
+	// Intermediate buffers.
+	BYTE* MCUBuf;
+	BYTE tMCUBuf[720 * 2]; // ???
 
-  // Processor detected.
-  PROCESSOR_TYPE           processor_type;
+	// Processor detected.
+	PROCESSOR_TYPE processor_type;
 
-  // Test specific members.
-  DWORD                    ignoreDCTs;
+	// Test specific members.
+	DWORD ignoreDCTs;
 
-  // Progressive mode members.
-  int                      progressive_found;
-  short*                   coef_buffer;
+	// Progressive mode members.
+	int progressive_found;
+	short* coef_buffer;
 
 } JPEG_PROPERTIES;
-
 
 /*D*
 ////////////////////////////////////////////////////////////////////////////
@@ -1111,39 +1075,38 @@ typedef struct
 
 typedef struct _JPEG_CORE_PROPERTIES
 {
-  DWORD   UseJPEGPROPERTIES;                     // default = 0
+	DWORD UseJPEGPROPERTIES; // default = 0
 
-  // DIB specific I/O data specifiers.
-  BYTE*               DIBBytes;                  // default = NULL
-  DWORD               DIBWidth;                  // default = 0
-  int                 DIBHeight;                 // default = 0
-  DWORD               DIBPadBytes;               // default = 0
-  DWORD               DIBChannels;               // default = 3
-  IJL_COLOR           DIBColor;                  // default = IJL_BGR
-  IJL_DIBSUBSAMPLING  DIBSubsampling;            // default = IJL_NONE
+	// DIB specific I/O data specifiers.
+	BYTE* DIBBytes;					   // default = NULL
+	DWORD DIBWidth;					   // default = 0
+	int DIBHeight;					   // default = 0
+	DWORD DIBPadBytes;				   // default = 0
+	DWORD DIBChannels;				   // default = 3
+	IJL_COLOR DIBColor;				   // default = IJL_BGR
+	IJL_DIBSUBSAMPLING DIBSubsampling; // default = IJL_NONE
 
-  // JPEG specific I/O data specifiers.
-  LPTSTR              JPGFile;                   // default = NULL
-  BYTE*               JPGBytes;                  // default = NULL
-  DWORD               JPGSizeBytes;              // default = 0
-  DWORD               JPGWidth;                  // default = 0
-  DWORD               JPGHeight;                 // default = 0
-  DWORD               JPGChannels;               // default = 3
-  IJL_COLOR           JPGColor;                  // default = IJL_YCBCR
-  IJL_JPGSUBSAMPLING  JPGSubsampling;            // default = IJL_411
-  DWORD               JPGThumbWidth;             // default = 0
-  DWORD               JPGThumbHeight;            // default = 0
+	// JPEG specific I/O data specifiers.
+	LPTSTR JPGFile;					   // default = NULL
+	BYTE* JPGBytes;					   // default = NULL
+	DWORD JPGSizeBytes;				   // default = 0
+	DWORD JPGWidth;					   // default = 0
+	DWORD JPGHeight;				   // default = 0
+	DWORD JPGChannels;				   // default = 3
+	IJL_COLOR JPGColor;				   // default = IJL_YCBCR
+	IJL_JPGSUBSAMPLING JPGSubsampling; // default = IJL_411
+	DWORD JPGThumbWidth;			   // default = 0
+	DWORD JPGThumbHeight;			   // default = 0
 
-  // JPEG conversion properties.
-  DWORD               cconversion_reqd;          // default = TRUE
-  DWORD               upsampling_reqd;           // default = TRUE
-  DWORD               jquality;                  // default = 75
+	// JPEG conversion properties.
+	DWORD cconversion_reqd; // default = TRUE
+	DWORD upsampling_reqd;  // default = TRUE
+	DWORD jquality;			// default = 75
 
-  // Low-level properties.
-  JPEG_PROPERTIES     jprops;
+	// Low-level properties.
+	JPEG_PROPERTIES jprops;
 
 } JPEG_CORE_PROPERTIES;
-
 
 /*D*
 ////////////////////////////////////////////////////////////////////////////
@@ -1160,50 +1123,46 @@ typedef struct _JPEG_CORE_PROPERTIES
 
 typedef enum
 {
-  // The following "error" values indicate an "OK" condition.
-  IJL_OK                          = 0,
-  IJL_INTERRUPT_OK                = 1,
-  IJL_ROI_OK                      = 2,
+	// The following "error" values indicate an "OK" condition.
+	IJL_OK			 = 0,
+	IJL_INTERRUPT_OK = 1,
+	IJL_ROI_OK		 = 2,
 
-  // The following "error" values indicate an error has occurred.
-  IJL_EXCEPTION_DETECTED          =  -1,
-  IJL_INVALID_ENCODER             =  -2,
-  IJL_UNSUPPORTED_SUBSAMPLING     =  -3,
-  IJL_UNSUPPORTED_BYTES_PER_PIXEL =  -4,
-  IJL_MEMORY_ERROR                =  -5,
-  IJL_BAD_HUFFMAN_TABLE           =  -6,
-  IJL_BAD_QUANT_TABLE             =  -7,
-  IJL_INVALID_JPEG_PROPERTIES     =  -8,
-  IJL_ERR_FILECLOSE               =  -9,
-  IJL_INVALID_FILENAME            = -10,
-  IJL_ERROR_EOF                   = -11,
-  IJL_PROG_NOT_SUPPORTED          = -12,
-  IJL_ERR_NOT_JPEG                = -13,
-  IJL_ERR_COMP                    = -14,
-  IJL_ERR_SOF                     = -15,
-  IJL_ERR_DNL                     = -16,
-  IJL_ERR_NO_HUF                  = -17,
-  IJL_ERR_NO_QUAN                 = -18,
-  IJL_ERR_NO_FRAME                = -19,
-  IJL_ERR_MULT_FRAME              = -20,
-  IJL_ERR_DATA                    = -21,
-  IJL_ERR_NO_IMAGE                = -22,
-  IJL_FILE_ERROR                  = -23,
-  IJL_INTERNAL_ERROR              = -24,
-  IJL_BAD_RST_MARKER              = -25,
-  IJL_THUMBNAIL_DIB_TOO_SMALL     = -26,
-  IJL_THUMBNAIL_DIB_WRONG_COLOR   = -27,
-  IJL_RESERVED                    = -99
+	// The following "error" values indicate an error has occurred.
+	IJL_EXCEPTION_DETECTED			= -1,
+	IJL_INVALID_ENCODER				= -2,
+	IJL_UNSUPPORTED_SUBSAMPLING		= -3,
+	IJL_UNSUPPORTED_BYTES_PER_PIXEL = -4,
+	IJL_MEMORY_ERROR				= -5,
+	IJL_BAD_HUFFMAN_TABLE			= -6,
+	IJL_BAD_QUANT_TABLE				= -7,
+	IJL_INVALID_JPEG_PROPERTIES		= -8,
+	IJL_ERR_FILECLOSE				= -9,
+	IJL_INVALID_FILENAME			= -10,
+	IJL_ERROR_EOF					= -11,
+	IJL_PROG_NOT_SUPPORTED			= -12,
+	IJL_ERR_NOT_JPEG				= -13,
+	IJL_ERR_COMP					= -14,
+	IJL_ERR_SOF						= -15,
+	IJL_ERR_DNL						= -16,
+	IJL_ERR_NO_HUF					= -17,
+	IJL_ERR_NO_QUAN					= -18,
+	IJL_ERR_NO_FRAME				= -19,
+	IJL_ERR_MULT_FRAME				= -20,
+	IJL_ERR_DATA					= -21,
+	IJL_ERR_NO_IMAGE				= -22,
+	IJL_FILE_ERROR					= -23,
+	IJL_INTERNAL_ERROR				= -24,
+	IJL_BAD_RST_MARKER				= -25,
+	IJL_THUMBNAIL_DIB_TOO_SMALL		= -26,
+	IJL_THUMBNAIL_DIB_WRONG_COLOR   = -27,
+	IJL_RESERVED					= -99
 
 } IJLERR;
-
-
-
 
 /* /////////////////////////////////////////////////////////////////////////
 //                     Function Prototypes (API Calls)                    //
 ///////////////////////////////////////////////////////////////////////// */
-
 
 /*F*
 ////////////////////////////////////////////////////////////////////////////
@@ -1227,8 +1186,7 @@ typedef enum
 ////////////////////////////////////////////////////////////////////////////
 *F*/
 
-IJLAPI(IJLERR, ijlInit, ( JPEG_CORE_PROPERTIES* jcprops ));
-
+IJLAPI(IJLERR, ijlInit, (JPEG_CORE_PROPERTIES * jcprops));
 
 /*F*
 ////////////////////////////////////////////////////////////////////////////
@@ -1252,8 +1210,7 @@ IJLAPI(IJLERR, ijlInit, ( JPEG_CORE_PROPERTIES* jcprops ));
 ////////////////////////////////////////////////////////////////////////////
 *F*/
 
-IJLAPI(IJLERR, ijlFree, ( JPEG_CORE_PROPERTIES* jcprops ));
-
+IJLAPI(IJLERR, ijlFree, (JPEG_CORE_PROPERTIES * jcprops));
 
 /*F*
 ////////////////////////////////////////////////////////////////////////////
@@ -1278,8 +1235,7 @@ IJLAPI(IJLERR, ijlFree, ( JPEG_CORE_PROPERTIES* jcprops ));
 ////////////////////////////////////////////////////////////////////////////
 *F*/
 
-IJLAPI(IJLERR, ijlRead, ( JPEG_CORE_PROPERTIES* jcprops, IJLIOTYPE iotype ));
-
+IJLAPI(IJLERR, ijlRead, (JPEG_CORE_PROPERTIES * jcprops, IJLIOTYPE iotype));
 
 /*F*
 ////////////////////////////////////////////////////////////////////////////
@@ -1304,8 +1260,7 @@ IJLAPI(IJLERR, ijlRead, ( JPEG_CORE_PROPERTIES* jcprops, IJLIOTYPE iotype ));
 ////////////////////////////////////////////////////////////////////////////
 *F*/
 
-IJLAPI(IJLERR, ijlWrite, ( JPEG_CORE_PROPERTIES* jcprops, IJLIOTYPE iotype ));
-
+IJLAPI(IJLERR, ijlWrite, (JPEG_CORE_PROPERTIES * jcprops, IJLIOTYPE iotype));
 
 /*F*
 ////////////////////////////////////////////////////////////////////////////
@@ -1324,7 +1279,6 @@ IJLAPI(IJLERR, ijlWrite, ( JPEG_CORE_PROPERTIES* jcprops, IJLIOTYPE iotype ));
 
 IJLAPI(const IJLibVersion*, ijlGetLibVersion, (void));
 
-
 /*F*
 ////////////////////////////////////////////////////////////////////////////
 // Name:        ijlErrorStr
@@ -1342,11 +1296,8 @@ IJLAPI(const IJLibVersion*, ijlGetLibVersion, (void));
 
 IJLAPI(LPCTSTR, ijlErrorStr, (IJLERR code));
 
-
-
-
-#if defined( __cplusplus )
+#if defined(__cplusplus)
 }
 #endif
 
-#endif  // __IJL_H__
+#endif // __IJL_H__

@@ -6,7 +6,8 @@
 //===========================================================================//
 //
 //############################################################################
-//########################  gosFX::Shape__Specification  #############################
+//########################  gosFX::Shape__Specification
+//#############################
 //############################################################################
 
 #include "stdafx.h"
@@ -15,24 +16,19 @@
 //------------------------------------------------------------------------------
 //
 gosFX::Shape__Specification::Shape__Specification(
-	Stuff::MemoryStream* stream,
-	uint32_t gfx_version
-):
-	Singleton__Specification(gosFX::ShapeClassID, stream, gfx_version)
+	Stuff::MemoryStream* stream, uint32_t gfx_version)
+	: Singleton__Specification(gosFX::ShapeClassID, stream, gfx_version)
 {
-	//Check_Pointer(this);
+	// Check_Pointer(this);
 	Verify(m_class == ShapeClassID);
-	//Verify(gos_GetCurrentHeap() == Heap);
+	// Verify(gos_GetCurrentHeap() == Heap);
 	//
 	//---------------
 	// Load the shape
 	//---------------
 	//
-	m_shape =
-		MidLevelRenderer::MLRShape::Make(
-			stream,
-			MidLevelRenderer::ReadMLRVersion(stream)
-		);
+	m_shape = MidLevelRenderer::MLRShape::Make(
+		stream, MidLevelRenderer::ReadMLRVersion(stream));
 	Register_Object(m_shape);
 	*stream >> m_radius;
 }
@@ -40,12 +36,11 @@ gosFX::Shape__Specification::Shape__Specification(
 //------------------------------------------------------------------------------
 //
 gosFX::Shape__Specification::Shape__Specification(
-	MidLevelRenderer::MLRShape* shape
-):
-	Singleton__Specification(gosFX::ShapeClassID)
+	MidLevelRenderer::MLRShape* shape)
+	: Singleton__Specification(gosFX::ShapeClassID)
 {
-	//Check_Pointer(this);
-	//Verify(gos_GetCurrentHeap() == Heap);
+	// Check_Pointer(this);
+	// Verify(gos_GetCurrentHeap() == Heap);
 	m_shape = nullptr;
 	SetShape(shape);
 }
@@ -55,7 +50,7 @@ gosFX::Shape__Specification::Shape__Specification(
 gosFX::Shape__Specification::~Shape__Specification()
 {
 	// Check_Object(this);
-	if(m_shape)
+	if (m_shape)
 	{
 		Check_Object(m_shape);
 		m_shape->DetachReference();
@@ -64,14 +59,11 @@ gosFX::Shape__Specification::~Shape__Specification()
 
 //------------------------------------------------------------------------------
 //
-gosFX::Shape__Specification*
-gosFX::Shape__Specification::Make(
-	Stuff::MemoryStream* stream,
-	uint32_t gfx_version
-)
+gosFX::Shape__Specification* gosFX::Shape__Specification::Make(
+	Stuff::MemoryStream* stream, uint32_t gfx_version)
 {
 	Check_Object(stream);
-	#ifdef _GAMEOS_HPP_
+#ifdef _GAMEOS_HPP_
 	// gos_PushCurrentHeap(Heap);
 #endif
 	Shape__Specification* spec =
@@ -82,8 +74,7 @@ gosFX::Shape__Specification::Make(
 
 //------------------------------------------------------------------------------
 //
-void
-gosFX::Shape__Specification::Save(Stuff::MemoryStream* stream)
+void gosFX::Shape__Specification::Save(Stuff::MemoryStream* stream)
 {
 	// Check_Object(this);
 	Check_Object(stream);
@@ -95,17 +86,16 @@ gosFX::Shape__Specification::Save(Stuff::MemoryStream* stream)
 
 //------------------------------------------------------------------------------
 //
-void
-gosFX::Shape__Specification::Copy(Shape__Specification* spec)
+void gosFX::Shape__Specification::Copy(Shape__Specification* spec)
 {
 	// Check_Object(this);
 	Check_Object(spec);
 	Singleton__Specification::Copy(spec);
-	#ifdef _GAMEOS_HPP_
+#ifdef _GAMEOS_HPP_
 	// gos_PushCurrentHeap(Heap);
 #endif
 	m_radius = spec->m_radius;
-	m_shape = spec->m_shape;
+	m_shape  = spec->m_shape;
 	// gos_PopCurrentHeap();
 	Check_Object(m_shape);
 	m_shape->AttachReference();
@@ -113,8 +103,7 @@ gosFX::Shape__Specification::Copy(Shape__Specification* spec)
 
 //------------------------------------------------------------------------------
 //
-void
-gosFX::Shape__Specification::SetShape(MidLevelRenderer::MLRShape* shape)
+void gosFX::Shape__Specification::SetShape(MidLevelRenderer::MLRShape* shape)
 {
 	// Check_Object(this);
 	//
@@ -122,7 +111,7 @@ gosFX::Shape__Specification::SetShape(MidLevelRenderer::MLRShape* shape)
 	// Detach the old shape if it is there
 	//------------------------------------
 	//
-	if(m_shape)
+	if (m_shape)
 	{
 		Check_Object(m_shape);
 		m_shape->DetachReference();
@@ -132,7 +121,7 @@ gosFX::Shape__Specification::SetShape(MidLevelRenderer::MLRShape* shape)
 	// Attach the new shape if it is there
 	//------------------------------------
 	//
-	if(shape)
+	if (shape)
 	{
 		Check_Object(shape);
 		m_shape = shape;
@@ -143,19 +132,19 @@ gosFX::Shape__Specification::SetShape(MidLevelRenderer::MLRShape* shape)
 		// distance any point is from the origin
 		//-----------------------------------------------------------------
 		//
-		m_radius = 0.0f;
+		m_radius	  = 0.0f;
 		int32_t count = m_shape->GetNum();
-		for(size_t i = 0; i < count; ++i)
+		for (size_t i = 0; i < count; ++i)
 		{
 			MidLevelRenderer::MLRPrimitiveBase* primitive = m_shape->Find(i);
 			Check_Object(primitive);
 			Stuff::Point3D* points;
 			int32_t vertex_count;
 			primitive->GetCoordData(&points, &vertex_count);
-			for(size_t v = 0; v < vertex_count; ++v)
+			for (size_t v = 0; v < vertex_count; ++v)
 			{
 				float len = points[v].GetLengthSquared();
-				if(len > m_radius)
+				if (len > m_radius)
 					m_radius = len;
 			}
 		}
@@ -167,31 +156,23 @@ gosFX::Shape__Specification::SetShape(MidLevelRenderer::MLRShape* shape)
 //##############################  gosFX::Shape  ################################
 //############################################################################
 
-gosFX::Shape::ClassData*
-gosFX::Shape::DefaultData = nullptr;
+gosFX::Shape::ClassData* gosFX::Shape::DefaultData = nullptr;
 
 //------------------------------------------------------------------------------
 //
-void
-gosFX::Shape::InitializeClass()
+void gosFX::Shape::InitializeClass()
 {
 	Verify(!DefaultData);
-	//Verify(gos_GetCurrentHeap() == Heap);
-	DefaultData =
-		new ClassData(
-		ShapeClassID,
-		"gosFX::Shape",
-		Singleton::DefaultData,
-		(Effect::Factory)&Make,
-		(Specification::Factory)&Specification::Make
-	);
+	// Verify(gos_GetCurrentHeap() == Heap);
+	DefaultData = new ClassData(ShapeClassID, "gosFX::Shape",
+		Singleton::DefaultData, (Effect::Factory)&Make,
+		(Specification::Factory)&Specification::Make);
 	Register_Object(DefaultData);
 }
 
 //------------------------------------------------------------------------------
 //
-void
-gosFX::Shape::TerminateClass()
+void gosFX::Shape::TerminateClass()
 {
 	Unregister_Object(DefaultData);
 	delete DefaultData;
@@ -200,26 +181,19 @@ gosFX::Shape::TerminateClass()
 
 //------------------------------------------------------------------------------
 //
-gosFX::Shape::Shape(
-	Specification* spec,
-	uint32_t flags
-):
-	Singleton(DefaultData, spec, flags)
+gosFX::Shape::Shape(Specification* spec, uint32_t flags)
+	: Singleton(DefaultData, spec, flags)
 {
-	//Verify(gos_GetCurrentHeap() == Heap);
+	// Verify(gos_GetCurrentHeap() == Heap);
 	m_radius = spec->m_radius;
 }
 
 //------------------------------------------------------------------------------
 //
-gosFX::Shape*
-gosFX::Shape::Make(
-	Specification* spec,
-	uint32_t flags
-)
+gosFX::Shape* gosFX::Shape::Make(Specification* spec, uint32_t flags)
 {
 	Check_Object(spec);
-	#ifdef _GAMEOS_HPP_
+#ifdef _GAMEOS_HPP_
 	// gos_PushCurrentHeap(Heap);
 #endif
 	Shape* cloud = new gosFX::Shape(spec, flags);
@@ -242,13 +216,13 @@ void gosFX::Shape::Draw(DrawInfo* info)
 	MidLevelRenderer::DrawScalableShapeInformation dinfo;
 	MidLevelRenderer::MLRShape* shape = GetSpecification()->m_shape;
 	dinfo.clippingFlags.SetClippingState(0x3f);
-	dinfo.worldToShape = nullptr;
+	dinfo.worldToShape  = nullptr;
 	Specification* spec = GetSpecification();
 	Check_Object(spec);
 	dinfo.state.Combine(info->m_state, spec->m_state);
-	dinfo.activeLights = nullptr;
+	dinfo.activeLights	 = nullptr;
 	dinfo.nrOfActiveLights = 0;
-	dinfo.shape = shape;
+	dinfo.shape			   = shape;
 	Stuff::Vector3D scale(m_scale, m_scale, m_scale);
 	dinfo.scaling = &scale;
 	dinfo.paintMe = &m_color;
@@ -260,46 +234,34 @@ void gosFX::Shape::Draw(DrawInfo* info)
 	// Check the orientation mode.  The first case is XY orientation
 	//--------------------------------------------------------------
 	//
-	if(spec->m_alignZUsingX)
+	if (spec->m_alignZUsingX)
 	{
-		Stuff::Point3D
-		camera_in_world(info->m_clipper->GetCameraToWorldMatrix());
+		Stuff::Point3D camera_in_world(
+			info->m_clipper->GetCameraToWorldMatrix());
 		Stuff::Point3D card_in_world(local_to_world);
 		Stuff::Vector3D look_at;
 		look_at.Subtract(camera_in_world, card_in_world);
-		if(spec->m_alignZUsingY)
+		if (spec->m_alignZUsingY)
 			local_to_world.AlignLocalAxisToWorldVector(
-				look_at,
-				Stuff::Z_Axis,
-				Stuff::Y_Axis,
-				Stuff::X_Axis
-			);
+				look_at, Stuff::Z_Axis, Stuff::Y_Axis, Stuff::X_Axis);
 		else
 			local_to_world.AlignLocalAxisToWorldVector(
-				look_at,
-				Stuff::Z_Axis,
-				Stuff::X_Axis,
-				-1
-			);
+				look_at, Stuff::Z_Axis, Stuff::X_Axis, -1);
 	}
 	//
 	//-------------------------------------------------------
 	// Each matrix needs to be aligned to the camera around Y
 	//-------------------------------------------------------
 	//
-	else if(spec->m_alignZUsingY)
+	else if (spec->m_alignZUsingY)
 	{
-		Stuff::Point3D
-		camera_in_world(info->m_clipper->GetCameraToWorldMatrix());
+		Stuff::Point3D camera_in_world(
+			info->m_clipper->GetCameraToWorldMatrix());
 		Stuff::Point3D card_in_world(local_to_world);
 		Stuff::Vector3D look_at;
 		look_at.Subtract(camera_in_world, card_in_world);
 		local_to_world.AlignLocalAxisToWorldVector(
-			look_at,
-			Stuff::Z_Axis,
-			Stuff::Y_Axis,
-			-1
-		);
+			look_at, Stuff::Z_Axis, Stuff::Y_Axis, -1);
 	}
 	//
 	//----------------------------
@@ -312,8 +274,7 @@ void gosFX::Shape::Draw(DrawInfo* info)
 
 //------------------------------------------------------------------------------
 //
-void
-gosFX::Shape::TestInstance(void) const
+void gosFX::Shape::TestInstance(void) const
 {
 	Verify(IsDerivedFrom(DefaultData));
 }

@@ -2,28 +2,30 @@
 
 extern char AlphaTable[256 * 256];
 extern enum { CPU_UNKNOWN, CPU_PENTIUM, CPU_MMX } Processor;
-//extern void memfill(PVOID Dest,int32_t Length);
-//extern void memclear(PVOID Dest,int32_t Length);
+// extern void memfill(PVOID Dest,int32_t Length);
+// extern void memclear(PVOID Dest,int32_t Length);
 
-void CopySprite(PANE* pane, PVOID texture, int32_t X, int32_t Y, int32_t Width, int32_t Height, int32_t Flip, int32_t Shrink);
-void AG_shape_fill(PANE* pane, PVOID shape_table, int32_t shape_number, int32_t hotX, int32_t hotY);
-void AG_shape_draw(PANE* pane, PVOID shape_table, int32_t shape_number, int32_t hotX, int32_t hotY);
-void AG_shape_translate_fill(PANE* pane, PVOID shape_table, int32_t shape_number, int32_t hotX, int32_t hotY);
+void CopySprite(PANE* pane, PVOID texture, int32_t X, int32_t Y, int32_t Width,
+	int32_t Height, int32_t Flip, int32_t Shrink);
+void AG_shape_fill(PANE* pane, PVOID shape_table, int32_t shape_number,
+	int32_t hotX, int32_t hotY);
+void AG_shape_draw(PANE* pane, PVOID shape_table, int32_t shape_number,
+	int32_t hotX, int32_t hotY);
+void AG_shape_translate_fill(PANE* pane, PVOID shape_table,
+	int32_t shape_number, int32_t hotX, int32_t hotY);
 extern uint32_t lookaside;
-
 
 int32_t SqrtCount = 0;
 
-
-//typedef uint32_t uint32_t;
+// typedef uint32_t uint32_t;
 typedef struct SHAPEHEADER
 {
-	uint32_t	bounds;
-	uint32_t	origin;
-	uint32_t	xmin;
-	uint32_t	ymin;
-	uint32_t	xmax;
-	uint32_t	ymax;
+	uint32_t bounds;
+	uint32_t origin;
+	uint32_t xmin;
+	uint32_t ymin;
+	uint32_t xmax;
+	uint32_t ymax;
 } SHAPEHEADER;
 
 //
@@ -37,10 +39,12 @@ typedef struct SHAPEHEADER
 // Bit 0 = 1	String packet [7654321] bytes
 //
 
-static uint32_t SourceWidth, tWidth, tHeight, DestWidth;			// Used for code optimizing
+static uint32_t SourceWidth, tWidth, tHeight,
+	DestWidth; // Used for code optimizing
 static int64_t xmask = -1;
 static uint32_t tempXmax, tempXmin;
-static uint32_t minX, minY, maxY, maxX, SkipLeft, NewWidth, StartofLine, StartofClip, EndofClip;
+static uint32_t minX, minY, maxY, maxX, SkipLeft, NewWidth, StartofLine,
+	StartofClip, EndofClip;
 static uint32_t lines, paneX0, paneX1, paneY0, paneY1;
 static uintptr_t SourcePointer;
 static uintptr_t DestPointer;
@@ -49,12 +53,12 @@ static int32_t X, Y, X1;
 static PANE tempPANE;
 static WINDOW tempWINDOW;
 
-
-
-void AG_shape_transform(PANE* globalPane, PVOID shapeTable, int32_t frameNum, int32_t hotX, int32_t hotY, PVOID tempBuffer, int32_t reverse, int32_t scaleUp)
+void AG_shape_transform(PANE* globalPane, PVOID shapeTable, int32_t frameNum,
+	int32_t hotX, int32_t hotY, PVOID tempBuffer, int32_t reverse,
+	int32_t scaleUp)
 {
 	_asm
-	{
+		{
 
 		mov esi, shapeTable
 		mov eax, frameNum
@@ -76,21 +80,22 @@ void AG_shape_transform(PANE* globalPane, PVOID shapeTable, int32_t frameNum, in
 		inc eax
 		mov maxY, eax
 
-	}
-	tempWINDOW.buffer=(puint8_t)tempBuffer;
-	tempWINDOW.x_max = maxX - 1;
-	tempWINDOW.y_max = maxY - 1;
-	tempPANE.window = &tempWINDOW;
-	tempPANE.x0 = 0;
-	tempPANE.y0 = 0;
-	tempPANE.x1 = maxX - 1;
-	tempPANE.y1 = maxY - 1;
+		}
+	tempWINDOW.buffer = (puint8_t)tempBuffer;
+	tempWINDOW.x_max  = maxX - 1;
+	tempWINDOW.y_max  = maxY - 1;
+	tempPANE.window   = &tempWINDOW;
+	tempPANE.x0		  = 0;
+	tempPANE.y0		  = 0;
+	tempPANE.x1		  = maxX - 1;
+	tempPANE.y1		  = maxY - 1;
 	//-------------------------------------------------------------------------------------
-	// Some armor here.  We have still have a bug somewhere that trashes the shape by
-	// the time it gets here.  Armor against for now and make Fatal to try to track down!
-#define MAX_X		360
-#define MAX_Y		360
-	if((maxX * maxY) >= (MAX_Y * MAX_X))
+	// Some armor here.  We have still have a bug somewhere that trashes the
+	// shape by the time it gets here.  Armor against for now and make Fatal to
+	// try to track down!
+#define MAX_X 360
+#define MAX_Y 360
+	if ((maxX * maxY) >= (MAX_Y * MAX_X))
 	{
 		return;
 	}
@@ -98,29 +103,32 @@ void AG_shape_transform(PANE* globalPane, PVOID shapeTable, int32_t frameNum, in
 	// memclear(tempBuffer,maxX*maxY);
 	memset(tempBuffer, 0, maxX * maxY);
 	AG_shape_draw(&tempPANE, shapeTable, frameNum, -X, -Y);
-	if(scaleUp)
+	if (scaleUp)
 	{
-		if(reverse)
-			CopySprite(globalPane, tempBuffer, hotX - X1, hotY + Y, maxX, maxY, reverse, scaleUp);
+		if (reverse)
+			CopySprite(globalPane, tempBuffer, hotX - X1, hotY + Y, maxX, maxY,
+				reverse, scaleUp);
 		else
-			CopySprite(globalPane, tempBuffer, hotX + X, hotY + Y, maxX, maxY, reverse, scaleUp);
+			CopySprite(globalPane, tempBuffer, hotX + X, hotY + Y, maxX, maxY,
+				reverse, scaleUp);
 	}
 	else
 	{
-		if(reverse)
-			CopySprite(globalPane, tempBuffer, hotX - (X1 >> 1), hotY + (Y >> 1), maxX, maxY, reverse, scaleUp);
+		if (reverse)
+			CopySprite(globalPane, tempBuffer, hotX - (X1 >> 1),
+				hotY + (Y >> 1), maxX, maxY, reverse, scaleUp);
 		else
-			CopySprite(globalPane, tempBuffer, hotX + (X >> 1), hotY + (Y >> 1), maxX, maxY, reverse, scaleUp);
+			CopySprite(globalPane, tempBuffer, hotX + (X >> 1), hotY + (Y >> 1),
+				maxX, maxY, reverse, scaleUp);
 	}
 }
 
-
-
-
-void AG_shape_translate_transform(PANE* globalPane, PVOIDshapeTable, int32_t frameNum, int32_t hotX, int32_t hotY, PVOIDtempBuffer, int32_t reverse, int32_t scaleUp)
+void AG_shape_translate_transform(PANE* globalPane, PVOIDshapeTable,
+	int32_t frameNum, int32_t hotX, int32_t hotY, PVOIDtempBuffer,
+	int32_t reverse, int32_t scaleUp)
 {
 	_asm
-	{
+		{
 
 		mov esi, shapeTable
 		mov eax, frameNum
@@ -142,21 +150,22 @@ void AG_shape_translate_transform(PANE* globalPane, PVOIDshapeTable, int32_t fra
 		inc eax
 		mov maxY, eax
 
-	}
-	tempWINDOW.buffer=(puint8_t)tempBuffer;
-	tempWINDOW.x_max = maxX - 1;
-	tempWINDOW.y_max = maxY - 1;
-	tempPANE.window = &tempWINDOW;
-	tempPANE.x0 = 0;
-	tempPANE.y0 = 0;
-	tempPANE.x1 = maxX - 1;
-	tempPANE.y1 = maxY - 1;
+		}
+	tempWINDOW.buffer = (puint8_t)tempBuffer;
+	tempWINDOW.x_max  = maxX - 1;
+	tempWINDOW.y_max  = maxY - 1;
+	tempPANE.window   = &tempWINDOW;
+	tempPANE.x0		  = 0;
+	tempPANE.y0		  = 0;
+	tempPANE.x1		  = maxX - 1;
+	tempPANE.y1		  = maxY - 1;
 	//-------------------------------------------------------------------------------------
-	// Some armor here.  We have still have a bug somewhere that trashes the shape by
-	// the time it gets here.  Armor against for now and make Fatal to try to track down!
-#define MAX_X		360
-#define MAX_Y		360
-	if((maxX * maxY) >= (MAX_Y * MAX_X))
+	// Some armor here.  We have still have a bug somewhere that trashes the
+	// shape by the time it gets here.  Armor against for now and make Fatal to
+	// try to track down!
+#define MAX_X 360
+#define MAX_Y 360
+	if ((maxX * maxY) >= (MAX_Y * MAX_X))
 	{
 		return;
 	}
@@ -164,39 +173,47 @@ void AG_shape_translate_transform(PANE* globalPane, PVOIDshapeTable, int32_t fra
 	// memclear(tempBuffer,maxX*maxY);
 	memset(tempBuffer, 0, maxX * maxY);
 	AG_shape_translate_fill(&tempPANE, shapeTable, frameNum, -X, -Y);
-	if(scaleUp)
+	if (scaleUp)
 	{
-		if(reverse)
-			CopySprite(globalPane, tempBuffer, hotX - X1, hotY + Y, maxX, maxY, reverse, scaleUp);
+		if (reverse)
+			CopySprite(globalPane, tempBuffer, hotX - X1, hotY + Y, maxX, maxY,
+				reverse, scaleUp);
 		else
-			CopySprite(globalPane, tempBuffer, hotX + X, hotY + Y, maxX, maxY, reverse, scaleUp);
+			CopySprite(globalPane, tempBuffer, hotX + X, hotY + Y, maxX, maxY,
+				reverse, scaleUp);
 	}
 	else
 	{
-		if(reverse)
-			CopySprite(globalPane, tempBuffer, hotX - (X1 >> 1), hotY + (Y >> 1), maxX, maxY, reverse, scaleUp);
+		if (reverse)
+			CopySprite(globalPane, tempBuffer, hotX - (X1 >> 1),
+				hotY + (Y >> 1), maxX, maxY, reverse, scaleUp);
 		else
-			CopySprite(globalPane, tempBuffer, hotX + (X >> 1), hotY + (Y >> 1), maxX, maxY, reverse, scaleUp);
+			CopySprite(globalPane, tempBuffer, hotX + (X >> 1), hotY + (Y >> 1),
+				maxX, maxY, reverse, scaleUp);
 	}
 }
 
-void CopySprite(PANE* pane, PVOID texture, int32_t X, int32_t Y, int32_t Width, int32_t Height, int32_t Flip, int32_t ScaleUp)
+void CopySprite(PANE* pane, PVOID texture, int32_t X, int32_t Y, int32_t Width,
+	int32_t Height, int32_t Flip, int32_t ScaleUp)
 {
-	DestWidth = pane->window->x_max + 1;
+	DestWidth	  = pane->window->x_max + 1;
 	int32_t paneX0 = (pane->x0 < 0) ? 0 : pane->x0;
 	int32_t paneY0 = (pane->y0 < 0) ? 0 : pane->y0;
-	int32_t paneX1 = (pane->x1 >= (int32_t)DestWidth) ? pane->window->x_max : pane->x1;
-	int32_t paneY1 = (pane->y1 >= (pane->window->y_max + 1)) ? pane->window->y_max : pane->y1;
+	int32_t paneX1 =
+		(pane->x1 >= (int32_t)DestWidth) ? pane->window->x_max : pane->x1;
+	int32_t paneY1 = (pane->y1 >= (pane->window->y_max + 1))
+						 ? pane->window->y_max
+						 : pane->y1;
 	X += paneX0;
 	Y += paneY0;
 	SourcePointer = texture;
-	SourceWidth = Width;
-	if(X < paneX0)
+	SourceWidth   = Width;
+	if (X < paneX0)
 	{
-		if(ScaleUp)
+		if (ScaleUp)
 		{
 			Width -= paneX0 - X;
-			if(Flip)						// Zoomed IN
+			if (Flip) // Zoomed IN
 				SourcePointer -= paneX0 - X;
 			else
 				SourcePointer += paneX0 - X;
@@ -204,16 +221,16 @@ void CopySprite(PANE* pane, PVOID texture, int32_t X, int32_t Y, int32_t Width, 
 		else
 		{
 			Width -= (paneX0 - X) * 2;
-			if(Flip)						// Zoomed OUT
+			if (Flip) // Zoomed OUT
 				SourcePointer -= (paneX0 - X) * 2;
 			else
 				SourcePointer += (paneX0 - X) * 2;
 		}
 		X = paneX0;
 	}
-	if(Y < paneY0)
+	if (Y < paneY0)
 	{
-		if(ScaleUp)
+		if (ScaleUp)
 		{
 			Height -= paneY0 - Y;
 			SourcePointer += (paneY0 - Y) * Width;
@@ -226,42 +243,37 @@ void CopySprite(PANE* pane, PVOID texture, int32_t X, int32_t Y, int32_t Width, 
 			Y = paneY0;
 		}
 	}
-	if(ScaleUp)
+	if (ScaleUp)
 	{
-		if(X + Width > (paneX1 + 1))
+		if (X + Width > (paneX1 + 1))
 		{
 			Width = paneX1 + 1 - X;
 		}
 	}
 	else
 	{
-		if(X + (Width >> 1) > (paneX1 + 1))
+		if (X + (Width >> 1) > (paneX1 + 1))
 		{
 			Width = (paneX1 + 1 - X) << 1;
 		}
 	}
-	if(ScaleUp)
+	if (ScaleUp)
 	{
-		if(Y + Height > (paneY1 + 1))
+		if (Y + Height > (paneY1 + 1))
 			Height = paneY1 + 1 - Y;
 	}
 	else
 	{
-		if(Y + (Height >> 1) > (paneY1 + 1))
+		if (Y + (Height >> 1) > (paneY1 + 1))
 			Height = (paneY1 + 1 - Y) << 1;
 	}
-	if((X >= paneX1) ||
-			(Y >= paneY1) ||
-			(X <= (paneX0 - Width)) ||
-			(Y <= (paneY0 - Height)) ||
-			(Width <= 0)					||
-			(Height <= 0))
+	if ((X >= paneX1) || (Y >= paneY1) || (X <= (paneX0 - Width)) ||
+		(Y <= (paneY0 - Height)) || (Width <= 0) || (Height <= 0))
 		return;
 	DestPointer = pane->window->buffer + X + Y * DestWidth;
-	tWidth = Width;
-	tHeight = Height;
-	_asm
-	{
+	tWidth		= Width;
+	tHeight		= Height;
+	_asm {
 
 		push ebp
 		mov eax, Flip
@@ -340,7 +352,7 @@ void CopySprite(PANE* pane, PVOID texture, int32_t X, int32_t Y, int32_t Width, 
 		cmp ah, 0
 		je  SKIPME1
 
-		//mov cl,AlphaTable[eax]
+			// mov cl,AlphaTable[eax]
 		mov [edi-1], ah
 
 		SKIPME1:
@@ -441,7 +453,7 @@ void CopySprite(PANE* pane, PVOID texture, int32_t X, int32_t Y, int32_t Width, 
 
 		cmp ah, 0
 		je  SKIPME2
-		//mov cl,AlphaTable[eax]
+			// mov cl,AlphaTable[eax]
 
 		mov [edi-1], ah
 
@@ -469,23 +481,6 @@ void CopySprite(PANE* pane, PVOID texture, int32_t X, int32_t Y, int32_t Width, 
 	return;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 /*
 ;
 ; int32_t cdecl VFX_shape_draw (PANE *panep, PVOIDshape_table,
@@ -501,7 +496,8 @@ void CopySprite(PANE* pane, PVOID texture, int32_t X, int32_t Y, int32_t Width, 
 ; drawn.  The shape's hot spot will end up at the specified location.
 ;
 */
-void AG_shape_fill(PANE* pane, PVOIDshape_table, int32_t shape_number, int32_t hotX, int32_t hotY)
+void AG_shape_fill(PANE* pane, PVOIDshape_table, int32_t shape_number,
+	int32_t hotX, int32_t hotY)
 {
 	_asm
 	{
@@ -932,17 +928,6 @@ void AG_shape_fill(PANE* pane, PVOIDshape_table, int32_t shape_number, int32_t h
 	}
 }
 
-
-
-
-
-
-
-
-
-
-
-
 /*
 ;----------------------------------------------------------------------------
 ;
@@ -972,7 +957,8 @@ void AG_shape_fill(PANE* pane, PVOIDshape_table, int32_t shape_number, int32_t h
 ;
 ;----------------------------------------------------------------------------
 */
-void AG_shape_translate_fill(PANE* pane, PVOIDshape_table, int32_t shape_number, int32_t hotX, int32_t hotY)
+void AG_shape_translate_fill(PANE* pane, PVOIDshape_table, int32_t shape_number,
+	int32_t hotX, int32_t hotY)
 {
 	_asm
 	{
@@ -1443,8 +1429,3 @@ void AG_shape_translate_fill(PANE* pane, PVOIDshape_table, int32_t shape_number,
 		Exit:
 	}
 }
-
-
-
-
-

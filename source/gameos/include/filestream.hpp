@@ -32,15 +32,14 @@ public:
 	DebugFileStream()
 	{}
 
-	inline  DebugFileStream& operator<<(ostream& (__cdecl * _f)(ostream&)){return *this;}
-	inline  DebugFileStream& operator<<(ios& (__cdecl * _f)(ios&)){return *this;}
-	inline  DebugFileStream& operator<<(PCSTR ){return *this;}
-	inline  DebugFileStream& operator<<(pcuint8_t){return *this;}
-	inline  DebugFileStream& operator<<(const signed PSTR ){return *this;}
-	inline  DebugFileStream& operator<<(char){return *this;}
-	inline  DebugFileStream& operator<<(uint8_t){return *this;}
-	inline  DebugFileStream& operator<<(signed char){return *this;}
-	inline  DebugFileStream& operator<<(int16_t){return *this;}
+	inline  DebugFileStream& operator<<(ostream& (__cdecl *
+_f)(ostream&)){return *this;} inline  DebugFileStream& operator<<(ios& (__cdecl
+* _f)(ios&)){return *this;} inline  DebugFileStream& operator<<(PCSTR ){return
+*this;} inline  DebugFileStream& operator<<(pcuint8_t){return *this;} inline
+DebugFileStream& operator<<(const signed PSTR ){return *this;} inline
+DebugFileStream& operator<<(char){return *this;} inline  DebugFileStream&
+operator<<(uint8_t){return *this;} inline  DebugFileStream& operator<<(signed
+char){return *this;} inline  DebugFileStream& operator<<(int16_t){return *this;}
 	inline  DebugFileStream& operator<<(uint16_t){return *this;}
 	inline  DebugFileStream& operator<<(int32_t){return *this;}
 	inline  DebugFileStream& operator<<(uint32_t){return *this;}
@@ -59,4 +58,3 @@ public:
 */
 
 #endif
-

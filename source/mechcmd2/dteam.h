@@ -15,10 +15,10 @@
 
 //---------------------------------------------------------------------------
 
-#define	MAX_TEAMS						8
-#define	MAX_MOVERS_PER_TEAM				120
-#define	MAX_CONTACTS_PER_TEAM			MAX_MOVERS
-#define	NUM_CONTACT_UPDATES_PER_PASS	3
+#define MAX_TEAMS 8
+#define MAX_MOVERS_PER_TEAM 120
+#define MAX_CONTACTS_PER_TEAM MAX_MOVERS
+#define NUM_CONTACT_UPDATES_PER_PASS 3
 
 typedef enum
 {
@@ -39,5 +39,3 @@ typedef _SystemTracker* SystemTrackerPtr;
 #endif
 
 //***************************************************************************
-
-

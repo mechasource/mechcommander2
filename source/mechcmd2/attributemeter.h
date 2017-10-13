@@ -1,5 +1,5 @@
 //===========================================================================//
-//AttributeMeter.h	: Implementation of the AttributeMeter component.        //
+// AttributeMeter.h	: Implementation of the AttributeMeter component.        //
 //---------------------------------------------------------------------------//
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
@@ -24,8 +24,7 @@ AttributeMeter:
 **************************************************************************************************/
 class AttributeMeter
 {
-public:
-
+  public:
 	AttributeMeter(void);
 
 	void update(void);
@@ -34,58 +33,34 @@ public:
 
 	void init(FitIniFile* file, PCSTR headerName);
 
-	void setValue(float val)
-	{
-		percent = val < 0 ? 0 : val;
-	}
-	void setAddedValue(float val)
-	{
-		addedPercent = val < 0 ? 0 : val;
-	}
-	void setColorMin(int32_t newColor)
-	{
-		colorMin = newColor;
-	}
-	void setColorMax(int32_t newColor)
-	{
-		colorMax = newColor;
-	}
-	void setAddedColorMin(int32_t newColor)
-	{
-		addedColorMin = newColor;
-	}
-	void setAddedColorMax(int32_t newColor)
-	{
-		addedColorMax = newColor;
-	}
-	void showGUIWindow(bool show)
-	{
-		bShow = show;
-	}
+	void setValue(float val) { percent = val < 0 ? 0 : val; }
+	void setAddedValue(float val) { addedPercent = val < 0 ? 0 : val; }
+	void setColorMin(int32_t newColor) { colorMin = newColor; }
+	void setColorMax(int32_t newColor) { colorMax = newColor; }
+	void setAddedColorMin(int32_t newColor) { addedColorMin = newColor; }
+	void setAddedColorMax(int32_t newColor) { addedColorMax = newColor; }
+	void showGUIWindow(bool show) { bShow = show; }
 	bool pointInside(int32_t mouseX, int32_t mouseY) const;
 
+  private:
+	RECT outsideRect;
+	int32_t unitHeight;
+	int32_t unitWidth;
+	int32_t unitCount;
+	int32_t skipWidth;
+	int32_t rectColor;
+	int32_t colorMin;
+	int32_t colorMax;
+	int32_t addedColorMin;
+	int32_t addedColorMax;
+	float percent;
+	float addedPercent;
+	int32_t numBars;
 
-private:
-
-	RECT	outsideRect;
-	int32_t		unitHeight;
-	int32_t		unitWidth;
-	int32_t		unitCount;
-	int32_t		skipWidth;
-	int32_t		rectColor;
-	int32_t		colorMin;
-	int32_t		colorMax;
-	int32_t		addedColorMin;
-	int32_t		addedColorMax;
-	float		percent;
-	float		addedPercent;
-	int32_t		numBars;
-
-	bool		bShow;
+	bool bShow;
 
 	int32_t helpID;
 };
 
-
 //*************************************************************************************************
-#endif  // end of file ( AttributeMeter.h )
+#endif // end of file ( AttributeMeter.h )

@@ -4,7 +4,8 @@
 
 #pragma once
 
-#if !defined(AFX_UNITSETTINGSDLG_H__66842972_D1C0_48E8_8DF6_930ED43A3896__INCLUDED_)
+#if !defined(                                                                  \
+	AFX_UNITSETTINGSDLG_H__66842972_D1C0_48E8_8DF6_930ED43A3896__INCLUDED_)
 #define AFX_UNITSETTINGSDLG_H__66842972_D1C0_48E8_8DF6_930ED43A3896__INCLUDED_
 
 /////////////////////////////////////////////////////////////////////////////
@@ -17,29 +18,31 @@ class Unit;
 
 class UnitSettingsDlg : public CDialog
 {
-public:
-	UnitSettingsDlg(EList<Unit*, Unit*>&, ActionUndoMgr& undoMgr);   // standard constructor
+  public:
+	UnitSettingsDlg(
+		EList<Unit*, Unit*>&, ActionUndoMgr& undoMgr); // standard constructor
 
 	//{{AFX_DATA(UnitSettingsDlg)
-	enum { IDD = IDD_UNITSETTINGS };
-	CComboBox	m_Variant;
-	CComboBox	m_Pilot;
-	CComboBox	m_Mech;
-	CComboBox	m_Group;
-	int32_t		m_Alignment;
-	CString	m_SquadEdit;
-	int32_t		m_SelfRepairBehavior;
+	enum
+	{
+		IDD = IDD_UNITSETTINGS
+	};
+	CComboBox m_Variant;
+	CComboBox m_Pilot;
+	CComboBox m_Mech;
+	CComboBox m_Group;
+	int32_t m_Alignment;
+	CString m_SquadEdit;
+	int32_t m_SelfRepairBehavior;
 	//}}AFX_DATA
 
-
 	//{{AFX_VIRTUAL(UnitSettingsDlg)
-protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-	//}}AFX_VIRTUAL
+  protected:
+	virtual void DoDataExchange(CDataExchange* pDX); // DDX/DDV support
+													 //}}AFX_VIRTUAL
 
-// Implementation
-protected:
-
+	// Implementation
+  protected:
 	void DoColorBox(CWnd* pWnd);
 
 	//{{AFX_MSG(UnitSettingsDlg)
@@ -63,12 +66,12 @@ protected:
 	void applyChanges(void);
 	ModifyBuildingAction* pAction;
 
-	typedef EList< Unit*, Unit* > UNIT_LIST;
+	typedef EList<Unit*, Unit*> UNIT_LIST;
 	UNIT_LIST& units;
 
-	CBrush		baseBrush;
-	CBrush		brush1;
-	CBrush		brush2;
+	CBrush baseBrush;
+	CBrush brush1;
+	CBrush brush2;
 
 	void updatePossibiltyControls(void);
 	Unit* pFirstPossibility;

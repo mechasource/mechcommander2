@@ -6,12 +6,12 @@ extern char AlphaTable[256 * 256];
 
 typedef struct SHAPEHEADER
 {
-	uint32_t	bounds;
-	uint32_t	origin;
-	uint32_t	xmin;
-	uint32_t	ymin;
-	uint32_t	xmax;
-	uint32_t	ymax;
+	uint32_t bounds;
+	uint32_t origin;
+	uint32_t xmin;
+	uint32_t ymin;
+	uint32_t xmax;
+	uint32_t ymax;
 } SHAPEHEADER;
 
 //
@@ -27,11 +27,9 @@ typedef struct SHAPEHEADER
 
 uint32_t lookaside;
 static uint32_t tempXmax, tempXmin;
-static uint32_t minX, minY, maxY, SkipLeft, NewWidth, StartofLine, StartofClip, EndofClip;
+static uint32_t minX, minY, maxY, SkipLeft, NewWidth, StartofLine, StartofClip,
+	EndofClip;
 static uint32_t lines, DestWidth, paneX0, paneX1, paneY0, paneY1;
-
-
-
 
 /*
 ;
@@ -48,7 +46,8 @@ static uint32_t lines, DestWidth, paneX0, paneX1, paneY0, paneY1;
 ; drawn.  The shape's hot spot will end up at the specified location.
 ;
 */
-void AG_shape_draw(PANE* pane, PVOIDshape_table, int32_t shape_number, int32_t hotX, int32_t hotY)
+void AG_shape_draw(PANE* pane, PVOIDshape_table, int32_t shape_number,
+	int32_t hotX, int32_t hotY)
 {
 	_asm
 	{
@@ -860,43 +859,6 @@ void AG_shape_draw(PANE* pane, PVOIDshape_table, int32_t shape_number, int32_t h
 	}
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 /*
 ;----------------------------------------------------------------------------
 ;
@@ -949,7 +911,8 @@ void AG_shape_lookaside(puint8_t table)
 ;
 ;----------------------------------------------------------------------------
 */
-void AG_shape_translate_draw(PANE* pane, PVOIDshape_table, int32_t shape_number, int32_t hotX, int32_t hotY)
+void AG_shape_translate_draw(PANE* pane, PVOIDshape_table, int32_t shape_number,
+	int32_t hotX, int32_t hotY)
 {
 	_asm
 	{
@@ -1841,34 +1804,30 @@ void AG_shape_translate_draw(PANE* pane, PVOIDshape_table, int32_t shape_number,
 #ifdef CATCH_VFX_BUG
 		mov saveEdi, edi
 	}
-	//PVOIDshape_table,int32_t shape_number, int32_t hotX, int32_t hotY
+	// PVOIDshape_table,int32_t shape_number, int32_t hotX, int32_t hotY
 	char msg[1024];
 	//-------------------------------------
 	// Save off the shape data table start
 	PSTR shapeTable = (PSTR)shape_table;
 	char version[5];
-	for(size_t i = 0; i < 4; i++)
+	for (size_t i = 0; i < 4; i++)
 	{
 		version[i] = *shapeTable;
 		shapeTable++;
 	}
-	version[4] = 0;
-	int32_t numShapes = (int32_t) * shapeTable;
+	version[4]		  = 0;
+	int32_t numShapes = (int32_t)*shapeTable;
 	shapeTable += 4;
 	shapeTable += (shape_number * 8);
-	int32_t shapeNumOffset = (int32_t) * shapeTable;
-	sprintf(msg, "SP: %08x  SF: %d  X: %d  Y:%d  V: %s  SN: %d  SOf: %d", shape_table, shape_number, hotX, hotY, version, numShapes, shapeNumOffset);
+	int32_t shapeNumOffset = (int32_t)*shapeTable;
+	sprintf(msg, "SP: %08x  SF: %d  X: %d  Y:%d  V: %s  SN: %d  SOf: %d",
+		shape_table, shape_number, hotX, hotY, version, numShapes,
+		shapeNumOffset);
 	Fatal(saveEdi, msg);
 #else
 	}
 #endif
-	__asm
-	{
+	__asm {
 		Exit:
 	}
 }
-
-
-
-
-

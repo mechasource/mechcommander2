@@ -14,14 +14,15 @@ ChooseBuildingDlg.h		: Interface for the ChooseBuildingDlg component.
 //#include "objective.h"
 //#include "editorobjectmgr.h"
 
-class ChooseBuildingDlg: public CDialog
+class ChooseBuildingDlg : public CDialog
 {
-public:
+  public:
 	typedef EditorObject* building_ptr_type;
 
 	ChooseBuildingDlg(building_ptr_type& buildingPtr);
 
-	BOOL OnCommand(WPARAM wParam, LPARAM lParam); // called by child controls to inform of an event
+	BOOL OnCommand(WPARAM wParam,
+		LPARAM lParam); // called by child controls to inform of an event
 	void OnUsePointer(void);
 	void OnCancel(void);
 	void OnOK(void);
@@ -30,7 +31,7 @@ public:
 
 	BOOL OnInitDialog(void);
 
-private:
+  private:
 	typedef CDialog inherited;
 
 	// suppressing these
@@ -46,6 +47,5 @@ private:
 	CButton* m_pOKButton;
 };
 
-
 //*************************************************************************************************
-#endif  // end of file ( ChooseBuildingDlg.h )
+#endif // end of file ( ChooseBuildingDlg.h )

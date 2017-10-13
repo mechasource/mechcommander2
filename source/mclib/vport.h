@@ -18,7 +18,7 @@
 // Macro Definitions
 
 //---------------------------------------------------------------------------
-//Externs
+// Externs
 extern PANE* globalPane;
 extern WINDOW* globalWindow;
 
@@ -30,4 +30,3 @@ extern WINDOW* globalWindow;
 // Edit Log
 //
 //---------------------------------------------------------------------------
-

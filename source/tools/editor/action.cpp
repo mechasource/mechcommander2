@@ -28,7 +28,7 @@ ActionUndoMgr* ActionUndoMgr::instance = nullptr;
 //************************************************************************
 ActionUndoMgr::ActionUndoMgr(void)
 {
-	m_CurrentPos = -1;
+	m_CurrentPos	= -1;
 	m_PosOfLastSave = -1;
 	ATLASSERT(instance == nullptr);
 	instance = this;
@@ -40,10 +40,7 @@ ActionUndoMgr::ActionUndoMgr(void)
 // Returns:		nothing
 // Description:	empties list
 //************************************************************************
-ActionUndoMgr::~ActionUndoMgr(void)
-{
-	Reset();
-}
+ActionUndoMgr::~ActionUndoMgr(void) { Reset(); }
 
 //***********************************************************************
 // Function:	AddAction
@@ -55,23 +52,23 @@ ActionUndoMgr::~ActionUndoMgr(void)
 void ActionUndoMgr::AddAction(Action* pAction)
 {
 	gosASSERT(pAction);
-	if(m_listUndoActions.Count())
+	if (m_listUndoActions.Count())
 	{
-		if(m_PosOfLastSave > m_CurrentPos)
+		if (m_PosOfLastSave > m_CurrentPos)
 		{
 			m_PosOfLastSave = -1;
 		}
 		ACTION_LIST::EIterator iter = m_listUndoActions.End();
-		for(uint32_t i = m_listUndoActions.Count() - 1; i > m_CurrentPos; -- i)
+		for (uint32_t i = m_listUndoActions.Count() - 1; i > m_CurrentPos; --i)
 		{
-			delete(*iter);
+			delete (*iter);
 			iter--;
 			m_listUndoActions.DeleteTail();
 		}
 	}
 	m_listUndoActions.Append(pAction);
 	m_CurrentPos = m_listUndoActions.Count() - 1;
-}// fun AddAction
+} // fun AddAction
 
 //***********************************************************************
 // Function:	EmptyUndoList
@@ -82,12 +79,13 @@ void ActionUndoMgr::AddAction(Action* pAction)
 //***********************************************************************
 void ActionUndoMgr::EmptyUndoList(void)
 {
-	for(ACTION_LIST::EIterator pos = m_listUndoActions.Begin(); !pos.IsDone(); pos++)
+	for (ACTION_LIST::EIterator pos = m_listUndoActions.Begin(); !pos.IsDone();
+		 pos++)
 	{
-		delete(*pos);
+		delete (*pos);
 	}
 	m_listUndoActions.Clear();
-	m_CurrentPos = -1;
+	m_CurrentPos	= -1;
 	m_PosOfLastSave = -1;
 }
 
@@ -101,7 +99,7 @@ void ActionUndoMgr::EmptyUndoList(void)
 PCSTR ActionUndoMgr::GetRedoString(void)
 {
 	PCSTR strRet = nullptr;
-	if(HaveRedo())
+	if (HaveRedo())
 	{
 		ACTION_POS tmp = m_CurrentPos;
 		tmp++;
@@ -121,14 +119,13 @@ PCSTR ActionUndoMgr::GetRedoString(void)
 PCSTR ActionUndoMgr::GetUndoString(void)
 {
 	PCSTR strRet = nullptr;
-	if(HaveUndo())
+	if (HaveUndo())
 	{
 		ACTION_LIST::EIterator iter = m_listUndoActions.Iterator(m_CurrentPos);
 		return (*iter)->getDescription();
 	}
 	return strRet;
 }
-
 
 //***********************************************************************
 // Function:	HaveRedo
@@ -149,10 +146,7 @@ bool ActionUndoMgr::HaveRedo(void) const
 // Returns:		whether there is undo action to perform
 // Descripition: call to see whether you can perform an undo action
 //***********************************************************************
-bool ActionUndoMgr::HaveUndo(void) const
-{
-	return m_CurrentPos != -1;
-}
+bool ActionUndoMgr::HaveUndo(void) const { return m_CurrentPos != -1; }
 
 //************************************************************************
 // Function:	Redo
@@ -177,10 +171,7 @@ bool ActionUndoMgr::Redo(void)
 // Returns:		nothing
 // Description:	Empties all of the actions from the do and undo lists
 //************************************************************************
-void ActionUndoMgr::Reset(void)
-{
-	EmptyUndoList();
-}
+void ActionUndoMgr::Reset(void) { EmptyUndoList(); }
 
 //************************************************************************
 // Function:	Undo
@@ -195,8 +186,8 @@ bool ActionUndoMgr::Undo(void)
 	bool bRetVal = false;
 	gosASSERT(HaveUndo());
 	ACTION_LIST::EIterator iter = m_listUndoActions.Iterator(m_CurrentPos);
-	bRetVal = (*iter)->undo();
-	m_CurrentPos --;
+	bRetVal						= (*iter)->undo();
+	m_CurrentPos--;
 	return bRetVal;
 }
 
@@ -221,7 +212,7 @@ void ActionUndoMgr::NoteThatASaveHasJustOccurred(void)
 //************************************************************************
 bool ActionUndoMgr::ThereHasBeenANetChangeFromWhenLastSaved(void)
 {
-	if(m_PosOfLastSave == m_CurrentPos)
+	if (m_PosOfLastSave == m_CurrentPos)
 	{
 		return false;
 	}
@@ -231,8 +222,6 @@ bool ActionUndoMgr::ThereHasBeenANetChangeFromWhenLastSaved(void)
 	}
 }
 
-
-
 //-----------------------------------------------------------------------
 // Function:	ActionPaintTile::Redo
 // ParamsIn:	none
@@ -240,16 +229,12 @@ bool ActionUndoMgr::ThereHasBeenANetChangeFromWhenLastSaved(void)
 // Returns:		success of operation
 // Description: redoes a smart paint operation
 ////-----------------------------------------------------------------------
-bool ActionPaintTile::redo(void)
-{
-	return doRedo();
-}
-
+bool ActionPaintTile::redo(void) { return doRedo(); }
 
 bool ActionPaintTile::doRedo(void)
 {
-	for(VERTEX_INFO_LIST::EIterator iter = vertexInfoList.Begin();
-			!iter.IsDone(); iter++)
+	for (VERTEX_INFO_LIST::EIterator iter = vertexInfoList.Begin();
+		 !iter.IsDone(); iter++)
 	{
 		// get current values
 		int32_t terrain = land->getTerrain((*iter).row, (*iter).column);
@@ -258,14 +243,17 @@ bool ActionPaintTile::doRedo(void)
 		Overlays overlay;
 		uint32_t offset;
 		// reset to old values
-		land->terrainTextures->getOverlayInfoFromHandle((*iter).textureData, overlay, offset);
+		land->terrainTextures->getOverlayInfoFromHandle(
+			(*iter).textureData, overlay, offset);
 		land->setOverlay((*iter).row, (*iter).column, overlay, offset);
 		land->setTerrain((*iter).row, (*iter).column, (*iter).terrainData);
-		land->setVertexHeight((*iter).row * land->realVerticesMapSide + (*iter).column, (*iter).elevation);
+		land->setVertexHeight(
+			(*iter).row * land->realVerticesMapSide + (*iter).column,
+			(*iter).elevation);
 		// save current valuds
 		(*iter).terrainData = terrain;
 		(*iter).textureData = texture;
-		(*iter).elevation = elv;
+		(*iter).elevation   = elv;
 	}
 	return true;
 }
@@ -293,10 +281,10 @@ bool ActionPaintTile::undo(void)
 ////-----------------------------------------------------------------------
 void ActionPaintTile::addVertexInfo(VertexInfo& info)
 {
-	for(VERTEX_INFO_LIST::EIterator iter = vertexInfoList.Begin();
-			!iter.IsDone(); iter++)
+	for (VERTEX_INFO_LIST::EIterator iter = vertexInfoList.Begin();
+		 !iter.IsDone(); iter++)
 	{
-		if(info.row == (*iter).row && info.column == (*iter).column)
+		if (info.row == (*iter).row && info.column == (*iter).column)
 			return;
 	}
 	vertexInfoList.Append(info);
@@ -312,10 +300,10 @@ void ActionPaintTile::addVertexInfo(VertexInfo& info)
 void ActionPaintTile::addChangedVertexInfo(int32_t row, int32_t column)
 {
 	// get the info and add it
-	for(VERTEX_INFO_LIST::EIterator iter = vertexInfoList.Begin();
-			!iter.IsDone(); iter++)
+	for (VERTEX_INFO_LIST::EIterator iter = vertexInfoList.Begin();
+		 !iter.IsDone(); iter++)
 	{
-		if(row == (*iter).row && column == (*iter).column)
+		if (row == (*iter).row && column == (*iter).column)
 			return;
 	}
 	// if we made it here, it isn't in there already
@@ -325,10 +313,10 @@ void ActionPaintTile::addChangedVertexInfo(int32_t row, int32_t column)
 
 bool ActionPaintTile::getOldHeight(int32_t row, int32_t column, float& height)
 {
-	for(VERTEX_INFO_LIST::EIterator iter = vertexInfoList.Begin();
-			!iter.IsDone(); iter++)
+	for (VERTEX_INFO_LIST::EIterator iter = vertexInfoList.Begin();
+		 !iter.IsDone(); iter++)
 	{
-		if(row == (*iter).row && column == (*iter).column)
+		if (row == (*iter).row && column == (*iter).column)
 		{
 			height = (*iter).elevation;
 			return true;
@@ -340,36 +328,40 @@ bool ActionPaintTile::getOldHeight(int32_t row, int32_t column, float& height)
 VertexInfo::VertexInfo(int32_t newRow, int32_t newColumn)
 {
 	gosASSERT(newRow > -1 && newColumn > -1);
-	gosASSERT(newRow < land->realVerticesMapSide && newColumn < land->realVerticesMapSide);
-	row = newRow;
-	column = newColumn;
-	elevation = land->getTerrainElevation(row, column);
+	gosASSERT(newRow < land->realVerticesMapSide &&
+			  newColumn < land->realVerticesMapSide);
+	row			= newRow;
+	column		= newColumn;
+	elevation   = land->getTerrainElevation(row, column);
 	terrainData = land->getTerrain(row, column);
 	textureData = land->getTexture(row, column);
 }
 
 ModifyBuildingAction::~ModifyBuildingAction()
 {
-	for(OBJ_INFO_PTR_LIST::EIterator iter = buildingCopyPtrs.Begin(); !iter.IsDone(); iter++)
+	for (OBJ_INFO_PTR_LIST::EIterator iter = buildingCopyPtrs.Begin();
+		 !iter.IsDone(); iter++)
 	{
-		delete(*iter);
+		delete (*iter);
 	}
 }
 
 bool ModifyBuildingAction::doRedo()
 {
-	bool bRetVal = true;
+	bool bRetVal					   = true;
 	OBJ_INFO_PTR_LIST::EIterator iter2 = buildingPtrs.Begin();
-	OBJ_APPEAR_LIST::EIterator iter3 = buildingAppearanceCopies.Begin();
-	OBJ_ID_LIST::EIterator iter4 = buildingIDs.Begin();
-	for(OBJ_INFO_PTR_LIST::EIterator iter = buildingCopyPtrs.Begin();
-			!iter.IsDone(); iter++)
+	OBJ_APPEAR_LIST::EIterator iter3   = buildingAppearanceCopies.Begin();
+	OBJ_ID_LIST::EIterator iter4	   = buildingIDs.Begin();
+	for (OBJ_INFO_PTR_LIST::EIterator iter = buildingCopyPtrs.Begin();
+		 !iter.IsDone(); iter++)
 	{
-		//EditorObject *pBuilding = (*iter2);
-		EditorObject* pBuilding = EditorObjectMgr::instance()->getObjectAtLocation((*iter4).x, (*iter4).y);
-		if(pBuilding)
+		// EditorObject *pBuilding = (*iter2);
+		EditorObject* pBuilding =
+			EditorObjectMgr::instance()->getObjectAtLocation(
+				(*iter4).x, (*iter4).y);
+		if (pBuilding)
 		{
-			EditorObject* pBuildingSwap = (*iter)->Clone();
+			EditorObject* pBuildingSwap		= (*iter)->Clone();
 			ObjectAppearance AppearanceSwap = (*iter3);
 			(*iter)->CastAndCopy(*pBuilding);
 			(*iter3) = (*(pBuilding->appearance()));
@@ -399,10 +391,7 @@ bool ModifyBuildingAction::doRedo()
 	return bRetVal;
 }
 
-bool ModifyBuildingAction::redo()
-{
-	return doRedo();
-}
+bool ModifyBuildingAction::redo() { return doRedo(); }
 
 bool ModifyBuildingAction::undo()
 {
@@ -412,7 +401,8 @@ bool ModifyBuildingAction::undo()
 
 void ModifyBuildingAction::addBuildingInfo(EditorObject& info)
 {
-	if((0 < buildingPtrs.Count()) && (OBJ_INFO_PTR_LIST::INVALID_ITERATOR != buildingPtrs.Find(&info)))
+	if ((0 < buildingPtrs.Count()) &&
+		(OBJ_INFO_PTR_LIST::INVALID_ITERATOR != buildingPtrs.Find(&info)))
 	{
 		return;
 	}
@@ -430,10 +420,11 @@ void ModifyBuildingAction::addBuildingInfo(EditorObject& info)
 void ModifyBuildingAction::updateNotedObjectPositions()
 {
 	OBJ_ID_LIST::EIterator iter4 = buildingIDs.Begin();
-	for(OBJ_INFO_PTR_LIST::EIterator iter = buildingPtrs.Begin(); !iter.IsDone(); iter++)
+	for (OBJ_INFO_PTR_LIST::EIterator iter = buildingPtrs.Begin();
+		 !iter.IsDone(); iter++)
 	{
 		EditorObject* pBuilding = (*iter);
-		if(pBuilding)
+		if (pBuilding)
 		{
 			(*iter4).x = pBuilding->getPosition().x;
 			(*iter4).y = pBuilding->getPosition().y;

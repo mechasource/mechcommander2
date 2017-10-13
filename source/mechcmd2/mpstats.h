@@ -22,7 +22,7 @@ MPStats:
 **************************************************************************************************/
 class MPStatsEntry : public LogisticsScreen
 {
-public:
+  public:
 	MPStatsEntry(void);
 	virtual ~MPStatsEntry(void);
 
@@ -30,36 +30,28 @@ public:
 	void setData(const _MC2Player*, bool bShowScore);
 	virtual void render(int32_t x, int32_t y);
 
-	int32_t	getPlayerHeadingX(void);
-	int32_t	getRankingX(void);
-	int32_t	getKillsX(void);
-	int32_t	getLossesX(void);
-	int32_t	overlayColor;
-
-
-
+	int32_t getPlayerHeadingX(void);
+	int32_t getRankingX(void);
+	int32_t getKillsX(void);
+	int32_t getLossesX(void);
+	int32_t overlayColor;
 };
 
 class MPStatsResultsEntry : public LogisticsScreen
 {
-public:
+  public:
 	MPStatsResultsEntry(void);
 	virtual ~MPStatsResultsEntry(void);
 	virtual void render(int32_t x, int32_t y);
 
 	void init();
 	void setData(const _MC2Player*, uint32_t laurelColor, bool bShowScore);
-	int32_t	overlayColor;
-
+	int32_t overlayColor;
 };
 
-
-
-
-class MPStats: public LogisticsScreen
+class MPStats : public LogisticsScreen
 {
-public:
-
+  public:
 	MPStats(void);
 	virtual ~MPStats(void);
 
@@ -73,22 +65,19 @@ public:
 
 	int32_t init(void);
 
-	void		setHostLeftDlg(PCSTR hostName);
+	void setHostLeftDlg(PCSTR hostName);
 
-private:
-
+  private:
 	MPStats(const MPStats& src);
 
-	MPStatsResultsEntry		entries[MAX_MC_PLAYERS];
+	MPStatsResultsEntry entries[MAX_MC_PLAYERS];
 
-	bool				bShowMainMenu;
-	bool				bSavingStats;
-	bool				bHostLeftDlg;
+	bool bShowMainMenu;
+	bool bSavingStats;
+	bool bHostLeftDlg;
 
 	// HELPER FUNCTIONS
-
 };
 
-
 //*************************************************************************************************
-#endif  // end of file ( MPStats.h )
+#endif // end of file ( MPStats.h )

@@ -16,19 +16,17 @@ SunDlg.h			: Interface for the SunDlg component.
 CLASS DESCRIPTION
 SunDlg:
 **************************************************************************************************/
-class SunDlg: public CDialog
+class SunDlg : public CDialog
 {
-public:
-
+  public:
 	SunDlg(void);
 	virtual void Init(void);
 	void DoDataExchange(CDataExchange* pDX);
 
-	//virtual	void OnCommand(Window *wnd,int32_t nCommand);
-	//virtual void OnOwnerDraw( ODSTRUCT* odStruct );
+	// virtual	void OnCommand(Window *wnd,int32_t nCommand);
+	// virtual void OnOwnerDraw( ODSTRUCT* odStruct );
 
-public:
-
+  public:
 	float yaw;
 	float pitch;
 
@@ -38,18 +36,20 @@ public:
 	CBrush brush;
 
 	//{{AFX_DATA(SunDlg)
-	enum { IDD = IDD_LIGHT };
-	CEdit	m_LightColor;
-	CEdit	m_AmbientEdit;
-	float	m_Yaw;
-	float	m_InitialSunPitch;
+	enum
+	{
+		IDD = IDD_LIGHT
+	};
+	CEdit m_LightColor;
+	CEdit m_AmbientEdit;
+	float m_Yaw;
+	float m_InitialSunPitch;
 	//}}AFX_DATA
 
 	//{{AFX_VIRTUAL(SunDlg)
 	//}}AFX_VIRTUAL
 
-protected:
-
+  protected:
 	//{{AFX_MSG(SunDlg)
 	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, uint32_t nCtlColor);
 	afx_msg void OnAmbientButton(void);
@@ -70,12 +70,7 @@ protected:
 	void applyChanges(void);
 
 	CBrush backgroundBrush;
-
-
-
-
 };
 
-
 //*************************************************************************************************
-#endif  // end of file ( SunDlg.h )
+#endif // end of file ( SunDlg.h )

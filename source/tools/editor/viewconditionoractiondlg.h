@@ -4,7 +4,8 @@
 
 #pragma once
 
-#if !defined(AFX_VIEWCONDITIONORACTIONDLG_H__9A818E75_A25C_4F93_9BC7_F990A52B8CD8__INCLUDED_)
+#if !defined(                                                                  \
+	AFX_VIEWCONDITIONORACTIONDLG_H__9A818E75_A25C_4F93_9BC7_F990A52B8CD8__INCLUDED_)
 #define AFX_VIEWCONDITIONORACTIONDLG_H__9A818E75_A25C_4F93_9BC7_F990A52B8CD8__INCLUDED_
 
 /////////////////////////////////////////////////////////////////////////////
@@ -12,27 +13,28 @@
 
 class ViewConditionOrActionDlg : public CDialog
 {
-// Construction
-public:
-	ViewConditionOrActionDlg(CWnd* pParent = nullptr);   // standard constructor
+	// Construction
+  public:
+	ViewConditionOrActionDlg(CWnd* pParent = nullptr); // standard constructor
 
-// Dialog Data
+	// Dialog Data
 	//{{AFX_DATA(ViewConditionOrActionDlg)
-	enum { IDD = IDD_VIEW_CONDITION_OR_ACTION };
-	CString	m_Edit;
+	enum
+	{
+		IDD = IDD_VIEW_CONDITION_OR_ACTION
+	};
+	CString m_Edit;
 	//}}AFX_DATA
 
-
-// Overrides
+	// Overrides
 	// ClassWizard generated virtual function overrides
 	//{{AFX_VIRTUAL(ViewConditionOrActionDlg)
-protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-	//}}AFX_VIRTUAL
+  protected:
+	virtual void DoDataExchange(CDataExchange* pDX); // DDX/DDV support
+													 //}}AFX_VIRTUAL
 
-// Implementation
-protected:
-
+	// Implementation
+  protected:
 	// Generated message map functions
 	//{{AFX_MSG(ViewConditionOrActionDlg)
 	// NOTE: the ClassWizard will add member functions here
@@ -41,6 +43,7 @@ protected:
 };
 
 //{{AFX_INSERT_LOCATION}}
-// Microsoft Visual C++ will insert additional declarations immediately before the previous line.
+// Microsoft Visual C++ will insert additional declarations immediately before
+// the previous line.
 
 #endif // !defined(AFX_VIEWCONDITIONORACTIONDLG_H__9A818E75_A25C_4F93_9BC7_F990A52B8CD8__INCLUDED_)

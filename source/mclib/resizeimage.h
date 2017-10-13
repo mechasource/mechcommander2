@@ -22,28 +22,28 @@
 #include <math.h>
 
 #define BLACK_PIXEL 0.0f
-#define WHITE_PIXEL	255.0f
-#define RESIZE_PI	3.1415926
+#define WHITE_PIXEL 255.0f
+#define RESIZE_PI 3.1415926
 
 float CLAMP(float x, float min, float max)
 {
-	if(x < min)
+	if (x < min)
 		return min;
-	if(x > max)
+	if (x > max)
 		return max;
 	return x;
 }
 
 typedef struct
 {
-	int32_t 	xSize;
-	int32_t 	ySize;
-	float*	 data;
+	int32_t xSize;
+	int32_t ySize;
+	float* data;
 } Image;
 
 float getPixel(Image* image, int32_t x, int32_t y)
 {
-	if((x < 0) || (x >= image->xSize) || (y < 0) || (y > image->ySize))
+	if ((x < 0) || (x >= image->xSize) || (y < 0) || (y > image->ySize))
 		return 0.0f;
 	float* p = image->data + (y * image->xSize);
 	return p[x];
@@ -51,16 +51,16 @@ float getPixel(Image* image, int32_t x, int32_t y)
 
 void getRow(float* row, Image* image, int32_t y)
 {
-	if((y < 0) || (y >= image->ySize))
+	if ((y < 0) || (y >= image->ySize))
 		return;
 	memcpy(row, image->data + (y * image->xSize), image->ySize * sizeof(float));
 }
 
 void getCol(float* col, Image* image, int32_t x)
 {
-	if((x < 0) || (x >= image->xSize))
+	if ((x < 0) || (x >= image->xSize))
 		return;
-	for(size_t i = 0; i < image->ySize; i++)
+	for (size_t i = 0; i < image->ySize; i++)
 	{
 		*col = image->data[x + (i * image->xSize)];
 		col++;
@@ -69,54 +69,54 @@ void getCol(float* col, Image* image, int32_t x)
 
 float putPixel(Image* image, int32_t x, int32_t y, float data)
 {
-	if((x < 0) || (x >= image->xSize) || (y < 0) || (y >= image->ySize))
+	if ((x < 0) || (x >= image->xSize) || (y < 0) || (y >= image->ySize))
 		return 0.0f;
 	float* p = image->data + (y * image->xSize);
 	return (p[x] = data);
 }
 
-//Filters
+// Filters
 
-#define filterSupport 	(1.0)
-#define boxSupport 		(0.5)
+#define filterSupport (1.0)
+#define boxSupport (0.5)
 #define triangleSupport (1.0)
-#define bellSupport		(1.5)
-#define bSplineSupport	(2.0)
+#define bellSupport (1.5)
+#define bSplineSupport (2.0)
 #define Lanczos3Support (3.0)
-#define MitchellSupport	(2.0)
+#define MitchellSupport (2.0)
 
 double filter(double t)
 {
-	if(t < 0.0)
+	if (t < 0.0)
 		t = -t;
-	if(t < 1.0)
-		return((2.0 * t - 3.0) * t * t + 1.0);
+	if (t < 1.0)
+		return ((2.0 * t - 3.0) * t * t + 1.0);
 	return 0.0;
 }
 
 double boxFilter(double t)
 {
-	if((t > -0.5) && (t <= 0.5))
+	if ((t > -0.5) && (t <= 0.5))
 		return 1.0;
 	return 0.0;
 }
 
 double triangleFilter(double t)
 {
-	if(t < 0.0)
+	if (t < 0.0)
 		t = -t;
-	if(t < 1.0)
+	if (t < 1.0)
 		return (1.0 - t);
 	return 0.0;
 }
 
 double bellFilter(double t)
 {
-	if(t < 0.0)
+	if (t < 0.0)
 		t = -t;
-	if(t < 0.5)
+	if (t < 0.5)
 		return (0.75 - (t * t));
-	if(t < 1.5)
+	if (t < 1.5)
 	{
 		t = (t - 1.5);
 		return (0.5 * (t * t));
@@ -127,14 +127,14 @@ double bellFilter(double t)
 double bSplineFilter(double t)
 {
 	double tt;
-	if(t < 0.0)
+	if (t < 0.0)
 		t = -t;
-	if(t < 1.0)
+	if (t < 1.0)
 	{
 		tt = t * t;
 		return ((0.5 * tt * t) - tt + (2.0 / 3.0));
 	}
-	else if(t < 2.0)
+	else if (t < 2.0)
 	{
 		t = 2.0 - t;
 		return ((1.0 / 6.0) * (t * t * t));
@@ -145,16 +145,16 @@ double bSplineFilter(double t)
 double sinc(double t)
 {
 	t *= RESIZE_PI;
-	if(t != 0.0)
+	if (t != 0.0)
 		return (sin(t) / t);
 	return 1.0;
 }
 
 double lanczos3Filter(double t)
 {
-	if(t < 0.0)
+	if (t < 0.0)
 		t = -t;
-	if(t < 3.0)
+	if (t < 3.0)
 		return (sinc(t) * sinc(t / 3.0));
 	return 0.0;
 }
@@ -165,21 +165,18 @@ double mitchellFilter(double t)
 	double C = (1.0 / 3.0);
 	double tt;
 	tt = t * t;
-	if(t < 0.0)
+	if (t < 0.0)
 		t = -t;
-	if(t < 1.0)
+	if (t < 1.0)
 	{
-		t = (((12.0 - 9.0 * B - 6.0 * C) * (t * tt))
-			 + ((-18.0 + 12.0 * B + 6.0 * C) * tt)
-			 + (6.0 - 2.0 * B));
+		t = (((12.0 - 9.0 * B - 6.0 * C) * (t * tt)) +
+			 ((-18.0 + 12.0 * B + 6.0 * C) * tt) + (6.0 - 2.0 * B));
 		return (t / 6.0);
 	}
-	else if(t < 2.0)
+	else if (t < 2.0)
 	{
-		t = (((-1.0 * B - 6.0 * C) * (t * tt))
-			 + ((6.0 * B + 30.0 * C) * tt)
-			 + ((-12.0 * B - 48.0 * C) * t)
-			 + (8.0 * B + 24.0 * C));
+		t = (((-1.0 * B - 6.0 * C) * (t * tt)) + ((6.0 * B + 30.0 * C) * tt) +
+			 ((-12.0 * B - 48.0 * C) * t) + (8.0 * B + 24.0 * C));
 		return (t / 6.0);
 	}
 	return 0.0;
@@ -202,7 +199,7 @@ CLIST* contrib;
 Image* newImage(int32_t xSize, int32_t ySize)
 {
 	Image* image = (Image*)malloc(sizeof(Image));
-	if(image)
+	if (image)
 	{
 		image->data = (float*)malloc(sizeof(float) * xSize * ySize);
 		memset(image->data, 0, sizeof(float) * xSize * ySize);
@@ -218,7 +215,7 @@ void freeImage(Image* image)
 	free(image);
 }
 
-void zoom(Image* dst, Image* src, double(*filter)(double t), double fwidth)
+void zoom(Image* dst, Image* src, double (*filter)(double t), double fwidth)
 {
 	Image* tmp;
 	double xscale, yscale;
@@ -227,33 +224,33 @@ void zoom(Image* dst, Image* src, double(*filter)(double t), double fwidth)
 	double center, left, right;
 	double width, fscale, weight;
 	float* raster;
-	//Create Intermediate image to hold horizontal zoom
-	tmp = newImage(dst->xSize, src->ySize);
+	// Create Intermediate image to hold horizontal zoom
+	tmp	= newImage(dst->xSize, src->ySize);
 	xscale = (double)dst->xSize / (double)src->xSize;
 	yscale = (double)dst->ySize / (double)src->ySize;
-	//pre-calculate filter contributions for a row
+	// pre-calculate filter contributions for a row
 	contrib = (CLIST*)malloc(dst->xSize * sizeof(CLIST));
 	memset(contrib, 0, dst->xSize * sizeof(CLIST));
-	if(xscale < 1.0)
+	if (xscale < 1.0)
 	{
-		width = fwidth / xscale;
+		width  = fwidth / xscale;
 		fscale = 1.0 / xscale;
-		for(i = 0; i < dst->xSize; ++i)
+		for (i = 0; i < dst->xSize; ++i)
 		{
 			contrib[i].n = 0;
 			contrib[i].p = (CONTRIB*)malloc((width * 2 + 1) * sizeof(CONTRIB));
-			center = (double)i / xscale;
-			left = ceil(center - width);
-			right = floor(center + width);
-			for(j = left; j <= right; ++j)
+			center		 = (double)i / xscale;
+			left		 = ceil(center - width);
+			right		 = floor(center + width);
+			for (j = left; j <= right; ++j)
 			{
 				weight = center - (double)j;
 				weight = (*filter)(weight / fscale) / fscale;
-				if(j < 0)
+				if (j < 0)
 				{
 					n = -j;
 				}
-				else if(j >= src->xSize)
+				else if (j >= src->xSize)
 				{
 					n = (src->xSize - j) + src->xSize - 1;
 				}
@@ -261,30 +258,30 @@ void zoom(Image* dst, Image* src, double(*filter)(double t), double fwidth)
 				{
 					n = j;
 				}
-				k = contrib[i].n++;
-				contrib[i].p[k].pixel = n;
+				k					   = contrib[i].n++;
+				contrib[i].p[k].pixel  = n;
 				contrib[i].p[k].weight = weight;
 			}
 		}
 	}
 	else
 	{
-		for(i = 0; i < dst->xSize; ++i)
+		for (i = 0; i < dst->xSize; ++i)
 		{
 			contrib[i].n = 0;
 			contrib[i].p = (CONTRIB*)malloc((fwidth * 2 + 1) * sizeof(CONTRIB));
-			center = (double)i / xscale;
-			left = ceil(center - fwidth);
-			right = floor(center + fwidth);
-			for(j = left; j <= right; ++j)
+			center		 = (double)i / xscale;
+			left		 = ceil(center - fwidth);
+			right		 = floor(center + fwidth);
+			for (j = left; j <= right; ++j)
 			{
 				weight = center - (double)j;
 				weight = (*filter)(weight);
-				if(j < 0)
+				if (j < 0)
 				{
 					n = -j;
 				}
-				else if(j >= src->xSize)
+				else if (j >= src->xSize)
 				{
 					n = (src->xSize - j) + src->xSize - 1;
 				}
@@ -292,60 +289,61 @@ void zoom(Image* dst, Image* src, double(*filter)(double t), double fwidth)
 				{
 					n = j;
 				}
-				k = contrib[i].n++;
-				contrib[i].p[k].pixel = n;
+				k					   = contrib[i].n++;
+				contrib[i].p[k].pixel  = n;
 				contrib[i].p[k].weight = weight;
 			}
 		}
 	}
-	//Apply filter to zoom horizontally from src to tmp
+	// Apply filter to zoom horizontally from src to tmp
 	raster = (float*)malloc(src->xSize * sizeof(float));
 	memset(raster, 0, src->xSize * sizeof(float));
-	for(k = 0; k < tmp->ySize; ++k)
+	for (k = 0; k < tmp->ySize; ++k)
 	{
 		getRow(raster, src, k);
-		for(i = 0; i < tmp->xSize; ++i)
+		for (i = 0; i < tmp->xSize; ++i)
 		{
 			weight = 0.0;
-			for(j = 0; j < contrib[i].n; ++j)
+			for (j = 0; j < contrib[i].n; ++j)
 			{
-				weight += raster[contrib[i].p[j].pixel] * contrib[i].p[j].weight;
+				weight +=
+					raster[contrib[i].p[j].pixel] * contrib[i].p[j].weight;
 			}
 			putPixel(tmp, i, k, (float)CLAMP(weight, BLACK_PIXEL, WHITE_PIXEL));
 		}
 	}
 	free(raster);
 	raster = nullptr;
-	for(i = 0; i < tmp->xSize; ++i)
+	for (i = 0; i < tmp->xSize; ++i)
 	{
 		free(contrib[i].p);
 		contrib[i].p = nullptr;
 	}
 	free(contrib);
 	contrib = nullptr;
-	//pre-calculate filter contributions for horizontal filter weights
+	// pre-calculate filter contributions for horizontal filter weights
 	contrib = (CLIST*)malloc(dst->ySize * sizeof(CLIST));
 	memset(contrib, 0, dst->ySize * sizeof(CLIST));
-	if(yscale < 1.0)
+	if (yscale < 1.0)
 	{
-		width = fwidth / yscale;
+		width  = fwidth / yscale;
 		fscale = 1.0 / yscale;
-		for(i = 0; i < dst->ySize; ++i)
+		for (i = 0; i < dst->ySize; ++i)
 		{
 			contrib[i].n = 0;
 			contrib[i].p = (CONTRIB*)malloc((width * 2 + 1) * sizeof(CONTRIB));
-			center = (double)i / yscale;
-			left = ceil(center - width);
-			right = floor(center + width);
-			for(j = left; j <= right; ++j)
+			center		 = (double)i / yscale;
+			left		 = ceil(center - width);
+			right		 = floor(center + width);
+			for (j = left; j <= right; ++j)
 			{
 				weight = center - (double)j;
 				weight = (*filter)(weight / fscale) / fscale;
-				if(j < 0)
+				if (j < 0)
 				{
 					n = -j;
 				}
-				else if(j >= tmp->ySize)
+				else if (j >= tmp->ySize)
 				{
 					n = (tmp->ySize - j) + tmp->ySize - 1;
 				}
@@ -353,30 +351,30 @@ void zoom(Image* dst, Image* src, double(*filter)(double t), double fwidth)
 				{
 					n = j;
 				}
-				k = contrib[i].n++;
-				contrib[i].p[k].pixel = n;
+				k					   = contrib[i].n++;
+				contrib[i].p[k].pixel  = n;
 				contrib[i].p[k].weight = weight;
 			}
 		}
 	}
 	else
 	{
-		for(i = 0; i < dst->ySize; ++i)
+		for (i = 0; i < dst->ySize; ++i)
 		{
 			contrib[i].n = 0;
 			contrib[i].p = (CONTRIB*)malloc((fwidth * 2 + 1) * sizeof(CONTRIB));
-			center = (double)i / yscale;
-			left = ceil(center - fwidth);
-			right = floor(center + fwidth);
-			for(j = left; j <= right; ++j)
+			center		 = (double)i / yscale;
+			left		 = ceil(center - fwidth);
+			right		 = floor(center + fwidth);
+			for (j = left; j <= right; ++j)
 			{
 				weight = center - (double)j;
 				weight = (*filter)(weight);
-				if(j < 0)
+				if (j < 0)
 				{
 					n = -j;
 				}
-				else if(j >= tmp->ySize)
+				else if (j >= tmp->ySize)
 				{
 					n = (tmp->ySize - j) + tmp->ySize - 1;
 				}
@@ -384,30 +382,31 @@ void zoom(Image* dst, Image* src, double(*filter)(double t), double fwidth)
 				{
 					n = j;
 				}
-				k = contrib[i].n++;
-				contrib[i].p[k].pixel = n;
+				k					   = contrib[i].n++;
+				contrib[i].p[k].pixel  = n;
 				contrib[i].p[k].weight = weight;
 			}
 		}
 	}
-	//Apply filter to zoom vertically from tmp to dst
+	// Apply filter to zoom vertically from tmp to dst
 	raster = (float*)malloc(sizeof(float) * tmp->ySize);
 	memset(raster, 0, sizeof(float) * tmp->ySize);
-	for(k = 0; k < dst->xSize; ++k)
+	for (k = 0; k < dst->xSize; ++k)
 	{
 		getCol(raster, tmp, k);
-		for(i = 0; i < dst->ySize; ++i)
+		for (i = 0; i < dst->ySize; ++i)
 		{
 			weight = 0.0;
-			for(j = 0; j < contrib[i].n; ++j)
+			for (j = 0; j < contrib[i].n; ++j)
 			{
-				weight += raster[contrib[i].p[j].pixel] * contrib[i].p[j].weight;
+				weight +=
+					raster[contrib[i].p[j].pixel] * contrib[i].p[j].weight;
 			}
 			putPixel(dst, k, i, (float)CLAMP(weight, BLACK_PIXEL, WHITE_PIXEL));
 		}
 	}
 	free(raster);
-	for(i = 0; i < dst->ySize; ++i)
+	for (i = 0; i < dst->ySize; ++i)
 	{
 		free(contrib[i].p);
 		contrib[i].p = nullptr;
@@ -421,4 +420,3 @@ void rescaleMap(float* dst, float* src, int32_t dstSize, int32_t srcSize);
 
 //----------------------------------------------------------------------------
 #endif
-

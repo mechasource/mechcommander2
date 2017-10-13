@@ -19,24 +19,21 @@
 
 class TGAWnd : public CStatic
 {
-// Construction
-public:
+	// Construction
+  public:
 	TGAWnd(void);
 	void SetTGAFileName(const CString& str);
 	void SetTGAFileData(puint8_t data, int32_t size);
 
-	PSTR GetImageData()
-	{
-		return m_pImage;
-	}
+	PSTR GetImageData() { return m_pImage; }
 
 	//{{AFX_VIRTUAL(TGAWnd)
 	//}}AFX_VIRTUAL
 
-public:
+  public:
 	virtual ~TGAWnd(void);
 
-protected:
+  protected:
 	//{{AFX_MSG(TGAWnd)
 	afx_msg void OnPaint(void);
 	//}}AFX_MSG
@@ -44,34 +41,30 @@ protected:
 	DECLARE_MESSAGE_MAP()
 
 	CString m_FileName;
-	bool	m_bTGAChanged;
-	PSTR	m_pImage;
+	bool m_bTGAChanged;
+	PSTR m_pImage;
 	BITMAPINFO* m_pBmi;
-	HBITMAP	m_hBitmap;
-	PVOID	m_pBits;
-	CDC*	m_pMemDC;
+	HBITMAP m_hBitmap;
+	PVOID m_pBits;
+	CDC* m_pMemDC;
 	CPalette* m_Palette;
 	HBITMAP m_hSplashBitMap;
 	bool bThisIsInitialized;
 };
-
 
 //*************************************************************************************************
 /**************************************************************************************************
 CLASS DESCRIPTION
 TACMapTGA:
 **************************************************************************************************/
-class TacMapTGA: public TGAWnd
+class TacMapTGA : public TGAWnd
 {
-public:
-
+  public:
 	afx_msg void OnPaint(void);
 	void refreshBmp(void);
 	DECLARE_MESSAGE_MAP()
-
-
 };
 
 //{{AFX_INSERT_LOCATION}}
 
-#endif// TGAWND_H
+#endif // TGAWND_H

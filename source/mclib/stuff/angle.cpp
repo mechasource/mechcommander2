@@ -17,15 +17,14 @@ using namespace Stuff;
 //#############################################################################
 //#############################################################################
 //
-float
-Radian::Normalize(float Value)
+float Radian::Normalize(float Value)
 {
 	float temp = static_cast<float>(fmod(Value, Two_Pi));
-	if(temp > Pi)
+	if (temp > Pi)
 	{
 		temp -= Two_Pi;
 	}
-	else if(temp <= -Pi)
+	else if (temp <= -Pi)
 	{
 		temp += Two_Pi;
 	}
@@ -36,16 +35,15 @@ Radian::Normalize(float Value)
 //#############################################################################
 //#############################################################################
 //
-Radian&
-Radian::Normalize()
+Radian& Radian::Normalize()
 {
 	// Check_Object(this);
 	angle = static_cast<float>(fmod(angle, Two_Pi));
-	if(angle > Pi)
+	if (angle > Pi)
 	{
 		angle -= Two_Pi;
 	}
-	else if(angle < -Pi)
+	else if (angle < -Pi)
 	{
 		angle += Two_Pi;
 	}
@@ -56,20 +54,19 @@ Radian::Normalize()
 //#############################################################################
 //#############################################################################
 //
-Radian&
-Radian::Lerp(const Radian& a, const Radian& b, float t)
+Radian& Radian::Lerp(const Radian& a, const Radian& b, float t)
 {
 	float a1, a2;
-	//Check_Pointer(this);
+	// Check_Pointer(this);
 	Check_Object(&a);
 	Check_Object(&b);
 	a1 = Radian::Normalize(a.angle);
 	a2 = Radian::Normalize(b.angle);
-	if(a2 - a1 > Pi)
+	if (a2 - a1 > Pi)
 	{
 		a2 -= Two_Pi;
 	}
-	else if(a2 - a1 < -Pi)
+	else if (a2 - a1 < -Pi)
 	{
 		a2 += Two_Pi;
 	}

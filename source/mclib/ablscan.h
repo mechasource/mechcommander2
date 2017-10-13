@@ -22,9 +22,9 @@
 
 typedef enum __ablscan_const
 {
-	TAB_SIZE = 4,
+	TAB_SIZE		= 4,
 	MAX_DIGIT_COUNT = 20,
-	MAX_EXPONENT = 20,
+	MAX_EXPONENT	= 20,
 };
 
 //***************************************************************************
@@ -166,52 +166,41 @@ typedef CaseItem* CaseItemPtr;
 class ABLFile
 {
 
-public:
-
+  public:
 	PSTR fileName;
 	PVOID file;
 
-	static int32_t (__stdcall* createCB)(PVOID* file, PSTR fName);
-	static int32_t (__stdcall* openCB)(PVOID* file, PSTR fName);
-	static int32_t (__stdcall* closeCB)(PVOID* file);
-	static bool (__stdcall* eofCB)(PVOID file);
-	static int32_t (__stdcall* readCB)(PVOID file, puint8_t buffer, int32_t length);
-	static int32_t (__stdcall* readLongCB)(PVOID file);
-	static int32_t (__stdcall* readStringCB)(PVOID file, puint8_t buffer);
-	static int32_t (__stdcall* readLineExCB)(PVOID file, puint8_t buffer, int32_t maxLength);
-	static int32_t (__stdcall* writeCB)(PVOID file, puint8_t buffer, int32_t length);
-	static int32_t (__stdcall* writeByteCB)(PVOID file, uint8_t byte);
-	static int32_t (__stdcall* writeLongCB)(PVOID file, int32_t value);
-	static int32_t (__stdcall* writeStringCB)(PVOID file, PSTR buffer);
+	static int32_t(__stdcall* createCB)(PVOID* file, PSTR fName);
+	static int32_t(__stdcall* openCB)(PVOID* file, PSTR fName);
+	static int32_t(__stdcall* closeCB)(PVOID* file);
+	static bool(__stdcall* eofCB)(PVOID file);
+	static int32_t(__stdcall* readCB)(
+		PVOID file, puint8_t buffer, int32_t length);
+	static int32_t(__stdcall* readLongCB)(PVOID file);
+	static int32_t(__stdcall* readStringCB)(PVOID file, puint8_t buffer);
+	static int32_t(__stdcall* readLineExCB)(
+		PVOID file, puint8_t buffer, int32_t maxLength);
+	static int32_t(__stdcall* writeCB)(
+		PVOID file, puint8_t buffer, int32_t length);
+	static int32_t(__stdcall* writeByteCB)(PVOID file, uint8_t byte);
+	static int32_t(__stdcall* writeLongCB)(PVOID file, int32_t value);
+	static int32_t(__stdcall* writeStringCB)(PVOID file, PSTR buffer);
 
-public:
-
+  public:
 	PVOID operator new(size_t ourSize);
 	void operator delete(PVOID us);
 
 	void init(void);
 
-	ABLFile(void)
-	{
-		init(void);
-	}
+	ABLFile(void) { init(void); }
 
 	void destroy(void);
 
-	~ABLFile(void)
-	{
-		destroy(void);
-	}
+	~ABLFile(void) { destroy(void); }
 
-	int32_t set(PVOID fPtr)
-	{
-		file = fPtr;
-	}
+	int32_t set(PVOID fPtr) { file = fPtr; }
 
-	PVOID get(void)
-	{
-		return(file);
-	}
+	PVOID get(void) { return (file); }
 
 	int32_t create(PSTR fileName);
 	int32_t open(PSTR fileName);
@@ -248,7 +237,8 @@ void __stdcall getNumber(void);
 void __stdcall getString(void);
 void __stdcall getSpecial(void);
 bool __stdcall tokenIn(TokenCodeType* tokenList);
-void __stdcall synchronize(TokenCodeType* tokenList1, TokenCodeType* tokenList2, TokenCodeType* tokenList3);
+void __stdcall synchronize(TokenCodeType* tokenList1, TokenCodeType* tokenList2,
+	TokenCodeType* tokenList3);
 bool __stdcall getSourceLine(void);
 void __stdcall printLine(PSTR line);
 void __stdcall initPageHeader(PSTR fileName);
@@ -262,18 +252,16 @@ extern PVOID(__stdcall* ABLSystemMallocCallback)(size_t memSize);
 extern PVOID(__stdcall* ABLStackMallocCallback)(size_t memSize);
 extern PVOID(__stdcall* ABLCodeMallocCallback)(size_t memSize);
 extern PVOID(__stdcall* ABLSymbolMallocCallback)(size_t memSize);
-extern void (__stdcall* ABLSystemFreeCallback)(PVOID memBlock);
-extern void (__stdcall* ABLStackFreeCallback)(PVOID memBlock);
-extern void (__stdcall* ABLCodeFreeCallback)(PVOID memBlock);
-extern void (__stdcall* ABLSymbolFreeCallback)(PVOID memBlock);
-extern void (__stdcall* ABLDebugPrintCallback)(PSTR s);
-extern int32_t (__stdcall* ABLRandomCallback)(int32_t range);
-extern void (__stdcall* ABLSeedRandomCallback)(size_t range);
-extern size_t (__stdcall* ABLGetTimeCallback)(void);
-extern void (__stdcall* ABLFatalCallback)(int32_t code, PSTR s);
+extern void(__stdcall* ABLSystemFreeCallback)(PVOID memBlock);
+extern void(__stdcall* ABLStackFreeCallback)(PVOID memBlock);
+extern void(__stdcall* ABLCodeFreeCallback)(PVOID memBlock);
+extern void(__stdcall* ABLSymbolFreeCallback)(PVOID memBlock);
+extern void(__stdcall* ABLDebugPrintCallback)(PSTR s);
+extern int32_t(__stdcall* ABLRandomCallback)(int32_t range);
+extern void(__stdcall* ABLSeedRandomCallback)(size_t range);
+extern size_t(__stdcall* ABLGetTimeCallback)(void);
+extern void(__stdcall* ABLFatalCallback)(int32_t code, PSTR s);
 
 //***************************************************************************
 
 #endif
-
-

@@ -8,20 +8,18 @@
 #include <mechgui/ascroll.h>
 #endif
 
-
-
 aScrollBar::aScrollBar()
 {
 	scrollMax = 0;
 	scrollPos = 0;
-	lastY = 0;
+	lastY	 = 0;
 }
 
 int32_t aScrollBar::init(int32_t xPos, int32_t yPos, int32_t w, int32_t h)
 {
 	int32_t err;
 	err = aObject::init(xPos, yPos, w, h);
-	if(err)
+	if (err)
 		return err;
 	topButton.setID(aMSG_SCROLLUP);
 	bottomButton.setID(aMSG_SCROLLDOWN);
@@ -47,19 +45,15 @@ int32_t aScrollBar::init(int32_t xPos, int32_t yPos, int32_t w, int32_t h)
 	moveTo(xPos, yPos);
 	SetScrollMax(0);
 	SetScrollPos(0);
-	scrollInc = 1;
-	pageInc = 10;
-	scrollTab.lightEdge = 0xff005392;
-	scrollTab.darkEdge = 0xff002D51;
+	scrollInc			   = 1;
+	pageInc				   = 10;
+	scrollTab.lightEdge	= 0xff005392;
+	scrollTab.darkEdge	 = 0xff002D51;
 	scrollTab.regularColor = 0xff004275;
 	return (NO_ERROR);
 }
 
-void aScrollBar::destroy()
-{
-	aObject::destroy();
-}
-
+void aScrollBar::destroy() { aObject::destroy(); }
 
 void aScrollBar::render()
 {
@@ -67,7 +61,7 @@ void aScrollBar::render()
 	bottomButton.moveTo(globalX() + 2, bottomButton.globalY());
 	scrollTab.moveTo(globalX() + 2, scrollTab.globalY());
 	aObject::render();
-	RECT area = { location[0].x, location[0].y, location[2].x, location[2].y };
+	RECT area = {location[0].x, location[0].y, location[2].x, location[2].y};
 	drawEmptyRect(area, color, color);
 }
 
@@ -80,9 +74,9 @@ void aScrollBar::SetScrollMax(float newMax)
 
 void aScrollBar::SetScrollPos(float newPos)
 {
-	if(newPos < 0)
+	if (newPos < 0)
 		newPos = 0;
-	if(newPos > scrollMax)
+	if (newPos > scrollMax)
 		newPos = scrollMax;
 	scrollPos = newPos;
 	ResizeAreas();
@@ -90,11 +84,11 @@ void aScrollBar::SetScrollPos(float newPos)
 
 void aScrollBar::SetScroll(int32_t newScrollPos)
 {
-	if(newScrollPos < 0)
+	if (newScrollPos < 0)
 		newScrollPos = 0;
-	if(newScrollPos > scrollMax)
+	if (newScrollPos > scrollMax)
 		newScrollPos = scrollMax;
-	if(getParent())
+	if (getParent())
 		getParent()->handleMessage(aMSG_SCROLLTO, newScrollPos);
 	SetScrollPos(newScrollPos);
 }
@@ -102,65 +96,75 @@ void aScrollBar::update()
 {
 	int32_t mouseX = userInput->getMouseX();
 	int32_t mouseY = userInput->getMouseY();
-	if(userInput->isLeftDrag() && lastY)    // dragging the little tab
+	if (userInput->isLeftDrag() && lastY) // dragging the little tab
 	{
 		int32_t tmpLastY = mouseY;
 		tmpLastY -= userInput->getMouseDragY();
 		tmpLastY += lastY;
 		float finalPos = (float)tmpLastY;
 		// figure out what this translates to
-		float physicalRange = height() - topButton.height() - bottomButton.height() - scrollTab.height() -  2.f;
+		float physicalRange = height() - topButton.height() -
+							  bottomButton.height() - scrollTab.height() - 2.f;
 		float RealRange = scrollMax;
-		if(!physicalRange)
+		if (!physicalRange)
 			physicalRange = RealRange;
-		//Check for what if both of the above are zero.  Probably nothing to scroll to, eh?
-		if((fabs(physicalRange) > Stuff::SMALL) && (fabs(RealRange) > Stuff::SMALL))
+		// Check for what if both of the above are zero.  Probably nothing to
+		// scroll to, eh?
+		if ((fabs(physicalRange) > Stuff::SMALL) &&
+			(fabs(RealRange) > Stuff::SMALL))
 		{
-			float newScrollPos = .5 + (finalPos) * RealRange / physicalRange;
-			if(newScrollPos < 0)
+			float newScrollPos = .5 + (finalPos)*RealRange / physicalRange;
+			if (newScrollPos < 0)
 				newScrollPos = 0;
-			if(newScrollPos > scrollMax)
+			if (newScrollPos > scrollMax)
 				newScrollPos = scrollMax;
 			SetScroll(newScrollPos);
 			scrollTab.press(true);
 		}
 	}
-	else if(pointInside(mouseX, mouseY))
+	else if (pointInside(mouseX, mouseY))
 	{
-		if(userInput->isLeftClick() || gos_GetKeyStatus(KEY_LMOUSE) == KEY_HELD
-				|| userInput->leftMouseReleased())
+		if (userInput->isLeftClick() ||
+			gos_GetKeyStatus(KEY_LMOUSE) == KEY_HELD ||
+			userInput->leftMouseReleased())
 		{
 			lastY = 0;
-			if(scrollTab.pointInside(mouseX, mouseY) && !userInput->leftMouseReleased())
+			if (scrollTab.pointInside(mouseX, mouseY) &&
+				!userInput->leftMouseReleased())
 				lastY = scrollTab.top() - topButton.bottom();
-			else if(getParent())
+			else if (getParent())
 			{
-				if(!topButton.pointInside(mouseX, mouseY)
-						&& !bottomButton.pointInside(mouseX, mouseY)
-						&& !topButton.pointInside(userInput->getMouseDragX(), userInput->getMouseDragY())
-						&& !bottomButton.pointInside(userInput->getMouseDragX(), userInput->getMouseDragY())
-						&& mouseY > topButton.globalBottom()
-						&& mouseY < bottomButton.globalY()
-						&& pointInside(userInput->getMouseDragX(), userInput->getMouseDragY())
-						&& !scrollTab.pointInside(mouseX, mouseY)
-						&& (userInput->leftMouseReleased() || userInput->getMouseLeftHeld() > .5))
+				if (!topButton.pointInside(mouseX, mouseY) &&
+					!bottomButton.pointInside(mouseX, mouseY) &&
+					!topButton.pointInside(userInput->getMouseDragX(),
+						userInput->getMouseDragY()) &&
+					!bottomButton.pointInside(userInput->getMouseDragX(),
+						userInput->getMouseDragY()) &&
+					mouseY > topButton.globalBottom() &&
+					mouseY < bottomButton.globalY() &&
+					pointInside(userInput->getMouseDragX(),
+						userInput->getMouseDragY()) &&
+					!scrollTab.pointInside(mouseX, mouseY) &&
+					(userInput->leftMouseReleased() ||
+						userInput->getMouseLeftHeld() > .5))
 				{
-					//	float physicalRange = height() - topButton.height() - bottomButton.height() - scrollTab.height();
-					//	float RealRange = scrollMax;
-					//	float delta = (float)mouseY - (topButton.globalY() + topButton.height());
+					//	float physicalRange = height() - topButton.height() -
+					//bottomButton.height() - scrollTab.height(); 	float
+					//RealRange = scrollMax; 	float delta = (float)mouseY -
+					//(topButton.globalY() + topButton.height());
 					float newScrollPos = scrollPos;
 					// if above the thumb, page up, otherwise page down
-					if(mouseY < scrollTab.globalY())
+					if (mouseY < scrollTab.globalY())
 					{
 						newScrollPos = scrollPos - pageInc;
 					}
-					else if(mouseY > scrollTab.globalBottom())
+					else if (mouseY > scrollTab.globalBottom())
 					{
 						newScrollPos = scrollPos + pageInc;
 					}
-					if(newScrollPos < 0)
+					if (newScrollPos < 0)
 						newScrollPos = 0;
-					if(newScrollPos > scrollMax)
+					if (newScrollPos > scrollMax)
 						newScrollPos = scrollMax;
 					getParent()->handleMessage(aMSG_SCROLLTO, newScrollPos);
 					SetScrollPos(newScrollPos);
@@ -169,21 +173,21 @@ void aScrollBar::update()
 			}
 		}
 	}
-	if(userInput->leftMouseReleased())
+	if (userInput->leftMouseReleased())
 		lastY = 0;
 	aObject::update();
 }
 
 int32_t aScrollBar::handleMessage(uint32_t message, uint32_t who)
 {
-	switch(who)
+	switch (who)
 	{
-		case aMSG_SCROLLUP:
-			SetScrollPos(scrollPos - scrollInc);
-			break;
-		case aMSG_SCROLLDOWN:
-			SetScrollPos(scrollPos + scrollInc);
-			break;
+	case aMSG_SCROLLUP:
+		SetScrollPos(scrollPos - scrollInc);
+		break;
+	case aMSG_SCROLLDOWN:
+		SetScrollPos(scrollPos + scrollInc);
+		break;
 	}
 	return getParent()->handleMessage(who, who);
 }
@@ -191,18 +195,23 @@ int32_t aScrollBar::handleMessage(uint32_t message, uint32_t who)
 void aScrollBar::ResizeAreas(void)
 {
 	float range, position;
-	if(scrollMax == 0)
+	if (scrollMax == 0)
 		return;
-	float physicalRange = height() - topButton.height() - bottomButton.height() - 6.f;
+	float physicalRange =
+		height() - topButton.height() - bottomButton.height() - 6.f;
 	float RealRange = scrollMax;
-	pageInc = physicalRange;
-	float	scrollTabSize =  physicalRange * physicalRange / (physicalRange + RealRange);
-	if(scrollTabSize < scrollTab.width())
+	pageInc			= physicalRange;
+	float scrollTabSize =
+		physicalRange * physicalRange / (physicalRange + RealRange);
+	if (scrollTabSize < scrollTab.width())
 		scrollTabSize = scrollTab.width();
 	scrollTab.resize(scrollTab.width(), scrollTabSize);
-	range = height() - topButton.height() - bottomButton.height() - scrollTab.height() - 6.f;	// one scrollwidth for buttons, one for tab. 2 for lines at either end.
-	position = range * scrollPos / scrollMax;	//	center of scroll tab;
-	scrollTab.moveTo(globalX() + 2, topButton.globalY() + topButton.height() + position + 1);
+	range = height() - topButton.height() - bottomButton.height() -
+			scrollTab.height() - 6.f; // one scrollwidth for buttons, one for
+									  // tab. 2 for lines at either end.
+	position = range * scrollPos / scrollMax; //	center of scroll tab;
+	scrollTab.moveTo(
+		globalX() + 2, topButton.globalY() + topButton.height() + position + 1);
 }
 
 void aScrollBar::Enable(bool enable)
@@ -218,13 +227,13 @@ int32_t mcScrollBar::init(int32_t xPos, int32_t yPos, int32_t w, int32_t h)
 	char path[256];
 	strcpy(path, artPath);
 	strcat(path, "scrollbar.fit");
-	if(NO_ERROR != file.open(path))
+	if (NO_ERROR != file.open(path))
 	{
 		char error[256];
 		sprintf(error, "couldn't open file %s", path);
 		Assert(0, 0, error);
 	}
-	setColor(0, 0);   // black background
+	setColor(0, 0);		// black background
 	color = 0xff002F55; // outline color
 	topButton.init(file, "ScrollButton0");
 	bottomButton.init(file, "ScrollButton1");
@@ -249,41 +258,49 @@ int32_t mcScrollBar::init(int32_t xPos, int32_t yPos, int32_t w, int32_t h)
 void mcScrollBar::resize(int32_t w, int32_t h)
 {
 	aScrollBar::resize(w, h);
-	bottomButton.moveTo(bottomButton.globalX(), globalY() + h - bottomButton.height() - 2);
-	scrollTab.moveTo(scrollTab.globalX(), topButton.globalY() + topButton.height() + 1);
+	bottomButton.moveTo(
+		bottomButton.globalX(), globalY() + h - bottomButton.height() - 2);
+	scrollTab.moveTo(
+		scrollTab.globalX(), topButton.globalY() + topButton.height() + 1);
 	ResizeAreas();
 }
 
 void mcScrollBar::setGreen()
 {
-	topButton.setAnimationInfo(&greenInfo[0], &greenInfo[1], &greenInfo[2], &greenInfo[3]);
-	bottomButton.setAnimationInfo(&greenInfo[0], &greenInfo[1], &greenInfo[2], &greenInfo[3]);
-	scrollTab.setAnimationInfo(&greenInfo[0], &greenInfo[1], &greenInfo[2], &greenInfo[3]);
-	scrollTab.lightEdge = 0xff6E7C00;
-	scrollTab.darkEdge = 0xff303600;
+	topButton.setAnimationInfo(
+		&greenInfo[0], &greenInfo[1], &greenInfo[2], &greenInfo[3]);
+	bottomButton.setAnimationInfo(
+		&greenInfo[0], &greenInfo[1], &greenInfo[2], &greenInfo[3]);
+	scrollTab.setAnimationInfo(
+		&greenInfo[0], &greenInfo[1], &greenInfo[2], &greenInfo[3]);
+	scrollTab.lightEdge	= 0xff6E7C00;
+	scrollTab.darkEdge	 = 0xff303600;
 	scrollTab.regularColor = 0xff586300;
-	color = (0xff6E7C00);
+	color				   = (0xff6E7C00);
 }
 
 void mcScrollBar::setOrange()
 {
-	topButton.setAnimationInfo(&orangeInfo[0], &orangeInfo[1], &orangeInfo[2], &orangeInfo[3]);
-	bottomButton.setAnimationInfo(&orangeInfo[0], &orangeInfo[1], &orangeInfo[2], &orangeInfo[3]);
-	scrollTab.setAnimationInfo(&orangeInfo[0], &orangeInfo[1], &orangeInfo[2], &orangeInfo[3]);
-	scrollTab.lightEdge = 0xffC66600;
-	scrollTab.darkEdge = 0xff5C2F00;
+	topButton.setAnimationInfo(
+		&orangeInfo[0], &orangeInfo[1], &orangeInfo[2], &orangeInfo[3]);
+	bottomButton.setAnimationInfo(
+		&orangeInfo[0], &orangeInfo[1], &orangeInfo[2], &orangeInfo[3]);
+	scrollTab.setAnimationInfo(
+		&orangeInfo[0], &orangeInfo[1], &orangeInfo[2], &orangeInfo[3]);
+	scrollTab.lightEdge	= 0xffC66600;
+	scrollTab.darkEdge	 = 0xff5C2F00;
 	scrollTab.regularColor = 0xff9E5200;
-	color = (0xff43311C);
+	color				   = (0xff43311C);
 }
 
 void mcScrollButton::render()
 {
-	if(isShowing() && state != DISABLED)
+	if (isShowing() && state != DISABLED)
 	{
 		setColor(regularColor);
 		aButton::render();
-		RECT rect =  { globalX(), globalY(), globalRight() - 1, globalBottom() - 1 };
+		RECT rect = {
+			globalX(), globalY(), globalRight() - 1, globalBottom() - 1};
 		drawEmptyRect(rect, lightEdge, darkEdge);
 	}
 }
-

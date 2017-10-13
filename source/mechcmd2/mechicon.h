@@ -26,8 +26,7 @@ MechIcon:
 class PilotIcon
 {
 
-public:
-
+  public:
 	static const int32_t DEAD_PILOT_INDEX;
 
 	PilotIcon(void);
@@ -35,56 +34,44 @@ public:
 	static void swapResolutions(bool bForce = 0);
 
 	void setPilot(MechWarrior* pWarrior);
-	void setTextureIndex(int32_t newIndex)
-	{
-		pilotTextureIndex = newIndex;
-	}
+	void setTextureIndex(int32_t newIndex) { pilotTextureIndex = newIndex; }
 	void render(float left, float top, float right, float bottom);
 
-
-private:
-
+  private:
 	uint32_t pilotTextureIndex;
 
-	static float			pilotIconX;
-	static float			pilotIconY;
+	static float pilotIconX;
+	static float pilotIconY;
 
-	static uint32_t	s_pilotTextureHandle;
-	static uint32_t	s_pilotTextureWidth;
+	static uint32_t s_pilotTextureHandle;
+	static uint32_t s_pilotTextureWidth;
 
 	friend class ForceGroupIcon;
 	friend class MechIcon;
 	friend class Mission;
 };
 
-
 class ForceGroupIcon
 {
-public:
-
+  public:
 	ForceGroupIcon(void);
 	virtual ~ForceGroupIcon(void);
 
 	virtual void update() = 0;
 	virtual void render(void);
 	void renderUnitIcon(float left, float top, float right, float bottom);
-	virtual void renderUnitIconBack(float left, float top, float right, float bottom);
+	virtual void renderUnitIconBack(
+		float left, float top, float right, float bottom);
 	void renderPilotIcon(float left, float top, float right, float bottom);
-	virtual bool			init(Mover* pMover)
-	{
-		return false;
-	}
+	virtual bool init(Mover* pMover) { return false; }
 	void init(void);
-
-
-
 
 	bool inRegion(int32_t x, int32_t y);
 
 	void click(bool shiftDn);
 	void rightClick(void);
 
-	virtual void setDrawBack(bool bSet) { };
+	virtual void setDrawBack(bool bSet){};
 
 	static int32_t __cdecl sort(PCVOID p1, PCVOID p2);
 
@@ -95,132 +82,114 @@ public:
 	static void resetResolution(bool bForce);
 
 	void setLocationIndex(int32_t i);
-	void beginDeathAnimation()
-	{
-		deathAnimationTime = .0001f;
-	}
+	void beginDeathAnimation() { deathAnimationTime = .0001f; }
 	bool deathAnimationOver()
 	{
 		return deathAnimationTime > animationInfos[NUM_DEATH_INFOS - 1].time;
 	}
-	bool isAnimatingDeath()
-	{
-		return deathAnimationTime ? 1 : 0;
-	}
+	bool isAnimatingDeath() { return deathAnimationTime ? 1 : 0; }
 
-protected:
+  protected:
+	static int32_t damageColors[4][3];
 
-	static int32_t		damageColors[4][3];
+	static uint32_t s_textureHandle[5];
+	static bool s_slotUsed[240];
+	static TGAFileHeader* s_textureMemory;
 
-	static uint32_t	s_textureHandle[5];
-	static bool				s_slotUsed[240];
-	static TGAFileHeader*	s_textureMemory;
+	static float unitIconX;
+	static float unitIconY;
+	static int32_t curScreenWidth;
 
-	static float			unitIconX;
-	static float		 	unitIconY;
-	static int32_t				curScreenWidth;
+	static StaticInfo* jumpJetIcon;
 
-	static StaticInfo*		jumpJetIcon;
+	static aFont* gosFontHandle;
 
-	static aFont*			gosFontHandle;
-
-	static gos_VERTEX	bmpLocation[17][5]; // in screen coords
+	static gos_VERTEX bmpLocation[17][5]; // in screen coords
 
 	static RECT textArea[17];
 	static RECT pilotRect[17];
 	static RECT selectionRect[17];
 	static RECT healthBar[17];
-	static int32_t		pilotTextTop[17];
+	static int32_t pilotTextTop[17];
 
-	static float	pilotLocation[17][4];
-	Mover*		unit;
+	static float pilotLocation[17][4];
+	Mover* unit;
 
-	static int32_t		ForceGroupColors[11];
+	static int32_t ForceGroupColors[11];
 
 	void drawBar(float barStatus);
 	static void setIconVariables(void);
 
-
 	friend class ForceGroupBar;
 	friend void __stdcall TerminateGameEngine(void);
 
-	bool	bDrawBack;
+	bool bDrawBack;
 
-	int32_t		damageIconIndex;
-	int32_t		backDamageIndex;
-	int32_t		locationIndex;
+	int32_t damageIconIndex;
+	int32_t backDamageIndex;
+	int32_t locationIndex;
 
-	float	deathAnimationTime;
+	float deathAnimationTime;
 
 	struct AnimationInfo
 	{
-		float	time;
-		int32_t	color;
+		float time;
+		int32_t color;
 	};
 
 	static AnimationInfo animationInfos[NUM_DEATH_INFOS];
 
 	void drawDeathEffect(void);
 
-	PilotIcon	pilotIcon;
+	PilotIcon pilotIcon;
 
-	float		msgPlayTime;
+	float msgPlayTime;
 
-	static		MC2MoviePtr 	bMovie;
-	static		uint32_t			pilotVideoTexture;
-	static		MechWarrior*	pilotVideoPilot;
-
+	static MC2MoviePtr bMovie;
+	static uint32_t pilotVideoTexture;
+	static MechWarrior* pilotVideoPilot;
 };
 
 class MechIcon : public ForceGroupIcon
 {
-public:
-
+  public:
 	MechIcon() {}
 	~MechIcon() {}
 
-	virtual bool			init(Mover* pMover);
-	virtual void			update(void);
+	virtual bool init(Mover* pMover);
+	virtual void update(void);
 
 	static TGAFileHeader* s_MechTextures;
 
-	void doDraw(PSTR newDamage, PSTR oldDamage, uint32_t handle, uint32_t where);
+	void doDraw(
+		PSTR newDamage, PSTR oldDamage, uint32_t handle, uint32_t where);
 	virtual void setDrawBack(bool bSet);
 
-
-
-
-
-private:
-
-	char	damage[8];
-	char	backDamage[8];
+  private:
+	char damage[8];
+	char backDamage[8];
 	bool init(int32_t whichIndex);
 	bool initTextures(void);
-
-
 };
 
 class VehicleIcon : public ForceGroupIcon
 {
-public:
-
+  public:
 	VehicleIcon() {}
 	~VehicleIcon() {}
 
-	virtual void renderUnitIconBack(float left, float top, float right, float bottom) {}
-	virtual void	update(void);
-	virtual bool			init(Mover* pMover);
+	virtual void renderUnitIconBack(
+		float left, float top, float right, float bottom)
+	{
+	}
+	virtual void update(void);
+	virtual bool init(Mover* pMover);
 
 	static TGAFileHeader* s_VehicleTextures;
 
-private:
-
-	char	damage[5];
-
+  private:
+	char damage[5];
 };
 
-
-
 //*************************************************************************************************
-#endif  // end of file ( MechIcon.h )
+#endif // end of file ( MechIcon.h )

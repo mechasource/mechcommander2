@@ -12,64 +12,54 @@
 namespace MidLevelRenderer
 {
 
-
 //##########################################################################
 //######################    MLRPointLight    ###############################
 //##########################################################################
 
-	class MLRPointLight:
-		public MLRInfiniteLightWithFalloff
+class MLRPointLight : public MLRInfiniteLightWithFalloff
+{
+  public:
+	static void __stdcall InitializeClass(void);
+	static void __stdcall TerminateClass(void);
+
+	MLRPointLight(void);
+	MLRPointLight(Stuff::MemoryStream* stream, uint32_t version);
+	MLRPointLight(Stuff::Page* page);
+	~MLRPointLight(void);
+
+	void Save(Stuff::MemoryStream* stream);
+	void Write(Stuff::Page* page);
+
+	virtual void LightVertex(const MLRVertexData&);
+
+	virtual LightType GetLightType()
 	{
-	public:
-		static void __stdcall InitializeClass(void);
-		static void __stdcall TerminateClass(void);
+		// Check_Object(this);
+		return PointLight;
+	}
 
-		MLRPointLight(void);
-		MLRPointLight(
-			Stuff::MemoryStream* stream,
-			uint32_t version);
-		MLRPointLight(Stuff::Page* page);
-		~MLRPointLight(void);
+	void SetLightMap(MLRLightMap* light_map);
 
-		void
-		Save(Stuff::MemoryStream* stream);
-		void
-		Write(Stuff::Page* page);
+	virtual MLRLightMap* GetLightMap()
+	{
+		// Check_Object(this);
+		return lightMap;
+	}
 
-		virtual void LightVertex(const MLRVertexData&);
+	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	// Class Data Support
+	//
+  public:
+	static ClassData* DefaultData;
 
-		virtual LightType
-		GetLightType()
-		{
-			// Check_Object(this);
-			return PointLight;
-		}
+	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	// Testing
+	//
+  public:
+	void TestInstance(void);
 
-		void
-		SetLightMap(MLRLightMap* light_map);
-
-		virtual MLRLightMap*
-		GetLightMap()
-		{
-			// Check_Object(this);
-			return lightMap;
-		}
-
-		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-		// Class Data Support
-		//
-	public:
-		static ClassData* DefaultData;
-
-		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-		// Testing
-		//
-	public:
-		void TestInstance(void);
-
-	protected:
-		MLRLightMap* lightMap;
-	};
-
+  protected:
+	MLRLightMap* lightMap;
+};
 }
 #endif

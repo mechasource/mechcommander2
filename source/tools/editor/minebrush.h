@@ -20,30 +20,24 @@ MineBrush.h			: Interface for the MineBrush component.
 CLASS DESCRIPTION
 MineBrush:
 **************************************************************************************************/
-class MineBrush: public Brush
+class MineBrush : public Brush
 {
-public:
-
-	MineBrush()
-	{
-		pAction = nullptr;
-	}
+  public:
+	MineBrush() { pAction = nullptr; }
 	virtual ~MineBrush() {}
 	virtual bool beginPaint(void);
 	virtual Action* endPaint(void);
-	virtual bool paint(Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY);
-	virtual bool canPaint(Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY, int32_t flags);
+	virtual bool paint(
+		Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY);
+	virtual bool canPaint(Stuff::Vector3D& worldPos, int32_t screenX,
+		int32_t screenY, int32_t flags);
 	virtual bool canPaintSelection();
 	virtual Action* applyToSelection(void);
 
-private:
-
-
+  private:
 	class MineAction : public Action
 	{
-	public:
-
-
+	  public:
 		virtual ~MineAction() {}
 		virtual bool redo(void);
 		virtual bool undo(void);
@@ -54,7 +48,7 @@ private:
 			int32_t column;
 			uint32_t mineState;
 		};
-		typedef EList< CTileMineInfo, const CTileMineInfo&> MINE_INFO_LIST;
+		typedef EList<CTileMineInfo, const CTileMineInfo&> MINE_INFO_LIST;
 		MINE_INFO_LIST mineInfoList;
 
 		void AddChangedTileMineInfo(CTileMineInfo& info);
@@ -63,6 +57,5 @@ private:
 	MineAction* pAction;
 };
 
-
 //*************************************************************************************************
-#endif  // end of file ( MineBrush.h )
+#endif // end of file ( MineBrush.h )

@@ -4,7 +4,8 @@
 #ifndef MECHPURCHASESCREEN_H
 #define MECHPURCHASESCREEN_H
 /*************************************************************************************************\
-MechPurchaseScreen.h			: Interface for the MechPurchaseScreen component.
+MechPurchaseScreen.h			: Interface for the MechPurchaseScreen
+component.
 //---------------------------------------------------------------------------//
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
@@ -27,60 +28,51 @@ class LogisticsMech;
 CLASS DESCRIPTION
 MechPurchaseScreen:
 **************************************************************************************************/
-class MechPurchaseScreen: public LogisticsScreen
+class MechPurchaseScreen : public LogisticsScreen
 {
-public:
-
-	static MechPurchaseScreen* instance()
-	{
-		return s_instance;
-	}
+  public:
+	static MechPurchaseScreen* instance() { return s_instance; }
 
 	MechPurchaseScreen(void);
-	virtual				~MechPurchaseScreen(void);
+	virtual ~MechPurchaseScreen(void);
 
-	int32_t					init(FitIniFile& file);
+	int32_t init(FitIniFile& file);
 
-	virtual void		begin(void);
-	virtual void		end(void);
-	virtual void		update(void);
-	virtual void		render(int32_t xOffset, int32_t yOffset);
+	virtual void begin(void);
+	virtual void end(void);
+	virtual void update(void);
+	virtual void render(int32_t xOffset, int32_t yOffset);
 
-	void				setMech(LogisticsMech* pMech, bool bFromLB = 0);
-	void				beginDrag(LogisticsMech* pMech);
-	virtual int32_t			handleMessage(uint32_t, uint32_t);
+	void setMech(LogisticsMech* pMech, bool bFromLB = 0);
+	void beginDrag(LogisticsMech* pMech);
+	virtual int32_t handleMessage(uint32_t, uint32_t);
 
-private:
-
+  private:
 	MechPurchaseScreen(const MechPurchaseScreen& src);
 	MechPurchaseScreen& operator=(const MechPurchaseScreen& echPurchaseScreen);
 
-	MechListBox			inventoryListBox;
-	MechListBox			variantListBox;
-	LogisticsMechDisplay	mechDisplay;
+	MechListBox inventoryListBox;
+	MechListBox variantListBox;
+	LogisticsMechDisplay mechDisplay;
 
-	LogisticsMech*		pDragMech;
-	aObject				dragIcon;
+	LogisticsMech* pDragMech;
+	aObject dragIcon;
 
-	bool				acceptPressed;
-
+	bool acceptPressed;
 
 	static MechPurchaseScreen* s_instance;
 
+	bool dragStartLeft;
 
-	bool				dragStartLeft;
+	typedef EList<LogisticsMech, LogisticsMech> MECH_LIST;
+	MECH_LIST prevInventory;
 
+	float countDownTime;
+	float curCount;
+	float previousAmount;
+	float oldCBillsAmount;
 
-	typedef EList<LogisticsMech, LogisticsMech > MECH_LIST;
-	MECH_LIST		prevInventory;
-
-	float				countDownTime;
-	float				curCount;
-	float				previousAmount;
-	float				oldCBillsAmount;
-
-	float				flashTime;
-
+	float flashTime;
 
 	// HELPER FUNCTIONS
 
@@ -90,11 +82,7 @@ private:
 	void removeMech(LogisticsMech* pMech);
 	void endDrag(void);
 	bool selectFirstBuyableMech(void);
-
-
-
 };
 
-
 //*************************************************************************************************
-#endif  // end of file ( MechPurchaseScreen.h )
+#endif // end of file ( MechPurchaseScreen.h )

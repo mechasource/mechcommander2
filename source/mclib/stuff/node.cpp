@@ -13,28 +13,20 @@
 
 using namespace Stuff;
 
-
 Node::ClassData* Node::DefaultData = nullptr;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-Node::InitializeClass()
+void Node::InitializeClass()
 {
 	Verify(!DefaultData);
-	DefaultData =
-		new ClassData(
-		NodeClassID,
-		"Stuff::Node",
-		Plug::DefaultData
-	);
+	DefaultData = new ClassData(NodeClassID, "Stuff::Node", Plug::DefaultData);
 	Register_Object(DefaultData);
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-Node::TerminateClass()
+void Node::TerminateClass()
 {
 	Unregister_Object(DefaultData);
 	delete DefaultData;
@@ -43,26 +35,18 @@ Node::TerminateClass()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Node ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Node::Node(ClassData* class_data):
-	Plug(class_data)
-{
-}
+Node::Node(ClassData* class_data) : Plug(class_data) {}
 
 Node::~Node()
 {
 	// Check_Object(this);
 }
 
-void
-Node::ReleaseLinkHandler(Socket*, Plug*)
+void Node::ReleaseLinkHandler(Socket*, Plug*)
 {
 	// Check_Object(this);
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-Node::TestInstance()
-{
-	Verify(IsDerivedFrom(DefaultData));
-}
+void Node::TestInstance() { Verify(IsDerivedFrom(DefaultData)); }

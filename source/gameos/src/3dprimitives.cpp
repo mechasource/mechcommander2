@@ -6,10 +6,10 @@
  conditions are met (OSI approved BSD 2-clause license):
 
  1. Redistributions of source code must retain the above copyright notice,
-    this list of conditions and the following disclaimer.
+	this list of conditions and the following disclaimer.
  2. Redistributions in binary form must reproduce the above copyright notice,
-    this list of conditions and the following disclaimer in the documentation
-    and/or other materials provided with the distribution.
+	this list of conditions and the following disclaimer in the documentation
+	and/or other materials provided with the distribution.
 
  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -35,7 +35,6 @@
 ================================================================================
  RcsID = $Id$ */
 
-
 #include "stdafx.h"
 
 #include <gameos.hpp>
@@ -50,32 +49,43 @@
 // global referenced data not listed in headers
 
 // local data
-static uint16_t		SingleQuadIndexArray[] = {1, 0, 2, 3};
-static float		FanLength;
-static uint32_t		FanCalls;
-static float		StripLength;
-static uint32_t		StripCalls;
+static uint16_t SingleQuadIndexArray[] = {1, 0, 2, 3};
+static float FanLength;
+static uint32_t FanCalls;
+static float StripLength;
+static uint32_t StripCalls;
 
 // unrecognized DirectX vertex type
 typedef enum __3dprimitives_const
 {
-	vertextype_unk1			= 0x1C4,
-	vertextype_unk2			= 0x2C4,
-	vertextype_unk3			= 0x3C4,
+	vertextype_unk1 = 0x1C4,
+	vertextype_unk2 = 0x2C4,
+	vertextype_unk3 = 0x3C4,
 };
 
 // -----------------------------------------------------------------------------
 // global implemented functions in this module listed in headers
 #if _JUST_SOME_INFO
-MECH_IMPEXP HRESULT __stdcall gos_DrawPoints(pgos_VERTEX Vertices, uint32_t NumVertices);
-MECH_IMPEXP HRESULT __stdcall gos_DrawLines(pgos_VERTEX Vertices, uint32_t NumVertices);
-MECH_IMPEXP HRESULT __stdcall gos_DrawTriangles(pgos_VERTEX Vertices, uint32_t NumVertices);
-MECH_IMPEXP HRESULT __stdcall gos_DrawQuads(pgos_VERTEX Vertices, uint32_t NumVertices);
-MECH_IMPEXP HRESULT __stdcall gos_DrawStrips(pgos_VERTEX Vertices, uint32_t NumVertices);
-MECH_IMPEXP HRESULT __stdcall gos_DrawFans(pgos_VERTEX Vertices, uint32_t NumVertices);
-MECH_IMPEXP HRESULT __stdcall gos_RenderIndexedArray(pgos_VERTEX pVertexArray, uint32_t NumberVertices, puint16_t lpwIndices, uint32_t NumberIndices);
-MECH_IMPEXP HRESULT __stdcall gos_RenderIndexedArray(pgos_VERTEX_2UV pVertexArray, uint32_t NumberVertices, puint16_t lpwIndices, uint32_t NumberIndices);
-MECH_IMPEXP HRESULT __stdcall gos_RenderIndexedArray(pgos_VERTEX_3UV pVertexArray, uint32_t NumberVertices, puint16_t lpwIndices, uint32_t NumberIndices);
+MECH_IMPEXP HRESULT __stdcall gos_DrawPoints(
+	pgos_VERTEX Vertices, uint32_t NumVertices);
+MECH_IMPEXP HRESULT __stdcall gos_DrawLines(
+	pgos_VERTEX Vertices, uint32_t NumVertices);
+MECH_IMPEXP HRESULT __stdcall gos_DrawTriangles(
+	pgos_VERTEX Vertices, uint32_t NumVertices);
+MECH_IMPEXP HRESULT __stdcall gos_DrawQuads(
+	pgos_VERTEX Vertices, uint32_t NumVertices);
+MECH_IMPEXP HRESULT __stdcall gos_DrawStrips(
+	pgos_VERTEX Vertices, uint32_t NumVertices);
+MECH_IMPEXP HRESULT __stdcall gos_DrawFans(
+	pgos_VERTEX Vertices, uint32_t NumVertices);
+MECH_IMPEXP HRESULT __stdcall gos_RenderIndexedArray(pgos_VERTEX pVertexArray,
+	uint32_t NumberVertices, puint16_t lpwIndices, uint32_t NumberIndices);
+MECH_IMPEXP HRESULT __stdcall gos_RenderIndexedArray(
+	pgos_VERTEX_2UV pVertexArray, uint32_t NumberVertices, puint16_t lpwIndices,
+	uint32_t NumberIndices);
+MECH_IMPEXP HRESULT __stdcall gos_RenderIndexedArray(
+	pgos_VERTEX_3UV pVertexArray, uint32_t NumberVertices, puint16_t lpwIndices,
+	uint32_t NumberIndices);
 #endif
 
 // global implemented functions not listed in headers
@@ -86,8 +96,10 @@ MECH_IMPEXP HRESULT __stdcall gos_RenderIndexedArray(pgos_VERTEX_3UV pVertexArra
 // externals referenced in this file not specified in headers
 
 #pragma region gos_DrawPoints
-// Draw points, pass a pointer to an array of gos_VERTEX's - every vertex is a new point
-//  (you must set the texture to 0 if you want to disable texture mapping on the points)
+// Draw points, pass a pointer to an array of gos_VERTEX's - every vertex is a
+// new point
+//  (you must set the texture to 0 if you want to disable texture mapping on the
+//  points)
 #pragma endregion local info
 /// <summary>
 /// <c>gos_DrawPoints</c>
@@ -97,11 +109,11 @@ MECH_IMPEXP HRESULT __stdcall gos_RenderIndexedArray(pgos_VERTEX_3UV pVertexArra
 /// <param name="Vertices"></param>
 /// <param name="NumVertices"></param>
 /// <returns></returns>
-MECH_IMPEXP HRESULT __stdcall
-gos_DrawPoints(pgos_VERTEX Vertices, uint32_t NumVertices)
+MECH_IMPEXP HRESULT __stdcall gos_DrawPoints(
+	pgos_VERTEX Vertices, uint32_t NumVertices)
 {
-	gos_VERTEX	vVertices;
-	size_t		i;
+	gos_VERTEX vVertices;
+	size_t i;
 	gosASSERT(!RenderDevice && InsideBeginScene && Vertices && NumVertices);
 	if (DirtyStates)
 		FlushRenderStates();
@@ -115,14 +127,20 @@ gos_DrawPoints(pgos_VERTEX Vertices, uint32_t NumVertices)
 			for (i = 0; i < NumVertices; ++i)
 			{
 				memcpy(&vVertices, &Vertices[i], sizeof(vVertices));
-				vVertices.x = (float)(vVertices.x - (((double)DBMouseX - vVertices.x) * ZoomMode));
-				vVertices.y = (float)(vVertices.y - (((double)DBMouseY - vVertices.y) * ZoomMode));
-				wDrawPrimitive(d3dDevice7, D3DPT_POINTLIST, vertextype_unk1, &vVertices, 1, 0);
+				vVertices.x =
+					(float)(vVertices.x -
+							(((double)DBMouseX - vVertices.x) * ZoomMode));
+				vVertices.y =
+					(float)(vVertices.y -
+							(((double)DBMouseY - vVertices.y) * ZoomMode));
+				wDrawPrimitive(d3dDevice7, D3DPT_POINTLIST, vertextype_unk1,
+					&vVertices, 1, 0);
 			}
 		}
 		else
 		{
-			wDrawPrimitive(d3dDevice7, D3DPT_POINTLIST, vertextype_unk1, Vertices, NumVertices, 0);
+			wDrawPrimitive(d3dDevice7, D3DPT_POINTLIST, vertextype_unk1,
+				Vertices, NumVertices, 0);
 			GameOSFPU();
 		}
 	}
@@ -134,8 +152,10 @@ gos_DrawPoints(pgos_VERTEX Vertices, uint32_t NumVertices)
 }
 
 #pragma region gos_DrawLines
-// Draw lines, pass a pointer to an array of gos_VERTEX's - every two vertices is a new line
-//  (you must set the texture to 0 if you want to disable texture mapping on the points)
+// Draw lines, pass a pointer to an array of gos_VERTEX's - every two vertices
+// is a new line
+//  (you must set the texture to 0 if you want to disable texture mapping on the
+//  points)
 #pragma endregion local info
 /// <summary>
 /// <c>gos_DrawLines</c>
@@ -145,13 +165,14 @@ gos_DrawPoints(pgos_VERTEX Vertices, uint32_t NumVertices)
 /// <param name="Vertices"></param>
 /// <param name="NumVertices"></param>
 /// <returns></returns>
-MECH_IMPEXP HRESULT __stdcall
-gos_DrawLines(pgos_VERTEX Vertices, uint32_t NumVertices)
+MECH_IMPEXP HRESULT __stdcall gos_DrawLines(
+	pgos_VERTEX Vertices, uint32_t NumVertices)
 {
-	gos_VERTEX	vVertices1;
-	gos_VERTEX	vVertices2;
-	size_t		i;
-	gosASSERT(!RenderDevice && InsideBeginScene && Vertices && NumVertices && (NumVertices & 1) == 0);
+	gos_VERTEX vVertices1;
+	gos_VERTEX vVertices2;
+	size_t i;
+	gosASSERT(!RenderDevice && InsideBeginScene && Vertices && NumVertices &&
+			  (NumVertices & 1) == 0);
 	if (DirtyStates)
 		FlushRenderStates();
 	CheckVertices(Vertices, NumVertices, 1);
@@ -165,17 +186,27 @@ gos_DrawLines(pgos_VERTEX Vertices, uint32_t NumVertices)
 			{
 				memcpy(&vVertices1, &Vertices[i], sizeof(vVertices1));
 				memcpy(&vVertices2, &Vertices[i + 1], sizeof(vVertices2));
-				vVertices1.x = (float)(vVertices1.x - (((double)DBMouseX - vVertices1.x) * (double)ZoomMode));
-				vVertices1.y = (float)(vVertices1.y - (((double)DBMouseY - vVertices1.y) * (double)ZoomMode));
-				vVertices2.x = (float)(vVertices2.x - (((double)DBMouseX - vVertices2.x) * (double)ZoomMode));
-				vVertices2.y = (float)(vVertices2.y - (((double)DBMouseY - vVertices2.y) * (double)ZoomMode));
-				wDrawPrimitive(d3dDevice7, D3DPT_LINELIST, vertextype_unk1, &vVertices1, 2u, 0);
+				vVertices1.x =
+					(float)(vVertices1.x - (((double)DBMouseX - vVertices1.x) *
+											   (double)ZoomMode));
+				vVertices1.y =
+					(float)(vVertices1.y - (((double)DBMouseY - vVertices1.y) *
+											   (double)ZoomMode));
+				vVertices2.x =
+					(float)(vVertices2.x - (((double)DBMouseX - vVertices2.x) *
+											   (double)ZoomMode));
+				vVertices2.y =
+					(float)(vVertices2.y - (((double)DBMouseY - vVertices2.y) *
+											   (double)ZoomMode));
+				wDrawPrimitive(d3dDevice7, D3DPT_LINELIST, vertextype_unk1,
+					&vVertices1, 2u, 0);
 			}
 		}
 		else
 		{
-			wDrawPrimitive(d3dDevice7, D3DPT_LINELIST, vertextype_unk1, Vertices, NumVertices, 0);
-			GameOSFPU();	// __asm { fninit }
+			wDrawPrimitive(d3dDevice7, D3DPT_LINELIST, vertextype_unk1,
+				Vertices, NumVertices, 0);
+			GameOSFPU(); // __asm { fninit }
 		}
 	}
 	else
@@ -197,20 +228,18 @@ gos_DrawLines(pgos_VERTEX Vertices, uint32_t NumVertices)
 /// <param name="Vertices"></param>
 /// <param name="NumVertices"></param>
 /// <returns></returns>
-MECH_IMPEXP HRESULT __stdcall
-gos_DrawTriangles(pgos_VERTEX Vertices, uint32_t NumVertices)
+MECH_IMPEXP HRESULT __stdcall gos_DrawTriangles(
+	pgos_VERTEX Vertices, uint32_t NumVertices)
 {
 	size_t i;
-	gosASSERT(InsideBeginScene && Vertices && NumVertices && (NumVertices % 3) == 0);
+	gosASSERT(
+		InsideBeginScene && Vertices && NumVertices && (NumVertices % 3) == 0);
 	if (RenderDevice)
 	{
-		//d3dDevice7->DrawPrimitive( dptPrimitiveType,dvtVertexType,lpvVertices,dwVertexCount,dwFlags )
+		// d3dDevice7->DrawPrimitive(
+		// dptPrimitiveType,dvtVertexType,lpvVertices,dwVertexCount,dwFlags )
 		RenderDevice->DrawPrimitive(
-			D3DPT_TRIANGLELIST,
-			vertextype_unk1,
-			Vertices,
-			NumVertices,
-			0);
+			D3DPT_TRIANGLELIST, vertextype_unk1, Vertices, NumVertices, 0);
 	}
 	else
 	{
@@ -224,12 +253,14 @@ gos_DrawTriangles(pgos_VERTEX Vertices, uint32_t NumVertices)
 			if (RenderMode)
 			{
 				for (i = 0; i < NumVertices; i += 3)
-					DebugTriangle(&Vertices[i], &Vertices[i + 1], &Vertices[i + 2]);
+					DebugTriangle(
+						&Vertices[i], &Vertices[i + 1], &Vertices[i + 2]);
 			}
 			else
 			{
-				wDrawPrimitive(d3dDevice7, D3DPT_TRIANGLELIST, vertextype_unk1, Vertices, NumVertices, 0);
-				GameOSFPU();	// __asm { fninit }
+				wDrawPrimitive(d3dDevice7, D3DPT_TRIANGLELIST, vertextype_unk1,
+					Vertices, NumVertices, 0);
+				GameOSFPU(); // __asm { fninit }
 			}
 		}
 		else
@@ -241,7 +272,8 @@ gos_DrawTriangles(pgos_VERTEX Vertices, uint32_t NumVertices)
 }
 
 #pragma region gos_DrawQuads
-// Draw quads, pass a pointer to an array of gos_VERTEX's - every four vertices is a new quad
+// Draw quads, pass a pointer to an array of gos_VERTEX's - every four vertices
+// is a new quad
 #pragma endregion local info
 /// <summary>
 /// <c>gos_DrawQuads</c>
@@ -251,11 +283,12 @@ gos_DrawTriangles(pgos_VERTEX Vertices, uint32_t NumVertices)
 /// <param name="Vertices"></param>
 /// <param name="NumVertices"></param>
 /// <returns></returns>
-MECH_IMPEXP HRESULT __stdcall
-gos_DrawQuads(pgos_VERTEX Vertices, uint32_t NumVertices)
+MECH_IMPEXP HRESULT __stdcall gos_DrawQuads(
+	pgos_VERTEX Vertices, uint32_t NumVertices)
 {
 	size_t i;
-	gosASSERT(!RenderDevice && InsideBeginScene && Vertices && NumVertices && (NumVertices & 3) == 0);
+	gosASSERT(!RenderDevice && InsideBeginScene && Vertices && NumVertices &&
+			  (NumVertices & 3) == 0);
 	gosASSERT((NumVertices + (NumVertices >> 1)) < 128 * 6);
 	if (DirtyStates)
 		FlushRenderStates();
@@ -280,47 +313,29 @@ gos_DrawQuads(pgos_VERTEX Vertices, uint32_t NumVertices)
 				{
 					if (NumVertices < 128)
 					{
-						wDrawIndexedPrimitive(
-							d3dDevice7,
-							D3DPT_TRIANGLELIST,
-							vertextype_unk1,
-							Vertices,
-							NumVertices,
+						wDrawIndexedPrimitive(d3dDevice7, D3DPT_TRIANGLELIST,
+							vertextype_unk1, Vertices, NumVertices,
 							(puint16_t)&QuadIndex,
-							NumVertices + (NumVertices >> 1),
-							0);
+							NumVertices + (NumVertices >> 1), 0);
 						NumVertices = 0;
 					}
 					else
 					{
-						wDrawIndexedPrimitive(
-							d3dDevice7,
-							D3DPT_TRIANGLELIST,
-							vertextype_unk1,
-							Vertices,
-							128u,
-							(puint16_t)&QuadIndex,
-							192u,
-							0);
+						wDrawIndexedPrimitive(d3dDevice7, D3DPT_TRIANGLELIST,
+							vertextype_unk1, Vertices, 128u,
+							(puint16_t)&QuadIndex, 192u, 0);
 						NumVertices -= 128;
 						Vertices += 128;
 					}
-				}
-				while (NumVertices);
+				} while (NumVertices);
 			}
 			else
 			{
-				wDrawIndexedPrimitive(
-					d3dDevice7,
-					D3DPT_TRIANGLELIST,
-					vertextype_unk1,
-					Vertices,
-					NumVertices,
-					(puint16_t)&QuadIndex,
-					NumVertices + (NumVertices >> 1),
-					0);
+				wDrawIndexedPrimitive(d3dDevice7, D3DPT_TRIANGLELIST,
+					vertextype_unk1, Vertices, NumVertices,
+					(puint16_t)&QuadIndex, NumVertices + (NumVertices >> 1), 0);
 			}
-			GameOSFPU();	// __asm { fninit }
+			GameOSFPU(); // __asm { fninit }
 		}
 	}
 	else
@@ -331,8 +346,8 @@ gos_DrawQuads(pgos_VERTEX Vertices, uint32_t NumVertices)
 }
 
 #pragma region gos_DrawStrips
-// Draws a strip, pass a pointer to an array of gos_VERTEX's - every vertex after
-// the 2nd is a new triangle
+// Draws a strip, pass a pointer to an array of gos_VERTEX's - every vertex
+// after the 2nd is a new triangle
 #pragma endregion local info
 /// <summary>
 /// <c>gos_DrawStrips</c>
@@ -342,11 +357,12 @@ gos_DrawQuads(pgos_VERTEX Vertices, uint32_t NumVertices)
 /// <param name="Vertices"></param>
 /// <param name="NumVertices"></param>
 /// <returns></returns>
-MECH_IMPEXP HRESULT __stdcall
-gos_DrawStrips(pgos_VERTEX Vertices, uint32_t NumVertices)
+MECH_IMPEXP HRESULT __stdcall gos_DrawStrips(
+	pgos_VERTEX Vertices, uint32_t NumVertices)
 {
 	size_t i;
-	gosASSERT(!RenderDevice && InsideBeginScene && Vertices && NumVertices >= 3);
+	gosASSERT(
+		!RenderDevice && InsideBeginScene && Vertices && NumVertices >= 3);
 	if (DirtyStates)
 		FlushRenderStates();
 	CheckVertices(Vertices, NumVertices, 0);
@@ -362,8 +378,9 @@ gos_DrawStrips(pgos_VERTEX Vertices, uint32_t NumVertices)
 		}
 		else
 		{
-			wDrawPrimitive(d3dDevice7, D3DPT_TRIANGLESTRIP, vertextype_unk1, Vertices, NumVertices, 0);
-			GameOSFPU();	// __asm { fninit }
+			wDrawPrimitive(d3dDevice7, D3DPT_TRIANGLESTRIP, vertextype_unk1,
+				Vertices, NumVertices, 0);
+			GameOSFPU(); // __asm { fninit }
 		}
 	}
 	else
@@ -385,18 +402,19 @@ gos_DrawStrips(pgos_VERTEX Vertices, uint32_t NumVertices)
 /// <param name="Vertices"></param>
 /// <param name="NumVertices"></param>
 /// <returns></returns>
-MECH_IMPEXP HRESULT __stdcall
-gos_DrawFans(pgos_VERTEX Vertices, uint32_t NumVertices)
+MECH_IMPEXP HRESULT __stdcall gos_DrawFans(
+	pgos_VERTEX Vertices, uint32_t NumVertices)
 {
 	size_t i;
-	gosASSERT(!RenderDevice && InsideBeginScene && Vertices && NumVertices >= 3);
+	gosASSERT(
+		!RenderDevice && InsideBeginScene && Vertices && NumVertices >= 3);
 	if (DirtyStates)
 		FlushRenderStates();
 	CheckVertices(Vertices, NumVertices, 0);
 	if (!gDisablePrimitives || InDebugger)
 	{
 		PrimitivesRendered = PrimitivesRendered + NumVertices - 2;
-		FanLength = (float)((double)NumVertices - 2 + FanLength);
+		FanLength		   = (float)((double)NumVertices - 2 + FanLength);
 		++FanCalls;
 		if (RenderMode)
 		{
@@ -405,8 +423,9 @@ gos_DrawFans(pgos_VERTEX Vertices, uint32_t NumVertices)
 		}
 		else
 		{
-			wDrawPrimitive(d3dDevice7, D3DPT_TRIANGLEFAN, vertextype_unk1, Vertices, NumVertices, 0);
-			GameOSFPU();	// __asm { fninit }
+			wDrawPrimitive(d3dDevice7, D3DPT_TRIANGLEFAN, vertextype_unk1,
+				Vertices, NumVertices, 0);
+			GameOSFPU(); // __asm { fninit }
 		}
 	}
 	else
@@ -417,13 +436,14 @@ gos_DrawFans(pgos_VERTEX Vertices, uint32_t NumVertices)
 }
 
 #pragma region gos_RenderIndexedArray
-// This API allows you to pass an array of indices and an array of vertices to be rendered.
+// This API allows you to pass an array of indices and an array of vertices to
+// be rendered.
 //
-// The x,y positions must be already transformed into the viewport using the constants returned
-// by gos_GetViewport.
+// The x,y positions must be already transformed into the viewport using the
+// constants returned by gos_GetViewport.
 //
-// The vertex colors in the array may be changed in some wireframe modes. Otherwise the data is
-// not altered.
+// The vertex colors in the array may be changed in some wireframe modes.
+// Otherwise the data is not altered.
 #pragma endregion local info
 /// <summary>
 /// <c>gos_RenderIndexedArray</c>
@@ -435,22 +455,18 @@ gos_DrawFans(pgos_VERTEX Vertices, uint32_t NumVertices)
 /// <param name="pwIndices"></param>
 /// <param name="NumberIndices"></param>
 /// <returns></returns>
-MECH_IMPEXP HRESULT __stdcall
-gos_RenderIndexedArray1(pgos_VERTEX pVertexArray, uint32_t NumberVertices, puint16_t pwIndices, uint32_t NumberIndices)
+MECH_IMPEXP HRESULT __stdcall gos_RenderIndexedArray1(pgos_VERTEX pVertexArray,
+	uint32_t NumberVertices, puint16_t pwIndices, uint32_t NumberIndices)
 {
 	size_t k;
 	size_t j;
 	size_t i;
-	gosASSERT(InsideBeginScene && NumberVertices > 0 && NumberIndices > 0 && (NumberIndices % 3) == 0);
+	gosASSERT(InsideBeginScene && NumberVertices > 0 && NumberIndices > 0 &&
+			  (NumberIndices % 3) == 0);
 	if (RenderDevice)
 	{
-		RenderDevice->DrawIndexedPrimitive(
-			D3DPT_TRIANGLELIST,
-			vertextype_unk1,
-			pVertexArray,
-			NumberVertices,
-			pwIndices,
-			NumberIndices, 0);
+		RenderDevice->DrawIndexedPrimitive(D3DPT_TRIANGLELIST, vertextype_unk1,
+			pVertexArray, NumberVertices, pwIndices, NumberIndices, 0);
 	}
 	else
 	{
@@ -459,12 +475,8 @@ gos_RenderIndexedArray1(pgos_VERTEX pVertexArray, uint32_t NumberVertices, puint
 		if (gShowVertexData)
 		{
 			for (i = 0; i < NumberIndices; i += 3)
-				InternalFunctionSpew(
-					"GameOS_Direct3D",
-					"Indices %d,%d,%d",
-					pwIndices[i],
-					pwIndices[i + 1],
-					pwIndices[i + 2]);
+				InternalFunctionSpew("GameOS_Direct3D", "Indices %d,%d,%d",
+					pwIndices[i], pwIndices[i + 1], pwIndices[i + 2]);
 		}
 		for (j = 0; j < NumberIndices; ++j)
 		{
@@ -474,28 +486,22 @@ gos_RenderIndexedArray1(pgos_VERTEX pVertexArray, uint32_t NumberVertices, puint
 		if (!gDisablePrimitives || InDebugger)
 		{
 			PrimitivesRendered += NumberIndices / 3;
-			IndexedTriangleLength = (float)(((double)NumberIndices / 3) + IndexedTriangleLength);
+			IndexedTriangleLength =
+				(float)(((double)NumberIndices / 3) + IndexedTriangleLength);
 			++IndexedTriangleCalls;
 			if (RenderMode)
 			{
 				for (k = 0; k < NumberIndices; k += 3)
-					DebugTriangle(
-						&pVertexArray[pwIndices[k]],
+					DebugTriangle(&pVertexArray[pwIndices[k]],
 						&pVertexArray[pwIndices[k + 1]],
 						&pVertexArray[pwIndices[k + 2]]);
 			}
 			else
 			{
-				wDrawIndexedPrimitive(
-					d3dDevice7,
-					D3DPT_TRIANGLELIST,
-					vertextype_unk1,
-					pVertexArray,
-					NumberVertices,
-					pwIndices,
-					NumberIndices,
-					0);
-				GameOSFPU();	// __asm { fninit }
+				wDrawIndexedPrimitive(d3dDevice7, D3DPT_TRIANGLELIST,
+					vertextype_unk1, pVertexArray, NumberVertices, pwIndices,
+					NumberIndices, 0);
+				GameOSFPU(); // __asm { fninit }
 			}
 		}
 		else
@@ -506,13 +512,14 @@ gos_RenderIndexedArray1(pgos_VERTEX pVertexArray, uint32_t NumberVertices, puint
 	return S_OK;
 }
 
-MECH_IMPEXP HRESULT __stdcall
-gos_RenderIndexedArray2(
-	pgos_VERTEX_2UV pVertexArray, uint32_t NumberVertices, puint16_t pwIndices, uint32_t NumberIndices)
+MECH_IMPEXP HRESULT __stdcall gos_RenderIndexedArray2(
+	pgos_VERTEX_2UV pVertexArray, uint32_t NumberVertices, puint16_t pwIndices,
+	uint32_t NumberIndices)
 {
 	size_t j;
 	size_t i;
-	gosASSERT(!RenderDevice && InsideBeginScene && NumberVertices > 0 && NumberIndices > 0 && (NumberIndices % 3) == 0);
+	gosASSERT(!RenderDevice && InsideBeginScene && NumberVertices > 0 &&
+			  NumberIndices > 0 && (NumberIndices % 3) == 0);
 	if (DirtyStates)
 		FlushRenderStates();
 	for (i = 0; i < NumberIndices; ++i)
@@ -523,28 +530,22 @@ gos_RenderIndexedArray2(
 	if (!gDisablePrimitives || InDebugger)
 	{
 		PrimitivesRendered += NumberIndices / 3;
-		IndexedTriangleLength = (float)(((double)NumberIndices / 3) + IndexedTriangleLength);
+		IndexedTriangleLength =
+			(float)(((double)NumberIndices / 3) + IndexedTriangleLength);
 		++IndexedTriangleCalls;
 		if (RenderMode)
 		{
 			for (j = 0; j < NumberIndices; j += 3)
-				DebugTriangle_2UV(
-					&pVertexArray[pwIndices[j]],
+				DebugTriangle_2UV(&pVertexArray[pwIndices[j]],
 					&pVertexArray[pwIndices[j + 1]],
 					&pVertexArray[pwIndices[j + 2]]);
 		}
 		else
 		{
-			wDrawIndexedPrimitive(
-				d3dDevice7,
-				D3DPT_TRIANGLELIST,
-				vertextype_unk2,
-				pVertexArray,
-				NumberVertices,
-				pwIndices,
-				NumberIndices,
-				0);
-			GameOSFPU();	// __asm { fninit }
+			wDrawIndexedPrimitive(d3dDevice7, D3DPT_TRIANGLELIST,
+				vertextype_unk2, pVertexArray, NumberVertices, pwIndices,
+				NumberIndices, 0);
+			GameOSFPU(); // __asm { fninit }
 		}
 	}
 	else
@@ -554,13 +555,14 @@ gos_RenderIndexedArray2(
 	return S_OK;
 }
 
-MECH_IMPEXP HRESULT __stdcall
-gos_RenderIndexedArray3(
-	pgos_VERTEX_3UV pVertexArray, uint32_t NumberVertices, puint16_t pwIndices, uint32_t NumberIndices)
+MECH_IMPEXP HRESULT __stdcall gos_RenderIndexedArray3(
+	pgos_VERTEX_3UV pVertexArray, uint32_t NumberVertices, puint16_t pwIndices,
+	uint32_t NumberIndices)
 {
 	size_t j;
 	size_t i;
-	gosASSERT(!RenderDevice && InsideBeginScene && NumberVertices > 0 && NumberIndices > 0 && (NumberIndices % 3) == 0);
+	gosASSERT(!RenderDevice && InsideBeginScene && NumberVertices > 0 &&
+			  NumberIndices > 0 && (NumberIndices % 3) == 0);
 	if (DirtyStates)
 		FlushRenderStates();
 	for (i = 0; i < NumberIndices; ++i)
@@ -571,28 +573,22 @@ gos_RenderIndexedArray3(
 	if (!gDisablePrimitives || InDebugger)
 	{
 		PrimitivesRendered += NumberIndices / 3;
-		IndexedTriangleLength = (float)(((double)NumberIndices / 3) + IndexedTriangleLength);
+		IndexedTriangleLength =
+			(float)(((double)NumberIndices / 3) + IndexedTriangleLength);
 		++IndexedTriangleCalls;
 		if (RenderMode)
 		{
 			for (j = 0; j < NumberIndices; j += 3)
-				DebugTriangle_3UV(
-					&pVertexArray[pwIndices[j]],
+				DebugTriangle_3UV(&pVertexArray[pwIndices[j]],
 					&pVertexArray[pwIndices[j + 1]],
 					&pVertexArray[pwIndices[j + 2]]);
 		}
 		else
 		{
-			wDrawIndexedPrimitive(
-				d3dDevice7,
-				D3DPT_TRIANGLELIST,
-				vertextype_unk3,
-				pVertexArray,
-				NumberVertices,
-				pwIndices,
-				NumberIndices,
-				0);
-			GameOSFPU();	// __asm { fninit }
+			wDrawIndexedPrimitive(d3dDevice7, D3DPT_TRIANGLELIST,
+				vertextype_unk3, pVertexArray, NumberVertices, pwIndices,
+				NumberIndices, 0);
+			GameOSFPU(); // __asm { fninit }
 		}
 	}
 	else

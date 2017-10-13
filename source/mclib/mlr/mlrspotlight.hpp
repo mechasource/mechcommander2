@@ -16,91 +16,73 @@ namespace MidLevelRenderer
 //########################    MLRSpotLight    ##############################
 //##########################################################################
 
-	class MLRSpotLight:
-		public MLRInfiniteLightWithFalloff
+class MLRSpotLight : public MLRInfiniteLightWithFalloff
+{
+  public:
+	static void __stdcall InitializeClass(void);
+	static void __stdcall TerminateClass(void);
+
+	MLRSpotLight(void);
+	MLRSpotLight(Stuff::MemoryStream* stream, uint32_t version);
+	MLRSpotLight(Stuff::Page* page);
+	~MLRSpotLight(void);
+
+	void Save(Stuff::MemoryStream* stream);
+	void Write(Stuff::Page* page);
+
+	virtual LightType GetLightType()
 	{
-	public:
-		static void __stdcall InitializeClass(void);
-		static void __stdcall TerminateClass(void);
+		// Check_Object(this);
+		return SpotLight;
+	}
 
-		MLRSpotLight(void);
-		MLRSpotLight(
-			Stuff::MemoryStream* stream,
-			uint32_t version);
-		MLRSpotLight(Stuff::Page* page);
-		~MLRSpotLight(void);
+	//
+	// spotlight spread.  This value is only valid if the light had falloff
+	//
+	bool GetSpreadAngle(Stuff::Radian* angle);
+	void SetSpreadAngle(const Stuff::Radian& radian);
 
-		void
-		Save(Stuff::MemoryStream* stream);
-		void
-		Write(Stuff::Page* page);
+	void SetSpreadAngle(const Stuff::Degree& degree);
 
-		virtual LightType
-		GetLightType()
-		{
-			// Check_Object(this);
-			return SpotLight;
-		}
+	float GetTanSpreadAngle()
+	{
+		// Check_Object(this);
+		return tanSpreadAngle;
+	}
 
+	float GetCosSpreadAngle()
+	{
+		// Check_Object(this);
+		return cosSpreadAngle;
+	}
 
-		//
-		// spotlight spread.  This value is only valid if the light had falloff
-		//
-		bool
-		GetSpreadAngle(Stuff::Radian* angle);
-		void
-		SetSpreadAngle(const Stuff::Radian& radian);
+	virtual void LightVertex(const MLRVertexData&);
 
-		void
-		SetSpreadAngle(const Stuff::Degree& degree);
+	void SetLightMap(MLRLightMap* light_map);
 
-		float
-		GetTanSpreadAngle()
-		{
-			// Check_Object(this);
-			return tanSpreadAngle;
-		}
+	MLRLightMap* GetLightMap()
+	{
+		// Check_Object(this);
+		return lightMap;
+	}
 
-		float
-		GetCosSpreadAngle()
-		{
-			// Check_Object(this);
-			return cosSpreadAngle;
-		}
+	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	// Class Data Support
+	//
+  public:
+	static ClassData* DefaultData;
 
-		virtual void LightVertex(const MLRVertexData&);
+	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	// Testing
+	//
+  public:
+	void TestInstance(void);
 
-		void
-		SetLightMap(MLRLightMap* light_map);
+  protected:
+	MLRLightMap* lightMap;
 
-		MLRLightMap*
-		GetLightMap()
-		{
-			// Check_Object(this);
-			return lightMap;
-		}
-
-		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-		// Class Data Support
-		//
-	public:
-		static ClassData* DefaultData;
-
-		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-		// Testing
-		//
-	public:
-		void TestInstance(void);
-
-	protected:
-		MLRLightMap* lightMap;
-
-		Stuff::Radian
-		spreadAngle;
-		float
-		tanSpreadAngle,
-		cosSpreadAngle;
-	};
-
+	Stuff::Radian spreadAngle;
+	float tanSpreadAngle, cosSpreadAngle;
+};
 }
 #endif

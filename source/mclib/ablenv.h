@@ -38,8 +38,7 @@ typedef struct _SourceFile
 class UserFile
 {
 
-public:
-
+  public:
 	int32_t handle;
 	bool inUse;
 	char fileName[MAXLEN_FILENAME];
@@ -50,35 +49,28 @@ public:
 
 	static UserFilePtr files[MAX_USER_FILES];
 
-public:
-
+  public:
 	PVOID operator new(size_t mySize);
 
 	void operator delete(PVOID us);
 
 	void init(void)
 	{
-		handle = -1;
-		inUse = false;
+		handle		= -1;
+		inUse		= false;
 		fileName[0] = nullptr;
-		filePtr = nullptr;
-		numLines = 0;
-		totalLines = 0;
-		for(size_t i = 0; i < MAX_USER_FILE_LINES; i++)
+		filePtr		= nullptr;
+		numLines	= 0;
+		totalLines  = 0;
+		for (size_t i = 0; i < MAX_USER_FILE_LINES; i++)
 			lines[i][0] = nullptr;
 	}
 
-	UserFile(void)
-	{
-		init(void);
-	}
+	UserFile(void) { init(void); }
 
 	void destroy(void);
 
-	~UserFile(void)
-	{
-		destroy(void);
-	}
+	~UserFile(void) { destroy(void); }
 
 	void dump(void);
 
@@ -98,7 +90,7 @@ public:
 //---------------------------------------------------------------------------
 
 #define MAX_ABLMODULE_NAME 5
-#define MAX_SOURCE_FILES 256 // per module
+#define MAX_SOURCE_FILES 256  // per module
 #define MAX_LIBRARIES_USED 25 // per module
 #define MAX_STATE_HANDLES_PER_MODULE 10
 
@@ -148,8 +140,7 @@ typedef ModuleEntry* ModuleEntryPtr;
 class ABLModule
 {
 
-private:
-
+  private:
 	int32_t id;
 	char name[MAX_ABLMODULE_NAME];
 	int32_t handle;
@@ -166,36 +157,31 @@ private:
 	bool traceEntry;
 	bool traceExit;
 
-	//static int32_t numModules;
+	// static int32_t numModules;
 
-public:
-
+  public:
 	PVOID operator new(size_t mySize);
 	void operator delete(PVOID us);
 
 	void init(void)
 	{
-		id = -1;
-		name[0] = nullptr;
-		handle = -1;
-		staticData = nullptr;
+		id				  = -1;
+		name[0]			  = nullptr;
+		handle			  = -1;
+		staticData		  = nullptr;
 		returnVal.integer = 0;
-		initCalled = false;
-		prevState = nullptr;
-		state = nullptr;
-		watchManager = nullptr;
+		initCalled		  = false;
+		prevState		  = nullptr;
+		state			  = nullptr;
+		watchManager	  = nullptr;
 		breakPointManager = nullptr;
-		trace = false;
-		step = false;
-		traceEntry = false;
-		traceExit = false;
+		trace			  = false;
+		step			  = false;
+		traceEntry		  = false;
+		traceExit		  = false;
 	}
 
-
-	ABLModule(void)
-	{
-		init(void);
-	}
+	ABLModule(void) { init(void); }
 
 	int32_t init(int32_t moduleHandle);
 
@@ -203,68 +189,35 @@ public:
 
 	void read(ABLFile* moduleFile);
 
-	int32_t getId(void)
-	{
-		return(id);
-	}
+	int32_t getId(void) { return (id); }
 
 	int32_t getRealId(void);
 
-	int32_t getHandle(void)
-	{
-		return(handle);
-	}
+	int32_t getHandle(void) { return (handle); }
 
-	StackItemPtr getStaticData(void)
-	{
-		return(staticData);
-	}
+	StackItemPtr getStaticData(void) { return (staticData); }
 
-	void setInitCalled(bool called)
-	{
-		initCalled = called;
-	}
+	void setInitCalled(bool called) { initCalled = called; }
 
-	bool getInitCalled(void)
-	{
-		return(initCalled);
-	}
+	bool getInitCalled(void) { return (initCalled); }
 
 	PSTR getFileName(void);
 
-	PSTR getName(void)
-	{
-		return(name);
-	}
+	PSTR getName(void) { return (name); }
 
 	void setName(PSTR _name);
 
-	size_t* getOrderCallFlags(void)
-	{
-		return(orderCallFlags);
-	}
+	size_t* getOrderCallFlags(void) { return (orderCallFlags); }
 
-	void setPrevState(SymTableNodePtr stateSym)
-	{
-		prevState = stateSym;
-	}
+	void setPrevState(SymTableNodePtr stateSym) { prevState = stateSym; }
 
-	SymTableNodePtr getPrevState(void)
-	{
-		return(prevState);
-	}
+	SymTableNodePtr getPrevState(void) { return (prevState); }
 
 	int32_t getPrevStateHandle(void);
 
-	void setState(SymTableNodePtr stateSym)
-	{
-		state = stateSym;
-	}
+	void setState(SymTableNodePtr stateSym) { state = stateSym; }
 
-	SymTableNodePtr getState(void)
-	{
-		return(state);
-	}
+	SymTableNodePtr getState(void) { return (state); }
 
 	int32_t getStateHandle(void);
 
@@ -278,47 +231,37 @@ public:
 
 	bool getOrderCallFlag(uint8_t dword, uint8_t bit)
 	{
-		return((orderCallFlags[dword] & (1 << bit)) != 0);
+		return ((orderCallFlags[dword] & (1 << bit)) != 0);
 	}
 
-	WatchManagerPtr getWatchManager(void)
-	{
-		return(watchManager);
-	}
+	WatchManagerPtr getWatchManager(void) { return (watchManager); }
 
 	BreakPointManagerPtr getBreakPointManager(void)
 	{
-		return(breakPointManager);
+		return (breakPointManager);
 	}
 
 	void setTrace(bool _trace)
 	{
-		trace = _trace;
+		trace	  = _trace;
 		traceEntry = _trace;
-		traceExit = _trace;
+		traceExit  = _trace;
 	}
 
-	bool getTrace(void)
-	{
-		return(trace);
-	}
+	bool getTrace(void) { return (trace); }
 
-	void setStep(bool _step)
-	{
-		step = _step;
-	}
+	void setStep(bool _step) { step = _step; }
 
-	bool getStep(void)
-	{
-		return(step);
-	}
+	bool getStep(void) { return (step); }
 
 	int32_t execute(ABLParamPtr paramList = nullptr);
 	int32_t execute(ABLParamPtr moduleParamList, SymTableNodePtr functionIdPtr);
 
-	SymTableNodePtr findSymbol(PSTR symbolName, SymTableNodePtr curFunction = nullptr, bool searchLibraries = false);
+	SymTableNodePtr findSymbol(PSTR symbolName,
+		SymTableNodePtr curFunction = nullptr, bool searchLibraries = false);
 
-	SymTableNodePtr findFunction(PSTR functionName, bool searchLibraries = false);
+	SymTableNodePtr findFunction(
+		PSTR functionName, bool searchLibraries = false);
 
 	SymTableNodePtr findState(PSTR stateName);
 
@@ -330,15 +273,9 @@ public:
 
 	void getInfo(ModuleInfo* moduleInfo);
 
-	float getReal(void)
-	{
-		return(returnVal.real);
-	}
+	float getReal(void) { return (returnVal.real); }
 
-	int32_t getInteger(void)
-	{
-		return(returnVal.integer);
-	}
+	int32_t getInteger(void) { return (returnVal.integer); }
 
 	int32_t setStaticInteger(PSTR name, int32_t value);
 
@@ -358,11 +295,7 @@ public:
 
 	void destroy(void);
 
-	~ABLModule(void)
-	{
-		destroy(void);
-	}
-
+	~ABLModule(void) { destroy(void); }
 };
 
 //*************************************************************************

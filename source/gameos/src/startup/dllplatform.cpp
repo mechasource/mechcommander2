@@ -6,10 +6,10 @@
  conditions are met (OSI approved BSD 2-clause license):
 
  1. Redistributions of source code must retain the above copyright notice,
-    this list of conditions and the following disclaimer.
+	this list of conditions and the following disclaimer.
  2. Redistributions in binary form must reproduce the above copyright notice,
-    this list of conditions and the following disclaimer in the documentation
-    and/or other materials provided with the distribution.
+	this list of conditions and the following disclaimer in the documentation
+	and/or other materials provided with the distribution.
 
  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -39,8 +39,8 @@
 #include <platform.hpp>
 #include <dllplatform.hpp>
 
-extern "C" void WINAPI
-InitGameOS(HINSTANCE hInstance, HWND hWindow, PSTR CommandLine)
+extern "C" void WINAPI InitGameOS(
+	HINSTANCE hInstance, HWND hWindow, PSTR CommandLine)
 {
 	Platform = Platform_DLL;
 	RunFromOtherApp(hInstance, hWindow, CommandLine);
@@ -52,13 +52,7 @@ PVOID __cdecl operator new(size_t size, HGOSHEAP /*Heap*/)
 	return malloc(Size);
 }
 
-PVOID __cdecl operator new(size_t Size)
-{
-	return malloc(Size);
-}
+PVOID __cdecl operator new(size_t Size) { return malloc(Size); }
 
-void __cdecl operator delete(PVOID Memory)
-{
-	free(Memory);
-}
+void __cdecl operator delete(PVOID Memory) { free(Memory); }
 #endif

@@ -12,14 +12,14 @@ This header and class is not used
 
 namespace Stuff
 {
-	class Noncopyable
-	{
-	protected:
-		Noncopyable() {}
+class Noncopyable
+{
+  protected:
+	Noncopyable() {}
 
-	private:
-		Noncopyable(const Noncopyable&);
-		const Noncopyable& operator=(const Noncopyable&);
-	};
+  private:
+	Noncopyable(const Noncopyable&);
+	const Noncopyable& operator=(const Noncopyable&);
+};
 };
 #endif // NONCOPYABLE_HPP

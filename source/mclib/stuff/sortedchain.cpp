@@ -14,16 +14,16 @@
 
 using namespace Stuff;
 
-
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ SortedChainLink ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ SortedChainLink
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 //
 //###########################################################################
 // SortedChainLink
 //###########################################################################
 //
-SortedChainLink::SortedChainLink(
-	SortedChain* vchain, Plug* plug) : Link(vchain, plug)
+SortedChainLink::SortedChainLink(SortedChain* vchain, Plug* plug)
+	: Link(vchain, plug)
 {
 	next = nullptr;
 	prev = nullptr;
@@ -49,7 +49,7 @@ SortedChainLink::~SortedChainLink(void)
 	// Remove from existing links
 	//---------------------------
 	//
-	if(prev != nullptr)
+	if (prev != nullptr)
 	{
 		Check_Object(prev);
 		prev->next = next;
@@ -59,7 +59,7 @@ SortedChainLink::~SortedChainLink(void)
 		Check_Object(vchain);
 		vchain->head = next;
 	}
-	if(next != nullptr)
+	if (next != nullptr)
 	{
 		Check_Object(next);
 		next->prev = prev;
@@ -83,7 +83,7 @@ SortedChainLink::~SortedChainLink(void)
 	// time.
 	//-------------------------------------------------------------
 	//
-	if(vchain->GetReleaseNode() != nullptr)
+	if (vchain->GetReleaseNode() != nullptr)
 	{
 		Check_Object(vchain->GetReleaseNode());
 		vchain->GetReleaseNode()->ReleaseLinkHandler(vchain, plug);
@@ -98,11 +98,11 @@ SortedChainLink::~SortedChainLink(void)
 void SortedChainLink::TestInstance(void)
 {
 	Link::TestInstance();
-	if(next != nullptr)
+	if (next != nullptr)
 	{
 		Check_Signature(next);
 	}
-	if(prev != nullptr)
+	if (prev != nullptr)
 	{
 		Check_Signature(prev);
 	}
@@ -113,14 +113,16 @@ void SortedChainLink::TestInstance(void)
 // SetupSortedChainLinks
 //###########################################################################
 //
-void SortedChainLink::SetupSortedChainLinks(SortedChainLink* next, SortedChainLink* prev)
+void SortedChainLink::SetupSortedChainLinks(
+	SortedChainLink* next, SortedChainLink* prev)
 {
 	// Check_Object(this);
 	this->next = next;
 	this->prev = prev;
 }
 
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ SortedChain ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ SortedChain
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 //
 //###########################################################################
@@ -144,7 +146,7 @@ SortedChain::~SortedChain(void)
 	// Check_Object(this);
 	SetReleaseNode(nullptr);
 	SortedChainLink* link = head;
-	while(link)
+	while (link)
 	{
 		Check_Object(link);
 		SortedChainLink* next = link->next;
@@ -162,11 +164,11 @@ SortedChain::~SortedChain(void)
 void SortedChain::TestInstance(void)
 {
 	SortedSocket::TestInstance();
-	if(head != nullptr)
+	if (head != nullptr)
 	{
 		Check_Object(head);
 	}
-	if(tail != nullptr)
+	if (tail != nullptr)
 	{
 		Check_Object(tail);
 	}
@@ -204,7 +206,8 @@ int32_t SortedChain::CompareSortedChainLinks(SortedChainLink*, SortedChainLink*)
 int32_t SortedChain::CompareValueToSortedChainLink(PCVOID, SortedChainLink*)
 {
 	// Check_Object(this);
-	STOP(("SortedChain::CompareValueToSortedChainLink - Should never reach here"));
+	STOP(("SortedChain::CompareValueToSortedChainLink - Should never reach "
+		  "here"));
 	return 0;
 }
 
@@ -235,7 +238,8 @@ void SortedChain::AddValueImplementation(Plug* plug, PCVOID value)
 	// Verify that value has not been added
 	//-------------------------------------------------------------
 	//
-	Verify(HasUniqueEntries() ? (SearchForValue(value) == nullptr) : (bool)true);
+	Verify(
+		HasUniqueEntries() ? (SearchForValue(value) == nullptr) : (bool)true);
 	//
 	//-------------------------------------------------------------
 	// Make new vchain link
@@ -248,7 +252,7 @@ void SortedChain::AddValueImplementation(Plug* plug, PCVOID value)
 	// Find insertion point for the new link
 	//-------------------------------------------------------------
 	//
-	if(head == nullptr)
+	if (head == nullptr)
 	{
 		link->SetupSortedChainLinks(nullptr, nullptr);
 		head = link;
@@ -259,33 +263,30 @@ void SortedChain::AddValueImplementation(Plug* plug, PCVOID value)
 		SortedChainLink* greater_link;
 		Check_Object(head);
 		Check_Object(tail);
-		for(
-			greater_link = head;
-			greater_link != nullptr;
-			greater_link = greater_link->next
-		)
+		for (greater_link = head; greater_link != nullptr;
+			 greater_link = greater_link->next)
 		{
 			Check_Object(greater_link);
-			if(CompareValueToSortedChainLink(value, greater_link) < 0)
+			if (CompareValueToSortedChainLink(value, greater_link) < 0)
 				break;
 		}
-		if(greater_link == nullptr)
+		if (greater_link == nullptr)
 		{
 			//
 			// Add after tail
 			//
 			link->SetupSortedChainLinks(nullptr, tail);
 			tail->next = link;
-			tail = link;
+			tail	   = link;
 		}
-		else if(greater_link == head)
+		else if (greater_link == head)
 		{
 			//
 			// Add before head
 			//
 			link->SetupSortedChainLinks(head, nullptr);
 			head->prev = link;
-			head = link;
+			head	   = link;
 		}
 		else
 		{
@@ -294,7 +295,7 @@ void SortedChain::AddValueImplementation(Plug* plug, PCVOID value)
 			//
 			link->SetupSortedChainLinks(greater_link, greater_link->prev);
 			greater_link->prev->next = link;
-			greater_link->prev = link;
+			greater_link->prev		 = link;
 		}
 	}
 	SendIteratorMemo(PlugAdded, link);
@@ -309,7 +310,7 @@ Plug* SortedChain::FindImplementation(PCVOID value)
 {
 	// Check_Object(this);
 	SortedChainLink* link;
-	if((link = SearchForValue(value)) != nullptr)
+	if ((link = SearchForValue(value)) != nullptr)
 	{
 		Check_Object(link);
 		return link->GetPlug();
@@ -338,13 +339,13 @@ SortedChainLink* SortedChain::SearchForValue(PCVOID value)
 	// Check_Object(this);
 	SortedChainLink* link;
 	int32_t ret;
-	for(link = head; link != nullptr; link = link->next)
+	for (link = head; link != nullptr; link = link->next)
 	{
 		Check_Object(link);
-		if((ret = CompareValueToSortedChainLink(value, link)) == 0)
+		if ((ret = CompareValueToSortedChainLink(value, link)) == 0)
 			break;
-		if(ret < 0)
-			return(nullptr);
+		if (ret < 0)
+			return (nullptr);
 	}
 	return link;
 }
@@ -373,8 +374,7 @@ SortedChainIterator::SortedChainIterator(const SortedChainIterator* iterator)
 	currentLink = iterator->currentLink;
 }
 
-Iterator*
-SortedChainIterator::MakeClone(void)
+Iterator* SortedChainIterator::MakeClone(void)
 {
 	// Check_Object(this);
 	return new SortedChainIterator(*this);
@@ -397,7 +397,7 @@ SortedChainIterator::~SortedChainIterator(void)
 void SortedChainIterator::TestInstance(void) const
 {
 	SortedIterator::TestInstance();
-	if(currentLink != nullptr)
+	if (currentLink != nullptr)
 	{
 		Check_Object(currentLink);
 	}
@@ -457,11 +457,11 @@ void SortedChainIterator::Previous(void)
 PVOID SortedChainIterator::ReadAndNextImplementation(void)
 {
 	// Check_Object(this);
-	if(currentLink != nullptr)
+	if (currentLink != nullptr)
 	{
 		Plug* plug;
 		Check_Object(currentLink);
-		plug = currentLink->GetPlug();
+		plug		= currentLink->GetPlug();
 		currentLink = currentLink->next;
 		return plug;
 	}
@@ -476,11 +476,11 @@ PVOID SortedChainIterator::ReadAndNextImplementation(void)
 PVOID SortedChainIterator::ReadAndPreviousImplementation(void)
 {
 	// Check_Object(this);
-	if(currentLink != nullptr)
+	if (currentLink != nullptr)
 	{
 		Plug* plug;
 		Check_Object(currentLink);
-		plug = currentLink->plug;
+		plug		= currentLink->plug;
 		currentLink = currentLink->prev;
 		return plug;
 	}
@@ -495,7 +495,7 @@ PVOID SortedChainIterator::ReadAndPreviousImplementation(void)
 PVOID SortedChainIterator::GetCurrentImplementation(void)
 {
 	// Check_Object(this);
-	if(currentLink != nullptr)
+	if (currentLink != nullptr)
 	{
 		Check_Object(currentLink);
 		return currentLink->GetPlug();
@@ -514,11 +514,8 @@ CollectionSize SortedChainIterator::GetSize(void)
 	SortedChainLink* link;
 	CollectionSize count;
 	count = 0;
-	for(
-		link = Cast_Object(SortedChain*, socket)->head;
-		link != nullptr;
-		link = link->next
-	)
+	for (link = Cast_Object(SortedChain*, socket)->head; link != nullptr;
+		 link = link->next)
 	{
 		Check_Object(link);
 		count++;
@@ -537,14 +534,11 @@ PVOID SortedChainIterator::GetNthImplementation(CollectionSize index)
 	SortedChainLink* link;
 	CollectionSize count;
 	count = 0;
-	for(
-		link = Cast_Object(SortedChain*, socket)->head;
-		link != nullptr;
-		link = link->next
-	)
+	for (link = Cast_Object(SortedChain*, socket)->head; link != nullptr;
+		 link = link->next)
 	{
 		Check_Object(link);
-		if(count == index)
+		if (count == index)
 		{
 			currentLink = link;
 			return currentLink->GetPlug();
@@ -576,7 +570,8 @@ Plug* SortedChainIterator::FindImplementation(PCVOID value)
 {
 	// Check_Object(this);
 	SortedChainLink* link;
-	if((link = Cast_Object(SortedChain*, socket)->SearchForValue(value)) != nullptr)
+	if ((link = Cast_Object(SortedChain*, socket)->SearchForValue(value)) !=
+		nullptr)
 	{
 		Check_Object(link);
 		return (currentLink = link)->GetPlug();
@@ -592,9 +587,9 @@ Plug* SortedChainIterator::FindImplementation(PCVOID value)
 void SortedChainIterator::ReceiveMemo(IteratorMemo memo, PVOID content)
 {
 	// Check_Object(this);
-	if(memo == PlugRemoved)
+	if (memo == PlugRemoved)
 	{
-		if(content == currentLink)
+		if (content == currentLink)
 		{
 			Next();
 		}

@@ -13,7 +13,7 @@
 
 //***************************************************************************
 
-#define	MAX_MOVERS		255	// Should probably equal that in Collision System
+#define MAX_MOVERS 255 // Should probably equal that in Collision System
 
 typedef struct _PathQueueRec* PathQueueRecPtr;
 
@@ -26,7 +26,3 @@ typedef MovePathManager* MovePathManagerPtr;
 #endif
 
 //***************************************************************************
-
-
-
-

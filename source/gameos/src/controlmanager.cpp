@@ -6,10 +6,10 @@
  conditions are met (OSI approved BSD 2-clause license):
 
  1. Redistributions of source code must retain the above copyright notice,
-    this list of conditions and the following disclaimer.
+	this list of conditions and the following disclaimer.
  2. Redistributions in binary form must reproduce the above copyright notice,
-    this list of conditions and the following disclaimer in the documentation
-    and/or other materials provided with the distribution.
+	this list of conditions and the following disclaimer in the documentation
+	and/or other materials provided with the distribution.
 
  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -59,18 +59,22 @@ MECH_IMPEXP void __stdcall CMAcquireControls(void);
 MECH_IMPEXP void __stdcall CMUnacquireControls(void);
 MECH_IMPEXP void __stdcall CMUpdate(void);
 MECH_IMPEXP void __stdcall CMCreateJoysticks(void);
-MECH_IMPEXP BOOL __stdcall CMCreateJoystick7(LPCDIDEVICEINSTANCEA pdinst, PVOID pvRef);
+MECH_IMPEXP BOOL __stdcall CMCreateJoystick7(
+	LPCDIDEVICEINSTANCEA pdinst, PVOID pvRef);
 MECH_IMPEXP void __stdcall ReInitControlManager(void);
 
 MECH_IMPEXP uint32_t __stdcall gosJoystick_CountJoysticks(uint8_t ReDetect = 1);
-MECH_IMPEXP float __stdcall gosJoystick_GetAxis(uint32_t index, GOSJoystickAxis axis);
-MECH_IMPEXP uint8_t __stdcall gosJoystick_ButtonStatus(uint32_t index, uint32_t button);
-MECH_IMPEXP void __stdcall gosJoystick_SetPolling(uint32_t index, uint8_t yesNo, float howOften = 0.03333f);
-MECH_IMPEXP void __stdcall gosJoystick_GetInfo(uint32_t index, gosJoystick_Info* gji);
+MECH_IMPEXP float __stdcall gosJoystick_GetAxis(
+	uint32_t index, GOSJoystickAxis axis);
+MECH_IMPEXP uint8_t __stdcall gosJoystick_ButtonStatus(
+	uint32_t index, uint32_t button);
+MECH_IMPEXP void __stdcall gosJoystick_SetPolling(
+	uint32_t index, uint8_t yesNo, float howOften = 0.03333f);
+MECH_IMPEXP void __stdcall gosJoystick_GetInfo(
+	uint32_t index, gosJoystick_Info* gji);
 
 // implemented functions not listed in headers
 void __stdcall CMRestoreEffects(int32_t);
 
 // -----------------------------------------------------------------------------
 // externals not specified in headers
-

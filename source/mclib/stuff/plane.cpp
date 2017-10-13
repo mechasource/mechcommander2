@@ -22,12 +22,7 @@ using namespace Stuff;
 //#############################################################################
 //#############################################################################
 //
-void
-Plane::BuildPlane(
-	const Point3D& p0,
-	const Point3D& p1,
-	const Point3D& p2
-)
+void Plane::BuildPlane(const Point3D& p0, const Point3D& p1, const Point3D& p2)
 {
 	Vector3D v1, v2;
 	v1.Subtract(p1, p0);
@@ -46,20 +41,14 @@ Plane::BuildPlane(
 	// this way we still maintain proof up to 1e-4 of the offset value
 	//----------------------------------------------------------------
 	//
-	Verify(Close_Enough(
-			   offset,
-			   offset2,
-			   Fabs(offset + offset2) > 200.0f
-			   ? SMALL * Fabs(offset + offset2) / 200.0f
-			   : SMALL
-		   ));
-	Verify(Close_Enough(
-			   offset,
-			   offset3,
-			   Fabs(offset + offset3) > 200.0f
-			   ? SMALL * Fabs(offset + offset3) / 200.0f
-			   : SMALL
-		   ));
+	Verify(Close_Enough(offset, offset2,
+		Fabs(offset + offset2) > 200.0f
+			? SMALL * Fabs(offset + offset2) / 200.0f
+			: SMALL));
+	Verify(Close_Enough(offset, offset3,
+		Fabs(offset + offset3) > 200.0f
+			? SMALL * Fabs(offset + offset3) / 200.0f
+			: SMALL));
 #endif
 }
 
@@ -67,19 +56,18 @@ Plane::BuildPlane(
 //#############################################################################
 //#############################################################################
 //
-Plane&
-Plane::Multiply(
-	const Plane& p,
-	const LinearMatrix4D& m
-)
+Plane& Plane::Multiply(const Plane& p, const LinearMatrix4D& m)
 {
-	//Check_Pointer(this);
+	// Check_Pointer(this);
 	Check_Object(&p);
 	Check_Object(&m);
 	Verify(this != &p);
-	normal.x = p.normal.x * m(0, 0) + p.normal.y * m(1, 0) + p.normal.z * m(2, 0);
-	normal.y = p.normal.x * m(0, 1) + p.normal.y * m(1, 1) + p.normal.z * m(2, 1);
-	normal.z = p.normal.x * m(0, 2) + p.normal.y * m(1, 2) + p.normal.z * m(2, 2);
+	normal.x =
+		p.normal.x * m(0, 0) + p.normal.y * m(1, 0) + p.normal.z * m(2, 0);
+	normal.y =
+		p.normal.x * m(0, 1) + p.normal.y * m(1, 1) + p.normal.z * m(2, 1);
+	normal.z =
+		p.normal.x * m(0, 2) + p.normal.y * m(1, 2) + p.normal.z * m(2, 2);
 	offset =
 		normal.x * m(3, 0) + normal.y * m(3, 1) + normal.z * m(3, 2) + p.offset;
 	return *this;
@@ -89,8 +77,7 @@ Plane::Multiply(
 //#############################################################################
 //#############################################################################
 //
-float
-Plane::GetDistanceTo(const Sphere& sphere) const
+float Plane::GetDistanceTo(const Sphere& sphere) const
 {
 	// Check_Object(this);
 	Check_Object(&sphere);
@@ -101,9 +88,9 @@ Plane::GetDistanceTo(const Sphere& sphere) const
 	//-----------------------------------------------------------------------
 	//
 	float distance = GetDistanceTo(sphere.center);
-	if(distance > sphere.radius)
+	if (distance > sphere.radius)
 		return distance - sphere.radius;
-	else if(distance < -sphere.radius)
+	else if (distance < -sphere.radius)
 		return distance + sphere.radius;
 	return 0.0f;
 }
@@ -112,8 +99,7 @@ Plane::GetDistanceTo(const Sphere& sphere) const
 //#############################################################################
 //#############################################################################
 //
-float
-Plane::GetDistanceTo(const OBB& box) const
+float Plane::GetDistanceTo(const OBB& box) const
 {
 	// Check_Object(this);
 	Check_Object(&box);
@@ -134,15 +120,15 @@ Plane::GetDistanceTo(const OBB& box) const
 	// should be testing
 	//---------------------------------------------------------------------
 	//
-	if(local_plane.normal.x > 0.0f)
+	if (local_plane.normal.x > 0.0f)
 		inside_extents.x = -inside_extents.x;
 	else
 		outside_extents.x = -outside_extents.x;
-	if(local_plane.normal.y > 0.0f)
+	if (local_plane.normal.y > 0.0f)
 		inside_extents.y = -inside_extents.y;
 	else
 		outside_extents.y = -outside_extents.y;
-	if(local_plane.normal.z > 0.0f)
+	if (local_plane.normal.z > 0.0f)
 		inside_extents.z = -inside_extents.z;
 	else
 		outside_extents.z = -outside_extents.z;
@@ -152,10 +138,10 @@ Plane::GetDistanceTo(const OBB& box) const
 	//---------------------------
 	//
 	float distance = local_plane.GetDistanceTo(outside_extents);
-	if(distance < 0.0f)
+	if (distance < 0.0f)
 		return distance;
 	distance = local_plane.GetDistanceTo(inside_extents);
-	if(distance > 0.0f)
+	if (distance > 0.0f)
 		return distance;
 	return 0.0f;
 }
@@ -164,11 +150,7 @@ Plane::GetDistanceTo(const OBB& box) const
 //#############################################################################
 //#############################################################################
 //
-bool
-Plane::ContainsSomeOf(
-	const Sphere& sphere,
-	float thickness
-) const
+bool Plane::ContainsSomeOf(const Sphere& sphere, float thickness) const
 {
 	return normal * sphere.center - offset <= sphere.radius - thickness;
 }
@@ -177,11 +159,7 @@ Plane::ContainsSomeOf(
 //#############################################################################
 //#############################################################################
 //
-bool
-Plane::ContainsAllOf(
-	const Sphere& sphere,
-	float thickness
-) const
+bool Plane::ContainsAllOf(const Sphere& sphere, float thickness) const
 {
 	return offset - normal * sphere.center >= sphere.radius + thickness;
 }
@@ -190,11 +168,7 @@ Plane::ContainsAllOf(
 //#############################################################################
 //#############################################################################
 //
-bool
-Plane::ContainsSomeOf(
-	const ExtentBox& box,
-	float thickness
-) const
+bool Plane::ContainsSomeOf(const ExtentBox& box, float thickness) const
 {
 	// Check_Object(this);
 	Check_Object(&box);
@@ -209,11 +183,7 @@ Plane::ContainsSomeOf(
 //#############################################################################
 //#############################################################################
 //
-bool
-Plane::ContainsAllOf(
-	const ExtentBox& box,
-	float thickness
-) const
+bool Plane::ContainsAllOf(const ExtentBox& box, float thickness) const
 {
 	// Check_Object(this);
 	Check_Object(&box);
@@ -228,11 +198,7 @@ Plane::ContainsAllOf(
 //#############################################################################
 //#############################################################################
 //
-bool
-Plane::Intersects(
-	const Sphere& sphere,
-	float thickness
-) const
+bool Plane::Intersects(const Sphere& sphere, float thickness) const
 {
 	float dist = normal * sphere.center - offset;
 	return abs(dist) <= sphere.radius + thickness;
@@ -242,20 +208,16 @@ Plane::Intersects(
 //#############################################################################
 //#############################################################################
 //
-bool
-Plane::Intersects(
-	const ExtentBox& box,
-	float thickness
-) const
+bool Plane::Intersects(const ExtentBox& box, float thickness) const
 {
-	if(!ContainsSomeOf(box, thickness))
+	if (!ContainsSomeOf(box, thickness))
 	{
 		return false;
 	}
 	STOP(("What is this????"));
 	Plane inverse(-normal.x, -normal.y, -normal.z, -offset);
 	return false;
-//	return inverse.ContainsSomeOf(box);
+	//	return inverse.ContainsSomeOf(box);
 }
 
 //
@@ -263,11 +225,7 @@ Plane::Intersects(
 //#############################################################################
 //
 #if !defined(Spew)
-void
-Spew(
-	PCSTR group,
-	const Plane& plane
-)
+void Spew(PCSTR group, const Plane& plane)
 {
 	Check_Object(&plane);
 	SPEW((group, "\n\tPlane Normal: +"));
@@ -278,8 +236,7 @@ Spew(
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-bool
-Plane::ComputeBestDividingPlane(DynamicArrayOf<Point3D>& points)
+bool Plane::ComputeBestDividingPlane(DynamicArrayOf<Point3D>& points)
 {
 	Check_Object(&points);
 	//
@@ -290,14 +247,14 @@ Plane::ComputeBestDividingPlane(DynamicArrayOf<Point3D>& points)
 	size_t count = points.GetLength();
 	Verify(count > 1);
 	Point3D sum = Point3D::Identity;
-	float xx = 0.0f;
-	float xy = 0.0f;
-	float xz = 0.0f;
-	float yy = 0.0f;
-	float yz = 0.0f;
-	float zz = 0.0f;
+	float xx	= 0.0f;
+	float xy	= 0.0f;
+	float xz	= 0.0f;
+	float yy	= 0.0f;
+	float yz	= 0.0f;
+	float zz	= 0.0f;
 	uint32_t i;
-	for(i = 0; i < count; i++)
+	for (i = 0; i < count; i++)
 	{
 		sum += points[i];
 		xx += points[i].x * points[i].x;
@@ -325,38 +282,38 @@ Plane::ComputeBestDividingPlane(DynamicArrayOf<Point3D>& points)
 	//------------------------------------------------------------------
 	//
 	int32_t axis;
-	if(xx > yy)
+	if (xx > yy)
 		axis = (xx > zz) ? X_Axis : Z_Axis;
 	else
 		axis = (yy > zz) ? Y_Axis : Z_Axis;
 	Vector3D direction;
-	switch(axis)
+	switch (axis)
 	{
-		case X_Axis:
-			if(xx < SMALL)
-				return false;
-			direction.x = 1.0f;
-			direction.y = xy / xx;
-			direction.z = xz / xx;
-			break;
-		case Y_Axis:
-			if(yy < SMALL)
-				return false;
-			Verify(yy > SMALL);
-			direction.x = xy / yy;
-			direction.y = 1.0f;
-			direction.z = yz / yy;
-			break;
-		case Z_Axis:
-			if(zz < SMALL)
-				return false;
-			direction.x = xz / zz;
-			direction.y = yz / zz;
-			direction.z = 1.0f;
-			break;
-		default:
-			direction = Vector3D::Identity;
-			STOP(("Bad switch"));
+	case X_Axis:
+		if (xx < SMALL)
+			return false;
+		direction.x = 1.0f;
+		direction.y = xy / xx;
+		direction.z = xz / xx;
+		break;
+	case Y_Axis:
+		if (yy < SMALL)
+			return false;
+		Verify(yy > SMALL);
+		direction.x = xy / yy;
+		direction.y = 1.0f;
+		direction.z = yz / yy;
+		break;
+	case Z_Axis:
+		if (zz < SMALL)
+			return false;
+		direction.x = xz / zz;
+		direction.y = yz / zz;
+		direction.z = 1.0f;
+		break;
+	default:
+		direction = Vector3D::Identity;
+		STOP(("Bad switch"));
 	}
 	//
 	//-----------------------------------------------------------------------
@@ -374,11 +331,10 @@ Plane::ComputeBestDividingPlane(DynamicArrayOf<Point3D>& points)
 	// errors
 	//-----------------------------------------------------------------------
 	//
-	for(i = 0; i < count; i++)
+	for (i = 0; i < count; i++)
 	{
-		if(points[i] != sum)
+		if (points[i] != sum)
 			return true;
 	}
 	return false;
 }
-

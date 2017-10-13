@@ -45,18 +45,20 @@ extern bool useFog;
 PVOID Appearance::operator new(size_t mySize)
 {
 	PVOID result = nullptr;
-	if(AppearanceTypeList::appearanceHeap && AppearanceTypeList::appearanceHeap->heapReady())
+	if (AppearanceTypeList::appearanceHeap &&
+		AppearanceTypeList::appearanceHeap->heapReady())
 	{
 		result = AppearanceTypeList::appearanceHeap->Malloc(mySize);
 	}
-	return(result);
+	return (result);
 }
 
 //---------------------------------------------------------------------------
 void Appearance::operator delete(PVOID us)
 {
 	int32_t result;
-	if(AppearanceTypeList::appearanceHeap && AppearanceTypeList::appearanceHeap->heapReady())
+	if (AppearanceTypeList::appearanceHeap &&
+		AppearanceTypeList::appearanceHeap->heapReady())
 	{
 		result = AppearanceTypeList::appearanceHeap->Free(us);
 	}
@@ -68,40 +70,41 @@ void Appearance::drawTextHelp(PSTR text, uint32_t color)
 	uint32_t width, height;
 	Stuff::Vector4D moveHere;
 	moveHere = screenPos;
-	gos_TextSetAttributes(gosFontHandle, 0, gosFontScale, false, true, false, false);
+	gos_TextSetAttributes(
+		gosFontHandle, 0, gosFontScale, false, true, false, false);
 	gos_TextStringLength(&width, &height, text);
 	moveHere.y = lowerRight.y + 10.0f;
 	moveHere.x -= width / 2;
 	moveHere.z = width;
 	moveHere.w = height;
-	globalFloatHelp->setFloatHelp(text, moveHere, color, SD_BLACK, 1.0f, true, false, false, false);
+	globalFloatHelp->setFloatHelp(
+		text, moveHere, color, SD_BLACK, 1.0f, true, false, false, false);
 }
 
-void Appearance::drawTextHelp(PSTR text)
-{
-	drawTextHelp(text, SD_GREEN);
-}
+void Appearance::drawTextHelp(PSTR text) { drawTextHelp(text, SD_GREEN); }
 void Appearance::drawPilotName(PSTR text, uint32_t color)
 {
 	uint32_t width, height;
 	Stuff::Vector4D moveHere;
 	moveHere = screenPos;
-	gos_TextSetAttributes(gosFontHandle, 0, gosFontScale, false, true, false, false);
+	gos_TextSetAttributes(
+		gosFontHandle, 0, gosFontScale, false, true, false, false);
 	gos_TextStringLength(&width, &height, text);
 	moveHere.y = lowerRight.y + 10.0f + height;
 	moveHere.x -= width / 2;
 	moveHere.z = width;
 	moveHere.w = height;
-	globalFloatHelp->setFloatHelp(text, moveHere, color, SD_BLACK, 1.0f, true, false, false, false);
+	globalFloatHelp->setFloatHelp(
+		text, moveHere, color, SD_BLACK, 1.0f, true, false, false, false);
 }
 
 //---------------------------------------------------------------------------
 void Appearance::drawSelectBox(uint32_t color)
 {
-	Stuff::Vector4D				ul, br, pos1, pos2;
-	float						offsets;
+	Stuff::Vector4D ul, br, pos1, pos2;
+	float offsets;
 	AppearanceType* appearType = getAppearanceType();
-	if(appearType && appearType->typeBoundExists())
+	if (appearType && appearType->typeBoundExists())
 	{
 		eye->projectZ(appearType->typeUpperLeft, ul);
 		ul.z = HUD_DEPTH;
@@ -120,12 +123,12 @@ void Appearance::drawSelectBox(uint32_t color)
 	//-----------------------------------------------------
 	// Must scale the magic numbers for select bracket
 	offsets = 5.0f * eye->getScaleFactor();
-	pos1.x = float(ul.x - offsets);
-	pos1.y = float(ul.y - offsets);
-	pos1.z = ul.z;
-	pos2.x = float(ul.x - offsets);
-	pos2.y = float(ul.y);
-	pos2.z = ul.z;
+	pos1.x  = float(ul.x - offsets);
+	pos1.y  = float(ul.y - offsets);
+	pos1.z  = ul.z;
+	pos2.x  = float(ul.x - offsets);
+	pos2.y  = float(ul.y);
+	pos2.z  = ul.z;
 	pos2.w = pos1.w = 1.0f;
 	{
 		LineElement newElement(pos1, pos2, color, nullptr, -1);
@@ -213,16 +216,16 @@ void Appearance::drawSelectBox(uint32_t color)
 //---------------------------------------------------------------------------
 void Appearance::drawSelectBrackets(uint32_t color)
 {
-	float					offsets = 5.0 * eye->getScaleFactor();
-	Stuff::Vector4D			pos1;
-	Stuff::Vector4D			pos2;
-	Stuff::Vector4D			ul, br;
-	ul.x = upperLeft.x;
-	ul.y = upperLeft.y;
-	ul.z = HUD_DEPTH;
-	br.x = lowerRight.x;
-	br.y = lowerRight.y;
-	br.z = HUD_DEPTH;
+	float offsets = 5.0 * eye->getScaleFactor();
+	Stuff::Vector4D pos1;
+	Stuff::Vector4D pos2;
+	Stuff::Vector4D ul, br;
+	ul.x   = upperLeft.x;
+	ul.y   = upperLeft.y;
+	ul.z   = HUD_DEPTH;
+	br.x   = lowerRight.x;
+	br.y   = lowerRight.y;
+	br.z   = HUD_DEPTH;
 	pos1.x = ul.x;
 	pos1.y = ul.y;
 	pos1.z = ul.z;
@@ -316,7 +319,7 @@ void Appearance::drawSelectBrackets(uint32_t color)
 //-----------------------------------------------------------------------------
 void DrawBox(float l, float t, float r, float b)
 {
-	Stuff::Vector4D		p1, p2;
+	Stuff::Vector4D p1, p2;
 	p1.x = l;
 	p1.y = t;
 	p1.z = HUD_DEPTH;
@@ -356,25 +359,24 @@ void DrawBox(float l, float t, float r, float b)
 }
 
 void Appearance::drawIcon(uint32_t bmpHandle, uint32_t bmpWidth,
-						  uint32_t bmpHeight, uint32_t color,
-						  uint32_t where)
+	uint32_t bmpHeight, uint32_t color, uint32_t where)
 {
 	// ignoring where for now
-	float			offset = 8.0 * eye->getScaleFactor();
-	float			trueHeight = HEIGHT * eye->getScaleFactor();
-	float			Y = upperLeft.y - offset - trueHeight -  2 * bmpHeight;
-	float			X = (upperLeft.x + lowerRight.x) / 2.f - bmpWidth / 2.f;
+	float offset	 = 8.0 * eye->getScaleFactor();
+	float trueHeight = HEIGHT * eye->getScaleFactor();
+	float Y			 = upperLeft.y - offset - trueHeight - 2 * bmpHeight;
+	float X			 = (upperLeft.x + lowerRight.x) / 2.f - bmpWidth / 2.f;
 	gos_VERTEX v[4];
-	for(size_t i = 0; i < 4; i ++)
+	for (size_t i = 0; i < 4; i++)
 	{
 		v[i].argb = color;
 		v[i].frgb = 0;
-		v[i].z = 0.f;
-		v[i].rhw = .5f;
-		v[i].x = X;
-		v[i].y = Y;
-		v[i].u = .25; // might want to pass these in too....
-		v[i].v = 0.f;
+		v[i].z	= 0.f;
+		v[i].rhw  = .5f;
+		v[i].x	= X;
+		v[i].y	= Y;
+		v[i].u	= .25; // might want to pass these in too....
+		v[i].v	= 0.f;
 	}
 	v[2].x = v[3].x = X + bmpWidth;
 	v[1].y = v[2].y = Y + bmpHeight;
@@ -393,21 +395,21 @@ void Appearance::drawBars(void)
 {
 	//-----------------------------------------
 	// Change to GOS DrawQuad code for HWare!!
-	float			offset = 8.0 * eye->getScaleFactor();		//Remember, EVEN numbers!!!
-	float			trueWidth = WIDTH * eye->getScaleFactor() * 2;
-	float			trueHeight = HEIGHT * eye->getScaleFactor();
-	float			topY = upperLeft.y - offset - trueHeight;
-	float			leftX = floor((upperLeft.x + lowerRight.x) / 2.f - trueWidth / 2);
-	uint32_t					color;
-	if(barStatus > 1.0f)
+	float offset	 = 8.0 * eye->getScaleFactor(); // Remember, EVEN numbers!!!
+	float trueWidth  = WIDTH * eye->getScaleFactor() * 2;
+	float trueHeight = HEIGHT * eye->getScaleFactor();
+	float topY		 = upperLeft.y - offset - trueHeight;
+	float leftX = floor((upperLeft.x + lowerRight.x) / 2.f - trueWidth / 2);
+	uint32_t color;
+	if (barStatus > 1.0f)
 		barStatus = 1.0f;
-	if(!barColor)
+	if (!barColor)
 	{
-		if(barStatus >= 0.5)
+		if (barStatus >= 0.5)
 			color = SB_GREEN;
-		else if(barStatus > 0.2)
+		else if (barStatus > 0.2)
 			color = SB_YELLOW;
-		else if(barStatus)
+		else if (barStatus)
 			color = SB_RED;
 		else
 			color = 0;
@@ -416,47 +418,48 @@ void Appearance::drawBars(void)
 		color = barColor;
 	float barLength = trueWidth * barStatus;
 	gos_VERTEX vertices[4];
-	vertices[0].x 		= leftX - 1.0;
-	vertices[0].y 		= topY - 1.0;
-	vertices[0].z		= HUD_DEPTH;
-	vertices[0].rhw		= 0.5;
-	vertices[0].u		= 0.0;
-	vertices[0].v		= 0.0;
-	vertices[0].argb	= color | 0xff000000;	  //Factor out the alpha color!!
-	vertices[0].frgb	= 0x00000000;
-	vertices[1].x 		= leftX + barLength + 1.0;
-	vertices[1].y 		= topY - 1.0;
-	vertices[1].z		= HUD_DEPTH;
-	vertices[1].rhw		= 0.5;
-	vertices[1].u		= 0.0;
-	vertices[1].v		= 0.0;
-	vertices[1].argb	= color | 0xff000000;     //Factor out the alpha color!!
-	vertices[1].frgb	= 0x00000000;
-	vertices[2].x 		= leftX + barLength + 1.0;
-	vertices[2].y 		= topY + trueHeight + 1.0;
-	vertices[2].z		= HUD_DEPTH;
-	vertices[2].rhw		= 0.5;
-	vertices[2].u		= 0.0;
-	vertices[2].v		= 0.0;
-	vertices[2].argb	= color | 0xff000000;     //Factor out the alpha color!!
-	vertices[2].frgb	= 0x00000000;
-	vertices[3].x 		= leftX - 1.0;
-	vertices[3].y 		= topY + trueHeight + 1.0;
-	vertices[3].z		= HUD_DEPTH;
-	vertices[3].rhw		= 0.5;
-	vertices[3].u		= 0.0;
-	vertices[3].v		= 0.0;
-	vertices[3].argb	= color | 0xff000000;     //Factor out the alpha color!!
-	vertices[3].frgb	= 0x00000000;
+	vertices[0].x	= leftX - 1.0;
+	vertices[0].y	= topY - 1.0;
+	vertices[0].z	= HUD_DEPTH;
+	vertices[0].rhw  = 0.5;
+	vertices[0].u	= 0.0;
+	vertices[0].v	= 0.0;
+	vertices[0].argb = color | 0xff000000; // Factor out the alpha color!!
+	vertices[0].frgb = 0x00000000;
+	vertices[1].x	= leftX + barLength + 1.0;
+	vertices[1].y	= topY - 1.0;
+	vertices[1].z	= HUD_DEPTH;
+	vertices[1].rhw  = 0.5;
+	vertices[1].u	= 0.0;
+	vertices[1].v	= 0.0;
+	vertices[1].argb = color | 0xff000000; // Factor out the alpha color!!
+	vertices[1].frgb = 0x00000000;
+	vertices[2].x	= leftX + barLength + 1.0;
+	vertices[2].y	= topY + trueHeight + 1.0;
+	vertices[2].z	= HUD_DEPTH;
+	vertices[2].rhw  = 0.5;
+	vertices[2].u	= 0.0;
+	vertices[2].v	= 0.0;
+	vertices[2].argb = color | 0xff000000; // Factor out the alpha color!!
+	vertices[2].frgb = 0x00000000;
+	vertices[3].x	= leftX - 1.0;
+	vertices[3].y	= topY + trueHeight + 1.0;
+	vertices[3].z	= HUD_DEPTH;
+	vertices[3].rhw  = 0.5;
+	vertices[3].u	= 0.0;
+	vertices[3].v	= 0.0;
+	vertices[3].argb = color | 0xff000000; // Factor out the alpha color!!
+	vertices[3].frgb = 0x00000000;
 	PolygonQuadElement newElement;
 	newElement.init(vertices);
 	gos_SetRenderState(gos_State_Fog, 0);
 	newElement.draw();
-	DrawBox(vertices[0].x, vertices[0].y, (leftX + trueWidth + 1.0), vertices[2].y);
+	DrawBox(
+		vertices[0].x, vertices[0].y, (leftX + trueWidth + 1.0), vertices[2].y);
 	uint32_t fogColor = eye->fogColor;
 	//-----------------------------------------------------
 	// FOG time.  Set Render state to FOG on!
-	if(useFog)
+	if (useFog)
 	{
 		gos_SetRenderState(gos_State_Fog, (int32_t)&fogColor);
 	}

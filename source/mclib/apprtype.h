@@ -31,57 +31,53 @@
 //---------------------------------------------------------------------------
 // Macro definitions
 #ifndef NO_ERROR
-#define NO_ERROR					0
+#define NO_ERROR 0
 #endif
 
-#define MAX_LODS				3
+#define MAX_LODS 3
 //---------------------------------------------------------------------------
 // Class definitions
 class AppearanceType
 {
-	//Data Members
+	// Data Members
 	//-------------
-public:
+  public:
+	size_t numUsers;		// Number of users using this appearanceType.
+	size_t appearanceNum;   // What kind am I.
+	AppearanceTypePtr next; // Pointer to next type in list.
 
-	size_t 		numUsers;			//Number of users using this appearanceType.
-	size_t		appearanceNum;		//What kind am I.
-	AppearanceTypePtr	next;				//Pointer to next type in list.
+	char* name; // Appearance Base FileName.
 
-	char*				 name;				//Appearance Base FileName.
+	Stuff::Vector3D typeUpperLeft;  // For Designer defined extents of objects
+	Stuff::Vector3D typeLowerRight; // For Designer defined extents of objects
 
-	Stuff::Vector3D		typeUpperLeft;		//For Designer defined extents of objects
-	Stuff::Vector3D		typeLowerRight;		//For Designer defined extents of objects
+	float boundsUpperLeftX;
+	float boundsUpperLeftY;
 
-	float				boundsUpperLeftX;
-	float				boundsUpperLeftY;
+	float boundsLowerRightX;
+	float boundsLowerRightY;
 
-	float				boundsLowerRightX;
-	float				boundsLowerRightY;
+	bool designerTypeBounds; // So I know not to change them if the designer
+							 // typed them in.
 
-	bool				designerTypeBounds;	//So I know not to change them if the designer typed them in.
-
-	//Member Functions
+	// Member Functions
 	//-----------------
-public:
-
+  public:
 	PVOID operator new(size_t memSize);
 	void operator delete(PVOID treePtr);
 
 	void init(void)
 	{
-		numUsers = 0;
-		next = nullptr;
+		numUsers	  = 0;
+		next		  = nullptr;
 		appearanceNum = 0xffffffff;
-		name = nullptr;
+		name		  = nullptr;
 		typeUpperLeft.Zero(void);
 		typeLowerRight.Zero(void);
 		designerTypeBounds = false;
 	}
 
-	AppearanceType(void)
-	{
-		init(void);
-	}
+	AppearanceType(void) { init(void); }
 
 	virtual void init(PSTR fileName);
 
@@ -91,61 +87,46 @@ public:
 
 	bool typeBoundExists(void)
 	{
-		return true;		//Always exists now
+		return true; // Always exists now
 	}
 
-	bool getDesignerTypeBounds(void)
-	{
-		return designerTypeBounds;
-	}
+	bool getDesignerTypeBounds(void) { return designerTypeBounds; }
 
-	size_t getAppearanceClass(void)
-	{
-		return(appearanceNum >> 24);
-	}
+	size_t getAppearanceClass(void) { return (appearanceNum >> 24); }
 
-	virtual ~AppearanceType(void)
-	{
-		destroy(void);
-	}
+	virtual ~AppearanceType(void) { destroy(void); }
 };
 
 //---------------------------------------------------------------------------
 class AppearanceTypeList
 {
-	//Data Members
+	// Data Members
 	//-------------
-protected:
+  protected:
+	AppearanceTypePtr head;
+	AppearanceTypePtr last;
 
-	AppearanceTypePtr	head;
-	AppearanceTypePtr	last;
+  public:
+	static UserHeapPtr appearanceHeap;
 
-public:
-
-	static UserHeapPtr	appearanceHeap;
-
-	//Member Functions
+	// Member Functions
 	//----------------
-public:
-
+  public:
 	AppearanceTypeList(void)
 	{
-		head = last = nullptr;
+		head = last	= nullptr;
 		appearanceHeap = nullptr;
 	}
 
 	void init(size_t heapSize);
 
-	AppearanceTypePtr getAppearance(size_t apprNum, PSTR  apprFile);
+	AppearanceTypePtr getAppearance(size_t apprNum, PSTR apprFile);
 
 	int32_t removeAppearance(AppearanceTypePtr which);
 
 	void destroy(void);
 
-	~AppearanceTypeList(void)
-	{
-		destroy(void);
-	}
+	~AppearanceTypeList(void) { destroy(void); }
 
 	bool pointerCanBeDeleted(PVOIDptr);
 };

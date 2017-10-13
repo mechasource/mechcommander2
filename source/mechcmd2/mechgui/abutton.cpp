@@ -11,34 +11,30 @@
 
 extern SoundSystem* sndSystem;
 
-
 aButton::aButton()
 {
-	toggleButton = 0;
-	singlePress = 0;
+	toggleButton	 = 0;
+	singlePress		 = 0;
 	messageOnRelease = 0;
-	state = ENABLED;
+	state			 = ENABLED;
 	memset(&data, 0, sizeof(data));
-	clickSFX = LOG_CLICKONBUTTON;
-	highlightSFX = LOG_HIGHLIGHTBUTTONS;
-	disabledSFX = LOG_WRONGBUTTON;
+	clickSFX	   = LOG_CLICKONBUTTON;
+	highlightSFX   = LOG_HIGHLIGHTBUTTONS;
+	disabledSFX	= LOG_WRONGBUTTON;
 	data.textAlign = 2;
-	holdTime = .5f;
+	holdTime	   = .5f;
 }
 
 int32_t aButton::init(int32_t xPos, int32_t yPos, int32_t w, int32_t h)
 {
 	int32_t err;
 	err = aObject::init(xPos, yPos, w, h);
-	if(err)
+	if (err)
 		return err;
 	return (NO_ERROR);
 }
 
-void aButton::destroy()
-{
-	aObject::destroy();
-}
+void aButton::destroy() { aObject::destroy(); }
 
 aButton& aButton::operator=(const aButton& src)
 {
@@ -46,75 +42,73 @@ aButton& aButton::operator=(const aButton& src)
 	aObject::operator=(src);
 	return *this;
 }
-aButton::aButton(const aButton& src) : aObject(src)
-{
-	copyData(src);
-}
+aButton::aButton(const aButton& src) : aObject(src) { copyData(src); }
 void aButton::copyData(const aButton& src)
 {
-	if(&src != this)
+	if (&src != this)
 	{
-		data = src.data;
+		data  = src.data;
 		state = src.state;
 	}
 }
 
-
 void aButton::update()
 {
-	if(!isShowing())
+	if (!isShowing())
 		return;
 	int32_t mouseX = userInput->getMouseX();
 	int32_t mouseY = userInput->getMouseY();
-	if(pointInside(mouseX, mouseY))
+	if (pointInside(mouseX, mouseY))
 	{
 		int32_t mouseDragX = userInput->getMouseDragX();
 		int32_t mouseDragY = userInput->getMouseDragY();
-		if(messageOnRelease && userInput->leftMouseReleased()
-				&& pointInside(mouseDragX, mouseDragY))
+		if (messageOnRelease && userInput->leftMouseReleased() &&
+			pointInside(mouseDragX, mouseDragY))
 		{
 			press(false);
-			if(getParent())
+			if (getParent())
 				getParent()->handleMessage(aMSG_LEFTMOUSEDOWN, data.ID);
-			if(state != DISABLED && state != HIDDEN)
+			if (state != DISABLED && state != HIDDEN)
 				sndSystem->playDigitalSample(clickSFX);
 			else
 				sndSystem->playDigitalSample(disabledSFX);
 		}
-		if(userInput->isLeftClick())
+		if (userInput->isLeftClick())
 		{
 			press(true);
-			if(getParent() && !messageOnRelease && pointInside(userInput->getMouseDragX(), userInput->getMouseDragY()))
+			if (getParent() && !messageOnRelease &&
+				pointInside(
+					userInput->getMouseDragX(), userInput->getMouseDragY()))
 				getParent()->handleMessage(aMSG_LEFTMOUSEDOWN, data.ID);
-			if(state != DISABLED)
+			if (state != DISABLED)
 				sndSystem->playDigitalSample(clickSFX);
 			else
 				sndSystem->playDigitalSample(disabledSFX);
 		}
-		else if(userInput->getMouseLeftHeld() > holdTime && !messageOnRelease &&
-				pointInside(userInput->getMouseDragX(), userInput->getMouseDragY()))
+		else if (userInput->getMouseLeftHeld() > holdTime &&
+				 !messageOnRelease &&
+				 pointInside(
+					 userInput->getMouseDragX(), userInput->getMouseDragY()))
 			handleMessage(aMSG_LEFTMOUSEHELD, data.ID);
 		else
 		{
-			if(state != HIGHLIGHT && state != DISABLED && state != HIDDEN)
+			if (state != HIGHLIGHT && state != DISABLED && state != HIDDEN)
 				sndSystem->playDigitalSample(highlightSFX);
 			state = HIGHLIGHT;
 			makeUVs(location, state, data);
 		}
 	}
-	else if(state == PRESSED && messageOnRelease)
+	else if (state == PRESSED && messageOnRelease)
 		state = ENABLED;
 	aObject::update();
 }
 
-bool		aButton::pointInside(int32_t xPos, int32_t yPos) const
+bool aButton::pointInside(int32_t xPos, int32_t yPos) const
 {
-	if(aObject::pointInside(xPos, yPos))
+	if (aObject::pointInside(xPos, yPos))
 		return true;
-	if(data.textRect.left  <= xPos &&
-			data.textRect.right >= xPos &&
-			data.textRect.top <= yPos &&
-			data.textRect.bottom >= yPos)
+	if (data.textRect.left <= xPos && data.textRect.right >= xPos &&
+		data.textRect.top <= yPos && data.textRect.bottom >= yPos)
 	{
 		return true;
 	}
@@ -124,11 +118,12 @@ bool		aButton::pointInside(int32_t xPos, int32_t yPos) const
 /////////////////////////////////////////////////
 void aButton::render()
 {
-	if(state != HIDDEN)
+	if (state != HIDDEN)
 	{
-		if(textureHandle)
+		if (textureHandle)
 		{
-			uint32_t gosID = mcTextureManager->get_gosTextureHandle(textureHandle);
+			uint32_t gosID =
+				mcTextureManager->get_gosTextureHandle(textureHandle);
 			gos_SetRenderState(gos_State_Texture, gosID);
 		}
 		else
@@ -139,31 +134,36 @@ void aButton::render()
 		gos_SetRenderState(gos_State_TextureAddress, gos_TextureClamp);
 		gos_SetRenderState(gos_State_TextureMapBlend, gos_BlendModulateAlpha);
 		gos_DrawQuads(location, 4);
-		if(data.textID && data.textFont)
+		if (data.textID && data.textFont)
 		{
 			char buffer[256];
 			cLoadString(data.textID, buffer, 256);
 			uint32_t width, height;
-			gos_TextSetAttributes(data.textFont, data.textColors[state], data.textSize, true, true, false, false, data.textAlign);
-			gos_TextSetRegion(data.textRect.left, data.textRect.top, data.textRect.right, data.textRect.bottom);
+			gos_TextSetAttributes(data.textFont, data.textColors[state],
+				data.textSize, true, true, false, false, data.textAlign);
+			gos_TextSetRegion(data.textRect.left, data.textRect.top,
+				data.textRect.right, data.textRect.bottom);
 			gos_TextStringLength(&width, &height, buffer);
-			gos_TextSetPosition(data.textRect.left, (data.textRect.top + data.textRect.bottom) / 2 - height / 2 + 1);
+			gos_TextSetPosition(data.textRect.left,
+				(data.textRect.top + data.textRect.bottom) / 2 - height / 2 +
+					1);
 			gos_TextDraw(buffer);
-			if(data.outlineText)
+			if (data.outlineText)
 			{
-				drawEmptyRect(data.textRect, data.textColors[state], data.textColors[state]);
+				drawEmptyRect(data.textRect, data.textColors[state],
+					data.textColors[state]);
 			}
 		}
-		if(data.outline)
+		if (data.outline)
 		{
 			RECT tmp;
-			tmp.left = location[0].x;
-			tmp.top = location[0].y;
-			tmp.right = location[2].x;
+			tmp.left   = location[0].x;
+			tmp.top	= location[0].y;
+			tmp.right  = location[2].x;
 			tmp.bottom = location[2].y;
 			drawEmptyRect(tmp, location[0].argb, location[0].argb);
 		}
-		for(size_t i = 0; i < numberOfChildren(); i++)
+		for (size_t i = 0; i < numberOfChildren(); i++)
 		{
 			pChildren[i]->render();
 		}
@@ -171,9 +171,9 @@ void aButton::render()
 }
 void aButton::press(bool bPress)
 {
-	if(!isEnabled())
+	if (!isEnabled())
 		return;
-	if(!bPress && state == HIGHLIGHT)
+	if (!bPress && state == HIGHLIGHT)
 		return;
 	state = bPress ? PRESSED : ENABLED;
 	makeUVs(location, state, data);
@@ -187,9 +187,9 @@ void aButton::makeAmbiguous(bool bAmbiguous)
 
 void aButton::disable(bool bDisable)
 {
-	if(!bDisable)
+	if (!bDisable)
 	{
-		if(state == DISABLED)
+		if (state == DISABLED)
 			state = ENABLED;
 	}
 	else
@@ -200,57 +200,74 @@ void aButton::disable(bool bDisable)
 void aButton::hide(bool bHide)
 {
 	state = bHide ? HIDDEN : ENABLED;
-	if(state !=  HIDDEN)
+	if (state != HIDDEN)
 		aButton::makeUVs(location, state, data);
 }
 
 bool aButton::isEnabled()
 {
-	return state == ENABLED || state == PRESSED || state == AMBIGUOUS || state == HIGHLIGHT;
+	return state == ENABLED || state == PRESSED || state == AMBIGUOUS ||
+		   state == HIGHLIGHT;
 }
 
-int32_t aButton::getID()
-{
-	return data.ID;
-}
+int32_t aButton::getID() { return data.ID; }
 
-void aButton::setID(int32_t newID)
-{
-	data.ID = newID;
-}
+void aButton::setID(int32_t newID) { data.ID = newID; }
 
-void aButton::makeUVs(gos_VERTEX* vertices, int32_t State, aButton::aButtonData& data)
+void aButton::makeUVs(
+	gos_VERTEX* vertices, int32_t State, aButton::aButtonData& data)
 {
 	float left = data.stateCoords[State][0];
-	float top = data.stateCoords[State][1];
-	if(left == -1 || top == -1)
+	float top  = data.stateCoords[State][1];
+	if (left == -1 || top == -1)
 	{
 		SPEW((0, "makeUVs given an Invalid state\n"));
 	}
-	float width = data.textureWidth;
+	float width  = data.textureWidth;
 	float height = data.textureHeight;
-	float right = left + width;
+	float right  = left + width;
 	float bottom = top + height;
-	if(data.fileWidth && data.fileHeight)    // will crash if 0
+	if (data.fileWidth && data.fileHeight) // will crash if 0
 	{
-		if(data.textureRotated)
+		if (data.textureRotated)
 		{
-			vertices[0].u = right / (float)data.fileWidth + (.1f / (float)data.fileWidth);;
-			vertices[1].u = left / (float)data.fileWidth + (.1f / (float)data.fileWidth);;
-			vertices[2].u = left / (float)data.fileWidth + (.1f / (float)data.fileWidth);
-			vertices[3].u = right / (float)data.fileWidth + (.1f / (float)data.fileWidth);
-			vertices[0].v = top / (float)data.fileHeight + (.1f / (float)data.fileWidth);;
-			vertices[1].v = top / (float)data.fileHeight + (.1f / (float)data.fileWidth);;
-			vertices[2].v = bottom / (float)data.fileHeight + (.1f / (float)data.fileHeight);;
-			vertices[3].v = bottom / (float)data.fileHeight + (.1f / (float)data.fileHeight);;
+			vertices[0].u =
+				right / (float)data.fileWidth + (.1f / (float)data.fileWidth);
+			;
+			vertices[1].u =
+				left / (float)data.fileWidth + (.1f / (float)data.fileWidth);
+			;
+			vertices[2].u =
+				left / (float)data.fileWidth + (.1f / (float)data.fileWidth);
+			vertices[3].u =
+				right / (float)data.fileWidth + (.1f / (float)data.fileWidth);
+			vertices[0].v =
+				top / (float)data.fileHeight + (.1f / (float)data.fileWidth);
+			;
+			vertices[1].v =
+				top / (float)data.fileHeight + (.1f / (float)data.fileWidth);
+			;
+			vertices[2].v = bottom / (float)data.fileHeight +
+							(.1f / (float)data.fileHeight);
+			;
+			vertices[3].v = bottom / (float)data.fileHeight +
+							(.1f / (float)data.fileHeight);
+			;
 		}
 		else
 		{
 			{
-				vertices[0].u = vertices[1].u =  left / (float)data.fileWidth + (.1f / (float)data.fileWidth);;
-				vertices[2].u = vertices[3].u = right / (float)data.fileWidth + (.1f / (float)data.fileWidth);
-				vertices[0].v = vertices[3].v = top / (float)data.fileHeight + (.1f / (float)data.fileWidth);;
-				vertices[1].v = vertices[2].v = bottom / (float)data.fileHeight + (.1f / (float)data.fileHeight);
+				vertices[0].u = vertices[1].u = left / (float)data.fileWidth +
+												(.1f / (float)data.fileWidth);
+				;
+				vertices[2].u = vertices[3].u = right / (float)data.fileWidth +
+												(.1f / (float)data.fileWidth);
+				vertices[0].v = vertices[3].v = top / (float)data.fileHeight +
+												(.1f / (float)data.fileWidth);
+				;
+				vertices[1].v = vertices[2].v =
+					bottom / (float)data.fileHeight +
+					(.1f / (float)data.fileHeight);
 			}
 		}
 	}
@@ -258,9 +275,9 @@ void aButton::makeUVs(gos_VERTEX* vertices, int32_t State, aButton::aButtonData&
 
 void aButton::init(FitIniFile& buttonFile, PCSTR str, HGOSFONT3D font)
 {
-	textureHandle = 0;
+	textureHandle  = 0;
 	int32_t result = buttonFile.seekBlock(str);
-	if(result != NO_ERROR)
+	if (result != NO_ERROR)
 	{
 		char errorStr[256];
 		sprintf(errorStr, "couldn't find button %s", str);
@@ -279,7 +296,7 @@ void aButton::init(FitIniFile& buttonFile, PCSTR str, HGOSFONT3D font)
 	buttonFile.readIdBoolean("outline", data.outline);
 	int32_t fontID;
 	buttonFile.readIdLong("Font", fontID);
-	if(fontID)
+	if (fontID)
 		data.textFont = aFont::loadFont(fontID, data.textSize);
 	else
 		data.textFont = 0;
@@ -291,80 +308,81 @@ void aButton::init(FitIniFile& buttonFile, PCSTR str, HGOSFONT3D font)
 	buttonFile.readIdLong("HelpCaption", helpHeader);
 	buttonFile.readIdLong("HelpDesc", helpID);
 	buttonFile.readIdBoolean("texturesRotated", data.textureRotated);
-	if(NO_ERROR != buttonFile.readIdLong("Alignment", data.textAlign))
+	if (NO_ERROR != buttonFile.readIdLong("Alignment", data.textAlign))
 		data.textAlign = 2;
 	location[0].x = location[1].x = x;
 	location[0].y = location[3].y = y;
 	location[2].x = location[3].x = x + width;
 	location[1].y = location[2].y = y + height;
-	for(size_t j = 0; j < 4; j++)
+	for (size_t j = 0; j < 4; j++)
 	{
 		location[j].argb = 0xffffffff;
 		location[j].frgb = 0;
-		location[j].rhw = .5;
-		location[j].u = 0.f;
-		location[j].v = 0.f;
-		location[j].z = 0.f;
+		location[j].rhw  = .5;
+		location[j].u	= 0.f;
+		location[j].v	= 0.f;
+		location[j].z	= 0.f;
 	}
-	if(0 == textureHandle && data.fileName && strlen(data.fileName))
+	if (0 == textureHandle && data.fileName && strlen(data.fileName))
 	{
 		char file[256];
 		strcpy(file, artPath);
 		strcat(file, data.fileName);
 		_strlwr(file);
-		if(!strstr(data.fileName, ".tga"))
+		if (!strstr(data.fileName, ".tga"))
 			strcat(file, ".tga");
-		int32_t ID = mcTextureManager->loadTexture(file, gos_Texture_Alpha, 0, 0, 0x2);
+		int32_t ID =
+			mcTextureManager->loadTexture(file, gos_Texture_Alpha, 0, 0, 0x2);
 		int32_t gosID = mcTextureManager->get_gosTextureHandle(ID);
 		TEXTUREPTR textureData;
-		gos_LockTexture(gosID, 0, 0, 	&textureData);
+		gos_LockTexture(gosID, 0, 0, &textureData);
 		gos_UnLockTexture(gosID);
-		textureHandle = ID;
-		data.fileWidth = textureData.Width;
+		textureHandle   = ID;
+		data.fileWidth  = textureData.Width;
 		data.fileHeight = data.fileWidth;
 	}
-	if(NO_ERROR != buttonFile.readIdLong("UNormal", data.stateCoords[0][0]))
+	if (NO_ERROR != buttonFile.readIdLong("UNormal", data.stateCoords[0][0]))
 		data.stateCoords[0][0] = -1.f;
-	if(NO_ERROR != buttonFile.readIdLong("VNormal", data.stateCoords[0][1]))
+	if (NO_ERROR != buttonFile.readIdLong("VNormal", data.stateCoords[0][1]))
 		data.stateCoords[0][1] = -1.f;
-	if(NO_ERROR != buttonFile.readIdLong("UPressed", data.stateCoords[1][0]))
+	if (NO_ERROR != buttonFile.readIdLong("UPressed", data.stateCoords[1][0]))
 		data.stateCoords[1][0] = -1.f;
-	if(NO_ERROR != buttonFile.readIdLong("VPressed", data.stateCoords[1][1]))
+	if (NO_ERROR != buttonFile.readIdLong("VPressed", data.stateCoords[1][1]))
 		data.stateCoords[1][1] = -1.f;
-	if(NO_ERROR != buttonFile.readIdLong("UDisabled", data.stateCoords[2][0]))
+	if (NO_ERROR != buttonFile.readIdLong("UDisabled", data.stateCoords[2][0]))
 		data.stateCoords[2][0] = -1.f;
-	if(NO_ERROR != buttonFile.readIdLong("VDisabled", data.stateCoords[2][1]))
+	if (NO_ERROR != buttonFile.readIdLong("VDisabled", data.stateCoords[2][1]))
 		data.stateCoords[2][1] = -1.f;
-	if(NO_ERROR != buttonFile.readIdLong("UAmbiguous", data.stateCoords[3][0]))
+	if (NO_ERROR != buttonFile.readIdLong("UAmbiguous", data.stateCoords[3][0]))
 		data.stateCoords[3][0] = -1.f;
-	if(NO_ERROR != buttonFile.readIdLong("VAmbiguous", data.stateCoords[3][1]))
+	if (NO_ERROR != buttonFile.readIdLong("VAmbiguous", data.stateCoords[3][1]))
 		data.stateCoords[3][1] = -1.f;
-	if(NO_ERROR != buttonFile.readIdLong("UHighlight", data.stateCoords[4][0]))
+	if (NO_ERROR != buttonFile.readIdLong("UHighlight", data.stateCoords[4][0]))
 	{
 		data.stateCoords[4][0] = data.stateCoords[0][0];
 	}
-	if(NO_ERROR != buttonFile.readIdLong("VHighlight", data.stateCoords[4][1]))
+	if (NO_ERROR != buttonFile.readIdLong("VHighlight", data.stateCoords[4][1]))
 	{
 		data.stateCoords[4][1] = data.stateCoords[0][1];
 	}
 	buttonFile.readIdLong("UWidth", data.textureWidth);
 	buttonFile.readIdLong("VHeight", data.textureHeight);
-	if(data.textID)
+	if (data.textID)
 		buttonFile.readIdBoolean("TextOutline", data.outlineText);
-	if(NO_ERROR == buttonFile.readIdLong("XTextLocation", data.textRect.left))
+	if (NO_ERROR == buttonFile.readIdLong("XTextLocation", data.textRect.left))
 	{
 		buttonFile.readIdLong("YTextLocation", data.textRect.top);
 		buttonFile.readIdLong("TextWidth", width);
 		buttonFile.readIdLong("TextHeight", height);
-		data.textRect.right = data.textRect.left + width;
+		data.textRect.right  = data.textRect.left + width;
 		data.textRect.bottom = data.textRect.top + height;
 		buttonFile.readIdBoolean("TextOutline", data.outlineText);
 	}
 	else
 	{
-		data.textRect.left = x;
-		data.textRect.right = x + width;
-		data.textRect.top = y;
+		data.textRect.left   = x;
+		data.textRect.right  = x + width;
+		data.textRect.top	= y;
 		data.textRect.bottom = y + height;
 	}
 	char bmpName[256];
@@ -372,10 +390,10 @@ void aButton::init(FitIniFile& buttonFile, PCSTR str, HGOSFONT3D font)
 	strcat(bmpName, "Bmp");
 	char finalName[256];
 	int32_t counter = 0;
-	while(true)
+	while (true)
 	{
 		sprintf(finalName, "%s%ld", bmpName, counter);
-		if(NO_ERROR != buttonFile.seekBlock(finalName))
+		if (NO_ERROR != buttonFile.seekBlock(finalName))
 			break;
 		aObject* pObject = new aObject;
 		pObject->init(&buttonFile, finalName);
@@ -391,8 +409,8 @@ void aButton::init(FitIniFile& buttonFile, PCSTR str, HGOSFONT3D font)
 
 aAnimButton::aAnimButton()
 {
-	animateText = 1;
-	animateBmp = 1;
+	animateText		 = 1;
+	animateBmp		 = 1;
 	bAnimateChildren = 1;
 }
 
@@ -409,15 +427,15 @@ aAnimButton::aAnimButton(const aAnimButton& src) : aButton(src)
 
 void aAnimButton::copyData(const aAnimButton& src)
 {
-	if(&src != this)
+	if (&src != this)
 	{
-		animateBmp = src.animateBmp;
-		animateText = src.animateText;
-		highlightData = src.highlightData;
-		disabledData = src.disabledData;
-		pressedData = src.pressedData;
-		normalData = src.normalData;
-		toggleButton = src.toggleButton;
+		animateBmp		 = src.animateBmp;
+		animateText		 = src.animateText;
+		highlightData	= src.highlightData;
+		disabledData	 = src.disabledData;
+		pressedData		 = src.pressedData;
+		normalData		 = src.normalData;
+		toggleButton	 = src.toggleButton;
 		bAnimateChildren = src.bAnimateChildren;
 	}
 }
@@ -432,12 +450,13 @@ void aAnimButton::destroy()
 
 void aAnimButton::init(FitIniFile& file, PCSTR headerName, HGOSFONT3D font)
 {
-	if(NO_ERROR != file.seekBlock(headerName))
+	if (NO_ERROR != file.seekBlock(headerName))
 	{
 		char errorStr[256];
-		sprintf(errorStr, "couldn't find block %s in file %s", headerName, file.getFilename());
+		sprintf(errorStr, "couldn't find block %s in file %s", headerName,
+			file.getFilename());
 		Assert(0, 0, errorStr);
-		animateBmp = 0;
+		animateBmp  = 0;
 		animateText = 0;
 		return;
 	}
@@ -447,12 +466,12 @@ void aAnimButton::init(FitIniFile& file, PCSTR headerName, HGOSFONT3D font)
 	highlightData.init(&file, "Highlight");
 	disabledData.init(&file, "Disabled");
 	normalData.begin();
-	if(NO_ERROR != file.readIdBoolean("AnimateBmp", animateBmp))
+	if (NO_ERROR != file.readIdBoolean("AnimateBmp", animateBmp))
 		animateBmp = 1;
-	if(NO_ERROR != file.readIdBoolean("AnimateText", animateText))
+	if (NO_ERROR != file.readIdBoolean("AnimateText", animateText))
 		animateText = 1;
 	bool bTmp = 0;
-	if(NO_ERROR == file.readIdBoolean("AnimateChildren", bTmp))
+	if (NO_ERROR == file.readIdBoolean("AnimateChildren", bTmp))
 	{
 		bAnimateChildren = bTmp;
 	}
@@ -460,25 +479,25 @@ void aAnimButton::init(FitIniFile& file, PCSTR headerName, HGOSFONT3D font)
 
 void aAnimButton::update()
 {
-	if(!isShowing())
+	if (!isShowing())
 		return;
 	int32_t mouseX = userInput->getMouseX();
 	int32_t mouseY = userInput->getMouseY();
-	bool bInside = pointInside(mouseX, mouseY);
-	if(bInside && state == DISABLED)
+	bool bInside   = pointInside(mouseX, mouseY);
+	if (bInside && state == DISABLED)
 	{
-		::helpTextID = this->helpID;
+		::helpTextID	   = this->helpID;
 		::helpTextHeaderID = this->helpHeader;
 	}
-	if(bInside && state != DISABLED && state != HIDDEN)
+	if (bInside && state != DISABLED && state != HIDDEN)
 	{
-		::helpTextID = this->helpID;
+		::helpTextID	   = this->helpID;
 		::helpTextHeaderID = this->helpHeader;
-		if(userInput->isLeftClick())
+		if (userInput->isLeftClick())
 		{
-			if(toggleButton)
+			if (toggleButton)
 			{
-				if(state == PRESSED)
+				if (state == PRESSED)
 				{
 					press(0);
 					pressedData.end();
@@ -498,73 +517,80 @@ void aAnimButton::update()
 				highlightData.end();
 				sndSystem->playDigitalSample(clickSFX);
 			}
-			if(getParent() && !messageOnRelease && pointInside(userInput->getMouseDragX(), userInput->getMouseDragY()))
+			if (getParent() && !messageOnRelease &&
+				pointInside(
+					userInput->getMouseDragX(), userInput->getMouseDragY()))
 				getParent()->handleMessage(aMSG_LEFTMOUSEDOWN, data.ID);
 		}
-		else if(userInput->getMouseLeftHeld() > holdTime && getParent() && !messageOnRelease
-				&& pointInside(userInput->getMouseDragX(), userInput->getMouseDragY()))
+		else if (userInput->getMouseLeftHeld() > holdTime && getParent() &&
+				 !messageOnRelease &&
+				 pointInside(
+					 userInput->getMouseDragX(), userInput->getMouseDragY()))
 			getParent()->handleMessage(aMSG_LEFTMOUSEHELD, data.ID);
-		else if(userInput->leftMouseReleased() && getParent() && messageOnRelease)
+		else if (userInput->leftMouseReleased() && getParent() &&
+				 messageOnRelease)
 		{
 			int32_t mouseDragX = userInput->getMouseDragX();
 			int32_t mouseDragY = userInput->getMouseDragY();
-			if(pointInside(mouseDragX, mouseDragY))
+			if (pointInside(mouseDragX, mouseDragY))
 			{
 				getParent()->handleMessage(aMSG_LEFTMOUSEDOWN, data.ID);
-				if(!toggleButton)
+				if (!toggleButton)
 					state = ENABLED;
 			}
 			//		sndSystem->playDigitalSample( clickSFX );
 		}
-		else if(state != PRESSED)
+		else if (state != PRESSED)
 		{
-			if(state != HIGHLIGHT && state != DISABLED && state != HIDDEN && isShowing())
+			if (state != HIGHLIGHT && state != DISABLED && state != HIDDEN &&
+				isShowing())
 				sndSystem->playDigitalSample(highlightSFX);
-			if(!highlightData.isAnimating())
+			if (!highlightData.isAnimating())
 				highlightData.begin();
 			state = HIGHLIGHT;
 			makeUVs(location, state, data);
 		}
 	}
-	else if(state == PRESSED)
+	else if (state == PRESSED)
 	{
 		// if clicked inside and release outside
-		if(userInput->leftMouseReleased() && (messageOnRelease || singlePress)
-				&& pointInside(userInput->getMouseDragX(), userInput->getMouseDragY()))
+		if (userInput->leftMouseReleased() &&
+			(messageOnRelease || singlePress) &&
+			pointInside(userInput->getMouseDragX(), userInput->getMouseDragY()))
 		{
 			state = ENABLED;
 		}
 		else
 		{
-			if(!pressedData.isAnimating())
+			if (!pressedData.isAnimating())
 				pressedData.begin();
-			if(singlePress && pressedData.isDone())
+			if (singlePress && pressedData.isDone())
 				press(0);
 		}
 	}
-	else if(state == DISABLED)
+	else if (state == DISABLED)
 	{
-		if(pointInside(mouseX, mouseY)  && userInput->isLeftClick())
+		if (pointInside(mouseX, mouseY) && userInput->isLeftClick())
 		{
 			sndSystem->playDigitalSample(disabledSFX);
 		}
-		if(!disabledData.isAnimating())
+		if (!disabledData.isAnimating())
 			disabledData.begin();
 		disabledData.update();
 	}
 	else
 	{
 		highlightData.end();
-		if(state == HIGHLIGHT)
+		if (state == HIGHLIGHT)
 			state = ENABLED;
 		press(0);
 	}
-	if(pressedData.isAnimating() && state != PRESSED)
+	if (pressedData.isAnimating() && state != PRESSED)
 	{
 		pressedData.end();
 		press(0);
 	}
-	if(state != DISABLED)
+	if (state != DISABLED)
 		disabledData.end();
 	highlightData.update();
 	pressedData.update();
@@ -572,17 +598,17 @@ void aAnimButton::update()
 }
 void aAnimButton::render()
 {
-	if(!isShowing())
+	if (!isShowing())
 		return;
-	if(disabledData.isAnimating())
+	if (disabledData.isAnimating())
 	{
 		update(disabledData);
 	}
-	else if(pressedData.isAnimating())
+	else if (pressedData.isAnimating())
 	{
 		update(pressedData);
 	}
-	else if(highlightData.isAnimating())
+	else if (highlightData.isAnimating())
 	{
 		update(highlightData);
 	}
@@ -594,35 +620,35 @@ void aAnimButton::render()
 
 void aAnimButton::update(const aAnimation& animData)
 {
-	if(!isShowing())
+	if (!isShowing())
 		return;
 	int32_t color = animData.getColor();
-	if(animateBmp)
+	if (animateBmp)
 		setColor(color, 0);
-	if(animateText)
+	if (animateText)
 		data.textColors[state] = color;
 	int32_t xPos = animData.getXDelta();
 	int32_t yPos = animData.getYDelta();
 	move(xPos, yPos);
-	if(bAnimateChildren)
+	if (bAnimateChildren)
 	{
-		for(size_t i = 0; i < numberOfChildren(); i++)
+		for (size_t i = 0; i < numberOfChildren(); i++)
 			pChildren[i]->setColor(color);
 	}
 	float fXcaleX = animData.getScaleX();
 	float fScaleY = animData.getScaleX();
-	if(fXcaleX != 1.0 && fScaleY != 1.0)
+	if (fXcaleX != 1.0 && fScaleY != 1.0)
 	{
-		float oldWidth = width();
+		float oldWidth  = width();
 		float oldHeight = height();
-		float oldLeft = globalX();
-		float oldTop = globalY();
-		float scaleX = .5 * fXcaleX * width();
-		float scaleY = .5 * fScaleY * height();
-		float midX = globalX() + .5 * width();
-		float midY = globalY() + .5 * height();
-		float newLeft = midX - scaleX;
-		float newTop = midY - scaleY;
+		float oldLeft   = globalX();
+		float oldTop	= globalY();
+		float scaleX	= .5 * fXcaleX * width();
+		float scaleY	= .5 * fScaleY * height();
+		float midX		= globalX() + .5 * width();
+		float midY		= globalY() + .5 * height();
+		float newLeft   = midX - scaleX;
+		float newTop	= midY - scaleY;
 		moveToNoRecurse(newLeft, newTop);
 		resize(width() * scaleX, height() * scaleY);
 		aButton::render();
@@ -643,30 +669,30 @@ void aButton::move(float offsetX, float offsetY)
 }
 
 void aAnimButton::setAnimationInfo(aAnimation* normal, aAnimation* highlight,
-								   aAnimation* pressed, aAnimation* disabled)
+	aAnimation* pressed, aAnimation* disabled)
 {
-	if(normal)
+	if (normal)
 	{
 		normalData.destroy();
 		normalData = *normal;
 	}
 	else
 		normalData.destroy();
-	if(highlight)
+	if (highlight)
 	{
 		highlightData.destroy();
 		highlightData = *highlight;
 	}
 	else
 		highlightData.destroy();
-	if(pressed)
+	if (pressed)
 	{
 		pressedData.destroy();
 		pressedData = *pressed;
 	}
 	else
 		pressedData.destroy();
-	if(disabled)
+	if (disabled)
 	{
 		disabledData.destroy();
 		disabledData = *disabled;
@@ -674,9 +700,3 @@ void aAnimButton::setAnimationInfo(aAnimation* normal, aAnimation* highlight,
 	else
 		disabledData.destroy();
 }
-
-
-
-
-
-

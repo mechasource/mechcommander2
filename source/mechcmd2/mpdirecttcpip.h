@@ -27,19 +27,18 @@ MPDirectTcpip.h			: Interface for the MPDirectTcpip component.
 
 class aButton;
 
-
 class aStyle7TextListItem : public aTextListItem
 {
-public:
+  public:
 	aStyle7TextListItem()
 	{
 		hasAnimation = false;
-		normalColor = 0xff808080;
+		normalColor  = 0xff808080;
 	}
-	virtual int32_t	init(FitIniFile* file, PCSTR blockName);
-	virtual void		render(void);
+	virtual int32_t init(FitIniFile* file, PCSTR blockName);
+	virtual void render(void);
 
-protected:
+  protected:
 	bool hasAnimation;
 	aAnimGroup animGroup;
 	int32_t normalColor;
@@ -47,30 +46,26 @@ protected:
 
 class MPDirectTcpip : public LogisticsScreen
 {
-public:
-
+  public:
 	MPDirectTcpip(void);
 	virtual ~MPDirectTcpip(void);
 
 	void init(FitIniFile* file);
 	bool isDone(void);
-	virtual void		begin(void);
-	virtual void		end(void);
+	virtual void begin(void);
+	virtual void end(void);
 	virtual void render(int32_t xOffset, int32_t yOffset);
 	virtual void render(void);
 	virtual void update(void);
-	virtual int32_t			handleMessage(uint32_t, uint32_t);
+	virtual int32_t handleMessage(uint32_t, uint32_t);
 
-	bool				bDone;
+	bool bDone;
 
-
-private:
+  private:
 	int32_t indexOfButtonWithID(int32_t id);
 
-	aComboBox				ipAddressComboBox;
+	aComboBox ipAddressComboBox;
 };
 
-
-
 //*************************************************************************************************
-#endif  // end of file ( MPDirectTcpip.h )
+#endif // end of file ( MPDirectTcpip.h )

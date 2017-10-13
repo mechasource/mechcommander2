@@ -18,14 +18,13 @@
 //---------------------------------------------------------------------------
 class Element
 {
-public:
-
-	float		depth;
-	bool		drawNormal;
+  public:
+	float depth;
+	bool drawNormal;
 
 	Element(void)
 	{
-		depth = 1.0;
+		depth	  = 1.0;
 		drawNormal = TRUE;
 	}
 

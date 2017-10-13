@@ -17,27 +17,21 @@ MLRTexturePool::ClassData* MLRTexturePool::DefaultData = nullptr;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLRTexturePool::InitializeClass()
+void MLRTexturePool::InitializeClass()
 {
 	Verify(!DefaultData);
 	// Verify(gos_GetCurrentHeap() == StaticHeap);
-	DefaultData =
-		new ClassData(
-		MLRTexturePoolClassID,
-		"MidLevelRenderer::MLRTexturePool",
-		RegisteredClass::DefaultData
-	);
+	DefaultData = new ClassData(MLRTexturePoolClassID,
+		"MidLevelRenderer::MLRTexturePool", RegisteredClass::DefaultData);
 	Register_Object(DefaultData);
 	MLRTexturePool::Instance = nullptr;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLRTexturePool::TerminateClass()
+void MLRTexturePool::TerminateClass()
 {
-	if(MLRTexturePool::Instance)
+	if (MLRTexturePool::Instance)
 	{
 		Unregister_Object(MLRTexturePool::Instance);
 		delete MLRTexturePool::Instance;
@@ -49,10 +43,10 @@ MLRTexturePool::TerminateClass()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLRTexturePool::MLRTexturePool(Stuff::MemoryStream* stream):
-	RegisteredClass(DefaultData)
+MLRTexturePool::MLRTexturePool(Stuff::MemoryStream* stream)
+	: RegisteredClass(DefaultData)
 {
-	//Verify(gos_GetCurrentHeap() == Heap);
+	// Verify(gos_GetCurrentHeap() == Heap);
 	unLoadedImages = false;
 	STOP(("Not implemented"));
 }
@@ -61,11 +55,11 @@ MLRTexturePool::MLRTexturePool(Stuff::MemoryStream* stream):
 //
 void MLRTexturePool::Stop(void)
 {
-	//Verify(gos_GetCurrentHeap() == Heap);
+	// Verify(gos_GetCurrentHeap() == Heap);
 	int32_t i;
-	for(i = 0; i < MLRState::TextureMask; i++)
+	for (i = 0; i < MLRState::TextureMask; i++)
 	{
-		if(textureArray[i] != nullptr)
+		if (textureArray[i] != nullptr)
 		{
 			Unregister_Object(textureArray[i]);
 			delete textureArray[i];
@@ -73,21 +67,21 @@ void MLRTexturePool::Stop(void)
 		}
 	}
 	Unregister_Pointer(freeHandle);
-	delete [] freeHandle;
+	delete[] freeHandle;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void MLRTexturePool::Restart(void)
 {
-	//Verify(gos_GetCurrentHeap() == Heap);
-	freeHandle = new int32_t [handleMax];
+	// Verify(gos_GetCurrentHeap() == Heap);
+	freeHandle = new int32_t[handleMax];
 	Register_Pointer(freeHandle);
-	lastHandle = 0;
+	lastHandle		= 0;
 	firstFreeHandle = 0;
-	lastFreeHandle = 0;
-	storedTextures = 0;
-	for(size_t i = 0; i < MLRState::TextureMask + 1; i++)
+	lastFreeHandle  = 0;
+	storedTextures  = 0;
+	for (size_t i = 0; i < MLRState::TextureMask + 1; i++)
 	{
 		textureArray[i] = nullptr;
 	}
@@ -96,23 +90,23 @@ void MLRTexturePool::Restart(void)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLRTexturePool::MLRTexturePool(GOSImagePool* image_pool, int32_t insDep):
-	RegisteredClass(DefaultData)
+MLRTexturePool::MLRTexturePool(GOSImagePool* image_pool, int32_t insDep)
+	: RegisteredClass(DefaultData)
 {
 	Check_Object(image_pool);
-	//Verify(gos_GetCurrentHeap() == Heap);
+	// Verify(gos_GetCurrentHeap() == Heap);
 	instanceDepth = insDep;
-	instanceMax = 1 << insDep;
-	handleDepth = MLRState::TextureNumberBits - insDep;
-	handleMax = 1 << handleDepth;
-	freeHandle = new int32_t [handleMax];
+	instanceMax   = 1 << insDep;
+	handleDepth   = MLRState::TextureNumberBits - insDep;
+	handleMax	 = 1 << handleDepth;
+	freeHandle	= new int32_t[handleMax];
 	Register_Pointer(freeHandle);
-	lastHandle = 0;
+	lastHandle		= 0;
 	firstFreeHandle = 0;
-	lastFreeHandle = 0;
-	storedTextures = 0;
-	imagePool = image_pool;
-	for(size_t i = 0; i < MLRState::TextureMask + 1; i++)
+	lastFreeHandle  = 0;
+	storedTextures  = 0;
+	imagePool		= image_pool;
+	for (size_t i = 0; i < MLRState::TextureMask + 1; i++)
 	{
 		textureArray[i] = nullptr;
 	}
@@ -124,9 +118,9 @@ MLRTexturePool::MLRTexturePool(GOSImagePool* image_pool, int32_t insDep):
 MLRTexturePool::~MLRTexturePool()
 {
 	int32_t i;
-	for(i = 0; i < MLRState::TextureMask; i++)
+	for (i = 0; i < MLRState::TextureMask; i++)
 	{
-		if(textureArray[i] != nullptr)
+		if (textureArray[i] != nullptr)
 		{
 			Unregister_Object(textureArray[i]);
 			delete textureArray[i];
@@ -136,16 +130,15 @@ MLRTexturePool::~MLRTexturePool()
 	Unregister_Object(imagePool);
 	delete imagePool;
 	Unregister_Pointer(freeHandle);
-	delete [] freeHandle;
+	delete[] freeHandle;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLRTexturePool*
-MLRTexturePool::Make(Stuff::MemoryStream* stream)
+MLRTexturePool* MLRTexturePool::Make(Stuff::MemoryStream* stream)
 {
 	Check_Object(stream);
-	#ifdef _GAMEOS_HPP_
+#ifdef _GAMEOS_HPP_
 	gos_PushCurrentHeap(Heap);
 #endif
 	MLRTexturePool* pool = new MLRTexturePool(stream);
@@ -155,57 +148,49 @@ MLRTexturePool::Make(Stuff::MemoryStream* stream)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLRTexturePool::Save(Stuff::MemoryStream* stream)
+void MLRTexturePool::Save(Stuff::MemoryStream* stream)
 {
 	STOP(("Not implemented"));
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLRTexture*
-MLRTexturePool::Add(PCSTR tn, int32_t instance)
+MLRTexture* MLRTexturePool::Add(PCSTR tn, int32_t instance)
 {
 	MString textureName(tn);
 	int32_t i, j, textureNameHashValue = textureName.GetHashValue();
-	for(i = 0; i < lastHandle; i++)
+	for (i = 0; i < lastHandle; i++)
 	{
 		int32_t first = i << instanceDepth;
-		bool yo = false;
-		for(j = first; j < first + instanceMax; j++)
+		bool yo		  = false;
+		for (j = first; j < first + instanceMax; j++)
 		{
-			if(textureArray[j] &&
-					textureArray[j]->textureNameHashValue == textureNameHashValue)
+			if (textureArray[j] &&
+				textureArray[j]->textureNameHashValue == textureNameHashValue)
 			{
 				yo = 1;
 			}
 		}
-		if(yo == false)
+		if (yo == false)
 		{
 			continue;
 		}
-		for(j = first; j < first + instanceMax; j++)
+		for (j = first; j < first + instanceMax; j++)
 		{
-			if(textureArray[j] &&
-					textureArray[j]->instance == instance)
+			if (textureArray[j] && textureArray[j]->instance == instance)
 			{
 				return textureArray[j];
 			}
 		}
-		for(j = first; j < first + instanceMax; j++)
+		for (j = first; j < first + instanceMax; j++)
 		{
-			if(!textureArray[j])
+			if (!textureArray[j])
 			{
 #ifdef _GAMEOS_HPP_
 				gos_PushCurrentHeap(Heap);
 #endif
 				textureArray[j] =
-					new MLRTexture(
-					this,
-					textureName,
-					instance,
-					j + 1
-				);
+					new MLRTexture(this, textureName, instance, j + 1);
 				Register_Object(textureArray[j]);
 #ifdef _GAMEOS_HPP_
 				gos_PopCurrentHeap();
@@ -221,16 +206,12 @@ MLRTexturePool::Add(PCSTR tn, int32_t instance)
 #ifdef _GAMEOS_HPP_
 	gos_PushCurrentHeap(Heap);
 #endif
-	if(firstFreeHandle < lastFreeHandle)
+	if (firstFreeHandle < lastFreeHandle)
 	{
-		newHandle = (freeHandle[firstFreeHandle & (handleMax - 1)]) << instanceDepth;
+		newHandle = (freeHandle[firstFreeHandle & (handleMax - 1)])
+					<< instanceDepth;
 		textureArray[newHandle] =
-			new MLRTexture(
-			this,
-			textureName,
-			instance,
-			newHandle + 1
-		);
+			new MLRTexture(this, textureName, instance, newHandle + 1);
 		storedTextures++;
 		firstFreeHandle++;
 	}
@@ -239,12 +220,7 @@ MLRTexturePool::Add(PCSTR tn, int32_t instance)
 		Verify(((lastHandle << instanceDepth) + 1) < MLRState::TextureMask);
 		newHandle = lastHandle << instanceDepth;
 		textureArray[newHandle] =
-			new MLRTexture(
-			this,
-			textureName,
-			instance,
-			newHandle + 1
-		);
+			new MLRTexture(this, textureName, instance, newHandle + 1);
 		storedTextures++;
 		lastHandle++;
 	}
@@ -256,23 +232,22 @@ MLRTexturePool::Add(PCSTR tn, int32_t instance)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLRTexture*
-MLRTexturePool::Add(GOSImage* image)
+MLRTexture* MLRTexturePool::Add(GOSImage* image)
 {
 	MString textureName;
 	textureName = image->GetName();
 	int32_t i, j, textureNameHashValue = textureName.GetHashValue();
-	for(i = 0; i < lastHandle; i++)
+	for (i = 0; i < lastHandle; i++)
 	{
 		int32_t first = i << instanceDepth;
-		for(j = first; j < first + instanceMax; j++)
+		for (j = first; j < first + instanceMax; j++)
 		{
-			if(textureArray[j] &&
-					textureArray[j]->textureNameHashValue == textureNameHashValue)
+			if (textureArray[j] &&
+				textureArray[j]->textureNameHashValue == textureNameHashValue)
 			{
 				Verify(image == textureArray[j]->GetImage());
 				return textureArray[j];
-//				STOP(("Image allready in texture pool !"));
+				//				STOP(("Image allready in texture pool !"));
 			}
 		}
 	}
@@ -280,28 +255,19 @@ MLRTexturePool::Add(GOSImage* image)
 #ifdef _GAMEOS_HPP_
 	gos_PushCurrentHeap(Heap);
 #endif
-	if(firstFreeHandle < lastFreeHandle)
+	if (firstFreeHandle < lastFreeHandle)
 	{
-		newHandle = (freeHandle[firstFreeHandle & (handleMax - 1)]) << instanceDepth;
-		textureArray[newHandle] =
-			new MLRTexture(
-			this,
-			image,
-			newHandle + 1
-		);
+		newHandle = (freeHandle[firstFreeHandle & (handleMax - 1)])
+					<< instanceDepth;
+		textureArray[newHandle] = new MLRTexture(this, image, newHandle + 1);
 		storedTextures++;
 		firstFreeHandle++;
 	}
 	else
 	{
 		Verify(((lastHandle << instanceDepth) + 1) < MLRState::TextureMask);
-		newHandle = lastHandle << instanceDepth;
-		textureArray[newHandle] =
-			new MLRTexture(
-			this,
-			image,
-			newHandle + 1
-		);
+		newHandle				= lastHandle << instanceDepth;
+		textureArray[newHandle] = new MLRTexture(this, image, newHandle + 1);
 		storedTextures++;
 		lastHandle++;
 	}
@@ -312,48 +278,48 @@ MLRTexturePool::Add(GOSImage* image)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLRTexturePool::Remove(MLRTexture* tex)
+void MLRTexturePool::Remove(MLRTexture* tex)
 {
 	textureArray[tex->textureHandle - 1] = nullptr;
 	storedTextures--;
 	int32_t i, first = (tex->textureHandle - 1) & ~(instanceMax - 1);
-	for(i = first; i < first + instanceMax; i++)
+	for (i = first; i < first + instanceMax; i++)
 	{
-		if(textureArray[i] != nullptr)
+		if (textureArray[i] != nullptr)
 		{
 			break;
 		}
 	}
-	if(i >= first + instanceMax)
+	if (i >= first + instanceMax)
 	{
 		imagePool->RemoveImage(tex->image);
 		tex->image = nullptr;
-		freeHandle[lastFreeHandle & (handleMax - 1)] = (tex->textureHandle - 1) >> instanceDepth;
+		freeHandle[lastFreeHandle & (handleMax - 1)] =
+			(tex->textureHandle - 1) >> instanceDepth;
 		lastFreeHandle++;
 	}
 	tex->textureHandle = 0;
-	unLoadedImages = true;
+	unLoadedImages	 = true;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLRTexture*
-MLRTexturePool::operator()(PCSTR tn, int32_t instance)
+MLRTexture* MLRTexturePool::operator()(PCSTR tn, int32_t instance)
 {
 	// Check_Object(this);
 	MString textureName = tn;
 	int32_t i, j, textureNameHashValue = textureName.GetHashValue();
-	for(i = 0; i < lastHandle; i++)
+	for (i = 0; i < lastHandle; i++)
 	{
 		int32_t first = i << instanceDepth;
-		for(j = first; j < first + instanceMax; j++)
+		for (j = first; j < first + instanceMax; j++)
 		{
-			if(textureArray[j])
+			if (textureArray[j])
 			{
-				if(textureArray[j]->textureNameHashValue == textureNameHashValue)
+				if (textureArray[j]->textureNameHashValue ==
+					textureNameHashValue)
 				{
-					if(textureArray[j]->instance == instance)
+					if (textureArray[j]->instance == instance)
 					{
 						return textureArray[j];
 					}
@@ -370,36 +336,36 @@ MLRTexturePool::operator()(PCSTR tn, int32_t instance)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-uint32_t
-MLRTexturePool::LoadImages()
+uint32_t MLRTexturePool::LoadImages()
 {
 	Check_Object(imagePool);
-	if(unLoadedImages == false)
+	if (unLoadedImages == false)
 	{
 		return lastHandle;
 	}
-//
-// Statistic timing function
-//
-	for(uint32_t i = 0; i < MLRState::TextureMask + 1; i++)
+	//
+	// Statistic timing function
+	//
+	for (uint32_t i = 0; i < MLRState::TextureMask + 1; i++)
 	{
-		if(textureArray[i])
+		if (textureArray[i])
 		{
 			int32_t hint;
 			GOSImage* image = textureArray[i]->GetImage(&hint);
-			if(image && !image->IsLoaded())
+			if (image && !image->IsLoaded())
 			{
 				Check_Object(image);
-				if(!imagePool->LoadImage(image, hint))
+				if (!imagePool->LoadImage(image, hint))
 				{
-					STOP(("Cannot load texture: %s!", textureArray[i]->textureName));
+					STOP(("Cannot load texture: %s!",
+						textureArray[i]->textureName));
 				}
 			}
 		}
 	}
-//
-// End timing function
-//
+	//
+	// End timing function
+	//
 	unLoadedImages = false;
 	return lastHandle;
 }

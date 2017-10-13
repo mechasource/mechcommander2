@@ -26,78 +26,62 @@
 //---------------------------------------------------------------------------
 typedef struct _CommanderData
 {
-	int32_t					id;
-	int32_t					teamId;
-	MoverGroupData			groups[MAX_MOVERGROUPS];
+	int32_t id;
+	int32_t teamId;
+	MoverGroupData groups[MAX_MOVERGROUPS];
 
 } CommanderData;
 
 typedef struct _StaticCommanderData
 {
-	int32_t	numCommanders;
-	int32_t	homeCommanderId;
+	int32_t numCommanders;
+	int32_t homeCommanderId;
 
 } StaticCommanderData;
 
 class Commander
 {
 
-public:
+  public:
+	int32_t id;
+	TeamPtr team;
+	MoverGroupPtr groups[MAX_MOVERGROUPS];
 
-	int32_t					id;
-	TeamPtr					team;
-	MoverGroupPtr			groups[MAX_MOVERGROUPS];
+	static int32_t numCommanders;
+	static CommanderPtr commanders[MAX_COMMANDERS];
+	static CommanderPtr home;
 
-	static int32_t				numCommanders;
-	static CommanderPtr		commanders[MAX_COMMANDERS];
-	static CommanderPtr		home;
-
-public:
-
+  public:
 	PVOID operator new(size_t ourSize);
 	void operator delete(PVOID us);
 
 	virtual void init(void);
 
-	Commander(void)
-	{
-		init(void);
-	}
+	Commander(void) { init(void); }
 
 	virtual void destroy(void);
 
-	~Commander(void)
-	{
-		destroy(void);
-	}
+	~Commander(void) { destroy(void); }
 
-	virtual int32_t getId(void)
-	{
-		return(id);
-	}
+	virtual int32_t getId(void) { return (id); }
 
 	virtual void setId(int32_t _id)
 	{
-		id = _id;
+		id			   = _id;
 		commanders[id] = this;
 	}
 
-	virtual TeamPtr getTeam(void)
-	{
-		return(team);
-	}
+	virtual TeamPtr getTeam(void) { return (team); }
 
-	virtual void setTeam(TeamPtr _team)
-	{
-		team = _team;
-	}
+	virtual void setTeam(TeamPtr _team) { team = _team; }
 
 	virtual MoverGroupPtr getGroup(int32_t groupNumber)
 	{
-		return(groups[groupNumber]);
+		return (groups[groupNumber]);
 	}
 
-	int32_t setGroup(int32_t id, int32_t numMates, MoverPtr* moverList, int32_t point);
+	int32_t setGroup(
+		int32_t id, int32_t numMates, MoverPtr* moverList, int32_t point);
 
 	void setLocalMoverId(int32_t localMoverId);
 
@@ -105,15 +89,9 @@ public:
 
 	void addToGUI(bool visible = true);
 
-	void setHomeCommander(void)
-	{
-		home = this;
-	}
+	void setHomeCommander(void) { home = this; }
 
-	static CommanderPtr getCommander(int32_t _id)
-	{
-		return(commanders[_id]);
-	}
+	static CommanderPtr getCommander(int32_t _id) { return (commanders[_id]); }
 
 	static int32_t Save(PacketFilePtr file, int32_t packetNum);
 	static int32_t Load(PacketFilePtr file, int32_t packetNum);

@@ -12,29 +12,22 @@ using namespace MidLevelRenderer;
 //###########################    MLRLight    ##################################
 //#############################################################################
 
-MLRLight::ClassData*
-MLRLight::DefaultData = nullptr;
+MLRLight::ClassData* MLRLight::DefaultData = nullptr;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLRLight::InitializeClass()
+void MLRLight::InitializeClass()
 {
 	Verify(!DefaultData);
 	// Verify(gos_GetCurrentHeap() == StaticHeap);
-	DefaultData =
-		new ClassData(
-		MLRLightClassID,
-		"MidLevelRenderer::MLRLight",
-		RegisteredClass::DefaultData
-	);
+	DefaultData = new ClassData(MLRLightClassID, "MidLevelRenderer::MLRLight",
+		RegisteredClass::DefaultData);
 	Register_Object(DefaultData);
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLRLight::TerminateClass()
+void MLRLight::TerminateClass()
 {
 	Unregister_Object(DefaultData);
 	delete DefaultData;
@@ -43,30 +36,26 @@ MLRLight::TerminateClass()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLRLight::MLRLight(ClassData* class_data) :
-	RegisteredClass(class_data)
+MLRLight::MLRLight(ClassData* class_data) : RegisteredClass(class_data)
 {
-	//Verify(gos_GetCurrentHeap() == Heap);
-	intensity = 1.0f;
+	// Verify(gos_GetCurrentHeap() == Heap);
+	intensity	= 1.0f;
 	lightToWorld = LinearMatrix4D::Identity;
 	lightToShape = LinearMatrix4D::Identity;
-	color = RGBColor(0.0f, 0.0f, 0.0f);
+	color		 = RGBColor(0.0f, 0.0f, 0.0f);
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 MLRLight::MLRLight(
-	ClassData* class_data,
-	Stuff::MemoryStream* stream,
-	uint32_t version
-) :
-	RegisteredClass(class_data)
+	ClassData* class_data, Stuff::MemoryStream* stream, uint32_t version)
+	: RegisteredClass(class_data)
 {
 	Check_Object(stream);
-	//Verify(gos_GetCurrentHeap() == Heap);
+	// Verify(gos_GetCurrentHeap() == Heap);
 	LinearMatrix4D matrix;
 	*stream >> intensity >> color >> matrix;
-	if(version >= 9)
+	if (version >= 9)
 	{
 		*stream >> lightName;
 	}
@@ -79,14 +68,11 @@ MLRLight::MLRLight(
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLRLight::MLRLight(
-	ClassData* class_data,
-	Stuff::Page* page
-) :
-	RegisteredClass(class_data)
+MLRLight::MLRLight(ClassData* class_data, Stuff::Page* page)
+	: RegisteredClass(class_data)
 {
 	Check_Object(page);
-	//Verify(gos_GetCurrentHeap() == Heap);
+	// Verify(gos_GetCurrentHeap() == Heap);
 	lightName = page->GetName();
 	intensity = 1.0f;
 	page->GetEntry("Intensity", &intensity);
@@ -104,43 +90,38 @@ MLRLight::MLRLight(
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLRLight::~MLRLight()
-{
-}
+MLRLight::~MLRLight() {}
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLRLight*
-MLRLight::Make(
-	Stuff::MemoryStream* stream,
-	uint32_t version
-)
+MLRLight* MLRLight::Make(Stuff::MemoryStream* stream, uint32_t version)
 {
-	#ifdef _GAMEOS_HPP_
+#ifdef _GAMEOS_HPP_
 	gos_PushCurrentHeap(Heap);
 #endif
 	int32_t type;
 	MLRLight* light = nullptr;
 	*stream >> type;
-	switch(type)
+	switch (type)
 	{
-		case AmbientLight:
-			light = new MLRAmbientLight(stream, version);
-			break;
-		case InfiniteLight:
-			light = new MLRInfiniteLight(MLRInfiniteLight::DefaultData, stream, version);
-			break;
-		case PointLight:
-			light = new MLRPointLight(stream, version);
-			break;
-		case SpotLight:
-			light = new MLRSpotLight(stream, version);
-			break;
-		case LookUpLight:
-			light = new MLRLookUpLight(stream, version);
-			break;
-		default:
-			STOP(("Bad light type"));
+	case AmbientLight:
+		light = new MLRAmbientLight(stream, version);
+		break;
+	case InfiniteLight:
+		light = new MLRInfiniteLight(
+			MLRInfiniteLight::DefaultData, stream, version);
+		break;
+	case PointLight:
+		light = new MLRPointLight(stream, version);
+		break;
+	case SpotLight:
+		light = new MLRSpotLight(stream, version);
+		break;
+	case LookUpLight:
+		light = new MLRLookUpLight(stream, version);
+		break;
+	default:
+		STOP(("Bad light type"));
 	}
 	gos_PopCurrentHeap();
 	return light;
@@ -148,24 +129,23 @@ MLRLight::Make(
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLRLight*
-MLRLight::Make(Stuff::Page* page)
+MLRLight* MLRLight::Make(Stuff::Page* page)
 {
-	#ifdef _GAMEOS_HPP_
+#ifdef _GAMEOS_HPP_
 	gos_PushCurrentHeap(Heap);
 #endif
 	PCSTR type;
 	page->GetEntry("LightType", &type, true);
 	MLRLight* light = nullptr;
-	if(!_stricmp(type, "Ambient"))
+	if (!_stricmp(type, "Ambient"))
 		light = new MLRAmbientLight(page);
-	else if(!_stricmp(type, "Infinite"))
+	else if (!_stricmp(type, "Infinite"))
 		light = new MLRInfiniteLight(MLRInfiniteLight::DefaultData, page);
-	else if(!_stricmp(type, "Point"))
+	else if (!_stricmp(type, "Point"))
 		light = new MLRPointLight(page);
-	else if(!_stricmp(type, "Spot"))
+	else if (!_stricmp(type, "Spot"))
 		light = new MLRSpotLight(page);
-	else if(!_stricmp(type, "LookUp"))
+	else if (!_stricmp(type, "LookUp"))
 		light = new MLRLookUpLight(page);
 	else
 		STOP(("Bad light type"));
@@ -175,8 +155,7 @@ MLRLight::Make(Stuff::Page* page)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLRLight::Save(Stuff::MemoryStream* stream)
+void MLRLight::Save(Stuff::MemoryStream* stream)
 {
 	// Check_Object(this);
 	Check_Object(stream);
@@ -187,28 +166,27 @@ MLRLight::Save(Stuff::MemoryStream* stream)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLRLight::Write(Stuff::Page* page)
+void MLRLight::Write(Stuff::Page* page)
 {
 	// Check_Object(this);
 	Check_Object(page);
-	switch(GetLightType())
+	switch (GetLightType())
 	{
-		case AmbientLight:
-			page->SetEntry("LightType", "Ambient");
-			break;
-		case InfiniteLight:
-			page->SetEntry("LightType", "Infinite");
-			break;
-		case PointLight:
-			page->SetEntry("LightType", "Point");
-			break;
-		case SpotLight:
-			page->SetEntry("LightType", "Spot");
-			break;
-		case LookUpLight:
-			page->SetEntry("LightType", "LookUp");
-			break;
+	case AmbientLight:
+		page->SetEntry("LightType", "Ambient");
+		break;
+	case InfiniteLight:
+		page->SetEntry("LightType", "Infinite");
+		break;
+	case PointLight:
+		page->SetEntry("LightType", "Point");
+		break;
+	case SpotLight:
+		page->SetEntry("LightType", "Spot");
+		break;
+	case LookUpLight:
+		page->SetEntry("LightType", "LookUp");
+		break;
 	}
 	page->SetEntry("Intensity", intensity);
 	page->SetEntry("Color", color);
@@ -221,16 +199,11 @@ MLRLight::Write(Stuff::Page* page)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLRLight::TestInstance()
-{
-	Verify(IsDerivedFrom(DefaultData));
-}
+void MLRLight::TestInstance() { Verify(IsDerivedFrom(DefaultData)); }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLRLight::SetLightToShapeMatrix(const LinearMatrix4D& worldToShape)
+void MLRLight::SetLightToShapeMatrix(const LinearMatrix4D& worldToShape)
 {
 	// Check_Object(this);
 	lightToShape.Multiply(lightToWorld, worldToShape);
@@ -238,8 +211,7 @@ MLRLight::SetLightToShapeMatrix(const LinearMatrix4D& worldToShape)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLRLight::SetLightToWorldMatrix(const LinearMatrix4D& matrix)
+void MLRLight::SetLightToWorldMatrix(const LinearMatrix4D& matrix)
 {
 	// Check_Object(this);
 	lightToWorld = matrix;
@@ -247,16 +219,14 @@ MLRLight::SetLightToWorldMatrix(const LinearMatrix4D& matrix)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLRLight::SetColor(float r, float g, float b)
+void MLRLight::SetColor(float r, float g, float b)
 {
 	SetColor(RGBColor(r, b, b));
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLRLight::GetColor(float& r, float& g, float& b)
+void MLRLight::GetColor(float& r, float& g, float& b)
 {
 	// Check_Object(this);
 	r = color.red;

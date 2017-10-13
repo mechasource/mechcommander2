@@ -18,7 +18,6 @@
 #include "packet.h"
 #endif
 
-
 #include <stuff/stuff.hpp>
 
 //---------------------------------------------------------------------
@@ -26,7 +25,7 @@
 enum craterTypes
 {
 	INVALID_CRATER = -1,
-	SML_FOOTPRINT = 0,
+	SML_FOOTPRINT  = 0,
 	AVG_FOOTPRINT,
 	BIG_FOOTPRINT,
 	ULLER_FOOTPRINT,
@@ -36,21 +35,21 @@ enum craterTypes
 	BUSH_FOOTPRINT,
 	NOVACAT_FOOTPRINT,
 	TURKINA_FOOTPRINT = 63,
-	CRATER_1 = 64,
+	CRATER_1		  = 64,
 	CRATER_2,
 	CRATER_3,
 	CRATER_4,
 	MAX_CRATER_SHAPES
 };
 
-#define FOOTPRINT_ROTATIONS		16
-#define BIG_CRATER_OFFSET		0
-#define SMALL_CRATER_OFFSET		1
+#define FOOTPRINT_ROTATIONS 16
+#define BIG_CRATER_OFFSET 0
+#define SMALL_CRATER_OFFSET 1
 //---------------------------------------------------------------------
 // struct CraterData
 typedef struct _CraterData
 {
-	int32_t			craterShapeId;
+	int32_t craterShapeId;
 	Stuff::Vector3D position[4];
 	Stuff::Vector4D screenPos[4];
 } CraterData;
@@ -60,60 +59,53 @@ typedef CraterData* CraterDataPtr;
 // class CraterManager
 class CraterManager
 {
-	//Data Members
+	// Data Members
 	//-------------
-protected:
+  protected:
+	HeapManagerPtr craterPosHeap;
+	UserHeapPtr craterShpHeap;
 
-	HeapManagerPtr		craterPosHeap;
-	UserHeapPtr			craterShpHeap;
+	uint32_t craterPosHeapSize;
+	uint32_t craterShpHeapSize;
 
-	uint32_t		craterPosHeapSize;
-	uint32_t		craterShpHeapSize;
+	PacketFilePtr craterFile;
 
-	PacketFilePtr		craterFile;
+	uint32_t maxCraters;
+	uint32_t currentCrater;
+	CraterDataPtr craterList;
+	int32_t numCraterTextures;
 
-	uint32_t		maxCraters;
-	uint32_t		currentCrater;
-	CraterDataPtr		craterList;
-	int32_t				numCraterTextures;
+	uint32_t* craterTextureIndices;
+	uint32_t* craterTextureHandles;
 
-	uint32_t*				craterTextureIndices;
-	uint32_t*				craterTextureHandles;
-
-	//Member Functions
+	// Member Functions
 	//-----------------
-protected:
-
-public:
-
+  protected:
+  public:
 	void init(void)
 	{
-		craterPosHeap = nullptr;
-		craterShpHeap = nullptr;
+		craterPosHeap	 = nullptr;
+		craterShpHeap	 = nullptr;
 		craterPosHeapSize = craterShpHeapSize = 0;
 		currentCrater = maxCraters = 0;
-		craterList = nullptr;
-		numCraterTextures = 0;
-		craterTextureHandles = nullptr;
-		craterTextureIndices = nullptr;
-		craterFile = nullptr;
+		craterList				   = nullptr;
+		numCraterTextures		   = 0;
+		craterTextureHandles	   = nullptr;
+		craterTextureIndices	   = nullptr;
+		craterFile				   = nullptr;
 	}
 
-	CraterManager(void)
-	{
-		init(void);
-	}
+	CraterManager(void) { init(void); }
 
-	int32_t init(int32_t numCraters, uint32_t craterTypeSize, PSTR craterFileName);
+	int32_t init(
+		int32_t numCraters, uint32_t craterTypeSize, PSTR craterFileName);
 
-	~CraterManager(void)
-	{
-		destroy(void);
-	}
+	~CraterManager(void) { destroy(void); }
 
 	void destroy(void);
 
-	int32_t addCrater(int32_t craterType, Stuff::Vector3D& position, float rotation);
+	int32_t addCrater(
+		int32_t craterType, Stuff::Vector3D& position, float rotation);
 
 	int32_t update(void);
 	void render(void);

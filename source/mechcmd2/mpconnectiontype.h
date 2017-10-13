@@ -19,64 +19,63 @@ MPConnectionType.h			: Interface for the MPConnectionType component.
 
 typedef enum __mpconnectiontype_const
 {
-	ZONE_PANEL_FIRST_BUTTON_ID		= 1000100,
-	LAN_PANEL_FIRST_BUTTON_ID		= 1000200,
-	TCPIP_PANEL_FIRST_BUTTON_ID		= 1000300,
+	ZONE_PANEL_FIRST_BUTTON_ID  = 1000100,
+	LAN_PANEL_FIRST_BUTTON_ID   = 1000200,
+	TCPIP_PANEL_FIRST_BUTTON_ID = 1000300,
 };
 
 class aZonePanel : public aObject
 {
-public:
+  public:
 	void init(FitIniFile* pFile, LogisticsScreen* pParent);
-	virtual int32_t			handleMessage(uint32_t, uint32_t);
-	virtual void		update(void);
-	virtual void		render(void);
+	virtual int32_t handleMessage(uint32_t, uint32_t);
+	virtual void update(void);
+	virtual void render(void);
 
-private:
+  private:
 	LogisticsScreen* pParentScreen;
 
 	aAnimButton button;
 	aText text;
 
-	bool	bShowWarning;
+	bool bShowWarning;
 };
 
 class aLanPanel : public aObject
 {
-public:
+  public:
 	aLanPanel(LogisticsScreen& refParentScreenParam)
 	{
 		pParentScreen = &refParentScreenParam;
 	}
 	void init(FitIniFile* pFile);
-	virtual int32_t			handleMessage(uint32_t, uint32_t);
+	virtual int32_t handleMessage(uint32_t, uint32_t);
 	virtual void update(void);
-private:
+
+  private:
 	LogisticsScreen* pParentScreen;
 	aAnimButton button0;
 	aAnimButton button1;
 	aText text;
 };
 
-
-
 class aTcpipPanel : public aObject
 {
-public:
+  public:
 	aTcpipPanel(LogisticsScreen& refParentScreenParam)
 	{
-		pParentScreen = &refParentScreenParam;
+		pParentScreen  = &refParentScreenParam;
 		connectingTime = 0.f;
 	}
 	void init(FitIniFile* pFile);
 	virtual void destroy(void);
-	virtual int32_t			handleMessage(uint32_t, uint32_t);
-	virtual void		update(void);
-	virtual void		render(void);
-	virtual void		begin(void);
-private:
+	virtual int32_t handleMessage(uint32_t, uint32_t);
+	virtual void update(void);
+	virtual void render(void);
+	virtual void begin(void);
 
-	int32_t		getNum(PSTR pStr, int32_t index1, int32_t index2);
+  private:
+	int32_t getNum(PSTR pStr, int32_t index1, int32_t index2);
 	LogisticsScreen* pParentScreen;
 	aAnimButton button0;
 	aAnimButton button1;
@@ -84,39 +83,37 @@ private:
 	aText text1;
 	aRect helpRect;
 	aComboBox comboBox;
-	bool	bConnectingDlg;
-	float	connectingTime;
-	bool	bErrorDlg;
-	bool			bExpanded;
-	bool	bFoundConnection;
-
+	bool bConnectingDlg;
+	float connectingTime;
+	bool bErrorDlg;
+	bool bExpanded;
+	bool bFoundConnection;
 };
 
 class MPConnectionType : public LogisticsScreen
 {
-public:
-
+  public:
 	MPConnectionType(void);
 	virtual ~MPConnectionType(void);
 
 	void init(FitIniFile* file);
 	bool isDone(void);
-	virtual void		begin(void);
-	virtual void		end(void);
+	virtual void begin(void);
+	virtual void end(void);
 	virtual void render(int32_t xOffset, int32_t yOffset);
 	virtual void render(void);
 	virtual void update(void);
-	virtual int32_t			handleMessage(uint32_t, uint32_t);
+	virtual int32_t handleMessage(uint32_t, uint32_t);
 
-	bool				bDone;
+	bool bDone;
 
-	PVOID*	ppConnectionScreen;
-	PVOID	pLocalBrowserScreen;
-	PVOID	pDirectTcpipScreen;
-	PVOID	pMPPlaceHolderScreen;
-	PVOID	pMPHostGame;
+	PVOID* ppConnectionScreen;
+	PVOID pLocalBrowserScreen;
+	PVOID pDirectTcpipScreen;
+	PVOID pMPPlaceHolderScreen;
+	PVOID pMPHostGame;
 
-private:
+  private:
 	int32_t indexOfButtonWithID(int32_t id);
 
 	aZonePanel zonePanel;
@@ -124,42 +121,38 @@ private:
 	aTcpipPanel tcpipPanel;
 	aObject* pPanel;
 
-	MPHostGame	hostDlg;
+	MPHostGame hostDlg;
 
-	bool		bHosting;
+	bool bHosting;
 };
 
 class MPPlaceHolderScreen : public LogisticsScreen
 {
-public:
+  public:
+	// MPPlaceHolderScreen(void);
+	// virtual ~MPPlaceHolderScreen(void);
 
-	//MPPlaceHolderScreen(void);
-	//virtual ~MPPlaceHolderScreen(void);
-
-	virtual void		begin()
-	{
-		status = RUNNING;
-	}
-	//virtual void		end(void);
+	virtual void begin() { status = RUNNING; }
+	// virtual void		end(void);
 	virtual void render(int32_t xOffset, int32_t yOffset)
 	{
 		static int32_t lastXOffset = 0;
 		static int32_t lastYOffset = 0;
-		if((0 == xOffset) && (0 == yOffset))
+		if ((0 == xOffset) && (0 == yOffset))
 		{
-			if(xOffset < lastXOffset)
+			if (xOffset < lastXOffset)
 			{
 				status = NEXT;
 			}
-			else if(xOffset > lastXOffset)
+			else if (xOffset > lastXOffset)
 			{
 				status = PREVIOUS;
 			}
-			else if(yOffset > lastYOffset)
+			else if (yOffset > lastYOffset)
 			{
 				status = UP;
 			}
-			else if(yOffset < lastYOffset)
+			else if (yOffset < lastYOffset)
 			{
 				status = DOWN;
 			}
@@ -172,16 +165,11 @@ public:
 		lastXOffset = xOffset;
 		lastYOffset = yOffset;
 	}
-	virtual void render()
-	{
-		render(0, 0);
-	}
-	//virtual void update(void);
+	virtual void render() { render(0, 0); }
+	// virtual void update(void);
 
-private:
+  private:
 };
 
-
-
 //*************************************************************************************************
-#endif  // end of file ( MPConnectionType.h )
+#endif // end of file ( MPConnectionType.h )

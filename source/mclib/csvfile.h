@@ -42,15 +42,15 @@ class CSVFile : public File
 {
 	// Data Members
 	//--------------
-protected:
-	uint32_t totalRows;			//Number of ROWS CSV file has.
-	uint32_t totalCols;			//NUmber of COLS CSV file has.
+  protected:
+	uint32_t totalRows; // Number of ROWS CSV file has.
+	uint32_t totalCols; // NUmber of COLS CSV file has.
 
 	char dataBuffer[2048];
 
 	// Member Functions
 	//------------------
-protected:
+  protected:
 	int32_t afterOpen(void);
 	void atClose(void);
 
@@ -85,21 +85,20 @@ protected:
 
 	int32_t copyString(PSTR dest, PSTR src, size_t bufLen);
 
-public:
+  public:
 	CSVFile(void);
 	~CSVFile(void);
 
-	virtual int32_t open(PCSTR fName, FileMode _mode = READ, int32_t numChildren = 50);
-	virtual int32_t open(FilePtr _parent, size_t fileSize, int32_t numChildren = 50);
+	virtual int32_t open(
+		PCSTR fName, FileMode _mode = READ, int32_t numChildren = 50);
+	virtual int32_t open(
+		FilePtr _parent, size_t fileSize, int32_t numChildren = 50);
 
 	virtual int32_t create(PSTR fName);
 
 	virtual void close(void);
 
-	virtual FileClass getFileClass(void)
-	{
-		return CSVFILE;
-	}
+	virtual FileClass getFileClass(void) { return CSVFILE; }
 
 	int32_t seekRowCol(uint32_t row, uint32_t col);
 
@@ -115,7 +114,8 @@ public:
 	int32_t readChar(uint32_t row, uint32_t col, char& value);
 	int32_t readUCHAR(uint32_t row, uint32_t col, uint8_t& value);
 
-	int32_t readString(uint32_t row, uint32_t col, PSTR result, size_t bufferSize);
+	int32_t readString(
+		uint32_t row, uint32_t col, PSTR result, size_t bufferSize);
 };
 
 //---------------------------------------------------------------------------

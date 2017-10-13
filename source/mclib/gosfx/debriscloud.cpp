@@ -6,7 +6,8 @@
 //===========================================================================//
 //
 //############################################################################
-//########################  gosFX::DebrisCloud__Specification  #############################
+//########################  gosFX::DebrisCloud__Specification
+//#############################
 //############################################################################
 
 #include "stdafx.h"
@@ -15,34 +16,46 @@
 //------------------------------------------------------------------------------
 //
 gosFX::DebrisCloud__Specification::DebrisCloud__Specification(
-	Stuff::MemoryStream* stream,
-	uint32_t gfx_version
-):
-	Effect__Specification(gosFX::DebrisCloudClassID, stream, gfx_version)
+	Stuff::MemoryStream* stream, uint32_t gfx_version)
+	: Effect__Specification(gosFX::DebrisCloudClassID, stream, gfx_version)
 {
-	//Check_Pointer(this);
+	// Check_Pointer(this);
 	Verify(m_class == DebrisCloudClassID);
-	//Verify(gos_GetCurrentHeap() == Heap);
-	m_minimumDeviation.Load(stream, gfx_version);	//	ConstantCurve
-	m_maximumDeviation.Load(stream, gfx_version);	//	SplineCurve
-	m_startingSpeed.Load(stream, gfx_version);		//	SeededCurveOf<ComplexCurve, ComplexCurve,Curve::e_ComplexComplexType>
-	m_pLifeSpan.Load(stream, gfx_version);			//	SeededCurveOf<ComplexCurve, SplineCurve,Curve::e_ComplexSplineType>
-	m_pEtherVelocityY.Load(stream, gfx_version);		//	SeededCurveOf<ConstantCurve, LinearCurve,Curve::e_ConstantLinearType>
-	m_pAccelerationY.Load(stream, gfx_version);		//	SeededCurveOf<SplineCurve, LinearCurve,Curve::e_SplineLinearType>
-	m_pDrag.Load(stream, gfx_version);				//	SeededCurveOf<ComplexCurve, ComplexCurve,Curve::e_ComplexComplexType>
-	m_pAlpha.Load(stream, gfx_version);				//	SeededCurveOf<ComplexCurve, LinearCurve,Curve::e_ComplexLinearType>
-	m_pSpin.Load(stream, gfx_version);				//	SeededCurveOf<ConstantCurve, LinearCurve,Curve::e_ConstantLinearType>
-	*stream >> centerOfForce;			//	Stuff::Point3D
+	// Verify(gos_GetCurrentHeap() == Heap);
+	m_minimumDeviation.Load(stream, gfx_version); //	ConstantCurve
+	m_maximumDeviation.Load(stream, gfx_version); //	SplineCurve
+	m_startingSpeed.Load(
+		stream, gfx_version); //	SeededCurveOf<ComplexCurve,
+							  //ComplexCurve,Curve::e_ComplexComplexType>
+	m_pLifeSpan.Load(
+		stream, gfx_version); //	SeededCurveOf<ComplexCurve,
+							  //SplineCurve,Curve::e_ComplexSplineType>
+	m_pEtherVelocityY.Load(
+		stream, gfx_version); //	SeededCurveOf<ConstantCurve,
+							  //LinearCurve,Curve::e_ConstantLinearType>
+	m_pAccelerationY.Load(
+		stream, gfx_version); //	SeededCurveOf<SplineCurve,
+							  //LinearCurve,Curve::e_SplineLinearType>
+	m_pDrag.Load(
+		stream, gfx_version); //	SeededCurveOf<ComplexCurve,
+							  //ComplexCurve,Curve::e_ComplexComplexType>
+	m_pAlpha.Load(
+		stream, gfx_version); //	SeededCurveOf<ComplexCurve,
+							  //LinearCurve,Curve::e_ComplexLinearType>
+	m_pSpin.Load(
+		stream, gfx_version); //	SeededCurveOf<ConstantCurve,
+							  //LinearCurve,Curve::e_ConstantLinearType>
+	*stream >> centerOfForce; //	Stuff::Point3D
 	LoadGeometry(stream);
 }
 
 //------------------------------------------------------------------------------
 //
-gosFX::DebrisCloud__Specification::DebrisCloud__Specification():
-	Effect__Specification(gosFX::DebrisCloudClassID)
+gosFX::DebrisCloud__Specification::DebrisCloud__Specification()
+	: Effect__Specification(gosFX::DebrisCloudClassID)
 {
-	//Check_Pointer(this);
-	//Verify(gos_GetCurrentHeap() == Heap);
+	// Check_Pointer(this);
+	// Verify(gos_GetCurrentHeap() == Heap);
 	debrisPieces.SetLength(0);
 	debrisPositions.SetLength(0);
 	debrisSpheres.SetLength(0);
@@ -55,7 +68,7 @@ gosFX::DebrisCloud__Specification::~DebrisCloud__Specification()
 {
 	// Check_Object(this);
 	int32_t i, nrOfParticles = debrisPieces.GetLength();
-	for(i = 0; i < nrOfParticles; i++)
+	for (i = 0; i < nrOfParticles; i++)
 	{
 		Check_Object(debrisPieces[i]);
 		debrisPieces[i]->DetachReference();
@@ -68,14 +81,11 @@ gosFX::DebrisCloud__Specification::~DebrisCloud__Specification()
 
 //------------------------------------------------------------------------------
 //
-gosFX::DebrisCloud__Specification*
-gosFX::DebrisCloud__Specification::Make(
-	Stuff::MemoryStream* stream,
-	uint32_t gfx_version
-)
+gosFX::DebrisCloud__Specification* gosFX::DebrisCloud__Specification::Make(
+	Stuff::MemoryStream* stream, uint32_t gfx_version)
 {
 	Check_Object(stream);
-	#ifdef _GAMEOS_HPP_
+#ifdef _GAMEOS_HPP_
 	// gos_PushCurrentHeap(Heap);
 #endif
 	DebrisCloud__Specification* spec =
@@ -86,26 +96,32 @@ gosFX::DebrisCloud__Specification::Make(
 
 //------------------------------------------------------------------------------
 //
-void
-gosFX::DebrisCloud__Specification::Save(Stuff::MemoryStream* stream)
+void gosFX::DebrisCloud__Specification::Save(Stuff::MemoryStream* stream)
 {
 	// Check_Object(this);
 	Check_Object(stream);
 	Effect__Specification::Save(stream);
-	m_minimumDeviation.Save(stream);	//	ConstantCurve
-	m_maximumDeviation.Save(stream);	//	SplineCurve
-	m_startingSpeed.Save(stream);		//	SeededCurveOf<ComplexCurve, ComplexCurve,Curve::e_ComplexComplexType>
-	m_pLifeSpan.Save(stream);			//	SeededCurveOf<ComplexCurve, SplineCurve,Curve::e_ComplexSplineType>
-	m_pEtherVelocityY.Save(stream);		//	SeededCurveOf<ConstantCurve, LinearCurve,Curve::e_ConstantLinearType>
-	m_pAccelerationY.Save(stream);		//	SeededCurveOf<SplineCurve, LinearCurve,Curve::e_SplineLinearType>
-	m_pDrag.Save(stream);				//	SeededCurveOf<ComplexCurve, ComplexCurve,Curve::e_ComplexComplexType>
-	m_pAlpha.Save(stream);				//	SeededCurveOf<ComplexCurve, LinearCurve,Curve::e_ComplexLinearType>
-	m_pSpin.Save(stream);				//	SeededCurveOf<ConstantCurve, LinearCurve,Curve::e_ConstantLinearType>
-	*stream << centerOfForce;			//	Stuff::Point3D
+	m_minimumDeviation.Save(stream); //	ConstantCurve
+	m_maximumDeviation.Save(stream); //	SplineCurve
+	m_startingSpeed.Save(stream);	//	SeededCurveOf<ComplexCurve,
+									 //ComplexCurve,Curve::e_ComplexComplexType>
+	m_pLifeSpan.Save(stream);		 //	SeededCurveOf<ComplexCurve,
+									 //SplineCurve,Curve::e_ComplexSplineType>
+	m_pEtherVelocityY.Save(stream);  //	SeededCurveOf<ConstantCurve,
+									 //LinearCurve,Curve::e_ConstantLinearType>
+	m_pAccelerationY.Save(stream);   //	SeededCurveOf<SplineCurve,
+									 //LinearCurve,Curve::e_SplineLinearType>
+	m_pDrag.Save(stream);			 //	SeededCurveOf<ComplexCurve,
+									 //ComplexCurve,Curve::e_ComplexComplexType>
+	m_pAlpha.Save(stream);			 //	SeededCurveOf<ComplexCurve,
+									 //LinearCurve,Curve::e_ComplexLinearType>
+	m_pSpin.Save(stream);			 //	SeededCurveOf<ConstantCurve,
+									 //LinearCurve,Curve::e_ConstantLinearType>
+	*stream << centerOfForce;		 //	Stuff::Point3D
 	MidLevelRenderer::WriteMLRVersion(stream);
 	int32_t i, nrOfParticles = debrisPieces.GetLength();
 	*stream << nrOfParticles;
-	for(i = 0; i < nrOfParticles; i++)
+	for (i = 0; i < nrOfParticles; i++)
 	{
 		*stream << debrisPositions[i];
 		*stream << debrisSpheres[i].center;
@@ -117,35 +133,44 @@ gosFX::DebrisCloud__Specification::Save(Stuff::MemoryStream* stream)
 
 //------------------------------------------------------------------------------
 //
-void
-gosFX::DebrisCloud__Specification::Copy(DebrisCloud__Specification* spec)
+void gosFX::DebrisCloud__Specification::Copy(DebrisCloud__Specification* spec)
 {
 	// Check_Object(this);
 	Check_Object(spec);
 	Effect__Specification::Copy(spec);
-	#ifdef _GAMEOS_HPP_
+#ifdef _GAMEOS_HPP_
 	// gos_PushCurrentHeap(Heap);
 #endif
-	m_minimumDeviation = spec->m_minimumDeviation;	//	ConstantCurve
-	m_maximumDeviation = spec->m_maximumDeviation;	//	SplineCurve
-	m_startingSpeed = spec->m_startingSpeed;		//	SeededCurveOf<ComplexCurve, ComplexCurve,Curve::e_ComplexComplexType>
-	m_pLifeSpan = spec->m_pLifeSpan;				//	SeededCurveOf<ComplexCurve, SplineCurve,Curve::e_ComplexSplineType>
-	m_pEtherVelocityY = spec->m_pEtherVelocityY;	//	SeededCurveOf<ConstantCurve, LinearCurve,Curve::e_ConstantLinearType>
-	m_pAccelerationY = spec->m_pAccelerationY;		//	SeededCurveOf<SplineCurve, LinearCurve,Curve::e_SplineLinearType>
-	m_pDrag = spec->m_pDrag;						//	SeededCurveOf<ComplexCurve, ComplexCurve,Curve::e_ComplexComplexType>
-	m_pAlpha = spec->m_pAlpha;						//	SeededCurveOf<ComplexCurve, LinearCurve,Curve::e_ComplexLinearType>
-	m_pSpin = spec->m_pSpin;						//	SeededCurveOf<ConstantCurve, LinearCurve,Curve::e_ConstantLinearType>
-	centerOfForce = spec->centerOfForce;			//	Stuff::Point3D
+	m_minimumDeviation = spec->m_minimumDeviation; //	ConstantCurve
+	m_maximumDeviation = spec->m_maximumDeviation; //	SplineCurve
+	m_startingSpeed =
+		spec->m_startingSpeed;		 //	SeededCurveOf<ComplexCurve,
+									 //ComplexCurve,Curve::e_ComplexComplexType>
+	m_pLifeSpan = spec->m_pLifeSpan; //	SeededCurveOf<ComplexCurve,
+									 //SplineCurve,Curve::e_ComplexSplineType>
+	m_pEtherVelocityY =
+		spec->m_pEtherVelocityY; //	SeededCurveOf<ConstantCurve,
+								 //LinearCurve,Curve::e_ConstantLinearType>
+	m_pAccelerationY =
+		spec->m_pAccelerationY; //	SeededCurveOf<SplineCurve,
+								//LinearCurve,Curve::e_SplineLinearType>
+	m_pDrag = spec->m_pDrag;	//	SeededCurveOf<ComplexCurve,
+								//ComplexCurve,Curve::e_ComplexComplexType>
+	m_pAlpha = spec->m_pAlpha;  //	SeededCurveOf<ComplexCurve,
+								//LinearCurve,Curve::e_ComplexLinearType>
+	m_pSpin = spec->m_pSpin;	//	SeededCurveOf<ConstantCurve,
+								//LinearCurve,Curve::e_ConstantLinearType>
+	centerOfForce = spec->centerOfForce; //	Stuff::Point3D
 	int32_t i, nrOfParticles = spec->debrisPieces.GetLength();
 	debrisPieces.SetLength(nrOfParticles);
 	debrisPositions.SetLength(nrOfParticles);
 	debrisSpheres.SetLength(nrOfParticles);
 	debrisSeed.SetLength(nrOfParticles);
-	for(i = 0; i < nrOfParticles; i++)
+	for (i = 0; i < nrOfParticles; i++)
 	{
 		debrisPositions[i] = spec->debrisPositions[i];
-		debrisSpheres[i] = spec->debrisSpheres[i];
-		debrisPieces[i] = spec->debrisPieces[i];
+		debrisSpheres[i]   = spec->debrisSpheres[i];
+		debrisPieces[i]	= spec->debrisPieces[i];
 		Check_Object(debrisPieces[i]);
 		debrisPieces[i]->AttachReference();
 		debrisSeed[i] = spec->debrisSeed[i];
@@ -153,11 +178,10 @@ gosFX::DebrisCloud__Specification::Copy(DebrisCloud__Specification* spec)
 	// gos_PopCurrentHeap();
 }
 
-
 //------------------------------------------------------------------------------
 //
-void
-gosFX::DebrisCloud__Specification::LoadGeometry(Stuff::MemoryStream* stream)
+void gosFX::DebrisCloud__Specification::LoadGeometry(
+	Stuff::MemoryStream* stream)
 {
 	int32_t i, mlrVersion, nrOfParticles;
 	mlrVersion = MidLevelRenderer::ReadMLRVersion(stream);
@@ -167,16 +191,16 @@ gosFX::DebrisCloud__Specification::LoadGeometry(Stuff::MemoryStream* stream)
 	debrisSpheres.SetLength(nrOfParticles);
 	debrisSeed.SetLength(nrOfParticles);
 	float minRadius = 100000000000.0f, maxRadius = 0.0f;
-	for(i = 0; i < nrOfParticles; i++)
+	for (i = 0; i < nrOfParticles; i++)
 	{
 		*stream >> debrisPositions[i];
 		*stream >> debrisSpheres[i].center;
 		*stream >> debrisSpheres[i].radius;
-		if(debrisSpheres[i].radius < minRadius)
+		if (debrisSpheres[i].radius < minRadius)
 		{
 			minRadius = debrisSpheres[i].radius;
 		}
-		if(debrisSpheres[i].radius > maxRadius)
+		if (debrisSpheres[i].radius > maxRadius)
 		{
 			maxRadius = debrisSpheres[i].radius;
 		}
@@ -185,24 +209,20 @@ gosFX::DebrisCloud__Specification::LoadGeometry(Stuff::MemoryStream* stream)
 		// Load the shape
 		//---------------
 		//
-		debrisPieces[i] =
-			MidLevelRenderer::MLRShape::Make(
-				stream,
-				mlrVersion
-			);
+		debrisPieces[i] = MidLevelRenderer::MLRShape::Make(stream, mlrVersion);
 		Register_Object(debrisPieces[i]);
 	}
 	Verify(maxRadius > minRadius);
-	for(i = 0; i < nrOfParticles; i++)
+	for (i = 0; i < nrOfParticles; i++)
 	{
-		debrisSeed[i] = (debrisSpheres[i].radius - minRadius) / (maxRadius - minRadius);
+		debrisSeed[i] =
+			(debrisSpheres[i].radius - minRadius) / (maxRadius - minRadius);
 	}
 }
 
 //------------------------------------------------------------------------------
 //
-void
-gosFX::DebrisCloud__Specification::BuildDefaults()
+void gosFX::DebrisCloud__Specification::BuildDefaults()
 {
 	// Check_Object(this);
 	Effect__Specification::BuildDefaults();
@@ -233,14 +253,12 @@ gosFX::DebrisCloud__Specification::BuildDefaults()
 	m_pLifeSpan.m_seedCurve.SetCurve(1.0f);
 }
 
-
 //------------------------------------------------------------------------------
 //
-bool
-gosFX::DebrisCloud__Specification::IsDataValid(bool fix_data)
+bool gosFX::DebrisCloud__Specification::IsDataValid(bool fix_data)
 {
 	// Check_Object(this);
-	return	Effect__Specification::IsDataValid(fix_data);
+	return Effect__Specification::IsDataValid(fix_data);
 	/*
 		centerOfForce = Stuff::Point3D(0.0f, 00.0f, 0.0f);
 
@@ -279,37 +297,27 @@ gosFX::DebrisCloud__Specification::IsDataValid(bool fix_data)
 		*/
 }
 
-
-
 //############################################################################
 //##########################  gosFX::DebrisCloud  ############################
 //############################################################################
 
-gosFX::DebrisCloud::ClassData*
-gosFX::DebrisCloud::DefaultData = nullptr;
+gosFX::DebrisCloud::ClassData* gosFX::DebrisCloud::DefaultData = nullptr;
 
 //------------------------------------------------------------------------------
 //
-void
-gosFX::DebrisCloud::InitializeClass()
+void gosFX::DebrisCloud::InitializeClass()
 {
 	Verify(!DefaultData);
-	//Verify(gos_GetCurrentHeap() == Heap);
-	DefaultData =
-		new ClassData(
-		DebrisCloudClassID,
-		"gosFX::DebrisCloud",
-		EffectCloud::DefaultData,
-		(Effect::Factory)&Make,
-		(Specification::Factory)&Specification::Make
-	);
+	// Verify(gos_GetCurrentHeap() == Heap);
+	DefaultData = new ClassData(DebrisCloudClassID, "gosFX::DebrisCloud",
+		EffectCloud::DefaultData, (Effect::Factory)&Make,
+		(Specification::Factory)&Specification::Make);
 	Register_Object(DefaultData);
 }
 
 //------------------------------------------------------------------------------
 //
-void
-gosFX::DebrisCloud::TerminateClass()
+void gosFX::DebrisCloud::TerminateClass()
 {
 	Unregister_Object(DefaultData);
 	delete DefaultData;
@@ -318,26 +326,20 @@ gosFX::DebrisCloud::TerminateClass()
 
 //------------------------------------------------------------------------------
 //
-gosFX::DebrisCloud::DebrisCloud(
-	Specification* spec,
-	uint32_t flags
-):
-	Effect(DefaultData, spec, flags)
+gosFX::DebrisCloud::DebrisCloud(Specification* spec, uint32_t flags)
+	: Effect(DefaultData, spec, flags)
 {
-	//Verify(gos_GetCurrentHeap() == Heap);
+	// Verify(gos_GetCurrentHeap() == Heap);
 	debrisPieces.SetLength(spec->debrisPieces.GetLength());
 }
 
 //------------------------------------------------------------------------------
 //
-gosFX::DebrisCloud*
-gosFX::DebrisCloud::Make(
-	Specification* spec,
-	uint32_t flags
-)
+gosFX::DebrisCloud* gosFX::DebrisCloud::Make(
+	Specification* spec, uint32_t flags)
 {
 	Check_Object(spec);
-	#ifdef _GAMEOS_HPP_
+#ifdef _GAMEOS_HPP_
 	// gos_PushCurrentHeap(Heap);
 #endif
 	DebrisCloud* cloud = new gosFX::DebrisCloud(spec, flags);
@@ -347,8 +349,7 @@ gosFX::DebrisCloud::Make(
 
 //------------------------------------------------------------------------------
 //
-void
-gosFX::DebrisCloud::Start(struct gosFX::Effect::ExecuteInfo* info)
+void gosFX::DebrisCloud::Start(struct gosFX::Effect::ExecuteInfo* info)
 {
 	// Check_Object(this);
 	Check_Pointer(info);
@@ -362,40 +363,40 @@ gosFX::DebrisCloud::Start(struct gosFX::Effect::ExecuteInfo* info)
 	Check_Object(spec);
 	Verify(debrisPieces.GetLength() == spec->debrisPieces.GetLength());
 	int32_t i, numOfParticles = debrisPieces.GetLength();
-	for(i = 0; i < numOfParticles; i++)
+	for (i = 0; i < numOfParticles; i++)
 	{
-		Particle* particle = &debrisPieces[i];
+		Particle* particle		  = &debrisPieces[i];
 		particle->m_localToParent = Stuff::LinearMatrix4D::Identity;
 		particle->m_localToParent.BuildTranslation(spec->debrisPositions[i]);
-		particle->m_age = 0.0f;
+		particle->m_age  = 0.0f;
 		particle->m_seed = spec->debrisSeed[i];
-		float lifetime =
-			spec->m_pLifeSpan.ComputeValue(0.0f, particle->m_seed);
+		float lifetime = spec->m_pLifeSpan.ComputeValue(0.0f, particle->m_seed);
 		Min_Clamp(lifetime, 0.0333333f);
 		particle->m_ageRate = 1.0f / lifetime;
 		Stuff::Vector3D v;
 		v.Subtract(spec->debrisPositions[i], spec->centerOfForce);
-//		v.y = 0.0f;
-		float lerpFactor =
-			Stuff::Lerp(
-				spec->m_minimumDeviation.ComputeValue(0.0f, particle->m_seed),
-				spec->m_maximumDeviation.ComputeValue(0.0f, particle->m_seed),
-				Stuff::Random::GetFraction()
-			);
+		//		v.y = 0.0f;
+		float lerpFactor = Stuff::Lerp(
+			spec->m_minimumDeviation.ComputeValue(0.0f, particle->m_seed),
+			spec->m_maximumDeviation.ComputeValue(0.0f, particle->m_seed),
+			Stuff::Random::GetFraction());
 		particle->m_linearVelocity.Lerp(Stuff::Vector3D::Up, v, lerpFactor);
 		particle->m_linearVelocity.Normalize(particle->m_linearVelocity);
-		particle->m_linearVelocity *= spec->m_startingSpeed.ComputeValue(0.0f, particle->m_seed);
+		particle->m_linearVelocity *=
+			spec->m_startingSpeed.ComputeValue(0.0f, particle->m_seed);
 		float temp = spec->m_pSpin.ComputeValue(0.0f, particle->m_seed);
-		particle->m_angularVelocity.x = temp * (2 * Stuff::Random::GetFraction() - 1.0f);
-		particle->m_angularVelocity.y = temp * (2 * Stuff::Random::GetFraction() - 1.0f);
-		particle->m_angularVelocity.z = temp * (2 * Stuff::Random::GetFraction() - 1.0f);
+		particle->m_angularVelocity.x =
+			temp * (2 * Stuff::Random::GetFraction() - 1.0f);
+		particle->m_angularVelocity.y =
+			temp * (2 * Stuff::Random::GetFraction() - 1.0f);
+		particle->m_angularVelocity.z =
+			temp * (2 * Stuff::Random::GetFraction() - 1.0f);
 	}
 }
 
 //------------------------------------------------------------------------------
 //
-bool
-gosFX::DebrisCloud::Execute(struct gosFX::Effect::ExecuteInfo* info)
+bool gosFX::DebrisCloud::Execute(struct gosFX::Effect::ExecuteInfo* info)
 {
 	// Check_Object(this);
 	Check_Object(info);
@@ -404,7 +405,7 @@ gosFX::DebrisCloud::Execute(struct gosFX::Effect::ExecuteInfo* info)
 	// If we aren't supposed to execute, don't
 	//----------------------------------------
 	//
-	if(!IsExecuted())
+	if (!IsExecuted())
 		return false;
 	//
 	//--------------------------------------------------------
@@ -413,8 +414,7 @@ gosFX::DebrisCloud::Execute(struct gosFX::Effect::ExecuteInfo* info)
 	//
 	Specification* spec = GetSpecification();
 	Check_Object(spec);
-	float dT =
-		static_cast<float>(info->m_time - m_lastRan);
+	float dT = static_cast<float>(info->m_time - m_lastRan);
 	Verify(dT >= 0.0f);
 	float prev_age = m_age;
 	m_age += dT * m_ageRate;
@@ -426,7 +426,7 @@ gosFX::DebrisCloud::Execute(struct gosFX::Effect::ExecuteInfo* info)
 	int32_t i;
 	Stuff::LinearMatrix4D local_to_world;
 	local_to_world.Multiply(m_localToParent, *info->m_parentToWorld);
-	for(i = 0; i < debrisPieces.GetLength(); i++)
+	for (i = 0; i < debrisPieces.GetLength(); i++)
 	{
 		//
 		//--------------------------------------------------------------------
@@ -436,10 +436,10 @@ gosFX::DebrisCloud::Execute(struct gosFX::Effect::ExecuteInfo* info)
 		//
 		Particle* particle = GetParticle(i);
 		Check_Object(particle);
-		if(particle->m_age < 1.0f)
+		if (particle->m_age < 1.0f)
 		{
 			particle->m_age += dT * particle->m_ageRate;
-			if(AnimateParticle(i, &local_to_world, info->m_time))
+			if (AnimateParticle(i, &local_to_world, info->m_time))
 			{
 				continue;
 			}
@@ -452,7 +452,7 @@ gosFX::DebrisCloud::Execute(struct gosFX::Effect::ExecuteInfo* info)
 	//----------------------------
 	//
 	m_age = prev_age;
-	if(!Effect::Execute(info))
+	if (!Effect::Execute(info))
 		return false;
 	//
 	//-------------------------------------------------------------------
@@ -461,7 +461,7 @@ gosFX::DebrisCloud::Execute(struct gosFX::Effect::ExecuteInfo* info)
 	//-------------------------------------------------------------------
 	//
 	Stuff::ExtentBox box(Stuff::Point3D::Identity, Stuff::Point3D::Identity);
-	for(i = 0; i < debrisPieces.GetLength(); i++)
+	for (i = 0; i < debrisPieces.GetLength(); i++)
 	{
 		Particle* particle = GetParticle(i);
 		Check_Object(particle);
@@ -470,11 +470,12 @@ gosFX::DebrisCloud::Execute(struct gosFX::Effect::ExecuteInfo* info)
 		// We have found our first particle, so put the box around it
 		//-----------------------------------------------------------
 		//
-		if(particle->m_age < 1.0f)
+		if (particle->m_age < 1.0f)
 		{
 			Stuff::Point3D point;
 			float radius = spec->debrisSpheres[i].radius;
-			point.Multiply(spec->debrisSpheres[i].center, particle->m_localToParent);
+			point.Multiply(
+				spec->debrisSpheres[i].center, particle->m_localToParent);
 			box.maxX = point.x + radius;
 			box.minX = point.x - radius;
 			box.maxY = point.y + radius;
@@ -490,16 +491,17 @@ gosFX::DebrisCloud::Execute(struct gosFX::Effect::ExecuteInfo* info)
 	// Look for the other particles
 	//-----------------------------
 	//
-	while(i < debrisPieces.GetLength())
+	while (i < debrisPieces.GetLength())
 	{
 		Particle* particle = GetParticle(i);
 		Check_Object(particle);
-		if(particle->m_age < 1.0f)
+		if (particle->m_age < 1.0f)
 		{
 			Stuff::ExtentBox local_box;
 			Stuff::Point3D point;
 			float radius = spec->debrisSpheres[i].radius;
-			point.Multiply(spec->debrisSpheres[i].center, particle->m_localToParent);
+			point.Multiply(
+				spec->debrisSpheres[i].center, particle->m_localToParent);
 			local_box.maxX = point.x + radius;
 			local_box.minX = point.x - radius;
 			local_box.maxY = point.y + radius;
@@ -518,15 +520,15 @@ gosFX::DebrisCloud::Execute(struct gosFX::Effect::ExecuteInfo* info)
 	Verify(box.maxX >= box.minX);
 	Verify(box.maxY >= box.minY);
 	Verify(box.maxZ >= box.minZ);
-	Stuff::OBB local_bounds = Stuff::OBB::Identity;
-	local_bounds.axisExtents.x = 0.5f * (box.maxX - box.minX);
-	local_bounds.axisExtents.y = 0.5f * (box.maxY - box.minY);
-	local_bounds.axisExtents.z = 0.5f * (box.maxZ - box.minZ);
+	Stuff::OBB local_bounds			 = Stuff::OBB::Identity;
+	local_bounds.axisExtents.x		 = 0.5f * (box.maxX - box.minX);
+	local_bounds.axisExtents.y		 = 0.5f * (box.maxY - box.minY);
+	local_bounds.axisExtents.z		 = 0.5f * (box.maxZ - box.minZ);
 	local_bounds.localToParent(3, 0) = box.minX + local_bounds.axisExtents.x;
 	local_bounds.localToParent(3, 1) = box.minY + local_bounds.axisExtents.y;
 	local_bounds.localToParent(3, 2) = box.minZ + local_bounds.axisExtents.z;
-	local_bounds.sphereRadius = local_bounds.axisExtents.GetLength();
-	if(local_bounds.sphereRadius < Stuff::SMALL)
+	local_bounds.sphereRadius		 = local_bounds.axisExtents.GetLength();
+	if (local_bounds.sphereRadius < Stuff::SMALL)
 		local_bounds.sphereRadius = 0.01f;
 	Stuff::OBB parent_bounds;
 	parent_bounds.Multiply(local_bounds, m_localToParent);
@@ -541,8 +543,7 @@ gosFX::DebrisCloud::Execute(struct gosFX::Effect::ExecuteInfo* info)
 
 //------------------------------------------------------------------------------
 //
-bool
-gosFX::DebrisCloud::HasFinished(void)
+bool gosFX::DebrisCloud::HasFinished(void)
 {
 	// Check_Object(this);
 	return Effect::HasFinished();
@@ -550,8 +551,7 @@ gosFX::DebrisCloud::HasFinished(void)
 
 //------------------------------------------------------------------------------
 //
-void
-gosFX::DebrisCloud::Kill(void)
+void gosFX::DebrisCloud::Kill(void)
 {
 	// Check_Object(this);
 	//
@@ -559,7 +559,7 @@ gosFX::DebrisCloud::Kill(void)
 	// Destroy all the particles and set up an empty particle cloud
 	//-------------------------------------------------------------
 	//
-	for(size_t i = 0; i < debrisPieces.GetLength(); i++)
+	for (size_t i = 0; i < debrisPieces.GetLength(); i++)
 	{
 		DestroyParticle(i);
 	}
@@ -573,12 +573,8 @@ gosFX::DebrisCloud::Kill(void)
 
 //------------------------------------------------------------------------------
 //
-bool
-gosFX::DebrisCloud::AnimateParticle(
-	uint32_t index,
-	const Stuff::LinearMatrix4D* world_to_new_local,
-	Stuff::Time till
-)
+bool gosFX::DebrisCloud::AnimateParticle(uint32_t index,
+	const Stuff::LinearMatrix4D* world_to_new_local, Stuff::Time till)
 {
 	// Check_Object(this);
 	//
@@ -591,8 +587,8 @@ gosFX::DebrisCloud::AnimateParticle(
 	Particle* particle = GetParticle(index);
 	Check_Object(particle);
 	float seed = particle->m_seed;
-	float age = particle->m_age;
-	if(age >= 1.0f)
+	float age  = particle->m_age;
+	if (age >= 1.0f)
 		return false;
 	//
 	//------------------
@@ -656,9 +652,9 @@ gosFX::DebrisCloud::AnimateParticle(
 	// Compute the particle's new velocity and position
 	//-------------------------------------------------
 	//
-	float time_slice =
-		static_cast<float>(till - m_lastRan);
-	particle->m_linearVelocity.AddScaled(particle->m_linearVelocity, accel, time_slice);
+	float time_slice = static_cast<float>(till - m_lastRan);
+	particle->m_linearVelocity.AddScaled(
+		particle->m_linearVelocity, accel, time_slice);
 	translation.AddScaled(translation, particle->m_linearVelocity, time_slice);
 	//
 	//-----------------------
@@ -679,8 +675,7 @@ gosFX::DebrisCloud::AnimateParticle(
 
 //------------------------------------------------------------------------------
 //
-void
-gosFX::DebrisCloud::DestroyParticle(uint32_t index)
+void gosFX::DebrisCloud::DestroyParticle(uint32_t index)
 {
 	Particle* particle = GetParticle(index);
 	Check_Object(particle);
@@ -702,7 +697,7 @@ void gosFX::DebrisCloud::Draw(DrawInfo* info)
 	Specification* spec = GetSpecification();
 	Check_Object(spec);
 	int32_t i, nrOfParticle = debrisPieces.GetLength();
-	for(i = 0; i < nrOfParticle; i++)
+	for (i = 0; i < nrOfParticle; i++)
 	{
 		//
 		//-----------------------------------------------------------------
@@ -712,16 +707,16 @@ void gosFX::DebrisCloud::Draw(DrawInfo* info)
 		//
 		Particle* particle = GetParticle(i);
 		Check_Object(particle);
-		if(particle->m_age < 1.0f)
+		if (particle->m_age < 1.0f)
 		{
 			MidLevelRenderer::DrawScalableShapeInformation dinfo;
 			MidLevelRenderer::MLRShape* shape = spec->debrisPieces[i];
 			dinfo.clippingFlags.SetClippingState(0x3f);
 			dinfo.worldToShape = nullptr;
 			dinfo.state.Combine(info->m_state, spec->m_state);
-			dinfo.activeLights = nullptr;
+			dinfo.activeLights	 = nullptr;
 			dinfo.nrOfActiveLights = 0;
-			dinfo.shape = shape;
+			dinfo.shape			   = shape;
 			Stuff::LinearMatrix4D local_to_world;
 			local_to_world.Multiply(m_localToParent, *info->m_parentToWorld);
 			//
@@ -731,12 +726,9 @@ void gosFX::DebrisCloud::Draw(DrawInfo* info)
 			//---------------------------------------------------------------
 			//
 			Stuff::LinearMatrix4D shape_to_world;
-			shape_to_world.Multiply(
-				particle->m_localToParent,
-				local_to_world
-			);
+			shape_to_world.Multiply(particle->m_localToParent, local_to_world);
 			dinfo.shapeToWorld = &shape_to_world;
-			dinfo.scaling = nullptr;
+			dinfo.scaling	  = nullptr;
 			Stuff::RGBAColor color(1.0f, 1.0f, 1.0f, particle->m_alpha);
 			dinfo.paintMe = &color;
 			info->m_clipper->DrawScalableShape(&dinfo);
@@ -752,8 +744,7 @@ void gosFX::DebrisCloud::Draw(DrawInfo* info)
 
 //------------------------------------------------------------------------------
 //
-void
-gosFX::DebrisCloud::TestInstance(void) const
+void gosFX::DebrisCloud::TestInstance(void) const
 {
 	Verify(IsDerivedFrom(DefaultData));
 }

@@ -5,7 +5,6 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
-
 #include "stdafx.h"
 //#include "stuffheaders.hpp"
 
@@ -19,41 +18,28 @@ using namespace Stuff;
 // First
 //###########################################################################
 //
-void
-Iterator::First()
-{
-	STOP(("Iterator::First - Should never reach here"));
-}
+void Iterator::First() { STOP(("Iterator::First - Should never reach here")); }
 
 //
 //###########################################################################
 // Last
 //###########################################################################
 //
-void
-Iterator::Last()
-{
-	STOP(("Iterator::Last - Should never reach here"));
-}
+void Iterator::Last() { STOP(("Iterator::Last - Should never reach here")); }
 
 //
 //###########################################################################
 // Next
 //###########################################################################
 //
-void
-Iterator::Next()
-{
-	STOP(("Iterator::Next - Should never reach here"));
-}
+void Iterator::Next() { STOP(("Iterator::Next - Should never reach here")); }
 
 //
 //###########################################################################
 // Previous
 //###########################################################################
 //
-void
-Iterator::Previous()
+void Iterator::Previous()
 {
 	STOP(("Iterator::Previous - Should never reach here"));
 }
@@ -63,13 +49,12 @@ Iterator::Previous()
 // GetSize
 //###########################################################################
 //
-CollectionSize
-Iterator::GetSize()
+CollectionSize Iterator::GetSize()
 {
 	CollectionSize i = 0;
 	PVOID item;
 	First();
-	while((item = GetCurrentImplementation()) != nullptr)
+	while ((item = GetCurrentImplementation()) != nullptr)
 	{
 		i++;
 		Next();
@@ -82,11 +67,10 @@ Iterator::GetSize()
 // ReadAndNextImplementation
 //###########################################################################
 //
-void
-* Iterator::ReadAndNextImplementation()
+void* Iterator::ReadAndNextImplementation()
 {
 	PVOID item;
-	if((item = GetCurrentImplementation()) != nullptr)
+	if ((item = GetCurrentImplementation()) != nullptr)
 	{
 		Next();
 	}
@@ -98,11 +82,10 @@ void
 // ReadAndPreviousImplementation
 //###########################################################################
 //
-void
-* Iterator::ReadAndPreviousImplementation()
+void* Iterator::ReadAndPreviousImplementation()
 {
 	PVOID item;
-	if((item = GetCurrentImplementation()) != nullptr)
+	if ((item = GetCurrentImplementation()) != nullptr)
 	{
 		Previous();
 	}
@@ -126,19 +109,17 @@ Iterator::GetCurrentImplementation()
 // GetNthImplementation
 //###########################################################################
 //
-void
-* Iterator::GetNthImplementation(CollectionSize index)
+void* Iterator::GetNthImplementation(CollectionSize index)
 {
 	CollectionSize i = 0;
 	PVOID item;
 	First();
-	while((item = GetCurrentImplementation()) != nullptr)
+	while ((item = GetCurrentImplementation()) != nullptr)
 	{
-		if(i == index)
+		if (i == index)
 			return item;
 		Next();
 		i++;
 	}
 	return nullptr;
 }
-

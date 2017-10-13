@@ -84,5 +84,4 @@ using namespace Stuff;
 //#include <mlr/mlrvertex.hpp>
 //#include <mlr/owntrace.hpp>
 
-
 #endif

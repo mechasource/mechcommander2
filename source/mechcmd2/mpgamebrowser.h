@@ -22,21 +22,20 @@ MPGameBrowser.h			: Interface for the MPGameBrowser component.
 //#include "mphostgame.h"
 
 class aButton;
-//struct _MC2Session;
-
+// struct _MC2Session;
 
 class aStyle3TextListItem : public aTextListItem
 {
-public:
+  public:
 	aStyle3TextListItem()
 	{
 		hasAnimation = false;
-		normalColor = 0xff808080;
+		normalColor  = 0xff808080;
 	}
-	virtual int32_t	init(FitIniFile* file, PCSTR blockName);
-	virtual void		render(void);
+	virtual int32_t init(FitIniFile* file, PCSTR blockName);
+	virtual void render(void);
 
-protected:
+  protected:
 	bool hasAnimation;
 	aAnimGroup animGroup;
 	int32_t normalColor;
@@ -44,25 +43,21 @@ protected:
 
 class aGameListItem : public aListItem
 {
-public:
+  public:
 	aGameListItem(void);
-	virtual int32_t	init(FitIniFile* file, PCSTR blockName);
+	virtual int32_t init(FitIniFile* file, PCSTR blockName);
 	virtual void update(void);
 	void setSessionInfo(_MC2Session* pSessions);
 
-	PCSTR		getSessionName(void);
+	PCSTR getSessionName(void);
 
-	PCSTR		getText(int32_t which);
+	PCSTR getText(int32_t which);
 
-	const MC2Session* getSession(void)
-	{
-		return(&session);
-	}
-
+	const MC2Session* getSession(void) { return (&session); }
 
 	aGameListItem& operator=(const aGameListItem&);
 
-protected:
+  protected:
 	MC2Session session;
 	aObject allTechGraphic;
 	aStyle3TextListItem gameName;
@@ -79,40 +74,36 @@ protected:
 
 class MPGameBrowser : public LogisticsScreen
 {
-public:
-
+  public:
 	MPGameBrowser(void);
 	virtual ~MPGameBrowser(void);
 
 	void init(FitIniFile* file);
 	bool isDone(void);
-	virtual void		begin(void);
-	virtual void		end(void);
+	virtual void begin(void);
+	virtual void end(void);
 	virtual void render(int32_t xOffset, int32_t yOffset);
 	virtual void render(void);
 	virtual void update(void);
-	virtual int32_t			handleMessage(uint32_t, uint32_t);
+	virtual int32_t handleMessage(uint32_t, uint32_t);
 
-
-private:
+  private:
 	int32_t indexOfButtonWithID(int32_t id);
 
-	aListBox				gameList;
-	aGameListItem			items[256];
-	aGameListItem			templateItem;
+	aListBox gameList;
+	aGameListItem items[256];
+	aGameListItem templateItem;
 
-	MPHostGame				hostDlg;
+	MPHostGame hostDlg;
 
-	bool					bHosting;
-	bool					bShowErrorDlg;
+	bool bHosting;
+	bool bShowErrorDlg;
 
-	int32_t						sortOrder;
+	int32_t sortOrder;
 
-	int32_t						bSortUpward;
-	int32_t					oldScrollPos;
+	int32_t bSortUpward;
+	int32_t oldScrollPos;
 };
 
-
-
 //*************************************************************************************************
-#endif  // end of file ( MPGameBrowser.h )
+#endif // end of file ( MPGameBrowser.h )

@@ -14,15 +14,15 @@ ChooseUnitDlg.h		: Interface for the ChooseUnitDlg component.
 //#include "objective.h"
 //#include "editorobjectmgr.h"
 
-
-class ChooseUnitDlg: public CDialog
+class ChooseUnitDlg : public CDialog
 {
-public:
+  public:
 	typedef Unit* unit_ptr_type;
 
 	ChooseUnitDlg(unit_ptr_type& unitPtr, int32_t alignmentToExclude = -1);
 
-	BOOL OnCommand(WPARAM wParam, LPARAM lParam); // called by child controls to inform of an event
+	BOOL OnCommand(WPARAM wParam,
+		LPARAM lParam); // called by child controls to inform of an event
 	void OnUsePointer(void);
 	void OnCancel(void);
 	void OnOK(void);
@@ -31,7 +31,7 @@ public:
 
 	BOOL OnInitDialog(void);
 
-private:
+  private:
 	typedef CDialog inherited;
 
 	// suppressing these
@@ -48,6 +48,5 @@ private:
 	CButton* m_pOKButton;
 };
 
-
 //*************************************************************************************************
-#endif  // end of file ( ChooseUnitDlg.h )
+#endif // end of file ( ChooseUnitDlg.h )

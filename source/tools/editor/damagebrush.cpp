@@ -9,11 +9,9 @@ DamageBrush.cpp			: Implementation of the DamageBrush component.
 #include "DamageBrush.h"
 #include "editorobjectmgr.h"
 
-
-
 bool DamageBrush::beginPaint()
 {
-	if(!pAction)
+	if (!pAction)
 		pAction = new ModifyBuildingAction();
 	return true;
 }
@@ -21,10 +19,10 @@ bool DamageBrush::beginPaint()
 Action* DamageBrush::endPaint()
 {
 	Action* pRetAction = nullptr;
-	if(pAction)
+	if (pAction)
 	{
-		if(pAction->isNotNull())
-			pRetAction =  pAction;
+		if (pAction->isNotNull())
+			pRetAction = pAction;
 		else
 		{
 			delete pAction;
@@ -34,10 +32,12 @@ Action* DamageBrush::endPaint()
 	return pRetAction;
 }
 
-bool DamageBrush::paint(Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY)
+bool DamageBrush::paint(
+	Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY)
 {
-	EditorObject* pObject = const_cast<EditorObject*>(EditorObjectMgr::instance()->getObjectAtPosition(worldPos));
-	if(pObject)
+	EditorObject* pObject = const_cast<EditorObject*>(
+		EditorObjectMgr::instance()->getObjectAtPosition(worldPos));
+	if (pObject)
 	{
 		pAction->addBuildingInfo(*pObject);
 		pObject->setDamage(damage);
@@ -45,9 +45,11 @@ bool DamageBrush::paint(Stuff::Vector3D& worldPos, int32_t screenX, int32_t scre
 	return true;
 }
 
-bool DamageBrush::canPaint(Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY, int32_t flags)
+bool DamageBrush::canPaint(
+	Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY, int32_t flags)
 {
-	const EditorObject* pObject = EditorObjectMgr::instance()->getObjectAtPosition(worldPos);
+	const EditorObject* pObject =
+		EditorObjectMgr::instance()->getObjectAtPosition(worldPos);
 	return pObject ? true : false;
 }
 
@@ -59,26 +61,27 @@ bool DamageBrush::canPaintSelection()
 Action* DamageBrush::applyToSelection()
 {
 	ModifyBuildingAction* pRetAction = new ModifyBuildingAction;
-	EditorObjectMgr::EDITOR_OBJECT_LIST selectedObjectsList = EditorObjectMgr::instance()->getSelectedObjectList();
-	EditorObjectMgr::EDITOR_OBJECT_LIST::EIterator it = selectedObjectsList.Begin();
-	while(!it.IsDone())
+	EditorObjectMgr::EDITOR_OBJECT_LIST selectedObjectsList =
+		EditorObjectMgr::instance()->getSelectedObjectList();
+	EditorObjectMgr::EDITOR_OBJECT_LIST::EIterator it =
+		selectedObjectsList.Begin();
+	while (!it.IsDone())
 	{
 		EditorObject* pInfo = (*it);
-		if(pInfo)
+		if (pInfo)
 		{
 			pRetAction->addBuildingInfo(*pInfo);
 			pInfo->setDamage(damage);
 		}
 		it++;
 	}
-	if(!(pRetAction->isNotNull()))
+	if (!(pRetAction->isNotNull()))
 	{
 		delete pRetAction;
 		pRetAction = nullptr;
 	}
 	return pRetAction;
 }
-
 
 //*************************************************************************************************
 // end of file ( DamageBrush.cpp )

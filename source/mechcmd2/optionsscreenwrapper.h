@@ -1,5 +1,6 @@
 /*************************************************************************************************\
-OptionsScreenWrapper.h			: Interface for the OptionsScreenWrapper component.
+OptionsScreenWrapper.h			: Interface for the OptionsScreenWrapper
+component.
 //---------------------------------------------------------------------------//
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
@@ -15,7 +16,6 @@ OptionsScreenWrapper.h			: Interface for the OptionsScreenWrapper component.
 //#include <mechgui/asystem.h>
 //#include <mechgui/alistbox.h>
 
-
 /**************************************************************************************************
 CLASS DESCRIPTION
 OptionsScreenWrapper:
@@ -25,7 +25,7 @@ class OptionsXScreen;
 
 class OptionsScreenWrapper
 {
-public:
+  public:
 	enum status_type
 	{
 		opt_INACTIVE,
@@ -44,21 +44,12 @@ public:
 
 	void begin(void);
 	void end(void);
-	bool isDone()
-	{
-		return (!isActive);
-	}
+	bool isDone() { return (!isActive); }
 
-private:
-
-	OptionsXScreen*		pOptionsScreen;
-	bool		isActive;
-
+  private:
+	OptionsXScreen* pOptionsScreen;
+	bool isActive;
 };
 
-
-
-
-
 //*************************************************************************************************
-#endif  // end of file ( OptionsScreenWrapper.h )
+#endif // end of file ( OptionsScreenWrapper.h )

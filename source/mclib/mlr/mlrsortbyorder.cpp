@@ -9,7 +9,8 @@
 using namespace MidLevelRenderer;
 
 //#############################################################################
-//############################    MLRSortByOrder    ################################
+//############################    MLRSortByOrder
+//################################
 //#############################################################################
 
 extern uint32_t gEnableTextureSort, gEnableAlphaSort, gEnableLightMaps;
@@ -17,24 +18,18 @@ MLRSortByOrder::ClassData* MLRSortByOrder::DefaultData = nullptr;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLRSortByOrder::InitializeClass()
+void MLRSortByOrder::InitializeClass()
 {
 	Verify(!DefaultData);
 	// Verify(gos_GetCurrentHeap() == StaticHeap);
-	DefaultData =
-		new ClassData(
-		MLRSortByOrderClassID,
-		"MidLevelRenderer::MLRSortByOrder",
-		MLRSorter::DefaultData
-	);
+	DefaultData = new ClassData(MLRSortByOrderClassID,
+		"MidLevelRenderer::MLRSortByOrder", MLRSorter::DefaultData);
 	Register_Object(DefaultData);
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLRSortByOrder::TerminateClass()
+void MLRSortByOrder::TerminateClass()
 {
 	Unregister_Object(DefaultData);
 	delete DefaultData;
@@ -43,19 +38,19 @@ MLRSortByOrder::TerminateClass()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLRSortByOrder::MLRSortByOrder(MLRTexturePool* tp) :
-	MLRSorter(DefaultData, tp)
+MLRSortByOrder::MLRSortByOrder(MLRTexturePool* tp) : MLRSorter(DefaultData, tp)
 {
-	//Verify(gos_GetCurrentHeap() == Heap);
+	// Verify(gos_GetCurrentHeap() == Heap);
 	int32_t i;
 	gos_PushCurrentHeap(StaticHeap);
-	for(i = 0; i < MLRState::PriorityCount; i++)
+	for (i = 0; i < MLRState::PriorityCount; i++)
 	{
 		lastUsedInBucket[i] = 0;
-		priorityBuckets[i].SetLength(Limits::Max_Number_Primitives_Per_Frame + Limits::Max_Number_ScreenQuads_Per_Frame);
+		priorityBuckets[i].SetLength(Limits::Max_Number_Primitives_Per_Frame +
+									 Limits::Max_Number_ScreenQuads_Per_Frame);
 	}
 	alphaSort.SetLength(2 * Limits::Max_Number_Vertices_Per_Frame);
-	for(i = 0; i < alphaSort.GetLength(); i++)
+	for (i = 0; i < alphaSort.GetLength(); i++)
 	{
 		alphaSort[i] = new SortAlpha;
 	}
@@ -68,7 +63,7 @@ MLRSortByOrder::~MLRSortByOrder()
 {
 	int32_t i;
 	gos_PushCurrentHeap(StaticHeap);
-	for(i = 0; i < alphaSort.GetLength(); i++)
+	for (i = 0; i < alphaSort.GetLength(); i++)
 	{
 		delete alphaSort[i];
 	}
@@ -78,12 +73,11 @@ MLRSortByOrder::~MLRSortByOrder()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLRSortByOrder::Reset()
+void MLRSortByOrder::Reset()
 {
 	// Check_Object(this);
 	int32_t i;
-	for(i = 0; i < MLRState::PriorityCount; i++)
+	for (i = 0; i < MLRState::PriorityCount; i++)
 	{
 		lastUsedInBucket[i] = 0;
 	}
@@ -97,15 +91,15 @@ void MLRSortByOrder::AddPrimitive(MLRPrimitiveBase* pt, uint32_t pass)
 	// Check_Object(this);
 	Check_Object(pt);
 	SortData* sd = nullptr;
-	switch(pt->GetSortDataMode())
+	switch (pt->GetSortDataMode())
 	{
-		case SortData::TriList:
-		case SortData::TriIndexedList:
-			sd = SetRawData(pt, pass);
-			break;
+	case SortData::TriList:
+	case SortData::TriIndexedList:
+		sd = SetRawData(pt, pass);
+		break;
 	}
 	uint32_t priority = pt->GetCurrentState(pass).GetPriority();
-	if(sd != nullptr)
+	if (sd != nullptr)
 	{
 		priorityBuckets[priority][lastUsedInBucket[priority]++] = sd;
 	}
@@ -113,56 +107,39 @@ void MLRSortByOrder::AddPrimitive(MLRPrimitiveBase* pt, uint32_t pass)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLRSortByOrder::AddEffect(MLREffect* ef, const MLRState& state)
+void MLRSortByOrder::AddEffect(MLREffect* ef, const MLRState& state)
 {
 	// Check_Object(this);
 	Check_Object(ef);
 	SortData* sd = nullptr;
-	switch(ef->GetSortDataMode())
+	switch (ef->GetSortDataMode())
 	{
-		case SortData::PointCloud:
-			sd = SetRawData(
-					 ef->GetGOSVertices(),
-					 ef->GetNumGOSVertices(),
-					 state,
-					 SortData::PointCloud
-				 );
-			sd->numIndices = ef->GetType(0);
-			break;
-		case SortData::LineCloud:
-			sd = SetRawData(
-					 ef->GetGOSVertices(),
-					 ef->GetNumGOSVertices(),
-					 state,
-					 SortData::LineCloud
-				 );
-			sd->numIndices = ef->GetType(0);
-			break;
-		case SortData::TriList:
-			sd = SetRawData(
-					 ef->GetGOSVertices(),
-					 ef->GetNumGOSVertices(),
-					 state,
-					 SortData::TriList
-				 );
-			break;
-		case SortData::TriIndexedList:
-		{
-			MLRIndexedTriangleCloud* itc = Cast_Object(MLRIndexedTriangleCloud*, ef);
-			sd = SetRawIndexedData(
-					 itc->GetGOSVertices(),
-					 itc->GetNumGOSVertices(),
-					 itc->GetGOSIndices(),
-					 itc->GetNumGOSIndices(),
-					 state,
-					 SortData::TriIndexedList
-				 );
-		}
+	case SortData::PointCloud:
+		sd = SetRawData(ef->GetGOSVertices(), ef->GetNumGOSVertices(), state,
+			SortData::PointCloud);
+		sd->numIndices = ef->GetType(0);
 		break;
+	case SortData::LineCloud:
+		sd = SetRawData(ef->GetGOSVertices(), ef->GetNumGOSVertices(), state,
+			SortData::LineCloud);
+		sd->numIndices = ef->GetType(0);
+		break;
+	case SortData::TriList:
+		sd = SetRawData(ef->GetGOSVertices(), ef->GetNumGOSVertices(), state,
+			SortData::TriList);
+		break;
+	case SortData::TriIndexedList:
+	{
+		MLRIndexedTriangleCloud* itc =
+			Cast_Object(MLRIndexedTriangleCloud*, ef);
+		sd = SetRawIndexedData(itc->GetGOSVertices(), itc->GetNumGOSVertices(),
+			itc->GetGOSIndices(), itc->GetNumGOSIndices(), state,
+			SortData::TriIndexedList);
+	}
+	break;
 	}
 	uint32_t priority = state.GetPriority();
-	if(sd != nullptr)
+	if (sd != nullptr)
 	{
 		priorityBuckets[priority][lastUsedInBucket[priority]++] = sd;
 	}
@@ -170,23 +147,14 @@ MLRSortByOrder::AddEffect(MLREffect* ef, const MLRState& state)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLRSortByOrder::AddScreenQuads
-(
-	GOSVertex* vertices,
-	const DrawScreenQuadsInformation* dInfo
-)
+void MLRSortByOrder::AddScreenQuads(
+	GOSVertex* vertices, const DrawScreenQuadsInformation* dInfo)
 {
 	Verify(dInfo->currentNrOfQuads != 0 && (dInfo->currentNrOfQuads & 3) == 0);
-	SortData* sd = SetRawData
-				   (
-					   vertices,
-					   dInfo->currentNrOfQuads,
-					   dInfo->state,
-					   SortData::Quads
-				   );
+	SortData* sd = SetRawData(
+		vertices, dInfo->currentNrOfQuads, dInfo->state, SortData::Quads);
 	uint32_t priority = dInfo->state.GetPriority();
-	if(sd != nullptr)
+	if (sd != nullptr)
 	{
 		priorityBuckets[priority][lastUsedInBucket[priority]++] = sd;
 	}
@@ -194,11 +162,10 @@ MLRSortByOrder::AddScreenQuads
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLRSortByOrder::AddSortRawData(SortData* sd)
+void MLRSortByOrder::AddSortRawData(SortData* sd)
 {
 	// Check_Object(this);
-	if(sd == nullptr)
+	if (sd == nullptr)
 	{
 		return;
 	}
@@ -208,46 +175,53 @@ MLRSortByOrder::AddSortRawData(SortData* sd)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLRSortByOrder::RenderNow()
+void MLRSortByOrder::RenderNow()
 {
 	// Check_Object(this);
-//
-// So GameOS knows how int32_t the transform and clip and lighting took of update renderers
-//
-	Stuff::DynamicArrayOf<SortData*>
-	* priorityBucket;
-	Stuff::DynamicArrayOf<ToBeDrawnPrimitive*>
-	* priorityBucketNotDrawn;
+	//
+	// So GameOS knows how int32_t the transform and clip and lighting took of
+	// update renderers
+	//
+	Stuff::DynamicArrayOf<SortData*>* priorityBucket;
+	Stuff::DynamicArrayOf<ToBeDrawnPrimitive*>* priorityBucketNotDrawn;
 	GOSVertex::farClipReciprocal = farClipReciprocal;
 	int32_t i, j, k;
-//	Limits::Max_Number_Primitives_Per_Frame + Max_Number_ScreenQuads_Per_Frame
+	//	Limits::Max_Number_Primitives_Per_Frame +
+	//Max_Number_ScreenQuads_Per_Frame
 	MLRPrimitiveBase* primitive;
-	for(i = 0; i < MLRState::PriorityCount; i++)
+	for (i = 0; i < MLRState::PriorityCount; i++)
 	{
 #ifdef CalDraw
 		ToBeDrawnPrimitive* tbdp;
 		int32_t alphaToSort = 0;
-		if(lastUsedInBucketNotDrawn[i])
+		if (lastUsedInBucketNotDrawn[i])
 		{
-			Verify(lastUsedInBucketNotDrawn[i] <= Limits::Max_Number_Primitives_Per_Frame + Limits::Max_Number_ScreenQuads_Per_Frame);
-			if(gEnableTextureSort && i != MLRState::AlphaPriority)
+			Verify(lastUsedInBucketNotDrawn[i] <=
+				   Limits::Max_Number_Primitives_Per_Frame +
+					   Limits::Max_Number_ScreenQuads_Per_Frame);
+			if (gEnableTextureSort && i != MLRState::AlphaPriority)
 			{
 				Start_Timer(Texture_Sorting_Time);
 				// do a shell sort
 				int32_t ii, jj, hh;
 				ToBeDrawnPrimitive* tempSortData;
 				priorityBucketNotDrawn = &priorityBucketsNotDrawn[i];
-				for(hh = 1; hh < lastUsedInBucketNotDrawn[i] / 9; hh = 3 * hh + 1);
-				for(; hh > 0; hh /= 3)
+				for (hh = 1; hh < lastUsedInBucketNotDrawn[i] / 9;
+					 hh = 3 * hh + 1)
+					;
+				for (; hh > 0; hh /= 3)
 				{
-					for(ii = hh; ii < lastUsedInBucketNotDrawn[i]; ii++)
+					for (ii = hh; ii < lastUsedInBucketNotDrawn[i]; ii++)
 					{
 						tempSortData = (*priorityBucketNotDrawn)[ii];
-						jj = ii;
-						while(jj >= hh && (*priorityBucketNotDrawn)[jj - hh]->state.GetTextureHandle() > tempSortData->state.GetTextureHandle())
+						jj			 = ii;
+						while (jj >= hh &&
+							   (*priorityBucketNotDrawn)[jj - hh]
+									   ->state.GetTextureHandle() >
+								   tempSortData->state.GetTextureHandle())
 						{
-							(*priorityBucketNotDrawn)[jj] = (*priorityBucketNotDrawn)[jj - hh];
+							(*priorityBucketNotDrawn)[jj] =
+								(*priorityBucketNotDrawn)[jj - hh];
 							jj -= hh;
 						}
 						(*priorityBucketNotDrawn)[jj] = tempSortData;
@@ -255,50 +229,52 @@ MLRSortByOrder::RenderNow()
 				}
 				Stop_Timer(Texture_Sorting_Time);
 			}
-			if(i != MLRState::AlphaPriority)
+			if (i != MLRState::AlphaPriority)
 			{
-				for(j = 0; j < lastUsedInBucketNotDrawn[i]; j++)
+				for (j = 0; j < lastUsedInBucketNotDrawn[i]; j++)
 				{
 					tbdp = priorityBucketsNotDrawn[i][j];
 					Check_Pointer(tbdp);
 					primitive = tbdp->primitive;
 					Check_Object(primitive);
-					int32_t	nrOfLightMaps = 0;
-					for(k = 0; k < tbdp->nrOfActiveLights; k++)
+					int32_t nrOfLightMaps = 0;
+					for (k = 0; k < tbdp->nrOfActiveLights; k++)
 					{
 						Check_Object(tbdp->activeLights[k]);
-						nrOfLightMaps += (tbdp->activeLights[k]->GetLightMap() != nullptr) ? 1 : 0;
-						tbdp->activeLights[k]->SetLightToShapeMatrix(tbdp->worldToShape);
+						nrOfLightMaps +=
+							(tbdp->activeLights[k]->GetLightMap() != nullptr)
+								? 1
+								: 0;
+						tbdp->activeLights[k]->SetLightToShapeMatrix(
+							tbdp->worldToShape);
 					}
-					if(!gEnableLightMaps)
+					if (!gEnableLightMaps)
 					{
 						nrOfLightMaps = 0;
 					}
-					if(nrOfLightMaps)
+					if (nrOfLightMaps)
 					{
-						MLRLightMap::SetDrawData
-						(
+						MLRLightMap::SetDrawData(
 							ToBeDrawnPrimitive::allVerticesToDraw,
-							&tbdp->shapeToClipMatrix,
-							tbdp->clippingFlags,
-							tbdp->state
-						);
+							&tbdp->shapeToClipMatrix, tbdp->clippingFlags,
+							tbdp->state);
 					}
-					if(primitive->FindBackFace(tbdp->cameraPosition))
+					if (primitive->FindBackFace(tbdp->cameraPosition))
 					{
-						primitive->Lighting(tbdp->activeLights, tbdp->nrOfActiveLights);
-						if(tbdp->clippingFlags.GetClippingState() != 0)
+						primitive->Lighting(
+							tbdp->activeLights, tbdp->nrOfActiveLights);
+						if (tbdp->clippingFlags.GetClippingState() != 0)
 						{
-							if(primitive->TransformAndClip(
-										&tbdp->shapeToClipMatrix,
-										tbdp->clippingFlags,
-										ToBeDrawnPrimitive::allVerticesToDraw,
-										true)
-							  )
+							if (primitive->TransformAndClip(
+									&tbdp->shapeToClipMatrix,
+									tbdp->clippingFlags,
+									ToBeDrawnPrimitive::allVerticesToDraw,
+									true))
 							{
-								if(primitive->GetVisible())
+								if (primitive->GetVisible())
 								{
-									for(k = 0; k < primitive->GetNumPasses(); k++)
+									for (k = 0; k < primitive->GetNumPasses();
+										 k++)
 									{
 										DrawPrimitive(primitive, k);
 									}
@@ -307,31 +283,33 @@ MLRSortByOrder::RenderNow()
 						}
 						else
 						{
-							primitive->TransformNoClip(
-								&tbdp->shapeToClipMatrix,
-								ToBeDrawnPrimitive::allVerticesToDraw,
-								true);
-							for(k = 0; k < primitive->GetNumPasses(); k++)
+							primitive->TransformNoClip(&tbdp->shapeToClipMatrix,
+								ToBeDrawnPrimitive::allVerticesToDraw, true);
+							for (k = 0; k < primitive->GetNumPasses(); k++)
 							{
 								DrawPrimitive(primitive, k);
 							}
 						}
 #ifdef LAB_ONLY
-						Set_Statistic(Number_Of_Primitives, Number_Of_Primitives + 1);
-						if(primitive->IsDerivedFrom(MLRIndexedPrimitiveBase::DefaultData))
+						Set_Statistic(
+							Number_Of_Primitives, Number_Of_Primitives + 1);
+						if (primitive->IsDerivedFrom(
+								MLRIndexedPrimitiveBase::DefaultData))
 						{
 							Point3D* coords;
 							puint16_t indices;
 							int32_t nr;
-							(Cast_Pointer(MLRIndexedPrimitiveBase*, primitive))->GetIndexData(&indices, &nr);
+							(Cast_Pointer(MLRIndexedPrimitiveBase*, primitive))
+								->GetIndexData(&indices, &nr);
 							Set_Statistic(NumAllIndices, NumAllIndices + nr);
 							primitive->GetCoordData(&coords, &nr);
 							Set_Statistic(NumAllVertices, NumAllVertices + nr);
-							Set_Statistic(Index_Over_Vertex_Ratio, (float)NumAllIndices / (float)NumAllVertices);
+							Set_Statistic(Index_Over_Vertex_Ratio,
+								(float)NumAllIndices / (float)NumAllVertices);
 						}
 #endif
 					}
-					if(nrOfLightMaps)
+					if (nrOfLightMaps)
 					{
 						MLRLightMap::DrawLightMaps(this);
 					}
@@ -340,23 +318,23 @@ MLRSortByOrder::RenderNow()
 			else
 			{
 				SortData* sd = nullptr;
-				for(j = 0; j < lastUsedInBucketNotDrawn[i]; j++)
+				for (j = 0; j < lastUsedInBucketNotDrawn[i]; j++)
 				{
-					tbdp = priorityBucketsNotDrawn[i][j];
+					tbdp	  = priorityBucketsNotDrawn[i][j];
 					primitive = tbdp->primitive;
-					if(primitive->FindBackFace(tbdp->cameraPosition))
+					if (primitive->FindBackFace(tbdp->cameraPosition))
 					{
-						primitive->Lighting(tbdp->activeLights, tbdp->nrOfActiveLights);
-						if(tbdp->clippingFlags.GetClippingState() != 0)
+						primitive->Lighting(
+							tbdp->activeLights, tbdp->nrOfActiveLights);
+						if (tbdp->clippingFlags.GetClippingState() != 0)
 						{
-							if(primitive->TransformAndClip(
-										&tbdp->shapeToClipMatrix,
-										tbdp->clippingFlags,
-										ToBeDrawnPrimitive::allVerticesToDraw,
-										true)
-							  )
+							if (primitive->TransformAndClip(
+									&tbdp->shapeToClipMatrix,
+									tbdp->clippingFlags,
+									ToBeDrawnPrimitive::allVerticesToDraw,
+									true))
 							{
-								if(!primitive->GetVisible())
+								if (!primitive->GetVisible())
 								{
 									continue;
 								}
@@ -364,23 +342,25 @@ MLRSortByOrder::RenderNow()
 						}
 						else
 						{
-							primitive->TransformNoClip(
-								&tbdp->shapeToClipMatrix,
-								ToBeDrawnPrimitive::allVerticesToDraw,
-								true);
+							primitive->TransformNoClip(&tbdp->shapeToClipMatrix,
+								ToBeDrawnPrimitive::allVerticesToDraw, true);
 						}
 #ifdef LAB_ONLY
-						Set_Statistic(Number_Of_Primitives, Number_Of_Primitives + 1);
-						if(primitive->IsDerivedFrom(MLRIndexedPrimitiveBase::DefaultData))
+						Set_Statistic(
+							Number_Of_Primitives, Number_Of_Primitives + 1);
+						if (primitive->IsDerivedFrom(
+								MLRIndexedPrimitiveBase::DefaultData))
 						{
 							Point3D* coords;
 							puint16_t indices;
 							int32_t nr;
-							(Cast_Pointer(MLRIndexedPrimitiveBase*, primitive))->GetIndexData(&indices, &nr);
+							(Cast_Pointer(MLRIndexedPrimitiveBase*, primitive))
+								->GetIndexData(&indices, &nr);
 							Set_Statistic(NumAllIndices, NumAllIndices + nr);
 							primitive->GetCoordData(&coords, &nr);
 							Set_Statistic(NumAllVertices, NumAllVertices + nr);
-							Set_Statistic(Index_Over_Vertex_Ratio, (float)NumAllIndices / (float)NumAllVertices);
+							Set_Statistic(Index_Over_Vertex_Ratio,
+								(float)NumAllIndices / (float)NumAllVertices);
 						}
 #endif
 					}
@@ -388,25 +368,32 @@ MLRSortByOrder::RenderNow()
 					{
 						continue;
 					}
-					if(primitive->GetNumGOSVertices() > 0)
-						for(k = 0; k < primitive->GetNumPasses(); k++)
+					if (primitive->GetNumGOSVertices() > 0)
+						for (k = 0; k < primitive->GetNumPasses(); k++)
 						{
 							sd = SetRawData(primitive, k);
 							Check_Pointer(sd);
-							if(gEnableAlphaSort && (sd->type == SortData::TriList || sd->type == SortData::TriIndexedList))
+							if (gEnableAlphaSort &&
+								(sd->type == SortData::TriList ||
+									sd->type == SortData::TriIndexedList))
 							{
-								SortData::LoadSortAlphaFunc alphaFunc = sd->LoadSortAlpha[sd->type];
-								Verify(alphaToSort + sd->numVertices / 3 < 2 * Limits::Max_Number_Vertices_Per_Frame);
-								alphaToSort += (sd->*alphaFunc)(alphaSort.GetData() + alphaToSort);
+								SortData::LoadSortAlphaFunc alphaFunc =
+									sd->LoadSortAlpha[sd->type];
+								Verify(
+									alphaToSort + sd->numVertices / 3 <
+									2 * Limits::Max_Number_Vertices_Per_Frame);
+								alphaToSort += (sd->*alphaFunc)(
+									alphaSort.GetData() + alphaToSort);
 							}
 							else
 							{
-								if(theCurrentState != sd->state)
+								if (theCurrentState != sd->state)
 								{
 									SetDifferences(theCurrentState, sd->state);
 									theCurrentState = sd->state;
 								}
-								SortData::DrawFunc drawFunc = sd->Draw[sd->type];
+								SortData::DrawFunc drawFunc =
+									sd->Draw[sd->type];
 								(sd->*drawFunc)();
 							}
 						}
@@ -414,24 +401,30 @@ MLRSortByOrder::RenderNow()
 			}
 		}
 #endif
-		if(lastUsedInBucket[i])
+		if (lastUsedInBucket[i])
 		{
-			Verify(lastUsedInBucket[i] <= Limits::Max_Number_Primitives_Per_Frame + Limits::Max_Number_ScreenQuads_Per_Frame);
-			if(gEnableTextureSort && i != MLRState::AlphaPriority)
+			Verify(lastUsedInBucket[i] <=
+				   Limits::Max_Number_Primitives_Per_Frame +
+					   Limits::Max_Number_ScreenQuads_Per_Frame);
+			if (gEnableTextureSort && i != MLRState::AlphaPriority)
 			{
 				Start_Timer(Texture_Sorting_Time);
 				// do a shell sort
 				int32_t ii, jj, hh;
 				SortData* tempSortData;
 				priorityBucket = &priorityBuckets[i];
-				for(hh = 1; hh < lastUsedInBucket[i] / 9; hh = 3 * hh + 1);
-				for(; hh > 0; hh /= 3)
+				for (hh = 1; hh < lastUsedInBucket[i] / 9; hh = 3 * hh + 1)
+					;
+				for (; hh > 0; hh /= 3)
 				{
-					for(ii = hh; ii < lastUsedInBucket[i]; ii++)
+					for (ii = hh; ii < lastUsedInBucket[i]; ii++)
 					{
 						tempSortData = (*priorityBucket)[ii];
-						jj = ii;
-						while(jj >= hh && (*priorityBucket)[jj - hh]->state.GetTextureHandle() > tempSortData->state.GetTextureHandle())
+						jj			 = ii;
+						while (jj >= hh &&
+							   (*priorityBucket)[jj - hh]
+									   ->state.GetTextureHandle() >
+								   tempSortData->state.GetTextureHandle())
 						{
 							(*priorityBucket)[jj] = (*priorityBucket)[jj - hh];
 							jj -= hh;
@@ -441,13 +434,13 @@ MLRSortByOrder::RenderNow()
 				}
 				Stop_Timer(Texture_Sorting_Time);
 			}
-			if(i != MLRState::AlphaPriority)
+			if (i != MLRState::AlphaPriority)
 			{
-				for(j = 0; j < lastUsedInBucket[i]; j++)
+				for (j = 0; j < lastUsedInBucket[i]; j++)
 				{
 					SortData* sd = priorityBuckets[i][j];
 					Check_Pointer(sd);
-					if(theCurrentState != sd->state)
+					if (theCurrentState != sd->state)
 					{
 						SetDifferences(theCurrentState, sd->state);
 						theCurrentState = sd->state;
@@ -460,19 +453,24 @@ MLRSortByOrder::RenderNow()
 			}
 			else
 			{
-				for(j = 0; j < lastUsedInBucket[i]; j++)
+				for (j = 0; j < lastUsedInBucket[i]; j++)
 				{
 					SortData* sd = priorityBuckets[i][j];
 					Check_Pointer(sd);
-					if(gEnableAlphaSort && (sd->type == SortData::TriList || sd->type == SortData::TriIndexedList))
+					if (gEnableAlphaSort &&
+						(sd->type == SortData::TriList ||
+							sd->type == SortData::TriIndexedList))
 					{
-						SortData::LoadSortAlphaFunc alphaFunc = sd->LoadSortAlpha[sd->type];
-						Verify(alphaToSort + sd->numVertices / 3 < 2 * Limits::Max_Number_Vertices_Per_Frame);
-						alphaToSort += (sd->*alphaFunc)(alphaSort.GetData() + alphaToSort);
+						SortData::LoadSortAlphaFunc alphaFunc =
+							sd->LoadSortAlpha[sd->type];
+						Verify(alphaToSort + sd->numVertices / 3 <
+							   2 * Limits::Max_Number_Vertices_Per_Frame);
+						alphaToSort +=
+							(sd->*alphaFunc)(alphaSort.GetData() + alphaToSort);
 					}
 					else
 					{
-						if(theCurrentState != sd->state)
+						if (theCurrentState != sd->state)
 						{
 							SetDifferences(theCurrentState, sd->state);
 							theCurrentState = sd->state;
@@ -483,23 +481,24 @@ MLRSortByOrder::RenderNow()
 				}
 			}
 		}
-		if(alphaToSort > 0)
+		if (alphaToSort > 0)
 		{
 			Start_Timer(Alpha_Sorting_Time);
 			// do a shell sort
 			int32_t ii, jj, hh;
 			SortAlpha* tempSortAlpha;
-			Stuff::DynamicArrayOf<SortAlpha*>
-			* alphaArray;
+			Stuff::DynamicArrayOf<SortAlpha*>* alphaArray;
 			alphaArray = &alphaSort;
-			for(hh = 1; hh < alphaToSort / 9; hh = 3 * hh + 1);
-			for(; hh > 0; hh /= 3)
+			for (hh = 1; hh < alphaToSort / 9; hh = 3 * hh + 1)
+				;
+			for (; hh > 0; hh /= 3)
 			{
-				for(ii = hh; ii < alphaToSort; ii++)
+				for (ii = hh; ii < alphaToSort; ii++)
 				{
 					tempSortAlpha = (*alphaArray)[ii];
-					jj = ii;
-					while(jj >= hh && (*alphaArray)[jj - hh]->distance < tempSortAlpha->distance)
+					jj			  = ii;
+					while (jj >= hh && (*alphaArray)[jj - hh]->distance <
+										   tempSortAlpha->distance)
 					{
 						(*alphaArray)[jj] = (*alphaArray)[jj - hh];
 						jj -= hh;
@@ -508,35 +507,34 @@ MLRSortByOrder::RenderNow()
 				}
 			}
 			Stop_Timer(Alpha_Sorting_Time);
-			for(ii = 0; ii < alphaToSort; ii++)
+			for (ii = 0; ii < alphaToSort; ii++)
 			{
-				if(theCurrentState != *alphaSort[ii]->state)
+				if (theCurrentState != *alphaSort[ii]->state)
 				{
 					SetDifferences(theCurrentState, *alphaSort[ii]->state);
 					theCurrentState = *alphaSort[ii]->state;
 				}
 				Start_Timer(GOS_Draw_Time);
-				if((alphaSort[ii]->triangle[0].z >= 0.0f) &&
-						(alphaSort[ii]->triangle[0].z < 1.0f) &&
-						(alphaSort[ii]->triangle[1].z >= 0.0f) &&
-						(alphaSort[ii]->triangle[1].z < 1.0f) &&
-						(alphaSort[ii]->triangle[2].z >= 0.0f) &&
-						(alphaSort[ii]->triangle[2].z < 1.0f))
+				if ((alphaSort[ii]->triangle[0].z >= 0.0f) &&
+					(alphaSort[ii]->triangle[0].z < 1.0f) &&
+					(alphaSort[ii]->triangle[1].z >= 0.0f) &&
+					(alphaSort[ii]->triangle[1].z < 1.0f) &&
+					(alphaSort[ii]->triangle[2].z >= 0.0f) &&
+					(alphaSort[ii]->triangle[2].z < 1.0f))
 				{
 					gos_DrawTriangles(&(alphaSort[ii]->triangle[0]), 3);
 				}
 				Stop_Timer(GOS_Draw_Time);
 			}
-			Set_Statistic(NumberOfAlphaSortedTriangles, NumberOfAlphaSortedTriangles + alphaToSort);
+			Set_Statistic(NumberOfAlphaSortedTriangles,
+				NumberOfAlphaSortedTriangles + alphaToSort);
 		}
 	}
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLRSortByOrder::TestInstance(void) const
+void MLRSortByOrder::TestInstance(void) const
 {
 	Verify(IsDerivedFrom(DefaultData));
 }
-

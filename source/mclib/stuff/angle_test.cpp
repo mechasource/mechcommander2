@@ -8,18 +8,15 @@
 #include "stdafx.h"
 #include "stuffheaders.hpp"
 
-
 //
 //#############################################################################
 //#############################################################################
 //
-bool
-Radian::TestClass()
+bool Radian::TestClass()
 {
 	SPEW((GROUP_STUFF_TEST, "Starting Radian Test..."));
 	const Radian a(1.25f);
-	Radian
-	b, c;
+	Radian b, c;
 	Test_Assumption(a);
 	c = 0.0f;
 	Test_Assumption(!c);
@@ -105,15 +102,12 @@ Radian::TestClass()
 //#############################################################################
 //#############################################################################
 //
-bool
-Degree::TestClass()
+bool Degree::TestClass()
 {
 	SPEW((GROUP_STUFF_TEST, "Starting Degree test..."));
 	const Degree a(Degrees_Per_Radian);
-	Degree
-	b, c;
-	Radian
-	r(1.0f), s;
+	Degree b, c;
+	Radian r(1.0f), s;
 	s = a;
 	Test_Assumption(r == s);
 	b = r;
@@ -138,12 +132,10 @@ Degree::TestClass()
 //#############################################################################
 //#############################################################################
 //
-bool
-SinCosPair::TestClass()
+bool SinCosPair::TestClass()
 {
 	SPEW((GROUP_STUFF_TEST, "Starting SinCos test..."));
-	Radian
-	s, r(Pi_Over_2);
+	Radian s, r(Pi_Over_2);
 	SinCosPair a;
 	a = r;
 	Test_Assumption(Close_Enough(a.sine, 1.0f));

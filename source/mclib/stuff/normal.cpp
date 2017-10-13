@@ -26,11 +26,8 @@ const Normal3D Normal3D::Down(DOWN_X, DOWN_Y, DOWN_Z);
 //#############################################################################
 //#############################################################################
 //
-Normal3D&
-Normal3D::Multiply_Inverse(
-	const Normal3D& Source,
-	const AffineMatrix4D& M
-)
+Normal3D& Normal3D::Multiply_Inverse(
+	const Normal3D& Source, const AffineMatrix4D& M)
 {
 	// Check_Object(this);
 	Check_Object(&Source);
@@ -45,11 +42,7 @@ Normal3D::Multiply_Inverse(
 //#############################################################################
 //#############################################################################
 //
-Normal3D&
-Normal3D::Multiply(
-	const Normal3D& n,
-	const AffineMatrix4D& m
-)
+Normal3D& Normal3D::Multiply(const Normal3D& n, const AffineMatrix4D& m)
 {
 	// Check_Object(this);
 	Check_Object(&n);

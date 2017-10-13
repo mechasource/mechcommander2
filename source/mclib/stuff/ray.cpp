@@ -20,10 +20,9 @@ using namespace Stuff;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-Ray3D&
-Ray3D::SetDirection(const Vector3D& vector)
+Ray3D& Ray3D::SetDirection(const Vector3D& vector)
 {
-	//Check_Pointer(this);
+	// Check_Pointer(this);
 	Check_Object(&vector);
 	//
 	//---------------------------------------
@@ -48,17 +47,13 @@ Ray3D::SetDirection(const Vector3D& vector)
 //#############################################################################
 //#############################################################################
 //
-float
-Ray3D::GetDistanceTo(
-	const Plane& plane,
-	float* product
-) const
+float Ray3D::GetDistanceTo(const Plane& plane, float* product) const
 {
 	// Check_Object(this);
 	Check_Object(&plane);
 	Check_Pointer(product);
 	*product = direction * plane.normal;
-	if(Small_Enough(*product))
+	if (Small_Enough(*product))
 	{
 		return -1.0f;
 	}
@@ -70,16 +65,10 @@ Ray3D::GetDistanceTo(
 //#############################################################################
 //#############################################################################
 //
-float
-Ray3D::GetDistanceTo(
-	const Sphere& sphere,
-	float* penetration
-) const
+float Ray3D::GetDistanceTo(const Sphere& sphere, float* penetration) const
 {
-	float
-	b, c;
-	Vector3D
-	temp;
+	float b, c;
+	Vector3D temp;
 	//
 	//-------------------------------------------------------------------------
 	// Set up to solve a quadratic equation for the intersection of the ray and
@@ -98,7 +87,7 @@ Ray3D::GetDistanceTo(
 	//--------------------------------------------------------------------------
 	//
 	*penetration = b * b - 4.0f * c;
-	if(*penetration < SMALL)
+	if (*penetration < SMALL)
 		return 0.0f;
 	//
 	//-------------------------------------------------------------------------
@@ -118,17 +107,9 @@ Ray3D::GetDistanceTo(
 //#############################################################################
 //#############################################################################
 //
-float
-Stuff::Find_Closest_Approach(
-	const Point3D& origin1,
-	const Vector3D& velocity1,
-	Point3D* result1,
-	const Point3D& origin2,
-	const Vector3D& velocity2,
-	Point3D* result2,
-	float* time,
-	bool* constant
-)
+float Stuff::Find_Closest_Approach(const Point3D& origin1,
+	const Vector3D& velocity1, Point3D* result1, const Point3D& origin2,
+	const Vector3D& velocity2, Point3D* result2, float* time, bool* constant)
 {
 	Vector3D a, b;
 	a.Subtract(origin1, origin2);
@@ -140,10 +121,10 @@ Stuff::Find_Closest_Approach(
 	//--------------------------------------------------------------------
 	//
 	float d = b.GetLengthSquared();
-	if(Small_Enough(d))
+	if (Small_Enough(d))
 	{
 		*constant = true;
-		d = a.GetLength();
+		d		  = a.GetLength();
 		return d;
 	}
 	//
@@ -153,7 +134,7 @@ Stuff::Find_Closest_Approach(
 	//-------------------------------------------------------------------------
 	//
 	*constant = false;
-	*time = (a * b) / -d;
+	*time	 = (a * b) / -d;
 	//
 	//------------------------------------------------------
 	// Now, plot the resultant points of both line equations

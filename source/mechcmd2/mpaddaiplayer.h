@@ -20,25 +20,24 @@ MPAddAIPlayer.h			: Interface for the MPAddAIPlayer component.
 #include <mechgui/alistbox.h>
 #include "attributemeter.h"
 #include "simplecamera.h"
-#include "MPParameterScreen.h"/*only for the definition of CFocusManager*/
+#include "MPParameterScreen.h" /*only for the definition of CFocusManager*/
 
 #ifndef AANIM_H
 #include <mechgui/aanim.h>
 #endif
 
-
 class aStyle4TextListItem : public aTextListItem
 {
-public:
+  public:
 	aStyle4TextListItem()
 	{
 		hasAnimation = false;
-		normalColor = 0xff808080;
+		normalColor  = 0xff808080;
 	}
-	virtual int32_t	init(FitIniFile* file, PCSTR blockName);
-	virtual void		render(void);
+	virtual int32_t init(FitIniFile* file, PCSTR blockName);
+	virtual void render(void);
 
-protected:
+  protected:
 	bool hasAnimation;
 	aAnimGroup animGroup;
 	int32_t normalColor;
@@ -46,33 +45,30 @@ protected:
 
 class MPAddAIPlayer : public LogisticsScreen
 {
-public:
-
+  public:
 	MPAddAIPlayer(void);
 	virtual ~MPAddAIPlayer(void);
 
 	void init(FitIniFile* file);
 	bool isDone(void);
-	virtual void		begin(void);
-	virtual void		end(void);
+	virtual void begin(void);
+	virtual void end(void);
 	virtual void render(int32_t xOffset, int32_t yOffset);
 	virtual void render(void);
 	virtual void update(void);
-	virtual int32_t			handleMessage(uint32_t, uint32_t);
+	virtual int32_t handleMessage(uint32_t, uint32_t);
 
-private:
-	aEdit		nameEntry;
-	aRect		nameEntryOutline;
-	aDropList				experienceDropList;
-	aDropList				factionDropList;
-	aDropList				mechSelectionDropLists[4][3];
+  private:
+	aEdit nameEntry;
+	aRect nameEntryOutline;
+	aDropList experienceDropList;
+	aDropList factionDropList;
+	aDropList mechSelectionDropLists[4][3];
 
 	int32_t indexOfButtonWithID(int32_t id);
 
 	CFocusManager focusManager;
 };
 
-
-
 //*************************************************************************************************
-#endif  // end of file ( MPAddAIPlayer.h )
+#endif // end of file ( MPAddAIPlayer.h )

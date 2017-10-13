@@ -6,10 +6,10 @@
  conditions are met (OSI approved BSD 2-clause license):
 
  1. Redistributions of source code must retain the above copyright notice,
-    this list of conditions and the following disclaimer.
+	this list of conditions and the following disclaimer.
  2. Redistributions in binary form must reproduce the above copyright notice,
-    this list of conditions and the following disclaimer in the documentation
-    and/or other materials provided with the distribution.
+	this list of conditions and the following disclaimer in the documentation
+	and/or other materials provided with the distribution.
 
  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -39,7 +39,8 @@
 
 #include <memorymanager.hpp>
 
-typedef struct _MemStack{
+typedef struct _MemStack
+{
 	PVOID unk1;
 	PVOID startaddress;
 	size_t nsize;
@@ -77,16 +78,15 @@ PLARGEBLOCKHEADER gMemoryBigAllocList;
 size_t gCurrentHeapStackLevel;
 size_t gMemoryStackWalkLevel;
 HGOSHEAP gExaminingHeap;	// not used
-PMEMORYPOOL gExaminingPool;	// not used
+PMEMORYPOOL gExaminingPool; // not used
 size_t VirtualMemoryAllocated;
 size_t MemoryUsed;
 size_t MemoryAllocations;
 PPSAPI_WS_WATCH_INFORMATION pMemBlockInfo;
 
 // initialized data
-uint16_t AgressiveManager = 1;	// unknown purpose
-extern uint16_t PoolSizes[MemoryPools] =
-{
+uint16_t AgressiveManager			   = 1; // unknown purpose
+extern uint16_t PoolSizes[MemoryPools] = {
 	0x000C,
 	0x0010,
 	0x0014,
@@ -106,7 +106,7 @@ extern uint16_t PoolSizes[MemoryPools] =
 	0x0300,
 	0x0400,
 };
-uint32_t gMemoryBlockOverhead = 0xFF81FF81;	// not used
+uint32_t gMemoryBlockOverhead = 0xFF81FF81; // not used
 
 // global referenced data not listed in headers
 bool gViaNew;
@@ -124,9 +124,11 @@ void __stdcall MM_Shutdown(void);
 PVOID __stdcall gos_Malloc(size_t nbytes, HGOSHEAP Heap = nullptr);
 PVOID __stdcall gos_Realloc(HGOSHEAP Heap, size_t nbytes);
 void __stdcall gos_Free(PVOID ptr);
-HGOSHEAP __stdcall gos_CreateMemoryHeap(PSTR HeapName, size_t MaximumSize/* = 0*/, HGOSHEAP parentHeap/* = ParentClientHeap*/);
+HGOSHEAP __stdcall gos_CreateMemoryHeap(PSTR HeapName,
+	size_t MaximumSize /* = 0*/, HGOSHEAP parentHeap /* = ParentClientHeap*/);
 void __stdcall gos_DestroyMemoryHeap(HGOSHEAP Heap, uint8_t shouldBeEmpty = 1);
-void __stdcall gos_ChangeHeapSize(HGOSHEAP Heap, size_t Change, uint8_t SystemAllocation = 0);
+void __stdcall gos_ChangeHeapSize(
+	HGOSHEAP Heap, size_t Change, uint8_t SystemAllocation = 0);
 void __stdcall gos_PushCurrentHeap(HGOSHEAP Heap);
 HGOSHEAP __stdcall gos_GetCurrentHeap(void);
 void __stdcall gos_PopCurrentHeap(void);
@@ -138,9 +140,10 @@ void __stdcall AnalyzeWS(PSTR Title);
 // local functions
 PMEMORYPOOL __stdcall MM_CreateMemoryPool(uint16_t);
 void __stdcall MM_DestroyMemoryPool(PMEMORYPOOL pAddress);
-void __stdcall DisplayLeakInformation(PLARGEBLOCKHEADER, PPOOLBLOCK, PSMALLPOOLBLOCK, puint8_t)
-void __stdcall SpewAndFreeHeapAllocs(HGOSHEAP heap, bool)
-void __stdcall DestroySelfAndChildren(HGOSHEAP heap, bool);
+void __stdcall DisplayLeakInformation(PLARGEBLOCKHEADER, PPOOLBLOCK,
+	PSMALLPOOLBLOCK,
+	puint8_t) void __stdcall SpewAndFreeHeapAllocs(HGOSHEAP heap,
+	bool) void __stdcall DestroySelfAndChildren(HGOSHEAP heap, bool);
 void __stdcall WalkSelfAndChildren(HGOSHEAP heap, bool);
 void __stdcall WalkHeapAllocs(HGOSHEAP heap, bool);
 
@@ -149,5 +152,3 @@ void __stdcall WalkHeapAllocs(HGOSHEAP heap, bool);
 extern size_t MemoryFrees;
 extern size_t MemoryAllocs;
 extern bool g_MMInitialized;
-
-

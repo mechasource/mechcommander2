@@ -2,7 +2,6 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
-
 #include "stdafx.h"
 
 #include "mechclassids.h"
@@ -58,13 +57,13 @@ using namespace MidLevelRenderer;
 extern uint32_t gShowClippedPolys;
 extern uint32_t gShowBirdView;
 
-uint32_t gShowClippedPolys = 0;
-uint32_t gShowBirdView = 0;
+uint32_t gShowClippedPolys	= 0;
+uint32_t gShowBirdView		  = 0;
 uint32_t gEnableDetailTexture = 1;
-uint32_t gEnableTextureSort = 1;
-uint32_t gEnableAlphaSort = 1;
-uint32_t gEnableMultiTexture = 1;
-uint32_t gEnableLightMaps = 1;
+uint32_t gEnableTextureSort   = 1;
+uint32_t gEnableAlphaSort	 = 1;
+uint32_t gEnableMultiTexture  = 1;
+uint32_t gEnableLightMaps	 = 1;
 
 static uint8_t __stdcall CheckDetailTexture(void)
 {
@@ -130,7 +129,7 @@ uint32_t Limits::Max_Number_Primitives_Per_Frame;
 uint32_t Limits::Max_Number_ScreenQuads_Per_Frame;
 uint32_t Limits::Max_Size_Of_LightMap_MemoryStream;
 
-HGOSHEAP MidLevelRenderer::Heap = nullptr;
+HGOSHEAP MidLevelRenderer::Heap		  = nullptr;
 HGOSHEAP MidLevelRenderer::StaticHeap = nullptr;
 
 DEFINE_TIMER(MidLevelRenderer, Scene_Draw_Time);
@@ -158,18 +157,15 @@ uint32_t MidLevelRenderer::PolysClippedButInside;
 uint32_t MidLevelRenderer::PolysClippedButOnePlane;
 uint32_t MidLevelRenderer::PolysClippedButGOnePlane;
 
-
 bool MidLevelRenderer::ConvertToTriangleMeshes = true;
-bool MidLevelRenderer::PerspectiveMode = true;
+bool MidLevelRenderer::PerspectiveMode		   = true;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MidLevelRenderer::InitializeClasses(
-	uint32_t Max_Number_Vertices_Per_Frame,
+void MidLevelRenderer::InitializeClasses(uint32_t Max_Number_Vertices_Per_Frame,
 	uint32_t Max_Number_Primitives_Per_Frame,
 	uint32_t Max_Number_ScreenQuads_Per_Frame,
-	uint32_t Max_Size_Of_LightMap_MemoryStream,
-	bool Convert_To_Triangle_Meshes)
+	uint32_t Max_Size_Of_LightMap_MemoryStream, bool Convert_To_Triangle_Meshes)
 {
 	Verify(FirstFreeMLRClassID <= Stuff::LastMLRClassID);
 #if _CONSIDERED_OBSOLETE
@@ -181,10 +177,11 @@ void MidLevelRenderer::InitializeClasses(
 	Heap = gos_CreateMemoryHeap("MLR", 0, ParentClientHeap);
 	Check_Pointer(Heap);
 #endif
-	Limits::Max_Number_Vertices_Per_Frame = Max_Number_Vertices_Per_Frame;
-	Limits::Max_Number_Primitives_Per_Frame = Max_Number_Primitives_Per_Frame;
+	Limits::Max_Number_Vertices_Per_Frame	= Max_Number_Vertices_Per_Frame;
+	Limits::Max_Number_Primitives_Per_Frame  = Max_Number_Primitives_Per_Frame;
 	Limits::Max_Number_ScreenQuads_Per_Frame = Max_Number_ScreenQuads_Per_Frame;
-	Limits::Max_Size_Of_LightMap_MemoryStream = Max_Size_Of_LightMap_MemoryStream;
+	Limits::Max_Size_Of_LightMap_MemoryStream =
+		Max_Size_Of_LightMap_MemoryStream;
 	ConvertToTriangleMeshes = Convert_To_Triangle_Meshes;
 	MLRLight::InitializeClass();
 	MLRTexturePool::InitializeClass();
@@ -244,13 +241,20 @@ void MidLevelRenderer::InitializeClasses(
 	//-------------------------
 	//
 #ifdef _GAMEOS_HPP_
-	AddDebuggerMenuItem("Libraries\\MLR\\Show Clipped Polygons", Check_ShowClippedPolys, Toggle_ShowClippedPolys, nullptr);
-	AddDebuggerMenuItem("Libraries\\MLR\\Show Bird View", Check_ShowBirdView, Toggle_ShowBirdView, nullptr);
-	AddDebuggerMenuItem("Libraries\\MLR\\Texture Sort", CheckTextureSort, EnableTextureSort, nullptr);
-	AddDebuggerMenuItem("Libraries\\MLR\\Enable Detail Texture", CheckDetailTexture, EnableDetailTexture, nullptr);
-	AddDebuggerMenuItem("Libraries\\MLR\\Alpha Sort", CheckAlphaSort, EnableAlphaSort, nullptr);
-	AddDebuggerMenuItem("Libraries\\MLR\\MultiTexture Enabled", CheckMultiTexture, EnableMultiTexture, nullptr);
-	AddDebuggerMenuItem("Libraries\\MLR\\LightMaps Enabled", CheckLightMaps, EnableLightMaps, nullptr);
+	AddDebuggerMenuItem("Libraries\\MLR\\Show Clipped Polygons",
+		Check_ShowClippedPolys, Toggle_ShowClippedPolys, nullptr);
+	AddDebuggerMenuItem("Libraries\\MLR\\Show Bird View", Check_ShowBirdView,
+		Toggle_ShowBirdView, nullptr);
+	AddDebuggerMenuItem("Libraries\\MLR\\Texture Sort", CheckTextureSort,
+		EnableTextureSort, nullptr);
+	AddDebuggerMenuItem("Libraries\\MLR\\Enable Detail Texture",
+		CheckDetailTexture, EnableDetailTexture, nullptr);
+	AddDebuggerMenuItem(
+		"Libraries\\MLR\\Alpha Sort", CheckAlphaSort, EnableAlphaSort, nullptr);
+	AddDebuggerMenuItem("Libraries\\MLR\\MultiTexture Enabled",
+		CheckMultiTexture, EnableMultiTexture, nullptr);
+	AddDebuggerMenuItem("Libraries\\MLR\\LightMaps Enabled", CheckLightMaps,
+		EnableLightMaps, nullptr);
 #endif
 #ifdef _GAMEOS_HPP_
 	//
@@ -270,30 +274,44 @@ void MidLevelRenderer::InitializeClasses(
 	Initialize_Timer(Texture_Sorting_Time, "Texture Sorting Time");
 	Initialize_Timer(Alpha_Sorting_Time, "Alpha Sorting Time");
 	Initialize_Timer(Unlock_Texture_Time, "Unlock Texture Time");
-	AddStatistic("MLR Primitives", "prims", gos_DWORD, &Number_Of_Primitives, Stat_AutoReset);
-	AddStatistic("Indices/Vertices", "Ratio", gos_float, &Index_Over_Vertex_Ratio, Stat_AutoReset + Stat_2DP);
-	AddStatistic("Transformed vertices", "vertices", gos_DWORD, &TransformedVertices, Stat_AutoReset);
-	AddStatistic("Number of alphasorted Tri", "tri", gos_DWORD, &NumberOfAlphaSortedTriangles, Stat_AutoReset);
-	AddStatistic("Lit vertices", "vertices", gos_DWORD, &LitVertices, Stat_AutoReset);
-	AddStatistic("Unclipped vertices", "vertices", gos_DWORD, &NonClippedVertices, Stat_AutoReset);
-	AddStatistic("Clipped vertices", "vertices", gos_DWORD, &ClippedVertices, Stat_AutoReset);
-	// Polygons in primitives which are clipped but polys are outside the viewing frustrum
-	AddStatistic("Clip: Offscreen", "Poly", gos_DWORD, &PolysClippedButOutside, Stat_AutoReset);
-	// Polygons in primitives which are clipped but polys are inside the viewing frustrum
-	AddStatistic("Clip: Onscreen", "Poly", gos_DWORD, &PolysClippedButInside, Stat_AutoReset);
+	AddStatistic("MLR Primitives", "prims", gos_DWORD, &Number_Of_Primitives,
+		Stat_AutoReset);
+	AddStatistic("Indices/Vertices", "Ratio", gos_float,
+		&Index_Over_Vertex_Ratio, Stat_AutoReset + Stat_2DP);
+	AddStatistic("Transformed vertices", "vertices", gos_DWORD,
+		&TransformedVertices, Stat_AutoReset);
+	AddStatistic("Number of alphasorted Tri", "tri", gos_DWORD,
+		&NumberOfAlphaSortedTriangles, Stat_AutoReset);
+	AddStatistic(
+		"Lit vertices", "vertices", gos_DWORD, &LitVertices, Stat_AutoReset);
+	AddStatistic("Unclipped vertices", "vertices", gos_DWORD,
+		&NonClippedVertices, Stat_AutoReset);
+	AddStatistic("Clipped vertices", "vertices", gos_DWORD, &ClippedVertices,
+		Stat_AutoReset);
+	// Polygons in primitives which are clipped but polys are outside the
+	// viewing frustrum
+	AddStatistic("Clip: Offscreen", "Poly", gos_DWORD, &PolysClippedButOutside,
+		Stat_AutoReset);
+	// Polygons in primitives which are clipped but polys are inside the viewing
+	// frustrum
+	AddStatistic("Clip: Onscreen", "Poly", gos_DWORD, &PolysClippedButInside,
+		Stat_AutoReset);
 	// Polygons in primitives which are clipped, polys clipped against one plain
-	AddStatistic("Clip: One Plane", "Poly", gos_DWORD, &PolysClippedButOnePlane, Stat_AutoReset);
-	// Polygons in primitives which are clipped, polys clipped against more than one plain
-	AddStatistic("Clip: > One Plane", "Poly", gos_DWORD, &PolysClippedButGOnePlane, Stat_AutoReset);
+	AddStatistic("Clip: One Plane", "Poly", gos_DWORD, &PolysClippedButOnePlane,
+		Stat_AutoReset);
+	// Polygons in primitives which are clipped, polys clipped against more than
+	// one plain
+	AddStatistic("Clip: > One Plane", "Poly", gos_DWORD,
+		&PolysClippedButGOnePlane, Stat_AutoReset);
 #endif
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MidLevelRenderer::TerminateClasses(void)
+void MidLevelRenderer::TerminateClasses(void)
 {
-	if(!MLRLookUpLight::DefaultData)    // make sure there is something to termiante
+	if (!MLRLookUpLight::DefaultData) // make sure there is something to
+									  // termiante
 		return;
 	MLRLookUpLight::TerminateClass();
 	MLR_I_L_DeT_TMesh::TerminateClass();
@@ -355,18 +373,18 @@ uint32_t MidLevelRenderer::ReadMLRVersion(Stuff::MemoryStream* erf_stream)
 	Check_Object(erf_stream);
 	//
 	//------------------------------------------------------------------------
-	// See if this file has an erf signature. If so, the next int32_t will be the
-	// version number. If not, assume it is version 1 and rewind the file
+	// See if this file has an erf signature. If so, the next int32_t will be
+	// the version number. If not, assume it is version 1 and rewind the file
 	//------------------------------------------------------------------------
 	//
 	uint32_t version = uint32_t(-1);
 	uint32_t erf_signature;
 	*erf_stream >> erf_signature;
-	if(erf_signature == 'MLR#')
+	if (erf_signature == 'MLR#')
 		*erf_stream >> version;
 	else
 		erf_stream->RewindPointer(sizeof(erf_signature));
-	//if (version > Current_MLR_Version)
+	// if (version > Current_MLR_Version)
 	//	STOP(("Application must be rebuilt to use this version of MLR data"));
 	return version;
 }

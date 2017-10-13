@@ -8,11 +8,13 @@
 #define STRICT
 #endif
 
-#define ATL_SUPPRESS_WARNING_PUSH(x)    __pragma(warning(push)); __pragma(warning(disable: x))
-#define ATL_SUPPRESS_WARNING_POP        __pragma(warning(pop))
-#define ATL_ADD_LIBRARY(x)				__pragma(comment(lib, x))
+#define ATL_SUPPRESS_WARNING_PUSH(x)                                           \
+	__pragma(warning(push));                                                   \
+	__pragma(warning(disable : x))
+#define ATL_SUPPRESS_WARNING_POP __pragma(warning(pop))
+#define ATL_ADD_LIBRARY(x) __pragma(comment(lib, x))
 
-#define  _WIN32_WINNT   0x0600	// minimum Windows Vista
+#define _WIN32_WINNT 0x0600 // minimum Windows Vista
 #include <sdkddkver.h>
 
 #define _ATL_APARTMENT_THREADED
@@ -23,7 +25,7 @@
 #define _CRT_SECURE_NO_WARNINGS 1
 
 #include <atlbase.h>
-#if (_ATL_VER < 0x0700)	// linking with system (WDK) atl.dll
+#if (_ATL_VER < 0x0700) // linking with system (WDK) atl.dll
 extern ATL::CComModule& _Module;
 ATL_ADD_LIBRARY("atlthunk.lib")
 #endif
@@ -42,110 +44,109 @@ ATL_ADD_LIBRARY("atlthunk.lib")
 // MClib
 #ifdef _DEBUG
 // _ARMOR;USE_PROTOTYPES;STRICT;WIN32;_DEBUG;_WINDOWS;VIEWER
-#define _ARMOR		1
-#define LAB_ONLY	1
+#define _ARMOR 1
+#define LAB_ONLY 1
 #else
 // VIEWER;WIN32;NDEBUG;_WINDOWS
 #endif
 #ifndef VIEWER
-#define VIEWER		1
+#define VIEWER 1
 #endif
 
 namespace Utilities
 {
 
-//HRESULT WINAPI FormatCLSID(_Out_writes_(nCharacters) PWCHAR pszCLSID,_In_ size_t nCharacters,_In_ REFGUID clsid);
-//HRESULT WINAPI PrivateUpdateRegistry(_In_ BOOL bRegister,_In_ UINT nID,_In_ REFGUID clsid,_In_ REFGUID libid,_In_opt_ ULONG dwOleMisc,_In_opt_ ATL::_ATL_REGMAP_ENTRY* pregMap);
+// HRESULT WINAPI FormatCLSID(_Out_writes_(nCharacters) PWCHAR pszCLSID,_In_
+// size_t nCharacters,_In_ REFGUID clsid);  HRESULT WINAPI
+// PrivateUpdateRegistry(_In_ BOOL bRegister,_In_ UINT nID,_In_ REFGUID
+// clsid,_In_ REFGUID libid,_In_opt_ ULONG dwOleMisc,_In_opt_
+// ATL::_ATL_REGMAP_ENTRY* pregMap);
 
-// ModuleHelper - helper functions for ATL3 and ATL7 module classes (modified from WTL)
-	namespace ModuleHelper
-	{
-		inline HINSTANCE GetModuleInstance(void)
-		{
+// ModuleHelper - helper functions for ATL3 and ATL7 module classes (modified
+// from WTL)
+namespace ModuleHelper
+{
+inline HINSTANCE GetModuleInstance(void)
+{
 #if (_ATL_VER >= 0x0700)
-			return ATL::_AtlBaseModule.GetModuleInstance();
+	return ATL::_AtlBaseModule.GetModuleInstance();
 #else
-			return ATL::_pModule->GetModuleInstance();
+	return ATL::_pModule->GetModuleInstance();
 #endif
-		}
+}
 
-		inline HINSTANCE GetResourceInstance(void)
-		{
+inline HINSTANCE GetResourceInstance(void)
+{
 #if (_ATL_VER >= 0x0700)
-			return ATL::_AtlBaseModule.GetResourceInstance();
+	return ATL::_AtlBaseModule.GetResourceInstance();
 #else
-			return ATL::_pModule->GetResourceInstance();
+	return ATL::_pModule->GetResourceInstance();
 #endif
-		}
+}
 
-		inline HINSTANCE SetResourceInstance(_In_ HINSTANCE hInstance)
-		{
+inline HINSTANCE SetResourceInstance(_In_ HINSTANCE hInstance)
+{
 #if (_ATL_VER >= 0x0700)
-			return ATL::_AtlBaseModule.SetResourceInstance(hInstance);
+	return ATL::_AtlBaseModule.SetResourceInstance(hInstance);
 #else
-			return ATL::_pModule->SetResourceInstance(hInstance);
+	return ATL::_pModule->SetResourceInstance(hInstance);
 #endif
-		}
+}
 
-		inline void AddCreateWndData(_Inout_ ATL::_AtlCreateWndData* pData, _In_ void* pObject)
-		{
+inline void AddCreateWndData(
+	_Inout_ ATL::_AtlCreateWndData* pData, _In_ void* pObject)
+{
 #if (_ATL_VER >= 0x0700)
-			ATL::_AtlWinModule.AddCreateWndData(pData, pObject);
+	ATL::_AtlWinModule.AddCreateWndData(pData, pObject);
 #else
-			ATL::_pModule->AddCreateWndData(pData, pObject);
+	ATL::_pModule->AddCreateWndData(pData, pObject);
 #endif
-		}
+}
 
-		inline void* ExtractCreateWndData(void)
-		{
+inline void* ExtractCreateWndData(void)
+{
 #if (_ATL_VER >= 0x0700)
-			return ATL::_AtlWinModule.ExtractCreateWndData();
+	return ATL::_AtlWinModule.ExtractCreateWndData();
 #else
-			return ATL::_pModule->ExtractCreateWndData();
+	return ATL::_pModule->ExtractCreateWndData();
 #endif
-		}
+}
 
-		inline void AtlTerminate(void)
-		{
+inline void AtlTerminate(void)
+{
 #if (_ATL_VER >= 0x0700)
-			return ATL::_AtlWinModule.Term();
+	return ATL::_AtlWinModule.Term();
 #else
-			return ATL::_pModule->Term();
+	return ATL::_pModule->Term();
 #endif
-		}
+}
 
 #if (_ATL_VER >= 0x0700)
-		inline ATL::CAtlModule* GetModulePtr(void)
-		{
-			return ATL::_pAtlModule;
-		}
+inline ATL::CAtlModule* GetModulePtr(void) { return ATL::_pAtlModule; }
 #else
-		inline ATL::CComModule* GetModulePtr(void)
-		{
-			return ATL::_pModule;
-		}
+inline ATL::CComModule* GetModulePtr(void) { return ATL::_pModule; }
 #endif
 
-		inline bool AtlInitFailed(void)
-		{
+inline bool AtlInitFailed(void)
+{
 #if (_ATL_VER >= 0x0700)
-			return ATL::CAtlBaseModule::m_bInitFailed;
+	return ATL::CAtlBaseModule::m_bInitFailed;
 #else
-			return ATL::_bInitFailed;
+	return ATL::_bInitFailed;
 #endif
-		}
+}
 
-		inline void AtlSetTraceLevel(_In_ UINT nLevel)
-		{
+inline void AtlSetTraceLevel(_In_ UINT nLevel)
+{
 #if defined _DEBUG && (_ATL_VER >= 0x0700)
-			ATL::CTrace::SetLevel(nLevel);
+	ATL::CTrace::SetLevel(nLevel);
 #else
-			UNREFERENCED_PARAMETER(nLevel);
+	UNREFERENCED_PARAMETER(nLevel);
 #endif
-		}
+}
 
-	};	// namespace ModuleHelper
-};	// namespace Utilities
+}; // namespace ModuleHelper
+}; // namespace Utilities
 
 using namespace Utilities;
 
@@ -160,5 +161,7 @@ using namespace Utilities;
 #endif
 
 //#ifdef _MSC_VER
-//#pragma comment(linker,"/manifestdependency:\"type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
+//#pragma comment(linker,"/manifestdependency:\"type='win32'
+//name='Microsoft.Windows.Common-Controls' version='6.0.0.0'
+//processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
 //#endif

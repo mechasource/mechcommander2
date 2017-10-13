@@ -1,5 +1,6 @@
 /*************************************************************************************************\
-PilotReadyScreen.cpp			: Implementation of the PilotReadyScreen component.
+PilotReadyScreen.cpp			: Implementation of the PilotReadyScreen
+component.
 //---------------------------------------------------------------------------//
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
@@ -19,29 +20,28 @@ PilotReadyScreen.cpp			: Implementation of the PilotReadyScreen component.
 
 PilotReadyScreen* PilotReadyScreen::s_instance = nullptr;
 
-
 #define PR_MSG_ADD 62
 #define PR_MSG_REMOVE 63
 #define PR_MSG_MAIN 64
 
 PilotReadyScreen::PilotReadyScreen()
 {
-	pCurPilot = nullptr;
-	pIcons = nullptr;
-	status = LogisticsScreen::RUNNING;
-	s_instance = this;
+	pCurPilot		= nullptr;
+	pIcons			= nullptr;
+	status			= LogisticsScreen::RUNNING;
+	s_instance		= this;
 	forceGroupCount = 0;
-	pDragPilot = 0;
-	dragLeft = 0;
-	status = PAUSED;
+	pDragPilot		= 0;
+	dragLeft		= 0;
+	status			= PAUSED;
 	helpTextArrayID = 13;
-	mechSelected = 0;
+	mechSelected	= 0;
 }
 
 PilotReadyScreen::~PilotReadyScreen()
 {
-	if(pIcons)
-		delete [] pIcons;
+	if (pIcons)
+		delete[] pIcons;
 	pIcons = nullptr;
 	LogisticsScreen::clear();
 }
@@ -50,26 +50,27 @@ void PilotReadyScreen::init(FitIniFile* file)
 {
 	mechDisplay.init();
 	// init button, texts, statics, rects
-	LogisticsScreen::init(*file, "PilotReadyStatic", "PilotReadyTextEntry", "PilotReadyRect", "PilotReadyButton");
+	LogisticsScreen::init(*file, "PilotReadyStatic", "PilotReadyTextEntry",
+		"PilotReadyRect", "PilotReadyButton");
 	// initialize little icons
 	FitIniFile iconFile;
 	char path[256];
 	strcpy(path, artPath);
 	strcat(path, "mcl_gn_deploymentteams.fit");
 	strlwr(path);
-	if(NO_ERROR != iconFile.open(path))
+	if (NO_ERROR != iconFile.open(path))
 	{
 		gosASSERT("couldn't open the MCL_GN_DevploymentTeams file");
 		return;
 	}
 	LogisticsMechIcon::init(iconFile);
-	pIcons = new LogisticsMechIcon[ICON_COUNT];
+	pIcons		  = new LogisticsMechIcon[ICON_COUNT];
 	int32_t count = 0;
-	int32_t x = 0;
-	int32_t y = 0;
-	for(size_t j = 0; j < ICON_COUNT_Y; j++)
+	int32_t x	 = 0;
+	int32_t y	 = 0;
+	for (size_t j = 0; j < ICON_COUNT_Y; j++)
 	{
-		for(size_t i = 0; i < ICON_COUNT_X; i++)
+		for (size_t i = 0; i < ICON_COUNT_X; i++)
 		{
 			pIcons[count].setHelpID(IDS_HELP_DEPLOYTEAMMW);
 			pIcons[count].setMech(0);
@@ -87,25 +88,25 @@ void PilotReadyScreen::init(FitIniFile* file)
 	// initialize the attribute meeters
 	attributeMeters[0].init(file, "AttributeMeter0");
 	attributeMeters[1].init(file, "AttributeMeter1");
-	for(size_t i = 0; i < buttonCount; i++)
+	for (size_t i = 0; i < buttonCount; i++)
 		buttons[i].setMessageOnRelease();
-	pilotListBox.init(rects[0].left(), rects[0].top(),
-					  rects[0].width(), rects[0].height());
+	pilotListBox.init(
+		rects[0].left(), rects[0].top(), rects[0].width(), rects[0].height());
 	FullPathFileName tmpPath;
 	tmpPath.init(artPath, "mcl_pr_availablepilotentry", ".fit");
 	FitIniFile tmpFile;
-	if(NO_ERROR != tmpFile.open(tmpPath))
+	if (NO_ERROR != tmpFile.open(tmpPath))
 	{
 		Assert(0, 0, "couldn't open MCL_PR_AvailablePilotEntry.fit");
 	}
 	LogisticsPilotListBoxItem::init(&tmpFile);
 	char blockName[32];
-	for(i = 0; i < 4; i++)
+	for (i = 0; i < 4; i++)
 	{
 		sprintf(blockName, "PilotSpecialtySkillIcon%ld", i);
 		specialtySkillIcons[i].init(file, blockName);
 	}
-	for(i = 0; i < 4; i++)
+	for (i = 0; i < 4; i++)
 	{
 		sprintf(blockName, "PilotSpecialtySkill%ld", i);
 		file->seekBlock(blockName);
@@ -114,17 +115,17 @@ void PilotReadyScreen::init(FitIniFile* file)
 		file->readIdLong("bottom", skillLocations[i].bottom);
 		file->readIdLong("right", skillLocations[i].right);
 	}
-	for(i = 0; i < 5; i++)
+	for (i = 0; i < 5; i++)
 	{
 		sprintf(blockName, "PilotReadyRankIcon%ld", i);
 		rankIcons[i].init(file, blockName);
 	}
-	for(i = 0; i < 16; i++)
+	for (i = 0; i < 16; i++)
 	{
 		sprintf(blockName, "PilotMedal%ld", i);
 		medalIcons[i].init(file, blockName);
 	}
-	for(i = 0; i < 16; i++)
+	for (i = 0; i < 16; i++)
 	{
 		sprintf(blockName, "PilotMedalPlacement%ld", i);
 		file->seekBlock(blockName);
@@ -141,30 +142,30 @@ void PilotReadyScreen::begin()
 	getButton(MB_MSG_MAINMENU)->disable(false);
 	launchFadeTime = 0;
 	// initialize both the inventory and icon lists
-	EList< LogisticsMech*, LogisticsMech* > mechList;
+	EList<LogisticsMech*, LogisticsMech*> mechList;
 	LogisticsData::instance->getInventory(mechList);
 	// reset force group
-	forceGroupCount = 0;
+	forceGroupCount  = 0;
 	int32_t maxUnits = 12;
-	if(MPlayer)
+	if (MPlayer)
 	{
 		int32_t playerCount;
 		MPlayer->getPlayers(playerCount);
-		if(playerCount)
+		if (playerCount)
 			maxUnits = MAX_MULTIPLAYER_MECHS_IN_LOGISTICS / playerCount;
-		if(maxUnits > 12)
+		if (maxUnits > 12)
 			maxUnits = 12;
 	}
-	for(size_t i = 0; i < 12; i++)
+	for (size_t i = 0; i < 12; i++)
 	{
 		pIcons[i].setMech(0);
 		pIcons[i].select(0);
-		if(i >= maxUnits)
+		if (i >= maxUnits)
 			pIcons[i].disable(1);
 		else
 			pIcons[i].disable(0);
 	}
-	if(getButton(MB_MSG_MAINMENU))
+	if (getButton(MB_MSG_MAINMENU))
 		getButton(MB_MSG_MAINMENU)->setPressFX(-1);
 	int32_t bHasPilot = -1;
 	// update pilot use here... things can get screwed up.
@@ -172,18 +173,19 @@ void PilotReadyScreen::begin()
 	int32_t count = 256;
 	LogisticsPilot* pilots[256];
 	LogisticsData::instance->getPilots(pilots, count);
-	for(i = 0; i < count; i++)
+	for (i = 0; i < count; i++)
 	{
 		pilots[i]->setUsed(0);
 	}
-	for(EList< LogisticsMech*, LogisticsMech* >::EIterator iter = mechList.Begin();
-			!iter.IsDone(); iter++)
+	for (EList<LogisticsMech*, LogisticsMech*>::EIterator iter =
+			 mechList.Begin();
+		 !iter.IsDone(); iter++)
 	{
-		if((*iter)->getForceGroup())
+		if ((*iter)->getForceGroup())
 		{
 			int32_t FG = (*iter)->getForceGroup();
 			pIcons[FG - 1].setMech((*iter));
-			if((*iter)->getPilot())
+			if ((*iter)->getPilot())
 			{
 				(*iter)->getPilot()->setUsed(true);
 				pIcons[FG - 1].setPilot((*iter)->getPilot());
@@ -192,23 +194,24 @@ void PilotReadyScreen::begin()
 			forceGroupCount++;
 		}
 	}
-	for(i = 0; i < count; i++)
+	for (i = 0; i < count; i++)
 	{
-		if(!pilots[i]->isUsed() && pilots[i]->isAvailable())
+		if (!pilots[i]->isUsed() && pilots[i]->isAvailable())
 		{
 			pilotListBox.AddItem(new LogisticsPilotListBoxItem(pilots[i]));
 		}
 	}
 	status = RUNNING;
-	if(bHasPilot != -1)
+	if (bHasPilot != -1)
 	{
 		pIcons[bHasPilot].select(true);
 		setPilot(pIcons[bHasPilot].getPilot());
 	}
 	else
 	{
-		LogisticsPilotListBoxItem* pItem = (LogisticsPilotListBoxItem*)pilotListBox.GetItem(0);
-		if(pItem)
+		LogisticsPilotListBoxItem* pItem =
+			(LogisticsPilotListBoxItem*)pilotListBox.GetItem(0);
+		if (pItem)
 		{
 			pilotListBox.SelectItem(0);
 			setPilot(pItem->getPilot());
@@ -217,229 +220,234 @@ void PilotReadyScreen::begin()
 	}
 }
 
-void PilotReadyScreen::end()
-{
-	mechDisplay.setMech(nullptr);
-}
+void PilotReadyScreen::end() { mechDisplay.setMech(nullptr); }
 
 void PilotReadyScreen::render(int32_t xOffset, int32_t yOffset)
 {
 	pilotListBox.move(xOffset, yOffset);
 	pilotListBox.render();
 	pilotListBox.move(-xOffset, -yOffset);
-	if(!xOffset && !yOffset)
+	if (!xOffset && !yOffset)
 	{
-		if(!MPlayer && !LogisticsData::instance->isSingleMission() && LogisticsData::instance->newPilotsAvailable())
+		if (!MPlayer && !LogisticsData::instance->isSingleMission() &&
+			LogisticsData::instance->newPilotsAvailable())
 		{
 			soundSystem->playBettySample(BETTY_NEW_PILOTS);
 			LogisticsData::instance->setNewPilotsAcknowledged();
 		}
 	}
-	for(size_t i = 0; i < 2; i++)
+	for (size_t i = 0; i < 2; i++)
 	{
 		attributeMeters[i].render(xOffset, yOffset);
 	}
-	if(pCurPilot)
+	if (pCurPilot)
 		rankIcons[pCurPilot->getRank()].render(xOffset, yOffset);
-	for(i = 0; i < 4; i++)
+	for (i = 0; i < 4; i++)
 		skillIcons[i].render(xOffset, yOffset);
-	for(i = 0; i < MAX_MEDAL; i++)
+	for (i = 0; i < MAX_MEDAL; i++)
 		medalIcons[i].render(xOffset, yOffset);
 	LogisticsScreen::render(xOffset, yOffset);
-	for(i = 0; i < ICON_COUNT; i++)
+	for (i = 0; i < ICON_COUNT; i++)
 	{
 		pIcons[i].render(xOffset, yOffset);
 	}
-	if(mechSelected)
+	if (mechSelected)
 	{
 		// hack, cover up pilot stuff.
-		RECT rect = { 77 + xOffset, 317 + yOffset, 720 + xOffset, 515 + yOffset };
+		RECT rect = {77 + xOffset, 317 + yOffset, 720 + xOffset, 515 + yOffset};
 		drawRect(rect, 0xff000000);
 		mechDisplay.render(xOffset, yOffset);
 		// hack, cover up list box overrruns.
 		statics[27].render(xOffset, yOffset);
 		statics[28].render(xOffset, yOffset);
 	}
-	if(launchFadeTime)
+	if (launchFadeTime)
 	{
 		launchFadeTime += frameLength;
-		int32_t color = interpolateColor(0x00000000, 0x7f000000, launchFadeTime / .5f);
-		RECT rect = { 0, 0, Environment.screenWidth, Environment.screenHeight };
+		int32_t color =
+			interpolateColor(0x00000000, 0x7f000000, launchFadeTime / .5f);
+		RECT rect = {0, 0, Environment.screenWidth, Environment.screenHeight};
 		drawRect(rect, color);
 	}
-	if(MPlayer && ChatWindow::instance())
+	if (MPlayer && ChatWindow::instance())
 		ChatWindow::instance()->render(xOffset, yOffset);
-	if(pDragPilot)
+	if (pDragPilot)
 		dragIcon.render();
 }
 
-
 void PilotReadyScreen::update()
 {
-	if(MPlayer)
+	if (MPlayer)
 	{
-		if(MPlayer->playersReadyToLoad())
+		if (MPlayer->playersReadyToLoad())
 			status = NEXT;
 	}
-	if(getButton(MB_MSG_PREV)->isEnabled())      // this is disabled if the user has already pressed launch )
+	if (getButton(MB_MSG_PREV)->isEnabled()) // this is disabled if the user has
+											 // already pressed launch )
 	{
 		// update current text
 		char str[64];
 		// RP
 		sprintf(str, "%ld ", LogisticsData::instance->getCBills());
 		textObjects[1].setText(str);
-		for(size_t i = 0; i < 4; i++)
+		for (size_t i = 0; i < 4; i++)
 			skillIcons[i].update();
 		// desel icons if necessary
-		bool bAllFull = 1;
-		int32_t newSel = -1;
-		int32_t oldSel = -1;
-		bool bHasMech = 0;
+		bool bAllFull		= 1;
+		int32_t newSel		= -1;
+		int32_t oldSel		= -1;
+		bool bHasMech		= 0;
 		int32_t newRightSel = -1;
-		for(i = 0; i < ICON_COUNT; i++)
+		for (i = 0; i < ICON_COUNT; i++)
 		{
 			pIcons[i].update();
-			if(pIcons[i].justSelected())
+			if (pIcons[i].justSelected())
 				newSel = i;
-			else if(pIcons[i].isSelected())
+			else if (pIcons[i].isSelected())
 				oldSel = i;
-			bool bInside = pIcons[i].pointInside(userInput->getMouseX(), userInput->getMouseY());
-			if(userInput->isLeftDoubleClick() && bInside && pIcons[i].getMech())
+			bool bInside = pIcons[i].pointInside(
+				userInput->getMouseX(), userInput->getMouseY());
+			if (userInput->isLeftDoubleClick() && bInside &&
+				pIcons[i].getMech())
 			{
 				removeSelectedPilot();
 			}
-			if(userInput->isRightClick() && bInside && pIcons[i].getMech())
+			if (userInput->isRightClick() && bInside && pIcons[i].getMech())
 			{
 				newRightSel = i;
 			}
-			else if(userInput->isLeftDrag()
-					&& bInside
-					&& pIcons[i].pointInside(userInput->getMouseDragX(), userInput->getMouseDragY())
-					&& pIcons[i].getMech())
+			else if (userInput->isLeftDrag() && bInside &&
+					 pIcons[i].pointInside(userInput->getMouseDragX(),
+						 userInput->getMouseDragY()) &&
+					 pIcons[i].getMech())
 			{
 				beginDrag(pIcons[i].getMech()->getPilot());
 				pIcons[i].dimPilot(true);
 				pIcons[i].setPilot(nullptr);
 			}
-			if(pIcons[i].getMech() && !pIcons[i].getPilot())
+			if (pIcons[i].getMech() && !pIcons[i].getPilot())
 				bAllFull = 0;
-			if(pIcons[i].getMech())
+			if (pIcons[i].getMech())
 				bHasMech = true;
 		}
-		if(newSel != -1)
+		if (newSel != -1)
 		{
-			if(oldSel != -1)
+			if (oldSel != -1)
 				pIcons[oldSel].select(0);
-			if(pIcons[newSel].getPilot())
+			if (pIcons[newSel].getPilot())
 			{
 				setPilot(pIcons[newSel].getPilot());
 			}
 			else
 				setMech(pIcons[newSel].getMech());
 		}
-		if(newRightSel != -1)
+		if (newRightSel != -1)
 		{
 			setMech(pIcons[newRightSel].getMech());
 		}
 		int32_t curSel = newSel == -1 ? oldSel : newSel;
-		if(!MPlayer || !ChatWindow::instance()->pointInside(userInput->getMouseX(), userInput->getMouseY()))
+		if (!MPlayer || !ChatWindow::instance()->pointInside(
+							userInput->getMouseX(), userInput->getMouseY()))
 			LogisticsScreen::update();
-		if(mechSelected &&
-				(!MPlayer || !ChatWindow::instance()->pointInside(userInput->getMouseX(), userInput->getMouseY())))
+		if (mechSelected &&
+			(!MPlayer || !ChatWindow::instance()->pointInside(
+							 userInput->getMouseX(), userInput->getMouseY())))
 		{
-			if(userInput->getMouseY() > 317)
+			if (userInput->getMouseY() > 317)
 			{
 				helpID = 0;
 				textObjects[helpTextArrayID].setText("");
 			}
 			mechDisplay.update();
 		}
-		if(!bAllFull)    // disable the next button until all have pilots
+		if (!bAllFull) // disable the next button until all have pilots
 		{
 			buttons[1].disable(1);
-			if(curSel == -1 || pIcons[curSel].getPilot())
+			if (curSel == -1 || pIcons[curSel].getPilot())
 				buttons[2].disable(1);
 			else
 				buttons[2].disable(0);
 		}
 		else
 		{
-			if(bHasMech)
+			if (bHasMech)
 				buttons[1].disable(0);
 			else
 				buttons[1].disable(1);
 			buttons[2].disable(1);
 		}
-		if((newSel == -1 && oldSel == -1) || !pIcons[curSel].getPilot())
+		if ((newSel == -1 && oldSel == -1) || !pIcons[curSel].getPilot())
 		{
 			// disable the remove button
 			buttons[3].disable(1);
 		}
 		else
 			buttons[3].disable(0);
-		for(i = 0; i < MAX_MEDAL; i++)    // so we get rollovers
+		for (i = 0; i < MAX_MEDAL; i++) // so we get rollovers
 			medalIcons[i].update();
 		// update drag and drop
-		if(pDragPilot)
+		if (pDragPilot)
 		{
 			dragIcon.moveTo(userInput->getMouseX() - dragIcon.width() / 2,
-							userInput->getMouseY() - dragIcon.height() / 2);
+				userInput->getMouseY() - dragIcon.height() / 2);
 			LogisticsMechIcon* pSelIcon = 0;
-			for(size_t i = 0; i < ICON_COUNT; i++)
+			for (size_t i = 0; i < ICON_COUNT; i++)
 			{
-				if(pIcons[i].pointInside(userInput->getMouseX(), userInput->getMouseY())
-						&& pIcons[i].getMech())
+				if (pIcons[i].pointInside(
+						userInput->getMouseX(), userInput->getMouseY()) &&
+					pIcons[i].getMech())
 				{
 					pSelIcon = &pIcons[i];
 					break;
 				}
 			}
-			if(userInput->leftMouseReleased())
+			if (userInput->leftMouseReleased())
 			{
 				endDrag(pSelIcon);
 			}
 		}
 		pilotListBox.update();
 	}
-	if(MPlayer && ChatWindow::instance())
+	if (MPlayer && ChatWindow::instance())
 		ChatWindow::instance()->update();
 }
 
-int32_t	PilotReadyScreen::handleMessage(uint32_t message, uint32_t who)
+int32_t PilotReadyScreen::handleMessage(uint32_t message, uint32_t who)
 {
-	switch(who)
+	switch (who)
 	{
-		case MB_MSG_NEXT:
-			if(MPlayer)
+	case MB_MSG_NEXT:
+		if (MPlayer)
+		{
+			MPlayer->sendMissionSetup(0, 7, nullptr);
+			getButton(MB_MSG_PREV)->disable(true);
+			getButton(MB_MSG_NEXT)->disable(true);
+			getButton(MB_MSG_MAINMENU)->disable(true);
+			MC2Player* pInfo = MPlayer->getPlayerInfo(MPlayer->commanderID);
+			if (pInfo)
 			{
-				MPlayer->sendMissionSetup(0, 7, nullptr);
-				getButton(MB_MSG_PREV)->disable(true);
-				getButton(MB_MSG_NEXT)->disable(true);
-				getButton(MB_MSG_MAINMENU)->disable(true);
-				MC2Player* pInfo = MPlayer->getPlayerInfo(MPlayer->commanderID);
-				if(pInfo)
-				{
-					PCSTR name = pInfo->name;
-					MPlayer->sendPlayerActionChat(nullptr, name, IDS_MP_PLAYER_READY);
-				}
-				pilotListBox.SelectItem(-1);
-				launchFadeTime = .0001f;
+				PCSTR name = pInfo->name;
+				MPlayer->sendPlayerActionChat(
+					nullptr, name, IDS_MP_PLAYER_READY);
 			}
-			else
-				status = NEXT;
-			break;
-		case MB_MSG_PREV:
-			status = PREVIOUS;
-			break;
-		case PR_MSG_ADD:
-			addSelectedPilot();
-			break;
-		case PR_MSG_REMOVE:
-			removeSelectedPilot();
-			break;
-		case MB_MSG_MAINMENU:
-			status = MAINMENU;
-			break;
+			pilotListBox.SelectItem(-1);
+			launchFadeTime = .0001f;
+		}
+		else
+			status = NEXT;
+		break;
+	case MB_MSG_PREV:
+		status = PREVIOUS;
+		break;
+	case PR_MSG_ADD:
+		addSelectedPilot();
+		break;
+	case PR_MSG_REMOVE:
+		removeSelectedPilot();
+		break;
+	case MB_MSG_MAINMENU:
+		status = MAINMENU;
+		break;
 	}
 	return 0;
 }
@@ -447,25 +455,26 @@ int32_t	PilotReadyScreen::handleMessage(uint32_t message, uint32_t who)
 void PilotReadyScreen::addSelectedPilot()
 {
 	aListItem* pItem = nullptr;
-	bool bFound = 0;
-	int32_t index = pilotListBox.GetSelectedItem();
-	if(index != -1)
+	bool bFound		 = 0;
+	int32_t index	= pilotListBox.GetSelectedItem();
+	if (index != -1)
 		pItem = pilotListBox.GetItem(index);
-	if(pItem)
+	if (pItem)
 	{
-		LogisticsPilot* pPilot = ((LogisticsPilotListBoxItem*)pItem)->getPilot();
-		if(pPilot)
+		LogisticsPilot* pPilot =
+			((LogisticsPilotListBoxItem*)pItem)->getPilot();
+		if (pPilot)
 		{
-			for(size_t i = 0; i < ICON_COUNT; i++)
+			for (size_t i = 0; i < ICON_COUNT; i++)
 			{
-				if(pIcons[i].isSelected())
+				if (pIcons[i].isSelected())
 				{
-					if(!pIcons[i].getPilot() && pIcons[i].getMech())
+					if (!pIcons[i].getPilot() && pIcons[i].getMech())
 					{
 						pIcons[i].setPilot(pPilot);
 						pIcons[i].select(0);
 						i++;
-						if(i >= ICON_COUNT || !pIcons[i].getMech())
+						if (i >= ICON_COUNT || !pIcons[i].getMech())
 							i = 0;
 						pIcons[i].select(true);
 						bFound = true;
@@ -473,12 +482,12 @@ void PilotReadyScreen::addSelectedPilot()
 					}
 				}
 			}
-			if(!bFound)
+			if (!bFound)
 			{
 				// if we got here, there was nothing selected
-				for(i = 0; i < ICON_COUNT; i++)
+				for (i = 0; i < ICON_COUNT; i++)
 				{
-					if(pIcons[i].getMech() && !pIcons[i].getPilot())
+					if (pIcons[i].getMech() && !pIcons[i].getPilot())
 					{
 						pIcons[i].setPilot(pPilot);
 						bFound = true;
@@ -488,12 +497,13 @@ void PilotReadyScreen::addSelectedPilot()
 			}
 		}
 	}
-	if(index != -1)
+	if (index != -1)
 		pItem = pilotListBox.GetItem(index + 1);
-	if(pItem && bFound)
+	if (pItem && bFound)
 	{
-		LogisticsPilot* pPilot = ((LogisticsPilotListBoxItem*)pItem)->getPilot();
-		if(pPilot)
+		LogisticsPilot* pPilot =
+			((LogisticsPilotListBoxItem*)pItem)->getPilot();
+		if (pPilot)
 		{
 			setPilot(pPilot);
 		}
@@ -502,25 +512,26 @@ void PilotReadyScreen::addSelectedPilot()
 
 void PilotReadyScreen::removeSelectedPilot()
 {
-	for(size_t i = 0; i < ICON_COUNT; i++)
+	for (size_t i = 0; i < ICON_COUNT; i++)
 	{
-		if(pIcons[i].isSelected())
+		if (pIcons[i].isSelected())
 		{
-			if(pIcons[i].getPilot())
+			if (pIcons[i].getPilot())
 			{
 				// add the pilot back into the list
 				int32_t oldSel = pilotListBox.GetSelectedItem();
-				LogisticsPilotListBoxItem* pNewItem = new LogisticsPilotListBoxItem(pIcons[i].getPilot());
+				LogisticsPilotListBoxItem* pNewItem =
+					new LogisticsPilotListBoxItem(pIcons[i].getPilot());
 				int32_t newIndex = pilotListBox.AddItem(pNewItem);
 				pIcons[i].setPilot(nullptr);
 				pIcons[i].select(0);
 				i++;
-				if(i >= ICON_COUNT || !pIcons[i].getMech())
+				if (i >= ICON_COUNT || !pIcons[i].getMech())
 					i = 0;
 				pIcons[i].select(true);
-				if(pIcons[i].getPilot())
+				if (pIcons[i].getPilot())
 				{
-					if(newIndex <= oldSel)
+					if (newIndex <= oldSel)
 					{
 						pilotListBox.SelectItem(oldSel + 1);
 					}
@@ -530,13 +541,16 @@ void PilotReadyScreen::removeSelectedPilot()
 				{
 					pilotListBox.SelectItem(newIndex);
 					int32_t index = pilotListBox.GetSelectedItem();
-					if(index != -1)
+					if (index != -1)
 					{
-						LogisticsPilotListBoxItem* pItem = (LogisticsPilotListBoxItem*)pilotListBox.GetItem(index);
-						if(pItem)
+						LogisticsPilotListBoxItem* pItem =
+							(LogisticsPilotListBoxItem*)pilotListBox.GetItem(
+								index);
+						if (pItem)
 						{
-							LogisticsPilot* pPilot = ((LogisticsPilotListBoxItem*)pItem)->getPilot();
-							if(pPilot)
+							LogisticsPilot* pPilot =
+								((LogisticsPilotListBoxItem*)pItem)->getPilot();
+							if (pPilot)
 							{
 								setPilot(pPilot);
 							}
@@ -551,19 +565,19 @@ void PilotReadyScreen::removeSelectedPilot()
 
 void PilotReadyScreen::beginDrag(LogisticsPilot* pPilot)
 {
-	if(!pDragPilot)
+	if (!pDragPilot)
 		pDragPilot = pPilot;
-	if(pPilot)
+	if (pPilot)
 		LogisticsPilotListBox::makeUVs(pPilot, dragIcon);
 	launchFadeTime = 0.f;
 }
 
 void PilotReadyScreen::endDrag(LogisticsMechIcon* pIcon)
 {
-	if(pIcon)
+	if (pIcon)
 	{
 		LogisticsPilot* pOldPilot = pIcon->getPilot();
-		if(pOldPilot)
+		if (pOldPilot)
 			putBackPilot(pOldPilot);
 		pIcon->setPilot(pDragPilot);
 		pilotListBox.removePilot(pDragPilot);
@@ -575,12 +589,11 @@ void PilotReadyScreen::endDrag(LogisticsMechIcon* pIcon)
 	pDragPilot = 0;
 }
 
-
 void PilotReadyScreen::putBackPilot(LogisticsPilot* pPilot)
 {
-	for(size_t i = 0; i < ICON_COUNT; i++)
+	for (size_t i = 0; i < ICON_COUNT; i++)
 	{
-		if(pIcons[i].getPilot() == pPilot)
+		if (pIcons[i].getPilot() == pPilot)
 		{
 			pIcons[i].setPilot(0);
 			pIcons[i].dimPilot(false);
@@ -593,11 +606,11 @@ void PilotReadyScreen::putBackPilot(LogisticsPilot* pPilot)
 void PilotReadyScreen::setPilot(LogisticsPilot* pPilot)
 {
 	mechSelected = 0;
-	if(pPilot != pCurPilot)
+	if (pPilot != pCurPilot)
 	{
 		pCurPilot = pPilot;
 		// set up the big bitmap
-		if(!pCurPilot)
+		if (!pCurPilot)
 		{
 			statics[staticCount - 1].setColor(0);
 			return;
@@ -614,11 +627,11 @@ void PilotReadyScreen::setPilot(LogisticsPilot* pPilot)
 		statics[67].setUVs(0, 0, 92, 128);
 	}
 	// update pilot specific stuff
-	if(pCurPilot)
+	if (pCurPilot)
 	{
 		char str[256];
-		//ACE not continguous with other ranks.  Added too late!
-		if(pCurPilot->getRank() != 4)
+		// ACE not continguous with other ranks.  Added too late!
+		if (pCurPilot->getRank() != 4)
 			textObjects[4].setText(IDS_GREEN + pCurPilot->getRank());
 		else
 			textObjects[4].setText(IDS_ACE);
@@ -640,17 +653,21 @@ void PilotReadyScreen::setPilot(LogisticsPilot* pPilot)
 		pCurPilot->getSpecialtySkills(specialtySkills, count);
 		count = 32;
 		pCurPilot->getSpecialtySkills(skillIDs, count);
-		for(size_t i = 0; i < 4; i++)
+		for (size_t i = 0; i < 4; i++)
 		{
-			if(i < count)
+			if (i < count)
 			{
 				textObjects[9 + i].setText(specialtySkills[i]);
-				textObjects[9 + i].resize(textObjects[9 + i].width(), textObjects[9 + i].font.height());
+				textObjects[9 + i].resize(textObjects[9 + i].width(),
+					textObjects[9 + i].font.height());
 				textObjects[9 + i].setHelpID(skillIDs[i] + IDS_SPECIALTY_HELP1);
-				skillIcons[i] = specialtySkillIcons[MechWarrior::skillTypes[skillIDs[i]]];
-				skillIcons[i].resize(skillLocations[i].right - skillLocations[i].left,
-									 skillLocations[i].bottom - skillLocations[i].top);
-				skillIcons[i].moveTo(skillLocations[i].left, skillLocations[i].top);
+				skillIcons[i] =
+					specialtySkillIcons[MechWarrior::skillTypes[skillIDs[i]]];
+				skillIcons[i].resize(
+					skillLocations[i].right - skillLocations[i].left,
+					skillLocations[i].bottom - skillLocations[i].top);
+				skillIcons[i].moveTo(
+					skillLocations[i].left, skillLocations[i].top);
 				skillIcons[i].setColor(0xffffffff);
 				skillIcons[i].setHelpID(skillIDs[i] + IDS_SPECIALTY_HELP1);
 			}
@@ -661,17 +678,20 @@ void PilotReadyScreen::setPilot(LogisticsPilot* pPilot)
 				skillIcons[i].setHelpID(0);
 			}
 		}
-		for(; i < 4; i++)
+		for (; i < 4; i++)
 			skillIcons[i].setColor(0);
 		const bool* medals = pCurPilot->getMedalArray();
 		int32_t medalCount = 0;
-		for(i = 0; i < MAX_MEDAL; i++)
+		for (i = 0; i < MAX_MEDAL; i++)
 		{
-			if(medals[i])
+			if (medals[i])
 			{
-				medalIcons[i].moveTo(medalLocations[medalCount].left, medalLocations[medalCount].top);
-				medalIcons[i].resize(medalLocations[medalCount].right - medalLocations[medalCount].left,
-									 medalLocations[medalCount].bottom - medalLocations[medalCount].top);
+				medalIcons[i].moveTo(medalLocations[medalCount].left,
+					medalLocations[medalCount].top);
+				medalIcons[i].resize(medalLocations[medalCount].right -
+										 medalLocations[medalCount].left,
+					medalLocations[medalCount].bottom -
+						medalLocations[medalCount].top);
 				medalIcons[i].setColor(0xffffffff);
 				medalCount++;
 				medalIcons[i].showGUIWindow(true);
@@ -685,7 +705,7 @@ void PilotReadyScreen::setPilot(LogisticsPilot* pPilot)
 	}
 	else
 	{
-		for(size_t i = 4; i < 13; i++)
+		for (size_t i = 4; i < 13; i++)
 			textObjects[i].setText("");
 		statics[staticCount - 1].setColor(0);
 	}

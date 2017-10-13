@@ -22,28 +22,21 @@ class Action;
 class Action
 {
 
-public:
-
+  public:
 	virtual ~Action(void) {}
 	virtual bool redo(void) = 0;
 	virtual bool undo(void) = 0;
-	Action& operator=(const Action& src);
-	PCWSTR getDescription(void)
-	{
-		return m_strDescription.c_str(void);
-	}
+	Action& operator		=(const Action& src);
+	PCWSTR getDescription(void) { return m_strDescription.c_str(void); }
 
-protected:
+  protected:
 	std::wstring m_strDescription;
 
 	// suppressed
-	Action(PCWSTR pStr)
-	{
-		m_strDescription.assign(pStr);
-	}
+	Action(PCWSTR pStr) { m_strDescription.assign(pStr); }
 
 	// if you call this, make sure you set the description
-	Action(void) { }
+	Action(void) {}
 };
 
 typedef struct VertexInfo
@@ -57,7 +50,7 @@ typedef struct VertexInfo
 	uint32_t textureData;
 	float elevation;
 
-private:
+  private:
 	// make sure the list class doesn't try and use this
 	VertexInfo& operator=(const VertexInfo&);
 
@@ -68,8 +61,7 @@ private:
 // it here
 class ActionPaintTile : public Action
 {
-public:
-
+  public:
 	ActionPaintTile(void) {}
 
 	// virtual overrides
@@ -78,38 +70,33 @@ public:
 
 	bool doRedo(void); // so we don't go through virtual functions
 
-	ActionPaintTile(PCWSTR pStr)
-		: Action(pStr) {}
+	ActionPaintTile(PCWSTR pStr) : Action(pStr) {}
 
 	void addChangedVertexInfo(uint32_t row, uint32_t column);
 	void addVertexInfo(VertexInfo&);
 	bool getOldHeight(uint32_t row, uint32_t column, float& oldHeight);
 
-private:
-	typedef std::list< VertexInfo /*, const VertexInfo& */ > VERTEX_INFO_LIST;
-	VERTEX_INFO_LIST	vertexInfoList;
+  private:
+	typedef std::list<VertexInfo /*, const VertexInfo& */> VERTEX_INFO_LIST;
+	VERTEX_INFO_LIST vertexInfoList;
 };
 
 class ModifyBuildingAction : public Action
 {
-public:
-
+  public:
 	virtual ~ModifyBuildingAction(void);
 	virtual bool redo(void);
 	virtual bool undo(void);
 	bool doRedo(void); // so we don't go through virtual functions
 	virtual void addBuildingInfo(EditorObject& info);
-	virtual bool isNotNull(void)
-	{
-		return (!buildingCopyPtrs.empty());
-	}
+	virtual bool isNotNull(void) { return (!buildingCopyPtrs.empty()); }
 	virtual void updateNotedObjectPositions(void);
 
-private:
-	typedef std::list< EditorObject* /*, EditorObject**/ > OBJ_INFO_PTR_LIST;
-	typedef std::list< ObjectAppearance /*, ObjectAppearance&*/ > OBJ_APPEAR_LIST;
+  private:
+	typedef std::list<EditorObject* /*, EditorObject**/> OBJ_INFO_PTR_LIST;
+	typedef std::list<ObjectAppearance /*, ObjectAppearance&*/> OBJ_APPEAR_LIST;
 
-	typedef std::list< __m64 /*, __m64&*/ > OBJ_ID_LIST;	// MMX Data Type
+	typedef std::list<__m64 /*, __m64&*/> OBJ_ID_LIST; // MMX Data Type
 
 	OBJ_INFO_PTR_LIST buildingCopyPtrs;
 	OBJ_APPEAR_LIST buildingAppearanceCopies;
@@ -121,7 +108,7 @@ private:
 class ActionUndoMgr
 {
 
-public:
+  public:
 	ActionUndoMgr(void);
 	~ActionUndoMgr(void);
 
@@ -139,17 +126,16 @@ public:
 	void NoteThatASaveHasJustOccurred(void);
 	bool ThereHasBeenANetChangeFromWhenLastSaved(void);
 
-	static ActionUndoMgr*	instance;
+	static ActionUndoMgr* instance;
 
-private:
-
-	typedef std::list< Action* /*, Action**/ > ACTION_LIST;
+  private:
+	typedef std::list<Action* /*, Action**/> ACTION_LIST;
 	typedef uint32_t ACTION_POS;
 
-	void				EmptyUndoList(void);
-	ACTION_LIST			m_listUndoActions;
-	ACTION_POS			m_CurrentPos;
-	ACTION_POS			m_PosOfLastSave;
+	void EmptyUndoList(void);
+	ACTION_LIST m_listUndoActions;
+	ACTION_POS m_CurrentPos;
+	ACTION_POS m_PosOfLastSave;
 }; // class SActionMgr
 
-#endif// ACTION_H
+#endif // ACTION_H

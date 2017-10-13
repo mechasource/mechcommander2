@@ -14,41 +14,34 @@
 
 class EditorTacMap : public CDialog
 {
-public:
-	EditorTacMap(CWnd* pParent = nullptr);   // standard constructor
+  public:
+	EditorTacMap(CWnd* pParent = nullptr); // standard constructor
 
 	//{{AFX_DATA(EditorTacMap)
-	enum { IDD = IDD_TACMAP };
-	TacMapTGA	picture;
+	enum
+	{
+		IDD = IDD_TACMAP
+	};
+	TacMapTGA picture;
 	//}}AFX_DATA
 
 	void SetData(puint8_t pData, size_t size)
 	{
 		picture.SetTGAFileData(pData, size);
 	}
-	void UpdateMap()
-	{
-		picture.refreshBmp(void);
-	}
+	void UpdateMap() { picture.refreshBmp(void); }
 
 	void ReleaseFocus(void);
-	virtual void OnCancel()
-	{
-		ReleaseFocus(void);
-	}
-	virtual void OnOk()
-	{
-		ReleaseFocus(void);
-	}
+	virtual void OnCancel() { ReleaseFocus(void); }
+	virtual void OnOk() { ReleaseFocus(void); }
 
 	//{{AFX_VIRTUAL(EditorTacMap)
-protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+  protected:
+	virtual void DoDataExchange(CDataExchange* pDX); // DDX/DDV support
 	virtual LRESULT WindowProc(uint32_t message, WPARAM wParam, LPARAM lParam);
 	//}}AFX_VIRTUAL
 
-protected:
-
+  protected:
 	//{{AFX_MSG(EditorTacMap)
 	virtual BOOL OnInitDialog(void);
 	afx_msg void OnTga(void);

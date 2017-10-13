@@ -20,53 +20,39 @@
 #include "networkmessages.hpp"
 #endif
 
-
-class ListFriendlyDPID: public ListItem
+class ListFriendlyDPID : public ListItem
 {
-public:
+  public:
 	DPID ID;
 
-	ListFriendlyDPID(DPID id)
-	{
-		ID = id;
-	}
+	ListFriendlyDPID(DPID id) { ID = id; }
 
 	ListFriendlyDPID& operator=(DPID id)
 	{
 		ID = id;
 		return *this;
 	}
-
-
 };
 
-class FIDPGroup: public ListItem
+class FIDPGroup : public ListItem
 {
-protected:
-	DPID				groupID;
-	DPID				parentGroupID;
-	char				shortName[64];
-	char				longName[256];
-	uint32_t		groupFlags;
+  protected:
+	DPID groupID;
+	DPID parentGroupID;
+	char shortName[64];
+	char longName[256];
+	uint32_t groupFlags;
 
-	LPVOID		groupData;
-	uint32_t		dataSize;
+	LPVOID groupData;
+	uint32_t dataSize;
 	FLinkedList<ListFriendlyDPID> playerIDList;
 
-
-
-public:
-
-
+  public:
 	// Constructor and destructor
 	FIDPGroup(void);
-	FIDPGroup(DPID id,
-			  DPID parent_id,
-			  LPCDPNAME name,
-			  uint32_t flags);
+	FIDPGroup(DPID id, DPID parent_id, LPCDPNAME name, uint32_t flags);
 
 	virtual ~FIDPGroup(void);
-
 
 	inline FLinkedList<ListFriendlyDPID>* GetPlayerList()
 	{
@@ -77,7 +63,7 @@ public:
 
 	BOOL RemovePlayer(DPID& id);
 
-	inline void  SetShortName(PSTR name)
+	inline void SetShortName(PSTR name)
 	{
 		if (name != nullptr)
 		{
@@ -101,29 +87,15 @@ public:
 		}
 	}
 
-	PCSTR GetShortName()
-	{
-		return shortName;
-	}
+	PCSTR GetShortName() { return shortName; }
 
-	PCSTR GetLongName()
-	{
-		return longName;
-	}
-
+	PCSTR GetLongName() { return longName; }
 
 	void SetGroupData(LPVOID data, uint32_t size);
 
-	inline LPVOID GetGroupData()
-	{
-		return groupData;
-	}
+	inline LPVOID GetGroupData() { return groupData; }
 
-	inline DPID ID()
-	{
-		return groupID;
-	}
-
+	inline DPID ID() { return groupID; }
 };
 
 #endif // !defined(FIDPGROUP_H)

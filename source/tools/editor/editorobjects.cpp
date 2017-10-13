@@ -38,60 +38,57 @@ extern IProviderEngine* armProvider;
 
 extern uint32_t gameResourceHandle;
 
-Pilot::PilotInfo Pilot::s_BadPilots[MAX_PILOT] = { 0 };
-Pilot::PilotInfo Pilot::s_GoodPilots[MAX_PILOT] = { 0 };
-int32_t	Pilot::goodCount = 0;
-int32_t	Pilot::badCount = 0;
+Pilot::PilotInfo Pilot::s_BadPilots[MAX_PILOT]  = {0};
+Pilot::PilotInfo Pilot::s_GoodPilots[MAX_PILOT] = {0};
+int32_t Pilot::goodCount						= 0;
+int32_t Pilot::badCount							= 0;
 
 //--------------------------------------------------------------------------------------
 PVOID EditorObject::operator new(size_t mySize)
 {
 	PVOID result = nullptr;
-	result = systemHeap->Malloc(mySize);
-	return(result);
+	result		 = systemHeap->Malloc(mySize);
+	return (result);
 }
 
 //--------------------------------------------------------------------------------------
-void EditorObject::operator delete(PVOID us)
-{
-	systemHeap->Free(us);
-}
+void EditorObject::operator delete(PVOID us) { systemHeap->Free(us); }
 
 //--------------------------------------------------------------------------------------
 EditorObject::EditorObject()
 {
-	appearInfo = new AppearanceInfo();
+	appearInfo			   = new AppearanceInfo();
 	appearInfo->appearance = 0;
-	appearInfo->refCount = 1;
+	appearInfo->refCount   = 1;
 	cellColumn = cellRow = id = 0;
-	forestId = -1;
-	scale = 1.0;
+	forestId				  = -1;
+	scale					  = 1.0;
 }
 EditorObject::EditorObject(const EditorObject& src)
 {
-	if(&src != this)
+	if (&src != this)
 	{
 		appearInfo = src.appearInfo;
 		appearInfo->refCount++;
 		cellColumn = src.cellColumn;
-		cellRow = src.cellRow;
-		id = src.id;
-		forestId = src.forestId;
-		scale = src.scale;
+		cellRow	= src.cellRow;
+		id		   = src.id;
+		forestId   = src.forestId;
+		scale	  = src.scale;
 	}
 }
 
 EditorObject& EditorObject::operator=(const EditorObject& src)
 {
 	/* do the assignment */
-	if(&src != this)
+	if (&src != this)
 	{
 		/* "destruct" the current object first */
-		if(appearInfo)
+		if (appearInfo)
 		{
 			gosASSERT(appearInfo->refCount != 0);
-			appearInfo->refCount --;
-			if(appearInfo->refCount < 1)
+			appearInfo->refCount--;
+			if (appearInfo->refCount < 1)
 			{
 				delete appearInfo->appearance;
 				appearInfo->appearance = nullptr;
@@ -102,21 +99,21 @@ EditorObject& EditorObject::operator=(const EditorObject& src)
 		appearInfo = src.appearInfo;
 		appearInfo->refCount++;
 		cellColumn = src.cellColumn;
-		cellRow = src.cellRow;
-		id = src.id;
-		forestId = src.forestId;
-		scale = src.scale;
+		cellRow	= src.cellRow;
+		id		   = src.id;
+		forestId   = src.forestId;
+		scale	  = src.scale;
 	}
 	return *this;
 }
 
 EditorObject::~EditorObject()
 {
-	if(appearInfo)
+	if (appearInfo)
 	{
 		gosASSERT(appearInfo->refCount != 0);
-		appearInfo->refCount --;
-		if(appearInfo->refCount < 1)
+		appearInfo->refCount--;
+		if (appearInfo->refCount < 1)
 		{
 			delete appearInfo->appearance;
 			appearInfo->appearance = nullptr;
@@ -129,7 +126,7 @@ EditorObject::~EditorObject()
 void EditorObject::setDamage(bool bDamage)
 {
 	appearance()->setDamage(bDamage);
-//	appearance()->setDamageLvl( 1000000 );
+	//	appearance()->setDamageLvl( 1000000 );
 }
 
 bool EditorObject::getDamage() const
@@ -144,13 +141,14 @@ PCSTR EditorObject::getDisplayName(void) const
 
 void EditorObject::setAlignment(int32_t align)
 {
-	if(appearance()->teamId != align)
+	if (appearance()->teamId != align)
 	{
-		if(align == 8)			//New magical force Neutral buttons
+		if (align == 8) // New magical force Neutral buttons
 			align = -1;
 		appearance()->teamId = align;
-		BuildingLink* pLink = EditorObjectMgr::instance()->getLinkWithParent(this);
-		if(pLink)
+		BuildingLink* pLink =
+			EditorObjectMgr::instance()->getLinkWithParent(this);
+		if (pLink)
 		{
 			pLink->SetParentAlignment(appearance()->teamId);
 		}
@@ -170,21 +168,25 @@ int32_t EditorObject::getGroup(void) const
 void EditorObject::setAppearance(int32_t Group, int32_t indexInGroup)
 {
 	// make sure the thing has changed....
-	if(Group != EditorObjectMgr::getGroup(id) || indexInGroup != EditorObjectMgr::getIndexInGroup(id))
+	if (Group != EditorObjectMgr::getGroup(id) ||
+		indexInGroup != EditorObjectMgr::getIndexInGroup(id))
 	{
 		AppearanceInfo* appearInfo2 = new AppearanceInfo();
-		appearInfo2->appearance = EditorObjectMgr::instance()->getAppearance(Group, indexInGroup);
-		appearInfo2->refCount = 1;
+		appearInfo2->appearance =
+			EditorObjectMgr::instance()->getAppearance(Group, indexInGroup);
+		appearInfo2->refCount			= 1;
 		static int32_t homeRelations[9] = {0, 0, 2, 1, 1, 1, 1, 1, 1};
 		gosASSERT((8 > appearance()->teamId) && (-1 <= appearance()->teamId));
-		appearInfo2->appearance->setObjectParameters(appearance()->position, appearance()->rotation, appearance()->selected, appearance()->teamId, homeRelations[appearance()->teamId + 1]);
+		appearInfo2->appearance->setObjectParameters(appearance()->position,
+			appearance()->rotation, appearance()->selected,
+			appearance()->teamId, homeRelations[appearance()->teamId + 1]);
 		appearInfo2->appearance->setDamage(appearance()->damage);
 		id = EditorObjectMgr::instance()->getID(Group, indexInGroup);
-		if(appearInfo)
+		if (appearInfo)
 		{
 			gosASSERT(appearInfo->refCount != 0);
-			appearInfo->refCount --;
-			if(appearInfo->refCount < 1)
+			appearInfo->refCount--;
+			if (appearInfo->refCount < 1)
 			{
 				delete appearInfo->appearance;
 				appearInfo->appearance = nullptr;
@@ -198,37 +200,37 @@ void EditorObject::setAppearance(int32_t Group, int32_t indexInGroup)
 
 void EditorObject::select(bool bSelect)
 {
-	//appearance()->selected = bSelect;
+	// appearance()->selected = bSelect;
 	EditorObjectMgr::instance()->select(*this, bSelect);
 }
 
 uint32_t EditorObject::getColor(void) const
 {
-	switch(appearInfo->appearance->teamId)
+	switch (appearInfo->appearance->teamId)
 	{
-		case EDITOR_TEAMNONE:
-			return 0;
-		case EDITOR_TEAM1:
-			return SB_GREEN;
-			break;
-		case EDITOR_TEAM2:
-			return SB_RED;
-			break;
-		case EDITOR_TEAM3:
-			return SB_BLUE;
-		case EDITOR_TEAM4:
-			return SB_ORANGE;
-		case EDITOR_TEAM5:
-			return SB_WHITE;
-		case EDITOR_TEAM6:
-			return SB_GRAY;
-		case EDITOR_TEAM7:
-			return SB_BLACK;
-		case EDITOR_TEAM8:
-			return SB_YELLOW;
-			break;
-		default:
-			gosASSERT(false);
+	case EDITOR_TEAMNONE:
+		return 0;
+	case EDITOR_TEAM1:
+		return SB_GREEN;
+		break;
+	case EDITOR_TEAM2:
+		return SB_RED;
+		break;
+	case EDITOR_TEAM3:
+		return SB_BLUE;
+	case EDITOR_TEAM4:
+		return SB_ORANGE;
+	case EDITOR_TEAM5:
+		return SB_WHITE;
+	case EDITOR_TEAM6:
+		return SB_GRAY;
+	case EDITOR_TEAM7:
+		return SB_BLACK;
+	case EDITOR_TEAM8:
+		return SB_YELLOW;
+		break;
+	default:
+		gosASSERT(false);
 	}
 	return 0xffffffff;
 }
@@ -239,29 +241,30 @@ void EditorObject::getCells(int32_t& row, int32_t& col) const
 	col = cellColumn;
 }
 
-EditorObject::AppearanceInfo& EditorObject::AppearanceInfo::operator=(const AppearanceInfo& src)
+EditorObject::AppearanceInfo& EditorObject::AppearanceInfo::operator=(
+	const AppearanceInfo& src)
 {
-	if(&src != this)
+	if (&src != this)
 	{
-		// assuming ref count stays the same, since that refers to the graphic...
-		appearance->rotation = src.appearance->rotation;
-		appearance->position = src.appearance->position;
-		appearance->barStatus = src.appearance->barStatus;
-		appearance->damage = src.appearance->damage;
-		appearance->fadeTable = src.appearance->fadeTable;
+		// assuming ref count stays the same, since that refers to the
+		// graphic...
+		appearance->rotation	= src.appearance->rotation;
+		appearance->position	= src.appearance->position;
+		appearance->barStatus   = src.appearance->barStatus;
+		appearance->damage		= src.appearance->damage;
+		appearance->fadeTable   = src.appearance->fadeTable;
 		appearance->paintScheme = src.appearance->paintScheme;
-		appearance->selected = src.appearance->selected;
+		appearance->selected	= src.appearance->selected;
 	}
 	return *this;
 }
 
-int32_t	EditorObject::getSpecialType(void) const
+int32_t EditorObject::getSpecialType(void) const
 {
 	return EditorObjectMgr::instance()->getSpecialType(getID());
 }
 
 //*************************************************************************************************
-
 
 Unit::Unit(int32_t align)
 {
@@ -271,33 +274,30 @@ Unit::Unit(int32_t align)
 	EditorObjectMgr::instance()->registerSquadNum(squadNum);
 	setSelfRepairBehaviorEnabled(true);
 	pilot.info = align == 0 ? &Pilot::s_GoodPilots[0] : &Pilot::s_BadPilots[0];
-	baseColor = 0x00ffffff;
-	highlightColor = 0x00c0c0c0;
+	baseColor  = 0x00ffffff;
+	highlightColor  = 0x00c0c0c0;
 	highlightColor2 = 0x00808080;
-	variant = 0;
+	variant			= 0;
 }
 
-Unit::~Unit()
-{
-	delete pAlternativeInstances;
-}
+Unit::~Unit() { delete pAlternativeInstances; }
 
 Unit::Unit(const Unit& src) : EditorObject(src)
 {
-	if(&src != this)
+	if (&src != this)
 	{
-		brain = src.brain;
-		lance = src.lance;
+		brain	  = src.brain;
+		lance	  = src.lance;
 		lanceIndex = src.lanceIndex;
-		pilot = src.pilot;
+		pilot	  = src.pilot;
 		uint32_t color1, color2, color3;
 		src.getColors(color1, color2, color3);
 		setColors(color1, color2, color3);
 		setSelfRepairBehaviorEnabled(src.getSelfRepairBehaviorEnabled());
 		setVariant(src.getVariant());
-		pAlternativeInstances = new CUnitList;
+		pAlternativeInstances	= new CUnitList;
 		(*pAlternativeInstances) = *(src.pAlternativeInstances);
-		squad = src.squad;
+		squad					 = src.squad;
 	}
 	variant = 0;
 }
@@ -305,7 +305,7 @@ Unit::Unit(const Unit& src) : EditorObject(src)
 void Unit::CastAndCopy(const EditorObject& master)
 {
 	const Unit* pCastedMaster = dynamic_cast<const Unit*>(&master);
-	if(0 != pCastedMaster)
+	if (0 != pCastedMaster)
 	{
 		(*this) = (*pCastedMaster);
 	}
@@ -319,29 +319,30 @@ void Unit::CastAndCopy(const EditorObject& master)
 bool Unit::save(FitIniFile* file, int32_t WarriorNumber)
 {
 	bool bIsVehicle = dynamic_cast<GVAppearance*>(appearance()) ? true : false;
-	if(!bIsVehicle)
-		return Unit::save(file, WarriorNumber, 1, appearance()->teamId == EDITOR_TEAM1 ?
-						  "PM207300" : "PM101100");
+	if (!bIsVehicle)
+		return Unit::save(file, WarriorNumber, 1,
+			appearance()->teamId == EDITOR_TEAM1 ? "PM207300" : "PM101100");
 	else
 		return Unit::save(file, WarriorNumber, 2,
-						  appearance()->teamId == EDITOR_TEAM1 ? "pv20600" : "pv20500");
+			appearance()->teamId == EDITOR_TEAM1 ? "pv20600" : "pv20500");
 }
 
-bool Unit::save(FitIniFile* file, int32_t WarriorNumber, int32_t controlDataType, PSTR objectProfile)
+bool Unit::save(FitIniFile* file, int32_t WarriorNumber,
+	int32_t controlDataType, PSTR objectProfile)
 {
 	// ARM
-	if(mechAsset)
+	if (mechAsset)
 	{
-		PCSTR  iniFilename = (PCSTR)EditorObjectMgr::instance()->getFileName(id);
-		char buf[512] = {0};
-		if(iniFilename && iniFilename[0])
+		PCSTR iniFilename = (PCSTR)EditorObjectMgr::instance()->getFileName(id);
+		char buf[512]	 = {0};
+		if (iniFilename && iniFilename[0])
 		{
 			strcpy(buf, "Data\\TGL\\");
 			strcat(buf, iniFilename);
 			strcat(buf, ".ini");
-			IProviderAssetPtr objAssetPtr = armProvider->OpenAsset(buf,
-											AssetType_Physical, ProviderType_Secondary);
-			if(getDisplayName()[0])
+			IProviderAssetPtr objAssetPtr = armProvider->OpenAsset(
+				buf, AssetType_Physical, ProviderType_Secondary);
+			if (getDisplayName()[0])
 			{
 				objAssetPtr->AddProperty("DisplayName", getDisplayName());
 			}
@@ -363,16 +364,20 @@ bool Unit::save(FitIniFile* file, int32_t WarriorNumber, int32_t controlDataType
 		mechAsset->AddRelationship("AppearanceFile", buf);
 	}
 	pilot.save(file, appearance()->teamId == EDITOR_TEAM1 ? 1 : 0);
-	brain.save(file, WarriorNumber, appearance()->teamId == EDITOR_TEAM1 ? 1 : 0);
+	brain.save(
+		file, WarriorNumber, appearance()->teamId == EDITOR_TEAM1 ? 1 : 0);
 	char tmp[256];
 	sprintf(tmp, "Part%ld", WarriorNumber);
 	file->writeBlock(tmp);
-	file->writeIdULong("ObjectNumber", EditorObjectMgr::instance()->getFitID(id));
+	file->writeIdULong(
+		"ObjectNumber", EditorObjectMgr::instance()->getFitID(id));
 	file->writeIdULong("ControlType", 2);
 	int32_t playerNum = appearance()->teamId;
-	file->writeIdBoolean("PlayerPart", playerNum == EDITOR_TEAM1 ? true : false);
+	file->writeIdBoolean(
+		"PlayerPart", playerNum == EDITOR_TEAM1 ? true : false);
 	file->writeIdChar("MyIcon", 0);
-	int32_t teamNum = EditorData::instance->PlayersRef().PlayerRef(playerNum).DefaultTeam();
+	int32_t teamNum =
+		EditorData::instance->PlayersRef().PlayerRef(playerNum).DefaultTeam();
 	file->writeIdChar("TeamID", teamNum);
 	file->writeIdChar("CommanderID", playerNum);
 	file->writeIdULong("Pilot", WarriorNumber);
@@ -386,14 +391,15 @@ bool Unit::save(FitIniFile* file, int32_t WarriorNumber, int32_t controlDataType
 	file->writeIdULong("HighlightColor1", highlightColor);
 	file->writeIdULong("HighlightColor2", highlightColor2);
 	uint32_t tmpULong = 0;
-	if(getSelfRepairBehaviorEnabled())
+	if (getSelfRepairBehaviorEnabled())
 	{
 		tmpULong = 1;
 	}
 	file->writeIdULong("SelfRepairBehavior", tmpULong);
 	file->writeIdULong("ControlDataType", controlDataType);
 	file->writeIdString("ObjectProfile", objectProfile);
-	file->writeIdString("CSVFile",  EditorObjectMgr::instance()->getFileName(id));
+	file->writeIdString(
+		"CSVFile", EditorObjectMgr::instance()->getFileName(id));
 	file->writeIdULong("VariantNumber", variant);
 	file->writeIdULong("SquadNum", getSquad());
 	file->writeIdULong("NumAlternatives", pAlternativeInstances->Count());
@@ -411,8 +417,8 @@ bool Unit::load(FitIniFile* file, int32_t warriorNumber)
 	file->readIdFloat("Rotation", appearance()->rotation);
 	land->worldToCell(appearance()->position, cellRow, cellColumn);
 	float fDamage = 0.0;
-	result = file->readIdFloat("Damage", fDamage);
-	if((NO_ERROR == result) && (0.0 != fDamage))
+	result		  = file->readIdFloat("Damage", fDamage);
+	if ((NO_ERROR == result) && (0.0 != fDamage))
 	{
 		setDamage(true);
 	}
@@ -420,8 +426,8 @@ bool Unit::load(FitIniFile* file, int32_t warriorNumber)
 	file->readIdULong("HighlightColor1", highlightColor);
 	file->readIdULong("HighlightColor2", highlightColor2);
 	uint32_t tmpULong = 1;
-	result = file->readIdULong("SelfRepairBehavior", tmpULong);
-	if((NO_ERROR == result) && (0 == tmpULong))
+	result			  = file->readIdULong("SelfRepairBehavior", tmpULong);
+	if ((NO_ERROR == result) && (0 == tmpULong))
 	{
 		setSelfRepairBehaviorEnabled(false);
 	}
@@ -431,10 +437,11 @@ bool Unit::load(FitIniFile* file, int32_t warriorNumber)
 	}
 	file->readIdULong("VariantNumber", variant);
 	uint32_t squadNum = 1;
-	result = file->readIdULong("SquadNum", squadNum);
-	if(NO_ERROR != result)
+	result			  = file->readIdULong("SquadNum", squadNum);
+	if (NO_ERROR != result)
 	{
-		// the unit should already have a valid default squad assigned at construction
+		// the unit should already have a valid default squad assigned at
+		// construction
 	}
 	else
 	{
@@ -444,7 +451,7 @@ bool Unit::load(FitIniFile* file, int32_t warriorNumber)
 	tmpNumAlternativeInstances = 0;
 	file->readIdULong("NumAlternatives", tmpNumAlternativeInstances);
 	tmpAlternativeStartIndex = 0;
-	if(0 < tmpNumAlternativeInstances)
+	if (0 < tmpNumAlternativeInstances)
 	{
 		file->readIdULong("AlternativeStartIndex", tmpAlternativeStartIndex);
 	}
@@ -466,37 +473,37 @@ void Unit::getColors(uint32_t& color1, uint32_t& color2, uint32_t& color3) const
 
 void Unit::setColors(uint32_t color1, uint32_t color2, uint32_t color3)
 {
-	baseColor = color1;
-	highlightColor = color2;
+	baseColor		= color1;
+	highlightColor  = color2;
 	highlightColor2 = color3;
 	appearance()->resetPaintScheme(color2, color3, color1);
 }
 
 Unit& Unit::operator=(const Unit& src)
 {
-	if(&src != this)
+	if (&src != this)
 	{
-		brain = src.brain;
-		lance = src.lance;
+		brain	  = src.brain;
+		lance	  = src.lance;
 		lanceIndex = src.lanceIndex;
-		pilot = src.pilot;
+		pilot	  = src.pilot;
 		uint32_t color1, color2, color3;
 		src.getColors(color1, color2, color3);
 		setColors(color1, color2, color3);
 		setSelfRepairBehaviorEnabled(src.getSelfRepairBehaviorEnabled());
 		setVariant(src.getVariant());
 		(*pAlternativeInstances) = *(src.pAlternativeInstances);
-		squad = src.squad;
-		EditorObject::operator=(src);
+		squad					 = src.squad;
+		EditorObject::operator   =(src);
 	}
 	return *this;
 }
 
 void Unit::setSquad(uint32_t newSquad)
 {
-	squad = newSquad;
+	squad					  = newSquad;
 	CUnitList::EIterator iter = pAlternativeInstances->Begin();
-	while(!iter.IsDone())
+	while (!iter.IsDone())
 	{
 		(*iter).setSquad(newSquad);
 		iter++;
@@ -509,7 +516,7 @@ bool DropZone::save(FitIniFile* file, int32_t number)
 {
 	Stuff::Vector3D pos = getPosition();
 	file->writeIdLong("NumSlots", 4);
-	if(bVTol)
+	if (bVTol)
 	{
 		file->writeIdBoolean("IsVTOL", 1);
 		file->writeIdFloat("PositionX", pos.x);
@@ -543,7 +550,7 @@ DropZone::DropZone(const Stuff::Vector3D& pos, int32_t alignment, bool bvtol)
 void DropZone::CastAndCopy(const EditorObject& master)
 {
 	const DropZone* pCastedMaster = dynamic_cast<const DropZone*>(&master);
-	if(0 != pCastedMaster)
+	if (0 != pCastedMaster)
 	{
 		(*this) = (*pCastedMaster);
 	}
@@ -557,22 +564,22 @@ void DropZone::CastAndCopy(const EditorObject& master)
 //*************************************************************************************************
 bool Brain::save(FitIniFile* file, int32_t warriorNumber, bool bPlayer)
 {
-	if(brainName[0])
+	if (brainName[0])
 	{
 		file->writeIdString("Brain", brainName);
 		file->writeIdLong("NumCells", numCells);
 		file->writeIdLong("NumStaticVars", numStaticVars);
 		char text[256];
-		for(size_t i = 0; i < numCells; i++)
+		for (size_t i = 0; i < numCells; i++)
 		{
 			sprintf(text, "Warrior%ldCell%d", warriorNumber, i);
 			file->writeBlock(text);
-			file->writeIdLong("Cell",  cellNum[i]);
+			file->writeIdLong("Cell", cellNum[i]);
 			file->writeIdLong("MemType", cellType[i]);
 			file->writeIdFloat("Value", cellData[i]);
 		}
 		// ARM
-		if(mechAsset && brainName[0])
+		if (mechAsset && brainName[0])
 		{
 			char buf[512] = {0};
 			strcpy(buf, "Data\\Missions\\Warriors\\");
@@ -583,33 +590,33 @@ bool Brain::save(FitIniFile* file, int32_t warriorNumber, bool bPlayer)
 	}
 	else
 	{
-		if(!bPlayer)
+		if (!bPlayer)
 		{
 			file->writeIdString("Brain", "DredAttack01");
 			file->writeIdLong("NumCells", 3);
 			file->writeIdLong("NumStaticVars", 0);
 			char text[256];
-			for(size_t i = 0; i < 3; i++)
+			for (size_t i = 0; i < 3; i++)
 			{
 				sprintf(text, "Warrior%ldCell%d", warriorNumber, i);
 				file->writeBlock(text);
-				switch(i)
+				switch (i)
 				{
-					case 0:
-						file->writeIdLong("Cell",  2);
-						file->writeIdLong("MemType", 1);
-						file->writeIdFloat("Value", 150);
-						break;
-					case 1:
-						file->writeIdLong("Cell",  9);
-						file->writeIdLong("MemType", 0);
-						file->writeIdFloat("Value", 0.0f);
-						break;
-					case 2:
-						file->writeIdLong("Cell",  28);
-						file->writeIdLong("MemType", 0);
-						file->writeIdFloat("Value", 0.0f);
-						break;
+				case 0:
+					file->writeIdLong("Cell", 2);
+					file->writeIdLong("MemType", 1);
+					file->writeIdFloat("Value", 150);
+					break;
+				case 1:
+					file->writeIdLong("Cell", 9);
+					file->writeIdLong("MemType", 0);
+					file->writeIdFloat("Value", 0.0f);
+					break;
+				case 2:
+					file->writeIdLong("Cell", 28);
+					file->writeIdLong("MemType", 0);
+					file->writeIdFloat("Value", 0.0f);
+					break;
 				}
 			}
 		}
@@ -630,28 +637,28 @@ bool Brain::load(FitIniFile* file, int32_t warriorNumber)
 	file->readIdLong("NumStaticVars", numStaticVars);
 	file->readIdString("Brain", brainName, 255);
 	// if not explicitly set, then redo
-	if(strcmp(brainName, "PBrain") == 0)
+	if (strcmp(brainName, "PBrain") == 0)
 		brainName[0] = 0;
-	else if(_stricmp(brainName, "DredAttack01") == 0)
+	else if (_stricmp(brainName, "DredAttack01") == 0)
 		brainName[0] = 0;
-	if(0 < numCells)
+	if (0 < numCells)
 	{
-		cellNum = (int32_t*)malloc(sizeof(int32_t) * numCells);
+		cellNum  = (int32_t*)malloc(sizeof(int32_t) * numCells);
 		cellType = (int32_t*)malloc(sizeof(int32_t) * numCells);
 		cellData = (float*)malloc(sizeof(float) * numCells);
 	}
 	else
 	{
-		cellNum = (int32_t*)0;
+		cellNum  = (int32_t*)0;
 		cellType = (int32_t*)0;
 		cellData = (float*)0;
 	}
 	char text[256];
-	for(size_t i = 0; i < numCells; i++)
+	for (size_t i = 0; i < numCells; i++)
 	{
 		sprintf(text, "Warrior%ldCell%d", warriorNumber, i);
 		file->seekBlock(text);
-		file->readIdLong("Cell",  cellNum[i]);
+		file->readIdLong("Cell", cellNum[i]);
 		file->readIdLong("MemType", cellType[i]);
 		file->readIdFloat("Value", cellData[i]);
 	}
@@ -660,41 +667,41 @@ bool Brain::load(FitIniFile* file, int32_t warriorNumber)
 
 Brain::Brain(const Brain& src)
 {
-	numCells = src.numCells;
+	numCells	  = src.numCells;
 	numStaticVars = src.numStaticVars;
 	strcpy(brainName, src.brainName);
-	cellNum = (int32_t*)malloc(sizeof(int32_t) * numCells);
+	cellNum  = (int32_t*)malloc(sizeof(int32_t) * numCells);
 	cellType = (int32_t*)malloc(sizeof(int32_t) * numCells);
 	cellData = (float*)malloc(sizeof(float) * numCells);
-	for(size_t i = 0; i < numCells; i++)
+	for (size_t i = 0; i < numCells; i++)
 	{
-		cellNum[i] = src.cellNum[i];
+		cellNum[i]  = src.cellNum[i];
 		cellType[i] = src.cellType[i];
 		cellData[i] = src.cellData[i];
 	}
 }
 Brain& Brain::operator=(const Brain& src)
 {
-	if(&src != this)
+	if (&src != this)
 	{
-		numCells = src.numCells;
+		numCells	  = src.numCells;
 		numStaticVars = src.numStaticVars;
 		strcpy(brainName, src.brainName);
-		if(0 < numCells)
+		if (0 < numCells)
 		{
-			cellNum = (int32_t*)malloc(sizeof(int32_t) * numCells);
+			cellNum  = (int32_t*)malloc(sizeof(int32_t) * numCells);
 			cellType = (int32_t*)malloc(sizeof(int32_t) * numCells);
 			cellData = (float*)malloc(sizeof(float) * numCells);
-			for(size_t i = 0; i < numCells; i++)
+			for (size_t i = 0; i < numCells; i++)
 			{
-				cellNum[i] = src.cellNum[i];
+				cellNum[i]  = src.cellNum[i];
 				cellType[i] = src.cellType[i];
 				cellData[i] = src.cellData[i];
 			}
 		}
 		else
 		{
-			cellNum = (int32_t*)0;
+			cellNum  = (int32_t*)0;
 			cellType = (int32_t*)0;
 			cellData = (float*)0;
 		}
@@ -706,7 +713,7 @@ void Pilot::save(FitIniFile* file, int32_t bGoodGuy)
 {
 	file->writeIdString("Profile", info->fileName);
 	// ARM
-	if(mechAsset && info->fileName[0])
+	if (mechAsset && info->fileName[0])
 	{
 		char buf[512] = {0};
 		strcpy(buf, "Data\\Missions\\Warriors\\");
@@ -720,37 +727,37 @@ void Pilot::load(FitIniFile* file, int32_t bGoodGuy)
 {
 	int32_t result = 0;
 	char buffer[256];
-	result = file->readIdString("Profile", buffer, 256);
+	result		= file->readIdString("Profile", buffer, 256);
 	bool bFound = 0;
-	if(NO_ERROR == result)
+	if (NO_ERROR == result)
 	{
-		for(size_t i = 0; i < goodCount; i++)
+		for (size_t i = 0; i < goodCount; i++)
 		{
-			if(_stricmp(buffer, s_GoodPilots[i].fileName) == 0)
+			if (_stricmp(buffer, s_GoodPilots[i].fileName) == 0)
 			{
-				info = &s_GoodPilots[i];
+				info   = &s_GoodPilots[i];
 				bFound = 1;
 				break;
 			}
 		}
-		if(!bFound)
+		if (!bFound)
 		{
-			for(size_t i = 0; i < badCount; i++)
+			for (size_t i = 0; i < badCount; i++)
 			{
-				if(_stricmp(buffer, s_BadPilots[i].fileName) == 0)
+				if (_stricmp(buffer, s_BadPilots[i].fileName) == 0)
 				{
-					info = &s_BadPilots[i];
+					info   = &s_BadPilots[i];
 					bFound = 1;
 					break;
 				}
 			}
 		}
 	}
-	if(!bFound)
+	if (!bFound)
 	{
 		info = &s_GoodPilots[0];
 	}
-	if(!info)
+	if (!info)
 	{
 		Assert(0, 0, "reassigning invalid pilot");
 		info = bGoodGuy ? &s_GoodPilots[0] : &s_BadPilots[0];
@@ -763,7 +770,7 @@ void Pilot::initPilots()
 	char path[256];
 	strcpy(path, objectPath);
 	strcat(path, "pilots.csv");
-	if(NO_ERROR != file.open(path))
+	if (NO_ERROR != file.open(path))
 	{
 		STOP(("couldn't find pilots.csv file"));
 		return;
@@ -772,28 +779,30 @@ void Pilot::initPilots()
 	strcpy(pilotFileName, "");
 	PilotInfo* infos = s_GoodPilots;
 	int32_t* counter = &goodCount;
-	for(size_t i = 0; i < 2; i++)
+	for (size_t i = 0; i < 2; i++)
 	{
-		while(true)
+		while (true)
 		{
 			int32_t bytesRead = file.readLine((puint8_t)pilotFileName, 256);
-			if(bytesRead < 2)
+			if (bytesRead < 2)
 				break;
 			CString postFix;
-			if(0 == i)
+			if (0 == i)
 			{
-				if((strlen(pilotFileName) > strlen("pmw"))
-						&& (0 == strnicmp(pilotFileName, "pmw", strlen("pmw"))))
+				if ((strlen(pilotFileName) > strlen("pmw")) &&
+					(0 == strnicmp(pilotFileName, "pmw", strlen("pmw"))))
 				{
-					/*Good pilots that start with "pmw" are single-player pilots.*/
+					/*Good pilots that start with "pmw" are single-player
+					 * pilots.*/
 					CString tmpStr;
 					tmpStr.LoadString(IDS_PILOT_SINGLE_PLAYER_VERSION);
 					postFix = tmpStr.GetBuffer(0);
 				}
-				else if((strlen(pilotFileName) > strlen("pmp_"))
-						&& (0 == strnicmp(pilotFileName, "pmp_", strlen("pmp_"))))
+				else if ((strlen(pilotFileName) > strlen("pmp_")) &&
+						 (0 == strnicmp(pilotFileName, "pmp_", strlen("pmp_"))))
 				{
-					/*Good pilots that start with "pmp_" are multi-player pilots.*/
+					/*Good pilots that start with "pmp_" are multi-player
+					 * pilots.*/
 					CString tmpStr;
 					tmpStr.LoadString(IDS_PILOT_MULTIPLAYER_VERSION);
 					postFix = tmpStr.GetBuffer(0);
@@ -802,7 +811,7 @@ void Pilot::initPilots()
 			FitIniFile pilotFile;
 			FullPathFileName tmpPath;
 			tmpPath.init(warriorPath, pilotFileName, ".fit");
-			if(NO_ERROR != pilotFile.open(tmpPath))
+			if (NO_ERROR != pilotFile.open(tmpPath))
 			{
 				char errorString[256];
 				sprintf(errorString, "Couldn't open file %s", tmpPath);
@@ -823,35 +832,35 @@ void Pilot::initPilots()
 			infos[*counter].name = new char[strlen(pilotFileName) + 1];
 			strcpy(infos[*counter].name, pilotFileName);
 			(*counter)++;
-			if(goodCount > MAX_PILOT)
+			if (goodCount > MAX_PILOT)
 				return;
 		}
 		file.close();
 		FullPathFileName path;
 		path.init(objectPath, "BadPilots", ".csv");
-		if(NO_ERROR != file.open(path))
+		if (NO_ERROR != file.open(path))
 		{
 			STOP(("couldn't find BadPilots.csv file"));
 			return;
 		}
-		infos = s_BadPilots;
+		infos   = s_BadPilots;
 		counter = &badCount;
 	}
 }
 
 void Pilot::setName(PCSTR newName)
 {
-	for(size_t i = 0; i < goodCount; i++)
+	for (size_t i = 0; i < goodCount; i++)
 	{
-		if(_stricmp(newName, s_GoodPilots[i].name) == 0)
+		if (_stricmp(newName, s_GoodPilots[i].name) == 0)
 		{
 			info = &s_GoodPilots[i];
 			return;
 		}
 	}
-	for(i = 0; i < badCount; i++)
+	for (i = 0; i < badCount; i++)
 	{
-		if(_stricmp(newName, s_BadPilots[i].name) == 0)
+		if (_stricmp(newName, s_BadPilots[i].name) == 0)
 		{
 			info = &s_BadPilots[i];
 			return;
@@ -871,10 +880,7 @@ bool NavMarker::save(FitIniFile* file, int32_t warriorNumber)
 	return true;
 }
 
-NavMarker::NavMarker()
-{
-}
-
+NavMarker::NavMarker() {}
 
 //*************************************************************************************************
 // end of file ( EditorObjects.cpp )

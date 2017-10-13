@@ -23,29 +23,27 @@ class EditorObject;
 CLASS DESCRIPTION
 LinkBrush:
 **************************************************************************************************/
-class LinkBrush: public Brush
+class LinkBrush : public Brush
 {
-public:
-
+  public:
 	LinkBrush(bool bLink);
 	virtual ~LinkBrush(void);
 	virtual bool beginPaint(void);
 	virtual Action* endPaint(void);
-	virtual bool paint(Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY);
-	virtual bool canPaint(Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY, int32_t flags);
-	virtual bool canPaintSelection()
-	{
-		return false;
-	}
+	virtual bool paint(
+		Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY);
+	virtual bool canPaint(Stuff::Vector3D& worldPos, int32_t screenX,
+		int32_t screenY, int32_t flags);
+	virtual bool canPaintSelection() { return false; }
 	virtual void render(int32_t screenX, int32_t screenY);
 
-	const EditorObject*		parent;
-	Stuff::Vector3D			parentPos;
-	bool					bLink;
-
+	const EditorObject* parent;
+	Stuff::Vector3D parentPos;
+	bool bLink;
 
 	bool unPaint(Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY);
-	bool canUnPaint(Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY, int32_t flags);
+	bool canUnPaint(Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY,
+		int32_t flags);
 
 	struct LinkInfo
 	{
@@ -59,31 +57,26 @@ public:
 
 		LinkInfo(BuildingLink* m_pOriginal, TYPE type = EDIT);
 
-		BuildingLink m_LinkCopy;  // copy of link
-		int32_t  type;
-
+		BuildingLink m_LinkCopy; // copy of link
+		int32_t type;
 	};
 
 	class LinkAction : public Action
 	{
 
-	public:
-
-
+	  public:
 		LinkAction(void);
 		~LinkAction() {}
 
 		virtual bool redo(void);
 		virtual bool undo(void);
 
-		EList< LinkInfo, const LinkInfo& > changedLinks;
+		EList<LinkInfo, const LinkInfo&> changedLinks;
 		AddToListOnce(const LinkAction::LinkInfo& info);
 	};
 
 	LinkAction* pAction;
-
 };
 
-
 //*************************************************************************************************
-#endif  // end of file ( LinkBrush.h )
+#endif // end of file ( LinkBrush.h )

@@ -6,10 +6,10 @@
  conditions are met (OSI approved BSD;-clause license):
 
 ;. Redistributions of source code must retain the above copyright notice,
-    this list of conditions and the following disclaimer.
+	this list of conditions and the following disclaimer.
 ;. Redistributions in binary form must reproduce the above copyright notice,
-    this list of conditions and the following disclaimer in the documentation
-    and/or other materials provided with the distribution.
+	this list of conditions and the following disclaimer in the documentation
+	and/or other materials provided with the distribution.
 
  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -41,7 +41,6 @@
 #include <platform.hpp>
 #include <windows.hpp>
 
-
 // -----------------------------------------------------------------------------
 // Global data exported from this module
 MECH_IMPEXP PlatformType Platform;
@@ -71,7 +70,6 @@ void (*DoScriptUpdate)(int32_t);
 uint32_t gNoFree;
 uint32_t StartupMemory;
 uint32_t gLoadAllSymbols;
-
 
 uint32_t gDisableJoystick;
 uint32_t gNumberCompatFlags;
@@ -119,19 +117,21 @@ uint32_t SavedSP;
 uint32_t SavedBP;
 bool RunFullScreen;
 
-
 // -----------------------------------------------------------------------------
 // global implemented functions in this module listed in headers
 
-MECH_IMPEXP void _stdcall RunFromOtherApp(HINSTANCE hInstance, HWND hWnd, PSTR pCmdLine);
-MECH_IMPEXP int32_t _stdcall RunFromWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR pCmdLine, int32_t nCmdShow);
+MECH_IMPEXP void _stdcall RunFromOtherApp(
+	HINSTANCE hInstance, HWND hWnd, PSTR pCmdLine);
+MECH_IMPEXP int32_t _stdcall RunFromWinMain(HINSTANCE hInstance,
+	HINSTANCE hPrevInstance, PSTR pCmdLine, int32_t nCmdShow);
 MECH_IMPEXP void __stdcall RestartGameOS(void);
 MECH_IMPEXP void __stdcall gos_UpdateDisplay(bool Everything);
 MECH_IMPEXP uint32_t __stdcall RunGameOSLogic(void);
 MECH_IMPEXP void __stdcall gos_TerminateApplication(void);
 MECH_IMPEXP void __stdcall gos_AbortTermination(void);
 MECH_IMPEXP uint8_t __stdcall gos_UserExit(void);
-MECH_IMPEXP uint8_t __stdcall gos_RunMainLoop(void(__stdcall* DoGameLogic)(void) = nullptr);
+MECH_IMPEXP uint8_t __stdcall gos_RunMainLoop(
+	void(__stdcall* DoGameLogic)(void) = nullptr);
 
 // inline void __stdcall InitTextureManager(void)
 // inline void __stdcall DestroyTextureManager(void);
@@ -143,7 +143,8 @@ static int32_t __stdcall CheckOption(PCSTR substr);
 static void __stdcall InitializeGOS(HINSTANCE hInstance, PSTR pCmdLine);
 static void __stdcall ProfileRenderStart(void);
 static int64_t __stdcall ProfileRenderEnd(int64_t);
-static uint32_t __stdcall InternalRunGameOSLogic(void (__stdcall* DoGameLogic)(void));
+static uint32_t __stdcall InternalRunGameOSLogic(
+	void(__stdcall* DoGameLogic)(void));
 
 // -----------------------------------------------------------------------------
 // externals referenced in this file not specified in headers

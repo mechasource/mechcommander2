@@ -26,7 +26,7 @@ int64_t __stdcall gos_GetHiResTime(void);
 //
 // You must pass the address of the worker thread routine to this function.
 //
-uint32_t __stdcall gos_CreateThread(void (__stdcall* ThreadRoutine)(PVOID));
+uint32_t __stdcall gos_CreateThread(void(__stdcall* ThreadRoutine)(PVOID));
 
 //
 // Waits until the thread is not executing anymore and then deletes the thread
@@ -35,17 +35,18 @@ void __stdcall gos_DeleteThread(uint32_t ThreadHandle);
 
 typedef enum gosThreadPriority
 {
-	ThreadPri_Lowest = 1,
+	ThreadPri_Lowest	  = 1,
 	ThreadPri_BelowNormal = 2,
-	ThreadPri_Normal = 3,
+	ThreadPri_Normal	  = 3,
 	ThreadPri_AboveNormal = 4,
-	ThreadPri_Highest = 5
+	ThreadPri_Highest	 = 5
 } gosThreadPriority;
 
 //
 // Set the thread priority
 //
-void __stdcall gos_SetThreadPriority(uint32_t ThreadHandle, gosThreadPriority Priority);
+void __stdcall gos_SetThreadPriority(
+	uint32_t ThreadHandle, gosThreadPriority Priority);
 
 //
 // Starts the created thread executing
@@ -53,36 +54,34 @@ void __stdcall gos_SetThreadPriority(uint32_t ThreadHandle, gosThreadPriority Pr
 // 'ThreadFinished' will be set when the thread has finished executing
 // 'Context' will be passed to the thread function
 //
-void __stdcall gos_TriggerThread(uint32_t ThreadHandle, bool* ThreadFinished, PVOID Context);
-
-
+void __stdcall gos_TriggerThread(
+	uint32_t ThreadHandle, bool* ThreadFinished, PVOID Context);
 
 //
 //
 // LZ Compression - returns length of compressed destination buffer
 //
 //
-uint32_t __stdcall gos_LZCompress(puint8_t dest, puint8_t src, size_t srcLen, size_t destLen = 0);
+uint32_t __stdcall gos_LZCompress(
+	puint8_t dest, puint8_t src, size_t srcLen, size_t destLen = 0);
 //
 //
-// LZ Decompression routine, returns length to decompressed output in dest buffer
+// LZ Decompression routine, returns length to decompressed output in dest
+// buffer
 //
 //
 uint32_t __stdcall gos_LZDecompress(puint8_t dest, puint8_t src, size_t srcLen);
 
-
-
 //
 // Gets a pointer to text data in the windows clip board (nullptr=No text)
 //
-MECH_IMPEXP size_t __stdcall gos_GetClipboardText(PSTR Buffer, size_t BufferSize);
+MECH_IMPEXP size_t __stdcall gos_GetClipboardText(
+	PSTR Buffer, size_t BufferSize);
 
 //
 // Sets the windows clipboard to the current text string
 //
 MECH_IMPEXP void __stdcall gos_SetClipboardText(PSTR Text);
-
-
 
 //
 // Gets a list of valid drives, returned as a list of strings, ending in 0,0
@@ -94,21 +93,21 @@ MECH_IMPEXP void __stdcall gos_SetClipboardText(PSTR Text);
 uint32_t __stdcall gos_GetValidDrives(PSTR Buffer, size_t buf_len);
 
 //
-// Returns the drive label for a root directory specified. eg:  "c:\" might return "DriveC"
+// Returns the drive label for a root directory specified. eg:  "c:\" might
+// return "DriveC"
 //
-bool __stdcall gos_GetDriveLabel(PCSTR RootName, PSTR DriveLabel, size_t DriveLabelBufferLen);
+bool __stdcall gos_GetDriveLabel(
+	PCSTR RootName, PSTR DriveLabel, size_t DriveLabelBufferLen);
 
 //
 // Get the space available on the drive specified, either "x:" or "x:\"
 //
 int64_t __stdcall gos_GetDriveFreeSpace(PSTR Path);
 
-
 //
 // Gets the current path
 //
 void __stdcall gos_GetCurrentPath(PSTR Buffer, size_t buf_len);
-
 
 //
 // Create directory. - Returns TRUE for sucess
@@ -129,7 +128,8 @@ bool __stdcall gos_RenameFile(PCSTR FileNameFrom, PCSTR FileNameTo);
 bool __stdcall gos_DeleteFile(PCSTR FileName);
 
 //
-// Find files matching pattern - returns nullptr when no more files (Can be used too see if a directory is empty : ie: 0==gos_FindFiles( "\\graphics\\*.*" )
+// Find files matching pattern - returns nullptr when no more files (Can be used
+// too see if a directory is empty : ie: 0==gos_FindFiles( "\\graphics\\*.*" )
 //
 PSTR __stdcall gos_FindFiles(PCSTR PathFileName);
 //
@@ -164,7 +164,8 @@ void __stdcall gos_GetFullPathName(PSTR FullPath, PCSTR FileName);
 //
 uint32_t __stdcall gos_FileSize(PCSTR FileName);
 //
-// Get file date/time information (-1 if error) - this can be compared directly, and decoded using gos_FileTimeString
+// Get file date/time information (-1 if error) - this can be compared directly,
+// and decoded using gos_FileTimeString
 //
 int64_t __stdcall gos_FileTimeStamp(PCSTR FileName);
 //
@@ -193,9 +194,10 @@ void __stdcall gos_FileSetReadOnly(PCSTR FileName);
 // Ways to specify how to open file.
 typedef enum gosEnum_FileWriteStatus
 {
-	READONLY,				// Open for READ
-	READWRITE,				// Open for READ and WRITE - but clears the file on open
-	APPEND					// Open for READ and WRITE - leaves the file alone if it already exists
+	READONLY,  // Open for READ
+	READWRITE, // Open for READ and WRITE - but clears the file on open
+	APPEND	 // Open for READ and WRITE - leaves the file alone if it already
+			   // exists
 };
 
 //////////////////////////////////////////////////////////////////////////////////
@@ -214,7 +216,8 @@ bool __stdcall gos_DoesFileExist(PCSTR FileName);
 //////////////////////////////////////////////////////////////////////////////////
 // Open the file found at <path> with the method <writeable> and return a handle
 // hfile to it.
-void __stdcall gos_OpenFile(HGOSFILE* hfile, PCSTR path, gosEnum_FileWriteStatus);
+void __stdcall gos_OpenFile(
+	HGOSFILE* hfile, PCSTR path, gosEnum_FileWriteStatus);
 
 //////////////////////////////////////////////////////////////////////////////////
 // Close the file specified by handle <hfile>.
@@ -233,6 +236,7 @@ uint32_t __stdcall gos_WriteFile(HGOSFILE hfile, PCVOID buf, size_t size);
 //////////////////////////////////////////////////////////////////////////////////
 // Move the current file position in filestream <hfile> to offset <offset> using
 // the seek type specified by <type>.
-uint32_t __stdcall gos_SeekFile(HGOSFILE hfile, gosEnum_FileSeekType type, ptrdiff_t offset);
+uint32_t __stdcall gos_SeekFile(
+	HGOSFILE hfile, gosEnum_FileSeekType type, ptrdiff_t offset);
 
 #endif

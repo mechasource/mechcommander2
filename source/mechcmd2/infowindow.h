@@ -17,8 +17,8 @@ InfoWindow.h			: Interface for the InfoWindow component.
 class Mover;
 class ForceGroupIcon;
 
-#define SCROLLUP	1
-#define SCROLLDOWN	2
+#define SCROLLUP 1
+#define SCROLLDOWN 2
 
 //*************************************************************************************************
 
@@ -28,8 +28,7 @@ InfoWindow:
 **************************************************************************************************/
 class InfoWindow
 {
-public:
-
+  public:
 	InfoWindow(void);
 	~InfoWindow(void);
 
@@ -37,27 +36,26 @@ public:
 	void update(void);
 	void render(void);
 
-private:
+  private:
+	float scrollPos;
+	float scrollLength;
+	float infoLength;
 
-	float		scrollPos;
-	float		scrollLength;
-	float		infoLength;
-
-	float		lastYClick;
+	float lastYClick;
 
 	// DATA
-	Mover*		pUnit;
+	Mover* pUnit;
 
-	static ButtonData	buttonData[2];
-	static StaticInfo*	skillInfos;
+	static ButtonData buttonData[2];
+	static StaticInfo* skillInfos;
 
-	uint32_t		backgroundTexture;
-	aFont				nameFont;
-	aFont				componentFont;
+	uint32_t backgroundTexture;
+	aFont nameFont;
+	aFont componentFont;
 
-	static ControlButton		buttons[2];
+	static ControlButton buttons[2];
 
-	bool		bUnitChanged;
+	bool bUnitChanged;
 
 	friend class ControlGui;
 
@@ -71,29 +69,29 @@ private:
 
 	ForceGroupIcon* icon;
 
-	static  int32_t SCROLLLEFT;
-	static  int32_t SCROLLRIGHT;
-	static  int32_t SCROLLTOP;
-	static  int32_t SCROLLBOTTOM;
-	static int32_t	 SCROLLMIN;
+	static int32_t SCROLLLEFT;
+	static int32_t SCROLLRIGHT;
+	static int32_t SCROLLTOP;
+	static int32_t SCROLLBOTTOM;
+	static int32_t SCROLLMIN;
 	static int32_t SCROLLMAX;
 	static int32_t SCROLLBUTTONU;
 	static int32_t SCROLLBUTTONV;
 	static int32_t SCROLLBUTTONWIDTH;
 	static int32_t SCROLLBUTTONHEIGHT;
-	static  int32_t SECTIONSKIP;
-	static  int32_t NAMELEFT;
-	static  int32_t NAMERIGHT;
-	static  int32_t NAMETOP;
-	static  int32_t NAMEBOTTOM;
-	static  int32_t HEALTHLEFT;
-	static	int32_t HEALTHRIGHT;
+	static int32_t SECTIONSKIP;
+	static int32_t NAMELEFT;
+	static int32_t NAMERIGHT;
+	static int32_t NAMETOP;
+	static int32_t NAMEBOTTOM;
+	static int32_t HEALTHLEFT;
+	static int32_t HEALTHRIGHT;
 	static int32_t HEALTHTOP;
 	static int32_t HEALTHBOTTOM;
 	static int32_t DIVIDERCOLOR;
 	static int32_t DIVIDERLEFT;
 	static int32_t DIVIDERRIGHT;
-	static int32_t	PILOTLEFT;
+	static int32_t PILOTLEFT;
 	static int32_t PILOTRIGHT;
 	static int32_t PILOTHEIGHT;
 	static int32_t MECHLEFT;
@@ -126,11 +124,7 @@ private:
 	static void InfoWindow::init(FitIniFile& file);
 
 	static InfoWindow* s_instance;
-
-
-
 };
 
-
 //*************************************************************************************************
-#endif  // end of file ( InfoWindow.h )
+#endif // end of file ( InfoWindow.h )

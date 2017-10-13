@@ -44,40 +44,41 @@
 #include "userinput.h"
 #endif
 
-extern void AG_ellipse_draw(PANE* pane, int32_t xc, int32_t yc, int32_t width, int32_t height, int32_t color);
-extern void AG_ellipse_fill(PANE* pane, int32_t xc, int32_t yc, int32_t width, int32_t height, int32_t color);
-extern void AG_StatusBar(PANE* pane, int32_t X0, int32_t Y0, int32_t X1, int32_t Y1, int32_t Color, int32_t Width);
-extern void AG_shape_draw(PANE* pane, PVOIDshape_table, int32_t shape_number, int32_t hotX, int32_t hotY);
-extern void AG_shape_translate_draw(PANE* pane, PVOIDshape_table, int32_t shape_number, int32_t hotX, int32_t hotY);
+extern void AG_ellipse_draw(PANE* pane, int32_t xc, int32_t yc, int32_t width,
+	int32_t height, int32_t color);
+extern void AG_ellipse_fill(PANE* pane, int32_t xc, int32_t yc, int32_t width,
+	int32_t height, int32_t color);
+extern void AG_StatusBar(PANE* pane, int32_t X0, int32_t Y0, int32_t X1,
+	int32_t Y1, int32_t Color, int32_t Width);
+extern void AG_shape_draw(PANE* pane, PVOIDshape_table, int32_t shape_number,
+	int32_t hotX, int32_t hotY);
+extern void AG_shape_translate_draw(PANE* pane, PVOIDshape_table,
+	int32_t shape_number, int32_t hotX, int32_t hotY);
 extern void AG_shape_lookaside(puint8_t palette);
 
 //#pragma warning(disable:4305/*double to float truncation*/)
 
-inline float agsqrt(float _a, float _b)
-{
-	return sqrt(_a * _a + _b * _b);
-}
+inline float agsqrt(float _a, float _b) { return sqrt(_a * _a + _b * _b); }
 
 //---------------------------------------------------------------------------
 // Static Globals
 
-char WindowTitle[1024];		// Global window title (GetWindowText is VERY slow)
+char WindowTitle[1024]; // Global window title (GetWindowText is VERY slow)
 
 int32_t topCtrlUpd = 0;
 
 extern int32_t scenarioEndTurn;
 extern float actualTime;
 
+#define TABLE_ENTRY_SIZE 256
+#define SCALE_LEVELS 7
+#define RAMPED_RED 239
+#define RAMPED_GREEN 248
+#define NO_RAM_FOR_SCALE_TABLE 0x12120001
 
-#define TABLE_ENTRY_SIZE		256
-#define SCALE_LEVELS			7
-#define	RAMPED_RED				239
-#define RAMPED_GREEN			248
-#define NO_RAM_FOR_SCALE_TABLE	0x12120001
-
-#define NIGHT_START_PITCH		(25.0f)
-#define NIGHT_LIGHT_PITCH		(10.0f)
-#define TERRAIN_LIGHTS_ON		(40.0f)
+#define NIGHT_START_PITCH (25.0f)
+#define NIGHT_LIGHT_PITCH (10.0f)
+#define TERRAIN_LIGHTS_ON (40.0f)
 
 #ifdef _DEBUG
 extern int32_t currentHotSpot;
@@ -105,63 +106,59 @@ bool MaxObjectsDrawn = FALSE;
 
 float elevationAdjustFactor = 50.0;
 
-float Camera::MIN_PERSPECTIVE =			10.0f;
-float Camera::MIN_ORTHO		  =			18.0f;
-float Camera::MAX_PERSPECTIVE =			88.0f;
-float Camera::MAX_ORTHO		  =			88.0f;
+float Camera::MIN_PERSPECTIVE = 10.0f;
+float Camera::MIN_ORTHO		  = 18.0f;
+float Camera::MAX_PERSPECTIVE = 88.0f;
+float Camera::MAX_ORTHO		  = 88.0f;
 
-#define NORM_PERSPECTIVE		35.0f
+#define NORM_PERSPECTIVE 35.0f
 
-float zoomMax = 1.0;
-float zoomMin = 0.3f;
-float FOVMax = 75.0f;
-float FOVMin = 20.0f;
-float Camera::AltitudeMinimum = 560.0f;
+float zoomMax					= 1.0;
+float zoomMin					= 0.3f;
+float FOVMax					= 75.0f;
+float FOVMin					= 20.0f;
+float Camera::AltitudeMinimum   = 560.0f;
 float Camera::AltitudeMaximumLo = 1500.0f;
 float Camera::AltitudeMaximumHi = 1600.0f;
-float Camera::AltitudeDefault = 1200.0f;
-float Camera::AltitudeTight = 800.0f;
+float Camera::AltitudeDefault   = 1200.0f;
+float Camera::AltitudeTight		= 800.0f;
 
 float Camera::globalScaleFactor = 1.0;
 
-float Camera::MaxClipDistance	= 4000.0f;
-float Camera::MinHazeDistance	= 3000.0f;
-float Camera::HazeFactor	 	= 0.0f;
+float Camera::MaxClipDistance   = 4000.0f;
+float Camera::MinHazeDistance   = 3000.0f;
+float Camera::HazeFactor		= 0.0f;
 float Camera::DistanceFactor	= 1.0f / (MaxClipDistance - MinHazeDistance);
 float Camera::NearPlaneDistance = -400.0f;
 float Camera::FarPlaneDistance  = 61555.0f;
 
-float Camera::MinNearPlane		= -100.0f;
-float Camera::MaxNearPlane		= -400.0f;
+float Camera::MinNearPlane = -100.0f;
+float Camera::MaxNearPlane = -400.0f;
 
-float Camera::MinFarPlane		= 61500.0f;
-float Camera::MaxFarPlane		= 61555.0f;
+float Camera::MinFarPlane = 61500.0f;
+float Camera::MaxFarPlane = 61555.0f;
 
-float Camera::verticalSphereClipConstant = 0.0f;
+float Camera::verticalSphereClipConstant   = 0.0f;
 float Camera::horizontalSphereClipConstant = 0.0f;
 
-bool Camera::inMovieMode = false;
+bool Camera::inMovieMode   = false;
 bool Camera::forceMovieEnd = false;
-float Camera::MaxLetterBoxTime = 5.0f;		//Takes this many seconds to get into letter box mode
-float Camera::MaxLetterBoxPos = 0.15f;		//This is the percentage of the screen covered by EACH black bar!
+float Camera::MaxLetterBoxTime =
+	5.0f; // Takes this many seconds to get into letter box mode
+float Camera::MaxLetterBoxPos =
+	0.15f; // This is the percentage of the screen covered by EACH black bar!
 
-float Camera::cameraTilt[MAX_VIEWS] =
-{
+float Camera::cameraTilt[MAX_VIEWS] = {
 	NORM_PERSPECTIVE,
 	NORM_PERSPECTIVE,
 	NORM_PERSPECTIVE,
 	NORM_PERSPECTIVE,
 };
 
-float Camera::cameraZoom[MAX_VIEWS] =
-{
-	Camera::AltitudeDefault,
-	Camera::AltitudeDefault,
-	Camera::AltitudeDefault,
-	Camera::AltitudeDefault
-};
+float Camera::cameraZoom[MAX_VIEWS] = {Camera::AltitudeDefault,
+	Camera::AltitudeDefault, Camera::AltitudeDefault, Camera::AltitudeDefault};
 
-frameOfRef		Camera::cameraFrame;
+frameOfRef Camera::cameraFrame;
 
 extern bool recalcLight;
 
@@ -170,7 +167,6 @@ const float CAM_THRESHOLD = 150.0f;
 //---------------------------------------------------------------------------
 // Camera Class
 //---------------------------------------------------------------------------
-
 
 //---------------------------------------------------------------------------
 int32_t Camera::init(FitIniFilePtr cameraFile)
@@ -186,7 +182,7 @@ int32_t Camera::init(FitIniFilePtr cameraFile)
 	result = cameraFile->readIdFloat("PositionZ", position.z);
 	gosASSERT(result == NO_ERROR);
 	cameraShiftZ = position.z;
-	result = cameraFile->readIdBoolean("Ready", ready);
+	result		 = cameraFile->readIdBoolean("Ready", ready);
 	gosASSERT(result == NO_ERROR);
 	result = cameraFile->readIdUChar("LightRed", lightRed);
 	gosASSERT(result == NO_ERROR);
@@ -202,7 +198,7 @@ int32_t Camera::init(FitIniFilePtr cameraFile)
 	gosASSERT(result == NO_ERROR);
 	uint8_t tmpUCHAR;
 	result = cameraFile->readIdUChar("TerrainShadowColorEnabled", tmpUCHAR);
-	if((result != NO_ERROR) || (0 == tmpUCHAR))
+	if ((result != NO_ERROR) || (0 == tmpUCHAR))
 	{
 		terrainShadowColorEnabled = false;
 	}
@@ -211,17 +207,17 @@ int32_t Camera::init(FitIniFilePtr cameraFile)
 		terrainShadowColorEnabled = true;
 	}
 	result = cameraFile->readIdUChar("TerrainShadowRed", terrainShadowRed);
-	if(result != NO_ERROR)
+	if (result != NO_ERROR)
 	{
 		terrainShadowRed = ambientRed;
 	}
 	result = cameraFile->readIdUChar("TerrainShadowGreen", terrainShadowGreen);
-	if(result != NO_ERROR)
+	if (result != NO_ERROR)
 	{
 		terrainShadowGreen = ambientGreen;
 	}
 	result = cameraFile->readIdUChar("TerrainShadowBlue", terrainShadowBlue);
-	if(result != NO_ERROR)
+	if (result != NO_ERROR)
 	{
 		terrainShadowBlue = ambientBlue;
 	}
@@ -242,34 +238,35 @@ int32_t Camera::init(FitIniFilePtr cameraFile)
 	result = cameraFile->readIdFloat("LightDirPitch", lightPitch);
 	gosASSERT(result == NO_ERROR);
 	result = cameraFile->readIdFloat("DayToNightTime", day2NightTransitionTime);
-	if(result != NO_ERROR)
+	if (result != NO_ERROR)
 	{
 		day2NightTransitionTime = -1.0f;
-		dayLightTime = 0.0f;
+		dayLightTime			= 0.0f;
 		gosASSERT((lightYaw >= -360.0) && (lightYaw <= 360.0));
-		//gosASSERT((lightPitch >= 0.0) && (lightPitch <= 90.0));
+		// gosASSERT((lightPitch >= 0.0) && (lightPitch <= 90.0));
 		lightDirection.x = cos((lightYaw + 45.0f) * DEGREES_TO_RADS);
 		lightDirection.y = sin((lightYaw + 45.0f) * DEGREES_TO_RADS);
 		lightDirection.z = sin(lightPitch * DEGREES_TO_RADS);
 		// initialize these so we can edit 'em
-		dayAmbientRed = ambientRed;
-		dayAmbientBlue = ambientBlue;
-		dayAmbientGreen = ambientGreen;
-		dayLightRed = lightRed;
-		dayLightGreen = lightGreen;
-		dayLightBlue = lightBlue;
-		sunsetLightRed = 205/*arbitrary default*/;
-		sunsetLightGreen = 84/*arbitrary default*/;
-		sunsetLightBlue = 31/*arbitrary default*/;
-		nightAmbientRed = 32/*arbitrary default*/;
-		nightAmbientBlue = 32/*arbitrary default*/;
-		nightAmbientGreen = 32/*arbitrary default*/;;
-		nightLightRed = 64/*arbitrary default*/;
-		nightLightGreen = 64/*arbitrary default*/;
-		nightLightBlue = 64/*arbitrary default*/;
-		dayLightPitch = lightPitch;
+		dayAmbientRed	 = ambientRed;
+		dayAmbientBlue	= ambientBlue;
+		dayAmbientGreen   = ambientGreen;
+		dayLightRed		  = lightRed;
+		dayLightGreen	 = lightGreen;
+		dayLightBlue	  = lightBlue;
+		sunsetLightRed	= 205 /*arbitrary default*/;
+		sunsetLightGreen  = 84 /*arbitrary default*/;
+		sunsetLightBlue   = 31 /*arbitrary default*/;
+		nightAmbientRed   = 32 /*arbitrary default*/;
+		nightAmbientBlue  = 32 /*arbitrary default*/;
+		nightAmbientGreen = 32 /*arbitrary default*/;
+		;
+		nightLightRed   = 64 /*arbitrary default*/;
+		nightLightGreen = 64 /*arbitrary default*/;
+		nightLightBlue  = 64 /*arbitrary default*/;
+		dayLightPitch   = lightPitch;
 	}
-	else		//They want the time of day to change!
+	else // They want the time of day to change!
 	{
 		result = cameraFile->readIdFloat("DayLightPitch", dayLightPitch);
 		gosASSERT(result == NO_ERROR);
@@ -286,17 +283,19 @@ int32_t Camera::init(FitIniFilePtr cameraFile)
 		result = cameraFile->readIdUChar("DayAmbientBlue", dayAmbientBlue);
 		gosASSERT(result == NO_ERROR);
 		result = cameraFile->readIdUChar("SunsetLightRed", sunsetLightRed);
-		if(NO_ERROR != result)
+		if (NO_ERROR != result)
 		{
-			sunsetLightRed = 254/*arbitrary default*/;
-			sunsetLightGreen = 68/*arbitrary default*/;
-			sunsetLightBlue = 5/*arbitrary default*/;
+			sunsetLightRed   = 254 /*arbitrary default*/;
+			sunsetLightGreen = 68 /*arbitrary default*/;
+			sunsetLightBlue  = 5 /*arbitrary default*/;
 		}
 		else
 		{
-			result = cameraFile->readIdUChar("SunsetLightGreen", sunsetLightGreen);
+			result =
+				cameraFile->readIdUChar("SunsetLightGreen", sunsetLightGreen);
 			gosASSERT(result == NO_ERROR);
-			result = cameraFile->readIdUChar("SunsetLightBlue", sunsetLightBlue);
+			result =
+				cameraFile->readIdUChar("SunsetLightBlue", sunsetLightBlue);
 			gosASSERT(result == NO_ERROR);
 		}
 		result = cameraFile->readIdUChar("NightLightRed", nightLightRed);
@@ -307,20 +306,21 @@ int32_t Camera::init(FitIniFilePtr cameraFile)
 		gosASSERT(result == NO_ERROR);
 		result = cameraFile->readIdUChar("NightAmbientRed", nightAmbientRed);
 		gosASSERT(result == NO_ERROR);
-		result = cameraFile->readIdUChar("NightAmbientGreen", nightAmbientGreen);
+		result =
+			cameraFile->readIdUChar("NightAmbientGreen", nightAmbientGreen);
 		gosASSERT(result == NO_ERROR);
 		result = cameraFile->readIdUChar("NightAmbientBlue", nightAmbientBlue);
 		gosASSERT(result == NO_ERROR);
 		dayLightTime = 0.0f;
-		lightPitch = dayLightPitch;
-		ambientRed = dayAmbientRed;
-		ambientBlue = dayAmbientBlue;
+		lightPitch   = dayLightPitch;
+		ambientRed   = dayAmbientRed;
+		ambientBlue  = dayAmbientBlue;
 		ambientGreen = dayAmbientGreen;
-		lightRed = dayLightRed;
-		lightBlue = dayLightBlue;
-		lightGreen = dayLightGreen;
+		lightRed	 = dayLightRed;
+		lightBlue	= dayLightBlue;
+		lightGreen   = dayLightGreen;
 		gosASSERT((lightYaw >= -360.0) && (lightYaw <= 360.0));
-		//gosASSERT((lightPitch >= 0.0) && (lightPitch <= 90.0));
+		// gosASSERT((lightPitch >= 0.0) && (lightPitch <= 90.0));
 		lightDirection.x = cos((lightYaw + 45.0f) * DEGREES_TO_RADS);
 		lightDirection.y = sin((lightYaw + 45.0f) * DEGREES_TO_RADS);
 		lightDirection.z = sin(lightPitch * DEGREES_TO_RADS);
@@ -331,9 +331,11 @@ int32_t Camera::init(FitIniFilePtr cameraFile)
 	result = cameraFile->readIdFloat("StartRotation", startRotation);
 	gosASSERT(result == NO_ERROR);
 	setCameraRotation(startRotation, startRotation);
-	result = cameraFile->readIdFloatArray("LODScales", zoomLevelLODScale, MAX_LODS);
+	result =
+		cameraFile->readIdFloatArray("LODScales", zoomLevelLODScale, MAX_LODS);
 	gosASSERT(result == NO_ERROR);
-	result = cameraFile->readIdFloat("ElevationAdjustFactor", elevationAdjustFactor);
+	result =
+		cameraFile->readIdFloat("ElevationAdjustFactor", elevationAdjustFactor);
 	gosASSERT(result == NO_ERROR);
 	result = cameraFile->readIdFloat("ZoomMax", zoomMax);
 	gosASSERT(result == NO_ERROR);
@@ -341,15 +343,16 @@ int32_t Camera::init(FitIniFilePtr cameraFile)
 	gosASSERT(result == NO_ERROR);
 	FOVMax = 90.0f;
 	result = cameraFile->readIdFloat("FOVMax", FOVMax);
-//	gosASSERT(result == NO_ERROR);
+	//	gosASSERT(result == NO_ERROR);
 	FOVMin = 20.0f;
 	result = cameraFile->readIdFloat("FOVMin", FOVMin);
-//	gosASSERT(result == NO_ERROR);
+	//	gosASSERT(result == NO_ERROR);
 	setClass(BASE_CAMERA);
-	//Replace with TGL
-	if(!worldLights)    // only do the alloc once
+	// Replace with TGL
+	if (!worldLights) // only do the alloc once
 	{
-		worldLights = (TG_LightPtr*)systemHeap->Malloc(sizeof(TG_LightPtr) * MAX_LIGHTS_IN_WORLD);
+		worldLights = (TG_LightPtr*)systemHeap->Malloc(
+			sizeof(TG_LightPtr) * MAX_LIGHTS_IN_WORLD);
 		memset(worldLights, 0, sizeof(TG_LightPtr) * MAX_LIGHTS_IN_WORLD);
 		numLights = 2;
 		//---------------------------------------------------------
@@ -357,21 +360,25 @@ int32_t Camera::init(FitIniFilePtr cameraFile)
 		worldLights[0] = (TG_LightPtr)systemHeap->Malloc(sizeof(TG_Light));
 		worldLights[0]->init(TG_LIGHT_INFINITE);
 	}
-	if(!activeLights)    // only do the alloc once
+	if (!activeLights) // only do the alloc once
 	{
-		activeLights = (TG_LightPtr*)systemHeap->Malloc(sizeof(TG_LightPtr) * MAX_LIGHTS_IN_WORLD);
+		activeLights = (TG_LightPtr*)systemHeap->Malloc(
+			sizeof(TG_LightPtr) * MAX_LIGHTS_IN_WORLD);
 		memset(activeLights, 0, sizeof(TG_LightPtr) * MAX_LIGHTS_IN_WORLD);
 		numActiveLights = 0;
 	}
-	if(!terrainLights)    // only do the alloc once
+	if (!terrainLights) // only do the alloc once
 	{
-		terrainLights = (TG_LightPtr*)systemHeap->Malloc(sizeof(TG_LightPtr) * MAX_LIGHTS_IN_WORLD);
+		terrainLights = (TG_LightPtr*)systemHeap->Malloc(
+			sizeof(TG_LightPtr) * MAX_LIGHTS_IN_WORLD);
 		memset(terrainLights, 0, sizeof(TG_LightPtr) * MAX_LIGHTS_IN_WORLD);
 		numTerrainLights = 0;
 	}
 	Stuff::LinearMatrix4D lightToWorldMatrix;
 	lightToWorldMatrix.BuildTranslation(Stuff::Point3D(0.0, 0.0, 0.0));
-	lightToWorldMatrix.BuildRotation(Stuff::EulerAngles(lightPitch * DEGREES_TO_RADS, (lightYaw + 135.0) * DEGREES_TO_RADS, 0.0f));
+	lightToWorldMatrix.BuildRotation(
+		Stuff::EulerAngles(lightPitch * DEGREES_TO_RADS,
+			(lightYaw + 135.0) * DEGREES_TO_RADS, 0.0f));
 	worldLights[0]->SetLightToWorld(&lightToWorldMatrix);
 	//---------------------------------------------------------
 	// Second light is ambient.
@@ -383,7 +390,7 @@ int32_t Camera::init(FitIniFilePtr cameraFile)
 	gosASSERT(result == NO_ERROR);
 	result = cameraFile->readIdFloat("FogFull", fogFull);
 	gosASSERT(result == NO_ERROR);
-	result = cameraFile->readIdULong("FogColor", fogColor);
+	result		= cameraFile->readIdULong("FogColor", fogColor);
 	dayFogColor = fogColor;
 	gosASSERT(result == NO_ERROR);
 	result = cameraFile->readIdFloat("FogTransparency", fogTransparency);
@@ -435,26 +442,30 @@ int32_t Camera::init(FitIniFilePtr cameraFile)
 	land->setUserSettings(userMin, userMax, baseTerrain);
 	//-------------------------------------------
 	// To get it working again.
-	usePerspective = true;
-	camera_fov = 40.0f;
-	cosHalfFOV = cos(camera_fov * 0.7071f * DEGREES_TO_RADS);				//Cosine of half the FOV for view cone.
-	float anglePercent = (projectionAngle - MIN_PERSPECTIVE) / (MAX_PERSPECTIVE - MIN_PERSPECTIVE);
-	float testMax = Camera::AltitudeMaximumLo + ((Camera::AltitudeMaximumHi - Camera::AltitudeMaximumLo) * anglePercent);
-	newScaleFactor = 1.0f - ((cameraAltitude - AltitudeMinimum) / testMax);
+	usePerspective	 = true;
+	camera_fov		   = 40.0f;
+	cosHalfFOV		   = cos(camera_fov * 0.7071f *
+					 DEGREES_TO_RADS); // Cosine of half the FOV for view cone.
+	float anglePercent = (projectionAngle - MIN_PERSPECTIVE) /
+						 (MAX_PERSPECTIVE - MIN_PERSPECTIVE);
+	float testMax = Camera::AltitudeMaximumLo +
+					((Camera::AltitudeMaximumHi - Camera::AltitudeMaximumLo) *
+						anglePercent);
+	newScaleFactor	= 1.0f - ((cameraAltitude - AltitudeMinimum) / testMax);
 	terrainLightNight = false;
-	terrainLightCalc = true;
-//	if (ready)
-//	{
-//		activate();
-//		update();
-//	}
-	return(NO_ERROR);
+	terrainLightCalc  = true;
+	//	if (ready)
+	//	{
+	//		activate();
+	//		update();
+	//	}
+	return (NO_ERROR);
 }
 
 //---------------------------------------------------------------------------
 void Camera::destroy(void)
 {
-	if(worldLights)
+	if (worldLights)
 	{
 		systemHeap->Free(worldLights[1]);
 		worldLights[1] = nullptr;
@@ -463,12 +474,12 @@ void Camera::destroy(void)
 		systemHeap->Free(worldLights);
 		worldLights = nullptr;
 	}
-	if(activeLights)
+	if (activeLights)
 	{
 		systemHeap->Free(activeLights);
 		activeLights = nullptr;
 	}
-	if(terrainLights)
+	if (terrainLights)
 	{
 		systemHeap->Free(terrainLights);
 		terrainLights = nullptr;
@@ -476,68 +487,77 @@ void Camera::destroy(void)
 }
 
 //---------------------------------------------------------------------------
-void Camera::getClosestVertex(Stuff::Vector2DOf<int32_t>& screenPos, int32_t& row, int32_t& col)
+void Camera::getClosestVertex(
+	Stuff::Vector2DOf<int32_t>& screenPos, int32_t& row, int32_t& col)
 {
 	//--------------------------------------------------------
 	// New method.  Use the terrain window to figure out
 	// where we are by finding the vertex closest to the clicked
 	// position and returning its 3d pos.
-	VertexPtr topVertex = land->getVertexList();
-	uint32_t numVertices = land->getNumVertices();
+	VertexPtr topVertex		= land->getVertexList();
+	uint32_t numVertices	= land->getNumVertices();
 	VertexPtr closestVertex = nullptr;
-	int32_t whichVertex = 0;
-//
-// Redone all using integers and no square root.
-//
-	uint32_t i = 0;
+	int32_t whichVertex		= 0;
+	//
+	// Redone all using integers and no square root.
+	//
+	uint32_t i   = 0;
 	uint32_t tvx = screenPos.x;
 	uint32_t tvy = screenPos.y;
 	float dx, dy, cd = 1e38f, dist;
-	for(i = 0; i < numVertices; i++)
+	for (i = 0; i < numVertices; i++)
 	{
-		dx = (tvx - topVertex->px);
-		dy = (tvy - topVertex->py);
+		dx   = (tvx - topVertex->px);
+		dy   = (tvy - topVertex->py);
 		dist = dx * dx + dy * dy;
-		if(dist < cd)
+		if (dist < cd)
 		{
-			cd = dist;
+			cd			  = dist;
 			closestVertex = topVertex;
-			whichVertex = i;
+			whichVertex   = i;
 		}
 		topVertex++;
 	}
-	int32_t block = closestVertex->blockVertex >> 16;
-	int32_t vertex = closestVertex->blockVertex & 0x0000ffff;
-	int32_t blockX = block % Terrain::blocksMapSide;
-	int32_t blockY = block / Terrain::blocksMapSide;
+	int32_t block   = closestVertex->blockVertex >> 16;
+	int32_t vertex  = closestVertex->blockVertex & 0x0000ffff;
+	int32_t blockX  = block % Terrain::blocksMapSide;
+	int32_t blockY  = block / Terrain::blocksMapSide;
 	int32_t vertexX = vertex % Terrain::verticesBlockSide;
 	int32_t vertexY = vertex / Terrain::verticesBlockSide;
-	col = blockX * Terrain::verticesBlockSide + vertexX;
-	row = blockY * Terrain::verticesBlockSide + vertexY;
+	col				= blockX * Terrain::verticesBlockSide + vertexX;
+	row				= blockY * Terrain::verticesBlockSide + vertexY;
 }
 
 //---------------------------------------------------------------------------
 
-inline void mapTileCellToWorldPos(int32_t tileR, int32_t tileC, int32_t cellR, int32_t cellC, Stuff::Vector3D& worldPos)
+inline void mapTileCellToWorldPos(int32_t tileR, int32_t tileC, int32_t cellR,
+	int32_t cellC, Stuff::Vector3D& worldPos)
 {
-	worldPos.x = Terrain::tileColToWorldCoord[tileC] + Terrain::cellToWorldCoord[cellC] + Terrain::halfWorldUnitsPerCell;
-	worldPos.y = Terrain::tileRowToWorldCoord[tileR] - Terrain::cellToWorldCoord[cellR] - Terrain::halfWorldUnitsPerCell;
+	worldPos.x = Terrain::tileColToWorldCoord[tileC] +
+				 Terrain::cellToWorldCoord[cellC] +
+				 Terrain::halfWorldUnitsPerCell;
+	worldPos.y = Terrain::tileRowToWorldCoord[tileR] -
+				 Terrain::cellToWorldCoord[cellR] -
+				 Terrain::halfWorldUnitsPerCell;
 	worldPos.z = (float)0.0;
 }
 
 //---------------------------------------------------------------------------
 
-inline void mapCellToWorldPos(int32_t cellR, int32_t cellC, Stuff::Vector3D& worldPos)
+inline void mapCellToWorldPos(
+	int32_t cellR, int32_t cellC, Stuff::Vector3D& worldPos)
 {
-	worldPos.x = Terrain::cellColToWorldCoord[cellC] + Terrain::halfWorldUnitsPerCell;
-	worldPos.y = Terrain::cellRowToWorldCoord[cellR] - Terrain::halfWorldUnitsPerCell;
+	worldPos.x =
+		Terrain::cellColToWorldCoord[cellC] + Terrain::halfWorldUnitsPerCell;
+	worldPos.y =
+		Terrain::cellRowToWorldCoord[cellR] - Terrain::halfWorldUnitsPerCell;
 	worldPos.z = (float)0.0;
 }
 
 //---------------------------------------------------------------------------
 inline bool overThisTile(TerrainQuadPtr tile, int32_t mouseX, int32_t mouseY)
 {
-	if(tile)
+	if (tile)
 	{
 		Stuff::Point3D v0, v1, v2;
 		v0.x = tile->vertices[0]->px;
@@ -547,16 +567,17 @@ inline bool overThisTile(TerrainQuadPtr tile, int32_t mouseX, int32_t mouseY)
 		v2.x = tile->vertices[2]->px;
 		v2.y = tile->vertices[2]->py;
 		v0.z = v1.z = v2.z = 0.0f;
-		//Can trivially reject IF vertex values are these, this triangle was NOT on screen!!
-		if((v0.x == 10000.0f) || (v0.y == 10000.0f) ||
-				(v1.x == 10000.0f) || (v1.y == 10000.0f) ||
-				(v2.x == 10000.0f) || (v2.y == 10000.0f))
+		// Can trivially reject IF vertex values are these, this triangle was
+		// NOT on screen!!
+		if ((v0.x == 10000.0f) || (v0.y == 10000.0f) || (v1.x == 10000.0f) ||
+			(v1.y == 10000.0f) || (v2.x == 10000.0f) || (v2.y == 10000.0f))
 			return false;
-		//Using the above vertex Data, determine if the mouse is over this poly!
+		// Using the above vertex Data, determine if the mouse is over this
+		// poly!
 		//
-		//Theorem:
-		// Given the sides of the triangle defined by the lines v0v1, v1v2 and v2v0
-		// in the form Ax + By + C = 0
+		// Theorem:
+		// Given the sides of the triangle defined by the lines v0v1, v1v2 and
+		// v2v0 in the form Ax + By + C = 0
 		//
 		// the point mousex, mousey lies inside the triangle if and only if
 		//
@@ -564,29 +585,31 @@ inline bool overThisTile(TerrainQuadPtr tile, int32_t mouseX, int32_t mouseY)
 		//		A1 * mouseX * B1 * mouseY + c1 = D1
 		//		A2 * mouseX + B2 * mouseY + c2 = D2
 		//
-		// Dx is the same sign for each line as the correct sign for clockwise or counterclockwise vertices!
+		// Dx is the same sign for each line as the correct sign for clockwise
+		// or counterclockwise vertices!
 		//
 		Stuff::Vector3D line1;
 		Stuff::Vector3D line2;
 		line1.Subtract(v0, v1);
 		line2.Subtract(v1, v2);
 		float order = line2.x * line1.y - line1.x * line2.y;
-		order = sign(order);
-		float A0 = -(v0.y - v1.y);
-		float B0 = (v0.x - v1.x);
-		float C0 = -B0 * (v0.y) - A0 * (v0.x);
-		float D0 = A0 * mouseX + B0 * mouseY + C0;
-		float A1 = -(v1.y - v2.y);
-		float B1 = (v1.x - v2.x);
-		float C1 = -B1 * (v1.y) - A1 * (v1.x);
-		float D1 = A1 * mouseX + B1 * mouseY + C1;
-		float A2 = -(v2.y - v0.y);
-		float B2 = (v2.x - v0.x);
-		float C2 = -B2 * (v2.y) - A2 * (v2.x);
-		float D2 = A2 * mouseX + B2 * mouseY + C2;
-		if((sign(D0) == order) && (sign(D0) == sign(D1)) && (sign(D0) == sign(D2)))
+		order		= sign(order);
+		float A0	= -(v0.y - v1.y);
+		float B0	= (v0.x - v1.x);
+		float C0	= -B0 * (v0.y) - A0 * (v0.x);
+		float D0	= A0 * mouseX + B0 * mouseY + C0;
+		float A1	= -(v1.y - v2.y);
+		float B1	= (v1.x - v2.x);
+		float C1	= -B1 * (v1.y) - A1 * (v1.x);
+		float D1	= A1 * mouseX + B1 * mouseY + C1;
+		float A2	= -(v2.y - v0.y);
+		float B2	= (v2.x - v0.x);
+		float C2	= -B2 * (v2.y) - A2 * (v2.x);
+		float D2	= A2 * mouseX + B2 * mouseY + C2;
+		if ((sign(D0) == order) && (sign(D0) == sign(D1)) &&
+			(sign(D0) == sign(D2)))
 			return true;
-		//Tiles are TWO Polys.  Check number two.
+		// Tiles are TWO Polys.  Check number two.
 		v0.x = tile->vertices[0]->px;
 		v0.y = tile->vertices[0]->py;
 		v1.x = tile->vertices[2]->px;
@@ -594,16 +617,17 @@ inline bool overThisTile(TerrainQuadPtr tile, int32_t mouseX, int32_t mouseY)
 		v2.x = tile->vertices[3]->px;
 		v2.y = tile->vertices[3]->py;
 		v0.z = v1.z = v2.z = 0.0f;
-		//Can trivially reject IF vertex values are these, this triangle was NOT on screen!!
-		if((v0.x == 10000.0f) || (v0.y == 10000.0f) ||
-				(v1.x == 10000.0f) || (v1.y == 10000.0f) ||
-				(v2.x == 10000.0f) || (v2.y == 10000.0f))
+		// Can trivially reject IF vertex values are these, this triangle was
+		// NOT on screen!!
+		if ((v0.x == 10000.0f) || (v0.y == 10000.0f) || (v1.x == 10000.0f) ||
+			(v1.y == 10000.0f) || (v2.x == 10000.0f) || (v2.y == 10000.0f))
 			return false;
-		//Using the above vertex Data, determine if the mouse is over this poly!
+		// Using the above vertex Data, determine if the mouse is over this
+		// poly!
 		//
-		//Theorem:
-		// Given the sides of the triangle defined by the lines v0v1, v1v2 and v2v0
-		// in the form Ax + By + C = 0
+		// Theorem:
+		// Given the sides of the triangle defined by the lines v0v1, v1v2 and
+		// v2v0 in the form Ax + By + C = 0
 		//
 		// the point mousex, mousey lies inside the triangle if and only if
 		//
@@ -611,34 +635,37 @@ inline bool overThisTile(TerrainQuadPtr tile, int32_t mouseX, int32_t mouseY)
 		//		A1 * mouseX * B1 * mouseY + c1 = D1
 		//		A2 * mouseX + B2 * mouseY + c2 = D2
 		//
-		// Dx is the same sign for each line as the correct sign for clockwise or counterclockwise vertices!
+		// Dx is the same sign for each line as the correct sign for clockwise
+		// or counterclockwise vertices!
 		//
 		line1.Subtract(v0, v1);
 		line2.Subtract(v1, v2);
 		order = line2.x * line1.y - line1.x * line2.y;
 		order = sign(order);
-		A0 = -(v0.y - v1.y);
-		B0 = (v0.x - v1.x);
-		C0 = -B0 * (v0.y) - A0 * (v0.x);
-		D0 = A0 * mouseX + B0 * mouseY + C0;
-		A1 = -(v1.y - v2.y);
-		B1 = (v1.x - v2.x);
-		C1 = -B1 * (v1.y) - A1 * (v1.x);
-		D1 = A1 * mouseX + B1 * mouseY + C1;
-		A2 = -(v2.y - v0.y);
-		B2 = (v2.x - v0.x);
-		C2 = -B2 * (v2.y) - A2 * (v2.x);
-		D2 = A2 * mouseX + B2 * mouseY + C2;
-		if((sign(D0) == order) && (sign(D0) == sign(D1)) && (sign(D0) == sign(D2)))
+		A0	= -(v0.y - v1.y);
+		B0	= (v0.x - v1.x);
+		C0	= -B0 * (v0.y) - A0 * (v0.x);
+		D0	= A0 * mouseX + B0 * mouseY + C0;
+		A1	= -(v1.y - v2.y);
+		B1	= (v1.x - v2.x);
+		C1	= -B1 * (v1.y) - A1 * (v1.x);
+		D1	= A1 * mouseX + B1 * mouseY + C1;
+		A2	= -(v2.y - v0.y);
+		B2	= (v2.x - v0.x);
+		C2	= -B2 * (v2.y) - A2 * (v2.x);
+		D2	= A2 * mouseX + B2 * mouseY + C2;
+		if ((sign(D0) == order) && (sign(D0) == sign(D1)) &&
+			(sign(D0) == sign(D2)))
 			return true;
 	}
 	return false;
 }
 
 //---------------------------------------------------------------------------
-uint32_t Camera::inverseProject(Stuff::Vector2DOf<int32_t>& screenPos, Stuff::Vector3D& point)
+uint32_t Camera::inverseProject(
+	Stuff::Vector2DOf<int32_t>& screenPos, Stuff::Vector3D& point)
 {
-	if(turn < 4)
+	if (turn < 4)
 	{
 		point.x = point.y = point.z = 0.0f;
 		return 0;
@@ -646,135 +673,143 @@ uint32_t Camera::inverseProject(Stuff::Vector2DOf<int32_t>& screenPos, Stuff::Ve
 	//-----------------------------------------------------------
 	// Pick the tile that has the vertex with the LEAST Z value.
 	TerrainQuadPtr currentTile = land->getQuadList();
-	uint32_t numTiles = land->getNumQuads();
+	uint32_t numTiles		   = land->getNumQuads();
 	TerrainQuadPtr closestTiles[100];
 	memset(closestTiles, 0, sizeof(TerrainQuadPtr) * 100);
 	TerrainQuadPtr closestTile = nullptr;
-	int32_t currentClosest = 0;
-	VertexPtr closestVertex = nullptr;
-	for(size_t i = 0; i < (int32_t)numTiles; i++)
+	int32_t currentClosest	 = 0;
+	VertexPtr closestVertex	= nullptr;
+	for (size_t i = 0; i < (int32_t)numTiles; i++)
 	{
-		if((currentTile->vertices[0]->clipInfo) ||
-				(currentTile->vertices[1]->clipInfo) ||
-				(currentTile->vertices[2]->clipInfo) ||
-				(currentTile->vertices[3]->clipInfo))
+		if ((currentTile->vertices[0]->clipInfo) ||
+			(currentTile->vertices[1]->clipInfo) ||
+			(currentTile->vertices[2]->clipInfo) ||
+			(currentTile->vertices[3]->clipInfo))
 		{
 			bool isOver = overThisTile(currentTile, screenPos.x, screenPos.y);
-			if(isOver && (currentClosest < 100))
+			if (isOver && (currentClosest < 100))
 			{
-				//We are.  Save it into the closestTiles list.
+				// We are.  Save it into the closestTiles list.
 				closestTiles[currentClosest] = currentTile;
 				currentClosest++;
 				//			if (currentClosest >= 100)
-				//				STOP(("FOUND Too Many Tiles Under the mouse cursor"));
+				//				STOP(("FOUND Too Many Tiles Under the mouse
+				//cursor"));
 			}
 		}
 		currentTile++;
 	}
-	if(currentClosest > 1)
+	if (currentClosest > 1)
 	{
 		float leastZ = 1.0f;
-		for(size_t i = 0; i < currentClosest; i++)
+		for (size_t i = 0; i < currentClosest; i++)
 		{
-			//Find the least Z tile.
-			if((closestTiles[i]->vertices[0]->pz > 0.0f) &&
-					(closestTiles[i]->vertices[1]->pz > 0.0f) &&
-					(closestTiles[i]->vertices[2]->pz > 0.0f) &&
-					(closestTiles[i]->vertices[3]->pz > 0.0f))
+			// Find the least Z tile.
+			if ((closestTiles[i]->vertices[0]->pz > 0.0f) &&
+				(closestTiles[i]->vertices[1]->pz > 0.0f) &&
+				(closestTiles[i]->vertices[2]->pz > 0.0f) &&
+				(closestTiles[i]->vertices[3]->pz > 0.0f))
 			{
-				if(closestTiles[i]->vertices[0]->pz < leastZ)
+				if (closestTiles[i]->vertices[0]->pz < leastZ)
 				{
-					leastZ = closestTiles[i]->vertices[0]->pz;
+					leastZ		= closestTiles[i]->vertices[0]->pz;
 					closestTile = closestTiles[i];
 				}
-				if(closestTiles[i]->vertices[1]->pz < leastZ)
+				if (closestTiles[i]->vertices[1]->pz < leastZ)
 				{
-					leastZ = closestTiles[i]->vertices[1]->pz;
+					leastZ		= closestTiles[i]->vertices[1]->pz;
 					closestTile = closestTiles[i];
 				}
-				if(closestTiles[i]->vertices[2]->pz < leastZ)
+				if (closestTiles[i]->vertices[2]->pz < leastZ)
 				{
-					leastZ = closestTiles[i]->vertices[2]->pz;
+					leastZ		= closestTiles[i]->vertices[2]->pz;
 					closestTile = closestTiles[i];
 				}
-				if(closestTiles[i]->vertices[3]->pz < leastZ)
+				if (closestTiles[i]->vertices[3]->pz < leastZ)
 				{
-					leastZ = closestTiles[i]->vertices[3]->pz;
+					leastZ		= closestTiles[i]->vertices[3]->pz;
 					closestTile = closestTiles[i];
 				}
 			}
 		}
 	}
-	else if(currentClosest)
+	else if (currentClosest)
 	{
 		closestTile = closestTiles[0];
 	}
-	if(closestTile)
+	if (closestTile)
 	{
 #ifdef _DEBUG
-		closestTile->selected = TRUE;
+		closestTile->selected			   = TRUE;
 		closestTile->vertices[0]->selected = TRUE;
 #endif
 		//-----------------------------------------------------------------------------
-		// Once we have the tile, use the vertex[0] to find out which cell we are in.
+		// Once we have the tile, use the vertex[0] to find out which cell we
+		// are in.
 		closestVertex = closestTile->vertices[0];
 		//-------------------------------------------------------------------
 		// Really new method.  Snap to center of closest Cell.  This is ideal
-		// because movement should always be to this location and Heidi and Mike need
-		// cell resolution in the Editor!
+		// because movement should always be to this location and Heidi and Mike
+		// need cell resolution in the Editor!
 		Stuff::Vector4D cellCenter;
 		int32_t cellCenterC = -1;
 		int32_t cellCenterR = -1;
-		float cellWidth = Terrain::worldUnitsPerCell;
+		float cellWidth		= Terrain::worldUnitsPerCell;
 		float halfCellWidth = cellWidth / 2.0f;
 		int32_t tileC = -1, tileR = -1;
 		int32_t VerticesMapSideDivTwo = Terrain::realVerticesMapSide / 2;
-		int32_t MetersMapSideDivTwo = VerticesMapSideDivTwo * float2long(Terrain::worldUnitsPerVertex);
-		int32_t dx, dy, cd = 1 << 30, dist, tvx = screenPos.x, tvy = screenPos.y;
-		for(size_t cellC = 0; cellC < 3; cellC++)
+		int32_t MetersMapSideDivTwo =
+			VerticesMapSideDivTwo * float2long(Terrain::worldUnitsPerVertex);
+		int32_t dx, dy, cd = 1 << 30, dist, tvx = screenPos.x,
+						tvy = screenPos.y;
+		for (size_t cellC = 0; cellC < 3; cellC++)
 		{
-			for(size_t cellR = 0; cellR < 3; cellR++)
+			for (size_t cellR = 0; cellR < 3; cellR++)
 			{
 				point.x = closestVertex->vx;
 				point.y = closestVertex->vy;
 				point.z = closestVertex->pVertex->elevation;
-				point.x += (cellC) * cellWidth + halfCellWidth;
-				point.y -= (cellR) * cellWidth + halfCellWidth;
+				point.x += (cellC)*cellWidth + halfCellWidth;
+				point.y -= (cellR)*cellWidth + halfCellWidth;
 				point.z = land->getTerrainElevation(point);
 				eye->projectZ(point, cellCenter);
-				dx = (tvx - float2long(cellCenter.x));
-				dy = (tvy - float2long(cellCenter.y));
+				dx   = (tvx - float2long(cellCenter.x));
+				dy   = (tvy - float2long(cellCenter.y));
 				dist = dx * dx + dy * dy;
-				if(dist < cd)
+				if (dist < cd)
 				{
-					cd = dist;
+					cd			= dist;
 					cellCenterC = cellC;
 					cellCenterR = cellR;
-					tileC = float2long(point.x * Terrain::oneOverWorldUnitsPerVertex + VerticesMapSideDivTwo);
-					tileR = float2long((MetersMapSideDivTwo - point.y) * Terrain::oneOverWorldUnitsPerVertex);
+					tileC		= float2long(
+						  point.x * Terrain::oneOverWorldUnitsPerVertex +
+						  VerticesMapSideDivTwo);
+					tileR = float2long((MetersMapSideDivTwo - point.y) *
+									   Terrain::oneOverWorldUnitsPerVertex);
 				}
 			}
 		}
-		if(tileR < 0)
+		if (tileR < 0)
 			tileR = 0;
-		if(tileR >= Terrain::realVerticesMapSide)
+		if (tileR >= Terrain::realVerticesMapSide)
 			tileR = Terrain::realVerticesMapSide - 1;
-		if(tileC < 0)
+		if (tileC < 0)
 			tileC = 0;
-		if(tileC >= Terrain::realVerticesMapSide)
+		if (tileC >= Terrain::realVerticesMapSide)
 			tileC = Terrain::realVerticesMapSide - 1;
 		mapTileCellToWorldPos(tileR, tileC, cellCenterR, cellCenterC, point);
 		point.z = land->getTerrainElevation(point);
 	}
 	else
 	{
-		// not in any tile, must be off map.  We're going to return the coord of the
-		// closest vertex
-		float dis = 999999999.f;
+		// not in any tile, must be off map.  We're going to return the coord of
+		// the closest vertex
+		float dis		 = 999999999.f;
 		int32_t closeRow = 0, closeCol = 0;
 		Stuff::Vector3D tmpWorld;
 		Stuff::Vector4D tmpScreen;
-		/*for ( int32_t column = 0; column < land->realVerticesMapSide; column += land->realVerticesMapSide - 1 )
+		/*for ( int32_t column = 0; column < land->realVerticesMapSide; column
+		+= land->realVerticesMapSide - 1 )
 		{
 			for ( int32_t row = 0; row < land->realVerticesMapSide; ++row )
 			{
@@ -784,8 +819,9 @@ uint32_t Camera::inverseProject(Stuff::Vector2DOf<int32_t>& screenPos, Stuff::Ve
 
 				projectZ( tmpWorld, tmpScreen );
 
-				float tmpDis = (tmpScreen.x - screenPos.x) * (tmpScreen.x - screenPos.x ) + (tmpScreen.y - screenPos.y) * (tmpScreen.y - screenPos.y );
-				if ( tmpDis < dis )
+				float tmpDis = (tmpScreen.x - screenPos.x) * (tmpScreen.x -
+		screenPos.x ) + (tmpScreen.y - screenPos.y) * (tmpScreen.y - screenPos.y
+		); if ( tmpDis < dis )
 				{
 					closeRow = row;
 					closeCol = column;
@@ -793,20 +829,23 @@ uint32_t Camera::inverseProject(Stuff::Vector2DOf<int32_t>& screenPos, Stuff::Ve
 				}
 			}
 		}*/
-		for(size_t column = 0; column < land->realVerticesMapSide; column ++)
+		for (size_t column = 0; column < land->realVerticesMapSide; column++)
 		{
-			for(size_t row = 0; row < land->realVerticesMapSide; row++/*row += land->realVerticesMapSide - 1*/)
+			for (size_t row = 0; row < land->realVerticesMapSide;
+				 row++ /*row += land->realVerticesMapSide - 1*/)
 			{
 				tmpWorld.x = land->tileColToWorldCoord[column];
 				tmpWorld.y = land->tileRowToWorldCoord[row];
 				tmpWorld.z = land->getTerrainElevation(row, column);
 				projectZ(tmpWorld, tmpScreen);
-				float tmpDis = (tmpScreen.x - screenPos.x) * (tmpScreen.x - screenPos.x) + (tmpScreen.y - screenPos.y) * (tmpScreen.y - screenPos.y);
-				if(tmpDis < dis)
+				float tmpDis =
+					(tmpScreen.x - screenPos.x) * (tmpScreen.x - screenPos.x) +
+					(tmpScreen.y - screenPos.y) * (tmpScreen.y - screenPos.y);
+				if (tmpDis < dis)
 				{
 					closeRow = row;
 					closeCol = column;
-					dis = tmpDis;
+					dis		 = tmpDis;
 				}
 			}
 		}
@@ -815,28 +854,27 @@ uint32_t Camera::inverseProject(Stuff::Vector2DOf<int32_t>& screenPos, Stuff::Ve
 		point.z = land->getTerrainElevation(closeRow, closeCol);
 		return 1; // don't return success for bogus value
 	}
-	return(0);
+	return (0);
 }
-
 
 //---------------------------------------------------------------------------
 void Camera::updateGoalVelocity(void)
 {
-	if(goalVelTime > 0.0)
+	if (goalVelTime > 0.0)
 	{
 		Stuff::Vector3D velDiff;
 		velDiff.Subtract(goalVelocity, velocity);
 		velDiff /= goalVelTime;
 		velDiff *= frameLength;
 		goalVelTime -= frameLength;
-		if(goalVelTime < 0.0)
+		if (goalVelTime < 0.0)
 			velocity = goalVelocity;
 		else
 			velocity.Add(velocity, velDiff);
 	}
 	else
 	{
-		goalVelTime = 0.0;
+		goalVelTime  = 0.0;
 		goalVelocity = velocity;
 	}
 }
@@ -844,13 +882,13 @@ void Camera::updateGoalVelocity(void)
 //---------------------------------------------------------------------------
 void Camera::updateGoalFOV(void)
 {
-	if(goalFOVTime > 0.0)
+	if (goalFOVTime > 0.0)
 	{
 		float fovDiff = goalFOV - camera_fov;
 		fovDiff /= goalFOVTime;
 		fovDiff *= frameLength;
 		goalFOVTime -= frameLength;
-		if(goalFOVTime < 0.0)
+		if (goalFOVTime < 0.0)
 		{
 			camera_fov = goalFOV;
 		}
@@ -868,7 +906,7 @@ void Camera::updateGoalFOV(void)
 //---------------------------------------------------------------------------
 void Camera::updateGoalRotation(void)
 {
-	if(goalRotTime > 0.0)
+	if (goalRotTime > 0.0)
 	{
 		float goalProjectionAngle = goalRotation.x - projectionAngle;
 		goalProjectionAngle /= goalRotTime;
@@ -877,10 +915,10 @@ void Camera::updateGoalRotation(void)
 		goalCameraRotation /= goalRotTime;
 		goalCameraRotation *= frameLength;
 		goalRotTime -= frameLength;
-		if(goalRotTime < 0.0)
+		if (goalRotTime < 0.0)
 		{
 			projectionAngle = goalRotation.x;
-			cameraRotation = goalRotation.y;
+			cameraRotation  = goalRotation.y;
 			setCameraRotation(cameraRotation, cameraRotation);
 		}
 		else
@@ -899,71 +937,77 @@ void Camera::updateGoalRotation(void)
 //---------------------------------------------------------------------------
 void Camera::updateGoalPosition(Stuff::Vector3D& pos)
 {
-	if(goalPosTime > 0.0)
+	if (goalPosTime > 0.0)
 	{
 		Stuff::Vector3D posDiff;
 		posDiff.Subtract(goalPosition, pos);
 		posDiff /= goalPosTime;
 		posDiff *= frameLength;
 		goalPosTime -= frameLength;
-		if(goalPosTime < 0.0f)
+		if (goalPosTime < 0.0f)
 			pos = goalPosition;
 		else
 			pos.Add(position, posDiff);
 	}
 	else
 	{
-		goalPosTime = 0.0;
+		goalPosTime  = 0.0;
 		goalPosition = pos;
 	}
 }
 
 //---------------------------------------------------------------------------
-static const float rhatx = 1.0; //cos(0/*degrees*/ * DEGREES_TO_RADS);
-static const float rhaty = 0.0; //sin(0/*degrees*/ * DEGREES_TO_RADS);
-static const float ghatx = -0.5; //cos(120/*degrees*/ * DEGREES_TO_RADS);
-static const float ghaty = 0.86602540378443864676372317075294f; //sin(120/*degrees*/ * DEGREES_TO_RADS);
-static const float bhatx = -0.5; //cos(240/*degrees*/ * DEGREES_TO_RADS);
-static const float bhaty = -0.86602540378443864676372317075294f; //sin(240/*degrees*/ * DEGREES_TO_RADS);
+static const float rhatx = 1.0;  // cos(0/*degrees*/ * DEGREES_TO_RADS);
+static const float rhaty = 0.0;  // sin(0/*degrees*/ * DEGREES_TO_RADS);
+static const float ghatx = -0.5; // cos(120/*degrees*/ * DEGREES_TO_RADS);
+static const float ghaty =
+	0.86602540378443864676372317075294f; // sin(120/*degrees*/ *
+										 // DEGREES_TO_RADS);
+static const float bhatx = -0.5; // cos(240/*degrees*/ * DEGREES_TO_RADS);
+static const float bhaty =
+	-0.86602540378443864676372317075294f; // sin(240/*degrees*/ *
+										  // DEGREES_TO_RADS);
 static const float two_pi = 6.283185307179586476925286766559f;
 
 /* all params range from 0.0 to 1.0 */
-static void rgb2hsi(float r, float g, float b, float& hue, float& saturation, float& intensity)
+static void rgb2hsi(
+	float r, float g, float b, float& hue, float& saturation, float& intensity)
 {
 	intensity = (r + g + b) / 3.0;
-	if(0.0 >= intensity)
+	if (0.0 >= intensity)
 	{
 		saturation = 0.0;
-		hue = 0.0;
+		hue		   = 0.0;
 		return;
 	}
 	float min = r;
-	if(g < min)
+	if (g < min)
 	{
 		min = g;
 	}
-	if(b < min)
+	if (b < min)
 	{
 		min = b;
 	}
 	saturation = 1.0 - (min / intensity);
-	float cx = r * rhatx + g * ghatx + b * bhatx;
-	float cy = r * rhaty + g * ghaty + b * bhaty;
-	hue = atan2(cy, cx);
-	if(0.0 > hue)
+	float cx   = r * rhatx + g * ghatx + b * bhatx;
+	float cy   = r * rhaty + g * ghaty + b * bhaty;
+	hue		   = atan2(cy, cx);
+	if (0.0 > hue)
 	{
 		hue += two_pi;
 	}
 	hue /= two_pi;
 }
 
-static void hsi2rgb(float hue, float saturation, float intensity, float& r, float& g, float& b)
+static void hsi2rgb(
+	float hue, float saturation, float intensity, float& r, float& g, float& b)
 {
 	float thue = hue;
-	if((1.0f / 3.0f) > hue)
+	if ((1.0f / 3.0f) > hue)
 	{
 	}
-	else if((2.0f / 3.0f) > hue)
+	else if ((2.0f / 3.0f) > hue)
 	{
 		thue -= 1.0f / 3.0f;
 	}
@@ -973,43 +1017,46 @@ static void hsi2rgb(float hue, float saturation, float intensity, float& r, floa
 	}
 	float chatx = cos(two_pi * thue);
 	float chaty = sin(two_pi * thue);
-	float ti = 3.0f * intensity;
+	float ti	= 3.0f * intensity;
 	{
-		b = (1.0f - saturation) * intensity;
-		float tib = ti - b;
+		b				  = (1.0f - saturation) * intensity;
+		float tib		  = ti - b;
 		float denominator = (chaty * (ghatx - rhatx) - chatx * (ghaty - rhaty));
-		if(0.0f == denominator)
+		if (0.0f == denominator)
 		{
-			/* I suspect it's mathematically impossible to get here, but I'm too lazy to make sure. */
+			/* I suspect it's mathematically impossible to get here, but I'm too
+			 * lazy to make sure. */
 			denominator = 0.000001f;
 		}
-		g = ((b * bhaty + tib * rhaty) * chatx - (b * bhatx + tib * rhatx) * chaty) / denominator;
+		g = ((b * bhaty + tib * rhaty) * chatx -
+				(b * bhatx + tib * rhatx) * chaty) /
+			denominator;
 		r = tib - g;
 	}
-	if((1.0f / 3.0f) > hue)
+	if ((1.0f / 3.0f) > hue)
 	{
 	}
-	else if((2.0f / 3.0f) > hue)
+	else if ((2.0f / 3.0f) > hue)
 	{
 		float swap = b;
-		b = g;
-		g = r;
-		r = swap;
+		b		   = g;
+		g		   = r;
+		r		   = swap;
 	}
 	else
 	{
 		float swap = b;
-		b = r;
-		r = g;
-		g = swap;
+		b		   = r;
+		r		   = g;
+		g		   = swap;
 	}
 }
 
 /* interpolation with dy/dx == 0 at x = 0 and x = 1 */
 float smoothConnectingInterpolation(float y0, float y1, float x)
 {
-	float a = 0.5 * (y0 - y1);
-	float b = 0.5 * (y0 + y1);
+	float a		 = 0.5 * (y0 - y1);
+	float b		 = 0.5 * (y0 + y1);
 	float retval = a * cos(x * (0.5 * two_pi)) + b;
 	return retval;
 }
@@ -1017,26 +1064,28 @@ float smoothConnectingInterpolation(float y0, float y1, float x)
 void Camera::updateDaylight(bool bInitialize)
 {
 	float day2NightTransitionTime = this->day2NightTransitionTime;
-	if(bInitialize)
+	if (bInitialize)
 	{
-		if(day2NightTransitionTime <= 0.0f)
+		if (day2NightTransitionTime <= 0.0f)
 		{
-			day2NightTransitionTime = 3600.0f/*seconds*/;
+			day2NightTransitionTime = 3600.0f /*seconds*/;
 		}
-		dayLightTime = dayLightPitch / 360.0f/*degrees*/ * day2NightTransitionTime;
+		dayLightTime =
+			dayLightPitch / 360.0f /*degrees*/ * day2NightTransitionTime;
 	}
-	if(day2NightTransitionTime > 0.0f)
+	if (day2NightTransitionTime > 0.0f)
 	{
-		while(dayLightTime > day2NightTransitionTime)
+		while (dayLightTime > day2NightTransitionTime)
 		{
 			dayLightTime -= day2NightTransitionTime;
 		}
 		float oneOverDay2NightTransitionTime = 1.0f / day2NightTransitionTime;
-		lightPitch = dayLightTime * oneOverDay2NightTransitionTime * 360.0/*degrees*/;
+		lightPitch =
+			dayLightTime * oneOverDay2NightTransitionTime * 360.0 /*degrees*/;
 		/* arbitrary assumed daytime sky color */
-		static const float fDaySkyRed = 193.0f;
+		static const float fDaySkyRed   = 193.0f;
 		static const float fDaySkyGreen = 231.0f;
-		static const float fDaySkyBlue = 238.0f;
+		static const float fDaySkyBlue  = 238.0f;
 		float fSkyRed;
 		float fSkyGreen;
 		float fSkyBlue;
@@ -1046,146 +1095,183 @@ void Camera::updateDaylight(bool bInitialize)
 		float fLightRed;
 		float fLightGreen;
 		float fLightBlue;
-		if(180.0f/*degrees*/ >= lightPitch)
+		if (180.0f /*degrees*/ >= lightPitch)
 		{
-			//Set flags to help renderer with light sources.
+			// Set flags to help renderer with light sources.
 			float lightAltitude = lightPitch;
-			if(lightPitch > 90.0f)
+			if (lightPitch > 90.0f)
 				lightAltitude = 180.0f - lightPitch;
 			isNight = false;
-			if(lightAltitude < NIGHT_LIGHT_PITCH)
+			if (lightAltitude < NIGHT_LIGHT_PITCH)
 				isNight = true;
-			if(lightAltitude > NIGHT_START_PITCH)
+			if (lightAltitude > NIGHT_START_PITCH)
 			{
 				nightFactor = 0.0f;
 			}
 			else
 			{
-				nightFactor = (NIGHT_START_PITCH - lightAltitude) / (NIGHT_START_PITCH - NIGHT_LIGHT_PITCH);
-				if(nightFactor > 1.0f)
+				nightFactor = (NIGHT_START_PITCH - lightAltitude) /
+							  (NIGHT_START_PITCH - NIGHT_LIGHT_PITCH);
+				if (nightFactor > 1.0f)
 					nightFactor = 1.0f;
 			}
 			/* daytime */
 			float fSineOfPitch = sin(lightPitch * DEGREES_TO_RADS);
 			/* these calculations are sort of based on optics */
-			//Do not let day ambient go darker then nightAmbient for smooth transitions.
-			fAmbientRed = (dayAmbientRed - nightAmbientRed) * fSineOfPitch + nightAmbientRed;
-			fAmbientGreen = (dayAmbientGreen - nightAmbientGreen) * fSineOfPitch + nightAmbientGreen;
-			fAmbientBlue = (dayAmbientBlue - nightAmbientBlue) * fSineOfPitch + nightAmbientBlue;
+			// Do not let day ambient go darker then nightAmbient for smooth
+			// transitions.
+			fAmbientRed = (dayAmbientRed - nightAmbientRed) * fSineOfPitch +
+						  nightAmbientRed;
+			fAmbientGreen =
+				(dayAmbientGreen - nightAmbientGreen) * fSineOfPitch +
+				nightAmbientGreen;
+			fAmbientBlue = (dayAmbientBlue - nightAmbientBlue) * fSineOfPitch +
+						   nightAmbientBlue;
 			/* these sunset color calculations are not based on optics*/
-			float fAngleFromTheHorizon = 90.0/*degrees*/ - fabs(90.0/*degrees*/ - lightPitch);
-			/*static*/ const float fSunSetStartAngle = 35.0/*degrees*/;
-			if(fSunSetStartAngle > fAngleFromTheHorizon)
+			float fAngleFromTheHorizon =
+				90.0 /*degrees*/ - fabs(90.0 /*degrees*/ - lightPitch);
+			/*static*/ const float fSunSetStartAngle = 35.0 /*degrees*/;
+			if (fSunSetStartAngle > fAngleFromTheHorizon)
 			{
-				const float fSunSetRed = sunsetLightRed;
+				const float fSunSetRed   = sunsetLightRed;
 				const float fSunSetGreen = sunsetLightGreen;
-				const float fSunSetBlue = sunsetLightBlue;
+				const float fSunSetBlue  = sunsetLightBlue;
 				float fSunSetHue;
 				float fSunSetSaturation;
 				float fSunSetIntensity;
-				rgb2hsi(fSunSetRed / 255.0f, fSunSetGreen / 255.0f, fSunSetBlue / 255.0f
-						, fSunSetHue, fSunSetSaturation, fSunSetIntensity);
+				rgb2hsi(fSunSetRed / 255.0f, fSunSetGreen / 255.0f,
+					fSunSetBlue / 255.0f, fSunSetHue, fSunSetSaturation,
+					fSunSetIntensity);
 				float fDayLightHue;
 				float fDayLightSaturation;
 				float fDayLightIntensity;
-				rgb2hsi(dayLightRed / 255.0f, dayLightGreen / 255.0f, dayLightBlue / 255.0f
-						, fDayLightHue, fDayLightSaturation, fDayLightIntensity);
-				float fSunSetProportion = 0.75/*arbitrary*/ * sin((fSunSetStartAngle - fAngleFromTheHorizon) * (90.0f/*degrees*/ / fSunSetStartAngle) * DEGREES_TO_RADS);
+				rgb2hsi(dayLightRed / 255.0f, dayLightGreen / 255.0f,
+					dayLightBlue / 255.0f, fDayLightHue, fDayLightSaturation,
+					fDayLightIntensity);
+				float fSunSetProportion =
+					0.75 /*arbitrary*/ *
+					sin((fSunSetStartAngle - fAngleFromTheHorizon) *
+						(90.0f /*degrees*/ / fSunSetStartAngle) *
+						DEGREES_TO_RADS);
 				float fOneMinusSunSetProportion = 1.0f - fSunSetProportion;
-				/* for sunlight color, linear interpolation in HSI color space is a better
-				model than linear interpolation in RGB color space */
-				float H = fSunSetHue * fSunSetProportion + fDayLightHue * fOneMinusSunSetProportion;
-				float S = fSunSetSaturation * fSunSetProportion + fDayLightSaturation * fOneMinusSunSetProportion;
-				float I = fSunSetIntensity * fSunSetProportion + fDayLightIntensity * fOneMinusSunSetProportion;
+				/* for sunlight color, linear interpolation in HSI color space
+				is a better model than linear interpolation in RGB color space
+			  */
+				float H = fSunSetHue * fSunSetProportion +
+						  fDayLightHue * fOneMinusSunSetProportion;
+				float S = fSunSetSaturation * fSunSetProportion +
+						  fDayLightSaturation * fOneMinusSunSetProportion;
+				float I = fSunSetIntensity * fSunSetProportion +
+						  fDayLightIntensity * fOneMinusSunSetProportion;
 				float R, G, B;
 				hsi2rgb(H, S, I, R, G, B);
-				if(R > 0.99f)
+				if (R > 0.99f)
 				{
 					R = 0.99f;
 				}
-				if(G > 0.99f)
+				if (G > 0.99f)
 				{
 					G = 0.99f;
 				}
-				if(B > 0.99f)
+				if (B > 0.99f)
 				{
 					B = 0.99f;
 				}
-				if(R < 0.0f)
+				if (R < 0.0f)
 				{
 					R = 0.0f;
 				}
-				if(G < 0.0f)
+				if (G < 0.0f)
 				{
 					G = 0.0f;
 				}
-				if(B < 0.0f)
+				if (B < 0.0f)
 				{
 					B = 0.0f;
 				}
-				fLightRed = R * 255.0f;
+				fLightRed   = R * 255.0f;
 				fLightGreen = G * 255.0f;
-				fLightBlue = B * 255.0f;
-				/* Basically I'm using an arbitrary harcoded formula (which may need some
-				tweaking) to approximate the sky color as it progresses to sunset. For more
-				accurate results it would probably be better to store a table of colors obtained
-				from photographs. */
-				fSunSetProportion = sin((fSunSetStartAngle - fAngleFromTheHorizon) * (90.0f/*degrees*/ / fSunSetStartAngle) * DEGREES_TO_RADS);
+				fLightBlue  = B * 255.0f;
+				/* Basically I'm using an arbitrary harcoded formula (which may
+				need some tweaking) to approximate the sky color as it
+				progresses to sunset. For more accurate results it would
+				probably be better to store a table of colors obtained from
+				photographs. */
+				fSunSetProportion = sin(
+					(fSunSetStartAngle - fAngleFromTheHorizon) *
+					(90.0f /*degrees*/ / fSunSetStartAngle) * DEGREES_TO_RADS);
 				float fSunAzimuth = lightYaw;
-				if(90.0/*degrees*/ < lightPitch)
+				if (90.0 /*degrees*/ < lightPitch)
 				{
-					fSunAzimuth += 180.0/*degress*/;
+					fSunAzimuth += 180.0 /*degress*/;
 				}
-				float fAzimuthCameraAngleRelativeToTheSun = fmod(fabs(fSunAzimuth - (getCameraRotation() - 135.0)), 360.0/*degrees*/);
-				if(180.0/*degress*/ < fAzimuthCameraAngleRelativeToTheSun)
+				float fAzimuthCameraAngleRelativeToTheSun =
+					fmod(fabs(fSunAzimuth - (getCameraRotation() - 135.0)),
+						360.0 /*degrees*/);
+				if (180.0 /*degress*/ < fAzimuthCameraAngleRelativeToTheSun)
 				{
-					fAzimuthCameraAngleRelativeToTheSun = 360.0/*degrees*/ - fAzimuthCameraAngleRelativeToTheSun;
+					fAzimuthCameraAngleRelativeToTheSun =
+						360.0 /*degrees*/ - fAzimuthCameraAngleRelativeToTheSun;
 				}
-				fSunSetProportion *= (1.0 - pow(fAzimuthCameraAngleRelativeToTheSun / 180.0/*degress*/, 2.0/*arbitrary*/));
+				fSunSetProportion *=
+					(1.0 - pow(fAzimuthCameraAngleRelativeToTheSun /
+								   180.0 /*degress*/,
+							   2.0 /*arbitrary*/));
 				fOneMinusSunSetProportion = 1.0 - fSunSetProportion;
 				float fDaySkyHue;
 				float fDaySkySaturation;
 				float fDaySkyIntensity;
-				rgb2hsi(fDaySkyRed / 255.0f, fDaySkyGreen / 255.0f, fDaySkyBlue / 255.0f
-						, fDaySkyHue, fDaySkySaturation, fDaySkyIntensity);
-				H = fSunSetHue * fSunSetProportion + fDaySkyHue * fOneMinusSunSetProportion;
+				rgb2hsi(fDaySkyRed / 255.0f, fDaySkyGreen / 255.0f,
+					fDaySkyBlue / 255.0f, fDaySkyHue, fDaySkySaturation,
+					fDaySkyIntensity);
+				H = fSunSetHue * fSunSetProportion +
+					fDaySkyHue * fOneMinusSunSetProportion;
 				/*static*/ const float fGreenHue = 1.0f / 3.0f;
 				float za;
-				if(fGreenHue > H)
+				if (fGreenHue > H)
 				{
-					/*static*/ const float fGreenHueMargin = 1.0 / 6.0 + 0.12/*arbitrary*/;
-					if((fGreenHue - fGreenHueMargin) > H)
+					/*static*/ const float fGreenHueMargin =
+						1.0 / 6.0 + 0.12 /*arbitrary*/;
+					if ((fGreenHue - fGreenHueMargin) > H)
 					{
 						za = 0.0;
 					}
 					else
 					{
-						za = smoothConnectingInterpolation(0, 1, (H - (fGreenHue - fGreenHueMargin)) / fGreenHueMargin);
-						za = pow(fabs(za), 0.15f/*arbitrary*/);
+						za = smoothConnectingInterpolation(0, 1,
+							(H - (fGreenHue - fGreenHueMargin)) /
+								fGreenHueMargin);
+						za = pow(fabs(za), 0.15f /*arbitrary*/);
 					}
 				}
 				else
 				{
-					/*static*/ const float fGreenHueMargin = 1.0 / 6.0 + 0.00/*arbitrary*/;
-					if((fGreenHue + fGreenHueMargin) < H)
+					/*static*/ const float fGreenHueMargin =
+						1.0 / 6.0 + 0.00 /*arbitrary*/;
+					if ((fGreenHue + fGreenHueMargin) < H)
 					{
 						za = 0.0;
 					}
 					else
 					{
-						za = smoothConnectingInterpolation(0, 1, ((fGreenHue + fGreenHueMargin) - H) / fGreenHueMargin);
-						za = pow(fabs(za), 0.15f/*arbitrary*/);
+						za = smoothConnectingInterpolation(0, 1,
+							((fGreenHue + fGreenHueMargin) - H) /
+								fGreenHueMargin);
+						za = pow(fabs(za), 0.15f /*arbitrary*/);
 					}
 				}
-				S = fSunSetSaturation * fSunSetProportion + fDaySkySaturation * fOneMinusSunSetProportion;
-				S = 0.0f/*arbitrary*/ * za + S * (1.0f - za);
-				/*static*/ const float brightHue = 0.25 * 1.0 / 3.0; /*arbitrary*/
+				S = fSunSetSaturation * fSunSetProportion +
+					fDaySkySaturation * fOneMinusSunSetProportion;
+				S = 0.0f /*arbitrary*/ * za + S * (1.0f - za);
+				/*static*/ const float brightHue =
+					0.25 * 1.0 / 3.0; /*arbitrary*/
 				float zb;
-				if(brightHue > H)
+				if (brightHue > H)
 				{
-					if(brightHue != fSunSetHue)
+					if (brightHue != fSunSetHue)
 					{
-						zb = sin((H - fSunSetHue) / (brightHue - fSunSetHue) * 0.35f * two_pi);
+						zb = sin((H - fSunSetHue) / (brightHue - fSunSetHue) *
+								 0.35f * two_pi);
 					}
 					else
 					{
@@ -1194,159 +1280,181 @@ void Camera::updateDaylight(bool bInitialize)
 				}
 				else
 				{
-					zb = sin((fDaySkyHue - H) / (fDaySkyHue - brightHue) * 0.35f * two_pi);
+					zb = sin((fDaySkyHue - H) / (fDaySkyHue - brightHue) *
+							 0.35f * two_pi);
 				}
 				zb = pow(fabs(zb), 1.0f);
-				I = fSunSetIntensity * fSunSetProportion + fDaySkyIntensity * fOneMinusSunSetProportion;
-				I = 0.85f/*arbitrary*/ * zb + I * (1.0f - zb);
-				I *= (1.0 - (fAzimuthCameraAngleRelativeToTheSun / 180.0/*degress*/) * (1.0 - (fAngleFromTheHorizon / fSunSetStartAngle)));
+				I  = fSunSetIntensity * fSunSetProportion +
+					fDaySkyIntensity * fOneMinusSunSetProportion;
+				I = 0.85f /*arbitrary*/ * zb + I * (1.0f - zb);
+				I *= (1.0 -
+					  (fAzimuthCameraAngleRelativeToTheSun /
+						  180.0 /*degress*/) *
+						  (1.0 - (fAngleFromTheHorizon / fSunSetStartAngle)));
 				hsi2rgb(H, S, I, R, G, B);
-				if(R > 0.99f)
+				if (R > 0.99f)
 				{
 					R = 0.99f;
 				}
-				if(G > 0.99f)
+				if (G > 0.99f)
 				{
 					G = 0.99f;
 				}
-				if(B > 0.99f)
+				if (B > 0.99f)
 				{
 					B = 0.99f;
 				}
-				if(R < 0.0f)
+				if (R < 0.0f)
 				{
 					R = 0.0f;
 				}
-				if(G < 0.0f)
+				if (G < 0.0f)
 				{
 					G = 0.0f;
 				}
-				if(B < 0.0f)
+				if (B < 0.0f)
 				{
 					B = 0.0f;
 				}
-				fSkyRed = R * 255.0f;
+				fSkyRed   = R * 255.0f;
 				fSkyGreen = G * 255.0f;
-				fSkyBlue = B * 255.0f;
-				/*static*/ const float fFadeToDarknessStartAngle  = 5.0/*degrees*/;
-				if(fFadeToDarknessStartAngle > fAngleFromTheHorizon)
+				fSkyBlue  = B * 255.0f;
+				/*static*/ const float fFadeToDarknessStartAngle =
+					5.0 /*degrees*/;
+				if (fFadeToDarknessStartAngle > fAngleFromTheHorizon)
 				{
-					float fOneMinusDarknessProportion = sin((fAngleFromTheHorizon) * (90.0f/*degrees*/ / fFadeToDarknessStartAngle) * DEGREES_TO_RADS);
-					float fDarknessProportion = 1.0f - fOneMinusDarknessProportion;
-					fLightRed = fLightRed * fOneMinusDarknessProportion + nightLightRed * fDarknessProportion;
-					fLightGreen = fLightGreen * fOneMinusDarknessProportion + nightLightGreen * fDarknessProportion;
-					fLightBlue = fLightBlue * fOneMinusDarknessProportion + nightLightBlue * fDarknessProportion;
-					fSkyRed = fSkyRed * fOneMinusDarknessProportion;
+					float fOneMinusDarknessProportion =
+						sin((fAngleFromTheHorizon) *
+							(90.0f /*degrees*/ / fFadeToDarknessStartAngle) *
+							DEGREES_TO_RADS);
+					float fDarknessProportion =
+						1.0f - fOneMinusDarknessProportion;
+					fLightRed = fLightRed * fOneMinusDarknessProportion +
+								nightLightRed * fDarknessProportion;
+					fLightGreen = fLightGreen * fOneMinusDarknessProportion +
+								  nightLightGreen * fDarknessProportion;
+					fLightBlue = fLightBlue * fOneMinusDarknessProportion +
+								 nightLightBlue * fDarknessProportion;
+					fSkyRed   = fSkyRed * fOneMinusDarknessProportion;
 					fSkyGreen = fSkyGreen * fOneMinusDarknessProportion;
-					fSkyBlue = fSkyBlue * fOneMinusDarknessProportion;
+					fSkyBlue  = fSkyBlue * fOneMinusDarknessProportion;
 				}
 			}
 			else
 			{
-				fLightRed = dayLightRed;
+				fLightRed   = dayLightRed;
 				fLightGreen = dayLightGreen;
-				fLightBlue = dayLightBlue;
-				fSkyRed = fDaySkyRed;
-				fSkyGreen = fDaySkyGreen;
-				fSkyBlue = fDaySkyBlue;
+				fLightBlue  = dayLightBlue;
+				fSkyRed		= fDaySkyRed;
+				fSkyGreen   = fDaySkyGreen;
+				fSkyBlue	= fDaySkyBlue;
 			}
 		}
 		else
 		{
-			//Set flags to help renderer with light sources.
-			isNight = true;
+			// Set flags to help renderer with light sources.
+			isNight		= true;
 			nightFactor = 1.0f;
 			/* nighttime */
-			float moonPitch = 180.0f/*degrees*/ - fabs(180.0f/*degrees*/ - lightPitch);
+			float moonPitch =
+				180.0f /*degrees*/ - fabs(180.0f /*degrees*/ - lightPitch);
 			lightPitch = moonPitch;
-			//float fSineOfPitch = sin(moonPitch * DEGREES_TO_RADS);
+			// float fSineOfPitch = sin(moonPitch * DEGREES_TO_RADS);
 			/* these calculations are sort of based on optics */
-			// DO NOT ever get darker then the night Ambient.  Change hue with moon.
-			// Not realistic but very unplayable in the pitch dark.
-			fAmbientRed = nightAmbientRed;// * fSineOfPitch;
-			fAmbientGreen = nightAmbientGreen;// * fSineOfPitch;
-			fAmbientBlue = nightAmbientBlue;// * fSineOfPitch;
-			fLightRed = nightLightRed;
-			fLightGreen = nightLightGreen;
-			fLightBlue = nightLightBlue;
-			fSkyRed = 0.0;
-			fSkyGreen = 0.0;
-			fSkyBlue = 0.0;
+			// DO NOT ever get darker then the night Ambient.  Change hue with
+			// moon. Not realistic but very unplayable in the pitch dark.
+			fAmbientRed   = nightAmbientRed;   // * fSineOfPitch;
+			fAmbientGreen = nightAmbientGreen; // * fSineOfPitch;
+			fAmbientBlue  = nightAmbientBlue;  // * fSineOfPitch;
+			fLightRed	 = nightLightRed;
+			fLightGreen   = nightLightGreen;
+			fLightBlue	= nightLightBlue;
+			fSkyRed		  = 0.0;
+			fSkyGreen	 = 0.0;
+			fSkyBlue	  = 0.0;
 		}
-		ambientRed = fAmbientRed;
-		ambientBlue = fAmbientBlue;
+		ambientRed   = fAmbientRed;
+		ambientBlue  = fAmbientBlue;
 		ambientGreen = fAmbientGreen;
-		lightRed = fLightRed;
-		lightGreen = fLightGreen;
-		lightBlue = fLightBlue;
+		lightRed	 = fLightRed;
+		lightGreen   = fLightGreen;
+		lightBlue	= fLightBlue;
 		Stuff::LinearMatrix4D lightToWorldMatrix;
 		lightToWorldMatrix.BuildTranslation(Stuff::Point3D(0.0f, 0.0f, 0.0f));
-		lightToWorldMatrix.BuildRotation(Stuff::EulerAngles(lightPitch * DEGREES_TO_RADS, (lightYaw + 135.0) * DEGREES_TO_RADS, 0.0f));
+		lightToWorldMatrix.BuildRotation(
+			Stuff::EulerAngles(lightPitch * DEGREES_TO_RADS,
+				(lightYaw + 135.0) * DEGREES_TO_RADS, 0.0f));
 		worldLights[0]->SetLightToWorld(&lightToWorldMatrix);
-		/* In the real world, fog color is generally varies with the ambient color, but in our
-		game fog color more reflects "sky color near the horizon" */
-		float fFogTransparency = fogTransparency;
-		float fOpaqueDayFogRed = (float)((dayFogColor >> 16) & 0xff);
+		/* In the real world, fog color is generally varies with the ambient
+		color, but in our game fog color more reflects "sky color near the
+		horizon" */
+		float fFogTransparency   = fogTransparency;
+		float fOpaqueDayFogRed   = (float)((dayFogColor >> 16) & 0xff);
 		float fOpaqueDayFogGreen = (float)((dayFogColor >> 8) & 0xff);
-		float fOpaqueDayFogBlue = (float)((dayFogColor) & 0xff);
-		static const float fBlackSkyLevel = 32.0f; /* If the light is below this level, the sky is effectively black. */
-		//float fFogRed = fLightRed - fBlackSkyLevel;
-		//float fFogGreen = fLightGreen - fBlackSkyLevel;
-		//float fFogBlue = fLightBlue - fBlackSkyLevel;
-		float fFogRed = fAmbientRed - fBlackSkyLevel;
+		float fOpaqueDayFogBlue  = (float)((dayFogColor)&0xff);
+		static const float fBlackSkyLevel =
+			32.0f; /* If the light is below this level, the sky is effectively
+					  black. */
+		// float fFogRed = fLightRed - fBlackSkyLevel;
+		// float fFogGreen = fLightGreen - fBlackSkyLevel;
+		// float fFogBlue = fLightBlue - fBlackSkyLevel;
+		float fFogRed   = fAmbientRed - fBlackSkyLevel;
 		float fFogGreen = fAmbientGreen - fBlackSkyLevel;
-		float fFogBlue = fAmbientBlue - fBlackSkyLevel;
-		if(0.0f > fFogRed)
+		float fFogBlue  = fAmbientBlue - fBlackSkyLevel;
+		if (0.0f > fFogRed)
 		{
 			fFogRed = 0.0f;
 		}
-		if(0.0f > fFogGreen)
+		if (0.0f > fFogGreen)
 		{
 			fFogGreen = 0.0f;
 		}
-		if(0.0f > fFogBlue)
+		if (0.0f > fFogBlue)
 		{
 			fFogBlue = 0.0f;
 		}
-		//float fTmpRed = (float)(dayLightRed) - fBlackSkyLevel;
-		//float fTmpGreen = (float)(dayLightGreen) - fBlackSkyLevel;
-		//float fTmpBlue = (float)(dayLightBlue) - fBlackSkyLevel;
-		float fTmpRed = (float)(dayAmbientRed) - fBlackSkyLevel;
-		float fTmpGreen = (float)(dayAmbientGreen) - fBlackSkyLevel;
-		float fTmpBlue = (float)(dayAmbientBlue) - fBlackSkyLevel;
-		float epsilon = 1.0;
-		if(epsilon > fTmpRed)
+		// float fTmpRed = (float)(dayLightRed) - fBlackSkyLevel;
+		// float fTmpGreen = (float)(dayLightGreen) - fBlackSkyLevel;
+		// float fTmpBlue = (float)(dayLightBlue) - fBlackSkyLevel;
+		float fTmpRed   = (float)(dayAmbientRed)-fBlackSkyLevel;
+		float fTmpGreen = (float)(dayAmbientGreen)-fBlackSkyLevel;
+		float fTmpBlue  = (float)(dayAmbientBlue)-fBlackSkyLevel;
+		float epsilon   = 1.0;
+		if (epsilon > fTmpRed)
 		{
 			fTmpRed = epsilon;
 		}
-		if(epsilon > fTmpGreen)
+		if (epsilon > fTmpGreen)
 		{
 			fTmpGreen = epsilon;
 		}
-		if(epsilon > fTmpBlue)
+		if (epsilon > fTmpBlue)
 		{
 			fTmpBlue = epsilon;
 		}
 		float fOneMinusFogTransparency = 1.0 - fFogTransparency;
-		fFogRed = fFogRed / fTmpRed * fOpaqueDayFogRed * fOneMinusFogTransparency;
-		fFogGreen = fFogGreen / fTmpGreen * fOpaqueDayFogGreen * fOneMinusFogTransparency;
-		fFogBlue = fFogBlue / fTmpBlue * fOpaqueDayFogBlue * fOneMinusFogTransparency;
+		fFogRed =
+			fFogRed / fTmpRed * fOpaqueDayFogRed * fOneMinusFogTransparency;
+		fFogGreen = fFogGreen / fTmpGreen * fOpaqueDayFogGreen *
+					fOneMinusFogTransparency;
+		fFogBlue =
+			fFogBlue / fTmpBlue * fOpaqueDayFogBlue * fOneMinusFogTransparency;
 		/* Here we add in the sky color component. */
-		fFogRed = fFogRed + fFogTransparency * fSkyRed;
-		fFogGreen = fFogGreen + fFogTransparency * fSkyGreen;
-		fFogBlue = fFogBlue + fFogTransparency * fSkyBlue;
-		uint32_t fogRed = fFogRed;
+		fFogRed			  = fFogRed + fFogTransparency * fSkyRed;
+		fFogGreen		  = fFogGreen + fFogTransparency * fSkyGreen;
+		fFogBlue		  = fFogBlue + fFogTransparency * fSkyBlue;
+		uint32_t fogRed   = fFogRed;
 		uint32_t fogGreen = fFogGreen;
-		uint32_t fogBlue = fFogBlue;
-		if(0xff < fogRed)
+		uint32_t fogBlue  = fFogBlue;
+		if (0xff < fogRed)
 		{
 			fogRed = 0xff;
 		}
-		if(0xff < fogGreen)
+		if (0xff < fogGreen)
 		{
 			fogGreen = 0xff;
 		}
-		if(0xff < fogBlue)
+		if (0xff < fogBlue)
 		{
 			fogBlue = 0xff;
 		}
@@ -1358,45 +1466,49 @@ void Camera::updateDaylight(bool bInitialize)
 //---------------------------------------------------------------------------
 void Camera::updateLetterboxAndFade(void)
 {
-	//OK, if we are inMovieMode and we haven't finished letterboxing, finish it!
-	if(!startEnding && inMovieMode && (letterBoxTime != MaxLetterBoxTime))
+	// OK, if we are inMovieMode and we haven't finished letterboxing, finish
+	// it!
+	if (!startEnding && inMovieMode && (letterBoxTime != MaxLetterBoxTime))
 	{
 		letterBoxTime += frameLength;
 		float letterBoxPercent = letterBoxTime / MaxLetterBoxTime;
-		if(letterBoxTime > MaxLetterBoxTime)
+		if (letterBoxTime > MaxLetterBoxTime)
 		{
 			letterBoxPercent = 1.0f;
-			letterBoxTime = MaxLetterBoxTime;
+			letterBoxTime	= MaxLetterBoxTime;
 		}
-		letterBoxPos = letterBoxPercent * MaxLetterBoxPos;
+		letterBoxPos   = letterBoxPercent * MaxLetterBoxPos;
 		letterBoxAlpha = (letterBoxPercent * 255.0f);
 	}
-	//Now, if we are in startEnding and we haven't finished DE-Letterboxing, finish it.
-	if(startEnding && inMovieMode && (letterBoxPos != 0.0f))
+	// Now, if we are in startEnding and we haven't finished DE-Letterboxing,
+	// finish it.
+	if (startEnding && inMovieMode && (letterBoxPos != 0.0f))
 	{
 		letterBoxTime -= frameLength;
 		float letterBoxPercent = letterBoxTime / MaxLetterBoxTime;
-		if(letterBoxTime < 0.0f)
+		if (letterBoxTime < 0.0f)
 		{
 			letterBoxPercent = 0.0f;
-			inMovieMode = false;
-			startEnding = false;
+			inMovieMode		 = false;
+			startEnding		 = false;
 		}
-		letterBoxPos = letterBoxPercent * MaxLetterBoxPos;
+		letterBoxPos   = letterBoxPercent * MaxLetterBoxPos;
 		letterBoxAlpha = (letterBoxPercent * 255.0f);
 	}
-	//If we are fading toward a color, continue the fade.
+	// If we are fading toward a color, continue the fade.
 	// We only fades during movie Mode at present!!
-	if(inMovieMode && inFadeMode)
+	if (inMovieMode && inFadeMode)
 	{
 		timeLeftToFade += frameLength;
 		float fadePercent = timeLeftToFade / startFadeTime;
-		if(timeLeftToFade > startFadeTime)
+		if (timeLeftToFade > startFadeTime)
 		{
 			fadePercent = 1.0f;
-			inFadeMode = false;
+			inFadeMode  = false;
 		}
-		fadeAlpha = (fadeStart >> 24) + (fadePercent * (float(fadeColor >> 24) - float(fadeStart >> 24)));
+		fadeAlpha =
+			(fadeStart >> 24) +
+			(fadePercent * (float(fadeColor >> 24) - float(fadeStart >> 24)));
 	}
 }
 
@@ -1406,16 +1518,16 @@ int32_t Camera::update(void)
 	//---------------------------------------------------------
 	// This is the guts.  This routine will be used to
 	// move the camera, cut to different shots, etc.
-	switch(cameraClass)
+	switch (cameraClass)
 	{
-		case BASE_CAMERA:
-			break;
-		default:
-			//return INVALID_CAMERA;
-			NODEFAULT;
+	case BASE_CAMERA:
+		break;
+	default:
+		// return INVALID_CAMERA;
+		NODEFAULT;
 	}
 	float oldNightFactor = nightFactor;
-	//updateDaylight();
+	// updateDaylight();
 	//----------------------------------------------------
 	// Check if light moved.
 	// Should not be necessary every frame.
@@ -1424,49 +1536,53 @@ int32_t Camera::update(void)
 	lightDirection.y = sin((lightYaw + 45.0f) * DEGREES_TO_RADS);
 	lightDirection.z = sin(lightPitch * DEGREES_TO_RADS);
 	lightDirection.Normalize(lightDirection);
-	//If we are not transitioning, we need to set the night/day flags and factors.
-	//If we ARE transitioning, they have already been set in updateDaylight!
+	// If we are not transitioning, we need to set the night/day flags and
+	// factors.  If we ARE transitioning, they have already been set in
+	// updateDaylight!
 	//
 	// WE ARE NEVER TRANSITIONING ANYMORE
-	//if (day2NightTransitionTime <= 0.0f)
+	// if (day2NightTransitionTime <= 0.0f)
 	{
-		//Set flags to help renderer with light sources.
+		// Set flags to help renderer with light sources.
 		float lightAltitude = lightPitch;
-		if(lightPitch > 90.0f)
+		if (lightPitch > 90.0f)
 			lightAltitude = 180.0f - lightPitch;
 		//--------------------------------------------------
-		//Set is night based on pitch.
-		//Do NOT draw shadows for infinite light if NIGHT!
-		if(lightAltitude < NIGHT_LIGHT_PITCH)
+		// Set is night based on pitch.
+		// Do NOT draw shadows for infinite light if NIGHT!
+		if (lightAltitude < NIGHT_LIGHT_PITCH)
 		{
-			isNight = true;
+			isNight		= true;
 			nightFactor = 1.0f;
 		}
 		else
 		{
 			isNight = false;
-			if(lightAltitude > NIGHT_START_PITCH)
+			if (lightAltitude > NIGHT_START_PITCH)
 			{
 				nightFactor = 0.0f;
 			}
 			else
 			{
-				nightFactor = (NIGHT_START_PITCH - lightPitch) / (NIGHT_START_PITCH - NIGHT_LIGHT_PITCH);
+				nightFactor = (NIGHT_START_PITCH - lightPitch) /
+							  (NIGHT_START_PITCH - NIGHT_LIGHT_PITCH);
 			}
 		}
 	}
 	//-----------------------------------------------------
 	// Check if we need to re-burn the terrain lights.
-	if(!terrainLightCalc)
+	if (!terrainLightCalc)
 	{
-		if((!terrainLightNight) && (nightFactor > oldNightFactor) && (nightFactor > TERRAIN_LIGHTS_ON))
+		if ((!terrainLightNight) && (nightFactor > oldNightFactor) &&
+			(nightFactor > TERRAIN_LIGHTS_ON))
 		{
-			terrainLightCalc = true;
+			terrainLightCalc  = true;
 			terrainLightNight = true;
 		}
-		if((terrainLightNight) && (nightFactor < oldNightFactor) && (nightFactor < TERRAIN_LIGHTS_ON))
+		if ((terrainLightNight) && (nightFactor < oldNightFactor) &&
+			(nightFactor < TERRAIN_LIGHTS_ON))
 		{
-			terrainLightCalc = true;
+			terrainLightCalc  = true;
 			terrainLightNight = false;
 		}
 	}
@@ -1477,9 +1593,7 @@ int32_t Camera::update(void)
 	//------------------
 	// Velocity Update
 	updateGoalVelocity();
-	if((velocity.x != 0.0) &&
-			(velocity.y != 0.0) &&
-			(velocity.z != 0.0))
+	if ((velocity.x != 0.0) && (velocity.y != 0.0) && (velocity.z != 0.0))
 	{
 		Stuff::Vector3D posOffset;
 		posOffset = velocity;
@@ -1489,29 +1603,29 @@ int32_t Camera::update(void)
 	updateGoalPosition(newPosition);
 	updateGoalRotation();
 	updateGoalFOV();
-	setPosition(newPosition);		//THIS ALWAYS sets z position for us now!!!!!
+	setPosition(newPosition); // THIS ALWAYS sets z position for us now!!!!!
 	//----------------------------------------------
-	//Update fades and letterbox transitions here.
+	// Update fades and letterbox transitions here.
 	updateLetterboxAndFade();
 	//----------------------
 	// Setup Matrices, etc.
 	cameraShift.x = newPosition.x;
 	cameraShift.y = newPosition.y;
-	if(usePerspective)
+	if (usePerspective)
 		cameraShiftZ = newPosition.z;
 	//--------------------------------------------------------
 	// Get new viewport values to scale stuff.  No longer uses
 	// VFX stuff for this.  ALL GOS NOW!
-	//gos_GetViewport(&viewMulX, &viewMulY, &viewAddX, &viewAddY);
-	if(land)
+	// gos_GetViewport(&viewMulX, &viewMulY, &viewAddX, &viewAddY);
+	if (land)
 	{
-		if(newScaleFactor >= 0.75)
+		if (newScaleFactor >= 0.75)
 			Terrain::terrainTextures->setMipLevel(0);
-		else if(newScaleFactor >= 0.3)
+		else if (newScaleFactor >= 0.3)
 		{
 			Terrain::terrainTextures->setMipLevel(1);
 		}
-		else if(newScaleFactor >= 0.2)
+		else if (newScaleFactor >= 0.2)
 		{
 			Terrain::terrainTextures->setMipLevel(2);
 		}
@@ -1525,64 +1639,67 @@ int32_t Camera::update(void)
 	screenResolution.y = viewMulY;
 	calculateProjectionConstants();
 	globalScaleFactor = getScaleFactor();
-	globalScaleFactor *= viewMulX / Environment.screenWidth;		//Scale Mechs to ScreenRES
+	globalScaleFactor *=
+		viewMulX / Environment.screenWidth; // Scale Mechs to ScreenRES
 	//-----------------------------------------------
 	// Set Ambient for this pass of rendering
 	uint32_t lightRGB = (ambientRed << 16) + (ambientGreen << 8) + ambientBlue;
 	setLightColor(1, lightRGB);
 	setLightIntensity(1, 1.0);
 	//---------------------------------------------------------------------------------
-	// Check which lights are on screen and deactivate those which are NOT on screen!
+	// Check which lights are on screen and deactivate those which are NOT on
+	// screen!
 	numActiveLights = numTerrainLights = 0;
-	for(size_t i = 0; i < MAX_LIGHTS_IN_WORLD; i++)
+	for (size_t i = 0; i < MAX_LIGHTS_IN_WORLD; i++)
 	{
-		if(worldLights[i])
+		if (worldLights[i])
 		{
 			TG_LightPtr light = worldLights[i];
-			// IF we are a terrain Light, we are ONLY active when day changes to Night or vice/versa.
-			// On screen matters not.
-			if(light->lightType == TG_LIGHT_TERRAIN)
+			// IF we are a terrain Light, we are ONLY active when day changes to
+			// Night or vice/versa. On screen matters not.
+			if (light->lightType == TG_LIGHT_TERRAIN)
 			{
 				Stuff::Vector4D dummy;
 				light->active = projectZ(light->position, dummy);
-				if(light->active)
+				if (light->active)
 				{
-					if(terrainLightCalc)
+					if (terrainLightCalc)
 						activeLights[numActiveLights++] = light;
 					terrainLights[numTerrainLights++] = light;
 				}
 				continue;
 			}
-			//If we are infinite or Ambient, we MUST be active
-			if((light->lightType == TG_LIGHT_AMBIENT)  ||
-					(light->lightType == TG_LIGHT_INFINITE))
+			// If we are infinite or Ambient, we MUST be active
+			if ((light->lightType == TG_LIGHT_AMBIENT) ||
+				(light->lightType == TG_LIGHT_INFINITE))
 			{
-				light->active = true;
-				activeLights[numActiveLights++] = light;
+				light->active					  = true;
+				activeLights[numActiveLights++]   = light;
 				terrainLights[numTerrainLights++] = light;
 				continue;
 			}
 			// IF we are a Spot or Point light, we must know if we are onscreen.
 			// This is complicated because these lights have a radius!
 			// For now, simple position check.  Make complicated later!
-			if(light->lightType >= TG_LIGHT_POINT && light->lightType < TG_LIGHT_TERRAIN)
+			if (light->lightType >= TG_LIGHT_POINT &&
+				light->lightType < TG_LIGHT_TERRAIN)
 			{
 				Stuff::Vector4D dummy;
 				light->active = projectZ(light->position, dummy);
-				activeLights[numActiveLights++] = light;
+				activeLights[numActiveLights++]   = light;
 				terrainLights[numTerrainLights++] = light;
 			}
 		}
 	}
 	TG_Shape::SetCameraMatrices(&cameraOrigin, &cameraToClip);
 	TG_Shape::SetFog(fogColor, fogStart, fogFull);
-	active = true;
+	active			 = true;
 	terrainLightCalc = false;
 	return NO_ERROR;
 }
 
 float currentScaleFactor = 0.0;
-bool lastZoom = FALSE;
+bool lastZoom			 = FALSE;
 
 //---------------------------------------------------------------------------
 void Camera::render(void)
@@ -1615,19 +1732,21 @@ void Camera::render(void)
 	screenResolution.y = viewMulY;
 	calculateProjectionConstants();
 	globalScaleFactor = getScaleFactor();
-	globalScaleFactor *= viewMulX / Environment.screenWidth;		//Scale Mechs to ScreenRES
+	globalScaleFactor *=
+		viewMulX / Environment.screenWidth; // Scale Mechs to ScreenRES
 	//-----------------------------------------------
 	// Set Ambient for this pass of rendering
 	uint32_t lightRGB = (ambientRed << 16) + (ambientGreen << 8) + ambientBlue;
 	eye->setLightColor(1, lightRGB);
 	eye->setLightIntensity(1, 1.0);
-	if(active && turn > 1)
+	if (active && turn > 1)
 	{
-		land->render();								//render the Terrain
-		craterManager->render();					//render the craters and footprints
-		//Only the GameCamera knows about this.  Heidi, override this function in EditorCamera
-		//and have your objectManager draw.
-//		ObjectManager->render(true, true, true);	//render all other objects
+		land->render();			 // render the Terrain
+		craterManager->render(); // render the craters and footprints
+		// Only the GameCamera knows about this.  Heidi, override this function
+		// in EditorCamera  and have your objectManager draw.
+		//		ObjectManager->render(true, true, true);	//render all other
+		//objects
 	}
 	//-----------------------------------------------------
 }
@@ -1637,26 +1756,26 @@ int32_t Camera::activate(void)
 {
 	//------------------------------------------
 	// If camera is already active, just return
-	if(ready && active)
+	if (ready && active)
 	{
 		updateDaylight(true);
-		return(NO_ERROR);
+		return (NO_ERROR);
 	}
 	return NO_ERROR;
 }
 
-float zero = 0.0f;
-float one = 1.0f;
+float zero   = 0.0f;
+float one	= 1.0f;
 float point1 = 0.000001f;
 
 //---------------------------------------------------------------------------
 // Returns a FAIRLY accurate interpretation.  NOT completely accurate unless
-// a REAL W and Z are passed in.  Will see if there's was a to better interpolate those.
-// More then accurate enough for the TacMap at present.  Really improves frameRate ALOT!
-// -fs
+// a REAL W and Z are passed in.  Will see if there's was a to better
+// interpolate those. More then accurate enough for the TacMap at present.
+// Really improves frameRate ALOT! -fs
 void Camera::inverseProjectZ(Stuff::Vector4D& screen, Stuff::Vector3D& point)
 {
-	if(!usePerspective)
+	if (!usePerspective)
 	{
 		Stuff::Vector2DOf<int32_t> screenPos;
 		screenPos.x = screen.x;
@@ -1665,13 +1784,13 @@ void Camera::inverseProjectZ(Stuff::Vector4D& screen, Stuff::Vector3D& point)
 		return;
 	}
 	point.x = point.y = point.z = 0.0f;
-	if((viewMulX < Stuff::SMALL) || (viewMulY < Stuff::SMALL))
+	if ((viewMulX < Stuff::SMALL) || (viewMulY < Stuff::SMALL))
 		return;
-	if((screen.w == 0.0f) || (screen.z == 0.0f))
+	if ((screen.w == 0.0f) || (screen.z == 0.0f))
 	{
-		if(startZInverse > 1.0f)
+		if (startZInverse > 1.0f)
 			startZInverse = 1.0f;
-		if(zPerPixel < 0.0f)
+		if (zPerPixel < 0.0f)
 			zPerPixel = fabs(zPerPixel);
 		screen.z = startZInverse - (zPerPixel * screen.y);
 		screen.w = startWInverse + (wPerPixel * screen.y);
@@ -1683,7 +1802,7 @@ void Camera::inverseProjectZ(Stuff::Vector4D& screen, Stuff::Vector3D& point)
 	coords.y = (screen.y - viewAddY) / (screen.w * viewMulY);
 	coords.z = (screen.z / screen.w);
 	xformCoords.Multiply(coords, clipToWorld);
-	if(xformCoords.w < 0.0)
+	if (xformCoords.w < 0.0)
 		xformCoords.Negate(xformCoords);
 	point.x = -xformCoords.x;
 	point.y = xformCoords.z;
@@ -1701,97 +1820,104 @@ void Camera::projectCamera(Stuff::Vector3D& point)
 //------------------------------------------------------------------------------
 void Camera::setOrthogonal(void)
 {
-	if(!usePerspective)
+	if (!usePerspective)
 	{
 		//--------------------
-		//Parallel Projection
+		// Parallel Projection
 		float invCamScale = 1.0 / newScaleFactor;
 		float left_clip, right_clip, top_clip, bottom_clip, far_clip, near_clip;
-		left_clip = invCamScale * 300.0;
-		top_clip = left_clip * ((float)Environment.screenHeight / (float)Environment.screenWidth);
-		right_clip = -invCamScale * 300.0;
-		bottom_clip = right_clip * ((float)Environment.screenHeight / (float)Environment.screenWidth);
-		near_clip = -2000.0;
-		far_clip = 8000.0;
+		left_clip   = invCamScale * 300.0;
+		top_clip	= left_clip * ((float)Environment.screenHeight /
+									  (float)Environment.screenWidth);
+		right_clip  = -invCamScale * 300.0;
+		bottom_clip = right_clip * ((float)Environment.screenHeight /
+									   (float)Environment.screenWidth);
+		near_clip   = -2000.0;
+		far_clip	= 8000.0;
 		//
 		//------------------------------------------------------------------------
 		// Set up the camera to clip matrix.  This matrix takes camera space
-		// coordinates and maps them into a homogeneous culling space where valid
-		// X, Y, and Z axis values (when divided by W) will all be between 0 and 1
+		// coordinates and maps them into a homogeneous culling space where
+		// valid X, Y, and Z axis values (when divided by W) will all be between
+		// 0 and 1
 		//------------------------------------------------------------------------
 		//
-		cameraToClip(LEFT_AXIS, LEFT_AXIS) = 1.0f / (left_clip - right_clip);
-		cameraToClip(LEFT_AXIS, UP_AXIS) = 0.0f;
+		cameraToClip(LEFT_AXIS, LEFT_AXIS)	= 1.0f / (left_clip - right_clip);
+		cameraToClip(LEFT_AXIS, UP_AXIS)	  = 0.0f;
 		cameraToClip(LEFT_AXIS, FORWARD_AXIS) = 0.0f;
-		cameraToClip(LEFT_AXIS, 3) = 0.0f;
-		cameraToClip(UP_AXIS, LEFT_AXIS) = 0.0f;
-		cameraToClip(UP_AXIS, UP_AXIS) = 1.0f / (top_clip - bottom_clip);
-		cameraToClip(UP_AXIS, FORWARD_AXIS) = 0.0f;
-		cameraToClip(UP_AXIS, 3) = 0.0f;
+		cameraToClip(LEFT_AXIS, 3)			  = 0.0f;
+		cameraToClip(UP_AXIS, LEFT_AXIS)	  = 0.0f;
+		cameraToClip(UP_AXIS, UP_AXIS)		  = 1.0f / (top_clip - bottom_clip);
+		cameraToClip(UP_AXIS, FORWARD_AXIS)   = 0.0f;
+		cameraToClip(UP_AXIS, 3)			  = 0.0f;
 		cameraToClip(FORWARD_AXIS, LEFT_AXIS) = 0.0;
-		cameraToClip(FORWARD_AXIS, UP_AXIS) = 0.0;
-		cameraToClip(FORWARD_AXIS, FORWARD_AXIS) = 1.0f / (far_clip - near_clip);
+		cameraToClip(FORWARD_AXIS, UP_AXIS)   = 0.0;
+		cameraToClip(FORWARD_AXIS, FORWARD_AXIS) =
+			1.0f / (far_clip - near_clip);
 		cameraToClip(FORWARD_AXIS, 3) = 0.0;
-		cameraToClip(3, LEFT_AXIS) = -right_clip / (left_clip - right_clip);
-		cameraToClip(3, UP_AXIS) = -bottom_clip / (top_clip - bottom_clip);
+		cameraToClip(3, LEFT_AXIS)	= -right_clip / (left_clip - right_clip);
+		cameraToClip(3, UP_AXIS)	  = -bottom_clip / (top_clip - bottom_clip);
 		cameraToClip(3, FORWARD_AXIS) = -near_clip / (far_clip - near_clip);
-		cameraToClip(3, 3) = 1.0f;
+		cameraToClip(3, 3)			  = 1.0f;
 	}
 	else
 	{
 		//-----------------------
-		//Perspective Projection
+		// Perspective Projection
 		//
 		float far_clip, near_clip;
-		near_clip = Camera::NearPlaneDistance;
-		far_clip = Camera::FarPlaneDistance;
+		near_clip			 = Camera::NearPlaneDistance;
+		far_clip			 = Camera::FarPlaneDistance;
 		float horizontal_fov = camera_fov * DEGREES_TO_RADS;
-		float height2width = ((float)Environment.screenHeight / (float)Environment.screenWidth);
+		float height2width =
+			((float)Environment.screenHeight / (float)Environment.screenWidth);
 		//
 		//-------------------------------------------------------
 		// Calculate the horizontal, vertical, and forward ranges
 		//-------------------------------------------------------
 		//
-		float left_clip = -(float)(near_clip * tan(horizontal_fov * 0.5f));
-		float top_clip = -left_clip * height2width;
+		float left_clip   = -(float)(near_clip * tan(horizontal_fov * 0.5f));
+		float top_clip	= -left_clip * height2width;
 		float bottom_clip = -top_clip;
-		float right_clip = -left_clip;
-		float horizontal_range = APPLY_LEFT_SIGN(1.0f) / (left_clip - right_clip);
+		float right_clip  = -left_clip;
+		float horizontal_range =
+			APPLY_LEFT_SIGN(1.0f) / (left_clip - right_clip);
 		float vertical_range = APPLY_UP_SIGN(1.0f) / (top_clip - bottom_clip);
 		float depth_range = APPLY_FORWARD_SIGN(1.0f) / (far_clip - near_clip);
 		//
 		//------------------------------------------------------------------------
 		// Set up the camera to clip matrix.  This matrix takes camera space
-		// coordinates and maps them into a homogeneous culling space where valid
-		// X, Y, and Z axis values (when divided by W) will all be between 0 and 1
+		// coordinates and maps them into a homogeneous culling space where
+		// valid X, Y, and Z axis values (when divided by W) will all be between
+		// 0 and 1
 		//------------------------------------------------------------------------
 		//
-		cameraToClip(LEFT_AXIS, LEFT_AXIS) = near_clip * horizontal_range;
-		cameraToClip(LEFT_AXIS, UP_AXIS) = 0.0f;
+		cameraToClip(LEFT_AXIS, LEFT_AXIS)	= near_clip * horizontal_range;
+		cameraToClip(LEFT_AXIS, UP_AXIS)	  = 0.0f;
 		cameraToClip(LEFT_AXIS, FORWARD_AXIS) = 0.0f;
-		cameraToClip(LEFT_AXIS, 3) = 0.0f;
-		cameraToClip(UP_AXIS, LEFT_AXIS) = 0.0f;
-		cameraToClip(UP_AXIS, UP_AXIS) = near_clip * vertical_range;
-		cameraToClip(UP_AXIS, FORWARD_AXIS) = 0.0f;
-		cameraToClip(UP_AXIS, 3) = 0.0f;
+		cameraToClip(LEFT_AXIS, 3)			  = 0.0f;
+		cameraToClip(UP_AXIS, LEFT_AXIS)	  = 0.0f;
+		cameraToClip(UP_AXIS, UP_AXIS)		  = near_clip * vertical_range;
+		cameraToClip(UP_AXIS, FORWARD_AXIS)   = 0.0f;
+		cameraToClip(UP_AXIS, 3)			  = 0.0f;
 		cameraToClip(FORWARD_AXIS, LEFT_AXIS) = -right_clip * horizontal_range;
-		cameraToClip(FORWARD_AXIS, UP_AXIS) = -bottom_clip * vertical_range;
+		cameraToClip(FORWARD_AXIS, UP_AXIS)   = -bottom_clip * vertical_range;
 		cameraToClip(FORWARD_AXIS, FORWARD_AXIS) = far_clip * depth_range;
-		cameraToClip(FORWARD_AXIS, 3) = 1.0f;
-		cameraToClip(3, LEFT_AXIS) = 0.0f;
-		cameraToClip(3, UP_AXIS) = 0.0f;
+		cameraToClip(FORWARD_AXIS, 3)			 = 1.0f;
+		cameraToClip(3, LEFT_AXIS)				 = 0.0f;
+		cameraToClip(3, UP_AXIS)				 = 0.0f;
 		cameraToClip(3, FORWARD_AXIS) = -far_clip * near_clip * depth_range;
-		cameraToClip(3, 3) = 0.0f;
+		cameraToClip(3, 3)			  = 0.0f;
 	}
 }
 
 extern bool useLOSAngle;
-extern float	worldUnitsPerMeter;
+extern float worldUnitsPerMeter;
 Stuff::Vector3D actualPosition;
 
-#define MOVE_IN_INC			50.0f
-#define ELEVATION_BUFFER	125.0f
-#define ANGLE_UP_INC		0.25f
+#define MOVE_IN_INC 50.0f
+#define ELEVATION_BUFFER 125.0f
+#define ANGLE_UP_INC 0.25f
 
 //-----------------------------------------------------------------------------------------------
 bool CameraLineOfSight(Stuff::Vector3D position, Stuff::Vector3D targetPosition)
@@ -1806,8 +1932,9 @@ bool CameraLineOfSight(Stuff::Vector3D position, Stuff::Vector3D targetPosition)
 	//------------------------------------------------------------------------------------------
 	// Within magic radius.  Check REAL LOS now.
 	// Check is really simple.
-	// Find deltaCellRow and deltaCellCol and iterate over them from source to dest.
-	// If the magic line ever goes BELOW the terrainElevation PLUS localElevation return false.
+	// Find deltaCellRow and deltaCellCol and iterate over them from source to
+	// dest. If the magic line ever goes BELOW the terrainElevation PLUS
+	// localElevation return false.
 	Stuff::Vector3D startPos, endPos;
 	startPos.Zero();
 	endPos.Zero();
@@ -1815,32 +1942,33 @@ bool CameraLineOfSight(Stuff::Vector3D position, Stuff::Vector3D targetPosition)
 	int32_t mCellRow = posCellR, mCellCol = posCellC;
 	land->getCellPos(tCellRow, tCellCol, endPos);
 	startPos = position;
-//	land->getCellPos(mCellRow,mCellCol,startPos);
-//	startPos.z = position.z;
+	//	land->getCellPos(mCellRow,mCellCol,startPos);
+	//	startPos.z = position.z;
 	Stuff::Vector3D deltaCellVec;
-	deltaCellVec.y = tCellRow - mCellRow;
-	deltaCellVec.x = tCellCol - mCellCol;
-	deltaCellVec.z = 0.0f;
+	deltaCellVec.y	= tCellRow - mCellRow;
+	deltaCellVec.x	= tCellCol - mCellCol;
+	deltaCellVec.z	= 0.0f;
 	float startHeight = startPos.z;
-	float length = deltaCellVec.GetApproximateLength();
-	if(length > Stuff::SMALL)
+	float length	  = deltaCellVec.GetApproximateLength();
+	if (length > Stuff::SMALL)
 	{
-		float colLength = deltaCellVec.x / length;
-		float rowLength = deltaCellVec.y / length;
-		float heightLen = (endPos.z - startPos.z) / length;
-		float lastCol = fabs(colLength * 5.0);
-		float lastRow = fabs(rowLength * 5.0);
-		float startCellRow = mCellRow;
-		float startCellCol = mCellCol;
-		float endCellRow = tCellRow;
-		float endCellCol = tCellCol;
+		float colLength			   = deltaCellVec.x / length;
+		float rowLength			   = deltaCellVec.y / length;
+		float heightLen			   = (endPos.z - startPos.z) / length;
+		float lastCol			   = fabs(colLength * 5.0);
+		float lastRow			   = fabs(rowLength * 5.0);
+		float startCellRow		   = mCellRow;
+		float startCellCol		   = mCellCol;
+		float endCellRow		   = tCellRow;
+		float endCellCol		   = tCellCol;
 		Stuff::Vector3D currentPos = startPos;
 		Stuff::Vector3D dist;
 		dist.Subtract(endPos, currentPos);
 		bool colDone = false, rowDone = false;
-		while(!colDone || !rowDone)
+		while (!colDone || !rowDone)
 		{
-			if(fabs(startCellRow - endCellRow) > lastRow)	//DO NOT INCLUDE LAST CELL!!!!!
+			if (fabs(startCellRow - endCellRow) >
+				lastRow) // DO NOT INCLUDE LAST CELL!!!!!
 			{
 				startCellRow += rowLength;
 			}
@@ -1848,7 +1976,8 @@ bool CameraLineOfSight(Stuff::Vector3D position, Stuff::Vector3D targetPosition)
 			{
 				rowDone = true;
 			}
-			if(fabs(startCellCol - endCellCol) > lastCol)	//DO NOT INCLUDE LAST CELL!!!!!
+			if (fabs(startCellCol - endCellCol) >
+				lastCol) // DO NOT INCLUDE LAST CELL!!!!!
 			{
 				startCellCol += colLength;
 			}
@@ -1860,9 +1989,10 @@ bool CameraLineOfSight(Stuff::Vector3D position, Stuff::Vector3D targetPosition)
 			int32_t startCellC = startCellCol;
 			int32_t startCellR = startCellRow;
 			land->getCellPos(startCellR, startCellC, currentPos);
-			//float localElev = (worldUnitsPerMeter * 4.0f * (float)GameMap->getLocalHeight(startCellR,startCellC));
-			//currentPos.z += localElev;
-			if(startHeight < currentPos.z)
+			// float localElev = (worldUnitsPerMeter * 4.0f *
+			// (float)GameMap->getLocalHeight(startCellR,startCellC));
+			// currentPos.z += localElev;
+			if (startHeight < currentPos.z)
 			{
 				return false;
 			}
@@ -1874,13 +2004,14 @@ bool CameraLineOfSight(Stuff::Vector3D position, Stuff::Vector3D targetPosition)
 //------------------------------------------------------------
 void Camera::setCameraOrigin(void)
 {
-	if(!usePerspective)
+	if (!usePerspective)
 	{
 		//--------------------
-		//Parallel Projection
+		// Parallel Projection
 		cameraDirection.range = -3000.0f;
-		//cameraDirection.pitch = cameraDirection.pitch;
-		cameraOrigin.BuildRotation(Stuff::EulerAngles(cameraDirection.pitch, cameraDirection.yaw, 0.0f));
+		// cameraDirection.pitch = cameraDirection.pitch;
+		cameraOrigin.BuildRotation(Stuff::EulerAngles(
+			cameraDirection.pitch, cameraDirection.yaw, 0.0f));
 		Stuff::Point3D translation(cameraDirection);
 		translation.x -= cameraShift.x;
 		translation.z += cameraShift.y;
@@ -1892,14 +2023,15 @@ void Camera::setCameraOrigin(void)
 	{
 		//--------------------------------
 		// Perspective projection
-		bool isOKView = false;
+		bool isOKView		= false;
 		float localAltitude = cameraAltitude;
-		float localAngle = projectionAngle;
-		while(!isOKView)
+		float localAngle	= projectionAngle;
+		while (!isOKView)
 		{
 			cameraDirection.range = localAltitude;
 			cameraDirection.pitch = -localAngle * DEGREES_TO_RADS;
-			cameraOrigin.BuildRotation(Stuff::EulerAngles(cameraDirection.pitch, cameraDirection.yaw, 0.0f));
+			cameraOrigin.BuildRotation(Stuff::EulerAngles(
+				cameraDirection.pitch, cameraDirection.yaw, 0.0f));
 			Stuff::Point3D translation(cameraDirection);
 			lookVector = translation;
 			lookVector.Normalize(lookVector);
@@ -1910,19 +2042,21 @@ void Camera::setCameraOrigin(void)
 			actualPosition.x = -translation.x;
 			actualPosition.y = translation.z;
 			actualPosition.z = translation.y - ELEVATION_BUFFER;
-			if(land && (turn > 3) && (useLOSAngle))
+			if (land && (turn > 3) && (useLOSAngle))
 			{
-				//bool isLOS = CameraLineOfSight(actualPosition,position);
-				bool isLOS = actualPosition.z > (land->getTerrainElevation(actualPosition) + 75.0f);
-				if(!isLOS)
+				// bool isLOS = CameraLineOfSight(actualPosition,position);
+				bool isLOS =
+					actualPosition.z >
+					(land->getTerrainElevation(actualPosition) + 75.0f);
+				if (!isLOS)
 				{
-					//Try moving closer to get above terrain.
-					//if (localAltitude > AltitudeMinimum)
+					// Try moving closer to get above terrain.
+					// if (localAltitude > AltitudeMinimum)
 					//{
 					//	isOKView = false;
 					//	localAltitude -= MOVE_IN_INC;
 					//}
-					//else	//We are as tight as we can go, pull localAngle up.
+					// else	//We are as tight as we can go, pull localAngle up.
 					{
 						isOKView = false;
 						localAngle += ANGLE_UP_INC;
@@ -1948,30 +2082,34 @@ void Camera::setCameraOrigin(void)
 	Stuff::LinearMatrix4D cameraToWorldMatrix(cameraOrigin);
 	worldToCameraMatrix.Invert(cameraToWorldMatrix);
 	worldToClip.Multiply(worldToCameraMatrix, cameraToClip);
-	if(usePerspective)
+	if (usePerspective)
 		clipToWorld.Invert(worldToClip);
 }
 
 //---------------------------------------------------------------------------
 void Camera::calculateProjectionConstants(void)
 {
-	cameraDirection.yaw = cameraRotation * DEGREES_TO_RADS;
+	cameraDirection.yaw   = cameraRotation * DEGREES_TO_RADS;
 	cameraDirection.pitch = projectionAngle * DEGREES_TO_RADS;
-	screenCenter.x = screenResolution.x / 2.0;
-	screenCenter.y = screenResolution.y / 2.0;
+	screenCenter.x		  = screenResolution.x / 2.0;
+	screenCenter.y		  = screenResolution.y / 2.0;
 	screenCenter.z = screenResolution.z = 0.0f;
-	if(usePerspective)
+	if (usePerspective)
 	{
 		float oneOverResMag = screenResolution.GetLength();
-		if(oneOverResMag > Stuff::SMALL)
+		if (oneOverResMag > Stuff::SMALL)
 			oneOverResMag = 1.0f / oneOverResMag;
-		verticalSphereClipConstant = tan(screenResolution.y * oneOverResMag * camera_fov * 0.7071f * DEGREES_TO_RADS);
-		horizontalSphereClipConstant = tan(screenResolution.x * oneOverResMag * camera_fov * 0.7071f * DEGREES_TO_RADS);
+		verticalSphereClipConstant =
+			tan(screenResolution.y * oneOverResMag * camera_fov * 0.7071f *
+				DEGREES_TO_RADS);
+		horizontalSphereClipConstant =
+			tan(screenResolution.x * oneOverResMag * camera_fov * 0.7071f *
+				DEGREES_TO_RADS);
 		cameraFrame.reset_to_world_frame();
 		Stuff::Vector3D rotationVector(-projectionAngle, 0.0f, cameraRotation);
 		cameraFrame.rotate(rotationVector);
 	}
-	setOrthogonal();		//Setup the camera Clip matrix.
+	setOrthogonal(); // Setup the camera Clip matrix.
 	setCameraOrigin();
 }
 
@@ -1980,11 +2118,11 @@ void Camera::calculateTopViewConstants(void)
 {
 	//-----------------------------------------------------------
 	// Make camera look down on terrain.
-	cameraDirection.yaw = cameraRotation * DEGREES_TO_RADS;
+	cameraDirection.yaw   = cameraRotation * DEGREES_TO_RADS;
 	cameraDirection.pitch = -90.0f * DEGREES_TO_RADS;
-	screenCenter.x = screenResolution.x / 2.0;
-	screenCenter.y = screenResolution.y / 2.0;
-	setOrthogonal();		//Setup the camera Clip matrix.
+	screenCenter.x		  = screenResolution.x / 2.0;
+	screenCenter.y		  = screenResolution.y / 2.0;
+	setOrthogonal(); // Setup the camera Clip matrix.
 	setCameraOrigin();
 }
 
@@ -2000,31 +2138,32 @@ void Camera::deactivate(void)
 void Camera::setPosition(Stuff::Vector3D newPosition, bool swoopy)
 {
 	position = newPosition;
-	if(land)
+	if (land)
 	{
-		float maxVisual = (Terrain::worldUnitsMapSide / 2) - (Terrain::worldUnitsPerVertex * 2.0f);
-		//This keeps the camera from moving too close to the edge.
+		float maxVisual = (Terrain::worldUnitsMapSide / 2) -
+						  (Terrain::worldUnitsPerVertex * 2.0f);
+		// This keeps the camera from moving too close to the edge.
 		//  -fs
-		if(!drawTerrainGrid)
+		if (!drawTerrainGrid)
 			maxVisual -= (Terrain::worldUnitsPerVertex * 6.0f);
-		if(position.x > maxVisual)
+		if (position.x > maxVisual)
 			position.x = maxVisual;
-		if(position.y > maxVisual)
+		if (position.y > maxVisual)
 			position.y = maxVisual;
-		if(position.x < -maxVisual)
+		if (position.x < -maxVisual)
 			position.x = -maxVisual;
-		if(position.y < -maxVisual)
+		if (position.y < -maxVisual)
 			position.y = -maxVisual;
 		cameraShiftZ = land->getTerrainElevation(position);
-		if(cameraShiftZ < Terrain::waterElevation)
+		if (cameraShiftZ < Terrain::waterElevation)
 			cameraShiftZ = Terrain::waterElevation;
-		if(swoopy)
+		if (swoopy)
 		{
-			if(fabs(position.z - cameraShiftZ) > CAM_THRESHOLD)
+			if (fabs(position.z - cameraShiftZ) > CAM_THRESHOLD)
 			{
 				goalPositionZ = cameraShiftZ;
 			}
-			if(fabs(goalPositionZ - position.z) > 10.0f)
+			if (fabs(goalPositionZ - position.z) > 10.0f)
 			{
 				float offsetZ = goalPositionZ - position.z;
 				offsetZ *= 0.5f * frameLength;
@@ -2037,7 +2176,7 @@ void Camera::setPosition(Stuff::Vector3D newPosition, bool swoopy)
 			goalPositionZ = position.z = cameraShiftZ;
 		}
 	}
-#if 0 //Used to restrict camera to the diamond.  Not used Anymore!	
+#if 0 // Used to restrict camera to the diamond.  Not used Anymore!	
 	//--------------------------------------------------------------
 	// Use a different clip constant for the corner to clip them
 	// off diagonally!  Or the designers must wet them!!!!!
@@ -2197,7 +2336,7 @@ void Camera::setPosition(Stuff::Vector3D newPosition, bool swoopy)
 //---------------------------------------------------------------------------
 void Camera::setCameraView(int32_t viewNum)
 {
-	if((viewNum >= 0) && (viewNum < MAX_VIEWS))
+	if ((viewNum >= 0) && (viewNum < MAX_VIEWS))
 	{
 		zoomValue(cameraZoom[viewNum]);
 		tiltValue(cameraTilt[viewNum]);
@@ -2207,20 +2346,24 @@ void Camera::setCameraView(int32_t viewNum)
 //---------------------------------------------------------------------------
 void Camera::zoomValue(float value)
 {
-	if(!usePerspective)
+	if (!usePerspective)
 	{
 		newScaleFactor = value;
-		if(newScaleFactor > zoomMax)
+		if (newScaleFactor > zoomMax)
 			newScaleFactor = zoomMax;
 	}
 	else
 	{
-		cameraAltitude = value;
+		cameraAltitude		  = value;
 		cameraAltitudeDesired = cameraAltitude;
-		if(cameraAltitude < AltitudeMinimum)
+		if (cameraAltitude < AltitudeMinimum)
 			cameraAltitude = AltitudeMinimum;
-		float anglePercent = (projectionAngle - MIN_PERSPECTIVE) / (MAX_PERSPECTIVE - MIN_PERSPECTIVE);
-		float testMax = Camera::AltitudeMaximumLo + ((Camera::AltitudeMaximumHi - Camera::AltitudeMaximumLo) * anglePercent);
+		float anglePercent = (projectionAngle - MIN_PERSPECTIVE) /
+							 (MAX_PERSPECTIVE - MIN_PERSPECTIVE);
+		float testMax =
+			Camera::AltitudeMaximumLo +
+			((Camera::AltitudeMaximumHi - Camera::AltitudeMaximumLo) *
+				anglePercent);
 		newScaleFactor = 1.0f - ((cameraAltitude - AltitudeMinimum) / testMax);
 	}
 	cameraShiftZ = position.z;
@@ -2229,20 +2372,24 @@ void Camera::zoomValue(float value)
 //---------------------------------------------------------------------------
 void Camera::ZoomIn(float amount)
 {
-	if(!usePerspective)
+	if (!usePerspective)
 	{
 		newScaleFactor += amount;
-		if(newScaleFactor > zoomMax)
+		if (newScaleFactor > zoomMax)
 			newScaleFactor = zoomMax;
 	}
 	else
 	{
 		cameraAltitude -= (amount * 1500.0f);
 		cameraAltitudeDesired = cameraAltitude;
-		if(cameraAltitude < AltitudeMinimum)
+		if (cameraAltitude < AltitudeMinimum)
 			cameraAltitude = AltitudeMinimum;
-		float anglePercent = (projectionAngle - MIN_PERSPECTIVE) / (MAX_PERSPECTIVE - MIN_PERSPECTIVE);
-		float testMax = Camera::AltitudeMaximumLo + ((Camera::AltitudeMaximumHi - Camera::AltitudeMaximumLo) * anglePercent);
+		float anglePercent = (projectionAngle - MIN_PERSPECTIVE) /
+							 (MAX_PERSPECTIVE - MIN_PERSPECTIVE);
+		float testMax =
+			Camera::AltitudeMaximumLo +
+			((Camera::AltitudeMaximumHi - Camera::AltitudeMaximumLo) *
+				anglePercent);
 		newScaleFactor = 1.0f - ((cameraAltitude - AltitudeMinimum) / testMax);
 	}
 	cameraShiftZ = position.z;
@@ -2251,19 +2398,23 @@ void Camera::ZoomIn(float amount)
 //---------------------------------------------------------------------------
 void Camera::ZoomOut(float amount)
 {
-	if(!usePerspective)
+	if (!usePerspective)
 	{
 		newScaleFactor -= amount;
-		if(newScaleFactor < zoomMin)
+		if (newScaleFactor < zoomMin)
 			newScaleFactor = zoomMin;
 	}
 	else
 	{
-		float anglePercent = (projectionAngle - MIN_PERSPECTIVE) / (MAX_PERSPECTIVE - MIN_PERSPECTIVE);
-		float testMax = Camera::AltitudeMaximumLo + ((Camera::AltitudeMaximumHi - Camera::AltitudeMaximumLo) * anglePercent);
+		float anglePercent = (projectionAngle - MIN_PERSPECTIVE) /
+							 (MAX_PERSPECTIVE - MIN_PERSPECTIVE);
+		float testMax =
+			Camera::AltitudeMaximumLo +
+			((Camera::AltitudeMaximumHi - Camera::AltitudeMaximumLo) *
+				anglePercent);
 		cameraAltitude += (amount * 1500.0f);
 		cameraAltitudeDesired = cameraAltitude;
-		if(cameraAltitude > testMax)
+		if (cameraAltitude > testMax)
 			cameraAltitude = testMax;
 		newScaleFactor = 1.0f - ((cameraAltitude - AltitudeMinimum) / testMax);
 	}
@@ -2273,17 +2424,21 @@ void Camera::ZoomOut(float amount)
 //---------------------------------------------------------------------------
 void Camera::ZoomNormal(void)
 {
-	if(!usePerspective)
+	if (!usePerspective)
 	{
 		newScaleFactor = 0.5f;
 	}
 	else
 	{
-		camera_fov = 40.0f;
-		cosHalfFOV = cos(camera_fov * DEGREES_TO_RADS);
-		float anglePercent = (projectionAngle - MIN_PERSPECTIVE) / (MAX_PERSPECTIVE - MIN_PERSPECTIVE);
-		float testMax = Camera::AltitudeMaximumLo + ((Camera::AltitudeMaximumHi - Camera::AltitudeMaximumLo) * anglePercent);
-		cameraAltitude = AltitudeDefault;
+		camera_fov		   = 40.0f;
+		cosHalfFOV		   = cos(camera_fov * DEGREES_TO_RADS);
+		float anglePercent = (projectionAngle - MIN_PERSPECTIVE) /
+							 (MAX_PERSPECTIVE - MIN_PERSPECTIVE);
+		float testMax =
+			Camera::AltitudeMaximumLo +
+			((Camera::AltitudeMaximumHi - Camera::AltitudeMaximumLo) *
+				anglePercent);
+		cameraAltitude		  = AltitudeDefault;
 		cameraAltitudeDesired = cameraAltitude;
 		newScaleFactor = 1.0f - ((cameraAltitude - AltitudeMinimum) / testMax);
 	}
@@ -2293,17 +2448,21 @@ void Camera::ZoomNormal(void)
 //---------------------------------------------------------------------------
 void Camera::ZoomMin(void)
 {
-	if(!usePerspective)
+	if (!usePerspective)
 	{
 		newScaleFactor = 0.5f;
 	}
 	else
 	{
-		camera_fov = 40.0f;
-		cosHalfFOV = cos(camera_fov * DEGREES_TO_RADS);
-		float anglePercent = (projectionAngle - MIN_PERSPECTIVE) / (MAX_PERSPECTIVE - MIN_PERSPECTIVE);
-		float testMax = Camera::AltitudeMaximumLo + ((Camera::AltitudeMaximumHi - Camera::AltitudeMaximumLo) * anglePercent);
-		cameraAltitude = testMax;
+		camera_fov		   = 40.0f;
+		cosHalfFOV		   = cos(camera_fov * DEGREES_TO_RADS);
+		float anglePercent = (projectionAngle - MIN_PERSPECTIVE) /
+							 (MAX_PERSPECTIVE - MIN_PERSPECTIVE);
+		float testMax =
+			Camera::AltitudeMaximumLo +
+			((Camera::AltitudeMaximumHi - Camera::AltitudeMaximumLo) *
+				anglePercent);
+		cameraAltitude		  = testMax;
 		cameraAltitudeDesired = cameraAltitude;
 		newScaleFactor = 1.0f - ((cameraAltitude - AltitudeMinimum) / testMax);
 	}
@@ -2313,18 +2472,22 @@ void Camera::ZoomMin(void)
 //---------------------------------------------------------------------------
 void Camera::ZoomDefault(void)
 {
-	if(!usePerspective)
+	if (!usePerspective)
 	{
 		newScaleFactor = 0.5f;
 	}
 	else
 	{
-		camera_fov = 40.0f;
-		cosHalfFOV = cos(camera_fov * DEGREES_TO_RADS);
-		cameraAltitude = AltitudeDefault;
+		camera_fov			  = 40.0f;
+		cosHalfFOV			  = cos(camera_fov * DEGREES_TO_RADS);
+		cameraAltitude		  = AltitudeDefault;
 		cameraAltitudeDesired = cameraAltitude;
-		float anglePercent = (projectionAngle - MIN_PERSPECTIVE) / (MAX_PERSPECTIVE - MIN_PERSPECTIVE);
-		float testMax = Camera::AltitudeMaximumLo + ((Camera::AltitudeMaximumHi - Camera::AltitudeMaximumLo) * anglePercent);
+		float anglePercent	= (projectionAngle - MIN_PERSPECTIVE) /
+							 (MAX_PERSPECTIVE - MIN_PERSPECTIVE);
+		float testMax =
+			Camera::AltitudeMaximumLo +
+			((Camera::AltitudeMaximumHi - Camera::AltitudeMaximumLo) *
+				anglePercent);
 		newScaleFactor = 1.0f - ((cameraAltitude - AltitudeMinimum) / testMax);
 	}
 	cameraShiftZ = position.z;
@@ -2333,18 +2496,22 @@ void Camera::ZoomDefault(void)
 //---------------------------------------------------------------------------
 void Camera::ZoomTight(void)
 {
-	if(!usePerspective)
+	if (!usePerspective)
 	{
 		newScaleFactor = 0.5f;
 	}
 	else
 	{
-		camera_fov = 40.0f;
-		cosHalfFOV = cos(camera_fov * DEGREES_TO_RADS);
-		cameraAltitude = AltitudeTight;
+		camera_fov			  = 40.0f;
+		cosHalfFOV			  = cos(camera_fov * DEGREES_TO_RADS);
+		cameraAltitude		  = AltitudeTight;
 		cameraAltitudeDesired = cameraAltitude;
-		float anglePercent = (projectionAngle - MIN_PERSPECTIVE) / (MAX_PERSPECTIVE - MIN_PERSPECTIVE);
-		float testMax = Camera::AltitudeMaximumLo + ((Camera::AltitudeMaximumHi - Camera::AltitudeMaximumLo) * anglePercent);
+		float anglePercent	= (projectionAngle - MIN_PERSPECTIVE) /
+							 (MAX_PERSPECTIVE - MIN_PERSPECTIVE);
+		float testMax =
+			Camera::AltitudeMaximumLo +
+			((Camera::AltitudeMaximumHi - Camera::AltitudeMaximumLo) *
+				anglePercent);
 		newScaleFactor = 1.0f - ((cameraAltitude - AltitudeMinimum) / testMax);
 	}
 	cameraShiftZ = position.z;
@@ -2353,18 +2520,22 @@ void Camera::ZoomTight(void)
 //---------------------------------------------------------------------------
 void Camera::ZoomMax(void)
 {
-	if(!usePerspective)
+	if (!usePerspective)
 	{
 		newScaleFactor = 0.5f;
 	}
 	else
 	{
-		camera_fov = 40.0f;
-		cosHalfFOV = cos(camera_fov * DEGREES_TO_RADS);
-		cameraAltitude = AltitudeMinimum;
+		camera_fov			  = 40.0f;
+		cosHalfFOV			  = cos(camera_fov * DEGREES_TO_RADS);
+		cameraAltitude		  = AltitudeMinimum;
 		cameraAltitudeDesired = cameraAltitude;
-		float anglePercent = (projectionAngle - MIN_PERSPECTIVE) / (MAX_PERSPECTIVE - MIN_PERSPECTIVE);
-		float testMax = Camera::AltitudeMaximumLo + ((Camera::AltitudeMaximumHi - Camera::AltitudeMaximumLo) * anglePercent);
+		float anglePercent	= (projectionAngle - MIN_PERSPECTIVE) /
+							 (MAX_PERSPECTIVE - MIN_PERSPECTIVE);
+		float testMax =
+			Camera::AltitudeMaximumLo +
+			((Camera::AltitudeMaximumHi - Camera::AltitudeMaximumLo) *
+				anglePercent);
 		newScaleFactor = 1.0f - ((cameraAltitude - AltitudeMinimum) / testMax);
 	}
 	cameraShiftZ = position.z;
@@ -2374,14 +2545,14 @@ void Camera::ZoomMax(void)
 void Camera::tiltValue(float value)
 {
 	projectionAngle = value;
-	if(usePerspective)
+	if (usePerspective)
 	{
-		if(projectionAngle < MIN_PERSPECTIVE)
+		if (projectionAngle < MIN_PERSPECTIVE)
 			projectionAngle = MIN_PERSPECTIVE;
 	}
 	else
 	{
-		if(projectionAngle < MIN_ORTHO)
+		if (projectionAngle < MIN_ORTHO)
 			projectionAngle = MIN_ORTHO;
 	}
 	calculateProjectionConstants();
@@ -2391,14 +2562,14 @@ void Camera::tiltValue(float value)
 void Camera::tiltUp(float amount)
 {
 	projectionAngle -= amount;
-	if(usePerspective)
+	if (usePerspective)
 	{
-		if(projectionAngle < MIN_PERSPECTIVE)
+		if (projectionAngle < MIN_PERSPECTIVE)
 			projectionAngle = MIN_PERSPECTIVE;
 	}
 	else
 	{
-		if(projectionAngle < MIN_ORTHO)
+		if (projectionAngle < MIN_ORTHO)
 			projectionAngle = MIN_ORTHO;
 	}
 	calculateProjectionConstants();
@@ -2408,7 +2579,7 @@ void Camera::tiltUp(float amount)
 void Camera::tiltDown(float amount)
 {
 	projectionAngle += amount;
-	if(projectionAngle > MAX_PERSPECTIVE)
+	if (projectionAngle > MAX_PERSPECTIVE)
 		projectionAngle = MAX_PERSPECTIVE;
 	calculateProjectionConstants();
 }
@@ -2485,7 +2656,7 @@ void Camera::movePosDown(float amount, Stuff::Vector3D& pos)
 void Camera::moveLeft(float amount)
 {
 	Stuff::Vector3D direction;
-	if(!usePerspective)
+	if (!usePerspective)
 	{
 		direction.x = -1.0;
 		direction.y = 0.0;
@@ -2509,7 +2680,7 @@ void Camera::moveLeft(float amount)
 void Camera::moveRight(float amount)
 {
 	Stuff::Vector3D direction;
-	if(!usePerspective)
+	if (!usePerspective)
 	{
 		direction.x = 1.0;
 		direction.y = 0.0;
@@ -2533,7 +2704,7 @@ void Camera::moveRight(float amount)
 void Camera::moveUp(float amount)
 {
 	Stuff::Vector3D direction;
-	if(!usePerspective)
+	if (!usePerspective)
 	{
 		direction.x = 0.0;
 		direction.y = 1.0;
@@ -2557,7 +2728,7 @@ void Camera::moveUp(float amount)
 void Camera::moveDown(float amount)
 {
 	Stuff::Vector3D direction;
-	if(!usePerspective)
+	if (!usePerspective)
 	{
 		direction.x = 0.0;
 		direction.y = -1.0;
@@ -2581,12 +2752,14 @@ void Camera::moveDown(float amount)
 void Camera::rotateLightLeft(float amount)
 {
 	lightYaw += amount;
-	if(lightYaw > 360.0)
+	if (lightYaw > 360.0)
 		lightYaw -= 360;
-	//Replace with TGL Lights
+	// Replace with TGL Lights
 	Stuff::LinearMatrix4D lightToWorldMatrix;
 	lightToWorldMatrix.BuildTranslation(Stuff::Point3D(0.0, 0.0, 0.0));
-	lightToWorldMatrix.BuildRotation(Stuff::EulerAngles(lightPitch * DEGREES_TO_RADS, (lightYaw + 135.0) * DEGREES_TO_RADS, 0.0f));
+	lightToWorldMatrix.BuildRotation(
+		Stuff::EulerAngles(lightPitch * DEGREES_TO_RADS,
+			(lightYaw + 135.0) * DEGREES_TO_RADS, 0.0f));
 	worldLights[0]->SetLightToWorld(&lightToWorldMatrix);
 }
 
@@ -2594,12 +2767,14 @@ void Camera::rotateLightLeft(float amount)
 void Camera::rotateLightRight(float amount)
 {
 	lightYaw -= amount;
-	if(lightYaw < -360.0)
+	if (lightYaw < -360.0)
 		lightYaw += 360;
-	//Replace with TGL Lights
+	// Replace with TGL Lights
 	Stuff::LinearMatrix4D lightToWorldMatrix;
 	lightToWorldMatrix.BuildTranslation(Stuff::Point3D(0.0, 0.0, 0.0));
-	lightToWorldMatrix.BuildRotation(Stuff::EulerAngles(lightPitch * DEGREES_TO_RADS, (lightYaw + 135.0) * DEGREES_TO_RADS, 0.0f));
+	lightToWorldMatrix.BuildRotation(
+		Stuff::EulerAngles(lightPitch * DEGREES_TO_RADS,
+			(lightYaw + 135.0) * DEGREES_TO_RADS, 0.0f));
 	worldLights[0]->SetLightToWorld(&lightToWorldMatrix);
 }
 
@@ -2607,12 +2782,14 @@ void Camera::rotateLightRight(float amount)
 void Camera::rotateLightUp(float amount)
 {
 	lightPitch += amount;
-	if(lightPitch > 90.0)
+	if (lightPitch > 90.0)
 		lightPitch = 90.0;
-	//Replace with TGL Lights
+	// Replace with TGL Lights
 	Stuff::LinearMatrix4D lightToWorldMatrix;
 	lightToWorldMatrix.BuildTranslation(Stuff::Point3D(0.0, 0.0, 0.0));
-	lightToWorldMatrix.BuildRotation(Stuff::EulerAngles(lightPitch * DEGREES_TO_RADS, (lightYaw + 135.0) * DEGREES_TO_RADS, 0.0f));
+	lightToWorldMatrix.BuildRotation(
+		Stuff::EulerAngles(lightPitch * DEGREES_TO_RADS,
+			(lightYaw + 135.0) * DEGREES_TO_RADS, 0.0f));
 	worldLights[0]->SetLightToWorld(&lightToWorldMatrix);
 }
 
@@ -2620,12 +2797,14 @@ void Camera::rotateLightUp(float amount)
 void Camera::rotateLightDown(float amount)
 {
 	lightPitch -= amount;
-	if(lightPitch < 5.0f)
+	if (lightPitch < 5.0f)
 		lightPitch = 5.0f;
-	//Replace with TGL Lights
+	// Replace with TGL Lights
 	Stuff::LinearMatrix4D lightToWorldMatrix;
 	lightToWorldMatrix.BuildTranslation(Stuff::Point3D(0.0, 0.0, 0.0));
-	lightToWorldMatrix.BuildRotation(Stuff::EulerAngles(lightPitch * DEGREES_TO_RADS, (lightYaw + 135.0) * DEGREES_TO_RADS, 0.0f));
+	lightToWorldMatrix.BuildRotation(
+		Stuff::EulerAngles(lightPitch * DEGREES_TO_RADS,
+			(lightYaw + 135.0) * DEGREES_TO_RADS, 0.0f));
 	worldLights[0]->SetLightToWorld(&lightToWorldMatrix);
 }
 
@@ -2651,35 +2830,32 @@ void Camera::rotateRight(float amount)
 void Camera::setCameraRotation(float angle, float worldAngle)
 {
 	worldCameraRotation = worldAngle;
-	if(worldCameraRotation > 180)
+	if (worldCameraRotation > 180)
 		worldCameraRotation -= 360;
-	if(worldCameraRotation < -180)
+	if (worldCameraRotation < -180)
 		worldCameraRotation += 360;
 	cameraRotation = angle;
-	if(cameraRotation > 180)
+	if (cameraRotation > 180)
 		cameraRotation -= 360;
-	if(cameraRotation < -180)
+	if (cameraRotation < -180)
 		cameraRotation += 360;
-	cameraDirection.yaw = cameraRotation * DEGREES_TO_RADS;
+	cameraDirection.yaw   = cameraRotation * DEGREES_TO_RADS;
 	cameraDirection.pitch = -projectionAngle * DEGREES_TO_RADS;
 	cameraDirection.range = 0.0;
 }
 
 //---------------------------------------------------------------------------
-float Camera::getCameraRotation(void)
-{
-	return worldCameraRotation;
-}
+float Camera::getCameraRotation(void) { return worldCameraRotation; }
 
-#define OBSCURED_FACTOR	0.5f;
+#define OBSCURED_FACTOR 0.5f;
 //---------------------------------------------------------------------------
 uint8_t Camera::getLightRed(float intensity)
 {
-	//ASM and Inline
-	if(intensity > 0.0)
+	// ASM and Inline
+	if (intensity > 0.0)
 	{
 		int32_t fResult = float2long(lightRed * intensity + ambientRed);
-		if(fResult < 0xff)
+		if (fResult < 0xff)
 			return fResult;
 		else
 			return 0xff;
@@ -2690,11 +2866,11 @@ uint8_t Camera::getLightRed(float intensity)
 //---------------------------------------------------------------------------
 uint8_t Camera::getLightGreen(float intensity)
 {
-	//ASM and Inline
-	if(intensity > 0.0)
+	// ASM and Inline
+	if (intensity > 0.0)
 	{
 		int32_t fResult = float2long(lightGreen * intensity + ambientGreen);
-		if(fResult < 0xff)
+		if (fResult < 0xff)
 			return fResult;
 		else
 			return 0xff;
@@ -2705,11 +2881,11 @@ uint8_t Camera::getLightGreen(float intensity)
 //---------------------------------------------------------------------------
 uint8_t Camera::getLightBlue(float intensity)
 {
-	//ASM and Inline
-	if(intensity > 0.0)
+	// ASM and Inline
+	if (intensity > 0.0)
 	{
 		int32_t fResult = float2long(lightBlue * intensity + ambientBlue);
-		if(fResult < 0xff)
+		if (fResult < 0xff)
 			return fResult;
 		else
 			return 0xff;
@@ -2731,7 +2907,7 @@ bool Camera::save(FitIniFile* file)
 	file->writeIdUChar("AmbientBlue", ambientBlue);
 	file->writeIdUChar("AmbientGreen", ambientGreen);
 	file->writeIdUChar("AmbientRed", ambientRed);
-	if(terrainShadowColorEnabled)
+	if (terrainShadowColorEnabled)
 	{
 		file->writeIdUChar("TerrainShadowColorEnabled", 1);
 	}
@@ -2788,21 +2964,15 @@ bool Camera::save(FitIniFile* file)
 	return true;
 }
 
-float Camera::getFarClipDistance()
-{
-	return MaxClipDistance;
-}
+float Camera::getFarClipDistance() { return MaxClipDistance; }
 
 void Camera::setFarClipDistance(float farClipDistance)
 {
 	MaxClipDistance = farClipDistance;
-	DistanceFactor	= 1.0f / (MaxClipDistance - MinHazeDistance);
+	DistanceFactor  = 1.0f / (MaxClipDistance - MinHazeDistance);
 }
 
-float Camera::getNearClipDistance()
-{
-	return NearPlaneDistance;
-}
+float Camera::getNearClipDistance() { return NearPlaneDistance; }
 
 void Camera::setNearClipDistance(float nearClipDistance)
 {
@@ -2811,8 +2981,11 @@ void Camera::setNearClipDistance(float nearClipDistance)
 
 float Camera::getMaximumCameraAltitude()
 {
-	float anglePercent = (projectionAngle - MIN_PERSPECTIVE) / (MAX_PERSPECTIVE - MIN_PERSPECTIVE);
-	float testMax = Camera::AltitudeMaximumLo + ((Camera::AltitudeMaximumHi - Camera::AltitudeMaximumLo) * anglePercent);
+	float anglePercent = (projectionAngle - MIN_PERSPECTIVE) /
+						 (MAX_PERSPECTIVE - MIN_PERSPECTIVE);
+	float testMax = Camera::AltitudeMaximumLo +
+					((Camera::AltitudeMaximumHi - Camera::AltitudeMaximumLo) *
+						anglePercent);
 	return testMax;
 }
 void Camera::setMaximumCameraAltitude(float maxAltitude)

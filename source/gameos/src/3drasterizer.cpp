@@ -6,10 +6,10 @@
  conditions are met (OSI approved BSD 2-clause license):
 
  1. Redistributions of source code must retain the above copyright notice,
-    this list of conditions and the following disclaimer.
+	this list of conditions and the following disclaimer.
  2. Redistributions in binary form must reproduce the above copyright notice,
-    this list of conditions and the following disclaimer in the documentation
-    and/or other materials provided with the distribution.
+	this list of conditions and the following disclaimer in the documentation
+	and/or other materials provided with the distribution.
 
  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -40,31 +40,30 @@
 #include <gameos.hpp>
 #include <3drasterizer.hpp>
 
-
 // -----------------------------------------------------------------------------
 // Global data exported from this module
-int32_t HasMipMap;				// not used
+int32_t HasMipMap; // not used
 int32_t HasMaxUV;
-uint32_t ModeMinBiLinear;		// not used
+uint32_t ModeMinBiLinear; // not used
 uint32_t CurrentBGCol;
 float MaxGuardBandClip;
 float MinVCoord;
-int32_t HasModulateAlpha;		// not used
+int32_t HasModulateAlpha; // not used
 uint16_t QuadIndex[192];
-int32_t HasBumpEnvMap;			// not used
-int32_t HasDecal;				// not used
+int32_t HasBumpEnvMap; // not used
+int32_t HasDecal;	  // not used
 float MinGuardBandClip;
-int32_t HasGuardBandClipping;	// not used
-int32_t HasAdd;					// not used
-int32_t HasAntiAlias;			// not used
-int32_t HasSpecular;			// not used
-int32_t HasAGP;					// not used
-uint32_t ModeMagBiLinear;		// not used
-uint32_t ModeMinNone;			// not used
-int32_t HasDither;				// not used
+int32_t HasGuardBandClipping; // not used
+int32_t HasAdd;				  // not used
+int32_t HasAntiAlias;		  // not used
+int32_t HasSpecular;		  // not used
+int32_t HasAGP;				  // not used
+uint32_t ModeMagBiLinear;	 // not used
+uint32_t ModeMinNone;		  // not used
+int32_t HasDither;			  // not used
 float MaxUCoord;
-int32_t HasMipLodBias;			// not used
-uint32_t ModeMinTriLinear;		// not used
+int32_t HasMipLodBias;	 // not used
+uint32_t ModeMinTriLinear; // not used
 gos_VERTEX Pickv1;
 gos_VERTEX Pickv2;
 gos_VERTEX Pickv3;
@@ -76,8 +75,8 @@ pgos_VERTEX PickZoom;
 RenderModeType RenderMode;
 uint32_t InUpdateRenderers;
 uint32_t TriangleColor;
-uint32_t ValidatePasses;		// not used
-uint32_t ValidateResult;		// not used
+uint32_t ValidatePasses; // not used
+uint32_t ValidateResult; // not used
 bool InsideBeginScene;
 bool NeedToInitRenderStates;
 bool ViewPortChanged;
@@ -85,27 +84,27 @@ uint32_t PickFound;
 uint32_t PickDepth;
 uint32_t PickNumber;
 uint32_t DrawingPolys;
-uint32_t CulledMax;				// not used
+uint32_t CulledMax; // not used
 uint32_t DrawingMax;
-uint32_t DrawingHighest;		// not used
-uint32_t NumSpecular;			// not used
-uint32_t NumPerspective;		// not used
-uint32_t NumAlpha;				// not used
+uint32_t DrawingHighest; // not used
+uint32_t NumSpecular;	// not used
+uint32_t NumPerspective; // not used
+uint32_t NumAlpha;		 // not used
 uint32_t NumTextured;
-uint32_t PrimitivesRendered;	// not used
-uint32_t PointsRendered;		// not used
-uint32_t LinesRendered;			// not used
-uint32_t TrianglesRendered;		// not used
-uint32_t QuadsRendered;			// not used
-uint32_t IndexedTriangleCalls;	// not used
-float IndexedTriangleLength;	// not used
-uint32_t IndexedVBTriangleCalls;// not used
-float IndexedVBTriangleLength;	// not used
-uint32_t LastSpecularPrim;		// not used
+uint32_t PrimitivesRendered;	 // not used
+uint32_t PointsRendered;		 // not used
+uint32_t LinesRendered;			 // not used
+uint32_t TrianglesRendered;		 // not used
+uint32_t QuadsRendered;			 // not used
+uint32_t IndexedTriangleCalls;   // not used
+float IndexedTriangleLength;	 // not used
+uint32_t IndexedVBTriangleCalls; // not used
+float IndexedVBTriangleLength;   // not used
+uint32_t LastSpecularPrim;		 // not used
 uint32_t LastPerspectivePrim;	// not used
-uint32_t LastAlphaPrim;			// not used
-uint32_t LastTexturePrim;		// not used
-uint32_t LastFilterPrim;		// not used
+uint32_t LastAlphaPrim;			 // not used
+uint32_t LastTexturePrim;		 // not used
+uint32_t LastFilterPrim;		 // not used
 uint32_t NumPointSampled;
 uint32_t NumBilinear;
 uint32_t NumTrilinear;
@@ -149,18 +148,27 @@ uint32_t VerticesUploaded;
 
 // -----------------------------------------------------------------------------
 // global implemented functions in this module listed in headers
-void __stdcall CheckVertices(pgos_VERTEX pVertexArray, uint32_t NumberVertices, uint8_t PointsLines = 0);
-void __stdcall CheckVertices2(pgos_VERTEX_2UV pVertexArray, uint32_t NumberVertices);
-void __stdcall CheckVertices3(pgos_VERTEX_3UV pVertexArray, uint32_t NumberVertices);
+void __stdcall CheckVertices(
+	pgos_VERTEX pVertexArray, uint32_t NumberVertices, uint8_t PointsLines = 0);
+void __stdcall CheckVertices2(
+	pgos_VERTEX_2UV pVertexArray, uint32_t NumberVertices);
+void __stdcall CheckVertices3(
+	pgos_VERTEX_3UV pVertexArray, uint32_t NumberVertices);
 uint32_t __stdcall GetMipmapColor(int32_t Mipmap);
 void __stdcall DebugTriangle(pgos_VERTEX v1, pgos_VERTEX v2, pgos_VERTEX v3);
-void __stdcall DebugTriangle_2UV(pgos_VERTEX_2UV v1, pgos_VERTEX_2UV v2, pgos_VERTEX_2UV v3);
-void __stdcall DebugTriangle_3UV(pgos_VERTEX_3UV v1, pgos_VERTEX_3UV v2, pgos_VERTEX_3UV v3);
+void __stdcall DebugTriangle_2UV(
+	pgos_VERTEX_2UV v1, pgos_VERTEX_2UV v2, pgos_VERTEX_2UV v3);
+void __stdcall DebugTriangle_3UV(
+	pgos_VERTEX_3UV v1, pgos_VERTEX_3UV v2, pgos_VERTEX_3UV v3);
 void __stdcall Destroy3D(void);
 void __stdcall ReInit3D(void);
-void __stdcall gos_SetViewport(uint32_t LeftX, uint32_t RightX, uint32_t Width, uint32_t height, float MinZ = 0.0f, float MaxZ = 1.0f);
-void __stdcall gos_SetupViewport(uint8_t FillZ, float ZBuffer, uint8_t FillBG, uint32_t BGColor, float top, float left, float bottom, float right, uint8_t ClearStencil = 0, uint32_t StencilValue = 0);
-void __stdcall gos_GetViewport(float* pViewportMulX, float* pViewportMulY, float* pViewportAddX, float* pViewportAddY);
+void __stdcall gos_SetViewport(uint32_t LeftX, uint32_t RightX, uint32_t Width,
+	uint32_t height, float MinZ = 0.0f, float MaxZ = 1.0f);
+void __stdcall gos_SetupViewport(uint8_t FillZ, float ZBuffer, uint8_t FillBG,
+	uint32_t BGColor, float top, float left, float bottom, float right,
+	uint8_t ClearStencil = 0, uint32_t StencilValue = 0);
+void __stdcall gos_GetViewport(float* pViewportMulX, float* pViewportMulY,
+	float* pViewportAddX, float* pViewportAddY);
 void __stdcall InitRenderer(void);
 
 // global implemented functions not listed in headers
@@ -169,7 +177,3 @@ void __stdcall InitRenderer(void);
 
 // -----------------------------------------------------------------------------
 // externals referenced in this file not specified in headers
-
-
-
-

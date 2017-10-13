@@ -14,12 +14,14 @@ TargetAreaDlg.h		: Interface for the TargetAreaDlg component.
 //#include "objective.h"
 //#include "editorobjectmgr.h"
 
-class TargetAreaDlg: public CDialog
+class TargetAreaDlg : public CDialog
 {
-public:
-	TargetAreaDlg(float& targetCenterX, float& targetCenterY, float& targetRadius);
+  public:
+	TargetAreaDlg(
+		float& targetCenterX, float& targetCenterY, float& targetRadius);
 
-	BOOL OnCommand(WPARAM wParam, LPARAM lParam); // called by child controls to inform of an event
+	BOOL OnCommand(WPARAM wParam,
+		LPARAM lParam); // called by child controls to inform of an event
 	void OnCancel(void);
 	void OnOK(void);
 
@@ -27,7 +29,7 @@ public:
 
 	BOOL OnInitDialog(void);
 
-private:
+  private:
 	typedef CDialog inherited;
 
 	// suppressing these
@@ -44,6 +46,5 @@ private:
 	CButton* m_pOKButton;
 };
 
-
 //*************************************************************************************************
-#endif  // end of file ( TargetAreaDlg.h )
+#endif // end of file ( TargetAreaDlg.h )

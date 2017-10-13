@@ -21,44 +21,37 @@ class FitIniFile;
 class MissionSelectionScreen : public LogisticsScreen
 {
 
-public:
-
+  public:
 	MissionSelectionScreen(void);
 	virtual ~MissionSelectionScreen(void);
 	virtual void render(int32_t xOffset, int32_t yOffset);
 	virtual void begin(void);
 	virtual void end(void);
 	virtual void update(void);
-	void	init(FitIniFile* file);
-	virtual int32_t			handleMessage(uint32_t, uint32_t);
+	void init(FitIniFile* file);
+	virtual int32_t handleMessage(uint32_t, uint32_t);
 
+  private:
+	LogisticsScreen operationScreen;
 
-private:
+	MC2MoviePtr bMovie;
+	bool playedLogisticsTune;
 
-	LogisticsScreen	operationScreen;
+	// HGOSVIDEO			video;
+	// uint32_t		videoTexture;
 
-	MC2MoviePtr		bMovie;
-	bool				playedLogisticsTune;
+	PCSTR missionNames[MAX_MISSIONS_IN_GROUP];
+	int32_t missionCount;
 
-	//HGOSVIDEO			video;
-	//uint32_t		videoTexture;
+	void setMission(int32_t whichOne);
 
-	PCSTR			missionNames[MAX_MISSIONS_IN_GROUP];
-	int32_t				missionCount;
+	aListBox missionDescriptionListBox;
 
-	void				setMission(int32_t whichOne);
+	void updateListBox(void);
 
-	aListBox			missionDescriptionListBox;
+	int32_t pressedButton;
 
-	void				updateListBox(void);
-
-	int32_t				pressedButton;
-
-	bool				bStop;
-
-
-
-
+	bool bStop;
 };
 
 #endif

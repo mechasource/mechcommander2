@@ -14,13 +14,13 @@
 //---------------------------------------------------------------------------------
 // weapon FX Equivalancy.  Stores names now for GOS FX
 WeaponEffects* weaponEffects = nullptr;
-char mc2_word_none[5] = "NONE";
+char mc2_word_none[5]		 = "NONE";
 
 //---------------------------------------------------------------------------------
 void WeaponEffects::destroy(void)
 {
 	systemHeap->Free(effects);
-	effects = nullptr;
+	effects	= nullptr;
 	numEffects = 0;
 }
 
@@ -31,12 +31,13 @@ void WeaponEffects::init(PSTR effectCSVFileName)
 	effectsName.init(objectPath, effectCSVFileName, ".csv");
 	CSVFile effectFile;
 	int32_t result = effectFile.open(effectsName);
-	if(result != NO_ERROR)
+	if (result != NO_ERROR)
 		STOP(("Unable to open Effects File %s", effectsName));
-	numEffects = effectFile.getNumLines() - 1;	//Always subtract one for the column headers
+	numEffects = effectFile.getNumLines() -
+				 1; // Always subtract one for the column headers
 	effects = (EffectData*)systemHeap->Malloc(sizeof(EffectData) * numEffects);
 	gosASSERT(effects != nullptr);
-	for(size_t i = 0; i < numEffects; i++)
+	for (size_t i = 0; i < numEffects; i++)
 	{
 		effectFile.readString(i + 2, 2, effects[i].effectName, 49);
 		effectFile.readString(i + 2, 3, effects[i].muzzleFlashName, 49);

@@ -9,8 +9,7 @@ HeightDlg.cpp			: Implementation of the HeightDlg component.
 #include "HeightDlg.h"
 #include "resource.h"
 
-HeightDlg::HeightDlg(int32_t minZ, int32_t maxZ)
-	: CDialog(IDD_HEIGHT_DLG)
+HeightDlg::HeightDlg(int32_t minZ, int32_t maxZ) : CDialog(IDD_HEIGHT_DLG)
 {
 	min = minZ;
 	max = maxZ;
@@ -36,7 +35,7 @@ void HeightDlg::OnOK()
 	CDialog::OnOK();
 }
 
-//void HeightDlg::OnCommand(Window *wnd,int32_t nCommand)
+// void HeightDlg::OnCommand(Window *wnd,int32_t nCommand)
 //{
 /*	if (nCommand == BC_CLICKED)
 	{
@@ -55,7 +54,6 @@ void HeightDlg::OnOK()
 	}*/
 
 //}
-
 
 //*************************************************************************************************
 // end of file ( HeightDlg.cpp )

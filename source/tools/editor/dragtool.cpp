@@ -10,17 +10,11 @@ DragTool.cpp			: Implementation of the DragTool component.
 //#include "editorinterface.h"
 #include "dragtool.h"
 
-DragTool::DragTool()
-{
-	lastX = lastY = -1;
-}
+DragTool::DragTool() { lastX = lastY = -1; }
 
 //-------------------------------------------------------------------------------------------------
 
-DragTool::~DragTool()
-{
-}
-
+DragTool::~DragTool() {}
 
 bool DragTool::beginPaint()
 {
@@ -28,14 +22,12 @@ bool DragTool::beginPaint()
 	return true;
 }
 
-Action* DragTool::endPaint()
-{
-	return nullptr;
-}
+Action* DragTool::endPaint() { return nullptr; }
 
-bool DragTool::paint(Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY)
+bool DragTool::paint(
+	Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY)
 {
-	if(lastX != -1)
+	if (lastX != -1)
 	{
 		eye->moveLeft((screenX - lastX) / eye->getScaleFactor());
 		eye->moveDown((lastY - screenY) / eye->getScaleFactor());
@@ -46,7 +38,6 @@ bool DragTool::paint(Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY
 	lastY = screenY;
 	return true;
 }
-
 
 //*************************************************************************************************
 // end of file ( DragTool.cpp )

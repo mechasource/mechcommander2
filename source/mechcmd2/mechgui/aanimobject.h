@@ -1,5 +1,6 @@
 /*************************************************************************************************\
-aAnimObject.h			: Interface for the aAnimObject component of the GUI library.
+aAnimObject.h			: Interface for the aAnimObject component of the GUI
+library.
 //---------------------------------------------------------------------------//
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
@@ -18,48 +19,33 @@ aAnimObject.h			: Interface for the aAnimObject component of the GUI library.
 namespace mechgui
 {
 
-	/**************************************************************************************************
-	CLASS DESCRIPTION
-	aAnimObject:
-	**************************************************************************************************/
-	class aAnimObject: public aObject
-	{
-	public:
+/**************************************************************************************************
+CLASS DESCRIPTION
+aAnimObject:
+**************************************************************************************************/
+class aAnimObject : public aObject
+{
+  public:
+	aAnimObject(void);
+	virtual ~aAnimObject(void);
+	aAnimObject& operator=(const aAnimObject& AnimObject);
 
-		aAnimObject(void);
-		virtual ~aAnimObject(void);
-		aAnimObject& operator=(const aAnimObject& AnimObject);
+	int32_t init(FitIniFile* file, PCSTR blockName, uint32_t neverFlush = 0);
 
+	virtual void update(void);
+	virtual void render(void);
 
-		int32_t init(FitIniFile* file, PCSTR blockName, uint32_t neverFlush = 0);
+	void begin() { animInfo.begin(void); }
+	void end(void);
+	void reverseBegin() { animInfo.reverseBegin(void); }
 
-		virtual void update(void);
-		virtual void render(void);
+	bool isDone() { return animInfo.isDone(void); }
 
-		void begin()
-		{
-			animInfo.begin(void);
-		}
-		void end(void);
-		void reverseBegin()
-		{
-			animInfo.reverseBegin(void);
-		}
+	aAnimation animInfo;
 
-		bool isDone()
-		{
-			return animInfo.isDone(void);
-		}
-
-		aAnimation		animInfo;
-
-
-	private:
-
-		aAnimObject(const aAnimObject& src);
-
-	};
-
+  private:
+	aAnimObject(const aAnimObject& src);
+};
 
 //*************************************************************************************************
-#endif  // end of file ( aAnimObject.h )
+#endif // end of file ( aAnimObject.h )

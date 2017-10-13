@@ -13,13 +13,14 @@ mapsizeDlg.cpp		: Implementation of the mapsizeDlg component.
 #include "utilities.h"
 #include "terrtxm2.h"
 
-extern uint32_t gameResourceHandle;		//Default handle must be used for mc2res.dll due to shared game/editor code
+extern uint32_t gameResourceHandle; // Default handle must be used for
+									// mc2res.dll due to shared game/editor code
 
 //----------------------------------------------------------------------
 void MapSizeDlg::Init()
 {
 	CListBox* pListBox = (CListBox*)GetDlgItem(IDC_MAPSIZE);
-	int32_t index = pListBox->AddString("60x60");
+	int32_t index	  = pListBox->AddString("60x60");
 	pListBox->SetItemData(index, 0);
 	index = pListBox->AddString("80x80");
 	pListBox->SetItemData(index, 1);
@@ -34,7 +35,7 @@ void MapSizeDlg::Init()
 void MapSizeDlg::OnOK()
 {
 	int32_t index = ((CListBox*)GetDlgItem(IDC_MAPSIZE))->GetCurSel();
-	mapSize = ((CListBox*)GetDlgItem(IDC_MAPSIZE))->GetItemData(index);
+	mapSize		  = ((CListBox*)GetDlgItem(IDC_MAPSIZE))->GetItemData(index);
 	CDialog::OnOK();
 }
 

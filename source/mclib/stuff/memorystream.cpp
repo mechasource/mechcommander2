@@ -15,34 +15,25 @@
 
 using namespace Stuff;
 
-
-
 //#############################################################################
 //##########################    MemoryStream    ###############################
 //#############################################################################
 
-MemoryStream::ClassData*
-MemoryStream::DefaultData = nullptr;
+MemoryStream::ClassData* MemoryStream::DefaultData = nullptr;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MemoryStream::InitializeClass()
+void MemoryStream::InitializeClass()
 {
 	Verify(!DefaultData);
-	DefaultData =
-		new ClassData(
-		MemoryStreamClassID,
-		"Stuff::MemoryStream",
-		RegisteredClass::DefaultData
-	);
+	DefaultData = new ClassData(MemoryStreamClassID, "Stuff::MemoryStream",
+		RegisteredClass::DefaultData);
 	Check_Object(DefaultData);
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MemoryStream::TerminateClass()
+void MemoryStream::TerminateClass()
 {
 	Check_Object(DefaultData);
 	delete DefaultData;
@@ -53,52 +44,41 @@ MemoryStream::TerminateClass()
 //
 #if _CONSIDERED_DISABLED
 MemoryStream::MemoryStream(
-	PVOID stream_start,
-	size_t stream_size,
-	size_t initial_offset
-):
-	RegisteredClass(DefaultData)
+	PVOID stream_start, size_t stream_size, size_t initial_offset)
+	: RegisteredClass(DefaultData)
 {
-	//Check_Pointer(this);
+	// Check_Pointer(this);
 	streamStart = static_cast<puint8_t>(stream_start);
-	streamSize = stream_size;
+	streamSize  = stream_size;
 	Verify(initial_offset <= stream_size);
 	currentPosition = streamStart + initial_offset;
-	currentBit = Empty_Bit_Buffer;
+	currentBit		= Empty_Bit_Buffer;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MemoryStream::MemoryStream(
-	ClassData* class_data,
-	PVOID stream_start,
-	size_t stream_size,
-	size_t initial_offset
-):
-	RegisteredClass(class_data)
+MemoryStream::MemoryStream(ClassData* class_data, PVOID stream_start,
+	size_t stream_size, size_t initial_offset)
+	: RegisteredClass(class_data)
 {
-	//Check_Pointer(this);
+	// Check_Pointer(this);
 	streamStart = static_cast<puint8_t>(stream_start);
-	streamSize = stream_size;
+	streamSize  = stream_size;
 	Verify(initial_offset <= stream_size);
 	currentPosition = streamStart + initial_offset;
-	currentBit = 0;
+	currentBit		= 0;
 }
 #endif
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-//MemoryStream::~MemoryStream()
+// MemoryStream::~MemoryStream()
 //{
 //}
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MemoryStream&
-MemoryStream::ReadBytes(
-	PVOID ptr,
-	size_t number_of_bytes
-)
+MemoryStream& MemoryStream::ReadBytes(PVOID ptr, size_t number_of_bytes)
 {
 	// Check_Object(this);
 	Check_Pointer(ptr);
@@ -114,12 +94,11 @@ MemoryStream::ReadBytes(
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-int32_t
-MemoryStream::ReadChar()
+int32_t MemoryStream::ReadChar()
 {
 	// Check_Object(this);
 	size_t bytes_remaining = GetBytesRemaining();
-	if(bytes_remaining > 0)
+	if (bytes_remaining > 0)
 	{
 		uint8_t byte;
 		ReadBytes(&byte, 1);
@@ -130,12 +109,8 @@ MemoryStream::ReadChar()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-bool
-MemoryStream::ReadLine(
-	PSTR buffer,
-	size_t max_number_of_bytes,
-	char continuator
-)
+bool MemoryStream::ReadLine(
+	PSTR buffer, size_t max_number_of_bytes, char continuator)
 {
 	// Check_Object(this);
 	Check_Pointer(buffer);
@@ -147,14 +122,14 @@ MemoryStream::ReadLine(
 	// copy the character into the buffer
 	//
 	int32_t c = ReadChar();
-	if(c == End_Of_Stream)
+	if (c == End_Of_Stream)
 		return false;
-	PSTR p = buffer;
+	PSTR p   = buffer;
 	size_t i = 0;
 	Check_Object(FileStreamManager::Instance);
-	PCSTR eol = "\r\n";
+	PCSTR eol		  = "\r\n";
 	size_t eol_length = strlen(eol);
-	while(c != End_Of_Stream && i < max_number_of_bytes)
+	while (c != End_Of_Stream && i < max_number_of_bytes)
 	{
 		Check_Pointer(p);
 		Verify(i < max_number_of_bytes);
@@ -162,36 +137,36 @@ MemoryStream::ReadLine(
 		//
 		// If we have met the end of line condition, break
 		//
-		switch(eol_length)
+		switch (eol_length)
 		{
-			case 1:
-				if(p[i] == *eol)
-				{
-					c = End_Of_Stream;
-				}
-				else
-				{
-					++i;
-					c = ReadChar();
-				}
-				break;
-			case 2:
-				if(p[i] == eol[1] && i > 0 && p[i - 1] == eol[0])
-				{
-					i -= 1;
-					c = End_Of_Stream;
-				}
-				else
-				{
-					++i;
-					c = ReadChar();
-				}
-				break;
-			default:
-				STOP(("Unhandled eol style"));
+		case 1:
+			if (p[i] == *eol)
+			{
+				c = End_Of_Stream;
+			}
+			else
+			{
+				++i;
+				c = ReadChar();
+			}
+			break;
+		case 2:
+			if (p[i] == eol[1] && i > 0 && p[i - 1] == eol[0])
+			{
+				i -= 1;
+				c = End_Of_Stream;
+			}
+			else
+			{
+				++i;
+				c = ReadChar();
+			}
+			break;
+		default:
+			STOP(("Unhandled eol style"));
 		}
 	}
-	if(i < max_number_of_bytes)
+	if (i < max_number_of_bytes)
 	{
 		p[i] = '\0';
 		return true;
@@ -204,18 +179,14 @@ MemoryStream::ReadLine(
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MString
-MemoryStream::ReadString(
-	size_t size_of_buffer,
-	char continuator
-)
+MString MemoryStream::ReadString(size_t size_of_buffer, char continuator)
 {
 	// Check_Object(this);
 	Verify(size_of_buffer > 0);
 	static char buffer[1024];
 	Verify(size_of_buffer < sizeof(buffer));
 	MString temp_string;
-	if(ReadLine(buffer, size_of_buffer, continuator))
+	if (ReadLine(buffer, size_of_buffer, continuator))
 	{
 		temp_string = buffer;
 	}
@@ -224,11 +195,7 @@ MemoryStream::ReadString(
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MemoryStream&
-MemoryStream::ReadSwappedBytes(
-	PVOID ptr,
-	size_t number_of_bytes
-)
+MemoryStream& MemoryStream::ReadSwappedBytes(PVOID ptr, size_t number_of_bytes)
 {
 	// Check_Object(this);
 	Check_Pointer(ptr);
@@ -237,7 +204,7 @@ MemoryStream::ReadSwappedBytes(
 	puint8_t buffer = new uint8_t[number_of_bytes];
 	Check_Pointer(buffer);
 	ReadBytes(buffer, number_of_bytes);
-	for(size_t i = 0; i < number_of_bytes; ++i)
+	for (size_t i = 0; i < number_of_bytes; ++i)
 	{
 		static_cast<puint8_t>(ptr)[i] = buffer[number_of_bytes - 1 - i];
 	}
@@ -248,8 +215,7 @@ MemoryStream::ReadSwappedBytes(
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MemoryStream::WriteLine(PSTR buffer)
+void MemoryStream::WriteLine(PSTR buffer)
 {
 	// Check_Object(this);
 	Check_Pointer(buffer);
@@ -260,11 +226,7 @@ MemoryStream::WriteLine(PSTR buffer)
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 #if _CONSIDERED_DISABLED
-MemoryStream&
-MemoryStream::WriteBytes(
-	PCVOID ptr,
-	size_t number_of_bytes
-)
+MemoryStream& MemoryStream::WriteBytes(PCVOID ptr, size_t number_of_bytes)
 {
 	// Check_Object(this);
 	Check_Pointer(ptr);
@@ -277,11 +239,8 @@ MemoryStream::WriteBytes(
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-MemoryStream&
-MemoryStream::WriteSwappedBytes(
-	PCVOID ptr,
-	size_t number_of_bytes
-)
+MemoryStream& MemoryStream::WriteSwappedBytes(
+	PCVOID ptr, size_t number_of_bytes)
 {
 	// Check_Object(this);
 	Check_Pointer(ptr);
@@ -289,7 +248,7 @@ MemoryStream::WriteSwappedBytes(
 	Verify(GetBytesRemaining() >= number_of_bytes);
 	puint8_t buffer = new uint8_t[number_of_bytes];
 	Check_Pointer(buffer);
-	for(size_t i = 0; i < number_of_bytes; ++i)
+	for (size_t i = 0; i < number_of_bytes; ++i)
 	{
 		buffer[number_of_bytes - 1 - i] = static_cast<pcuint8_t>(ptr)[i];
 	}
@@ -301,25 +260,18 @@ MemoryStream::WriteSwappedBytes(
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MemoryStream&
-MemoryStreamIO::Write(
-	MemoryStream* stream,
-	const MemoryStream* input_stream
-)
+MemoryStream& MemoryStreamIO::Write(
+	MemoryStream* stream, const MemoryStream* input_stream)
 {
 	Check_Object(stream);
 	Check_Object(input_stream);
-	return
-		stream->WriteBytes(
-			input_stream->GetPointer(),
-			input_stream->GetBytesRemaining()
-		);
+	return stream->WriteBytes(
+		input_stream->GetPointer(), input_stream->GetBytesRemaining());
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //  Bit packing methods...
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
 
 #if 0
 
@@ -394,47 +346,43 @@ SPEW(("jerryeds", "%u %u", i, bit_count));
 
 #endif
 
-
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 
-void
-MemoryStream::ByteAlign()
+void MemoryStream::ByteAlign()
 {
-	if(currentBit == 0)
+	if (currentBit == 0)
 	{
 		return;
 	}
 	// Check_Object(this);
-	//SPEW(("jerryeds", "WRITE : %x", workingBitBuffer));
+	// SPEW(("jerryeds", "WRITE : %x", workingBitBuffer));
 	WriteBytes(&workingBitBuffer, 1);
 	workingBitBuffer = 0x00;
-	currentBit = 0;
+	currentBit		 = 0;
 }
-
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MemoryStream&
-MemoryStream::ReadBit(bool& bit_value)
+MemoryStream& MemoryStream::ReadBit(bool& bit_value)
 {
 	// Check_Object(this);
 	int32_t result = 0;
-	if(currentBit == Empty_Bit_Buffer)
+	if (currentBit == Empty_Bit_Buffer)
 	{
 		ReadBytes(&workingBitBuffer, 1);
-		//SPEW(("jerryeds", "READ : %x", workingBitBuffer));
+		// SPEW(("jerryeds", "READ : %x", workingBitBuffer));
 		currentBit = 0;
 	}
 	Verify(currentBit >= 0);
-	Verify(currentBit <  8);
-	result = (0x01 & (workingBitBuffer >> currentBit));
+	Verify(currentBit < 8);
+	result	= (0x01 & (workingBitBuffer >> currentBit));
 	bit_value = (result) ? true : false;
 	currentBit++;
-	if(currentBit > 7 && GetBytesRemaining())
+	if (currentBit > 7 && GetBytesRemaining())
 	{
 		ReadBytes(&workingBitBuffer, 1);
-		//SPEW(("jerryeds", "READ : %x", workingBitBuffer));
+		// SPEW(("jerryeds", "READ : %x", workingBitBuffer));
 		currentBit = 0;
 	}
 	return *this;
@@ -443,63 +391,58 @@ MemoryStream::ReadBit(bool& bit_value)
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 
-MemoryStream&
-MemoryStream::WriteBit(const bool& bit_value)
+MemoryStream& MemoryStream::WriteBit(const bool& bit_value)
 {
 	// Check_Object(this);
 	int32_t int_bit_value = (bit_value) ? 1 : 0;
-	if(currentBit == Empty_Bit_Buffer)
+	if (currentBit == Empty_Bit_Buffer)
 	{
-		currentBit = 0;
+		currentBit		 = 0;
 		workingBitBuffer = 0x0;
 	}
 	Verify(currentBit >= 0);
-	Verify(currentBit <  8);
+	Verify(currentBit < 8);
 	workingBitBuffer |= (int_bit_value << currentBit);
 	currentBit++;
-	if(currentBit > 7)
+	if (currentBit > 7)
 	{
 		WriteBytes(&workingBitBuffer, 1);
-		//SPEW(("jerryeds", "WRITE : %x", workingBitBuffer));
+		// SPEW(("jerryeds", "WRITE : %x", workingBitBuffer));
 		workingBitBuffer = 0x00;
-		currentBit = 0;
+		currentBit		 = 0;
 	}
 	return *this;
 }
 
-
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MemoryStream&
-MemoryStream::ReadUnsafeBits(
-	PVOID ptr,
-	uint32_t number_of_bits
-)
+MemoryStream& MemoryStream::ReadUnsafeBits(PVOID ptr, uint32_t number_of_bits)
 {
 	// Check_Object(this);
 	Check_Pointer(ptr);
-	if(currentBit == Empty_Bit_Buffer)
+	if (currentBit == Empty_Bit_Buffer)
 	{
 		ReadBytes(&workingBitBuffer, 1);
-		//SPEW(("jerryeds", "READ : %x", workingBitBuffer));
+		// SPEW(("jerryeds", "READ : %x", workingBitBuffer));
 		currentBit = 0;
 	}
 	Verify(currentBit >= 0);
 	Verify(currentBit < 8);
 	int32_t total_number_of_bytes = (int32_t)(number_of_bits / 8.0f);
-	int32_t total_remainder_bits = (int32_t)(number_of_bits - (total_number_of_bytes * 8));
-	if(total_remainder_bits != 0)
+	int32_t total_remainder_bits =
+		(int32_t)(number_of_bits - (total_number_of_bytes * 8));
+	if (total_remainder_bits != 0)
 	{
 		total_number_of_bytes += 1;
 	}
-	puint8_t dest_array = Cast_Pointer(puint8_t , ptr);
+	puint8_t dest_array		  = Cast_Pointer(puint8_t, ptr);
 	int32_t dest_byte_counter = 0;
-	int32_t bits_remaining = (int32_t)number_of_bits;
-	while(bits_remaining > 0)
+	int32_t bits_remaining	= (int32_t)number_of_bits;
+	while (bits_remaining > 0)
 	{
 		puint8_t dest = &dest_array[dest_byte_counter];
 		// empy out destination
-		*dest = 0x00;
+		*dest						  = 0x00;
 		int32_t total_bits_to_be_read = 8;
 		Max_Clamp(total_bits_to_be_read, bits_remaining);
 		int32_t bits_in_first_source_byte = total_bits_to_be_read;
@@ -511,23 +454,26 @@ MemoryStream::ReadUnsafeBits(
 		// remove any bits from the next set that tagged along
 		*dest &= bit_mask;
 		currentBit += bits_in_first_source_byte;
-		if(currentBit == 8)
+		if (currentBit == 8)
 		{
-			int32_t bits_in_second_source_byte = total_bits_to_be_read - bits_in_first_source_byte;
-			if(GetBytesRemaining())
+			int32_t bits_in_second_source_byte =
+				total_bits_to_be_read - bits_in_first_source_byte;
+			if (GetBytesRemaining())
 			{
 				ReadBytes(&workingBitBuffer, 1);
-				//SPEW(("jerryeds", "READ : %x", workingBitBuffer));
+				// SPEW(("jerryeds", "READ : %x", workingBitBuffer));
 			}
 			++dest_byte_counter;
 			currentBit = 0;
-			if(bits_in_second_source_byte)
+			if (bits_in_second_source_byte)
 			{
 				// make a bitmask of the used bits
 				bit_mask = 0xff >> (8 - bits_in_second_source_byte);
-				// mask the used bits out of the buffer and then shift the buffer to the correct
-				// bit location.  Then combine it with the destination
-				*dest |= ((workingBitBuffer & bit_mask) << bits_in_first_source_byte);
+				// mask the used bits out of the buffer and then shift the
+				// buffer to the correct bit location.  Then combine it with the
+				// destination
+				*dest |= ((workingBitBuffer & bit_mask)
+						  << bits_in_first_source_byte);
 				currentBit = bits_in_second_source_byte;
 			}
 		}
@@ -541,31 +487,31 @@ MemoryStream::ReadUnsafeBits(
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 
-MemoryStream&
-MemoryStream::WriteBits(PCVOID ptr, uint32_t number_of_bits)
+MemoryStream& MemoryStream::WriteBits(PCVOID ptr, uint32_t number_of_bits)
 {
 	// Check_Object(this);
 	Check_Pointer(ptr);
-	if(currentBit == Empty_Bit_Buffer)
+	if (currentBit == Empty_Bit_Buffer)
 	{
 		workingBitBuffer = 0x00;
-		currentBit = 0;
+		currentBit		 = 0;
 	}
 	Verify(currentBit >= 0);
 	Verify(currentBit < 8);
 	size_t total_number_of_bytes = (number_of_bits / 8);
-	uint32_t total_remainder_bits = (uint32_t)(number_of_bits  - (total_number_of_bytes * 8));
-	if(total_remainder_bits != 0)
+	uint32_t total_remainder_bits =
+		(uint32_t)(number_of_bits - (total_number_of_bytes * 8));
+	if (total_remainder_bits != 0)
 	{
 		total_number_of_bytes += 1;
 	}
-	pcuint8_t source_array = Cast_Pointer(pcuint8_t, ptr);
+	pcuint8_t source_array		= Cast_Pointer(pcuint8_t, ptr);
 	int32_t source_byte_counter = 0;
-	int32_t bits_remaining = (int32_t)number_of_bits;
-	while(bits_remaining > 0)
+	int32_t bits_remaining		= (int32_t)number_of_bits;
+	while (bits_remaining > 0)
 	{
 		// if we are writing the full byte
-		pcuint8_t source = &source_array[source_byte_counter];
+		pcuint8_t source				 = &source_array[source_byte_counter];
 		int32_t total_bits_to_be_written = 8;
 		Max_Clamp(total_bits_to_be_written, bits_remaining);
 		int32_t bits_in_first_destination_byte = total_bits_to_be_written;
@@ -577,18 +523,20 @@ MemoryStream::WriteBits(PCVOID ptr, uint32_t number_of_bits)
 		// put the adjusted source into the destination
 		workingBitBuffer |= new_source;
 		currentBit += bits_in_first_destination_byte;
-		if(currentBit == 8)
+		if (currentBit == 8)
 		{
-			int32_t bits_in_second_destination_byte = total_bits_to_be_written - bits_in_first_destination_byte;
-			//SPEW(("jerryeds", "WRITE : %x", workingBitBuffer));
+			int32_t bits_in_second_destination_byte =
+				total_bits_to_be_written - bits_in_first_destination_byte;
+			// SPEW(("jerryeds", "WRITE : %x", workingBitBuffer));
 			WriteBytes(&workingBitBuffer, 1);
 			++source_byte_counter;
 			workingBitBuffer = 0x00;
-			currentBit = 0;
-			if(bits_in_second_destination_byte)
+			currentBit		 = 0;
+			if (bits_in_second_destination_byte)
 			{
 				// remove bits we have already used
-				workingBitBuffer = (uint8_t)(*source >> bits_in_first_destination_byte);
+				workingBitBuffer =
+					(uint8_t)(*source >> bits_in_first_destination_byte);
 				currentBit = bits_in_second_destination_byte;
 			}
 		}
@@ -597,13 +545,11 @@ MemoryStream::WriteBits(PCVOID ptr, uint32_t number_of_bits)
 	return *this;
 }
 
-
-
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 
-MemoryStream&
-MemoryStream::ReadBitsToScaledInt(int32_t& number, int32_t min, int32_t max,  uint32_t number_of_bits)
+MemoryStream& MemoryStream::ReadBitsToScaledInt(
+	int32_t& number, int32_t min, int32_t max, uint32_t number_of_bits)
 {
 	uint32_t buffer = 0x0;
 	ReadUnsafeBits(&buffer, number_of_bits);
@@ -614,8 +560,8 @@ MemoryStream::ReadBitsToScaledInt(int32_t& number, int32_t min, int32_t max,  ui
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 
-MemoryStream&
-MemoryStream::WriteScaledIntToBits(cint32_t& number, int32_t min, int32_t max,  uint32_t number_of_bits)
+MemoryStream& MemoryStream::WriteScaledIntToBits(
+	cint32_t& number, int32_t min, int32_t max, uint32_t number_of_bits)
 {
 	// Check_Object(this);
 	uint32_t buffer;
@@ -627,8 +573,8 @@ MemoryStream::WriteScaledIntToBits(cint32_t& number, int32_t min, int32_t max,  
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 
-MemoryStream&
-MemoryStream::ReadBitsToScaledFloat(float& number, float min, float max,  uint32_t number_of_bits)
+MemoryStream& MemoryStream::ReadBitsToScaledFloat(
+	float& number, float min, float max, uint32_t number_of_bits)
 {
 	// Check_Object(this);
 	uint32_t buffer = 0x0;
@@ -640,8 +586,8 @@ MemoryStream::ReadBitsToScaledFloat(float& number, float min, float max,  uint32
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 
-MemoryStream&
-MemoryStream::WriteScaledFloatToBits(const float& number, float min, float max,  uint32_t number_of_bits)
+MemoryStream& MemoryStream::WriteScaledFloatToBits(
+	const float& number, float min, float max, uint32_t number_of_bits)
 {
 	// Check_Object(this);
 	uint32_t buffer;
@@ -672,45 +618,41 @@ static inline size_t Calculate_Buffer_Size(size_t needed)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-DynamicMemoryStream::DynamicMemoryStream(size_t stream_size):
-	MemoryStream(nullptr, stream_size)
+DynamicMemoryStream::DynamicMemoryStream(size_t stream_size)
+	: MemoryStream(nullptr, stream_size)
 {
-	//Check_Pointer(this);
-	bufferSize = Calculate_Buffer_Size(stream_size);
+	// Check_Pointer(this);
+	bufferSize  = Calculate_Buffer_Size(stream_size);
 	streamStart = new uint8_t[bufferSize];
 	Check_Pointer(streamStart);
 	currentPosition = streamStart;
-	streamSize = stream_size;
-	ownsStream = true;
+	streamSize		= stream_size;
+	ownsStream		= true;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-DynamicMemoryStream::DynamicMemoryStream(const DynamicMemoryStream& otherStream):
-	MemoryStream(nullptr, otherStream.GetSize())
+DynamicMemoryStream::DynamicMemoryStream(const DynamicMemoryStream& otherStream)
+	: MemoryStream(nullptr, otherStream.GetSize())
 {
-	//Check_Pointer(this);
+	// Check_Pointer(this);
 	Check_Pointer(&otherStream);
-	bufferSize = otherStream.bufferSize;
+	bufferSize  = otherStream.bufferSize;
 	streamStart = new uint8_t[bufferSize];
 	Check_Pointer(streamStart);
 	streamSize = otherStream.GetSize();
 	Mem_Copy(streamStart, otherStream.streamStart, streamSize, bufferSize);
 	currentPosition = streamStart + otherStream.GetBytesUsed();
-	ownsStream = true;
+	ownsStream		= true;
 }
-
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 DynamicMemoryStream::DynamicMemoryStream(
-	PVOID stream_start,
-	size_t stream_size,
-	size_t initial_offset
-):
-	MemoryStream(stream_start, stream_size, initial_offset)
+	PVOID stream_start, size_t stream_size, size_t initial_offset)
+	: MemoryStream(stream_start, stream_size, initial_offset)
 {
-	//Check_Pointer(this);
+	// Check_Pointer(this);
 	ownsStream = false;
 	bufferSize = stream_size;
 }
@@ -720,7 +662,7 @@ DynamicMemoryStream::DynamicMemoryStream(
 DynamicMemoryStream::~DynamicMemoryStream()
 {
 	// Check_Object(this);
-	if(ownsStream)
+	if (ownsStream)
 	{
 		Check_Pointer(streamStart);
 		delete[] streamStart;
@@ -729,36 +671,32 @@ DynamicMemoryStream::~DynamicMemoryStream()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-bool
-DynamicMemoryStream::AllocateBytes(size_t count)
+bool DynamicMemoryStream::AllocateBytes(size_t count)
 {
 	// Check_Object(this);
-	size_t current_offset = size_t(currentPosition - streamStart);
+	size_t current_offset  = size_t(currentPosition - streamStart);
 	size_t new_stream_size = current_offset + count;
-	if(ownsStream && bufferSize - current_offset < count)
+	if (ownsStream && bufferSize - current_offset < count)
 	{
-		bufferSize = Calculate_Buffer_Size(new_stream_size);
+		bufferSize				  = Calculate_Buffer_Size(new_stream_size);
 		puint8_t new_stream_start = new uint8_t[bufferSize];
 		Check_Pointer(new_stream_start);
 		Mem_Copy(new_stream_start, streamStart, streamSize, bufferSize);
 		Check_Pointer(streamStart);
 		delete[] streamStart;
-		streamStart = new_stream_start;
-		streamSize = new_stream_size;
+		streamStart		= new_stream_start;
+		streamSize		= new_stream_size;
 		currentPosition = streamStart + current_offset;
 	}
-	else if(new_stream_size > streamSize)
+	else if (new_stream_size > streamSize)
 		streamSize = new_stream_size;
 	return true;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MemoryStream&
-DynamicMemoryStream::WriteBytes(
-	PCVOID ptr,
-	size_t number_of_bytes
-)
+MemoryStream& DynamicMemoryStream::WriteBytes(
+	PCVOID ptr, size_t number_of_bytes)
 {
 	// Check_Object(this);
 	Check_Pointer(ptr);
@@ -771,13 +709,8 @@ DynamicMemoryStream::WriteBytes(
 	//
 	AllocateBytes(number_of_bytes);
 	Mem_Copy(
-		GetPointer(),
-		ptr,
-		number_of_bytes,
-		MemoryStream::GetBytesRemaining()
-	);
+		GetPointer(), ptr, number_of_bytes, MemoryStream::GetBytesRemaining());
 	AdvancePointer(number_of_bytes);
 	bufferSize = Max(bufferSize, GetBytesUsed());
 	return *this;
 }
-

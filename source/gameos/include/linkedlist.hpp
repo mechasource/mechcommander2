@@ -8,88 +8,88 @@
 
 class gosLink
 {
-public:
+  public:
 	gosLink* Next;
 	gosLink* Prev;
 	PVOID linkData;
-public:
+
+  public:
 	gosLink()
 	{
 		linkData = 0;
-		Next = 0;
-		Prev = 0;
+		Next	 = 0;
+		Prev	 = 0;
 	}
 	gosLink(PVOID ptr)
 	{
 		linkData = ptr;
-		Next = 0;
-		Prev = 0;
+		Next	 = 0;
+		Prev	 = 0;
 	}
 	virtual ~gosLink()
 	{
 		Next = 0;
 		Prev = 0;
 	}
-	gosLink* GetNext()
-	{
-		return (gosLink*) linkData;
-	}
+	gosLink* GetNext() { return (gosLink*)linkData; }
 };
-
 
 template <class T> class LinkedList
 {
-public:
+  public:
 	gosLink* m_Head;
 	int32_t m_Size;
 
-public:
+  public:
 	LinkedList()
 	{
 		m_Head = 0;
 		m_Size = 0;
 	};
-	LinkedList(T  ptr)
+	LinkedList(T ptr)
 	{
-		gosLink* newlink = (gosLink*) malloc(sizeof(gosLink));
-		m_Head = newlink;
-		m_Head->Next = 0;
-		m_Size = 1;
+		gosLink* newlink = (gosLink*)malloc(sizeof(gosLink));
+		m_Head			 = newlink;
+		m_Head->Next	 = 0;
+		m_Size			 = 1;
 	};
 	~LinkedList()
 	{
-		while (m_Head != 0) Del((T) m_Head->linkData);
+		while (m_Head != 0)
+			Del((T)m_Head->linkData);
 	};
 	void Add(T ptr)
 	{
-		gosLink* newlink = (gosLink*) malloc(sizeof(gosLink));
+		gosLink* newlink  = (gosLink*)malloc(sizeof(gosLink));
 		newlink->linkData = ptr;
-		newlink->Next = 0;
-		newlink->Prev = 0;
+		newlink->Next	 = 0;
+		newlink->Prev	 = 0;
 		if (m_Head == 0)
 		{
-			m_Head = newlink;
+			m_Head		  = newlink;
 			newlink->Next = 0;
 			newlink->Prev = 0;
 		}
 		else
 		{
 			gosLink* tmp = m_Head;
-			while (tmp->Next != 0) tmp = tmp->Next;
-			tmp->Next = newlink;
+			while (tmp->Next != 0)
+				tmp = tmp->Next;
+			tmp->Next	 = newlink;
 			newlink->Next = 0;
 			newlink->Prev = tmp;
 		}
 		m_Size += 1;
 	}
-	void Del(T  ptr)
+	void Del(T ptr)
 	{
-		if (!m_Head)						//YIK - Why does it need this! (Delete All surfaces used to crash)
+		if (!m_Head) // YIK - Why does it need this! (Delete All surfaces used
+					 // to crash)
 			return;
 		gosLink* tmp = m_Head;
-		if (tmp->linkData == (PVOID) ptr)
+		if (tmp->linkData == (PVOID)ptr)
 		{
-			m_Head = tmp->Next;
+			m_Head	= tmp->Next;
 			tmp->Prev = 0;
 			m_Size -= 1;
 			memset(tmp, 0, sizeof(tmp));
@@ -100,9 +100,9 @@ public:
 			gosLink* target;
 			while (tmp->Next != 0)
 			{
-				if (tmp->Next->linkData == (PVOID) ptr)
+				if (tmp->Next->linkData == (PVOID)ptr)
 				{
-					target = tmp->Next;
+					target	= tmp->Next;
 					tmp->Next = target->Next;
 					if (target->Next)
 						target->Next->Prev = tmp;
@@ -113,16 +113,13 @@ public:
 				}
 				else
 				{
-					tmp = (gosLink*) tmp->Next;
+					tmp = (gosLink*)tmp->Next;
 				}
 			}
 		}
 	}
 
-	int32_t Size()
-	{
-		return m_Size;
-	}
+	int32_t Size() { return m_Size; }
 	T Get(int32_t index)
 	{
 		gosLink* tmp = m_Head;
@@ -141,62 +138,63 @@ public:
 		}
 		else
 		{
-			return (T) tmp->linkData;
+			return (T)tmp->linkData;
 		}
 	}
 };
 
 template <class T> class LinkedListIterator
 {
-public:
-	gosLink*
-	m_Iterator;
-	LinkedList<T>*
-	m_List;
-public:
+  public:
+	gosLink* m_Iterator;
+	LinkedList<T>* m_List;
+
+  public:
 	LinkedListIterator(LinkedList<T>* list)
 	{
 		m_Iterator = list->m_Head;
-		m_List = list;
+		m_List	 = list;
 	}
-	~LinkedListIterator()
-	{
-	}
-	T  Head()
+	~LinkedListIterator() {}
+	T Head()
 	{
 		m_Iterator = m_List->m_Head;
-		if (m_List->m_Head == 0) return 0;
+		if (m_List->m_Head == 0)
+			return 0;
 		return (T)((gosLink*)m_List->m_Head)->linkData;
 	}
-	T  Tail()
+	T Tail()
 	{
 		m_Iterator = m_List->m_Head;
-		if (!m_Iterator) return 0;
+		if (!m_Iterator)
+			return 0;
 		while (m_Iterator->Next != 0)
 		{
 			m_Iterator = m_Iterator->Next;
 		}
 		return (T)((gosLink*)m_Iterator)->linkData;
 	}
-	T  ReadAndNext()
+	T ReadAndNext()
 	{
 		gosLink* tmp = m_Iterator;
-		if (tmp == 0) return (T)0;
+		if (tmp == 0)
+			return (T)0;
 		m_Iterator = m_Iterator->Next;
 		return (T)((gosLink*)tmp)->linkData;
 	}
-	T  ReadAndPrev()
+	T ReadAndPrev()
 	{
 		gosLink* tmp = m_Iterator;
-		if (tmp == 0) return (T)0;
+		if (tmp == 0)
+			return (T)0;
 		m_Iterator = m_Iterator->Prev;
 		return (T)((gosLink*)tmp)->linkData;
 	}
-	T  Next()
+	T Next()
 	{
 		m_Iterator = m_Iterator->Next;
-		if (m_Iterator == 0) return 0;
-		return (T) m_Iterator->linkData;
+		if (m_Iterator == 0)
+			return 0;
+		return (T)m_Iterator->linkData;
 	}
 };
-

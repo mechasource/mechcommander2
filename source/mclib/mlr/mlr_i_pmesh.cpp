@@ -36,33 +36,29 @@ Stuff::DynamicArrayOf<float>* lightMapSqFalloffs;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLR_I_PMesh::InitializeClass(void)
+void MLR_I_PMesh::InitializeClass(void)
 {
 	Verify(!DefaultData);
 	// Verify(gos_GetCurrentHeap() == StaticHeap);
-	DefaultData =
-		new ClassData(
-		MLR_I_PMeshClassID,
-		"MidLevelRenderer::MLR_I_PMesh",
-		MLRIndexedPrimitiveBase::DefaultData,
-		(MLRPrimitiveBase::Factory)&Make
-	);
+	DefaultData = new ClassData(MLR_I_PMeshClassID,
+		"MidLevelRenderer::MLR_I_PMesh", MLRIndexedPrimitiveBase::DefaultData,
+		(MLRPrimitiveBase::Factory)&Make);
 	Register_Object(DefaultData);
 #if defined(TRACE_ENABLED) && defined(MLR_TRACE)
 	MLR_I_PMesh_Clip = new BitTrace("MLR_I_PMesh_Clip");
 	Register_Object(MLR_I_PMesh_Clip);
 #endif
-	lightMapUVs = new Stuff::DynamicArrayOf<Stuff::Vector2DScalar>(Limits::Max_Number_Vertices_Per_Polygon);
+	lightMapUVs = new Stuff::DynamicArrayOf<Stuff::Vector2DScalar>(
+		Limits::Max_Number_Vertices_Per_Polygon);
 	Register_Object(lightMapUVs);
-	lightMapSqFalloffs = new Stuff::DynamicArrayOf<float> (Limits::Max_Number_Vertices_Per_Polygon);
+	lightMapSqFalloffs = new Stuff::DynamicArrayOf<float>(
+		Limits::Max_Number_Vertices_Per_Polygon);
 	Register_Object(lightMapSqFalloffs);
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLR_I_PMesh::TerminateClass(void)
+void MLR_I_PMesh::TerminateClass(void)
 {
 	Unregister_Object(lightMapSqFalloffs);
 	delete lightMapSqFalloffs;
@@ -83,9 +79,9 @@ MLR_I_PMesh::MLR_I_PMesh(
 	ClassData* class_data, Stuff::MemoryStream* stream, uint32_t version)
 	: MLRIndexedPrimitiveBase(class_data, stream, version)
 {
-	//Check_Pointer(this);
+	// Check_Pointer(this);
 	Check_Pointer(stream);
-	//Verify(gos_GetCurrentHeap() == Heap);
+	// Verify(gos_GetCurrentHeap() == Heap);
 	facePlanes.SetLength(GetNumPrimitives());
 	testList.SetLength(GetNumPrimitives());
 	FindFacePlanes();
@@ -93,11 +89,11 @@ MLR_I_PMesh::MLR_I_PMesh(
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLR_I_PMesh::MLR_I_PMesh(ClassData* class_data):
-	MLRIndexedPrimitiveBase(class_data)
+MLR_I_PMesh::MLR_I_PMesh(ClassData* class_data)
+	: MLRIndexedPrimitiveBase(class_data)
 {
-	//Check_Pointer(this);
-	//Verify(gos_GetCurrentHeap() == Heap);
+	// Check_Pointer(this);
+	// Verify(gos_GetCurrentHeap() == Heap);
 	drawMode = SortData::TriIndexedList;
 }
 
@@ -148,11 +144,7 @@ MLR_I_PMesh::~MLR_I_PMesh(void)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLR_I_PMesh*
-MLR_I_PMesh::Make(
-	Stuff::MemoryStream* stream,
-	uint32_t version
-)
+MLR_I_PMesh* MLR_I_PMesh::Make(Stuff::MemoryStream* stream, uint32_t version)
 {
 	Check_Object(stream);
 #ifdef _GAMEOS_HPP_
@@ -166,11 +158,9 @@ MLR_I_PMesh::Make(
 	return mesh;
 }
 
-
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLR_I_PMesh::Save(Stuff::MemoryStream* stream)
+void MLR_I_PMesh::Save(Stuff::MemoryStream* stream)
 {
 	// Check_Object(this);
 	Check_Object(stream);
@@ -179,19 +169,17 @@ MLR_I_PMesh::Save(Stuff::MemoryStream* stream)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLR_I_PMesh::TestInstance(void) const
+void MLR_I_PMesh::TestInstance(void) const
 {
 	Verify(IsDerivedFrom(DefaultData));
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLR_I_PMesh::InitializeDrawPrimitive(uint8_t vis, int32_t parameter)
+void MLR_I_PMesh::InitializeDrawPrimitive(uint8_t vis, int32_t parameter)
 {
 	MLRIndexedPrimitiveBase::InitializeDrawPrimitive(vis, parameter);
-	if(parameter & 1)
+	if (parameter & 1)
 	{
 		ResetTestList();
 	}
@@ -199,11 +187,10 @@ MLR_I_PMesh::InitializeDrawPrimitive(uint8_t vis, int32_t parameter)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLR_I_PMesh::SetSubprimitiveLengths(puint8_t data, size_t numPrimitives)
+void MLR_I_PMesh::SetSubprimitiveLengths(puint8_t data, size_t numPrimitives)
 {
 	// Check_Object(this);
-	//Verify(gos_GetCurrentHeap() == Heap);
+	// Verify(gos_GetCurrentHeap() == Heap);
 	lengths.AssignData(data, numPrimitives);
 	facePlanes.SetLength(numPrimitives);
 	testList.SetLength(numPrimitives);
@@ -211,62 +198,56 @@ MLR_I_PMesh::SetSubprimitiveLengths(puint8_t data, size_t numPrimitives)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLR_I_PMesh::GetSubprimitiveLengths(puint8_t* pdata, psize_t plength)
+void MLR_I_PMesh::GetSubprimitiveLengths(puint8_t* pdata, psize_t plength)
 {
 	// Check_Object(this);
 	*plength = lengths.GetLength();
-	*pdata = lengths.GetData();
+	*pdata   = lengths.GetData();
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLR_I_PMesh::FindFacePlanes(void)
+void MLR_I_PMesh::FindFacePlanes(void)
 {
 	// Check_Object(this);
 	size_t i, j, stride, numPrimitives = GetNumPrimitives();
 	Stuff::Vector3D v;
 	Verify(index.GetLength() > 0);
-	for(i = 0, j = 0; i < numPrimitives; i++)
+	for (i = 0, j = 0; i < numPrimitives; i++)
 	{
 		stride = lengths[i];
 		facePlanes[i].BuildPlane(
-			coords[index[j]],
-			coords[index[j + 1]],
-			coords[index[j + 2]]
-		);
+			coords[index[j]], coords[index[j + 1]], coords[index[j + 2]]);
 		j += stride;
 	}
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-int32_t
-MLR_I_PMesh::FindBackFace(const Stuff::Point3D& u)
+int32_t MLR_I_PMesh::FindBackFace(const Stuff::Point3D& u)
 {
 	// Check_Object(this);
 	size_t i, numPrimitives = GetNumPrimitives();
 	int32_t ret = 0;
-	size_t len = lengths.GetLength();
+	size_t len  = lengths.GetLength();
 	puint8_t iPtr;
 	Stuff::Plane* p;
 
-	if(len <= 0)
+	if (len <= 0)
 	{
 		visible = 0;
 		return 0;
 	}
-	p = &facePlanes[0];
+	p	= &facePlanes[0];
 	iPtr = &testList[0];
-	if(state.GetBackFaceMode() == MLRState::BackFaceOffMode)
+	if (state.GetBackFaceMode() == MLRState::BackFaceOffMode)
 	{
 		ResetTestList();
 		ret = 1;
 	}
 	else
 	{
-		for(i = 0; i < numPrimitives; i++, p++, iPtr++)
+		for (i = 0; i < numPrimitives; i++, p++, iPtr++)
 		{
 			*iPtr = uint8_t((p->GetDistanceTo(u) >= 0.0f) ? 0xff : 0);
 			ret += *iPtr;
@@ -280,12 +261,11 @@ MLR_I_PMesh::FindBackFace(const Stuff::Point3D& u)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLR_I_PMesh::ResetTestList(void)
+void MLR_I_PMesh::ResetTestList(void)
 {
 	size_t i, numPrimitives = GetNumPrimitives();
 	puint8_t iPtr = &testList[0];
-	for(i = 0; i < numPrimitives; i++, iPtr++)
+	for (i = 0; i < numPrimitives; i++, iPtr++)
 	{
 		*iPtr = 1;
 	}
@@ -293,23 +273,22 @@ MLR_I_PMesh::ResetTestList(void)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-uint32_t
-MLR_I_PMesh::FindVisibleVertices(void)
+uint32_t MLR_I_PMesh::FindVisibleVertices(void)
 {
 	// Check_Object(this);
 	Verify(index.GetLength() > 0);
 	size_t ret, i, j, k, stride, len = lengths.GetLength();
 	Verify(index.GetLength() > 0);
-	for(i = 0, j = 0, ret = 0; i < len; i++)
+	for (i = 0, j = 0, ret = 0; i < len; i++)
 	{
 		stride = lengths[i];
 		Verify(stride >= 3);
-		if(testList[i] == 0)
+		if (testList[i] == 0)
 		{
 			j += stride;
 			continue;
 		}
-		for(k = j; k < j + stride; k++)
+		for (k = j; k < j + stride; k++)
 		{
 			visibleIndexedVertices[index[k]] = 1;
 			ret++;
@@ -324,24 +303,23 @@ extern uint32_t gEnableTextureSort, gEnableAlphaSort;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLR_I_PMesh::Transform(Stuff::Matrix4D* mat)
+void MLR_I_PMesh::Transform(Stuff::Matrix4D* mat)
 {
 	// Check_Object(this);
 	Start_Timer(Transform_Time);
 	Verify(index.GetLength() > 0);
 	size_t i, len = coords.GetLength();
-	if(visibleIndexedVerticesKey == false)
+	if (visibleIndexedVerticesKey == false)
 	{
 		FindVisibleVertices();
 	}
 	Stuff::Vector4D* v4d = transformedCoords->GetData();
-	Stuff::Point3D* p3d = coords.GetData();
+	Stuff::Point3D* p3d  = coords.GetData();
 	MLRClippingState* cs = clipPerVertex->GetData();
-	puint8_t viv = visibleIndexedVertices.GetData();
-	for(i = 0; i < len; i++, p3d++, v4d++, cs++, viv++)
+	puint8_t viv		 = visibleIndexedVertices.GetData();
+	for (i = 0; i < len; i++, p3d++, v4d++, cs++, viv++)
 	{
-		if(*viv == 0)
+		if (*viv == 0)
 		{
 			continue;
 		}
@@ -356,16 +334,16 @@ MLR_I_PMesh::Transform(Stuff::Matrix4D* mat)
 //--------------------------------------------------------
 //
 #ifdef LAB_ONLY
-		if((*cs) == 0)
+		if ((*cs) == 0)
 		{
 #if defined(_ARMOR)
-			if(Stuff::ArmorLevel > 3)
+			if (Stuff::ArmorLevel > 3)
 			{
-//
-//--------------------------------------------------------
-// I claims all vertices are in. lets check it. who knows
-//--------------------------------------------------------
-//
+				//
+				//--------------------------------------------------------
+				// I claims all vertices are in. lets check it. who knows
+				//--------------------------------------------------------
+				//
 				Verify(v4d->x >= 0.0f && v4d->x <= v4d->w);
 				Verify(v4d->y >= 0.0f && v4d->y <= v4d->w);
 				Verify(v4d->z >= 0.0f && v4d->z <= v4d->w);
@@ -408,15 +386,14 @@ MLR_I_PMesh::Transform(Stuff::Matrix4D* mat)
 
 //---------------------------------------------------------------------------
 //
-void
-MLR_I_PMesh::Lighting(MLRLight* const* lights, uint32_t nrLights)
+void MLR_I_PMesh::Lighting(MLRLight* const* lights, uint32_t nrLights)
 {
 	size_t i;
 	MLRLightMap* lightMap;
-	for(i = 0; i < nrLights; i++)
+	for (i = 0; i < nrLights; i++)
 	{
 		lightMap = lights[i]->GetLightMap();
-		if(lightMap != nullptr)
+		if (lightMap != nullptr)
 		{
 			LightMapLighting(lights[i]);
 		}
@@ -427,69 +404,73 @@ Stuff::RGBAColor errorColor;
 
 //---------------------------------------------------------------------------
 //
-// warning C6244: Local declaration of 'lightMapUVs' hides previous declaration at line '34'
-bool CheckForBigTriangles(Stuff::DynamicArrayOf<Stuff::Vector2DScalar>* lightMapUVs2, uint32_t stride)
+// warning C6244: Local declaration of 'lightMapUVs' hides previous declaration
+// at line '34'
+bool CheckForBigTriangles(
+	Stuff::DynamicArrayOf<Stuff::Vector2DScalar>* lightMapUVs2, uint32_t stride)
 {
 	size_t k1, k0;
 	float u1v0, u0v1;
 	size_t up = 0, down = 0, right = 0, left = 0;
 
-	for(k0 = 0; k0 < stride; k0++)
+	for (k0 = 0; k0 < stride; k0++)
 	{
-		if((*lightMapUVs2)[k0][1] > 0.5f)
+		if ((*lightMapUVs2)[k0][1] > 0.5f)
 		{
 			up++;
 		}
-		if((*lightMapUVs2)[k0][1] < -0.5f)
+		if ((*lightMapUVs2)[k0][1] < -0.5f)
 		{
 			down++;
 		}
-		if((*lightMapUVs2)[k0][0] > 0.5f)
+		if ((*lightMapUVs2)[k0][0] > 0.5f)
 		{
 			right++;
 		}
-		if((*lightMapUVs2)[k0][0] < -0.5f)
+		if ((*lightMapUVs2)[k0][0] < -0.5f)
 		{
 			left++;
 		}
 	}
-	if(up == stride || down == stride || left == stride || right == stride)
+	if (up == stride || down == stride || left == stride || right == stride)
 	{
 		errorColor = Stuff::RGBAColor(0.5f, 0.5f, 0.0f, 1.0f);
 		return false;
 	}
 #if 1
 	float sign = -1.0f;
-	if(
-		((*lightMapUVs2)[1][0] - (*lightMapUVs2)[0][0]) * ((*lightMapUVs2)[stride - 1][1] - (*lightMapUVs2)[0][1]) >
-		((*lightMapUVs2)[1][1] - (*lightMapUVs2)[0][1]) * ((*lightMapUVs2)[stride - 1][0] - (*lightMapUVs2)[0][0])
-	)
+	if (((*lightMapUVs2)[1][0] - (*lightMapUVs2)[0][0]) *
+			((*lightMapUVs2)[stride - 1][1] - (*lightMapUVs2)[0][1]) >
+		((*lightMapUVs2)[1][1] - (*lightMapUVs2)[0][1]) *
+			((*lightMapUVs2)[stride - 1][0] - (*lightMapUVs2)[0][0]))
 	{
 		sign = 1.0f;
 	}
 #endif
-	for(k0 = 0; k0 < stride; k0++)
+	for (k0 = 0; k0 < stride; k0++)
 	{
-		k1 = (k0 + 1 < stride) ? k0 + 1 : 0;
-		u1v0 =	(*lightMapUVs2)[k1][0] * (*lightMapUVs2)[k0][1];
-		u0v1 =	(*lightMapUVs2)[k0][0] * (*lightMapUVs2)[k1][1];
-		if(sign * (u1v0 - u0v1) < 0.0f)
-//		if( (u1v0 - u0v1) < 0.0f )
+		k1   = (k0 + 1 < stride) ? k0 + 1 : 0;
+		u1v0 = (*lightMapUVs2)[k1][0] * (*lightMapUVs2)[k0][1];
+		u0v1 = (*lightMapUVs2)[k0][0] * (*lightMapUVs2)[k1][1];
+		if (sign * (u1v0 - u0v1) < 0.0f)
+		//		if( (u1v0 - u0v1) < 0.0f )
 		{
 			continue;
 		}
-		if(
-			(
-				((*lightMapUVs2)[k1][0] * (*lightMapUVs2)[k1][0] - 2.0f * (*lightMapUVs2)[k1][0] * (*lightMapUVs2)[k0][0] + (*lightMapUVs2)[k0][0] * (*lightMapUVs2)[k0][0]) +
-				((*lightMapUVs2)[k1][1] * (*lightMapUVs2)[k1][1] - 2.0f * (*lightMapUVs2)[k1][1] * (*lightMapUVs2)[k0][1] + (*lightMapUVs2)[k0][1] * (*lightMapUVs2)[k0][1])
-			) 	<	(2.0f * (u1v0 * u1v0 - 2.0f * u1v0 * u0v1 + u0v1 * u0v1))
-		)
+		if ((((*lightMapUVs2)[k1][0] * (*lightMapUVs2)[k1][0] -
+				 2.0f * (*lightMapUVs2)[k1][0] * (*lightMapUVs2)[k0][0] +
+				 (*lightMapUVs2)[k0][0] * (*lightMapUVs2)[k0][0]) +
+				((*lightMapUVs2)[k1][1] * (*lightMapUVs2)[k1][1] -
+					2.0f * (*lightMapUVs2)[k1][1] * (*lightMapUVs2)[k0][1] +
+					(*lightMapUVs2)[k0][1] * (*lightMapUVs2)[k0][1])) <
+			(2.0f * (u1v0 * u1v0 - 2.0f * u1v0 * u0v1 + u0v1 * u0v1)))
 		{
 #if UV_TEST
 			DEBUG_STREAM << k0 << endl;
-			for(size_t i = 0; i < stride; i++)
+			for (size_t i = 0; i < stride; i++)
 			{
-				DEBUG_STREAM << (*lightMapUVs2)[i][0] << " " << (*lightMapUVs2)[i][1] << endl;
+				DEBUG_STREAM << (*lightMapUVs2)[i][0] << " "
+							 << (*lightMapUVs2)[i][1] << endl;
 			}
 			DEBUG_STREAM << endl;
 #endif
@@ -502,10 +483,9 @@ bool CheckForBigTriangles(Stuff::DynamicArrayOf<Stuff::Vector2DScalar>* lightMap
 
 //---------------------------------------------------------------------------
 //
-void
-MLR_I_PMesh::LightMapLighting(MLRLight* light)
+void MLR_I_PMesh::LightMapLighting(MLRLight* light)
 {
-	if(!gEnableLightMaps)
+	if (!gEnableLightMaps)
 	{
 		return;
 	}
@@ -517,256 +497,276 @@ MLR_I_PMesh::LightMapLighting(MLRLight* light)
 	bool lm;
 	float f, rhf, falloff = 1.0f, distance;
 	MLRLightMap* lightMap = light->GetLightMap();
-	if((!lightMap)  || (!gEnableLightMaps))
+	if ((!lightMap) || (!gEnableLightMaps))
 	{
 		return;
 	}
-	switch(light->GetLightType())
+	switch (light->GetLightType())
 	{
-		case MLRLight::PointLight:
+	case MLRLight::PointLight:
+	{
+		lightMap->AddState(referenceState.GetPriority() + 1);
+		light->GetInShapePosition(lightPosInShape);
+		for (i = 0, j = 0, k = 0; i < len; i++, j += stride)
 		{
-			lightMap->AddState(referenceState.GetPriority() + 1);
-			light->GetInShapePosition(lightPosInShape);
-			for(i = 0, j = 0, k = 0; i < len; i++, j += stride)
+			stride = lengths[i];
+			if (testList[i] == 0)
 			{
-				stride = lengths[i];
-				if(testList[i] == 0)
-				{
-					continue;
-				}
-				f = facePlanes[i].GetDistanceTo(lightPosInShape);
-				lm = false;
-				if(f > 0.0f && Cast_Object(MLRInfiniteLightWithFalloff*, light)->GetFalloff(f, falloff) == true)
-				{
-					rhf = 1.0f / f;
-					matrix = Stuff::LinearMatrix4D::Identity;
-					matrix.AlignLocalAxisToWorldVector(facePlanes[i].normal, Stuff::Z_Axis, Stuff::Y_Axis, Stuff::X_Axis);
-					matrix.GetWorldLeftInLocal(&left);
-					matrix.GetWorldUpInLocal(&up);
-					matrix.GetWorldForwardInLocal(&forward);
-					Verify(Stuff::Small_Enough(up * left));
-#if defined(_ARMOR)
-					float diff = forward * left;
-					Verify(Stuff::Small_Enough(diff));
-					diff = up * forward;
-					Verify(Stuff::Small_Enough(diff));
-#endif
-					Check_Object(&forward);
-					hitPoint.Multiply(forward, -f);
-					hitPoint += lightPosInShape;
-					for(k = 0; k < stride; k++)
-					{
-						Stuff::Vector3D vec(coords[index[k + j]]);
-						vec -= hitPoint;
-						(*lightMapUVs)[k][0] = -(left * vec) * rhf;
-						(*lightMapUVs)[k][1] = -(up * vec) * rhf;
-						if(
-							(*lightMapUVs)[k][0] >= -0.5f && (*lightMapUVs)[k][0] <= 0.5f &&
-							(*lightMapUVs)[k][1] >= -0.5f && (*lightMapUVs)[k][1] <= 0.5f
-						)
-						{
-							lm = true;
-						}
-					}
-				}
-				else
-				{
-					continue;
-				}
-				if(lm == true || CheckForBigTriangles(lightMapUVs, stride) == true)
-				{
-					lightMap->SetPolygonMarker(0);
-					lightMap->AddUShort(stride);
-					float sq_falloff
-						= falloff * falloff * light->GetIntensity();
-					Stuff::RGBAColor color(sq_falloff, sq_falloff, sq_falloff, 1.0f);
-					lightMap->AddColor(color);
-					for(k = 0; k < stride; k++)
-					{
-						lightMap->AddCoord(coords[index[k + j]]);
-					}
-					for(k = 0; k < stride; k++)
-					{
-						lightMap->AddUVs((*lightMapUVs)[k][0] + 0.5f, (*lightMapUVs)[k][1] + 0.5f);
-						//				DEBUG_STREAM << k << " " << lightMapUVs[k][0] << " " << lightMapUVs[k][0] << "\n";
-					}
-				}
+				continue;
 			}
-		}
-		break;
-		case MLRLight::SpotLight:
-		{
-			int32_t behindCount = 0, falloffCount = 0;
-			lightMap->AddState(referenceState.GetPriority() + 1);
-			light->GetInShapePosition(matrix);
-			lightPosInShape = matrix;
-			float tanSpeadAngle = Cast_Object(MLRSpotLight*, light)->GetTanSpreadAngle();
-			matrix.GetLocalLeftInWorld(&left);
-			matrix.GetLocalUpInWorld(&up);
-			matrix.GetLocalForwardInWorld(&forward);
-			Verify(Stuff::Small_Enough(up * left));
-			for(i = 0, j = 0, k = 0; i < len; i++, j += stride)
+			f  = facePlanes[i].GetDistanceTo(lightPosInShape);
+			lm = false;
+			if (f > 0.0f && Cast_Object(MLRInfiniteLightWithFalloff*, light)
+									->GetFalloff(f, falloff) == true)
 			{
-				behindCount = 0;
-				falloffCount = 0;
-				stride = lengths[i];
-				if(testList[i] == 0)
+				rhf	= 1.0f / f;
+				matrix = Stuff::LinearMatrix4D::Identity;
+				matrix.AlignLocalAxisToWorldVector(facePlanes[i].normal,
+					Stuff::Z_Axis, Stuff::Y_Axis, Stuff::X_Axis);
+				matrix.GetWorldLeftInLocal(&left);
+				matrix.GetWorldUpInLocal(&up);
+				matrix.GetWorldForwardInLocal(&forward);
+				Verify(Stuff::Small_Enough(up * left));
+#if defined(_ARMOR)
+				float diff = forward * left;
+				Verify(Stuff::Small_Enough(diff));
+				diff = up * forward;
+				Verify(Stuff::Small_Enough(diff));
+#endif
+				Check_Object(&forward);
+				hitPoint.Multiply(forward, -f);
+				hitPoint += lightPosInShape;
+				for (k = 0; k < stride; k++)
 				{
-					continue;
-				}
-				lm = false;
-				if(!facePlanes[i].IsSeenBy(lightPosInShape))
-				{
-					continue;
-				}
-				int32_t tooBig = 0;
-				for(k = 0; k < stride; k++)
-				{
-					Stuff::Vector3D vec;
-					vec.Subtract(coords[index[k + j]], lightPosInShape);
-					distance = (vec * forward);
-					if(distance > Stuff::SMALL)
-					{
-						if(Cast_Object(MLRInfiniteLightWithFalloff*, light)->GetFalloff(distance, falloff) == false)
-						{
-							falloffCount++;
-						}
-						(*lightMapSqFalloffs)[k] = falloff * falloff * light->GetIntensity();
-					}
-					else
-					{
-						behindCount++;
-						break;
-					}
-					(*lightMapUVs)[k][0] = (left * vec) / (2.0f * distance * tanSpeadAngle);
-					(*lightMapUVs)[k][1] = -(up * vec) / (2.0f * distance * tanSpeadAngle);
-					if(
-						(*lightMapUVs)[k][0] >= -0.5f && (*lightMapUVs)[k][0] <= 0.5f &&
-						(*lightMapUVs)[k][1] >= -0.5f && (*lightMapUVs)[k][1] <= 0.5f
-					)
+					Stuff::Vector3D vec(coords[index[k + j]]);
+					vec -= hitPoint;
+					(*lightMapUVs)[k][0] = -(left * vec) * rhf;
+					(*lightMapUVs)[k][1] = -(up * vec) * rhf;
+					if ((*lightMapUVs)[k][0] >= -0.5f &&
+						(*lightMapUVs)[k][0] <= 0.5f &&
+						(*lightMapUVs)[k][1] >= -0.5f &&
+						(*lightMapUVs)[k][1] <= 0.5f)
 					{
 						lm = true;
 					}
-					if(
-						(*lightMapUVs)[k][0] < -1.5f || (*lightMapUVs)[k][0] > 1.5f ||
-						(*lightMapUVs)[k][1] < -1.5f && (*lightMapUVs)[k][1] > 1.5f
-					)
-					{
-						tooBig++;
-					}
 				}
-#if 1
-				if(
-					tooBig == 0 &&
-					behindCount == 0 &&
-					falloffCount < stride &&
-					(lm == true || CheckForBigTriangles(lightMapUVs, stride) == true)
-				)
+			}
+			else
+			{
+				continue;
+			}
+			if (lm == true || CheckForBigTriangles(lightMapUVs, stride) == true)
+			{
+				lightMap->SetPolygonMarker(0);
+				lightMap->AddUShort(stride);
+				float sq_falloff = falloff * falloff * light->GetIntensity();
+				Stuff::RGBAColor color(
+					sq_falloff, sq_falloff, sq_falloff, 1.0f);
+				lightMap->AddColor(color);
+				for (k = 0; k < stride; k++)
 				{
-					lightMap->SetPolygonMarker(1);
-					lightMap->AddUShort(stride);
-					for(k = 0; k < stride; k++)
-					{
-						lightMap->AddCoord(coords[index[k + j]]);
-					}
-					for(k = 0; k < stride; k++)
-					{
-						lightMap->AddColor((*lightMapSqFalloffs)[k], (*lightMapSqFalloffs)[k], (*lightMapSqFalloffs)[k], 1.0f);
-					}
-					for(k = 0; k < stride; k++)
-					{
-						lightMap->AddUVs((*lightMapUVs)[k][0] + 0.5f, (*lightMapUVs)[k][1] + 0.5f);
-						//				DEBUG_STREAM << k << " " << lightMapUVs[k][0] << " " << lightMapUVs[k][0] << "\n";
-					}
+					lightMap->AddCoord(coords[index[k + j]]);
 				}
-#else
-				if(tooBig != 0)
+				for (k = 0; k < stride; k++)
 				{
-					lightMap->SetPolygonMarker(1);
-					lightMap->AddUShort(stride);
-					for(k = 0; k < stride; k++)
-					{
-						lightMap->AddCoord(coords[index[k + j]]);
-					}
-					for(k = 0; k < stride; k++)
-					{
-						lightMap->AddColor(Stuff::RGBAColor(0.0f, 0.0f, 0.5f, 1.0f));
-					}
-					for(k = 0; k < stride; k++)
-					{
-						lightMap->AddUVs(0.5f, 0.5f);
-						//				DEBUG_STREAM << k << " " << lightMapUVs[k][0] << " " << lightMapUVs[k][0] << "\n";
-					}
+					lightMap->AddUVs((*lightMapUVs)[k][0] + 0.5f,
+						(*lightMapUVs)[k][1] + 0.5f);
+					//				DEBUG_STREAM << k << " " << lightMapUVs[k][0] << "
+					//" << lightMapUVs[k][0] << "\n";
 				}
-				else if(behindCount != 0)
-				{
-					lightMap->SetPolygonMarker(1);
-					lightMap->AddUShort(stride);
-					for(k = 0; k < stride; k++)
-					{
-						lightMap->AddCoord(coords[index[k + j]]);
-					}
-					for(k = 0; k < stride; k++)
-					{
-						lightMap->AddColor(Stuff::RGBAColor(0.5f, 0.0f, 0.0f, 1.0f));
-					}
-					for(k = 0; k < stride; k++)
-					{
-						lightMap->AddUVs(0.5f, 0.5f);
-						//				DEBUG_STREAM << k << " " << lightMapUVs[k][0] << " " << lightMapUVs[k][0] << "\n";
-					}
-				}
-				else	if(behindCount == 0 && (lm == true || CheckForBigTriangles(&lightMapUVs, stride) == true))
-				{
-					lightMap->SetPolygonMarker(1);
-					lightMap->AddUShort(stride);
-					for(k = 0; k < stride; k++)
-					{
-						lightMap->AddCoord(coords[index[k + j]]);
-					}
-					for(k = 0; k < stride; k++)
-					{
-						lightMap->AddColor(lightMapSqFalloffs[k], lightMapSqFalloffs[k], lightMapSqFalloffs[k], 1.0f);
-					}
-					for(k = 0; k < stride; k++)
-					{
-						lightMap->AddUVs(lightMapUVs[k][0] + 0.5f, lightMapUVs[k][1] + 0.5f);
-						//				DEBUG_STREAM << k << " " << lightMapUVs[k][0] << " " << lightMapUVs[k][0] << "\n";
-					}
-				}
-				else if(CheckForBigTriangles(&lightMapUVs, stride) == false)
-				{
-					lightMap->SetPolygonMarker(1);
-					lightMap->AddUShort(stride);
-					for(k = 0; k < stride; k++)
-					{
-						lightMap->AddCoord(coords[index[k + j]]);
-					}
-					for(k = 0; k < stride; k++)
-					{
-						lightMap->AddColor(errorColor);
-					}
-					for(k = 0; k < stride; k++)
-					{
-						lightMap->AddUVs(0.5f, 0.5f);
-						//				DEBUG_STREAM << k << " " << lightMapUVs[k][0] << " " << lightMapUVs[k][0] << "\n";
-					}
-				}
-#endif
 			}
 		}
-		break;
+	}
+	break;
+	case MLRLight::SpotLight:
+	{
+		int32_t behindCount = 0, falloffCount = 0;
+		lightMap->AddState(referenceState.GetPriority() + 1);
+		light->GetInShapePosition(matrix);
+		lightPosInShape = matrix;
+		float tanSpeadAngle =
+			Cast_Object(MLRSpotLight*, light)->GetTanSpreadAngle();
+		matrix.GetLocalLeftInWorld(&left);
+		matrix.GetLocalUpInWorld(&up);
+		matrix.GetLocalForwardInWorld(&forward);
+		Verify(Stuff::Small_Enough(up * left));
+		for (i = 0, j = 0, k = 0; i < len; i++, j += stride)
+		{
+			behindCount  = 0;
+			falloffCount = 0;
+			stride		 = lengths[i];
+			if (testList[i] == 0)
+			{
+				continue;
+			}
+			lm = false;
+			if (!facePlanes[i].IsSeenBy(lightPosInShape))
+			{
+				continue;
+			}
+			int32_t tooBig = 0;
+			for (k = 0; k < stride; k++)
+			{
+				Stuff::Vector3D vec;
+				vec.Subtract(coords[index[k + j]], lightPosInShape);
+				distance = (vec * forward);
+				if (distance > Stuff::SMALL)
+				{
+					if (Cast_Object(MLRInfiniteLightWithFalloff*, light)
+							->GetFalloff(distance, falloff) == false)
+					{
+						falloffCount++;
+					}
+					(*lightMapSqFalloffs)[k] =
+						falloff * falloff * light->GetIntensity();
+				}
+				else
+				{
+					behindCount++;
+					break;
+				}
+				(*lightMapUVs)[k][0] =
+					(left * vec) / (2.0f * distance * tanSpeadAngle);
+				(*lightMapUVs)[k][1] =
+					-(up * vec) / (2.0f * distance * tanSpeadAngle);
+				if ((*lightMapUVs)[k][0] >= -0.5f &&
+					(*lightMapUVs)[k][0] <= 0.5f &&
+					(*lightMapUVs)[k][1] >= -0.5f &&
+					(*lightMapUVs)[k][1] <= 0.5f)
+				{
+					lm = true;
+				}
+				if ((*lightMapUVs)[k][0] < -1.5f ||
+					(*lightMapUVs)[k][0] > 1.5f ||
+					(*lightMapUVs)[k][1] < -1.5f && (*lightMapUVs)[k][1] > 1.5f)
+				{
+					tooBig++;
+				}
+			}
+#if 1
+			if (tooBig == 0 && behindCount == 0 && falloffCount < stride &&
+				(lm == true ||
+					CheckForBigTriangles(lightMapUVs, stride) == true))
+			{
+				lightMap->SetPolygonMarker(1);
+				lightMap->AddUShort(stride);
+				for (k = 0; k < stride; k++)
+				{
+					lightMap->AddCoord(coords[index[k + j]]);
+				}
+				for (k = 0; k < stride; k++)
+				{
+					lightMap->AddColor((*lightMapSqFalloffs)[k],
+						(*lightMapSqFalloffs)[k], (*lightMapSqFalloffs)[k],
+						1.0f);
+				}
+				for (k = 0; k < stride; k++)
+				{
+					lightMap->AddUVs((*lightMapUVs)[k][0] + 0.5f,
+						(*lightMapUVs)[k][1] + 0.5f);
+					//				DEBUG_STREAM << k << " " << lightMapUVs[k][0] << "
+					//" << lightMapUVs[k][0] << "\n";
+				}
+			}
+#else
+			if (tooBig != 0)
+			{
+				lightMap->SetPolygonMarker(1);
+				lightMap->AddUShort(stride);
+				for (k = 0; k < stride; k++)
+				{
+					lightMap->AddCoord(coords[index[k + j]]);
+				}
+				for (k = 0; k < stride; k++)
+				{
+					lightMap->AddColor(
+						Stuff::RGBAColor(0.0f, 0.0f, 0.5f, 1.0f));
+				}
+				for (k = 0; k < stride; k++)
+				{
+					lightMap->AddUVs(0.5f, 0.5f);
+					//				DEBUG_STREAM << k << " " << lightMapUVs[k][0] << "
+					//" << lightMapUVs[k][0] << "\n";
+				}
+			}
+			else if (behindCount != 0)
+			{
+				lightMap->SetPolygonMarker(1);
+				lightMap->AddUShort(stride);
+				for (k = 0; k < stride; k++)
+				{
+					lightMap->AddCoord(coords[index[k + j]]);
+				}
+				for (k = 0; k < stride; k++)
+				{
+					lightMap->AddColor(
+						Stuff::RGBAColor(0.5f, 0.0f, 0.0f, 1.0f));
+				}
+				for (k = 0; k < stride; k++)
+				{
+					lightMap->AddUVs(0.5f, 0.5f);
+					//				DEBUG_STREAM << k << " " << lightMapUVs[k][0] << "
+					//" << lightMapUVs[k][0] << "\n";
+				}
+			}
+			else if (behindCount == 0 &&
+					 (lm == true ||
+						 CheckForBigTriangles(&lightMapUVs, stride) == true))
+			{
+				lightMap->SetPolygonMarker(1);
+				lightMap->AddUShort(stride);
+				for (k = 0; k < stride; k++)
+				{
+					lightMap->AddCoord(coords[index[k + j]]);
+				}
+				for (k = 0; k < stride; k++)
+				{
+					lightMap->AddColor(lightMapSqFalloffs[k],
+						lightMapSqFalloffs[k], lightMapSqFalloffs[k], 1.0f);
+				}
+				for (k = 0; k < stride; k++)
+				{
+					lightMap->AddUVs(
+						lightMapUVs[k][0] + 0.5f, lightMapUVs[k][1] + 0.5f);
+					//				DEBUG_STREAM << k << " " << lightMapUVs[k][0] << "
+					//" << lightMapUVs[k][0] << "\n";
+				}
+			}
+			else if (CheckForBigTriangles(&lightMapUVs, stride) == false)
+			{
+				lightMap->SetPolygonMarker(1);
+				lightMap->AddUShort(stride);
+				for (k = 0; k < stride; k++)
+				{
+					lightMap->AddCoord(coords[index[k + j]]);
+				}
+				for (k = 0; k < stride; k++)
+				{
+					lightMap->AddColor(errorColor);
+				}
+				for (k = 0; k < stride; k++)
+				{
+					lightMap->AddUVs(0.5f, 0.5f);
+					//				DEBUG_STREAM << k << " " << lightMapUVs[k][0] << "
+					//" << lightMapUVs[k][0] << "\n";
+				}
+			}
+#endif
+		}
+	}
+	break;
 
-		case MLRLight::AmbientLight:
-		case MLRLight::InfiniteLight:
-		case MLRLight::InfiniteLightWithFallOff:
-		case MLRLight::LookUpLight:
-		default:
-			// STOP(("MLR_I_PMesh::LightMapLighting: What you want me to do ?"));
-			// warning C4061: enumerator 'LookUpLight' in switch of enum 
-			// 'MidLevelRenderer::MLRLight::LightType' is not explicitly handled by a case label
-			NODEFAULT;
-			break;
+	case MLRLight::AmbientLight:
+	case MLRLight::InfiniteLight:
+	case MLRLight::InfiniteLightWithFallOff:
+	case MLRLight::LookUpLight:
+	default:
+		// STOP(("MLR_I_PMesh::LightMapLighting: What you want me to do ?"));
+		// warning C4061: enumerator 'LookUpLight' in switch of enum
+		// 'MidLevelRenderer::MLRLight::LightType' is not explicitly handled by
+		// a case label
+		NODEFAULT;
+		break;
 	}
 }
 
@@ -785,7 +785,7 @@ bool MLR_I_PMesh::CastRay(Stuff::Line3D* line, Stuff::Normal3D* normal)
 	//
 	size_t poly_start = 0, numPrimitives = GetNumPrimitives();
 	bool hit = false;
-	for(size_t polygon = 0; polygon < numPrimitives; ++polygon)
+	for (size_t polygon = 0; polygon < numPrimitives; ++polygon)
 	{
 		size_t stride = lengths[polygon];
 		Verify(stride > 2);
@@ -798,15 +798,15 @@ bool MLR_I_PMesh::CastRay(Stuff::Line3D* line, Stuff::Normal3D* normal)
 		const Stuff::Plane* plane = &facePlanes[polygon];
 		Check_Object(plane);
 		float distance = line->GetDistanceTo(*plane, &product);
-		if(distance < 0.0f || distance > line->length)
+		if (distance < 0.0f || distance > line->length)
 		{
 			poly_start += stride;
 			continue;
 		}
 		bool negate = false;
-		if(product > -Stuff::SMALL)
+		if (product > -Stuff::SMALL)
 		{
-			if(GetCurrentState().GetBackFaceMode() == MLRState::BackFaceOnMode)
+			if (GetCurrentState().GetBackFaceMode() == MLRState::BackFaceOnMode)
 			{
 				poly_start += stride;
 				continue;
@@ -830,9 +830,9 @@ bool MLR_I_PMesh::CastRay(Stuff::Line3D* line, Stuff::Normal3D* normal)
 		float nx = abs(plane->normal.x);
 		float ny = abs(plane->normal.y);
 		float nz = abs(plane->normal.z);
-		if(nx > ny)
+		if (nx > ny)
 		{
-			if(nx > nz)
+			if (nx > nz)
 			{
 				s = Stuff::Y_Axis;
 				t = Stuff::Z_Axis;
@@ -843,7 +843,7 @@ bool MLR_I_PMesh::CastRay(Stuff::Line3D* line, Stuff::Normal3D* normal)
 				t = Stuff::Y_Axis;
 			}
 		}
-		else if(ny > nz)
+		else if (ny > nz)
 		{
 			s = Stuff::Z_Axis;
 			t = Stuff::X_Axis;
@@ -879,8 +879,8 @@ bool MLR_I_PMesh::CastRay(Stuff::Line3D* line, Stuff::Normal3D* normal)
 		//------------------------------------------------------------
 		//
 		bool local_hit = false;
-		size_t next_v = 3;
-Test_Triangle:
+		size_t next_v  = 3;
+	Test_Triangle:
 		Check_Pointer(v3);
 		float s2 = (*v3)[s] - (*v1)[s];
 		float t2 = (*v3)[t] - (*v1)[t];
@@ -889,25 +889,25 @@ Test_Triangle:
 		// Now, see if we hit the triangle
 		//--------------------------------
 		//
-		if(Stuff::Small_Enough(s1))
+		if (Stuff::Small_Enough(s1))
 		{
 			Verify(!Stuff::Small_Enough(s2));
 			float beta = s0 / s2;
-			if(beta >= 0.0f && beta < 1.0f)
+			if (beta >= 0.0f && beta < 1.0f)
 			{
 				Verify(!Stuff::Small_Enough(t1));
 				float alpha = (t0 - beta * t2) / t1;
-				local_hit = (alpha >= 0.0f && alpha + beta <= 1.0f);
+				local_hit   = (alpha >= 0.0f && alpha + beta <= 1.0f);
 			}
 		}
 		else
 		{
-			float beta = (t0 * s1 - s0 * t1);
+			float beta  = (t0 * s1 - s0 * t1);
 			float alpha = (t2 * s1 - s2 * t1);
 			beta /= alpha;
-			if(beta >= 0.0f && beta <= 1.0f)
+			if (beta >= 0.0f && beta <= 1.0f)
 			{
-				alpha = (s0 - beta * s2) / s1;
+				alpha	 = (s0 - beta * s2) / s1;
 				local_hit = (alpha >= 0.0f && alpha + beta <= 1.0f);
 			}
 		}
@@ -916,7 +916,7 @@ Test_Triangle:
 		// Set up for the next triangle
 		//-----------------------------
 		//
-		if(next_v < stride && !local_hit)
+		if (next_v < stride && !local_hit)
 		{
 			v2 = v3;
 			v3 = &coords[index[poly_start + next_v++]];
@@ -929,11 +929,11 @@ Test_Triangle:
 		// Handle the hit status, and move to the next polygon
 		//----------------------------------------------------
 		//
-		if(local_hit)
+		if (local_hit)
 		{
-			hit = true;
+			hit			 = true;
 			line->length = distance;
-			if(negate)
+			if (negate)
 				normal->Negate(plane->normal);
 			else
 				*normal = plane->normal;
@@ -951,48 +951,45 @@ Test_Triangle:
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLR_I_PMesh*
-MidLevelRenderer::CreateIndexedCube_NoColor_NoLit(
-	float half,
-	MLRState* state
-)
+MLR_I_PMesh* MidLevelRenderer::CreateIndexedCube_NoColor_NoLit(
+	float half, MLRState* state)
 {
 #ifdef _GAMEOS_HPP_
 	gos_PushCurrentHeap(Heap);
 #endif
 	MLR_I_PMesh* ret = new MLR_I_PMesh();
 	Register_Object(ret);
-	Stuff::Point3D* coords = new Stuff::Point3D [8];
+	Stuff::Point3D* coords = new Stuff::Point3D[8];
 	Register_Object(coords);
-	coords[0] = Stuff::Point3D(half, -half,  half);
-	coords[1] = Stuff::Point3D(-half, -half,  half);
-	coords[2] = Stuff::Point3D(half, -half, -half);
-	coords[3] = Stuff::Point3D(-half, -half, -half);
-	coords[4] = Stuff::Point3D(-half,  half,  half);
-	coords[5] = Stuff::Point3D(half,  half,  half);
-	coords[6] = Stuff::Point3D(half,  half, -half);
-	coords[7] = Stuff::Point3D(-half,  half, -half);
-	puint8_t lengths = new uint8_t [6];
+	coords[0]		 = Stuff::Point3D(half, -half, half);
+	coords[1]		 = Stuff::Point3D(-half, -half, half);
+	coords[2]		 = Stuff::Point3D(half, -half, -half);
+	coords[3]		 = Stuff::Point3D(-half, -half, -half);
+	coords[4]		 = Stuff::Point3D(-half, half, half);
+	coords[5]		 = Stuff::Point3D(half, half, half);
+	coords[6]		 = Stuff::Point3D(half, half, -half);
+	coords[7]		 = Stuff::Point3D(-half, half, -half);
+	puint8_t lengths = new uint8_t[6];
 	Register_Pointer(lengths);
 	int32_t i;
-	for(i = 0; i < 6; i++)
+	for (i = 0; i < 6; i++)
 	{
 		lengths[i] = 4;
 	}
 	ret->SetSubprimitiveLengths(lengths, 6);
 	ret->SetCoordData(coords, 8);
-	puint16_t index = new uint16_t [6 * 4];
+	puint16_t index = new uint16_t[6 * 4];
 	Register_Pointer(index);
-	index[0] = 0;
-	index[1] = 2;
-	index[2] = 6;
-	index[3] = 5;
-	index[4] = 0;
-	index[5] = 5;
-	index[6] = 4;
-	index[7] = 1;
-	index[8] = 5;
-	index[9] = 6;
+	index[0]  = 0;
+	index[1]  = 2;
+	index[2]  = 6;
+	index[3]  = 5;
+	index[4]  = 0;
+	index[5]  = 5;
+	index[6]  = 4;
+	index[7]  = 1;
+	index[8]  = 5;
+	index[9]  = 6;
 	index[10] = 7;
 	index[11] = 4;
 	index[12] = 2;
@@ -1019,10 +1016,10 @@ MidLevelRenderer::CreateIndexedCube_NoColor_NoLit(
 	texCoords[5] = Stuff::Vector2DScalar(0.0f, 0.0f);
 	texCoords[6] = Stuff::Vector2DScalar(0.0f, 0.0f);
 	texCoords[7] = Stuff::Vector2DScalar(0.0f, 0.0f);
-	if(state != nullptr)
+	if (state != nullptr)
 	{
 		ret->SetReferenceState(*state);
-		if(state->GetTextureHandle() > 0)
+		if (state->GetTextureHandle() > 0)
 		{
 			texCoords[0] = Stuff::Vector2DScalar(0.0f, 0.0f);
 			texCoords[1] = Stuff::Vector2DScalar(1.0f, 0.0f);
@@ -1036,14 +1033,14 @@ MidLevelRenderer::CreateIndexedCube_NoColor_NoLit(
 	}
 	ret->SetTexCoordData(texCoords, 8);
 	Unregister_Object(texCoords);
-	delete [] texCoords;
+	delete[] texCoords;
 	Unregister_Pointer(index);
-	delete [] index;
+	delete[] index;
 	Unregister_Pointer(lengths);
-	delete [] lengths;
+	delete[] lengths;
 	Unregister_Object(coords);
-	delete [] coords;
-	#ifdef _GAMEOS_HPP_
+	delete[] coords;
+#ifdef _GAMEOS_HPP_
 	gos_PopCurrentHeap();
 #endif
 
@@ -1054,20 +1051,16 @@ uint32_t MidLevelRenderer::triDrawn = 0;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MidLevelRenderer::subdivide(
-	Stuff::Point3D* coords,
-	Stuff::Point3D& v1,
-	Stuff::Point3D& v2,
-	Stuff::Point3D& v3,
-	uint32_t depth,
-	uint32_t tri2draw,
+void MidLevelRenderer::subdivide(Stuff::Point3D* coords, Stuff::Point3D& v1,
+	Stuff::Point3D& v2, Stuff::Point3D& v3, uint32_t depth, uint32_t tri2draw,
 	float rad)
 {
-	Stuff::Point3D v12(0.0f, 0.0f, 0.0f), v23(0.0f, 0.0f, 0.0f), v31(0.0f, 0.0f, 0.0f);
+	Stuff::Point3D v12(0.0f, 0.0f, 0.0f), v23(0.0f, 0.0f, 0.0f),
+		v31(0.0f, 0.0f, 0.0f);
 	size_t i;
-	if(depth == 0)
+	if (depth == 0)
 	{
-		if(tri2draw > triDrawn)
+		if (tri2draw > triDrawn)
 		{
 			coords[3 * triDrawn].Multiply(v1, rad);
 			coords[3 * triDrawn + 1].Multiply(v3, rad);
@@ -1076,7 +1069,7 @@ void MidLevelRenderer::subdivide(
 		triDrawn++;
 		return;
 	}
-	for(i = 0; i < 3; i++)
+	for (i = 0; i < 3; i++)
 	{
 		v12[i] = v1[i] + v2[i];
 		v23[i] = v2[i] + v3[i];
@@ -1088,31 +1081,25 @@ void MidLevelRenderer::subdivide(
 	MidLevelRenderer::subdivide(coords, v1, v12, v31, depth - 1, tri2draw, rad);
 	MidLevelRenderer::subdivide(coords, v2, v23, v12, depth - 1, tri2draw, rad);
 	MidLevelRenderer::subdivide(coords, v3, v31, v23, depth - 1, tri2draw, rad);
-	MidLevelRenderer::subdivide(coords, v12, v23, v31, depth - 1, tri2draw, rad);
+	MidLevelRenderer::subdivide(
+		coords, v12, v23, v31, depth - 1, tri2draw, rad);
 }
 
-float MidLevelRenderer::vdata[12][3] =
-{
-	{ -ICO_X, 0.0f, ICO_Z}, {ICO_X, 0.0f, ICO_Z}, { -ICO_X, 0.0f, -ICO_Z}, {ICO_X, 0.0f, -ICO_Z},
-	{0.0f, ICO_Z, ICO_X}, {0.0f, ICO_Z, -ICO_X}, {0.0f, -ICO_Z, ICO_X}, {0.0f, -ICO_Z, -ICO_X},
-	{ICO_Z, ICO_X, 0.0f}, { -ICO_Z, ICO_X, 0.0f}, {ICO_Z, -ICO_X, 0.0f}, { -ICO_Z, -ICO_X, 0.0f}
-};
+float MidLevelRenderer::vdata[12][3] = {{-ICO_X, 0.0f, ICO_Z},
+	{ICO_X, 0.0f, ICO_Z}, {-ICO_X, 0.0f, -ICO_Z}, {ICO_X, 0.0f, -ICO_Z},
+	{0.0f, ICO_Z, ICO_X}, {0.0f, ICO_Z, -ICO_X}, {0.0f, -ICO_Z, ICO_X},
+	{0.0f, -ICO_Z, -ICO_X}, {ICO_Z, ICO_X, 0.0f}, {-ICO_Z, ICO_X, 0.0f},
+	{ICO_Z, -ICO_X, 0.0f}, {-ICO_Z, -ICO_X, 0.0f}};
 
-uint32_t MidLevelRenderer::tindices [20][3] =
-{
-	{0, 4, 1}, {0, 9, 4}, {9, 5, 4}, {4, 5, 8}, {4, 8, 1},
-	{8, 10, 1}, {8, 3, 10}, {5, 3, 8}, {5, 2, 3}, {2, 7, 3},
-	{7, 10, 3}, {7, 6, 10}, {7, 11, 6}, {11, 0, 6}, {0, 1, 6},
-	{6, 1, 10}, {9, 0, 11}, {9, 11, 2}, {9, 2, 5}, {7, 2, 11}
-};
+uint32_t MidLevelRenderer::tindices[20][3] = {{0, 4, 1}, {0, 9, 4}, {9, 5, 4},
+	{4, 5, 8}, {4, 8, 1}, {8, 10, 1}, {8, 3, 10}, {5, 3, 8}, {5, 2, 3},
+	{2, 7, 3}, {7, 10, 3}, {7, 6, 10}, {7, 11, 6}, {11, 0, 6}, {0, 1, 6},
+	{6, 1, 10}, {9, 0, 11}, {9, 11, 2}, {9, 2, 5}, {7, 2, 11}};
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLRShape*
-MidLevelRenderer::CreateIndexedIcosahedron_NoColor_NoLit(
-	IcoInfo& icoInfo,
-	MLRState* state
-)
+MLRShape* MidLevelRenderer::CreateIndexedIcosahedron_NoColor_NoLit(
+	IcoInfo& icoInfo, MLRState* state)
 {
 #ifdef _GAMEOS_HPP_
 	gos_PushCurrentHeap(Heap);
@@ -1120,60 +1107,62 @@ MidLevelRenderer::CreateIndexedIcosahedron_NoColor_NoLit(
 	MLRShape* ret = new MLRShape(20);
 	Register_Object(ret);
 	size_t i, j, k;
-	uint32_t nrTri = static_cast<uint32_t>(ceil(icoInfo.all * pow(4.0f, icoInfo.depth)));
+	uint32_t nrTri =
+		static_cast<uint32_t>(ceil(icoInfo.all * pow(4.0f, icoInfo.depth)));
 	Stuff::Point3D v[3];
-	if(3 * nrTri >= Limits::Max_Number_Vertices_Per_Mesh)
+	if (3 * nrTri >= Limits::Max_Number_Vertices_Per_Mesh)
 	{
 		nrTri = Limits::Max_Number_Vertices_Per_Mesh / 3;
 	}
-	puint8_t lengths = new uint8_t [nrTri];
+	puint8_t lengths = new uint8_t[nrTri];
 	Register_Pointer(lengths);
-	for(i = 0; i < nrTri; i++)
+	for (i = 0; i < nrTri; i++)
 	{
 		lengths[i] = 3;
 	}
-	Stuff::Point3D* coords = new Stuff::Point3D [nrTri * 3];
+	Stuff::Point3D* coords = new Stuff::Point3D[nrTri * 3];
 	Register_Pointer(coords);
 	Stuff::Point3D* collapsedCoords = nullptr;
-	if(icoInfo.indexed == true)
+	if (icoInfo.indexed == true)
 	{
-		collapsedCoords = new Stuff::Point3D [nrTri * 3];
+		collapsedCoords = new Stuff::Point3D[nrTri * 3];
 		Register_Pointer(collapsedCoords);
 	}
-	puint16_t index = new uint16_t [nrTri * 3];
+	puint16_t index = new uint16_t[nrTri * 3];
 	Register_Pointer(index);
 	Stuff::Vector2DScalar* texCoords = new Stuff::Vector2DScalar[nrTri * 3];
 	Register_Pointer(texCoords);
 	size_t uniquePoints = 0;
-	for(k = 0; k < 20; k++)
+	for (k = 0; k < 20; k++)
 	{
-		triDrawn = 0;
+		triDrawn		  = 0;
 		MLR_I_PMesh* mesh = new MLR_I_PMesh();
 		Register_Object(mesh);
-// setup vertex position information
-		for(j = 0; j < 3; j++)
+		// setup vertex position information
+		for (j = 0; j < 3; j++)
 		{
 			v[j].x = vdata[tindices[k][j]][0];
 			v[j].y = vdata[tindices[k][j]][1];
 			v[j].z = vdata[tindices[k][j]][2];
 		}
-		subdivide(coords, v[0], v[1], v[2], icoInfo.depth, nrTri, icoInfo.radius);
+		subdivide(
+			coords, v[0], v[1], v[2], icoInfo.depth, nrTri, icoInfo.radius);
 		mesh->SetSubprimitiveLengths(lengths, nrTri);
-		if(icoInfo.indexed == true)
+		if (icoInfo.indexed == true)
 		{
-			uniquePoints = 1;
+			uniquePoints	   = 1;
 			collapsedCoords[0] = coords[0];
-			index[0] = 0;
-			for(i = 1; i < nrTri * 3; i++)
+			index[0]		   = 0;
+			for (i = 1; i < nrTri * 3; i++)
 			{
-				for(j = 0; j < uniquePoints; j++)
+				for (j = 0; j < uniquePoints; j++)
 				{
-					if(coords[i] == collapsedCoords[j])
+					if (coords[i] == collapsedCoords[j])
 					{
 						break;
 					}
 				}
-				if(j == uniquePoints)
+				if (j == uniquePoints)
 				{
 					collapsedCoords[uniquePoints++] = coords[i];
 				}
@@ -1184,7 +1173,7 @@ MidLevelRenderer::CreateIndexedIcosahedron_NoColor_NoLit(
 		else
 		{
 			uniquePoints = nrTri * 3;
-			for(i = 0; i < nrTri * 3; i++)
+			for (i = 0; i < nrTri * 3; i++)
 			{
 				index[i] = static_cast<uint16_t>(i);
 			}
@@ -1192,9 +1181,9 @@ MidLevelRenderer::CreateIndexedIcosahedron_NoColor_NoLit(
 		}
 		mesh->SetIndexData(index, nrTri * 3);
 		mesh->FindFacePlanes();
-		if(state == nullptr)
+		if (state == nullptr)
 		{
-			for(i = 0; i < uniquePoints; i++)
+			for (i = 0; i < uniquePoints; i++)
 			{
 				texCoords[i] = Stuff::Vector2DScalar(0.0f, 0.0f);
 			}
@@ -1202,44 +1191,36 @@ MidLevelRenderer::CreateIndexedIcosahedron_NoColor_NoLit(
 		else
 		{
 			mesh->SetReferenceState(*state);
-			if(state->GetTextureHandle() > 0)
+			if (state->GetTextureHandle() > 0)
 			{
-				if(icoInfo.indexed == true)
+				if (icoInfo.indexed == true)
 				{
-					for(i = 0; i < uniquePoints; i++)
+					for (i = 0; i < uniquePoints; i++)
 					{
-						texCoords[i] =
-							Stuff::Vector2DScalar(
-								(1.0f + collapsedCoords[i].x) / 2.0f,
-								(1.0f + collapsedCoords[i].y) / 2.0f
-							);
+						texCoords[i] = Stuff::Vector2DScalar(
+							(1.0f + collapsedCoords[i].x) / 2.0f,
+							(1.0f + collapsedCoords[i].y) / 2.0f);
 					}
 				}
 				else
 				{
-					for(i = 0; i < nrTri; i++)
+					for (i = 0; i < nrTri; i++)
 					{
-						texCoords[3 * i] =
-							Stuff::Vector2DScalar(
-								(1.0f + coords[3 * i].x) / 2.0f,
-								(1.0f + coords[3 * i].y) / 2.0f
-							);
-						texCoords[3 * i + 1] =
-							Stuff::Vector2DScalar(
-								(1.0f + coords[3 * i + 1].x) / 2.0f,
-								(1.0f + coords[3 * i + 1].y) / 2.0f
-							);
-						texCoords[3 * i + 2] =
-							Stuff::Vector2DScalar(
-								(1.0f + coords[3 * i + 2].x) / 2.0f,
-								(1.0f + coords[3 * i + 2].y) / 2.0f
-							);
+						texCoords[3 * i] = Stuff::Vector2DScalar(
+							(1.0f + coords[3 * i].x) / 2.0f,
+							(1.0f + coords[3 * i].y) / 2.0f);
+						texCoords[3 * i + 1] = Stuff::Vector2DScalar(
+							(1.0f + coords[3 * i + 1].x) / 2.0f,
+							(1.0f + coords[3 * i + 1].y) / 2.0f);
+						texCoords[3 * i + 2] = Stuff::Vector2DScalar(
+							(1.0f + coords[3 * i + 2].x) / 2.0f,
+							(1.0f + coords[3 * i + 2].y) / 2.0f);
 					}
 				}
 			}
 			else
 			{
-				for(i = 0; i < uniquePoints; i++)
+				for (i = 0; i < uniquePoints; i++)
 				{
 					texCoords[i] = Stuff::Vector2DScalar(0.0f, 0.0f);
 				}
@@ -1250,18 +1231,18 @@ MidLevelRenderer::CreateIndexedIcosahedron_NoColor_NoLit(
 		mesh->DetachReference();
 	}
 	Unregister_Pointer(texCoords);
-	delete [] texCoords;
+	delete[] texCoords;
 	Unregister_Pointer(index);
-	delete [] index;
-	if(icoInfo.indexed == true)
+	delete[] index;
+	if (icoInfo.indexed == true)
 	{
 		Unregister_Pointer(collapsedCoords);
-		delete [] collapsedCoords;
+		delete[] collapsedCoords;
 	}
 	Unregister_Pointer(coords);
-	delete [] coords;
+	delete[] coords;
 	Unregister_Pointer(lengths);
-	delete [] lengths;
+	delete[] lengths;
 #ifdef _GAMEOS_HPP_
 	gos_PopCurrentHeap();
 #endif

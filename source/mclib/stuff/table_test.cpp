@@ -11,20 +11,18 @@
 
 #define TEST_COUNT 50
 
-class TableTestPlug:
-	public Plug
+class TableTestPlug : public Plug
 {
-public:
+  public:
 	int32_t value;
 
 	TableTestPlug(int32_t value);
 	~TableTestPlug();
 };
 
-class TableTestNode:
-	public Node
+class TableTestNode : public Node
 {
-public:
+  public:
 	TableOf<TableTestPlug*, int32_t> table1;
 	TableOf<TableTestPlug*, int32_t> table2;
 
@@ -35,24 +33,19 @@ public:
 	bool RunTest();
 };
 
-TableTestPlug::TableTestPlug(int32_t value):
-	Plug(DefaultData)
+TableTestPlug::TableTestPlug(int32_t value) : Plug(DefaultData)
 {
 	this->value = value;
 }
 
-TableTestPlug::~TableTestPlug()
+TableTestPlug::~TableTestPlug() {}
+
+TableTestNode::TableTestNode()
+	: Node(DefaultData), table1(this, true), table2(this, true)
 {
 }
 
-TableTestNode::TableTestNode():
-	Node(DefaultData), table1(this, true), table2(this, true)
-{
-}
-
-TableTestNode::~TableTestNode()
-{
-}
+TableTestNode::~TableTestNode() {}
 
 //
 //###########################################################################
@@ -60,20 +53,16 @@ TableTestNode::~TableTestNode()
 //###########################################################################
 //
 
-bool
-Table::ProfileClass()
+bool Table::ProfileClass()
 {
-	TableTestNode	testNode;
+	TableTestNode testNode;
 #if defined(_ARMOR)
-	Time 		startTicks = gos_GetHiResTime();
+	Time startTicks = gos_GetHiResTime();
 #endif
 	Test_Message("Table::ProfileClass\n");
 	testNode.RunProfile();
-	SPEW((
-			 GROUP_STUFF_TEST,
-			 "Table::ProfileClass elapsed = %f",
-			 gos_GetHiResTime() - startTicks
-		 ));
+	SPEW((GROUP_STUFF_TEST, "Table::ProfileClass elapsed = %f",
+		gos_GetHiResTime() - startTicks));
 	return true;
 }
 
@@ -83,34 +72,32 @@ Table::ProfileClass()
 //###########################################################################
 //
 
-bool
-Table::TestClass()
+bool Table::TestClass()
 {
 	SPEW((GROUP_STUFF_TEST, "Starting Table test..."));
-	TableTestNode	testNode;
+	TableTestNode testNode;
 	testNode.RunTest();
 	return true;
 }
 
-bool
-TableTestNode::RunProfile()
+bool TableTestNode::RunProfile()
 {
-	TableTestPlug*	testPlug1, *testPlug2;
-	int32_t		 		values[TEST_COUNT];
-	int32_t				i, j;
-	Time 				startTicks;
+	TableTestPlug *testPlug1, *testPlug2;
+	int32_t values[TEST_COUNT];
+	int32_t i, j;
+	Time startTicks;
 	/*
 	 * Generate unique values, shuffle them
 	 */
-	for(i = 0; i < TEST_COUNT; i++)
+	for (i = 0; i < TEST_COUNT; i++)
 	{
 		values[i] = i;
 	}
-	for(i = 0; i < TEST_COUNT; i++)
+	for (i = 0; i < TEST_COUNT; i++)
 	{
-		int32_t  tmp;
-		j = i + Random::GetLessThan(TEST_COUNT - i);
-		tmp = values[j];
+		int32_t tmp;
+		j		  = i + Random::GetLessThan(TEST_COUNT - i);
+		tmp		  = values[j];
 		values[j] = values[i];
 		values[i] = tmp;
 	}
@@ -123,18 +110,15 @@ TableTestNode::RunProfile()
 	 * Create plugs and add to both sockets
 	 */
 	startTicks = gos_GetHiResTime();
-	for(i = 0; i < TEST_COUNT; i++)
+	for (i = 0; i < TEST_COUNT; i++)
 	{
 		testPlug1 = new TableTestPlug(values[i]);
 		Register_Object(testPlug1);
 		table1.AddValue(testPlug1, values[i]);
 		table2.AddValue(testPlug1, values[i]);
 	}
-	SPEW((
-			 GROUP_STUFF_TEST,
-			 "TableTestNode::RunTest Create = %f",
-			 gos_GetHiResTime() - startTicks
-		 ));
+	SPEW((GROUP_STUFF_TEST, "TableTestNode::RunTest Create = %f",
+		gos_GetHiResTime() - startTicks));
 	/*
 	 * Iterate over both sockets
 	 */
@@ -145,25 +129,22 @@ TableTestNode::RunProfile()
 		Test_Assumption(iterator1.GetSize() == TEST_COUNT);
 		Test_Assumption(iterator2.GetSize() == TEST_COUNT);
 		i = 0;
-		while((testPlug1 = iterator1.ReadAndNext()) != nullptr)
+		while ((testPlug1 = iterator1.ReadAndNext()) != nullptr)
 		{
 			Test_Assumption(testPlug1->value == i);
 			i++;
 		}
 		Test_Assumption(i == TEST_COUNT);
 		i = 0;
-		while((testPlug1 = iterator2.ReadAndNext()) != nullptr)
+		while ((testPlug1 = iterator2.ReadAndNext()) != nullptr)
 		{
 			Test_Assumption(testPlug1->value == i);
 			i++;
 		}
 		Test_Assumption(i == TEST_COUNT);
 	}
-	SPEW((
-			 GROUP_STUFF_TEST,
-			 "TableTestNode::RunTest Iterate = %f",
-			 gos_GetHiResTime() - startTicks
-		 ));
+	SPEW((GROUP_STUFF_TEST, "TableTestNode::RunTest Iterate = %f",
+		gos_GetHiResTime() - startTicks));
 	/*
 	 * Find
 	 */
@@ -171,7 +152,7 @@ TableTestNode::RunProfile()
 	{
 		TableIteratorOf<TableTestPlug*, int32_t> iterator1(&table1);
 		TableIteratorOf<TableTestPlug*, int32_t> iterator2(&table2);
-		for(i = 0; i < TEST_COUNT; i++)
+		for (i = 0; i < TEST_COUNT; i++)
 		{
 			testPlug1 = iterator1.Find(i);
 			testPlug2 = iterator2.Find(i);
@@ -180,11 +161,8 @@ TableTestNode::RunProfile()
 			Test_Assumption(testPlug1 == testPlug2);
 		}
 	}
-	SPEW((
-			 GROUP_STUFF_TEST,
-			 "TableTestNode::RunTest Find = %d",
-			 gos_GetHiResTime() - startTicks
-		 ));
+	SPEW((GROUP_STUFF_TEST, "TableTestNode::RunTest Find = %d",
+		gos_GetHiResTime() - startTicks));
 	/*
 	 * Destroy from table1, verify with table2
 	 */
@@ -195,44 +173,40 @@ TableTestNode::RunProfile()
 		Test_Assumption(iterator1.GetSize() == TEST_COUNT);
 		Test_Assumption(iterator2.GetSize() == TEST_COUNT);
 		i = 0;
-		while((testPlug1 = iterator1.ReadAndNext()) != nullptr)
+		while ((testPlug1 = iterator1.ReadAndNext()) != nullptr)
 		{
 			Test_Assumption(testPlug1->value == i);
 			i++;
 			Unregister_Object(testPlug1);
-			delete(testPlug1);
+			delete (testPlug1);
 		}
 		Test_Assumption(i == TEST_COUNT);
 		Test_Assumption(iterator1.GetSize() == 0);
 		Test_Assumption(iterator2.GetSize() == 0);
 	}
-	SPEW((
-			 GROUP_STUFF_TEST,
-			 "TableTestNode::RunTest Destroy = %f",
-			 gos_GetHiResTime() - startTicks
-		 ));
+	SPEW((GROUP_STUFF_TEST, "TableTestNode::RunTest Destroy = %f",
+		gos_GetHiResTime() - startTicks));
 	return true;
 }
 
-bool
-TableTestNode::RunTest()
+bool TableTestNode::RunTest()
 {
-	TableTestPlug*	testPlug1, *testPlug2;
-	int32_t	 		values[TEST_COUNT];
-	int32_t				i, j;
-//	Time 			startTicks;
+	TableTestPlug *testPlug1, *testPlug2;
+	int32_t values[TEST_COUNT];
+	int32_t i, j;
+	//	Time 			startTicks;
 	/*
 	 * Generate unique values, shuffle them
 	 */
-	for(i = 0; i < TEST_COUNT; i++)
+	for (i = 0; i < TEST_COUNT; i++)
 	{
 		values[i] = i;
 	}
-	for(i = 0; i < TEST_COUNT; i++)
+	for (i = 0; i < TEST_COUNT; i++)
 	{
-		int32_t  tmp;
-		j = i + Random::GetLessThan(TEST_COUNT - i);
-		tmp = values[j];
+		int32_t tmp;
+		j		  = i + Random::GetLessThan(TEST_COUNT - i);
+		tmp		  = values[j];
 		values[j] = values[i];
 		values[i] = tmp;
 	}
@@ -244,7 +218,7 @@ TableTestNode::RunTest()
 	/*
 	 * Create plugs and add to both sockets
 	 */
-	for(i = 0; i < TEST_COUNT; i++)
+	for (i = 0; i < TEST_COUNT; i++)
 	{
 		testPlug1 = new TableTestPlug(values[i]);
 		Register_Object(testPlug1);
@@ -255,7 +229,7 @@ TableTestNode::RunTest()
 	 * Find
 	 */
 	{
-		for(i = 0; i < TEST_COUNT; i++)
+		for (i = 0; i < TEST_COUNT; i++)
 		{
 			testPlug1 = table1.Find(i);
 			testPlug2 = table2.Find(i);
@@ -296,7 +270,7 @@ TableTestNode::RunTest()
 		Test_Assumption(iterator1.GetSize() == TEST_COUNT);
 		Test_Assumption(iterator2.GetSize() == TEST_COUNT);
 		i = 0;
-		while((testPlug1 = iterator1.GetCurrent()) != nullptr)
+		while ((testPlug1 = iterator1.GetCurrent()) != nullptr)
 		{
 			testPlug2 = iterator2.GetCurrent();
 			Test_Assumption(testPlug1 == testPlug2);
@@ -310,7 +284,7 @@ TableTestNode::RunTest()
 		iterator1.Last();
 		iterator2.Last();
 		i = TEST_COUNT - 1;
-		while((testPlug1 = iterator1.GetCurrent()) != nullptr)
+		while ((testPlug1 = iterator1.GetCurrent()) != nullptr)
 		{
 			testPlug2 = iterator2.GetCurrent();
 			Test_Assumption(testPlug1 == testPlug2);
@@ -331,7 +305,7 @@ TableTestNode::RunTest()
 		Test_Assumption(iterator1.GetSize() == TEST_COUNT);
 		Test_Assumption(iterator2.GetSize() == TEST_COUNT);
 		i = 0;
-		while((testPlug1 = iterator1.ReadAndNext()) != nullptr)
+		while ((testPlug1 = iterator1.ReadAndNext()) != nullptr)
 		{
 			testPlug2 = iterator2.ReadAndNext();
 			Test_Assumption(testPlug1 == testPlug2);
@@ -343,7 +317,7 @@ TableTestNode::RunTest()
 		iterator1.Last();
 		iterator2.Last();
 		i = TEST_COUNT - 1;
-		while((testPlug1 = iterator1.ReadAndPrevious()) != nullptr)
+		while ((testPlug1 = iterator1.ReadAndPrevious()) != nullptr)
 		{
 			testPlug2 = iterator2.ReadAndPrevious();
 			Test_Assumption(testPlug1 == testPlug2);
@@ -361,7 +335,7 @@ TableTestNode::RunTest()
 		TableIteratorOf<TableTestPlug*, int32_t> iterator2(&table2);
 		Test_Assumption(iterator1.GetSize() == TEST_COUNT);
 		Test_Assumption(iterator2.GetSize() == TEST_COUNT);
-		for(i = 0; i < TEST_COUNT; i++)
+		for (i = 0; i < TEST_COUNT; i++)
 		{
 			testPlug1 = iterator1.GetNth(i);
 			testPlug2 = iterator2.GetNth(i);
@@ -379,7 +353,7 @@ TableTestNode::RunTest()
 		Test_Assumption(iterator1.GetSize() == TEST_COUNT);
 		Test_Assumption(iterator2.GetSize() == TEST_COUNT);
 		i = 0;
-		while((testPlug1 = iterator1.GetCurrent()) != nullptr)
+		while ((testPlug1 = iterator1.GetCurrent()) != nullptr)
 		{
 			Test_Assumption(testPlug1->value == i);
 			iterator1.Remove();
@@ -387,7 +361,7 @@ TableTestNode::RunTest()
 			Test_Assumption(testPlug2->value == i);
 			Test_Assumption(testPlug1 == testPlug2);
 			Unregister_Object(testPlug2);
-			delete(testPlug2);
+			delete (testPlug2);
 			i++;
 		}
 		Test_Assumption(i == TEST_COUNT);
@@ -405,7 +379,7 @@ TableTestNode::RunTest()
 		TableIteratorOf<TableTestPlug*, int32_t> iterator2(&table2);
 		Test_Assumption(iterator1.GetSize() == 0);
 		Test_Assumption(iterator2.GetSize() == 0);
-		for(i = 0; i < TEST_COUNT; i++)
+		for (i = 0; i < TEST_COUNT; i++)
 		{
 			testPlug1 = new TableTestPlug(values[i]);
 			Register_Object(testPlug1);
@@ -423,15 +397,15 @@ TableTestNode::RunTest()
 		Test_Assumption(iterator1.GetSize() == TEST_COUNT);
 		Test_Assumption(iterator2.GetSize() == TEST_COUNT);
 		i = 0;
-		while((size = iterator1.GetSize()) != 0)
+		while ((size = iterator1.GetSize()) != 0)
 		{
-			index = Random::GetLessThan(size);
+			index	 = Random::GetLessThan(size);
 			testPlug1 = iterator1.GetNth(index);
 			iterator1.Remove();
 			testPlug2 = iterator2.GetNth(index);
 			Test_Assumption(testPlug1 == testPlug2);
 			Unregister_Object(testPlug2);
-			delete(testPlug2);
+			delete (testPlug2);
 			i++;
 		}
 		Test_Assumption(i == TEST_COUNT);

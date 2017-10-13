@@ -22,7 +22,7 @@
 
 #include <stdio.h>
 
-#define LIGHT_DEPTH_FIXUP		-500
+#define LIGHT_DEPTH_FIXUP -500
 
 //***************************************************************************
 //	LIGHT TYPE class
@@ -31,18 +31,15 @@
 GameObjectPtr LightType::createInstance(void)
 {
 	LightPtr newLight = new Light;
-	if(!newLight)
-		return(nullptr);
+	if (!newLight)
+		return (nullptr);
 	newLight->init(true, this);
-	return(newLight);
+	return (newLight);
 }
 
 //---------------------------------------------------------------------------
 
-void LightType::destroy(void)
-{
-	ObjectType::destroy();
-}
+void LightType::destroy(void) { ObjectType::destroy(); }
 
 //---------------------------------------------------------------------------
 
@@ -51,21 +48,21 @@ int32_t LightType::init(FilePtr objFile, uint32_t fileSize)
 	int32_t result = 0;
 	FitIniFile explFile;
 	result = explFile.open(objFile, fileSize);
-	if(result != NO_ERROR)
-		return(result);
+	if (result != NO_ERROR)
+		return (result);
 	result = explFile.seekBlock("LightData");
-	if(result != NO_ERROR)
+	if (result != NO_ERROR)
 		return result;
 	result = explFile.readIdBoolean("OneShotFlag", oneShotFlag);
-	if(result != NO_ERROR)
+	if (result != NO_ERROR)
 		return result;
 	result = explFile.readIdFloat("AltitudeOffset", altitudeOffset);
-	if(result != NO_ERROR)
+	if (result != NO_ERROR)
 		return result;
 	//------------------------------------------------------------------
 	// Initialize the base object Type from the current file.
 	result = ObjectType::init(&explFile);
-	return(result);
+	return (result);
 }
 
 //---------------------------------------------------------------------------
@@ -74,38 +71,36 @@ bool LightType::handleCollision(GameObjectPtr collidee, GameObjectPtr collider)
 {
 	//-----------------------------
 	// Nothing collides with light!
-	return(false);
+	return (false);
 }
 
 //---------------------------------------------------------------------------
 
-bool LightType::handleDestruction(GameObjectPtr collidee, GameObjectPtr collider)
+bool LightType::handleDestruction(
+	GameObjectPtr collidee, GameObjectPtr collider)
 {
 	//----------------------------
 	// No destroy'n light, either!
-	return(false);
+	return (false);
 }
 
 //***************************************************************************
 // LIGHT class
 //***************************************************************************
 
-void Light::init(bool create)
-{
-	setFlag(OBJECT_FLAG_JUSTCREATED, true);
-}
+void Light::init(bool create) { setFlag(OBJECT_FLAG_JUSTCREATED, true); }
 
 //---------------------------------------------------------------------------
 
 int32_t Light::update(void)
 {
-	if(!getFlag(OBJECT_FLAG_DONE))
+	if (!getFlag(OBJECT_FLAG_DONE))
 	{
 		//----------------------------------
 		//-- Always force position altitude 'cause set every frame.
 		position.z += ((LightTypePtr)getObjectType())->altitudeOffset;
 		setPosition(position);
-		if(getFlag(OBJECT_FLAG_JUSTCREATED))
+		if (getFlag(OBJECT_FLAG_JUSTCREATED))
 		{
 			setFlag(OBJECT_FLAG_JUSTCREATED, false);
 			setFlag(OBJECT_FLAG_TANGIBLE, false);
@@ -116,7 +111,7 @@ int32_t Light::update(void)
 		bool inView = onScreen();
 		lightAppearance->setInView(inView);
 		int32_t result = lightAppearance->update();
-		if(!result && ((LightTypePtr)getObjectType())->oneShotFlag)
+		if (!result && ((LightTypePtr)getObjectType())->oneShotFlag)
 			setFlag(OBJECT_FLAG_DONE, true);
 #endif
 	}
@@ -127,9 +122,10 @@ int32_t Light::update(void)
 
 void Light::render(void)
 {
-	if(gamePaused)
+	if (gamePaused)
 		onScreen();
-	if(!getFlag(OBJECT_FLAG_JUSTCREATED) && (windowsVisible == turn) && !getFlag(OBJECT_FLAG_DONE))
+	if (!getFlag(OBJECT_FLAG_JUSTCREATED) && (windowsVisible == turn) &&
+		!getFlag(OBJECT_FLAG_DONE))
 	{
 #ifdef USE_LIGHT_APPEARANCE
 		lightAppearance->render(LIGHT_DEPTH_FIXUP);
@@ -139,9 +135,7 @@ void Light::render(void)
 
 //---------------------------------------------------------------------------
 
-void Light::destroy(void)
-{
-}
+void Light::destroy(void) {}
 
 //---------------------------------------------------------------------------
 
@@ -156,24 +150,26 @@ void Light::init(bool create, ObjectTypePtr _type)
 	// The appearance is initialized here using data from the type
 #ifdef USE_LIGHT_APPEARANCE
 	uint32_t appearanceType = _type->getAppearanceTypeNum();
-	AppearanceTypePtr lightAppearanceType = appearanceTypeList->getAppearance(appearanceType);
-	if(!lightAppearanceType)
-		return(NO_APPEARANCE_TYPE_FOR_EXPL);
+	AppearanceTypePtr lightAppearanceType =
+		appearanceTypeList->getAppearance(appearanceType);
+	if (!lightAppearanceType)
+		return (NO_APPEARANCE_TYPE_FOR_EXPL);
 	//--------------------------------------------------------------
 	// The only kind of appearanceType the explosions currently know how
 	// to work with is a spriteTree.  Anything else is wrong.
-	if(lightAppearanceType->getAppearanceClass() == VFX_APPEAR)
+	if (lightAppearanceType->getAppearanceClass() == VFX_APPEAR)
 	{
 		lightAppearance = new VFXAppearance;
-		if(!lightAppearance)
-			return(NO_APPEARANCE_FOR_EXPL);
-		result = lightAppearance->init((VFXAppearanceType*)lightAppearanceType, (GameObjectPtr)this);
-		if(result != NO_ERROR)
-			return(result);
+		if (!lightAppearance)
+			return (NO_APPEARANCE_FOR_EXPL);
+		result = lightAppearance->init(
+			(VFXAppearanceType*)lightAppearanceType, (GameObjectPtr)this);
+		if (result != NO_ERROR)
+			return (result);
 	}
 	else
 	{
-		return(APPEARANCE_NOT_VFX_XPL);
+		return (APPEARANCE_NOT_VFX_XPL);
 	}
 #endif
 	objectClass = KLIEG_LIGHT;
@@ -181,4 +177,3 @@ void Light::init(bool create, ObjectTypePtr _type)
 }
 
 //***************************************************************************
-

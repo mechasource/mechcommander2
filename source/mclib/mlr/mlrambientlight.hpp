@@ -16,44 +16,38 @@ namespace MidLevelRenderer
 //######################    MLRAmbientLight    #############################
 //##########################################################################
 
-	class MLRAmbientLight:
-		public MLRLight
+class MLRAmbientLight : public MLRLight
+{
+  public:
+	static void __stdcall InitializeClass(void);
+	static void __stdcall TerminateClass(void);
+
+	MLRAmbientLight(void);
+	MLRAmbientLight(Stuff::MemoryStream* stream, uint32_t version);
+	MLRAmbientLight(Stuff::Page* page);
+	~MLRAmbientLight(void);
+
+	virtual void LightVertex(const MLRVertexData&);
+
+	virtual LightType GetLightType()
 	{
-	public:
-		static void __stdcall InitializeClass(void);
-		static void __stdcall TerminateClass(void);
+		// Check_Object(this);
+		return AmbientLight;
+	}
 
-		MLRAmbientLight(void);
-		MLRAmbientLight(
-			Stuff::MemoryStream* stream,
-			uint32_t version);
-		MLRAmbientLight(Stuff::Page* page);
-		~MLRAmbientLight(void);
+	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	// Class Data Support
+	//
+  public:
+	static ClassData* DefaultData;
 
-		virtual void LightVertex(const MLRVertexData&);
+	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	// Testing
+	//
+  public:
+	void TestInstance(void);
 
-		virtual LightType
-		GetLightType()
-		{
-			// Check_Object(this);
-			return AmbientLight;
-		}
-
-
-		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-		// Class Data Support
-		//
-	public:
-		static ClassData* DefaultData;
-
-		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-		// Testing
-		//
-	public:
-		void TestInstance(void);
-
-	protected:
-	};
-
+  protected:
+};
 }
 #endif

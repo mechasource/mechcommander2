@@ -22,7 +22,7 @@ struct FFEffectData
 
 struct gosForceEffect
 {
-public:
+  public:
 	FFEffectData* ffEffectData;
 	gosForce m_eType;
 	gosForceEffect* pNext;
@@ -31,9 +31,10 @@ public:
 	double startTime;
 	bool bStatus;
 	bool fromFile;
-public:
+
+  public:
 	gosForceEffect(gosJoystick_ForceEffect* fe, uint32_t joy);
-	gosForceEffect(PCSTR  fe, uint32_t joy);
+	gosForceEffect(PCSTR fe, uint32_t joy);
 	void ReCreate(void);
 	~gosForceEffect(void);
 	void Play(uint32_t times);

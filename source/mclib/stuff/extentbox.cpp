@@ -16,18 +16,14 @@
 
 using namespace Stuff;
 
-
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-ExtentBox::ExtentBox(
-	const Vector3D& min,
-	const Vector3D& max
-)
+ExtentBox::ExtentBox(const Vector3D& min, const Vector3D& max)
 {
-	//Check_Pointer(this);
+	// Check_Pointer(this);
 	Check_Object(&min);
 	Check_Object(&max);
-	if(min.x <= max.x)
+	if (min.x <= max.x)
 	{
 		minX = min.x;
 		maxX = max.x;
@@ -37,7 +33,7 @@ ExtentBox::ExtentBox(
 		minX = max.x;
 		maxX = min.x;
 	}
-	if(min.y <= max.y)
+	if (min.y <= max.y)
 	{
 		minY = min.y;
 		maxY = max.y;
@@ -47,7 +43,7 @@ ExtentBox::ExtentBox(
 		minY = max.y;
 		maxY = min.y;
 	}
-	if(min.z <= max.z)
+	if (min.z <= max.z)
 	{
 		minZ = min.z;
 		maxZ = max.z;
@@ -63,7 +59,7 @@ ExtentBox::ExtentBox(
 //
 ExtentBox::ExtentBox(const ExtentBox& box)
 {
-	//Check_Pointer(this);
+	// Check_Pointer(this);
 	Check_Object(&box);
 	minX = box.minX;
 	maxX = box.maxX;
@@ -77,7 +73,7 @@ ExtentBox::ExtentBox(const ExtentBox& box)
 //
 ExtentBox::ExtentBox(const OBB& obb)
 {
-	//Check_Pointer(this);
+	// Check_Pointer(this);
 	Check_Object(&obb);
 	Point3D center(obb.localToParent);
 	minX = center.x - obb.sphereRadius;
@@ -90,13 +86,9 @@ ExtentBox::ExtentBox(const OBB& obb)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-ExtentBox&
-ExtentBox::Intersect(
-	const ExtentBox& box_1,
-	const ExtentBox& box_2
-)
+ExtentBox& ExtentBox::Intersect(const ExtentBox& box_1, const ExtentBox& box_2)
 {
-	//Check_Pointer(this);
+	// Check_Pointer(this);
 	Check_Object(&box_1);
 	Check_Object(&box_2);
 	Verify(box_1.minX <= box_2.maxX);
@@ -116,13 +108,9 @@ ExtentBox::Intersect(
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-ExtentBox&
-ExtentBox::Union(
-	const ExtentBox& box_1,
-	const ExtentBox& box_2
-)
+ExtentBox& ExtentBox::Union(const ExtentBox& box_1, const ExtentBox& box_2)
 {
-	//Check_Pointer(this);
+	// Check_Pointer(this);
 	Check_Object(&box_1);
 	Check_Object(&box_2);
 	minX = Min(box_1.minX, box_2.minX);
@@ -137,13 +125,9 @@ ExtentBox::Union(
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-ExtentBox&
-ExtentBox::Union(
-	const ExtentBox& box,
-	const Vector3D& point
-)
+ExtentBox& ExtentBox::Union(const ExtentBox& box, const Vector3D& point)
 {
-	//Check_Pointer(this);
+	// Check_Pointer(this);
 	Check_Object(&box);
 	Check_Object(&point);
 	minX = Min(box.minX, point.x);
@@ -157,8 +141,7 @@ ExtentBox::Union(
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-Vector3D*
-ExtentBox::Constrain(Vector3D* point) const
+Vector3D* ExtentBox::Constrain(Vector3D* point) const
 {
 	// Check_Object(this);
 	Check_Object(point);
@@ -170,47 +153,37 @@ ExtentBox::Constrain(Vector3D* point) const
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-bool
-ExtentBox::Contains(const Vector3D& point) const
+bool ExtentBox::Contains(const Vector3D& point) const
 {
 	// Check_Object(this);
 	Check_Object(&point);
-	return
-		minX <= point.x && maxX >= point.x
-		&& minY <= point.y && maxY >= point.y
-		&& minZ <= point.z && maxZ >= point.z;
+	return minX <= point.x && maxX >= point.x && minY <= point.y &&
+		   maxY >= point.y && minZ <= point.z && maxZ >= point.z;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-bool
-ExtentBox::Contains(const ExtentBox& box) const
+bool ExtentBox::Contains(const ExtentBox& box) const
 {
 	// Check_Object(this);
 	Check_Object(&box);
-	return
-		minX <= box.minX && maxX >= box.maxX
-		&& minY <= box.minY && maxY >= box.maxY
-		&& minZ <= box.minZ && maxZ >= box.maxZ;
+	return minX <= box.minX && maxX >= box.maxX && minY <= box.minY &&
+		   maxY >= box.maxY && minZ <= box.minZ && maxZ >= box.maxZ;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-bool
-ExtentBox::Intersects(const ExtentBox& box) const
+bool ExtentBox::Intersects(const ExtentBox& box) const
 {
 	// Check_Object(this);
 	Check_Object(&box);
-	return
-		minX <= box.maxX && maxX >= box.minX
-		&& minY <= box.maxY && maxY >= box.minY
-		&& minZ <= box.maxZ && maxZ >= box.minZ;
+	return minX <= box.maxX && maxX >= box.minX && minY <= box.maxY &&
+		   maxY >= box.minY && minZ <= box.maxZ && maxZ >= box.minZ;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-ExtentBox::GetCenterpoint(Point3D* point) const
+void ExtentBox::GetCenterpoint(Point3D* point) const
 {
 	// Check_Object(this);
 	Check_Pointer(point);
@@ -221,8 +194,7 @@ ExtentBox::GetCenterpoint(Point3D* point) const
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-ExtentBox::TestInstance(void) const
+void ExtentBox::TestInstance(void) const
 {
 	Verify(minX <= maxX && minY <= maxY && minZ <= maxZ);
 }
@@ -230,23 +202,11 @@ ExtentBox::TestInstance(void) const
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 #if !defined(Spew)
-void
-Spew(
-	PCSTR group,
-	const ExtentBox& box
-)
+void Spew(PCSTR group, const ExtentBox& box)
 {
 	Check_Object(&box);
-	SPEW((
-			 group,
-			 "[%f..%f,%f..%f,%f..%f]+",
-			 box.minX,
-			 box.maxX,
-			 box.minY,
-			 box.maxY,
-			 box.minZ,
-			 box.maxZ
-		 ));
+	SPEW((group, "[%f..%f,%f..%f,%f..%f]+", box.minX, box.maxX, box.minY,
+		box.maxY, box.minZ, box.maxZ));
 }
 #endif
 
@@ -254,41 +214,31 @@ Spew(
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-Stuff::Convert_From_Ascii(
-	PCSTR str,
-	ExtentBox* extent_box
-)
+void Stuff::Convert_From_Ascii(PCSTR str, ExtentBox* extent_box)
 {
 	Check_Pointer(str);
 	Check_Object(extent_box);
 	MString parse_string(str);
 	Check_Object(&parse_string);
-	MString token = parse_string.GetNthToken(0);
+	MString token	= parse_string.GetNthToken(0);
 	extent_box->minX = AtoF(token);
-	token = parse_string.GetNthToken(1);
+	token			 = parse_string.GetNthToken(1);
 	extent_box->minY = AtoF(token);
-	token = parse_string.GetNthToken(2);
+	token			 = parse_string.GetNthToken(2);
 	extent_box->minZ = AtoF(token);
-	token = parse_string.GetNthToken(3);
+	token			 = parse_string.GetNthToken(3);
 	extent_box->maxX = AtoF(token);
-	token = parse_string.GetNthToken(4);
+	token			 = parse_string.GetNthToken(4);
 	extent_box->maxY = AtoF(token);
-	token = parse_string.GetNthToken(5);
+	token			 = parse_string.GetNthToken(5);
 	extent_box->maxZ = AtoF(token);
 	Check_Object(extent_box);
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-Stuff::Use_Scalar_In_Sorted_Array(
-	DynamicArrayOf<float>* values,
-	float value,
-	puint32_t max_index,
-	uint32_t block_size,
-	float threshold
-)
+void Stuff::Use_Scalar_In_Sorted_Array(DynamicArrayOf<float>* values,
+	float value, puint32_t max_index, uint32_t block_size, float threshold)
 {
 	Check_Object(values);
 	Check_Pointer(max_index);
@@ -298,15 +248,15 @@ Stuff::Use_Scalar_In_Sorted_Array(
 	//-------------------------------------------------------------
 	//
 	uint32_t bottom = 0;
-	uint32_t top = *max_index;
-	while(top > bottom)
+	uint32_t top	= *max_index;
+	while (top > bottom)
 	{
 		uint32_t middle = (top + bottom - 1) >> 1;
-		if(Close_Enough((*values)[middle], value, threshold))
+		if (Close_Enough((*values)[middle], value, threshold))
 		{
 			return;
 		}
-		else if((*values)[middle] > value)
+		else if ((*values)[middle] > value)
 		{
 			top = middle;
 		}
@@ -322,19 +272,16 @@ Stuff::Use_Scalar_In_Sorted_Array(
 	// room in the table
 	//-----------------------------------------------------------------------
 	//
-	if(*max_index == values->GetLength())
+	if (*max_index == values->GetLength())
 	{
 		values->SetLength(*max_index + block_size);
 	}
 	uint32_t to_move = *max_index - bottom;
 	Verify(to_move <= *max_index);
-	if(to_move > 0)
+	if (to_move > 0)
 	{
-		memmove(
-			&(*values)[bottom + 1],
-			&(*values)[bottom],
-			to_move * sizeof(value)
-		);
+		memmove(&(*values)[bottom + 1], &(*values)[bottom],
+			to_move * sizeof(value));
 	}
 	++(*max_index);
 	(*values)[bottom] = value;
@@ -342,11 +289,8 @@ Stuff::Use_Scalar_In_Sorted_Array(
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-Stuff::Find_Planes_Of_Boxes(
-	DynamicArrayOf<Plane>* planes,
-	const DynamicArrayOf<ExtentBox>& boxes
-)
+void Stuff::Find_Planes_Of_Boxes(
+	DynamicArrayOf<Plane>* planes, const DynamicArrayOf<ExtentBox>& boxes)
 {
 	Check_Object(planes);
 	Check_Object(&boxes);
@@ -355,16 +299,16 @@ Stuff::Find_Planes_Of_Boxes(
 	// Figure out all the unique axis components used by the boxes
 	//------------------------------------------------------------
 	//
-	DynamicArrayOf<float>		xs;
-	DynamicArrayOf<float>		ys;
-	DynamicArrayOf<float>		zs;
-	uint32_t					max_x = 0;
-	uint32_t					max_y = 0;
-	uint32_t					max_z = 0;
-	size_t						count = boxes.GetLength();
-	uint32_t					i;
+	DynamicArrayOf<float> xs;
+	DynamicArrayOf<float> ys;
+	DynamicArrayOf<float> zs;
+	uint32_t max_x = 0;
+	uint32_t max_y = 0;
+	uint32_t max_z = 0;
+	size_t count   = boxes.GetLength();
+	uint32_t i;
 	Verify(count > 0);
-	for(i = 0; i < count; ++i)
+	for (i = 0; i < count; ++i)
 	{
 		Use_Scalar_In_Sorted_Array(&xs, boxes[i].minX, &max_x, 10);
 		Use_Scalar_In_Sorted_Array(&xs, boxes[i].maxX, &max_x, 10);
@@ -386,13 +330,13 @@ Stuff::Find_Planes_Of_Boxes(
 	//------------------------
 	//
 	Plane* plane = &(*planes)[0];
-	for(i = 0; i < max_x; ++i)
+	for (i = 0; i < max_x; ++i)
 	{
-		Verify(static_cast<uint32_t>(plane - & (*planes)[0]) < count);
+		Verify(static_cast<uint32_t>(plane - &(*planes)[0]) < count);
 		plane->normal.x = 1.0f;
 		plane->normal.y = 0.0f;
 		plane->normal.z = 0.0f;
-		plane->offset = xs[i];
+		plane->offset   = xs[i];
 		++plane;
 	}
 	//
@@ -400,13 +344,13 @@ Stuff::Find_Planes_Of_Boxes(
 	// Generate the X-Z planes
 	//------------------------
 	//
-	for(i = 0; i < max_y; ++i)
+	for (i = 0; i < max_y; ++i)
 	{
-		Verify(static_cast<uint32_t>(plane - & (*planes)[0]) < count);
+		Verify(static_cast<uint32_t>(plane - &(*planes)[0]) < count);
 		plane->normal.x = 0.0f;
 		plane->normal.y = 1.0f;
 		plane->normal.z = 0.0f;
-		plane->offset = ys[i];
+		plane->offset   = ys[i];
 		++plane;
 	}
 	//
@@ -414,13 +358,13 @@ Stuff::Find_Planes_Of_Boxes(
 	// Generate the X-Y planes
 	//------------------------
 	//
-	for(i = 0; i < max_z; ++i)
+	for (i = 0; i < max_z; ++i)
 	{
-		Verify(static_cast<uint32_t>(plane - & (*planes)[0]) < count);
+		Verify(static_cast<uint32_t>(plane - &(*planes)[0]) < count);
 		plane->normal.x = 0.0f;
 		plane->normal.y = 0.0f;
 		plane->normal.z = 1.0f;
-		plane->offset = zs[i];
+		plane->offset   = zs[i];
 		++plane;
 	}
 }

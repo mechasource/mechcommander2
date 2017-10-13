@@ -6,7 +6,6 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
-
 void __stdcall TimeManagerInstall(void);
 void __stdcall StartTimeManager(void);
 void __stdcall TimeManagerUpdate(void);

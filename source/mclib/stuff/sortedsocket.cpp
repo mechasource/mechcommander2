@@ -13,7 +13,6 @@
 
 using namespace Stuff;
 
-
 SortedSocket::SortedSocket(Node* node, bool has_unique_entries)
 	: SafeSocket(node)
 {
@@ -38,8 +37,8 @@ Plug* SortedSocket::FindImplementation(PCVOID)
 	return nullptr;
 }
 
-SortedIterator::SortedIterator(SortedSocket* sortedSocket):
-	SafeIterator(sortedSocket)
+SortedIterator::SortedIterator(SortedSocket* sortedSocket)
+	: SafeIterator(sortedSocket)
 {
 }
 
@@ -48,8 +47,7 @@ SortedIterator::~SortedIterator()
 	// Check_Object(this);
 }
 
-Plug*
-SortedIterator::FindImplementation(PCVOID)
+Plug* SortedIterator::FindImplementation(PCVOID)
 {
 	// Check_Object(this);
 	STOP(("SortedIterator::FindImplementation - Should never reach here"));
@@ -63,4 +61,3 @@ SortedIterator::GetValueImplementation()
 	STOP(("SortedIterator::GetValueImplementation - Should never reach here"));
 	return nullptr;
 }
-

@@ -20,28 +20,28 @@ DamageBrush.h			: Interface for the DamageBrush component.
 CLASS DESCRIPTION
 DamageBrush:
 **************************************************************************************************/
-class DamageBrush: public Brush
+class DamageBrush : public Brush
 {
-public:
-
+  public:
 	DamageBrush(bool bDamage)
 	{
-		damage = bDamage;
+		damage  = bDamage;
 		pAction = nullptr;
 	}
 	virtual ~DamageBrush() {}
 	virtual bool beginPaint(void);
 	virtual Action* endPaint(void);
-	virtual bool paint(Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY);
-	virtual bool canPaint(Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY, int32_t flags);
+	virtual bool paint(
+		Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY);
+	virtual bool canPaint(Stuff::Vector3D& worldPos, int32_t screenX,
+		int32_t screenY, int32_t flags);
 	virtual bool canPaintSelection();
 	virtual Action* applyToSelection(void);
-	bool	damage;
+	bool damage;
 
-private:
+  private:
 	ModifyBuildingAction* pAction;
 };
 
-
 //*************************************************************************************************
-#endif  // end of file ( DamageBrush.h )
+#endif // end of file ( DamageBrush.h )

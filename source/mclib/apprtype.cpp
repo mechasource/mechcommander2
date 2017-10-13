@@ -39,25 +39,27 @@
 //---------------------------------------------------------------------------
 // static Globals
 UserHeapPtr AppearanceTypeList::appearanceHeap = nullptr;
-AppearanceTypeListPtr appearanceTypeList = nullptr;
+AppearanceTypeListPtr appearanceTypeList	   = nullptr;
 
 //---------------------------------------------------------------------------
 // Class AppearanceType
 PVOID AppearanceType::operator new(size_t memSize)
 {
 	PVOID result = nullptr;
-	if(AppearanceTypeList::appearanceHeap && AppearanceTypeList::appearanceHeap->heapReady())
+	if (AppearanceTypeList::appearanceHeap &&
+		AppearanceTypeList::appearanceHeap->heapReady())
 	{
 		result = AppearanceTypeList::appearanceHeap->Malloc(memSize);
 	}
-	return(result);
+	return (result);
 }
 
 //---------------------------------------------------------------------------
 void AppearanceType::operator delete(PVOID treePtr)
 {
 	int32_t result;
-	if(AppearanceTypeList::appearanceHeap && AppearanceTypeList::appearanceHeap->heapReady())
+	if (AppearanceTypeList::appearanceHeap &&
+		AppearanceTypeList::appearanceHeap->heapReady())
 	{
 		result = AppearanceTypeList::appearanceHeap->Free(treePtr);
 	}
@@ -66,47 +68,48 @@ void AppearanceType::operator delete(PVOID treePtr)
 //---------------------------------------------------------------------------
 void AppearanceType::init(PSTR fileName)
 {
-	name = (PSTR)AppearanceTypeList::appearanceHeap->Malloc(strlen(fileName) + 1);
+	name =
+		(PSTR)AppearanceTypeList::appearanceHeap->Malloc(strlen(fileName) + 1);
 	strcpy(name, fileName);
-	//Dig out the Type Bounds here for selections
+	// Dig out the Type Bounds here for selections
 	FullPathFileName iniName;
 	iniName.init(tglPath, fileName, ".ini");
 	FitIniFile iniFile;
 	int32_t result = iniFile.open(iniName);
-	if(result != NO_ERROR)
+	if (result != NO_ERROR)
 		STOP(("Could not find appearance INI file %s", iniName));
 	result = iniFile.seekBlock("3DBounds");
-	if(result == NO_ERROR)
+	if (result == NO_ERROR)
 	{
 		designerTypeBounds = true;
 		int32_t tmpy;
 		result = iniFile.readIdLong("UpperLeftX", tmpy);
-		if(result != NO_ERROR)
+		if (result != NO_ERROR)
 			STOP(("Cant find upperleftX type bounds in %s", iniName));
 		else
 			typeUpperLeft.x = tmpy;
 		result = iniFile.readIdLong("UpperLeftY", tmpy);
-		if(result != NO_ERROR)
+		if (result != NO_ERROR)
 			STOP(("Cant find upperleftX type bounds in %s", iniName));
 		else
 			typeUpperLeft.y = tmpy;
 		result = iniFile.readIdLong("UpperLeftZ", tmpy);
-		if(result != NO_ERROR)
+		if (result != NO_ERROR)
 			STOP(("Cant find upperleftX type bounds in %s", iniName));
 		else
 			typeUpperLeft.z = tmpy;
 		result = iniFile.readIdLong("LowerRightX", tmpy);
-		if(result != NO_ERROR)
+		if (result != NO_ERROR)
 			STOP(("Cant find upperleftX type bounds in %s", iniName));
 		else
 			typeLowerRight.x = tmpy;
 		result = iniFile.readIdLong("LowerRightY", tmpy);
-		if(result != NO_ERROR)
+		if (result != NO_ERROR)
 			STOP(("Cant find upperleftX type bounds in %s", iniName));
 		else
 			typeLowerRight.y = tmpy;
 		result = iniFile.readIdLong("LowerRightZ", tmpy);
-		if(result != NO_ERROR)
+		if (result != NO_ERROR)
 			STOP(("Cant find upperleftX type bounds in %s", iniName));
 		else
 			typeLowerRight.z = tmpy;
@@ -117,45 +120,45 @@ void AppearanceType::init(PSTR fileName)
 //---------------------------------------------------------------------------
 void AppearanceType::reinit(void)
 {
-	//Dig out the Type Bounds here for selections
+	// Dig out the Type Bounds here for selections
 	FullPathFileName iniName;
 	iniName.init(tglPath, name, ".ini");
 	FitIniFile iniFile;
 	int32_t result = iniFile.open(iniName);
-	if(result != NO_ERROR)
+	if (result != NO_ERROR)
 		STOP(("Could not find appearance INI file %s", iniName));
 	result = iniFile.seekBlock("3DBounds");
-	if(result == NO_ERROR)
+	if (result == NO_ERROR)
 	{
 		designerTypeBounds = true;
 		int32_t tmpy;
 		result = iniFile.readIdLong("UpperLeftX", tmpy);
-		if(result != NO_ERROR)
+		if (result != NO_ERROR)
 			STOP(("Cant find upperleftX type bounds in %s", iniName));
 		else
 			typeUpperLeft.x = tmpy;
 		result = iniFile.readIdLong("UpperLeftY", tmpy);
-		if(result != NO_ERROR)
+		if (result != NO_ERROR)
 			STOP(("Cant find upperleftX type bounds in %s", iniName));
 		else
 			typeUpperLeft.y = tmpy;
 		result = iniFile.readIdLong("UpperLeftZ", tmpy);
-		if(result != NO_ERROR)
+		if (result != NO_ERROR)
 			STOP(("Cant find upperleftX type bounds in %s", iniName));
 		else
 			typeUpperLeft.z = tmpy;
 		result = iniFile.readIdLong("LowerRightX", tmpy);
-		if(result != NO_ERROR)
+		if (result != NO_ERROR)
 			STOP(("Cant find upperleftX type bounds in %s", iniName));
 		else
 			typeLowerRight.x = tmpy;
 		result = iniFile.readIdLong("LowerRightY", tmpy);
-		if(result != NO_ERROR)
+		if (result != NO_ERROR)
 			STOP(("Cant find upperleftX type bounds in %s", iniName));
 		else
 			typeLowerRight.y = tmpy;
 		result = iniFile.readIdLong("LowerRightZ", tmpy);
-		if(result != NO_ERROR)
+		if (result != NO_ERROR)
 			STOP(("Cant find upperleftX type bounds in %s", iniName));
 		else
 			typeLowerRight.z = tmpy;
@@ -177,37 +180,39 @@ void AppearanceTypeList::init(uint32_t heapSize)
 	appearanceHeap = new UserHeap;
 	gosASSERT(appearanceHeap != nullptr);
 	appearanceHeap->init(heapSize, "APPEAR");
-	//No More sprite files.  Objects now have direct control over their appearances.
+	// No More sprite files.  Objects now have direct control over their
+	// appearances.
 }
 
 //---------------------------------------------------------------------------
-AppearanceTypePtr AppearanceTypeList::getAppearance(uint32_t apprNum, PSTR appearFile)
+AppearanceTypePtr AppearanceTypeList::getAppearance(
+	uint32_t apprNum, PSTR appearFile)
 {
 	//----------------------------------------------------------------
 	// The type of appearance is stored in the upper 8 bits of the
 	// apprNum.  To get the correct packet we mask off the top 8 bits
 	// and store the number.  To get the appearance type, we right shift
 	// by 24.
-	int32_t appearanceClass = apprNum >> 24;
+	int32_t appearanceClass			 = apprNum >> 24;
 	AppearanceTypePtr appearanceType = nullptr;
 	//----------------------------------------------------
 	// If these top bits are wrong, return nullptr
-	if(appearanceClass == 0)
-		return(nullptr);
+	if (appearanceClass == 0)
+		return (nullptr);
 	//----------------------------------------------------
 	// If string passed in is nullptr, return nullptr
-	if(!appearFile)
+	if (!appearFile)
 	{
 		return nullptr;
 	}
 	//-----------------------------------------------------------
 	// Scan the list of appearances and see if we have this one.
 	appearanceType = head;
-	while(appearanceType && _stricmp(appearanceType->name, appearFile) != 0)
+	while (appearanceType && _stricmp(appearanceType->name, appearFile) != 0)
 	{
 		appearanceType = appearanceType->next;
 	}
-	if(appearanceType)
+	if (appearanceType)
 	{
 		appearanceType->numUsers++;
 	}
@@ -215,126 +220,126 @@ AppearanceTypePtr AppearanceTypeList::getAppearance(uint32_t apprNum, PSTR appea
 	{
 		//---------------------------------------------------------
 		// This appearance is not on the list yet, so load/new it.
-		switch(appearanceClass)
+		switch (appearanceClass)
 		{
+		//----------------------------------------
+		case MECH_TYPE:
+		{
+			appearanceType = new Mech3DAppearanceType;
+			gosASSERT(appearanceType != nullptr);
+			appearanceType->appearanceNum = apprNum;
+			appearanceType->init(appearFile);
 			//----------------------------------------
-			case MECH_TYPE:
+			// We have a new one, add it to the list.
+			appearanceType->numUsers = 1;
+			appearanceType->next	 = nullptr;
+			if (head == nullptr)
 			{
-				appearanceType = new Mech3DAppearanceType;
-				gosASSERT(appearanceType != nullptr);
-				appearanceType->appearanceNum = apprNum;
-				appearanceType->init(appearFile);
-				//----------------------------------------
-				// We have a new one, add it to the list.
-				appearanceType->numUsers = 1;
-				appearanceType->next = nullptr;
-				if(head == nullptr)
-				{
-					head = appearanceType;
-					last = head;
-				}
-				else
-				{
-					last->next = appearanceType;
-					last = appearanceType;
-				}
+				head = appearanceType;
+				last = head;
 			}
-			break;
+			else
+			{
+				last->next = appearanceType;
+				last	   = appearanceType;
+			}
+		}
+		break;
+		//----------------------------------------
+		case GV_TYPE:
+		{
+			appearanceType = new GVAppearanceType;
+			gosASSERT(appearanceType != nullptr);
+			appearanceType->appearanceNum = apprNum;
+			appearanceType->init(appearFile);
 			//----------------------------------------
-			case GV_TYPE:
+			// We have a new one, add it to the list.
+			appearanceType->numUsers = 1;
+			appearanceType->next	 = nullptr;
+			if (head == nullptr)
 			{
-				appearanceType = new GVAppearanceType;
-				gosASSERT(appearanceType != nullptr);
-				appearanceType->appearanceNum = apprNum;
-				appearanceType->init(appearFile);
-				//----------------------------------------
-				// We have a new one, add it to the list.
-				appearanceType->numUsers = 1;
-				appearanceType->next = nullptr;
-				if(head == nullptr)
-				{
-					head = appearanceType;
-					last = head;
-				}
-				else
-				{
-					last->next = appearanceType;
-					last = appearanceType;
-				}
+				head = appearanceType;
+				last = head;
 			}
-			break;
+			else
+			{
+				last->next = appearanceType;
+				last	   = appearanceType;
+			}
+		}
+		break;
+		//----------------------------------------
+		case TREED_TYPE:
+		{
+			appearanceType = new TreeAppearanceType;
+			gosASSERT(appearanceType != nullptr);
+			appearanceType->appearanceNum = apprNum;
+			appearanceType->init(appearFile);
 			//----------------------------------------
-			case TREED_TYPE:
+			// We have a new one, add it to the list.
+			appearanceType->numUsers = 1;
+			appearanceType->next	 = nullptr;
+			if (head == nullptr)
 			{
-				appearanceType = new TreeAppearanceType;
-				gosASSERT(appearanceType != nullptr);
-				appearanceType->appearanceNum = apprNum;
-				appearanceType->init(appearFile);
-				//----------------------------------------
-				// We have a new one, add it to the list.
-				appearanceType->numUsers = 1;
-				appearanceType->next = nullptr;
-				if(head == nullptr)
-				{
-					head = appearanceType;
-					last = head;
-				}
-				else
-				{
-					last->next = appearanceType;
-					last = appearanceType;
-				}
+				head = appearanceType;
+				last = head;
 			}
-			break;
+			else
+			{
+				last->next = appearanceType;
+				last	   = appearanceType;
+			}
+		}
+		break;
+		//----------------------------------------
+		case GENERIC_APPR_TYPE:
+		{
+			appearanceType = new GenericAppearanceType;
+			gosASSERT(appearanceType != nullptr);
+			appearanceType->appearanceNum = apprNum;
+			appearanceType->init(appearFile);
 			//----------------------------------------
-			case GENERIC_APPR_TYPE:
+			// We have a new one, add it to the list.
+			appearanceType->numUsers = 1;
+			appearanceType->next	 = nullptr;
+			if (head == nullptr)
 			{
-				appearanceType = new GenericAppearanceType;
-				gosASSERT(appearanceType != nullptr);
-				appearanceType->appearanceNum = apprNum;
-				appearanceType->init(appearFile);
-				//----------------------------------------
-				// We have a new one, add it to the list.
-				appearanceType->numUsers = 1;
-				appearanceType->next = nullptr;
-				if(head == nullptr)
-				{
-					head = appearanceType;
-					last = head;
-				}
-				else
-				{
-					last->next = appearanceType;
-					last = appearanceType;
-				}
+				head = appearanceType;
+				last = head;
 			}
-			break;
+			else
+			{
+				last->next = appearanceType;
+				last	   = appearanceType;
+			}
+		}
+		break;
+		//----------------------------------------
+		case BLDG_TYPE:
+		{
+			appearanceType = new BldgAppearanceType;
+			gosASSERT(appearanceType != nullptr);
+			appearanceType->appearanceNum = apprNum;
+			appearanceType->init(appearFile);
 			//----------------------------------------
-			case BLDG_TYPE:
+			// We have a new one, add it to the list.
+			appearanceType->numUsers = 1;
+			appearanceType->next	 = nullptr;
+			if (head == nullptr)
 			{
-				appearanceType = new BldgAppearanceType;
-				gosASSERT(appearanceType != nullptr);
-				appearanceType->appearanceNum = apprNum;
-				appearanceType->init(appearFile);
-				//----------------------------------------
-				// We have a new one, add it to the list.
-				appearanceType->numUsers = 1;
-				appearanceType->next = nullptr;
-				if(head == nullptr)
-				{
-					head = appearanceType;
-					last = head;
-				}
-				else
-				{
-					last->next = appearanceType;
-					last = appearanceType;
-				}
+				head = appearanceType;
+				last = head;
 			}
-			break;
-			default:
-				//return(nullptr);
-				NODEFAULT;
+			else
+			{
+				last->next = appearanceType;
+				last	   = appearanceType;
+			}
+		}
+		break;
+		default:
+			// return(nullptr);
+			NODEFAULT;
 		}
 	}
 	return appearanceType;
@@ -344,24 +349,24 @@ AppearanceTypePtr AppearanceTypeList::getAppearance(uint32_t apprNum, PSTR appea
 int32_t AppearanceTypeList::removeAppearance(AppearanceTypePtr which)
 {
 	AppearanceTypePtr appearanceType = head;
-	AppearanceTypePtr previous = nullptr;
-	while(appearanceType && (appearanceType != which))
+	AppearanceTypePtr previous		 = nullptr;
+	while (appearanceType && (appearanceType != which))
 	{
-		previous = appearanceType;
+		previous	   = appearanceType;
 		appearanceType = appearanceType->next;
 	}
-	if(appearanceType)
+	if (appearanceType)
 		appearanceType->numUsers--;
 	else
-		return(-1);
+		return (-1);
 	//----------------------------------------------------------
 	// NEVER remove the types anymore.  Save cache time!
-//#if 0
-	if(appearanceType && (appearanceType->numUsers == 0))
+	//#if 0
+	if (appearanceType && (appearanceType->numUsers == 0))
 	{
 		//------------------------------------------------------
 		// Check if there is no previous appearanceType in list
-		if(previous == nullptr)
+		if (previous == nullptr)
 		{
 			//----------------------------------------------------
 			// if there was no previous, head is the next in list
@@ -373,12 +378,12 @@ int32_t AppearanceTypeList::removeAppearance(AppearanceTypePtr which)
 		}
 		//-------------------------------------------------------------
 		// Make sure that we don't gratuitously free the last pointer
-		if(appearanceType == last)
+		if (appearanceType == last)
 			last = previous;
 		delete appearanceType;
 		appearanceType = nullptr;
 	}
-//#endif
+	//#endif
 	return NO_ERROR;
 }
 
@@ -390,7 +395,7 @@ void AppearanceTypeList::destroy(void)
 	// This will free any RAM used by each individual appearance.
 	// DO NOT really need to do this.  Just toss the heap!
 	AppearanceTypePtr currentAppr = head;
-	while(currentAppr)
+	while (currentAppr)
 	{
 		AppearanceTypePtr nextPtr = currentAppr->next;
 		currentAppr->destroy();
@@ -399,17 +404,17 @@ void AppearanceTypeList::destroy(void)
 	head = last = nullptr;
 	delete appearanceHeap;
 	appearanceHeap = nullptr;
-	if(GVAppearanceType::SensorCircleShape)
+	if (GVAppearanceType::SensorCircleShape)
 	{
 		delete GVAppearanceType::SensorCircleShape;
 		GVAppearanceType::SensorCircleShape = nullptr;
 	}
-	if(GVAppearanceType::SensorTriangleShape)
+	if (GVAppearanceType::SensorTriangleShape)
 	{
 		delete GVAppearanceType::SensorTriangleShape;
 		GVAppearanceType::SensorTriangleShape = nullptr;
 	}
-	if(Mech3DAppearanceType::SensorSquareShape)
+	if (Mech3DAppearanceType::SensorSquareShape)
 	{
 		delete Mech3DAppearanceType::SensorSquareShape;
 		Mech3DAppearanceType::SensorSquareShape = nullptr;
@@ -419,7 +424,7 @@ void AppearanceTypeList::destroy(void)
 //---------------------------------------------------------------------------
 bool AppearanceTypeList::pointerCanBeDeleted(PVOIDptr)
 {
-	if(appearanceHeap && appearanceHeap->pointerOnHeap(ptr))
+	if (appearanceHeap && appearanceHeap->pointerOnHeap(ptr))
 		return true;
 	return false;
 }

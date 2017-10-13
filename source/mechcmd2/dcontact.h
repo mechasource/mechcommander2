@@ -13,9 +13,9 @@
 #ifndef DCONTACT_H
 #define DCONTACT_H
 
-#define	MAX_SENSORS						150	// # sensor systems allowed per mission
-#define	MAX_ECMS						50
-#define	MAX_CONTACTS_PER_SENSOR			200
+#define MAX_SENSORS 150 // # sensor systems allowed per mission
+#define MAX_ECMS 50
+#define MAX_CONTACTS_PER_SENSOR 200
 
 typedef enum _ContactStatus
 {
@@ -30,16 +30,16 @@ typedef enum _ContactStatus
 
 typedef enum
 {
-	CONTACT_CRITERIA_NONE = 0,
-	CONTACT_CRITERIA_ENEMY = 1,
-	CONTACT_CRITERIA_VISUAL = 2,
-	CONTACT_CRITERIA_GUARD_BREACH = 4,
-	CONTACT_CRITERIA_NOT_CHALLENGED = 8,
-	CONTACT_CRITERIA_SENSOR = 16,
+	CONTACT_CRITERIA_NONE			  = 0,
+	CONTACT_CRITERIA_ENEMY			  = 1,
+	CONTACT_CRITERIA_VISUAL			  = 2,
+	CONTACT_CRITERIA_GUARD_BREACH	 = 4,
+	CONTACT_CRITERIA_NOT_CHALLENGED   = 8,
+	CONTACT_CRITERIA_SENSOR			  = 16,
 	CONTACT_CRITERIA_VISUAL_OR_SENSOR = 32,
-	CONTACT_CRITERIA_NOT_DISABLED = 64,
-	CONTACT_CRITERIA_ARMED = 128,
-	NUM_CONTACT_CRITERIA = 9
+	CONTACT_CRITERIA_NOT_DISABLED	 = 64,
+	CONTACT_CRITERIA_ARMED			  = 128,
+	NUM_CONTACT_CRITERIA			  = 9
 } ContactCriteria;
 
 typedef enum
@@ -65,4 +65,3 @@ typedef SensorSystemManager* SensorSystemManagerPtr;
 #endif
 
 //***************************************************************************
-

@@ -26,21 +26,21 @@
 // enums
 typedef enum __inifile_constants
 {
-	BLOCK_NOT_FOUND						= 0xFADA0000,
-	ID_NOT_FOUND						= 0xFADA0001,
-	DATA_NOT_CORRECT_TYPE				= 0xFADA0002,
-	BUFFER_TOO_SMALL					= 0xFADA0003,
-	NOT_A_FITINIFILE					= 0xFADA0004,
-	NO_RAM_FOR_INI_BLOCKS				= 0xFADA0005,
-	NO_MORE_BLOCKS						= 0xFADA0006,
-	TOO_MANY_BLOCKS						= 0xFADA0007,
-	NOT_ENOUGH_BLOCKS					= 0xFADA0008,
-	VARIABLE_NOT_FOUND					= 0xFADA0009,
-	SYNTAX_ERROR						= 0xFADA000A,
-	NOT_ENOUGH_ELEMENTS_FOR_ARRAY		= 0xFADA000B,
-	GET_NEXT_LINE						= 0xFADA000C,
-	USER_ARRAY_TOO_SMALL				= 0xFADA000D,
-	TOO_MANY_ELEMENTS					= 0xFADA000E,
+	BLOCK_NOT_FOUND				  = 0xFADA0000,
+	ID_NOT_FOUND				  = 0xFADA0001,
+	DATA_NOT_CORRECT_TYPE		  = 0xFADA0002,
+	BUFFER_TOO_SMALL			  = 0xFADA0003,
+	NOT_A_FITINIFILE			  = 0xFADA0004,
+	NO_RAM_FOR_INI_BLOCKS		  = 0xFADA0005,
+	NO_MORE_BLOCKS				  = 0xFADA0006,
+	TOO_MANY_BLOCKS				  = 0xFADA0007,
+	NOT_ENOUGH_BLOCKS			  = 0xFADA0008,
+	VARIABLE_NOT_FOUND			  = 0xFADA0009,
+	SYNTAX_ERROR				  = 0xFADA000A,
+	NOT_ENOUGH_ELEMENTS_FOR_ARRAY = 0xFADA000B,
+	GET_NEXT_LINE				  = 0xFADA000C,
+	USER_ARRAY_TOO_SMALL		  = 0xFADA000D,
+	TOO_MANY_ELEMENTS			  = 0xFADA000E,
 };
 
 /*
@@ -64,26 +64,25 @@ class FitIniFile : public File
 {
 	// Data Members
 	//--------------
-protected:
-	std::unique_ptr<IniBlockNode>	m_fileBlocks;			//Data for blocks to speed up file
-	PSTR							m_currentBlockId;		//Id of current block
-	size_t							m_totalBlocks;			//Total number of blocks in file
-	size_t 							m_currentBlockOffset;	//Offset into file of block start
-	size_t 							m_currentBlockSize;		//Length of current block
+  protected:
+	std::unique_ptr<IniBlockNode>
+		m_fileBlocks;			 // Data for blocks to speed up file
+	PSTR m_currentBlockId;		 // Id of current block
+	size_t m_totalBlocks;		 // Total number of blocks in file
+	size_t m_currentBlockOffset; // Offset into file of block start
+	size_t m_currentBlockSize;   // Length of current block
 
-public:
-	FitIniFile(void) : m_currentBlockId(nullptr),
-		m_totalBlocks(0), m_currentBlockOffset(0), m_currentBlockSize(0)
+  public:
+	FitIniFile(void)
+		: m_currentBlockId(nullptr), m_totalBlocks(0), m_currentBlockOffset(0),
+		  m_currentBlockSize(0)
 	{
 	}
-	virtual ~FitIniFile(void)
-	{
-		close();
-	}
+	virtual ~FitIniFile(void) { close(); }
 
 	// Member Functions
 	//------------------
-protected:
+  protected:
 	HRESULT afterOpen(void);
 	void atClose(void);
 
@@ -130,20 +129,18 @@ protected:
 
 	int32_t copyString(PSTR dest, PSTR src, size_t bufLen);
 
-public:
-
-	virtual int32_t open(PCSTR fName, FileMode _mode = READ, uint32_t numChildren = 50);
-	virtual int32_t open(FilePtr _parent, size_t fileSize, uint32_t numChildren = 50);
+  public:
+	virtual int32_t open(
+		PCSTR fName, FileMode _mode = READ, uint32_t numChildren = 50);
+	virtual int32_t open(
+		FilePtr _parent, size_t fileSize, uint32_t numChildren = 50);
 
 	virtual int32_t create(PCSTR fName);
 	virtual int32_t createWithCase(PSTR fName);
 
 	virtual void close(void);
 
-	virtual FileClass getFileClass(void)
-	{
-		return INIFILE;
-	}
+	virtual FileClass getFileClass(void) { return INIFILE; }
 
 	HRESULT seekBlock(PCSTR blockId);
 
@@ -167,13 +164,17 @@ public:
 	HRESULT readIdFloatArray(PCSTR varName, float* result, size_t numElements);
 
 	HRESULT readIdLongArray(PCSTR varName, pint32_t result, size_t numElements);
-	HRESULT readIdULongArray(PCSTR varName, puint32_t result, size_t numElements);
+	HRESULT readIdULongArray(
+		PCSTR varName, puint32_t result, size_t numElements);
 
-	HRESULT readIdShortArray(PCSTR varName, pint16_t result, size_t numElements);
-	HRESULT readIdUShortArray(PCSTR varName, puint16_t result, size_t numElements);
+	HRESULT readIdShortArray(
+		PCSTR varName, pint16_t result, size_t numElements);
+	HRESULT readIdUShortArray(
+		PCSTR varName, puint16_t result, size_t numElements);
 
 	HRESULT readIdCharArray(PCSTR varName, pint8_t result, size_t numElements);
-	HRESULT readIdUCharArray(PCSTR varName, puint8_t result, size_t numElements);
+	HRESULT readIdUCharArray(
+		PCSTR varName, puint8_t result, size_t numElements);
 
 	size_t getIdFloatArrayElements(PCSTR varName);
 
@@ -203,9 +204,12 @@ public:
 	HRESULT writeIdString(PCSTR varName, PCSTR result);
 
 	HRESULT writeIdFloatArray(PCSTR varName, float* parray, size_t numElements);
-	HRESULT writeIdLongArray(PCSTR varName, pint32_t parray, size_t numElements);
-	HRESULT writeIdUShortArray(PCSTR varName, puint16_t parray, size_t numElements);
-	HRESULT writeIdUCharArray(PCSTR varName, puint8_t parray, size_t numElements);
+	HRESULT writeIdLongArray(
+		PCSTR varName, pint32_t parray, size_t numElements);
+	HRESULT writeIdUShortArray(
+		PCSTR varName, puint16_t parray, size_t numElements);
+	HRESULT writeIdUCharArray(
+		PCSTR varName, puint8_t parray, size_t numElements);
 };
 
 //---------------------------------------------------------------------------

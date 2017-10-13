@@ -16,8 +16,9 @@ eraser.cpp			: Implementation of the eraser component.
 //---------------------------------------------------------------------------
 inline bool isCementType(uint32_t type)
 {
-	bool isCement = ((type == BASE_CEMENT_TYPE) ||
-					 ((type >= START_CEMENT_TYPE) && (type <= END_CEMENT_TYPE)));
+	bool isCement =
+		((type == BASE_CEMENT_TYPE) ||
+			((type >= START_CEMENT_TYPE) && (type <= END_CEMENT_TYPE)));
 	return isCement;
 }
 
@@ -30,9 +31,10 @@ bool Eraser::beginPaint()
 Action* Eraser::endPaint()
 {
 	Action* pRetAction = nullptr;
-	if(pCurAction)
+	if (pCurAction)
 	{
-		if(pCurAction->vertexInfoList.Count() || pCurAction->bldgAction.objInfoPtrList.Count())
+		if (pCurAction->vertexInfoList.Count() ||
+			pCurAction->bldgAction.objInfoPtrList.Count())
 		{
 			pRetAction = pCurAction;
 		}
@@ -45,36 +47,40 @@ Action* Eraser::endPaint()
 	return pRetAction;
 }
 
-#define DEFAULT_TERRAIN		2
+#define DEFAULT_TERRAIN 2
 bool Eraser::paint(Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY)
 {
-	EditorObject* pInfo = EditorObjectMgr::instance()->getObjectAtPosition(worldPos);
-	if(pInfo)
+	EditorObject* pInfo =
+		EditorObjectMgr::instance()->getObjectAtPosition(worldPos);
+	if (pInfo)
 	{
 		CTeams originalTeams = EditorData::instance->TeamsRef();
 		EditorData::instance->handleObjectInvalidation(pInfo);
-		if(!(originalTeams == EditorData::instance->TeamsRef()))
+		if (!(originalTeams == EditorData::instance->TeamsRef()))
 		{
 			pCurAction->teamsAction.PreviousTeams(originalTeams);
 			pCurAction->teamsActionIsSet = true;
 		}
 		{
-			BuildingLink* pLink = EditorObjectMgr::instance()->getLinkWithParent(pInfo);
-			if(pLink)
+			BuildingLink* pLink =
+				EditorObjectMgr::instance()->getLinkWithParent(pInfo);
+			if (pLink)
 			{
-				pCurAction->linkAction.AddToListOnce(LinkBrush::LinkInfo(pLink, LinkBrush::LinkInfo::REMOVE));
+				pCurAction->linkAction.AddToListOnce(
+					LinkBrush::LinkInfo(pLink, LinkBrush::LinkInfo::REMOVE));
 				EditorObjectMgr::instance()->deleteLink(pLink);
 			}
 			{
 				pLink = EditorObjectMgr::instance()->getLinkWithBuilding(pInfo);
-				if(pLink)
+				if (pLink)
 				{
-					pCurAction->linkAction.AddToListOnce(LinkBrush::LinkInfo(pLink, LinkBrush::LinkInfo::EDIT));
+					pCurAction->linkAction.AddToListOnce(
+						LinkBrush::LinkInfo(pLink, LinkBrush::LinkInfo::EDIT));
 					pLink->RemoveObject(pInfo);
 				}
 			}
 		}
-		pCurAction->bldgAction.addBuildingInfo(*pInfo);   // undo!
+		pCurAction->bldgAction.addBuildingInfo(*pInfo); // undo!
 		bool retval = EditorObjectMgr::instance()->deleteObject(pInfo);
 		return retval;
 	}
@@ -88,27 +94,28 @@ bool Eraser::paint(Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY)
 		Overlays type;
 		uint32_t Offset;
 		land->getOverlay(tileRow, tileCol, type, Offset);
-		if(type != INVALID_OVERLAY)
+		if (type != INVALID_OVERLAY)
 		{
-			pCurAction->addChangedVertexInfo(tileRow, tileCol);   // undo!
+			pCurAction->addChangedVertexInfo(tileRow, tileCol); // undo!
 			land->setOverlay(tileRow, tileCol, INVALID_OVERLAY, 0);
 			return true;
 		}
-		if(GameMap->getMine(cellRow, cellCol))
+		if (GameMap->getMine(cellRow, cellCol))
 		{
 			GameMap->setMine(cellRow, cellCol, 0);
 		}
 		int32_t terrainType = land->getTerrain(tileRow, tileCol);
-		if(isCementType(terrainType))
+		if (isCementType(terrainType))
 		{
 			land->setTerrain(tileRow, tileCol, DEFAULT_TERRAIN);
 		}
 	}
 	return false;
 }
-bool Eraser::canPaint(Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY, int32_t flags)
+bool Eraser::canPaint(
+	Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY, int32_t flags)
 {
-	if(EditorObjectMgr::instance()->getObjectAtPosition(worldPos))
+	if (EditorObjectMgr::instance()->getObjectAtPosition(worldPos))
 		return true;
 	int32_t tileRow, tileCol;
 	int32_t cellRow, cellCol;
@@ -118,16 +125,16 @@ bool Eraser::canPaint(Stuff::Vector3D& worldPos, int32_t screenX, int32_t screen
 	Overlays type;
 	uint32_t Offset;
 	land->getOverlay(tileRow, tileCol, type, Offset);
-	if(type != INVALID_OVERLAY)
+	if (type != INVALID_OVERLAY)
 	{
 		return true;
 	}
 	int32_t terrainType = land->getTerrain(tileRow, tileCol);
-	if(isCementType(terrainType))
+	if (isCementType(terrainType))
 	{
 		return true;
 	}
-	if(GameMap->getMine(cellRow, cellCol))
+	if (GameMap->getMine(cellRow, cellCol))
 	{
 		return true;
 	}
@@ -140,66 +147,76 @@ Action* Eraser::applyToSelection()
 	{
 		CTeams originalTeams = EditorData::instance->TeamsRef();
 		/*first remove all references to objects that are about to be deleted*/
-		EditorObjectMgr::EDITOR_OBJECT_LIST selectedObjectsList = EditorObjectMgr::instance()->getSelectedObjectList();
-		EditorObjectMgr::EDITOR_OBJECT_LIST::EIterator it = selectedObjectsList.Begin();
-		while(!it.IsDone())
+		EditorObjectMgr::EDITOR_OBJECT_LIST selectedObjectsList =
+			EditorObjectMgr::instance()->getSelectedObjectList();
+		EditorObjectMgr::EDITOR_OBJECT_LIST::EIterator it =
+			selectedObjectsList.Begin();
+		while (!it.IsDone())
 		{
 			const EditorObject* pInfo = (*it);
-			if(pInfo)
+			if (pInfo)
 			{
 				EditorData::instance->handleObjectInvalidation(pInfo);
 			}
 			it++;
 		}
-		if(!(originalTeams == EditorData::instance->TeamsRef()))
+		if (!(originalTeams == EditorData::instance->TeamsRef()))
 		{
-			/*record undo info regarding removal of references to deleted objects before we actually
-			delete the objects (because we need info from the actual objects before they're deleted)*/
+			/*record undo info regarding removal of references to deleted
+			objects before we actually delete the objects (because we need info
+			from the actual objects before they're deleted)*/
 			pRetAction->teamsAction.PreviousTeams(originalTeams);
 			pRetAction->teamsActionIsSet = true;
 		}
 	}
-	EditorObjectMgr::EDITOR_OBJECT_LIST selectedObjectsList = EditorObjectMgr::instance()->getSelectedObjectList();
-	EditorObjectMgr::EDITOR_OBJECT_LIST::EIterator it = selectedObjectsList.Begin();
-	while(!it.IsDone())
+	EditorObjectMgr::EDITOR_OBJECT_LIST selectedObjectsList =
+		EditorObjectMgr::instance()->getSelectedObjectList();
+	EditorObjectMgr::EDITOR_OBJECT_LIST::EIterator it =
+		selectedObjectsList.Begin();
+	while (!it.IsDone())
 	{
 		EditorObject* pInfo = (*it);
-		if(pInfo)
+		if (pInfo)
 		{
 			{
-				BuildingLink* pLink = EditorObjectMgr::instance()->getLinkWithParent(pInfo);
-				if(pLink)
+				BuildingLink* pLink =
+					EditorObjectMgr::instance()->getLinkWithParent(pInfo);
+				if (pLink)
 				{
-					pRetAction->linkAction.AddToListOnce(LinkBrush::LinkInfo(pLink, LinkBrush::LinkInfo::REMOVE));
+					pRetAction->linkAction.AddToListOnce(LinkBrush::LinkInfo(
+						pLink, LinkBrush::LinkInfo::REMOVE));
 					EditorObjectMgr::instance()->deleteLink(pLink);
 				}
 				{
-					pLink = EditorObjectMgr::instance()->getLinkWithBuilding(pInfo);
-					if(pLink)
+					pLink =
+						EditorObjectMgr::instance()->getLinkWithBuilding(pInfo);
+					if (pLink)
 					{
-						pRetAction->linkAction.AddToListOnce(LinkBrush::LinkInfo(pLink, LinkBrush::LinkInfo::EDIT));
+						pRetAction->linkAction.AddToListOnce(
+							LinkBrush::LinkInfo(
+								pLink, LinkBrush::LinkInfo::EDIT));
 						pLink->RemoveObject(pInfo);
 					}
 				}
 			}
-			pRetAction->bldgAction.addBuildingInfo(*pInfo);   // undo!
+			pRetAction->bldgAction.addBuildingInfo(*pInfo); // undo!
 			EditorObjectMgr::instance()->deleteObject(pInfo);
 		}
 		it++;
 	}
-	//EditorObjectMgr::instance()->deleteSelectedObjects();
-	for(size_t i = 0; i < land->realVerticesMapSide; ++i)
+	// EditorObjectMgr::instance()->deleteSelectedObjects();
+	for (size_t i = 0; i < land->realVerticesMapSide; ++i)
 	{
-		for(size_t j = 0; j < land->realVerticesMapSide; ++j)
+		for (size_t j = 0; j < land->realVerticesMapSide; ++j)
 		{
-			if(land->isVertexSelected(j, i))
+			if (land->isVertexSelected(j, i))
 			{
 				pRetAction->addChangedVertexInfo(j, i);
 				land->setOverlay(j, i, INVALID_OVERLAY, 0);
 				land->setTerrain(j, i, DEFAULT_TERRAIN);
-				for(size_t icell = 0; icell < MAPCELL_DIM; icell++)
+				for (size_t icell = 0; icell < MAPCELL_DIM; icell++)
 				{
-					for(size_t jcell = 0; jcell < MAPCELL_DIM; jcell++)
+					for (size_t jcell = 0; jcell < MAPCELL_DIM; jcell++)
 					{
 						int32_t cellRow = j * MAPCELL_DIM + jcell;
 						int32_t cellCol = i * MAPCELL_DIM + icell;
@@ -215,10 +232,10 @@ Action* Eraser::applyToSelection()
 bool Eraser::EraserAction::undo()
 {
 	bool bRetVal = bldgAction.redo();
-	bRetVal = linkAction.undo() && bRetVal;
-	/*teamAction.undo() must occur after bldgAction.redo() (after the deleted buildings have
-	been restored)*/
-	if(teamsActionIsSet)
+	bRetVal		 = linkAction.undo() && bRetVal;
+	/*teamAction.undo() must occur after bldgAction.redo() (after the deleted
+	buildings have been restored)*/
+	if (teamsActionIsSet)
 	{
 		bRetVal = teamsAction.undo() && bRetVal;
 	}
@@ -229,8 +246,9 @@ bool Eraser::EraserAction::undo()
 bool Eraser::EraserAction::redo()
 {
 	bool bRetVal = true;
-	/*teamAction.redo() must occur before bldgAction.undo() (before the buildings are deleted)*/
-	if(teamsActionIsSet)
+	/*teamAction.redo() must occur before bldgAction.undo() (before the
+	 * buildings are deleted)*/
+	if (teamsActionIsSet)
 	{
 		bRetVal = teamsAction.redo();
 	}

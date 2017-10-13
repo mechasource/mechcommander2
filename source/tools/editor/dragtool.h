@@ -1,6 +1,6 @@
 /*************************************************************************************************\
-DragTool.h			: Interface for the DragTool component.  When you hold down the space bar,
-						this thing lets you scroll around
+DragTool.h			: Interface for the DragTool component.  When you hold
+down the space bar, this thing lets you scroll around
 //---------------------------------------------------------------------------//
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
@@ -13,34 +13,27 @@ DragTool.h			: Interface for the DragTool component.  When you hold down the spa
 
 // #include "brush.h"
 
-class DragTool: public Brush
+class DragTool : public Brush
 {
-public:
-
+  public:
 	DragTool(void);
 	virtual ~DragTool(void);
 
 	virtual bool beginPaint(void);
 	virtual Action* endPaint(void);
-	virtual bool paint(Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY);
-	virtual bool canPaint(Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY, int32_t flags)
+	virtual bool paint(
+		Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY);
+	virtual bool canPaint(Stuff::Vector3D& worldPos, int32_t screenX,
+		int32_t screenY, int32_t flags)
 	{
 		return true;
 	}
-	virtual bool canPaintSelection()
-	{
-		return false;
-	}
+	virtual bool canPaintSelection() { return false; }
 
-
-private:
-
+  private:
 	int32_t lastX;
 	int32_t lastY;
-
-
 };
 
-
 //*************************************************************************************************
-#endif  // end of file ( DragTool.h )
+#endif // end of file ( DragTool.h )

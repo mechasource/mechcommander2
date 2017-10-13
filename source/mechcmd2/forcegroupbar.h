@@ -23,8 +23,7 @@ class StaticInfo;
 
 #include "mechicon.h"
 
-#define FORCEGROUP_TOP	ForceGroupIcon::selectionRect[0].top
-
+#define FORCEGROUP_TOP ForceGroupIcon::selectionRect[0].top
 
 /**************************************************************************************************
 CLASS DESCRIPTION
@@ -32,8 +31,7 @@ ForceGroupBar:
 **************************************************************************************************/
 class ForceGroupBar
 {
-public:
-
+  public:
 	ForceGroupBar(void);
 	~ForceGroupBar(void);
 
@@ -49,36 +47,29 @@ public:
 
 	void init(FitIniFile& file, StaticInfo* pCoverIcon);
 	void swapResolutions(void);
-	int32_t  getIconCount()
-	{
-		return iconCount;
-	}
+	int32_t getIconCount() { return iconCount; }
 
 	bool setPilotVideo(PCSTR pVideo, MechWarrior* pPilot);
 	bool isPlayingVideo(void);
 
 	bool flashJumpers(int32_t numFlashes);
 
-private:
-
+  private:
 	static float iconWidth;
 	static float iconHeight;
-	static int32_t	 iconsPerRow;
+	static int32_t iconsPerRow;
 
 	static StaticInfo* s_coverIcon;
 
-	//Tutorial
+	// Tutorial
 	int32_t forceNumFlashes;
 	float forceFlashTime;
 
-
 	int32_t iconCount;
-	ForceGroupIcon*	icons[MAX_ICONS];
+	ForceGroupIcon* icons[MAX_ICONS];
 
 	friend class ControlGui;
-
 };
 
-
 //*************************************************************************************************
-#endif  // end of file ( ForceGroupBar.h )
+#endif // end of file ( ForceGroupBar.h )

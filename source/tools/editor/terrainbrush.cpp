@@ -13,11 +13,11 @@ int32_t TerrainBrush::s_lastType = 0;
 Action* TerrainBrush::applyToSelection()
 {
 	ActionPaintTile* pRetAction = new ActionPaintTile();
-	for(size_t i = 0; i < land->realVerticesMapSide; ++i)
+	for (size_t i = 0; i < land->realVerticesMapSide; ++i)
 	{
-		for(size_t j = 0; j < land->realVerticesMapSide; ++j)
+		for (size_t j = 0; j < land->realVerticesMapSide; ++j)
 		{
-			if(land->isVertexSelected(j, i))
+			if (land->isVertexSelected(j, i))
 			{
 				pRetAction->addChangedVertexInfo(j, i);
 				land->setTerrain(j, i, terrainType);

@@ -19,7 +19,6 @@ static char THIS_FILE[] = __FILE__;
 /////////////////////////////////////////////////////////////////////////////
 // PlayerSettingsDlg dialog
 
-
 PlayerSettingsDlg::PlayerSettingsDlg(CWnd* pParent /*=nullptr*/)
 	: CDialog(PlayerSettingsDlg::IDD, pParent)
 {
@@ -27,20 +26,20 @@ PlayerSettingsDlg::PlayerSettingsDlg(CWnd* pParent /*=nullptr*/)
 	m_playerEdit = 0;
 	//}}AFX_DATA_INIT
 	m_oldDefaultTeam = 0;
-	m_numTeams = 8/*hardcoded*/;
+	m_numTeams		 = 8 /*hardcoded*/;
 }
-
 
 void PlayerSettingsDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(PlayerSettingsDlg)
-	DDX_Control(pDX, IDC_PLAYER_SETTINGS_DEFAULT_TEAM_COMBO, m_defaultTeamComboBox);
+	DDX_Control(
+		pDX, IDC_PLAYER_SETTINGS_DEFAULT_TEAM_COMBO, m_defaultTeamComboBox);
 	DDX_Text(pDX, IDC_PLAYER_SETTINGS_PLAYER_EDIT, m_playerEdit);
 	DDV_MinMaxInt(pDX, m_playerEdit, 1, 8);
 	//}}AFX_DATA_MAP
 	m_newDefaultTeam = m_defaultTeamComboBox.GetCurSel();
-	if(0 >= m_newDefaultTeam)
+	if (0 >= m_newDefaultTeam)
 	{
 		m_newDefaultTeam = m_defaultTeamComboBox.GetCurSel();
 	}
@@ -50,10 +49,9 @@ void PlayerSettingsDlg::DoDataExchange(CDataExchange* pDX)
 	}
 }
 
-
 BEGIN_MESSAGE_MAP(PlayerSettingsDlg, CDialog)
-	//{{AFX_MSG_MAP(PlayerSettingsDlg)
-	//}}AFX_MSG_MAP
+//{{AFX_MSG_MAP(PlayerSettingsDlg)
+//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -63,15 +61,15 @@ BOOL PlayerSettingsDlg::OnInitDialog()
 {
 	CDialog::OnInitDialog();
 	m_defaultTeamComboBox.SetCurSel(m_oldDefaultTeam);
-	if(0 < m_numTeams)
+	if (0 < m_numTeams)
 	{
 		int32_t i;
-		for(i = m_defaultTeamComboBox.GetCount() - 1; i >= m_numTeams; i--)
+		for (i = m_defaultTeamComboBox.GetCount() - 1; i >= m_numTeams; i--)
 		{
 			m_defaultTeamComboBox.DeleteString(i);
 		}
 	}
-	if(EditorData::instance->IsSinglePlayer() && (1 == m_playerEdit))
+	if (EditorData::instance->IsSinglePlayer() && (1 == m_playerEdit))
 	{
 		m_defaultTeamComboBox.EnableWindow(FALSE);
 	}
@@ -80,6 +78,6 @@ BOOL PlayerSettingsDlg::OnInitDialog()
 		m_defaultTeamComboBox.EnableWindow(TRUE);
 	}
 	// TODO: Add extra initialization here
-	return TRUE;  // return TRUE unless you set the focus to a control
-	// EXCEPTION: OCX Property Pages should return FALSE
+	return TRUE; // return TRUE unless you set the focus to a control
+				 // EXCEPTION: OCX Property Pages should return FALSE
 }

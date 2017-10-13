@@ -17,135 +17,118 @@ namespace MidLevelRenderer
 //######################## MLRLookUpLight ############################
 //##########################################################################
 
-	class MLRLookUpLight:
-		public MLRInfiniteLight
+class MLRLookUpLight : public MLRInfiniteLight
+{
+  public:
+	static void __stdcall InitializeClass(void);
+	static void __stdcall TerminateClass(void);
+
+	MLRLookUpLight(void);
+	MLRLookUpLight(Stuff::MemoryStream* stream, uint32_t version);
+	MLRLookUpLight(Stuff::Page* page);
+	~MLRLookUpLight(void);
+
+	void Save(Stuff::MemoryStream* stream);
+	void Write(Stuff::Page* page);
+
+	virtual LightType GetLightType(void)
 	{
-	public:
-		static void __stdcall InitializeClass(void);
-		static void __stdcall TerminateClass(void);
+		// Check_Object(this);
+		return LookUpLight;
+	}
 
-		MLRLookUpLight(void);
-		MLRLookUpLight(
-			Stuff::MemoryStream* stream,
-			uint32_t version);
-		MLRLookUpLight(Stuff::Page* page);
-		~MLRLookUpLight(void);
+	virtual void LightVertex(const MLRVertexData&);
 
-		void
-		Save(Stuff::MemoryStream* stream);
-		void
-		Write(Stuff::Page* page);
+	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	// LookUp Light Specific
+	//
+	void SetMapOrigin(float x, float y, float z)
+	{
+		// Check_Object(this);
+		mapOrigin.x = x;
+		mapOrigin.y = y;
+		mapOrigin.z = z;
+	}
 
-		virtual LightType
-		GetLightType(void)
-		{
-			// Check_Object(this);
-			return LookUpLight;
-		}
+	Stuff::Point3D GetMapOrigin(void)
+	{
+		// Check_Object(this);
+		return mapOrigin;
+	}
 
+	void SetMapSizeAndName(int32_t x, int32_t z, PCSTR name);
 
-		virtual void LightVertex(const MLRVertexData&);
+	int32_t GetMapZoneCountX(void)
+	{
+		// Check_Object(this);
+		return mapZoneCountX;
+	}
+	int32_t GetMapZoneCountZ(void)
+	{
+		// Check_Object(this);
+		return mapZoneCountZ;
+	}
 
-		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-		// LookUp Light Specific
-		//
-		void SetMapOrigin(float x, float y, float z)
-		{
-			// Check_Object(this);
-			mapOrigin.x = x;
-			mapOrigin.y = y;
-			mapOrigin.z = z;
-		}
+	PCSTR
+	GetMapName(void)
+	{
+		// Check_Object(this);
+		return mapName;
+	}
 
-		Stuff::Point3D GetMapOrigin(void)
-		{
-			// Check_Object(this);
-			return mapOrigin;
-		}
+	void SetMapZoneSizeX(float x)
+	{
+		// Check_Object(this);
+		zoneSizeX = x;
+		Verify(x > Stuff::SMALL);
+		one_Over_zoneSizeX = 1.0f / x;
+	}
+	void SetMapZoneSizeZ(float z)
+	{
+		// Check_Object(this);
+		zoneSizeZ = z;
+		Verify(z > Stuff::SMALL);
+		one_Over_zoneSizeZ = 1.0f / z;
+	}
 
-		void
-		SetMapSizeAndName(int32_t x, int32_t z, PCSTR name);
+	float GetMapZoneSizeX(void)
+	{
+		// Check_Object(this);
+		return zoneSizeX;
+	}
+	float GetMapZoneSizeZ(void)
+	{
+		// Check_Object(this);
+		return zoneSizeZ;
+	}
 
-		int32_t
-		GetMapZoneCountX(void)
-		{
-			// Check_Object(this);
-			return mapZoneCountX;
-		}
-		int32_t
-		GetMapZoneCountZ(void)
-		{
-			// Check_Object(this);
-			return mapZoneCountZ;
-		}
+	void SetLightToShapeMatrix(const Stuff::LinearMatrix4D&);
 
-		PCSTR
-		GetMapName(void)
-		{
-			// Check_Object(this);
-			return mapName;
-		}
+	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	// Class Data Support
+	//
+  public:
+	static ClassData* DefaultData;
 
-		void
-		SetMapZoneSizeX(float x)
-		{
-			// Check_Object(this);
-			zoneSizeX = x;
-			Verify(x > Stuff::SMALL);
-			one_Over_zoneSizeX = 1.0f / x;
-		}
-		void
-		SetMapZoneSizeZ(float z)
-		{
-			// Check_Object(this);
-			zoneSizeZ = z;
-			Verify(z > Stuff::SMALL);
-			one_Over_zoneSizeZ = 1.0f / z;
-		}
+	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	// Testing
+	//
+  public:
+	void TestInstance(void);
 
-		float
-		GetMapZoneSizeX(void)
-		{
-			// Check_Object(this);
-			return zoneSizeX;
-		}
-		float
-		GetMapZoneSizeZ(void)
-		{
-			// Check_Object(this);
-			return zoneSizeZ;
-		}
+  protected:
+	bool LoadMap(void);
 
-		void SetLightToShapeMatrix(const Stuff::LinearMatrix4D&);
+	Stuff::Point3D mapOrigin;
+	float zoneSizeX, zoneSizeZ;
+	float one_Over_zoneSizeX, one_Over_zoneSizeZ;
 
-		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-		// Class Data Support
-		//
-	public:
-		static ClassData* DefaultData;
+	int32_t mapZoneCountX, mapZoneCountZ;
+	Stuff::MString mapName;
 
-		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-		// Testing
-		//
-	public:
-		void TestInstance(void);
+	puint8_t* maps;
 
-	protected:
-		bool
-		LoadMap(void);
-
-		Stuff::Point3D mapOrigin;
-		float zoneSizeX, zoneSizeZ;
-		float one_Over_zoneSizeX, one_Over_zoneSizeZ;
-
-		int32_t mapZoneCountX, mapZoneCountZ;
-		Stuff::MString mapName;
-
-		puint8_t* maps;
-
-		Stuff::LinearMatrix4D
-		shapeToWorld;
-	};
-
+	Stuff::LinearMatrix4D shapeToWorld;
+};
 }
 #endif

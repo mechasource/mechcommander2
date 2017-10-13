@@ -13,146 +13,113 @@
 
 namespace MidLevelRenderer
 {
-	class MLRShape;
+class MLRShape;
 }
 
 namespace gosFX
 {
 //############################################################################
-//########################  ShapeCloud__Specification  #############################
+//########################  ShapeCloud__Specification
+//#############################
 //############################################################################
 
-	class ShapeCloud;
+class ShapeCloud;
 
-	class ShapeCloud__Specification:
-		public SpinningCloud__Specification
-	{
-		friend class ShapeCloud;
+class ShapeCloud__Specification : public SpinningCloud__Specification
+{
+	friend class ShapeCloud;
 
-		//----------------------------------------------------------------------
-		// Constructors/Destructors
-		//
-	protected:
-		ShapeCloud__Specification(
-			Stuff::MemoryStream* stream,
-			uint32_t gfx_version
-		);
+	//----------------------------------------------------------------------
+	// Constructors/Destructors
+	//
+  protected:
+	ShapeCloud__Specification(
+		Stuff::MemoryStream* stream, uint32_t gfx_version);
 
-	public:
-		ShapeCloud__Specification(MidLevelRenderer::MLRShape* shape);
-		~ShapeCloud__Specification(void);
+  public:
+	ShapeCloud__Specification(MidLevelRenderer::MLRShape* shape);
+	~ShapeCloud__Specification(void);
 
-		void
-		Save(Stuff::MemoryStream* stream);
+	void Save(Stuff::MemoryStream* stream);
 
-		static ShapeCloud__Specification*
-		Make(
-			Stuff::MemoryStream* stream,
-			uint32_t gfx_version
-		);
+	static ShapeCloud__Specification* Make(
+		Stuff::MemoryStream* stream, uint32_t gfx_version);
 
-		void
-		Copy(ShapeCloud__Specification* spec);
+	void Copy(ShapeCloud__Specification* spec);
 
-		void
-		SetShape(MidLevelRenderer::MLRShape* shape);
+	void SetShape(MidLevelRenderer::MLRShape* shape);
 
-	protected:
-		MidLevelRenderer::MLRShape
-		* m_shape;
-		float
-		m_radius;
-	};
+  protected:
+	MidLevelRenderer::MLRShape* m_shape;
+	float m_radius;
+};
 
 //############################################################################
-//########################  SpinningCloud__Particle  #############################
+//########################  SpinningCloud__Particle
+//#############################
 //############################################################################
 
-	class ShapeCloud__Particle:
-		public SpinningCloud__Particle
-	{
-	public:
-		Stuff::RGBAColor
-		m_color;
-	};
+class ShapeCloud__Particle : public SpinningCloud__Particle
+{
+  public:
+	Stuff::RGBAColor m_color;
+};
 
 //############################################################################
 //#############################  ShapeCloud  #################################
 //############################################################################
 
-	class ShapeCloud : public SpinningCloud
+class ShapeCloud : public SpinningCloud
+{
+	//----------------------------------------------------------------------------
+	// Class Registration Support
+	//
+  public:
+	static void __stdcall InitializeClass(void);
+	static void __stdcall TerminateClass(void);
+
+	typedef ShapeCloud__Specification Specification;
+	typedef ShapeCloud__Particle Particle;
+
+	//----------------------------------------------------------------------------
+	// Class Data Support
+	//
+  protected:
+	ShapeCloud(Specification* spec, uint32_t flags);
+
+  public:
+	static ShapeCloud* Make(Specification* spec, uint32_t flags);
+
+	Specification* GetSpecification()
 	{
-		//----------------------------------------------------------------------------
-		// Class Registration Support
-		//
-	public:
-		static void __stdcall InitializeClass(void);
-		static void __stdcall TerminateClass(void);
+		// Check_Object(this);
+		return Cast_Object(Specification*, m_specification);
+	}
+	Particle* GetParticle(uint32_t index)
+	{
+		// Check_Object(this);
+		Check_Object(GetSpecification());
+		return Cast_Pointer(Particle*,
+			&m_data[index * GetSpecification()->m_particleClassSize]);
+	}
 
-		typedef ShapeCloud__Specification Specification;
-		typedef ShapeCloud__Particle Particle;
+	static ClassData* DefaultData;
 
-		//----------------------------------------------------------------------------
-		// Class Data Support
-		//
-	protected:
-		ShapeCloud(
-			Specification* spec,
-			uint32_t flags
-		);
+	//----------------------------------------------------------------------------
+	// Testing
+	//
+  public:
+	void TestInstance(void) const;
 
-	public:
-		static ShapeCloud*
-		Make(
-			Specification* spec,
-			uint32_t flags
-		);
+	//----------------------------------------------------------------------------
+	// API
+	//
+  protected:
+	bool AnimateParticle(uint32_t index,
+		const Stuff::LinearMatrix4D* world_to_new_local, Stuff::Time till);
+	void CreateNewParticle(uint32_t index, Stuff::Point3D* translation);
 
-		Specification*
-		GetSpecification()
-		{
-			// Check_Object(this);
-			return
-				Cast_Object(Specification*, m_specification);
-		}
-		Particle*
-		GetParticle(uint32_t index)
-		{
-			// Check_Object(this);
-			Check_Object(GetSpecification());
-			return
-				Cast_Pointer(
-					Particle*,
-					&m_data[index * GetSpecification()->m_particleClassSize]
-				);
-		}
-
-		static ClassData* DefaultData;
-
-		//----------------------------------------------------------------------------
-		// Testing
-		//
-	public:
-		void TestInstance(void) const;
-
-		//----------------------------------------------------------------------------
-		// API
-		//
-	protected:
-		bool
-		AnimateParticle(
-			uint32_t index,
-			const Stuff::LinearMatrix4D* world_to_new_local,
-			Stuff::Time till
-		);
-		void
-		CreateNewParticle(
-			uint32_t index,
-			Stuff::Point3D* translation
-		);
-
-	public:
-		void
-		Draw(DrawInfo* info);
-	};
+  public:
+	void Draw(DrawInfo* info);
+};
 }

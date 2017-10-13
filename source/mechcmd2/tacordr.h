@@ -23,10 +23,10 @@
 
 //***************************************************************************
 
-#define	NUM_MOVE_SPEEDS		4
+#define NUM_MOVE_SPEEDS 4
 
-#define	TACORDER_FAILURE	0
-#define	TACORDER_SUCCESS	1
+#define TACORDER_FAILURE 0
+#define TACORDER_SUCCESS 1
 
 typedef enum
 {
@@ -36,7 +36,7 @@ typedef enum
 	MOVE_SPEED_MODERATE
 } MoveSpeedType;
 
-#define	NUM_MOVE_PATTERNS	7
+#define NUM_MOVE_PATTERNS 7
 
 typedef enum
 {
@@ -49,7 +49,7 @@ typedef enum
 	MOVE_PATTERN_RANDOM_WIDE
 } MovePatternType;
 
-#define	NUM_ATTITUDES		6
+#define NUM_ATTITUDES 6
 
 typedef enum
 {
@@ -151,16 +151,17 @@ typedef enum
 	TACTICAL_ORDER_LOAD_INTO_CARRIER,
 	TACTICAL_ORDER_DEPLOY_ELEMENTALS,
 	TACTICAL_ORDER_RECOVER,
-	NUM_TACTICAL_ORDERS	// IF THIS CHANGES, ADD GUARD_POINT AS SEP. ORDER (see pack/unpack hack)
+	NUM_TACTICAL_ORDERS // IF THIS CHANGES, ADD GUARD_POINT AS SEP. ORDER (see
+						// pack/unpack hack)
 } TacticalOrderCode;
 
 //***************************************************************************
 
 struct LocationNode
 {
-	Stuff::Vector3D	location;
-	bool			run;
-	LocationNodePtr	next;
+	Stuff::Vector3D location;
+	bool run;
+	LocationNodePtr next;
 };
 
 typedef enum _TravelModeType
@@ -174,10 +175,10 @@ typedef enum _TravelModeType
 
 typedef struct _WayPath
 {
-	int32_t			numPoints;
-	int32_t			curPoint;
-	float			points[3 * MAX_WAYPTS];
-	uint8_t	mode[MAX_WAYPTS];
+	int32_t numPoints;
+	int32_t curPoint;
+	float points[3 * MAX_WAYPTS];
+	uint8_t mode[MAX_WAYPTS];
 } WayPath;
 
 typedef WayPath* WayPathPtr;
@@ -190,86 +191,85 @@ typedef enum
 
 typedef struct _TacOrderMoveParams
 {
-	WayPath			wayPath;
-	bool			faceObject;
-	bool			wait;
-	SpecialMoveMode	mode;
-	bool			escapeTile;
-	bool			jump;
-	int32_t			fromArea;
-	bool			keepMoving;
+	WayPath wayPath;
+	bool faceObject;
+	bool wait;
+	SpecialMoveMode mode;
+	bool escapeTile;
+	bool jump;
+	int32_t fromArea;
+	bool keepMoving;
 } TacOrderMoveParams;
 
 typedef struct _TacOrderAttackParams
 {
-	AttackType		type; //NO LONGER USED! 1/7/00
-	AttackMethod	method;
-	FireRangeType	range;
-	TacticType		tactic;
-	int32_t			aimLocation;
-	bool			pursue;
-	bool			obliterate;
-	Stuff::Vector3D	targetPoint;
+	AttackType type; // NO LONGER USED! 1/7/00
+	AttackMethod method;
+	FireRangeType range;
+	TacticType tactic;
+	int32_t aimLocation;
+	bool pursue;
+	bool obliterate;
+	Stuff::Vector3D targetPoint;
 } TacOrderAttackParams;
 
 class TacticalOrder
 {
 
-public:
-
-	int32_t					id;
-	float					time;
-	float					delayedTime;
-	float					lastTime;
-	bool					unitOrder;		// TRUE if unit order, else individual order
-	bool					subOrder;
-	OrderOriginType			origin;
-	TacticalOrderCode		code;
-	TacOrderMoveParams		moveParams;
-	TacOrderAttackParams	attackParams;
-	GameObjectWatchID		targetWID;
-	int32_t					targetObjectClass;
-	int32_t					selectionIndex;
-	char					stage;
-	char					statusCode;
-	Stuff::Vector3D			lastMoveGoal;
+  public:
+	int32_t id;
+	float time;
+	float delayedTime;
+	float lastTime;
+	bool unitOrder; // TRUE if unit order, else individual order
+	bool subOrder;
+	OrderOriginType origin;
+	TacticalOrderCode code;
+	TacOrderMoveParams moveParams;
+	TacOrderAttackParams attackParams;
+	GameObjectWatchID targetWID;
+	int32_t targetObjectClass;
+	int32_t selectionIndex;
+	char stage;
+	char statusCode;
+	Stuff::Vector3D lastMoveGoal;
 
 	// for network use only
-	char					pointLocalMoverId;
-	uint32_t			groupFlags;
-	uint32_t			data[2];
+	char pointLocalMoverId;
+	uint32_t groupFlags;
+	uint32_t data[2];
 
-public:
-
+  public:
 	PVOID operator new(size_t ourSize);
 	void operator delete(PVOID us);
 
-	void operator = (TacticalOrder copy)
+	void operator=(TacticalOrder copy)
 	{
-		time = copy.time;
-		delayedTime = copy.delayedTime;
-		lastTime = copy.lastTime;
-		unitOrder = copy.unitOrder;
-		origin = copy.origin;
-		code = copy.code;
-		moveParams = copy.moveParams;
-		attackParams = copy.attackParams;
-		targetWID = copy.targetWID;
+		time			  = copy.time;
+		delayedTime		  = copy.delayedTime;
+		lastTime		  = copy.lastTime;
+		unitOrder		  = copy.unitOrder;
+		origin			  = copy.origin;
+		code			  = copy.code;
+		moveParams		  = copy.moveParams;
+		attackParams	  = copy.attackParams;
+		targetWID		  = copy.targetWID;
 		targetObjectClass = copy.targetObjectClass;
-		selectionIndex = copy.selectionIndex;
-		stage = copy.stage;
-		subOrder = copy.subOrder;
-		lastMoveGoal.x = -99999.0;
-		statusCode = 0;
+		selectionIndex	= copy.selectionIndex;
+		stage			  = copy.stage;
+		subOrder		  = copy.subOrder;
+		lastMoveGoal.x	= -99999.0;
+		statusCode		  = 0;
 		pointLocalMoverId = copy.pointLocalMoverId;
-		groupFlags = copy.groupFlags;
-		data[0] = copy.data[0];
-		data[1] = copy.data[1];
+		groupFlags		  = copy.groupFlags;
+		data[0]			  = copy.data[0];
+		data[1]			  = copy.data[1];
 	}
 
 	void init(void);
 
-	void init(OrderOriginType _origin, TacticalOrderCode _code, bool _unitOrder = false);
+	void init(OrderOriginType _origin, TacticalOrderCode _code,
+		bool _unitOrder = false);
 
 	void initWayPath(LocationNodePtr path);
 
@@ -277,27 +277,15 @@ public:
 
 	void destroy(void);
 
-	TacticalOrder(void)
-	{
-		init(void);
-	}
+	TacticalOrder(void) { init(void); }
 
-	~TacticalOrder(void)
-	{
-		destroy(void);
-	}
+	~TacticalOrder(void) { destroy(void); }
 
-	void setId(int32_t newId)
-	{
-		id = newId;
-	}
+	void setId(int32_t newId) { id = newId; }
 
 	void setId(MechWarriorPtr pilot);
 
-	int32_t getId(void)
-	{
-		return(id);
-	}
+	int32_t getId(void) { return (id); }
 
 	int32_t execute(MechWarriorPtr warrior, int32_t& message);
 
@@ -331,24 +319,18 @@ public:
 
 	void setGroupFlag(int32_t localMoverId, bool set);
 
-	int32_t getGroup(int32_t commanderID, MoverPtr* moverList, MoverPtr* point, int32_t sortType = 0);
+	int32_t getGroup(int32_t commanderID, MoverPtr* moverList, MoverPtr* point,
+		int32_t sortType = 0);
 
-	void setStage(int32_t newStage)
-	{
-		stage = (char)newStage;
-	}
+	void setStage(int32_t newStage) { stage = (char)newStage; }
 
 	GameObjectPtr getTarget(void);
 
 	bool equals(TacticalOrder* tacOrder);
 
-	char getStatusCode(void)
-	{
-		return(statusCode);
-	}
+	char getStatusCode(void) { return (statusCode); }
 
 	void debugString(MechWarriorPtr pilot, PSTR s);
-
 };
 
 //***************************************************************************

@@ -6,10 +6,10 @@
  conditions are met (OSI approved BSD 2-clause license):
 
  1. Redistributions of source code must retain the above copyright notice,
-    this list of conditions and the following disclaimer.
+	this list of conditions and the following disclaimer.
  2. Redistributions in binary form must reproduce the above copyright notice,
-    this list of conditions and the following disclaimer in the documentation
-    and/or other materials provided with the distribution.
+	this list of conditions and the following disclaimer in the documentation
+	and/or other materials provided with the distribution.
 
  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -38,8 +38,8 @@
 #include <gameos.hpp>
 #include <platform.hpp>
 
-extern "C" int32_t WINAPI
-WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR pCmdLine, int32_t nShowCmd)
+extern "C" int32_t WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
+	PSTR pCmdLine, int32_t nShowCmd)
 {
 	Platform = Platform_Game;
 	RunFromWinMain(hInstance, hPrevInstance, pCmdLine, nShowCmd);
@@ -58,16 +58,10 @@ PVOID __cdecl operator new(size_t nSize, HGOSHEAP HeapBlock)
 PVOID __cdecl operator new(size_t nSize)
 {
 	gViaNew = true;
-	return gos_Malloc(nSize, (HGOSHEAP) - 1);
+	return gos_Malloc(nSize, (HGOSHEAP)-1);
 }
 
-void __cdecl operator delete(PVOID block)
-{
-	gos_Free(block);
-}
+void __cdecl operator delete(PVOID block) { gos_Free(block); }
 
-void __cdecl operator delete[](PVOID block)
-{
-	operator delete(block);
-}
+void __cdecl operator delete[](PVOID block) { operator delete(block); }
 #endif

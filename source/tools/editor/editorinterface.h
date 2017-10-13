@@ -38,16 +38,9 @@ extern bool DebuggerActive;
 // this class handles and routes all messages...
 class EditorInterface : public CWnd
 {
-private:
-
-
-
-public:
-
-	static EditorInterface* instance()
-	{
-		return s_instance;
-	}
+  private:
+  public:
+	static EditorInterface* instance() { return s_instance; }
 
 	EditorInterface(void);
 	~EditorInterface(void);
@@ -64,28 +57,23 @@ public:
 
 	int32_t Team(int32_t team);
 	int32_t Player(int32_t player);
-	/* When in "ObjectSelectOnlyMode", the interface is put in selection mode and all
-	features are disabled except those pertaining to selection of objects. This mode is
-	engaged from the objectives dialog. */
-	bool ObjectSelectOnlyMode()
-	{
-		return bObjectSelectOnlyMode;
-	}
-	void ObjectSelectOnlyMode(bool val)
-	{
-		bObjectSelectOnlyMode = val;
-	}
-	CObjectivesEditState objectivesEditState;	/* persistent storage for the objective(s) dialog */
-	void SelectionMode()
-	{
-		Select(void);
-	}
+	/* When in "ObjectSelectOnlyMode", the interface is put in selection mode
+	and all features are disabled except those pertaining to selection of
+	objects. This mode is engaged from the objectives dialog. */
+	bool ObjectSelectOnlyMode() { return bObjectSelectOnlyMode; }
+	void ObjectSelectOnlyMode(bool val) { bObjectSelectOnlyMode = val; }
+	CObjectivesEditState objectivesEditState; /* persistent storage for the
+												 objective(s) dialog */
+	void SelectionMode() { Select(void); }
 
 	int32_t RefractalizeTerrain(int32_t threshold);
 
-	virtual void handleLeftButtonDown(int32_t PosX, int32_t PosY);   // mouse button down
-	virtual void handleLeftButtonDbl(int32_t PosX, int32_t PosY) {}   // mouse button dbl click
-	virtual void handleLeftButtonUp(int32_t PosX, int32_t PosY);   // pop ups etc need this
+	virtual void handleLeftButtonDown(
+		int32_t PosX, int32_t PosY); // mouse button down
+	virtual void handleLeftButtonDbl(int32_t PosX, int32_t PosY) {
+	} // mouse button dbl click
+	virtual void handleLeftButtonUp(
+		int32_t PosX, int32_t PosY); // pop ups etc need this
 	virtual void handleKeyDown(int32_t Key);
 	virtual void handleMouseMove(int32_t PosX, int32_t PosY);
 
@@ -93,10 +81,7 @@ public:
 
 	virtual void render(void);
 	void initTacMap(void);
-	void updateTacMap()
-	{
-		tacMap.UpdateMap(void);
-	}
+	void updateTacMap() { tacMap.UpdateMap(void); }
 
 	void syncHScroll(void);
 	void syncVScroll(void);
@@ -124,10 +109,7 @@ public:
 
 	bool SafeRunGameOSLogic(void);
 
-	bool ThisIsInitialized()
-	{
-		return this->bThisIsInitialized;
-	}
+	bool ThisIsInitialized() { return this->bThisIsInitialized; }
 
 	afx_msg void UpdateButton(CCmdUI* button);
 
@@ -137,17 +119,18 @@ public:
 	int32_t QuickSave(void);
 	int32_t PromptAndSaveIfNecessary(void);
 
-	ActionUndoMgr				undoMgr;
+	ActionUndoMgr undoMgr;
 
 	//{{AFX_VIRTUAL(EditorInterface)
-public:
+  public:
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
-protected:
+
+  protected:
 	virtual LRESULT WindowProc(uint32_t message, WPARAM wParam, LPARAM lParam);
 	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
 	//}}AFX_VIRTUAL
 
-protected:
+  protected:
 	//{{AFX_MSG(EditorInterface)
 	afx_msg int32_t OnCreate(LPCREATESTRUCT lpCreateStruct);
 	afx_msg void OnLButtonDown(uint32_t nFlags, CPoint point);
@@ -158,9 +141,12 @@ protected:
 	afx_msg void OnRButtonDown(uint32_t nFlags, CPoint point);
 	afx_msg void OnRButtonUp(uint32_t nFlags, CPoint point);
 	afx_msg BOOL OnMouseWheel(uint32_t nFlags, int16_t zDelta, CPoint pt);
-	afx_msg void OnHScroll(uint32_t nSBCode, uint32_t nPos, CScrollBar* pScrollBar);
-	afx_msg void OnVScroll(uint32_t nSBCode, uint32_t nPos, CScrollBar* pScrollBar);
-	afx_msg void OnSysKeyDown(uint32_t nChar, uint32_t nRepCnt, uint32_t nFlags);
+	afx_msg void OnHScroll(
+		uint32_t nSBCode, uint32_t nPos, CScrollBar* pScrollBar);
+	afx_msg void OnVScroll(
+		uint32_t nSBCode, uint32_t nPos, CScrollBar* pScrollBar);
+	afx_msg void OnSysKeyDown(
+		uint32_t nChar, uint32_t nRepCnt, uint32_t nFlags);
 	afx_msg void OnLButtonDblClk(uint32_t nFlags, CPoint point);
 	afx_msg void OnPaint(void);
 	afx_msg void OnViewRefreshtacmap(void);
@@ -187,9 +173,7 @@ protected:
 
 	afx_msg void OnCommand(WPARAM wParam);
 
-
-private:
-
+  private:
 	// Message handlers
 	int32_t Undo(void);
 	int32_t Redo(void);
@@ -254,55 +238,55 @@ private:
 
 	//-------------------------------------------
 	// Data to control scroll, rotation and zoom
-	float						baseFrameLength;
+	float baseFrameLength;
 
-	float						zoomInc;
-	float						rotationInc;
-	float						scrollInc;
+	float zoomInc;
+	float rotationInc;
+	float scrollInc;
 
-	float						screenScrollLeft;
-	float						screenScrollRight;
-	float						screenScrollUp;
-	float						screenScrollDown;
+	float screenScrollLeft;
+	float screenScrollRight;
+	float screenScrollUp;
+	float screenScrollDown;
 
-	float						realRotation;
-	float						degPerSecRot;
+	float realRotation;
+	float degPerSecRot;
 
-	Brush*						curBrush;
-	Brush*						prevBrush;
-	bool						prevSelecting;
-	bool						prevPainting;
-	bool						prevDragging;
-	int32_t							oldCursor;
-	bool						painting;
-	bool						selecting;
-	bool						dragging;
-	bool						highlighted;
+	Brush* curBrush;
+	Brush* prevBrush;
+	bool prevSelecting;
+	bool prevPainting;
+	bool prevDragging;
+	int32_t oldCursor;
+	bool painting;
+	bool selecting;
+	bool dragging;
+	bool highlighted;
 
-	int32_t							currentBrushID;
-	int32_t							currentBrushMenuID;
+	int32_t currentBrushID;
+	int32_t currentBrushMenuID;
 
-	MainMenu*					m_pMainMenu;
+	MainMenu* m_pMainMenu;
 
-	int32_t							smoothRadius;
-	bool						bSmooth;
+	int32_t smoothRadius;
+	bool bSmooth;
 
-	static EditorInterface*		s_instance;
-	Stuff::Vector3D				lastClickPos;
+	static EditorInterface* s_instance;
+	Stuff::Vector3D lastClickPos;
 
-	HCURSOR						hCursor;
-	int32_t							curCursorID;
-	int32_t							lastX;
-	int32_t							lastY;
-	int32_t						lastKey;
-	bool 						bObjectSelectOnlyMode;
-	CMenu**						menus;
+	HCURSOR hCursor;
+	int32_t curCursorID;
+	int32_t lastX;
+	int32_t lastY;
+	int32_t lastKey;
+	bool bObjectSelectOnlyMode;
+	CMenu** menus;
 
-	EditorTacMap				tacMap;
-	HACCEL						m_hAccelTable;
+	EditorTacMap tacMap;
+	HACCEL m_hAccelTable;
 
-	bool						rightDrag;
-	uint32_t				lastRightClickTime;
+	bool rightDrag;
+	uint32_t lastRightClickTime;
 
 	HBITMAP m_hSplashBitMap;
 	HCURSOR m_hBusyCursor;
@@ -311,19 +295,13 @@ private:
 	bool bThisIsInitialized;
 };
 
-
-
 class Editor // simply holds everything else
 {
-public:
+  public:
+	EditorObjectMgr objectMgr;
+	EditorData data;
 
-	EditorObjectMgr					objectMgr;
-	EditorData						data;
-
-	~Editor()
-	{
-		destroy(void);
-	}
+	~Editor() { destroy(void); }
 
 	void destroy(void);
 
@@ -333,28 +311,22 @@ public:
 
 	void update(void);
 
-	void resaveAll(void);		//Used by autoBuild to automagically resave all maps with correct data.
+	void resaveAll(void); // Used by autoBuild to automagically resave all maps
+						  // with correct data.
 };
-
 
 class TeamsAction : public Action
 {
-public:
+  public:
 	TeamsAction() : Action() {}
-	TeamsAction(const CTeams& teams) : Action()
-	{
-		PreviousTeams(teams);
-	}
+	TeamsAction(const CTeams& teams) : Action() { PreviousTeams(teams); }
 	virtual ~TeamsAction() {}
-	virtual bool redo()
-	{
-		return undo(void);
-	}
+	virtual bool redo() { return undo(void); }
 	virtual bool undo(void);
 	CTeams PreviousTeams(void);
 	void PreviousTeams(const CTeams& teams);
 
-private:
+  private:
 	CTeams m_previousTeams;
 };
 

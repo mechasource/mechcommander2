@@ -18,7 +18,6 @@ static char THIS_FILE[] = __FILE__;
 /////////////////////////////////////////////////////////////////////////////
 // TextMessageDlg dialog
 
-
 TextMessageDlg::TextMessageDlg(CWnd* pParent /*=nullptr*/)
 	: CDialog(TextMessageDlg::IDD, pParent)
 {
@@ -26,7 +25,6 @@ TextMessageDlg::TextMessageDlg(CWnd* pParent /*=nullptr*/)
 	m_TextMessage = _T("");
 	//}}AFX_DATA_INIT
 }
-
 
 void TextMessageDlg::DoDataExchange(CDataExchange* pDX)
 {
@@ -37,11 +35,10 @@ void TextMessageDlg::DoDataExchange(CDataExchange* pDX)
 	//}}AFX_DATA_MAP
 }
 
-
 BEGIN_MESSAGE_MAP(TextMessageDlg, CDialog)
-	//{{AFX_MSG_MAP(TextMessageDlg)
-	// NOTE: the ClassWizard will add message map macros here
-	//}}AFX_MSG_MAP
+//{{AFX_MSG_MAP(TextMessageDlg)
+// NOTE: the ClassWizard will add message map macros here
+//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////

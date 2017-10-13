@@ -14,71 +14,44 @@ namespace Stuff
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~ SortedSocket ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-	class SortedSocket:
-		public SafeSocket
+class SortedSocket : public SafeSocket
+{
+  public:
+	~SortedSocket(void);
+
+	void AddValuePlug(Plug* plug, PCVOID value)
 	{
-	public:
-		~SortedSocket(void);
+		AddValueImplementation(plug, value);
+	}
 
-		void
-		AddValuePlug(
-			Plug* plug,
-			PCVOID value
-		)
-		{
-			AddValueImplementation(plug, value);
-		}
+	Plug* FindPlug(PCVOID value) { return FindImplementation(value); }
 
-		Plug*
-		FindPlug(PCVOID value)
-		{
-			return FindImplementation(value);
-		}
+  protected:
+	explicit SortedSocket(bool has_unique_entries = true);
+	SortedSocket(Node* node, bool has_unique_entries = true);
 
-	protected:
-		explicit SortedSocket(
-			bool has_unique_entries = true
-		);
-		SortedSocket(
-			Node* node,
-			bool has_unique_entries = true
-		);
+	bool HasUniqueEntries() { return hasUniqueEntries; }
 
-		bool
-		HasUniqueEntries()
-		{
-			return hasUniqueEntries;
-		}
+	virtual void AddValueImplementation(Plug* plug, PCVOID value);
 
-		virtual void AddValueImplementation(
-			Plug* plug,
-			PCVOID value
-		);
+	virtual Plug* FindImplementation(PCVOID value);
 
-		virtual Plug*
-		FindImplementation(PCVOID value);
-
-	private:
-		bool
-		hasUniqueEntries;
-	};
+  private:
+	bool hasUniqueEntries;
+};
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~ SortedIterator ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-	class SortedIterator:
-		public SafeIterator
-	{
-	public:
-		~SortedIterator(void);
+class SortedIterator : public SafeIterator
+{
+  public:
+	~SortedIterator(void);
 
-		virtual Plug*
-		FindImplementation(PCVOID value);
+	virtual Plug* FindImplementation(PCVOID value);
 
-		virtual PVOID
-		GetValueImplementation(void);
+	virtual PVOID GetValueImplementation(void);
 
-	protected:
-		explicit SortedIterator(SortedSocket* sortedSocket);
-	};
-
+  protected:
+	explicit SortedIterator(SortedSocket* sortedSocket);
+};
 }

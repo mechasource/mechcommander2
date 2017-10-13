@@ -14,13 +14,12 @@
 
 using namespace Stuff;
 
-const LinearMatrix4D
-LinearMatrix4D::Identity(true);
+const LinearMatrix4D LinearMatrix4D::Identity(true);
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void LinearMatrix4D::AlignLocalAxisToWorldVector(
-	const Vector3D& world_target, size_t pointing_axis, size_t rotating_axis, size_t minor_axis)
+void LinearMatrix4D::AlignLocalAxisToWorldVector(const Vector3D& world_target,
+	size_t pointing_axis, size_t rotating_axis, size_t minor_axis)
 {
 	// Check_Object(this);
 	Check_Object(&world_target);
@@ -32,16 +31,16 @@ void LinearMatrix4D::AlignLocalAxisToWorldVector(
 	// These are the variables that the alignment algorithm must fill in
 	//------------------------------------------------------------------
 	//
-	UnitVector3D	rotation_vector;
-	UnitVector3D	pointing_vector;
-	UnitVector3D	minor_vector;
+	UnitVector3D rotation_vector;
+	UnitVector3D pointing_vector;
+	UnitVector3D minor_vector;
 	//
 	//------------------------------------------------------------------
 	// Extract the current target axis direction, then cross it with the
 	// plane target to find the minor axis direction (uint32_t)
 	//------------------------------------------------------------------
 	//
-	if(Small_Enough(world_target.GetLengthSquared()))
+	if (Small_Enough(world_target.GetLengthSquared()))
 		return;
 	rotation_vector.x = (*this)(rotating_axis, X_Axis);
 	rotation_vector.y = (*this)(rotating_axis, Y_Axis);
@@ -57,11 +56,11 @@ void LinearMatrix4D::AlignLocalAxisToWorldVector(
 	// axis and generate the pointing vector appropriately
 	//----------------------------------------------------------------------
 	//
-	if(minor_axis == -1)
+	if (minor_axis == -1)
 	{
 		minor_axis = 3 - pointing_axis - rotating_axis;
 		minor_vector.Normalize(temp);
-		if((rotating_axis + 1) % 3 == pointing_axis)
+		if ((rotating_axis + 1) % 3 == pointing_axis)
 			pointing_vector.Vector3D::Cross(minor_vector, rotation_vector);
 		else
 		{
@@ -88,9 +87,9 @@ void LinearMatrix4D::AlignLocalAxisToWorldVector(
 		//--------------------------------------------------------------------
 		//
 		Verify(minor_axis == 3 - pointing_axis - rotating_axis);
-		if(Small_Enough(temp.GetLengthSquared()))
+		if (Small_Enough(temp.GetLengthSquared()))
 		{
-			if(world_target * rotation_vector > 0.0f)
+			if (world_target * rotation_vector > 0.0f)
 			{
 				pointing_vector.x = (*this)(rotating_axis, X_Axis);
 				pointing_vector.y = (*this)(rotating_axis, Y_Axis);
@@ -125,7 +124,7 @@ void LinearMatrix4D::AlignLocalAxisToWorldVector(
 		{
 			pointing_vector.Normalize(world_target);
 			minor_vector.Normalize(temp);
-			if((rotating_axis + 1) % 3 == pointing_axis)
+			if ((rotating_axis + 1) % 3 == pointing_axis)
 				rotation_vector.Vector3D::Cross(pointing_vector, minor_vector);
 			else
 			{
@@ -157,10 +156,9 @@ void LinearMatrix4D::AlignLocalAxisToWorldVector(
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-LinearMatrix4D&
-LinearMatrix4D::Invert(const LinearMatrix4D& m)
+LinearMatrix4D& LinearMatrix4D::Invert(const LinearMatrix4D& m)
 {
-	//Check_Pointer(this);
+	// Check_Pointer(this);
 	Check_Object(&m);
 	Verify(this != &m);
 	//
@@ -190,23 +188,24 @@ LinearMatrix4D::Invert(const LinearMatrix4D& m)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-LinearMatrix4D&
-LinearMatrix4D::Normalize()
+LinearMatrix4D& LinearMatrix4D::Normalize()
 {
-	//Check_Pointer(this);
+	// Check_Pointer(this);
 #if defined(LEFT_HANDED_COORDINATES)
 #error Right handed coordinate dependancy!
 #endif
-	(*this)(0, 2) = (*this)(1, 0) * (*this)(2, 1) - (*this)(1, 1) * (*this)(2, 0);
-	(*this)(1, 2) = (*this)(2, 0) * (*this)(0, 1) - (*this)(2, 1) * (*this)(0, 0);
-	(*this)(2, 2) = (*this)(0, 0) * (*this)(1, 1) - (*this)(0, 1) * (*this)(1, 0);
+	(*this)(0, 2) =
+		(*this)(1, 0) * (*this)(2, 1) - (*this)(1, 1) * (*this)(2, 0);
+	(*this)(1, 2) =
+		(*this)(2, 0) * (*this)(0, 1) - (*this)(2, 1) * (*this)(0, 0);
+	(*this)(2, 2) =
+		(*this)(0, 0) * (*this)(1, 1) - (*this)(0, 1) * (*this)(1, 0);
 	return *this;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-LinearMatrix4D::TestInstance(void) const
+void LinearMatrix4D::TestInstance(void) const
 {
 	UnitVector3D v1;
 	v1.x = (*this)(0, 0);

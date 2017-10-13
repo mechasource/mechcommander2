@@ -47,8 +47,8 @@
 
 namespace Stuff
 {
-	void __stdcall InitializeClasses(void);
-	void __stdcall TerminateClasses(void);
+void __stdcall InitializeClasses(void);
+void __stdcall TerminateClasses(void);
 }
 
 #define GROUP_STUFF "Stuff::"

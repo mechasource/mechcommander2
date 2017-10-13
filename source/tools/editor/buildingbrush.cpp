@@ -15,11 +15,12 @@ BuildingBrush.cpp	: Implementation of the BuildingBrush component.
 #include "editorinterface.h"
 #include "resource.h"
 
-BuildingBrush::BuildingBrush(int32_t Group, int32_t IndexInGroup, int32_t Alignment)
+BuildingBrush::BuildingBrush(
+	int32_t Group, int32_t IndexInGroup, int32_t Alignment)
 {
-	group = Group;
+	group		 = Group;
 	indexInGroup = IndexInGroup;
-	pAction = nullptr;
+	pAction		 = nullptr;
 	pCursor = EditorObjectMgr::instance()->getAppearance(Group, IndexInGroup);
 	pCursor->teamId = Alignment;
 	pCursor->setInView(true);
@@ -33,18 +34,20 @@ BuildingBrush::BuildingBrush()
 {
 	pCursor = nullptr;
 	group = indexInGroup = -1;
-	pAction = nullptr;
+	pAction				 = nullptr;
 }
 
 BuildingBrush::~BuildingBrush()
 {
-	if(pCursor)
+	if (pCursor)
 		delete pCursor;
 }
 
-bool BuildingBrush::canPaint(Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY, int32_t flags)
+bool BuildingBrush::canPaint(
+	Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY, int32_t flags)
 {
-	if(!EditorObjectMgr::instance()->canAddBuilding(worldPos, pCursor->rotation, group, indexInGroup))
+	if (!EditorObjectMgr::instance()->canAddBuilding(
+			worldPos, pCursor->rotation, group, indexInGroup))
 	{
 		pCursor->setHighlightColor(0x007f0000);
 		return false; // no two things on top of each other
@@ -60,15 +63,18 @@ bool BuildingBrush::beginPaint()
 	return true; // need to set up undo here
 }
 
-bool BuildingBrush::paint(Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY)
+bool BuildingBrush::paint(
+	Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY)
 {
-	if((AppearanceTypeList::appearanceHeap->totalCoreLeft() < 1000/*arbitrary*/)
-			|| (AppearanceTypeList::appearanceHeap->totalCoreLeft() < 0.01/*arbitrary*/ * AppearanceTypeList::appearanceHeap->size()))
+	if ((AppearanceTypeList::appearanceHeap->totalCoreLeft() <
+			1000 /*arbitrary*/) ||
+		(AppearanceTypeList::appearanceHeap->totalCoreLeft() <
+			0.01 /*arbitrary*/ * AppearanceTypeList::appearanceHeap->size()))
 	{
 		AfxMessageBox(IDS_APPEARANCE_HEAP_EXHAUSTED);
 		{
-			/*The preceding message box will cause the app (EditorInterface) to miss the "left
-			mouse button up" event, so we'll act on it here.*/
+			/*The preceding message box will cause the app (EditorInterface) to
+			miss the "left mouse button up" event, so we'll act on it here.*/
 			POINT point;
 			GetCursorPos(&point);
 			EditorInterface::instance()->handleLeftButtonUp(point.x, point.y);
@@ -78,9 +84,10 @@ bool BuildingBrush::paint(Stuff::Vector3D& worldPos, int32_t screenX, int32_t sc
 	}
 	else
 	{
-		EditorObject* pInfo = EditorObjectMgr::instance()->addBuilding(worldPos, group, indexInGroup, alignment, pCursor->rotation);
+		EditorObject* pInfo = EditorObjectMgr::instance()->addBuilding(
+			worldPos, group, indexInGroup, alignment, pCursor->rotation);
 		{
-			if(pInfo && pAction)
+			if (pInfo && pAction)
 				pAction->addBuildingInfo(*pInfo);
 			return true;
 		}
@@ -89,16 +96,16 @@ bool BuildingBrush::paint(Stuff::Vector3D& worldPos, int32_t screenX, int32_t sc
 
 Action* BuildingBrush::endPaint()
 {
-	if(pAction)
+	if (pAction)
 	{
-		if(!pAction->objInfoPtrList.Count())
+		if (!pAction->objInfoPtrList.Count())
 		{
 			delete pAction;
 			pAction = nullptr;
 		}
 	}
 	Action* pRetAction = pAction;
-	pAction = nullptr;
+	pAction			   = nullptr;
 	return pRetAction;
 }
 
@@ -110,10 +117,12 @@ bool BuildingBrush::BuildingAction::undo()
 	for ( OBJ_INFO_LIST::EIterator iter = positions.Begin();
 		!iter.IsDone(); iter++ )
 	{
-		EditorObject* pObj = EditorObjectMgr::instance()->getObjectAtLocation((*iter3).position.x, (*iter3).position.y);
-		if (pObj)
+		EditorObject* pObj =
+	EditorObjectMgr::instance()->getObjectAtLocation((*iter3).position.x,
+	(*iter3).position.y); if (pObj)
 		{
-			bRetVal = EditorObjectMgr::instance()->deleteBuilding( pObj ) && bRetVal;
+			bRetVal = EditorObjectMgr::instance()->deleteBuilding( pObj ) &&
+	bRetVal;
 		}
 		else
 		{
@@ -123,13 +132,16 @@ bool BuildingBrush::BuildingAction::undo()
 		iter3++;
 	}
 	*/
-	for(OBJ_INFO_PTR_LIST::EIterator iter = objInfoPtrList.Begin(); !iter.IsDone(); iter++)
+	for (OBJ_INFO_PTR_LIST::EIterator iter = objInfoPtrList.Begin();
+		 !iter.IsDone(); iter++)
 	{
 		ObjectAppearance* pAppearance = (*(*iter)).appearance();
-		EditorObject* pObj = EditorObjectMgr::instance()->getObjectAtLocation(pAppearance->position.x, pAppearance->position.y);
-		if(pObj)
+		EditorObject* pObj = EditorObjectMgr::instance()->getObjectAtLocation(
+			pAppearance->position.x, pAppearance->position.y);
+		if (pObj)
 		{
-			bRetVal = EditorObjectMgr::instance()->deleteBuilding(pObj) && bRetVal;
+			bRetVal =
+				EditorObjectMgr::instance()->deleteBuilding(pObj) && bRetVal;
 		}
 		else
 		{
@@ -142,11 +154,16 @@ bool BuildingBrush::BuildingAction::undo()
 bool BuildingBrush::BuildingAction::redo()
 {
 	bool bRetVal = true;
-	for(OBJ_INFO_PTR_LIST::EIterator iter = objInfoPtrList.Begin(); !iter.IsDone(); iter++)
+	for (OBJ_INFO_PTR_LIST::EIterator iter = objInfoPtrList.Begin();
+		 !iter.IsDone(); iter++)
 	{
 		ObjectAppearance* pAppearance = (*(*iter)).appearance();
-		EditorObject* pObj = EditorObjectMgr::instance()->addBuilding(pAppearance->position, EditorObjectMgr::instance()->getGroup((*(*iter)).getID()), EditorObjectMgr::instance()->getIndexInGroup((*(*iter)).getID()), pAppearance->teamId, pAppearance->rotation);
-		if(pObj)
+		EditorObject* pObj = EditorObjectMgr::instance()->addBuilding(
+			pAppearance->position,
+			EditorObjectMgr::instance()->getGroup((*(*iter)).getID()),
+			EditorObjectMgr::instance()->getIndexInGroup((*(*iter)).getID()),
+			pAppearance->teamId, pAppearance->rotation);
+		if (pObj)
 		{
 			(*pObj).CastAndCopy((*(*iter)));
 		}
@@ -168,27 +185,30 @@ void BuildingBrush::BuildingAction::addBuildingInfo(EditorObject& info)
 
 void BuildingBrush::update(int32_t ScreenMouseX, int32_t ScreenMouseY)
 {
-	if(!pCursor)
+	if (!pCursor)
 		return;
 	Stuff::Vector3D pos;
 	Stuff::Vector2DOf<int32_t> pt;
 	pt.x = ScreenMouseX;
 	pt.y = ScreenMouseY;
 	eye->inverseProject(pt, pos);
-	if(!EditorObjectMgr::instance()->canAddBuilding(pos, pCursor->rotation, group, indexInGroup))
+	if (!EditorObjectMgr::instance()->canAddBuilding(
+			pos, pCursor->rotation, group, indexInGroup))
 		pCursor->setHighlightColor(0x00400000);
 	else
 		pCursor->setHighlightColor(0x00004000);
 	pCursor->position = pos;
 	pCursor->recalcBounds();
-	pCursor->update();			//Safe tp call here now because we run the first update in the constructor which caches in texture
-	//NOT TRUE WITH RIA CODE!!!!!  Must have a separate update or NO Triangles get added!!!
+	pCursor->update(); // Safe tp call here now because we run the first update
+					   // in the constructor which caches in texture
+	// NOT TRUE WITH RIA CODE!!!!!  Must have a separate update or NO Triangles
+	// get added!!!
 	pCursor->setVisibility(true, true);
 }
 
 void BuildingBrush::render(int32_t ScreenMouseX, int32_t ScreenMouseY)
 {
-	if(!pCursor)
+	if (!pCursor)
 		return;
 	/*
 	Stuff::Vector3D pos;
@@ -207,15 +227,17 @@ void BuildingBrush::render(int32_t ScreenMouseX, int32_t ScreenMouseY)
 	pCursor->update();			//Safe tp call here now because we run the first update in the constructor which caches in texture
 								//NOT TRUE WITH RIA CODE!!!!!  Must have a separate update or NO Triangles get added!!!
 	pCursor->setVisibility( true, true );
-	*/		//This may cause cursor to lag.  Check it and see.
+	*/ // This may cause cursor to lag.  Check it and see.
 	pCursor->render();
 }
 
 void BuildingBrush::rotateBrush(int32_t direction)
 {
-	int32_t ID = EditorObjectMgr::instance()->getID(group, indexInGroup);
+	int32_t ID	= EditorObjectMgr::instance()->getID(group, indexInGroup);
 	int32_t fitID = EditorObjectMgr::instance()->getFitID(ID);
-	if((EditorObjectMgr::WALL == EditorObjectMgr::instance()->getSpecialType(ID)) || (33/*repair bay*/ == fitID))
+	if ((EditorObjectMgr::WALL ==
+			EditorObjectMgr::instance()->getSpecialType(ID)) ||
+		(33 /*repair bay*/ == fitID))
 	{
 		pCursor->rotation += direction * 90;
 	}

@@ -16,47 +16,39 @@ namespace MidLevelRenderer
 //####################    MLRInfiniteLight    ##############################
 //##########################################################################
 
-	class MLRInfiniteLight:
-		public MLRLight
+class MLRInfiniteLight : public MLRLight
+{
+  public:
+	static void __stdcall InitializeClass(void);
+	static void __stdcall TerminateClass(void);
+
+	MLRInfiniteLight(ClassData* class_data = DefaultData);
+	MLRInfiniteLight(
+		ClassData* class_data, Stuff::MemoryStream* stream, uint32_t version);
+	MLRInfiniteLight(ClassData* class_data, Stuff::Page* page);
+	~MLRInfiniteLight(void);
+
+	virtual void LightVertex(const MLRVertexData&);
+
+	virtual LightType GetLightType()
 	{
-	public:
-		static void __stdcall InitializeClass(void);
-		static void __stdcall TerminateClass(void);
+		// Check_Object(this);
+		return InfiniteLight;
+	}
 
-		MLRInfiniteLight(ClassData* class_data = DefaultData);
-		MLRInfiniteLight(
-			ClassData* class_data,
-			Stuff::MemoryStream* stream,
-			uint32_t version);
-		MLRInfiniteLight(
-			ClassData* class_data,
-			Stuff::Page* page
-		);
-		~MLRInfiniteLight(void);
+	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	// Class Data Support
+	//
+  public:
+	static ClassData* DefaultData;
 
-		virtual void LightVertex(const MLRVertexData&);
+	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	// Testing
+	//
+  public:
+	void TestInstance(void);
 
-		virtual LightType
-		GetLightType()
-		{
-			// Check_Object(this);
-			return InfiniteLight;
-		}
-
-		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-		// Class Data Support
-		//
-	public:
-		static ClassData* DefaultData;
-
-		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-		// Testing
-		//
-	public:
-		void TestInstance(void);
-
-	protected:
-	};
-
+  protected:
+};
 }
 #endif

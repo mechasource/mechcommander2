@@ -13,7 +13,7 @@
 
 class CMissionData
 {
-public:
+  public:
 	CMissionData(void);
 	bool operator==(const CMissionData& rhs) const;
 	bool operator!=(const CMissionData& rhs) const
@@ -23,45 +23,46 @@ public:
 	bool Save(FitIniFile& fitFile);
 	bool Read(FitIniFile& fitFile);
 
-	CString	m_MissionFile;
-	CString	m_PurchaseFile;
-	bool	m_LogisticsEnabled;
-	bool	m_IsMandatory;
-	bool	m_PilotPromotionEnabled;
-	bool	m_PurchasingEnabled;
-	bool	m_MissionSelectionEnabled;
-	bool	m_SalvageEnabled;
+	CString m_MissionFile;
+	CString m_PurchaseFile;
+	bool m_LogisticsEnabled;
+	bool m_IsMandatory;
+	bool m_PilotPromotionEnabled;
+	bool m_PurchasingEnabled;
+	bool m_MissionSelectionEnabled;
+	bool m_SalvageEnabled;
 };
 
-class CMissionList : public EList<CMissionData, CMissionData> {};
+class CMissionList : public EList<CMissionData, CMissionData>
+{
+};
 
 class CGroupData
 {
-public:
+  public:
 	CGroupData(void);
 	bool operator==(const CGroupData& rhs) const;
-	bool operator!=(const CGroupData& rhs) const
-	{
-		return (!((*this) == rhs));
-	}
+	bool operator!=(const CGroupData& rhs) const { return (!((*this) == rhs)); }
 	bool Save(FitIniFile& fitFile, PCSTR groupName);
 	bool Read(FitIniFile& fitFile, PCSTR groupName);
 
-	CMissionList	m_MissionList;
-	CString	m_OperationFile;
-	CString	m_PreVideoFile;
-	CString	m_VideoFile;
-	CString	m_Label;
-	int32_t		m_NumMissionsToComplete;
-	int32_t		m_TuneNumber;
-	CString	m_ABLScript;
+	CMissionList m_MissionList;
+	CString m_OperationFile;
+	CString m_PreVideoFile;
+	CString m_VideoFile;
+	CString m_Label;
+	int32_t m_NumMissionsToComplete;
+	int32_t m_TuneNumber;
+	CString m_ABLScript;
 };
 
-class CGroupList : public EList<CGroupData, CGroupData> {};
+class CGroupList : public EList<CGroupData, CGroupData>
+{
+};
 
 class CCampaignData
 {
-public:
+  public:
 	CCampaignData(void);
 	bool operator==(const CCampaignData& rhs) const;
 	bool operator!=(const CCampaignData& rhs) const
@@ -77,12 +78,12 @@ public:
 	}
 
 	CString m_PathName;
-	CGroupList	m_GroupList;
-	CString	m_Name;
+	CGroupList m_GroupList;
+	CString m_Name;
 	bool m_NameUseResourceString;
 	int32_t m_NameResourceStringID;
-	int32_t		m_CBills;
-	CString	m_FinalVideo;
+	int32_t m_CBills;
+	CString m_FinalVideo;
 };
 
-#endif  /*CAMPAIGNDATA_H*/
+#endif /*CAMPAIGNDATA_H*/

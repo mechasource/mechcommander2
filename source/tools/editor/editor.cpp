@@ -15,22 +15,23 @@
 
 // globals used for memory
 UserHeapPtr systemHeap = nullptr;
-UserHeapPtr guiHeap = nullptr;
+UserHeapPtr guiHeap	= nullptr;
 
 float MaxMinUV = 8.0f;
 
 Stuff::MemoryStream* effectStream = nullptr;
 
 uint32_t systemHeapSize = 8192000;
-uint32_t guiHeapSize = 1023999;
-uint32_t tglHeapSize = 65536000;
+uint32_t guiHeapSize	= 1023999;
+uint32_t tglHeapSize	= 65536000;
 
-uint32_t BaseVertexColor = 0x00000000;		//This color is applied to all vertices in game as Brightness correction.
+uint32_t BaseVertexColor = 0x00000000; // This color is applied to all vertices
+									   // in game as Brightness correction.
 
 int32_t gammaLevel = 0;
-bool hasGuardBand = false;
+bool hasGuardBand  = false;
 extern int32_t terrainLineChanged; // the terrain uses this
-//extern float frameNum;	// tiny geometry needs this
+// extern float frameNum;	// tiny geometry needs this
 extern float frameRate; // tiny geometry needs this
 
 extern bool InEditor;
@@ -40,11 +41,11 @@ extern char MissingTitleString[];
 
 extern char CDInstallPath[];
 
-uint32_t gosResourceHandle = 0;
-HGOSFONT3D gosFontHandle = 0;
-float gosFontScale = 1.0;
+uint32_t gosResourceHandle   = 0;
+HGOSFONT3D gosFontHandle	 = 0;
+float gosFontScale			 = 1.0;
 FloatHelpPtr globalFloatHelp = nullptr;
-uint32_t currentFloatHelp = 0;
+uint32_t currentFloatHelp	= 0;
 extern float CliffTerrainAngle;
 
 extern bool gNoDialogs;
@@ -55,19 +56,19 @@ bool quitGame = FALSE;
 
 bool gamePaused = FALSE;
 
-bool reloadBounds = false;
+bool reloadBounds	  = false;
 bool justResaveAllMaps = false;
 
 extern bool forceShadowBurnIn;
 // these globals are necessary for fast files for some reason
-FastFile**	 fastFiles = nullptr;
-size_t 		numFastFiles = 0;
-size_t		maxFastFiles = 0;
+FastFile** fastFiles = nullptr;
+size_t numFastFiles  = 0;
+size_t maxFastFiles  = 0;
 
-#define MAX_SHAPES	0
+#define MAX_SHAPES 0
 
-//Heidi, turn this FALSE to turn Fog of War ON!
-extern uint8_t godMode;			//Can I simply see everything, enemy and friendly?
+// Heidi, turn this FALSE to turn Fog of War ON!
+extern uint8_t godMode; // Can I simply see everything, enemy and friendly?
 
 void InitDW();
 
@@ -82,33 +83,39 @@ Editor* editor = nullptr;
 
 char missionName[1024] = "\0";
 
-enum { CPU_UNKNOWN, CPU_PENTIUM, CPU_MMX, CPU_KATMAI } Processor = CPU_PENTIUM;		//Needs to be set when GameOS supports ProcessorID -- MECHCMDR2
+enum
+{
+	CPU_UNKNOWN,
+	CPU_PENTIUM,
+	CPU_MMX,
+	CPU_KATMAI
+} Processor = CPU_PENTIUM; // Needs to be set when GameOS supports ProcessorID
+						   // -- MECHCMDR2
 
-MidLevelRenderer::MLRClipper*   theClipper = nullptr;
+MidLevelRenderer::MLRClipper* theClipper = nullptr;
 
 // called by gos
 //---------------------------------------------------------------------------
-PSTR GetGameInformation()
-{
-	return(ExceptionGameMsg);
-}
+PSTR GetGameInformation() { return (ExceptionGameMsg); }
 
 // called by GOS when you need to draw
 //---------------------------------------------------------------------------
-//define RUNNING_REMOTELY
+// define RUNNING_REMOTELY
 #ifdef RUNNING_REMOTELY
 #include <windows.h> /* for declaration of Sleep() */
-#endif /*RUNNING_REMOTELY*/
+#endif				 /*RUNNING_REMOTELY*/
 void UpdateRenderers()
 {
 #ifdef RUNNING_REMOTELY
-	Sleep(0.25/*seconds*/ * 1000.0); /* limit the frame rate when displaying on remote console */
-#endif /*RUNNING_REMOTELY*/
-	hasGuardBand = true;
+	Sleep(0.25 /*seconds*/ *
+		  1000.0); /* limit the frame rate when displaying on remote console */
+#endif			   /*RUNNING_REMOTELY*/
+	hasGuardBand	= true;
 	uint32_t bColor = 0x0;
-	if(eye)
+	if (eye)
 		bColor = eye->fogColor;
-	gos_SetupViewport(1, 1.0, 1, bColor, 0.0, 0.0, 1.0, 1.0);		//ALWAYS FULL SCREEN for now
+	gos_SetupViewport(
+		1, 1.0, 1, bColor, 0.0, 0.0, 1.0, 1.0); // ALWAYS FULL SCREEN for now
 	gos_SetRenderState(gos_State_Filter, gos_FilterBiLinear);
 	gos_SetRenderState(gos_State_AlphaMode, gos_Alpha_AlphaInvAlpha);
 	gos_SetRenderState(gos_State_AlphaTest, TRUE);
@@ -123,7 +130,7 @@ void UpdateRenderers()
 	globalFloatHelp->renderAll();
 	turn++;
 	reloadBounds = false;
-	//reset the TGL RAM pools.
+	// reset the TGL RAM pools.
 	colorPool->reset();
 	vertexPool->reset();
 	facePool->reset();
@@ -139,11 +146,11 @@ void DoGameLogic()
 	//-------------------------------------
 	// Get me the current frameRate.
 	// Convert to frameLength and any other timing stuff.
-	if(frameRate < 4.0)
+	if (frameRate < 4.0)
 		frameRate = 4.0;
-	frameLength = 1.0f / frameRate;
+	frameLength			 = 1.0f / frameRate;
 	bool doTransformMath = true;
-	if(doTransformMath)
+	if (doTransformMath)
 	{
 		//-------------------------------------
 		// Poll devices for this frame.
@@ -155,16 +162,17 @@ void DoGameLogic()
 	//---------------------------------------------------
 	// Update heap instrumentation.
 	globalHeapList->update();
-	if(justResaveAllMaps)
+	if (justResaveAllMaps)
 	{
 		PostQuitMessage(0);
-		quitGame = true;		//We just needed to resave the maps.  Exit immediately
+		quitGame = true; // We just needed to resave the maps.  Exit immediately
 	}
 	//---------------------------------------------------------------
 	// Somewhere in all of the updates, we have asked to be excused!
-	if(quitGame)
+	if (quitGame)
 	{
-		//EnterWindowMode();				//Game crashes if _TerminateApp called from fullScreen
+		// EnterWindowMode();				//Game crashes if _TerminateApp called from
+		// fullScreen
 		gos_TerminateApplication();
 	}
 }
@@ -173,7 +181,7 @@ void DoGameLogic()
 void InitializeGameEngine()
 {
 	InEditor = true;
-	if(fileExists("mc2resUS.dll"))
+	if (fileExists("mc2resUS.dll"))
 		gosResourceHandle = gos_OpenResourceDLL("mc2resUS.dll");
 	else
 		gosResourceHandle = gos_OpenResourceDLL("mc2res.dll");
@@ -184,26 +192,27 @@ void InitializeGameEngine()
 	char temp[256];
 	cLoadString(IDS_FLOAT_HELP_FONT, temp, 255);
 	PSTR pStr = strstr(temp, ",");
-	if(pStr)
+	if (pStr)
 	{
 		gosFontScale = atoi(pStr + 2);
-		*pStr = 0;
+		*pStr		 = 0;
 	}
-	char path [256];
+	char path[256];
 	strcpy(path, "assets\\graphics\\");
 	strcat(path, temp);
 	gosFontHandle = gos_LoadFont(path);
-	//Check if we are a Voodoo 3.  If so, ONLY allow editor to run IF
+	// Check if we are a Voodoo 3.  If so, ONLY allow editor to run IF
 	// Starting resolution is 1024x768x16 or LOWER.  NO 32-BIT ALLOWED!
-	if((gos_GetMachineInformation(gos_Info_GetDeviceVendorID, 0) == 0x121a) &&
-			(gos_GetMachineInformation(gos_Info_GetDeviceDeviceID, 0) == 0x0005))
+	if ((gos_GetMachineInformation(gos_Info_GetDeviceVendorID, 0) == 0x121a) &&
+		(gos_GetMachineInformation(gos_Info_GetDeviceDeviceID, 0) == 0x0005))
 	{
 		DEVMODE dev;
 		memset(&dev, 0, sizeof(DEVMODE));
-		dev.dmSize = sizeof(DEVMODE);
+		dev.dmSize		  = sizeof(DEVMODE);
 		dev.dmSpecVersion = DM_SPECVERSION;
 		EnumDisplaySettings(nullptr, ENUM_CURRENT_SETTINGS, &dev);
-		if((dev.dmPelsWidth > 1024) || (dev.dmPelsHeight > 768) || (dev.dmBitsPerPel > 16))
+		if ((dev.dmPelsWidth > 1024) || (dev.dmPelsHeight > 768) ||
+			(dev.dmBitsPerPel > 16))
 		{
 			char title[256];
 			char msg[2048];
@@ -216,14 +225,14 @@ void InitializeGameEngine()
 	//-------------------------------------------------------------
 	// Find the CDPath in the registry and save it off so I can
 	// look in CD Install Path for files.
-	//Changed for the shared source release, just set to current directory
-	//uint32_t maxPathLength = 1023;
-	//gos_LoadDataFromRegistry("CDPath", CDInstallPath, &maxPathLength);
-	//if (!maxPathLength)
+	// Changed for the shared source release, just set to current directory
+	// uint32_t maxPathLength = 1023;
+	// gos_LoadDataFromRegistry("CDPath", CDInstallPath, &maxPathLength);
+	// if (!maxPathLength)
 	//	strcpy(CDInstallPath,"..\\");
 	strcpy(CDInstallPath, ".\\");
 	int32_t lastCharacter = strlen(CDInstallPath) - 1;
-	if(CDInstallPath[lastCharacter] != '\\')
+	if (CDInstallPath[lastCharacter] != '\\')
 	{
 		CDInstallPath[lastCharacter + 1] = '\\';
 		CDInstallPath[lastCharacter + 2] = 0;
@@ -233,7 +242,7 @@ void InitializeGameEngine()
 	globalHeapList = new HeapList;
 	gosASSERT(globalHeapList != nullptr);
 	globalHeapList->init();
-	globalHeapList->update();		//Run Instrumentation into GOS Debugger Screen
+	globalHeapList->update(); // Run Instrumentation into GOS Debugger Screen
 	systemHeap = new UserHeap;
 	gosASSERT(systemHeap != nullptr);
 	systemHeap->init(systemHeapSize, "SYSTEM");
@@ -241,9 +250,13 @@ void InitializeGameEngine()
 	MidLevelRenderer::InitializeClasses(1024);
 	gosFX::InitializeClasses();
 	gos_PushCurrentHeap(MidLevelRenderer::Heap);
-	MidLevelRenderer::TGAFilePool* pool = new MidLevelRenderer::TGAFilePool("data\\Effects\\");
-	MidLevelRenderer::MLRTexturePool::Instance = new MidLevelRenderer::MLRTexturePool(pool);
-	MidLevelRenderer::MLRSortByOrder* cameraSorter = new MidLevelRenderer::MLRSortByOrder(MidLevelRenderer::MLRTexturePool::Instance);
+	MidLevelRenderer::TGAFilePool* pool =
+		new MidLevelRenderer::TGAFilePool("data\\Effects\\");
+	MidLevelRenderer::MLRTexturePool::Instance =
+		new MidLevelRenderer::MLRTexturePool(pool);
+	MidLevelRenderer::MLRSortByOrder* cameraSorter =
+		new MidLevelRenderer::MLRSortByOrder(
+			MidLevelRenderer::MLRTexturePool::Instance);
 	theClipper = new MidLevelRenderer::MLRClipper(0, cameraSorter);
 	gos_PopCurrentHeap();
 	//------------------------------------------------------
@@ -255,9 +268,9 @@ void InitializeGameEngine()
 	effectsName.init(effectsPath, "mc2.fx", "");
 	File effectFile;
 	int32_t result = effectFile.open(effectsName);
-	if(result != NO_ERROR)
+	if (result != NO_ERROR)
 		STOP(("Could not find MC2.fx"));
-	int32_t effectsSize = effectFile.fileSize();
+	int32_t effectsSize  = effectFile.fileSize();
 	puint8_t effectsData = (puint8_t)systemHeap->Malloc(effectsSize);
 	effectFile.read(effectsData, effectsSize);
 	effectFile.close();
@@ -269,7 +282,7 @@ void InitializeGameEngine()
 	globalFloatHelp = new FloatHelp(MAX_FLOAT_HELPS);
 	//---------------------------------------------------------------------
 	float doubleClickThreshold = 0.2f;
-	int32_t dragThreshold = 10;
+	int32_t dragThreshold	  = 10;
 	//--------------------------------------------------------------
 	// Read in System.CFG
 	FitIniFilePtr systemFile = new FitIniFile;
@@ -278,7 +291,7 @@ void InitializeGameEngine()
 #endif
 		systemFile->open("system.cfg");
 #ifdef _DEBUG
-	if(systemOpenResult != NO_ERROR)
+	if (systemOpenResult != NO_ERROR)
 	{
 		char Buffer[256];
 		gos_GetCurrentPath(Buffer, 256);
@@ -292,7 +305,8 @@ void InitializeGameEngine()
 			systemFile->seekBlock("systemHeap");
 		gosASSERT(systemBlockResult == NO_ERROR);
 		{
-			int32_t result = systemFile->readIdULong("systemHeapSize", systemHeapSize);
+			int32_t result =
+				systemFile->readIdULong("systemHeapSize", systemHeapSize);
 			gosASSERT(result == NO_ERROR);
 		}
 #ifdef _DEBUG
@@ -301,7 +315,8 @@ void InitializeGameEngine()
 			systemFile->seekBlock("systemPaths");
 		gosASSERT(systemPathResult == NO_ERROR);
 		{
-			int32_t result = systemFile->readIdString("terrainPath", terrainPath, 79);
+			int32_t result =
+				systemFile->readIdString("terrainPath", terrainPath, 79);
 			gosASSERT(result == NO_ERROR);
 			result = systemFile->readIdString("artPath", artPath, 79);
 			gosASSERT(result == NO_ERROR);
@@ -327,7 +342,8 @@ void InitializeGameEngine()
 			gosASSERT(result == NO_ERROR);
 			result = systemFile->readIdString("profilePath", profilePath, 79);
 			gosASSERT(result == NO_ERROR);
-			result = systemFile->readIdString("interfacepath", interfacePath, 79);
+			result =
+				systemFile->readIdString("interfacepath", interfacePath, 79);
 			gosASSERT(result == NO_ERROR);
 			result = systemFile->readIdString("moviepath", moviePath, 79);
 			gosASSERT(result == NO_ERROR);
@@ -346,60 +362,69 @@ void InitializeGameEngine()
 			systemFile->seekBlock("FastFiles");
 		gosASSERT(fastFileResult == NO_ERROR);
 		{
-			int32_t result = systemFile->readIdLong("NumFastFiles", maxFastFiles);
-			if(result != NO_ERROR)
+			int32_t result =
+				systemFile->readIdLong("NumFastFiles", maxFastFiles);
+			if (result != NO_ERROR)
 				maxFastFiles = 0;
-			if(maxFastFiles)
+			if (maxFastFiles)
 			{
-				fastFiles = (FastFile**)malloc(maxFastFiles * sizeof(FastFile*));
+				fastFiles =
+					(FastFile**)malloc(maxFastFiles * sizeof(FastFile*));
 				memset(fastFiles, 0, maxFastFiles * sizeof(FastFile*));
 				int32_t fileNum = 0;
 				char fastFileId[10];
 				char fileName[100];
 				sprintf(fastFileId, "File%d", fileNum);
-				while(systemFile->readIdString(fastFileId, fileName, 99) == NO_ERROR)
+				while (systemFile->readIdString(fastFileId, fileName, 99) ==
+					   NO_ERROR)
 				{
 					bool result = FastFileInit(fileName);
-					if(!result)
-						STOP(("Unable to startup fastfiles.  Probably an old one in the directory!!"));
+					if (!result)
+						STOP(("Unable to startup fastfiles.  Probably an old "
+							  "one in the directory!!"));
 					fileNum++;
 					sprintf(fastFileId, "File%d", fileNum);
 				}
 			}
 		}
 		result = systemFile->seekBlock("CameraSettings");
-		if(result == NO_ERROR)
+		if (result == NO_ERROR)
 		{
-			result = systemFile->readIdFloat("MaxPerspective", Camera::MAX_PERSPECTIVE);
-			if(result != NO_ERROR)
+			result = systemFile->readIdFloat(
+				"MaxPerspective", Camera::MAX_PERSPECTIVE);
+			if (result != NO_ERROR)
 				Camera::MAX_PERSPECTIVE = 88.0f;
-			if(Camera::MAX_PERSPECTIVE > 90.0f)
+			if (Camera::MAX_PERSPECTIVE > 90.0f)
 				Camera::MAX_PERSPECTIVE = 90.0f;
-			result = systemFile->readIdFloat("MinPerspective", Camera::MIN_PERSPECTIVE);
-			if(result != NO_ERROR)
+			result = systemFile->readIdFloat(
+				"MinPerspective", Camera::MIN_PERSPECTIVE);
+			if (result != NO_ERROR)
 				Camera::MIN_PERSPECTIVE = 18.0f;
-			if(Camera::MIN_PERSPECTIVE < 0.0f)
+			if (Camera::MIN_PERSPECTIVE < 0.0f)
 				Camera::MIN_PERSPECTIVE = 0.0f;
 			result = systemFile->readIdFloat("MaxOrtho", Camera::MAX_ORTHO);
-			if(result != NO_ERROR)
+			if (result != NO_ERROR)
 				Camera::MAX_ORTHO = 88.0f;
-			if(Camera::MAX_ORTHO > 90.0f)
+			if (Camera::MAX_ORTHO > 90.0f)
 				Camera::MAX_ORTHO = 90.0f;
 			result = systemFile->readIdFloat("MinOrtho", Camera::MIN_ORTHO);
-			if(result != NO_ERROR)
+			if (result != NO_ERROR)
 				Camera::MIN_ORTHO = 18.0f;
-			if(Camera::MIN_ORTHO < 0.0f)
+			if (Camera::MIN_ORTHO < 0.0f)
 				Camera::MIN_ORTHO = 0.0f;
-			result = systemFile->readIdFloat("AltitudeMinimum", Camera::AltitudeMinimum);
-			if(result != NO_ERROR)
+			result = systemFile->readIdFloat(
+				"AltitudeMinimum", Camera::AltitudeMinimum);
+			if (result != NO_ERROR)
 				Camera::AltitudeMinimum = 560.0f;
-			if(Camera::AltitudeMinimum < 110.0f)
+			if (Camera::AltitudeMinimum < 110.0f)
 				Camera::AltitudeMinimum = 110.0f;
-			result = systemFile->readIdFloat("AltitudeMaximumHi", Camera::AltitudeMaximumHi);
-			if(result != NO_ERROR)
+			result = systemFile->readIdFloat(
+				"AltitudeMaximumHi", Camera::AltitudeMaximumHi);
+			if (result != NO_ERROR)
 				Camera::AltitudeMaximumHi = 1600.0f;
-			result = systemFile->readIdFloat("AltitudeMaximumLo", Camera::AltitudeMaximumLo);
-			if(result != NO_ERROR)
+			result = systemFile->readIdFloat(
+				"AltitudeMaximumLo", Camera::AltitudeMaximumLo);
+			if (result != NO_ERROR)
 				Camera::AltitudeMaximumHi = 1500.0f;
 		}
 	}
@@ -408,8 +433,8 @@ void InitializeGameEngine()
 	systemFile = nullptr;
 	//--------------------------------------------------------------
 	// Read in Prefs.cfg
-	FitIniFilePtr prefs = new FitIniFile;
-	Environment.Key_Exit = (uint32_t) - 1;
+	FitIniFilePtr prefs  = new FitIniFile;
+	Environment.Key_Exit = (uint32_t)-1;
 #ifdef _DEBUG
 	int32_t prefsOpenResult =
 #endif
@@ -422,77 +447,79 @@ void InitializeGameEngine()
 			prefs->seekBlock("MechCommander2Editor");
 		gosASSERT(prefsBlockResult == NO_ERROR);
 		{
-			int32_t result = prefs->readIdFloat("CliffTerrainAngle", CliffTerrainAngle);
-			if(result != NO_ERROR)
+			int32_t result =
+				prefs->readIdFloat("CliffTerrainAngle", CliffTerrainAngle);
+			if (result != NO_ERROR)
 				CliffTerrainAngle = 45.0f;
 		}
 		prefs->seekBlock("MechCommander2");
 		gosASSERT(prefsBlockResult == NO_ERROR);
 		{
 			Environment.Key_SwitchMonitors = 0;
-			Environment.Key_FullScreen = 0;
-			int32_t bitD = 0;
+			Environment.Key_FullScreen	 = 0;
+			int32_t bitD				   = 0;
 			int32_t result = prefs->readIdLong("BitDepth", bitD);
-			if(result != NO_ERROR)
-				Environment.bitDepth				= 16;
-			else if(bitD == 32)
-				Environment.bitDepth				= 32;
+			if (result != NO_ERROR)
+				Environment.bitDepth = 16;
+			else if (bitD == 32)
+				Environment.bitDepth = 32;
 			else
-				Environment.bitDepth				= 16;
-			//Editor can't draw fullscreen!
-//			bool fullScreen;
-//			result = prefs->readIdBoolean("FullScreen",	fullScreen);
-//			if (result != NO_ERROR)
-//				Environment.fullScreen = 1;
-//			else
-//				Environment.fullScreen = (fullScreen == TRUE);
+				Environment.bitDepth = 16;
+			// Editor can't draw fullscreen!
+			//			bool fullScreen;
+			//			result = prefs->readIdBoolean("FullScreen",	fullScreen);
+			//			if (result != NO_ERROR)
+			//				Environment.fullScreen = 1;
+			//			else
+			//				Environment.fullScreen = (fullScreen == TRUE);
 			int32_t fullScreenCard;
 			result = prefs->readIdLong("FullScreenCard", fullScreenCard);
-			if(result != NO_ERROR)
-				Environment.FullScreenDevice		= 0;
+			if (result != NO_ERROR)
+				Environment.FullScreenDevice = 0;
 			else
-				Environment.FullScreenDevice		= fullScreenCard;
+				Environment.FullScreenDevice = fullScreenCard;
 			int32_t rasterizer;
 			result = prefs->readIdLong("Rasterizer", rasterizer);
-			if(result != NO_ERROR)
-				Environment.Renderer				= 0;
+			if (result != NO_ERROR)
+				Environment.Renderer = 0;
 			else
-				Environment.Renderer				= rasterizer;
+				Environment.Renderer = rasterizer;
 			int32_t filterSetting;
 			result = prefs->readIdLong("FilterState", filterSetting);
-			if(result == NO_ERROR)
+			if (result == NO_ERROR)
 			{
-				switch(filterSetting)
+				switch (filterSetting)
 				{
-					default:
-					case 0:
-						FilterState = gos_FilterNone;
-						break;
-					case 1:
-						FilterState = gos_FilterBiLinear;
-						break;
-					case 2:
-						FilterState = gos_FilterTriLinear;
-						break;
+				default:
+				case 0:
+					FilterState = gos_FilterNone;
+					break;
+				case 1:
+					FilterState = gos_FilterBiLinear;
+					break;
+				case 2:
+					FilterState = gos_FilterTriLinear;
+					break;
 				}
 			}
 			result = prefs->readIdLong("TerrainTextureRes", TERRAIN_TXM_SIZE);
-			if(result != NO_ERROR)
+			if (result != NO_ERROR)
 				TERRAIN_TXM_SIZE = 64;
 			result = prefs->readIdLong("ObjectTextureRes", ObjectTextureSize);
-			if(result != NO_ERROR)
+			if (result != NO_ERROR)
 				ObjectTextureSize = 128;
 			result = prefs->readIdLong("Brightness", gammaLevel);
-			if(result != NO_ERROR)
+			if (result != NO_ERROR)
 				gammaLevel = 0;
-			result = prefs->readIdFloat("DoubleClickThreshold", doubleClickThreshold);
-			if(result != NO_ERROR)
+			result = prefs->readIdFloat(
+				"DoubleClickThreshold", doubleClickThreshold);
+			if (result != NO_ERROR)
 				doubleClickThreshold = 0.2f;
 			result = prefs->readIdLong("DragThreshold", dragThreshold);
-			if(result != NO_ERROR)
+			if (result != NO_ERROR)
 				dragThreshold = 10;
 			result = prefs->readIdULong("BaseVertexColor", BaseVertexColor);
-			if(result != NO_ERROR)
+			if (result != NO_ERROR)
 				BaseVertexColor = 0x00000000;
 		}
 	}
@@ -507,23 +534,23 @@ void InitializeGameEngine()
 	// Start the Tiny Geometry Layer Heap.
 	TG_Shape::tglHeap = new UserHeap;
 	TG_Shape::tglHeap->init(tglHeapSize, "TinyGeom");
-	//Start up the TGL RAM pools.
-	colorPool 		= new TG_VertexPool;
+	// Start up the TGL RAM pools.
+	colorPool = new TG_VertexPool;
 	colorPool->init(20000);
-	vertexPool 		= new TG_GOSVertexPool;
+	vertexPool = new TG_GOSVertexPool;
 	vertexPool->init(20000);
-	facePool 		= new TG_DWORDPool;
+	facePool = new TG_DWORDPool;
 	facePool->init(40000);
-	shadowPool 		= new TG_ShadowPool;
+	shadowPool = new TG_ShadowPool;
 	shadowPool->init(20000);
-	trianglePool 	= new TG_TrianglePool;
+	trianglePool = new TG_TrianglePool;
 	trianglePool->init(20000);
 	//--------------------------------------------------------------
 	//------------------------------------------------
 	// Fire up the MC Texture Manager.
 	mcTextureManager = new MC_TextureManager;
 	mcTextureManager->start();
-	//Startup the vertex array pool
+	// Startup the vertex array pool
 	mcTextureManager->startVertices(500000);
 	//--------------------------------------------------------------
 	// Load up the mouse cursors
@@ -534,7 +561,7 @@ void InitializeGameEngine()
 	weaponEffects = new WeaponEffects;
 	weaponEffects->init("Effects");
 	editor = new Editor();
-	if(justResaveAllMaps)
+	if (justResaveAllMaps)
 	{
 		editor->resaveAll();
 	}
@@ -553,19 +580,19 @@ void InitializeGameEngine()
 	//---------------------------------------------------------
 	// Start the Color table code
 	initColorTables();
-	if(!statisticsInitialized)
+	if (!statisticsInitialized)
 	{
 		statisticsInitialized = true;
 		HeapList::initializeStatistics();
 	}
-	//Startup the Office Watson Handler.
+	// Startup the Office Watson Handler.
 	InitDW();
 }
 
 bool alreadyTermed = false;
 void TerminateGameEngine()
 {
-	if(alreadyTermed)
+	if (alreadyTermed)
 		return;
 	else
 		alreadyTermed = true;
@@ -576,7 +603,7 @@ void TerminateGameEngine()
 	// End the Timers
 	delete timerManager;
 	timerManager = nullptr;
-	if(editor)
+	if (editor)
 		delete editor;
 	editor = nullptr;
 	//--------------------------
@@ -586,7 +613,7 @@ void TerminateGameEngine()
 	MOVE_cleanup();
 	//------------------------------------------------
 	// shutdown the MC Texture Manager.
-	if(mcTextureManager)
+	if (mcTextureManager)
 	{
 		mcTextureManager->freeVertices();
 		mcTextureManager->destroy();
@@ -595,34 +622,34 @@ void TerminateGameEngine()
 	}
 	//---------------------------------------------------------
 	// End the Tiny Geometry Layer Heap.
-	if(TG_Shape::tglHeap)
+	if (TG_Shape::tglHeap)
 	{
-		//Shut down the TGL RAM pools.
-		if(colorPool)
+		// Shut down the TGL RAM pools.
+		if (colorPool)
 		{
 			colorPool->destroy();
 			delete colorPool;
 			colorPool = nullptr;
 		}
-		if(vertexPool)
+		if (vertexPool)
 		{
 			vertexPool->destroy();
 			delete vertexPool;
 			vertexPool = nullptr;
 		}
-		if(facePool)
+		if (facePool)
 		{
 			facePool->destroy();
 			delete facePool;
 			facePool = nullptr;
 		}
-		if(shadowPool)
+		if (shadowPool)
 		{
 			shadowPool->destroy();
 			delete shadowPool;
 			shadowPool = nullptr;
 		}
-		if(trianglePool)
+		if (trianglePool)
 		{
 			trianglePool->destroy();
 			delete trianglePool;
@@ -658,13 +685,13 @@ void TerminateGameEngine()
 	Stuff::TerminateClasses();
 	//--------------------------------------------------------------
 	// End the SystemHeap and globalHeapList
-	if(systemHeap)
+	if (systemHeap)
 	{
 		systemHeap->destroy();
 		delete systemHeap;
 		systemHeap = nullptr;
 	}
-	if(globalHeapList)
+	if (globalHeapList)
 	{
 		globalHeapList->destroy();
 		delete globalHeapList;
@@ -678,12 +705,12 @@ void TerminateGameEngine()
 	//---------------------------------------------------------
 	// TEST of PORT
 	// Create VFX PANE and WINDOW to test draw of old terrain!
-	if(globalPane)
+	if (globalPane)
 	{
 		delete globalPane;
 		globalPane = nullptr;
 	}
-	if(globalWindow)
+	if (globalWindow)
 	{
 		delete globalWindow;
 		globalWindow = nullptr;
@@ -696,69 +723,69 @@ void ParseCommandLine(PSTR command_line)
 {
 	int32_t i;
 	int32_t n_args = 0;
-	int32_t index = 0;
+	int32_t index  = 0;
 	PSTR argv[30];
 	char tempCommandLine[4096];
 	memset(tempCommandLine, 0, 4096);
 	strncpy(tempCommandLine, command_line, 4095);
-	while(tempCommandLine[index] != '\0')   // until we null out
+	while (tempCommandLine[index] != '\0') // until we null out
 	{
 		argv[n_args] = tempCommandLine + index;
 		n_args++;
-		while(tempCommandLine[index] != ' ' && tempCommandLine[index] != '\0')
+		while (tempCommandLine[index] != ' ' && tempCommandLine[index] != '\0')
 		{
 			index++;
 		}
-		while(tempCommandLine[index] == ' ')
+		while (tempCommandLine[index] == ' ')
 		{
 			tempCommandLine[index] = '\0';
 			index++;
 		}
 	}
 	i = 0;
-	while(i < n_args)
+	while (i < n_args)
 	{
-		if(strcmpi(argv[i], "-burnInShadows") == 0)
+		if (strcmpi(argv[i], "-burnInShadows") == 0)
 		{
 			forceShadowBurnIn = true;
 		}
-		else if(strcmpi(argv[i], "-resaveall") == 0)
+		else if (strcmpi(argv[i], "-resaveall") == 0)
 		{
 			justResaveAllMaps = true;
 		}
-		else if(strcmpi(argv[i], "-nodialog") == 0)
+		else if (strcmpi(argv[i], "-nodialog") == 0)
 		{
 			gNoDialogs = true;
 		}
-		else if(strcmpi(argv[i], "-mission") == 0)
+		else if (strcmpi(argv[i], "-mission") == 0)
 		{
 			i++;
-			if(i < n_args)
+			if (i < n_args)
 			{
-				if(argv[i][0] == '"')
+				if (argv[i][0] == '"')
 				{
 					// They typed in a quote, keep reading argvs
 					// until you find the close quote
 					strcpy(missionName, &(argv[i][1]));
 					bool scanName = true;
-					while(scanName && (i < n_args))
+					while (scanName && (i < n_args))
 					{
 						i++;
-						if(i < n_args)
+						if (i < n_args)
 						{
 							strcat(missionName, " ");
 							strcat(missionName, argv[i]);
-							if(strstr(argv[i], "\"") != nullptr)
+							if (strstr(argv[i], "\"") != nullptr)
 							{
-								scanName = false;
+								scanName							 = false;
 								missionName[strlen(missionName) - 1] = 0;
 							}
 						}
 						else
 						{
-							//They put a quote on the line with no space.
+							// They put a quote on the line with no space.
 							//
-							scanName = false;
+							scanName							 = false;
 							missionName[strlen(missionName) - 1] = 0;
 						}
 					}
@@ -775,97 +802,102 @@ void ParseCommandLine(PSTR command_line)
 void GetGameOSEnvironment(PSTR CommandLine)
 {
 	ParseCommandLine(CommandLine);
-	Environment.applicationName			= "MC2 Mission Editor";
-	Environment.debugLog				= "";			//"DebugLog.txt";
-	Environment.memoryTraceLevel		= 5;
-	Environment.spew					= ""; //"GameOS_Texture GameOS_DirectDraw GameOS_Direct3D ";
-	Environment.TimeStampSpew			= 0;
-	Environment.GetGameInformation		= GetGameInformation;
-	Environment.UpdateRenderers			= UpdateRenderers;
-	Environment.InitializeGameEngine	= InitializeGameEngine;
-	Environment.DoGameLogic				= DoGameLogic;
-	Environment.TerminateGameEngine		= TerminateGameEngine;
-	Environment.soundDisable			= TRUE;
-	Environment.soundHiFi				= FALSE;
-	Environment.soundChannels			= 24;
-	Environment.dontClearRegistry		= true;
-	Environment.allowMultipleApps		= false;
-	Environment.version					= versionStamp;
-	Environment.AntiAlias				= 0;
-//
-// Texture infomation
-//
-	Environment.Texture_S_256			= 6;
-	Environment.Texture_S_128			= 1;
-	Environment.Texture_S_64			= 0;
-	Environment.Texture_S_32			= 1;
-	Environment.Texture_S_16			= 5;
-	Environment.Texture_K_256			= 2;
-	Environment.Texture_K_128			= 5;
-	Environment.Texture_K_64			= 5;
-	Environment.Texture_K_32			= 5;
-	Environment.Texture_K_16			= 5;
-	Environment.Texture_A_256			= 0;
-	Environment.Texture_A_128			= 1;
-	Environment.Texture_A_64			= 5;
-	Environment.Texture_A_32			= 1;
-	Environment.Texture_A_16			= 0;
-	Environment.bitDepth				= 16;
-	Environment.RaidDataSource			= "MechCommander 2:Raid4";
-	Environment.RaidFilePath			= "\\\\aas1\\MC2\\Test\\GOSRaid";
-	Environment.RaidCustomFields		= "Area=GOSRaid";
+	Environment.applicationName  = "MC2 Mission Editor";
+	Environment.debugLog		 = ""; //"DebugLog.txt";
+	Environment.memoryTraceLevel = 5;
+	Environment.spew =
+		""; //"GameOS_Texture GameOS_DirectDraw GameOS_Direct3D ";
+	Environment.TimeStampSpew		 = 0;
+	Environment.GetGameInformation   = GetGameInformation;
+	Environment.UpdateRenderers		 = UpdateRenderers;
+	Environment.InitializeGameEngine = InitializeGameEngine;
+	Environment.DoGameLogic			 = DoGameLogic;
+	Environment.TerminateGameEngine  = TerminateGameEngine;
+	Environment.soundDisable		 = TRUE;
+	Environment.soundHiFi			 = FALSE;
+	Environment.soundChannels		 = 24;
+	Environment.dontClearRegistry	= true;
+	Environment.allowMultipleApps	= false;
+	Environment.version				 = versionStamp;
+	Environment.AntiAlias			 = 0;
+	//
+	// Texture infomation
+	//
+	Environment.Texture_S_256	= 6;
+	Environment.Texture_S_128	= 1;
+	Environment.Texture_S_64	 = 0;
+	Environment.Texture_S_32	 = 1;
+	Environment.Texture_S_16	 = 5;
+	Environment.Texture_K_256	= 2;
+	Environment.Texture_K_128	= 5;
+	Environment.Texture_K_64	 = 5;
+	Environment.Texture_K_32	 = 5;
+	Environment.Texture_K_16	 = 5;
+	Environment.Texture_A_256	= 0;
+	Environment.Texture_A_128	= 1;
+	Environment.Texture_A_64	 = 5;
+	Environment.Texture_A_32	 = 1;
+	Environment.Texture_A_16	 = 0;
+	Environment.bitDepth		 = 16;
+	Environment.RaidDataSource   = "MechCommander 2:Raid4";
+	Environment.RaidFilePath	 = "\\\\aas1\\MC2\\Test\\GOSRaid";
+	Environment.RaidCustomFields = "Area=GOSRaid";
 	DEVMODE dev;
 	memset(&dev, 0, sizeof(DEVMODE));
-	dev.dmSize = sizeof(DEVMODE);
+	dev.dmSize		  = sizeof(DEVMODE);
 	dev.dmSpecVersion = DM_SPECVERSION;
 	EnumDisplaySettings(nullptr, ENUM_CURRENT_SETTINGS, &dev);
-	Environment.screenWidth = dev.dmPelsWidth;
+	Environment.screenWidth  = dev.dmPelsWidth;
 	Environment.screenHeight = dev.dmPelsHeight;
-	if(((512 > Environment.screenWidth) || (384 > Environment.screenHeight) || (1600 < Environment.screenWidth) || (1200 < Environment.screenHeight)) && (0 == dev.dmDeviceName[0]))
+	if (((512 > Environment.screenWidth) || (384 > Environment.screenHeight) ||
+			(1600 < Environment.screenWidth) ||
+			(1200 < Environment.screenHeight)) &&
+		(0 == dev.dmDeviceName[0]))
 	{
-		/* might be a buggy driver reporting incorrectly (like the permedia2 win95 driver */
-		Environment.screenWidth = GetDeviceCaps(GetDC(nullptr), HORZRES);
+		/* might be a buggy driver reporting incorrectly (like the permedia2
+		 * win95 driver */
+		Environment.screenWidth  = GetDeviceCaps(GetDC(nullptr), HORZRES);
 		Environment.screenHeight = GetDeviceCaps(GetDC(nullptr), VERTRES);
 	}
-	//CHeck for non-standard resolutions.  Like LapTops or ATI cards or BOTH!!
-	if(Environment.screenWidth < 512)
+	// CHeck for non-standard resolutions.  Like LapTops or ATI cards or BOTH!!
+	if (Environment.screenWidth < 512)
 	{
-		Environment.screenWidth = 512;
+		Environment.screenWidth  = 512;
 		Environment.screenHeight = 384;
 	}
-	else if((Environment.screenWidth > 512) && (Environment.screenWidth < 640))
+	else if ((Environment.screenWidth > 512) && (Environment.screenWidth < 640))
 	{
-		Environment.screenWidth = 640;
+		Environment.screenWidth  = 640;
 		Environment.screenHeight = 480;
 	}
-	else if((Environment.screenWidth > 640) && (Environment.screenWidth < 800))
+	else if ((Environment.screenWidth > 640) && (Environment.screenWidth < 800))
 	{
-		Environment.screenWidth = 512;
+		Environment.screenWidth  = 512;
 		Environment.screenHeight = 384;
 	}
-	else if((Environment.screenWidth > 800) && (Environment.screenWidth < 1024))
+	else if ((Environment.screenWidth > 800) &&
+			 (Environment.screenWidth < 1024))
 	{
-		Environment.screenWidth = 800;
+		Environment.screenWidth  = 800;
 		Environment.screenHeight = 600;
 	}
-	else if((Environment.screenWidth > 1024) && (Environment.screenWidth < 1280))
+	else if ((Environment.screenWidth > 1024) &&
+			 (Environment.screenWidth < 1280))
 	{
-		Environment.screenWidth = 1024;
+		Environment.screenWidth  = 1024;
 		Environment.screenHeight = 768;
 	}
-	else if((Environment.screenWidth > 1280) && (Environment.screenWidth < 1600))
+	else if ((Environment.screenWidth > 1280) &&
+			 (Environment.screenWidth < 1600))
 	{
-		Environment.screenWidth = 1280;
+		Environment.screenWidth  = 1280;
 		Environment.screenHeight = 1024;
 	}
-	else if(Environment.screenWidth > 1600)
+	else if (Environment.screenWidth > 1600)
 	{
-		Environment.screenWidth = 1600;
+		Environment.screenWidth  = 1600;
 		Environment.screenHeight = 1200;
 	}
 	Environment.Suppress3DFullScreenWarning = 0;
 	EditorData::setMapName(nullptr);
 }
-
-
-

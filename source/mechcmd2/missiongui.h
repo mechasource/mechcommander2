@@ -4,8 +4,8 @@
 //
 // This header contains the mission classes for the GUI
 //
-// GUI is now single update driven.  An event comes in, the manager decides who its for
-// and passes the event down.  Eveything still know how to draw etc.
+// GUI is now single update driven.  An event comes in, the manager decides who
+// its for and passes the event down.  Eveything still know how to draw etc.
 //
 // All drawing is done through gos_drawQuad and drawTriangle
 //
@@ -34,13 +34,12 @@
 class KeyboardRef;
 enum COMMAND_KEY_INDEX
 {
-	ENERGY_WEAPON_INDEX = 3,
-	GUARD_COMMAND_INDEX = 8,
-	FORCE_FIRE_KEY = 11,
-	EJECT_COMMAND_INDEX = 27,
+	ENERGY_WEAPON_INDEX	= 3,
+	GUARD_COMMAND_INDEX	= 8,
+	FORCE_FIRE_KEY		   = 11,
+	EJECT_COMMAND_INDEX	= 27,
 	OBJECTVIES_COMMAND_KEY = 59,
-	INFO_COMMAND_INDEX = 64
-
+	INFO_COMMAND_INDEX	 = 64
 
 };
 //--------------------------------------------------------------------------------------
@@ -70,134 +69,113 @@ class MissionInterfaceManager
 	//
 	// Essentially, this is the iface of MechCommander 2
 
-public:
-
+  public:
 	typedef int32_t (MissionInterfaceManager::*COMMAND)(void);
 
 	struct Command
 	{
-		int32_t	key;
-		int32_t	cursor;
-		int32_t	cursorLOS;
-		bool	singleClick;
+		int32_t key;
+		int32_t cursor;
+		int32_t cursorLOS;
+		bool singleClick;
 		COMMAND function;
-		COMMAND	releaseFunction;
-		int32_t	hotKeyDescriptionText;
+		COMMAND releaseFunction;
+		int32_t hotKeyDescriptionText;
 	};
 
-	static Command*		getCommands()
-	{
-		return commands;
-	}
-	static int32_t*		getOldKeys()
-	{
-		return OldKeys;
-	}
+	static Command* getCommands() { return commands; }
+	static int32_t* getOldKeys() { return OldKeys; }
 
-protected:
-
-
+  protected:
 	static int32_t mouseX;
 	static int32_t mouseY;
 	static gosEnum_KeyIndex WAYPOINT_KEY;
 
 	static float pauseWndVelocity;
 
-
-
-	static Command		commands[MAX_COMMAND];
-	static int32_t			OldKeys[MAX_COMMAND];
+	static Command commands[MAX_COMMAND];
+	static int32_t OldKeys[MAX_COMMAND];
 
 	int32_t terrainLineChanged;
 
 	//-------------------------------------------
 	// Data to control scroll, rotation and zoom
-	float						baseFrameLength;
+	float baseFrameLength;
 
-	float						zoomInc;
-	float						rotationInc;
-	float						scrollInc;
+	float zoomInc;
+	float rotationInc;
+	float scrollInc;
 
-	float						screenScrollLeft;
-	float						screenScrollRight;
-	float						screenScrollUp;
-	float						screenScrollDown;
+	float screenScrollLeft;
+	float screenScrollRight;
+	float screenScrollUp;
+	float screenScrollDown;
 
-	float						realRotation;
-	float						degPerSecRot;
+	float realRotation;
+	float degPerSecRot;
 
-	int32_t						zoomChoice;			//Can range from 0 to 3 right now.
+	int32_t zoomChoice; // Can range from 0 to 3 right now.
 
 	//----------------------------------------------
 	// Mouse Event Data
-	bool						isDragging;
-	float						vTolSpeed;
-	PCSTR					vehicleFile;
-	int32_t						vehicleID[MAX_TEAMS];
-	Stuff::Vector3D				dragStart;
-	Stuff::Vector3D				dragEnd;
-	bool						selectClicked;			// left click
-	bool						commandClicked;			// usually right clicked
-	bool						cameraClicked;
+	bool isDragging;
+	float vTolSpeed;
+	PCSTR vehicleFile;
+	int32_t vehicleID[MAX_TEAMS];
+	Stuff::Vector3D dragStart;
+	Stuff::Vector3D dragEnd;
+	bool selectClicked;  // left click
+	bool commandClicked; // usually right clicked
+	bool cameraClicked;
 
-	ControlGui					controlGui;
-	Stuff::Vector3D				wPos;					//World Position of camera cursor.
+	ControlGui controlGui;
+	Stuff::Vector3D wPos; // World Position of camera cursor.
 
-	//vTol
-	Stuff::Vector3D				vPos[MAX_TEAMS];		// vehicle position
-	BldgAppearance*				vTol[MAX_TEAMS];
-	bool						paintingVtol[MAX_TEAMS];
-	float						vTolTime[MAX_TEAMS];
-	gosFX::Effect*				recoveryBeam[MAX_TEAMS];
-	gosFX::Effect*				dustCloud[MAX_TEAMS];
-	bool						mechRecovered[MAX_TEAMS];
-	bool						vehicleDropped[MAX_TEAMS];
-	MoverPtr					mechToRecover[MAX_TEAMS];
+	// vTol
+	Stuff::Vector3D vPos[MAX_TEAMS]; // vehicle position
+	BldgAppearance* vTol[MAX_TEAMS];
+	bool paintingVtol[MAX_TEAMS];
+	float vTolTime[MAX_TEAMS];
+	gosFX::Effect* recoveryBeam[MAX_TEAMS];
+	gosFX::Effect* dustCloud[MAX_TEAMS];
+	bool mechRecovered[MAX_TEAMS];
+	bool vehicleDropped[MAX_TEAMS];
+	MoverPtr mechToRecover[MAX_TEAMS];
 
-	bool						bPaused;
-	bool						bPausedWithoutMenu;
-	bool						bEnergyWeapons;
-	bool						bDrawHotKeys;
-	int32_t						resolution;
+	bool bPaused;
+	bool bPausedWithoutMenu;
+	bool bEnergyWeapons;
+	bool bDrawHotKeys;
+	int32_t resolution;
 
 	//-----------------------------------------------
 	// Attila (Strategic Commander) Data
-	float						attilaXAxis;
-	float						attilaYAxis;
-	float						attilaRZAxis;
+	float attilaXAxis;
+	float attilaYAxis;
+	float attilaRZAxis;
 
 	//-----------------------------------------------
 	// Tutorial Data
-	bool						animationRunning;
-	float						timeLeftToScroll;
-	int32_t						targetButtonId;
-	int32_t						buttonNumFlashes;
-	float						buttonFlashTime;
-	bool						targetIsButton;
-	bool						targetIsPressed;
-	bool						guiFrozen;
+	bool animationRunning;
+	float timeLeftToScroll;
+	int32_t targetButtonId;
+	int32_t buttonNumFlashes;
+	float buttonFlashTime;
+	bool targetIsButton;
+	bool targetIsPressed;
+	bool guiFrozen;
 
-	bool						bForcedShot;
-	bool						bAimedShot;
+	bool bForcedShot;
+	bool bAimedShot;
 
-	static	MissionInterfaceManager* s_instance;
+	static MissionInterfaceManager* s_instance;
 
-public:
+  public:
+	MissionInterfaceManager(void) { init(void); }
 
-	MissionInterfaceManager(void)
-	{
-		init(void);
-	}
+	~MissionInterfaceManager(void) { destroy(void); }
 
-	~MissionInterfaceManager(void)
-	{
-		destroy(void);
-	}
-
-	static MissionInterfaceManager* instance()
-	{
-		return s_instance;
-	}
+	static MissionInterfaceManager* instance() { return s_instance; }
 
 	void init(void);
 
@@ -210,53 +188,37 @@ public:
 	virtual void drawVTOL(void);
 	virtual void render(void);
 
-	void	initMechs()
-	{
-		controlGui.initMechs(void);
-	}
+	void initMechs() { controlGui.initMechs(void); }
 
 	PCSTR getSupportVehicleNameFromID(int32_t ID)
 	{
 		return controlGui.getVehicleNameFromID(ID);
 	}
 
-	void	addMover(MoverPtr mover)
-	{
-		controlGui.addMover(mover);
-	}
-	void	removeMover(MoverPtr mover)
-	{
-		controlGui.removeMover(mover);
-	}
+	void addMover(MoverPtr mover) { controlGui.addMover(mover); }
+	void removeMover(MoverPtr mover) { controlGui.removeMover(mover); }
 
-	int32_t update(bool bLeftClick, bool bRightClick, int32_t mouseX, int32_t mouseY, GameObject* pTarget, bool bLOS);   // check for each key in the list
+	int32_t update(bool bLeftClick, bool bRightClick, int32_t mouseX,
+		int32_t mouseY, GameObject* pTarget,
+		bool bLOS); // check for each key in the list
 
-	void	updateVTol(void);
+	void updateVTol(void);
 
-	ControlGui* getControlGui(void)
-	{
-		return &controlGui;
-	}
+	ControlGui* getControlGui(void) { return &controlGui; }
 
-	void playMovie(PSTR filename)
-	{
-		controlGui.playMovie(filename);
-	}
+	void playMovie(PSTR filename) { controlGui.playMovie(filename); }
 
 	int32_t handleOrders(TacticalOrder& order);
 	bool anySelectedWithoutAreaEffect(void);
 	void updateWaypoints(void);
 
-	void setTarget(GameObject* pTarget)
-	{
-		target = pTarget;
-	}
+	void setTarget(GameObject* pTarget) { target = pTarget; }
 	static void selectForceGroup(int32_t forceGroup, bool deselectOthers);
 	void doRepair(GameObject* who);
 	void doRepairBay(GameObject* who);
 	void doEject(GameObject* who);
-	bool	canRepair(GameObject* pMover);
-	bool	canRepairBay(GameObject* bay);
+	bool canRepair(GameObject* pMover);
+	bool canRepairBay(GameObject* bay);
 
 	void setMechRecovered(int32_t teamID, bool set)
 	{
@@ -264,15 +226,19 @@ public:
 	}
 
 	void updateOldStyle(bool shiftDn, bool altDn, bool ctrlDn, bool bGui,
-						bool lineOfSight, bool passable, int32_t moverCount, int32_t nonMoverCount);
+		bool lineOfSight, bool passable, int32_t moverCount,
+		int32_t nonMoverCount);
 	void updateAOEStyle(bool shiftDn, bool altDn, bool ctrlDn, bool bGui,
-						bool lineOfSight, bool passable, int32_t moverCount, int32_t nonMoverCount);
+		bool lineOfSight, bool passable, int32_t moverCount,
+		int32_t nonMoverCount);
 
 	static int32_t saveHotKeys(FitIniFile& file);
 	static int32_t loadHotKeys(FitIniFile& file);
 
-	static int32_t setHotKey(int32_t whichCommand, gosEnum_KeyIndex key, bool bShift, bool bControl, bool bAlt);
-	int32_t getHotKey(int32_t whichCommand, gosEnum_KeyIndex& newKey, bool& bShift, bool& bControl, bool& bAlt);
+	static int32_t setHotKey(int32_t whichCommand, gosEnum_KeyIndex key,
+		bool bShift, bool bControl, bool bAlt);
+	int32_t getHotKey(int32_t whichCommand, gosEnum_KeyIndex& newKey,
+		bool& bShift, bool& bControl, bool& bAlt);
 	bool hotKeyIsPressed(int32_t whichCommand);
 
 	int32_t setWayPointKey(gosEnum_KeyIndex key);
@@ -283,44 +249,40 @@ public:
 	bool isAOEStyle(void);
 	bool isMCStyle(void);
 
-	bool	isPaused(void);
-	bool	isPausedWithoutMenu(void);
-	int32_t		togglePause(void);
-	int32_t		togglePauseWithoutMenu(void);
-	int32_t		toggleHoldPosition(void);
-	int32_t		showObjectives(void);
-	int32_t		showObjectives(bool on);
-	void	doMove(const Stuff::Vector3D& pos);
-	void	doGuard(GameObject* pObj);
+	bool isPaused(void);
+	bool isPausedWithoutMenu(void);
+	int32_t togglePause(void);
+	int32_t togglePauseWithoutMenu(void);
+	int32_t toggleHoldPosition(void);
+	int32_t showObjectives(void);
+	int32_t showObjectives(bool on);
+	void doMove(const Stuff::Vector3D& pos);
+	void doGuard(GameObject* pObj);
 	int32_t toggleHotKeys(void);
-	void	beginVtol(int32_t supportID, int32_t commanderID = 0, Stuff::Vector3D* reinforcePos = nullptr, MoverPtr salvageTarget = nullptr);
+	void beginVtol(int32_t supportID, int32_t commanderID = 0,
+		Stuff::Vector3D* reinforcePos = nullptr,
+		MoverPtr salvageTarget		  = nullptr);
 
-	//Tutorial Stuff goes here.
-	bool startAnimation(int32_t buttonId, bool isButton, bool isPressed, float timeToScroll, int32_t numFlashes);
+	// Tutorial Stuff goes here.
+	bool startAnimation(int32_t buttonId, bool isButton, bool isPressed,
+		float timeToScroll, int32_t numFlashes);
 	void setTutorialText(PCSTR text);
 
-	bool isInCalloutAnimation()
-	{
-		return animationRunning;
-	}
+	bool isInCalloutAnimation() { return animationRunning; }
 
-	void freezeGUI(bool flag)
-	{
-		guiFrozen = flag;
-	}
+	void freezeGUI(bool flag) { guiFrozen = flag; }
 
-	//In-Mission Save
+	// In-Mission Save
 	void Save(FitIniFilePtr file);
 	void Load(FitIniFilePtr file);
 
-private:
-
+  private:
 	void makeForceGroup(int32_t forceGroup);
-	bool moveCameraAround(bool lineOfSight, bool passable, bool ctrl, bool bGui, int32_t moverCount, int32_t nonMoverCount);
+	bool moveCameraAround(bool lineOfSight, bool passable, bool ctrl, bool bGui,
+		int32_t moverCount, int32_t nonMoverCount);
 	bool canJump(void); // selected units can jump
 	bool canJumpToWPos(void);
 	void doDrag(bool bGui);
-
 
 	int32_t attackShort(void);
 	int32_t attackMedium(void);
@@ -381,7 +343,7 @@ private:
 	int32_t changeLighting(void);
 	int32_t vehicleCommand(void);
 	int32_t toggleGUI(void);
-	int32_t	drawTGLShapes(void);
+	int32_t drawTGLShapes(void);
 	int32_t infoCommand(void);
 	int32_t infoButtonReleased(void);
 	int32_t energyWeapons(void);
@@ -390,9 +352,8 @@ private:
 	int32_t gotoNextNavMarker(void);
 	int32_t sendSensorStrike(void);
 
-	int32_t	handleChatKey(void);
-	int32_t	handleTeamChatKey(void);
-
+	int32_t handleChatKey(void);
+	int32_t handleTeamChatKey(void);
 
 	bool makePatrolPath(void);
 
@@ -412,7 +373,7 @@ private:
 	int32_t cameraAssign2(void);
 	int32_t cameraAssign3(void);
 
-	static GameObject*	target;
+	static GameObject* target;
 
 	void printDebugInfo(void);
 
@@ -454,52 +415,46 @@ private:
 	int32_t rotateObjectLeft(void);
 	int32_t rotateObjectRight(void);
 
-	bool	canAddVehicle(const Stuff::Vector3D& pos);
-	bool	canRecover(const Stuff::Vector3D& pos);
-	int32_t	makeNoTargetCursor(bool passable, bool lineOfSight, bool ctrl, bool bGui,
-							   int32_t moverCount, int32_t nonMoverCount);
-	int32_t	makeRangeCursor(bool LOS);
-	int32_t	makeTargetCursor(bool lineOfSight, int32_t moverCount, int32_t nonMoverCount);
-	int32_t	makeMoveCursor(bool bLineOfSite);
-	int32_t	makeJumpCursor(bool bLineOfSite);
-	int32_t	makeRunCursor(bool bLineOfSite);
-	void	updateRollovers(void);
+	bool canAddVehicle(const Stuff::Vector3D& pos);
+	bool canRecover(const Stuff::Vector3D& pos);
+	int32_t makeNoTargetCursor(bool passable, bool lineOfSight, bool ctrl,
+		bool bGui, int32_t moverCount, int32_t nonMoverCount);
+	int32_t makeRangeCursor(bool LOS);
+	int32_t makeTargetCursor(
+		bool lineOfSight, int32_t moverCount, int32_t nonMoverCount);
+	int32_t makeMoveCursor(bool bLineOfSite);
+	int32_t makeJumpCursor(bool bLineOfSite);
+	int32_t makeRunCursor(bool bLineOfSite);
+	void updateRollovers(void);
 
+	void addAirstrike(void);
+	void addVehicle(const Stuff::Vector3D& pos);
+	void updateTarget(bool bCursorIsInGui);
+	void drawWayPointPaths(void);
 
+	int32_t calcRotation(void);
 
-	void	addAirstrike(void);
-	void	addVehicle(const Stuff::Vector3D& pos);
-	void	updateTarget(bool bCursorIsInGui);
-	void	drawWayPointPaths(void);
+	void swapResolutions(void);
 
-	int32_t	calcRotation(void);
-
-
-
-	void	swapResolutions(void);
-
-
-	bool	canSalvage(GameObject* pMover);
-	bool	selectionIsHelicopters();
-	void	drawHotKey(PCSTR string, PCSTR descStr, int32_t x, int32_t y);
-	void	drawHotKeys(void);
-
-
+	bool canSalvage(GameObject* pMover);
+	bool selectionIsHelicopters();
+	void drawHotKey(PCSTR string, PCSTR descStr, int32_t x, int32_t y);
+	void drawHotKeys(void);
 
 	Stuff::Vector3D makeAirStrikeTarget(const Stuff::Vector3D& pos);
 
-	GameObject*		oldTargets[MAX_ICONS];
+	GameObject* oldTargets[MAX_ICONS];
 
-	aFont			hotKeyFont;
-	aFont			hotKeyHeaderFont;
+	aFont hotKeyFont;
+	aFont hotKeyHeaderFont;
 
-	bool			lastUpdateDoubleClick;
+	bool lastUpdateDoubleClick;
 
-	float			swapTime;
+	float swapTime;
 
-	KeyboardRef*	keyboardRef;
+	KeyboardRef* keyboardRef;
 
-	MoverPtr		reinforcement;
+	MoverPtr reinforcement;
 };
 
 typedef MissionInterfaceManager* MissionInterfaceManagerPtr;

@@ -17,31 +17,31 @@
 
 class EditorMFCApp : public CWinApp
 {
-public:
+  public:
 	EditorMFCApp(void);
 
-// Overrides
+	// Overrides
 	// ClassWizard generated virtual function overrides
 	//{{AFX_VIRTUAL(EditorMFCApp)
-public:
+  public:
 	virtual BOOL InitInstance(void);
 	virtual BOOL OnIdle(int32_t lCount);
 	virtual int32_t ExitInstance(void);
 	//}}AFX_VIRTUAL
 
-// Implementation
+	// Implementation
 
-public:
+  public:
 	//{{AFX_MSG(EditorMFCApp)
 	afx_msg void OnAppAbout(void);
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };
 
-
 /////////////////////////////////////////////////////////////////////////////
 
 //{{AFX_INSERT_LOCATION}}
-// Microsoft Visual C++ will insert additional declarations immediately before the previous line.
+// Microsoft Visual C++ will insert additional declarations immediately before
+// the previous line.
 
 #endif // !defined(AFX_EDITORMFC_H__FFBDF9AD_0923_4563_968D_887E72897ECF__INCLUDED_)

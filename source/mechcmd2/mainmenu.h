@@ -26,7 +26,6 @@ MainMenu.h			: Interface for the MainMenu component.
 #include "mc2movie.h"
 #endif
 
-
 class OptionsScreenWrapper;
 class Mechlopedia;
 //*************************************************************************************************
@@ -37,23 +36,18 @@ MainMenu:
 **************************************************************************************************/
 class SplashIntro : public LogisticsScreen
 {
-public:
-
+  public:
 	SplashIntro() {}
 	virtual ~SplashIntro() {}
 
 	void init(void);
-
 };
 
-
-class MainMenu: public LogisticsScreen
+class MainMenu : public LogisticsScreen
 {
-public:
-
+  public:
 	MainMenu(void);
 	virtual ~MainMenu(void);
-
 
 	int32_t init(FitIniFile& file);
 
@@ -67,52 +61,44 @@ public:
 	void setDrawBackground(bool bDrawBackground);
 	void skipIntro(void);
 
-	virtual int32_t	handleMessage(uint32_t, uint32_t);
+	virtual int32_t handleMessage(uint32_t, uint32_t);
 
+	static bool bDrawMechlopedia;
 
-	static	bool	bDrawMechlopedia;
-
-private:
-
+  private:
 	MainMenu& operator=(const MainMenu& ainMenu);
 	MainMenu(const MainMenu& src);
 
+	bool bDrawBackground;
 
+	LogisticsScreen background;
 
-	bool	bDrawBackground;
+	bool promptToQuit;
+	bool bOptions;
+	bool bSave;
+	bool bLoad;
+	bool bLoadSingle;
+	bool bLoadCampaign;
+	bool promptToDisconnect;
+	bool bLegal;
 
-	LogisticsScreen	background;
+	int32_t tuneId;	// What music should I play here!
+	bool musicStarted; // Should I restart the tune?
 
-	bool	promptToQuit;
-	bool	bOptions;
-	bool	bSave;
-	bool	bLoad;
-	bool	bLoadSingle;
-	bool	bLoadCampaign;
-	bool	promptToDisconnect;
-	bool	bLegal;
+	int32_t endResult;
 
-	int32_t	tuneId;			//What music should I play here!
-	bool	musicStarted;	//Should I restart the tune?
+	aAnimation beginAnim;
+	aAnimation endAnim;
 
-	int32_t	endResult;
+	OptionsScreenWrapper* optionsScreenWrapper;
+	Mechlopedia* mechlopedia;
+	SplashIntro intro;
+	bool introOver;
+	MPLoadMap singleLoadDlg;
+	bool bHostLeftDlg;
 
-	aAnimation	beginAnim;
-	aAnimation	endAnim;
-
-	OptionsScreenWrapper*	optionsScreenWrapper;
-	Mechlopedia*			mechlopedia;
-	SplashIntro				intro;
-	bool					introOver;
-	MPLoadMap				singleLoadDlg;
-	bool					bHostLeftDlg;
-
-	MC2MoviePtr			introMovie;
-
-
-
+	MC2MoviePtr introMovie;
 };
 
-
 //*************************************************************************************************
-#endif  // end of file ( MainMenu.h )
+#endif // end of file ( MainMenu.h )

@@ -22,8 +22,10 @@ uint32_t gosFX::Profile_Count;
 
 static Stuff::LinearMatrix4D Effect_Into_Motion_data(true);
 static Stuff::LinearMatrix4D Effect_Against_Motion_data(true);
-const Stuff::LinearMatrix4D& gosFX::Effect_Into_Motion = Effect_Into_Motion_data;
-const Stuff::LinearMatrix4D& gosFX::Effect_Against_Motion = Effect_Against_Motion_data;
+const Stuff::LinearMatrix4D& gosFX::Effect_Into_Motion =
+	Effect_Into_Motion_data;
+const Stuff::LinearMatrix4D& gosFX::Effect_Against_Motion =
+	Effect_Against_Motion_data;
 
 //-----------------------------------------------------------------------------
 //
@@ -52,10 +54,10 @@ void __stdcall gosFX::InitializeClasses(void)
 	DebrisCloud::InitializeClass();
 	PointLight::InitializeClass();
 	EffectLibrary::InitializeClass();
-	Effect_Into_Motion_data(1, 1) = 0.0f;
-	Effect_Into_Motion_data(1, 2) = 1.0f;
-	Effect_Into_Motion_data(2, 1) = -1.0f;
-	Effect_Into_Motion_data(2, 2) = 0.0f;
+	Effect_Into_Motion_data(1, 1)	= 0.0f;
+	Effect_Into_Motion_data(1, 2)	= 1.0f;
+	Effect_Into_Motion_data(2, 1)	= -1.0f;
+	Effect_Into_Motion_data(2, 2)	= 0.0f;
 	Effect_Against_Motion_data(1, 1) = 0.0f;
 	Effect_Against_Motion_data(1, 2) = -1.0f;
 	Effect_Against_Motion_data(2, 1) = 1.0f;
@@ -72,7 +74,8 @@ void __stdcall gosFX::InitializeClasses(void)
 	AddStatistic("Perts", "prims", gos_DWORD, &Pert_Count, Stat_AutoReset);
 	AddStatistic("Cards", "prims", gos_DWORD, &Card_Count, Stat_AutoReset);
 	AddStatistic("Shapes", "prims", gos_DWORD, &Shape_Count, Stat_AutoReset);
-	AddStatistic("Profiles", "prims", gos_DWORD, &Profile_Count, Stat_AutoReset);
+	AddStatistic(
+		"Profiles", "prims", gos_DWORD, &Profile_Count, Stat_AutoReset);
 }
 
 //-----------------------------------------------------------------------------
@@ -80,7 +83,7 @@ void __stdcall gosFX::InitializeClasses(void)
 void __stdcall gosFX::TerminateClasses(void)
 {
 	// make sure these were actually initialized
-	if(!DebrisCloud::DefaultData)
+	if (!DebrisCloud::DefaultData)
 		return;
 	EffectLibrary::TerminateClass();
 	PointLight::TerminateClass();
@@ -98,15 +101,14 @@ void __stdcall gosFX::TerminateClasses(void)
 	PointCloud::TerminateClass();
 	ParticleCloud::TerminateClass();
 	Effect::TerminateClass();
-	//Check_Pointer(Heap);
-	//gos_DestroyMemoryHeap(Heap, true);
-	//Heap = nullptr;
+	// Check_Pointer(Heap);
+	// gos_DestroyMemoryHeap(Heap, true);
+	// Heap = nullptr;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-int32_t
-gosFX::ReadGFXVersion(Stuff::MemoryStream* erf_stream)
+int32_t gosFX::ReadGFXVersion(Stuff::MemoryStream* erf_stream)
 {
 	Check_Object(erf_stream);
 	int32_t erf_signature;
@@ -114,15 +116,14 @@ gosFX::ReadGFXVersion(Stuff::MemoryStream* erf_stream)
 	Verify(erf_signature == 'GFX#');
 	uint32_t version;
 	*erf_stream >> version;
-	if(version > CurrentGFXVersion)
+	if (version > CurrentGFXVersion)
 		STOP(("Application must be rebuilt to use this version of GFX data"));
 	return version;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-gosFX::WriteGFXVersion(Stuff::MemoryStream* erf_stream)
+void gosFX::WriteGFXVersion(Stuff::MemoryStream* erf_stream)
 {
 	Check_Object(erf_stream);
 	*erf_stream << 'GFX#' << static_cast<int32_t>(CurrentGFXVersion);

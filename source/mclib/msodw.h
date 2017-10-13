@@ -16,41 +16,41 @@
 #pragma pack(push, msodw_h)
 #pragma pack(4)
 
-#define DW_TIMEOUT_VALUE	20000
-#define DW_MUTEX_TIMEOUT    DW_TIMEOUT_VALUE / 2
-#define DW_NOTIFY_TIMEOUT   120000 // 2 minutes
-#define DW_MAX_ASSERT_CCH   1024
-#define DW_MAX_PATH         260
-#define DW_APPNAME_LENGTH	56
-#define DW_MAX_SERVERNAME   DW_MAX_PATH
-#define DW_MAX_ERROR_CWC    260 // must be at least max_path
-#define DW_MAX_REGSUBPATH   200
+#define DW_TIMEOUT_VALUE 20000
+#define DW_MUTEX_TIMEOUT DW_TIMEOUT_VALUE / 2
+#define DW_NOTIFY_TIMEOUT 120000 // 2 minutes
+#define DW_MAX_ASSERT_CCH 1024
+#define DW_MAX_PATH 260
+#define DW_APPNAME_LENGTH 56
+#define DW_MAX_SERVERNAME DW_MAX_PATH
+#define DW_MAX_ERROR_CWC 260 // must be at least max_path
+#define DW_MAX_REGSUBPATH 200
 #define DW_CMDLINE_RESPONSE "DwResponse="
 
 #define DW_WHISTLER_EVENTLOG_SOURCE "Application Error"
 
 // the following are the fields that can be specified in a manifest file to
 // launch DW in a file based reporting mode
-#define DW_MANIFEST_TITLENAME    L"TitleName="
-#define DW_MANIFEST_ERRORTEXT    L"ErrorText="
-#define DW_MANIFEST_HDRTEXT      L"HeaderText="
-#define DW_MANIFEST_ERRORSIG     L"ErrorSig="
-#define DW_MANIFEST_ERRORDETAIL  L"ErrorDetail="
-#define DW_MANIFEST_SERVERNAME   L"Server="
-#define DW_MANIFEST_URL1         L"Stage1URL="
-#define DW_MANIFEST_URL2         L"Stage2URL="
-#define DW_MANIFEST_LCID         L"UI LCID="
-#define DW_MANIFEST_BRAND        L"Brand="
-#define DW_MANIFEST_EVENTSOURCE  L"EventLogSource="
-#define DW_MANIFEST_EVENTID      L"EventID="
-#define DW_MANIFEST_DATAFILES    L"DataFiles="
-#define DW_MANIFEST_FLAGS        L"Flags="
+#define DW_MANIFEST_TITLENAME L"TitleName="
+#define DW_MANIFEST_ERRORTEXT L"ErrorText="
+#define DW_MANIFEST_HDRTEXT L"HeaderText="
+#define DW_MANIFEST_ERRORSIG L"ErrorSig="
+#define DW_MANIFEST_ERRORDETAIL L"ErrorDetail="
+#define DW_MANIFEST_SERVERNAME L"Server="
+#define DW_MANIFEST_URL1 L"Stage1URL="
+#define DW_MANIFEST_URL2 L"Stage2URL="
+#define DW_MANIFEST_LCID L"UI LCID="
+#define DW_MANIFEST_BRAND L"Brand="
+#define DW_MANIFEST_EVENTSOURCE L"EventLogSource="
+#define DW_MANIFEST_EVENTID L"EventID="
+#define DW_MANIFEST_DATAFILES L"DataFiles="
+#define DW_MANIFEST_FLAGS L"Flags="
 
 // Seperator for file lists (Manifest DataFiles and Exception Additional Files
-#define DW_FILESEPA              '|'
-#define DW_FILESEP_X(X)          L##X
-#define DW_FILESEP_Y(X)          DW_FILESEP_X(X)
-#define DW_FILESEP               DW_FILESEP_Y(DW_FILESEPA)
+#define DW_FILESEPA '|'
+#define DW_FILESEP_X(X) L##X
+#define DW_FILESEP_Y(X) DW_FILESEP_X(X)
+#define DW_FILESEP DW_FILESEP_Y(DW_FILESEPA)
 
 #ifdef DEBUG
 enum // AssertActionCodes
@@ -68,12 +68,12 @@ enum // AssertActionCodes
 
 enum // ECrashTimeDialogStates	// msoctds
 {
-	msoctdsNull          = 0x00000000,
-	msoctdsQuit          = 0x00000001,
-	msoctdsRestart       = 0x00000002,
-	msoctdsRecover       = 0x00000004,
-	msoctdsUnused        = 0x00000008,
-	msoctdsDebug         = 0x00000010,
+	msoctdsNull	= 0x00000000,
+	msoctdsQuit	= 0x00000001,
+	msoctdsRestart = 0x00000002,
+	msoctdsRecover = 0x00000004,
+	msoctdsUnused  = 0x00000008,
+	msoctdsDebug   = 0x00000010,
 };
 
 #define MSODWRECOVERQUIT (msoctdsRecover | msoctdsQuit)
@@ -81,97 +81,101 @@ enum // ECrashTimeDialogStates	// msoctds
 #define MSODWRESPONSES (msoctdsQuit | msoctdsRestart | msoctdsRecover)
 
 // THIS IS PHASED OUT -- DON'T USE
-enum  // EMsoCrashHandlerFlags  // msochf
+enum // EMsoCrashHandlerFlags  // msochf
 {
-	msochfNull                = 0x00000000,
+	msochfNull = 0x00000000,
 
-	msochfUnused              = msoctdsUnused,  // THESE MUST BE THE SAME
+	msochfUnused			  = msoctdsUnused, // THESE MUST BE THE SAME
 	msochfCanRecoverDocuments = msoctdsRecover,
 
-	msochfObsoleteCanDebug    = 0x00010001,  // not used anymore
-	msochfCannotSneakyDebug   = 0x00010002,  // The "hidden" debug feature won't work
-	msochfDefaultDontReport   = 0x00010004,
-	msochReportingDisabled    = 0x00010008,  // User cannot change default reporting choice
+	msochfObsoleteCanDebug = 0x00010001, // not used anymore
+	msochfCannotSneakyDebug =
+		0x00010002, // The "hidden" debug feature won't work
+	msochfDefaultDontReport = 0x00010004,
+	msochReportingDisabled =
+		0x00010008, // User cannot change default reporting choice
 };
-
 
 //
-enum  // EMsoCrashHandlerResults  // msochr
+enum // EMsoCrashHandlerResults  // msochr
 {
-	msochrNotHandled        = msoctdsNull,
-	msochrUnused            = msoctdsUnused,
-	msochrDebug             = msoctdsDebug,
-	msochrRecoverDocuments  = msoctdsRecover,
-	msochrRestart           = msoctdsRestart,
-	msochrQuit              = msoctdsQuit,
+	msochrNotHandled	   = msoctdsNull,
+	msochrUnused		   = msoctdsUnused,
+	msochrDebug			   = msoctdsDebug,
+	msochrRecoverDocuments = msoctdsRecover,
+	msochrRestart		   = msoctdsRestart,
+	msochrQuit			   = msoctdsQuit,
 };
 
-enum  // EDwBehaviorFlags
+enum // EDwBehaviorFlags
 {
-	fDwOfficeApp            = 0x00000001,
-	fDwNoReporting          = 0x00000002,   // don't report
-	fDwCheckSig             = 0x00000004,   // checks the signatures of the App/Mod list
-	fDwGiveAppResponse      = 0x00000008,   // hands szResponse to app on command line
-	fDwWhistler             = 0x00000010,   // Whistler's exception handler is caller
-	fDwUseIE                = 0x00000020,   // always launch w/ IE
-	fDwDeleteFiles          = 0x00000040,   // delete the additional files after use.
-	fDwHeadless             = 0x00000080,   // DW will auto-report. policy required to enable
-	fDwUseHKLM              = 0x00000100,   // DW reg from HKLM instead of HKCU
+	fDwOfficeApp   = 0x00000001,
+	fDwNoReporting = 0x00000002, // don't report
+	fDwCheckSig	= 0x00000004, // checks the signatures of the App/Mod list
+	fDwGiveAppResponse = 0x00000008, // hands szResponse to app on command line
+	fDwWhistler		   = 0x00000010, // Whistler's exception handler is caller
+	fDwUseIE		   = 0x00000020, // always launch w/ IE
+	fDwDeleteFiles	 = 0x00000040, // delete the additional files after use.
+	fDwHeadless = 0x00000080, // DW will auto-report. policy required to enable
+	fDwUseHKLM  = 0x00000100, // DW reg from HKLM instead of HKCU
 };
-
 
 typedef struct _DWSharedMem
 {
-	uint32_t dwSize;               // should be set to size of DWSharedMem
-	uint32_t pid;                  // Process Id of caller
-	uint32_t tid;                  // Id of excepting thread
-	DWORD_PTR eip;              // EIP of the excepting instruction
-	PEXCEPTION_POINTERS pep;    // Exception pointers given to the callee's
+	uint32_t dwSize;		 // should be set to size of DWSharedMem
+	uint32_t pid;			 // Process Id of caller
+	uint32_t tid;			 // Id of excepting thread
+	DWORD_PTR eip;			 // EIP of the excepting instruction
+	PEXCEPTION_POINTERS pep; // Exception pointers given to the callee's
 	// exception handler
-	HANDLE hEventDone;          // event DW signals when done
+	HANDLE hEventDone; // event DW signals when done
 	// caller will also signal this if it things
 	// DW has hung and restarts itself
-	HANDLE hEventNotifyDone;    // App sets when it's done w/ notifcation phase
-	HANDLE hEventAlive;         // heartbeat event DW signals per EVENT_TIMEOUT
-	HANDLE hMutex;              // to protect the signaling of EventDone
-	HANDLE hProc;               // handle to the calling process (! in Assert)
+	HANDLE hEventNotifyDone; // App sets when it's done w/ notifcation phase
+	HANDLE hEventAlive;		 // heartbeat event DW signals per EVENT_TIMEOUT
+	HANDLE hMutex;			 // to protect the signaling of EventDone
+	HANDLE hProc;			 // handle to the calling process (! in Assert)
 
-	uint32_t bfDWBehaviorFlags;    // controls caller-specific behaviors
+	uint32_t bfDWBehaviorFlags; // controls caller-specific behaviors
 
-	uint32_t msoctdsResult;      // result from crash-time dialog
-	BOOL fReportProblem;      // did user approve reporting?
-	uint32_t bfmsoctdsOffer;     // bitfield of user choices to offer
+	uint32_t msoctdsResult;  // result from crash-time dialog
+	BOOL fReportProblem;	 // did user approve reporting?
+	uint32_t bfmsoctdsOffer; // bitfield of user choices to offer
 	// note that you must specify two of:
 	// Quit, Restart, Recover, Ignore
 	// The Debug choice is independent
-	uint32_t bfmsoctdsNotify;    // bitfield of user choices for which the
+	uint32_t bfmsoctdsNotify; // bitfield of user choices for which the
 	// app wants control back instead of simply being
 	// terminated by DW.  The app will then be
 	// responsible for pinging DW (if desired) with
 	// hEventAlive and for notify DW it's ok to
 	// terminate the app w/ hEventDone
 
-	uint32_t bfmsoctdsLetRun;    // bitfield of user choices for which the
+	uint32_t bfmsoctdsLetRun; // bitfield of user choices for which the
 	// app wants control back instead of being
 	// terminated by DW.  DW can then safely ignore
 	// the app and exit.
 
-	int32_t iPingCurrent;         // current count for the recovery progress bar
-	int32_t iPingEnd;             // index for the end of the recovery progress bar
+	int32_t iPingCurrent; // current count for the recovery progress bar
+	int32_t iPingEnd;	 // index for the end of the recovery progress bar
 
-	char szFormalAppName[DW_APPNAME_LENGTH];   // the app name for display to user (ie "Microsoft Word")
-	char szInformalAppName[DW_APPNAME_LENGTH]; // the app name for display to user (ie "Word")
-	char szModuleFileName[DW_MAX_PATH];        // The result of GetModuleFileNameA(nullptr)
-	WCHAR wzErrorMessage[DW_MAX_ERROR_CWC];    // Error message to show user.
+	char szFormalAppName[DW_APPNAME_LENGTH]; // the app name for display to user
+											 // (ie "Microsoft Word")
+	char szInformalAppName[DW_APPNAME_LENGTH]; // the app name for display to
+											   // user (ie "Word")
+	char szModuleFileName[DW_MAX_PATH];		   // The result of
+											   // GetModuleFileNameA(nullptr)
+	WCHAR wzErrorMessage[DW_MAX_ERROR_CWC];	// Error message to show user.
 
-	char szServer[DW_MAX_SERVERNAME];  // name of server to try by default
-	char szLCIDKeyValue[DW_MAX_PATH];  // name of key value uint32_t containing the
+	char szServer[DW_MAX_SERVERNAME]; // name of server to try by default
+	char szLCIDKeyValue[DW_MAX_PATH]; // name of key value uint32_t containing
+									  // the
 	// PlugUI LCID, if this string fails to
 	// be a valid key-value, DW will use the
 	// system LCID, and if it can't find
 	// an intl dll for that, will fall
 	// back on US English (1033)
-	char szPIDRegKey[DW_MAX_PATH];     // name of the key that holds the PID
+	char szPIDRegKey[DW_MAX_PATH]; // name of the key that holds the PID
 	// can be used by the Server for
 	// spoof-detection
 
@@ -180,23 +184,23 @@ typedef struct _DWSharedMem
 	// HKCU\Software and
 	// HKCU\Software\Policies (for policy)
 
-	WCHAR wzDotDataDlls[DW_MAX_PATH];  // contains the list of DLLs, terminated
+	WCHAR wzDotDataDlls[DW_MAX_PATH]; // contains the list of DLLs, terminated
 	// by '\0' characters, that DW will
 	// collect the .data sections into the
 	// full minidump version
 	// e.g. "mso9.dll\0outllib.dll\0"
-	WCHAR wzAdditionalFile[1024];      // File list, seperated by DW_FILESEP
+	WCHAR wzAdditionalFile[1024]; // File list, seperated by DW_FILESEP
 	// each of these files gets added to the
 	// cab at upload time
 
-	char szBrand[DW_APPNAME_LENGTH];   // passed as a param to Privacy Policy link
+	char szBrand[DW_APPNAME_LENGTH]; // passed as a param to Privacy Policy link
 #ifdef DEBUG
 	// for Assert communication
-	uint32_t dwTag;                       // [in] AssertTag
-	char szFile[DW_MAX_PATH];          // [in] File name of the assert
-	int32_t line;                          // [in] Line number of the assert
-	char szAssert[DW_MAX_ASSERT_CCH];  // [in] Sz from the assert
-	int32_t AssertActionCode;              // [out] action code to take
+	uint32_t dwTag;					  // [in] AssertTag
+	char szFile[DW_MAX_PATH];		  // [in] File name of the assert
+	int32_t line;					  // [in] Line number of the assert
+	char szAssert[DW_MAX_ASSERT_CCH]; // [in] Sz from the assert
+	int32_t AssertActionCode;		  // [out] action code to take
 #endif
 } DWSharedMem;
 

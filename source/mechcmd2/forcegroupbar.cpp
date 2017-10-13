@@ -20,11 +20,11 @@ ForceGroupBar.cpp			: Implementation of the ForceGroupBar component.
 #include "prefs.h"
 #include "GameSound.h"
 
-float ForceGroupBar::iconWidth = 48;
-float ForceGroupBar::iconHeight = 42;
-int32_t	  ForceGroupBar::iconsPerRow = 8;
+float ForceGroupBar::iconWidth	 = 48;
+float ForceGroupBar::iconHeight	= 42;
+int32_t ForceGroupBar::iconsPerRow = 8;
 
-StaticInfo*  ForceGroupBar::s_coverIcon = nullptr;
+StaticInfo* ForceGroupBar::s_coverIcon = nullptr;
 
 extern bool useLeftRightMouseProfile;
 extern char CDInstallPath[];
@@ -32,75 +32,79 @@ void EnterWindowMode();
 void EnterFullScreenMode();
 void __stdcall ExitGameOS();
 
-#define BOTTOM_OFFSET	5 * Environment.screenHeight/640.f
+#define BOTTOM_OFFSET 5 * Environment.screenHeight / 640.f
 
-#define FORCEGROUP_LEFT		ForceGroupIcon::selectionRect[0].left
-#define FORCEGROUP_WIDTH	(ForceGroupIcon::selectionRect[7].right - ForceGroupIcon::selectionRect[0].left)
-#define FORCEGROUP_HEIGHT	(ForceGroupIcon::selectionRect[0].bottom - ForceGroupIcon::selectionRect[0].top)
+#define FORCEGROUP_LEFT ForceGroupIcon::selectionRect[0].left
+#define FORCEGROUP_WIDTH                                                       \
+	(ForceGroupIcon::selectionRect[7].right -                                  \
+		ForceGroupIcon::selectionRect[0].left)
+#define FORCEGROUP_HEIGHT                                                      \
+	(ForceGroupIcon::selectionRect[0].bottom -                                 \
+		ForceGroupIcon::selectionRect[0].top)
 
 extern float frameRate;
 
 ForceGroupBar::ForceGroupBar()
 {
-	for(size_t i = 0; i < MAX_ICONS; ++i)
+	for (size_t i = 0; i < MAX_ICONS; ++i)
 	{
 		icons[i] = 0;
 	}
-	iconCount = 0;
+	iconCount		= 0;
 	forceNumFlashes = 0;
-	forceFlashTime = 0.0f;
+	forceFlashTime  = 0.0f;
 }
 
 ForceGroupBar::~ForceGroupBar()
 {
 	removeAll();
-	if(ForceGroupIcon::gosFontHandle)
+	if (ForceGroupIcon::gosFontHandle)
 		delete ForceGroupIcon::gosFontHandle;
-	ForceGroupIcon::gosFontHandle  = nullptr;
+	ForceGroupIcon::gosFontHandle = nullptr;
 }
-
 
 bool ForceGroupBar::flashJumpers(int32_t numFlashes)
 {
 	forceNumFlashes = numFlashes;
-	forceFlashTime = 0.0f;
+	forceFlashTime  = 0.0f;
 	return true;
 }
 
 bool ForceGroupBar::addMech(Mover* pMover)
 {
-	if(iconCount >= MAX_ICONS)
+	if (iconCount >= MAX_ICONS)
 	{
 		gosASSERT(false);
 		return 0;
 	}
-	MechIcon* pIcon = new MechIcon;
-	bool bRetVal = pIcon->init(pMover);
+	MechIcon* pIcon	= new MechIcon;
+	bool bRetVal	   = pIcon->init(pMover);
 	icons[iconCount++] = pIcon;
 	return bRetVal;
 }
 
 bool ForceGroupBar::addVehicle(Mover* pMover)
 {
-	if(iconCount >= MAX_ICONS)
+	if (iconCount >= MAX_ICONS)
 	{
 		gosASSERT(false);
 		return 0;
 	}
 	VehicleIcon* pIcon = new VehicleIcon;
-	bool bRetVal = pIcon->init(pMover);
+	bool bRetVal	   = pIcon->init(pMover);
 	icons[iconCount++] = pIcon;
 	return bRetVal;
 }
 
 void ForceGroupBar::removeMover(Mover* mover)
 {
-	for(size_t i = 0; i < iconCount; i++)
-		if(icons[i]->unit == mover)
+	for (size_t i = 0; i < iconCount; i++)
+		if (icons[i]->unit == mover)
 		{
 			delete icons[i];
-			iconCount --;
-			memmove(&icons[i], &icons[i] + 1, (iconCount - i) * sizeof(ForceGroupIcon*));
+			iconCount--;
+			memmove(&icons[i], &icons[i] + 1,
+				(iconCount - i) * sizeof(ForceGroupIcon*));
 			icons[iconCount] = 0;
 			break;
 		}
@@ -108,88 +112,102 @@ void ForceGroupBar::removeMover(Mover* mover)
 
 void ForceGroupBar::update()
 {
-	bool bSelect = userInput->isLeftClick();
-	bool bCommand = useLeftRightMouseProfile ? userInput->isRightClick() : userInput->isLeftClick();
+	bool bSelect  = userInput->isLeftClick();
+	bool bCommand = useLeftRightMouseProfile ? userInput->isRightClick()
+											 : userInput->isLeftClick();
 	bool shiftDn = userInput->getKeyDown(KEY_LSHIFT) ? true : false;
-	bool bCamera = useLeftRightMouseProfile ? (userInput->isLeftDoubleClick()) : (userInput->isRightClick() && !userInput->isRightDrag());
-	bool bForceGroup = useLeftRightMouseProfile ? (userInput->isLeftDoubleClick()) : userInput->isLeftDoubleClick();
-	if(bCamera)
+	bool bCamera = useLeftRightMouseProfile ? (userInput->isLeftDoubleClick())
+											: (userInput->isRightClick() &&
+												  !userInput->isRightDrag());
+	bool bForceGroup = useLeftRightMouseProfile
+						   ? (userInput->isLeftDoubleClick())
+						   : userInput->isLeftDoubleClick();
+	if (bCamera)
 		bSelect = 0;
 	Stuff::Vector2DOf<int32_t> screen;
 	screen.x = userInput->getMouseX();
 	screen.y = userInput->getMouseY();
-	if(screen.x > FORCEGROUP_LEFT && screen.x < FORCEGROUP_LEFT + FORCEGROUP_WIDTH
-			&& screen.y > FORCEGROUP_TOP)
+	if (screen.x > FORCEGROUP_LEFT &&
+		screen.x < FORCEGROUP_LEFT + FORCEGROUP_WIDTH &&
+		screen.y > FORCEGROUP_TOP)
 	{
-		if(ControlGui::instance->isSelectingInfoObject())
+		if (ControlGui::instance->isSelectingInfoObject())
 			userInput->setMouseCursor(mState_INFO);
-		else if(ControlGui::instance->getRepair())
+		else if (ControlGui::instance->getRepair())
 			userInput->setMouseCursor(mState_XREPAIR);
-		else if(MissionInterfaceManager::instance()->hotKeyIsPressed(EJECT_COMMAND_INDEX))
+		else if (MissionInterfaceManager::instance()->hotKeyIsPressed(
+					 EJECT_COMMAND_INDEX))
 			userInput->setMouseCursor(mState_EJECT);
 		else
 			userInput->setMouseCursor(mState_NORMAL);
-		helpTextID = IDS_FORCEGROUP_BAR_DESC;
+		helpTextID		 = IDS_FORCEGROUP_BAR_DESC;
 		helpTextHeaderID = IDS_FORCEGROUP_BAR;
 	}
 	// unselect all if appropriate
-	if(bSelect && !shiftDn && inRegion(screen.x, screen.y)
-			&& !ControlGui::instance->isSelectingInfoObject() && (!ControlGui::instance->getRepair()
-					&& !MissionInterfaceManager::instance()->hotKeyIsPressed(EJECT_COMMAND_INDEX)
-					&& !ControlGui::instance->getGuard()
-					|| useLeftRightMouseProfile))
+	if (bSelect && !shiftDn && inRegion(screen.x, screen.y) &&
+		!ControlGui::instance->isSelectingInfoObject() &&
+		(!ControlGui::instance->getRepair() &&
+				!MissionInterfaceManager::instance()->hotKeyIsPressed(
+					EJECT_COMMAND_INDEX) &&
+				!ControlGui::instance->getGuard() ||
+			useLeftRightMouseProfile))
 	{
 		Team* pTeam = Team::home;
-		for(size_t i = 0; i < pTeam->rosterSize; ++i)
+		for (size_t i = 0; i < pTeam->rosterSize; ++i)
 		{
 			Mover* pMover = (Mover*)pTeam->getMover(i);
-			if(pMover->getCommander()->getId() == Commander::home->getId())
+			if (pMover->getCommander()->getId() == Commander::home->getId())
 			{
 				pMover->setSelected(false);
 			}
 		}
 	}
 	// remove dead mechs
-	for(size_t t = 0; t < iconCount; ++t)
+	for (size_t t = 0; t < iconCount; ++t)
 	{
-		if((icons[t]->unit->isDestroyed() || icons[t]->unit->isDisabled()) && !icons[t]->unit->recoverBuddyWID)
+		if ((icons[t]->unit->isDestroyed() || icons[t]->unit->isDisabled()) &&
+			!icons[t]->unit->recoverBuddyWID)
 		{
-			if(!icons[t]->isAnimatingDeath())
+			if (!icons[t]->isAnimatingDeath())
 				icons[t]->beginDeathAnimation();
-			if(icons[t]->deathAnimationOver() || icons[t]->unit->causeOfDeath == POWER_USED_UP)
+			if (icons[t]->deathAnimationOver() ||
+				icons[t]->unit->causeOfDeath == POWER_USED_UP)
 			{
 				delete icons[t];
-				iconCount --;
-				memmove(&icons[t], &icons[t] + 1, (iconCount - t) * sizeof(ForceGroupIcon*));
+				iconCount--;
+				memmove(&icons[t], &icons[t] + 1,
+					(iconCount - t) * sizeof(ForceGroupIcon*));
 				icons[iconCount] = 0;
 			}
 		}
 	}
 	qsort(icons, iconCount, sizeof(ForceGroupIcon*), ForceGroupIcon::sort);
-	for(size_t i = 0; i < iconCount; i++)
+	for (size_t i = 0; i < iconCount; i++)
 	{
 		icons[i]->setLocationIndex(i);
 	}
-	for(i = 0; i < iconCount; ++i)
+	for (i = 0; i < iconCount; ++i)
 	{
-		if(icons[i]->inRegion(screen.x, screen.y))
+		if (icons[i]->inRegion(screen.x, screen.y))
 		{
 			icons[i]->unit->setTargeted(true);
-			if(ControlGui::instance->getRepair())
+			if (ControlGui::instance->getRepair())
 			{
-				if(!MissionInterfaceManager::instance()->canRepair(icons[i]->unit))
+				if (!MissionInterfaceManager::instance()->canRepair(
+						icons[i]->unit))
 				{
 					userInput->setMouseCursor(mState_XREPAIR);
 					// need to go back and unselect everything
-					if(bSelect)
+					if (bSelect)
 					{
-						if(!shiftDn)
+						if (!shiftDn)
 						{
 							Team* pTeam = Team::home;
-							for(size_t j = 0; j < pTeam->rosterSize; ++j)
+							for (size_t j = 0; j < pTeam->rosterSize; ++j)
 							{
 								Mover* pMover = (Mover*)pTeam->getMover(j);
-								if(pMover->getCommander()->getId() == Commander::home->getId())
+								if (pMover->getCommander()->getId() ==
+									Commander::home->getId())
 								{
 									pMover->setSelected(false);
 								}
@@ -202,7 +220,7 @@ void ForceGroupBar::update()
 					userInput->setMouseCursor(mState_REPAIR);
 				}
 			}
-			else if(ControlGui::instance->getGuard())
+			else if (ControlGui::instance->getGuard())
 			{
 				userInput->setMouseCursor(mState_GUARD);
 			}
@@ -210,39 +228,47 @@ void ForceGroupBar::update()
 			{
 				ControlGui::instance->setRolloverHelpText(IDS_UNIT_SELECT_HELP);
 			}
-			if(bSelect && !ControlGui::instance->infoButtonPressed())
+			if (bSelect && !ControlGui::instance->infoButtonPressed())
 			{
-				if(!(ControlGui::instance->getRepair() && MissionInterfaceManager::instance()->canRepair(icons[i]->unit) && !useLeftRightMouseProfile))
+				if (!(ControlGui::instance->getRepair() &&
+						MissionInterfaceManager::instance()->canRepair(
+							icons[i]->unit) &&
+						!useLeftRightMouseProfile))
 					icons[i]->click(shiftDn);
 				ControlGui::instance->setInfoWndMover(icons[i]->unit);
 			}
-			if(bCommand)
+			if (bCommand)
 			{
-				if(MissionInterfaceManager::instance()->hotKeyIsPressed(EJECT_COMMAND_INDEX))
+				if (MissionInterfaceManager::instance()->hotKeyIsPressed(
+						EJECT_COMMAND_INDEX))
 				{
-					MissionInterfaceManager::instance()->doEject(icons[i]->unit);
+					MissionInterfaceManager::instance()->doEject(
+						icons[i]->unit);
 				}
-				else if(ControlGui::instance->getGuard())
+				else if (ControlGui::instance->getGuard())
 				{
-					MissionInterfaceManager::instance()->doGuard(icons[i]->unit);
+					MissionInterfaceManager::instance()->doGuard(
+						icons[i]->unit);
 				}
-				else if(ControlGui::instance->getRepair())
+				else if (ControlGui::instance->getRepair())
 				{
-					if(MissionInterfaceManager::instance()->canRepair(icons[i]->unit))
-						MissionInterfaceManager::instance()->doRepair(icons[i]->unit);
+					if (MissionInterfaceManager::instance()->canRepair(
+							icons[i]->unit))
+						MissionInterfaceManager::instance()->doRepair(
+							icons[i]->unit);
 				}
 				else
 					ControlGui::instance->setInfoWndMover(icons[i]->unit);
 			}
-			if(bCamera)
+			if (bCamera)
 			{
 				icons[i]->rightClick();
 			}
-			if(bForceGroup)
+			if (bForceGroup)
 			{
-				for(size_t j = 0; j < 10; ++j)
+				for (size_t j = 0; j < 10; ++j)
 				{
-					if(icons[i]->unit->isInUnitGroup(j))
+					if (icons[i]->unit->isInUnitGroup(j))
 					{
 						MissionInterfaceManager::selectForceGroup(j, true);
 					}
@@ -257,9 +283,9 @@ void ForceGroupBar::update()
 
 bool ForceGroupBar::inRegion(int32_t x, int32_t y)
 {
-	for(size_t i = 0; i < iconCount; ++i)
+	for (size_t i = 0; i < iconCount; ++i)
 	{
-		if(icons[i]->inRegion(x, y))
+		if (icons[i]->inRegion(x, y))
 			return true;
 	}
 	return false;
@@ -269,47 +295,48 @@ void ForceGroupBar::render()
 {
 	s_coverIcon->setColor(0);
 	int32_t maxUnits = 16;
-	if(MPlayer)
+	if (MPlayer)
 	{
 		int32_t playerCount;
 		MPlayer->getPlayers(playerCount);
-		if(playerCount)
+		if (playerCount)
 			maxUnits = (MAX_MULTIPLAYER_MECHS_IN_LOGISTICS / playerCount) + 4;
 		else
 			maxUnits = 0;
-		if(maxUnits > 16)
+		if (maxUnits > 16)
 			maxUnits = 16;
 	}
-	for(size_t i = 0; i < MAX_ICONS; i++)
+	for (size_t i = 0; i < MAX_ICONS; i++)
 	{
-		if(forceNumFlashes && icons[i] && icons[i]->unit->canJump())
+		if (forceNumFlashes && icons[i] && icons[i]->unit->canJump())
 		{
-			if(forceFlashTime > .25f)
+			if (forceFlashTime > .25f)
 			{
-				if(icons[i])
+				if (icons[i])
 					icons[i]->render();
 			}
 		}
 		else
 		{
-			if(icons[i])
+			if (icons[i])
 				icons[i]->render();
 		}
-		if(i >= maxUnits)
+		if (i >= maxUnits)
 		{
-			if(s_coverIcon)
+			if (s_coverIcon)
 			{
-				s_coverIcon->setLocation(ForceGroupIcon::selectionRect[i].left, ForceGroupIcon::selectionRect[i].top);
+				s_coverIcon->setLocation(ForceGroupIcon::selectionRect[i].left,
+					ForceGroupIcon::selectionRect[i].top);
 				s_coverIcon->setColor(0xffffffff);
 				s_coverIcon->render();
 				s_coverIcon->setColor(0);
 			}
 		}
 	}
-	if(forceNumFlashes)
+	if (forceNumFlashes)
 	{
 		forceFlashTime += frameLength;
-		if(forceFlashTime > .5f)
+		if (forceFlashTime > .5f)
 		{
 			forceFlashTime = 0.0f;
 			forceNumFlashes--;
@@ -319,9 +346,9 @@ void ForceGroupBar::render()
 
 void ForceGroupBar::removeAll()
 {
-	for(size_t i = 0; i < iconCount; i++)
+	for (size_t i = 0; i < iconCount; i++)
 	{
-		if(icons[i])
+		if (icons[i])
 			delete icons[i];
 		icons[i] = nullptr;
 	}
@@ -330,15 +357,15 @@ void ForceGroupBar::removeAll()
 
 void ForceGroupBar::init(FitIniFile& file, StaticInfo* pCoverIcon)
 {
-	if(NO_ERROR != file.seekBlock("Fonts"))
+	if (NO_ERROR != file.seekBlock("Fonts"))
 		Assert(0, 0, "couldn't find the font block");
-	if(!ForceGroupIcon::gosFontHandle)
+	if (!ForceGroupIcon::gosFontHandle)
 		ForceGroupIcon::gosFontHandle = new aFont;
 	int32_t fontID;
 	file.readIdLong("IconFont", fontID);
 	ForceGroupIcon::gosFontHandle->init(fontID);
 	swapResolutions();
-	for(size_t i = 0; i < 16; i++)
+	for (size_t i = 0; i < 16; i++)
 		ForceGroupIcon::init(file, i);
 	s_coverIcon = pCoverIcon;
 }
@@ -346,26 +373,26 @@ void ForceGroupBar::init(FitIniFile& file, StaticInfo* pCoverIcon)
 void ForceGroupBar::swapResolutions()
 {
 	ForceGroupIcon::resetResolution(0);
-	for(size_t i = 0; i < iconCount; i++)
+	for (size_t i = 0; i < iconCount; i++)
 		icons[i]->swapResolutions(0);
 }
 
 bool ForceGroupBar::setPilotVideo(PCSTR pVideo, MechWarrior* pPilot)
 {
-	if(!pVideo)
+	if (!pVideo)
 	{
-		if(ForceGroupIcon::bMovie)
+		if (ForceGroupIcon::bMovie)
 		{
 			delete ForceGroupIcon::bMovie;
 			ForceGroupIcon::bMovie = nullptr;
 		}
-		else if(ForceGroupIcon::pilotVideoTexture)
+		else if (ForceGroupIcon::pilotVideoTexture)
 			gos_DestroyTexture(ForceGroupIcon::pilotVideoTexture);
 		ForceGroupIcon::pilotVideoTexture = 0;
-		ForceGroupIcon::pilotVideoPilot = 0;
+		ForceGroupIcon::pilotVideoPilot   = 0;
 	}
-	else if(ForceGroupIcon::bMovie || ControlGui::instance->isMoviePlaying()
-			|| ForceGroupIcon::pilotVideoTexture || !prefs.pilotVideos)
+	else if (ForceGroupIcon::bMovie || ControlGui::instance->isMoviePlaying() ||
+			 ForceGroupIcon::pilotVideoTexture || !prefs.pilotVideos)
 	{
 		// one already playing...
 		// OR we don't want them playing.
@@ -373,50 +400,64 @@ bool ForceGroupBar::setPilotVideo(PCSTR pVideo, MechWarrior* pPilot)
 	}
 	else
 	{
-		for(size_t i = 0; i < iconCount; i++)
+		for (size_t i = 0; i < iconCount; i++)
 		{
-			if(icons[i] && icons[i]->unit->getPilot() == pPilot)
+			if (icons[i] && icons[i]->unit->getPilot() == pPilot)
 			{
 				ForceGroupIcon::pilotVideoPilot = pPilot;
 				FullPathFileName aviPath;
 				aviPath.init(moviePath, pVideo, ".bik");
-				if((frameRate > 15.0) && fileExists(aviPath) && prefs.pilotVideos)   // This is about correct.  Slower then this and movie has hard time keeping up!
+				if ((frameRate > 15.0) && fileExists(aviPath) &&
+					prefs.pilotVideos) // This is about correct.  Slower then
+									   // this and movie has hard time keeping
+									   // up!
 				{
-					//Update the RECT every frame.  What if we shift Icons around cause someone died!!
+					// Update the RECT every frame.  What if we shift Icons
+					// around cause someone died!!
 					RECT vRect;
-					vRect.left 		= icons[i]->bmpLocation[icons[i]->locationIndex][1].x;
-					vRect.right 	= icons[i]->pilotLocation[icons[i]->locationIndex][2];
-					vRect.top 		= icons[i]->bmpLocation[icons[i]->locationIndex][3].y;
-					vRect.bottom 	= icons[i]->bmpLocation[icons[i]->locationIndex][1].y;
+					vRect.left =
+						icons[i]->bmpLocation[icons[i]->locationIndex][1].x;
+					vRect.right =
+						icons[i]->pilotLocation[icons[i]->locationIndex][2];
+					vRect.top =
+						icons[i]->bmpLocation[icons[i]->locationIndex][3].y;
+					vRect.bottom =
+						icons[i]->bmpLocation[icons[i]->locationIndex][1].y;
 					ForceGroupIcon::bMovie = new MC2Movie;
 					ForceGroupIcon::bMovie->init(aviPath, vRect, true);
 				}
 				else // make a still texture
 				{
 					char realPilotName[9];
-					//Set everything to zero so the strncpy below doesn't go off into LALA land!!
+					// Set everything to zero so the strncpy below doesn't go
+					// off into LALA land!!
 					memset(realPilotName, 0, 9);
 					strncpy(realPilotName, pPilot->getName(), 8);
 					FullPathFileName path;
 					path.init(moviePath, realPilotName, ".tga");
-					if(fileExists(path))
-						ForceGroupIcon::pilotVideoTexture = gos_NewTextureFromFile(gos_Texture_Solid, path, 0);
+					if (fileExists(path))
+						ForceGroupIcon::pilotVideoTexture =
+							gos_NewTextureFromFile(gos_Texture_Solid, path, 0);
 					else
 					{
 						char realMovieName[256];
 						char realMoviePath[1024];
-						_splitpath(path, nullptr, realMoviePath, realMovieName, nullptr);
-						//Not in main installed directory and not in fastfile.  Look on CD.
+						_splitpath(path, nullptr, realMoviePath, realMovieName,
+							nullptr);
+						// Not in main installed directory and not in fastfile.
+						// Look on CD.
 						char actualPath[2048];
 						strcpy(actualPath, CDInstallPath);
 						strcat(actualPath, realMoviePath);
 						strcat(actualPath, realMovieName);
 						strcat(actualPath, ".tga");
 						bool fileThere = fileExists(actualPath);
-						if(fileThere)
-							ForceGroupIcon::pilotVideoTexture = gos_NewTextureFromFile(gos_Texture_Solid, actualPath, 0);
+						if (fileThere)
+							ForceGroupIcon::pilotVideoTexture =
+								gos_NewTextureFromFile(
+									gos_Texture_Solid, actualPath, 0);
 						bool openFailed = false;
-						while(!fileThere)
+						while (!fileThere)
 						{
 							openFailed = true;
 							EnterWindowMode();
@@ -428,17 +469,21 @@ bool ForceGroupBar::setPilotVideo(PCSTR pVideo, MechWarrior* pPilot)
 							cLoadString(IDS_MC2_CDMISSING, msg, 1023);
 							cLoadString(IDS_MC2_MISSING_TITLE, title, 255);
 							sprintf(data, msg1, path, msg);
-							uint32_t result = MessageBox(nullptr, data, title, MB_OKCANCEL | MB_ICONWARNING);
-							if(result == IDCANCEL)
+							uint32_t result = MessageBox(nullptr, data, title,
+								MB_OKCANCEL | MB_ICONWARNING);
+							if (result == IDCANCEL)
 							{
 								ExitGameOS();
 								return 1;
 							}
 							fileThere = fileExists(actualPath);
-							if(fileThere)
-								ForceGroupIcon::pilotVideoTexture = gos_NewTextureFromFile(gos_Texture_Solid, actualPath, 0);
+							if (fileThere)
+								ForceGroupIcon::pilotVideoTexture =
+									gos_NewTextureFromFile(
+										gos_Texture_Solid, actualPath, 0);
 						}
-						if(openFailed && (Environment.fullScreen == 0) && prefs.fullScreen)
+						if (openFailed && (Environment.fullScreen == 0) &&
+							prefs.fullScreen)
 							EnterFullScreenMode();
 					}
 				}
@@ -451,7 +496,7 @@ bool ForceGroupBar::setPilotVideo(PCSTR pVideo, MechWarrior* pPilot)
 
 bool ForceGroupBar::isPlayingVideo()
 {
-	if(ForceGroupIcon::bMovie)
+	if (ForceGroupIcon::bMovie)
 		return true;
 	return false;
 }

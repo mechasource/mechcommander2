@@ -14,36 +14,24 @@
 
 using namespace Stuff;
 
-
 MemoryBlock* SlotLink::AllocatedMemory = nullptr;
 
 //
 //#############################################################################
 //#############################################################################
 //
-void
-SlotLink::InitializeClass(
-	size_t block_count,
-	size_t block_delta
-)
+void SlotLink::InitializeClass(size_t block_count, size_t block_delta)
 {
 	Verify(!AllocatedMemory);
-	AllocatedMemory =
-		new MemoryBlock(
-		sizeof(SlotLink),
-		block_count,
-		block_delta,
-		"Stuff::SlotLink",
-		ConnectionEngineHeap
-	);
+	AllocatedMemory = new MemoryBlock(sizeof(SlotLink), block_count,
+		block_delta, "Stuff::SlotLink", ConnectionEngineHeap);
 }
 
 //
 //#############################################################################
 //#############################################################################
 //
-void
-SlotLink::TerminateClass()
+void SlotLink::TerminateClass()
 {
 	delete AllocatedMemory;
 	AllocatedMemory = nullptr;
@@ -54,13 +42,7 @@ SlotLink::TerminateClass()
 // SlotLink
 //###########################################################################
 //
-SlotLink::SlotLink(
-	Slot* slot,
-	Plug* plug
-):
-	Link(slot, plug)
-{
-}
+SlotLink::SlotLink(Slot* slot, Plug* plug) : Link(slot, plug) {}
 
 //
 //###########################################################################
@@ -92,7 +74,7 @@ SlotLink::~SlotLink()
 	// time.
 	//-------------------------------------------------------------
 	//
-	if(slot->GetReleaseNode() != nullptr)
+	if (slot->GetReleaseNode() != nullptr)
 	{
 		Check_Object(slot->GetReleaseNode());
 		slot->GetReleaseNode()->ReleaseLinkHandler(slot, plug);
@@ -104,13 +86,7 @@ SlotLink::~SlotLink()
 // Slot
 //###########################################################################
 //
-Slot::Slot(
-	Node* node
-):
-	Socket(node)
-{
-	slotLink = nullptr;
-}
+Slot::Slot(Node* node) : Socket(node) { slotLink = nullptr; }
 
 //
 //###########################################################################
@@ -121,7 +97,7 @@ Slot::~Slot()
 {
 	// Check_Object(this);
 	SetReleaseNode(nullptr);
-	if(slotLink != nullptr)
+	if (slotLink != nullptr)
 	{
 		Unregister_Object(slotLink);
 		delete slotLink;
@@ -133,11 +109,10 @@ Slot::~Slot()
 // TestInstance
 //###########################################################################
 //
-void
-Slot::TestInstance()
+void Slot::TestInstance()
 {
 	Socket::TestInstance();
-	if(slotLink != nullptr)
+	if (slotLink != nullptr)
 	{
 		Check_Object(slotLink);
 	}
@@ -148,11 +123,10 @@ Slot::TestInstance()
 // Remove
 //###########################################################################
 //
-void
-Slot::Remove()
+void Slot::Remove()
 {
 	// Check_Object(this);
-	if(slotLink != nullptr)
+	if (slotLink != nullptr)
 	{
 		Unregister_Object(slotLink);
 		delete slotLink;
@@ -165,10 +139,7 @@ Slot::Remove()
 // AddImplementation
 //###########################################################################
 //
-void
-Slot::AddImplementation(
-	Plug* plug
-)
+void Slot::AddImplementation(Plug* plug)
 {
 	// Check_Object(this);
 	Verify(slotLink == nullptr);
@@ -181,15 +152,13 @@ Slot::AddImplementation(
 // GetCurrentPlug
 //###########################################################################
 //
-Plug*
-Slot::GetCurrentPlug()
+Plug* Slot::GetCurrentPlug()
 {
 	// Check_Object(this);
-	if(slotLink != nullptr)
+	if (slotLink != nullptr)
 	{
 		Check_Object(slotLink);
 		return slotLink->GetPlug();
 	}
 	return nullptr;
 }
-

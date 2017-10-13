@@ -15,7 +15,7 @@
 
 //---------------------------------------------------------------------------
 
-#define	MAX_WEAPONS_PER_MOVER				32
+#define MAX_WEAPONS_PER_MOVER 32
 
 enum
 {

@@ -23,57 +23,42 @@ class aButton;
 
 class MPLoadMap : public LogisticsDialog
 {
-public:
-
+  public:
 	MPLoadMap(void);
 	virtual ~MPLoadMap(void);
 
 	void init(FitIniFile* file);
 	bool isDone(void);
-	virtual void		begin(void);
-	virtual void		end(void);
-	virtual void		render(int32_t xOffset, int32_t yOffset);
-	virtual void		render(void);
-	virtual void		update(void);
-	virtual int32_t			handleMessage(uint32_t, uint32_t);
+	virtual void begin(void);
+	virtual void end(void);
+	virtual void render(int32_t xOffset, int32_t yOffset);
+	virtual void render(void);
+	virtual void update(void);
+	virtual int32_t handleMessage(uint32_t, uint32_t);
 
-	void				beginSingleMission(void);
+	void beginSingleMission(void);
 
-	PCSTR getMapFileName()
-	{
-		return selMapName;
-	}
+	PCSTR getMapFileName() { return selMapName; }
 
-	static void			getMapNameFromFile(PCSTR pFileName, PSTR pBuffer, int32_t bufferLength);
+	static void getMapNameFromFile(
+		PCSTR pFileName, PSTR pBuffer, int32_t bufferLength);
 
-
-
-
-private:
+  private:
 	int32_t indexOfButtonWithID(int32_t id);
 	void seedDialog(bool bSeedSingle);
 	void seedFromCampaign(void);
 
+	aListBox mapList;
+	aLocalizedListItem templateItem;
 
+	EString selMapName;
 
-	aListBox				mapList;
-	aLocalizedListItem	templateItem;
+	bool bIsSingle;
 
-	EString					selMapName;
-
-	bool					bIsSingle;
-
-
-
-	void	updateMapInfo(void);
-	void	seedFromFile(PCSTR pFileName);
-	void	addFile(PCSTR pFileName, bool bSeedSingle);
-
-
-
+	void updateMapInfo(void);
+	void seedFromFile(PCSTR pFileName);
+	void addFile(PCSTR pFileName, bool bSeedSingle);
 };
 
-
-
 //*************************************************************************************************
-#endif  // end of file ( MPLoadMap.h )
+#endif // end of file ( MPLoadMap.h )

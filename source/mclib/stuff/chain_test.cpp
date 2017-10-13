@@ -11,20 +11,18 @@
 
 #define TEST_COUNT 50
 
-class ChainTestPlug:
-	public Plug
+class ChainTestPlug : public Plug
 {
-public:
+  public:
 	int32_t value;
 
 	ChainTestPlug(int32_t value);
 	~ChainTestPlug();
 };
 
-class ChainTestNode:
-	public Node
+class ChainTestNode : public Node
 {
-public:
+  public:
 	int32_t receivedCommand;
 
 	ChainOf<ChainTestPlug*> chain1;
@@ -37,35 +35,27 @@ public:
 	bool RunTest();
 };
 
-ChainTestPlug::ChainTestPlug(int32_t value):
-	Plug(DefaultData)
+ChainTestPlug::ChainTestPlug(int32_t value) : Plug(DefaultData)
 {
 	this->value = value;
 }
 
-ChainTestPlug::~ChainTestPlug()
-{
-}
+ChainTestPlug::~ChainTestPlug() {}
 
-ChainTestNode::ChainTestNode():
-	Node(DefaultData),
-	chain1(nullptr),
-	chain2(this)
+ChainTestNode::ChainTestNode()
+	: Node(DefaultData), chain1(nullptr), chain2(this)
 {
 	receivedCommand = 0;
 }
 
-ChainTestNode::~ChainTestNode()
-{
-}
+ChainTestNode::~ChainTestNode() {}
 
 //
 //###########################################################################
 // ProfileClass
 //###########################################################################
 //
-bool
-Chain::ProfileClass()
+bool Chain::ProfileClass()
 {
 	ChainTestNode testNode;
 #if defined(_ARMOR)
@@ -73,11 +63,8 @@ Chain::ProfileClass()
 #endif
 	Test_Message("Chain::ProfileClass\n");
 	testNode.RunProfile();
-	SPEW((
-			 GROUP_STUFF_TEST,
-			 "Chain::ProfileClass elapsed = %f",
-			 gos_GetHiResTime() - startTicks
-		 ));
+	SPEW((GROUP_STUFF_TEST, "Chain::ProfileClass elapsed = %f",
+		gos_GetHiResTime() - startTicks));
 	return true;
 }
 
@@ -86,11 +73,10 @@ Chain::ProfileClass()
 // TestClass
 //###########################################################################
 //
-bool
-Chain::TestClass()
+bool Chain::TestClass()
 {
 	SPEW((GROUP_STUFF_TEST, "Starting Chain test..."));
-	ChainTestNode	testNode;
+	ChainTestNode testNode;
 	testNode.RunTest();
 	return true;
 }
@@ -100,12 +86,11 @@ Chain::TestClass()
 // RunProfile
 //###########################################################################
 //
-bool
-ChainTestNode::RunProfile()
+bool ChainTestNode::RunProfile()
 {
-	ChainTestPlug*		testPlug1;
-	CollectionSize 	i;
-	Time 			startTicks;
+	ChainTestPlug* testPlug1;
+	CollectionSize i;
+	Time startTicks;
 	//
 	//--------------------------------------------------------------------
 	// Run timing tests
@@ -115,18 +100,15 @@ ChainTestNode::RunProfile()
 	 * Create plugs and add to both sockets
 	 */
 	startTicks = gos_GetHiResTime();
-	for(i = 0; i < TEST_COUNT; i++)
+	for (i = 0; i < TEST_COUNT; i++)
 	{
 		testPlug1 = new ChainTestPlug(i);
 		Register_Object(testPlug1);
 		chain1.Add(testPlug1);
 		chain2.Add(testPlug1);
 	}
-	SPEW((
-			 GROUP_STUFF_TEST,
-			 "ChainTestNode::RunTest Create = %f",
-			 gos_GetHiResTime() - startTicks
-		 ));
+	SPEW((GROUP_STUFF_TEST, "ChainTestNode::RunTest Create = %f",
+		gos_GetHiResTime() - startTicks));
 	/*
 	 * Iterate over both sockets
 	 */
@@ -137,25 +119,22 @@ ChainTestNode::RunProfile()
 		Test_Assumption(iterator1.GetSize() == TEST_COUNT);
 		Test_Assumption(iterator2.GetSize() == TEST_COUNT);
 		i = 0;
-		while((testPlug1 = iterator1.ReadAndNext()) != nullptr)
+		while ((testPlug1 = iterator1.ReadAndNext()) != nullptr)
 		{
 			Test_Assumption(testPlug1->value == i);
 			i++;
 		}
 		Test_Assumption(i == TEST_COUNT);
 		i = 0;
-		while((testPlug1 = iterator2.ReadAndNext()) != nullptr)
+		while ((testPlug1 = iterator2.ReadAndNext()) != nullptr)
 		{
 			Test_Assumption(testPlug1->value == i);
 			i++;
 		}
 		Test_Assumption(i == TEST_COUNT);
 	}
-	SPEW((
-			 GROUP_STUFF_TEST,
-			 "ChainTestNode::RunTest Iterate = %f",
-			 gos_GetHiResTime() - startTicks
-		 ));
+	SPEW((GROUP_STUFF_TEST, "ChainTestNode::RunTest Iterate = %f",
+		gos_GetHiResTime() - startTicks));
 	/*
 	 * Destroy from chain1, verify with chain2
 	 */
@@ -168,21 +147,18 @@ ChainTestNode::RunProfile()
 #if defined(_ARMOR)
 		i = 0;
 #endif
-		while((testPlug1 = iterator1.ReadAndNext()) != nullptr)
+		while ((testPlug1 = iterator1.ReadAndNext()) != nullptr)
 		{
 			Test_Assumption(testPlug1->value == i++);
 			Unregister_Object(testPlug1);
-			delete(testPlug1);
+			delete (testPlug1);
 		}
 		Test_Assumption(i == TEST_COUNT);
 		Test_Assumption(iterator1.GetSize() == 0);
 		Test_Assumption(iterator2.GetSize() == 0);
 	}
-	SPEW((
-			 GROUP_STUFF_TEST,
-			 "ChainTestNode::RunTest Destroy = %f",
-			 gos_GetHiResTime() - startTicks
-		 ));
+	SPEW((GROUP_STUFF_TEST, "ChainTestNode::RunTest Destroy = %f",
+		gos_GetHiResTime() - startTicks));
 	return true;
 }
 
@@ -191,12 +167,11 @@ ChainTestNode::RunProfile()
 // RunTest
 //###########################################################################
 //
-bool
-ChainTestNode::RunTest()
+bool ChainTestNode::RunTest()
 {
-	ChainTestPlug*		testPlug1, *testPlug2;
-	CollectionSize 	i;
-//	Time 					startTicks;
+	ChainTestPlug *testPlug1, *testPlug2;
+	CollectionSize i;
+	//	Time 					startTicks;
 	//
 	//--------------------------------------------------------------------
 	// Stress tests
@@ -205,7 +180,7 @@ ChainTestNode::RunTest()
 	/*
 	 * Create plugs and add to both sockets
 	 */
-	for(i = 0; i < TEST_COUNT; i++)
+	for (i = 0; i < TEST_COUNT; i++)
 	{
 		testPlug1 = new ChainTestPlug(i);
 		Register_Object(testPlug1);
@@ -244,7 +219,7 @@ ChainTestNode::RunTest()
 		Test_Assumption(iterator1.GetSize() == TEST_COUNT);
 		Test_Assumption(iterator2.GetSize() == TEST_COUNT);
 		i = 0;
-		while((testPlug1 = iterator1.GetCurrent()) != nullptr)
+		while ((testPlug1 = iterator1.GetCurrent()) != nullptr)
 		{
 			testPlug2 = iterator2.GetCurrent();
 			Test_Assumption(testPlug1 == testPlug2);
@@ -258,7 +233,7 @@ ChainTestNode::RunTest()
 		iterator1.Last();
 		iterator2.Last();
 		i = TEST_COUNT - 1;
-		while((testPlug1 = iterator1.GetCurrent()) != nullptr)
+		while ((testPlug1 = iterator1.GetCurrent()) != nullptr)
 		{
 			testPlug2 = iterator2.GetCurrent();
 			Test_Assumption(testPlug1 == testPlug2);
@@ -279,7 +254,7 @@ ChainTestNode::RunTest()
 		Test_Assumption(iterator1.GetSize() == TEST_COUNT);
 		Test_Assumption(iterator2.GetSize() == TEST_COUNT);
 		i = 0;
-		while((testPlug1 = iterator1.ReadAndNext()) != nullptr)
+		while ((testPlug1 = iterator1.ReadAndNext()) != nullptr)
 		{
 			testPlug2 = iterator2.ReadAndNext();
 			Test_Assumption(testPlug1 == testPlug2);
@@ -291,7 +266,7 @@ ChainTestNode::RunTest()
 		iterator1.Last();
 		iterator2.Last();
 		i = TEST_COUNT - 1;
-		while((testPlug1 = iterator1.ReadAndPrevious()) != nullptr)
+		while ((testPlug1 = iterator1.ReadAndPrevious()) != nullptr)
 		{
 			testPlug2 = iterator2.ReadAndPrevious();
 			Test_Assumption(testPlug1 == testPlug2);
@@ -309,7 +284,7 @@ ChainTestNode::RunTest()
 		ChainIteratorOf<ChainTestPlug*> iterator2(&chain2);
 		Test_Assumption(iterator1.GetSize() == TEST_COUNT);
 		Test_Assumption(iterator2.GetSize() == TEST_COUNT);
-		for(i = 0; i < TEST_COUNT; i++)
+		for (i = 0; i < TEST_COUNT; i++)
 		{
 			testPlug1 = iterator1.GetNth(i);
 			testPlug2 = iterator2.GetNth(i);
@@ -324,10 +299,10 @@ ChainTestNode::RunTest()
 	{
 		ChainIteratorOf<ChainTestPlug*> iterator1(&chain1);
 		ChainTestNode* testNode;
-		while((testPlug1 = iterator1.ReadAndNext()) != nullptr)
+		while ((testPlug1 = iterator1.ReadAndNext()) != nullptr)
 		{
 			PlugIteratorOf<ChainTestNode*> iterator2(testPlug1);
-			while((testNode = iterator2.ReadAndNext()) != nullptr)
+			while ((testNode = iterator2.ReadAndNext()) != nullptr)
 			{
 				Test_Assumption(testNode == this);
 			}
@@ -356,10 +331,10 @@ ChainTestNode::RunTest()
 		Test_Assumption(iterator1.GetSize() == TEST_COUNT);
 		Test_Assumption(iterator2.GetSize() == TEST_COUNT);
 		i = 0;
-		while((testPlug1 = iterator1.GetCurrent()) != nullptr)
+		while ((testPlug1 = iterator1.GetCurrent()) != nullptr)
 		{
 			Test_Assumption(testPlug1->value == i);
-			if(i % 2 == 0)
+			if (i % 2 == 0)
 			{
 				iterator1.Remove();
 			}
@@ -372,7 +347,7 @@ ChainTestNode::RunTest()
 			Test_Assumption(testPlug2->value == i);
 			Test_Assumption(testPlug1 == testPlug2);
 			Unregister_Object(testPlug2);
-			delete(testPlug2);
+			delete (testPlug2);
 			i++;
 		}
 		Test_Assumption(i == TEST_COUNT);
@@ -385,33 +360,33 @@ ChainTestNode::RunTest()
 	{
 		ChainIteratorOf<ChainTestPlug*> iterator1(&chain1);
 		Test_Assumption(iterator1.GetSize() == 0);
-		for(i = 0; i < TEST_COUNT; i += 2)
+		for (i = 0; i < TEST_COUNT; i += 2)
 		{
 			testPlug1 = new ChainTestPlug(i);
 			Register_Object(testPlug1);
 			chain1.Add(testPlug1);
 		}
-		for(i = 1; i < TEST_COUNT; i += 2)
+		for (i = 1; i < TEST_COUNT; i += 2)
 		{
 			testPlug1 = new ChainTestPlug(i);
 			Register_Object(testPlug1);
 			iterator1.First();
-			while((testPlug2 = iterator1.GetCurrent()) != nullptr)
+			while ((testPlug2 = iterator1.GetCurrent()) != nullptr)
 			{
-				if(i < testPlug2->value)
+				if (i < testPlug2->value)
 				{
 					iterator1.Insert(testPlug1);
 					break;
 				}
 				iterator1.Next();
 			}
-			if(testPlug2 == nullptr)
+			if (testPlug2 == nullptr)
 			{
 				chain1.Add(testPlug1);
 			}
 		}
 		Test_Assumption(iterator1.GetSize() == TEST_COUNT);
-		for(i = 1; i < TEST_COUNT; i++)
+		for (i = 1; i < TEST_COUNT; i++)
 		{
 			testPlug1 = iterator1.GetNth(i);
 			testPlug2 = iterator1.GetNth(i - 1);
@@ -420,10 +395,10 @@ ChainTestNode::RunTest()
 	}
 	{
 		ChainIteratorOf<ChainTestPlug*> iterator1(&chain1);
-		while((testPlug1 = iterator1.GetCurrent()) != nullptr)
+		while ((testPlug1 = iterator1.GetCurrent()) != nullptr)
 		{
 			Unregister_Object(testPlug1);
-			delete(testPlug1);
+			delete (testPlug1);
 			iterator1.First();
 		}
 	}
@@ -438,7 +413,7 @@ ChainTestNode::RunTest()
 		ChainIteratorOf<ChainTestPlug*> iterator2(&chain2);
 		Test_Assumption(iterator1.GetSize() == 0);
 		Test_Assumption(iterator2.GetSize() == 0);
-		for(i = 0; i < TEST_COUNT; i++)
+		for (i = 0; i < TEST_COUNT; i++)
 		{
 			testPlug1 = new ChainTestPlug(i);
 			Register_Object(testPlug1);
@@ -453,15 +428,15 @@ ChainTestNode::RunTest()
 		Test_Assumption(iterator1.GetSize() == TEST_COUNT);
 		Test_Assumption(iterator2.GetSize() == TEST_COUNT);
 		i = 0;
-		while((size = iterator1.GetSize()) != 0)
+		while ((size = iterator1.GetSize()) != 0)
 		{
-			index = Random::GetLessThan(size);
+			index	 = Random::GetLessThan(size);
 			testPlug1 = iterator1.GetNth(index);
 			iterator1.Remove();
 			testPlug2 = iterator2.GetNth(index);
 			Test_Assumption(testPlug1 == testPlug2);
 			Unregister_Object(testPlug2);
-			delete(testPlug2);
+			delete (testPlug2);
 			i++;
 		}
 		Test_Assumption(i == TEST_COUNT);
@@ -470,4 +445,3 @@ ChainTestNode::RunTest()
 	}
 	return true;
 }
-

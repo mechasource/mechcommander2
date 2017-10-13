@@ -38,7 +38,7 @@ typedef enum BlockType
 TypePtr expression(void);
 TypePtr variable(SymTableNodePtr variableIdPtr);
 TypePtr arraySubscriptList(TypePtr typePtr);
-//TypePtr routineCall (SymTableNodePtr routineIdPtr, BOOL parmCheckFlag);
+// TypePtr routineCall (SymTableNodePtr routineIdPtr, BOOL parmCheckFlag);
 void checkRelationalOpTypes(TypePtr type1, TypePtr type2);
 int32_t isAssignTypeCompatible(TypePtr type1, TypePtr type2);
 void ifTokenGet(TokenCodeType tokenCode);
@@ -66,7 +66,8 @@ void routine(void);
 SymTableNodePtr functionHeader(void);
 SymTableNodePtr formalParamList(int32_t* count, int32_t* totalSize);
 TypePtr routineCall(SymTableNodePtr routineIdPtr, int32_t paramCheckFlag);
-TypePtr declaredRoutineCall(SymTableNodePtr routineIdPtr, int32_t paramCheckFlag);
+TypePtr declaredRoutineCall(
+	SymTableNodePtr routineIdPtr, int32_t paramCheckFlag);
 void actualParamList(SymTableNodePtr routineIdPtr, int32_t paramCheckFlag);
 void block(SymTableNodePtr routineIdPtr);
 
@@ -105,4 +106,3 @@ int32_t closeSourceFile(void);
 //***************************************************************************
 
 #endif
-

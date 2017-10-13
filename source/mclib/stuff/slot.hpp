@@ -14,158 +14,123 @@
 #include <stuff/memoryblock.hpp>
 #include <stuff/socket.hpp>
 
-
 namespace Stuff
 {
 
-	class Slot;
-	class PLug;
+class Slot;
+class PLug;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ SlotLink ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-	enum
-	{
-		SlotLink_MemoryBlock_Allocation = 100
-	};
+enum
+{
+	SlotLink_MemoryBlock_Allocation = 100
+};
 
-	class SlotLink:
-		public Link
-	{
-		friend class Slot;
+class SlotLink : public Link
+{
+	friend class Slot;
 
-	public:
-		static void
-		InitializeClass(
-			size_t block_count = SlotLink_MemoryBlock_Allocation,
-			size_t block_delta = SlotLink_MemoryBlock_Allocation
-		);
-		static void __stdcall TerminateClass(void);
+  public:
+	static void InitializeClass(
+		size_t block_count = SlotLink_MemoryBlock_Allocation,
+		size_t block_delta = SlotLink_MemoryBlock_Allocation);
+	static void __stdcall TerminateClass(void);
 
-	public:
-		~SlotLink(void);
+  public:
+	~SlotLink(void);
 
-	private:
-		SlotLink(
-			Slot* slot,
-			Plug* plug
-		);
+  private:
+	SlotLink(Slot* slot, Plug* plug);
 
-	private:
-		static MemoryBlock*	AllocatedMemory;
+  private:
+	static MemoryBlock* AllocatedMemory;
 
-		PVOID operator new(size_t)
-		{
-			return AllocatedMemory->New();
-		}
-		void operator delete(PVOID where)
-		{
-			AllocatedMemory->Delete(where);
-		}
-	};
+	PVOID operator new(size_t) { return AllocatedMemory->New(); }
+	void operator delete(PVOID where) { AllocatedMemory->Delete(where); }
+};
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~ Slot ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-	class Slot : public Socket
-	{
-		friend class SlotLink;
+class Slot : public Socket
+{
+	friend class SlotLink;
 
-	public:
-		//
-		//--------------------------------------------------------------------
-		//--------------------------------------------------------------------
-		// Public interface
-		//--------------------------------------------------------------------
-		//--------------------------------------------------------------------
-		//
+  public:
+	//
+	//--------------------------------------------------------------------
+	//--------------------------------------------------------------------
+	// Public interface
+	//--------------------------------------------------------------------
+	//--------------------------------------------------------------------
+	//
 
-		//
-		//--------------------------------------------------------------------
-		// Constructor, Destructor and testing
-		//--------------------------------------------------------------------
-		//
-		explicit Slot(Node* node);
-		~Slot(void);
+	//
+	//--------------------------------------------------------------------
+	// Constructor, Destructor and testing
+	//--------------------------------------------------------------------
+	//
+	explicit Slot(Node* node);
+	~Slot(void);
 
-		void TestInstance(void);
+	void TestInstance(void);
 
-		//
-		//--------------------------------------------------------------------
-		// Remove	- Remove the link
-		//--------------------------------------------------------------------
-		//
-		void
-		Remove(void);
+	//
+	//--------------------------------------------------------------------
+	// Remove	- Remove the link
+	//--------------------------------------------------------------------
+	//
+	void Remove(void);
 
-	protected:
-		//
-		//--------------------------------------------------------------------
-		//--------------------------------------------------------------------
-		// Protected interface
-		//--------------------------------------------------------------------
-		//--------------------------------------------------------------------
-		//
-		void
-		AddImplementation(Plug* plug);
-		Plug*
-		GetCurrentPlug(void);
+  protected:
+	//
+	//--------------------------------------------------------------------
+	//--------------------------------------------------------------------
+	// Protected interface
+	//--------------------------------------------------------------------
+	//--------------------------------------------------------------------
+	//
+	void AddImplementation(Plug* plug);
+	Plug* GetCurrentPlug(void);
 
-	private:
-		//
-		//--------------------------------------------------------------------
-		// Private data
-		//--------------------------------------------------------------------
-		//
-		SlotLink
-		* slotLink;
-	};
+  private:
+	//
+	//--------------------------------------------------------------------
+	// Private data
+	//--------------------------------------------------------------------
+	//
+	SlotLink* slotLink;
+};
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~ SlotOf ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-	template <class T> class SlotOf:
-		public Slot
-	{
-	public:
-		//
-		//--------------------------------------------------------------------
-		//--------------------------------------------------------------------
-		// Public interface
-		//--------------------------------------------------------------------
-		//--------------------------------------------------------------------
-		//
-		explicit SlotOf(Node* node);
-		~SlotOf(void);
+template <class T> class SlotOf : public Slot
+{
+  public:
+	//
+	//--------------------------------------------------------------------
+	//--------------------------------------------------------------------
+	// Public interface
+	//--------------------------------------------------------------------
+	//--------------------------------------------------------------------
+	//
+	explicit SlotOf(Node* node);
+	~SlotOf(void);
 
-		//
-		//--------------------------------------------------------------------
-		// Socket methods (see Socket for full listing)
-		//--------------------------------------------------------------------
-		//
-		void
-		Add(T plug)
-		{
-			AddImplementation(Cast_Object(Plug*, plug));
-		}
+	//
+	//--------------------------------------------------------------------
+	// Socket methods (see Socket for full listing)
+	//--------------------------------------------------------------------
+	//
+	void Add(T plug) { AddImplementation(Cast_Object(Plug*, plug)); }
 
-		T
-		GetCurrent()
-		{
-			return (T)GetCurrentPlug(void);
-		}
-	};
-
+	T GetCurrent() { return (T)GetCurrentPlug(void); }
+};
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~ SlotOf templates ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-	template <class T>
-	SlotOf<T>::SlotOf(Node* node):
-		Slot(node)
-	{
-	}
+template <class T> SlotOf<T>::SlotOf(Node* node) : Slot(node) {}
 
-	template <class T>
-	SlotOf<T>::~SlotOf()
-	{
-	}
-
+template <class T> SlotOf<T>::~SlotOf() {}
 }
 #endif

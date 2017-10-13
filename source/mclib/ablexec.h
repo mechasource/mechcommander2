@@ -18,17 +18,17 @@
 
 //***************************************************************************
 
-#define	STATEMENT_MARKER	0x70
-#define	ADDRESS_MARKER		0x71
+#define STATEMENT_MARKER 0x70
+#define ADDRESS_MARKER 0x71
 
 //***************************************************************************
 
 //--------------
 // ABL Parameter
 
-#define	ABL_PARAM_VOID			0
-#define	ABL_PARAM_INTEGER		1
-#define	ABL_PARAM_REAL			2
+#define ABL_PARAM_VOID 0
+#define ABL_PARAM_INTEGER 1
+#define ABL_PARAM_REAL 2
 
 typedef enum ABLStackItemType
 {
@@ -45,9 +45,9 @@ typedef enum ABLStackItemType
 
 typedef struct
 {
-	char		type;
-	int32_t		integer;
-	float		real;
+	char type;
+	int32_t integer;
+	float real;
 } ABLParam;
 
 typedef ABLParam* ABLParamPtr;
@@ -55,29 +55,27 @@ typedef ABLParam* ABLParamPtr;
 //---------------
 // RUN-TIME STACK
 
-typedef union
-{
-	int32_t			integer;
-	float			real;
-	uint8_t	byte;
-	Address			address;
+typedef union {
+	int32_t integer;
+	float real;
+	uint8_t byte;
+	Address address;
 } StackItem;
 
 typedef StackItem* StackItemPtr;
 
 typedef struct
 {
-	int32_t			type;
-	union
-	{
-		int32_t		integer;
-		float		real;
-		bool		boolean;
-		char		character;
-		int32_t*		integerPtr;
-		float*		realPtr;
-		bool*		booleanPtr;
-		PSTR		characterPtr;
+	int32_t type;
+	union {
+		int32_t integer;
+		float real;
+		bool boolean;
+		char character;
+		int32_t* integerPtr;
+		float* realPtr;
+		bool* booleanPtr;
+		PSTR characterPtr;
 	} data;
 } ABLStackItem;
 
@@ -85,10 +83,10 @@ typedef ABLStackItem* ABLStackItemPtr;
 
 typedef struct
 {
-	StackItem	functionValue;
-	StackItem	staticLink;
-	StackItem	dynamicLink;
-	StackItem	returnAddress;
+	StackItem functionValue;
+	StackItem staticLink;
+	StackItem dynamicLink;
+	StackItem returnAddress;
 } StackFrameHeader;
 
 typedef StackFrameHeader* StackFrameHeaderPtr;
@@ -113,19 +111,19 @@ typedef StackFrameHeader* StackFrameHeaderPtr;
 
 //***************************************************************************
 
-extern PSTR			codeBuffer;
-extern PSTR			codeBufferPtr;
-extern PSTR			codeSegmentPtr;
-extern PSTR			codeSegmentLimit;
-extern PSTR			statementStartPtr;
+extern PSTR codeBuffer;
+extern PSTR codeBufferPtr;
+extern PSTR codeSegmentPtr;
+extern PSTR codeSegmentLimit;
+extern PSTR statementStartPtr;
 
-extern TokenCodeType	codeToken;
-extern int32_t				execLineNumber;
-extern int32_t				execStatementCount;
+extern TokenCodeType codeToken;
+extern int32_t execLineNumber;
+extern int32_t execStatementCount;
 
-extern StackItem*		stack;
-extern StackItemPtr		tos;
-extern StackItemPtr		stackFrameBasePtr;
+extern StackItem* stack;
+extern StackItemPtr tos;
+extern StackItemPtr stackFrameBasePtr;
 
 //***************************************************************************
 
@@ -180,7 +178,8 @@ void freeData(SymTableNodePtr idPtr);
 void routineEntry(SymTableNodePtr routineIdPtr);
 void routineExit(SymTableNodePtr routineIdPtr);
 void execute(SymTableNodePtr routineIdPtr);
-void executeChild(SymTableNodePtr routineIdPtr, SymTableNodePtr childRoutineIdPtr);
+void executeChild(
+	SymTableNodePtr routineIdPtr, SymTableNodePtr childRoutineIdPtr);
 
 //******************
 // EXECSTMT routines

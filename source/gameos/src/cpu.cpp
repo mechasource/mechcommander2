@@ -6,10 +6,10 @@
  conditions are met (OSI approved BSD 2-clause license):
 
  1. Redistributions of source code must retain the above copyright notice,
-    this list of conditions and the following disclaimer.
+	this list of conditions and the following disclaimer.
  2. Redistributions in binary form must reproduce the above copyright notice,
-    this list of conditions and the following disclaimer in the documentation
-    and/or other materials provided with the distribution.
+	this list of conditions and the following disclaimer in the documentation
+	and/or other materials provided with the distribution.
 
  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -54,22 +54,14 @@
 // -----------------------------------------------------------------------------
 // externals referenced in this file not specified in headers
 
-
 // considered utterly obsolete
 
 #if _CONSIDERED_OBSOLETE || _CONSIDERED_UNUSED
 
-void __stdcall InitProcessorSpeed(void)
-{
-}
+void __stdcall InitProcessorSpeed(void) {}
 
-PSTR __stdcall GetProcessor(void)
-{
-	return nullptr;
-}
+PSTR __stdcall GetProcessor(void) { return nullptr; }
 
-void __stdcall GetProcessorInfo(void)
-{
-}
+void __stdcall GetProcessorInfo(void) {}
 
 #endif

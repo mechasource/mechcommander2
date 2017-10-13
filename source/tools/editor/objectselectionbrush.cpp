@@ -1,5 +1,6 @@
 /*************************************************************************************************\
-ObjectSelectionBrush.cpp			: Implementation of the ObjectSelectionBrush component.
+ObjectSelectionBrush.cpp			: Implementation of the ObjectSelectionBrush
+component.
 //---------------------------------------------------------------------------//
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
@@ -85,38 +86,38 @@ ObjectSelectionBrush.cpp			: Implementation of the ObjectSelectionBrush componen
 #include "utilities.h"
 #include "editormessages.h"
 
-
 ObjectSelectionBrush::ObjectSelectionBrush()
 {
-	bPainting = false;
+	bPainting  = false;
 	pCurAction = nullptr;
-	lastPos.x = lastPos.y = lastPos.z = lastPos.w = 0.0f;		//Keep the FPU exception from going off!
+	lastPos.x = lastPos.y = lastPos.z = lastPos.w =
+		0.0f; // Keep the FPU exception from going off!
 	bFirstClick = false;
 }
 
 ObjectSelectionBrush::~ObjectSelectionBrush()
 {
-	if(EditorObjectMgr::instance)
+	if (EditorObjectMgr::instance)
 		EditorObjectMgr::instance->unselectAll();
-	if(land)
+	if (land)
 		land->unselectAll();
 }
 
 bool ObjectSelectionBrush::beginPaint()
 {
 	lastPos.x = lastPos.y = 0.0;
-	bPainting = true;
-	bFirstClick = !bFirstClick;
+	bPainting			  = true;
+	bFirstClick			  = !bFirstClick;
 	return true;
 }
 
 Action* ObjectSelectionBrush::endPaint()
 {
-	bPainting = false;
+	bPainting		   = false;
 	Action* pRetAction = nullptr;
-	if(pCurAction)
+	if (pCurAction)
 	{
-		if(pCurAction->vertexInfoList.Count())
+		if (pCurAction->vertexInfoList.Count())
 		{
 			pRetAction = pCurAction;
 			pCurAction = nullptr;
@@ -132,18 +133,19 @@ Action* ObjectSelectionBrush::endPaint()
 	return pRetAction;
 }
 
-bool ObjectSelectionBrush::paint(Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY)
+bool ObjectSelectionBrush::paint(
+	Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY)
 {
 	Stuff::Vector4D endPos;
 	endPos.x = screenX;
 	endPos.y = screenY;
-	//if ( bFirstClick ) // otherwise, do a new area select
+	// if ( bFirstClick ) // otherwise, do a new area select
 	{
 		bool bShift = GetAsyncKeyState(KEY_LSHIFT);
 		// select the objects
-		if(lastPos.x != 0.0 && lastPos.y != 0.0)
+		if (lastPos.x != 0.0 && lastPos.y != 0.0)
 		{
-			if(!bShift)
+			if (!bShift)
 			{
 				land->unselectAll();
 				EditorObjectMgr::instance->unselectAll();
@@ -154,7 +156,7 @@ bool ObjectSelectionBrush::paint(Stuff::Vector3D& worldPos, int32_t screenX, int
 		}
 		else
 		{
-			if(lastPos != endPos)
+			if (lastPos != endPos)
 			{
 				land->unselectAll();
 				EditorObjectMgr::instance->unselectAll();
@@ -164,10 +166,11 @@ bool ObjectSelectionBrush::paint(Stuff::Vector3D& worldPos, int32_t screenX, int
 			screenPos.x = screenX;
 			screenPos.y = screenY;
 			eye->inverseProject(screenPos, lastWorldPos);
-			const EditorObject* pInfo = EditorObjectMgr::instance->getObjectAtPosition(worldPos);
-			if(pInfo)
+			const EditorObject* pInfo =
+				EditorObjectMgr::instance->getObjectAtPosition(worldPos);
+			if (pInfo)
 			{
-				if(!bShift || (bShift && pInfo->isSelected() == false))
+				if (!bShift || (bShift && pInfo->isSelected() == false))
 					(const_cast<EditorObject*>(pInfo))->select(true);
 				else
 					(const_cast<EditorObject*>(pInfo))->select(false);
@@ -176,15 +179,18 @@ bool ObjectSelectionBrush::paint(Stuff::Vector3D& worldPos, int32_t screenX, int
 			{
 				int32_t tileR, tileC;
 				land->worldToTile(worldPos, tileR, tileC);
-				if(tileR > -1 && tileR < land->realVerticesMapSide
-						&& tileC > -1 && tileC < land->realVerticesMapSide)
+				if (tileR > -1 && tileR < land->realVerticesMapSide &&
+					tileC > -1 && tileC < land->realVerticesMapSide)
 				{
 					// figure out which vertex is closest
-					if(fabs(worldPos.x - land->tileColToWorldCoord[tileC]) >= land->worldUnitsPerVertex / 2)
+					if (fabs(worldPos.x - land->tileColToWorldCoord[tileC]) >=
+						land->worldUnitsPerVertex / 2)
 						tileC++;
-					if(fabs(worldPos.y - land->tileRowToWorldCoord[tileR]) >= land->worldUnitsPerVertex / 2)
+					if (fabs(worldPos.y - land->tileRowToWorldCoord[tileR]) >=
+						land->worldUnitsPerVertex / 2)
 						tileR++;
-					if(!bShift || (bShift && !land->isVertexSelected(tileR, tileC)))
+					if (!bShift ||
+						(bShift && !land->isVertexSelected(tileR, tileC)))
 						land->selectVertex(tileR, tileC);
 					else // shift key, object is selected
 						land->selectVertex(tileR, tileC, false);
@@ -197,16 +203,16 @@ bool ObjectSelectionBrush::paint(Stuff::Vector3D& worldPos, int32_t screenX, int
 
 void ObjectSelectionBrush::render(int32_t screenX, int32_t screenY)
 {
-	if(bPainting)
+	if (bPainting)
 	{
 		//------------------------------------------
 		Stuff::Vector4D Screen;
 		eye->projectZ(lastWorldPos, Screen);
-		RECT rect = { screenX, screenY, Screen.x, Screen.y };
+		RECT rect = {screenX, screenY, Screen.x, Screen.y};
 		drawRect(rect, 0x30ffffff);
 		drawEmptyRect(rect, 0xff000000, 0xff000000);
 	}
-	if(!bPainting)
+	if (!bPainting)
 	{
 		EditorInterface::instance()->ChangeCursor(IDC_TARGET);
 	}

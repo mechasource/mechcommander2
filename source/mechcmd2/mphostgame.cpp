@@ -19,29 +19,26 @@ MPHostGame.cpp			: Implementation of the MPHostGame component.
 
 static int32_t connectionType = 0;
 
-static cint32_t FIRST_BUTTON_ID = 1000010;
-static cint32_t OK_BUTTON_ID = 1000001;
+static cint32_t FIRST_BUTTON_ID  = 1000010;
+static cint32_t OK_BUTTON_ID	 = 1000001;
 static cint32_t CANCEL_BUTTON_ID = 1000002;
 
 extern CPrefs prefs;
 
-
 MPHostGame::MPHostGame()
 {
-	bDone = 0;
+	bDone  = 0;
 	status = RUNNING;
 }
 
-MPHostGame::~MPHostGame()
-{
-}
+MPHostGame::~MPHostGame() {}
 
 int32_t MPHostGame::indexOfButtonWithID(int32_t id)
 {
 	int32_t i;
-	for(i = 0; i < buttonCount; i++)
+	for (i = 0; i < buttonCount; i++)
 	{
-		if(buttons[i].getID() == id)
+		if (buttons[i].getID() == id)
 		{
 			return i;
 		}
@@ -54,7 +51,7 @@ void MPHostGame::init()
 	FullPathFileName path;
 	FitIniFile file;
 	path.init(artPath, "mcl_mp_hostgamedialog", ".fit");
-	if(NO_ERROR != file.open(path))
+	if (NO_ERROR != file.open(path))
 	{
 		char error[256];
 		sprintf(error, "couldn't open file %s", path);
@@ -66,12 +63,12 @@ void MPHostGame::init()
 	enterAnim.init(&file, "");
 	file.seekBlock("OutAnim");
 	exitAnim.init(&file, "");
-	if(buttonCount)
+	if (buttonCount)
 	{
-		for(size_t i = 0; i < buttonCount; i++)
+		for (size_t i = 0; i < buttonCount; i++)
 		{
 			buttons[i].setMessageOnRelease();
-			if(buttons[i].getID() == 0)
+			if (buttons[i].getID() == 0)
 			{
 				buttons[i].setID(FIRST_BUTTON_ID + i);
 			}
@@ -111,8 +108,8 @@ void MPHostGame::init()
 				sprintf( txt, "%ld", i );
 				pTmp2->setText( txt );
 				pTmp2->sizeToText();
-				pTmp2->resize( numPlayersDropList.width() - numPlayersDropList.ListBox().getScrollBarWidth() + 5,
-					pTmp2->height() );
+				pTmp2->resize( numPlayersDropList.width() -
+	   numPlayersDropList.ListBox().getScrollBarWidth() + 5, pTmp2->height() );
 				numPlayersDropList.AddItem(pTmp2);
 			}
 			numPlayersDropList.SelectItem(0);
@@ -132,7 +129,6 @@ void MPHostGame::begin()
 	bShowDlg = 0;
 }
 
-
 void MPHostGame::end()
 {
 	bShowDlg = 0;
@@ -142,82 +138,77 @@ void MPHostGame::end()
 void MPHostGame::render(int32_t xOffset, int32_t yOffset)
 {
 	LogisticsDialog::render();
-	if((0 == xOffset) && (0 == yOffset) && enterAnim.isDone() && !exitAnim.isAnimating())
+	if ((0 == xOffset) && (0 == yOffset) && enterAnim.isDone() &&
+		!exitAnim.isAnimating())
 	{
-//		numPlayersDropList.render();
-		for(size_t i = 0; i < staticCount; i++)
+		//		numPlayersDropList.render();
+		for (size_t i = 0; i < staticCount; i++)
 		{
 			statics[i].render(); // need to cover up droplist overflow...
 		}
 	}
-	if(bShowDlg)
+	if (bShowDlg)
 	{
 		LogisticsOneButtonDialog::instance()->render();
 	}
 }
 
-void MPHostGame::render()
-{
-	render(0, 0);
-}
+void MPHostGame::render() { render(0, 0); }
 
-int32_t	MPHostGame::handleMessage(uint32_t message, uint32_t who)
+int32_t MPHostGame::handleMessage(uint32_t message, uint32_t who)
 {
 	status = who;
 	exitAnim.begin();
 	enterAnim.end();
-	if(status == YES)
+	if (status == YES)
 	{
 		EString tmp;
-//		numPlayersDropList.EditBox().getEntry(tmp);
-//		int32_t maxPlayers = atoi( tmp );
+		//		numPlayersDropList.EditBox().getEntry(tmp);
+		//		int32_t maxPlayers = atoi( tmp );
 		edits[0].getEntry(tmp);
 		MPlayer->setMode(MULTIPLAYER_MODE_PARAMETERS);
-		if(!MPlayer->hostSession((PSTR)(PCSTR)tmp, &prefs.playerName[0][0], 8))
+		if (!MPlayer->hostSession((PSTR)(PCSTR)tmp, &prefs.playerName[0][0], 8))
 		{
 			MPlayer->setMode(MULTIPLAYER_MODE_NONE);
 			// need to pop dlg here
 			LogisticsOneButtonDialog::instance()->begin();
-			LogisticsOneButtonDialog::instance()->setText(IDS_ERROR_NOT_CONNECTED, IDS_DIALOG_OK, IDS_DIALOG_OK);
-			LogisticsOneButtonDialog::instance()->setFont(IDS_MP_CONNECT_ERROR_NO_CONNECTION_FONT);
+			LogisticsOneButtonDialog::instance()->setText(
+				IDS_ERROR_NOT_CONNECTED, IDS_DIALOG_OK, IDS_DIALOG_OK);
+			LogisticsOneButtonDialog::instance()->setFont(
+				IDS_MP_CONNECT_ERROR_NO_CONNECTION_FONT);
 			bShowDlg = true;
 		}
 	}
 	return 0;
 }
 
-bool MPHostGame::isDone()
-{
-	return bDone;
-}
+bool MPHostGame::isDone() { return bDone; }
 
 void MPHostGame::update()
 {
-	if(bShowDlg)
+	if (bShowDlg)
 	{
 		LogisticsOneButtonDialog::instance()->update();
-		if(LogisticsOneButtonDialog::instance()->isDone())
+		if (LogisticsOneButtonDialog::instance()->isDone())
 		{
 			bShowDlg = 0;
-			status = NO;
+			status   = NO;
 		}
 		return;
 	}
 	LogisticsDialog::update();
-	helpTextID = 0;
+	helpTextID		 = 0;
 	helpTextHeaderID = 0;
 	EString tmp;
 	edits[0].getEntry(tmp);
 	int32_t len = tmp.Length();
-	if(len >= 1)
+	if (len >= 1)
 	{
 		getButton(YES)->disable(false);
 	}
 	else
 		getButton(YES)->disable(true);
 }
-
-
 
 int32_t aStyle5TextListItem::init(FitIniFile* file, PCSTR blockName)
 {
@@ -235,7 +226,7 @@ int32_t aStyle5TextListItem::init(FitIniFile* file, PCSTR blockName)
 	char tmpStr[64];
 	strcpy(tmpStr, "");
 	file->readIdString("Animation", tmpStr, 63);
-	if(0 == strcmp("", tmpStr))
+	if (0 == strcmp("", tmpStr))
 	{
 		hasAnimation = false;
 	}
@@ -250,11 +241,11 @@ int32_t aStyle5TextListItem::init(FitIniFile* file, PCSTR blockName)
 void aStyle5TextListItem::render()
 {
 	float color;
-	if(aListItem::SELECTED == getState())
+	if (aListItem::SELECTED == getState())
 	{
 		color = 0.33 * ((uint32_t)normalColor) + 0.67 * ((uint32_t)0xffffffff);
 	}
-	else if(aListItem::HIGHLITE == getState())
+	else if (aListItem::HIGHLITE == getState())
 	{
 		color = 0.67 * ((uint32_t)normalColor) + 0.33 * ((uint32_t)0xffffffff);
 	}
@@ -267,8 +258,6 @@ void aStyle5TextListItem::render()
 }
 
 //////////////////////////////////////////////
-
-
 
 //*************************************************************************************************
 // end of file ( MPHostGame.cpp )

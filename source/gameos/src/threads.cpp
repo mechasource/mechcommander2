@@ -6,10 +6,10 @@
  conditions are met (OSI approved BSD 2-clause license):
 
  1. Redistributions of source code must retain the above copyright notice,
-    this list of conditions and the following disclaimer.
+	this list of conditions and the following disclaimer.
  2. Redistributions in binary form must reproduce the above copyright notice,
-    this list of conditions and the following disclaimer in the documentation
-    and/or other materials provided with the distribution.
+	this list of conditions and the following disclaimer in the documentation
+	and/or other materials provided with the distribution.
 
  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -53,10 +53,12 @@ struct _gosThreadInfo* ListofThreads;
 // global implemented functions in this module listed in headers
 void __stdcall CheckThreads(void);
 void __stdcall DestroyThreads(void);
-uint32_t __stdcall gos_CreateThread(void (__stdcall* ThreadRoutine)(PVOID));
-void __stdcall gos_SetThreadPriority(uint32_t ThreadHandle, gosThreadPriority Priority);
+uint32_t __stdcall gos_CreateThread(void(__stdcall* ThreadRoutine)(PVOID));
+void __stdcall gos_SetThreadPriority(
+	uint32_t ThreadHandle, gosThreadPriority Priority);
 void __stdcall gos_DeleteThread(uint32_t ThreadHandle);
-void __stdcall gos_TriggerThread(uint32_t ThreadHandle, bool* ThreadFinished, PVOID Context);
+void __stdcall gos_TriggerThread(
+	uint32_t ThreadHandle, bool* ThreadFinished, PVOID Context);
 
 // global implemented functions not listed in headers
 
@@ -66,5 +68,3 @@ uint32_t __stdcall WorkerThread(PVOID);
 // -----------------------------------------------------------------------------
 // externals referenced in this file not specified in headers
 extern void __stdcall gosSetThreadName(uint32_t, PSTR);
-
-

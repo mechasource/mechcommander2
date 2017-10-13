@@ -11,7 +11,7 @@
 #ifndef TXMCONV_H
 #define TXMCONV_H
 //---------------------------------------------------------------------------
-#define DEFINED_TXMS		3576
+#define DEFINED_TXMS 3576
 
 //---------------------------------------------------------------------------
 extern int32_t txmToTileLookup[];

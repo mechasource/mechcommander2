@@ -1,6 +1,7 @@
 //----------------------------------------------------------------------------
 //
-// Brush.h - header file for the abstract base class that all brush objects should
+// Brush.h - header file for the abstract base class that all brush objects
+// should
 //			 derive from
 //
 //---------------------------------------------------------------------------//
@@ -14,7 +15,7 @@
 
 namespace Stuff
 {
-	class Vector3D;
+class Vector3D;
 }
 
 class Action;
@@ -23,30 +24,24 @@ class Map;
 class Brush
 {
 
-public:
+  public:
 	Brush(void) {}
 	virtual ~Brush(void) {}
 	virtual bool beginPaint(void)  = 0;
 	virtual Action* endPaint(void) = 0;
-	virtual bool paint(Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY)  = 0;
-	virtual bool canPaint(Stuff::Vector3D& /*worldPos*/, int32_t /*screenX*/, int32_t /*screenY*/, int32_t /*flags*/)
+	virtual bool paint(
+		Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY) = 0;
+	virtual bool canPaint(Stuff::Vector3D& /*worldPos*/, int32_t /*screenX*/,
+		int32_t /*screenY*/, int32_t /*flags*/)
 	{
 		return true;
 	}
-	virtual bool canPaintSelection(void)
-	{
-		return true;
-	}
-	virtual Action* applyToSelection(void)
-	{
-		return nullptr;
-	}
+	virtual bool canPaintSelection(void) { return true; }
+	virtual Action* applyToSelection(void) { return nullptr; }
 
 	virtual void render(int32_t /*screenX*/, int32_t /*screenY*/) {}
 	virtual void update(int32_t /*screenX*/, int32_t /*screenY*/) {}
 
-private:
-
-
+  private:
 };
 #endif // BRUSH_H_

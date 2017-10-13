@@ -22,33 +22,31 @@ class TestHost
 	: public Stuff::Signature
 #endif
 {
-public:
+  public:
 	//--------------------------------------------------------------------
 	// ObjectNameList is designed to bond with another class to provide
 	// dymanic naming of the objects represented by that class.  TestHost
 	// provides a means of testing the functionality of ObjectNameList.
 	//--------------------------------------------------------------------
-	PCSTR					name;
-	TestHost*				next;
-	static ObjectNameList	names;
+	PCSTR name;
+	TestHost* next;
+	static ObjectNameList names;
 
 	TestHost(PCSTR a_name);
 	~TestHost();
 
-	bool
-	TestInstance(void) const;
+	bool TestInstance(void) const;
 };
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-ObjectNameList
-TestHost::names;
+ObjectNameList TestHost::names;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 TestHost::TestHost(PCSTR a_name)
 {
-	//Check_Pointer(this);
+	// Check_Pointer(this);
 	Check_Pointer(a_name);
 	name = names.AddEntry(a_name, this);
 	next = nullptr;
@@ -64,18 +62,13 @@ TestHost::~TestHost()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-bool
-TestHost::TestInstance(void) const
-{
-	return true;
-}
+bool TestHost::TestInstance(void) const { return true; }
 
 //#############################################################################
 //##############    ObjectNameList::TestClass    ##############################
 //#############################################################################
 
-bool
-ObjectNameList::TestClass()
+bool ObjectNameList::TestClass()
 {
 	SPEW((GROUP_STUFF_TEST, "Starting ObjectNameList test..."));
 	SPEW((GROUP_STUFF_TEST, "ObjectNameList test is stubbed out..."));
@@ -243,7 +236,7 @@ ObjectNameList::TestClass()
 	}
 	Test_Assumption(count == 0);
 #endif
-//	Tell("  ObjectNameList::TestClass() is stubbed out!\n");
+	//	Tell("  ObjectNameList::TestClass() is stubbed out!\n");
 	return true;
 }
 
@@ -251,8 +244,7 @@ ObjectNameList::TestClass()
 //##############    NameList::TestClass    ####################################
 //#############################################################################
 
-bool
-NameList::TestClass()
+bool NameList::TestClass()
 {
 	SPEW((GROUP_STUFF_TEST, "Starting NameList test..."));
 	SPEW((GROUP_STUFF_TEST, "  NameList::TestClass() is stubbed out!"));
@@ -263,8 +255,7 @@ NameList::TestClass()
 //##############    AlphaNameList::TestClass    ###############################
 //#############################################################################
 
-bool
-AlphaNameList::TestClass()
+bool AlphaNameList::TestClass()
 {
 	SPEW((GROUP_STUFF_TEST, "Starting AlphaNameList test..."));
 	SPEW((GROUP_STUFF_TEST, "  AlphaNameList::TestClass() is stubbed out!\n"));

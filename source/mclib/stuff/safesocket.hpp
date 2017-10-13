@@ -15,64 +15,54 @@
 namespace Stuff
 {
 
-	class SafeIterator;
+class SafeIterator;
 
-	typedef int32_t IteratorMemo;
+typedef int32_t IteratorMemo;
 
-	enum
-	{
-		PlugAdded = 0,
-		PlugRemoved,
-		NextSafeSocketMemo
-	};
+enum
+{
+	PlugAdded = 0,
+	PlugRemoved,
+	NextSafeSocketMemo
+};
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~ SafeSocket ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-	class SafeSocket:
-		public Socket
-	{
-		friend class SafeIterator;
+class SafeSocket : public Socket
+{
+	friend class SafeIterator;
 
-	public:
-		~SafeSocket(void);
-		void TestInstance(void);
+  public:
+	~SafeSocket(void);
+	void TestInstance(void);
 
-	protected:
-		explicit SafeSocket(Node* node);
+  protected:
+	explicit SafeSocket(Node* node);
 
-		void
-		SendIteratorMemo(
-			IteratorMemo memo,
-			PVOID content
-		);
+	void SendIteratorMemo(IteratorMemo memo, PVOID content);
 
-	private:
-		SafeIterator* iteratorHead;
-	};
+  private:
+	SafeIterator* iteratorHead;
+};
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~ SafeIterator ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-	class SafeIterator:
-		public SocketIterator
-	{
-		friend class SafeSocket;
+class SafeIterator : public SocketIterator
+{
+	friend class SafeSocket;
 
-	public:
-		~SafeIterator(void);
-		void TestInstance(void) const;
+  public:
+	~SafeIterator(void);
+	void TestInstance(void) const;
 
-	protected:
-		explicit SafeIterator(SafeSocket* safeSocket);
+  protected:
+	explicit SafeIterator(SafeSocket* safeSocket);
 
-	private:
-		virtual void ReceiveMemo(
-			IteratorMemo memo,
-			PVOID content
-		);
+  private:
+	virtual void ReceiveMemo(IteratorMemo memo, PVOID content);
 
-		SafeIterator* nextIterator;
-		SafeIterator* prevIterator;
-	};
-
+	SafeIterator* nextIterator;
+	SafeIterator* prevIterator;
+};
 }
 #endif

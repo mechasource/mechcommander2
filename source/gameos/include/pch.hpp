@@ -18,36 +18,38 @@
 //
 // Error groups for SPEW
 //
-#define GROUP_FILES				"GameOS_Files"			// File functions
-#define GROUP_MEMORY			"GameOS_Memory"			// Leak notification only
-#define GROUP_MEMORYVERBOSE		"GameOS_MemoryVerbose"	// Heap create / destroy functions
-#define GROUP_TEXTURE			"GameOS_Texture"		// Texture enumeration and creation
-#define GROUP_GAMEOS			"GameOS_Core"
-#define GROUP_NETWORK			"GameOS_Network"		// Networking messages (DPlay layer is lower level)
-#define GROUP_DIRECTX			"GameOS_DirectX"
-#define GROUP_DIRECTDRAW		"GameOS_DirectDraw"
-#define GROUP_DIRECT3D			"GameOS_Direct3D"
-#define GROUP_DIRECTINPUT		"GameOS_DirectInput"
-#define GROUP_DIRECTSOUND		"GameOS_DirectSound"
-#define GROUP_DIRECTSHOW		"GameOS_DirectShow"
-#define GROUP_DIRECTPLAY		"GameOS_DirectPlay"
-#define GROUP_WINDOWSMESSAGES	"Windows_Messages"		// WM_ messages from windows
+#define GROUP_FILES "GameOS_Files"   // File functions
+#define GROUP_MEMORY "GameOS_Memory" // Leak notification only
+#define GROUP_MEMORYVERBOSE                                                    \
+	"GameOS_MemoryVerbose"			   // Heap create / destroy functions
+#define GROUP_TEXTURE "GameOS_Texture" // Texture enumeration and creation
+#define GROUP_GAMEOS "GameOS_Core"
+#define GROUP_NETWORK                                                          \
+	"GameOS_Network" // Networking messages (DPlay layer is lower level)
+#define GROUP_DIRECTX "GameOS_DirectX"
+#define GROUP_DIRECTDRAW "GameOS_DirectDraw"
+#define GROUP_DIRECT3D "GameOS_Direct3D"
+#define GROUP_DIRECTINPUT "GameOS_DirectInput"
+#define GROUP_DIRECTSOUND "GameOS_DirectSound"
+#define GROUP_DIRECTSHOW "GameOS_DirectShow"
+#define GROUP_DIRECTPLAY "GameOS_DirectPlay"
+#define GROUP_WINDOWSMESSAGES "Windows_Messages" // WM_ messages from windows
 //
 // Defines to alter windows headers
 //
-#define STRICT						// Make windows type checking more accurate
-#define WIN32_EXTRA_LEAN			// Reduce windows header size
-#define VC_EXTRALEAN				// Reduce windows header size
+#define STRICT			 // Make windows type checking more accurate
+#define WIN32_EXTRA_LEAN // Reduce windows header size
+#define VC_EXTRALEAN	 // Reduce windows header size
 #define NOGDIOBJ
 #define NOSCROLL
-#define NOMDI						// windows - if you ever use a windows function
-#define NOLOGERROR					// of define that does not work or link comment
-#define NOPROFILER					// out all of these, and put them back until you
-#define NOMEMMGR					// find the one causing it to be removed.
+#define NOMDI	  // windows - if you ever use a windows function
+#define NOLOGERROR // of define that does not work or link comment
+#define NOPROFILER // out all of these, and put them back until you
+#define NOMEMMGR   // find the one causing it to be removed.
 #define NOLFILEIO
 #define NOOPENFILE
 #define NOATOM
-#define NOLANGUAGE					// mfc\include\Afxv_w32.h
+#define NOLANGUAGE // mfc\include\Afxv_w32.h
 #define NOLSTRING
 #define NODBCS
 #define NOKEYBOARDINFO
@@ -68,26 +70,25 @@
 //#pragma warning( disable: 4097 )	// typedef synonyms
 //#pragma warning( disable: 4100 )	// unreferenced formal parameter
 //#pragma warning( disable: 4102 )	// unreferenced labels
-//#pragma warning( disable: 4127 )	// conditional expression is constant eg: While(1)
-//#pragma warning( disable: 4201 )	// nameless struct/union
-//#pragma warning( disable: 4245 )	// conversion from 'cint32_t' to 'uint32_t', signed/uint32_t mismatch
-//#pragma warning( disable: 4355 )	// this used in base initializers
-//#pragma warning( disable: 4511 )	// no copy constructor
-//#pragma warning( disable: 4512 )	// no assignment operator
-//#pragma warning( disable: 4514 )	// unreferenced inline function has been removed
-//#pragma warning( disable: 4702 )	// Unreachable code
-//#pragma warning( disable: 4710 )	// inline not expanded
-//#pragma warning( disable: 4711 )	// auto-inline selection
+//#pragma warning( disable: 4127 )	// conditional expression is constant eg:
+//While(1) #pragma warning( disable: 4201 )	// nameless struct/union #pragma
+//warning( disable: 4245 )	// conversion from 'cint32_t' to 'uint32_t',
+//signed/uint32_t mismatch #pragma warning( disable: 4355 )	// this used in base
+//initializers #pragma warning( disable: 4511 )	// no copy constructor #pragma
+//warning( disable: 4512 )	// no assignment operator #pragma warning( disable:
+//4514 )	// unreferenced inline function has been removed #pragma warning(
+//disable: 4702 )	// Unreachable code #pragma warning( disable: 4710 )	//
+//inline not expanded #pragma warning( disable: 4711 )	// auto-inline selection
 //
 // Common synonyms
 //
-typedef	uint8_t	U8;
-typedef signed char		S8;
-typedef uint16_t	U16;
-typedef signed int16_t	S16;
-typedef uint32_t	U32;
-typedef signed int32_t		S32;
-typedef float			real;
+typedef uint8_t U8;
+typedef signed char S8;
+typedef uint16_t U16;
+typedef signed int16_t S16;
+typedef uint32_t U32;
+typedef signed int32_t S32;
+typedef float real;
 //
 // C / C++ headers
 //
@@ -99,7 +100,8 @@ typedef float			real;
 //
 #include <windows.h>
 //
-// We have modified imagehlp.h so that it does not require a lot more platformsdk files.
+// We have modified imagehlp.h so that it does not require a lot more
+// platformsdk files.
 //
 //#define WINTRUST_H
 //#define ULONG_PTR uint32_t
@@ -109,10 +111,11 @@ typedef float			real;
 //
 #include "psapi.h"
 //
-// Check that DX7 SDK headers and includes are included first in your Tools\Options\Directories in Visual C
+// Check that DX7 SDK headers and includes are included first in your
+// Tools\Options\Directories in Visual C
 //
 #include <ddraw.h>
-#if DIRECTDRAW_VERSION !=0x0700
+#if DIRECTDRAW_VERSION != 0x0700
 #error DirectX 7 SDK is required
 #endif
 #include <dinput.h>
@@ -124,7 +127,8 @@ typedef float			real;
 //
 // DirectShow
 //
-#pragma warning( disable: 4201 )	// nameless struct/union (again - something reenables this!)
+#pragma warning(disable : 4201) // nameless struct/union (again - something
+								// reenables this!)
 #include <amstream.h>
 #include <control.h>
 #include <process.h>
@@ -144,8 +148,11 @@ typedef float			real;
 //
 // Reads time stamp into an int64_t, End finds difference
 //
-//#define GetTimeStampStart(x) { _asm push eax  _asm push edx _asm rdtsc __asm mov dword ptr x,eax __asm mov dword ptr x+4,edx _asm pop edx _asm pop eax}
-//#define GetTimeStampEnd(x) {  _asm push eax _asm push edx _asm rdtsc __asm sub eax,dword ptr x __asm sbb edx,dword ptr x+4 __asm mov dword ptr x,eax __asm mov dword ptr x+4,edx _asm pop edx _asm pop eax}
+//#define GetTimeStampStart(x) { _asm push eax  _asm push edx _asm rdtsc __asm
+//mov dword ptr x,eax __asm mov dword ptr x+4,edx _asm pop edx _asm pop eax}
+//#define GetTimeStampEnd(x) {  _asm push eax _asm push edx _asm rdtsc __asm sub
+//eax,dword ptr x __asm sbb edx,dword ptr x+4 __asm mov dword ptr x,eax __asm
+//mov dword ptr x+4,edx _asm pop edx _asm pop eax}
 //
 // Faster float to int32_t  (Always rounds to nearest)  ie: -2.7 goes to 3
 //

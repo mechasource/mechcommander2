@@ -6,10 +6,10 @@
  conditions are met (OSI approved BSD 2-clause license):
 
  1. Redistributions of source code must retain the above copyright notice,
-    this list of conditions and the following disclaimer.
+	this list of conditions and the following disclaimer.
  2. Redistributions in binary form must reproduce the above copyright notice,
-    this list of conditions and the following disclaimer in the documentation
-    and/or other materials provided with the distribution.
+	this list of conditions and the following disclaimer in the documentation
+	and/or other materials provided with the distribution.
 
  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -54,17 +54,15 @@
 // -----------------------------------------------------------------------------
 // externals referenced in this file not specified in headers
 
-
 uint32_t __stdcall CallDebuggerMenuItem(PCSTR Name, uint32_t MenuFunction);
 void __stdcall DelDebuggerMenuItem(PSTR Name);
-void __stdcall AddDebuggerMenuItem(
-	PSTR Name,
-	uint8_t(__stdcall* CheckMark)(void),
-	void(__stdcall* Activated)(void),
-	uint8_t(__stdcall* Greyed)(void) = 0,
+void __stdcall AddDebuggerMenuItem(PSTR Name,
+	uint8_t(__stdcall* CheckMark)(void), void(__stdcall* Activated)(void),
+	uint8_t(__stdcall* Greyed)(void)								= 0,
 	uint32_t(__stdcall* Callback)(PSTR Name, uint32_t MenuFunction) = 0);
 void __stdcall EndRenderMode(void);
-void __stdcall RenderMenu(int32_t, int32_t, uint32_t, uint32_t, MenuItem*, int32_t);
+void __stdcall RenderMenu(
+	int32_t, int32_t, uint32_t, uint32_t, MenuItem*, int32_t);
 void __stdcall DrawMenu(void);
 void __stdcall OpenMenu(MenuItem*, int32_t, int32_t);
 void __stdcall OpenSubMenu(MenuItem*, int32_t, int32_t);
@@ -75,13 +73,16 @@ void __stdcall DestroyDebugger(void);
 void __stdcall SpewNextLine(void);
 void __stdcall SpewToDebugger(PSTR Message);
 float __stdcall DoUV(float);
-int32_t __stdcall GetMipmapUsed(uint32_t Handle, pgos_VERTEX Pickv1, pgos_VERTEX Pickv2, pgos_VERTEX Pickv3);
+int32_t __stdcall GetMipmapUsed(uint32_t Handle, pgos_VERTEX Pickv1,
+	pgos_VERTEX Pickv2, pgos_VERTEX Pickv3);
 void __stdcall ShowTriangleSizeInfo(void);
 void __stdcall DoExamineMipmaps(void);
 void __stdcall DoExamineMipmaps2(void);
 void __stdcall DoExamineRenderer(void);
-void __stdcall DrawSquare(int32_t TopX, int32_t TopY, int32_t Width, int32_t Height, uint32_t Color);
-void __stdcall DrawLines(int32_t X1, int32_t Y1, int32_t X2, int32_t Y2, uint32_t Color);
+void __stdcall DrawSquare(
+	int32_t TopX, int32_t TopY, int32_t Width, int32_t Height, uint32_t Color);
+void __stdcall DrawLines(
+	int32_t X1, int32_t Y1, int32_t X2, int32_t Y2, uint32_t Color);
 void __stdcall DoExamineDepth(void);
 void __stdcall DoExamineArea(void);
 void __stdcall DoExamineDrawing(void);
@@ -125,7 +126,8 @@ unsigned long gStopRendering;
 
 struct _TextureHeap* pTextureHeap;
 
-int32_t __stdcall DrawTextA(HDC hdc, PCSTR lpchText, int32_t cchText, PRECT lprc, uint32_t format);
+int32_t __stdcall DrawTextA(
+	HDC hdc, PCSTR lpchText, int32_t cchText, PRECT lprc, uint32_t format);
 
 InternalFunctionStop(char const*, ...);
 gos_Free(void*);
@@ -138,7 +140,8 @@ gos_SetRenderState(gos_RenderState, int);
 InternalFunctionSpew(char const*, char const*, ...);
 fabs;
 GetMipmapColor(int);
-gos_SetupViewport(bool, float, bool, uint32_t, float, float, float, float, bool, uint32_t);
+gos_SetupViewport(
+	bool, float, bool, uint32_t, float, float, float, float, bool, uint32_t);
 gos_GetKey(void);
 End3DScene(void);
 CopyBackBuffer(IDirectDrawSurface7*, IDirectDrawSurface7*);
@@ -162,9 +165,9 @@ ShowLogFileControls(void);
 gos_GetMouseInfo(float*, float*, int*, int*, int*, uint32_t*);
 gos_SetViewport(uint32_t, uint32_t, uint32_t, uint32_t, float, float);
 SaveStatistics(void);
-IJLERR(*_ijlFree)(_JPEG_CORE_PROPERTIES*);
-IJLERR(*_ijlWrite)(_JPEG_CORE_PROPERTIES*, IJLIOTYPE);
-IJLERR(*_ijlInit)(_JPEG_CORE_PROPERTIES*);
+IJLERR (*_ijlFree)(_JPEG_CORE_PROPERTIES*);
+IJLERR (*_ijlWrite)(_JPEG_CORE_PROPERTIES*, IJLIOTYPE);
+IJLERR (*_ijlInit)(_JPEG_CORE_PROPERTIES*);
 InternalDoesFileExist(char const*);
 GrabScreenImage(void);
 CheckLogFile(void);

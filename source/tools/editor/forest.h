@@ -23,8 +23,7 @@ forest:
 class Forest
 {
 
-public:
-
+  public:
 	Forest(int32_t newID);
 	Forest(const Forest& src);
 
@@ -35,58 +34,35 @@ public:
 	void save();
 	void save(FitIniFile& file);
 
+	PCSTR getFileName(void) const { return fileName; }
+	void setFileName(PCSTR newName) { fileName = newName; }
 
-	PCSTR getFileName(void) const
-	{
-		return fileName;
-	}
-	void		setFileName(PCSTR newName)
-	{
-		fileName = newName;
-	}
+	PCSTR getName(void) const { return name; }
+	void setName(PCSTR newName) { name = newName; }
 
-	PCSTR getName(void) const
-	{
-		return name;
-	}
-	void		setName(PCSTR newName)
-	{
-		name = newName;
-	}
+	int32_t getID(void) const { return ID; }
 
-	int32_t		getID(void) const
-	{
-		return ID;
-	}
-
-
-private:
-
-
-
-	int32_t	ID;
+  private:
+	int32_t ID;
 	CString fileName;
-	CString	name;
+	CString name;
 
-	bool	bRandom;
+	bool bRandom;
 
-	float	maxHeight;
-	float	minHeight;
-	float	maxDensity;
-	float	minDensity;
+	float maxHeight;
+	float minHeight;
+	float maxDensity;
+	float minDensity;
 
-	float	percentages[FOREST_TYPES];
+	float percentages[FOREST_TYPES];
 
-	float	centerX;
-	float	centerY;
-	float	radius;
-
+	float centerX;
+	float centerY;
+	float radius;
 
 	friend class EditorObjectMgr;
 	friend class ForestDlg;
-
 };
 
-
 //*************************************************************************************************
-#endif  // end of file ( forest.h )
+#endif // end of file ( forest.h )

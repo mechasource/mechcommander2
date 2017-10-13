@@ -24,14 +24,14 @@
 // Class Element
 Element::Element(int32_t _depth)
 {
-	depth = _depth;
+	depth	  = _depth;
 	drawNormal = TRUE;
 }
 //---------------------------------------------------------------------------
 // Class Element
 Element::Element(float _depth)
 {
-	depth = _depth;
+	depth	  = _depth;
 	drawNormal = TRUE;
 }
 

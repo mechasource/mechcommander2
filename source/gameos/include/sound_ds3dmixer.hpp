@@ -12,8 +12,8 @@ struct enumDevice
 
 class DS3DSoundMixer
 {
-public:
-	LPDIRECTSOUND3DLISTENER	m_lpListener;
+  public:
+	LPDIRECTSOUND3DLISTENER m_lpListener;
 	LPDIRECTSOUNDBUFFER m_lpPrimaryBuffer;
 	LPDIRECTSOUND3DBUFFER m_lpEffectsBuffer;
 	LPDIRECTSOUND m_lpDirectSound;
@@ -28,9 +28,7 @@ public:
 	uint32_t m_properties;
 	bool m_changed;
 
-
-
-public:
+  public:
 	DS3DSoundMixer(void);
 	~DS3DSoundMixer(void);
 	void Reset(void);
@@ -48,8 +46,6 @@ public:
 	void GetCaps(void);
 	void SetSpeakerConfig(uint32_t);
 	void GetSpeakerConfig(uint32_t*);
-	void ReturnFormattedDebugData(PSTR  dst, uint32_t maxlen);
+	void ReturnFormattedDebugData(PSTR dst, uint32_t maxlen);
 	void SetAllParameters(void);
-
 };
-

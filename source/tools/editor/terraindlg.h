@@ -19,14 +19,10 @@ TerrainDlg.h			: Interface for the TerrainDlg component.
 CLASS DESCRIPTION
 TerrainDlg:
 **************************************************************************************************/
-class TerrainDlg: public CDialog
+class TerrainDlg : public CDialog
 {
-public:
-
-	TerrainDlg() : CDialog(IDD_TERRAINS)
-	{
-		terrain = 0;
-	}
+  public:
+	TerrainDlg() : CDialog(IDD_TERRAINS) { terrain = 0; }
 	virtual ~TerrainDlg() {}
 	virtual void Init(void);
 	virtual BOOL OnInitDialog()
@@ -36,10 +32,8 @@ public:
 	}
 	void OnOK(void);
 
-
 	int32_t terrain;
 };
 
-
 //*************************************************************************************************
-#endif  // end of file ( TerrainDlg.h )
+#endif // end of file ( TerrainDlg.h )

@@ -8,7 +8,7 @@
 
 class SoundMixer
 {
-public:
+  public:
 	WAVEFORMATEX m_waveFormatEx;
 
 	float m_dopplerFactor, m_rolloffFactor, m_distanceFactor;
@@ -28,8 +28,7 @@ public:
 
 	bool m_changed;
 
-
-public:
+  public:
 	SoundMixer(void);
 	virtual ~SoundMixer(void);
 	virtual void GetHardwareData(void);
@@ -48,8 +47,6 @@ public:
 	virtual void SetDistanceFactor(float df);
 	virtual void SetReverbFactor(float rf);
 	virtual void SetDecayFactor(float df);
-	virtual void SetSpeakerConfig(uint32_t) = 0;
+	virtual void SetSpeakerConfig(uint32_t)  = 0;
 	virtual void GetSpeakerConfig(uint32_t*) = 0;
 };
-
-

@@ -12,7 +12,7 @@
 // Include files
 
 //---------------------------------------------------------------------------
-#define ID_SIZE 8	// enough for an old DOS file name
+#define ID_SIZE 8 // enough for an old DOS file name
 
 class IDString;
 typedef IDString* IDStringPtr;

@@ -26,7 +26,7 @@ MechLabScreen.h			: Interface for the MechLabScreen component.
 #include "simplecamera.h"
 #endif
 
-#define MECH_LAB_ATTRIBUTE_METER_COUNT	9
+#define MECH_LAB_ATTRIBUTE_METER_COUNT 9
 class FitIniFile;
 class LogisticsVariant;
 class LogisticsComponent;
@@ -38,10 +38,9 @@ class LogisticsAcceptVariantDialog;
 CLASS DESCRIPTION
 MechLabScreen:
 **************************************************************************************************/
-class MechLabScreen: public LogisticsScreen
+class MechLabScreen : public LogisticsScreen
 {
-public:
-
+  public:
 	MechLabScreen(void);
 	virtual ~MechLabScreen(void);
 
@@ -52,53 +51,49 @@ public:
 	virtual void update(void);
 	virtual void render(int32_t xOffset, int32_t yOffset);
 
-	virtual int32_t	handleMessage(uint32_t, uint32_t);
+	virtual int32_t handleMessage(uint32_t, uint32_t);
 
-	void	setComponent(LogisticsComponent* pComponent, bool bMessageFromLB = 0);
-	int32_t		addComponent(LogisticsComponent* pComponent, int32_t& x, int32_t& y);
-	void	beginDrag(LogisticsComponent* pComponent);
-	void	endDrag();
+	void setComponent(LogisticsComponent* pComponent, bool bMessageFromLB = 0);
+	int32_t addComponent(
+		LogisticsComponent* pComponent, int32_t& x, int32_t& y);
+	void beginDrag(LogisticsComponent* pComponent);
+	void endDrag();
 
-	int32_t		canAddComponent(LogisticsComponent* pComponent);
+	int32_t canAddComponent(LogisticsComponent* pComponent);
 
-	static MechLabScreen* instance()
-	{
-		return s_instance;
-	}
+	static MechLabScreen* instance() { return s_instance; }
 
 	bool canRemoveComponent(LogisticsComponent* pComp);
 
-
-private:
-
+  private:
 	MechLabScreen(const MechLabScreen& src);
 	MechLabScreen& operator=(const MechLabScreen& echLabScreen);
-	static MechLabScreen*	s_instance;
+	static MechLabScreen* s_instance;
 
 	static LogisticsVariantDialog* saveDlg;
 	static LogisticsAcceptVariantDialog* acceptDlg;
 
-	LogisticsVariantDialog*			pCurDialog;
+	LogisticsVariantDialog* pCurDialog;
 
-	LogisticsVariant*	pVariant;
-	LogisticsComponent*	pSelectedComponent;
-	int32_t				selI;
-	int32_t				selJ;
+	LogisticsVariant* pVariant;
+	LogisticsComponent* pSelectedComponent;
+	int32_t selI;
+	int32_t selJ;
 
-	ComponentIconListBox	componentListBox;
-	aComboBox				variantList;
+	ComponentIconListBox componentListBox;
+	aComboBox variantList;
 
 	AttributeMeter attributeMeters[MECH_LAB_ATTRIBUTE_METER_COUNT];
 
-	aObject				componentIcons[128];
-	int32_t				componentCount;
+	aObject componentIcons[128];
+	int32_t componentCount;
 
-	aObject				payloadIcon;
+	aObject payloadIcon;
 
-	aObject				dragIcon;
+	aObject dragIcon;
 
-	LogisticsComponent*	pDragComponent;
-	LogisticsComponent*	pCurComponent;
+	LogisticsComponent* pDragComponent;
+	LogisticsComponent* pCurComponent;
 
 	void showJumpJetItems(bool bShow);
 
@@ -106,53 +101,49 @@ private:
 
 	float originalCost;
 
-	aObject				selRects[2][5];
-	aObject				selJumpJetRect;
-	aObject*			selRect;
+	aObject selRects[2][5];
+	aObject selJumpJetRect;
+	aObject* selRect;
 
-	bool				bSaveDlg;
-	bool				bDragLeft ;
+	bool bSaveDlg;
+	bool bDragLeft;
 
-	SimpleCamera		camera;
+	SimpleCamera camera;
 
-	EString				varName;
+	EString varName;
 
-	static				RECT	sensorRects[4];
-	static				int32_t		sensorHelpIDs[4];
+	static RECT sensorRects[4];
+	static int32_t sensorHelpIDs[4];
 
-	float				countDownTime;
-	float				curCount;
-	float				previousAmount;
-	float				oldCBillsAmount;
+	float countDownTime;
+	float curCount;
+	float previousAmount;
+	float oldCBillsAmount;
 
-	float				oldHeat;
-	float				heatTime;
-	bool				flashHeatRange;
+	float oldHeat;
+	float heatTime;
+	bool flashHeatRange;
 
-	float				oldArmor;
-	float				newArmor;
-	float				armorTime;
+	float oldArmor;
+	float newArmor;
+	float armorTime;
 
-	bool				bErrorDlg;
-
+	bool bErrorDlg;
 
 	// HELPER FUNCTIONS
 	void getMouseDiagramCoords(int32_t& x, int32_t& y);
-	void getMouseDiagramCoords(int32_t screenX, int32_t screenY, int32_t& x, int32_t& y);
+	void getMouseDiagramCoords(
+		int32_t screenX, int32_t screenY, int32_t& x, int32_t& y);
 
-	void	diagramToScreen(int32_t i, int32_t j, int32_t& x, int32_t& y);
-	int32_t		selectFirstDiagramComponent(void);
-	int32_t		selectFirstLBComponent(void);
-	void	updateDiagramInput(void);
-	void	swapVariant(void);
-	void	updateHeatMeter(void);
-	void	updateArmorMeter(void);
-	void	removeComponent(int32_t i, int32_t j);
-
-
-
+	void diagramToScreen(int32_t i, int32_t j, int32_t& x, int32_t& y);
+	int32_t selectFirstDiagramComponent(void);
+	int32_t selectFirstLBComponent(void);
+	void updateDiagramInput(void);
+	void swapVariant(void);
+	void updateHeatMeter(void);
+	void updateArmorMeter(void);
+	void removeComponent(int32_t i, int32_t j);
 };
 
-
 //*************************************************************************************************
-#endif  // end of file ( MechLabScreen.h )
+#endif // end of file ( MechLabScreen.h )

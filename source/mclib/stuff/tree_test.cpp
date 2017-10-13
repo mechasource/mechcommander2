@@ -11,20 +11,18 @@
 
 #define TEST_COUNT 50
 
-class TreeTestPlug:
-	public Plug
+class TreeTestPlug : public Plug
 {
-public:
+  public:
 	int32_t value;
 
 	TreeTestPlug(int32_t value);
 	~TreeTestPlug();
 };
 
-class TreeTestNode:
-	public Node
+class TreeTestNode : public Node
 {
-public:
+  public:
 	TreeOf<TreeTestPlug*, int32_t> tree1;
 	TreeOf<TreeTestPlug*, int32_t> tree2;
 
@@ -36,27 +34,19 @@ public:
 	bool RunTest();
 };
 
-TreeTestPlug::TreeTestPlug(int32_t value):
-	Plug(DefaultData)
+TreeTestPlug::TreeTestPlug(int32_t value) : Plug(DefaultData)
 {
 	this->value = value;
 }
 
-TreeTestPlug::~TreeTestPlug()
-{
-	this->value = -1;
-}
+TreeTestPlug::~TreeTestPlug() { this->value = -1; }
 
-TreeTestNode::TreeTestNode():
-	Node(DefaultData),
-	tree1(this, true),
-	tree2(this, true)
+TreeTestNode::TreeTestNode()
+	: Node(DefaultData), tree1(this, true), tree2(this, true)
 {
 }
 
-TreeTestNode::~TreeTestNode()
-{
-}
+TreeTestNode::~TreeTestNode() {}
 
 //
 //###########################################################################
@@ -64,20 +54,16 @@ TreeTestNode::~TreeTestNode()
 //###########################################################################
 //
 
-void
-Tree::ProfileClass()
+void Tree::ProfileClass()
 {
-	TreeTestNode	testNode;
+	TreeTestNode testNode;
 #if defined(_ARMOR)
-	Time 		startTicks = gos_GetHiResTime();
+	Time startTicks = gos_GetHiResTime();
 #endif
 	Test_Message("Tree::ProfileClass \n");
 	testNode.RunProfile();
-	SPEW((
-			 GROUP_STUFF_TEST,
-			 "Tree::ProfileClass elapsed = %d",
-			 gos_GetHiResTime() - startTicks
-		 ));
+	SPEW((GROUP_STUFF_TEST, "Tree::ProfileClass elapsed = %d",
+		gos_GetHiResTime() - startTicks));
 }
 
 //
@@ -86,11 +72,10 @@ Tree::ProfileClass()
 //###########################################################################
 //
 
-void
-Tree::TestClass()
+void Tree::TestClass()
 {
 	SPEW((GROUP_STUFF_TEST, "Starting Tree test..."));
-	TreeTestNode	testNode;
+	TreeTestNode testNode;
 	testNode.RunTest();
 }
 
@@ -99,15 +84,14 @@ Tree::TestClass()
 // TestOrder
 //###########################################################################
 //
-bool
-TreeTestNode::TestOrder()
+bool TreeTestNode::TestOrder()
 {
 	TreeIteratorOf<TreeTestPlug*, int32_t> iterator1(&tree1);
 	TreeIteratorOf<TreeTestPlug*, int32_t> iterator2(&tree2);
-	TreeTestPlug* testPlug1, *testPlug2;
+	TreeTestPlug *testPlug1, *testPlug2;
 	int32_t i, size;
 	size = iterator1.GetSize();
-	for(i = 1; i < size; i++)
+	for (i = 1; i < size; i++)
 	{
 		testPlug1 = iterator1.GetNth(i - 1);
 		testPlug2 = iterator2.GetNth(i);
@@ -121,25 +105,24 @@ TreeTestNode::TestOrder()
 // RunProfile
 //###########################################################################
 //
-bool
-TreeTestNode::RunProfile()
+bool TreeTestNode::RunProfile()
 {
-	TreeTestPlug*	testPlug1, *testPlug2;
-	int32_t			 	values[TEST_COUNT];
-	int32_t				i, j;
-	Time 				startTicks;
+	TreeTestPlug *testPlug1, *testPlug2;
+	int32_t values[TEST_COUNT];
+	int32_t i, j;
+	Time startTicks;
 	/*
 	 * Generate unique values, shuffle them
 	 */
-	for(i = 0; i < TEST_COUNT; i++)
+	for (i = 0; i < TEST_COUNT; i++)
 	{
 		values[i] = i;
 	}
-	for(i = 0; i < TEST_COUNT; i++)
+	for (i = 0; i < TEST_COUNT; i++)
 	{
-		int32_t   tmp;
-		j = i + Random::GetLessThan(TEST_COUNT - i);
-		tmp = values[j];
+		int32_t tmp;
+		j		  = i + Random::GetLessThan(TEST_COUNT - i);
+		tmp		  = values[j];
 		values[j] = values[i];
 		values[i] = tmp;
 	}
@@ -152,18 +135,15 @@ TreeTestNode::RunProfile()
 	 * Create plugs and add to both sockets
 	 */
 	startTicks = gos_GetHiResTime();
-	for(i = 0; i < TEST_COUNT; i++)
+	for (i = 0; i < TEST_COUNT; i++)
 	{
 		testPlug1 = new TreeTestPlug(values[i]);
 		Register_Object(testPlug1);
 		tree1.AddValue(testPlug1, values[i]);
 		tree2.AddValue(testPlug1, values[i]);
 	}
-	SPEW((
-			 GROUP_STUFF_TEST,
-			 "TreeTestNode::RunTest Create = %f",
-			 gos_GetHiResTime() - startTicks
-		 ));
+	SPEW((GROUP_STUFF_TEST, "TreeTestNode::RunTest Create = %f",
+		gos_GetHiResTime() - startTicks));
 	/*
 	 * Iterate over both sockets
 	 */
@@ -174,25 +154,22 @@ TreeTestNode::RunProfile()
 		Test_Assumption(iterator1.GetSize() == TEST_COUNT);
 		Test_Assumption(iterator2.GetSize() == TEST_COUNT);
 		i = 0;
-		while((testPlug1 = iterator1.ReadAndNext()) != nullptr)
+		while ((testPlug1 = iterator1.ReadAndNext()) != nullptr)
 		{
 			Test_Assumption(testPlug1->value == i);
 			i++;
 		}
 		Test_Assumption(i == TEST_COUNT);
 		i = 0;
-		while((testPlug1 = iterator2.ReadAndNext()) != nullptr)
+		while ((testPlug1 = iterator2.ReadAndNext()) != nullptr)
 		{
 			Test_Assumption(testPlug1->value == i);
 			i++;
 		}
 		Test_Assumption(i == TEST_COUNT);
 	}
-	SPEW((
-			 GROUP_STUFF_TEST,
-			 "TreeTestNode::RunTest Iterate = %f",
-			 gos_GetHiResTime() - startTicks
-		 ));
+	SPEW((GROUP_STUFF_TEST, "TreeTestNode::RunTest Iterate = %f",
+		gos_GetHiResTime() - startTicks));
 	/*
 	 * Find
 	 */
@@ -200,7 +177,7 @@ TreeTestNode::RunProfile()
 	{
 		TreeIteratorOf<TreeTestPlug*, int32_t> iterator1(&tree1);
 		TreeIteratorOf<TreeTestPlug*, int32_t> iterator2(&tree2);
-		for(i = 0; i < TEST_COUNT; i++)
+		for (i = 0; i < TEST_COUNT; i++)
 		{
 			testPlug1 = iterator1.Find(i);
 			testPlug2 = iterator2.Find(i);
@@ -209,11 +186,8 @@ TreeTestNode::RunProfile()
 			Test_Assumption(testPlug1 == testPlug2);
 		}
 	}
-	SPEW((
-			 GROUP_STUFF_TEST,
-			 "TreeTestNode::RunTest Find = %f",
-			 gos_GetHiResTime() - startTicks
-		 ));
+	SPEW((GROUP_STUFF_TEST, "TreeTestNode::RunTest Find = %f",
+		gos_GetHiResTime() - startTicks));
 	/*
 	 * Destroy from tree1, verify with tree2
 	 */
@@ -224,22 +198,19 @@ TreeTestNode::RunProfile()
 		Test_Assumption(iterator1.GetSize() == TEST_COUNT);
 		Test_Assumption(iterator2.GetSize() == TEST_COUNT);
 		i = 0;
-		while((testPlug1 = iterator1.ReadAndNext()) != nullptr)
+		while ((testPlug1 = iterator1.ReadAndNext()) != nullptr)
 		{
 			Test_Assumption(testPlug1->value == i);
 			i++;
 			Unregister_Object(testPlug1);
-			delete(testPlug1);
+			delete (testPlug1);
 		}
 		Test_Assumption(i == TEST_COUNT);
 		Test_Assumption(iterator1.GetSize() == 0);
 		Test_Assumption(iterator2.GetSize() == 0);
 	}
-	SPEW((
-			 GROUP_STUFF_TEST,
-			 "TreeTestNode::RunTest Destroy = %f",
-			 gos_GetHiResTime() - startTicks
-		 ));
+	SPEW((GROUP_STUFF_TEST, "TreeTestNode::RunTest Destroy = %f",
+		gos_GetHiResTime() - startTicks));
 	return true;
 }
 
@@ -248,25 +219,24 @@ TreeTestNode::RunProfile()
 // RunTest
 //###########################################################################
 //
-bool
-TreeTestNode::RunTest()
+bool TreeTestNode::RunTest()
 {
-	TreeTestPlug*	testPlug1, *testPlug2;
-	int32_t		 		values[TEST_COUNT];
-	int32_t				i, j;
-//	Time 				startTicks;
+	TreeTestPlug *testPlug1, *testPlug2;
+	int32_t values[TEST_COUNT];
+	int32_t i, j;
+	//	Time 				startTicks;
 	/*
 	 * Generate unique values, shuffle them
 	 */
-	for(i = 0; i < TEST_COUNT; i++)
+	for (i = 0; i < TEST_COUNT; i++)
 	{
 		values[i] = i;
 	}
-	for(i = 0; i < TEST_COUNT; i++)
+	for (i = 0; i < TEST_COUNT; i++)
 	{
-		int32_t   tmp;
-		j = i + Random::GetLessThan(TEST_COUNT - i);
-		tmp = values[j];
+		int32_t tmp;
+		j		  = i + Random::GetLessThan(TEST_COUNT - i);
+		tmp		  = values[j];
 		values[j] = values[i];
 		values[i] = tmp;
 	}
@@ -278,7 +248,7 @@ TreeTestNode::RunTest()
 	/*
 	 * Create plugs and add to both sockets
 	 */
-	for(i = 0; i < TEST_COUNT; i++)
+	for (i = 0; i < TEST_COUNT; i++)
 	{
 		testPlug1 = new TreeTestPlug(values[i]);
 		Register_Object(testPlug1);
@@ -290,7 +260,7 @@ TreeTestNode::RunTest()
 	 * Find
 	 */
 	{
-		for(i = 0; i < TEST_COUNT; i++)
+		for (i = 0; i < TEST_COUNT; i++)
 		{
 			testPlug1 = tree1.Find(i);
 			testPlug2 = tree2.Find(i);
@@ -324,7 +294,7 @@ TreeTestNode::RunTest()
 		Test_Assumption(iterator1.GetSize() == TEST_COUNT);
 		Test_Assumption(iterator2.GetSize() == TEST_COUNT);
 		i = 0;
-		while((testPlug1 = iterator1.GetCurrent()) != nullptr)
+		while ((testPlug1 = iterator1.GetCurrent()) != nullptr)
 		{
 			testPlug2 = iterator2.GetCurrent();
 			Test_Assumption(testPlug1 == testPlug2);
@@ -345,7 +315,7 @@ TreeTestNode::RunTest()
 		Test_Assumption(iterator1.GetSize() == TEST_COUNT);
 		Test_Assumption(iterator2.GetSize() == TEST_COUNT);
 		i = 0;
-		while((testPlug1 = iterator1.ReadAndNext()) != nullptr)
+		while ((testPlug1 = iterator1.ReadAndNext()) != nullptr)
 		{
 			testPlug2 = iterator2.ReadAndNext();
 			Test_Assumption(testPlug1 == testPlug2);
@@ -363,7 +333,7 @@ TreeTestNode::RunTest()
 		TreeIteratorOf<TreeTestPlug*, int32_t> iterator2(&tree2);
 		Test_Assumption(iterator1.GetSize() == TEST_COUNT);
 		Test_Assumption(iterator2.GetSize() == TEST_COUNT);
-		for(i = 0; i < TEST_COUNT; i++)
+		for (i = 0; i < TEST_COUNT; i++)
 		{
 			testPlug1 = iterator1.GetNth(i);
 			testPlug2 = iterator2.GetNth(i);
@@ -381,7 +351,7 @@ TreeTestNode::RunTest()
 		Test_Assumption(iterator1.GetSize() == TEST_COUNT);
 		Test_Assumption(iterator2.GetSize() == TEST_COUNT);
 		i = 0;
-		while((testPlug1 = iterator1.GetCurrent()) != nullptr)
+		while ((testPlug1 = iterator1.GetCurrent()) != nullptr)
 		{
 			Test_Assumption(testPlug1->value == i);
 			iterator1.Remove();
@@ -408,7 +378,7 @@ TreeTestNode::RunTest()
 		TreeIteratorOf<TreeTestPlug*, int32_t> iterator2(&tree2);
 		Test_Assumption(iterator1.GetSize() == 0);
 		Test_Assumption(iterator2.GetSize() == 0);
-		for(i = 0; i < TEST_COUNT; i++)
+		for (i = 0; i < TEST_COUNT; i++)
 		{
 			testPlug1 = new TreeTestPlug(values[i]);
 			Register_Object(testPlug1);
@@ -428,15 +398,15 @@ TreeTestNode::RunTest()
 		Test_Assumption(iterator1.GetSize() == TEST_COUNT);
 		Test_Assumption(iterator2.GetSize() == TEST_COUNT);
 		i = 0;
-		while((size = iterator1.GetSize()) != 0)
+		while ((size = iterator1.GetSize()) != 0)
 		{
-			index = Random::GetLessThan(size);
+			index	 = Random::GetLessThan(size);
 			testPlug1 = iterator1.GetNth(index);
 			iterator1.Remove();
 			testPlug2 = iterator2.GetNth(index);
 			Test_Assumption(testPlug1 == testPlug2);
 			Unregister_Object(testPlug2);
-			delete(testPlug2);
+			delete (testPlug2);
 			i++;
 			TestOrder();
 		}
@@ -446,5 +416,3 @@ TreeTestNode::RunTest()
 	}
 	return true;
 }
-
-

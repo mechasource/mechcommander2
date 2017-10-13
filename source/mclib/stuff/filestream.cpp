@@ -33,16 +33,17 @@ Directory::Directory(PSTR find_files, bool directories)
 	//---------------------------------------------------------
 	//
 	PCSTR file_name = gos_FindFiles(new_directory_string);
-	while(file_name)
+	while (file_name)
 	{
 		MString file_name_string = file_name;
-		DirectoryEntry* entry = new DirectoryEntry(file_name_string);
+		DirectoryEntry* entry	= new DirectoryEntry(file_name_string);
 		Check_Object(entry);
 		fileEntries.AddValue(entry, file_name_string);
 		file_name = gos_FindFilesNext();
 	}
 	gos_FindFilesClose();
-	fileWalker = new SortedChainIteratorOf<DirectoryEntry*, MString>(&fileEntries);
+	fileWalker =
+		new SortedChainIteratorOf<DirectoryEntry*, MString>(&fileEntries);
 	Check_Object(fileWalker);
 	//
 	//---------------------------------------------------
@@ -50,19 +51,20 @@ Directory::Directory(PSTR find_files, bool directories)
 	//---------------------------------------------------
 	//
 	folderWalker = nullptr;
-	if(directories)
+	if (directories)
 	{
 		file_name = gos_FindDirectories(new_directory_string);
-		while(file_name)
+		while (file_name)
 		{
 			MString file_name_string = file_name;
-			DirectoryFolder* entry = new DirectoryFolder(file_name_string);
+			DirectoryFolder* entry   = new DirectoryFolder(file_name_string);
 			Check_Object(entry);
 			folderEntries.AddValue(entry, file_name_string);
 			file_name = gos_FindDirectoriesNext();
 		}
 		gos_FindDirectoriesClose();
-		folderWalker = new SortedChainIteratorOf<DirectoryFolder*, MString>(&folderEntries);
+		folderWalker = new SortedChainIteratorOf<DirectoryFolder*, MString>(
+			&folderEntries);
 		Check_Object(folderWalker);
 	}
 }
@@ -76,7 +78,7 @@ Directory::~Directory(void)
 	fileWalker->DeletePlugs();
 	Check_Object(fileWalker);
 	delete fileWalker;
-	if(folderWalker != nullptr)
+	if (folderWalker != nullptr)
 	{
 		Check_Object(folderWalker);
 		folderWalker->DeletePlugs();
@@ -92,7 +94,7 @@ PSTR Directory::GetCurrentFileName(void)
 	// Check_Object(this);
 	Check_Object(fileWalker);
 	DirectoryEntry* entry;
-	if((entry = fileWalker->GetCurrent()) != nullptr)
+	if ((entry = fileWalker->GetCurrent()) != nullptr)
 	{
 		Check_Object(entry);
 		return entry->GetItem();
@@ -114,11 +116,12 @@ void Directory::AdvanceCurrentFile(void)
 PSTR Directory::GetCurrentFolderName(void)
 {
 	// Check_Object(this);
-	if(folderWalker == nullptr)
-		STOP(("Directory class was instantiated without directory support:\n Set the <directories> parameter to true to enable."));
+	if (folderWalker == nullptr)
+		STOP(("Directory class was instantiated without directory support:\n "
+			  "Set the <directories> parameter to true to enable."));
 	Check_Object(folderWalker);
 	DirectoryFolder* entry;
-	if((entry = folderWalker->GetCurrent()) != nullptr)
+	if ((entry = folderWalker->GetCurrent()) != nullptr)
 	{
 		Check_Object(entry);
 		return entry->GetItem();
@@ -131,8 +134,9 @@ PSTR Directory::GetCurrentFolderName(void)
 void Directory::AdvanceCurrentFolder(void)
 {
 	// Check_Object(this);
-	if(folderWalker == nullptr)
-		STOP(("Directory class was instantiated without directory support:\n Set the <directories> parameter to true to enable."));
+	if (folderWalker == nullptr)
+		STOP(("Directory class was instantiated without directory support:\n "
+			  "Set the <directories> parameter to true to enable."));
 	Check_Object(folderWalker);
 	folderWalker->Next();
 }
@@ -145,28 +149,22 @@ FileStream::ClassData* FileStream::DefaultData = nullptr;
 
 PCSTR FileStream::WhiteSpace = " \t\n";
 char FileStream::RedirectedName[256];
-bool FileStream::IsRedirected = false;
+bool FileStream::IsRedirected		= false;
 bool FileStream::IgnoreReadOnlyFlag = false;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-FileStream::InitializeClass(void)
+void FileStream::InitializeClass(void)
 {
 	Verify(!DefaultData);
-	DefaultData =
-		new ClassData(
-		FileStreamClassID,
-		"Stuff::FileStream",
-		MemoryStream::DefaultData
-	);
+	DefaultData = new ClassData(
+		FileStreamClassID, "Stuff::FileStream", MemoryStream::DefaultData);
 	Check_Object(DefaultData);
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-FileStream::TerminateClass(void)
+void FileStream::TerminateClass(void)
 {
 	Check_Object(DefaultData);
 	delete DefaultData;
@@ -175,80 +173,69 @@ FileStream::TerminateClass(void)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-FileStream::TestInstance(void) const
+void FileStream::TestInstance(void) const
 {
 	Verify(IsDerivedFrom(DefaultData));
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-FileStream::FileStream():
-	MemoryStream(DefaultData, nullptr, 0)
+FileStream::FileStream() : MemoryStream(DefaultData, nullptr, 0)
 {
-	fileName = nullptr;
-	isOpen = false;
+	fileName   = nullptr;
+	isOpen	 = false;
 	fileHandle = nullptr;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-FileStream::FileStream(
-	PCSTR file_name,
-	WriteStatus writable
-):
-	MemoryStream(DefaultData, nullptr, 0)
+FileStream::FileStream(PCSTR file_name, WriteStatus writable)
+	: MemoryStream(DefaultData, nullptr, 0)
 {
 	fileName = nullptr;
-	isOpen = false;
+	isOpen   = false;
 	Open(file_name, writable);
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-FileStream::~FileStream(void)
-{
-	Close();
-}
+FileStream::~FileStream(void) { Close(); }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-FileStream::Open(
-	PCSTR file_name,
-	WriteStatus writable
-)
+void FileStream::Open(PCSTR file_name, WriteStatus writable)
 {
 	// Check_Object(this);
 	Check_Pointer(file_name);
-	writeEnabled = writable;
+	writeEnabled	= writable;
 	currentPosition = streamStart = nullptr;
-	streamSize = 0;
-	fileHandle = nullptr;
+	streamSize					  = 0;
+	fileHandle					  = nullptr;
 	//
 	//------------------------------------------------
 	// If this is a readonly file, have gos read it in
 	//------------------------------------------------
 	//
-	if(writeEnabled == ReadOnly)
+	if (writeEnabled == ReadOnly)
 	{
-		if(IsRedirected)
+		if (IsRedirected)
 		{
-			void (__stdcall * old_hook)(PCSTR, puint8_t*, uint32_t*) = Environment.HookGetFile;
+			void(__stdcall * old_hook)(PCSTR, puint8_t*, uint32_t*) =
+				Environment.HookGetFile;
 			Environment.HookGetFile = nullptr;
 			gos_GetFile(RedirectedName, &streamStart, &streamSize);
 			Environment.HookGetFile = old_hook;
-			fileName = _strdup(RedirectedName);
+			fileName				= _strdup(RedirectedName);
 		}
 		else
 		{
 			gos_GetFile(file_name, &streamStart, &streamSize);
-			if(IsRedirected)
+			if (IsRedirected)
 				fileName = _strdup(RedirectedName);
 			else
 				fileName = _strdup(file_name);
 		}
-		isOpen = true;
+		isOpen			= true;
 		currentPosition = streamStart;
 	}
 	//
@@ -259,22 +246,19 @@ FileStream::Open(
 	else
 	{
 		writeEnabled = writable;
-		if(IgnoreReadOnlyFlag)
+		if (IgnoreReadOnlyFlag)
 		{
-			uint8_t (__stdcall * old_hook)(PCSTR) = Environment.HookDoesFileExist;
+			uint8_t(__stdcall * old_hook)(PCSTR) =
+				Environment.HookDoesFileExist;
 			Environment.HookDoesFileExist = nullptr;
-			if(gos_DoesFileExist(file_name))
+			if (gos_DoesFileExist(file_name))
 				gos_FileSetReadWrite(file_name);
 			Environment.HookDoesFileExist = old_hook;
 		}
-		gos_OpenFile(
-			&fileHandle,
-			file_name,
-			READWRITE
-		);
-		isOpen = true;
+		gos_OpenFile(&fileHandle, file_name, READWRITE);
+		isOpen	 = true;
 		streamSize = 0xFFFFFFFFU;
-		fileName = _strdup(file_name);
+		fileName   = _strdup(file_name);
 	}
 	//
 	//--------------------------
@@ -286,8 +270,7 @@ FileStream::Open(
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-FileStream::Close(void)
+void FileStream::Close(void)
 {
 	// Check_Object(this);
 	//
@@ -295,9 +278,9 @@ FileStream::Close(void)
 	// If the file was opened, close it
 	//---------------------------------
 	//
-	if(fileHandle)
+	if (fileHandle)
 		gos_CloseFile(fileHandle);
-	else if(streamStart != nullptr)
+	else if (streamStart != nullptr)
 		gos_Free(streamStart);
 	//
 	//----------------
@@ -305,7 +288,7 @@ FileStream::Close(void)
 	//----------------
 	//
 	isOpen = false;
-	if(fileName)
+	if (fileName)
 	{
 		Check_Pointer(fileName);
 		free(fileName);
@@ -315,8 +298,7 @@ FileStream::Close(void)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-FileStream::SetPointer(size_t index)
+void FileStream::SetPointer(size_t index)
 {
 	// Check_Object(this);
 	Verify(IsFileOpened());
@@ -326,8 +308,7 @@ FileStream::SetPointer(size_t index)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MemoryStream&
-FileStream::AdvancePointer(size_t index)
+MemoryStream& FileStream::AdvancePointer(size_t index)
 {
 	// Check_Object(this);
 	Verify(IsFileOpened());
@@ -337,8 +318,7 @@ FileStream::AdvancePointer(size_t index)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MemoryStream&
-FileStream::RewindPointer(size_t index)
+MemoryStream& FileStream::RewindPointer(size_t index)
 {
 	// Check_Object(this);
 	Verify(IsFileOpened());
@@ -348,11 +328,7 @@ FileStream::RewindPointer(size_t index)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MemoryStream&
-FileStream::ReadBytes(
-	PVOID ptr,
-	size_t number_of_bytes
-)
+MemoryStream& FileStream::ReadBytes(PVOID ptr, size_t number_of_bytes)
 {
 	// Check_Object(this);
 	Verify(IsFileOpened());
@@ -362,17 +338,13 @@ FileStream::ReadBytes(
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MemoryStream&
-FileStream::WriteBytes(
-	PCVOID ptr,
-	size_t number_of_bytes
-)
+MemoryStream& FileStream::WriteBytes(PCVOID ptr, size_t number_of_bytes)
 {
 	// Check_Object(this);
 	Verify(IsFileOpened());
 	Verify(writeEnabled == WriteOnly);
-	size_t written = gos_WriteFile(
-						 fileHandle, Cast_Pointer(puint8_t, const_cast<PVOID>(ptr)), number_of_bytes);
+	size_t written = gos_WriteFile(fileHandle,
+		Cast_Pointer(puint8_t, const_cast<PVOID>(ptr)), number_of_bytes);
 	Verify(written == number_of_bytes);
 	currentPosition += written;
 	return *this;
@@ -380,8 +352,7 @@ FileStream::WriteBytes(
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-bool
-FileStream::IsFileOpened(void)
+bool FileStream::IsFileOpened(void)
 {
 	// Check_Object(this);
 	return isOpen;
@@ -391,59 +362,60 @@ FileStream::IsFileOpened(void)
 //
 bool Stuff::CreateDirectories(PCSTR directory_path)
 {
-	if(directory_path == nullptr)
+	if (directory_path == nullptr)
 		return false;
 	Check_Pointer(directory_path);
-	PCSTR start_position = directory_path;
+	PCSTR start_position   = directory_path;
 	PCSTR current_position = directory_path;
-	if(*current_position != '\\')
+	if (*current_position != '\\')
 	{
-		if((current_position + 1) != nullptr)
+		if ((current_position + 1) != nullptr)
 		{
-			if((current_position + 2) != nullptr)
+			if ((current_position + 2) != nullptr)
 			{
-				if(*(current_position + 1) == ':' && *(current_position + 2) == '\\')
+				if (*(current_position + 1) == ':' &&
+					*(current_position + 2) == '\\')
 				{
 					current_position += 2;
 				}
 			}
 		}
 	}
-	if(*current_position != '\\')
+	if (*current_position != '\\')
 		return false;
-	while((current_position != nullptr))
+	while ((current_position != nullptr))
 	{
-		//make a substring with the path...
+		// make a substring with the path...
 		PCSTR next_slash;
-		next_slash = strchr(current_position + 1, '\\');
+		next_slash		= strchr(current_position + 1, '\\');
 		PSTR new_string = nullptr;
-		if(next_slash == nullptr)
+		if (next_slash == nullptr)
 		{
-			//copy the whole string
+			// copy the whole string
 			size_t length = strlen(start_position) + 1;
-			new_string = new char[length];
+			new_string	= new char[length];
 			Check_Pointer(new_string);
 			Str_Copy(new_string, start_position, length);
 		}
 		else
 		{
-			if(next_slash - current_position == 0)
+			if (next_slash - current_position == 0)
 			{
 				return false;
 			}
-			if(next_slash - current_position == 1)
+			if (next_slash - current_position == 1)
 			{
 				return false;
 			}
-			//copy the sub string
+			// copy the sub string
 			size_t length = size_t(next_slash - start_position);
-			new_string = new char[length + 1];
+			new_string	= new char[length + 1];
 			Check_Pointer(new_string);
 			strncpy_s(new_string, (length + 1), start_position, length);
 			new_string[length] = 0;
 		}
 		Verify(new_string != nullptr);
-		if(!gos_DoesFileExist(new_string))
+		if (!gos_DoesFileExist(new_string))
 		{
 			gos_CreateDirectory(new_string);
 		}

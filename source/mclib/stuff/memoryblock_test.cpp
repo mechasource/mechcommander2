@@ -8,15 +8,13 @@
 #include "stdafx.h"
 #include "stuffheaders.hpp"
 
-
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ MemoryBlock ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 //
 //#############################################################################
 //#############################################################################
 //
-bool
-MemoryBlock::TestClass()
+bool MemoryBlock::TestClass()
 {
 	SPEW((GROUP_STUFF_TEST, "Starting MemoryBlock test..."));
 	SPEW((GROUP_STUFF_TEST, "  MemoryBlock::TestClass() is stubbed out!"));
@@ -29,11 +27,9 @@ MemoryBlock::TestClass()
 //###########################################################################
 //###########################################################################
 //
-bool
-MemoryStack::TestClass()
+bool MemoryStack::TestClass()
 {
 	SPEW((GROUP_STUFF_TEST, "Starting MemoryStack test..."));
 	SPEW((GROUP_STUFF_TEST, "  MemoryStack::TestClass() is stubbed out!"));
 	return false;
 }
-

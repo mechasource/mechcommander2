@@ -13,28 +13,22 @@ using namespace MidLevelRenderer;
 //#############################################################################
 
 MLRInfiniteLightWithFalloff::ClassData*
-MLRInfiniteLightWithFalloff::DefaultData = nullptr;
+	MLRInfiniteLightWithFalloff::DefaultData = nullptr;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLRInfiniteLightWithFalloff::InitializeClass()
+void MLRInfiniteLightWithFalloff::InitializeClass()
 {
 	Verify(!DefaultData);
 	// Verify(gos_GetCurrentHeap() == StaticHeap);
-	DefaultData =
-		new ClassData(
-		MLRInfiniteLightWithFalloffClassID,
-		"MidLevelRenderer::MLRInfiniteLightWithFalloff",
-		MLRLight::DefaultData
-	);
+	DefaultData = new ClassData(MLRInfiniteLightWithFalloffClassID,
+		"MidLevelRenderer::MLRInfiniteLightWithFalloff", MLRLight::DefaultData);
 	Register_Object(DefaultData);
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLRInfiniteLightWithFalloff::TerminateClass()
+void MLRInfiniteLightWithFalloff::TerminateClass()
 {
 	Unregister_Object(DefaultData);
 	delete DefaultData;
@@ -43,27 +37,24 @@ MLRInfiniteLightWithFalloff::TerminateClass()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLRInfiniteLightWithFalloff::MLRInfiniteLightWithFalloff(ClassData* class_data) :
-	MLRLight(class_data)
+MLRInfiniteLightWithFalloff::MLRInfiniteLightWithFalloff(ClassData* class_data)
+	: MLRLight(class_data)
 {
-	//Verify(gos_GetCurrentHeap() == Heap);
-	lightMask = MLRState::FaceLightingMode | MLRState::VertexLightingMode;
-	innerRadius = 0.0f;
-	outerRadius = 0.0f;
+	// Verify(gos_GetCurrentHeap() == Heap);
+	lightMask		= MLRState::FaceLightingMode | MLRState::VertexLightingMode;
+	innerRadius		= 0.0f;
+	outerRadius		= 0.0f;
 	oneOverDistance = 100.0f;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 MLRInfiniteLightWithFalloff::MLRInfiniteLightWithFalloff(
-	ClassData* class_data,
-	Stuff::MemoryStream* stream,
-	uint32_t version
-) :
-	MLRLight(class_data, stream, version)
+	ClassData* class_data, Stuff::MemoryStream* stream, uint32_t version)
+	: MLRLight(class_data, stream, version)
 {
 	Check_Object(stream);
-	//Verify(gos_GetCurrentHeap() == Heap);
+	// Verify(gos_GetCurrentHeap() == Heap);
 	lightMask = MLRState::FaceLightingMode | MLRState::VertexLightingMode;
 	float inner, outer;
 	*stream >> inner >> outer;
@@ -73,14 +64,12 @@ MLRInfiniteLightWithFalloff::MLRInfiniteLightWithFalloff(
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 MLRInfiniteLightWithFalloff::MLRInfiniteLightWithFalloff(
-	ClassData* class_data,
-	Stuff::Page* page
-) :
-	MLRLight(class_data, page)
+	ClassData* class_data, Stuff::Page* page)
+	: MLRLight(class_data, page)
 {
 	Check_Object(page);
-	//Verify(gos_GetCurrentHeap() == Heap);
-	lightMask = MLRState::FaceLightingMode | MLRState::VertexLightingMode;
+	// Verify(gos_GetCurrentHeap() == Heap);
+	lightMask   = MLRState::FaceLightingMode | MLRState::VertexLightingMode;
 	float inner = 0.0f;
 	page->GetEntry("InnerRadius", &inner);
 	float outer = 100.0;
@@ -90,14 +79,11 @@ MLRInfiniteLightWithFalloff::MLRInfiniteLightWithFalloff(
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLRInfiniteLightWithFalloff::~MLRInfiniteLightWithFalloff()
-{
-}
+MLRInfiniteLightWithFalloff::~MLRInfiniteLightWithFalloff() {}
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLRInfiniteLightWithFalloff::Save(Stuff::MemoryStream* stream)
+void MLRInfiniteLightWithFalloff::Save(Stuff::MemoryStream* stream)
 {
 	// Check_Object(this);
 	Check_Object(stream);
@@ -107,8 +93,7 @@ MLRInfiniteLightWithFalloff::Save(Stuff::MemoryStream* stream)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLRInfiniteLightWithFalloff::Write(Stuff::Page* page)
+void MLRInfiniteLightWithFalloff::Write(Stuff::Page* page)
 {
 	// Check_Object(this);
 	Check_Object(page);
@@ -119,28 +104,24 @@ MLRInfiniteLightWithFalloff::Write(Stuff::Page* page)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLRInfiniteLightWithFalloff::TestInstance()
+void MLRInfiniteLightWithFalloff::TestInstance()
 {
 	Verify(IsDerivedFrom(DefaultData));
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLRInfiniteLightWithFalloff::SetFalloffDistance(float ir, float or)
+void MLRInfiniteLightWithFalloff::SetFalloffDistance(float ir, float or)
 {
 	// Check_Object(this);
-	innerRadius = ir;
-	outerRadius = or;
+	innerRadius		= ir;
+	outerRadius		= or ;
 	oneOverDistance = 1.0f / (outerRadius - innerRadius);
 }
 
-
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-bool
-MLRInfiniteLightWithFalloff::GetFalloffDistance(float& ir, float& or)
+bool MLRInfiniteLightWithFalloff::GetFalloffDistance(float& ir, float& or)
 {
 	// Check_Object(this);
 	ir = innerRadius;
@@ -148,11 +129,9 @@ MLRInfiniteLightWithFalloff::GetFalloffDistance(float& ir, float& or)
 	return true;
 }
 
-
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLRInfiniteLightWithFalloff::LightVertex(const MLRVertexData& vertexData)
+void MLRInfiniteLightWithFalloff::LightVertex(const MLRVertexData& vertexData)
 {
 	UnitVector3D light_z;
 	GetInShapeDirection(light_z);
@@ -175,12 +154,12 @@ MLRInfiniteLightWithFalloff::LightVertex(const MLRVertexData& vertexData)
 	// light level as appropriate to the distance
 	//--------------------------------------------------------------
 	//
-	float length = vertex_to_light.GetApproximateLength();
+	float length  = vertex_to_light.GetApproximateLength();
 	float falloff = 1.0f;
 #if COLOR_AS_DWORD
 	TO_DO;
 #else
-	if(GetFalloff(length, falloff))
+	if (GetFalloff(length, falloff))
 	{
 		light_color.red *= falloff;
 		light_color.green *= falloff;
@@ -190,7 +169,7 @@ MLRInfiniteLightWithFalloff::LightVertex(const MLRVertexData& vertexData)
 	{
 		return;
 	}
-	if(cosine > SMALL)
+	if (cosine > SMALL)
 	{
 		light_color.red *= cosine;
 		light_color.green *= cosine;

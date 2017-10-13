@@ -12,20 +12,18 @@
 
 #define TEST_COUNT 50
 
-class HashTestPlug:
-	public Plug
+class HashTestPlug : public Plug
 {
-public:
+  public:
 	int32_t value;
 
 	HashTestPlug(int32_t value);
 	~HashTestPlug();
 };
 
-class HashTestNode:
-	public Node
+class HashTestNode : public Node
 {
-public:
+  public:
 	HashOf<HashTestPlug*, int32_t> hash1;
 	HashOf<HashTestPlug*, int32_t> hash2;
 
@@ -36,26 +34,20 @@ public:
 	bool RunTest();
 };
 
-HashTestPlug::HashTestPlug(int32_t value):
-	Plug(DefaultData)
+HashTestPlug::HashTestPlug(int32_t value) : Plug(DefaultData)
 {
 	this->value = value;
 }
 
-HashTestPlug::~HashTestPlug()
+HashTestPlug::~HashTestPlug() {}
+
+HashTestNode::HashTestNode()
+	: Node(DefaultData), hash1(TEST_COUNT / 2, this, true),
+	  hash2(TEST_COUNT / 2, this, true)
 {
 }
 
-HashTestNode::HashTestNode():
-	Node(DefaultData),
-	hash1(TEST_COUNT / 2, this, true),
-	hash2(TEST_COUNT / 2, this, true)
-{
-}
-
-HashTestNode::~HashTestNode()
-{
-}
+HashTestNode::~HashTestNode() {}
 
 //
 //###########################################################################
@@ -63,8 +55,7 @@ HashTestNode::~HashTestNode()
 //###########################################################################
 //
 
-bool
-Hash::ProfileClass()
+bool Hash::ProfileClass()
 {
 	HashTestNode testNode;
 #if defined(_ARMOR)
@@ -72,11 +63,8 @@ Hash::ProfileClass()
 #endif
 	Test_Message("Hash::ProfileClass \n");
 	testNode.RunProfile();
-	SPEW((
-			 GROUP_STUFF_TEST,
-			 "Hash::ProfileClass elapsed = %f",
-			 gos_GetHiResTime() - startTicks
-		 ));
+	SPEW((GROUP_STUFF_TEST, "Hash::ProfileClass elapsed = %f",
+		gos_GetHiResTime() - startTicks));
 	return true;
 }
 
@@ -86,8 +74,7 @@ Hash::ProfileClass()
 //###########################################################################
 //
 
-bool
-Hash::TestClass()
+bool Hash::TestClass()
 {
 	SPEW((GROUP_STUFF_TEST, "Starting Hash test..."));
 	HashTestNode testNode;
@@ -95,25 +82,24 @@ Hash::TestClass()
 	return true;
 }
 
-bool
-HashTestNode::RunProfile()
+bool HashTestNode::RunProfile()
 {
-	HashTestPlug*	testPlug1, *testPlug2;
-	int32_t			 	values[TEST_COUNT];
-	int32_t				i, j;
-	Time 				startTicks;
+	HashTestPlug *testPlug1, *testPlug2;
+	int32_t values[TEST_COUNT];
+	int32_t i, j;
+	Time startTicks;
 	/*
 	 * Generate unique values, shuffle them
 	 */
-	for(i = 0; i < TEST_COUNT; i++)
+	for (i = 0; i < TEST_COUNT; i++)
 	{
 		values[i] = i;
 	}
-	for(i = 0; i < TEST_COUNT; i++)
+	for (i = 0; i < TEST_COUNT; i++)
 	{
-		int32_t   tmp;
-		j = i + Random::GetLessThan(TEST_COUNT - i);
-		tmp = values[j];
+		int32_t tmp;
+		j		  = i + Random::GetLessThan(TEST_COUNT - i);
+		tmp		  = values[j];
 		values[j] = values[i];
 		values[i] = tmp;
 	}
@@ -126,18 +112,15 @@ HashTestNode::RunProfile()
 	 * Create plugs and add to both sockets
 	 */
 	startTicks = gos_GetHiResTime();
-	for(i = 0; i < TEST_COUNT; i++)
+	for (i = 0; i < TEST_COUNT; i++)
 	{
 		testPlug1 = new HashTestPlug(values[i]);
 		Register_Object(testPlug1);
 		hash1.AddValue(testPlug1, values[i]);
 		hash2.AddValue(testPlug1, values[i]);
 	}
-	SPEW((
-			 GROUP_STUFF_TEST,
-			 "HashTestNode::RunTest Create = %f",
-			 gos_GetHiResTime() - startTicks
-		 ));
+	SPEW((GROUP_STUFF_TEST, "HashTestNode::RunTest Create = %f",
+		gos_GetHiResTime() - startTicks));
 	/*
 	 * Iterate over both sockets
 	 */
@@ -146,40 +129,34 @@ HashTestNode::RunProfile()
 		HashIteratorOf<HashTestPlug*, int32_t> iterator1(&hash1);
 		HashIteratorOf<HashTestPlug*, int32_t> iterator2(&hash2);
 		i = 0;
-		while((testPlug1 = iterator1.ReadAndNext()) != nullptr)
+		while ((testPlug1 = iterator1.ReadAndNext()) != nullptr)
 		{
 			i++;
 		}
 		Test_Assumption(i == TEST_COUNT);
 		i = 0;
-		while((testPlug1 = iterator2.ReadAndNext()) != nullptr)
+		while ((testPlug1 = iterator2.ReadAndNext()) != nullptr)
 		{
 			i++;
 		}
 		Test_Assumption(i == TEST_COUNT);
 	}
-	SPEW((
-			 GROUP_STUFF_TEST,
-			 "HashTestNode::RunTest Iterate = %f",
-			 gos_GetHiResTime() - startTicks
-		 ));
+	SPEW((GROUP_STUFF_TEST, "HashTestNode::RunTest Iterate = %f",
+		gos_GetHiResTime() - startTicks));
 	/*
 	 * Find
 	 */
 	startTicks = gos_GetHiResTime();
 	{
-		for(i = 0; i < TEST_COUNT; i++)
+		for (i = 0; i < TEST_COUNT; i++)
 		{
 			testPlug1 = hash1.Find(i);
 			testPlug2 = hash2.Find(i);
 			Test_Assumption(testPlug1 == testPlug2);
 		}
 	}
-	SPEW((
-			 GROUP_STUFF_TEST,
-			 "HashTestNode::RunTest Find = %f",
-			 gos_GetHiResTime() - startTicks
-		 ));
+	SPEW((GROUP_STUFF_TEST, "HashTestNode::RunTest Find = %f",
+		gos_GetHiResTime() - startTicks));
 	/*
 	 * Destroy from hash1, verify with hash2
 	 */
@@ -188,42 +165,38 @@ HashTestNode::RunProfile()
 		HashIteratorOf<HashTestPlug*, int32_t> iterator1(&hash1);
 		HashIteratorOf<HashTestPlug*, int32_t> iterator2(&hash2);
 		i = 0;
-		while((testPlug1 = iterator1.ReadAndNext()) != nullptr)
+		while ((testPlug1 = iterator1.ReadAndNext()) != nullptr)
 		{
 			i++;
 			Unregister_Object(testPlug1);
-			delete(testPlug1);
+			delete (testPlug1);
 		}
 		Test_Assumption(i == TEST_COUNT);
 		Test_Assumption(iterator2.GetCurrent() == nullptr);
 	}
-	SPEW((
-			 GROUP_STUFF_TEST,
-			 "HashTestNode::RunTest Destroy = %f",
-			 gos_GetHiResTime() - startTicks
-		 ));
+	SPEW((GROUP_STUFF_TEST, "HashTestNode::RunTest Destroy = %f",
+		gos_GetHiResTime() - startTicks));
 	return true;
 }
 
-bool
-HashTestNode::RunTest()
+bool HashTestNode::RunTest()
 {
-	HashTestPlug*	testPlug1, *testPlug2;
-	int32_t		 		values[TEST_COUNT];
-	int32_t				i, j;
-//	Time 				startTicks;
+	HashTestPlug *testPlug1, *testPlug2;
+	int32_t values[TEST_COUNT];
+	int32_t i, j;
+	//	Time 				startTicks;
 	/*
 	 * Generate unique values, shuffle them
 	 */
-	for(i = 0; i < TEST_COUNT; i++)
+	for (i = 0; i < TEST_COUNT; i++)
 	{
 		values[i] = i;
 	}
-	for(i = 0; i < TEST_COUNT; i++)
+	for (i = 0; i < TEST_COUNT; i++)
 	{
-		int32_t   tmp;
-		j = i + Random::GetLessThan(TEST_COUNT - i);
-		tmp = values[j];
+		int32_t tmp;
+		j		  = i + Random::GetLessThan(TEST_COUNT - i);
+		tmp		  = values[j];
 		values[j] = values[i];
 		values[i] = tmp;
 	}
@@ -235,7 +208,7 @@ HashTestNode::RunTest()
 	/*
 	 * Create plugs and add to both sockets
 	 */
-	for(i = 0; i < TEST_COUNT; i++)
+	for (i = 0; i < TEST_COUNT; i++)
 	{
 		testPlug1 = new HashTestPlug(values[i]);
 		Register_Object(testPlug1);
@@ -246,7 +219,7 @@ HashTestNode::RunTest()
 	 * Find
 	 */
 	{
-		for(i = 0; i < TEST_COUNT; i++)
+		for (i = 0; i < TEST_COUNT; i++)
 		{
 			testPlug1 = hash1.Find(i);
 			testPlug2 = hash2.Find(i);
@@ -274,7 +247,7 @@ HashTestNode::RunTest()
 		HashIteratorOf<HashTestPlug*, int32_t> iterator1(&hash1);
 		HashIteratorOf<HashTestPlug*, int32_t> iterator2(&hash2);
 		i = 0;
-		while((testPlug1 = iterator1.GetCurrent()) != nullptr)
+		while ((testPlug1 = iterator1.GetCurrent()) != nullptr)
 		{
 			testPlug2 = iterator2.GetCurrent();
 			Test_Assumption(testPlug1 == testPlug2);
@@ -291,7 +264,7 @@ HashTestNode::RunTest()
 		HashIteratorOf<HashTestPlug*, int32_t> iterator1(&hash1);
 		HashIteratorOf<HashTestPlug*, int32_t> iterator2(&hash2);
 		i = 0;
-		while((testPlug1 = iterator1.ReadAndNext()) != nullptr)
+		while ((testPlug1 = iterator1.ReadAndNext()) != nullptr)
 		{
 			testPlug2 = iterator2.ReadAndNext();
 			Test_Assumption(testPlug1 == testPlug2);
@@ -306,13 +279,13 @@ HashTestNode::RunTest()
 		HashIteratorOf<HashTestPlug*, int32_t> iterator1(&hash1);
 		HashIteratorOf<HashTestPlug*, int32_t> iterator2(&hash2);
 		i = 0;
-		while((testPlug1 = iterator1.GetCurrent()) != nullptr)
+		while ((testPlug1 = iterator1.GetCurrent()) != nullptr)
 		{
 			testPlug2 = iterator2.GetCurrent();
 			Test_Assumption(testPlug1 == testPlug2);
 			iterator1.Remove();
 			Unregister_Object(testPlug1);
-			delete(testPlug1);
+			delete (testPlug1);
 			i++;
 		}
 		Test_Assumption(iterator2.GetCurrent() == nullptr);
@@ -329,7 +302,7 @@ HashTestNode::RunTest()
 		HashIteratorOf<HashTestPlug*, int32_t> iterator2(&hash2);
 		Test_Assumption(iterator1.GetCurrent() == nullptr);
 		Test_Assumption(iterator2.GetCurrent() == nullptr);
-		for(i = 0; i < TEST_COUNT; i++)
+		for (i = 0; i < TEST_COUNT; i++)
 		{
 			testPlug1 = new HashTestPlug(values[i]);
 			Register_Object(testPlug1);
@@ -346,15 +319,15 @@ HashTestNode::RunTest()
 		HashIteratorOf<HashTestPlug*, int32_t> iterator2(&hash2);
 		i = 0;
 		iterator1.First();
-		while((size = iterator1.GetSize()) != 0)
+		while ((size = iterator1.GetSize()) != 0)
 		{
-			index = Random::GetLessThan(size);
+			index	 = Random::GetLessThan(size);
 			testPlug1 = iterator1.GetNth(index);
 			iterator1.Remove();
 			testPlug2 = iterator2.GetNth(index);
 			Test_Assumption(testPlug1 == testPlug2);
 			Unregister_Object(testPlug2);
-			delete(testPlug2);
+			delete (testPlug2);
 			i++;
 		}
 		Test_Assumption(i == TEST_COUNT);
@@ -363,4 +336,3 @@ HashTestNode::RunTest()
 	}
 	return true;
 }
-

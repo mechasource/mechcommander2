@@ -8,7 +8,7 @@
 //===========================================================================//
 //
 // replace with std::list<string>?
-// 
+//
 
 #pragma once
 
@@ -19,22 +19,23 @@
 
 namespace Stuff
 {
-	class NameList;
+class NameList;
 }
 
 namespace MemoryStreamIO
 {
-	Stuff::MemoryStream& Read(Stuff::MemoryStream* stream, Stuff::NameList* names);
-	Stuff::MemoryStream& Write(Stuff::MemoryStream* stream, const Stuff::NameList* names);
+Stuff::MemoryStream& Read(Stuff::MemoryStream* stream, Stuff::NameList* names);
+Stuff::MemoryStream& Write(
+	Stuff::MemoryStream* stream, const Stuff::NameList* names);
 }
 
 namespace Stuff
 {
 
-	class ObjectNameList;
-	class ObjectNameList__Entry;
-	class NameList;
-	class AlphaNameList;
+class ObjectNameList;
+class ObjectNameList__Entry;
+class NameList;
+class AlphaNameList;
 
 //=======================================================================
 // Notice:
@@ -57,186 +58,176 @@ namespace Stuff
 //##############    ObjectNameList    ######################################
 //##########################################################################
 
-	class ObjectNameList
+class ObjectNameList
 #if defined(_ARMOR)
-		: public Stuff::Signature
+	: public Stuff::Signature
 #endif
+{
+  public:
+	typedef ObjectNameList__Entry Entry;
+
+  protected:
+	Entry* firstEntry;
+	Entry* lastEntry;
+
+  public:
+	ObjectNameList(void);
+	virtual ~ObjectNameList(void);
+
+	virtual PCSTR AddEntry(PCSTR name, PVOID data);
+	PVOID FindObject(PCSTR name);
+	void DeleteEntry(PCSTR name);	 // ** DANGEROUS!! see notice above **
+	size_t GetEntryCount(void) const; // (implementation assumes infrequent use)
+	bool IsEmpty(void) const
 	{
-	public:
-		typedef ObjectNameList__Entry    Entry;
+		// Check_Object(this);
+		return firstEntry == nullptr && lastEntry == nullptr;
+	}
+	Entry* GetFirstEntry(void)
+	{
+		// Check_Object(this);
+		return firstEntry;
+	}
+	const Entry* GetFirstEntry(void) const
+	{
+		// Check_Object(this);
+		return firstEntry;
+	}
+	Entry* GetLastEntry()
+	{
+		// Check_Object(this);
+		return lastEntry;
+	}
+	const Entry* GetLastEntry(void) const
+	{
+		// Check_Object(this);
+		return lastEntry;
+	}
+	int32_t BuildSubList(const ObjectNameList& source_list, PCSTR prefix);
 
-	protected:
-		Entry* firstEntry;
-		Entry* lastEntry;
-
-	public:
-		ObjectNameList(void);
-		virtual ~ObjectNameList(void);
-
-		virtual PCSTR AddEntry(
-			PCSTR name,
-			PVOID data
-		);
-		PVOID FindObject(PCSTR name);
-		void DeleteEntry(PCSTR name);		// ** DANGEROUS!! see notice above **
-		size_t GetEntryCount(void) const;	// (implementation assumes infrequent use)
-		bool IsEmpty(void) const
-		{
-			// Check_Object(this);
-			return firstEntry == nullptr && lastEntry == nullptr;
-		}
-		Entry* GetFirstEntry(void)
-		{
-			// Check_Object(this);
-			return firstEntry;
-		}
-		const Entry* GetFirstEntry(void) const
-		{
-			// Check_Object(this);
-			return firstEntry;
-		}
-		Entry* GetLastEntry()
-		{
-			// Check_Object(this);
-			return lastEntry;
-		}
-		const Entry* GetLastEntry(void) const
-		{
-			// Check_Object(this);
-			return lastEntry;
-		}
-		int32_t BuildSubList(const ObjectNameList& source_list, PCSTR prefix);
-
-		void TestInstance(void) const {}
-		static bool TestClass(void);
-	};
+	void TestInstance(void) const {}
+	static bool TestClass(void);
+};
 
 //##########################################################################
 //##############    ObjectNameList::Entry    ###############################
 //##########################################################################
 
-	class ObjectNameList__Entry
+class ObjectNameList__Entry
+{
+	friend class ObjectNameList;
+	friend class NameList;
+	friend class AlphaNameList;
+
+  private:
+	ObjectNameList::Entry* nextEntry;
+
+  public:
+	PVOID dataReference;
+
+  protected:
+	void SetName(PCSTR name);
+
+  public:
+	PCSTR GetName(void) const
 	{
-		friend class ObjectNameList;
-		friend class NameList;
-		friend class AlphaNameList;
-
-	private:
-		ObjectNameList::Entry* nextEntry;
-
-	public:
-		PVOID	dataReference;
-
-	protected:
-		void SetName(PCSTR name);
-
-	public:
-		PCSTR GetName(void) const
-		{
-			// Check_Object(this);
-			return &(Cast_Pointer(PCSTR, this)[sizeof(ObjectNameList::Entry)]);
-		}
-		bool IsName(PCSTR name) const;
-		PVOID GetObject(void)
-		{
-			// Check_Object(this);
-			return dataReference;
-		}
-		PVOID GetData(void)
-		{
-			// Check_Object(this);
-			return dataReference;
-		}
-		PCVOID GetData(void) const
-		{
-			// Check_Object(this);
-			return dataReference;
-		}
-		PSTR GetChar(void)
-		{
-			// Check_Object(this);
-			return Cast_Pointer(PSTR , dataReference);
-		}
-		PCSTR GetChar(void) const
-		{
-			// Check_Object(this);
-			return Cast_Pointer(PCSTR , dataReference);
-		}
-		int32_t GetAtoi(void) const
-		{
-			// Check_Object(this);
-			Check_Pointer(dataReference);
-			return atoi(Cast_Pointer(PCSTR , dataReference));
-		}
-		int32_t GetAtol(void) const
-		{
-			// Check_Object(this);
-			Check_Pointer(dataReference);
-			return atol(Cast_Pointer(PCSTR , dataReference));
-		}
-		float GetAtof(void) const
-		{
-			// Check_Object(this);
-			Check_Pointer(dataReference);
-			return float(atof(Cast_Pointer(PCSTR, dataReference)));
-		}
-		ObjectNameList::Entry* GetNextEntry()
-		{
-			// Check_Object(this);
-			return nextEntry;
-		}
-		const ObjectNameList::Entry* GetNextEntry(void) const
-		{
-			// Check_Object(this);
-			return nextEntry;
-		}
-		void TestInstance(void) const {}
-	};
+		// Check_Object(this);
+		return &(Cast_Pointer(PCSTR, this)[sizeof(ObjectNameList::Entry)]);
+	}
+	bool IsName(PCSTR name) const;
+	PVOID GetObject(void)
+	{
+		// Check_Object(this);
+		return dataReference;
+	}
+	PVOID GetData(void)
+	{
+		// Check_Object(this);
+		return dataReference;
+	}
+	PCVOID GetData(void) const
+	{
+		// Check_Object(this);
+		return dataReference;
+	}
+	PSTR GetChar(void)
+	{
+		// Check_Object(this);
+		return Cast_Pointer(PSTR, dataReference);
+	}
+	PCSTR GetChar(void) const
+	{
+		// Check_Object(this);
+		return Cast_Pointer(PCSTR, dataReference);
+	}
+	int32_t GetAtoi(void) const
+	{
+		// Check_Object(this);
+		Check_Pointer(dataReference);
+		return atoi(Cast_Pointer(PCSTR, dataReference));
+	}
+	int32_t GetAtol(void) const
+	{
+		// Check_Object(this);
+		Check_Pointer(dataReference);
+		return atol(Cast_Pointer(PCSTR, dataReference));
+	}
+	float GetAtof(void) const
+	{
+		// Check_Object(this);
+		Check_Pointer(dataReference);
+		return float(atof(Cast_Pointer(PCSTR, dataReference)));
+	}
+	ObjectNameList::Entry* GetNextEntry()
+	{
+		// Check_Object(this);
+		return nextEntry;
+	}
+	const ObjectNameList::Entry* GetNextEntry(void) const
+	{
+		// Check_Object(this);
+		return nextEntry;
+	}
+	void TestInstance(void) const {}
+};
 
 //##########################################################################
 //##############    NameList    ############################################
 //##########################################################################
 
-	class NameList:
-		public ObjectNameList
-	{
-	public:
-		NameList(void);
-		~NameList(void);
+class NameList : public ObjectNameList
+{
+  public:
+	NameList(void);
+	~NameList(void);
 
-		PVOID FindData(PCSTR name)
-		{
-			return FindObject(name);
-		}
-		PCSTR FindName(PVOID data);
-		Entry* FindEntry(PCSTR name);
-		size_t FindEntryIndex(PCSTR name);
-		Entry* FindEntry(PVOID data);
-		void DeleteEntry(PCSTR name);	// this one is searches for name
-		static bool TestClass(void);
+	PVOID FindData(PCSTR name) { return FindObject(name); }
+	PCSTR FindName(PVOID data);
+	Entry* FindEntry(PCSTR name);
+	size_t FindEntryIndex(PCSTR name);
+	Entry* FindEntry(PVOID data);
+	void DeleteEntry(PCSTR name); // this one is searches for name
+	static bool TestClass(void);
 
-		friend MemoryStream& MemoryStreamIO::Read(MemoryStream* stream, NameList* names);
-		friend MemoryStream& MemoryStreamIO::Write(MemoryStream* stream, const NameList* names);
-	};
+	friend MemoryStream& MemoryStreamIO::Read(
+		MemoryStream* stream, NameList* names);
+	friend MemoryStream& MemoryStreamIO::Write(
+		MemoryStream* stream, const NameList* names);
+};
 
 //##########################################################################
 //##############    AlphaNameList    #######################################
 //##########################################################################
 
-	class AlphaNameList:
-		public NameList
-	{
-	public:
-		AlphaNameList(void);
-		~AlphaNameList(void);
+class AlphaNameList : public NameList
+{
+  public:
+	AlphaNameList(void);
+	~AlphaNameList(void);
 
-		PCSTR
-		AddEntry(
-			PCSTR name,
-			PVOID data
-		);
-		static bool TestClass(void);
-	};
-
+	PCSTR
+	AddEntry(PCSTR name, PVOID data);
+	static bool TestClass(void);
+};
 }
 #endif

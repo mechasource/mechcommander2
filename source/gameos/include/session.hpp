@@ -87,7 +87,7 @@ public:
 
 	inline void Lock()
 	{
-		if(!IsLocked())
+		if (!IsLocked())
 		{
 			SessionDescriptor.dwFlags |= DPSESSION_NEWPLAYERSDISABLED;
 			PropagateSettings(void);

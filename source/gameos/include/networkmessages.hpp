@@ -54,7 +54,7 @@ public:
 	// Accessors
 	inline bool IsMulticast()
 	{
-		if(flags & MulticastFlag)
+		if (flags & MulticastFlag)
 			return true;
 		else
 			return false;
@@ -62,7 +62,7 @@ public:
 
 	inline bool IsGuaranteed()
 	{
-		if(flags & GuaranteedFlag)
+		if (flags & GuaranteedFlag)
 			return true;
 		else
 			return false;
@@ -115,7 +115,7 @@ public:
 	inline void Clear()
 	{
 		int32_t i;
-		for(i = 0; i < MAXPLAYERS; i++)
+		for (i = 0; i < MAXPLAYERS; i++)
 		{
 			sendCounts[i] = 255;
 		}
@@ -205,9 +205,9 @@ public:
 	int32_t GetPlayerNumber(uint32_t player_id)
 	{
 		int32_t i;
-		for(i = 0; i < MAXPLAYERS; i++)
+		for (i = 0; i < MAXPLAYERS; i++)
 		{
-			if(playerID[i] == player_id)
+			if (playerID[i] == player_id)
 			{
 				return i;
 			}
@@ -320,7 +320,7 @@ public:
 	inline void SetTime(uint32_t new_time)
 	{
 		time = new_time;
-		if(!isResend)
+		if (!isResend)
 			originalTime = time;
 	}
 

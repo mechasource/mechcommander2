@@ -98,7 +98,7 @@ public:
 	void Release(void)
 	{
 		m_RefCount--;
-		if(m_RefCount < 0) m_RefCount = 0;
+		if (m_RefCount < 0) m_RefCount = 0;
 	}
 	int32_t RefCount(void)
 	{

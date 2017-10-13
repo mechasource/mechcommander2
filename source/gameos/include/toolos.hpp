@@ -12,6 +12,10 @@
 
 // #include "gameos.hpp"
 
+#ifndef MECH_IMPEXP
+#define MECH_IMPEXP extern
+#endif
+
 //
 // Returns the highest res timer possible (in seconds from start of game)
 //
@@ -71,12 +75,12 @@ uint32_t __stdcall gos_LZDecompress(puint8_t dest, puint8_t src, size_t srcLen);
 //
 // Gets a pointer to text data in the windows clip board (nullptr=No text)
 //
-uint32_t __stdcall gos_GetClipboardText(PSTR Buffer, size_t BufferSize);
+MECH_IMPEXP size_t __stdcall gos_GetClipboardText(PSTR Buffer, size_t BufferSize);
 
 //
 // Sets the windows clipboard to the current text string
 //
-void __stdcall gos_SetClipboardText(PSTR Text);
+MECH_IMPEXP void __stdcall gos_SetClipboardText(PSTR Text);
 
 
 

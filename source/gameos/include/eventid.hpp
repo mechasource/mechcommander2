@@ -1,5 +1,5 @@
 //===========================================================================//
-// Copyright (C) Microsoft Corporation. All rights reserved. //
+// Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
 #pragma once
@@ -35,7 +35,7 @@ public:
 	}
 	static uint32_t AssignId(GosLogRef::EventType type, PSTR name, PSTR filename, int32_t lineno)
 	{
-		if(!ListSpace)
+		if (!ListSpace)
 			Resize(void);
 		EventInfo* pInfo = pEventInfo + NextEntry;
 		ListSpace--;

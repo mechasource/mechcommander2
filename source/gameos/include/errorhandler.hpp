@@ -11,6 +11,7 @@
 #define _ERRORHANDLER_HPP_
 
 //#include "string.hpp"
+class FixedLengthString;
 
 //JJ Fix-A-Roo
 typedef LPDIRECT3DVERTEXBUFFER7(__stdcall* GETDXFUNC)(LPDIRECT3DVERTEXBUFFER7, LPDIRECT3DDEVICE7);
@@ -36,8 +37,10 @@ extern bool ThreadDone;
 extern bool InDebugger; // During debugger rendering
 extern char CacheInformation[128];
 
+#if _CONSIDERED_OBSOLETE	// and not used BTW
 extern void __stdcall InitProcessorSpeed(void);
 extern PSTR __stdcall GetProcessor(void);
+#endif
 extern void __stdcall EnableSpewToFile(void);
 extern void __stdcall DisableSpewToFile(void);
 extern void __stdcall CheckLogFile(void);
@@ -117,8 +120,8 @@ void __stdcall ScanCards(FixedLengthString& Buffer);
 //
 void __stdcall InitExceptionHandler(PSTR CommandLine);
 void __stdcall DestroyImageHlp(void);
-PSTR __stdcall GetSymbolFromAddress(PSTR Buffer, int32_t Address);
-PSTR __stdcall GetLocationFromAddress(PIMAGEHLP_LINE pline, PSTR Buffer, int32_t Address);
+PSTR __stdcall GetSymbolFromAddress(PSTR Buffer, size_t Address);
+PSTR __stdcall GetLocationFromAddress(PIMAGEHLP_LINE pline, PSTR Buffer, size_t Address);
 void __stdcall InitStackWalk(LPSTACKFRAME sf, PCONTEXT Context);
 int32_t __stdcall WalkStack(LPSTACKFRAME sf);
 

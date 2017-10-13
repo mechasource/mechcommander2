@@ -92,7 +92,7 @@ public:
 	inline void SetMessageSendCount(FIGuaranteedMessageHeader* msg)
 	{
 		sendCount++;
-		if(sendCount == 255)
+		if (sendCount == 255)
 			sendCount = 0;
 		msg -> sendCounts[playerNumber] = sendCount;
 	}
@@ -103,7 +103,7 @@ public:
 
 	inline void  SetShortName(PSTR name)
 	{
-		if(name != nullptr)
+		if (name != nullptr)
 		{
 			strncpy(shortName, name, 127);
 		}
@@ -115,7 +115,7 @@ public:
 
 	inline void SetLongName(PSTR name)
 	{
-		if(name != nullptr)
+		if (name != nullptr)
 		{
 			strncpy(longName, name, 255);
 		}

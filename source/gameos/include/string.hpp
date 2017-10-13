@@ -36,7 +36,7 @@ public:
 		Text = (PSTR)malloc(Length);
 		MaximumLength = Length;
 		CurrentSize = 0;
-		if(Text) *Text = 0;
+		if (Text) *Text = 0;
 	}
 //
 // Destructor
@@ -57,7 +57,7 @@ public:
 //
 	inline char operator [](size_t Offset) const
 	{
-		if(Offset <= CurrentSize)
+		if (Offset <= CurrentSize)
 			return *(Text + Offset);
 		else
 			return 0;
@@ -89,10 +89,10 @@ public:
 //
 	inline FixedLengthString& operator = (PCSTR Source)
 	{
-		if(Source)
+		if (Source)
 		{
 			size_t Length = strlen(Source) + 1;
-			if(Length > MaximumLength)
+			if (Length > MaximumLength)
 				Length = MaximumLength;
 			memcpy(Text, Source, Length);
 			CurrentSize = Length - 1;
@@ -106,7 +106,7 @@ public:
 	inline FixedLengthString& operator += (PSTR Source)
 	{
 		size_t Length = strlen(Source) + 1;
-		if(CurrentSize + Length > MaximumLength)
+		if (CurrentSize + Length > MaximumLength)
 			Length = MaximumLength - CurrentSize;
 		memcpy(Text + CurrentSize, Source, Length);
 		CurrentSize += Length - 1;
@@ -118,10 +118,10 @@ public:
 //
 	inline FixedLengthString& operator << (PSTR Source)
 	{
-		if(Source)
+		if (Source)
 		{
 			size_t Length = strlen(Source) + 1;
-			if(CurrentSize + Length > MaximumLength)
+			if (CurrentSize + Length > MaximumLength)
 				Length = MaximumLength - CurrentSize;
 			memcpy(Text + CurrentSize, Source, Length);
 			CurrentSize += Length - 1;
@@ -137,7 +137,7 @@ public:
 		char Source[30];
 		_itoa(Value, Source, 10);
 		size_t Length = strlen(Source) + 1;
-		if(CurrentSize + Length > MaximumLength)
+		if (CurrentSize + Length > MaximumLength)
 			Length = MaximumLength - CurrentSize;
 		memcpy(Text + CurrentSize, Source, Length);
 		CurrentSize += Length - 1;
@@ -152,7 +152,7 @@ public:
 		char Source[30];
 		_itoa(Value, Source, 10);
 		size_t Length = strlen(Source) + 1;
-		if(CurrentSize + Length > MaximumLength)
+		if (CurrentSize + Length > MaximumLength)
 			Length = MaximumLength - CurrentSize;
 		memcpy(Text + CurrentSize, Source, Length);
 		CurrentSize += Length - 1;

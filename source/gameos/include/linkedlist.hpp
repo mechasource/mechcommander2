@@ -58,7 +58,7 @@ public:
 	};
 	~LinkedList()
 	{
-		while(m_Head != 0) Del((T) m_Head->linkData);
+		while (m_Head != 0) Del((T) m_Head->linkData);
 	};
 	void Add(T ptr)
 	{
@@ -66,7 +66,7 @@ public:
 		newlink->linkData = ptr;
 		newlink->Next = 0;
 		newlink->Prev = 0;
-		if(m_Head == 0)
+		if (m_Head == 0)
 		{
 			m_Head = newlink;
 			newlink->Next = 0;
@@ -75,7 +75,7 @@ public:
 		else
 		{
 			gosLink* tmp = m_Head;
-			while(tmp->Next != 0) tmp = tmp->Next;
+			while (tmp->Next != 0) tmp = tmp->Next;
 			tmp->Next = newlink;
 			newlink->Next = 0;
 			newlink->Prev = tmp;
@@ -84,10 +84,10 @@ public:
 	}
 	void Del(T  ptr)
 	{
-		if(!m_Head)						//YIK - Why does it need this! (Delete All surfaces used to crash)
+		if (!m_Head)						//YIK - Why does it need this! (Delete All surfaces used to crash)
 			return;
 		gosLink* tmp = m_Head;
-		if(tmp->linkData == (PVOID) ptr)
+		if (tmp->linkData == (PVOID) ptr)
 		{
 			m_Head = tmp->Next;
 			tmp->Prev = 0;
@@ -98,13 +98,13 @@ public:
 		else
 		{
 			gosLink* target;
-			while(tmp->Next != 0)
+			while (tmp->Next != 0)
 			{
-				if(tmp->Next->linkData == (PVOID) ptr)
+				if (tmp->Next->linkData == (PVOID) ptr)
 				{
 					target = tmp->Next;
 					tmp->Next = target->Next;
-					if(target->Next)
+					if (target->Next)
 						target->Next->Prev = tmp;
 					m_Size -= 1;
 					free(target);
@@ -126,16 +126,16 @@ public:
 	T Get(int32_t index)
 	{
 		gosLink* tmp = m_Head;
-		if(tmp == 0)
+		if (tmp == 0)
 		{
 			return 0;
 		}
-		while(index && tmp->Next)
+		while (index && tmp->Next)
 		{
 			tmp = tmp->Next;
 			index--;
 		}
-		if(index != 0)
+		if (index != 0)
 		{
 			return 0;
 		}
@@ -165,14 +165,14 @@ public:
 	T  Head()
 	{
 		m_Iterator = m_List->m_Head;
-		if(m_List->m_Head == 0) return 0;
+		if (m_List->m_Head == 0) return 0;
 		return (T)((gosLink*)m_List->m_Head)->linkData;
 	}
 	T  Tail()
 	{
 		m_Iterator = m_List->m_Head;
-		if(!m_Iterator) return 0;
-		while(m_Iterator->Next != 0)
+		if (!m_Iterator) return 0;
+		while (m_Iterator->Next != 0)
 		{
 			m_Iterator = m_Iterator->Next;
 		}
@@ -181,21 +181,21 @@ public:
 	T  ReadAndNext()
 	{
 		gosLink* tmp = m_Iterator;
-		if(tmp == 0) return (T)0;
+		if (tmp == 0) return (T)0;
 		m_Iterator = m_Iterator->Next;
 		return (T)((gosLink*)tmp)->linkData;
 	}
 	T  ReadAndPrev()
 	{
 		gosLink* tmp = m_Iterator;
-		if(tmp == 0) return (T)0;
+		if (tmp == 0) return (T)0;
 		m_Iterator = m_Iterator->Prev;
 		return (T)((gosLink*)tmp)->linkData;
 	}
 	T  Next()
 	{
 		m_Iterator = m_Iterator->Next;
-		if(m_Iterator == 0) return 0;
+		if (m_Iterator == 0) return 0;
 		return (T) m_Iterator->linkData;
 	}
 };

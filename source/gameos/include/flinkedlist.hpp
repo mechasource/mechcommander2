@@ -79,7 +79,7 @@ public:
 	};
 	~FLinkedList()
 	{
-		while(m_Head != nullptr)
+		while (m_Head != nullptr)
 			Remove(m_Head->linkData);
 	};
 
@@ -89,7 +89,7 @@ public:
 		newlink->castedData = static_cast <ListItem*>(ptr);
 		newlink->linkData = ptr;
 		newlink->Next = nullptr;
-		if(m_Head == nullptr)
+		if (m_Head == nullptr)
 		{
 			m_Head = newlink;
 			m_Tail = newlink;
@@ -108,7 +108,7 @@ public:
 	{
 		gosASSERT(link_memory != nullptr);
 		FLink<T>* link = (FLink<T>*)link_memory;
-		if(m_Head == nullptr)
+		if (m_Head == nullptr)
 		{
 			m_Head = link;
 			m_Tail = link;
@@ -124,7 +124,7 @@ public:
 
 	void InsertAfterCurrent(T* ptr)
 	{
-		if(!m_Head)
+		if (!m_Head)
 		{
 			Add(ptr);
 		}
@@ -147,20 +147,20 @@ public:
 	void Remove(T*  ptr, bool delete_data = false)
 	{
 		FLink<T>* tmp = m_Head;
-		if((T*)tmp->linkData == ptr)
+		if ((T*)tmp->linkData == ptr)
 		{
 			m_Size -= 1;
 			m_Head = tmp->Next;
-			if(m_Tail == tmp)
+			if (m_Tail == tmp)
 			{
 				m_Tail = m_Head;
 				m_Iterator = m_Head;
 			}
-			else if(m_Iterator == tmp)
+			else if (m_Iterator == tmp)
 			{
 				m_Iterator = tmp->Next;
 			}
-			if(delete_data)
+			if (delete_data)
 			{
 				delete tmp->castedData;
 			}
@@ -169,25 +169,25 @@ public:
 		else
 		{
 			FLink<T>* target;
-			while(tmp->Next != nullptr)
+			while (tmp->Next != nullptr)
 			{
-				if(tmp->Next->linkData == ptr)
+				if (tmp->Next->linkData == ptr)
 				{
 					m_Size -= 1;
 					target = tmp->Next;
 					// Rewind tail or iterator if they point
 					// to the link being deleted.
-					if(m_Tail == target)
+					if (m_Tail == target)
 					{
 						m_Tail = tmp;
 						m_Iterator = m_Head;
 					}
-					else if(m_Iterator == target)
+					else if (m_Iterator == target)
 					{
 						m_Iterator = target->Next;
 					}
 					tmp->Next = target->Next;
-					if(delete_data)
+					if (delete_data)
 					{
 						delete target->castedData;
 					}
@@ -206,13 +206,13 @@ public:
 	T*	Head()
 	{
 		m_Iterator = m_Head;
-		if(m_Head == nullptr) return nullptr;
+		if (m_Head == nullptr) return nullptr;
 		return m_Head->linkData;
 	}
 
 	T*  GetTail()
 	{
-		if(m_Tail == nullptr)
+		if (m_Tail == nullptr)
 			return nullptr;
 		return m_Tail->linkData;
 	}
@@ -227,7 +227,7 @@ public:
 	}
 	T*  PeekNext()
 	{
-		if(m_Iterator->Next == nullptr)
+		if (m_Iterator->Next == nullptr)
 			return nullptr;
 		else
 			return m_Iterator->Next->linkData;
@@ -235,13 +235,13 @@ public:
 	T*  ReadAndNext()
 	{
 		FLink<T>* tmp = m_Iterator;
-		if(tmp == nullptr) return nullptr;
+		if (tmp == nullptr) return nullptr;
 		m_Iterator = m_Iterator->Next;
 		return tmp->linkData;
 	}
 	T*  Next()
 	{
-		if(m_Iterator == nullptr ||
+		if (m_Iterator == nullptr ||
 				m_Iterator == m_Tail)
 			return nullptr;
 		m_Iterator = m_Iterator->Next;
@@ -250,16 +250,16 @@ public:
 	T* Get(int32_t index)
 	{
 		FLink<T>* tmp = m_Head;
-		if(tmp == nullptr)
+		if (tmp == nullptr)
 		{
 			return nullptr;
 		}
-		while(index && tmp->Next)
+		while (index && tmp->Next)
 		{
 			tmp = tmp->Next;
 			index--;
 		}
-		if(index != 0)
+		if (index != 0)
 		{
 			return nullptr;
 		}
@@ -275,7 +275,7 @@ public:
 
 	inline void Clear(bool delete_data = false)
 	{
-		while(m_Size > 0)
+		while (m_Size > 0)
 			Remove(m_Head->linkData, delete_data);
 	}
 };
@@ -313,7 +313,7 @@ public:
 	{
 		gosASSERT(current != nullptr);
 		current = current->GetNext(void);
-		if(current == nullptr)
+		if (current == nullptr)
 			return nullptr;
 		else
 			return current->linkData;
@@ -326,7 +326,7 @@ public:
 
 	T* Read()
 	{
-		if(current)
+		if (current)
 			return current->linkData;
 		else
 			return nullptr;

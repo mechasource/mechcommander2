@@ -8,12 +8,21 @@
 
 #include "Globals.hpp"
 
-PSTR __stdcall GetWindowsMessage(uint32_t uMsg, WPARAM wParam, LPARAM lParam);
-void __stdcall InitializeWindows(void);
-void __stdcall DestroyWindows(void);
-bool __stdcall AlreadyRunning(void);
+#ifndef MECH_IMPEXP
+#define MECH_IMPEXP extern
+#endif
+
+// windows.cpp
+MECH_IMPEXP bool __stdcall AlreadyRunning(void);
+MECH_IMPEXP void __stdcall InitializeWindows(void);
+MECH_IMPEXP void __stdcall DestroyWindows(void);
+MECH_IMPEXP void __stdcall Update(void);
+
+// windowsdebugging.cpp
+MECH_IMPEXP PCSTR __stdcall GetWindowsMessage(uint32_t uMsg, WPARAM wParam, LPARAM lParam);
+
 void __stdcall SystemCheck(void);
-void __stdcall Update(void);
+
 
 typedef enum Status
 {
@@ -23,16 +32,16 @@ typedef enum Status
 extern HDC			DesktopDC;
 extern HWND			hWindow;
 extern HINSTANCE	hInstance;
-extern WNDCLASS		wndClass;
+extern WNDCLASSA	wndClass;
 extern PSTR 		CommandLine;
 extern MSG			msg;
 extern Status		status;
 extern BOOL			fullScreen;
 extern POINT		clientToScreen;
-extern int32_t			widthX;
-extern int32_t			heightY;
-extern int32_t			WindowStartX;
-extern int32_t			WindowStartY;
+extern int32_t		widthX;
+extern int32_t		heightY;
+extern int32_t		WindowStartX;
+extern int32_t		WindowStartY;
 extern bool			WindowsNT;
 extern uint32_t		HitScrollLock;
 extern uint32_t		ForceReStart;
@@ -58,20 +67,27 @@ extern T_GetDiskFreeSpaceEx _GetDiskFreeSpaceEx;
 
 extern BOOL (__stdcall* _EmptyWorkingSet)(HANDLE hProcess);
 extern BOOL (__stdcall* _InitializeProcessForWsWatch)(HANDLE hProcess);
-extern BOOL (__stdcall* _GetWsChanges)(HANDLE hProcess, PPSAPI_WS_WATCH_INFORMATION pWatchInfo, uint32_t cb);
+extern BOOL (__stdcall* _GetWsChanges)(HANDLE hProcess, struct _PSAPI_WS_WATCH_INFORMATION* pWatchInfo, uint32_t cb);
 extern uint32_t (__stdcall* _GetMappedFileName)(HANDLE hProcess, PVOID pv, PSTR pFilename, uint32_t nSize);
 
+typedef int32_t (__stdcall* PDIRECTXSETUPGETVERSION)(uint32_t* pdwVersion, uint32_t* pdwMinorVersion);
+typedef HRESULT(__stdcall* PDIRECTDRAWCREATEEX)(GUID* pGUID, PVOID* ppDD, REFIID iid, LPUNKNOWN pUnkOuter);
+typedef HRESULT(__stdcall* PDIRECTDRAWENUMERATEA)(LPDDENUMCALLBACKA pCallback, PVOID pContext);
+typedef HRESULT(__stdcall* PDIRECTDRAWENUMERATEEXA)(LPDDENUMCALLBACKEXA pCallback, PVOID pContext, uint32_t dwFlags);
+typedef HRESULT(__stdcall* PDIRECTSOUNDCREATE)(LPCGUID pcGuidDevice, LPDIRECTSOUND* ppDS, LPUNKNOWN pUnkOuter);
+typedef HRESULT(__stdcall* PDIRECTSOUNDENUMERATEA)(LPDSENUMCALLBACKA pDSEnumCallback, PVOID pContext);
+typedef HRESULT(__stdcall* PDIRECTINPUTCREATEEX)(HINSTANCE hInstance, uint32_t dwVersion, REFIID riidltf, PVOID* ppvOut, LPUNKNOWN punkOuter);
 
-extern HRESULT(__stdcall* _DirectDrawCreateEx)(GUID* lpGUID, PVOID* lplpDD, const IID* iid, LPUNKNOWN pUnkOuter);
-extern HRESULT(__stdcall* _DirectDrawEnumerate)(LPDDENUMCALLBACK pCallback, PVOID lpContext);
-extern HRESULT(__stdcall* _DirectDrawEnumerateEx)(LPDDENUMCALLBACKEX lpCallback, PVOID lpContext, uint32_t Flags);
+extern HRESULT(__stdcall* _DirectDrawCreateEx)(GUID* pGUID, PVOID* ppDD, REFIID iid, LPUNKNOWN pUnkOuter);
+extern HRESULT(__stdcall* _DirectDrawEnumerate)(LPDDENUMCALLBACKA pCallback, PVOID pContext);
+extern HRESULT(__stdcall* _DirectDrawEnumerateEx)(LPDDENUMCALLBACKEXA pCallback, PVOID pContext, uint32_t dwFlags);
+extern HRESULT(__stdcall* _DirectSoundCreate)(LPCGUID pcGuidDevice, LPDIRECTSOUND* ppDS, LPUNKNOWN pUnkOuter);
+extern HRESULT(__stdcall* _DirectSoundEnumerate)(LPDSENUMCALLBACKA pDSEnumCallback, PVOID pContext);
 extern HRESULT(__stdcall* _DirectInputCreate)(HINSTANCE hinst, uint32_t dwVersion, LPDIRECTINPUT* lplpDirectInput, LPUNKNOWN punkOuter);
-extern HRESULT(__stdcall* _DirectSoundCreate)(LPGUID lpGuid, LPDIRECTSOUND* ppDS, LPUNKNOWN  pUnkOuter);
-extern HRESULT(__stdcall* _DirectInputCreateEx)(HINSTANCE hinst, uint32_t dwVersion, const IID* refID, PVOID* lplpDirectInput, LPUNKNOWN punkOuter);
-extern HRESULT(__stdcall* _DirectSoundEnumerate)(LPDSENUMCALLBACK lpDSEnumCallback, PVOID lpContext);
+extern HRESULT(__stdcall* _DirectInputCreateEx)(HINSTANCE hInstance, uint32_t dwVersion, REFIID riidltf, PVOID* ppvOut, LPUNKNOWN punkOuter);
 extern HWND (__stdcall* _CallmyHelp)(HWND hWindow, HINSTANCE hInst, bool Window, uint32_t HelpItem);
 extern void (__stdcall* _FreeHlpLib)(void);
-extern uint32_t (__stdcall* _AMGetErrorText)(HRESULT hr, TCHAR* pBuffer, uint32_t MaxLen);
+extern uint32_t (__stdcall* _AMGetErrorText)(HRESULT hr, PSTR pbuffer, uint32_t MaxLen);
 
 // WinMain.cpp
 extern float frameRate;

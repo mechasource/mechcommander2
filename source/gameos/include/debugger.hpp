@@ -10,10 +10,15 @@
 #ifndef _DEBUGGER_HPP_
 #define _DEBUGGER_HPP_
 
+#define LAB_ONLY 1
+#define _DEBUG 1
+
 //
 // Size of scroll back buffer for spew
 //
-#define DebuggerBufferSize 128*1024
+typedef enum __spew_scroll_back_buffer {
+	DebuggerBufferSize = 128*1024,	// 0x20000
+};
 
 extern gos_VERTEX pTextVertices[80];
 extern uint32_t TextVertex;
@@ -51,7 +56,7 @@ extern gos_VERTEX Graph[512];
 extern uint32_t gScreenBMP;
 
 void	__stdcall WalkStack(uint32_t* RoutineAddresses, uint32_t NumberOfLevels, uint32_t IgnoreLevels);
-PSTR	__stdcall DecodeAddress(uint32_t Address, uint8_t brief = true);
+PSTR	__stdcall DecodeAddress(uint32_t Address, uint8_t brief/* = true*/);
 void	__stdcall DrawLines(int32_t X1, int32_t Y1, int32_t X2, int32_t Y2, uint32_t Color);
 
 typedef struct _MenuItem
@@ -65,17 +70,17 @@ typedef struct _MenuItem
 	PSTR FullName;
 	PSTR Name;
 } MenuItem;
+typedef MenuItem* PMenuItem;
 
 
-
-extern MenuItem*	pDebuggerMenu;
-extern MenuItem*	pRasterizerMenu;
-extern MenuItem*	pLibrariesMenu;
-extern MenuItem*	pGameMenu;
+extern PMenuItem	pDebuggerMenu;
+extern PMenuItem	pRasterizerMenu;
+extern PMenuItem	pLibrariesMenu;
+extern PMenuItem	pGameMenu;
 //
-extern MenuItem*	CurrentMenu;
-extern MenuItem*	MenuHighlight;
-extern MenuItem**	pCurrentMenu;
+extern PMenuItem	CurrentMenu;
+extern PMenuItem	MenuHighlight;
+extern PMenuItem*	pCurrentMenu;
 extern void __stdcall CleanUpDebugger(void);
 extern void __stdcall InitDebuggerMenus(void);
 
@@ -93,11 +98,11 @@ extern gos_VERTEX PieData[103];
 typedef struct _TextureHeap
 {
 	struct _TextureHeap*	pNext;
-	int32_t						X1;
-	int32_t						Y1;
-	int32_t						X2;
-	int32_t						Y2;
-	uint32_t					Handle;
+	int32_t					X1;
+	int32_t					Y1;
+	int32_t					X2;
+	int32_t					Y2;
+	uint32_t				Handle;
 } TextureHeap;
 
 extern TextureHeap* pTextureHeap;
@@ -238,8 +243,10 @@ extern uint32_t TopStatistics;
 //
 // Debugger window constants
 //
-#define DbSizeX 489
-#define DbSizeY 342
+typedef enum __debugger_window_constants {
+	DbSizeX = 489,
+	DbSizeY = 342,
+};
 
 
 extern int32_t CurrentX, CurrentY;		// Current pixel position

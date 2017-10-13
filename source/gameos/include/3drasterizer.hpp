@@ -10,14 +10,21 @@
 #ifndef _3DRASTERIZER_HPP_
 #define _3DRASTERIZER_HPP_
 
+#ifndef MECH_IMPEXP
+#define MECH_IMPEXP extern
+#endif
+
+#define LAB_ONLY 1
+#define _DEBUG 1
+
 typedef struct _SAVESTATE
 {
 	struct _SAVESTATE*	pNext;
-	uint32_t				SaveState[gos_MaxState];
+	uint32_t			SaveState[gos_MaxState];
 } SAVESTATE;
 typedef SAVESTATE* PSAVESTATE;
 
-extern SAVESTATE*	pStateStack;
+extern PSAVESTATE	pStateStack;
 extern uint32_t		StackDepth;
 
 //
@@ -85,7 +92,7 @@ void __stdcall DebugTriangle_3UV(pgos_VERTEX_3UV v1, pgos_VERTEX_3UV v2, pgos_VE
 uint32_t __stdcall GetMipmapColor(int32_t Mipmap);
 
 // clipping.cpp
-MECH_IMPEXP void MECH_CALL gos_ClipDrawQuad(pgos_VERTEX pVertices);
+MECH_IMPEXP void __stdcall gos_ClipDrawQuad(pgos_VERTEX pVertices);
 
 // Statistics
 extern uint32_t	NumSpecular;

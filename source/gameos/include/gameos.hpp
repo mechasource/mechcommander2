@@ -26,6 +26,11 @@
 #endif
 #define MECH_CALL __stdcall
 
+// for object files
+#define LAB_ONLY 1
+#define _DEBUG 1
+#define _ARMOR 1
+
 //
 //
 //
@@ -377,21 +382,21 @@ typedef enum gosVideo_PlayMode
 // consult the comments listed under the appropriate command (listed above).
 typedef struct _gosVideo_Info
 {
-	PSTR					lpstrPath;		// string specified path to data
-	gosVideo_PlayMode		ePlayMode;		// the play mode (see above)
-	gosVideo_PlayMode		ePlayStatus;	// the play mode (see above)
-	uint32_t					dwOriginX;		// x coord on dest. surf for video
-	uint32_t					dwOriginY;		// y coord on dest. surf for video
-	float					fScaleOfX;		// ratio of displayed to orgininal width
-	float					fScaleOfY;		// ratio of displayed to orgininal height
-	float					fDurationSec;	// read-only duration of video (hundredth of a second)
-	float					fSoFarSec;		// current play position (hundredth of a second)
-	puint8_t					lpData;			// RGB data
-	uint32_t					dwSurfaceWidth;	// read-only width of video surface
-	uint32_t					dwSurfaceHeight;// read-only height of vidoe surface
-	uint32_t					dwPitch;		// read-only pitch of video surface
-	uint32_t					dwWidth;		// read-only width of video
-	uint32_t					dwHeight;		// read-only height of vidoe
+	PSTR				lpstrPath;		// string specified path to data
+	gosVideo_PlayMode	ePlayMode;		// the play mode (see above)
+	gosVideo_PlayMode	ePlayStatus;	// the play mode (see above)
+	uint32_t			dwOriginX;		// x coord on dest. surf for video
+	uint32_t			dwOriginY;		// y coord on dest. surf for video
+	float				fScaleOfX;		// ratio of displayed to orgininal width
+	float				fScaleOfY;		// ratio of displayed to orgininal height
+	float				fDurationSec;	// read-only duration of video (hundredth of a second)
+	float				fSoFarSec;		// current play position (hundredth of a second)
+	puint8_t			lpData;			// RGB data
+	uint32_t			dwSurfaceWidth;	// read-only width of video surface
+	uint32_t			dwSurfaceHeight;// read-only height of vidoe surface
+	uint32_t			dwPitch;		// read-only pitch of video surface
+	uint32_t			dwWidth;		// read-only width of video
+	uint32_t			dwHeight;		// read-only height of vidoe
 } gosVideo_ResourceInfo;
 
 //////////////////////////////////////////////////////////////////////////////////
@@ -968,18 +973,8 @@ uint32_t __stdcall gos_ReadFileInBackground(PCSTR FileName, puint8_t* MemoryImag
 void __stdcall gos_CloseBackgroundFile(uint32_t Handle);
 
 
-
-
-
-
-
-
-
-
-
-
-
-
+/* =============================================================================*/
+#if	1	// _CONSIDERED_OBSOLETE
 
 //////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////
@@ -1032,7 +1027,7 @@ PVOID __cdecl operator new(size_t size, HGOSHEAP Heap);
 //
 // The memory heaps and current sizes are visible in the GameOS debugger.
 //
-HGOSHEAP __stdcall gos_CreateMemoryHeap(PSTR HeapName, uint32_t MaximumSize = 0, HGOSHEAP parentHeap = ParentClientHeap);
+HGOSHEAP __stdcall gos_CreateMemoryHeap(PSTR HeapName, size_t MaximumSize/* = 0*/, HGOSHEAP parentHeap/* = ParentClientHeap*/);
 
 //
 // Allows the application to destroy a previously created memory heap.
@@ -1069,16 +1064,7 @@ void __stdcall gos_PopCurrentHeap(void);
 //
 void __stdcall gos_WalkMemoryHeap(HGOSHEAP pHeap, uint8_t vociferous = 0);
 
-
-
-
-
-
-
-
-
-
-
+#endif	// MEMORY API
 
 //////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////
@@ -1232,7 +1218,7 @@ typedef enum gosEnum_KeyDeviceType
 	KEYDEV_JOYSTICK = 0x01000000,
 } gosEnum_KeyDeviceType;
 
-typedef enum _KeyDevice_const { KEYDEV_MASK = 0xff000000 };
+typedef enum _KeyDevice_const : uint32_t { KEYDEV_MASK = 0xff000000 };
 
 //////////////////////////////////////////////////////////////////////////////////
 // Get the status of key <index>. TRUE means it is pressed, while FALSE means
@@ -2043,9 +2029,9 @@ MECH_IMPEXP HRESULT MECH_CALL gos_DrawQuads(pgos_VERTEX Vertices, uint32_t NumVe
 // The vertex colors in the array may be changed in some wireframe modes. Otherwise the data is
 // not altered.
 //
-MECH_IMPEXP HRESULT MECH_CALL gos_RenderIndexedArray(pgos_VERTEX pVertexArray, uint32_t NumberVertices, puint16_t lpwIndices, uint32_t NumberIndices);
-MECH_IMPEXP HRESULT MECH_CALL gos_RenderIndexedArray(pgos_VERTEX_2UV pVertexArray, uint32_t NumberVertices, puint16_t lpwIndices, uint32_t NumberIndices);
-MECH_IMPEXP HRESULT MECH_CALL gos_RenderIndexedArray(pgos_VERTEX_3UV pVertexArray, uint32_t NumberVertices, puint16_t lpwIndices, uint32_t NumberIndices);
+MECH_IMPEXP HRESULT MECH_CALL gos_RenderIndexedArray1(pgos_VERTEX pVertexArray, uint32_t NumberVertices, puint16_t lpwIndices, uint32_t NumberIndices);
+MECH_IMPEXP HRESULT MECH_CALL gos_RenderIndexedArray2(pgos_VERTEX_2UV pVertexArray, uint32_t NumberVertices, puint16_t lpwIndices, uint32_t NumberIndices);
+MECH_IMPEXP HRESULT MECH_CALL gos_RenderIndexedArray3(pgos_VERTEX_3UV pVertexArray, uint32_t NumberVertices, puint16_t lpwIndices, uint32_t NumberIndices);
 
 //
 // Set a renderstate
@@ -2313,7 +2299,7 @@ void __stdcall gos_SetMaterial(LPD3DMATERIAL7 pMaterialData);
 //
 // NOTE: When PrimitiveType is a POINTLIST the lpwIndices and NumberIndices are ignored, it is treated as a list of points
 //
-void __stdcall gos_RenderIndexedArray(PVOID pVertexArray, uint32_t NumberVertices, puint16_t lpwIndices, uint32_t NumberIndices, gosVERTEXTYPE VertexType, gosPRIMITIVETYPE PrimitiveType = PRIMITIVE_TRIANGLELIST);
+void __stdcall gos_RenderIndexedArray0(PVOID pVertexArray, uint32_t NumberVertices, puint16_t lpwIndices, uint32_t NumberIndices, gosVERTEXTYPE VertexType, gosPRIMITIVETYPE PrimitiveType = PRIMITIVE_TRIANGLELIST);
 
 
 
@@ -2910,6 +2896,7 @@ uint32_t __stdcall gos_GetMachineInformation(MachineInfo mi, int32_t Param1 = 0,
 #define gos_ErrorAppendRoutine	8192// append ' in Routine()+xxx' to the error  (or address if no symbols)
 #define Stat_Format				(0x40000000)// Used for formatting in statistics
 #define gos_SpewNoAddCR			1	// Don't add "\n" to spew output
+
 extern PSTR gosErrorFile;
 extern uint32_t gosErrorLine;
 extern void __cdecl InternalFunctionSpew(PCSTR Group, PCSTR Message, ...);
@@ -3064,8 +3051,8 @@ public:
 class GosLogFuncScope
 {
 private:
-	uint32_t		 m_Caller;
-	static uint32_t Current;
+	uint32_t			m_Caller;
+	static uint32_t		Current;
 public:
 	GosLogFuncScope(uint32_t newId)
 	{
@@ -3075,7 +3062,7 @@ public:
 	}
 	~GosLogFuncScope()
 	{
-		if(m_Caller)
+		if (m_Caller)
 		{
 			Current = m_Caller;
 			GosEventLog::Log(Current);	// i.e. log the return to the function

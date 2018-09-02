@@ -372,7 +372,7 @@
     <ClCompile Include="..\mechcmd2\vfxshape.cpp">
       <Filter>Sources\extra</Filter>
     </ClCompile>
-    <ClCompile Include="..\mechcmd2\stdinc.cpp">
+    <ClCompile Include="..\pch\stdinc.cpp">
       <Filter>build\precompiled</Filter>
     </ClCompile>
   </ItemGroup>
@@ -728,7 +728,7 @@
     <ClInclude Include="..\mechcmd2\resource.h">
       <Filter>Resources\mechcmd2</Filter>
     </ClInclude>
-    <ClInclude Include="..\mechcmd2\stdinc.h">
+    <ClInclude Include="..\pch\stdinc.h">
       <Filter>build\precompiled</Filter>
     </ClInclude>
     <ClInclude Include="..\include\mechresources.h">

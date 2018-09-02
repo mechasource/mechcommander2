@@ -1018,7 +1018,7 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\mclib\stdinc.h"
+					RelativePath="..\pch\stdinc.h"
 					>
 				</File>
 			</Filter>

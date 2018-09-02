@@ -12,22 +12,28 @@
 
 #pragma once
 
-#ifndef _STDAFX_H_MECHCMD2_
-#define _STDAFX_H_MECHCMD2_
-
-#ifndef STRICT
 #define STRICT
+#define WIN32_LEAN_AND_MEAN
+#define NOMINMAX
+#define _CRTDBG_MAP_ALLOC
+
+#define _WIN32_WINNT 0x0600 // minimum Vista
+#include <winsdkver.h>
+#include <sdkddkver.h>
+#ifndef WINAPI_FAMILY
+#define WINAPI_FAMILY WINAPI_FAMILY_DESKTOP_APP
 #endif
 
-#define ATL_SUPPRESS_WARNING_PUSH(x)                                           \
-	__pragma(warning(push));                                                   \
-	__pragma(warning(disable : x))
-#define ATL_SUPPRESS_WARNING_POP __pragma(warning(pop))
-#define ATL_SUPPRESS_WARNING(x) __pragma(warning(suppress : x))
-#define ATL_ADD_LIBRARY(x) __pragma(comment(lib, x))
-
-#define _WIN32_WINNT 0x0501 // minimum Windows XP
-#include <sdkddkver.h>
+#ifdef _MSC_VER
+#define DISABLE_WARNING_PUSH(x)                                                                    \
+	__pragma(warning(push)); __pragma(warning(disable : x))
+#define DISABLE_WARNING_POP __pragma(warning(pop))
+#define ADD_LIBRARY(x) __pragma(comment(lib, x))
+#else
+#define DISABLE_WARNING_PUSH
+#define DISABLE_WARNING_POP
+#define ADD_LIBRARY
+#endif
 
 #define _ATL_APARTMENT_THREADED
 #define _ATL_NO_AUTOMATIC_NAMESPACE
@@ -35,7 +41,7 @@
 #define ATL_NO_ASSERT_ON_DESTROY_NONEXISTENT_WINDOW
 #define DIRECTINPUT_VERSION         0x0800
 
-#define _CRT_SECURE_NO_WARNINGS 1
+// #define _CRT_SECURE_NO_WARNINGS 1
 
 // disable useless warnings when compiling with -Wall
 #pragma warning(disable : 4514 4710 4711)
@@ -43,48 +49,45 @@
 #pragma warning(disable : 4266 4625 4820)
 
 // temporary disable warnings when compiling with -Wall
-#pragma warning(push)
-#pragma warning(disable : 4191 4350 4365)
+DISABLE_WARNING_PUSH(4191 4350 4365 4774 4571 4623 4626 5026 5027 5039 4514 4710 4711 4625 4820 26439 26495)
+#include <cstdlib>
+#include <cstddef>
+#include <cstdint>
+#include <cstdio>
+#include <cmath>
+#include <limits>
+#include <algorithm>
+#include <utility>
 #include <string>
+#include <iostream>
+#include <sstream>
+#include <iosfwd>
+#include <iterator>
+#include <exception>
+#include <stdexcept>
+#include <vector>
+#include <set>
+#include <map>
+#include <crtdbg.h>
+#include <cppunittest.h>
+DISABLE_WARNING_POP
 
+DISABLE_WARNING_PUSH(4191 4365 5039 5045 6011)
 #include <atlbase.h>
-#if (_ATL_VER < 0x0700) // linking with system (WDK) atl.dll
-extern ATL::CComModule& _Module;
-ATL_ADD_LIBRARY("atlthunk.lib")
-#endif
-#pragma warning(pop)
-
-#include <sys/types.h>
-#include <limits.h>
-#include <ctype.h>
-#include <stdlib.h>
-#include <memory.h>
-#include <string.h>
-#include <stdio.h>
-#include <time.h>
-#include <sys/stat.h>
-#include <float.h>
-#include <math.h>
 #include <imagehlp.h>
 #include <mmsystem.h>
 #include <d3dtypes.h>
 #include <ddraw.h>
+#include <d3d.h>
+#include <dsound.h>
+#include <dinput.h>
+#include <mmstream.h>
+DISABLE_WARNING_POP
 
 #include <mechtypes.h>
 
-#include <d3d.h>
-#include <d3dtypes.h>
-#include <dsound.h>
-#include <dinput.h>
-#include <dinputd.h>
-#include <mmstream.h>
-
-ATL_SUPPRESS_WARNING_POP
-
 #define MECH_IMPEXP	extern "C"
 #define MECH_CALL	__stdcall
-
-
 
 // mechcmd2
 #ifdef _DEBUG
@@ -97,8 +100,6 @@ ATL_SUPPRESS_WARNING_POP
 // #define LAB_ONLY 0
 // #define FINAL
 #endif
-
-// #include <mclib.h>
 
 namespace Utilities
 {
@@ -212,5 +213,3 @@ using namespace Utilities;
 //name='Microsoft.Windows.Common-Controls' version='6.0.0.0'
 //processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
 //#endif
-
-#endif

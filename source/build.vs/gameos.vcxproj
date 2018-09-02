@@ -21,7 +21,6 @@
   <PropertyGroup Label="Globals">
     <ProjectGuid>{B4EA2124-2ABF-442E-9B3E-0E503A4DAF8B}</ProjectGuid>
     <RootNamespace>MechCommander</RootNamespace>
-    <Keyword>AtlProj</Keyword>
     <WindowsTargetPlatformVersion>10.0.17134.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -71,18 +70,19 @@
     <Import Project="mechcommander.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
-  <PropertyGroup>
-    <_ProjectFileVersion>12.0.30501.0</_ProjectFileVersion>
-  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <OutDir>..\..\bin\$(Platform)_$(Configuration)\</OutDir>
     <IntDir>$(TEMP)\$(SolutionName)\$(ProjectName)\$(Platform)_$(Configuration)\</IntDir>
     <LinkIncremental>false</LinkIncremental>
+    <CodeAnalysisRuleSet>NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <RunCodeAnalysis>true</RunCodeAnalysis>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <OutDir>..\..\bin\$(Platform)_$(Configuration)\</OutDir>
     <IntDir>$(TEMP)\$(SolutionName)\$(ProjectName)\$(Platform)_$(Configuration)\</IntDir>
     <LinkIncremental>false</LinkIncremental>
+    <CodeAnalysisRuleSet>NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <RunCodeAnalysis>true</RunCodeAnalysis>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>..\..\bin\$(Platform)_$(Configuration)\</OutDir>
@@ -339,6 +339,8 @@
       <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)%(Filename)1.obj</ObjectFileName>
       <XMLDocumentationFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)%(Filename)1.xdc</XMLDocumentationFileName>
     </ClCompile>
+    <ClCompile Include="..\gameos\lib\x86\gameos\cpu.c" />
+    <ClCompile Include="..\gameos\lib\x86\gameos\debugger.c" />
     <ClCompile Include="..\gameos\lib\x86\gameos\direct3d.c">
       <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)%(Filename)1.obj</ObjectFileName>
       <XMLDocumentationFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)%(Filename)1.xdc</XMLDocumentationFileName>
@@ -359,6 +361,12 @@
       <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)%(Filename)1.obj</ObjectFileName>
       <XMLDocumentationFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)%(Filename)1.xdc</XMLDocumentationFileName>
     </ClCompile>
+    <ClCompile Include="..\gameos\lib\x86\gameos\directinput.c" />
+    <ClCompile Include="..\gameos\lib\x86\gameos\directx.c" />
+    <ClCompile Include="..\gameos\lib\x86\gameos\libraries.c" />
+    <ClCompile Include="..\gameos\lib\x86\gameos\memorymanager.c" />
+    <ClCompile Include="..\gameos\lib\x86\gameos\windows.c" />
+    <ClCompile Include="..\gameos\lib\x86\gameos\windowsdebugging.c" />
     <ClCompile Include="..\gameos\lib\x86\gameos\winmain.c">
       <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)%(Filename)1.obj</ObjectFileName>
       <XMLDocumentationFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)%(Filename)1.xdc</XMLDocumentationFileName>
@@ -369,6 +377,7 @@
       <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)%(Filename)1.obj</ObjectFileName>
       <XMLDocumentationFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)%(Filename)1.xdc</XMLDocumentationFileName>
     </ClCompile>
+    <ClCompile Include="..\gameos\lib\x86\gameos\winproc.c" />
     <ClCompile Include="..\gameos\src\3dprimitives.cpp" />
     <ClCompile Include="..\gameos\src\3drasterizer.cpp" />
     <ClCompile Include="..\gameos\src\3d_tl.cpp" />
@@ -451,7 +460,7 @@
     <ClCompile Include="..\gameos\src\startup\dllplatform.cpp" />
     <ClCompile Include="..\gameos\src\startup\gameplatform.cpp" />
     <ClCompile Include="..\gameos\src\startup\mfcplatform.cpp" />
-    <ClCompile Include="..\gameos\src\stdinc.cpp">
+    <ClCompile Include="..\pch\stdinc.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
@@ -543,14 +552,11 @@
     <ClInclude Include="..\gameos\include\windows.hpp" />
     <ClInclude Include="..\gameos\include\winproc.hpp" />
     <ClInclude Include="..\gameos\include\zping.h" />
-    <ClInclude Include="..\gameos\src\resource.h" />
-    <ClInclude Include="..\gameos\src\stdinc.h" />
+    <ClInclude Include="..\gameos\lib\x86\gameos\idaref.h" />
+    <ClInclude Include="..\pch\stdinc.h" />
     <ClInclude Include="..\include\dplay.h" />
     <ClInclude Include="..\include\mechresources.h" />
     <ClInclude Include="..\include\mechtypes.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="..\gameos\src\gameos.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

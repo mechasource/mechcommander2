@@ -1630,7 +1630,7 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\mechcmd2\stdinc.h"
+					RelativePath="..\pch\stdinc.h"
 					>
 				</File>
 			</Filter>

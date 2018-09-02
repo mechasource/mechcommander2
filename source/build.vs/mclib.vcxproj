@@ -21,7 +21,6 @@
   <PropertyGroup Label="Globals">
     <ProjectGuid>{09582E8D-FAA3-4A07-AB43-74C33436CDDF}</ProjectGuid>
     <RootNamespace>MechCommander</RootNamespace>
-    <Keyword>AtlProj</Keyword>
     <WindowsTargetPlatformVersion>10.0.17134.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -71,18 +70,19 @@
     <Import Project="mechcommander.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
-  <PropertyGroup>
-    <_ProjectFileVersion>12.0.30501.0</_ProjectFileVersion>
-  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <OutDir>..\..\bin\$(Platform)_$(Configuration)\</OutDir>
     <IntDir>$(TEMP)\$(SolutionName)\$(ProjectName)\$(Platform)_$(Configuration)\</IntDir>
     <LinkIncremental>false</LinkIncremental>
+    <CodeAnalysisRuleSet>NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <RunCodeAnalysis>true</RunCodeAnalysis>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <OutDir>..\..\bin\$(Platform)_$(Configuration)\</OutDir>
     <IntDir>$(TEMP)\$(SolutionName)\$(ProjectName)\$(Platform)_$(Configuration)\</IntDir>
     <LinkIncremental>false</LinkIncremental>
+    <CodeAnalysisRuleSet>NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <RunCodeAnalysis>true</RunCodeAnalysis>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>..\..\bin\$(Platform)_$(Configuration)\</OutDir>
@@ -338,7 +338,7 @@
     <ClCompile Include="..\mclib\scale.cpp" />
     <ClCompile Include="..\mclib\sortlist.cpp" />
     <ClCompile Include="..\mclib\soundsys.cpp" />
-    <ClCompile Include="..\mclib\stdinc.cpp">
+    <ClCompile Include="..\pch\stdinc.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
@@ -440,7 +440,6 @@
     <ClInclude Include="..\mclib\mapdata.h" />
     <ClInclude Include="..\mclib\mathfunc.h" />
     <ClInclude Include="..\mclib\mclib.h" />
-    <ClInclude Include="..\mclib\mclibresource.h" />
     <ClInclude Include="..\mclib\mech3d.h" />
     <ClInclude Include="..\mclib\move.h" />
     <ClInclude Include="..\mclib\msl.h" />
@@ -457,7 +456,7 @@
     <ClInclude Include="..\mclib\sortlist.h" />
     <ClInclude Include="..\mclib\sounds.h" />
     <ClInclude Include="..\mclib\soundsys.h" />
-    <ClInclude Include="..\mclib\stdinc.h" />
+    <ClInclude Include="..\pch\stdinc.h" />
     <ClInclude Include="..\mclib\tacmap.h" />
     <ClInclude Include="..\mclib\terrain.h" />
     <ClInclude Include="..\mclib\terrtxm.h" />

@@ -393,8 +393,35 @@
     <ClCompile Include="..\gameos\lib\x86\gameos\winmain.c">
       <Filter>Sources\raw pseudo c</Filter>
     </ClCompile>
-    <ClCompile Include="..\gameos\src\stdinc.cpp">
+    <ClCompile Include="..\pch\stdinc.cpp">
       <Filter>build\precompiled</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gameos\lib\x86\gameos\winproc.c">
+      <Filter>Sources\raw pseudo c</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gameos\lib\x86\gameos\windowsdebugging.c">
+      <Filter>Sources\raw pseudo c</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gameos\lib\x86\gameos\windows.c">
+      <Filter>Sources\raw pseudo c</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gameos\lib\x86\gameos\memorymanager.c">
+      <Filter>Sources\raw pseudo c</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gameos\lib\x86\gameos\libraries.c">
+      <Filter>Sources\raw pseudo c</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gameos\lib\x86\gameos\directx.c">
+      <Filter>Sources\raw pseudo c</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gameos\lib\x86\gameos\directinput.c">
+      <Filter>Sources\raw pseudo c</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gameos\lib\x86\gameos\debugger.c">
+      <Filter>Sources\raw pseudo c</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gameos\lib\x86\gameos\cpu.c">
+      <Filter>Sources\raw pseudo c</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -581,10 +608,7 @@
     <ClInclude Include="..\gameos\include\zping.h">
       <Filter>Headers\gameos</Filter>
     </ClInclude>
-    <ClInclude Include="..\gameos\src\resource.h">
-      <Filter>Resources\gameos</Filter>
-    </ClInclude>
-    <ClInclude Include="..\gameos\src\stdinc.h">
+    <ClInclude Include="..\pch\stdinc.h">
       <Filter>build\precompiled</Filter>
     </ClInclude>
     <ClInclude Include="..\gameos\include\3drasterizer.hpp">
@@ -599,10 +623,8 @@
     <ClInclude Include="..\include\mechtypes.h">
       <Filter>Headers\common</Filter>
     </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="..\gameos\src\gameos.rc">
-      <Filter>Resources\gameos</Filter>
-    </ResourceCompile>
+    <ClInclude Include="..\gameos\lib\x86\gameos\idaref.h">
+      <Filter>Sources\raw pseudo c</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

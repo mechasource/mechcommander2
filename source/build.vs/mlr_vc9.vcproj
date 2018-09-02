@@ -6,6 +6,7 @@
 	ProjectGUID="{6CFC313D-C849-4753-8EAA-3244D0515C7A}"
 	RootNamespace="MechCommander"
 	Keyword="AtlProj"
+	TargetFrameworkVersion="0"
 	>
 	<Platforms>
 		<Platform
@@ -55,14 +56,14 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalOptions="-sdl -MP -Wall"
+				AdditionalOptions="-Wall -MP -sdl -guard:cf -Zo -Zc:inline -Zc:rvalueCast /Zc:referenceBinding -Zc:strictStrings -std:c++latest"
 				Optimization="0"
 				PreprocessorDefinitions="WIN32;_WINDOWS;_DEBUG;_USRDLL"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="2"
-				PrecompiledHeaderThrough="stdafx.h"
+				PrecompiledHeaderThrough="stdinc.h"
 				WarningLevel="4"
 				DebugInformationFormat="3"
 				CallingConvention="2"
@@ -135,14 +136,14 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalOptions="-sdl -MP -Wall"
+				AdditionalOptions="-Wall -MP -sdl -guard:cf -Zo -Zc:inline -Zc:rvalueCast /Zc:referenceBinding -Zc:strictStrings -std:c++latest"
 				Optimization="0"
 				PreprocessorDefinitions="WIN32;_WINDOWS;_DEBUG;_USRDLL"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="2"
-				PrecompiledHeaderThrough="stdafx.h"
+				PrecompiledHeaderThrough="stdinc.h"
 				WarningLevel="4"
 				DebugInformationFormat="3"
 				CallingConvention="2"
@@ -216,7 +217,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalOptions="-sdl -MP -Wall"
+				AdditionalOptions="-Wall -MP -sdl -guard:cf -Zo -Zc:inline -Zc:rvalueCast /Zc:referenceBinding -Zc:strictStrings -std:c++latest"
 				Optimization="3"
 				FavorSizeOrSpeed="2"
 				PreprocessorDefinitions="WIN32;_WINDOWS;NDEBUG;_USRDLL"
@@ -224,7 +225,7 @@
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="2"
-				PrecompiledHeaderThrough="stdafx.h"
+				PrecompiledHeaderThrough="stdinc.h"
 				WarningLevel="4"
 				DebugInformationFormat="3"
 				CallingConvention="2"
@@ -296,7 +297,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalOptions="-sdl -MP -Wall"
+				AdditionalOptions="-Wall -MP -sdl -guard:cf -Zo -Zc:inline -Zc:rvalueCast /Zc:referenceBinding -Zc:strictStrings -std:c++latest"
 				Optimization="3"
 				FavorSizeOrSpeed="2"
 				PreprocessorDefinitions="WIN32;_WINDOWS;NDEBUG;_USRDLL"
@@ -304,7 +305,7 @@
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="2"
-				PrecompiledHeaderThrough="stdafx.h"
+				PrecompiledHeaderThrough="stdinc.h"
 				WarningLevel="4"
 				DebugInformationFormat="3"
 				CallingConvention="2"
@@ -981,7 +982,7 @@
 					>
 				</File>
 				<File
-					RelativePath="..\mclib\stdafx.cpp"
+					RelativePath="..\pch\stdinc.cpp"
 					>
 					<FileConfiguration
 						Name="Debug|Win32"
@@ -1017,7 +1018,7 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\mclib\stdafx.h"
+					RelativePath="..\mclib\stdinc.h"
 					>
 				</File>
 			</Filter>

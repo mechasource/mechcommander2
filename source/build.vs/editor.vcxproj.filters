@@ -252,7 +252,7 @@
     <ClCompile Include="..\tools\editor\wavedlg.cpp">
       <Filter>Sources\extra</Filter>
     </ClCompile>
-    <ClCompile Include="..\tools\editor\stdafx.cpp">
+    <ClCompile Include="..\tools\editor\stdinc.cpp">
       <Filter>build\precompiled</Filter>
     </ClCompile>
   </ItemGroup>
@@ -458,7 +458,7 @@
     <ClInclude Include="..\tools\editor\resource.h">
       <Filter>Resources\editor</Filter>
     </ClInclude>
-    <ClInclude Include="..\tools\editor\stdafx.h">
+    <ClInclude Include="..\tools\editor\stdinc.h">
       <Filter>build\precompiled</Filter>
     </ClInclude>
     <ClInclude Include="..\include\mechresources.h">

@@ -393,7 +393,7 @@
     <ClCompile Include="..\gameos\lib\x86\gameos\winmain.c">
       <Filter>Sources\raw pseudo c</Filter>
     </ClCompile>
-    <ClCompile Include="..\gameos\src\stdafx.cpp">
+    <ClCompile Include="..\gameos\src\stdinc.cpp">
       <Filter>build\precompiled</Filter>
     </ClCompile>
   </ItemGroup>
@@ -584,7 +584,7 @@
     <ClInclude Include="..\gameos\src\resource.h">
       <Filter>Resources\gameos</Filter>
     </ClInclude>
-    <ClInclude Include="..\gameos\src\stdafx.h">
+    <ClInclude Include="..\gameos\src\stdinc.h">
       <Filter>build\precompiled</Filter>
     </ClInclude>
     <ClInclude Include="..\gameos\include\3drasterizer.hpp">

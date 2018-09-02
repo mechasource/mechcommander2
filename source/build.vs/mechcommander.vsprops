@@ -6,7 +6,7 @@
 	>
 	<Tool
 		Name="VCCLCompilerTool"
-		AdditionalIncludeDirectories="$(mech_inc);$(mclib_dir);$(gameos_dir)/include"
+		AdditionalIncludeDirectories=".;$(IntDir);$(mech_inc);$(mclib_dir);$(gameos_dir)/include;$(pch_dir)"
 	/>
 	<Tool
 		Name="VCLinkerTool"
@@ -47,7 +47,12 @@
 		Value="../include"
 		PerformEnvironmentSet="true"
 	/>
-	<UserMacro
+  <UserMacro
+		Name="pch_dir"
+		Value="../pch"
+		PerformEnvironmentSet="true"
+	/>  
+  <UserMacro
 		Name="mfc42_include"
 		Value="H:\WinSDK\7600.16385.1\inc\mfc42"
 		PerformEnvironmentSet="true"

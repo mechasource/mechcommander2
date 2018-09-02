@@ -66,7 +66,7 @@
     <ClCompile Include="..\mechcmd2\mechgui\logisticsscreen.cpp">
       <Filter>Sources\mechgui</Filter>
     </ClCompile>
-    <ClCompile Include="..\mechcmd2\stdafx.cpp">
+    <ClCompile Include="..\mechcmd2\stdinc.cpp">
       <Filter>build\precompiled</Filter>
     </ClCompile>
   </ItemGroup>
@@ -104,7 +104,7 @@
     <ClInclude Include="..\include\mechtypes.h">
       <Filter>Headers\common</Filter>
     </ClInclude>
-    <ClInclude Include="..\mechcmd2\stdafx.h">
+    <ClInclude Include="..\mechcmd2\stdinc.h">
       <Filter>build\precompiled</Filter>
     </ClInclude>
   </ItemGroup>

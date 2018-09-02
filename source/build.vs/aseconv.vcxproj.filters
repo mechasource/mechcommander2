@@ -52,7 +52,7 @@
     <ClInclude Include="..\tools\aseconv\resource.h">
       <Filter>Resources\aseconv</Filter>
     </ClInclude>
-    <ClInclude Include="..\tools\aseconv\stdafx.h">
+    <ClInclude Include="..\tools\aseconv\stdinc.h">
       <Filter>build\precompiled</Filter>
     </ClInclude>
     <ClInclude Include="..\include\mechresources.h">

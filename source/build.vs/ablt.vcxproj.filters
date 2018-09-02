@@ -84,7 +84,7 @@
     <ClCompile Include="..\mclib\ablxstmt.cpp">
       <Filter>Sources\abl</Filter>
     </ClCompile>
-    <ClCompile Include="..\ABLT\stdafx.cpp">
+    <ClCompile Include="..\ABLT\stdinc.cpp">
       <Filter>build\precompiled</Filter>
     </ClCompile>
     <ClCompile Include="..\tools\ablt\ablmc2.cpp">
@@ -131,7 +131,7 @@
     <ClInclude Include="..\tools\ablt\resource.h">
       <Filter>Resources\ablt</Filter>
     </ClInclude>
-    <ClInclude Include="..\ABLT\stdafx.h">
+    <ClInclude Include="..\ABLT\stdinc.h">
       <Filter>build\precompiled</Filter>
     </ClInclude>
     <ClInclude Include="..\include\mechresources.h">

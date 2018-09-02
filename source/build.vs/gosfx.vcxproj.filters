@@ -126,7 +126,7 @@
     <ClCompile Include="..\mclib\gosfx\gosfxheaders.cpp">
       <Filter>build\precompiled</Filter>
     </ClCompile>
-    <ClCompile Include="..\mclib\stdafx.cpp">
+    <ClCompile Include="..\mclib\stdinc.cpp">
       <Filter>build\precompiled</Filter>
     </ClCompile>
   </ItemGroup>
@@ -188,7 +188,7 @@
     <ClInclude Include="..\mclib\gosfx\gosfxheaders.hpp">
       <Filter>build\precompiled</Filter>
     </ClInclude>
-    <ClInclude Include="..\mclib\stdafx.h">
+    <ClInclude Include="..\mclib\stdinc.h">
       <Filter>build\precompiled</Filter>
     </ClInclude>
     <ClInclude Include="..\include\mechresources.h">

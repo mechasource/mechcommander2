@@ -56,7 +56,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalOptions="-sdl -MP -Wall"
+				AdditionalOptions="-Wall -MP -sdl -guard:cf -Zo -Zc:inline -Zc:rvalueCast /Zc:referenceBinding -Zc:strictStrings -std:c++latest"
 				Optimization="0"
 				AdditionalIncludeDirectories="$(mechcmd2_dir)"
 				PreprocessorDefinitions="WIN32;_WINDOWS;_DEBUG"
@@ -64,7 +64,7 @@
 				RuntimeLibrary="3"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="2"
-				PrecompiledHeaderThrough="stdafx.h"
+				PrecompiledHeaderThrough="stdinc.h"
 				WarningLevel="4"
 				DebugInformationFormat="3"
 				CallingConvention="2"
@@ -137,7 +137,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalOptions="-sdl -MP -Wall"
+				AdditionalOptions="-Wall -MP -sdl -guard:cf -Zo -Zc:inline -Zc:rvalueCast /Zc:referenceBinding -Zc:strictStrings -std:c++latest"
 				Optimization="0"
 				AdditionalIncludeDirectories="$(mechcmd2_dir)"
 				PreprocessorDefinitions="WIN32;_WINDOWS;_DEBUG"
@@ -145,7 +145,7 @@
 				RuntimeLibrary="3"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="2"
-				PrecompiledHeaderThrough="stdafx.h"
+				PrecompiledHeaderThrough="stdinc.h"
 				WarningLevel="4"
 				DebugInformationFormat="3"
 				CallingConvention="2"
@@ -219,7 +219,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalOptions="-sdl -MP -Wall"
+				AdditionalOptions="-Wall -MP -sdl -guard:cf -Zo -Zc:inline -Zc:rvalueCast /Zc:referenceBinding -Zc:strictStrings -std:c++latest"
 				Optimization="3"
 				FavorSizeOrSpeed="2"
 				AdditionalIncludeDirectories="$(mechcmd2_dir)"
@@ -228,7 +228,7 @@
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="2"
-				PrecompiledHeaderThrough="stdafx.h"
+				PrecompiledHeaderThrough="stdinc.h"
 				WarningLevel="4"
 				DebugInformationFormat="3"
 				CallingConvention="2"
@@ -300,7 +300,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalOptions="-sdl -MP -Wall"
+				AdditionalOptions="-Wall -MP -sdl -guard:cf -Zo -Zc:inline -Zc:rvalueCast /Zc:referenceBinding -Zc:strictStrings -std:c++latest"
 				Optimization="3"
 				FavorSizeOrSpeed="2"
 				AdditionalIncludeDirectories="$(mechcmd2_dir)"
@@ -309,7 +309,7 @@
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="2"
-				PrecompiledHeaderThrough="stdafx.h"
+				PrecompiledHeaderThrough="stdinc.h"
 				WarningLevel="4"
 				DebugInformationFormat="3"
 				CallingConvention="2"
@@ -474,7 +474,7 @@
 				Name="precompiled"
 				>
 				<File
-					RelativePath="..\mechcmd2\stdafx.cpp"
+					RelativePath="..\pch\stdinc.cpp"
 					>
 					<FileConfiguration
 						Name="Debug|Win32"
@@ -510,7 +510,7 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\mechcmd2\stdafx.h"
+					RelativePath="..\mechcmd2\stdinc.h"
 					>
 				</File>
 			</Filter>

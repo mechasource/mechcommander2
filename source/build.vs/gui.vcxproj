@@ -28,27 +28,27 @@
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
-    <PlatformToolset>LLVM</PlatformToolset>
     <UseOfAtl>false</UseOfAtl>
     <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v141</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
-    <PlatformToolset>LLVM</PlatformToolset>
     <UseOfAtl>false</UseOfAtl>
     <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v141</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
-    <PlatformToolset>LLVM</PlatformToolset>
     <UseOfAtl>false</UseOfAtl>
     <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v141</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
-    <PlatformToolset>LLVM</PlatformToolset>
     <UseOfAtl>false</UseOfAtl>
     <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v141</PlatformToolset>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -107,8 +107,7 @@
       <ValidateAllParameters>true</ValidateAllParameters>
     </Midl>
     <ClCompile>
-      <AdditionalOptions>
-      </AdditionalOptions>
+      <AdditionalOptions>-guard:cf -Zo -Zc:inline -Zc:referenceBinding -Zc:strictStrings</AdditionalOptions>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_WINDOWS;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -123,6 +122,8 @@
       <SDLCheck>true</SDLCheck>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <AdditionalIncludeDirectories>$(mechcmd2_dir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <EnforceTypeConversionRules>true</EnforceTypeConversionRules>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -151,8 +152,7 @@
       <ProxyFileName>$(IntDir)$(TargetName)_p.c</ProxyFileName>
     </Midl>
     <ClCompile>
-      <AdditionalOptions>
-      </AdditionalOptions>
+      <AdditionalOptions>-guard:cf -Zo -Zc:inline -Zc:referenceBinding -Zc:strictStrings</AdditionalOptions>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_WINDOWS;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -167,6 +167,8 @@
       <SDLCheck>true</SDLCheck>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <AdditionalIncludeDirectories>$(mechcmd2_dir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <EnforceTypeConversionRules>true</EnforceTypeConversionRules>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -197,8 +199,7 @@
       <ValidateAllParameters>true</ValidateAllParameters>
     </Midl>
     <ClCompile>
-      <AdditionalOptions>
-      </AdditionalOptions>
+      <AdditionalOptions>-guard:cf -Zo -Zc:inline -Zc:referenceBinding -Zc:strictStrings</AdditionalOptions>
       <Optimization>Full</Optimization>
       <FavorSizeOrSpeed>Size</FavorSizeOrSpeed>
       <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -215,6 +216,8 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <OmitFramePointers>true</OmitFramePointers>
       <AdditionalIncludeDirectories>$(mechcmd2_dir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <EnforceTypeConversionRules>true</EnforceTypeConversionRules>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -245,8 +248,7 @@
       <ProxyFileName>$(IntDir)$(TargetName)_p.c</ProxyFileName>
     </Midl>
     <ClCompile>
-      <AdditionalOptions>
-      </AdditionalOptions>
+      <AdditionalOptions>-guard:cf -Zo -Zc:inline -Zc:referenceBinding -Zc:strictStrings</AdditionalOptions>
       <Optimization>Full</Optimization>
       <FavorSizeOrSpeed>Size</FavorSizeOrSpeed>
       <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -263,6 +265,8 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <OmitFramePointers>true</OmitFramePointers>
       <AdditionalIncludeDirectories>$(mechcmd2_dir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <EnforceTypeConversionRules>true</EnforceTypeConversionRules>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>

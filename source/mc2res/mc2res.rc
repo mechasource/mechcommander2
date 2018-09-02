@@ -5514,6 +5514,111 @@ BEGIN
                             "Only Airstrikes, Sensor Probes and Salvage Craft are available."
 END
 
+STRINGTABLE 
+BEGIN
+    IDS_ERROR               "Error"
+    IDS_CANCEL              "Cancel"
+    IDS_OK                  "OK"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_YES                 "Yes"
+    IDS_NO                  "No"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_SAVE_CAMERAS        "Save Current Camera"
+    IDS_TERRAINS            "Terrains"
+    IDS_BUILDINGS           "O&bjects"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_DIRTROAD            "Dirt Road"
+    IDS_PAVED_ROAD          "Paved road"
+    IDS_ROUGH               "Rough"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_GROUPS              "Markers"
+    IDS_GROUP1              "Trees"
+    IDS_GROUP2              "Small Stuff"
+    IDS_GROUP3              "Turrets"
+    IDS_MECHS               "'Mechs"
+    IDS_SMALLSTUFF          "Flammable Things"
+    IDS_STRING10106         "Vehicles"
+    IDS_STRING10107         "House Davion"
+    IDS_STRING10108         "House Liao"
+    IDS_STRING10109         "Vehicle Props"
+    IDS_STRING10110         "House Steiner"
+    IDS_STRING10111         "Regular Buildings"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_SELECT              "Select"
+    IDS_FLATTEN             "Flatten"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_SAVE_CAMERA_FAIL    "You need to save first!"
+    IDS_NO_VERTEX_SEL       "You must first select some vertices!"
+    IDS_ASSIGN_ELEVATION    "Assign Elevation"
+    IDS_ELEVATION           "Elevation:"
+    IDS_SMOOTH_RADIUS       "Hill radius"
+    IDS_RADIUS              "Radius:"
+    IDS_INVALID_FILE        "Could not save the file %s."
+    IDS_MUST_HAVE_PLAYER    "You must have one player mech!"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_NEED_ENEMY          "You must have one enemy mech!"
+    IDS_CANT_SAVE           "Can't save"
+    IDS_UNTITLED            "Untitled"
+    IDS_CAPTION             "MC2 Editor -- Version %s    %s"
+    IDS_COULDNT_OPEN        "Couldn't open the file %s."
+    IDS_IN_SECONDS          "in seconds"
+    IDS_NO_NEUTRAL_MOVERS   "Cannot have a Neutral Mover!"
+    IDS_WARNING             "Warning !"
+    IDS_PLAYERS_WITH_NO_UNITS 
+                            "Multiplayer Map: There are players with no default units. Default units are needed for quickstart games."
+    IDS_NO_ENEMY_UNITS      "Single-player Map: There are no enemy units."
+    IDS_BLANK_SPACE         " "
+    IDS_NUM_ENEMY_UNITS     "Number of enemy units"
+    IDS_ELAPSED_TIME        "Elapsed Mission Time"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_STRING10112         "Rocks"
+    IDS_STRING10113         "Gulag Set Piece"
+    IDS_STRING10114         "Starport Set Piece"
+    IDS_STRING10115         "Liao Palace Set Piece"
+    IDS_STRING10116         "Crash Site Set Piece"
+    IDS_STRING10117         "HPG Set Piece"
+    IDS_STRING10118         "Steiner High Command Set Piece"
+    IDS_STRING10119         "Destroyable Road"
+    IDS_STRING10120         "Dummy Objects"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_UNNAMDE_FOREST      "Unnamed Forest %ld"
+    IDS_TOO_MANY_PILOTS     "Too many units on map.  Limit is 104."
+    IDS_INVALID_COLOR_MAP   "Color Map wrong size or not valid TGA."
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_NO_PLAYER_UNITS     "Single-player Map: There are no player units. A player unit  needs to be placed to indicate the dropzone location."
+END
+
+
 #endif    // English (U.S.) resources
 /////////////////////////////////////////////////////////////////////////////
 

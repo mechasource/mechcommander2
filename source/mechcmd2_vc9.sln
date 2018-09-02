@@ -2,8 +2,12 @@ Microsoft Visual Studio Solution File, Format Version 10.00
 # Visual Studio 2008
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Config", "Config", "{DE2F4131-38FF-4205-94C8-6032A0BC76C2}"
 	ProjectSection(SolutionItems) = preProject
+		..\.clang-format = ..\.clang-format
+		..\.gitattributes = ..\.gitattributes
+		..\.gitignore = ..\.gitignore
 		initial_preparations.txt = initial_preparations.txt
 		..\LICENSE = ..\LICENSE
+		build.vs\mechcommander.vsprops = build.vs\mechcommander.vsprops
 		..\original_source.txt = ..\original_source.txt
 		..\README.md = ..\README.md
 	EndProjectSection
@@ -14,29 +18,29 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Libraries", "Libraries", "{
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DLLs", "DLLs", "{21B88EB2-E31D-4E38-BEDB-83E0EA4D88D4}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ablt", "build.vs\ablt_vc9.vcproj", "{533EB470-9743-48C3-A77F-1490873B7CBB}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ablt", "build.vs\ablt.vcproj", "{533EB470-9743-48C3-A77F-1490873B7CBB}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "aseconv", "build.vs\aseconv_vc9.vcproj", "{8D87B501-FAB3-4468-A67E-72CE3F4D21AE}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "aseconv", "build.vs\aseconv.vcproj", "{8D87B501-FAB3-4468-A67E-72CE3F4D21AE}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "editor", "build.vs\editor_vc9.vcproj", "{61FF0D0E-7063-4843-A009-A764F7AD72D4}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "editor", "build.vs\editor.vcproj", "{61FF0D0E-7063-4843-A009-A764F7AD72D4}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "gameos", "build.vs\gameos_vc9.vcproj", "{B4EA2124-2ABF-442E-9B3E-0E503A4DAF8B}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "gameos", "build.vs\gameos.vcproj", "{B4EA2124-2ABF-442E-9B3E-0E503A4DAF8B}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "gosfx", "build.vs\gosfx_vc9.vcproj", "{FDA65357-68F7-4567-89C0-A4D15FB27CDB}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "gosfx", "build.vs\gosfx.vcproj", "{FDA65357-68F7-4567-89C0-A4D15FB27CDB}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "mechgui", "build.vs\gui_vc9.vcproj", "{97985315-F026-4AB8-A765-2DBE7B78CC6C}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "mechgui", "build.vs\gui.vcproj", "{97985315-F026-4AB8-A765-2DBE7B78CC6C}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "mc2res", "build.vs\mc2res_vc9.vcproj", "{CFE8A9D5-80DF-4ACC-B91F-64AB2167BC3A}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "mc2res", "build.vs\mc2res.vcproj", "{CFE8A9D5-80DF-4ACC-B91F-64AB2167BC3A}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "mclib", "build.vs\mclib_vc9.vcproj", "{09582E8D-FAA3-4A07-AB43-74C33436CDDF}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "mclib", "build.vs\mclib.vcproj", "{09582E8D-FAA3-4A07-AB43-74C33436CDDF}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "mechcmd2", "build.vs\mechcmd2_vc9.vcproj", "{8FA46A42-5363-4C71-90D8-1106203F0DC7}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "mechcmd2", "build.vs\mechcmd2.vcproj", "{8FA46A42-5363-4C71-90D8-1106203F0DC7}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "mlr", "build.vs\mlr_vc9.vcproj", "{6CFC313D-C849-4753-8EAA-3244D0515C7A}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "mlr", "build.vs\mlr.vcproj", "{6CFC313D-C849-4753-8EAA-3244D0515C7A}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "stuff", "build.vs\stuff_vc9.vcproj", "{14F6019A-43EA-41FF-BE5D-24D54425B7AA}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "stuff", "build.vs\stuff.vcproj", "{14F6019A-43EA-41FF-BE5D-24D54425B7AA}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "viewer", "build.vs\viewer_vc9.vcproj", "{D6A172C0-ACCD-4F05-BADA-D8DEBD36B666}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "viewer", "build.vs\viewer.vcproj", "{D6A172C0-ACCD-4F05-BADA-D8DEBD36B666}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

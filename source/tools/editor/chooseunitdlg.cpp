@@ -5,7 +5,7 @@ ChooseUnitDlg.cpp			: Implementation of the ChooseUnitDlg component.
 //===========================================================================//
 \*************************************************************************************************/
 
-#include "stdafx.h"
+#include "stdinc.h"
 #include "resource.h"
 
 //#include <stdlib.h>
@@ -34,8 +34,7 @@ BOOL ChooseUnitDlg::OnInitDialog()
 {
 	m_pComboBox = (CComboBox*)GetDlgItem(IDC_CHOOSE_UNIT_COMBO);
 	assert(m_pComboBox);
-	m_pUsingPointerButton =
-		(CButton*)GetDlgItem(IDC_CHOOSE_UNIT_USING_POINTER_BUTTON);
+	m_pUsingPointerButton = (CButton*)GetDlgItem(IDC_CHOOSE_UNIT_USING_POINTER_BUTTON);
 	assert(m_pUsingPointerButton);
 	m_pCancelButton = (CButton*)GetDlgItem(IDCANCEL);
 	assert(m_pCancelButton);
@@ -43,19 +42,17 @@ BOOL ChooseUnitDlg::OnInitDialog()
 	assert(m_pOKButton);
 	if (EditorInterface::instance()->ObjectSelectOnlyMode())
 	{
-		m_pModifiedUnitPtr = (unit_ptr_type*)EditorInterface::instance()
-								 ->objectivesEditState.pModifiedUnitPtr;
+		m_pModifiedUnitPtr =
+			(unit_ptr_type*)EditorInterface::instance()->objectivesEditState.pModifiedUnitPtr;
 	}
 	else
 	{
 		m_pModifiedUnitPtr	= new unit_ptr_type;
 		(*m_pModifiedUnitPtr) = (*m_pUnitPtr);
 	}
-	EditorObjectMgr::UNIT_LIST completeUnitList =
-		EditorObjectMgr::instance()->getUnits();
+	EditorObjectMgr::UNIT_LIST completeUnitList = EditorObjectMgr::instance()->getUnits();
 	{
-		EditorObjectMgr::UNIT_LIST::EConstIterator it =
-			completeUnitList.Begin();
+		EditorObjectMgr::UNIT_LIST::EConstIterator it = completeUnitList.Begin();
 		while (!it.IsDone())
 		{
 			if ((*it)->getAlignment() != m_alignmentToExclude)
@@ -90,8 +87,7 @@ BOOL ChooseUnitDlg::OnInitDialog()
 	if (EditorInterface::instance()->ObjectSelectOnlyMode())
 	{
 		// post a message that the USEPOINTER button was pressed
-		PostMessage(WM_COMMAND, (WPARAM)BN_CLICKED,
-			(LPARAM)m_pUsingPointerButton->m_hWnd);
+		PostMessage(WM_COMMAND, (WPARAM)BN_CLICKED, (LPARAM)m_pUsingPointerButton->m_hWnd);
 	}
 	return 1;
 }
@@ -117,8 +113,8 @@ BOOL ChooseUnitDlg::OnCommand(WPARAM wParam,
 			if (EditorInterface::instance()->ObjectSelectOnlyMode())
 			{
 				/* close the dialog and enter ObjectSelectOnlyMode */
-				EditorInterface::instance()
-					->objectivesEditState.pModifiedUnitPtr = m_pModifiedUnitPtr;
+				EditorInterface::instance()->objectivesEditState.pModifiedUnitPtr =
+					m_pModifiedUnitPtr;
 				EndDialog(IDOK);
 			}
 		}
@@ -139,10 +135,9 @@ void ChooseUnitDlg::OnUsePointer()
 		EditorInterface::instance()->ObjectSelectOnlyMode(false);
 		EditorObjectMgr::EDITOR_OBJECT_LIST selectedObjects =
 			EditorObjectMgr::instance()->getSelectedObjectList();
-		int32_t num_units_selected = 0;
-		int32_t validObjectIndex   = -1;
-		EditorObjectMgr::EDITOR_OBJECT_LIST::EConstIterator it =
-			selectedObjects.Begin();
+		int32_t num_units_selected							   = 0;
+		int32_t validObjectIndex							   = -1;
+		EditorObjectMgr::EDITOR_OBJECT_LIST::EConstIterator it = selectedObjects.Begin();
 		while (!it.IsDone())
 		{
 			int32_t index								   = 0;

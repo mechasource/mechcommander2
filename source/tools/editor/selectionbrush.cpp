@@ -32,11 +32,10 @@ SelectionBrush::SelectionBrush(bool Area, int32_t newRadius)
 	bDrag					 = false;
 	pCurAction				 = nullptr;
 	pCurModifyBuildingAction = nullptr;
-	lastPos.x = lastPos.y = lastPos.z = lastPos.w =
-		0.0f; // Keep the FPU exception from going off!
-	smoothRadius  = newRadius;
-	bFirstClick   = false;
-	pDragBuilding = nullptr;
+	lastPos.x = lastPos.y = lastPos.z = lastPos.w = 0.0f; // Keep the FPU exception from going off!
+	smoothRadius								  = newRadius;
+	bFirstClick									  = false;
+	pDragBuilding								  = nullptr;
 }
 
 SelectionBrush::~SelectionBrush()
@@ -99,8 +98,7 @@ Action* SelectionBrush::endPaint()
 		eye->projectZ(firstWorldPos, endPos);
 		eye->projectZ(lastWorldPos, lastPos);
 		EditorObjectMgr::instance()->select(lastPos, endPos);
-		land->selectVerticesInRect(
-			lastPos, endPos, (GetAsyncKeyState(VK_CONTROL)));
+		land->selectVerticesInRect(lastPos, endPos, (GetAsyncKeyState(VK_CONTROL)));
 	}
 	if (EditorInterface::instance()->ObjectSelectOnlyMode())
 	{
@@ -113,8 +111,7 @@ Action* SelectionBrush::endPaint()
 	return pRetAction;
 }
 
-float SelectionBrush::calcNewHeight(
-	int32_t vertexRow, int32_t vertexCol, float deltaScreen)
+float SelectionBrush::calcNewHeight(int32_t vertexRow, int32_t vertexCol, float deltaScreen)
 {
 	Stuff::Vector3D world;
 	Stuff::Vector3D newWorld;
@@ -130,8 +127,7 @@ float SelectionBrush::calcNewHeight(
 	return (ratio * deltaScreen);
 }
 
-bool SelectionBrush::paint(
-	Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY)
+bool SelectionBrush::paint(Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY)
 {
 	Stuff::Vector4D endPos;
 	endPos.x = (float)screenX;
@@ -148,8 +144,7 @@ bool SelectionBrush::paint(
 			// if ( lastRow  != 0 && lastCol != 0 )
 			if (true)
 			{
-				pCurModifyBuildingAction->addBuildingInfo(
-					*(const_cast<EditorObject*>(pObject)));
+				pCurModifyBuildingAction->addBuildingInfo(*(const_cast<EditorObject*>(pObject)));
 				EditorObjectMgr::instance()->moveBuilding(
 					const_cast<EditorObject*>(pObject), newCellJ, newCellI);
 			}
@@ -171,8 +166,7 @@ bool SelectionBrush::paint(
 			if (lastPos.x != 0.0 && lastPos.y != 0.0)
 			{
 				// return paintSmooth( worldPos, screenX, screenY, 6 );
-				float delta =
-					calcNewHeight(lastRow, lastCol, endPos.y - lastPos.y);
+				float delta = calcNewHeight(lastRow, lastCol, endPos.y - lastPos.y);
 				for (size_t j = 0; j < land->realVerticesMapSide; ++j)
 				{
 					for (size_t i = 0; i < land->realVerticesMapSide; ++i)
@@ -180,11 +174,10 @@ bool SelectionBrush::paint(
 						if (land->isVertexSelected(j, i))
 						{
 							pCurAction->addChangedVertexInfo(j, i);
-							float oldHeight = land->getVertexHeight(
-								j * land->realVerticesMapSide + i);
+							float oldHeight =
+								land->getVertexHeight(j * land->realVerticesMapSide + i);
 							land->setVertexHeight(
-								j * land->realVerticesMapSide + i,
-								oldHeight + delta);
+								j * land->realVerticesMapSide + i, oldHeight + delta);
 						}
 					}
 				}
@@ -224,8 +217,7 @@ bool SelectionBrush::paint(
 			if (firstWorldPos.x == 0.f && firstWorldPos.y == 0.f)
 				eye->inverseProject(screenPos, firstWorldPos);
 			eye->inverseProject(screenPos, lastWorldPos);
-			const EditorObject* pInfo =
-				EditorObjectMgr::instance()->getObjectAtPosition(worldPos);
+			const EditorObject* pInfo = EditorObjectMgr::instance()->getObjectAtPosition(worldPos);
 			if (pInfo)
 			{
 				if (!bCtrl || (bCtrl && pInfo->isSelected() == false))
@@ -237,8 +229,8 @@ bool SelectionBrush::paint(
 			{
 				int32_t tileR, tileC;
 				land->worldToTile(worldPos, tileR, tileC);
-				if (tileR > -1 && tileR < land->realVerticesMapSide &&
-					tileC > -1 && tileC < land->realVerticesMapSide)
+				if (tileR > -1 && tileR < land->realVerticesMapSide && tileC > -1 &&
+					tileC < land->realVerticesMapSide)
 				{
 					// figure out which vertex is closest
 					if (fabs(worldPos.x - land->tileColToWorldCoord[tileC]) >=
@@ -247,8 +239,7 @@ bool SelectionBrush::paint(
 					if (fabs(worldPos.y - land->tileRowToWorldCoord[tileR]) >=
 						land->worldUnitsPerVertex / 2)
 						tileR++;
-					if (!bCtrl ||
-						(bCtrl && !land->isVertexSelected(tileR, tileC)))
+					if (!bCtrl || (bCtrl && !land->isVertexSelected(tileR, tileC)))
 						land->selectVertex(tileR, tileC);
 					else // shift key, object is selected
 						land->selectVertex(tileR, tileC, false);
@@ -270,8 +261,8 @@ void SelectionBrush::render(int32_t screenX, int32_t screenY)
 		drawRect(rect, 0x30ffffff);
 		drawEmptyRect(rect, 0xff000000, 0xff000000);
 	}
-	else if (lastPos.x != 0.0 && lastPos.y != 0.0 &&
-			 !GetAsyncKeyState(KEY_LSHIFT) && !GetAsyncKeyState(KEY_LCONTROL))
+	else if (lastPos.x != 0.0 && lastPos.y != 0.0 && !GetAsyncKeyState(KEY_LSHIFT) &&
+		!GetAsyncKeyState(KEY_LCONTROL))
 	{
 		if (EditorObjectMgr::instance()->getSelectionCount() == 1)
 		{
@@ -309,8 +300,7 @@ void SelectionBrush::render(int32_t screenX, int32_t screenY)
 						world.x = land->tileColToWorldCoord[i];
 						world.z = land->getTerrainElevation(j, i);
 						eye->projectZ(world, screen);
-						if ((fabs(screen.x - screenX) < 20 &&
-								fabs(screen.y - screenY) < 20))
+						if ((fabs(screen.x - screenX) < 20 && fabs(screen.y - screenY) < 20))
 						{
 							EditorInterface::instance()->ChangeCursor(
 								smoothRadius == -1 ? IDC_UP : IDC_HILLS);
@@ -358,18 +348,17 @@ bool SelectionBrush::paintSmooth(
 	}
 	if (maxI == minI && maxJ == minJ)
 	{
-		return paintSmoothArea(worldPos, screenX, screenY, (float)radius,
-			(float)radius, minJ, minI);
+		return paintSmoothArea(
+			worldPos, screenX, screenY, (float)radius, (float)radius, minJ, minI);
 	}
 	else
-		return paintSmoothArea(worldPos, screenX, screenY,
-			float((maxJ - minJ + 1) >> 1), float((maxI - minI + 1) >> 1),
-			minJ + ((maxJ - minJ) / 2), minI + ((maxI - minI) / 2));
+		return paintSmoothArea(worldPos, screenX, screenY, float((maxJ - minJ + 1) >> 1),
+			float((maxI - minI + 1) >> 1), minJ + ((maxJ - minJ) / 2), minI + ((maxI - minI) / 2));
 	return false;
 }
 
-bool SelectionBrush::paintSmoothArea(Stuff::Vector3D& worldPos, int32_t screenX,
-	int32_t screenY, float radY, float radX, int32_t j, int32_t i)
+bool SelectionBrush::paintSmoothArea(Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY,
+	float radY, float radX, int32_t j, int32_t i)
 {
 	Stuff::Vector4D endPos;
 	endPos.x = (float)screenX;
@@ -385,8 +374,7 @@ bool SelectionBrush::paintSmoothArea(Stuff::Vector3D& worldPos, int32_t screenX,
 		{
 			float delta = calcNewHeight(lastRow, lastCol, endPos.y - lastPos.y);
 			pCurAction->addChangedVertexInfo(j, i);
-			float oldHeight =
-				land->getVertexHeight(j * land->realVerticesMapSide + i);
+			float oldHeight = land->getVertexHeight(j * land->realVerticesMapSide + i);
 			float newHeight = oldHeight + delta;
 			land->setVertexHeight(j * land->realVerticesMapSide + i, newHeight);
 			float midX = land->tileColToWorldCoord[i];
@@ -395,52 +383,36 @@ bool SelectionBrush::paintSmoothArea(Stuff::Vector3D& worldPos, int32_t screenX,
 				radiusX = .5;
 			if (radiusY == 0)
 				radiusY = .5;
-			float a = radiusX * radiusX * land->worldUnitsPerVertex *
-					  land->worldUnitsPerVertex;
-			float b = radiusY * radiusY * land->worldUnitsPerVertex *
-					  land->worldUnitsPerVertex;
+			float a = radiusX * radiusX * land->worldUnitsPerVertex * land->worldUnitsPerVertex;
+			float b = radiusY * radiusY * land->worldUnitsPerVertex * land->worldUnitsPerVertex;
 			// now set surrounding vertices within radius
-			for (size_t k = j - (int32_t)radiusY; k < j + (int32_t)radiusY + 1;
-				 ++k)
+			for (size_t k = j - (int32_t)radiusY; k < j + (int32_t)radiusY + 1; ++k)
 			{
 				if (k > -1 && k < land->realVerticesMapSide)
 				{
-					for (size_t l = i - (int32_t)radiusX;
-						 l < i + (int32_t)radiusX + 1; ++l)
+					for (size_t l = i - (int32_t)radiusX; l < i + (int32_t)radiusX + 1; ++l)
 					{
 						if (l > -1 && l < land->realVerticesMapSide)
 						{
 							if (radX == radY || (land->isVertexSelected(k, l)))
 							{
 								// make sure vertex is within radius
-								float deltaY =
-									((k - j)) * -land->worldUnitsPerVertex;
-								float deltaX =
-									((l - i)) * land->worldUnitsPerVertex;
-								if ((deltaX * deltaX) / a +
-										(deltaY * deltaY) / b <=
-									1)
+								float deltaY = ((k - j)) * -land->worldUnitsPerVertex;
+								float deltaX = ((l - i)) * land->worldUnitsPerVertex;
+								if ((deltaX * deltaX) / a + (deltaY * deltaY) / b <= 1)
 								{
 									Stuff::Vector3D edge;
 									if (deltaX == 0)
 									{
 										edge.x = 0.f;
-										edge.y =
-											deltaY < 0
-												? -radY *
-													  land->worldUnitsPerVertex
-												: radY *
-													  land->worldUnitsPerVertex;
+										edge.y = deltaY < 0 ? -radY * land->worldUnitsPerVertex
+															: radY * land->worldUnitsPerVertex;
 									}
 									else if (deltaY == 0)
 									{
 										edge.y = 0.f;
-										edge.x =
-											deltaX < 0
-												? -radX *
-													  land->worldUnitsPerVertex
-												: radX *
-													  land->worldUnitsPerVertex;
+										edge.x = deltaX < 0 ? -radX * land->worldUnitsPerVertex
+															: radX * land->worldUnitsPerVertex;
 									}
 									else
 									{
@@ -448,48 +420,39 @@ bool SelectionBrush::paintSmoothArea(Stuff::Vector3D& worldPos, int32_t screenX,
 										//> .1 )
 										//									{
 										//										theta = atan(
-										//fabs(deltaY)/fabs(deltaX) );
+										// fabs(deltaY)/fabs(deltaX) );
 										//									}
 										float tangent = deltaY / deltaX;
-										float tmp =
-											1 / a + tangent * tangent / b;
-										edge.x = (float)sqrt(1 / tmp);
+										float tmp	 = 1 / a + tangent * tangent / b;
+										edge.x		  = (float)sqrt(1 / tmp);
 										if (deltaX < 0 && edge.x > 0)
 										{
 											edge.x = -edge.x;
 										}
 										edge.y = edge.x * tangent;
-										if (deltaY < 0 && edge.y > 0 ||
-											deltaY > 0 && edge.y < 0)
+										if (deltaY < 0 && edge.y > 0 || deltaY > 0 && edge.y < 0)
 										{
 											edge.y = -edge.y;
 										}
 									}
-									float r = (float)sqrt(
-										edge.x * edge.x + edge.y * edge.y);
-									float delta = (float)sqrt(
-										deltaX * deltaX + deltaY * deltaY);
+									float r		= (float)sqrt(edge.x * edge.x + edge.y * edge.y);
+									float delta = (float)sqrt(deltaX * deltaX + deltaY * deltaY);
 									edge.x += midX;
 									edge.y += midY;
-									edge.z = land->getTerrainElevation(edge);
+									edge.z		 = land->getTerrainElevation(edge);
 									float deltaZ = newHeight - edge.z;
 									if (deltaZ > .1 || deltaZ < -.1)
 									{
-										float z =
-											(float)fabs(deltaZ / 2) +
-											(float)fabs(deltaZ / 2) *
-												(float)cos(PI * delta / r);
+										float z = (float)fabs(deltaZ / 2) +
+											(float)fabs(deltaZ / 2) * (float)cos(PI * delta / r);
 										if (fabs(z) > .1f)
 										{
 											if (deltaZ <= 0)
 												z = -z;
-											pCurAction->addChangedVertexInfo(
-												k, l);
+											pCurAction->addChangedVertexInfo(k, l);
 											z += edge.z;
 											land->setVertexHeight(
-												k * land->realVerticesMapSide +
-													l,
-												z);
+												k * land->realVerticesMapSide + l, z);
 										}
 									}
 								}

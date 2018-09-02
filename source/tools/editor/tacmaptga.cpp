@@ -6,7 +6,7 @@ TgaMapTGA.cpp			: Implementation of the TgaMapTGA component.
 //===========================================================================//
 \*************************************************************************************************/
 
-#include "stdafx.h"
+#include "stdinc.h"
 #include <tacmap.h>
 #include "tgawnd.h"
 #include "editordata.h"

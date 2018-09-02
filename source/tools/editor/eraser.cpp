@@ -17,8 +17,7 @@ eraser.cpp			: Implementation of the eraser component.
 inline bool isCementType(uint32_t type)
 {
 	bool isCement =
-		((type == BASE_CEMENT_TYPE) ||
-			((type >= START_CEMENT_TYPE) && (type <= END_CEMENT_TYPE)));
+		((type == BASE_CEMENT_TYPE) || ((type >= START_CEMENT_TYPE) && (type <= END_CEMENT_TYPE)));
 	return isCement;
 }
 
@@ -33,8 +32,7 @@ Action* Eraser::endPaint()
 	Action* pRetAction = nullptr;
 	if (pCurAction)
 	{
-		if (pCurAction->vertexInfoList.Count() ||
-			pCurAction->bldgAction.objInfoPtrList.Count())
+		if (pCurAction->vertexInfoList.Count() || pCurAction->bldgAction.objInfoPtrList.Count())
 		{
 			pRetAction = pCurAction;
 		}
@@ -50,8 +48,7 @@ Action* Eraser::endPaint()
 #define DEFAULT_TERRAIN 2
 bool Eraser::paint(Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY)
 {
-	EditorObject* pInfo =
-		EditorObjectMgr::instance()->getObjectAtPosition(worldPos);
+	EditorObject* pInfo = EditorObjectMgr::instance()->getObjectAtPosition(worldPos);
 	if (pInfo)
 	{
 		CTeams originalTeams = EditorData::instance->TeamsRef();
@@ -62,8 +59,7 @@ bool Eraser::paint(Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY)
 			pCurAction->teamsActionIsSet = true;
 		}
 		{
-			BuildingLink* pLink =
-				EditorObjectMgr::instance()->getLinkWithParent(pInfo);
+			BuildingLink* pLink = EditorObjectMgr::instance()->getLinkWithParent(pInfo);
 			if (pLink)
 			{
 				pCurAction->linkAction.AddToListOnce(
@@ -89,8 +85,8 @@ bool Eraser::paint(Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY)
 		int32_t tileRow, tileCol;
 		int32_t cellRow, cellCol;
 		land->worldToTileCell(worldPos, tileRow, tileCol, cellRow, cellCol);
-		cellRow += tileRow * MAPCELL_DIM;
-		cellCol += tileCol * MAPCELL_DIM;
+		cellRow += tileRow * terrain_const::MAPCELL_DIM;
+		cellCol += tileCol * terrain_const::MAPCELL_DIM;
 		Overlays type;
 		uint32_t Offset;
 		land->getOverlay(tileRow, tileCol, type, Offset);
@@ -112,16 +108,15 @@ bool Eraser::paint(Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY)
 	}
 	return false;
 }
-bool Eraser::canPaint(
-	Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY, int32_t flags)
+bool Eraser::canPaint(Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY, int32_t flags)
 {
 	if (EditorObjectMgr::instance()->getObjectAtPosition(worldPos))
 		return true;
 	int32_t tileRow, tileCol;
 	int32_t cellRow, cellCol;
 	land->worldToTileCell(worldPos, tileRow, tileCol, cellRow, cellCol);
-	cellRow += tileRow * MAPCELL_DIM;
-	cellCol += tileCol * MAPCELL_DIM;
+	cellRow += tileRow * terrain_const::MAPCELL_DIM;
+	cellCol += tileCol * terrain_const::MAPCELL_DIM;
 	Overlays type;
 	uint32_t Offset;
 	land->getOverlay(tileRow, tileCol, type, Offset);
@@ -149,8 +144,7 @@ Action* Eraser::applyToSelection()
 		/*first remove all references to objects that are about to be deleted*/
 		EditorObjectMgr::EDITOR_OBJECT_LIST selectedObjectsList =
 			EditorObjectMgr::instance()->getSelectedObjectList();
-		EditorObjectMgr::EDITOR_OBJECT_LIST::EIterator it =
-			selectedObjectsList.Begin();
+		EditorObjectMgr::EDITOR_OBJECT_LIST::EIterator it = selectedObjectsList.Begin();
 		while (!it.IsDone())
 		{
 			const EditorObject* pInfo = (*it);
@@ -171,30 +165,26 @@ Action* Eraser::applyToSelection()
 	}
 	EditorObjectMgr::EDITOR_OBJECT_LIST selectedObjectsList =
 		EditorObjectMgr::instance()->getSelectedObjectList();
-	EditorObjectMgr::EDITOR_OBJECT_LIST::EIterator it =
-		selectedObjectsList.Begin();
+	EditorObjectMgr::EDITOR_OBJECT_LIST::EIterator it = selectedObjectsList.Begin();
 	while (!it.IsDone())
 	{
 		EditorObject* pInfo = (*it);
 		if (pInfo)
 		{
 			{
-				BuildingLink* pLink =
-					EditorObjectMgr::instance()->getLinkWithParent(pInfo);
+				BuildingLink* pLink = EditorObjectMgr::instance()->getLinkWithParent(pInfo);
 				if (pLink)
 				{
-					pRetAction->linkAction.AddToListOnce(LinkBrush::LinkInfo(
-						pLink, LinkBrush::LinkInfo::REMOVE));
+					pRetAction->linkAction.AddToListOnce(
+						LinkBrush::LinkInfo(pLink, LinkBrush::LinkInfo::REMOVE));
 					EditorObjectMgr::instance()->deleteLink(pLink);
 				}
 				{
-					pLink =
-						EditorObjectMgr::instance()->getLinkWithBuilding(pInfo);
+					pLink = EditorObjectMgr::instance()->getLinkWithBuilding(pInfo);
 					if (pLink)
 					{
 						pRetAction->linkAction.AddToListOnce(
-							LinkBrush::LinkInfo(
-								pLink, LinkBrush::LinkInfo::EDIT));
+							LinkBrush::LinkInfo(pLink, LinkBrush::LinkInfo::EDIT));
 						pLink->RemoveObject(pInfo);
 					}
 				}
@@ -214,12 +204,12 @@ Action* Eraser::applyToSelection()
 				pRetAction->addChangedVertexInfo(j, i);
 				land->setOverlay(j, i, INVALID_OVERLAY, 0);
 				land->setTerrain(j, i, DEFAULT_TERRAIN);
-				for (size_t icell = 0; icell < MAPCELL_DIM; icell++)
+				for (size_t icell = 0; icell < terrain_const::MAPCELL_DIM; icell++)
 				{
-					for (size_t jcell = 0; jcell < MAPCELL_DIM; jcell++)
+					for (size_t jcell = 0; jcell < terrain_const::MAPCELL_DIM; jcell++)
 					{
-						int32_t cellRow = j * MAPCELL_DIM + jcell;
-						int32_t cellCol = i * MAPCELL_DIM + icell;
+						int32_t cellRow = j * terrain_const::MAPCELL_DIM + jcell;
+						int32_t cellCol = i * terrain_const::MAPCELL_DIM + icell;
 						GameMap->setMine(cellRow, cellCol, 0);
 					}
 				}

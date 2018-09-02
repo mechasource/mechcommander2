@@ -5,7 +5,7 @@
 // EditorView.cpp : implementation of the EditorView class
 //
 
-#include "stdafx.h"
+#include "stdinc.h"
 #include <mclib.h>
 #include "EditorMFC.h"
 #include "EditorView.h"

@@ -5,7 +5,7 @@ DragTool.cpp			: Implementation of the DragTool component.
 //===========================================================================//
 \*************************************************************************************************/
 
-#include "stdafx.h"
+#include "stdinc.h"
 
 //#include "editorinterface.h"
 #include "dragtool.h"
@@ -24,8 +24,7 @@ bool DragTool::beginPaint()
 
 Action* DragTool::endPaint() { return nullptr; }
 
-bool DragTool::paint(
-	Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY)
+bool DragTool::paint(Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY)
 {
 	if (lastX != -1)
 	{

@@ -5,7 +5,7 @@
 // MissionDialog.cpp : implementation file
 //
 
-#include "stdafx.h"
+#include "stdinc.h"
 // include "CampaignEditor.h"
 #include "resource.h"
 #include "MissionDialog.h"
@@ -21,8 +21,7 @@ static char THIS_FILE[] = __FILE__;
 /////////////////////////////////////////////////////////////////////////////
 // CMissionDialog dialog
 
-CMissionDialog::CMissionDialog(CWnd* pParent /*=nullptr*/)
-	: CDialog(CMissionDialog::IDD, pParent)
+CMissionDialog::CMissionDialog(CWnd* pParent /*=nullptr*/) : CDialog(CMissionDialog::IDD, pParent)
 {
 	//{{AFX_DATA_INIT(CMissionDialog)
 	m_MissionFileEdit	  = _T("");

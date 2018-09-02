@@ -5,14 +5,18 @@
 // ablt.cpp : Defines the entry point for the console application.
 //
 
-#include "stdafx.h"
+#include "stdinc.h"
+
 //#include "string.h"
 
 void initABL(void);
 void closeABL(void);
 
-extern "C" int32_t __cdecl main(int32_t argc, PSTR argv[])
+extern "C" int __cdecl main(
+	_In_ int argc, _In_reads_(argc) _Pre_z_ char* argv[], _In_z_ char** envp)
 {
+	(void)envp;
+
 	if ((argc < 2) || (argc > 3))
 	{
 		printf("Try again.\n");
@@ -49,17 +53,14 @@ extern "C" int32_t __cdecl main(int32_t argc, PSTR argv[])
 			numFiles = 0;
 			if ((s[0] == 'l') && (s[1] == ' '))
 			{
-				handle = (int32_t)ABLi_loadLibrary(
-					(PSTR)&s[2], &numErrs, &numLines, &numFiles, false);
-				printf("     Loaded: %s [%d lines, %d files]\n", &s[2],
-					numLines, numFiles);
+				handle =
+					(int32_t)ABLi_loadLibrary((PSTR)&s[2], &numErrs, &numLines, &numFiles, false);
+				printf("     Loaded: %s [%d lines, %d files]\n", &s[2], numLines, numFiles);
 			}
 			else if ((s[0] == 'm') && (s[1] == ' '))
 			{
-				handle = ABLi_preProcess(
-					(PSTR)&s[2], &numErrs, &numLines, &numFiles, false);
-				printf("     Loaded: %s [%d lines, %d files]\n", &s[2],
-					numLines, numFiles);
+				handle = ABLi_preProcess((PSTR)&s[2], &numErrs, &numLines, &numFiles, false);
+				printf("     Loaded: %s [%d lines, %d files]\n", &s[2], numLines, numFiles);
 			}
 		}
 		bFile->close();
@@ -70,10 +71,8 @@ extern "C" int32_t __cdecl main(int32_t argc, PSTR argv[])
 	numErrs  = 0;
 	numLines = 0;
 	numFiles = 0;
-	handle =
-		ABLi_preProcess(argv[argc - 1], &numErrs, &numLines, &numFiles, false);
-	printf("SUCCESS: %s [%d lines, %d files]\n", argv[argc - 1], numLines,
-		numFiles);
+	handle   = ABLi_preProcess(argv[argc - 1], &numErrs, &numLines, &numFiles, false);
+	printf("SUCCESS: %s [%d lines, %d files]\n", argv[argc - 1], numLines, numFiles);
 	scanf(" ");
 	closeABL();
 	return (0);

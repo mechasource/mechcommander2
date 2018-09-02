@@ -5,7 +5,7 @@
 // CampaignDialog.cpp : implementation file
 //
 
-#include "stdafx.h"
+#include "stdinc.h"
 #include "campaigndialog.h"
 #include "campaigndata.h"
 #include "groupdialog.h"
@@ -44,8 +44,7 @@ void CCampaignDialog::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_CA_CBILLS_EDIT, m_CBillsEdit);
 	DDX_Text(pDX, IDC_CA_FINAL_VIDEO_EDIT, m_FinalVideoEdit);
 	DDX_Text(pDX, IDC_CA_NAME_EDIT, m_NameEdit);
-	DDX_Text(
-		pDX, IDC_CA_NAME_RESOURCE_STRING_ID_EDIT, m_NameResourceStringIDEdit);
+	DDX_Text(pDX, IDC_CA_NAME_RESOURCE_STRING_ID_EDIT, m_NameResourceStringIDEdit);
 	//}}AFX_DATA_MAP
 }
 
@@ -75,8 +74,7 @@ void CCampaignDialog::OnCaFinalVideoBrowseButton()
 	while (true)
 	{
 		CFileDialog selectFileDialog(TRUE, _T("AVI"), _T("*.AVI"),
-			OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT | OFN_NOCHANGEDIR,
-			_T("Movie (*.AVI)|*.AVI|"));
+			OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT | OFN_NOCHANGEDIR, _T("Movie (*.AVI)|*.AVI|"));
 		selectFileDialog.m_ofn.lpstrInitialDir = moviePath;
 		if (selectFileDialog.DoModal() == IDOK)
 		{
@@ -100,8 +98,7 @@ void CCampaignDialog::OnCaExit()
 	}
 }
 
-static void setGroupListBoxValues(
-	CListBox& GroupListBox, const CGroupList& GroupList)
+static void setGroupListBoxValues(CListBox& GroupListBox, const CGroupList& GroupList)
 {
 	GroupListBox.ResetContent();
 	CGroupList::EConstIterator it;
@@ -115,8 +112,7 @@ static void setGroupListBoxValues(
 	}
 }
 
-static void setGroupDialogValues(
-	CGroupDialog& groupDialog, const CGroupData& groupData)
+static void setGroupDialogValues(CGroupDialog& groupDialog, const CGroupData& groupData)
 {
 	groupDialog.m_LabelEdit					= groupData.m_Label;
 	groupDialog.m_NumMissionsToCompleteEdit = groupData.m_NumMissionsToComplete;
@@ -127,8 +123,7 @@ static void setGroupDialogValues(
 	groupDialog.m_TuneNumber				= groupData.m_TuneNumber;
 }
 
-static void setGroupDataValues(
-	CGroupData& groupData, const CGroupDialog& groupDialog)
+static void setGroupDataValues(CGroupData& groupData, const CGroupDialog& groupDialog)
 {
 	groupData.m_Label				  = groupDialog.m_LabelEdit;
 	groupData.m_NumMissionsToComplete = groupDialog.m_NumMissionsToCompleteEdit;
@@ -159,27 +154,23 @@ void CCampaignDialog::OnCaAddButton()
 static void setCampaignDialogValues(
 	CCampaignDialog& campaignDialog, const CCampaignData& campaignData)
 {
-	campaignDialog.m_NameUnlocalizedText = campaignData.m_Name;
-	campaignDialog.m_NameUseResourceString =
-		campaignData.m_NameUseResourceString;
-	campaignDialog.m_NameResourceStringID = campaignData.m_NameResourceStringID;
-	campaignDialog.m_CBillsEdit			  = campaignData.m_CBills;
-	campaignDialog.m_FinalVideoEdit		  = campaignData.m_FinalVideo;
-	setGroupListBoxValues(
-		campaignDialog.m_GroupListControl, campaignData.m_GroupList);
+	campaignDialog.m_NameUnlocalizedText   = campaignData.m_Name;
+	campaignDialog.m_NameUseResourceString = campaignData.m_NameUseResourceString;
+	campaignDialog.m_NameResourceStringID  = campaignData.m_NameResourceStringID;
+	campaignDialog.m_CBillsEdit			   = campaignData.m_CBills;
+	campaignDialog.m_FinalVideoEdit		   = campaignData.m_FinalVideo;
+	setGroupListBoxValues(campaignDialog.m_GroupListControl, campaignData.m_GroupList);
 	campaignDialog.UpdateData(FALSE);
 }
 
-static void setCampaignDataValues(
-	CCampaignData& campaignData, CCampaignDialog& campaignDialog)
+static void setCampaignDataValues(CCampaignData& campaignData, CCampaignDialog& campaignDialog)
 {
 	campaignDialog.UpdateData();
-	campaignData.m_Name = campaignDialog.m_NameUnlocalizedText;
-	campaignData.m_NameUseResourceString =
-		campaignDialog.m_NameUseResourceString;
-	campaignData.m_NameResourceStringID = campaignDialog.m_NameResourceStringID;
-	campaignData.m_CBills				= campaignDialog.m_CBillsEdit;
-	campaignData.m_FinalVideo			= campaignDialog.m_FinalVideoEdit;
+	campaignData.m_Name					 = campaignDialog.m_NameUnlocalizedText;
+	campaignData.m_NameUseResourceString = campaignDialog.m_NameUseResourceString;
+	campaignData.m_NameResourceStringID  = campaignDialog.m_NameResourceStringID;
+	campaignData.m_CBills				 = campaignDialog.m_CBillsEdit;
+	campaignData.m_FinalVideo			 = campaignDialog.m_FinalVideoEdit;
 }
 
 int32_t CCampaignDialog::SaveAs()
@@ -245,16 +236,14 @@ void CCampaignDialog::OnCaEditButton()
 	if ((0 <= selectedItemIndex) &&
 		((int32_t)m_CampaignData.m_GroupList.Count() > selectedItemIndex))
 	{
-		CGroupData& groupDataRef =
-			m_CampaignData.m_GroupList[selectedItemIndex];
+		CGroupData& groupDataRef = m_CampaignData.m_GroupList[selectedItemIndex];
 		CGroupDialog groupDialog;
 		setGroupDialogValues(groupDialog, groupDataRef);
 		if (IDOK == groupDialog.DoModal())
 		{
 			setGroupDataValues(groupDataRef, groupDialog);
 			UpdateData(TRUE);
-			setGroupListBoxValues(
-				m_GroupListControl, m_CampaignData.m_GroupList);
+			setGroupListBoxValues(m_GroupListControl, m_CampaignData.m_GroupList);
 			UpdateData(FALSE);
 		}
 	}
@@ -278,8 +267,7 @@ void CCampaignDialog::OnCaRemoveButton()
 		UpdateData(TRUE);
 		int32_t selectedItemIndex = m_GroupListControl.GetCurSel();
 		setGroupListBoxValues(m_GroupListControl, m_CampaignData.m_GroupList);
-		if ((LB_ERR != selectedItemIndex) &&
-			(0 < m_GroupListControl.GetCount()))
+		if ((LB_ERR != selectedItemIndex) && (0 < m_GroupListControl.GetCount()))
 		{
 			if (m_GroupListControl.GetCount() <= (int32_t)selectedItemIndex)
 			{
@@ -298,8 +286,7 @@ void CCampaignDialog::OnCaMoveUpButton()
 		((int32_t)m_CampaignData.m_GroupList.Count() > selectedItemIndex))
 	{
 		CGroupData tmpGroupData;
-		tmpGroupData =
-			(*m_CampaignData.m_GroupList.Iterator(selectedItemIndex));
+		tmpGroupData = (*m_CampaignData.m_GroupList.Iterator(selectedItemIndex));
 		m_CampaignData.m_GroupList.Delete(selectedItemIndex);
 		m_CampaignData.m_GroupList.Insert(tmpGroupData, selectedItemIndex - 1);
 		UpdateData(TRUE);
@@ -316,18 +303,15 @@ void CCampaignDialog::OnCaMoveDownButton()
 		((int32_t)m_CampaignData.m_GroupList.Count() - 1 > selectedItemIndex))
 	{
 		CGroupData tmpGroupData;
-		tmpGroupData =
-			(*m_CampaignData.m_GroupList.Iterator(selectedItemIndex));
+		tmpGroupData = (*m_CampaignData.m_GroupList.Iterator(selectedItemIndex));
 		m_CampaignData.m_GroupList.Delete(selectedItemIndex);
-		if ((int32_t)m_CampaignData.m_GroupList.Count() - 1 ==
-			selectedItemIndex)
+		if ((int32_t)m_CampaignData.m_GroupList.Count() - 1 == selectedItemIndex)
 		{
 			m_CampaignData.m_GroupList.Append(tmpGroupData);
 		}
 		else
 		{
-			m_CampaignData.m_GroupList.Insert(
-				tmpGroupData, selectedItemIndex + 1);
+			m_CampaignData.m_GroupList.Insert(tmpGroupData, selectedItemIndex + 1);
 		}
 		UpdateData(TRUE);
 		setGroupListBoxValues(m_GroupListControl, m_CampaignData.m_GroupList);
@@ -414,8 +398,7 @@ int32_t CCampaignDialog::PromptAndSaveIfNecessary()
 		endFlag = true;
 		if (!(m_LastSavedCampaignData == m_CampaignData))
 		{
-			res = AfxMessageBox(
-				IDS_DO_YOU_WANT_TO_SAVE_YOUR_CHANGES, MB_YESNOCANCEL);
+			res = AfxMessageBox(IDS_DO_YOU_WANT_TO_SAVE_YOUR_CHANGES, MB_YESNOCANCEL);
 		}
 		if (IDYES == res)
 		{

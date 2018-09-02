@@ -5,7 +5,7 @@
 // GroupDialog.cpp : implementation file
 //
 
-#include "stdafx.h"
+#include "stdinc.h"
 // include "CampaignEditor.h"
 #include "resource.h"
 #include "GroupDialog.h"
@@ -23,8 +23,7 @@ static char THIS_FILE[] = __FILE__;
 /////////////////////////////////////////////////////////////////////////////
 // CGroupDialog dialog
 
-CGroupDialog::CGroupDialog(CWnd* pParent /*=nullptr*/)
-	: CDialog(CGroupDialog::IDD, pParent)
+CGroupDialog::CGroupDialog(CWnd* pParent /*=nullptr*/) : CDialog(CGroupDialog::IDD, pParent)
 {
 	//{{AFX_DATA_INIT(CGroupDialog)
 	m_OperationFileEdit			= _T("");
@@ -45,15 +44,13 @@ void CGroupDialog::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_GR_PREVIDEO_FILE_EDIT, m_PreVideoFileEdit);
 	DDX_Text(pDX, IDC_GR_VIDEO_FILE_EDIT, m_VideoFileEdit);
 	DDX_Text(pDX, IDC_GR_LABEL_EDIT, m_LabelEdit);
-	DDX_Text(
-		pDX, IDC_GR_NUM_MISSIONS_TO_COMPLETE_EDIT, m_NumMissionsToCompleteEdit);
+	DDX_Text(pDX, IDC_GR_NUM_MISSIONS_TO_COMPLETE_EDIT, m_NumMissionsToCompleteEdit);
 	//}}AFX_DATA_MAP
 }
 
 BEGIN_MESSAGE_MAP(CGroupDialog, CDialog)
 //{{AFX_MSG_MAP(CGroupDialog)
-ON_BN_CLICKED(
-	IDC_GR_OPERATION_FILE_BROWSE_BUTTON, OnGrOperationFileBrowseButton)
+ON_BN_CLICKED(IDC_GR_OPERATION_FILE_BROWSE_BUTTON, OnGrOperationFileBrowseButton)
 ON_BN_CLICKED(IDC_GR_PREVIDEO_FILE_BROWSE_BUTTON, OnGrPrevideoFileBrowseButton)
 ON_BN_CLICKED(IDC_GR_VIDEO_FILE_BROWSE_BUTTON, OnGrVideoFileBrowseButton)
 ON_BN_CLICKED(IDC_GR_ADD_BUTTON, OnGrAddButton)
@@ -111,8 +108,7 @@ void CGroupDialog::OnGrPrevideoFileBrowseButton()
 	while (true)
 	{
 		CFileDialog selectFileDialog(TRUE, _T("AVI"), _T("*.AVI"),
-			OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT | OFN_NOCHANGEDIR,
-			_T("Movie (*.AVI)|*.AVI|"));
+			OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT | OFN_NOCHANGEDIR, _T("Movie (*.AVI)|*.AVI|"));
 		selectFileDialog.m_ofn.lpstrInitialDir = moviePath;
 		if (selectFileDialog.DoModal() == IDOK)
 		{
@@ -133,8 +129,7 @@ void CGroupDialog::OnGrVideoFileBrowseButton()
 	while (true)
 	{
 		CFileDialog selectFileDialog(TRUE, _T("AVI"), _T("*.AVI"),
-			OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT | OFN_NOCHANGEDIR,
-			_T("Movie (*.AVI)|*.AVI|"));
+			OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT | OFN_NOCHANGEDIR, _T("Movie (*.AVI)|*.AVI|"));
 		selectFileDialog.m_ofn.lpstrInitialDir = moviePath;
 		if (selectFileDialog.DoModal() == IDOK)
 		{
@@ -149,8 +144,7 @@ void CGroupDialog::OnGrVideoFileBrowseButton()
 	UpdateData(FALSE);
 }
 
-static void setMissionListBoxValues(
-	CListBox& MissionListBox, const CMissionList& MissionList)
+static void setMissionListBoxValues(CListBox& MissionListBox, const CMissionList& MissionList)
 {
 	MissionListBox.ResetContent();
 	CMissionList::EConstIterator it;
@@ -173,8 +167,7 @@ BOOL CGroupDialog::OnInitDialog()
 				 // EXCEPTION: OCX Property Pages should return FALSE
 }
 
-static void setMissionDialogValues(
-	CMissionDialog& missionDialog, const CMissionData& missionData)
+static void setMissionDialogValues(CMissionDialog& missionDialog, const CMissionData& missionData)
 {
 	missionDialog.m_MissionFileEdit		= missionData.m_MissionFile;
 	missionDialog.m_PurchaseFileEdit	= missionData.m_PurchaseFile;
@@ -185,8 +178,7 @@ static void setMissionDialogValues(
 	missionDialog.m_SalvageCheck		= missionData.m_SalvageEnabled;
 }
 
-static void setMissionDataValues(
-	CMissionData& missionData, const CMissionDialog& missionDialog)
+static void setMissionDataValues(CMissionData& missionData, const CMissionDialog& missionDialog)
 {
 	missionData.m_MissionFile			= missionDialog.m_MissionFileEdit;
 	missionData.m_PurchaseFile			= missionDialog.m_PurchaseFileEdit;
@@ -231,8 +223,7 @@ void CGroupDialog::OnGrRemoveButton()
 		UpdateData(TRUE);
 		int32_t selectedItemIndex = m_MissionListControl.GetCurSel();
 		setMissionListBoxValues(m_MissionListControl, m_MissionList);
-		if ((LB_ERR != selectedItemIndex) &&
-			(0 < m_MissionListControl.GetCount()))
+		if ((LB_ERR != selectedItemIndex) && (0 < m_MissionListControl.GetCount()))
 		{
 			if (m_MissionListControl.GetCount() <= (int32_t)selectedItemIndex)
 			{

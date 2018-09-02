@@ -18,8 +18,7 @@ BEGIN_MESSAGE_MAP(SunDlg, CDialog)
 ON_WM_CTLCOLOR()
 ON_BN_CLICKED(IDC_AMBIENT_BUTTON, OnAmbientButton)
 ON_BN_CLICKED(IDC_LIGHT_BUTTON, OnLightButton)
-ON_BN_CLICKED(
-	IDC_RECALCULATE_TERRAIN_SHADOWS_BUTTON, OnRecalculateTerrainShadowsButton)
+ON_BN_CLICKED(IDC_RECALCULATE_TERRAIN_SHADOWS_BUTTON, OnRecalculateTerrainShadowsButton)
 ON_BN_CLICKED(IDC_REFRACTALIZE_TERRAIN_BUTTON, OnRefractalizeTerrainButton)
 //}}AFX_MSG_MAP
 ON_CONTROL_RANGE(EN_CHANGE, IDC_LIGHTCOLOR, IDC_AMBIENT2, OnChangeLightcolor)
@@ -46,11 +45,9 @@ void SunDlg::DoDataExchange(CDataExchange* pDX)
 
 void SunDlg::Init()
 {
-	uint32_t color = eye->dayAmbientBlue | (eye->dayAmbientGreen << 8) |
-					 (eye->dayAmbientRed << 16);
+	uint32_t color = eye->dayAmbientBlue | (eye->dayAmbientGreen << 8) | (eye->dayAmbientRed << 16);
 	displayInHex(color, m_AmbientEdit);
-	color = eye->dayLightBlue | (eye->dayLightGreen << 8) |
-			(eye->dayLightRed << 16);
+	color = eye->dayLightBlue | (eye->dayLightGreen << 8) | (eye->dayLightRed << 16);
 	displayInHex(color, m_LightColor);
 	m_InitialSunPitch = eye->lightPitch;
 	m_Yaw			  = eye->lightYaw;
@@ -112,8 +109,8 @@ HBRUSH SunDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, uint32_t nCtlColor)
 {
 	int32_t ID = pWnd->GetDlgCtrlID();
 	HBRUSH hbr = CDialog ::OnCtlColor(pDC, pWnd, nCtlColor);
-	if (ID == IDC_LIGHTCOLOR || ID == IDC_AMBIENT || ID == IDC_LIGHTCOLOR2 ||
-		ID == IDC_AMBIENT2 || ID == IDC_SUNSETCOLOR)
+	if (ID == IDC_LIGHTCOLOR || ID == IDC_AMBIENT || ID == IDC_LIGHTCOLOR2 || ID == IDC_AMBIENT2 ||
+		ID == IDC_SUNSETCOLOR)
 	{
 		int32_t i = getHexValue(*(CEdit*)pWnd);
 		if (backgroundBrush.m_hObject)
@@ -122,8 +119,7 @@ HBRUSH SunDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, uint32_t nCtlColor)
 		uint32_t reverse = reverseRGB(i);
 		backgroundBrush.CreateSolidBrush(reverse);
 		pDC->SetBkColor(reverse);
-		if (((i & 0xff) + ((i & 0xff00) >> 8) + ((i & 0xff0000) >> 16)) / 3 <
-			85)
+		if (((i & 0xff) + ((i & 0xff00) >> 8) + ((i & 0xff0000) >> 16)) / 3 < 85)
 			pDC->SetTextColor(0x00ffffff);
 		return (HBRUSH)backgroundBrush.m_hObject;
 	}
@@ -166,8 +162,7 @@ void SunDlg::OnChangeLightcolor(uint32_t ID)
 	GetDlgItem(ID)->GetWindowText(text);
 	bool bChanged = false;
 	int32_t i	 = 0;
-	if (text.GetLength() > 1 &&
-		(text[0] == '0' && (text[1] == 'x' || text[i] == 'X')))
+	if (text.GetLength() > 1 && (text[0] == '0' && (text[1] == 'x' || text[i] == 'X')))
 		i = 2;
 	for (; i < text.GetLength(); ++i)
 	{

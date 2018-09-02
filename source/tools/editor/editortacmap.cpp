@@ -5,7 +5,7 @@
 // EditorTacMap.cpp : implementation file
 //
 
-#include "stdafx.h"
+#include "stdinc.h"
 #include "resource.h"
 #include "EditorTacMap.h"
 #include <tacmap.h>
@@ -14,8 +14,7 @@
 /////////////////////////////////////////////////////////////////////////////
 // EditorTacMap dialog
 
-EditorTacMap::EditorTacMap(CWnd* pParent /*=nullptr*/)
-	: CDialog(EditorTacMap::IDD, pParent)
+EditorTacMap::EditorTacMap(CWnd* pParent /*=nullptr*/) : CDialog(EditorTacMap::IDD, pParent)
 {
 	//{{AFX_DATA_INIT(EditorTacMap)
 	// NOTE: the ClassWizard will add member initialization here
@@ -49,8 +48,7 @@ BOOL EditorTacMap::OnInitDialog()
 	EditorInterface::instance()->ClientToScreen(&p);
 	SetWindowPos(nullptr, p.x, p.y + 32 /*arbitrary*/, (int32_t)TACMAP_SIZE,
 		(int32_t)TACMAP_SIZE + borderSize, /*SWP_NOMOVE | */ SWP_NOZORDER);
-	picture.SetWindowPos(nullptr, 0, 0, (int32_t)TACMAP_SIZE,
-		(int32_t)TACMAP_SIZE, SWP_NOZORDER);
+	picture.SetWindowPos(nullptr, 0, 0, (int32_t)TACMAP_SIZE, (int32_t)TACMAP_SIZE, SWP_NOZORDER);
 	return TRUE; // return TRUE unless you set the focus to a control
 				 // EXCEPTION: OCX Property Pages should return FALSE
 }
@@ -64,8 +62,7 @@ void EditorTacMap::OnTga()
 	screen.x = pt.x;
 	screen.y = pt.y;
 	Stuff::Vector3D world;
-	TacMap::tacMapToWorld(
-		screen, (int32_t)TACMAP_SIZE, (int32_t)TACMAP_SIZE, world);
+	TacMap::tacMapToWorld(screen, (int32_t)TACMAP_SIZE, (int32_t)TACMAP_SIZE, world);
 	eye->setPosition(world, false);
 	/* After calling eye->setPosition(), eye needs to be updated so that
 	the function eye->inverseProject() is current. That's why we call

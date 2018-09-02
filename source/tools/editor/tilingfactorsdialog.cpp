@@ -5,7 +5,7 @@
 // TilingFactorsDialog.cpp : implementation file
 //
 
-#include "stdafx.h"
+#include "stdinc.h"
 #include "resource.h"
 #include "TilingFactorsDialog.h"
 
@@ -32,10 +32,8 @@ void TilingFactorsDialog::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(TilingFactorsDialog)
-	DDX_Text(pDX, IDC_TILING_FACTORS_TERRAIN_DETAIL_EDIT,
-		m_TerrainDetailTilingFactor);
-	DDX_Text(
-		pDX, IDC_TILING_FACTORS_WATER_DETAIL_EDIT, m_WaterDetailTilingFactor);
+	DDX_Text(pDX, IDC_TILING_FACTORS_TERRAIN_DETAIL_EDIT, m_TerrainDetailTilingFactor);
+	DDX_Text(pDX, IDC_TILING_FACTORS_WATER_DETAIL_EDIT, m_WaterDetailTilingFactor);
 	DDX_Text(pDX, IDC_TILING_FACTORS_WATER_EDIT, m_WaterTilingFactor);
 	//}}AFX_DATA_MAP
 }

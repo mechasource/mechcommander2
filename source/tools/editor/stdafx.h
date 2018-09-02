@@ -9,11 +9,11 @@
 
 #pragma once
 
-#define ATL_SUPPRESS_WARNING_PUSH(x)                                           \
+#define DISABLE_WARNING_PUSH(x)                                                \
 	__pragma(warning(push));                                                   \
 	__pragma(warning(disable : x))
-#define ATL_SUPPRESS_WARNING_POP __pragma(warning(pop))
-#define ATL_SUPPRESS_WARNING(x) __pragma(warning(suppress : x))
+#define DISABLE_WARNING_POP __pragma(warning(pop))
+#define SUPPRESS_WARNING(x) __pragma(warning(suppress : x))
 #define ATL_ADD_LIBRARY(x) __pragma(comment(lib, x))
 
 #ifndef VC_EXTRALEAN

@@ -18,7 +18,7 @@ static cint32_t GAME_MAX_PLAYERS = 8;
 
 class CTeam
 {
-  public:
+public:
 	CTeam(int32_t alignment = 0) { Alignment(alignment); }
 	bool operator==(const CTeam& rhs) const;
 	void Clear() { m_objectives.Clear(void); }
@@ -55,14 +55,14 @@ class CTeam
 		return m_objectives.ThereAreObjectivesWithNoConditions(void);
 	}
 
-  private:
+private:
 	int32_t m_alignment;
 	CObjectives m_objectives;
 };
 
 class CTeams
 {
-  public:
+public:
 	CTeams(void);
 	CTeams& operator=(const CTeams& master);
 	bool operator==(const CTeams& rhs) const;
@@ -75,13 +75,13 @@ class CTeams
 	bool RestoreObjectPointerReferencesFromNotedPositions(void);
 	bool ThereAreObjectivesWithNoConditions(void);
 
-  private:
+private:
 	CTeam m_teamArray[GAME_MAX_PLAYERS];
 };
 
 class CPlayer
 {
-  public:
+public:
 	CPlayer() { Clear(void); }
 	void Clear() { m_defaultTeam = 0; }
 	int32_t DefaultTeam() { return m_defaultTeam; }
@@ -89,26 +89,28 @@ class CPlayer
 	bool Read(FitIniFile* missionFile, int32_t playerNum);
 	bool Save(FitIniFile* missionFile, int32_t playerNum);
 
-  private:
+private:
 	int32_t m_defaultTeam;
 };
 
 class CPlayers
 {
-  public:
+public:
 	void Clear(void);
 	CPlayer& PlayerRef(int32_t i) { return m_playerArray[i]; }
 	bool Read(FitIniFile* missionFile);
 	bool Save(FitIniFile* missionFile);
 
-  private:
-	CPlayers& operator=(const CPlayers& master) { /*not valid, do not use*/ }
+private:
+	CPlayers& operator=(const CPlayers& master)
+	{ /*not valid, do not use*/
+	}
 	CPlayer m_playerArray[GAME_MAX_PLAYERS];
 };
 
 class MissionSettings
 {
-  public:
+public:
 	int32_t largeArtillery;
 	int32_t smallArtillery;
 	int32_t cameraDrones;
@@ -126,7 +128,7 @@ class MissionSettings
 
 class EditorData
 {
-  public:
+public:
 	static EditorData* instance;
 
 	EditorData(void);
@@ -239,7 +241,7 @@ class EditorData
 	int32_t MaxPlayers() { return m_maxPlayers; }
 	void MaxPlayers(int32_t maxPlayers);
 	//{ m_maxPlayers = maxPlayers; /* Not finished. Need to check 2 <= param <=
-	//8, disable menu items, etc.,. */}
+	// 8, disable menu items, etc.,. */}
 
 	CTeams& TeamsRef() { return m_teams; }
 	CPlayers& PlayersRef() { return m_players; }
@@ -410,7 +412,7 @@ class EditorData
 		int32_t tacMapSize); // this allocates memory.  Saves millions of CPU
 							 // cycles on load
 
-  private:
+private:
 	EditorData& operator=(const EditorData& editorData);
 	EditorData(const EditorData& editorData);
 	bool saveTacMap(PacketFile* file, int32_t whichPacket);

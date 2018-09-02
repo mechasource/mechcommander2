@@ -22,8 +22,7 @@ PointerSelectObjectDlg component.
 static cint32_t WM_DOTICK = WM_USER + 1;
 
 //-------------------------------------------------------------------------------------------------
-PointerSelectObjectDlg::PointerSelectObjectDlg()
-	: CDialog(IDD_POINTER_SELECT_OBJECT)
+PointerSelectObjectDlg::PointerSelectObjectDlg() : CDialog(IDD_POINTER_SELECT_OBJECT)
 {
 	m_pButton		= 0;
 	m_bTimerIsReset = true;
@@ -155,8 +154,8 @@ BOOL PointerSelectObjectDlg::OnWndMsg(
 			depth -= 1;
 			if ((0 == result) && (m_bTimerIsReset))
 			{
-				uint32_t ui = ::SetTimer(GetSafeHwnd(),
-					1 /*arbitrary non-zero ID*/, 2 /*milliseconds*/, nullptr);
+				uint32_t ui = ::SetTimer(
+					GetSafeHwnd(), 1 /*arbitrary non-zero ID*/, 2 /*milliseconds*/, nullptr);
 				assert(ui);
 				m_bTimerIsReset = false;
 			}

@@ -6,7 +6,7 @@
 // Copyright (C) Microsoft Corporation. All rights reserved. //
 //===========================================================================//
 
-#include "stdafx.h"
+#include "stdinc.h"
 
 #include "editorobjects.h"
 
@@ -45,8 +45,8 @@ void BuildingLink::CopyData(const BuildingLink& Src)
 {
 	parent = Src.parent;
 	children.Clear();
-	for (EList<Info, const Info&>::EConstIterator iter = Src.children.Begin();
-		 !iter.IsDone(); iter++)
+	for (EList<Info, const Info&>::EConstIterator iter = Src.children.Begin(); !iter.IsDone();
+		 iter++)
 	{
 		children.Append(*iter);
 	}
@@ -55,13 +55,13 @@ void BuildingLink::CopyData(const BuildingLink& Src)
 bool BuildingLink::AddChild(const EditorObject* pObject)
 {
 	int32_t ID = pObject->getID();
-	for (EList<Info, const Info&>::EIterator iter = children.Begin();
-		 !iter.IsDone(); iter++)
+	for (EList<Info, const Info&>::EIterator iter = children.Begin(); !iter.IsDone(); iter++)
 	{
 		if ((*iter).pos == pObject->getPosition() && (*iter).m_ID == ID)
 		{
-			SPEW((0, "Link::AddChild, not adding an object because it is"
-					 "already there\n"));
+			SPEW((0,
+				"Link::AddChild, not adding an object because it is"
+				"already there\n"));
 			return false;
 		}
 	}
@@ -74,17 +74,13 @@ bool BuildingLink::AddChild(const EditorObject* pObject)
 
 int32_t BuildingLink::GetLinkCount() const { return children.Count(); }
 
-const Stuff::Vector3D& BuildingLink::GetParentPosition(void) const
-{
-	return parent.pos;
-}
+const Stuff::Vector3D& BuildingLink::GetParentPosition(void) const { return parent.pos; }
 
 bool BuildingLink::HasChild(const EditorObject* pObject) const
 {
 	int32_t ID = pObject->getID();
 	pObject->getPosition();
-	for (EList<Info, const Info&>::EConstIterator iter = children.Begin();
-		 !iter.IsDone(); iter++)
+	for (EList<Info, const Info&>::EConstIterator iter = children.Begin(); !iter.IsDone(); iter++)
 	{
 		if ((*iter).pos == pObject->getPosition())
 		{
@@ -123,8 +119,7 @@ bool BuildingLink::TypeCanBeParent(const EditorObject* pObject)
 	};
 	return false;
 }
-bool BuildingLink::CanLink(
-	const EditorObject* pParent, const EditorObject* pChild)
+bool BuildingLink::CanLink(const EditorObject* pParent, const EditorObject* pChild)
 {
 	int32_t ParentType = pParent->getSpecialType();
 	int32_t ChildType  = pChild->getSpecialType();
@@ -133,8 +128,8 @@ bool BuildingLink::CanLink(
 	case EditorObjectMgr::TURRET_CONTROL:
 		return (ChildType == EditorObjectMgr::EDITOR_TURRET ||
 				   ChildType == EditorObjectMgr::LOOKOUT)
-				   ? true
-				   : false;
+			? true
+			: false;
 		break;
 	case EditorObjectMgr::GATE_CONTROL:
 		return ChildType == EditorObjectMgr::EDITOR_GATE ? true : false;
@@ -143,8 +138,8 @@ bool BuildingLink::CanLink(
 		return (ChildType == EditorObjectMgr::BRIDGE_CONTROL ||
 				   ChildType == EditorObjectMgr::GATE_CONTROL ||
 				   ChildType == EditorObjectMgr::SPOTLIGHT_CONTROL)
-				   ? true
-				   : false;
+			? true
+			: false;
 		break;
 	case EditorObjectMgr::SENSOR_CONTROL:
 		return ChildType == EditorObjectMgr::SENSOR_TOWER ? true : false;
@@ -168,14 +163,12 @@ bool BuildingLink::RemoveObject(const EditorObject* pObject)
 {
 	if (HasParent(pObject))
 	{
-		SPEW((0,
-			"BuildingLink::RemoveObject could not remove a parent object\n"));
+		SPEW((0, "BuildingLink::RemoveObject could not remove a parent object\n"));
 		return false;
 	}
 	Stuff::Vector3D pos = pObject->getPosition();
 	int32_t ID			= pObject->getID();
-	for (EList<Info, const Info&>::EIterator iter = children.Begin();
-		 !iter.IsDone(); iter++)
+	for (EList<Info, const Info&>::EIterator iter = children.Begin(); !iter.IsDone(); iter++)
 	{
 		if (ID == (*iter).m_ID && pos == (*iter).pos)
 		{
@@ -183,19 +176,18 @@ bool BuildingLink::RemoveObject(const EditorObject* pObject)
 			return true;
 		}
 	}
-	SPEW((0, "BuildingLInk::RemoveObject failed because it didn't have the "
-			 "object\n"));
+	SPEW((0,
+		"BuildingLInk::RemoveObject failed because it didn't have the "
+		"object\n"));
 	return false;
 }
 
-int32_t BuildingLink::GetChildrenPositions(
-	Stuff::Vector3D* pos, int32_t Count) const
+int32_t BuildingLink::GetChildrenPositions(Stuff::Vector3D* pos, int32_t Count) const
 {
 	if (children.Count() > (uint32_t)Count)
 		return children.Count();
 	int32_t i = 0;
-	for (EList<Info, const Info&>::EConstIterator iter = children.Begin();
-		 !iter.IsDone(); iter++)
+	for (EList<Info, const Info&>::EConstIterator iter = children.Begin(); !iter.IsDone(); iter++)
 	{
 		pos[i++] = (*iter).pos;
 	}
@@ -226,8 +218,8 @@ static bool isInView(const Point3D& position)
 			}
 			else if (eyeDistance > Camera::MinHazeDistance)
 			{
-				Camera::HazeFactor = (eyeDistance - Camera::MinHazeDistance) *
-									 Camera::DistanceFactor;
+				Camera::HazeFactor =
+					(eyeDistance - Camera::MinHazeDistance) * Camera::DistanceFactor;
 				inView = true;
 			}
 			else
@@ -270,8 +262,7 @@ void BuildingLink::render()
 	Stuff::Vector4D parentScreen;
 	eye->projectZ(parent.pos, parentScreen);
 	Stuff::Vector4D childScreen;
-	for (EList<Info, const Info&>::EConstIterator iter = children.Begin();
-		 !iter.IsDone(); iter++)
+	for (EList<Info, const Info&>::EConstIterator iter = children.Begin(); !iter.IsDone(); iter++)
 	{
 		/* Rather than doing true clipping, the link lines are broken into
 		"typical object" sized pieces and rendered using course culling and
@@ -281,7 +272,7 @@ void BuildingLink::render()
 		diffVect.Subtract((*iter).pos, parent.pos);
 		float lineLength						= diffVect.GetLength();
 		const float lengthOfATypicalLargeObject = 150.0 /*arbitrary*/;
-		int32_t numSegments = lineLength / lengthOfATypicalLargeObject;
+		int32_t numSegments						= lineLength / lengthOfATypicalLargeObject;
 		if (1 > numSegments)
 		{
 			numSegments = 1;
@@ -322,19 +313,17 @@ void BuildingLink::render()
 
 void BuildingLink::SetParentAlignment(int32_t alignment)
 {
-	EditorObject* pTmp = EditorObjectMgr::instance()->getObjectAtLocation(
-		parent.pos.x, parent.pos.y);
+	EditorObject* pTmp =
+		EditorObjectMgr::instance()->getObjectAtLocation(parent.pos.x, parent.pos.y);
 	if (pTmp)
 		pTmp->setAlignment(alignment);
 	else
 	{
 		gosASSERT(false);
 	}
-	for (EList<Info, const Info&>::EConstIterator iter = children.Begin();
-		 !iter.IsDone(); iter++)
+	for (EList<Info, const Info&>::EConstIterator iter = children.Begin(); !iter.IsDone(); iter++)
 	{
-		pTmp = EditorObjectMgr::instance()->getObjectAtLocation(
-			(*iter).pos.x, (*iter).pos.y);
+		pTmp = EditorObjectMgr::instance()->getObjectAtLocation((*iter).pos.x, (*iter).pos.y);
 		if (pTmp)
 			pTmp->setAlignment(alignment);
 		else
@@ -347,17 +336,13 @@ void BuildingLink::SetParentAlignment(int32_t alignment)
 void BuildingLink::FixHeights()
 {
 	parent.pos.z = land->getTerrainElevation(parent.pos);
-	for (EList<Info, const Info&>::EIterator iter = children.Begin();
-		 !iter.IsDone(); iter++)
+	for (EList<Info, const Info&>::EIterator iter = children.Begin(); !iter.IsDone(); iter++)
 	{
 		(*iter).pos.z = land->getTerrainElevation((*iter).pos);
 	}
 }
 
-void BuildingLink::SetParentPosition(const Stuff::Vector3D& pos)
-{
-	parent.pos = pos;
-}
+void BuildingLink::SetParentPosition(const Stuff::Vector3D& pos) { parent.pos = pos; }
 
 BuildingLink::Info::~Info(void)
 {

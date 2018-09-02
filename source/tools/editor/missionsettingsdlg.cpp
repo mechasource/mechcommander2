@@ -5,7 +5,7 @@
 // MissionSettingsDlg.cpp : implementation file
 //
 
-#include "stdafx.h"
+#include "stdinc.h"
 #include "resource.h"
 #include "MissionSettingsDlg.h"
 #include "assert.h"
@@ -110,12 +110,9 @@ void MissionSettingsDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_MISSION_NAME_EDIT, m_MissionNameEdit);
 	DDX_Text(pDX, IDC_BLURB_EDIT, m_BlurbEdit);
 	DDX_Text(pDX, IDC_BLURB2_EDIT, m_Blurb2Edit);
-	DDX_Text(
-		pDX, IDC_BLURB_RESOURCE_STRING_ID_EDIT, m_BlurbResourceStringIDEdit);
-	DDX_Text(
-		pDX, IDC_BLURB2_RESOURCE_STRING_ID_EDIT, m_Blurb2ResourceStringIDEdit);
-	DDX_Text(pDX, IDC_MISSION_NAME_RESOURCE_STRING_ID_EDIT,
-		m_MissionNameResourceStringIDEdit);
+	DDX_Text(pDX, IDC_BLURB_RESOURCE_STRING_ID_EDIT, m_BlurbResourceStringIDEdit);
+	DDX_Text(pDX, IDC_BLURB2_RESOURCE_STRING_ID_EDIT, m_Blurb2ResourceStringIDEdit);
+	DDX_Text(pDX, IDC_MISSION_NAME_RESOURCE_STRING_ID_EDIT, m_MissionNameResourceStringIDEdit);
 	//}}AFX_DATA_MAP
 }
 
@@ -150,10 +147,8 @@ void MissionSettingsDlg::UpdateMissionNameDisplay()
 	UpdateData(TRUE);
 	if (m_MissionNameUseResourceString)
 	{
-		m_MissionNameResourceStringIDEdit.Format(
-			"%d", m_MissionNameResourceStringID);
-		int32_t ret =
-			CSLoadString(m_MissionNameResourceStringID, m_MissionNameEdit);
+		m_MissionNameResourceStringIDEdit.Format("%d", m_MissionNameResourceStringID);
+		int32_t ret = CSLoadString(m_MissionNameResourceStringID, m_MissionNameEdit);
 		if (0 == ret)
 		{
 			m_MissionNameEdit = _TEXT("");
@@ -226,20 +221,18 @@ void MissionSettingsDlg::OnBrowseButton()
 	while (true)
 	{
 		CFileDialog selectAVIFileDialog(TRUE, _T("AVI"), _T("*.AVI"),
-			OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT | OFN_NOCHANGEDIR,
-			_T("Movie (*.AVI)|*.AVI|"));
+			OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT | OFN_NOCHANGEDIR, _T("Movie (*.AVI)|*.AVI|"));
 		selectAVIFileDialog.m_ofn.lpstrInitialDir = moviePath;
 		if (selectAVIFileDialog.DoModal() == IDOK)
 		{
-			CString pathname = selectAVIFileDialog.GetPathName();
+			CString pathname					 = selectAVIFileDialog.GetPathName();
 			int32_t CurrentDirectoryBufferLength = GetCurrentDirectory(0, 0);
 			assert(1 <= CurrentDirectoryBufferLength);
 			// TCHAR *CurrentDirectoryBuffer = new
 			// TCHAR[CurrentDirectoryBufferLength];
 			TCHAR* CurrentDirectoryBuffer =
 				(TCHAR*)malloc(sizeof(TCHAR) * CurrentDirectoryBufferLength);
-			int32_t ret = GetCurrentDirectory(
-				CurrentDirectoryBufferLength, CurrentDirectoryBuffer);
+			int32_t ret = GetCurrentDirectory(CurrentDirectoryBufferLength, CurrentDirectoryBuffer);
 			assert(CurrentDirectoryBufferLength - 1 == ret);
 			ret = -1;
 			if (pathname.GetLength() > (CurrentDirectoryBufferLength - 1))
@@ -252,8 +245,7 @@ void MissionSettingsDlg::OnBrowseButton()
 			CurrentDirectoryBuffer = 0;
 			if (0 == ret)
 			{
-				m_VideoFilename = (pathname.GetBuffer(0) +
-								   (CurrentDirectoryBufferLength - 1) + 1);
+				m_VideoFilename = (pathname.GetBuffer(0) + (CurrentDirectoryBufferLength - 1) + 1);
 				break;
 			}
 			else

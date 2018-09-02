@@ -4,7 +4,7 @@
 // Viewer.cpp : Defines the class behaviors for the application.
 //
 
-#include "stdafx.h"
+#include "stdinc.h"
 
 //#ifndef VIEWER
 //#define VIEWER
@@ -80,18 +80,18 @@ enum
 } Processor = CPU_PENTIUM; // Needs to be set when GameOS supports ProcessorID
 						   // -- MECHCMDR2
 
-bool reloadBounds		  = false;
+bool reloadBounds = false;
 int32_t ObjectTextureSize = 128;
-char missionName[1024];
+//char missionName[1024];
 float gosFontScale = 1.0;
 
 float doubleClickThreshold;
 float dragThreshold;
 
-uint32_t gosResourceHandle = 0;
-HGOSFONT3D gosFontHandle   = 0;
+//uint32_t gosResourceHandle = 0;
+HGOSFONT3D gosFontHandle   = nullptr;
 
-bool quitGame = FALSE;
+bool quitGame = false;
 
 // these globals are necessary for fast files for some reason
 FastFile** fastFiles = nullptr;
@@ -110,19 +110,17 @@ Mechlopedia* pMechlopedia;
 LogisticsData* pLogData;
 
 PSTR SpecialtySkillsTable[NUM_SPECIALTY_SKILLS] = {
-	"LightMechSpecialist", "LaserSpecialist", "LightACSpecialist",
-	"MediumACSpecialist", "SRMSpecialist", "SmallArmsSpecialist",
-	"SensorProfileSpecialist",
+	"LightMechSpecialist", "LaserSpecialist", "LightACSpecialist", "MediumACSpecialist",
+	"SRMSpecialist", "SmallArmsSpecialist", "SensorProfileSpecialist",
 	"ToughnessSpecialist", // Thoughness Specialty
 
-	"MediumMechSpecialist", "PulseLaserSpecialist", "ERLaserSpecialist",
-	"LRMSpecialist",
+	"MediumMechSpecialist", "PulseLaserSpecialist", "ERLaserSpecialist", "LRMSpecialist",
 	"Scout",	// Scouting Specialty
 	"LongJump", // Jump Jet Specialty
 
 	"HevayMechSpecialist", // Heavy mech Specialty
-	"PPCSpecialist", "HeavyACSpecialist", "ShortRangeSpecialist",
-	"MediumRangeSpecialist", "LongRangeSpecialist",
+	"PPCSpecialist", "HeavyACSpecialist", "ShortRangeSpecialist", "MediumRangeSpecialist",
+	"LongRangeSpecialist",
 
 	"AssaultMechSpecialist", "GaussSpecialist",
 	"SharpShooter", // Sharpshooter specialty
@@ -137,8 +135,7 @@ PSTR __stdcall GetGameInformation() { return (ExceptionGameMsg); }
 void __stdcall UpdateRenderers()
 {
 	uint32_t bColor = 0x0;
-	gos_SetupViewport(
-		1, 1.0, 1, bColor, 0.0, 0.0, 1.0, 1.0); // ALWAYS FULL SCREEN for now
+	gos_SetupViewport(1, 1.0, 1, bColor, 0.0, 0.0, 1.0, 1.0); // ALWAYS FULL SCREEN for now
 	gos_SetRenderState(gos_State_Filter, gos_FilterBiLinear);
 	gos_SetRenderState(gos_State_AlphaMode, gos_Alpha_AlphaInvAlpha);
 	gos_SetRenderState(gos_State_AlphaTest, TRUE);
@@ -239,8 +236,7 @@ void __stdcall InitializeGameEngine()
 			systemFile.seekBlock("systemHeap");
 		gosASSERT(systemBlockResult == NO_ERROR);
 		{
-			int32_t result =
-				systemFile.readIdULong("systemHeapSize", systemHeapSize);
+			int32_t result = systemFile.readIdULong("systemHeapSize", systemHeapSize);
 			result;
 			gosASSERT(result == NO_ERROR);
 		}
@@ -250,8 +246,7 @@ void __stdcall InitializeGameEngine()
 			systemFile.seekBlock("systemPaths");
 		gosASSERT(systemPathResult == NO_ERROR);
 		{
-			int32_t result =
-				systemFile.readIdString("terrainPath", terrainPath, 79);
+			int32_t result = systemFile.readIdString("terrainPath", terrainPath, 79);
 			gosASSERT(result == NO_ERROR);
 			result = systemFile.readIdString("artPath", artPath, 79);
 			gosASSERT(result == NO_ERROR);
@@ -277,8 +272,7 @@ void __stdcall InitializeGameEngine()
 			gosASSERT(result == NO_ERROR);
 			result = systemFile.readIdString("profilePath", profilePath, 79);
 			gosASSERT(result == NO_ERROR);
-			result =
-				systemFile.readIdString("interfacepath", interfacePath, 79);
+			result = systemFile.readIdString("interfacepath", interfacePath, 79);
 			gosASSERT(result == NO_ERROR);
 			result = systemFile.readIdString("moviepath", moviePath, 79);
 			gosASSERT(result == NO_ERROR);
@@ -297,21 +291,18 @@ void __stdcall InitializeGameEngine()
 			systemFile.seekBlock("FastFiles");
 		gosASSERT(fastFileResult == NO_ERROR);
 		{
-			int32_t result =
-				systemFile.readIdLong("NumFastFiles", maxFastFiles);
+			int32_t result = systemFile.readIdLong("NumFastFiles", maxFastFiles);
 			if (result != NO_ERROR)
 				maxFastFiles = 0;
 			if (maxFastFiles)
 			{
-				fastFiles =
-					(FastFile**)malloc(maxFastFiles * sizeof(FastFile*));
+				fastFiles = (FastFile**)malloc(maxFastFiles * sizeof(FastFile*));
 				memset(fastFiles, 0, maxFastFiles * sizeof(FastFile*));
 				int32_t fileNum = 0;
 				char fastFileId[10];
 				char fileName[100];
 				sprintf(fastFileId, "File%d", fileNum);
-				while (systemFile.readIdString(fastFileId, fileName, 99) ==
-					   NO_ERROR)
+				while (systemFile.readIdString(fastFileId, fileName, 99) == NO_ERROR)
 				{
 					bool result = FastFileInit(fileName);
 					if (!result)
@@ -369,8 +360,7 @@ void __stdcall InitializeGameEngine()
 				gammaLevel = 0;
 			// store volume settings in global variable since soundsystem
 			// does not exist yet. These will be set in SoundSystem::init()
-			result =
-				prefs->readIdLong("DigitalMasterVolume", DigitalMasterVolume);
+			result = prefs->readIdLong("DigitalMasterVolume", DigitalMasterVolume);
 			if (result != NO_ERROR)
 				DigitalMasterVolume = 255;
 			result = prefs->readIdLong("MusicVolume", MusicVolume);
@@ -382,8 +372,7 @@ void __stdcall InitializeGameEngine()
 			result = prefs->readIdLong("SFXVolume", sfxVolume);
 			if (result != NO_ERROR)
 				sfxVolume = 64;
-			result = prefs->readIdFloat(
-				"DoubleClickThreshold", doubleClickThreshold);
+			result = prefs->readIdFloat("DoubleClickThreshold", doubleClickThreshold);
 			if (result != NO_ERROR)
 				doubleClickThreshold = 0.2f;
 			result = prefs->readIdLong("DragThreshold", dragThreshold);
@@ -416,13 +405,10 @@ void __stdcall InitializeGameEngine()
 	MidLevelRenderer::InitializeClasses(8192 * 4, 1024, 0, 0, true);
 	gosFX::InitializeClasses();
 	gos_PushCurrentHeap(MidLevelRenderer::Heap);
-	MidLevelRenderer::TGAFilePool* pool =
-		new MidLevelRenderer::TGAFilePool("data\\Effects\\");
-	MidLevelRenderer::MLRTexturePool::Instance =
-		new MidLevelRenderer::MLRTexturePool(pool);
+	MidLevelRenderer::TGAFilePool* pool = new MidLevelRenderer::TGAFilePool("data\\Effects\\");
+	MidLevelRenderer::MLRTexturePool::Instance = new MidLevelRenderer::MLRTexturePool(pool);
 	MidLevelRenderer::MLRSortByOrder* cameraSorter =
-		new MidLevelRenderer::MLRSortByOrder(
-			MidLevelRenderer::MLRTexturePool::Instance);
+		new MidLevelRenderer::MLRSortByOrder(MidLevelRenderer::MLRTexturePool::Instance);
 	theClipper = new MidLevelRenderer::MLRClipper(0, cameraSorter);
 	gos_PopCurrentHeap();
 	//------------------------------------------------------
@@ -536,11 +522,10 @@ void __stdcall TerminateGameEngine()
 //---------------------------------------------------------------------
 void __stdcall GetGameOSEnvironment(PSTR CommandLine)
 {
-	Environment.applicationName  = "MechCommander 2 Encyclopedia";
-	Environment.debugLog		 = ""; //"DebugLog.txt";
-	Environment.memoryTraceLevel = 5;
-	Environment.spew =
-		""; //"GameOS_Texture GameOS_DirectDraw GameOS_Direct3D ";
+	Environment.applicationName		 = "MechCommander 2 Encyclopedia";
+	Environment.debugLog			 = ""; //"DebugLog.txt";
+	Environment.memoryTraceLevel	 = 5;
+	Environment.spew				 = ""; //"GameOS_Texture GameOS_DirectDraw GameOS_Direct3D ";
 	Environment.TimeStampSpew		 = 0;
 	Environment.GetGameInformation   = GetGameInformation;
 	Environment.UpdateRenderers		 = UpdateRenderers;
@@ -549,14 +534,14 @@ void __stdcall GetGameOSEnvironment(PSTR CommandLine)
 	Environment.TerminateGameEngine  = TerminateGameEngine;
 	if (useSound)
 	{
-		Environment.soundDisable  = FALSE;
+		Environment.soundDisable  = false;
 		Environment.soundHiFi	 = TRUE;
 		Environment.soundChannels = 24;
 	}
 	else
 	{
 		Environment.soundDisable  = TRUE;
-		Environment.soundHiFi	 = FALSE;
+		Environment.soundHiFi	 = false;
 		Environment.soundChannels = 0;
 	}
 	Environment.version   = versionStamp;

@@ -2,11 +2,11 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
-//----------------------------------------------------------------------------------
+#include "stdinc.h"
+
+//-----------------------------------------------------------------------------
 // Include Files
-#ifndef ABL_H
 #include "abl.h"
-#endif
 
 #ifndef BUILD_GAME
 
@@ -66,9 +66,8 @@ UserHeapPtr AblSymbolHeap = nullptr;
 // MISC AI
 //*****************************************************************************
 
-int32_t getMoversWithinRadius(MoverPtr* moverList, Stuff::Vector3D center,
-	float radius, int32_t teamID, bool getEnemies, bool sortDescending,
-	bool ignoreOrder)
+int32_t getMoversWithinRadius(MoverPtr* moverList, Stuff::Vector3D center, float radius,
+	int32_t teamID, bool getEnemies, bool sortDescending, bool ignoreOrder)
 {
 	static float sortValues[MAX_MOVERS];
 	if (!Team::sortList)
@@ -92,13 +91,10 @@ int32_t getMoversWithinRadius(MoverPtr* moverList, Stuff::Vector3D center,
 					if (mover->distanceFrom(center) < radius)
 					{
 						if (ignoreOrder ||
-							(mover->getPilot()->getCurTacOrder()->code ==
-								TACTICAL_ORDER_NONE))
+							(mover->getPilot()->getCurTacOrder()->code == TACTICAL_ORDER_NONE))
 						{
-							Team::sortList->setId(
-								numValidMovers, mover->getHandle());
-							Team::sortList->setValue(
-								numValidMovers, mover->getThreatRating());
+							Team::sortList->setId(numValidMovers, mover->getHandle());
+							Team::sortList->setValue(numValidMovers, mover->getThreatRating());
 							numValidMovers++;
 						}
 					}
@@ -115,13 +111,10 @@ int32_t getMoversWithinRadius(MoverPtr* moverList, Stuff::Vector3D center,
 					if (mover->getPilot()->getWillHelp())
 					{
 						if (ignoreOrder ||
-							(mover->getPilot()->getCurTacOrder()->code ==
-								TACTICAL_ORDER_NONE))
+							(mover->getPilot()->getCurTacOrder()->code == TACTICAL_ORDER_NONE))
 						{
-							Team::sortList->setId(
-								numValidMovers, mover->getHandle());
-							Team::sortList->setValue(
-								numValidMovers, mover->getThreatRating());
+							Team::sortList->setId(numValidMovers, mover->getHandle());
+							Team::sortList->setValue(numValidMovers, mover->getThreatRating());
 							numValidMovers++;
 						}
 					}
@@ -132,19 +125,20 @@ int32_t getMoversWithinRadius(MoverPtr* moverList, Stuff::Vector3D center,
 	{
 		Team::sortList->sort(sortDescending);
 		for (size_t i = 0; i < numValidMovers; i++)
-			moverList[i] =
-				(MoverPtr)ObjectManager->get(Team::sortList->getId(i));
+			moverList[i] = (MoverPtr)ObjectManager->get(Team::sortList->getId(i));
 	}
 	return (numValidMovers);
 }
 
 //-----------------------------------------------------------------------------
 
-void calcAttackPlan(int32_t numAttackers, GameObjectPtr* attackers,
-	int32_t numDefenders, GameObjectPtr* defenders)
+void calcAttackPlan(
+	int32_t numAttackers, GameObjectPtr* attackers, int32_t numDefenders, GameObjectPtr* defenders)
 {
+
 	if ((numDefenders == 0) || (numAttackers == 0))
 		return;
+
 	//------------------------------------------------------------------
 	// This assumes the attackers and defenders lists are already sorted
 	// in descending order...
@@ -157,6 +151,7 @@ void calcAttackPlan(int32_t numAttackers, GameObjectPtr* attackers,
 		attackRatio[i] = 0.0;
 		target[i]	  = nullptr;
 	}
+
 	//-------------------------------------------------------------------------
 	// Calc who they should attack, trying to spread the wealth, so to speak...
 	for (size_t a = 0; a < numAttackers; a++)
@@ -173,21 +168,20 @@ void calcAttackPlan(int32_t numAttackers, GameObjectPtr* attackers,
 			}
 		}
 		attackTotal[toughest] += attackers[a]->getThreatRating();
-		attackRatio[toughest] =
-			attackTotal[toughest] / defenders[toughest]->getThreatRating();
-		target[a] = defenders[toughest];
+		attackRatio[toughest] = attackTotal[toughest] / defenders[toughest]->getThreatRating();
+		target[a]			  = defenders[toughest];
 	}
+
 	//---------------------------------------------
 	// For now, let's let 'em know their targets...
 	for (i = 0; i < numAttackers; i++)
-		attackers[i]->getPilot()->triggerAlarm(
-			PILOT_ALARM_ATTACK_ORDER, target[i]->getWatchID());
+		attackers[i]->getPilot()->triggerAlarm(PILOT_ALARM_ATTACK_ORDER, target[i]->getWatchID());
 }
 
 //-----------------------------------------------------------------------------
 
-GameObjectPtr calcBestTarget(MoverPtr attacker, int32_t numAttackers,
-	MoverPtr* attackers, int32_t numDefenders, MoverPtr* defenders)
+GameObjectPtr calcBestTarget(MoverPtr attacker, int32_t numAttackers, MoverPtr* attackers,
+	int32_t numDefenders, MoverPtr* defenders)
 {
 	//------------------------------------------------------------------
 	// This assumes the attackers and defenders lists are already sorted
@@ -232,8 +226,7 @@ GameObjectPtr calcBestTarget(MoverPtr attacker, int32_t numAttackers,
 			}
 		}
 	attackTotal[bestTarget] += attacker->getThreatRating();
-	attackRatio[bestTarget] =
-		attackTotal[bestTarget] / defenders[bestTarget]->getThreatRating();
+	attackRatio[bestTarget] = attackTotal[bestTarget] / defenders[bestTarget]->getThreatRating();
 	return (defenders[bestTarget]);
 }
 
@@ -310,13 +303,11 @@ inline int32_t getMovers(int32_t partId, MoverPtr* list, bool existsOnly)
 		Fatal(3, " ABL.getMovers: bad id ");
 	// numObjects = Commander::commanders[partId -
 	// OBJ_ID_FIRST_COMMANDER]->getRoster((GameObjectPtr*)list);
-	else if ((partId >= PlayerLance0) &&
-			 (partId < PlayerLance0 + MAX_MOVERGROUPS))
+	else if ((partId >= PlayerLance0) && (partId < PlayerLance0 + MAX_MOVERGROUPS))
 		Fatal(0, " ABL.getMovers: bad id ");
 	// numObjects = Commander::commanders[INNER_SPHERE_TEAM_ID]->getGroup(partId
 	// - PlayerLance0)->getMovers(list);
-	else if ((partId >= AlliedLance0) &&
-			 (partId < AlliedLance0 + MAX_MOVERGROUPS))
+	else if ((partId >= AlliedLance0) && (partId < AlliedLance0 + MAX_MOVERGROUPS))
 		Fatal(1, " ABL.getMovers: bad id ");
 	// numObjects = Commander::commanders[ALLIED_TEAM_ID]->getGroup(partId -
 	// AlliedLance0)->getMovers(list);
@@ -503,8 +494,7 @@ void execGetContacts(void)
 	int32_t* contactList	= ABLi_popIntegerPtr();
 	int32_t contactCriteria = ABLi_popInteger();
 	int32_t sortCriteria	= ABLi_popInteger();
-	int32_t numContacts =
-		CurObject->getContacts(contactList, contactCriteria, sortCriteria);
+	int32_t numContacts		= CurObject->getContacts(contactList, contactCriteria, sortCriteria);
 	ABLi_pushInteger(numContacts);
 	for (size_t i = 0; i < numContacts; i++)
 	{
@@ -540,8 +530,7 @@ void execGetEnemyCount(void)
 		{
 			TeamPtr team = Team::teams[objectId - OBJ_ID_FIRST_TEAM];
 			if (team)
-				result =
-					SensorManager->getTeamSensor(team->getId())->numContacts;
+				result = SensorManager->getTeamSensor(team->getId())->numContacts;
 		}
 	}
 	else
@@ -550,17 +539,14 @@ void execGetEnemyCount(void)
 		if (object)
 		{
 			if (object->isMover())
-				result = SensorManager->getTeamSensor(object->getTeamId())
-							 ->numContacts;
+				result = SensorManager->getTeamSensor(object->getTeamId())->numContacts;
 			else
 				switch (object->getObjectClass())
 				{
 				case BUILDING:
 				case ARTILLERY:
 					if (object->getTeamId() > -1)
-						result =
-							SensorManager->getTeamSensor(object->getTeamId())
-								->numContacts;
+						result = SensorManager->getTeamSensor(object->getTeamId())->numContacts;
 					break;
 				}
 		}
@@ -594,8 +580,7 @@ void execSelectContact(void)
 		MoverPtr object = (MoverPtr)ObjectManager->findByPartId(id);
 		//-------------------------------------------------------
 		// Passed an object id, so select it if it's a contact...
-		if (object && object->getContactStatus(me->getTeam()->getId(), true) !=
-						  CONTACT_NONE)
+		if (object && object->getContactStatus(me->getTeam()->getId(), true) != CONTACT_NONE)
 		{
 			CurContact = object;
 			code	   = NO_ERROR;
@@ -671,8 +656,7 @@ void execGetContactStatus(void)
 	*contactTagged		   = 0;
 	int32_t status		   = 0;
 	if (CurContact && CurObject->isMover())
-		status = ((MoverPtr)CurContact)
-					 ->getContactStatus(CurObject->getTeamId(), true);
+		status = ((MoverPtr)CurContact)->getContactStatus(CurObject->getTeamId(), true);
 	ABLi_pushInteger(status);
 }
 
@@ -780,8 +764,7 @@ void execGetWeaponsReady(void)
 	int32_t listSize	= ABLi_popInteger();
 	int32_t numWeapons  = 0;
 	if (CurObject->isMover())
-		numWeapons =
-			((MoverPtr)CurObject)->getWeaponsReady(weaponList, listSize);
+		numWeapons = ((MoverPtr)CurObject)->getWeaponsReady(weaponList, listSize);
 	ABLi_pushInteger(numWeapons);
 }
 
@@ -793,8 +776,7 @@ void execGetWeaponsLocked(void)
 	int32_t listSize	= ABLi_popInteger();
 	int32_t numWeapons  = 0;
 	if (CurObject->isMover())
-		numWeapons =
-			((MoverPtr)CurObject)->getWeaponsLocked(weaponList, listSize);
+		numWeapons = ((MoverPtr)CurObject)->getWeaponsLocked(weaponList, listSize);
 	ABLi_pushInteger(numWeapons);
 }
 
@@ -808,8 +790,8 @@ void execGetWeaponsInRange(void)
 	int32_t numWeapons   = 0;
 	if (CurObject->isMover() && target)
 		numWeapons = ((MoverPtr)CurObject)
-						 ->getWeaponsInRange(weaponList, listSize,
-							 CurObject->distanceFrom(target->getPosition()));
+						 ->getWeaponsInRange(
+							 weaponList, listSize, CurObject->distanceFrom(target->getPosition()));
 	ABLi_pushInteger(numWeapons);
 }
 
@@ -1016,7 +998,7 @@ void execGetFireRanges(void)
 	ranges[0]	 = WeaponRange[FIRERANGE_SHORT];
 	ranges[1]	 = WeaponRange[FIRERANGE_MEDIUM];
 	ranges[2]	 = WeaponRange[FIRERANGE_LONG];
-	ranges[3] = 250.0; // No one should use this in MC2!
+	ranges[3]	 = 250.0; // No one should use this in MC2!
 }
 
 //*****************************************************************************
@@ -1075,8 +1057,7 @@ void execGetAttackerInfo(void)
 	{
 		if (CurWarrior)
 		{
-			AttackerRecPtr attackerRec =
-				CurWarrior->getAttackerInfo(attackerId);
+			AttackerRecPtr attackerRec = CurWarrior->getAttackerInfo(attackerId);
 			if (attackerRec)
 				timeSince = scenarioTime - attackerRec->lastTime;
 		}
@@ -1104,8 +1085,7 @@ void execSetChallenger(void)
 	int32_t victimId	 = ABLi_popInteger();
 	int32_t challengerId = ABLi_popInteger();
 	int32_t result		 = NO_ERROR;
-	if ((challengerId >= MIN_UNIT_PART_ID) &&
-		(challengerId <= MAX_UNIT_PART_ID))
+	if ((challengerId >= MIN_UNIT_PART_ID) && (challengerId <= MAX_UNIT_PART_ID))
 	{
 		//--------------------------------------------
 		// We have a group. Act accordingly.
@@ -1171,8 +1151,7 @@ void execSortWeapons(void)
 	int32_t sortType	= ABLi_popInteger();
 	int32_t valueList[50];
 	if (CurObject && CurObject->isMover())
-		((MoverPtr)CurObject)
-			->sortWeapons(weaponList, valueList, listSize, sortType, true);
+		((MoverPtr)CurObject)->sortWeapons(weaponList, valueList, listSize, sortType, true);
 }
 
 //*****************************************************************************
@@ -1449,8 +1428,8 @@ void execGetObjects(void)
 				// int32_t row, col;
 				//((GameObjectPtr)gate)->getCellPosition(row, col);
 				// int32_t partID = MIN_TERRAIN_PART_ID + row *
-				// MAX_MAP_CELL_WIDTH + col;  Assert(partID == gate->getPartId(),
-				// partID, "ugh");
+				// MAX_MAP_CELL_WIDTH + col;  Assert(partID ==
+				// gate->getPartId(), partID, "ugh");
 				objList[numObjects++] = gate->getPartId();
 			}
 		}
@@ -1511,8 +1490,8 @@ void execGetObjects(void)
 				// int32_t row, col;
 				//((GameObjectPtr)gate)->getCellPosition(row, col);
 				// int32_t partID = MIN_TERRAIN_PART_ID + row *
-				// MAX_MAP_CELL_WIDTH + col;  Assert(partID == gate->getPartId(),
-				// partID, "ugh");
+				// MAX_MAP_CELL_WIDTH + col;  Assert(partID ==
+				// gate->getPartId(), partID, "ugh");
 				objList[numObjects++] = gate->getPartId();
 			}
 		}
@@ -1534,8 +1513,8 @@ void execOrderWait(void)
 		return;
 	}
 	int32_t result = TACORDER_FAILURE;
-	result		   = CurWarrior->orderWait(
-		false, ORDER_ORIGIN_COMMANDER, double2long(seconds), clearLastTarget);
+	result =
+		CurWarrior->orderWait(false, ORDER_ORIGIN_COMMANDER, double2long(seconds), clearLastTarget);
 	ABLi_pokeInteger(result);
 }
 
@@ -1573,8 +1552,8 @@ void execOrderMoveTo(void)
 	uint32_t params = TACORDER_PARAM_NONE;
 	if (run)
 		params |= TACORDER_PARAM_RUN;
-	result = CurWarrior->orderMoveToPoint(
-		false, true, ORDER_ORIGIN_COMMANDER, location, -1, params);
+	result =
+		CurWarrior->orderMoveToPoint(false, true, ORDER_ORIGIN_COMMANDER, location, -1, params);
 	ABLi_pushInteger(result);
 }
 
@@ -1751,9 +1730,8 @@ void execOrderAttackObject(void)
 		{
 			if (objectId > 0)
 				object = ObjectManager->findByPartId(objectId);
-			result = CurWarrior->orderAttackObject(false,
-				ORDER_ORIGIN_COMMANDER, object, attackType, attackMethod,
-				attackRange, -1, -1, params);
+			result = CurWarrior->orderAttackObject(false, ORDER_ORIGIN_COMMANDER, object,
+				attackType, attackMethod, attackRange, -1, -1, params);
 		}
 	}
 	ABLi_pushInteger(result);
@@ -1793,9 +1771,8 @@ void execOrderAttackContact(void)
 			params |= TACORDER_PARAM_PURSUE;
 		result = -2;
 		if (CurContact)
-			result = CurWarrior->orderAttackObject(false,
-				ORDER_ORIGIN_COMMANDER, CurContact, attackType, attackMethod,
-				attackRange, -1, -1, params);
+			result = CurWarrior->orderAttackObject(false, ORDER_ORIGIN_COMMANDER, CurContact,
+				attackType, attackMethod, attackRange, -1, -1, params);
 	}
 	ABLi_pushInteger(result);
 }
@@ -1907,8 +1884,7 @@ void execDamageObject(void)
 			// We have a group. Act accordingly.
 			int32_t numObjects = getMovers(targetId, moverList, true);
 			WeaponShotInfo shotInfo;
-			shotInfo.init(attacker->getWatchID(), weaponMasterId, damage,
-				hitLocation, entryAngle);
+			shotInfo.init(attacker->getWatchID(), weaponMasterId, damage, hitLocation, entryAngle);
 			if (MPlayer)
 			{
 				if (MPlayer->isServer)
@@ -1930,8 +1906,8 @@ void execDamageObject(void)
 			if (target)
 			{
 				WeaponShotInfo shotInfo;
-				shotInfo.init(attacker->getWatchID(), weaponMasterId, damage,
-					hitLocation, entryAngle);
+				shotInfo.init(
+					attacker->getWatchID(), weaponMasterId, damage, hitLocation, entryAngle);
 				if (MPlayer)
 				{
 					if (MPlayer->isServer)
@@ -2154,11 +2130,9 @@ void execObjectCreate(void)
 	if (object && !object->getExists())
 	{
 		object->setExists(true);
-		SensorManager->getTeamSensor(Team::innerSphere->getId())
-			->scanBattlefield();
+		SensorManager->getTeamSensor(Team::innerSphere->getId())->scanBattlefield();
 		if (Team::allied)
-			SensorManager->getTeamSensor(Team::allied->getId())
-				->scanBattlefield();
+			SensorManager->getTeamSensor(Team::allied->getId())->scanBattlefield();
 		result = objectId;
 	}
 	ABLi_pushInteger(result);
@@ -2216,8 +2190,7 @@ void execObjectStatus(void)
 		for (size_t i = 0; i < numObjects; i++)
 		{
 			int32_t status = moverList[i]->getStatus();
-			if ((status != OBJECT_STATUS_DESTROYED) &&
-				(status != OBJECT_STATUS_DISABLED))
+			if ((status != OBJECT_STATUS_DESTROYED) && (status != OBJECT_STATUS_DISABLED))
 			{
 				MechWarriorPtr pilot = moverList[i]->getPilot();
 				if (pilot && (pilot->getStatus() != WARRIOR_STATUS_WITHDRAWN))
@@ -2259,26 +2232,16 @@ void execObjectStatusCount(void)
 		//--------------------------------------------
 		// We have a group. Act accordingly.
 		// No Group Check of actual status, return -1.
-		if ((objectId >= PlayerLance0) &&
-			(objectId < PlayerLance0 + MAX_MOVERGROUPS))
+		if ((objectId >= PlayerLance0) && (objectId < PlayerLance0 + MAX_MOVERGROUPS))
 			// Fatal(0, " ABL.objectStatusCount: bad id ");
-			Commander::commanders[0]
-				->getGroup(objectId - PlayerLance0)
-				->statusCount(tallyList);
-		else if ((objectId >= AlliedLance0) &&
-				 (objectId < AlliedLance0 + MAX_MOVERGROUPS))
+			Commander::commanders[0]->getGroup(objectId - PlayerLance0)->statusCount(tallyList);
+		else if ((objectId >= AlliedLance0) && (objectId < AlliedLance0 + MAX_MOVERGROUPS))
 			// Fatal(0, " ABL.objectStatusCount: bad id ");
-			Commander::commanders[2]
-				->getGroup(objectId - AlliedLance0)
-				->statusCount(tallyList);
-		else if ((objectId >= ClanStar0) &&
-				 (objectId < ClanStar0 + MAX_MOVERGROUPS))
+			Commander::commanders[2]->getGroup(objectId - AlliedLance0)->statusCount(tallyList);
+		else if ((objectId >= ClanStar0) && (objectId < ClanStar0 + MAX_MOVERGROUPS))
 			// Fatal(0, " ABL.objectStatusCount: bad id ");
-			Commander::commanders[1]
-				->getGroup(objectId - ClanStar0)
-				->statusCount(tallyList);
-		else if ((objectId >= OBJ_ID_FIRST_TEAM) &&
-				 (objectId <= OBJ_ID_LAST_TEAM))
+			Commander::commanders[1]->getGroup(objectId - ClanStar0)->statusCount(tallyList);
+		else if ((objectId >= OBJ_ID_FIRST_TEAM) && (objectId <= OBJ_ID_LAST_TEAM))
 		{
 			TeamPtr team = Team::teams[objectId - OBJ_ID_FIRST_TEAM];
 			if (team)
@@ -2402,8 +2365,7 @@ void execSetTimer(void)
 	else
 	{
 		TimerPtr timer = timerManager->getTimer(timerNumber);
-		Assert(timer != nullptr, timerNumber,
-			" ABL.execHbSetTimer: nullptr timer ");
+		Assert(timer != nullptr, timerNumber, " ABL.execHbSetTimer: nullptr timer ");
 		timer->setTimer(duration);
 	}
 	ABLi_pushInteger(timerNumber);
@@ -2423,8 +2385,7 @@ void execCheckTimer(void)
 	if ((timerNumber >= 0) && (timerNumber < MAX_TIMERS))
 	{
 		TimerPtr timer = timerManager->getTimer(timerNumber);
-		Assert(timer != nullptr, timerNumber,
-			" ABL.execHbSetTimer: nullptr timer ");
+		Assert(timer != nullptr, timerNumber, " ABL.execHbSetTimer: nullptr timer ");
 		timeLeft = timer->getCurrentTime();
 	}
 	if (timeLeft < 0.0f)
@@ -2815,8 +2776,8 @@ void execInArea(void)
 			for (size_t i = 0; i < numObjects; i++)
 			{
 				MoverPtr mover = moverList[i];
-				if (mover->getExists() && mover->getAwake() &&
-					!mover->isDisabled() && !mover->isDestroyed())
+				if (mover->getExists() && mover->getAwake() && !mover->isDisabled() &&
+					!mover->isDestroyed())
 					if (mover->distanceFrom(center) <= areaRadius)
 					{
 						if (++numIn == minIn)
@@ -2835,8 +2796,8 @@ void execInArea(void)
 		{
 			ABLi_pokeInteger(0);
 			GameObjectPtr obj = getObject(objectId);
-			if (obj && obj->getExists() && obj->getAwake() &&
-				!obj->isDisabled() && !obj->isDestroyed())
+			if (obj && obj->getExists() && obj->getAwake() && !obj->isDisabled() &&
+				!obj->isDestroyed())
 			{
 				if (obj->distanceFrom(center) <= areaRadius)
 					ABLi_pokeInteger(1);
@@ -3508,8 +3469,7 @@ void execSetRevealed(void)
 	//------------------------------------------------------------------
 	// This is sloppy, and we need a better way to update their scans...
 	if (whichSide == IS_SEEN_FLAG)
-		SensorManager->getTeamSensor(Team::innerSphere->getId())
-			->scanBattlefield();
+		SensorManager->getTeamSensor(Team::innerSphere->getId())->scanBattlefield();
 	else
 		SensorManager->getTeamSensor(Team::clan->getId())->scanBattlefield();
 	if (Team::allied)
@@ -3637,8 +3597,7 @@ void execOrderCapture(void)
 	if (CurObject && CurObject->isMover())
 		target = getObject(targetId);
 	if (target)
-		CurObject->getPilot()->orderCapture(
-			ORDER_ORIGIN_COMMANDER, target, params);
+		CurObject->getPilot()->orderCapture(ORDER_ORIGIN_COMMANDER, target, params);
 }
 
 //*****************************************************************************
@@ -3893,13 +3852,11 @@ void execCallStrikeEx(void)
 		timeToImpact = 0.0;
 	GameObjectPtr target = getObject(targetId);
 	if (target)
-		IfaceCallStrike(
-			strikeType, nullptr, target, false, clanStrike, timeToImpact);
+		IfaceCallStrike(strikeType, nullptr, target, false, clanStrike, timeToImpact);
 	else
 	{
 		strikeLoc.z = land->getTerrainElevation(strikeLoc);
-		IfaceCallStrike(
-			strikeType, &strikeLoc, nullptr, false, clanStrike, timeToImpact);
+		IfaceCallStrike(strikeType, &strikeLoc, nullptr, false, clanStrike, timeToImpact);
 	}
 }
 
@@ -3925,8 +3882,7 @@ void execOrderLoadElementals(void)
 		carrier = getObject(carrierID);
 	if (carrier && carrier->getObjectClass() == GROUNDVEHICLE &&
 		((GroundVehiclePtr)carrier)->elementalCarrier)
-		CurObject->getPilot()->orderLoadIntoCarrier(
-			ORDER_ORIGIN_COMMANDER, carrier);
+		CurObject->getPilot()->orderLoadIntoCarrier(ORDER_ORIGIN_COMMANDER, carrier);
 #endif
 }
 
@@ -3951,8 +3907,7 @@ void execOrderDeployElementals(void)
 #ifdef USE_ELEMENTALS
 	if (CurObject && CurObject->getObjectClass() == GROUNDVEHICLE &&
 		((GroundVehiclePtr)CurObject)->elementalCarrier)
-		CurObject->getPilot()->orderDeployElementals(
-			ORDER_ORIGIN_COMMANDER, params);
+		CurObject->getPilot()->orderDeployElementals(ORDER_ORIGIN_COMMANDER, params);
 #endif
 }
 
@@ -4171,8 +4126,7 @@ void execIsGateOpen(void)
 		if (object)
 		{
 			Stuff::Vector3D newPos;
-			newPos =
-				((MoverPtr)object)->relativePosition(angle, distance, flags);
+			newPos	= ((MoverPtr)object)->relativePosition(angle, distance, flags);
 			relPos[0] = newPos.x;
 			relPos[1] = newPos.y;
 			relPos[2] = newPos.z;
@@ -4219,8 +4173,8 @@ void execIsGateOpen(void)
 			BattleMechPtr mech = (BattleMechPtr)repairTarget;
 			for (size_t i = 0; i < mech->numBodyLocations; i++)
 			{
-				float diff = (float)mech->body[i].maxInternalStructure -
-							 mech->body[i].curInternalStructure;
+				float diff =
+					(float)mech->body[i].maxInternalStructure - mech->body[i].curInternalStructure;
 				if (mech->body[i].damageState ==
 					IS_DAMAGE_DESTROYED) // can't repair it if it ain't there!
 					continue;
@@ -4229,8 +4183,7 @@ void execIsGateOpen(void)
 					if (diff < points)
 					{
 						points -= diff;
-						mech->body[i].curInternalStructure =
-							mech->body[i].maxInternalStructure;
+						mech->body[i].curInternalStructure = mech->body[i].maxInternalStructure;
 					}
 					else
 					{
@@ -4242,21 +4195,19 @@ void execIsGateOpen(void)
 			}
 			for (i = 0; i < mech->numArmorLocations; i++)
 			{
-				float diff =
-					(float)mech->armor[i].maxArmor - mech->armor[i].curArmor;
+				float diff = (float)mech->armor[i].maxArmor - mech->armor[i].curArmor;
 				if (i < mech->numBodyLocations)
 				{
-					if (mech->body[i].damageState ==
-						IS_DAMAGE_DESTROYED) // can't repair it if it ain't
-											 // there!
+					if (mech->body[i].damageState == IS_DAMAGE_DESTROYED) // can't repair it if it
+																		  // ain't there!
 						continue;
 				}
 				else // for back armor, be sure you're looking at the front...
 				{
-					if (mech->body[i - mech->numBodyLocations + 1]
-							.damageState == IS_DAMAGE_DESTROYED) // can't repair
-																 // it if it
-																 // ain't there!
+					if (mech->body[i - mech->numBodyLocations + 1].damageState ==
+						IS_DAMAGE_DESTROYED) // can't repair
+											 // it if it
+											 // ain't there!
 						continue;
 				}
 				if (diff > 0)
@@ -4325,14 +4276,14 @@ void execIsGateOpen(void)
 			{
 				result = 7;
 				obj	= getObject(fixeeId);
-				if (obj && ((obj->getObjectClass() == BATTLEMECH) ||
-							   (obj->getObjectClass() == GROUNDVEHICLE)))
+				if (obj &&
+					((obj->getObjectClass() == BATTLEMECH) ||
+						(obj->getObjectClass() == GROUNDVEHICLE)))
 				{
 					result = 9;
 					if (bay->isFriendly(obj->getTeam()))
 					{
-						GameObjectPtr refitBuddy =
-							ObjectManager->getByWatchID(bay->refitBuddyWID);
+						GameObjectPtr refitBuddy = ObjectManager->getByWatchID(bay->refitBuddyWID);
 						if (refitBuddy)
 						{
 							if (refitBuddy == obj)
@@ -4347,16 +4298,14 @@ void execIsGateOpen(void)
 							if (bay->getFlag(OBJECT_FLAG_MECHBAY))
 							{
 								result	 = 5;
-								refitBuddy = ObjectManager->getByWatchID(
-									mech->refitBuddyWID);
+								refitBuddy = ObjectManager->getByWatchID(mech->refitBuddyWID);
 								if (!refitBuddy)
 								{
 									result = 6;
 									if (mech->needsRefit())
 									{
 										if (mech->getPilot()->orderGetFixed(
-												ORDER_ORIGIN_COMMANDER, bay,
-												params) == NO_ERROR)
+												ORDER_ORIGIN_COMMANDER, bay, params) == NO_ERROR)
 											result = 0;
 										else
 											result = -1;
@@ -4371,16 +4320,14 @@ void execIsGateOpen(void)
 							if (bay->getFlag(OBJECT_FLAG_MECHBAY))
 							{
 								result	 = 5;
-								refitBuddy = ObjectManager->getByWatchID(
-									vehicle->refitBuddyWID);
+								refitBuddy = ObjectManager->getByWatchID(vehicle->refitBuddyWID);
 								if (!refitBuddy)
 								{
 									result = 6;
 									if (vehicle->needsRefit())
 									{
 										if (vehicle->getPilot()->orderGetFixed(
-												ORDER_ORIGIN_COMMANDER, bay,
-												params) == NO_ERROR)
+												ORDER_ORIGIN_COMMANDER, bay, params) == NO_ERROR)
 											result = 0;
 										else
 											result = -1;
@@ -4424,18 +4371,17 @@ void execIsGateOpen(void)
 			{
 				if (i < mover->numBodyLocations)
 				{
-					if (mover->body[i].damageState ==
-						IS_DAMAGE_DESTROYED) // can't repair it if it ain't
-											 // there!
+					if (mover->body[i].damageState == IS_DAMAGE_DESTROYED) // can't repair it if it
+																		   // ain't there!
 						continue;
 				}
 				else
 				{
 					// for back armor, be sure you're looking at the front...
-					if (mover->body[i - mover->numBodyLocations + 1]
-							.damageState == IS_DAMAGE_DESTROYED) // can't repair
-																 // it if it
-																 // ain't there!
+					if (mover->body[i - mover->numBodyLocations + 1].damageState ==
+						IS_DAMAGE_DESTROYED) // can't repair
+											 // it if it
+											 // ain't there!
 						continue;
 				}
 				max += mover->armor[i].maxArmor;
@@ -4532,21 +4478,16 @@ void execIsGateOpen(void)
 		{
 			//------------------------------------
 			// We must be server if we got here...
-			MPlayer->addMissionScriptMessageChunk(
-				CurMultiplayCode, CurMultiplayParam);
+			MPlayer->addMissionScriptMessageChunk(CurMultiplayCode, CurMultiplayParam);
 #ifdef DEBUG_MISSION_SCRIPT
 			if (NumMissionScriptMessages == MAX_MISSION_MSGS)
 			{
 				DebugMissionScriptMessages();
-				Assert(false, NumMissionScriptMessages,
-					" Way too many Mission Script Messages! ");
+				Assert(false, NumMissionScriptMessages, " Way too many Mission Script Messages! ");
 			}
-			MissionScriptMessageLog[NumMissionScriptMessages][0] =
-				execLineNumber;
-			MissionScriptMessageLog[NumMissionScriptMessages][1] =
-				CurMultiplayCode;
-			MissionScriptMessageLog[NumMissionScriptMessages][2] =
-				CurMultiplayParam;
+			MissionScriptMessageLog[NumMissionScriptMessages][0] = execLineNumber;
+			MissionScriptMessageLog[NumMissionScriptMessages][1] = CurMultiplayCode;
+			MissionScriptMessageLog[NumMissionScriptMessages][2] = CurMultiplayParam;
 			NumMissionScriptMessages++;
 #endif
 		}
@@ -4598,20 +4539,16 @@ void execIsGateOpen(void)
 				switch (strikeType)
 				{
 				case 0:
-					ABLi_pokeInteger(Commander::commanders[commanderId]
-										 ->getNumSmallStrikes());
+					ABLi_pokeInteger(Commander::commanders[commanderId]->getNumSmallStrikes());
 					break;
 				case 1:
-					ABLi_pokeInteger(Commander::commanders[commanderId]
-										 ->getNumLargeStrikes());
+					ABLi_pokeInteger(Commander::commanders[commanderId]->getNumLargeStrikes());
 					break;
 				case 2:
-					ABLi_pokeInteger(Commander::commanders[commanderId]
-										 ->getNumSensorStrikes());
+					ABLi_pokeInteger(Commander::commanders[commanderId]->getNumSensorStrikes());
 					break;
 				case 3:
-					ABLi_pokeInteger(Commander::commanders[commanderId]
-										 ->getNumCameraDrones());
+					ABLi_pokeInteger(Commander::commanders[commanderId]->getNumCameraDrones());
 					break;
 				}
 	}
@@ -4641,20 +4578,16 @@ void execIsGateOpen(void)
 				switch (strikeType)
 				{
 				case 0:
-					Commander::commanders[commanderId]->setNumSmallStrikes(
-						numStrikes);
+					Commander::commanders[commanderId]->setNumSmallStrikes(numStrikes);
 					break;
 				case 1:
-					Commander::commanders[commanderId]->setNumLargeStrikes(
-						numStrikes);
+					Commander::commanders[commanderId]->setNumLargeStrikes(numStrikes);
 					break;
 				case 2:
-					Commander::commanders[commanderId]->setNumSensorStrikes(
-						numStrikes);
+					Commander::commanders[commanderId]->setNumSensorStrikes(numStrikes);
 					break;
 				case 3:
-					Commander::commanders[commanderId]->setNumCameraDrones(
-						numStrikes);
+					Commander::commanders[commanderId]->setNumCameraDrones(numStrikes);
 					break;
 				}
 	}
@@ -4685,32 +4618,24 @@ void execIsGateOpen(void)
 				switch (strikeType)
 				{
 				case 0:
-					strikeInc = Commander::commanders[commanderId]
-									->getNumSmallStrikes();
+					strikeInc = Commander::commanders[commanderId]->getNumSmallStrikes();
 					strikeInc += numStrikes;
-					Commander::commanders[commanderId]->setNumSmallStrikes(
-						strikeInc);
+					Commander::commanders[commanderId]->setNumSmallStrikes(strikeInc);
 					break;
 				case 1:
-					strikeInc = Commander::commanders[commanderId]
-									->getNumLargeStrikes();
+					strikeInc = Commander::commanders[commanderId]->getNumLargeStrikes();
 					strikeInc += numStrikes;
-					Commander::commanders[commanderId]->setNumLargeStrikes(
-						strikeInc);
+					Commander::commanders[commanderId]->setNumLargeStrikes(strikeInc);
 					break;
 				case 2:
-					strikeInc = Commander::commanders[commanderId]
-									->getNumSensorStrikes();
+					strikeInc = Commander::commanders[commanderId]->getNumSensorStrikes();
 					strikeInc += numStrikes;
-					Commander::commanders[commanderId]->setNumSensorStrikes(
-						strikeInc);
+					Commander::commanders[commanderId]->setNumSensorStrikes(strikeInc);
 					break;
 				case 3:
-					strikeInc = Commander::commanders[commanderId]
-									->getNumCameraDrones();
+					strikeInc = Commander::commanders[commanderId]->getNumCameraDrones();
 					strikeInc += numStrikes;
-					Commander::commanders[commanderId]->setNumCameraDrones(
-						strikeInc);
+					Commander::commanders[commanderId]->setNumCameraDrones(strikeInc);
 					break;
 				}
 	}
@@ -4740,8 +4665,7 @@ void execIsGateOpen(void)
 		int32_t param1		= ABLi_popInteger();
 		int32_t param2		= ABLi_popInteger();
 		int32_t param3		= ABLi_popInteger();
-		int32_t partId =
-			ObjectManager->calcPartId(objectClass, param1, param2, param3);
+		int32_t partId		= ObjectManager->calcPartId(objectClass, param1, param2, param3);
 		ABLi_pushInteger(partId);
 	}
 	//*****************************************************************************
@@ -4804,8 +4728,8 @@ void execIsGateOpen(void)
 		int32_t startArea = GlobalMoveMap[0]->calcArea(startRow, startCol);
 		int32_t goalArea  = GlobalMoveMap[0]->calcArea(goalRow, goalCol);
 		int32_t confidence;
-		int32_t areaPathCost = GlobalMoveMap[0]->getPathCost(
-			startArea, goalArea, false, confidence, true);
+		int32_t areaPathCost =
+			GlobalMoveMap[0]->getPathCost(startArea, goalArea, false, confidence, true);
 		ABLi_pushInteger(areaPathCost);
 	}
 	//*****************************************************************************
@@ -4905,8 +4829,7 @@ void execIsGateOpen(void)
 		int32_t targetID  = 0;
 		GameObjectPtr obj = getObject(objectID);
 		if (CurWarrior && ((objectID == 0) || obj))
-			targetID =
-				CurWarrior->coreScan((objectID == 0) ? nullptr : obj, params);
+			targetID = CurWarrior->coreScan((objectID == 0) ? nullptr : obj, params);
 		ABLi_pushInteger(targetID);
 	}
 	//*****************************************************************************
@@ -4917,8 +4840,7 @@ void execIsGateOpen(void)
 		int32_t targetID  = 0;
 		GameObjectPtr obj = getObject(objectID);
 		if (CurWarrior && ((objectID == 0) || obj))
-			targetID = CurWarrior->coreControl(
-				(objectID == 0) ? nullptr : obj, params);
+			targetID = CurWarrior->coreControl((objectID == 0) ? nullptr : obj, params);
 		ABLi_pushInteger(targetID);
 	}
 	//*****************************************************************************
@@ -5021,8 +4943,7 @@ void execIsGateOpen(void)
 		int32_t param1 = ABLi_popInteger();
 		int32_t param2 = ABLi_popInteger();
 		int32_t param3 = ABLi_popInteger();
-		int32_t err =
-			CurWarrior->setTargetPriority(index, type, param1, param2, param3);
+		int32_t err	= CurWarrior->setTargetPriority(index, type, param1, param2, param3);
 		ABLi_pushInteger(err);
 	}
 	//*****************************************************************************
@@ -5472,10 +5393,9 @@ void execIsGateOpen(void)
 		friendlyPos.y = friendlyCenter[1];
 		friendlyPos.z = 0.0;
 		MoverPtr friendlies[MAX_MOVERS];
-		int32_t numFriendlies =
-			getMoversWithinRadius(friendlies, friendlyPos, friendlyRadius,
-				CurWarrior->getTeam()->getId(), false, true, priority > 0);
-		GameObjectPtr enemy = ObjectManager->findByPartId(enemyPartID);
+		int32_t numFriendlies = getMoversWithinRadius(friendlies, friendlyPos, friendlyRadius,
+			CurWarrior->getTeam()->getId(), false, true, priority > 0);
+		GameObjectPtr enemy   = ObjectManager->findByPartId(enemyPartID);
 		if (enemy)
 		{
 			Stuff::Vector3D enemyPos;
@@ -5483,10 +5403,10 @@ void execIsGateOpen(void)
 			enemyPos.y = enemyCenter[1];
 			enemyPos.z = 0.0;
 			MoverPtr enemies[MAX_MOVERS];
-			int32_t numEnemies = getMoversWithinRadius(enemies, enemyPos,
-				enemyRadius, enemy->getTeamId(), false, true, true);
-			calcAttackPlan(numFriendlies, (GameObjectPtr*)friendlies,
-				numEnemies, (GameObjectPtr*)enemies);
+			int32_t numEnemies = getMoversWithinRadius(
+				enemies, enemyPos, enemyRadius, enemy->getTeamId(), false, true, true);
+			calcAttackPlan(
+				numFriendlies, (GameObjectPtr*)friendlies, numEnemies, (GameObjectPtr*)enemies);
 		}
 		ABLi_pushReal(0.0);
 	}
@@ -5501,14 +5421,14 @@ void execIsGateOpen(void)
 		friendlyPos.z = 0.0;
 		MoverPtr friendlies[MAX_MOVERS];
 		MoverPtr enemies[MAX_MOVERS];
-		int32_t numFriendlies = getMoversWithinRadius(friendlies, friendlyPos,
-			radius, CurWarrior->getTeam()->getId(), false, true, true);
-		int32_t numEnemies = getMoversWithinRadius(enemies, friendlyPos, radius,
-			CurWarrior->getTeam()->getId(), true, true, true);
+		int32_t numFriendlies = getMoversWithinRadius(
+			friendlies, friendlyPos, radius, CurWarrior->getTeam()->getId(), false, true, true);
+		int32_t numEnemies = getMoversWithinRadius(
+			enemies, friendlyPos, radius, CurWarrior->getTeam()->getId(), true, true, true);
 		GameObjectPtr bestTarget = nullptr;
 		if (numEnemies > 0)
-			bestTarget = calcBestTarget(CurWarrior->getVehicle(), numFriendlies,
-				friendlies, numEnemies, enemies);
+			bestTarget = calcBestTarget(
+				CurWarrior->getVehicle(), numFriendlies, friendlies, numEnemies, enemies);
 		if (bestTarget)
 			ABLi_pushInteger(bestTarget->getPartId());
 		else
@@ -5569,18 +5489,18 @@ void execIsGateOpen(void)
 			DEBUGWINS_print(s, 0);
 			break;
 		case ABL_STACKITEM_INTEGER_PTR:
-			sprintf(s, "pint32_t=%d,%d,%d", value.data.integerPtr[0],
-				value.data.integerPtr[1], value.data.integerPtr[2]);
+			sprintf(s, "pint32_t=%d,%d,%d", value.data.integerPtr[0], value.data.integerPtr[1],
+				value.data.integerPtr[2]);
 			DEBUGWINS_print(s, 0);
 			break;
 		case ABL_STACKITEM_REAL_PTR:
-			sprintf(s, "real*=%.2f,%.2f,%.2f", value.data.realPtr[0],
-				value.data.realPtr[1], value.data.realPtr[2]);
+			sprintf(s, "real*=%.2f,%.2f,%.2f", value.data.realPtr[0], value.data.realPtr[1],
+				value.data.realPtr[2]);
 			DEBUGWINS_print(s, 0);
 			break;
 		case ABL_STACKITEM_BOOLEAN_PTR:
-			sprintf(s, "bool*=%d,%d,%d", value.data.booleanPtr[0],
-				value.data.booleanPtr[1], value.data.booleanPtr[2]);
+			sprintf(s, "bool*=%d,%d,%d", value.data.booleanPtr[0], value.data.booleanPtr[1],
+				value.data.booleanPtr[2]);
 			DEBUGWINS_print(s, 0);
 			break;
 		}
@@ -5590,14 +5510,13 @@ void execIsGateOpen(void)
 	//*****************************************************************************
 	void execAddTriggerArea(void)
 	{
-		int32_t ULrow = ABLi_popInteger();
-		int32_t ULcol = ABLi_popInteger();
-		int32_t LRrow = ABLi_popInteger();
-		int32_t LRcol = ABLi_popInteger();
-		int32_t type  = ABLi_popInteger();
-		int32_t param = ABLi_popInteger();
-		int32_t handle =
-			Mover::triggerAreaMgr->add(ULrow, ULcol, LRrow, LRcol, type, param);
+		int32_t ULrow  = ABLi_popInteger();
+		int32_t ULcol  = ABLi_popInteger();
+		int32_t LRrow  = ABLi_popInteger();
+		int32_t LRcol  = ABLi_popInteger();
+		int32_t type   = ABLi_popInteger();
+		int32_t param  = ABLi_popInteger();
+		int32_t handle = Mover::triggerAreaMgr->add(ULrow, ULcol, LRrow, LRcol, type, param);
 		if (handle == 0)
 			Fatal(0, " Too many Trigger Areas ");
 		ABLi_pushInteger(handle);
@@ -5634,22 +5553,18 @@ void execIsGateOpen(void)
 			case 0:
 			{
 				for (size_t curWeapon = mover->numOther;
-					 curWeapon < (mover->numOther + mover->numWeapons);
-					 curWeapon++)
-					weaponList[numWpns++] =
-						mover->inventory[curWeapon].masterID;
+					 curWeapon < (mover->numOther + mover->numWeapons); curWeapon++)
+					weaponList[numWpns++] = mover->inventory[curWeapon].masterID;
 			}
 			break;
 			case 1:
 			{
 				for (size_t curWeapon = mover->numOther;
-					 curWeapon < (mover->numOther + mover->numWeapons);
-					 curWeapon++)
+					 curWeapon < (mover->numOther + mover->numWeapons); curWeapon++)
 				{
 					if (!mover->inventory[curWeapon].disabled &&
 						(mover->getWeaponShots(curWeapon) > 0))
-						weaponList[numWpns++] =
-							mover->inventory[curWeapon].masterID;
+						weaponList[numWpns++] = mover->inventory[curWeapon].masterID;
 				}
 				Assert(numWpns == mover->numFunctionalWeapons, 0,
 					" execGetWeapons: weapon counts don't match ");
@@ -5726,10 +5641,7 @@ void execIsGateOpen(void)
 		mapInfo[1]		 = GameMap->getWidth();
 	}
 	//*****************************************************************************
-	PVOID ablSystemMallocCallback(uint32_t memSize)
-	{
-		return (systemHeap->Malloc(memSize));
-	}
+	PVOID ablSystemMallocCallback(uint32_t memSize) { return (systemHeap->Malloc(memSize)); }
 	//-----------------------------------------------------------------------------
 	PVOID ablStackMallocCallback(uint32_t memSize)
 	{
@@ -5783,8 +5695,7 @@ void execIsGateOpen(void)
 		if (((FilePtr)*file)->create(fName) != NO_ERROR)
 		{
 			char s[256];
-			sprintf(
-				s, " ABL.ablFileOpenCB: unable to create file [%s] ", fName);
+			sprintf(s, " ABL.ablFileOpenCB: unable to create file [%s] ", fName);
 			Fatal(0, s);
 		}
 		return (NO_ERROR);
@@ -5816,10 +5727,7 @@ void execIsGateOpen(void)
 		return (((FilePtr)file)->read(buffer, length));
 	}
 	//-----------------------------------------------------------------------------
-	int32_t ablFileReadLongCB(PVOID file)
-	{
-		return (((FilePtr)file)->readLong());
-	}
+	int32_t ablFileReadLongCB(PVOID file) { return (((FilePtr)file)->readLong()); }
 	//-----------------------------------------------------------------------------
 	int32_t ablFileReadStringCB(PVOID file, puint8_t buffer)
 	{
@@ -5876,8 +5784,7 @@ void execIsGateOpen(void)
 		log->write(s);
 		sprintf(s, " NumWeapons = %d", CurWarrior->getVehicle()->numWeapons);
 		log->write(s);
-		sprintf(s, " NumFunctionalWeapons = %d",
-			CurWarrior->getVehicle()->numFunctionalWeapons);
+		sprintf(s, " NumFunctionalWeapons = %d", CurWarrior->getVehicle()->numFunctionalWeapons);
 		log->write(s);
 		sprintf(s, " TacOrder = ");
 		CurWarrior->getCurTacOrder()->debugString(CurWarrior, &s[16]);
@@ -5895,12 +5802,10 @@ void execIsGateOpen(void)
 				MoverPtr mover = (MoverPtr)LastCoreAttackTarget;
 				sprintf(s, " NumWeapons = %d", mover->numWeapons);
 				log->write(s);
-				sprintf(s, " NumFunctionalWeapons = %d",
-					mover->numFunctionalWeapons);
+				sprintf(s, " NumFunctionalWeapons = %d", mover->numFunctionalWeapons);
 				log->write(s);
 				sprintf(s, " TacOrder = ");
-				mover->getPilot()->getCurTacOrder()->debugString(
-					CurWarrior, &s[16]);
+				mover->getPilot()->getCurTacOrder()->debugString(CurWarrior, &s[16]);
 				log->write(s);
 			}
 		}
@@ -5927,14 +5832,12 @@ void execIsGateOpen(void)
 			51199,		 // AblMaxCodeBlockSize,
 			200,		 // AblMaxRegisteredModules,
 			100,		 // AblMaxStaticVariables,
-			ablSystemMallocCallback, ablStackMallocCallback,
-			ablCodeMallocCallback, ablSymbolMallocCallback,
-			ablSystemFreeCallback, ablStackFreeCallback, ablCodeFreeCallback,
-			ablSymbolFreeCallback, ablFileCreateCB, ablFileOpenCB,
-			ablFileCloseCB, ablFileEofCB, ablFileReadCB, ablFileReadLongCB,
-			ablFileReadStringCB, ablFileReadLineExCB, ablFileWriteCB,
-			ablFileWriteByteCB, ablFileWriteLongCB, ablFileWriteStringCB,
-			ablDebuggerPrintCallback, ablFatalCallback, true, false);
+			ablSystemMallocCallback, ablStackMallocCallback, ablCodeMallocCallback,
+			ablSymbolMallocCallback, ablSystemFreeCallback, ablStackFreeCallback,
+			ablCodeFreeCallback, ablSymbolFreeCallback, ablFileCreateCB, ablFileOpenCB,
+			ablFileCloseCB, ablFileEofCB, ablFileReadCB, ablFileReadLongCB, ablFileReadStringCB,
+			ablFileReadLineExCB, ablFileWriteCB, ablFileWriteByteCB, ablFileWriteLongCB,
+			ablFileWriteStringCB, ablDebuggerPrintCallback, ablFatalCallback, true, false);
 		ABLi_setDebugPrintCallback(ablDebugPrintCallback);
 		ABLi_setRandomCallbacks(ablSeedRandom, RandomNumber);
 		ABLi_setEndlessStateCallback(ablEndlessStateCallback);
@@ -5944,209 +5847,140 @@ void execIsGateOpen(void)
 		ABLi_addFunction("selectobject", false, "i", "i", execSelectObject);
 		// ABLi_addFunction("selectunit", false, "i", "i", execSelectUnit);
 		ABLi_addFunction("selectwarrior", false, "i", "i", execSelectWarrior);
-		ABLi_addFunction(
-			"getwarriorstatus", false, "i", "i", execGetWarriorStatus);
+		ABLi_addFunction("getwarriorstatus", false, "i", "i", execGetWarriorStatus);
 		ABLi_addFunction("getcontacts", false, "Iii", "i", execGetContacts);
 		ABLi_addFunction("getenemycount", false, "i", "i", execGetEnemyCount);
 		ABLi_addFunction("selectcontact", false, "ii", "i", execSelectContact);
 		ABLi_addFunction("getcontactid", false, nullptr, "i", execGetContactId);
 		ABLi_addFunction("iscontact", false, "iii", "i", execIsContact);
+		ABLi_addFunction("getcontactstatus", false, "I", "i", execGetContactStatus);
 		ABLi_addFunction(
-			"getcontactstatus", false, "I", "i", execGetContactStatus);
-		ABLi_addFunction("getcontactrelativeposition", false, "rr", "i",
-			execGetContactRelativePosition);
+			"getcontactrelativeposition", false, "rr", "i", execGetContactRelativePosition);
 		ABLi_addFunction("settarget", false, "ii", nullptr, execSetTarget);
 		ABLi_addFunction("gettarget", false, "i", "i", execGetTarget);
-		ABLi_addFunction(
-			"getweaponsready", false, "Ii", "i", execGetWeaponsReady);
-		ABLi_addFunction(
-			"getweaponslocked", false, "Ii", "i", execGetWeaponsLocked);
-		ABLi_addFunction(
-			"getweaponsinrange", false, "Ii", "i", execGetWeaponsInRange);
+		ABLi_addFunction("getweaponsready", false, "Ii", "i", execGetWeaponsReady);
+		ABLi_addFunction("getweaponslocked", false, "Ii", "i", execGetWeaponsLocked);
+		ABLi_addFunction("getweaponsinrange", false, "Ii", "i", execGetWeaponsInRange);
 		ABLi_addFunction("getweaponshots", false, "i", "i", execGetWeaponShots);
-		ABLi_addFunction(
-			"getweaponranges", false, "iR", nullptr, execGetWeaponRanges);
-		ABLi_addFunction(
-			"getobjectposition", false, "iR", nullptr, execGetObjectPosition);
-		ABLi_addFunction(
-			"getintegermemory", false, "i", "i", execGetIntegerMemory);
+		ABLi_addFunction("getweaponranges", false, "iR", nullptr, execGetWeaponRanges);
+		ABLi_addFunction("getobjectposition", false, "iR", nullptr, execGetObjectPosition);
+		ABLi_addFunction("getintegermemory", false, "i", "i", execGetIntegerMemory);
 		ABLi_addFunction("getrealmemory", false, "i", "r", execGetRealMemory);
-		ABLi_addFunction(
-			"getalarmtriggers", false, "I", "i", execGetAlarmTriggers);
+		ABLi_addFunction("getalarmtriggers", false, "I", "i", execGetAlarmTriggers);
 		ABLi_addFunction("getchallenger", false, "i", "i", execGetChallenger);
-		ABLi_addFunction("gettimewithoutorders", false, nullptr, "r",
-			execGetTimeWithoutOrders);
-		ABLi_addFunction(
-			"getfireranges", false, "R", nullptr, execGetFireRanges);
+		ABLi_addFunction("gettimewithoutorders", false, nullptr, "r", execGetTimeWithoutOrders);
+		ABLi_addFunction("getfireranges", false, "R", nullptr, execGetFireRanges);
 		ABLi_addFunction("getattackers", false, "Ir", "i", execGetAttackers);
-		ABLi_addFunction(
-			"getattackerinfo", false, "i", "r", execGetAttackerInfo);
+		ABLi_addFunction("getattackerinfo", false, "i", "r", execGetAttackerInfo);
 		ABLi_addFunction("setchallenger", false, "ii", "i", execSetChallenger);
-		ABLi_addFunction(
-			"setintegermemory", false, "ii", nullptr, execSetIntegerMemory);
-		ABLi_addFunction(
-			"setrealmemory", false, "ir", nullptr, execSetRealMemory);
+		ABLi_addFunction("setintegermemory", false, "ii", nullptr, execSetIntegerMemory);
+		ABLi_addFunction("setrealmemory", false, "ir", nullptr, execSetRealMemory);
 		ABLi_addFunction("hasmovegoal", false, nullptr, "b", execHasMoveGoal);
 		ABLi_addFunction("hasmovepath", false, nullptr, "b", execHasMovePath);
 		ABLi_addFunction("sortweapons", false, "Ii", "i", execSortWeapons);
 		ABLi_addFunction("getvisualrange", false, "i", "r", execGetVisualRange);
 		ABLi_addFunction("getunitmates", false, "iI", "i", execGetUnitMates);
 		ABLi_addFunction("gettacorder", false, "irI", "i", execGetTacOrder);
-		ABLi_addFunction(
-			"getlasttacorder", false, "irI", "i", execGetLastTacOrder);
+		ABLi_addFunction("getlasttacorder", false, "irI", "i", execGetLastTacOrder);
 		ABLi_addFunction("getobjects", false, "iI", "i", execGetObjects);
 		ABLi_addFunction("orderwait", false, "rb", "i", execOrderWait);
 		ABLi_addFunction("ordermoveto", false, "Rb", "i", execOrderMoveTo);
-		ABLi_addFunction(
-			"ordermovetoobject", false, "ib", "i", execOrderMoveToObject);
-		ABLi_addFunction(
-			"ordermovetocontact", false, "b", "i", execOrderMoveToContact);
-		ABLi_addFunction(
-			"orderpowerdown", false, nullptr, "i", execOrderPowerDown);
+		ABLi_addFunction("ordermovetoobject", false, "ib", "i", execOrderMoveToObject);
+		ABLi_addFunction("ordermovetocontact", false, "b", "i", execOrderMoveToContact);
+		ABLi_addFunction("orderpowerdown", false, nullptr, "i", execOrderPowerDown);
 		ABLi_addFunction("orderpowerup", false, nullptr, "i", execOrderPowerUp);
-		ABLi_addFunction(
-			"orderattackobject", false, "iiiib", "i", execOrderAttackObject);
-		ABLi_addFunction(
-			"orderattackcontact", false, "iiib", "i", execOrderAttackContact);
-		ABLi_addFunction(
-			"orderwithdraw", false, nullptr, "i", execOrderWithdraw);
-		ABLi_addFunction(
-			"objectinwithdrawal", false, "i", "i", execObjectInWithdrawal);
-		ABLi_addFunction(
-			"damageobject", false, "iiirirr", "i", execDamageObject);
-		ABLi_addFunction(
-			"setattackradius", false, "r", "r", execSetAttackRadius);
-		ABLi_addFunction(
-			"objectchangesides", false, "ii", nullptr, execObjectChangeSides);
-		ABLi_addFunction(
-			"distancetoobject", false, "ii", "r", execDistanceToObject);
-		ABLi_addFunction(
-			"distancetoposition", false, "iR", "r", execDistanceToPosition);
-		ABLi_addFunction(
-			"objectsuicide", false, "i", nullptr, execObjectSuicide);
+		ABLi_addFunction("orderattackobject", false, "iiiib", "i", execOrderAttackObject);
+		ABLi_addFunction("orderattackcontact", false, "iiib", "i", execOrderAttackContact);
+		ABLi_addFunction("orderwithdraw", false, nullptr, "i", execOrderWithdraw);
+		ABLi_addFunction("objectinwithdrawal", false, "i", "i", execObjectInWithdrawal);
+		ABLi_addFunction("damageobject", false, "iiirirr", "i", execDamageObject);
+		ABLi_addFunction("setattackradius", false, "r", "r", execSetAttackRadius);
+		ABLi_addFunction("objectchangesides", false, "ii", nullptr, execObjectChangeSides);
+		ABLi_addFunction("distancetoobject", false, "ii", "r", execDistanceToObject);
+		ABLi_addFunction("distancetoposition", false, "iR", "r", execDistanceToPosition);
+		ABLi_addFunction("objectsuicide", false, "i", nullptr, execObjectSuicide);
 		ABLi_addFunction("objectcreate", false, "i", "i", execObjectCreate);
 		ABLi_addFunction("objectexists", false, "i", "i", execObjectExists);
 		ABLi_addFunction("objectstatus", false, "i", "i", execObjectStatus);
-		ABLi_addFunction(
-			"objectstatuscount", false, "iI", nullptr, execObjectStatusCount);
+		ABLi_addFunction("objectstatuscount", false, "iI", nullptr, execObjectStatusCount);
 		ABLi_addFunction("objectvisible", false, "ii", "i", execObjectVisible);
 		ABLi_addFunction("objectside", false, "i", "i", execObjectTeam);
-		ABLi_addFunction(
-			"objectcommander", false, "i", "i", execObjectCommander);
+		ABLi_addFunction("objectcommander", false, "i", "i", execObjectCommander);
 		ABLi_addFunction("objectclass", false, "i", "i", execObjectClass);
 		ABLi_addFunction("settimer", false, "i*", "i", execSetTimer);
 		ABLi_addFunction("checktimer", false, "i", "r", execCheckTimer);
 		ABLi_addFunction("endtimer", false, "i", nullptr, execEndTimer);
-		ABLi_addFunction(
-			"setobjectivetimer", false, "i*", "i", execSetObjectiveTimer);
-		ABLi_addFunction(
-			"checkobjectivetimer", false, "i", "r", execCheckObjectiveTimer);
-		ABLi_addFunction(
-			"setobjectivestatus", false, "ii", "i", execSetObjectiveStatus);
-		ABLi_addFunction(
-			"checkobjectivestatus", false, "i", "i", execCheckObjectiveStatus);
-		ABLi_addFunction(
-			"setobjectivetype", false, "ii", "i", execSetObjectiveType);
-		ABLi_addFunction(
-			"checkobjectivetype", false, "i", "i", execCheckObjectiveType);
-		ABLi_addFunction(
-			"playdigitalmusic", false, "i", "i", execPlayDigitalMusic);
+		ABLi_addFunction("setobjectivetimer", false, "i*", "i", execSetObjectiveTimer);
+		ABLi_addFunction("checkobjectivetimer", false, "i", "r", execCheckObjectiveTimer);
+		ABLi_addFunction("setobjectivestatus", false, "ii", "i", execSetObjectiveStatus);
+		ABLi_addFunction("checkobjectivestatus", false, "i", "i", execCheckObjectiveStatus);
+		ABLi_addFunction("setobjectivetype", false, "ii", "i", execSetObjectiveType);
+		ABLi_addFunction("checkobjectivetype", false, "i", "i", execCheckObjectiveType);
+		ABLi_addFunction("playdigitalmusic", false, "i", "i", execPlayDigitalMusic);
 		ABLi_addFunction("stopmusic", false, nullptr, "i", execStopMusic);
-		ABLi_addFunction(
-			"playsoundeffect", false, "i", "i", execPlaySoundEffect);
+		ABLi_addFunction("playsoundeffect", false, "i", "i", execPlaySoundEffect);
 		ABLi_addFunction("playvideo", false, "i", "i", execPlayVideo);
 		ABLi_addFunction("setradio", false, "ib", "i", execSetRadio);
 		ABLi_addFunction("playspeech", false, "ii", "i", execPlaySpeech);
 		ABLi_addFunction("playbetty", false, "i", "i", execPlayBetty);
-		ABLi_addFunction(
-			"setobjectactive", false, "ib", "i", execSetObjectActive);
+		ABLi_addFunction("setobjectactive", false, "ib", "i", execSetObjectActive);
 		ABLi_addFunction("objecttypeid", false, "i", "i", execObjectTypeID);
-		ABLi_addFunction("getterrainobjectpartid", false, "ii", "i",
-			execGetTerrainObjectPartID);
+		ABLi_addFunction("getterrainobjectpartid", false, "ii", "i", execGetTerrainObjectPartID);
 		ABLi_addFunction("objectremove", false, "i", "i", execObjectRemove);
 		ABLi_addFunction("inarea", false, "iRri", "b", execInArea);
-		ABLi_addFunction(
-			"createinfantry", false, "Ri", "i", execCreateInfantry);
-		ABLi_addFunction(
-			"getsensorsworking", false, "i", "i", execGetSensorsWorking);
-		ABLi_addFunction(
-			"getcurrentbrvalue", false, "i", "i", execGetCurrentBRValue);
-		ABLi_addFunction(
-			"setcurrentbrvalue", false, "ii", nullptr, execSetCurrentBRValue);
+		ABLi_addFunction("createinfantry", false, "Ri", "i", execCreateInfantry);
+		ABLi_addFunction("getsensorsworking", false, "i", "i", execGetSensorsWorking);
+		ABLi_addFunction("getcurrentbrvalue", false, "i", "i", execGetCurrentBRValue);
+		ABLi_addFunction("setcurrentbrvalue", false, "ii", nullptr, execSetCurrentBRValue);
 		ABLi_addFunction("getarmorpts", false, "i", "i", execGetArmorPts);
 		ABLi_addFunction("getmaxarmor", false, "i", "i", execGetMaxArmor);
 		ABLi_addFunction("getpilotid", false, "i", "i", execGetPilotID);
 		ABLi_addFunction("getpilotwounds", false, "i", "r", execGetPilotWounds);
-		ABLi_addFunction(
-			"setpilotwounds", false, "ii", nullptr, execSetPilotWounds);
-		ABLi_addFunction(
-			"getobjectactive", false, "i", "i", execGetObjectActive);
-		ABLi_addFunction(
-			"getobjectdamage", false, "i", "i", execGetObjectDamage);
-		ABLi_addFunction(
-			"getobjectdmgpts", false, "i", "i", execGetObjectDmgPts);
-		ABLi_addFunction(
-			"getobjectmaxdmg", false, "i", "i", execGetObjectMaxDmg);
-		ABLi_addFunction(
-			"setobjectdamage", false, "i", "i", execSetObjectDamage);
+		ABLi_addFunction("setpilotwounds", false, "ii", nullptr, execSetPilotWounds);
+		ABLi_addFunction("getobjectactive", false, "i", "i", execGetObjectActive);
+		ABLi_addFunction("getobjectdamage", false, "i", "i", execGetObjectDamage);
+		ABLi_addFunction("getobjectdmgpts", false, "i", "i", execGetObjectDmgPts);
+		ABLi_addFunction("getobjectmaxdmg", false, "i", "i", execGetObjectMaxDmg);
+		ABLi_addFunction("setobjectdamage", false, "i", "i", execSetObjectDamage);
 		ABLi_addFunction("getglobalvalue", false, "i", "r", execGetGlobalValue);
-		ABLi_addFunction(
-			"setglobalvalue", false, "i*", nullptr, execSetGlobalValue);
-		ABLi_addFunction(
-			"setobjectivepos", false, "i***", nullptr, execSetObjectivePos);
-		ABLi_addFunction(
-			"setsensorrange", false, "ir", nullptr, execSetSensorRange);
+		ABLi_addFunction("setglobalvalue", false, "i*", nullptr, execSetGlobalValue);
+		ABLi_addFunction("setobjectivepos", false, "i***", nullptr, execSetObjectivePos);
+		ABLi_addFunction("setsensorrange", false, "ir", nullptr, execSetSensorRange);
 		ABLi_addFunction("settonnage", false, "ir", nullptr, execSetTonnage);
-		ABLi_addFunction(
-			"setexplosiondamage", false, "ir", nullptr, execSetExplosionDamage);
-		ABLi_addFunction(
-			"setexplosionradius", false, "ir", nullptr, execSetExplosionRadius);
+		ABLi_addFunction("setexplosiondamage", false, "ir", nullptr, execSetExplosionDamage);
+		ABLi_addFunction("setexplosionradius", false, "ir", nullptr, execSetExplosionRadius);
 		ABLi_addFunction("setsalvage", false, "iii", "b", execSetSalvage);
-		ABLi_addFunction(
-			"setsalvagestatus", false, "ib", "b", execSetSalvageStatus);
-		ABLi_addFunction(
-			"setanimation", false, "iii", nullptr, execSetAnimation);
+		ABLi_addFunction("setsalvagestatus", false, "ib", "b", execSetSalvageStatus);
+		ABLi_addFunction("setanimation", false, "iii", nullptr, execSetAnimation);
 		ABLi_addFunction("setrevealed", false, "i*R", nullptr, execSetRevealed);
 		ABLi_addFunction("getsalvage", false, "iiII", nullptr, execGetSalvage);
 		ABLi_addFunction("orderrefit", false, "ii", nullptr, execOrderRefit);
 		ABLi_addFunction("setcaptured", false, "i", nullptr, execSetCaptured);
-		ABLi_addFunction(
-			"ordercapture", false, "ii", nullptr, execOrderCapture);
-		ABLi_addFunction(
-			"setcapturable", false, "ib", nullptr, execSetCapturable);
+		ABLi_addFunction("ordercapture", false, "ii", nullptr, execOrderCapture);
+		ABLi_addFunction("setcapturable", false, "ib", nullptr, execSetCapturable);
 		ABLi_addFunction("iscaptured", false, "i", "i", execIsCaptured);
 		ABLi_addFunction("iscapturable", false, "ii", "b", execIsCapturable);
-		ABLi_addFunction(
-			"wasevercapturable", false, "i", "b", execWasEverCapturable);
-		ABLi_addFunction(
-			"setbuildingname", false, "ii", nullptr, execSetBuildingName);
-		ABLi_addFunction(
-			"callstrike", false, "iirrrb", nullptr, execCallStrike);
-		ABLi_addFunction(
-			"callstrikeex", false, "iirrrbr", nullptr, execCallStrikeEx);
-		ABLi_addFunction("orderloadelementals", false, "i", nullptr,
-			execOrderLoadElementals);
-		ABLi_addFunction("orderdeployelementals", false, "i", nullptr,
-			execOrderDeployElementals);
+		ABLi_addFunction("wasevercapturable", false, "i", "b", execWasEverCapturable);
+		ABLi_addFunction("setbuildingname", false, "ii", nullptr, execSetBuildingName);
+		ABLi_addFunction("callstrike", false, "iirrrb", nullptr, execCallStrike);
+		ABLi_addFunction("callstrikeex", false, "iirrrbr", nullptr, execCallStrikeEx);
+		ABLi_addFunction("orderloadelementals", false, "i", nullptr, execOrderLoadElementals);
+		ABLi_addFunction("orderdeployelementals", false, "i", nullptr, execOrderDeployElementals);
 		ABLi_addFunction("addprisoner", false, "ii", "i", execAddPrisoner);
 		ABLi_addFunction("lockgateopen", false, "i", nullptr, execLockGateOpen);
-		ABLi_addFunction(
-			"lockgateclosed", false, "i", nullptr, execLockGateClosed);
-		ABLi_addFunction(
-			"releasegatelock", false, "i", nullptr, execReleaseGateLock);
+		ABLi_addFunction("lockgateclosed", false, "i", nullptr, execLockGateClosed);
+		ABLi_addFunction("releasegatelock", false, "i", nullptr, execReleaseGateLock);
 		ABLi_addFunction("isgateopen", false, "i", "b", execIsGateOpen);
-		ABLi_addFunction("getrelativepositiontopoint", false, "RrriR", nullptr,
-			execGetRelativePositionToPoint);
+		ABLi_addFunction(
+			"getrelativepositiontopoint", false, "RrriR", nullptr, execGetRelativePositionToPoint);
 		ABLi_addFunction("getrelativepositiontoobject", false, "irriR", nullptr,
 			execGetRelativePositionToObject);
 		ABLi_addFunction("getunitstatus", false, "i", "r", execGetUnitStatus);
 		ABLi_addFunction("repair", false, "ir", nullptr, execRepair);
 		ABLi_addFunction("getfixed", false, "iii", "i", execGetFixed);
 		ABLi_addFunction("getrepairstate", false, "i", "i", execGetRepairState);
-		ABLi_addFunction(
-			"isteamtargeting", false, "iii", "b", execIsTeamTargeting);
-		ABLi_addFunction(
-			"isteamcapturing", false, "iii", "b", execIsTeamCapturing);
+		ABLi_addFunction("isteamtargeting", false, "iii", "b", execIsTeamTargeting);
+		ABLi_addFunction("isteamcapturing", false, "iii", "b", execIsTeamCapturing);
 		ABLi_addFunction("sendmessage", false, "ii", nullptr, execSendMessage);
 		ABLi_addFunction("getmessage", false, "i", "i", execGetMessage);
 		ABLi_addFunction("gethometeam", false, nullptr, "i", execGetHomeTeam);
@@ -6155,22 +5989,19 @@ void execIsGateOpen(void)
 		ABLi_addFunction("addstrikes", false, "iii", nullptr, execAddStrikes);
 		ABLi_addFunction("isserver", false, nullptr, "b", execIsServer);
 		ABLi_addFunction("calcpartid", false, "iiii", "i", execCalcPartID);
-		ABLi_addFunction(
-			"setdebugstring", false, "iiC", nullptr, execSetDebugString);
+		ABLi_addFunction("setdebugstring", false, "iiC", nullptr, execSetDebugString);
 		ABLi_addFunction("break", false, nullptr, nullptr, execBreak);
 		ABLi_addFunction("pathexists", false, "iiiii", "i", execPathExists);
 		ABLi_addFunction("convertcoords", false, "iRI", "i", execConvertCoords);
 		ABLi_addFunction("newmoveto", true, "Ri", "i", execNewMoveTo);
-		ABLi_addFunction(
-			"newmovetoobject", true, "ii", "i", execNewMoveToObject);
+		ABLi_addFunction("newmovetoobject", true, "ii", "i", execNewMoveToObject);
 		ABLi_addFunction("newpower", true, "b", "i", execNewPower);
 		ABLi_addFunction("newattack", true, "ii", "i", execNewAttack);
 		ABLi_addFunction("newcapture", true, "ii", "i", execNewCapture);
 		ABLi_addFunction("newscan", true, "ii", "i", execNewScan);
 		ABLi_addFunction("newcontrol", true, "ii", "i", execNewControl);
 		ABLi_addFunction("coremoveto", true, "Ri", "i", execNewMoveTo);
-		ABLi_addFunction(
-			"coremovetoobject", true, "ii", "i", execNewMoveToObject);
+		ABLi_addFunction("coremovetoobject", true, "ii", "i", execNewMoveToObject);
 		ABLi_addFunction("corepower", true, "b", "i", execNewPower);
 		ABLi_addFunction("coreattack", true, "ii", "i", execNewAttack);
 		ABLi_addFunction("corecapture", true, "ii", "i", execNewCapture);
@@ -6178,72 +6009,42 @@ void execIsGateOpen(void)
 		ABLi_addFunction("corecontrol", true, "ii", "i", execNewControl);
 		ABLi_addFunction("coreeject", true, nullptr, "i", execCoreEject);
 		ABLi_addFunction("setpilotstate", false, "i", "i", execSetPilotState);
-		ABLi_addFunction(
-			"getpilotstate", false, nullptr, "i", execGetPilotState);
-		ABLi_addFunction(
-			"getnextpilotevent", false, "I", "i", execGetNextPilotEvent);
-		ABLi_addFunction(
-			"settargetpriority", false, "iiiii", "i", execSetTargetPriority);
-		ABLi_addFunction(
-			"setdebugwindow", false, "ii", "i", execSetDebugWindow);
-		ABLi_addFunction(
-			"getcameraposition", false, "R", nullptr, execGetCameraPosition);
-		ABLi_addFunction(
-			"setcameraposition", false, "R", nullptr, execSetCameraPosition);
-		ABLi_addFunction("setcameragoalposition", false, "Rr", nullptr,
-			execSetCameraGoalPosition);
-		ABLi_addFunction("getcameragoalposition", false, "R", nullptr,
-			execGetCameraGoalPosition);
-		ABLi_addFunction(
-			"getcamerarotation", false, "R", nullptr, execGetCameraRotation);
-		ABLi_addFunction(
-			"setcamerarotation", false, "R", nullptr, execSetCameraRotation);
-		ABLi_addFunction("setcameragoalrotation", false, "Rr", nullptr,
-			execSetCameraGoalRotation);
-		ABLi_addFunction("getcameragoalrotation", false, "R", nullptr,
-			execGetCameraGoalRotation);
-		ABLi_addFunction(
-			"getcamerazoom", false, nullptr, "r", execGetCameraZoom);
-		ABLi_addFunction(
-			"setcamerazoom", false, "r", nullptr, execSetCameraZoom);
-		ABLi_addFunction(
-			"getcameragoalzoom", false, nullptr, "r", execGetCameraGoalZoom);
-		ABLi_addFunction(
-			"setcameragoalzoom", false, "rr", nullptr, execSetCameraGoalZoom);
-		ABLi_addFunction(
-			"setcameravelocity", false, "R", nullptr, execSetCameraVelocity);
-		ABLi_addFunction(
-			"getcameravelocity", false, "R", nullptr, execGetCameraVelocity);
-		ABLi_addFunction("setcameragoalvelocity", false, "Rr", nullptr,
-			execSetCameraGoalVelocity);
-		ABLi_addFunction("getcameragoalvelocity", false, "R", nullptr,
-			execGetCameraGoalVelocity);
-		ABLi_addFunction("setcameralookobject", false, "i", nullptr,
-			execSetCameraLookObject);
-		ABLi_addFunction("getcameralookobject", false, nullptr, "i",
-			execGetCameraLookObject);
-		ABLi_addFunction("getcameraframelength", false, nullptr, "r",
-			execGetCameraFrameLength);
+		ABLi_addFunction("getpilotstate", false, nullptr, "i", execGetPilotState);
+		ABLi_addFunction("getnextpilotevent", false, "I", "i", execGetNextPilotEvent);
+		ABLi_addFunction("settargetpriority", false, "iiiii", "i", execSetTargetPriority);
+		ABLi_addFunction("setdebugwindow", false, "ii", "i", execSetDebugWindow);
+		ABLi_addFunction("getcameraposition", false, "R", nullptr, execGetCameraPosition);
+		ABLi_addFunction("setcameraposition", false, "R", nullptr, execSetCameraPosition);
+		ABLi_addFunction("setcameragoalposition", false, "Rr", nullptr, execSetCameraGoalPosition);
+		ABLi_addFunction("getcameragoalposition", false, "R", nullptr, execGetCameraGoalPosition);
+		ABLi_addFunction("getcamerarotation", false, "R", nullptr, execGetCameraRotation);
+		ABLi_addFunction("setcamerarotation", false, "R", nullptr, execSetCameraRotation);
+		ABLi_addFunction("setcameragoalrotation", false, "Rr", nullptr, execSetCameraGoalRotation);
+		ABLi_addFunction("getcameragoalrotation", false, "R", nullptr, execGetCameraGoalRotation);
+		ABLi_addFunction("getcamerazoom", false, nullptr, "r", execGetCameraZoom);
+		ABLi_addFunction("setcamerazoom", false, "r", nullptr, execSetCameraZoom);
+		ABLi_addFunction("getcameragoalzoom", false, nullptr, "r", execGetCameraGoalZoom);
+		ABLi_addFunction("setcameragoalzoom", false, "rr", nullptr, execSetCameraGoalZoom);
+		ABLi_addFunction("setcameravelocity", false, "R", nullptr, execSetCameraVelocity);
+		ABLi_addFunction("getcameravelocity", false, "R", nullptr, execGetCameraVelocity);
+		ABLi_addFunction("setcameragoalvelocity", false, "Rr", nullptr, execSetCameraGoalVelocity);
+		ABLi_addFunction("getcameragoalvelocity", false, "R", nullptr, execGetCameraGoalVelocity);
+		ABLi_addFunction("setcameralookobject", false, "i", nullptr, execSetCameraLookObject);
+		ABLi_addFunction("getcameralookobject", false, nullptr, "i", execGetCameraLookObject);
+		ABLi_addFunction("getcameraframelength", false, nullptr, "r", execGetCameraFrameLength);
 		ABLi_addFunction("requesthelp", false, "iRrRri", "r", execRequestHelp);
 		ABLi_addFunction("requesttarget", false, "Rr", "i", execRequestTarget);
 		ABLi_addFunction("requestshelter", false, "*", "i", execRequestShelter);
 		ABLi_addFunction("mcprint", false, "?", nullptr, execMCPrint);
-		ABLi_addFunction(
-			"getmissionstatus", false, nullptr, "i", execGetMissionStatus);
-		ABLi_addFunction(
-			"addtriggerarea", false, "iiiiii", "i", execAddTriggerArea);
-		ABLi_addFunction(
-			"istriggerareahit", false, "i", "b", execIsTriggerAreaHit);
-		ABLi_addFunction(
-			"resettriggerarea", false, "i", nullptr, execResetTriggerArea);
-		ABLi_addFunction(
-			"removetriggerarea", false, "i", nullptr, execRemoveTriggerArea);
+		ABLi_addFunction("getmissionstatus", false, nullptr, "i", execGetMissionStatus);
+		ABLi_addFunction("addtriggerarea", false, "iiiiii", "i", execAddTriggerArea);
+		ABLi_addFunction("istriggerareahit", false, "i", "b", execIsTriggerAreaHit);
+		ABLi_addFunction("resettriggerarea", false, "i", nullptr, execResetTriggerArea);
+		ABLi_addFunction("removetriggerarea", false, "i", nullptr, execRemoveTriggerArea);
 		ABLi_addFunction("getweapons", false, "Ii", "i", execGetWeapons);
 		ABLi_addFunction("setmovearea", false, "Rr", nullptr, execSetMoveArea);
-		ABLi_addFunction(
-			"getweaponsstatus", false, "I", "i", execGetWeaponsStatus);
-		ABLi_addFunction(
-			"cleartacorder", false, nullptr, nullptr, execClearTacOrder);
+		ABLi_addFunction("getweaponsstatus", false, "I", "i", execGetWeaponsStatus);
+		ABLi_addFunction("cleartacorder", false, nullptr, nullptr, execClearTacOrder);
 		ABLi_addFunction("playwave", false, "Ci", "i", execPlayWave);
 		ABLi_addFunction("objectteam", false, "i", "i", execObjectTeam);
 		ABLi_addFunction("setwillhelp", false, "b", "b", execSetWillHelp);
@@ -6318,7 +6119,8 @@ void execIsGateOpen(void)
 		sprintf(s, " ABL.ablFileOpenCB: unable to create file [%s] ", fName);
 		Fatal(0, s);
 		}
-		*/ return (0);
+		*/
+		return (0);
 	}
 	//-----------------------------------------------------------------------------
 	int32_t ablFileOpenCB(PVOID * file, PSTR fName)
@@ -6380,8 +6182,7 @@ void execIsGateOpen(void)
 		return (strlen(s));
 	}
 	//-----------------------------------------------------------------------------
-	int32_t ablFileWriteCB(
-		PVOID /* file */, puint8_t /* buffer */, int32_t /* length */)
+	int32_t ablFileWriteCB(PVOID /* file */, puint8_t /* buffer */, int32_t /* length */)
 	{
 		// return(((FilePtr)file)->write(buffer, length));
 		return (0);
@@ -6437,14 +6238,12 @@ void execIsGateOpen(void)
 			51199,		 // AblMaxCodeBlockSize,
 			200,		 // AblMaxRegisteredModules,
 			100,		 // AblMaxStaticVariables,
-			ablSystemMallocCallback, ablStackMallocCallback,
-			ablCodeMallocCallback, ablSymbolMallocCallback,
-			ablSystemFreeCallback, ablStackFreeCallback, ablCodeFreeCallback,
-			ablSymbolFreeCallback, ablFileCreateCB, ablFileOpenCB,
-			ablFileCloseCB, ablFileEofCB, ablFileReadCB, ablFileReadLongCB,
-			ablFileReadStringCB, ablFileReadLineExCB, ablFileWriteCB,
-			ablFileWriteByteCB, ablFileWriteLongCB, ablFileWriteStringCB,
-			ablDebuggerPrintCallback, ablFatalCallback, true, false);
+			ablSystemMallocCallback, ablStackMallocCallback, ablCodeMallocCallback,
+			ablSymbolMallocCallback, ablSystemFreeCallback, ablStackFreeCallback,
+			ablCodeFreeCallback, ablSymbolFreeCallback, ablFileCreateCB, ablFileOpenCB,
+			ablFileCloseCB, ablFileEofCB, ablFileReadCB, ablFileReadLongCB, ablFileReadStringCB,
+			ablFileReadLineExCB, ablFileWriteCB, ablFileWriteByteCB, ablFileWriteLongCB,
+			ablFileWriteStringCB, ablDebuggerPrintCallback, ablFatalCallback, true, false);
 		ABLi_setDebugPrintCallback(ablDebugPrintCallback);
 		ABLi_addFunction("getid", false, nullptr, "i", nullptr);
 		ABLi_addFunction("gettime", false, nullptr, "r", nullptr);
@@ -6459,8 +6258,7 @@ void execIsGateOpen(void)
 		ABLi_addFunction("getcontactid", false, nullptr, "i", nullptr);
 		ABLi_addFunction("iscontact", false, "iii", "i", nullptr);
 		ABLi_addFunction("getcontactstatus", false, "I", "i", nullptr);
-		ABLi_addFunction(
-			"getcontactrelativeposition", false, "rr", "i", nullptr);
+		ABLi_addFunction("getcontactrelativeposition", false, "rr", "i", nullptr);
 		ABLi_addFunction("settarget", false, "ii", nullptr, nullptr);
 		ABLi_addFunction("gettarget", false, "i", "i", nullptr);
 		ABLi_addFunction("getweaponsready", false, "Ii", "i", nullptr);
@@ -6576,10 +6374,8 @@ void execIsGateOpen(void)
 		ABLi_addFunction("lockgateclosed", false, "i", nullptr, nullptr);
 		ABLi_addFunction("releasegatelock", false, "i", nullptr, nullptr);
 		ABLi_addFunction("isgateopen", false, "i", "b", nullptr);
-		ABLi_addFunction(
-			"getrelativepositiontopoint", false, "RrriR", nullptr, nullptr);
-		ABLi_addFunction(
-			"getrelativepositiontoobject", false, "irriR", nullptr, nullptr);
+		ABLi_addFunction("getrelativepositiontopoint", false, "RrriR", nullptr, nullptr);
+		ABLi_addFunction("getrelativepositiontoobject", false, "irriR", nullptr, nullptr);
 		ABLi_addFunction("getunitstatus", false, "i", "r", nullptr);
 		ABLi_addFunction("repair", false, "ir", nullptr, nullptr);
 		ABLi_addFunction("getfixed", false, "iii", "i", nullptr);
@@ -6620,13 +6416,11 @@ void execIsGateOpen(void)
 		ABLi_addFunction("setdebugwindow", false, "ii", "i", nullptr);
 		ABLi_addFunction("getcameraposition", false, "R", nullptr, nullptr);
 		ABLi_addFunction("setcameraposition", false, "R", nullptr, nullptr);
-		ABLi_addFunction(
-			"setcameragoalposition", false, "Rr", nullptr, nullptr);
+		ABLi_addFunction("setcameragoalposition", false, "Rr", nullptr, nullptr);
 		ABLi_addFunction("getcameragoalposition", false, "R", nullptr, nullptr);
 		ABLi_addFunction("getcamerarotation", false, "R", nullptr, nullptr);
 		ABLi_addFunction("setcamerarotation", false, "R", nullptr, nullptr);
-		ABLi_addFunction(
-			"setcameragoalrotation", false, "Rr", nullptr, nullptr);
+		ABLi_addFunction("setcameragoalrotation", false, "Rr", nullptr, nullptr);
 		ABLi_addFunction("getcameragoalrotation", false, "R", nullptr, nullptr);
 		ABLi_addFunction("getcamerazoom", false, nullptr, "r", nullptr);
 		ABLi_addFunction("setcamerazoom", false, "r", nullptr, nullptr);
@@ -6634,8 +6428,7 @@ void execIsGateOpen(void)
 		ABLi_addFunction("setcameragoalzoom", false, "rr", nullptr, nullptr);
 		ABLi_addFunction("setcameravelocity", false, "R", nullptr, nullptr);
 		ABLi_addFunction("getcameravelocity", false, "R", nullptr, nullptr);
-		ABLi_addFunction(
-			"setcameragoalvelocity", false, "Rr", nullptr, nullptr);
+		ABLi_addFunction("setcameragoalvelocity", false, "Rr", nullptr, nullptr);
 		ABLi_addFunction("getcameragoalvelocity", false, "R", nullptr, nullptr);
 		ABLi_addFunction("setcameralookobject", false, "i", nullptr, nullptr);
 		ABLi_addFunction("getcameralookobject", false, nullptr, "i", nullptr);

@@ -8,10 +8,10 @@
 #define STRICT
 #endif
 
-#define ATL_SUPPRESS_WARNING_PUSH(x)                                           \
+#define DISABLE_WARNING_PUSH(x)                                                \
 	__pragma(warning(push));                                                   \
 	__pragma(warning(disable : x))
-#define ATL_SUPPRESS_WARNING_POP __pragma(warning(pop))
+#define DISABLE_WARNING_POP __pragma(warning(pop))
 #define ATL_ADD_LIBRARY(x) __pragma(comment(lib, x))
 
 #define _WIN32_WINNT 0x0600 // minimum Windows Vista
@@ -162,6 +162,6 @@ using namespace Utilities;
 
 //#ifdef _MSC_VER
 //#pragma comment(linker,"/manifestdependency:\"type='win32'
-//name='Microsoft.Windows.Common-Controls' version='6.0.0.0'
-//processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
+// name='Microsoft.Windows.Common-Controls' version='6.0.0.0'
+// processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
 //#endif

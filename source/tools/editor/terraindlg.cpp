@@ -24,8 +24,7 @@ void TerrainDlg::Init()
 	for (size_t i = 0; i < numTerrains; i++)
 	{
 		char buffer[256];
-		if (!TerrainColorMap::getTextureNameID(
-				i)) // if we start to repeat, quit
+		if (!TerrainColorMap::getTextureNameID(i)) // if we start to repeat, quit
 			break;
 		cLoadString(TerrainColorMap::getTextureNameID(i), buffer, 256);
 		int32_t index = pListBox->AddString(buffer);

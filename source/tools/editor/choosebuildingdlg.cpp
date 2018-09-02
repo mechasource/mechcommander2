@@ -7,7 +7,7 @@ component.
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 \*************************************************************************************************/
-#include "stdafx.h"
+#include "stdinc.h"
 
 //#include "resource.h"
 //#include <stdlib.h>
@@ -19,8 +19,7 @@ component.
 //#include "editorobjectmgr.h"
 
 //-------------------------------------------------------------------------------------------------
-ChooseBuildingDlg::ChooseBuildingDlg(building_ptr_type& buildingPtr)
-	: CDialog(IDD_CHOOSE_BUILDING)
+ChooseBuildingDlg::ChooseBuildingDlg(building_ptr_type& buildingPtr) : CDialog(IDD_CHOOSE_BUILDING)
 {
 	m_pBuildingPtr		   = &buildingPtr;
 	m_pModifiedBuildingPtr = 0;
@@ -34,8 +33,7 @@ BOOL ChooseBuildingDlg::OnInitDialog()
 {
 	m_pComboBox = (CComboBox*)GetDlgItem(IDC_CHOOSE_BUILDING_COMBO);
 	assert(m_pComboBox);
-	m_pUsingPointerButton =
-		(CButton*)GetDlgItem(IDC_CHOOSE_BUILDING_USING_POINTER_BUTTON);
+	m_pUsingPointerButton = (CButton*)GetDlgItem(IDC_CHOOSE_BUILDING_USING_POINTER_BUTTON);
 	assert(m_pUsingPointerButton);
 	m_pCancelButton = (CButton*)GetDlgItem(IDCANCEL);
 	assert(m_pCancelButton);
@@ -54,8 +52,7 @@ BOOL ChooseBuildingDlg::OnInitDialog()
 	m_buildingList.Clear();
 	EditorObjectMgr::BUILDING_LIST completeBuildingList =
 		EditorObjectMgr::instance()->getBuildings();
-	EditorObjectMgr::BUILDING_LIST::EConstIterator it2 =
-		completeBuildingList.Begin();
+	EditorObjectMgr::BUILDING_LIST::EConstIterator it2 = completeBuildingList.Begin();
 	while (!it2.IsDone())
 	{
 		// if ((BUILDING == typeNum) || (TREEBUILDING == typeNum)) {
@@ -88,8 +85,7 @@ BOOL ChooseBuildingDlg::OnInitDialog()
 	if (EditorInterface::instance()->ObjectSelectOnlyMode())
 	{
 		// post a message that the USEPOINTER button was pressed
-		PostMessage(WM_COMMAND, (WPARAM)BN_CLICKED,
-			(LPARAM)m_pUsingPointerButton->m_hWnd);
+		PostMessage(WM_COMMAND, (WPARAM)BN_CLICKED, (LPARAM)m_pUsingPointerButton->m_hWnd);
 	}
 	return 1;
 }
@@ -115,8 +111,7 @@ BOOL ChooseBuildingDlg::OnCommand(WPARAM wParam,
 			if (EditorInterface::instance()->ObjectSelectOnlyMode())
 			{
 				/* close the dialog and enter ObjectSelectOnlyMode */
-				EditorInterface::instance()
-					->objectivesEditState.pModifiedBuildingPtr =
+				EditorInterface::instance()->objectivesEditState.pModifiedBuildingPtr =
 					m_pModifiedBuildingPtr;
 				EndDialog(IDOK);
 			}
@@ -138,15 +133,13 @@ void ChooseBuildingDlg::OnUsePointer()
 		EditorInterface::instance()->ObjectSelectOnlyMode(false);
 		EditorObjectMgr::EDITOR_OBJECT_LIST selectedObjects =
 			EditorObjectMgr::instance()->getSelectedObjectList();
-		int32_t num_buildings_selected = 0;
-		int32_t validObjectIndex	   = -1;
-		EditorObjectMgr::EDITOR_OBJECT_LIST::EConstIterator it =
-			selectedObjects.Begin();
+		int32_t num_buildings_selected						   = 0;
+		int32_t validObjectIndex							   = -1;
+		EditorObjectMgr::EDITOR_OBJECT_LIST::EConstIterator it = selectedObjects.Begin();
 		while (!it.IsDone())
 		{
-			int32_t index = 0;
-			EditorObjectMgr::BUILDING_LIST::EConstIterator it2 =
-				m_buildingList.Begin();
+			int32_t index									   = 0;
+			EditorObjectMgr::BUILDING_LIST::EConstIterator it2 = m_buildingList.Begin();
 			while (!it2.IsDone())
 			{
 				if ((*it) == (*it2))

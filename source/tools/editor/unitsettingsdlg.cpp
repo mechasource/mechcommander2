@@ -5,7 +5,7 @@
 // UnitSettingsDlg.cpp : implementation file
 //
 
-#include "stdafx.h"
+#include "stdinc.h"
 #include "resource.h"
 #include "UnitSettingsDlg.h"
 #include "EditorObjects.h"
@@ -15,8 +15,7 @@
 /////////////////////////////////////////////////////////////////////////////
 // UnitSettingsDlg dialog
 
-UnitSettingsDlg::UnitSettingsDlg(
-	EList<Unit*, Unit*>& newList /*=nullptr*/, ActionUndoMgr& undoMgr)
+UnitSettingsDlg::UnitSettingsDlg(EList<Unit*, Unit*>& newList /*=nullptr*/, ActionUndoMgr& undoMgr)
 	: CDialog(UnitSettingsDlg::IDD), units(newList)
 {
 	//{{AFX_DATA_INIT(UnitSettingsDlg)
@@ -68,8 +67,7 @@ void UnitSettingsDlg::OnSelchangeGroup()
 	group		  = m_Group.GetItemData(group);
 	PCSTR MechNames[256];
 	int32_t count = 256;
-	EditorObjectMgr::instance()->getBuildingNamesInGroup(
-		group, MechNames, count);
+	EditorObjectMgr::instance()->getBuildingNamesInGroup(group, MechNames, count);
 	for (size_t i = 0; i < count; ++i)
 	{
 		m_Mech.AddString(MechNames[i]);
@@ -93,8 +91,7 @@ void UnitSettingsDlg::OnChangeHighlight1()
 	GetDlgItem(IDC_HIGHLIGHT1)->GetWindowText(text);
 	bool bChanged = false;
 	int32_t i	 = 0;
-	if (text.GetLength() > 1 &&
-		(text[0] == '0' && (text[1] == 'x' || text[i] == 'X')))
+	if (text.GetLength() > 1 && (text[0] == '0' && (text[1] == 'x' || text[i] == 'X')))
 		i = 2;
 	for (; i < text.GetLength(); ++i)
 	{
@@ -121,8 +118,7 @@ void UnitSettingsDlg::OnChangeHighlight2()
 	GetDlgItem(IDC_HIGHLIGHT2)->GetWindowText(text);
 	bool bChanged = false;
 	int32_t i	 = 0;
-	if (text.GetLength() > 1 &&
-		(text[0] == '0' && (text[1] == 'x' || text[i] == 'X')))
+	if (text.GetLength() > 1 && (text[0] == '0' && (text[1] == 'x' || text[i] == 'X')))
 		i = 2;
 	for (; i < text.GetLength(); ++i)
 	{
@@ -143,8 +139,7 @@ void UnitSettingsDlg::OnChangeBase()
 	GetDlgItem(IDC_BASE)->GetWindowText(text);
 	bool bChanged = false;
 	int32_t i	 = 0;
-	if (text.GetLength() > 1 &&
-		(text[0] == '0' && (text[1] == 'x' || text[i] == 'X')))
+	if (text.GetLength() > 1 && (text[0] == '0' && (text[1] == 'x' || text[i] == 'X')))
 		i = 2;
 	for (; i < text.GetLength(); ++i)
 	{
@@ -195,8 +190,7 @@ void UnitSettingsDlg::applyChanges()
 		int32_t indexInGroup = m_Mech.GetCurSel();
 		if (indexInGroup != -1)
 		{
-			for (UNIT_LIST::EIterator iter = units.Begin(); !iter.IsDone();
-				 iter++)
+			for (UNIT_LIST::EIterator iter = units.Begin(); !iter.IsDone(); iter++)
 			{
 				(*iter)->setAppearance(group, indexInGroup);
 			}
@@ -236,8 +230,7 @@ void UnitSettingsDlg::applyChanges()
 		index = _ttol(m_SquadEdit.GetBuffer(0));
 		if (1 != units.Count())
 		{
-			for (UNIT_LIST::EIterator iter = units.Begin(); !iter.IsDone();
-				 iter++)
+			for (UNIT_LIST::EIterator iter = units.Begin(); !iter.IsDone(); iter++)
 			{
 				(*iter)->setSquad(index);
 			}
@@ -365,10 +358,7 @@ HBRUSH UnitSettingsDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, uint32_t nCtlColor)
 			baseBrush.DeleteObject();
 		baseBrush.CreateSolidBrush(base);
 		pDC->SetBkColor(base);
-		if (((base & 0xff) + ((base & 0xff00) >> 8) +
-				((base & 0xff0000) >> 16)) /
-				3 <
-			85)
+		if (((base & 0xff) + ((base & 0xff00) >> 8) + ((base & 0xff0000) >> 16)) / 3 < 85)
 			pDC->SetTextColor(0x00ffffff);
 		return (HBRUSH)baseBrush.m_hObject;
 	}
@@ -385,10 +375,7 @@ HBRUSH UnitSettingsDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, uint32_t nCtlColor)
 			brush1.DeleteObject();
 		brush1.CreateSolidBrush(base);
 		pDC->SetBkColor(base);
-		if (((base & 0xff) + ((base & 0xff00) >> 8) +
-				((base & 0xff0000) >> 16)) /
-				3 <
-			85)
+		if (((base & 0xff) + ((base & 0xff00) >> 8) + ((base & 0xff0000) >> 16)) / 3 < 85)
 			pDC->SetTextColor(0x00ffffff);
 		return (HBRUSH)brush1.m_hObject;
 	}
@@ -405,10 +392,7 @@ HBRUSH UnitSettingsDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, uint32_t nCtlColor)
 			brush2.DeleteObject();
 		brush2.CreateSolidBrush(base);
 		pDC->SetBkColor(base);
-		if (((base & 0xff) + ((base & 0xff00) >> 8) +
-				((base & 0xff0000) >> 16)) /
-				3 <
-			85)
+		if (((base & 0xff) + ((base & 0xff00) >> 8) + ((base & 0xff0000) >> 16)) / 3 < 85)
 			pDC->SetTextColor(0x00ffffff);
 		return (HBRUSH)brush2.m_hObject;
 	}
@@ -422,14 +406,12 @@ void UnitSettingsDlg::OnSelchangeMech()
 	int32_t group		 = m_Group.GetCurSel();
 	group				 = m_Group.GetItemData(group);
 	int32_t indexInGroup = m_Mech.GetCurSel();
-	int32_t varCount =
-		EditorObjectMgr::instance()->getNumberOfVariants(group, indexInGroup);
-	PCSTR* VariantNames = 0;
+	int32_t varCount	 = EditorObjectMgr::instance()->getNumberOfVariants(group, indexInGroup);
+	PCSTR* VariantNames  = 0;
 	if (0 < varCount)
 	{
 		VariantNames = new PCSTR[varCount];
-		EditorObjectMgr::instance()->getVariantNames(
-			group, indexInGroup, VariantNames, varCount);
+		EditorObjectMgr::instance()->getVariantNames(group, indexInGroup, VariantNames, varCount);
 		for (size_t v = 0; v < varCount; ++v)
 		{
 			m_Variant.AddString(VariantNames[v]);
@@ -453,11 +435,9 @@ int32_t UnitSettingsDlg::getPossibilityIndex()
 		return 0;
 	}
 	int32_t i;
-	for (i = 0; i < (int32_t)pFirstPossibility->pAlternativeInstances->Count();
-		 i++)
+	for (i = 0; i < (int32_t)pFirstPossibility->pAlternativeInstances->Count(); i++)
 	{
-		if (pUnit ==
-			&(*(pFirstPossibility->pAlternativeInstances->Iterator(i))))
+		if (pUnit == &(*(pFirstPossibility->pAlternativeInstances->Iterator(i))))
 		{
 			return i + 1;
 		}
@@ -490,8 +470,7 @@ void UnitSettingsDlg::updateMemberVariables()
 	}
 	for (iter = units.Begin(); !iter.IsDone(); iter++)
 	{
-		if ((*iter)->getSelfRepairBehaviorEnabled() !=
-			pUnit->getSelfRepairBehaviorEnabled())
+		if ((*iter)->getSelfRepairBehaviorEnabled() != pUnit->getSelfRepairBehaviorEnabled())
 		{
 			m_SelfRepairBehavior = -1;
 			break;
@@ -593,8 +572,7 @@ void UnitSettingsDlg::updateMemberVariables()
 				// now we need to find the variant
 				m_Variant.ResetContent();
 				int32_t varCount =
-					EditorObjectMgr::instance()->getNumberOfVariants(
-						group, indexInGroup);
+					EditorObjectMgr::instance()->getNumberOfVariants(group, indexInGroup);
 				PCSTR* VariantNames = 0;
 				if (0 < varCount)
 				{

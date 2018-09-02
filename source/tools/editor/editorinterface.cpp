@@ -2,7 +2,7 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
-#include "stdafx.h"
+#include "stdinc.h"
 #include "EditorInterface.h"
 #include "dstd.h"
 
@@ -277,9 +277,7 @@ void Editor::init(PSTR loader)
 				{
 					resolved = true;
 					CFileDialog fileDlg(1, "pak", nullptr,
-						OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT |
-							OFN_NOCHANGEDIR,
-						szPAKFilter);
+						OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT | OFN_NOCHANGEDIR, szPAKFilter);
 					fileDlg.m_ofn.lpstrInitialDir = missionPath;
 					bOK							  = false;
 					while (!bOK)
@@ -313,8 +311,7 @@ void Editor::init(PSTR loader)
 		if (!land)
 		{
 			land = new Terrain();
-			land->init(
-				0, (PacketFile*)nullptr, EDITOR_VISIBLE_VERTICES, crap, 100);
+			land->init(0, (PacketFile*)nullptr, EDITOR_VISIBLE_VERTICES, crap, 100);
 		}
 	}
 	if (bOK)
@@ -348,8 +345,8 @@ void Editor::resaveAll(void)
 		eye = new EditorCamera;
 	// ARM
 	CoInitialize(nullptr);
-	armProvider = CreateProviderEngine("MC2Editor", versionStamp);
-	silentMode  = true; // shut up the warnings from tgl export
+	armProvider				   = CreateProviderEngine("MC2Editor", versionStamp);
+	silentMode				   = true; // shut up the warnings from tgl export
 	char campaignFiles[2][256] = {0};
 	strcpy(campaignFiles[0], "Data\\Campaign\\campaign.fit");
 	strcpy(campaignFiles[1], "Data\\Campaign\\tutorial.fit");
@@ -357,14 +354,13 @@ void Editor::resaveAll(void)
 	{
 		CCampaignData campaignData;
 		campaignData.Read(campaignFiles[i]);
-		IProviderAssetPtr campaignAssetPtr = armProvider->OpenAsset(
-			campaignFiles[i], AssetType_Physical, ProviderType_Primary);
+		IProviderAssetPtr campaignAssetPtr =
+			armProvider->OpenAsset(campaignFiles[i], AssetType_Physical, ProviderType_Primary);
 		campaignAssetPtr->AddProperty("Type", "Campaign");
 		int32_t count = 0;
 		char buf[512] = {0};
 		// for all groups
-		for (EList<CGroupData, CGroupData>::EConstIterator iter =
-				 campaignData.m_GroupList.Begin();
+		for (EList<CGroupData, CGroupData>::EConstIterator iter = campaignData.m_GroupList.Begin();
 			 !iter.IsDone(); count++, iter++)
 		{
 			CGroupData groupData = (*iter);
@@ -380,8 +376,8 @@ void Editor::resaveAll(void)
 			// Add a relationship from the campaign to the virtual group
 			campaignAssetPtr->AddRelationship("Group", buf);
 			// Open the virtual asset
-			IProviderAssetPtr groupAssetPtr = armProvider->OpenAsset(
-				buf, AssetType_Virtual, ProviderType_Primary);
+			IProviderAssetPtr groupAssetPtr =
+				armProvider->OpenAsset(buf, AssetType_Virtual, ProviderType_Primary);
 			groupAssetPtr->AddProperty("Type", "Mission Group");
 			// Add all the relationships
 			if (groupData.m_OperationFile != "")
@@ -433,8 +429,7 @@ void Editor::resaveAll(void)
 					strcat(buf, ".fit");
 					IProviderRelationshipPtr rel =
 						groupAssetPtr->AddRelationship("PurchaseFile", buf);
-					rel->AddProperty(
-						"Mission", missionData.m_MissionFile.GetBuffer());
+					rel->AddProperty("Mission", missionData.m_MissionFile.GetBuffer());
 				}
 			}
 			groupAssetPtr->Close();
@@ -464,8 +459,7 @@ void Editor::resaveAll(void)
 		if ((findResult.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) == 0)
 		{
 			char baseName[1024];
-			_splitpath(
-				findResult.cFileName, nullptr, nullptr, baseName, nullptr);
+			_splitpath(findResult.cFileName, nullptr, nullptr, baseName, nullptr);
 			FullPathFileName pakName;
 			pakName.init(missionPath, baseName, ".pak");
 			FullPathFileName fitName;
@@ -589,11 +583,10 @@ EditorInterface::EditorInterface()
 	hCursor											 = 0;
 	bObjectSelectOnlyMode							 = false;
 	menus											 = nullptr;
-	m_hAccelTable									 = LoadAccelerators(
-		   AfxGetInstanceHandle(), MAKEINTRESOURCE(IDR_ACCELERATOR1));
-	m_hSplashBitMap			= nullptr;
-	m_hBusyCursor			= nullptr;
-	m_AppIsBusy				= 0;
+	m_hAccelTable   = LoadAccelerators(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDR_ACCELERATOR1));
+	m_hSplashBitMap = nullptr;
+	m_hBusyCursor   = nullptr;
+	m_AppIsBusy		= 0;
 	m_bInRunGameOSLogicCall = false;
 	rightDrag				= 0;
 }
@@ -629,8 +622,7 @@ void EditorInterface::terminate()
 		curBrush = nullptr;
 		if (EditorObjectMgr::instance())
 		{
-			int32_t count =
-				EditorObjectMgr::instance()->getBuildingGroupCount();
+			int32_t count = EditorObjectMgr::instance()->getBuildingGroupCount();
 			for (size_t i = 0; i < count + 1; ++i)
 			{
 				delete menus[i];
@@ -672,8 +664,7 @@ void EditorInterface::init(PCSTR fileName)
 	result = loader.readIdFloat("MouseDragThreshold", missionDragThreshold);
 	gosASSERT(result == NO_ERROR);
 	float missionDblClkThreshold;
-	result =
-		loader.readIdFloat("MouseDoubleClickThreshold", missionDblClkThreshold);
+	result = loader.readIdFloat("MouseDoubleClickThreshold", missionDblClkThreshold);
 	gosASSERT(result == NO_ERROR);
 	addBuildingsToNewMenu();
 	curBrush = new SelectionBrush(false, -1);
@@ -719,8 +710,7 @@ void EditorInterface::addBuildingsToNewMenu()
 				pChildMenu->GetMenuString(k, oldName, MF_BYPOSITION);
 				if (oldName > pBuildingNames[j])
 				{
-					pChildMenu->InsertMenu(
-						k, MF_BYPOSITION, id, pBuildingNames[j]);
+					pChildMenu->InsertMenu(k, MF_BYPOSITION, id, pBuildingNames[j]);
 					bAdded = 1;
 					break;
 				}
@@ -736,15 +726,14 @@ void EditorInterface::addBuildingsToNewMenu()
 			pMenu->GetMenuString(k, oldName, MF_BYPOSITION);
 			if (oldName > pNames[i])
 			{
-				pMenu->InsertMenu(k, MF_BYPOSITION | MF_POPUP,
-					(uint32_t)pChildMenu->m_hMenu, pNames[i]);
+				pMenu->InsertMenu(
+					k, MF_BYPOSITION | MF_POPUP, (uint32_t)pChildMenu->m_hMenu, pNames[i]);
 				bAdded = 1;
 				break;
 			}
 		}
 		if (!bAdded)
-			pMenu->AppendMenu(
-				MF_POPUP, (uint32_t)pChildMenu->m_hMenu, pNames[i]);
+			pMenu->AppendMenu(MF_POPUP, (uint32_t)pChildMenu->m_hMenu, pNames[i]);
 		free(pBuildingNames);
 	}
 	AfxGetMainWnd()->GetMenu()->InsertMenu(
@@ -757,8 +746,7 @@ void EditorInterface::addBuildingsToNewMenu()
 	for (i = groupCount; i < numTerrains + groupCount; i++)
 	{
 		char buffer[256];
-		int32_t nameID =
-			land->terrainTextures->getTextureNameID(i - groupCount);
+		int32_t nameID	= land->terrainTextures->getTextureNameID(i - groupCount);
 		bool continueFlag = true;
 		switch (nameID)
 		{
@@ -776,8 +764,7 @@ void EditorInterface::addBuildingsToNewMenu()
 		};
 		if (continueFlag)
 			continue;
-		cLoadString(land->terrainTextures->getTextureNameID(i - groupCount),
-			buffer, 256);
+		cLoadString(land->terrainTextures->getTextureNameID(i - groupCount), buffer, 256);
 		int32_t count = pChildMenu->GetMenuItemCount();
 		bool bPlaced  = 0;
 		CString newStr(buffer);
@@ -787,18 +774,17 @@ void EditorInterface::addBuildingsToNewMenu()
 			pChildMenu->GetMenuString(j, tmp, MF_BYPOSITION);
 			if (tmp > newStr)
 			{
-				pChildMenu->InsertMenu(j, MF_BYPOSITION,
-					ID_TERRAINS_BLUEWATER + i - groupCount, buffer);
+				pChildMenu->InsertMenu(
+					j, MF_BYPOSITION, ID_TERRAINS_BLUEWATER + i - groupCount, buffer);
 				bPlaced = 1;
 				break;
 			}
 		}
 		if (!bPlaced)
-			pChildMenu->AppendMenu(
-				MF_STRING, ID_TERRAINS_BLUEWATER + i - groupCount, buffer);
+			pChildMenu->AppendMenu(MF_STRING, ID_TERRAINS_BLUEWATER + i - groupCount, buffer);
 	}
-	AfxGetMainWnd()->GetMenu()->InsertMenu(4, MF_BYPOSITION | MF_POPUP,
-		(uint32_t)pChildMenu->m_hMenu, TerrainHeader);
+	AfxGetMainWnd()->GetMenu()->InsertMenu(
+		4, MF_BYPOSITION | MF_POPUP, (uint32_t)pChildMenu->m_hMenu, TerrainHeader);
 	AfxGetMainWnd()->DrawMenuBar();
 	free(pNames);
 }
@@ -824,8 +810,7 @@ void EditorInterface::handleNewMenuMessage(int32_t specificMessage)
 		PaintTerrain(specificMessage - ID_TERRAINS_BLUEWATER);
 		return;
 	}
-	else if (specificMessage >= ID_ALIGNMENT_TEAM1 &&
-			 specificMessage <= ID_ALIGNMENT_TEAM1 + 9)
+	else if (specificMessage >= ID_ALIGNMENT_TEAM1 && specificMessage <= ID_ALIGNMENT_TEAM1 + 9)
 	{
 		Alignment(specificMessage);
 	}
@@ -1226,20 +1211,16 @@ int32_t EditorInterface::PromptAndSaveIfNecessary()
 	while (!endFlag)
 	{
 		endFlag = true;
-		if (EditorInterface::instance() &&
-			EditorInterface::instance()->ThisIsInitialized() &&
+		if (EditorInterface::instance() && EditorInterface::instance()->ThisIsInitialized() &&
 			EditorData::instance)
 		{
-			if (EditorInterface::instance()
-					->undoMgr.ThereHasBeenANetChangeFromWhenLastSaved())
+			if (EditorInterface::instance()->undoMgr.ThereHasBeenANetChangeFromWhenLastSaved())
 			{
-				res = AfxMessageBox(
-					IDS_DO_YOU_WANT_TO_SAVE_YOUR_CHANGES, MB_YESNOCANCEL);
+				res = AfxMessageBox(IDS_DO_YOU_WANT_TO_SAVE_YOUR_CHANGES, MB_YESNOCANCEL);
 			}
 			else if (EditorData::instance->MissionNeedsSaving())
 			{
-				res = AfxMessageBox(
-					IDS_DO_YOU_WANT_TO_SAVE_THIS_MISSION, MB_YESNOCANCEL);
+				res = AfxMessageBox(IDS_DO_YOU_WANT_TO_SAVE_THIS_MISSION, MB_YESNOCANCEL);
 			}
 		}
 		if (IDYES == res)
@@ -1277,8 +1258,7 @@ int32_t EditorInterface::New()
 			{
 				SetBusyMode();
 				eye->reset();
-				bOK = EditorData::initTerrainFromTGA(
-					msdlg.mapSize, 0, 0, dlg.terrain);
+				bOK = EditorData::initTerrainFromTGA(msdlg.mapSize, 0, 0, dlg.terrain);
 				UnsetBusyMode();
 			}
 			else
@@ -1304,8 +1284,8 @@ int32_t EditorInterface::FileOpen()
 	{
 		return false;
 	}
-	CFileDialog fileDlg(1, "pak", nullptr,
-		OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT | OFN_NOCHANGEDIR, szPAKFilter);
+	CFileDialog fileDlg(
+		1, "pak", nullptr, OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT | OFN_NOCHANGEDIR, szPAKFilter);
 	fileDlg.m_ofn.lpstrInitialDir = missionPath;
 	if (IDOK == fileDlg.DoModal())
 	{
@@ -1398,9 +1378,7 @@ void EditorInterface::handleMouseMove(int32_t PosX, int32_t PosY)
 	char buffer[256];
 	sprintf(buffer, "%.3f", distance);
 	// need to put this value in the appropriate place.
-	((MainFrame*)AfxGetMainWnd())
-		->m_wndDlgBar.GetDlgItem(IDC_DISTANCE_EDIT)
-		->SetWindowText(buffer);
+	((MainFrame*)AfxGetMainWnd())->m_wndDlgBar.GetDlgItem(IDC_DISTANCE_EDIT)->SetWindowText(buffer);
 	// IF there is a selected object, find distance to it from camera.
 	float eyeDistance	  = 0.0f;
 	int32_t selectionCount = EditorObjectMgr::instance()->getSelectionCount();
@@ -1408,9 +1386,8 @@ void EditorInterface::handleMouseMove(int32_t PosX, int32_t PosY)
 	{
 		EditorObjectMgr::EDITOR_OBJECT_LIST selectedObjectsList =
 			EditorObjectMgr::instance()->getSelectedObjectList();
-		EditorObjectMgr::EDITOR_OBJECT_LIST::EIterator it =
-			selectedObjectsList.Begin();
-		const EditorObject* pInfo = (*it);
+		EditorObjectMgr::EDITOR_OBJECT_LIST::EIterator it = selectedObjectsList.Begin();
+		const EditorObject* pInfo						  = (*it);
 		if (pInfo)
 		{
 			Stuff::Point3D eyePosition(eye->getCameraOrigin());
@@ -1472,8 +1449,7 @@ void EditorInterface::handleKeyDown(int32_t Key)
 			dragging = true;
 		}
 	}
-	if (currentBrushID >= IDS_OBJECT_200 &&
-		currentBrushID <= IDS_OBJECT_200 + 600)
+	if (currentBrushID >= IDS_OBJECT_200 && currentBrushID <= IDS_OBJECT_200 + 600)
 	{
 		if (Key == KEY_LBRACKET)
 		{
@@ -1577,32 +1553,21 @@ void EditorInterface::handleKeyDown(int32_t Key)
 	}
 	//------------------------
 	// Keyboard Checks First
-	bool scrollUp = (GetAsyncKeyState(KEY_UP) && !shiftDn && !ctrlDn && !altDn);
-	bool scrollDn =
-		(GetAsyncKeyState(KEY_DOWN) && !shiftDn && !ctrlDn && !altDn);
-	bool scrollLf =
-		(GetAsyncKeyState(KEY_LEFT) && !shiftDn && !ctrlDn && !altDn);
-	bool scrollRt =
-		(GetAsyncKeyState(KEY_RIGHT) && !shiftDn && !ctrlDn && !altDn);
-	bool zoomOut =
-		(GetAsyncKeyState(KEY_SUBTRACT) && !shiftDn && !ctrlDn && !altDn);
-	bool zoomIn = (GetAsyncKeyState(KEY_ADD) && !shiftDn && !ctrlDn && !altDn);
-	bool rotateLf =
-		(GetAsyncKeyState(KEY_LEFT) && shiftDn && !ctrlDn && !altDn);
-	bool rotateRt =
-		(GetAsyncKeyState(KEY_RIGHT) && shiftDn && !ctrlDn && !altDn);
-	bool rotateLightLf =
-		(GetAsyncKeyState(KEY_LEFT) && !shiftDn && ctrlDn && !altDn);
-	bool rotateLightRt =
-		(GetAsyncKeyState(KEY_RIGHT) && !shiftDn && ctrlDn && !altDn);
-	bool rotateLightUp =
-		(GetAsyncKeyState(KEY_UP) && !shiftDn && ctrlDn && !altDn);
-	bool rotateLightDn =
-		(GetAsyncKeyState(KEY_DOWN) && !shiftDn && ctrlDn && !altDn);
-	bool tiltUp = (GetAsyncKeyState(KEY_DOWN) && shiftDn && !ctrlDn && !altDn);
-	bool tiltDn = (GetAsyncKeyState(KEY_UP) && shiftDn && !ctrlDn && !altDn);
-	bool tiltNormal =
-		(GetAsyncKeyState(KEY_HOME) && !shiftDn && !ctrlDn && !altDn);
+	bool scrollUp	  = (GetAsyncKeyState(KEY_UP) && !shiftDn && !ctrlDn && !altDn);
+	bool scrollDn	  = (GetAsyncKeyState(KEY_DOWN) && !shiftDn && !ctrlDn && !altDn);
+	bool scrollLf	  = (GetAsyncKeyState(KEY_LEFT) && !shiftDn && !ctrlDn && !altDn);
+	bool scrollRt	  = (GetAsyncKeyState(KEY_RIGHT) && !shiftDn && !ctrlDn && !altDn);
+	bool zoomOut	   = (GetAsyncKeyState(KEY_SUBTRACT) && !shiftDn && !ctrlDn && !altDn);
+	bool zoomIn		   = (GetAsyncKeyState(KEY_ADD) && !shiftDn && !ctrlDn && !altDn);
+	bool rotateLf	  = (GetAsyncKeyState(KEY_LEFT) && shiftDn && !ctrlDn && !altDn);
+	bool rotateRt	  = (GetAsyncKeyState(KEY_RIGHT) && shiftDn && !ctrlDn && !altDn);
+	bool rotateLightLf = (GetAsyncKeyState(KEY_LEFT) && !shiftDn && ctrlDn && !altDn);
+	bool rotateLightRt = (GetAsyncKeyState(KEY_RIGHT) && !shiftDn && ctrlDn && !altDn);
+	bool rotateLightUp = (GetAsyncKeyState(KEY_UP) && !shiftDn && ctrlDn && !altDn);
+	bool rotateLightDn = (GetAsyncKeyState(KEY_DOWN) && !shiftDn && ctrlDn && !altDn);
+	bool tiltUp		   = (GetAsyncKeyState(KEY_DOWN) && shiftDn && !ctrlDn && !altDn);
+	bool tiltDn		   = (GetAsyncKeyState(KEY_UP) && shiftDn && !ctrlDn && !altDn);
+	bool tiltNormal	= (GetAsyncKeyState(KEY_HOME) && !shiftDn && !ctrlDn && !altDn);
 	// Update the Camera based on Input
 	if (scrollLf)
 	{
@@ -1697,9 +1662,9 @@ void EditorInterface::handleKeyDown(int32_t Key)
 		eye->rotateLightDown(rotationInc);
 	}
 	lastKey = Key;
-	if (scrollUp || scrollDn || scrollLf || scrollRt || zoomOut || zoomIn ||
-		rotateLf || rotateRt || rotateLightLf || rotateLightRt ||
-		rotateLightUp || rotateLightDn || tiltUp || tiltDn || tiltNormal)
+	if (scrollUp || scrollDn || scrollLf || scrollRt || zoomOut || zoomIn || rotateLf || rotateRt ||
+		rotateLightLf || rotateLightRt || rotateLightUp || rotateLightDn || tiltUp || tiltDn ||
+		tiltNormal)
 	{
 		SafeRunGameOSLogic();
 	}
@@ -1712,9 +1677,8 @@ void EditorInterface::handleKeyDown(int32_t Key)
 	{
 		EditorObjectMgr::EDITOR_OBJECT_LIST selectedObjectsList =
 			EditorObjectMgr::instance()->getSelectedObjectList();
-		EditorObjectMgr::EDITOR_OBJECT_LIST::EIterator it =
-			selectedObjectsList.Begin();
-		const EditorObject* pInfo = (*it);
+		EditorObjectMgr::EDITOR_OBJECT_LIST::EIterator it = selectedObjectsList.Begin();
+		const EditorObject* pInfo						  = (*it);
 		if (pInfo)
 		{
 			Stuff::Point3D eyePosition(eye->getCameraOrigin());
@@ -1746,20 +1710,11 @@ void EditorInterface::KillCurBrush()
 	ChangeCursor(IDC_MC2ARROW);
 }
 
-int32_t EditorInterface::PaintDirtRoad()
-{
-	return PaintOverlay(DIRT_ROAD, PAINT_OVERLAY_DIRT);
-}
+int32_t EditorInterface::PaintDirtRoad() { return PaintOverlay(DIRT_ROAD, PAINT_OVERLAY_DIRT); }
 
-int32_t EditorInterface::PaintRocks()
-{
-	return PaintOverlay(ROUGH, PAINT_OVERLAY_ROUGH);
-}
+int32_t EditorInterface::PaintRocks() { return PaintOverlay(ROUGH, PAINT_OVERLAY_ROUGH); }
 
-int32_t EditorInterface::PaintPaved()
-{
-	return PaintOverlay(PAVED_ROAD, PAINT_OVERLAY_PAVED);
-}
+int32_t EditorInterface::PaintPaved() { return PaintOverlay(PAVED_ROAD, PAINT_OVERLAY_PAVED); }
 
 int32_t EditorInterface::PaintTwoLaneDirtRoad()
 {
@@ -1771,15 +1726,9 @@ int32_t EditorInterface::PaintDamagedRoad()
 	return PaintOverlay(DAMAGED_ROAD, PAINT_OVERLAY_PAVED);
 }
 
-int32_t EditorInterface::PaintRunway()
-{
-	return PaintOverlay(RUNWAY, PAINT_OVERLAY_PAVED);
-}
+int32_t EditorInterface::PaintRunway() { return PaintOverlay(RUNWAY, PAINT_OVERLAY_PAVED); }
 
-int32_t EditorInterface::PaintBridge()
-{
-	return PaintOverlay(OBRIDGE, PAINT_OVERLAY_PAVED);
-}
+int32_t EditorInterface::PaintBridge() { return PaintOverlay(OBRIDGE, PAINT_OVERLAY_PAVED); }
 
 int32_t EditorInterface::PaintDamagedBridge()
 {
@@ -1817,8 +1766,8 @@ int32_t EditorInterface::PaintTerrain(int32_t type)
 int32_t EditorInterface::SaveAs()
 {
 	int32_t retVal = IDOK;
-	CFileDialog fileDlg(0, "pak", nullptr,
-		OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT | OFN_NOCHANGEDIR, szPAKFilter);
+	CFileDialog fileDlg(
+		0, "pak", nullptr, OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT | OFN_NOCHANGEDIR, szPAKFilter);
 	{
 		/* if the mission directory doesn't exist, we attempt to create it */
 		int32_t curDirStrSize = GetCurrentDirectory(0, nullptr);
@@ -1857,8 +1806,7 @@ int32_t EditorInterface::SaveAs()
 		char name2[1024];
 		_splitpath(pFile, nullptr, nullptr, name2, nullptr);
 		if (EditorData::instance->getMapName())
-			_splitpath(EditorData::instance->getMapName(), nullptr, nullptr,
-				name, nullptr);
+			_splitpath(EditorData::instance->getMapName(), nullptr, nullptr, name, nullptr);
 		else
 			strcpy(name, name2);
 		FullPathFileName oldBaseFile;
@@ -1952,8 +1900,7 @@ int32_t EditorInterface::paintBuildings(int32_t message)
 			int32_t alignment = EDITOR_TEAM2;
 			for (size_t j = 0; j < 9; ++j)
 			{
-				if (GetParent()->GetMenu()->GetMenuState(
-						ID_ALIGNMENT_TEAM1 + j, MF_BYCOMMAND) &
+				if (GetParent()->GetMenu()->GetMenuState(ID_ALIGNMENT_TEAM1 + j, MF_BYCOMMAND) &
 					MF_CHECKED)
 				{
 					if (j != 8)
@@ -1983,8 +1930,7 @@ int32_t EditorInterface::paintBuildings(int32_t message)
 
 int32_t EditorInterface::Erase()
 {
-	if (selecting &&
-		(EditorObjectMgr::instance()->hasSelection() || land->hasSelection()))
+	if (selecting && (EditorObjectMgr::instance()->hasSelection() || land->hasSelection()))
 	{
 		Eraser tmp;
 		Action* pRetAction = tmp.applyToSelection();
@@ -2090,13 +2036,12 @@ void EditorInterface::render()
 			int32_t PosX = (int32_t)pt.x;
 			int32_t PosY = (int32_t)pt.y;
 			// scroll if painting
-			int32_t scrollLf  = (PosX <= (screenScrollLeft));
-			int32_t scrollRt  = (PosX >= (Width() - screenScrollRight));
-			int32_t scrollUp  = (PosY <= (screenScrollUp));
-			int32_t scrollDn  = (PosY >= (Height() - screenScrollDown));
-			float frameFactor = frameLength / baseFrameLength;
-			float scrollFactor =
-				scrollInc / eye->getScaleFactor() * frameFactor;
+			int32_t scrollLf   = (PosX <= (screenScrollLeft));
+			int32_t scrollRt   = (PosX >= (Width() - screenScrollRight));
+			int32_t scrollUp   = (PosY <= (screenScrollUp));
+			int32_t scrollDn   = (PosY >= (Height() - screenScrollDown));
+			float frameFactor  = frameLength / baseFrameLength;
+			float scrollFactor = scrollInc / eye->getScaleFactor() * frameFactor;
 			if (scrollLf)
 			{
 				eye->moveLeft(scrollFactor);
@@ -2123,8 +2068,8 @@ void EditorInterface::render()
 
 int32_t EditorInterface::NewHeightMap()
 {
-	CFileDialog fileDlg(1, "tga", nullptr,
-		OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT | OFN_NOCHANGEDIR, szTGAFilter);
+	CFileDialog fileDlg(
+		1, "tga", nullptr, OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT | OFN_NOCHANGEDIR, szTGAFilter);
 	fileDlg.m_ofn.lpstrInitialDir = terrainPath;
 	bool endFlag				  = false;
 	while (!endFlag)
@@ -2164,8 +2109,8 @@ int32_t EditorInterface::NewHeightMap()
 			if (IDOK == htDlg.DoModal())
 			{
 				SetBusyMode();
-				chkStatus = EditorData::reassignHeightsFromTGA(
-					pFile, htDlg.GetMin(), htDlg.GetMax());
+				chkStatus =
+					EditorData::reassignHeightsFromTGA(pFile, htDlg.GetMin(), htDlg.GetMax());
 				UnsetBusyMode();
 			}
 			if (chkStatus)
@@ -2200,8 +2145,7 @@ int32_t EditorInterface::RefractalizeTerrain(int32_t Threshold)
 			Terrain::fractalNoise = MIN_NOISE;
 		if (Terrain::terrainTextures2)
 			Terrain::terrainTextures2->refractalizeBaseMesh(
-				Terrain::terrainName, Terrain::fractalThreshold,
-				Terrain::fractalNoise);
+				Terrain::terrainName, Terrain::fractalThreshold, Terrain::fractalNoise);
 		UnsetBusyMode();
 	}
 	return true;
@@ -2224,10 +2168,9 @@ int32_t EditorInterface::Select()
 	{
 		KillCurBrush();
 		int32_t radius =
-			GetParent()->GetMenu()->GetMenuState(ID_DRAGNORMAL, MF_BYCOMMAND) &
-					MF_CHECKED
-				? -1
-				: smoothRadius;
+			GetParent()->GetMenu()->GetMenuState(ID_DRAGNORMAL, MF_BYCOMMAND) & MF_CHECKED
+			? -1
+			: smoothRadius;
 		curBrush		   = new SelectionBrush(false, radius);
 		currentBrushID	 = IDS_SELECT;
 		currentBrushMenuID = ID_OTHER_SELECT;
@@ -2285,12 +2228,12 @@ int32_t EditorInterface::SelectSlopes()
 	SelectSlopeDialog dlg;
 	if (dlg.DoModal() == IDOK)
 	{
-		float minAngle  = dlg.m_MinEdit;
-		float maxAngle  = dlg.m_MaxEdit;
-		float minHeight = float(fabs(float(
-			tan(minAngle * float(PI) / 180.f) * land->worldUnitsPerVertex)));
-		float maxHeight = float(fabs(float(
-			tan(maxAngle * float(PI) / 180.f) * land->worldUnitsPerVertex)));
+		float minAngle = dlg.m_MinEdit;
+		float maxAngle = dlg.m_MaxEdit;
+		float minHeight =
+			float(fabs(float(tan(minAngle * float(PI) / 180.f) * land->worldUnitsPerVertex)));
+		float maxHeight =
+			float(fabs(float(tan(maxAngle * float(PI) / 180.f) * land->worldUnitsPerVertex)));
 		float centerElv;
 		float tmpElv;
 		int32_t left;
@@ -2302,23 +2245,19 @@ int32_t EditorInterface::SelectSlopes()
 		{
 			for (size_t i = 0; i < land->realVerticesMapSide; ++i)
 			{
-				left   = i > 0 ? i - 1 : 0;
-				right  = i < land->realVerticesMapSide ? i + 1 : i;
-				top	= j > 0 ? j - 1 : 0;
-				bottom = j < land->realVerticesMapSide ? j + 1 : j;
-				centerElv =
-					land->getVertexHeight(j * land->realVerticesMapSide + i);
-				tmpElv = land->getVertexHeight(
-					top * land->realVerticesMapSide + left);
-				if (fabs(tmpElv - centerElv) >= minHeight &&
-					fabs(tmpElv - centerElv) <= maxHeight)
+				left	  = i > 0 ? i - 1 : 0;
+				right	 = i < land->realVerticesMapSide ? i + 1 : i;
+				top		  = j > 0 ? j - 1 : 0;
+				bottom	= j < land->realVerticesMapSide ? j + 1 : j;
+				centerElv = land->getVertexHeight(j * land->realVerticesMapSide + i);
+				tmpElv	= land->getVertexHeight(top * land->realVerticesMapSide + left);
+				if (fabs(tmpElv - centerElv) >= minHeight && fabs(tmpElv - centerElv) <= maxHeight)
 				{
 					land->selectVertex(j, i);
 				}
 				else
 				{
-					tmpElv = land->getVertexHeight(
-						top * land->realVerticesMapSide + right);
+					tmpElv = land->getVertexHeight(top * land->realVerticesMapSide + right);
 					if (fabs(tmpElv - centerElv) >= minHeight &&
 						fabs(tmpElv - centerElv) <= maxHeight)
 					{
@@ -2326,8 +2265,7 @@ int32_t EditorInterface::SelectSlopes()
 					}
 					else
 					{
-						tmpElv = land->getVertexHeight(
-							bottom * land->realVerticesMapSide + right);
+						tmpElv = land->getVertexHeight(bottom * land->realVerticesMapSide + right);
 						if (fabs(tmpElv - centerElv) >= minHeight &&
 							fabs(tmpElv - centerElv) <= maxHeight)
 						{
@@ -2335,8 +2273,8 @@ int32_t EditorInterface::SelectSlopes()
 						}
 						else
 						{
-							tmpElv = land->getVertexHeight(
-								bottom * land->realVerticesMapSide + left);
+							tmpElv =
+								land->getVertexHeight(bottom * land->realVerticesMapSide + left);
 							if (fabs(tmpElv - centerElv) >= minHeight &&
 								fabs(tmpElv - centerElv) <= maxHeight)
 							{
@@ -2365,8 +2303,7 @@ int32_t EditorInterface::SelectAltitude()
 		{
 			for (size_t i = 0; i < land->realVerticesMapSide; ++i)
 			{
-				centerElv =
-					land->getVertexHeight(j * land->realVerticesMapSide + i);
+				centerElv = land->getVertexHeight(j * land->realVerticesMapSide + i);
 				if ((centerElv >= minHeight) && (centerElv <= maxHeight))
 				{
 					land->selectVertex(j, i);
@@ -2382,11 +2319,9 @@ int32_t EditorInterface::SelectTerrainType()
 {
 	SelectTerrainTypeDlg dlg;
 	dlg.SelectedTerrainType(-1);
-	if ((dlg.DoModal() == IDOK) &&
-		(ID_TERRAINS_BLUEWATER <= dlg.SelectedTerrainType()))
+	if ((dlg.DoModal() == IDOK) && (ID_TERRAINS_BLUEWATER <= dlg.SelectedTerrainType()))
 	{
-		cint32_t selectedTerrainType =
-			dlg.SelectedTerrainType() - ID_TERRAINS_BLUEWATER;
+		cint32_t selectedTerrainType = dlg.SelectedTerrainType() - ID_TERRAINS_BLUEWATER;
 		land->unselectAll();
 		for (size_t j = 0; j < land->realVerticesMapSide; ++j)
 		{
@@ -2432,9 +2367,8 @@ int32_t EditorInterface::Fog()
 	dlg.m_end   = eye->fogFull;
 	if (IDOK == dlg.DoModal())
 	{
-		eye->dayFogColor = ((uint32_t)dlg.m_blue) +
-						   (((uint32_t)dlg.m_green) << 8) +
-						   (((uint32_t)dlg.m_red) << 16);
+		eye->dayFogColor =
+			((uint32_t)dlg.m_blue) + (((uint32_t)dlg.m_green) << 8) + (((uint32_t)dlg.m_red) << 16);
 		eye->fogColor = eye->dayFogColor;
 		eye->fogStart = dlg.m_start;
 		eye->fogFull  = dlg.m_end;
@@ -2493,10 +2427,8 @@ int32_t EditorInterface::DragSmooth()
 	{
 		currentBrushID	 = -1;
 		currentBrushMenuID = -1;
-		GetParent()->GetMenu()->CheckMenuItem(
-			ID_DRAGSMOOTH, MF_BYCOMMAND | MF_CHECKED);
-		GetParent()->GetMenu()->CheckMenuItem(
-			ID_DRAGNORMAL, MF_BYCOMMAND | MF_UNCHECKED);
+		GetParent()->GetMenu()->CheckMenuItem(ID_DRAGSMOOTH, MF_BYCOMMAND | MF_CHECKED);
+		GetParent()->GetMenu()->CheckMenuItem(ID_DRAGNORMAL, MF_BYCOMMAND | MF_UNCHECKED);
 		Select();
 	}
 	return true;
@@ -2507,10 +2439,8 @@ int32_t EditorInterface::DragRough()
 	{
 		currentBrushID	 = -1;
 		currentBrushMenuID = -1;
-		GetParent()->GetMenu()->CheckMenuItem(
-			ID_DRAGSMOOTH, MF_BYCOMMAND | MF_UNCHECKED);
-		GetParent()->GetMenu()->CheckMenuItem(
-			ID_DRAGNORMAL, MF_BYCOMMAND | MF_CHECKED);
+		GetParent()->GetMenu()->CheckMenuItem(ID_DRAGSMOOTH, MF_BYCOMMAND | MF_UNCHECKED);
+		GetParent()->GetMenu()->CheckMenuItem(ID_DRAGNORMAL, MF_BYCOMMAND | MF_CHECKED);
 		Select();
 	}
 	return true;
@@ -2540,8 +2470,8 @@ int32_t EditorInterface::AssignElevation()
 				{
 					if (land->isVertexSelected(j, i))
 					{
-						land->setVertexHeight(j * land->realVerticesMapSide + i,
-							(float)dlg.GetVal());
+						land->setVertexHeight(
+							j * land->realVerticesMapSide + i, (float)dlg.GetVal());
 					}
 				}
 			}
@@ -2576,8 +2506,7 @@ int32_t EditorInterface::SmoothRadius()
 int32_t EditorInterface::Alignment(int32_t specific)
 {
 	for (size_t i = 0; i < 9; ++i)
-		GetParent()->GetMenu()->CheckMenuItem(
-			ID_ALIGNMENT_TEAM1 + i, MF_BYCOMMAND | MF_UNCHECKED);
+		GetParent()->GetMenu()->CheckMenuItem(ID_ALIGNMENT_TEAM1 + i, MF_BYCOMMAND | MF_UNCHECKED);
 	GetParent()->GetMenu()->CheckMenuItem(specific, MF_BYCOMMAND | MF_CHECKED);
 	if (currentBrushID >= IDS_OBJECT_200 && currentBrushID <= 30800)
 	{
@@ -2591,8 +2520,8 @@ int32_t EditorInterface::Alignment(int32_t specific)
 int32_t EditorInterface::SaveHeightMap()
 {
 	CreateDirectory(terrainPath, nullptr);
-	CFileDialog fileDlg(0, "tga", nullptr,
-		OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT | OFN_NOCHANGEDIR, szTGAFilter);
+	CFileDialog fileDlg(
+		0, "tga", nullptr, OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT | OFN_NOCHANGEDIR, szTGAFilter);
 	fileDlg.m_ofn.lpstrInitialDir = terrainPath;
 	if (IDOK == fileDlg.DoModal())
 	{
@@ -2614,80 +2543,60 @@ int32_t EditorInterface::SaveHeightMap()
 int32_t EditorInterface::MissionSettings()
 {
 	MissionSettingsDlg dlg;
-	dlg.m_MissionNameUnlocalizedText =
-		EditorData::instance->MissionName().Data();
-	dlg.m_MissionNameUseResourceString =
-		EditorData::instance->MissionNameUseResourceString();
-	dlg.m_MissionNameResourceStringID =
-		EditorData::instance->MissionNameResourceStringID();
-	dlg.m_AuthorEdit		   = EditorData::instance->Author().Data();
-	dlg.m_BlurbUnlocalizedText = EditorData::instance->Blurb().Data();
-	dlg.m_BlurbUseResourceString =
-		EditorData::instance->BlurbUseResourceString();
-	dlg.m_BlurbResourceStringID = EditorData::instance->BlurbResourceStringID();
-	dlg.m_Blurb2UnlocalizedText = EditorData::instance->Blurb2().Data();
-	dlg.m_Blurb2UseResourceString =
-		EditorData::instance->Blurb2UseResourceString();
-	dlg.m_Blurb2ResourceStringID =
-		EditorData::instance->Blurb2ResourceStringID();
-	dlg.m_TimeLimit				= EditorData::instance->TimeLimit();
-	dlg.m_DropWeightLimit		= EditorData::instance->DropWeightLimit();
-	dlg.m_InitialResourcePoints = EditorData::instance->InitialResourcePoints();
-	dlg.m_SinglePlayerCheck		= (BOOL)EditorData::instance->IsSinglePlayer();
-	dlg.m_MaxTeams				= EditorData::instance->MaxTeams();
-	dlg.m_MaxPlayers			= EditorData::instance->MaxPlayers();
+	dlg.m_MissionNameUnlocalizedText   = EditorData::instance->MissionName().Data();
+	dlg.m_MissionNameUseResourceString = EditorData::instance->MissionNameUseResourceString();
+	dlg.m_MissionNameResourceStringID  = EditorData::instance->MissionNameResourceStringID();
+	dlg.m_AuthorEdit				   = EditorData::instance->Author().Data();
+	dlg.m_BlurbUnlocalizedText		   = EditorData::instance->Blurb().Data();
+	dlg.m_BlurbUseResourceString	   = EditorData::instance->BlurbUseResourceString();
+	dlg.m_BlurbResourceStringID		   = EditorData::instance->BlurbResourceStringID();
+	dlg.m_Blurb2UnlocalizedText		   = EditorData::instance->Blurb2().Data();
+	dlg.m_Blurb2UseResourceString	  = EditorData::instance->Blurb2UseResourceString();
+	dlg.m_Blurb2ResourceStringID	   = EditorData::instance->Blurb2ResourceStringID();
+	dlg.m_TimeLimit					   = EditorData::instance->TimeLimit();
+	dlg.m_DropWeightLimit			   = EditorData::instance->DropWeightLimit();
+	dlg.m_InitialResourcePoints		   = EditorData::instance->InitialResourcePoints();
+	dlg.m_SinglePlayerCheck			   = (BOOL)EditorData::instance->IsSinglePlayer();
+	dlg.m_MaxTeams					   = EditorData::instance->MaxTeams();
+	dlg.m_MaxPlayers				   = EditorData::instance->MaxPlayers();
 	dlg.m_ScenarioTune.Empty();
 	dlg.m_ScenarioTune.Format(_T("%d"), EditorData::instance->ScenarioTune());
-	dlg.m_VideoFilename	= EditorData::instance->VideoFilename().Data();
-	dlg.m_CBills		   = EditorData::instance->CBills();
-	dlg.m_NumRPBuildings   = EditorData::instance->NumRandomRPbuildings();
-	dlg.m_DownloadUrlEdit  = EditorData::instance->DownloadURL().Data();
-	dlg.m_MissionType	  = EditorData::instance->MissionType();
-	dlg.m_AirStrikeCheck   = EditorData::instance->AirStrikesEnabledDefault();
-	dlg.m_MineLayerCheck   = EditorData::instance->MineLayersEnabledDefault();
-	dlg.m_ScoutCopterCheck = EditorData::instance->ScoutCoptersEnabledDefault();
-	dlg.m_SensorProbeCheck = EditorData::instance->SensorProbesEnabledDefault();
-	dlg.m_UnlimitedAmmoCheck =
-		EditorData::instance->UnlimitedAmmoEnabledDefault();
-	dlg.m_AllTech = EditorData::instance->AllTechEnabledDefault();
-	dlg.m_RepairVehicleCheck =
-		EditorData::instance->RepairVehicleEnabledDefault();
-	dlg.m_SalvageCraftCheck =
-		EditorData::instance->SalvageCraftEnabledDefault();
-	dlg.m_ResourceBuildingCheck =
-		EditorData::instance->ResourceBuildingsEnabledDefault();
-	dlg.m_NoVariantsCheck = EditorData::instance->NoVariantsEnabledDefault();
-	dlg.m_ArtilleryPieceCheck =
-		EditorData::instance->ArtilleryPieceEnabledDefault();
-	dlg.m_RPsForMechsCheck = EditorData::instance->RPsForMechsEnabledDefault();
+	dlg.m_VideoFilename			= EditorData::instance->VideoFilename().Data();
+	dlg.m_CBills				= EditorData::instance->CBills();
+	dlg.m_NumRPBuildings		= EditorData::instance->NumRandomRPbuildings();
+	dlg.m_DownloadUrlEdit		= EditorData::instance->DownloadURL().Data();
+	dlg.m_MissionType			= EditorData::instance->MissionType();
+	dlg.m_AirStrikeCheck		= EditorData::instance->AirStrikesEnabledDefault();
+	dlg.m_MineLayerCheck		= EditorData::instance->MineLayersEnabledDefault();
+	dlg.m_ScoutCopterCheck		= EditorData::instance->ScoutCoptersEnabledDefault();
+	dlg.m_SensorProbeCheck		= EditorData::instance->SensorProbesEnabledDefault();
+	dlg.m_UnlimitedAmmoCheck	= EditorData::instance->UnlimitedAmmoEnabledDefault();
+	dlg.m_AllTech				= EditorData::instance->AllTechEnabledDefault();
+	dlg.m_RepairVehicleCheck	= EditorData::instance->RepairVehicleEnabledDefault();
+	dlg.m_SalvageCraftCheck		= EditorData::instance->SalvageCraftEnabledDefault();
+	dlg.m_ResourceBuildingCheck = EditorData::instance->ResourceBuildingsEnabledDefault();
+	dlg.m_NoVariantsCheck		= EditorData::instance->NoVariantsEnabledDefault();
+	dlg.m_ArtilleryPieceCheck   = EditorData::instance->ArtilleryPieceEnabledDefault();
+	dlg.m_RPsForMechsCheck		= EditorData::instance->RPsForMechsEnabledDefault();
 	if (IDOK == dlg.DoModal())
 	{
-		EditorData::instance->MissionName(
-			dlg.m_MissionNameUnlocalizedText.GetBuffer(0));
-		EditorData::instance->MissionNameUseResourceString(
-			dlg.m_MissionNameUseResourceString);
-		EditorData::instance->MissionNameResourceStringID(
-			dlg.m_MissionNameResourceStringID);
+		EditorData::instance->MissionName(dlg.m_MissionNameUnlocalizedText.GetBuffer(0));
+		EditorData::instance->MissionNameUseResourceString(dlg.m_MissionNameUseResourceString);
+		EditorData::instance->MissionNameResourceStringID(dlg.m_MissionNameResourceStringID);
 		EditorData::instance->Author(dlg.m_AuthorEdit.GetBuffer(0));
 		EditorData::instance->Blurb(dlg.m_BlurbUnlocalizedText.GetBuffer(0));
-		EditorData::instance->BlurbUseResourceString(
-			dlg.m_BlurbUseResourceString);
-		EditorData::instance->BlurbResourceStringID(
-			dlg.m_BlurbResourceStringID);
+		EditorData::instance->BlurbUseResourceString(dlg.m_BlurbUseResourceString);
+		EditorData::instance->BlurbResourceStringID(dlg.m_BlurbResourceStringID);
 		EditorData::instance->Blurb2(dlg.m_Blurb2UnlocalizedText.GetBuffer(0));
-		EditorData::instance->Blurb2UseResourceString(
-			dlg.m_Blurb2UseResourceString);
-		EditorData::instance->Blurb2ResourceStringID(
-			dlg.m_Blurb2ResourceStringID);
+		EditorData::instance->Blurb2UseResourceString(dlg.m_Blurb2UseResourceString);
+		EditorData::instance->Blurb2ResourceStringID(dlg.m_Blurb2ResourceStringID);
 		EditorData::instance->TimeLimit(dlg.m_TimeLimit);
 		EditorData::instance->DropWeightLimit(dlg.m_DropWeightLimit);
-		EditorData::instance->InitialResourcePoints(
-			dlg.m_InitialResourcePoints);
+		EditorData::instance->InitialResourcePoints(dlg.m_InitialResourcePoints);
 		EditorData::instance->IsSinglePlayer((bool)dlg.m_SinglePlayerCheck);
 		EditorData::instance->MaxTeams(dlg.m_MaxTeams);
 		EditorData::instance->MaxPlayers(dlg.m_MaxPlayers);
-		EditorData::instance->ScenarioTune(
-			atoi(dlg.m_ScenarioTune.GetBuffer(0)));
+		EditorData::instance->ScenarioTune(atoi(dlg.m_ScenarioTune.GetBuffer(0)));
 		EditorData::instance->VideoFilename(dlg.m_VideoFilename.GetBuffer(0));
 		EditorData::instance->CBills(dlg.m_CBills);
 		EditorData::instance->NumRandomRPbuildings(dlg.m_NumRPBuildings);
@@ -2695,22 +2604,15 @@ int32_t EditorInterface::MissionSettings()
 		EditorData::instance->MissionType(dlg.m_MissionType);
 		EditorData::instance->AirStrikesEnabledDefault(dlg.m_AirStrikeCheck);
 		EditorData::instance->MineLayersEnabledDefault(dlg.m_MineLayerCheck);
-		EditorData::instance->ScoutCoptersEnabledDefault(
-			dlg.m_ScoutCopterCheck);
-		EditorData::instance->SensorProbesEnabledDefault(
-			dlg.m_SensorProbeCheck);
-		EditorData::instance->UnlimitedAmmoEnabledDefault(
-			dlg.m_UnlimitedAmmoCheck);
+		EditorData::instance->ScoutCoptersEnabledDefault(dlg.m_ScoutCopterCheck);
+		EditorData::instance->SensorProbesEnabledDefault(dlg.m_SensorProbeCheck);
+		EditorData::instance->UnlimitedAmmoEnabledDefault(dlg.m_UnlimitedAmmoCheck);
 		EditorData::instance->AllTechEnabledDefault(dlg.m_AllTech);
-		EditorData::instance->RepairVehicleEnabledDefault(
-			dlg.m_RepairVehicleCheck);
-		EditorData::instance->SalvageCraftEnabledDefault(
-			dlg.m_SalvageCraftCheck);
-		EditorData::instance->ResourceBuildingsEnabledDefault(
-			dlg.m_ResourceBuildingCheck);
+		EditorData::instance->RepairVehicleEnabledDefault(dlg.m_RepairVehicleCheck);
+		EditorData::instance->SalvageCraftEnabledDefault(dlg.m_SalvageCraftCheck);
+		EditorData::instance->ResourceBuildingsEnabledDefault(dlg.m_ResourceBuildingCheck);
 		EditorData::instance->NoVariantsEnabledDefault(dlg.m_NoVariantsCheck);
-		EditorData::instance->ArtilleryPieceEnabledDefault(
-			dlg.m_ArtilleryPieceCheck);
+		EditorData::instance->ArtilleryPieceEnabledDefault(dlg.m_ArtilleryPieceCheck);
 		EditorData::instance->RPsForMechsEnabledDefault(dlg.m_RPsForMechsCheck);
 	}
 	return true;
@@ -2739,14 +2641,12 @@ int32_t EditorInterface::Team(int32_t team)
 int32_t EditorInterface::Player(int32_t player)
 {
 	PlayerSettingsDlg dlg;
-	dlg.m_playerEdit = player + 1;
-	dlg.m_oldDefaultTeam =
-		EditorData::instance->PlayersRef().PlayerRef(player).DefaultTeam();
-	dlg.m_numTeams = EditorData::instance->MaxTeams();
+	dlg.m_playerEdit	 = player + 1;
+	dlg.m_oldDefaultTeam = EditorData::instance->PlayersRef().PlayerRef(player).DefaultTeam();
+	dlg.m_numTeams		 = EditorData::instance->MaxTeams();
 	if ((IDOK == dlg.DoModal()) && (0 <= dlg.m_newDefaultTeam))
 	{
-		EditorData::instance->PlayersRef().PlayerRef(player).DefaultTeam(
-			dlg.m_newDefaultTeam);
+		EditorData::instance->PlayersRef().PlayerRef(player).DefaultTeam(dlg.m_newDefaultTeam);
 	}
 	return true;
 }
@@ -2774,11 +2674,9 @@ void EditorInterface::syncHScroll()
 	OppRotate(direction, worldCameraRotation);
 	Stuff::Vector3D eyeDisplacement = eye->getPosition();
 	/* maxVisual was taken from Camera::setPosition(). */
-	float maxVisual =
-		(Terrain::worldUnitsMapSide / 2) - Terrain::worldUnitsPerVertex;
+	float maxVisual = (Terrain::worldUnitsMapSide / 2) - Terrain::worldUnitsPerVertex;
 	float bound		= SQRT_2 * maxVisual;
-	float scrollPos = ((direction * eyeDisplacement) / bound * 0.5f + 0.5f) *
-					  HSCROLLBAR_RANGE;
+	float scrollPos = ((direction * eyeDisplacement) / bound * 0.5f + 0.5f) * HSCROLLBAR_RANGE;
 	SetScrollRange(SB_HORZ, 0, HSCROLLBAR_RANGE, true);
 	SetScrollPos(SB_HORZ, (int32_t)scrollPos);
 	{
@@ -2826,11 +2724,9 @@ void EditorInterface::syncVScroll()
 	OppRotate(direction, worldCameraRotation);
 	Stuff::Vector3D eyeDisplacement = eye->getPosition();
 	/* maxVisual was taken from Camera::setPosition(). */
-	float maxVisual =
-		(Terrain::worldUnitsMapSide / 2) - Terrain::worldUnitsPerVertex;
+	float maxVisual = (Terrain::worldUnitsMapSide / 2) - Terrain::worldUnitsPerVertex;
 	float bound		= SQRT_2 * maxVisual;
-	float scrollPos = ((direction * eyeDisplacement) / bound * 0.5f + 0.5f) *
-					  VSCROLLBAR_RANGE;
+	float scrollPos = ((direction * eyeDisplacement) / bound * 0.5f + 0.5f) * VSCROLLBAR_RANGE;
 	SetScrollRange(SB_VERT, 0, VSCROLLBAR_RANGE, false);
 	SetScrollPos(SB_VERT, (int32_t)scrollPos);
 	{
@@ -2869,10 +2765,10 @@ void EditorInterface::SetBusyMode(bool bRedrawWindow)
 	{
 		if (!m_hBusyCursor)
 		{
-#ifndef _DEBUG /*the debugger seems to encounter an infinite loop of user      \
+#ifndef _DEBUG /*the debugger seems to encounter an infinite loop of user                          \
 				  breaks (int32_t 3) ntdll when executing this line*/
-			m_hBusyCursor = (HCURSOR)LoadImage(
-				nullptr, "bmech.ani", IMAGE_CURSOR, 0, 0, LR_LOADFROMFILE);
+			m_hBusyCursor =
+				(HCURSOR)LoadImage(nullptr, "bmech.ani", IMAGE_CURSOR, 0, 0, LR_LOADFROMFILE);
 #endif
 		}
 		if (m_hBusyCursor)
@@ -2943,8 +2839,7 @@ int32_t EditorInterface::LayMines()
 
 int32_t EditorInterface::SelectDetailTexture()
 {
-	CFileDialog fileDlg(
-		TRUE, "tga", nullptr, OFN_FILEMUSTEXIST | OFN_NOCHANGEDIR, szTGAFilter);
+	CFileDialog fileDlg(TRUE, "tga", nullptr, OFN_FILEMUSTEXIST | OFN_NOCHANGEDIR, szTGAFilter);
 	fileDlg.m_ofn.lpstrInitialDir = texturePath;
 	if (IDOK == fileDlg.DoModal())
 	{
@@ -2961,8 +2856,7 @@ int32_t EditorInterface::SelectDetailTexture()
 
 int32_t EditorInterface::SelectWaterTexture()
 {
-	CFileDialog fileDlg(
-		TRUE, "tga", nullptr, OFN_FILEMUSTEXIST | OFN_NOCHANGEDIR, szTGAFilter);
+	CFileDialog fileDlg(TRUE, "tga", nullptr, OFN_FILEMUSTEXIST | OFN_NOCHANGEDIR, szTGAFilter);
 	fileDlg.m_ofn.lpstrInitialDir = texturePath;
 	if (IDOK == fileDlg.DoModal())
 	{
@@ -2987,8 +2881,7 @@ inline bool colorMapIsOKFormat(PCSTR fileName)
 	{
 		struct TGAFileHeader tgaHeader;
 		tgaFile.read((puint8_t)&tgaHeader, sizeof(TGAFileHeader));
-		if ((tgaHeader.image_type == UNC_TRUE) &&
-			(tgaHeader.width == tgaHeader.height) &&
+		if ((tgaHeader.image_type == UNC_TRUE) && (tgaHeader.width == tgaHeader.height) &&
 			(tgaHeader.width == localColorMapSizeCheck))
 			return true;
 		tgaFile.close();
@@ -2998,8 +2891,7 @@ inline bool colorMapIsOKFormat(PCSTR fileName)
 
 int32_t EditorInterface::SetBaseTexture()
 {
-	CFileDialog fileDlg(
-		TRUE, "tga", nullptr, OFN_FILEMUSTEXIST | OFN_NOCHANGEDIR, szTGAFilter);
+	CFileDialog fileDlg(TRUE, "tga", nullptr, OFN_FILEMUSTEXIST | OFN_NOCHANGEDIR, szTGAFilter);
 	fileDlg.m_ofn.lpstrInitialDir = texturePath;
 	if (IDOK == fileDlg.DoModal())
 	{
@@ -3014,12 +2906,10 @@ int32_t EditorInterface::SetBaseTexture()
 			if (testLoc)
 				testLoc[0] = 0; // Prune off the burnin name.
 			land->setColorMapName(name);
-			if (land->terrainTextures2 &&
-				(land->terrainTextures2->colorMapStarted))
+			if (land->terrainTextures2 && (land->terrainTextures2->colorMapStarted))
 			{
 				if (land->colorMapName)
-					land->terrainTextures2->resetBaseTexture(
-						land->colorMapName);
+					land->terrainTextures2->resetBaseTexture(land->colorMapName);
 				else
 					land->terrainTextures2->resetBaseTexture(land->terrainName);
 			}
@@ -3046,8 +2936,7 @@ int32_t EditorInterface::ReloadBaseTexture()
 
 int32_t EditorInterface::SelectWaterDetailTexture()
 {
-	CFileDialog fileDlg(
-		TRUE, "tga", nullptr, OFN_FILEMUSTEXIST | OFN_NOCHANGEDIR, szTGAFilter);
+	CFileDialog fileDlg(TRUE, "tga", nullptr, OFN_FILEMUSTEXIST | OFN_NOCHANGEDIR, szTGAFilter);
 	fileDlg.m_ofn.lpstrInitialDir = texturePath;
 	if (IDOK == fileDlg.DoModal())
 	{
@@ -3065,18 +2954,14 @@ int32_t EditorInterface::SelectWaterDetailTexture()
 int32_t EditorInterface::TextureTilingFactors()
 {
 	TilingFactorsDialog tilingFactorsDlg;
-	tilingFactorsDlg.m_TerrainDetailTilingFactor =
-		land->terrainTextures2->getDetailTilingFactor();
-	tilingFactorsDlg.m_WaterTilingFactor =
-		land->terrainTextures2->getWaterTextureTilingFactor();
+	tilingFactorsDlg.m_TerrainDetailTilingFactor = land->terrainTextures2->getDetailTilingFactor();
+	tilingFactorsDlg.m_WaterTilingFactor = land->terrainTextures2->getWaterTextureTilingFactor();
 	tilingFactorsDlg.m_WaterDetailTilingFactor =
 		land->terrainTextures2->getWaterDetailTilingFactor();
 	if (IDOK == tilingFactorsDlg.DoModal())
 	{
-		land->terrainTextures2->setDetailTilingFactor(
-			tilingFactorsDlg.m_TerrainDetailTilingFactor);
-		land->terrainTextures2->setWaterTextureTilingFactor(
-			tilingFactorsDlg.m_WaterTilingFactor);
+		land->terrainTextures2->setDetailTilingFactor(tilingFactorsDlg.m_TerrainDetailTilingFactor);
+		land->terrainTextures2->setWaterTextureTilingFactor(tilingFactorsDlg.m_WaterTilingFactor);
 		land->terrainTextures2->setWaterDetailTilingFactor(
 			tilingFactorsDlg.m_WaterDetailTilingFactor);
 	}
@@ -3146,8 +3031,7 @@ extern bool gActive;
 extern bool gGotFocus;
 extern Editor* editor;
 
-LRESULT EditorInterface::WindowProc(
-	uint32_t message, WPARAM wParam, LPARAM lParam)
+LRESULT EditorInterface::WindowProc(uint32_t message, WPARAM wParam, LPARAM lParam)
 {
 	// We're not ready to draw anything.
 	// If you let an event through it'll probably crash!
@@ -3217,16 +3101,12 @@ LRESULT EditorInterface::WindowProc(
 	return retVal;
 }
 
-afx_msg void EditorInterface::OnCommand(WPARAM wParam)
-{
-	handleNewMenuMessage(wParam);
-}
+afx_msg void EditorInterface::OnCommand(WPARAM wParam) { handleNewMenuMessage(wParam); }
 
 void EditorInterface::UpdateButton(CCmdUI* pButton)
 {
 	pButton->Enable(true);
-	if (pButton->m_nID == ID_DROPZONES_ADD ||
-		pButton->m_nID == ID_DROPZONES_VTOL)
+	if (pButton->m_nID == ID_DROPZONES_ADD || pButton->m_nID == ID_DROPZONES_VTOL)
 	{
 		Stuff::Vector3D pos;
 		pos.x = -1;
@@ -3268,8 +3148,7 @@ void EditorInterface::ChangeCursor(int32_t ID)
 	curCursorID = ID;
 }
 
-BOOL EditorInterface::OnSetCursor(
-	CWnd* pWnd, uint32_t nHitTest, uint32_t message)
+BOOL EditorInterface::OnSetCursor(CWnd* pWnd, uint32_t nHitTest, uint32_t message)
 {
 	if (0 < m_AppIsBusy)
 	{
@@ -3292,9 +3171,9 @@ BOOL EditorInterface::OnSetCursor(
 
 BOOL EditorInterface::PreCreateWindow(CREATESTRUCT& cs)
 {
-	cs.lpszClass = AfxRegisterWndClass(
-		CS_DBLCLKS | CS_HREDRAW | CS_VREDRAW, // use any window styles
-		nullptr, (HBRUSH)(COLOR_WINDOW + 1));
+	cs.lpszClass =
+		AfxRegisterWndClass(CS_DBLCLKS | CS_HREDRAW | CS_VREDRAW, // use any window styles
+			nullptr, (HBRUSH)(COLOR_WINDOW + 1));
 	return CWnd ::PreCreateWindow(cs);
 }
 
@@ -3368,12 +3247,10 @@ BOOL EditorInterface::OnMouseWheel(uint32_t nFlags, int16_t zDelta, CPoint pt)
 {
 	//--------------------------------------------------
 	// Zoom Camera based on Mouse Wheel input.
-	int32_t mouseWheelDelta =
-		zDelta; // 240 is the weird increment that the mouse wheel is in
+	int32_t mouseWheelDelta = zDelta; // 240 is the weird increment that the mouse wheel is in
 	if (mouseWheelDelta)
 	{
-		float actualZoom =
-			zoomInc * abs(mouseWheelDelta) * 0.0001f * eye->getScaleFactor();
+		float actualZoom = zoomInc * abs(mouseWheelDelta) * 0.0001f * eye->getScaleFactor();
 		if (mouseWheelDelta < 0)
 		{
 			eye->ZoomOut(actualZoom);
@@ -3384,8 +3261,7 @@ BOOL EditorInterface::OnMouseWheel(uint32_t nFlags, int16_t zDelta, CPoint pt)
 		}
 	}
 	// int32_t middleClicked = nFlags & MK_MBUTTON;
-	int32_t middleClicked =
-		(nFlags & MK_MBUTTON) &&
+	int32_t middleClicked = (nFlags & MK_MBUTTON) &&
 		(nFlags & MK_RBUTTON); // it's too easy to accidentally press the middle
 							   // button while scrolling on some mice
 	//-----------------------------------------------------------------
@@ -3402,9 +3278,8 @@ BOOL EditorInterface::OnMouseWheel(uint32_t nFlags, int16_t zDelta, CPoint pt)
 	{
 		EditorObjectMgr::EDITOR_OBJECT_LIST selectedObjectsList =
 			EditorObjectMgr::instance()->getSelectedObjectList();
-		EditorObjectMgr::EDITOR_OBJECT_LIST::EIterator it =
-			selectedObjectsList.Begin();
-		const EditorObject* pInfo = (*it);
+		EditorObjectMgr::EDITOR_OBJECT_LIST::EIterator it = selectedObjectsList.Begin();
+		const EditorObject* pInfo						  = (*it);
 		if (pInfo)
 		{
 			Stuff::Point3D eyePosition(eye->getCameraOrigin());
@@ -3428,8 +3303,7 @@ BOOL EditorInterface::OnMouseWheel(uint32_t nFlags, int16_t zDelta, CPoint pt)
 	return CWnd ::OnMouseWheel(nFlags, zDelta, pt);
 }
 
-void EditorInterface::OnHScroll(
-	uint32_t nSBCode, uint32_t nPos, CScrollBar* pScrollBar)
+void EditorInterface::OnHScroll(uint32_t nSBCode, uint32_t nPos, CScrollBar* pScrollBar)
 {
 	if (pScrollBar != nullptr && pScrollBar->SendChildNotifyLastMsg())
 		return; // eat it
@@ -3492,8 +3366,7 @@ void EditorInterface::OnHScroll(
 	OppRotate(direction, worldCameraRotation);
 	Stuff::Vector3D eyeDisplacement = eye->getPosition();
 	/* maxVisual was taken from Camera::setPosition(). */
-	float maxVisual =
-		(Terrain::worldUnitsMapSide / 2) - Terrain::worldUnitsPerVertex;
+	float maxVisual  = (Terrain::worldUnitsMapSide / 2) - Terrain::worldUnitsPerVertex;
 	float bound		 = SQRT_2 * maxVisual;
 	float amount	 = bound * 2.0f * (((float)pt.x) / HSCROLLBAR_RANGE - 0.5f);
 	float amountMore = amount - direction * eyeDisplacement;
@@ -3507,8 +3380,7 @@ void EditorInterface::OnHScroll(
 	syncScrollBars();
 }
 
-void EditorInterface::OnVScroll(
-	uint32_t nSBCode, uint32_t nPos, CScrollBar* pScrollBar)
+void EditorInterface::OnVScroll(uint32_t nSBCode, uint32_t nPos, CScrollBar* pScrollBar)
 {
 	SCROLLINFO sInfo;
 	sInfo.cbSize	= sizeof(SCROLLINFO);
@@ -3565,8 +3437,7 @@ void EditorInterface::OnVScroll(
 	OppRotate(direction, worldCameraRotation);
 	Stuff::Vector3D eyeDisplacement = eye->getPosition();
 	/* maxVisual was taken from Camera::setPosition(). */
-	float maxVisual =
-		(Terrain::worldUnitsMapSide / 2) - Terrain::worldUnitsPerVertex;
+	float maxVisual  = (Terrain::worldUnitsMapSide / 2) - Terrain::worldUnitsPerVertex;
 	float bound		 = SQRT_2 * maxVisual;
 	float amount	 = bound * 2.0f * ((float)pt.y / VSCROLLBAR_RANGE - 0.5f);
 	float amountMore = amount - direction * eyeDisplacement;
@@ -3578,8 +3449,7 @@ void EditorInterface::OnVScroll(
 	syncScrollBars();
 }
 
-void EditorInterface::OnSysKeyDown(
-	uint32_t nChar, uint32_t nRepCnt, uint32_t nFlags)
+void EditorInterface::OnSysKeyDown(uint32_t nChar, uint32_t nRepCnt, uint32_t nFlags)
 {
 	handleKeyDown(nChar);
 	CWnd ::OnSysKeyDown(nChar, nRepCnt, nFlags);
@@ -3605,8 +3475,7 @@ int32_t EditorInterface::UnitSettings()
 		EditorObjectMgr::EDITOR_OBJECT_LIST::EIterator iter;
 		for (iter = list2.End(); !iter.IsDone(); iter--)
 		{
-			if ((0 != dynamic_cast<Unit*>(*iter)) ||
-				(0 != dynamic_cast<::DropZone*>(*iter)))
+			if ((0 != dynamic_cast<Unit*>(*iter)) || (0 != dynamic_cast<::DropZone*>(*iter)))
 			{
 				list2.Delete(iter);
 			}
@@ -3635,8 +3504,7 @@ void EditorInterface::initTacMap()
 	bool bFile = false;
 	if (EditorData::instance->getMapName())
 	{
-		mPath.init(
-			missionPath, (PSTR)EditorData::instance->getMapName(), ".pak");
+		mPath.init(missionPath, (PSTR)EditorData::instance->getMapName(), ".pak");
 		bFile = true;
 	}
 	if (bFile && fileExists(mPath))
@@ -3673,8 +3541,7 @@ void EditorInterface::OnLButtonDblClk(uint32_t nFlags, CPoint point)
 	screen.x = point.x;
 	screen.y = point.y;
 	eye->inverseProject(screen, pos);
-	EditorObject* pObject =
-		EditorObjectMgr::instance()->getObjectAtPosition(pos);
+	EditorObject* pObject = EditorObjectMgr::instance()->getObjectAtPosition(pos);
 	if (nullptr != pObject)
 	{
 		UnitSettings();
@@ -3693,8 +3560,8 @@ void EditorInterface::OnPaint()
 			/*paint splash screen*/
 			if (!m_hSplashBitMap)
 			{
-				m_hSplashBitMap = (HBITMAP)LoadImage(nullptr, "esplash.bmp",
-					IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);
+				m_hSplashBitMap =
+					(HBITMAP)LoadImage(nullptr, "esplash.bmp", IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);
 			}
 			if (m_hSplashBitMap)
 			{
@@ -3705,14 +3572,13 @@ void EditorInterface::OnPaint()
 				CDC dcMem;
 				dcMem.CreateCompatibleDC(&dc);
 				{
-					CBitmap* pSplashBitmap =
-						CBitmap::FromHandle(m_hSplashBitMap);
+					CBitmap* pSplashBitmap = CBitmap::FromHandle(m_hSplashBitMap);
 					pSplashBitmap->GetBitmap(&bm_struct);
 					pbmOld = dcMem.SelectObject(pSplashBitmap);
 				}
-				int32_t gbmLeft  = rcClient.right / 2 - bm_struct.bmWidth / 2;
-				int32_t gbmTop   = rcClient.bottom / 2 - bm_struct.bmHeight / 2;
-				int32_t gbmRight = gbmLeft + bm_struct.bmWidth;
+				int32_t gbmLeft   = rcClient.right / 2 - bm_struct.bmWidth / 2;
+				int32_t gbmTop	= rcClient.bottom / 2 - bm_struct.bmHeight / 2;
+				int32_t gbmRight  = gbmLeft + bm_struct.bmWidth;
 				int32_t gbmBottom = gbmTop + bm_struct.bmHeight;
 				CRect rcTmp;
 				rcTmp		 = rcClient;
@@ -3728,9 +3594,8 @@ void EditorInterface::OnPaint()
 				rcTmp.left = gbmRight;
 				dc.FillSolidRect(&rcTmp, RGB(0, 0, 0));
 				dc.BitBlt(rcClient.right / 2 - bm_struct.bmWidth / 2,
-					rcClient.bottom / 2 - bm_struct.bmHeight / 2,
-					bm_struct.bmWidth, bm_struct.bmHeight, &dcMem, 0, 0,
-					SRCCOPY);
+					rcClient.bottom / 2 - bm_struct.bmHeight / 2, bm_struct.bmWidth,
+					bm_struct.bmHeight, &dcMem, 0, 0, SRCCOPY);
 				dcMem.SelectObject(pbmOld);
 				dcMem.DeleteDC();
 			}
@@ -3777,15 +3642,13 @@ void EditorInterface::rotateSelectedObjects(int32_t direction)
 	ModifyBuildingAction* pAction = new ModifyBuildingAction;
 	EditorObjectMgr::EDITOR_OBJECT_LIST selectedObjects;
 	selectedObjects = EditorObjectMgr::instance()->getSelectedObjectList();
-	EditorObjectMgr::EDITOR_OBJECT_LIST::EIterator iter =
-		selectedObjects.Begin();
+	EditorObjectMgr::EDITOR_OBJECT_LIST::EIterator iter = selectedObjects.Begin();
 	while (!iter.IsDone())
 	{
 		pAction->addBuildingInfo(*(*iter));
 		int32_t id	= (*iter)->getID();
 		int32_t fitID = EditorObjectMgr::instance()->getFitID(id);
-		if ((EditorObjectMgr::WALL == (*iter)->getSpecialType()) ||
-			(33 /*repair bay*/ == fitID))
+		if ((EditorObjectMgr::WALL == (*iter)->getSpecialType()) || (33 /*repair bay*/ == fitID))
 		{
 			(*iter)->appearance()->rotation += direction * 90;
 		}
@@ -3853,35 +3716,17 @@ static void UpdateMissionTeamTeam(int32_t team, CCmdUI* pCmdUI)
 	}
 }
 
-void EditorInterface::OnUpdateMissionTeamTeam3(CCmdUI* pCmdUI)
-{
-	UpdateMissionTeamTeam(3, pCmdUI);
-}
+void EditorInterface::OnUpdateMissionTeamTeam3(CCmdUI* pCmdUI) { UpdateMissionTeamTeam(3, pCmdUI); }
 
-void EditorInterface::OnUpdateMissionTeamTeam4(CCmdUI* pCmdUI)
-{
-	UpdateMissionTeamTeam(4, pCmdUI);
-}
+void EditorInterface::OnUpdateMissionTeamTeam4(CCmdUI* pCmdUI) { UpdateMissionTeamTeam(4, pCmdUI); }
 
-void EditorInterface::OnUpdateMissionTeamTeam5(CCmdUI* pCmdUI)
-{
-	UpdateMissionTeamTeam(5, pCmdUI);
-}
+void EditorInterface::OnUpdateMissionTeamTeam5(CCmdUI* pCmdUI) { UpdateMissionTeamTeam(5, pCmdUI); }
 
-void EditorInterface::OnUpdateMissionTeamTeam6(CCmdUI* pCmdUI)
-{
-	UpdateMissionTeamTeam(6, pCmdUI);
-}
+void EditorInterface::OnUpdateMissionTeamTeam6(CCmdUI* pCmdUI) { UpdateMissionTeamTeam(6, pCmdUI); }
 
-void EditorInterface::OnUpdateMissionTeamTeam7(CCmdUI* pCmdUI)
-{
-	UpdateMissionTeamTeam(7, pCmdUI);
-}
+void EditorInterface::OnUpdateMissionTeamTeam7(CCmdUI* pCmdUI) { UpdateMissionTeamTeam(7, pCmdUI); }
 
-void EditorInterface::OnUpdateMissionTeamTeam8(CCmdUI* pCmdUI)
-{
-	UpdateMissionTeamTeam(8, pCmdUI);
-}
+void EditorInterface::OnUpdateMissionTeamTeam8(CCmdUI* pCmdUI) { UpdateMissionTeamTeam(8, pCmdUI); }
 
 void EditorInterface::OnDestroy()
 {
@@ -3990,9 +3835,7 @@ void TeamsAction::PreviousTeams(const CTeams& teams)
 
 void EditorInterface::OnViewOrthographiccamera()
 {
-	if (GetParent()->GetMenu()->GetMenuState(
-			ID_VIEW_ORTHOGRAPHICCAMERA, MF_BYCOMMAND) &
-		MF_CHECKED)
+	if (GetParent()->GetMenu()->GetMenuState(ID_VIEW_ORTHOGRAPHICCAMERA, MF_BYCOMMAND) & MF_CHECKED)
 	{
 		GetParent()->GetMenu()->CheckMenuItem(
 			ID_VIEW_ORTHOGRAPHICCAMERA, MF_BYCOMMAND | MF_UNCHECKED);
@@ -4011,9 +3854,7 @@ void EditorInterface::OnViewOrthographiccamera()
 
 void EditorInterface::OnViewShowpassabilitymap()
 {
-	if (GetParent()->GetMenu()->GetMenuState(
-			ID_VIEW_SHOWPASSABILITYMAP, MF_BYCOMMAND) &
-		MF_CHECKED)
+	if (GetParent()->GetMenu()->GetMenuState(ID_VIEW_SHOWPASSABILITYMAP, MF_BYCOMMAND) & MF_CHECKED)
 	{
 		GetParent()->GetMenu()->CheckMenuItem(
 			ID_VIEW_SHOWPASSABILITYMAP, MF_BYCOMMAND | MF_UNCHECKED);

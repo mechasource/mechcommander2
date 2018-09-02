@@ -2,15 +2,14 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
-#include "stdafx.h"
+#include "stdinc.h"
 
 #include "campaigndata.h"
 #include <estring.h>
 #include "echarstring.h"
 #include "assert.h"
 
-static int32_t sReadIdBoolean(
-	FitIniFile& missionFile, PCSTR varName, bool& value)
+static int32_t sReadIdBoolean(FitIniFile& missionFile, PCSTR varName, bool& value)
 {
 	int32_t result = 0;
 	bool tmpBool;
@@ -26,8 +25,7 @@ static int32_t sReadIdBoolean(
 	return result;
 }
 
-static int32_t sReadIdInteger(
-	FitIniFile& missionFile, PCSTR varName, int32_t& value)
+static int32_t sReadIdInteger(FitIniFile& missionFile, PCSTR varName, int32_t& value)
 {
 	int32_t result = 0;
 	int32_t tmpLong;
@@ -43,14 +41,12 @@ static int32_t sReadIdInteger(
 	return result;
 }
 
-static int32_t sReadIdString(
-	FitIniFile& missionFile, PCSTR varName, CString& CStr)
+static int32_t sReadIdString(FitIniFile& missionFile, PCSTR varName, CString& CStr)
 {
 	int32_t result = 0;
 	char buffer[2001 /*buffer size*/];
 	buffer[0] = '\0';
-	result	= missionFile.readIdString(
-		   (PSTR)varName, buffer, 2001 /*buffer size*/ - 1);
+	result	= missionFile.readIdString((PSTR)varName, buffer, 2001 /*buffer size*/ - 1);
 	if (NO_ERROR != result)
 	{
 		// assert(false);
@@ -75,10 +71,8 @@ CMissionData::CMissionData()
 
 bool CMissionData::operator==(const CMissionData& rhs) const
 {
-	if ((m_MissionFile == rhs.m_MissionFile) &&
-		(m_PurchaseFile == rhs.m_PurchaseFile) &&
-		(m_LogisticsEnabled == rhs.m_LogisticsEnabled) &&
-		(m_IsMandatory == rhs.m_IsMandatory) &&
+	if ((m_MissionFile == rhs.m_MissionFile) && (m_PurchaseFile == rhs.m_PurchaseFile) &&
+		(m_LogisticsEnabled == rhs.m_LogisticsEnabled) && (m_IsMandatory == rhs.m_IsMandatory) &&
 		(m_PilotPromotionEnabled == rhs.m_PilotPromotionEnabled) &&
 		(m_PurchasingEnabled == rhs.m_PurchasingEnabled) &&
 		(m_MissionSelectionEnabled == rhs.m_MissionSelectionEnabled) &&
@@ -113,11 +107,9 @@ bool CMissionData::Read(FitIniFile& fitFile)
 	result = sReadIdString(fitFile, "PurchaseFile", m_PurchaseFile);
 	result = sReadIdBoolean(fitFile, "PlayLogistics", m_LogisticsEnabled);
 	result = sReadIdBoolean(fitFile, "PlaySalvage", m_SalvageEnabled);
-	result =
-		sReadIdBoolean(fitFile, "PlayPilotPromotion", m_PilotPromotionEnabled);
+	result = sReadIdBoolean(fitFile, "PlayPilotPromotion", m_PilotPromotionEnabled);
 	result = sReadIdBoolean(fitFile, "PlayPurchasing", m_PurchasingEnabled);
-	result =
-		sReadIdBoolean(fitFile, "PlaySelection", m_MissionSelectionEnabled);
+	result = sReadIdBoolean(fitFile, "PlaySelection", m_MissionSelectionEnabled);
 	return true;
 }
 
@@ -130,11 +122,9 @@ CGroupData::CGroupData()
 
 bool CGroupData::operator==(const CGroupData& rhs) const
 {
-	if ((m_MissionList == rhs.m_MissionList) &&
-		(m_OperationFile == rhs.m_OperationFile) &&
-		(m_PreVideoFile == rhs.m_PreVideoFile) &&
-		(m_VideoFile == rhs.m_VideoFile) && (m_Label == rhs.m_Label) &&
-		(m_NumMissionsToComplete == rhs.m_NumMissionsToComplete) &&
+	if ((m_MissionList == rhs.m_MissionList) && (m_OperationFile == rhs.m_OperationFile) &&
+		(m_PreVideoFile == rhs.m_PreVideoFile) && (m_VideoFile == rhs.m_VideoFile) &&
+		(m_Label == rhs.m_Label) && (m_NumMissionsToComplete == rhs.m_NumMissionsToComplete) &&
 		(m_TuneNumber == rhs.m_TuneNumber) && (m_ABLScript == rhs.m_ABLScript))
 	{
 		return true;
@@ -173,16 +163,15 @@ bool CGroupData::Save(FitIniFile& fitFile, PCSTR groupName)
 bool CGroupData::Read(FitIniFile& fitFile, PCSTR groupName)
 {
 	int32_t result;
-	result = sReadIdString(fitFile, "Label", m_Label);
-	result =
-		sReadIdInteger(fitFile, "NumberToComplete", m_NumMissionsToComplete);
-	result = sReadIdString(fitFile, "OperationFile", m_OperationFile);
-	result = sReadIdString(fitFile, "Video", m_VideoFile);
-	result = sReadIdString(fitFile, "PreVideo", m_PreVideoFile);
-	result = sReadIdInteger(fitFile, "Tune", m_TuneNumber);
-	result = sReadIdString(fitFile, "ABLScript", m_ABLScript);
+	result				 = sReadIdString(fitFile, "Label", m_Label);
+	result				 = sReadIdInteger(fitFile, "NumberToComplete", m_NumMissionsToComplete);
+	result				 = sReadIdString(fitFile, "OperationFile", m_OperationFile);
+	result				 = sReadIdString(fitFile, "Video", m_VideoFile);
+	result				 = sReadIdString(fitFile, "PreVideo", m_PreVideoFile);
+	result				 = sReadIdInteger(fitFile, "Tune", m_TuneNumber);
+	result				 = sReadIdString(fitFile, "ABLScript", m_ABLScript);
 	int32_t missionCount = 0;
-	result = sReadIdInteger(fitFile, "MissionCount", missionCount);
+	result				 = sReadIdInteger(fitFile, "MissionCount", missionCount);
 	if (NO_ERROR != result)
 	{
 		return false;
@@ -221,8 +210,8 @@ bool CCampaignData::operator==(const CCampaignData& rhs) const
 {
 	if ((m_GroupList == rhs.m_GroupList) && (m_Name == rhs.m_Name) &&
 		(m_NameUseResourceString == rhs.m_NameUseResourceString) &&
-		(m_NameResourceStringID == rhs.m_NameResourceStringID) &&
-		(m_CBills == rhs.m_CBills) && (m_FinalVideo == rhs.m_FinalVideo))
+		(m_NameResourceStringID == rhs.m_NameResourceStringID) && (m_CBills == rhs.m_CBills) &&
+		(m_FinalVideo == rhs.m_FinalVideo))
 	{
 		return true;
 	}
@@ -290,8 +279,7 @@ bool CCampaignData::Read(CString pathName)
 	{
 		m_NameUseResourceString = true;
 	}
-	result = sReadIdBoolean(
-		fitFile, "NameUseResourceString", m_NameUseResourceString);
+	result			   = sReadIdBoolean(fitFile, "NameUseResourceString", m_NameUseResourceString);
 	result			   = sReadIdInteger(fitFile, "CBills", m_CBills);
 	result			   = sReadIdString(fitFile, "FinalVideo", m_FinalVideo);
 	int32_t groupCount = 0;

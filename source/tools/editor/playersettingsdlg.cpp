@@ -4,7 +4,7 @@
 // PlayerSettingsDlg.cpp : implementation file
 //
 
-#include "stdafx.h"
+#include "stdinc.h"
 #include "resource.h"
 #include "PlayerSettingsDlg.h"
 
@@ -33,8 +33,7 @@ void PlayerSettingsDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(PlayerSettingsDlg)
-	DDX_Control(
-		pDX, IDC_PLAYER_SETTINGS_DEFAULT_TEAM_COMBO, m_defaultTeamComboBox);
+	DDX_Control(pDX, IDC_PLAYER_SETTINGS_DEFAULT_TEAM_COMBO, m_defaultTeamComboBox);
 	DDX_Text(pDX, IDC_PLAYER_SETTINGS_PLAYER_EDIT, m_playerEdit);
 	DDV_MinMaxInt(pDX, m_playerEdit, 1, 8);
 	//}}AFX_DATA_MAP

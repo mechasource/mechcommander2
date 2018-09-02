@@ -4,7 +4,7 @@
 // ObjectiveDlg.cpp : implementation file
 //
 
-#include "stdafx.h"
+#include "stdinc.h"
 #include "resource.h"
 #include "ObjectiveDlg.h"
 
@@ -25,8 +25,7 @@ static char THIS_FILE[] = __FILE__;
 /////////////////////////////////////////////////////////////////////////////
 // ObjectiveDlg dialog
 
-ObjectiveDlg::ObjectiveDlg(CWnd* pParent /*=nullptr*/)
-	: CDialog(ObjectiveDlg::IDD, pParent)
+ObjectiveDlg::ObjectiveDlg(CWnd* pParent /*=nullptr*/) : CDialog(ObjectiveDlg::IDD, pParent)
 {
 	m_TitleResourceStringID		  = 0;
 	m_DescriptionResourceStringID = 0;
@@ -58,15 +57,11 @@ void ObjectiveDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(ObjectiveDlg)
-	DDX_Control(pDX, IDC_OBJECTIVE_ADD_FAILURE_CONDITION_BUTTON,
-		m_AddFailureConditionButton);
+	DDX_Control(pDX, IDC_OBJECTIVE_ADD_FAILURE_CONDITION_BUTTON, m_AddFailureConditionButton);
 	DDX_Control(pDX, IDC_OBJECTIVE_FAILURE_ACTION_LIST, m_FailureActionList);
-	DDX_Control(
-		pDX, IDC_OBJECTIVE_FAILURE_CONDITION_LIST, m_FailureConditionList);
-	DDX_Control(pDX, IDC_OBJECTIVE_TYPE_OF_FAILURE_ACTION_COMBOBOX,
-		m_FailureActionComboBox);
-	DDX_Control(pDX, IDC_OBJECTIVE_TYPE_OF_FAILURE_CONDITION_COMBOBOX,
-		m_FailureConditionComboBox);
+	DDX_Control(pDX, IDC_OBJECTIVE_FAILURE_CONDITION_LIST, m_FailureConditionList);
+	DDX_Control(pDX, IDC_OBJECTIVE_TYPE_OF_FAILURE_ACTION_COMBOBOX, m_FailureActionComboBox);
+	DDX_Control(pDX, IDC_OBJECTIVE_TYPE_OF_FAILURE_CONDITION_COMBOBOX, m_FailureConditionComboBox);
 	DDX_Control(pDX, IDC_OBJECTIVEGROUP, m_modelGroup);
 	DDX_Control(pDX, IDC_MECH2, m_Mech);
 	DDX_Control(pDX, IDC_OBJECTIVE_ADD_CONDITION_BUTTON, m_AddButton);
@@ -76,37 +71,30 @@ void ObjectiveDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_OBJECTIVE_CONDITION_LIST, m_List);
 	DDX_Radio(pDX, IDC_OBJECTIVE_PRIMARY_RADIO, m_PriorityRadioButton);
 	DDX_Text(pDX, IDC_OBJECTIVE_RESOURCE_POINTS_EDITBOX, m_ResourcePointsEdit);
-	DDX_Check(pDX, IDC_OBJECTIVE_PREVIOUS_CHECK,
-		m_PreviousPrimaryObjectiveMustBeCompleteCheckButton);
+	DDX_Check(
+		pDX, IDC_OBJECTIVE_PREVIOUS_CHECK, m_PreviousPrimaryObjectiveMustBeCompleteCheckButton);
 	DDX_Check(pDX, IDC_OBJECTIVE_ALL_PREVIOUS_CHECK,
 		m_AllPreviousPrimaryObjectivesMustBeCompleteCheckButton);
-	DDX_Check(
-		pDX, IDC_OBJECTIVE_DISPLAY_MARKER_CHECK, m_DisplayMarkerCheckButton);
+	DDX_Check(pDX, IDC_OBJECTIVE_DISPLAY_MARKER_CHECK, m_DisplayMarkerCheckButton);
 	DDX_Text(pDX, IDC_OBJECTIVE_X_EDITBOX, m_XEdit);
 	DDX_Text(pDX, IDC_OBJECTIVE_Y_EDITBOX, m_YEdit);
-	DDX_Check(
-		pDX, IDC_OBJECTIVE_HIDDEN_TRIGGER_CHECK, m_HiddenTriggerCheckButton);
-	DDX_Check(
-		pDX, IDC_OBJECTIVE_ACTIVATE_ON_FLAG_CHECK, m_ActivateOnFlagCheckButton);
+	DDX_Check(pDX, IDC_OBJECTIVE_HIDDEN_TRIGGER_CHECK, m_HiddenTriggerCheckButton);
+	DDX_Check(pDX, IDC_OBJECTIVE_ACTIVATE_ON_FLAG_CHECK, m_ActivateOnFlagCheckButton);
 	DDX_Text(pDX, IDC_OBJECTIVE_TITLE_EDIT, m_TitleEdit);
 	DDX_Text(pDX, IDC_OBJECTIVE_DESCRIPTION_EDIT, m_DescriptionEdit);
-	DDX_Text(pDX, IDC_OBJECTIVE_TITLE_RESOURCE_STRING_ID_EDIT,
-		m_TitleResourceStringIDEdit);
-	DDX_Text(pDX, IDC_OBJECTIVE_DESCRIPTION_RESOURCE_STRING_ID_EDIT,
-		m_DescriptionResourceStringIDEdit);
-	DDX_Text(pDX, IDC_OBJECTIVE_ACTIVATE_FLAG_EDITBOX, m_ActivateFlagIDEdit);
-	DDX_Check(pDX, IDC_OBJECTIVE_RESET_STATUS_ON_FLAG_CHECK,
-		m_ResetStatusOnFlagCheckButton);
+	DDX_Text(pDX, IDC_OBJECTIVE_TITLE_RESOURCE_STRING_ID_EDIT, m_TitleResourceStringIDEdit);
 	DDX_Text(
-		pDX, IDC_OBJECTIVE_RESET_STATUS_FLAG_EDITBOX, m_ResetStatusFlagIDEdit);
+		pDX, IDC_OBJECTIVE_DESCRIPTION_RESOURCE_STRING_ID_EDIT, m_DescriptionResourceStringIDEdit);
+	DDX_Text(pDX, IDC_OBJECTIVE_ACTIVATE_FLAG_EDITBOX, m_ActivateFlagIDEdit);
+	DDX_Check(pDX, IDC_OBJECTIVE_RESET_STATUS_ON_FLAG_CHECK, m_ResetStatusOnFlagCheckButton);
+	DDX_Text(pDX, IDC_OBJECTIVE_RESET_STATUS_FLAG_EDITBOX, m_ResetStatusFlagIDEdit);
 	//}}AFX_DATA_MAP
 }
 
 BEGIN_MESSAGE_MAP(ObjectiveDlg, CDialog)
 //{{AFX_MSG_MAP(ObjectiveDlg)
 ON_BN_CLICKED(IDC_OBJECTIVE_ADD_CONDITION_BUTTON, OnObjectiveAddConditionButton)
-ON_BN_CLICKED(
-	IDC_OBJECTIVE_REMOVE_CONDITION_BUTTON, OnObjectiveRemoveConditionButton)
+ON_BN_CLICKED(IDC_OBJECTIVE_REMOVE_CONDITION_BUTTON, OnObjectiveRemoveConditionButton)
 ON_BN_CLICKED(IDC_OBJECTIVE_ADD_ACTION_BUTTON, OnObjectiveAddActionButton)
 ON_BN_CLICKED(IDC_OBJECTIVE_REMOVE_ACTION_BUTTON, OnObjectiveRemoveActionButton)
 ON_CBN_SELCHANGE(IDC_OBJECTIVEGROUP, OnSelchangeGroup)
@@ -118,25 +106,17 @@ ON_EN_CHANGE(IDC_HIGHLIGHT2, OnChangeHighlight2)
 ON_EN_CHANGE(IDC_BASE2, OnChangeBase2)
 ON_WM_CTLCOLOR()
 ON_BN_CLICKED(IDC_OBJECTIVE_TITLE_EDIT_BUTTON, OnObjectiveTitleEditButton)
+ON_BN_CLICKED(IDC_OBJECTIVE_DESCRIPTION_EDIT_BUTTON, OnObjectiveDescriptionEditButton)
+ON_BN_CLICKED(IDC_OBJECTIVE_ADD_FAILURE_CONDITION_BUTTON, OnObjectiveAddFailureConditionButton)
 ON_BN_CLICKED(
-	IDC_OBJECTIVE_DESCRIPTION_EDIT_BUTTON, OnObjectiveDescriptionEditButton)
-ON_BN_CLICKED(IDC_OBJECTIVE_ADD_FAILURE_CONDITION_BUTTON,
-	OnObjectiveAddFailureConditionButton)
-ON_BN_CLICKED(IDC_OBJECTIVE_REMOVE_FAILURE_CONDITION_BUTTON,
-	OnObjectiveRemoveFailureConditionButton)
-ON_BN_CLICKED(
-	IDC_OBJECTIVE_ADD_FAILURE_ACTION_BUTTON, OnObjectiveAddFailureActionButton)
-ON_BN_CLICKED(IDC_OBJECTIVE_REMOVE_FAILURE_ACTION_BUTTON,
-	OnObjectiveRemoveFailureActionButton)
-ON_BN_CLICKED(
-	IDC_OBJECTIVE_VIEW_CONDITION_BUTTON, OnObjectiveViewConditionButton)
+	IDC_OBJECTIVE_REMOVE_FAILURE_CONDITION_BUTTON, OnObjectiveRemoveFailureConditionButton)
+ON_BN_CLICKED(IDC_OBJECTIVE_ADD_FAILURE_ACTION_BUTTON, OnObjectiveAddFailureActionButton)
+ON_BN_CLICKED(IDC_OBJECTIVE_REMOVE_FAILURE_ACTION_BUTTON, OnObjectiveRemoveFailureActionButton)
+ON_BN_CLICKED(IDC_OBJECTIVE_VIEW_CONDITION_BUTTON, OnObjectiveViewConditionButton)
 ON_BN_CLICKED(IDC_OBJECTIVE_VIEW_ACTION_BUTTON, OnObjectiveViewActionButton)
-ON_BN_CLICKED(IDC_OBJECTIVE_VIEW_FAILURE_CONDITION_BUTTON,
-	OnObjectiveViewFailureConditionButton)
-ON_BN_CLICKED(IDC_OBJECTIVE_VIEW_FAILURE_ACTION_BUTTON,
-	OnObjectiveViewFailureActionButton)
-ON_BN_CLICKED(IDC_OBJECTIVE_CLEAR_LOGISTICS_MODEL_BUTTON,
-	OnObjectiveClearLogisticsModelButton)
+ON_BN_CLICKED(IDC_OBJECTIVE_VIEW_FAILURE_CONDITION_BUTTON, OnObjectiveViewFailureConditionButton)
+ON_BN_CLICKED(IDC_OBJECTIVE_VIEW_FAILURE_ACTION_BUTTON, OnObjectiveViewFailureActionButton)
+ON_BN_CLICKED(IDC_OBJECTIVE_CLEAR_LOGISTICS_MODEL_BUTTON, OnObjectiveClearLogisticsModelButton)
 //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -148,8 +128,7 @@ static void syncConditionsListWithListBox(
 {
 	pList->ResetContent();
 	EString tmpStr;
-	CObjective::condition_list_type::EConstIterator it =
-		pConditionList->Begin();
+	CObjective::condition_list_type::EConstIterator it = pConditionList->Begin();
 	while (!it.IsDone())
 	{
 		tmpStr = (*it)->Description() + "  " + (*it)->InstanceDescription();
@@ -211,10 +190,8 @@ void ObjectiveDlg::UpdateDescriptionDisplay()
 	UpdateData(TRUE);
 	if (m_DescriptionUseResourceString)
 	{
-		m_DescriptionResourceStringIDEdit.Format(
-			"%d", m_DescriptionResourceStringID);
-		int32_t ret =
-			CSLoadString(m_DescriptionResourceStringID, m_DescriptionEdit);
+		m_DescriptionResourceStringIDEdit.Format("%d", m_DescriptionResourceStringID);
+		int32_t ret = CSLoadString(m_DescriptionResourceStringID, m_DescriptionEdit);
 		if (0 == ret)
 		{
 			m_DescriptionEdit = _TEXT("");
@@ -232,18 +209,15 @@ void ObjectiveDlg::LoadDialogValues()
 {
 	(&m_ComboBox)->SetCurSel(nConditionSpeciesSelectionIndex);
 	(&m_ActionComboBox)->SetCurSel(nActionSpeciesSelectionIndex);
-	(&m_FailureConditionComboBox)
-		->SetCurSel(nFailureConditionSpeciesSelectionIndex);
+	(&m_FailureConditionComboBox)->SetCurSel(nFailureConditionSpeciesSelectionIndex);
 	(&m_FailureActionComboBox)->SetCurSel(nFailureActionSpeciesSelectionIndex);
 	m_TitleUnlocalizedText   = m_ModifiedObjective.Title().Data();
 	m_TitleUseResourceString = m_ModifiedObjective.TitleUseResourceString();
 	m_TitleResourceStringID  = m_ModifiedObjective.TitleResourceStringID();
 	UpdateTitleDisplay();
-	m_DescriptionUnlocalizedText = m_ModifiedObjective.Description().Data();
-	m_DescriptionUseResourceString =
-		m_ModifiedObjective.DescriptionUseResourceString();
-	m_DescriptionResourceStringID =
-		m_ModifiedObjective.DescriptionResourceStringID();
+	m_DescriptionUnlocalizedText   = m_ModifiedObjective.Description().Data();
+	m_DescriptionUseResourceString = m_ModifiedObjective.DescriptionUseResourceString();
+	m_DescriptionResourceStringID  = m_ModifiedObjective.DescriptionResourceStringID();
 	UpdateDescriptionDisplay();
 	if (1 != m_ModifiedObjective.Priority())
 	{
@@ -307,12 +281,10 @@ void ObjectiveDlg::LoadDialogValues()
 	}
 	m_ResetStatusFlagIDEdit = m_ModifiedObjective.ResetStatusFlagID().Data();
 	syncConditionsListWithListBox((&m_ModifiedObjective), (&m_List));
-	syncActionsListWithListBox(
-		&(m_ModifiedObjective.m_actionList), (&m_ActionList));
-	syncConditionsListWithListBox(&(m_ModifiedObjective.m_failureConditionList),
-		(&m_FailureConditionList));
-	syncActionsListWithListBox(
-		&(m_ModifiedObjective.m_failureActionList), (&m_FailureActionList));
+	syncActionsListWithListBox(&(m_ModifiedObjective.m_actionList), (&m_ActionList));
+	syncConditionsListWithListBox(
+		&(m_ModifiedObjective.m_failureConditionList), (&m_FailureConditionList));
+	syncActionsListWithListBox(&(m_ModifiedObjective.m_failureActionList), (&m_FailureActionList));
 	int32_t color = m_ModifiedObjective.BaseColor();
 	char tmp[256];
 	sprintf(tmp, "0x%x", color);
@@ -327,8 +299,7 @@ void ObjectiveDlg::LoadDialogValues()
 	if (modelID != -1)
 	{
 		uint32_t ulGroup, ulIndex;
-		EditorObjectMgr::instance()->getBuildingFromID(
-			modelID, ulGroup, ulIndex, true);
+		EditorObjectMgr::instance()->getBuildingFromID(modelID, ulGroup, ulIndex, true);
 		m_modelGroup.SetCurSel(ulGroup);
 		OnSelchangeGroup();
 		m_Mech.SetCurSel(ulIndex);
@@ -340,14 +311,11 @@ void ObjectiveDlg::SaveDialogValues()
 {
 	UpdateData(TRUE);
 	m_ModifiedObjective.Title(m_TitleUnlocalizedText.GetBuffer(0));
-	m_ModifiedObjective.TitleUseResourceString(
-		TRUE == m_TitleUseResourceString);
+	m_ModifiedObjective.TitleUseResourceString(TRUE == m_TitleUseResourceString);
 	m_ModifiedObjective.TitleResourceStringID(m_TitleResourceStringID);
 	m_ModifiedObjective.Description(m_DescriptionUnlocalizedText.GetBuffer(0));
-	m_ModifiedObjective.DescriptionUseResourceString(
-		TRUE == m_DescriptionUseResourceString);
-	m_ModifiedObjective.DescriptionResourceStringID(
-		m_DescriptionResourceStringID);
+	m_ModifiedObjective.DescriptionUseResourceString(TRUE == m_DescriptionUseResourceString);
+	m_ModifiedObjective.DescriptionResourceStringID(m_DescriptionResourceStringID);
 	if (0 == m_PriorityRadioButton)
 	{
 		m_ModifiedObjective.Priority(1);
@@ -502,8 +470,7 @@ BOOL ObjectiveDlg::OnInitDialog()
 			CConditionSpeciesList::EConstIterator it = comboBoxItems.Begin();
 			while (!it.IsDone())
 			{
-				tmpEStr =
-					m_ModifiedObjective.DescriptionOfConditionSpecies(*it);
+				tmpEStr = m_ModifiedObjective.DescriptionOfConditionSpecies(*it);
 				(&m_ComboBox)->AddString(tmpEStr.Data());
 				it++;
 			}
@@ -533,38 +500,28 @@ BOOL ObjectiveDlg::OnInitDialog()
 			failureConditionComboBoxItems.Append(DESTROY_NUMBER_OF_ENEMY_UNITS);
 			failureConditionComboBoxItems.Append(DESTROY_SPECIFIC_ENEMY_UNIT);
 			failureConditionComboBoxItems.Append(DESTROY_SPECIFIC_STRUCTURE);
-			failureConditionComboBoxItems.Append(
-				CAPTURE_OR_DESTROY_ALL_ENEMY_UNITS);
-			failureConditionComboBoxItems.Append(
-				CAPTURE_OR_DESTROY_NUMBER_OF_ENEMY_UNITS);
-			failureConditionComboBoxItems.Append(
-				CAPTURE_OR_DESTROY_SPECIFIC_ENEMY_UNIT);
-			failureConditionComboBoxItems.Append(
-				CAPTURE_OR_DESTROY_SPECIFIC_STRUCTURE);
+			failureConditionComboBoxItems.Append(CAPTURE_OR_DESTROY_ALL_ENEMY_UNITS);
+			failureConditionComboBoxItems.Append(CAPTURE_OR_DESTROY_NUMBER_OF_ENEMY_UNITS);
+			failureConditionComboBoxItems.Append(CAPTURE_OR_DESTROY_SPECIFIC_ENEMY_UNIT);
+			failureConditionComboBoxItems.Append(CAPTURE_OR_DESTROY_SPECIFIC_STRUCTURE);
 			failureConditionComboBoxItems.Append(DEAD_OR_FLED_ALL_ENEMY_UNITS);
-			failureConditionComboBoxItems.Append(
-				DEAD_OR_FLED_NUMBER_OF_ENEMY_UNITS);
-			failureConditionComboBoxItems.Append(
-				DEAD_OR_FLED_SPECIFIC_ENEMY_UNIT);
+			failureConditionComboBoxItems.Append(DEAD_OR_FLED_NUMBER_OF_ENEMY_UNITS);
+			failureConditionComboBoxItems.Append(DEAD_OR_FLED_SPECIFIC_ENEMY_UNIT);
 			failureConditionComboBoxItems.Append(CAPTURE_UNIT);
 			failureConditionComboBoxItems.Append(CAPTURE_STRUCTURE);
 			failureConditionComboBoxItems.Append(GUARD_SPECIFIC_UNIT);
 			failureConditionComboBoxItems.Append(GUARD_SPECIFIC_STRUCTURE);
 			failureConditionComboBoxItems.Append(MOVE_ANY_UNIT_TO_AREA);
 			failureConditionComboBoxItems.Append(MOVE_ALL_UNITS_TO_AREA);
-			failureConditionComboBoxItems.Append(
-				MOVE_ALL_SURVIVING_UNITS_TO_AREA);
-			failureConditionComboBoxItems.Append(
-				MOVE_ALL_SURVIVING_MECHS_TO_AREA);
+			failureConditionComboBoxItems.Append(MOVE_ALL_SURVIVING_UNITS_TO_AREA);
+			failureConditionComboBoxItems.Append(MOVE_ALL_SURVIVING_MECHS_TO_AREA);
 			failureConditionComboBoxItems.Append(BOOLEAN_FLAG_IS_SET);
 			failureConditionComboBoxItems.Append(ELAPSED_MISSION_TIME);
 			EString tmpEStr;
-			CConditionSpeciesList::EConstIterator it =
-				failureConditionComboBoxItems.Begin();
+			CConditionSpeciesList::EConstIterator it = failureConditionComboBoxItems.Begin();
 			while (!it.IsDone())
 			{
-				tmpEStr =
-					m_ModifiedObjective.DescriptionOfConditionSpecies(*it);
+				tmpEStr = m_ModifiedObjective.DescriptionOfConditionSpecies(*it);
 				(&m_FailureConditionComboBox)->AddString(tmpEStr.Data());
 				it++;
 			}
@@ -579,8 +536,7 @@ BOOL ObjectiveDlg::OnInitDialog()
 			failureActionComboBoxItems.Append(SET_BOOLEAN_FLAG);
 			failureActionComboBoxItems.Append(MAKE_NEW_TECHNOLOGY_AVAILABLE);
 			EString tmpEStr;
-			CActionSpeciesList::EConstIterator it =
-				failureActionComboBoxItems.Begin();
+			CActionSpeciesList::EConstIterator it = failureActionComboBoxItems.Begin();
 			while (!it.IsDone())
 			{
 				tmpEStr = m_ModifiedObjective.DescriptionOfActionSpecies(*it);
@@ -599,8 +555,7 @@ BOOL ObjectiveDlg::OnInitDialog()
 		{
 			// post a message that the "Add (Success) Condition" button was
 			// pressed
-			PostMessage(WM_COMMAND,
-				MAKEWPARAM(IDC_OBJECTIVE_ADD_CONDITION_BUTTON, BN_CLICKED),
+			PostMessage(WM_COMMAND, MAKEWPARAM(IDC_OBJECTIVE_ADD_CONDITION_BUTTON, BN_CLICKED),
 				(LPARAM)((&m_AddButton)->m_hWnd));
 		}
 		else
@@ -608,15 +563,13 @@ BOOL ObjectiveDlg::OnInitDialog()
 			// post a message that the "Add (Failure) Condition" button was
 			// pressed
 			PostMessage(WM_COMMAND,
-				MAKEWPARAM(
-					IDC_OBJECTIVE_ADD_FAILURE_CONDITION_BUTTON, BN_CLICKED),
+				MAKEWPARAM(IDC_OBJECTIVE_ADD_FAILURE_CONDITION_BUTTON, BN_CLICKED),
 				(LPARAM)((&m_AddFailureConditionButton)->m_hWnd));
 		}
 	}
 	else
 	{
-		EditorInterface::instance()->objectivesEditState.ModifiedObjective =
-			m_ModifiedObjective;
+		EditorInterface::instance()->objectivesEditState.ModifiedObjective = m_ModifiedObjective;
 	}
 	return TRUE; // return TRUE unless you set the focus to a control
 				 // EXCEPTION: OCX Property Pages should return FALSE
@@ -626,15 +579,13 @@ void ObjectiveDlg::OnObjectiveAddConditionButton()
 {
 	{
 		uint32_t comboboxSelection = (&m_ComboBox)->GetCurSel();
-		if ((0 <= comboboxSelection) &&
-			(comboBoxItems.Count() > comboboxSelection))
+		if ((0 <= comboboxSelection) && (comboBoxItems.Count() > comboboxSelection))
 		{
 			// condition_species_type species =
 			// comboBoxItems[comboboxSelection];
-			condition_species_type species =
-				*(comboBoxItems.Iterator(comboboxSelection));
-			pNewCondition = CObjective::new_CObjectiveCondition(
-				species, m_ModifiedObjective.Alignment());
+			condition_species_type species = *(comboBoxItems.Iterator(comboboxSelection));
+			pNewCondition =
+				CObjective::new_CObjectiveCondition(species, m_ModifiedObjective.Alignment());
 		}
 		else
 		{
@@ -649,21 +600,16 @@ void ObjectiveDlg::OnObjectiveAddConditionButton()
 	{
 		/* close the dialog and enter ObjectSelectOnlyMode */
 		SaveDialogValues();
-		EditorInterface::instance()->objectivesEditState.ModifiedObjective =
-			m_ModifiedObjective;
+		EditorInterface::instance()->objectivesEditState.ModifiedObjective = m_ModifiedObjective;
 		EditorInterface::instance()->objectivesEditState.listID =
 			CObjectivesEditState::SUCCESS_CONDITION;
-		EditorInterface::instance()
-			->objectivesEditState.nConditionSpeciesSelectionIndex =
+		EditorInterface::instance()->objectivesEditState.nConditionSpeciesSelectionIndex =
 			(&m_ComboBox)->GetCurSel();
-		EditorInterface::instance()
-			->objectivesEditState.nActionSpeciesSelectionIndex =
+		EditorInterface::instance()->objectivesEditState.nActionSpeciesSelectionIndex =
 			(&m_ActionComboBox)->GetCurSel();
-		EditorInterface::instance()
-			->objectivesEditState.nFailureConditionSpeciesSelectionIndex =
+		EditorInterface::instance()->objectivesEditState.nFailureConditionSpeciesSelectionIndex =
 			(&m_FailureConditionComboBox)->GetCurSel();
-		EditorInterface::instance()
-			->objectivesEditState.nFailureActionSpeciesSelectionIndex =
+		EditorInterface::instance()->objectivesEditState.nFailureActionSpeciesSelectionIndex =
 			(&m_FailureActionComboBox)->GetCurSel();
 		delete pNewCondition;
 		pNewCondition = 0;
@@ -690,8 +636,7 @@ void ObjectiveDlg::OnObjectiveAddConditionButton()
 void ObjectiveDlg::OnObjectiveRemoveConditionButton()
 {
 	int32_t nSelectionIndex = (&m_List)->GetCurSel();
-	if ((0 <= nSelectionIndex) &&
-		(m_ModifiedObjective.Count() > nSelectionIndex))
+	if ((0 <= nSelectionIndex) && (m_ModifiedObjective.Count() > nSelectionIndex))
 	{
 		// should put up confirmation box here
 		delete *(m_ModifiedObjective.Iterator(nSelectionIndex));
@@ -717,10 +662,8 @@ void ObjectiveDlg::OnObjectiveAddActionButton()
 		{
 			// action_species_type species =
 			// actionComboBoxItems[actionComboboxSelection];
-			action_species_type species =
-				*(actionComboBoxItems.Iterator(actionComboboxSelection));
-			pNewAction = CObjective::new_CObjectiveAction(
-				species, m_ModifiedObjective.Alignment());
+			action_species_type species = *(actionComboBoxItems.Iterator(actionComboboxSelection));
+			pNewAction = CObjective::new_CObjectiveAction(species, m_ModifiedObjective.Alignment());
 		}
 		else
 		{
@@ -735,19 +678,14 @@ void ObjectiveDlg::OnObjectiveAddActionButton()
 	{
 		/* close the dialog and enter ObjectSelectOnlyMode */
 		SaveDialogValues();
-		EditorInterface::instance()->objectivesEditState.ModifiedObjective =
-			m_ModifiedObjective;
-		EditorInterface::instance()
-			->objectivesEditState.nConditionSpeciesSelectionIndex =
+		EditorInterface::instance()->objectivesEditState.ModifiedObjective = m_ModifiedObjective;
+		EditorInterface::instance()->objectivesEditState.nConditionSpeciesSelectionIndex =
 			(&m_ComboBox)->GetCurSel();
-		EditorInterface::instance()
-			->objectivesEditState.nActionSpeciesSelectionIndex =
+		EditorInterface::instance()->objectivesEditState.nActionSpeciesSelectionIndex =
 			(&m_ActionComboBox)->GetCurSel();
-		EditorInterface::instance()
-			->objectivesEditState.nFailureConditionSpeciesSelectionIndex =
+		EditorInterface::instance()->objectivesEditState.nFailureConditionSpeciesSelectionIndex =
 			(&m_FailureConditionComboBox)->GetCurSel();
-		EditorInterface::instance()
-			->objectivesEditState.nFailureActionSpeciesSelectionIndex =
+		EditorInterface::instance()->objectivesEditState.nFailureActionSpeciesSelectionIndex =
 			(&m_FailureActionComboBox)->GetCurSel();
 		delete pNewAction;
 		pNewAction = 0;
@@ -760,8 +698,7 @@ void ObjectiveDlg::OnObjectiveAddActionButton()
 		{
 			m_ModifiedObjective.m_actionList.Append(pNewAction);
 			m_ActionList.SetCurSel(m_ActionList.GetCount() - 1);
-			syncActionsListWithListBox(
-				&(m_ModifiedObjective.m_actionList), (&m_ActionList));
+			syncActionsListWithListBox(&(m_ModifiedObjective.m_actionList), (&m_ActionList));
 		}
 		else
 		{
@@ -775,14 +712,12 @@ void ObjectiveDlg::OnObjectiveAddActionButton()
 void ObjectiveDlg::OnObjectiveRemoveActionButton()
 {
 	int32_t nSelectionIndex = (&m_ActionList)->GetCurSel();
-	if ((0 <= nSelectionIndex) &&
-		(m_ModifiedObjective.m_actionList.Count() > nSelectionIndex))
+	if ((0 <= nSelectionIndex) && (m_ModifiedObjective.m_actionList.Count() > nSelectionIndex))
 	{
 		// should put up confirmation box here
 		delete *(m_ModifiedObjective.m_actionList.Iterator(nSelectionIndex));
 		m_ModifiedObjective.m_actionList.Delete(nSelectionIndex);
-		syncActionsListWithListBox(
-			&(m_ModifiedObjective.m_actionList), (&m_ActionList));
+		syncActionsListWithListBox(&(m_ModifiedObjective.m_actionList), (&m_ActionList));
 		if (0 < m_ActionList.GetCount())
 		{
 			if (m_ActionList.GetCount() <= (int32_t)nSelectionIndex)
@@ -807,8 +742,7 @@ void ObjectiveDlg::OnSelchangeGroup()
 	group		  = m_modelGroup.GetItemData(group);
 	PCSTR MechNames[256];
 	int32_t count = 256;
-	EditorObjectMgr::instance()->getBuildingNamesInGroup(
-		group, MechNames, count);
+	EditorObjectMgr::instance()->getBuildingNamesInGroup(group, MechNames, count);
 	for (size_t i = 0; i < count; ++i)
 	{
 		m_Mech.AddString(MechNames[i]);
@@ -840,8 +774,7 @@ void ObjectiveDlg::DoEditColorChange(int32_t ID)
 	GetDlgItem(ID)->GetWindowText(text);
 	bool bChanged = false;
 	int32_t i	 = 0;
-	if (text.GetLength() > 1 &&
-		(text[0] == '0' && (text[1] == 'x' || text[i] == 'X')))
+	if (text.GetLength() > 1 && (text[0] == '0' && (text[1] == 'x' || text[i] == 'X')))
 		i = 2;
 	for (; i < text.GetLength(); ++i)
 	{
@@ -898,10 +831,7 @@ HBRUSH ObjectiveDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, uint32_t nCtlColor)
 			baseBrush.DeleteObject();
 		baseBrush.CreateSolidBrush(base);
 		pDC->SetBkColor(base);
-		if (((base & 0xff) + ((base & 0xff00) >> 8) +
-				((base & 0xff0000) >> 16)) /
-				3 <
-			85)
+		if (((base & 0xff) + ((base & 0xff00) >> 8) + ((base & 0xff0000) >> 16)) / 3 < 85)
 			pDC->SetTextColor(0x00ffffff);
 		return (HBRUSH)baseBrush.m_hObject;
 	}
@@ -918,10 +848,7 @@ HBRUSH ObjectiveDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, uint32_t nCtlColor)
 			brush1.DeleteObject();
 		brush1.CreateSolidBrush(base);
 		pDC->SetBkColor(base);
-		if (((base & 0xff) + ((base & 0xff00) >> 8) +
-				((base & 0xff0000) >> 16)) /
-				3 <
-			85)
+		if (((base & 0xff) + ((base & 0xff00) >> 8) + ((base & 0xff0000) >> 16)) / 3 < 85)
 			pDC->SetTextColor(0x00ffffff);
 		return (HBRUSH)brush1.m_hObject;
 	}
@@ -938,10 +865,7 @@ HBRUSH ObjectiveDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, uint32_t nCtlColor)
 			brush2.DeleteObject();
 		brush2.CreateSolidBrush(base);
 		pDC->SetBkColor(base);
-		if (((base & 0xff) + ((base & 0xff00) >> 8) +
-				((base & 0xff0000) >> 16)) /
-				3 <
-			85)
+		if (((base & 0xff) + ((base & 0xff00) >> 8) + ((base & 0xff0000) >> 16)) / 3 < 85)
 			pDC->SetTextColor(0x00ffffff);
 		return (HBRUSH)brush2.m_hObject;
 	}
@@ -984,15 +908,14 @@ void ObjectiveDlg::OnObjectiveAddFailureConditionButton()
 {
 	{
 		uint32_t comboboxSelection = (&m_FailureConditionComboBox)->GetCurSel();
-		if ((0 <= comboboxSelection) &&
-			(failureConditionComboBoxItems.Count() > comboboxSelection))
+		if ((0 <= comboboxSelection) && (failureConditionComboBoxItems.Count() > comboboxSelection))
 		{
 			// condition_species_type species =
 			// failureConditionComboBoxItems[comboboxSelection];
 			condition_species_type species =
 				*(failureConditionComboBoxItems.Iterator(comboboxSelection));
-			pNewCondition = CObjective::new_CObjectiveCondition(
-				species, m_ModifiedObjective.Alignment());
+			pNewCondition =
+				CObjective::new_CObjectiveCondition(species, m_ModifiedObjective.Alignment());
 		}
 		else
 		{
@@ -1007,21 +930,16 @@ void ObjectiveDlg::OnObjectiveAddFailureConditionButton()
 	{
 		/* close the dialog and enter ObjectSelectOnlyMode */
 		SaveDialogValues();
-		EditorInterface::instance()->objectivesEditState.ModifiedObjective =
-			m_ModifiedObjective;
+		EditorInterface::instance()->objectivesEditState.ModifiedObjective = m_ModifiedObjective;
 		EditorInterface::instance()->objectivesEditState.listID =
 			CObjectivesEditState::FAILURE_CONDITION;
-		EditorInterface::instance()
-			->objectivesEditState.nConditionSpeciesSelectionIndex =
+		EditorInterface::instance()->objectivesEditState.nConditionSpeciesSelectionIndex =
 			(&m_ComboBox)->GetCurSel();
-		EditorInterface::instance()
-			->objectivesEditState.nActionSpeciesSelectionIndex =
+		EditorInterface::instance()->objectivesEditState.nActionSpeciesSelectionIndex =
 			(&m_ActionComboBox)->GetCurSel();
-		EditorInterface::instance()
-			->objectivesEditState.nFailureConditionSpeciesSelectionIndex =
+		EditorInterface::instance()->objectivesEditState.nFailureConditionSpeciesSelectionIndex =
 			(&m_FailureConditionComboBox)->GetCurSel();
-		EditorInterface::instance()
-			->objectivesEditState.nFailureActionSpeciesSelectionIndex =
+		EditorInterface::instance()->objectivesEditState.nFailureActionSpeciesSelectionIndex =
 			(&m_FailureActionComboBox)->GetCurSel();
 		delete pNewCondition;
 		pNewCondition = 0;
@@ -1033,11 +951,9 @@ void ObjectiveDlg::OnObjectiveAddFailureConditionButton()
 		if (true == result)
 		{
 			m_ModifiedObjective.m_failureConditionList.Append(pNewCondition);
-			m_FailureConditionList.SetCurSel(
-				m_FailureConditionList.GetCount() - 1);
+			m_FailureConditionList.SetCurSel(m_FailureConditionList.GetCount() - 1);
 			syncConditionsListWithListBox(
-				&(m_ModifiedObjective.m_failureConditionList),
-				(&m_FailureConditionList));
+				&(m_ModifiedObjective.m_failureConditionList), (&m_FailureConditionList));
 		}
 		else
 		{
@@ -1055,12 +971,10 @@ void ObjectiveDlg::OnObjectiveRemoveFailureConditionButton()
 		(m_ModifiedObjective.m_failureConditionList.Count() > nSelectionIndex))
 	{
 		// should put up confirmation box here
-		delete *(m_ModifiedObjective.m_failureConditionList.Iterator(
-			nSelectionIndex));
+		delete *(m_ModifiedObjective.m_failureConditionList.Iterator(nSelectionIndex));
 		m_ModifiedObjective.m_failureConditionList.Delete(nSelectionIndex);
 		syncConditionsListWithListBox(
-			&(m_ModifiedObjective.m_failureConditionList),
-			(&m_FailureConditionList));
+			&(m_ModifiedObjective.m_failureConditionList), (&m_FailureConditionList));
 		if (0 < m_FailureConditionList.GetCount())
 		{
 			if (m_FailureConditionList.GetCount() <= (int32_t)nSelectionIndex)
@@ -1075,8 +989,7 @@ void ObjectiveDlg::OnObjectiveRemoveFailureConditionButton()
 void ObjectiveDlg::OnObjectiveAddFailureActionButton()
 {
 	{
-		uint32_t actionComboboxSelection =
-			(&m_FailureActionComboBox)->GetCurSel();
+		uint32_t actionComboboxSelection = (&m_FailureActionComboBox)->GetCurSel();
 		if ((0 <= actionComboboxSelection) &&
 			(failureActionComboBoxItems.Count() > actionComboboxSelection))
 		{
@@ -1084,8 +997,7 @@ void ObjectiveDlg::OnObjectiveAddFailureActionButton()
 			// failureActionComboBoxItems[actionComboboxSelection];
 			action_species_type species =
 				*(failureActionComboBoxItems.Iterator(actionComboboxSelection));
-			pNewAction = CObjective::new_CObjectiveAction(
-				species, m_ModifiedObjective.Alignment());
+			pNewAction = CObjective::new_CObjectiveAction(species, m_ModifiedObjective.Alignment());
 		}
 		else
 		{
@@ -1100,19 +1012,14 @@ void ObjectiveDlg::OnObjectiveAddFailureActionButton()
 	{
 		/* close the dialog and enter ObjectSelectOnlyMode */
 		SaveDialogValues();
-		EditorInterface::instance()->objectivesEditState.ModifiedObjective =
-			m_ModifiedObjective;
-		EditorInterface::instance()
-			->objectivesEditState.nConditionSpeciesSelectionIndex =
+		EditorInterface::instance()->objectivesEditState.ModifiedObjective = m_ModifiedObjective;
+		EditorInterface::instance()->objectivesEditState.nConditionSpeciesSelectionIndex =
 			(&m_ComboBox)->GetCurSel();
-		EditorInterface::instance()
-			->objectivesEditState.nActionSpeciesSelectionIndex =
+		EditorInterface::instance()->objectivesEditState.nActionSpeciesSelectionIndex =
 			(&m_FailureActionComboBox)->GetCurSel();
-		EditorInterface::instance()
-			->objectivesEditState.nFailureConditionSpeciesSelectionIndex =
+		EditorInterface::instance()->objectivesEditState.nFailureConditionSpeciesSelectionIndex =
 			(&m_FailureConditionComboBox)->GetCurSel();
-		EditorInterface::instance()
-			->objectivesEditState.nFailureActionSpeciesSelectionIndex =
+		EditorInterface::instance()->objectivesEditState.nFailureActionSpeciesSelectionIndex =
 			(&m_FailureActionComboBox)->GetCurSel();
 		delete pNewAction;
 		pNewAction = 0;
@@ -1126,8 +1033,7 @@ void ObjectiveDlg::OnObjectiveAddFailureActionButton()
 			m_ModifiedObjective.m_failureActionList.Append(pNewAction);
 			m_FailureActionList.SetCurSel(m_FailureActionList.GetCount() - 1);
 			syncActionsListWithListBox(
-				&(m_ModifiedObjective.m_failureActionList),
-				(&m_FailureActionList));
+				&(m_ModifiedObjective.m_failureActionList), (&m_FailureActionList));
 		}
 		else
 		{
@@ -1145,8 +1051,7 @@ void ObjectiveDlg::OnObjectiveRemoveFailureActionButton()
 		(m_ModifiedObjective.m_failureActionList.Count() > nSelectionIndex))
 	{
 		// should put up confirmation box here
-		delete *(
-			m_ModifiedObjective.m_failureActionList.Iterator(nSelectionIndex));
+		delete *(m_ModifiedObjective.m_failureActionList.Iterator(nSelectionIndex));
 		m_ModifiedObjective.m_failureActionList.Delete(nSelectionIndex);
 		syncActionsListWithListBox(
 			&(m_ModifiedObjective.m_failureActionList), (&m_FailureActionList));
@@ -1167,10 +1072,8 @@ void ObjectiveDlg::OnObjectiveViewConditionButton()
 	if ((LB_ERR != nSelectionIndex) && (0 <= nSelectionIndex) &&
 		(m_ModifiedObjective.Count() > nSelectionIndex))
 	{
-		CObjective::condition_list_type::EConstIterator it =
-			m_ModifiedObjective.Begin();
-		EString tmpEStr =
-			(*it)->Description() + "  " + (*it)->InstanceDescription();
+		CObjective::condition_list_type::EConstIterator it = m_ModifiedObjective.Begin();
+		EString tmpEStr = (*it)->Description() + "  " + (*it)->InstanceDescription();
 		ViewConditionOrActionDlg viewDlg;
 		viewDlg.m_Edit = tmpEStr.Data();
 		viewDlg.DoModal();
@@ -1183,10 +1086,8 @@ void ObjectiveDlg::OnObjectiveViewActionButton()
 	if ((LB_ERR != nSelectionIndex) && (0 <= nSelectionIndex) &&
 		(m_ModifiedObjective.m_actionList.Count() > nSelectionIndex))
 	{
-		CObjective::action_list_type::EConstIterator it =
-			m_ModifiedObjective.m_actionList.Begin();
-		EString tmpEStr =
-			(*it)->Description() + "  " + (*it)->InstanceDescription();
+		CObjective::action_list_type::EConstIterator it = m_ModifiedObjective.m_actionList.Begin();
+		EString tmpEStr = (*it)->Description() + "  " + (*it)->InstanceDescription();
 		ViewConditionOrActionDlg viewDlg;
 		viewDlg.m_Edit = tmpEStr.Data();
 		viewDlg.DoModal();
@@ -1201,8 +1102,7 @@ void ObjectiveDlg::OnObjectiveViewFailureConditionButton()
 	{
 		CObjective::condition_list_type::EConstIterator it =
 			m_ModifiedObjective.m_failureConditionList.Begin();
-		EString tmpEStr =
-			(*it)->Description() + "  " + (*it)->InstanceDescription();
+		EString tmpEStr = (*it)->Description() + "  " + (*it)->InstanceDescription();
 		ViewConditionOrActionDlg viewDlg;
 		viewDlg.m_Edit = tmpEStr.Data();
 		viewDlg.DoModal();
@@ -1217,8 +1117,7 @@ void ObjectiveDlg::OnObjectiveViewFailureActionButton()
 	{
 		CObjective::action_list_type::EConstIterator it =
 			m_ModifiedObjective.m_failureActionList.Begin();
-		EString tmpEStr =
-			(*it)->Description() + "  " + (*it)->InstanceDescription();
+		EString tmpEStr = (*it)->Description() + "  " + (*it)->InstanceDescription();
 		ViewConditionOrActionDlg viewDlg;
 		viewDlg.m_Edit = tmpEStr.Data();
 		viewDlg.DoModal();

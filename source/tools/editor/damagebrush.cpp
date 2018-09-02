@@ -32,11 +32,10 @@ Action* DamageBrush::endPaint()
 	return pRetAction;
 }
 
-bool DamageBrush::paint(
-	Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY)
+bool DamageBrush::paint(Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY)
 {
-	EditorObject* pObject = const_cast<EditorObject*>(
-		EditorObjectMgr::instance()->getObjectAtPosition(worldPos));
+	EditorObject* pObject =
+		const_cast<EditorObject*>(EditorObjectMgr::instance()->getObjectAtPosition(worldPos));
 	if (pObject)
 	{
 		pAction->addBuildingInfo(*pObject);
@@ -48,23 +47,18 @@ bool DamageBrush::paint(
 bool DamageBrush::canPaint(
 	Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY, int32_t flags)
 {
-	const EditorObject* pObject =
-		EditorObjectMgr::instance()->getObjectAtPosition(worldPos);
+	const EditorObject* pObject = EditorObjectMgr::instance()->getObjectAtPosition(worldPos);
 	return pObject ? true : false;
 }
 
-bool DamageBrush::canPaintSelection()
-{
-	return EditorObjectMgr::instance()->hasSelection();
-}
+bool DamageBrush::canPaintSelection() { return EditorObjectMgr::instance()->hasSelection(); }
 
 Action* DamageBrush::applyToSelection()
 {
 	ModifyBuildingAction* pRetAction = new ModifyBuildingAction;
 	EditorObjectMgr::EDITOR_OBJECT_LIST selectedObjectsList =
 		EditorObjectMgr::instance()->getSelectedObjectList();
-	EditorObjectMgr::EDITOR_OBJECT_LIST::EIterator it =
-		selectedObjectsList.Begin();
+	EditorObjectMgr::EDITOR_OBJECT_LIST::EIterator it = selectedObjectsList.Begin();
 	while (!it.IsDone())
 	{
 		EditorObject* pInfo = (*it);

@@ -15,8 +15,8 @@
 
 MainMenu* pMainMenu = nullptr;
 MainMenu::MainMenu(EditorInterface* pEditorInterface)
-	: Window(L"MainMenu", 0, 0, Environment.screenWidth,
-		  Environment.screenHeight, pEditorInterface /*pgWinMan->Root()*/, 0, 0)
+	: Window(L"MainMenu", 0, 0, Environment.screenWidth, Environment.screenHeight,
+		  pEditorInterface /*pgWinMan->Root()*/, 0, 0)
 {
 	pMenu	 = nullptr;
 	bEndModal = false;
@@ -41,8 +41,7 @@ MainMenu::MainMenu(EditorInterface* pEditorInterface)
 }
 
 extern bool gos_RunMainLoop(void (*DoGameLogic)());
-extern uint32_t
-	TerminateGame; // BUGBUG exported function handles this with return value
+extern uint32_t TerminateGame; // BUGBUG exported function handles this with return value
 
 void MainMenu::DoModal()
 {

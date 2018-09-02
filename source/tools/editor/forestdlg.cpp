@@ -5,7 +5,7 @@
 // ForestDlg.cpp : implementation file
 //
 
-#include "stdafx.h"
+#include "stdinc.h"
 #include "resource.h"
 #include "forestdlg.h"
 #include <terrain.h>
@@ -17,8 +17,7 @@
 
 static char szFITFilter[] = "FIT Files (*.FIT)|*.fit||";
 
-ForestDlg::ForestDlg(CWnd* pParent /*=nullptr*/)
-	: CDialog(ForestDlg::IDD, pParent), forest(-1)
+ForestDlg::ForestDlg(CWnd* pParent /*=nullptr*/) : CDialog(ForestDlg::IDD, pParent), forest(-1)
 {
 	//{{AFX_DATA_INIT(ForestDlg)
 	m_maxDensity	  = 10.0f;
@@ -119,8 +118,7 @@ void ForestDlg::OnSave()
 	{
 		return;
 	}
-	CFileDialog dlg(0, "fit", nullptr, OFN_OVERWRITEPROMPT | OFN_NOCHANGEDIR,
-		szFITFilter, this);
+	CFileDialog dlg(0, "fit", nullptr, OFN_OVERWRITEPROMPT | OFN_NOCHANGEDIR, szFITFilter, this);
 	dlg.m_ofn.lpstrInitialDir = terrainPath;
 	int32_t retVal			  = dlg.DoModal();
 	if (IDOK == retVal)
@@ -204,8 +202,7 @@ void ForestDlg::OnEditChanged(uint32_t nID)
 	}
 }
 
-void ForestDlg::OnSliderChanged(
-	uint32_t id, NMHDR* pNotifyStruct, LRESULT* result)
+void ForestDlg::OnSliderChanged(uint32_t id, NMHDR* pNotifyStruct, LRESULT* result)
 {
 	CWnd* pWnd			 = GetDlgItem(id);
 	CSliderCtrl* pSlider = (CSliderCtrl*)(pWnd);
@@ -254,8 +251,7 @@ BOOL ForestDlg::OnInitDialog()
 		if (pEdit)
 		{
 			CString str;
-			str.Format(
-				"%ld", (int32_t)forest.percentages[(i - IDC_FOREST_EDIT1) / 2]);
+			str.Format("%ld", (int32_t)forest.percentages[(i - IDC_FOREST_EDIT1) / 2]);
 			pEdit->SetWindowText(str);
 		}
 		CSliderCtrl* pSlider = (CSliderCtrl*)(GetDlgItem(i - 1));
@@ -277,8 +273,7 @@ BOOL ForestDlg::OnInitDialog()
 
 void ForestDlg::OnLoad()
 {
-	CFileDialog dlg(TRUE, "fit", nullptr, OFN_NOCHANGEDIR | OFN_FILEMUSTEXIST,
-		szFITFilter, this);
+	CFileDialog dlg(TRUE, "fit", nullptr, OFN_NOCHANGEDIR | OFN_FILEMUSTEXIST, szFITFilter, this);
 	dlg.m_ofn.lpstrInitialDir = terrainPath;
 	if (IDOK == dlg.DoModal())
 	{

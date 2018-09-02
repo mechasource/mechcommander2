@@ -5,7 +5,7 @@
 // UserTextEdit.cpp : implementation file
 //
 
-#include "stdafx.h"
+#include "stdinc.h"
 #include "resource.h"
 #include "UserTextEdit.h"
 
@@ -23,8 +23,7 @@ static char THIS_FILE[] = __FILE__;
 /////////////////////////////////////////////////////////////////////////////
 // CUserTextEdit dialog
 
-CUserTextEdit::CUserTextEdit(CWnd* pParent /*=nullptr*/)
-	: CDialog(CUserTextEdit::IDD, pParent)
+CUserTextEdit::CUserTextEdit(CWnd* pParent /*=nullptr*/) : CDialog(CUserTextEdit::IDD, pParent)
 {
 	m_UseResourceString = false;
 	m_ResourceStringID  = 0;
@@ -39,17 +38,15 @@ void CUserTextEdit::DoDataExchange(CDataExchange* pDX)
 	CDialog::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(CUserTextEdit)
 	DDX_Text(pDX, IDC_USER_TEXT_EDIT_EDIT, m_Edit);
-	DDX_Text(pDX, IDC_USER_TEXT_EDIT_RESOURCE_STRING_ID_EDIT,
-		m_ResourceStringIDEdit);
+	DDX_Text(pDX, IDC_USER_TEXT_EDIT_RESOURCE_STRING_ID_EDIT, m_ResourceStringIDEdit);
 	//}}AFX_DATA_MAP
 }
 
 BEGIN_MESSAGE_MAP(CUserTextEdit, CDialog)
 //{{AFX_MSG_MAP(CUserTextEdit)
+ON_BN_CLICKED(IDC_USER_TEXT_EDIT_ENTER_TEXT_BUTTON, OnUserTextEditEnterTextButton)
 ON_BN_CLICKED(
-	IDC_USER_TEXT_EDIT_ENTER_TEXT_BUTTON, OnUserTextEditEnterTextButton)
-ON_BN_CLICKED(IDC_USER_TEXT_EDIT_SELECT_RESOURCE_STRING_BUTTON,
-	OnUserTextEditSelectResourceStringButton)
+	IDC_USER_TEXT_EDIT_SELECT_RESOURCE_STRING_BUTTON, OnUserTextEditSelectResourceStringButton)
 //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -100,11 +97,9 @@ void CUserTextEdit::OnUserTextEditEnterTextButton()
 		m_UnlocalizedText = textMessageDlg.m_TextMessage;
 		/*remove trailing "new line"s and "carriage return"s because the game
 		 * doesn't like them*/
-		while (("\n" == m_UnlocalizedText.Right(1)) ||
-			   ("\r" == m_UnlocalizedText.Right(1)))
+		while (("\n" == m_UnlocalizedText.Right(1)) || ("\r" == m_UnlocalizedText.Right(1)))
 		{
-			m_UnlocalizedText =
-				m_UnlocalizedText.Left(m_UnlocalizedText.GetLength() - 1);
+			m_UnlocalizedText = m_UnlocalizedText.Left(m_UnlocalizedText.GetLength() - 1);
 		}
 		m_UseResourceString = false;
 		UpdateTextDisplay();
@@ -115,11 +110,10 @@ void CUserTextEdit::OnUserTextEditSelectResourceStringButton()
 {
 	ResourceStringSelectionDlg resourceStringSelectionDlg;
 	resourceStringSelectionDlg.m_SelectedResourceStringID = m_ResourceStringID;
-	int32_t ret = resourceStringSelectionDlg.DoModal();
+	int32_t ret											  = resourceStringSelectionDlg.DoModal();
 	if (IDOK == ret)
 	{
-		m_ResourceStringID =
-			resourceStringSelectionDlg.m_SelectedResourceStringID;
+		m_ResourceStringID  = resourceStringSelectionDlg.m_SelectedResourceStringID;
 		m_UseResourceString = true;
 		UpdateTextDisplay();
 	}

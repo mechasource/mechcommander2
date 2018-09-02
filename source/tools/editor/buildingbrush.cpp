@@ -6,7 +6,7 @@ BuildingBrush.cpp	: Implementation of the BuildingBrush component.
 \*************************************************************************************************/
 // #define BUILDINGBRUSH_CPP
 
-#include "stdafx.h"
+#include "stdinc.h"
 
 #include "buildingbrush.h"
 #include "editorobjectmgr.h"
@@ -15,13 +15,12 @@ BuildingBrush.cpp	: Implementation of the BuildingBrush component.
 #include "editorinterface.h"
 #include "resource.h"
 
-BuildingBrush::BuildingBrush(
-	int32_t Group, int32_t IndexInGroup, int32_t Alignment)
+BuildingBrush::BuildingBrush(int32_t Group, int32_t IndexInGroup, int32_t Alignment)
 {
-	group		 = Group;
-	indexInGroup = IndexInGroup;
-	pAction		 = nullptr;
-	pCursor = EditorObjectMgr::instance()->getAppearance(Group, IndexInGroup);
+	group			= Group;
+	indexInGroup	= IndexInGroup;
+	pAction			= nullptr;
+	pCursor			= EditorObjectMgr::instance()->getAppearance(Group, IndexInGroup);
 	pCursor->teamId = Alignment;
 	pCursor->setInView(true);
 	pCursor->setVisibility(true, true);
@@ -63,11 +62,9 @@ bool BuildingBrush::beginPaint()
 	return true; // need to set up undo here
 }
 
-bool BuildingBrush::paint(
-	Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY)
+bool BuildingBrush::paint(Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY)
 {
-	if ((AppearanceTypeList::appearanceHeap->totalCoreLeft() <
-			1000 /*arbitrary*/) ||
+	if ((AppearanceTypeList::appearanceHeap->totalCoreLeft() < 1000 /*arbitrary*/) ||
 		(AppearanceTypeList::appearanceHeap->totalCoreLeft() <
 			0.01 /*arbitrary*/ * AppearanceTypeList::appearanceHeap->size()))
 	{
@@ -132,16 +129,14 @@ bool BuildingBrush::BuildingAction::undo()
 		iter3++;
 	}
 	*/
-	for (OBJ_INFO_PTR_LIST::EIterator iter = objInfoPtrList.Begin();
-		 !iter.IsDone(); iter++)
+	for (OBJ_INFO_PTR_LIST::EIterator iter = objInfoPtrList.Begin(); !iter.IsDone(); iter++)
 	{
 		ObjectAppearance* pAppearance = (*(*iter)).appearance();
-		EditorObject* pObj = EditorObjectMgr::instance()->getObjectAtLocation(
-			pAppearance->position.x, pAppearance->position.y);
+		EditorObject* pObj			  = EditorObjectMgr::instance()->getObjectAtLocation(
+			   pAppearance->position.x, pAppearance->position.y);
 		if (pObj)
 		{
-			bRetVal =
-				EditorObjectMgr::instance()->deleteBuilding(pObj) && bRetVal;
+			bRetVal = EditorObjectMgr::instance()->deleteBuilding(pObj) && bRetVal;
 		}
 		else
 		{
@@ -154,15 +149,13 @@ bool BuildingBrush::BuildingAction::undo()
 bool BuildingBrush::BuildingAction::redo()
 {
 	bool bRetVal = true;
-	for (OBJ_INFO_PTR_LIST::EIterator iter = objInfoPtrList.Begin();
-		 !iter.IsDone(); iter++)
+	for (OBJ_INFO_PTR_LIST::EIterator iter = objInfoPtrList.Begin(); !iter.IsDone(); iter++)
 	{
 		ObjectAppearance* pAppearance = (*(*iter)).appearance();
-		EditorObject* pObj = EditorObjectMgr::instance()->addBuilding(
-			pAppearance->position,
+		EditorObject* pObj = EditorObjectMgr::instance()->addBuilding(pAppearance->position,
 			EditorObjectMgr::instance()->getGroup((*(*iter)).getID()),
-			EditorObjectMgr::instance()->getIndexInGroup((*(*iter)).getID()),
-			pAppearance->teamId, pAppearance->rotation);
+			EditorObjectMgr::instance()->getIndexInGroup((*(*iter)).getID()), pAppearance->teamId,
+			pAppearance->rotation);
 		if (pObj)
 		{
 			(*pObj).CastAndCopy((*(*iter)));
@@ -192,8 +185,7 @@ void BuildingBrush::update(int32_t ScreenMouseX, int32_t ScreenMouseY)
 	pt.x = ScreenMouseX;
 	pt.y = ScreenMouseY;
 	eye->inverseProject(pt, pos);
-	if (!EditorObjectMgr::instance()->canAddBuilding(
-			pos, pCursor->rotation, group, indexInGroup))
+	if (!EditorObjectMgr::instance()->canAddBuilding(pos, pCursor->rotation, group, indexInGroup))
 		pCursor->setHighlightColor(0x00400000);
 	else
 		pCursor->setHighlightColor(0x00004000);
@@ -224,9 +216,10 @@ void BuildingBrush::render(int32_t ScreenMouseX, int32_t ScreenMouseY)
 
 	pCursor->position = pos;
 	pCursor->recalcBounds();
-	pCursor->update();			//Safe tp call here now because we run the first update in the constructor which caches in texture
-								//NOT TRUE WITH RIA CODE!!!!!  Must have a separate update or NO Triangles get added!!!
-	pCursor->setVisibility( true, true );
+	pCursor->update();			//Safe tp call here now because we run the first update in the
+	constructor which caches in texture
+								//NOT TRUE WITH RIA CODE!!!!!  Must have a separate update or NO
+	Triangles get added!!! pCursor->setVisibility( true, true );
 	*/ // This may cause cursor to lag.  Check it and see.
 	pCursor->render();
 }
@@ -235,8 +228,7 @@ void BuildingBrush::rotateBrush(int32_t direction)
 {
 	int32_t ID	= EditorObjectMgr::instance()->getID(group, indexInGroup);
 	int32_t fitID = EditorObjectMgr::instance()->getFitID(ID);
-	if ((EditorObjectMgr::WALL ==
-			EditorObjectMgr::instance()->getSpecialType(ID)) ||
+	if ((EditorObjectMgr::WALL == EditorObjectMgr::instance()->getSpecialType(ID)) ||
 		(33 /*repair bay*/ == fitID))
 	{
 		pCursor->rotation += direction * 90;

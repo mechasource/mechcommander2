@@ -5,7 +5,7 @@ DlgFileOpen.cpp			: Implementation of the DlgFileOpen component.
 //===========================================================================//
 \*************************************************************************************************/
 
-#include "stdafx.h"
+#include "stdinc.h"
 #include "resource.h"
 
 //#include "toolos.hpp"
@@ -18,8 +18,7 @@ ON_LBN_SELCHANGE(IDC_FILEOPEN_FILELIST, OnSelchangeFileopenFilelist)
 END_MESSAGE_MAP()
 
 //-------------------------------------------------------------------------------------------------
-DlgFileOpen::DlgFileOpen(PCSTR directory, PCSTR dlgExtension, bool bsave)
-	: CDialog(IDD_FILEOPEN)
+DlgFileOpen::DlgFileOpen(PCSTR directory, PCSTR dlgExtension, bool bsave) : CDialog(IDD_FILEOPEN)
 {
 	strcpy(m_directory, directory);
 	strcpy(fileName, directory);
@@ -69,8 +68,7 @@ void DlgFileOpen::OnOK()
 	tmpExtension[1] = 0;
 	strcat(tmpExtension, extension);
 	if (!fileName ||
-		(strlen(fileName) < 4 ||
-			0 != _stricmp(tmpExtension, fileName + strlen(fileName) - 4)))
+		(strlen(fileName) < 4 || 0 != _stricmp(tmpExtension, fileName + strlen(fileName) - 4)))
 	{
 		strcat(fileName, ".");
 		strcat(fileName, extension);

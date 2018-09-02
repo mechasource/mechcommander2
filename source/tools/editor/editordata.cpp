@@ -3,7 +3,7 @@
 //===========================================================================//
 // #define EDITORDATA_CPP
 
-#include "stdafx.h"
+#include "stdinc.h"
 //#include <mclib.h>
 //#include "editorobjectmgr.h"
 //#include "mclibresource.h"
@@ -100,8 +100,7 @@ bool EditorData::clear()
 	EditorData::instance->Blurb2UseResourceString(false);
 	EditorData::instance->Blurb2ResourceStringID(0);
 	EditorData::instance->TimeLimit(-1.0 /*seconds*/);
-	EditorData::instance->DropWeightLimit(
-		300 /*lbs*/ /*default initial drop weight limit*/);
+	EditorData::instance->DropWeightLimit(300 /*lbs*/ /*default initial drop weight limit*/);
 	EditorData::instance->InitialResourcePoints(100000 /*default initial rp*/);
 	EditorData::instance->CBills(0);
 	EditorData::instance->IsSinglePlayer(false);
@@ -152,8 +151,7 @@ bool EditorData::clear()
 
 //-------------------------------------------------------------------------------------------------
 
-static int32_t sReadIdBoolean(
-	FitIniFile* missionFile, PCSTR varName, bool& value)
+static int32_t sReadIdBoolean(FitIniFile* missionFile, PCSTR varName, bool& value)
 {
 	int32_t result = 0;
 	bool tmpBool;
@@ -169,8 +167,7 @@ static int32_t sReadIdBoolean(
 	return result;
 }
 
-static int32_t sReadIdWholeNum(
-	FitIniFile* missionFile, PCSTR varName, int32_t& value)
+static int32_t sReadIdWholeNum(FitIniFile* missionFile, PCSTR varName, int32_t& value)
 {
 	int32_t result = 0;
 	uint32_t tmpULong;
@@ -186,14 +183,12 @@ static int32_t sReadIdWholeNum(
 	return result;
 }
 
-static int32_t sReadIdString(
-	FitIniFile* missionFile, PCSTR varName, ECharString& ECStr)
+static int32_t sReadIdString(FitIniFile* missionFile, PCSTR varName, ECharString& ECStr)
 {
 	int32_t result = 0;
 	char buffer[2001 /*buffer size*/];
-	buffer[0] = '\0';
-	result	= missionFile->readIdString(
-		   (PSTR)varName, buffer, 2001 /*buffer size*/ - 1);
+	buffer[0]	= '\0';
+	result		 = missionFile->readIdString((PSTR)varName, buffer, 2001 /*buffer size*/ - 1);
 	CString CStr = buffer;
 	/*readIdString can't read in "\r\n"*/
 	CStr.Replace("\n", "\r\n");
@@ -208,8 +203,7 @@ static int32_t sReadIdString(
 	return result;
 }
 
-static int32_t sWriteIdString(
-	FitIniFile* missionFile, PCSTR varName, PCSTR szStr)
+static int32_t sWriteIdString(FitIniFile* missionFile, PCSTR varName, PCSTR szStr)
 {
 	if (!szStr)
 	{
@@ -292,21 +286,19 @@ bool EditorData::initTerrainFromPCV(PCSTR fileName)
 		if (NO_ERROR == result)
 		{
 			ECharString tmpECStr = "";
-			result = sReadIdString(&file, "MissionName", tmpECStr);
+			result				 = sReadIdString(&file, "MissionName", tmpECStr);
 			if (NO_ERROR == result)
 			{
 				EditorData::instance->MissionName(_T(tmpECStr.Data()));
 			}
 			bool tmpBool = false;
-			result =
-				sReadIdBoolean(&file, "MissionNameUseResourceString", tmpBool);
+			result		 = sReadIdBoolean(&file, "MissionNameUseResourceString", tmpBool);
 			if (NO_ERROR == result)
 			{
 				EditorData::instance->MissionNameUseResourceString(tmpBool);
 			}
 			int32_t tmpInt = 0;
-			result =
-				sReadIdWholeNum(&file, "MissionNameResourceStringID", tmpInt);
+			result		   = sReadIdWholeNum(&file, "MissionNameResourceStringID", tmpInt);
 			if (NO_ERROR == result)
 			{
 				EditorData::instance->MissionNameResourceStringID(tmpInt);
@@ -425,34 +417,31 @@ bool EditorData::initTerrainFromPCV(PCSTR fileName)
 				EditorData::instance->MissionType(tmpULong);
 			}
 			tmpBool = false;
-			result = sReadIdBoolean(&file, "AirStrikesEnabledDefault", tmpBool);
+			result  = sReadIdBoolean(&file, "AirStrikesEnabledDefault", tmpBool);
 			if (NO_ERROR == result)
 			{
 				EditorData::instance->AirStrikesEnabledDefault(tmpBool);
 			}
 			tmpBool = false;
-			result = sReadIdBoolean(&file, "MineLayersEnabledDefault", tmpBool);
+			result  = sReadIdBoolean(&file, "MineLayersEnabledDefault", tmpBool);
 			if (NO_ERROR == result)
 			{
 				EditorData::instance->MineLayersEnabledDefault(tmpBool);
 			}
 			tmpBool = false;
-			result =
-				sReadIdBoolean(&file, "ScoutCoptersEnabledDefault", tmpBool);
+			result  = sReadIdBoolean(&file, "ScoutCoptersEnabledDefault", tmpBool);
 			if (NO_ERROR == result)
 			{
 				EditorData::instance->ScoutCoptersEnabledDefault(tmpBool);
 			}
 			tmpBool = false;
-			result =
-				sReadIdBoolean(&file, "SensorProbesEnabledDefault", tmpBool);
+			result  = sReadIdBoolean(&file, "SensorProbesEnabledDefault", tmpBool);
 			if (NO_ERROR == result)
 			{
 				EditorData::instance->SensorProbesEnabledDefault(tmpBool);
 			}
 			tmpBool = false;
-			result =
-				sReadIdBoolean(&file, "UnlimitedAmmoEnabledDefault", tmpBool);
+			result  = sReadIdBoolean(&file, "UnlimitedAmmoEnabledDefault", tmpBool);
 			if (NO_ERROR == result)
 			{
 				EditorData::instance->UnlimitedAmmoEnabledDefault(tmpBool);
@@ -464,42 +453,37 @@ bool EditorData::initTerrainFromPCV(PCSTR fileName)
 				EditorData::instance->AllTechEnabledDefault(tmpBool);
 			}
 			tmpBool = false;
-			result =
-				sReadIdBoolean(&file, "RepairVehicleEnabledDefault", tmpBool);
+			result  = sReadIdBoolean(&file, "RepairVehicleEnabledDefault", tmpBool);
 			if (NO_ERROR == result)
 			{
 				EditorData::instance->RepairVehicleEnabledDefault(tmpBool);
 			}
 			tmpBool = false;
-			result =
-				sReadIdBoolean(&file, "SalvageCraftEnabledDefault", tmpBool);
+			result  = sReadIdBoolean(&file, "SalvageCraftEnabledDefault", tmpBool);
 			if (NO_ERROR == result)
 			{
 				EditorData::instance->SalvageCraftEnabledDefault(tmpBool);
 			}
 			tmpBool = false;
-			result  = sReadIdBoolean(
-				 &file, "ResourceBuildingsEnabledDefault", tmpBool);
+			result  = sReadIdBoolean(&file, "ResourceBuildingsEnabledDefault", tmpBool);
 			if (NO_ERROR == result)
 			{
 				EditorData::instance->ResourceBuildingsEnabledDefault(tmpBool);
 			}
 			tmpBool = false;
-			result = sReadIdBoolean(&file, "NoVariantsEnabledDefault", tmpBool);
+			result  = sReadIdBoolean(&file, "NoVariantsEnabledDefault", tmpBool);
 			if (NO_ERROR == result)
 			{
 				EditorData::instance->NoVariantsEnabledDefault(tmpBool);
 			}
 			tmpBool = false;
-			result =
-				sReadIdBoolean(&file, "ArtilleryPieceEnabledDefault", tmpBool);
+			result  = sReadIdBoolean(&file, "ArtilleryPieceEnabledDefault", tmpBool);
 			if (NO_ERROR == result)
 			{
 				EditorData::instance->ArtilleryPieceEnabledDefault(tmpBool);
 			}
 			tmpBool = false;
-			result =
-				sReadIdBoolean(&file, "RPsForMechsEnabledDefault", tmpBool);
+			result  = sReadIdBoolean(&file, "RPsForMechsEnabledDefault", tmpBool);
 			if (NO_ERROR == result)
 			{
 				EditorData::instance->RPsForMechsEnabledDefault(tmpBool);
@@ -508,8 +492,7 @@ bool EditorData::initTerrainFromPCV(PCSTR fileName)
 		result = file.seekBlock("Script");
 		if (NO_ERROR == result)
 		{
-			result =
-				file.readIdString("ScenarioScript", missionScriptName, 1023);
+			result = file.readIdString("ScenarioScript", missionScriptName, 1023);
 			if (NO_ERROR != result)
 				strcpy(missionScriptName, "m0101");
 		}
@@ -570,8 +553,8 @@ bool EditorData::initTerrainFromPCV(PCSTR fileName)
 		/// This was a quickSave.  No Move Data.  Leave Blank!
 		// can't might crash
 		else
-			MOVE_buildData(land->realVerticesMapSide * 3,
-				land->realVerticesMapSide * 3, nullptr, 0, nullptr);
+			MOVE_buildData(
+				land->realVerticesMapSide * 3, land->realVerticesMapSide * 3, nullptr, 0, nullptr);
 	}
 	else
 	{
@@ -579,8 +562,8 @@ bool EditorData::initTerrainFromPCV(PCSTR fileName)
 	}
 	if (tacMapBmp)
 		free(tacMapBmp);
-	int32_t ramSize = ((land->realVerticesMapSide) * MAPCELL_DIM) *
-					  ((land->realVerticesMapSide) * MAPCELL_DIM);
+	int32_t ramSize = ((land->realVerticesMapSide) * terrain_const::MAPCELL_DIM) *
+		((land->realVerticesMapSide) * terrain_const::MAPCELL_DIM);
 	puint8_t pMemory = (puint8_t)malloc(ramSize * 4);
 	tacMapBmp		 = (uint32_t*)((puint8_t)pMemory);
 	setMapName(fileName);
@@ -590,8 +573,7 @@ bool EditorData::initTerrainFromPCV(PCSTR fileName)
 }
 
 //-------------------------------------------------------------------------------------------------
-bool EditorData::reassignHeightsFromTGA(
-	PCSTR fileName, int32_t min, int32_t max)
+bool EditorData::reassignHeightsFromTGA(PCSTR fileName, int32_t min, int32_t max)
 {
 	float MinVal = min;
 	float MaxVal = max; // should prompt the user for these
@@ -629,8 +611,7 @@ bool EditorData::reassignHeightsFromTGA(
 	puint8_t pTmp = nullptr;
 	float mapMin  = 255.;
 	float mapMax  = 0.;
-	pTmp		  = tgaData + header->cm_length * header->cm_entry_size / 8 +
-		   sizeof(TGAFileHeader);
+	pTmp		  = tgaData + header->cm_length * header->cm_entry_size / 8 + sizeof(TGAFileHeader);
 	if (header->image_type == UNC_PAL || header->image_type == UNC_GRAY)
 	{
 		for (size_t i = 0; i < header->width * header->width; ++i)
@@ -644,8 +625,7 @@ bool EditorData::reassignHeightsFromTGA(
 		int32_t lineIncrement;
 		int32_t countIncrement;
 		int32_t linePreAdd;
-		pTmp = tgaData + header->cm_length * header->cm_entry_size / 8 +
-			   sizeof(TGAFileHeader);
+		pTmp = tgaData + header->cm_length * header->cm_entry_size / 8 + sizeof(TGAFileHeader);
 		lineIncrement  = header->width;
 		countIncrement = 1;
 		linePreAdd	 = 0;
@@ -656,16 +636,13 @@ bool EditorData::reassignHeightsFromTGA(
 		bool top = (header->image_descriptor & 32) != 0;
 		if (!top)
 		{
-			flipTopToBottom(
-				pTmp, header->pixel_depth, header->width, header->height);
+			flipTopToBottom(pTmp, header->pixel_depth, header->width, header->height);
 		}
 		puint8_t pLine = pTmp;
-		for (size_t j = 0; j < header->height, j < land->realVerticesMapSide;
-			 ++j)
+		for (size_t j = 0; j < header->height, j < land->realVerticesMapSide; ++j)
 		{
 			pTmp = pLine + linePreAdd;
-			for (size_t i = 0; i < header->width, i < land->realVerticesMapSide;
-				 ++i)
+			for (size_t i = 0; i < header->width, i < land->realVerticesMapSide; ++i)
 			{
 				float val = (float)(*pTmp);
 				pTmp += countIncrement;
@@ -686,9 +663,8 @@ bool EditorData::reassignHeightsFromTGA(
 	return true;
 }
 
-PVOID DecodeJPG(PCSTR FileName, puint8_t Data, uint32_t DataSize,
-	uint32_t* TextureWidth, uint32_t* TextureHeight, bool TextureLoad,
-	PVOIDpDestSurf);
+PVOID DecodeJPG(PCSTR FileName, puint8_t Data, uint32_t DataSize, uint32_t* TextureWidth,
+	uint32_t* TextureHeight, bool TextureLoad, PVOIDpDestSurf);
 //-------------------------------------------------------------------------------------------------
 void CreateScaledColorMap(
 	int32_t mapWidth, PSTR localColorMapName, puint8_t tmpRAM, int32_t fileSize)
@@ -696,14 +672,13 @@ void CreateScaledColorMap(
 	puint8_t image			   = nullptr;
 	uint32_t jpgColorMapWidth  = 0;
 	uint32_t jpgColorMapHeight = 0;
-	image = (puint8_t)DecodeJPG("Startup.jpg", tmpRAM, fileSize,
-		&jpgColorMapWidth, &jpgColorMapHeight, false, nullptr);
+	image					   = (puint8_t)DecodeJPG(
+		 "Startup.jpg", tmpRAM, fileSize, &jpgColorMapWidth, &jpgColorMapHeight, false, nullptr);
 	// We are now pointing at the image.  Figure out the new line width in
 	// bytes.
-	int32_t newWidth  = mapWidth * 12.8f;
-	int32_t physWidth = newWidth * 4;
-	puint8_t tmpImage =
-		(puint8_t)malloc(physWidth * physWidth + sizeof(TGAFileHeader));
+	int32_t newWidth		 = mapWidth * 12.8f;
+	int32_t physWidth		 = newWidth * 4;
+	puint8_t tmpImage		 = (puint8_t)malloc(physWidth * physWidth + sizeof(TGAFileHeader));
 	TGAFileHeader* output	= (TGAFileHeader*)tmpImage;
 	output->image_id_len	 = 0;
 	output->color_map		 = 0;
@@ -726,16 +701,14 @@ void CreateScaledColorMap(
 	}
 	File newFile;
 	newFile.create(localColorMapName);
-	newFile.write(
-		(puint8_t)output, physWidth * physWidth + sizeof(TGAFileHeader));
+	newFile.write((puint8_t)output, physWidth * physWidth + sizeof(TGAFileHeader));
 	newFile.close();
 	free(tmpImage);
 }
 
 //-------------------------------------------------------------------------------------------------
 // Does things the new Colormap WAY!!! (tm)
-bool EditorData::initTerrainFromTGA(
-	int32_t mapSize, int32_t min, int32_t max, int32_t terrain)
+bool EditorData::initTerrainFromTGA(int32_t mapSize, int32_t min, int32_t max, int32_t terrain)
 {
 	EditorInterface::instance()->SetBusyMode(false /*no redraw*/);
 	clear(); // get rid of all the old stuff now
@@ -850,9 +823,8 @@ bool EditorData::initTerrainFromTGA(
 					AfxMessageBox(IDS_UNABLE_TO_DELETE_NEWMAP);
 				}
 			}
-			land->terrainTextures2 =
-				new TerrainColorMap; // Otherwise, this will stay nullptr and we
-									 // know not to use them
+			land->terrainTextures2 = new TerrainColorMap; // Otherwise, this will stay nullptr and
+														  // we know not to use them
 			land->terrainName = (PSTR)gos_Malloc(strlen(name2) + 1);
 			strcpy(land->terrainName, name2);
 			FullPathFileName missionName;
@@ -882,12 +854,12 @@ bool EditorData::initTerrainFromTGA(
 	land->recalcWater();
 	if (tacMapBmp)
 		free(tacMapBmp);
-	int32_t ramSize = ((land->realVerticesMapSide) * MAPCELL_DIM) *
-					  ((land->realVerticesMapSide) * MAPCELL_DIM);
+	int32_t ramSize = ((land->realVerticesMapSide) * terrain_const::MAPCELL_DIM) *
+		((land->realVerticesMapSide) * terrain_const::MAPCELL_DIM);
 	puint8_t pMemory = (puint8_t)malloc(ramSize * 4);
 	tacMapBmp		 = (uint32_t*)((puint8_t)pMemory);
-	MOVE_buildData(land->realVerticesMapSide * 3, land->realVerticesMapSide * 3,
-		nullptr, 0, nullptr);
+	MOVE_buildData(
+		land->realVerticesMapSide * 3, land->realVerticesMapSide * 3, nullptr, 0, nullptr);
 	EditorInterface::instance()->UnsetBusyMode();
 	return true;
 }
@@ -911,8 +883,7 @@ bool EditorData::save(PCSTR fileName, bool quickSave)
 	// remove(backupPath);
 	// rename(originalPath, backupPath);
 	MoveFileEx(originalPath, backupPath,
-		MOVEFILE_COPY_ALLOWED | MOVEFILE_REPLACE_EXISTING |
-			MOVEFILE_WRITE_THROUGH);
+		MOVEFILE_COPY_ALLOWED | MOVEFILE_REPLACE_EXISTING | MOVEFILE_WRITE_THROUGH);
 	CString backupFit;
 	CString newOriginalFit;
 	newOriginalFit = originalPath;
@@ -924,8 +895,7 @@ bool EditorData::save(PCSTR fileName, bool quickSave)
 	// remove(backupPath);
 	// rename(originalPath, backupPath);
 	MoveFileEx(newOriginalFit, backupFit,
-		MOVEFILE_COPY_ALLOWED | MOVEFILE_REPLACE_EXISTING |
-			MOVEFILE_WRITE_THROUGH);
+		MOVEFILE_COPY_ALLOWED | MOVEFILE_REPLACE_EXISTING | MOVEFILE_WRITE_THROUGH);
 	// Don't move the ABL file.  Editor doesn't write one out!!!
 	/*
 	strcpy( originalPath, base );
@@ -954,12 +924,11 @@ bool EditorData::save(PCSTR fileName, bool quickSave)
 	{
 		//-----------------------------------------------------------------------
 		// Whenever we call calcWater, we should do this to speed up save times
-		_ScenarioMapCellInfo* pInfo = (_ScenarioMapCellInfo*)malloc(
-			sizeof(_ScenarioMapCellInfo) * land->realVerticesMapSide *
-			land->realVerticesMapSide * 9);
+		_ScenarioMapCellInfo* pInfo = (_ScenarioMapCellInfo*)malloc(sizeof(_ScenarioMapCellInfo) *
+			land->realVerticesMapSide * land->realVerticesMapSide * 9);
 		memset(pInfo, 0,
-			sizeof(_ScenarioMapCellInfo) * land->realVerticesMapSide *
-				land->realVerticesMapSide * 9);
+			sizeof(_ScenarioMapCellInfo) * land->realVerticesMapSide * land->realVerticesMapSide *
+				9);
 		MissionMapCellInfo* pTmp = pInfo;
 		for (size_t i = 0; i < land->realVerticesMapSide; ++i)
 		{
@@ -975,16 +944,15 @@ bool EditorData::save(PCSTR fileName, bool quickSave)
 						pTmp->specialID   = 0;
 						pTmp->specialType = SPECIAL_NONE;
 						pTmp->lineOfSight = 0; // Now the local height!!!!!!
-						pTmp->passable = true;
-						pTmp->terrain  = land->getTerrain(i, j);
+						pTmp->passable	= true;
+						pTmp->terrain	 = land->getTerrain(i, j);
 						// If physical terrain type not passable, mark as such.
 						// WATER IS NOT STORED IN THIS VARIABLE!!!!!!!!!!!!!!
 						// Water is deep or not and not deep water is PASSABLE!
 						//-------------------------------------------------------
 						// NOW, mark cliffs as impassable.  ANY tile whose angle
 						// Exceeds CliffTerrainAngle value.
-						if ((i == 0) || (j == 0) ||
-							(i >= (land->realVerticesMapSide - 1)) ||
+						if ((i == 0) || (j == 0) || (i >= (land->realVerticesMapSide - 1)) ||
 							(j >= (land->realVerticesMapSide - 1)))
 						{
 							pTmp->passable = false;
@@ -994,10 +962,8 @@ bool EditorData::save(PCSTR fileName, bool quickSave)
 							//--------------------------------------------------------------------------------------
 							// We need to check cliff angles based on UVMode.
 							// This check is great for the old WAY!!
-							bool tlx =
-								(int32_t(land->mapData->topLeftVertex.x) & 1);
-							bool tly =
-								(int32_t(land->mapData->topLeftVertex.y) & 1);
+							bool tlx	   = (int32_t(land->mapData->topLeftVertex.x) & 1);
+							bool tly	   = (int32_t(land->mapData->topLeftVertex.y) & 1);
 							int32_t x	  = i - land->mapData->topLeftVertex.x;
 							int32_t y	  = j - land->mapData->topLeftVertex.y;
 							bool yby2	  = (y & 1) ^ (tly);
@@ -1027,60 +993,46 @@ bool EditorData::save(PCSTR fileName, bool quickSave)
 							}
 							if (uvMode == BOTTOMRIGHT)
 							{
-								float elv0 = land->getTerrainElevation(i, j);
-								float elv1 =
-									land->getTerrainElevation(i + 1, j);
-								float elv2 =
-									land->getTerrainElevation(i + 1, j + 1);
-								float elv3 =
-									land->getTerrainElevation(i, j + 1);
-								float elvDiff1 = fabs(elv0 - elv2);
-								float elvDiff2 = fabs(elv0 - elv1);
-								float elvAngleFactor =
-									Terrain::worldUnitsPerVertex *
+								float elv0			 = land->getTerrainElevation(i, j);
+								float elv1			 = land->getTerrainElevation(i + 1, j);
+								float elv2			 = land->getTerrainElevation(i + 1, j + 1);
+								float elv3			 = land->getTerrainElevation(i, j + 1);
+								float elvDiff1		 = fabs(elv0 - elv2);
+								float elvDiff2		 = fabs(elv0 - elv1);
+								float elvAngleFactor = Terrain::worldUnitsPerVertex *
 									sin(CliffTerrainAngle * DEGREES_TO_RADS);
-								if ((elvDiff1 > elvAngleFactor) ||
-									(elvDiff2 > elvAngleFactor))
+								if ((elvDiff1 > elvAngleFactor) || (elvDiff2 > elvAngleFactor))
 								{
 									pTmp->passable = false;
 								}
-								elvDiff1 = fabs(elv0 - elv2);
-								elvDiff2 = fabs(elv0 - elv3);
-								elvAngleFactor =
-									Terrain::worldUnitsPerVertex *
+								elvDiff1	   = fabs(elv0 - elv2);
+								elvDiff2	   = fabs(elv0 - elv3);
+								elvAngleFactor = Terrain::worldUnitsPerVertex *
 									sin(CliffTerrainAngle * DEGREES_TO_RADS);
-								if ((elvDiff1 > elvAngleFactor) ||
-									(elvDiff2 > elvAngleFactor))
+								if ((elvDiff1 > elvAngleFactor) || (elvDiff2 > elvAngleFactor))
 								{
 									pTmp->passable = false;
 								}
 							}
 							else // uvMode is BOTTOMLEFT!
 							{
-								float elv0 = land->getTerrainElevation(i, j);
-								float elv1 =
-									land->getTerrainElevation(i + 1, j);
-								float elv2 =
-									land->getTerrainElevation(i + 1, j + 1);
-								float elv3 =
-									land->getTerrainElevation(i, j + 1);
-								float elvDiff1 = fabs(elv0 - elv1);
-								float elvDiff2 = fabs(elv0 - elv3);
-								float elvAngleFactor =
-									Terrain::worldUnitsPerVertex *
+								float elv0			 = land->getTerrainElevation(i, j);
+								float elv1			 = land->getTerrainElevation(i + 1, j);
+								float elv2			 = land->getTerrainElevation(i + 1, j + 1);
+								float elv3			 = land->getTerrainElevation(i, j + 1);
+								float elvDiff1		 = fabs(elv0 - elv1);
+								float elvDiff2		 = fabs(elv0 - elv3);
+								float elvAngleFactor = Terrain::worldUnitsPerVertex *
 									sin(CliffTerrainAngle * DEGREES_TO_RADS);
-								if ((elvDiff1 > elvAngleFactor) ||
-									(elvDiff2 > elvAngleFactor))
+								if ((elvDiff1 > elvAngleFactor) || (elvDiff2 > elvAngleFactor))
 								{
 									pTmp->passable = false;
 								}
-								elvDiff1 = fabs(elv1 - elv2);
-								elvDiff2 = fabs(elv1 - elv3);
-								elvAngleFactor =
-									Terrain::worldUnitsPerVertex *
+								elvDiff1	   = fabs(elv1 - elv2);
+								elvDiff2	   = fabs(elv1 - elv3);
+								elvAngleFactor = Terrain::worldUnitsPerVertex *
 									sin(CliffTerrainAngle * DEGREES_TO_RADS);
-								if ((elvDiff1 > elvAngleFactor) ||
-									(elvDiff2 > elvAngleFactor))
+								if ((elvDiff1 > elvAngleFactor) || (elvDiff2 > elvAngleFactor))
 								{
 									pTmp->passable = false;
 								}
@@ -1093,11 +1045,11 @@ bool EditorData::save(PCSTR fileName, bool quickSave)
 						{
 							pTmp->overlay = (int32_t)overlay;
 							pTmp->road	= true; // This should be more
-											   // accurate!!!!! Need to fix...
+												  // accurate!!!!! Need to fix...
 						}
 						int32_t cellRow	= i * 3 + cellI;
 						int32_t cellColumn = j * 3 + cellJ;
-						pTmp->mine = GameMap->getMine(cellRow, cellColumn);
+						pTmp->mine		   = GameMap->getMine(cellRow, cellColumn);
 						pTmp++;
 					}
 				}
@@ -1118,21 +1070,18 @@ bool EditorData::save(PCSTR fileName, bool quickSave)
 			EditorObjectMgr::instance()->getBuildings();
 		if (completeBuildingList.Count() > 0)
 		{
-			EditorObjectMgr::BUILDING_LIST::EConstIterator it =
-				completeBuildingList.Begin();
+			EditorObjectMgr::BUILDING_LIST::EConstIterator it = completeBuildingList.Begin();
 			while (!it.IsDone())
 			{
 				if ((*it)->getType() == BLDG_TYPE)
 				{
 					// ONLY Buildings mark impassable.  Thus, if we want trees,
 					// forest clumps etc to block, they must be buildings
-					if (((*it)->getSpecialType() ==
-							EditorObjectMgr::EDITOR_GATE))
+					if (((*it)->getSpecialType() == EditorObjectMgr::EDITOR_GATE))
 						gateTotalCount++;
 					else if ((*it)->getSpecialType() == EditorObjectMgr::WALL)
 						wallTotalCount++;
-					else if ((*it)->getSpecialType() ==
-							 EditorObjectMgr::EDITOR_BRIDGE)
+					else if ((*it)->getSpecialType() == EditorObjectMgr::EDITOR_BRIDGE)
 						landBridgeTotalCount++;
 				}
 				it++;
@@ -1144,16 +1093,14 @@ bool EditorData::save(PCSTR fileName, bool quickSave)
 		completeBuildingList	= EditorObjectMgr::instance()->getBuildings();
 		if (completeBuildingList.Count() > 0)
 		{
-			EditorObjectMgr::BUILDING_LIST::EConstIterator it =
-				completeBuildingList.Begin();
+			EditorObjectMgr::BUILDING_LIST::EConstIterator it = completeBuildingList.Begin();
 			while (!it.IsDone())
 			{
 				if ((*it)->getType() == BLDG_TYPE)
 				{
 					// ONLY Buildings mark impassable.  Thus, if we want trees,
 					// forest clumps etc to block, they must be buildings
-					if (((*it)->getSpecialType() ==
-							EditorObjectMgr::EDITOR_GATE))
+					if (((*it)->getSpecialType() == EditorObjectMgr::EDITOR_GATE))
 					{
 						(*it)->markTerrain(pInfo, SPECIAL_GATE, gateCount);
 						Stuff::Vector3D pos = (*it)->appearance()->position;
@@ -1165,41 +1112,32 @@ bool EditorData::save(PCSTR fileName, bool quickSave)
 					}
 					else if ((*it)->getSpecialType() == EditorObjectMgr::WALL)
 					{
-						(*it)->markTerrain(
-							pInfo, SPECIAL_WALL, gateTotalCount + wallCount);
+						(*it)->markTerrain(pInfo, SPECIAL_WALL, gateTotalCount + wallCount);
 						Stuff::Vector3D pos = (*it)->appearance()->position;
 						int32_t r, c;
 						land->worldToCell(pos, r, c);
-						specialAreaFootPrints[gateTotalCount + wallCount]
-							.cellPositionRow = r;
-						specialAreaFootPrints[gateTotalCount + wallCount]
-							.cellPositionCol = c;
+						specialAreaFootPrints[gateTotalCount + wallCount].cellPositionRow = r;
+						specialAreaFootPrints[gateTotalCount + wallCount].cellPositionCol = c;
 						wallCount++;
 					}
-					else if ((*it)->getSpecialType() ==
-							 EditorObjectMgr::EDITOR_BRIDGE)
+					else if ((*it)->getSpecialType() == EditorObjectMgr::EDITOR_BRIDGE)
 					{
 						(*it)->markTerrain(pInfo, SPECIAL_LAND_BRIDGE,
 							gateTotalCount + wallTotalCount + landBridgeCount);
 						Stuff::Vector3D pos = (*it)->appearance()->position;
 						int32_t r, c;
 						land->worldToCell(pos, r, c);
-						specialAreaFootPrints[gateTotalCount + wallTotalCount +
-											  landBridgeCount]
+						specialAreaFootPrints[gateTotalCount + wallTotalCount + landBridgeCount]
 							.cellPositionRow = r;
-						specialAreaFootPrints[gateTotalCount + wallTotalCount +
-											  landBridgeCount]
+						specialAreaFootPrints[gateTotalCount + wallTotalCount + landBridgeCount]
 							.cellPositionCol = c;
 						landBridgeCount++;
 					}
-					else if ((*it)->appearance()->isForestClump() ||
-							 (*it)->getForestID() != -1)
+					else if ((*it)->appearance()->isForestClump() || (*it)->getForestID() != -1)
 						(*it)->markTerrain(pInfo, SPECIAL_FOREST, 0);
 					else if (!IsSinglePlayer() &&
-							 (*it)->getSpecialType() ==
-								 EditorObjectMgr::RESOURCE_BUILDING)
-						(*it)->markTerrain(
-							pInfo, EditorObjectMgr::RESOURCE_BUILDING, 0);
+						(*it)->getSpecialType() == EditorObjectMgr::RESOURCE_BUILDING)
+						(*it)->markTerrain(pInfo, EditorObjectMgr::RESOURCE_BUILDING, 0);
 					else
 						(*it)->markTerrain(pInfo, SPECIAL_NONE, 0);
 				}
@@ -1208,9 +1146,8 @@ bool EditorData::save(PCSTR fileName, bool quickSave)
 		}
 		for (i = 0; i < gateCount + wallCount + landBridgeCount; i++)
 		{
-			specialAreaFootPrints[i].preNumCells =
-				specialAreaFootPrints[i].numCells;
-			specialAreaFootPrints[i].numCells = 0;
+			specialAreaFootPrints[i].preNumCells = specialAreaFootPrints[i].numCells;
+			specialAreaFootPrints[i].numCells	= 0;
 		}
 		pTmp = pInfo;
 		for (size_t r = 0; r < land->realVerticesMapSide * 3; r++)
@@ -1221,18 +1158,15 @@ bool EditorData::save(PCSTR fileName, bool quickSave)
 					if (pTmp->passable)
 					{
 						specialAreaFootPrints[pTmp->specialID]
-							.cells[specialAreaFootPrints[pTmp->specialID]
-									   .numCells][0] = r;
+							.cells[specialAreaFootPrints[pTmp->specialID].numCells][0] = r;
 						specialAreaFootPrints[pTmp->specialID]
-							.cells[specialAreaFootPrints[pTmp->specialID]
-									   .numCells][1] = c;
+							.cells[specialAreaFootPrints[pTmp->specialID].numCells][1] = c;
 						specialAreaFootPrints[pTmp->specialID].numCells++;
 					}
 				}
 				pTmp++;
 			}
-		MOVE_buildData(land->realVerticesMapSide * 3,
-			land->realVerticesMapSide * 3, pInfo,
+		MOVE_buildData(land->realVerticesMapSide * 3, land->realVerticesMapSide * 3, pInfo,
 			gateCount + wallCount + landBridgeCount, specialAreaFootPrints);
 		free(pInfo);
 		pInfo = nullptr;
@@ -1256,10 +1190,8 @@ bool EditorData::save(PCSTR fileName, bool quickSave)
 	uint32_t numPackets = 5 + MOVE_saveData(nullptr);
 	file.reserve(numPackets, false);
 	land->unselectAll();
-	bool bRetVal = land->save(&file, 0, (0.0 < eye->day2NightTransitionTime))
-					   ? true
-					   : false;
-	bRetVal = EditorObjectMgr::instance()->save(file, 1) && bRetVal;
+	bool bRetVal = land->save(&file, 0, (0.0 < eye->day2NightTransitionTime)) ? true : false;
+	bRetVal		 = EditorObjectMgr::instance()->save(file, 1) && bRetVal;
 	if (!quickSave)
 	{
 		saveTacMap(&file, 3);
@@ -1346,8 +1278,7 @@ bool EditorData::save(PCSTR fileName, bool quickSave)
 		EditorObjectMgr::instance()->getBuildings();
 	if (completeBuildingList.Count() > 0)
 	{
-		EditorObjectMgr::BUILDING_LIST::EConstIterator it =
-			completeBuildingList.Begin();
+		EditorObjectMgr::BUILDING_LIST::EConstIterator it = completeBuildingList.Begin();
 		std::set<int32_t> doneIds;
 		while (!it.IsDone())
 		{
@@ -1357,9 +1288,8 @@ bool EditorData::save(PCSTR fileName, bool quickSave)
 				doneIds.insert(id);
 				if (id)
 				{
-					PCSTR objFilename =
-						EditorObjectMgr::instance()->getFileName(id);
-					char buf[512] = {0};
+					PCSTR objFilename = EditorObjectMgr::instance()->getFileName(id);
+					char buf[512]	 = {0};
 					if (objFilename[0])
 					{
 						strcpy(buf, "Data\\TGL\\");
@@ -1368,44 +1298,34 @@ bool EditorData::save(PCSTR fileName, bool quickSave)
 						mapAssetPtr->AddRelationship("Object", buf);
 						if (armProvider)
 						{
-							IProviderAssetPtr objAssetPtr =
-								armProvider->OpenAsset(buf, AssetType_Physical,
-									ProviderType_Secondary);
-							objAssetPtr->AddProperty(
-								"DisplayName", (*it)->getDisplayName());
+							IProviderAssetPtr objAssetPtr = armProvider->OpenAsset(
+								buf, AssetType_Physical, ProviderType_Secondary);
+							objAssetPtr->AddProperty("DisplayName", (*it)->getDisplayName());
 							switch ((*it)->getType())
 							{
 							case SPRITE_TREE:
-								objAssetPtr->AddProperty(
-									"ObjectType", "Sprite Tree");
+								objAssetPtr->AddProperty("ObjectType", "Sprite Tree");
 								break;
 							case VFX_APPEAR:
-								objAssetPtr->AddProperty(
-									"ObjectType", "VFX Appearance");
+								objAssetPtr->AddProperty("ObjectType", "VFX Appearance");
 								break;
 							case FSY_APPEAR:
-								objAssetPtr->AddProperty(
-									"ObjectType", "FSY Appearance");
+								objAssetPtr->AddProperty("ObjectType", "FSY Appearance");
 								break;
 							case LINE_APPEAR:
-								objAssetPtr->AddProperty(
-									"ObjectType", "Line Appearance");
+								objAssetPtr->AddProperty("ObjectType", "Line Appearance");
 								break;
 							case GV_TYPE:
-								objAssetPtr->AddProperty(
-									"ObjectType", "Ground Vehicle");
+								objAssetPtr->AddProperty("ObjectType", "Ground Vehicle");
 								break;
 							case ARM_APPEAR:
-								objAssetPtr->AddProperty(
-									"ObjectType", "Arm Appearance");
+								objAssetPtr->AddProperty("ObjectType", "Arm Appearance");
 								break;
 							case BUILD_APPEAR:
-								objAssetPtr->AddProperty(
-									"ObjectType", "Building Appearance");
+								objAssetPtr->AddProperty("ObjectType", "Building Appearance");
 								break;
 							case ELM_TREE:
-								objAssetPtr->AddProperty(
-									"ObjectType", "Elm Tree");
+								objAssetPtr->AddProperty("ObjectType", "Elm Tree");
 								break;
 							case PU_TYPE:
 								objAssetPtr->AddProperty("ObjectType", "PU");
@@ -1414,12 +1334,10 @@ bool EditorData::save(PCSTR fileName, bool quickSave)
 								objAssetPtr->AddProperty("ObjectType", "Smoke");
 								break;
 							case POLY_APPEARANCE:
-								objAssetPtr->AddProperty(
-									"ObjectType", "Poly Appearance");
+								objAssetPtr->AddProperty("ObjectType", "Poly Appearance");
 								break;
 							case MLR_APPEARANCE:
-								objAssetPtr->AddProperty(
-									"ObjectType", "MLR Appearance");
+								objAssetPtr->AddProperty("ObjectType", "MLR Appearance");
 								break;
 							case MECH_TYPE:
 								objAssetPtr->AddProperty("ObjectType", "Mech");
@@ -1428,93 +1346,71 @@ bool EditorData::save(PCSTR fileName, bool quickSave)
 								objAssetPtr->AddProperty("ObjectType", "Tree");
 								break;
 							case BLDG_TYPE:
-								objAssetPtr->AddProperty(
-									"ObjectType", "Building");
+								objAssetPtr->AddProperty("ObjectType", "Building");
 								switch ((*it)->getSpecialType())
 								{
 								case EditorObjectMgr::UNSPECIAL:
-									objAssetPtr->AddProperty(
-										"BuildingType", "Unspecial");
+									objAssetPtr->AddProperty("BuildingType", "Unspecial");
 									break;
 								case EditorObjectMgr::NORMAL_BUILDING:
-									objAssetPtr->AddProperty(
-										"BuildingType", "Normal");
+									objAssetPtr->AddProperty("BuildingType", "Normal");
 									break;
 								case EditorObjectMgr::DROP_ZONE:
-									objAssetPtr->AddProperty(
-										"BuildingType", "Drop Zone");
+									objAssetPtr->AddProperty("BuildingType", "Drop Zone");
 									break;
 								case EditorObjectMgr::TURRET_CONTROL:
-									objAssetPtr->AddProperty(
-										"BuildingType", "Turret Control");
+									objAssetPtr->AddProperty("BuildingType", "Turret Control");
 									break;
 								case EditorObjectMgr::GATE_CONTROL:
-									objAssetPtr->AddProperty(
-										"BuildingType", "Gate Control");
+									objAssetPtr->AddProperty("BuildingType", "Gate Control");
 									break;
 								case EditorObjectMgr::POWER_STATION:
-									objAssetPtr->AddProperty(
-										"BuildingType", "Power Station");
+									objAssetPtr->AddProperty("BuildingType", "Power Station");
 									break;
 								case EditorObjectMgr::TURRET_GENERATOR:
-									objAssetPtr->AddProperty(
-										"BuildingType", "Turret Generator");
+									objAssetPtr->AddProperty("BuildingType", "Turret Generator");
 									break;
 								case EditorObjectMgr::SENSOR_CONTROL:
-									objAssetPtr->AddProperty(
-										"BuildingType", "Sensor Control");
+									objAssetPtr->AddProperty("BuildingType", "Sensor Control");
 									break;
 								case EditorObjectMgr::EDITOR_GATE:
-									objAssetPtr->AddProperty(
-										"BuildingType", "Editor Gate");
+									objAssetPtr->AddProperty("BuildingType", "Editor Gate");
 									break;
 								case EditorObjectMgr::EDITOR_TURRET:
-									objAssetPtr->AddProperty(
-										"BuildingType", "Editor Turret");
+									objAssetPtr->AddProperty("BuildingType", "Editor Turret");
 									break;
 								case EditorObjectMgr::SENSOR_TOWER:
-									objAssetPtr->AddProperty(
-										"BuildingType", "Sensor Tower");
+									objAssetPtr->AddProperty("BuildingType", "Sensor Tower");
 									break;
 								case EditorObjectMgr::EDITOR_BRIDGE:
-									objAssetPtr->AddProperty(
-										"BuildingType", "Editor Bridge");
+									objAssetPtr->AddProperty("BuildingType", "Editor Bridge");
 									break;
 								case EditorObjectMgr::BRIDGE_CONTROL:
-									objAssetPtr->AddProperty(
-										"BuildingType", "Bridge Control");
+									objAssetPtr->AddProperty("BuildingType", "Bridge Control");
 									break;
 								case EditorObjectMgr::SPOTLIGHT:
-									objAssetPtr->AddProperty(
-										"BuildingType", "Spotlight");
+									objAssetPtr->AddProperty("BuildingType", "Spotlight");
 									break;
 								case EditorObjectMgr::SPOTLIGHT_CONTROL:
-									objAssetPtr->AddProperty(
-										"BuildingType", "Spotlight Control");
+									objAssetPtr->AddProperty("BuildingType", "Spotlight Control");
 									break;
 								case EditorObjectMgr::DROPZONE:
-									objAssetPtr->AddProperty(
-										"BuildingType", "Drop Zone");
+									objAssetPtr->AddProperty("BuildingType", "Drop Zone");
 									break;
 								case EditorObjectMgr::NAV_MARKER:
-									objAssetPtr->AddProperty(
-										"BuildingType", "Nav Marker");
+									objAssetPtr->AddProperty("BuildingType", "Nav Marker");
 									break;
 								case EditorObjectMgr::WALL:
-									objAssetPtr->AddProperty(
-										"BuildingType", "Wall");
+									objAssetPtr->AddProperty("BuildingType", "Wall");
 									break;
 								case EditorObjectMgr::LOOKOUT:
-									objAssetPtr->AddProperty(
-										"BuildingType", "Lookout");
+									objAssetPtr->AddProperty("BuildingType", "Lookout");
 									break;
 								case EditorObjectMgr::RESOURCE_BUILDING:
-									objAssetPtr->AddProperty(
-										"BuildingType", "Resource Building");
+									objAssetPtr->AddProperty("BuildingType", "Resource Building");
 									break;
 								case EditorObjectMgr::HELICOPTER:
-									objAssetPtr->AddProperty(
-										"BuildingType", "Helicopter");
+									objAssetPtr->AddProperty("BuildingType", "Helicopter");
 									break;
 								}
 								break;
@@ -1543,10 +1439,7 @@ bool EditorData::save(PCSTR fileName, bool quickSave)
 }
 
 //-------------------------------------------------------------------------------------------------
-bool EditorData::quickSave(PCSTR fileName)
-{
-	return save(fileName, true /*quick save enabled*/);
-}
+bool EditorData::quickSave(PCSTR fileName) { return save(fileName, true /*quick save enabled*/); }
 
 bool EditorData::saveMissionFitFileStuff(FitIniFile& fitFile)
 {
@@ -1559,71 +1452,59 @@ bool EditorData::saveMissionFitFileStuff(FitIniFile& fitFile)
 	missionSettings.save(&fitFile);
 	fitFile.writeBlock("MissionSettings");
 	fitFile.writeIdString("MissionName", EditorData::instance->MissionName());
-	fitFile.writeIdBoolean("MissionNameUseResourceString",
-		EditorData::instance->MissionNameUseResourceString());
-	fitFile.writeIdULong("MissionNameResourceStringID",
-		EditorData::instance->MissionNameResourceStringID());
+	fitFile.writeIdBoolean(
+		"MissionNameUseResourceString", EditorData::instance->MissionNameUseResourceString());
+	fitFile.writeIdULong(
+		"MissionNameResourceStringID", EditorData::instance->MissionNameResourceStringID());
 	fitFile.writeIdString("Author", EditorData::instance->Author());
 	sWriteIdString(&fitFile, "Blurb", EditorData::instance->Blurb().Data());
-	fitFile.writeIdBoolean("BlurbUseResourceString",
-		EditorData::instance->BlurbUseResourceString());
-	fitFile.writeIdULong(
-		"BlurbResourceStringID", EditorData::instance->BlurbResourceStringID());
+	fitFile.writeIdBoolean(
+		"BlurbUseResourceString", EditorData::instance->BlurbUseResourceString());
+	fitFile.writeIdULong("BlurbResourceStringID", EditorData::instance->BlurbResourceStringID());
 	sWriteIdString(&fitFile, "Blurb2", EditorData::instance->Blurb2().Data());
-	fitFile.writeIdBoolean("Blurb2UseResourceString",
-		EditorData::instance->Blurb2UseResourceString());
-	fitFile.writeIdULong("Blurb2ResourceStringID",
-		EditorData::instance->Blurb2ResourceStringID());
+	fitFile.writeIdBoolean(
+		"Blurb2UseResourceString", EditorData::instance->Blurb2UseResourceString());
+	fitFile.writeIdULong("Blurb2ResourceStringID", EditorData::instance->Blurb2ResourceStringID());
 	fitFile.writeIdFloat("TimeLimit", EditorData::instance->TimeLimit());
-	fitFile.writeIdFloat(
-		"DropWeightLimit", EditorData::instance->DropWeightLimit());
-	fitFile.writeIdLong(
-		"ResourcePoints", EditorData::instance->InitialResourcePoints());
-	fitFile.writeIdULong(
-		"IsSinglePlayer", EditorData::instance->IsSinglePlayer() ? 1 : 0);
-	fitFile.writeIdULong(
-		"MaximumNumberOfTeams", EditorData::instance->MaxTeams());
-	fitFile.writeIdULong(
-		"MaximumNumberOfPlayers", EditorData::instance->MaxPlayers());
-	fitFile.writeIdUCHAR(
-		"scenarioTuneNum", EditorData::instance->ScenarioTune());
+	fitFile.writeIdFloat("DropWeightLimit", EditorData::instance->DropWeightLimit());
+	fitFile.writeIdLong("ResourcePoints", EditorData::instance->InitialResourcePoints());
+	fitFile.writeIdULong("IsSinglePlayer", EditorData::instance->IsSinglePlayer() ? 1 : 0);
+	fitFile.writeIdULong("MaximumNumberOfTeams", EditorData::instance->MaxTeams());
+	fitFile.writeIdULong("MaximumNumberOfPlayers", EditorData::instance->MaxPlayers());
+	fitFile.writeIdUCHAR("scenarioTuneNum", EditorData::instance->ScenarioTune());
 	fitFile.writeIdString("AVIFilename", EditorData::instance->VideoFilename());
 	fitFile.writeIdLong("AdditionalCBills", EditorData::instance->m_CBills);
-	fitFile.writeIdULong(
-		"NumRandomRPbuildings", EditorData::instance->NumRandomRPbuildings());
+	fitFile.writeIdULong("NumRandomRPbuildings", EditorData::instance->NumRandomRPbuildings());
 	fitFile.writeIdString("DownloadURL", EditorData::instance->DownloadURL());
 	fitFile.writeIdULong("MissionType", EditorData::instance->MissionType());
-	fitFile.writeIdBoolean("AirStrikesEnabledDefault",
-		EditorData::instance->AirStrikesEnabledDefault());
-	fitFile.writeIdBoolean("MineLayersEnabledDefault",
-		EditorData::instance->MineLayersEnabledDefault());
-	fitFile.writeIdBoolean("ScoutCoptersEnabledDefault",
-		EditorData::instance->ScoutCoptersEnabledDefault());
-	fitFile.writeIdBoolean("SensorProbesEnabledDefault",
-		EditorData::instance->SensorProbesEnabledDefault());
-	fitFile.writeIdBoolean("UnlimitedAmmoEnabledDefault",
-		EditorData::instance->UnlimitedAmmoEnabledDefault());
 	fitFile.writeIdBoolean(
-		"AllTechEnabledDefault", EditorData::instance->AllTechEnabledDefault());
-	fitFile.writeIdBoolean("RepairVehicleEnabledDefault",
-		EditorData::instance->RepairVehicleEnabledDefault());
-	fitFile.writeIdBoolean("SalvageCraftEnabledDefault",
-		EditorData::instance->SalvageCraftEnabledDefault());
-	fitFile.writeIdBoolean("ResourceBuildingsEnabledDefault",
-		EditorData::instance->ResourceBuildingsEnabledDefault());
-	fitFile.writeIdBoolean("NoVariantsEnabledDefault",
-		EditorData::instance->NoVariantsEnabledDefault());
-	fitFile.writeIdBoolean("ArtilleryPieceEnabledDefault",
-		EditorData::instance->ArtilleryPieceEnabledDefault());
-	fitFile.writeIdBoolean("RPsForMechsEnabledDefault",
-		EditorData::instance->RPsForMechsEnabledDefault());
+		"AirStrikesEnabledDefault", EditorData::instance->AirStrikesEnabledDefault());
+	fitFile.writeIdBoolean(
+		"MineLayersEnabledDefault", EditorData::instance->MineLayersEnabledDefault());
+	fitFile.writeIdBoolean(
+		"ScoutCoptersEnabledDefault", EditorData::instance->ScoutCoptersEnabledDefault());
+	fitFile.writeIdBoolean(
+		"SensorProbesEnabledDefault", EditorData::instance->SensorProbesEnabledDefault());
+	fitFile.writeIdBoolean(
+		"UnlimitedAmmoEnabledDefault", EditorData::instance->UnlimitedAmmoEnabledDefault());
+	fitFile.writeIdBoolean("AllTechEnabledDefault", EditorData::instance->AllTechEnabledDefault());
+	fitFile.writeIdBoolean(
+		"RepairVehicleEnabledDefault", EditorData::instance->RepairVehicleEnabledDefault());
+	fitFile.writeIdBoolean(
+		"SalvageCraftEnabledDefault", EditorData::instance->SalvageCraftEnabledDefault());
+	fitFile.writeIdBoolean(
+		"ResourceBuildingsEnabledDefault", EditorData::instance->ResourceBuildingsEnabledDefault());
+	fitFile.writeIdBoolean(
+		"NoVariantsEnabledDefault", EditorData::instance->NoVariantsEnabledDefault());
+	fitFile.writeIdBoolean(
+		"ArtilleryPieceEnabledDefault", EditorData::instance->ArtilleryPieceEnabledDefault());
+	fitFile.writeIdBoolean(
+		"RPsForMechsEnabledDefault", EditorData::instance->RPsForMechsEnabledDefault());
 	fitFile.writeBlock("Weather");
 	fitFile.writeIdULong("MaxRainDrops", EditorData::instance->MaxRaindrops());
-	fitFile.writeIdFloat(
-		"StartingRainLevel", EditorData::instance->StartingRainLevel());
+	fitFile.writeIdFloat("StartingRainLevel", EditorData::instance->StartingRainLevel());
 	fitFile.writeIdLong("ChanceOfRain", EditorData::instance->ChanceOfRain());
-	fitFile.writeIdFloat(
-		"BaseLighteningChance", EditorData::instance->BaseLightningChance());
+	fitFile.writeIdFloat("BaseLighteningChance", EditorData::instance->BaseLightningChance());
 	fitFile.writeBlock("TheSky");
 	fitFile.writeIdLong("SkyNumber", EditorData::instance->TheSkyNumber());
 	saveObjectives(&fitFile);
@@ -1646,8 +1527,8 @@ bool EditorData::saveMissionFitFileStuff(FitIniFile& fitFile)
 		{
 			mapAsset->AddProperty("MissionAuthor", buf);
 		}
-		mapAsset->AddProperty("IsSinglePlayer",
-			EditorData::instance->IsSinglePlayer() ? "Yes" : "No");
+		mapAsset->AddProperty(
+			"IsSinglePlayer", EditorData::instance->IsSinglePlayer() ? "Yes" : "No");
 		switch (EditorData::instance->MissionType())
 		{
 		case MISSION_TYPE_ELIMINATION:
@@ -1819,8 +1700,7 @@ struct TGARecs
 inline bool isCementType(uint32_t type)
 {
 	bool isCement =
-		((type == BASE_CEMENT_TYPE) ||
-			((type >= START_CEMENT_TYPE) && (type <= END_CEMENT_TYPE)));
+		((type == BASE_CEMENT_TYPE) || ((type >= START_CEMENT_TYPE) && (type <= END_CEMENT_TYPE)));
 	return isCement;
 }
 
@@ -1828,8 +1708,8 @@ inline bool isCementType(uint32_t type)
 void EditorData::drawTacMap(puint8_t pDest, size_t dataSize, int32_t tacMapSize)
 {
 	EditorInterface::instance()->SetBusyMode();
-	int32_t ramSize = ((land->realVerticesMapSide) * MAPCELL_DIM) *
-					  ((land->realVerticesMapSide) * MAPCELL_DIM);
+	int32_t ramSize = ((land->realVerticesMapSide) * terrain_const::MAPCELL_DIM) *
+		((land->realVerticesMapSide) * terrain_const::MAPCELL_DIM);
 	uint32_t* pShrunken = (uint32_t*)pDest;
 	memset(pShrunken, 0, dataSize);
 	gosASSERT(tacMapBmp != nullptr);
@@ -1846,8 +1726,7 @@ void EditorData::drawTacMap(puint8_t pDest, size_t dataSize, int32_t tacMapSize)
 	}
 	PostcompVertexPtr currentVertex = land->mapData->getData();
 	float maxElv = 0, minElv = 20000000;
-	for (size_t i = 0;
-		 i < (land->realVerticesMapSide * land->realVerticesMapSide); i++)
+	for (size_t i = 0; i < (land->realVerticesMapSide * land->realVerticesMapSide); i++)
 	{
 		if (currentVertex->elevation > maxElv)
 			maxElv = currentVertex->elevation;
@@ -1867,11 +1746,11 @@ void EditorData::drawTacMap(puint8_t pDest, size_t dataSize, int32_t tacMapSize)
 	if (land->terrainTextures2)
 	{
 		land->terrainTextures2->getScaledColorMap(
-			(puint8_t)tacMapBmp, ((land->realVerticesMapSide) * MAPCELL_DIM));
+			(puint8_t)tacMapBmp, ((land->realVerticesMapSide) * terrain_const::MAPCELL_DIM));
 	}
-	for (size_t y = 0; y < (land->realVerticesMapSide) * MAPCELL_DIM; y++)
+	for (size_t y = 0; y < (land->realVerticesMapSide) * terrain_const::MAPCELL_DIM; y++)
 	{
-		for (size_t x = 0; x < (land->realVerticesMapSide) * MAPCELL_DIM; x++)
+		for (size_t x = 0; x < (land->realVerticesMapSide) * terrain_const::MAPCELL_DIM; x++)
 		{
 			//-----------------------------------------------
 			// Get the data needed to make this terrain quad
@@ -1880,20 +1759,16 @@ void EditorData::drawTacMap(puint8_t pDest, size_t dataSize, int32_t tacMapSize)
 			// Store texture in bottom part from TxmIndex provided by
 			// TerrainTextureManager
 			uint32_t terrainType1RGB = 0xffffffff;
-			if (pVertex1->elevation <
-				(Terrain::waterElevation - MapData::shallowDepth))
+			if (pVertex1->elevation < (Terrain::waterElevation - MapData::shallowDepth))
 				terrainType1RGB = land->terrainTextures->getTextureTypeRGB(0);
 			else if (pVertex1->elevation < Terrain::waterElevation)
-				terrainType1RGB =
-					0x002e7599; // Derek's magic number for shallow water.
+				terrainType1RGB = 0x002e7599; // Derek's magic number for shallow water.
 			else if (isCementType(pVertex1->terrainType))
-				terrainType1RGB = land->terrainTextures->getTextureTypeRGB(
-					pVertex1->terrainType);
+				terrainType1RGB = land->terrainTextures->getTextureTypeRGB(pVertex1->terrainType);
 			float lightIntensity1 = 1.0f;
 			//----------------------------------------------
 			// Get Pointer to BMP data for this point.
-			uint32_t* tBMP =
-				&(tacMapBmp[(x) + ((y)*land->realVerticesMapSide * 3)]);
+			uint32_t* tBMP = &(tacMapBmp[(x) + ((y)*land->realVerticesMapSide * 3)]);
 			if (terrainType1RGB != 0xffffffff)
 				*tBMP = terrainType1RGB;
 			tBMP++;
@@ -1908,14 +1783,12 @@ void EditorData::drawTacMap(puint8_t pDest, size_t dataSize, int32_t tacMapSize)
 	}
 	uint32_t* tBMP = tacMapBmp;
 	// now draw on the trees
-	for (i = 0; i < land->realVerticesMapSide * MAPCELL_DIM; i++)
+	for (i = 0; i < land->realVerticesMapSide * terrain_const::MAPCELL_DIM; i++)
 	{
-		for (size_t j = 0; j < land->realVerticesMapSide * MAPCELL_DIM; j++)
+		for (size_t j = 0; j < land->realVerticesMapSide * terrain_const::MAPCELL_DIM; j++)
 		{
-			EditorObject* pObj =
-				EditorObjectMgr::instance()->getObjectAtCell(j, i);
-			if (pObj && EditorObjectMgr::instance()->getAppearanceType(
-							pObj->getID()) == TREED_TYPE)
+			EditorObject* pObj = EditorObjectMgr::instance()->getObjectAtCell(j, i);
+			if (pObj && EditorObjectMgr::instance()->getAppearanceType(pObj->getID()) == TREED_TYPE)
 			{
 				uint32_t green = ((*tBMP & 0x0000ff00) >> 8);
 				green += 10;
@@ -1948,20 +1821,17 @@ void EditorData::drawTacMap(puint8_t pDest, size_t dataSize, int32_t tacMapSize)
 			if (terrainTypeRGB == 0xffffffff)
 				continue;
 			PostcompVertex* pVertex2 = currentVertex + 1;
-			PostcompVertex* pVertex3 =
-				currentVertex + land->realVerticesMapSide + 1;
-			PostcompVertex* pVertex4 =
-				currentVertex + land->realVerticesMapSide;
-			float lightIntensity1 = pVertex1->vertexNormal * optimalLight;
-			float lightIntensity2 = pVertex2->vertexNormal * optimalLight;
-			float lightIntensity3 = pVertex3->vertexNormal * optimalLight;
-			float lightIntensity4 = pVertex4->vertexNormal * optimalLight;
+			PostcompVertex* pVertex3 = currentVertex + land->realVerticesMapSide + 1;
+			PostcompVertex* pVertex4 = currentVertex + land->realVerticesMapSide;
+			float lightIntensity1	= pVertex1->vertexNormal * optimalLight;
+			float lightIntensity2	= pVertex2->vertexNormal * optimalLight;
+			float lightIntensity3	= pVertex3->vertexNormal * optimalLight;
+			float lightIntensity4	= pVertex4->vertexNormal * optimalLight;
 			//----------------------------------------------
 			// Get Pointer to BMP data for this point.
-			uint32_t* tBMP = &(
-				tacMapBmp[(x * 3) + ((y * 3) * land->realVerticesMapSide * 3)]);
-			float totalR1, totalG1, totalB1, totalR2, totalG2, totalB2, totalR3,
-				totalG3, totalB3, totalR4, totalG4, totalB4;
+			uint32_t* tBMP = &(tacMapBmp[(x * 3) + ((y * 3) * land->realVerticesMapSide * 3)]);
+			float totalR1, totalG1, totalB1, totalR2, totalG2, totalB2, totalR3, totalG3, totalB3,
+				totalR4, totalG4, totalB4;
 			int32_t elvOffset1 = (lightIntensity1 - 0.5f) * CONTRAST;
 			totalR1			   = ((terrainTypeRGB >> 16) & 0x000000ff);
 			totalG1			   = ((terrainTypeRGB >> 8) & 0x000000ff);
@@ -1981,8 +1851,8 @@ void EditorData::drawTacMap(puint8_t pDest, size_t dataSize, int32_t tacMapSize)
 				totalG1 = 0.0f;
 			if (totalB1 < 0.0f)
 				totalB1 = 0.0f;
-			uint32_t color1 = (((uint32_t)totalR1) << 16) +
-							  (((uint32_t)totalG1) << 8) + ((uint32_t)totalB1);
+			uint32_t color1 =
+				(((uint32_t)totalR1) << 16) + (((uint32_t)totalG1) << 8) + ((uint32_t)totalB1);
 			int32_t elvOffset2 = (lightIntensity2 - 0.5f) * CONTRAST;
 			totalR2			   = ((terrainTypeRGB >> 16) & 0x000000ff);
 			totalG2			   = ((terrainTypeRGB >> 8) & 0x000000ff);
@@ -2002,8 +1872,8 @@ void EditorData::drawTacMap(puint8_t pDest, size_t dataSize, int32_t tacMapSize)
 				totalG2 = 0.0f;
 			if (totalB2 < 0.0f)
 				totalB2 = 0.0f;
-			uint32_t color2 = (((uint32_t)totalR2) << 16) +
-							  (((uint32_t)totalG2) << 8) + ((uint32_t)totalB2);
+			uint32_t color2 =
+				(((uint32_t)totalR2) << 16) + (((uint32_t)totalG2) << 8) + ((uint32_t)totalB2);
 			int32_t elvOffset4 = (lightIntensity4 - 0.5f) * CONTRAST;
 			totalR4			   = ((terrainTypeRGB >> 16) & 0x000000ff);
 			totalG4			   = ((terrainTypeRGB >> 8) & 0x000000ff);
@@ -2023,8 +1893,8 @@ void EditorData::drawTacMap(puint8_t pDest, size_t dataSize, int32_t tacMapSize)
 				totalG4 = 0.0f;
 			if (totalB4 < 0.0f)
 				totalB4 = 0.0f;
-			uint32_t color4 = (((uint32_t)totalR4) << 16) +
-							  (((uint32_t)totalG4) << 8) + ((uint32_t)totalB4);
+			uint32_t color4 =
+				(((uint32_t)totalR4) << 16) + (((uint32_t)totalG4) << 8) + ((uint32_t)totalB4);
 			int32_t elvOffset3 = (lightIntensity3 - 0.5f) * CONTRAST;
 			totalR3			   = ((terrainTypeRGB >> 16) & 0x000000ff);
 			totalG3			   = ((terrainTypeRGB >> 8) & 0x000000ff);
@@ -2044,8 +1914,8 @@ void EditorData::drawTacMap(puint8_t pDest, size_t dataSize, int32_t tacMapSize)
 				totalG3 = 0.0f;
 			if (totalB3 < 0.0f)
 				totalB3 = 0.0f;
-			uint32_t color3 = (((uint32_t)totalR3) << 16) +
-							  (((uint32_t)totalG3) << 8) + ((uint32_t)totalB3);
+			uint32_t color3 =
+				(((uint32_t)totalR3) << 16) + (((uint32_t)totalG3) << 8) + ((uint32_t)totalB3);
 			*tBMP = color1;
 			tBMP++;
 			*tBMP = color1;
@@ -2071,17 +1941,14 @@ void EditorData::drawTacMap(puint8_t pDest, size_t dataSize, int32_t tacMapSize)
 	// now draw on the Buildings and forests
 	TGARecs* tRecs = (TGARecs*)systemHeap->Malloc(sizeof(TGARecs) * 255);
 	memset(tRecs, 0, sizeof(TGARecs) * 255);
-	for (i = 0; i < land->realVerticesMapSide * MAPCELL_DIM; i++)
+	for (i = 0; i < land->realVerticesMapSide * terrain_const::MAPCELL_DIM; i++)
 	{
-		for (size_t j = 0; j < land->realVerticesMapSide * MAPCELL_DIM; j++)
+		for (size_t j = 0; j < land->realVerticesMapSide * terrain_const::MAPCELL_DIM; j++)
 		{
-			EditorObject* pObj =
-				EditorObjectMgr::instance()->getObjectAtCell(i, j);
-			if (pObj &&
-				EditorObjectMgr::instance()->getTacMapColor(pObj->getID()))
+			EditorObject* pObj = EditorObjectMgr::instance()->getObjectAtCell(i, j);
+			if (pObj && EditorObjectMgr::instance()->getTacMapColor(pObj->getID()))
 			{
-				uint32_t tgaColor =
-					EditorObjectMgr::instance()->getTacMapColor(pObj->getID());
+				uint32_t tgaColor = EditorObjectMgr::instance()->getTacMapColor(pObj->getID());
 				float tBlue		  = tgaColor & 0x000000ff;
 				float tGreen	  = (tgaColor >> 8) & 0x000000ff;
 				float tRed		  = (tgaColor >> 16) & 0x000000ff;
@@ -2091,12 +1958,9 @@ void EditorData::drawTacMap(puint8_t pDest, size_t dataSize, int32_t tacMapSize)
 				float bBlue		  = bmpColor & 0x000000ff;
 				float bGreen	  = (bmpColor >> 8) & 0x000000ff;
 				float bRed		  = (bmpColor >> 16) & 0x000000ff;
-				float nBlue =
-					(tBlue * alphaFactor) + (bBlue * (1.0f - alphaFactor));
-				float nGreen =
-					(tGreen * alphaFactor) + (bGreen * (1.0f - alphaFactor));
-				float nRed =
-					(tRed * alphaFactor) + (bRed * (1.0f - alphaFactor));
+				float nBlue		  = (tBlue * alphaFactor) + (bBlue * (1.0f - alphaFactor));
+				float nGreen	  = (tGreen * alphaFactor) + (bGreen * (1.0f - alphaFactor));
+				float nRed		  = (tRed * alphaFactor) + (bRed * (1.0f - alphaFactor));
 				if (nBlue > 255.0f)
 					nBlue = 255.0f;
 				if (nGreen > 255.0f)
@@ -2106,11 +1970,11 @@ void EditorData::drawTacMap(puint8_t pDest, size_t dataSize, int32_t tacMapSize)
 				uint8_t nb = nBlue, ng = nGreen, nr = nRed;
 				uint32_t nColor = (nr << 16) + (ng << 8) + (nb);
 				if (i && j &&
-					(i < ((land->realVerticesMapSide * MAPCELL_DIM) - 1)) &&
-					(j < ((land->realVerticesMapSide * MAPCELL_DIM) - 1)))
+					(i < ((land->realVerticesMapSide * terrain_const::MAPCELL_DIM) - 1)) &&
+					(j < ((land->realVerticesMapSide * terrain_const::MAPCELL_DIM) - 1)))
 				{
 					uint32_t* tmptBMP =
-						tBMP + (land->realVerticesMapSide * MAPCELL_DIM);
+						tBMP + (land->realVerticesMapSide * terrain_const::MAPCELL_DIM);
 					tmptBMP -= 1;
 					*tmptBMP = nColor;
 					tmptBMP++;
@@ -2131,9 +1995,8 @@ void EditorData::drawTacMap(puint8_t pDest, size_t dataSize, int32_t tacMapSize)
 					*tmptBMP = nColor;
 				}
 			}
-			if (pObj && strcmp(EditorObjectMgr::instance()->getTGAFileName(
-								   pObj->getID()),
-							"NONE") != 0)
+			if (pObj &&
+				strcmp(EditorObjectMgr::instance()->getTGAFileName(pObj->getID()), "NONE") != 0)
 			{
 				int32_t recNum  = -1;
 				puint8_t tgaRAM = nullptr;
@@ -2141,8 +2004,7 @@ void EditorData::drawTacMap(puint8_t pDest, size_t dataSize, int32_t tacMapSize)
 				for (size_t it = 0; it < 255; it++)
 				{
 					if (tRecs[it].tgaData &&
-						strcmp(EditorObjectMgr::instance()->getTGAFileName(
-								   pObj->getID()),
+						strcmp(EditorObjectMgr::instance()->getTGAFileName(pObj->getID()),
 							tRecs[it].fileName) == 0)
 					{
 						recNum = it;
@@ -2160,15 +2022,12 @@ void EditorData::drawTacMap(puint8_t pDest, size_t dataSize, int32_t tacMapSize)
 					File tgaFile;
 					int32_t result = ~NO_ERROR;
 					if (0 !=
-						strcmp("0", EditorObjectMgr::instance()->getTGAFileName(
-										pObj->getID())))
+						strcmp("0", EditorObjectMgr::instance()->getTGAFileName(pObj->getID())))
 					{
 						// Draw the TGA at this location into the tBMP
 						FullPathFileName tgaName;
 						tgaName.init(artPath,
-							EditorObjectMgr::instance()->getTGAFileName(
-								pObj->getID()),
-							".tga");
+							EditorObjectMgr::instance()->getTGAFileName(pObj->getID()), ".tga");
 						result = tgaFile.open(tgaName);
 					}
 					if (result == NO_ERROR)
@@ -2178,16 +2037,14 @@ void EditorData::drawTacMap(puint8_t pDest, size_t dataSize, int32_t tacMapSize)
 						tgaFile.seek(0);
 						tgaRAM = (puint8_t)systemHeap->Malloc(
 							header.width * header.height * sizeof(uint32_t));
-						loadTGATexture(
-							&tgaFile, tgaRAM, header.width, header.height);
+						loadTGATexture(&tgaFile, tgaRAM, header.width, header.height);
 						for (size_t it = 0; it < 255; it++)
 						{
 							if (!(tRecs[it].tgaData))
 							{
 								tRecs[it].tgaData = tgaRAM;
 								strcpy(tRecs[it].fileName,
-									EditorObjectMgr::instance()->getTGAFileName(
-										pObj->getID()));
+									EditorObjectMgr::instance()->getTGAFileName(pObj->getID()));
 								tRecs[it].height = tHeight = header.height;
 								tRecs[it].width = tWidth = header.width;
 								break;
@@ -2203,37 +2060,34 @@ void EditorData::drawTacMap(puint8_t pDest, size_t dataSize, int32_t tacMapSize)
 					{
 						if (((i - (tHeight >> 1)) >= 0) &&
 							(((tHeight >> 1) + i) <
-								(land->realVerticesMapSide * MAPCELL_DIM)))
+								(land->realVerticesMapSide * terrain_const::MAPCELL_DIM)))
 						{
 							if (((j - (tWidth >> 1)) >= 0) &&
 								(((tWidth >> 1) + j) <
-									(land->realVerticesMapSide * MAPCELL_DIM)))
+									(land->realVerticesMapSide * terrain_const::MAPCELL_DIM)))
 							{
-								tmptBMP =
-									tBMP +
-									((land->realVerticesMapSide * MAPCELL_DIM) *
+								tmptBMP = tBMP +
+									((land->realVerticesMapSide * terrain_const::MAPCELL_DIM) *
 										(ib - (tHeight >> 1)));
 								tmptBMP -= (tWidth >> 1);
 								for (size_t jb = 0; jb < tWidth; jb++)
 								{
 									uint32_t tgaColor = *tgaBMP;
 									float tBlue		  = tgaColor & 0x000000ff;
-									float tGreen = (tgaColor >> 8) & 0x000000ff;
-									float tRed  = (tgaColor >> 16) & 0x000000ff;
-									float alpha = (tgaColor >> 24) & 0x000000ff;
+									float tGreen	  = (tgaColor >> 8) & 0x000000ff;
+									float tRed		  = (tgaColor >> 16) & 0x000000ff;
+									float alpha		  = (tgaColor >> 24) & 0x000000ff;
 									float alphaFactor = alpha / 255.0;
 									uint32_t bmpColor = *tmptBMP;
 									float bBlue		  = bmpColor & 0x000000ff;
-									float bGreen = (bmpColor >> 8) & 0x000000ff;
-									float bRed = (bmpColor >> 16) & 0x000000ff;
+									float bGreen	  = (bmpColor >> 8) & 0x000000ff;
+									float bRed		  = (bmpColor >> 16) & 0x000000ff;
 									float nBlue =
-										(tBlue * alphaFactor) +
-										(bBlue * (1.0f - alphaFactor));
+										(tBlue * alphaFactor) + (bBlue * (1.0f - alphaFactor));
 									float nGreen =
-										(tGreen * alphaFactor) +
-										(bGreen * (1.0f - alphaFactor));
-									float nRed = (tRed * alphaFactor) +
-												 (bRed * (1.0f - alphaFactor));
+										(tGreen * alphaFactor) + (bGreen * (1.0f - alphaFactor));
+									float nRed =
+										(tRed * alphaFactor) + (bRed * (1.0f - alphaFactor));
 									if (nBlue > 255.0f)
 										nBlue = 255.0f;
 									if (nGreen > 255.0f)
@@ -2241,9 +2095,8 @@ void EditorData::drawTacMap(puint8_t pDest, size_t dataSize, int32_t tacMapSize)
 									if (nRed > 255.0f)
 										nRed = 255.0f;
 									uint8_t nb = nBlue, ng = nGreen, nr = nRed;
-									uint32_t nColor =
-										(nr << 16) + (ng << 8) + (nb);
-									*tmptBMP = nColor;
+									uint32_t nColor = (nr << 16) + (ng << 8) + (nb);
+									*tmptBMP		= nColor;
 									tmptBMP++;
 									tgaBMP++;
 								}
@@ -2274,10 +2127,9 @@ void EditorData::drawTacMap(puint8_t pDest, size_t dataSize, int32_t tacMapSize)
 		y = ((float)i * yRatio) + .5;
 		for (size_t j = 0; j < tacMapSize; j++)
 		{
-			int32_t x = ((float)j * xRatio) + .5;
-			uint32_t* tBMP =
-				&(tacMapBmp[(x) + ((y)*land->realVerticesMapSide * 3)]);
-			*pTmp++ = *tBMP;
+			int32_t x	  = ((float)j * xRatio) + .5;
+			uint32_t* tBMP = &(tacMapBmp[(x) + ((y)*land->realVerticesMapSide * 3)]);
+			*pTmp++		   = *tBMP;
 		}
 		for (; j < 128; ++j) // leave the edges blank.
 		{
@@ -2287,8 +2139,7 @@ void EditorData::drawTacMap(puint8_t pDest, size_t dataSize, int32_t tacMapSize)
 	EditorInterface::instance()->UnsetBusyMode();
 }
 
-void EditorData::makeTacMap(
-	puint8_t& pReturn, int32_t& dataSize, int32_t tacMapSize)
+void EditorData::makeTacMap(puint8_t& pReturn, int32_t& dataSize, int32_t tacMapSize)
 {
 	// the bitmap is always 128 * 128, the size of the tac map can be anything,
 	// the edges will be filled in with transparency
@@ -2322,8 +2173,7 @@ void EditorData::loadTacMap(
 	// Create a block of RAM for Bitmap.
 	// 24 Bits of color at Cell resolution.
 	int32_t outputSize = 128 * 128 * 4;
-	puint8_t pOutput =
-		(puint8_t) new uint8_t[outputSize + sizeof(TGAFileHeader)];
+	puint8_t pOutput   = (puint8_t) new uint8_t[outputSize + sizeof(TGAFileHeader)];
 	pReturn			   = pOutput;
 	puint8_t pShrunken = pOutput + sizeof(TGAFileHeader);
 	dataSize		   = outputSize + sizeof(TGAFileHeader);
@@ -2454,8 +2304,7 @@ bool CTeams::RestoreObjectPointerReferencesFromNotedPositions()
 	bool retval = true;
 	for (size_t i = 0; i < GAME_MAX_PLAYERS; i++)
 	{
-		bool res =
-			m_teamArray[i].RestoreObjectPointerReferencesFromNotedPositions();
+		bool res = m_teamArray[i].RestoreObjectPointerReferencesFromNotedPositions();
 		if (false == res)
 		{
 			retval = false;

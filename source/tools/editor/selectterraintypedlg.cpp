@@ -5,7 +5,7 @@
 // SelectTerrainTypeDlg.cpp : implementation file
 //
 
-#include "stdafx.h"
+#include "stdinc.h"
 #include "resource.h"
 #include "SelectTerrainTypeDlg.h"
 
@@ -55,12 +55,10 @@ BOOL SelectTerrainTypeDlg::OnInitDialog()
 	int32_t i;
 	for (i = 0; i < numTerrains; i++)
 	{
-		if (land->terrainTextures->getTextureNameID(
-				i)) // if we start to repeat, quit
+		if (land->terrainTextures->getTextureNameID(i)) // if we start to repeat, quit
 		{
 			char buffer[256];
-			cLoadString(
-				land->terrainTextures->getTextureNameID(i), buffer, 256);
+			cLoadString(land->terrainTextures->getTextureNameID(i), buffer, 256);
 			CString newStr(buffer);
 			int32_t count = m_terrainTypeList.GetCount();
 			bool bPlaced  = 0;

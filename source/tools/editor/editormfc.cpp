@@ -5,7 +5,7 @@
 // EditorMFC.cpp : Defines the class behaviors for the application.
 //
 
-#include "stdafx.h"
+#include "stdinc.h"
 #include "EditorMFC.h"
 
 #include "MainFrm.h"
@@ -65,7 +65,7 @@ BOOL EditorMFCApp::InitInstance()
 
 class CAboutDlg : public CDialog
 {
-  public:
+public:
 	CAboutDlg();
 
 	// Dialog Data
@@ -78,12 +78,12 @@ class CAboutDlg : public CDialog
 
 	// ClassWizard generated virtual function overrides
 	//{{AFX_VIRTUAL(CAboutDlg)
-  protected:
+protected:
 	virtual void DoDataExchange(CDataExchange* pDX); // DDX/DDV support
 													 //}}AFX_VIRTUAL
 
 	// Implementation
-  protected:
+protected:
 	//{{AFX_MSG(CAboutDlg)
 	// No message handlers
 	//}}AFX_MSG
@@ -152,8 +152,8 @@ int32_t EditorMFCApp::ExitInstance()
 			executed, but this is not the correct place for the EditorInterface
 			window to be destroyed. */
 			EditorInterface::instance()->Create(nullptr, nullptr,
-				AFX_WS_DEFAULT_VIEW | WS_VSCROLL | WS_HSCROLL,
-				CRect(0, 0, 0, 0), m_pMainWnd, AFX_IDW_PANE_FIRST, nullptr);
+				AFX_WS_DEFAULT_VIEW | WS_VSCROLL | WS_HSCROLL, CRect(0, 0, 0, 0), m_pMainWnd,
+				AFX_IDW_PANE_FIRST, nullptr);
 		}
 	}
 	delete m_pMainWnd;

@@ -11,12 +11,12 @@
 // ..\..\mclib\stuff\$(ConfigurationName)\stuff.lib
 // ..\..\gameos\lib\$(ConfigurationName)\zlib.lib
 
-#include "stdafx.h"
+#include "stdinc.h"
 
 #include "version.h"
 
-#include "../../ARM/Microsoft.Xna.Arm.h"
-using namespace Microsoft::Xna::Arm;
+//#include "../../ARM/Microsoft.Xna.Arm.h"
+// using namespace Microsoft::Xna::Arm;
 
 HINSTANCE hInst			   = nullptr;
 uint32_t gosResourceHandle = 0;
@@ -217,8 +217,8 @@ int32_t convertASE2TGL(PSTR file)
 			if (result != NO_ERROR)
 				return result;
 			// ARM
-			IProviderAssetPtr iniAsset = armProvider->OpenAsset(
-				(PSTR)iniName, AssetType_Physical, ProviderType_Primary);
+			IProviderAssetPtr iniAsset =
+				armProvider->OpenAsset((PSTR)iniName, AssetType_Physical, ProviderType_Primary);
 			iniAsset->AddProperty("Type", "Object Definition");
 			iniAsset->AddProperty("Version", "1.0");
 			TG_TypeMultiShape* shape = nullptr;
@@ -255,12 +255,10 @@ int32_t convertASE2TGL(PSTR file)
 						IProviderRelationshipPtr armLink =
 							iniAsset->AddRelationship("LOD Shape", aseName);
 						armLink->AddProperty("LOD", lodID);
-						shape->LoadTGMultiShapeFromASE(
-							aseName, true, armProvider);
+						shape->LoadTGMultiShapeFromASE(aseName, true, armProvider);
 						i++;
 						sprintf(fileCheck, "FileName%d", i);
-						result =
-							iniFile.readIdString(fileCheck, fileName, 1023);
+						result = iniFile.readIdString(fileCheck, fileName, 1023);
 					}
 				}
 				char aseName[1024];
@@ -270,8 +268,7 @@ int32_t convertASE2TGL(PSTR file)
 				shape = new TG_TypeMultiShape;
 				gosASSERT(shape != nullptr);
 				printf("Processing Main Shape %s\n", aseName);
-				IProviderRelationshipPtr armLink =
-					iniAsset->AddRelationship("Main Shape", aseName);
+				IProviderRelationshipPtr armLink = iniAsset->AddRelationship("Main Shape", aseName);
 				shape->LoadTGMultiShapeFromASE(aseName, true, armProvider);
 				//-------------------------------------------
 				// Gotta make the special shadow shape now!!
@@ -289,8 +286,7 @@ int32_t convertASE2TGL(PSTR file)
 					printf("Processing Shadow Shape %s\n", aseName);
 					IProviderRelationshipPtr armLink =
 						iniAsset->AddRelationship("Shadow Shape", aseName);
-					shadowShape->LoadTGMultiShapeFromASE(
-						aseName, true, armProvider);
+					shadowShape->LoadTGMultiShapeFromASE(aseName, true, armProvider);
 					delete shadowShape;
 					shadowShape = nullptr;
 				}
@@ -298,12 +294,10 @@ int32_t convertASE2TGL(PSTR file)
 				char animCheck[1024];
 				sprintf(animCheck, "Animation:%d", i);
 				result = iniFile.seekBlock(animCheck);
-				while (result ==
-					   NO_ERROR) // This thing has animations. Process them!
+				while (result == NO_ERROR) // This thing has animations. Process them!
 				{
 					char fileName[1024];
-					result =
-						iniFile.readIdString("AnimationName", fileName, 1023);
+					result = iniFile.readIdString("AnimationName", fileName, 1023);
 					if (result == NO_ERROR)
 					{
 						FullPathFileName aseName;
@@ -315,10 +309,8 @@ int32_t convertASE2TGL(PSTR file)
 						// Happens ALOT!
 						printf("Processing Animation %s\n", aseName);
 						IProviderRelationshipPtr armLink =
-							iniAsset->AddRelationship(
-								"Animation", (PSTR)aseName);
-						anim->LoadTGMultiShapeAnimationFromASE(
-							aseName, shape, true);
+							iniAsset->AddRelationship("Animation", (PSTR)aseName);
+						anim->LoadTGMultiShapeAnimationFromASE(aseName, shape, true);
 						delete anim;
 						anim = nullptr;
 					}
@@ -335,11 +327,10 @@ int32_t convertASE2TGL(PSTR file)
 						for (size_t i = 0; i < MaxGestures; i++)
 						{
 							char name[MAX_PATH];
-							_splitpath(findResult.cFileName, nullptr, nullptr,
-								name, nullptr);
+							_splitpath(findResult.cFileName, nullptr, nullptr, name, nullptr);
 							char mechFileName[1024];
-							sprintf(mechFileName, "%s%s%s.ase", tglPath, name,
-								MechAnimationNames[i]);
+							sprintf(
+								mechFileName, "%s%s%s.ase", tglPath, name, MechAnimationNames[i]);
 							TG_AnimateShape* anim = new TG_AnimateShape;
 							gosASSERT(anim != nullptr);
 							//-----------------------------------------------
@@ -347,10 +338,8 @@ int32_t convertASE2TGL(PSTR file)
 							// Happens ALOT!
 							printf("Processing Animation %s\n", mechFileName);
 							IProviderRelationshipPtr armLink =
-								iniAsset->AddRelationship(
-									"Animation", mechFileName);
-							anim->LoadTGMultiShapeAnimationFromASE(
-								mechFileName, shape, true);
+								iniAsset->AddRelationship("Animation", mechFileName);
+							anim->LoadTGMultiShapeAnimationFromASE(mechFileName, shape, true);
 							delete anim;
 							anim = nullptr;
 						}
@@ -365,20 +354,17 @@ int32_t convertASE2TGL(PSTR file)
 						for (size_t i = MaxGestures; i < MaxGestures + 2; i++)
 						{
 							char name[MAX_PATH];
-							_splitpath(findResult.cFileName, nullptr, nullptr,
-								name, nullptr);
+							_splitpath(findResult.cFileName, nullptr, nullptr, name, nullptr);
 							char mechFileName[1024];
-							sprintf(mechFileName, "%s%s%s.ase", tglPath, name,
-								MechAnimationNames[i]);
+							sprintf(
+								mechFileName, "%s%s%s.ase", tglPath, name, MechAnimationNames[i]);
 							//-----------------------------------------------
 							shape = new TG_TypeMultiShape;
 							gosASSERT(shape != nullptr);
 							printf("Processing Animation %s\n", mechFileName);
 							IProviderRelationshipPtr armLink =
-								iniAsset->AddRelationship(
-									"Destroyed Shape", mechFileName);
-							shape->LoadTGMultiShapeFromASE(
-								mechFileName, true, armProvider);
+								iniAsset->AddRelationship("Destroyed Shape", mechFileName);
+							shape->LoadTGMultiShapeFromASE(mechFileName, true, armProvider);
 							delete shape;
 							shape = nullptr;
 						}
@@ -404,8 +390,7 @@ int32_t convertASE2TGL(PSTR file)
 						printf("Processing Damage Shape %s\n", aseName);
 						IProviderRelationshipPtr armLink =
 							iniAsset->AddRelationship("Damage Shape", aseName);
-						shape->LoadTGMultiShapeFromASE(
-							aseName, true, armProvider);
+						shape->LoadTGMultiShapeFromASE(aseName, true, armProvider);
 					}
 					//-------------------------------------------
 					// Gotta make the special shadow shape now!!
@@ -418,15 +403,12 @@ int32_t convertASE2TGL(PSTR file)
 						sprintf(aseName, "%s%s%s", tglPath, fileName, ".ase");
 						//---------------------------------------------------------------------------------------------
 						// Load Base Shape or LOD 0 Shape.
-						TG_TypeMultiShapePtr shadowShape =
-							new TG_TypeMultiShape;
+						TG_TypeMultiShapePtr shadowShape = new TG_TypeMultiShape;
 						gosASSERT(shadowShape != nullptr);
 						printf("Processing Damage Shadow Shape %s\n", aseName);
 						IProviderRelationshipPtr armLink =
-							iniAsset->AddRelationship(
-								"Damage Shadow Shape", aseName);
-						shadowShape->LoadTGMultiShapeFromASE(
-							aseName, true, armProvider);
+							iniAsset->AddRelationship("Damage Shadow Shape", aseName);
+						shadowShape->LoadTGMultiShapeFromASE(aseName, true, armProvider);
 						delete shadowShape;
 						shadowShape = nullptr;
 					}
@@ -441,8 +423,7 @@ int32_t convertASE2TGL(PSTR file)
 	return 0;
 }
 
-LRESULT CALLBACK WndProc(
-	HWND hWnd, uint32_t message, WPARAM wParam, LPARAM lParam)
+LRESULT CALLBACK WndProc(HWND hWnd, uint32_t message, WPARAM wParam, LPARAM lParam)
 {
 	switch (message)
 	{
@@ -456,8 +437,8 @@ LRESULT CALLBACK WndProc(
 }
 
 //-----------------------------
-int32_t APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
-	LPSTR lpCmdLine, int32_t nCmdShow)
+int32_t APIENTRY WinMain(
+	HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int32_t nCmdShow)
 {
 	WNDCLASS wc;
 	if (!hPrevInstance)
@@ -478,9 +459,8 @@ int32_t APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	hInst = hInstance;
 	char appTitle[1024];
 	sprintf(appTitle, "MechCommander 2 Data Editor %s", versionStamp);
-	appWnd =
-		CreateWindow(lpszAppName, appTitle, WS_OVERLAPPEDWINDOW, CW_USEDEFAULT,
-			CW_USEDEFAULT, 640, 480, nullptr, nullptr, hInstance, nullptr);
+	appWnd = CreateWindow(lpszAppName, appTitle, WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, CW_USEDEFAULT,
+		640, 480, nullptr, nullptr, hInstance, nullptr);
 	if (appWnd == nullptr)
 		return false;
 	globalHeapList = new HeapList;
@@ -509,8 +489,7 @@ int32_t APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 			systemFile->seekBlock("systemPaths");
 		assert(systemPathResult == NO_ERROR);
 		{
-			int32_t result =
-				systemFile->readIdString("terrainPath", terrainPath, 79);
+			int32_t result = systemFile->readIdString("terrainPath", terrainPath, 79);
 			assert(result == NO_ERROR);
 			result = systemFile->readIdString("artPath", artPath, 79);
 			assert(result == NO_ERROR);
@@ -536,8 +515,7 @@ int32_t APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 			assert(result == NO_ERROR);
 			result = systemFile->readIdString("profilePath", profilePath, 79);
 			assert(result == NO_ERROR);
-			result =
-				systemFile->readIdString("interfacepath", interfacePath, 79);
+			result = systemFile->readIdString("interfacepath", interfacePath, 79);
 			assert(result == NO_ERROR);
 			result = systemFile->readIdString("moviepath", moviePath, 79);
 			assert(result == NO_ERROR);

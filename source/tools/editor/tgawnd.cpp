@@ -5,7 +5,7 @@
 // TGAWnd.cpp : implementation file
 //
 
-#include "stdafx.h"
+#include "stdinc.h"
 #include "tgawnd.h"
 #include "tgainfo.h"
 
@@ -30,8 +30,7 @@ TGAWnd::TGAWnd()
 	m_pMemDC						  = nullptr;
 	m_hBitmap						  = nullptr;
 	m_hSplashBitMap					  = nullptr;
-	bThisIsInitialized =
-		true; /*it may be premature to flag it as initialized here*/
+	bThisIsInitialized				  = true; /*it may be premature to flag it as initialized here*/
 }
 
 TGAWnd::~TGAWnd()
@@ -89,8 +88,9 @@ void TGAWnd::SetTGAFileData(puint8_t data, int32_t size)
 	m_bTGAChanged = true;
 	TGAFileHeader* header;
 	header = (TGAFileHeader*)data;
-	if (m_pImage && (m_pBmi->bmiHeader.biWidth != -header->width ||
-						m_pBmi->bmiHeader.biHeight != header->height))
+	if (m_pImage &&
+		(m_pBmi->bmiHeader.biWidth != -header->width ||
+			m_pBmi->bmiHeader.biHeight != header->height))
 	{
 		free(m_pImage);
 		m_pImage = nullptr;
@@ -99,8 +99,7 @@ void TGAWnd::SetTGAFileData(puint8_t data, int32_t size)
 		m_pImage = (PSTR)malloc(header->width * header->height * 4);
 	if (header->image_type == UNC_TRUE)
 	{
-		memcpy(m_pImage, data + sizeof(TGAFileHeader),
-			header->width * header->height * 4);
+		memcpy(m_pImage, data + sizeof(TGAFileHeader), header->width * header->height * 4);
 		m_pBmi->bmiHeader.biHeight = -header->height;
 		m_pBmi->bmiHeader.biWidth  = header->width;
 	}
@@ -131,10 +130,9 @@ void TGAWnd::OnPaint()
 			m_pMemDC->CreateCompatibleDC(&dc);
 		}
 		if (!m_hBitmap)
-			m_hBitmap = CreateDIBSection(
-				dc.m_hDC, m_pBmi, DIB_RGB_COLORS, (PVOID*)&m_pBits, nullptr, 0);
-		memcpy(m_pBits, m_pImage,
-			m_pBmi->bmiHeader.biWidth * -m_pBmi->bmiHeader.biHeight * 4);
+			m_hBitmap =
+				CreateDIBSection(dc.m_hDC, m_pBmi, DIB_RGB_COLORS, (PVOID*)&m_pBits, nullptr, 0);
+		memcpy(m_pBits, m_pImage, m_pBmi->bmiHeader.biWidth * -m_pBmi->bmiHeader.biHeight * 4);
 		m_bTGAChanged = false;
 	}
 	if (m_pMemDC)
@@ -143,16 +141,16 @@ void TGAWnd::OnPaint()
 		CRect rect;
 		GetWindowRect(rect);
 		dc.SetStretchBltMode(STRETCH_DELETESCANS);
-		dc.StretchBlt(0, 0, rect.Width(), rect.Height(), m_pMemDC, 0, 0,
-			m_pBmi->bmiHeader.biWidth, -m_pBmi->bmiHeader.biHeight, SRCCOPY);
+		dc.StretchBlt(0, 0, rect.Width(), rect.Height(), m_pMemDC, 0, 0, m_pBmi->bmiHeader.biWidth,
+			-m_pBmi->bmiHeader.biHeight, SRCCOPY);
 		m_pMemDC->SelectObject(hOldObj);
 	}
 	else
 	{
 		if (!m_hSplashBitMap)
 		{
-			m_hSplashBitMap = (HBITMAP)LoadImage(
-				nullptr, "tacsplash.bmp", IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);
+			m_hSplashBitMap =
+				(HBITMAP)LoadImage(nullptr, "tacsplash.bmp", IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);
 		}
 		if (m_hSplashBitMap)
 		{
@@ -167,8 +165,8 @@ void TGAWnd::OnPaint()
 			CRect rect;
 			GetWindowRect(rect);
 			dc.SetStretchBltMode(STRETCH_DELETESCANS);
-			dc.StretchBlt(0, 0, rect.Width(), rect.Height(), &l_MemDC, 0, 0,
-				bm_struct.bmWidth, bm_struct.bmHeight, SRCCOPY);
+			dc.StretchBlt(0, 0, rect.Width(), rect.Height(), &l_MemDC, 0, 0, bm_struct.bmWidth,
+				bm_struct.bmHeight, SRCCOPY);
 			l_MemDC.SelectObject(hOldObj);
 		}
 	}

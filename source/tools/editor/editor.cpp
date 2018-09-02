@@ -2,7 +2,7 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
-#include "stdafx.h"
+#include "stdinc.h"
 #include "resource.h"
 
 //#include "editorinterface.h"
@@ -107,15 +107,13 @@ PSTR GetGameInformation() { return (ExceptionGameMsg); }
 void UpdateRenderers()
 {
 #ifdef RUNNING_REMOTELY
-	Sleep(0.25 /*seconds*/ *
-		  1000.0); /* limit the frame rate when displaying on remote console */
-#endif			   /*RUNNING_REMOTELY*/
+	Sleep(0.25 /*seconds*/ * 1000.0); /* limit the frame rate when displaying on remote console */
+#endif								  /*RUNNING_REMOTELY*/
 	hasGuardBand	= true;
 	uint32_t bColor = 0x0;
 	if (eye)
 		bColor = eye->fogColor;
-	gos_SetupViewport(
-		1, 1.0, 1, bColor, 0.0, 0.0, 1.0, 1.0); // ALWAYS FULL SCREEN for now
+	gos_SetupViewport(1, 1.0, 1, bColor, 0.0, 0.0, 1.0, 1.0); // ALWAYS FULL SCREEN for now
 	gos_SetRenderState(gos_State_Filter, gos_FilterBiLinear);
 	gos_SetRenderState(gos_State_AlphaMode, gos_Alpha_AlphaInvAlpha);
 	gos_SetRenderState(gos_State_AlphaTest, TRUE);
@@ -211,8 +209,7 @@ void InitializeGameEngine()
 		dev.dmSize		  = sizeof(DEVMODE);
 		dev.dmSpecVersion = DM_SPECVERSION;
 		EnumDisplaySettings(nullptr, ENUM_CURRENT_SETTINGS, &dev);
-		if ((dev.dmPelsWidth > 1024) || (dev.dmPelsHeight > 768) ||
-			(dev.dmBitsPerPel > 16))
+		if ((dev.dmPelsWidth > 1024) || (dev.dmPelsHeight > 768) || (dev.dmBitsPerPel > 16))
 		{
 			char title[256];
 			char msg[2048];
@@ -250,13 +247,10 @@ void InitializeGameEngine()
 	MidLevelRenderer::InitializeClasses(1024);
 	gosFX::InitializeClasses();
 	gos_PushCurrentHeap(MidLevelRenderer::Heap);
-	MidLevelRenderer::TGAFilePool* pool =
-		new MidLevelRenderer::TGAFilePool("data\\Effects\\");
-	MidLevelRenderer::MLRTexturePool::Instance =
-		new MidLevelRenderer::MLRTexturePool(pool);
+	MidLevelRenderer::TGAFilePool* pool = new MidLevelRenderer::TGAFilePool("data\\Effects\\");
+	MidLevelRenderer::MLRTexturePool::Instance = new MidLevelRenderer::MLRTexturePool(pool);
 	MidLevelRenderer::MLRSortByOrder* cameraSorter =
-		new MidLevelRenderer::MLRSortByOrder(
-			MidLevelRenderer::MLRTexturePool::Instance);
+		new MidLevelRenderer::MLRSortByOrder(MidLevelRenderer::MLRTexturePool::Instance);
 	theClipper = new MidLevelRenderer::MLRClipper(0, cameraSorter);
 	gos_PopCurrentHeap();
 	//------------------------------------------------------
@@ -305,8 +299,7 @@ void InitializeGameEngine()
 			systemFile->seekBlock("systemHeap");
 		gosASSERT(systemBlockResult == NO_ERROR);
 		{
-			int32_t result =
-				systemFile->readIdULong("systemHeapSize", systemHeapSize);
+			int32_t result = systemFile->readIdULong("systemHeapSize", systemHeapSize);
 			gosASSERT(result == NO_ERROR);
 		}
 #ifdef _DEBUG
@@ -315,8 +308,7 @@ void InitializeGameEngine()
 			systemFile->seekBlock("systemPaths");
 		gosASSERT(systemPathResult == NO_ERROR);
 		{
-			int32_t result =
-				systemFile->readIdString("terrainPath", terrainPath, 79);
+			int32_t result = systemFile->readIdString("terrainPath", terrainPath, 79);
 			gosASSERT(result == NO_ERROR);
 			result = systemFile->readIdString("artPath", artPath, 79);
 			gosASSERT(result == NO_ERROR);
@@ -342,8 +334,7 @@ void InitializeGameEngine()
 			gosASSERT(result == NO_ERROR);
 			result = systemFile->readIdString("profilePath", profilePath, 79);
 			gosASSERT(result == NO_ERROR);
-			result =
-				systemFile->readIdString("interfacepath", interfacePath, 79);
+			result = systemFile->readIdString("interfacepath", interfacePath, 79);
 			gosASSERT(result == NO_ERROR);
 			result = systemFile->readIdString("moviepath", moviePath, 79);
 			gosASSERT(result == NO_ERROR);
@@ -362,21 +353,18 @@ void InitializeGameEngine()
 			systemFile->seekBlock("FastFiles");
 		gosASSERT(fastFileResult == NO_ERROR);
 		{
-			int32_t result =
-				systemFile->readIdLong("NumFastFiles", maxFastFiles);
+			int32_t result = systemFile->readIdLong("NumFastFiles", maxFastFiles);
 			if (result != NO_ERROR)
 				maxFastFiles = 0;
 			if (maxFastFiles)
 			{
-				fastFiles =
-					(FastFile**)malloc(maxFastFiles * sizeof(FastFile*));
+				fastFiles = (FastFile**)malloc(maxFastFiles * sizeof(FastFile*));
 				memset(fastFiles, 0, maxFastFiles * sizeof(FastFile*));
 				int32_t fileNum = 0;
 				char fastFileId[10];
 				char fileName[100];
 				sprintf(fastFileId, "File%d", fileNum);
-				while (systemFile->readIdString(fastFileId, fileName, 99) ==
-					   NO_ERROR)
+				while (systemFile->readIdString(fastFileId, fileName, 99) == NO_ERROR)
 				{
 					bool result = FastFileInit(fileName);
 					if (!result)
@@ -390,14 +378,12 @@ void InitializeGameEngine()
 		result = systemFile->seekBlock("CameraSettings");
 		if (result == NO_ERROR)
 		{
-			result = systemFile->readIdFloat(
-				"MaxPerspective", Camera::MAX_PERSPECTIVE);
+			result = systemFile->readIdFloat("MaxPerspective", Camera::MAX_PERSPECTIVE);
 			if (result != NO_ERROR)
 				Camera::MAX_PERSPECTIVE = 88.0f;
 			if (Camera::MAX_PERSPECTIVE > 90.0f)
 				Camera::MAX_PERSPECTIVE = 90.0f;
-			result = systemFile->readIdFloat(
-				"MinPerspective", Camera::MIN_PERSPECTIVE);
+			result = systemFile->readIdFloat("MinPerspective", Camera::MIN_PERSPECTIVE);
 			if (result != NO_ERROR)
 				Camera::MIN_PERSPECTIVE = 18.0f;
 			if (Camera::MIN_PERSPECTIVE < 0.0f)
@@ -412,18 +398,15 @@ void InitializeGameEngine()
 				Camera::MIN_ORTHO = 18.0f;
 			if (Camera::MIN_ORTHO < 0.0f)
 				Camera::MIN_ORTHO = 0.0f;
-			result = systemFile->readIdFloat(
-				"AltitudeMinimum", Camera::AltitudeMinimum);
+			result = systemFile->readIdFloat("AltitudeMinimum", Camera::AltitudeMinimum);
 			if (result != NO_ERROR)
 				Camera::AltitudeMinimum = 560.0f;
 			if (Camera::AltitudeMinimum < 110.0f)
 				Camera::AltitudeMinimum = 110.0f;
-			result = systemFile->readIdFloat(
-				"AltitudeMaximumHi", Camera::AltitudeMaximumHi);
+			result = systemFile->readIdFloat("AltitudeMaximumHi", Camera::AltitudeMaximumHi);
 			if (result != NO_ERROR)
 				Camera::AltitudeMaximumHi = 1600.0f;
-			result = systemFile->readIdFloat(
-				"AltitudeMaximumLo", Camera::AltitudeMaximumLo);
+			result = systemFile->readIdFloat("AltitudeMaximumLo", Camera::AltitudeMaximumLo);
 			if (result != NO_ERROR)
 				Camera::AltitudeMaximumHi = 1500.0f;
 		}
@@ -447,8 +430,7 @@ void InitializeGameEngine()
 			prefs->seekBlock("MechCommander2Editor");
 		gosASSERT(prefsBlockResult == NO_ERROR);
 		{
-			int32_t result =
-				prefs->readIdFloat("CliffTerrainAngle", CliffTerrainAngle);
+			int32_t result = prefs->readIdFloat("CliffTerrainAngle", CliffTerrainAngle);
 			if (result != NO_ERROR)
 				CliffTerrainAngle = 45.0f;
 		}
@@ -458,7 +440,7 @@ void InitializeGameEngine()
 			Environment.Key_SwitchMonitors = 0;
 			Environment.Key_FullScreen	 = 0;
 			int32_t bitD				   = 0;
-			int32_t result = prefs->readIdLong("BitDepth", bitD);
+			int32_t result				   = prefs->readIdLong("BitDepth", bitD);
 			if (result != NO_ERROR)
 				Environment.bitDepth = 16;
 			else if (bitD == 32)
@@ -511,8 +493,7 @@ void InitializeGameEngine()
 			result = prefs->readIdLong("Brightness", gammaLevel);
 			if (result != NO_ERROR)
 				gammaLevel = 0;
-			result = prefs->readIdFloat(
-				"DoubleClickThreshold", doubleClickThreshold);
+			result = prefs->readIdFloat("DoubleClickThreshold", doubleClickThreshold);
 			if (result != NO_ERROR)
 				doubleClickThreshold = 0.2f;
 			result = prefs->readIdLong("DragThreshold", dragThreshold);
@@ -802,11 +783,10 @@ void ParseCommandLine(PSTR command_line)
 void GetGameOSEnvironment(PSTR CommandLine)
 {
 	ParseCommandLine(CommandLine);
-	Environment.applicationName  = "MC2 Mission Editor";
-	Environment.debugLog		 = ""; //"DebugLog.txt";
-	Environment.memoryTraceLevel = 5;
-	Environment.spew =
-		""; //"GameOS_Texture GameOS_DirectDraw GameOS_Direct3D ";
+	Environment.applicationName		 = "MC2 Mission Editor";
+	Environment.debugLog			 = ""; //"DebugLog.txt";
+	Environment.memoryTraceLevel	 = 5;
+	Environment.spew				 = ""; //"GameOS_Texture GameOS_DirectDraw GameOS_Direct3D ";
 	Environment.TimeStampSpew		 = 0;
 	Environment.GetGameInformation   = GetGameInformation;
 	Environment.UpdateRenderers		 = UpdateRenderers;
@@ -850,8 +830,7 @@ void GetGameOSEnvironment(PSTR CommandLine)
 	Environment.screenWidth  = dev.dmPelsWidth;
 	Environment.screenHeight = dev.dmPelsHeight;
 	if (((512 > Environment.screenWidth) || (384 > Environment.screenHeight) ||
-			(1600 < Environment.screenWidth) ||
-			(1200 < Environment.screenHeight)) &&
+			(1600 < Environment.screenWidth) || (1200 < Environment.screenHeight)) &&
 		(0 == dev.dmDeviceName[0]))
 	{
 		/* might be a buggy driver reporting incorrectly (like the permedia2
@@ -875,20 +854,17 @@ void GetGameOSEnvironment(PSTR CommandLine)
 		Environment.screenWidth  = 512;
 		Environment.screenHeight = 384;
 	}
-	else if ((Environment.screenWidth > 800) &&
-			 (Environment.screenWidth < 1024))
+	else if ((Environment.screenWidth > 800) && (Environment.screenWidth < 1024))
 	{
 		Environment.screenWidth  = 800;
 		Environment.screenHeight = 600;
 	}
-	else if ((Environment.screenWidth > 1024) &&
-			 (Environment.screenWidth < 1280))
+	else if ((Environment.screenWidth > 1024) && (Environment.screenWidth < 1280))
 	{
 		Environment.screenWidth  = 1024;
 		Environment.screenHeight = 768;
 	}
-	else if ((Environment.screenWidth > 1280) &&
-			 (Environment.screenWidth < 1600))
+	else if ((Environment.screenWidth > 1280) && (Environment.screenWidth < 1600))
 	{
 		Environment.screenWidth  = 1280;
 		Environment.screenHeight = 1024;

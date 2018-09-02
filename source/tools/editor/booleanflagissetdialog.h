@@ -10,12 +10,12 @@
 
 /////////////////////////////////////////////////////////////////////////////
 // CBooleanFlagIsSetDialog dialog
-ATL_SUPPRESS_WARNING_PUSH(
+DISABLE_WARNING_PUSH(
 	4626) // assignment operator could not be generated (due to MFC design)
 class CBooleanFlagIsSetDialog : public CDialog
 {
 	// Construction
-  public:
+public:
 	CBooleanFlagIsSetDialog(CWnd* pParent = nullptr); // standard constructor
 
 	// Dialog Data
@@ -28,19 +28,19 @@ class CBooleanFlagIsSetDialog : public CDialog
 	// Overrides
 	// ClassWizard generated virtual function overrides
 	//{{AFX_VIRTUAL(CBooleanFlagIsSetDialog)
-  protected:
+protected:
 	virtual void DoDataExchange(CDataExchange* pDX); // DDX/DDV support
 													 //}}AFX_VIRTUAL
 
 	// Implementation
-  protected:
+protected:
 	// Generated message map functions
 	//{{AFX_MSG(CBooleanFlagIsSetDialog)
 	// NOTE: the ClassWizard will add member functions here
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };
-ATL_SUPPRESS_WARNING_POP
+DISABLE_WARNING_POP
 //{{AFX_INSERT_LOCATION}}
 // Microsoft Visual C++ will insert additional declarations immediately before
 // the previous line.

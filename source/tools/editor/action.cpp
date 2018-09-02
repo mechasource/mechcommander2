@@ -8,7 +8,7 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
-#include "stdafx.h"
+#include "stdinc.h"
 
 //#include <elist.h>
 //#include <terrain.h>
@@ -79,8 +79,7 @@ void ActionUndoMgr::AddAction(Action* pAction)
 //***********************************************************************
 void ActionUndoMgr::EmptyUndoList(void)
 {
-	for (ACTION_LIST::EIterator pos = m_listUndoActions.Begin(); !pos.IsDone();
-		 pos++)
+	for (ACTION_LIST::EIterator pos = m_listUndoActions.Begin(); !pos.IsDone(); pos++)
 	{
 		delete (*pos);
 	}
@@ -134,10 +133,7 @@ PCSTR ActionUndoMgr::GetUndoString(void)
 // Returns:		whether there is a redo action to perform
 // Descripition: call to see wherther you can perform a redo
 //***********************************************************************
-bool ActionUndoMgr::HaveRedo(void) const
-{
-	return m_CurrentPos + 1 != m_listUndoActions.Count();
-}
+bool ActionUndoMgr::HaveRedo(void) const { return m_CurrentPos + 1 != m_listUndoActions.Count(); }
 
 //***********************************************************************
 // Function:	HaveUndo
@@ -198,10 +194,7 @@ bool ActionUndoMgr::Undo(void)
 // Returns:
 // Description:
 //************************************************************************
-void ActionUndoMgr::NoteThatASaveHasJustOccurred(void)
-{
-	m_PosOfLastSave = m_CurrentPos;
-}
+void ActionUndoMgr::NoteThatASaveHasJustOccurred(void) { m_PosOfLastSave = m_CurrentPos; }
 
 //************************************************************************
 // Function:	ThereHasBeenANetChangeFromWhenLastSaved
@@ -233,23 +226,20 @@ bool ActionPaintTile::redo(void) { return doRedo(); }
 
 bool ActionPaintTile::doRedo(void)
 {
-	for (VERTEX_INFO_LIST::EIterator iter = vertexInfoList.Begin();
-		 !iter.IsDone(); iter++)
+	for (VERTEX_INFO_LIST::EIterator iter = vertexInfoList.Begin(); !iter.IsDone(); iter++)
 	{
 		// get current values
 		int32_t terrain = land->getTerrain((*iter).row, (*iter).column);
 		int32_t texture = land->getTexture((*iter).row, (*iter).column);
-		float elv = land->getTerrainElevation((*iter).row, (*iter).column);
+		float elv		= land->getTerrainElevation((*iter).row, (*iter).column);
 		Overlays overlay;
 		uint32_t offset;
 		// reset to old values
-		land->terrainTextures->getOverlayInfoFromHandle(
-			(*iter).textureData, overlay, offset);
+		land->terrainTextures->getOverlayInfoFromHandle((*iter).textureData, overlay, offset);
 		land->setOverlay((*iter).row, (*iter).column, overlay, offset);
 		land->setTerrain((*iter).row, (*iter).column, (*iter).terrainData);
 		land->setVertexHeight(
-			(*iter).row * land->realVerticesMapSide + (*iter).column,
-			(*iter).elevation);
+			(*iter).row * land->realVerticesMapSide + (*iter).column, (*iter).elevation);
 		// save current valuds
 		(*iter).terrainData = terrain;
 		(*iter).textureData = texture;
@@ -281,8 +271,7 @@ bool ActionPaintTile::undo(void)
 ////-----------------------------------------------------------------------
 void ActionPaintTile::addVertexInfo(VertexInfo& info)
 {
-	for (VERTEX_INFO_LIST::EIterator iter = vertexInfoList.Begin();
-		 !iter.IsDone(); iter++)
+	for (VERTEX_INFO_LIST::EIterator iter = vertexInfoList.Begin(); !iter.IsDone(); iter++)
 	{
 		if (info.row == (*iter).row && info.column == (*iter).column)
 			return;
@@ -300,8 +289,7 @@ void ActionPaintTile::addVertexInfo(VertexInfo& info)
 void ActionPaintTile::addChangedVertexInfo(int32_t row, int32_t column)
 {
 	// get the info and add it
-	for (VERTEX_INFO_LIST::EIterator iter = vertexInfoList.Begin();
-		 !iter.IsDone(); iter++)
+	for (VERTEX_INFO_LIST::EIterator iter = vertexInfoList.Begin(); !iter.IsDone(); iter++)
 	{
 		if (row == (*iter).row && column == (*iter).column)
 			return;
@@ -313,8 +301,7 @@ void ActionPaintTile::addChangedVertexInfo(int32_t row, int32_t column)
 
 bool ActionPaintTile::getOldHeight(int32_t row, int32_t column, float& height)
 {
-	for (VERTEX_INFO_LIST::EIterator iter = vertexInfoList.Begin();
-		 !iter.IsDone(); iter++)
+	for (VERTEX_INFO_LIST::EIterator iter = vertexInfoList.Begin(); !iter.IsDone(); iter++)
 	{
 		if (row == (*iter).row && column == (*iter).column)
 		{
@@ -328,8 +315,7 @@ bool ActionPaintTile::getOldHeight(int32_t row, int32_t column, float& height)
 VertexInfo::VertexInfo(int32_t newRow, int32_t newColumn)
 {
 	gosASSERT(newRow > -1 && newColumn > -1);
-	gosASSERT(newRow < land->realVerticesMapSide &&
-			  newColumn < land->realVerticesMapSide);
+	gosASSERT(newRow < land->realVerticesMapSide && newColumn < land->realVerticesMapSide);
 	row			= newRow;
 	column		= newColumn;
 	elevation   = land->getTerrainElevation(row, column);
@@ -339,8 +325,7 @@ VertexInfo::VertexInfo(int32_t newRow, int32_t newColumn)
 
 ModifyBuildingAction::~ModifyBuildingAction()
 {
-	for (OBJ_INFO_PTR_LIST::EIterator iter = buildingCopyPtrs.Begin();
-		 !iter.IsDone(); iter++)
+	for (OBJ_INFO_PTR_LIST::EIterator iter = buildingCopyPtrs.Begin(); !iter.IsDone(); iter++)
 	{
 		delete (*iter);
 	}
@@ -352,13 +337,11 @@ bool ModifyBuildingAction::doRedo()
 	OBJ_INFO_PTR_LIST::EIterator iter2 = buildingPtrs.Begin();
 	OBJ_APPEAR_LIST::EIterator iter3   = buildingAppearanceCopies.Begin();
 	OBJ_ID_LIST::EIterator iter4	   = buildingIDs.Begin();
-	for (OBJ_INFO_PTR_LIST::EIterator iter = buildingCopyPtrs.Begin();
-		 !iter.IsDone(); iter++)
+	for (OBJ_INFO_PTR_LIST::EIterator iter = buildingCopyPtrs.Begin(); !iter.IsDone(); iter++)
 	{
 		// EditorObject *pBuilding = (*iter2);
 		EditorObject* pBuilding =
-			EditorObjectMgr::instance()->getObjectAtLocation(
-				(*iter4).x, (*iter4).y);
+			EditorObjectMgr::instance()->getObjectAtLocation((*iter4).x, (*iter4).y);
 		if (pBuilding)
 		{
 			EditorObject* pBuildingSwap		= (*iter)->Clone();
@@ -420,8 +403,7 @@ void ModifyBuildingAction::addBuildingInfo(EditorObject& info)
 void ModifyBuildingAction::updateNotedObjectPositions()
 {
 	OBJ_ID_LIST::EIterator iter4 = buildingIDs.Begin();
-	for (OBJ_INFO_PTR_LIST::EIterator iter = buildingPtrs.Begin();
-		 !iter.IsDone(); iter++)
+	for (OBJ_INFO_PTR_LIST::EIterator iter = buildingPtrs.Begin(); !iter.IsDone(); iter++)
 	{
 		EditorObject* pBuilding = (*iter);
 		if (pBuilding)

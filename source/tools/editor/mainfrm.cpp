@@ -5,7 +5,7 @@
 // MainFrm.cpp : implementation of the MainFrame class
 //
 
-#include "stdafx.h"
+#include "stdinc.h"
 #include "EditorMFC.h"
 
 #include "MainFrm.h"
@@ -42,9 +42,8 @@ int32_t MainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	if (CFrameWnd::OnCreate(lpCreateStruct) == -1)
 		return -1;
 	// create a view to occupy the client area of the frame
-	if (!m_wndView.Create(nullptr, nullptr,
-			AFX_WS_DEFAULT_VIEW | WS_VSCROLL | WS_HSCROLL, CRect(0, 0, 0, 0),
-			this, AFX_IDW_PANE_FIRST, nullptr))
+	if (!m_wndView.Create(nullptr, nullptr, AFX_WS_DEFAULT_VIEW | WS_VSCROLL | WS_HSCROLL,
+			CRect(0, 0, 0, 0), this, AFX_IDW_PANE_FIRST, nullptr))
 	{
 		TRACE0("Failed to create view window\n");
 		return -1;
@@ -57,8 +56,7 @@ int32_t MainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 		return -1;      // fail to create
 	}
 	*/
-	if (!m_wndDlgBar.Create(
-			this, IDR_EDITOR_MENU, CBRS_ALIGN_TOP, AFX_IDW_DIALOGBAR))
+	if (!m_wndDlgBar.Create(this, IDR_EDITOR_MENU, CBRS_ALIGN_TOP, AFX_IDW_DIALOGBAR))
 	{
 		TRACE0("Failed to create dialogbar\n");
 		return -1; // fail to create
@@ -74,8 +72,7 @@ int32_t MainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	}
 #endif
 	if (!m_wndStatusBar.Create(this) ||
-		!m_wndStatusBar.SetIndicators(
-			indicators, sizeof(indicators) / sizeof(uint32_t)))
+		!m_wndStatusBar.SetIndicators(indicators, sizeof(indicators) / sizeof(uint32_t)))
 	{
 		TRACE0("Failed to create status bar\n");
 		return -1; // fail to create
@@ -150,8 +147,7 @@ LRESULT MainFrame::WindowProc(uint32_t message, WPARAM wParam, LPARAM lParam)
 void MainFrame::OnClose()
 {
 	int32_t res = IDNO;
-	if (EditorInterface::instance() &&
-		EditorInterface::instance()->ThisIsInitialized() &&
+	if (EditorInterface::instance() && EditorInterface::instance()->ThisIsInitialized() &&
 		EditorData::instance)
 	{
 		res = EditorInterface::instance()->PromptAndSaveIfNecessary();

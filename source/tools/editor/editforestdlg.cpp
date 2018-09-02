@@ -5,7 +5,7 @@
 // EditForestDlg.cpp : implementation file
 //
 
-#include "stdafx.h"
+#include "stdinc.h"
 #include "resource.h"
 
 //#include "forest.h"
@@ -17,8 +17,7 @@
 /////////////////////////////////////////////////////////////////////////////
 // EditForestDlg dialog
 
-EditForestDlg::EditForestDlg(CWnd* pParent /*=nullptr*/)
-	: CDialog(EditForestDlg::IDD, pParent)
+EditForestDlg::EditForestDlg(CWnd* pParent /*=nullptr*/) : CDialog(EditForestDlg::IDD, pParent)
 {
 	//{{AFX_DATA_INIT(EditForestDlg)
 	m_Name = _T("");
@@ -97,8 +96,7 @@ void EditForestDlg::OnDelete()
 
 void EditForestDlg::OnLoad()
 {
-	CFileDialog dlg(TRUE, terrainPath, nullptr,
-		OFN_FILEMUSTEXIST | OFN_NOCHANGEDIR, szFITFilter);
+	CFileDialog dlg(TRUE, terrainPath, nullptr, OFN_FILEMUSTEXIST | OFN_NOCHANGEDIR, szFITFilter);
 	if (IDOK == dlg.DoModal())
 	{
 		CString str = dlg.GetFileName();
@@ -152,13 +150,12 @@ void EditForestDlg::OnSave()
 	int32_t index = m_fileList.GetCurSel();
 	if (index != -1)
 	{
-		int32_t ID = m_fileList.GetItemData(index);
-		Forest* pOldForest =
-			(Forest*)EditorObjectMgr::instance()->getForest(ID);
+		int32_t ID		   = m_fileList.GetItemData(index);
+		Forest* pOldForest = (Forest*)EditorObjectMgr::instance()->getForest(ID);
 		if (pOldForest)
 		{
-			CFileDialog dlg(0, "fit", nullptr,
-				OFN_NOCHANGEDIR | OFN_OVERWRITEPROMPT, szFITFilter, this);
+			CFileDialog dlg(
+				0, "fit", nullptr, OFN_NOCHANGEDIR | OFN_OVERWRITEPROMPT, szFITFilter, this);
 			dlg.m_ofn.lpstrInitialDir = terrainPath;
 			int32_t retVal			  = dlg.DoModal();
 			if (IDOK == retVal)
@@ -180,9 +177,8 @@ void EditForestDlg::OnRename()
 	int32_t index = m_fileList.GetCurSel();
 	if (index != -1)
 	{
-		int32_t ID = m_fileList.GetItemData(index);
-		Forest* pOldForest =
-			(Forest*)EditorObjectMgr::instance()->getForest(ID);
+		int32_t ID		   = m_fileList.GetItemData(index);
+		Forest* pOldForest = (Forest*)EditorObjectMgr::instance()->getForest(ID);
 		if (pOldForest)
 			pOldForest->setName(m_Name);
 		m_fileList.DeleteString(index);
@@ -197,10 +193,9 @@ void EditForestDlg::OnSelchangeListFiles()
 	int32_t index = m_fileList.GetCurSel();
 	if (index != -1)
 	{
-		int32_t ID = m_fileList.GetItemData(index);
-		Forest* pOldForest =
-			(Forest*)EditorObjectMgr::instance()->getForest(ID);
-		m_Name = pOldForest->getName();
+		int32_t ID		   = m_fileList.GetItemData(index);
+		Forest* pOldForest = (Forest*)EditorObjectMgr::instance()->getForest(ID);
+		m_Name			   = pOldForest->getName();
 		UpdateData(false);
 	}
 }

@@ -39,22 +39,19 @@ Action* LinkBrush::endPaint()
 	return nullptr;
 }
 
-bool LinkBrush::paint(
-	Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY)
+bool LinkBrush::paint(Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY)
 {
 	if (!bLink)
 		return unPaint(worldPos, screenX, screenY);
-	const EditorObject* pObject =
-		EditorObjectMgr::instance()->getObjectAtPosition(worldPos);
+	const EditorObject* pObject = EditorObjectMgr::instance()->getObjectAtPosition(worldPos);
 	if (!pObject)
 		return 0;
 	if (BuildingLink::TypeCanBeParent(pObject) &&
 		(!parent || (parent && !BuildingLink::CanLink(parent, pObject))))
 	{
-		parent	= pObject;
-		parentPos = parent->getPosition();
-		BuildingLink* pLink =
-			EditorObjectMgr::instance()->getLinkWithParent(pObject);
+		parent				= pObject;
+		parentPos			= parent->getPosition();
+		BuildingLink* pLink = EditorObjectMgr::instance()->getLinkWithParent(pObject);
 		if (pLink)
 		{
 			pAction->AddToListOnce(LinkInfo(pLink, LinkInfo::EDIT));
@@ -72,16 +69,14 @@ bool LinkBrush::paint(
 		{
 			return false;
 		}
-		BuildingLink* pLink =
-			EditorObjectMgr::instance()->getLinkWithParent(parent);
+		BuildingLink* pLink = EditorObjectMgr::instance()->getLinkWithParent(parent);
 		if (!pLink)
 		{
 			pLink = new BuildingLink(parent);
 			EditorObjectMgr::instance()->addLink(pLink);
 			pAction->AddToListOnce(LinkInfo(pLink, LinkInfo::ADD));
 		}
-		BuildingLink* pOldLink =
-			EditorObjectMgr::instance()->getLinkWithBuilding(pObject);
+		BuildingLink* pOldLink = EditorObjectMgr::instance()->getLinkWithBuilding(pObject);
 		if (pOldLink && pOldLink != pLink)
 		{
 			pAction->AddToListOnce(LinkInfo(pOldLink, LinkInfo::EDIT));
@@ -93,20 +88,17 @@ bool LinkBrush::paint(
 			SPEW((0, "LinkBrush failed to add a link to a parent\n"));
 		}
 		if (pObject->getSpecialType() != EditorObjectMgr::POWER_STATION)
-			(const_cast<EditorObject*>(pObject))
-				->setAlignment(parent->getAlignment());
+			(const_cast<EditorObject*>(pObject))->setAlignment(parent->getAlignment());
 		return true;
 	}
 	return false;
 }
 
-bool LinkBrush::canPaint(
-	Stuff::Vector3D& pos, int32_t x, int32_t y, int32_t flags)
+bool LinkBrush::canPaint(Stuff::Vector3D& pos, int32_t x, int32_t y, int32_t flags)
 {
 	if (!bLink)
 		return canUnPaint(pos, x, y, flags);
-	const EditorObject* pObject =
-		EditorObjectMgr::instance()->getObjectAtPosition(pos);
+	const EditorObject* pObject = EditorObjectMgr::instance()->getObjectAtPosition(pos);
 	if (!pObject)
 		return false;
 	if (BuildingLink::TypeCanBeParent(pObject)) // see if this can be a parent
@@ -121,11 +113,9 @@ bool LinkBrush::canPaint(
 	return false;
 }
 
-bool LinkBrush::canUnPaint(
-	Stuff::Vector3D& pos, int32_t x, int32_t y, int32_t flags)
+bool LinkBrush::canUnPaint(Stuff::Vector3D& pos, int32_t x, int32_t y, int32_t flags)
 {
-	const EditorObject* pBuilding =
-		EditorObjectMgr::instance()->getObjectAtPosition(pos);
+	const EditorObject* pBuilding = EditorObjectMgr::instance()->getObjectAtPosition(pos);
 	if (!pBuilding)
 		return false;
 	if (EditorObjectMgr::instance()->getLinkWithParent(pBuilding))
@@ -137,12 +127,10 @@ bool LinkBrush::canUnPaint(
 
 int32_t LinkBrush::LinkAction::AddToListOnce(const LinkBrush::LinkInfo& Info)
 {
-	for (EList<LinkInfo, const LinkInfo&>::EIterator iter =
-			 changedLinks.Begin();
-		 !iter.IsDone(); iter++)
+	for (EList<LinkInfo, const LinkInfo&>::EIterator iter = changedLinks.Begin(); !iter.IsDone();
+		 iter++)
 	{
-		if ((*iter).m_LinkCopy.GetParentPosition() ==
-			Info.m_LinkCopy.GetParentPosition())
+		if ((*iter).m_LinkCopy.GetParentPosition() == Info.m_LinkCopy.GetParentPosition())
 		{
 			return 0; // assume if parents are in the same place, we have the
 					  // same link
@@ -157,8 +145,8 @@ LinkBrush::LinkAction::LinkAction() {}
 bool LinkBrush::LinkAction::undo()
 {
 	// go through each of the objects in the list
-	for (EList<LinkInfo, const LinkInfo&>::EIterator iter = changedLinks.End();
-		 !iter.IsDone(); iter--)
+	for (EList<LinkInfo, const LinkInfo&>::EIterator iter = changedLinks.End(); !iter.IsDone();
+		 iter--)
 	{
 		if ((*iter).type == LinkInfo::ADD)
 		{
@@ -170,8 +158,7 @@ bool LinkBrush::LinkAction::undo()
 			gosASSERT(pBuilding);
 			if (pBuilding)
 			{
-				BuildingLink* pLink =
-					EditorObjectMgr::instance()->getLinkWithBuilding(pBuilding);
+				BuildingLink* pLink = EditorObjectMgr::instance()->getLinkWithBuilding(pBuilding);
 				if (pLink)
 				{
 					(*iter).m_LinkCopy = *(pLink);
@@ -183,8 +170,7 @@ bool LinkBrush::LinkAction::undo()
 		{
 			// change the type to remove, and take it out of the map
 			(*iter).type = LinkInfo::ADD;
-			EditorObjectMgr::instance()->addLink(
-				new BuildingLink((*iter).m_LinkCopy));
+			EditorObjectMgr::instance()->addLink(new BuildingLink((*iter).m_LinkCopy));
 			// make sure each of the buildings in the link has the right
 			// alignment
 			int32_t LinkCount		 = (*iter).m_LinkCopy.GetLinkCount();
@@ -199,8 +185,7 @@ bool LinkBrush::LinkAction::undo()
 			for (size_t i = 0; i < LinkCount; ++i)
 			{
 				const EditorObject* pObject =
-					EditorObjectMgr::instance()->getObjectAtLocation(
-						pPoints[i].x, pPoints[i].y);
+					EditorObjectMgr::instance()->getObjectAtLocation(pPoints[i].x, pPoints[i].y);
 				if (pObject)
 				{
 					(const_cast<EditorObject*>(pObject))->setAlignment(align);
@@ -216,8 +201,7 @@ bool LinkBrush::LinkAction::undo()
 				EditorObjectMgr::instance()->getObjectAtLocation(pos.x, pos.y);
 			if (pBuilding)
 			{
-				BuildingLink* pLink =
-					EditorObjectMgr::instance()->getLinkWithParent(pBuilding);
+				BuildingLink* pLink = EditorObjectMgr::instance()->getLinkWithParent(pBuilding);
 				if (pLink)
 				{
 					BuildingLink tmp(*pLink);
@@ -227,8 +211,9 @@ bool LinkBrush::LinkAction::undo()
 			}
 			else
 			{
-				SPEW((0, "LinkBursh::LinkAction::Undo failed because the map "
-						 "didn't have the link\n"));
+				SPEW((0,
+					"LinkBursh::LinkAction::Undo failed because the map "
+					"didn't have the link\n"));
 				return false;
 			}
 		}
@@ -238,12 +223,10 @@ bool LinkBrush::LinkAction::undo()
 
 bool LinkBrush::unPaint(Stuff::Vector3D& pos, int32_t XPos, int32_t yPos)
 {
-	const EditorObject* pBuilding =
-		EditorObjectMgr::instance()->getObjectAtPosition(pos);
+	const EditorObject* pBuilding = EditorObjectMgr::instance()->getObjectAtPosition(pos);
 	if (pBuilding)
 	{
-		BuildingLink* pLink =
-			EditorObjectMgr::instance()->getLinkWithParent(pBuilding);
+		BuildingLink* pLink = EditorObjectMgr::instance()->getLinkWithParent(pBuilding);
 		if (pLink) // we are deleting a parent link
 		{
 			pAction->AddToListOnce(LinkInfo(pLink, LinkInfo::REMOVE));
@@ -268,8 +251,7 @@ bool LinkBrush::unPaint(Stuff::Vector3D& pos, int32_t XPos, int32_t yPos)
 
 bool LinkBrush::LinkAction::redo() { return undo(); }
 
-LinkBrush::LinkInfo::LinkInfo(
-	BuildingLink* pOriginal, LinkBrush::LinkInfo::TYPE Type)
+LinkBrush::LinkInfo::LinkInfo(BuildingLink* pOriginal, LinkBrush::LinkInfo::TYPE Type)
 	: m_LinkCopy(*pOriginal)
 {
 	type = Type;

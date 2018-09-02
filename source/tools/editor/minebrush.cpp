@@ -33,8 +33,7 @@ Action* MineBrush::endPaint()
 	return pRetAction;
 }
 
-bool MineBrush::paint(
-	Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY)
+bool MineBrush::paint(Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY)
 {
 	int32_t tileC;
 	int32_t tileR;
@@ -60,8 +59,7 @@ bool MineBrush::paint(
 	return true;
 }
 
-bool MineBrush::canPaint(
-	Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY, int32_t flags)
+bool MineBrush::canPaint(Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY, int32_t flags)
 {
 	return true;
 }
@@ -91,8 +89,7 @@ Action* MineBrush::applyToSelection()
 
 bool MineBrush::MineAction::undo()
 {
-	for (MINE_INFO_LIST::EIterator iter = mineInfoList.Begin(); !iter.IsDone();
-		 iter++)
+	for (MINE_INFO_LIST::EIterator iter = mineInfoList.Begin(); !iter.IsDone(); iter++)
 	{
 		// get current values
 		uint32_t lMineState = GameMap->getMine((*iter).row, (*iter).column);
@@ -108,8 +105,7 @@ bool MineBrush::MineAction::redo() { return undo(); }
 
 void MineBrush::MineAction::AddChangedTileMineInfo(CTileMineInfo& info)
 {
-	for (MINE_INFO_LIST::EIterator iter = mineInfoList.Begin(); !iter.IsDone();
-		 iter++)
+	for (MINE_INFO_LIST::EIterator iter = mineInfoList.Begin(); !iter.IsDone(); iter++)
 	{
 		if (info.row == (*iter).row && info.column == (*iter).column)
 			return;

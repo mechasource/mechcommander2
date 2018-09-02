@@ -39,21 +39,17 @@ Action* FlattenBrush::endPaint()
 }
 
 //-------------------------------------------------------------------------------------------------
-bool FlattenBrush::paint(
-	Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY)
+bool FlattenBrush::paint(Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY)
 {
-	int32_t closestX = floor(
-		(worldPos.x - land->mapTopLeft3d.x) / land->worldUnitsPerVertex + .5);
-	int32_t closestY = floor(
-		(land->mapTopLeft3d.y - worldPos.y) / land->worldUnitsPerVertex + .5);
-	float height = 0.f;
-	float viable = 0.f;
+	int32_t closestX = floor((worldPos.x - land->mapTopLeft3d.x) / land->worldUnitsPerVertex + .5);
+	int32_t closestY = floor((land->mapTopLeft3d.y - worldPos.y) / land->worldUnitsPerVertex + .5);
+	float height	 = 0.f;
+	float viable	 = 0.f;
 	for (size_t i = closestX - 1; i < closestX + 2; ++i)
 	{
 		for (size_t j = closestY - 1; j < closestY + 2; ++j)
 		{
-			if (j < land->realVerticesMapSide && j > -1 &&
-				i < land->realVerticesMapSide && i > -1)
+			if (j < land->realVerticesMapSide && j > -1 && i < land->realVerticesMapSide && i > -1)
 			{
 				height += land->getTerrainElevation(j, i);
 				viable += 1.0f;
@@ -118,8 +114,7 @@ void FlattenBrush::flattenVertex(int32_t row, int32_t col, float val)
 	{
 		int32_t i = col;
 		int32_t j = row;
-		if (i > -1 && i < land->realVerticesMapSide && j > -1 &&
-			j < land->realVerticesMapSide)
+		if (i > -1 && i < land->realVerticesMapSide && j > -1 && j < land->realVerticesMapSide)
 		{
 			pCurAction->addChangedVertexInfo(j, i);
 			land->setVertexHeight(j * land->realVerticesMapSide + i, val);
@@ -130,8 +125,7 @@ void FlattenBrush::flattenVertex(int32_t row, int32_t col, float val)
 	{
 		for (size_t j = row - 1; j < row + 2; ++j)
 		{
-			if (i > -1 && i < land->realVerticesMapSide && j > -1 &&
-				j < land->realVerticesMapSide)
+			if (i > -1 && i < land->realVerticesMapSide && j > -1 && j < land->realVerticesMapSide)
 			{
 				pCurAction->addChangedVertexInfo(j, i);
 				land->setVertexHeight(j * land->realVerticesMapSide + i, val);

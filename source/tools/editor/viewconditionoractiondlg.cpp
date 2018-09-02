@@ -5,7 +5,7 @@
 // ViewConditionOrActionDlg.cpp : implementation file
 //
 
-#include "stdafx.h"
+#include "stdinc.h"
 #include "resource.h"
 #include "ViewConditionOrActionDlg.h"
 

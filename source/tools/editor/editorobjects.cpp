@@ -129,10 +129,7 @@ void EditorObject::setDamage(bool bDamage)
 	//	appearance()->setDamageLvl( 1000000 );
 }
 
-bool EditorObject::getDamage() const
-{
-	return appearance()->damage ? true : false;
-}
+bool EditorObject::getDamage() const { return appearance()->damage ? true : false; }
 
 PCSTR EditorObject::getDisplayName(void) const
 {
@@ -146,8 +143,7 @@ void EditorObject::setAlignment(int32_t align)
 		if (align == 8) // New magical force Neutral buttons
 			align = -1;
 		appearance()->teamId = align;
-		BuildingLink* pLink =
-			EditorObjectMgr::instance()->getLinkWithParent(this);
+		BuildingLink* pLink  = EditorObjectMgr::instance()->getLinkWithParent(this);
 		if (pLink)
 		{
 			pLink->SetParentAlignment(appearance()->teamId);
@@ -155,15 +151,9 @@ void EditorObject::setAlignment(int32_t align)
 	}
 }
 
-int32_t EditorObject::getIndexInGroup(void) const
-{
-	return EditorObjectMgr::getIndexInGroup(id);
-}
+int32_t EditorObject::getIndexInGroup(void) const { return EditorObjectMgr::getIndexInGroup(id); }
 
-int32_t EditorObject::getGroup(void) const
-{
-	return EditorObjectMgr::getGroup(id);
-}
+int32_t EditorObject::getGroup(void) const { return EditorObjectMgr::getGroup(id); }
 
 void EditorObject::setAppearance(int32_t Group, int32_t indexInGroup)
 {
@@ -172,14 +162,12 @@ void EditorObject::setAppearance(int32_t Group, int32_t indexInGroup)
 		indexInGroup != EditorObjectMgr::getIndexInGroup(id))
 	{
 		AppearanceInfo* appearInfo2 = new AppearanceInfo();
-		appearInfo2->appearance =
-			EditorObjectMgr::instance()->getAppearance(Group, indexInGroup);
-		appearInfo2->refCount			= 1;
+		appearInfo2->appearance = EditorObjectMgr::instance()->getAppearance(Group, indexInGroup);
+		appearInfo2->refCount   = 1;
 		static int32_t homeRelations[9] = {0, 0, 2, 1, 1, 1, 1, 1, 1};
 		gosASSERT((8 > appearance()->teamId) && (-1 <= appearance()->teamId));
-		appearInfo2->appearance->setObjectParameters(appearance()->position,
-			appearance()->rotation, appearance()->selected,
-			appearance()->teamId, homeRelations[appearance()->teamId + 1]);
+		appearInfo2->appearance->setObjectParameters(appearance()->position, appearance()->rotation,
+			appearance()->selected, appearance()->teamId, homeRelations[appearance()->teamId + 1]);
 		appearInfo2->appearance->setDamage(appearance()->damage);
 		id = EditorObjectMgr::instance()->getID(Group, indexInGroup);
 		if (appearInfo)
@@ -241,8 +229,7 @@ void EditorObject::getCells(int32_t& row, int32_t& col) const
 	col = cellColumn;
 }
 
-EditorObject::AppearanceInfo& EditorObject::AppearanceInfo::operator=(
-	const AppearanceInfo& src)
+EditorObject::AppearanceInfo& EditorObject::AppearanceInfo::operator=(const AppearanceInfo& src)
 {
 	if (&src != this)
 	{
@@ -269,12 +256,12 @@ int32_t EditorObject::getSpecialType(void) const
 Unit::Unit(int32_t align)
 {
 	pAlternativeInstances = new CUnitList;
-	uint32_t squadNum = EditorObjectMgr::instance()->getNextAvailableSquadNum();
+	uint32_t squadNum	 = EditorObjectMgr::instance()->getNextAvailableSquadNum();
 	setSquad(squadNum);
 	EditorObjectMgr::instance()->registerSquadNum(squadNum);
 	setSelfRepairBehaviorEnabled(true);
-	pilot.info = align == 0 ? &Pilot::s_GoodPilots[0] : &Pilot::s_BadPilots[0];
-	baseColor  = 0x00ffffff;
+	pilot.info		= align == 0 ? &Pilot::s_GoodPilots[0] : &Pilot::s_BadPilots[0];
+	baseColor		= 0x00ffffff;
 	highlightColor  = 0x00c0c0c0;
 	highlightColor2 = 0x00808080;
 	variant			= 0;
@@ -320,15 +307,15 @@ bool Unit::save(FitIniFile* file, int32_t WarriorNumber)
 {
 	bool bIsVehicle = dynamic_cast<GVAppearance*>(appearance()) ? true : false;
 	if (!bIsVehicle)
-		return Unit::save(file, WarriorNumber, 1,
-			appearance()->teamId == EDITOR_TEAM1 ? "PM207300" : "PM101100");
+		return Unit::save(
+			file, WarriorNumber, 1, appearance()->teamId == EDITOR_TEAM1 ? "PM207300" : "PM101100");
 	else
-		return Unit::save(file, WarriorNumber, 2,
-			appearance()->teamId == EDITOR_TEAM1 ? "pv20600" : "pv20500");
+		return Unit::save(
+			file, WarriorNumber, 2, appearance()->teamId == EDITOR_TEAM1 ? "pv20600" : "pv20500");
 }
 
-bool Unit::save(FitIniFile* file, int32_t WarriorNumber,
-	int32_t controlDataType, PSTR objectProfile)
+bool Unit::save(
+	FitIniFile* file, int32_t WarriorNumber, int32_t controlDataType, PSTR objectProfile)
 {
 	// ARM
 	if (mechAsset)
@@ -340,8 +327,8 @@ bool Unit::save(FitIniFile* file, int32_t WarriorNumber,
 			strcpy(buf, "Data\\TGL\\");
 			strcat(buf, iniFilename);
 			strcat(buf, ".ini");
-			IProviderAssetPtr objAssetPtr = armProvider->OpenAsset(
-				buf, AssetType_Physical, ProviderType_Secondary);
+			IProviderAssetPtr objAssetPtr =
+				armProvider->OpenAsset(buf, AssetType_Physical, ProviderType_Secondary);
 			if (getDisplayName()[0])
 			{
 				objAssetPtr->AddProperty("DisplayName", getDisplayName());
@@ -364,20 +351,16 @@ bool Unit::save(FitIniFile* file, int32_t WarriorNumber,
 		mechAsset->AddRelationship("AppearanceFile", buf);
 	}
 	pilot.save(file, appearance()->teamId == EDITOR_TEAM1 ? 1 : 0);
-	brain.save(
-		file, WarriorNumber, appearance()->teamId == EDITOR_TEAM1 ? 1 : 0);
+	brain.save(file, WarriorNumber, appearance()->teamId == EDITOR_TEAM1 ? 1 : 0);
 	char tmp[256];
 	sprintf(tmp, "Part%ld", WarriorNumber);
 	file->writeBlock(tmp);
-	file->writeIdULong(
-		"ObjectNumber", EditorObjectMgr::instance()->getFitID(id));
+	file->writeIdULong("ObjectNumber", EditorObjectMgr::instance()->getFitID(id));
 	file->writeIdULong("ControlType", 2);
 	int32_t playerNum = appearance()->teamId;
-	file->writeIdBoolean(
-		"PlayerPart", playerNum == EDITOR_TEAM1 ? true : false);
+	file->writeIdBoolean("PlayerPart", playerNum == EDITOR_TEAM1 ? true : false);
 	file->writeIdChar("MyIcon", 0);
-	int32_t teamNum =
-		EditorData::instance->PlayersRef().PlayerRef(playerNum).DefaultTeam();
+	int32_t teamNum = EditorData::instance->PlayersRef().PlayerRef(playerNum).DefaultTeam();
 	file->writeIdChar("TeamID", teamNum);
 	file->writeIdChar("CommanderID", playerNum);
 	file->writeIdULong("Pilot", WarriorNumber);
@@ -398,8 +381,7 @@ bool Unit::save(FitIniFile* file, int32_t WarriorNumber,
 	file->writeIdULong("SelfRepairBehavior", tmpULong);
 	file->writeIdULong("ControlDataType", controlDataType);
 	file->writeIdString("ObjectProfile", objectProfile);
-	file->writeIdString(
-		"CSVFile", EditorObjectMgr::instance()->getFileName(id));
+	file->writeIdString("CSVFile", EditorObjectMgr::instance()->getFileName(id));
 	file->writeIdULong("VariantNumber", variant);
 	file->writeIdULong("SquadNum", getSquad());
 	file->writeIdULong("NumAlternatives", pAlternativeInstances->Count());
@@ -542,10 +524,7 @@ bool DropZone::save(FitIniFile* file, int32_t number)
 	return true;
 }
 
-DropZone::DropZone(const Stuff::Vector3D& pos, int32_t alignment, bool bvtol)
-{
-	bVTol = bvtol;
-}
+DropZone::DropZone(const Stuff::Vector3D& pos, int32_t alignment, bool bvtol) { bVTol = bvtol; }
 
 void DropZone::CastAndCopy(const EditorObject& master)
 {
@@ -799,7 +778,7 @@ void Pilot::initPilots()
 					postFix = tmpStr.GetBuffer(0);
 				}
 				else if ((strlen(pilotFileName) > strlen("pmp_")) &&
-						 (0 == strnicmp(pilotFileName, "pmp_", strlen("pmp_"))))
+					(0 == strnicmp(pilotFileName, "pmp_", strlen("pmp_"))))
 				{
 					/*Good pilots that start with "pmp_" are multi-player
 					 * pilots.*/

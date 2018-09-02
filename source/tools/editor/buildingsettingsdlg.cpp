@@ -5,7 +5,7 @@
 // BuildingSettingsDlg.cpp : implementation file
 //
 
-#include "stdafx.h"
+#include "stdinc.h"
 
 #include "resource.h"
 #include "buildingsettingsdlg.h"
@@ -14,14 +14,13 @@
 #include "editorinterface.h" // just for the undo manager
 
 //#include "../Code/unitdesg.h" /* just for definition of MIN_TERRAIN_PART_ID
-//and MAX_MAP_CELL_WIDTH */
+// and MAX_MAP_CELL_WIDTH */
 
 /////////////////////////////////////////////////////////////////////////////
 // BuildingSettingsDlg dialog
 
 BuildingSettingsDlg::BuildingSettingsDlg(
-	EList<EditorObject*, EditorObject*>& newList /*=nullptr*/,
-	ActionUndoMgr& undoMgr)
+	EList<EditorObject*, EditorObject*>& newList /*=nullptr*/, ActionUndoMgr& undoMgr)
 	: CDialog(BuildingSettingsDlg::IDD), units(newList)
 {
 	//{{AFX_DATA_INIT(BuildingSettingsDlg)
@@ -66,8 +65,7 @@ void BuildingSettingsDlg::OnSelchangeGroup()
 	group		  = m_Group.GetItemData(group);
 	PCSTR MechNames[256];
 	int32_t count = 256;
-	EditorObjectMgr::instance()->getBuildingNamesInGroup(
-		group, MechNames, count);
+	EditorObjectMgr::instance()->getBuildingNamesInGroup(group, MechNames, count);
 	for (size_t i = 0; i < count; ++i)
 	{
 		m_Mech.AddString(MechNames[i]);
@@ -85,8 +83,7 @@ void BuildingSettingsDlg::applyChanges()
 		int32_t indexInGroup = m_Mech.GetCurSel();
 		if (indexInGroup != -1)
 		{
-			for (EDITOROBJECT_LIST::EIterator iter = units.Begin();
-				 !iter.IsDone(); iter++)
+			for (EDITOROBJECT_LIST::EIterator iter = units.Begin(); !iter.IsDone(); iter++)
 			{
 				(*iter)->setAppearance(group, indexInGroup);
 			}
@@ -97,8 +94,7 @@ void BuildingSettingsDlg::applyChanges()
 	index = m_Alignment;
 	if (index != -1)
 	{
-		for (EDITOROBJECT_LIST::EIterator iter = units.Begin(); !iter.IsDone();
-			 iter++)
+		for (EDITOROBJECT_LIST::EIterator iter = units.Begin(); !iter.IsDone(); iter++)
 		{
 			(*iter)->setAlignment(index);
 		}
@@ -193,11 +189,9 @@ void BuildingSettingsDlg::updateMemberVariables()
 	m_Alignment					= pEditorObject->getAlignment();
 	if (m_Alignment == -1)
 		m_Alignment = 8; // Move it to the neutral select button
-	for (EDITOROBJECT_LIST::EIterator iter = units.Begin(); !iter.IsDone();
-		 iter++)
+	for (EDITOROBJECT_LIST::EIterator iter = units.Begin(); !iter.IsDone(); iter++)
 	{
-		if (((*iter)->getAlignment() != m_Alignment) &&
-			((*iter)->getAlignment() != -1))
+		if (((*iter)->getAlignment() != m_Alignment) && ((*iter)->getAlignment() != -1))
 		{
 			m_Alignment = -1;
 			break;

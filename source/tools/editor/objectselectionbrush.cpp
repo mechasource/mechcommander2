@@ -7,7 +7,7 @@ component.
 \*************************************************************************************************/
 // #define OBJECTSELECTIONBRUSH_CPP
 
-#include "stdafx.h"
+#include "stdinc.h"
 
 // test header dependencies one by one
 //#include "action.h"
@@ -90,9 +90,8 @@ ObjectSelectionBrush::ObjectSelectionBrush()
 {
 	bPainting  = false;
 	pCurAction = nullptr;
-	lastPos.x = lastPos.y = lastPos.z = lastPos.w =
-		0.0f; // Keep the FPU exception from going off!
-	bFirstClick = false;
+	lastPos.x = lastPos.y = lastPos.z = lastPos.w = 0.0f; // Keep the FPU exception from going off!
+	bFirstClick									  = false;
 }
 
 ObjectSelectionBrush::~ObjectSelectionBrush()
@@ -133,8 +132,7 @@ Action* ObjectSelectionBrush::endPaint()
 	return pRetAction;
 }
 
-bool ObjectSelectionBrush::paint(
-	Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY)
+bool ObjectSelectionBrush::paint(Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY)
 {
 	Stuff::Vector4D endPos;
 	endPos.x = screenX;
@@ -166,8 +164,7 @@ bool ObjectSelectionBrush::paint(
 			screenPos.x = screenX;
 			screenPos.y = screenY;
 			eye->inverseProject(screenPos, lastWorldPos);
-			const EditorObject* pInfo =
-				EditorObjectMgr::instance->getObjectAtPosition(worldPos);
+			const EditorObject* pInfo = EditorObjectMgr::instance->getObjectAtPosition(worldPos);
 			if (pInfo)
 			{
 				if (!bShift || (bShift && pInfo->isSelected() == false))
@@ -179,8 +176,8 @@ bool ObjectSelectionBrush::paint(
 			{
 				int32_t tileR, tileC;
 				land->worldToTile(worldPos, tileR, tileC);
-				if (tileR > -1 && tileR < land->realVerticesMapSide &&
-					tileC > -1 && tileC < land->realVerticesMapSide)
+				if (tileR > -1 && tileR < land->realVerticesMapSide && tileC > -1 &&
+					tileC < land->realVerticesMapSide)
 				{
 					// figure out which vertex is closest
 					if (fabs(worldPos.x - land->tileColToWorldCoord[tileC]) >=
@@ -189,8 +186,7 @@ bool ObjectSelectionBrush::paint(
 					if (fabs(worldPos.y - land->tileRowToWorldCoord[tileR]) >=
 						land->worldUnitsPerVertex / 2)
 						tileR++;
-					if (!bShift ||
-						(bShift && !land->isVertexSelected(tileR, tileC)))
+					if (!bShift || (bShift && !land->isVertexSelected(tileR, tileC)))
 						land->selectVertex(tileR, tileC);
 					else // shift key, object is selected
 						land->selectVertex(tileR, tileC, false);

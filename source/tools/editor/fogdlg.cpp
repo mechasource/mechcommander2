@@ -50,8 +50,7 @@ void FogDlg::OnChangeBlue1() { RedrawWindow(); }
 
 HBRUSH FogDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, uint32_t nCtlColor)
 {
-	if (CTLCOLOR_STATIC == nCtlColor &&
-		GetDlgItem(IDC_SOURCE_COLOR)->m_hWnd == pWnd->m_hWnd)
+	if (CTLCOLOR_STATIC == nCtlColor && GetDlgItem(IDC_SOURCE_COLOR)->m_hWnd == pWnd->m_hWnd)
 	{
 		UpdateData();
 		if (brush.m_hObject)

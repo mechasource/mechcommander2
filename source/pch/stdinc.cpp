@@ -1,3 +1,3 @@
-// stdafx.cpp : source file that includes just the standard includes
+// stdinc.cpp : source file that includes system dependencies and creates a precompiled header
 
-#include "stdafx.h"
+#include "stdinc.h"

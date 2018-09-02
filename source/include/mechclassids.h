@@ -46,7 +46,7 @@ namespace Stuff
 //-------------------------
 // ClassID reserved blocks
 //-------------------------
-typedef enum __stuff_classids : uint32_t
+enum class __stuff_classids : uint32_t
 {
 	FirstStuffClassID = 0,
 	StuffClassIDCount = 64,
@@ -127,7 +127,7 @@ typedef enum __stuff_classids : uint32_t
 	TemporaryClassIDCount = 16,
 	LastTemporaryClassID  = FirstTemporaryClassID + TemporaryClassIDCount - 1,
 
-	/*ClassIDCount*/
+	ClassIDCount // does this work?
 };
 
 //
@@ -135,15 +135,15 @@ typedef enum __stuff_classids : uint32_t
 // Stuff classes
 //--------------
 //
-typedef enum __stuff_attributeids
+enum class __stuff_attributeids : uint32_t
 {
 	//
 	//-------------------------
 	// attribute IDs
 	//-------------------------
 	//
-	NullClassID	= ClassIDCount,
-	MStringClassID = FirstStuffClassID,
+	NullClassID	= __stuff_classids::ClassIDCount,
+	MStringClassID = __stuff_classids::FirstStuffClassID,
 	IntClassID,
 	ScalarClassID,
 	RadianClassID,
@@ -183,9 +183,9 @@ namespace MidLevelRenderer
 // Stuff classes
 //--------------
 //
-typedef enum __mlr_classids
+enum class __mlr_classids : uint32_t
 {
-	MLRStateClassID = Stuff::FirstMLRClassID,
+	MLRStateClassID = Stuff::__stuff_classids::FirstMLRClassID,
 	MLRClippingStateClassID,
 	MLRClipperClassID,
 	MLRSorterClassID,

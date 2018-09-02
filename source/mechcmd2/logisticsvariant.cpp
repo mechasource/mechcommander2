@@ -8,7 +8,7 @@ component.
 
 #define LOGISTICSVARIANT_CPP
 
-#include "stdafx.h"
+#include "stdinc.h"
 #include "logisticsvariant.h"
 #include <mclib.h>
 #include "logisticsdata.h"

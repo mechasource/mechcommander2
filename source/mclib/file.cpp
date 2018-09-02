@@ -12,7 +12,7 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
-#include "stdafx.h"
+#include "stdinc.h"
 
 #include "file.h"
 #include "heap.h"
@@ -37,7 +37,7 @@
 //-----------------
 // Static Variables
 uint32_t File::lastError  = NO_ERROR;
-bool File::logFileTraffic = FALSE;
+bool File::logFileTraffic = false;
 
 FilePtr fileTrafficLog = nullptr;
 char CDInstallPath[1024];
@@ -131,7 +131,7 @@ File::File(void)
 	physicalLength  = 0;
 	childList		= nullptr;
 	numChildren		= 0;
-	inRAM			= FALSE;
+	inRAM			= false;
 	fileImage		= nullptr;
 	fastFile		= nullptr;
 }
@@ -418,7 +418,7 @@ int32_t File::open(FilePtr _parent, uint32_t fileSize, int32_t numChild)
 			uint32_t result = 0;
 			fileImage		= (puint8_t)malloc(fileSize);
 			if (!fileImage)
-				inRAM = FALSE;
+				inRAM = false;
 			if (_parent->getFileClass() == PACKETFILE)
 			{
 				result = ((PacketFilePtr)_parent)
@@ -570,7 +570,7 @@ void File::close(void)
 		if (fileImage)
 			free(fileImage);
 		fileImage = nullptr;
-		inRAM	 = FALSE;
+		inRAM	 = false;
 	}
 }
 

@@ -6,7 +6,7 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
-#include "stdafx.h"
+#include "stdinc.h"
 
 #ifndef FFILE_H
 #include "ffile.h"
@@ -155,7 +155,7 @@ int32_t FastFile::open(PSTR fName)
 		memset(files[i].pfe, 0, sizeof(FILEENTRY));
 		uint32_t result = 0;
 		result			= fread(files[i].pfe, 1, sizeof(FILEENTRY), handle);
-		files[i].inuse  = FALSE;
+		files[i].inuse  = false;
 		files[i].pos	= 0;
 	}
 	return (result);
@@ -213,7 +213,7 @@ void FastFile::closeFast(int32_t fastFileHandle)
 	if ((fastFileHandle >= 0) && (fastFileHandle < numFiles) &&
 		files[fastFileHandle].inuse)
 	{
-		files[fastFileHandle].inuse = FALSE;
+		files[fastFileHandle].inuse = false;
 		files[fastFileHandle].pos   = 0;
 	}
 }

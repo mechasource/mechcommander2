@@ -5,7 +5,7 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
-#include "stdafx.h"
+#include "stdinc.h"
 //#include "stuffheaders.hpp"
 
 #include <gameos.hpp>
@@ -32,9 +32,8 @@ void Plug::InitializeClass()
 	ConnectionEngineHeap =
 		gos_CreateMemoryHeap("ConnectionEngine", 0, ParentClientHeap);
 	Check_Pointer(ConnectionEngineHeap);
-	Verify(!DefaultData);
-	DefaultData =
-		new ClassData(PlugClassID, "Stuff::Plug", RegisteredClass::DefaultData);
+	Verify(DefaultData == nullptr);
+	DefaultData = new ClassData(__stuff_attributeids::PlugClassID, "Stuff::Plug", RegisteredClass::DefaultData);
 	Register_Object(DefaultData);
 }
 

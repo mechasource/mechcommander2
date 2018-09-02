@@ -6,15 +6,11 @@ aAnimObject.cpp			: Implementation of the aAnimObject component.
 \*************************************************************************************************/
 #define AANIMOBJECT_CPP
 
-#include "stdafx.h"
+#include "stdinc.h"
 #include <mechgui/aanimobject.h>
 #include <mclib.h>
 
-aAnimObject::aAnimObject(void) {}
-
 //-------------------------------------------------------------------------------------------------
-
-aAnimObject::~aAnimObject(void) {}
 
 aAnimObject& aAnimObject::operator=(const aAnimObject& src)
 {

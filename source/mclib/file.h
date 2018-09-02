@@ -55,7 +55,7 @@ bool __stdcall file1OlderThan2(PSTR file1, PSTR file2);
 //---------------------------------------------------------------------------
 // Macro Definitions
 
-typedef enum __file_constants
+enum __file_constants
 {
 	DISK_FULL_ERR			   = 0xBADF0001,
 	SHARE_ERR				   = 0xBADF0002,
@@ -91,7 +91,7 @@ class File
 {
 	// Data Members
 	//--------------
-  protected:
+protected:
 	PSTR fileName;
 	FileMode fileMode;
 	int32_t handle;
@@ -109,16 +109,16 @@ class File
 	bool inRAM;
 	puint8_t fileImage;
 
-  public:
+public:
 	static bool logFileTraffic;
 	static HRESULT lastError;
 
 	// Member Functions
 	//------------------
-  protected:
+protected:
 	void setup(void);
 
-  public:
+public:
 	PVOID operator new(size_t mySize);
 	void operator delete(PVOID us);
 

@@ -8,7 +8,7 @@
 //---------------------------------------------------------------------------//
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
-#include "stdafx.h"
+#include "stdinc.h"
 //#include <windows.h>
 //#include <imagehlp.h>
 //#include <tchar.h>
@@ -104,13 +104,13 @@ void HeapManager::destroy(void)
 	if (committedSize)
 	{
 		result = VirtualFree(heap, totalSize, MEM_DECOMMIT);
-		if (result == FALSE)
+		if (result == false)
 			result = GetLastError();
 	}
 	if (totalSize && memReserved && heap)
 	{
 		result = VirtualFree(heap, 0, MEM_RELEASE);
-		if (result == FALSE)
+		if (result == false)
 			result = GetLastError();
 	}
 	init();
@@ -126,7 +126,7 @@ void HeapManager::destroy(void)
 void HeapManager::init(void)
 {
 	heap		  = nullptr;
-	memReserved   = FALSE;
+	memReserved   = false;
 	totalSize	 = 0;
 	committedSize = 0;
 	nxt			  = nullptr;
@@ -220,7 +220,7 @@ int32_t HeapManager::decommitHeap(uint32_t decommitSize)
 	uint32_t decommitAddress = decommitSize;
 	committedSize -= decommitAddress;
 	result = VirtualFree((PVOID)committedSize, decommitSize, MEM_DECOMMIT);
-	if (result == FALSE)
+	if (result == false)
 		result = GetLastError();
 	return NO_ERROR;
 }
@@ -238,7 +238,7 @@ UserHeap::UserHeap(void) : HeapManager()
 #ifdef CHECK_HEAP
 	mallocFatals = TRUE;
 #else
-	mallocFatals = FALSE;
+	mallocFatals = false;
 #endif
 	heapState = NO_ERROR;
 }
@@ -306,7 +306,7 @@ int32_t UserHeap::init(uint32_t memSize, PSTR heapId, bool useGOS)
 #ifdef _DEBUG
 		recordArray = nullptr;
 		recordCount = 0;
-		logMallocs  = FALSE;
+		logMallocs  = false;
 #endif;
 		gosHeap = 0;
 	}
@@ -341,7 +341,7 @@ void UserHeap::startHeapMallocLog(void)
 }
 
 //---------------------------------------------------------------------------
-void UserHeap::stopHeapMallocLog(void) { logMallocs = FALSE; }
+void UserHeap::stopHeapMallocLog(void) { logMallocs = false; }
 
 //---------------------------------------------------------------------------
 void UserHeap::dumpRecordLog(void)
@@ -840,7 +840,7 @@ __Done:
 
 		  } memCoreLeft = totalCoreLeft();
 	memTotalLeft		= coreLeft();
-	walkHeap(TRUE, FALSE);
+	walkHeap(TRUE, false);
 	if (memSize)
 		STOP(("Heap %s is Out Of RAM.  HeapSize %d, CoreLeft %d, TotalLeft %d, "
 			  "SizeTried %d",
@@ -1135,7 +1135,7 @@ __Done:
 					} relink(sortBlock);
 Dealloc_Done:
 #ifdef HEAP_CHECK
-	walkHeap(FALSE, FALSE, " Free Heap Ck ");
+	walkHeap(false, FALSE, " Free Heap Ck ");
 #endif
 	__asm
 	{

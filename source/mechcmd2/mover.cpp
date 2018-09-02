@@ -7,7 +7,7 @@
 //---------------------------------------------------------------------------//
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
-#include "stdafx.h"
+#include "stdinc.h"
 
 #ifndef MCLIB_h
 #include <mclib.h>
@@ -212,7 +212,7 @@ extern int32_t NumLocationCriticalSpaces[NUM_BODY_LOCATIONS];
 
 extern GlobalMapPtr GlobalMoveMap[3];
 
-extern int32_t adjCellTable[MAPCELL_DIM * MAPCELL_DIM][8][4];
+extern int32_t adjCellTable[terrain_const::MAPCELL_DIM * terrain_const::MAPCELL_DIM][8][4];
 
 extern bool useUnlimitedAmmo;
 
@@ -359,7 +359,7 @@ extern char ProfessionalismOffsetTable[NUM_OFFSET_RANGES][2];
 extern char DecorumOffsetTable[NUM_OFFSET_RANGES][2];
 extern char AmmoConservationModifiers[2][2];
 // extern int32_t OverlayWeightTable[NUM_OVERLAY_WEIGHT_CLASSES *
-// NUM_OVERLAY_TYPES * MAPCELL_DIM * MAPCELL_DIM];  extern int32_t
+// NUM_OVERLAY_TYPES * terrain_const::MAPCELL_DIM * terrain_const::MAPCELL_DIM];  extern int32_t
 // OverlayWeightIndex[NUM_OVERLAY_TYPES];  extern float MoveMarginOfError[2];
 extern float MoveTimeOut;
 extern float MoveYieldTime;
@@ -1762,10 +1762,10 @@ int32_t Mover::loadGameSystem(FitIniFilePtr mechFile, float visualRange)
 	if (result != NO_ERROR)
 		return (result);
 	//	for (size_t i = 0; i < NUM_OVERLAY_TYPES; i++)
-	//		OverlayWeightIndex[i] = i * MAPCELL_DIM * MAPCELL_DIM;
+	//		OverlayWeightIndex[i] = i * terrain_const::MAPCELL_DIM * terrain_const::MAPCELL_DIM;
 	//	result = mechFile->readIdLongArray("OverlayCellCosts",
 	//OverlayWeightTable, NUM_OVERLAY_WEIGHT_CLASSES * NUM_OVERLAY_TYPES *
-	//MAPCELL_DIM * MAPCELL_DIM); 	if (result != NO_ERROR)
+	//terrain_const::MAPCELL_DIM * terrain_const::MAPCELL_DIM); 	if (result != NO_ERROR)
 	//		return(result);
 	result = mechFile->seekBlock("Mover:General");
 	Assert(result == NO_ERROR, 0,

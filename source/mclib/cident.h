@@ -7,20 +7,14 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
+#pragma once
+
 #ifndef CIDENT_H
 #define CIDENT_H
-//---------------------------------------------------------------------------
-// Include files
 
-#ifndef DSTD_H
-#include "dstd.h"
-#endif
-
-#ifndef DIDENT_H
-#include "dident.h"
-#endif
-
-#include <string.h>
+//#include "dstd.h"
+//#include "dident.h"
+//#include <string.h>
 
 //---------------------------------------------------------------------------
 // Externs
@@ -32,10 +26,10 @@
 //---------------------------------------------------------------------------
 class IDString
 {
-  protected:
+protected:
 	char id[ID_SIZE]; // 8 characters and a terminator...
 
-  public:
+public:
 	void init(void) { memset(id, 0, ID_SIZE); }
 
 	void init(PSTR new_id)
@@ -50,7 +44,7 @@ class IDString
 		id[ID_SIZE - 1] = 0;
 	}
 
-	IDString(void) { init(void); }
+	IDString(void) { init(); }
 
 	IDString(PSTR new_id) { init(new_id); }
 
@@ -61,31 +55,31 @@ class IDString
 	bool operator==(PSTR other_id)
 	{
 		if (other_id[0] != id[0])
-			return FALSE;
+			return false;
 		if (other_id[0] == 0)
 			return TRUE;
 		if (other_id[1] != id[1])
-			return FALSE;
+			return false;
 		if (other_id[1] == 0)
 			return TRUE;
 		if (other_id[2] != id[2])
-			return FALSE;
+			return false;
 		if (other_id[2] == 0)
 			return TRUE;
 		if (other_id[3] != id[3])
-			return FALSE;
+			return false;
 		if (other_id[3] == 0)
 			return TRUE;
 		if (other_id[4] != id[4])
-			return FALSE;
+			return false;
 		if (other_id[4] == 0)
 			return TRUE;
 		if (other_id[5] != id[5])
-			return FALSE;
+			return false;
 		if (other_id[5] == 0)
 			return TRUE;
 		if (other_id[6] != id[6])
-			return FALSE;
+			return false;
 		if (other_id[6] == 0)
 			return TRUE;
 		return (other_id[7] == id[7]);
@@ -95,31 +89,31 @@ class IDString
 	bool operator==(IDString& other_ids)
 	{
 		if (other_ids.id[0] != id[0])
-			return FALSE;
+			return false;
 		if (other_ids.id[0] == 0)
 			return TRUE;
 		if (other_ids.id[1] != id[1])
-			return FALSE;
+			return false;
 		if (other_ids.id[1] == 0)
 			return TRUE;
 		if (other_ids.id[2] != id[2])
-			return FALSE;
+			return false;
 		if (other_ids.id[2] == 0)
 			return TRUE;
 		if (other_ids.id[3] != id[3])
-			return FALSE;
+			return false;
 		if (other_ids.id[3] == 0)
 			return TRUE;
 		if (other_ids.id[4] != id[4])
-			return FALSE;
+			return false;
 		if (other_ids.id[4] == 0)
 			return TRUE;
 		if (other_ids.id[5] != id[5])
-			return FALSE;
+			return false;
 		if (other_ids.id[5] == 0)
 			return TRUE;
 		if (other_ids.id[6] != id[6])
-			return FALSE;
+			return false;
 		if (other_ids.id[6] == 0)
 			return TRUE;
 		return (other_ids.id[7] == id[7]);
@@ -142,48 +136,25 @@ class IDString
 //--------------------------------------------------------------------------
 class FullPathFileName
 {
-	// Data items...
-	//-------------
+protected:
+	std::wstring fullName;
 
-  private:
-  protected:
-	PSTR fullName;
+public:
+	FullPathFileName(void) {}
 
-  public:
-	// Member functions...
-	//-------------------
-
-  private:
-  protected:
-  public:
-	void init(void) { fullName = nullptr; }
-
-	void init(PSTR dir_path, PCSTR name, PSTR ext);
-
-	FullPathFileName(void) { init(void); }
-
-	FullPathFileName(PSTR dir_path, PCSTR name, PSTR ext)
+	FullPathFileName(
+		std::wstring& dir_path, std::wstring& name, std::wstring& ext)
 	{
-		init(void);
 		init(dir_path, name, ext);
 	}
+	~FullPathFileName(void) {}
 
-	inline operator PSTR(void) { return fullName; }
+	operator std::wstring&() { return fullName; }
+	void changeExt(std::wstring& from, std::wstring& to);
 
+protected:
+	void init(std::wstring& dir_path, std::wstring& name, std::wstring& ext);
 	void destroy(void);
-
-	void changeExt(PSTR from, PSTR to);
-
-	~FullPathFileName(void);
 };
 
-//---------------------------------------------------------------------------
 #endif
-
-//---------------------------------------------------------------------------
-//
-// Edit Log
-//
-// $Log$
-//
-//---------------------------------------------------------------------------

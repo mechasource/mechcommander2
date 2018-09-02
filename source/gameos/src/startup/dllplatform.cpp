@@ -39,8 +39,8 @@
 #include <platform.hpp>
 #include <dllplatform.hpp>
 
-extern "C" void WINAPI InitGameOS(
-	HINSTANCE hInstance, HWND hWindow, PSTR CommandLine)
+extern "C" void WINAPI 
+InitGameOS(HINSTANCE hInstance, HWND hWindow, PSTR CommandLine)
 {
 	Platform = Platform_DLL;
 	RunFromOtherApp(hInstance, hWindow, CommandLine);

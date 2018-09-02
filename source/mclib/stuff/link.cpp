@@ -5,7 +5,7 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
-#include "stdafx.h"
+#include "stdinc.h"
 //#include "stuffheaders.hpp"
 
 //#include <gameos.hpp>
@@ -99,15 +99,15 @@ void Link::ReleaseFromPlug()
 // AddToPlug
 //#############################################################################
 //
-void Link::AddToPlug(Plug* plug)
+void Link::AddToPlug(Plug* pplug)
 {
 	// Check_Object(this);
-	Check_Object(plug);
-	if ((nextLink = plug->linkHead) != nullptr)
+	Check_Object(pplug);
+	if ((nextLink = pplug->linkHead) != nullptr)
 	{
 		Check_Object(nextLink);
 		nextLink->prevLink = this;
 	}
 	this->prevLink = nullptr;
-	plug->linkHead = this;
+	pplug->linkHead = this;
 }

@@ -34,13 +34,13 @@
 typedef struct _GoalMapNode
 {
 	int16_t cost; // normal cost to travel here, based upon terrain
-	// int32_t				parent;								// where we came from (parent
-	// cell)
+	// int32_t				parent;								// where we came
+	// from (parent cell)
 	uint8_t flags; // CLOSED, OPEN, STEP flags
 	int32_t g;	 // known cost from START to this node
-	// int32_t				hPrime;								// estimated cost from this node to
-	// GOAL  int32_t				fPrime;								// = g +
-	// hPrime
+	// int32_t				hPrime;								// estimated cost from this
+	// node to GOAL  int32_t				fPrime;
+	// // = g + hPrime
 
 	void setFlag(uint8_t flag) { flags |= flag; }
 
@@ -60,7 +60,7 @@ typedef struct _MoverGroupData
 class MoverGroup
 {
 
-  public:
+public:
 	int32_t id;
 	int32_t numMovers;
 	GameObjectWatchID moverWIDs[MAX_MOVERGROUP_COUNT];
@@ -70,7 +70,7 @@ class MoverGroup
 	static SortList sortList;
 	static GoalMapNode* goalMap;
 
-  public:
+public:
 	PVOID operator new(size_t ourSize);
 	void operator delete(PVOID us);
 

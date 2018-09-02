@@ -8,7 +8,7 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
-#include "stdafx.h"
+#include "stdinc.h"
 
 #ifndef GVACTOR_H
 #include "gvactor.h"
@@ -1426,7 +1426,7 @@ bool GVAppearance::isMouseOver(float px, float py)
 		}
 		else
 		{
-			return FALSE;
+			return false;
 		}
 	}
 	return (inView);
@@ -1943,7 +1943,7 @@ int32_t GVAppearance::render(int32_t depthFixup)
 					drawPilotName(pilotName, color);
 				}
 			}
-			// selected = FALSE;
+			// selected = false;
 			//------------------------------------------
 			// Render GOS FX if necessary
 			if (destructFX && destructFX->IsExecuted())

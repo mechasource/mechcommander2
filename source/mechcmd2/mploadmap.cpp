@@ -5,7 +5,7 @@ MPLoadMap.cpp			: Implementation of the MPLoadMap component.
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 \*************************************************************************************************/
-#include "stdafx.h"
+#include "stdinc.h"
 
 #include "MPLoadMap.h"
 #include "prefs.h"

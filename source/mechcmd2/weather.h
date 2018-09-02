@@ -51,7 +51,7 @@ typedef struct _RainDrops
 // Class Definitions
 class Weather
 {
-  protected:
+protected:
 	bool weatherActive; // Should we even bother calling update or render?
 
 	float rainLevel; // How bad is it raining
@@ -60,14 +60,14 @@ class Weather
 	// Levels are:
 	//		0.0f				Not raining.
 	//		>0.0f - <1.0f		Threatening.  Getting darker.  Some ambient wind
-	//noise.  Distant thunder.
+	// noise.  Distant thunder.
 	//		>=1.0f - <1.2f		Drizzle.  ambient wind.  No thunder.
-	//		>=1.2f - <2.0f		Raining.  Steady downpour.  Not much thunder.  Dark
-	//enough for lights.
-	//		>=2.0f - <3.0f		Raining Hard.  Some lightening/thunder.  Full night
-	//conditions.
+	//		>=1.2f - <2.0f		Raining.  Steady downpour.  Not much thunder.
+	// Dark  enough for lights.
+	//		>=2.0f - <3.0f		Raining Hard.  Some lightening/thunder.  Full
+	// night  conditions.
 	//		>=3.0f				Storm.  Lots of thunder/lightening.  Full Night
-	//Conditions.
+	// Conditions.
 
 	float lighteningLevel;		// Brightness of lightening this frame.  Effects
 								// Ambient/sun lighting.
@@ -93,7 +93,7 @@ class Weather
 
 	float oldFog; // Original FOGFull Height value.
 
-  public:
+public:
 	Weather(void) { init(void); }
 
 	void init(void)

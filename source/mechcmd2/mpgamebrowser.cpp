@@ -5,7 +5,7 @@ MPGameBrowser.cpp			: Implementation of the MPGameBrowser component.
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 \*************************************************************************************************/
-#include "stdafx.h"
+#include "stdinc.h"
 
 #include "MPGameBrowser.h"
 #include "prefs.h"

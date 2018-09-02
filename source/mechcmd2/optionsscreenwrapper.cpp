@@ -8,7 +8,7 @@ component.
 
 #define OPTIONSSCREENWRAPPER_CPP
 
-#include "stdafx.h"
+#include "stdinc.h"
 #include "optionsscreenwrapper.h"
 #include <mclib.h>
 #include "optionsarea.h"

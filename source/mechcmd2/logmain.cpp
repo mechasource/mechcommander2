@@ -5,7 +5,7 @@
 //---------------------------------------------------------------------------//
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
-#include "stdafx.h"
+#include "stdinc.h"
 
 //-----------------------------------
 // Include Files
@@ -261,12 +261,12 @@ void InitializeGameEngine()
 			}
 		}
 		int32_t result = systemFile->seekBlock("UseMusic");
-		if (result == NO_ERROR)
+		if (SUCCEEDED(result))
 			useMusic = TRUE;
 		else
 			useMusic = FALSE;
 		result = systemFile->seekBlock("UseSound");
-		if (result == NO_ERROR)
+		if (SUCCEEDED(result))
 		{
 			useSound = TRUE;
 		}
@@ -295,8 +295,9 @@ void InitializeGameEngine()
 		gosASSERT(prefsBlockResult == NO_ERROR);
 		{
 			int32_t filterSetting;
-			int32_t result = prefs->readIdLong("FilterState", filterSetting);
-			if (result == NO_ERROR)
+			HRESULT result = prefs->readIdLong("FilterState", filterSetting);
+			
+			if (SUCCEEDED(result))
 			{
 				switch (filterSetting)
 				{

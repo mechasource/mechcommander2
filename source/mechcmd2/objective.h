@@ -118,11 +118,11 @@ class CBoolList : public EList<bool, bool>
 
 class CBooleanArray
 {
-  private:
+private:
 	CEStringList m_FlagIDList;
 	CBoolList m_valueList;
 
-  public:
+public:
 	CBooleanArray() {}
 	~CBooleanArray() {}
 	void Clear()
@@ -188,10 +188,10 @@ class CBooleanArray
 
 class CObjectiveCondition
 {
-  private:
+private:
 	int32_t m_alignment;
 
-  public:
+public:
 	CObjectiveCondition(int32_t alignment) { m_alignment = alignment; }
 	virtual ~CObjectiveCondition() {}
 	int32_t Alignment() { return m_alignment; }
@@ -219,7 +219,7 @@ class CObjectiveCondition
 
 class CDestroyAllEnemyUnits : public CObjectiveCondition
 {
-  public:
+public:
 	CDestroyAllEnemyUnits(int32_t alignment) : CObjectiveCondition(alignment) {}
 	condition_species_type Species() { return DESTROY_ALL_ENEMY_UNITS; }
 	objective_status_type Status(void);
@@ -234,10 +234,10 @@ class CDestroyAllEnemyUnits : public CObjectiveCondition
 class CNumberOfUnitsObjectiveCondition
 	: public CObjectiveCondition /*abstract class*/
 {
-  protected:
+protected:
 	int32_t m_num;
 
-  public:
+public:
 	CNumberOfUnitsObjectiveCondition(int32_t alignment)
 		: CObjectiveCondition(alignment)
 	{
@@ -255,7 +255,7 @@ class CNumberOfUnitsObjectiveCondition
 
 class CDestroyNumberOfEnemyUnits : public CNumberOfUnitsObjectiveCondition
 {
-  public:
+public:
 	CDestroyNumberOfEnemyUnits(int32_t alignment)
 		: CNumberOfUnitsObjectiveCondition(alignment)
 	{
@@ -274,10 +274,10 @@ class CDestroyNumberOfEnemyUnits : public CNumberOfUnitsObjectiveCondition
 class CSpecificUnitObjectiveCondition
 	: public CObjectiveCondition /*abstract class*/
 {
-  protected:
+protected:
 	GameObjectWatchID m_pUnitWID;
 
-  public:
+public:
 	CSpecificUnitObjectiveCondition(int32_t alignment)
 		: CObjectiveCondition(alignment)
 	{
@@ -295,7 +295,7 @@ class CSpecificUnitObjectiveCondition
 class CSpecificEnemyUnitObjectiveCondition
 	: public CSpecificUnitObjectiveCondition /*abstract class*/
 {
-  public:
+public:
 	CSpecificEnemyUnitObjectiveCondition(int32_t alignment)
 		: CSpecificUnitObjectiveCondition(alignment)
 	{
@@ -305,7 +305,7 @@ class CSpecificEnemyUnitObjectiveCondition
 
 class CDestroySpecificEnemyUnit : public CSpecificEnemyUnitObjectiveCondition
 {
-  public:
+public:
 	CDestroySpecificEnemyUnit(int32_t alignment)
 		: CSpecificEnemyUnitObjectiveCondition(alignment)
 	{
@@ -323,10 +323,10 @@ class CDestroySpecificEnemyUnit : public CSpecificEnemyUnitObjectiveCondition
 class CSpecificStructureObjectiveCondition
 	: public CObjectiveCondition /*abstract class*/
 {
-  protected:
+protected:
 	int32_t m_pBuildingWID;
 
-  public:
+public:
 	CSpecificStructureObjectiveCondition(int32_t alignment)
 		: CObjectiveCondition(alignment)
 	{
@@ -353,7 +353,7 @@ class CSpecificStructureObjectiveCondition
 
 class CDestroySpecificStructure : public CSpecificStructureObjectiveCondition
 {
-  public:
+public:
 	CDestroySpecificStructure(int32_t alignment)
 		: CSpecificStructureObjectiveCondition(alignment)
 	{
@@ -370,7 +370,7 @@ class CDestroySpecificStructure : public CSpecificStructureObjectiveCondition
 
 class CCaptureOrDestroyAllEnemyUnits : public CObjectiveCondition
 {
-  public:
+public:
 	CCaptureOrDestroyAllEnemyUnits(int32_t alignment)
 		: CObjectiveCondition(alignment)
 	{
@@ -392,7 +392,7 @@ class CCaptureOrDestroyAllEnemyUnits : public CObjectiveCondition
 class CCaptureOrDestroyNumberOfEnemyUnits
 	: public CNumberOfUnitsObjectiveCondition
 {
-  public:
+public:
 	CCaptureOrDestroyNumberOfEnemyUnits(int32_t alignment)
 		: CNumberOfUnitsObjectiveCondition(alignment)
 	{
@@ -414,7 +414,7 @@ class CCaptureOrDestroyNumberOfEnemyUnits
 class CCaptureOrDestroySpecificEnemyUnit
 	: public CSpecificEnemyUnitObjectiveCondition
 {
-  public:
+public:
 	CCaptureOrDestroySpecificEnemyUnit(int32_t alignment)
 		: CSpecificEnemyUnitObjectiveCondition(alignment)
 	{
@@ -437,7 +437,7 @@ class CCaptureOrDestroySpecificEnemyUnit
 class CCaptureOrDestroySpecificStructure
 	: public CSpecificStructureObjectiveCondition
 {
-  public:
+public:
 	CCaptureOrDestroySpecificStructure(int32_t alignment)
 		: CSpecificStructureObjectiveCondition(alignment)
 	{
@@ -459,7 +459,7 @@ class CCaptureOrDestroySpecificStructure
 
 class CDeadOrFledAllEnemyUnits : public CObjectiveCondition
 {
-  public:
+public:
 	CDeadOrFledAllEnemyUnits(int32_t alignment) : CObjectiveCondition(alignment)
 	{
 	}
@@ -467,16 +467,15 @@ class CDeadOrFledAllEnemyUnits : public CObjectiveCondition
 	objective_status_type Status(void);
 	EString Description()
 	{
-		EString
-			retval = "DeadOrFledAllEnemyUnits"; /* needs to be put somewhere
-												   localizable */
+		EString retval = "DeadOrFledAllEnemyUnits"; /* needs to be put somewhere
+													   localizable */
 		return retval;
 	}
 };
 
 class CDeadOrFledNumberOfEnemyUnits : public CNumberOfUnitsObjectiveCondition
 {
-  public:
+public:
 	CDeadOrFledNumberOfEnemyUnits(int32_t alignment)
 		: CNumberOfUnitsObjectiveCondition(alignment)
 	{
@@ -497,7 +496,7 @@ class CDeadOrFledNumberOfEnemyUnits : public CNumberOfUnitsObjectiveCondition
 
 class CDeadOrFledSpecificEnemyUnit : public CSpecificEnemyUnitObjectiveCondition
 {
-  public:
+public:
 	CDeadOrFledSpecificEnemyUnit(int32_t alignment)
 		: CSpecificEnemyUnitObjectiveCondition(alignment)
 	{
@@ -518,7 +517,7 @@ class CDeadOrFledSpecificEnemyUnit : public CSpecificEnemyUnitObjectiveCondition
 
 class CCaptureUnit : public CSpecificEnemyUnitObjectiveCondition
 {
-  public:
+public:
 	CCaptureUnit(int32_t alignment)
 		: CSpecificEnemyUnitObjectiveCondition(alignment)
 	{
@@ -536,7 +535,7 @@ class CCaptureUnit : public CSpecificEnemyUnitObjectiveCondition
 
 class CCaptureStructure : public CSpecificStructureObjectiveCondition
 {
-  public:
+public:
 	CCaptureStructure(int32_t alignment)
 		: CSpecificStructureObjectiveCondition(alignment)
 	{
@@ -554,7 +553,7 @@ class CCaptureStructure : public CSpecificStructureObjectiveCondition
 
 class CGuardSpecificUnit : public CSpecificUnitObjectiveCondition
 {
-  public:
+public:
 	CGuardSpecificUnit(int32_t alignment)
 		: CSpecificUnitObjectiveCondition(alignment)
 	{
@@ -572,7 +571,7 @@ class CGuardSpecificUnit : public CSpecificUnitObjectiveCondition
 
 class CGuardSpecificStructure : public CSpecificStructureObjectiveCondition
 {
-  public:
+public:
 	CGuardSpecificStructure(int32_t alignment)
 		: CSpecificStructureObjectiveCondition(alignment)
 	{
@@ -590,12 +589,12 @@ class CGuardSpecificStructure : public CSpecificStructureObjectiveCondition
 
 class CAreaObjectiveCondition : public CObjectiveCondition /*abstract class*/
 {
-  protected:
+protected:
 	float m_targetCenterX;
 	float m_targetCenterY;
 	float m_targetRadius;
 
-  public:
+public:
 	CAreaObjectiveCondition(int32_t alignment) : CObjectiveCondition(alignment)
 	{
 		m_targetCenterX = 0.0;
@@ -626,7 +625,7 @@ class CAreaObjectiveCondition : public CObjectiveCondition /*abstract class*/
 
 class CMoveAnyUnitToArea : public CAreaObjectiveCondition
 {
-  public:
+public:
 	CMoveAnyUnitToArea(int32_t alignment) : CAreaObjectiveCondition(alignment)
 	{
 	}
@@ -642,7 +641,7 @@ class CMoveAnyUnitToArea : public CAreaObjectiveCondition
 
 class CMoveAllUnitsToArea : public CAreaObjectiveCondition
 {
-  public:
+public:
 	CMoveAllUnitsToArea(int32_t alignment) : CAreaObjectiveCondition(alignment)
 	{
 	}
@@ -658,7 +657,7 @@ class CMoveAllUnitsToArea : public CAreaObjectiveCondition
 
 class CMoveAllSurvivingUnitsToArea : public CAreaObjectiveCondition
 {
-  public:
+public:
 	CMoveAllSurvivingUnitsToArea(int32_t alignment)
 		: CAreaObjectiveCondition(alignment)
 	{
@@ -679,7 +678,7 @@ class CMoveAllSurvivingUnitsToArea : public CAreaObjectiveCondition
 
 class CMoveAllSurvivingMechsToArea : public CAreaObjectiveCondition
 {
-  public:
+public:
 	CMoveAllSurvivingMechsToArea(int32_t alignment)
 		: CAreaObjectiveCondition(alignment)
 	{
@@ -700,11 +699,11 @@ class CMoveAllSurvivingMechsToArea : public CAreaObjectiveCondition
 
 class CBooleanFlagIsSet : public CObjectiveCondition
 {
-  protected:
+protected:
 	EString m_flagID;
 	bool m_value;
 
-  public:
+public:
 	CBooleanFlagIsSet(int32_t alignment) : CObjectiveCondition(alignment)
 	{
 		m_flagID = _TEXT("flag0");
@@ -729,10 +728,10 @@ class CBooleanFlagIsSet : public CObjectiveCondition
 
 class CElapsedMissionTime : public CObjectiveCondition
 {
-  protected:
+protected:
 	float m_time;
 
-  public:
+public:
 	CElapsedMissionTime(int32_t alignment) : CObjectiveCondition(alignment)
 	{
 		m_time = 0.0;
@@ -779,10 +778,10 @@ static PCSTR g_actionSpeciesStringArray[] = {
 
 class CObjectiveAction
 {
-  private:
+private:
 	int32_t m_alignment;
 
-  public:
+public:
 	CObjectiveAction(int32_t alignment) { m_alignment = alignment; }
 	virtual ~CObjectiveAction() {}
 	int32_t Alignment() { return m_alignment; }
@@ -807,10 +806,10 @@ class CObjectiveAction
 
 class CPlayBIK : public CObjectiveAction
 {
-  private:
+private:
 	EString m_pathname;
 
-  public:
+public:
 	CPlayBIK(int32_t alignment) : CObjectiveAction(alignment) {}
 	action_species_type Species() { return PLAY_BIK; }
 	bool Init() { return true; }
@@ -831,10 +830,10 @@ class CPlayBIK : public CObjectiveAction
 
 class CPlayWAV : public CObjectiveAction
 {
-  private:
+private:
 	EString m_pathname;
 
-  public:
+public:
 	CPlayWAV(int32_t alignment) : CObjectiveAction(alignment) {}
 	action_species_type Species() { return PLAY_WAV; }
 	bool Init() { return true; }
@@ -855,10 +854,10 @@ class CPlayWAV : public CObjectiveAction
 
 class CDisplayTextMessage : public CObjectiveAction
 {
-  private:
+private:
 	EString m_message;
 
-  public:
+public:
 	CDisplayTextMessage(int32_t alignment) : CObjectiveAction(alignment) {}
 	action_species_type Species() { return DISPLAY_TEXT_MESSAGE; }
 	bool Init() { return true; }
@@ -880,10 +879,10 @@ class CDisplayTextMessage : public CObjectiveAction
 
 class CDisplayResourceTextMessage : public CObjectiveAction
 {
-  private:
+private:
 	int32_t m_resourceStringID;
 
-  public:
+public:
 	CDisplayResourceTextMessage(int32_t alignment) : CObjectiveAction(alignment)
 	{
 	}
@@ -909,11 +908,11 @@ class CDisplayResourceTextMessage : public CObjectiveAction
 
 class CSetBooleanFlag : public CObjectiveAction
 {
-  private:
+private:
 	EString m_flagID;
 	bool m_value;
 
-  public:
+public:
 	CSetBooleanFlag(int32_t alignment) : CObjectiveAction(alignment)
 	{
 		m_flagID = _TEXT("flag0");
@@ -939,10 +938,10 @@ class CSetBooleanFlag : public CObjectiveAction
 
 class CMakeNewTechnologyAvailable : public CObjectiveAction
 {
-  private:
+private:
 	EString m_purchaseFilePathname;
 
-  public:
+public:
 	CMakeNewTechnologyAvailable(int32_t alignment) : CObjectiveAction(alignment)
 	{
 	}
@@ -968,10 +967,10 @@ class CMakeNewTechnologyAvailable : public CObjectiveAction
 
 class C_RemoveStructure : public CObjectiveAction
 {
-  private:
+private:
 	int32_t m_pBuildingWID;
 
-  public:
+public:
 	C_RemoveStructure(int32_t alignment) : CObjectiveAction(alignment) {}
 	bool SetParams(float positionX, float positionY);
 	action_species_type Species() { return _REMOVE_STRUCTURE; }
@@ -1003,7 +1002,7 @@ class CObjectiveActionList : public EList<CObjectiveAction*, CObjectiveAction*>
 
 class CObjective : public /*maybe protected*/ CObjectiveConditionList
 {
-  private:
+private:
 	typedef CObjectiveConditionList inherited;
 	int32_t m_alignment;
 	EString m_title;
@@ -1041,8 +1040,8 @@ class CObjective : public /*maybe protected*/ CObjectiveConditionList
 	static uint32_t s_blinkColor;
 	static aFont* s_markerFont;
 
-  public: /* we could make this protected if only the editdialog is to access
-			 these functions */
+public: /* we could make this protected if only the editdialog is to access
+		   these functions */
 	static CObjectiveCondition* new_CObjectiveCondition(
 		condition_species_type conditionSpecies, int32_t alignment);
 	static EString DescriptionOfConditionSpecies(
@@ -1052,7 +1051,7 @@ class CObjective : public /*maybe protected*/ CObjectiveConditionList
 	static EString DescriptionOfActionSpecies(
 		action_species_type actionSpecies);
 
-  public:
+public:
 	typedef CObjectiveConditionList condition_list_type;
 	typedef CObjectiveActionList action_list_type;
 	action_list_type m_actionList;
@@ -1216,7 +1215,7 @@ class CObjective : public /*maybe protected*/ CObjectiveConditionList
 
 class CObjectives : public /*maybe protected*/ EList<CObjective*, CObjective*>
 {
-  public:
+public:
 	CObjectives(int32_t alignment = 0) { m_alignment = alignment; }
 	CObjectives(const CObjectives& master) { (*this) = master; }
 	~CObjectives() { Clear(void); }
@@ -1230,7 +1229,7 @@ class CObjectives : public /*maybe protected*/ EList<CObjective*, CObjective*>
 	objective_status_type Status(void);
 	CBooleanArray boolFlags;
 
-  private:
+private:
 	typedef EList<CObjective*, CObjective*> inherited;
 	int32_t m_alignment;
 };

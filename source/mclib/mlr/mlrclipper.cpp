@@ -2,7 +2,7 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
-#include "stdafx.h"
+#include "stdinc.h"
 
 #include <gameos.hpp>
 #include <stuff/polar.hpp>
@@ -204,13 +204,13 @@ void MLRClipper::StartDraw(const Stuff::LinearMatrix4D& camera_to_world,
 #ifdef LAB_ONLY
 	if (gShowBirdView)
 	{
-		ATL_SUPPRESS_WARNING_PUSH(
+		DISABLE_WARNING_PUSH(
 			4640) // construction of local static object is not thread-safe
 		static Stuff::YawPitchRange Camera_Direction(
 			-Stuff::Pi_Over_6, 0.0f, 15.0f);
 		static Stuff::Vector2DOf<float> Camera_Shift(0.0f, 0.0f);
 		static Stuff::LinearMatrix4D birdsEye = Stuff::LinearMatrix4D::Identity;
-		ATL_SUPPRESS_WARNING_POP
+		DISABLE_WARNING_POP
 		//
 		//---------------
 		// Read the mouse

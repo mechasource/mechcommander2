@@ -20,7 +20,7 @@
 //---------------------------------------------------------------------------
 class VFXElement : public Element
 {
-  public:
+public:
 	puint8_t shapeTable;
 	int32_t frameNum;
 	int32_t x, y;
@@ -34,16 +34,16 @@ class VFXElement : public Element
 		shapeTable = nullptr;
 		frameNum   = 0;
 		x = y		= 0;
-		reverse		= FALSE;
+		reverse		= false;
 		fadeTable   = nullptr;
-		noScaleDraw = FALSE;
-		scaleUp		= FALSE;
+		noScaleDraw = false;
+		scaleUp		= false;
 	}
 
 	VFXElement(puint8_t _shape, int32_t _x, int32_t _y, int32_t frame, bool rev,
-		puint8_t fTable = nullptr, bool noScale = FALSE, bool scaleUp = FALSE);
+		puint8_t fTable = nullptr, bool noScale = false, bool scaleUp = false);
 	VFXElement(puint8_t _shape, float _x, float _y, int32_t frame, bool rev,
-		puint8_t fTable = nullptr, bool noScale = FALSE, bool scaleUp = FALSE);
+		puint8_t fTable = nullptr, bool noScale = false, bool scaleUp = false);
 
 	virtual void draw(void);
 };
@@ -52,7 +52,7 @@ class VFXElement : public Element
 //---------------------------------------------------------------------------
 class VFXShapeElement : public Element
 {
-  public:
+public:
 	//---------------------------------------
 	// This new element class combines all of
 	// the shapes into a single Texture for
@@ -75,7 +75,7 @@ class VFXShapeElement : public Element
 		shapeTable[0] = shapeTable[1] = shapeTable[2] = shapeTable[3] = nullptr;
 		frameNum[0] = frameNum[1] = frameNum[2] = frameNum[3] = 0;
 		x = y	  = 0;
-		reverse[0] = reverse[1] = reverse[2] = reverse[3] = FALSE;
+		reverse[0] = reverse[1] = reverse[2] = reverse[3] = false;
 		fadeTable										  = nullptr;
 		textureMemoryHandle								  = 0xffffffff;
 		actualHeight									  = -1;
@@ -103,7 +103,7 @@ class VFXShapeElement : public Element
 //---------------------------------------------------------------------------
 class TextureElement : public Element
 {
-  public:
+public:
 	//-----------------------------------------
 	// This just draws a textured face.
 	// Texture is passed in when inited.
@@ -135,7 +135,7 @@ class TextureElement : public Element
 //---------------------------------------------------------------------------
 class PolygonQuadElement : public Element
 {
-  public:
+public:
 	//--------------------------------
 	// This draws any untextured face.
 	// Useful for status bars, etc.
@@ -151,7 +151,7 @@ class PolygonQuadElement : public Element
 //---------------------------------------------------------------------------
 class PolygonTriElement : public Element
 {
-  public:
+public:
 	//--------------------------------
 	// This draws any untextured face.
 	// Useful for status bars, etc.
@@ -167,7 +167,7 @@ class PolygonTriElement : public Element
 //---------------------------------------------------------------------------
 class TexturedPolygonQuadElement : public PolygonQuadElement
 {
-  public:
+public:
 	//--------------------------------
 	// This draws any untextured face.
 	// Useful everywhere
@@ -186,7 +186,7 @@ class TexturedPolygonQuadElement : public PolygonQuadElement
 //---------------------------------------------------------------------------
 class TexturedPolygonTriElement : public PolygonTriElement
 {
-  public:
+public:
 	//--------------------------------
 	// This draws any textured face.
 	// Useful everywhere.

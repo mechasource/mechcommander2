@@ -39,8 +39,8 @@
 #include <platform.hpp>
 #include <mfcplatform.hpp>
 
-extern "C" void WINAPI InitGameOS(
-	HINSTANCE hInstance, HWND hWindow, PSTR CommandLine)
+extern "C" void WINAPI 
+InitGameOS(HINSTANCE hInstance, HWND hWindow, PSTR CommandLine)
 {
 	Platform = Platform_MFC;
 	RunFromOtherApp(hInstance, hWindow, CommandLine);

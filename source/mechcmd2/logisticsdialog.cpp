@@ -7,7 +7,7 @@ LogisticsDialog.cpp			: Implementation of the LogisticsDialog component.
 
 #define LOGISTICSDIALOG_CPP
 
-#include "stdafx.h"
+#include "stdinc.h"
 #include "logisticsdialog.h"
 #include <mechgui/abutton.h>
 #include "inifile.h"

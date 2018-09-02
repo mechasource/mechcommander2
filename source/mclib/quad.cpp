@@ -138,13 +138,13 @@ void TerrainQuad::setupTextures(void)
 				{
 					mineResult.init();
 					int32_t cellPos = 0;
-					for (size_t cellR = 0; cellR < MAPCELL_DIM; cellR++)
+					for (size_t cellR = 0; cellR < terrain_const::MAPCELL_DIM; cellR++)
 					{
-						for (size_t cellC = 0; cellC < MAPCELL_DIM;
+						for (size_t cellC = 0; cellC < terrain_const::MAPCELL_DIM;
 							 cellC++, cellPos++)
 						{
-							int32_t actualCellRow = tileR * MAPCELL_DIM + cellR;
-							int32_t actualCellCol = tileC * MAPCELL_DIM + cellC;
+							int32_t actualCellRow = tileR * terrain_const::MAPCELL_DIM + cellR;
+							int32_t actualCellCol = tileC * terrain_const::MAPCELL_DIM + cellC;
 							uint32_t localResult  = 0;
 							if (GameMap->inBounds(actualCellRow, actualCellCol))
 								localResult = GameMap->getMine(
@@ -220,13 +220,13 @@ void TerrainQuad::setupTextures(void)
 				{
 					int32_t cellPos = 0;
 					mineResult.init();
-					for (size_t cellR = 0; cellR < MAPCELL_DIM; cellR++)
+					for (size_t cellR = 0; cellR < terrain_const::MAPCELL_DIM; cellR++)
 					{
-						for (size_t cellC = 0; cellC < MAPCELL_DIM;
+						for (size_t cellC = 0; cellC < terrain_const::MAPCELL_DIM;
 							 cellC++, cellPos++)
 						{
-							int32_t actualCellRow = tileR * MAPCELL_DIM + cellR;
-							int32_t actualCellCol = tileC * MAPCELL_DIM + cellC;
+							int32_t actualCellRow = tileR * terrain_const::MAPCELL_DIM + cellR;
+							int32_t actualCellCol = tileC * terrain_const::MAPCELL_DIM + cellC;
 							uint32_t localResult  = 0;
 							if (GameMap->inBounds(actualCellRow, actualCellCol))
 								localResult = GameMap->getMine(
@@ -353,13 +353,13 @@ void TerrainQuad::setupTextures(void)
 				{
 					int32_t cellPos = 0;
 					mineResult.init();
-					for (size_t cellR = 0; cellR < MAPCELL_DIM; cellR++)
+					for (size_t cellR = 0; cellR < terrain_const::MAPCELL_DIM; cellR++)
 					{
-						for (size_t cellC = 0; cellC < MAPCELL_DIM;
+						for (size_t cellC = 0; cellC < terrain_const::MAPCELL_DIM;
 							 cellC++, cellPos++)
 						{
-							int32_t actualCellRow = tileR * MAPCELL_DIM + cellR;
-							int32_t actualCellCol = tileC * MAPCELL_DIM + cellC;
+							int32_t actualCellRow = tileR * terrain_const::MAPCELL_DIM + cellR;
+							int32_t actualCellCol = tileC * terrain_const::MAPCELL_DIM + cellC;
 							uint32_t localResult  = 0;
 							if (GameMap->inBounds(actualCellRow, actualCellCol))
 								localResult = GameMap->getMine(
@@ -477,13 +477,13 @@ void TerrainQuad::setupTextures(void)
 				{
 					int32_t cellPos = 0;
 					mineResult.init();
-					for (size_t cellR = 0; cellR < MAPCELL_DIM; cellR++)
+					for (size_t cellR = 0; cellR < terrain_const::MAPCELL_DIM; cellR++)
 					{
-						for (size_t cellC = 0; cellC < MAPCELL_DIM;
+						for (size_t cellC = 0; cellC < terrain_const::MAPCELL_DIM;
 							 cellC++, cellPos++)
 						{
-							int32_t actualCellRow = tileR * MAPCELL_DIM + cellR;
-							int32_t actualCellCol = tileC * MAPCELL_DIM + cellC;
+							int32_t actualCellRow = tileR * terrain_const::MAPCELL_DIM + cellR;
+							int32_t actualCellCol = tileC * terrain_const::MAPCELL_DIM + cellC;
 							uint32_t localResult  = 0;
 							if (GameMap->inBounds(actualCellRow, actualCellCol))
 								localResult = GameMap->getMine(
@@ -2884,19 +2884,19 @@ void TerrainQuad::drawLine(void)
 		//--------------------------------------------------------------------
 		// Display the ScenarioMap cell grid, as well, displaying open\blocked
 		// states...
-		float cellWidth = Terrain::worldUnitsPerVertex / MAPCELL_DIM;
+		float cellWidth = Terrain::worldUnitsPerVertex / terrain_const::MAPCELL_DIM;
 		// cellWidth -= 5.0;
 		int32_t rowCol = vertices[0]->posTile;
 		int32_t tileR  = rowCol >> 16;
 		int32_t tileC  = rowCol & 0x0000ffff;
 		if (GameMap)
 		{
-			for (size_t cellR = 0; cellR < MAPCELL_DIM; cellR++)
+			for (size_t cellR = 0; cellR < terrain_const::MAPCELL_DIM; cellR++)
 			{
-				for (size_t cellC = 0; cellC < MAPCELL_DIM; cellC++)
+				for (size_t cellC = 0; cellC < terrain_const::MAPCELL_DIM; cellC++)
 				{
-					int32_t actualCellRow = tileR * MAPCELL_DIM + cellR;
-					int32_t actualCellCol = tileC * MAPCELL_DIM + cellC;
+					int32_t actualCellRow = tileR * terrain_const::MAPCELL_DIM + cellR;
+					int32_t actualCellCol = tileC * terrain_const::MAPCELL_DIM + cellC;
 					MapCellPtr curCell	= nullptr;
 					if (GameMap->inBounds(actualCellRow, actualCellCol))
 						curCell =
@@ -2983,22 +2983,22 @@ void TerrainQuad::drawLine(void)
 		return;
 	if (clipped1 != 0)
 	{
-		float cellWidth = Terrain::worldUnitsPerVertex / MAPCELL_DIM;
+		float cellWidth = Terrain::worldUnitsPerVertex / terrain_const::MAPCELL_DIM;
 		cellWidth -= 5.0;
 		int32_t rowCol = vertices[0]->posTile;
 		int32_t tileR  = rowCol >> 16;
 		int32_t tileC  = rowCol & 0x0000ffff;
-		int32_t cellR  = tileR * MAPCELL_DIM;
-		int32_t cellC  = tileC * MAPCELL_DIM;
+		int32_t cellR  = tileR * terrain_const::MAPCELL_DIM;
+		int32_t cellC  = tileC * terrain_const::MAPCELL_DIM;
 		for (size_t currentDoor = 0; currentDoor < GlobalMoveMap[0]->numDoors;
 			 currentDoor++)
 		{
 			if ((GlobalMoveMap[0]->doors[currentDoor].row >= cellR) &&
 				(GlobalMoveMap[0]->doors[currentDoor].row <
-					(cellR + MAPCELL_DIM)) &&
+					(cellR + terrain_const::MAPCELL_DIM)) &&
 				(GlobalMoveMap[0]->doors[currentDoor].col >= cellC) &&
 				(GlobalMoveMap[0]->doors[currentDoor].col <
-					(cellC + MAPCELL_DIM)))
+					(cellC + terrain_const::MAPCELL_DIM)))
 			{
 				Stuff::Vector4D pos1;
 				Stuff::Vector4D pos2;
@@ -3081,18 +3081,18 @@ void TerrainQuad::drawLOSLine(void)
 	if (clipped1 != 0)
 	{
 		//--------------------------------------------------------------------
-		float cellWidth = Terrain::worldUnitsPerVertex / MAPCELL_DIM;
+		float cellWidth = Terrain::worldUnitsPerVertex / terrain_const::MAPCELL_DIM;
 		int32_t rowCol  = vertices[0]->posTile;
 		int32_t tileR   = rowCol >> 16;
 		int32_t tileC   = rowCol & 0x0000ffff;
 		if (GameMap)
 		{
-			for (size_t cellR = 0; cellR < MAPCELL_DIM; cellR++)
+			for (size_t cellR = 0; cellR < terrain_const::MAPCELL_DIM; cellR++)
 			{
-				for (size_t cellC = 0; cellC < MAPCELL_DIM; cellC++)
+				for (size_t cellC = 0; cellC < terrain_const::MAPCELL_DIM; cellC++)
 				{
-					int32_t actualCellRow = tileR * MAPCELL_DIM + cellR;
-					int32_t actualCellCol = tileC * MAPCELL_DIM + cellC;
+					int32_t actualCellRow = tileR * terrain_const::MAPCELL_DIM + cellR;
+					int32_t actualCellCol = tileC * terrain_const::MAPCELL_DIM + cellC;
 					MapCellPtr curCell	= nullptr;
 					if (GameMap->inBounds(actualCellRow, actualCellCol))
 						curCell =
@@ -3317,19 +3317,19 @@ void TerrainQuad::drawDebugCellLine(void)
 		//--------------------------------------------------------------------
 		// Display the ScenarioMap cell grid, as well, displaying open\blocked
 		// states...
-		float cellWidth = Terrain::worldUnitsPerVertex / MAPCELL_DIM;
+		float cellWidth = Terrain::worldUnitsPerVertex / terrain_const::MAPCELL_DIM;
 		// cellWidth -= 5.0;
 		int32_t rowCol = vertices[0]->posTile;
 		int32_t tileR  = rowCol >> 16;
 		int32_t tileC  = rowCol & 0x0000ffff;
 		if (GameMap)
 		{
-			for (size_t cellR = 0; cellR < MAPCELL_DIM; cellR++)
+			for (size_t cellR = 0; cellR < terrain_const::MAPCELL_DIM; cellR++)
 			{
-				for (size_t cellC = 0; cellC < MAPCELL_DIM; cellC++)
+				for (size_t cellC = 0; cellC < terrain_const::MAPCELL_DIM; cellC++)
 				{
-					int32_t actualCellRow = tileR * MAPCELL_DIM + cellR;
-					int32_t actualCellCol = tileC * MAPCELL_DIM + cellC;
+					int32_t actualCellRow = tileR * terrain_const::MAPCELL_DIM + cellR;
+					int32_t actualCellCol = tileC * terrain_const::MAPCELL_DIM + cellC;
 					MapCellPtr curCell	= nullptr;
 					if (GameMap->inBounds(actualCellRow, actualCellCol))
 						curCell =
@@ -3428,9 +3428,9 @@ void TerrainQuad::drawMine(void)
 	{
 		int32_t cellPos = 0;
 		float cellWidth = Terrain::worldUnitsPerCell;
-		for (size_t cellR = 0; cellR < MAPCELL_DIM; cellR++)
+		for (size_t cellR = 0; cellR < terrain_const::MAPCELL_DIM; cellR++)
 		{
-			for (size_t cellC = 0; cellC < MAPCELL_DIM; cellC++, cellPos++)
+			for (size_t cellC = 0; cellC < terrain_const::MAPCELL_DIM; cellC++, cellPos++)
 			{
 				//--------------------------------------------------------------------
 				bool drawMine	  = false;

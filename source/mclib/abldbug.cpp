@@ -6,7 +6,7 @@
 //								ABLDBUG.CPP
 //
 //***************************************************************************
-#include "stdafx.h"
+#include "stdinc.h"
 
 //#include <stdlib.h>
 //#include <string.h>

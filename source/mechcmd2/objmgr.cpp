@@ -8,7 +8,7 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 // Include Files
-#include "stdafx.h"
+#include "stdinc.h"
 
 //=============
 // #include <mclib.h>

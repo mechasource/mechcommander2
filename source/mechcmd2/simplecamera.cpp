@@ -5,7 +5,7 @@ SimpleCamera.cpp	: Implementation of the SimpleCamera component.
 //===========================================================================//
 \*************************************************************************************************/
 
-#include "stdafx.h"
+#include "stdinc.h"
 #include "simplecamera.h"
 #include "appear.h"
 #include <mclib.h>

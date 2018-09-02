@@ -6,7 +6,7 @@
 
 #define LOGISTICSPILOT_CPP
 
-#include "stdafx.h"
+#include "stdinc.h"
 #include <mclib.h>
 #include "logisticspilot.h"
 #include "logisticserrors.h"

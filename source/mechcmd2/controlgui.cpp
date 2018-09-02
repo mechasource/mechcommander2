@@ -4,7 +4,7 @@ controlGui.cpp			: Implementation of the controlGui component.
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 \*************************************************************************************************/
-#include "stdafx.h"
+#include "stdinc.h"
 
 #include "controlgui.h"
 #include "Team.h"

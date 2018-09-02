@@ -22,12 +22,15 @@
 
 //----------------------------------------------------------------------------------
 // Macro Definitions
-#define mis_PLAYING 0
-#define mis_PLAYER_LOST_BIG 1
-#define mis_PLAYER_LOST_SMALL 2
-#define mis_PLAYER_DRAW 3
-#define mis_PLAYER_WIN_SMALL 4
-#define mis_PLAYER_WIN_BIG 5
+enum class player_mission : uint32_t 
+{
+	mis_PLAYING,
+	mis_PLAYER_LOST_BIG,
+	mis_PLAYER_LOST_SMALL,
+	mis_PLAYER_DRAW,
+	mis_PLAYER_WIN_SMALL,
+	mis_PLAYER_WIN_BIG
+};
 
 extern uint32_t scenarioResult;
 
@@ -43,10 +46,8 @@ struct Part
 	GameObjectWatchID objectWID; // Pointer to my physical incarnation
 	uint32_t objNumber;			 // What kind of object am I?
 	uint32_t baseColor; // Base color of mech -- Overrides the RED in RGB
-	uint32_t
-		highlightColor1; // First Highlight Color -- Overrides the GREEN in RGB
-	uint32_t
-		highlightColor2; // Second Highlight Color -- Overrides the BLUE in RGB
+	uint32_t highlightColor1; // First Highlight Color -- Overrides the GREEN in RGB
+	uint32_t highlightColor2; // Second Highlight Color -- Overrides the BLUE in RGB
 	int32_t active;		 // Am I currently awake?
 	int32_t exists;		 // Am I currently in Existance?
 	bool destroyed;		 // Have I been destroyed for this scenario?
@@ -140,7 +141,7 @@ class Mission
 
 	// Data Members
 	//-------------
-  protected:
+protected:
 	FitIniFilePtr missionFile;
 
 	int32_t operationId; // aka operation id
@@ -159,7 +160,7 @@ class Mission
 
 	static double missionTerminationTime;
 
-  public:
+public:
 	static bool terminationCounterStarted;
 	static uint32_t terminationResult;
 
@@ -195,8 +196,8 @@ class Mission
 
 	// Member Functions
 	//-----------------
-  protected:
-  public:
+protected:
+public:
 	void init(void)
 	{
 		missionFile = nullptr;

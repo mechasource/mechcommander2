@@ -2,7 +2,7 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
-#include "stdafx.h"
+#include "stdinc.h"
 
 //#include <gameos.hpp>
 //#include <mlr/mlr_i_l_tmesh.hpp>

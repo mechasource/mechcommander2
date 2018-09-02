@@ -24,7 +24,7 @@
 
 //---------------------------------------------------------------------------
 // enums
-typedef enum __inifile_constants
+enum __inifile_constants
 {
 	BLOCK_NOT_FOUND				  = 0xFADA0000,
 	ID_NOT_FOUND				  = 0xFADA0001,
@@ -64,25 +64,27 @@ class FitIniFile : public File
 {
 	// Data Members
 	//--------------
-  protected:
-	std::unique_ptr<IniBlockNode>
-		m_fileBlocks;			 // Data for blocks to speed up file
-	PSTR m_currentBlockId;		 // Id of current block
-	size_t m_totalBlocks;		 // Total number of blocks in file
-	size_t m_currentBlockOffset; // Offset into file of block start
-	size_t m_currentBlockSize;   // Length of current block
+protected:
+	std::unique_ptr<IniBlockNode> m_fileBlocks;	// Data for blocks to speed up file
+	PSTR		m_currentBlockId;				// Id of current block
+	size_t		m_totalBlocks;					// Total number of blocks in file
+	size_t		m_currentBlockOffset;			// Offset into file of block start
+	size_t		m_currentBlockSize;				// Length of current block
 
-  public:
-	FitIniFile(void)
-		: m_currentBlockId(nullptr), m_totalBlocks(0), m_currentBlockOffset(0),
-		  m_currentBlockSize(0)
+public:
+	FitIniFile(void) : 
+		m_currentBlockId(nullptr), m_totalBlocks(0), m_currentBlockOffset(0),
+		m_currentBlockSize(0)
 	{
 	}
-	virtual ~FitIniFile(void) { close(); }
+	virtual ~FitIniFile(void) 
+	{
+		close();
+	}
 
 	// Member Functions
 	//------------------
-  protected:
+protected:
 	HRESULT afterOpen(void);
 	void atClose(void);
 
@@ -129,7 +131,7 @@ class FitIniFile : public File
 
 	int32_t copyString(PSTR dest, PSTR src, size_t bufLen);
 
-  public:
+public:
 	virtual int32_t open(
 		PCSTR fName, FileMode _mode = READ, uint32_t numChildren = 50);
 	virtual int32_t open(

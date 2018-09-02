@@ -2,7 +2,7 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
-#include "stdafx.h"
+#include "stdinc.h"
 //#include "stuffheaders.hpp"
 
 #include <gameos.hpp>
@@ -65,7 +65,7 @@ void Macro::ReplaceMacros(
 	// Copy the characters one by one until we find the $(
 	//----------------------------------------------------
 	//
-	ATL_SUPPRESS_WARNING(4127)
+	SUPPRESS_WARNING(4127)
 	while (1)
 	{
 		while (*buffer && (*buffer != '$' || buffer[1] != '('))
@@ -302,7 +302,7 @@ void NotationFile::Read(
 				{
 					// suppress warning about unsafe strcpy as a strcpy_s
 					// implementation isn't straightforward
-					ATL_SUPPRESS_WARNING(4996)
+					SUPPRESS_WARNING(4996)
 					strcpy(p - 1, p + 1);
 					--p;
 				}
@@ -310,7 +310,7 @@ void NotationFile::Read(
 				{
 					// suppress warning about unsafe strcpy as a strcpy_s
 					// implementation isn't straightforward
-					ATL_SUPPRESS_WARNING(4996)
+					SUPPRESS_WARNING(4996)
 					strcpy(buffer, p + 1);
 					p = buffer;
 				}
@@ -318,7 +318,7 @@ void NotationFile::Read(
 				{
 					// suppress warning about unsafe strcpy as a strcpy_s
 					// implementation isn't straightforward
-					ATL_SUPPRESS_WARNING(4996)
+					SUPPRESS_WARNING(4996)
 					strcpy(comment_start, p + 1);
 					p = comment_start;
 				}

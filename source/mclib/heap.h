@@ -80,7 +80,7 @@ class HeapManager
 {
 	// Data Members
 	//-------------
-  protected:
+protected:
 	puint8_t heap;
 	bool memReserved;
 	size_t totalSize;
@@ -90,17 +90,17 @@ class HeapManager
 	//		BOOL	VMQuery (PVOID pvAddress, PVMQUERY pVMQ);
 	//		PCSTR   GetMemStorageText (uint32_t dwStorage);
 	//		PSTR	GetProtectText (uint32_t dwProtect, PSTR szBuf, BOOL
-	//fShowFlags);
+	// fShowFlags);
 	//		void	ConstructRgnInfoLine (PVMQUERY pVMQ, PSTR szLine, int32_t
-	//nMaxLen); 		void	ConstructBlkInfoLine (PVMQUERY pVMQ, PSTR
-	//szLine, int32_t nMaxLen);
+	// nMaxLen); 		void	ConstructBlkInfoLine (PVMQUERY pVMQ, PSTR
+	// szLine, int32_t nMaxLen);
 
-  public:
+public:
 	HeapManagerPtr nxt;
 
 	// Member Functions
 	//-----------------
-  public:
+public:
 	HeapManager(void) { init(void); }
 	virtual ~HeapManager(void) { destroy(void); }
 
@@ -136,7 +136,7 @@ class UserHeap : public HeapManager
 {
 	// Data Members
 	//-------------
-  protected:
+protected:
 	HeapBlockPtr heapStart;
 	HeapBlockPtr heapEnd;
 	HeapBlockPtr firstNearBlock;
@@ -155,12 +155,12 @@ class UserHeap : public HeapManager
 
 	// Member Functions
 	//-----------------
-  protected:
+protected:
 	void relink(HeapBlockPtr newBlock);
 	void unlink(HeapBlockPtr oldBlock);
 	bool mergeWithLower(HeapBlockPtr block);
 
-  public:
+public:
 	UserHeap(void);
 	int32_t init(uint32_t memSize, PSTR heapId = nullptr, bool useGOS = false);
 
@@ -176,7 +176,7 @@ class UserHeap : public HeapManager
 
 	PVOID calloc(size_t memSize);
 
-	void walkHeap(bool printIt = FALSE, bool skipAllocated = FALSE);
+	void walkHeap(bool printIt = false, bool skipAllocated = false);
 
 	HRESULT getLastError(void);
 
@@ -220,13 +220,13 @@ class HeapList
 {
 	// Data Members
 	//-------------
-  protected:
+protected:
 	static GlobalHeapRec heapRecords[MAX_HEAPS];
 	static bool heapInstrumented;
 
 	// Member Functions
 	//----------------
-  public:
+public:
 	void init(void)
 	{
 		memset(heapRecords, 0, sizeof(GlobalHeapRec) * MAX_HEAPS);

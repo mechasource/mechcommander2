@@ -89,8 +89,9 @@ extern float metersPerWorldUnit;
 #define MECH_GESTURE_JUMP 20		 // Jump
 #define MECH_GESTURE_ROLLOVER 21	 // Rollover from FallBack to FallForward
 #define MECH_GESTURE_GETUP 22		 // Get up from FallForward
-#define MECH_GESTURE_FALLEN_F 23	 // Fallen Forward (Single Frame, mech on
-								 // ground)
+#define MECH_GESTURE_FALLEN_F                                                  \
+	23 // Fallen Forward (Single Frame, mech on
+	   // ground)
 #define MECH_GESTURE_FALLEN_B                                                  \
 	24 // Fallen Backward (Single Frame, mech on ground)
 
@@ -192,17 +193,17 @@ class BattleMechType : public ObjectType
 	//-------------
 	// Data Members
 
-  public:
+public:
 	bool isEndoSteel; // has endosteel frame?
 	uint8_t maxInternalStructure[NUM_BODY_LOCATIONS];
 
 	PSTR anim;
 	uint8_t moveAnimSpeed[3];
 
-	// uint32_t		controlType;								// Who controls us, Player, AI or
-	// NET?
-	// uint32_t		controlDataType;							// which data set do we
-	// use.
+	// uint32_t		controlType;								// Who controls us, Player,
+	// AI or NET?
+	// uint32_t		controlDataType;							// which data set
+	// do we use.
 	MoverDynamics dynamics; // what dynamics do we use.
 
 	//----------------------------------------------------------------------------------------
@@ -229,7 +230,7 @@ class BattleMechType : public ObjectType
 	//----------------
 	// Member Functions
 
-  public:
+public:
 	void init(void);
 
 	BattleMechType(void)
@@ -324,7 +325,7 @@ class BattleMech : public Mover
 	//------------
 	// Data Members
 
-  public:
+public:
 	char chassisClass; // none, light, medium, heavy, assault
 	int32_t chassisBR; // chassis Battle Rating
 
@@ -379,8 +380,8 @@ class BattleMech : public Mover
 	bool notMineYet; // Used by logsitics to drop this mech if mission lost.
 
 	int32_t descID; // Used by Logistics to Desc.
-	//		int32_t				variant;						// Now we have three longs storing
-	//a bytes worth of data well done SJ
+	//		int32_t				variant;						// Now we have three
+	//longs  storing  a bytes worth of data well done SJ
 
 	float damageThisFrame; // How much damage have we taken this frame.
 	bool sentCrippledMsg;  // Have I already announced that I'm gimped?
@@ -399,7 +400,7 @@ class BattleMech : public Mover
 	//----------------
 	// Member Functions
 
-  public:
+public:
 	void operator=(BattleMech copy);
 
 	virtual void init(bool create);

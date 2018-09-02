@@ -6,7 +6,7 @@ LogisticsScreen.cpp			: Implementation of the LogisticsScreen component.
 \*************************************************************************************************/
 #define LOGISTICSSCREEN_CPP
 
-#include "stdafx.h"
+#include "stdinc.h"
 #include <mechgui/logisticsscreen.h>
 #include "inifile.h"
 #include <mechgui/asystem.h>

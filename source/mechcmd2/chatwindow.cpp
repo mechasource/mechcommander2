@@ -6,7 +6,7 @@
 
 #define CHATWINDOW_CPP
 
-#include "stdafx.h"
+#include "stdinc.h"
 #include "chatwindow.h"
 #include <mclib.h>
 #include "multplyr.h"

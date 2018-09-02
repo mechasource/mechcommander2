@@ -7,7 +7,7 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
-#include "stdafx.h"
+#include "stdinc.h"
 #include <stuff/namelist.hpp>
 
 using namespace Stuff;
@@ -175,7 +175,7 @@ void ObjectNameList::Entry::SetName(PCSTR name)
 	Check_Pointer(name);
 	// suppress warning about unsafe strcpy as a strcpy_s implementation isn't
 	// straightforward
-	ATL_SUPPRESS_WARNING(4996)
+	SUPPRESS_WARNING(4996)
 	strcpy(Cast_Pointer(PSTR, this) + sizeof(ObjectNameList::Entry), name);
 }
 

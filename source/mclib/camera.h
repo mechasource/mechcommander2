@@ -72,7 +72,7 @@ class Camera
 	// Data Members
 	//-------------
 
-  protected:
+protected:
 	float projectionAngle; // Angle of orthogonal projection
 
 	Stuff::Vector3D screenResolution; // Resolution of screen in pixels
@@ -113,7 +113,7 @@ class Camera
 
 	TG_LightPtr* worldLights; // Lighting for the entire world.
 	int32_t numLights;		  // Number of lights in the above list.  Always
-					   // MAX_LIGHTS!
+							  // MAX_LIGHTS!
 
 	TG_LightPtr* activeLights; // This is the light list to process every frame.
 	int32_t numActiveLights;   // Number of lights active.  Actually Correct.
@@ -153,7 +153,7 @@ class Camera
 	float timeLeftToFade;
 	float startFadeTime;
 
-  public:
+public:
 	bool active;		 // Is camera active (ie. drawing itself)
 	bool ready;			 // Is camera ready to be activated?
 	bool usePerspective; // Switch camera from Parallel to perspective view
@@ -212,7 +212,7 @@ class Camera
 
 	bool terrainLightNight; // What state are the terrain lights in?
 	bool terrainLightCalc;  // Should we activate all terrain lights this frame
-						   // and burn their lights in?
+							// and burn their lights in?
 
 	bool isNight; // Flag indicating if we are in NightMode
 	// Based solely on light angle.
@@ -222,7 +222,7 @@ class Camera
 
 	float day2NightTransitionTime; // Time in Seconds that light goes from day
 								   // to night.
-	float dayLightTime;		// Current dayToNight Transition time.
+	float dayLightTime;			   // Current dayToNight Transition time.
 	bool forceShadowRecalc; // Has the sun/moon moved enough for shadows to have
 							// changed?
 
@@ -289,14 +289,14 @@ class Camera
 	// Member Functions
 	//-----------------
 
-  public:
+public:
 	virtual void init(void)
 	{
 		projectionAngle	= 30;
 		screenResolution.x = 400.0;
 		screenResolution.y = 400.0;
 		position.Zero(void);
-		ready = active = FALSE;
+		ready = active = false;
 		cameraClass	= INVALID_CAMERA;
 		setCameraRotation(0.0, 0.0);
 		cameraShiftZ = goalPositionZ = 0.0f;
@@ -388,7 +388,7 @@ class Camera
 		}
 		if ((screen.x < 0) || (screen.y < 0) ||
 			(screen.x > screenResolution.x) || (screen.y > screenResolution.y))
-			return FALSE;
+			return false;
 		return TRUE;
 	}
 

@@ -157,7 +157,7 @@ inline float agsqrt(float _a, float _b) { return sqrt(_a * _a + _b * _b); }
 
 //-------------------------------------------------
 // Only pattern 2 is used now.
-char mineLayout[4][MAPCELL_DIM * MAPCELL_DIM] = {{0, 0, 0, 0, 0, 0, 0, 0, 0},
+char mineLayout[4][terrain_const::MAPCELL_DIM * terrain_const::MAPCELL_DIM] = {{0, 0, 0, 0, 0, 0, 0, 0, 0},
 	{0, 0, 0, 0, 0, 0, 0, 0, 0}, {1, 0, 1, 0, 1, 0, 1, 0, 1},
 	{0, 0, 0, 0, 0, 0, 0, 0, 0}};
 
@@ -659,18 +659,18 @@ void MissionMap::init(int32_t h, int32_t w)
 	HalfMapCell		= Terrain::worldUnitsPerCell / 2.0;
 	int32_t i;
 	for (i = 0; i < MAX_MAP_CELL_WIDTH; i++)
-		tileMulMAPCELL_DIM[i] = i * MAPCELL_DIM;
-	int32_t tileWidth  = width / MAPCELL_DIM;
-	int32_t tileHeight = height / MAPCELL_DIM;
+		tileMulMAPCELL_DIM[i] = i * terrain_const::MAPCELL_DIM;
+	int32_t tileWidth  = width / terrain_const::MAPCELL_DIM;
+	int32_t tileHeight = height / terrain_const::MAPCELL_DIM;
 	for (i = 0; i < tileHeight; i++)
 		Terrain::tileRowToWorldCoord[i] = (Terrain::worldUnitsMapSide / 2.0) -
 										  (i * Terrain::worldUnitsPerVertex);
 	for (i = 0; i < tileWidth; i++)
 		Terrain::tileColToWorldCoord[i] = (i * Terrain::worldUnitsPerVertex) -
 										  (Terrain::worldUnitsMapSide / 2.0);
-	for (i = 0; i < MAPCELL_DIM; i++)
+	for (i = 0; i < terrain_const::MAPCELL_DIM; i++)
 		Terrain::cellToWorldCoord[i] =
-			(Terrain::worldUnitsPerVertex / (float)MAPCELL_DIM) * i;
+			(Terrain::worldUnitsPerVertex / (float)terrain_const::MAPCELL_DIM) * i;
 	for (i = 0; i < height; i++)
 		Terrain::cellRowToWorldCoord[i] = (Terrain::worldUnitsMapSide / 2.0) -
 										  (i * Terrain::worldUnitsPerCell);
@@ -920,23 +920,23 @@ void MissionMap::placeTerrainObject(int32_t objectClass, int32_t objectTypeID,
 	Assert(objectClass != -1, 0, " MissionMap.placeTerrainObject: bad ObjectClass ");
 	int32_t maskTemplateLo = footPrint;
 	int32_t maskTemplateHi = footPrint >> 32;
-	int32_t posTileR = cellRow / MAPCELL_DIM;
-	int32_t posTileC = cellCol / MAPCELL_DIM;
+	int32_t posTileR = cellRow / terrain_const::MAPCELL_DIM;
+	int32_t posTileC = cellCol / terrain_const::MAPCELL_DIM;
 	int32_t tileOriginR = posTileR;
 	int32_t tileOriginC = posTileC;
-	int32_t startCellR = cellRow % MAPCELL_DIM;
-	int32_t startCellC = cellCol % MAPCELL_DIM;
+	int32_t startCellR = cellRow % terrain_const::MAPCELL_DIM;
+	int32_t startCellC = cellCol % terrain_const::MAPCELL_DIM;
 	int32_t cellR = startCellR - 4;
 	int32_t cellC = startCellC - 4;
 	while(cellR < 0)
 	{
 		posTileR--;
-		cellR += MAPCELL_DIM;
+		cellR += terrain_const::MAPCELL_DIM;
 	}
 	while(cellC < 0)
 	{
 		posTileC--;
-		cellC += MAPCELL_DIM;
+		cellC += terrain_const::MAPCELL_DIM;
 	}
 	if(objectClass == GATE)
 		blocksLineOfFire = false;
@@ -990,7 +990,7 @@ void MissionMap::placeTerrainObject(int32_t objectClass, int32_t objectTypeID,
 							map[posTileR * width + posTileC].setCellLOS(cellR, cellC, 0);
 					}
 					cellC++;
-					if(cellC == MAPCELL_DIM)
+					if(cellC == terrain_const::MAPCELL_DIM)
 					{
 						cellC = 0;
 						posTileC++;
@@ -1000,7 +1000,7 @@ void MissionMap::placeTerrainObject(int32_t objectClass, int32_t objectTypeID,
 				posTileC = startCol;
 				cellC = firstCellC;
 				cellR++;
-				if(cellR == MAPCELL_DIM)
+				if(cellR == terrain_const::MAPCELL_DIM)
 				{
 					cellR = 0;
 					posTileR++;
@@ -1040,18 +1040,18 @@ int32_t MissionMap::getOverlayWeight(int32_t cellR, int32_t cellC,
 		if (overlay) {
 			int32_t* overlayWeightTable =
 	   &OverlayWeightTable[moverOverlayWeightClass * NUM_OVERLAY_TYPES *
-	   MAPCELL_DIM * MAPCELL_DIM]; if ((overlayType >=
+	   terrain_const::MAPCELL_DIM * terrain_const::MAPCELL_DIM]; if ((overlayType >=
 	   OVERLAY_GATE_CLAN_NS_OPEN) && (overlayType <= OVERLAY_GATE_IS_EW_CLOSED))
 	   { overlayType = GateOverlayTable[moverRelation][overlayType -
 	   OVERLAY_GATE_CLAN_NS_OPEN]; if (overlayType == -1) return(COST_BLOCKED *
 	   2); else { int32_t overlayCostIndex = OverlayWeightIndex[overlayType] +
-	   cellR * MAPCELL_DIM + cellC;
+	   cellR * terrain_const::MAPCELL_DIM + cellC;
 					return(overlayWeightTable[overlayCostIndex]);
 				}
 				}
 			else {
 				int32_t overlayCostIndex = OverlayWeightIndex[overlayType] +
-	   cellR * MAPCELL_DIM + cellC;
+	   cellR * terrain_const::MAPCELL_DIM + cellC;
 				return(overlayWeightTable[overlayCostIndex]);
 			}
 		}
@@ -5550,8 +5550,8 @@ int32_t MoveMap::calcPathJUMP(
 	// it, at least. Change the blocked tiles to just barely passable...
 	/*	int32_t startULr = startR - 1;
 		int32_t startULc = startC - 1;
-		for (int32_t cellR = 0; cellR < MAPCELL_DIM; cellR++)
-			for (int32_t cellC = 0; cellC < MAPCELL_DIM; cellC++) {
+		for (int32_t cellR = 0; cellR < terrain_const::MAPCELL_DIM; cellR++)
+			for (int32_t cellC = 0; cellC < terrain_const::MAPCELL_DIM; cellC++) {
 				int32_t curCellR = startULr + cellR;
 				int32_t curCellC = startULc + cellC;
 				int32_t mapIndex = curCellR * maxCellWidth + curCellC;
@@ -5804,18 +5804,18 @@ int32_t MoveMap::calcPathJUMP(
 #if 0 // REdo when bridges are done
 	if(ClearBridgeTiles)
 	{
-		overlayWeightTable[OVERLAY_WATER_BRIDGE_NS * MAPCELL_DIM * MAPCELL_DIM + 1] += COST_BLOCKED;
-		overlayWeightTable[OVERLAY_WATER_BRIDGE_NS * MAPCELL_DIM * MAPCELL_DIM + 4] += COST_BLOCKED;
-		overlayWeightTable[OVERLAY_WATER_BRIDGE_NS * MAPCELL_DIM * MAPCELL_DIM + 7] += COST_BLOCKED;
-		overlayWeightTable[OVERLAY_WATER_BRIDGE_EW * MAPCELL_DIM * MAPCELL_DIM + 1] += COST_BLOCKED;
-		overlayWeightTable[OVERLAY_WATER_BRIDGE_EW * MAPCELL_DIM * MAPCELL_DIM + 4] += COST_BLOCKED;
-		overlayWeightTable[OVERLAY_WATER_BRIDGE_EW * MAPCELL_DIM * MAPCELL_DIM + 7] += COST_BLOCKED;
-		overlayWeightTable[OVERLAY_RAILROAD_WATER_BRIDGE_NS * MAPCELL_DIM * MAPCELL_DIM + 1] += COST_BLOCKED;
-		overlayWeightTable[OVERLAY_RAILROAD_WATER_BRIDGE_NS * MAPCELL_DIM * MAPCELL_DIM + 4] += COST_BLOCKED;
-		overlayWeightTable[OVERLAY_RAILROAD_WATER_BRIDGE_NS * MAPCELL_DIM * MAPCELL_DIM + 7] += COST_BLOCKED;
-		overlayWeightTable[OVERLAY_RAILROAD_WATER_BRIDGE_EW * MAPCELL_DIM * MAPCELL_DIM + 1] += COST_BLOCKED;
-		overlayWeightTable[OVERLAY_RAILROAD_WATER_BRIDGE_EW * MAPCELL_DIM * MAPCELL_DIM + 4] += COST_BLOCKED;
-		overlayWeightTable[OVERLAY_RAILROAD_WATER_BRIDGE_EW * MAPCELL_DIM * MAPCELL_DIM + 7] += COST_BLOCKED;
+		overlayWeightTable[OVERLAY_WATER_BRIDGE_NS * terrain_const::MAPCELL_DIM * terrain_const::MAPCELL_DIM + 1] += COST_BLOCKED;
+		overlayWeightTable[OVERLAY_WATER_BRIDGE_NS * terrain_const::MAPCELL_DIM * terrain_const::MAPCELL_DIM + 4] += COST_BLOCKED;
+		overlayWeightTable[OVERLAY_WATER_BRIDGE_NS * terrain_const::MAPCELL_DIM * terrain_const::MAPCELL_DIM + 7] += COST_BLOCKED;
+		overlayWeightTable[OVERLAY_WATER_BRIDGE_EW * terrain_const::MAPCELL_DIM * terrain_const::MAPCELL_DIM + 1] += COST_BLOCKED;
+		overlayWeightTable[OVERLAY_WATER_BRIDGE_EW * terrain_const::MAPCELL_DIM * terrain_const::MAPCELL_DIM + 4] += COST_BLOCKED;
+		overlayWeightTable[OVERLAY_WATER_BRIDGE_EW * terrain_const::MAPCELL_DIM * terrain_const::MAPCELL_DIM + 7] += COST_BLOCKED;
+		overlayWeightTable[OVERLAY_RAILROAD_WATER_BRIDGE_NS * terrain_const::MAPCELL_DIM * terrain_const::MAPCELL_DIM + 1] += COST_BLOCKED;
+		overlayWeightTable[OVERLAY_RAILROAD_WATER_BRIDGE_NS * terrain_const::MAPCELL_DIM * terrain_const::MAPCELL_DIM + 4] += COST_BLOCKED;
+		overlayWeightTable[OVERLAY_RAILROAD_WATER_BRIDGE_NS * terrain_const::MAPCELL_DIM * terrain_const::MAPCELL_DIM + 7] += COST_BLOCKED;
+		overlayWeightTable[OVERLAY_RAILROAD_WATER_BRIDGE_EW * terrain_const::MAPCELL_DIM * terrain_const::MAPCELL_DIM + 1] += COST_BLOCKED;
+		overlayWeightTable[OVERLAY_RAILROAD_WATER_BRIDGE_EW * terrain_const::MAPCELL_DIM * terrain_const::MAPCELL_DIM + 4] += COST_BLOCKED;
+		overlayWeightTable[OVERLAY_RAILROAD_WATER_BRIDGE_EW * terrain_const::MAPCELL_DIM * terrain_const::MAPCELL_DIM + 7] += COST_BLOCKED;
 	}
 #endif
 	if (goalFound)
@@ -6061,8 +6061,8 @@ int32_t MoveMap::calcEscapePath(
 	// it, at least. Change the blocked tiles to just barely passable...
 	/*	int32_t startULr = startR - 1;
 		int32_t startULc = startC - 1;
-		for (int32_t cellR = 0; cellR < MAPCELL_DIM; cellR++)
-			for (int32_t cellC = 0; cellC < MAPCELL_DIM; cellC++) {
+		for (int32_t cellR = 0; cellR < terrain_const::MAPCELL_DIM; cellR++)
+			for (int32_t cellC = 0; cellC < terrain_const::MAPCELL_DIM; cellC++) {
 				int32_t curCellR = startULr + cellR;
 				int32_t curCellC = startULc + cellC;
 				int32_t mapIndex = curCellR * maxCellWidth + curCellC;
@@ -6310,18 +6310,18 @@ int32_t MoveMap::calcEscapePath(
 #if 0 // Redo when bridges are done
 	if(ClearBridgeTiles)
 	{
-		overlayWeightTable[OVERLAY_WATER_BRIDGE_NS * MAPCELL_DIM * MAPCELL_DIM + 1] += COST_BLOCKED;
-		overlayWeightTable[OVERLAY_WATER_BRIDGE_NS * MAPCELL_DIM * MAPCELL_DIM + 4] += COST_BLOCKED;
-		overlayWeightTable[OVERLAY_WATER_BRIDGE_NS * MAPCELL_DIM * MAPCELL_DIM + 7] += COST_BLOCKED;
-		overlayWeightTable[OVERLAY_WATER_BRIDGE_EW * MAPCELL_DIM * MAPCELL_DIM + 1] += COST_BLOCKED;
-		overlayWeightTable[OVERLAY_WATER_BRIDGE_EW * MAPCELL_DIM * MAPCELL_DIM + 4] += COST_BLOCKED;
-		overlayWeightTable[OVERLAY_WATER_BRIDGE_EW * MAPCELL_DIM * MAPCELL_DIM + 7] += COST_BLOCKED;
-		overlayWeightTable[OVERLAY_RAILROAD_WATER_BRIDGE_NS * MAPCELL_DIM * MAPCELL_DIM + 1] += COST_BLOCKED;
-		overlayWeightTable[OVERLAY_RAILROAD_WATER_BRIDGE_NS * MAPCELL_DIM * MAPCELL_DIM + 4] += COST_BLOCKED;
-		overlayWeightTable[OVERLAY_RAILROAD_WATER_BRIDGE_NS * MAPCELL_DIM * MAPCELL_DIM + 7] += COST_BLOCKED;
-		overlayWeightTable[OVERLAY_RAILROAD_WATER_BRIDGE_EW * MAPCELL_DIM * MAPCELL_DIM + 1] += COST_BLOCKED;
-		overlayWeightTable[OVERLAY_RAILROAD_WATER_BRIDGE_EW * MAPCELL_DIM * MAPCELL_DIM + 4] += COST_BLOCKED;
-		overlayWeightTable[OVERLAY_RAILROAD_WATER_BRIDGE_EW * MAPCELL_DIM * MAPCELL_DIM + 7] += COST_BLOCKED;
+		overlayWeightTable[OVERLAY_WATER_BRIDGE_NS * terrain_const::MAPCELL_DIM * terrain_const::MAPCELL_DIM + 1] += COST_BLOCKED;
+		overlayWeightTable[OVERLAY_WATER_BRIDGE_NS * terrain_const::MAPCELL_DIM * terrain_const::MAPCELL_DIM + 4] += COST_BLOCKED;
+		overlayWeightTable[OVERLAY_WATER_BRIDGE_NS * terrain_const::MAPCELL_DIM * terrain_const::MAPCELL_DIM + 7] += COST_BLOCKED;
+		overlayWeightTable[OVERLAY_WATER_BRIDGE_EW * terrain_const::MAPCELL_DIM * terrain_const::MAPCELL_DIM + 1] += COST_BLOCKED;
+		overlayWeightTable[OVERLAY_WATER_BRIDGE_EW * terrain_const::MAPCELL_DIM * terrain_const::MAPCELL_DIM + 4] += COST_BLOCKED;
+		overlayWeightTable[OVERLAY_WATER_BRIDGE_EW * terrain_const::MAPCELL_DIM * terrain_const::MAPCELL_DIM + 7] += COST_BLOCKED;
+		overlayWeightTable[OVERLAY_RAILROAD_WATER_BRIDGE_NS * terrain_const::MAPCELL_DIM * terrain_const::MAPCELL_DIM + 1] += COST_BLOCKED;
+		overlayWeightTable[OVERLAY_RAILROAD_WATER_BRIDGE_NS * terrain_const::MAPCELL_DIM * terrain_const::MAPCELL_DIM + 4] += COST_BLOCKED;
+		overlayWeightTable[OVERLAY_RAILROAD_WATER_BRIDGE_NS * terrain_const::MAPCELL_DIM * terrain_const::MAPCELL_DIM + 7] += COST_BLOCKED;
+		overlayWeightTable[OVERLAY_RAILROAD_WATER_BRIDGE_EW * terrain_const::MAPCELL_DIM * terrain_const::MAPCELL_DIM + 1] += COST_BLOCKED;
+		overlayWeightTable[OVERLAY_RAILROAD_WATER_BRIDGE_EW * terrain_const::MAPCELL_DIM * terrain_const::MAPCELL_DIM + 4] += COST_BLOCKED;
+		overlayWeightTable[OVERLAY_RAILROAD_WATER_BRIDGE_EW * terrain_const::MAPCELL_DIM * terrain_const::MAPCELL_DIM + 7] += COST_BLOCKED;
 	}
 #endif
 	if (goalFound)

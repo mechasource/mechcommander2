@@ -7,7 +7,7 @@
 
 //----------------------------------------------------------------------------------
 // Include Files
-#include "stdafx.h"
+#include "stdinc.h"
 
 #ifndef BITFLAG_H
 #include "bitflag.h"

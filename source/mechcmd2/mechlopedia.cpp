@@ -7,7 +7,7 @@ Mechlopedia.cpp			: Implementation of the Mechlopedia component.
 
 #define MECHLOPEDIA_CPP
 
-#include "stdafx.h"
+#include "stdinc.h"
 #include "mechlopedia.h"
 #include "inifile.h"
 #include <mclib.h>

@@ -8,7 +8,7 @@
 
 //---------------------------------------------------------------------------
 // Include files
-#include "stdafx.h"
+#include "stdinc.h"
 
 // #include <mclib.h>
 

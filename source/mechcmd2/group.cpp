@@ -7,7 +7,7 @@
 //---------------------------------------------------------------------------//
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
-#include "stdafx.h"
+#include "stdinc.h"
 
 // #include <mclib.h>
 
@@ -279,7 +279,7 @@ inline bool inMapBounds(
 //---------------------------------------------------------------------------
 
 #define JUMPMAP_TILE_DIM 3
-#define JUMPMAP_CELL_DIM MAPCELL_DIM* JUMPMAP_TILE_DIM
+#define JUMPMAP_CELL_DIM terrain_const::MAPCELL_DIM* JUMPMAP_TILE_DIM
 
 char CellSpiralIncrement[JUMPMAP_CELL_DIM * JUMPMAP_CELL_DIM * 2] = {-1, 0, 0,
 	1, 1, 0, 1, 0, 0, -1, 0, -1, -1, 0, -1, 0,

@@ -8,7 +8,7 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
-#include "stdafx.h"
+#include "stdinc.h"
 
 //---------------------------------------------------------------------------
 
@@ -562,7 +562,7 @@ bool FitIniFile::booleanToLong(PCSTR num)
 	while (num[testChar] && isspace(num[testChar]))
 		testChar++;
 	if ((toupper(num[testChar]) == 'F') || (toupper(num[testChar]) == '0'))
-		return FALSE;
+		return false;
 	else
 		return (TRUE);
 }
@@ -2187,7 +2187,7 @@ int32_t FitIniFile::writeIdBoolean(PCSTR varName, bool value)
 	if (value)
 		sprintf(thisLine, "b %s = %s\r\n", varName, "TRUE");
 	else
-		sprintf(thisLine, "b %s = %s\r\n", varName, "FALSE");
+		sprintf(thisLine, "b %s = %s\r\n", varName, "false");
 	int32_t result = write((puint8_t)thisLine, strlen(thisLine));
 	return (result);
 }

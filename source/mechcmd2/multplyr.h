@@ -46,7 +46,7 @@ enum NETMESSAGETYPE
 //========================================================================
 class NETMESSAGE
 {
-  public:
+public:
 	NETMESSAGETYPE m_Type; // 0==network message
 	NETPLAYER m_pPlayer;   // player message is to, or who it's from
 	uint32_t m_dwFlags;	// priority, guaranteed, etc.
@@ -304,7 +304,7 @@ typedef struct _CompressedMech
 class WorldChunk
 {
 
-  public:
+public:
 	char type;
 	int16_t tileRC[2];
 	int32_t objectId;
@@ -316,7 +316,7 @@ class WorldChunk
 
 	uint32_t data;
 
-  public:
+public:
 	PVOID operator new(size_t mySize);
 
 	void operator delete(PVOID us);
@@ -547,10 +547,10 @@ class MCMSG_RemoveForce:public FIGuaranteedMessageHeader
 class MCMSG_Generic
 {
 
-  public:
+public:
 	uint8_t type;
 
-  public:
+public:
 	MCMSG_Generic(void) { init(void); }
 
 	void init(void) { type = MCMSG_GENERIC; }
@@ -561,12 +561,12 @@ class MCMSG_Generic
 class MCMSG_PlayerCID
 {
 
-  public:
+public:
 	uint8_t type;
 	char commanderID;
 	uint8_t subType;
 
-  public:
+public:
 	MCMSG_PlayerCID(void) { init(void); }
 
 	void init(void)
@@ -582,7 +582,7 @@ class MCMSG_PlayerCID
 class MCMSG_PlayerUpdate
 {
 
-  public:
+public:
 	uint8_t type;
 	char stage;
 	float senderTime;
@@ -590,7 +590,7 @@ class MCMSG_PlayerUpdate
 	char versionStamp[15];
 	MC2Player info;
 
-  public:
+public:
 	MCMSG_PlayerUpdate(void) { init(void); }
 
 	void init(void)
@@ -606,11 +606,11 @@ class MCMSG_PlayerUpdate
 class MCMSG_MissionSettingsUpdate
 {
 
-  public:
+public:
 	uint8_t type;
 	MissionSettings missionSettings;
 
-  public:
+public:
 	MCMSG_MissionSettingsUpdate(void) { init(void); }
 
 	void init(void) { type = MCMSG_MISSION_SETTINGS_UPDATE; }
@@ -621,14 +621,14 @@ class MCMSG_MissionSettingsUpdate
 class MCMSG_MissionSetup
 {
 
-  public:
+public:
 	uint8_t type;
 	int32_t randomSeed;
 	char subType;
 	char commandersToLoad[MAX_MC_PLAYERS][3];
 	CompressedMech mechData;
 
-  public:
+public:
 	MCMSG_MissionSetup(void) { init(void); }
 
 	void init(void)
@@ -643,11 +643,11 @@ class MCMSG_MissionSetup
 class MCMSG_PlayerInfo
 {
 
-  public:
+public:
 	uint8_t type;
 	char commanderID;
 
-  public:
+public:
 	MCMSG_PlayerInfo(void) { init(void); }
 
 	void init(void)
@@ -664,14 +664,14 @@ class MCMSG_Chat
 
 	// GUARANTEED
 
-  public:
+public:
 	uint8_t type;
 	bool allPlayers;
 	bool isDeadChat;
 	bool hideName;
 	char string[];
 
-  public:
+public:
 	MCMSG_Chat(void) { init(void); }
 
 	void init(void)
@@ -691,11 +691,11 @@ class MCMSG_PlayerCheckIn
 
 	// GUARANTEED
 
-  public:
+public:
 	uint8_t type;
 	char commanderID;
 
-  public:
+public:
 	MCMSG_PlayerCheckIn(void) { init(void); }
 
 	void init(void)
@@ -712,11 +712,11 @@ class MCMSG_PlayerSetup
 
 	// GUARANTEED
 
-  public:
+public:
 	uint8_t type;
 	uint8_t moverData[MAX_MULTIPLAYER_MOVERS];
 
-  public:
+public:
 	MCMSG_PlayerSetup(void) { init(void); }
 
 	void init(void)
@@ -732,14 +732,14 @@ class MCMSG_PlayerSetup
 class MCMSG_PlayerInsignia
 {
 
-  public:
+public:
 	uint8_t type;
 	char commanderID;
 	char fileName[64];
 	int32_t dataSize;
 	uint8_t data[];
 
-  public:
+public:
 	MCMSG_PlayerInsignia(void) { init(void); }
 
 	void init(void) { type = MCMSG_PLAYER_INSIGNIA; }
@@ -752,11 +752,11 @@ class MCMSG_StartMission
 
 	// GUARANTEED
 
-  public:
+public:
 	uint8_t type;
 	int32_t huh;
 
-  public:
+public:
 	MCMSG_StartMission(void) { init(void); }
 
 	void init(void)
@@ -773,13 +773,13 @@ class MCMSG_EndMission
 
 	// GUARANTEED
 
-  public:
+public:
 	uint8_t type;
 	int32_t teamScore[MAX_MC_PLAYERS];
 	int32_t playerScore[MAX_MC_PLAYERS];
 	int32_t result;
 
-  public:
+public:
 	MCMSG_EndMission(void) { init(void); }
 
 	void init(void)
@@ -794,12 +794,12 @@ class MCMSG_EndMission
 class MCMSG_LeaveSession
 {
 
-  public:
+public:
 	uint8_t type;
 	uint8_t subType;
 	char commanderID;
 
-  public:
+public:
 	MCMSG_LeaveSession(void) { init(void); }
 
 	void init(void)
@@ -817,14 +817,14 @@ class MCMSG_PlayerOrder
 
 	// GUARANTEED
 
-  public:
+public:
 	uint8_t type;
 	char commanderID;
 	uint8_t flags;
 	float location[2];
 	uint32_t tacOrderChunk[2];
 
-  public:
+public:
 	MCMSG_PlayerOrder(void) { init(void); }
 
 	void init(void)
@@ -844,12 +844,12 @@ class MCMSG_PlayerOrder
 class MCMSG_HoldPosition
 {
 
-  public:
+public:
 	uint8_t type;
 	char commanderID;
 	uint16_t flags;
 
-  public:
+public:
 	MCMSG_HoldPosition(void) { init(void); }
 
 	void init(void)
@@ -871,14 +871,14 @@ class MCMSG_PlayerMoverGroup
 
 	// GUARANTEED
 
-  public:
+public:
 	uint8_t type;
 	uint8_t action;
 	char commanderID;
 	char groupId;
 	uint16_t moverGroupInfo;
 
-  public:
+public:
 	MCMSG_PlayerMoverGroup(void) { init(void); }
 
 	void init(void)
@@ -897,7 +897,7 @@ class MCMSG_PlayerArtillery
 
 	// GUARANTEED
 
-  public:
+public:
 	uint8_t type;
 	float location[2];
 	uint32_t chunk;
@@ -918,7 +918,7 @@ class MCMSG_PlayerArtillery
 class MCMSG_MoverUpdate
 {
 
-  public:
+public:
 	uint8_t type;
 	int32_t teamScore[MAX_MC_PLAYERS];
 	int32_t playerScore[MAX_MC_PLAYERS];
@@ -927,7 +927,7 @@ class MCMSG_MoverUpdate
 	uint8_t numRLEs;
 	uint8_t moveData[];
 
-  public:
+public:
 	MCMSG_MoverUpdate(void) { init(void); }
 
 	void init(void)
@@ -943,12 +943,12 @@ class MCMSG_MoverUpdate
 class MCMSG_TurretUpdate
 {
 
-  public:
+public:
 	uint8_t type;
 	uint16_t updateId;
 	char targetList[];
 
-  public:
+public:
 	MCMSG_TurretUpdate(void) { init(void); }
 
 	void init(void)
@@ -967,12 +967,12 @@ class MCMSG_MoverWeaponFireUpdate
 
 	// GUARANTEED
 
-  public:
+public:
 	uint8_t type;
 	uint8_t numRLEs;
 	uint8_t weaponFireData[];
 
-  public:
+public:
 	MCMSG_MoverWeaponFireUpdate(void) { init(void); }
 
 	void init(void)
@@ -989,12 +989,12 @@ class MCMSG_TurretWeaponFireUpdate
 
 	// GUARANTEED
 
-  public:
+public:
 	uint8_t type;
 	char numTurrets;
 	uint16_t info[];
 
-  public:
+public:
 	MCMSG_TurretWeaponFireUpdate(void) { init(void); }
 
 	void init(void)
@@ -1011,13 +1011,13 @@ class MCMSG_MoverCriticalUpdate
 
 	// GUARANTEED
 
-  public:
+public:
 	uint8_t type;
 	uint8_t numCritHitChunks[MAX_MULTIPLAYER_MOVERS];
 	uint8_t numRadioChunks[MAX_MULTIPLAYER_MOVERS];
 	uint8_t chunk[];
 
-  public:
+public:
 	MCMSG_MoverCriticalUpdate(void) { init(void); }
 
 	void init(void)
@@ -1038,12 +1038,12 @@ class MCMSG_WeaponHitUpdate
 
 	// GUARANTEED
 
-  public:
+public:
 	uint8_t type;
 	uint8_t numWeaponHits;
 	uint32_t weaponHitChunk[];
 
-  public:
+public:
 	MCMSG_WeaponHitUpdate(void) { init(void); }
 
 	void init()
@@ -1060,13 +1060,13 @@ class MCMSG_WorldUpdate
 
 	// GUARANTEED
 
-  public:
+public:
 	uint8_t type;
 	uint8_t numWorldChanges;
 	uint8_t numArtilleryStrikes;
 	uint32_t worldChunk[];
 
-  public:
+public:
 	MCMSG_WorldUpdate(void) { init(void); }
 
 	void init(void)
@@ -1082,7 +1082,7 @@ class MCMSG_WorldUpdate
 class MCMSG_Reinforcement
 {
 
-  public:
+public:
 	uint8_t type;
 	uint8_t stage;
 	uint8_t rosterIndex;
@@ -1091,7 +1091,7 @@ class MCMSG_Reinforcement
 	char commanderID;
 	float location[2];
 
-  public:
+public:
 	MCMSG_Reinforcement(void) { init(void); }
 
 	void init(void)
@@ -1112,11 +1112,11 @@ class MCMSG_Reinforcement
 class MCMSG_NewServer
 {
 
-  public:
+public:
 	uint8_t type;
 	char ipAddress[16];
 
-  public:
+public:
 	MCMSG_NewServer(void) { init(void); }
 
 	void init(void)
@@ -1133,7 +1133,7 @@ class MCMSG_FileReport
 
 	// GUARANTEED
 
-  public:
+public:
 	uint8_t type;
 	uint32_t checkSum;
 	GUID fileGuid;
@@ -1189,7 +1189,7 @@ typedef enum
 class MultiPlayer
 {
 
-  public:
+public:
 	bool onLAN;
 	bool hostLeft;
 	VersionStatus versionStatus;
@@ -1263,13 +1263,13 @@ class MultiPlayer
 	char sessionName[80];
 	char playerName[80];
 
-	// MC2Player			playerList[MAX_MC_PLAYERS];		// list of players--order
-	// doesn't matter
+	// MC2Player			playerList[MAX_MC_PLAYERS];		// list of
+	// players--order doesn't matter
 	MC2PlayerSlot playerList[MAX_MC_PLAYERS];
 	bool insigniaList[MAX_MC_PLAYERS]; // list of insignia data
 	int32_t insigniaSizeList[MAX_MC_PLAYERS];
-	// int32_t				maxPlayers;						// max number of players allowed in
-	// session
+	// int32_t				maxPlayers;						// max number of players
+	// allowed in session
 	MC2Player
 		playerInfo[MAX_MC_PLAYERS]; // list of players--indexed by commanderID
 
@@ -1340,7 +1340,7 @@ class MultiPlayer
 	static bool registerZone;
 	static int32_t presetDropZones[MAX_MC_PLAYERS];
 
-  public:
+public:
 	PVOID operator new(size_t mySize);
 
 	void operator delete(PVOID us);
@@ -1491,7 +1491,7 @@ class MultiPlayer
 	int32_t addMissionScriptMessageChunk(int32_t code, int32_t param1);
 
 	//		int32_t addTerrainAlignmentChunk (GameObjectPtr object, int32_t
-	//alignment);
+	// alignment);
 
 	int32_t addArtilleryChunk(int32_t artilleryType, int32_t teamId,
 		Stuff::Vector3D location, int32_t seconds);

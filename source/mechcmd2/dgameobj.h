@@ -113,7 +113,7 @@
 
 typedef int32_t GameObjectHandle;
 typedef int32_t GameObjectTypeHandle;
-typedef int32_t GameObjectWatchID;
+typedef uint32_t GameObjectWatchID;
 
 class GameObject;
 typedef GameObject* GameObjectPtr;

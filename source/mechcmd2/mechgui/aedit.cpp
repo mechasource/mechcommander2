@@ -6,7 +6,7 @@ aEdit.cpp			: Implementation of the aEdit component of the GUI library.
 \*************************************************************************************************/
 #define AEDIT_CPP
 
-#include "stdafx.h"
+#include "stdinc.h"
 #include <mechgui/aedit.h>
 #include "userinput.h"
 #include "ctype.h"

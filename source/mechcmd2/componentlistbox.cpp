@@ -8,7 +8,7 @@ component.
 
 #define COMPONENTLISTBOX_CPP
 
-#include "stdafx.h"
+#include "stdinc.h"
 #include "componentlistbox.h"
 #include "logisticsvariant.h"
 #include "logisticscomponent.h"

@@ -7,7 +7,7 @@ LoadScreen.cpp			: Implementation of the LoadScreen component.
 
 #define LOADSCREEN_CPP
 
-#include "stdafx.h"
+#include "stdinc.h"
 //#include <windows.h>
 //#include <ddraw.h>
 #include "loadscreen.h"

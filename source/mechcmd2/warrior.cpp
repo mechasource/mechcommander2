@@ -7,7 +7,7 @@
 //								WARRIOR.CPP
 //
 //***************************************************************************
-#include "stdafx.h"
+#include "stdinc.h"
 
 // #include <mclib.h>
 

@@ -8,7 +8,7 @@ component.
 
 #define LOGISTICSMECHDISPLAY_CPP
 
-#include "stdafx.h"
+#include "stdinc.h"
 #include "logisticsmechdisplay.h"
 #include "logisticsmech.h"
 #include <mclib.h>

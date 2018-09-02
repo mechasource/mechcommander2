@@ -25,9 +25,9 @@ aAnimObject:
 **************************************************************************************************/
 class aAnimObject : public aObject
 {
-  public:
-	aAnimObject(void);
-	virtual ~aAnimObject(void);
+public:
+	aAnimObject(void) {}
+	virtual ~aAnimObject(void) {}
 	aAnimObject& operator=(const aAnimObject& AnimObject);
 
 	int32_t init(FitIniFile* file, PCSTR blockName, uint32_t neverFlush = 0);
@@ -43,7 +43,7 @@ class aAnimObject : public aObject
 
 	aAnimation animInfo;
 
-  private:
+private:
 	aAnimObject(const aAnimObject& src);
 };
 

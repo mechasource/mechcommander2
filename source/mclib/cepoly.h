@@ -40,14 +40,14 @@ struct PolyElementData
 	void init(void)
 	{
 		numVertices		= 0;
-		correctTexture  = FALSE;
-		isClipped		= FALSE;
-		StatusBar		= FALSE;
+		correctTexture  = false;
+		isClipped		= false;
+		StatusBar		= false;
 		textureMap		= 0;
 		width			= 0;
 		height			= 0;
 		hazePalette		= nullptr;
-		drawTranslucent = FALSE;
+		drawTranslucent = false;
 	}
 
 	PolyElementData(void) { init(void); }
@@ -58,7 +58,7 @@ typedef PolyElementData* PolyElementDataPtr;
 //---------------------------------------------------------------------------
 class PolygonElement : public Element
 {
-  public:
+public:
 	PolyElementData polyData;
 
 	PolygonElement(void) { polyData.init(void); }

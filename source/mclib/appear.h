@@ -47,13 +47,13 @@ class Appearance
 {
 	// Data Members
 	//-------------
-  protected:
+protected:
 	Stuff::Vector4D screenPos; // Where am I on Screen? INCLUDES correct Z now!
 
 	bool visible; // Current FOW status to help draw
 	bool seen;	// Current FOW status to help draw
 
-  public:
+public:
 	bool inView;				// Can I be Seen?
 	Stuff::Vector4D upperLeft;  // used to draw select boxes. Can be 3D Now!
 	Stuff::Vector4D lowerRight; // used to draw select boxes.
@@ -63,13 +63,13 @@ class Appearance
 
 	// Member Functions
 	//-----------------
-  public:
+public:
 	PVOID operator new(size_t mySize);
 	void operator delete(PVOID us);
 
 	Appearance(void)
 	{
-		inView		= FALSE;
+		inView		= false;
 		screenPos.x = screenPos.y = screenPos.z = screenPos.w = -999.0f;
 		upperLeft.x = upperLeft.y = upperLeft.z = upperLeft.w = -999.0f;
 		lowerRight.x = lowerRight.y = lowerRight.z = lowerRight.w = -999.0f;
@@ -81,7 +81,7 @@ class Appearance
 	virtual void init(
 		AppearanceTypePtr tree = nullptr, GameObjectPtr obj = nullptr)
 	{
-		inView		= FALSE;
+		inView		= false;
 		screenPos.x = screenPos.y = screenPos.z = screenPos.w = -999.0f;
 		upperLeft.x = upperLeft.y = upperLeft.z = upperLeft.w = -999.0f;
 		lowerRight.x = lowerRight.y = lowerRight.z = lowerRight.w = -999.0f;
@@ -126,7 +126,7 @@ class Appearance
 	{
 		(void)px;
 		(void)py;
-		return FALSE; // Never over a base appearance
+		return false; // Never over a base appearance
 	}
 
 	virtual void drawSelectBox(uint32_t color);
@@ -144,7 +144,7 @@ class Appearance
 	{
 		//-------------------------------------------------------
 		// returns TRUE is this appearance is Visible this frame
-		inView = FALSE;
+		inView = false;
 		return inView;
 	}
 

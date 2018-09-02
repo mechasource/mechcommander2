@@ -41,7 +41,7 @@ typedef enum
 class BuildingType : public ObjectType
 {
 
-  public:
+public:
 	float damageLevel;
 	float sensorRange;
 	int32_t teamId;
@@ -65,7 +65,7 @@ class BuildingType : public ObjectType
 
 	uint32_t activityEffectId;
 
-  public:
+public:
 	void init(void);
 
 	BuildingType(void)
@@ -113,7 +113,7 @@ typedef struct _BuildingData : public TerrainObjectData
 
 class Building : public TerrainObject
 {
-  public:
+public:
 	char teamId;
 	uint8_t baseTileId;
 	SensorSystemPtr sensorSystem;
@@ -130,7 +130,7 @@ class Building : public TerrainObject
 	float proximityTimer;
 	int32_t updatedTurn;
 
-  public:
+public:
 	virtual void init(bool create)
 	{
 		sensorSystem = nullptr;
@@ -306,11 +306,12 @@ class Building : public TerrainObject
 	virtual bool isSpecialBuilding(void)
 	{
 		BuildingTypePtr bldgType = ((BuildingTypePtr)getObjectType());
-		//			if ((bldgType->getObjTypeNum() == GENERIC_HQ_BUILDING_OBJNUM)
+		//			if ((bldgType->getObjTypeNum() ==
+		// GENERIC_HQ_BUILDING_OBJNUM)
 		//|| 				(bldgType->getObjTypeNum() ==
-		//GENERIC_DESTRUCTIBLE_RESOURCE_BUILDING_OBJNUM) ||
+		// GENERIC_DESTRUCTIBLE_RESOURCE_BUILDING_OBJNUM) ||
 		//				(bldgType->getObjTypeNum() ==
-		//GENERIC_INDESTRUCTIBLE_RESOURCE_BUILDING_OBJNUM))
+		// GENERIC_INDESTRUCTIBLE_RESOURCE_BUILDING_OBJNUM))
 		//				return(true);
 		if ((bldgType->perimeterAlarmRange > 0.0f) &&
 				(bldgType->perimeterAlarmTimer > 0.0f) ||

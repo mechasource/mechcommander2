@@ -134,7 +134,7 @@ class PlugIterator : public Iterator
 	//
   public:
 	explicit PlugIterator(
-		Plug* plug, RegisteredClass::ClassID class_to_iterate = NullClassID);
+		Plug* plug, RegisteredClass::ClassID class_to_iterate = static_cast<RegisteredClass::ClassID>(__stuff_attributeids::NullClassID));
 	PlugIterator(const PlugIterator& iterator);
 	~PlugIterator(void);
 

@@ -8,14 +8,14 @@
 
 //---------------------------------------------------------------------------
 // Include files
-#include "stdafx.h"
+#include "stdinc.h"
 // #include <ctype.h>
 // #include "windows.h"
+// #include <string.h>
 
-#ifndef CIDENT_H
+#include "dstd.h"
+#include "dident.h"
 #include "cident.h"
-#endif
-
 #include "heap.h"
 
 #ifndef _MBCS
@@ -32,7 +32,6 @@
 //---------------------------------------------------------------------------
 //								FullPathFileName
 //---------------------------------------------------------------------------
-FullPathFileName::~FullPathFileName(void) { destroy(); }
 
 //---------------------------------------------------------------------------
 void FullPathFileName::destroy(void)
@@ -77,10 +76,4 @@ void FullPathFileName::changeExt(PSTR from, PSTR to)
 			ext[i] = to[i];
 	}
 }
-//---------------------------------------------------------------------------
-//
-// Edit Log
-//
-// $Log$
-//
-//---------------------------------------------------------------------------
+

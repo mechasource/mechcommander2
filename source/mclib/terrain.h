@@ -25,48 +25,60 @@
 //#include "dvertex.h"
 //#include "clouds.h"
 
+class Vertex;
+class TerrainQuad;
+
 //---------------------------------------------------------------------------
 // Macro Definitions
+enum class terrain_const : uint32_t
+{
+	MAPCELL_DIM			= 3,
+	MAX_MAP_CELL_WIDTH	= 720
+};
 
-#define MAPCELL_DIM 3
-#define MAX_MAP_CELL_WIDTH 720
-#define TACMAP_SIZE 128.f
+const float TACMAP_SIZE = 128.f;
 
 //------------------------------------------------
 // Put back in Move code when Glenn moves it over.
 // 07/28/99 these numbers didn't correspond to clan/IS despite comment, so I
 // chagned 'em. These MUST be these numbers or the game will not mark LOS
 // correctly!
-#define NOTEAM -1
-//#define TEAM1					0 	//this is PLAYER TEAM -- Single Player
-#define TEAM2 1 // this is OPFOR TEAM -- Single Player
-#define TEAM3 2 // this is allies
-#define TEAM4 3
-#define TEAM5 4
-#define TEAM6 5
-#define TEAM7 6
-#define TEAM8 7
+enum class team : uint32_t 
+{
+	NOTEAM	= 0xFFFFFFFF,
+	TEAM1	= 0,			// this is PLAYER TEAM -- Single Player
+	TEAM2	= TEAM1 + 1,	// this is OPFOR TEAM -- Single Player
+	TEAM3	= TEAM1 + 2,	// this is allies
+	TEAM4	= TEAM1 + 3,
+	TEAM5	= TEAM1 + 4,
+	TEAM6	= TEAM1 + 5,
+	TEAM7	= TEAM1 + 6,
+	TEAM8	= TEAM1 + 7
+};
 
 //-------------------------------------------
 // 08/01/99 -- Must have generic alignments or Heidi goes WAY south!
-#define EDITOR_TEAMNONE -1 // Allied
-#define EDITOR_TEAM1 0	 // Player
-#define EDITOR_TEAM2 1	 // Enemy
-#define EDITOR_TEAM3 2
-#define EDITOR_TEAM4 3
-#define EDITOR_TEAM5 4
-#define EDITOR_TEAM6 5
-#define EDITOR_TEAM7 6
-#define EDITOR_TEAM8 7
+enum class editor_team : uint32_t
+{
+	EDITOR_TEAMNONE	= 0xFFFFFFFF,			// Allied
+	EDITOR_TEAM1	= 0,					// Player
+	EDITOR_TEAM2	= EDITOR_TEAM1 + 1,		// Enemy
+	EDITOR_TEAM3	= EDITOR_TEAM1 + 2,
+	EDITOR_TEAM4	= EDITOR_TEAM1 + 3,
+	EDITOR_TEAM5	= EDITOR_TEAM1 + 4,
+	EDITOR_TEAM6	= EDITOR_TEAM1 + 5,
+	EDITOR_TEAM7	= EDITOR_TEAM1 + 6,
+	EDITOR_TEAM8	= EDITOR_TEAM1 + 7
+};
 
 //---------------------------------------------------------------------------
 // Used by the object system to load the objects on the terrain.
 typedef struct _ObjBlockInfo
 {
-	bool active;
-	int32_t numCollidableObjects;
-	int32_t numObjects;  // includes collidable objects
-	int32_t firstHandle; // collidables, followed by non
+	uint32_t	numCollidableObjects;
+	uint32_t	numObjects;				// includes collidable objects
+	uint32_t	firstHandle;			// collidables, followed by non
+	bool		active;
 } ObjBlockInfo;
 
 //---------------------------------------------------------------------------
@@ -75,17 +87,15 @@ typedef struct _ObjBlockInfo
 // between
 class Terrain
 {
-	// Data Members
-	//-------------
-  protected:
+protected:
+
 	uint32_t terrainHeapSize;
+	uint32_t numberVertices;
+	uint32_t numberQuads;
+	std::unique_ptr<Vertex>			vertexList;
+	std::unique_ptr<TerrainQuad>	quadList;
 
-	int32_t numberVertices;
-	int32_t numberQuads;
-	VertexPtr vertexList;
-	TerrainQuadPtr quadList;
-
-  public:
+public:
 	// For editor
 	static int32_t userMin;
 	static int32_t userMax;
@@ -94,8 +104,7 @@ class Terrain
 	static uint8_t fractalNoise;
 
 	static int32_t halfVerticesMapSide; // Half of the below value.
-	static int32_t
-		realVerticesMapSide; // Number of vertices on each side of map.
+	static int32_t realVerticesMapSide; // Number of vertices on each side of map.
 
 	static const int32_t verticesBlockSide; // Always 20.
 	static int32_t blocksMapSide;			// Calced from above and
@@ -108,8 +117,8 @@ class Terrain
 	static const float worldUnitsPerVertex; // How many world Units between each
 											// vertex.  128.0f in current
 											// universe.
-	static const float worldUnitsPerCell; // How many world units between
-										  // cells.  42.66666667f ALWAYS!!!!
+	static const float worldUnitsPerCell;   // How many world units between
+											// cells.  42.66666667f ALWAYS!!!!
 	static const float halfWorldUnitsPerCell; // Above divided by two.
 	static const float
 		metersPerCell; // Number of meters per cell.  8.53333333f ALWAYS!!
@@ -130,10 +139,10 @@ class Terrain
 	static TerrainColorMapPtr terrainTextures2; // Pointer to class that manages
 												// the NEW color map terrain
 												// texture.
-	static UserHeapPtr terrainHeap; // Heap used for terrain.
+	static UserHeapPtr terrainHeap;				// Heap used for terrain.
 
-	//		static ByteFlag							*VisibleBits;				//What can currently
-	//be seen
+	//		static ByteFlag							*VisibleBits;				//What
+	//can  currently  be seen
 
 	static char* terrainName; // Name of terrain data file.
 	static char*
@@ -172,7 +181,7 @@ class Terrain
 
 	// Member Functions
 	//-----------------
-  public:
+public:
 	void init(void);
 
 	Terrain(void) { init(void); }
@@ -366,7 +375,7 @@ inline void Terrain::tileCellToWorld(int32_t tileR, int32_t tileC,
 {
 	if ((tileC < 0) || (tileR < 0) || (tileC >= Terrain::realVerticesMapSide) ||
 		(tileR >= Terrain::realVerticesMapSide) || (cellC < 0) || (cellR < 0) ||
-		(cellC >= MAPCELL_DIM) || (cellR >= MAPCELL_DIM))
+		(cellC >= terrain_const::MAPCELL_DIM) || (cellR >= terrain_const::MAPCELL_DIM))
 	{
 #ifdef _DEBUG
 		PAUSE(("called cellToWorld with tile or cell out of bounds. TC:%d "
@@ -391,8 +400,8 @@ inline void Terrain::cellToWorld(
 	int32_t cellR, int32_t cellC, Stuff::Vector3D& worldPos)
 {
 	if ((cellR < 0) || (cellC < 0) ||
-		(cellR >= (Terrain::realVerticesMapSide * MAPCELL_DIM)) ||
-		(cellC >= (Terrain::realVerticesMapSide * MAPCELL_DIM)))
+		(cellR >= (Terrain::realVerticesMapSide * terrain_const::MAPCELL_DIM)) ||
+		(cellC >= (Terrain::realVerticesMapSide * terrain_const::MAPCELL_DIM)))
 	{
 #ifdef _DEBUG
 		PAUSE(

@@ -5,7 +5,7 @@
 //----------------------------------------------------------------------------
 // Global Fast File Code.
 //
-#include "stdafx.h"
+#include "stdinc.h"
 #include "heap.h"
 #include "fastfile.h"
 //#include <ctype.h>
@@ -19,7 +19,7 @@ bool FastFileInit(PSTR fname)
 	if (numFastFiles == maxFastFiles)
 	{
 		ffLastError = -1;
-		return FALSE;
+		return false;
 	}
 	//-----------------------------------------------------------------------------
 	//-- Open this fast file, add it to the list O pointers and return TRUE if
@@ -29,7 +29,7 @@ bool FastFileInit(PSTR fname)
 	if (result == FASTFILE_VERSION)
 	{
 		ffLastError = result;
-		return FALSE;
+		return false;
 	}
 	numFastFiles++;
 	return TRUE;

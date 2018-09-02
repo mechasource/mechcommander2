@@ -6,31 +6,15 @@
 
 // #define ATTRIBUTEMETER_CPP
 
-#include "stdafx.h"
+#include "stdinc.h"
 #include "utilities.h"
 #include "attributemeter.h"
 #include "file.h"
 #include "inifile.h"
-#include <mclib.h>
+//#include <mclib.h>
 
 extern int32_t helpTextID;
 extern int32_t helpTextHeaderID;
-
-AttributeMeter::AttributeMeter()
-{
-	memset(&outsideRect, 0, sizeof(outsideRect));
-	unitHeight   = 0;
-	unitWidth	= 0;
-	unitCount	= 0;
-	skipWidth	= 0;
-	rectColor	= 0;
-	colorMin	 = 0xff005392;
-	colorMax	 = 0xffcdeaff;
-	numBars		 = 0;
-	percent		 = 0;
-	addedPercent = 0;
-	bShow		 = 1;
-}
 
 bool AttributeMeter::pointInside(int32_t mouseX, int32_t mouseY) const
 {

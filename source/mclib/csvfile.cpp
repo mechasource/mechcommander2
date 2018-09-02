@@ -10,7 +10,7 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
-#include "stdafx.h"
+#include "stdinc.h"
 
 #ifndef CSVFILE_H
 #include "csvfile.h"
@@ -489,7 +489,7 @@ bool CSVFile::booleanToLong(PSTR num)
 	// 'N' == NO if you can believe that
 	if ((toupper(num[testChar]) == 'F') || (toupper(num[testChar]) == '0') ||
 		(toupper(num[testChar]) == 'N'))
-		return FALSE;
+		return false;
 	else
 		return (TRUE);
 }

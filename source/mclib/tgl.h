@@ -178,11 +178,11 @@ typedef struct _TG_Light
 	uint32_t lightType; // Ambient, directional, etc.
 	bool active;		// Should this light be considered on?
 
-  protected:
+protected:
 	uint32_t aRGB; // Color
 	uint32_t OEMaRGB;
 
-  public:
+public:
 	float intensity;		  // How Bright
 	float closeDistance;	  // Distance out light is constant
 	float farDistance;		  // Distance at which light is off
@@ -346,7 +346,7 @@ class TG_TypeNode
 {
 	//---------------
 	// Data Members
-  protected:
+protected:
 	Stuff::Point3D nodeCenter;
 	Stuff::Point3D relativeNodeCenter;
 	char nodeId[TG_NODE_ID];
@@ -354,8 +354,8 @@ class TG_TypeNode
 
 	//---------------------
 	// Member Functions
-  protected:
-  public:
+protected:
+public:
 	PVOID operator new(size_t mySize);
 	void operator delete(PVOID us);
 
@@ -482,7 +482,7 @@ class TG_TypeShape : public TG_TypeNode
 
 	//-------------
 	// Data Members
-  protected:
+protected:
 	uint32_t numTypeVertices;  // Number of vertices in Shape
 	uint32_t numTypeTriangles; // NUmber of triangles in Shape
 	uint32_t numTextures;	  // Number of textures in Shape
@@ -496,16 +496,16 @@ class TG_TypeShape : public TG_TypeNode
 		hotPinkRGB; // Stores the value for this shape to replace hot Pink With
 	uint32_t hotYellowRGB; // Stores the value for this shape to replace hot
 						   // Yellow With
-	uint32_t hotGreenRGB; // Stores the value for this shape to replace hot
-						  // Green With
+	uint32_t hotGreenRGB;  // Stores the value for this shape to replace hot
+						   // Green With
 
 	bool alphaTestOn; // Decides if we should draw alphaTest On or not!
 	bool filterOn;	// Decides if we should filter the shape or not!
 
 	//-----------------
 	// Member Functions
-  protected:
-  public:
+protected:
+public:
 	virtual void init(void)
 	{
 		numTypeVertices = numTypeTriangles = numTextures = 0;
@@ -614,7 +614,7 @@ class TG_Shape
 
 	//-------------
 	// Data Members
-  protected:
+protected:
 	TG_TypeNodePtr myType;		// Pointer to the instance of the shape.
 	uint32_t numVertices;		// Number of vertices in Shape
 	uint32_t numTriangles;		// NUmber of triangles in Shape
@@ -657,7 +657,7 @@ class TG_Shape
 
 	uint32_t lastTurnTransformed;
 
-  public:
+public:
 	// Matrices used to transform the shapes.
 	static Stuff::LinearMatrix4D* cameraOrigin;
 	static Stuff::Matrix4D* cameraToClip;
@@ -687,8 +687,8 @@ class TG_Shape
 
 	//-----------------
 	// Member Functions
-  protected:
-  public:
+protected:
+public:
 	PVOID operator new(size_t mySize);
 	void operator delete(PVOID us);
 
@@ -739,11 +739,11 @@ class TG_Shape
 	// This function does exactly what TranformShape does EXCEPT that the
 	// shapeToClip,  Lighting and backface matrices have been calculated in the
 	// step above this one.  This saves enormous processor cycles when matrices
-	// are the same and transforms  Can just be run from the same matrices without
-	// recalcing them!  Function returns -1 if all vertex screen positions are off
-	// screen.  Function returns 0 if any one vertex screen position is off
-	// screen.  Function returns 1 is all vertex screen positions are on screen.
-	// NOTE:  THIS IS NOT A RIGOROUS CLIP!!!!!!!!!
+	// are the same and transforms  Can just be run from the same matrices
+	// without recalcing them!  Function returns -1 if all vertex screen
+	// positions are off screen.  Function returns 0 if any one vertex screen
+	// position is off screen.  Function returns 1 is all vertex screen
+	// positions are on screen. NOTE:  THIS IS NOT A RIGOROUS CLIP!!!!!!!!!
 	int32_t MultiTransformShape(Stuff::Matrix4D* shapeToClip,
 		Stuff::Point3D* backFacePoint, TG_ShapeRecPtr parentNode,
 		bool isHudElement, uint8_t alphaValue, bool isClamped);
@@ -787,14 +787,14 @@ typedef TG_Shape* TG_ShapePtr;
 
 class TG_VertexPool
 {
-  protected:
+protected:
 	TG_Vertex* tgVertexPool;
 	TG_Vertex* nextVertex;
 
 	uint32_t totalVertices;
 	uint32_t numVertices;
 
-  public:
+public:
 	TG_VertexPool(void)
 	{
 		tgVertexPool = nextVertex = nullptr;
@@ -841,14 +841,14 @@ class TG_VertexPool
 
 class TG_GOSVertexPool
 {
-  protected:
+protected:
 	gos_VERTEX* gVertexPool;
 	gos_VERTEX* nextVertex;
 
 	uint32_t totalVertices;
 	uint32_t numVertices;
 
-  public:
+public:
 	TG_GOSVertexPool(void)
 	{
 		gVertexPool = nextVertex = nullptr;
@@ -895,14 +895,14 @@ class TG_GOSVertexPool
 
 class TG_TrianglePool
 {
-  protected:
+protected:
 	TG_Triangle* trianglePool;
 	TG_Triangle* nextTriangle;
 
 	uint32_t totalTriangles;
 	uint32_t numTriangles;
 
-  public:
+public:
 	TG_TrianglePool(void)
 	{
 		trianglePool = nextTriangle = nullptr;
@@ -949,14 +949,14 @@ class TG_TrianglePool
 
 class TG_ShadowPool
 {
-  protected:
+protected:
 	TG_ShadowVertexTemp* tVertexPool;
 	TG_ShadowVertexTemp* nextVertex;
 
 	uint32_t totalVertices;
 	uint32_t numVertices;
 
-  public:
+public:
 	TG_ShadowPool(void)
 	{
 		tVertexPool = nextVertex = nullptr;
@@ -1003,14 +1003,14 @@ class TG_ShadowPool
 
 class TG_DWORDPool
 {
-  protected:
+protected:
 	uint32_t* triPool;
 	uint32_t* nextTri;
 
 	uint32_t totalTriangles;
 	uint32_t numTriangles;
 
-  public:
+public:
 	TG_DWORDPool(void)
 	{
 		triPool = nextTri = nullptr;

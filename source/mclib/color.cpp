@@ -7,7 +7,7 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
-#include "stdafx.h"
+#include "stdinc.h"
 
 #ifndef COLOR_H
 #include "color.h"
@@ -38,8 +38,10 @@ int32_t numColorRGBTables = 0;
 //----------------------------------------------------------------------------------
 void initColorTables(void)
 {
-	FullPathFileName colorPath;
-	colorPath.init(cameraPath, "colors", ".fit");
+	stdfs::path colorPath;		// FullPathFileName colorPath;
+	GetMcDataPath(colorPath, data_paths::cameraPath);
+	colorPath.append(L"colors.fit");
+
 	FitIniFile colorFile;
 	int32_t result = colorFile.open(colorPath);
 	gosASSERT(result == NO_ERROR);

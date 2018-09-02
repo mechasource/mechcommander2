@@ -6,98 +6,67 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
-#include "stdafx.h"
+#include "stdinc.h"
+
+#include <gameos.hpp>
+//#include <toolos.hpp>
+//#include <stuff/stuff.hpp>
+//#include <mlr/mlr.hpp>
+//#include <gosfx/gosfxheaders.hpp>
+
 
 //-----------------------------------
 // Include Files
 // #include <mclib.h>
 
-#ifndef MISSION_H
-#include "mission.h"
-#endif
-
-#ifndef UNITDESG_H
-#include "unitdesg.h"
-#endif
-
-#ifndef LOGISTICS_H
-#include "logistics.h"
-#endif
-
-#include "gamesound.h"
-#ifndef SOUNDS_H
-#include "sounds.h"
-#endif
-
-#ifndef MULTPLYR_H
-#include "multplyr.h"
-#endif
-
-#ifndef TEAM_H
-#include "team.h"
-#endif
-
-#ifndef VERSION_H
-#include "version.h"
-#endif
-
-#ifndef TURRET_H
-#include "turret.h"
-#endif
-
-#ifndef OPTIONSSCREENWRAPPER_H
-#include "OptionsScreenWrapper.h"
-#endif
-
-#ifndef GAMELOG_H
-#include "gamelog.h"
-#endif
-
-#ifndef LOGISTICSDIALOG_H
-#include "logisticsdialog.h"
-#endif '
-
-#ifndef PREFS_H
+//#include "mission.h"
+//#include "unitdesg.h"
+//#include "logistics.h"
+//#include "gamesound.h"
+//#include "sounds.h"
+//#include "multplyr.h"
+//#include "team.h"
+//#include "version.h"
+//#include "turret.h"
+//#include "OptionsScreenWrapper.h"
+//#include "gamelog.h"
+//#include "logisticsdialog.h"
 #include "prefs.h"
-#endif
 
 extern CPrefs prefs;
 
-#include "..\resource.h"
+//#include "..\resource.h"
 
-#include <gameos.hpp>
-#include <ToolOS.hpp>
-#include <Stuff\stuff.hpp>
-#include <mlr/mlr.hpp>
-#include <GosFX\gosfxheaders.hpp>
 
 //------------------------------------------------------------------------------------------------------------
-// MechCmdr2 Global Instances of Things
-UserHeapPtr systemHeap = nullptr;
-UserHeapPtr guiHeap	= nullptr;
+// MechCmdr2 Global Instances of Things	- ugh!
 
-FastFile** fastFiles = nullptr;
-int32_t numFastFiles = 0;
-int32_t maxFastFiles = 0;
+//UserHeapPtr systemHeap = nullptr;
+//UserHeapPtr guiHeap	= nullptr;
 
-int32_t GameDifficulty = 0;
-int32_t gammaLevel	 = 0;
+//FastFile** fastFiles = nullptr;
+//int32_t numFastFiles = 0;
+//int32_t maxFastFiles = 0;
+
+uint32_t GameDifficulty			= 0;
+uint32_t gammaLevel				= 0;
 extern int32_t DigitalMasterVolume;
 extern int32_t MusicVolume;
 extern int32_t sfxVolume;
 extern int32_t RadioVolume;
 extern int32_t BettyVolume;
-int32_t resolution			  = 0;
-int32_t renderer			  = 0;
-int32_t FilterState			  = gos_FilterNone;
-bool quitGame				  = FALSE;
-bool justStartMission		  = FALSE;
-bool gamePaused				  = FALSE;
-bool hasGuardBand			  = false;
-bool canMultiTextureDetail	= false;
-bool useUnlimitedAmmo		  = true;
-bool useLeftRightMouseProfile = true; // if false, use old style commands
-bool justResaveAllMaps		  = false;
+int32_t resolution				= 0;
+int32_t renderer				= 0;
+int32_t FilterState				= gos_FilterNone;
+
+bool quitGame					= false;
+bool justStartMission			= false;
+bool gamePaused					= false;
+bool hasGuardBand				= false;
+bool canMultiTextureDetail		= false;
+bool useUnlimitedAmmo			= true;
+bool useLeftRightMouseProfile	= true; // if false, use old style commands
+bool justResaveAllMaps			= false;
 extern bool useWaterInterestTexture;
 extern bool useShadows;
 
@@ -185,7 +154,6 @@ extern bool useRealLOS;
 bool reloadBounds = false;
 
 extern int32_t DrawDebugCells;
-
 extern int32_t GameVisibleVertices;
 
 bool EULAShown = false;
@@ -198,7 +166,8 @@ extern bool gNoDialogs;
 TG_MultiShape testShape[36];
 TG_AnimateShape testAnim[36];
 
-Stuff::Vector3D pos[36] = {Stuff::Vector3D(-3400.0f, 3000.0f, -1.0f),
+Stuff::Vector3D pos[36] = {
+	Stuff::Vector3D(-3400.0f, 3000.0f, -1.0f),
 	Stuff::Vector3D(-3300.0f, 2700.0f, -1.0f),
 	Stuff::Vector3D(-3300.0f, 2800.0f, -1.0f),
 	Stuff::Vector3D(-3300.0f, 2900.0f, -1.0f),
@@ -1038,83 +1007,82 @@ void InitializeGameEngine()
 			{
 				int32_t result =
 					systemFile->readIdULong("systemHeapSize", systemHeapSize);
-				gosASSERT(result == NO_ERROR);
+				gosASSERT(SUCCEEDED(result));
 
 				result = systemFile->readIdULong("guiHeapSize", guiHeapSize);
-				gosASSERT(result == NO_ERROR);
+				gosASSERT(SUCCEEDED(result));
 
 				result = systemFile->readIdULong(
 					"logisticsHeapSize", logisticsHeapSize);
-				gosASSERT(result == NO_ERROR);
+				gosASSERT(SUCCEEDED(result));
 			}
 
 #ifdef _DEBUG
-			int32_t systemPathResult =
+			HRESULT systemPathResult =
 #endif
 				systemFile->seekBlock("systemPaths");
 			gosASSERT(systemPathResult == NO_ERROR);
 			{
-				int32_t result =
-					systemFile->readIdString("terrainPath", terrainPath, 79);
-				gosASSERT(result == NO_ERROR);
+				HRESULT result = systemFile->readIdString("terrainPath", terrainPath, 79);
+				gosASSERT(SUCCEEDED(result));
 
 				result = systemFile->readIdString("artPath", artPath, 79);
-				gosASSERT(result == NO_ERROR);
+				gosASSERT(SUCCEEDED(result));
 
 				result = systemFile->readIdString("fontPath", fontPath, 79);
-				gosASSERT(result == NO_ERROR);
+				gosASSERT(SUCCEEDED(result));
 
 				result = systemFile->readIdString("savePath", savePath, 79);
-				gosASSERT(result == NO_ERROR);
+				gosASSERT(SUCCEEDED(result));
 
 				result = systemFile->readIdString("spritePath", spritePath, 79);
-				gosASSERT(result == NO_ERROR);
+				gosASSERT(SUCCEEDED(result));
 
 				result = systemFile->readIdString("shapesPath", shapesPath, 79);
-				gosASSERT(result == NO_ERROR);
+				gosASSERT(SUCCEEDED(result));
 
 				result = systemFile->readIdString("soundPath", soundPath, 79);
-				gosASSERT(result == NO_ERROR);
+				gosASSERT(SUCCEEDED(result));
 
 				result = systemFile->readIdString("objectPath", objectPath, 79);
-				gosASSERT(result == NO_ERROR);
+				gosASSERT(SUCCEEDED(result));
 
 				result = systemFile->readIdString("cameraPath", cameraPath, 79);
-				gosASSERT(result == NO_ERROR);
+				gosASSERT(SUCCEEDED(result));
 
 				result = systemFile->readIdString("tilePath", tilePath, 79);
-				gosASSERT(result == NO_ERROR);
+				gosASSERT(SUCCEEDED(result));
 
 				result =
 					systemFile->readIdString("missionPath", missionPath, 79);
-				gosASSERT(result == NO_ERROR);
+				gosASSERT(SUCCEEDED(result));
 
 				result =
 					systemFile->readIdString("warriorPath", warriorPath, 79);
-				gosASSERT(result == NO_ERROR);
+				gosASSERT(SUCCEEDED(result));
 
 				result =
 					systemFile->readIdString("profilePath", profilePath, 79);
-				gosASSERT(result == NO_ERROR);
+				gosASSERT(SUCCEEDED(result));
 
 				result = systemFile->readIdString(
 					"interfacepath", interfacePath, 79);
-				gosASSERT(result == NO_ERROR);
+				gosASSERT(SUCCEEDED(result));
 
 				result = systemFile->readIdString("moviepath", moviePath, 79);
-				gosASSERT(result == NO_ERROR);
+				gosASSERT(SUCCEEDED(result));
 
 				result =
 					systemFile->readIdString("CDsoundPath", CDsoundPath, 79);
-				gosASSERT(result == NO_ERROR);
+				gosASSERT(SUCCEEDED(result));
 
 				result =
 					systemFile->readIdString("CDmoviepath", CDmoviePath, 79);
-				gosASSERT(result == NO_ERROR);
+				gosASSERT(SUCCEEDED(result));
 
 				result =
 					systemFile->readIdString("CDspritePath", CDspritePath, 79);
-				gosASSERT(result == NO_ERROR);
+				gosASSERT(SUCCEEDED(result));
 			}
 
 #ifdef _DEBUG
@@ -1125,9 +1093,10 @@ void InitializeGameEngine()
 			{
 				int32_t result =
 					systemFile->readIdLong("NumFastFiles", maxFastFiles);
-				if (result != NO_ERROR)
+				if (FAILED(result))
 					maxFastFiles = 0;
 
+#if _CONSIDERED_OBSOLETE
 				if (maxFastFiles)
 				{
 					fastFiles =
@@ -1149,15 +1118,15 @@ void InitializeGameEngine()
 					}
 				}
 			}
-
-			int32_t result = systemFile->seekBlock("UseMusic");
-			if (result == NO_ERROR)
+#endif
+			HRESULT result = systemFile->seekBlock("UseMusic");
+			if (SUCCEEDED(result))
 				useMusic = TRUE;
 			else
 				useMusic = FALSE;
 
 			result = systemFile->seekBlock("UseSound");
-			if (result == NO_ERROR)
+			if (SUCCEEDED(result))
 			{
 				useSound = TRUE;
 			}
@@ -1168,43 +1137,41 @@ void InitializeGameEngine()
 			}
 
 			result = systemFile->seekBlock("CameraSettings");
-			if (result == NO_ERROR)
+			if (SUCCEEDED(result))
 			{
-				result = systemFile->readIdFloat(
-					"MaxPerspective", Camera::MAX_PERSPECTIVE);
-				if (result != NO_ERROR)
+				result = systemFile->readIdFloat("MaxPerspective", Camera::MAX_PERSPECTIVE);
+				if (FAILED(result))
 					Camera::MAX_PERSPECTIVE = 88.0f;
 				if (Camera::MAX_PERSPECTIVE > 90.0f)
 					Camera::MAX_PERSPECTIVE = 90.0f;
-				result = systemFile->readIdFloat(
-					"MinPerspective", Camera::MIN_PERSPECTIVE);
-				if (result != NO_ERROR)
+				result = systemFile->readIdFloat("MinPerspective", Camera::MIN_PERSPECTIVE);
+				if (FAILED(result))
 					Camera::MIN_PERSPECTIVE = 18.0f;
-				if (Camera::MIN_PERSPECTIVE < 0.0f)
+				if (Camera::MIN_PERSPECTIVE < 0.0f) 
 					Camera::MIN_PERSPECTIVE = 0.0f;
 				result = systemFile->readIdFloat("MaxOrtho", Camera::MAX_ORTHO);
-				if (result != NO_ERROR)
+				if (FAILED(result))
 					Camera::MAX_ORTHO = 88.0f;
 				if (Camera::MAX_ORTHO > 90.0f)
 					Camera::MAX_ORTHO = 90.0f;
 				result = systemFile->readIdFloat("MinOrtho", Camera::MIN_ORTHO);
-				if (result != NO_ERROR)
+				if (FAILED(result))
 					Camera::MIN_ORTHO = 18.0f;
 				if (Camera::MIN_ORTHO < 0.0f)
 					Camera::MIN_ORTHO = 0.0f;
 				result = systemFile->readIdFloat(
 					"AltitudeMinimum", Camera::AltitudeMinimum);
-				if (result != NO_ERROR)
+				if (FAILED(result))
 					Camera::AltitudeMinimum = 560.0f;
 				if (Camera::AltitudeMinimum < 110.0f)
 					Camera::AltitudeMinimum = 110.0f;
 				result = systemFile->readIdFloat(
 					"AltitudeMaximumHi", Camera::AltitudeMaximumHi);
-				if (result != NO_ERROR)
+				if (FAILED(result))
 					Camera::AltitudeMaximumHi = 1600.0f;
 				result = systemFile->readIdFloat(
 					"AltitudeMaximumLo", Camera::AltitudeMaximumLo);
-				if (result != NO_ERROR)
+				if (FAILED(result))
 					Camera::AltitudeMaximumHi = 1500.0f;
 			}
 		}
@@ -1265,7 +1232,7 @@ void InitializeGameEngine()
 
 		{
 #ifdef _DEBUG
-			int32_t prefsBlockResult =
+			HRESULT prefsBlockResult =
 #endif
 				prefsFile->seekBlock("MechCommander2");
 			optsFile->seekBlock("MechCommander2");
@@ -1282,62 +1249,60 @@ void InitializeGameEngine()
 				*/
 				// store volume settings in global variable since soundsystem
 				// does not exist yet.  These will be set in SoundSystem::init()
-				int32_t result = optsFile->readIdLong(
-					"DigitalMasterVolume", DigitalMasterVolume);
-				if (result != NO_ERROR)
+				HRESULT result = optsFile->readIdLong("DigitalMasterVolume", DigitalMasterVolume);
+				if (FAILED(result))
 					DigitalMasterVolume = 255;
 				result = optsFile->readIdLong("MusicVolume", MusicVolume);
-				if (result != NO_ERROR)
+				if (FAILED(result))
 					MusicVolume = 64;
 				result = optsFile->readIdLong("RadioVolume", RadioVolume);
-				if (result != NO_ERROR)
+				if (FAILED(result))
 					RadioVolume = 64;
 				result = optsFile->readIdLong("SFXVolume", sfxVolume);
-				if (result != NO_ERROR)
+				if (FAILED(result))
 					sfxVolume = 64;
 				result = optsFile->readIdLong("BettyVolume", BettyVolume);
-				if (result != NO_ERROR)
+				if (FAILED(result))
 					BettyVolume = 64;
 				result = optsFile->readIdBoolean("Shadows", useShadows);
-				if (result != NO_ERROR)
+				if (FAILED(result))
 					useShadows = true;
-				result = optsFile->readIdBoolean(
-					"DetailTexture", useWaterInterestTexture);
-				if (result != NO_ERROR)
+				result = optsFile->readIdBoolean("DetailTexture", useWaterInterestTexture);
+				if (FAILED(result))
 					useWaterInterestTexture = true;
 				result = optsFile->readIdLong("Difficulty", GameDifficulty);
-				if (result != NO_ERROR)
+				if (FAILED(result))
 					GameDifficulty = 1;
 				result =
 					optsFile->readIdBoolean("UnlimitedAmmo", useUnlimitedAmmo);
-				if (result != NO_ERROR)
+				if (FAILED(result))
 					useUnlimitedAmmo = true;
 				result = optsFile->readIdLong("Rasterizer", renderer);
-				if (result != NO_ERROR)
+				if (FAILED(result))
 					renderer = 0;
 				if ((renderer < 0) || (renderer > 3))
 					renderer = 0;
 				result = optsFile->readIdLong("Resolution", resolution);
-				if (result != NO_ERROR)
+				if (FAILED(result))
 					resolution = 0;
 				result = optsFile->readIdBoolean("FullScreen", fullScreen);
-				if (result != NO_ERROR)
+				if (FAILED(result))
 					fullScreen = true;
 				result = optsFile->readIdLong("Brightness", gammaLevel);
-				if (result != NO_ERROR)
+				if (FAILED(result))
 					gammaLevel = 0;
 				result = optsFile->readIdBoolean(
 					"useLeftRightMouseProfile", useLeftRightMouseProfile);
-				if (result != NO_ERROR)
+				if (FAILED(result))
 					useLeftRightMouseProfile = true;
 				bool asyncMouse = false;
 				result = optsFile->readIdBoolean("useAsyncMouse", asyncMouse);
-				if (result != NO_ERROR)
+				if (FAILED(result))
 					asyncMouse = false;
 				mc2UseAsyncMouse = asyncMouse;
 				int32_t filterSetting;
 				result = prefsFile->readIdLong("FilterState", filterSetting);
-				if (result == NO_ERROR)
+				if (SUCCEEDED(result))
 				{
 					switch (filterSetting)
 					{
@@ -1355,69 +1320,69 @@ void InitializeGameEngine()
 				}
 				result = prefsFile->readIdLong(
 					"TerrainTextureRes", TERRAIN_TXM_SIZE);
-				if (result != NO_ERROR)
+				if (FAILED(result))
 					TERRAIN_TXM_SIZE = 64;
 				result = prefsFile->readIdLong(
 					"ObjectTextureRes", ObjectTextureSize);
-				if (result != NO_ERROR)
+				if (FAILED(result))
 					ObjectTextureSize = 128;
 				result = prefsFile->readIdFloat(
 					"DoubleClickThreshold", doubleClickThreshold);
-				if (result != NO_ERROR)
+				if (FAILED(result))
 					doubleClickThreshold = 0.2f;
 				result = prefsFile->readIdLong("DragThreshold", dragThreshold);
-				if (result != NO_ERROR)
+				if (FAILED(result))
 					dragThreshold = .01667f;
 				result =
 					prefsFile->readIdULong("BaseVertexColor", BaseVertexColor);
-				if (result != NO_ERROR)
+				if (FAILED(result))
 					BaseVertexColor = 0x00000000;
 				result = prefsFile->readIdBoolean("RealLOS", useRealLOS);
-				if (result != NO_ERROR)
+				if (FAILED(result))
 					useRealLOS = true;
 				result = prefsFile->readIdLong(
 					"GameVisibleVertices", GameVisibleVertices);
-				if (result != NO_ERROR)
+				if (FAILED(result))
 					GameVisibleVertices = 30;
 				result = prefsFile->readIdFloat(
 					"MaxClipDistance", Camera::MaxClipDistance);
-				if (result != NO_ERROR)
+				if (FAILED(result))
 					Camera::MaxClipDistance = 3000.0f;
 				result = prefsFile->readIdFloat(
 					"MinHazeDistance", Camera::MinHazeDistance);
-				if (result != NO_ERROR)
+				if (FAILED(result))
 					Camera::MinHazeDistance = 2000.0f;
 				result =
 					prefsFile->readIdFloat("View0Zoom", Camera::cameraZoom[0]);
-				if (result != NO_ERROR)
+				if (FAILED(result))
 					Camera::cameraZoom[0] = 1200.0f;
 				result =
 					prefsFile->readIdFloat("View0Tilt", Camera::cameraTilt[0]);
-				if (result != NO_ERROR)
+				if (FAILED(result))
 					Camera::cameraTilt[0] = 35.0f;
 				result =
 					prefsFile->readIdFloat("View1Zoom", Camera::cameraZoom[1]);
-				if (result != NO_ERROR)
+				if (FAILED(result))
 					Camera::cameraZoom[1] = 1200.0f;
 				result =
 					prefsFile->readIdFloat("View1Tilt", Camera::cameraTilt[1]);
-				if (result != NO_ERROR)
+				if (FAILED(result))
 					Camera::cameraTilt[1] = 35.0f;
 				result =
 					prefsFile->readIdFloat("View2Zoom", Camera::cameraZoom[2]);
-				if (result != NO_ERROR)
+				if (FAILED(result))
 					Camera::cameraZoom[2] = 1200.0f;
 				result =
 					prefsFile->readIdFloat("View2Tilt", Camera::cameraTilt[2]);
-				if (result != NO_ERROR)
+				if (FAILED(result))
 					Camera::cameraTilt[2] = 35.0f;
 				result =
 					prefsFile->readIdFloat("View3Zoom", Camera::cameraZoom[3]);
-				if (result != NO_ERROR)
+				if (FAILED(result))
 					Camera::cameraZoom[3] = 1200.0f;
 				result =
 					prefsFile->readIdFloat("View3Tilt", Camera::cameraTilt[3]);
-				if (result != NO_ERROR)
+				if (FAILED(result))
 					Camera::cameraTilt[3] = 35.0f;
 			}
 		}
@@ -1552,7 +1517,7 @@ void InitializeGameEngine()
 
 		File effectFile;
 		int32_t result = effectFile.open(effectsName);
-		if (result != NO_ERROR)
+		if (FAILED(result))
 			STOP(("Could not find MC2.fx"));
 
 		int32_t effectsSize  = effectFile.fileSize();

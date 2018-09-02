@@ -104,8 +104,8 @@ typedef struct
 	VariableType varType;
 	int32_t offset;
 	PVOID registeredData;
-	// SymTableNodePtr			recordIdPtr;		// Currently not implementing record
-	// structures...
+	// SymTableNodePtr			recordIdPtr;		// Currently not
+	// implementing record structures...
 } Data;
 
 typedef union {

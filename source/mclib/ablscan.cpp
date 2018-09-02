@@ -6,7 +6,7 @@
 //								ABLSCAN.CPP
 //
 //***************************************************************************
-#include "stdafx.h"
+#include "stdinc.h"
 
 //#include <stdio.h>
 //#include <stdlib.h>

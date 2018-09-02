@@ -8,48 +8,41 @@
 
 #ifndef PATHS_H
 #define PATHS_H
-//---------------------------------------------------------------------------
-// Include Files
 
 //---------------------------------------------------------------------------
 // static Globals
 
-extern PCSTR savePath;
-extern PCSTR saveTempPath;
-extern PCSTR terrainPath;
-extern PCSTR palettePath;
-extern PCSTR artPath;
-extern PCSTR interfacePath;
-extern PCSTR fontPath;
-extern PCSTR spritePath;
-extern PCSTR soundPath;
-extern PCSTR objectPath;
-extern PCSTR missionPath;
-extern PCSTR cameraPath;
-extern PCSTR tilePath;
-extern PCSTR tile90Path;
-extern PCSTR directXPath;
-extern PCSTR warriorPath;
-extern PCSTR profilePath;
-extern PCSTR moviePath;
-extern PCSTR shapesPath;
-extern PCSTR CDsoundPath;
-extern PCSTR CDspritePath;
-extern PCSTR CDmoviePath;
-extern PCSTR texturePath;
-extern PCSTR tglPath;
-extern PCSTR effectsPath;
-extern PCSTR campaignPath;
-extern PCSTR transcriptsPath;
+enum class data_paths : uint32_t
+{
+	terrainPath,
+	objectPath,
+	missionPath,
+	cameraPath,
+	tilePath,
+	tile90Path,
+	moviePath,
+	shapesPath,
+	saveTempPath,
+	spritePath,
+	artPath,
+	soundPath,
+	interfacePath,
+	profilePath,
+	warriorPath,
+	fontPath,
+	savePath,
+	texturePath,
+	tglPath,
+	effectsPath,
+	campaignPath,
+	CDobjectPath,
+	CDmissionPath,
+	CDcameraPath,
+	CDtilePath,
+	CDmoviePath,
+	CDspritePath,
+	CDsoundPath,
+	transcriptsPath,
+};
 
-//---------------------------------------------------------------------------
-// Free Functions
-
-//---------------------------------------------------------------------------
-#endif
-
-//---------------------------------------------------------------------------
-//
-// Edit Log
-//
-//---------------------------------------------------------------------------
+void GetMcDataPath(std::wstring& path, uint32_t id);

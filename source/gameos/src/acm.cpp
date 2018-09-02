@@ -35,7 +35,7 @@
 ================================================================================
  RcsID = $Id$ */
 
-#include "stdafx.h"
+#include "stdinc.h"
 
 //#include <mmreg.h>
 //#include <msacm.h>

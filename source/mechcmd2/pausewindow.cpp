@@ -5,7 +5,7 @@ PauseWindow.cpp			: Implementation of the PauseWindow component.
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 \*************************************************************************************************/
-#include "stdafx.h"
+#include "stdinc.h"
 
 #include "pausewindow.h"
 #include "controlgui.h"

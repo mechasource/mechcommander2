@@ -7,7 +7,7 @@ InfoWindow.cpp			: Implementation of the InfoWindow component.
 
 #define INFOWINDOW_CPP
 
-#include "stdafx.h"
+#include "stdinc.h"
 #include "infowindow.h"
 #include <mclib.h>
 #include "..\resource.h"

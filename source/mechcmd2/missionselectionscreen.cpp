@@ -7,7 +7,7 @@ MissionSelectionScreen component.
 \*************************************************************************************************/
 // #define MISSIONSELECTIONSCREEN_CPP
 
-#include "stdafx.h"
+#include "stdinc.h"
 
 #include "missionselectionscreen.h"
 #include "mechbayscreen.h"

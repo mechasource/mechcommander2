@@ -6,7 +6,7 @@ Objective.cpp			: Implementation of the Objective component.
 \*************************************************************************************************/
 // #define OBJECTIVE_CPP
 
-#include "stdafx.h"
+#include "stdinc.h"
 
 //#include <terrain.h>
 //#include "objective.h"

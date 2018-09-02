@@ -122,7 +122,7 @@ typedef MoveChunk* MoveChunkPtr;
 class MoveChunk
 {
 
-  public:
+public:
 	int32_t stepPos[4][2]; // 0 = curPos, 1 thru 3 = next steps
 	int32_t stepRelPos[3]; // delta for steps 1 thru 3
 	int32_t numSteps;
@@ -131,7 +131,7 @@ class MoveChunk
 	uint32_t data;
 	static int32_t err;
 
-  public:
+public:
 	PVOID operator new(size_t mySize);
 
 	void operator delete(PVOID us);
@@ -198,11 +198,11 @@ typedef union {
 class MoverDynamics
 {
 
-  public:
+public:
 	DynamicsType type;
 	DynamicsLimits max;
 
-  public:
+public:
 	void operator=(MoverDynamics copy)
 	{
 		type = copy.type;
@@ -281,12 +281,12 @@ typedef union {
 class MoverControl
 {
 
-  public:
+public:
 	ControlType type;
 	ControlDataType dataType;
 	ControlSettings settings;
 
-  public:
+public:
 	void operator=(MoverControl copy)
 	{
 		type	 = copy.type;
@@ -405,7 +405,7 @@ typedef struct _CriticalSpace
 class BodyLocation
 {
 
-  public:
+public:
 	bool CASE;
 	int32_t totalSpaces;
 	CriticalSpace criticalSpaces[MAX_CRITSPACES_PER_BODYLOCATION];
@@ -414,7 +414,7 @@ class BodyLocation
 	uint8_t maxInternalStructure;
 	uint8_t damageState;
 
-  public:
+public:
 	void operator=(BodyLocation copy)
 	{
 		CASE		= copy.CASE;
@@ -435,7 +435,7 @@ typedef BodyLocation* BodyLocationPtr;
 class ArmorLocation
 {
 
-  public:
+public:
 	float curArmor;
 	uint8_t maxArmor;
 };
@@ -485,7 +485,7 @@ typedef StatusChunk* StatusChunkPtr;
 class StatusChunk
 {
 
-  public:
+public:
 	uint32_t bodyState;
 	char targetType;
 	int32_t targetId;
@@ -498,7 +498,7 @@ class StatusChunk
 
 	uint32_t data;
 
-  public:
+public:
 	PVOID operator new(size_t mySize);
 
 	void operator delete(PVOID us);
@@ -709,7 +709,7 @@ class Mover : public GameObject
 	//------------
 	// Data Members
 
-  public:
+public:
 	Stuff::Vector3D positionNormal; // normal to terrain at current position
 	Stuff::Vector3D velocity;		// How fast am I going?
 	char name[MAXLEN_MOVER_NAME];   // Name of this particular mover
@@ -785,8 +785,8 @@ class Mover : public GameObject
 	bool disableThisFrame;
 
 	// Team
-	// MoverGroupPtr		group;							// what group am I a member
-	// of?
+	// MoverGroupPtr		group;							// what group am I a
+	// member of?
 	char teamId;
 	char groupId;
 	int32_t squadId;
@@ -815,8 +815,8 @@ class Mover : public GameObject
 
 	char lastGesture;
 
-	//		AppearancePtr		appearance;						// pointer to the Actor which
-	//is the appearance.
+	//		AppearancePtr		appearance;						// pointer to the
+	//Actor  which  is the appearance.
 	MoverControl control;   // control settings for this mover
 	MoverDynamics dynamics; // dynamics settings for this mover
 
@@ -921,7 +921,7 @@ class Mover : public GameObject
 	//----------------
 	// Member Functions
 
-  public:
+public:
 	virtual void set(Mover copy);
 
 	virtual void init(bool create);

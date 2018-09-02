@@ -6,14 +6,17 @@
 #ifndef UTILITIES_H
 #define UTILITIES_H
 
-#include <gameos.hpp>
-#include <string.h>
+//#include <gameos.hpp>
+//#include <string.h>
 
 class FitIniFile;
 
 class StaticInfo
 {
-  public:
+public:
+	StaticInfo() {}
+	~StaticInfo(void);
+
 	void init(FitIniFile& file, PSTR blockName, int32_t hiResOffsetX = 0,
 		int32_t hiResOffsetY = 0, uint32_t neverFlush = 0);
 	void render(void);
@@ -33,8 +36,6 @@ class StaticInfo
 
 	void setColor(int32_t newColor);
 
-	StaticInfo() {}
-	~StaticInfo(void);
 
 	uint32_t textureHandle;
 	gos_VERTEX location[4];
@@ -87,7 +88,7 @@ inline COLORREF reverseRGB(COLORREF oldVal)
 // Replaced.  Andy wants us to call everytime.  Will try and see if practical.
 extern uint32_t gosResourceHandle;
 
-#if 1
+#if _CONSIDERED_OBSOLETE
 inline size_t cLoadString(uint32_t uID, // resource identifier
 	PSTR lpBuffer,						// pointer to buffer for resource
 	size_t nBufferMax,					// size of buffer

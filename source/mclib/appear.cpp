@@ -8,7 +8,7 @@
 
 //---------------------------------------------------------------------------
 // Include Files
-#include "stdafx.h"
+#include "stdinc.h"
 
 #ifndef APPEAR_H
 #include "appear.h"

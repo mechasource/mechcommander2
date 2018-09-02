@@ -6,7 +6,7 @@
 //---------------------------------------------------------------------------//
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
-#include "stdafx.h"
+#include "stdinc.h"
 
 // Include Files
 // #include <mclib.h>

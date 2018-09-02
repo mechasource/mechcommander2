@@ -7,7 +7,7 @@
 //---------------------------------------------------------------------------//
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
-#include "stdafx.h"
+#include "stdinc.h"
 
 // #include <mclib.h>
 
@@ -1695,7 +1695,7 @@ Stuff::Vector3D GameObject::relativePosition(
 	// First, we need to calc the delta vector--how much we extend
 	// the ray everytime we check the map cell for clear placement.
 	deltaVector.normalize();
-	float cellLength = Terrain::metersPerVertex / (float)MAPCELL_DIM;
+	float cellLength = Terrain::metersPerVertex / (float)terrain_const::MAPCELL_DIM;
 	cellLength *= 0.5;
 	deltaVector *= cellLength;
 	if (deltaVector.magnitude() == 0.0)
@@ -1761,8 +1761,8 @@ void GameObject::setPosition(
 		int32_t tileCol	= 0;
 		land->worldToTileCell(
 			position, tileRow, tileCol, newCellRow, newCellCol);
-		cellPositionRow = newCellRow + tileRow * MAPCELL_DIM;
-		cellPositionCol = newCellCol + tileCol * MAPCELL_DIM;
+		cellPositionRow = newCellRow + tileRow * terrain_const::MAPCELL_DIM;
+		cellPositionCol = newCellCol + tileCol * terrain_const::MAPCELL_DIM;
 		d_vertexNum		= tileRow * Terrain::realVerticesMapSide + tileCol;
 	}
 	Assert((cellPositionRow >= 0) && (cellPositionRow < GameMap->getHeight()),

@@ -7,7 +7,7 @@ MissionResults.cpp			: Implementation of the MissionResults component.
 
 #define MISSIONRESULTS_CPP
 
-#include "stdafx.h"
+#include "stdinc.h"
 #include "missionresults.h"
 #include <mclib.h>
 #include "objmgr.h"

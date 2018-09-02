@@ -6,79 +6,36 @@
 //---------------------------------------------------------------------------//
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
-#include "stdafx.h"
+#include "stdinc.h"
 
 //----------------------------------------------------------------------------------
 // Include Files
-#ifndef LOGISTICS_H
 #include "logistics.h"
-#endif
-
-#ifndef TEST_SHELL
-#ifndef MISSION_H
 #include "mission.h"
-#endif
-
-#ifndef OBJMGR_H
-#include "ObjMgr.h"
-#endif
-
-#ifndef TEAM_H
-#include "Team.h"
-#endif
-
-#ifndef COMNDR_H
+#include "objmgr.h"
+#include "team.h"
 #include "comndr.h"
-#endif
-
-#ifndef MISSIONGUI_H
-#include "MissionGui.h"
-#endif
-
-#ifndef MECH_H
-#include "Mech.h"
-#endif
-
-#ifndef MULTPLYR_H
+#include "missiongui.h"
+#include "mech.h"
 #include "multplyr.h"
-#endif
-
 #include "gamesound.h"
-#ifndef PREFS_H
 #include "prefs.h"
-#endif
-extern CPrefs prefs;
-
-#ifndef GAMECAM_H
 #include "gamecam.h"
-#endif
-
-#endif /*TEST_SHELL*/
-
-#ifndef SOUNDS_H
 #include "sounds.h"
-#endif
-
-#ifndef MISSIONBEGIN_H
-#include "MissionBegin.h"
-#endif
-
-#ifndef MECHICON_H
-#include "MechIcon.h"
-#endif
-
-#include "MissionResults.h"
+#include "missionbegin.h"
+#include "mechicon.h"
+#include "missionresults.h"
 #include "paths.h"
+#include "..\resource.h"
 
+extern CPrefs prefs;
 extern bool quitGame;
 extern bool justStartMission;
 extern int32_t renderer;
 extern bool useUnlimitedAmmo;
 extern float loadProgress;
-
 extern bool aborted;
 
-#include "..\resource.h"
 void DEBUGWINS_print(PSTR s, int32_t window = 0);
 
 //----------------------------------------------------------------------------------

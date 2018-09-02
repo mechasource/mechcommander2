@@ -11,8 +11,7 @@
 //                      PROPRIETARY AND CONFIDENTIAL                         //
 //===========================================================================//
 
-#include "stdafx.h"
-//#include "stuffheaders.hpp"
+#include "stdinc.h"
 #include <gameos.hpp>
 #include <stuff/hash.hpp>
 

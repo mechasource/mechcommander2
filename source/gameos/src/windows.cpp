@@ -35,7 +35,7 @@
 ================================================================================
  RcsID = $Id$ */
 
-#include "stdafx.h"
+#include "stdinc.h"
 
 #include <gameos.hpp>
 #include <globals.hpp>
@@ -195,31 +195,28 @@ MECH_IMPEXP void __stdcall InitializeWindows(void)
 #if _CONSIDERED_OBSOLETE
 	OSVERSIONINFOA VersionInformation;
 #endif
+
 	InternalFunctionSpew("GameOS_Core", "InitializeWindows()");
-	ArrowCursor = LoadCursor(nullptr, IDC_ARROW); // LoadCursorA(nullptr,
-												  // MAKEINTRESOURCEA(32512)
-												  // /*IDC_ARROW*/);
+	ArrowCursor = LoadCursor(nullptr, IDC_ARROW); // LoadCursorA(nullptr, MAKEINTRESOURCEA(32512) /*IDC_ARROW*/);
 	DesktopBpp = static_cast<uint32_t>(GetDeviceCaps(DesktopDC, BITSPIXEL));
-	DesktopRes =
-		static_cast<uint32_t>((GetDeviceCaps(DesktopDC, VERTRES) << 16) +
-							  GetDeviceCaps(DesktopDC, HORZRES));
+	DesktopRes = static_cast<uint32_t>((GetDeviceCaps(DesktopDC, VERTRES) << 16) + GetDeviceCaps(DesktopDC, HORZRES));
+
+#if _CONSIDERED_OBSOLETE
 	// _SetThreadExecutionState = nullptr;
 	hKernel32 = GetModuleHandleA("kernel32.dll");
-	_SetThreadExecutionState =
-		reinterpret_cast<EXECUTION_STATE(__stdcall*)(EXECUTION_STATE)>(
-			GetProcAddress(hKernel32, "SetThreadExecutionState"));
-	_GetFileAttributesEx =
-		reinterpret_cast<int32_t(__stdcall*)(PCSTR, GET_FILEEX_INFO_LEVELS,
-			PVOID)>(GetProcAddress(hKernel32, "GetFileAttributesExA"));
-	_GetDiskFreeSpaceEx = reinterpret_cast<int32_t(__stdcall*)(
-		PCSTR, PULARGE_INTEGER, PULARGE_INTEGER, PULARGE_INTEGER)>(
-		GetProcAddress(hKernel32, "GetDiskFreeSpaceExA"));
+	_SetThreadExecutionState = reinterpret_cast<EXECUTION_STATE(__stdcall*)(EXECUTION_STATE)>(GetProcAddress(hKernel32, "SetThreadExecutionState"));
+	_GetFileAttributesEx = reinterpret_cast<int32_t(__stdcall*)(PCSTR, GET_FILEEX_INFO_LEVELS, PVOID)>(GetProcAddress(hKernel32, "GetFileAttributesExA"));
+	_GetDiskFreeSpaceEx = reinterpret_cast<int32_t(__stdcall*)(PCSTR, PULARGE_INTEGER, PULARGE_INTEGER, PULARGE_INTEGER)>(GetProcAddress(hKernel32, "GetDiskFreeSpaceExA"));
+	
 	if (_SetThreadExecutionState)
-		_SetThreadExecutionState(
-			ES_SYSTEM_REQUIRED | ES_DISPLAY_REQUIRED | ES_CONTINUOUS);
+		_SetThreadExecutionState(ES_SYSTEM_REQUIRED | ES_DISPLAY_REQUIRED | ES_CONTINUOUS);
+#endif
+	SetThreadExecutionState(ES_SYSTEM_REQUIRED|ES_DISPLAY_REQUIRED|ES_CONTINUOUS);
+
 	SystemParametersInfo(SPI_GETSCREENSAVEACTIVE, 0, &bScreenSaver, 0);
 	SystemParametersInfo(SPI_SETSCREENSAVEACTIVE, 0, nullptr, SPIF_SENDCHANGE);
 	StoredScreenSaverSetting = true;
+
 #if _CONSIDERED_OBSOLETE
 	VersionInformation.dwOSVersionInfoSize = sizeof(OSVERSIONINFOA);
 	GetVersionExA(&VersionInformation);
@@ -230,6 +227,7 @@ MECH_IMPEXP void __stdcall InitializeWindows(void)
 			"Please upgrade to Windows 2000 RTM (Build 2195)"))
 		ENTER_DEBUGGER;
 #else
+#if _CONSIDERED_OUTDATED
 	if (IsWindowsVersionOrGreater(5, 0, 0) == FALSE)
 	{
 		pszMessage = "Please upgrade to Windows 2000 RTM (Build 2195)";
@@ -238,10 +236,10 @@ MECH_IMPEXP void __stdcall InitializeWindows(void)
 		ExitGameOS();
 	}
 #endif
+#endif
 	if (Platform == Platform_Game)
 	{
-		if ((DesktopBpp == 1) || ((RunFullScreen == false) &&
-									 (DesktopBpp != 16) && (DesktopBpp != 32)))
+		if ((DesktopBpp == 1) || ((RunFullScreen == false) && (DesktopBpp != 16) && (DesktopBpp != 32)))
 		{
 			// pszMessage = gos_GetResourceString(gLanguageDLL, 1020u);
 			pszMessage = "Please select a color depth of 16 bit or 32 bit from "
@@ -250,6 +248,7 @@ MECH_IMPEXP void __stdcall InitializeWindows(void)
 			MessageBoxA(0, pszMessage, ApplicationName, MB_ICONEXCLAMATION);
 			status = AfterExit;
 			ExitGameOS();
+
 			// ??? the code below must surely be dead
 			Arguments = Buffer2;
 			// pszFormat = gos_GetResourceString(gLanguageDLL, 1021u);

@@ -75,7 +75,7 @@ int32_t Terrain::visibleVerticesPerSide = 0; // Passed in.
 
 const float Terrain::worldUnitsPerVertex = 128.0;
 const float Terrain::worldUnitsPerCell =
-	Terrain::worldUnitsPerVertex / MAPCELL_DIM;
+	Terrain::worldUnitsPerVertex / terrain_const::MAPCELL_DIM;
 const float Terrain::halfWorldUnitsPerCell = Terrain::worldUnitsPerCell / 2.0f;
 const float Terrain::metersPerCell =
 	Terrain::worldUnitsPerCell * metersPerWorldUnit;
@@ -247,19 +247,19 @@ void Terrain::initMapCellArrays(void)
 	if (!cellToWorldCoord)
 	{
 		cellToWorldCoord =
-			(float*)terrainHeap->Malloc(sizeof(float) * MAPCELL_DIM);
+			(float*)terrainHeap->Malloc(sizeof(float) * terrain_const::MAPCELL_DIM);
 		gosASSERT(cellToWorldCoord != nullptr);
 	}
 	if (!cellColToWorldCoord)
 	{
 		cellColToWorldCoord = (float*)terrainHeap->Malloc(
-			sizeof(float) * realVerticesMapSide * MAPCELL_DIM);
+			sizeof(float) * realVerticesMapSide * terrain_const::MAPCELL_DIM);
 		gosASSERT(cellColToWorldCoord != nullptr);
 	}
 	if (!cellRowToWorldCoord)
 	{
 		cellRowToWorldCoord = (float*)terrainHeap->Malloc(
-			sizeof(float) * realVerticesMapSide * MAPCELL_DIM);
+			sizeof(float) * realVerticesMapSide * terrain_const::MAPCELL_DIM);
 		gosASSERT(cellRowToWorldCoord != nullptr);
 	}
 	int32_t i	  = 0;
@@ -270,13 +270,13 @@ void Terrain::initMapCellArrays(void)
 	for (i = 0; i < width; i++)
 		tileColToWorldCoord[i] =
 			(i * worldUnitsPerVertex) - (worldUnitsMapSide / 2.0);
-	for (i = 0; i < MAPCELL_DIM; i++)
-		cellToWorldCoord[i] = (worldUnitsPerVertex / (float)MAPCELL_DIM) * i;
-	int32_t maxCell = height * MAPCELL_DIM;
+	for (i = 0; i < terrain_const::MAPCELL_DIM; i++)
+		cellToWorldCoord[i] = (worldUnitsPerVertex / (float)terrain_const::MAPCELL_DIM) * i;
+	int32_t maxCell = height * terrain_const::MAPCELL_DIM;
 	for (i = 0; i < maxCell; i++)
 		cellRowToWorldCoord[i] =
 			(worldUnitsMapSide / 2.0) - (i * worldUnitsPerCell);
-	maxCell = width * MAPCELL_DIM;
+	maxCell = width * terrain_const::MAPCELL_DIM;
 	for (i = 0; i < maxCell; i++)
 		cellColToWorldCoord[i] =
 			(i * worldUnitsPerCell) - (worldUnitsMapSide / 2.0);

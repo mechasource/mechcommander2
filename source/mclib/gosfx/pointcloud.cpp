@@ -10,7 +10,7 @@
 //#############################
 //############################################################################
 
-#include "stdafx.h"
+#include "stdinc.h"
 #include "gosFXHeaders.hpp"
 #include <mlr/mlrpointcloud.hpp>
 

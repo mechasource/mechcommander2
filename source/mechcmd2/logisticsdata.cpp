@@ -5,7 +5,7 @@ LogisticsData.cpp			: Implementation of the LogisticsData component.
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 \*************************************************************************************************/
-#include "stdafx.h"
+#include "stdinc.h"
 
 #include "LogisticsData.h"
 #include "file.h"

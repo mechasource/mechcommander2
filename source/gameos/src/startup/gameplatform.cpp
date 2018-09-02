@@ -38,8 +38,9 @@
 #include <gameos.hpp>
 #include <platform.hpp>
 
-extern "C" int32_t WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
-	PSTR pCmdLine, int32_t nShowCmd)
+
+extern "C" int WINAPI 
+WinMain(_In_ HINSTANCE hInstance,_In_opt_ HINSTANCE hPrevInstance,_In_ PSTR pCmdLine,_In_ int nShowCmd)
 {
 	Platform = Platform_Game;
 	RunFromWinMain(hInstance, hPrevInstance, pCmdLine, nShowCmd);

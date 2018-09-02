@@ -31,19 +31,18 @@ extern PSTR __stdcall ErrorNumberToMessage(HRESULT hResult);
 //
 // Used to save and restore FPU control word around DirectX functions
 //
-#if defined(LAB_ONLY)
-#define SafeFPU() _asm fldcw FPUDefault
-#define GameOSFPU() _asm fninit _asm fldcw FPUControl
-#else
-#define SafeFPU()
-#define GameOSFPU()
-#endif
+//#if defined(LAB_ONLY)
+//#define SafeFPU() _asm fldcw FPUDefault
+//#define GameOSFPU() _asm fninit _asm fldcw FPUControl
+//#else
+//#define SafeFPU()
+//#define GameOSFPU()
+//#endif
 
 //
 // General DirectX
 //
-HRESULT __stdcall wCoCreateInstance(REFCLSID rclsid, LPUNKNOWN pUnkOuter,
-	uint32_t dwClsContext, REFIID riid, PVOID* ppv);
+HRESULT __stdcall wCoCreateInstance(REFCLSID rclsid, LPUNKNOWN pUnkOuter,uint32_t dwClsContext, REFIID riid, PVOID* ppv);
 HRESULT __stdcall wQueryInterface(IUnknown* iun, REFIID riid, PVOID* obp);
 uint32_t __stdcall wRelease(IUnknown* iun);
 uint32_t __stdcall wAddRef(IUnknown* iun);

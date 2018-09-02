@@ -6,7 +6,7 @@ mpprefs.cpp			: Implementation of the mpprefs component.ef
 //===========================================================================//
 \*************************************************************************************************/
 
-#include "stdafx.h"
+#include "stdinc.h"
 #include "mpprefs.h"
 #include <mclib.h>
 #include "mechbayscreen.h"

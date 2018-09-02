@@ -6,7 +6,7 @@
 //								ABLEXEC.CPP
 //
 //***************************************************************************
-#include "stdafx.h"
+#include "stdinc.h"
 
 //#include <stdio.h>
 //#include <string.h>

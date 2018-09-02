@@ -6,43 +6,17 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
-#include "stdafx.h"
+#include "stdinc.h"
 
-#ifndef CAMERA_H
 #include "camera.h"
-#endif
-
-#ifndef TERRAIN_H
 #include <terrain.h>
-#endif
-
-#ifndef VERTEX_H
 #include "vertex.h"
-#endif
-
-#ifndef CRATER_H
 #include "crater.h"
-#endif
-
-#ifndef TERRTXM_H
 #include <terrtxm.h>
-#endif
-
-#ifndef CIDENT_H
 #include "cident.h"
-#endif
-
-#ifndef PATHS_H
 #include "paths.h"
-#endif
-
-#ifndef TIMING_H
 #include "timing.h"
-#endif
-
-#ifndef USERINPUT_H
 #include "userinput.h"
-#endif
 
 extern void AG_ellipse_draw(PANE* pane, int32_t xc, int32_t yc, int32_t width,
 	int32_t height, int32_t color);
@@ -96,13 +70,13 @@ extern int32_t tileCacheReqs;
 extern int32_t tileCacheHits;
 extern int32_t tileCacheMiss;
 
-bool drawCameraCircle = FALSE;
+bool drawCameraCircle = false;
 extern bool gamePaused;
 extern bool gameAsked;
 puint8_t pauseShape = nullptr;
 puint8_t askedShape = nullptr;
 extern bool gRestartRender;
-bool MaxObjectsDrawn = FALSE;
+bool MaxObjectsDrawn = false;
 
 float elevationAdjustFactor = 50.0;
 
@@ -1699,7 +1673,7 @@ int32_t Camera::update(void)
 }
 
 float currentScaleFactor = 0.0;
-bool lastZoom			 = FALSE;
+bool lastZoom			 = false;
 
 //---------------------------------------------------------------------------
 void Camera::render(void)
@@ -2131,7 +2105,7 @@ void Camera::deactivate(void)
 {
 	//--------------------------------------------------------
 	// Anything a camera needs to do on shutdown goes in here.
-	active = FALSE;
+	active = false;
 }
 
 //---------------------------------------------------------------------------
@@ -2327,7 +2301,7 @@ void Camera::setPosition(Stuff::Vector3D newPosition, bool swoopy)
 		return;
 	}
 #ifdef _DEBUG
-	bool CameraClipImpossible = FALSE;
+	bool CameraClipImpossible = false;
 #endif
 	gosASSERT(CameraClipImpossible);
 #endif

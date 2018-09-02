@@ -35,7 +35,7 @@
 ================================================================================
  RcsID = $Id$ */
 
-#include "stdafx.h"
+#include "stdinc.h"
 
 #include <gameos.hpp>
 #include <windows.hpp>
@@ -96,7 +96,7 @@ static PCSTR __stdcall GetWM_WINDOWPOSCHANGEFlags(PWINDOWPOS pwinpos)
 		strcat_s(szBuffer, _countof(szBuffer), "NOZORDER ");
 	if (pwinpos->flags & SWP_SHOWWINDOW)
 		strcat_s(szBuffer, _countof(szBuffer), "SHOWWINDOW ");
-	ATL_SUPPRESS_WARNING(
+	SUPPRESS_WARNING(
 		4172)		 // returning address of local variable or temporary
 	return szBuffer; //-V558
 }

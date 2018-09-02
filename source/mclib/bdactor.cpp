@@ -9,7 +9,7 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
-#include "stdafx.h"
+#include "stdinc.h"
 
 #ifndef BDACTOR_H
 #include "bdactor.h"
@@ -952,7 +952,7 @@ bool BldgAppearance::isMouseOver(float px, float py)
 		}
 		else
 		{
-			return FALSE;
+			return false;
 		}
 	}
 	return (inView);
@@ -1538,7 +1538,7 @@ int32_t BldgAppearance::render(int32_t depthFixup)
 					activity1->Draw(&drawInfo);
 			}
 		}
-//		selected = FALSE;
+//		selected = false;
 //#define DRAW_BOX
 #ifdef DRAW_BOX
 		//---------------------------------------------------------
@@ -2181,7 +2181,7 @@ void BldgAppearance::destroy(void)
 int32_t BldgAppearance::calcCellsCovered(
 	Stuff::Vector3D& pos, pint16_t cellList)
 {
-	gosASSERT((Terrain::realVerticesMapSide * MAPCELL_DIM) == GameMap->width);
+	gosASSERT((Terrain::realVerticesMapSide * terrain_const::MAPCELL_DIM) == GameMap->width);
 	int32_t numCoords = 0;
 	int32_t maxCoords = cellList[0];
 	// MUST force building to HIGHEST LOD!!!  IMpassability data is only valid
@@ -2219,9 +2219,9 @@ int32_t BldgAppearance::calcCellsCovered(
 					int32_t cellR, cellC;
 					land->worldToCell(worldPos, cellR, cellC);
 					if ((0 > cellR) ||
-						(Terrain::realVerticesMapSide * MAPCELL_DIM <= cellR) ||
+						(Terrain::realVerticesMapSide * terrain_const::MAPCELL_DIM <= cellR) ||
 						(0 > cellC) ||
-						(Terrain::realVerticesMapSide * MAPCELL_DIM <= cellC))
+						(Terrain::realVerticesMapSide * terrain_const::MAPCELL_DIM <= cellC))
 					{
 						// gosASSERT(false);
 						continue;
@@ -2283,15 +2283,15 @@ void BldgAppearance::markTerrain(
 					int32_t cellR, cellC;
 					land->worldToCell(worldPos, cellR, cellC);
 					if ((0 > cellR) ||
-						(Terrain::realVerticesMapSide * MAPCELL_DIM <= cellR) ||
+						(Terrain::realVerticesMapSide * terrain_const::MAPCELL_DIM <= cellR) ||
 						(0 > cellC) ||
-						(Terrain::realVerticesMapSide * MAPCELL_DIM <= cellC))
+						(Terrain::realVerticesMapSide * terrain_const::MAPCELL_DIM <= cellC))
 					{
 						continue;
 					}
 					_ScenarioMapCellInfo* pTmp =
 						&(pInfo[cellR * Terrain::realVerticesMapSide *
-									MAPCELL_DIM +
+									terrain_const::MAPCELL_DIM +
 								cellC]);
 					if (vertexPos.z <= 1.0f)
 					{
@@ -2357,15 +2357,15 @@ void BldgAppearance::markTerrain(
 					int32_t cellR, cellC;
 					land->worldToCell(worldPos, cellR, cellC);
 					if ((0 > cellR) ||
-						(Terrain::realVerticesMapSide * MAPCELL_DIM <= cellR) ||
+						(Terrain::realVerticesMapSide * terrain_const::MAPCELL_DIM <= cellR) ||
 						(0 > cellC) ||
-						(Terrain::realVerticesMapSide * MAPCELL_DIM <= cellC))
+						(Terrain::realVerticesMapSide * terrain_const::MAPCELL_DIM <= cellC))
 					{
 						continue;
 					}
 					_ScenarioMapCellInfo* pTmp =
 						&(pInfo[cellR * Terrain::realVerticesMapSide *
-									MAPCELL_DIM +
+									terrain_const::MAPCELL_DIM +
 								cellC]);
 					if (vertexPos.z >= 1.0f)
 					{
@@ -2453,15 +2453,15 @@ void BldgAppearance::markTerrain(
 					int32_t cellR, cellC;
 					land->worldToCell(worldPos, cellR, cellC);
 					if ((0 > cellR) ||
-						(Terrain::realVerticesMapSide * MAPCELL_DIM <= cellR) ||
+						(Terrain::realVerticesMapSide * terrain_const::MAPCELL_DIM <= cellR) ||
 						(0 > cellC) ||
-						(Terrain::realVerticesMapSide * MAPCELL_DIM <= cellC))
+						(Terrain::realVerticesMapSide * terrain_const::MAPCELL_DIM <= cellC))
 					{
 						continue;
 					}
 					_ScenarioMapCellInfo* pTmp =
 						&(pInfo[cellR * Terrain::realVerticesMapSide *
-									MAPCELL_DIM +
+									terrain_const::MAPCELL_DIM +
 								cellC]);
 					if (vertexPos.z >= 1.0f)
 					{
@@ -2551,9 +2551,9 @@ int32_t BldgAppearance::markMoveMap(
 					int32_t cellR, cellC;
 					land->worldToCell(worldPos, cellR, cellC);
 					if ((0 > cellR) ||
-						(Terrain::realVerticesMapSide * MAPCELL_DIM <= cellR) ||
+						(Terrain::realVerticesMapSide * terrain_const::MAPCELL_DIM <= cellR) ||
 						(0 > cellC) ||
-						(Terrain::realVerticesMapSide * MAPCELL_DIM <= cellC))
+						(Terrain::realVerticesMapSide * terrain_const::MAPCELL_DIM <= cellC))
 					{
 						continue;
 					}
@@ -2598,9 +2598,9 @@ int32_t BldgAppearance::markMoveMap(
 					int32_t cellR, cellC;
 					land->worldToCell(worldPos, cellR, cellC);
 					if ((0 > cellR) ||
-						(Terrain::realVerticesMapSide * MAPCELL_DIM <= cellR) ||
+						(Terrain::realVerticesMapSide * terrain_const::MAPCELL_DIM <= cellR) ||
 						(0 > cellC) ||
-						(Terrain::realVerticesMapSide * MAPCELL_DIM <= cellC))
+						(Terrain::realVerticesMapSide * terrain_const::MAPCELL_DIM <= cellC))
 					{
 						continue;
 					}
@@ -2681,9 +2681,9 @@ void BldgAppearance::markLOS(bool clearIt)
 				int32_t cellR, cellC;
 				land->worldToCell(worldPos, cellR, cellC);
 				if ((0 > cellR) ||
-					(Terrain::realVerticesMapSide * MAPCELL_DIM <= cellR) ||
+					(Terrain::realVerticesMapSide * terrain_const::MAPCELL_DIM <= cellR) ||
 					(0 > cellC) ||
-					(Terrain::realVerticesMapSide * MAPCELL_DIM <= cellC))
+					(Terrain::realVerticesMapSide * terrain_const::MAPCELL_DIM <= cellC))
 				{
 					continue;
 				}
@@ -3244,7 +3244,7 @@ bool TreeAppearance::isMouseOver(float px, float py)
 		}
 		else
 		{
-			return FALSE;
+			return false;
 		}
 	}
 	return (inView);
@@ -3590,7 +3590,7 @@ int32_t TreeAppearance::render(int32_t depthFixup)
 			}
 		}
 		// I don't want my selection reset each time I draw HKG
-//		selected = FALSE;
+//		selected = false;
 //---------------------------------------------------------
 // Render the Bounding Box to see if it is OK.
 #ifdef DRAW_BOX
@@ -3829,14 +3829,14 @@ void TreeAppearance::markTerrain(
 				int32_t cellR, cellC;
 				land->worldToCell(worldPos, cellR, cellC);
 				if ((0 > cellR) ||
-					(Terrain::realVerticesMapSide * MAPCELL_DIM <= cellR) ||
+					(Terrain::realVerticesMapSide * terrain_const::MAPCELL_DIM <= cellR) ||
 					(0 > cellC) ||
-					(Terrain::realVerticesMapSide * MAPCELL_DIM <= cellC))
+					(Terrain::realVerticesMapSide * terrain_const::MAPCELL_DIM <= cellC))
 				{
 					continue;
 				}
 				_ScenarioMapCellInfo* pTmp =
-					&(pInfo[cellR * Terrain::realVerticesMapSide * MAPCELL_DIM +
+					&(pInfo[cellR * Terrain::realVerticesMapSide * terrain_const::MAPCELL_DIM +
 							cellC]);
 				if (vertexPos.z >= 1.0f)
 				{
@@ -3886,9 +3886,9 @@ void TreeAppearance::markLOS(bool clearIt)
 				int32_t cellR, cellC;
 				land->worldToCell(worldPos, cellR, cellC);
 				if ((0 > cellR) ||
-					(Terrain::realVerticesMapSide * MAPCELL_DIM <= cellR) ||
+					(Terrain::realVerticesMapSide * terrain_const::MAPCELL_DIM <= cellR) ||
 					(0 > cellC) ||
-					(Terrain::realVerticesMapSide * MAPCELL_DIM <= cellC))
+					(Terrain::realVerticesMapSide * terrain_const::MAPCELL_DIM <= cellC))
 				{
 					continue;
 				}

@@ -5,7 +5,7 @@ MissionBegin.cpp			: Implementation of the MissionBegin component.
 //===========================================================================//
 \*************************************************************************************************/
 
-#include "stdafx.h"
+#include "stdinc.h"
 #include "missionbegin.h"
 #include <mclib.h>
 #include "objmgr.h"

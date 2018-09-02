@@ -6,7 +6,7 @@ KeyboardRef.cpp			: Implementation of the KeyboardRef component.
 //===========================================================================//
 \*************************************************************************************************/
 
-#include "stdafx.h"
+#include "stdinc.h"
 #include "keyboardref.h"
 #include <mclib.h>
 #include "..\resource.h"

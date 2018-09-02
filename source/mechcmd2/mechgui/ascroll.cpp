@@ -2,7 +2,7 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
-#include "stdafx.h"
+#include "stdinc.h"
 #include <mclib.h>
 #ifndef ASCROLL_H
 #include <mechgui/ascroll.h>

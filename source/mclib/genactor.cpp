@@ -9,7 +9,7 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
-#include "stdafx.h"
+#include "stdinc.h"
 
 #ifndef GENACTOR_H
 #include "genactor.h"
@@ -507,7 +507,7 @@ bool GenericAppearance::isMouseOver(float px, float py)
 		}
 		else
 		{
-			return FALSE;
+			return false;
 		}
 	}
 	return (inView);
@@ -751,7 +751,7 @@ int32_t GenericAppearance::render(int32_t depthFixup)
 			cLoadString(objectNameId, tmpString, 254);
 			drawTextHelp(tmpString, color);
 		}
-//		selected = FALSE;
+//		selected = false;
 //#define DRAW_BOX
 #ifdef DRAW_BOX
 		//---------------------------------------------------------

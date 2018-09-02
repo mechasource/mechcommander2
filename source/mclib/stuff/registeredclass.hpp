@@ -12,6 +12,7 @@
 
 #include <stuff/stuff.hpp>
 #include <stuff/style.hpp>
+#include <mechclassids.h>
 
 namespace Stuff
 {
@@ -39,7 +40,7 @@ class RegisteredClass
 	// ClassID enumeration
 	//
   public:
-	typedef int32_t ClassID;
+	typedef uint32_t ClassID;
 	typedef RegisteredClass__ClassData ClassData;
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -70,7 +71,7 @@ class RegisteredClass
 	static ClassData* FindClassData(PCSTR name);
 	static ClassData* FindClassData(ClassID class_id)
 	{
-		Verify(static_cast<uint32_t>(class_id) < ClassIDCount);
+		Verify(class_id < static_cast<ClassID>(__stuff_classids::ClassIDCount));
 		return ClassDataArray[class_id];
 	}
 	static ClassData* DefaultData;
@@ -86,12 +87,12 @@ class RegisteredClass
 	PCSTR GetClassString(void) const;
 	static ClassID AllocateTemporaryClassID(void)
 	{
-		Verify(FirstTemporaryClassID < ClassIDCount);
+		Verify(FirstTemporaryClassID < static_cast<ClassID>(__stuff_classids::ClassIDCount));
 		return FirstTemporaryClassID++;
 	}
 
   private:
-	static ClassData* ClassDataArray[ClassIDCount];
+	  static ClassData* ClassDataArray[__stuff_classids::ClassIDCount];
 	static ClassID FirstTemporaryClassID;
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

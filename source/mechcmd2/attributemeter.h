@@ -24,8 +24,32 @@ AttributeMeter:
 **************************************************************************************************/
 class AttributeMeter
 {
-  public:
-	AttributeMeter(void);
+private:
+	RECT		outsideRect;
+	int32_t		unitHeight;
+	int32_t		unitWidth;
+	int32_t		unitCount;
+	int32_t		skipWidth;
+	int32_t		rectColor;
+	int32_t		colorMin;
+	int32_t		colorMax;
+	int32_t		addedColorMin;
+	int32_t		addedColorMax;
+	float		percent;
+	float		addedPercent;
+	int32_t		numBars;
+	int32_t		helpID;
+	bool		bShow;
+
+public:
+	AttributeMeter(void) : 
+		unitHeight(0), unitWidth(0), unitCount(0), skipWidth(0), rectColor(0),
+		colorMin(0xff005392), colorMax(0xffcdeaff), 
+		addedColorMin(0), addedColorMax(0),
+		percent(0), addedPercent(0), numBars(0), helpID(0), bShow(true)
+	{
+		outsideRect = {0};
+	}
 
 	void update(void);
 	void render(void);
@@ -42,24 +66,6 @@ class AttributeMeter
 	void showGUIWindow(bool show) { bShow = show; }
 	bool pointInside(int32_t mouseX, int32_t mouseY) const;
 
-  private:
-	RECT outsideRect;
-	int32_t unitHeight;
-	int32_t unitWidth;
-	int32_t unitCount;
-	int32_t skipWidth;
-	int32_t rectColor;
-	int32_t colorMin;
-	int32_t colorMax;
-	int32_t addedColorMin;
-	int32_t addedColorMax;
-	float percent;
-	float addedPercent;
-	int32_t numBars;
-
-	bool bShow;
-
-	int32_t helpID;
 };
 
 //*************************************************************************************************

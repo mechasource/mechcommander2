@@ -24,8 +24,8 @@
 
 //---------------------------------------------------------------------------
 
-#define FASTFILE_VERSION 0xCADDECAF
-#define FASTFILE_VERSION_LZ 0xFADDECAF
+#define FASTFILE_VERSION        0xCADDECAF
+#define FASTFILE_VERSION_LZ     0xFADDECAF
 
 #pragma pack(1)
 typedef struct
@@ -49,7 +49,7 @@ typedef struct FILE_HANDLE
 // Class FastFile
 class FastFile
 {
-  protected:
+protected:
 	size_t numFiles;
 	FILE_HANDLE* files;
 	char* fileName;
@@ -58,7 +58,7 @@ class FastFile
 	size_t logicalPosition;
 	bool useLZCompress;
 
-  public:
+public:
 	FastFile(void);
 	~FastFile(void);
 
@@ -87,8 +87,7 @@ class FastFile
 
 	void closeFast(int32_t localHandle);
 
-	int32_t seekFast(
-		int32_t fastFileHandle, int32_t off, int32_t from = SEEK_SET);
+	int32_t seekFast(int32_t fastFileHandle, int32_t off, int32_t from = SEEK_SET);
 	int32_t readFast(int32_t fastFileHandle, PVOID bfr, int32_t size);
 	int32_t readFastRAW(int32_t fastFileHandle, PVOID bfr, int32_t size);
 	int32_t tellFast(int32_t fastFileHandle);

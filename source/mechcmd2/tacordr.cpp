@@ -7,7 +7,7 @@
 //								TACORDR.CPP
 //
 //***************************************************************************
-#include "stdafx.h"
+#include "stdinc.h"
 
 #ifndef MCLIB
 #include <mclib.h>

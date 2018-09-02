@@ -10,7 +10,7 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
-#include "stdafx.h"
+#include "stdinc.h"
 
 #ifndef MECH3D_H
 #include "mech3d.h"
@@ -1855,7 +1855,7 @@ bool Mech3DAppearance::isMouseOver(float px, float py)
 		}
 		else
 		{
-			return FALSE;
+			return false;
 		}
 	}
 	return (inView);
@@ -3669,7 +3669,7 @@ int32_t Mech3DAppearance::update(bool animate)
 	}
 	//--------------------------------------------------------
 	// Force frames to last frame of FALL if fallen
-	fallen = FALSE;
+	fallen = false;
 	if ((currentGestureId == GestureFallenForward) ||
 		(currentGestureId == GestureFallenBackward))
 	{
@@ -3713,7 +3713,7 @@ int32_t Mech3DAppearance::update(bool animate)
 			//------------------------------------------
 			// Always ASSUME we cannot transition yet.
 			// Saves myriad compares below.
-			atTransitionToNextGesture = FALSE;
+			atTransitionToNextGesture = false;
 			//---------------------------------------
 			// Increment Frames -- Everything else!
 			if ((frameInc != 0.0f) || (singleStepMode))

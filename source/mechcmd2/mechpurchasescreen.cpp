@@ -8,7 +8,7 @@ component.
 
 #define MECHPURCHASESCREEN_CPP
 
-#include "stdafx.h"
+#include "stdinc.h"
 #include "mechpurchasescreen.h"
 #include <mclib.h>
 #include "logisticsdata.h"

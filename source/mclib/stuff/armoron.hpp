@@ -30,7 +30,7 @@ namespace Stuff
 		if (Stuff::ArmorLevel > 0 && !(c))                                     \
 			PAUSE(("Failed " #c));                                             \
 	}                                                                          \
-	ATL_SUPPRESS_WARNING(4127) while (0)
+	SUPPRESS_WARNING(4127) while (0)
 #endif
 #define Verify(c) ATLASSERT(c)
 
@@ -40,7 +40,7 @@ namespace Stuff
 		if (Stuff::ArmorLevel > 0 && (c))                                      \
 			SPEW((0, #c));                                                     \
 	}                                                                          \
-	ATL_SUPPRESS_WARNING(4127) while (0)
+	SUPPRESS_WARNING(4127) while (0)
 
 #if defined(_M_IX86)
 #define Check_Pointer(p)                                                       \
@@ -57,7 +57,7 @@ template <class T> T Cast_Pointer_Function(T p)
 }
 
 #define Cast_Pointer(type, ptr)                                                \
-	ATL_SUPPRESS_WARNING(4946)                                                 \
+	SUPPRESS_WARNING(4946)                                                 \
 	Stuff::Cast_Pointer_Function(reinterpret_cast<type>(ptr))
 
 #define Mem_Copy(destination, source, length, available)                       \
@@ -70,7 +70,7 @@ template <class T> T Cast_Pointer_Function(T p)
 							reinterpret_cast<PCSTR>(source))) >= length);      \
 		memcpy(destination, source, length);                                   \
 	}                                                                          \
-	ATL_SUPPRESS_WARNING(4127) while (0)
+	SUPPRESS_WARNING(4127) while (0)
 
 #define Str_Copy(destination, source, available)                               \
 	do                                                                         \
@@ -81,7 +81,7 @@ template <class T> T Cast_Pointer_Function(T p)
 		Verify(size_t(abs(destination - source)) >= (strlen(source) + 1));     \
 		strcpy_s(destination, available, source);                              \
 	}                                                                          \
-	ATL_SUPPRESS_WARNING(4127) while (0)
+	SUPPRESS_WARNING(4127) while (0)
 
 #define Str_Cat(destination, source, available)                                \
 	do                                                                         \
@@ -91,7 +91,7 @@ template <class T> T Cast_Pointer_Function(T p)
 		Verify((strlen(destination) + strlen(source) + 1) <= (available));     \
 		strcat(destination, source);                                           \
 	}                                                                          \
-	ATL_SUPPRESS_WARNING(4127) while (0)
+	SUPPRESS_WARNING(4127) while (0)
 
 #define Check_Signature(p) Stuff::Is_Signature_Bad(p)
 

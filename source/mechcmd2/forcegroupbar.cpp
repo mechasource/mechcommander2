@@ -5,7 +5,7 @@ ForceGroupBar.cpp			: Implementation of the ForceGroupBar component.
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 \*************************************************************************************************/
-#include "stdafx.h"
+#include "stdinc.h"
 
 #include "forcegroupbar.h"
 #include "MechIcon.h"

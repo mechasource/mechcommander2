@@ -6,7 +6,7 @@
 //								ABLEXPR.CPP
 //
 //***************************************************************************
-#include "stdafx.h"
+#include "stdinc.h"
 
 //#include <string.h>
 //#include <stdio.h>

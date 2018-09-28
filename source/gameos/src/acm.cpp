@@ -1,39 +1,19 @@
 /*******************************************************************************
- Copyright (c) 2011-2014, Jerker Back. All rights reserved.
-
- Permission to use, copy, modify, and distribute this software for any
- purpose with or without fee is hereby granted, provided that the following
- conditions are met (OSI approved BSD 2-clause license):
-
- 1. Redistributions of source code must retain the above copyright notice,
-	this list of conditions and the following disclaimer.
- 2. Redistributions in binary form must reproduce the above copyright notice,
-	this list of conditions and the following disclaimer in the documentation
-	and/or other materials provided with the distribution.
-
- THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
- AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
- IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
- FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
- DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
- SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
- CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
- OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-
+ This file consist of reversed and interpreted code from object source in the
+ x86 debug build gameos.lib. The code in this file can not be used in any way
+ other than serve as an information reference to the original released source of
+ Mechcommander2. The code is a work of progress and there is no guarantee it is
+ complete, accurate or useful in any way. The purpose is instead to make it
+ possible to safely remove any dependencies of gameos.lib from Mechcommander2.
 *******************************************************************************/
 /*******************************************************************************
  acm.cpp - gameos Audio Compression Manager wrappers
 
  MechCommander 2 source code
 
- 2014-07-24 jerker_back, created
+ 2014-07-24 Jerker Beck, created
 
- $LastChangedBy$
-
-================================================================================
- RcsID = $Id$ */
+*******************************************************************************/
 
 #include "stdinc.h"
 
@@ -66,20 +46,17 @@
 // implemented function declarations
 HRESULT __stdcall wACMStreamPrepareHeader(
 	HACMSTREAM has, PACMSTREAMHEADER pash, uint32_t fdwPrepare);
-HRESULT __stdcall wACMStreamConvert(
-	HACMSTREAM has, PACMSTREAMHEADER pash, uint32_t fdwConvert);
+HRESULT __stdcall wACMStreamConvert(HACMSTREAM has, PACMSTREAMHEADER pash, uint32_t fdwConvert);
 HRESULT __stdcall wACMStreamUnprepareHeader(
 	HACMSTREAM has, PACMSTREAMHEADER pash, uint32_t fdwUnprepare);
 HRESULT __stdcall wACMStreamClose(HACMSTREAM has, uint32_t fdwClose);
-HRESULT __stdcall wACMStreamOpen(PHACMSTREAM phas, HACMDRIVER had,
-	const PWAVEFORMATEX pwfxSrc, const PWAVEFORMATEX pwfxDst,
-	PWAVEFILTER pwfltr, ULONG_PTR dwCallback, ULONG_PTR dwInstance,
+HRESULT __stdcall wACMStreamOpen(PHACMSTREAM phas, HACMDRIVER had, const PWAVEFORMATEX pwfxSrc,
+	const PWAVEFORMATEX pwfxDst, PWAVEFILTER pwfltr, ULONG_PTR dwCallback, ULONG_PTR dwInstance,
 	uint32_t fdwOpen);
-HRESULT __stdcall wACMStreamSize(HACMSTREAM has, uint32_t cbInput,
-	puint32_t pdwOutputBytes, uint32_t fdwSize);
-HRESULT __stdcall wACMFormatSuggest(HACMDRIVER had,
-	const struct tWAVEFORMATEX* pwfxSrc, const struct tWAVEFORMATEX* pwfxDst,
-	uint32_t cbwfxDst, uint32_t fdwSuggest);
+HRESULT __stdcall wACMStreamSize(
+	HACMSTREAM has, uint32_t cbInput, puint32_t pdwOutputBytes, uint32_t fdwSize);
+HRESULT __stdcall wACMFormatSuggest(HACMDRIVER had, const struct tWAVEFORMATEX* pwfxSrc,
+	const struct tWAVEFORMATEX* pwfxDst, uint32_t cbwfxDst, uint32_t fdwSuggest);
 #endif
 
 #pragma region wACMStreamPrepareHeader
@@ -101,16 +78,14 @@ HRESULT __stdcall wACMStreamPrepareHeader(
 {
 	PSTR pszErrorMessage;
 	MMRESULT hResult;
-	InternalFunctionSpew("GameOS_DirectSound",
-		"acmStreamPrepareHeader(0x%x, 0x%x, 0x%x)", has, pash, fdwPrepare);
+	InternalFunctionSpew(
+		"GameOS_DirectSound", "acmStreamPrepareHeader(0x%x, 0x%x, 0x%x)", has, pash, fdwPrepare);
 	hResult = acmStreamPrepareHeader(has, pash, fdwPrepare);
 	if (MMFAILED(hResult))
 	{
-		pszErrorMessage =
-			ErrorNumberToMessage(hResult); // likely to take a uint32_t
+		pszErrorMessage = ErrorNumberToMessage(hResult); // likely to take a uint32_t
 		// PAUSE(
-		if (InternalFunctionPause(
-				"FAILED (0x%x - %s) - acmStreamPrepareHeader(0x%x, 0x%x, 0x%x)",
+		if (InternalFunctionPause("FAILED (0x%x - %s) - acmStreamPrepareHeader(0x%x, 0x%x, 0x%x)",
 				hResult, pszErrorMessage, has, pash, fdwPrepare))
 			ENTER_DEBUGGER;
 	}
@@ -131,20 +106,18 @@ HRESULT __stdcall wACMStreamPrepareHeader(
 /// <param name="pash"></param>
 /// <param name="fdwConvert"></param>
 /// <returns></returns>
-HRESULT __stdcall wACMStreamConvert(
-	HACMSTREAM has, PACMSTREAMHEADER pash, uint32_t fdwConvert)
+HRESULT __stdcall wACMStreamConvert(HACMSTREAM has, PACMSTREAMHEADER pash, uint32_t fdwConvert)
 {
 	PSTR pszErrorMessage;
 	MMRESULT hResult;
-	InternalFunctionSpew("GameOS_DirectSound",
-		"acmStreamConvert(0x%x, 0x%x, 0x%x)", has, pash, fdwConvert);
+	InternalFunctionSpew(
+		"GameOS_DirectSound", "acmStreamConvert(0x%x, 0x%x, 0x%x)", has, pash, fdwConvert);
 	hResult = acmStreamConvert(has, pash, fdwConvert);
 	if (MMFAILED(hResult))
 	{
 		pszErrorMessage = ErrorNumberToMessage(hResult);
 		// PAUSE(
-		if (InternalFunctionPause(
-				"FAILED (0x%x - %s) - acmStreamConvert(0x%x, 0x%x, 0x%x)",
+		if (InternalFunctionPause("FAILED (0x%x - %s) - acmStreamConvert(0x%x, 0x%x, 0x%x)",
 				hResult, pszErrorMessage, has, pash, fdwConvert))
 			ENTER_DEBUGGER;
 	}
@@ -170,8 +143,8 @@ HRESULT __stdcall wACMStreamUnprepareHeader(
 {
 	PSTR pszErrorMessage;
 	MMRESULT hResult;
-	InternalFunctionSpew("GameOS_DirectSound",
-		"acmStreamUnprepareHeader(0x%x, 0x%x, 0x%x)", has, pash, fdwUnprepare);
+	InternalFunctionSpew("GameOS_DirectSound", "acmStreamUnprepareHeader(0x%x, 0x%x, 0x%x)", has,
+		pash, fdwUnprepare);
 	hResult = acmStreamUnprepareHeader(has, pash, fdwUnprepare);
 	if (MMFAILED(hResult))
 	{
@@ -202,15 +175,13 @@ HRESULT __stdcall wACMStreamClose(HACMSTREAM has, uint32_t fdwClose)
 {
 	PSTR pszErrorMessage;
 	MMRESULT hResult;
-	InternalFunctionSpew(
-		"GameOS_DirectSound", "acmStreamClose(0x%x, 0x%x)", has, fdwClose);
+	InternalFunctionSpew("GameOS_DirectSound", "acmStreamClose(0x%x, 0x%x)", has, fdwClose);
 	hResult = acmStreamClose(has, fdwClose);
 	if (MMFAILED(hResult))
 	{
 		pszErrorMessage = ErrorNumberToMessage(hResult);
-		if (InternalFunctionPause(
-				"FAILED (0x%x - %s) - acmStreamClose(0x%x, 0x%x, 0x%x)",
-				hResult, pszErrorMessage, has, fdwClose))
+		if (InternalFunctionPause("FAILED (0x%x - %s) - acmStreamClose(0x%x, 0x%x, 0x%x)", hResult,
+				pszErrorMessage, has, fdwClose))
 			ENTER_DEBUGGER;
 	}
 	return hResult;
@@ -235,9 +206,8 @@ HRESULT __stdcall wACMStreamClose(HACMSTREAM has, uint32_t fdwClose)
 /// <param name="dwInstance"></param>
 /// <param name="fdwOpen"></param>
 /// <returns></returns>
-HRESULT __stdcall wACMStreamOpen(PHACMSTREAM phas, HACMDRIVER had,
-	const PWAVEFORMATEX pwfxSrc, const PWAVEFORMATEX pwfxDst,
-	PWAVEFILTER pwfltr, ULONG_PTR dwCallback, ULONG_PTR dwInstance,
+HRESULT __stdcall wACMStreamOpen(PHACMSTREAM phas, HACMDRIVER had, const PWAVEFORMATEX pwfxSrc,
+	const PWAVEFORMATEX pwfxDst, PWAVEFILTER pwfltr, ULONG_PTR dwCallback, ULONG_PTR dwInstance,
 	uint32_t fdwOpen)
 {
 	PSTR pszwfDst;
@@ -249,10 +219,9 @@ HRESULT __stdcall wACMStreamOpen(PHACMSTREAM phas, HACMDRIVER had,
 	pszwfDst = GetWaveFormat(Buffer, pwfxDst);
 	pszwfSrc = GetWaveFormat(BUffer2, pwfxSrc);
 	InternalFunctionSpew("GameOS_DirectSound",
-		"acmStreamOpen(0x%x, 0x%x, %s, %s, 0x%x,0x%x, 0x%x, 0x%x)", phas, had,
-		pszwfSrc, pszwfDst, pwfltr, dwCallback, dwInstance, fdwOpen);
-	hResult = acmStreamOpen(
-		phas, had, pwfxSrc, pwfxDst, pwfltr, dwCallback, dwInstance, 1u);
+		"acmStreamOpen(0x%x, 0x%x, %s, %s, 0x%x,0x%x, 0x%x, 0x%x)", phas, had, pszwfSrc, pszwfDst,
+		pwfltr, dwCallback, dwInstance, fdwOpen);
+	hResult = acmStreamOpen(phas, had, pwfxSrc, pwfxDst, pwfltr, dwCallback, dwInstance, 1u);
 	if (MMFAILED(hResult))
 	{
 		pszwfDst		= GetWaveFormat(Buffer, pwfxDst);
@@ -260,12 +229,11 @@ HRESULT __stdcall wACMStreamOpen(PHACMSTREAM phas, HACMDRIVER had,
 		pszErrorMessage = ErrorNumberToMessage(hResult);
 		if (InternalFunctionPause("FAILED (0x%x - %s) - acmStreamOpen(0x%x, "
 								  "0x%x, %s, %s, 0x%x,0x%x, 0x%x, 0x%x)",
-				hResult, pszErrorMessage, phas, had, pszwfSrc, pszwfDst, pwfltr,
-				dwCallback, dwInstance, fdwOpen))
+				hResult, pszErrorMessage, phas, had, pszwfSrc, pszwfDst, pwfltr, dwCallback,
+				dwInstance, fdwOpen))
 			ENTER_DEBUGGER;
 	}
-	hResult = acmStreamOpen(
-		phas, had, pwfxSrc, pwfxDst, pwfltr, dwCallback, dwInstance, fdwOpen);
+	hResult = acmStreamOpen(phas, had, pwfxSrc, pwfxDst, pwfltr, dwCallback, dwInstance, fdwOpen);
 	if (MMFAILED(hResult))
 	{
 		pszwfDst		= GetWaveFormat(Buffer, pwfxDst);
@@ -273,8 +241,8 @@ HRESULT __stdcall wACMStreamOpen(PHACMSTREAM phas, HACMDRIVER had,
 		pszErrorMessage = ErrorNumberToMessage(hResult);
 		if (InternalFunctionPause("FAILED (0x%x - %s) - acmStreamOpen(0x%x, "
 								  "0x%x, %s, %s, 0x%x,0x%x, 0x%x, 0x%x)",
-				hResult, pszErrorMessage, phas, had, pszwfSrc, pszwfDst, pwfltr,
-				dwCallback, dwInstance, fdwOpen))
+				hResult, pszErrorMessage, phas, had, pszwfSrc, pszwfDst, pwfltr, dwCallback,
+				dwInstance, fdwOpen))
 			ENTER_DEBUGGER;
 	}
 	return hResult;
@@ -295,22 +263,19 @@ HRESULT __stdcall wACMStreamOpen(PHACMSTREAM phas, HACMDRIVER had,
 /// <param name="pdwOutputBytes"></param>
 /// <param name="fdwSize"></param>
 /// <returns></returns>
-HRESULT __stdcall wACMStreamSize(HACMSTREAM has, uint32_t cbInput,
-	puint32_t pdwOutputBytes, uint32_t fdwSize)
+HRESULT __stdcall wACMStreamSize(
+	HACMSTREAM has, uint32_t cbInput, puint32_t pdwOutputBytes, uint32_t fdwSize)
 {
 	PSTR pszErrorMessage;
 	MMRESULT hResult;
-	InternalFunctionSpew("GameOS_DirectSound",
-		"acmStreamSize(0x%x, 0x%x, 0x%x, 0x%x)", has, cbInput, pdwOutputBytes,
-		fdwSize);
+	InternalFunctionSpew("GameOS_DirectSound", "acmStreamSize(0x%x, 0x%x, 0x%x, 0x%x)", has,
+		cbInput, pdwOutputBytes, fdwSize);
 	hResult = acmStreamSize(has, cbInput, pdwOutputBytes, fdwSize);
 	if (MMFAILED(hResult))
 	{
 		pszErrorMessage = ErrorNumberToMessage(hResult);
-		if (InternalFunctionPause(
-				"FAILED (0x%x - %s) - acmStreamSize(0x%x, 0x%x, 0x%x, 0x%x)",
-				hResult, pszErrorMessage, has, cbInput, pdwOutputBytes,
-				fdwSize))
+		if (InternalFunctionPause("FAILED (0x%x - %s) - acmStreamSize(0x%x, 0x%x, 0x%x, 0x%x)",
+				hResult, pszErrorMessage, has, cbInput, pdwOutputBytes, fdwSize))
 			ENTER_DEBUGGER;
 	}
 	return hResult;
@@ -343,9 +308,8 @@ HRESULT __stdcall wACMFormatSuggest(HACMDRIVER had, const PWAVEFORMATEX pwfxSrc,
 	MMRESULT hResult;
 	pszwfDst = GetWaveFormat(Buffer1, pwfxDst);
 	pszwfSrc = GetWaveFormat(Buffer2, pwfxSrc);
-	InternalFunctionSpew("GameOS_DirectSound",
-		"acmFormatSuggest(0x%x, %s, %s, 0x%x, 0x%x)", had, pszwfSrc, pszwfDst,
-		cbwfxDst, fdwSuggest);
+	InternalFunctionSpew("GameOS_DirectSound", "acmFormatSuggest(0x%x, %s, %s, 0x%x, 0x%x)", had,
+		pszwfSrc, pszwfDst, cbwfxDst, fdwSuggest);
 	hResult = acmFormatSuggest(had, pwfxSrc, pwfxDst, cbwfxDst, fdwSuggest);
 	if (MMFAILED(hResult))
 	{
@@ -354,8 +318,7 @@ HRESULT __stdcall wACMFormatSuggest(HACMDRIVER had, const PWAVEFORMATEX pwfxSrc,
 		pszErrorMessage = ErrorNumberToMessage(hResult);
 		if (InternalFunctionPause("FAILED (0x%x - %s) - acmFormatSuggest(0x%x, "
 								  "%s, %s, 0x%x, 0x%x)",
-				hResult, pszErrorMessage, had, pszwfSrc, pszwfDst, cbwfxDst,
-				fdwSuggest))
+				hResult, pszErrorMessage, had, pszwfSrc, pszwfDst, cbwfxDst, fdwSuggest))
 			ENTER_DEBUGGER;
 	}
 	return hResult;

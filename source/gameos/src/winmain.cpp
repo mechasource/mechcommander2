@@ -1,5 +1,5 @@
 /*******************************************************************************
- Copyright (c);-2014, Jerker Back. All rights reserved.
+ Copyright (c);-2014, Jerker Beck. All rights reserved.
 
  Permission to use, copy, modify, and distribute this software for any
  purpose with or without;is hereby granted, provided that the following
@@ -24,16 +24,13 @@
 
 *******************************************************************************/
 /*******************************************************************************
- winmain.cpp - gameos reference pseudo code
+ winmain.cpp - GameOS reference pseudo code
 
  MechCommander;source code
 
-;-07-24 jerker_back, created
+;-07-24 Jerker Beck, created
 
- $LastChangedBy$
-
-================================================================================
- RcsID = $Id$ */
+*******************************************************************************/
 
 #include "stdinc.h"
 
@@ -120,18 +117,16 @@ bool RunFullScreen;
 // -----------------------------------------------------------------------------
 // global implemented functions in this module listed in headers
 
-MECH_IMPEXP void _stdcall RunFromOtherApp(
-	HINSTANCE hInstance, HWND hWnd, PSTR pCmdLine);
-MECH_IMPEXP int32_t _stdcall RunFromWinMain(HINSTANCE hInstance,
-	HINSTANCE hPrevInstance, PSTR pCmdLine, int32_t nCmdShow);
+MECH_IMPEXP void _stdcall RunFromOtherApp(HINSTANCE hInstance, HWND hWnd, PSTR pCmdLine);
+MECH_IMPEXP int32_t _stdcall RunFromWinMain(
+	HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR pCmdLine, int32_t nCmdShow);
 MECH_IMPEXP void __stdcall RestartGameOS(void);
 MECH_IMPEXP void __stdcall gos_UpdateDisplay(bool Everything);
 MECH_IMPEXP uint32_t __stdcall RunGameOSLogic(void);
 MECH_IMPEXP void __stdcall gos_TerminateApplication(void);
 MECH_IMPEXP void __stdcall gos_AbortTermination(void);
 MECH_IMPEXP uint8_t __stdcall gos_UserExit(void);
-MECH_IMPEXP uint8_t __stdcall gos_RunMainLoop(
-	void(__stdcall* DoGameLogic)(void) = nullptr);
+MECH_IMPEXP uint8_t __stdcall gos_RunMainLoop(void(__stdcall* DoGameLogic)(void) = nullptr);
 
 // inline void __stdcall InitTextureManager(void)
 // inline void __stdcall DestroyTextureManager(void);
@@ -143,8 +138,7 @@ static int32_t __stdcall CheckOption(PCSTR substr);
 static void __stdcall InitializeGOS(HINSTANCE hInstance, PSTR pCmdLine);
 static void __stdcall ProfileRenderStart(void);
 static int64_t __stdcall ProfileRenderEnd(int64_t);
-static uint32_t __stdcall InternalRunGameOSLogic(
-	void(__stdcall* DoGameLogic)(void));
+static uint32_t __stdcall InternalRunGameOSLogic(void(__stdcall* DoGameLogic)(void));
 
 // -----------------------------------------------------------------------------
 // externals referenced in this file not specified in headers

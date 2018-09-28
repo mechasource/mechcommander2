@@ -1,39 +1,19 @@
 /*******************************************************************************
- Copyright (c) 2011-2014, Jerker Back. All rights reserved.
-
- Permission to use, copy, modify, and distribute this software for any
- purpose with or without fee is hereby granted, provided that the following
- conditions are met (OSI approved BSD 2-clause license):
-
- 1. Redistributions of source code must retain the above copyright notice,
-	this list of conditions and the following disclaimer.
- 2. Redistributions in binary form must reproduce the above copyright notice,
-	this list of conditions and the following disclaimer in the documentation
-	and/or other materials provided with the distribution.
-
- THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
- AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
- IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
- FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
- DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
- SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
- CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
- OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-
+ This file consist of reversed and interpreted code from object source in the
+ x86 debug build gameos.lib. The code in this file can not be used in any way
+ other than serve as an information reference to the original released source of
+ Mechcommander2. The code is a work of progress and there is no guarantee it is
+ complete, accurate or useful in any way. The purpose is instead to make it
+ possible to safely remove any dependencies of gameos.lib from Mechcommander2.
 *******************************************************************************/
 /*******************************************************************************
- clipping.cpp - gameos reference pseudo code
+ clipping.cpp - GameOS reference pseudo code
 
  MechCommander 2 source code
 
- 2014-07-24 jerker_back, created
+ 2014-07-24 Jerker Beck, created
 
- $LastChangedBy$
-
-================================================================================
- RcsID = $Id$ */
+*******************************************************************************/
 
 #include "stdinc.h"
 
@@ -116,24 +96,22 @@ MECH_IMPEXP void MECH_CALL gos_ClipDrawQuad(pgos_VERTEX pVertices)
 	{
 		if (DirtyStates)
 			FlushRenderStates();
-		if (pVertices[1].x < 0.0 || fWidth < (double)pVertices[3].x ||
-			pVertices[3].y < 0.0 || fHeight < (double)pVertices[1].y)
+		if (pVertices[1].x < 0.0 || fWidth < (double)pVertices[3].x || pVertices[3].y < 0.0 ||
+			fHeight < (double)pVertices[1].y)
 		{
 			PrimitivesRendered += 2;
 			++QuadsRendered;
 			if (HasGuardBandClipping)
 			{
 				++NumGuardBandClipped;
-				wDrawPrimitive(
-					d3dDevice7, D3DPT_TRIANGLEFAN, 0x1C4u, pVertices, 4u, 0);
+				wDrawPrimitive(d3dDevice7, D3DPT_TRIANGLEFAN, 0x1C4u, pVertices, 4u, 0);
 				GameOSFPU();
 			}
 			else
 			{
 				NumClipped += 2;
 				wSetRenderState(d3dDevice7, D3DRS_CLIPPING, 1u);
-				wDrawPrimitive(
-					d3dDevice7, D3DPT_TRIANGLEFAN, 0x1C4u, pVertices, 4u, 0);
+				wDrawPrimitive(d3dDevice7, D3DPT_TRIANGLEFAN, 0x1C4u, pVertices, 4u, 0);
 				wSetRenderState(d3dDevice7, D3DRS_CLIPPING, 0);
 			}
 		}

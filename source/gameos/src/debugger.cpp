@@ -1,39 +1,19 @@
 /*******************************************************************************
- Copyright (c) 2011-2014, Jerker Back. All rights reserved.
-
- Permission to use, copy, modify, and distribute this software for any
- purpose with or without fee is hereby granted, provided that the following
- conditions are met (OSI approved BSD 2-clause license):
-
- 1. Redistributions of source code must retain the above copyright notice,
-	this list of conditions and the following disclaimer.
- 2. Redistributions in binary form must reproduce the above copyright notice,
-	this list of conditions and the following disclaimer in the documentation
-	and/or other materials provided with the distribution.
-
- THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
- AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
- IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
- FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
- DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
- SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
- CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
- OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-
+ This file consist of reversed and interpreted code from object source in the
+ x86 debug build gameos.lib. The code in this file can not be used in any way
+ other than serve as an information reference to the original released source of
+ Mechcommander2. The code is a work of progress and there is no guarantee it is
+ complete, accurate or useful in any way. The purpose is instead to make it
+ possible to safely remove any dependencies of gameos.lib from Mechcommander2.
 *******************************************************************************/
 /*******************************************************************************
- debugger.cpp - gameos reference pseudo code
+ debugger.cpp - GameOS reference pseudo code
 
  MechCommander 2 source code
 
- 2014-07-24 jerker_back, created
+ 2014-07-24 Jerker Beck, created
 
- $LastChangedBy$
-
-================================================================================
- RcsID = $Id$ */
+*******************************************************************************/
 
 #include "stdinc.h"
 
@@ -56,13 +36,11 @@
 
 uint32_t __stdcall CallDebuggerMenuItem(PCSTR Name, uint32_t MenuFunction);
 void __stdcall DelDebuggerMenuItem(PSTR Name);
-void __stdcall AddDebuggerMenuItem(PSTR Name,
-	uint8_t(__stdcall* CheckMark)(void), void(__stdcall* Activated)(void),
-	uint8_t(__stdcall* Greyed)(void)								= 0,
+void __stdcall AddDebuggerMenuItem(PSTR Name, uint8_t(__stdcall* CheckMark)(void),
+	void(__stdcall* Activated)(void), uint8_t(__stdcall* Greyed)(void) = 0,
 	uint32_t(__stdcall* Callback)(PSTR Name, uint32_t MenuFunction) = 0);
 void __stdcall EndRenderMode(void);
-void __stdcall RenderMenu(
-	int32_t, int32_t, uint32_t, uint32_t, MenuItem*, int32_t);
+void __stdcall RenderMenu(int32_t, int32_t, uint32_t, uint32_t, MenuItem*, int32_t);
 void __stdcall DrawMenu(void);
 void __stdcall OpenMenu(MenuItem*, int32_t, int32_t);
 void __stdcall OpenSubMenu(MenuItem*, int32_t, int32_t);
@@ -73,16 +51,15 @@ void __stdcall DestroyDebugger(void);
 void __stdcall SpewNextLine(void);
 void __stdcall SpewToDebugger(PSTR Message);
 float __stdcall DoUV(float);
-int32_t __stdcall GetMipmapUsed(uint32_t Handle, pgos_VERTEX Pickv1,
-	pgos_VERTEX Pickv2, pgos_VERTEX Pickv3);
+int32_t __stdcall GetMipmapUsed(
+	uint32_t Handle, pgos_VERTEX Pickv1, pgos_VERTEX Pickv2, pgos_VERTEX Pickv3);
 void __stdcall ShowTriangleSizeInfo(void);
 void __stdcall DoExamineMipmaps(void);
 void __stdcall DoExamineMipmaps2(void);
 void __stdcall DoExamineRenderer(void);
 void __stdcall DrawSquare(
 	int32_t TopX, int32_t TopY, int32_t Width, int32_t Height, uint32_t Color);
-void __stdcall DrawLines(
-	int32_t X1, int32_t Y1, int32_t X2, int32_t Y2, uint32_t Color);
+void __stdcall DrawLines(int32_t X1, int32_t Y1, int32_t X2, int32_t Y2, uint32_t Color);
 void __stdcall DoExamineDepth(void);
 void __stdcall DoExamineArea(void);
 void __stdcall DoExamineDrawing(void);
@@ -126,8 +103,7 @@ unsigned long gStopRendering;
 
 struct _TextureHeap* pTextureHeap;
 
-int32_t __stdcall DrawTextA(
-	HDC hdc, PCSTR lpchText, int32_t cchText, PRECT lprc, uint32_t format);
+int32_t __stdcall DrawTextA(HDC hdc, PCSTR lpchText, int32_t cchText, PRECT lprc, uint32_t format);
 
 InternalFunctionStop(char const*, ...);
 gos_Free(void*);
@@ -140,8 +116,7 @@ gos_SetRenderState(gos_RenderState, int);
 InternalFunctionSpew(char const*, char const*, ...);
 fabs;
 GetMipmapColor(int);
-gos_SetupViewport(
-	bool, float, bool, uint32_t, float, float, float, float, bool, uint32_t);
+gos_SetupViewport(bool, float, bool, uint32_t, float, float, float, float, bool, uint32_t);
 gos_GetKey(void);
 End3DScene(void);
 CopyBackBuffer(IDirectDrawSurface7*, IDirectDrawSurface7*);

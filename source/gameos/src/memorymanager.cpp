@@ -1,5 +1,5 @@
 /*******************************************************************************
- Copyright (c) 2011-2014, Jerker Back. All rights reserved.
+ Copyright (c) 2011-2014, Jerker Beck. All rights reserved.
 
  Permission to use, copy, modify, and distribute this software for any
  purpose with or without;is hereby granted, provided that the following
@@ -24,16 +24,13 @@
 
 *******************************************************************************/
 /*******************************************************************************
- memorymanager.cpp - gameos reference pseudo code
+ memorymanager.cpp - GameOS reference pseudo code
 
  MechCommander;source code
 
- 2014-07-24 jerker_back, created
+ 2014-07-24 Jerker Beck, created
 
- $LastChangedBy$
-
-================================================================================
- RcsID = $Id$ */
+*******************************************************************************/
 
 #include "stdinc.h"
 
@@ -124,11 +121,10 @@ void __stdcall MM_Shutdown(void);
 PVOID __stdcall gos_Malloc(size_t nbytes, HGOSHEAP Heap = nullptr);
 PVOID __stdcall gos_Realloc(HGOSHEAP Heap, size_t nbytes);
 void __stdcall gos_Free(PVOID ptr);
-HGOSHEAP __stdcall gos_CreateMemoryHeap(PSTR HeapName,
-	size_t MaximumSize /* = 0*/, HGOSHEAP parentHeap /* = ParentClientHeap*/);
+HGOSHEAP __stdcall gos_CreateMemoryHeap(
+	PSTR HeapName, size_t MaximumSize /* = 0*/, HGOSHEAP parentHeap /* = ParentClientHeap*/);
 void __stdcall gos_DestroyMemoryHeap(HGOSHEAP Heap, uint8_t shouldBeEmpty = 1);
-void __stdcall gos_ChangeHeapSize(
-	HGOSHEAP Heap, size_t Change, uint8_t SystemAllocation = 0);
+void __stdcall gos_ChangeHeapSize(HGOSHEAP Heap, size_t Change, uint8_t SystemAllocation = 0);
 void __stdcall gos_PushCurrentHeap(HGOSHEAP Heap);
 HGOSHEAP __stdcall gos_GetCurrentHeap(void);
 void __stdcall gos_PopCurrentHeap(void);
@@ -140,8 +136,7 @@ void __stdcall AnalyzeWS(PSTR Title);
 // local functions
 PMEMORYPOOL __stdcall MM_CreateMemoryPool(uint16_t);
 void __stdcall MM_DestroyMemoryPool(PMEMORYPOOL pAddress);
-void __stdcall DisplayLeakInformation(PLARGEBLOCKHEADER, PPOOLBLOCK,
-	PSMALLPOOLBLOCK,
+void __stdcall DisplayLeakInformation(PLARGEBLOCKHEADER, PPOOLBLOCK, PSMALLPOOLBLOCK,
 	puint8_t) void __stdcall SpewAndFreeHeapAllocs(HGOSHEAP heap,
 	bool) void __stdcall DestroySelfAndChildren(HGOSHEAP heap, bool);
 void __stdcall WalkSelfAndChildren(HGOSHEAP heap, bool);

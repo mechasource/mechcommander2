@@ -1,39 +1,19 @@
 /*******************************************************************************
- Copyright (c) 2011-2014, Jerker Back. All rights reserved.
-
- Permission to use, copy, modify, and distribute this software for any
- purpose with or without fee is hereby granted, provided that the following
- conditions are met (OSI approved BSD 2-clause license):
-
- 1. Redistributions of source code must retain the above copyright notice,
-	this list of conditions and the following disclaimer.
- 2. Redistributions in binary form must reproduce the above copyright notice,
-	this list of conditions and the following disclaimer in the documentation
-	and/or other materials provided with the distribution.
-
- THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
- AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
- IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
- FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
- DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
- SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
- CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
- OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-
+ This file consist of reversed and interpreted code from object source in the
+ x86 debug build gameos.lib. The code in this file can not be used in any way
+ other than serve as an information reference to the original released source of
+ Mechcommander2. The code is a work of progress and there is no guarantee it is
+ complete, accurate or useful in any way. The purpose is instead to make it
+ possible to safely remove any dependencies of gameos.lib from Mechcommander2.
 *******************************************************************************/
 /*******************************************************************************
- winproc.cpp - gameos reference pseudo code
+ winproc.cpp - GameOS reference pseudo code
 
  MechCommander 2 source code
 
- 2014-07-24 jerker_back, created
+ 2014-07-24 Jerker Beck, created
 
- $LastChangedBy$
-
-================================================================================
- RcsID = $Id$ */
+*******************************************************************************/
 
 #include "stdinc.h"
 
@@ -61,8 +41,7 @@ LPARAM LastlParam;
 
 // -----------------------------------------------------------------------------
 // global implemented functions in this module listed in headers
-MECH_IMPEXP LRESULT __stdcall GameOSWinProc(
-	HWND hWnd, uint32_t uMsg, WPARAM wParam, LPARAM lParam);
+MECH_IMPEXP LRESULT __stdcall GameOSWinProc(HWND hWnd, uint32_t uMsg, WPARAM wParam, LPARAM lParam);
 
 // global implemented functions not listed in headers
 MECH_IMPEXP void __stdcall UpdateCursor(void);
@@ -99,8 +78,7 @@ void __stdcall UpdateCursor(void)
 	if (gActive && gGotFocus && !ProcessingError &&
 		((unsigned __int16)LastlParam == 1 || Environment.fullScreen))
 	{
-		if (!gHardwareMouse && !DebuggerMouse || Environment.fullScreen ||
-			Compatibility3D & 0x400)
+		if (!gHardwareMouse && !DebuggerMouse || Environment.fullScreen || Compatibility3D & 0x400)
 			SetCursor(0);
 		else
 			SetCursor(ArrowCursor);
@@ -125,8 +103,7 @@ void __stdcall UpdateCursor(void)
 /// <param name="wParam"></param>
 /// <param name="lParam"></param>
 /// <returns>LRESULT __stdcall</returns>
-MECH_IMPEXP LRESULT __stdcall GameOSWinProc(
-	HWND hWnd, uint32_t uMsg, WPARAM wParam, LPARAM lParam)
+MECH_IMPEXP LRESULT __stdcall GameOSWinProc(HWND hWnd, uint32_t uMsg, WPARAM wParam, LPARAM lParam)
 {
 	bool bActive;
 	bool bHandled;
@@ -193,17 +170,14 @@ MECH_IMPEXP LRESULT __stdcall GameOSWinProc(
 		}
 		if (wParam != VK_CANCEL)
 			DealWithKey(wParam, lParam);
-		if (!Environment.Key_FullScreen || ProcessingError ||
-			wParam != Environment.Key_FullScreen)
+		if (!Environment.Key_FullScreen || ProcessingError || wParam != Environment.Key_FullScreen)
 		{
 			if (!Environment.Key_SwitchMonitors || ProcessingError ||
 				wParam != Environment.Key_SwitchMonitors)
 			{
-				if (Environment.Key_Exit && !ProcessingError &&
-					wParam == Environment.Key_Exit)
+				if (Environment.Key_Exit && !ProcessingError && wParam == Environment.Key_Exit)
 				{
-					InternalFunctionSpew(
-						"GameOS_DirectDraw", "Mode change requested - Esc");
+					InternalFunctionSpew("GameOS_DirectDraw", "Mode change requested - Esc");
 					if (Environment.fullScreen)
 					{
 						DoUpdateWindow		 = 1;
@@ -217,13 +191,11 @@ MECH_IMPEXP LRESULT __stdcall GameOSWinProc(
 			}
 			else
 			{
-				InternalFunctionSpew(
-					"GameOS_DirectDraw", "Mode change requested - F5");
+				InternalFunctionSpew("GameOS_DirectDraw", "Mode change requested - F5");
 				if (Environment.fullScreen)
 				{
 					++Environment.FullScreenDevice;
-					if ((unsigned int)Environment.FullScreenDevice >=
-						NumDevices)
+					if ((unsigned int)Environment.FullScreenDevice >= NumDevices)
 						Environment.FullScreenDevice = 0;
 					DoUpdateWindow		 = 1;
 					GlobalGotoFullScreen = 1;
@@ -237,8 +209,7 @@ MECH_IMPEXP LRESULT __stdcall GameOSWinProc(
 		}
 		else
 		{
-			InternalFunctionSpew(
-				"GameOS_DirectDraw", "Mode change requested - F4");
+			InternalFunctionSpew("GameOS_DirectDraw", "Mode change requested - F4");
 			if (Environment.fullScreen)
 			{
 				DoUpdateWindow		 = 1;
@@ -289,7 +260,7 @@ MECH_IMPEXP LRESULT __stdcall GameOSWinProc(
 		default:
 		$LN2:
 			bHandled = 0;
-			lResult = ProcessIMEMessages(hWnd, uMsg, wParam, lParam, &bHandled);
+			lResult  = ProcessIMEMessages(hWnd, uMsg, wParam, lParam, &bHandled);
 			if (!bHandled)
 				return DefWindowProcA(hWnd, uMsg, wParam, lParam);
 			lResult = lResult;
@@ -310,8 +281,7 @@ MECH_IMPEXP LRESULT __stdcall GameOSWinProc(
 			case WM_SYSKEYDOWN:
 				if (wParam == VK_RETURN && !ProcessingError)
 				{
-					InternalFunctionSpew("GameOS_DirectDraw",
-						"Mode change requested - Alt Enter");
+					InternalFunctionSpew("GameOS_DirectDraw", "Mode change requested - Alt Enter");
 					if (Environment.fullScreen)
 					{
 						DoUpdateWindow		 = 1;
@@ -346,16 +316,14 @@ MECH_IMPEXP LRESULT __stdcall GameOSWinProc(
 					gCaptureScreen = 1;
 				return DefWindowProcA(hWnd, uMsg, wParam, lParam);
 			case WM_CHAR:
-				if (wParam != VK_F16 &&
-					(wParam != VK_CANCEL || lParam != 0x1460001))
+				if (wParam != VK_F16 && (wParam != VK_CANCEL || lParam != 0x1460001))
 				{
 					if (DebuggerActive && ((dbKeyPressed + 1) != dbKeyCurrent))
 					{
 						dbKeyBoardBuffer[dbKeyPressed] = wParam + LastWMDown;
 						dbKeyPressed				   = (dbKeyPressed + 1);
 					}
-					if (!DebuggerActive ||
-						DebuggerActive && gControlsActive && !gStopSystem)
+					if (!DebuggerActive || DebuggerActive && gControlsActive && !gStopSystem)
 						AddKeyEvent(wParam + LastWMDown);
 					LastWMDown = 0;
 					lResult	= 0;
@@ -372,13 +340,12 @@ MECH_IMPEXP LRESULT __stdcall GameOSWinProc(
 		}
 		if ((wParam & 0xFFF0) == SC_KEYMENU)
 			return 0;
-		if ((wParam & 0xFFF0) == SC_SCREENSAVE ||
-			(wParam & 0xFFF0) == SC_MONITORPOWER)
+		if ((wParam & 0xFFF0) == SC_SCREENSAVE || (wParam & 0xFFF0) == SC_MONITORPOWER)
 			return 0;
 		if ((wParam & 0xFFF0) == SC_RESTORE)
 		{
-			InternalFunctionSpew("GameOS_DirectDraw",
-				"Mode change requested - WM_SYSCOMMAND - SC_RESTORE");
+			InternalFunctionSpew(
+				"GameOS_DirectDraw", "Mode change requested - WM_SYSCOMMAND - SC_RESTORE");
 			if (Environment.fullScreen)
 			{
 				DoUpdateWindow		 = 1;
@@ -400,8 +367,8 @@ MECH_IMPEXP LRESULT __stdcall GameOSWinProc(
 			}
 			if (Environment.fullScreen)
 			{
-				InternalFunctionSpew("GameOS_DirectDraw",
-					"Mode change requested - WM_SYSCOMMAND - other");
+				InternalFunctionSpew(
+					"GameOS_DirectDraw", "Mode change requested - WM_SYSCOMMAND - other");
 				DoUpdateWindow		 = 1;
 				GlobalGotoWindowMode = 1;
 			}
@@ -409,8 +376,8 @@ MECH_IMPEXP LRESULT __stdcall GameOSWinProc(
 		}
 		if (!Environment.fullScreen && !ProcessingError)
 		{
-			InternalFunctionSpew("GameOS_DirectDraw",
-				"Mode change requested - WM_SYSCOMMAND - SC_MAXIMIZE");
+			InternalFunctionSpew(
+				"GameOS_DirectDraw", "Mode change requested - WM_SYSCOMMAND - SC_MAXIMIZE");
 			DoUpdateWindow		 = 1;
 			GlobalGotoFullScreen = 1;
 		}
@@ -425,14 +392,15 @@ MECH_IMPEXP LRESULT __stdcall GameOSWinProc(
 		if (!(Compatibility3D & 0x800000) && !ChangingModes)
 		{
 			DoUpdateWindow = 1;
-			InternalFunctionSpew("GameOS_DirectDraw", "Mode change requested - "
-													  "WM_SYSCOLORCHANGE or "
-													  "WM_DISPLAYCHANGE");
+			InternalFunctionSpew("GameOS_DirectDraw",
+				"Mode change requested - "
+				"WM_SYSCOLORCHANGE or "
+				"WM_DISPLAYCHANGE");
 		}
 		return DefWindowProcA(hWnd, uMsg, wParam, lParam);
 	case WM_PAINT:
-		if (InUpdateRenderers || g_DDstate != 1 || !g_DDperformFlip ||
-			Environment.fullScreen || status != Running && status != GameInit)
+		if (InUpdateRenderers || g_DDstate != 1 || !g_DDperformFlip || Environment.fullScreen ||
+			status != Running && status != GameInit)
 			goto LABEL_35;
 		if (FrontBufferSurface)
 		{
@@ -448,8 +416,7 @@ MECH_IMPEXP LRESULT __stdcall GameOSWinProc(
 				rect.bottom = Environment.screenHeight;
 			}
 			AllowFail = true;
-			wBlt(
-				FrontBufferSurface, &rect, BackBufferSurface, 0, DDBLT_WAIT, 0);
+			wBlt(FrontBufferSurface, &rect, BackBufferSurface, 0, DDBLT_WAIT, 0);
 			__asm { fninit} // GameOSFPU(void);
 			AllowFail = false;
 		LABEL_35:
@@ -463,14 +430,13 @@ MECH_IMPEXP LRESULT __stdcall GameOSWinProc(
 			if (DesktopBpp == 8)
 			{
 				SetStretchBltMode(hdc, HALFTONE);
-				StretchBlt(hdc, 0, 0, Environment.screenWidth,
-					Environment.screenHeight, hdcSrc, 0, 0,
-					Environment.screenWidth, Environment.screenHeight, SRCCOPY);
+				StretchBlt(hdc, 0, 0, Environment.screenWidth, Environment.screenHeight, hdcSrc, 0,
+					0, Environment.screenWidth, Environment.screenHeight, SRCCOPY);
 			}
 			else
 			{
-				BitBlt(hdc, 0, 0, Environment.screenWidth,
-					Environment.screenHeight, hdcSrc, 0, 0, SRCCOPY);
+				BitBlt(hdc, 0, 0, Environment.screenWidth, Environment.screenHeight, hdcSrc, 0, 0,
+					SRCCOPY);
 			}
 			wReleaseDC(BackBufferSurface, hdcSrc);
 			EndPaint(hWnd, &paint);
@@ -479,7 +445,7 @@ MECH_IMPEXP LRESULT __stdcall GameOSWinProc(
 		return lResult;
 	case WM_ACTIVATE:
 		bActive = (unsigned __int16)wParam == WA_ACTIVE ||
-				  (unsigned __int16)wParam == WA_CLICKACTIVE; // low order word
+			(unsigned __int16)wParam == WA_CLICKACTIVE; // low order word
 		gActive = bActive;
 		if (gActive)
 			mc2HasLostFocus = false;

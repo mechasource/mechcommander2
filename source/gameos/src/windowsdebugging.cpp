@@ -1,39 +1,19 @@
 /*******************************************************************************
- Copyright (c) 2011-2014, Jerker Back. All rights reserved.
-
- Permission to use, copy, modify, and distribute this software for any
- purpose with or without fee is hereby granted, provided that the following
- conditions are met (OSI approved BSD 2-clause license):
-
- 1. Redistributions of source code must retain the above copyright notice,
-	this list of conditions and the following disclaimer.
- 2. Redistributions in binary form must reproduce the above copyright notice,
-	this list of conditions and the following disclaimer in the documentation
-	and/or other materials provided with the distribution.
-
- THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
- AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
- IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
- FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
- DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
- SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
- CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
- OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-
+ This file consist of reversed and interpreted code from object source in the
+ x86 debug build gameos.lib. The code in this file can not be used in any way
+ other than serve as an information reference to the original released source of
+ Mechcommander2. The code is a work of progress and there is no guarantee it is
+ complete, accurate or useful in any way. The purpose is instead to make it
+ possible to safely remove any dependencies of gameos.lib from Mechcommander2.
 *******************************************************************************/
 /*******************************************************************************
- windowsdebugging.cpp - gameos reference pseudo code
+ windowsdebugging.cpp - GameOS reference pseudo code
 
  MechCommander 2 source code
 
- 2014-07-24 jerker_back, created
+ 2014-07-24 Jerker Beck, created
 
- $LastChangedBy$
-
-================================================================================
- RcsID = $Id$ */
+*******************************************************************************/
 
 #include "stdinc.h"
 
@@ -49,8 +29,7 @@
 
 // -----------------------------------------------------------------------------
 // global implemented functions in this module listed in headers
-MECH_IMPEXP PCSTR __stdcall GetWindowsMessage(
-	uint32_t uMsg, WPARAM wParam, LPARAM lParam);
+MECH_IMPEXP PCSTR __stdcall GetWindowsMessage(uint32_t uMsg, WPARAM wParam, LPARAM lParam);
 
 // global implemented functions not listed in headers
 
@@ -67,11 +46,9 @@ static PCSTR __stdcall GetWM_WINDOWPOSCHANGEFlags(PWINDOWPOS pwinpos)
 	/*static*/ char szBuffer[0x80];
 	szBuffer[0] = 0;
 	if (!(pwinpos->flags & SWP_NOMOVE))
-		sprintf_s(szBuffer, _countof(szBuffer), "Top Left = %d,%d ", pwinpos->x,
-			pwinpos->y);
+		sprintf_s(szBuffer, _countof(szBuffer), "Top Left = %d,%d ", pwinpos->x, pwinpos->y);
 	if (!(pwinpos->flags & SWP_NOSIZE))
-		sprintf_s(szBuffer, _countof(szBuffer), "Client Size = %d,%d ",
-			pwinpos->cx, pwinpos->cy);
+		sprintf_s(szBuffer, _countof(szBuffer), "Client Size = %d,%d ", pwinpos->cx, pwinpos->cy);
 	// if (pwinpos->flags & SWP_FRAMECHANGED)
 	//	strcat_s(szBuffer, _countof(szBuffer), "DRAWFRAME ");
 	if (pwinpos->flags & SWP_FRAMECHANGED)
@@ -96,9 +73,8 @@ static PCSTR __stdcall GetWM_WINDOWPOSCHANGEFlags(PWINDOWPOS pwinpos)
 		strcat_s(szBuffer, _countof(szBuffer), "NOZORDER ");
 	if (pwinpos->flags & SWP_SHOWWINDOW)
 		strcat_s(szBuffer, _countof(szBuffer), "SHOWWINDOW ");
-	SUPPRESS_WARNING(
-		4172)		 // returning address of local variable or temporary
-	return szBuffer; //-V558
+	SUPPRESS_WARNING(4172) // returning address of local variable or temporary
+	return szBuffer;	   //-V558
 }
 
 static PCSTR __stdcall GetWM_SIZEFlags(WPARAM wParam)
@@ -197,8 +173,7 @@ static PCSTR __stdcall GetWM_SYSCOMMANDFlags(WPARAM wParam)
 }
 
 //----- (00000AB0) --------------------------------------------------------
-MECH_IMPEXP PCSTR __stdcall GetWindowsMessage(
-	uint32_t uMsg, WPARAM wParam, LPARAM lParam)
+MECH_IMPEXP PCSTR __stdcall GetWindowsMessage(uint32_t uMsg, WPARAM wParam, LPARAM lParam)
 {
 	/*static*/ char szBuffer[0x100];
 	PCSTR pszMessage = nullptr;
@@ -213,8 +188,7 @@ MECH_IMPEXP PCSTR __stdcall GetWindowsMessage(
 		pszMessage = nullptr;
 		break;
 	case WM_KEYFIRST:
-		sprintf_s(szBuffer, _countof(szBuffer),
-			"WM_KEYDOWN w=0x%4.4x l=0x%4.4x", wParam, lParam);
+		sprintf_s(szBuffer, _countof(szBuffer), "WM_KEYDOWN w=0x%4.4x l=0x%4.4x", wParam, lParam);
 		pszMessage = szBuffer;
 		break;
 	case WM_CANCELMODE:
@@ -279,8 +253,7 @@ MECH_IMPEXP PCSTR __stdcall GetWindowsMessage(
 			pszMessage = "Activated";
 		else
 			pszMessage = "Deactivated";
-		sprintf_s(
-			szBuffer, _countof(szBuffer), "WM_ACTIVATEAPP %s", pszMessage);
+		sprintf_s(szBuffer, _countof(szBuffer), "WM_ACTIVATEAPP %s", pszMessage);
 		pszMessage = szBuffer;
 		break;
 	case WM_ACTIVATE:
@@ -353,8 +326,7 @@ MECH_IMPEXP PCSTR __stdcall GetWindowsMessage(
 		pszMessage = szBuffer;
 		break;
 	case WM_SYSKEYDOWN:
-		sprintf_s(
-			szBuffer, _countof(szBuffer), "WM_SYSKEYDOWN 0x%4.4x", wParam);
+		sprintf_s(szBuffer, _countof(szBuffer), "WM_SYSKEYDOWN 0x%4.4x", wParam);
 		pszMessage = szBuffer;
 		break;
 	case WM_SYSKEYUP:
@@ -362,13 +334,11 @@ MECH_IMPEXP PCSTR __stdcall GetWindowsMessage(
 		pszMessage = szBuffer;
 		break;
 	case WM_SYSCOMMAND:
-		sprintf_s(szBuffer, _countof(szBuffer), "WM_SYSCOMMAND %s",
-			GetWM_SYSCOMMANDFlags(wParam));
+		sprintf_s(szBuffer, _countof(szBuffer), "WM_SYSCOMMAND %s", GetWM_SYSCOMMANDFlags(wParam));
 		pszMessage = szBuffer;
 		break;
 	case WM_COMMAND:
-		sprintf_s(szBuffer, _countof(szBuffer), "WM_COMMAND 0x%4.4x,0x%x",
-			wParam, lParam);
+		sprintf_s(szBuffer, _countof(szBuffer), "WM_COMMAND 0x%4.4x,0x%x", wParam, lParam);
 		pszMessage = szBuffer;
 		break;
 	case WM_CHAR:

@@ -1,39 +1,19 @@
 /*******************************************************************************
- Copyright (c) 2011-2014, Jerker Back. All rights reserved.
-
- Permission to use, copy, modify, and distribute this software for any
- purpose with or without fee is hereby granted, provided that the following
- conditions are met (OSI approved BSD 2-clause license):
-
- 1. Redistributions of source code must retain the above copyright notice,
-	this list of conditions and the following disclaimer.
- 2. Redistributions in binary form must reproduce the above copyright notice,
-	this list of conditions and the following disclaimer in the documentation
-	and/or other materials provided with the distribution.
-
- THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
- AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
- IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
- FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
- DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
- SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
- CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
- OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-
+ This file consist of reversed and interpreted code from object source in the
+ x86 debug build gameos.lib. The code in this file can not be used in any way
+ other than serve as an information reference to the original released source of
+ Mechcommander2. The code is a work of progress and there is no guarantee it is
+ complete, accurate or useful in any way. The purpose is instead to make it
+ possible to safely remove any dependencies of gameos.lib from Mechcommander2.
 *******************************************************************************/
 /*******************************************************************************
- libraries.cpp - gameos reference pseudo code
+ libraries.cpp - GameOS reference pseudo code
 
  MechCommander 2 source code
 
- 2014-07-24 jerker_back, created
+ 2014-07-24 Jerker Beck, created
 
- $LastChangedBy$
-
-================================================================================
- RcsID = $Id$ */
+*******************************************************************************/
 
 #include "stdinc.h"
 
@@ -41,26 +21,23 @@
 #include <toolos.hpp>
 #include <windows.hpp>
 
-#pragma warning(                                                               \
-	disable : 4191) // 'type cast' : unsafe conversion from 'FARPROC'
+#pragma warning(disable : 4191) // 'type cast' : unsafe conversion from 'FARPROC'
 
 typedef int32_t(__stdcall* PDIRECTXSETUPGETVERSION)(
 	uint32_t* pdwVersion, uint32_t* pdwMinorVersion);
 typedef HRESULT(__stdcall* PDIRECTDRAWCREATEEX)(
 	GUID* pGUID, PVOID* ppDD, REFIID iid, LPUNKNOWN pUnkOuter);
-typedef HRESULT(__stdcall* PDIRECTDRAWENUMERATEA)(
-	LPDDENUMCALLBACKA pCallback, PVOID pContext);
+typedef HRESULT(__stdcall* PDIRECTDRAWENUMERATEA)(LPDDENUMCALLBACKA pCallback, PVOID pContext);
 typedef HRESULT(__stdcall* PDIRECTDRAWENUMERATEEXA)(
 	LPDDENUMCALLBACKEXA pCallback, PVOID pContext, uint32_t dwFlags);
 typedef HRESULT(__stdcall* PDIRECTSOUNDCREATE)(
 	LPCGUID pcGuidDevice, LPDIRECTSOUND* ppDS, LPUNKNOWN pUnkOuter);
 typedef HRESULT(__stdcall* PDIRECTSOUNDENUMERATEA)(
 	LPDSENUMCALLBACKA pDSEnumCallback, PVOID pContext);
-typedef HRESULT(__stdcall* PDIRECTINPUTCREATEEX)(HINSTANCE hInstance,
-	uint32_t dwVersion, REFIID riidltf, PVOID* ppvOut, LPUNKNOWN punkOuter);
+typedef HRESULT(__stdcall* PDIRECTINPUTCREATEEX)(
+	HINSTANCE hInstance, uint32_t dwVersion, REFIID riidltf, PVOID* ppvOut, LPUNKNOWN punkOuter);
 
-typedef LPDIRECT3DVERTEXBUFFER7(__stdcall* GETDXFUNC)(
-	LPDIRECT3DVERTEXBUFFER7, LPDIRECT3DDEVICE7);
+typedef LPDIRECT3DVERTEXBUFFER7(__stdcall* GETDXFUNC)(LPDIRECT3DVERTEXBUFFER7, LPDIRECT3DDEVICE7);
 
 typedef enum IJLERR(__stdcall* PIJLINIT)(struct _JPEG_CORE_PROPERTIES* jcprops);
 typedef enum IJLERR(__stdcall* PIJLFREE)(struct _JPEG_CORE_PROPERTIES* jcprops);
@@ -86,26 +63,24 @@ typedef int32_t(__stdcall* PIMMSETOPENSTATUS)(HIMC, int32_t);
 typedef int32_t(__stdcall* PIMMSIMULATEHOTKEY)(HWND, uint32_t);
 typedef int32_t(__stdcall* PIMMUNLOCKIMC)(HIMC);
 typedef int32_t(__stdcall* PIMMUNLOCKIMCC)(HIMCC);
-typedef uint32_t(__stdcall* PIMMGETCANDIDATELISTA)(HIMC, uint32_t deIndex,
-	struct tagCANDIDATELIST* pCandList, uint32_t dwBufLen);
+typedef uint32_t(__stdcall* PIMMGETCANDIDATELISTA)(
+	HIMC, uint32_t deIndex, struct tagCANDIDATELIST* pCandList, uint32_t dwBufLen);
 typedef uint32_t(__stdcall* PIMMGETVIRTUALKEY)(HWND);
 typedef struct tagINPUTCONTEXT*(__stdcall* PIMMLOCKIMC)(HIMC);
 
 typedef int32_t(__stdcall* PEMPTYWORKINGSET)(HANDLE hProcess);
 typedef int32_t(__stdcall* PINITIALIZEPROCESSFORWSWATCH)(HANDLE hProcess);
-typedef int32_t(__stdcall* PGETWSCHANGES)(HANDLE hProcess,
-	struct _PSAPI_WS_WATCH_INFORMATION* lpWatchInfo, uint32_t cb);
+typedef int32_t(__stdcall* PGETWSCHANGES)(
+	HANDLE hProcess, struct _PSAPI_WS_WATCH_INFORMATION* lpWatchInfo, uint32_t cb);
 typedef uint32_t(__stdcall* PGETMAPPEDFILENAMEA)(
 	HANDLE hProcess, PVOID lpv, PSTR lpFilename, uint32_t nSize);
 
-typedef uint32_t(__stdcall* PAMGETERRORTEXTA)(
-	HRESULT hr, PSTR pbuffer, uint32_t MaxLen);
+typedef uint32_t(__stdcall* PAMGETERRORTEXTA)(HRESULT hr, PSTR pbuffer, uint32_t MaxLen);
 
 typedef int16_t(__stdcall* PSQLALLOCHANDLE)(int16_t, void*, void**);
-typedef int16_t(__stdcall* PSQLBINDCOL)(
-	void*, uint16_t, int16_t, void*, int32_t, int32_t*);
-typedef int16_t(__stdcall* PSQLBINDPARAMETER)(void*, uint16_t, int16_t, int16_t,
-	int16_t, uint32_t, int16_t, void*, int32_t, int32_t*);
+typedef int16_t(__stdcall* PSQLBINDCOL)(void*, uint16_t, int16_t, void*, int32_t, int32_t*);
+typedef int16_t(__stdcall* PSQLBINDPARAMETER)(
+	void*, uint16_t, int16_t, int16_t, int16_t, uint32_t, int16_t, void*, int32_t, int32_t*);
 typedef int16_t(__stdcall* PSQLDISCONNECT)(void*);
 typedef int16_t(__stdcall* PSQLDRIVERCONNECT)(
 	void*, HWND, uint8_t*, int16_t, uint8_t*, int16_t, int16_t*, uint16_t);
@@ -120,8 +95,7 @@ typedef int16_t(__stdcall* PSQLGETDIAGREC)(
 typedef int16_t(__stdcall* PSQLNUMRESULTCOLS)(void*, int16_t*);
 typedef int16_t(__stdcall* PSQLSETENVATTR)(void*, int32_t, void*, int32_t);
 
-typedef SOCKET(__stdcall* PACCEPT)(
-	SOCKET s, struct sockaddr* paddr, int32_t* addrlen);
+typedef SOCKET(__stdcall* PACCEPT)(SOCKET s, struct sockaddr* paddr, int32_t* addrlen);
 typedef int32_t(__stdcall* PWSACLEANUP)(void);
 typedef int32_t(__stdcall* PWSAGETLASTERROR)(void);
 typedef int32_t(__stdcall* PWSASTARTUP)(uint16_t, struct WSAData*);
@@ -304,18 +278,16 @@ void __stdcall InitLibraries(void)
 	if (hModule_dsetup == nullptr)
 	{
 		strcpy_s(szAssetsPath, _countof(szAssetsPath), AssetsDirectory1);
-		strcat_s(szAssetsPath, _countof(szAssetsPath),
-			"\\assets\\binaries\\dsetup.dll");
+		strcat_s(szAssetsPath, _countof(szAssetsPath), "\\assets\\binaries\\dsetup.dll");
 		hModule_dsetup = LoadLibraryA(szAssetsPath);
 		if (hModule_dsetup == nullptr)
 		{
 			// pszFormat = gos_GetResourceString(gLanguageDLL, 10051u);
 			pszFormat = "Cannot find dsetup.dll in %s\\assets\\binaries or %s, "
 						"this file is required";
-			sprintf_s(szDsetupMessage, _countof(szDsetupMessage), pszFormat,
-				AssetsDirectory1, AssetsDirectory2);
-			MessageBoxA(
-				nullptr, szDsetupMessage, ApplicationName, MB_ICONEXCLAMATION);
+			sprintf_s(szDsetupMessage, _countof(szDsetupMessage), pszFormat, AssetsDirectory1,
+				AssetsDirectory2);
+			MessageBoxA(nullptr, szDsetupMessage, ApplicationName, MB_ICONEXCLAMATION);
 			status = AfterExit;
 			_exit(EXIT_FAILURE);
 		}
@@ -337,10 +309,9 @@ void __stdcall InitLibraries(void)
 		{
 			pszFormat  = "Requires DirectX 7.0a or later, found %s";
 			pszMessage = GetDirectXVersion();
-			sprintf_s(szDirectXVersionMessage1,
-				_countof(szDirectXVersionMessage1), pszFormat, pszMessage);
-			MessageBoxA(nullptr, szDirectXVersionMessage1, ApplicationName,
-				MB_ICONEXCLAMATION);
+			sprintf_s(szDirectXVersionMessage1, _countof(szDirectXVersionMessage1), pszFormat,
+				pszMessage);
+			MessageBoxA(nullptr, szDirectXVersionMessage1, ApplicationName, MB_ICONEXCLAMATION);
 			status = AfterExit;
 			_exit(EXIT_FAILURE);
 		}
@@ -353,10 +324,9 @@ void __stdcall InitLibraries(void)
 			// language.dll : "Requires DirectX 8 or later, found %s"
 			pszFormat  = "Requires DirectX 8 or later, found %s";
 			pszMessage = GetDirectXVersion();
-			sprintf_s(szDirectXVersionMessage2,
-				_countof(szDirectXVersionMessage2), pszFormat, pszMessage);
-			MessageBoxA(nullptr, szDirectXVersionMessage2, ApplicationName,
-				MB_ICONEXCLAMATION);
+			sprintf_s(szDirectXVersionMessage2, _countof(szDirectXVersionMessage2), pszFormat,
+				pszMessage);
+			MessageBoxA(nullptr, szDirectXVersionMessage2, ApplicationName, MB_ICONEXCLAMATION);
 			status = AfterExit;
 			_exit(EXIT_FAILURE);
 		}
@@ -369,26 +339,23 @@ void __stdcall InitLibraries(void)
 			// pszMessage = gos_GetResourceString(gLanguageDLL, 10031u);
 			pszMessage = "Cannot find ddraw.dll, this file is required";
 			// sprintf_s(szDdrawMessage, _countof(szDdrawMessage), pszMessage);
-			MessageBoxA(
-				nullptr, pszMessage, ApplicationName, MB_ICONEXCLAMATION);
+			MessageBoxA(nullptr, pszMessage, ApplicationName, MB_ICONEXCLAMATION);
 			status = AfterExit;
 			_exit(EXIT_FAILURE);
 		}
-		_DirectDrawCreateEx = reinterpret_cast<PDIRECTDRAWCREATEEX>(
-			GetProcAddress(LibBlade, "DirectDrawCreateEx"));
+		_DirectDrawCreateEx =
+			reinterpret_cast<PDIRECTDRAWCREATEEX>(GetProcAddress(LibBlade, "DirectDrawCreateEx"));
 		_DirectDrawEnumerate = reinterpret_cast<PDIRECTDRAWENUMERATEA>(
 			GetProcAddress(LibBlade, "DirectDrawEnumerateA"));
 		_DirectDrawEnumerateEx = reinterpret_cast<PDIRECTDRAWENUMERATEEXA>(
 			GetProcAddress(LibBlade, "DirectDrawEnumerateExA"));
 		g_pGetDXVB = nullptr;
-		if ((_DirectDrawCreateEx == nullptr) ||
-			(_DirectDrawEnumerate == nullptr) ||
+		if ((_DirectDrawCreateEx == nullptr) || (_DirectDrawEnumerate == nullptr) ||
 			/* typo bug (_DirectDrawEnumerate == nullptr)*/
 			(_DirectDrawEnumerateEx == nullptr))
 		{
 			pszMessage = "Cannot find ddraw functions";
-			MessageBoxA(
-				nullptr, pszMessage, ApplicationName, MB_ICONEXCLAMATION);
+			MessageBoxA(nullptr, pszMessage, ApplicationName, MB_ICONEXCLAMATION);
 			status = AfterExit;
 			_exit(EXIT_FAILURE);
 		}
@@ -405,16 +372,15 @@ void __stdcall InitLibraries(void)
 		if (LibBlade == nullptr)
 		{
 			strcpy_s(BladePath, _countof(BladePath), AssetsDirectory1);
-			strcat_s(BladePath, _countof(BladePath),
-				"\\assets\\binaries\\bladed.dll");
+			strcat_s(BladePath, _countof(BladePath), "\\assets\\binaries\\bladed.dll");
 			LibBlade = LoadLibraryA(BladePath);
 			if (LibBlade == nullptr)
 			{
 				if (strlen(AssetsDirectory2) >= 16)
 				{
 					nBufferSize = strlen(AssetsDirectory2);
-					if (!_strnicmp(&AssetsDirectory2[nBufferSize - 16],
-							"\\assets\\binaries", 0x10u))
+					if (!_strnicmp(
+							&AssetsDirectory2[nBufferSize - 16], "\\assets\\binaries", 0x10u))
 						bbladepath2 = true;
 				}
 				bbladepath1 = false;
@@ -424,8 +390,7 @@ void __stdcall InitLibraries(void)
 				if (LibBlade == nullptr)
 				{
 					strcpy_s(BladePath, _countof(BladePath), AssetsDirectory1);
-					strcat_s(BladePath, _countof(BladePath),
-						"\\assets\\binaries\\blade.dll");
+					strcat_s(BladePath, _countof(BladePath), "\\assets\\binaries\\blade.dll");
 					LibBlade	= LoadLibraryA(BladePath);
 					bbladepath2 = true;
 					if (LibBlade == nullptr)
@@ -435,11 +400,10 @@ void __stdcall InitLibraries(void)
 						pszFormat = "Cannot find blade.dll in "
 									"%s\\assets\\binaries or %s, this file is "
 									"required";
-						sprintf_s(szAssetsPathMessage,
-							_countof(szAssetsPathMessage), pszFormat,
+						sprintf_s(szAssetsPathMessage, _countof(szAssetsPathMessage), pszFormat,
 							AssetsDirectory1, AssetsDirectory2);
-						MessageBoxA(nullptr, szAssetsPathMessage,
-							ApplicationName, MB_ICONEXCLAMATION);
+						MessageBoxA(
+							nullptr, szAssetsPathMessage, ApplicationName, MB_ICONEXCLAMATION);
 						status = AfterExit;
 						_exit(EXIT_FAILURE);
 					}
@@ -460,22 +424,19 @@ void __stdcall InitLibraries(void)
 					ENTER_DEBUGGER;
 			}
 		}
-		_DirectDrawCreateEx = reinterpret_cast<PDIRECTDRAWCREATEEX>(
-			GetProcAddress(LibBlade, "DirectDrawCreateEx"));
+		_DirectDrawCreateEx =
+			reinterpret_cast<PDIRECTDRAWCREATEEX>(GetProcAddress(LibBlade, "DirectDrawCreateEx"));
 		_DirectDrawEnumerate = reinterpret_cast<PDIRECTDRAWENUMERATEA>(
 			GetProcAddress(LibBlade, "DirectDrawEnumerateA"));
 		_DirectDrawEnumerateEx = reinterpret_cast<PDIRECTDRAWENUMERATEEXA>(
 			GetProcAddress(LibBlade, "DirectDrawEnumerateExA"));
-		g_pGetDXVB =
-			reinterpret_cast<GETDXFUNC>(GetProcAddress(LibBlade, "GetDXVB"));
-		if ((_DirectDrawCreateEx == nullptr) ||
-			(_DirectDrawEnumerate == nullptr) ||
+		g_pGetDXVB = reinterpret_cast<GETDXFUNC>(GetProcAddress(LibBlade, "GetDXVB"));
+		if ((_DirectDrawCreateEx == nullptr) || (_DirectDrawEnumerate == nullptr) ||
 			/* typo bug (_DirectDrawEnumerate == nullptr)*/
 			(_DirectDrawEnumerateEx == nullptr) || (g_pGetDXVB == nullptr))
 		{
 			pszMessage = "Cannot find Blade functions";
-			MessageBoxA(
-				nullptr, pszMessage, ApplicationName, MB_ICONEXCLAMATION);
+			MessageBoxA(nullptr, pszMessage, ApplicationName, MB_ICONEXCLAMATION);
 			status = AfterExit;
 			_exit(EXIT_FAILURE);
 		}
@@ -487,20 +448,15 @@ void __stdcall InitLibraries(void)
 	if (LibJpeg == nullptr)
 	{
 		strcpy_s(szAssetsPath, _countof(szAssetsPath), AssetsDirectory1);
-		strcat_s(szAssetsPath, _countof(szAssetsPath),
-			"\\assets\\binaries\\ijl10.dll");
+		strcat_s(szAssetsPath, _countof(szAssetsPath), "\\assets\\binaries\\ijl10.dll");
 		LibJpeg = LoadLibraryA(szAssetsPath);
 	}
 	if (LibJpeg)
 	{
-		_ijlInit =
-			reinterpret_cast<PIJLINIT>(GetProcAddress(LibJpeg, "ijlInit"));
-		_ijlFree =
-			reinterpret_cast<PIJLFREE>(GetProcAddress(LibJpeg, "ijlFree"));
-		_ijlRead =
-			reinterpret_cast<PIJLREAD>(GetProcAddress(LibJpeg, "ijlRead"));
-		_ijlWrite =
-			reinterpret_cast<PIJLWRITE>(GetProcAddress(LibJpeg, "ijlWrite"));
+		_ijlInit  = reinterpret_cast<PIJLINIT>(GetProcAddress(LibJpeg, "ijlInit"));
+		_ijlFree  = reinterpret_cast<PIJLFREE>(GetProcAddress(LibJpeg, "ijlFree"));
+		_ijlRead  = reinterpret_cast<PIJLREAD>(GetProcAddress(LibJpeg, "ijlRead"));
+		_ijlWrite = reinterpret_cast<PIJLWRITE>(GetProcAddress(LibJpeg, "ijlWrite"));
 	}
 	// dsound.dll
 	LibDsound = LoadLibraryA("dsound.dll");
@@ -512,8 +468,8 @@ void __stdcall InitLibraries(void)
 		status = AfterExit;
 		_exit(EXIT_FAILURE);
 	}
-	_DirectSoundCreate = reinterpret_cast<PDIRECTSOUNDCREATE>(
-		GetProcAddress(LibDsound, "DirectSoundCreate"));
+	_DirectSoundCreate =
+		reinterpret_cast<PDIRECTSOUNDCREATE>(GetProcAddress(LibDsound, "DirectSoundCreate"));
 	_DirectSoundEnumerate = reinterpret_cast<PDIRECTSOUNDENUMERATEA>(
 		GetProcAddress(LibDsound, "DirectSoundEnumerateA"));
 	if ((_DirectSoundCreate == nullptr) && (_DirectSoundEnumerate == nullptr))
@@ -533,8 +489,8 @@ void __stdcall InitLibraries(void)
 		status = AfterExit;
 		_exit(EXIT_FAILURE);
 	}
-	_DirectInputCreateEx = reinterpret_cast<PDIRECTINPUTCREATEEX>(
-		GetProcAddress(LibDinput, "DirectInputCreateEx"));
+	_DirectInputCreateEx =
+		reinterpret_cast<PDIRECTINPUTCREATEEX>(GetProcAddress(LibDinput, "DirectInputCreateEx"));
 	if (_DirectInputCreateEx == nullptr)
 	{
 		pszMessage = "Cannot find DirectInput functions";
@@ -546,44 +502,37 @@ void __stdcall InitLibraries(void)
 	LibIME = LoadLibraryA("imm32.dll");
 	if (LibIME)
 	{
-		_ImmGetContext = reinterpret_cast<PIMMGETCONTEXT>(
-			GetProcAddress(LibIME, "ImmGetContext"));
-		_ImmReleaseContext = reinterpret_cast<PIMMRELEASECONTEXT>(
-			GetProcAddress(LibIME, "ImmReleaseContext"));
-		_ImmAssociateContext = reinterpret_cast<PIMMASSOCIATECONTEXT>(
-			GetProcAddress(LibIME, "ImmAssociateContext"));
+		_ImmGetContext = reinterpret_cast<PIMMGETCONTEXT>(GetProcAddress(LibIME, "ImmGetContext"));
+		_ImmReleaseContext =
+			reinterpret_cast<PIMMRELEASECONTEXT>(GetProcAddress(LibIME, "ImmReleaseContext"));
+		_ImmAssociateContext =
+			reinterpret_cast<PIMMASSOCIATECONTEXT>(GetProcAddress(LibIME, "ImmAssociateContext"));
 		_ImmGetCompositionString = reinterpret_cast<PIMMGETCOMPOSITIONSTRINGA>(
 			GetProcAddress(LibIME, "ImmGetCompositionStringA"));
-		_ImmGetOpenStatus = reinterpret_cast<PIMMGETOPENSTATUS>(
-			GetProcAddress(LibIME, "ImmGetOpenStatus"));
-		_ImmSetOpenStatus = reinterpret_cast<PIMMSETOPENSTATUS>(
-			GetProcAddress(LibIME, "ImmSetOpenStatus"));
+		_ImmGetOpenStatus =
+			reinterpret_cast<PIMMGETOPENSTATUS>(GetProcAddress(LibIME, "ImmGetOpenStatus"));
+		_ImmSetOpenStatus =
+			reinterpret_cast<PIMMSETOPENSTATUS>(GetProcAddress(LibIME, "ImmSetOpenStatus"));
 		_ImmGetConversionStatus = reinterpret_cast<PIMMGETCONVERSIONSTATUS>(
 			GetProcAddress(LibIME, "ImmGetConversionStatus"));
-		_ImmGetCandidateList = reinterpret_cast<PIMMGETCANDIDATELISTA>(
-			GetProcAddress(LibIME, "ImmGetCandidateListA"));
-		_ImmGetVirtualKey = reinterpret_cast<PIMMGETVIRTUALKEY>(
-			GetProcAddress(LibIME, "ImmGetVirtualKey"));
-		_ImmLockIMC =
-			reinterpret_cast<PIMMLOCKIMC>(GetProcAddress(LibIME, "ImmLockIMC"));
-		_ImmUnlockIMC = reinterpret_cast<PIMMUNLOCKIMC>(
-			GetProcAddress(LibIME, "ImmUnlockIMCC"));
-		_ImmLockIMCC = reinterpret_cast<PIMMLOCKIMCC>(
-			GetProcAddress(LibIME, "ImmLockIMCC"));
-		_ImmUnlockIMCC = reinterpret_cast<PIMMUNLOCKIMCC>(
-			GetProcAddress(LibIME, "ImmUnlockIMC"));
-		_ImmGetDefaultIMEWnd = reinterpret_cast<PIMMGETDEFAULTIMEWND>(
-			GetProcAddress(LibIME, "ImmGetDefaultIMEWnd"));
-		_ImmGetIMEFileName = reinterpret_cast<PIMMGETIMEFILENAME>(
-			GetProcAddress(LibIME, "ImmGetIMEFileNameA"));
-		_ImmNotifyIME = reinterpret_cast<PIMMNOTIFYIME>(
-			GetProcAddress(LibIME, "ImmNotifyIME"));
+		_ImmGetCandidateList =
+			reinterpret_cast<PIMMGETCANDIDATELISTA>(GetProcAddress(LibIME, "ImmGetCandidateListA"));
+		_ImmGetVirtualKey =
+			reinterpret_cast<PIMMGETVIRTUALKEY>(GetProcAddress(LibIME, "ImmGetVirtualKey"));
+		_ImmLockIMC	= reinterpret_cast<PIMMLOCKIMC>(GetProcAddress(LibIME, "ImmLockIMC"));
+		_ImmUnlockIMC  = reinterpret_cast<PIMMUNLOCKIMC>(GetProcAddress(LibIME, "ImmUnlockIMCC"));
+		_ImmLockIMCC   = reinterpret_cast<PIMMLOCKIMCC>(GetProcAddress(LibIME, "ImmLockIMCC"));
+		_ImmUnlockIMCC = reinterpret_cast<PIMMUNLOCKIMCC>(GetProcAddress(LibIME, "ImmUnlockIMC"));
+		_ImmGetDefaultIMEWnd =
+			reinterpret_cast<PIMMGETDEFAULTIMEWND>(GetProcAddress(LibIME, "ImmGetDefaultIMEWnd"));
+		_ImmGetIMEFileName =
+			reinterpret_cast<PIMMGETIMEFILENAME>(GetProcAddress(LibIME, "ImmGetIMEFileNameA"));
+		_ImmNotifyIME = reinterpret_cast<PIMMNOTIFYIME>(GetProcAddress(LibIME, "ImmNotifyIME"));
 		_ImmSetConversionStatus = reinterpret_cast<PIMMSETCONVERSIONSTATUS>(
 			GetProcAddress(LibIME, "ImmSetConversionStatus"));
-		_ImmSimulateHotKey = reinterpret_cast<PIMMSIMULATEHOTKEY>(
-			GetProcAddress(LibIME, "ImmSimulateHotKey"));
-		_ImmIsIME =
-			reinterpret_cast<PIMMISIME>(GetProcAddress(LibIME, "ImmIsIME"));
+		_ImmSimulateHotKey =
+			reinterpret_cast<PIMMSIMULATEHOTKEY>(GetProcAddress(LibIME, "ImmSimulateHotKey"));
+		_ImmIsIME = reinterpret_cast<PIMMISIME>(GetProcAddress(LibIME, "ImmIsIME"));
 	}
 	// psapi.dll
 	if (WindowsNT)
@@ -592,15 +541,13 @@ void __stdcall InitLibraries(void)
 		LibPSAPI = nullptr;
 	if (LibPSAPI)
 	{
-		_EmptyWorkingSet = reinterpret_cast<PEMPTYWORKINGSET>(
-			GetProcAddress(LibPSAPI, "EmptyWorkingSet"));
-		_InitializeProcessForWsWatch =
-			reinterpret_cast<PINITIALIZEPROCESSFORWSWATCH>(
-				GetProcAddress(LibPSAPI, "InitializeProcessForWsWatch"));
-		_GetWsChanges = reinterpret_cast<PGETWSCHANGES>(
-			GetProcAddress(LibPSAPI, "GetWsChanges"));
-		_GetMappedFileName = reinterpret_cast<PGETMAPPEDFILENAMEA>(
-			GetProcAddress(LibPSAPI, "GetMappedFileNameA"));
+		_EmptyWorkingSet =
+			reinterpret_cast<PEMPTYWORKINGSET>(GetProcAddress(LibPSAPI, "EmptyWorkingSet"));
+		_InitializeProcessForWsWatch = reinterpret_cast<PINITIALIZEPROCESSFORWSWATCH>(
+			GetProcAddress(LibPSAPI, "InitializeProcessForWsWatch"));
+		_GetWsChanges = reinterpret_cast<PGETWSCHANGES>(GetProcAddress(LibPSAPI, "GetWsChanges"));
+		_GetMappedFileName =
+			reinterpret_cast<PGETMAPPEDFILENAMEA>(GetProcAddress(LibPSAPI, "GetMappedFileNameA"));
 	}
 	// ws2_32.dll
 	if (Environment.NetworkGame || gEnableGosView)
@@ -610,41 +557,30 @@ void __stdcall InitLibraries(void)
 			LibWinSock = LoadLibraryA("wsock32.dll");
 		if (LibWinSock)
 		{
-			_accept =
-				reinterpret_cast<PACCEPT>(GetProcAddress(LibWinSock, "accept"));
-			_bind = reinterpret_cast<PBIND>(GetProcAddress(LibWinSock, "bind"));
-			_closesocket = reinterpret_cast<PCLOSESOCKET>(
-				GetProcAddress(LibWinSock, "closesocket"));
-			_gethostbyname = reinterpret_cast<PGETHOSTBYNAME>(
-				GetProcAddress(LibWinSock, "gethostbyname"));
-			_gethostname = reinterpret_cast<PGETHOSTNAME>(
-				GetProcAddress(LibWinSock, "gethostname"));
-			_getservbyname = reinterpret_cast<PGETSERVBYNAME>(
-				GetProcAddress(LibWinSock, "getservbyname"));
-			_htonl =
-				reinterpret_cast<PHTONL>(GetProcAddress(LibWinSock, "htonl"));
-			_htons =
-				reinterpret_cast<PHTONS>(GetProcAddress(LibWinSock, "htons"));
-			_inet_addr = reinterpret_cast<PINET_ADDR>(
-				GetProcAddress(LibWinSock, "inet_addr"));
-			_listen =
-				reinterpret_cast<PLISTEN>(GetProcAddress(LibWinSock, "listen"));
-			_ntohl =
-				reinterpret_cast<PNTOHL>(GetProcAddress(LibWinSock, "ntohl"));
-			_recv = reinterpret_cast<PRECV>(GetProcAddress(LibWinSock, "recv"));
-			_recvfrom = reinterpret_cast<PRECVFROM>(
-				GetProcAddress(LibWinSock, "recvfrom"));
-			_send = reinterpret_cast<PSEND>(GetProcAddress(LibWinSock, "send"));
-			_sendto =
-				reinterpret_cast<PSENDTO>(GetProcAddress(LibWinSock, "sendto"));
-			_socket =
-				reinterpret_cast<PSOCKET>(GetProcAddress(LibWinSock, "socket"));
-			_WSACleanup = reinterpret_cast<PWSACLEANUP>(
-				GetProcAddress(LibWinSock, "WSACleanup"));
-			_WSAGetLastError = reinterpret_cast<PWSAGETLASTERROR>(
-				GetProcAddress(LibWinSock, "WSAGetLastError"));
-			_WSAStartup = reinterpret_cast<PWSASTARTUP>(
-				GetProcAddress(LibWinSock, "WSAStartup"));
+			_accept = reinterpret_cast<PACCEPT>(GetProcAddress(LibWinSock, "accept"));
+			_bind   = reinterpret_cast<PBIND>(GetProcAddress(LibWinSock, "bind"));
+			_closesocket =
+				reinterpret_cast<PCLOSESOCKET>(GetProcAddress(LibWinSock, "closesocket"));
+			_gethostbyname =
+				reinterpret_cast<PGETHOSTBYNAME>(GetProcAddress(LibWinSock, "gethostbyname"));
+			_gethostname =
+				reinterpret_cast<PGETHOSTNAME>(GetProcAddress(LibWinSock, "gethostname"));
+			_getservbyname =
+				reinterpret_cast<PGETSERVBYNAME>(GetProcAddress(LibWinSock, "getservbyname"));
+			_htonl		= reinterpret_cast<PHTONL>(GetProcAddress(LibWinSock, "htonl"));
+			_htons		= reinterpret_cast<PHTONS>(GetProcAddress(LibWinSock, "htons"));
+			_inet_addr  = reinterpret_cast<PINET_ADDR>(GetProcAddress(LibWinSock, "inet_addr"));
+			_listen		= reinterpret_cast<PLISTEN>(GetProcAddress(LibWinSock, "listen"));
+			_ntohl		= reinterpret_cast<PNTOHL>(GetProcAddress(LibWinSock, "ntohl"));
+			_recv		= reinterpret_cast<PRECV>(GetProcAddress(LibWinSock, "recv"));
+			_recvfrom   = reinterpret_cast<PRECVFROM>(GetProcAddress(LibWinSock, "recvfrom"));
+			_send		= reinterpret_cast<PSEND>(GetProcAddress(LibWinSock, "send"));
+			_sendto		= reinterpret_cast<PSENDTO>(GetProcAddress(LibWinSock, "sendto"));
+			_socket		= reinterpret_cast<PSOCKET>(GetProcAddress(LibWinSock, "socket"));
+			_WSACleanup = reinterpret_cast<PWSACLEANUP>(GetProcAddress(LibWinSock, "WSACleanup"));
+			_WSAGetLastError =
+				reinterpret_cast<PWSAGETLASTERROR>(GetProcAddress(LibWinSock, "WSAGetLastError"));
+			_WSAStartup = reinterpret_cast<PWSASTARTUP>(GetProcAddress(LibWinSock, "WSAStartup"));
 		}
 	}
 	// amstream.dll quartz.dll msadp32.acm
@@ -672,19 +608,17 @@ void __stdcall InitLibraries(void)
 	{
 		nBufferSize = strlen("amstream.dll  - Version 6.01");
 		pszMessage  = GetDLLInfo("amstream.dll", 0);
-		if (strncmp(pszMessage, "amstream.dll  - Version 6.01", nBufferSize) <
-			0)
+		if (strncmp(pszMessage, "amstream.dll  - Version 6.01", nBufferSize) < 0)
 		{
 			// pszMessage = gos_GetResourceString(gLanguageDLL, 10043u);
 			pszMessage = "Please install DirectX Media 6.0 or later";
-			MessageBoxA(
-				nullptr, pszMessage, ApplicationName, MB_ICONEXCLAMATION);
+			MessageBoxA(nullptr, pszMessage, ApplicationName, MB_ICONEXCLAMATION);
 			status = AfterExit;
 			_exit(EXIT_FAILURE);
 		}
 	}
-	_AMGetErrorText = reinterpret_cast<PAMGETERRORTEXTA>(
-		GetProcAddress(LibQuartz, "AMGetErrorTextA"));
+	_AMGetErrorText =
+		reinterpret_cast<PAMGETERRORTEXTA>(GetProcAddress(LibQuartz, "AMGetErrorTextA"));
 	if (_AMGetErrorText == nullptr)
 	{
 		pszMessage = "Cannot find DirectShow functions";
@@ -715,8 +649,7 @@ void __stdcall InitLibraries(void)
 							"\n\n(Microsoft Internal) - This can be found at "
 							"\\\\dxrelease\\release\\dx7\\DXF\\extras\\win98 "
 							"piii dbg");
-					MessageBoxA(nullptr, szInstallMessage, ApplicationName,
-						MB_ICONEXCLAMATION);
+					MessageBoxA(nullptr, szInstallMessage, ApplicationName, MB_ICONEXCLAMATION);
 				}
 			}
 		}
@@ -726,32 +659,24 @@ void __stdcall InitLibraries(void)
 	LibODBC = LoadLibraryA("odbc32.dll");
 	if (LibODBC)
 	{
-		_SQLAllocHandle = reinterpret_cast<PSQLALLOCHANDLE>(
-			GetProcAddress(LibODBC, "SQLAllocHandle"));
-		_SQLBindCol = reinterpret_cast<PSQLBINDCOL>(
-			GetProcAddress(LibODBC, "SQLBindCol"));
-		_SQLBindParameter = reinterpret_cast<PSQLBINDPARAMETER>(
-			GetProcAddress(LibODBC, "SQLBindParameter"));
-		_SQLDisconnect = reinterpret_cast<PSQLDISCONNECT>(
-			GetProcAddress(LibODBC, "SQLDisconnect"));
-		_SQLDriverConnect = reinterpret_cast<PSQLDRIVERCONNECT>(
-			GetProcAddress(LibODBC, "SQLDriverConnect"));
-		_SQLExecDirect = reinterpret_cast<PSQLEXECDIRECT>(
-			GetProcAddress(LibODBC, "SQLExecDirect"));
-		_SQLFetch =
-			reinterpret_cast<PSQLFETCH>(GetProcAddress(LibODBC, "SQLFetch"));
-		_SQLFreeHandle = reinterpret_cast<PSQLFREEHANDLE>(
-			GetProcAddress(LibODBC, "SQLFreeHandle"));
-		_SQLFreeStmt = reinterpret_cast<PSQLFREESTMT>(
-			GetProcAddress(LibODBC, "SQLFreeStmt"));
-		_SQLGetDiagField = reinterpret_cast<PSQLGETDIAGFIELD>(
-			GetProcAddress(LibODBC, "SQLGetDiagField"));
-		_SQLGetDiagRec = reinterpret_cast<PSQLGETDIAGREC>(
-			GetProcAddress(LibODBC, "SQLGetDiagRec"));
-		_SQLNumResultCols = reinterpret_cast<PSQLNUMRESULTCOLS>(
-			GetProcAddress(LibODBC, "SQLNumResultCols"));
-		_SQLSetEnvAttr = reinterpret_cast<PSQLSETENVATTR>(
-			GetProcAddress(LibODBC, "SQLSetEnvAttr"));
+		_SQLAllocHandle =
+			reinterpret_cast<PSQLALLOCHANDLE>(GetProcAddress(LibODBC, "SQLAllocHandle"));
+		_SQLBindCol = reinterpret_cast<PSQLBINDCOL>(GetProcAddress(LibODBC, "SQLBindCol"));
+		_SQLBindParameter =
+			reinterpret_cast<PSQLBINDPARAMETER>(GetProcAddress(LibODBC, "SQLBindParameter"));
+		_SQLDisconnect = reinterpret_cast<PSQLDISCONNECT>(GetProcAddress(LibODBC, "SQLDisconnect"));
+		_SQLDriverConnect =
+			reinterpret_cast<PSQLDRIVERCONNECT>(GetProcAddress(LibODBC, "SQLDriverConnect"));
+		_SQLExecDirect = reinterpret_cast<PSQLEXECDIRECT>(GetProcAddress(LibODBC, "SQLExecDirect"));
+		_SQLFetch	  = reinterpret_cast<PSQLFETCH>(GetProcAddress(LibODBC, "SQLFetch"));
+		_SQLFreeHandle = reinterpret_cast<PSQLFREEHANDLE>(GetProcAddress(LibODBC, "SQLFreeHandle"));
+		_SQLFreeStmt   = reinterpret_cast<PSQLFREESTMT>(GetProcAddress(LibODBC, "SQLFreeStmt"));
+		_SQLGetDiagField =
+			reinterpret_cast<PSQLGETDIAGFIELD>(GetProcAddress(LibODBC, "SQLGetDiagField"));
+		_SQLGetDiagRec = reinterpret_cast<PSQLGETDIAGREC>(GetProcAddress(LibODBC, "SQLGetDiagRec"));
+		_SQLNumResultCols =
+			reinterpret_cast<PSQLNUMRESULTCOLS>(GetProcAddress(LibODBC, "SQLNumResultCols"));
+		_SQLSetEnvAttr = reinterpret_cast<PSQLSETENVATTR>(GetProcAddress(LibODBC, "SQLSetEnvAttr"));
 	}
 	gos_MathExceptions(true, false);
 }
@@ -834,8 +759,7 @@ PSTR __stdcall GetDirectXVersion(void)
 	char Buffer2[256];
 	sprintf_s(Buffer, _countof(Buffer),
 		"%u.%02u.%02u.%04u", // "%d.%02d.%02d.%04d",
-		(uint16_t)DXdwVersion, HIWORD(DXdwVersion), HIWORD(DXdwRevision),
-		(uint16_t)DXdwRevision);
+		(uint16_t)DXdwVersion, HIWORD(DXdwVersion), HIWORD(DXdwRevision), (uint16_t)DXdwRevision);
 	if (DXdwVersion == 0x40005 && DXdwRevision == 155)
 		strcat_s(Buffer, _countof(Buffer), " (DirectX 5.0)");
 	if (DXdwVersion == 0x40005 && DXdwRevision == 0x10640)
@@ -871,8 +795,7 @@ PSTR __stdcall GetDirectXVersion(void)
 			strcat_s(Buffer, _countof(Buffer), " (DirectX 8.0)");
 			GetSystemDirectoryA(Buffer2, 0x100u);
 			strcat_s(Buffer2, _countof(Buffer2), "\\ddraw.dll");
-			if (gos_FileSize(Buffer2) == 0x71800 ||
-				gos_FileSize(Buffer2) == 0xEF200)
+			if (gos_FileSize(Buffer2) == 0x71800 || gos_FileSize(Buffer2) == 0xEF200)
 				strcat_s(Buffer, _countof(Buffer), " DEBUG DLL's");
 		}
 	}

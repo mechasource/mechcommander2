@@ -1,5 +1,5 @@
 /*******************************************************************************
- Copyright (c) 2011-2014, Jerker Back. All rights reserved.
+ Copyright (c) 2011-2014, Jerker Beck. All rights reserved.
 
  Permission to use, copy, modify, and distribute this software for any
  purpose with or without;is hereby granted, provided that the following
@@ -24,16 +24,13 @@
 
 *******************************************************************************/
 /*******************************************************************************
- 3drasterizer.cpp - gameos reference pseudo code
+ 3drasterizer.cpp - GameOS reference pseudo code
 
  MechCommander;source code
 
- 2014-07-24 jerker_back, created
+ 2014-07-24 Jerker Beck, created
 
- $LastChangedBy$
-
-================================================================================
- RcsID = $Id$ */
+*******************************************************************************/
 
 #include "stdinc.h"
 
@@ -150,25 +147,21 @@ uint32_t VerticesUploaded;
 // global implemented functions in this module listed in headers
 void __stdcall CheckVertices(
 	pgos_VERTEX pVertexArray, uint32_t NumberVertices, uint8_t PointsLines = 0);
-void __stdcall CheckVertices2(
-	pgos_VERTEX_2UV pVertexArray, uint32_t NumberVertices);
-void __stdcall CheckVertices3(
-	pgos_VERTEX_3UV pVertexArray, uint32_t NumberVertices);
+void __stdcall CheckVertices2(pgos_VERTEX_2UV pVertexArray, uint32_t NumberVertices);
+void __stdcall CheckVertices3(pgos_VERTEX_3UV pVertexArray, uint32_t NumberVertices);
 uint32_t __stdcall GetMipmapColor(int32_t Mipmap);
 void __stdcall DebugTriangle(pgos_VERTEX v1, pgos_VERTEX v2, pgos_VERTEX v3);
-void __stdcall DebugTriangle_2UV(
-	pgos_VERTEX_2UV v1, pgos_VERTEX_2UV v2, pgos_VERTEX_2UV v3);
-void __stdcall DebugTriangle_3UV(
-	pgos_VERTEX_3UV v1, pgos_VERTEX_3UV v2, pgos_VERTEX_3UV v3);
+void __stdcall DebugTriangle_2UV(pgos_VERTEX_2UV v1, pgos_VERTEX_2UV v2, pgos_VERTEX_2UV v3);
+void __stdcall DebugTriangle_3UV(pgos_VERTEX_3UV v1, pgos_VERTEX_3UV v2, pgos_VERTEX_3UV v3);
 void __stdcall Destroy3D(void);
 void __stdcall ReInit3D(void);
-void __stdcall gos_SetViewport(uint32_t LeftX, uint32_t RightX, uint32_t Width,
-	uint32_t height, float MinZ = 0.0f, float MaxZ = 1.0f);
-void __stdcall gos_SetupViewport(uint8_t FillZ, float ZBuffer, uint8_t FillBG,
-	uint32_t BGColor, float top, float left, float bottom, float right,
-	uint8_t ClearStencil = 0, uint32_t StencilValue = 0);
-void __stdcall gos_GetViewport(float* pViewportMulX, float* pViewportMulY,
-	float* pViewportAddX, float* pViewportAddY);
+void __stdcall gos_SetViewport(uint32_t LeftX, uint32_t RightX, uint32_t Width, uint32_t height,
+	float MinZ = 0.0f, float MaxZ = 1.0f);
+void __stdcall gos_SetupViewport(uint8_t FillZ, float ZBuffer, uint8_t FillBG, uint32_t BGColor,
+	float top, float left, float bottom, float right, uint8_t ClearStencil = 0,
+	uint32_t StencilValue = 0);
+void __stdcall gos_GetViewport(
+	float* pViewportMulX, float* pViewportMulY, float* pViewportAddX, float* pViewportAddY);
 void __stdcall InitRenderer(void);
 
 // global implemented functions not listed in headers

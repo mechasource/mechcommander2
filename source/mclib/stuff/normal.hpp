@@ -19,7 +19,7 @@ namespace Stuff
 
 class Normal3D : public UnitVector3D
 {
-  public:
+public:
 	//
 	// Constructors
 	//
@@ -88,7 +88,7 @@ class Normal3D : public UnitVector3D
 	//
 	static bool TestClass(void);
 
-  private:
+private:
 	static const Normal3D identity;
 	Normal3D& Negate(const Vector3D& V);
 	Normal3D& Add(const Vector3D& V1, const Vector3D& V2);
@@ -104,8 +104,7 @@ class Normal3D : public UnitVector3D
 	Normal3D& operator*=(const AffineMatrix4D& M);
 	Normal3D& Divide(const Vector3D& V, float Scale);
 	Normal3D& operator/=(float Value);
-	Normal3D& Combine(
-		const Vector3D& V1, float t1, const Vector3D& V2, float t2);
+	Normal3D& Combine(const Vector3D& V1, float t1, const Vector3D& V2, float t2);
 };
-}
+} // namespace Stuff
 #endif

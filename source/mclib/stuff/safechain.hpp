@@ -26,28 +26,27 @@ enum
 
 class SafeChainLink : public Link
 {
-  public:
+public:
 	friend class SafeChain;
 	friend class SafeChainIterator;
 
-	static void InitializeClass(
-		size_t block_count = SafeChainLink_MemoryBlock_Allocation,
-		size_t block_delta = SafeChainLink_MemoryBlock_Allocation);
+	static void InitializeClass(size_t block_count = SafeChainLink_MemoryBlock_Allocation,
+		size_t block_delta						   = SafeChainLink_MemoryBlock_Allocation);
 	static void __stdcall TerminateClass(void);
 
-  public:
+public:
 	~SafeChainLink(void);
 	void TestInstance(void);
 
-  private:
-	SafeChainLink(SafeChain* chain, Plug* plug,
-		SafeChainLink* nextSafeChainLink, SafeChainLink* prevSafeChainLink);
+private:
+	SafeChainLink(SafeChain* chain, Plug* plug, SafeChainLink* nextSafeChainLink,
+		SafeChainLink* prevSafeChainLink);
 
 	SafeChainLink* nextSafeChainLink;
 	SafeChainLink* prevSafeChainLink;
 
-  private:
-	static MemoryBlock* AllocatedMemory;
+private:
+	// static MemoryBlock* AllocatedMemory;
 
 	PVOID operator new(size_t) { return AllocatedMemory->New(); }
 	void operator delete(PVOID where) { AllocatedMemory->Delete(where); }
@@ -60,7 +59,7 @@ class SafeChain : public SafeSocket
 	friend class SafeChainLink;
 	friend class SafeChainIterator;
 
-  public:
+public:
 	//
 	//-----------------------------------------------------------------------
 	//-----------------------------------------------------------------------
@@ -82,7 +81,7 @@ class SafeChain : public SafeSocket
 	//
 	bool IsEmpty(void);
 
-  protected:
+protected:
 	//
 	//-----------------------------------------------------------------------
 	//-----------------------------------------------------------------------
@@ -92,7 +91,7 @@ class SafeChain : public SafeSocket
 	//
 	void AddImplementation(Plug* plug);
 
-  private:
+private:
 	//
 	//-----------------------------------------------------------------------
 	// Private utilities
@@ -113,7 +112,7 @@ class SafeChain : public SafeSocket
 
 template <class T> class SafeChainOf : public SafeChain
 {
-  public:
+public:
 	//
 	//--------------------------------------------------------------------
 	//--------------------------------------------------------------------
@@ -143,7 +142,7 @@ template <class T> SafeChainOf<T>::~SafeChainOf() {}
 
 class SafeChainIterator : public SafeIterator
 {
-  public:
+public:
 	//
 	//--------------------------------------------------------------------
 	//--------------------------------------------------------------------
@@ -175,7 +174,7 @@ class SafeChainIterator : public SafeIterator
 	CollectionSize GetSize(void);
 	void Remove(void);
 
-  protected:
+protected:
 	//
 	//--------------------------------------------------------------------
 	//--------------------------------------------------------------------
@@ -193,7 +192,7 @@ class SafeChainIterator : public SafeIterator
 	GetNthImplementation(CollectionSize index);
 	void InsertImplementation(Plug* plug);
 
-  private:
+private:
 	//
 	//--------------------------------------------------------------------
 	//--------------------------------------------------------------------
@@ -216,7 +215,7 @@ class SafeChainIterator : public SafeIterator
 
 template <class T> class SafeChainIteratorOf : public SafeChainIterator
 {
-  public:
+public:
 	//
 	//--------------------------------------------------------------------
 	//--------------------------------------------------------------------
@@ -251,15 +250,13 @@ template <class T> class SafeChainIteratorOf : public SafeChainIterator
 //~~~~~~~~~~~~~~~~~~~~~~~ SafeChainIteratorOf templates ~~~~~~~~~~~~~~~~~~~~~~~
 
 template <class T>
-SafeChainIteratorOf<T>::SafeChainIteratorOf(
-	SafeChainOf<T>* chain, bool move_next_on_remove)
+SafeChainIteratorOf<T>::SafeChainIteratorOf(SafeChainOf<T>* chain, bool move_next_on_remove)
 	: SafeChainIterator(chain, move_next_on_remove)
 {
 }
 
 template <class T>
-SafeChainIteratorOf<T>::SafeChainIteratorOf(
-	const SafeChainIteratorOf<T>& iterator)
+SafeChainIteratorOf<T>::SafeChainIteratorOf(const SafeChainIteratorOf<T>& iterator)
 	: SafeChainIterator(iterator)
 {
 }
@@ -270,6 +267,6 @@ template <class T> Iterator* SafeChainIteratorOf<T>::MakeClone()
 }
 
 template <class T> SafeChainIteratorOf<T>::~SafeChainIteratorOf() {}
-}
+} // namespace Stuff
 
 #endif

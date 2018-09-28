@@ -40,13 +40,12 @@ GOSImage::GOSImage(uint32_t iHandle) : Plug(DefaultData)
 //
 GOSImage::GOSImage(PCSTR name, gos_TextureHints hints) : Plug(DefaultData)
 {
-	imageName = name;
-	flags	 = Loaded;
-	instance  = 0;
-	ipHints   = hints;
-	mcTextureNodeIndex =
-		mcTextureManager->loadTexture(name, gos_Texture_Detect, ipHints);
-	ptr.pTexture = nullptr;
+	imageName		   = name;
+	flags			   = Loaded;
+	instance		   = 0;
+	ipHints			   = hints;
+	mcTextureNodeIndex = mcTextureManager->loadTexture(name, gos_Texture_Detect, ipHints);
+	ptr.pTexture	   = nullptr;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -86,8 +85,7 @@ void GOSImage::LockImage()
 	if (!(flags & Locked))
 	{
 		flags |= Locked;
-		uint32_t imageHandle =
-			mcTextureManager->get_gosTextureHandle(mcTextureNodeIndex);
+		uint32_t imageHandle = mcTextureManager->get_gosTextureHandle(mcTextureNodeIndex);
 		if (imageHandle != 0xffffffff)
 			gos_LockTexture(imageHandle, 0, false, &ptr);
 	}
@@ -101,8 +99,7 @@ void GOSImage::UnlockImage()
 	{
 		flags &= ~Locked;
 		Start_Timer(Unlock_Texture_Time);
-		uint32_t imageHandle =
-			mcTextureManager->get_gosTextureHandle(mcTextureNodeIndex);
+		uint32_t imageHandle = mcTextureManager->get_gosTextureHandle(mcTextureNodeIndex);
 		if (imageHandle != 0xffffffff)
 			gos_UnLockTexture(imageHandle);
 		Stop_Timer(Unlock_Texture_Time);

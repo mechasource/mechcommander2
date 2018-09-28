@@ -17,6 +17,7 @@
 //#include <daprtype.h>
 //#include "floathelp.h"
 //#include <stuff/stuff.hpp>
+#include <stuff/vector4d.hpp>
 
 //---------------------------------------------------------------------------
 // Macro definitions
@@ -26,11 +27,11 @@
 #define HEIGHT 4
 #define BARTEST 0.001f
 
-extern FloatHelpPtr globalFloatHelp;
-extern size_t currentFloatHelp;
+// extern FloatHelpPtr globalFloatHelp;
+// extern size_t currentFloatHelp;
 
 // would have loved to make object flags, but it looks like we're out...
-typedef enum __appear_draw_const
+enum __appear_draw_const
 {
 	DRAW_NORMAL   = 0x00,			// 0x00
 	DRAW_BARS	 = 0x01,			// 0x01
@@ -39,8 +40,11 @@ typedef enum __appear_draw_const
 	DRAW_COLORED  = DRAW_BARS << 3, // 0x08
 };
 
+// needed forward declarations
+class AppearanceType;
+class GameObject;
 struct _ScenarioMapCellInfo;
-struct _GameObjectFootPrint;
+// struct _GameObjectFootPrint;
 //---------------------------------------------------------------------------
 // Class definitions
 class Appearance
@@ -53,7 +57,7 @@ protected:
 	bool visible; // Current FOW status to help draw
 	bool seen;	// Current FOW status to help draw
 
-public:
+	// public:
 	bool inView;				// Can I be Seen?
 	Stuff::Vector4D upperLeft;  // used to draw select boxes. Can be 3D Now!
 	Stuff::Vector4D lowerRight; // used to draw select boxes.
@@ -64,8 +68,8 @@ public:
 	// Member Functions
 	//-----------------
 public:
-	PVOID operator new(size_t mySize);
-	void operator delete(PVOID us);
+	// PVOID operator new(size_t mySize);
+	// void operator delete(PVOID us);
 
 	Appearance(void)
 	{
@@ -77,9 +81,9 @@ public:
 		barColor												  = 0x0;
 		visible = seen = false;
 	}
+	virtual ~Appearance(void) { destroy(); }
 
-	virtual void init(
-		AppearanceTypePtr tree = nullptr, GameObjectPtr obj = nullptr)
+	virtual void init(AppearanceType* tree = nullptr, GameObject* obj = nullptr)
 	{
 		inView		= false;
 		screenPos.x = screenPos.y = screenPos.z = screenPos.w = -999.0f;
@@ -93,10 +97,7 @@ public:
 	}
 
 	virtual void initFX(void) {}
-
-	virtual void destroy(void) { init(void); }
-
-	virtual ~Appearance(void) { destroy(void); }
+	virtual void destroy(void) { init(); }
 
 	virtual int32_t update(bool animate = true)
 	{
@@ -113,13 +114,9 @@ public:
 	}
 
 	virtual int32_t renderShadows(void) { return NO_ERROR; }
-
-	virtual AppearanceTypePtr getAppearanceType(void) { return nullptr; }
-
+	virtual AppearanceType* getAppearanceType(void) { return nullptr; }
 	bool canBeSeen(void) { return (inView); }
-
 	void setInView(bool viewStatus) { inView = viewStatus; }
-
 	Stuff::Vector4D getScreenPos(void) { return screenPos; }
 
 	virtual bool isMouseOver(float px, float py)
@@ -130,15 +127,11 @@ public:
 	}
 
 	virtual void drawSelectBox(uint32_t color);
-
 	virtual void drawSelectBrackets(uint32_t color);
-
 	virtual void drawBars(void);
-
 	void drawTextHelp(PSTR text);
-	void drawTextHelp(PSTR text, size_t color);
-
-	void drawPilotName(PSTR text, size_t color); // next line below drawTextHelp
+	void drawTextHelp(PSTR text, uint32_t color);
+	void drawPilotName(PSTR text, uint32_t color); // next line below drawTextHelp
 
 	virtual bool recalcBounds(void)
 	{
@@ -156,7 +149,7 @@ public:
 
 	virtual int32_t getFrameNumber(void) { return 0; }
 
-	virtual size_t getAppearanceClass(void) { return BASE_APPEARANCE; }
+	virtual uint32_t getAppearanceClass(void) { return 0; /*BASE_APPEARANCE;*/ }
 
 	virtual void setBarStatus(float stat)
 	{
@@ -169,7 +162,7 @@ public:
 
 	virtual bool getInTransition(void) { return false; }
 
-	virtual int32_t getNumFramesInGesture(int32_t /*gestureId*/) { return 0; }
+	virtual int32_t getNumFramesInGesture(uint32_t /*gestureId*/) { return 0; }
 
 	virtual int32_t getOldGestureGoal(void) { return -1; }
 
@@ -187,10 +180,7 @@ public:
 
 	virtual void setObjectNameId(int32_t /*objId*/) {}
 
-	virtual bool setJumpParameters(Stuff::Vector3D& /*jumpGoal*/)
-	{
-		return false;
-	}
+	virtual bool setJumpParameters(Stuff::Vector3D& /*jumpGoal*/) { return false; }
 
 	virtual void setWeaponNodeUsed(int32_t /*nodeId*/) {}
 
@@ -254,46 +244,33 @@ public:
 
 	virtual void setBrake(bool /*brake*/) {}
 
-	virtual void setObjectParameters(Stuff::Vector3D& /*pos*/, float /*rot*/,
-		int32_t /*selected*/, int32_t /*team*/, int32_t /*homeRelations*/)
+	virtual void setObjectParameters(Stuff::Vector3D& /*pos*/, float /*rot*/, int32_t /*selected*/,
+		int32_t /*team*/, int32_t /*homeRelations*/)
 	{
 	}
 
-	virtual void setMoverParameters(float /*turretRot*/, float lArmRot = 0.0f,
-		float rArmRot = 0.0f, bool isAirborne = false)
+	virtual void setMoverParameters(
+		float /*turretRot*/, float lArmRot = 0.0f, float rArmRot = 0.0f, bool isAirborne = false)
 	{
-		lArmRot;
-		rArmRot;
-		isAirborne;
+		(void)lArmRot;
+		(void)rArmRot;
+		(void)isAirborne;
 	}
 
 	virtual void updateFootprints(void) {}
 
 	virtual void setPaintScheme(void) {}
 
-	virtual void setPaintScheme(
-		uint32_t /*red*/, uint32_t /*green*/, uint32_t /*blue*/)
-	{
-	}
+	virtual void setPaintScheme(uint32_t /*red*/, uint32_t /*green*/, uint32_t /*blue*/) {}
 
-	virtual void getPaintScheme(
-		uint32_t& /*red*/, uint32_t& /*green*/, uint32_t& /*blue*/)
-	{
-	}
+	virtual void getPaintScheme(uint32_t& /*red*/, uint32_t& /*green*/, uint32_t& /*blue*/) {}
 
-	virtual void resetPaintScheme(
-		uint32_t /*red*/, uint32_t /*green*/, uint32_t /*blue*/)
-	{
-	}
+	virtual void resetPaintScheme(uint32_t /*red*/, uint32_t /*green*/, uint32_t /*blue*/) {}
 
 	virtual void setDebugMoveMode(void) {}
-
 	virtual void setSingleStepMode(void) {}
-
 	virtual void setPrevFrame(void) {}
-
 	virtual void setNextFrame(void) {}
-
 	virtual void setVisibility(bool vis, bool sen)
 	{
 		visible = vis;
@@ -301,136 +278,103 @@ public:
 	}
 
 	virtual void setSensorLevel(int32_t /*lvl*/) {}
-
 	virtual void hitFront(void) {}
-
 	virtual void hitBack(void) {}
-
 	virtual void hitLeft(void) {}
-
 	virtual void hitRight(void) {}
-
 	virtual void setObjStatus(int32_t /*oStatus*/) {}
 
-	virtual int32_t calcCellsCovered(
-		Stuff::Vector3D& /*pos*/, pint16_t /*cellList*/)
+	virtual int32_t calcCellsCovered(Stuff::Vector3D& /*pos*/, pint16_t /*cellList*/)
 	{
 		return (0);
 	}
 
-	virtual void markTerrain(
-		_ScenarioMapCellInfo* /*pInfo*/, int32_t /*type*/, int32_t /*counter*/)
+	virtual void markTerrain(_ScenarioMapCellInfo* /*pInfo*/, int32_t /*type*/, int32_t /*counter*/)
 	{
 	}
 
 	virtual int32_t markMoveMap(bool /*passable*/, int32_t* /*lineOfSightRect*/,
 		bool useheight = false, pint16_t cellList = nullptr)
 	{
-		useheight;
-		cellList;
+		(void)useheight;
+		(void)cellList;
 		return (0);
 	}
 
-	virtual void markLOS(bool clearIt = false) { clearIt; }
-
-	virtual void scale(float scaleFactor) { scaleFactor; }
-
+	virtual void markLOS(bool clearIt = false) { (void)clearIt; }
+	virtual void scale(float scaleFactor) { (void)scaleFactor; }
 	virtual bool playDestruction(void) { return false; }
-
 	virtual float getRadius(void) { return 0.0f; }
 
-	virtual void flashBuilding(
-		float /*duration*/, float /*flashDuration*/, uint32_t /*color*/)
-	{
-	}
+	virtual void flashBuilding(float /*duration*/, float /*flashDuration*/, uint32_t /*color*/) {}
 
 	virtual void setHighlightColor(int32_t /*argb*/) {}
-
 	virtual float getTopZ(void) { return 0.0f; }
-
 	virtual void blowLeftArm(void) {}
-
 	virtual void blowRightArm(void) {}
-
 	virtual void setFilterState(bool /*state*/) {}
 
 	virtual Stuff::Vector3D getVelocity(void)
 	{
 		Stuff::Vector3D result;
-		result.Zero(void);
-		return result;
+		result.Zero();
+		return result; // !
 	}
 
 	virtual bool isSelectable(void) { return true; }
-
 	virtual void setIsHudElement(void) {}
-
 	virtual int32_t getObjectNameId(void) { return -1; }
-
 	virtual bool getIsLit(void) { return false; }
-
 	virtual void setLightsOut(bool /*lightFlag*/) {}
 
-	virtual bool PerPolySelect(int32_t /*mouseX*/, int32_t /*mouseY*/)
-	{
-		return true;
-	}
+	virtual bool PerPolySelect(int32_t /*mouseX*/, int32_t /*mouseY*/) { return true; }
 
 	virtual bool isForestClump(void) { return false; }
 
 	virtual Stuff::Point3D getRootNodeCenter(void)
 	{
 		Stuff::Point3D result;
-		result.Zero(void);
-		return result;
+		result.Zero();
+		return result; // !
 	}
 
 	virtual void setAlphaValue(uint8_t /*aVal*/) {}
 
-	void drawIcon(size_t bmpHandle, size_t bmpWidth, size_t bmpHeight,
-		size_t color, size_t where = 0);
+	void drawIcon(
+		size_t bmpHandle, size_t bmpWidth, size_t bmpHeight, size_t color, size_t where = 0);
 
 	virtual void setSkyNumber(int32_t /*skyNum*/) {}
-
 	virtual void setMechName(PCSTR /*pName*/) {}
-
 	virtual void startSmoking(int32_t /*smokeLvl*/) {}
-
 	virtual void startWaterWake(void) {}
-
 	virtual void stopWaterWake(void) {}
-
 	virtual void playEjection(void) {}
-
 	virtual void startActivity(int32_t /*effectId*/, bool /*loop*/) {}
-
 	virtual void stopActivity(void) {}
 
 	virtual Stuff::Vector3D getHitNode(void)
 	{
 		Stuff::Point3D result;
-		result.Zero(void);
+		result.Zero();
 		return result;
 	}
 
 	virtual Stuff::Vector3D getHitNodeLeft(void)
 	{
 		Stuff::Point3D result;
-		result.Zero(void);
+		result.Zero();
 		return result;
 	}
 
 	virtual Stuff::Vector3D getHitNodeRight(void)
 	{
 		Stuff::Point3D result;
-		result.Zero(void);
+		result.Zero();
 		return result;
 	}
 
 	virtual bool getRightArmOff(void) { return false; }
-
 	virtual bool getLeftArmOff(void) { return false; }
-
 	virtual bool hasAnimationData(int32_t /*gestureId*/) { return false; }
 };
 

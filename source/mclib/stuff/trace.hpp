@@ -56,7 +56,7 @@ class _declspec(novtable) Trace : public Plug
 {
 	friend class TraceManager;
 
-  public:
+public:
 	enum Type
 	{
 		BitType,
@@ -65,7 +65,7 @@ class _declspec(novtable) Trace : public Plug
 		EventType
 	};
 
-  protected:
+protected:
 	static uint8_t NextTraceID;
 
 	PCSTR traceName;
@@ -74,7 +74,7 @@ class _declspec(novtable) Trace : public Plug
 
 	Trace(PCSTR name, Type type);
 
-	MemoryStream* GetTraceLog(void);
+	std::iostream& GetTraceLog(void);
 	void IncrementSampleCount(void);
 
 	virtual void DumpTraceStatus() = 0;
@@ -93,7 +93,7 @@ class _declspec(novtable) Trace : public Plug
 
 class BitTrace : public Trace
 {
-  protected:
+protected:
 	static uint8_t NextActiveLine;
 
 	int32_t traceUp;
@@ -110,7 +110,7 @@ class BitTrace : public Trace
 	void PrintUsage(float usage);
 #endif
 
-  public:
+public:
 	BitTrace(PCSTR name);
 
 	void Set(void);
@@ -141,7 +141,7 @@ class BitTrace : public Trace
 
 template <class T> class TraceOf : public Trace
 {
-  protected:
+protected:
 	int64_t weightedSum;
 	T currentValue;
 
@@ -155,9 +155,8 @@ template <class T> class TraceOf : public Trace
 	void PrintUsage(float usage);
 #endif
 
-  public:
-	TraceOf(PCSTR name, const T& initial_value, Type trace_type,
-		TraceSample::Type sample_type);
+public:
+	TraceOf(PCSTR name, const T& initial_value, Type trace_type, TraceSample::Type sample_type);
 
 	void TakeSnapshot(const T& value);
 };
@@ -165,8 +164,8 @@ template <class T> class TraceOf : public Trace
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 template <class T>
-TraceOf<T>::TraceOf(PCSTR name, const T& initial_value, Type trace_type,
-	TraceSample::Type sample_type)
+TraceOf<T>::TraceOf(
+	PCSTR name, const T& initial_value, Type trace_type, TraceSample::Type sample_type)
 	: Trace(name, trace_type)
 {
 	currentValue = initial_value;
@@ -203,8 +202,7 @@ template <class T> void TraceOf<T>::StartTiming()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-template <class T>
-float TraceOf<T>::CalculateUsage(int64_t when, int64_t sample_time)
+template <class T> float TraceOf<T>::CalculateUsage(int64_t when, int64_t sample_time)
 {
 	int64_t last_part = when - lastActivity;
 	weightedSum += last_part * currentValue;
@@ -239,7 +237,7 @@ template <class T> void TraceOf<T>::TakeSnapshot(const T& value)
 	currentValue = value;
 #if defined(USE_TRACE_LOG)
 	IncrementSampleCount(void);
-	MemoryStream* log = GetTraceLog(void);
+	std::iostream& log = GetTraceLog(void);
 	if (log)
 	{
 		Check_Object(log);
@@ -263,24 +261,25 @@ class TraceManager
 	: public Stuff::Signature
 #endif
 {
-  public:
+public:
 	static void __stdcall InitializeClass(void);
 	static void __stdcall TerminateClass(void);
 
 	friend class Trace;
 	friend class BitTrace;
 
-  protected:
+protected:
 	ChainOf<Trace*> traceChain;
 	int64_t sampleStart;
 	int32_t actualSampleCount, ignoredSampleCount;
-	MemoryStream *allocatedTraceLog, *activeTraceLog;
+	std::iostream allocatedTraceLog;
+	std::iostream activeTraceLog;
 	uint8_t traceCount;
 	uint32_t activeBits;
 
 	void Add(Trace* trace);
 
-  public:
+public:
 	TraceManager(void);
 	~TraceManager(void);
 
@@ -324,7 +323,7 @@ class TraceManager
 	void TestInstance(void) {}
 };
 
-inline MemoryStream* Trace::GetTraceLog()
+inline std::iostream& Trace::GetTraceLog()
 {
 	// Check_Object(this);
 	Check_Object(TraceManager::Instance);

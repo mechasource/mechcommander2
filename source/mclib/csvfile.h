@@ -15,17 +15,9 @@
 //---------------------------------------------------------------------------
 // Include files
 
-#ifndef DSTD_H
-#include "dstd.h"
-#endif
-
-#ifndef DCSVFILE_H
-#include "dcsvfile.h"
-#endif
-
-#ifndef FILE_H
-#include "file.h"
-#endif
+//#include "dstd.h"
+//#include "dcsvfile.h"
+//#include "file.h"
 
 //---------------------------------------------------------------------------
 // Macro Definitions
@@ -38,11 +30,11 @@
 
 //---------------------------------------------------------------------------
 //									CSVFile
-class CSVFile : public File
+class CSVFile : public MechFile
 {
 	// Data Members
 	//--------------
-  protected:
+protected:
 	uint32_t totalRows; // Number of ROWS CSV file has.
 	uint32_t totalCols; // NUmber of COLS CSV file has.
 
@@ -50,7 +42,7 @@ class CSVFile : public File
 
 	// Member Functions
 	//------------------
-  protected:
+protected:
 	int32_t afterOpen(void);
 	void atClose(void);
 
@@ -85,14 +77,12 @@ class CSVFile : public File
 
 	int32_t copyString(PSTR dest, PSTR src, size_t bufLen);
 
-  public:
+public:
 	CSVFile(void);
 	~CSVFile(void);
 
-	virtual int32_t open(
-		PCSTR fName, FileMode _mode = READ, int32_t numChildren = 50);
-	virtual int32_t open(
-		FilePtr _parent, size_t fileSize, int32_t numChildren = 50);
+	virtual int32_t open(PCSTR fName, FileMode _mode = READ, int32_t numChildren = 50);
+	virtual int32_t open(FilePtr _parent, size_t fileSize, int32_t numChildren = 50);
 
 	virtual int32_t create(PSTR fName);
 
@@ -114,8 +104,7 @@ class CSVFile : public File
 	int32_t readChar(uint32_t row, uint32_t col, char& value);
 	int32_t readUCHAR(uint32_t row, uint32_t col, uint8_t& value);
 
-	int32_t readString(
-		uint32_t row, uint32_t col, PSTR result, size_t bufferSize);
+	int32_t readString(uint32_t row, uint32_t col, PSTR result, size_t bufferSize);
 };
 
 //---------------------------------------------------------------------------

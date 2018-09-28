@@ -19,16 +19,16 @@ namespace MidLevelRenderer
 
 class MLRLookUpLight : public MLRInfiniteLight
 {
-  public:
+public:
 	static void __stdcall InitializeClass(void);
 	static void __stdcall TerminateClass(void);
 
 	MLRLookUpLight(void);
-	MLRLookUpLight(Stuff::MemoryStream* stream, uint32_t version);
+	MLRLookUpLight(std::iostream stream, uint32_t version);
 	MLRLookUpLight(Stuff::Page* page);
 	~MLRLookUpLight(void);
 
-	void Save(Stuff::MemoryStream* stream);
+	void Save(std::iostream stream);
 	void Write(Stuff::Page* page);
 
 	virtual LightType GetLightType(void)
@@ -80,14 +80,14 @@ class MLRLookUpLight : public MLRInfiniteLight
 	{
 		// Check_Object(this);
 		zoneSizeX = x;
-		Verify(x > Stuff::SMALL);
+		_ASSERT(x > Stuff::SMALL);
 		one_Over_zoneSizeX = 1.0f / x;
 	}
 	void SetMapZoneSizeZ(float z)
 	{
 		// Check_Object(this);
 		zoneSizeZ = z;
-		Verify(z > Stuff::SMALL);
+		_ASSERT(z > Stuff::SMALL);
 		one_Over_zoneSizeZ = 1.0f / z;
 	}
 
@@ -107,16 +107,16 @@ class MLRLookUpLight : public MLRInfiniteLight
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Class Data Support
 	//
-  public:
+public:
 	static ClassData* DefaultData;
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Testing
 	//
-  public:
+public:
 	void TestInstance(void);
 
-  protected:
+protected:
 	bool LoadMap(void);
 
 	Stuff::Point3D mapOrigin;
@@ -124,11 +124,11 @@ class MLRLookUpLight : public MLRInfiniteLight
 	float one_Over_zoneSizeX, one_Over_zoneSizeZ;
 
 	int32_t mapZoneCountX, mapZoneCountZ;
-	Stuff::MString mapName;
+	std::wstring mapName;
 
 	puint8_t* maps;
 
 	Stuff::LinearMatrix4D shapeToWorld;
 };
-}
+} // namespace MidLevelRenderer
 #endif

@@ -18,16 +18,16 @@ namespace MidLevelRenderer
 
 class MLRPointLight : public MLRInfiniteLightWithFalloff
 {
-  public:
+public:
 	static void __stdcall InitializeClass(void);
 	static void __stdcall TerminateClass(void);
 
 	MLRPointLight(void);
-	MLRPointLight(Stuff::MemoryStream* stream, uint32_t version);
+	MLRPointLight(std::iostream stream, uint32_t version);
 	MLRPointLight(Stuff::Page* page);
 	~MLRPointLight(void);
 
-	void Save(Stuff::MemoryStream* stream);
+	void Save(std::iostream stream);
 	void Write(Stuff::Page* page);
 
 	virtual void LightVertex(const MLRVertexData&);
@@ -49,17 +49,17 @@ class MLRPointLight : public MLRInfiniteLightWithFalloff
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Class Data Support
 	//
-  public:
+public:
 	static ClassData* DefaultData;
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Testing
 	//
-  public:
+public:
 	void TestInstance(void);
 
-  protected:
+protected:
 	MLRLightMap* lightMap;
 };
-}
+} // namespace MidLevelRenderer
 #endif

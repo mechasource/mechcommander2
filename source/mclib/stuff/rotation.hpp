@@ -18,7 +18,7 @@ namespace Stuff
 class UnitQuaternion;
 class YawPitchRoll;
 class EulerAngles;
-}
+} // namespace Stuff
 
 #if !defined(Spew)
 void Spew(PCSTR group, const Stuff::EulerAngles& angle);
@@ -41,7 +41,7 @@ class LinearMatrix4D;
 
 class EulerAngles
 {
-  public:
+public:
 	Radian pitch, yaw, roll;
 
 	static const EulerAngles Identity;
@@ -63,10 +63,7 @@ class EulerAngles
 		roll  = a.roll;
 	}
 	explicit EulerAngles(const YawPitchRoll& angles) { *this = angles; }
-	explicit EulerAngles(const UnitQuaternion& quaternion)
-	{
-		*this = quaternion;
-	}
+	explicit EulerAngles(const UnitQuaternion& quaternion) { *this = quaternion; }
 	explicit EulerAngles(const LinearMatrix4D& matrix) { *this = matrix; }
 	explicit EulerAngles(const Origin3D& origin) { *this = origin; }
 
@@ -91,18 +88,11 @@ class EulerAngles
 	// "Close-enough" comparators
 	//
 	friend bool Small_Enough(const EulerAngles& a, float e = SMALL);
-	bool operator!(void)const { return Small_Enough(*this); }
+	bool operator!(void) const { return Small_Enough(*this); }
 
-	friend bool Close_Enough(
-		const EulerAngles& a1, const EulerAngles& a2, float e = SMALL);
-	bool operator==(const EulerAngles& a) const
-	{
-		return Close_Enough(*this, a, SMALL);
-	}
-	bool operator!=(const EulerAngles& a) const
-	{
-		return !Close_Enough(*this, a, SMALL);
-	}
+	friend bool Close_Enough(const EulerAngles& a1, const EulerAngles& a2, float e = SMALL);
+	bool operator==(const EulerAngles& a) const { return Close_Enough(*this, a, SMALL); }
+	bool operator!=(const EulerAngles& a) const { return !Close_Enough(*this, a, SMALL); }
 
 	//
 	// Axis index operators
@@ -112,13 +102,13 @@ class EulerAngles
 	const Radian& operator[](size_t index) const
 	{
 		// Check_Pointer(this);
-		Verify(static_cast<uint32_t>(index) <= Z_Axis);
+		_ASSERT(static_cast<uint32_t>(index) <= Z_Axis);
 		return (&pitch)[index];
 	}
 	Radian& operator[](size_t index)
 	{
 		// Check_Pointer(this);
-		Verify(static_cast<uint32_t>(index) <= Z_Axis);
+		_ASSERT(static_cast<uint32_t>(index) <= Z_Axis);
 		return (&pitch)[index];
 	}
 
@@ -149,7 +139,7 @@ class EulerAngles
 
 class YawPitchRoll
 {
-  public:
+public:
 	Radian yaw, pitch, roll;
 
 	static const YawPitchRoll Identity;
@@ -171,10 +161,7 @@ class YawPitchRoll
 		roll  = angles.roll;
 	}
 	explicit YawPitchRoll(const EulerAngles& angles) { *this = angles; }
-	explicit YawPitchRoll(const UnitQuaternion& quaternion)
-	{
-		*this = quaternion;
-	}
+	explicit YawPitchRoll(const UnitQuaternion& quaternion) { *this = quaternion; }
 	explicit YawPitchRoll(const LinearMatrix4D& matrix) { *this = matrix; }
 	explicit YawPitchRoll(const Origin3D& origin) { *this = origin; }
 
@@ -200,13 +187,13 @@ class YawPitchRoll
 	const Radian& operator[](size_t index) const
 	{
 		// Check_Pointer(this);
-		Verify(static_cast<uint32_t>(index) <= Z_Axis);
+		_ASSERT(static_cast<uint32_t>(index) <= Z_Axis);
 		return (&yaw)[index];
 	}
 	Radian& operator[](size_t index)
 	{
 		// Check_Pointer(this);
-		Verify(static_cast<uint32_t>(index) <= Z_Axis);
+		_ASSERT(static_cast<uint32_t>(index) <= Z_Axis);
 		return (&yaw)[index];
 	}
 
@@ -214,18 +201,11 @@ class YawPitchRoll
 	// "Close-enough" comparators
 	//
 	friend bool Small_Enough(const YawPitchRoll& a, float e = SMALL);
-	bool operator!(void)const { return Small_Enough(*this); }
+	bool operator!(void) const { return Small_Enough(*this); }
 
-	friend bool Close_Enough(
-		const YawPitchRoll& a1, const YawPitchRoll& a2, float e = SMALL);
-	bool operator==(const YawPitchRoll& a) const
-	{
-		return Close_Enough(*this, a);
-	}
-	bool operator!=(const YawPitchRoll& a) const
-	{
-		return !Close_Enough(*this, a);
-	}
+	friend bool Close_Enough(const YawPitchRoll& a1, const YawPitchRoll& a2, float e = SMALL);
+	bool operator==(const YawPitchRoll& a) const { return Close_Enough(*this, a); }
+	bool operator!=(const YawPitchRoll& a) const { return !Close_Enough(*this, a); }
 
 	//
 	// Template support
@@ -253,7 +233,7 @@ class YawPitchRoll
 
 class UnitQuaternion
 {
-  public:
+public:
 	static const UnitQuaternion Identity;
 
 	static void __stdcall InitializeClass(void);
@@ -305,18 +285,11 @@ class UnitQuaternion
 		Check_Object(&q);
 		return Close_Enough(q.w, 1.0f, e);
 	}
-	bool operator!(void)const { return Small_Enough(*this, SMALL); }
+	bool operator!(void) const { return Small_Enough(*this, SMALL); }
 
-	friend bool Close_Enough(
-		const UnitQuaternion& a1, const UnitQuaternion& a2, float e = SMALL);
-	bool operator==(const UnitQuaternion& a) const
-	{
-		return Close_Enough(*this, a, SMALL);
-	}
-	bool operator!=(const UnitQuaternion& a) const
-	{
-		return !Close_Enough(*this, a, SMALL);
-	}
+	friend bool Close_Enough(const UnitQuaternion& a1, const UnitQuaternion& a2, float e = SMALL);
+	bool operator==(const UnitQuaternion& a) const { return Close_Enough(*this, a, SMALL); }
+	bool operator!=(const UnitQuaternion& a) const { return !Close_Enough(*this, a, SMALL); }
 
 	//
 	// Axis index operators
@@ -324,13 +297,13 @@ class UnitQuaternion
 	const float& operator[](size_t index) const
 	{
 		// Check_Pointer(this);
-		Verify(static_cast<uint32_t>(index) <= W_Axis);
+		_ASSERT(static_cast<uint32_t>(index) <= W_Axis);
 		return (&x)[index];
 	}
 	float& operator[](size_t index)
 	{
 		// Check_Pointer(this);
-		Verify(static_cast<uint32_t>(index) <= W_Axis);
+		_ASSERT(static_cast<uint32_t>(index) <= W_Axis);
 		return (&x)[index];
 	}
 
@@ -340,11 +313,9 @@ class UnitQuaternion
 	//
 	// Multiplication operators
 	//
-	UnitQuaternion& Multiply(
-		const UnitQuaternion& q1, const UnitQuaternion& q2);
+	UnitQuaternion& Multiply(const UnitQuaternion& q1, const UnitQuaternion& q2);
 	UnitQuaternion& Multiply(const UnitQuaternion& q, float scale);
-	UnitQuaternion& MultiplyScaled(
-		const UnitQuaternion& q1, const UnitQuaternion& q2, float t);
+	UnitQuaternion& MultiplyScaled(const UnitQuaternion& q1, const UnitQuaternion& q2, float t);
 
 	//
 	// Transform functions
@@ -365,11 +336,9 @@ class UnitQuaternion
 		);
 #endif
 
-	UnitQuaternion& Lerp(
-		const UnitQuaternion& p, const UnitQuaternion& q, float t);
+	UnitQuaternion& Lerp(const UnitQuaternion& p, const UnitQuaternion& q, float t);
 
-	UnitQuaternion& FastLerp(
-		const UnitQuaternion& p, const UnitQuaternion& q, float t);
+	UnitQuaternion& FastLerp(const UnitQuaternion& p, const UnitQuaternion& q, float t);
 
 	UnitQuaternion& Lerp(const EulerAngles& v1, const EulerAngles& v2, float t);
 
@@ -380,10 +349,8 @@ class UnitQuaternion
 
 	UnitQuaternion& FastNormalize(void);
 
-	UnitQuaternion& Subtract(
-		const UnitQuaternion& end, const UnitQuaternion& start);
-	UnitQuaternion& Subtract(
-		const UnitVector3D& end, const UnitVector3D& start);
+	UnitQuaternion& Subtract(const UnitQuaternion& end, const UnitQuaternion& start);
+	UnitQuaternion& Subtract(const UnitVector3D& end, const UnitVector3D& start);
 	UnitQuaternion& Subtract(const Vector3D& end, const Vector3D& start);
 #if 0
 		UnitQuaternion&
@@ -438,8 +405,8 @@ class UnitQuaternion
 
 	UnitQuaternion& LogN(const UnitQuaternion& q);
 
-	UnitQuaternion CompA(const UnitQuaternion& qprev, const UnitQuaternion& q,
-		const UnitQuaternion& qnext);
+	UnitQuaternion CompA(
+		const UnitQuaternion& qprev, const UnitQuaternion& q, const UnitQuaternion& qnext);
 
 	UnitQuaternion& Orthog(const UnitQuaternion& p, const Point3D& axis);
 
@@ -455,42 +422,37 @@ class UnitQuaternion
 	void TestInstance(void) const;
 	static bool TestClass(void);
 };
-}
+} // namespace Stuff
 
 namespace MemoryStreamIO
 {
-
-inline Stuff::MemoryStream& Read(
-	Stuff::MemoryStream* stream, Stuff::EulerAngles* output)
+#if _CONSIDERED_TEMPORARILY_DISABLED
+inline std::istream& Read(std::istream& stream, Stuff::EulerAngles* output)
 {
-	return stream->ReadBytes(output, sizeof(*output));
+	return stream.read(output, sizeof(*output));
 }
-inline Stuff::MemoryStream& Write(
-	Stuff::MemoryStream* stream, const Stuff::EulerAngles* input)
+inline std::ostream& Write(std::ostream& stream, const Stuff::EulerAngles* input)
 {
-	return stream->WriteBytes(input, sizeof(*input));
+	return stream.write(input, sizeof(*input));
 }
 
-inline Stuff::MemoryStream& Read(
-	Stuff::MemoryStream* stream, Stuff::YawPitchRoll* output)
+inline std::istream& Read(std::istream& stream, Stuff::YawPitchRoll* output)
 {
-	return stream->ReadBytes(output, sizeof(*output));
+	return stream.read(output, sizeof(*output));
 }
-inline Stuff::MemoryStream& Write(
-	Stuff::MemoryStream* stream, const Stuff::YawPitchRoll* input)
+inline std::ostream& Write(std::ostream& stream, const Stuff::YawPitchRoll* input)
 {
-	return stream->WriteBytes(input, sizeof(*input));
+	return stream.write(input, sizeof(*input));
 }
 
-inline Stuff::MemoryStream& Read(
-	Stuff::MemoryStream* stream, Stuff::UnitQuaternion* output)
+inline std::istream& Read(std::istream& stream, Stuff::UnitQuaternion* output)
 {
-	return stream->ReadBytes(output, sizeof(*output));
+	return stream.read(output, sizeof(*output));
 }
-inline Stuff::MemoryStream& Write(
-	Stuff::MemoryStream* stream, const Stuff::UnitQuaternion* input)
+inline std::ostream& Write(std::ostream& stream, const Stuff::UnitQuaternion* input)
 {
-	return stream->WriteBytes(input, sizeof(*input));
+	return stream.write(input, sizeof(*input));
 }
-}
+#endif
+} // namespace MemoryStreamIO
 #endif

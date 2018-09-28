@@ -229,8 +229,7 @@ int32_t WatchManager::removeAll(void)
 
 //---------------------------------------------------------------------------
 
-int32_t WatchManager::setStore(
-	SymTableNodePtr idPtr, bool state, bool breakToDebug)
+int32_t WatchManager::setStore(SymTableNodePtr idPtr, bool state, bool breakToDebug)
 {
 	if (!idPtr)
 		return (1);
@@ -262,8 +261,7 @@ int32_t WatchManager::setStore(
 
 //---------------------------------------------------------------------------
 
-int32_t WatchManager::setFetch(
-	SymTableNodePtr idPtr, bool state, bool breakToDebug)
+int32_t WatchManager::setFetch(SymTableNodePtr idPtr, bool state, bool breakToDebug)
 {
 	if (!idPtr)
 		return (1);
@@ -697,9 +695,8 @@ int32_t Debugger::sprintSimpleValue(PSTR dest, SymTableNodePtr symbol)
 		{
 		case VAR_TYPE_NORMAL:
 		{
-			StackFrameHeaderPtr headerPtr =
-				(StackFrameHeaderPtr)stackFrameBasePtr;
-			int32_t delta = level - symbol->level;
+			StackFrameHeaderPtr headerPtr = (StackFrameHeaderPtr)stackFrameBasePtr;
+			int32_t delta				  = level - symbol->level;
 			while (delta-- > 0)
 				headerPtr = (StackFrameHeaderPtr)headerPtr->staticLink.address;
 			dataPtr = (StackItemPtr)headerPtr + symbol->defn.info.data.offset;
@@ -709,8 +706,7 @@ int32_t Debugger::sprintSimpleValue(PSTR dest, SymTableNodePtr symbol)
 			dataPtr = (StackItemPtr)stack + symbol->defn.info.data.offset;
 			break;
 		case VAR_TYPE_STATIC:
-			dataPtr =
-				(StackItemPtr)StaticDataPtr + symbol->defn.info.data.offset;
+			dataPtr = (StackItemPtr)StaticDataPtr + symbol->defn.info.data.offset;
 			break;
 		}
 		//---------------------------------------------------------------
@@ -721,8 +717,7 @@ int32_t Debugger::sprintSimpleValue(PSTR dest, SymTableNodePtr symbol)
 			dataPtr = (StackItemPtr)dataPtr->address;
 		if ((typePtr->form != FRM_ARRAY) /*&& (typePtr->form != FRM_RECORD)*/)
 		{
-			ABL_Assert(dataPtr != nullptr, 0,
-				" Debugger.sprintSimpleValue(): dataPtr is nullptr ");
+			ABL_Assert(dataPtr != nullptr, 0, " Debugger.sprintSimpleValue(): dataPtr is nullptr ");
 			if ((typePtr == IntegerTypePtr) || (typePtr->form == FRM_ENUM))
 				sprintf(dest, "%d", *((int32_t*)dataPtr));
 			else if (typePtr == CharTypePtr)
@@ -738,8 +733,7 @@ int32_t Debugger::sprintSimpleValue(PSTR dest, SymTableNodePtr symbol)
 
 //---------------------------------------------------------------------------
 
-int32_t Debugger::sprintArrayValue(
-	PSTR dest, SymTableNodePtr symbol, PSTR subscriptString)
+int32_t Debugger::sprintArrayValue(PSTR dest, SymTableNodePtr symbol, PSTR subscriptString)
 {
 	//--------------------------------------------------------------------
 	// This code is adapted from execVariable(). If that function changes,
@@ -757,9 +751,8 @@ int32_t Debugger::sprintArrayValue(
 		{
 		case VAR_TYPE_NORMAL:
 		{
-			StackFrameHeaderPtr headerPtr =
-				(StackFrameHeaderPtr)stackFrameBasePtr;
-			int32_t delta = level - symbol->level;
+			StackFrameHeaderPtr headerPtr = (StackFrameHeaderPtr)stackFrameBasePtr;
+			int32_t delta				  = level - symbol->level;
 			while (delta-- > 0)
 				headerPtr = (StackFrameHeaderPtr)headerPtr->staticLink.address;
 			dataPtr = (StackItemPtr)headerPtr + symbol->defn.info.data.offset;
@@ -769,13 +762,11 @@ int32_t Debugger::sprintArrayValue(
 			dataPtr = (StackItemPtr)stack + symbol->defn.info.data.offset;
 			break;
 		case VAR_TYPE_STATIC:
-			dataPtr =
-				(StackItemPtr)StaticDataPtr + symbol->defn.info.data.offset;
+			dataPtr = (StackItemPtr)StaticDataPtr + symbol->defn.info.data.offset;
 			break;
 		}
 		TypePtr typePtr = (TypePtr)(symbol->typePtr);
-		ABL_Assert(dataPtr != nullptr, 0,
-			" Debugger.sprintArrayValue(): dataPtr is nullptr ");
+		ABL_Assert(dataPtr != nullptr, 0, " Debugger.sprintArrayValue(): dataPtr is nullptr ");
 		Address elementAddress = (Address)dataPtr->address;
 		if (subscriptString)
 		{
@@ -793,8 +784,7 @@ int32_t Debugger::sprintArrayValue(
 				// Range check the index...
 				if ((index < 0) || (index >= typePtr->info.array.elementCount))
 					return (1);
-				elementAddress +=
-					(index * typePtr->info.array.elementTypePtr->size);
+				elementAddress += (index * typePtr->info.array.elementTypePtr->size);
 				typePtr = typePtr->info.array.elementTypePtr;
 				token   = strtok(nullptr, ",]");
 			}
@@ -825,8 +815,7 @@ int32_t Debugger::sprintValue(PSTR dest, PSTR exprString)
 	{
 		//------------------------------------------
 		// Probably a simple variable or constant...
-		SymTableNodePtr symbol =
-			debugModule->findSymbol(exprString, CurRoutineIdPtr);
+		SymTableNodePtr symbol = debugModule->findSymbol(exprString, CurRoutineIdPtr);
 		if (!symbol)
 			return (1);
 		if (symbol->typePtr->form != FRM_ARRAY)
@@ -843,9 +832,8 @@ int32_t Debugger::sprintValue(PSTR dest, PSTR exprString)
 		// Looking for specific element...
 		char subscriptString[255];
 		strcpy(subscriptString, subscript);
-		*subscript = nullptr;
-		SymTableNodePtr symbol =
-			debugModule->findSymbol(exprString, CurRoutineIdPtr);
+		*subscript			   = nullptr;
+		SymTableNodePtr symbol = debugModule->findSymbol(exprString, CurRoutineIdPtr);
 		if (!symbol)
 			return (1);
 		sprintArrayValue(dest, symbol, subscriptString);
@@ -854,8 +842,7 @@ int32_t Debugger::sprintValue(PSTR dest, PSTR exprString)
 	{
 		//-------------------------
 		// Print the whole thing...
-		SymTableNodePtr symbol =
-			debugModule->findSymbol(exprString, CurRoutineIdPtr);
+		SymTableNodePtr symbol = debugModule->findSymbol(exprString, CurRoutineIdPtr);
 		if (!symbol)
 			return (1);
 		sprintArrayValue(dest, symbol, nullptr);
@@ -876,8 +863,8 @@ int32_t Debugger::traceStatementExecution(void)
 	{
 		if (breakPointManager->isBreakPoint(execLineNumber))
 		{
-			sprintf(message, "HIT BP: (%d) %s [%d]", module->getId(),
-				module->getName(), execLineNumber);
+			sprintf(message, "HIT BP: (%d) %s [%d]", module->getId(), module->getName(),
+				execLineNumber);
 			print(message);
 			halt = true;
 		}
@@ -901,8 +888,7 @@ int32_t Debugger::traceRoutineEntry(SymTableNodePtr idPtr)
 {
 	if (traceEntry)
 	{
-		sprintf(message, "ENTER (%d) %s:%s", module->getId(), module->getName(),
-			idPtr->name);
+		sprintf(message, "ENTER (%d) %s:%s", module->getId(), module->getName(), idPtr->name);
 		print(message);
 	}
 	return (ABL_NO_ERR);
@@ -914,8 +900,7 @@ int32_t Debugger::traceRoutineExit(SymTableNodePtr idPtr)
 {
 	if (traceExit)
 	{
-		sprintf(message, "EXIT (%d) %s:%s", module->getId(), module->getName(),
-			idPtr->name);
+		sprintf(message, "EXIT (%d) %s:%s", module->getId(), module->getName(), idPtr->name);
 		print(message);
 	}
 	return (ABL_NO_ERR);
@@ -940,16 +925,14 @@ int32_t Debugger::traceDataStore(
 		char valString[255];
 		sprintDataValue(valString, target, targetType);
 		if (idType->form == FRM_ARRAY)
-			sprintf(message, "STORE: (%d) %s [%d] -> %s[#] = %s\n",
-				module->getId(), module->getName(), execLineNumber, id->name,
-				valString);
+			sprintf(message, "STORE: (%d) %s [%d] -> %s[#] = %s\n", module->getId(),
+				module->getName(), execLineNumber, id->name, valString);
 		// else if (idType->form == FRM_RECORD)
 		//	sprintf(message, "STORE AT LINE %d - %s.# = %s\n", execLineNumber,
-		//id->name, valString);
+		// id->name, valString);
 		else
-			sprintf(message, "STORE: (%d) %s [%d] -> %s = %s\n",
-				module->getId(), module->getName(), execLineNumber, id->name,
-				valString);
+			sprintf(message, "STORE: (%d) %s [%d] -> %s = %s\n", module->getId(), module->getName(),
+				execLineNumber, id->name, valString);
 		print(message);
 		if (((WatchPtr)id->info)->breakOnStore)
 			debugMode();
@@ -959,8 +942,7 @@ int32_t Debugger::traceDataStore(
 
 //---------------------------------------------------------------------------
 
-int32_t Debugger::traceDataFetch(
-	SymTableNodePtr id, TypePtr idType, StackItemPtr data)
+int32_t Debugger::traceDataFetch(SymTableNodePtr id, TypePtr idType, StackItemPtr data)
 {
 	TypePtr idTypePtr = id->typePtr;
 	if (id->info && ((WatchPtr)id->info)->fetch)
@@ -968,15 +950,14 @@ int32_t Debugger::traceDataFetch(
 		char valString[255];
 		sprintDataValue(valString, data, idType);
 		if (idTypePtr->form == FRM_ARRAY)
-			sprintf(message, "FETCH: (%d) %s [%d] - %s[#] = %s\n",
-				module->getId(), module->getName(), execLineNumber, id->name,
-				valString);
+			sprintf(message, "FETCH: (%d) %s [%d] - %s[#] = %s\n", module->getId(),
+				module->getName(), execLineNumber, id->name, valString);
 		// else if (idTypePtr->form == FRM_RECORD)
 		//	sprintf(message, "STORE AT LINE %d - %s.# = %s\n", id->name,
-		//valString);
+		// valString);
 		else
-			sprintf(message, "FETCH: (%d) %s [%d] - %s = %s\n", module->getId(),
-				module->getName(), execLineNumber, id->name, valString);
+			sprintf(message, "FETCH: (%d) %s [%d] - %s = %s\n", module->getId(), module->getName(),
+				execLineNumber, id->name, valString);
 		print(message);
 		if (((WatchPtr)id->info)->breakOnFetch)
 			debugMode();
@@ -1063,13 +1044,11 @@ void Debugger::displayModuleInstanceRegistry(void)
 	char buffer1[200], buffer2[40];
 	for (size_t i = 0; i < ((NumModuleInstances + 1) / 2); i++)
 	{
-		sprintf(buffer1, "(%02d) %-20s ",
-			ModuleInstanceRegistry[i * 2]->getId(),
+		sprintf(buffer1, "(%02d) %-20s ", ModuleInstanceRegistry[i * 2]->getId(),
 			ModuleInstanceRegistry[i * 2]->getName());
 		if ((i * 2 + 1) < NumModuleInstances)
 		{
-			sprintf(buffer2, "(%02d) %-20s ",
-				ModuleInstanceRegistry[i * 2 + 1]->getId(),
+			sprintf(buffer2, "(%02d) %-20s ", ModuleInstanceRegistry[i * 2 + 1]->getId(),
 				ModuleInstanceRegistry[i * 2 + 1]->getName());
 			strcat(buffer1, buffer2);
 		}
@@ -1079,8 +1058,8 @@ void Debugger::displayModuleInstanceRegistry(void)
 
 //---------------------------------------------------------------------------
 
-void Debugger::processCommand(int32_t commandId, PSTR strParam1,
-	int32_t numParam1, ABLModulePtr moduleParam1)
+void Debugger::processCommand(
+	int32_t commandId, PSTR strParam1, int32_t numParam1, ABLModulePtr moduleParam1)
 {
 	switch (commandId)
 	{
@@ -1153,8 +1132,7 @@ void Debugger::processCommand(int32_t commandId, PSTR strParam1,
 	case DEBUG_COMMAND_BREAKPOINT_REMOVE:
 		print(" ");
 		debugModule->getBreakPointManager()->remove(numParam1);
-		sprintf(
-			message, "REMOVE BP: %s (%d)", debugModule->getName(), numParam1);
+		sprintf(message, "REMOVE BP: %s (%d)", debugModule->getName(), numParam1);
 		print(message);
 		break;
 	case DEBUG_COMMAND_WATCH_SET:
@@ -1169,8 +1147,7 @@ void Debugger::processCommand(int32_t commandId, PSTR strParam1,
 		bool breakToDebug = ((numParam1 & WATCH_BREAK) != 0);
 		if (numParam1 & WATCH_STORE_ON)
 		{
-			int32_t result = debugModule->getWatchManager()->setStore(
-				idPtr, true, breakToDebug);
+			int32_t result = debugModule->getWatchManager()->setStore(idPtr, true, breakToDebug);
 			if (result == 2)
 			{
 				print("Reached max watch limit--unable to set watch.\n");
@@ -1179,8 +1156,7 @@ void Debugger::processCommand(int32_t commandId, PSTR strParam1,
 		}
 		if (numParam1 & WATCH_FETCH_ON)
 		{
-			int32_t result = debugModule->getWatchManager()->setFetch(
-				idPtr, true, breakToDebug);
+			int32_t result = debugModule->getWatchManager()->setFetch(idPtr, true, breakToDebug);
 			if (result == 2)
 			{
 				print("Reached max watch limit--unable to set watch.\n");
@@ -1188,17 +1164,14 @@ void Debugger::processCommand(int32_t commandId, PSTR strParam1,
 			}
 		}
 		if (numParam1 & WATCH_STORE_OFF)
-			debugModule->getWatchManager()->setStore(
-				idPtr, false, breakToDebug);
+			debugModule->getWatchManager()->setStore(idPtr, false, breakToDebug);
 		if (numParam1 & WATCH_FETCH_OFF)
-			debugModule->getWatchManager()->setFetch(
-				idPtr, false, breakToDebug);
+			debugModule->getWatchManager()->setFetch(idPtr, false, breakToDebug);
 		bool store = debugModule->getWatchManager()->getStore(idPtr);
 		bool fetch = debugModule->getWatchManager()->getFetch(idPtr);
 		if (store || fetch)
 		{
-			sprintf(message, "SET WATCH: %s.%s (", debugModule->getName(),
-				strParam1);
+			sprintf(message, "SET WATCH: %s.%s (", debugModule->getName(), strParam1);
 			if (store)
 				strcat(message, "s");
 			if (fetch)
@@ -1206,8 +1179,7 @@ void Debugger::processCommand(int32_t commandId, PSTR strParam1,
 			strcat(message, ")");
 		}
 		else
-			sprintf(message, "REMOVE WATCH: %s.%s", debugModule->getName(),
-				strParam1);
+			sprintf(message, "REMOVE WATCH: %s.%s", debugModule->getName(), strParam1);
 		print(message);
 	}
 	break;
@@ -1251,9 +1223,8 @@ void Debugger::processCommand(int32_t commandId, PSTR strParam1,
 		print(message);
 		ModuleInfo moduleInfo;
 		debugModule->getInfo(&moduleInfo);
-		sprintf(message, "%d static vars, %d bytes, %d largest",
-			moduleInfo.numStaticVars, moduleInfo.totalSizeStaticVars,
-			moduleInfo.largestStaticVar);
+		sprintf(message, "%d static vars, %d bytes, %d largest", moduleInfo.numStaticVars,
+			moduleInfo.totalSizeStaticVars, moduleInfo.largestStaticVar);
 		print(message);
 	}
 	break;

@@ -47,10 +47,10 @@ AffineMatrix4D& AffineMatrix4D::operator=(const Matrix4D& m)
 {
 	// Check_Pointer(this);
 	Check_Object(&m);
-	Verify(Small_Enough(m(0, 3)));
-	Verify(Small_Enough(m(1, 3)));
-	Verify(Small_Enough(m(2, 3)));
-	Verify(Close_Enough(m(3, 3), 1.0f));
+	_ASSERT(Small_Enough(m(0, 3)));
+	_ASSERT(Small_Enough(m(1, 3)));
+	_ASSERT(Small_Enough(m(2, 3)));
+	_ASSERT(Close_Enough(m(3, 3), 1.0f));
 	memcpy(entries, m.entries, sizeof(entries));
 	return *this;
 }
@@ -146,10 +146,8 @@ AffineMatrix4D& AffineMatrix4D::BuildRotation(const EulerAngles& angles)
 {
 	// Check_Pointer(this);
 	Check_Object(&angles);
-	Verify(Vector3D::Forward.z == 1.0f && Vector3D::Right.x == -1.0f &&
-			   Vector3D::Up.y == 1.0f ||
-		   Vector3D::Forward.z == -1.0f && Vector3D::Right.x == 1.0f &&
-			   Vector3D::Up.y == 1.0f);
+	_ASSERT(Vector3D::Forward.z == 1.0f && Vector3D::Right.x == -1.0f && Vector3D::Up.y == 1.0f ||
+		Vector3D::Forward.z == -1.0f && Vector3D::Right.x == 1.0f && Vector3D::Up.y == 1.0f);
 	SinCosPair x, y, z;
 	x			  = angles.pitch;
 	y			  = angles.yaw;
@@ -175,10 +173,8 @@ AffineMatrix4D& AffineMatrix4D::BuildRotation(const YawPitchRoll& angles)
 {
 	// Check_Pointer(this);
 	Check_Object(&angles);
-	Verify(Vector3D::Forward.z == 1.0f && Vector3D::Right.x == -1.0f &&
-			   Vector3D::Up.y == 1.0f ||
-		   Vector3D::Forward.z == -1.0f && Vector3D::Right.x == 1.0f &&
-			   Vector3D::Up.y == 1.0f);
+	_ASSERT(Vector3D::Forward.z == 1.0f && Vector3D::Right.x == -1.0f && Vector3D::Up.y == 1.0f ||
+		Vector3D::Forward.z == -1.0f && Vector3D::Right.x == 1.0f && Vector3D::Up.y == 1.0f);
 	SinCosPair x, y, z;
 	x			  = angles.pitch;
 	y			  = angles.yaw;
@@ -204,9 +200,8 @@ AffineMatrix4D& AffineMatrix4D::BuildRotation(const UnitQuaternion& q)
 {
 	// Check_Pointer(this);
 	Check_Object(&q);
-	float a = q.x * q.y, b = q.y * q.z, c = q.z * q.x, d = q.w * q.x,
-		  e = q.w * q.y, f = q.w * q.z, g = q.w * q.w, h = q.x * q.x,
-		  i = q.y * q.y, j = q.z * q.z;
+	float a = q.x * q.y, b = q.y * q.z, c = q.z * q.x, d = q.w * q.x, e = q.w * q.y, f = q.w * q.z,
+		  g = q.w * q.w, h = q.x * q.x, i = q.y * q.y, j = q.z * q.z;
 	(*this)(0, 0) = g + h - i - j;
 	(*this)(1, 0) = 2.0f * (a - f);
 	(*this)(2, 0) = 2.0f * (c + e);
@@ -269,8 +264,7 @@ AffineMatrix4D& AffineMatrix4D::BuildRotation(const Vector3D& v)
 //###########################################################################
 //###########################################################################
 //
-bool Stuff::Close_Enough(
-	const AffineMatrix4D& m1, const AffineMatrix4D& m2, float e)
+bool Stuff::Close_Enough(const AffineMatrix4D& m1, const AffineMatrix4D& m2, float e)
 {
 	Check_Object(&m2);
 	Check_Object(&m1);
@@ -298,9 +292,9 @@ AffineMatrix4D::Multiply(
 	//Check_Pointer(this);
 	Check_Object(&Source1);
 	Check_Object(&Source2);
-	Verify(this != &Source1);
-	Verify(this != &Source2);
-#if USE_ASSEMBLER_CODE
+	_ASSERT(this != &Source1);
+	_ASSERT(this != &Source2);
+#if USE_INLINE_ASSEMBLER_CODE
 	float* f = entries;
 	_asm
 	{
@@ -606,25 +600,25 @@ AffineMatrix4D& AffineMatrix4D::Invert(const AffineMatrix4D& Source)
 {
 	// Check_Pointer(this);
 	Check_Object(&Source);
-	Verify(this != &Source);
+	_ASSERT(this != &Source);
 	(*this)(0, 0) = Source(1, 1) * Source(2, 2) - Source(1, 2) * Source(2, 1);
 	(*this)(1, 0) = Source(1, 2) * Source(2, 0) - Source(1, 0) * Source(2, 2);
 	(*this)(2, 0) = Source(1, 0) * Source(2, 1) - Source(1, 1) * Source(2, 0);
-	float det = (*this)(0, 0) * Source(0, 0) + (*this)(1, 0) * Source(0, 1) +
-				(*this)(2, 0) * Source(0, 2);
-	Verify(!Small_Enough(det));
-	(*this)(3, 0) = -Source(3, 0) * (*this)(0, 0) -
-					Source(3, 1) * (*this)(1, 0) - Source(3, 2) * (*this)(2, 0);
+	float det =
+		(*this)(0, 0) * Source(0, 0) + (*this)(1, 0) * Source(0, 1) + (*this)(2, 0) * Source(0, 2);
+	_ASSERT(!Small_Enough(det));
+	(*this)(3, 0) =
+		-Source(3, 0) * (*this)(0, 0) - Source(3, 1) * (*this)(1, 0) - Source(3, 2) * (*this)(2, 0);
 	(*this)(0, 1) = Source(0, 2) * Source(2, 1) - Source(0, 1) * Source(2, 2);
 	(*this)(1, 1) = Source(0, 0) * Source(2, 2) - Source(0, 2) * Source(2, 0);
 	(*this)(2, 1) = Source(0, 1) * Source(2, 0) - Source(0, 0) * Source(2, 1);
-	(*this)(3, 1) = -Source(3, 0) * (*this)(0, 1) -
-					Source(3, 1) * (*this)(1, 1) - Source(3, 2) * (*this)(2, 1);
+	(*this)(3, 1) =
+		-Source(3, 0) * (*this)(0, 1) - Source(3, 1) * (*this)(1, 1) - Source(3, 2) * (*this)(2, 1);
 	(*this)(0, 2) = Source(0, 1) * Source(1, 2) - Source(0, 2) * Source(1, 1);
 	(*this)(1, 2) = Source(1, 0) * Source(0, 2) - Source(0, 0) * Source(1, 2);
 	(*this)(2, 2) = Source(0, 0) * Source(1, 1) - Source(0, 1) * Source(1, 0);
-	(*this)(3, 2) = -Source(3, 0) * (*this)(0, 2) -
-					Source(3, 1) * (*this)(1, 2) - Source(3, 2) * (*this)(2, 2);
+	(*this)(3, 2) =
+		-Source(3, 0) * (*this)(0, 2) - Source(3, 1) * (*this)(1, 2) - Source(3, 2) * (*this)(2, 2);
 	det = 1.0f / det;
 	for (size_t i = 0; i < 12; ++i)
 	{
@@ -637,8 +631,7 @@ AffineMatrix4D& AffineMatrix4D::Invert(const AffineMatrix4D& Source)
 //###########################################################################
 //###########################################################################
 //
-AffineMatrix4D& AffineMatrix4D::Multiply(
-	const AffineMatrix4D& m, const Vector3D& v)
+AffineMatrix4D& AffineMatrix4D::Multiply(const AffineMatrix4D& m, const Vector3D& v)
 {
 	// Check_Pointer(this);
 	Check_Object(&m);
@@ -662,8 +655,7 @@ AffineMatrix4D& AffineMatrix4D::Multiply(
 //###########################################################################
 //###########################################################################
 //
-AffineMatrix4D& AffineMatrix4D::Multiply(
-	const AffineMatrix4D& m, const UnitQuaternion& q)
+AffineMatrix4D& AffineMatrix4D::Multiply(const AffineMatrix4D& m, const UnitQuaternion& q)
 {
 	// Check_Pointer(this);
 	Check_Object(&m);
@@ -677,8 +669,7 @@ AffineMatrix4D& AffineMatrix4D::Multiply(
 //###########################################################################
 //###########################################################################
 //
-AffineMatrix4D& AffineMatrix4D::Multiply(
-	const AffineMatrix4D& m, const Point3D& p)
+AffineMatrix4D& AffineMatrix4D::Multiply(const AffineMatrix4D& m, const Point3D& p)
 {
 	// Check_Pointer(this);
 	Check_Object(&m);
@@ -696,12 +687,9 @@ AffineMatrix4D& AffineMatrix4D::Multiply(
 float AffineMatrix4D::Determinant(void) const
 {
 	// Check_Object(this);
-	return (*this)(0, 0) *
-			   ((*this)(1, 1) * (*this)(2, 2) - (*this)(1, 2) * (*this)(2, 1)) +
-		   (*this)(0, 1) *
-			   ((*this)(1, 2) * (*this)(2, 0) - (*this)(1, 0) * (*this)(2, 2)) +
-		   (*this)(0, 2) *
-			   ((*this)(1, 0) * (*this)(2, 1) - (*this)(1, 1) * (*this)(2, 0));
+	return (*this)(0, 0) * ((*this)(1, 1) * (*this)(2, 2) - (*this)(1, 2) * (*this)(2, 1)) +
+		(*this)(0, 1) * ((*this)(1, 2) * (*this)(2, 0) - (*this)(1, 0) * (*this)(2, 2)) +
+		(*this)(0, 2) * ((*this)(1, 0) * (*this)(2, 1) - (*this)(1, 1) * (*this)(2, 0));
 }
 
 //
@@ -723,7 +711,7 @@ AffineMatrix4D& AffineMatrix4D::Solve()
 		for (column = 0; column < 3; ++column)
 			if ((*this)(0, column))
 				break;
-		Verify(column != 3);
+		_ASSERT(column != 3);
 		//
 		//--------------
 		// Swap the columns
@@ -774,7 +762,7 @@ AffineMatrix4D& AffineMatrix4D::Solve()
 	//
 	if (!(*this)(1, 1))
 	{
-		Verify(!(*this)(2, 2));
+		_ASSERT(!(*this)(2, 2));
 		//
 		//---------------------
 		// Swap the (*this) columns
@@ -817,7 +805,7 @@ AffineMatrix4D& AffineMatrix4D::Solve()
 	// Make the last diagonal 1.0
 	//---------------------------
 	//
-	Verify((*this)(2, 2));
+	_ASSERT((*this)(2, 2));
 	temp		  = (*this)(2, 2);
 	(*this)(2, 2) = 1.0f;
 	(*this)(3, 2) /= temp;
@@ -848,13 +836,9 @@ AffineMatrix4D& AffineMatrix4D::Solve()
 void Spew(PCSTR group, const AffineMatrix4D& matrix)
 {
 	Check_Object(&matrix);
-	SPEW((group, "\n\t| %9f, %9f, %9f, 0 |", matrix(0, 0), matrix(0, 1),
-		matrix(0, 2)));
-	SPEW((group, "\t| %9f, %9f, %9f, 0 |", matrix(1, 0), matrix(1, 1),
-		matrix(1, 2)));
-	SPEW((group, "\t| %9f, %9f, %9f, 0 |", matrix(2, 0), matrix(2, 1),
-		matrix(2, 2)));
-	SPEW((group, "\t| %9f, %9f, %9f, 1 |+", matrix(3, 0), matrix(3, 1),
-		matrix(3, 2)));
+	SPEW((group, "\n\t| %9f, %9f, %9f, 0 |", matrix(0, 0), matrix(0, 1), matrix(0, 2)));
+	SPEW((group, "\t| %9f, %9f, %9f, 0 |", matrix(1, 0), matrix(1, 1), matrix(1, 2)));
+	SPEW((group, "\t| %9f, %9f, %9f, 0 |", matrix(2, 0), matrix(2, 1), matrix(2, 2)));
+	SPEW((group, "\t| %9f, %9f, %9f, 1 |+", matrix(3, 0), matrix(3, 1), matrix(3, 2)));
 }
 #endif

@@ -10,44 +10,29 @@
 
 //---------------------------------------------------------------------------
 // Include Files
-#ifndef APPRTYPE_H
-#include "apprtype.h"
-#endif
 
-#ifndef GVACTOR_H
-#include "gvactor.h"
-#endif
-
-#ifndef MECH3D_H
-#include "mech3d.h"
-#endif
-
-#ifndef BDACTOR_H
-#include "bdactor.h"
-#endif
-
-#ifndef GENACTOR_H
-#include "genactor.h"
-#endif
-
-#include "cident.h"
-#include "inifile.h"
-#include "paths.h"
-
-#include <gameos.hpp>
+//#include "apprtype.h"
+//#include "gvactor.h"
+//#include "mech3d.h"
+//#include "bdactor.h"
+//#include "genactor.h"
+//#include "cident.h"
+//#include "inifile.h"
+//#include "paths.h"
+//#include <gameos.hpp>
 
 //---------------------------------------------------------------------------
 // static Globals
-UserHeapPtr AppearanceTypeList::appearanceHeap = nullptr;
-AppearanceTypeListPtr appearanceTypeList	   = nullptr;
+// UserHeapPtr AppearanceTypeList::appearanceHeap = nullptr;
+// AppearanceTypeListPtr appearanceTypeList	   = nullptr;
 
 //---------------------------------------------------------------------------
 // Class AppearanceType
+#if _CONSIDERED_OBSOLETE
 PVOID AppearanceType::operator new(size_t memSize)
 {
 	PVOID result = nullptr;
-	if (AppearanceTypeList::appearanceHeap &&
-		AppearanceTypeList::appearanceHeap->heapReady())
+	if (AppearanceTypeList::appearanceHeap && AppearanceTypeList::appearanceHeap->heapReady())
 	{
 		result = AppearanceTypeList::appearanceHeap->Malloc(memSize);
 	}
@@ -58,18 +43,17 @@ PVOID AppearanceType::operator new(size_t memSize)
 void AppearanceType::operator delete(PVOID treePtr)
 {
 	int32_t result;
-	if (AppearanceTypeList::appearanceHeap &&
-		AppearanceTypeList::appearanceHeap->heapReady())
+	if (AppearanceTypeList::appearanceHeap && AppearanceTypeList::appearanceHeap->heapReady())
 	{
 		result = AppearanceTypeList::appearanceHeap->Free(treePtr);
 	}
 }
+#endif
 
 //---------------------------------------------------------------------------
 void AppearanceType::init(PSTR fileName)
 {
-	name =
-		(PSTR)AppearanceTypeList::appearanceHeap->Malloc(strlen(fileName) + 1);
+	name = (PSTR)AppearanceTypeList::appearanceHeap->Malloc(strlen(fileName) + 1);
 	strcpy(name, fileName);
 	// Dig out the Type Bounds here for selections
 	FullPathFileName iniName;
@@ -167,6 +151,7 @@ void AppearanceType::reinit(void)
 }
 
 //---------------------------------------------------------------------------
+#if _CONSIDERED_OBSOLETE
 void AppearanceType::destroy(void)
 {
 	AppearanceTypeList::appearanceHeap->Free(name);
@@ -183,10 +168,10 @@ void AppearanceTypeList::init(uint32_t heapSize)
 	// No More sprite files.  Objects now have direct control over their
 	// appearances.
 }
+#endif
 
 //---------------------------------------------------------------------------
-AppearanceTypePtr AppearanceTypeList::getAppearance(
-	uint32_t apprNum, PSTR appearFile)
+AppearanceTypePtr AppearanceTypeList::getAppearance(uint32_t apprNum, PSTR appearFile)
 {
 	//----------------------------------------------------------------
 	// The type of appearance is stored in the upper 8 bits of the

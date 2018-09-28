@@ -20,7 +20,7 @@ namespace Stuff
 
 class LinearMatrix4D : public AffineMatrix4D
 {
-  public:
+public:
 	static const LinearMatrix4D Identity;
 
 	//
@@ -208,8 +208,8 @@ class LinearMatrix4D : public AffineMatrix4D
 		Check_Object(v);
 	}
 
-	void AlignLocalAxisToWorldVector(const Vector3D& target,
-		size_t pointing_axis, size_t rotating_axis, size_t minor_axis);
+	void AlignLocalAxisToWorldVector(
+		const Vector3D& target, size_t pointing_axis, size_t rotating_axis, size_t minor_axis);
 
 	//
 	// Matrix4D Multiplication
@@ -275,7 +275,7 @@ class LinearMatrix4D : public AffineMatrix4D
 	void TestInstance(void) const;
 	static bool TestClass(void);
 
-  private:
+private:
 	LinearMatrix4D& Solve(void);
 };
 
@@ -284,5 +284,5 @@ inline UnitQuaternion& UnitQuaternion::operator*=(const LinearMatrix4D& m)
 	UnitQuaternion t(*this);
 	return Multiply(t, m);
 }
-}
+} // namespace Stuff
 #endif

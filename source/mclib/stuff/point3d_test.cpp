@@ -51,8 +51,8 @@ bool Point3D::TestClass()
 	Test_Assumption(f == c.x * d.x + c.y * d.y + c.z * d.z);
 #endif
 	b.Cross(c, d);
-	Test_Assumption(b == Point3D(c.y * d.z - c.z * d.y, c.z * d.x - c.x * d.z,
-							 c.x * d.y - c.y * d.x));
+	Test_Assumption(
+		b == Point3D(c.y * d.z - c.z * d.y, c.z * d.x - c.x * d.z, c.x * d.y - c.y * d.x));
 	f = 2.0f;
 	b.Multiply(c, f);
 	Test_Assumption(b == Point3D(f * c.x, f * c.y, f * c.z));
@@ -81,14 +81,14 @@ bool Point3D::TestClass()
 	b = m;
 	Test_Assumption(b == c);
 	b.Multiply(c, m);
-	Test_Assumption(
-		b == Point3D(c.x + m(3, 0), c.y * m(1, 1) + c.z * m(2, 1) + m(3, 1),
-				 c.y * m(1, 2) + c.z * m(2, 2) + m(3, 2)));
+	Test_Assumption(b ==
+		Point3D(c.x + m(3, 0), c.y * m(1, 1) + c.z * m(2, 1) + m(3, 1),
+			c.y * m(1, 2) + c.z * m(2, 2) + m(3, 2)));
 	b = c;
 	b *= m;
-	Test_Assumption(
-		b == Point3D(c.x + m(3, 0), c.y * m(1, 1) + c.z * m(2, 1) + m(3, 1),
-				 c.y * m(1, 2) + c.z * m(2, 2) + m(3, 2)));
+	Test_Assumption(b ==
+		Point3D(c.x + m(3, 0), c.y * m(1, 1) + c.z * m(2, 1) + m(3, 1),
+			c.y * m(1, 2) + c.z * m(2, 2) + m(3, 2)));
 	Test_Assumption(!a.GetLengthSquared());
 	f = c.GetLengthSquared();
 	Test_Assumption(f == c.x * c.x + c.y * c.y + c.z * c.z);
@@ -97,11 +97,9 @@ bool Point3D::TestClass()
 	b.Normalize(c);
 	Test_Assumption(b == Point3D(c.x / f, c.y / f, c.z / f));
 	b.Combine(c, 2.0f, d, 2.0f);
-	Test_Assumption(b == Point3D(2.0f * (c.x + d.x), 2.0f * (c.y + d.y),
-							 2.0f * (c.z + d.z)));
+	Test_Assumption(b == Point3D(2.0f * (c.x + d.x), 2.0f * (c.y + d.y), 2.0f * (c.z + d.z)));
 	b.Lerp(c, d, 0.5f);
-	Test_Assumption(b == Point3D(0.5f * (c.x + d.x), 0.5f * (c.y + d.y),
-							 0.5f * (c.z + d.z)));
+	Test_Assumption(b == Point3D(0.5f * (c.x + d.x), 0.5f * (c.y + d.y), 0.5f * (c.z + d.z)));
 	Vector4D v(2.0f, 4.0f, 6.0f, 2.0f);
 	b = v;
 	Test_Assumption(b == Point3D(v.x / v.w, v.y / v.w, v.z / v.w));
@@ -109,7 +107,6 @@ bool Point3D::TestClass()
 	t.linearPosition  = Point3D(2.0f, 3.0f, 4.0f);
 	t.angularPosition = EulerAngles(0.0f, 0.0f, 0.0f);
 	b				  = t;
-	Test_Assumption(b == Point3D(t.linearPosition.x, t.linearPosition.y,
-							 t.linearPosition.z));
+	Test_Assumption(b == Point3D(t.linearPosition.x, t.linearPosition.y, t.linearPosition.z));
 	return true;
 }

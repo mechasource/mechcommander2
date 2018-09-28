@@ -9,7 +9,7 @@
 
 #include <stuff/plug.hpp>
 #include <stuff/matrix.hpp>
-#include <stuff/marray.hpp>
+//#include <stuff/marray.hpp>
 #include <mlr/mlrstate.hpp>
 
 namespace Stuff
@@ -18,7 +18,7 @@ class LinearMatrix4D;
 class Line3D;
 class Normal3D;
 class Point3D;
-}
+} // namespace Stuff
 
 namespace MidLevelRenderer
 {
@@ -40,25 +40,25 @@ class MLRShape : public Stuff::Plug
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Initialization
 	//
-  public:
+public:
 	static void __stdcall InitializeClass(void);
 	static void __stdcall TerminateClass(void);
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Constructors/Destructors
 	//
-  protected:
-	MLRShape(Stuff::MemoryStream* stream, uint32_t version);
+protected:
+	MLRShape(std::iostream stream, uint32_t version);
 	~MLRShape(void);
 
-  public:
+public:
 	MLRShape(int32_t);
 
-	static MLRShape* Make(Stuff::MemoryStream* stream, uint32_t version);
+	static MLRShape* Make(std::iostream stream, uint32_t version);
 
-	void Save(Stuff::MemoryStream* stream);
+	void Save(std::iostream stream);
 
-  public:
+public:
 	void Add(MLRPrimitiveBase*);
 	MLRPrimitiveBase* Find(int32_t);
 	int32_t Find(MLRPrimitiveBase*);
@@ -90,13 +90,12 @@ class MLRShape : public Stuff::Plug
 	// the clipping states defines the planes against the shape might have be
 	// culled
 	//	now done only on primitive level - int32_t	Clip(MLRClippingState,
-	//GOSVertexPool*);
+	// GOSVertexPool*);
 
 	// lights the geometry, uses the worldToShape matrix and an array of lights
 	// which affect the shape in this frame and the number of lights in this
 	// array
-	void Lighting(
-		const Stuff::LinearMatrix4D&, MLRLight* const*, uint32_t nrLights);
+	void Lighting(const Stuff::LinearMatrix4D&, MLRLight* const*, uint32_t nrLights);
 
 	// casts an ray against the geometry contained in shape
 	bool CastRay(Stuff::Line3D* line, Stuff::Normal3D* normal);
@@ -106,13 +105,13 @@ class MLRShape : public Stuff::Plug
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Class Data Support
 	//
-  public:
+public:
 	static ClassData* DefaultData;
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Reference counting
 	//
-  public:
+public:
 	void AttachReference()
 	{
 		// Check_Object(this);
@@ -121,7 +120,7 @@ class MLRShape : public Stuff::Plug
 	void DetachReference()
 	{
 		// Check_Object(this);
-		Verify(referenceCount > 0);
+		_ASSERT(referenceCount > 0);
 		if ((--referenceCount) == 0)
 		{
 			Unregister_Object(this);
@@ -131,13 +130,13 @@ class MLRShape : public Stuff::Plug
 
 	int32_t GetReferenceCount() { return referenceCount; }
 
-  protected:
+protected:
 	int32_t referenceCount;
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Testing
 	//
-  public:
+public:
 	void TestInstance(void) const {};
 	virtual size_t GetSize()
 	{
@@ -146,7 +145,7 @@ class MLRShape : public Stuff::Plug
 		return ret;
 	}
 
-  protected:
+protected:
 	int32_t FindBackFace(const Stuff::Point3D&);
 
 	//		void
@@ -155,12 +154,12 @@ class MLRShape : public Stuff::Plug
 	//		void
 	//			Transform(void);
 
-	Stuff::DynamicArrayOf<MLRPrimitiveBase*> allPrimitives;
+	std::vector<MLRPrimitiveBase*> allPrimitives;
 	const Stuff::LinearMatrix4D* worldToShape;
 	Stuff::Matrix4D shapeToClipMatrix;
 
-  private:
+private:
 	size_t numPrimitives;
 };
-}
+} // namespace MidLevelRenderer
 #endif

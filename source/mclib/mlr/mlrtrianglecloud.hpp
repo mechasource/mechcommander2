@@ -21,24 +21,23 @@ class MLRTriangleCloud : public MLREffect
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Initialization
 	//
-  public:
+public:
 	static void __stdcall InitializeClass(void);
 	static void __stdcall TerminateClass(void);
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Constructors/Destructors
 	//
-  public:
+public:
 	MLRTriangleCloud(uint32_t);
 	~MLRTriangleCloud(void);
 
-	void SetData(pcsize_t count, const Stuff::Point3D* point_data,
-		const Stuff::RGBAColor* color_data);
+	void SetData(
+		pcsize_t count, const Stuff::Point3D* point_data, const Stuff::RGBAColor* color_data);
 
 	// added due to warning C4263 in MLRIndexedTriangleCloud
-	virtual void SetData(pcsize_t tri_count, pcsize_t point_count,
-		pcuint16_t index_data, const Stuff::Point3D* point_data,
-		const Stuff::RGBAColor* color_data,
+	virtual void SetData(pcsize_t tri_count, pcsize_t point_count, pcuint16_t index_data,
+		const Stuff::Point3D* point_data, const Stuff::RGBAColor* color_data,
 		const Stuff::Vector2DScalar* uv_data);
 
 	void Draw(DrawEffectInformation*, GOSVertexPool*, MLRSorter*);
@@ -48,29 +47,27 @@ class MLRTriangleCloud : public MLREffect
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Class Data Support
 	//
-  public:
+public:
 	static ClassData* DefaultData;
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Testing
 	//
-  public:
+public:
 	void TestInstance(void) const;
 
-  protected:
+protected:
 	pcsize_t usedNrOfTriangles;
 
-	static Stuff::DynamicArrayOf<Stuff::RGBAColor>*
+	static std::vector<Stuff::RGBAColor>*
 		clipExtraColors; // , Max_Number_Vertices_Per_Mesh
 
-	static Stuff::DynamicArrayOf<MLRClippingState>*
-		clipPerVertex; // , Max_Number_Vertices_Per_Mesh
+	static std::vector<MLRClippingState>* clipPerVertex; // , Max_Number_Vertices_Per_Mesh
 
-	static Stuff::DynamicArrayOf<Stuff::Vector4D>*
+	static std::vector<Stuff::Vector4D>*
 		clipExtraCoords; // , Max_Number_Vertices_Per_Mesh
 
-	static Stuff::DynamicArrayOf<int32_t>*
-		clipExtraLength; // , Max_Number_Primitives_Per_Frame
+	static std::vector<int32_t>* clipExtraLength; // , Max_Number_Primitives_Per_Frame
 };
-}
+} // namespace MidLevelRenderer
 #endif

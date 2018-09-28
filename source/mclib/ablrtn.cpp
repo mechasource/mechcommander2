@@ -219,21 +219,17 @@ void (*ABLEndlessStateCallback)(UserFile* log)	 = nullptr;
 
 TokenCodeType followHeaderList[] = {TKN_SEMICOLON, TKN_EOF, TKN_NONE};
 
-TokenCodeType followModuleIdList[] = {
-	TKN_LPAREN, TKN_COLON, TKN_SEMICOLON, TKN_EOF, TKN_NONE};
+TokenCodeType followModuleIdList[] = {TKN_LPAREN, TKN_COLON, TKN_SEMICOLON, TKN_EOF, TKN_NONE};
 
-TokenCodeType followFunctionIdList[] = {
-	TKN_LPAREN, TKN_COLON, TKN_SEMICOLON, TKN_EOF, TKN_NONE};
+TokenCodeType followFunctionIdList[] = {TKN_LPAREN, TKN_COLON, TKN_SEMICOLON, TKN_EOF, TKN_NONE};
 
 TokenCodeType followParamsList[] = {TKN_RPAREN, TKN_COMMA, TKN_EOF, TKN_NONE};
 
 TokenCodeType followParamList[] = {TKN_COMMA, TKN_RPAREN, TKN_NONE};
 
-TokenCodeType followModuleDeclsList[] = {
-	TKN_SEMICOLON, TKN_CODE, TKN_EOF, TKN_NONE};
+TokenCodeType followModuleDeclsList[] = {TKN_SEMICOLON, TKN_CODE, TKN_EOF, TKN_NONE};
 
-TokenCodeType followRoutineDeclsList[] = {
-	TKN_SEMICOLON, TKN_CODE, TKN_EOF, TKN_NONE};
+TokenCodeType followRoutineDeclsList[] = {TKN_SEMICOLON, TKN_CODE, TKN_EOF, TKN_NONE};
 
 TokenCodeType followDeclsList[] = {TKN_SEMICOLON, TKN_EOF, TKN_NONE};
 
@@ -261,8 +257,8 @@ uint32_t DefaultGetTimeCallback(void) { return (0); }
 
 //---------------------------------------------------------------------------
 
-void ABLi_setRandomCallbacks(void (*seedRandomCallback)(uint32_t seed),
-	int32_t (*randomCallback)(int32_t range))
+void ABLi_setRandomCallbacks(
+	void (*seedRandomCallback)(uint32_t seed), int32_t (*randomCallback)(int32_t range))
 {
 	ABLSeedRandomCallback = seedRandomCallback;
 	ABLRandomCallback	 = randomCallback;
@@ -291,30 +287,22 @@ void ABLi_setEndlessStateCallback(void (*endlessStateCallback)(UserFile* log))
 
 //---------------------------------------------------------------------------
 
-void ABLi_init(uint32_t runtimeStackSize, uint32_t maxCodeBufferSize,
-	uint32_t maxRegisteredModules, uint32_t maxStaticVariables,
-	PVOID (*systemMallocCallback)(uint32_t memSize),
-	PVOID (*stackMallocCallback)(uint32_t memSize),
-	PVOID (*codeMallocCallback)(uint32_t memSize),
-	PVOID (*symbolMallocCallback)(uint32_t memSize),
-	void (*systemFreeCallback)(PVOID memBlock),
-	void (*stackFreeCallback)(PVOID memBlock),
-	void (*codeFreeCallback)(PVOID memBlock),
-	void (*symbolFreeCallback)(PVOID memBlock),
-	int32_t (*fileCreateCB)(PVOID* file, PSTR fName),
-	int32_t (*fileOpenCB)(PVOID* file, PSTR fName),
-	int32_t (*fileCloseCB)(PVOID* file), bool (*fileEofCB)(PVOID file),
+void ABLi_init(uint32_t runtimeStackSize, uint32_t maxCodeBufferSize, uint32_t maxRegisteredModules,
+	uint32_t maxStaticVariables, PVOID (*systemMallocCallback)(uint32_t memSize),
+	PVOID (*stackMallocCallback)(uint32_t memSize), PVOID (*codeMallocCallback)(uint32_t memSize),
+	PVOID (*symbolMallocCallback)(uint32_t memSize), void (*systemFreeCallback)(PVOID memBlock),
+	void (*stackFreeCallback)(PVOID memBlock), void (*codeFreeCallback)(PVOID memBlock),
+	void (*symbolFreeCallback)(PVOID memBlock), int32_t (*fileCreateCB)(PVOID* file, PSTR fName),
+	int32_t (*fileOpenCB)(PVOID* file, PSTR fName), int32_t (*fileCloseCB)(PVOID* file),
+	bool (*fileEofCB)(PVOID file),
 	int32_t (*fileReadCB)(PVOID file, puint8_t buffer, int32_t length),
-	int32_t (*fileReadLongCB)(PVOID file),
-	int32_t (*fileReadStringCB)(PVOID file, puint8_t buffer),
+	int32_t (*fileReadLongCB)(PVOID file), int32_t (*fileReadStringCB)(PVOID file, puint8_t buffer),
 	int32_t (*fileReadLineExCB)(PVOID file, puint8_t buffer, int32_t maxLength),
 	int32_t (*fileWriteCB)(PVOID file, puint8_t buffer, int32_t length),
 	int32_t (*fileWriteByteCB)(PVOID file, uint8_t byte),
 	int32_t (*fileWriteLongCB)(PVOID file, int32_t value),
-	int32_t (*fileWriteStringCB)(PVOID file, PSTR buffer),
-	void (*debuggerPrintCallback)(PSTR s),
-	void (*fatalCallback)(int32_t code, PSTR s), bool debugInfo, bool debug,
-	bool profile)
+	int32_t (*fileWriteStringCB)(PVOID file, PSTR buffer), void (*debuggerPrintCallback)(PSTR s),
+	void (*fatalCallback)(int32_t code, PSTR s), bool debugInfo, bool debug, bool profile)
 {
 // HACK, for testing...
 #ifdef _DEBUG
@@ -439,8 +427,7 @@ void ABLi_init(uint32_t runtimeStackSize, uint32_t maxCodeBufferSize,
 	MaxCodeBufferSize = maxCodeBufferSize;
 	codeBuffer		  = (PSTR)ABLCodeMallocCallback(maxCodeBufferSize);
 	if (!codeBuffer)
-		ABL_Fatal(
-			0, " ABL: Unable to AblCodeHeap->malloc preprocess code buffer ");
+		ABL_Fatal(0, " ABL: Unable to AblCodeHeap->malloc preprocess code buffer ");
 	//----------------------------------------------------------------------
 	// Alloc the static variable data block. Ultimately, we may want to just
 	// implement the static data construction with a linked list, rather
@@ -453,11 +440,10 @@ void ABLi_init(uint32_t runtimeStackSize, uint32_t maxCodeBufferSize,
 	StaticVariablesSizes = nullptr;
 	if (MaxStaticVariables > 0)
 	{
-		StaticVariablesSizes = (int32_t*)ABLStackMallocCallback(
-			sizeof(int32_t) * MaxStaticVariables);
+		StaticVariablesSizes =
+			(int32_t*)ABLStackMallocCallback(sizeof(int32_t) * MaxStaticVariables);
 		if (!StaticVariablesSizes)
-			ABL_Fatal(0,
-				" ABL: Unable to AblStackHeap->malloc StaticVariablesSizes ");
+			ABL_Fatal(0, " ABL: Unable to AblStackHeap->malloc StaticVariablesSizes ");
 	}
 	//------------------------------
 	// Allocate the runtime stack...
@@ -469,11 +455,10 @@ void ABLi_init(uint32_t runtimeStackSize, uint32_t maxCodeBufferSize,
 	// Allocate Eternal Vars Size List...
 	if (MaxEternalVariables > 0)
 	{
-		EternalVariablesSizes = (int32_t*)ABLStackMallocCallback(
-			sizeof(int32_t) * MaxEternalVariables);
+		EternalVariablesSizes =
+			(int32_t*)ABLStackMallocCallback(sizeof(int32_t) * MaxEternalVariables);
 		if (!EternalVariablesSizes)
-			ABL_Fatal(0,
-				" ABL: Unable to AblStackHeap->malloc EternalVariablesSizes ");
+			ABL_Fatal(0, " ABL: Unable to AblStackHeap->malloc EternalVariablesSizes ");
 	}
 	//-------------------------
 	// Prep the symbol table...
@@ -516,8 +501,8 @@ void ABLi_init(uint32_t runtimeStackSize, uint32_t maxCodeBufferSize,
 
 //***************************************************************************
 
-int32_t ABLi_preProcess(PSTR sourceFileName, int32_t* numErrors,
-	int32_t* numLinesProcessed, int32_t* numFilesProcessed, bool printLines)
+int32_t ABLi_preProcess(PSTR sourceFileName, int32_t* numErrors, int32_t* numLinesProcessed,
+	int32_t* numFilesProcessed, bool printLines)
 {
 	//--------------------------------------------------------------------------------
 	// First, check if this module has already been registered into the
@@ -614,8 +599,7 @@ int32_t ABLi_preProcess(PSTR sourceFileName, int32_t* numErrors,
 			} while (tokenIn(statementStartList));
 	}
 	if (CurLibrary)
-		ifTokenGetElseError(
-			TKN_END_LIBRARY, ABL_ERR_SYNTAX_MISSING_END_LIBRARY);
+		ifTokenGetElseError(TKN_END_LIBRARY, ABL_ERR_SYNTAX_MISSING_END_LIBRARY);
 	else if (moduleIdPtr->defn.info.routine.flags & ROUTINE_FLAG_FSM)
 		ifTokenGetElseError(TKN_END_FSM, ABL_ERR_SYNTAX_MISSING_END_FSM);
 	else
@@ -641,8 +625,7 @@ int32_t ABLi_preProcess(PSTR sourceFileName, int32_t* numErrors,
 		(PSTR)ABLStackMallocCallback(strlen(sourceFileName) + 1);
 	if (!ModuleRegistry[NumModulesRegistered].fileName)
 		ABL_Fatal(0, " ABL: Unable to AblStackHeap->malloc module filename ");
-	strcpy(
-		ModuleRegistry[NumModulesRegistered].fileName, strlwr(sourceFileName));
+	strcpy(ModuleRegistry[NumModulesRegistered].fileName, strlwr(sourceFileName));
 	ModuleRegistry[NumModulesRegistered].moduleIdPtr	= moduleIdPtr;
 	ModuleRegistry[NumModulesRegistered].numSourceFiles = NumSourceFiles;
 	ModuleRegistry[NumModulesRegistered].sourceFiles =
@@ -653,39 +636,32 @@ int32_t ABLi_preProcess(PSTR sourceFileName, int32_t* numErrors,
 	{
 		ModuleRegistry[NumModulesRegistered].sourceFiles[i] =
 			(PSTR)ABLStackMallocCallback(strlen(SourceFiles[i]) + 1);
-		strcpy(ModuleRegistry[NumModulesRegistered].sourceFiles[i],
-			SourceFiles[i]);
+		strcpy(ModuleRegistry[NumModulesRegistered].sourceFiles[i], SourceFiles[i]);
 	}
 	if (NumLibrariesUsed > 0)
 	{
-		ModuleRegistry[NumModulesRegistered].numLibrariesUsed =
-			NumLibrariesUsed;
+		ModuleRegistry[NumModulesRegistered].numLibrariesUsed = NumLibrariesUsed;
 		ModuleRegistry[NumModulesRegistered].librariesUsed =
-			(ABLModulePtr*)ABLStackMallocCallback(
-				NumLibrariesUsed * sizeof(SymTableNodePtr));
+			(ABLModulePtr*)ABLStackMallocCallback(NumLibrariesUsed * sizeof(SymTableNodePtr));
 		if (!ModuleRegistry[NumModulesRegistered].librariesUsed)
 			ABL_Fatal(0, " ABL: Unable to AblStackHeap->malloc librariesUsed ");
 		for (i = 0; i < NumLibrariesUsed; i++)
-			ModuleRegistry[NumModulesRegistered].librariesUsed[i] =
-				LibrariesUsed[i];
+			ModuleRegistry[NumModulesRegistered].librariesUsed[i] = LibrariesUsed[i];
 	}
-	ModuleRegistry[NumModulesRegistered].numStaticVars  = NumStaticVariables;
-	ModuleRegistry[NumModulesRegistered].sizeStaticVars = nullptr;
+	ModuleRegistry[NumModulesRegistered].numStaticVars		 = NumStaticVariables;
+	ModuleRegistry[NumModulesRegistered].sizeStaticVars		 = nullptr;
 	ModuleRegistry[NumModulesRegistered].totalSizeStaticVars = 0;
 	if (NumStaticVariables)
 	{
 		ModuleRegistry[NumModulesRegistered].sizeStaticVars =
-			(int32_t*)ABLStackMallocCallback(
-				sizeof(int32_t) * NumStaticVariables);
+			(int32_t*)ABLStackMallocCallback(sizeof(int32_t) * NumStaticVariables);
 		if (!ModuleRegistry[NumModulesRegistered].sizeStaticVars)
-			ABL_Fatal(0,
-				" ABL: Unable to AblStackHeap->malloc module sizeStaticVars ");
-		memcpy(ModuleRegistry[NumModulesRegistered].sizeStaticVars,
-			StaticVariablesSizes, sizeof(int32_t) * NumStaticVariables);
+			ABL_Fatal(0, " ABL: Unable to AblStackHeap->malloc module sizeStaticVars ");
+		memcpy(ModuleRegistry[NumModulesRegistered].sizeStaticVars, StaticVariablesSizes,
+			sizeof(int32_t) * NumStaticVariables);
 		ModuleRegistry[NumModulesRegistered].totalSizeStaticVars =
 			sizeof(int32_t) * NumStaticVariables;
-		for (size_t i = 0;
-			 i < ModuleRegistry[NumModulesRegistered].numStaticVars; i++)
+		for (size_t i = 0; i < ModuleRegistry[NumModulesRegistered].numStaticVars; i++)
 			ModuleRegistry[NumModulesRegistered].totalSizeStaticVars +=
 				ModuleRegistry[NumModulesRegistered].sizeStaticVars[i];
 	}
@@ -695,10 +671,9 @@ int32_t ABLi_preProcess(PSTR sourceFileName, int32_t* numErrors,
 	if (NumStateHandles > 1)
 	{
 		ModuleRegistry[NumModulesRegistered].stateHandles =
-			(StateHandleInfoPtr)ABLStackMallocCallback(
-				sizeof(StateHandleInfo) * NumStateHandles);
-		memcpy(ModuleRegistry[NumModulesRegistered].stateHandles,
-			StateHandleList, sizeof(StateHandleInfo) * NumStateHandles);
+			(StateHandleInfoPtr)ABLStackMallocCallback(sizeof(StateHandleInfo) * NumStateHandles);
+		memcpy(ModuleRegistry[NumModulesRegistered].stateHandles, StateHandleList,
+			sizeof(StateHandleInfo) * NumStateHandles);
 	}
 	NumModulesRegistered++;
 	//---------------------------------------------------------------
@@ -714,9 +689,8 @@ int32_t ABLi_preProcess(PSTR sourceFileName, int32_t* numErrors,
 
 //***************************************************************************
 
-int32_t ABLi_execute(SymTableNodePtr moduleIdPtr,
-	SymTableNodePtr /* functionIdPtr */, ABLParamPtr paramList,
-	StackItemPtr returnVal)
+int32_t ABLi_execute(SymTableNodePtr moduleIdPtr, SymTableNodePtr /* functionIdPtr */,
+	ABLParamPtr paramList, StackItemPtr returnVal)
 {
 	// insertSymTable(&SymTableDisplay[0], moduleIdPtr);
 	//--------------------------
@@ -771,8 +745,7 @@ int32_t ABLi_execute(SymTableNodePtr moduleIdPtr,
 		// NOTE: Currently, parameter passing of arrays is not functioning. This
 		// MUST be done...
 		int32_t curParam = 0;
-		for (SymTableNodePtr formalIdPtr =
-				 (SymTableNodePtr)(moduleIdPtr->defn.info.routine.params);
+		for (SymTableNodePtr formalIdPtr = (SymTableNodePtr)(moduleIdPtr->defn.info.routine.params);
 			 formalIdPtr != nullptr; formalIdPtr = formalIdPtr->next)
 		{
 			TypePtr formalTypePtr = (TypePtr)(formalIdPtr->typePtr);
@@ -798,8 +771,7 @@ int32_t ABLi_execute(SymTableNodePtr moduleIdPtr,
 				}
 				//----------------------------------------------------------
 				// Formal parameter is an array or record, so make a copy...
-				if ((formalTypePtr->form ==
-						FRM_ARRAY) /* || (formalTypePtr->form == FRM_RECORD)*/)
+				if ((formalTypePtr->form == FRM_ARRAY) /* || (formalTypePtr->form == FRM_RECORD)*/)
 				{
 					//------------------------------------------------------------------------------
 					// The following is a little inefficient, but is kept this
@@ -808,8 +780,9 @@ int32_t ABLi_execute(SymTableNodePtr moduleIdPtr,
 					int32_t size = formalTypePtr->size;
 					PSTR dest	= (PSTR)ABLStackMallocCallback((size_t)size);
 					if (!dest)
-						ABL_Fatal(0, " ABL: Unable to AblStackHeap->malloc "
-									 "module formal array param ");
+						ABL_Fatal(0,
+							" ABL: Unable to AblStackHeap->malloc "
+							"module formal array param ");
 					PSTR src	 = tos->address;
 					PSTR savePtr = dest;
 					memcpy(dest, src, size);
@@ -843,10 +816,7 @@ int32_t ABLi_execute(SymTableNodePtr moduleIdPtr,
 
 //***************************************************************************
 
-int32_t ABLi_deleteModule(SymTableNodePtr /* moduleIdPtr */)
-{
-	return (ABL_NO_ERR);
-}
+int32_t ABLi_deleteModule(SymTableNodePtr /* moduleIdPtr */) { return (ABL_NO_ERR); }
 
 //***************************************************************************
 
@@ -888,9 +858,8 @@ void ABLi_close(void)
 
 //***************************************************************************
 
-ABLModulePtr ABLi_loadLibrary(PSTR sourceFileName, int32_t* numErrors,
-	int32_t* numLinesProcessed, int32_t* numFilesProcessed, bool printLines,
-	bool createInstance)
+ABLModulePtr ABLi_loadLibrary(PSTR sourceFileName, int32_t* numErrors, int32_t* numLinesProcessed,
+	int32_t* numFilesProcessed, bool printLines, bool createInstance)
 {
 	//--------------------------------------------------------------------
 	// Create an instance of it so it may be used from other modules. Note
@@ -903,8 +872,8 @@ ABLModulePtr ABLi_loadLibrary(PSTR sourceFileName, int32_t* numErrors,
 	//-------------------------------------------------------------
 	// Preprocess the library. Note that a library should be loaded
 	// just once.
-	int32_t libraryHandle = ABLi_preProcess(sourceFileName, numErrors,
-		numLinesProcessed, numFilesProcessed, printLines);
+	int32_t libraryHandle = ABLi_preProcess(
+		sourceFileName, numErrors, numLinesProcessed, numFilesProcessed, printLines);
 	if (libraryHandle < (NumModulesRegistered - 1))
 	{
 		//------------------
@@ -934,8 +903,8 @@ ABLParamPtr ABLi_createParamList(int32_t numParameters)
 {
 	if (numParameters)
 	{
-		ABLParamPtr paramList = (ABLParamPtr)ABLStackMallocCallback(
-			sizeof(ABLParam) * (numParameters + 1));
+		ABLParamPtr paramList =
+			(ABLParamPtr)ABLStackMallocCallback(sizeof(ABLParam) * (numParameters + 1));
 		if (!paramList)
 			ABL_Fatal(0, " ABL: Unable to AblStackHeap->malloc paramList ");
 		memset(paramList, 0, sizeof(ABLParam) * (numParameters + 1));
@@ -989,11 +958,10 @@ bool ABLi_enabled(void) { return (ABLenabled); }
 
 //***************************************************************************
 
-void ABLi_addFunction(PSTR name, bool isOrder, PSTR paramList, PSTR returnType,
-	void (*codeCallback)(void))
+void ABLi_addFunction(
+	PSTR name, bool isOrder, PSTR paramList, PSTR returnType, void (*codeCallback)(void))
 {
-	enterStandardRoutine(
-		name, -1, isOrder, paramList, returnType, codeCallback);
+	enterStandardRoutine(name, -1, isOrder, paramList, returnType, codeCallback);
 }
 
 //***************************************************************************
@@ -1060,9 +1028,7 @@ void ABLi_transState(int32_t newStateHandle)
 {
 	if (CurFSM && (newStateHandle > 0) &&
 		(newStateHandle < ModuleRegistry[CurFSM->getHandle()].numStateHandles))
-		transState(ModuleRegistry[CurFSM->getHandle()]
-					   .stateHandles[newStateHandle]
-					   .state);
+		transState(ModuleRegistry[CurFSM->getHandle()].stateHandles[newStateHandle].state);
 }
 
 //***************************************************************************
@@ -1088,9 +1054,9 @@ SymTableNodePtr moduleHeader(void)
 	if (curToken == TKN_IDENTIFIER)
 	{
 		searchAndEnterLocalSymTable(moduleIdPtr);
-		moduleIdPtr->defn.key				 = DFN_MODULE;
-		moduleIdPtr->defn.info.routine.key   = RTN_DECLARED;
-		moduleIdPtr->defn.info.routine.flags = (isFSM ? ROUTINE_FLAG_FSM : 0);
+		moduleIdPtr->defn.key						  = DFN_MODULE;
+		moduleIdPtr->defn.info.routine.key			  = RTN_DECLARED;
+		moduleIdPtr->defn.info.routine.flags		  = (isFSM ? ROUTINE_FLAG_FSM : 0);
 		moduleIdPtr->defn.info.routine.orderCallIndex = 0;
 		moduleIdPtr->defn.info.routine.numOrderCalls  = 0;
 		moduleIdPtr->defn.info.routine.paramCount	 = 0;
@@ -1115,8 +1081,7 @@ SymTableNodePtr moduleHeader(void)
 	{
 		int32_t paramCount;
 		int32_t totalParamSize;
-		SymTableNodePtr paramListPtr =
-			formalParamList(&paramCount, &totalParamSize);
+		SymTableNodePtr paramListPtr = formalParamList(&paramCount, &totalParamSize);
 		// if (forwardFlag)
 		//	syntaxError(ABL_ERR_SYNTAX_ALREADY_FORWARDED);
 		// else {
@@ -1189,10 +1154,9 @@ void routine(void)
 		if (curToken != TKN_CODE)
 			syntaxError(ABL_ERR_SYNTAX_MISSING_CODE);
 		crunchToken();
-		blockType = BLOCK_ROUTINE;
-		blockFlag = true;
-		routineIdPtr->defn.info.routine.orderCallIndex =
-			(uint16_t)NumOrderCalls;
+		blockType									   = BLOCK_ROUTINE;
+		blockFlag									   = true;
+		routineIdPtr->defn.info.routine.orderCallIndex = (uint16_t)NumOrderCalls;
 		// compoundStatement();
 		getToken();
 		TokenCodeType endToken = TKN_END_FUNCTION;
@@ -1215,8 +1179,7 @@ void routine(void)
 		ifTokenGetElseError(endToken, ABL_ERR_SYNTAX_MISSING_END_FUNCTION);
 		blockFlag = false;
 		routineIdPtr->defn.info.routine.numOrderCalls =
-			(uint16_t)NumOrderCalls -
-			routineIdPtr->defn.info.routine.orderCallIndex;
+			(uint16_t)NumOrderCalls - routineIdPtr->defn.info.routine.orderCallIndex;
 		routineIdPtr->defn.info.routine.codeSegment =
 			createCodeSegment(routineIdPtr->defn.info.routine.codeSegmentSize);
 		analyzeBlock(routineIdPtr->defn.info.routine.codeSegment);
@@ -1245,12 +1208,11 @@ void routine(void)
 
 SymTableNodePtr forwardState(PSTR stateName)
 {
-	SymTableNodePtr stateSymbol =
-		searchSymTableForState(stateName, SymTableDisplay[1]);
+	SymTableNodePtr stateSymbol = searchSymTableForState(stateName, SymTableDisplay[1]);
 	if (stateSymbol)
 		ABL_Fatal(0, " ABL.forwardState: State symbol should not exist ");
-	stateSymbol			  = enterSymTable(stateName, &SymTableDisplay[1]);
-	stateSymbol->defn.key = DFN_FUNCTION;
+	stateSymbol									  = enterSymTable(stateName, &SymTableDisplay[1]);
+	stateSymbol->defn.key						  = DFN_FUNCTION;
 	stateSymbol->defn.info.routine.key			  = RTN_FORWARD;
 	stateSymbol->defn.info.routine.paramCount	 = 0;
 	stateSymbol->defn.info.routine.flags		  = ROUTINE_FLAG_STATE;
@@ -1287,8 +1249,7 @@ SymTableNodePtr functionHeader(void)
 	bool forwardFlag			  = false;
 	if (curToken == TKN_IDENTIFIER)
 	{
-		functionIdPtr =
-			searchSymTableForFunction(wordString, SymTableDisplay[level]);
+		functionIdPtr = searchSymTableForFunction(wordString, SymTableDisplay[level]);
 		if (!functionIdPtr)
 		{
 			enterLocalSymTable(functionIdPtr);
@@ -1313,7 +1274,7 @@ SymTableNodePtr functionHeader(void)
 			functionIdPtr->labelIndex = 0;
 		}
 		else if ((functionIdPtr->defn.key == DFN_FUNCTION) &&
-				 (functionIdPtr->defn.info.routine.key == RTN_FORWARD))
+			(functionIdPtr->defn.info.routine.key == RTN_FORWARD))
 			forwardFlag = true;
 		else
 			syntaxError(ABL_ERR_SYNTAX_REDEFINED_IDENTIFIER);
@@ -1327,16 +1288,14 @@ SymTableNodePtr functionHeader(void)
 	{
 		int32_t paramCount;
 		int32_t totalParamSize;
-		SymTableNodePtr paramListPtr =
-			formalParamList(&paramCount, &totalParamSize);
+		SymTableNodePtr paramListPtr = formalParamList(&paramCount, &totalParamSize);
 		if (forwardFlag)
 			syntaxError(ABL_ERR_SYNTAX_ALREADY_FORWARDED);
 		else
 		{
-			functionIdPtr->defn.info.routine.paramCount = (uint8_t)paramCount;
-			functionIdPtr->defn.info.routine.totalParamSize =
-				(uint8_t)totalParamSize;
-			functionIdPtr->defn.info.routine.params = paramListPtr;
+			functionIdPtr->defn.info.routine.paramCount		= (uint8_t)paramCount;
+			functionIdPtr->defn.info.routine.totalParamSize = (uint8_t)totalParamSize;
+			functionIdPtr->defn.info.routine.params			= paramListPtr;
 		}
 	}
 	else if (!forwardFlag)
@@ -1491,12 +1450,11 @@ TypePtr routineCall(SymTableNodePtr routineIdPtr, int32_t paramCheckFlag)
 
 //***************************************************************************
 
-TypePtr declaredRoutineCall(
-	SymTableNodePtr routineIdPtr, int32_t paramCheckFlag)
+TypePtr declaredRoutineCall(SymTableNodePtr routineIdPtr, int32_t paramCheckFlag)
 {
 	actualParamList(routineIdPtr, paramCheckFlag);
-	return (/*routineIdPtr->defn.key == DFN_PROCEDURE ? nullptr :*/ (TypePtr)(
-		routineIdPtr->typePtr));
+	return (
+		/*routineIdPtr->defn.key == DFN_PROCEDURE ? nullptr :*/ (TypePtr)(routineIdPtr->typePtr));
 }
 
 //***************************************************************************
@@ -1508,8 +1466,7 @@ void actualParamList(SymTableNodePtr routineIdPtr, int32_t paramCheckFlag)
 	TypePtr formalParamTypePtr		 = nullptr;
 	TypePtr actualParamTypePtr		 = nullptr;
 	if (paramCheckFlag)
-		formalParamIdPtr =
-			(SymTableNodePtr)(routineIdPtr->defn.info.routine.params);
+		formalParamIdPtr = (SymTableNodePtr)(routineIdPtr->defn.info.routine.params);
 	if (curToken == TKN_LPAREN)
 	{
 		//-----------------------------------------------
@@ -1524,15 +1481,14 @@ void actualParamList(SymTableNodePtr routineIdPtr, int32_t paramCheckFlag)
 				formalParamTypePtr = (TypePtr)(formalParamIdPtr->typePtr);
 			}
 			getToken();
-			if ((formalParamIdPtr == nullptr) ||
-				(formalParamDefn == DFN_VALPARAM) || !paramCheckFlag)
+			if ((formalParamIdPtr == nullptr) || (formalParamDefn == DFN_VALPARAM) ||
+				!paramCheckFlag)
 			{
 				//--------------
 				// VAL Params...
 				actualParamTypePtr = expression();
 				if (paramCheckFlag && (formalParamIdPtr != nullptr) &&
-					!isAssignTypeCompatible(
-						formalParamTypePtr, actualParamTypePtr))
+					!isAssignTypeCompatible(formalParamTypePtr, actualParamTypePtr))
 					syntaxError(ABL_ERR_SYNTAX_INCOMPATIBLE_TYPES);
 			}
 			else
@@ -1587,8 +1543,8 @@ void transState(SymTableNodePtr newState)
 	{
 		CurFSM->setPrevState(CurFSM->getState());
 		CurFSM->setState(newState);
-		sprintf(SetStateDebugStr, "%s:%s, line %d", CurModule->getFileName(),
-			newState->name, execLineNumber);
+		sprintf(SetStateDebugStr, "%s:%s, line %d", CurModule->getFileName(), newState->name,
+			execLineNumber);
 		NewStateSet = true;
 	}
 }

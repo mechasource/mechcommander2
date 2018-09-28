@@ -51,7 +51,7 @@ Vector4D& Vector4D::Multiply(const Vector4D& v, const AffineMatrix4D& m)
 	// Check_Pointer(this);
 	Check_Object(&v);
 	Check_Object(&m);
-	Verify(this != &v);
+	_ASSERT(this != &v);
 	x = v.x * m(0, 0) + v.y * m(1, 0) + v.z * m(2, 0) + v.w * m(3, 0);
 	y = v.x * m(0, 1) + v.y * m(1, 1) + v.z * m(2, 1) + v.w * m(3, 1);
 	z = v.x * m(0, 2) + v.y * m(1, 2) + v.z * m(2, 2) + v.w * m(3, 2);
@@ -68,7 +68,7 @@ Vector4D& Vector4D::Multiply(const Vector4D& v, const Matrix4D& m)
 	// Check_Pointer(this);
 	Check_Object(&v);
 	Check_Object(&m);
-	Verify(this != &v);
+	_ASSERT(this != &v);
 	x = v.x * m(0, 0) + v.y * m(1, 0) + v.z * m(2, 0) + v.w * m(3, 0);
 	y = v.x * m(0, 1) + v.y * m(1, 1) + v.z * m(2, 1) + v.w * m(3, 1);
 	z = v.x * m(0, 2) + v.y * m(1, 2) + v.z * m(2, 2) + v.w * m(3, 2);
@@ -126,13 +126,12 @@ void Spew(PCSTR group, const Vector4D& vector)
 }
 #endif
 
-Vector4D& Vector4D::MultiplySetClip(
-	const Point3D& v, const Matrix4D& m, puint32_t clipper)
+Vector4D& Vector4D::MultiplySetClip(const Point3D& v, const Matrix4D& m, puint32_t clipper)
 {
 	// Check_Pointer(this);
 	Check_Object(&v);
 	Check_Object(&m);
-#if USE_ASSEMBLER_CODE
+#if USE_INLINE_ASSEMBLER_CODE
 	float* f = &x;
 	_asm
 	{

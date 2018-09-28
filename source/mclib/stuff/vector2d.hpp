@@ -19,7 +19,7 @@ namespace Stuff
 
 template <class T> class Vector2DOf
 {
-  public:
+public:
 	// static const Vector2DOf<T>
 	// Identity;
 
@@ -35,29 +35,22 @@ template <class T> class Vector2DOf
 	}
 
 	friend bool Small_Enough(const Vector2DOf<T>& v, float e);
-	bool operator!(void)const { return Small_Enough(*this, SMALL); }
+	bool operator!(void) const { return Small_Enough(*this, SMALL); }
 
-	friend bool Close_Enough(
-		const Vector2DOf<T>& v1, const Vector2DOf<T>& v2, float e);
-	bool operator==(const Vector2DOf<T>& v) const
-	{
-		return Close_Enough(*this, v, SMALL);
-	}
-	bool operator!=(const Vector2DOf<T>& v) const
-	{
-		return !Close_Enough(*this, v, SMALL);
-	}
+	friend bool Close_Enough(const Vector2DOf<T>& v1, const Vector2DOf<T>& v2, float e);
+	bool operator==(const Vector2DOf<T>& v) const { return Close_Enough(*this, v, SMALL); }
+	bool operator!=(const Vector2DOf<T>& v) const { return !Close_Enough(*this, v, SMALL); }
 
 	const T& operator[](size_t index) const
 	{
 		// Check_Object(this);
-		Verify(static_cast<uint32_t>(index) <= Y_Axis);
+		_ASSERT(static_cast<uint32_t>(index) <= Y_Axis);
 		return (&x)[index];
 	}
 	T& operator[](size_t index)
 	{
 		// Check_Object(this);
-		Verify(static_cast<uint32_t>(index) <= Y_Axis);
+		_ASSERT(static_cast<uint32_t>(index) <= Y_Axis);
 		return (&x)[index];
 	}
 
@@ -97,10 +90,7 @@ template <class T> class Vector2DOf
 		return *this;
 	}
 
-	Vector2DOf<T>& operator-=(const Vector2DOf<T>& v)
-	{
-		return Subtract(*this, v);
-	}
+	Vector2DOf<T>& operator-=(const Vector2DOf<T>& v) { return Subtract(*this, v); }
 
 	T operator*(const Vector2DOf<T>& v) const
 	{
@@ -129,15 +119,12 @@ template <class T> class Vector2DOf
 		return *this;
 	}
 
-	Vector2DOf<T>& operator*=(const Vector2DOf<T>& v)
-	{
-		return Multiply(*this, v);
-	}
+	Vector2DOf<T>& operator*=(const Vector2DOf<T>& v) { return Multiply(*this, v); }
 	Vector2DOf<T>& Divide(const Vector2DOf<T>& v, T scale)
 	{
 		// Check_Object(this);
 		Check_Object(&v);
-		Verify(!Small_Enough(static_cast<float>(scale)));
+		_ASSERT(!Small_Enough(static_cast<float>(scale)));
 		x = v.x / scale;
 		y = v.y / scale;
 		return *this;
@@ -149,17 +136,14 @@ template <class T> class Vector2DOf
 		// Check_Object(this);
 		Check_Object(&v1);
 		Check_Object(&v2);
-		Verify(!Small_Enough(static_cast<float>(v2.x)));
-		Verify(!Small_Enough(static_cast<float>(v2.y)));
+		_ASSERT(!Small_Enough(static_cast<float>(v2.x)));
+		_ASSERT(!Small_Enough(static_cast<float>(v2.y)));
 		x = v1.x / v2.x;
 		y = v1.y / v2.y;
 		return *this;
 	}
 
-	Vector2DOf<T>& operator/=(const Vector2DOf<T>& v)
-	{
-		return Divide(*this, v);
-	}
+	Vector2DOf<T>& operator/=(const Vector2DOf<T>& v) { return Divide(*this, v); }
 	T GetLengthSquared(void) const
 	{
 		// Check_Object(this);
@@ -182,14 +166,13 @@ template <class T> class Vector2DOf
 		// Check_Pointer(this);
 		Check_Object(&v);
 		float len = v.GetLength(void);
-		Verify(!Small_Enough(len));
+		_ASSERT(!Small_Enough(len));
 		x = v.x / len;
 		y = v.y / len;
 		return *this;
 	}
 
-	Vector2DOf<T>& Combine(
-		const Vector2DOf<T>& v1, float t1, const Vector2DOf<T>& v2, float t2)
+	Vector2DOf<T>& Combine(const Vector2DOf<T>& v1, float t1, const Vector2DOf<T>& v2, float t2)
 	{
 		// Check_Object(this);
 		Check_Object(&v1);
@@ -201,8 +184,7 @@ template <class T> class Vector2DOf
 
 	void Zero(void) { x = y = 0; }
 
-	Vector2DOf<T>& Lerp(
-		const Vector2DOf<T>& v1, const Vector2DOf<T>& v2, float t)
+	Vector2DOf<T>& Lerp(const Vector2DOf<T>& v1, const Vector2DOf<T>& v2, float t)
 	{
 		// Check_Object(this);
 		Check_Object(&v1);
@@ -224,22 +206,19 @@ template <class T> class Vector2DOf
 template <class T> bool Small_Enough(const Vector2DOf<T>& v, float e)
 {
 	Check_Object(&v);
-	return Small_Enough(static_cast<float>(v.x), e) &&
-		   Small_Enough(static_cast<float>(v.y), e);
+	return Small_Enough(static_cast<float>(v.x), e) && Small_Enough(static_cast<float>(v.y), e);
 }
 
-template <class T>
-bool Close_Enough(const Vector2DOf<T>& v1, const Vector2DOf<T>& v2, float e)
+template <class T> bool Close_Enough(const Vector2DOf<T>& v1, const Vector2DOf<T>& v2, float e)
 {
 	Check_Object(&v1);
 	Check_Object(&v2);
-	return Close_Enough(
-			   static_cast<float>(v1.x), static_cast<float>(v2.x), e) &&
-		   Close_Enough(static_cast<float>(v1.y), static_cast<float>(v2.y), e);
+	return Close_Enough(static_cast<float>(v1.x), static_cast<float>(v2.x), e) &&
+		Close_Enough(static_cast<float>(v1.y), static_cast<float>(v2.y), e);
 }
 
 typedef Vector2DOf<float> Vector2DScalar;
-}
+} // namespace Stuff
 
 #if !defined(Spew)
 template <class T> void Spew(PCSTR group, const Stuff::Vector2DOf<T>& vector)

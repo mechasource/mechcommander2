@@ -23,8 +23,8 @@ Random* Random::Instance = nullptr;
 //
 void Random::InitializeClass()
 {
-	Verify(!Random::Instance);
-	Verify(Index == -1);
+	_ASSERT(!Random::Instance);
+	_ASSERT(Index == -1);
 	Random::Instance = new Random;
 	Register_Pointer(Random::Instance);
 }
@@ -69,7 +69,7 @@ void Random::Init()
 	i = 14;
 	while (rand_size--)
 	{
-		Verify(i < ELEMENTS(Numbers));
+		_ASSERT(i < ELEMENTS(Numbers));
 		Numbers[i] &= mask;
 		Numbers[i] |= msb;
 		mask >>= 1;

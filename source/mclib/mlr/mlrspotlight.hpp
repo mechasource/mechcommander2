@@ -18,16 +18,16 @@ namespace MidLevelRenderer
 
 class MLRSpotLight : public MLRInfiniteLightWithFalloff
 {
-  public:
+public:
 	static void __stdcall InitializeClass(void);
 	static void __stdcall TerminateClass(void);
 
 	MLRSpotLight(void);
-	MLRSpotLight(Stuff::MemoryStream* stream, uint32_t version);
+	MLRSpotLight(std::iostream stream, uint32_t version);
 	MLRSpotLight(Stuff::Page* page);
 	~MLRSpotLight(void);
 
-	void Save(Stuff::MemoryStream* stream);
+	void Save(std::iostream stream);
 	void Write(Stuff::Page* page);
 
 	virtual LightType GetLightType()
@@ -69,20 +69,20 @@ class MLRSpotLight : public MLRInfiniteLightWithFalloff
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Class Data Support
 	//
-  public:
+public:
 	static ClassData* DefaultData;
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Testing
 	//
-  public:
+public:
 	void TestInstance(void);
 
-  protected:
+protected:
 	MLRLightMap* lightMap;
 
 	Stuff::Radian spreadAngle;
 	float tanSpreadAngle, cosSpreadAngle;
 };
-}
+} // namespace MidLevelRenderer
 #endif

@@ -9,13 +9,13 @@
 //------------------------------------------------------------------------------
 //
 gosFX::CardCloud__Specification::CardCloud__Specification(
-	Stuff::MemoryStream* stream, uint32_t gfx_version)
+	std::iostream stream, uint32_t gfx_version)
 	: SpinningCloud__Specification(gosFX::CardCloudClassID, stream, gfx_version)
 {
 	// Check_Pointer(this);
 	Check_Object(stream);
-	Verify(m_class == CardCloudClassID);
-	// Verify(gos_GetCurrentHeap() == Heap);
+	_ASSERT(m_class == CardCloudClassID);
+	// _ASSERT(gos_GetCurrentHeap() == Heap);
 	m_halfHeight.Load(stream, gfx_version);
 	m_aspectRatio.Load(stream, gfx_version);
 	//
@@ -29,8 +29,7 @@ gosFX::CardCloud__Specification::CardCloud__Specification(
 		m_pIndex.m_ageCurve.SetCurve(0.0f);
 		m_pIndex.m_seedCurve.SetCurve(1.0f);
 		m_pIndex.m_seeded = false;
-		SeededCurveOf<ComplexCurve, LinearCurve, Curve::e_ComplexLinearType>
-			temp;
+		SeededCurveOf<ComplexCurve, LinearCurve, Curve::e_ComplexLinearType> temp;
 		temp.Load(stream, gfx_version);
 		float v = temp.ComputeValue(0.0f, 0.0f);
 		m_UOffset.SetCurve(v);
@@ -66,7 +65,7 @@ gosFX::CardCloud__Specification::CardCloud__Specification()
 	: SpinningCloud__Specification(gosFX::CardCloudClassID)
 {
 	// Check_Pointer(this);
-	// Verify(gos_GetCurrentHeap() == Heap);
+	// _ASSERT(gos_GetCurrentHeap() == Heap);
 	m_animated			= false;
 	m_width				= 1;
 	m_totalParticleSize = gosFX::CardCloud::ParticleSize;
@@ -76,21 +75,20 @@ gosFX::CardCloud__Specification::CardCloud__Specification()
 //------------------------------------------------------------------------------
 //
 gosFX::CardCloud__Specification* gosFX::CardCloud__Specification::Make(
-	Stuff::MemoryStream* stream, uint32_t gfx_version)
+	std::iostream stream, uint32_t gfx_version)
 {
 	Check_Object(stream);
 #ifdef _GAMEOS_HPP_
 	// gos_PushCurrentHeap(Heap);
 #endif
-	CardCloud__Specification* spec =
-		new gosFX::CardCloud__Specification(stream, gfx_version);
+	CardCloud__Specification* spec = new gosFX::CardCloud__Specification(stream, gfx_version);
 	// gos_PopCurrentHeap();
 	return spec;
 }
 
 //------------------------------------------------------------------------------
 //
-void gosFX::CardCloud__Specification::Save(Stuff::MemoryStream* stream)
+void gosFX::CardCloud__Specification::Save(std::iostream stream)
 {
 	// Check_Object(this);
 	Check_Object(stream);
@@ -228,11 +226,10 @@ gosFX::CardCloud::ClassData* gosFX::CardCloud::DefaultData = nullptr;
 //
 void gosFX::CardCloud::InitializeClass()
 {
-	Verify(!DefaultData);
-	// Verify(gos_GetCurrentHeap() == Heap);
-	DefaultData = new ClassData(CardCloudClassID, "gosFX::CardCloud",
-		SpinningCloud::DefaultData, (Effect::Factory)&Make,
-		(Specification::Factory)&Specification::Make);
+	_ASSERT(!DefaultData);
+	// _ASSERT(gos_GetCurrentHeap() == Heap);
+	DefaultData = new ClassData(CardCloudClassID, "gosFX::CardCloud", SpinningCloud::DefaultData,
+		(Effect::Factory)&Make, (Specification::Factory)&Specification::Make);
 	Register_Object(DefaultData);
 }
 
@@ -251,10 +248,9 @@ gosFX::CardCloud::CardCloud(Specification* spec, uint32_t flags)
 	: SpinningCloud(DefaultData, spec, flags)
 {
 	Check_Object(spec);
-	// Verify(gos_GetCurrentHeap() == Heap);
+	// _ASSERT(gos_GetCurrentHeap() == Heap);
 	// gos_PushCurrentHeap(MidLevelRenderer::Heap);
-	m_cloudImplementation =
-		new MidLevelRenderer::MLRCardCloud(spec->m_maxParticleCount);
+	m_cloudImplementation = new MidLevelRenderer::MLRCardCloud(spec->m_maxParticleCount);
 	Register_Object(m_cloudImplementation);
 	// gos_PopCurrentHeap();
 	uint32_t index = spec->m_maxParticleCount * sizeof(Particle);
@@ -264,8 +260,7 @@ gosFX::CardCloud::CardCloud(Specification* spec, uint32_t flags)
 	index += spec->m_maxParticleCount * sizeof(Stuff::RGBAColor);
 	m_P_uvs = Cast_Pointer(Stuff::Vector2DOf<float>*, &m_data[index]);
 	m_cloudImplementation->SetData(
-		Cast_Pointer(pcsize_t, &m_activeParticleCount), m_P_vertices, m_P_color,
-		m_P_uvs);
+		Cast_Pointer(pcsize_t, &m_activeParticleCount), m_P_vertices, m_P_color, m_P_uvs);
 }
 
 //------------------------------------------------------------------------------
@@ -291,8 +286,7 @@ gosFX::CardCloud* gosFX::CardCloud::Make(Specification* spec, uint32_t flags)
 
 //------------------------------------------------------------------------------
 //
-void gosFX::CardCloud::CreateNewParticle(
-	uint32_t index, Stuff::Point3D* translation)
+void gosFX::CardCloud::CreateNewParticle(uint32_t index, Stuff::Point3D* translation)
 {
 	// Check_Object(this);
 	//
@@ -302,7 +296,7 @@ void gosFX::CardCloud::CreateNewParticle(
 	//
 	SpinningCloud::CreateNewParticle(index, translation);
 	m_cloudImplementation->TurnOn(index);
-	Verify(m_cloudImplementation->IsOn(index));
+	_ASSERT(m_cloudImplementation->IsOn(index));
 	//
 	//-----------------------------
 	// Figure out the particle size
@@ -312,18 +306,17 @@ void gosFX::CardCloud::CreateNewParticle(
 	Check_Object(spec);
 	Particle* particle = GetParticle(index);
 	Check_Object(particle);
-	particle->m_halfY =
-		spec->m_halfHeight.ComputeValue(m_age, particle->m_seed);
-	particle->m_halfX = particle->m_halfY * spec->m_aspectRatio.ComputeValue(
-												m_age, particle->m_seed);
-	particle->m_radius = Stuff::Sqrt(particle->m_halfX * particle->m_halfX +
-									 particle->m_halfY * particle->m_halfY);
+	particle->m_halfY = spec->m_halfHeight.ComputeValue(m_age, particle->m_seed);
+	particle->m_halfX =
+		particle->m_halfY * spec->m_aspectRatio.ComputeValue(m_age, particle->m_seed);
+	particle->m_radius =
+		Stuff::Sqrt(particle->m_halfX * particle->m_halfX + particle->m_halfY * particle->m_halfY);
 }
 
 //------------------------------------------------------------------------------
 //
-bool gosFX::CardCloud::AnimateParticle(uint32_t index,
-	const Stuff::LinearMatrix4D* world_to_new_local, Stuff::Time till)
+bool gosFX::CardCloud::AnimateParticle(
+	uint32_t index, const Stuff::LinearMatrix4D* world_to_new_local, Stuff::Time till)
 {
 	// Check_Object(this);
 	//
@@ -366,10 +359,9 @@ bool gosFX::CardCloud::AnimateParticle(uint32_t index,
 	//
 	if (spec->m_animated)
 	{
-		uint8_t columns = Stuff::Truncate_Float_To_Byte(
-			spec->m_pIndex.ComputeValue(age, seed));
-		uint8_t rows = static_cast<uint8_t>(columns / spec->m_width);
-		columns		 = static_cast<uint8_t>(columns - rows * spec->m_width);
+		uint8_t columns = Stuff::Truncate_Float_To_Byte(spec->m_pIndex.ComputeValue(age, seed));
+		uint8_t rows	= static_cast<uint8_t>(columns / spec->m_width);
+		columns			= static_cast<uint8_t>(columns - rows * spec->m_width);
 		//
 		//---------------------------
 		// Now compute the end points
@@ -398,7 +390,7 @@ void gosFX::CardCloud::DestroyParticle(uint32_t index)
 {
 	// Check_Object(this);
 	m_cloudImplementation->TurnOff(index);
-	Verify(!m_cloudImplementation->IsOn(index));
+	_ASSERT(!m_cloudImplementation->IsOn(index));
 	SpinningCloud::DestroyParticle(index);
 }
 
@@ -440,11 +432,9 @@ void gosFX::CardCloud::Draw(DrawInfo* info)
 				// Get the camera location into local space
 				//-----------------------------------------
 				//
-				Stuff::Point3D camera_in_world(
-					info->m_clipper->GetCameraToWorldMatrix());
+				Stuff::Point3D camera_in_world(info->m_clipper->GetCameraToWorldMatrix());
 				Stuff::Point3D camera_in_cloud;
-				camera_in_cloud.MultiplyByInverse(
-					camera_in_world, local_to_world);
+				camera_in_cloud.MultiplyByInverse(camera_in_world, local_to_world);
 				//
 				//--------------------------------------
 				// Spin through all the active particles
@@ -462,36 +452,29 @@ void gosFX::CardCloud::Draw(DrawInfo* info)
 						//--------------------------------
 						//
 						Stuff::Vector3D direction_in_cloud;
-						direction_in_cloud.Subtract(
-							camera_in_cloud, particle->m_localTranslation);
+						direction_in_cloud.Subtract(camera_in_cloud, particle->m_localTranslation);
 						Stuff::LinearMatrix4D card_to_cloud;
 						card_to_cloud.BuildRotation(particle->m_localRotation);
 						card_to_cloud.AlignLocalAxisToWorldVector(
-							direction_in_cloud, Stuff::Z_Axis, Stuff::Y_Axis,
-							Stuff::X_Axis);
-						card_to_cloud.BuildTranslation(
-							particle->m_localTranslation);
+							direction_in_cloud, Stuff::Z_Axis, Stuff::Y_Axis, Stuff::X_Axis);
+						card_to_cloud.BuildTranslation(particle->m_localTranslation);
 						//
 						//-------------------------------------------------
 						// Figure out the scale, then build the four points
 						//-------------------------------------------------
 						//
 						float scale = particle->m_scale;
-						m_P_vertices[vert++].Multiply(
-							Stuff::Point3D(scale * particle->m_halfX,
-								-scale * particle->m_halfY, 0.0f),
+						m_P_vertices[vert++].Multiply(Stuff::Point3D(scale * particle->m_halfX,
+														  -scale * particle->m_halfY, 0.0f),
 							card_to_cloud);
-						m_P_vertices[vert++].Multiply(
-							Stuff::Point3D(-scale * particle->m_halfX,
-								-scale * particle->m_halfY, 0.0f),
+						m_P_vertices[vert++].Multiply(Stuff::Point3D(-scale * particle->m_halfX,
+														  -scale * particle->m_halfY, 0.0f),
 							card_to_cloud);
-						m_P_vertices[vert++].Multiply(
-							Stuff::Point3D(-scale * particle->m_halfX,
-								scale * particle->m_halfY, 0.0f),
+						m_P_vertices[vert++].Multiply(Stuff::Point3D(-scale * particle->m_halfX,
+														  scale * particle->m_halfY, 0.0f),
 							card_to_cloud);
-						m_P_vertices[vert++].Multiply(
-							Stuff::Point3D(scale * particle->m_halfX,
-								scale * particle->m_halfY, 0.0f),
+						m_P_vertices[vert++].Multiply(Stuff::Point3D(scale * particle->m_halfX,
+														  scale * particle->m_halfY, 0.0f),
 							card_to_cloud);
 					}
 					else
@@ -510,11 +493,9 @@ void gosFX::CardCloud::Draw(DrawInfo* info)
 				// Get the camera location into local space
 				//-----------------------------------------
 				//
-				Stuff::Point3D camera_in_world(
-					info->m_clipper->GetCameraToWorldMatrix());
+				Stuff::Point3D camera_in_world(info->m_clipper->GetCameraToWorldMatrix());
 				Stuff::Point3D camera_in_cloud;
-				camera_in_cloud.MultiplyByInverse(
-					camera_in_world, local_to_world);
+				camera_in_cloud.MultiplyByInverse(camera_in_world, local_to_world);
 				//
 				//--------------------------------------
 				// Spin through all the active particles
@@ -532,36 +513,29 @@ void gosFX::CardCloud::Draw(DrawInfo* info)
 						//--------------------------------
 						//
 						Stuff::Vector3D direction_in_cloud;
-						direction_in_cloud.Subtract(
-							camera_in_cloud, particle->m_localTranslation);
+						direction_in_cloud.Subtract(camera_in_cloud, particle->m_localTranslation);
 						Stuff::LinearMatrix4D card_to_cloud;
 						card_to_cloud.BuildRotation(particle->m_localRotation);
 						card_to_cloud.AlignLocalAxisToWorldVector(
-							direction_in_cloud, Stuff::Z_Axis, Stuff::X_Axis,
-							-1);
-						card_to_cloud.BuildTranslation(
-							particle->m_localTranslation);
+							direction_in_cloud, Stuff::Z_Axis, Stuff::X_Axis, -1);
+						card_to_cloud.BuildTranslation(particle->m_localTranslation);
 						//
 						//-------------------------------------------------
 						// Figure out the scale, then build the four points
 						//-------------------------------------------------
 						//
 						float scale = particle->m_scale;
-						m_P_vertices[vert++].Multiply(
-							Stuff::Point3D(scale * particle->m_halfX,
-								-scale * particle->m_halfY, 0.0f),
+						m_P_vertices[vert++].Multiply(Stuff::Point3D(scale * particle->m_halfX,
+														  -scale * particle->m_halfY, 0.0f),
 							card_to_cloud);
-						m_P_vertices[vert++].Multiply(
-							Stuff::Point3D(-scale * particle->m_halfX,
-								-scale * particle->m_halfY, 0.0f),
+						m_P_vertices[vert++].Multiply(Stuff::Point3D(-scale * particle->m_halfX,
+														  -scale * particle->m_halfY, 0.0f),
 							card_to_cloud);
-						m_P_vertices[vert++].Multiply(
-							Stuff::Point3D(-scale * particle->m_halfX,
-								scale * particle->m_halfY, 0.0f),
+						m_P_vertices[vert++].Multiply(Stuff::Point3D(-scale * particle->m_halfX,
+														  scale * particle->m_halfY, 0.0f),
 							card_to_cloud);
-						m_P_vertices[vert++].Multiply(
-							Stuff::Point3D(scale * particle->m_halfX,
-								scale * particle->m_halfY, 0.0f),
+						m_P_vertices[vert++].Multiply(Stuff::Point3D(scale * particle->m_halfX,
+														  scale * particle->m_halfY, 0.0f),
 							card_to_cloud);
 					}
 					else
@@ -581,8 +555,7 @@ void gosFX::CardCloud::Draw(DrawInfo* info)
 			// Get the camera location into local space
 			//-----------------------------------------
 			//
-			Stuff::Point3D camera_in_world(
-				info->m_clipper->GetCameraToWorldMatrix());
+			Stuff::Point3D camera_in_world(info->m_clipper->GetCameraToWorldMatrix());
 			Stuff::Point3D camera_in_cloud;
 			camera_in_cloud.MultiplyByInverse(camera_in_world, local_to_world);
 			//
@@ -602,14 +575,12 @@ void gosFX::CardCloud::Draw(DrawInfo* info)
 					//--------------------------------
 					//
 					Stuff::Vector3D direction_in_cloud;
-					direction_in_cloud.Subtract(
-						camera_in_cloud, particle->m_localTranslation);
+					direction_in_cloud.Subtract(camera_in_cloud, particle->m_localTranslation);
 					Stuff::LinearMatrix4D card_to_cloud;
 					card_to_cloud.BuildRotation(particle->m_localRotation);
 					card_to_cloud.AlignLocalAxisToWorldVector(
 						direction_in_cloud, Stuff::Z_Axis, Stuff::Y_Axis, -1);
-					card_to_cloud.BuildTranslation(
-						particle->m_localTranslation);
+					card_to_cloud.BuildTranslation(particle->m_localTranslation);
 					//
 					//-------------------------------------------------
 					// Figure out the scale, then build the four points
@@ -617,20 +588,16 @@ void gosFX::CardCloud::Draw(DrawInfo* info)
 					//
 					float scale = particle->m_scale;
 					m_P_vertices[vert++].Multiply(
-						Stuff::Point3D(scale * particle->m_halfX,
-							-scale * particle->m_halfY, 0.0f),
+						Stuff::Point3D(scale * particle->m_halfX, -scale * particle->m_halfY, 0.0f),
+						card_to_cloud);
+					m_P_vertices[vert++].Multiply(Stuff::Point3D(-scale * particle->m_halfX,
+													  -scale * particle->m_halfY, 0.0f),
 						card_to_cloud);
 					m_P_vertices[vert++].Multiply(
-						Stuff::Point3D(-scale * particle->m_halfX,
-							-scale * particle->m_halfY, 0.0f),
+						Stuff::Point3D(-scale * particle->m_halfX, scale * particle->m_halfY, 0.0f),
 						card_to_cloud);
 					m_P_vertices[vert++].Multiply(
-						Stuff::Point3D(-scale * particle->m_halfX,
-							scale * particle->m_halfY, 0.0f),
-						card_to_cloud);
-					m_P_vertices[vert++].Multiply(
-						Stuff::Point3D(scale * particle->m_halfX,
-							scale * particle->m_halfY, 0.0f),
+						Stuff::Point3D(scale * particle->m_halfX, scale * particle->m_halfY, 0.0f),
 						card_to_cloud);
 				}
 				else
@@ -658,8 +625,7 @@ void gosFX::CardCloud::Draw(DrawInfo* info)
 					//
 					Stuff::LinearMatrix4D card_to_cloud;
 					card_to_cloud.BuildRotation(particle->m_localRotation);
-					card_to_cloud.BuildTranslation(
-						particle->m_localTranslation);
+					card_to_cloud.BuildTranslation(particle->m_localTranslation);
 					//
 					//-------------------------------------------------
 					// Figure out the scale, then build the four points
@@ -667,20 +633,16 @@ void gosFX::CardCloud::Draw(DrawInfo* info)
 					//
 					float scale = particle->m_scale;
 					m_P_vertices[vert++].Multiply(
-						Stuff::Point3D(scale * particle->m_halfX,
-							-scale * particle->m_halfY, 0.0f),
+						Stuff::Point3D(scale * particle->m_halfX, -scale * particle->m_halfY, 0.0f),
+						card_to_cloud);
+					m_P_vertices[vert++].Multiply(Stuff::Point3D(-scale * particle->m_halfX,
+													  -scale * particle->m_halfY, 0.0f),
 						card_to_cloud);
 					m_P_vertices[vert++].Multiply(
-						Stuff::Point3D(-scale * particle->m_halfX,
-							-scale * particle->m_halfY, 0.0f),
+						Stuff::Point3D(-scale * particle->m_halfX, scale * particle->m_halfY, 0.0f),
 						card_to_cloud);
 					m_P_vertices[vert++].Multiply(
-						Stuff::Point3D(-scale * particle->m_halfX,
-							scale * particle->m_halfY, 0.0f),
-						card_to_cloud);
-					m_P_vertices[vert++].Multiply(
-						Stuff::Point3D(scale * particle->m_halfX,
-							scale * particle->m_halfY, 0.0f),
+						Stuff::Point3D(scale * particle->m_halfX, scale * particle->m_halfY, 0.0f),
 						card_to_cloud);
 				}
 				else
@@ -699,7 +661,4 @@ void gosFX::CardCloud::Draw(DrawInfo* info)
 
 //------------------------------------------------------------------------------
 //
-void gosFX::CardCloud::TestInstance(void) const
-{
-	Verify(IsDerivedFrom(DefaultData));
-}
+void gosFX::CardCloud::TestInstance(void) const { _ASSERT(IsDerivedFrom(DefaultData)); }

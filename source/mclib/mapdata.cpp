@@ -141,8 +141,7 @@ void MapData::newInit(PacketFile* newFile, uint32_t numVertices)
 int32_t MapData::save(PacketFile* file, int32_t whichPacket)
 {
 	return file->writePacket(whichPacket, (puint8_t)blocks,
-		Terrain::realVerticesMapSide * Terrain::realVerticesMapSide *
-			sizeof(PostcompVertex));
+		Terrain::realVerticesMapSide * Terrain::realVerticesMapSide * sizeof(PostcompVertex));
 }
 
 //---------------------------------------------------------------------------
@@ -160,19 +159,15 @@ void MapData::highlightAllTransitionsOver2(void)
 			// Get the data needed to make this terrain quad
 			PostcompVertex* pVertex1 = currentVertex;
 			PostcompVertex* pVertex2 = currentVertex + 1;
-			PostcompVertex* pVertex3 =
-				currentVertex + Terrain::realVerticesMapSide + 1;
-			PostcompVertex* pVertex4 =
-				currentVertex + Terrain::realVerticesMapSide;
+			PostcompVertex* pVertex3 = currentVertex + Terrain::realVerticesMapSide + 1;
+			PostcompVertex* pVertex4 = currentVertex + Terrain::realVerticesMapSide;
 			//-------------------------------------------------------------------------------
-			int32_t totalNotEqual1 =
-				abs((pVertex1->terrainType != pVertex2->terrainType) +
-					(pVertex3->terrainType != pVertex4->terrainType) +
-					(pVertex2->terrainType != pVertex4->terrainType));
-			int32_t totalNotEqual2 =
-				abs((pVertex2->terrainType != pVertex3->terrainType) +
-					(pVertex1->terrainType != pVertex4->terrainType) +
-					(pVertex1->terrainType != pVertex3->terrainType));
+			int32_t totalNotEqual1 = abs((pVertex1->terrainType != pVertex2->terrainType) +
+				(pVertex3->terrainType != pVertex4->terrainType) +
+				(pVertex2->terrainType != pVertex4->terrainType));
+			int32_t totalNotEqual2 = abs((pVertex2->terrainType != pVertex3->terrainType) +
+				(pVertex1->terrainType != pVertex4->terrainType) +
+				(pVertex1->terrainType != pVertex3->terrainType));
 			if ((totalNotEqual1 >= 2) && (totalNotEqual2 >= 2))
 			{
 				pVertex1->highlighted = true;
@@ -200,27 +195,22 @@ void MapData::calcTransitions()
 			// Get the data needed to make this terrain quad
 			PostcompVertex* pVertex1 = currentVertex;
 			PostcompVertex* pVertex2 = currentVertex + 1;
-			PostcompVertex* pVertex3 =
-				currentVertex + Terrain::realVerticesMapSide + 1;
-			PostcompVertex* pVertex4 =
-				currentVertex + Terrain::realVerticesMapSide;
+			PostcompVertex* pVertex3 = currentVertex + Terrain::realVerticesMapSide + 1;
+			PostcompVertex* pVertex4 = currentVertex + Terrain::realVerticesMapSide;
 			//-------------------------------------------------------------------------------
 			// Store texture in bottom part from TxmIndex provided by
 			// TerrainTextureManager
-			uint32_t terrainType =
-				pVertex1->terrainType + (pVertex2->terrainType << 8) +
+			uint32_t terrainType = pVertex1->terrainType + (pVertex2->terrainType << 8) +
 				(pVertex3->terrainType << 16) + (pVertex4->terrainType << 24);
 			uint32_t overlayType = (pVertex1->textureData >> 16);
 			if (overlayType < Terrain::terrainTextures->getFirstOverlay())
 			{
-				pVertex1->textureData =
-					0xffff0000; // Erase the overlay, the numbers changed!
-				overlayType = 0xffff;
+				pVertex1->textureData = 0xffff0000; // Erase the overlay, the numbers changed!
+				overlayType			  = 0xffff;
 			}
 			// Insure Base Texture is zero.
 			pVertex1->textureData &= (pVertex1->textureData & 0xffff0000);
-			uint32_t txmResult =
-				Terrain::terrainTextures->setTexture(terrainType, overlayType);
+			uint32_t txmResult = Terrain::terrainTextures->setTexture(terrainType, overlayType);
 			pVertex1->textureData += txmResult;
 			gosASSERT((pVertex1->textureData & 0x0000ffff) != 0xffff);
 			currentVertex++;
@@ -228,8 +218,7 @@ void MapData::calcTransitions()
 		currentVertex++;
 	}
 	uint32_t terrainType = MC_BLUEWATER_TYPE + (MC_BLUEWATER_TYPE << 8) +
-						   (MC_BLUEWATER_TYPE << 16) +
-						   (MC_BLUEWATER_TYPE << 24);
+		(MC_BLUEWATER_TYPE << 16) + (MC_BLUEWATER_TYPE << 24);
 	WaterTXMData = Terrain::terrainTextures->setTexture(terrainType, 0xffff);
 }
 
@@ -335,10 +324,7 @@ void MapData::setVertexHeight(int32_t VertexIndex, float Val)
 }
 
 //---------------------------------------------------------------------------
-float MapData::getVertexHeight(int32_t VertexIndex)
-{
-	return blocks[VertexIndex].elevation;
-}
+float MapData::getVertexHeight(int32_t VertexIndex) { return blocks[VertexIndex].elevation; }
 
 #define ContrastEnhance 1.0f
 //---------------------------------------------------------------------------
@@ -367,18 +353,15 @@ void MapData::calcLight(void)
 		//------------------------------------------------
 		// Check Bounds to make sure we don't go off map
 		if (((diskMapIndex - Terrain::realVerticesMapSide - 1) < 0) ||
-			((diskMapIndex - Terrain::realVerticesMapSide) < 0) ||
-			((diskMapIndex - 1) < 0))
+			((diskMapIndex - Terrain::realVerticesMapSide) < 0) || ((diskMapIndex - 1) < 0))
 		{
 			//---------------------------------------------
 			// Cant generate a normal.  TOO close to edge.
 			// Default data please!
 		}
 		else if (((diskMapIndex + 1) >= totalVertices) ||
-				 ((diskMapIndex + Terrain::realVerticesMapSide) >=
-					 totalVertices) ||
-				 ((diskMapIndex + Terrain::realVerticesMapSide + 1) >=
-					 totalVertices))
+			((diskMapIndex + Terrain::realVerticesMapSide) >= totalVertices) ||
+			((diskMapIndex + Terrain::realVerticesMapSide + 1) >= totalVertices))
 		{
 			//---------------------------------------------
 			// Cant generate a normal.  TOO close to edge.
@@ -404,10 +387,8 @@ void MapData::calcLight(void)
 			if (Terrain::recalcShadows)
 			{
 				Stuff::Vector3D vertexPos;
-				vertexPos.x = ((float(x) * Terrain::worldUnitsPerVertex) +
-							   Terrain::mapTopLeft3d.x);
-				vertexPos.y = (Terrain::mapTopLeft3d.y -
-							   (float(y) * Terrain::worldUnitsPerVertex));
+				vertexPos.x = ((float(x) * Terrain::worldUnitsPerVertex) + Terrain::mapTopLeft3d.x);
+				vertexPos.y = (Terrain::mapTopLeft3d.y - (float(y) * Terrain::worldUnitsPerVertex));
 				vertexPos.z = 0.0f;
 				vertexPos.z = terrainElevation(vertexPos);
 				v0->shadow  = 0;
@@ -432,12 +413,10 @@ void MapData::calcLight(void)
 			// Tri 021
 			triVect[0].x = 0.0;
 			triVect[0].y = Terrain::worldUnitsPerVertex;
-			triVect[0].z =
-				(v2->getElevation() - v0->getElevation()) * ContrastEnhance;
+			triVect[0].z = (v2->getElevation() - v0->getElevation()) * ContrastEnhance;
 			triVect[1].x = -Terrain::worldUnitsPerVertex;
 			triVect[1].y = Terrain::worldUnitsPerVertex;
-			triVect[1].z =
-				(v1->getElevation() - v0->getElevation()) * ContrastEnhance;
+			triVect[1].z = (v1->getElevation() - v0->getElevation()) * ContrastEnhance;
 			normals[0].Cross(triVect[0], triVect[1]);
 			gosASSERT(normals[0].z > 0.0);
 			normals[0].Normalize(normals[0]);
@@ -445,12 +424,10 @@ void MapData::calcLight(void)
 			// Tri 032
 			triVect[0].x = Terrain::worldUnitsPerVertex;
 			triVect[0].y = 0.0;
-			triVect[0].z =
-				(v3->getElevation() - v0->getElevation()) * ContrastEnhance;
+			triVect[0].z = (v3->getElevation() - v0->getElevation()) * ContrastEnhance;
 			triVect[1].x = 0.0;
 			triVect[1].y = Terrain::worldUnitsPerVertex;
-			triVect[1].z =
-				(v2->getElevation() - v0->getElevation()) * ContrastEnhance;
+			triVect[1].z = (v2->getElevation() - v0->getElevation()) * ContrastEnhance;
 			normals[1].Cross(triVect[0], triVect[1]);
 			gosASSERT(normals[1].z > 0.0);
 			normals[1].Normalize(normals[1]);
@@ -458,12 +435,10 @@ void MapData::calcLight(void)
 			// Tri 043
 			triVect[0].x = Terrain::worldUnitsPerVertex;
 			triVect[0].y = -Terrain::worldUnitsPerVertex;
-			triVect[0].z =
-				(v4->getElevation() - v0->getElevation()) * ContrastEnhance;
+			triVect[0].z = (v4->getElevation() - v0->getElevation()) * ContrastEnhance;
 			triVect[1].x = Terrain::worldUnitsPerVertex;
 			triVect[1].y = 0.0;
-			triVect[1].z =
-				(v3->getElevation() - v0->getElevation()) * ContrastEnhance;
+			triVect[1].z = (v3->getElevation() - v0->getElevation()) * ContrastEnhance;
 			normals[2].Cross(triVect[0], triVect[1]);
 			gosASSERT(normals[2].z > 0.0);
 			normals[2].Normalize(normals[2]);
@@ -471,12 +446,10 @@ void MapData::calcLight(void)
 			// Tri 054
 			triVect[0].x = 0.0;
 			triVect[0].y = -Terrain::worldUnitsPerVertex;
-			triVect[0].z =
-				(v5->getElevation() - v0->getElevation()) * ContrastEnhance;
+			triVect[0].z = (v5->getElevation() - v0->getElevation()) * ContrastEnhance;
 			triVect[1].x = Terrain::worldUnitsPerVertex;
 			triVect[1].y = -Terrain::worldUnitsPerVertex;
-			triVect[1].z =
-				(v4->getElevation() - v0->getElevation()) * ContrastEnhance;
+			triVect[1].z = (v4->getElevation() - v0->getElevation()) * ContrastEnhance;
 			normals[3].Cross(triVect[0], triVect[1]);
 			gosASSERT(normals[3].z > 0.0);
 			normals[3].Normalize(normals[3]);
@@ -484,12 +457,10 @@ void MapData::calcLight(void)
 			// Tri 065
 			triVect[0].x = -Terrain::worldUnitsPerVertex;
 			triVect[0].y = 0.0;
-			triVect[0].z =
-				(v6->getElevation() - v0->getElevation()) * ContrastEnhance;
+			triVect[0].z = (v6->getElevation() - v0->getElevation()) * ContrastEnhance;
 			triVect[1].x = 0.0;
 			triVect[1].y = -Terrain::worldUnitsPerVertex;
-			triVect[1].z =
-				(v5->getElevation() - v0->getElevation()) * ContrastEnhance;
+			triVect[1].z = (v5->getElevation() - v0->getElevation()) * ContrastEnhance;
 			normals[4].Cross(triVect[0], triVect[1]);
 			gosASSERT(normals[4].z > 0.0);
 			normals[4].Normalize(normals[4]);
@@ -497,12 +468,10 @@ void MapData::calcLight(void)
 			// Tri 076
 			triVect[0].x = -Terrain::worldUnitsPerVertex;
 			triVect[0].y = 0.0;
-			triVect[0].z =
-				(v7->getElevation() - v0->getElevation()) * ContrastEnhance;
+			triVect[0].z = (v7->getElevation() - v0->getElevation()) * ContrastEnhance;
 			triVect[1].x = 0.0;
 			triVect[1].y = -Terrain::worldUnitsPerVertex;
-			triVect[1].z =
-				(v6->getElevation() - v0->getElevation()) * ContrastEnhance;
+			triVect[1].z = (v6->getElevation() - v0->getElevation()) * ContrastEnhance;
 			normals[5].Cross(triVect[0], triVect[1]);
 			gosASSERT(normals[5].z > 0.0);
 			normals[5].Normalize(normals[5]);
@@ -510,12 +479,10 @@ void MapData::calcLight(void)
 			// Tri 087
 			triVect[0].x = -Terrain::worldUnitsPerVertex;
 			triVect[0].y = 0.0;
-			triVect[0].z =
-				(v8->getElevation() - v0->getElevation()) * ContrastEnhance;
+			triVect[0].z = (v8->getElevation() - v0->getElevation()) * ContrastEnhance;
 			triVect[1].x = 0.0;
 			triVect[1].y = -Terrain::worldUnitsPerVertex;
-			triVect[1].z =
-				(v7->getElevation() - v0->getElevation()) * ContrastEnhance;
+			triVect[1].z = (v7->getElevation() - v0->getElevation()) * ContrastEnhance;
 			normals[6].Cross(triVect[0], triVect[1]);
 			gosASSERT(normals[6].z > 0.0);
 			normals[6].Normalize(normals[6]);
@@ -523,24 +490,19 @@ void MapData::calcLight(void)
 			// Tri 018
 			triVect[0].x = -Terrain::worldUnitsPerVertex;
 			triVect[0].y = Terrain::worldUnitsPerVertex;
-			triVect[0].z =
-				(v1->getElevation() - v0->getElevation()) * ContrastEnhance;
+			triVect[0].z = (v1->getElevation() - v0->getElevation()) * ContrastEnhance;
 			triVect[1].x = -Terrain::worldUnitsPerVertex;
 			triVect[1].y = 0.0;
-			triVect[1].z =
-				(v8->getElevation() - v0->getElevation()) * ContrastEnhance;
+			triVect[1].z = (v8->getElevation() - v0->getElevation()) * ContrastEnhance;
 			normals[7].Cross(triVect[0], triVect[1]);
 			gosASSERT(normals[7].z > 0.0);
 			normals[7].Normalize(normals[7]);
-			currentVertex->vertexNormal.x =
-				normals[0].x + normals[1].x + normals[2].x + normals[3].x +
-				normals[4].x + normals[5].x + normals[6].x + normals[7].x;
-			currentVertex->vertexNormal.y =
-				normals[0].y + normals[1].y + normals[2].y + normals[3].y +
-				normals[4].y + normals[5].y + normals[6].y + normals[7].y;
-			currentVertex->vertexNormal.z =
-				normals[0].z + normals[1].z + normals[2].z + normals[3].z +
-				normals[4].z + normals[5].z + normals[6].z + normals[7].z;
+			currentVertex->vertexNormal.x = normals[0].x + normals[1].x + normals[2].x +
+				normals[3].x + normals[4].x + normals[5].x + normals[6].x + normals[7].x;
+			currentVertex->vertexNormal.y = normals[0].y + normals[1].y + normals[2].y +
+				normals[3].y + normals[4].y + normals[5].y + normals[6].y + normals[7].y;
+			currentVertex->vertexNormal.z = normals[0].z + normals[1].z + normals[2].z +
+				normals[3].z + normals[4].z + normals[5].z + normals[6].z + normals[7].z;
 			currentVertex->vertexNormal.x /= 8.0;
 			currentVertex->vertexNormal.y /= 8.0;
 			currentVertex->vertexNormal.z /= 8.0;
@@ -557,8 +519,8 @@ void MapData::clearShadows()
 	//----------------------------------------
 	// Let's calc the map dimensions...
 	int32_t height, width;
-	height = width		  = Terrain::verticesBlockSide * Terrain::blocksMapSide;
-	int32_t totalVertices = height * width;
+	height = width					= Terrain::verticesBlockSide * Terrain::blocksMapSide;
+	int32_t totalVertices			= height * width;
 	PostcompVertexPtr currentVertex = blocks;
 	for (size_t i = 0; i < totalVertices; i++)
 	{
@@ -593,10 +555,8 @@ int32_t MapData::update(void)
 	// Calculate the topLeftVertex from Camera.
 	// This is the closest vertex to the Physical topLeft
 	// coordinate of the visible terrain blocks.
-	topLeftVertex.x = (position.x - Terrain::mapTopLeft3d.x) *
-					  Terrain::oneOverWorldUnitsPerVertex;
-	topLeftVertex.y = (Terrain::mapTopLeft3d.y - position.y) *
-					  Terrain::oneOverWorldUnitsPerVertex;
+	topLeftVertex.x = (position.x - Terrain::mapTopLeft3d.x) * Terrain::oneOverWorldUnitsPerVertex;
+	topLeftVertex.y = (Terrain::mapTopLeft3d.y - position.y) * Terrain::oneOverWorldUnitsPerVertex;
 	int32_t PVx		= float2long(topLeftVertex.x + 0.5f);
 	int32_t PVy		= float2long(topLeftVertex.y + 0.5f);
 	float fTLVx		= float(PVx) - (Terrain::visibleVerticesPerSide >> 1);
@@ -637,8 +597,7 @@ int32_t MapData::update(void)
 	if (!Terrain::terrainTextures2)
 	{
 		if ((0.0 != Terrain::terrainTextures->getDetailFrameRate(0)) &&
-			(SprayTextureNum >
-				(1.0 / Terrain::terrainTextures->getDetailFrameRate(0))))
+			(SprayTextureNum > (1.0 / Terrain::terrainTextures->getDetailFrameRate(0))))
 		{
 			sprayFrame += sprayAdd;
 			SprayTextureNum = 0.0f;
@@ -657,17 +616,15 @@ int32_t MapData::update(void)
 		if (Terrain::terrainTextures2->getWaterDetailNumFrames() > 1)
 		{
 			if ((0.0 != Terrain::terrainTextures2->getWaterDetailFrameRate()) &&
-				(SprayTextureNum >
-					(1.0 /
-						Terrain::terrainTextures2->getWaterDetailFrameRate())))
+				(SprayTextureNum > (1.0 / Terrain::terrainTextures2->getWaterDetailFrameRate())))
 			{
 				sprayFrame += sprayAdd;
 				SprayTextureNum = 0.0f;
 				if (((int32_t)(sprayFrame + sprayAdd)) >=
-					(int32_t)Terrain::terrainTextures2
-						->getWaterDetailNumFrames()) /*carefull of the
-														signed/uint32_t
-														mismatch*/
+					(int32_t)
+						Terrain::terrainTextures2->getWaterDetailNumFrames()) /*carefull of the
+																				 signed/uint32_t
+																				 mismatch*/
 				{
 					sprayAdd = -1;
 				}
@@ -686,8 +643,8 @@ int32_t MapData::update(void)
 }
 
 //---------------------------------------------------------------------------
-void MapData::makeLists(VertexPtr vertexList, int32_t& numVerts,
-	TerrainQuadPtr quadList, int32_t& numQuads)
+void MapData::makeLists(
+	VertexPtr vertexList, int32_t& numVerts, TerrainQuadPtr quadList, int32_t& numQuads)
 {
 	int32_t topLeftX		  = float2long(topLeftVertex.x);
 	int32_t topLeftY		  = float2long(topLeftVertex.y);
@@ -699,8 +656,8 @@ void MapData::makeLists(VertexPtr vertexList, int32_t& numVerts,
 	{
 		for (size_t x = 0; x < Terrain::visibleVerticesPerSide; x++)
 		{
-			if ((topLeftX < 0) || (topLeftX >= Terrain::realVerticesMapSide) ||
-				(topLeftY < 0) || (topLeftY >= Terrain::realVerticesMapSide))
+			if ((topLeftX < 0) || (topLeftX >= Terrain::realVerticesMapSide) || (topLeftY < 0) ||
+				(topLeftY >= Terrain::realVerticesMapSide))
 			{
 				//------------------------------------------------------------
 				// Point this to the Blank Vertex
@@ -709,32 +666,29 @@ void MapData::makeLists(VertexPtr vertexList, int32_t& numVerts,
 			}
 			else
 			{
-				Pvertex = &blocks[topLeftX +
-								  (topLeftY * Terrain::realVerticesMapSide)];
-				currentVertex->vertexNum =
-					topLeftX + (topLeftY * Terrain::realVerticesMapSide);
+				Pvertex = &blocks[topLeftX + (topLeftY * Terrain::realVerticesMapSide)];
+				currentVertex->vertexNum = topLeftX + (topLeftY * Terrain::realVerticesMapSide);
 			}
 			gosASSERT(Pvertex != nullptr);
 			currentVertex->pVertex = Pvertex;
 			//------------------------------------------------
 			// Must be calced from ABS positions now!
-			int32_t blockX  = (topLeftX / Terrain::verticesBlockSide);
-			int32_t blockY  = (topLeftY / Terrain::verticesBlockSide);
-			int32_t vertexX = topLeftX - (blockX * Terrain::verticesBlockSide);
-			int32_t vertexY = topLeftY - (blockY * Terrain::verticesBlockSide);
-			currentVertex->blockVertex =
-				((blockX + (blockY * Terrain::blocksMapSide)) << 16) +
+			int32_t blockX			   = (topLeftX / Terrain::verticesBlockSide);
+			int32_t blockY			   = (topLeftY / Terrain::verticesBlockSide);
+			int32_t vertexX			   = topLeftX - (blockX * Terrain::verticesBlockSide);
+			int32_t vertexY			   = topLeftY - (blockY * Terrain::verticesBlockSide);
+			currentVertex->blockVertex = ((blockX + (blockY * Terrain::blocksMapSide)) << 16) +
 				(vertexX + (vertexY * Terrain::verticesBlockSide));
 			//----------------------------------------------------------------------
 			// From Blocks and vertex, calculate the World Position
-			currentVertex->vx = float(topLeftX - Terrain::halfVerticesMapSide) *
-								Terrain::worldUnitsPerVertex;
-			currentVertex->vy = float(Terrain::halfVerticesMapSide - topLeftY) *
-								Terrain::worldUnitsPerVertex;
+			currentVertex->vx =
+				float(topLeftX - Terrain::halfVerticesMapSide) * Terrain::worldUnitsPerVertex;
+			currentVertex->vy =
+				float(Terrain::halfVerticesMapSide - topLeftY) * Terrain::worldUnitsPerVertex;
 			//----------------------------------------------------------------------
-			int32_t posTileR	   = topLeftY;
-			int32_t posTileC	   = topLeftX;
-			currentVertex->posTile = (posTileR << 16) + (posTileC & 0x0000ffff);
+			int32_t posTileR			 = topLeftY;
+			int32_t posTileC			 = topLeftX;
+			currentVertex->posTile		 = (posTileR << 16) + (posTileC & 0x0000ffff);
 			currentVertex->calcThisFrame = 0;
 			currentVertex->px = currentVertex->py = -99999.0f;
 			currentVertex->clipInfo				  = false;
@@ -836,14 +790,12 @@ void MapData::setOverlayTile(int32_t block, int32_t vertex, int32_t offset)
 }
 
 //---------------------------------------------------------------------------
-void MapData::setOverlay(
-	int32_t indexY, int32_t indexX, Overlays type, uint32_t offset)
+void MapData::setOverlay(int32_t indexY, int32_t indexX, Overlays type, uint32_t offset)
 {
 	int32_t index			   = indexX + indexY * Terrain::realVerticesMapSide;
 	PostcompVertexPtr ourBlock = &blocks[index];
 	ourBlock->textureData &= 0x0000ffff;
-	ourBlock->textureData |=
-		Terrain::terrainTextures->getOverlayHandle(type, offset);
+	ourBlock->textureData |= Terrain::terrainTextures->getOverlayHandle(type, offset);
 	setTerrain(indexY, indexX, -1);
 }
 
@@ -884,8 +836,7 @@ void MapData::setTerrain(int32_t indexY, int32_t indexX, int32_t Type)
 		if ((indexX > -1 && indexX < Terrain::realVerticesMapSide - 1) &&
 			(indexY > -1 && indexY < Terrain::realVerticesMapSide - 1))
 		{
-			int32_t index =
-				Vertices[i][x] + Vertices[i][y] * Terrain::realVerticesMapSide;
+			int32_t index = Vertices[i][x] + Vertices[i][y] * Terrain::realVerticesMapSide;
 			PostcompVertexPtr currentVertex = &blocks[index];
 			currentVertex->textureData &= 0xffff0000;
 			if (i == 0 && Type > 0)
@@ -894,27 +845,22 @@ void MapData::setTerrain(int32_t indexY, int32_t indexX, int32_t Type)
 			// Get the data needed to make this terrain quad
 			PostcompVertex* pVertex1 = currentVertex;
 			PostcompVertex* pVertex2 = currentVertex + 1;
-			PostcompVertex* pVertex3 =
-				currentVertex + Terrain::realVerticesMapSide + 1;
-			PostcompVertex* pVertex4 =
-				currentVertex + Terrain::realVerticesMapSide;
+			PostcompVertex* pVertex3 = currentVertex + Terrain::realVerticesMapSide + 1;
+			PostcompVertex* pVertex4 = currentVertex + Terrain::realVerticesMapSide;
 			//-------------------------------------------------------------------------------
 			// Store texture in bottom part from TxmIndex provided by
 			// TerrainTextureManager
-			uint32_t terrainType =
-				pVertex1->terrainType + (pVertex2->terrainType << 8) +
+			uint32_t terrainType = pVertex1->terrainType + (pVertex2->terrainType << 8) +
 				(pVertex3->terrainType << 16) + (pVertex4->terrainType << 24);
 			uint32_t overlayType = (pVertex1->textureData >> 16);
 			if (overlayType < Terrain::terrainTextures->getFirstOverlay())
 			{
-				pVertex1->textureData =
-					0xffff0000; // Erase the overlay, the numbers changed!
-				overlayType = 0xffff;
+				pVertex1->textureData = 0xffff0000; // Erase the overlay, the numbers changed!
+				overlayType			  = 0xffff;
 			}
 			// Insure Base Texture is zero.
 			pVertex1->textureData &= (pVertex1->textureData & 0xffff0000);
-			uint32_t txmResult =
-				Terrain::terrainTextures->setTexture(terrainType, overlayType);
+			uint32_t txmResult = Terrain::terrainTextures->setTexture(terrainType, overlayType);
 			pVertex1->textureData += txmResult;
 		}
 	}
@@ -930,14 +876,12 @@ int32_t MapData::getTerrain(int32_t tileR, int32_t tileC)
 }
 
 //---------------------------------------------------------------------------
-void MapData::getOverlay(
-	int32_t tileR, int32_t tileC, Overlays& type, uint32_t& Offset)
+void MapData::getOverlay(int32_t tileR, int32_t tileC, Overlays& type, uint32_t& Offset)
 {
 	gosASSERT(tileR < Terrain::realVerticesMapSide && tileR > -1);
 	gosASSERT(tileC < Terrain::realVerticesMapSide && tileC > -1);
 	int32_t index = tileC + tileR * Terrain::realVerticesMapSide;
-	Terrain::terrainTextures->getOverlayInfoFromHandle(
-		blocks[index].textureData, type, Offset);
+	Terrain::terrainTextures->getOverlayInfoFromHandle(blocks[index].textureData, type, Offset);
 }
 //---------------------------------------------------------------------------
 int32_t MapData::getOverlayTile(int32_t block, int32_t vertex)
@@ -979,36 +923,31 @@ float MapData::terrainAngle(Stuff::Vector3D& position, Stuff::Vector3D* normal)
 	upperLeft.x = floor(position.x * Terrain::oneOverWorldUnitsPerVertex);
 	upperLeft.x *= Terrain::worldUnitsPerVertex;
 	upperLeft.y = floor(position.y * Terrain::oneOverWorldUnitsPerVertex);
-	if (float(position.y * Terrain::oneOverWorldUnitsPerVertex) !=
-		(float)upperLeft.y)
+	if (float(position.y * Terrain::oneOverWorldUnitsPerVertex) != (float)upperLeft.y)
 		upperLeft.y += 1.0;
 	upperLeft.y *= Terrain::worldUnitsPerVertex;
 	Stuff::Vector2DOf<float> _upperLeft;
 	_upperLeft.Multiply(upperLeft, float(Terrain::oneOverWorldUnitsPerVertex));
 	Stuff::Vector2DOf<int32_t> meshOffset;
-	meshOffset.x = float2long(_upperLeft.x);
-	meshOffset.y = float2long(_upperLeft.y);
-	int32_t verticesMapSide =
-		Terrain::verticesBlockSide * Terrain::blocksMapSide;
+	meshOffset.x			= float2long(_upperLeft.x);
+	meshOffset.y			= float2long(_upperLeft.y);
+	int32_t verticesMapSide = Terrain::verticesBlockSide * Terrain::blocksMapSide;
 	meshOffset.x += (verticesMapSide >> 1);
 	meshOffset.y = (verticesMapSide >> 1) - meshOffset.y;
 	// Make sure we have map data to return.  Otherwise, just make it full
 	// bright
 	if (((meshOffset.x + 1) >= Terrain::realVerticesMapSide) ||
-		((meshOffset.y + 1) >= Terrain::realVerticesMapSide) ||
-		(meshOffset.x < 0) || (meshOffset.y < 0))
+		((meshOffset.y + 1) >= Terrain::realVerticesMapSide) || (meshOffset.x < 0) ||
+		(meshOffset.y < 0))
 		return (0.0f);
 	PostcompVertexPtr pVertex1 =
 		&blocks[meshOffset.x + (meshOffset.y * Terrain::realVerticesMapSide)];
 	PostcompVertexPtr pVertex2 =
-		&blocks[(meshOffset.x + 1) +
-				(meshOffset.y * Terrain::realVerticesMapSide)];
+		&blocks[(meshOffset.x + 1) + (meshOffset.y * Terrain::realVerticesMapSide)];
 	PostcompVertexPtr pVertex3 =
-		&blocks[(meshOffset.x + 1) +
-				((meshOffset.y + 1) * Terrain::realVerticesMapSide)];
+		&blocks[(meshOffset.x + 1) + ((meshOffset.y + 1) * Terrain::realVerticesMapSide)];
 	PostcompVertexPtr pVertex4 =
-		&blocks[meshOffset.x +
-				((meshOffset.y + 1) * Terrain::realVerticesMapSide)];
+		&blocks[meshOffset.x + ((meshOffset.y + 1) * Terrain::realVerticesMapSide)];
 	triPos.x	   = Terrain::worldUnitsPerVertex * floor(_upperLeft.x);
 	triPos.y	   = Terrain::worldUnitsPerVertex * floor(_upperLeft.y);
 	triPos.z	   = pVertex1->elevation;
@@ -1080,8 +1019,7 @@ float MapData::terrainAngle(Stuff::Vector3D& position, Stuff::Vector3D* normal)
 	}
 	else if (uvMode == BOTTOMLEFT)
 	{
-		deltaX =
-			fabs((upperLeft.x + Terrain::worldUnitsPerVertex) - position.x);
+		deltaX = fabs((upperLeft.x + Terrain::worldUnitsPerVertex) - position.x);
 		deltaY = fabs(upperLeft.y - position.y);
 		// Calculate which triangle and return elevation
 		//---------------------------------------------
@@ -1152,10 +1090,8 @@ float MapData::terrainLight(Stuff::Vector3D& position)
 		return (1.0f);
 	//-------------------------------------------------------
 	// Need pointer to block containing this vertex.
-	float fTLVx = (position.x - Terrain::mapTopLeft3d.x) *
-				  Terrain::oneOverWorldUnitsPerVertex;
-	float fTLVy = (Terrain::mapTopLeft3d.y - position.y) *
-				  Terrain::oneOverWorldUnitsPerVertex;
+	float fTLVx = (position.x - Terrain::mapTopLeft3d.x) * Terrain::oneOverWorldUnitsPerVertex;
+	float fTLVy = (Terrain::mapTopLeft3d.y - position.y) * Terrain::oneOverWorldUnitsPerVertex;
 	int32_t PVx = float2long(fTLVx);
 	int32_t PVy = float2long(fTLVy);
 	// Make sure we have map data to return.  Otherwise, just make it full
@@ -1163,14 +1099,10 @@ float MapData::terrainLight(Stuff::Vector3D& position)
 	if (((PVx + 1) >= Terrain::realVerticesMapSide) ||
 		((PVy + 1) >= Terrain::realVerticesMapSide) || (PVx < 0) || (PVy < 0))
 		return 1.0f;
-	PostcompVertexPtr pVertex1 =
-		&blocks[PVx + (PVy * Terrain::realVerticesMapSide)];
-	PostcompVertexPtr pVertex2 =
-		&blocks[(PVx + 1) + (PVy * Terrain::realVerticesMapSide)];
-	PostcompVertexPtr pVertex3 =
-		&blocks[(PVx + 1) + ((PVy + 1) * Terrain::realVerticesMapSide)];
-	PostcompVertexPtr pVertex4 =
-		&blocks[PVx + ((PVy + 1) * Terrain::realVerticesMapSide)];
+	PostcompVertexPtr pVertex1 = &blocks[PVx + (PVy * Terrain::realVerticesMapSide)];
+	PostcompVertexPtr pVertex2 = &blocks[(PVx + 1) + (PVy * Terrain::realVerticesMapSide)];
+	PostcompVertexPtr pVertex3 = &blocks[(PVx + 1) + ((PVy + 1) * Terrain::realVerticesMapSide)];
+	PostcompVertexPtr pVertex4 = &blocks[PVx + ((PVy + 1) * Terrain::realVerticesMapSide)];
 	Stuff::Vector3D vPos1, vPos2, vPos3, vPos4;
 	vPos1.x = (PVx * Terrain::worldUnitsPerVertex) + Terrain::mapTopLeft3d.x;
 	vPos1.y = Terrain::mapTopLeft3d.y - (PVy * Terrain::worldUnitsPerVertex);
@@ -1201,18 +1133,12 @@ float MapData::terrainLight(Stuff::Vector3D& position)
 	dist4			 = maxDist - dist4;
 	float distWeight = dist1 + dist2 + dist3 + dist4;
 	Stuff::Vector3D weightedNormal;
-	weightedNormal.x = (pVertex1->vertexNormal.x * dist1) +
-					   (pVertex2->vertexNormal.x * dist2) +
-					   (pVertex3->vertexNormal.x * dist3) +
-					   (pVertex4->vertexNormal.x * dist4);
-	weightedNormal.y = (pVertex1->vertexNormal.y * dist1) +
-					   (pVertex2->vertexNormal.y * dist2) +
-					   (pVertex3->vertexNormal.y * dist3) +
-					   (pVertex4->vertexNormal.y * dist4);
-	weightedNormal.z = (pVertex1->vertexNormal.z * dist1) +
-					   (pVertex2->vertexNormal.z * dist2) +
-					   (pVertex3->vertexNormal.z * dist3) +
-					   (pVertex4->vertexNormal.z * dist4);
+	weightedNormal.x = (pVertex1->vertexNormal.x * dist1) + (pVertex2->vertexNormal.x * dist2) +
+		(pVertex3->vertexNormal.x * dist3) + (pVertex4->vertexNormal.x * dist4);
+	weightedNormal.y = (pVertex1->vertexNormal.y * dist1) + (pVertex2->vertexNormal.y * dist2) +
+		(pVertex3->vertexNormal.y * dist3) + (pVertex4->vertexNormal.y * dist4);
+	weightedNormal.z = (pVertex1->vertexNormal.z * dist1) + (pVertex2->vertexNormal.z * dist2) +
+		(pVertex3->vertexNormal.z * dist3) + (pVertex4->vertexNormal.z * dist4);
 	if (distWeight > Stuff::SMALL)
 		weightedNormal /= distWeight;
 	else
@@ -1242,36 +1168,31 @@ Stuff::Vector3D MapData::terrainNormal(Stuff::Vector3D& position)
 	upperLeft.x = floor(position.x * Terrain::oneOverWorldUnitsPerVertex);
 	upperLeft.x *= Terrain::worldUnitsPerVertex;
 	upperLeft.y = floor(position.y * Terrain::oneOverWorldUnitsPerVertex);
-	if (float(position.y * Terrain::oneOverWorldUnitsPerVertex) !=
-		(float)upperLeft.y)
+	if (float(position.y * Terrain::oneOverWorldUnitsPerVertex) != (float)upperLeft.y)
 		upperLeft.y += 1.0;
 	upperLeft.y *= Terrain::worldUnitsPerVertex;
 	Stuff::Vector2DOf<float> _upperLeft;
 	_upperLeft.Multiply(upperLeft, float(Terrain::oneOverWorldUnitsPerVertex));
 	Stuff::Vector2DOf<int32_t> meshOffset;
-	meshOffset.x = float2long(_upperLeft.x);
-	meshOffset.y = float2long(_upperLeft.y);
-	int32_t verticesMapSide =
-		Terrain::verticesBlockSide * Terrain::blocksMapSide;
+	meshOffset.x			= float2long(_upperLeft.x);
+	meshOffset.y			= float2long(_upperLeft.y);
+	int32_t verticesMapSide = Terrain::verticesBlockSide * Terrain::blocksMapSide;
 	meshOffset.x += (verticesMapSide >> 1);
 	meshOffset.y = (verticesMapSide >> 1) - meshOffset.y;
 	// Make sure we have map data to return.  Otherwise, just make it full
 	// bright
 	if (((meshOffset.x + 1) >= Terrain::realVerticesMapSide) ||
-		((meshOffset.y + 1) >= Terrain::realVerticesMapSide) ||
-		(meshOffset.x < 0) || (meshOffset.y < 0))
+		((meshOffset.y + 1) >= Terrain::realVerticesMapSide) || (meshOffset.x < 0) ||
+		(meshOffset.y < 0))
 		return (Stuff::Vector3D(0.0f, 0.0f, 1.0f));
 	PostcompVertexPtr pVertex1 =
 		&blocks[meshOffset.x + (meshOffset.y * Terrain::realVerticesMapSide)];
 	PostcompVertexPtr pVertex2 =
-		&blocks[(meshOffset.x + 1) +
-				(meshOffset.y * Terrain::realVerticesMapSide)];
+		&blocks[(meshOffset.x + 1) + (meshOffset.y * Terrain::realVerticesMapSide)];
 	PostcompVertexPtr pVertex3 =
-		&blocks[(meshOffset.x + 1) +
-				((meshOffset.y + 1) * Terrain::realVerticesMapSide)];
+		&blocks[(meshOffset.x + 1) + ((meshOffset.y + 1) * Terrain::realVerticesMapSide)];
 	PostcompVertexPtr pVertex4 =
-		&blocks[meshOffset.x +
-				((meshOffset.y + 1) * Terrain::realVerticesMapSide)];
+		&blocks[meshOffset.x + ((meshOffset.y + 1) * Terrain::realVerticesMapSide)];
 	triPos.x	   = Terrain::worldUnitsPerVertex * floor(_upperLeft.x);
 	triPos.y	   = Terrain::worldUnitsPerVertex * floor(_upperLeft.y);
 	triPos.z	   = pVertex1->elevation;
@@ -1343,8 +1264,7 @@ Stuff::Vector3D MapData::terrainNormal(Stuff::Vector3D& position)
 	}
 	else if (uvMode == BOTTOMLEFT)
 	{
-		deltaX =
-			fabs((upperLeft.x + Terrain::worldUnitsPerVertex) - position.x);
+		deltaX = fabs((upperLeft.x + Terrain::worldUnitsPerVertex) - position.x);
 		deltaY = fabs(upperLeft.y - position.y);
 		// Calculate which triangle and return elevation
 		//---------------------------------------------
@@ -1417,8 +1337,7 @@ float MapData::terrainElevation(Stuff::Vector3D& position)
 	upperLeft.x = floor(position.x * Terrain::oneOverWorldUnitsPerVertex);
 	upperLeft.x *= Terrain::worldUnitsPerVertex;
 	upperLeft.y = floor(position.y * Terrain::oneOverWorldUnitsPerVertex);
-	if (float(position.y * Terrain::oneOverWorldUnitsPerVertex) !=
-		(float)upperLeft.y)
+	if (float(position.y * Terrain::oneOverWorldUnitsPerVertex) != (float)upperLeft.y)
 		upperLeft.y += 1.0;
 	upperLeft.y *= Terrain::worldUnitsPerVertex;
 	Stuff::Vector2DOf<float> _upperLeft;
@@ -1432,8 +1351,7 @@ float MapData::terrainElevation(Stuff::Vector3D& position)
 	if (int32_t(floor(_upperLeft.y)) != float2long(_upperLeft.y))
 		PAUSE(("Long != float2long  %d  ->  %d", int32_t(floor(_upperLeft.y)),
 			float2long(_upperLeft.y)));
-	int32_t verticesMapSide =
-		Terrain::verticesBlockSide * Terrain::blocksMapSide;
+	int32_t verticesMapSide = Terrain::verticesBlockSide * Terrain::blocksMapSide;
 	meshOffset.x += (verticesMapSide >> 1);
 	meshOffset.y = (verticesMapSide >> 1) - meshOffset.y;
 	if ((meshOffset.x >= (verticesMapSide - 1)))
@@ -1443,14 +1361,11 @@ float MapData::terrainElevation(Stuff::Vector3D& position)
 	PostcompVertexPtr pVertex1 =
 		&blocks[meshOffset.x + (meshOffset.y * Terrain::realVerticesMapSide)];
 	PostcompVertexPtr pVertex2 =
-		&blocks[(meshOffset.x + 1) +
-				(meshOffset.y * Terrain::realVerticesMapSide)];
+		&blocks[(meshOffset.x + 1) + (meshOffset.y * Terrain::realVerticesMapSide)];
 	PostcompVertexPtr pVertex3 =
-		&blocks[(meshOffset.x + 1) +
-				((meshOffset.y + 1) * Terrain::realVerticesMapSide)];
+		&blocks[(meshOffset.x + 1) + ((meshOffset.y + 1) * Terrain::realVerticesMapSide)];
 	PostcompVertexPtr pVertex4 =
-		&blocks[meshOffset.x +
-				((meshOffset.y + 1) * Terrain::realVerticesMapSide)];
+		&blocks[meshOffset.x + ((meshOffset.y + 1) * Terrain::realVerticesMapSide)];
 	triPos.x = Terrain::worldUnitsPerVertex * floor(_upperLeft.x);
 	triPos.y = Terrain::worldUnitsPerVertex * floor(_upperLeft.y);
 	triPos.z = pVertex1->elevation;
@@ -1528,8 +1443,7 @@ float MapData::terrainElevation(Stuff::Vector3D& position)
 	}
 	else if (uvMode == BOTTOMLEFT)
 	{
-		deltaX =
-			fabs((upperLeft.x + Terrain::worldUnitsPerVertex) - position.x);
+		deltaX = fabs((upperLeft.x + Terrain::worldUnitsPerVertex) - position.x);
 		deltaY = fabs(upperLeft.y - position.y);
 		// Calculate which triangle and return elevation
 		//---------------------------------------------
@@ -1591,8 +1505,7 @@ float MapData::terrainElevation(Stuff::Vector3D& position)
 //---------------------------------------------------------------------------
 void MapData::unselectAll()
 {
-	for (size_t i = 0;
-		 i < Terrain::realVerticesMapSide * Terrain::realVerticesMapSide; ++i)
+	for (size_t i = 0; i < Terrain::realVerticesMapSide * Terrain::realVerticesMapSide; ++i)
 	{
 		blocks[i].selected = false;
 	}
@@ -1602,16 +1515,14 @@ void MapData::unselectAll()
 //---------------------------------------------------------------------------
 void MapData::unhighlightAll()
 {
-	for (size_t i = 0;
-		 i < Terrain::realVerticesMapSide * Terrain::realVerticesMapSide; ++i)
+	for (size_t i = 0; i < Terrain::realVerticesMapSide * Terrain::realVerticesMapSide; ++i)
 	{
 		blocks[i].highlighted = false;
 	}
 }
 
 //---------------------------------------------------------------------------
-void MapData::selectVertex(
-	uint32_t tileRow, uint32_t tileCol, bool bSelect, bool bToggle)
+void MapData::selectVertex(uint32_t tileRow, uint32_t tileCol, bool bSelect, bool bToggle)
 {
 	// Just return.  Don't select anything!
 	if (tileRow >= Terrain::realVerticesMapSide)

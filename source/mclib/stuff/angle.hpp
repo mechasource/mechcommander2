@@ -17,7 +17,7 @@ namespace Stuff
 class Radian;
 class Degree;
 class SinCosPair;
-}
+} // namespace Stuff
 
 #if !defined(Spew)
 void Spew(PCSTR group, const Stuff::Radian& angle);
@@ -35,15 +35,15 @@ class SinCosPair;
 
 class Radian
 {
-  public:
-	float angle;
+public:
+	float m_angle;
 
 	//
 	// Constructors
 	//
 	Radian(void) {}
-	Radian(float a) { angle = a; }
-	Radian(const Radian& a) { angle = a.angle; }
+	Radian(float a) { m_angle = a; }
+	Radian(const Radian& a) { m_angle = a.m_angle; }
 	explicit Radian(const Degree& degree) { *this = degree; }
 	explicit Radian(const SinCosPair& pair) { *this = pair; }
 
@@ -53,14 +53,14 @@ class Radian
 	Radian& operator=(float angle)
 	{
 		// Check_Pointer(this);
-		this->angle = angle;
+		this->m_angle = angle;
 		return *this;
 	}
 	Radian& operator=(const Radian& radian)
 	{
 		// Check_Pointer(this);
 		Check_Object(&radian);
-		angle = radian.angle;
+		m_angle = radian.m_angle;
 		return *this;
 	}
 	Radian& operator=(const Degree& degree);
@@ -72,47 +72,47 @@ class Radian
 	operator float(void) const
 	{
 		// Check_Object(this);
-		return angle;
+		return m_angle;
 	}
 
 	float getdata(void) const
 	{
 		// Check_Object(this);
-		return angle;
+		return m_angle;
 	}
 	//
 	// These comparator functions are not designed to make exact comparisons
 	// of Scalaring point numbers, but rather to compare them to within some
 	// specified error threshold
 	//
-	bool operator!(void)const
+	bool operator!(void) const
 	{
 		// Check_Object(this);
-		return Small_Enough(angle);
+		return Small_Enough(m_angle);
 	}
 
 	bool operator==(const Radian& r) const
 	{
 		// Check_Object(this);
 		Check_Object(&r);
-		return Close_Enough(angle, r.angle);
+		return Close_Enough(m_angle, r.m_angle);
 	}
 	bool operator==(float r) const
 	{
 		// Check_Object(this);
-		return Close_Enough(angle, r);
+		return Close_Enough(m_angle, r);
 	}
 
 	bool operator!=(const Radian& r) const
 	{
 		// Check_Object(this);
 		Check_Object(&r);
-		return !Close_Enough(angle, r.angle);
+		return !Close_Enough(m_angle, r.m_angle);
 	}
 	bool operator!=(float r) const
 	{
 		// Check_Object(this);
-		return !Close_Enough(angle, r);
+		return !Close_Enough(m_angle, r);
 	}
 
 	//
@@ -121,61 +121,61 @@ class Radian
 	Radian& Negate(float r)
 	{
 		// Check_Pointer(this);
-		angle = -r;
+		m_angle = -r;
 		return *this;
 	}
 
 	Radian& Add(float r1, float r2)
 	{
 		// Check_Pointer(this);
-		angle = r1 + r2;
+		m_angle = r1 + r2;
 		return *this;
 	}
 	Radian& operator+=(float r)
 	{
 		// Check_Object(this);
-		angle += r;
+		m_angle += r;
 		return *this;
 	}
 
 	Radian& Subtract(float r1, float r2)
 	{
 		// Check_Pointer(this);
-		angle = r1 - r2;
+		m_angle = r1 - r2;
 		return *this;
 	}
 	Radian& operator-=(float r)
 	{
 		// Check_Object(this);
-		angle -= r;
+		m_angle -= r;
 		return *this;
 	}
 
 	Radian& Multiply(float r1, float r2)
 	{
 		// Check_Pointer(this);
-		angle = r1 * r2;
+		m_angle = r1 * r2;
 		return *this;
 	}
 	Radian& operator*=(float r)
 	{
 		// Check_Object(this);
-		angle *= r;
+		m_angle *= r;
 		return *this;
 	}
 
 	Radian& Divide(float r1, float r2)
 	{
 		// Check_Pointer(this);
-		Verify(!Small_Enough(r2));
-		angle = r1 / r2;
+		_ASSERT(!Small_Enough(r2));
+		m_angle = r1 / r2;
 		return *this;
 	}
 	Radian& operator/=(float r)
 	{
 		// Check_Object(this);
-		Verify(!Small_Enough(r));
-		angle /= r;
+		_ASSERT(!Small_Enough(r));
+		m_angle /= r;
 		return *this;
 	}
 
@@ -201,15 +201,15 @@ class Radian
 
 class Degree
 {
-  public:
-	float angle;
+public:
+	float m_angle;
 
 	//
 	// constructors
 	//
 	Degree() {}
-	Degree(float a) { angle = a; }
-	Degree(const Degree& a) { angle = a.angle; }
+	Degree(float a) { m_angle = a; }
+	Degree(const Degree& a) { m_angle = a.m_angle; }
 	explicit Degree(const Radian& radian) { *this = radian; }
 
 	//
@@ -219,20 +219,20 @@ class Degree
 	{
 		// Check_Object(this);
 		Check_Object(&degree);
-		angle = degree.angle;
+		m_angle = degree.m_angle;
 		return *this;
 	}
 	Degree& operator=(float angle)
 	{
 		// Check_Object(this);
-		this->angle = angle;
+		this->m_angle = angle;
 		return *this;
 	}
 	Degree& operator=(const Radian& radian)
 	{
 		// Check_Object(this);
 		Check_Object(&radian);
-		angle = radian.angle * Degrees_Per_Radian;
+		m_angle = radian.m_angle * Degrees_Per_Radian;
 		return *this;
 	}
 
@@ -250,7 +250,7 @@ inline Radian& Radian::operator=(const Degree& degree)
 {
 	// Check_Pointer(this);
 	Check_Object(&degree);
-	angle = degree.angle * Radians_Per_Degree;
+	m_angle = degree.m_angle * Radians_Per_Degree;
 	return *this;
 }
 
@@ -258,7 +258,7 @@ inline Radian& Radian::operator=(const Degree& degree)
 
 class SinCosPair
 {
-  public:
+public:
 	float sine, cosine;
 
 	//
@@ -297,7 +297,7 @@ class SinCosPair
 		// Check_Pointer(this);
 		Check_Object(&radian);
 		(void)radian; // 4100
-#if USE_ASSEMBLER_CODE
+#if USE_INLINE_ASSEMBLER_CODE
 		float* f = &sine;
 		_asm
 		{
@@ -305,7 +305,7 @@ class SinCosPair
 				push	edx
 
 				mov		ebx, f
-				mov		edx, [edx]radian.angle
+				mov		edx, [edx]radian.m_angle
 
 				fld		dword ptr [edx]
 				fsincos
@@ -337,23 +337,23 @@ inline Radian& Radian::operator=(const SinCosPair& pair)
 {
 	// Check_Pointer(this);
 	Check_Object(&pair);
-	angle = Arctan(pair.sine, pair.cosine);
+	m_angle = Arctan(pair.sine, pair.cosine);
 	return *this;
 }
-}
+} // namespace Stuff
 
 namespace MemoryStreamIO
 {
+#if _CONSIDERED_TEMPORARILY_DISABLED
+inline std::istream& Read(std::istream& stream, Stuff::Radian* output)
+{
+	return stream.read(output, sizeof(*output));
+}
 
-inline Stuff::MemoryStream& Read(
-	Stuff::MemoryStream* stream, Stuff::Radian* output)
+inline std::ostream& Write(std::ostream stream, const Stuff::Radian* input)
 {
-	return stream->ReadBytes(output, sizeof(*output));
+	return stream.write(input, sizeof(*input));
 }
-inline Stuff::MemoryStream& Write(
-	Stuff::MemoryStream* stream, const Stuff::Radian* input)
-{
-	return stream->WriteBytes(input, sizeof(*input));
-}
-}
+#endif
+} // namespace MemoryStreamIO
 #endif

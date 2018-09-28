@@ -66,30 +66,27 @@ void Stuff::Find_Roots(float a, // a*x*x + b*x + c = 0
 	}
 }
 
-uint32_t Stuff::Scaled_Float_To_Bits(
-	float in, float min, float max, uint32_t bits)
+uint32_t Stuff::Scaled_Float_To_Bits(float in, float min, float max, uint32_t bits)
 {
-	Verify(bits < 32);
-	Verify(bits > 0);
-	Verify(min < max);
-	Verify(in <= max);
-	Verify(in >= min);
+	_ASSERT(bits < 32);
+	_ASSERT(bits > 0);
+	_ASSERT(min < max);
+	_ASSERT(in <= max);
+	_ASSERT(in >= min);
 	uint32_t biggest_number = (0xffffffff >> (32 - bits));
 	float local_in			= in - min;
 	float range				= (max - min);
-	uint32_t return_value =
-		(uint32_t)((local_in / range) * (float)biggest_number);
-	// Verify((uint32_t)return_value >= 0x00000000);
-	Verify((uint32_t)return_value <= (uint32_t)biggest_number);
+	uint32_t return_value   = (uint32_t)((local_in / range) * (float)biggest_number);
+	// _ASSERT((uint32_t)return_value >= 0x00000000);
+	_ASSERT((uint32_t)return_value <= (uint32_t)biggest_number);
 	return return_value;
 }
 
-float Stuff::Scaled_Float_From_Bits(
-	uint32_t in, float min, float max, uint32_t bits)
+float Stuff::Scaled_Float_From_Bits(uint32_t in, float min, float max, uint32_t bits)
 {
-	Verify(bits < 32);
-	Verify(bits > 0);
-	Verify(min < max);
+	_ASSERT(bits < 32);
+	_ASSERT(bits > 0);
+	_ASSERT(min < max);
 	in &= (0xffffffff >> (32 - bits));
 	uint32_t biggest_number = (0xffffffff >> (32 - bits));
 	float ratio				= in / (float)biggest_number;
@@ -98,30 +95,27 @@ float Stuff::Scaled_Float_From_Bits(
 	return return_value;
 }
 
-uint32_t Stuff::Scaled_Int_To_Bits(
-	int32_t in, int32_t min, int32_t max, uint32_t bits)
+uint32_t Stuff::Scaled_Int_To_Bits(int32_t in, int32_t min, int32_t max, uint32_t bits)
 {
-	Verify(bits < 32);
-	Verify(bits > 0);
-	Verify(min < max);
-	Verify(in <= max);
-	Verify(in >= min);
+	_ASSERT(bits < 32);
+	_ASSERT(bits > 0);
+	_ASSERT(min < max);
+	_ASSERT(in <= max);
+	_ASSERT(in >= min);
 	uint32_t biggest_number = (0xffffffff >> (32 - bits));
 	int32_t local_in		= in - min;
 	int32_t range			= (max - min);
-	uint32_t return_value =
-		(uint32_t)(((float)local_in / (float)range) * (float)biggest_number);
-	// Verify((uint32_t)return_value >= 0x00000000);
-	Verify((uint32_t)return_value < (uint32_t)biggest_number);
+	uint32_t return_value   = (uint32_t)(((float)local_in / (float)range) * (float)biggest_number);
+	// _ASSERT((uint32_t)return_value >= 0x00000000);
+	_ASSERT((uint32_t)return_value < (uint32_t)biggest_number);
 	return return_value;
 }
 
-int32_t Stuff::Scaled_Int_From_Bits(
-	uint32_t in, int32_t min, int32_t max, uint32_t bits)
+int32_t Stuff::Scaled_Int_From_Bits(uint32_t in, int32_t min, int32_t max, uint32_t bits)
 {
-	Verify(bits < 32);
-	Verify(bits > 0);
-	Verify(min < max);
+	_ASSERT(bits < 32);
+	_ASSERT(bits > 0);
+	_ASSERT(min < max);
 	uint32_t biggest_number = (0xffffffff >> (32 - bits));
 	float ratio				= (float)in / (float)biggest_number;
 	int32_t range			= (max - min);

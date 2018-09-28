@@ -43,72 +43,63 @@
 #define MINLEN_RESERVED_WORD 2
 #define MAXLEN_RESERVED_WORD 11
 
-ReservedWord reservedWord2[] = {{"if", TKN_IF}, {"or", TKN_OR}, {"do", TKN_DO},
-	{"to", TKN_TO}, {nullptr, TKN_NONE}};
+ReservedWord reservedWord2[] = {
+	{"if", TKN_IF}, {"or", TKN_OR}, {"do", TKN_DO}, {"to", TKN_TO}, {nullptr, TKN_NONE}};
 
-ReservedWord reservedWord3[] = {{"and", TKN_AND}, {"for", TKN_FOR},
-	{"mod", TKN_MOD}, {"not", TKN_NOT}, {"var", TKN_VAR}, {"fsm", TKN_FSM},
+ReservedWord reservedWord3[] = {{"and", TKN_AND}, {"for", TKN_FOR}, {"mod", TKN_MOD},
+	{"not", TKN_NOT}, {"var", TKN_VAR}, {"fsm", TKN_FSM}, {nullptr, TKN_NONE}};
+
+ReservedWord reservedWord4[] = {{"else", TKN_ELSE}, {"then", TKN_THEN}, {"case", TKN_CASE},
+	{"code", TKN_CODE}, {"type", TKN_TYPE}, {nullptr, TKN_NONE}};
+
+ReservedWord reservedWord5[] = {{"const", TKN_CONST}, {"until", TKN_UNTIL}, {"while", TKN_WHILE},
+	{"endif", TKN_END_IF}, {"order", TKN_ORDER}, {"state", TKN_STATE}, {"trans", TKN_TRANS},
 	{nullptr, TKN_NONE}};
-
-ReservedWord reservedWord4[] = {{"else", TKN_ELSE}, {"then", TKN_THEN},
-	{"case", TKN_CASE}, {"code", TKN_CODE}, {"type", TKN_TYPE},
-	{nullptr, TKN_NONE}};
-
-ReservedWord reservedWord5[] = {{"const", TKN_CONST}, {"until", TKN_UNTIL},
-	{"while", TKN_WHILE}, {"endif", TKN_END_IF}, {"order", TKN_ORDER},
-	{"state", TKN_STATE}, {"trans", TKN_TRANS}, {nullptr, TKN_NONE}};
 
 ReservedWord reservedWord6[] = {{"module", TKN_MODULE}, {"repeat", TKN_REPEAT},
 	{"endfor", TKN_END_FOR}, {"switch", TKN_SWITCH}, {"static", TKN_STATIC},
 	{"endfsm", TKN_END_FSM}, {nullptr, TKN_NONE}};
 
-ReservedWord reservedWord7[] = {{"endcase", TKN_END_CASE},
-	{"eternal", TKN_ETERNAL}, {"library", TKN_LIBRARY}, {nullptr, TKN_NONE}};
+ReservedWord reservedWord7[] = {{"endcase", TKN_END_CASE}, {"eternal", TKN_ETERNAL},
+	{"library", TKN_LIBRARY}, {nullptr, TKN_NONE}};
 
-ReservedWord reservedWord8[] = {{"function", TKN_FUNCTION},
-	{"endwhile", TKN_END_WHILE}, {"endorder", TKN_END_ORDER},
-	{"endstate", TKN_END_STATE}, {nullptr, TKN_NONE}};
+ReservedWord reservedWord8[] = {{"function", TKN_FUNCTION}, {"endwhile", TKN_END_WHILE},
+	{"endorder", TKN_END_ORDER}, {"endstate", TKN_END_STATE}, {nullptr, TKN_NONE}};
 
 ReservedWord reservedWord9[] = {
-	{"endswitch", TKN_END_SWITCH}, {"endmodule", TKN_END_MODULE},
-	{"transback", TKN_TRANS_BACK},
-	{nullptr,
-		TKN_NONE} // This was missing.  Thank You Symantec!!!!		1/24/97 -fs
+	{"endswitch", TKN_END_SWITCH}, {"endmodule", TKN_END_MODULE}, {"transback", TKN_TRANS_BACK},
+	{nullptr, TKN_NONE} // This was missing.  Thank You Symantec!!!!		1/24/97 -fs
 };
 
-ReservedWord reservedWord10[] = {
-	{"endlibrary", TKN_END_LIBRARY}, {nullptr, TKN_NONE}};
+ReservedWord reservedWord10[] = {{"endlibrary", TKN_END_LIBRARY}, {nullptr, TKN_NONE}};
 
-ReservedWord reservedWord11[] = {
-	{"endfunction", TKN_END_FUNCTION}, {nullptr, TKN_NONE}};
+ReservedWord reservedWord11[] = {{"endfunction", TKN_END_FUNCTION}, {nullptr, TKN_NONE}};
 
-ReservedWord* reservedWordTable[] = {nullptr, nullptr, reservedWord2,
-	reservedWord3, reservedWord4, reservedWord5, reservedWord6, reservedWord7,
-	reservedWord8, reservedWord9, reservedWord10, reservedWord11};
+ReservedWord* reservedWordTable[] = {nullptr, nullptr, reservedWord2, reservedWord3, reservedWord4,
+	reservedWord5, reservedWord6, reservedWord7, reservedWord8, reservedWord9, reservedWord10,
+	reservedWord11};
 
 //------------
 // TOKEN lists
 
-TokenCodeType statementStartList[] = {TKN_FOR, TKN_IF, TKN_REPEAT, TKN_WHILE,
-	TKN_SWITCH, TKN_TRANS, TKN_TRANS_BACK, TKN_IDENTIFIER, TKN_NONE};
+TokenCodeType statementStartList[] = {TKN_FOR, TKN_IF, TKN_REPEAT, TKN_WHILE, TKN_SWITCH, TKN_TRANS,
+	TKN_TRANS_BACK, TKN_IDENTIFIER, TKN_NONE};
 
-TokenCodeType statementEndList[] = {TKN_SEMICOLON, TKN_END_IF, TKN_END_WHILE,
-	TKN_END_FOR, TKN_END_SWITCH, TKN_END_FUNCTION, TKN_END_ORDER, TKN_END_STATE,
-	TKN_ELSE, TKN_ELSIF, TKN_UNTIL, TKN_EOF, TKN_NONE};
+TokenCodeType statementEndList[] = {TKN_SEMICOLON, TKN_END_IF, TKN_END_WHILE, TKN_END_FOR,
+	TKN_END_SWITCH, TKN_END_FUNCTION, TKN_END_ORDER, TKN_END_STATE, TKN_ELSE, TKN_ELSIF, TKN_UNTIL,
+	TKN_EOF, TKN_NONE};
 
 TokenCodeType declarationStartList[] = {
 	TKN_CONST, TKN_VAR, TKN_FUNCTION, TKN_ORDER, TKN_STATE, TKN_NONE};
 
-PSTR TokenStrings[NUM_TOKENS] = {"{BAD TOKEN}", "{IDENTIFIER}", "{NUMBER}",
-	"{TYPE}", "{STRING}", "*", "(", ")", "-", "+", "=", "[", "]", ":", ";", "<",
-	">", ",", ".", "/", "==", "<=", ">=", "<>", "{EOF}", "{ERROR}", "code",
-	"order", "state", "and", "switch", "case", "const", "div", "do", "of",
-	"else", "endif", "endwhile", "endfor", "endfunction", "endorder",
-	"endstate", "endmodule", "endfsm", "endlibrary", "endvar", "endcode",
-	"endcase", "endswitch", "for", "function", "if", "mod", "not", "or",
-	"repeat", "then", "to", "until", "var", "@", "while", "elsif", "return",
-	"module", "fsm", "trans", "transback", "library", "eternal", "static", "#",
-	"{UNEXPECTED TOKEN}", "{STATEMENT MARKER}", "{ADDRESS MARKER}"};
+PSTR TokenStrings[NUM_TOKENS] = {"{BAD TOKEN}", "{IDENTIFIER}", "{NUMBER}", "{TYPE}", "{STRING}",
+	"*", "(", ")", "-", "+", "=", "[", "]", ":", ";", "<", ">", ",", ".", "/",
+	"==", "<=", ">=", "<>", "{EOF}", "{ERROR}", "code", "order", "state", "and", "switch", "case",
+	"const", "div", "do", "of", "else", "endif", "endwhile", "endfor", "endfunction", "endorder",
+	"endstate", "endmodule", "endfsm", "endlibrary", "endvar", "endcode", "endcase", "endswitch",
+	"for", "function", "if", "mod", "not", "or", "repeat", "then", "to", "until", "var", "@",
+	"while", "elsif", "return", "module", "fsm", "trans", "transback", "library", "eternal",
+	"static", "#", "{UNEXPECTED TOKEN}", "{STATEMENT MARKER}", "{ADDRESS MARKER}"};
 
 //--------
 // GLOBALS
@@ -156,21 +147,18 @@ extern bool DebugCodeEnabled;
 
 extern ABLModulePtr CurLibrary;
 
-int32_t (*ABLFile::createCB)(PVOID* file, PSTR fName) = nullptr;
-int32_t (*ABLFile::openCB)(PVOID* file, PSTR fName)   = nullptr;
-int32_t (*ABLFile::closeCB)(PVOID* file)			  = nullptr;
-bool (*ABLFile::eofCB)(PVOID file)					  = nullptr;
-int32_t (*ABLFile::readCB)(
-	PVOID file, puint8_t buffer, int32_t length)			  = nullptr;
-int32_t (*ABLFile::readLongCB)(PVOID file)					  = nullptr;
-int32_t (*ABLFile::readStringCB)(PVOID file, puint8_t buffer) = nullptr;
-int32_t (*ABLFile::readLineExCB)(
-	PVOID file, puint8_t buffer, int32_t maxLength) = nullptr;
-int32_t (*ABLFile::writeCB)(
-	PVOID file, puint8_t buffer, int32_t length)		   = nullptr;
-int32_t (*ABLFile::writeByteCB)(PVOID file, uint8_t byte)  = nullptr;
-int32_t (*ABLFile::writeLongCB)(PVOID file, int32_t value) = nullptr;
-int32_t (*ABLFile::writeStringCB)(PVOID file, PSTR buffer) = nullptr;
+int32_t (*ABLFile::createCB)(PVOID* file, PSTR fName)							 = nullptr;
+int32_t (*ABLFile::openCB)(PVOID* file, PSTR fName)								 = nullptr;
+int32_t (*ABLFile::closeCB)(PVOID* file)										 = nullptr;
+bool (*ABLFile::eofCB)(PVOID file)												 = nullptr;
+int32_t (*ABLFile::readCB)(PVOID file, puint8_t buffer, int32_t length)			 = nullptr;
+int32_t (*ABLFile::readLongCB)(PVOID file)										 = nullptr;
+int32_t (*ABLFile::readStringCB)(PVOID file, puint8_t buffer)					 = nullptr;
+int32_t (*ABLFile::readLineExCB)(PVOID file, puint8_t buffer, int32_t maxLength) = nullptr;
+int32_t (*ABLFile::writeCB)(PVOID file, puint8_t buffer, int32_t length)		 = nullptr;
+int32_t (*ABLFile::writeByteCB)(PVOID file, uint8_t byte)						 = nullptr;
+int32_t (*ABLFile::writeLongCB)(PVOID file, int32_t value)						 = nullptr;
+int32_t (*ABLFile::writeStringCB)(PVOID file, PSTR buffer)						 = nullptr;
 
 //***************************************************************************
 // ABL FILE routines
@@ -333,11 +321,10 @@ inline CharCodeType calcCharCode(int32_t ch) { return (charTable[ch]); }
 int32_t isReservedWord(void)
 {
 	int32_t wordLength = strlen(wordString);
-	if ((wordLength >= MINLEN_RESERVED_WORD) &&
-		(wordLength <= MAXLEN_RESERVED_WORD) && reservedWordTable[wordLength])
+	if ((wordLength >= MINLEN_RESERVED_WORD) && (wordLength <= MAXLEN_RESERVED_WORD) &&
+		reservedWordTable[wordLength])
 	{
-		for (ReservedWord* rwPtr = reservedWordTable[wordLength];
-			 rwPtr->string != nullptr; rwPtr++)
+		for (ReservedWord* rwPtr = reservedWordTable[wordLength]; rwPtr->string != nullptr; rwPtr++)
 		{
 			if (strcmp(wordString, rwPtr->string) == 0)
 			{
@@ -448,8 +435,7 @@ void languageDirective(void)
 	getChar();
 	char directive[32];
 	int32_t directiveLength = 0;
-	while ((curChar != ' ') && (curChar != '\n') && (curChar != '\r') &&
-		   (directiveLength < 31))
+	while ((curChar != ' ') && (curChar != '\n') && (curChar != '\r') && (directiveLength < 31))
 	{
 		directive[directiveLength++] = curChar;
 		getChar();
@@ -604,8 +590,8 @@ void languageDirective(void)
 				{
 					char directive2[32];
 					int32_t directiveLength = 0;
-					while ((curChar != ' ') && (curChar != '\n') &&
-						   (curChar != '\r') && (directiveLength < 31))
+					while ((curChar != ' ') && (curChar != '\n') && (curChar != '\r') &&
+						(directiveLength < 31))
 					{
 						directive2[directiveLength++] = curChar;
 						getChar();
@@ -716,8 +702,7 @@ void downShiftWord(void)
 	PSTR tp					 = tokenString;
 	int32_t checkLengthWord  = strlen(wordString);
 	int32_t checkLengthToken = strlen(tokenString);
-	if ((checkLengthWord >= MAXLEN_TOKENSTRING) ||
-		(checkLengthToken >= MAXLEN_TOKENSTRING))
+	if ((checkLengthWord >= MAXLEN_TOKENSTRING) || (checkLengthToken >= MAXLEN_TOKENSTRING))
 		ABL_Fatal(-1, " Boy did Glenn screw the pooch here!! ");
 	do
 	{
@@ -760,8 +745,8 @@ void getToken(void)
 
 void getWord(void)
 {
-	while ((calcCharCode(curChar) == CHR_LETTER) ||
-		   (calcCharCode(curChar) == CHR_DIGIT) || (curChar == '_'))
+	while ((calcCharCode(curChar) == CHR_LETTER) || (calcCharCode(curChar) == CHR_DIGIT) ||
+		(curChar == '_'))
 	{
 		*tokenp = curChar;
 		tokenp++;
@@ -783,8 +768,8 @@ void getWord(void)
 			*tokenp = curChar;
 			tokenp++;
 			getChar();
-			while ((calcCharCode(curChar) == CHR_LETTER) ||
-				   (calcCharCode(curChar) == CHR_DIGIT) || (curChar == '_'))
+			while ((calcCharCode(curChar) == CHR_LETTER) || (calcCharCode(curChar) == CHR_DIGIT) ||
+				(curChar == '_'))
 			{
 				*tokenp = curChar;
 				tokenp++;
@@ -885,8 +870,7 @@ void getNumber(void)
 	//------------------------------------------------------------
 	// Adjust number's value using decimal offset and the exponent
 	exponent = exponentValue + decimalOffset;
-	if ((exponent + wholeCount < -MAX_EXPONENT) ||
-		(exponent + wholeCount > MAX_EXPONENT))
+	if ((exponent + wholeCount < -MAX_EXPONENT) || (exponent + wholeCount > MAX_EXPONENT))
 	{
 		syntaxError(ABL_ERR_SYNTAX_REAL_OUT_OF_RANGE);
 		curToken = TKN_ERROR;
@@ -1091,19 +1075,17 @@ bool tokenIn(TokenCodeType* tokenList)
 
 //***************************************************************************
 
-void synchronize(TokenCodeType* tokenList1, TokenCodeType* tokenList2,
-	TokenCodeType* tokenList3)
+void synchronize(TokenCodeType* tokenList1, TokenCodeType* tokenList2, TokenCodeType* tokenList3)
 {
-	bool badLists =
-		(!tokenIn(tokenList1) && !tokenIn(tokenList2) && !tokenIn(tokenList3));
+	bool badLists = (!tokenIn(tokenList1) && !tokenIn(tokenList2) && !tokenIn(tokenList3));
 	if (badLists)
 	{
 		syntaxError((curToken == TKN_EOF) ? ABL_ERR_SYNTAX_UNEXPECTED_EOF
 										  : ABL_ERR_SYNTAX_UNEXPECTED_TOKEN);
 		//----------------------------------------------
 		// Now, we need to re-sync by skipping tokens...
-		while (!tokenIn(tokenList1) && !tokenIn(tokenList2) &&
-			   !tokenIn(tokenList3) && (curToken != TKN_EOF))
+		while (!tokenIn(tokenList1) && !tokenIn(tokenList2) && !tokenIn(tokenList3) &&
+			(curToken != TKN_EOF))
 			getToken();
 	}
 }
@@ -1116,8 +1098,7 @@ bool getSourceLine(void)
 {
 	if (!sourceFile->eof())
 	{
-		int32_t numChars =
-			sourceFile->readLineEx((puint8_t)sourceBuffer, MAXLEN_SOURCELINE);
+		int32_t numChars = sourceFile->readLineEx((puint8_t)sourceBuffer, MAXLEN_SOURCELINE);
 		if (numChars == 0)
 			return (false);
 		lineNumber++;

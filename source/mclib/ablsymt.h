@@ -28,7 +28,7 @@ typedef union {
 	PSTR stringPtr;
 } Value;
 
-typedef enum
+typedef enum VariableType : uint32_t
 {
 	VAR_TYPE_NORMAL,
 	VAR_TYPE_STATIC,
@@ -36,7 +36,7 @@ typedef enum
 	VAR_TYPE_REGISTERED
 } VariableType;
 
-typedef enum
+typedef enum DefinitionType : uint32_t
 {
 	DFN_UNDEFINED,
 	DFN_CONST,
@@ -49,7 +49,7 @@ typedef enum
 	DFN_FUNCTION
 } DefinitionType;
 
-typedef enum
+typedef enum RoutineKey : uint32_t
 {
 	RTN_DECLARED,
 	RTN_FORWARD,
@@ -140,7 +140,7 @@ typedef struct _SymTableNode
 	int32_t labelIndex; // really for compiling only...
 } SymTableNode;
 
-typedef enum
+typedef enum FunctionParamType
 {
 	PARAM_TYPE_ANYTHING,
 	PARAM_TYPE_CHAR,
@@ -155,7 +155,7 @@ typedef enum
 	NUM_PARAM_TYPES
 } FunctionParamType;
 
-typedef enum
+typedef enum FunctionReturnType
 {
 	RETURN_TYPE_NONE,
 	RETURN_TYPE_INTEGER,
@@ -228,8 +228,7 @@ void enterLocalSymTable(SymTableNodePtr& IdPtr);
 void enterNameLocalSymTable(SymTableNodePtr& IdPtr, PSTR name);
 void searchAndFindAllSymTables(SymTableNodePtr& IdPtr);
 void searchAndEnterLocalSymTable(SymTableNodePtr& IdPtr);
-/*inline*/ void searchAndEnterThisTable(
-	SymTableNodePtr& IdPtr, SymTableNodePtr thisTable);
+/*inline*/ void searchAndEnterThisTable(SymTableNodePtr& IdPtr, SymTableNodePtr thisTable);
 inline SymTableNodePtr symTableSuccessor(SymTableNodePtr nodeX);
 
 SymTableNodePtr searchSymTable(PSTR name, SymTableNodePtr nodePtr);
@@ -238,12 +237,10 @@ SymTableNodePtr searchSymTableForState(PSTR name, SymTableNodePtr nodePtr);
 SymTableNodePtr searchSymTableForString(PSTR name, SymTableNodePtr nodePtr);
 SymTableNodePtr searchSymTableDisplay(PSTR name);
 SymTableNodePtr enterSymTable(PSTR name, SymTableNodePtr* ptrToNodePtr);
-SymTableNodePtr insertSymTable(
-	SymTableNodePtr* tableRoot, SymTableNodePtr newNode);
-SymTableNodePtr extractSymTable(
-	SymTableNodePtr* tableRoot, SymTableNodePtr nodeKill);
-void enterStandardRoutine(PSTR name, int32_t routineKey, bool isOrder,
-	PSTR paramList, PSTR returnType, void (*callback)(void));
+SymTableNodePtr insertSymTable(SymTableNodePtr* tableRoot, SymTableNodePtr newNode);
+SymTableNodePtr extractSymTable(SymTableNodePtr* tableRoot, SymTableNodePtr nodeKill);
+void enterStandardRoutine(PSTR name, int32_t routineKey, bool isOrder, PSTR paramList,
+	PSTR returnType, void (*callback)(void));
 void enterScope(SymTableNodePtr symTableRoot);
 SymTableNodePtr exitScope(void);
 void initSymTable(void);

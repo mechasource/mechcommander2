@@ -35,10 +35,9 @@ typedef uint32_t* DWORDPtr;
 typedef struct _TG_TypeVertex
 {
 	// Only changes at load time.
-	Stuff::Point3D
-		position; // Position of vertex relative to base position of shape.
-	Stuff::Vector3D normal; // Vertex Normal
-	uint32_t aRGBLight;		// Vertex Light and Alpha
+	Stuff::Point3D position; // Position of vertex relative to base position of shape.
+	Stuff::Vector3D normal;  // Vertex Normal
+	uint32_t aRGBLight;		 // Vertex Light and Alpha
 
 } TG_TypeVertex;
 
@@ -68,9 +67,8 @@ typedef TG_Vertex* TG_VertexPtr;
 typedef struct _TG_ShadowVertex
 {
 	// Changes every frame if local light.  Rarely for the sun.  Moves slowly!
-	bool bDataIsNotValid; // Indicates that the struct contains unitialized data
-	Stuff::Point3D
-		position; // Position of vertex relative to base position of shape.
+	bool bDataIsNotValid;	// Indicates that the struct contains unitialized data
+	Stuff::Point3D position; // Position of vertex relative to base position of shape.
 } TG_ShadowVertex;
 
 typedef TG_ShadowVertex* TG_ShadowVertexPtr;
@@ -81,8 +79,7 @@ typedef TG_ShadowVertex* TG_ShadowVertexPtr;
 // pool!
 typedef struct _TG_ShadowVertexTemp
 {
-	uint32_t
-		fRGBFog; // Vertex Fog and Specular Color.  Needed if shadow is fogged.
+	uint32_t fRGBFog; // Vertex Fog and Specular Color.  Needed if shadow is fogged.
 	// Every frame for local light.  Once in a blue moon for infinite light.
 
 	// Changes each call to Transform.
@@ -183,23 +180,21 @@ protected:
 	uint32_t OEMaRGB;
 
 public:
-	float intensity;		  // How Bright
-	float closeDistance;	  // Distance out light is constant
-	float farDistance;		  // Distance at which light is off
-	float oneOverDistance;	// Used for falloff calc
-	Stuff::Point3D direction; // Direction in world of light source.  This is
-							  // the light spot center for POINT and SPOT
+	float intensity;					// How Bright
+	float closeDistance;				// Distance out light is constant
+	float farDistance;					// Distance at which light is off
+	float oneOverDistance;				// Used for falloff calc
+	Stuff::Point3D direction;			// Direction in world of light source.  This is
+										// the light spot center for POINT and SPOT
 	Stuff::LinearMatrix4D lightToWorld; // Transformation Matrix
-	Stuff::Vector3D
-		position; // Explicit position to aid terrain code with point sources.
-	Stuff::Point3D
-		spotDir; // Direction of the actual Spotlight to help with shadows, etc.
-	float maxSpotLength; // Maximum length spotlight can be from target.
+	Stuff::Vector3D position;			// Explicit position to aid terrain code with point sources.
+	Stuff::Point3D spotDir; // Direction of the actual Spotlight to help with shadows, etc.
+	float maxSpotLength;	// Maximum length spotlight can be from target.
 
 	void init(uint32_t lType)
 	{
-		gosASSERT((lType != TG_LIGHT_NONE) && (lType >= TG_LIGHT_AMBIENT) &&
-				  (lType <= TG_LIGHT_TERRAIN));
+		gosASSERT(
+			(lType != TG_LIGHT_NONE) && (lType >= TG_LIGHT_AMBIENT) && (lType <= TG_LIGHT_TERRAIN));
 		lightType = lType;
 		aRGB = OEMaRGB = 0xffffffff;
 		intensity	  = 1.0f;
@@ -287,19 +282,17 @@ class TG_Shape;
 // TG_Animation
 typedef struct _TG_Animation
 {
-	char nodeId[TG_NODE_ID]; // Node ID
-	uint32_t shapeId; // DON'T SCAN EVERY FRAME.  WOW IS IT SLOW!!!!!  Set this
-					  // first time through and its simple.
-	uint32_t numFrames; // Number of Frames of animation.
-	float frameRate;	// Number of Frames Per Second.
-	float tickRate;		// Number of Ticks Per Second.
-	Stuff::UnitQuaternion*
-		quat; // Stores animation offset in Quaternion rotation.
-	Stuff::Point3D*
-		pos; // Stores Positional offsets if present.  OTHERWISE nullptr!!!!!!!!
+	char nodeId[TG_NODE_ID];	 // Node ID
+	uint32_t shapeId;			 // DON'T SCAN EVERY FRAME.  WOW IS IT SLOW!!!!!  Set this
+								 // first time through and its simple.
+	uint32_t numFrames;			 // Number of Frames of animation.
+	float frameRate;			 // Number of Frames Per Second.
+	float tickRate;				 // Number of Ticks Per Second.
+	Stuff::UnitQuaternion* quat; // Stores animation offset in Quaternion rotation.
+	Stuff::Point3D* pos;		 // Stores Positional offsets if present.  OTHERWISE nullptr!!!!!!!!
 
-	void SaveBinaryCopy(File* binFile);
-	void LoadBinaryCopy(File* binFile);
+	void SaveBinaryCopy(MechFile* binFile);
+	void LoadBinaryCopy(MechFile* binFile);
 
 } TG_Animation;
 
@@ -309,18 +302,16 @@ typedef TG_Animation* TG_AnimationPtr;
 // TG_ShapeRec
 typedef struct _TG_ShapeRec
 {
-	TG_Shape* node; // Pointer to the actual TG_Shape for this piece
-	Stuff::LinearMatrix4D
-		localShapeToWorld;				// Matrix to transform this TG_Shape.
-	Stuff::LinearMatrix4D shapeToWorld; // Matrix to transform this TG_Shape.
-	Stuff::LinearMatrix4D worldToShape; // Inverse of above Matrix.
-	int32_t calcedThisFrame; // Turn number this matrix is current for.
+	TG_Shape* node;							 // Pointer to the actual TG_Shape for this piece
+	Stuff::LinearMatrix4D localShapeToWorld; // Matrix to transform this TG_Shape.
+	Stuff::LinearMatrix4D shapeToWorld;		 // Matrix to transform this TG_Shape.
+	Stuff::LinearMatrix4D worldToShape;		 // Inverse of above Matrix.
+	int32_t calcedThisFrame;				 // Turn number this matrix is current for.
 	bool processMe; // Flag indicating if I should transform/draw this.  Used
 					// for arms off.
-	TG_AnimationPtr currentAnimation; // Animation data being applied to this
-									  // shape.  OK if nullptr
-	_TG_ShapeRec*
-		parentNode; // Parent Node.  OK if nullptr but only for ROOT node!
+	TG_AnimationPtr currentAnimation;   // Animation data being applied to this
+										// shape.  OK if nullptr
+	_TG_ShapeRec* parentNode;			// Parent Node.  OK if nullptr but only for ROOT node!
 	Stuff::UnitQuaternion baseRotation; // Always ZERO unless set by appearance
 										// controlling this shape.
 
@@ -362,8 +353,7 @@ public:
 	virtual void init(void)
 	{
 		nodeId[0] = parentId[0] = '\0';
-		relativeNodeCenter.x = relativeNodeCenter.y = relativeNodeCenter.z =
-			0.0f;
+		relativeNodeCenter.x = relativeNodeCenter.y = relativeNodeCenter.z = 0.0f;
 		nodeCenter.x = nodeCenter.y = nodeCenter.z = 0.0f;
 	}
 
@@ -397,10 +387,7 @@ public:
 	//
 	// NOTE: Only takes the first GEOMOBJECT from the ASE file.  Multi-object
 	// Files will require user intervention to parse!!
-	virtual int32_t ParseASEFile(puint8_t /*aseBuffer*/, PSTR /*filename*/)
-	{
-		return 0;
-	}
+	virtual int32_t ParseASEFile(puint8_t /*aseBuffer*/, PSTR /*filename*/) { return 0; }
 
 	// Function return 0 is OK.  -1 if file is not ASE Format or missing data.
 	// This function simply parses the ASE buffers handed to it.  This allows
@@ -423,8 +410,7 @@ public:
 	// Function returns 0 if OK.  -1 if textureNum is out of range of
 	// numTextures.  This function takes the gosTextureHandle passed in and
 	// assigns it to the  textureNum entry of the listOfTextures;
-	virtual int32_t SetTextureHandle(
-		uint32_t /*textureNum*/, uint32_t /*gosTextureHandle*/)
+	virtual int32_t SetTextureHandle(uint32_t /*textureNum*/, uint32_t /*gosTextureHandle*/)
 	{
 		return 0;
 	}
@@ -432,16 +418,10 @@ public:
 	// Function returns 0 if OK.  -1 if textureNum is out of range of
 	// numTextures.  This function takes the gosTextureHandle passed in and
 	// assigns it to the  textureNum entry of the listOfTextures;
-	virtual int32_t SetTextureAlpha(uint32_t /*textureNum*/, bool /*alphaFlag*/)
-	{
-		return 0;
-	}
+	virtual int32_t SetTextureAlpha(uint32_t /*textureNum*/, bool /*alphaFlag*/) { return 0; }
 
 	// Need this so that Multi-Shapes can let each shape know texture info.
-	virtual void CreateListOfTextures(
-		TG_TexturePtr /*list*/, uint32_t /*numTxms*/)
-	{
-	}
+	virtual void CreateListOfTextures(TG_TexturePtr /*list*/, uint32_t /*numTxms*/) {}
 
 	//--------------------------------------------------------------
 	// Creates an instance of this shape for the game to muck with.
@@ -451,13 +431,10 @@ public:
 
 	virtual void SetFilter(bool /*flag*/) {}
 
-	virtual void SetLightRGBs(
-		uint32_t /*hPink*/, uint32_t /*hGreen*/, uint32_t /*hYellow*/)
-	{
-	}
+	virtual void SetLightRGBs(uint32_t /*hPink*/, uint32_t /*hGreen*/, uint32_t /*hYellow*/) {}
 
-	virtual void LoadBinaryCopy(File& binFile);
-	virtual void SaveBinaryCopy(File& binFile);
+	virtual void LoadBinaryCopy(MechFile& binFile);
+	virtual void SaveBinaryCopy(MechFile& binFile);
 };
 
 typedef TG_TypeNode* TG_TypeNodePtr;
@@ -489,11 +466,9 @@ protected:
 
 	TG_TypeVertexPtr listOfTypeVertices;	// Memory holding all vertex data
 	TG_TypeTrianglePtr listOfTypeTriangles; // Memory holding all triangle data
-	TG_TinyTexturePtr
-		listOfTextures; // List of texture Structures for this shape.
+	TG_TinyTexturePtr listOfTextures;		// List of texture Structures for this shape.
 
-	uint32_t
-		hotPinkRGB; // Stores the value for this shape to replace hot Pink With
+	uint32_t hotPinkRGB;   // Stores the value for this shape to replace hot Pink With
 	uint32_t hotYellowRGB; // Stores the value for this shape to replace hot
 						   // Yellow With
 	uint32_t hotGreenRGB;  // Stores the value for this shape to replace hot
@@ -514,8 +489,7 @@ public:
 		listOfTextures									 = nullptr;
 		alphaTestOn										 = false;
 		filterOn										 = true;
-		relativeNodeCenter.x = relativeNodeCenter.y = relativeNodeCenter.z =
-			0.0f;
+		relativeNodeCenter.x = relativeNodeCenter.y = relativeNodeCenter.z = 0.0f;
 		nodeCenter.x = nodeCenter.y = nodeCenter.z = 0.0f;
 		hotPinkRGB								   = 0x00cbf0ff;
 		hotYellowRGB							   = 0x00FEfF91;
@@ -562,8 +536,7 @@ public:
 	// Function returns 0 if OK.  -1 if textureNum is out of range of
 	// numTextures.  This function takes the gosTextureHandle passed in and
 	// assigns it to the  textureNum entry of the listOfTextures;
-	virtual int32_t SetTextureHandle(
-		uint32_t textureNum, uint32_t gosTextureHandle);
+	virtual int32_t SetTextureHandle(uint32_t textureNum, uint32_t gosTextureHandle);
 
 	// Function returns 0 if OK.  -1 if textureNum is out of range of
 	// numTextures.  This function takes the gosTextureHandle passed in and
@@ -592,8 +565,8 @@ public:
 
 	virtual int32_t GetNodeType(void) { return SHAPE_NODE; }
 
-	virtual void LoadBinaryCopy(File& binFile);
-	virtual void SaveBinaryCopy(File& binFile);
+	virtual void LoadBinaryCopy(MechFile& binFile);
+	virtual void SaveBinaryCopy(MechFile& binFile);
 };
 
 typedef TG_TypeShape* TG_TypeShapePtr;
@@ -621,16 +594,15 @@ protected:
 	uint32_t numVisibleFaces;   // Number of non-backfaced non-clipped faces.
 	uint32_t numVisibleShadows; // Number of visible Shadow Faces.
 
-	TG_Vertex* listOfColors; // Memory holding all unchanged or rarely changed
-							 // color data.
+	TG_Vertex* listOfColors;		// Memory holding all unchanged or rarely changed
+									// color data.
 	gos_VERTEX* listOfVertices;		// Memory holding all vertex data
 	TG_TrianglePtr listOfTriangles; // Memory holding all triangle data
-	DWORDPtr listOfVisibleFaces; // Memory holding indices into listOfTriangles
+	DWORDPtr listOfVisibleFaces;	// Memory holding indices into listOfTriangles
 	// Draw in this order.  First entry with value 0xffffffff
 	// Means all done, no more to draw.
 
-	TG_ShadowVertexPtr
-		listOfShadowVertices; // Stores shadow vertex information for the shape.
+	TG_ShadowVertexPtr listOfShadowVertices; // Stores shadow vertex information for the shape.
 	// We just use existing listOfTriangles to draw!
 
 	TG_ShadowVertexTempPtr listOfShadowTVertices; // Stores just the Volatile
@@ -643,9 +615,8 @@ protected:
 
 	bool shadowsVisible[MAX_SHADOWS]; // Is this shadow worth drawing?
 
-	uint32_t
-		aRGBHighlight; // Color to add to vertices to make building stand out.
-	uint32_t fogRGB;   // Color to make fog.
+	uint32_t aRGBHighlight; // Color to add to vertices to make building stand out.
+	uint32_t fogRGB;		// Color to make fog.
 
 	float shapeScalar;
 
@@ -660,8 +631,8 @@ protected:
 public:
 	// Matrices used to transform the shapes.
 	static Stuff::LinearMatrix4D* cameraOrigin;
-	static Stuff::Matrix4D* cameraToClip;
-	static Stuff::Matrix4D worldToClip;
+	static XMMATRIX*	cameraToClip;
+	static XMMATRIX		worldToClip;
 	static Stuff::LinearMatrix4D worldToCamera;
 	static TG_LightPtr* listOfLights; // List passed in a transform time
 	static uint32_t numLights;
@@ -720,8 +691,7 @@ public:
 	// This function sets up the camera Matrices for this TG_Shape to transform
 	// itself with.  These matrices are static and only need to be set once per
 	// render pass if the camera does not change for that pass.
-	static void SetCameraMatrices(
-		Stuff::LinearMatrix4D* camOrigin, Stuff::Matrix4D* camToClip);
+	static void SetCameraMatrices(Stuff::LinearMatrix4D* camOrigin, XMMATRIX* camToClip);
 
 	static void SetViewport(float mulX, float mulY, float addX, float addY);
 
@@ -737,27 +707,25 @@ public:
 	void SetFogRGB(uint32_t fRGB);
 
 	// This function does exactly what TranformShape does EXCEPT that the
-	// shapeToClip,  Lighting and backface matrices have been calculated in the
+	// shapeToClip,  Lighting and back face matrices have been calculated in the
 	// step above this one.  This saves enormous processor cycles when matrices
 	// are the same and transforms  Can just be run from the same matrices
-	// without recalcing them!  Function returns -1 if all vertex screen
+	// without recalculing them!  Function returns -1 if all vertex screen
 	// positions are off screen.  Function returns 0 if any one vertex screen
 	// position is off screen.  Function returns 1 is all vertex screen
 	// positions are on screen. NOTE:  THIS IS NOT A RIGOROUS CLIP!!!!!!!!!
-	int32_t MultiTransformShape(Stuff::Matrix4D* shapeToClip,
-		Stuff::Point3D* backFacePoint, TG_ShapeRecPtr parentNode,
-		bool isHudElement, uint8_t alphaValue, bool isClamped);
+	int32_t MultiTransformShape(XMMATRIX* shapeToClip, Stuff::Point3D* backFacePoint,
+		TG_ShapeRecPtr parentNode, bool isHudElement, uint8_t alphaValue, bool isClamped);
 
 	// This function creates the list of shadows and transforms them in
 	// preparation to drawing.
 	//
-	void MultiTransformShadows(
-		Stuff::Point3D* pos, Stuff::LinearMatrix4D* s2w, float rotation);
+	void MultiTransformShadows(Stuff::Point3D* pos, Stuff::LinearMatrix4D* s2w, float rotation);
 
 	// This function takes the current listOfVisibleFaces and draws them using
 	// gos_DrawTriangle.  Does clipping, too!
-	void Render(float forceZ = -1.0f, bool isHudElement = false,
-		uint8_t alphaValue = 0xff, bool isClamped = false);
+	void Render(float forceZ = -1.0f, bool isHudElement = false, uint8_t alphaValue = 0xff,
+		bool isClamped = false);
 
 	// This function takes the current listOfShadowTriangles and draws them
 	// using  gos_DrawTriangle.  Does clipping, too!
@@ -769,10 +737,7 @@ public:
 
 	PSTR getNodeName(void) { return myType->getNodeId(void); }
 
-	Stuff::Point3D GetRelativeNodeCenter(void)
-	{
-		return myType->GetRelativeNodeCenter(void);
-	}
+	Stuff::Point3D GetRelativeNodeCenter(void) { return myType->GetRelativeNodeCenter(void); }
 
 	bool PerPolySelect(float mouseX, float mouseY);
 
@@ -812,8 +777,7 @@ public:
 
 	void init(uint32_t maxVertices)
 	{
-		tgVertexPool = (TG_VertexPtr)TG_Shape::tglHeap->Malloc(
-			sizeof(TG_Vertex) * maxVertices);
+		tgVertexPool = (TG_VertexPtr)TG_Shape::tglHeap->Malloc(sizeof(TG_Vertex) * maxVertices);
 		gosASSERT(tgVertexPool != nullptr);
 		nextVertex	= tgVertexPool;
 		totalVertices = maxVertices;
@@ -866,8 +830,7 @@ public:
 
 	void init(uint32_t maxVertices)
 	{
-		gVertexPool = (gos_VERTEX*)TG_Shape::tglHeap->Malloc(
-			sizeof(gos_VERTEX) * maxVertices);
+		gVertexPool = (gos_VERTEX*)TG_Shape::tglHeap->Malloc(sizeof(gos_VERTEX) * maxVertices);
 		gosASSERT(gVertexPool != nullptr);
 		nextVertex	= gVertexPool;
 		totalVertices = maxVertices;
@@ -920,8 +883,7 @@ public:
 
 	void init(uint32_t maxTriangles)
 	{
-		trianglePool = (TG_Triangle*)TG_Shape::tglHeap->Malloc(
-			sizeof(TG_Triangle) * maxTriangles);
+		trianglePool = (TG_Triangle*)TG_Shape::tglHeap->Malloc(sizeof(TG_Triangle) * maxTriangles);
 		gosASSERT(trianglePool != nullptr);
 		nextTriangle   = trianglePool;
 		totalTriangles = maxTriangles;
@@ -1028,8 +990,7 @@ public:
 
 	void init(uint32_t maxTriangles)
 	{
-		triPool = (uint32_t*)TG_Shape::tglHeap->Malloc(
-			sizeof(uint32_t) * maxTriangles);
+		triPool = (uint32_t*)TG_Shape::tglHeap->Malloc(sizeof(uint32_t) * maxTriangles);
 		gosASSERT(triPool != nullptr);
 		nextTri		   = triPool;
 		totalTriangles = maxTriangles;

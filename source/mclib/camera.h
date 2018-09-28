@@ -78,7 +78,7 @@ protected:
 	Stuff::Vector3D screenResolution; // Resolution of screen in pixels
 	Stuff::Vector3D screenCenter;	 // Center coordinate of screen
 	Stuff::Vector3D lookVector;		  // Direction camera is looking.
-	Stuff::Vector3D physicalPos; // Actual Physical Position of camera in world.
+	Stuff::Vector3D physicalPos;	  // Actual Physical Position of camera in world.
 
 	CameraClass cameraClass; // Type of camera.w
 
@@ -91,22 +91,16 @@ protected:
 	float zoomLevelLODScale[MAX_LODS]; // Data to help calc which LOD at which
 									   // zoom.
 
-	Stuff::LinearMatrix4D cameraOrigin; // Translation and rotation of Camera
+	Stuff::LinearMatrix4D cameraOrigin;		   // Translation and rotation of Camera
 	Stuff::LinearMatrix4D worldToCameraMatrix; // Inverse of the above.
-
 	Stuff::YawPitchRange cameraDirection; // Direction camera is looking.
-
 	Stuff::Vector2DOf<float> cameraShift; // Position camera is looking At.
 
-	Stuff::Matrix4D
-		cameraToClip; // Camera Clip Matrix--Used for projection and zoom.
-	Stuff::Matrix4D worldToClip; // Matrix used to bring a point from world
-								 // space to camera/clip space
-	Stuff::Matrix4D clipToWorld; // Matrix used to bring a point from
-								 // camera/clip space to world space
+	XMMATRIX cameraToClip; // Camera Clip Matrix--Used for projection and zoom.
+	XMMATRIX worldToClip;  // Matrix used to bring a point from world space to camera/clip space
+	XMMATRIX clipToWorld;  // Matrix used to bring a point from camera/clip space to world space
 
-	float startZInverse; // Used to help interpolate the Screen Coords in
-						 // InverseProjectZ
+	float startZInverse; // Used to help interpolate the Screen Coords in InverseProjectZ
 	float startWInverse;
 	float zPerPixel;
 	float wPerPixel;
@@ -120,8 +114,8 @@ protected:
 
 	TG_LightPtr* terrainLights; // This is the light list to process every frame
 								// for TERRAIN ONLY
-	int32_t numTerrainLights; // Number of lights active for terrain.  Actually
-							  // Correct.
+	int32_t numTerrainLights;   // Number of lights active for terrain.  Actually
+								// Correct.
 
 	// Camera Scripting stuff
 	Stuff::Vector3D goalPosition;
@@ -223,8 +217,8 @@ public:
 	float day2NightTransitionTime; // Time in Seconds that light goes from day
 								   // to night.
 	float dayLightTime;			   // Current dayToNight Transition time.
-	bool forceShadowRecalc; // Has the sun/moon moved enough for shadows to have
-							// changed?
+	bool forceShadowRecalc;		   // Has the sun/moon moved enough for shadows to have
+								   // changed?
 
 	uint8_t seenRed;   // Red component of World Light
 	uint8_t seenGreen; // Green component of World Light
@@ -386,8 +380,8 @@ public:
 			screen.z = xformCoords.z;
 			screen.w = 0.000001f;
 		}
-		if ((screen.x < 0) || (screen.y < 0) ||
-			(screen.x > screenResolution.x) || (screen.y > screenResolution.y))
+		if ((screen.x < 0) || (screen.y < 0) || (screen.x > screenResolution.x) ||
+			(screen.y > screenResolution.y))
 			return false;
 		return TRUE;
 	}
@@ -396,11 +390,9 @@ public:
 
 	void projectCamera(Stuff::Vector3D& point);
 
-	size_t inverseProject(
-		Stuff::Vector2DOf<int32_t>& screenPos, Stuff::Vector3D& point);
+	size_t inverseProject(Stuff::Vector2DOf<int32_t>& screenPos, Stuff::Vector3D& point);
 
-	void getClosestVertex(
-		Stuff::Vector2DOf<int32_t>& screenPos, int32_t& row, int32_t& col);
+	void getClosestVertex(Stuff::Vector2DOf<int32_t>& screenPos, int32_t& row, int32_t& col);
 
 	void setOrthogonal(void);
 	virtual void setCameraOrigin(void);
@@ -491,11 +483,9 @@ public:
 
 	void removeWorldLight(uint32_t lightNum, TG_LightPtr light)
 	{
-		if ((lightNum < MAX_LIGHTS_IN_WORLD) &&
-			(worldLights[lightNum] == light))
+		if ((lightNum < MAX_LIGHTS_IN_WORLD) && (worldLights[lightNum] == light))
 		{
-			worldLights[lightNum] =
-				nullptr; // Up to class that created light to free it!!!!!!
+			worldLights[lightNum] = nullptr; // Up to class that created light to free it!!!!!!
 			return;
 		}
 		// If we get here, the light we passed in either had an invalid index OR
@@ -547,8 +537,7 @@ public:
 		float result = 1.0;
 		if (usePerspective)
 		{
-			result = 0.5f +
-					 ((projectionAngle - 28.0f) * 0.016666667f * 0.5); // 1/60th
+			result = 0.5f + ((projectionAngle - 28.0f) * 0.016666667f * 0.5); // 1/60th
 		}
 		return result;
 	}
@@ -694,12 +683,10 @@ public:
 		cameraAltitude = rot.z;
 		if (cameraAltitude < AltitudeMinimum)
 			cameraAltitude = AltitudeMinimum;
-		float anglePercent = (projectionAngle - MIN_PERSPECTIVE) /
-							 (MAX_PERSPECTIVE - MIN_PERSPECTIVE);
-		float testMax =
-			Camera::AltitudeMaximumLo +
-			((Camera::AltitudeMaximumHi - Camera::AltitudeMaximumLo) *
-				anglePercent);
+		float anglePercent =
+			(projectionAngle - MIN_PERSPECTIVE) / (MAX_PERSPECTIVE - MIN_PERSPECTIVE);
+		float testMax = Camera::AltitudeMaximumLo +
+			((Camera::AltitudeMaximumHi - Camera::AltitudeMaximumLo) * anglePercent);
 		newScaleFactor = 1.0f - ((cameraAltitude - AltitudeMinimum) / testMax);
 	}
 

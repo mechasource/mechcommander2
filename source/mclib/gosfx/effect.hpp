@@ -7,17 +7,21 @@
 
 #pragma once
 
-#include <stuff/plug.hpp>
+#include <stuff/linearmatrix.hpp>
+#include <stuff/registeredclass.hpp>
+#include <gosfx/gosfx.hpp>
+#include <gosfx/fcurve.hpp>
 
-//#include <gosfx/gosfx.hpp>
+//#include <stuff/plug.hpp>
 //#include <mlr/mlr.hpp>
+
 
 namespace MidLevelRenderer
 {
 class MLRState;
 class MLRClipper;
 class MLRClippingState;
-}
+} // namespace MidLevelRenderer
 
 namespace gosFX
 {
@@ -27,22 +31,22 @@ class Effect__ClassData;
 //####################################  Event  ###############################
 //############################################################################
 
-class Event : public Stuff::Plug
+class Event // : public Stuff::Plug
 {
-  public:
-	Event() : Plug(DefaultData) {}
+public:
+	Event() /* : Plug(DefaultData) */  {}
 	Event(const Event& event);
 
-	static Event* Make(Stuff::MemoryStream* stream, uint32_t gfx_version);
+	static Event* Make(std::istream& stream, uint32_t gfx_version);
 
-	void Save(Stuff::MemoryStream* stream);
+	void Save(std::ostream& stream);
 
 	float m_time;
 	uint32_t m_flags, m_effectID;
 	Stuff::LinearMatrix4D m_localToParent;
 
-  protected:
-	Event(Stuff::MemoryStream* stream, uint32_t gfx_version);
+protected:
+	Event(std::istream& stream, uint32_t gfx_version);
 };
 
 //############################################################################
@@ -57,28 +61,19 @@ class Effect__Specification
 	//----------------------------------------------------------------------
 	// Constructors/Destructors
 	//
-  protected:
-	Effect__Specification(Stuff::RegisteredClass::ClassID class_id,
-		Stuff::MemoryStream* stream, uint32_t gfx_version);
+protected:
+	Effect__Specification(Stuff::RegisteredClass::ClassID class_id, std::iostream stream, uint32_t gfx_version);
 
-  public:
-	Effect__Specification(
-		Stuff::RegisteredClass::ClassID class_id = gosFX::EffectClassID);
+public:
+	Effect__Specification(Stuff::RegisteredClass::ClassID class_id = gosFX::EffectClassID);
 	virtual ~Effect__Specification(void);
 
-	static Effect__Specification* Create(
-		Stuff::MemoryStream* stream, uint32_t gfx_version);
+	static Effect__Specification* Create(std::iostream stream, uint32_t gfx_version);
+	typedef Effect__Specification* (*Factory)(std::iostream stream, uint32_t gfx_version);
+	static Effect__Specification* Make(std::iostream stream, uint32_t gfx_version);
 
-	typedef Effect__Specification* (*Factory)(
-		Stuff::MemoryStream* stream, uint32_t gfx_version);
-
-	static Effect__Specification* Make(
-		Stuff::MemoryStream* stream, uint32_t gfx_version);
-
-	virtual void Save(Stuff::MemoryStream* stream);
-
+	virtual void Save(std::iostream stream);
 	virtual void BuildDefaults(void);
-
 	virtual bool IsDataValid(bool fix_data = false);
 
 	Stuff::RegisteredClass::ClassID GetClassID()
@@ -89,37 +84,43 @@ class Effect__Specification
 
 	virtual void Copy(Effect__Specification* spec);
 
-	std::wstring m_name; // Stuff::MString m_name;
-	uint32_t m_effectID;
-
-  protected:
+protected:
 	Stuff::RegisteredClass::ClassID m_class;
+
+	uint32_t m_effectID;
+	std::wstring m_name;
 
 	//----------------------------------------------------------------------
 	// Events
 	//
-  public:
-	Stuff::ChainOf<Event*> m_events;
-
+public:
 	void AdoptEvent(Event* event);
+
+protected:
+	std::list<Event*> m_events;		// Stuff::ChainOf<Event*> m_events;
 
 	//-------------------------------------------------------------------------
 	// FCurves
 	//
-  public:
+public:
+
+protected:
 	ConstantCurve m_lifeSpan;
-	SplineCurve m_minimumChildSeed, m_maximumChildSeed;
+	SplineCurve m_maximumChildSeed;
+	SplineCurve m_minimumChildSeed;
 
 	//----------------------------------------------------------------------
 	// States
 	//
-  public:
+public:
+
+protected:
 	MidLevelRenderer::MLRState m_state;
 
 	//----------------------------------------------------------------------
 	// Testing
 	//
-  public:
+public:
 	void TestInstance(void) const {}
 };
 
@@ -127,14 +128,14 @@ class Effect__Specification
 //###############################  Effect  ###################################
 //############################################################################
 
-class Effect : public Stuff::Node
+class Effect // : public Stuff::Node
 {
 	friend class EffectCloud;
 
 	//----------------------------------------------------------------------------
 	// Types
 	//
-  public:
+public:
 	struct ExecuteInfo
 	{
 		Stuff::Time m_time;
@@ -144,9 +145,8 @@ class Effect : public Stuff::Node
 		const Stuff::LinearMatrix4D* m_parentToWorld;
 		Stuff::OBB* m_bounds;
 
-		ExecuteInfo(Stuff::Time time,
-			const Stuff::LinearMatrix4D* parent_to_world, Stuff::OBB* bounds,
-			float seed = -1.0f)
+		ExecuteInfo(Stuff::Time time, const Stuff::LinearMatrix4D* parent_to_world,
+			Stuff::OBB* bounds, float seed = -1.0f)
 		{
 			m_time			= time;
 			m_seed			= seed;
@@ -158,9 +158,9 @@ class Effect : public Stuff::Node
 
 		void TestInstance(void) const {}
 
-	  private:
-		ExecuteInfo(float time, const Stuff::LinearMatrix4D* parent_to_world,
-			Stuff::OBB* bounds, float seed = -1.0f);
+	private:
+		ExecuteInfo(float time, const Stuff::LinearMatrix4D* parent_to_world, Stuff::OBB* bounds,
+			float seed = -1.0f);
 	};
 
 	struct DrawInfo
@@ -179,7 +179,7 @@ class Effect : public Stuff::Node
 	//----------------------------------------------------------------------------
 	// Initialization
 	//
-  public:
+public:
 	static void __stdcall InitializeClass(void);
 	static void __stdcall TerminateClass(void);
 	static ClassData* DefaultData;
@@ -187,10 +187,10 @@ class Effect : public Stuff::Node
 	//----------------------------------------------------------------------------
 	// Constructors/Destructors
 	//
-  protected:
+protected:
 	Effect(ClassData* class_data, Specification* spec, uint32_t flags);
 
-  public:
+public:
 	~Effect(void);
 
 	typedef Effect* (*Factory)(Specification* spec, uint32_t flags);
@@ -203,26 +203,26 @@ class Effect : public Stuff::Node
 		return m_specification;
 	}
 
-  protected:
+protected:
 	Specification* m_specification;
 
 	//----------------------------------------------------------------------------
 	// Events
 	//
-  protected:
-	Stuff::ChainOf<Effect*> m_children;
-	Stuff::ChainIteratorOf<Event*> m_event;
+protected:
+	std::list<Effect*> m_children;	// Stuff::ChainOf<Effect*> m_children;
+	std::unique_ptr<Event> m_event; // Stuff::ChainIteratorOf<Event*> m_event;
 
 	//----------------------------------------------------------------------------
 	// Testing
 	//
-  public:
+public:
 	void TestInstance(void) const;
 
 	//----------------------------------------------------------------------------
 	// API
 	//
-  public:
+public:
 	virtual void Start(ExecuteInfo* info);
 	void Stop(void);
 	virtual bool Execute(ExecuteInfo* info);
@@ -230,7 +230,7 @@ class Effect : public Stuff::Node
 	virtual void Draw(DrawInfo* info);
 	virtual bool HasFinished(void);
 
-	enum
+	enum : uint32_t
 	{
 		ExecuteFlag						= 1,
 		LoopFlag						= 2,
@@ -244,7 +244,7 @@ class Effect : public Stuff::Node
 	static Stuff::Vector3D s_ether;
 	static Stuff::Vector3D s_gravity;
 
-  public:
+public:
 	void SetExecuteOn()
 	{
 		// Check_Object(this);
@@ -308,9 +308,9 @@ class Effect : public Stuff::Node
 
 	Stuff::LinearMatrix4D m_localToWorld;
 
-  protected:
+protected:
 	Stuff::LinearMatrix4D m_localToParent;
-	Stuff::Time m_lastRan;
+	time_t m_lastRan;
 	float m_age, m_ageRate, m_seed;
 	uint32_t m_flags;
 };
@@ -319,14 +319,13 @@ class Effect : public Stuff::Node
 //########################    Effect__ClassData    #########################
 //##########################################################################
 
-class Effect__ClassData : public Stuff::Plug::ClassData
+class Effect__ClassData //: public Stuff::Plug::ClassData
 {
 	//----------------------------------------------------------------------------
 	//
-  public:
-	Effect__ClassData(Stuff::RegisteredClass::ClassID class_id,
-		PCSTR class_name, Stuff::Plug::ClassData* parent_class,
-		Effect::Factory effect_factory,
+public:
+	Effect__ClassData(Stuff::RegisteredClass::ClassID class_id, PCSTR class_name,
+		Stuff::Plug::ClassData* parent_class, Effect::Factory effect_factory,
 		Effect::Specification::Factory spec_factory)
 		: RegisteredClass__ClassData(class_id, class_name, parent_class),
 		  effectFactory(effect_factory), specificationFactory(spec_factory)
@@ -338,7 +337,7 @@ class Effect__ClassData : public Stuff::Plug::ClassData
 
 	//----------------------------------------------------------------------------
 	//
-  public:
+public:
 	void TestInstance(void);
 };
-}
+} // namespace gosFX

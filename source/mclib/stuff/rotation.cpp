@@ -24,10 +24,7 @@ const EulerAngles EulerAngles::Identity(0.0f, 0.0f, 0.0f);
 static bool UseFastLerp		 = true;
 static bool UseFastNormalize = true;
 
-static uint8_t __stdcall Check_UseFastLerp(void)
-{
-	return uint8_t((UseFastLerp == true) ? 1 : 0);
-}
+static uint8_t __stdcall Check_UseFastLerp(void) { return uint8_t((UseFastLerp == true) ? 1 : 0); }
 
 static uint8_t __stdcall Check_UseFastNormalize(void)
 {
@@ -36,10 +33,7 @@ static uint8_t __stdcall Check_UseFastNormalize(void)
 
 static void __stdcall Activate_UseFastLerp(void) { UseFastLerp = !UseFastLerp; }
 
-static void __stdcall Activate_UseFastNormalize(void)
-{
-	UseFastNormalize = !UseFastNormalize;
-}
+static void __stdcall Activate_UseFastNormalize(void) { UseFastNormalize = !UseFastNormalize; }
 
 //
 //#############################################################################
@@ -76,10 +70,8 @@ EulerAngles& EulerAngles::operator=(const LinearMatrix4D& matrix)
 {
 	// Check_Pointer(this);
 	Check_Object(&matrix);
-	Verify(Vector3D::Forward.z == 1.0f && Vector3D::Right.x == -1.0f &&
-			   Vector3D::Up.y == 1.0f ||
-		   Vector3D::Forward.z == -1.0f && Vector3D::Right.x == 1.0f &&
-			   Vector3D::Up.y == 1.0f);
+	_ASSERT(Vector3D::Forward.z == 1.0f && Vector3D::Right.x == -1.0f && Vector3D::Up.y == 1.0f ||
+		Vector3D::Forward.z == -1.0f && Vector3D::Right.x == 1.0f && Vector3D::Up.y == 1.0f);
 	SinCosPair p, y, r;
 	//
 	//-------------------------------------------------
@@ -134,7 +126,7 @@ EulerAngles& EulerAngles::operator=(const LinearMatrix4D& matrix)
 		r.cosine = matrix(0, 0) * one_y_cosine;
 #if defined(_ARMOR)
 		float temp = p.sine * y.sine * r.cosine - p.cosine * r.sine;
-		Verify(Close_Enough(temp, matrix(1, 0), 5e-3f));
+		_ASSERT(Close_Enough(temp, matrix(1, 0), 5e-3f));
 #endif
 	}
 	pitch = p;
@@ -151,7 +143,7 @@ bool Stuff::Small_Enough(const EulerAngles& angles, float e)
 {
 	Check_Object(&angles);
 	return Small_Enough(angles.pitch, e) && Small_Enough(angles.yaw, e) &&
-		   Small_Enough(angles.roll, e);
+		Small_Enough(angles.roll, e);
 }
 
 //
@@ -162,16 +154,15 @@ bool Stuff::Close_Enough(const EulerAngles& a1, const EulerAngles& a2, float e)
 {
 	Check_Object(&a1);
 	Check_Object(&a2);
-	return Close_Enough(a1.pitch, a2.pitch, e) &&
-		   Close_Enough(a1.yaw, a2.yaw, e) && Close_Enough(a1.roll, a2.roll, e);
+	return Close_Enough(a1.pitch, a2.pitch, e) && Close_Enough(a1.yaw, a2.yaw, e) &&
+		Close_Enough(a1.roll, a2.roll, e);
 }
 
 //
 //#############################################################################
 //#############################################################################
 //
-EulerAngles& EulerAngles::Lerp(
-	const EulerAngles& a1, const EulerAngles& a2, float t)
+EulerAngles& EulerAngles::Lerp(const EulerAngles& a1, const EulerAngles& a2, float t)
 {
 	// Check_Pointer(this);
 	Check_Object(&a1);
@@ -252,10 +243,8 @@ YawPitchRoll& YawPitchRoll::operator=(const LinearMatrix4D& matrix)
 {
 	// Check_Pointer(this);
 	Check_Object(&matrix);
-	Verify(Vector3D::Forward.z == 1.0f && Vector3D::Right.x == -1.0f &&
-			   Vector3D::Up.y == 1.0f ||
-		   Vector3D::Forward.z == -1.0f && Vector3D::Right.x == 1.0f &&
-			   Vector3D::Up.y == 1.0f);
+	_ASSERT(Vector3D::Forward.z == 1.0f && Vector3D::Right.x == -1.0f && Vector3D::Up.y == 1.0f ||
+		Vector3D::Forward.z == -1.0f && Vector3D::Right.x == 1.0f && Vector3D::Up.y == 1.0f);
 	SinCosPair p, y, r;
 	//
 	//---------------------------------------------------
@@ -298,8 +287,7 @@ YawPitchRoll& YawPitchRoll::operator=(const LinearMatrix4D& matrix)
 		y.cosine = matrix(2, 2) / p.cosine;
 		r.sine   = matrix(0, 1) / p.cosine;
 		r.cosine = matrix(1, 1) / p.cosine;
-		Verify(Close_Enough(y.cosine * r.cosine + p.sine * y.sine * r.sine,
-			matrix(0, 0), 1e-4f));
+		_ASSERT(Close_Enough(y.cosine * r.cosine + p.sine * y.sine * r.sine, matrix(0, 0), 1e-4f));
 	}
 	pitch = p;
 	yaw   = y;
@@ -315,28 +303,26 @@ bool Stuff::Small_Enough(const YawPitchRoll& angles, float e)
 {
 	Check_Object(&angles);
 	return Small_Enough(angles.pitch, e) && Small_Enough(angles.yaw, e) &&
-		   Small_Enough(angles.roll, e);
+		Small_Enough(angles.roll, e);
 }
 
 //
 //#############################################################################
 //#############################################################################
 //
-bool Stuff::Close_Enough(
-	const YawPitchRoll& a1, const YawPitchRoll& a2, float e)
+bool Stuff::Close_Enough(const YawPitchRoll& a1, const YawPitchRoll& a2, float e)
 {
 	Check_Object(&a1);
 	Check_Object(&a2);
-	return Close_Enough(a1.pitch, a2.pitch, e) &&
-		   Close_Enough(a1.yaw, a2.yaw, e) && Close_Enough(a1.roll, a2.roll, e);
+	return Close_Enough(a1.pitch, a2.pitch, e) && Close_Enough(a1.yaw, a2.yaw, e) &&
+		Close_Enough(a1.roll, a2.roll, e);
 }
 
 //
 //#############################################################################
 //#############################################################################
 //
-YawPitchRoll& YawPitchRoll::Lerp(
-	const YawPitchRoll& a1, const YawPitchRoll& a2, float t)
+YawPitchRoll& YawPitchRoll::Lerp(const YawPitchRoll& a1, const YawPitchRoll& a2, float t)
 {
 	// Check_Pointer(this);
 	Check_Object(&a1);
@@ -393,19 +379,16 @@ uint32_t UnitQuaternion::SlerpCount;
 cint32_t QuaternionLerpTableSize = static_cast<int32_t>(1024);
 cint32_t SinTableSize			 = static_cast<int32_t>(1024);
 
-const float MinCosom = static_cast<float>(-1.0f);
-const float MaxCosom = static_cast<float>(1.0f);
-const float CosomRangeOverOne =
-	static_cast<float>(1.0f / (MaxCosom - MinCosom));
-const float CosBiggestNumber =
-	(float)static_cast<uint32_t>(0xffffffff >> (32 - 10));
+const float MinCosom		  = static_cast<float>(-1.0f);
+const float MaxCosom		  = static_cast<float>(1.0f);
+const float CosomRangeOverOne = static_cast<float>(1.0f / (MaxCosom - MinCosom));
+const float CosBiggestNumber  = (float)static_cast<uint32_t>(0xffffffff >> (32 - 10));
 
-const float MinSin			= static_cast<float>(-1.3);
-const float MaxSin			= static_cast<float>(1.3);
-const float SinRangeOverOne = static_cast<float>(1.0f / (MaxSin - MinSin));
-const float SinIncrement = static_cast<float>((MaxSin - MinSin) / SinTableSize);
-const float SinBiggestNumber =
-	(float)static_cast<uint32_t>(0xffffffff >> (32 - 10));
+const float MinSin			 = static_cast<float>(-1.3);
+const float MaxSin			 = static_cast<float>(1.3);
+const float SinRangeOverOne  = static_cast<float>(1.0f / (MaxSin - MinSin));
+const float SinIncrement	 = static_cast<float>((MaxSin - MinSin) / SinTableSize);
+const float SinBiggestNumber = (float)static_cast<uint32_t>(0xffffffff >> (32 - 10));
 
 float Omega_Table[QuaternionLerpTableSize];
 float SinomOverOne_Table[QuaternionLerpTableSize];
@@ -421,23 +404,22 @@ float tableIncrementStepOverOne;
 
 void UnitQuaternion::InitializeClass()
 {
-	Verify(!quaternionFastLerpTableBuilt);
-	Verify(QuaternionLerpTableSize > 0);
+	_ASSERT(!quaternionFastLerpTableBuilt);
+	_ASSERT(QuaternionLerpTableSize > 0);
 	Initialize_Timer(SlerpTime, "Slerp Time");
-	AddStatistic(
-		"Quat Slerp Count", "slerps", gos_DWORD, &SlerpCount, Stat_AutoReset);
-	AddDebuggerMenuItem("Libraries\\Animation\\Use Fast Lerp",
-		Check_UseFastLerp, Activate_UseFastLerp, nullptr);
-	AddDebuggerMenuItem("Libraries\\Animation\\Use Fast Normalize",
-		Check_UseFastNormalize, Activate_UseFastNormalize, nullptr);
+	AddStatistic("Quat Slerp Count", "slerps", gos_DWORD, &SlerpCount, Stat_AutoReset);
+	AddDebuggerMenuItem(
+		"Libraries\\Animation\\Use Fast Lerp", Check_UseFastLerp, Activate_UseFastLerp, nullptr);
+	AddDebuggerMenuItem("Libraries\\Animation\\Use Fast Normalize", Check_UseFastNormalize,
+		Activate_UseFastNormalize, nullptr);
 	float increment_step	  = (MaxCosom - MinCosom) / QuaternionLerpTableSize;
 	tableIncrementStepOverOne = 1.0f / increment_step;
 	float cosom				  = MinCosom;
 	size_t i;
 	for (i = 0; i < QuaternionLerpTableSize; ++i)
 	{
-		Verify(cosom >= MinCosom);
-		Verify(cosom <= MaxCosom);
+		_ASSERT(cosom >= MinCosom);
+		_ASSERT(cosom <= MaxCosom);
 		Omega_Table[i]		  = Arccos(cosom);
 		SinomOverOne_Table[i] = 1.0f / Sin(Omega_Table[i]);
 		cosom += increment_step;
@@ -445,8 +427,8 @@ void UnitQuaternion::InitializeClass()
 	float sin_seed = MinSin;
 	for (i = 0; i < SinTableSize; ++i)
 	{
-		Verify(sin_seed >= MinSin);
-		Verify(sin_seed <= MaxSin);
+		_ASSERT(sin_seed >= MinSin);
+		_ASSERT(sin_seed <= MaxSin);
 		Sin_Table[i] = Sin(sin_seed);
 		sin_seed += SinIncrement;
 	}
@@ -502,7 +484,7 @@ UnitQuaternion& UnitQuaternion::operator=(const LinearMatrix4D& matrix)
 	w = (1.0f + matrix(0, 0) + matrix(1, 1) + matrix(2, 2)) * 0.25f;
 	if (Small_Enough(w, 1e-2f))
 	{
-		Verify(w >= -SMALL);
+		_ASSERT(w >= -SMALL);
 		if (w < 0.0f)
 		{
 			w = 0.0f;
@@ -547,7 +529,7 @@ UnitQuaternion& UnitQuaternion::operator=(const LinearMatrix4D& matrix)
 	//
 	else
 	{
-		Verify(w > 0.0f);
+		_ASSERT(w > 0.0f);
 		w = Sqrt(w);
 		x = (matrix(1, 2) - matrix(2, 1)) * 0.25f / w;
 		y = (matrix(2, 0) - matrix(0, 2)) * 0.25f / w;
@@ -597,8 +579,7 @@ UnitQuaternion& UnitQuaternion::operator=(const Vector3D& v)
 //#############################################################################
 //#############################################################################
 //
-bool Stuff::Close_Enough(
-	const UnitQuaternion& a1, const UnitQuaternion& a2, float e)
+bool Stuff::Close_Enough(const UnitQuaternion& a1, const UnitQuaternion& a2, float e)
 {
 	Check_Object(&a1);
 	Check_Object(&a2);
@@ -653,13 +634,12 @@ void UnitQuaternion::GetAxis(UnitVector3D* axis)
 //#############################################################################
 //#############################################################################
 //
-UnitQuaternion& UnitQuaternion::Multiply(
-	const UnitQuaternion& q2, const UnitQuaternion& q1)
+UnitQuaternion& UnitQuaternion::Multiply(const UnitQuaternion& q2, const UnitQuaternion& q1)
 {
 	// Check_Pointer(this);
 	Check_Object(&q1);
 	Check_Object(&q2);
-	Verify(this != &q1 && this != &q2);
+	_ASSERT(this != &q1 && this != &q2);
 	x = q1.w * q2.x + q2.w * q1.x + q1.y * q2.z - q1.z * q2.y;
 	y = q1.w * q2.y + q2.w * q1.y + q1.z * q2.x - q1.x * q2.z;
 	z = q1.w * q2.z + q2.w * q1.z + q1.x * q2.y - q1.y * q2.x;
@@ -672,8 +652,7 @@ UnitQuaternion& UnitQuaternion::Multiply(
 //#############################################################################
 //#############################################################################
 //
-UnitQuaternion& UnitQuaternion::Multiply(
-	const UnitQuaternion& q, const LinearMatrix4D& m)
+UnitQuaternion& UnitQuaternion::Multiply(const UnitQuaternion& q, const LinearMatrix4D& m)
 {
 	// Check_Pointer(this);
 	Check_Object(&q);
@@ -733,10 +712,10 @@ UnitQuaternion& UnitQuaternion::MultiplyScaled(
 	const UnitQuaternion& q1, const UnitQuaternion& q2, float t)
 {
 	// Check_Pointer(this);
-	Verify(this != &q1);
+	_ASSERT(this != &q1);
 	Check_Object(&q1);
 	Check_Object(&q2);
-	Verify(t >= 0.0f);
+	_ASSERT(t >= 0.0f);
 	UnitQuaternion scaled_quat;
 	scaled_quat.Multiply(q2, t);
 	Multiply(q1, scaled_quat);
@@ -815,8 +794,7 @@ UnitQuaternion& UnitQuaternion::FastNormalize()
 //#############################################################################
 //#############################################################################
 //
-UnitQuaternion& UnitQuaternion::Subtract(
-	const UnitQuaternion& end, const UnitQuaternion& start)
+UnitQuaternion& UnitQuaternion::Subtract(const UnitQuaternion& end, const UnitQuaternion& start)
 {
 	// Check_Pointer(this);
 	Check_Object(&start);
@@ -831,8 +809,7 @@ UnitQuaternion& UnitQuaternion::Subtract(
 //#############################################################################
 //#############################################################################
 //
-UnitQuaternion& UnitQuaternion::Subtract(
-	const UnitVector3D& end, const UnitVector3D& start)
+UnitQuaternion& UnitQuaternion::Subtract(const UnitVector3D& end, const UnitVector3D& start)
 {
 	// Check_Pointer(this);
 	Check_Object(&start);
@@ -939,8 +916,7 @@ UnitQuaternion& UnitQuaternion::Subtract(
 //#############################################################################
 //#############################################################################
 //
-UnitQuaternion& UnitQuaternion::Subtract(
-	const Vector3D& end, const Vector3D& start)
+UnitQuaternion& UnitQuaternion::Subtract(const Vector3D& end, const Vector3D& start)
 {
 	// Check_Pointer(this);
 	Check_Object(&start);
@@ -955,8 +931,7 @@ UnitQuaternion& UnitQuaternion::Subtract(
 //#############################################################################
 //#############################################################################
 //
-UnitQuaternion& UnitQuaternion::Lerp(
-	const EulerAngles& v1, const EulerAngles& v2, float t)
+UnitQuaternion& UnitQuaternion::Lerp(const EulerAngles& v1, const EulerAngles& v2, float t)
 {
 	UnitQuaternion q1;
 	q1 = v1;
@@ -970,8 +945,7 @@ UnitQuaternion& UnitQuaternion::Lerp(
 //
 #define SLERP_THRESHOLD (float)0.00001f
 
-UnitQuaternion& UnitQuaternion::Lerp(
-	const UnitQuaternion& p, const UnitQuaternion& q, float t)
+UnitQuaternion& UnitQuaternion::Lerp(const UnitQuaternion& p, const UnitQuaternion& q, float t)
 {
 	Start_Timer(SlerpTime);
 	Set_Statistic(SlerpCount, SlerpCount + 1);
@@ -1035,14 +1009,13 @@ UnitQuaternion& UnitQuaternion::Lerp(
 //#############################################################################
 //
 
-UnitQuaternion& UnitQuaternion::FastLerp(
-	const UnitQuaternion& p, const UnitQuaternion& q, float t)
+UnitQuaternion& UnitQuaternion::FastLerp(const UnitQuaternion& p, const UnitQuaternion& q, float t)
 {
 	if (!UseFastLerp)
 		return Lerp(p, q, t);
 	Start_Timer(SlerpTime);
 	Set_Statistic(SlerpCount, SlerpCount + 1);
-	Verify(quaternionFastLerpTableBuilt);
+	_ASSERT(quaternionFastLerpTableBuilt);
 	float cosom, sclp, sclq;
 	cosom = p.x * q.x + p.y * q.y + p.z * q.z + p.w * q.w;
 	if ((1.0f + cosom) > 0.01f)
@@ -1053,41 +1026,41 @@ UnitQuaternion& UnitQuaternion::FastLerp(
 			// usual case
 			// table_entry = (int32_t)Scaled_Float_To_Bits(cosom, MinCosom,
 			// MaxCosom, 10);
-			float tabled_float		= cosom - MinCosom;
-			int32_t cos_table_entry = Truncate_Float_To_Word(
-				((tabled_float * CosomRangeOverOne) * CosBiggestNumber));
-			Verify(cos_table_entry >= 0);
-			Verify(cos_table_entry <= QuaternionLerpTableSize);
+			float tabled_float = cosom - MinCosom;
+			int32_t cos_table_entry =
+				Truncate_Float_To_Word(((tabled_float * CosomRangeOverOne) * CosBiggestNumber));
+			_ASSERT(cos_table_entry >= 0);
+			_ASSERT(cos_table_entry <= QuaternionLerpTableSize);
 #if 0
 			sclp = Sin((1.0f - t) * Omega_Table[cos_table_entry]) * SinomOverOne_Table[cos_table_entry];
 			sclq = Sin(t * Omega_Table[cos_table_entry]) * SinomOverOne_Table[cos_table_entry];
 #else
 			float difference, percent, lerped_sin;
 			tabled_float = ((1.0f - t) * Omega_Table[cos_table_entry]) - MinSin;
-			int32_t sclp_table_entry = Truncate_Float_To_Word(
-				((tabled_float * SinRangeOverOne) * SinBiggestNumber));
+			int32_t sclp_table_entry =
+				Truncate_Float_To_Word(((tabled_float * SinRangeOverOne) * SinBiggestNumber));
 			if (!(sclp_table_entry < SinTableSize))
 			{
 				Max_Clamp(sclp_table_entry, SinTableSize - 1);
 			}
-			Verify(sclp_table_entry >= 0 && sclp_table_entry < SinTableSize);
-			difference = tabled_float - (SinIncrement * sclp_table_entry);
-			percent	= difference / SinIncrement;
+			_ASSERT(sclp_table_entry >= 0 && sclp_table_entry < SinTableSize);
+			difference			  = tabled_float - (SinIncrement * sclp_table_entry);
+			percent				  = difference / SinIncrement;
 			int32_t lerp_to_entry = sclp_table_entry + 1;
 			Max_Clamp(lerp_to_entry, SinTableSize - 1);
-			lerped_sin = Stuff::Lerp(
-				Sin_Table[sclp_table_entry], Sin_Table[lerp_to_entry], percent);
+			lerped_sin =
+				Stuff::Lerp(Sin_Table[sclp_table_entry], Sin_Table[lerp_to_entry], percent);
 			sclp		 = lerped_sin * SinomOverOne_Table[cos_table_entry];
 			tabled_float = (t * Omega_Table[cos_table_entry]) - MinSin;
-			int32_t sclq_table_entry = Truncate_Float_To_Word(
-				((tabled_float * SinRangeOverOne) * SinBiggestNumber));
-			Verify(sclq_table_entry >= 0 && sclq_table_entry < SinTableSize);
+			int32_t sclq_table_entry =
+				Truncate_Float_To_Word(((tabled_float * SinRangeOverOne) * SinBiggestNumber));
+			_ASSERT(sclq_table_entry >= 0 && sclq_table_entry < SinTableSize);
 			difference	= tabled_float - (SinIncrement * sclq_table_entry);
 			percent		  = difference / SinIncrement;
 			lerp_to_entry = sclq_table_entry + 1;
 			Max_Clamp(lerp_to_entry, SinTableSize - 1);
-			lerped_sin = Stuff::Lerp(
-				Sin_Table[sclq_table_entry], Sin_Table[lerp_to_entry], percent);
+			lerped_sin =
+				Stuff::Lerp(Sin_Table[sclq_table_entry], Sin_Table[lerp_to_entry], percent);
 			sclq = lerped_sin * SinomOverOne_Table[cos_table_entry];
 #endif
 		}
@@ -1131,11 +1104,10 @@ UnitQuaternion& UnitQuaternion::FastLerp(
 //#############################################################################
 //#############################################################################
 //
-UnitQuaternion UnitQuaternion::Squad(
-	const UnitQuaternion& p, // start quaternion
-	const UnitQuaternion& a, // start tangent quaternion
-	const UnitQuaternion& b, // end tangent quaternion
-	const UnitQuaternion& q, // end quaternion
+UnitQuaternion UnitQuaternion::Squad(const UnitQuaternion& p, // start quaternion
+	const UnitQuaternion& a,								  // start tangent quaternion
+	const UnitQuaternion& b,								  // end tangent quaternion
+	const UnitQuaternion& q,								  // end quaternion
 	float t)
 {
 	float k = 2.0f * (1.0f - t) * t;
@@ -1152,7 +1124,7 @@ UnitQuaternion UnitQuaternion::SquadRev(float angle, // angle of rotation
 	const UnitQuaternion& a,						 // start tangent quaternion
 	const UnitQuaternion& b,						 // end tangent quaternion
 	const UnitQuaternion& q,						 // end quaternion
-	float t // parameter, in range [0.0,1.0]
+	float t											 // parameter, in range [0.0,1.0]
 )
 {
 	float s, v;
@@ -1257,8 +1229,7 @@ UnitQuaternion& UnitQuaternion::Inverse(const UnitQuaternion& q)
 // Ratio of two quaternions: This creates a result quaternion r = p/q, such
 // that q*r = p.  (order of multiplication is important)
 
-UnitQuaternion& UnitQuaternion::Divide(
-	const UnitQuaternion& p, const UnitQuaternion& q)
+UnitQuaternion& UnitQuaternion::Divide(const UnitQuaternion& p, const UnitQuaternion& q)
 {
 	UnitQuaternion i;
 	i.Inverse(q);
@@ -1271,8 +1242,7 @@ UnitQuaternion& UnitQuaternion::Divide(
 //#############################################################################
 //
 
-UnitQuaternion& UnitQuaternion::LnDif(
-	const UnitQuaternion& p, const UnitQuaternion& q)
+UnitQuaternion& UnitQuaternion::LnDif(const UnitQuaternion& p, const UnitQuaternion& q)
 {
 	UnitQuaternion r;
 	r.Divide(q, p);
@@ -1326,8 +1296,8 @@ UnitQuaternion& UnitQuaternion::Exp(const UnitQuaternion& q)
 //#############################################################################
 //#############################################################################
 //
-UnitQuaternion UnitQuaternion::CompA(const UnitQuaternion& qprev,
-	const UnitQuaternion& q, const UnitQuaternion& qnext)
+UnitQuaternion UnitQuaternion::CompA(
+	const UnitQuaternion& qprev, const UnitQuaternion& q, const UnitQuaternion& qnext)
 {
 	UnitQuaternion qm, qp, r;
 	qm.LnDif(q, qprev);
@@ -1346,8 +1316,7 @@ UnitQuaternion UnitQuaternion::CompA(const UnitQuaternion& qprev,
 //#############################################################################
 //
 
-UnitQuaternion& UnitQuaternion::Orthog(
-	const UnitQuaternion& p, const Point3D& axis)
+UnitQuaternion& UnitQuaternion::Orthog(const UnitQuaternion& p, const Point3D& axis)
 {
 	Multiply(p, UnitQuaternion(axis.x, axis.y, axis.z, 0.0f));
 	return *this;
@@ -1380,5 +1349,5 @@ void UnitQuaternion::TestInstance(void) const
 		if (Small_Enough(diff))
 			STOP(("UnitQuaternion needs normalizing"));
 	}
-	Verify(Small_Enough(diff));
+	_ASSERT(Small_Enough(diff));
 }

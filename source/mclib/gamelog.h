@@ -10,22 +10,16 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
+#pragma once
+
 #ifndef GAMELOG_H
 #define GAMELOG_H
 //---------------------------------------------------------------------------
 // Include files
 
-#ifndef DSTD_H
-#include "dstd.h"
-#endif
-
-#ifndef DFILE_H
-#include "dfile.h"
-#endif
-
-#ifndef DGAMELOG_H
-#include "dgamelog.h"
-#endif
+//#include "dstd.h"
+//#include "dfile.h"
+//#include "dgamelog.h"
 
 //---------------------------------------------------------------------------
 
@@ -37,18 +31,18 @@
 class GameLog
 {
 
-  public:
+public:
 	int32_t handle;
 	bool inUse;
 	char fileName[MAXLEN_GAMELOG_NAME];
-	File* filePtr;
+	MechFile* filePtr;
 	int32_t numLines;
 	int32_t totalLines;
 	char lines[MAX_GAMELOG_LINES][MAX_GAMELOG_LINELEN];
 
 	static GameLogPtr files[MAX_GAMELOGS];
 
-  public:
+public:
 	PVOID operator new(size_t mySize);
 
 	void operator delete(PVOID us);

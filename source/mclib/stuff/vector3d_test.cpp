@@ -57,8 +57,8 @@ bool Vector3D::TestClass()
 #endif
 	Test_Assumption(x == Backward);
 	b.Cross(c, d);
-	Test_Assumption(b == Vector3D(c.y * d.z - c.z * d.y, c.z * d.x - c.x * d.z,
-							 c.x * d.y - c.y * d.x));
+	Test_Assumption(
+		b == Vector3D(c.y * d.z - c.z * d.y, c.z * d.x - c.x * d.z, c.x * d.y - c.y * d.x));
 	f = 2.0f;
 	b.Multiply(c, f);
 	Test_Assumption(b == Vector3D(f * c.x, f * c.y, f * c.z));
@@ -84,12 +84,12 @@ bool Vector3D::TestClass()
 	EulerAngles r(Pi_Over_4, 0.0f, 0.0f);
 	m.BuildRotation(r);
 	b.Multiply(c, m);
-	Test_Assumption(b == Vector3D(c.x, c.y * m(1, 1) + c.z * m(2, 1),
-							 c.y * m(1, 2) + c.z * m(2, 2)));
+	Test_Assumption(
+		b == Vector3D(c.x, c.y * m(1, 1) + c.z * m(2, 1), c.y * m(1, 2) + c.z * m(2, 2)));
 	b = c;
 	b *= m;
-	Test_Assumption(b == Vector3D(c.x, c.y * m(1, 1) + c.z * m(2, 1),
-							 c.y * m(1, 2) + c.z * m(2, 2)));
+	Test_Assumption(
+		b == Vector3D(c.x, c.y * m(1, 1) + c.z * m(2, 1), c.y * m(1, 2) + c.z * m(2, 2)));
 	Test_Assumption(!a.GetLengthSquared());
 	f = c.GetLengthSquared();
 	Test_Assumption(f == c.x * c.x + c.y * c.y + c.z * c.z);
@@ -98,10 +98,8 @@ bool Vector3D::TestClass()
 	b.Normalize(c);
 	Test_Assumption(b == Vector3D(c.x / f, c.y / f, c.z / f));
 	b.Combine(c, 2.0f, d, 2.0f);
-	Test_Assumption(b == Vector3D(2.0f * (c.x + d.x), 2.0f * (c.y + d.y),
-							 2.0f * (c.z + d.z)));
+	Test_Assumption(b == Vector3D(2.0f * (c.x + d.x), 2.0f * (c.y + d.y), 2.0f * (c.z + d.z)));
 	b.Lerp(c, d, 0.5f);
-	Test_Assumption(b == Vector3D(0.5f * (c.x + d.x), 0.5f * (c.y + d.y),
-							 0.5f * (c.z + d.z)));
+	Test_Assumption(b == Vector3D(0.5f * (c.x + d.x), 0.5f * (c.y + d.y), 0.5f * (c.z + d.z)));
 	return true;
 }

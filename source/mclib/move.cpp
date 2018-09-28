@@ -58,12 +58,11 @@ bool GlobalMap::logEnabled = false;
 bool ZeroHPrime	= false;
 bool CullPathAreas = false;
 
-const float LOSincrement = 0.33f; // based upon cell size
-const float LOFincrement = 0.33f; // based upon cell size
-const float LOSensorIncrement =
-	2.0; // based upon cell size (big, since we care only about tiles)
-bool debugMoveMap	 = false;
-bool ClearBridgeTiles = false;
+const float LOSincrement	  = 0.33f; // based upon cell size
+const float LOFincrement	  = 0.33f; // based upon cell size
+const float LOSensorIncrement = 2.0;   // based upon cell size (big, since we care only about tiles)
+bool debugMoveMap			  = false;
+bool ClearBridgeTiles		  = false;
 
 int32_t RamObjectWID = 0;
 
@@ -86,8 +85,7 @@ char rowShift[NUM_DIRECTIONS]   = {-1, -1, 0, 1, 1, 1, 0, -1};
 char colShift[NUM_DIRECTIONS]   = {0, 1, 1, 1, 0, -1, -1, -1};
 
 #define NUM_CELL_OFFSETS 128
-int32_t cellShift[NUM_CELL_OFFSETS * 2] = {-1, 0, -1, 1, 0, 1, 1, 1, 1, 0, 1,
-	-1, 0, -1, -1, -1,
+int32_t cellShift[NUM_CELL_OFFSETS * 2] = {-1, 0, -1, 1, 0, 1, 1, 1, 1, 0, 1, -1, 0, -1, -1, -1,
 
 	-2, 0, -2, 2, 0, 2, 2, 2, 2, 0, 2, -2, 0, -2, -2, -2,
 
@@ -120,14 +118,12 @@ int32_t cellShift[NUM_CELL_OFFSETS * 2] = {-1, 0, -1, 1, 0, 1, 1, 1, 1, 0, 1,
 	-15, 0, -15, 15, 0, 15, 15, 15, 15, 0, 15, -15, 0, -15, -15, -15};
 
 float cellShiftDistance[NUM_CELL_OFFSETS];
-char reverseShift[NUM_CELL_OFFSETS] = {4, 5, 6, 7, 0, 1, 2, 3, 12, 13, 14, 15,
-	8, 9, 10, 11, 20, 21, 22, 23, 16, 17, 18, 19, 28, 29, 30, 31, 24, 25, 26,
-	27, 36, 37, 38, 39, 32, 33, 34, 35, 44, 45, 46, 47, 40, 41, 42, 43, 52, 53,
-	54, 55, 48, 49, 50, 51, 60, 61, 62, 63, 56, 57, 58, 59, 68, 69, 70, 71, 64,
-	65, 66, 67, 76, 77, 78, 79, 72, 73, 74, 75, 84, 85, 86, 87, 80, 81, 82, 83,
-	92, 93, 94, 95, 88, 89, 90, 91, 100, 101, 102, 103, 96, 97, 98, 99, 108,
-	109, 110, 111, 104, 105, 106, 107, 116, 117, 118, 119, 112, 113, 114, 115,
-	124, 125, 126, 127, 120, 121, 122, 123};
+char reverseShift[NUM_CELL_OFFSETS] = {4, 5, 6, 7, 0, 1, 2, 3, 12, 13, 14, 15, 8, 9, 10, 11, 20, 21,
+	22, 23, 16, 17, 18, 19, 28, 29, 30, 31, 24, 25, 26, 27, 36, 37, 38, 39, 32, 33, 34, 35, 44, 45,
+	46, 47, 40, 41, 42, 43, 52, 53, 54, 55, 48, 49, 50, 51, 60, 61, 62, 63, 56, 57, 58, 59, 68, 69,
+	70, 71, 64, 65, 66, 67, 76, 77, 78, 79, 72, 73, 74, 75, 84, 85, 86, 87, 80, 81, 82, 83, 92, 93,
+	94, 95, 88, 89, 90, 91, 100, 101, 102, 103, 96, 97, 98, 99, 108, 109, 110, 111, 104, 105, 106,
+	107, 116, 117, 118, 119, 112, 113, 114, 115, 124, 125, 126, 127, 120, 121, 122, 123};
 
 int32_t tileMulMAPCELL_DIM[MAX_MAP_CELL_WIDTH];
 float MapCellDiagonal		= 0.0;
@@ -135,19 +131,17 @@ float HalfMapCell			= 0.0;
 float VerticesMapSideDivTwo = 0.0;
 float MetersMapSideDivTwo   = 0.0;
 
-bool IsDiagonalStep[NUM_CELL_OFFSETS] = {false, true, false, true, false, true,
-	false, true, false, false, false, false, false, false, false, false, false,
-	false, false, false, false, false, false, false, false, false, false, false,
-	false, false, false, false, false, false, false, false, false, false, false,
-	false, false, false, false, false, false, false, false, false, false, false,
-	false, false, false, false, false, false, false, false, false, false, false,
-	false, false, false, false, false, false, false, false, false, false, false,
-	false, false, false, false, false, false, false, false, false, false, false,
-	false, false, false, false, false, false, false, false, false, false, false,
-	false, false, false, false, false, false, false, false, false, false, false,
-	false, false, false, false, false, false, false, false, false, false, false,
-	false, false, false, false, false, false, false, false, false, false, false,
-	false};
+bool IsDiagonalStep[NUM_CELL_OFFSETS] = {false, true, false, true, false, true, false, true, false,
+	false, false, false, false, false, false, false, false, false, false, false, false, false,
+	false, false, false, false, false, false, false, false, false, false, false, false, false,
+	false, false, false, false, false, false, false, false, false, false, false, false, false,
+	false, false, false, false, false, false, false, false, false, false, false, false, false,
+	false, false, false, false, false, false, false, false, false, false, false, false, false,
+	false, false, false, false, false, false, false, false, false, false, false, false, false,
+	false, false, false, false, false, false, false, false, false, false, false, false, false,
+	false, false, false, false, false, false, false, false, false, false, false, false, false,
+	false, false, false, false, false, false, false, false, false, false, false, false, false,
+	false, false};
 
 int32_t StepAdjDir[9] = {-1, 0, 2, 2, 4, 4, 6, 6, 0};
 
@@ -157,15 +151,14 @@ inline float agsqrt(float _a, float _b) { return sqrt(_a * _a + _b * _b); }
 
 //-------------------------------------------------
 // Only pattern 2 is used now.
-char mineLayout[4][terrain_const::MAPCELL_DIM * terrain_const::MAPCELL_DIM] = {{0, 0, 0, 0, 0, 0, 0, 0, 0},
-	{0, 0, 0, 0, 0, 0, 0, 0, 0}, {1, 0, 1, 0, 1, 0, 1, 0, 1},
+char mineLayout[4][terrain_const::MAPCELL_DIM * terrain_const::MAPCELL_DIM] = {
+	{0, 0, 0, 0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0, 0, 0, 0}, {1, 0, 1, 0, 1, 0, 1, 0, 1},
 	{0, 0, 0, 0, 0, 0, 0, 0, 0}};
 
-char TeamRelations[MAX_TEAMS][MAX_TEAMS] = {
-	{0, 2, RELATION_NEUTRAL, 2, 2, 2, 2, 2}, {2, 0, 2, 2, 2, 2, 2, 2},
-	{RELATION_NEUTRAL, 2, 0, 2, 2, 2, 2, 2}, {2, 2, 2, 0, 2, 2, 2, 2},
-	{2, 2, 2, 2, 0, 2, 2, 2}, {2, 2, 2, 2, 2, 0, 2, 2},
-	{2, 2, 2, 2, 2, 2, 0, 2}, {2, 2, 2, 2, 2, 2, 2, 0}};
+char TeamRelations[MAX_TEAMS][MAX_TEAMS] = {{0, 2, RELATION_NEUTRAL, 2, 2, 2, 2, 2},
+	{2, 0, 2, 2, 2, 2, 2, 2}, {RELATION_NEUTRAL, 2, 0, 2, 2, 2, 2, 2}, {2, 2, 2, 0, 2, 2, 2, 2},
+	{2, 2, 2, 2, 0, 2, 2, 2}, {2, 2, 2, 2, 2, 0, 2, 2}, {2, 2, 2, 2, 2, 2, 0, 2},
+	{2, 2, 2, 2, 2, 2, 2, 0}};
 
 bool GoalIsDoor			= false;
 int32_t numNodesVisited = 0;
@@ -199,8 +192,7 @@ inline void calcAdjNode(int32_t& r, int32_t& c, int32_t direction)
 
 //---------------------------------------------------------------------------
 
-inline bool inMapBounds(
-	int32_t r, int32_t c, int32_t mapHeight, int32_t mapWidth)
+inline bool inMapBounds(int32_t r, int32_t c, int32_t mapHeight, int32_t mapWidth)
 {
 	return ((r >= 0) && (r < mapHeight) && (c >= 0) && (c < mapWidth));
 }
@@ -342,8 +334,7 @@ void MOVE_init(int32_t moveRange)
 	SimpleMovePathRange = moveRange;
 	if (SimpleMovePathRange <= 20)
 		Fatal(0, " MOVE_Init: MoveRange TOO SMALL. Go see Glenn. ");
-	PathFindMap[SIMPLE_PATHMAP]->init(
-		SimpleMovePathRange * 2 + 1, SimpleMovePathRange * 2 + 1);
+	PathFindMap[SIMPLE_PATHMAP]->init(SimpleMovePathRange * 2 + 1, SimpleMovePathRange * 2 + 1);
 }
 
 //---------------------------------------------------------------------------
@@ -371,7 +362,7 @@ void MOVE_buildData(int32_t height, int32_t width, MissionMapCellInfo* mapData,
 			Stuff::Vector3D worldPos;
 			land->cellToWorld(r, c, worldPos);
 			bool set = (land->IsEditorSelectTerrainPosition(worldPos) &&
-						!land->IsGameSelectTerrainPosition(worldPos));
+				!land->IsGameSelectTerrainPosition(worldPos));
 			GameMap->setOffMap(r, c, set);
 			if (set)
 				numOffMap++;
@@ -446,8 +437,7 @@ int32_t MOVE_saveData(PacketFile* packetFile, int32_t whichPacket)
 		Fatal(0, " MOVE_SaveData: Cannot initialize GlobalMoveMap ");
 	if (!packetFile)
 		return (GameMap->write(nullptr) + GlobalMoveMap[0]->write(nullptr) +
-				GlobalMoveMap[1]->write(nullptr) +
-				GlobalMoveMap[2]->write(nullptr) + 2);
+			GlobalMoveMap[1]->write(nullptr) + GlobalMoveMap[2]->write(nullptr) + 2);
 	//-----------------------
 	// Just some debugging...
 	// int32_t numOffMap = 0;
@@ -460,34 +450,28 @@ int32_t MOVE_saveData(PacketFile* packetFile, int32_t whichPacket)
 		GlobalMoveMap[0]->write(packetFile, whichPacket + numMissionMapPackets);
 	int32_t numGlobalMap1Packets = GlobalMoveMap[1]->write(
 		packetFile, whichPacket + numMissionMapPackets + numGlobalMap0Packets);
-	int32_t numGlobalMap2Packets = GlobalMoveMap[2]->write(
-		packetFile, whichPacket + numMissionMapPackets + numGlobalMap0Packets +
-						numGlobalMap1Packets);
-	int32_t result = packetFile->writePacket(
-		whichPacket + numMissionMapPackets + numGlobalMap0Packets +
-			numGlobalMap1Packets + numGlobalMap2Packets,
-		(puint8_t)&tempNumSpecialAreas, sizeof(int32_t));
+	int32_t numGlobalMap2Packets = GlobalMoveMap[2]->write(packetFile,
+		whichPacket + numMissionMapPackets + numGlobalMap0Packets + numGlobalMap1Packets);
+	int32_t result				 = packetFile->writePacket(whichPacket + numMissionMapPackets +
+			  numGlobalMap0Packets + numGlobalMap1Packets + numGlobalMap2Packets,
+		  (puint8_t)&tempNumSpecialAreas, sizeof(int32_t));
 	if (result <= 0)
 		Fatal(result, " MOVE_saveData: Unable to write num special area ");
 	//-------------------------------------------------------------------------------------------------
 	// If there are no special areas, we just write the specialArea count as a
 	// filler for the packet...
 	if (tempNumSpecialAreas == 0)
-		result = packetFile->writePacket(
-			whichPacket + numMissionMapPackets + numGlobalMap0Packets +
+		result = packetFile->writePacket(whichPacket + numMissionMapPackets + numGlobalMap0Packets +
 				numGlobalMap1Packets + numGlobalMap2Packets + 1,
 			(puint8_t)&tempNumSpecialAreas, sizeof(int32_t));
 	else
-		result = packetFile->writePacket(
-			whichPacket + numMissionMapPackets + numGlobalMap0Packets +
+		result = packetFile->writePacket(whichPacket + numMissionMapPackets + numGlobalMap0Packets +
 				numGlobalMap1Packets + numGlobalMap2Packets + 1,
-			(puint8_t)tempSpecialAreaFootPrints,
-			sizeof(GameObjectFootPrint) * tempNumSpecialAreas);
+			(puint8_t)tempSpecialAreaFootPrints, sizeof(GameObjectFootPrint) * tempNumSpecialAreas);
 	if (result <= 0)
-		Fatal(
-			result, " MOVE_saveData: Unable to write special area footprints ");
+		Fatal(result, " MOVE_saveData: Unable to write special area footprints ");
 	return (numMissionMapPackets + numGlobalMap0Packets + numGlobalMap1Packets +
-			numGlobalMap2Packets + 2);
+		numGlobalMap2Packets + 2);
 }
 
 //---------------------------------------------------------------------------
@@ -509,7 +493,7 @@ int32_t MOVE_readData(PacketFile* packetFile, int32_t whichPacket)
 	//		Stuff::Vector3D worldPos;
 	//		land->cellToWorld(r, c, worldPos);
 	//		bool set = (land->IsEditorSelectTerrainPosition(worldPos) &&
-	//!land->IsGameSelectTerrainPosition(worldPos)); 		if (set)
+	//! land->IsGameSelectTerrainPosition(worldPos)); 		if (set)
 	//			numOffMap[1]++;
 	//		if (set && !GameMap->getOffMap(r, c))
 	//			set = false;
@@ -538,8 +522,8 @@ int32_t MOVE_readData(PacketFile* packetFile, int32_t whichPacket)
 		if (!GlobalMoveMap[1])
 			Fatal(0, " MOVE_Init: Cannot initialize GlobalMoveMap1 ");
 		GlobalMoveMap[1]->hover = true;
-		numGlobalMap1Packets	= GlobalMoveMap[1]->init(packetFile,
-			   whichPacket + numMissionMapPackets + numGlobalMap0Packets);
+		numGlobalMap1Packets	= GlobalMoveMap[1]->init(
+			   packetFile, whichPacket + numMissionMapPackets + numGlobalMap0Packets);
 		//--------------------------------------
 		// Let's read the helicoptor move map...
 		if (GlobalMoveMap[2])
@@ -551,20 +535,17 @@ int32_t MOVE_readData(PacketFile* packetFile, int32_t whichPacket)
 		if (!GlobalMoveMap[2])
 			Fatal(0, " MOVE_Init: Cannot initialize GlobalMoveMap2 ");
 		GlobalMoveMap[2]->blank = true;
-		numGlobalMap2Packets	= GlobalMoveMap[2]->init(
-			   packetFile, whichPacket + numMissionMapPackets +
-							   numGlobalMap0Packets + numGlobalMap1Packets);
+		numGlobalMap2Packets	= GlobalMoveMap[2]->init(packetFile,
+			   whichPacket + numMissionMapPackets + numGlobalMap0Packets + numGlobalMap1Packets);
 		//------------------------------------------------------------------
 		// Delete the pathExistsTable for this one, since we don't use it...
 		systemHeap->Free(GlobalMoveMap[2]->pathExistsTable);
 		GlobalMoveMap[2]->pathExistsTable = nullptr;
-		int32_t numBytes				  = packetFile->readPacket(
-			 whichPacket + numMissionMapPackets + numGlobalMap0Packets +
-				 numGlobalMap1Packets + numGlobalMap2Packets,
-			 (puint8_t)&tempNumSpecialAreas);
+		int32_t numBytes = packetFile->readPacket(whichPacket + numMissionMapPackets +
+				numGlobalMap0Packets + numGlobalMap1Packets + numGlobalMap2Packets,
+			(puint8_t)&tempNumSpecialAreas);
 		if (numBytes <= 0)
-			Fatal(
-				numBytes, " MOVE_readData: Unable to read num special areas ");
+			Fatal(numBytes, " MOVE_readData: Unable to read num special areas ");
 		if (tempSpecialAreaFootPrints)
 		{
 			systemHeap->Free(tempSpecialAreaFootPrints);
@@ -572,16 +553,13 @@ int32_t MOVE_readData(PacketFile* packetFile, int32_t whichPacket)
 		}
 		if (tempNumSpecialAreas > 0)
 		{
-			tempSpecialAreaFootPrints =
-				(GameObjectFootPrint*)systemHeap->Malloc(
-					sizeof(GameObjectFootPrint) * tempNumSpecialAreas);
-			numBytes = packetFile->readPacket(
-				whichPacket + numMissionMapPackets + numGlobalMap0Packets +
-					numGlobalMap1Packets + numGlobalMap2Packets + 1,
+			tempSpecialAreaFootPrints = (GameObjectFootPrint*)systemHeap->Malloc(
+				sizeof(GameObjectFootPrint) * tempNumSpecialAreas);
+			numBytes = packetFile->readPacket(whichPacket + numMissionMapPackets +
+					numGlobalMap0Packets + numGlobalMap1Packets + numGlobalMap2Packets + 1,
 				(puint8_t)tempSpecialAreaFootPrints);
 			if (numBytes <= 0)
-				Fatal(numBytes,
-					" MOVE_readData: Unable to read num special areas ");
+				Fatal(numBytes, " MOVE_readData: Unable to read num special areas ");
 		}
 	}
 	//-----------------------
@@ -592,7 +570,7 @@ int32_t MOVE_readData(PacketFile* packetFile, int32_t whichPacket)
 	//		if (GameMap->getOffMap(r, c))
 	//			numOffMap[0]++;
 	return (numMissionMapPackets + numGlobalMap0Packets + numGlobalMap1Packets +
-			numGlobalMap2Packets + 2);
+		numGlobalMap2Packets + 2);
 }
 
 //---------------------------------------------------------------------------
@@ -650,33 +628,32 @@ void MissionMap::operator delete(PVOID us) { systemHeap->Free(us); }
 
 void MissionMap::init(int32_t h, int32_t w)
 {
-	height = h;
-	width  = w;
-	VerticesMapSideDivTwo =
-		(Terrain::blocksMapSide * Terrain::verticesBlockSide) / 2.0;
-	MetersMapSideDivTwo = Terrain::worldUnitsMapSide / 2;
-	MapCellDiagonal = Terrain::worldUnitsPerCell * 1.4142 * metersPerWorldUnit;
-	HalfMapCell		= Terrain::worldUnitsPerCell / 2.0;
+	height				  = h;
+	width				  = w;
+	VerticesMapSideDivTwo = (Terrain::blocksMapSide * Terrain::verticesBlockSide) / 2.0;
+	MetersMapSideDivTwo   = Terrain::worldUnitsMapSide / 2;
+	MapCellDiagonal		  = Terrain::worldUnitsPerCell * 1.4142 * metersPerWorldUnit;
+	HalfMapCell			  = Terrain::worldUnitsPerCell / 2.0;
 	int32_t i;
 	for (i = 0; i < MAX_MAP_CELL_WIDTH; i++)
 		tileMulMAPCELL_DIM[i] = i * terrain_const::MAPCELL_DIM;
 	int32_t tileWidth  = width / terrain_const::MAPCELL_DIM;
 	int32_t tileHeight = height / terrain_const::MAPCELL_DIM;
 	for (i = 0; i < tileHeight; i++)
-		Terrain::tileRowToWorldCoord[i] = (Terrain::worldUnitsMapSide / 2.0) -
-										  (i * Terrain::worldUnitsPerVertex);
+		Terrain::tileRowToWorldCoord[i] =
+			(Terrain::worldUnitsMapSide / 2.0) - (i * Terrain::worldUnitsPerVertex);
 	for (i = 0; i < tileWidth; i++)
-		Terrain::tileColToWorldCoord[i] = (i * Terrain::worldUnitsPerVertex) -
-										  (Terrain::worldUnitsMapSide / 2.0);
+		Terrain::tileColToWorldCoord[i] =
+			(i * Terrain::worldUnitsPerVertex) - (Terrain::worldUnitsMapSide / 2.0);
 	for (i = 0; i < terrain_const::MAPCELL_DIM; i++)
 		Terrain::cellToWorldCoord[i] =
 			(Terrain::worldUnitsPerVertex / (float)terrain_const::MAPCELL_DIM) * i;
 	for (i = 0; i < height; i++)
-		Terrain::cellRowToWorldCoord[i] = (Terrain::worldUnitsMapSide / 2.0) -
-										  (i * Terrain::worldUnitsPerCell);
+		Terrain::cellRowToWorldCoord[i] =
+			(Terrain::worldUnitsMapSide / 2.0) - (i * Terrain::worldUnitsPerCell);
 	for (i = 0; i < width; i++)
-		Terrain::cellColToWorldCoord[i] = (i * Terrain::worldUnitsPerCell) -
-										  (Terrain::worldUnitsMapSide / 2.0);
+		Terrain::cellColToWorldCoord[i] =
+			(i * Terrain::worldUnitsPerCell) - (Terrain::worldUnitsMapSide / 2.0);
 	if (map)
 	{
 		systemHeap->Free(map);
@@ -709,7 +686,7 @@ int32_t MissionMap::init(PacketFile* packetFile, int32_t whichPacket)
 	//		Stuff::Vector3D worldPos;
 	//		land->cellToWorld(r, c, worldPos);
 	//		bool set = (land->IsEditorSelectTerrainPosition(worldPos) &&
-	//!land->IsGameSelectTerrainPosition(worldPos));
+	//! land->IsGameSelectTerrainPosition(worldPos));
 	//		GameMap->setOffMap(r, c, set);
 	//		if (set)
 	//			numOffMap++;
@@ -730,20 +707,17 @@ int32_t MissionMap::write(PacketFile* packetFile, int32_t whichPacket)
 	// Return number of packets if !packetFile...
 	if (!packetFile)
 		return (NUM_MISSIONMAP_PACKETS);
-	int32_t result = packetFile->writePacket(
-		whichPacket++, (puint8_t)&height, sizeof(int32_t));
+	int32_t result = packetFile->writePacket(whichPacket++, (puint8_t)&height, sizeof(int32_t));
 	if (result <= 0)
 		Fatal(result, " MissionMap.write: Unable to write height packet ");
-	result = packetFile->writePacket(
-		whichPacket++, (puint8_t)&width, sizeof(int32_t));
+	result = packetFile->writePacket(whichPacket++, (puint8_t)&width, sizeof(int32_t));
 	if (result <= 0)
 		Fatal(result, " MissionMap.write: Unable to write width packet ");
-	result = packetFile->writePacket(
-		whichPacket++, (puint8_t)&planet, sizeof(int32_t));
+	result = packetFile->writePacket(whichPacket++, (puint8_t)&planet, sizeof(int32_t));
 	if (result <= 0)
 		Fatal(result, " MissionMap.write: Unable to write planet packet ");
-	result = packetFile->writePacket(
-		whichPacket++, (puint8_t)map, sizeof(MapCell) * height * width);
+	result =
+		packetFile->writePacket(whichPacket++, (puint8_t)map, sizeof(MapCell) * height * width);
 	if (result <= 0)
 		Fatal(result, " MissionMap.write: Unable to write map packet ");
 	return (NUM_MISSIONMAP_PACKETS);
@@ -760,8 +734,8 @@ bool MissionMap::getPassable(Stuff::Vector3D cellPosition)
 
 //---------------------------------------------------------------------------
 
-int32_t MissionMap::init(int32_t cellHeight, int32_t cellWidth,
-	int32_t curPlanet, MissionMapCellInfo* mapData)
+int32_t MissionMap::init(
+	int32_t cellHeight, int32_t cellWidth, int32_t curPlanet, MissionMapCellInfo* mapData)
 {
 	if (!map)
 		init(cellHeight, cellWidth);
@@ -784,8 +758,7 @@ int32_t MissionMap::init(int32_t cellHeight, int32_t cellWidth,
 				setGate(row, col, mapData[row * width + col].gate);
 				setRoad(row, col, mapData[row * width + col].road);
 				setPassable(row, col, mapData[row * width + col].passable);
-				setLocalHeight(
-					row, col, mapData[row * width + col].lineOfSight);
+				setLocalHeight(row, col, mapData[row * width + col].lineOfSight);
 				setPreserved(row, col, false);
 				setMine(row, col, mapData[row * width + col].mine);
 				setForest(row, col, mapData[row * width + col].forest);
@@ -824,8 +797,7 @@ int32_t MissionMap::init(int32_t cellHeight, int32_t cellWidth,
 				setTerrain(row, col, MC_GRASS_TYPE);
 				setOverlay(row, col, 0);
 				setGate(row, col, false);
-				if ((row == 0) || (col == 0) || (row == (height - 1)) ||
-					(col == (width - 1)))
+				if ((row == 0) || (col == 0) || (row == (height - 1)) || (col == (width - 1)))
 					setPassable(row, col, false);
 				else
 					setPassable(row, col, true);
@@ -840,8 +812,7 @@ int32_t MissionMap::init(int32_t cellHeight, int32_t cellWidth,
 
 //---------------------------------------------------------------------------
 
-void MissionMap::setPassable(
-	int32_t row, int32_t col, PSTR footPrint, bool passable)
+void MissionMap::setPassable(int32_t row, int32_t col, PSTR footPrint, bool passable)
 {
 	/* FootPrint Data format:
 			r1, c1, l1, r2, c2, l2, r3, c3, l3, ...
@@ -902,8 +873,7 @@ int32_t MissionMap::placeObject(Stuff::Vector3D position, float radius)
 	land->worldToCell(position, cellRow, cellCol);
 	//---------------------------------------------------------
 	// Now, set the cell states based upon the object's size...
-	float cellRadius =
-		(radius / (Terrain::worldUnitsPerCell * metersPerWorldUnit));
+	float cellRadius = (radius / (Terrain::worldUnitsPerCell * metersPerWorldUnit));
 	if ((cellRadius > 0.5) && (cellRadius < 1.0))
 		cellRadius = 1.0;
 	spreadState(cellRow, cellCol, (int32_t)cellRadius);
@@ -912,9 +882,8 @@ int32_t MissionMap::placeObject(Stuff::Vector3D position, float radius)
 
 //---------------------------------------------------------------------------
 
-void MissionMap::placeTerrainObject(int32_t objectClass, int32_t objectTypeID,
-	int32_t cellRow, int32_t cellCol, int64_t footPrint, bool blocksLineOfFire,
-	int32_t mineType)
+void MissionMap::placeTerrainObject(int32_t objectClass, int32_t objectTypeID, int32_t cellRow,
+	int32_t cellCol, int64_t footPrint, bool blocksLineOfFire, int32_t mineType)
 {
 #if 0
 	Assert(objectClass != -1, 0, " MissionMap.placeTerrainObject: bad ObjectClass ");
@@ -1032,8 +1001,8 @@ void MissionMap::placeTerrainObject(int32_t objectClass, int32_t objectTypeID,
 
 //---------------------------------------------------------------------------
 
-int32_t MissionMap::getOverlayWeight(int32_t cellR, int32_t cellC,
-	int32_t moverOverlayWeightClass, int32_t moverRelation)
+int32_t MissionMap::getOverlayWeight(
+	int32_t cellR, int32_t cellC, int32_t moverOverlayWeightClass, int32_t moverRelation)
 {
 	// int32_t overlay = getOverlay(cellR, cellC);
 	/*
@@ -1063,7 +1032,7 @@ int32_t MissionMap::getOverlayWeight(int32_t cellR, int32_t cellC,
 
 void MissionMap::print(PSTR fileName)
 {
-	File* debugFile = new File;
+	MechFile* debugFile = new MechFile;
 	debugFile->create(fileName);
 	for (size_t cellR = 0; cellR < height; cellR++)
 	{
@@ -1167,14 +1136,12 @@ void MovePath::lock(int32_t level, int32_t start, int32_t range, bool setting)
 	if (lastStep >= numStepsWhenNotPaused)
 		lastStep = numStepsWhenNotPaused;
 	for (size_t i = start; i < lastStep; i++)
-		GameMap->setPathlock(
-			level, stepList[i].cell[0], stepList[i].cell[1], setting);
+		GameMap->setPathlock(level, stepList[i].cell[0], stepList[i].cell[1], setting);
 }
 
 //---------------------------------------------------------------------------
 
-bool MovePath::isLocked(
-	int32_t level, int32_t start, int32_t range, bool* reachedEnd)
+bool MovePath::isLocked(int32_t level, int32_t start, int32_t range, bool* reachedEnd)
 {
 #ifdef _DEBUG
 	if (level > 1)
@@ -1192,8 +1159,7 @@ bool MovePath::isLocked(
 		lastStep = numStepsWhenNotPaused;
 	}
 	for (size_t i = start; i < lastStep; i++)
-		if (GameMap->getPathlock(
-				level, stepList[i].cell[0], stepList[i].cell[1]))
+		if (GameMap->getPathlock(level, stepList[i].cell[0], stepList[i].cell[1]))
 			return (true);
 	return (false);
 }
@@ -1243,8 +1209,7 @@ int32_t MovePath::crossesBridge(int32_t start, int32_t range)
 
 //---------------------------------------------------------------------------
 
-int32_t MovePath::crossesCell(
-	int32_t start, int32_t range, int32_t cellR, int32_t cellC)
+int32_t MovePath::crossesCell(int32_t start, int32_t range, int32_t cellR, int32_t cellC)
 {
 	if (start == -1)
 		start = curStep;
@@ -1261,17 +1226,11 @@ int32_t MovePath::crossesCell(
 
 //---------------------------------------------------------------------------
 
-int32_t MovePath::crossesClosedClanGate(int32_t start, int32_t range)
-{
-	return (-1);
-}
+int32_t MovePath::crossesClosedClanGate(int32_t start, int32_t range) { return (-1); }
 
 //---------------------------------------------------------------------------
 
-int32_t MovePath::crossesClosedISGate(int32_t start, int32_t range)
-{
-	return (-1);
-}
+int32_t MovePath::crossesClosedISGate(int32_t start, int32_t range) { return (-1); }
 
 //---------------------------------------------------------------------------
 
@@ -1343,7 +1302,7 @@ int32_t GlobalMap::init(PacketFilePtr packetFile, int32_t whichPacket)
 {
 	int32_t startPacket = whichPacket;
 	uint32_t version	= 0;
-	int32_t result = packetFile->readPacket(whichPacket++, (puint8_t)&version);
+	int32_t result		= packetFile->readPacket(whichPacket++, (puint8_t)&version);
 	if (result == 0)
 		Fatal(result, " GlobalMap.init: unable to read version packet ");
 	bool badVersion = false;
@@ -1394,29 +1353,24 @@ int32_t GlobalMap::init(PacketFilePtr packetFile, int32_t whichPacket)
 	result = packetFile->readPacket(whichPacket++, (puint8_t)areaMap);
 	if (result == 0)
 		Fatal(result, " GlobalMap.init: unable to read areaMap packet ");
-	areas =
-		(GlobalMapAreaPtr)systemHeap->Malloc(sizeof(GlobalMapArea) * numAreas);
+	areas = (GlobalMapAreaPtr)systemHeap->Malloc(sizeof(GlobalMapArea) * numAreas);
 	gosASSERT(areas != nullptr);
 	result = packetFile->readPacket(whichPacket++, (puint8_t)areas);
 	if (result == 0)
 		Fatal(result, " GlobalMap.init: unable to read areas packet ");
-	doorInfos =
-		(DoorInfoPtr)systemHeap->Malloc(sizeof(DoorInfo) * numDoorInfos);
+	doorInfos = (DoorInfoPtr)systemHeap->Malloc(sizeof(DoorInfo) * numDoorInfos);
 	gosASSERT(doorInfos != nullptr);
 	int32_t curDoorInfo = 0;
 	int32_t i;
 	for (i = 0; i < numAreas; i++)
 		if (areas[i].numDoors)
 		{
-			result = packetFile->readPacket(
-				whichPacket++, (puint8_t)&doorInfos[curDoorInfo]);
+			result = packetFile->readPacket(whichPacket++, (puint8_t)&doorInfos[curDoorInfo]);
 			if (result == 0)
-				Fatal(result,
-					" GlobalMap.init: unable to read doorInfos packet ");
+				Fatal(result, " GlobalMap.init: unable to read doorInfos packet ");
 			curDoorInfo += areas[i].numDoors;
 		}
-	Assert(
-		numDoorInfos == curDoorInfo, 0, " GlobalMap.init: bad doorInfo count ");
+	Assert(numDoorInfos == curDoorInfo, 0, " GlobalMap.init: bad doorInfo count ");
 	//------------------------------------------------------------
 	// Set up the areas so they point to the correct door infos...
 	curDoorInfo = 0;
@@ -1425,39 +1379,35 @@ int32_t GlobalMap::init(PacketFilePtr packetFile, int32_t whichPacket)
 		areas[curArea].doors = &doorInfos[curDoorInfo];
 		curDoorInfo += areas[curArea].numDoors;
 	}
-	doors = (GlobalMapDoorPtr)systemHeap->Malloc(
-		sizeof(GlobalMapDoor) * (numDoors + NUM_DOOR_OFFSETS));
+	doors =
+		(GlobalMapDoorPtr)systemHeap->Malloc(sizeof(GlobalMapDoor) * (numDoors + NUM_DOOR_OFFSETS));
 	gosASSERT(doors != nullptr);
 	result = packetFile->readPacket(whichPacket++, (puint8_t)doors);
 	if (result == 0)
 		Fatal(result, " GlobalMap.init: unable to read doors packet ");
 	//--------------
 	// Door Links...
-	doorLinks =
-		(DoorLinkPtr)systemHeap->Malloc(sizeof(DoorLink) * numDoorLinks);
+	doorLinks = (DoorLinkPtr)systemHeap->Malloc(sizeof(DoorLink) * numDoorLinks);
 	gosASSERT(doorLinks != nullptr);
 	int32_t numLinksRead = 0;
 	for (i = 0; i < (numDoors + NUM_DOOR_OFFSETS); i++)
 	{
 		int32_t numLinks = doors[i].numLinks[0] + NUM_EXTRA_DOOR_LINKS;
 		gosASSERT(numLinks >= 2);
-		result = packetFile->readPacket(
-			whichPacket++, (puint8_t)&doorLinks[numLinksRead]);
+		result = packetFile->readPacket(whichPacket++, (puint8_t)&doorLinks[numLinksRead]);
 		if (result <= 0)
 			Fatal(result, " GlobalMap.init: Unable to write doorLinks packet ");
 		doors[i].links[0] = &doorLinks[numLinksRead];
 		numLinksRead += numLinks;
 		numLinks = doors[i].numLinks[1] + NUM_EXTRA_DOOR_LINKS;
 		gosASSERT(numLinks >= 2);
-		result = packetFile->readPacket(
-			whichPacket++, (puint8_t)&doorLinks[numLinksRead]);
+		result = packetFile->readPacket(whichPacket++, (puint8_t)&doorLinks[numLinksRead]);
 		if (result <= 0)
 			Fatal(result, " GlobalMap.init: Unable to write doorLinks packet ");
 		doors[i].links[1] = &doorLinks[numLinksRead];
 		numLinksRead += numLinks;
 	}
-	Assert(numLinksRead == numDoorLinks, 0,
-		" GlobalMap.init: Incorrect Links count ");
+	Assert(numLinksRead == numDoorLinks, 0, " GlobalMap.init: Incorrect Links count ");
 	numOffMapAreas = 0;
 	for (i = 0; i < numAreas; i++)
 		if (areas[i].offMap)
@@ -1469,8 +1419,7 @@ int32_t GlobalMap::init(PacketFilePtr packetFile, int32_t whichPacket)
 			openArea(i);
 	//--------------------------
 	// Create pathExistsTable...
-	pathExistsTable =
-		(puint8_t)systemHeap->Malloc(numAreas * (numAreas / 4 + 1));
+	pathExistsTable = (puint8_t)systemHeap->Malloc(numAreas * (numAreas / 4 + 1));
 	if (!pathExistsTable)
 		STOP(("GlobalMap.init: unable to malloc pathExistsTable"));
 	clearPathExistsTable();
@@ -1479,9 +1428,8 @@ int32_t GlobalMap::init(PacketFilePtr packetFile, int32_t whichPacket)
 		char s[256];
 		for (i = 0; i < numDoors; i++)
 		{
-			sprintf(s, "door %05d, %s(%d), areas %d & %d", i,
-				doors[i].open ? "opened" : "CLOSED", doors[i].teamID,
-				doors[i].area[0], doors[i].area[1]);
+			sprintf(s, "door %05d, %s(%d), areas %d & %d", i, doors[i].open ? "opened" : "CLOSED",
+				doors[i].teamID, doors[i].area[0], doors[i].area[1]);
 			log->write(s);
 			for (size_t side = 0; side < 2; side++)
 			{
@@ -1490,8 +1438,7 @@ int32_t GlobalMap::init(PacketFilePtr packetFile, int32_t whichPacket)
 				for (size_t j = 0; j < doors[i].numLinks[side]; j++)
 				{
 					sprintf(s, "          link %03d, to door %05d, cost %d", j,
-						doors[i].links[side][j].doorIndex,
-						doors[i].links[side][j].cost);
+						doors[i].links[side][j].doorIndex, doors[i].links[side][j].cost);
 					log->write(s);
 				}
 			}
@@ -1499,23 +1446,22 @@ int32_t GlobalMap::init(PacketFilePtr packetFile, int32_t whichPacket)
 		log->write(" ");
 		for (i = 0; i < numAreas; i++)
 		{
-			sprintf(s, "area %05d, %s(%d)", i,
-				areas[i].open ? "opened" : "CLOSED", areas[i].teamID);
+			sprintf(
+				s, "area %05d, %s(%d)", i, areas[i].open ? "opened" : "CLOSED", areas[i].teamID);
 			log->write(s);
 			if (areas[i].ownerWID > 0)
 			{
 				sprintf(s, "     ownerWID is %d", areas[i].ownerWID);
 				log->write(s);
 			}
-			static PSTR typeString[] = {"normal area", "wall area", "gate area",
-				"land bridge area", "forest area"};
+			static PSTR typeString[] = {
+				"normal area", "wall area", "gate area", "land bridge area", "forest area"};
 			sprintf(s, "     %s", typeString[areas[i].type]);
 			log->write(s);
 			for (size_t d = 0; d < areas[i].numDoors; d++)
 			{
-				sprintf(s, "     door %03d is %d (%d:%d & %d) ", d,
-					areas[i].doors[d].doorIndex, areas[i].doors[d].doorSide,
-					doors[areas[i].doors[d].doorIndex].area[0],
+				sprintf(s, "     door %03d is %d (%d:%d & %d) ", d, areas[i].doors[d].doorIndex,
+					areas[i].doors[d].doorSide, doors[areas[i].doors[d].doorIndex].area[0],
 					doors[areas[i].doors[d].doorIndex].area[1]);
 				log->write(s);
 			}
@@ -1544,49 +1490,39 @@ int32_t GlobalMap::write(PacketFilePtr packetFile, int32_t whichPacket)
 	if (!packetFile)
 		return (numPackets);
 	uint32_t version = GLOBALMAP_VERSION_NUMBER;
-	int32_t result   = packetFile->writePacket(
-		  whichPacket++, (puint8_t)&version, sizeof(int32_t));
+	int32_t result   = packetFile->writePacket(whichPacket++, (puint8_t)&version, sizeof(int32_t));
 	if (result <= 0)
 		Fatal(result, " GlobalMap.write: Unable to write version packet ");
-	result = packetFile->writePacket(
-		whichPacket++, (puint8_t)&height, sizeof(int32_t));
+	result = packetFile->writePacket(whichPacket++, (puint8_t)&height, sizeof(int32_t));
 	if (result <= 0)
 		Fatal(result, " GlobalMap.write: Unable to write height packet ");
-	result = packetFile->writePacket(
-		whichPacket++, (puint8_t)&width, sizeof(int32_t));
+	result = packetFile->writePacket(whichPacket++, (puint8_t)&width, sizeof(int32_t));
 	if (result <= 0)
 		Fatal(result, " GlobalMap.write: Unable to write width packet ");
 	int32_t sectorDim = SECTOR_DIM;
-	result			  = packetFile->writePacket(
-		   whichPacket++, (puint8_t)&sectorDim, sizeof(int32_t));
+	result = packetFile->writePacket(whichPacket++, (puint8_t)&sectorDim, sizeof(int32_t));
 	if (result <= 0)
 		Fatal(result, " GlobalMap.write: Unable to write sectorDim packet ");
-	result = packetFile->writePacket(
-		whichPacket++, (puint8_t)&sectorHeight, sizeof(int32_t));
+	result = packetFile->writePacket(whichPacket++, (puint8_t)&sectorHeight, sizeof(int32_t));
 	if (result <= 0)
 		Fatal(result, " GlobalMap.write: Unable to write sectorHeight packet ");
-	result = packetFile->writePacket(
-		whichPacket++, (puint8_t)&sectorWidth, sizeof(int32_t));
+	result = packetFile->writePacket(whichPacket++, (puint8_t)&sectorWidth, sizeof(int32_t));
 	if (result <= 0)
 		Fatal(result, " GlobalMap.write: Unable to write sectorWidth packet ");
-	result = packetFile->writePacket(
-		whichPacket++, (puint8_t)&numAreas, sizeof(int32_t));
+	result = packetFile->writePacket(whichPacket++, (puint8_t)&numAreas, sizeof(int32_t));
 	if (result <= 0)
 		Fatal(result, " GlobalMap.write: Unable to write numAreas packet ");
-	result = packetFile->writePacket(
-		whichPacket++, (puint8_t)&numDoors, sizeof(int32_t));
+	result = packetFile->writePacket(whichPacket++, (puint8_t)&numDoors, sizeof(int32_t));
 	if (result <= 0)
 		Fatal(result, " GlobalMap.write: Unable to write numDoors packet ");
-	result = packetFile->writePacket(
-		whichPacket++, (puint8_t)&numDoorInfos, sizeof(int32_t));
+	result = packetFile->writePacket(whichPacket++, (puint8_t)&numDoorInfos, sizeof(int32_t));
 	if (result <= 0)
 		Fatal(result, " GlobalMap.write: Unable to write numDoorInfos packet ");
-	result = packetFile->writePacket(
-		whichPacket++, (puint8_t)&numDoorLinks, sizeof(int32_t));
+	result = packetFile->writePacket(whichPacket++, (puint8_t)&numDoorLinks, sizeof(int32_t));
 	if (result <= 0)
 		Fatal(result, " GlobalMap.write: Unable to write numDoorLinks packet ");
-	result = packetFile->writePacket(
-		whichPacket++, (puint8_t)areaMap, sizeof(int16_t) * height * width);
+	result =
+		packetFile->writePacket(whichPacket++, (puint8_t)areaMap, sizeof(int16_t) * height * width);
 	if (result <= 0)
 		Fatal(result, " GlobalMap.write: Unable to write areaMap packet ");
 	//----------------------------------
@@ -1603,8 +1539,8 @@ int32_t GlobalMap::write(PacketFilePtr packetFile, int32_t whichPacket)
 		// areas[i].offMap = false;
 		areas[i].open = true;
 	}
-	result = packetFile->writePacket(
-		whichPacket++, (puint8_t)areas, sizeof(GlobalMapArea) * numAreas);
+	result =
+		packetFile->writePacket(whichPacket++, (puint8_t)areas, sizeof(GlobalMapArea) * numAreas);
 	for (i = 0; i < numAreas; i++)
 	{
 		//---------------------
@@ -1634,15 +1570,12 @@ int32_t GlobalMap::write(PacketFilePtr packetFile, int32_t whichPacket)
 		if (areas[i].numDoors)
 		{
 			int32_t packetSize = sizeof(DoorInfo) * areas[i].numDoors;
-			result			   = packetFile->writePacket(
-				whichPacket++, (puint8_t)areas[i].doors, packetSize);
+			result = packetFile->writePacket(whichPacket++, (puint8_t)areas[i].doors, packetSize);
 			if (result <= 0)
-				Fatal(result,
-					" GlobalMap.write: Unable to write doorInfos packet ");
+				Fatal(result, " GlobalMap.write: Unable to write doorInfos packet ");
 			numDoorInfosWritten += areas[i].numDoors;
 		}
-	Assert(numDoorInfosWritten == numDoorInfos, 0,
-		" GlobalMap.write: Error in writing DoorInfos ");
+	Assert(numDoorInfosWritten == numDoorInfos, 0, " GlobalMap.write: Error in writing DoorInfos ");
 	DoorLinkPtr doorLinkSave[MAX_GLOBALMAP_DOORS][2];
 	for (i = 0; i < numDoors + NUM_DOOR_OFFSETS; i++)
 	{
@@ -1660,8 +1593,8 @@ int32_t GlobalMap::write(PacketFilePtr packetFile, int32_t whichPacket)
 		doors[i].hPrime		   = 0;
 		doors[i].fPrime		   = 0;
 	}
-	result = packetFile->writePacket(whichPacket++, (puint8_t)doors,
-		sizeof(GlobalMapDoor) * (numDoors + NUM_DOOR_OFFSETS));
+	result = packetFile->writePacket(
+		whichPacket++, (puint8_t)doors, sizeof(GlobalMapDoor) * (numDoors + NUM_DOOR_OFFSETS));
 	for (i = 0; i < (numDoors + NUM_DOOR_OFFSETS); i++)
 	{
 		//---------------------
@@ -1678,19 +1611,17 @@ int32_t GlobalMap::write(PacketFilePtr packetFile, int32_t whichPacket)
 	{
 		int32_t numLinks = doors[i].numLinks[0] + NUM_EXTRA_DOOR_LINKS;
 		gosASSERT(numLinks >= 2);
-		result = packetFile->writePacket(whichPacket++,
-			(puint8_t)doors[i].links[0], sizeof(DoorLink) * numLinks);
+		result = packetFile->writePacket(
+			whichPacket++, (puint8_t)doors[i].links[0], sizeof(DoorLink) * numLinks);
 		if (result <= 0)
-			Fatal(
-				result, " GlobalMap.write: Unable to write doorLinks packet ");
+			Fatal(result, " GlobalMap.write: Unable to write doorLinks packet ");
 		numberL += numLinks;
 		numLinks = doors[i].numLinks[1] + NUM_EXTRA_DOOR_LINKS;
 		gosASSERT(numLinks >= 2);
-		result = packetFile->writePacket(whichPacket++,
-			(puint8_t)doors[i].links[1], sizeof(DoorLink) * numLinks);
+		result = packetFile->writePacket(
+			whichPacket++, (puint8_t)doors[i].links[1], sizeof(DoorLink) * numLinks);
 		if (result <= 0)
-			Fatal(
-				result, " GlobalMap.write: Unable to write doorLinks packet ");
+			Fatal(result, " GlobalMap.write: Unable to write doorLinks packet ");
 		numberL += numLinks;
 	}
 	if (numberL != numDoorLinks)
@@ -1700,8 +1631,7 @@ int32_t GlobalMap::write(PacketFilePtr packetFile, int32_t whichPacket)
 		calcPathCostTable();
 	else
 		initPathCostTable();
-	result = packetFile->writePacket(
-		whichPacket++, (puint8_t)pathCostTable, numAreas * numAreas);
+	result = packetFile->writePacket(whichPacket++, (puint8_t)pathCostTable, numAreas * numAreas);
 	if (result <= 0)
 		Fatal(result, " GlobalMap.write: Unable to write doors packet ");
 #endif
@@ -1825,8 +1755,7 @@ int32_t GlobalMap::setTempArea(int32_t tileR, int32_t tileC, int32_t cost)
 
 //------------------------------------------------------------------------------------------
 
-bool GlobalMap::fillSpecialArea(
-	int32_t row, int32_t col, int32_t area, int32_t specialID)
+bool GlobalMap::fillSpecialArea(int32_t row, int32_t col, int32_t area, int32_t specialID)
 {
 	//----------------------------------------------------------------------
 	// This is used to fill any dynamic or "special" areas. Currently, these
@@ -1837,10 +1766,8 @@ bool GlobalMap::fillSpecialArea(
 	{
 		int32_t adjR = row + adjTile[dir][0];
 		int32_t adjC = col + adjTile[dir][1];
-		if ((adjR >= minRow) && (adjR < maxRow) && (adjC >= minCol) &&
-			(adjC < maxCol))
-			if (GameMap->getBuildNotSet(adjR, adjC) &&
-				(areaMap[adjR * width + adjC] == specialID))
+		if ((adjR >= minRow) && (adjR < maxRow) && (adjC >= minCol) && (adjC < maxCol))
+			if (GameMap->getBuildNotSet(adjR, adjC) && (areaMap[adjR * width + adjC] == specialID))
 				fillSpecialArea(adjR, adjC, area, specialID);
 	}
 	return (true);
@@ -1892,8 +1819,7 @@ bool GlobalMap::fillArea(int32_t row, int32_t col, int32_t area, bool offMap)
 	{
 		int32_t adjR = row + adjTile[dir][0];
 		int32_t adjC = col + adjTile[dir][1];
-		if ((adjR >= minRow) && (adjR < maxRow) && (adjC >= minCol) &&
-			(adjC < maxCol))
+		if ((adjR >= minRow) && (adjR < maxRow) && (adjC >= minCol) && (adjC < maxCol))
 			if (GameMap->getBuildNotSet(adjR, adjC))
 				fillArea(adjR, adjC, area, offMap);
 	}
@@ -1931,13 +1857,11 @@ void GlobalMap::calcSectorAreas(int32_t sectorR, int32_t sectorC)
 						//-------------------------------------------------
 						// List this new area as part of the region covered
 						// by this gate or wall or forest...
-						if (specialAreas[specialHere].numSubAreas ==
-							MAX_SPECIAL_SUB_AREAS)
+						if (specialAreas[specialHere].numSubAreas == MAX_SPECIAL_SUB_AREAS)
 							Fatal(MAX_SPECIAL_SUB_AREAS,
 								" GlobalMap.calcSectorAreas: too many special "
 								"subareas ");
-						specialAreas[specialHere]
-							.subAreas[specialAreas[specialHere].numSubAreas] =
+						specialAreas[specialHere].subAreas[specialAreas[specialHere].numSubAreas] =
 							numAreas;
 						specialAreas[specialHere].numSubAreas++;
 						//-------------------
@@ -1966,8 +1890,7 @@ void GlobalMap::calcAreas(void)
 	// NOTE: We allocate one extra area--this is used by the calcPath routine
 	// as a "scratch" area in some cases...
 	gosASSERT(numAreas <= MAX_GLOBALMAP_AREAS);
-	areas = (GlobalMapAreaPtr)systemHeap->Malloc(
-		sizeof(GlobalMapArea) * (numAreas + 1));
+	areas = (GlobalMapAreaPtr)systemHeap->Malloc(sizeof(GlobalMapArea) * (numAreas + 1));
 	gosASSERT(areas != nullptr);
 	for (size_t i = 0; i < (numAreas + 1); i++)
 	{
@@ -2052,8 +1975,8 @@ void GlobalMap::calcSpecialTypes(void)
 void GlobalMap::beginDoorProcessing(void)
 {
 	// systemHeap->walkHeap();
-	doorBuildList = (GlobalMapDoorPtr)systemHeap->Malloc(
-		sizeof(GlobalMapDoor) * MAX_GLOBALMAP_DOORS);
+	doorBuildList =
+		(GlobalMapDoorPtr)systemHeap->Malloc(sizeof(GlobalMapDoor) * MAX_GLOBALMAP_DOORS);
 	for (size_t i = 0; i < MAX_GLOBALMAP_DOORS; i++)
 	{
 		doorBuildList[i].row		 = -1;
@@ -2069,8 +1992,8 @@ void GlobalMap::beginDoorProcessing(void)
 
 //------------------------------------------------------------------------------------------
 
-void GlobalMap::addDoor(int32_t area1, int32_t area2, int32_t row, int32_t col,
-	int32_t length, int32_t dir)
+void GlobalMap::addDoor(
+	int32_t area1, int32_t area2, int32_t row, int32_t col, int32_t length, int32_t dir)
 {
 	/*
 	if (area1 > area2) {
@@ -2133,8 +2056,7 @@ void GlobalMap::endDoorProcessing(void)
 		// used by the pathfinder...
 		doors = (GlobalMapDoorPtr)systemHeap->Malloc(
 			sizeof(GlobalMapDoor) * (numDoors + NUM_DOOR_OFFSETS));
-		memcpy(doors, doorBuildList,
-			sizeof(GlobalMapDoor) * (numDoors + NUM_DOOR_OFFSETS));
+		memcpy(doors, doorBuildList, sizeof(GlobalMapDoor) * (numDoors + NUM_DOOR_OFFSETS));
 		//----------------------------
 		// Free the temp build list...
 		systemHeap->Free(doorBuildList);
@@ -2149,8 +2071,7 @@ int32_t GlobalMap::numAreaDoors(int32_t area)
 {
 	int32_t doorCount = 0;
 	for (size_t doorIndex = 0; doorIndex < numDoors; doorIndex++)
-		if ((doors[doorIndex].area[0] == area) ||
-			(doors[doorIndex].area[1] == area))
+		if ((doors[doorIndex].area[0] == area) || (doors[doorIndex].area[1] == area))
 			doorCount++;
 	if (doorCount > 255)
 		Fatal(doorCount, " Too many area doors ");
@@ -2163,8 +2084,7 @@ void GlobalMap::getAreaDoors(int32_t area, DoorInfoPtr doorList)
 {
 	int32_t doorCount = 0;
 	for (size_t doorIndex = 0; doorIndex < numDoors; doorIndex++)
-		if ((doors[doorIndex].area[0] == area) ||
-			(doors[doorIndex].area[1] == area))
+		if ((doors[doorIndex].area[0] == area) || (doors[doorIndex].area[1] == area))
 		{
 			doorList[doorCount].doorIndex = doorIndex;
 			int32_t doorSide			  = (doors[doorIndex].area[1] == area);
@@ -2175,8 +2095,7 @@ void GlobalMap::getAreaDoors(int32_t area, DoorInfoPtr doorList)
 
 //------------------------------------------------------------------------------------------
 
-#define MAX_DOORS_PER_SECTOR                                                   \
-	500 // This should be WAY more than we'll ever need...
+#define MAX_DOORS_PER_SECTOR 500 // This should be WAY more than we'll ever need...
 
 int32_t maxNumDoors = 0;
 
@@ -2215,8 +2134,7 @@ void GlobalMap::calcGlobalDoors(void)
 							// adjacent to it thru a door...
 							int32_t adjR = r + adjTile[dir][0];
 							int32_t adjC = c + adjTile[dir][1];
-							if ((adjR >= 0) && (adjR < height) && (adjC >= 0) &&
-								(adjC < width))
+							if ((adjR >= 0) && (adjR < height) && (adjC >= 0) && (adjC < width))
 							{
 								int32_t adjArea = areaMap[adjR * width + adjC];
 								if ((adjArea > -1) && (curArea != adjArea))
@@ -2228,8 +2146,7 @@ void GlobalMap::calcGlobalDoors(void)
 										(adjAreaType == AREA_TYPE_NORMAL))
 										validDoor = true;
 									if (validDoor)
-										doorMap[r - minRow][c - minCol] =
-											adjArea;
+										doorMap[r - minRow][c - minCol] = adjArea;
 								}
 							}
 						}
@@ -2254,18 +2171,15 @@ void GlobalMap::calcGlobalDoors(void)
 								//-----------------------------------
 								// We have a door. Calc its length...
 								int32_t length = 0;
-								while ((r < maxRow) &&
-									   (areaMap[r * width + c] == curArea) &&
-									   (doorMap[r - minRow][c - minCol] ==
-										   adjArea))
+								while ((r < maxRow) && (areaMap[r * width + c] == curArea) &&
+									(doorMap[r - minRow][c - minCol] == adjArea))
 								{
 									length++;
 									r++;
 								}
 								//---------------------------------------
 								// Now, add it to the global door list...
-								addDoor(curArea, adjArea, r - length, c, length,
-									dir);
+								addDoor(curArea, adjArea, r - length, c, length, dir);
 							}
 							else
 								r++;
@@ -2286,18 +2200,15 @@ void GlobalMap::calcGlobalDoors(void)
 								//-----------------------------------
 								// We have a door. Calc its length...
 								int32_t length = 0;
-								while ((c < maxCol) &&
-									   (areaMap[r * width + c] == curArea) &&
-									   (doorMap[r - minRow][c - minCol] ==
-										   adjArea))
+								while ((c < maxCol) && (areaMap[r * width + c] == curArea) &&
+									(doorMap[r - minRow][c - minCol] == adjArea))
 								{
 									length++;
 									c++;
 								}
 								//-----------------------------------------
 								// Now, add it to the sector's door list...
-								addDoor(curArea, adjArea, r, c - length, length,
-									dir);
+								addDoor(curArea, adjArea, r, c - length, length, dir);
 							}
 							else
 								c++;
@@ -2321,8 +2232,8 @@ void GlobalMap::calcAreaDoors(void)
 		numDoorInfos += areas[area].numDoors;
 		if (areas[area].numDoors)
 		{
-			areas[area].doors = (DoorInfoPtr)systemHeap->Malloc(
-				sizeof(DoorInfo) * areas[area].numDoors);
+			areas[area].doors =
+				(DoorInfoPtr)systemHeap->Malloc(sizeof(DoorInfo) * areas[area].numDoors);
 			getAreaDoors(area, areas[area].doors);
 		}
 		else
@@ -2332,11 +2243,9 @@ void GlobalMap::calcAreaDoors(void)
 
 //------------------------------------------------------------------------------------------
 
-int32_t GlobalMap::calcLinkCost(
-	int32_t startDoor, int32_t thruArea, int32_t goalDoor)
+int32_t GlobalMap::calcLinkCost(int32_t startDoor, int32_t thruArea, int32_t goalDoor)
 {
-	if ((doors[startDoor].area[0] != thruArea) &&
-		(doors[startDoor].area[1] != thruArea))
+	if ((doors[startDoor].area[0] != thruArea) && (doors[startDoor].area[1] != thruArea))
 		return (-1);
 	int32_t startSide = (doors[startDoor].area[1] == thruArea);
 	int32_t startRow  = doors[startDoor].row;
@@ -2359,8 +2268,7 @@ int32_t GlobalMap::calcLinkCost(
 		startRow += startSide;
 		startCol += (doors[startDoor].length / 2);
 	}
-	if ((doors[goalDoor].area[0] != thruArea) &&
-		(doors[goalDoor].area[1] != thruArea))
+	if ((doors[goalDoor].area[0] != thruArea) && (doors[goalDoor].area[1] != thruArea))
 		return (-2);
 	int32_t goalSide = (doors[goalDoor].area[1] == thruArea);
 	int32_t goalRow  = doors[goalDoor].row;
@@ -2397,8 +2305,7 @@ int32_t GlobalMap::calcLinkCost(
 	if (!PathFindMap[SIMPLE_PATHMAP])
 	{
 		PathFindMap[SIMPLE_PATHMAP] = new MoveMap;
-		PathFindMap[SIMPLE_PATHMAP]->init(
-			SimpleMovePathRange * 2 + 1, SimpleMovePathRange * 2 + 1);
+		PathFindMap[SIMPLE_PATHMAP]->init(SimpleMovePathRange * 2 + 1, SimpleMovePathRange * 2 + 1);
 	}
 	//-------------------------------------------------------------------------
 	// Let's make sure the bridge tiles are NOT blocked here (since, during the
@@ -2410,9 +2317,8 @@ int32_t GlobalMap::calcLinkCost(
 		newPath.numSteps = 10;
 		newPath.cost	 = 10;
 	}
-	else if ((areas[thruArea].type == AREA_TYPE_WALL) ||
-			 (areas[thruArea].type == AREA_TYPE_GATE) ||
-			 (areas[thruArea].type == AREA_TYPE_FOREST))
+	else if ((areas[thruArea].type == AREA_TYPE_WALL) || (areas[thruArea].type == AREA_TYPE_GATE) ||
+		(areas[thruArea].type == AREA_TYPE_FOREST))
 	{
 		//---------------------------------------------
 		// These costs are for when the area is open...
@@ -2434,14 +2340,12 @@ int32_t GlobalMap::calcLinkCost(
 		// and mechs separately (and vehicles don't use shallow). But, if
 		// nothing else, this fixes the bug where we weren't passing in the
 		// moveParams.
-		PathFindMap[SECTOR_PATHMAP]->setUp(mapULr, mapULc, SECTOR_DIM,
-			SECTOR_DIM, hover ? 1 : 0, nullptr, startRow, startCol,
-			goalWorldPos, goalRow - mapULr, goalCol - mapULc, 10, 0, 8,
+		PathFindMap[SECTOR_PATHMAP]->setUp(mapULr, mapULc, SECTOR_DIM, SECTOR_DIM, hover ? 1 : 0,
+			nullptr, startRow, startCol, goalWorldPos, goalRow - mapULr, goalCol - mapULc, 10, 0, 8,
 			moveParams);
 #else
-		PathFindMap[SECTOR_PATHMAP]->setUp(mapULr, mapULc, SECTOR_DIM,
-			SECTOR_DIM, hover ? 1 : 0, nullptr, startRow, startCol,
-			goalWorldPos, goalRow - mapULr, goalCol - mapULc, 10, 0, 8,
+		PathFindMap[SECTOR_PATHMAP]->setUp(mapULr, mapULc, SECTOR_DIM, SECTOR_DIM, hover ? 1 : 0,
+			nullptr, startRow, startCol, goalWorldPos, goalRow - mapULr, goalCol - mapULc, 10, 0, 8,
 			MOVEPARAM_NONE);
 #endif
 		int32_t goalCell[2];
@@ -2511,24 +2415,20 @@ void GlobalMap::calcDoorLinks(void)
 			// Allocate enough links for all links to this door plus a scratch
 			// link used during path calc...
 			thisDoor->links[s] = (DoorLinkPtr)systemHeap->Malloc(
-				sizeof(DoorLink) *
-				(thisDoor->numLinks[s] + NUM_EXTRA_DOOR_LINKS));
+				sizeof(DoorLink) * (thisDoor->numLinks[s] + NUM_EXTRA_DOOR_LINKS));
 			numDoorLinks += (thisDoor->numLinks[s] + NUM_EXTRA_DOOR_LINKS);
 			gosASSERT(thisDoor->links[s] != nullptr);
 			int32_t linkIndex = 0;
 			for (size_t areaDoor = 0; areaDoor < areaNumDoors; areaDoor++)
 			{
-				int32_t doorIndex = areas[area].doors[areaDoor].doorIndex;
+				int32_t doorIndex		 = areas[area].doors[areaDoor].doorIndex;
 				GlobalMapDoorPtr curDoor = &doors[doorIndex];
 				if (curDoor != thisDoor)
 				{
 					thisDoor->links[s][linkIndex].doorIndex = doorIndex;
-					thisDoor->links[s][linkIndex].doorSide =
-						(curDoor->area[1] == area);
-					thisDoor->links[s][linkIndex].cost =
-						calcLinkCost(d, area, doorIndex);
-					thisDoor->links[s][linkIndex].openCost =
-						thisDoor->links[s][linkIndex].cost;
+					thisDoor->links[s][linkIndex].doorSide  = (curDoor->area[1] == area);
+					thisDoor->links[s][linkIndex].cost		= calcLinkCost(d, area, doorIndex);
+					thisDoor->links[s][linkIndex].openCost  = thisDoor->links[s][linkIndex].cost;
 					linkIndex++;
 				}
 			}
@@ -2540,35 +2440,23 @@ void GlobalMap::calcDoorLinks(void)
 	//----------------------------------------
 	// Now, set up the start and goal doors...
 	doors[numDoors + DOOR_OFFSET_START].numLinks[0] = maxDoors;
-	numDoorLinks += (doors[numDoors + DOOR_OFFSET_START].numLinks[0] +
-					 NUM_EXTRA_DOOR_LINKS);
+	numDoorLinks += (doors[numDoors + DOOR_OFFSET_START].numLinks[0] + NUM_EXTRA_DOOR_LINKS);
 	doors[numDoors + DOOR_OFFSET_START].links[0] =
-		(DoorLinkPtr)systemHeap->Malloc(
-			sizeof(DoorLink) *
-			(doors[numDoors + DOOR_OFFSET_START].numLinks[0] +
-				NUM_EXTRA_DOOR_LINKS));
+		(DoorLinkPtr)systemHeap->Malloc(sizeof(DoorLink) *
+			(doors[numDoors + DOOR_OFFSET_START].numLinks[0] + NUM_EXTRA_DOOR_LINKS));
 	doors[numDoors + DOOR_OFFSET_START].numLinks[1] = 0;
-	numDoorLinks += (doors[numDoors + DOOR_OFFSET_START].numLinks[1] +
-					 NUM_EXTRA_DOOR_LINKS);
+	numDoorLinks += (doors[numDoors + DOOR_OFFSET_START].numLinks[1] + NUM_EXTRA_DOOR_LINKS);
 	doors[numDoors + DOOR_OFFSET_START].links[1] =
-		(DoorLinkPtr)systemHeap->Malloc(
-			sizeof(DoorLink) *
-			(doors[numDoors + DOOR_OFFSET_START].numLinks[1] +
-				NUM_EXTRA_DOOR_LINKS));
+		(DoorLinkPtr)systemHeap->Malloc(sizeof(DoorLink) *
+			(doors[numDoors + DOOR_OFFSET_START].numLinks[1] + NUM_EXTRA_DOOR_LINKS));
 	doors[numDoors + DOOR_OFFSET_GOAL].numLinks[0] = maxDoors;
-	numDoorLinks +=
-		(doors[numDoors + DOOR_OFFSET_GOAL].numLinks[0] + NUM_EXTRA_DOOR_LINKS);
-	doors[numDoors + DOOR_OFFSET_GOAL].links[0] =
-		(DoorLinkPtr)systemHeap->Malloc(
-			sizeof(DoorLink) * (doors[numDoors + DOOR_OFFSET_GOAL].numLinks[0] +
-								   NUM_EXTRA_DOOR_LINKS));
+	numDoorLinks += (doors[numDoors + DOOR_OFFSET_GOAL].numLinks[0] + NUM_EXTRA_DOOR_LINKS);
+	doors[numDoors + DOOR_OFFSET_GOAL].links[0] = (DoorLinkPtr)systemHeap->Malloc(
+		sizeof(DoorLink) * (doors[numDoors + DOOR_OFFSET_GOAL].numLinks[0] + NUM_EXTRA_DOOR_LINKS));
 	doors[numDoors + DOOR_OFFSET_GOAL].numLinks[1] = 0;
-	numDoorLinks +=
-		(doors[numDoors + DOOR_OFFSET_GOAL].numLinks[1] + NUM_EXTRA_DOOR_LINKS);
-	doors[numDoors + DOOR_OFFSET_GOAL].links[1] =
-		(DoorLinkPtr)systemHeap->Malloc(
-			sizeof(DoorLink) * (doors[numDoors + DOOR_OFFSET_GOAL].numLinks[1] +
-								   NUM_EXTRA_DOOR_LINKS));
+	numDoorLinks += (doors[numDoors + DOOR_OFFSET_GOAL].numLinks[1] + NUM_EXTRA_DOOR_LINKS);
+	doors[numDoors + DOOR_OFFSET_GOAL].links[1] = (DoorLinkPtr)systemHeap->Malloc(
+		sizeof(DoorLink) * (doors[numDoors + DOOR_OFFSET_GOAL].numLinks[1] + NUM_EXTRA_DOOR_LINKS));
 	int32_t numberL = 0;
 	for (size_t i = 0; i < (numDoors + NUM_DOOR_OFFSETS); i++)
 	{
@@ -2577,14 +2465,14 @@ void GlobalMap::calcDoorLinks(void)
 		// result = packetFile->writePacket(whichPacket++,
 		// (puint8_t)doors[i].links[0], sizeof(DoorLink) * numLinks);  if (result
 		// <= 0) 	Fatal(result, " GlobalMap.write: Unable to write doorLinks
-		//packet ");
+		// packet ");
 		numberL += numLinks;
 		numLinks = doors[i].numLinks[1] + NUM_EXTRA_DOOR_LINKS;
 		gosASSERT(numLinks >= 2);
 		// result = packetFile->writePacket(whichPacket++,
 		// (puint8_t)doors[i].links[1], sizeof(DoorLink) * numLinks);  if (result
 		// <= 0) 	Fatal(result, " GlobalMap.write: Unable to write doorLinks
-		//packet ");
+		// packet ");
 		numberL += numLinks;
 	}
 	Assert(numberL == numDoorLinks, 0, " HUH ");
@@ -2592,8 +2480,8 @@ void GlobalMap::calcDoorLinks(void)
 
 //------------------------------------------------------------------------------------------
 
-int32_t GlobalMap::getPathCost(int32_t startArea, int32_t goalArea,
-	bool withSpecialAreas, int32_t& confidence, bool calcIt)
+int32_t GlobalMap::getPathCost(
+	int32_t startArea, int32_t goalArea, bool withSpecialAreas, int32_t& confidence, bool calcIt)
 {
 	//------------------------------------------------------------------------
 	// This could be cleaned up if we re-save this data, 0 being no path and 1
@@ -2637,8 +2525,7 @@ int32_t GlobalMap::getPathCost(int32_t startArea, int32_t goalArea,
 				useClosedAreas = true;
 				calcPath(startArea, goalArea, path);
 				useClosedAreas = false;
-				cost =
-					getPathCost(startArea, goalArea, true, confidence, false);
+				cost = getPathCost(startArea, goalArea, true, confidence, false);
 				calcedPathCost = true;
 				confidence = GLOBAL_CONFIDENCE_GOOD;
 			}
@@ -2663,8 +2550,7 @@ int32_t GlobalMap::getPathCost(int32_t startArea, int32_t goalArea,
 			{
 				GlobalPathStep path[MAX_GLOBAL_PATH];
 				calcPath(startArea, goalArea, path);
-				cost =
-					getPathCost(startArea, goalArea, false, confidence, false);
+				cost = getPathCost(startArea, goalArea, false, confidence, false);
 				calcedPathCost = true;
 				confidence = GLOBAL_CONFIDENCE_GOOD;
 			}
@@ -2679,8 +2565,7 @@ int32_t GlobalMap::getPathCost(int32_t startArea, int32_t goalArea,
 			{
 				GlobalPathStep path[MAX_GLOBAL_PATH];
 				calcPath(startArea, goalArea, path);
-				cost =
-					getPathCost(startArea, goalArea, false, confidence, false);
+				cost = getPathCost(startArea, goalArea, false, confidence, false);
 				calcedPathCost = true;
 				confidence = GLOBAL_CONFIDENCE_GOOD;
 			}
@@ -2699,8 +2584,7 @@ int32_t GlobalMap::getPathCost(int32_t startArea, int32_t goalArea,
 
 #if USE_PATH_COST_TABLE
 
-void GlobalMap::setPathFlag(
-	int32_t startArea, int32_t goalArea, uint8_t flag, bool set)
+void GlobalMap::setPathFlag(int32_t startArea, int32_t goalArea, uint8_t flag, bool set)
 {
 	int32_t index = startArea * numAreas + goalArea;
 	pathCostTable[index] &= (flag ^ 0xFF);
@@ -2710,8 +2594,7 @@ void GlobalMap::setPathFlag(
 
 //---------------------------------------------------------------------------
 
-int32_t GlobalMap::getPathFlag(
-	int32_t startArea, int32_t goalArea, uint8_t flag)
+int32_t GlobalMap::getPathFlag(int32_t startArea, int32_t goalArea, uint8_t flag)
 {
 	return (pathCostTable[startArea * numAreas + goalArea] & flag);
 }
@@ -2760,8 +2643,7 @@ void GlobalMap::initPathCostTable(void)
 		{
 			setPathCost(startArea, goalArea, false, 0);
 			setPathCost(startArea, goalArea, true, 0);
-			setPathFlag(
-				startArea, goalArea, GLOBAL_FLAG_SPECIAL_IMPOSSIBLE, false);
+			setPathFlag(startArea, goalArea, GLOBAL_FLAG_SPECIAL_IMPOSSIBLE, false);
 			setPathFlag(startArea, goalArea, GLOBAL_FLAG_SPECIAL_CALC, true);
 			setPathFlag(startArea, goalArea, GLOBAL_FLAG_NORMAL_OPENS, true);
 			setPathFlag(startArea, goalArea, GLOBAL_FLAG_NORMAL_CLOSES, true);
@@ -2812,15 +2694,13 @@ void GlobalMap::calcPathCostTable(void)
 			// table. If no path (or start and goal are the same), we'll store
 			// 0. 255 is reserved to mark the need to re-calc during the game...
 			setPathCost(startArea, goalArea, true, numSteps);
-			setPathFlag(
-				startArea, goalArea, GLOBAL_FLAG_SPECIAL_IMPOSSIBLE, false);
+			setPathFlag(startArea, goalArea, GLOBAL_FLAG_SPECIAL_IMPOSSIBLE, false);
 			setPathFlag(startArea, goalArea, GLOBAL_FLAG_SPECIAL_CALC, true);
 			setPathFlag(startArea, goalArea, GLOBAL_FLAG_NORMAL_OPENS, false);
 			setPathFlag(startArea, goalArea, GLOBAL_FLAG_NORMAL_CLOSES, false);
 		}
 	for (i = 0; i < numAreas; i++)
-		if ((areas[i].type == AREA_TYPE_WALL) ||
-			(areas[i].type == AREA_TYPE_GATE) ||
+		if ((areas[i].type == AREA_TYPE_WALL) || (areas[i].type == AREA_TYPE_GATE) ||
 			(areas[i].type == AREA_TYPE_FOREST))
 			openArea(i);
 	for (startArea = 0; startArea < numAreas; startArea++)
@@ -2834,8 +2714,7 @@ void GlobalMap::calcPathCostTable(void)
 			setPathCost(startArea, goalArea, true, numSteps);
 		}
 	for (i = 0; i < numAreas; i++)
-		if ((areas[i].type == AREA_TYPE_WALL) ||
-			(areas[i].type == AREA_TYPE_GATE) ||
+		if ((areas[i].type == AREA_TYPE_WALL) || (areas[i].type == AREA_TYPE_GATE) ||
 			(areas[i].type == AREA_TYPE_FOREST))
 			closeArea(i);
 	closes = false;
@@ -2902,8 +2781,7 @@ int32_t GlobalMap::exitDirection(int32_t doorIndex, int32_t fromArea)
 
 //------------------------------------------------------------------------------------------
 
-void GlobalMap::getDoorTiles(
-	int32_t area, int32_t door, GlobalMapDoorPtr areaDoor)
+void GlobalMap::getDoorTiles(int32_t area, int32_t door, GlobalMapDoorPtr areaDoor)
 {
 	*areaDoor = doors[areas[area].doors[door].doorIndex];
 }
@@ -2919,8 +2797,7 @@ bool GlobalMap::getAdjacentAreaCell(
 		int32_t doorSide  = areas[area].doors[i].doorSide;
 		if (doors[doorIndex].area[doorSide % 1] == adjacentArea)
 		{
-			if ((doors[doorIndex].area[0] != area) &&
-				(doors[doorIndex].area[1] != area))
+			if ((doors[doorIndex].area[0] != area) && (doors[doorIndex].area[1] != area))
 				STOP(("bad adjacent area door", 0));
 			int32_t goalSide = (doors[doorIndex].area[1] == adjacentArea);
 			cellRow			 = doors[doorIndex].row;
@@ -2948,20 +2825,17 @@ bool GlobalMap::getAdjacentAreaCell(
 
 //------------------------------------------------------------------------------------------
 
-Stuff::Vector3D GlobalMap::getDoorWorldPos(
-	int32_t area, int32_t door, int32_t* prevGoalCell)
+Stuff::Vector3D GlobalMap::getDoorWorldPos(int32_t area, int32_t door, int32_t* prevGoalCell)
 {
 	int32_t cellR, cellC;
 	cellR = prevGoalCell[0]; // + adjTile[areas[area].doors[door].direction][0];
-	cellC =
-		prevGoalCell[1]; // += adjTile[areas[area].doors[door].direction][1];
+	cellC = prevGoalCell[1]; // += adjTile[areas[area].doors[door].direction][1];
 	Stuff::Vector3D pos;
 	pos.Zero();
-	pos.x = (float)cellC * Terrain::worldUnitsPerCell +
-			Terrain::worldUnitsPerCell / 2 - Terrain::worldUnitsMapSide / 2;
-	pos.y = (Terrain::worldUnitsMapSide / 2) -
-			((float)cellR * Terrain::worldUnitsPerCell) -
-			Terrain::worldUnitsPerCell / 2;
+	pos.x = (float)cellC * Terrain::worldUnitsPerCell + Terrain::worldUnitsPerCell / 2 -
+		Terrain::worldUnitsMapSide / 2;
+	pos.y = (Terrain::worldUnitsMapSide / 2) - ((float)cellR * Terrain::worldUnitsPerCell) -
+		Terrain::worldUnitsPerCell / 2;
 	pos.z = (float)land->getTerrainElevation(
 		pos); // How do we get the elevation for this point? Do we care?
 	return (pos);
@@ -3025,9 +2899,8 @@ int32_t GlobalMap::build(MissionMapCellInfo* mapData)
 		char s[256];
 		for (size_t i = 0; i < numDoors; i++)
 		{
-			sprintf(s, "door %05d, %s(%d), areas %d & %d", i,
-				doors[i].open ? "opened" : "CLOSED", doors[i].teamID,
-				doors[i].area[0], doors[i].area[1]);
+			sprintf(s, "door %05d, %s(%d), areas %d & %d", i, doors[i].open ? "opened" : "CLOSED",
+				doors[i].teamID, doors[i].area[0], doors[i].area[1]);
 			log->write(s);
 			for (size_t side = 0; side < 2; side++)
 			{
@@ -3036,8 +2909,7 @@ int32_t GlobalMap::build(MissionMapCellInfo* mapData)
 				for (size_t j = 0; j < doors[i].numLinks[side]; j++)
 				{
 					sprintf(s, "          link %03d, to door %05d, cost %d", j,
-						doors[i].links[side][j].doorIndex,
-						doors[i].links[side][j].cost);
+						doors[i].links[side][j].doorIndex, doors[i].links[side][j].cost);
 					log->write(s);
 				}
 			}
@@ -3045,23 +2917,22 @@ int32_t GlobalMap::build(MissionMapCellInfo* mapData)
 		log->write(" ");
 		for (i = 0; i < numAreas; i++)
 		{
-			sprintf(s, "area %05d, %s(%d)", i,
-				areas[i].open ? "opened" : "CLOSED", areas[i].teamID);
+			sprintf(
+				s, "area %05d, %s(%d)", i, areas[i].open ? "opened" : "CLOSED", areas[i].teamID);
 			log->write(s);
 			if (areas[i].ownerWID > 0)
 			{
 				sprintf(s, "     ownerWID is %d", areas[i].ownerWID);
 				log->write(s);
 			}
-			static PSTR typeString[] = {"normal area", "wall area", "gate area",
-				"land bridge area", "forest area"};
+			static PSTR typeString[] = {
+				"normal area", "wall area", "gate area", "land bridge area", "forest area"};
 			sprintf(s, "     %s", typeString[areas[i].type]);
 			log->write(s);
 			for (size_t d = 0; d < areas[i].numDoors; d++)
 			{
-				sprintf(s, "     door %03d is %d (%d:%d & %d) ", d,
-					areas[i].doors[d].doorIndex, areas[i].doors[d].doorSide,
-					doors[areas[i].doors[d].doorIndex].area[0],
+				sprintf(s, "     door %03d is %d (%d:%d & %d) ", d, areas[i].doors[d].doorIndex,
+					areas[i].doors[d].doorSide, doors[areas[i].doors[d].doorIndex].area[0],
 					doors[areas[i].doors[d].doorIndex].area[1]);
 				log->write(s);
 			}
@@ -3095,11 +2966,10 @@ void GlobalMap::setStartDoor(int32_t startArea)
 	{
 		//---------------------------------------------
 		// Point the goal "door" to its area's doors...
-		int32_t doorIndex = areas[startArea].doors[curLink].doorIndex;
-		int32_t doorSide  = areas[startArea].doors[curLink].doorSide;
-		GlobalMapDoorPtr curDoor =
-			&doors[areas[startArea].doors[curLink].doorIndex];
-		int32_t costSum = 1;
+		int32_t doorIndex		 = areas[startArea].doors[curLink].doorIndex;
+		int32_t doorSide		 = areas[startArea].doors[curLink].doorSide;
+		GlobalMapDoorPtr curDoor = &doors[areas[startArea].doors[curLink].doorIndex];
+		int32_t costSum			 = 1;
 		if (startCell[0] > -1)
 		{
 			if (startCell[0] > curDoor->row)
@@ -3120,9 +2990,8 @@ void GlobalMap::setStartDoor(int32_t startArea)
 		curDoor->links[doorSide][curDoor->numLinks[doorSide]].doorIndex =
 			numDoors + DOOR_OFFSET_START;
 		curDoor->links[doorSide][curDoor->numLinks[doorSide]].doorSide = 0;
-		curDoor->links[doorSide][curDoor->numLinks[doorSide]].cost = costSum;
-		curDoor->links[doorSide][curDoor->numLinks[doorSide]].openCost =
-			costSum;
+		curDoor->links[doorSide][curDoor->numLinks[doorSide]].cost	 = costSum;
+		curDoor->links[doorSide][curDoor->numLinks[doorSide]].openCost = costSum;
 		curDoor->numLinks[doorSide]++;
 	}
 }
@@ -3174,8 +3043,7 @@ void GlobalMap::setGoalDoor(int32_t goalArea)
 	if ((goalArea < 0) || (goalArea >= numAreas))
 	{
 		char errMsg[256];
-		sprintf(errMsg, " GlobalMap.setGoalDoor: bad goalArea (%d of %d) ",
-			goalArea, numAreas);
+		sprintf(errMsg, " GlobalMap.setGoalDoor: bad goalArea (%d of %d) ", goalArea, numAreas);
 		gosASSERT((goalArea >= 0) || (goalArea < numAreas));
 	}
 	GlobalMapDoorPtr goalDoor = &doors[numDoors + DOOR_OFFSET_GOAL];
@@ -3200,8 +3068,7 @@ void GlobalMap::setGoalDoor(int32_t goalArea)
 		// Point the goal "door" to its area's doors...
 		int32_t doorIndex = areas[goalArea].doors[curLink].doorIndex;
 		int32_t doorSide  = areas[goalArea].doors[curLink].doorSide;
-		gosASSERT(
-			(doorIndex >= 0) && (doorIndex < (numDoors + NUM_DOOR_OFFSETS)));
+		gosASSERT((doorIndex >= 0) && (doorIndex < (numDoors + NUM_DOOR_OFFSETS)));
 		GlobalMapDoorPtr curDoor = &doors[doorIndex];
 		int32_t costSum			 = 1;
 		if (goalCell[0] > -1)
@@ -3224,9 +3091,8 @@ void GlobalMap::setGoalDoor(int32_t goalArea)
 		curDoor->links[doorSide][curDoor->numLinks[doorSide]].doorIndex =
 			numDoors + DOOR_OFFSET_GOAL;
 		curDoor->links[doorSide][curDoor->numLinks[doorSide]].doorSide = 0;
-		curDoor->links[doorSide][curDoor->numLinks[doorSide]].cost = costSum;
-		curDoor->links[doorSide][curDoor->numLinks[doorSide]].openCost =
-			costSum;
+		curDoor->links[doorSide][curDoor->numLinks[doorSide]].cost	 = costSum;
+		curDoor->links[doorSide][curDoor->numLinks[doorSide]].openCost = costSum;
 		curDoor->numLinks[doorSide]++;
 	}
 }
@@ -3250,13 +3116,9 @@ void GlobalMap::resetGoalDoor(int32_t goalArea)
 int32_t GlobalMap::calcHPrime(int32_t door)
 {
 	gosASSERT((door > -1) && (door < (numDoors + NUM_DOOR_OFFSETS)));
-	int32_t sectorR = (areas[doors[door].area[0]].sectorR +
-						  areas[doors[door].area[1]].sectorR) /
-					  2;
-	int32_t sectorC = (areas[doors[door].area[0]].sectorC +
-						  areas[doors[door].area[1]].sectorC) /
-					  2;
-	int32_t sum = 0;
+	int32_t sectorR = (areas[doors[door].area[0]].sectorR + areas[doors[door].area[1]].sectorR) / 2;
+	int32_t sectorC = (areas[doors[door].area[0]].sectorC + areas[doors[door].area[1]].sectorC) / 2;
+	int32_t sum		= 0;
 	if (sectorR > goalSector[0])
 		sum += (sectorR - goalSector[0]);
 	else
@@ -3270,11 +3132,10 @@ int32_t GlobalMap::calcHPrime(int32_t door)
 
 //---------------------------------------------------------------------------
 
-inline void GlobalMap::propogateCost(
-	int32_t door, int32_t cost, int32_t fromAreaIndex, int32_t g)
+inline void GlobalMap::propogateCost(int32_t door, int32_t cost, int32_t fromAreaIndex, int32_t g)
 {
 	gosASSERT((door >= 0) && (door < (numDoors + NUM_DOOR_OFFSETS)) &&
-			  ((fromAreaIndex == 0) || (fromAreaIndex == 1)));
+		((fromAreaIndex == 0) || (fromAreaIndex == 1)));
 	GlobalMapDoorPtr curMapDoor = &doors[door];
 	if (curMapDoor->g > (g + cost))
 	{
@@ -3300,47 +3161,37 @@ inline void GlobalMap::propogateCost(
 			int32_t numLinks	= curMapDoor->numLinks[toAreaIndex];
 			for (size_t curLink = 0; curLink < numLinks; curLink++)
 			{
-				int32_t succDoor =
-					curMapDoor->links[toAreaIndex][curLink].doorIndex;
-				gosASSERT((succDoor >= 0) &&
-						  (succDoor < numDoors + NUM_DOOR_OFFSETS));
+				int32_t succDoor = curMapDoor->links[toAreaIndex][curLink].doorIndex;
+				gosASSERT((succDoor >= 0) && (succDoor < numDoors + NUM_DOOR_OFFSETS));
 				GlobalMapDoorPtr succMapDoor = &doors[succDoor];
-				int32_t succDoorCost =
-					curMapDoor->links[toAreaIndex][curLink].cost;
+				int32_t succDoorCost		 = curMapDoor->links[toAreaIndex][curLink].cost;
 				if (useClosedAreas)
 				{
-					if ((succMapDoor->teamID > -1) &&
-						(succMapDoor->teamID != moverTeamID))
+					if ((succMapDoor->teamID > -1) && (succMapDoor->teamID != moverTeamID))
 						succDoorCost = 1000;
 				}
 				else
 				{
-					if ((succMapDoor->teamID > -1) &&
-						(succMapDoor->teamID != moverTeamID))
+					if ((succMapDoor->teamID > -1) && (succMapDoor->teamID != moverTeamID))
 						succDoorCost = COST_BLOCKED;
 					//--------------------------------------------------
 					// Whether the door is even open is another issue...
 					if (!succMapDoor->open)
 						succDoorCost = COST_BLOCKED;
 				}
-				int32_t succFromAreaIndex =
-					(succMapDoor->area[1] == curMapDoor->area[toAreaIndex]);
-				if ((succMapDoor->open || useClosedAreas) &&
-					(succDoorCost < COST_BLOCKED))
+				int32_t succFromAreaIndex = (succMapDoor->area[1] == curMapDoor->area[toAreaIndex]);
+				if ((succMapDoor->open || useClosedAreas) && (succDoorCost < COST_BLOCKED))
 					if ((succMapDoor->hPrime !=
 							HPRIME_NOT_CALCED) /* && (succMapDoor->hPrime < MaxHPrime)*/)
 					{
 						if (door == succMapDoor->parent)
-							propogateCost(succDoor, succDoorCost, toAreaIndex,
-								curMapDoor->g);
-						else if ((curMapDoor->g + succDoorCost) <
-								 succMapDoor->g)
+							propogateCost(succDoor, succDoorCost, toAreaIndex, curMapDoor->g);
+						else if ((curMapDoor->g + succDoorCost) < succMapDoor->g)
 						{
 							succMapDoor->cost		   = succDoorCost;
 							succMapDoor->parent		   = door;
 							succMapDoor->fromAreaIndex = succFromAreaIndex;
-							propogateCost(succDoor, succDoorCost,
-								succFromAreaIndex, curMapDoor->g);
+							propogateCost(succDoor, succDoorCost, succFromAreaIndex, curMapDoor->g);
 						}
 					}
 			}
@@ -3353,9 +3204,8 @@ inline void GlobalMap::propogateCost(
 #define MAX_GLOBAL_PATH 50
 #endif
 
-int32_t GlobalMap::calcPath(int32_t startArea, int32_t goalArea,
-	GlobalPathStepPtr path, int32_t startRow, int32_t startCol, int32_t goalRow,
-	int32_t goalCol)
+int32_t GlobalMap::calcPath(int32_t startArea, int32_t goalArea, GlobalPathStepPtr path,
+	int32_t startRow, int32_t startCol, int32_t goalRow, int32_t goalCol)
 {
 #ifdef _DEBUG
 	// systemHeap->walkHeap(false,false,"GlobalMap:calc BAD HEAP1\n");
@@ -3484,8 +3334,8 @@ int32_t GlobalMap::calcPath(int32_t startArea, int32_t goalArea,
 		if (logEnabled)
 		{
 			char s[50];
-			sprintf(s, "     thruArea = %d, bestDoor = %d, numLinks = %d",
-				thruArea, bestDoor, numLinks);
+			sprintf(s, "     thruArea = %d, bestDoor = %d, numLinks = %d", thruArea, bestDoor,
+				numLinks);
 			log->write(s);
 		}
 		for (size_t curLink = 0; curLink < numLinks; curLink++)
@@ -3495,10 +3345,8 @@ int32_t GlobalMap::calcPath(int32_t startArea, int32_t goalArea,
 			// travel, we must check right here...
 			//--------------------------
 			// Now, process this door...
-			int32_t succDoor =
-				bestMapDoor->links[toAreaIndex][curLink].doorIndex;
-			gosASSERT(
-				(succDoor >= 0) && (succDoor < numDoors + NUM_DOOR_OFFSETS));
+			int32_t succDoor = bestMapDoor->links[toAreaIndex][curLink].doorIndex;
+			gosASSERT((succDoor >= 0) && (succDoor < numDoors + NUM_DOOR_OFFSETS));
 			GlobalMapDoorPtr succMapDoor = &doors[succDoor];
 			if (logEnabled)
 			{
@@ -3506,24 +3354,21 @@ int32_t GlobalMap::calcPath(int32_t startArea, int32_t goalArea,
 				sprintf(s, "          %02d) succDoor = %d", curLink, succDoor);
 				log->write(s);
 			}
-			int32_t succDoorCost =
-				bestMapDoor->links[toAreaIndex][curLink].cost;
+			int32_t succDoorCost = bestMapDoor->links[toAreaIndex][curLink].cost;
 			//----------------------------------------------------------------------------
 			// If this is an aligned door, make it more expensive for unfriendly
 			// movers...
 			if (useClosedAreas)
 			{
 				if (succMapDoor->teamID > -1)
-					if (TeamRelations[succMapDoor->teamID][moverTeamID] ==
-						RELATION_FRIENDLY)
+					if (TeamRelations[succMapDoor->teamID][moverTeamID] == RELATION_FRIENDLY)
 						succDoorCost = 50;
 				if (!succMapDoor->open)
 					succDoorCost = 1000;
 			}
 			else
 			{
-				if ((succMapDoor->teamID > -1) &&
-					(succMapDoor->teamID != moverTeamID))
+				if ((succMapDoor->teamID > -1) && (succMapDoor->teamID != moverTeamID))
 					succDoorCost = COST_BLOCKED;
 				//--------------------------------------------------
 				// Whether the door is even open is another issue...
@@ -3558,16 +3403,15 @@ int32_t GlobalMap::calcPath(int32_t startArea, int32_t goalArea,
 						succMapDoor->parent		   = bestDoor;
 						succMapDoor->fromAreaIndex = succFromAreaIndex;
 						succMapDoor->g			   = succDoorG;
-						succMapDoor->fPrime = succDoorG + succMapDoor->hPrime;
-						int32_t openIndex   = openList->find(succDoor);
+						succMapDoor->fPrime		   = succDoorG + succMapDoor->hPrime;
+						int32_t openIndex		   = openList->find(succDoor);
 						if (!openIndex)
 						{
 							char s[128];
 							sprintf(s,
 								"GlobalMap.calcPath: Cannot find globalmap "
 								"door [%d, %d, %d, %d] for change\n",
-								succDoor, curLink, succFromAreaIndex,
-								succDoorCost);
+								succDoor, curLink, succFromAreaIndex, succDoorCost);
 #ifdef USE_OBJECTS
 							DebugOpenList(s);
 #endif
@@ -3589,8 +3433,7 @@ int32_t GlobalMap::calcPath(int32_t startArea, int32_t goalArea,
 						succMapDoor->cost		   = succDoorCost;
 						succMapDoor->parent		   = bestDoor;
 						succMapDoor->fromAreaIndex = succFromAreaIndex;
-						propogateCost(succDoor, succDoorCost, succFromAreaIndex,
-							bestDoorG);
+						propogateCost(succDoor, succDoorCost, succFromAreaIndex, bestDoorG);
 					}
 				}
 				else
@@ -3602,7 +3445,7 @@ int32_t GlobalMap::calcPath(int32_t startArea, int32_t goalArea,
 					succMapDoor->parent		   = bestDoor;
 					succMapDoor->fromAreaIndex = succFromAreaIndex;
 					succMapDoor->g			   = succDoorG;
-					succMapDoor->fPrime = succDoorG + succMapDoor->hPrime;
+					succMapDoor->fPrime		   = succDoorG + succMapDoor->hPrime;
 					PQNode succPQNode;
 					succPQNode.key = succMapDoor->fPrime;
 					succPQNode.id  = succDoor;
@@ -3647,8 +3490,7 @@ int32_t GlobalMap::calcPath(int32_t startArea, int32_t goalArea,
 		int32_t costToGoal = 0;
 		while (curPathDoor > 0)
 		{
-			path[curPathDoor - 1].thruArea =
-				doors[curDoor].area[doors[curDoor].fromAreaIndex];
+			path[curPathDoor - 1].thruArea   = doors[curDoor].area[doors[curDoor].fromAreaIndex];
 			path[curPathDoor - 1].goalDoor   = curDoor;
 			path[curPathDoor - 1].costToGoal = costToGoal;
 			costToGoal += doors[curDoor].cost;
@@ -3664,17 +3506,13 @@ int32_t GlobalMap::calcPath(int32_t startArea, int32_t goalArea,
 			setPathCost(startArea, goalArea, useClosedAreas, numDoors);
 			if (useClosedAreas)
 			{
-				setPathFlag(
-					startArea, goalArea, GLOBAL_FLAG_SPECIAL_IMPOSSIBLE, false);
-				setPathFlag(
-					startArea, goalArea, GLOBAL_FLAG_SPECIAL_CALC, false);
+				setPathFlag(startArea, goalArea, GLOBAL_FLAG_SPECIAL_IMPOSSIBLE, false);
+				setPathFlag(startArea, goalArea, GLOBAL_FLAG_SPECIAL_CALC, false);
 			}
 			else
 			{
-				setPathFlag(
-					startArea, goalArea, GLOBAL_FLAG_NORMAL_OPENS, false);
-				setPathFlag(
-					startArea, goalArea, GLOBAL_FLAG_SPECIAL_CALC, false);
+				setPathFlag(startArea, goalArea, GLOBAL_FLAG_NORMAL_OPENS, false);
+				setPathFlag(startArea, goalArea, GLOBAL_FLAG_SPECIAL_CALC, false);
 			}
 		}
 #endif
@@ -3695,17 +3533,13 @@ int32_t GlobalMap::calcPath(int32_t startArea, int32_t goalArea,
 			setPathCost(startArea, goalArea, useClosedAreas, 0);
 			if (useClosedAreas)
 			{
-				setPathFlag(
-					startArea, goalArea, GLOBAL_FLAG_SPECIAL_IMPOSSIBLE, true);
-				setPathFlag(
-					startArea, goalArea, GLOBAL_FLAG_SPECIAL_CALC, false);
+				setPathFlag(startArea, goalArea, GLOBAL_FLAG_SPECIAL_IMPOSSIBLE, true);
+				setPathFlag(startArea, goalArea, GLOBAL_FLAG_SPECIAL_CALC, false);
 			}
 			else
 			{
-				setPathFlag(
-					startArea, goalArea, GLOBAL_FLAG_NORMAL_OPENS, false);
-				setPathFlag(
-					startArea, goalArea, GLOBAL_FLAG_SPECIAL_CALC, false);
+				setPathFlag(startArea, goalArea, GLOBAL_FLAG_NORMAL_OPENS, false);
+				setPathFlag(startArea, goalArea, GLOBAL_FLAG_SPECIAL_CALC, false);
 			}
 		}
 #endif
@@ -3719,15 +3553,14 @@ int32_t GlobalMap::calcPath(int32_t startArea, int32_t goalArea,
 
 //------------------------------------------------------------------------------------------
 
-int32_t GlobalMap::calcPath(
-	Stuff::Vector3D start, Stuff::Vector3D goal, GlobalPathStepPtr path)
+int32_t GlobalMap::calcPath(Stuff::Vector3D start, Stuff::Vector3D goal, GlobalPathStepPtr path)
 {
 	int32_t startR, startC;
 	land->worldToCell(start, startR, startC);
 	int32_t goalR, goalC;
 	land->worldToCell(goal, goalR, goalC);
-	int32_t numSteps = calcPath(calcArea(startR, startC),
-		calcArea(goalR, goalC), path, startR, startC, goalR, goalC);
+	int32_t numSteps = calcPath(
+		calcArea(startR, startC), calcArea(goalR, goalC), path, startR, startC, goalR, goalC);
 	return (numSteps);
 }
 
@@ -3783,8 +3616,7 @@ void GlobalMap::openArea(int32_t area)
 		GlobalMapDoorPtr curDoor = &doors[openedArea->doors[i].doorIndex];
 		int32_t doorSide		 = openedArea->doors[i].doorSide;
 		for (size_t j = 0; j < curDoor->numLinks[doorSide]; j++)
-			curDoor->links[doorSide][j].cost =
-				curDoor->links[doorSide][j].openCost;
+			curDoor->links[doorSide][j].cost = curDoor->links[doorSide][j].openCost;
 	}
 	opens = true;
 }
@@ -3795,7 +3627,7 @@ void GlobalMap::print(PSTR fileName)
 {
 	if (areaMap)
 		return;
-	File* debugFile = new File;
+	MechFile* debugFile = new MechFile;
 	debugFile->create(fileName);
 	char outString[500];
 	for (size_t row = 0; row < height; row++)
@@ -3919,9 +3751,8 @@ bool GlobalMap::toggleLog(void)
 			for (i = 0; i < map->numDoors; i++)
 			{
 				sprintf(s, "door %05d, %s(%d), areas %d & %d", i,
-					map->doors[i].open ? "opened" : "CLOSED",
-					map->doors[i].teamID, map->doors[i].area[0],
-					map->doors[i].area[1]);
+					map->doors[i].open ? "opened" : "CLOSED", map->doors[i].teamID,
+					map->doors[i].area[0], map->doors[i].area[1]);
 				log->write(s);
 				for (size_t side = 0; side < 2; side++)
 				{
@@ -3929,8 +3760,8 @@ bool GlobalMap::toggleLog(void)
 					log->write(s);
 					for (size_t j = 0; j < map->doors[i].numLinks[side]; j++)
 					{
-						sprintf(s, "          link %03d, to door %05d, cost %d",
-							j, map->doors[i].links[side][j].doorIndex,
+						sprintf(s, "          link %03d, to door %05d, cost %d", j,
+							map->doors[i].links[side][j].doorIndex,
 							map->doors[i].links[side][j].cost);
 						log->write(s);
 					}
@@ -3939,8 +3770,7 @@ bool GlobalMap::toggleLog(void)
 			log->write(" ");
 			for (i = 0; i < map->numAreas; i++)
 			{
-				sprintf(s, "area %05d, %s(%d)", i,
-					map->areas[i].open ? "opened" : "CLOSED",
+				sprintf(s, "area %05d, %s(%d)", i, map->areas[i].open ? "opened" : "CLOSED",
 					map->areas[i].teamID);
 				log->write(s);
 				if (map->areas[i].ownerWID > 0)
@@ -3948,15 +3778,14 @@ bool GlobalMap::toggleLog(void)
 					sprintf(s, "     ownerWID is %d", map->areas[i].ownerWID);
 					log->write(s);
 				}
-				static PSTR typeString[] = {"normal area", "wall area",
-					"gate area", "land bridge area", "forest area"};
+				static PSTR typeString[] = {
+					"normal area", "wall area", "gate area", "land bridge area", "forest area"};
 				sprintf(s, "     %s", typeString[map->areas[i].type]);
 				log->write(s);
 				for (size_t d = 0; d < map->areas[i].numDoors; d++)
 				{
 					sprintf(s, "     door %03d is %d (%d:%d & %d) ", d,
-						map->areas[i].doors[d].doorIndex,
-						map->areas[i].doors[d].doorSide,
+						map->areas[i].doors[d].doorIndex, map->areas[i].doors[d].doorSide,
 						map->doors[map->areas[i].doors[d].doorIndex].area[0],
 						map->doors[map->areas[i].doors[d].doorIndex].area[1]);
 					log->write(s);
@@ -4001,17 +3830,14 @@ void MoveMap::init(int32_t maxW, int32_t maxH)
 	int32_t mapByteSize = sizeof(MoveMapNode) * maxWidth * maxHeight;
 	map					= (MoveMapNodePtr)systemHeap->Malloc(mapByteSize);
 	gosASSERT(map != nullptr);
-	mapRowStartTable =
-		(int32_t*)systemHeap->Malloc(maxHeight * sizeof(int32_t));
+	mapRowStartTable = (int32_t*)systemHeap->Malloc(maxHeight * sizeof(int32_t));
 	gosASSERT(mapRowStartTable != nullptr);
 	int32_t r;
 	for (r = 0; r < maxHeight; r++)
 		mapRowStartTable[r] = r * maxWidth;
-	mapRowTable =
-		(int32_t*)systemHeap->Malloc(maxHeight * maxWidth * sizeof(int32_t));
+	mapRowTable = (int32_t*)systemHeap->Malloc(maxHeight * maxWidth * sizeof(int32_t));
 	gosASSERT(mapRowTable != nullptr);
-	mapColTable =
-		(int32_t*)systemHeap->Malloc(maxHeight * maxWidth * sizeof(int32_t));
+	mapColTable = (int32_t*)systemHeap->Malloc(maxHeight * maxWidth * sizeof(int32_t));
 	gosASSERT(mapColTable != nullptr);
 	for (r = 0; r < maxHeight; r++)
 		for (size_t c = 0; c < maxWidth; c++)
@@ -4073,8 +3899,7 @@ void MoveMap::setTarget(Stuff::Vector3D targetPos) { target = targetPos; }
 
 //---------------------------------------------------------------------------
 
-void MoveMap::setStart(
-	Stuff::Vector3D* startPos, int32_t startRow, int32_t startCol)
+void MoveMap::setStart(Stuff::Vector3D* startPos, int32_t startRow, int32_t startCol)
 {
 	if (startPos)
 		start = *startPos;
@@ -4137,15 +3962,14 @@ void MoveMap::setGoal(int32_t thruArea, int32_t goalDoor)
 	// with a better one that uses the door range. If the global path's final
 	// goal is on the other side of this door, we should select THAT cell of the
 	// door...
-	goal.x	 = -999999.0;
-	goal.y	 = -999999.0;
-	goal.z	 = -999999.0;
-	GoalIsDoor = true;
-	door	   = goalDoor;
-	doorSide = (GlobalMoveMap[moveLevel]->doors[goalDoor].area[1] == thruArea);
+	goal.x					   = -999999.0;
+	goal.y					   = -999999.0;
+	goal.z					   = -999999.0;
+	GoalIsDoor				   = true;
+	door					   = goalDoor;
+	doorSide				   = (GlobalMoveMap[moveLevel]->doors[goalDoor].area[1] == thruArea);
 	int32_t doorDirTable[4][2] = {{-1, -1}, {1, 3}, {2, 0}, {-1, -1}};
-	int32_t goalDoorDir =
-		GlobalMoveMap[moveLevel]->doors[goalDoor].direction[0];
+	int32_t goalDoorDir		   = GlobalMoveMap[moveLevel]->doors[goalDoor].direction[0];
 	gosASSERT((goalDoorDir == 1) || (goalDoorDir == 2));
 	doorDirection	  = doorDirTable[goalDoorDir][doorSide];
 	int32_t doorLength = GlobalMoveMap[moveLevel]->doors[goalDoor].length;
@@ -4155,16 +3979,14 @@ void MoveMap::setGoal(int32_t thruArea, int32_t goalDoor)
 		// We need to set goalR and goalC for the calcHPrime function used
 		// in pathfinding...
 		goalR = GlobalMoveMap[moveLevel]->doors[goalDoor].row + doorSide - ULr;
-		goalC = GlobalMoveMap[moveLevel]->doors[goalDoor].col +
-				(doorLength / 2) - ULc;
+		goalC = GlobalMoveMap[moveLevel]->doors[goalDoor].col + (doorLength / 2) - ULc;
 	}
 	else if ((doorDirection == 1) || (doorDirection == 3))
 	{
 		//----------------------------------------------------------------
 		// We need to set goalR and goalC for the calcHPrime function used
 		// in pathfinding...
-		goalR = GlobalMoveMap[moveLevel]->doors[goalDoor].row +
-				(doorLength / 2) - ULr;
+		goalR = GlobalMoveMap[moveLevel]->doors[goalDoor].row + (doorLength / 2) - ULr;
 		goalC = GlobalMoveMap[moveLevel]->doors[goalDoor].col + doorSide - ULc;
 	}
 }
@@ -4202,8 +4024,7 @@ inline int32_t MoveMap::markGoals(Stuff::Vector3D finalGoal)
 		{
 			if (finalGoalR == (cellR + 1))
 				//				if (!doorCellBlocked(cellR, cellC))
-				if ((finalGoalC >= cellC) &&
-					(finalGoalC < (cellC + doorLength)))
+				if ((finalGoalC >= cellC) && (finalGoalC < (cellC + doorLength)))
 				{
 					//-----------------------------------------------------
 					// Our global goal is on the other side of this door...
@@ -4216,8 +4037,7 @@ inline int32_t MoveMap::markGoals(Stuff::Vector3D finalGoal)
 		{
 			if (finalGoalR == (cellR - 1))
 				//				if (!doorCellBlocked(cellR, cellC)
-				if ((finalGoalC >= cellC) &&
-					(finalGoalC < (cellC + doorLength)))
+				if ((finalGoalC >= cellC) && (finalGoalC < (cellC + doorLength)))
 				{
 					//-----------------------------------------------------
 					// Our global goal is on the other side of this door...
@@ -4321,8 +4141,7 @@ inline int32_t MoveMap::markEscapeGoals(Stuff::Vector3D finalGoal)
 	// store it in the moveOrders data...
 	int32_t finalGoalR, finalGoalC;
 	land->worldToCell(finalGoal, finalGoalR, finalGoalC);
-	int32_t finalGoalArea =
-		GlobalMoveMap[moveLevel]->calcArea(finalGoalR, finalGoalC);
+	int32_t finalGoalArea = GlobalMoveMap[moveLevel]->calcArea(finalGoalR, finalGoalC);
 	//------------------------------------------------------------------------
 	// For each tile, mark its cells as valid goals if:
 	//		1) the tile's areaId == the areaId of the finalGoal
@@ -4333,8 +4152,7 @@ inline int32_t MoveMap::markEscapeGoals(Stuff::Vector3D finalGoal)
 		{
 			if (GameMap->inBounds(ULr + row, ULc + col))
 			{
-				int32_t curArea =
-					GlobalMoveMap[moveLevel]->calcArea(ULr + row, ULc + col);
+				int32_t curArea = GlobalMoveMap[moveLevel]->calcArea(ULr + row, ULc + col);
 				int32_t confidence;
 				int32_t numLRSteps = GlobalMoveMap[moveLevel]->getPathCost(
 					curArea, finalGoalArea, false, confidence, true);
@@ -4349,10 +4167,9 @@ inline int32_t MoveMap::markEscapeGoals(Stuff::Vector3D finalGoal)
 
 //---------------------------------------------------------------------------
 
-int32_t MoveMap::setUp(int32_t mapULr, int32_t mapULc, int32_t mapWidth,
-	int32_t mapHeight, int32_t level, Stuff::Vector3D* startPos,
-	int32_t startRow, int32_t startCol, Stuff::Vector3D goalPos,
-	int32_t goalRow, int32_t goalCol, int32_t clearCellCost,
+int32_t MoveMap::setUp(int32_t mapULr, int32_t mapULc, int32_t mapWidth, int32_t mapHeight,
+	int32_t level, Stuff::Vector3D* startPos, int32_t startRow, int32_t startCol,
+	Stuff::Vector3D goalPos, int32_t goalRow, int32_t goalCol, int32_t clearCellCost,
 	int32_t jumpCellCost, int32_t offsets, uint32_t params)
 {
 	//-----------------------------------------------------------------------------
@@ -4405,11 +4222,10 @@ int32_t MoveMap::setUp(int32_t mapULr, int32_t mapULc, int32_t mapWidth,
 		travelOffMap	  = true;
 		cannotEnterOffMap = false;
 	}
-	bool followRoads = ((params & MOVEPARAM_FOLLOW_ROADS) != 0);
-	bool traverseShallowWater =
-		((params & (MOVEPARAM_WATER_SHALLOW + MOVEPARAM_WATER_DEEP)) != 0);
-	bool traverseDeepWater = ((params & MOVEPARAM_WATER_DEEP) != 0);
-	bool avoidMines		   = true;
+	bool followRoads		  = ((params & MOVEPARAM_FOLLOW_ROADS) != 0);
+	bool traverseShallowWater = ((params & (MOVEPARAM_WATER_SHALLOW + MOVEPARAM_WATER_DEEP)) != 0);
+	bool traverseDeepWater	= ((params & MOVEPARAM_WATER_DEEP) != 0);
+	bool avoidMines			  = true;
 	if (params & MOVEPARAM_SWEEP_MINES)
 		avoidMines = false;
 	//-------------------------------------------------
@@ -4423,8 +4239,7 @@ int32_t MoveMap::setUp(int32_t mapULr, int32_t mapULc, int32_t mapWidth,
 		{
 			if (GameMap->inBounds(ULr + cellRow, ULc + cellCol))
 			{
-				MapCellPtr mapCell =
-					GameMap->getCell(ULr + cellRow, ULc + cellCol);
+				MapCellPtr mapCell   = GameMap->getCell(ULr + cellRow, ULc + cellCol);
 				int32_t moveMapIndex = cellRow * maxWidth + cellCol;
 				int32_t cost		 = clearCost;
 				bool offMapCell		 = mapCell->getOffMap();
@@ -4453,13 +4268,12 @@ int32_t MoveMap::setUp(int32_t mapULr, int32_t mapULc, int32_t mapWidth,
 					}
 					else if (mapCell->getGate())
 					{
-						int32_t areaID = GlobalMoveMap[moveLevel]->calcArea(
-							ULr + cellRow, ULc + cellCol);
+						int32_t areaID =
+							GlobalMoveMap[moveLevel]->calcArea(ULr + cellRow, ULc + cellCol);
 						int32_t teamID = -1;
 						if (areaID > -1)
 						{
-							teamID =
-								GlobalMoveMap[moveLevel]->areas[areaID].teamID;
+							teamID = GlobalMoveMap[moveLevel]->areas[areaID].teamID;
 							// Its possible for the ownerWIDs to be invalid for
 							// one or two frames after a quick save.
 							// We handle this ok later on!!  OwnerWIDs
@@ -4476,13 +4290,10 @@ int32_t MoveMap::setUp(int32_t mapULr, int32_t mapULc, int32_t mapWidth,
 						}
 						if (!EditorSave && (areaID > -1) &&
 							GlobalMoveMap[moveLevel]->isGateDisabledCallback(
-								GlobalMoveMap[moveLevel]
-									->areas[areaID]
-									.ownerWID))
+								GlobalMoveMap[moveLevel]->areas[areaID].ownerWID))
 							cost = COST_BLOCKED;
 						else if ((teamID > -1) &&
-								 (TeamRelations[teamID][moverTeamID] !=
-									 RELATION_FRIENDLY))
+							(TeamRelations[teamID][moverTeamID] != RELATION_FRIENDLY))
 						{
 							if (mapCell->getPassable())
 								cost <<= 2;
@@ -4509,8 +4320,7 @@ int32_t MoveMap::setUp(int32_t mapULr, int32_t mapULc, int32_t mapWidth,
 				// they're set as an overlay, we'll just treat them as such for
 				// now.
 				if (mapCell->getPathlock(moveLevel == 2))
-					adjustMoveMapCellCost(
-						&map[cellRow * maxWidth + cellCol], pathLockCost);
+					adjustMoveMapCellCost(&map[cellRow * maxWidth + cellCol], pathLockCost);
 			}
 		}
 	if (FindingEscapePath)
@@ -4531,10 +4341,9 @@ int32_t MoveMap::setUp(int32_t mapULr, int32_t mapULc, int32_t mapWidth,
 
 //---------------------------------------------------------------------------
 
-int32_t MoveMap::setUp(int32_t level, Stuff::Vector3D* startPos,
-	int32_t startRow, int32_t startCol, int32_t thruArea[2], int32_t goalDoor,
-	Stuff::Vector3D finalGoal, int32_t clearCellCost, int32_t jumpCellCost,
-	int32_t offsets, uint32_t params)
+int32_t MoveMap::setUp(int32_t level, Stuff::Vector3D* startPos, int32_t startRow, int32_t startCol,
+	int32_t thruArea[2], int32_t goalDoor, Stuff::Vector3D finalGoal, int32_t clearCellCost,
+	int32_t jumpCellCost, int32_t offsets, uint32_t params)
 {
 #ifdef LAB_ONLY
 	int64_t startTime = GetCycles();
@@ -4568,10 +4377,8 @@ int32_t MoveMap::setUp(int32_t level, Stuff::Vector3D* startPos,
 	}
 	else
 	{
-		int32_t secondSectorRow =
-			GlobalMoveMap[level]->areas[thruArea[1]].sectorR;
-		int32_t secondSectorCol =
-			GlobalMoveMap[level]->areas[thruArea[1]].sectorC;
+		int32_t secondSectorRow = GlobalMoveMap[level]->areas[thruArea[1]].sectorR;
+		int32_t secondSectorCol = GlobalMoveMap[level]->areas[thruArea[1]].sectorC;
 		if (secondSectorRow > firstSectorRow)
 		{
 			if (secondSectorCol == firstSectorCol)
@@ -4656,11 +4463,10 @@ int32_t MoveMap::setUp(int32_t level, Stuff::Vector3D* startPos,
 	}
 	//-------------------------------------------------
 	// Now that the params are set up, build the map...
-	bool followRoads = ((params & MOVEPARAM_FOLLOW_ROADS) != 0);
-	bool traverseShallowWater =
-		((params & (MOVEPARAM_WATER_SHALLOW + MOVEPARAM_WATER_DEEP)) != 0);
-	bool traverseDeepWater = ((params & MOVEPARAM_WATER_DEEP) != 0);
-	bool avoidMines		   = true;
+	bool followRoads		  = ((params & MOVEPARAM_FOLLOW_ROADS) != 0);
+	bool traverseShallowWater = ((params & (MOVEPARAM_WATER_SHALLOW + MOVEPARAM_WATER_DEEP)) != 0);
+	bool traverseDeepWater	= ((params & MOVEPARAM_WATER_DEEP) != 0);
+	bool avoidMines			  = true;
 	if (params & MOVEPARAM_SWEEP_MINES)
 		avoidMines = false;
 	//--------------------------------------------------------------
@@ -4669,20 +4475,16 @@ int32_t MoveMap::setUp(int32_t level, Stuff::Vector3D* startPos,
 	for (size_t cellRow = 0; cellRow < height; cellRow++)
 		for (size_t cellCol = 0; cellCol < width; cellCol++)
 		{
-			if (GameMap->inBounds(ULr + cellRow, ULc + cellCol) &&
-				inBounds(cellRow, cellCol))
+			if (GameMap->inBounds(ULr + cellRow, ULc + cellCol) && inBounds(cellRow, cellCol))
 			{
-				MapCellPtr mapCell =
-					GameMap->getCell(ULr + cellRow, ULc + cellCol);
+				MapCellPtr mapCell   = GameMap->getCell(ULr + cellRow, ULc + cellCol);
 				int32_t moveMapIndex = cellRow * maxWidth + cellCol;
 				int32_t cost		 = clearCost;
 				bool offMapCell		 = mapCell->getOffMap();
 				if (offMapCell)
 					map[moveMapIndex].setFlag(MOVEFLAG_OFFMAP);
-				int32_t areaID = GlobalMoveMap[moveLevel]->calcArea(
-					ULr + cellRow, ULc + cellCol);
-				if (CullPathAreas && (areaID != thruAreas[0]) &&
-					(areaID != thruAreas[1]))
+				int32_t areaID = GlobalMoveMap[moveLevel]->calcArea(ULr + cellRow, ULc + cellCol);
+				if (CullPathAreas && (areaID != thruAreas[0]) && (areaID != thruAreas[1]))
 					cost = COST_BLOCKED;
 				else if (offMapCell && !travelOffMap)
 					cost = COST_BLOCKED;
@@ -4704,13 +4506,12 @@ int32_t MoveMap::setUp(int32_t level, Stuff::Vector3D* startPos,
 					}
 					else if (mapCell->getGate())
 					{
-						int32_t areaID = GlobalMoveMap[moveLevel]->calcArea(
-							ULr + cellRow, ULc + cellCol);
+						int32_t areaID =
+							GlobalMoveMap[moveLevel]->calcArea(ULr + cellRow, ULc + cellCol);
 						int32_t teamID = -1;
 						if (areaID > -1)
 						{
-							teamID =
-								GlobalMoveMap[moveLevel]->areas[areaID].teamID;
+							teamID = GlobalMoveMap[moveLevel]->areas[areaID].teamID;
 							/*  See Above
 							if (!EditorSave)
 								if
@@ -4720,13 +4521,10 @@ int32_t MoveMap::setUp(int32_t level, Stuff::Vector3D* startPos,
 						}
 						if (!EditorSave && (areaID > -1) &&
 							GlobalMoveMap[moveLevel]->isGateDisabledCallback(
-								GlobalMoveMap[moveLevel]
-									->areas[areaID]
-									.ownerWID))
+								GlobalMoveMap[moveLevel]->areas[areaID].ownerWID))
 							cost = COST_BLOCKED;
 						else if ((teamID > -1) &&
-								 (TeamRelations[teamID][moverTeamID] !=
-									 RELATION_FRIENDLY))
+							(TeamRelations[teamID][moverTeamID] != RELATION_FRIENDLY))
 						{
 							if (mapCell->getPassable())
 								cost <<= 2;
@@ -4748,8 +4546,7 @@ int32_t MoveMap::setUp(int32_t level, Stuff::Vector3D* startPos,
 				}
 				setCost(cellRow, cellCol, cost);
 				if (mapCell->getPathlock(moveLevel == 2))
-					adjustMoveMapCellCost(
-						&map[cellRow * maxWidth + cellCol], pathLockCost);
+					adjustMoveMapCellCost(&map[cellRow * maxWidth + cellCol], pathLockCost);
 			}
 		}
 	if (markGoals(finalGoal) == 0)
@@ -4839,8 +4636,7 @@ inline int32_t MoveMap::calcHPrime(int32_t r, int32_t c)
 
 //---------------------------------------------------------------------------
 
-inline void MoveMap::propogateCost(
-	int32_t mapCellIndex, int32_t cost, int32_t g)
+inline void MoveMap::propogateCost(int32_t mapCellIndex, int32_t cost, int32_t g)
 {
 	gosASSERT(cost > 0);
 	gosASSERT(g >= 0);
@@ -4876,19 +4672,15 @@ inline void MoveMap::propogateCost(
 				if (isDiagonalWalk)
 				{
 					// MINE CHECK should go in these adj tests...
-					bool adj1Open = false;
-					int32_t adjCellIndex =
-						map[mapCellIndex].adjCells[StepAdjDir[dir]];
+					bool adj1Open		 = false;
+					int32_t adjCellIndex = map[mapCellIndex].adjCells[StepAdjDir[dir]];
 					if (adjCellIndex > -1)
-						if ((map[adjCellIndex].flags & MOVEFLAG_MOVER_HERE) ==
-							0)
+						if ((map[adjCellIndex].flags & MOVEFLAG_MOVER_HERE) == 0)
 							adj1Open = (map[adjCellIndex].cost < COST_BLOCKED);
 					bool adj2Open = false;
-					adjCellIndex =
-						map[mapCellIndex].adjCells[StepAdjDir[dir + 1]];
+					adjCellIndex  = map[mapCellIndex].adjCells[StepAdjDir[dir + 1]];
 					if (adjCellIndex > -1)
-						if ((map[adjCellIndex].flags & MOVEFLAG_MOVER_HERE) ==
-							0)
+						if ((map[adjCellIndex].flags & MOVEFLAG_MOVER_HERE) == 0)
 							adj2Open = (map[adjCellIndex].cost < COST_BLOCKED);
 					if (!adj1Open && !adj2Open)
 						continue;
@@ -4916,13 +4708,11 @@ inline void MoveMap::propogateCost(
 							if (isDiagonalWalk)
 								cost += (cost << 1);
 							if (dirToParent == succMapNode->parent)
-								propogateCost(
-									succCellIndex, cost, curMapNode->g);
+								propogateCost(succCellIndex, cost, curMapNode->g);
 							else if ((curMapNode->g + cost) < succMapNode->g)
 							{
 								succMapNode->parent = dirToParent;
-								propogateCost(
-									succCellIndex, cost, curMapNode->g);
+								propogateCost(succCellIndex, cost, curMapNode->g);
 							}
 						}
 				}
@@ -4933,8 +4723,7 @@ inline void MoveMap::propogateCost(
 
 //---------------------------------------------------------------------------
 
-inline void MoveMap::propogateCostJUMP(
-	int32_t r, int32_t c, int32_t cost, int32_t g)
+inline void MoveMap::propogateCostJUMP(int32_t r, int32_t c, int32_t cost, int32_t g)
 {
 	gosASSERT(cost > 0);
 	gosASSERT(g >= 0);
@@ -4985,8 +4774,7 @@ inline void MoveMap::propogateCostJUMP(
 				// If it's on the map, check it...
 				if (inMapBounds(succRow, succCol, height, width))
 				{
-					MoveMapNodePtr succMapNode =
-						&map[succRow * maxWidth + succCol];
+					MoveMapNodePtr succMapNode = &map[succRow * maxWidth + succCol];
 					if (succMapNode->cost < COST_BLOCKED)
 						if ((succMapNode->hPrime != HPRIME_NOT_CALCED) &&
 							(succMapNode->hPrime < MaxHPrime))
@@ -5008,13 +4796,11 @@ inline void MoveMap::propogateCostJUMP(
 							else if (isDiagonalWalk)
 								cost += (cost / 2);
 							if (dirToParent == succMapNode->parent)
-								propogateCostJUMP(
-									succRow, succCol, cost, curMapNode->g);
+								propogateCostJUMP(succRow, succCol, cost, curMapNode->g);
 							else if ((curMapNode->g + cost) < succMapNode->g)
 							{
 								succMapNode->parent = dirToParent;
-								propogateCostJUMP(
-									succRow, succCol, cost, curMapNode->g);
+								propogateCostJUMP(succRow, succCol, cost, curMapNode->g);
 							}
 						}
 				}
@@ -5030,8 +4816,7 @@ inline void MoveMap::propogateCostJUMP(
 //#define TIME_PATH
 //#define DEBUG_MOVE_MAP
 
-int32_t MoveMap::calcPath(
-	MovePathPtr path, Stuff::Vector3D* goalWorldPos, int32_t* goalCell)
+int32_t MoveMap::calcPath(MovePathPtr path, Stuff::Vector3D* goalWorldPos, int32_t* goalCell)
 {
 #ifdef TIME_PATH
 	L_INTEGER calcStart, calcStop;
@@ -5040,18 +4825,15 @@ int32_t MoveMap::calcPath(
 	if ((goalR < 0) || (goalR >= height) || (goalC < 0) || (goalC >= width))
 	{
 		Stuff::Vector3D p;
-		p.x = (float)(goalC)*Terrain::worldUnitsPerCell +
-			  Terrain::worldUnitsPerCell / 2 - Terrain::worldUnitsMapSide / 2;
-		p.y = (Terrain::worldUnitsMapSide / 2) -
-			  ((float)(goalR)*Terrain::worldUnitsPerCell) -
-			  Terrain::worldUnitsPerCell / 2;
-		p.z =
-			(float)0; // How do we get the elevation for this point? Do we care?
+		p.x = (float)(goalC)*Terrain::worldUnitsPerCell + Terrain::worldUnitsPerCell / 2 -
+			Terrain::worldUnitsMapSide / 2;
+		p.y = (Terrain::worldUnitsMapSide / 2) - ((float)(goalR)*Terrain::worldUnitsPerCell) -
+			Terrain::worldUnitsPerCell / 2;
+		p.z = (float)0; // How do we get the elevation for this point? Do we care?
 		char msg[200];
-		sprintf(msg, " Bad Move Goal: %d [%d(%d), %d(%d)], (%.2f, %.2f, %.2f)",
-			DebugMovePathType, goalR, height, goalC, width, p.x, p.y, p.z);
-		gosASSERT((goalR >= 0) && (goalR < height) && (goalC >= 0) &&
-				  (goalC < width));
+		sprintf(msg, " Bad Move Goal: %d [%d(%d), %d(%d)], (%.2f, %.2f, %.2f)", DebugMovePathType,
+			goalR, height, goalC, width, p.x, p.y, p.z);
+		gosASSERT((goalR >= 0) && (goalR < height) && (goalC >= 0) && (goalC < width));
 	}
 	//------------------------------------------------------------------
 	// Let's use their hPrime as a barrier for cutting off the search...
@@ -5099,7 +4881,7 @@ int32_t MoveMap::calcPath(
 #ifdef DEBUG_MOVE_MAP
 		if (debugMoveMap)
 		{
-			File* pathDebugFile = new File;
+			MechFile* pathDebugFile = new MechFile;
 			pathDebugFile->create("mm.dbg");
 			writeDebug(pathDebugFile);
 			pathDebugFile->close();
@@ -5139,14 +4921,13 @@ int32_t MoveMap::calcPath(
 			if (isDiagonalWalk)
 			{
 				// MINE CHECK should go in these adj tests...
-				bool adj1Open = false;
-				int32_t adjCellIndex =
-					map[bestPQNode.id].adjCells[StepAdjDir[dir]];
+				bool adj1Open		 = false;
+				int32_t adjCellIndex = map[bestPQNode.id].adjCells[StepAdjDir[dir]];
 				if (adjCellIndex > -1)
 					if ((map[adjCellIndex].flags & MOVEFLAG_MOVER_HERE) == 0)
 						adj1Open = (map[adjCellIndex].cost < COST_BLOCKED);
 				bool adj2Open = false;
-				adjCellIndex = map[bestPQNode.id].adjCells[StepAdjDir[dir + 1]];
+				adjCellIndex  = map[bestPQNode.id].adjCells[StepAdjDir[dir + 1]];
 				if (adjCellIndex > -1)
 					if ((map[adjCellIndex].flags & MOVEFLAG_MOVER_HERE) == 0)
 						adj2Open = (map[adjCellIndex].cost < COST_BLOCKED);
@@ -5170,16 +4951,15 @@ int32_t MoveMap::calcPath(
 			// If it's on the map, check it...
 			if (succCellIndex > -1)
 			{
-				if (!inBounds(
-						mapRowTable[succCellIndex], mapColTable[succCellIndex]))
+				if (!inBounds(mapRowTable[succCellIndex], mapColTable[succCellIndex]))
 					continue;
 				MoveMapNodePtr succMapNode = &map[succCellIndex];
 				if (succMapNode->cost < COST_BLOCKED)
 				{
 					if (succMapNode->hPrime == HPRIME_NOT_CALCED)
-						succMapNode->hPrime = calcHPrime(
-							mapRowTable[succCellIndex /*bestPQNode.id*/],
-							mapColTable[succCellIndex /*bestPQNode.id*/]);
+						succMapNode->hPrime =
+							calcHPrime(mapRowTable[succCellIndex /*bestPQNode.id*/],
+								mapColTable[succCellIndex /*bestPQNode.id*/]);
 					if (succMapNode->hPrime < MaxHPrime)
 					{
 #ifdef DEBUG_PATH
@@ -5210,10 +4990,8 @@ int32_t MoveMap::calcPath(
 								// This new path is cheaper...
 								succMapNode->parent = dirToParent;
 								succMapNode->g		= succNodeG;
-								succMapNode->fPrime =
-									succNodeG + succMapNode->hPrime;
-								int32_t openIndex =
-									openList->find(succCellIndex);
+								succMapNode->fPrime = succNodeG + succMapNode->hPrime;
+								int32_t openIndex   = openList->find(succCellIndex);
 								if (!openIndex)
 								{
 									char s[128];
@@ -5227,8 +5005,7 @@ int32_t MoveMap::calcPath(
 									gosASSERT(openIndex != nullptr);
 								}
 								else
-									openList->change(
-										openIndex, succMapNode->fPrime);
+									openList->change(openIndex, succMapNode->fPrime);
 							}
 						}
 						else if (succMapNode->flags & MOVEFLAG_CLOSED)
@@ -5253,8 +5030,7 @@ int32_t MoveMap::calcPath(
 							// into the OPEN list...
 							succMapNode->parent = dirToParent;
 							succMapNode->g		= succNodeG;
-							succMapNode->fPrime =
-								succNodeG + succMapNode->hPrime;
+							succMapNode->fPrime = succNodeG + succMapNode->hPrime;
 							PQNode succPQNode;
 							succPQNode.key = succMapNode->fPrime;
 							succPQNode.id  = succCellIndex;
@@ -5275,7 +5051,7 @@ int32_t MoveMap::calcPath(
 #ifdef DEBUG_MOVE_MAP
 	if (debugMoveMap)
 	{
-		File* pathDebugFile = new File;
+		MechFile* pathDebugFile = new MechFile;
 		pathDebugFile->create("mm.dbg");
 		writeDebug(pathDebugFile);
 		pathDebugFile->close();
@@ -5293,8 +5069,7 @@ int32_t MoveMap::calcPath(
 		while ((curRow != startR) || (curCol != startC))
 		{
 			numCells += 1;
-			int32_t cellOffsetIndex =
-				(map[mapRowStartTable[curRow] + curCol].parent << 1);
+			int32_t cellOffsetIndex = (map[mapRowStartTable[curRow] + curCol].parent << 1);
 			// if ((cellOffsetIndex < 0) || (cellOffsetIndex > 14))
 			//	OutputDebugString("PathFinder: whoops\n");
 			curRow += cellShift[cellOffsetIndex++];
@@ -5308,7 +5083,7 @@ int32_t MoveMap::calcPath(
 #ifdef _DEBUG
 		if (numCells > MAX_STEPS_PER_MOVEPATH)
 		{
-			File* pathDebugFile = new File;
+			MechFile* pathDebugFile = new MechFile;
 			pathDebugFile->create("longpath.dbg");
 			char s[512];
 			sprintf(s,
@@ -5338,11 +5113,11 @@ int32_t MoveMap::calcPath(
 #ifdef _DEBUG
 			if (maxSteps > -1)
 			{
-				File* pathDebugFile = new File;
+				MechFile* pathDebugFile = new MechFile;
 				pathDebugFile->create("longpath.dbg");
 				char s[512];
-				sprintf(s, "New Longest Path: %d steps (Max = %d)\n\n",
-					numCells, MAX_STEPS_PER_MOVEPATH);
+				sprintf(s, "New Longest Path: %d steps (Max = %d)\n\n", numCells,
+					MAX_STEPS_PER_MOVEPATH);
 				pathDebugFile->writeString(s);
 				writeDebug(pathDebugFile);
 				pathDebugFile->close();
@@ -5359,12 +5134,9 @@ int32_t MoveMap::calcPath(
 			{
 				if (goalWorldPos)
 				{
-					goalWorldPos->x =
-						(float)(ULc + bestCol) * Terrain::worldUnitsPerCell +
-						Terrain::worldUnitsPerCell / 2 -
-						Terrain::worldUnitsMapSide / 2;
-					goalWorldPos->y =
-						(Terrain::worldUnitsMapSide / 2) -
+					goalWorldPos->x = (float)(ULc + bestCol) * Terrain::worldUnitsPerCell +
+						Terrain::worldUnitsPerCell / 2 - Terrain::worldUnitsMapSide / 2;
+					goalWorldPos->y = (Terrain::worldUnitsMapSide / 2) -
 						((float)(ULr + bestRow) * Terrain::worldUnitsPerCell) -
 						Terrain::worldUnitsPerCell / 2;
 					goalWorldPos->z = (float)0; // How do we get the elevation
@@ -5379,18 +5151,15 @@ int32_t MoveMap::calcPath(
 				//--------------------------------------------------
 				// It's a door, so it's the last on the path list...
 				curCell--;
-				path->setDirection(
-					curCell, /*reverseShift[*/ doorDirection * 2 /*]*/);
+				path->setDirection(curCell, /*reverseShift[*/ doorDirection * 2 /*]*/);
 				int32_t doorR = bestRow + adjTile[doorDirection][0];
 				int32_t doorC = bestCol + adjTile[doorDirection][1];
 				goalCell[0]   = ULr + doorR;
 				goalCell[1]   = ULc + doorC;
 				Stuff::Vector3D stepDest;
 				stepDest.x = (float)(ULc + doorC) * Terrain::worldUnitsPerCell +
-							 Terrain::worldUnitsPerCell / 2 -
-							 Terrain::worldUnitsMapSide / 2;
-				stepDest.y =
-					(Terrain::worldUnitsMapSide / 2) -
+					Terrain::worldUnitsPerCell / 2 - Terrain::worldUnitsMapSide / 2;
+				stepDest.y = (Terrain::worldUnitsMapSide / 2) -
 					((float)(ULr + doorR) * Terrain::worldUnitsPerCell) -
 					Terrain::worldUnitsPerCell / 2;
 				stepDest.z = (float)0; // How do we get the elevation for this
@@ -5412,13 +5181,10 @@ int32_t MoveMap::calcPath(
 			static bool setTable = false;
 			if (!setTable)
 			{
-				float cellLength =
-					Terrain::worldUnitsPerCell * metersPerWorldUnit;
+				float cellLength = Terrain::worldUnitsPerCell * metersPerWorldUnit;
 				for (size_t i = 0; i < NUM_CELL_OFFSETS; i++)
 				{
-					float distance =
-						agsqrt(cellShift[i * 2], cellShift[i * 2 + 1]) *
-						cellLength;
+					float distance = agsqrt(cellShift[i * 2], cellShift[i * 2 + 1]) * cellLength;
 					cellShiftDistance[i] = distance;
 				}
 				setTable = true;
@@ -5426,8 +5192,7 @@ int32_t MoveMap::calcPath(
 			while ((curRow != startR) || (curCol != startC))
 			{
 				curCell--;
-				int32_t parent =
-					reverseShift[map[mapRowStartTable[curRow] + curCol].parent];
+				int32_t parent = reverseShift[map[mapRowStartTable[curRow] + curCol].parent];
 				if (parent > 7)
 					path->setDirection(curCell, parent);
 				else
@@ -5437,11 +5202,10 @@ int32_t MoveMap::calcPath(
 				cell[0]	= ULr + curRow;
 				cell[1]	= ULc + curCol;
 				stepDest.x = (float)(cell[1]) * Terrain::worldUnitsPerCell +
-							 Terrain::worldUnitsPerCell / 2 -
-							 Terrain::worldUnitsMapSide / 2;
+					Terrain::worldUnitsPerCell / 2 - Terrain::worldUnitsMapSide / 2;
 				stepDest.y = (Terrain::worldUnitsMapSide / 2) -
-							 ((float)(cell[0]) * Terrain::worldUnitsPerCell) -
-							 Terrain::worldUnitsPerCell / 2;
+					((float)(cell[0]) * Terrain::worldUnitsPerCell) -
+					Terrain::worldUnitsPerCell / 2;
 				stepDest.z = (float)0; // How do we get the elevation for this
 									   // point? Do we care?
 				if (curCell == (numCells - 1))
@@ -5450,16 +5214,13 @@ int32_t MoveMap::calcPath(
 				{
 					int32_t tempDir = path->getDirection(curCell + 1);
 					float tempDist  = path->getDistanceToGoal(curCell + 1);
-					path->setDistanceToGoal(
-						curCell, cellShiftDistance[tempDir] + tempDist);
+					path->setDistanceToGoal(curCell, cellShiftDistance[tempDir] + tempDist);
 				}
 				path->setDestination(curCell, stepDest);
 				path->setCell(curCell, cell[0], cell[1]);
-				path->stepList[curCell].area =
-					GlobalMoveMap[moveLevel]->calcArea(cell[0], cell[1]);
+				path->stepList[curCell].area = GlobalMoveMap[moveLevel]->calcArea(cell[0], cell[1]);
 				map[curRow * maxWidth + curCol].setFlag(MOVEFLAG_STEP);
-				int32_t cellOffsetIndex =
-					map[mapRowStartTable[curRow] + curCol].parent << 1;
+				int32_t cellOffsetIndex = map[mapRowStartTable[curRow] + curCol].parent << 1;
 				curRow += cellShift[cellOffsetIndex++];
 				curCol += cellShift[cellOffsetIndex];
 				// calcAdjNode(curRow, curCol, map[curRow * maxCellWidth +
@@ -5472,12 +5233,10 @@ int32_t MoveMap::calcPath(
 					{
 						if (path->stepList[i].area == thruAreas[1])
 						{
-							path->numStepsWhenNotPaused = path->numSteps =
-								i + 1;
+							path->numStepsWhenNotPaused = path->numSteps = i + 1;
 							goalCell[0] = path->stepList[i].cell[0];
 							goalCell[1] = path->stepList[i].cell[1];
-							land->cellToWorld(
-								goalCell[0], goalCell[1], *goalWorldPos);
+							land->cellToWorld(goalCell[0], goalCell[1], *goalWorldPos);
 							break;
 						}
 					}
@@ -5489,21 +5248,18 @@ int32_t MoveMap::calcPath(
 			for (size_t i = 0; i < path->numSteps; i++)
 			{
 				int32_t tile[2], cell[2];
-				GameMap->worldToMapPos(path->stepList[i].destination, tile[0],
-					tile[1], cell[0], cell[1]);
-				bool cellPassable =
-					GameMap->cellPassable(tile[0], tile[0], cell[0], cell[1]);
+				GameMap->worldToMapPos(
+					path->stepList[i].destination, tile[0], tile[1], cell[0], cell[1]);
+				bool cellPassable = GameMap->cellPassable(tile[0], tile[0], cell[0], cell[1]);
 				if (!cellPassable)
-					cellPassable = GameMap->cellPassable(
-						tile[0], tile[0], cell[0], cell[1]);
+					cellPassable = GameMap->cellPassable(tile[0], tile[0], cell[0], cell[1]);
 				Assert(cellPassable || (i < 3), 0, " Bad Path Point ");
 			}
 #endif
 		}
 #ifdef TIME_PATH
 		QueryPerformanceCounter(calcStop);
-		calcTime = float(calcStop.LowPart - calcStart.LowPart) /
-				   float(countsPerSecond.LowPart);
+		calcTime = float(calcStop.LowPart - calcStart.LowPart) / float(countsPerSecond.LowPart);
 		if (debugger && (scenarioTime > 0.0))
 		{
 			char s[50];
@@ -5521,8 +5277,7 @@ int32_t MoveMap::calcPath(
 	}
 #ifdef TIME_PATH
 	QueryPerformanceCounter(calcStop);
-	calcTime = float(calcStop.LowPart - calcStart.LowPart) /
-			   float(countsPerSecond.LowPart);
+	calcTime = float(calcStop.LowPart - calcStart.LowPart) / float(countsPerSecond.LowPart);
 	if (debugger && (scenarioTime > 0.0))
 	{
 		char s[50];
@@ -5535,8 +5290,7 @@ int32_t MoveMap::calcPath(
 
 //---------------------------------------------------------------------------
 
-int32_t MoveMap::calcPathJUMP(
-	MovePathPtr path, Stuff::Vector3D* goalWorldPos, int32_t* goalCell)
+int32_t MoveMap::calcPathJUMP(MovePathPtr path, Stuff::Vector3D* goalWorldPos, int32_t* goalCell)
 {
 #ifdef TIME_PATH
 	L_INTEGER calcStart, calcStop;
@@ -5563,18 +5317,15 @@ int32_t MoveMap::calcPathJUMP(
 	if ((goalR < 0) || (goalR >= height) || (goalC < 0) || (goalC >= width))
 	{
 		Stuff::Vector3D p;
-		p.x = (float)(goalC)*Terrain::worldUnitsPerCell +
-			  Terrain::worldUnitsPerCell / 2 - Terrain::worldUnitsMapSide / 2;
-		p.y = (Terrain::worldUnitsMapSide / 2) -
-			  ((float)(goalR)*Terrain::worldUnitsPerCell) -
-			  Terrain::worldUnitsPerCell / 2;
-		p.z =
-			(float)0; // How do we get the elevation for this point? Do we care?
+		p.x = (float)(goalC)*Terrain::worldUnitsPerCell + Terrain::worldUnitsPerCell / 2 -
+			Terrain::worldUnitsMapSide / 2;
+		p.y = (Terrain::worldUnitsMapSide / 2) - ((float)(goalR)*Terrain::worldUnitsPerCell) -
+			Terrain::worldUnitsPerCell / 2;
+		p.z = (float)0; // How do we get the elevation for this point? Do we care?
 		char msg[200];
-		sprintf(msg, " Bad Move Goal: %d [%d(%d), %d(%d)], (%.2f, %.2f, %.2f)",
-			DebugMovePathType, goalR, height, goalC, width, p.x, p.y, p.z);
-		gosASSERT((goalR >= 0) && (goalR < height) && (goalC >= 0) &&
-				  (goalC < width));
+		sprintf(msg, " Bad Move Goal: %d [%d(%d), %d(%d)], (%.2f, %.2f, %.2f)", DebugMovePathType,
+			goalR, height, goalC, width, p.x, p.y, p.z);
+		gosASSERT((goalR >= 0) && (goalR < height) && (goalC >= 0) && (goalC < width));
 	}
 	//------------------------------------------------------------------
 	// Let's use their hPrime as a barrier for cutting off the search...
@@ -5622,7 +5373,7 @@ int32_t MoveMap::calcPathJUMP(
 #ifdef DEBUG_MOVE_MAP
 		if (debugMoveMap)
 		{
-			File* pathDebugFile = new File;
+			MechFile* pathDebugFile = new MechFile;
 			pathDebugFile->create("mm.dbg");
 			writeDebug(pathDebugFile);
 			pathDebugFile->close();
@@ -5663,8 +5414,7 @@ int32_t MoveMap::calcPathJUMP(
 			if (isDiagonalWalk)
 			{
 				if (!adjacentCellOpenJUMP(bestRow, bestCol, StepAdjDir[dir]) &&
-					!adjacentCellOpenJUMP(
-						bestRow, bestCol, StepAdjDir[dir + 1]))
+					!adjacentCellOpenJUMP(bestRow, bestCol, StepAdjDir[dir + 1]))
 				{
 					cellOffsetIndex += 2;
 					continue;
@@ -5726,26 +5476,23 @@ int32_t MoveMap::calcPathJUMP(
 								// This new path is cheaper...
 								succMapNode->parent = dirToParent;
 								succMapNode->g		= succNodeG;
-								succMapNode->fPrime =
-									succNodeG + succMapNode->hPrime;
-								int32_t openIndex = openList->find(
-									succRow * MAX_MAPWIDTH + succCol);
+								succMapNode->fPrime = succNodeG + succMapNode->hPrime;
+								int32_t openIndex =
+									openList->find(succRow * MAX_MAPWIDTH + succCol);
 								if (!openIndex)
 								{
 									char s[128];
 									sprintf(s,
 										"MoveMap.calcPath: Cannot find movemap "
 										"node [%d, %d, %d, %d] for change\n",
-										succRow, succCol,
-										succRow * MAX_MAPWIDTH + succCol, dir);
+										succRow, succCol, succRow * MAX_MAPWIDTH + succCol, dir);
 #ifdef USE_OBJECTS
 									DebugOpenList(s);
 #endif
 									gosASSERT(openIndex != nullptr);
 								}
 								else
-									openList->change(
-										openIndex, succMapNode->fPrime);
+									openList->change(openIndex, succMapNode->fPrime);
 							}
 						}
 						else if (succMapNode->flags & MOVEFLAG_CLOSED)
@@ -5760,8 +5507,7 @@ int32_t MoveMap::calcPathJUMP(
 								succMapNode->parent = dirToParent;
 								//------------------------------------------
 								// Now, we have to propogate the new cost...
-								propogateCostJUMP(
-									succRow, succCol, cost, bestNodeG);
+								propogateCostJUMP(succRow, succCol, cost, bestNodeG);
 							}
 						}
 						else
@@ -5771,8 +5517,7 @@ int32_t MoveMap::calcPathJUMP(
 							// into the OPEN list...
 							succMapNode->parent = dirToParent;
 							succMapNode->g		= succNodeG;
-							succMapNode->fPrime =
-								succNodeG + succMapNode->hPrime;
+							succMapNode->fPrime = succNodeG + succMapNode->hPrime;
 							PQNode succPQNode;
 							succPQNode.key = succMapNode->fPrime;
 							succPQNode.id  = succRow * MAX_MAPWIDTH + succCol;
@@ -5793,7 +5538,7 @@ int32_t MoveMap::calcPathJUMP(
 #ifdef DEBUG_MOVE_MAP
 	if (debugMoveMap)
 	{
-		File* pathDebugFile = new File;
+		MechFile* pathDebugFile = new MechFile;
 		pathDebugFile->create("mm.dbg");
 		writeDebug(pathDebugFile);
 		pathDebugFile->close();
@@ -5828,8 +5573,7 @@ int32_t MoveMap::calcPathJUMP(
 		while ((curRow != startR) || (curCol != startC))
 		{
 			numCells += 1;
-			int32_t cellOffsetIndex =
-				map[curRow * maxWidth + curCol].parent * 2;
+			int32_t cellOffsetIndex = map[curRow * maxWidth + curCol].parent * 2;
 			// if ((cellOffsetIndex < 0) || (cellOffsetIndex > 14))
 			//	OutputDebugString("PathFinder: whoops\n");
 			curRow += cellShift[cellOffsetIndex++];
@@ -5843,7 +5587,7 @@ int32_t MoveMap::calcPathJUMP(
 #ifdef _DEBUG
 		if (numCells > MAX_STEPS_PER_MOVEPATH)
 		{
-			File* pathDebugFile = new File;
+			MechFile* pathDebugFile = new MechFile;
 			pathDebugFile->create("longpath.dbg");
 			char s[512];
 			sprintf(s,
@@ -5873,11 +5617,11 @@ int32_t MoveMap::calcPathJUMP(
 #ifdef _DEBUG
 			if (maxSteps > -1)
 			{
-				File* pathDebugFile = new File;
+				MechFile* pathDebugFile = new MechFile;
 				pathDebugFile->create("longpath.dbg");
 				char s[512];
-				sprintf(s, "New Longest Path: %d steps (Max = %d)\n\n",
-					numCells, MAX_STEPS_PER_MOVEPATH);
+				sprintf(s, "New Longest Path: %d steps (Max = %d)\n\n", numCells,
+					MAX_STEPS_PER_MOVEPATH);
 				pathDebugFile->writeString(s);
 				writeDebug(pathDebugFile);
 				pathDebugFile->close();
@@ -5894,12 +5638,9 @@ int32_t MoveMap::calcPathJUMP(
 			{
 				if (goalWorldPos)
 				{
-					goalWorldPos->x =
-						(float)(ULc + bestCol) * Terrain::worldUnitsPerCell +
-						Terrain::worldUnitsPerCell / 2 -
-						Terrain::worldUnitsMapSide / 2;
-					goalWorldPos->y =
-						(Terrain::worldUnitsMapSide / 2) -
+					goalWorldPos->x = (float)(ULc + bestCol) * Terrain::worldUnitsPerCell +
+						Terrain::worldUnitsPerCell / 2 - Terrain::worldUnitsMapSide / 2;
+					goalWorldPos->y = (Terrain::worldUnitsMapSide / 2) -
 						((float)(ULr + bestRow) * Terrain::worldUnitsPerCell) -
 						Terrain::worldUnitsPerCell / 2;
 					goalWorldPos->z = (float)0; // How do we get the elevation
@@ -5914,18 +5655,15 @@ int32_t MoveMap::calcPathJUMP(
 				//--------------------------------------------------
 				// It's a door, so it's the last on the path list...
 				curCell--;
-				path->setDirection(
-					curCell, /*reverseShift[*/ doorDirection * 2 /*]*/);
+				path->setDirection(curCell, /*reverseShift[*/ doorDirection * 2 /*]*/);
 				int32_t doorR = bestRow + adjTile[doorDirection][0];
 				int32_t doorC = bestCol + adjTile[doorDirection][1];
 				goalCell[0]   = ULr + doorR;
 				goalCell[1]   = ULc + doorC;
 				Stuff::Vector3D stepDest;
 				stepDest.x = (float)(ULc + doorC) * Terrain::worldUnitsPerCell +
-							 Terrain::worldUnitsPerCell / 2 -
-							 Terrain::worldUnitsMapSide / 2;
-				stepDest.y =
-					(Terrain::worldUnitsMapSide / 2) -
+					Terrain::worldUnitsPerCell / 2 - Terrain::worldUnitsMapSide / 2;
+				stepDest.y = (Terrain::worldUnitsMapSide / 2) -
 					((float)(ULr + doorR) * Terrain::worldUnitsPerCell) -
 					Terrain::worldUnitsPerCell / 2;
 				stepDest.z = (float)0; // How do we get the elevation for this
@@ -5947,13 +5685,10 @@ int32_t MoveMap::calcPathJUMP(
 			static bool setTable = false;
 			if (!setTable)
 			{
-				float cellLength =
-					Terrain::worldUnitsPerCell * metersPerWorldUnit;
+				float cellLength = Terrain::worldUnitsPerCell * metersPerWorldUnit;
 				for (size_t i = 0; i < NUM_CELL_OFFSETS; i++)
 				{
-					float distance =
-						agsqrt(cellShift[i * 2], cellShift[i * 2 + 1]) *
-						cellLength;
+					float distance = agsqrt(cellShift[i * 2], cellShift[i * 2 + 1]) * cellLength;
 					cellShiftDistance[i] = distance;
 				}
 				setTable = true;
@@ -5961,8 +5696,7 @@ int32_t MoveMap::calcPathJUMP(
 			while ((curRow != startR) || (curCol != startC))
 			{
 				curCell--;
-				int32_t parent =
-					reverseShift[map[curRow * maxWidth + curCol].parent];
+				int32_t parent = reverseShift[map[curRow * maxWidth + curCol].parent];
 				if (parent > 7)
 					path->setDirection(curCell, parent);
 				else
@@ -5972,11 +5706,10 @@ int32_t MoveMap::calcPathJUMP(
 				cell[0]	= ULr + curRow;
 				cell[1]	= ULc + curCol;
 				stepDest.x = (float)(cell[1]) * Terrain::worldUnitsPerCell +
-							 Terrain::worldUnitsPerCell / 2 -
-							 Terrain::worldUnitsMapSide / 2;
+					Terrain::worldUnitsPerCell / 2 - Terrain::worldUnitsMapSide / 2;
 				stepDest.y = (Terrain::worldUnitsMapSide / 2) -
-							 ((float)(cell[0]) * Terrain::worldUnitsPerCell) -
-							 Terrain::worldUnitsPerCell / 2;
+					((float)(cell[0]) * Terrain::worldUnitsPerCell) -
+					Terrain::worldUnitsPerCell / 2;
 				stepDest.z = (float)0; // How do we get the elevation for this
 									   // point? Do we care?
 				if (curCell == (numCells - 1))
@@ -5985,14 +5718,12 @@ int32_t MoveMap::calcPathJUMP(
 				{
 					int32_t tempDir = path->getDirection(curCell + 1);
 					float tempDist  = path->getDistanceToGoal(curCell + 1);
-					path->setDistanceToGoal(
-						curCell, cellShiftDistance[tempDir] + tempDist);
+					path->setDistanceToGoal(curCell, cellShiftDistance[tempDir] + tempDist);
 				}
 				path->setDestination(curCell, stepDest);
 				path->setCell(curCell, cell[0], cell[1]);
 				map[curRow * maxWidth + curCol].setFlag(MOVEFLAG_STEP);
-				int32_t cellOffsetIndex = map[curRow * maxWidth + curCol].parent
-										  << 1;
+				int32_t cellOffsetIndex = map[curRow * maxWidth + curCol].parent << 1;
 				curRow += cellShift[cellOffsetIndex++];
 				curCol += cellShift[cellOffsetIndex];
 				// calcAdjNode(curRow, curCol, map[curRow * maxCellWidth +
@@ -6005,21 +5736,18 @@ int32_t MoveMap::calcPathJUMP(
 			for (size_t i = 0; i < path->numSteps; i++)
 			{
 				int32_t tile[2], cell[2];
-				GameMap->worldToMapPos(path->stepList[i].destination, tile[0],
-					tile[1], cell[0], cell[1]);
-				bool cellPassable =
-					GameMap->cellPassable(tile[0], tile[0], cell[0], cell[1]);
+				GameMap->worldToMapPos(
+					path->stepList[i].destination, tile[0], tile[1], cell[0], cell[1]);
+				bool cellPassable = GameMap->cellPassable(tile[0], tile[0], cell[0], cell[1]);
 				if (!cellPassable)
-					cellPassable = GameMap->cellPassable(
-						tile[0], tile[0], cell[0], cell[1]);
+					cellPassable = GameMap->cellPassable(tile[0], tile[0], cell[0], cell[1]);
 				Assert(cellPassable || (i < 3), 0, " Bad Path Point ");
 			}
 #endif
 		}
 #ifdef TIME_PATH
 		QueryPerformanceCounter(calcStop);
-		calcTime = float(calcStop.LowPart - calcStart.LowPart) /
-				   float(countsPerSecond.LowPart);
+		calcTime = float(calcStop.LowPart - calcStart.LowPart) / float(countsPerSecond.LowPart);
 		if (debugger && (scenarioTime > 0.0))
 		{
 			char s[50];
@@ -6032,8 +5760,7 @@ int32_t MoveMap::calcPathJUMP(
 	}
 #ifdef TIME_PATH
 	QueryPerformanceCounter(calcStop);
-	calcTime = float(calcStop.LowPart - calcStart.LowPart) /
-			   float(countsPerSecond.LowPart);
+	calcTime = float(calcStop.LowPart - calcStart.LowPart) / float(countsPerSecond.LowPart);
 	if (debugger && (scenarioTime > 0.0))
 	{
 		char s[50];
@@ -6046,8 +5773,7 @@ int32_t MoveMap::calcPathJUMP(
 
 //---------------------------------------------------------------------------
 
-int32_t MoveMap::calcEscapePath(
-	MovePathPtr path, Stuff::Vector3D* goalWorldPos, int32_t* goalCell)
+int32_t MoveMap::calcEscapePath(MovePathPtr path, Stuff::Vector3D* goalWorldPos, int32_t* goalCell)
 {
 #ifdef TIME_PATH
 	L_INTEGER calcStart, calcStop;
@@ -6099,8 +5825,8 @@ int32_t MoveMap::calcEscapePath(
 	int32_t curRow			  = startR;
 	MoveMapNodePtr curMapNode = &map[curRow * maxWidth + curCol];
 	curMapNode->g			  = 0;
-	curMapNode->hPrime = 10; // calcHPrime(curRow, curCol);
-	curMapNode->fPrime = curMapNode->hPrime;
+	curMapNode->hPrime		  = 10; // calcHPrime(curRow, curCol);
+	curMapNode->fPrime		  = curMapNode->hPrime;
 	//-----------------------------------------------
 	// Put the START vertex on the empty OPEN list...
 	PQNode initialVertex;
@@ -6127,7 +5853,7 @@ int32_t MoveMap::calcEscapePath(
 #ifdef DEBUG_MOVE_MAP
 		if (debugMoveMap)
 		{
-			File* pathDebugFile = new File;
+			MechFile* pathDebugFile = new MechFile;
 			pathDebugFile->create("mm.dbg");
 			writeDebug(pathDebugFile);
 			pathDebugFile->close();
@@ -6168,8 +5894,7 @@ int32_t MoveMap::calcEscapePath(
 			if (isDiagonalWalk)
 			{
 				if (!adjacentCellOpenJUMP(bestRow, bestCol, StepAdjDir[dir]) &&
-					!adjacentCellOpenJUMP(
-						bestRow, bestCol, StepAdjDir[dir + 1]))
+					!adjacentCellOpenJUMP(bestRow, bestCol, StepAdjDir[dir + 1]))
 				{
 					cellOffsetIndex += 2;
 					continue;
@@ -6188,8 +5913,7 @@ int32_t MoveMap::calcEscapePath(
 				if (succMapNode->cost < COST_BLOCKED)
 				{
 					if (succMapNode->hPrime == HPRIME_NOT_CALCED)
-						succMapNode->hPrime =
-							10; // calcHPrime(succRow, succCol);
+						succMapNode->hPrime = 10; // calcHPrime(succRow, succCol);
 					if (succMapNode->hPrime < MaxHPrime)
 					{
 #ifdef DEBUG_PATH
@@ -6231,10 +5955,9 @@ int32_t MoveMap::calcEscapePath(
 								// This new path is cheaper...
 								succMapNode->parent = dirToParent;
 								succMapNode->g		= succNodeG;
-								succMapNode->fPrime =
-									succNodeG + succMapNode->hPrime;
-								int32_t openIndex = openList->find(
-									succRow * MAX_MAPWIDTH + succCol);
+								succMapNode->fPrime = succNodeG + succMapNode->hPrime;
+								int32_t openIndex =
+									openList->find(succRow * MAX_MAPWIDTH + succCol);
 								if (!openIndex)
 								{
 									char s[128];
@@ -6242,16 +5965,14 @@ int32_t MoveMap::calcEscapePath(
 										"MoveMap.calcEscapePath: Cannot find "
 										"movemap node [%d, %d, %d, %d] for "
 										"change\n",
-										succRow, succCol,
-										succRow * MAX_MAPWIDTH + succCol, dir);
+										succRow, succCol, succRow * MAX_MAPWIDTH + succCol, dir);
 #ifdef USE_OBJECTS
 									DebugOpenList(s);
 #endif
 									gosASSERT(openIndex != nullptr);
 								}
 								else
-									openList->change(
-										openIndex, succMapNode->fPrime);
+									openList->change(openIndex, succMapNode->fPrime);
 							}
 						}
 						else if (succMapNode->flags & MOVEFLAG_CLOSED)
@@ -6266,8 +5987,7 @@ int32_t MoveMap::calcEscapePath(
 								succMapNode->parent = dirToParent;
 								//------------------------------------------
 								// Now, we have to propogate the new cost...
-								propogateCostJUMP(
-									succRow, succCol, cost, bestNodeG);
+								propogateCostJUMP(succRow, succCol, cost, bestNodeG);
 							}
 						}
 						else
@@ -6277,8 +5997,7 @@ int32_t MoveMap::calcEscapePath(
 							// into the OPEN list...
 							succMapNode->parent = dirToParent;
 							succMapNode->g		= succNodeG;
-							succMapNode->fPrime =
-								succNodeG + succMapNode->hPrime;
+							succMapNode->fPrime = succNodeG + succMapNode->hPrime;
 							PQNode succPQNode;
 							succPQNode.key = succMapNode->fPrime;
 							succPQNode.id  = succRow * MAX_MAPWIDTH + succCol;
@@ -6299,7 +6018,7 @@ int32_t MoveMap::calcEscapePath(
 #ifdef DEBUG_MOVE_MAP
 	if (debugMoveMap)
 	{
-		File* pathDebugFile = new File;
+		MechFile* pathDebugFile = new MechFile;
 		pathDebugFile->create("mm.dbg");
 		writeDebug(pathDebugFile);
 		pathDebugFile->close();
@@ -6334,8 +6053,7 @@ int32_t MoveMap::calcEscapePath(
 		while ((curRow != startR) || (curCol != startC))
 		{
 			numCells += 1;
-			int32_t cellOffsetIndex =
-				map[curRow * maxWidth + curCol].parent * 2;
+			int32_t cellOffsetIndex = map[curRow * maxWidth + curCol].parent * 2;
 			// if ((cellOffsetIndex < 0) || (cellOffsetIndex > 14))
 			//	OutputDebugString("PathFinder: whoops\n");
 			curRow += cellShift[cellOffsetIndex++];
@@ -6349,7 +6067,7 @@ int32_t MoveMap::calcEscapePath(
 #ifdef _DEBUG
 		if (numCells > MAX_STEPS_PER_MOVEPATH)
 		{
-			File* pathDebugFile = new File;
+			MechFile* pathDebugFile = new MechFile;
 			pathDebugFile->create("longpath.dbg");
 			char s[512];
 			sprintf(s,
@@ -6376,11 +6094,11 @@ int32_t MoveMap::calcEscapePath(
 			int32_t maxSteps = path->init(numCells);
 			if (maxSteps > -1)
 			{
-				File* pathDebugFile = new File;
+				MechFile* pathDebugFile = new MechFile;
 				pathDebugFile->create("longpath.dbg");
 				char s[512];
-				sprintf(s, "New Longest Path: %d steps (Max = %d)\n\n",
-					numCells, MAX_STEPS_PER_MOVEPATH);
+				sprintf(s, "New Longest Path: %d steps (Max = %d)\n\n", numCells,
+					MAX_STEPS_PER_MOVEPATH);
 				pathDebugFile->writeString(s);
 				writeDebug(pathDebugFile);
 				pathDebugFile->close();
@@ -6397,12 +6115,9 @@ int32_t MoveMap::calcEscapePath(
 			{
 				if (goalWorldPos)
 				{
-					goalWorldPos->x =
-						(float)(ULc + bestCol) * Terrain::worldUnitsPerCell +
-						Terrain::worldUnitsPerCell / 2 -
-						Terrain::worldUnitsMapSide / 2;
-					goalWorldPos->y =
-						(Terrain::worldUnitsMapSide / 2) -
+					goalWorldPos->x = (float)(ULc + bestCol) * Terrain::worldUnitsPerCell +
+						Terrain::worldUnitsPerCell / 2 - Terrain::worldUnitsMapSide / 2;
+					goalWorldPos->y = (Terrain::worldUnitsMapSide / 2) -
 						((float)(ULr + bestRow) * Terrain::worldUnitsPerCell) -
 						Terrain::worldUnitsPerCell / 2;
 					goalWorldPos->z = (float)0; // How do we get the elevation
@@ -6417,18 +6132,15 @@ int32_t MoveMap::calcEscapePath(
 				//--------------------------------------------------
 				// It's a door, so it's the last on the path list...
 				curCell--;
-				path->setDirection(
-					curCell, /*reverseShift[*/ doorDirection * 2 /*]*/);
+				path->setDirection(curCell, /*reverseShift[*/ doorDirection * 2 /*]*/);
 				int32_t doorR = bestRow + adjTile[doorDirection][0];
 				int32_t doorC = bestCol + adjTile[doorDirection][1];
 				goalCell[0]   = ULr + doorR;
 				goalCell[1]   = ULc + doorC;
 				Stuff::Vector3D stepDest;
 				stepDest.x = (float)(ULc + doorC) * Terrain::worldUnitsPerCell +
-							 Terrain::worldUnitsPerCell / 2 -
-							 Terrain::worldUnitsMapSide / 2;
-				stepDest.y =
-					(Terrain::worldUnitsMapSide / 2) -
+					Terrain::worldUnitsPerCell / 2 - Terrain::worldUnitsMapSide / 2;
+				stepDest.y = (Terrain::worldUnitsMapSide / 2) -
 					((float)(ULr + doorR) * Terrain::worldUnitsPerCell) -
 					Terrain::worldUnitsPerCell / 2;
 				stepDest.z = (float)0; // How do we get the elevation for this
@@ -6450,13 +6162,10 @@ int32_t MoveMap::calcEscapePath(
 			static bool setTable = false;
 			if (!setTable)
 			{
-				float cellLength =
-					Terrain::worldUnitsPerCell * metersPerWorldUnit;
+				float cellLength = Terrain::worldUnitsPerCell * metersPerWorldUnit;
 				for (size_t i = 0; i < NUM_CELL_OFFSETS; i++)
 				{
-					float distance =
-						agsqrt(cellShift[i * 2], cellShift[i * 2 + 1]) *
-						cellLength;
+					float distance = agsqrt(cellShift[i * 2], cellShift[i * 2 + 1]) * cellLength;
 					cellShiftDistance[i] = distance;
 				}
 				setTable = true;
@@ -6464,8 +6173,7 @@ int32_t MoveMap::calcEscapePath(
 			while ((curRow != startR) || (curCol != startC))
 			{
 				curCell--;
-				int32_t parent =
-					reverseShift[map[curRow * maxWidth + curCol].parent];
+				int32_t parent = reverseShift[map[curRow * maxWidth + curCol].parent];
 				if (parent > 7)
 					path->setDirection(curCell, parent);
 				else
@@ -6475,11 +6183,10 @@ int32_t MoveMap::calcEscapePath(
 				cell[0]	= ULr + curRow;
 				cell[1]	= ULc + curCol;
 				stepDest.x = (float)(cell[1]) * Terrain::worldUnitsPerCell +
-							 Terrain::worldUnitsPerCell / 2 -
-							 Terrain::worldUnitsMapSide / 2;
+					Terrain::worldUnitsPerCell / 2 - Terrain::worldUnitsMapSide / 2;
 				stepDest.y = (Terrain::worldUnitsMapSide / 2) -
-							 ((float)(cell[0]) * Terrain::worldUnitsPerCell) -
-							 Terrain::worldUnitsPerCell / 2;
+					((float)(cell[0]) * Terrain::worldUnitsPerCell) -
+					Terrain::worldUnitsPerCell / 2;
 				stepDest.z = (float)0; // How do we get the elevation for this
 									   // point? Do we care?
 				if (curCell == (numCells - 1) && (parent <= 7))
@@ -6491,8 +6198,7 @@ int32_t MoveMap::calcEscapePath(
 				path->setDestination(curCell, stepDest);
 				path->setCell(curCell, cell[0], cell[1]);
 				map[curRow * maxWidth + curCol].setFlag(MOVEFLAG_STEP);
-				int32_t cellOffsetIndex = map[curRow * maxWidth + curCol].parent
-										  << 1;
+				int32_t cellOffsetIndex = map[curRow * maxWidth + curCol].parent << 1;
 				curRow += cellShift[cellOffsetIndex++];
 				curCol += cellShift[cellOffsetIndex];
 				// calcAdjNode(curRow, curCol, map[curRow * maxCellWidth +
@@ -6505,21 +6211,18 @@ int32_t MoveMap::calcEscapePath(
 			for (size_t i = 0; i < path->numSteps; i++)
 			{
 				int32_t tile[2], cell[2];
-				GameMap->worldToMapPos(path->stepList[i].destination, tile[0],
-					tile[1], cell[0], cell[1]);
-				bool cellPassable =
-					GameMap->cellPassable(tile[0], tile[0], cell[0], cell[1]);
+				GameMap->worldToMapPos(
+					path->stepList[i].destination, tile[0], tile[1], cell[0], cell[1]);
+				bool cellPassable = GameMap->cellPassable(tile[0], tile[0], cell[0], cell[1]);
 				if (!cellPassable)
-					cellPassable = GameMap->cellPassable(
-						tile[0], tile[0], cell[0], cell[1]);
+					cellPassable = GameMap->cellPassable(tile[0], tile[0], cell[0], cell[1]);
 				Assert(cellPassable || (i < 3), 0, " Bad Path Point ");
 			}
 #endif
 		}
 #ifdef TIME_PATH
 		QueryPerformanceCounter(calcStop);
-		calcTime = float(calcStop.LowPart - calcStart.LowPart) /
-				   float(countsPerSecond.LowPart);
+		calcTime = float(calcStop.LowPart - calcStart.LowPart) / float(countsPerSecond.LowPart);
 		if (debugger && (scenarioTime > 0.0))
 		{
 			char s[50];
@@ -6532,8 +6235,7 @@ int32_t MoveMap::calcEscapePath(
 	}
 #ifdef TIME_PATH
 	QueryPerformanceCounter(calcStop);
-	calcTime = float(calcStop.LowPart - calcStart.LowPart) /
-			   float(countsPerSecond.LowPart);
+	calcTime = float(calcStop.LowPart - calcStart.LowPart) / float(countsPerSecond.LowPart);
 	if (debugger && (scenarioTime > 0.0))
 	{
 		char s[50];
@@ -6546,7 +6248,7 @@ int32_t MoveMap::calcEscapePath(
 
 //---------------------------------------------------------------------------
 
-void MoveMap::writeDebug(File* debugFile)
+void MoveMap::writeDebug(MechFile* debugFile)
 {
 	char outString[512];
 	sprintf(outString, "Time = %.6f\n\n", calcTime);

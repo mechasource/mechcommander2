@@ -76,4 +76,3 @@ void FullPathFileName::changeExt(PSTR from, PSTR to)
 			ext[i] = to[i];
 	}
 }
-

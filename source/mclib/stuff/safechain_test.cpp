@@ -13,7 +13,7 @@
 
 class SafeChainTestPlug : public Plug
 {
-  public:
+public:
 	int32_t value;
 
 	SafeChainTestPlug(int32_t value);
@@ -22,7 +22,7 @@ class SafeChainTestPlug : public Plug
 
 class SafeChainTestNode : public Node
 {
-  public:
+public:
 	SafeChainOf<SafeChainTestPlug*> chain1, chain2;
 
 	SafeChainTestNode();
@@ -32,17 +32,11 @@ class SafeChainTestNode : public Node
 	bool RunTest();
 };
 
-SafeChainTestPlug::SafeChainTestPlug(int32_t value) : Plug(DefaultData)
-{
-	this->value = value;
-}
+SafeChainTestPlug::SafeChainTestPlug(int32_t value) : Plug(DefaultData) { this->value = value; }
 
 SafeChainTestPlug::~SafeChainTestPlug() {}
 
-SafeChainTestNode::SafeChainTestNode()
-	: Node(DefaultData), chain1(this), chain2(this)
-{
-}
+SafeChainTestNode::SafeChainTestNode() : Node(DefaultData), chain1(this), chain2(this) {}
 
 SafeChainTestNode::~SafeChainTestNode() {}
 
@@ -60,8 +54,8 @@ void SafeChain::ProfileClass()
 #endif
 	Test_Message("SafeChain::ProfileClass");
 	testNode.RunProfile();
-	SPEW((GROUP_STUFF_TEST, "SafeChain::ProfileClass elapsed = %f",
-		gos_GetHiResTime() - startTicks));
+	SPEW((
+		GROUP_STUFF_TEST, "SafeChain::ProfileClass elapsed = %f", gos_GetHiResTime() - startTicks));
 }
 
 //

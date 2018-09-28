@@ -40,29 +40,28 @@ class MLRState
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Constructors/Destructors
 	//
-  protected:
-	MLRState(Stuff::MemoryStream* stream, uint32_t version);
+protected:
+	MLRState(std::iostream stream, uint32_t version);
 
-  public:
+public:
 	MLRState(void);
 	MLRState(const MLRState&);
 	~MLRState(void) {}
 
-	static MLRState* Make(Stuff::MemoryStream* stream, uint32_t version);
+	static MLRState* Make(std::iostream stream, uint32_t version);
 
-	void Save(Stuff::MemoryStream* stream);
-	void Load(Stuff::MemoryStream* stream, uint32_t version);
+	void Save(std::ostream& stream);
+	void Load(std::istream& stream, uint32_t version);
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Render state
 	//
-  public:
-	enum
+public:
+	enum : uint32_t
 	{
 		TextureNumberBit  = 0,
 		TextureNumberBits = Limits::Max_Number_Of_Texture_Bits,
-		TextureMask = (0xFFFFFFFF >> (Stuff::INT_BITS - TextureNumberBits))
-					  << TextureNumberBit,
+		TextureMask = (0xFFFFFFFF >> (Stuff::INT_BITS - TextureNumberBits)) << TextureNumberBit,
 
 		AlphaBit  = TextureNumberBit + TextureNumberBits,
 		AlphaBits = 3,
@@ -70,8 +69,7 @@ class MLRState
 
 		FilterBit  = AlphaBit + AlphaBits,
 		FilterBits = 2,
-		FilterMask = (0xFFFFFFFF >> (Stuff::INT_BITS - FilterBits))
-					 << FilterBit,
+		FilterMask = (0xFFFFFFFF >> (Stuff::INT_BITS - FilterBits)) << FilterBit,
 
 		FogBit  = FilterBit + FilterBits,
 		FogBits = 2,
@@ -88,8 +86,7 @@ class MLRState
 
 		WireFrameBit  = TextureCorrectionBit + 1,
 		WireFrameBits = 2,
-		WireFrameMask = (0xFFFFFFFF >> (Stuff::INT_BITS - WireFrameBits))
-						<< WireFrameBit,
+		WireFrameMask = (0xFFFFFFFF >> (Stuff::INT_BITS - WireFrameBits)) << WireFrameBit,
 
 		ZBufferWriteBit  = WireFrameBit + WireFrameBits,
 		ZBufferWriteMask = 1 << ZBufferWriteBit,
@@ -181,7 +178,7 @@ class MLRState
 		// Check_Object(this);
 		renderState &= ~TextureMask;
 		renderDeltaMask |= TextureMask;
-		Verify(texture <= TextureMask);
+		_ASSERT(texture <= TextureMask);
 		renderState |= texture;
 	}
 	uint32_t GetTextureHandle(void) const
@@ -291,8 +288,7 @@ class MLRState
 	TextureCorrectionMode GetTextureCorrectionMode(void) const
 	{
 		// Check_Object(this);
-		return static_cast<TextureCorrectionMode>(
-			renderState & TextureCorrectionMask);
+		return static_cast<TextureCorrectionMode>(renderState & TextureCorrectionMask);
 	}
 
 	void SetWireFrameMode(WireFrameMode wire)
@@ -341,8 +337,7 @@ class MLRState
 	ZBufferCompareMode GetZBufferCompareMode(void) const
 	{
 		// Check_Object(this);
-		return static_cast<ZBufferCompareMode>(
-			renderState & ZBufferCompareMask);
+		return static_cast<ZBufferCompareMode>(renderState & ZBufferCompareMask);
 	}
 
 	void SetFlatColoringOn(void)
@@ -392,26 +387,23 @@ class MLRState
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Process state
 	//
-  public:
+public:
 	enum
 	{
 		PriorityBit  = 0,
 		PriorityBits = 4,
-		PriorityMask = (0xFFFFFFFF >> (Stuff::INT_BITS - PriorityBits))
-					   << PriorityBit,
+		PriorityMask = (0xFFFFFFFF >> (Stuff::INT_BITS - PriorityBits)) << PriorityBit,
 
 		BackFaceBit  = PriorityBit + PriorityBits,
 		BackFaceMask = 1 << BackFaceBit,
 
 		LightingBit  = BackFaceBit + 1,
 		LightingBits = 5,
-		LightingMask = (0xFFFFFFFF >> (Stuff::INT_BITS - LightingBits))
-					   << LightingBit,
+		LightingMask = (0xFFFFFFFF >> (Stuff::INT_BITS - LightingBits)) << LightingBit,
 
 		MultitextureBit  = LightingBit + LightingBits,
 		MultitextureBits = 4,
-		MultitextureMask = (0xFFFFFFFF >> (Stuff::INT_BITS - MultitextureBits))
-						   << MultitextureBit,
+		MultitextureMask = (0xFFFFFFFF >> (Stuff::INT_BITS - MultitextureBits)) << MultitextureBit,
 
 		DrawNowBit  = MultitextureBit + MultitextureBits,
 		DrawNowMask = 1 << DrawNowBit,
@@ -482,7 +474,7 @@ class MLRState
 		// Check_Object(this);
 		processState &= ~PriorityMask;
 		processDeltaMask |= PriorityMask;
-		Verify(priority < PriorityCount);
+		_ASSERT(priority < PriorityCount);
 		processState |= priority;
 	}
 	uint32_t GetPriority(void) const
@@ -572,13 +564,10 @@ class MLRState
 
 	enum
 	{
-		HasAGPAvailable =
-			1, //	FALSE when no AGP memory available (assume a low end card)
-		CanMultitextureLightMap =
-			2, //	TRUE when single pass light mapping is available
-		CanMultitextureSpecularMap =
-			4,		  //	TRUE when single pass specular mapping is available
-		HasMaxUVs = 8 //	TRUE if video card has certain limits on UVs
+		HasAGPAvailable			= 1, //	FALSE when no AGP memory available (assume a low end card)
+		CanMultitextureLightMap = 2, //	TRUE when single pass light mapping is available
+		CanMultitextureSpecularMap = 4, //	TRUE when single pass specular mapping is available
+		HasMaxUVs				   = 8  //	TRUE if video card has certain limits on UVs
 	};
 
 	static void SetAGPAvailable(bool b)
@@ -613,10 +602,7 @@ class MLRState
 			systemFlags &= ~HasMaxUVs;
 	}
 
-	static bool GetAGPAvailable(void)
-	{
-		return (systemFlags & HasAGPAvailable) > 0;
-	}
+	static bool GetAGPAvailable(void) { return (systemFlags & HasAGPAvailable) > 0; }
 
 	static bool GetMultitextureLightMap(void)
 	{
@@ -650,37 +636,33 @@ class MLRState
 	bool operator==(const MLRState& s) const
 	{
 		// Check_Pointer(this);
-		return (renderState == s.renderState) &&
-			   (processState == s.processState);
+		return (renderState == s.renderState) && (processState == s.processState);
 	}
 
 	bool operator>(const MLRState& s) const
 	{
 		// Check_Pointer(this);
 		return (renderState > s.renderState) ||
-			   (renderState == s.renderState) &&
-				   (processState > s.processState);
+			(renderState == s.renderState) && (processState > s.processState);
 	}
 
 	bool operator!=(const MLRState& s) const
 	{
 		// Check_Pointer(this);
-		return (renderState != s.renderState) ||
-			   (processState != s.processState);
+		return (renderState != s.renderState) || (processState != s.processState);
 	}
 
 	MLRState& Combine(const MLRState& master, const MLRState& slave);
 
-	friend Stuff::IteratorPosition GetHashFunctions::GetHashValue(
-		const MLRState& value);
+	friend Stuff::IteratorPosition GetHashFunctions::GetHashValue(const MLRState& value);
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Testing
 	//
-  public:
+public:
 	void TestInstance(void) const {}
 
-  protected:
+protected:
 	uint32_t renderState;
 	uint32_t processState;
 	uint32_t renderDeltaMask;
@@ -696,10 +678,10 @@ class MLRState
 	float nearFog;
 	float farFog;
 #else
-  public:
+public:
 	static uint32_t fogColor;
 #endif
 };
-}
+} // namespace MidLevelRenderer
 
 #endif

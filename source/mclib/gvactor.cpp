@@ -132,8 +132,7 @@ void GVAppearanceType::init(PSTR fileName)
 			{
 				result = iniFile.readIdFloat(baseLODDist, lodDistance[i]);
 				if (result != NO_ERR)
-					STOP(("LOD %d has no distance value in file %s", i,
-						fileName));
+					STOP(("LOD %d has no distance value in file %s", i, fileName));
 				//----------------------------------------------
 				// Base LOD shape.  In stand Pose by default.
 				gvShape[i] = new TG_TypeMultiShape;
@@ -174,8 +173,7 @@ void GVAppearanceType::init(PSTR fileName)
 	{
 		result = iniFile.readIdString("FileName", aseFileName, 511);
 		if (result != NO_ERR)
-			Fatal(result,
-				"Could not find ASE FileName in building appearance INI file");
+			Fatal(result, "Could not find ASE FileName in building appearance INI file");
 		FullPathFileName dmgName;
 		dmgName.init(tglPath, aseFileName, ".ase");
 		gvDmgShape = new TG_TypeMultiShape;
@@ -238,8 +236,7 @@ void GVAppearanceType::init(PSTR fileName)
 				//--------------------------------------------------------
 				// If this animation does not exist, it is not a problem!
 				// Building will simply freeze until animation is "over"
-				gvAnimData[i]->LoadTGMultiShapeAnimationFromASE(
-					animPath, gvShape[0]);
+				gvAnimData[i]->LoadTGMultiShapeAnimationFromASE(animPath, gvShape[0]);
 			}
 			else
 				gvAnimData[i] = nullptr;
@@ -270,15 +267,13 @@ void GVAppearanceType::init(PSTR fileName)
 	nodeData	   = (NodeData*)AppearanceTypeList::appearanceHeap->Malloc(
 		  sizeof(NodeData) * (numWeaponNodes + numSmokeNodes + numFootNodes));
 	gosASSERT(nodeData != nullptr);
-	memset(nodeData, 0,
-		sizeof(NodeData) * (numWeaponNodes + numSmokeNodes + numFootNodes));
+	memset(nodeData, 0, sizeof(NodeData) * (numWeaponNodes + numSmokeNodes + numFootNodes));
 	for (i = 1; i <= numSmokeNodes; i++)
 	{
 		char blockId[512];
 		sprintf(blockId, "Smoke_%02d", i);
 		nodeData[i - 1].nodeId =
-			(PSTR)AppearanceTypeList::appearanceHeap->Malloc(
-				strlen(blockId) + 1);
+			(PSTR)AppearanceTypeList::appearanceHeap->Malloc(strlen(blockId) + 1);
 		gosASSERT(nodeData[i - 1].nodeId != nullptr);
 		strcpy(nodeData[i - 1].nodeId, blockId);
 		nodeData[i - 1].weaponType = MECH3D_WEAPONTYPE_NONE;
@@ -288,8 +283,7 @@ void GVAppearanceType::init(PSTR fileName)
 		char blockId[512];
 		sprintf(blockId, "Weapon_%02d", i);
 		nodeData[(i - 1) + numSmokeNodes].nodeId =
-			(PSTR)AppearanceTypeList::appearanceHeap->Malloc(
-				strlen(blockId) + 1);
+			(PSTR)AppearanceTypeList::appearanceHeap->Malloc(strlen(blockId) + 1);
 		gosASSERT(nodeData[(i - 1) + numSmokeNodes].nodeId != nullptr);
 		strcpy(nodeData[(i - 1) + numSmokeNodes].nodeId, blockId);
 		nodeData[(i - 1) + numSmokeNodes].weaponType = MECH3D_WEAPONTYPE_ANY;
@@ -299,14 +293,10 @@ void GVAppearanceType::init(PSTR fileName)
 		char blockId[512];
 		sprintf(blockId, "FootNode_%02d", i);
 		nodeData[(i - 1) + numSmokeNodes + numWeaponNodes].nodeId =
-			(PSTR)AppearanceTypeList::appearanceHeap->Malloc(
-				strlen(blockId) + 1);
-		gosASSERT(nodeData[(i - 1) + numSmokeNodes + numWeaponNodes].nodeId !=
-				  nullptr);
-		strcpy(
-			nodeData[(i - 1) + numSmokeNodes + numWeaponNodes].nodeId, blockId);
-		nodeData[(i - 1) + numSmokeNodes + numWeaponNodes].weaponType =
-			MECH3D_WEAPONTYPE_NONE;
+			(PSTR)AppearanceTypeList::appearanceHeap->Malloc(strlen(blockId) + 1);
+		gosASSERT(nodeData[(i - 1) + numSmokeNodes + numWeaponNodes].nodeId != nullptr);
+		strcpy(nodeData[(i - 1) + numSmokeNodes + numWeaponNodes].nodeId, blockId);
+		nodeData[(i - 1) + numSmokeNodes + numWeaponNodes].weaponType = MECH3D_WEAPONTYPE_NONE;
 	}
 	//----------------------------------------------
 	// Load up sensor Shape if not yet defined.
@@ -369,8 +359,7 @@ void GVAppearanceType::destroy(void)
 }
 
 //-----------------------------------------------------------------------------
-void GVAppearanceType::setAnimation(
-	TG_MultiShapePtr shape, uint32_t animationNum)
+void GVAppearanceType::setAnimation(TG_MultiShapePtr shape, uint32_t animationNum)
 {
 	gosASSERT(shape != nullptr);
 	gosASSERT(animationNum != 0xffffffff);
@@ -421,11 +410,9 @@ Stuff::Vector3D GVAppearance::getWeaponNodePosition(int32_t nodeId)
 	xlatPosition.y = position.z;
 	xlatPosition.z = position.y;
 	Stuff::UnitQuaternion torsoRot;
-	torsoRot =
-		Stuff::EulerAngles(0.0f, (turretRotation * DEGREES_TO_RADS), 0.0f);
+	torsoRot = Stuff::EulerAngles(0.0f, (turretRotation * DEGREES_TO_RADS), 0.0f);
 	if (rotationalNodeIndex == -1)
-		rotationalNodeIndex =
-			gvShape->SetNodeRotation(appearType->rotationalNodeId, &torsoRot);
+		rotationalNodeIndex = gvShape->SetNodeRotation(appearType->rotationalNodeId, &torsoRot);
 	gvShape->SetNodeRotation(rotationalNodeIndex, &torsoRot);
 	if (weaponNodeId[nodeId - appearType->numSmokeNodes] == -1)
 		weaponNodeId[nodeId - appearType->numSmokeNodes] =
@@ -435,8 +422,8 @@ Stuff::Vector3D GVAppearance::getWeaponNodePosition(int32_t nodeId)
 	if (weaponNodeId[nodeId - appearType->numSmokeNodes] == -1)
 		weaponNodeId[nodeId - appearType->numSmokeNodes] = -2;
 	if (weaponNodeId[nodeId - appearType->numSmokeNodes] >= 0)
-		result = gvShape->GetTransformedNodePosition(&xlatPosition, &qRotation,
-			weaponNodeId[nodeId - appearType->numSmokeNodes]);
+		result = gvShape->GetTransformedNodePosition(
+			&xlatPosition, &qRotation, weaponNodeId[nodeId - appearType->numSmokeNodes]);
 	if ((result.x == 0.0f) && (result.y == 0.0f) && (result.z == 0.0f))
 		result = position;
 	return result;
@@ -460,11 +447,9 @@ Stuff::Vector3D GVAppearance::getSmokeNodePosition(int32_t nodeId)
 	xlatPosition.y = position.z;
 	xlatPosition.z = position.y;
 	Stuff::UnitQuaternion torsoRot;
-	torsoRot =
-		Stuff::EulerAngles(0.0f, (turretRotation * DEGREES_TO_RADS), 0.0f);
+	torsoRot = Stuff::EulerAngles(0.0f, (turretRotation * DEGREES_TO_RADS), 0.0f);
 	if (rotationalNodeIndex == -1)
-		rotationalNodeIndex =
-			gvShape->SetNodeRotation(appearType->rotationalNodeId, &torsoRot);
+		rotationalNodeIndex = gvShape->SetNodeRotation(appearType->rotationalNodeId, &torsoRot);
 	gvShape->SetNodeRotation(rotationalNodeIndex, &torsoRot);
 	result = gvShape->GetTransformedNodePosition(
 		&xlatPosition, &qRotation, appearType->nodeData[nodeId].nodeId);
@@ -489,16 +474,12 @@ Stuff::Vector3D GVAppearance::getDustNodePosition(int32_t nodeId)
 	xlatPosition.y = position.z;
 	xlatPosition.z = position.y;
 	Stuff::UnitQuaternion torsoRot;
-	torsoRot =
-		Stuff::EulerAngles(0.0f, (turretRotation * DEGREES_TO_RADS), 0.0f);
+	torsoRot = Stuff::EulerAngles(0.0f, (turretRotation * DEGREES_TO_RADS), 0.0f);
 	if (rotationalNodeIndex == -1)
-		rotationalNodeIndex =
-			gvShape->SetNodeRotation(appearType->rotationalNodeId, &torsoRot);
+		rotationalNodeIndex = gvShape->SetNodeRotation(appearType->rotationalNodeId, &torsoRot);
 	gvShape->SetNodeRotation(rotationalNodeIndex, &torsoRot);
 	result = gvShape->GetTransformedNodePosition(&xlatPosition, &qRotation,
-		appearType
-			->nodeData[nodeId + appearType->numWeaponNodes +
-					   appearType->numSmokeNodes]
+		appearType->nodeData[nodeId + appearType->numWeaponNodes + appearType->numSmokeNodes]
 			.nodeId);
 	return result;
 }
@@ -515,15 +496,13 @@ int32_t GVAppearance::getLowestWeaponNode(void)
 	for (size_t i = 0; i < appearType->numWeaponNodes; i++)
 	{
 		Stuff::Vector3D nodePosition = getWeaponNodePosition(i + numSmokeNodes);
-		if (((nodePosition.z - position.z) < lowestPosZ) &&
-			(nodePosition.z != position.z))
+		if (((nodePosition.z - position.z) < lowestPosZ) && (nodePosition.z != position.z))
 		{
 			lowestPosZ = nodePosition.z - position.z;
 			bestNode   = i + numSmokeNodes;
 		}
 	}
-	if ((lowestPosZ == 0.0f) || (bestNode < 0) ||
-		(bestNode >= appearType->getTotalNodes()))
+	if ((lowestPosZ == 0.0f) || (bestNode < 0) || (bestNode >= appearType->getTotalNodes()))
 		return -1;
 	return bestNode;
 }
@@ -544,15 +523,12 @@ int32_t GVAppearance::getWeaponNode(int32_t weaponType)
 		switch (weaponType)
 		{
 		case MECH3D_WEAPONTYPE_MISSILE:
-			if ((appearType->nodeData[numSmokeNodes + i].weaponType ==
-					weaponType) ||
-				(appearType->nodeData[numSmokeNodes + i].weaponType ==
-					MECH3D_WEAPONTYPE_ANY) ||
-				(appearType->nodeData[numSmokeNodes + i].weaponType ==
-					MECH3D_WEAPONTYPE_NONENERGY))
+			if ((appearType->nodeData[numSmokeNodes + i].weaponType == weaponType) ||
+				(appearType->nodeData[numSmokeNodes + i].weaponType == MECH3D_WEAPONTYPE_ANY) ||
+				(appearType->nodeData[numSmokeNodes + i].weaponType == MECH3D_WEAPONTYPE_NONENERGY))
 			{
 				//					if (getWeaponNodePosition(i + numSmokeNodes).z !=
-				//position.z)
+				// position.z)
 				//					{
 				if (nodeUsed[i] < leastUsed)
 				{
@@ -563,15 +539,12 @@ int32_t GVAppearance::getWeaponNode(int32_t weaponType)
 			}
 			break;
 		case MECH3D_WEAPONTYPE_BALLISTIC:
-			if ((appearType->nodeData[numSmokeNodes + i].weaponType ==
-					weaponType) ||
-				(appearType->nodeData[numSmokeNodes + i].weaponType ==
-					MECH3D_WEAPONTYPE_ANY) ||
-				(appearType->nodeData[numSmokeNodes + i].weaponType ==
-					MECH3D_WEAPONTYPE_NONENERGY))
+			if ((appearType->nodeData[numSmokeNodes + i].weaponType == weaponType) ||
+				(appearType->nodeData[numSmokeNodes + i].weaponType == MECH3D_WEAPONTYPE_ANY) ||
+				(appearType->nodeData[numSmokeNodes + i].weaponType == MECH3D_WEAPONTYPE_NONENERGY))
 			{
 				//					if (getWeaponNodePosition(i + numSmokeNodes).z !=
-				//position.z)
+				// position.z)
 				//					{
 				if (nodeUsed[i] < leastUsed)
 				{
@@ -582,13 +555,11 @@ int32_t GVAppearance::getWeaponNode(int32_t weaponType)
 			}
 			break;
 		case MECH3D_WEAPONTYPE_ENERGY:
-			if ((appearType->nodeData[numSmokeNodes + i].weaponType ==
-					weaponType) ||
-				(appearType->nodeData[numSmokeNodes + i].weaponType ==
-					MECH3D_WEAPONTYPE_ANY))
+			if ((appearType->nodeData[numSmokeNodes + i].weaponType == weaponType) ||
+				(appearType->nodeData[numSmokeNodes + i].weaponType == MECH3D_WEAPONTYPE_ANY))
 			{
 				//					if (getWeaponNodePosition(i + numSmokeNodes).z !=
-				//position.z)
+				// position.z)
 				//					{
 				if (nodeUsed[i] < leastUsed)
 				{
@@ -600,7 +571,7 @@ int32_t GVAppearance::getWeaponNode(int32_t weaponType)
 			break;
 		case MECH3D_WEAPONTYPE_ANY:
 			//				if (getWeaponNodePosition(i + numSmokeNodes).z !=
-			//position.z)
+			// position.z)
 			//				{
 			if (nodeUsed[i] < leastUsed)
 			{
@@ -642,8 +613,8 @@ void GVAppearance::init(AppearanceTypePtr tree, GameObjectPtr obj)
 	flashColor								= 0x00000000;
 	drawFlash								= false;
 	rotationalNodeIndex						= -1;
-	dustNodeIndex = activityNodeIndex = hitNodeId = weaponNodeId[0] =
-		weaponNodeId[1] = weaponNodeId[2] = weaponNodeId[3] = -1;
+	dustNodeIndex = activityNodeIndex = hitNodeId = weaponNodeId[0] = weaponNodeId[1] =
+		weaponNodeId[2] = weaponNodeId[3] = -1;
 	screenPos.x = screenPos.y = screenPos.z = screenPos.w = -999.0f;
 	position.Zero();
 	rotation = 0.0;
@@ -700,17 +671,15 @@ void GVAppearance::init(AppearanceTypePtr tree, GameObjectPtr obj)
 					uint32_t gosTextureHandle = 0;
 					if (!i)
 					{
-						localTextureHandle = mcTextureManager->loadTexture(
-							textureName, gos_Texture_Alpha,
-							gosHint_DisableMipmap | gosHint_DontShrink, true);
+						localTextureHandle = mcTextureManager->loadTexture(textureName,
+							gos_Texture_Alpha, gosHint_DisableMipmap | gosHint_DontShrink, true);
 						gvShape->SetTextureHandle(i, localTextureHandle);
 						gvShape->SetTextureAlpha(i, true);
 					}
 					else
 					{
-						gosTextureHandle = mcTextureManager->loadTexture(
-							textureName, gos_Texture_Alpha,
-							gosHint_DisableMipmap | gosHint_DontShrink);
+						gosTextureHandle = mcTextureManager->loadTexture(textureName,
+							gos_Texture_Alpha, gosHint_DisableMipmap | gosHint_DontShrink);
 						gvShape->SetTextureHandle(i, gosTextureHandle);
 						gvShape->SetTextureAlpha(i, true);
 					}
@@ -720,17 +689,15 @@ void GVAppearance::init(AppearanceTypePtr tree, GameObjectPtr obj)
 					uint32_t gosTextureHandle = 0;
 					if (!i)
 					{
-						localTextureHandle = mcTextureManager->loadTexture(
-							textureName, gos_Texture_Solid,
-							gosHint_DisableMipmap | gosHint_DontShrink, true);
+						localTextureHandle = mcTextureManager->loadTexture(textureName,
+							gos_Texture_Solid, gosHint_DisableMipmap | gosHint_DontShrink, true);
 						gvShape->SetTextureHandle(i, localTextureHandle);
 						gvShape->SetTextureAlpha(i, false);
 					}
 					else
 					{
-						gosTextureHandle = mcTextureManager->loadTexture(
-							textureName, gos_Texture_Solid,
-							gosHint_DisableMipmap | gosHint_DontShrink);
+						gosTextureHandle = mcTextureManager->loadTexture(textureName,
+							gos_Texture_Solid, gosHint_DisableMipmap | gosHint_DontShrink);
 						gvShape->SetTextureHandle(i, gosTextureHandle);
 						gvShape->SetTextureAlpha(i, false);
 					}
@@ -759,20 +726,16 @@ void GVAppearance::init(AppearanceTypePtr tree, GameObjectPtr obj)
 				{
 					if (strnicmp(txmName, "a_", 2) == 0)
 					{
-						uint32_t gosTextureHandle =
-							mcTextureManager->loadTexture(textureName,
-								gos_Texture_Alpha,
-								gosHint_DisableMipmap | gosHint_DontShrink);
+						uint32_t gosTextureHandle = mcTextureManager->loadTexture(textureName,
+							gos_Texture_Alpha, gosHint_DisableMipmap | gosHint_DontShrink);
 						gosASSERT(gosTextureHandle != 0xffffffff);
 						gvShadowShape->SetTextureHandle(i, gosTextureHandle);
 						gvShadowShape->SetTextureAlpha(i, true);
 					}
 					else
 					{
-						uint32_t gosTextureHandle =
-							mcTextureManager->loadTexture(textureName,
-								gos_Texture_Solid,
-								gosHint_DisableMipmap | gosHint_DontShrink);
+						uint32_t gosTextureHandle = mcTextureManager->loadTexture(textureName,
+							gos_Texture_Solid, gosHint_DisableMipmap | gosHint_DontShrink);
 						gosASSERT(gosTextureHandle != 0xffffffff);
 						gvShadowShape->SetTextureHandle(i, gosTextureHandle);
 						gvShadowShape->SetTextureAlpha(i, false);
@@ -788,8 +751,7 @@ void GVAppearance::init(AppearanceTypePtr tree, GameObjectPtr obj)
 		{
 			gvShadowShape = nullptr;
 		}
-		sensorTriangleShape =
-			GVAppearanceType::SensorTriangleShape->CreateFrom();
+		sensorTriangleShape = GVAppearanceType::SensorTriangleShape->CreateFrom();
 		//-------------------------------------------------
 		// Load the texture and store its handle.
 		for (i = 0; i < sensorTriangleShape->GetNumTextures(); i++)
@@ -805,16 +767,14 @@ void GVAppearance::init(AppearanceTypePtr tree, GameObjectPtr obj)
 				if (strnicmp(txmName, "a_", 2) == 0)
 				{
 					uint32_t gosTextureHandle = mcTextureManager->loadTexture(
-						textureName, gos_Texture_Alpha,
-						gosHint_DisableMipmap | gosHint_DontShrink);
+						textureName, gos_Texture_Alpha, gosHint_DisableMipmap | gosHint_DontShrink);
 					sensorTriangleShape->SetTextureHandle(i, gosTextureHandle);
 					sensorTriangleShape->SetTextureAlpha(i, true);
 				}
 				else
 				{
 					uint32_t gosTextureHandle = mcTextureManager->loadTexture(
-						textureName, gos_Texture_Solid,
-						gosHint_DisableMipmap | gosHint_DontShrink);
+						textureName, gos_Texture_Solid, gosHint_DisableMipmap | gosHint_DontShrink);
 					sensorTriangleShape->SetTextureHandle(i, gosTextureHandle);
 					sensorTriangleShape->SetTextureAlpha(i, false);
 				}
@@ -841,16 +801,14 @@ void GVAppearance::init(AppearanceTypePtr tree, GameObjectPtr obj)
 				if (strnicmp(txmName, "a_", 2) == 0)
 				{
 					uint32_t gosTextureHandle = mcTextureManager->loadTexture(
-						textureName, gos_Texture_Alpha,
-						gosHint_DisableMipmap | gosHint_DontShrink);
+						textureName, gos_Texture_Alpha, gosHint_DisableMipmap | gosHint_DontShrink);
 					sensorCircleShape->SetTextureHandle(i, gosTextureHandle);
 					sensorCircleShape->SetTextureAlpha(i, true);
 				}
 				else
 				{
 					uint32_t gosTextureHandle = mcTextureManager->loadTexture(
-						textureName, gos_Texture_Solid,
-						gosHint_DisableMipmap | gosHint_DontShrink);
+						textureName, gos_Texture_Solid, gosHint_DisableMipmap | gosHint_DontShrink);
 					sensorCircleShape->SetTextureHandle(i, gosTextureHandle);
 					sensorCircleShape->SetTextureAlpha(i, false);
 				}
@@ -863,31 +821,31 @@ void GVAppearance::init(AppearanceTypePtr tree, GameObjectPtr obj)
 		}
 		Stuff::Vector3D boxCoords[8];
 		Stuff::Vector3D nodeCenter = gvShape->GetRootNodeCenter();
-		boxCoords[0].x   = position.x + gvShape->GetMinBox().x + nodeCenter.x;
-		boxCoords[0].y   = position.y + gvShape->GetMinBox().z + nodeCenter.z;
-		boxCoords[0].z   = position.z + gvShape->GetMaxBox().y + nodeCenter.y;
-		boxCoords[1].x   = position.x + gvShape->GetMinBox().x + nodeCenter.x;
-		boxCoords[1].y   = position.y + gvShape->GetMaxBox().z + nodeCenter.z;
-		boxCoords[1].z   = position.z + gvShape->GetMaxBox().y + nodeCenter.y;
-		boxCoords[2].x   = position.x + gvShape->GetMaxBox().x + nodeCenter.x;
-		boxCoords[2].y   = position.y + gvShape->GetMaxBox().z + nodeCenter.z;
-		boxCoords[2].z   = position.z + gvShape->GetMaxBox().y + nodeCenter.y;
-		boxCoords[3].x   = position.x + gvShape->GetMaxBox().x + nodeCenter.x;
-		boxCoords[3].y   = position.y + gvShape->GetMinBox().z + nodeCenter.z;
-		boxCoords[3].z   = position.z + gvShape->GetMaxBox().y + nodeCenter.y;
-		boxCoords[4].x   = position.x + gvShape->GetMinBox().x + nodeCenter.x;
-		boxCoords[4].y   = position.y + gvShape->GetMinBox().z + nodeCenter.z;
-		boxCoords[4].z   = position.z + gvShape->GetMinBox().y + nodeCenter.y;
-		boxCoords[5].x   = position.x + gvShape->GetMaxBox().x + nodeCenter.x;
-		boxCoords[5].y   = position.y + gvShape->GetMinBox().z + nodeCenter.z;
-		boxCoords[5].z   = position.z + gvShape->GetMinBox().y + nodeCenter.y;
-		boxCoords[6].x   = position.x + gvShape->GetMaxBox().x + nodeCenter.x;
-		boxCoords[6].y   = position.y + gvShape->GetMaxBox().z + nodeCenter.z;
-		boxCoords[6].z   = position.z + gvShape->GetMinBox().y + nodeCenter.y;
-		boxCoords[7].x   = position.x + gvShape->GetMinBox().x + nodeCenter.x;
-		boxCoords[7].y   = position.y + gvShape->GetMaxBox().z + nodeCenter.z;
-		boxCoords[7].z   = position.z + gvShape->GetMinBox().y + nodeCenter.y;
-		float testRadius = 0.0;
+		boxCoords[0].x			   = position.x + gvShape->GetMinBox().x + nodeCenter.x;
+		boxCoords[0].y			   = position.y + gvShape->GetMinBox().z + nodeCenter.z;
+		boxCoords[0].z			   = position.z + gvShape->GetMaxBox().y + nodeCenter.y;
+		boxCoords[1].x			   = position.x + gvShape->GetMinBox().x + nodeCenter.x;
+		boxCoords[1].y			   = position.y + gvShape->GetMaxBox().z + nodeCenter.z;
+		boxCoords[1].z			   = position.z + gvShape->GetMaxBox().y + nodeCenter.y;
+		boxCoords[2].x			   = position.x + gvShape->GetMaxBox().x + nodeCenter.x;
+		boxCoords[2].y			   = position.y + gvShape->GetMaxBox().z + nodeCenter.z;
+		boxCoords[2].z			   = position.z + gvShape->GetMaxBox().y + nodeCenter.y;
+		boxCoords[3].x			   = position.x + gvShape->GetMaxBox().x + nodeCenter.x;
+		boxCoords[3].y			   = position.y + gvShape->GetMinBox().z + nodeCenter.z;
+		boxCoords[3].z			   = position.z + gvShape->GetMaxBox().y + nodeCenter.y;
+		boxCoords[4].x			   = position.x + gvShape->GetMinBox().x + nodeCenter.x;
+		boxCoords[4].y			   = position.y + gvShape->GetMinBox().z + nodeCenter.z;
+		boxCoords[4].z			   = position.z + gvShape->GetMinBox().y + nodeCenter.y;
+		boxCoords[5].x			   = position.x + gvShape->GetMaxBox().x + nodeCenter.x;
+		boxCoords[5].y			   = position.y + gvShape->GetMinBox().z + nodeCenter.z;
+		boxCoords[5].z			   = position.z + gvShape->GetMinBox().y + nodeCenter.y;
+		boxCoords[6].x			   = position.x + gvShape->GetMaxBox().x + nodeCenter.x;
+		boxCoords[6].y			   = position.y + gvShape->GetMaxBox().z + nodeCenter.z;
+		boxCoords[6].z			   = position.z + gvShape->GetMinBox().y + nodeCenter.y;
+		boxCoords[7].x			   = position.x + gvShape->GetMinBox().x + nodeCenter.x;
+		boxCoords[7].y			   = position.y + gvShape->GetMaxBox().z + nodeCenter.z;
+		boxCoords[7].z			   = position.z + gvShape->GetMinBox().y + nodeCenter.y;
+		float testRadius		   = 0.0;
 		for (i = 0; i < 8; i++)
 		{
 			testRadius = boxCoords[i].GetLength();
@@ -926,13 +884,11 @@ void GVAppearance::init(AppearanceTypePtr tree, GameObjectPtr obj)
 		{
 			if (!dustCloud && useNonWeaponEffects)
 			{
-				if (strcmp(weaponEffects->GetEffectName(VEHICLE_DUST_CLOUD),
-						"NONE") != 0)
+				if (strcmp(weaponEffects->GetEffectName(VEHICLE_DUST_CLOUD), "NONE") != 0)
 				{
 					//--------------------------------------------
 					// Yes, load it on up.
-					uint32_t flags =
-						gosFX::Effect::ExecuteFlag | gosFX::Effect::LoopFlag;
+					uint32_t flags = gosFX::Effect::ExecuteFlag | gosFX::Effect::LoopFlag;
 					Check_Object(gosFX::EffectLibrary::Instance);
 					gosFX::Effect::Specification* gosEffectSpec =
 						gosFX::EffectLibrary::Instance->Find(
@@ -942,8 +898,7 @@ void GVAppearance::init(AppearanceTypePtr tree, GameObjectPtr obj)
 						dustCloud = gosFX::EffectLibrary::Instance->MakeEffect(
 							gosEffectSpec->m_effectID, flags);
 						gosASSERT(dustCloud != nullptr);
-						MidLevelRenderer::MLRTexturePool::Instance
-							->LoadImages();
+						MidLevelRenderer::MLRTexturePool::Instance->LoadImages();
 					}
 				}
 			}
@@ -956,8 +911,7 @@ void GVAppearance::setObjStatus(int32_t oStatus)
 {
 	if (status != oStatus)
 	{
-		if ((oStatus == OBJECT_STATUS_DESTROYED) ||
-			(oStatus == OBJECT_STATUS_DISABLED))
+		if ((oStatus == OBJECT_STATUS_DESTROYED) || (oStatus == OBJECT_STATUS_DISABLED))
 		{
 			if (appearType->gvDmgShape)
 			{
@@ -995,17 +949,15 @@ void GVAppearance::setObjStatus(int32_t oStatus)
 					uint32_t gosTextureHandle = 0;
 					if (!i)
 					{
-						localTextureHandle = mcTextureManager->loadTexture(
-							textureName, gos_Texture_Alpha,
-							gosHint_DisableMipmap | gosHint_DontShrink, true);
+						localTextureHandle = mcTextureManager->loadTexture(textureName,
+							gos_Texture_Alpha, gosHint_DisableMipmap | gosHint_DontShrink, true);
 						gvShape->SetTextureHandle(i, localTextureHandle);
 						gvShape->SetTextureAlpha(i, true);
 					}
 					else
 					{
-						gosTextureHandle = mcTextureManager->loadTexture(
-							textureName, gos_Texture_Alpha,
-							gosHint_DisableMipmap | gosHint_DontShrink);
+						gosTextureHandle = mcTextureManager->loadTexture(textureName,
+							gos_Texture_Alpha, gosHint_DisableMipmap | gosHint_DontShrink);
 						gvShape->SetTextureHandle(i, gosTextureHandle);
 						gvShape->SetTextureAlpha(i, true);
 					}
@@ -1015,17 +967,15 @@ void GVAppearance::setObjStatus(int32_t oStatus)
 					uint32_t gosTextureHandle = 0;
 					if (!i)
 					{
-						localTextureHandle = mcTextureManager->loadTexture(
-							textureName, gos_Texture_Solid,
-							gosHint_DisableMipmap | gosHint_DontShrink, true);
+						localTextureHandle = mcTextureManager->loadTexture(textureName,
+							gos_Texture_Solid, gosHint_DisableMipmap | gosHint_DontShrink, true);
 						gvShape->SetTextureHandle(i, localTextureHandle);
 						gvShape->SetTextureAlpha(i, false);
 					}
 					else
 					{
-						gosTextureHandle = mcTextureManager->loadTexture(
-							textureName, gos_Texture_Solid,
-							gosHint_DisableMipmap | gosHint_DontShrink);
+						gosTextureHandle = mcTextureManager->loadTexture(textureName,
+							gos_Texture_Solid, gosHint_DisableMipmap | gosHint_DontShrink);
 						gvShape->SetTextureHandle(i, gosTextureHandle);
 						gvShape->SetTextureAlpha(i, false);
 					}
@@ -1048,8 +998,7 @@ void GVAppearance::setPaintScheme(void)
 	//----------------------------------------------------------------------------
 	// Simple really.  Get the texture memory, apply the paint scheme, let it
 	// go!
-	uint32_t gosHandle =
-		mcTextureManager->get_gosTextureHandle(gvShape->GetTextureHandle(0));
+	uint32_t gosHandle = mcTextureManager->get_gosTextureHandle(gvShape->GetTextureHandle(0));
 	if (gosHandle && gosHandle != 0xffffffff)
 	{
 		//-------------------
@@ -1069,7 +1018,7 @@ void GVAppearance::setPaintScheme(void)
 				float baseColorRed	 = float((baseColor & 0x00ff0000) >> 16);
 				float baseColorGreen   = float((baseColor & 0x0000ff00) >> 8);
 				float baseColorBlue	= float(baseColor & 0x000000ff);
-				uint32_t newColor = *textureMemory; // Black by default.
+				uint32_t newColor	  = *textureMemory; // Black by default.
 				if ((!baseColorGreen) && (!baseColorBlue))
 				{
 					baseColorRed *= 0.00390625f; // Divide by 256;
@@ -1085,8 +1034,7 @@ void GVAppearance::setPaintScheme(void)
 					float newColorBlue = float(psRed & 0x000000ff);
 					newColorBlue *= baseColorRed;
 					uint8_t blue = (uint8_t)newColorBlue;
-					newColor	 = (baseColorAlpha << 24) + (red << 16) +
-							   (green << 8) + (blue);
+					newColor	 = (baseColorAlpha << 24) + (red << 16) + (green << 8) + (blue);
 				}
 				else if ((!baseColorRed) && (!baseColorBlue))
 				{
@@ -1103,8 +1051,7 @@ void GVAppearance::setPaintScheme(void)
 					float newColorBlue = float(psGreen & 0x000000ff);
 					newColorBlue *= baseColorGreen;
 					uint8_t blue = (uint8_t)newColorBlue;
-					newColor	 = (baseColorAlpha << 24) + (red << 16) +
-							   (green << 8) + (blue);
+					newColor	 = (baseColorAlpha << 24) + (red << 16) + (green << 8) + (blue);
 				}
 				else if ((!baseColorRed) && (!baseColorGreen))
 				{
@@ -1121,8 +1068,7 @@ void GVAppearance::setPaintScheme(void)
 					float newColorBlue = float(psBlue & 0x000000ff);
 					newColorBlue *= baseColorBlue;
 					uint8_t blue = (uint8_t)newColorBlue;
-					newColor	 = (baseColorAlpha << 24) + (red << 16) +
-							   (green << 8) + (blue);
+					newColor	 = (baseColorAlpha << 24) + (red << 16) + (green << 8) + (blue);
 				}
 				*textureMemory = newColor;
 				textureMemory++;
@@ -1138,8 +1084,7 @@ void GVAppearance::setPaintScheme(void)
 uint32_t bgrTorgb(uint32_t frontRGB);
 
 //-----------------------------------------------------------------------------
-void GVAppearance::setPaintScheme(
-	uint32_t mcRed, uint32_t mcGreen, uint32_t mcBlue)
+void GVAppearance::setPaintScheme(uint32_t mcRed, uint32_t mcGreen, uint32_t mcBlue)
 {
 #ifdef BGR
 	// These come into here bgr instead of RGB.  CONVERT!
@@ -1155,8 +1100,7 @@ void GVAppearance::setPaintScheme(
 }
 
 //-----------------------------------------------------------------------------
-void GVAppearance::getPaintScheme(
-	uint32_t& red, uint32_t& green, uint32_t& blue)
+void GVAppearance::getPaintScheme(uint32_t& red, uint32_t& green, uint32_t& blue)
 {
 #ifdef BGR
 	red   = bgrTorgb(psRed);
@@ -1175,8 +1119,7 @@ void GVAppearance::resetPaintScheme(uint32_t red, uint32_t green, uint32_t blue)
 	//---------------------------------------------------------------------------------
 	// Simple really.  Toss the current texture, reload the RGB and reapply the
 	// colors
-	uint32_t gosHandle =
-		mcTextureManager->get_gosTextureHandle(localTextureHandle);
+	uint32_t gosHandle = mcTextureManager->get_gosTextureHandle(localTextureHandle);
 	mcTextureManager->removeTexture(gosHandle);
 	//-------------------------------------------------
 	// Load the texture and store its handle.
@@ -1198,25 +1141,21 @@ void GVAppearance::resetPaintScheme(uint32_t red, uint32_t green, uint32_t blue)
 	textures that are close in color (i.e. all of the 3 most significant bits of
 	the 9 rgb components are the same) will be treated as the same texture,
 	which is not necessarily a bad thing in our case.  */
-	uint32_t ccbase =
-		((red >> 5) & 7) + (((red >> 13) & 7) << 3) + (((red >> 21) & 7) << 6);
-	uint32_t cchighlight1 = ((green >> 5) & 7) + (((green >> 13) & 7) << 3) +
-							(((green >> 21) & 7) << 6);
-	uint32_t cchighlight2 = ((blue >> 5) & 7) + (((blue >> 13) & 7) << 3) +
-							(((blue >> 21) & 7) << 6);
-	uint32_t paintInstance =
-		(ccbase << 18) + (cchighlight1 << 9) + (cchighlight2);
+	uint32_t ccbase = ((red >> 5) & 7) + (((red >> 13) & 7) << 3) + (((red >> 21) & 7) << 6);
+	uint32_t cchighlight1 =
+		((green >> 5) & 7) + (((green >> 13) & 7) << 3) + (((green >> 21) & 7) << 6);
+	uint32_t cchighlight2 =
+		((blue >> 5) & 7) + (((blue >> 13) & 7) << 3) + (((blue >> 21) & 7) << 6);
+	uint32_t paintInstance = (ccbase << 18) + (cchighlight1 << 9) + (cchighlight2);
 	if (fileExists(textureName))
 	{
 		if (strnicmp(txmName, "a_", 2) == 0)
 		{
 			uint32_t textureInstanceAlreadyExists =
-				mcTextureManager->textureInstanceExists(textureName,
-					gos_Texture_Solid,
+				mcTextureManager->textureInstanceExists(textureName, gos_Texture_Solid,
 					gosHint_DisableMipmap | gosHint_DontShrink, paintInstance);
 			if (!textureInstanceAlreadyExists)
-				localTextureHandle = mcTextureManager->loadTexture(textureName,
-					gos_Texture_Alpha,
+				localTextureHandle = mcTextureManager->loadTexture(textureName, gos_Texture_Alpha,
 					gosHint_DisableMipmap | gosHint_DontShrink, paintInstance);
 			else
 				localTextureHandle = textureInstanceAlreadyExists;
@@ -1236,12 +1175,10 @@ void GVAppearance::resetPaintScheme(uint32_t red, uint32_t green, uint32_t blue)
 		else
 		{
 			uint32_t textureInstanceAlreadyExists =
-				mcTextureManager->textureInstanceExists(textureName,
-					gos_Texture_Solid,
+				mcTextureManager->textureInstanceExists(textureName, gos_Texture_Solid,
 					gosHint_DisableMipmap | gosHint_DontShrink, paintInstance);
 			if (!textureInstanceAlreadyExists)
-				localTextureHandle = mcTextureManager->loadTexture(textureName,
-					gos_Texture_Solid,
+				localTextureHandle = mcTextureManager->loadTexture(textureName, gos_Texture_Solid,
 					gosHint_DisableMipmap | gosHint_DontShrink, paintInstance);
 			else
 				localTextureHandle = textureInstanceAlreadyExists;
@@ -1276,8 +1213,7 @@ void GVAppearance::setGesture(uint32_t gestureId)
 		return;
 	//------------------------------------------------------------
 	// Check if object destroyed.  If so, no animation!
-	if ((status == OBJECT_STATUS_DESTROYED) ||
-		(status == OBJECT_STATUS_DISABLED))
+	if ((status == OBJECT_STATUS_DESTROYED) || (status == OBJECT_STATUS_DISABLED))
 		return;
 	//----------------------------------------------------------------------
 	// If state is OK, set animation data, set first frame, set loop and
@@ -1295,8 +1231,7 @@ void GVAppearance::setGesture(uint32_t gestureId)
 	}
 	if (appearType->isRandom(gvAnimationState))
 	{
-		currentFrame =
-			RandomNumber(appearType->getNumFrames(gvAnimationState) - 1);
+		currentFrame = RandomNumber(appearType->getNumFrames(gvAnimationState) - 1);
 	}
 	isLooping	 = appearType->isLooped(gvAnimationState);
 	gvFrameRate   = appearType->getFrameRate(gvAnimationState);
@@ -1314,8 +1249,8 @@ Stuff::Vector3D GVAppearance::getHitNode(void)
 }
 
 //-----------------------------------------------------------------------------
-void GVAppearance::setObjectParameters(Stuff::Vector3D& pos, float Rot,
-	int32_t sel, int32_t team, int32_t homeRelations)
+void GVAppearance::setObjectParameters(
+	Stuff::Vector3D& pos, float Rot, int32_t sel, int32_t team, int32_t homeRelations)
 {
 	movedThisFrame = false;
 	if ((rotation != Rot) || (pos != position))
@@ -1397,9 +1332,8 @@ void GVAppearance::debugUpdate(void)
 	//-----------------------------------------
 	// Take slope being walked on into account.
 	// Use for ground vehicles for sure.
-	Stuff::Vector3D currentNormal =
-		land->getTerrainNormal(debugGVActorPosition);
-	float angle = angle_from(velocity, currentNormal);
+	Stuff::Vector3D currentNormal = land->getTerrainNormal(debugGVActorPosition);
+	float angle					  = angle_from(velocity, currentNormal);
 	if (angle != 90.0)
 	{
 		float hillFactor = cos(angle * DEGREES_TO_RADS) * velMag;
@@ -1419,8 +1353,8 @@ bool GVAppearance::isMouseOver(float px, float py)
 {
 	if (inView)
 	{
-		if ((px <= lowerRight.x) && (py <= lowerRight.y) &&
-			(px >= upperLeft.x) && (py >= upperLeft.y))
+		if ((px <= lowerRight.x) && (py <= lowerRight.y) && (px >= upperLeft.x) &&
+			(py >= upperLeft.y))
 		{
 			return inView;
 		}
@@ -1462,8 +1396,8 @@ bool GVAppearance::recalcBounds(void)
 			}
 			else if (eyeDistance > Camera::MinHazeDistance)
 			{
-				Camera::HazeFactor = (eyeDistance - Camera::MinHazeDistance) *
-									 Camera::DistanceFactor;
+				Camera::HazeFactor =
+					(eyeDistance - Camera::MinHazeDistance) * Camera::DistanceFactor;
 				inView = true;
 			}
 			else
@@ -1501,8 +1435,7 @@ bool GVAppearance::recalcBounds(void)
 		{
 			if (reloadBounds)
 				appearType->reinit();
-			appearType->boundsLowerRightY =
-				(OBBRadius * eye->getTiltFactor() * 2.0f);
+			appearType->boundsLowerRightY = (OBBRadius * eye->getTiltFactor() * 2.0f);
 			//-------------------------------------------------------------------------
 			// do a rough check if on screen.  If no where near, do NOT do the
 			// below. Mighty mighty slow!!!! Use the original check done before
@@ -1512,17 +1445,12 @@ bool GVAppearance::recalcBounds(void)
 			upperLeft.y  = tempPos.y;
 			lowerRight.x = tempPos.x;
 			lowerRight.y = tempPos.y;
-			upperLeft.x +=
-				(appearType->boundsUpperLeftX * eye->getScaleFactor());
-			upperLeft.y +=
-				(appearType->boundsUpperLeftY * eye->getScaleFactor());
-			lowerRight.x +=
-				(appearType->boundsLowerRightX * eye->getScaleFactor());
-			lowerRight.y +=
-				(appearType->boundsLowerRightY * eye->getScaleFactor());
+			upperLeft.x += (appearType->boundsUpperLeftX * eye->getScaleFactor());
+			upperLeft.y += (appearType->boundsUpperLeftY * eye->getScaleFactor());
+			lowerRight.x += (appearType->boundsLowerRightX * eye->getScaleFactor());
+			lowerRight.y += (appearType->boundsLowerRightY * eye->getScaleFactor());
 			if ((lowerRight.x >= 0) && (lowerRight.y >= 0) &&
-				(upperLeft.x <= eye->getScreenResX()) &&
-				(upperLeft.y <= eye->getScreenResY()))
+				(upperLeft.x <= eye->getScreenResX()) && (upperLeft.y <= eye->getScreenResY()))
 			{
 				// We are on screen.  Figure out selection box.
 				Stuff::Vector3D boxCoords[8];
@@ -1590,12 +1518,10 @@ bool GVAppearance::recalcBounds(void)
 				lowerRight.x = maxX;
 				lowerRight.y = maxY;
 				if ((lowerRight.x >= 0) && (lowerRight.y >= 0) &&
-					(upperLeft.x <= eye->getScreenResX()) &&
-					(upperLeft.y <= eye->getScreenResY()))
+					(upperLeft.x <= eye->getScreenResX()) && (upperLeft.y <= eye->getScreenResY()))
 				{
 					inView = true;
-					if ((status != OBJECT_STATUS_DESTROYED) &&
-						(status != OBJECT_STATUS_DISABLED))
+					if ((status != OBJECT_STATUS_DESTROYED) && (status != OBJECT_STATUS_DISABLED))
 					{
 						//-------------------------------------------------------------------------------
 						// Set LOD of Model here because we have the distance
@@ -1630,50 +1556,38 @@ bool GVAppearance::recalcBounds(void)
 							gvShape->ClearAnimation();
 							delete gvShape;
 							gvShape = nullptr;
-							gvShape =
-								appearType->gvShape[currentLOD]->CreateFrom();
+							gvShape = appearType->gvShape[currentLOD]->CreateFrom();
 							if (gvAnimationState != -1)
-								appearType->setAnimation(
-									gvShape, gvAnimationState);
+								appearType->setAnimation(gvShape, gvAnimationState);
 							gvShape->SetAlphaValue(alphaValue);
 							//-------------------------------------------------
 							// Load the texture and store its handle.
-							for (size_t j = 0; j < gvShape->GetNumTextures();
-								 j++)
+							for (size_t j = 0; j < gvShape->GetNumTextures(); j++)
 							{
 								char txmName[1024];
 								gvShape->GetTextureName(j, txmName, 256);
 								char texturePath[1024];
-								sprintf(texturePath, "%s%d\\", tglPath,
-									ObjectTextureSize);
+								sprintf(texturePath, "%s%d\\", tglPath, ObjectTextureSize);
 								FullPathFileName textureName;
 								textureName.init(texturePath, txmName, "");
 								if (fileExists(textureName))
 								{
 									if (strnicmp(txmName, "a_", 2) == 0)
 									{
-										uint32_t gosTextureHandle =
-											mcTextureManager->loadTexture(
-												textureName, gos_Texture_Alpha,
-												gosHint_DisableMipmap |
-													gosHint_DontShrink);
-										gosASSERT(
-											gosTextureHandle != 0xffffffff);
-										gvShape->SetTextureHandle(
-											j, gosTextureHandle);
+										uint32_t gosTextureHandle = mcTextureManager->loadTexture(
+											textureName, gos_Texture_Alpha,
+											gosHint_DisableMipmap | gosHint_DontShrink);
+										gosASSERT(gosTextureHandle != 0xffffffff);
+										gvShape->SetTextureHandle(j, gosTextureHandle);
 										gvShape->SetTextureAlpha(j, true);
 									}
 									else
 									{
-										uint32_t gosTextureHandle =
-											mcTextureManager->loadTexture(
-												textureName, gos_Texture_Solid,
-												gosHint_DisableMipmap |
-													gosHint_DontShrink);
-										gosASSERT(
-											gosTextureHandle != 0xffffffff);
-										gvShape->SetTextureHandle(
-											j, gosTextureHandle);
+										uint32_t gosTextureHandle = mcTextureManager->loadTexture(
+											textureName, gos_Texture_Solid,
+											gosHint_DisableMipmap | gosHint_DontShrink);
+										gosASSERT(gosTextureHandle != 0xffffffff);
+										gvShape->SetTextureHandle(j, gosTextureHandle);
 										gvShape->SetTextureAlpha(j, false);
 									}
 								}
@@ -1695,49 +1609,36 @@ bool GVAppearance::recalcBounds(void)
 							gvShape->ClearAnimation();
 							delete gvShape;
 							gvShape = nullptr;
-							gvShape =
-								appearType->gvShape[currentLOD]->CreateFrom();
+							gvShape = appearType->gvShape[currentLOD]->CreateFrom();
 							gvShape->SetAlphaValue(alphaValue);
 							//-------------------------------------------------
 							// Load the texture and store its handle.
-							for (size_t i = 0; i < gvShape->GetNumTextures();
-								 i++)
+							for (size_t i = 0; i < gvShape->GetNumTextures(); i++)
 							{
 								char txmName[1024];
 								gvShape->GetTextureName(i, txmName, 256);
 								char texturePath[1024];
-								sprintf(texturePath, "%s%d\\", tglPath,
-									ObjectTextureSize);
+								sprintf(texturePath, "%s%d\\", tglPath, ObjectTextureSize);
 								FullPathFileName textureName;
 								textureName.init(texturePath, txmName, "");
 								if (fileExists(textureName))
 								{
 									if (strnicmp(txmName, "a_", 2) == 0)
 									{
-										localTextureHandle =
-											mcTextureManager->loadTexture(
-												textureName, gos_Texture_Alpha,
-												gosHint_DisableMipmap |
-													gosHint_DontShrink,
-												true);
-										gosASSERT(
-											localTextureHandle != 0xffffffff);
-										gvShape->SetTextureHandle(
-											i, localTextureHandle);
+										localTextureHandle = mcTextureManager->loadTexture(
+											textureName, gos_Texture_Alpha,
+											gosHint_DisableMipmap | gosHint_DontShrink, true);
+										gosASSERT(localTextureHandle != 0xffffffff);
+										gvShape->SetTextureHandle(i, localTextureHandle);
 										gvShape->SetTextureAlpha(i, true);
 									}
 									else
 									{
-										localTextureHandle =
-											mcTextureManager->loadTexture(
-												textureName, gos_Texture_Solid,
-												gosHint_DisableMipmap |
-													gosHint_DontShrink,
-												true);
-										gosASSERT(
-											localTextureHandle != 0xffffffff);
-										gvShape->SetTextureHandle(
-											i, localTextureHandle);
+										localTextureHandle = mcTextureManager->loadTexture(
+											textureName, gos_Texture_Solid,
+											gosHint_DisableMipmap | gosHint_DontShrink, true);
+										gosASSERT(localTextureHandle != 0xffffffff);
+										gvShape->SetTextureHandle(i, localTextureHandle);
 										gvShape->SetTextureAlpha(i, false);
 									}
 								}
@@ -1781,8 +1682,8 @@ bool GVAppearance::playDestruction(void)
 			gosFX::EffectLibrary::Instance->Find(appearType->destructEffect);
 		if (gosEffectSpec)
 		{
-			destructFX = gosFX::EffectLibrary::Instance->MakeEffect(
-				gosEffectSpec->m_effectID, flags);
+			destructFX =
+				gosFX::EffectLibrary::Instance->MakeEffect(gosEffectSpec->m_effectID, flags);
 			gosASSERT(destructFX != nullptr);
 			MidLevelRenderer::MLRTexturePool::Instance->LoadImages();
 			Stuff::Point3D tPosition;
@@ -1793,8 +1694,7 @@ bool GVAppearance::playDestruction(void)
 			tPosition.z = position.y;
 			shapeOrigin.BuildRotation(Stuff::EulerAngles(0.0f, 0.0f, 0.0f));
 			shapeOrigin.BuildTranslation(tPosition);
-			gosFX::Effect::ExecuteInfo info(
-				(Stuff::Time)scenarioTime, &shapeOrigin, nullptr);
+			gosFX::Effect::ExecuteInfo info((Stuff::Time)scenarioTime, &shapeOrigin, nullptr);
 			destructFX->Start(&info);
 			return true;
 		}
@@ -1820,14 +1720,11 @@ Stuff::Vector3D GVAppearance::getNodeNamePosition(PSTR nodeName)
 	xlatPosition.y = position.z;
 	xlatPosition.z = position.y;
 	Stuff::UnitQuaternion torsoRot;
-	torsoRot =
-		Stuff::EulerAngles(0.0f, (turretRotation * DEGREES_TO_RADS), 0.0f);
+	torsoRot = Stuff::EulerAngles(0.0f, (turretRotation * DEGREES_TO_RADS), 0.0f);
 	if (rotationalNodeIndex == -1)
-		rotationalNodeIndex =
-			gvShape->SetNodeRotation(appearType->rotationalNodeId, &torsoRot);
+		rotationalNodeIndex = gvShape->SetNodeRotation(appearType->rotationalNodeId, &torsoRot);
 	gvShape->SetNodeRotation(rotationalNodeIndex, &torsoRot);
-	result = gvShape->GetTransformedNodePosition(
-		&xlatPosition, &qRotation, nodeName);
+	result = gvShape->GetTransformedNodePosition(&xlatPosition, &qRotation, nodeName);
 	if ((result.x == 0.0f) && (result.y == 0.0f) && (result.z == 0.0f))
 		result = position;
 	return result;
@@ -1849,14 +1746,11 @@ Stuff::Vector3D GVAppearance::getNodeIdPosition(int32_t nodeId)
 	xlatPosition.y = position.z;
 	xlatPosition.z = position.y;
 	Stuff::UnitQuaternion torsoRot;
-	torsoRot =
-		Stuff::EulerAngles(0.0f, (turretRotation * DEGREES_TO_RADS), 0.0f);
+	torsoRot = Stuff::EulerAngles(0.0f, (turretRotation * DEGREES_TO_RADS), 0.0f);
 	if (rotationalNodeIndex == -1)
-		rotationalNodeIndex =
-			gvShape->SetNodeRotation(appearType->rotationalNodeId, &torsoRot);
+		rotationalNodeIndex = gvShape->SetNodeRotation(appearType->rotationalNodeId, &torsoRot);
 	gvShape->SetNodeRotation(rotationalNodeIndex, &torsoRot);
-	result =
-		gvShape->GetTransformedNodePosition(&xlatPosition, &qRotation, nodeId);
+	result = gvShape->GetTransformedNodePosition(&xlatPosition, &qRotation, nodeId);
 	if ((result.x == 0.0f) && (result.y == 0.0f) && (result.z == 0.0f))
 		result = position;
 	return result;
@@ -1888,12 +1782,11 @@ int32_t GVAppearance::render(int32_t depthFixup)
 		uint32_t highLight = 0x007f7f7f;
 		if ((teamId > -1) && (teamId < 8))
 		{
-			static uint32_t highLightTable[3] = {
-				0x00007f00, 0x0000007f, 0x007f0000};
-			static int32_t colorTable[3] = {SB_GREEN | 0xff000000,
-				SB_BLUE | 0xff000000, SB_RED | 0xff000000};
-			color						 = colorTable[homeTeamRelationship];
-			highLight					 = highLightTable[homeTeamRelationship];
+			static uint32_t highLightTable[3] = {0x00007f00, 0x0000007f, 0x007f0000};
+			static int32_t colorTable[3]	  = {
+				 SB_GREEN | 0xff000000, SB_BLUE | 0xff000000, SB_RED | 0xff000000};
+			color	 = colorTable[homeTeamRelationship];
+			highLight = highLightTable[homeTeamRelationship];
 		}
 		if (visible)
 		{
@@ -1989,14 +1882,12 @@ int32_t GVAppearance::render(int32_t depthFixup)
 					wakePos.x = -position.x;
 					wakePos.y = Terrain::waterElevation;
 					wakePos.z = position.y;
-					shapeOrigin.BuildRotation(
-						Stuff::EulerAngles(0.0f, 0.0f, 0.0f));
+					shapeOrigin.BuildRotation(Stuff::EulerAngles(0.0f, 0.0f, 0.0f));
 					shapeOrigin.BuildTranslation(wakePos);
 					Stuff::UnitQuaternion effectRot;
-					effectRot = Stuff::EulerAngles(90.0f * DEGREES_TO_RADS,
-						rotation * DEGREES_TO_RADS, 0.0f);
-					localToWorld.Multiply(
-						gosFX::Effect_Against_Motion, effectRot);
+					effectRot = Stuff::EulerAngles(
+						90.0f * DEGREES_TO_RADS, rotation * DEGREES_TO_RADS, 0.0f);
+					localToWorld.Multiply(gosFX::Effect_Against_Motion, effectRot);
 					localResult.Multiply(localToWorld, shapeOrigin);
 					drawInfo.m_parentToWorld = &localResult;
 					if (!MLRVertexLimitReached)
@@ -2023,14 +1914,11 @@ int32_t GVAppearance::render(int32_t depthFixup)
 					wakePos.x = -dustPos.x;
 					wakePos.y = dustPos.z;
 					wakePos.z = dustPos.y;
-					shapeOrigin.BuildRotation(
-						Stuff::EulerAngles(0.0f, 0.0f, 0.0f));
+					shapeOrigin.BuildRotation(Stuff::EulerAngles(0.0f, 0.0f, 0.0f));
 					shapeOrigin.BuildTranslation(wakePos);
 					Stuff::UnitQuaternion effectRot;
-					effectRot = Stuff::EulerAngles(
-						0.0f, rotation * DEGREES_TO_RADS, 0.0f);
-					localToWorld.Multiply(
-						gosFX::Effect_Against_Motion, effectRot);
+					effectRot = Stuff::EulerAngles(0.0f, rotation * DEGREES_TO_RADS, 0.0f);
+					localToWorld.Multiply(gosFX::Effect_Against_Motion, effectRot);
 					localResult.Multiply(localToWorld, shapeOrigin);
 					drawInfo.m_parentToWorld = &localResult;
 					if (!MLRVertexLimitReached)
@@ -2051,16 +1939,13 @@ int32_t GVAppearance::render(int32_t depthFixup)
 					Stuff::LinearMatrix4D localToWorld;
 					Stuff::LinearMatrix4D localResult;
 					if (activityNodeIndex == -1)
-						activityNodeIndex =
-							gvShape->GetNodeNameId("activity_node");
-					Stuff::Vector3D dustPos =
-						getNodeIdPosition(activityNodeIndex);
+						activityNodeIndex = gvShape->GetNodeNameId("activity_node");
+					Stuff::Vector3D dustPos = getNodeIdPosition(activityNodeIndex);
 					Stuff::Point3D wakePos;
 					wakePos.x = -dustPos.x;
 					wakePos.y = dustPos.z;
 					wakePos.z = dustPos.y;
-					shapeOrigin.BuildRotation(
-						Stuff::EulerAngles(0.0f, 0.0f, 0.0f));
+					shapeOrigin.BuildRotation(Stuff::EulerAngles(0.0f, 0.0f, 0.0f));
 					shapeOrigin.BuildTranslation(wakePos);
 					/*
 					Stuff::UnitQuaternion effectRot;
@@ -2201,11 +2086,9 @@ void GVAppearance::updateGeometry(void)
 	else
 		gvShape->SetFogRGB(0xffffffff);
 	Stuff::UnitQuaternion turretRot;
-	turretRot =
-		Stuff::EulerAngles(0.0f, (turretRotation * DEGREES_TO_RADS), 0.0f);
+	turretRot = Stuff::EulerAngles(0.0f, (turretRotation * DEGREES_TO_RADS), 0.0f);
 	if (rotationalNodeIndex == -1)
-		rotationalNodeIndex =
-			gvShape->SetNodeRotation(appearType->rotationalNodeId, &turretRot);
+		rotationalNodeIndex = gvShape->SetNodeRotation(appearType->rotationalNodeId, &turretRot);
 	gvShape->SetNodeRotation(rotationalNodeIndex, &turretRot);
 	if (gvShadowShape)
 		gvShape->SetUseShadow(false);
@@ -2231,8 +2114,7 @@ void GVAppearance::updateGeometry(void)
 		tPosition.y = position.z;
 		tPosition.z = position.y;
 		Stuff::OBB boundingBox;
-		gosFX::Effect::ExecuteInfo info(
-			(Stuff::Time)scenarioTime, &shapeOrigin, &boundingBox);
+		gosFX::Effect::ExecuteInfo info((Stuff::Time)scenarioTime, &shapeOrigin, &boundingBox);
 		bool result = destructFX->Execute(&info);
 		if (!result)
 		{
@@ -2253,13 +2135,11 @@ void GVAppearance::updateGeometry(void)
 		shapeOrigin.BuildRotation(Stuff::EulerAngles(0.0f, 0.0f, 0.0f));
 		shapeOrigin.BuildTranslation(wakePos);
 		Stuff::UnitQuaternion effectRot;
-		effectRot = Stuff::EulerAngles(
-			90.0f * DEGREES_TO_RADS, rotation * DEGREES_TO_RADS, 0.0f);
+		effectRot = Stuff::EulerAngles(90.0f * DEGREES_TO_RADS, rotation * DEGREES_TO_RADS, 0.0f);
 		localToWorld.Multiply(gosFX::Effect_Against_Motion, effectRot);
 		localResult.Multiply(localToWorld, shapeOrigin);
 		Stuff::OBB boundingBox;
-		gosFX::Effect::ExecuteInfo info(
-			(Stuff::Time)scenarioTime, &localResult, &boundingBox);
+		gosFX::Effect::ExecuteInfo info((Stuff::Time)scenarioTime, &localResult, &boundingBox);
 		waterWake->Execute(&info);
 	}
 	else if (dustCloud)
@@ -2289,12 +2169,10 @@ void GVAppearance::updateGeometry(void)
 			shapeOrigin.BuildRotation(Stuff::EulerAngles(0.0f, 0.0f, 0.0f));
 			shapeOrigin.BuildTranslation(wakePos);
 			Stuff::UnitQuaternion effectRot;
-			effectRot =
-				Stuff::EulerAngles(0.0f, rotation * DEGREES_TO_RADS, 0.0f);
+			effectRot = Stuff::EulerAngles(0.0f, rotation * DEGREES_TO_RADS, 0.0f);
 			localToWorld.Multiply(gosFX::Effect_Against_Motion, effectRot);
 			localResult.Multiply(localToWorld, shapeOrigin);
-			gosFX::Effect::ExecuteInfo info(
-				(Stuff::Time)scenarioTime, &localResult, nullptr);
+			gosFX::Effect::ExecuteInfo info((Stuff::Time)scenarioTime, &localResult, nullptr);
 			dustCloud->Start(&info);
 			dustCloudStart = true;
 		}
@@ -2315,8 +2193,7 @@ void GVAppearance::updateGeometry(void)
 		localToWorld.Multiply(gosFX::Effect_Against_Motion, effectRot);
 		localResult.Multiply(localToWorld, shapeOrigin);
 		Stuff::OBB boundingBox;
-		gosFX::Effect::ExecuteInfo info(
-			(Stuff::Time)scenarioTime, &localResult, &boundingBox);
+		gosFX::Effect::ExecuteInfo info((Stuff::Time)scenarioTime, &localResult, &boundingBox);
 		dustCloud->Execute(&info);
 	}
 	if (activity && isActivitying)
@@ -2340,8 +2217,7 @@ void GVAppearance::updateGeometry(void)
 		localResult.Multiply(localToWorld,shapeOrigin);
 		*/
 		Stuff::OBB boundingBox;
-		gosFX::Effect::ExecuteInfo info(
-			(Stuff::Time)scenarioTime, &shapeOrigin, &boundingBox);
+		gosFX::Effect::ExecuteInfo info((Stuff::Time)scenarioTime, &shapeOrigin, &boundingBox);
 		activity->Execute(&info);
 	}
 	sensorSpin += SPIN_RATE * frameLength;
@@ -2349,13 +2225,11 @@ void GVAppearance::updateGeometry(void)
 		sensorSpin -= 360;
 	if (sensorSpin < -180)
 		sensorSpin += 360;
-	totalRotation =
-		Stuff::EulerAngles(0.0f, sensorSpin * DEGREES_TO_RADS, 0.0f);
+	totalRotation = Stuff::EulerAngles(0.0f, sensorSpin * DEGREES_TO_RADS, 0.0f);
 	//----------------------------------------------
 	// Do geometry here to draw sensor contact
 	sensorTriangleShape->SetFogRGB(0xffffffff);
-	sensorTriangleShape->SetLightList(
-		eye->getWorldLights(), eye->getNumLights());
+	sensorTriangleShape->SetLightList(eye->getWorldLights(), eye->getNumLights());
 	sensorTriangleShape->TransformMultiShape(&xlatPosition, &totalRotation);
 	//----------------------------------------------
 	// Do geometry here to draw sensor contact
@@ -2398,8 +2272,7 @@ int32_t GVAppearance::update(bool animate)
 	}
 	// Always override with our local instance.
 	gvShape->SetTextureHandle(0, localTextureHandle);
-	if ((status == OBJECT_STATUS_DESTROYED) ||
-		(status == OBJECT_STATUS_DISABLED))
+	if ((status == OBJECT_STATUS_DESTROYED) || (status == OBJECT_STATUS_DISABLED))
 	{
 		gvShape->SetLightsOut(true);
 	}
@@ -2430,8 +2303,7 @@ int32_t GVAppearance::update(bool animate)
 				if (isLooping)
 					currentFrame -= appearType->getNumFrames(gvAnimationState);
 				else
-					currentFrame =
-						appearType->getNumFrames(gvAnimationState) - 1;
+					currentFrame = appearType->getNumFrames(gvAnimationState) - 1;
 				canTransition = true; // Whenever we have completed one cycle or
 									  // at last frame, OK to move on!
 			}
@@ -2512,28 +2384,24 @@ void GVAppearance::startWaterWake(void)
 	// can easily preload this.  Should we?  Memory?
 	if (!waterWake && useNonWeaponEffects)
 	{
-		if (strcmp(weaponEffects->GetEffectName(VEHICLE_WATER_WAKE), "NONE") !=
-			0)
+		if (strcmp(weaponEffects->GetEffectName(VEHICLE_WATER_WAKE), "NONE") != 0)
 		{
 			//--------------------------------------------
 			// Yes, load it on up.
-			uint32_t flags =
-				gosFX::Effect::ExecuteFlag | gosFX::Effect::LoopFlag;
+			uint32_t flags = gosFX::Effect::ExecuteFlag | gosFX::Effect::LoopFlag;
 			Check_Object(gosFX::EffectLibrary::Instance);
-			gosFX::Effect::Specification* gosEffectSpec =
-				gosFX::EffectLibrary::Instance->Find(
-					weaponEffects->GetEffectName(VEHICLE_WATER_WAKE));
+			gosFX::Effect::Specification* gosEffectSpec = gosFX::EffectLibrary::Instance->Find(
+				weaponEffects->GetEffectName(VEHICLE_WATER_WAKE));
 			if (gosEffectSpec)
 			{
-				waterWake = gosFX::EffectLibrary::Instance->MakeEffect(
-					gosEffectSpec->m_effectID, flags);
+				waterWake =
+					gosFX::EffectLibrary::Instance->MakeEffect(gosEffectSpec->m_effectID, flags);
 				gosASSERT(waterWake != nullptr);
 				MidLevelRenderer::MLRTexturePool::Instance->LoadImages();
 			}
 		}
 	}
-	if (waterWake &&
-		!isWaking) // Start the effect if we are not running it yet!!
+	if (waterWake && !isWaking) // Start the effect if we are not running it yet!!
 	{
 		Stuff::LinearMatrix4D shapeOrigin;
 		Stuff::LinearMatrix4D localToWorld;
@@ -2545,12 +2413,10 @@ void GVAppearance::startWaterWake(void)
 		shapeOrigin.BuildRotation(Stuff::EulerAngles(0.0f, 0.0f, 0.0f));
 		shapeOrigin.BuildTranslation(wakePos);
 		Stuff::UnitQuaternion effectRot;
-		effectRot = Stuff::EulerAngles(
-			90.0f * DEGREES_TO_RADS, rotation * DEGREES_TO_RADS, 0.0f);
+		effectRot = Stuff::EulerAngles(90.0f * DEGREES_TO_RADS, rotation * DEGREES_TO_RADS, 0.0f);
 		localToWorld.Multiply(gosFX::Effect_Against_Motion, effectRot);
 		localResult.Multiply(localToWorld, shapeOrigin);
-		gosFX::Effect::ExecuteInfo info(
-			(Stuff::Time)scenarioTime, &localResult, nullptr);
+		gosFX::Effect::ExecuteInfo info((Stuff::Time)scenarioTime, &localResult, nullptr);
 		waterWake->Start(&info);
 		isWaking = true;
 	}
@@ -2579,25 +2445,22 @@ void GVAppearance::startActivity(int32_t effectId, bool loop)
 		{
 			//--------------------------------------------
 			// Yes, load it on up.
-			uint32_t flags =
-				gosFX::Effect::ExecuteFlag | gosFX::Effect::LoopFlag;
+			uint32_t flags = gosFX::Effect::ExecuteFlag | gosFX::Effect::LoopFlag;
 			if (!loop)
 				flags = gosFX::Effect::ExecuteFlag;
 			Check_Object(gosFX::EffectLibrary::Instance);
 			gosFX::Effect::Specification* gosEffectSpec =
-				gosFX::EffectLibrary::Instance->Find(
-					weaponEffects->GetEffectName(effectId));
+				gosFX::EffectLibrary::Instance->Find(weaponEffects->GetEffectName(effectId));
 			if (gosEffectSpec)
 			{
-				activity = gosFX::EffectLibrary::Instance->MakeEffect(
-					gosEffectSpec->m_effectID, flags);
+				activity =
+					gosFX::EffectLibrary::Instance->MakeEffect(gosEffectSpec->m_effectID, flags);
 				gosASSERT(activity != nullptr);
 				MidLevelRenderer::MLRTexturePool::Instance->LoadImages();
 			}
 		}
 	}
-	if (!isActivitying &&
-		activity) // Start the effect if we are not running it yet!!
+	if (!isActivitying && activity) // Start the effect if we are not running it yet!!
 	{
 		Stuff::LinearMatrix4D shapeOrigin;
 		Stuff::LinearMatrix4D localToWorld;
@@ -2617,8 +2480,7 @@ void GVAppearance::startActivity(int32_t effectId, bool loop)
 		localToWorld.Multiply(gosFX::Effect_Against_Motion,effectRot);
 		localResult.Multiply(localToWorld,shapeOrigin);
 		*/
-		gosFX::Effect::ExecuteInfo info(
-			(Stuff::Time)scenarioTime, &shapeOrigin, nullptr);
+		gosFX::Effect::ExecuteInfo info((Stuff::Time)scenarioTime, &shapeOrigin, nullptr);
 		activity->Start(&info);
 		isActivitying = true;
 	}

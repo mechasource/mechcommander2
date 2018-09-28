@@ -122,8 +122,7 @@ void execStatement(void)
 			{
 				orderDWord   = getCodeByte();
 				orderBitMask = getCodeByte();
-				skipOrder =
-					!CurModule->isLibrary() &&
+				skipOrder	= !CurModule->isLibrary() &&
 					CurModule->getOrderCallFlag(orderDWord, orderBitMask);
 			}
 			TypePtr returnType = execRoutineCall(idPtr, skipOrder);
@@ -159,9 +158,8 @@ void execStatement(void)
 	case TKN_CODE:
 	{
 		bool wasAutoReturnFromOrders = AutoReturnFromOrders;
-		AutoReturnFromOrders =
-			((CurRoutineIdPtr->defn.info.routine.flags &
-				 (ROUTINE_FLAG_ORDER + ROUTINE_FLAG_STATE)) != 0);
+		AutoReturnFromOrders		 = ((CurRoutineIdPtr->defn.info.routine.flags &
+									(ROUTINE_FLAG_ORDER + ROUTINE_FLAG_STATE)) != 0);
 		getCodeToken();
 		TokenCodeType endToken = TKN_END_FUNCTION;
 		if (CurRoutineIdPtr->defn.info.routine.flags & ROUTINE_FLAG_ORDER)
@@ -173,8 +171,7 @@ void execStatement(void)
 			endTokenFinal = TKN_END_LIBRARY;
 		else if (CurRoutineIdPtr->defn.info.routine.flags & ROUTINE_FLAG_FSM)
 			endTokenFinal = TKN_END_FSM;
-		while ((codeToken != endToken) && (codeToken != endTokenFinal) &&
-			   !NewStateSet)
+		while ((codeToken != endToken) && (codeToken != endTokenFinal) && !NewStateSet)
 			execStatement();
 		if (NewStateSet)
 			return;
@@ -255,8 +252,7 @@ void execAssignmentStatement(SymTableNodePtr idPtr)
 		int32_t size = targetTypePtr->size;
 		memcpy(dest, src, size);
 	}
-	else if ((targetTypePtr == IntegerTypePtr) ||
-			 (targetTypePtr->form == FRM_ENUM))
+	else if ((targetTypePtr == IntegerTypePtr) || (targetTypePtr->form == FRM_ENUM))
 	{
 		//------------------------------------------------------
 		// Range check assignment to integer or enum subrange...
@@ -274,8 +270,7 @@ void execAssignmentStatement(SymTableNodePtr idPtr)
 	// Grab the expression value...
 	pop();
 	if (debugger)
-		debugger->traceDataStore(
-			idPtr, idPtr->typePtr, targetPtr, targetTypePtr);
+		debugger->traceDataStore(idPtr, idPtr->typePtr, targetPtr, targetTypePtr);
 }
 
 //***************************************************************************
@@ -314,8 +309,8 @@ TypePtr execDeclaredRoutineCall(SymTableNodePtr routineIdPtr, bool skipOrder)
 	//-------------------------------------------
 	// First, set up the stack frame of callee...
 	StackItemPtr newStackFrameBasePtr = tos + 1;
-	bool isLibraryCall				  = (routineIdPtr->library &&
-							 (routineIdPtr->library != CurRoutineIdPtr->library));
+	bool isLibraryCall =
+		(routineIdPtr->library && (routineIdPtr->library != CurRoutineIdPtr->library));
 	if (isLibraryCall)
 		pushStackFrameHeader(-1, -1);
 	else
@@ -362,8 +357,7 @@ TypePtr execDeclaredRoutineCall(SymTableNodePtr routineIdPtr, bool skipOrder)
 			for (size_t i = 0; i < CallStackLevel; i++)
 				strcat(s, " ");
 			char s1[512];
-			sprintf_s(s1, _countof(s1), "%s (%d)\n", routineIdPtr->name,
-				functionExecTime);
+			sprintf_s(s1, _countof(s1), "%s (%d)\n", routineIdPtr->name, functionExecTime);
 			strcat(s, s1);
 			ABL_AddToProfileLog(s);
 		}
@@ -408,8 +402,7 @@ void execActualParams(SymTableNodePtr routineIdPtr)
 {
 	//--------------------------
 	// Execute the parameters...
-	for (SymTableNodePtr formalIdPtr =
-			 (SymTableNodePtr)(routineIdPtr->defn.info.routine.params);
+	for (SymTableNodePtr formalIdPtr = (SymTableNodePtr)(routineIdPtr->defn.info.routine.params);
 		 formalIdPtr != nullptr; formalIdPtr = formalIdPtr->next)
 	{
 		TypePtr formalTypePtr = (TypePtr)(formalIdPtr->typePtr);
@@ -419,8 +412,7 @@ void execActualParams(SymTableNodePtr routineIdPtr)
 			//-------------------
 			// pass by value parameter...
 			TypePtr actualTypePtr = execExpression();
-			if ((formalTypePtr == RealTypePtr) &&
-				(actualTypePtr == IntegerTypePtr))
+			if ((formalTypePtr == RealTypePtr) && (actualTypePtr == IntegerTypePtr))
 			{
 				//---------------------------------------------
 				// Real formal parameter, but integer actual...
@@ -428,8 +420,7 @@ void execActualParams(SymTableNodePtr routineIdPtr)
 			}
 			//----------------------------------------------------------
 			// Formal parameter is an array or record, so make a copy...
-			if ((formalTypePtr->form ==
-					FRM_ARRAY) /* || (formalTypePtr->form == FRM_RECORD)*/)
+			if ((formalTypePtr->form == FRM_ARRAY) /* || (formalTypePtr->form == FRM_RECORD)*/)
 			{
 				//------------------------------------------------------------------------------
 				// The following is a little inefficient, but is kept this way
@@ -470,8 +461,7 @@ void execSwitchStatement(void)
 	getCodeToken();
 	TypePtr switchExpressionTypePtr = execExpression();
 	int32_t switchExpressionValue;
-	if ((switchExpressionTypePtr == IntegerTypePtr) ||
-		(switchExpressionTypePtr->form == FRM_ENUM))
+	if ((switchExpressionTypePtr == IntegerTypePtr) || (switchExpressionTypePtr->form == FRM_ENUM))
 		switchExpressionValue = tos->integer;
 	else
 		switchExpressionValue = tos->byte;

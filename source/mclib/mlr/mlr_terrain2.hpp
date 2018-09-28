@@ -21,31 +21,29 @@ class MLR_Terrain2 : public MLR_I_DeT_TMesh
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Initialization
 	//
-  public:
+public:
 	static void __stdcall InitializeClass(void);
 	static void __stdcall TerminateClass(void);
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Constructors/Destructors
 	//
-  protected:
-	MLR_Terrain2(
-		ClassData* class_data, Stuff::MemoryStream* stream, uint32_t version);
+protected:
+	MLR_Terrain2(ClassData* class_data, std::iostream stream, uint32_t version);
 	~MLR_Terrain2(void);
 
-  public:
+public:
 	MLR_Terrain2(ClassData* class_data = MLR_Terrain2::DefaultData);
 
-	static MLR_Terrain2* Make(Stuff::MemoryStream* stream, uint32_t version);
+	static MLR_Terrain2* Make(std::iostream stream, uint32_t version);
 
-	void Save(Stuff::MemoryStream* stream);
+	void Save(std::iostream stream);
 
-  public:
+public:
 	virtual uint32_t TransformAndClip(
 		Stuff::Matrix4D*, MLRClippingState, GOSVertexPool*, bool = false);
 
-	virtual void TransformNoClip(
-		Stuff::Matrix4D*, GOSVertexPool*, bool = false);
+	virtual void TransformNoClip(Stuff::Matrix4D*, GOSVertexPool*, bool = false);
 
 	void SetCurrentDepth(uint8_t d);
 
@@ -97,7 +95,7 @@ class MLR_Terrain2 : public MLR_I_DeT_TMesh
 	int32_t GetLevelTexture(int32_t lev)
 	{
 		// Check_Object(this);
-		Verify(lev >= 0 && lev < 8);
+		_ASSERT(lev >= 0 && lev < 8);
 		return textures[lev];
 	}
 
@@ -106,13 +104,13 @@ class MLR_Terrain2 : public MLR_I_DeT_TMesh
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Class Data Support
 	//
-  public:
+public:
 	static ClassData* DefaultData;
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Testing
 	//
-  public:
+public:
 	void TestInstance(void) const;
 
 	virtual size_t GetSize(void)
@@ -122,7 +120,7 @@ class MLR_Terrain2 : public MLR_I_DeT_TMesh
 		return ret;
 	}
 
-  protected:
+protected:
 	int32_t textures[8];
 	float frame[8][4];
 
@@ -131,8 +129,8 @@ class MLR_Terrain2 : public MLR_I_DeT_TMesh
 
 	float borderPixelFun;
 
-	static Stuff::DynamicArrayOf<Stuff::Vector2DScalar>*
+	static std::vector<Stuff::Vector2DScalar>*
 		detailTexCoords; // Base address of texture coordinate list
 };
-}
+} // namespace MidLevelRenderer
 #endif

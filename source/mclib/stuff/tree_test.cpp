@@ -13,7 +13,7 @@
 
 class TreeTestPlug : public Plug
 {
-  public:
+public:
 	int32_t value;
 
 	TreeTestPlug(int32_t value);
@@ -22,7 +22,7 @@ class TreeTestPlug : public Plug
 
 class TreeTestNode : public Node
 {
-  public:
+public:
 	TreeOf<TreeTestPlug*, int32_t> tree1;
 	TreeOf<TreeTestPlug*, int32_t> tree2;
 
@@ -34,17 +34,11 @@ class TreeTestNode : public Node
 	bool RunTest();
 };
 
-TreeTestPlug::TreeTestPlug(int32_t value) : Plug(DefaultData)
-{
-	this->value = value;
-}
+TreeTestPlug::TreeTestPlug(int32_t value) : Plug(DefaultData) { this->value = value; }
 
 TreeTestPlug::~TreeTestPlug() { this->value = -1; }
 
-TreeTestNode::TreeTestNode()
-	: Node(DefaultData), tree1(this, true), tree2(this, true)
-{
-}
+TreeTestNode::TreeTestNode() : Node(DefaultData), tree1(this, true), tree2(this, true) {}
 
 TreeTestNode::~TreeTestNode() {}
 
@@ -62,8 +56,7 @@ void Tree::ProfileClass()
 #endif
 	Test_Message("Tree::ProfileClass \n");
 	testNode.RunProfile();
-	SPEW((GROUP_STUFF_TEST, "Tree::ProfileClass elapsed = %d",
-		gos_GetHiResTime() - startTicks));
+	SPEW((GROUP_STUFF_TEST, "Tree::ProfileClass elapsed = %d", gos_GetHiResTime() - startTicks));
 }
 
 //
@@ -142,8 +135,7 @@ bool TreeTestNode::RunProfile()
 		tree1.AddValue(testPlug1, values[i]);
 		tree2.AddValue(testPlug1, values[i]);
 	}
-	SPEW((GROUP_STUFF_TEST, "TreeTestNode::RunTest Create = %f",
-		gos_GetHiResTime() - startTicks));
+	SPEW((GROUP_STUFF_TEST, "TreeTestNode::RunTest Create = %f", gos_GetHiResTime() - startTicks));
 	/*
 	 * Iterate over both sockets
 	 */
@@ -168,8 +160,7 @@ bool TreeTestNode::RunProfile()
 		}
 		Test_Assumption(i == TEST_COUNT);
 	}
-	SPEW((GROUP_STUFF_TEST, "TreeTestNode::RunTest Iterate = %f",
-		gos_GetHiResTime() - startTicks));
+	SPEW((GROUP_STUFF_TEST, "TreeTestNode::RunTest Iterate = %f", gos_GetHiResTime() - startTicks));
 	/*
 	 * Find
 	 */
@@ -186,8 +177,7 @@ bool TreeTestNode::RunProfile()
 			Test_Assumption(testPlug1 == testPlug2);
 		}
 	}
-	SPEW((GROUP_STUFF_TEST, "TreeTestNode::RunTest Find = %f",
-		gos_GetHiResTime() - startTicks));
+	SPEW((GROUP_STUFF_TEST, "TreeTestNode::RunTest Find = %f", gos_GetHiResTime() - startTicks));
 	/*
 	 * Destroy from tree1, verify with tree2
 	 */
@@ -209,8 +199,7 @@ bool TreeTestNode::RunProfile()
 		Test_Assumption(iterator1.GetSize() == 0);
 		Test_Assumption(iterator2.GetSize() == 0);
 	}
-	SPEW((GROUP_STUFF_TEST, "TreeTestNode::RunTest Destroy = %f",
-		gos_GetHiResTime() - startTicks));
+	SPEW((GROUP_STUFF_TEST, "TreeTestNode::RunTest Destroy = %f", gos_GetHiResTime() - startTicks));
 	return true;
 }
 

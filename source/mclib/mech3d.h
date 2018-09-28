@@ -14,21 +14,14 @@
 
 #ifndef MECH3D_H
 #define MECH3D_H
+
 //-------------------------------------------------------------------------------
 // Include Files
-#ifndef APPRTYPE_H
-#include "apprtype.h"
-#endif
+//#include "apprtype.h"
+//#include <objectappearance.h>
+//#include "msl.h"
+//#include <gosfx/gosfxheaders.hpp>
 
-#ifndef OBJECTAPPEARANCE_H
-#include <objectappearance.h>
-#endif
-
-#ifndef MSL_H
-#include "msl.h"
-#endif
-
-#include <gosfx/gosfxheaders.hpp>
 //-------------------------------------------------------------------------------
 // Structs used by layer.
 //
@@ -38,69 +31,73 @@ typedef struct _GestureData
 	float endVel;				 // Gesture Ends at this speed
 	int32_t frameStart;			 // Which frame does gesture start at.
 	bool reverse;				 // Should we play backwards?
-	int32_t rightFootDownFrame0; // When should the right foot make a poof and
-								 // print?
+	int32_t rightFootDownFrame0; // When should the right foot make a poof and print?
 	int32_t rightFootDownFrame1; // Sometimes the foot's down twice.
-	int32_t
-		leftFootDownFrame0; // When should the left foot make a poof and print?
-	int32_t leftFootDownFrame1; // Sometimes the foot's down twice.
+	int32_t leftFootDownFrame0;  // When should the left foot make a poof and print?
+	int32_t leftFootDownFrame1;  // Sometimes the foot's down twice.
 } GestureData;
 
 typedef struct _PaintSchemata
 {
-	uint32_t redColor; // Replace all Reds in texture with this color scaled by
-					   // intensity of red!
-	uint32_t greenColor; // Replace all Greens in texture with this color scaled
-						 // by intensity of green!
-	uint32_t blueColor; // Replace all Blues in texture with this color scaled
-						// by intensity of blue!
+	uint32_t redColor; // Replace all Reds in texture with this color scaled by intensity of red!
+	uint32_t
+		greenColor; // Replace all Greens in texture with this color scaled by intensity of green!
+	uint32_t blueColor; // Replace all Blues in texture with this color scaled by intensity of blue!
 } PaintSchemata;
 
 typedef PaintSchemata* PaintSchemataPtr;
+
 //-------------------------------------------------------------------------------
 // Macro Definitions
-#define GesturePark 0
-#define GestureStandToPark 1
-#define GestureStand 2
-#define GestureStandToWalk 3 // OBSOLETE!
-#define GestureWalk 4
-#define GestureParkToStand 5
-#define GestureWalkToRun 6 // OBSOLETE!
-#define GestureRun 7
-#define GestureRunToWalk 8 // OBSOLETE!
-#define GestureReverse 9
-#define GestureStandToReverse 10 // OBSOLETE!
-#define GestureLimpLeft 11
-#define GestureLimpRight 12
-#define GestureIdle 13
-#define GestureFallBackward 14
-#define GestureFallForward 15
-#define GestureHitFront 16
-#define GestureHitBack 17
-#define GestureHitLeft 18
-#define GestureHitRight 19
-#define GestureJump 20
-#define GestureRollover 21
-#define GestureGetUp 22
-#define GestureFallenForward 23
-#define GestureFallenBackward 24
-#define MaxGestures 25
+
+enum gesture_const : uint32_t
+{
+	GesturePark			  = 0,
+	GestureStandToPark	= 1,
+	GestureStand		  = 2,
+	GestureStandToWalk	= 3, // OBSOLETE!
+	GestureWalk			  = 4,
+	GestureParkToStand	= 5,
+	GestureWalkToRun	  = 6, // OBSOLETE!
+	GestureRun			  = 7,
+	GestureRunToWalk	  = 8, // OBSOLETE!
+	GestureReverse		  = 9,
+	GestureStandToReverse = 10, // OBSOLETE!
+	GestureLimpLeft		  = 11,
+	GestureLimpRight	  = 12,
+	GestureIdle			  = 13,
+	GestureFallBackward   = 14,
+	GestureFallForward	= 15,
+	GestureHitFront		  = 16,
+	GestureHitBack		  = 17,
+	GestureHitLeft		  = 18,
+	GestureHitRight		  = 19,
+	GestureJump			  = 20,
+	GestureRollover		  = 21,
+	GestureGetUp		  = 22,
+	GestureFallenForward  = 23,
+	GestureFallenBackward = 24,
+	MaxGestures			  = 25,
+};
 
 #define MAX_MECH_ANIMATIONS MaxGestures
 
-#define NUM_MECH_STATES 10
-#define MECH_STATE_PARKED 0
-#define MECH_STATE_STANDING 1
-#define MECH_STATE_WALKING 2
-#define MECH_STATE_RUNNING 3
-#define MECH_STATE_REVERSE 4
-#define MECH_STATE_LIMPING_LEFT 5
-#define MECH_STATE_JUMPING 6
-#define MECH_STATE_FALLEN_FORWARD 7
-#define MECH_STATE_FALLEN_BACKWARD 8
-#define MECH_STATE_LIMPING_RIGHT 9
+enum mech3dappearancetype_const : uint32_t
+{
+	NUM_MECH_STATES			   = 10,
+	MECH_STATE_PARKED		   = 0,
+	MECH_STATE_STANDING		   = 1,
+	MECH_STATE_WALKING		   = 2,
+	MECH_STATE_RUNNING		   = 3,
+	MECH_STATE_REVERSE		   = 4,
+	MECH_STATE_LIMPING_LEFT	= 5,
+	MECH_STATE_JUMPING		   = 6,
+	MECH_STATE_FALLEN_FORWARD  = 7,
+	MECH_STATE_FALLEN_BACKWARD = 8,
+	MECH_STATE_LIMPING_RIGHT   = 9,
+};
 
-#define BASE_NODE_RECYCLE_TIME 0.25f
+constexpr const float BASE_NODE_RECYCLE_TIME = 0.25f;
 
 extern char MechStateByGesture[];
 
@@ -110,7 +107,7 @@ class Mech3DAppearanceType : public AppearanceType
 {
 	//--------------------------------------------
 	// Stores Multi-Shapes, Animation Data, etc.
-  public:
+public:
 	TG_TypeMultiShapePtr mechShape[MAX_LODS];
 	TG_TypeMultiShapePtr mechShadowShape;
 	float lodDistance[MAX_LODS];
@@ -138,13 +135,10 @@ class Mech3DAppearanceType : public AppearanceType
 	static TG_TypeMultiShapePtr SensorSquareShape;
 
 	static bool animationLoadingEnabled;
-	static void disableAnimationLoading(void)
-	{
-		animationLoadingEnabled = false;
-	}
+	static void disableAnimationLoading(void) { animationLoadingEnabled = false; }
 	static void enableAnimationLoading(void) { animationLoadingEnabled = true; }
 
-  public:
+public:
 	void init(void)
 	{
 		int32_t i = 0;
@@ -156,7 +150,7 @@ class Mech3DAppearanceType : public AppearanceType
 		for (i = 0; i < MAX_MECH_ANIMATIONS; i++)
 			mechAnim[i] = nullptr;
 		rightFootprintType = leftFootprintType = -1;
-		shadowScalar						   = 0; // For stupid shadows if we need to draw them.
+		shadowScalar						   = 0;   // For stupid shadows if we need to draw them.
 		textureSide							   = 128; // For stupid shadows if we need to draw them.
 		nodeData							   = nullptr;
 		numSmokeNodes = numWeaponNodes = numJumpNodes = 0;
@@ -194,29 +188,21 @@ class Mech3DAppearanceType : public AppearanceType
 
 	float getFrameRate(int32_t animationNum)
 	{
-		if ((animationNum >= 0) && (animationNum < MaxGestures) &&
-			(mechAnim[animationNum]))
+		if ((animationNum >= 0) && (animationNum < MaxGestures) && (mechAnim[animationNum]))
 			return mechAnim[animationNum]->GetFrameRate(void);
 		return 0.0f;
 	}
 
 	int32_t getNumFrames(int32_t animationNum)
 	{
-		if ((animationNum >= 0) && (animationNum < MaxGestures) &&
-			(mechAnim[animationNum]))
+		if ((animationNum >= 0) && (animationNum < MaxGestures) && (mechAnim[animationNum]))
 			return mechAnim[animationNum]->GetNumFrames(void);
 		return 0.0f;
 	}
 
-	int32_t getJumpLandFrame(void)
-	{
-		return (gestures[GestureJump].frameStart & 0x0000ffff);
-	}
+	int32_t getJumpLandFrame(void) { return (gestures[GestureJump].frameStart & 0x0000ffff); }
 
-	int32_t getJumpTakeoffFrame(void)
-	{
-		return (gestures[GestureJump].frameStart >> 16);
-	}
+	int32_t getJumpTakeoffFrame(void) { return (gestures[GestureJump].frameStart >> 16); }
 };
 
 typedef Mech3DAppearanceType* Mech3DAppearanceTypePtr;
@@ -282,7 +268,7 @@ class Mech3DAppearance : public ObjectAppearance
 	//-------------------------------------------------------------------------------------
 	// Stores instance specific data.  Frame counts, position, velocity, texture
 	// map, etc.
-  protected:
+protected:
 	Mech3DAppearanceTypePtr mechType;
 
 	TG_MultiShapePtr mechShape;
@@ -430,19 +416,18 @@ class Mech3DAppearance : public ObjectAppearance
 	int32_t lightCircleNodeIndex;
 	float baseRootNodeDifference;
 
-  public:
+public:
 	static PaintSchemataPtr paintSchemata;
 	static uint32_t numPaintSchemata;
 
-  public:
+public:
 	Mech3DAppearance(void) { init(void); }
 
 	~Mech3DAppearance(void) { destroy(void); }
 
 	virtual void destroy(void);
 
-	virtual void init(
-		AppearanceTypePtr tree = nullptr, GameObjectPtr obj = nullptr);
+	virtual void init(AppearanceTypePtr tree = nullptr, GameObjectPtr obj = nullptr);
 
 	virtual void initFX(void);
 
@@ -501,10 +486,10 @@ class Mech3DAppearance : public ObjectAppearance
 		inView			 = true;
 		update(void);
 		currentGestureId = gestureId;
-		oldStateGoal = 0;	  // This is ONLY valid for park!!!!
+		oldStateGoal	 = 0;  // This is ONLY valid for park!!!!
 		currentStateGoal = -1; // Not going anywhere
-		transitionState = 0;   // No Transition necessary.
-		currentFrame	= mechType->getNumFrames(currentGestureId) - 1;
+		transitionState  = 0;  // No Transition necessary.
+		currentFrame	 = mechType->getNumFrames(currentGestureId) - 1;
 	}
 
 	virtual int32_t setGestureGoal(int32_t stateGoal)
@@ -521,15 +506,12 @@ class Mech3DAppearance : public ObjectAppearance
 			return (0);
 		if (currentStateGoal == stateGoal)
 			return (0);
-		if ((stateGoal < MECH_STATE_PARKED) ||
-			(stateGoal > MECH_STATE_LIMPING_RIGHT))
+		if ((stateGoal < MECH_STATE_PARKED) || (stateGoal > MECH_STATE_LIMPING_RIGHT))
 			return (0);
 		if (currentStateGoal != -1)
 			return 0;
-		if ((currentGestureId == GestureHitFront) ||
-			(currentGestureId == GestureHitBack) ||
-			(currentGestureId == GestureHitLeft) ||
-			(currentGestureId == GestureHitRight))
+		if ((currentGestureId == GestureHitFront) || (currentGestureId == GestureHitBack) ||
+			(currentGestureId == GestureHitLeft) || (currentGestureId == GestureHitRight))
 		{
 			return 0;
 		}
@@ -592,11 +574,11 @@ class Mech3DAppearance : public ObjectAppearance
 		inCombatMode = combatMode;
 	}
 
-	virtual void setObjectParameters(Stuff::Vector3D& pos, float legRot,
-		int32_t selected, int32_t alignment, int32_t homeRelations);
+	virtual void setObjectParameters(Stuff::Vector3D& pos, float legRot, int32_t selected,
+		int32_t alignment, int32_t homeRelations);
 
-	virtual void setMoverParameters(float turretRot, float lArmRot = 0.0f,
-		float rArmRot = 0.0f, bool isAirborne = false);
+	virtual void setMoverParameters(
+		float turretRot, float lArmRot = 0.0f, float rArmRot = 0.0f, bool isAirborne = false);
 
 	void debugUpdate(int32_t whichOne);
 

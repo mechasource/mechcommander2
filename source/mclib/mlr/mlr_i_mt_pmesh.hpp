@@ -22,44 +22,39 @@ class MLR_I_MT_PMesh : public MLR_I_PMesh
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Initialization
 	//
-  public:
+public:
 	static void __stdcall InitializeClass(void);
 	static void __stdcall TerminateClass(void);
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Constructors/Destructors
 	//
-  protected:
-	MLR_I_MT_PMesh(
-		ClassData* class_data, Stuff::MemoryStream* stream, uint32_t version);
+protected:
+	MLR_I_MT_PMesh(ClassData* class_data, std::iostream stream, uint32_t version);
 	~MLR_I_MT_PMesh(void);
 
-  public:
+public:
 	MLR_I_MT_PMesh(ClassData* class_data = MLR_I_MT_PMesh::DefaultData);
 
-	static MLR_I_MT_PMesh* Make(Stuff::MemoryStream* stream, uint32_t version);
+	static MLR_I_MT_PMesh* Make(std::iostream stream, uint32_t version);
 
-	void Save(Stuff::MemoryStream* stream);
+	void Save(std::iostream stream);
 
-  public:
+public:
 	void Copy(MLR_I_PMesh*);
 
 	virtual uint32_t TransformAndClip(
 		Stuff::Matrix4D*, MLRClippingState, GOSVertexPool*, bool = false);
 
-	virtual void TransformNoClip(
-		Stuff::Matrix4D*, GOSVertexPool*, bool = false);
+	virtual void TransformNoClip(Stuff::Matrix4D*, GOSVertexPool*, bool = false);
 
-	void SetTexCoordData(const Stuff::Vector2DScalar* array, size_t point_count,
-		size_t pass = 0);
-	void GetTexCoordData(
-		Stuff::Vector2DScalar** data, psize_t dataSize, size_t pass = 0);
+	void SetTexCoordData(const Stuff::Vector2DScalar* array, size_t point_count, size_t pass = 0);
+	void GetTexCoordData(Stuff::Vector2DScalar** data, psize_t dataSize, size_t pass = 0);
 
 	virtual void SetReferenceState(const MLRState& _state, size_t pass = 0)
 	{
 		// Check_Object(this);
-		Verify((intptr_t(pass) >= 0) &&
-			   (pass < Limits::Max_Number_Of_Multitextures));
+		_ASSERT((intptr_t(pass) >= 0) && (pass < Limits::Max_Number_Of_Multitextures));
 		if (pass == 0)
 		{
 			referenceState = _state;
@@ -70,15 +65,13 @@ class MLR_I_MT_PMesh : public MLR_I_PMesh
 	virtual const MLRState& GetReferenceState(size_t pass = 0) const
 	{
 		// Check_Object(this);
-		Verify((intptr_t(pass) >= 0) &&
-			   pass < Limits::Max_Number_Of_Multitextures);
+		_ASSERT((intptr_t(pass) >= 0) && pass < Limits::Max_Number_Of_Multitextures);
 		return multiReferenceState[pass];
 	}
 	virtual const MLRState& GetCurrentState(size_t pass = 0) const
 	{
 		// Check_Object(this);
-		Verify((intptr_t(pass) >= 0) &&
-			   pass < Limits::Max_Number_Of_Multitextures);
+		_ASSERT((intptr_t(pass) >= 0) && pass < Limits::Max_Number_Of_Multitextures);
 		return multiState[pass];
 	}
 
@@ -95,8 +88,7 @@ class MLR_I_MT_PMesh : public MLR_I_PMesh
 	virtual GOSVertex* GetGOSVertices(uint32_t pass = 0)
 	{
 		// Check_Object(this);
-		Verify((intptr_t(pass) >= 0) &&
-			   pass < Limits::Max_Number_Of_Multitextures);
+		_ASSERT((intptr_t(pass) >= 0) && pass < Limits::Max_Number_Of_Multitextures);
 		return gos_vertices + pass * numGOSVertices;
 	}
 
@@ -111,13 +103,13 @@ class MLR_I_MT_PMesh : public MLR_I_PMesh
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Class Data Support
 	//
-  public:
+public:
 	static ClassData* DefaultData;
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Testing
 	//
-  public:
+public:
 	void TestInstance(void) const;
 
 	virtual size_t GetSize(void)
@@ -127,25 +119,25 @@ class MLR_I_MT_PMesh : public MLR_I_PMesh
 		return ret;
 	}
 
-  protected:
+protected:
 	void SetTexCoordDataPointer(const Stuff::Vector2DScalar*);
 
 	uint8_t currentNrOfPasses;
 
-	Stuff::DynamicArrayOf<MLRState> multiState, multiReferenceState;
+	std::vector<MLRState> multiState, multiReferenceState;
 
-	Stuff::DynamicArrayOf<Stuff::DynamicArrayOf<Stuff::Vector2DScalar>*>
+	std::vector<std::vector<Stuff::Vector2DScalar>*>
 		multiTexCoords; // Max_Number_Vertices_Per_Mesh
 
-	Stuff::DynamicArrayOf<const Stuff::Vector2DScalar*> multiTexCoordsPointers;
+	std::vector<const Stuff::Vector2DScalar*> multiTexCoordsPointers;
 
-	static Stuff::DynamicArrayOf<Stuff::DynamicArrayOf<Stuff::Vector2DScalar>>*
+	static std::vector<std::vector<Stuff::Vector2DScalar>>*
 		clipExtraMultiTexCoords; // Max_Number_Vertices_Per_Mesh
-	static Stuff::DynamicArrayOf<Stuff::DynamicArrayOf<Stuff::Vector2DScalar>>*
+	static std::vector<std::vector<Stuff::Vector2DScalar>>*
 		extraMultiTexCoords; // Max_Number_Vertices_Per_Mesh
 };
 
 MLRShape* CreateIndexedIcosahedron_NoColor_NoLit_MultiTexture(
-	IcoInfo&, Stuff::DynamicArrayOf<MLRState>*);
-}
+	IcoInfo&, std::vector<MLRState>*);
+} // namespace MidLevelRenderer
 #endif

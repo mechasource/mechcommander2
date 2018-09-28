@@ -32,8 +32,7 @@ YawPitchRange& YawPitchRange::operator=(const Vector3D& vector)
 	// See if we have a zero length vector.  If so, convert it to the identity
 	//------------------------------------------------------------------------
 	//
-	Verify(Vector3D::Forward.z == 1.0f && Vector3D::Left.x == 1.0f &&
-		   Vector3D::Up.y == 1.0f);
+	_ASSERT(Vector3D::Forward.z == 1.0f && Vector3D::Left.x == 1.0f && Vector3D::Up.y == 1.0f);
 	float sub_range = vector.x * vector.x + vector.z * vector.z;
 	range			= Sqrt(sub_range + vector.y * vector.y);
 	if (Small_Enough(range))
@@ -73,21 +72,19 @@ bool Stuff::Small_Enough(const YawPitchRange& angles, float e)
 {
 	Check_Object(&angles);
 	return Small_Enough(angles.pitch, e) && Small_Enough(angles.yaw, e) &&
-		   Small_Enough(angles.range, e);
+		Small_Enough(angles.range, e);
 }
 
 //
 //#############################################################################
 //#############################################################################
 //
-bool Stuff::Close_Enough(
-	const YawPitchRange& a1, const YawPitchRange& a2, float e)
+bool Stuff::Close_Enough(const YawPitchRange& a1, const YawPitchRange& a2, float e)
 {
 	Check_Object(&a1);
 	Check_Object(&a2);
-	return Close_Enough(a1.pitch, a2.pitch, e) &&
-		   Close_Enough(a1.yaw, a2.yaw, e) &&
-		   Close_Enough(a1.range, a2.range, e);
+	return Close_Enough(a1.pitch, a2.pitch, e) && Close_Enough(a1.yaw, a2.yaw, e) &&
+		Close_Enough(a1.range, a2.range, e);
 }
 
 //

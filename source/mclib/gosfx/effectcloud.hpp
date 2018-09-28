@@ -22,19 +22,17 @@ class EffectCloud__Specification : public SpinningCloud__Specification
 	//----------------------------------------------------------------------
 	// Constructors/Destructors
 	//
-  protected:
-	EffectCloud__Specification(
-		Stuff::MemoryStream* stream, uint32_t gfx_version);
+protected:
+	EffectCloud__Specification(std::iostream stream, uint32_t gfx_version);
 
-  public:
+public:
 	EffectCloud__Specification(void);
 
-	static EffectCloud__Specification* Make(
-		Stuff::MemoryStream* stream, uint32_t gfx_version);
+	static EffectCloud__Specification* Make(std::iostream stream, uint32_t gfx_version);
 
 	void Copy(EffectCloud__Specification* spec);
 
-	void Save(Stuff::MemoryStream* stream);
+	void Save(std::iostream stream);
 
 	uint32_t m_particleEffectID;
 };
@@ -46,7 +44,7 @@ class EffectCloud__Specification : public SpinningCloud__Specification
 
 class EffectCloud__Particle : public SpinningCloud__Particle
 {
-  public:
+public:
 	Effect* m_effect;
 };
 
@@ -59,7 +57,7 @@ class EffectCloud : public SpinningCloud
 	//----------------------------------------------------------------------------
 	// Class Registration Support
 	//
-  public:
+public:
 	static void __stdcall InitializeClass(void);
 	static void __stdcall TerminateClass(void);
 
@@ -74,10 +72,10 @@ class EffectCloud : public SpinningCloud
 	//----------------------------------------------------------------------------
 	// Class Data Support
 	//
-  protected:
+protected:
 	EffectCloud(Specification* spec, uint32_t flags);
 
-  public:
+public:
 	~EffectCloud(void);
 
 	static EffectCloud* Make(Specification* spec, uint32_t flags);
@@ -91,8 +89,7 @@ class EffectCloud : public SpinningCloud
 	{
 		// Check_Object(this);
 		Check_Object(GetSpecification());
-		return Cast_Pointer(Particle*,
-			&m_data[index * GetSpecification()->m_particleClassSize]);
+		return Cast_Pointer(Particle*, &m_data[index * GetSpecification()->m_particleClassSize]);
 	}
 
 	static ClassData* DefaultData;
@@ -100,19 +97,19 @@ class EffectCloud : public SpinningCloud
 	//----------------------------------------------------------------------------
 	// Testing
 	//
-  public:
+public:
 	void TestInstance(void) const;
 
 	//----------------------------------------------------------------------------
 	// API
 	//
-  protected:
-	bool AnimateParticle(uint32_t index,
-		const Stuff::LinearMatrix4D* world_to_new_local, Stuff::Time till);
+protected:
+	bool AnimateParticle(
+		uint32_t index, const Stuff::LinearMatrix4D* world_to_new_local, Stuff::Time till);
 	void CreateNewParticle(uint32_t index, Stuff::Point3D* translation);
 	void DestroyParticle(uint32_t index);
 
-  public:
+public:
 	void Draw(DrawInfo* info);
 };
-}
+} // namespace gosFX

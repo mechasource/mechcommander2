@@ -50,7 +50,7 @@ void InitAlphaLookup(VFX_RGB* Palette)
 {
 	PSTR pAlphaTable = AlphaTable;
 	int32_t r, g, b, i;
-	File* IniFile;
+	MechFile* IniFile;
 	char Line[256];
 	float AlphaIni[NUM_ALPHACOLORS][5];
 	int32_t LineNumber;
@@ -63,7 +63,7 @@ void InitAlphaLookup(VFX_RGB* Palette)
 	// Read in and parse the AlphaPal.ini file containing all the color
 	// information
 	//
-	IniFile = new File;
+	IniFile = new MechFile;
 #ifdef _DEBUG
 	int32_t AlphapalOpenResult =
 #endif
@@ -80,14 +80,11 @@ void InitAlphaLookup(VFX_RGB* Palette)
 				break;
 			gosASSERT(i >= 0 && i < NUM_ALPHACOLORS);
 			SpecialColor[i] = 1;
-			gosASSERT(
-				EOF != sscanf_s(Line, "%f %f %f %f %f", &AlphaIni[i][R],
-						   &AlphaIni[i][G], &AlphaIni[i][B],
-						   &AlphaIni[i][SourceAlpha], &AlphaIni[i][DestAlpha]));
-			gosASSERT((AlphaIni[i][SourceAlpha] != 0.0 ||
-						  AlphaIni[i][DestAlpha] != 0.0) &&
-					  (AlphaIni[i][R] != 255 && AlphaIni[i][G] != 255 &&
-						  AlphaIni[i][B] != 255));
+			gosASSERT(EOF !=
+				sscanf_s(Line, "%f %f %f %f %f", &AlphaIni[i][R], &AlphaIni[i][G], &AlphaIni[i][B],
+					&AlphaIni[i][SourceAlpha], &AlphaIni[i][DestAlpha]));
+			gosASSERT((AlphaIni[i][SourceAlpha] != 0.0 || AlphaIni[i][DestAlpha] != 0.0) &&
+				(AlphaIni[i][R] != 255 && AlphaIni[i][G] != 255 && AlphaIni[i][B] != 255));
 		}
 	}
 	IniFile->close();
@@ -106,42 +103,33 @@ void InitAlphaLookup(VFX_RGB* Palette)
 			{
 				*pAlphaTable++ = dest;
 			}
-			else if (SpecialColor[source] ==
-					 0) // If not specified, make a solid color
+			else if (SpecialColor[source] == 0) // If not specified, make a solid color
 			{
 				*pAlphaTable++ = source;
 			}
 			else if (dest < 10 || dest > 245)
 			{
-				*pAlphaTable++ =
-					char(-1); // Is dest is ever a bad pixel, make white
+				*pAlphaTable++ = char(-1); // Is dest is ever a bad pixel, make white
 			}
 			else
 			{
-				if (AlphaIni[source][SourceAlpha] == 0.0 &&
-					AlphaIni[source][DestAlpha] == 0.0)
+				if (AlphaIni[source][SourceAlpha] == 0.0 && AlphaIni[source][DestAlpha] == 0.0)
 				{
-					r = (int32_t)(((float)(Palette[dest].r << 2) * 255) /
-								  (255 - AlphaIni[source][R]));
-					g = (int32_t)(((float)(Palette[dest].g << 2) * 255) /
-								  (255 - AlphaIni[source][G]));
-					b = (int32_t)(((float)(Palette[dest].b << 2) * 255) /
-								  (255 - AlphaIni[source][B]));
+					r = (int32_t)(
+						((float)(Palette[dest].r << 2) * 255) / (255 - AlphaIni[source][R]));
+					g = (int32_t)(
+						((float)(Palette[dest].g << 2) * 255) / (255 - AlphaIni[source][G]));
+					b = (int32_t)(
+						((float)(Palette[dest].b << 2) * 255) / (255 - AlphaIni[source][B]));
 				}
 				else
 				{
-					r = (int32_t)(
-						AlphaIni[source][SourceAlpha] * AlphaIni[source][R] +
-						AlphaIni[source][DestAlpha] *
-							(float)(Palette[dest].r << 2));
-					g = (int32_t)(
-						AlphaIni[source][SourceAlpha] * AlphaIni[source][G] +
-						AlphaIni[source][DestAlpha] *
-							(float)(Palette[dest].g << 2));
-					b = (int32_t)(
-						AlphaIni[source][SourceAlpha] * AlphaIni[source][B] +
-						AlphaIni[source][DestAlpha] *
-							(float)(Palette[dest].b << 2));
+					r = (int32_t)(AlphaIni[source][SourceAlpha] * AlphaIni[source][R] +
+						AlphaIni[source][DestAlpha] * (float)(Palette[dest].r << 2));
+					g = (int32_t)(AlphaIni[source][SourceAlpha] * AlphaIni[source][G] +
+						AlphaIni[source][DestAlpha] * (float)(Palette[dest].g << 2));
+					b = (int32_t)(AlphaIni[source][SourceAlpha] * AlphaIni[source][B] +
+						AlphaIni[source][DestAlpha] * (float)(Palette[dest].b << 2));
 				}
 				if (r < 0)
 					r = 0;
@@ -180,8 +168,7 @@ uint8_t FindClosest(VFX_RGB* Palette, int32_t r, int32_t g, int32_t b)
 		tempR = r - Palette[t1].r;
 		tempG = g - Palette[t1].g;
 		tempB = b - Palette[t1].b;
-		tdist =
-			(39 * tempR * tempR) + (51 * tempG * tempG) + (10 * tempB * tempB);
+		tdist = (39 * tempR * tempR) + (51 * tempG * tempG) + (10 * tempB * tempB);
 		if (Distance > tdist)
 		{
 			Distance = tdist;

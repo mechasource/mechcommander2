@@ -12,14 +12,13 @@
 //------------------------------------------------------------------------------
 //
 gosFX::ShardCloud__Specification::ShardCloud__Specification(
-	Stuff::MemoryStream* stream, uint32_t gfx_version)
-	: SpinningCloud__Specification(
-		  gosFX::ShardCloudClassID, stream, gfx_version)
+	std::iostream stream, uint32_t gfx_version)
+	: SpinningCloud__Specification(gosFX::ShardCloudClassID, stream, gfx_version)
 {
 	// Check_Pointer(this);
 	Check_Object(stream);
-	// Verify(gos_GetCurrentHeap() == Heap);
-	Verify(m_class == ShardCloudClassID);
+	// _ASSERT(gos_GetCurrentHeap() == Heap);
+	_ASSERT(m_class == ShardCloudClassID);
 	m_size.Load(stream, gfx_version);
 	m_angularity.Load(stream, gfx_version);
 	m_totalParticleSize = gosFX::ShardCloud::ParticleSize;
@@ -32,7 +31,7 @@ gosFX::ShardCloud__Specification::ShardCloud__Specification()
 	: SpinningCloud__Specification(gosFX::ShardCloudClassID)
 {
 	// Check_Pointer(this);
-	// Verify(gos_GetCurrentHeap() == Heap);
+	// _ASSERT(gos_GetCurrentHeap() == Heap);
 	m_totalParticleSize = gosFX::ShardCloud::ParticleSize;
 	m_particleClassSize = sizeof(gosFX::ShardCloud::Particle);
 }
@@ -40,21 +39,20 @@ gosFX::ShardCloud__Specification::ShardCloud__Specification()
 //------------------------------------------------------------------------------
 //
 gosFX::ShardCloud__Specification* gosFX::ShardCloud__Specification::Make(
-	Stuff::MemoryStream* stream, uint32_t gfx_version)
+	std::iostream stream, uint32_t gfx_version)
 {
 	Check_Object(stream);
 #ifdef _GAMEOS_HPP_
 	// gos_PushCurrentHeap(Heap);
 #endif
-	ShardCloud__Specification* spec =
-		new gosFX::ShardCloud__Specification(stream, gfx_version);
+	ShardCloud__Specification* spec = new gosFX::ShardCloud__Specification(stream, gfx_version);
 	// gos_PopCurrentHeap();
 	return spec;
 }
 
 //------------------------------------------------------------------------------
 //
-void gosFX::ShardCloud__Specification::Save(Stuff::MemoryStream* stream)
+void gosFX::ShardCloud__Specification::Save(std::iostream stream)
 {
 	// Check_Object(this);
 	Check_Object(stream);
@@ -120,11 +118,10 @@ gosFX::ShardCloud::ClassData* gosFX::ShardCloud::DefaultData = nullptr;
 //
 void gosFX::ShardCloud::InitializeClass()
 {
-	Verify(!DefaultData);
-	// Verify(gos_GetCurrentHeap() == Heap);
-	DefaultData = new ClassData(ShardCloudClassID, "gosFX::ShardCloud",
-		SpinningCloud::DefaultData, (Effect::Factory)&Make,
-		(Specification::Factory)&Specification::Make);
+	_ASSERT(!DefaultData);
+	// _ASSERT(gos_GetCurrentHeap() == Heap);
+	DefaultData = new ClassData(ShardCloudClassID, "gosFX::ShardCloud", SpinningCloud::DefaultData,
+		(Effect::Factory)&Make, (Specification::Factory)&Specification::Make);
 	Register_Object(DefaultData);
 }
 
@@ -143,10 +140,9 @@ gosFX::ShardCloud::ShardCloud(Specification* spec, uint32_t flags)
 	: SpinningCloud(DefaultData, spec, flags)
 {
 	Check_Object(spec);
-	// Verify(gos_GetCurrentHeap() == Heap);
+	// _ASSERT(gos_GetCurrentHeap() == Heap);
 	// gos_PushCurrentHeap(MidLevelRenderer::Heap);
-	m_cloudImplementation =
-		new MidLevelRenderer::MLRTriangleCloud(spec->m_maxParticleCount);
+	m_cloudImplementation = new MidLevelRenderer::MLRTriangleCloud(spec->m_maxParticleCount);
 	Register_Object(m_cloudImplementation);
 	// gos_PopCurrentHeap();
 	uint32_t index = spec->m_maxParticleCount * sizeof(Particle);
@@ -154,8 +150,7 @@ gosFX::ShardCloud::ShardCloud(Specification* spec, uint32_t flags)
 	index += 3 * spec->m_maxParticleCount * sizeof(Stuff::Point3D);
 	m_P_color = Cast_Pointer(Stuff::RGBAColor*, &m_data[index]);
 	m_cloudImplementation->SetData(
-		Cast_Pointer(pcsize_t, &m_activeParticleCount), m_P_vertices,
-		m_P_color);
+		Cast_Pointer(pcsize_t, &m_activeParticleCount), m_P_vertices, m_P_color);
 }
 
 //------------------------------------------------------------------------------
@@ -181,8 +176,8 @@ gosFX::ShardCloud* gosFX::ShardCloud::Make(Specification* spec, uint32_t flags)
 
 //------------------------------------------------------------------------------
 //
-bool gosFX::ShardCloud::AnimateParticle(uint32_t index,
-	const Stuff::LinearMatrix4D* world_to_new_local, Stuff::Time till)
+bool gosFX::ShardCloud::AnimateParticle(
+	uint32_t index, const Stuff::LinearMatrix4D* world_to_new_local, Stuff::Time till)
 {
 	// Check_Object(this);
 	//
@@ -216,8 +211,7 @@ bool gosFX::ShardCloud::AnimateParticle(uint32_t index,
 
 //------------------------------------------------------------------------------
 //
-void gosFX::ShardCloud::CreateNewParticle(
-	uint32_t index, Stuff::Point3D* translation)
+void gosFX::ShardCloud::CreateNewParticle(uint32_t index, Stuff::Point3D* translation)
 {
 	// Check_Object(this);
 	//
@@ -227,7 +221,7 @@ void gosFX::ShardCloud::CreateNewParticle(
 	//
 	SpinningCloud::CreateNewParticle(index, translation);
 	m_cloudImplementation->TurnOn(index);
-	Verify(m_cloudImplementation->IsOn(index));
+	_ASSERT(m_cloudImplementation->IsOn(index));
 	//
 	//-----------------------------
 	// Figure out the particle size
@@ -238,8 +232,7 @@ void gosFX::ShardCloud::CreateNewParticle(
 	Particle* particle = GetParticle(index);
 	Check_Object(particle);
 	particle->m_radius = spec->m_size.ComputeValue(m_age, particle->m_seed);
-	particle->m_angle =
-		Stuff::Sin(spec->m_angularity.ComputeValue(m_age, particle->m_seed));
+	particle->m_angle  = Stuff::Sin(spec->m_angularity.ComputeValue(m_age, particle->m_seed));
 }
 
 //------------------------------------------------------------------------------
@@ -248,7 +241,7 @@ void gosFX::ShardCloud::DestroyParticle(uint32_t index)
 {
 	// Check_Object(this);
 	m_cloudImplementation->TurnOff(index);
-	Verify(!m_cloudImplementation->IsOn(index));
+	_ASSERT(!m_cloudImplementation->IsOn(index));
 	SpinningCloud::DestroyParticle(index);
 }
 
@@ -290,11 +283,9 @@ void gosFX::ShardCloud::Draw(DrawInfo* info)
 				// Get the camera location into local space
 				//-----------------------------------------
 				//
-				Stuff::Point3D camera_in_world(
-					info->m_clipper->GetCameraToWorldMatrix());
+				Stuff::Point3D camera_in_world(info->m_clipper->GetCameraToWorldMatrix());
 				Stuff::Point3D camera_in_cloud;
-				camera_in_cloud.MultiplyByInverse(
-					camera_in_world, local_to_world);
+				camera_in_cloud.MultiplyByInverse(camera_in_world, local_to_world);
 				//
 				//--------------------------------------
 				// Spin through all the active particles
@@ -312,15 +303,12 @@ void gosFX::ShardCloud::Draw(DrawInfo* info)
 						//--------------------------------
 						//
 						Stuff::Vector3D direction_in_cloud;
-						direction_in_cloud.Subtract(
-							camera_in_cloud, particle->m_localTranslation);
+						direction_in_cloud.Subtract(camera_in_cloud, particle->m_localTranslation);
 						Stuff::LinearMatrix4D shard_to_cloud;
 						shard_to_cloud.BuildRotation(particle->m_localRotation);
 						shard_to_cloud.AlignLocalAxisToWorldVector(
-							direction_in_cloud, Stuff::Z_Axis, Stuff::Y_Axis,
-							Stuff::X_Axis);
-						shard_to_cloud.BuildTranslation(
-							particle->m_localTranslation);
+							direction_in_cloud, Stuff::Z_Axis, Stuff::Y_Axis, Stuff::X_Axis);
+						shard_to_cloud.BuildTranslation(particle->m_localTranslation);
 						//
 						//--------------------------------------------------
 						// Figure out the scale, then build the three points
@@ -328,17 +316,14 @@ void gosFX::ShardCloud::Draw(DrawInfo* info)
 						//
 						float scale = particle->m_scale;
 						m_P_vertices[vert++].Multiply(
-							Stuff::Point3D(
-								0.0f, -0.5f * scale * particle->m_radius, 0.0f),
+							Stuff::Point3D(0.0f, -0.5f * scale * particle->m_radius, 0.0f),
 							shard_to_cloud);
 						m_P_vertices[vert++].Multiply(
-							Stuff::Point3D(
-								scale * particle->m_angle * particle->m_radius,
+							Stuff::Point3D(scale * particle->m_angle * particle->m_radius,
 								scale * particle->m_radius * 0.5f, 0.0f),
 							shard_to_cloud);
 						m_P_vertices[vert++].Multiply(
-							Stuff::Point3D(
-								-scale * particle->m_angle * particle->m_radius,
+							Stuff::Point3D(-scale * particle->m_angle * particle->m_radius,
 								scale * particle->m_radius * 0.5f, 0.0f),
 							shard_to_cloud);
 					}
@@ -358,11 +343,9 @@ void gosFX::ShardCloud::Draw(DrawInfo* info)
 				// Get the camera location into local space
 				//-----------------------------------------
 				//
-				Stuff::Point3D camera_in_world(
-					info->m_clipper->GetCameraToWorldMatrix());
+				Stuff::Point3D camera_in_world(info->m_clipper->GetCameraToWorldMatrix());
 				Stuff::Point3D camera_in_cloud;
-				camera_in_cloud.MultiplyByInverse(
-					camera_in_world, local_to_world);
+				camera_in_cloud.MultiplyByInverse(camera_in_world, local_to_world);
 				//
 				//--------------------------------------
 				// Spin through all the active particles
@@ -380,15 +363,12 @@ void gosFX::ShardCloud::Draw(DrawInfo* info)
 						//--------------------------------
 						//
 						Stuff::Vector3D direction_in_cloud;
-						direction_in_cloud.Subtract(
-							camera_in_cloud, particle->m_localTranslation);
+						direction_in_cloud.Subtract(camera_in_cloud, particle->m_localTranslation);
 						Stuff::LinearMatrix4D shard_to_cloud;
 						shard_to_cloud.BuildRotation(particle->m_localRotation);
 						shard_to_cloud.AlignLocalAxisToWorldVector(
-							direction_in_cloud, Stuff::Z_Axis, Stuff::X_Axis,
-							-1);
-						shard_to_cloud.BuildTranslation(
-							particle->m_localTranslation);
+							direction_in_cloud, Stuff::Z_Axis, Stuff::X_Axis, -1);
+						shard_to_cloud.BuildTranslation(particle->m_localTranslation);
 						//
 						//--------------------------------------------------
 						// Figure out the scale, then build the three points
@@ -396,17 +376,14 @@ void gosFX::ShardCloud::Draw(DrawInfo* info)
 						//
 						float scale = particle->m_scale;
 						m_P_vertices[vert++].Multiply(
-							Stuff::Point3D(
-								0.0f, -0.5f * scale * particle->m_radius, 0.0f),
+							Stuff::Point3D(0.0f, -0.5f * scale * particle->m_radius, 0.0f),
 							shard_to_cloud);
 						m_P_vertices[vert++].Multiply(
-							Stuff::Point3D(
-								scale * particle->m_angle * particle->m_radius,
+							Stuff::Point3D(scale * particle->m_angle * particle->m_radius,
 								scale * particle->m_radius * 0.5f, 0.0f),
 							shard_to_cloud);
 						m_P_vertices[vert++].Multiply(
-							Stuff::Point3D(
-								-scale * particle->m_angle * particle->m_radius,
+							Stuff::Point3D(-scale * particle->m_angle * particle->m_radius,
 								scale * particle->m_radius * 0.5f, 0.0f),
 							shard_to_cloud);
 					}
@@ -427,8 +404,7 @@ void gosFX::ShardCloud::Draw(DrawInfo* info)
 			// Get the camera location into local space
 			//-----------------------------------------
 			//
-			Stuff::Point3D camera_in_world(
-				info->m_clipper->GetCameraToWorldMatrix());
+			Stuff::Point3D camera_in_world(info->m_clipper->GetCameraToWorldMatrix());
 			Stuff::Point3D camera_in_cloud;
 			camera_in_cloud.MultiplyByInverse(camera_in_world, local_to_world);
 			//
@@ -448,14 +424,12 @@ void gosFX::ShardCloud::Draw(DrawInfo* info)
 					//--------------------------------
 					//
 					Stuff::Vector3D direction_in_cloud;
-					direction_in_cloud.Subtract(
-						camera_in_cloud, particle->m_localTranslation);
+					direction_in_cloud.Subtract(camera_in_cloud, particle->m_localTranslation);
 					Stuff::LinearMatrix4D shard_to_cloud;
 					shard_to_cloud.BuildRotation(particle->m_localRotation);
 					shard_to_cloud.AlignLocalAxisToWorldVector(
 						direction_in_cloud, Stuff::Z_Axis, Stuff::Y_Axis, -1);
-					shard_to_cloud.BuildTranslation(
-						particle->m_localTranslation);
+					shard_to_cloud.BuildTranslation(particle->m_localTranslation);
 					//
 					//--------------------------------------------------
 					// Figure out the scale, then build the three points
@@ -463,17 +437,14 @@ void gosFX::ShardCloud::Draw(DrawInfo* info)
 					//
 					float scale = particle->m_scale;
 					m_P_vertices[vert++].Multiply(
-						Stuff::Point3D(
-							0.0f, -0.5f * scale * particle->m_radius, 0.0f),
+						Stuff::Point3D(0.0f, -0.5f * scale * particle->m_radius, 0.0f),
 						shard_to_cloud);
 					m_P_vertices[vert++].Multiply(
-						Stuff::Point3D(
-							scale * particle->m_angle * particle->m_radius,
+						Stuff::Point3D(scale * particle->m_angle * particle->m_radius,
 							scale * particle->m_radius * 0.5f, 0.0f),
 						shard_to_cloud);
 					m_P_vertices[vert++].Multiply(
-						Stuff::Point3D(
-							-scale * particle->m_angle * particle->m_radius,
+						Stuff::Point3D(-scale * particle->m_angle * particle->m_radius,
 							scale * particle->m_radius * 0.5f, 0.0f),
 						shard_to_cloud);
 				}
@@ -502,8 +473,7 @@ void gosFX::ShardCloud::Draw(DrawInfo* info)
 					//
 					Stuff::LinearMatrix4D shard_to_cloud;
 					shard_to_cloud.BuildRotation(particle->m_localRotation);
-					shard_to_cloud.BuildTranslation(
-						particle->m_localTranslation);
+					shard_to_cloud.BuildTranslation(particle->m_localTranslation);
 					//
 					//--------------------------------------------------
 					// Figure out the scale, then build the three points
@@ -511,17 +481,14 @@ void gosFX::ShardCloud::Draw(DrawInfo* info)
 					//
 					float scale = particle->m_scale;
 					m_P_vertices[vert++].Multiply(
-						Stuff::Point3D(
-							0.0f, -0.5f * scale * particle->m_radius, 0.0f),
+						Stuff::Point3D(0.0f, -0.5f * scale * particle->m_radius, 0.0f),
 						shard_to_cloud);
 					m_P_vertices[vert++].Multiply(
-						Stuff::Point3D(
-							scale * particle->m_angle * particle->m_radius,
+						Stuff::Point3D(scale * particle->m_angle * particle->m_radius,
 							scale * particle->m_radius * 0.5f, 0.0f),
 						shard_to_cloud);
 					m_P_vertices[vert++].Multiply(
-						Stuff::Point3D(
-							-scale * particle->m_angle * particle->m_radius,
+						Stuff::Point3D(-scale * particle->m_angle * particle->m_radius,
 							scale * particle->m_radius * 0.5f, 0.0f),
 						shard_to_cloud);
 				}
@@ -541,7 +508,4 @@ void gosFX::ShardCloud::Draw(DrawInfo* info)
 
 //------------------------------------------------------------------------------
 //
-void gosFX::ShardCloud::TestInstance(void) const
-{
-	Verify(IsDerivedFrom(DefaultData));
-}
+void gosFX::ShardCloud::TestInstance(void) const { _ASSERT(IsDerivedFrom(DefaultData)); }

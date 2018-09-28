@@ -29,11 +29,11 @@ typedef struct _SortListNode
 class SortList
 {
 
-  protected:
+protected:
 	SortListNode* list;
 	uint32_t numItems;
 
-  public:
+public:
 	void init(void)
 	{
 		list	 = nullptr;

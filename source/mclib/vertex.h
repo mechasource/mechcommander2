@@ -66,7 +66,7 @@ class Vertex
 {
 	// Data Members
 	//-------------
-  public:
+public:
 	PostcompVertexPtr pVertex; // Pointer to PostcompVertex for this Vertex
 	float vx, vy;			   // Unrotated World Coordinates of Vertex
 	float px, py;			   // Screen Coordinates of vertex.
@@ -75,8 +75,7 @@ class Vertex
 	int32_t vertexNum; // Physical Vertex Position in mapData
 
 	// Used by new Object positioning system.
-	int32_t
-		blockVertex; // What terrain block is this vertex part of.vertexNumber;
+	int32_t blockVertex; // What terrain block is this vertex part of.vertexNumber;
 	// What vertex number in the block
 
 	int32_t posTile; // Where are we on the tile!  Saves 24 divides per tile if
@@ -102,7 +101,7 @@ class Vertex
 
 	// Member Functions
 	//-----------------
-  public:
+public:
 	void init(void)
 	{
 		pVertex = nullptr;

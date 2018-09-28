@@ -18,14 +18,14 @@ const LinearMatrix4D LinearMatrix4D::Identity(true);
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void LinearMatrix4D::AlignLocalAxisToWorldVector(const Vector3D& world_target,
-	size_t pointing_axis, size_t rotating_axis, size_t minor_axis)
+void LinearMatrix4D::AlignLocalAxisToWorldVector(
+	const Vector3D& world_target, size_t pointing_axis, size_t rotating_axis, size_t minor_axis)
 {
 	// Check_Object(this);
 	Check_Object(&world_target);
-	Verify(static_cast<uint32_t>(pointing_axis) <= Z_Axis);
-	Verify(static_cast<uint32_t>(rotating_axis) <= Z_Axis);
-	Verify(rotating_axis != pointing_axis);
+	_ASSERT(static_cast<uint32_t>(pointing_axis) <= Z_Axis);
+	_ASSERT(static_cast<uint32_t>(rotating_axis) <= Z_Axis);
+	_ASSERT(rotating_axis != pointing_axis);
 	//
 	//------------------------------------------------------------------
 	// These are the variables that the alignment algorithm must fill in
@@ -86,7 +86,7 @@ void LinearMatrix4D::AlignLocalAxisToWorldVector(const Vector3D& world_target,
 		// axis vectors can already be found in the matrix
 		//--------------------------------------------------------------------
 		//
-		Verify(minor_axis == 3 - pointing_axis - rotating_axis);
+		_ASSERT(minor_axis == 3 - pointing_axis - rotating_axis);
 		if (Small_Enough(temp.GetLengthSquared()))
 		{
 			if (world_target * rotation_vector > 0.0f)
@@ -160,7 +160,7 @@ LinearMatrix4D& LinearMatrix4D::Invert(const LinearMatrix4D& m)
 {
 	// Check_Pointer(this);
 	Check_Object(&m);
-	Verify(this != &m);
+	_ASSERT(this != &m);
 	//
 	//-----------------------------------------
 	// First, transpose the 3x3 rotation matrix
@@ -194,12 +194,9 @@ LinearMatrix4D& LinearMatrix4D::Normalize()
 #if defined(LEFT_HANDED_COORDINATES)
 #error Right handed coordinate dependancy!
 #endif
-	(*this)(0, 2) =
-		(*this)(1, 0) * (*this)(2, 1) - (*this)(1, 1) * (*this)(2, 0);
-	(*this)(1, 2) =
-		(*this)(2, 0) * (*this)(0, 1) - (*this)(2, 1) * (*this)(0, 0);
-	(*this)(2, 2) =
-		(*this)(0, 0) * (*this)(1, 1) - (*this)(0, 1) * (*this)(1, 0);
+	(*this)(0, 2) = (*this)(1, 0) * (*this)(2, 1) - (*this)(1, 1) * (*this)(2, 0);
+	(*this)(1, 2) = (*this)(2, 0) * (*this)(0, 1) - (*this)(2, 1) * (*this)(0, 0);
+	(*this)(2, 2) = (*this)(0, 0) * (*this)(1, 1) - (*this)(0, 1) * (*this)(1, 0);
 	return *this;
 }
 
@@ -222,7 +219,7 @@ void LinearMatrix4D::TestInstance(void) const
 #if defined(LEFT_HANDED_COORDINATES)
 #error Right handed coordinate depenancy!
 #endif
-	Verify(Close_Enough(v3.x, (*this)(2, 0)));
-	Verify(Close_Enough(v3.y, (*this)(2, 1)));
-	Verify(Close_Enough(v3.z, (*this)(2, 2)));
+	_ASSERT(Close_Enough(v3.x, (*this)(2, 0)));
+	_ASSERT(Close_Enough(v3.y, (*this)(2, 1)));
+	_ASSERT(Close_Enough(v3.z, (*this)(2, 2)));
 }

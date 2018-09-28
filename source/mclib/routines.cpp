@@ -31,10 +31,9 @@ void memclear(PVOID Dest, size_t Len){_asm {
 		// memclear_mmx:
 		mov ebx,
 	ecx;
-8 byte align edi when possible sub ecx, edi xor eax, eax sub ecx, ebx and ecx,
-	7 sub ebx, ecx jle doalign0 test ecx,
-	ecx jz mmx0a mmx0 : mov byte ptr[edi],
-						al inc edi dec ecx jnz mmx0 mmx0a
+8 byte align edi when possible sub ecx, edi xor eax, eax sub ecx, ebx and ecx, 7 sub ebx,
+	ecx jle doalign0 test ecx, ecx jz mmx0a mmx0 : mov byte ptr[edi],
+												   al inc edi dec ecx jnz mmx0 mmx0a
 	: mov ecx,
 	  ebx and ebx,
 	  7 shr ecx,
@@ -43,16 +42,15 @@ void memclear(PVOID Dest, size_t Len){_asm {
 				 mm0 add edi,
 				 8 dec ecx jnz mmx1 doalign0 : add ecx,
 											   ebx test ecx,
-											   ecx jz mmx0d mmx0c
-	: mov byte ptr[edi],
-	  al inc edi dec ecx jnz mmx0c
+											   ecx jz mmx0d mmx0c : mov byte ptr[edi],
+																	al inc edi dec ecx jnz mmx0c
 
-		  mmx0d : emms jmp done
+																		mmx0d : emms jmp done
 
-					  mem1 : mov ebx,
-							 ecx;
-uint32_t align edi when possible sub ecx, edi xor eax, eax sub ecx, ebx and ecx,
-	3 sub ebx, ecx jle doalign1 rep stosb mov ecx, ebx and ebx, 3 shr ecx,
+																					mem1 : mov ebx,
+																						   ecx;
+uint32_t align edi when possible sub ecx, edi xor eax, eax sub ecx, ebx and ecx, 3 sub ebx,
+	ecx jle doalign1 rep stosb mov ecx, ebx and ebx, 3 shr ecx,
 	2 rep stosd doalign1 : add ecx, ebx rep stosb done:
 }
 }
@@ -71,10 +69,9 @@ void memfill(PVOID Dest, size_t Len){_asm {
 		// memfill_mmx:
 		mov ebx,
 	ecx;
-8 byte align edi when possible sub ecx, edi mov eax, -1 sub ecx, ebx and ecx,
-	7 sub ebx, ecx jle doalign0 test ecx,
-	ecx jz mmx0fa mmx0f : mov byte ptr[edi],
-						  al inc edi dec ecx jnz mmx0f mmx0fa
+8 byte align edi when possible sub ecx, edi mov eax, -1 sub ecx, ebx and ecx, 7 sub ebx,
+	ecx jle doalign0 test ecx, ecx jz mmx0fa mmx0f : mov byte ptr[edi],
+													 al inc edi dec ecx jnz mmx0f mmx0fa
 	: mov ecx,
 	  ebx and ebx,
 	  7 shr ecx,
@@ -89,8 +86,8 @@ void memfill(PVOID Dest, size_t Len){_asm {
 
 												memf1 : mov ebx,
 														ecx;
-uint32_t align edi when possible sub ecx, edi mov eax, -1 sub ecx, ebx and ecx,
-	3 sub ebx, ecx jle doalign1 rep stosb mov ecx, ebx and ebx, 3 shr ecx,
+uint32_t align edi when possible sub ecx, edi mov eax, -1 sub ecx, ebx and ecx, 3 sub ebx,
+	ecx jle doalign1 rep stosb mov ecx, ebx and ebx, 3 shr ecx,
 	2 rep stosd doalign1 : add ecx, ebx rep stosb done:
 }
 }
@@ -102,8 +99,7 @@ uint32_t align edi when possible sub ecx, edi mov eax, -1 sub ecx, ebx and ecx,
 int32_t RandomNumber(int32_t range)
 {
 	gosASSERT(RAND_MAX == (1 << 15) - 1); // This is always TRUE in VC
-	return ((gos_rand() * range) >>
-			15); // Used to used mod (%) - which costs 40+ cycles (AG)
+	return ((gos_rand() * range) >> 15);  // Used to used mod (%) - which costs 40+ cycles (AG)
 }
 
 //---------------------------------------------------------------------------

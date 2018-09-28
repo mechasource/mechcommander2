@@ -19,13 +19,12 @@ MLRSorter::ClassData* MLRSorter::DefaultData = nullptr;
 bool dontSeeMe = true;
 
 SortData::DrawFunc SortData::Draw[LastMode] = {&SortData::DrawTriList,
-	&SortData::DrawTriIndexedList, &SortData::DrawPointCloud,
-	&SortData::DrawQuads, &SortData::DrawLineCloud};
+	&SortData::DrawTriIndexedList, &SortData::DrawPointCloud, &SortData::DrawQuads,
+	&SortData::DrawLineCloud};
 
-SortData::LoadSortAlphaFunc SortData::LoadSortAlpha[LastMode] = {
-	&SortData::LoadAlphaFromTriList, &SortData::LoadAlphaFromTriIndexedList,
-	&SortData::LoadAlphaFromPointCloud, &SortData::LoadAlphaFromQuads,
-	&SortData::LoadAlphaFromLineCloud};
+SortData::LoadSortAlphaFunc SortData::LoadSortAlpha[LastMode] = {&SortData::LoadAlphaFromTriList,
+	&SortData::LoadAlphaFromTriIndexedList, &SortData::LoadAlphaFromPointCloud,
+	&SortData::LoadAlphaFromQuads, &SortData::LoadAlphaFromLineCloud};
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
@@ -39,8 +38,8 @@ void SortData::DrawTriList()
 		if (texture2 == 0)
 		{
 			GOSVertex* v = (GOSVertex*)vertices;
-			if ((v[0].z >= 0.0f) && (v[0].z < 1.0f) && (v[1].z >= 0.0f) &&
-				(v[1].z < 1.0f) && (v[2].z >= 0.0f) && (v[2].z < 1.0f))
+			if ((v[0].z >= 0.0f) && (v[0].z < 1.0f) && (v[1].z >= 0.0f) && (v[1].z < 1.0f) &&
+				(v[2].z >= 0.0f) && (v[2].z < 1.0f))
 			{
 				gos_DrawTriangles((GOSVertex*)vertices, numVertices);
 			}
@@ -50,7 +49,7 @@ void SortData::DrawTriList()
 			STOP(("GOS doesnt suppert gos_DrawTriangles for gos_VERTEX_2UV "
 				  "yet."));
 			//			gos_DrawTriangles( (GOSVertex2UV *)vertices,
-			//numVertices);
+			// numVertices);
 		}
 	}
 	Stop_Timer(GOS_Draw_Time);
@@ -71,8 +70,7 @@ void SortData::DrawTriIndexedList()
 		for (size_t i = 0; i < numIndices; i += 3)
 		{
 			if (((v[indices[i]].z >= 0.0f) && (v[indices[i]].z < 1.0f)) &&
-				((v[indices[i + 1]].z >= 0.0f) &&
-					(v[indices[i + 1]].z < 1.0f)) &&
+				((v[indices[i + 1]].z >= 0.0f) && (v[indices[i + 1]].z < 1.0f)) &&
 				((v[indices[i + 2]].z >= 0.0f) && (v[indices[i + 2]].z < 1.0f)))
 			{
 				// Copy these indicies to new array.
@@ -93,13 +91,11 @@ void SortData::DrawTriIndexedList()
 				//	uint32_t NumberIndices,
 				//	gosVERTEXTYPE VertexType,
 				//	gosPRIMITIVETYPE PrimitiveType = PRIMITIVE_TRIANGLELIST);
-				gos_RenderIndexedArray(
-					(GOSVertex*)vertices, numVertices, newIndicies, startIndex);
+				gos_RenderIndexedArray((GOSVertex*)vertices, numVertices, newIndicies, startIndex);
 			}
 			else
 			{
-				gos_RenderIndexedArray(
-					(GOSVertex2UV*)vertices, numVertices, indices, numIndices);
+				gos_RenderIndexedArray((GOSVertex2UV*)vertices, numVertices, indices, numIndices);
 			}
 		}
 	}
@@ -110,7 +106,7 @@ void SortData::DrawTriIndexedList()
 //
 void SortData::DrawPointCloud()
 {
-	Verify(texture2 == 0);
+	_ASSERT(texture2 == 0);
 	Start_Timer(GOS_Draw_Time);
 #ifdef LAB_ONLY
 	if (dontSeeMe == true)
@@ -141,9 +137,8 @@ void SortData::DrawPointCloud()
 			Vertex++;
 			if (Triangle == 32 * 3 || i == 1)
 			{
-				if ((pArray[0].z >= 0.0f) && (pArray[0].z < 1.0f) &&
-					(pArray[1].z >= 0.0f) && (pArray[1].z < 1.0f) &&
-					(pArray[2].z >= 0.0f) && (pArray[2].z < 1.0f))
+				if ((pArray[0].z >= 0.0f) && (pArray[0].z < 1.0f) && (pArray[1].z >= 0.0f) &&
+					(pArray[1].z < 1.0f) && (pArray[2].z >= 0.0f) && (pArray[2].z < 1.0f))
 				{
 					gos_DrawTriangles(pArray, Triangle);
 				}
@@ -181,19 +176,17 @@ void SortData::DrawQuads()
 //
 void SortData::DrawLineCloud()
 {
-	Verify(texture2 == 0);
+	_ASSERT(texture2 == 0);
 	Start_Timer(GOS_Draw_Time);
 	for (size_t i = 0; i < numVertices; i++)
 	{
 		if (((GOSVertex*)vertices)[i].x > Environment.screenWidth - 1)
 		{
-			((GOSVertex*)vertices)[i].x =
-				static_cast<float>(Environment.screenWidth - 1);
+			((GOSVertex*)vertices)[i].x = static_cast<float>(Environment.screenWidth - 1);
 		}
 		if (((GOSVertex*)vertices)[i].y > Environment.screenHeight - 1)
 		{
-			((GOSVertex*)vertices)[i].y =
-				static_cast<float>(Environment.screenHeight - 1);
+			((GOSVertex*)vertices)[i].y = static_cast<float>(Environment.screenHeight - 1);
 		}
 	}
 #ifdef LAB_ONLY
@@ -210,9 +203,8 @@ void SortData::DrawLineCloud()
 int32_t SortData::LoadAlphaFromTriList(SortAlpha** alpha)
 {
 	Start_Timer(Alpha_Sorting_Time);
-	int32_t i, index = 0,
-			   end = (int32_t)(numVertices * 0.333333333333333333333333);
-	Verify(texture2 == 0);
+	int32_t i, index = 0, end = (int32_t)(numVertices * 0.333333333333333333333333);
+	_ASSERT(texture2 == 0);
 	for (i = 0; i < end; i++)
 	{
 		alpha[i]->state		  = &state;
@@ -233,7 +225,7 @@ int32_t SortData::LoadAlphaFromTriIndexedList(SortAlpha** alpha)
 {
 	Start_Timer(Alpha_Sorting_Time);
 	int32_t i, index = 0, end = numIndices / 3;
-	Verify(texture2 == 0);
+	_ASSERT(texture2 == 0);
 	for (i = 0; i < end; i++)
 	{
 		alpha[i]->state		  = &state;
@@ -302,10 +294,10 @@ ToBeDrawnPrimitive::ToBeDrawnPrimitive()
 //
 void MLRSorter::InitializeClass()
 {
-	Verify(!DefaultData);
-	// Verify(gos_GetCurrentHeap() == StaticHeap);
-	DefaultData = new ClassData(MLRSorterClassID, "MidLevelRenderer::MLRSorter",
-		RegisteredClass::DefaultData);
+	_ASSERT(!DefaultData);
+	// _ASSERT(gos_GetCurrentHeap() == StaticHeap);
+	DefaultData = new ClassData(
+		MLRSorterClassID, "MidLevelRenderer::MLRSorter", RegisteredClass::DefaultData);
 	Register_Object(DefaultData);
 }
 
@@ -320,10 +312,9 @@ void MLRSorter::TerminateClass()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLRSorter::MLRSorter(ClassData* class_data, MLRTexturePool* tp)
-	: RegisteredClass(class_data)
+MLRSorter::MLRSorter(ClassData* class_data, MLRTexturePool* tp) : RegisteredClass(class_data)
 {
-	// Verify(gos_GetCurrentHeap() == Heap);
+	// _ASSERT(gos_GetCurrentHeap() == Heap);
 	texturePool = tp;
 	gos_PushCurrentHeap(StaticHeap);
 	rawDrawData.SetLength(Limits::Max_Number_Primitives_Per_Frame);
@@ -332,8 +323,7 @@ MLRSorter::MLRSorter(ClassData* class_data, MLRTexturePool* tp)
 	{
 		lastUsedInBucketNotDrawn[i] = 0;
 		priorityBucketsNotDrawn[i].SetLength(
-			Limits::Max_Number_Primitives_Per_Frame +
-			Limits::Max_Number_ScreenQuads_Per_Frame);
+			Limits::Max_Number_Primitives_Per_Frame + Limits::Max_Number_ScreenQuads_Per_Frame);
 	}
 	drawData.SetLength(Limits::Max_Number_Primitives_Per_Frame);
 #endif
@@ -386,17 +376,15 @@ void MLRSorter::DrawPrimitive(MLRPrimitiveBase* pt, uint32_t pass)
 		}
 		if (sd->texture2 > 0)
 		{
-			gos_SetRenderState(gos_State_Texture2,
-				(*texturePool)[sd->texture2]->GetImage(nullptr)->GetHandle());
+			gos_SetRenderState(
+				gos_State_Texture2, (*texturePool)[sd->texture2]->GetImage(nullptr)->GetHandle());
 			switch (sd->state.GetMultiTextureMode())
 			{
 			case MLRState::MultiTextureLightmapMode:
-				gos_SetRenderState(
-					gos_State_Multitexture, gos_Multitexture_LightMap);
+				gos_SetRenderState(gos_State_Multitexture, gos_Multitexture_LightMap);
 				break;
 			case MLRState::MultiTextureSpecularMode:
-				gos_SetRenderState(
-					gos_State_Multitexture, gos_Multitexture_SpecularMap);
+				gos_SetRenderState(gos_State_Multitexture, gos_Multitexture_SpecularMap);
 				break;
 			}
 		}
@@ -416,14 +404,14 @@ void MLRSorter::DrawPrimitive(MLRPrimitiveBase* pt, uint32_t pass)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-SortData* MLRSorter::SetRawData(PVOID vertices, uint32_t numVertices,
-	const MLRState& state, cint32_t& mode, int32_t tex2)
+SortData* MLRSorter::SetRawData(
+	PVOID vertices, uint32_t numVertices, const MLRState& state, cint32_t& mode, int32_t tex2)
 {
 	// Check_Object(this);
 	SortData* sd = rawDrawData.GetData();
-	Verify(lastUsedRaw < Limits::Max_Number_Primitives_Per_Frame);
-	Verify(vertices != nullptr);
-	Verify(numVertices > 0);
+	_ASSERT(lastUsedRaw < Limits::Max_Number_Primitives_Per_Frame);
+	_ASSERT(vertices != nullptr);
+	_ASSERT(numVertices > 0);
 	(sd + lastUsedRaw)->vertices	= vertices;
 	(sd + lastUsedRaw)->indices		= 0;
 	(sd + lastUsedRaw)->state		= state;
@@ -437,15 +425,14 @@ SortData* MLRSorter::SetRawData(PVOID vertices, uint32_t numVertices,
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-SortData* MLRSorter::SetRawIndexedData(PVOID vertices, uint32_t numVertices,
-	puint16_t indices, int32_t numIndices, const MLRState& state,
-	cint32_t& mode, int32_t tex2)
+SortData* MLRSorter::SetRawIndexedData(PVOID vertices, uint32_t numVertices, puint16_t indices,
+	int32_t numIndices, const MLRState& state, cint32_t& mode, int32_t tex2)
 {
 	// Check_Object(this);
 	SortData* sd = rawDrawData.GetData();
-	Verify(lastUsedRaw < Limits::Max_Number_Primitives_Per_Frame);
-	Verify(vertices != nullptr);
-	Verify(numVertices > 0);
+	_ASSERT(lastUsedRaw < Limits::Max_Number_Primitives_Per_Frame);
+	_ASSERT(vertices != nullptr);
+	_ASSERT(numVertices > 0);
 	(sd + lastUsedRaw)->vertices	= vertices;
 	(sd + lastUsedRaw)->indices		= indices;
 	(sd + lastUsedRaw)->state		= state;
@@ -468,26 +455,23 @@ SortData* MLRSorter::SetRawData(MLRPrimitiveBase* pt, int32_t pass)
 	{
 	case SortData::TriIndexedList:
 	{
-		MLRIndexedPrimitiveBase* ipt =
-			static_cast<MLRIndexedPrimitiveBase*>(pt);
-		int32_t tex2		= 0;
-		PVOID vertices		= ipt->GetGOSVertices(pass);
-		int32_t vertexCount = ipt->GetNumGOSVertices();
-		if (pt->GetCurrentState(pass).GetMultiTextureMode() !=
-				MLRState::MultiTextureOffMode &&
+		MLRIndexedPrimitiveBase* ipt = static_cast<MLRIndexedPrimitiveBase*>(pt);
+		int32_t tex2				 = 0;
+		PVOID vertices				 = ipt->GetGOSVertices(pass);
+		int32_t vertexCount			 = ipt->GetNumGOSVertices();
+		if (pt->GetCurrentState(pass).GetMultiTextureMode() != MLRState::MultiTextureOffMode &&
 			MLRState::GetMultitextureLightMap())
 		{
-			Verify(pass == 0);
+			_ASSERT(pass == 0);
 			tex2	 = pt->GetCurrentState(1).GetTextureHandle();
 			vertices = pt->GetGOSVertices2UV();
 		}
-		return SetRawIndexedData(vertices, vertexCount,
-			ipt->GetGOSIndices(pass), ipt->GetNumGOSIndices(),
-			ipt->GetCurrentState(pass), drawMode, tex2);
+		return SetRawIndexedData(vertices, vertexCount, ipt->GetGOSIndices(pass),
+			ipt->GetNumGOSIndices(), ipt->GetCurrentState(pass), drawMode, tex2);
 	}
 	case SortData::TriList:
-		return SetRawData(pt->GetGOSVertices(pass), pt->GetNumGOSVertices(),
-			pt->GetCurrentState(pass), drawMode);
+		return SetRawData(
+			pt->GetGOSVertices(pass), pt->GetNumGOSVertices(), pt->GetCurrentState(pass), drawMode);
 	}
 	return nullptr;
 }
@@ -498,8 +482,7 @@ SortData* MLRSorter::SetRawData(MLRPrimitiveBase* pt, int32_t pass)
 void MLRSorter::IncreaseTBDPCounter()
 {
 	// Check_Object(this);
-	int32_t priority =
-		drawData[lastUsedDraw].primitive->GetReferenceState().GetPriority();
+	int32_t priority = drawData[lastUsedDraw].primitive->GetReferenceState().GetPriority();
 	priorityBucketsNotDrawn[priority][lastUsedInBucketNotDrawn[priority]++] =
 		&drawData[lastUsedDraw];
 	lastUsedDraw++;
@@ -510,7 +493,7 @@ void MLRSorter::IncreaseTBDPCounter()
 //
 bool MLRSorter::SetDifferences(const MLRState& original, const MLRState& newer)
 {
-	Verify(original != newer);
+	_ASSERT(original != newer);
 	int32_t changed = (original.renderState ^ newer.renderState);
 	if (changed)
 	{
@@ -519,8 +502,7 @@ bool MLRSorter::SetDifferences(const MLRState& original, const MLRState& newer)
 			Check_Object(texturePool);
 			if (newer.renderState & MLRState::TextureMask)
 			{
-				Verify(
-					(*texturePool)[newer.renderState & MLRState::TextureMask]);
+				_ASSERT((*texturePool)[newer.renderState & MLRState::TextureMask]);
 				gos_SetRenderState(gos_State_Texture,
 					(*texturePool)[newer.renderState & MLRState::TextureMask]
 						->GetImage(nullptr)
@@ -542,17 +524,14 @@ bool MLRSorter::SetDifferences(const MLRState& original, const MLRState& newer)
 				gos_SetRenderState(gos_State_AlphaMode, gos_Alpha_OneOne);
 				break;
 			case MLRState::AlphaOneMode:
-				SPEW(("micgaert",
-					"MLRState::AlphaOneMode not available anymore"));
+				SPEW(("micgaert", "MLRState::AlphaOneMode not available anymore"));
 				break;
 			case MLRState::OneAlphaMode:
-				SPEW(("micgaert",
-					"MLRState::OneAlphaMode not available anymore"));
+				SPEW(("micgaert", "MLRState::OneAlphaMode not available anymore"));
 				break;
 			case MLRState::AlphaInvAlphaMode:
 				gos_SetRenderState(gos_State_AlphaTest, 1);
-				gos_SetRenderState(
-					gos_State_AlphaMode, gos_Alpha_AlphaInvAlpha);
+				gos_SetRenderState(gos_State_AlphaMode, gos_Alpha_AlphaInvAlpha);
 				break;
 			case MLRState::OneInvAlphaMode:
 				gos_SetRenderState(gos_State_AlphaTest, 0);
@@ -592,24 +571,21 @@ bool MLRSorter::SetDifferences(const MLRState& original, const MLRState& newer)
 		}
 		if (changed & MLRState::SpecularMask)
 		{
-			gos_SetRenderState(gos_State_Specular,
-				newer.renderState & MLRState::SpecularOnMode);
+			gos_SetRenderState(gos_State_Specular, newer.renderState & MLRState::SpecularOnMode);
 		}
 		if (changed & MLRState::TextureWrapMask)
 		{
 			gos_SetRenderState(gos_State_TextureAddress,
-				(newer.renderState & MLRState::TextureClamp) ? gos_TextureClamp
-															 : gos_TextureWrap);
+				(newer.renderState & MLRState::TextureClamp) ? gos_TextureClamp : gos_TextureWrap);
 		}
 		if (changed & MLRState::DitherOnMode)
 		{
-			gos_SetRenderState(
-				gos_State_Dither, newer.renderState & MLRState::DitherOnMode);
+			gos_SetRenderState(gos_State_Dither, newer.renderState & MLRState::DitherOnMode);
 		}
 		if (changed & MLRState::TextureCorrectionOnMode)
 		{
-			gos_SetRenderState(gos_State_Perspective,
-				newer.renderState & MLRState::TextureCorrectionOnMode);
+			gos_SetRenderState(
+				gos_State_Perspective, newer.renderState & MLRState::TextureCorrectionOnMode);
 		}
 		if (changed & MLRState::WireFrameMask)
 		{
@@ -629,13 +605,13 @@ bool MLRSorter::SetDifferences(const MLRState& original, const MLRState& newer)
 		}
 		if (changed & MLRState::ZBufferWriteMask)
 		{
-			gos_SetRenderState(gos_State_ZWrite,
-				(newer.renderState & MLRState::ZBufferWriteMask) ? 1 : 0);
+			gos_SetRenderState(
+				gos_State_ZWrite, (newer.renderState & MLRState::ZBufferWriteMask) ? 1 : 0);
 		}
 		if (changed & MLRState::ZBufferCompareMask)
 		{
-			gos_SetRenderState(gos_State_ZCompare,
-				(newer.renderState & MLRState::ZBufferCompareMask) ? 1 : 0);
+			gos_SetRenderState(
+				gos_State_ZCompare, (newer.renderState & MLRState::ZBufferCompareMask) ? 1 : 0);
 		}
 	}
 	gos_SetRenderState(gos_State_TextureMapBlend, gos_BlendModulateAlpha);
@@ -644,4 +620,4 @@ bool MLRSorter::SetDifferences(const MLRState& original, const MLRState& newer)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLRSorter::TestInstance(void) const { Verify(IsDerivedFrom(DefaultData)); }
+void MLRSorter::TestInstance(void) const { _ASSERT(IsDerivedFrom(DefaultData)); }

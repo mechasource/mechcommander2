@@ -31,7 +31,7 @@ class Motion3D;
 
 class Origin3D
 {
-  public:
+public:
 	Point3D linearPosition;
 	UnitQuaternion angularPosition;
 
@@ -95,16 +95,9 @@ class Origin3D
 	//
 	// Equality operator
 	//
-	friend bool Close_Enough(
-		const Origin3D& a1, const Origin3D& a2, float e = SMALL);
-	bool operator==(const Origin3D& a) const
-	{
-		return Close_Enough(*this, a, SMALL);
-	}
-	bool operator!=(const Origin3D& a) const
-	{
-		return !Close_Enough(*this, a, SMALL);
-	}
+	friend bool Close_Enough(const Origin3D& a1, const Origin3D& a2, float e = SMALL);
+	bool operator==(const Origin3D& a) const { return Close_Enough(*this, a, SMALL); }
+	bool operator!=(const Origin3D& a) const { return !Close_Enough(*this, a, SMALL); }
 
 	//
 	// Origin3D motion
@@ -129,10 +122,7 @@ class Origin3D
 	static bool TestClass(void);
 };
 
-inline Point3D& Point3D::operator=(const Origin3D& p)
-{
-	return operator=(p.linearPosition);
-}
+inline Point3D& Point3D::operator=(const Origin3D& p) { return operator=(p.linearPosition); }
 
 inline EulerAngles& EulerAngles::operator=(const Origin3D& p)
 {
@@ -143,20 +133,19 @@ inline UnitQuaternion& UnitQuaternion::operator=(const Origin3D& p)
 {
 	return operator=(p.angularPosition);
 }
-}
+} // namespace Stuff
 
 namespace MemoryStreamIO
 {
-
-inline Stuff::MemoryStream& Read(
-	Stuff::MemoryStream* stream, Stuff::Origin3D* output)
+#if _CONSIDERED_TEMPORARILY_DISABLED
+inline std::istream& Read(std::istream& stream, Stuff::Origin3D* output)
 {
-	return stream->ReadBytes(output, sizeof(*output));
+	return stream.read(output, sizeof(*output));
 }
-inline Stuff::MemoryStream& Write(
-	Stuff::MemoryStream* stream, const Stuff::Origin3D* input)
+inline std::ostream& Write(std::ostream& stream, const Stuff::Origin3D* input)
 {
-	return stream->WriteBytes(input, sizeof(*input));
+	return stream.write(input, sizeof(*input));
 }
-}
+#endif
+} // namespace MemoryStreamIO
 #endif

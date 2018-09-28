@@ -28,7 +28,7 @@ SafeSocket::SafeSocket(Node* node) : Socket(node) { iteratorHead = nullptr; }
 SafeSocket::~SafeSocket(void)
 {
 	// Check_Object(this);
-	Verify(iteratorHead == nullptr);
+	_ASSERT(iteratorHead == nullptr);
 }
 
 //
@@ -54,8 +54,7 @@ void SafeSocket::SendIteratorMemo(IteratorMemo memo, PVOID content)
 {
 	// Check_Object(this);
 	SafeIterator* iterator;
-	for (iterator = iteratorHead; iterator != nullptr;
-		 iterator = iterator->nextIterator)
+	for (iterator = iteratorHead; iterator != nullptr; iterator = iterator->nextIterator)
 	{
 		Check_Object(iterator);
 		iterator->ReceiveMemo(memo, content);

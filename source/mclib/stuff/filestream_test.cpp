@@ -38,11 +38,9 @@ bool FileStream::TestClass()
 	}
 	total = gos_GetHiResTime() - s;
 	for (i = 0; i < 65535; i++)
-		Verify(buffer[i] == 'A');
-	SPEW((GROUP_STUFF_TEST,
-		"Opening, writing, closing, opening, reading, and closing"));
-	SPEW((GROUP_STUFF_TEST,
-		"  64K file 1024 times, averaging out to %f ticks apiece...",
+		_ASSERT(buffer[i] == 'A');
+	SPEW((GROUP_STUFF_TEST, "Opening, writing, closing, opening, reading, and closing"));
+	SPEW((GROUP_STUFF_TEST, "  64K file 1024 times, averaging out to %f ticks apiece...",
 		total / 1024.0f));
 	SPEW((GROUP_STUFF_TEST, "File data checks out, as well..."));
 	SPEW((GROUP_STUFF_TEST, "Leaving FileStream test..."));

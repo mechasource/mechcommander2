@@ -11,7 +11,7 @@
 #ifndef _COLOR_HPP_
 #define _COLOR_HPP_
 
-#include <stuff/memorystream.hpp>
+// #include <stuff/memorystream.hpp>
 
 namespace Stuff
 {
@@ -19,7 +19,7 @@ class RGBColor;
 class RGBAColor;
 class HSVColor;
 class HSVAColor;
-}
+} // namespace Stuff
 
 #if !defined(Spew)
 void Spew(PCSTR group, const Stuff::RGBColor& color);
@@ -37,13 +37,9 @@ namespace Stuff
 
 class RGBColor
 {
-	friend class RGBAColor;
+//	friend class RGBAColor;
 
-  public:
-	static const RGBColor Unassigned;
-
-	float red, green, blue;
-
+public:
 	RGBColor(void) { red = green = blue = -1.0f; }
 
 	RGBColor(float r, float g, float b)
@@ -53,8 +49,7 @@ class RGBColor
 		blue  = b;
 	}
 
-	friend bool Close_Enough(
-		const RGBColor& c1, const RGBColor& c2, float e = SMALL);
+	friend bool Close_Enough(const RGBColor& c1, const RGBColor& c2, float e = SMALL);
 	bool operator==(const RGBColor& color) const
 	{
 		// Check_Object(this);
@@ -84,8 +79,7 @@ class RGBColor
 		return 0.3f * red + 0.5f * green + 0.2f * blue;
 	}
 
-	RGBColor& Combine(
-		const RGBColor& c1, float t1, const RGBColor& c2, float t2)
+	RGBColor& Combine(const RGBColor& c1, float t1, const RGBColor& c2, float t2)
 	{
 		// Check_Pointer(this);
 		Check_Object(&c1);
@@ -113,6 +107,10 @@ class RGBColor
 #if !defined(Spew)
 	friend void ::Spew(PCSTR group, const RGBColor& color);
 #endif
+
+protected:
+	// static const RGBColor Unassigned;
+	float red, green, blue;
 };
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~ RGBColor functions ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -125,27 +123,13 @@ void Convert_From_Ascii(PCSTR str, RGBColor* color);
 
 class RGBAColor : public RGBColor
 {
-  public:
-	static const RGBAColor Unassigned;
-
-	float alpha;
-
+public:
 	RGBAColor(void) : RGBColor() { alpha = -1.0f; }
-	RGBAColor(float r, float g, float b, float a) : RGBColor(r, g, b)
-	{
-		alpha = a;
-	}
+	RGBAColor(float r, float g, float b, float a) : RGBColor(r, g, b) { alpha = a; }
 
-	friend bool Close_Enough(
-		const RGBAColor& c1, const RGBAColor& c2, float e = SMALL);
-	bool operator==(const RGBAColor& color) const
-	{
-		return Close_Enough(*this, color, SMALL);
-	}
-	bool operator!=(const RGBAColor& color) const
-	{
-		return !Close_Enough(*this, color, SMALL);
-	}
+	friend bool Close_Enough(const RGBAColor& c1, const RGBAColor& c2, float e = SMALL);
+	bool operator==(const RGBAColor& color) const { return Close_Enough(*this, color, SMALL); }
+	bool operator!=(const RGBAColor& color) const { return !Close_Enough(*this, color, SMALL); }
 
 	RGBAColor& operator=(const RGBAColor& color)
 	{
@@ -159,8 +143,7 @@ class RGBAColor : public RGBColor
 	}
 	RGBAColor& operator=(const HSVAColor& color);
 
-	RGBAColor& Combine(
-		const RGBAColor& c1, float t1, const RGBAColor& c2, float t2)
+	RGBAColor& Combine(const RGBAColor& c1, float t1, const RGBAColor& c2, float t2)
 	{
 		// Check_Pointer(this);
 		Check_Object(&c1);
@@ -184,12 +167,21 @@ class RGBAColor : public RGBColor
 		return *this;
 	}
 
+	float GetAlpha(void) const
+	{
+		return alpha;
+	}
+
 	//
 	// Support functions
 	//
 #if !defined(Spew)
 	friend void ::Spew(PCSTR group, const RGBAColor& color);
 #endif
+
+protected:
+	//static const RGBAColor Unassigned;
+	float alpha;
 };
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~ RGBAColor functions ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -204,11 +196,7 @@ class HSVColor
 {
 	friend class HSVAColor;
 
-  public:
-	static const HSVColor Unassigned;
-
-	float hue, saturation, value;
-
+public:
 	HSVColor(void) { hue = saturation = value = -1.0f; }
 
 	HSVColor(float h, float s, float v)
@@ -218,8 +206,7 @@ class HSVColor
 		value	  = v;
 	}
 
-	friend bool Close_Enough(
-		const HSVColor& c1, const HSVColor& c2, float e = SMALL);
+	friend bool Close_Enough(const HSVColor& c1, const HSVColor& c2, float e = SMALL);
 	bool operator==(const HSVColor& color) const
 	{
 		// Check_Object(this);
@@ -244,8 +231,7 @@ class HSVColor
 
 	void TestInstance(void) const {}
 
-	HSVColor& Combine(
-		const HSVColor& c1, float t1, const HSVColor& c2, float t2)
+	HSVColor& Combine(const HSVColor& c1, float t1, const HSVColor& c2, float t2)
 	{
 		// Check_Pointer(this);
 		Check_Object(&c1);
@@ -273,6 +259,10 @@ class HSVColor
 #if !defined(Spew)
 	friend void ::Spew(PCSTR group, const HSVColor& color);
 #endif
+
+protected:
+	//static const HSVColor Unassigned;
+	float hue, saturation, value;
 };
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~ HSVColor functions ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -285,34 +275,24 @@ void Convert_From_Ascii(PCSTR str, HSVColor* color);
 
 class HSVAColor : public HSVColor
 {
-  public:
+public:
 	static const HSVAColor Unassigned;
 
 	float alpha;
 
 	HSVAColor(void) : HSVColor() { alpha = -1.0f; }
-	HSVAColor(float h, float s, float v, float a) : HSVColor(h, s, v)
-	{
-		alpha = a;
-	}
+	HSVAColor(float h, float s, float v, float a) : HSVColor(h, s, v) { alpha = a; }
 
-	friend bool Close_Enough(
-		const HSVAColor& c1, const HSVAColor& c2, float e = SMALL);
-	bool operator==(const HSVAColor& color) const
-	{
-		return Close_Enough(*this, color, SMALL);
-	}
-	bool operator!=(const HSVAColor& color) const
-	{
-		return !Close_Enough(*this, color, SMALL);
-	}
+	friend bool Close_Enough(const HSVAColor& c1, const HSVAColor& c2, float e = SMALL);
+	bool operator==(const HSVAColor& color) const { return Close_Enough(*this, color, SMALL); }
+	bool operator!=(const HSVAColor& color) const { return !Close_Enough(*this, color, SMALL); }
 
 	HSVAColor& operator=(const RGBAColor& color)
 	{
 		// Check_Object(this);
 		Check_Object(&color);
 		HSVColor::operator=(color);
-		alpha			  = color.alpha;
+		alpha = color.GetAlpha();
 		return *this;
 	}
 	HSVAColor& operator=(const HSVAColor& color)
@@ -326,8 +306,7 @@ class HSVAColor : public HSVColor
 		return *this;
 	}
 
-	HSVAColor& Combine(
-		const HSVAColor& c1, float t1, const HSVAColor& c2, float t2)
+	HSVAColor& Combine(const HSVAColor& c1, float t1, const HSVAColor& c2, float t2)
 	{
 		// Check_Pointer(this);
 		Check_Object(&c1);
@@ -371,53 +350,46 @@ inline RGBAColor& RGBAColor::operator=(const HSVAColor& color)
 	alpha			  = color.alpha;
 	return *this;
 }
-}
+} // namespace Stuff
 
 namespace MemoryStreamIO
 {
-
-inline Stuff::MemoryStream& Read(
-	Stuff::MemoryStream* stream, Stuff::RGBColor* output)
+#if _CONSIDERED_TEMPORARILY_DISABLED
+inline std::istream& Read(std::istream& stream, Stuff::RGBColor* output)
 {
-	return stream->ReadBytes(output, sizeof(*output));
+	return stream.read(output, sizeof(*output));
 }
-inline Stuff::MemoryStream& Write(
-	Stuff::MemoryStream* stream, const Stuff::RGBColor* input)
+inline std::ostream& Write(std::ostream& stream, const Stuff::RGBColor* input)
 {
-	return stream->WriteBytes(input, sizeof(*input));
+	return stream.write(input, sizeof(*input));
 }
 
-inline Stuff::MemoryStream& Read(
-	Stuff::MemoryStream* stream, Stuff::RGBAColor* output)
+inline std::istream& Read(std::istream& stream, Stuff::RGBAColor* output)
 {
-	return stream->ReadBytes(output, sizeof(*output));
+	return stream.read(output, sizeof(*output));
 }
-inline Stuff::MemoryStream& Write(
-	Stuff::MemoryStream* stream, const Stuff::RGBAColor* input)
+inline std::ostream& Write(std::ostream& stream, const Stuff::RGBAColor* input)
 {
-	return stream->WriteBytes(input, sizeof(*input));
+	return stream.write(input, sizeof(*input));
 }
 
-inline Stuff::MemoryStream& Read(
-	Stuff::MemoryStream* stream, Stuff::HSVColor* output)
+inline std::istream& Read(std::istream& stream, Stuff::HSVColor* output)
 {
-	return stream->ReadBytes(output, sizeof(*output));
+	return stream.read(output, sizeof(*output));
 }
-inline Stuff::MemoryStream& Write(
-	Stuff::MemoryStream* stream, const Stuff::HSVColor* input)
+inline std::ostream& Write(std::ostream& stream, const Stuff::HSVColor* input)
 {
-	return stream->WriteBytes(input, sizeof(*input));
+	return stream.write(input, sizeof(*input));
 }
 
-inline Stuff::MemoryStream& Read(
-	Stuff::MemoryStream* stream, Stuff::HSVAColor* output)
+inline std::istream& Read(std::istream& stream, Stuff::HSVAColor* output)
 {
-	return stream->ReadBytes(output, sizeof(*output));
+	return stream.read(output, sizeof(*output));
 }
-inline Stuff::MemoryStream& Write(
-	Stuff::MemoryStream* stream, const Stuff::HSVAColor* input)
+inline std::ostream& Write(std::ostream& stream, const Stuff::HSVAColor* input)
 {
-	return stream->WriteBytes(input, sizeof(*input));
+	return stream.write(input, sizeof(*input));
 }
-}
+#endif
+} // namespace MemoryStreamIO
 #endif

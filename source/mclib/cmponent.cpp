@@ -22,10 +22,9 @@
 #include "utilities.h"
 //******************************************************************************************
 
-PSTR ComponentFormString[] = {"Simple", "Cockpit", "Sensors", "Actuator",
-	"Engine", "HeatSink", "Weapon", "EnergyWeapon", "BallisticWeapon",
-	"MissileWeapon", "Ammo", "JumpJet", "Case", "LifeSupport", "Gyroscope",
-	"PowerAmplifier", "ECM", "Probe", "Jammer", "Bulk", nullptr};
+PSTR ComponentFormString[] = {"Simple", "Cockpit", "Sensors", "Actuator", "Engine", "HeatSink",
+	"Weapon", "EnergyWeapon", "BallisticWeapon", "MissileWeapon", "Ammo", "JumpJet", "Case",
+	"LifeSupport", "Gyroscope", "PowerAmplifier", "ECM", "Probe", "Jammer", "Bulk", nullptr};
 
 PSTR WeaponRangeString[] = {"int16_t", "medium", "int32_t"};
 
@@ -68,8 +67,7 @@ int32_t MasterComponent::initEXCEL(PSTR dataLine, float baseSensorRange)
 	health			   = 1;
 	masterID		   = atoi(field);
 	cLoadString(COMPONENT_NAME_START + masterID, name, MAXLEN_COMPONENT_NAME);
-	cLoadString(
-		COMPONENT_ABBR_START + masterID, abbreviation, MAXLEN_COMPONENT_ABBREV);
+	cLoadString(COMPONENT_ABBR_START + masterID, abbreviation, MAXLEN_COMPONENT_ABBREV);
 	field = strtok_s(nullptr, ",", &next_token);
 	int32_t formIndex;
 	for (formIndex = 0; ComponentFormString[formIndex] != nullptr; formIndex++)
@@ -112,8 +110,9 @@ int32_t MasterComponent::initEXCEL(PSTR dataLine, float baseSensorRange)
 		else if (strcmp(field, WeaponRangeString[WEAPON_RANGE_LONG]) == 0)
 			rangeType = WEAPON_RANGE_LONG;
 		else
-			Fatal(0, " MasterComponent.initEXCEL: bad weapon range type in "
-					 "compbase ");
+			Fatal(0,
+				" MasterComponent.initEXCEL: bad weapon range type in "
+				"compbase ");
 	}
 	field = strtok_s(nullptr, ",", &next_token);
 	for (size_t location = 0; location < NUM_BODY_LOCATIONS; location++)
@@ -194,9 +193,8 @@ int32_t MasterComponent::initEXCEL(PSTR dataLine, float baseSensorRange)
 		stats.weapon.range		   = rangeType;
 		stats.weapon.specialEffect = specialEffect;
 		stats.weapon.ammoMasterId  = ammoMasterId;
-		stats.weapon.flags =
-			ammoType == WEAPON_AMMO_ST ? WEAPON_FLAG_STREAK : 0;
-		stats.weapon.ammoAmount = ammoAmount;
+		stats.weapon.flags		   = ammoType == WEAPON_AMMO_ST ? WEAPON_FLAG_STREAK : 0;
+		stats.weapon.ammoAmount	= ammoAmount;
 		break;
 	case COMPONENT_FORM_AMMO:
 		stats.ammo.ammoPerTon	  = recycleTime;
@@ -223,8 +221,7 @@ int32_t MasterComponent::initEXCEL(PSTR dataLine, float baseSensorRange)
 }
 
 //******************************************************************************************
-int32_t MasterComponent::saveEXCEL(
-	FilePtr componentFile, uint8_t masterId, float baseSensorRange)
+int32_t MasterComponent::saveEXCEL(FilePtr componentFile, uint8_t masterId, float baseSensorRange)
 {
 	char dataLine[512];
 	char piece[512];
@@ -247,8 +244,7 @@ int32_t MasterComponent::saveEXCEL(
 	cLoadString(COMPONENT_NAME_START + masterID, name, MAXLEN_COMPONENT_NAME);
 	strcat(dataLine, name);
 	strcat(dataLine, comma);
-	cLoadString(
-		COMPONENT_ABBR_START + masterID, abbreviation, MAXLEN_COMPONENT_ABBREV);
+	cLoadString(COMPONENT_ABBR_START + masterID, abbreviation, MAXLEN_COMPONENT_ABBREV);
 	strcat(dataLine, abbreviation);
 	strcat(dataLine, comma);
 	strcat(dataLine, ComponentFormString[form]);
@@ -339,8 +335,7 @@ int32_t MasterComponent::saveEXCEL(
 		strcat(dataLine, comma);
 		break;
 	case COMPONENT_FORM_SENSOR:
-		sprintf_s(piece, _countof(piece), "%4.1f",
-			float(stats.sensor.range / baseSensorRange));
+		sprintf_s(piece, _countof(piece), "%4.1f", float(stats.sensor.range / baseSensorRange));
 		strcat(dataLine, piece);
 		strcat(dataLine, comma);
 		sprintf_s(piece, _countof(piece), "na,na,na,na,na,na,na,na,,,,,");
@@ -406,8 +401,7 @@ int32_t MasterComponent::saveEXCEL(
 		sprintf_s(piece, _countof(piece), "%d", WEAPON_AMMO_NONE);
 		strcat(dataLine, piece);
 		strcat(dataLine, comma);
-		sprintf_s(piece, _countof(piece), "%s",
-			WeaponRangeString[stats.weapon.range]);
+		sprintf_s(piece, _countof(piece), "%s", WeaponRangeString[stats.weapon.range]);
 		strcat(dataLine, piece);
 		strcat(dataLine, comma);
 		// sprintf_s(piece,_countof(piece),"%d",stats.weapon.type);
@@ -439,8 +433,7 @@ int32_t MasterComponent::saveEXCEL(
 		sprintf_s(piece, _countof(piece), "%d", stats.weapon.ammoType);
 		strcat(dataLine, piece);
 		strcat(dataLine, comma);
-		sprintf_s(piece, _countof(piece), "%s",
-			WeaponRangeString[stats.weapon.range]);
+		sprintf_s(piece, _countof(piece), "%s", WeaponRangeString[stats.weapon.range]);
 		strcat(dataLine, piece);
 		strcat(dataLine, comma);
 		//			sprintf_s(piece,_countof(piece),"%d",stats.weapon.type);
@@ -469,8 +462,7 @@ int32_t MasterComponent::saveEXCEL(
 		sprintf_s(piece, _countof(piece), "%d", stats.weapon.ammoType);
 		strcat(dataLine, piece);
 		strcat(dataLine, comma);
-		sprintf_s(piece, _countof(piece), "%s",
-			WeaponRangeString[stats.weapon.range]);
+		sprintf_s(piece, _countof(piece), "%s", WeaponRangeString[stats.weapon.range]);
 		strcat(dataLine, piece);
 		strcat(dataLine, comma);
 		//			sprintf_s(piece,_countof(piece),"%d",stats.weapon.type);
@@ -515,8 +507,7 @@ bool MasterComponent::isOffensiveWeapon(void)
 	// So, we can pretty much special-case this routine. If we add others,
 	// we will want to specify DEFENSIVE/OFFENSIVE for each weapon, and then
 	// check against this field...
-	return ((masterID != clanAntiMissileSystemID) &&
-			(masterID != innerSphereAntiMissileSystemID));
+	return ((masterID != clanAntiMissileSystemID) && (masterID != innerSphereAntiMissileSystemID));
 }
 
 //---------------------------------------------------------------------------
@@ -528,14 +519,12 @@ bool MasterComponent::isDefensiveWeapon(void)
 	// So, we can pretty much special-case this routine. If we add others,
 	// we will want to specify DEFENSIVE/OFFENSIVE for each weapon, and then
 	// check against this field...
-	return ((masterID == clanAntiMissileSystemID) ||
-			(masterID == innerSphereAntiMissileSystemID));
+	return ((masterID == clanAntiMissileSystemID) || (masterID == innerSphereAntiMissileSystemID));
 }
 
 //---------------------------------------------------------------------------
 
-int32_t MasterComponent::loadMasterList(
-	PSTR fileName, int32_t listSize, float baseSensorRange)
+int32_t MasterComponent::loadMasterList(PSTR fileName, int32_t listSize, float baseSensorRange)
 {
 	if (masterList)
 	{
@@ -543,8 +532,7 @@ int32_t MasterComponent::loadMasterList(
 		masterList = nullptr;
 	}
 	numComponents = listSize;
-	masterList	= (MasterComponentPtr)systemHeap->Malloc(
-		   sizeof(MasterComponent) * numComponents);
+	masterList	= (MasterComponentPtr)systemHeap->Malloc(sizeof(MasterComponent) * numComponents);
 	for (size_t curComponent = 0; curComponent < numComponents; curComponent++)
 		masterList[curComponent].init();
 	armActuatorID				   = -1;
@@ -554,7 +542,7 @@ int32_t MasterComponent::loadMasterList(
 	//-----------------------------------------------------------------
 	// All components are in one data file. Open it up, and read in the
 	// comma-delimited data...
-	File componentFile;
+	MechFile componentFile;
 	int32_t result = componentFile.open(fileName);
 	if (result != NO_ERROR)
 		return (result);
@@ -577,31 +565,29 @@ int32_t MasterComponent::loadMasterList(
 }
 
 //---------------------------------------------------------------------------
-int32_t MasterComponent::saveMasterList(
-	PSTR fileName, int32_t listSize, float baseSensorRange)
+int32_t MasterComponent::saveMasterList(PSTR fileName, int32_t listSize, float baseSensorRange)
 {
 	//-----------------------------------------------------------------
 	// All components are in one data file. Save it in CSV format!
-	File componentFile;
+	MechFile componentFile;
 	int32_t result = componentFile.create(fileName);
 	if (result != NO_ERROR)
 		return (result);
 	//----------------------------------------------------
 	// Comment header so we know who screwed the file up!
 	char dataLine[512];
-	sprintf(dataLine, "// <Built by Editor v3.0> Special Component "
-					  "Data,,,,,******REVISED FOR NEW MECH "
-					  "STATS,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,");
+	sprintf(dataLine,
+		"// <Built by Editor v3.0> Special Component "
+		"Data,,,,,******REVISED FOR NEW MECH "
+		"STATS,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,");
 	componentFile.writeLine(dataLine);
 	//-----------------------
 	// Special Component Data
-	sprintf(dataLine,
-		"MasterArmActuatorID = %d,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,",
-		armActuatorID);
+	sprintf(
+		dataLine, "MasterArmActuatorID = %d,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,", armActuatorID);
 	componentFile.writeLine(dataLine);
-	sprintf(dataLine,
-		"MasterLegActuatorID = %d,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,",
-		legActuatorID);
+	sprintf(
+		dataLine, "MasterLegActuatorID = %d,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,", legActuatorID);
 	componentFile.writeLine(dataLine);
 	sprintf(dataLine,
 		"MasterClanAntiMissileSystemID = "
@@ -613,21 +599,22 @@ int32_t MasterComponent::saveMasterList(
 		"106,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,",
 		innerSphereAntiMissileSystemID);
 	componentFile.writeLine(dataLine);
-	sprintf(dataLine, "//"
-					  ",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Weapon,Effect,Ammo,Flag,"
-					  "1 = streak 2 = inferno");
+	sprintf(dataLine,
+		"//"
+		",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Weapon,Effect,Ammo,Flag,"
+		"1 = streak 2 = inferno");
 	componentFile.writeLine(dataLine);
-	sprintf(dataLine, "// Component "
-					  "Table,,abbr,type,crits,?,tons,RP,head,CT,LT,RT,LA,RA,LL,"
-					  "RL,Vehicle?,Fit both?,Side,Fit "
-					  "IS?,art,disable,BR,Damage,Recycle,heat,#miss,miss "
-					  "type,min,int16_t,med,int32_t,Type,Field,Master "
-					  "ID,Fields,4 = LBX 8 = artillery");
+	sprintf(dataLine,
+		"// Component "
+		"Table,,abbr,type,crits,?,tons,RP,head,CT,LT,RT,LA,RA,LL,"
+		"RL,Vehicle?,Fit both?,Side,Fit "
+		"IS?,art,disable,BR,Damage,Recycle,heat,#miss,miss "
+		"type,min,int16_t,med,int32_t,Type,Field,Master "
+		"ID,Fields,4 = LBX 8 = artillery");
 	componentFile.writeLine(dataLine);
 	for (size_t componentNum = 0; componentNum < listSize; componentNum++)
 	{
-		masterList[componentNum].saveEXCEL(
-			&componentFile, componentNum, baseSensorRange);
+		masterList[componentNum].saveEXCEL(&componentFile, componentNum, baseSensorRange);
 	}
 	componentFile.close();
 	return (NO_ERROR);

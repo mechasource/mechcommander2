@@ -19,10 +19,10 @@ MLRInfiniteLight::ClassData* MLRInfiniteLight::DefaultData = nullptr;
 //
 void MLRInfiniteLight::InitializeClass()
 {
-	Verify(!DefaultData);
-	// Verify(gos_GetCurrentHeap() == StaticHeap);
-	DefaultData = new ClassData(MLRInfiniteLightClassID,
-		"MidLevelRenderer::MLRInfiniteLight", MLRLight::DefaultData);
+	_ASSERT(!DefaultData);
+	// _ASSERT(gos_GetCurrentHeap() == StaticHeap);
+	DefaultData = new ClassData(
+		MLRInfiniteLightClassID, "MidLevelRenderer::MLRInfiniteLight", MLRLight::DefaultData);
 	Register_Object(DefaultData);
 }
 
@@ -39,18 +39,17 @@ void MLRInfiniteLight::TerminateClass()
 //
 MLRInfiniteLight::MLRInfiniteLight(ClassData* class_data) : MLRLight(class_data)
 {
-	// Verify(gos_GetCurrentHeap() == Heap);
+	// _ASSERT(gos_GetCurrentHeap() == Heap);
 	lightMask = MLRState::FaceLightingMode | MLRState::VertexLightingMode;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLRInfiniteLight::MLRInfiniteLight(
-	ClassData* class_data, Stuff::MemoryStream* stream, uint32_t version)
+MLRInfiniteLight::MLRInfiniteLight(ClassData* class_data, std::iostream stream, uint32_t version)
 	: MLRLight(class_data, stream, version)
 {
 	Check_Object(stream);
-	// Verify(gos_GetCurrentHeap() == Heap);
+	// _ASSERT(gos_GetCurrentHeap() == Heap);
 	lightMask = MLRState::FaceLightingMode | MLRState::VertexLightingMode;
 }
 
@@ -60,7 +59,7 @@ MLRInfiniteLight::MLRInfiniteLight(ClassData* class_data, Stuff::Page* page)
 	: MLRLight(class_data, page)
 {
 	Check_Object(page);
-	// Verify(gos_GetCurrentHeap() == Heap);
+	// _ASSERT(gos_GetCurrentHeap() == Heap);
 	lightMask = MLRState::FaceLightingMode | MLRState::VertexLightingMode;
 }
 
@@ -70,7 +69,7 @@ MLRInfiniteLight::~MLRInfiniteLight() {}
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLRInfiniteLight::TestInstance() { Verify(IsDerivedFrom(DefaultData)); }
+void MLRInfiniteLight::TestInstance() { _ASSERT(IsDerivedFrom(DefaultData)); }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //

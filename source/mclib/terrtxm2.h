@@ -49,7 +49,7 @@ class TerrainColorMap
 {
 	// Data Members
 	//-------------
-  protected:
+protected:
 	puint8_t ColorMap;
 
 	uint32_t numTextures;
@@ -78,7 +78,7 @@ class TerrainColorMap
 
 	static uint32_t terrainTypeIDs[TOTAL_COLORMAP_TYPES];
 
-  public:
+public:
 	bool colorMapStarted;
 
 	float hGauss;
@@ -86,8 +86,8 @@ class TerrainColorMap
 
 	// Member Functions
 	//-----------------
-  protected:
-  public:
+protected:
+public:
 	void init(void);
 
 	TerrainColorMap(void) { init(void); }
@@ -100,8 +100,7 @@ class TerrainColorMap
 
 	void getColorMapData(puint8_t ourRAM, int32_t index, int32_t width);
 
-	uint32_t getTextureHandle(
-		VertexPtr vMin, VertexPtr vMax, TerrainUVData* uvData);
+	uint32_t getTextureHandle(VertexPtr vMin, VertexPtr vMax, TerrainUVData* uvData);
 
 	uint32_t getDetailHandle(void)
 	{
@@ -121,8 +120,7 @@ class TerrainColorMap
 	{
 		if ((frameNum >= 0) && (frameNum < (int32_t)numWaterDetailFrames))
 		{
-			mcTextureManager->get_gosTextureHandle(
-				waterDetailNodeIndex[frameNum]);
+			mcTextureManager->get_gosTextureHandle(waterDetailNodeIndex[frameNum]);
 			return waterDetailNodeIndex[frameNum];
 		}
 		else
@@ -140,17 +138,11 @@ class TerrainColorMap
 
 	float getWaterDetailTilingFactor(void) { return waterDetailTilingFactor; }
 
-	void setWaterDetailFrameRate(float frameRate)
-	{
-		waterDetailFrameRate = frameRate;
-	}
+	void setWaterDetailFrameRate(float frameRate) { waterDetailFrameRate = frameRate; }
 
 	void setDetailTilingFactor(float tf) { detailTextureTilingFactor = tf; }
 
-	void setWaterTextureTilingFactor(float tf)
-	{
-		waterTextureTilingFactor = tf;
-	}
+	void setWaterTextureTilingFactor(float tf) { waterTextureTilingFactor = tf; }
 
 	void setWaterDetailTilingFactor(float tf) { waterDetailTilingFactor = tf; }
 

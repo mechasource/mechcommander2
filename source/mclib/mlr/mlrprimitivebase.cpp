@@ -18,7 +18,7 @@ size_t clipTrick[6][2] = {{1, 1}, {1, 0}, {0, 1}, {0, 0}, {2, 0}, {2, 1}};
 
 void ClipPolygon2::Init(int32_t passes)
 {
-	// Verify(gos_GetCurrentHeap() == StaticHeap);
+	// _ASSERT(gos_GetCurrentHeap() == StaticHeap);
 	coords.SetLength(Limits::Max_Number_Vertices_Per_Polygon);
 	colors.SetLength(Limits::Max_Number_Vertices_Per_Polygon);
 	texCoords.SetLength(passes * Limits::Max_Number_Vertices_Per_Polygon);
@@ -39,21 +39,21 @@ void ClipPolygon2::Destroy()
 
 MLRPrimitiveBase::ClassData* MLRPrimitiveBase::DefaultData = nullptr;
 
-DynamicArrayOf<Vector4D>* MLRPrimitiveBase::transformedCoords;
+std::vector<Vector4D>* MLRPrimitiveBase::transformedCoords;
 
-DynamicArrayOf<MLRClippingState>* MLRPrimitiveBase::clipPerVertex;
-DynamicArrayOf<Vector4D>* MLRPrimitiveBase::clipExtraCoords;
+std::vector<MLRClippingState>* MLRPrimitiveBase::clipPerVertex;
+std::vector<Vector4D>* MLRPrimitiveBase::clipExtraCoords;
 
-DynamicArrayOf<Stuff::Vector2DScalar>* MLRPrimitiveBase::clipExtraTexCoords;
+std::vector<Stuff::Vector2DScalar>* MLRPrimitiveBase::clipExtraTexCoords;
 
 #if COLOR_AS_DWORD
-DynamicArrayOf<uint32_t>
+std::vector<uint32_t>
 #else
-DynamicArrayOf<RGBAColor>
+std::vector<RGBAColor>
 #endif
 	* MLR_I_C_PMesh::clipExtraColors;
 
-DynamicArrayOf<uint16_t>* MLRPrimitiveBase::clipExtraLength;
+std::vector<uint16_t>* MLRPrimitiveBase::clipExtraLength;
 
 ClipPolygon2* MLRPrimitiveBase::clipBuffer;
 
@@ -61,25 +61,21 @@ ClipPolygon2* MLRPrimitiveBase::clipBuffer;
 //
 void MLRPrimitiveBase::InitializeClass()
 {
-	Verify(!DefaultData);
-	// Verify(gos_GetCurrentHeap() == StaticHeap);
-	DefaultData = new ClassData(MLRPrimitiveBaseClassID,
-		"MidLevelRenderer::MLRPrimitiveBase", RegisteredClass::DefaultData,
-		nullptr);
+	_ASSERT(!DefaultData);
+	// _ASSERT(gos_GetCurrentHeap() == StaticHeap);
+	DefaultData = new ClassData(MLRPrimitiveBaseClassID, "MidLevelRenderer::MLRPrimitiveBase",
+		RegisteredClass::DefaultData, nullptr);
 	Register_Object(DefaultData);
-	transformedCoords =
-		new DynamicArrayOf<Vector4D>(Limits::Max_Number_Vertices_Per_Mesh);
+	transformedCoords = new std::vector<Vector4D>(Limits::Max_Number_Vertices_Per_Mesh);
 	Register_Object(transformedCoords);
-	clipPerVertex = new DynamicArrayOf<MLRClippingState>(
-		Limits::Max_Number_Vertices_Per_Mesh);
+	clipPerVertex = new std::vector<MLRClippingState>(Limits::Max_Number_Vertices_Per_Mesh);
 	Register_Object(clipPerVertex);
-	clipExtraCoords =
-		new DynamicArrayOf<Vector4D>(Limits::Max_Number_Vertices_Per_Mesh);
+	clipExtraCoords = new std::vector<Vector4D>(Limits::Max_Number_Vertices_Per_Mesh);
 	Register_Object(clipExtraCoords);
-	clipExtraTexCoords = new DynamicArrayOf<Stuff::Vector2DScalar>(
-		Limits::Max_Number_Vertices_Per_Mesh);
+	clipExtraTexCoords =
+		new std::vector<Stuff::Vector2DScalar>(Limits::Max_Number_Vertices_Per_Mesh);
 	Register_Object(clipExtraTexCoords);
-	clipExtraColors = new DynamicArrayOf<
+	clipExtraColors = new std::vector<
 #if COLOR_AS_DWORD
 		uint32_t
 #else
@@ -87,8 +83,7 @@ void MLRPrimitiveBase::InitializeClass()
 #endif
 		>(Limits::Max_Number_Primitives_Per_Frame);
 	Register_Object(clipExtraColors);
-	clipExtraLength =
-		new DynamicArrayOf<uint16_t>(Limits::Max_Number_Primitives_Per_Frame);
+	clipExtraLength = new std::vector<uint16_t>(Limits::Max_Number_Primitives_Per_Frame);
 	Register_Object(clipExtraLength);
 	clipBuffer = new ClipPolygon2[2];
 	Register_Pointer(clipBuffer);
@@ -123,13 +118,12 @@ void MLRPrimitiveBase::TerminateClass()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLRPrimitiveBase::MLRPrimitiveBase(
-	ClassData* class_data, Stuff::MemoryStream* stream, uint32_t version)
+MLRPrimitiveBase::MLRPrimitiveBase(ClassData* class_data, std::iostream stream, uint32_t version)
 	: RegisteredClass(class_data)
 {
 	// Check_Pointer(this);
 	Check_Object(stream);
-	// Verify(gos_GetCurrentHeap() == Heap);
+	// _ASSERT(gos_GetCurrentHeap() == Heap);
 	switch (version)
 	{
 	case 1:
@@ -154,7 +148,7 @@ MLRPrimitiveBase::MLRPrimitiveBase(
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLRPrimitiveBase::Save(Stuff::MemoryStream* stream)
+void MLRPrimitiveBase::Save(std::iostream stream)
 {
 	// Check_Object(this);
 	Check_Object(stream);
@@ -171,7 +165,7 @@ void MLRPrimitiveBase::Save(Stuff::MemoryStream* stream)
 MLRPrimitiveBase::MLRPrimitiveBase(ClassData* class_data)
 	: RegisteredClass(class_data), lengths(0), texCoords(0), coords(0)
 {
-	// Verify(gos_GetCurrentHeap() == Heap);
+	// _ASSERT(gos_GetCurrentHeap() == Heap);
 	referenceState = 0;
 	state		   = 0;
 	passes		   = 1;
@@ -180,14 +174,11 @@ MLRPrimitiveBase::MLRPrimitiveBase(ClassData* class_data)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLRPrimitiveBase::~MLRPrimitiveBase() { Verify(referenceCount == 0); }
+MLRPrimitiveBase::~MLRPrimitiveBase() { _ASSERT(referenceCount == 0); }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLRPrimitiveBase::TestInstance(void) const
-{
-	Verify(IsDerivedFrom(DefaultData));
-}
+void MLRPrimitiveBase::TestInstance(void) const { _ASSERT(IsDerivedFrom(DefaultData)); }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
@@ -233,9 +224,9 @@ void MLRPrimitiveBase::SetCoordData(const Point3D* data, size_t dataSize)
 {
 	// Check_Object(this);
 	Check_Pointer(data);
-	Verify(texCoords.GetLength() == 0 || dataSize == texCoords.GetLength());
+	_ASSERT(texCoords.GetLength() == 0 || dataSize == texCoords.GetLength());
 #if defined(MAX_NUMBER_VERTICES)
-	Verify(dataSize <= MAX_NUMBER_VERTICES);
+	_ASSERT(dataSize <= MAX_NUMBER_VERTICES);
 #endif
 	coords.AssignData(data, dataSize);
 }
@@ -251,19 +242,17 @@ void MLRPrimitiveBase::GetCoordData(Point3D** data, psize_t dataSize)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLRPrimitiveBase::SetTexCoordData(
-	const Stuff::Vector2DScalar* data, size_t dataSize)
+void MLRPrimitiveBase::SetTexCoordData(const Stuff::Vector2DScalar* data, size_t dataSize)
 {
 	// Check_Object(this);
 	Check_Pointer(data);
-	Verify(coords.GetLength() == 0 || dataSize == coords.GetLength());
+	_ASSERT(coords.GetLength() == 0 || dataSize == coords.GetLength());
 	texCoords.AssignData((Vector2DScalar*)data, dataSize);
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLRPrimitiveBase::GetTexCoordData(
-	Stuff::Vector2DScalar** data, psize_t dataSize)
+void MLRPrimitiveBase::GetTexCoordData(Stuff::Vector2DScalar** data, psize_t dataSize)
 {
 	// Check_Object(this);
 	*data	 = texCoords.GetData();
@@ -341,7 +330,7 @@ bool MLRPrimitiveBase::CastRay(Line3D* line, Normal3D* normal)
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 MLRShape* MidLevelRenderer::CreateIndexedIcosahedron(
-	IcoInfo& icoInfo, Stuff::DynamicArrayOf<MLRState>* states)
+	IcoInfo& icoInfo, std::vector<MLRState>* states)
 {
 	switch (icoInfo.type)
 	{
@@ -355,36 +344,28 @@ MLRShape* MidLevelRenderer::CreateIndexedIcosahedron(
 		return CreateIndexedIcosahedron_Color_Lit(icoInfo, &(*states)[0]);
 		break;
 	case MLR_I_DT_PMeshClassID:
-		return CreateIndexedIcosahedron_NoColor_NoLit_2Tex(
-			icoInfo, &(*states)[0], &(*states)[1]);
+		return CreateIndexedIcosahedron_NoColor_NoLit_2Tex(icoInfo, &(*states)[0], &(*states)[1]);
 		break;
 	case MLR_I_C_DT_PMeshClassID:
-		return CreateIndexedIcosahedron_Color_NoLit_2Tex(
-			icoInfo, &(*states)[0], &(*states)[1]);
+		return CreateIndexedIcosahedron_Color_NoLit_2Tex(icoInfo, &(*states)[0], &(*states)[1]);
 		break;
 	case MLR_I_L_DT_PMeshClassID:
-		return CreateIndexedIcosahedron_Color_Lit_2Tex(
-			icoInfo, &(*states)[0], &(*states)[1]);
+		return CreateIndexedIcosahedron_Color_Lit_2Tex(icoInfo, &(*states)[0], &(*states)[1]);
 		break;
 	case MLR_I_MT_PMeshClassID:
-		return CreateIndexedIcosahedron_NoColor_NoLit_MultiTexture(
-			icoInfo, states);
+		return CreateIndexedIcosahedron_NoColor_NoLit_MultiTexture(icoInfo, states);
 		break;
 	case MLR_I_DeT_PMeshClassID:
-		return CreateIndexedIcosahedron_NoColor_NoLit_DetTex(
-			icoInfo, &(*states)[0], &(*states)[1]);
+		return CreateIndexedIcosahedron_NoColor_NoLit_DetTex(icoInfo, &(*states)[0], &(*states)[1]);
 		break;
 	case MLR_I_C_DeT_PMeshClassID:
-		return CreateIndexedIcosahedron_Color_NoLit_DetTex(
-			icoInfo, &(*states)[0], &(*states)[1]);
+		return CreateIndexedIcosahedron_Color_NoLit_DetTex(icoInfo, &(*states)[0], &(*states)[1]);
 		break;
 	case MLR_I_L_DeT_PMeshClassID:
-		return CreateIndexedIcosahedron_Color_Lit_DetTex(
-			icoInfo, &(*states)[0], &(*states)[1]);
+		return CreateIndexedIcosahedron_Color_Lit_DetTex(icoInfo, &(*states)[0], &(*states)[1]);
 		break;
 	case MLR_I_TMeshClassID:
-		return CreateIndexedTriIcosahedron_NoColor_NoLit(
-			icoInfo, &(*states)[0]);
+		return CreateIndexedTriIcosahedron_NoColor_NoLit(icoInfo, &(*states)[0]);
 		break;
 	case MLR_I_C_TMeshClassID:
 		return CreateIndexedTriIcosahedron_Color_NoLit(icoInfo, &(*states)[0]);
@@ -401,24 +382,20 @@ MLRShape* MidLevelRenderer::CreateIndexedIcosahedron(
 			icoInfo, &(*states)[0], &(*states)[1]);
 		break;
 	case MLR_I_L_DeT_TMeshClassID:
-		return CreateIndexedTriIcosahedron_Color_Lit_DetTex(
-			icoInfo, &(*states)[0], &(*states)[1]);
+		return CreateIndexedTriIcosahedron_Color_Lit_DetTex(icoInfo, &(*states)[0], &(*states)[1]);
 		break;
 	case MLR_I_DT_TMeshClassID:
 		return CreateIndexedTriIcosahedron_NoColor_NoLit_2Tex(
 			icoInfo, &(*states)[0], &(*states)[1]);
 		break;
 	case MLR_I_C_DT_TMeshClassID:
-		return CreateIndexedTriIcosahedron_Color_NoLit_2Tex(
-			icoInfo, &(*states)[0], &(*states)[1]);
+		return CreateIndexedTriIcosahedron_Color_NoLit_2Tex(icoInfo, &(*states)[0], &(*states)[1]);
 		break;
 	case MLR_I_L_DT_TMeshClassID:
-		return CreateIndexedTriIcosahedron_Color_Lit_2Tex(
-			icoInfo, &(*states)[0], &(*states)[1]);
+		return CreateIndexedTriIcosahedron_Color_Lit_2Tex(icoInfo, &(*states)[0], &(*states)[1]);
 		break;
 	case MLR_TerrainClassID:
-		return CreateIndexedTriIcosahedron_TerrainTest(
-			icoInfo, &(*states)[0], &(*states)[1]);
+		return CreateIndexedTriIcosahedron_TerrainTest(icoInfo, &(*states)[0], &(*states)[1]);
 		break;
 	}
 	return nullptr;
@@ -501,5 +478,5 @@ MidLevelRenderer::IcoInfo::GetTypeName()
 
 void MLRPrimitiveBase__ClassData::TestInstance()
 {
-	Verify(IsDerivedFrom(MLRPrimitiveBase::DefaultData));
+	_ASSERT(IsDerivedFrom(MLRPrimitiveBase::DefaultData));
 }

@@ -33,12 +33,15 @@ class UnitQuaternion;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Matrix4D ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+// XMMATRIX XMFLOAT4X4
+
 class Matrix4D
 {
-  public:
-	static const Matrix4D Identity; // ???
-
+protected:
 	float entries[16];
+
+public:
+	static const Matrix4D Identity; // ???
 
 	//
 	// Constructors
@@ -84,16 +87,9 @@ class Matrix4D
 	//
 	// Comparison operators
 	//
-	friend bool Close_Enough(
-		const Matrix4D& m1, const Matrix4D& m2, float e = SMALL);
-	bool operator==(const Matrix4D& a) const
-	{
-		return Close_Enough(*this, a, SMALL);
-	}
-	bool operator!=(const Matrix4D& a) const
-	{
-		return !Close_Enough(*this, a, SMALL);
-	}
+	friend bool Close_Enough(const Matrix4D& m1, const Matrix4D& m2, float e = SMALL);
+	bool operator==(const Matrix4D& a) const { return Close_Enough(*this, a, SMALL); }
+	bool operator!=(const Matrix4D& a) const { return !Close_Enough(*this, a, SMALL); }
 
 	//
 	// Index operators
@@ -101,15 +97,15 @@ class Matrix4D
 	float& operator()(size_t row, size_t column)
 	{
 		// Check_Pointer(this);
-		Verify((row) <= W_Axis);
-		Verify((column) <= W_Axis);
+		_ASSERT((row) <= W_Axis);
+		_ASSERT((column) <= W_Axis);
 		return entries[(column << 2) + row];
 	}
 	const float& operator()(size_t row, size_t column) const
 	{
 		// Check_Pointer(this);
-		Verify((row) <= W_Axis);
-		Verify((column) <= W_Axis);
+		_ASSERT((row) <= W_Axis);
+		_ASSERT((column) <= W_Axis);
 		return entries[(column << 2) + row];
 	}
 
@@ -128,15 +124,14 @@ class Matrix4D
 		Matrix4D temp(*this);
 		return Multiply(temp, m);
 	}
-	inline Matrix4D& Multiply(
-		const AffineMatrix4D& Source1, const Matrix4D& Source2)
+	inline Matrix4D& Multiply(const AffineMatrix4D& Source1, const Matrix4D& Source2)
 	{
 		// Check_Pointer(this);
 		Check_Object(&Source1);
 		Check_Object(&Source2);
 		(void)Source1;
 		(void)Source2;
-#if USE_ASSEMBLER_CODE
+#if USE_INLINE_ASSEMBLER_CODE
 		float* f = entries;
 		_asm
 		{
@@ -457,60 +452,43 @@ class Matrix4D
 				pop         esi
 		}
 #else
-		(*this)(0, 0) = Source1(0, 0) * Source2(0, 0) +
-						Source1(0, 1) * Source2(1, 0) +
-						Source1(0, 2) * Source2(2, 0);
-		(*this)(1, 0) = Source1(1, 0) * Source2(0, 0) +
-						Source1(1, 1) * Source2(1, 0) +
-						Source1(1, 2) * Source2(2, 0);
-		(*this)(2, 0) = Source1(2, 0) * Source2(0, 0) +
-						Source1(2, 1) * Source2(1, 0) +
-						Source1(2, 2) * Source2(2, 0);
-		(*this)(3, 0) = Source1(3, 0) * Source2(0, 0) +
-						Source1(3, 1) * Source2(1, 0) +
-						Source1(3, 2) * Source2(2, 0) + Source2(3, 0);
-		(*this)(0, 1) = Source1(0, 0) * Source2(0, 1) +
-						Source1(0, 1) * Source2(1, 1) +
-						Source1(0, 2) * Source2(2, 1);
-		(*this)(1, 1) = Source1(1, 0) * Source2(0, 1) +
-						Source1(1, 1) * Source2(1, 1) +
-						Source1(1, 2) * Source2(2, 1);
-		(*this)(2, 1) = Source1(2, 0) * Source2(0, 1) +
-						Source1(2, 1) * Source2(1, 1) +
-						Source1(2, 2) * Source2(2, 1);
-		(*this)(3, 1) = Source1(3, 0) * Source2(0, 1) +
-						Source1(3, 1) * Source2(1, 1) +
-						Source1(3, 2) * Source2(2, 1) + Source2(3, 1);
-		(*this)(0, 2) = Source1(0, 0) * Source2(0, 2) +
-						Source1(0, 1) * Source2(1, 2) +
-						Source1(0, 2) * Source2(2, 2);
-		(*this)(1, 2) = Source1(1, 0) * Source2(0, 2) +
-						Source1(1, 1) * Source2(1, 2) +
-						Source1(1, 2) * Source2(2, 2);
-		(*this)(2, 2) = Source1(2, 0) * Source2(0, 2) +
-						Source1(2, 1) * Source2(1, 2) +
-						Source1(2, 2) * Source2(2, 2);
-		(*this)(3, 2) = Source1(3, 0) * Source2(0, 2) +
-						Source1(3, 1) * Source2(1, 2) +
-						Source1(3, 2) * Source2(2, 2) + Source2(3, 2);
-		(*this)(0, 3) = Source1(0, 0) * Source2(0, 3) +
-						Source1(0, 1) * Source2(1, 3) +
-						Source1(0, 2) * Source2(2, 3);
-		(*this)(1, 3) = Source1(1, 0) * Source2(0, 3) +
-						Source1(1, 1) * Source2(1, 3) +
-						Source1(1, 2) * Source2(2, 3);
-		(*this)(2, 3) = Source1(2, 0) * Source2(0, 3) +
-						Source1(2, 1) * Source2(1, 3) +
-						Source1(2, 2) * Source2(2, 3);
-		(*this)(3, 3) = Source1(3, 0) * Source2(0, 3) +
-						Source1(3, 1) * Source2(1, 3) +
-						Source1(3, 2) * Source2(2, 3) + Source2(3, 3);
+		(*this)(0, 0) = Source1(0, 0) * Source2(0, 0) + Source1(0, 1) * Source2(1, 0) +
+			Source1(0, 2) * Source2(2, 0);
+		(*this)(1, 0) = Source1(1, 0) * Source2(0, 0) + Source1(1, 1) * Source2(1, 0) +
+			Source1(1, 2) * Source2(2, 0);
+		(*this)(2, 0) = Source1(2, 0) * Source2(0, 0) + Source1(2, 1) * Source2(1, 0) +
+			Source1(2, 2) * Source2(2, 0);
+		(*this)(3, 0) = Source1(3, 0) * Source2(0, 0) + Source1(3, 1) * Source2(1, 0) +
+			Source1(3, 2) * Source2(2, 0) + Source2(3, 0);
+		(*this)(0, 1) = Source1(0, 0) * Source2(0, 1) + Source1(0, 1) * Source2(1, 1) +
+			Source1(0, 2) * Source2(2, 1);
+		(*this)(1, 1) = Source1(1, 0) * Source2(0, 1) + Source1(1, 1) * Source2(1, 1) +
+			Source1(1, 2) * Source2(2, 1);
+		(*this)(2, 1) = Source1(2, 0) * Source2(0, 1) + Source1(2, 1) * Source2(1, 1) +
+			Source1(2, 2) * Source2(2, 1);
+		(*this)(3, 1) = Source1(3, 0) * Source2(0, 1) + Source1(3, 1) * Source2(1, 1) +
+			Source1(3, 2) * Source2(2, 1) + Source2(3, 1);
+		(*this)(0, 2) = Source1(0, 0) * Source2(0, 2) + Source1(0, 1) * Source2(1, 2) +
+			Source1(0, 2) * Source2(2, 2);
+		(*this)(1, 2) = Source1(1, 0) * Source2(0, 2) + Source1(1, 1) * Source2(1, 2) +
+			Source1(1, 2) * Source2(2, 2);
+		(*this)(2, 2) = Source1(2, 0) * Source2(0, 2) + Source1(2, 1) * Source2(1, 2) +
+			Source1(2, 2) * Source2(2, 2);
+		(*this)(3, 2) = Source1(3, 0) * Source2(0, 2) + Source1(3, 1) * Source2(1, 2) +
+			Source1(3, 2) * Source2(2, 2) + Source2(3, 2);
+		(*this)(0, 3) = Source1(0, 0) * Source2(0, 3) + Source1(0, 1) * Source2(1, 3) +
+			Source1(0, 2) * Source2(2, 3);
+		(*this)(1, 3) = Source1(1, 0) * Source2(0, 3) + Source1(1, 1) * Source2(1, 3) +
+			Source1(1, 2) * Source2(2, 3);
+		(*this)(2, 3) = Source1(2, 0) * Source2(0, 3) + Source1(2, 1) * Source2(1, 3) +
+			Source1(2, 2) * Source2(2, 3);
+		(*this)(3, 3) = Source1(3, 0) * Source2(0, 3) + Source1(3, 1) * Source2(1, 3) +
+			Source1(3, 2) * Source2(2, 3) + Source2(3, 3);
 #endif
 		return *this;
 	};
 
-	Matrix4D& Multiply(
-		const AffineMatrix4D& Source1, const AffineMatrix4D& Source2);
+	Matrix4D& Multiply(const AffineMatrix4D& Source1, const AffineMatrix4D& Source2);
 
 	//
 	// Matrix4D Inversion
@@ -534,15 +512,15 @@ class Matrix4D
 	//
 	// Creating perspective Matrix4D
 	//
-	void SetPerspective(float near_clip, float far_clip, float left_clip,
-		float right_clip, float top_clip, float bottom_clip);
-	void GetPerspective(float* near_clip, float* far_clip, float* left_clip,
-		float* right_clip, float* top_clip, float* bottom_clip) const;
+	void SetPerspective(float near_clip, float far_clip, float left_clip, float right_clip,
+		float top_clip, float bottom_clip);
+	void GetPerspective(float* near_clip, float* far_clip, float* left_clip, float* right_clip,
+		float* top_clip, float* bottom_clip) const;
 
-	void SetPerspective(float near_clip, float far_clip,
-		const Radian& horizontal_fov, float height_to_width);
-	void GetPerspective(float* near_clip, float* far_clip,
-		Radian* horizontal_fov, float* height_to_width) const;
+	void SetPerspective(
+		float near_clip, float far_clip, const Radian& horizontal_fov, float height_to_width);
+	void GetPerspective(
+		float* near_clip, float* far_clip, Radian* horizontal_fov, float* height_to_width) const;
 };
-}
+} // namespace Stuff
 #endif

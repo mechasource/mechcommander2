@@ -79,8 +79,8 @@ public:
 		fadeTable										  = nullptr;
 		textureMemoryHandle								  = 0xffffffff;
 		actualHeight									  = -1;
-		lightRGB = 0xffffffff; // Fully Lit
-		fogRGB   = 0xffffffff; // NO Fog
+		lightRGB										  = 0xffffffff; // Fully Lit
+		fogRGB											  = 0xffffffff; // NO Fog
 	}
 
 	void init(puint8_t _shape, int32_t _x, int32_t _y, int32_t frame, bool rev,
@@ -127,8 +127,8 @@ public:
 
 	void setFog(uint32_t fog) { fogRGB = fog; }
 
-	void init(uint32_t textureHandle, int32_t _x, int32_t _y, int32_t hsx,
-		int32_t hsy, float tWidth, float _z, float tZ);
+	void init(uint32_t textureHandle, int32_t _x, int32_t _y, int32_t hsx, int32_t hsy,
+		float tWidth, float _z, float tZ);
 	virtual void draw(void);
 };
 
@@ -177,8 +177,7 @@ public:
 
 	TexturedPolygonQuadElement(void) {}
 
-	void init(
-		gos_VERTEX* v, uint32_t tHandle, bool writeZ = true, bool compZ = true);
+	void init(gos_VERTEX* v, uint32_t tHandle, bool writeZ = true, bool compZ = true);
 
 	virtual void draw(void);
 };

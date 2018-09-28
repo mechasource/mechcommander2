@@ -42,7 +42,7 @@
 
 //---------------------------------------------------------------------------
 // class CSVIniFile
-CSVFile::CSVFile(void) : File() { totalRows = totalCols = 0L; }
+CSVFile::CSVFile(void) : MechFile() { totalRows = totalCols = 0L; }
 
 //---------------------------------------------------------------------------
 CSVFile::~CSVFile(void) { close(); }
@@ -106,8 +106,7 @@ int32_t CSVFile::getNextWord(PSTR& line, PSTR buffer, uint32_t bufLen)
 		return -1;
 	//------------------------------------------
 	// Find start of word from current location
-	while ((*line != '\0') &&
-		   ((*line == ' ') || (*line == '\t') || (*line == ',')))
+	while ((*line != '\0') && ((*line == ' ') || (*line == '\t') || (*line == ',')))
 	{
 		line++;
 	}
@@ -141,7 +140,7 @@ int32_t CSVFile::afterOpen(void)
 	//-------------------------------------------------------
 	// Check if we opened this with CREATE and write the
 	// FITini Header and position to Write Start.
-	if (fileMode == CREATE && parent == nullptr)
+	if (fileMode == CREATE && m_parent == nullptr)
 	{
 		STOP(("Cannot write CSV files at present."));
 	}
@@ -191,8 +190,7 @@ int32_t CSVFile::textToLong(PSTR num)
 		int32_t numDigits = strlen(hexOffset) - 1;
 		for (size_t i = 0; i <= numDigits; i++)
 		{
-			if (!isalnum(hexOffset[i]) ||
-				(isalpha(hexOffset[i]) && toupper(hexOffset[i]) > 'F'))
+			if (!isalnum(hexOffset[i]) || (isalpha(hexOffset[i]) && toupper(hexOffset[i]) > 'F'))
 			{
 				hexOffset[i] = 0; // we've reach a "wrong" character. Either
 								  // start of a comment or something illegal.
@@ -242,8 +240,7 @@ int16_t CSVFile::textToShort(PSTR num)
 		int32_t numDigits = strlen(hexOffset) - 1;
 		for (size_t i = 0; i <= numDigits; i++)
 		{
-			if (!isalnum(hexOffset[i]) ||
-				(isalpha(hexOffset[i]) && toupper(hexOffset[i]) > 'F'))
+			if (!isalnum(hexOffset[i]) || (isalpha(hexOffset[i]) && toupper(hexOffset[i]) > 'F'))
 			{
 				hexOffset[i] = 0; // we've reach a "wrong" character. Either
 								  // start of a comment or something illegal.
@@ -293,8 +290,7 @@ char CSVFile::textToChar(PSTR num)
 		int32_t numDigits = strlen(hexOffset) - 1;
 		for (size_t i = 0; i <= numDigits; i++)
 		{
-			if (!isalnum(hexOffset[i]) ||
-				(isalpha(hexOffset[i]) && toupper(hexOffset[i]) > 'F'))
+			if (!isalnum(hexOffset[i]) || (isalpha(hexOffset[i]) && toupper(hexOffset[i]) > 'F'))
 			{
 				hexOffset[i] = 0; // we've reach a "wrong" character. Either
 								  // start of a comment or something illegal.
@@ -344,8 +340,7 @@ uint32_t CSVFile::textToULong(PSTR num)
 		int32_t numDigits = strlen(hexOffset) - 1;
 		for (size_t i = 0; i <= numDigits; i++)
 		{
-			if (!isalnum(hexOffset[i]) ||
-				(isalpha(hexOffset[i]) && toupper(hexOffset[i]) > 'F'))
+			if (!isalnum(hexOffset[i]) || (isalpha(hexOffset[i]) && toupper(hexOffset[i]) > 'F'))
 			{
 				hexOffset[i] = 0; // we've reach a "wrong" character. Either
 								  // start of a comment or something illegal.
@@ -395,8 +390,7 @@ uint16_t CSVFile::textToUShort(PSTR num)
 		int32_t numDigits = strlen(hexOffset) - 1;
 		for (size_t i = 0; i <= numDigits; i++)
 		{
-			if (!isalnum(hexOffset[i]) ||
-				(isalpha(hexOffset[i]) && toupper(hexOffset[i]) > 'F'))
+			if (!isalnum(hexOffset[i]) || (isalpha(hexOffset[i]) && toupper(hexOffset[i]) > 'F'))
 			{
 				hexOffset[i] = 0; // we've reach a "wrong" character. Either
 								  // start of a comment or something illegal.
@@ -446,8 +440,7 @@ uint8_t CSVFile::textToUCHAR(PSTR num)
 		int32_t numDigits = strlen(hexOffset) - 1;
 		for (size_t i = 0; i <= numDigits; i++)
 		{
-			if (!isalnum(hexOffset[i]) ||
-				(isalpha(hexOffset[i]) && toupper(hexOffset[i]) > 'F'))
+			if (!isalnum(hexOffset[i]) || (isalpha(hexOffset[i]) && toupper(hexOffset[i]) > 'F'))
 			{
 				hexOffset[i] = 0; // we've reach a "wrong" character. Either
 								  // start of a comment or something illegal.
@@ -588,7 +581,7 @@ int32_t CSVFile::byteToTextHex(PSTR result, byte num, uint32_t bufLen)
 //---------------------------------------------------------------------------
 int32_t CSVFile::open(PCSTR fName, FileMode _mode, int32_t numChild)
 {
-	int32_t result = File::open(fName, _mode, numChild);
+	int32_t result = MechFile::open(fName, _mode, numChild);
 	if (result != NO_ERROR)
 		return (result);
 	seek(0);
@@ -600,7 +593,7 @@ int32_t CSVFile::open(PCSTR fName, FileMode _mode, int32_t numChild)
 int32_t CSVFile::open(FilePtr _parent, uint32_t fileSize, int32_t numChild)
 {
 	numChild	   = -1; // Force all parented CSVs to load from RAM.
-	int32_t result = File::open(_parent, fileSize, numChild);
+	int32_t result = MechFile::open(_parent, fileSize, numChild);
 	if (result != NO_ERROR)
 		return (result);
 	result = afterOpen();
@@ -621,7 +614,7 @@ void CSVFile::close(void)
 	if (isOpen())
 	{
 		atClose();
-		File::close();
+		MechFile::close();
 	}
 }
 
@@ -796,8 +789,7 @@ int32_t CSVFile::copyString(PSTR dest, PSTR src, uint32_t bufLen)
 }
 
 //---------------------------------------------------------------------------
-int32_t CSVFile::readString(
-	uint32_t row, uint32_t col, PSTR result, uint32_t bufferSize)
+int32_t CSVFile::readString(uint32_t row, uint32_t col, PSTR result, uint32_t bufferSize)
 {
 	int32_t res = seekRowCol(row, col);
 	if (res == NO_ERROR)

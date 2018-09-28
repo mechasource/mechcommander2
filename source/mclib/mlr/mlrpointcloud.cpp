@@ -20,10 +20,10 @@ MLRPointCloud::ClassData* MLRPointCloud::DefaultData = nullptr;
 //
 void MLRPointCloud::InitializeClass()
 {
-	Verify(!DefaultData);
-	// Verify(gos_GetCurrentHeap() == StaticHeap);
-	DefaultData = new ClassData(MLRPointCloudClassID,
-		"MidLevelRenderer::MLRPointCloud", MLREffect::DefaultData);
+	_ASSERT(!DefaultData);
+	// _ASSERT(gos_GetCurrentHeap() == StaticHeap);
+	DefaultData = new ClassData(
+		MLRPointCloudClassID, "MidLevelRenderer::MLRPointCloud", MLREffect::DefaultData);
 	Register_Object(DefaultData);
 }
 
@@ -38,10 +38,9 @@ void MLRPointCloud::TerminateClass()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLRPointCloud::MLRPointCloud(uint32_t nr, uint32_t _type)
-	: MLREffect(nr, DefaultData), type(_type)
+MLRPointCloud::MLRPointCloud(uint32_t nr, uint32_t _type) : MLREffect(nr, DefaultData), type(_type)
 {
-	// Verify(gos_GetCurrentHeap() == Heap);
+	// _ASSERT(gos_GetCurrentHeap() == Heap);
 	usedNrOfVertices = 0;
 	// Check_Pointer(this);
 	drawMode = SortData::PointCloud;
@@ -56,20 +55,20 @@ MLRPointCloud::~MLRPointCloud()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLRPointCloud::SetData(pcsize_t count, const Stuff::Point3D* point_data,
-	const Stuff::RGBAColor* color_data)
+void MLRPointCloud::SetData(
+	pcsize_t count, const Stuff::Point3D* point_data, const Stuff::RGBAColor* color_data)
 {
 	// Check_Pointer(this);
 	usedNrOfVertices = count;
-	Verify(*usedNrOfVertices <= maxNrOf);
+	_ASSERT(*usedNrOfVertices <= maxNrOf);
 	points = point_data;
 	colors = color_data;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLRPointCloud::Draw(DrawEffectInformation* dInfo,
-	GOSVertexPool* allVerticesToDraw, MLRSorter* sorter)
+void MLRPointCloud::Draw(
+	DrawEffectInformation* dInfo, GOSVertexPool* allVerticesToDraw, MLRSorter* sorter)
 {
 	// Check_Object(this);
 	worldToEffect.Invert(*dInfo->effectToWorld);
@@ -127,8 +126,7 @@ uint32_t MLRPointCloud::Clip(MLRClippingState clippingFlags, GOSVertexPool* vt)
 				//				{
 				//					continue;
 				//				}
-				GOSCopyData(&gos_vertices[numGOSVertices],
-					transformedCoords->GetData(), colors, i);
+				GOSCopyData(&gos_vertices[numGOSVertices], transformedCoords->GetData(), colors, i);
 				numGOSVertices++;
 			}
 			Check_Object(vt);
@@ -170,12 +168,11 @@ uint32_t MLRPointCloud::Clip(MLRClippingState clippingFlags, GOSVertexPool* vt)
 		//		{
 		//			continue;
 		//		}
-		GOSCopyData(&gos_vertices[numGOSVertices], transformedCoords->GetData(),
-			colors, i);
+		GOSCopyData(&gos_vertices[numGOSVertices], transformedCoords->GetData(), colors, i);
 		//		if(
 		//			//clippingFlags.IsLeftClipped() &&
 		//			(gos_vertices[numGOSVertices].x + ((type)?type*4.f : 4.f)) >
-		//Environment.screenWidth
+		// Environment.screenWidth
 		//			)
 		//		{
 		//			continue;
@@ -184,7 +181,7 @@ uint32_t MLRPointCloud::Clip(MLRClippingState clippingFlags, GOSVertexPool* vt)
 		//		if(
 		//			//clippingFlags.IsTopClipped() &&
 		//			(gos_vertices[numGOSVertices].y + ((type)?type*4.f : 4.f)) >
-		//Environment.screenHeight
+		// Environment.screenHeight
 		//			)
 		//		{
 		//			continue;
@@ -209,6 +206,6 @@ void MLRPointCloud::TestInstance(void) const
 {
 	if (usedNrOfVertices)
 	{
-		Verify(*usedNrOfVertices <= maxNrOf);
+		_ASSERT(*usedNrOfVertices <= maxNrOf);
 	}
 }

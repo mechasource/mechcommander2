@@ -1,7 +1,7 @@
 //---------------------------------------------------------------------------
 //
 //	genactor.cpp - This file contains the code for the generic appearance
-//classes
+// classes
 //
 //	MechCommander 2
 //
@@ -95,8 +95,7 @@ void GenericAppearanceType::init(PSTR fileName)
 	char aseFileName[512];
 	result = iniFile.readIdString("FileName", aseFileName, 511);
 	if (result != NO_ERR)
-		Fatal(result,
-			"Could not find ASE FileName in building appearance INI file");
+		Fatal(result, "Could not find ASE FileName in building appearance INI file");
 	FullPathFileName genName;
 	genName.init(tglPath, aseFileName, ".ase");
 	genShape->LoadTGMultiShapeFromASE(genName);
@@ -111,8 +110,7 @@ void GenericAppearanceType::init(PSTR fileName)
 	{
 		result = iniFile.readIdString("FileName", aseFileName, 511);
 		if (result != NO_ERR)
-			Fatal(result,
-				"Could not find ASE FileName in building appearance INI file");
+			Fatal(result, "Could not find ASE FileName in building appearance INI file");
 		FullPathFileName dmgName;
 		dmgName.init(tglPath, aseFileName, ".ase");
 		genDmgShape = new TG_TypeMultiShape;
@@ -163,8 +161,7 @@ void GenericAppearanceType::init(PSTR fileName)
 				//--------------------------------------------------------
 				// If this animation does not exist, it is not a problem!
 				// Building will simply freeze until animation is "over"
-				genAnimData[i]->LoadTGMultiShapeAnimationFromASE(
-					animPath, genShape);
+				genAnimData[i]->LoadTGMultiShapeAnimationFromASE(animPath, genShape);
 			}
 			else
 				genAnimData[i] = nullptr;
@@ -205,8 +202,7 @@ void GenericAppearanceType::destroy(void)
 }
 
 //-----------------------------------------------------------------------------
-void GenericAppearanceType::setAnimation(
-	TG_MultiShapePtr shape, uint32_t animationNum)
+void GenericAppearanceType::setAnimation(TG_MultiShapePtr shape, uint32_t animationNum)
 {
 	gosASSERT(shape != nullptr);
 	gosASSERT(animationNum != 0xffffffff);
@@ -267,16 +263,14 @@ void GenericAppearance::init(AppearanceTypePtr tree, GameObjectPtr obj)
 				if (strnicmp(txmName, "a_", 2) == 0)
 				{
 					uint32_t gosTextureHandle = mcTextureManager->loadTexture(
-						textureName, gos_Texture_Alpha,
-						gosHint_DisableMipmap | gosHint_DontShrink);
+						textureName, gos_Texture_Alpha, gosHint_DisableMipmap | gosHint_DontShrink);
 					genShape->SetTextureHandle(i, gosTextureHandle);
 					genShape->SetTextureAlpha(i, true);
 				}
 				else
 				{
 					uint32_t gosTextureHandle = mcTextureManager->loadTexture(
-						textureName, gos_Texture_Solid,
-						gosHint_DisableMipmap | gosHint_DontShrink);
+						textureName, gos_Texture_Solid, gosHint_DisableMipmap | gosHint_DontShrink);
 					genShape->SetTextureHandle(i, gosTextureHandle);
 					genShape->SetTextureAlpha(i, false);
 				}
@@ -289,31 +283,31 @@ void GenericAppearance::init(AppearanceTypePtr tree, GameObjectPtr obj)
 		}
 		Stuff::Vector3D boxCoords[8];
 		Stuff::Vector3D nodeCenter = genShape->GetRootNodeCenter();
-		boxCoords[0].x   = position.x + genShape->GetMinBox().x + nodeCenter.x;
-		boxCoords[0].y   = position.y + genShape->GetMinBox().z + nodeCenter.z;
-		boxCoords[0].z   = position.z + genShape->GetMaxBox().y + nodeCenter.y;
-		boxCoords[1].x   = position.x + genShape->GetMinBox().x + nodeCenter.x;
-		boxCoords[1].y   = position.y + genShape->GetMaxBox().z + nodeCenter.z;
-		boxCoords[1].z   = position.z + genShape->GetMaxBox().y + nodeCenter.y;
-		boxCoords[2].x   = position.x + genShape->GetMaxBox().x + nodeCenter.x;
-		boxCoords[2].y   = position.y + genShape->GetMaxBox().z + nodeCenter.z;
-		boxCoords[2].z   = position.z + genShape->GetMaxBox().y + nodeCenter.y;
-		boxCoords[3].x   = position.x + genShape->GetMaxBox().x + nodeCenter.x;
-		boxCoords[3].y   = position.y + genShape->GetMinBox().z + nodeCenter.z;
-		boxCoords[3].z   = position.z + genShape->GetMaxBox().y + nodeCenter.y;
-		boxCoords[4].x   = position.x + genShape->GetMinBox().x + nodeCenter.x;
-		boxCoords[4].y   = position.y + genShape->GetMinBox().z + nodeCenter.z;
-		boxCoords[4].z   = position.z + genShape->GetMinBox().y + nodeCenter.y;
-		boxCoords[5].x   = position.x + genShape->GetMaxBox().x + nodeCenter.x;
-		boxCoords[5].y   = position.y + genShape->GetMinBox().z + nodeCenter.z;
-		boxCoords[5].z   = position.z + genShape->GetMinBox().y + nodeCenter.y;
-		boxCoords[6].x   = position.x + genShape->GetMaxBox().x + nodeCenter.x;
-		boxCoords[6].y   = position.y + genShape->GetMaxBox().z + nodeCenter.z;
-		boxCoords[6].z   = position.z + genShape->GetMinBox().y + nodeCenter.y;
-		boxCoords[7].x   = position.x + genShape->GetMinBox().x + nodeCenter.x;
-		boxCoords[7].y   = position.y + genShape->GetMaxBox().z + nodeCenter.z;
-		boxCoords[7].z   = position.z + genShape->GetMinBox().y + nodeCenter.y;
-		float testRadius = 0.0;
+		boxCoords[0].x			   = position.x + genShape->GetMinBox().x + nodeCenter.x;
+		boxCoords[0].y			   = position.y + genShape->GetMinBox().z + nodeCenter.z;
+		boxCoords[0].z			   = position.z + genShape->GetMaxBox().y + nodeCenter.y;
+		boxCoords[1].x			   = position.x + genShape->GetMinBox().x + nodeCenter.x;
+		boxCoords[1].y			   = position.y + genShape->GetMaxBox().z + nodeCenter.z;
+		boxCoords[1].z			   = position.z + genShape->GetMaxBox().y + nodeCenter.y;
+		boxCoords[2].x			   = position.x + genShape->GetMaxBox().x + nodeCenter.x;
+		boxCoords[2].y			   = position.y + genShape->GetMaxBox().z + nodeCenter.z;
+		boxCoords[2].z			   = position.z + genShape->GetMaxBox().y + nodeCenter.y;
+		boxCoords[3].x			   = position.x + genShape->GetMaxBox().x + nodeCenter.x;
+		boxCoords[3].y			   = position.y + genShape->GetMinBox().z + nodeCenter.z;
+		boxCoords[3].z			   = position.z + genShape->GetMaxBox().y + nodeCenter.y;
+		boxCoords[4].x			   = position.x + genShape->GetMinBox().x + nodeCenter.x;
+		boxCoords[4].y			   = position.y + genShape->GetMinBox().z + nodeCenter.z;
+		boxCoords[4].z			   = position.z + genShape->GetMinBox().y + nodeCenter.y;
+		boxCoords[5].x			   = position.x + genShape->GetMaxBox().x + nodeCenter.x;
+		boxCoords[5].y			   = position.y + genShape->GetMinBox().z + nodeCenter.z;
+		boxCoords[5].z			   = position.z + genShape->GetMinBox().y + nodeCenter.y;
+		boxCoords[6].x			   = position.x + genShape->GetMaxBox().x + nodeCenter.x;
+		boxCoords[6].y			   = position.y + genShape->GetMaxBox().z + nodeCenter.z;
+		boxCoords[6].z			   = position.z + genShape->GetMinBox().y + nodeCenter.y;
+		boxCoords[7].x			   = position.x + genShape->GetMinBox().x + nodeCenter.x;
+		boxCoords[7].y			   = position.y + genShape->GetMaxBox().z + nodeCenter.z;
+		boxCoords[7].z			   = position.z + genShape->GetMinBox().y + nodeCenter.y;
+		float testRadius		   = 0.0;
 		for (i = 0; i < 8; i++)
 		{
 			testRadius = boxCoords[i].GetLength();
@@ -337,8 +331,7 @@ void GenericAppearance::setObjStatus(int32_t oStatus)
 {
 	if (status != oStatus)
 	{
-		if ((oStatus == OBJECT_STATUS_DESTROYED) ||
-			(oStatus == OBJECT_STATUS_DISABLED))
+		if ((oStatus == OBJECT_STATUS_DESTROYED) || (oStatus == OBJECT_STATUS_DISABLED))
 		{
 			if (appearType->genDmgShape)
 			{
@@ -358,10 +351,8 @@ void GenericAppearance::setObjStatus(int32_t oStatus)
 					textureName.init(texturePath, txmName, "");
 					if (fileExists(textureName))
 					{
-						uint32_t gosTextureHandle =
-							mcTextureManager->loadTexture(textureName,
-								gos_Texture_Solid,
-								gosHint_DisableMipmap | gosHint_DontShrink);
+						uint32_t gosTextureHandle = mcTextureManager->loadTexture(textureName,
+							gos_Texture_Solid, gosHint_DisableMipmap | gosHint_DontShrink);
 						genShape->SetTextureHandle(i, gosTextureHandle);
 					}
 					else
@@ -386,8 +377,7 @@ void GenericAppearance::setGesture(uint32_t gestureId)
 		return;
 	//------------------------------------------------------------
 	// Check if object destroyed.  If so, no animation!
-	if ((status == OBJECT_STATUS_DESTROYED) ||
-		(status == OBJECT_STATUS_DISABLED))
+	if ((status == OBJECT_STATUS_DESTROYED) || (status == OBJECT_STATUS_DISABLED))
 		return;
 	//----------------------------------------------------------------------
 	// If state is OK, set animation data, set first frame, set loop and
@@ -405,8 +395,7 @@ void GenericAppearance::setGesture(uint32_t gestureId)
 	}
 	if (appearType->isRandom(genAnimationState))
 	{
-		currentFrame =
-			RandomNumber(appearType->getNumFrames(genAnimationState) - 1);
+		currentFrame = RandomNumber(appearType->getNumFrames(genAnimationState) - 1);
 	}
 	isLooping	 = appearType->isLooped(genAnimationState);
 	genFrameRate  = appearType->getFrameRate(genAnimationState);
@@ -422,8 +411,8 @@ void GenericAppearance::setMoverParameters(
 }
 
 //-----------------------------------------------------------------------------
-void GenericAppearance::setObjectParameters(Stuff::Vector3D& pos, float Rot,
-	int32_t sel, int32_t team, int32_t homeRelations)
+void GenericAppearance::setObjectParameters(
+	Stuff::Vector3D& pos, float Rot, int32_t sel, int32_t team, int32_t homeRelations)
 {
 	rotation			 = Rot;
 	position			 = pos;
@@ -473,16 +462,14 @@ void GenericAppearance::setSkyNumber(int32_t skyNum)
 			if (strnicmp(newName, "a_", 2) == 0)
 			{
 				uint32_t gosTextureHandle = mcTextureManager->loadTexture(
-					textureName, gos_Texture_Alpha,
-					gosHint_DisableMipmap | gosHint_DontShrink);
+					textureName, gos_Texture_Alpha, gosHint_DisableMipmap | gosHint_DontShrink);
 				genShape->SetTextureHandle(i, gosTextureHandle);
 				genShape->SetTextureAlpha(i, true);
 			}
 			else
 			{
 				uint32_t gosTextureHandle = mcTextureManager->loadTexture(
-					textureName, gos_Texture_Solid,
-					gosHint_DisableMipmap | gosHint_DontShrink);
+					textureName, gos_Texture_Solid, gosHint_DisableMipmap | gosHint_DontShrink);
 				genShape->SetTextureHandle(i, gosTextureHandle);
 				genShape->SetTextureAlpha(i, false);
 			}
@@ -500,8 +487,8 @@ bool GenericAppearance::isMouseOver(float px, float py)
 {
 	if (inView)
 	{
-		if ((px <= lowerRight.x) && (py <= lowerRight.y) &&
-			(px >= upperLeft.x) && (py >= upperLeft.y))
+		if ((px <= lowerRight.x) && (py <= lowerRight.y) && (px >= upperLeft.x) &&
+			(py >= upperLeft.y))
 		{
 			return inView;
 		}
@@ -539,8 +526,8 @@ bool GenericAppearance::recalcBounds(void)
 			}
 			else if (eyeDistance > Camera::MinHazeDistance)
 			{
-				Camera::HazeFactor = (eyeDistance - Camera::MinHazeDistance) *
-									 Camera::DistanceFactor;
+				Camera::HazeFactor =
+					(eyeDistance - Camera::MinHazeDistance) * Camera::DistanceFactor;
 				inView = true;
 			}
 			else
@@ -578,8 +565,7 @@ bool GenericAppearance::recalcBounds(void)
 		{
 			if (reloadBounds)
 				appearType->reinit();
-			appearType->boundsLowerRightY =
-				(OBBRadius * eye->getTiltFactor() * 2.0f);
+			appearType->boundsLowerRightY = (OBBRadius * eye->getTiltFactor() * 2.0f);
 			if (screenPos.z > 0.999999f)
 				screenPos.z = 0.999999f;
 			//-------------------------------------------------------------------------
@@ -591,17 +577,12 @@ bool GenericAppearance::recalcBounds(void)
 			upperLeft.y  = tempPos.y;
 			lowerRight.x = tempPos.x;
 			lowerRight.y = tempPos.y;
-			upperLeft.x +=
-				(appearType->boundsUpperLeftX * eye->getScaleFactor());
-			upperLeft.y +=
-				(appearType->boundsUpperLeftY * eye->getScaleFactor());
-			lowerRight.x +=
-				(appearType->boundsLowerRightX * eye->getScaleFactor());
-			lowerRight.y +=
-				(appearType->boundsLowerRightY * eye->getScaleFactor());
+			upperLeft.x += (appearType->boundsUpperLeftX * eye->getScaleFactor());
+			upperLeft.y += (appearType->boundsUpperLeftY * eye->getScaleFactor());
+			lowerRight.x += (appearType->boundsLowerRightX * eye->getScaleFactor());
+			lowerRight.y += (appearType->boundsLowerRightY * eye->getScaleFactor());
 			if ((lowerRight.x >= 0) && (lowerRight.y >= 0) &&
-				(upperLeft.x <= eye->getScreenResX()) &&
-				(upperLeft.y <= eye->getScreenResY()))
+				(upperLeft.x <= eye->getScreenResX()) && (upperLeft.y <= eye->getScreenResY()))
 			{
 				// We are on screen.  Figure out selection box.
 				Stuff::Vector3D boxCoords[8];
@@ -657,8 +638,7 @@ bool GenericAppearance::recalcBounds(void)
 				lowerRight.x = maxX;
 				lowerRight.y = maxY;
 				if ((lowerRight.x >= 0) && (lowerRight.y >= 0) &&
-					(upperLeft.x <= eye->getScreenResX()) &&
-					(upperLeft.y <= eye->getScreenResY()))
+					(upperLeft.x <= eye->getScreenResX()) && (upperLeft.y <= eye->getScreenResY()))
 				{
 					inView = true;
 				}
@@ -686,12 +666,11 @@ int32_t GenericAppearance::render(int32_t depthFixup)
 		uint32_t highLight = 0x007f7f7f;
 		if ((teamId > -1) && (teamId < 8))
 		{
-			static uint32_t highLightTable[3] = {
-				0x00007f00, 0x0000007f, 0x007f0000};
-			static int32_t colorTable[3] = {SB_GREEN | 0xff000000,
-				SB_BLUE | 0xff000000, SB_RED | 0xff000000};
-			color						 = colorTable[homeTeamRelationship];
-			highLight					 = highLightTable[homeTeamRelationship];
+			static uint32_t highLightTable[3] = {0x00007f00, 0x0000007f, 0x007f0000};
+			static int32_t colorTable[3]	  = {
+				 SB_GREEN | 0xff000000, SB_BLUE | 0xff000000, SB_RED | 0xff000000};
+			color	 = colorTable[homeTeamRelationship];
+			highLight = highLightTable[homeTeamRelationship];
 		}
 		if (selected & DRAW_COLORED)
 		{
@@ -821,63 +800,51 @@ int32_t GenericAppearance::render(int32_t depthFixup)
 			eye->projectZ(boxCoords[i], screenPos[i]);
 		}
 		{
-			LineElement newElement(
-				screenPos[0], screenPos[1], XP_WHITE, nullptr, -1);
+			LineElement newElement(screenPos[0], screenPos[1], XP_WHITE, nullptr, -1);
 			newElement.draw();
 		}
 		{
-			LineElement newElement(
-				screenPos[0], screenPos[4], XP_WHITE, nullptr, -1);
+			LineElement newElement(screenPos[0], screenPos[4], XP_WHITE, nullptr, -1);
 			newElement.draw();
 		}
 		{
-			LineElement newElement(
-				screenPos[0], screenPos[3], XP_WHITE, nullptr, -1);
+			LineElement newElement(screenPos[0], screenPos[3], XP_WHITE, nullptr, -1);
 			newElement.draw();
 		}
 		{
-			LineElement newElement(
-				screenPos[5], screenPos[4], XP_WHITE, nullptr, -1);
+			LineElement newElement(screenPos[5], screenPos[4], XP_WHITE, nullptr, -1);
 			newElement.draw();
 		}
 		{
-			LineElement newElement(
-				screenPos[5], screenPos[6], XP_WHITE, nullptr, -1);
+			LineElement newElement(screenPos[5], screenPos[6], XP_WHITE, nullptr, -1);
 			newElement.draw();
 		}
 		{
-			LineElement newElement(
-				screenPos[5], screenPos[3], XP_WHITE, nullptr, -1);
+			LineElement newElement(screenPos[5], screenPos[3], XP_WHITE, nullptr, -1);
 			newElement.draw();
 		}
 		{
-			LineElement newElement(
-				screenPos[2], screenPos[3], XP_WHITE, nullptr, -1);
+			LineElement newElement(screenPos[2], screenPos[3], XP_WHITE, nullptr, -1);
 			newElement.draw();
 		}
 		{
-			LineElement newElement(
-				screenPos[2], screenPos[6], XP_WHITE, nullptr, -1);
+			LineElement newElement(screenPos[2], screenPos[6], XP_WHITE, nullptr, -1);
 			newElement.draw();
 		}
 		{
-			LineElement newElement(
-				screenPos[2], screenPos[1], XP_WHITE, nullptr, -1);
+			LineElement newElement(screenPos[2], screenPos[1], XP_WHITE, nullptr, -1);
 			newElement.draw();
 		}
 		{
-			LineElement newElement(
-				screenPos[7], screenPos[1], XP_WHITE, nullptr, -1);
+			LineElement newElement(screenPos[7], screenPos[1], XP_WHITE, nullptr, -1);
 			newElement.draw();
 		}
 		{
-			LineElement newElement(
-				screenPos[7], screenPos[6], XP_WHITE, nullptr, -1);
+			LineElement newElement(screenPos[7], screenPos[6], XP_WHITE, nullptr, -1);
 			newElement.draw();
 		}
 		{
-			LineElement newElement(
-				screenPos[7], screenPos[4], XP_WHITE, nullptr, -1);
+			LineElement newElement(screenPos[7], screenPos[4], XP_WHITE, nullptr, -1);
 			newElement.draw();
 		}
 #endif
@@ -993,8 +960,7 @@ int32_t GenericAppearance::update(bool animate)
 				if (isLooping)
 					currentFrame -= appearType->getNumFrames(genAnimationState);
 				else
-					currentFrame =
-						appearType->getNumFrames(genAnimationState) - 1;
+					currentFrame = appearType->getNumFrames(genAnimationState) - 1;
 				canTransition = true; // Whenever we have completed one cycle or
 									  // at last frame, OK to move on!
 			}
@@ -1034,10 +1000,7 @@ void GenericAppearance::destroy(void)
 
 #define HEIGHT_THRESHOLD 10.0f
 //-----------------------------------------------------------------------------
-void GenericAppearance::markTerrain(
-	_ScenarioMapCellInfo* pInfo, int32_t type, int32_t counter)
-{
-}
+void GenericAppearance::markTerrain(_ScenarioMapCellInfo* pInfo, int32_t type, int32_t counter) {}
 
 //-----------------------------------------------------------------------------
 void GenericAppearance::markMoveMap(bool passable) {}

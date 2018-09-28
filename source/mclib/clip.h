@@ -30,8 +30,7 @@
 #include <gameos.hpp>
 
 //---------------------------------------------------------------------------------------------------
-inline void xLeftEdgeclip(
-	gos_VERTEX* vertices, uint32_t& numVertices, float leftEdge)
+inline void xLeftEdgeclip(gos_VERTEX* vertices, uint32_t& numVertices, float leftEdge)
 {
 	//------------------------------------------
 	// make local copy of all point data involved
@@ -114,8 +113,7 @@ inline void xLeftEdgeclip(
 }
 
 //---------------------------------------------------------------------------------------------------
-inline void xRightEdgeclip(
-	gos_VERTEX* vertices, uint32_t& numVertices, float rightEdge)
+inline void xRightEdgeclip(gos_VERTEX* vertices, uint32_t& numVertices, float rightEdge)
 {
 	//------------------------------------------
 	// make local copy of all point data involved
@@ -198,8 +196,7 @@ inline void xRightEdgeclip(
 }
 
 //---------------------------------------------------------------------------------------------------
-inline void yTopEdgeclip(
-	gos_VERTEX* vertices, uint32_t& numVertices, float topEdge)
+inline void yTopEdgeclip(gos_VERTEX* vertices, uint32_t& numVertices, float topEdge)
 {
 	//------------------------------------------
 	// make local copy of all point data involved
@@ -282,8 +279,7 @@ inline void yTopEdgeclip(
 }
 
 //---------------------------------------------------------------------------------------------------
-inline void yBottomEdgeclip(
-	gos_VERTEX* vertices, uint32_t& numVertices, float bottomEdge)
+inline void yBottomEdgeclip(gos_VERTEX* vertices, uint32_t& numVertices, float bottomEdge)
 {
 	//------------------------------------------
 	// make local copy of all point data involved

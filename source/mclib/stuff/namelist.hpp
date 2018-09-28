@@ -8,14 +8,14 @@
 //===========================================================================//
 //
 // replace with std::list<string>?
-//
+// not used
 
 #pragma once
 
 #ifndef _NAMELIST_HPP_
 #define _NAMELIST_HPP_
 
-#include <stuff/memorystream.hpp>
+// #include <stuff/memorystream.hpp>
 
 namespace Stuff
 {
@@ -24,10 +24,9 @@ class NameList;
 
 namespace MemoryStreamIO
 {
-Stuff::MemoryStream& Read(Stuff::MemoryStream* stream, Stuff::NameList* names);
-Stuff::MemoryStream& Write(
-	Stuff::MemoryStream* stream, const Stuff::NameList* names);
-}
+std::istream& Read(std::istream& stream, Stuff::NameList* names);
+std::ostream& Write(std::ostream& stream, const Stuff::NameList* names);
+} // namespace MemoryStreamIO
 
 namespace Stuff
 {
@@ -63,14 +62,14 @@ class ObjectNameList
 	: public Stuff::Signature
 #endif
 {
-  public:
+public:
 	typedef ObjectNameList__Entry Entry;
 
-  protected:
+protected:
 	Entry* firstEntry;
 	Entry* lastEntry;
 
-  public:
+public:
 	ObjectNameList(void);
 	virtual ~ObjectNameList(void);
 
@@ -119,16 +118,16 @@ class ObjectNameList__Entry
 	friend class NameList;
 	friend class AlphaNameList;
 
-  private:
+private:
 	ObjectNameList::Entry* nextEntry;
 
-  public:
+public:
 	PVOID dataReference;
 
-  protected:
+protected:
 	void SetName(PCSTR name);
 
-  public:
+public:
 	PCSTR GetName(void) const
 	{
 		// Check_Object(this);
@@ -197,7 +196,7 @@ class ObjectNameList__Entry
 
 class NameList : public ObjectNameList
 {
-  public:
+public:
 	NameList(void);
 	~NameList(void);
 
@@ -209,10 +208,8 @@ class NameList : public ObjectNameList
 	void DeleteEntry(PCSTR name); // this one is searches for name
 	static bool TestClass(void);
 
-	friend MemoryStream& MemoryStreamIO::Read(
-		MemoryStream* stream, NameList* names);
-	friend MemoryStream& MemoryStreamIO::Write(
-		MemoryStream* stream, const NameList* names);
+	friend MemoryStream& MemoryStreamIO::Read(std::iostream& stream, NameList* names);
+	friend MemoryStream& MemoryStreamIO::Write(std::iostream& stream, const NameList* names);
 };
 
 //##########################################################################
@@ -221,7 +218,7 @@ class NameList : public ObjectNameList
 
 class AlphaNameList : public NameList
 {
-  public:
+public:
 	AlphaNameList(void);
 	~AlphaNameList(void);
 
@@ -229,5 +226,5 @@ class AlphaNameList : public NameList
 	AddEntry(PCSTR name, PVOID data);
 	static bool TestClass(void);
 };
-}
+} // namespace Stuff
 #endif

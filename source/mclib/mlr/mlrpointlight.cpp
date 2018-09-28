@@ -18,11 +18,10 @@ MLRPointLight::ClassData* MLRPointLight::DefaultData = nullptr;
 //
 void MLRPointLight::InitializeClass()
 {
-	Verify(!DefaultData);
-	// Verify(gos_GetCurrentHeap() == StaticHeap);
-	DefaultData =
-		new ClassData(MLRPointLightClassID, "MidLevelRenderer::MLRPointLight",
-			MLRInfiniteLightWithFalloff::DefaultData);
+	_ASSERT(!DefaultData);
+	// _ASSERT(gos_GetCurrentHeap() == StaticHeap);
+	DefaultData = new ClassData(MLRPointLightClassID, "MidLevelRenderer::MLRPointLight",
+		MLRInfiniteLightWithFalloff::DefaultData);
 	Register_Object(DefaultData);
 }
 
@@ -39,21 +38,21 @@ void MLRPointLight::TerminateClass()
 //
 MLRPointLight::MLRPointLight() : MLRInfiniteLightWithFalloff(DefaultData)
 {
-	// Verify(gos_GetCurrentHeap() == Heap);
+	// _ASSERT(gos_GetCurrentHeap() == Heap);
 	lightMap = nullptr;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLRPointLight::MLRPointLight(Stuff::MemoryStream* stream, uint32_t version)
+MLRPointLight::MLRPointLight(std::iostream stream, uint32_t version)
 	: MLRInfiniteLightWithFalloff(DefaultData, stream, version)
 {
 	Check_Object(stream);
-	// Verify(gos_GetCurrentHeap() == Heap);
+	// _ASSERT(gos_GetCurrentHeap() == Heap);
 	lightMap = nullptr;
 	if (version > 7)
 	{
-		MString name;
+		std::wstring name;
 		*stream >> name;
 		if (name.GetLength() > 0)
 		{
@@ -71,11 +70,10 @@ MLRPointLight::MLRPointLight(Stuff::MemoryStream* stream, uint32_t version)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLRPointLight::MLRPointLight(Stuff::Page* page)
-	: MLRInfiniteLightWithFalloff(DefaultData, page)
+MLRPointLight::MLRPointLight(Stuff::Page* page) : MLRInfiniteLightWithFalloff(DefaultData, page)
 {
 	Check_Object(page);
-	// Verify(gos_GetCurrentHeap() == Heap);
+	// _ASSERT(gos_GetCurrentHeap() == Heap);
 	lightMap = nullptr;
 	PCSTR lightmap;
 	if (page->GetEntry("LightMap", &lightmap))
@@ -105,7 +103,7 @@ MLRPointLight::~MLRPointLight()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLRPointLight::Save(Stuff::MemoryStream* stream)
+void MLRPointLight::Save(std::iostream stream)
 {
 	// Check_Object(this);
 	Check_Object(stream);
@@ -116,11 +114,11 @@ void MLRPointLight::Save(Stuff::MemoryStream* stream)
 		uint32_t handle		= lightMap->GetState().GetTextureHandle();
 		MLRTexture* texture = (*MLRTexturePool::Instance)[handle];
 		Check_Object(texture);
-		MString name = texture->GetTextureName();
+		std::wstring name = texture->GetTextureName();
 		*stream << name;
 	}
 	else
-		*stream << MString("");
+		*stream << std::wstring("");
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -142,7 +140,7 @@ void MLRPointLight::Write(Stuff::Page* page)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLRPointLight::TestInstance() { Verify(IsDerivedFrom(DefaultData)); }
+void MLRPointLight::TestInstance() { _ASSERT(IsDerivedFrom(DefaultData)); }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
@@ -151,7 +149,7 @@ void MLRPointLight::LightVertex(const MLRVertexData& vertexData)
 	UnitVector3D light_z;
 	RGBColor light_color(color);
 	Point3D vertex_to_light;
-	Verify(GetFalloffDistance(vertex_to_light.x, vertex_to_light.y));
+	_ASSERT(GetFalloffDistance(vertex_to_light.x, vertex_to_light.y));
 	GetInShapePosition(vertex_to_light);
 	vertex_to_light -= *vertexData.point;
 	//

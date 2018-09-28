@@ -34,8 +34,8 @@ public:
 		x = y = 0;
 	}
 
-	PaneElement(PANE* _shapePane, int32_t _x, int32_t _y, int32_t _midx,
-		int32_t _midy, int32_t _SizeX, int32_t _SizeY);
+	PaneElement(PANE* _shapePane, int32_t _x, int32_t _y, int32_t _midx, int32_t _midy,
+		int32_t _SizeX, int32_t _SizeY);
 
 	virtual void draw(void);
 };
@@ -63,9 +63,8 @@ public:
 		scaleUp		= false;
 	}
 
-	DeltaElement(puint8_t _shape, int32_t _x, int32_t _y, int32_t frame,
-		bool rev, puint8_t fTable = nullptr, bool noScale = false,
-		bool scaleUp = false);
+	DeltaElement(puint8_t _shape, int32_t _x, int32_t _y, int32_t frame, bool rev,
+		puint8_t fTable = nullptr, bool noScale = false, bool scaleUp = false);
 
 	virtual void draw(void);
 };

@@ -191,12 +191,10 @@ public:
 	bool pointerOnHeap(PVOID ptr);
 
 #ifdef _DEBUG
-	void startHeapMallocLog(
-		void); // This function will start recoding each malloc and
+	void startHeapMallocLog(void); // This function will start recoding each malloc and
 	// free to insure that there are no leaks.
 
-	void stopHeapMallocLog(
-		void); // This can be used to suspend logging when mallocs
+	void stopHeapMallocLog(void); // This can be used to suspend logging when mallocs
 	// that are not desired to be logged are called.
 
 	void dumpRecordLog(void);

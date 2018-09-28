@@ -36,12 +36,12 @@ bool UnitVector3D::TestClass()
 	EulerAngles r(Pi_Over_4, 0.0f, 0.0f);
 	m.BuildRotation(r);
 	b.Multiply(c, m);
-	Test_Assumption(b == UnitVector3D(c.x, c.y * m(1, 1) + c.z * m(2, 1),
-							 c.y * m(1, 2) + c.z * m(2, 2)));
+	Test_Assumption(
+		b == UnitVector3D(c.x, c.y * m(1, 1) + c.z * m(2, 1), c.y * m(1, 2) + c.z * m(2, 2)));
 	b = c;
 	b *= m;
-	Test_Assumption(b == UnitVector3D(c.x, c.y * m(1, 1) + c.z * m(2, 1),
-							 c.y * m(1, 2) + c.z * m(2, 2)));
+	Test_Assumption(
+		b == UnitVector3D(c.x, c.y * m(1, 1) + c.z * m(2, 1), c.y * m(1, 2) + c.z * m(2, 2)));
 	f = c.GetLengthSquared();
 	Test_Assumption(Close_Enough(f, 1.0f));
 	f = c.GetLength();

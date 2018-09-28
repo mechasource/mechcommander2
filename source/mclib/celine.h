@@ -23,7 +23,7 @@
 //---------------------------------------------------------------------------
 class LineElement : public Element
 {
-  public:
+public:
 	Stuff::Vector4D startPos;
 	Stuff::Vector4D endPos;
 	int32_t color;
@@ -39,8 +39,8 @@ class LineElement : public Element
 		fadeTable								  = nullptr;
 	}
 
-	LineElement(Stuff::Vector4D& pos1, Stuff::Vector4D& pos2, int32_t clr,
-		puint8_t fTable, int32_t endClr = -1);
+	LineElement(Stuff::Vector4D& pos1, Stuff::Vector4D& pos2, int32_t clr, puint8_t fTable,
+		int32_t endClr = -1);
 
 	virtual void draw(void);
 };

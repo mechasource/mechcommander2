@@ -65,12 +65,12 @@ class MapData : public HeapManager
 {
 	// Data Members
 	//-------------
-  protected:
+protected:
 	PostcompVertexPtr blocks;
 	PostcompVertexPtr blankVertex;
 	int32_t hasSelection;
 
-  public:
+public:
 	Stuff::Vector2DOf<float> topLeftVertex;
 
 	static float shallowDepth;
@@ -80,7 +80,7 @@ class MapData : public HeapManager
 
 	// Member Functions
 	//-----------------
-  public:
+public:
 	PVOID operator new(size_t mySize);
 	void operator delete(PVOID us);
 
@@ -109,8 +109,8 @@ class MapData : public HeapManager
 	void newInit(uint32_t numVertices);
 
 	int32_t update(void);
-	void makeLists(VertexPtr vertexList, int32_t& numVerts,
-		TerrainQuadPtr quadList, int32_t& numTiles);
+	void makeLists(
+		VertexPtr vertexList, int32_t& numVerts, TerrainQuadPtr quadList, int32_t& numTiles);
 
 	Stuff::Vector2DOf<float> getTopLeftVertex(void) { return topLeftVertex; }
 
@@ -120,8 +120,7 @@ class MapData : public HeapManager
 	float terrainElevation(Stuff::Vector3D& position);
 	float terrainElevation(int32_t tileR, int32_t tileC);
 
-	float terrainAngle(
-		Stuff::Vector3D& position, Stuff::Vector3D* normal = nullptr);
+	float terrainAngle(Stuff::Vector3D& position, Stuff::Vector3D* normal = nullptr);
 	Stuff::Vector3D terrainNormal(Stuff::Vector3D& position);
 	float terrainLight(Stuff::Vector3D& position);
 
@@ -132,10 +131,8 @@ class MapData : public HeapManager
 	int32_t getOverlayTile(int32_t block, int32_t vertex);
 
 	// new overlay stuff
-	void setOverlay(
-		int32_t tileR, int32_t tileC, Overlays type, uint32_t Offset);
-	void getOverlay(
-		int32_t tileR, int32_t tileC, Overlays& type, uint32_t& Offset);
+	void setOverlay(int32_t tileR, int32_t tileC, Overlays type, uint32_t Offset);
+	void getOverlay(int32_t tileR, int32_t tileC, Overlays& type, uint32_t& Offset);
 	void setTerrain(int32_t tileR, int32_t tileC, int32_t terrainType);
 	int32_t getTerrain(int32_t tileR, int32_t tileC);
 
@@ -148,22 +145,18 @@ class MapData : public HeapManager
 
 	int32_t save(PacketFile* file, int32_t whichPacket);
 
-	void calcWater(
-		float waterDepth, float waterShallowDepth, float waterAlphaDepth);
-	void recalcWater(
-		void); // Uses above values already passed in to just recalc the water
+	void calcWater(float waterDepth, float waterShallowDepth, float waterAlphaDepth);
+	void recalcWater(void); // Uses above values already passed in to just recalc the water
 
 	float waterElevation() { return waterDepth; }
 
-	void markSeen(Stuff::Vector2DOf<float>& topLeftPosition,
-		VertexPtr vertexList, Stuff::Vector3D& looker,
-		Stuff::Vector3D& lookVector, float cone, float dist, byte who);
+	void markSeen(Stuff::Vector2DOf<float>& topLeftPosition, VertexPtr vertexList,
+		Stuff::Vector3D& looker, Stuff::Vector3D& lookVector, float cone, float dist, byte who);
 
 	void unselectAll(void);
 	void unhighlightAll(void);
 	void highlightAllTransitionsOver2(void);
-	void selectVertex(
-		uint32_t tileRow, uint32_t tileCol, bool bSelect, bool bToggle);
+	void selectVertex(uint32_t tileRow, uint32_t tileCol, bool bSelect, bool bToggle);
 	bool selection() { return hasSelection ? true : false; }
 	bool isVertexSelected(uint32_t tileRow, uint32_t tileCol);
 

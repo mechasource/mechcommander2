@@ -30,7 +30,7 @@ Ray3D& Ray3D::SetDirection(const Vector3D& vector)
 	//---------------------------------------
 	//
 	float length = vector.GetLength();
-	Verify(!Small_Enough(length));
+	_ASSERT(!Small_Enough(length));
 	length = 1.0f / length;
 	//
 	//----------------------------------------------
@@ -107,9 +107,9 @@ float Ray3D::GetDistanceTo(const Sphere& sphere, float* penetration) const
 //#############################################################################
 //#############################################################################
 //
-float Stuff::Find_Closest_Approach(const Point3D& origin1,
-	const Vector3D& velocity1, Point3D* result1, const Point3D& origin2,
-	const Vector3D& velocity2, Point3D* result2, float* time, bool* constant)
+float Stuff::Find_Closest_Approach(const Point3D& origin1, const Vector3D& velocity1,
+	Point3D* result1, const Point3D& origin2, const Vector3D& velocity2, Point3D* result2,
+	float* time, bool* constant)
 {
 	Vector3D a, b;
 	a.Subtract(origin1, origin2);

@@ -19,7 +19,7 @@
 
 //#pragma warning( disable : 4514 )
 
-typedef enum
+typedef enum SyntaxErrorType : uint32_t
 {
 	ABL_ERR_SYNTAX_NONE, // 0
 	ABL_ERR_SYNTAX_ERROR,
@@ -92,7 +92,7 @@ typedef enum
 	NUM_ABL_SYNTAX_ERRORS
 } SyntaxErrorType;
 
-typedef enum
+typedef enum RuntimeErrorType : uint32_t
 {
 	ABL_ERR_RUNTIME_STACK_OVERFLOW,
 	ABL_ERR_RUNTIME_INFINITE_LOOP,

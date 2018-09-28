@@ -18,13 +18,12 @@ namespace MidLevelRenderer
 
 class MLRInfiniteLight : public MLRLight
 {
-  public:
+public:
 	static void __stdcall InitializeClass(void);
 	static void __stdcall TerminateClass(void);
 
 	MLRInfiniteLight(ClassData* class_data = DefaultData);
-	MLRInfiniteLight(
-		ClassData* class_data, Stuff::MemoryStream* stream, uint32_t version);
+	MLRInfiniteLight(ClassData* class_data, std::iostream stream, uint32_t version);
 	MLRInfiniteLight(ClassData* class_data, Stuff::Page* page);
 	~MLRInfiniteLight(void);
 
@@ -39,16 +38,16 @@ class MLRInfiniteLight : public MLRLight
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Class Data Support
 	//
-  public:
+public:
 	static ClassData* DefaultData;
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Testing
 	//
-  public:
+public:
 	void TestInstance(void);
 
-  protected:
+protected:
 };
-}
+} // namespace MidLevelRenderer
 #endif

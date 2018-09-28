@@ -43,13 +43,12 @@ enum MC_TextureKey
 //----------------------------------------------------------------------
 // Can store up to 1024 8x8 textures in 1 256x256.
 #define MC_MAXTEXTURES 4096
-#define CACHED_OUT_HANDLE                                                      \
+#define CACHED_OUT_HANDLE                                                                          \
 	0xFFFFFACE // If this value is in gosTextureHandle, texture is cached out
 			   // and must be cached in.
 #define MAX_MC2_GOS_TEXTURES 750
-#define TEXTURE_CACHE_SIZE                                                     \
-	(40 * 1024 * 1024) // Extra space here to facilitate editting
-#define MAX_CACHE_SIZE (40 * 1024 * 1024) // Actual amount map must run in!
+#define TEXTURE_CACHE_SIZE (40 * 1024 * 1024) // Extra space here to facilitate editting
+#define MAX_CACHE_SIZE (40 * 1024 * 1024)	 // Actual amount map must run in!
 #define MC_MAXFACES 50000
 #define MAX_LZ_BUFFER_SIZE ((256 * 256 * 4) + 1024)
 
@@ -73,14 +72,13 @@ typedef struct _MC_VertexArrayNode
 {
 	friend MC_TextureManager;
 
-  public:
+public:
 	uint32_t textureIndex;
-	uint32_t flags;		 // Marks texture render state and terrain or not, etc.
-	int32_t numVertices; // Number of vertices this texture will be used to draw
-						 // this frame.
+	uint32_t flags;			   // Marks texture render state and terrain or not, etc.
+	int32_t numVertices;	   // Number of vertices this texture will be used to draw
+							   // this frame.
 	gos_VERTEX* currentVertex; // CurrentVertex data being added.
-	gos_VERTEX*
-		vertices; // Pointer into the vertex Pool for this texture to draw.
+	gos_VERTEX* vertices;	  // Pointer into the vertex Pool for this texture to draw.
 
 	void init(void)
 	{
@@ -91,8 +89,7 @@ typedef struct _MC_VertexArrayNode
 		textureIndex  = 0;
 	}
 
-	void destroy(
-		void); // Frees all blocks, free GOS_TextureHandle, blank all data.
+	void destroy(void); // Frees all blocks, free GOS_TextureHandle, blank all data.
 
 } MC_VertexArrayNode;
 
@@ -101,25 +98,22 @@ typedef struct _MC_TextureNode
 {
 	friend MC_TextureManager;
 
-  protected:
+protected:
 	uint32_t gosTextureHandle; // Handle returned by GOS
 
-  public:
-	char* nodeName; // Used for Unique nodes so I can just return the handle!
+public:
+	char* nodeName;			 // Used for Unique nodes so I can just return the handle!
 	uint32_t uniqueInstance; // Texture is modifiable.  DO NOT CACHE OUT!!!!!!
-	uint32_t
-		neverFLUSH; // Textures used by Userinput, etc.  DO NOT CACHE OUT!!!!!!
-	uint32_t numUsers; // Pushed up for each user using.
+	uint32_t neverFLUSH;	 // Textures used by Userinput, etc.  DO NOT CACHE OUT!!!!!!
+	uint32_t numUsers;		 // Pushed up for each user using.
 	// Users can "free" a texture which will decrement the number and actually
 	// free it if number is 0
 	gos_TextureFormat key; // Used to recreate texture if cached out.
 	uint32_t hints;		   // Used to recreate texture if cached out.
 	uint32_t width;		   // Used to recreate texture if cached out.
 	uint32_t lzCompSize;   // Size of Compressed version.
-	int32_t
-		lastUsed; // Last Game turn texture was used.  Used to cache textures.
-	uint32_t*
-		textureData; // Raw texture data.  Texture is stored here in system RAM
+	int32_t lastUsed;	  // Last Game turn texture was used.  Used to cache textures.
+	uint32_t* textureData; // Raw texture data.  Texture is stored here in system RAM
 	// if we overrun the max number of GOS HAndles.
 	// When the texture is needed, another least used GOS handle is
 	// cached out and this one is copied in.
@@ -130,8 +124,7 @@ typedef struct _MC_TextureNode
 	// This value can be nullptr if texture is on card.
 	// Should only be alloced when we need to cache.
 	// This will keep system memory usage to a minimum.
-	MC_VertexArrayNode*
-		vertexData; // This holds the vertex draw data.  nullptr if not used.
+	MC_VertexArrayNode* vertexData; // This holds the vertex draw data.  nullptr if not used.
 	MC_VertexArrayNode* vertexData2;
 	MC_VertexArrayNode* vertexData3;
 
@@ -155,11 +148,9 @@ typedef struct _MC_TextureNode
 
 	uint32_t findFirstAvailableBlock(void);
 
-	void destroy(
-		void); // Frees all blocks, free GOS_TextureHandle, blank all data.
+	void destroy(void); // Frees all blocks, free GOS_TextureHandle, blank all data.
 
-	void removeBlock(uint32_t
-			blockNum); // Just free one block.  DO NOT FREE GOS_TextureHandle.
+	void removeBlock(uint32_t blockNum); // Just free one block.  DO NOT FREE GOS_TextureHandle.
 
 	void markBlock(uint32_t blockNum);
 
@@ -173,13 +164,13 @@ class gos_VERTEXManager : public HeapManager
 {
 	// Data Members
 	//-------------
-  protected:
+protected:
 	int32_t totalVertices; // Total number of vertices in pool.
 	int32_t currentVertex; // Pointer to next available vertex in pool.
 
 	// Member Functions
 	//-----------------
-  public:
+public:
 	void init(void)
 	{
 		HeapManager::init(void);
@@ -226,27 +217,24 @@ class MC_TextureManager
 
 	// Data Members
 	//------------
-  protected:
+protected:
 	MC_TextureNode* masterTextureNodes; // Dynamically allocated from an MC
 										// Heap.
-	int32_t currentUsedTextures; // Number of textures on video card.
+	int32_t currentUsedTextures;		// Number of textures on video card.
 
-	MC_VertexArrayNode*
-		masterVertexNodes;			 // Dynamically allocated from an MC Heap.
-	int32_t nextAvailableVertexNode; // index to next available vertex Node
+	MC_VertexArrayNode* masterVertexNodes; // Dynamically allocated from an MC Heap.
+	int32_t nextAvailableVertexNode;	   // index to next available vertex Node
 
-	UserHeapPtr textureCacheHeap; // Heap used to cache textures from vidCard to
-								  // system RAM.
-	UserHeapPtr textureStringHeap; // Heap used to store filenames of textures
-								   // so no dupes.
-	bool textureManagerInstrumented; // Texture Manager Instrumented.
-	int32_t totalCacheMisses;		 //NUmber of times flush has been called.\
+	UserHeapPtr textureCacheHeap;		 // Heap used to cache textures from vidCard to
+										 // system RAM.
+	UserHeapPtr textureStringHeap;		 // Heap used to store filenames of textures
+										 // so no dupes.
+	bool textureManagerInstrumented;	 // Texture Manager Instrumented.
+	int32_t totalCacheMisses;			 //NUmber of times flush has been called.\
 
 	static gos_VERTEXManager* gvManager; // Stores arrays of vertices for draw.
-	static puint8_t
-		lzBuffer1; // Used to compress/decompress textures from cache.
-	static puint8_t
-		lzBuffer2; // Used to compress/decompress textures from cache.
+	static puint8_t lzBuffer1;			 // Used to compress/decompress textures from cache.
+	static puint8_t lzBuffer2;			 // Used to compress/decompress textures from cache.
 	/* iBufferRefCount is used to help determine if lzBuffer1&2 are valid. The
 	assumption is that if there are no valid MC_TextureManagers then lzBuffer1&2
 	are not valid. */
@@ -255,8 +243,7 @@ class MC_TextureManager
 	uint16_t* indexArray; // Master Vertex Index array.
 
 	// Upto four different kinds of untextured triangle!
-	MC_VertexArrayNode*
-		vertexData; // This holds the vertex draw data for UNTEXTURED triangles!
+	MC_VertexArrayNode* vertexData;  // This holds the vertex draw data for UNTEXTURED triangles!
 	MC_VertexArrayNode* vertexData2; // This holds the vertex draw data for
 									 // UNTEXTURED triangles!
 	MC_VertexArrayNode* vertexData3; // This holds the vertex draw data for
@@ -266,7 +253,7 @@ class MC_TextureManager
 
 	// Member Functions
 	//-----------------
-  public:
+public:
 	void init(void)
 	{
 		masterTextureNodes		   = nullptr;
@@ -299,9 +286,8 @@ class MC_TextureManager
 	// by the fact that that an existing texture instance can been modified in
 	// memory after it's loaded, and thus be different the from an instance that
 	// would be loaded from disk.
-	uint32_t textureInstanceExists(PCSTR textureFullPathName,
-		gos_TextureFormat key, uint32_t hints, uint32_t uniqueInstance = 0x0,
-		uint32_t nFlush = 0x0);
+	uint32_t textureInstanceExists(PCSTR textureFullPathName, gos_TextureFormat key, uint32_t hints,
+		uint32_t uniqueInstance = 0x0, uint32_t nFlush = 0x0);
 
 	//-----------------------------------------------------------------------------
 	// Returns the TextureNode Id based on what you asked for.
@@ -310,15 +296,15 @@ class MC_TextureManager
 	// matches that of an already existing instance of the texture, the handle
 	// of the existing instance will be returned. Used for Mech Coloration
 	// possibly, damage states, etc.
-	uint32_t loadTexture(PCSTR textureFullPathName, gos_TextureFormat key,
-		uint32_t hints, uint32_t uniqueInstance = 0x0, uint32_t nFlush = 0x0);
+	uint32_t loadTexture(PCSTR textureFullPathName, gos_TextureFormat key, uint32_t hints,
+		uint32_t uniqueInstance = 0x0, uint32_t nFlush = 0x0);
 
 	int32_t saveTexture(uint32_t textureIndex, PCSTR textureFullPathName);
 
 	//-----------------------------------------------------------------------------
 	// Returns the TextureNode Id based on what you asked for.
-	uint32_t textureFromMemory(uint32_t* data, gos_TextureFormat key,
-		uint32_t hints, uint32_t width, uint32_t bitDepth = 4);
+	uint32_t textureFromMemory(uint32_t* data, gos_TextureFormat key, uint32_t hints,
+		uint32_t width, uint32_t bitDepth = 4);
 
 	// increments the ref count
 	uint32_t copyTexture(uint32_t texNodeID);
@@ -356,47 +342,40 @@ class MC_TextureManager
 
 	void addTriangle(uint32_t nodeId, uint32_t flags)
 	{
-		if ((nodeId < MC_MAXTEXTURES) &&
-			(nextAvailableVertexNode < MC_MAXTEXTURES))
+		if ((nodeId < MC_MAXTEXTURES) && (nextAvailableVertexNode < MC_MAXTEXTURES))
 		{
 			if (!masterTextureNodes[nodeId].vertexData)
 			{
 				masterTextureNodes[nodeId].vertexData =
 					&(masterVertexNodes[nextAvailableVertexNode]);
-				gosASSERT(
-					masterTextureNodes[nodeId].vertexData->numVertices == 0);
-				gosASSERT(
-					masterTextureNodes[nodeId].vertexData->vertices == nullptr);
+				gosASSERT(masterTextureNodes[nodeId].vertexData->numVertices == 0);
+				gosASSERT(masterTextureNodes[nodeId].vertexData->vertices == nullptr);
 				nextAvailableVertexNode++;
 				masterTextureNodes[nodeId].vertexData->flags		= flags;
 				masterTextureNodes[nodeId].vertexData->textureIndex = nodeId;
 			}
 			else if (masterTextureNodes[nodeId].vertexData &&
-					 (masterTextureNodes[nodeId].vertexData->flags != flags) &&
-					 !masterTextureNodes[nodeId].vertexData2)
+				(masterTextureNodes[nodeId].vertexData->flags != flags) &&
+				!masterTextureNodes[nodeId].vertexData2)
 			{
 				masterTextureNodes[nodeId].vertexData2 =
 					&(masterVertexNodes[nextAvailableVertexNode]);
-				gosASSERT(
-					masterTextureNodes[nodeId].vertexData2->numVertices == 0);
-				gosASSERT(masterTextureNodes[nodeId].vertexData2->vertices ==
-						  nullptr);
+				gosASSERT(masterTextureNodes[nodeId].vertexData2->numVertices == 0);
+				gosASSERT(masterTextureNodes[nodeId].vertexData2->vertices == nullptr);
 				nextAvailableVertexNode++;
 				masterTextureNodes[nodeId].vertexData2->flags		 = flags;
 				masterTextureNodes[nodeId].vertexData2->textureIndex = nodeId;
 			}
 			else if (masterTextureNodes[nodeId].vertexData &&
-					 (masterTextureNodes[nodeId].vertexData->flags != flags) &&
-					 masterTextureNodes[nodeId].vertexData2 &&
-					 (masterTextureNodes[nodeId].vertexData2->flags != flags) &&
-					 !masterTextureNodes[nodeId].vertexData3)
+				(masterTextureNodes[nodeId].vertexData->flags != flags) &&
+				masterTextureNodes[nodeId].vertexData2 &&
+				(masterTextureNodes[nodeId].vertexData2->flags != flags) &&
+				!masterTextureNodes[nodeId].vertexData3)
 			{
 				masterTextureNodes[nodeId].vertexData3 =
 					&(masterVertexNodes[nextAvailableVertexNode]);
-				gosASSERT(
-					masterTextureNodes[nodeId].vertexData3->numVertices == 0);
-				gosASSERT(masterTextureNodes[nodeId].vertexData3->vertices ==
-						  nullptr);
+				gosASSERT(masterTextureNodes[nodeId].vertexData3->numVertices == 0);
+				gosASSERT(masterTextureNodes[nodeId].vertexData3->vertices == nullptr);
 				nextAvailableVertexNode++;
 				masterTextureNodes[nodeId].vertexData3->flags		 = flags;
 				masterTextureNodes[nodeId].vertexData3->textureIndex = nodeId;
@@ -404,10 +383,10 @@ class MC_TextureManager
 			if (masterTextureNodes[nodeId].vertexData->flags == flags)
 				masterTextureNodes[nodeId].vertexData->numVertices += 3;
 			else if (masterTextureNodes[nodeId].vertexData2 &&
-					 masterTextureNodes[nodeId].vertexData2->flags == flags)
+				masterTextureNodes[nodeId].vertexData2->flags == flags)
 				masterTextureNodes[nodeId].vertexData2->numVertices += 3;
 			else if (masterTextureNodes[nodeId].vertexData3 &&
-					 masterTextureNodes[nodeId].vertexData3->flags == flags)
+				masterTextureNodes[nodeId].vertexData3->flags == flags)
 				masterTextureNodes[nodeId].vertexData3->numVertices += 3;
 #ifdef _DEBUG
 			else
@@ -435,9 +414,8 @@ class MC_TextureManager
 				vertexData2->flags		  = flags;
 				vertexData2->textureIndex = 0;
 			}
-			else if (vertexData && (vertexData->flags != flags) &&
-					 vertexData2 && (vertexData2->flags != flags) &&
-					 !vertexData3)
+			else if (vertexData && (vertexData->flags != flags) && vertexData2 &&
+				(vertexData2->flags != flags) && !vertexData3)
 			{
 				vertexData3 = &(masterVertexNodes[nextAvailableVertexNode]);
 				gosASSERT(vertexData3->numVertices == 0);
@@ -446,10 +424,9 @@ class MC_TextureManager
 				vertexData3->flags		  = flags;
 				vertexData3->textureIndex = 0;
 			}
-			else if (vertexData && (vertexData->flags != flags) &&
-					 vertexData2 && (vertexData2->flags != flags) &&
-					 vertexData3 && (vertexData3->flags != flags) &&
-					 !vertexData4)
+			else if (vertexData && (vertexData->flags != flags) && vertexData2 &&
+				(vertexData2->flags != flags) && vertexData3 && (vertexData3->flags != flags) &&
+				!vertexData4)
 			{
 				vertexData4 = &(masterVertexNodes[nextAvailableVertexNode]);
 				gosASSERT(vertexData4->numVertices == 0);
@@ -482,21 +459,15 @@ class MC_TextureManager
 			if (masterTextureNodes[nodeId].vertexData &&
 				masterTextureNodes[nodeId].vertexData->flags == flags)
 			{
-				gos_VERTEX* vertices =
-					masterTextureNodes[nodeId].vertexData->currentVertex;
-				if (!vertices &&
-					!masterTextureNodes[nodeId].vertexData->vertices)
+				gos_VERTEX* vertices = masterTextureNodes[nodeId].vertexData->currentVertex;
+				if (!vertices && !masterTextureNodes[nodeId].vertexData->vertices)
 				{
-					masterTextureNodes[nodeId].vertexData->currentVertex =
-						vertices =
-							masterTextureNodes[nodeId].vertexData->vertices =
-								gvManager->getVertexBlock(
-									masterTextureNodes[nodeId]
-										.vertexData->numVertices);
+					masterTextureNodes[nodeId].vertexData->currentVertex = vertices =
+						masterTextureNodes[nodeId].vertexData->vertices = gvManager->getVertexBlock(
+							masterTextureNodes[nodeId].vertexData->numVertices);
 				}
-				if (vertices <
-					(masterTextureNodes[nodeId].vertexData->vertices +
-						masterTextureNodes[nodeId].vertexData->numVertices))
+				if (vertices < (masterTextureNodes[nodeId].vertexData->vertices +
+								   masterTextureNodes[nodeId].vertexData->numVertices))
 				{
 #if 0
 					if((data[0].u > 64.0f) ||
@@ -525,32 +496,26 @@ class MC_TextureManager
 				masterTextureNodes[nodeId].vertexData->currentVertex = vertices;
 			}
 			else if (masterTextureNodes[nodeId].vertexData2 &&
-					 masterTextureNodes[nodeId].vertexData2->flags == flags)
+				masterTextureNodes[nodeId].vertexData2->flags == flags)
 			{
-				gos_VERTEX* vertices =
-					masterTextureNodes[nodeId].vertexData2->currentVertex;
+				gos_VERTEX* vertices = masterTextureNodes[nodeId].vertexData2->currentVertex;
 #if defined(_DEBUG) || defined(_ARMOR)
 				gos_VERTEX* oldVertices = vertices;
-				gos_VERTEX* oldStart =
-					(masterTextureNodes[nodeId].vertexData2->vertices +
-						masterTextureNodes[nodeId].vertexData2->numVertices);
+				gos_VERTEX* oldStart	= (masterTextureNodes[nodeId].vertexData2->vertices +
+					   masterTextureNodes[nodeId].vertexData2->numVertices);
 				(void)oldVertices;
 				(void)oldStart; // 4189
 				gosASSERT(oldVertices < oldStart);
 #endif
-				if (!vertices &&
-					!masterTextureNodes[nodeId].vertexData2->vertices)
+				if (!vertices && !masterTextureNodes[nodeId].vertexData2->vertices)
 				{
-					masterTextureNodes[nodeId].vertexData2->currentVertex =
-						vertices =
-							masterTextureNodes[nodeId].vertexData2->vertices =
-								gvManager->getVertexBlock(
-									masterTextureNodes[nodeId]
-										.vertexData2->numVertices);
+					masterTextureNodes[nodeId].vertexData2->currentVertex = vertices =
+						masterTextureNodes[nodeId].vertexData2->vertices =
+							gvManager->getVertexBlock(
+								masterTextureNodes[nodeId].vertexData2->numVertices);
 				}
-				if (vertices <
-					(masterTextureNodes[nodeId].vertexData2->vertices +
-						masterTextureNodes[nodeId].vertexData2->numVertices))
+				if (vertices < (masterTextureNodes[nodeId].vertexData2->vertices +
+								   masterTextureNodes[nodeId].vertexData2->numVertices))
 				{
 #if 0
 					if((data[0].u > 64.0f) ||
@@ -576,36 +541,29 @@ class MC_TextureManager
 						memcpy(vertices, data, sizeof(gos_VERTEX) * 3);
 					vertices += 3;
 				}
-				masterTextureNodes[nodeId].vertexData2->currentVertex =
-					vertices;
+				masterTextureNodes[nodeId].vertexData2->currentVertex = vertices;
 			}
 			else if (masterTextureNodes[nodeId].vertexData3 &&
-					 masterTextureNodes[nodeId].vertexData3->flags == flags)
+				masterTextureNodes[nodeId].vertexData3->flags == flags)
 			{
-				gos_VERTEX* vertices =
-					masterTextureNodes[nodeId].vertexData3->currentVertex;
+				gos_VERTEX* vertices = masterTextureNodes[nodeId].vertexData3->currentVertex;
 #if defined(_DEBUG) || defined(_ARMOR)
 				gos_VERTEX* oldVertices = vertices;
-				gos_VERTEX* oldStart =
-					(masterTextureNodes[nodeId].vertexData3->vertices +
-						masterTextureNodes[nodeId].vertexData3->numVertices);
+				gos_VERTEX* oldStart	= (masterTextureNodes[nodeId].vertexData3->vertices +
+					   masterTextureNodes[nodeId].vertexData3->numVertices);
 				(void)oldVertices;
 				(void)oldStart; // 4189
 				gosASSERT(oldVertices < oldStart);
 #endif
-				if (!vertices &&
-					!masterTextureNodes[nodeId].vertexData3->vertices)
+				if (!vertices && !masterTextureNodes[nodeId].vertexData3->vertices)
 				{
-					masterTextureNodes[nodeId].vertexData3->currentVertex =
-						vertices =
-							masterTextureNodes[nodeId].vertexData3->vertices =
-								gvManager->getVertexBlock(
-									masterTextureNodes[nodeId]
-										.vertexData3->numVertices);
+					masterTextureNodes[nodeId].vertexData3->currentVertex = vertices =
+						masterTextureNodes[nodeId].vertexData3->vertices =
+							gvManager->getVertexBlock(
+								masterTextureNodes[nodeId].vertexData3->numVertices);
 				}
-				if (vertices <
-					(masterTextureNodes[nodeId].vertexData3->vertices +
-						masterTextureNodes[nodeId].vertexData3->numVertices))
+				if (vertices < (masterTextureNodes[nodeId].vertexData3->vertices +
+								   masterTextureNodes[nodeId].vertexData3->numVertices))
 				{
 #if 0
 					if((data[0].u > 64.0f) ||
@@ -631,8 +589,7 @@ class MC_TextureManager
 						memcpy(vertices, data, sizeof(gos_VERTEX) * 3);
 					vertices += 3;
 				}
-				masterTextureNodes[nodeId].vertexData3->currentVertex =
-					vertices;
+				masterTextureNodes[nodeId].vertexData3->currentVertex = vertices;
 			}
 			else // If we got here, something is really wrong
 			{
@@ -648,12 +605,10 @@ class MC_TextureManager
 				gos_VERTEX* vertices = vertexData->currentVertex;
 				if (!vertices && !vertexData->vertices)
 				{
-					vertexData->currentVertex = vertices =
-						vertexData->vertices =
-							gvManager->getVertexBlock(vertexData->numVertices);
+					vertexData->currentVertex = vertices = vertexData->vertices =
+						gvManager->getVertexBlock(vertexData->numVertices);
 				}
-				if (vertices <=
-					(vertexData->vertices + vertexData->numVertices))
+				if (vertices <= (vertexData->vertices + vertexData->numVertices))
 				{
 					memcpy(vertices, data, sizeof(gos_VERTEX) * 3);
 					vertices += 3;
@@ -665,12 +620,10 @@ class MC_TextureManager
 				gos_VERTEX* vertices = vertexData2->currentVertex;
 				if (!vertices && !vertexData2->vertices)
 				{
-					vertexData2->currentVertex = vertices =
-						vertexData2->vertices =
-							gvManager->getVertexBlock(vertexData2->numVertices);
+					vertexData2->currentVertex = vertices = vertexData2->vertices =
+						gvManager->getVertexBlock(vertexData2->numVertices);
 				}
-				if (vertices <=
-					(vertexData2->vertices + vertexData2->numVertices))
+				if (vertices <= (vertexData2->vertices + vertexData2->numVertices))
 				{
 					memcpy(vertices, data, sizeof(gos_VERTEX) * 3);
 					vertices += 3;
@@ -682,12 +635,10 @@ class MC_TextureManager
 				gos_VERTEX* vertices = vertexData3->currentVertex;
 				if (!vertices && !vertexData3->vertices)
 				{
-					vertexData3->currentVertex = vertices =
-						vertexData3->vertices =
-							gvManager->getVertexBlock(vertexData3->numVertices);
+					vertexData3->currentVertex = vertices = vertexData3->vertices =
+						gvManager->getVertexBlock(vertexData3->numVertices);
 				}
-				if (vertices <=
-					(vertexData3->vertices + vertexData3->numVertices))
+				if (vertices <= (vertexData3->vertices + vertexData3->numVertices))
 				{
 					memcpy(vertices, data, sizeof(gos_VERTEX) * 3);
 					vertices += 3;
@@ -699,12 +650,10 @@ class MC_TextureManager
 				gos_VERTEX* vertices = vertexData4->currentVertex;
 				if (!vertices && !vertexData4->vertices)
 				{
-					vertexData4->currentVertex = vertices =
-						vertexData4->vertices =
-							gvManager->getVertexBlock(vertexData4->numVertices);
+					vertexData4->currentVertex = vertices = vertexData4->vertices =
+						gvManager->getVertexBlock(vertexData4->numVertices);
 				}
-				if (vertices <=
-					(vertexData4->vertices + vertexData4->numVertices))
+				if (vertices <= (vertexData4->vertices + vertexData4->numVertices))
 				{
 					memcpy(vertices, data, sizeof(gos_VERTEX) * 3);
 					vertices += 3;
@@ -729,8 +678,7 @@ class MC_TextureManager
 			masterTextureNodes[i].vertexData3 = nullptr;
 		}
 		vertexData = vertexData2 = vertexData3 = vertexData4 = nullptr;
-		memset(
-			masterVertexNodes, 0, sizeof(MC_VertexArrayNode) * MC_MAXTEXTURES);
+		memset(masterVertexNodes, 0, sizeof(MC_VertexArrayNode) * MC_MAXTEXTURES);
 		nextAvailableVertexNode = 0;
 		gvManager->reset(void);
 	}
@@ -761,8 +709,7 @@ class MC_TextureManager
 
 	bool checkCacheHeap(void)
 	{
-		if (textureCacheHeap->totalCoreLeft() <=
-			(TEXTURE_CACHE_SIZE - MAX_CACHE_SIZE))
+		if (textureCacheHeap->totalCoreLeft() <= (TEXTURE_CACHE_SIZE - MAX_CACHE_SIZE))
 		{
 			return false;
 		}

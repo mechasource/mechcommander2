@@ -13,7 +13,7 @@
 
 class TableTestPlug : public Plug
 {
-  public:
+public:
 	int32_t value;
 
 	TableTestPlug(int32_t value);
@@ -22,7 +22,7 @@ class TableTestPlug : public Plug
 
 class TableTestNode : public Node
 {
-  public:
+public:
 	TableOf<TableTestPlug*, int32_t> table1;
 	TableOf<TableTestPlug*, int32_t> table2;
 
@@ -33,17 +33,11 @@ class TableTestNode : public Node
 	bool RunTest();
 };
 
-TableTestPlug::TableTestPlug(int32_t value) : Plug(DefaultData)
-{
-	this->value = value;
-}
+TableTestPlug::TableTestPlug(int32_t value) : Plug(DefaultData) { this->value = value; }
 
 TableTestPlug::~TableTestPlug() {}
 
-TableTestNode::TableTestNode()
-	: Node(DefaultData), table1(this, true), table2(this, true)
-{
-}
+TableTestNode::TableTestNode() : Node(DefaultData), table1(this, true), table2(this, true) {}
 
 TableTestNode::~TableTestNode() {}
 
@@ -61,8 +55,7 @@ bool Table::ProfileClass()
 #endif
 	Test_Message("Table::ProfileClass\n");
 	testNode.RunProfile();
-	SPEW((GROUP_STUFF_TEST, "Table::ProfileClass elapsed = %f",
-		gos_GetHiResTime() - startTicks));
+	SPEW((GROUP_STUFF_TEST, "Table::ProfileClass elapsed = %f", gos_GetHiResTime() - startTicks));
 	return true;
 }
 
@@ -117,8 +110,7 @@ bool TableTestNode::RunProfile()
 		table1.AddValue(testPlug1, values[i]);
 		table2.AddValue(testPlug1, values[i]);
 	}
-	SPEW((GROUP_STUFF_TEST, "TableTestNode::RunTest Create = %f",
-		gos_GetHiResTime() - startTicks));
+	SPEW((GROUP_STUFF_TEST, "TableTestNode::RunTest Create = %f", gos_GetHiResTime() - startTicks));
 	/*
 	 * Iterate over both sockets
 	 */
@@ -143,8 +135,8 @@ bool TableTestNode::RunProfile()
 		}
 		Test_Assumption(i == TEST_COUNT);
 	}
-	SPEW((GROUP_STUFF_TEST, "TableTestNode::RunTest Iterate = %f",
-		gos_GetHiResTime() - startTicks));
+	SPEW(
+		(GROUP_STUFF_TEST, "TableTestNode::RunTest Iterate = %f", gos_GetHiResTime() - startTicks));
 	/*
 	 * Find
 	 */
@@ -161,8 +153,7 @@ bool TableTestNode::RunProfile()
 			Test_Assumption(testPlug1 == testPlug2);
 		}
 	}
-	SPEW((GROUP_STUFF_TEST, "TableTestNode::RunTest Find = %d",
-		gos_GetHiResTime() - startTicks));
+	SPEW((GROUP_STUFF_TEST, "TableTestNode::RunTest Find = %d", gos_GetHiResTime() - startTicks));
 	/*
 	 * Destroy from table1, verify with table2
 	 */
@@ -184,8 +175,8 @@ bool TableTestNode::RunProfile()
 		Test_Assumption(iterator1.GetSize() == 0);
 		Test_Assumption(iterator2.GetSize() == 0);
 	}
-	SPEW((GROUP_STUFF_TEST, "TableTestNode::RunTest Destroy = %f",
-		gos_GetHiResTime() - startTicks));
+	SPEW(
+		(GROUP_STUFF_TEST, "TableTestNode::RunTest Destroy = %f", gos_GetHiResTime() - startTicks));
 	return true;
 }
 

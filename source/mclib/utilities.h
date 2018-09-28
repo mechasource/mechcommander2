@@ -6,7 +6,7 @@
 #ifndef UTILITIES_H
 #define UTILITIES_H
 
-//#include <gameos.hpp>
+#include <gameos.hpp>
 //#include <string.h>
 
 class FitIniFile;
@@ -17,8 +17,8 @@ public:
 	StaticInfo() {}
 	~StaticInfo(void);
 
-	void init(FitIniFile& file, PSTR blockName, int32_t hiResOffsetX = 0,
-		int32_t hiResOffsetY = 0, uint32_t neverFlush = 0);
+	void init(FitIniFile& file, PSTR blockName, int32_t hiResOffsetX = 0, int32_t hiResOffsetY = 0,
+		uint32_t neverFlush = 0);
 	void render(void);
 	bool isInside(int32_t mouseX, int32_t mouseY);
 
@@ -35,7 +35,6 @@ public:
 	void showGUIWindow(bool bShow);
 
 	void setColor(int32_t newColor);
-
 
 	uint32_t textureHandle;
 	gos_VERTEX location[4];
@@ -59,24 +58,23 @@ void drawEmptyRect(const RECT& rect, uint32_t leftBorderColor = 0xffffffff,
 
 void drawRect(const RECT& rect, uint32_t color);
 
-void drawShadowText(int32_t colorTop, int32_t colorShadow, HGOSFONT3D font,
-	int32_t left, int32_t top, bool proportional, PCSTR text, bool bBold,
-	float scale);
+void drawShadowText(int32_t colorTop, int32_t colorShadow, HGOSFONT3D font, int32_t left,
+	int32_t top, bool proportional, PCSTR text, bool bBold, float scale);
 
-void drawShadowText(int32_t colorTop, int32_t colorShadow, HGOSFONT3D font,
-	int32_t left, int32_t top, bool proportional, PCSTR text, bool bold,
+void drawShadowText(int32_t colorTop, int32_t colorShadow, HGOSFONT3D font, int32_t left,
+	int32_t top, bool proportional, PCSTR text, bool bold, float scale, int32_t xOffset,
+	int32_t yOffset);
+
+void drawShadowText(int32_t colorTop, int32_t colorShadow, HGOSFONT3D font, int32_t left,
+	int32_t top, int32_t right, int32_t bottom, bool proportional, PCSTR text, bool bold,
 	float scale, int32_t xOffset, int32_t yOffset);
 
-void drawShadowText(int32_t colorTop, int32_t colorShadow, HGOSFONT3D font,
-	int32_t left, int32_t top, int32_t right, int32_t bottom, bool proportional,
-	PCSTR text, bool bold, float scale, int32_t xOffset, int32_t yOffset);
-
-int32_t interpolateColor(int32_t color1, int32_t color2, float percent);
+uint32_t interpolateColor(uint32_t color1, uint32_t color2, float percent);
 
 inline COLORREF reverseRGB(COLORREF oldVal)
 {
-	return ((oldVal & 0xff000000) | ((oldVal & 0xff0000) >> 16) |
-			(oldVal & 0xff00) | ((oldVal & 0xff) << 16));
+	return ((oldVal & 0xff000000) | ((oldVal & 0xff0000) >> 16) | (oldVal & 0xff00) |
+		((oldVal & 0xff) << 16));
 }
 
 //-------------------------------------------------------
@@ -107,10 +105,7 @@ inline size_t cLoadString(uint32_t uID, // resource identifier
 
 #else
 
-inline PSTR cLoadString(uint32_t uID)
-{
-	return gos_GetResourceString(gosResourceHandle, uID);
-}
+inline PSTR cLoadString(uint32_t uID) { return gos_GetResourceString(gosResourceHandle, uID); }
 #endif
 
 #endif

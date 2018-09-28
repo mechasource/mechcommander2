@@ -27,25 +27,29 @@ class MLR_I_PMesh : public MLRIndexedPrimitiveBase
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Initialization
 	//
-  public:
+public:
 	static void __stdcall InitializeClass(void);
 	static void __stdcall TerminateClass(void);
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Constructors/Destructors
 	//
-  protected:
-	MLR_I_PMesh(
-		ClassData* class_data, Stuff::MemoryStream* stream, uint32_t version);
+protected:
+	MLR_I_PMesh(ClassData* class_data, std::iostream& stream, uint32_t version);
 	~MLR_I_PMesh(void);
 
-  public:
+public:
 	MLR_I_PMesh(ClassData* class_data = MLR_I_PMesh::DefaultData);
 
-	static MLR_I_PMesh* Make(Stuff::MemoryStream* stream, uint32_t version);
-	void Save(Stuff::MemoryStream* stream);
+	static MLR_I_PMesh* Make(std::iostream stream, uint32_t version);
+	void Save(std::ostream& stream)
+	{
+		// Check_Object(this);
+		//Check_Object(stream);
+		MLRIndexedPrimitiveBase::Save(stream);
+	}
 
-  public:
+public:
 	// void Copy(MLRIndexedPolyMesh*);
 
 	virtual void InitializeDrawPrimitive(uint8_t, int32_t = 0);
@@ -57,15 +61,14 @@ class MLR_I_PMesh : public MLRIndexedPrimitiveBase
 
 	virtual int32_t FindBackFace(const Stuff::Point3D&);
 
-	const Stuff::Plane* GetPolygonPlane(size_t index)
+	const Stuff::Plane* GetPolygonPlane(size_t ix)
 	{
 		// Check_Object(this);
-		Verify(index < facePlanes.GetLength());
-		return &facePlanes[index];
+		_ASSERT(ix < facePlanes.size());
+		return &facePlanes[ix];
 	}
 
 	virtual void Lighting(MLRLight* const*, uint32_t nrLights);
-
 	virtual void LightMapLighting(MLRLight*);
 
 #if COLOR_AS_DWORD
@@ -77,8 +80,7 @@ class MLR_I_PMesh : public MLRIndexedPrimitiveBase
 	virtual uint32_t TransformAndClip(
 		Stuff::Matrix4D*, MLRClippingState, GOSVertexPool*, bool = false);
 	bool CastRay(Stuff::Line3D* line, Stuff::Normal3D* normal);
-	virtual void TransformNoClip(
-		Stuff::Matrix4D*, GOSVertexPool*, bool = false);
+	virtual void TransformNoClip(Stuff::Matrix4D*, GOSVertexPool*, bool = false);
 
 	// Initializes the visibility test list
 	void ResetTestList(void);
@@ -90,28 +92,28 @@ class MLR_I_PMesh : public MLRIndexedPrimitiveBase
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Class Data Support
 	//
-  public:
+public:
 	static ClassData* DefaultData;
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Testing
 	//
-  public:
+public:
 	void TestInstance(void) const;
 
 	virtual size_t GetSize(void)
 	{
 		// Check_Object(this);
 		size_t ret = MLRIndexedPrimitiveBase::GetSize();
-		ret += testList.GetSize();
-		ret += facePlanes.GetSize();
+		ret += testList.size();
+		ret += facePlanes.size();
 		return ret;
 	}
 
-  protected:
+protected:
 	void Transform(Stuff::Matrix4D*);
-	Stuff::DynamicArrayOf<uint8_t> testList;
-	Stuff::DynamicArrayOf<Stuff::Plane> facePlanes;
+	std::vector<uint8_t> testList;
+	std::vector<Stuff::Plane> facePlanes;
 };
 
 #define ICO_X 0.525731112119133606f
@@ -122,10 +124,10 @@ extern uint32_t tindices[20][3];
 
 extern uint32_t triDrawn;
 
-void subdivide(Stuff::Point3D* coords, Stuff::Point3D& v1, Stuff::Point3D& v2,
-	Stuff::Point3D& v3, uint32_t depth, uint32_t tri2draw, float rad = 1.0f);
+void subdivide(Stuff::Point3D* coords, Stuff::Point3D& v1, Stuff::Point3D& v2, Stuff::Point3D& v3,
+	uint32_t depth, uint32_t tri2draw, float rad = 1.0f);
 
 MLR_I_PMesh* CreateIndexedCube_NoColor_NoLit(float, MLRState*);
 MLRShape* CreateIndexedIcosahedron_NoColor_NoLit(IcoInfo&, MLRState*);
-}
+} // namespace MidLevelRenderer
 #endif

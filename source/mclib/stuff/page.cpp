@@ -38,7 +38,7 @@ Page::~Page()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void Page::WriteNotes(MemoryStream* stream)
+void Page::WriteNotes(std::iostream& stream)
 {
 	// Check_Object(this);
 	PCSTR name = m_name;
@@ -158,8 +158,7 @@ bool Page::GetEntry(PCSTR entryname, PCSTR* contents, bool required)
 		return true;
 	}
 	if (required)
-		STOP(("%s: [%s]%s is a required entry!", m_notationFile->GetFileName(),
-			m_name, entryname));
+		STOP(("%s: [%s]%s is a required entry!", m_notationFile->GetFileName(), m_name, entryname));
 	return false;
 }
 
@@ -204,8 +203,7 @@ bool Page::GetEntry(PCSTR entryname, pint32_t contents, bool required)
 		return true;
 	}
 	if (required)
-		STOP(("%s: [%s]%s is a required entry!", m_notationFile->GetFileName(),
-			m_name, entryname));
+		STOP(("%s: [%s]%s is a required entry!", m_notationFile->GetFileName(), m_name, entryname));
 	return false;
 }
 
@@ -248,8 +246,7 @@ bool Page::GetEntry(PCSTR entryname, float* contents, bool required)
 		return true;
 	}
 	if (required)
-		STOP(("%s: [%s]%s is a required entry!", m_notationFile->GetFileName(),
-			m_name, entryname));
+		STOP(("%s: [%s]%s is a required entry!", m_notationFile->GetFileName(), m_name, entryname));
 	return false;
 }
 
@@ -292,8 +289,7 @@ bool Page::GetEntry(PCSTR entryname, bool* contents, bool required)
 		return true;
 	}
 	if (required)
-		STOP(("%s: [%s]%s is a required entry!", m_notationFile->GetFileName(),
-			m_name, entryname));
+		STOP(("%s: [%s]%s is a required entry!", m_notationFile->GetFileName(), m_name, entryname));
 	return false;
 }
 
@@ -336,8 +332,7 @@ bool Page::GetEntry(PCSTR entryname, Vector3D* contents, bool required)
 		return true;
 	}
 	if (required)
-		STOP(("%s: [%s]%s is a required entry!", m_notationFile->GetFileName(),
-			m_name, entryname));
+		STOP(("%s: [%s]%s is a required entry!", m_notationFile->GetFileName(), m_name, entryname));
 	return false;
 }
 
@@ -380,8 +375,7 @@ bool Page::GetEntry(PCSTR entryname, YawPitchRoll* contents, bool required)
 		return true;
 	}
 	if (required)
-		STOP(("%s: [%s]%s is a required entry!", m_notationFile->GetFileName(),
-			m_name, entryname));
+		STOP(("%s: [%s]%s is a required entry!", m_notationFile->GetFileName(), m_name, entryname));
 	return false;
 }
 
@@ -424,8 +418,7 @@ bool Page::GetEntry(PCSTR entryname, UnitQuaternion* contents, bool required)
 		return true;
 	}
 	if (required)
-		STOP(("%s: [%s]%s is a required entry!", m_notationFile->GetFileName(),
-			m_name, entryname));
+		STOP(("%s: [%s]%s is a required entry!", m_notationFile->GetFileName(), m_name, entryname));
 	return false;
 }
 
@@ -468,8 +461,7 @@ bool Page::GetEntry(PCSTR entryname, Motion3D* contents, bool required)
 		return true;
 	}
 	if (required)
-		STOP(("%s: [%s]%s is a required entry!", m_notationFile->GetFileName(),
-			m_name, entryname));
+		STOP(("%s: [%s]%s is a required entry!", m_notationFile->GetFileName(), m_name, entryname));
 	return false;
 }
 
@@ -512,8 +504,7 @@ bool Page::GetEntry(PCSTR entryname, RGBColor* contents, bool required)
 		return true;
 	}
 	if (required)
-		STOP(("%s: [%s]%s is a required entry!", m_notationFile->GetFileName(),
-			m_name, entryname));
+		STOP(("%s: [%s]%s is a required entry!", m_notationFile->GetFileName(), m_name, entryname));
 	return false;
 }
 
@@ -556,8 +547,7 @@ bool Page::GetEntry(PCSTR entryname, RGBAColor* contents, bool required)
 		return true;
 	}
 	if (required)
-		STOP(("%s: [%s]%s is a required entry!", m_notationFile->GetFileName(),
-			m_name, entryname));
+		STOP(("%s: [%s]%s is a required entry!", m_notationFile->GetFileName(), m_name, entryname));
 	return false;
 }
 
@@ -600,8 +590,8 @@ bool Page::GetEntry(PCSTR entryname, NotationFile* contents, bool required)
 		return true;
 	}
 	if (required)
-		STOP(("%s: [%s]%s is a required entry!", m_notationFile->GetFileName(),
-			(PSTR)m_name, entryname));
+		STOP(("%s: [%s]%s is a required entry!", m_notationFile->GetFileName(), (PSTR)m_name,
+			entryname));
 	return false;
 }
 

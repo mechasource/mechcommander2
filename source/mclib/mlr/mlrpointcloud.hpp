@@ -21,19 +21,19 @@ class MLRPointCloud : public MLREffect
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Initialization
 	//
-  public:
+public:
 	static void __stdcall InitializeClass(void);
 	static void __stdcall TerminateClass(void);
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Constructors/Destructors
 	//
-  public:
+public:
 	MLRPointCloud(uint32_t, uint32_t = 0);
 	~MLRPointCloud(void);
 
-	void SetData(pcsize_t count, const Stuff::Point3D* point_data,
-		const Stuff::RGBAColor* color_data);
+	void SetData(
+		pcsize_t count, const Stuff::Point3D* point_data, const Stuff::RGBAColor* color_data);
 	virtual uint32_t GetType(uint32_t) { return type; }
 	void Draw(DrawEffectInformation*, GOSVertexPool*, MLRSorter*);
 
@@ -44,18 +44,18 @@ class MLRPointCloud : public MLREffect
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Class Data Support
 	//
-  public:
+public:
 	static ClassData* DefaultData;
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Testing
 	//
-  public:
+public:
 	void TestInstance(void) const;
 
-  protected:
+protected:
 	uint32_t type;
 	pcsize_t usedNrOfVertices;
 };
-}
+} // namespace MidLevelRenderer
 #endif

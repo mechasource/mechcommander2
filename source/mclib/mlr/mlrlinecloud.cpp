@@ -23,10 +23,10 @@ MLRLineCloud::ClassData* MLRLineCloud::DefaultData = nullptr;
 //
 void MLRLineCloud::InitializeClass()
 {
-	Verify(!DefaultData);
-	// Verify(gos_GetCurrentHeap() == StaticHeap);
-	DefaultData = new ClassData(MLRLineCloudClassID,
-		"MidLevelRenderer::MLRLineCloud", MLREffect::DefaultData);
+	_ASSERT(!DefaultData);
+	// _ASSERT(gos_GetCurrentHeap() == StaticHeap);
+	DefaultData = new ClassData(
+		MLRLineCloudClassID, "MidLevelRenderer::MLRLineCloud", MLREffect::DefaultData);
 	Register_Object(DefaultData);
 }
 
@@ -44,7 +44,7 @@ void MLRLineCloud::TerminateClass()
 MLRLineCloud::MLRLineCloud(uint32_t nr, uint32_t _type)
 	: MLREffect(uint32_t(2 * nr), DefaultData), type(_type)
 {
-	// Verify(gos_GetCurrentHeap() == Heap);
+	// _ASSERT(gos_GetCurrentHeap() == Heap);
 	usedNrOfVertices = 0;
 	// Check_Pointer(this);
 	drawMode = SortData::LineCloud;
@@ -59,20 +59,20 @@ MLRLineCloud::~MLRLineCloud()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLRLineCloud::SetData(pcsize_t count, const Stuff::Point3D* point_data,
-	const Stuff::RGBAColor* color_data)
+void MLRLineCloud::SetData(
+	pcsize_t count, const Stuff::Point3D* point_data, const Stuff::RGBAColor* color_data)
 {
 	// Check_Pointer(this);
 	usedNrOfVertices = count;
-	Verify(*usedNrOfVertices <= maxNrOf);
+	_ASSERT(*usedNrOfVertices <= maxNrOf);
 	points = point_data;
 	colors = color_data;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLRLineCloud::Draw(DrawEffectInformation* dInfo,
-	GOSVertexPool* allVerticesToDraw, MLRSorter* sorter)
+void MLRLineCloud::Draw(
+	DrawEffectInformation* dInfo, GOSVertexPool* allVerticesToDraw, MLRSorter* sorter)
 {
 	// Check_Object(this);
 	worldToEffect.Invert(*dInfo->effectToWorld);
@@ -130,8 +130,7 @@ uint32_t MLRLineCloud::Clip(MLRClippingState clippingFlags, GOSVertexPool* vt)
 				{
 					continue;
 				}
-				GOSCopyData(&gos_vertices[numGOSVertices],
-					transformedCoords->GetData(), colors, i);
+				GOSCopyData(&gos_vertices[numGOSVertices], transformedCoords->GetData(), colors, i);
 				numGOSVertices++;
 			}
 			Check_Object(vt);
@@ -154,8 +153,7 @@ uint32_t MLRLineCloud::Clip(MLRClippingState clippingFlags, GOSVertexPool* vt)
 		endClip.Clip4dVertex(v4d + i + 1);
 		theAnd = *(puint32_t)&startClip & *(puint32_t)&endClip;
 		theOr  = *(puint32_t)&startClip | *(puint32_t)&endClip;
-		theAnd = theOr =
-			0; // ASSUME NO CLIPPING NEEDED FOR MC2.  Its just not done here!
+		theAnd = theOr = 0; // ASSUME NO CLIPPING NEEDED FOR MC2.  Its just not done here!
 		if (theAnd != 0)
 		{
 			continue;
@@ -187,9 +185,8 @@ uint32_t MLRLineCloud::Clip(MLRClippingState clippingFlags, GOSVertexPool* vt)
 					// Find the clipping interval from bc0 to bc1
 					//-------------------------------------------
 					//
-					a = GetLerpFactor(l, (*transformedCoords)[i],
-						(*transformedCoords)[i + 1]);
-					Verify(a >= 0.0f && a <= 1.0f);
+					a = GetLerpFactor(l, (*transformedCoords)[i], (*transformedCoords)[i + 1]);
+					_ASSERT(a >= 0.0f && a <= 1.0f);
 					ct = l;
 					break;
 				}
@@ -200,8 +197,7 @@ uint32_t MLRLineCloud::Clip(MLRClippingState clippingFlags, GOSVertexPool* vt)
 			cc.Lerp(colors[i], colors[i + 1], a);
 			if (startClip == 0)
 			{
-				GOSCopyData(&gos_vertices[numGOSVertices],
-					transformedCoords->GetData(), colors, i);
+				GOSCopyData(&gos_vertices[numGOSVertices], transformedCoords->GetData(), colors, i);
 				numGOSVertices++;
 				GOSCopyData(&gos_vertices[numGOSVertices], &p4d, &cc, 0);
 				numGOSVertices++;
@@ -210,8 +206,8 @@ uint32_t MLRLineCloud::Clip(MLRClippingState clippingFlags, GOSVertexPool* vt)
 			{
 				GOSCopyData(&gos_vertices[numGOSVertices], &p4d, &cc, 0);
 				numGOSVertices++;
-				GOSCopyData(&gos_vertices[numGOSVertices],
-					transformedCoords->GetData(), colors, i + 1);
+				GOSCopyData(
+					&gos_vertices[numGOSVertices], transformedCoords->GetData(), colors, i + 1);
 				numGOSVertices++;
 			}
 		}
@@ -238,7 +234,7 @@ uint32_t MLRLineCloud::Clip(MLRClippingState clippingFlags, GOSVertexPool* vt)
 					if (startClip.IsClipped(mask))
 					{
 						a = GetLerpFactor(l, p4d0, p4d1);
-						Verify(a >= 0.0f && a <= 1.0f);
+						_ASSERT(a >= 0.0f && a <= 1.0f);
 						p4d0.Lerp(p4d0, p4d1, a);
 						DoClipTrick(p4d0, l);
 						startClip.Clip4dVertex(&p4d0);
@@ -247,7 +243,7 @@ uint32_t MLRLineCloud::Clip(MLRClippingState clippingFlags, GOSVertexPool* vt)
 					if (endClip.IsClipped(mask))
 					{
 						a = GetLerpFactor(l, p4d0, p4d1);
-						Verify(a >= 0.0f && a <= 1.0f);
+						_ASSERT(a >= 0.0f && a <= 1.0f);
 						p4d1.Lerp(p4d0, p4d1, a);
 						DoClipTrick(p4d1, l);
 						endClip.Clip4dVertex(&p4d1);
@@ -280,6 +276,6 @@ void MLRLineCloud::TestInstance(void) const
 {
 	if (usedNrOfVertices)
 	{
-		Verify(*usedNrOfVertices <= maxNrOf);
+		_ASSERT(*usedNrOfVertices <= maxNrOf);
 	}
 }

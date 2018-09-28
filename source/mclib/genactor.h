@@ -1,7 +1,7 @@
 //---------------------------------------------------------------------------
 //
 //	Genactor.h - This file contains the header for the generic 3D appearance
-//class
+// class
 //
 //	MechCommander 2
 //
@@ -44,7 +44,7 @@
 //***********************************************************************
 class GenericAppearanceType : public AppearanceType
 {
-  public:
+public:
 	TG_TypeMultiShapePtr genShape;
 	TG_TypeMultiShapePtr genDmgShape;
 
@@ -58,7 +58,7 @@ class GenericAppearanceType : public AppearanceType
 	char textureName[50];
 	uint32_t dotRGB;
 
-  public:
+public:
 	void init(void)
 	{
 		genShape = nullptr;
@@ -126,7 +126,7 @@ class GenericAppearanceType : public AppearanceType
 //***********************************************************************
 class GenericAppearance : public ObjectAppearance
 {
-  public:
+public:
 	GenericAppearanceType* appearType;
 	TG_MultiShapePtr genShape;
 
@@ -147,9 +147,8 @@ class GenericAppearance : public ObjectAppearance
 
 	int32_t skyNumber;
 
-  public:
-	virtual void init(
-		AppearanceTypePtr tree = nullptr, GameObjectPtr obj = nullptr);
+public:
+	virtual void init(AppearanceTypePtr tree = nullptr, GameObjectPtr obj = nullptr);
 
 	virtual AppearanceTypePtr getAppearanceType(void) { return appearType; }
 
@@ -180,16 +179,15 @@ class GenericAppearance : public ObjectAppearance
 
 	virtual bool isMouseOver(float px, float py);
 
-	virtual void setObjectParameters(Stuff::Vector3D& pos, float rot,
-		int32_t selected, int32_t alignment, int32_t homeRelations);
+	virtual void setObjectParameters(Stuff::Vector3D& pos, float rot, int32_t selected,
+		int32_t alignment, int32_t homeRelations);
 
-	virtual void setMoverParameters(float turretRot, float lArmRot = 0.0f,
-		float rArmRot = 0.0f, bool isAirborne = false);
+	virtual void setMoverParameters(
+		float turretRot, float lArmRot = 0.0f, float rArmRot = 0.0f, bool isAirborne = false);
 
 	virtual void setObjStatus(int32_t oStatus);
 
-	virtual void markTerrain(
-		_ScenarioMapCellInfo* pInfo, int32_t type, int32_t counter);
+	virtual void markTerrain(_ScenarioMapCellInfo* pInfo, int32_t type, int32_t counter);
 
 	virtual void markMoveMap(bool passable);
 

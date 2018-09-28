@@ -27,7 +27,7 @@ Line3D& Line3D::SetDirection(const Vector3D& vector)
 	//---------------------------------------
 	//
 	length = vector.GetLength();
-	Verify(!Small_Enough(length));
+	_ASSERT(!Small_Enough(length));
 	length = 1.0f / length;
 	//
 	//----------------------------------------------
@@ -123,8 +123,8 @@ float Line3D::GetDistanceTo(const OBB& box)
 	float leaves = length + 100.0f;
 	for (axis = X_Axis; axis <= Z_Axis; ++axis)
 	{
-		UnitVector3D normal(box.localToParent(axis, X_Axis),
-			box.localToParent(axis, Y_Axis), box.localToParent(axis, Z_Axis));
+		UnitVector3D normal(box.localToParent(axis, X_Axis), box.localToParent(axis, Y_Axis),
+			box.localToParent(axis, Z_Axis));
 		//
 		//----------------------------------------------------------------------
 		// Now, we have to calculate how far the line moves along the normal per
@@ -206,8 +206,8 @@ float Line3D::GetDistanceTo(const OBB& box, size_t* first_axis)
 	float leaves = length + 100.0f;
 	for (axis = X_Axis; axis <= Z_Axis; ++axis)
 	{
-		UnitVector3D normal(box.localToParent(axis, X_Axis),
-			box.localToParent(axis, Y_Axis), box.localToParent(axis, Z_Axis));
+		UnitVector3D normal(box.localToParent(axis, X_Axis), box.localToParent(axis, Y_Axis),
+			box.localToParent(axis, Z_Axis));
 		//
 		//----------------------------------------------------------------------
 		// Now, we have to calculate how far the line moves along the normal per

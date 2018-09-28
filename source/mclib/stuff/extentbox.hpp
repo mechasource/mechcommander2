@@ -33,7 +33,7 @@ class OBB;
 
 class ExtentBox
 {
-  public:
+public:
 	float minX, maxX, minY, maxY, minZ, maxZ;
 
 	ExtentBox() {}
@@ -74,25 +74,23 @@ class ExtentBox
 
 void Convert_From_Ascii(PCSTR str, ExtentBox* extent_box);
 
-void Use_Scalar_In_Sorted_Array(DynamicArrayOf<float>* values, float value,
-	puint32_t max_index, uint32_t block_size, float threshold = SMALL);
+void Use_Scalar_In_Sorted_Array(std::vector<float>* values, float value, puint32_t max_index,
+	uint32_t block_size, float threshold = SMALL);
 
-void Find_Planes_Of_Boxes(
-	DynamicArrayOf<Plane>* planes, const DynamicArrayOf<ExtentBox>& boxes);
-}
+void Find_Planes_Of_Boxes(std::vector<Plane>* planes, const std::vector<ExtentBox>& boxes);
+} // namespace Stuff
 
 namespace MemoryStreamIO
 {
-
-inline Stuff::MemoryStream& Read(
-	Stuff::MemoryStream* stream, Stuff::ExtentBox* output)
+#if _CONSIDERED_TEMPORARILY_DISABLED
+inline std::istream& Read(std::istream& stream, Stuff::ExtentBox* output)
 {
-	return stream->ReadBytes(output, sizeof(*output));
+	return stream.read(output, sizeof(*output));
 }
-inline Stuff::MemoryStream& Write(
-	Stuff::MemoryStream* stream, const Stuff::ExtentBox* input)
+inline std::ostream& Write(std::ostream& stream, const Stuff::ExtentBox* input)
 {
-	return stream->WriteBytes(input, sizeof(*input));
+	return stream.write(input, sizeof(*input));
 }
-}
+#endif
+} // namespace MemoryStreamIO
 #endif

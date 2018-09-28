@@ -37,8 +37,8 @@ namespace Arm
 {
 struct IProviderEngine;
 }
-}
-}
+} // namespace Xna
+} // namespace Microsoft
 
 //-------------------------------------------------------------------------------
 // Structs used by layer.
@@ -66,26 +66,25 @@ class TG_TypeMultiShape
 
 	//-------------
 	// Data Members
-  protected:
-	uint32_t numTG_TypeShapes; // Number of TG_Shapes
-	uint32_t numTextures;	  // Total Textures for all shapes.
-	TG_TypeNodePtr*
-		listOfTypeShapes; // Memory holding all TG_TypeNodes and TypeShapes
-	TG_TexturePtr listOfTextures; // List of texture Structures for all shapes.
+protected:
+	uint32_t numTG_TypeShapes;		  // Number of TG_Shapes
+	uint32_t numTextures;			  // Total Textures for all shapes.
+	TG_TypeNodePtr* listOfTypeShapes; // Memory holding all TG_TypeNodes and TypeShapes
+	TG_TexturePtr listOfTextures;	 // List of texture Structures for all shapes.
 
 #ifdef _DEBUG
 	char* shapeName; // FileName of shape
 #endif
 
-  public:
+public:
 	Stuff::Vector3D maxBox; // Bounding Box Max Coords
 	Stuff::Vector3D minBox; // Bounding Box Min Coords
 	float extentRadius;		// Bounding Sphere Coords
 
 	//-----------------
 	// Member Functions
-  protected:
-  public:
+protected:
+public:
 	PVOID operator new(size_t mySize);
 	void operator delete(PVOID us);
 
@@ -119,8 +118,7 @@ class TG_TypeMultiShape
 	// Function returns 0 if OK.  -1 if textureName is longer then nameLength-1.
 	// This function digs the texture name(s) out of the ASE file so that the
 	// User can load and manage them anyway they want to.
-	int32_t GetTextureName(
-		uint32_t textureNum, PSTR textureName, int32_t nameLength);
+	int32_t GetTextureName(uint32_t textureNum, PSTR textureName, int32_t nameLength);
 
 	// Function returns 0 if OK.  -1 if textureNum is out of range of
 	// numTextures.  This function takes the gosTextureHandle passed in and
@@ -218,7 +216,7 @@ class TG_MultiShape
 
 	//-------------
 	// Data Members
-  protected:
+protected:
 	TG_TypeMultiShapePtr myMultiType; // Pointer to the type
 	int32_t numTG_Shapes;			  // Number of TG_Shapes
 	TG_ShapeRecPtr listOfShapes;	  // Memory holding all TG_ShapeRecs
@@ -230,8 +228,8 @@ class TG_MultiShape
 
 	//-----------------
 	// Member Functions
-  protected:
-  public:
+protected:
+public:
 	PVOID operator new(size_t mySize);
 	void operator delete(PVOID us);
 
@@ -269,8 +267,7 @@ class TG_MultiShape
 	// vertex screen position is off screen.  Function returns 1 is all vertex
 	// screen positions are on screen.
 	// NOTE:  THIS IS NOT A RIGOROUS CLIP!!!!!!!!!
-	int32_t TransformMultiShape(
-		Stuff::Point3D* pos, Stuff::UnitQuaternion* rot);
+	int32_t TransformMultiShape(Stuff::Point3D* pos, Stuff::UnitQuaternion* rot);
 
 	// This function rotates the heirarchy from this node down.  Used for torso
 	// twists, arms, etc.
@@ -312,10 +309,8 @@ class TG_MultiShape
 		return 0;
 	}
 
-	Stuff::Vector3D GetShapeVertexInWorld(
-		int32_t shapeNum, int32_t vertexNum, float rotation);
-	Stuff::Vector3D GetShapeVertexInEditor(
-		int32_t shapeNum, int32_t vertexNum, float rotation);
+	Stuff::Vector3D GetShapeVertexInWorld(int32_t shapeNum, int32_t vertexNum, float rotation);
+	Stuff::Vector3D GetShapeVertexInEditor(int32_t shapeNum, int32_t vertexNum, float rotation);
 
 	float GetFrameNum(void) { return frameNum; }
 
@@ -326,8 +321,7 @@ class TG_MultiShape
 	// Function returns 0 if OK.  -1 if textureName is longer then nameLength-1.
 	// This function digs the texture name(s) out of the ASE file so that the
 	// User can load and manage them anyway they want to.
-	int32_t GetTextureName(
-		uint32_t textureNum, PSTR textureName, int32_t nameLength)
+	int32_t GetTextureName(uint32_t textureNum, PSTR textureName, int32_t nameLength)
 	{
 		return myMultiType->GetTextureName(textureNum, textureName, nameLength);
 	}
@@ -383,8 +377,7 @@ class TG_MultiShape
 		{
 			if (listOfShapes[i].parentNode == nullptr)
 			{
-				result =
-					listOfShapes[i].node->myType->GetRelativeNodeCenter(void);
+				result = listOfShapes[i].node->myType->GetRelativeNodeCenter(void);
 			}
 		}
 		return result;
@@ -452,8 +445,7 @@ class TG_MultiShape
 			// Scan through the list of shapes and dig out the number needed.
 			// DO NOT UPDATE THE HEIRARCHY!!!!
 			// This thing may not have updated itself this turn yet!!!
-			if (_stricmp(listOfShapes[i].node->myType->getNodeId(), nodeId) ==
-				0)
+			if (_stricmp(listOfShapes[i].node->myType->getNodeId(), nodeId) == 0)
 				return i;
 		}
 		return -1;
@@ -504,13 +496,13 @@ class TG_AnimateShape
 	// From an ASE file.  When we change an animation gesture, this class
 	// will shove the correct pointers to the data down to the TG_ShapeRecs.
 	// Other then data storage, parsing, and the pointer sets, does zipp!
-  protected:
+protected:
 	TG_AnimationPtr listOfAnimation;
 	int32_t count;
 	int32_t actualCount;
 	bool shapeIdsSet;
 
-  public:
+public:
 	PVOID operator new(size_t mySize);
 	void operator delete(PVOID us);
 
@@ -536,9 +528,8 @@ class TG_AnimateShape
 	// It sets up a pointer to the multi-shape so that animation data for each
 	// Node in the Multi-Shape can be loaded.
 	// It mallocs memory.
-	int32_t LoadTGMultiShapeAnimationFromASE(PSTR filename,
-		TG_TypeMultiShapePtr shape, bool skipIfBinary = false,
-		bool forceMakeBinary = false);
+	int32_t LoadTGMultiShapeAnimationFromASE(PSTR filename, TG_TypeMultiShapePtr shape,
+		bool skipIfBinary = false, bool forceMakeBinary = false);
 
 	// This function copies the pointers to the animation data in this class to
 	// the  TG_MultiShape being drawn.  Nothing else happens.

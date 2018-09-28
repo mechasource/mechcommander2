@@ -22,7 +22,7 @@ class TestHost
 	: public Stuff::Signature
 #endif
 {
-  public:
+public:
 	//--------------------------------------------------------------------
 	// ObjectNameList is designed to bond with another class to provide
 	// dymanic naming of the objects represented by that class.  TestHost

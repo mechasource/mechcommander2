@@ -6,13 +6,15 @@
 // Global Fast File Code.
 //
 #include "stdinc.h"
-#include "heap.h"
+
 #include "fastfile.h"
+
+//#include "heap.h"
 //#include <ctype.h>
 
 int32_t ffLastError = 0;
 
-#define NO_ERROR 0
+// #define NO_ERROR 0
 //-----------------------------------------------------------------------------------
 bool FastFileInit(PSTR fname)
 {
@@ -22,8 +24,7 @@ bool FastFileInit(PSTR fname)
 		return false;
 	}
 	//-----------------------------------------------------------------------------
-	//-- Open this fast file, add it to the list O pointers and return TRUE if
-	//OK!
+	//-- Open this fast file, add it to the list O pointers and return TRUE if OK!
 	fastFiles[numFastFiles] = new FastFile;
 	int32_t result			= fastFiles[numFastFiles]->open(fname);
 	if (result == FASTFILE_VERSION)
@@ -40,7 +41,7 @@ void FastFileFini(void)
 {
 	if (fastFiles)
 	{
-		int32_t currentFastFile = 0;
+		uint32_t currentFastFile = 0;
 		while (currentFastFile < maxFastFiles)
 		{
 			if (fastFiles[currentFastFile])
@@ -62,9 +63,9 @@ FastFile* FastFileFind(PSTR fname, int32_t& fastFileHandle)
 {
 	if (fastFiles)
 	{
-		uint32_t thisHash		= elfHash(fname);
-		int32_t currentFastFile = 0;
-		int32_t tempHandle		= -1;
+		uint32_t thisHash		 = elfHash(fname);
+		uint32_t currentFastFile = 0;
+		int32_t tempHandle		 = -1;
 		while (currentFastFile < numFastFiles)
 		{
 			tempHandle = fastFiles[currentFastFile]->openFast(thisHash, fname);

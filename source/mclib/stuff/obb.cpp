@@ -27,8 +27,8 @@ void Spew(PCSTR group, const OBB& box)
 	SPEW((group, "  Transform = +"));
 	Spew(group, box.localToParent);
 	SPEW((group, ""));
-	SPEW((group, "  Extents = <%4f,%4f,%4f>, Radius = %4f+", box.axisExtents.x,
-		box.axisExtents.y, box.axisExtents.z, box.sphereRadius));
+	SPEW((group, "  Extents = <%4f,%4f,%4f>, Radius = %4f+", box.axisExtents.x, box.axisExtents.y,
+		box.axisExtents.z, box.sphereRadius));
 }
 #endif
 
@@ -58,7 +58,7 @@ OBB::MultiplySphereOnly(
 	//Check_Pointer(this);
 	Check_Object(&obb);
 	Check_Object(&matrix);
-#if USE_ASSEMBLER_CODE
+#if USE_INLINE_ASSEMBLER_CODE
 	float* f = localToParent.entries;
 	_asm
 	{
@@ -157,12 +157,12 @@ OBB::SeparatingAxis OBB::FindSeparatingAxis(const OBB& box) const
 {
 	// Check_Object(this);
 	Check_Object(&box);
-	Verify(axisExtents.x >= 0.0f);
-	Verify(axisExtents.y >= 0.0f);
-	Verify(axisExtents.z >= 0.0f);
-	Verify(box.axisExtents.x >= 0.0f);
-	Verify(box.axisExtents.y >= 0.0f);
-	Verify(box.axisExtents.z >= 0.0f);
+	_ASSERT(axisExtents.x >= 0.0f);
+	_ASSERT(axisExtents.y >= 0.0f);
+	_ASSERT(axisExtents.z >= 0.0f);
+	_ASSERT(box.axisExtents.x >= 0.0f);
+	_ASSERT(box.axisExtents.y >= 0.0f);
+	_ASSERT(box.axisExtents.z >= 0.0f);
 	//
 	//------------------------------------------
 	// Get the distance between the centerpoints
@@ -181,19 +181,18 @@ OBB::SeparatingAxis OBB::FindSeparatingAxis(const OBB& box) const
 	//
 	float ab[3][3];
 	ab[0][0]	 = Fabs(localToParent(0, 0) * box.localToParent(0, 0) +
-					localToParent(0, 1) * box.localToParent(0, 1) +
-					localToParent(0, 2) * box.localToParent(0, 2));
+		localToParent(0, 1) * box.localToParent(0, 1) +
+		localToParent(0, 2) * box.localToParent(0, 2));
 	ab[0][1]	 = Fabs(localToParent(0, 0) * box.localToParent(1, 0) +
-					localToParent(0, 1) * box.localToParent(1, 1) +
-					localToParent(0, 2) * box.localToParent(1, 2));
+		localToParent(0, 1) * box.localToParent(1, 1) +
+		localToParent(0, 2) * box.localToParent(1, 2));
 	ab[0][2]	 = Fabs(localToParent(0, 0) * box.localToParent(2, 0) +
-					localToParent(0, 1) * box.localToParent(2, 1) +
-					localToParent(0, 2) * box.localToParent(2, 2));
-	float radius = axisExtents.x + box.axisExtents.x * ab[0][0] +
-				   box.axisExtents.y * ab[0][1] + box.axisExtents.z * ab[0][2];
-	float projection = localToParent(0, 0) * distance.x +
-					   localToParent(0, 1) * distance.y +
-					   localToParent(0, 2) * distance.z;
+		localToParent(0, 1) * box.localToParent(2, 1) +
+		localToParent(0, 2) * box.localToParent(2, 2));
+	float radius = axisExtents.x + box.axisExtents.x * ab[0][0] + box.axisExtents.y * ab[0][1] +
+		box.axisExtents.z * ab[0][2];
+	float projection = localToParent(0, 0) * distance.x + localToParent(0, 1) * distance.y +
+		localToParent(0, 2) * distance.z;
 	if (projection > radius || projection < -radius)
 	{
 		return A0;
@@ -204,19 +203,18 @@ OBB::SeparatingAxis OBB::FindSeparatingAxis(const OBB& box) const
 	//-------------
 	//
 	ab[1][0] = Fabs(localToParent(1, 0) * box.localToParent(0, 0) +
-					localToParent(1, 1) * box.localToParent(0, 1) +
-					localToParent(1, 2) * box.localToParent(0, 2));
+		localToParent(1, 1) * box.localToParent(0, 1) +
+		localToParent(1, 2) * box.localToParent(0, 2));
 	ab[1][1] = Fabs(localToParent(1, 0) * box.localToParent(1, 0) +
-					localToParent(1, 1) * box.localToParent(1, 1) +
-					localToParent(1, 2) * box.localToParent(1, 2));
+		localToParent(1, 1) * box.localToParent(1, 1) +
+		localToParent(1, 2) * box.localToParent(1, 2));
 	ab[1][2] = Fabs(localToParent(1, 0) * box.localToParent(2, 0) +
-					localToParent(1, 1) * box.localToParent(2, 1) +
-					localToParent(1, 2) * box.localToParent(2, 2));
-	radius   = axisExtents.y + box.axisExtents.x * ab[1][0] +
-			 box.axisExtents.y * ab[1][1] + box.axisExtents.z * ab[1][2];
-	projection = localToParent(1, 0) * distance.x +
-				 localToParent(1, 1) * distance.y +
-				 localToParent(1, 2) * distance.z;
+		localToParent(1, 1) * box.localToParent(2, 1) +
+		localToParent(1, 2) * box.localToParent(2, 2));
+	radius   = axisExtents.y + box.axisExtents.x * ab[1][0] + box.axisExtents.y * ab[1][1] +
+		box.axisExtents.z * ab[1][2];
+	projection = localToParent(1, 0) * distance.x + localToParent(1, 1) * distance.y +
+		localToParent(1, 2) * distance.z;
 	if (projection > radius || projection < -radius)
 	{
 		return A1;
@@ -227,19 +225,18 @@ OBB::SeparatingAxis OBB::FindSeparatingAxis(const OBB& box) const
 	//-------------
 	//
 	ab[2][0] = Fabs(localToParent(2, 0) * box.localToParent(0, 0) +
-					localToParent(2, 1) * box.localToParent(0, 1) +
-					localToParent(2, 2) * box.localToParent(0, 2));
+		localToParent(2, 1) * box.localToParent(0, 1) +
+		localToParent(2, 2) * box.localToParent(0, 2));
 	ab[2][1] = Fabs(localToParent(2, 0) * box.localToParent(1, 0) +
-					localToParent(2, 1) * box.localToParent(1, 1) +
-					localToParent(2, 2) * box.localToParent(1, 2));
+		localToParent(2, 1) * box.localToParent(1, 1) +
+		localToParent(2, 2) * box.localToParent(1, 2));
 	ab[2][2] = Fabs(localToParent(2, 0) * box.localToParent(2, 0) +
-					localToParent(2, 1) * box.localToParent(2, 1) +
-					localToParent(2, 2) * box.localToParent(2, 2));
-	radius   = axisExtents.z + box.axisExtents.x * ab[2][0] +
-			 box.axisExtents.y * ab[2][1] + box.axisExtents.z * ab[2][2];
-	projection = localToParent(2, 0) * distance.x +
-				 localToParent(2, 1) * distance.y +
-				 localToParent(2, 2) * distance.z;
+		localToParent(2, 1) * box.localToParent(2, 1) +
+		localToParent(2, 2) * box.localToParent(2, 2));
+	radius   = axisExtents.z + box.axisExtents.x * ab[2][0] + box.axisExtents.y * ab[2][1] +
+		box.axisExtents.z * ab[2][2];
+	projection = localToParent(2, 0) * distance.x + localToParent(2, 1) * distance.y +
+		localToParent(2, 2) * distance.z;
 	if (projection > radius || projection < -radius)
 	{
 		return A2;
@@ -249,11 +246,10 @@ OBB::SeparatingAxis OBB::FindSeparatingAxis(const OBB& box) const
 	// Check L = Bx
 	//-------------
 	//
-	radius = box.axisExtents.x + axisExtents.x * ab[0][0] +
-			 axisExtents.y * ab[1][0] + axisExtents.z * ab[2][0];
-	projection = box.localToParent(0, 0) * distance.x +
-				 box.localToParent(0, 1) * distance.y +
-				 box.localToParent(0, 2) * distance.z;
+	radius = box.axisExtents.x + axisExtents.x * ab[0][0] + axisExtents.y * ab[1][0] +
+		axisExtents.z * ab[2][0];
+	projection = box.localToParent(0, 0) * distance.x + box.localToParent(0, 1) * distance.y +
+		box.localToParent(0, 2) * distance.z;
 	if (projection > radius || projection < -radius)
 	{
 		return B0;
@@ -263,11 +259,10 @@ OBB::SeparatingAxis OBB::FindSeparatingAxis(const OBB& box) const
 	// Check L = By
 	//-------------
 	//
-	radius = box.axisExtents.y + axisExtents.x * ab[0][1] +
-			 axisExtents.y * ab[1][1] + axisExtents.z * ab[2][1];
-	projection = box.localToParent(1, 0) * distance.x +
-				 box.localToParent(1, 1) * distance.y +
-				 box.localToParent(1, 2) * distance.z;
+	radius = box.axisExtents.y + axisExtents.x * ab[0][1] + axisExtents.y * ab[1][1] +
+		axisExtents.z * ab[2][1];
+	projection = box.localToParent(1, 0) * distance.x + box.localToParent(1, 1) * distance.y +
+		box.localToParent(1, 2) * distance.z;
 	if (projection > radius || projection < -radius)
 	{
 		return B1;
@@ -277,11 +272,10 @@ OBB::SeparatingAxis OBB::FindSeparatingAxis(const OBB& box) const
 	// Check L = Bz
 	//-------------
 	//
-	radius = box.axisExtents.z + axisExtents.x * ab[0][2] +
-			 axisExtents.y * ab[1][2] + axisExtents.z * ab[2][2];
-	projection = box.localToParent(2, 0) * distance.x +
-				 box.localToParent(2, 1) * distance.y +
-				 box.localToParent(2, 2) * distance.z;
+	radius = box.axisExtents.z + axisExtents.x * ab[0][2] + axisExtents.y * ab[1][2] +
+		axisExtents.z * ab[2][2];
+	projection = box.localToParent(2, 0) * distance.x + box.localToParent(2, 1) * distance.y +
+		box.localToParent(2, 2) * distance.z;
 	if (projection > radius || projection < -radius)
 	{
 		return B2;
@@ -305,15 +299,13 @@ OBB::SeparatingAxis OBB::FindSeparatingAxis(const OBB& box) const
 	//-------------------------------------------------------------------------
 	//
 	float minor[3][3];
-	minor[1][0] =
-		Fabs(b_to_a(0, 1) * b_to_a(2, 2) - b_to_a(2, 1) * b_to_a(0, 2));
-	minor[2][0] =
-		Fabs(b_to_a(0, 1) * b_to_a(1, 2) - b_to_a(1, 1) * b_to_a(0, 2));
+	minor[1][0] = Fabs(b_to_a(0, 1) * b_to_a(2, 2) - b_to_a(2, 1) * b_to_a(0, 2));
+	minor[2][0] = Fabs(b_to_a(0, 1) * b_to_a(1, 2) - b_to_a(1, 1) * b_to_a(0, 2));
 	float ba[3][3];
 	ba[0][1] = Fabs(b_to_a(0, 1));
 	ba[0][2] = Fabs(b_to_a(0, 2));
-	radius   = axisExtents.y * ba[0][2] + axisExtents.z * ba[0][1] +
-			 box.axisExtents.y * minor[2][0] + box.axisExtents.z * minor[1][0];
+	radius = axisExtents.y * ba[0][2] + axisExtents.z * ba[0][1] + box.axisExtents.y * minor[2][0] +
+		box.axisExtents.z * minor[1][0];
 	projection = distance.z * b_to_a(0, 1) - distance.y * b_to_a(0, 2);
 	if (projection > radius || projection < -radius)
 	{
@@ -324,12 +316,11 @@ OBB::SeparatingAxis OBB::FindSeparatingAxis(const OBB& box) const
 	// L = Ax crossed with By
 	//-----------------------
 	//
-	minor[0][0] =
-		Fabs(b_to_a(1, 1) * b_to_a(2, 2) - b_to_a(2, 1) * b_to_a(1, 2));
-	ba[1][1] = Fabs(b_to_a(1, 1));
-	ba[1][2] = Fabs(b_to_a(1, 2));
-	radius   = axisExtents.y * ba[1][2] + axisExtents.z * ba[1][1] +
-			 box.axisExtents.x * minor[2][0] + box.axisExtents.z * minor[0][0];
+	minor[0][0] = Fabs(b_to_a(1, 1) * b_to_a(2, 2) - b_to_a(2, 1) * b_to_a(1, 2));
+	ba[1][1]	= Fabs(b_to_a(1, 1));
+	ba[1][2]	= Fabs(b_to_a(1, 2));
+	radius = axisExtents.y * ba[1][2] + axisExtents.z * ba[1][1] + box.axisExtents.x * minor[2][0] +
+		box.axisExtents.z * minor[0][0];
 	projection = distance.z * b_to_a(1, 1) - distance.y * b_to_a(1, 2);
 	if (projection > radius || projection < -radius)
 	{
@@ -342,8 +333,8 @@ OBB::SeparatingAxis OBB::FindSeparatingAxis(const OBB& box) const
 	//
 	ba[2][1] = Fabs(b_to_a(2, 1));
 	ba[2][2] = Fabs(b_to_a(2, 2));
-	radius   = axisExtents.y * ba[2][2] + axisExtents.z * ba[2][1] +
-			 box.axisExtents.x * minor[1][0] + box.axisExtents.y * minor[0][0];
+	radius = axisExtents.y * ba[2][2] + axisExtents.z * ba[2][1] + box.axisExtents.x * minor[1][0] +
+		box.axisExtents.y * minor[0][0];
 	projection = distance.z * b_to_a(2, 1) - distance.y * b_to_a(2, 2);
 	if (projection > radius || projection < -radius)
 	{
@@ -354,13 +345,11 @@ OBB::SeparatingAxis OBB::FindSeparatingAxis(const OBB& box) const
 	// L = Ay crossed with Bx
 	//-----------------------
 	//
-	minor[2][1] =
-		Fabs(b_to_a(0, 2) * b_to_a(1, 0) - b_to_a(0, 0) * b_to_a(1, 2));
-	minor[1][1] =
-		Fabs(b_to_a(0, 0) * b_to_a(2, 2) - b_to_a(2, 0) * b_to_a(1, 2));
-	ba[0][0] = Fabs(b_to_a(0, 0));
-	radius   = axisExtents.x * ba[0][2] + axisExtents.z * ba[0][0] +
-			 box.axisExtents.y * minor[2][1] + box.axisExtents.z * minor[1][1];
+	minor[2][1] = Fabs(b_to_a(0, 2) * b_to_a(1, 0) - b_to_a(0, 0) * b_to_a(1, 2));
+	minor[1][1] = Fabs(b_to_a(0, 0) * b_to_a(2, 2) - b_to_a(2, 0) * b_to_a(1, 2));
+	ba[0][0]	= Fabs(b_to_a(0, 0));
+	radius = axisExtents.x * ba[0][2] + axisExtents.z * ba[0][0] + box.axisExtents.y * minor[2][1] +
+		box.axisExtents.z * minor[1][1];
 	projection = distance.x * b_to_a(0, 2) - distance.z * b_to_a(0, 0);
 	if (projection > radius || projection < -radius)
 	{
@@ -371,11 +360,10 @@ OBB::SeparatingAxis OBB::FindSeparatingAxis(const OBB& box) const
 	// L = Ay crossed with By
 	//-----------------------
 	//
-	minor[0][1] =
-		Fabs(b_to_a(1, 2) * b_to_a(2, 0) - b_to_a(1, 0) * b_to_a(2, 2));
-	ba[1][0] = Fabs(b_to_a(1, 0));
-	radius   = axisExtents.x * ba[1][2] + axisExtents.z * ba[1][0] +
-			 box.axisExtents.x * minor[2][1] + box.axisExtents.z * minor[0][1];
+	minor[0][1] = Fabs(b_to_a(1, 2) * b_to_a(2, 0) - b_to_a(1, 0) * b_to_a(2, 2));
+	ba[1][0]	= Fabs(b_to_a(1, 0));
+	radius = axisExtents.x * ba[1][2] + axisExtents.z * ba[1][0] + box.axisExtents.x * minor[2][1] +
+		box.axisExtents.z * minor[0][1];
 	projection = distance.x * b_to_a(1, 2) - distance.z * b_to_a(1, 0);
 	if (projection > radius || projection < -radius)
 	{
@@ -387,8 +375,8 @@ OBB::SeparatingAxis OBB::FindSeparatingAxis(const OBB& box) const
 	//-----------------------
 	//
 	ba[2][0] = Fabs(b_to_a(2, 0));
-	radius   = axisExtents.x * ba[2][2] + axisExtents.z * ba[2][0] +
-			 box.axisExtents.x * minor[1][1] + box.axisExtents.y * minor[0][1];
+	radius = axisExtents.x * ba[2][2] + axisExtents.z * ba[2][0] + box.axisExtents.x * minor[1][1] +
+		box.axisExtents.y * minor[0][1];
 	projection = distance.x * b_to_a(2, 2) - distance.z * b_to_a(2, 0);
 	if (projection > radius || projection < -radius)
 	{
@@ -399,12 +387,10 @@ OBB::SeparatingAxis OBB::FindSeparatingAxis(const OBB& box) const
 	// L = Az crossed with Bx
 	//-----------------------
 	//
-	minor[2][2] =
-		Fabs(b_to_a(1, 1) * b_to_a(0, 0) - b_to_a(0, 1) * b_to_a(1, 0));
-	minor[1][2] =
-		Fabs(b_to_a(2, 1) * b_to_a(0, 0) - b_to_a(2, 0) * b_to_a(0, 1));
-	radius = axisExtents.x * ba[0][1] + axisExtents.y * ba[0][0] +
-			 box.axisExtents.y * minor[2][2] + box.axisExtents.z * minor[1][2];
+	minor[2][2] = Fabs(b_to_a(1, 1) * b_to_a(0, 0) - b_to_a(0, 1) * b_to_a(1, 0));
+	minor[1][2] = Fabs(b_to_a(2, 1) * b_to_a(0, 0) - b_to_a(2, 0) * b_to_a(0, 1));
+	radius = axisExtents.x * ba[0][1] + axisExtents.y * ba[0][0] + box.axisExtents.y * minor[2][2] +
+		box.axisExtents.z * minor[1][2];
 	projection = distance.y * b_to_a(0, 0) - distance.x * b_to_a(0, 1);
 	if (projection > radius || projection < -radius)
 	{
@@ -415,10 +401,9 @@ OBB::SeparatingAxis OBB::FindSeparatingAxis(const OBB& box) const
 	// L = Az crossed with By
 	//-----------------------
 	//
-	minor[0][2] =
-		Fabs(b_to_a(1, 0) * b_to_a(2, 1) - b_to_a(2, 0) * b_to_a(1, 1));
-	radius = axisExtents.x * ba[1][1] + axisExtents.y * ba[1][0] +
-			 box.axisExtents.x * minor[2][2] + box.axisExtents.z * minor[0][2];
+	minor[0][2] = Fabs(b_to_a(1, 0) * b_to_a(2, 1) - b_to_a(2, 0) * b_to_a(1, 1));
+	radius = axisExtents.x * ba[1][1] + axisExtents.y * ba[1][0] + box.axisExtents.x * minor[2][2] +
+		box.axisExtents.z * minor[0][2];
 	projection = distance.y * b_to_a(1, 0) - distance.x * b_to_a(1, 1);
 	if (projection > radius || projection < -radius)
 	{
@@ -429,8 +414,8 @@ OBB::SeparatingAxis OBB::FindSeparatingAxis(const OBB& box) const
 	// L = Az crossed with Bz
 	//-----------------------
 	//
-	radius = axisExtents.x * ba[2][1] + axisExtents.y * ba[2][0] +
-			 box.axisExtents.x * minor[1][2] + box.axisExtents.y * minor[0][2];
+	radius = axisExtents.x * ba[2][1] + axisExtents.y * ba[2][0] + box.axisExtents.x * minor[1][2] +
+		box.axisExtents.y * minor[0][2];
 	projection = distance.y * b_to_a(2, 0) - distance.x * b_to_a(2, 1);
 	if (projection > radius || projection < -radius)
 	{
@@ -485,8 +470,7 @@ void OBB::Union(const OBB& first, const OBB& second)
 	//
 	localToParent = LinearMatrix4D::Identity;
 	axisExtents   = Vector3D::Identity;
-	c1.Lerp(c1, c2,
-		(len + second.sphereRadius - first.sphereRadius) / (2.0f * len));
+	c1.Lerp(c1, c2, (len + second.sphereRadius - first.sphereRadius) / (2.0f * len));
 	localToParent.BuildTranslation(c1);
 	sphereRadius = 0.5f * (len + first.sphereRadius + second.sphereRadius);
 }

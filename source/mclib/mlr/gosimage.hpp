@@ -8,7 +8,7 @@
 #define MLR_GOSIMAGE_HPP
 
 #include <stuff/plug.hpp>
-#include <stuff/mstring.hpp>
+// #include <stuff/mstring.hpp>
 
 namespace MidLevelRenderer
 {
@@ -18,7 +18,7 @@ class GOSImage : public Stuff::Plug
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Constructors/Destructors
 	//
-  public:
+public:
 	GOSImage(PCSTR imageName);
 	GOSImage(uint32_t imageHandle);
 	GOSImage(PCSTR, gos_TextureHints);
@@ -64,8 +64,7 @@ class GOSImage : public Stuff::Plug
 	uint32_t GetHandle(void)
 	{
 		// Check_Object(this);
-		uint32_t imageHandle =
-			mcTextureManager->get_gosTextureHandle(mcTextureNodeIndex);
+		uint32_t imageHandle = mcTextureManager->get_gosTextureHandle(mcTextureNodeIndex);
 		if (imageHandle == 0xffffffff)
 			imageHandle = 0;
 		return imageHandle;
@@ -94,17 +93,17 @@ class GOSImage : public Stuff::Plug
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Testing
 	//
-  public:
+public:
 	void TestInstance(void) const {}
 
-	Stuff::MString imageName;
+	std::wstring imageName;
 	int32_t flags;
 
-  protected:
+protected:
 	gos_TextureHints ipHints;
 	int32_t instance;
 	uint32_t mcTextureNodeIndex;
 	TEXTUREPTR ptr;
 };
-}
+} // namespace MidLevelRenderer
 #endif

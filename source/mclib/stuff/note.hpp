@@ -29,7 +29,7 @@ class Note : public Plug
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Constructors
 	//
-  protected:
+protected:
 	Note(Page* page) : Plug(DefaultData) { m_page = page; }
 
 	Page* m_page;
@@ -37,7 +37,7 @@ class Note : public Plug
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Note functions
 	//
-  public:
+public:
 	void SetName(PCSTR entryname)
 	{
 		// Check_Object(this);
@@ -51,8 +51,8 @@ class Note : public Plug
 		return m_name;
 	}
 
-  protected:
-	MString m_name, m_text;
+protected:
+	std::wstring m_name, m_text;
 
 	void SetDirty(void)
 	{
@@ -61,12 +61,12 @@ class Note : public Plug
 		m_page->SetDirty();
 	}
 
-	void WriteNotation(MemoryStream* stream);
+	void WriteNotation(std::iostream& stream);
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// string access
 	//
-  public:
+public:
 	void GetEntry(PCSTR* contents)
 	{
 		// Check_Object(this);
@@ -83,75 +83,75 @@ class Note : public Plug
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// int32_t access
 	//
-  public:
+public:
 	void GetEntry(pint32_t value);
 	void SetEntry(int32_t value);
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// scalar access
 	//
-  public:
+public:
 	void GetEntry(float* value);
 	void SetEntry(float value);
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// bool access
 	//
-  public:
+public:
 	void GetEntry(bool* value);
 	void SetEntry(bool value);
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Vector3D access
 	//
-  public:
+public:
 	void GetEntry(Vector3D* value);
 	void SetEntry(const Vector3D& value);
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// YawPitchRoll access
 	//
-  public:
+public:
 	void GetEntry(YawPitchRoll* value);
 	void SetEntry(const YawPitchRoll& value);
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// UnitQuaternion access
 	//
-  public:
+public:
 	void GetEntry(UnitQuaternion* value);
 	void SetEntry(const UnitQuaternion& value);
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Motion3D access
 	//
-  public:
+public:
 	void GetEntry(Motion3D* value);
 	void SetEntry(const Motion3D& value);
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// RGBColor access
 	//
-  public:
+public:
 	void GetEntry(RGBColor* value);
 	void SetEntry(const RGBColor& value);
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// RGBAColor access
 	//
-  public:
+public:
 	void GetEntry(RGBAColor* value);
 	void SetEntry(const RGBAColor& value);
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// NotationFile access
 	//
-  public:
+public:
 	void GetEntry(NotationFile* value);
 	void SetEntry(NotationFile* value);
 
-  public:
+public:
 	void TestInstance(void) const;
 };
-}
+} // namespace Stuff
 #endif

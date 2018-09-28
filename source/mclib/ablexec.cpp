@@ -480,8 +480,7 @@ void allocLocal(TypePtr typePtr)
 		case FRM_ARRAY:
 			PSTR ptr = (PSTR)ABLStackMallocCallback(typePtr->size);
 			if (!ptr)
-				ABL_Fatal(
-					0, " ABL: Unable to AblStackHeap->malloc local array ");
+				ABL_Fatal(0, " ABL: Unable to AblStackHeap->malloc local array ");
 			pushAddress((Address)ptr);
 			break;
 		}
@@ -508,7 +507,7 @@ void freeLocal(SymTableNodePtr idPtr)
 			//				break;
 			//			case VAR_TYPE_STATIC:
 			//				itemPtr = StaticDataPtr +
-			//idPtr->defn.info.data.offset; 				break;
+			// idPtr->defn.info.data.offset; 				break;
 		}
 		if (!itemPtr)
 			runtimeError(0);
@@ -531,8 +530,7 @@ void routineEntry(SymTableNodePtr routineIdPtr)
 	codeSegmentPtr = routineIdPtr->defn.info.routine.codeSegment;
 	//----------------------------------------------
 	// Allocate local variables onto system stack...
-	for (SymTableNodePtr varIdPtr =
-			 (SymTableNodePtr)(routineIdPtr->defn.info.routine.locals);
+	for (SymTableNodePtr varIdPtr	  = (SymTableNodePtr)(routineIdPtr->defn.info.routine.locals);
 		 varIdPtr != nullptr; varIdPtr = varIdPtr->next)
 		if (varIdPtr->defn.info.data.varType == VAR_TYPE_NORMAL)
 			allocLocal((TypePtr)(varIdPtr->typePtr));
@@ -547,11 +545,11 @@ void routineExit(SymTableNodePtr routineIdPtr)
 	//-----------------------------------------
 	// De-alloc parameters & local variables...
 	SymTableNodePtr idPtr;
-	for (idPtr = (SymTableNodePtr)(routineIdPtr->defn.info.routine.params);
-		 idPtr != nullptr; idPtr = idPtr->next)
+	for (idPtr = (SymTableNodePtr)(routineIdPtr->defn.info.routine.params); idPtr != nullptr;
+		 idPtr = idPtr->next)
 		freeLocal(idPtr);
-	for (idPtr = (SymTableNodePtr)(routineIdPtr->defn.info.routine.locals);
-		 idPtr != nullptr; idPtr = idPtr->next)
+	for (idPtr = (SymTableNodePtr)(routineIdPtr->defn.info.routine.locals); idPtr != nullptr;
+		 idPtr = idPtr->next)
 		if (idPtr->defn.info.data.varType == VAR_TYPE_NORMAL)
 			freeLocal(idPtr);
 	StackFrameHeaderPtr headerPtr = (StackFrameHeaderPtr)stackFrameBasePtr;
@@ -575,9 +573,8 @@ void execute(SymTableNodePtr routineIdPtr)
 	if (CallModuleInit)
 	{
 		CallModuleInit					  = false;
-		SymTableNodePtr initFunctionIdPtr = searchSymTable(
-			"init", ModuleRegistry[CurModule->getHandle()]
-						.moduleIdPtr->defn.info.routine.localSymTable);
+		SymTableNodePtr initFunctionIdPtr = searchSymTable("init",
+			ModuleRegistry[CurModule->getHandle()].moduleIdPtr->defn.info.routine.localSymTable);
 		if (initFunctionIdPtr)
 		{
 			execRoutineCall(initFunctionIdPtr, false);
@@ -596,8 +593,8 @@ void execute(SymTableNodePtr routineIdPtr)
 		while (NewStateSet)
 		{
 			NumStateTransitions++;
-			sprintf(stateList[NumStateTransitions], "%s (%s)",
-				CurModule->getState()->name, SetStateDebugStr);
+			sprintf(stateList[NumStateTransitions], "%s (%s)", CurModule->getState()->name,
+				SetStateDebugStr);
 			if (NumStateTransitions == 50)
 			{
 				UserFile* userFile = UserFile::getNewFile();
@@ -610,8 +607,7 @@ void execute(SymTableNodePtr routineIdPtr)
 						// char s[1024];
 						// sprintf(s, "Current Date: %s\n", GetTime());
 						// userFile->write(s);
-						userFile->write(
-							ModuleRegistry[CurModule->getHandle()].fileName);
+						userFile->write(ModuleRegistry[CurModule->getHandle()].fileName);
 						for (size_t i = 1; i < 51; i++)
 							userFile->write(stateList[i]);
 						userFile->write(" ");
@@ -621,8 +617,7 @@ void execute(SymTableNodePtr routineIdPtr)
 					}
 				}
 				sprintf(errStr, " ABL endless state loop in %s [%s:%s] ",
-					ModuleRegistry[CurModule->getHandle()].fileName,
-					CurModule->getState()->name,
+					ModuleRegistry[CurModule->getHandle()].fileName, CurModule->getState()->name,
 					CurModule->getPrevState()->name);
 #if 0
 				ABL_Fatal(NumStateTransitions, errStr);
@@ -660,8 +655,7 @@ void execute(SymTableNodePtr routineIdPtr)
 
 //***************************************************************************
 
-void executeChild(
-	SymTableNodePtr routineIdPtr, SymTableNodePtr childRoutineIdPtr)
+void executeChild(SymTableNodePtr routineIdPtr, SymTableNodePtr childRoutineIdPtr)
 {
 	// THIS DOES NOT SUPPORT CALLING FUNCTIONS WITH PARAMETERS YET!
 	SymTableNodePtr thisRoutineIdPtr = CurRoutineIdPtr;
@@ -673,8 +667,7 @@ void executeChild(
 	if (CallModuleInit)
 	{
 		CallModuleInit	= false;
-		initFunctionIdPtr = searchSymTable(
-			"init", routineIdPtr->defn.info.routine.localSymTable);
+		initFunctionIdPtr = searchSymTable("init", routineIdPtr->defn.info.routine.localSymTable);
 		if (initFunctionIdPtr)
 		{
 			execRoutineCall(initFunctionIdPtr, false);

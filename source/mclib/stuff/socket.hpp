@@ -38,14 +38,14 @@ class Socket
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Destructor, testing
 	//
-  public:
+public:
 	virtual ~Socket(void);
 	void TestInstance(void) {}
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Socket methods
 	//
-  public:
+public:
 	//
 	//-----------------------------------------------------------------------
 	// AddPlug - Add a plug to this socket, untyped access.
@@ -86,7 +86,7 @@ class Socket
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Protected methods
 	//
-  protected:
+protected:
 	explicit Socket(Node* node);
 
 	virtual void AddImplementation(Plug* plug);
@@ -94,7 +94,7 @@ class Socket
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Protected data
 	//
-  protected:
+protected:
 	Node* socketsNode;
 };
 
@@ -129,26 +129,17 @@ class SocketIterator : public Iterator
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Destructor and testing
 	//
-  public:
+public:
 	~SocketIterator(void) {}
 	void TestInstance(void) const {}
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Iterator methods (see Iterator for full listing)
 	//
-  public:
-	Plug* ReadAndNextPlug(void)
-	{
-		return static_cast<Plug*>(ReadAndNextImplementation());
-	}
-	Plug* ReadAndPreviousPlug(void)
-	{
-		return static_cast<Plug*>(ReadAndPreviousImplementation());
-	}
-	Plug* GetCurrentPlug(void)
-	{
-		return static_cast<Plug*>(GetCurrentImplementation());
-	}
+public:
+	Plug* ReadAndNextPlug(void) { return static_cast<Plug*>(ReadAndNextImplementation()); }
+	Plug* ReadAndPreviousPlug(void) { return static_cast<Plug*>(ReadAndPreviousImplementation()); }
+	Plug* GetCurrentPlug(void) { return static_cast<Plug*>(GetCurrentImplementation()); }
 	Plug* GetNthPlug(CollectionSize index)
 	{
 		return static_cast<Plug*>(GetNthImplementation(index));
@@ -180,12 +171,12 @@ class SocketIterator : public Iterator
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Protected interface
 	//
-  protected:
+protected:
 	explicit SocketIterator(Socket* socket) { this->socket = socket; }
 
 	virtual void InsertImplementation(Plug*);
 
 	Socket* socket;
 };
-}
+} // namespace Stuff
 #endif

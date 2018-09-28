@@ -28,15 +28,13 @@ class PointCloud__Specification : public ParticleCloud__Specification
 	//----------------------------------------------------------------------
 	// Constructors/Destructors
 	//
-  protected:
-	PointCloud__Specification(
-		Stuff::MemoryStream* stream, uint32_t gfx_version);
+protected:
+	PointCloud__Specification(std::iostream stream, uint32_t gfx_version);
 
-  public:
+public:
 	PointCloud__Specification(void);
 
-	static PointCloud__Specification* Make(
-		Stuff::MemoryStream* stream, uint32_t gfx_version);
+	static PointCloud__Specification* Make(std::iostream stream, uint32_t gfx_version);
 };
 
 //############################################################################
@@ -46,7 +44,7 @@ class PointCloud__Specification : public ParticleCloud__Specification
 
 class PointCloud__Particle : public ParticleCloud__Particle
 {
-  public:
+public:
 	Stuff::Point3D m_worldTranslation;
 };
 
@@ -59,7 +57,7 @@ class PointCloud : public ParticleCloud
 	//----------------------------------------------------------------------------
 	// Class Registration Support
 	//
-  public:
+public:
 	static void __stdcall InitializeClass(void);
 	static void __stdcall TerminateClass(void);
 
@@ -70,11 +68,10 @@ class PointCloud : public ParticleCloud
 
 	enum
 	{
-		ParticleSize =
-			sizeof(Particle) + sizeof(Stuff::Point3D) + sizeof(Stuff::RGBAColor)
+		ParticleSize = sizeof(Particle) + sizeof(Stuff::Point3D) + sizeof(Stuff::RGBAColor)
 	};
 
-  protected:
+protected:
 	MidLevelRenderer::MLRPointCloud* m_cloudImplementation;
 	Stuff::Point3D* m_P_localTranslation;
 	Stuff::RGBAColor* m_P_color;
@@ -82,10 +79,10 @@ class PointCloud : public ParticleCloud
 	//----------------------------------------------------------------------------
 	// Constructor/Destructor
 	//
-  protected:
+protected:
 	PointCloud(Specification* spec, uint32_t flags);
 
-  public:
+public:
 	~PointCloud(void);
 
 	static PointCloud* Make(Specification* spec, uint32_t flags);
@@ -99,27 +96,26 @@ class PointCloud : public ParticleCloud
 	{
 		// Check_Object(this);
 		Check_Object(GetSpecification());
-		return Cast_Pointer(Particle*,
-			&m_data[index * GetSpecification()->m_particleClassSize]);
+		return Cast_Pointer(Particle*, &m_data[index * GetSpecification()->m_particleClassSize]);
 	}
 
 	//----------------------------------------------------------------------------
 	// Testing
 	//
-  public:
+public:
 	void TestInstance(void) const;
 
 	//----------------------------------------------------------------------------
 	// API
 	//
-  protected:
-	bool AnimateParticle(uint32_t index,
-		const Stuff::LinearMatrix4D* world_to_new_local, Stuff::Time till);
+protected:
+	bool AnimateParticle(
+		uint32_t index, const Stuff::LinearMatrix4D* world_to_new_local, Stuff::Time till);
 	void CreateNewParticle(uint32_t index, Stuff::Point3D* translation);
 	void DestroyParticle(uint32_t index);
 
-  public:
+public:
 	bool Execute(ExecuteInfo* info);
 	void Draw(DrawInfo* info);
 };
-}
+} // namespace gosFX

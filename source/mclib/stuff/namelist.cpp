@@ -98,7 +98,7 @@ void ObjectNameList::DeleteEntry(PCSTR name)
 		Check_Pointer(cur);
 		prev = cur;
 	}
-	Verify(cur && cur == entry);
+	_ASSERT(cur && cur == entry);
 	if (!prev)
 	{
 		firstEntry = entry->nextEntry;
@@ -134,8 +134,7 @@ size_t ObjectNameList::GetEntryCount(void) const
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-int32_t ObjectNameList::BuildSubList(
-	const ObjectNameList& source_list, PCSTR prefix)
+int32_t ObjectNameList::BuildSubList(const ObjectNameList& source_list, PCSTR prefix)
 {
 	// Check_Object(this);
 	Check_Object(&source_list);
@@ -316,7 +315,7 @@ void NameList::DeleteEntry(PCSTR name)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MemoryStream& MemoryStreamIO::Write(MemoryStream* stream, const NameList* names)
+std::ostream& MemoryStreamIO::Write(std::ostream& stream, const NameList* names)
 {
 	Check_Object(names);
 	//
@@ -324,7 +323,7 @@ MemoryStream& MemoryStreamIO::Write(MemoryStream* stream, const NameList* names)
 	// Write out the number of names
 	//------------------------------
 	//
-	int32_t i					 = 0;
+	size_t i					 = 0;
 	const NameList::Entry* entry = names->GetFirstEntry();
 	while (entry)
 	{
@@ -344,7 +343,7 @@ MemoryStream& MemoryStreamIO::Write(MemoryStream* stream, const NameList* names)
 		Check_Object(entry);
 		PCSTR name = entry->GetName();
 		Check_Pointer(name);
-		stream->WriteBytes(name, strlen(name) + 1);
+		stream.write(name, strlen(name) + 1);
 		entry = entry->GetNextEntry();
 	}
 	return *stream;
@@ -352,7 +351,7 @@ MemoryStream& MemoryStreamIO::Write(MemoryStream* stream, const NameList* names)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MemoryStream& MemoryStreamIO::Read(MemoryStream* stream, NameList* names)
+std::iostream& MemoryStreamIO::Read(std::iostream& stream, NameList* names)
 {
 	//
 	//---------------------------------------------------------------------

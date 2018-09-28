@@ -7,7 +7,7 @@
 #ifndef MLR_GOSIMAGEPOOL_HPP
 #define MLR_GOSIMAGEPOOL_HPP
 
-#include <stuff/mstring.hpp>
+// #include <stuff/mstring.hpp>
 #include <stuff/hash.hpp>
 
 namespace MidLevelRenderer
@@ -23,22 +23,22 @@ class GOSImagePool
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Constructors/Destructors
 	//
-  public:
+public:
 	GOSImagePool(void);
 	virtual ~GOSImagePool(void);
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Image handling
 	//
-  public:
+public:
 	GOSImage* GetImage(PCSTR imageName);
-	GOSImage* GetImage(PCSTR imageName, /*gos_TextureFormat*/ uint32_t format,
-		size_t size, /*gos_TextureHints*/ uint32_t hints);
+	GOSImage* GetImage(PCSTR imageName, /*gos_TextureFormat*/ uint32_t format, size_t size,
+		/*gos_TextureHints*/ uint32_t hints);
 
 	virtual bool LoadImage(GOSImage* image, int32_t = 0) = 0;
 	void RemoveImage(GOSImage* image);
 	void UnLoadImages(void);
-	void GetTexturePath(Stuff::MString* pName) const
+	void GetTexturePath(std::wstring* pName) const
 	{
 		// Check_Object(this);
 		*pName = texturePath;
@@ -47,12 +47,12 @@ class GOSImagePool
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Testing
 	//
-  public:
+public:
 	void TestInstance(void) const {}
 
-  protected:
-	Stuff::HashOf<GOSImage*, Stuff::MString> imageHash;
-	Stuff::MString texturePath;
+protected:
+	Stuff::HashOf<GOSImage*, std::wstring> imageHash;
+	std::wstring texturePath;
 };
 
 class TGAFilePool : public GOSImagePool
@@ -60,14 +60,14 @@ class TGAFilePool : public GOSImagePool
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Constructors/Destructors
 	//
-  public:
+public:
 	TGAFilePool(PCSTR path);
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Image handling
 	//
-  public:
+public:
 	bool LoadImage(GOSImage* image, int32_t = 0);
 };
-}
+} // namespace MidLevelRenderer
 #endif

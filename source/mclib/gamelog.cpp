@@ -30,8 +30,7 @@ bool isSetup = false;
 
 //*****************************************************************************
 
-GameLogPtr GameLog::files[MAX_GAMELOGS] = {
-	nullptr, nullptr, nullptr, nullptr, nullptr, nullptr};
+GameLogPtr GameLog::files[MAX_GAMELOGS] = {nullptr, nullptr, nullptr, nullptr, nullptr, nullptr};
 
 PVOID GameLog::operator new(size_t mySize)
 {
@@ -133,7 +132,7 @@ void GameLog::setup(void)
 		files[i]->init();
 		files[i]->handle  = i;
 		files[i]->inUse   = false;
-		files[i]->filePtr = new File;
+		files[i]->filePtr = new MechFile;
 		gosASSERT(files[i]->filePtr != nullptr);
 	}
 }

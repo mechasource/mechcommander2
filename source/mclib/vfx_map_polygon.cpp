@@ -12,18 +12,15 @@ static int64_t xmask = -1;
 // Draws a status bar
 //
 //
-void AG_StatusBar(PANE* pane, int32_t X0, int32_t Y0, int32_t X1, int32_t Y1,
-	int32_t Color, int32_t Width)
+void AG_StatusBar(
+	PANE* pane, int32_t X0, int32_t Y0, int32_t X1, int32_t Y1, int32_t Color, int32_t Width)
 {
 	static int32_t TopY, BottomY;
 	DestWidth	  = pane->window->x_max + 1;
 	int32_t paneX0 = (pane->x0 < 0) ? 0 : pane->x0;
 	int32_t paneY0 = (pane->y0 < 0) ? 0 : pane->y0;
-	int32_t paneX1 =
-		(pane->x1 >= (int32_t)DestWidth) ? pane->window->x_max : pane->x1;
-	int32_t paneY1 = (pane->y1 >= (pane->window->y_max + 1))
-						 ? pane->window->y_max
-						 : pane->y1;
+	int32_t paneX1 = (pane->x1 >= (int32_t)DestWidth) ? pane->window->x_max : pane->x1;
+	int32_t paneY1 = (pane->y1 >= (pane->window->y_max + 1)) ? pane->window->y_max : pane->y1;
 	if (X0 > X1)
 	{
 		Width = -Width;
@@ -160,8 +157,7 @@ void AG_pixel_write(PANE* pane, int32_t x, int32_t y, uint32_t color)
 	int32_t X = x + pane->x0;
 	int32_t Y = y + pane->y0;
 	if (X > pane->x0 && X < pane->x1 && Y > pane->y0 && Y < pane->y1)
-		*(pane->window->buffer + X + Y * (pane->window->x_max + 1)) =
-			(uint8_t)color;
+		*(pane->window->buffer + X + Y * (pane->window->x_max + 1)) = (uint8_t)color;
 }
 
 //
@@ -170,21 +166,17 @@ void AG_pixel_write(PANE* pane, int32_t x, int32_t y, uint32_t color)
 //
 //
 //
-int32_t DrawTransparent(PANE* pane, WINDOW* texture, int32_t X, int32_t Y,
-	int32_t Width, int32_t Height)
+int32_t DrawTransparent(
+	PANE* pane, WINDOW* texture, int32_t X, int32_t Y, int32_t Width, int32_t Height)
 {
 	DestWidth	  = pane->window->x_max + 1;
 	int32_t paneX0 = (pane->x0 < 0) ? 0 : pane->x0;
 	int32_t paneY0 = (pane->y0 < 0) ? 0 : pane->y0;
-	int32_t paneX1 =
-		(pane->x1 >= (int32_t)DestWidth) ? pane->window->x_max : pane->x1;
-	int32_t paneY1 = (pane->y1 >= (pane->window->y_max + 1))
-						 ? pane->window->y_max
-						 : pane->y1;
+	int32_t paneX1 = (pane->x1 >= (int32_t)DestWidth) ? pane->window->x_max : pane->x1;
+	int32_t paneY1 = (pane->y1 >= (pane->window->y_max + 1)) ? pane->window->y_max : pane->y1;
 	X += paneX0;
 	Y += paneY0;
-	if ((X >= paneX1) || (Y >= paneY1) || (X <= (paneX0 - Width)) ||
-		(Y <= (paneY0 - Height)))
+	if ((X >= paneX1) || (Y >= paneY1) || (X <= (paneX0 - Width)) || (Y <= (paneY0 - Height)))
 		return (1);
 	puint8_t SourcePointer = texture->buffer;
 	if (X < paneX0)

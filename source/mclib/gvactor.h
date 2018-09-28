@@ -13,33 +13,23 @@
 
 //---------------------------------------------------------------------------
 // Include files
-#ifndef APPEAR_H
-#include "appear.h"
-#endif
+//#include "appear.h"
+//#include "apprtype.h"
+//#include "msl.h"
+//#include "objectappearance.h"
+//#include <gosfx/gosfxheaders.hpp>
 
-#ifndef APPRTYPE_H
-#include "apprtype.h"
-#endif
-
-#ifndef MSL_H
-#include "msl.h"
-#endif
-
-#ifndef OBJECTAPPEARANCE_H
-#include "ObjectAppearance.h"
-#endif
-
-#include <gosfx/gosfxheaders.hpp>
 //**************************************************************************************
-#ifndef NO_ERROR
-#define NO_ERROR 0
-#endif
 
-#define GV_PART_BODY 0
-#define GV_PART_TURRET 1
-#define NUM_GV_PARTS 2
+enum gvappearancetype_const : uint32_t
+{
+	GV_PART_BODY,
+	GV_PART_TURRET,
+	NUM_GV_PARTS,
+};
 
-#define MAX_GV_ANIMATIONS 10
+constexpr const uint32_t MAX_GV_ANIMATIONS = 10;
+
 //***********************************************************************
 //
 // GVAppearanceType
@@ -47,7 +37,7 @@
 //***********************************************************************
 class GVAppearanceType : public AppearanceType
 {
-  public:
+public:
 	TG_TypeMultiShapePtr gvShape[MAX_LODS];
 	float lodDistance[MAX_LODS];
 
@@ -73,7 +63,7 @@ class GVAppearanceType : public AppearanceType
 	static TG_TypeMultiShapePtr SensorTriangleShape;
 	static TG_TypeMultiShapePtr SensorCircleShape;
 
-  public:
+public:
 	void init(void)
 	{
 		int32_t i = 0;
@@ -107,48 +97,40 @@ class GVAppearanceType : public AppearanceType
 
 	int32_t getNumFrames(int32_t animationNum)
 	{
-		if ((animationNum >= 0) && (animationNum < MAX_GV_ANIMATIONS) &&
-			(gvAnimData[animationNum]))
+		if ((animationNum >= 0) && (animationNum < MAX_GV_ANIMATIONS) && (gvAnimData[animationNum]))
 			return gvAnimData[animationNum]->GetNumFrames(void);
 		return 0.0f;
 	}
 
 	float getFrameRate(int32_t animationNum)
 	{
-		if ((animationNum >= 0) && (animationNum < MAX_GV_ANIMATIONS) &&
-			(gvAnimData[animationNum]))
+		if ((animationNum >= 0) && (animationNum < MAX_GV_ANIMATIONS) && (gvAnimData[animationNum]))
 			return gvAnimData[animationNum]->GetFrameRate(void);
 		return 0.0f;
 	}
 
 	bool isReversed(int32_t animationNum)
 	{
-		if ((animationNum >= 0) && (animationNum < MAX_GV_ANIMATIONS) &&
-			(gvAnimData[animationNum]))
+		if ((animationNum >= 0) && (animationNum < MAX_GV_ANIMATIONS) && (gvAnimData[animationNum]))
 			return gvReverse[animationNum];
 		return false;
 	}
 
 	bool isLooped(int32_t animationNum)
 	{
-		if ((animationNum >= 0) && (animationNum < MAX_GV_ANIMATIONS) &&
-			(gvAnimData[animationNum]))
+		if ((animationNum >= 0) && (animationNum < MAX_GV_ANIMATIONS) && (gvAnimData[animationNum]))
 			return gvAnimLoop[animationNum];
 		return false;
 	}
 
 	bool isRandom(int32_t animationNum)
 	{
-		if ((animationNum >= 0) && (animationNum < MAX_GV_ANIMATIONS) &&
-			(gvAnimData[animationNum]))
+		if ((animationNum >= 0) && (animationNum < MAX_GV_ANIMATIONS) && (gvAnimData[animationNum]))
 			return gvRandom[animationNum];
 		return false;
 	}
 
-	int32_t getTotalNodes(void)
-	{
-		return numSmokeNodes + numWeaponNodes + numFootNodes;
-	}
+	int32_t getTotalNodes(void) { return numSmokeNodes + numWeaponNodes + numFootNodes; }
 };
 
 //***********************************************************************
@@ -158,7 +140,7 @@ class GVAppearanceType : public AppearanceType
 //***********************************************************************
 class GVAppearance : public ObjectAppearance
 {
-  public:
+public:
 	GVAppearanceType* appearType;
 
 	TG_MultiShapePtr gvShape;
@@ -224,9 +206,8 @@ class GVAppearance : public ObjectAppearance
 	int32_t hitNodeId;
 	int32_t weaponNodeId[4];
 
-  public:
-	virtual void init(
-		AppearanceTypePtr tree = nullptr, GameObjectPtr obj = nullptr);
+public:
+	virtual void init(AppearanceTypePtr tree = nullptr, GameObjectPtr obj = nullptr);
 
 	virtual AppearanceTypePtr getAppearanceType(void) { return appearType; }
 
@@ -255,8 +236,7 @@ class GVAppearance : public ObjectAppearance
 
 	virtual bool recalcBounds(void);
 
-	virtual void flashBuilding(
-		float duration, float flashDuration, uint32_t color);
+	virtual void flashBuilding(float duration, float flashDuration, uint32_t color);
 
 	void setFadeTable(puint8_t fTable) { fadeTable = fTable; }
 
@@ -264,11 +244,11 @@ class GVAppearance : public ObjectAppearance
 
 	virtual bool isMouseOver(float px, float py);
 
-	virtual void setObjectParameters(Stuff::Vector3D& pos, float rot,
-		int32_t selected, int32_t team, int32_t homeRelations);
+	virtual void setObjectParameters(
+		Stuff::Vector3D& pos, float rot, int32_t selected, int32_t team, int32_t homeRelations);
 
-	virtual void setMoverParameters(float turretRot, float lArmRot = 0.0f,
-		float rArmRot = 0.0f, bool isAirborne = false);
+	virtual void setMoverParameters(
+		float turretRot, float lArmRot = 0.0f, float rArmRot = 0.0f, bool isAirborne = false);
 
 	void debugUpdate(void);
 

@@ -21,8 +21,7 @@ bool EulerAngles::TestClass()
 	EulerAngles b;
 	const EulerAngles c(Pi_Over_4, Pi_Over_6, Pi_Over_3);
 	Test_Assumption(!a.pitch && !a.yaw && !a.roll);
-	Test_Assumption(
-		c.pitch == Pi_Over_4 && c.yaw == Pi_Over_6 && c.roll == Pi_Over_3);
+	Test_Assumption(c.pitch == Pi_Over_4 && c.yaw == Pi_Over_6 && c.roll == Pi_Over_3);
 	Test_Assumption(!a);
 	b = c;
 	Test_Assumption(b == c);
@@ -30,9 +29,9 @@ bool EulerAngles::TestClass()
 	Test_Assumption(b[Y_Axis] == b.yaw);
 	Test_Assumption(c[Z_Axis] == c.roll);
 	b.Lerp(a, c, 0.5f);
-	Test_Assumption(b == EulerAngles(Stuff::Lerp(a.pitch, c.pitch, 0.5f),
-							 Stuff::Lerp(a.yaw, c.yaw, 0.5f),
-							 Stuff::Lerp(a.roll, c.roll, 0.5f)));
+	Test_Assumption(b ==
+		EulerAngles(Stuff::Lerp(a.pitch, c.pitch, 0.5f), Stuff::Lerp(a.yaw, c.yaw, 0.5f),
+			Stuff::Lerp(a.roll, c.roll, 0.5f)));
 	LinearMatrix4D m;
 	m.BuildRotation(c);
 	b = m;

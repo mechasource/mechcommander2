@@ -25,12 +25,12 @@ void gosFX::LightManager::DeleteLight(Light* light) {}
 //------------------------------------------------------------------------------
 //
 gosFX::PointLight__Specification::PointLight__Specification(
-	Stuff::MemoryStream* stream, uint32_t gfx_version)
+	std::iostream stream, uint32_t gfx_version)
 	: Effect__Specification(PointLightClassID, stream, gfx_version)
 {
 	// Check_Pointer(this);
-	Verify(m_class == PointLightClassID);
-	// Verify(gos_GetCurrentHeap() == Heap);
+	_ASSERT(m_class == PointLightClassID);
+	// _ASSERT(gos_GetCurrentHeap() == Heap);
 	m_red.Load(stream, gfx_version);
 	m_green.Load(stream, gfx_version);
 	m_blue.Load(stream, gfx_version);
@@ -56,28 +56,27 @@ gosFX::PointLight__Specification::PointLight__Specification()
 	: Effect__Specification(PointLightClassID)
 {
 	// Check_Pointer(this);
-	// Verify(gos_GetCurrentHeap() == Heap);
+	// _ASSERT(gos_GetCurrentHeap() == Heap);
 	m_twoSided = false;
 }
 
 //------------------------------------------------------------------------------
 //
 gosFX::PointLight__Specification* gosFX::PointLight__Specification::Make(
-	Stuff::MemoryStream* stream, uint32_t gfx_version)
+	std::iostream stream, uint32_t gfx_version)
 {
 	Check_Object(stream);
 #ifdef _GAMEOS_HPP_
 	// gos_PushCurrentHeap(Heap);
 #endif
-	PointLight__Specification* spec =
-		new gosFX::PointLight__Specification(stream, gfx_version);
+	PointLight__Specification* spec = new gosFX::PointLight__Specification(stream, gfx_version);
 	// gos_PopCurrentHeap();
 	return spec;
 }
 
 //------------------------------------------------------------------------------
 //
-void gosFX::PointLight__Specification::Save(Stuff::MemoryStream* stream)
+void gosFX::PointLight__Specification::Save(std::iostream stream)
 {
 	// Check_Object(this);
 	Check_Object(stream);
@@ -155,11 +154,10 @@ gosFX::PointLight::ClassData* gosFX::PointLight::DefaultData = nullptr;
 //
 void gosFX::PointLight::InitializeClass()
 {
-	Verify(!DefaultData);
-	// Verify(gos_GetCurrentHeap() == Heap);
-	DefaultData = new ClassData(PointLightClassID, "gosFX::PointLight",
-		Effect::DefaultData, (Effect::Factory)&Make,
-		(Specification::Factory)&Specification::Make);
+	_ASSERT(!DefaultData);
+	// _ASSERT(gos_GetCurrentHeap() == Heap);
+	DefaultData = new ClassData(PointLightClassID, "gosFX::PointLight", Effect::DefaultData,
+		(Effect::Factory)&Make, (Specification::Factory)&Specification::Make);
 	Register_Object(DefaultData);
 }
 
@@ -181,7 +179,7 @@ gosFX::PointLight::PointLight(Specification* spec, uint32_t flags)
 	: Effect(DefaultData, spec, flags)
 {
 	Check_Object(spec);
-	// Verify(gos_GetCurrentHeap() == Heap);
+	// _ASSERT(gos_GetCurrentHeap() == Heap);
 }
 
 //------------------------------------------------------------------------------
@@ -282,7 +280,4 @@ void gosFX::PointLight::Kill()
 
 //------------------------------------------------------------------------------
 //
-void gosFX::PointLight::TestInstance(void) const
-{
-	Verify(IsDerivedFrom(DefaultData));
-}
+void gosFX::PointLight::TestInstance(void) const { _ASSERT(IsDerivedFrom(DefaultData)); }

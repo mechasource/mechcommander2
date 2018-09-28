@@ -5,14 +5,13 @@
 #ifndef MATHFUNC_H
 #define MATHFUNC_H
 
-#ifndef STUFF_STUFF_HPP
-#include <stuff/stuff.hpp>
-#endif
+#include <stuff/vector3d.hpp>
+#include <stuff/vector2d.hpp>
 
 // DESCRIBES A COORDINATE SYSTEM, OR FRAME OR REFERENCE
 class frameOfRef
 {
-  public:
+public:
 	Stuff::Vector3D i;
 	Stuff::Vector3D j;
 	Stuff::Vector3D k;
@@ -41,7 +40,7 @@ class frameOfRef
 
 	frameOfRef& operator=(frameOfRef& fr);
 
-	frameOfRef& orthonormalize() { return orthonormalize_on_yaxis(void); }
+	frameOfRef& orthonormalize() { return orthonormalize_on_yaxis(); }
 
 	frameOfRef& orthonormalize_on_xaxis(void);
 
@@ -107,7 +106,7 @@ bool RollDice(int32_t percent);
 inline int32_t float2long(float val)
 {
 	//_ftol TRUNCS not rounds.  Processor wants to round.  Surely there is some
-	//flag to not have this happen?
+	// flag to not have this happen?
 	// There is but BOY is it slow.  We will try Andy's Magical formula instead.
 	// Doesn't work either.  Major bug in Intel's FPU.
 	// Will simply call int32_t here now to insure working ok and address later.
@@ -149,6 +148,7 @@ inline float mc2_atan2(float f1, float f2)
 	// Return atan of f1/f2;
 	float result = 1.570796f;
 	// f2 is always assumed positive here!!!
+#if USE_INLINE_ASSEMBLER_CODE
 	if (f2 > Stuff::SMALL)
 	{
 		__asm
@@ -160,6 +160,7 @@ inline float mc2_atan2(float f1, float f2)
 			fstp result
 		}
 	}
+#endif
 	return result;
 }
 

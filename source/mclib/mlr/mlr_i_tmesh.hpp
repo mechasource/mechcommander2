@@ -31,26 +31,25 @@ class MLR_I_TMesh : public MLRIndexedPrimitiveBase
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Initialization
 	//
-  public:
+public:
 	static void __stdcall InitializeClass(void);
 	static void __stdcall TerminateClass(void);
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Constructors/Destructors
 	//
-  protected:
-	MLR_I_TMesh(
-		ClassData* class_data, Stuff::MemoryStream* stream, uint32_t version);
+protected:
+	MLR_I_TMesh(ClassData* class_data, std::iostream stream, uint32_t version);
 	~MLR_I_TMesh(void);
 
-  public:
+public:
 	MLR_I_TMesh(ClassData* class_data = MLR_I_TMesh::DefaultData);
 
-	static MLR_I_TMesh* Make(Stuff::MemoryStream* stream, uint32_t version);
+	static MLR_I_TMesh* Make(std::iostream stream, uint32_t version);
 
-	void Save(Stuff::MemoryStream* stream);
+	void Save(std::iostream stream);
 
-  public:
+public:
 	virtual void InitializeDrawPrimitive(uint8_t, int32_t = 0);
 
 	virtual size_t GetNumPrimitives(void)
@@ -59,12 +58,11 @@ class MLR_I_TMesh : public MLRIndexedPrimitiveBase
 		return numOfTriangles;
 	}
 
-	virtual void SetSubprimitiveLengths(
-		puint8_t length_array, size_t subprimitive_count)
+	virtual void SetSubprimitiveLengths(puint8_t length_array, size_t subprimitive_count)
 	{
 		// Check_Object(this);
 		(void)length_array;
-		// Verify(gos_GetCurrentHeap() == Heap);
+		// _ASSERT(gos_GetCurrentHeap() == Heap);
 		numOfTriangles = subprimitive_count;
 		testList.SetLength(numOfTriangles);
 		facePlanes.SetLength(numOfTriangles);
@@ -77,7 +75,7 @@ class MLR_I_TMesh : public MLRIndexedPrimitiveBase
 	const Stuff::Plane* GetTrianglePlane(size_t index)
 	{
 		// Check_Object(this);
-		Verify(index < facePlanes.GetLength());
+		_ASSERT(index < facePlanes.GetLength());
 		return &facePlanes[index];
 	}
 
@@ -99,8 +97,7 @@ class MLR_I_TMesh : public MLRIndexedPrimitiveBase
 	// void
 	// Transform(Stuff::Matrix4D*);
 
-	virtual void TransformNoClip(
-		Stuff::Matrix4D*, GOSVertexPool*, bool = false);
+	virtual void TransformNoClip(Stuff::Matrix4D*, GOSVertexPool*, bool = false);
 
 	// Initializes the visibility test list
 	void ResetTestList(void);
@@ -114,13 +111,13 @@ class MLR_I_TMesh : public MLRIndexedPrimitiveBase
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Class Data Support
 	//
-  public:
+public:
 	static ClassData* DefaultData;
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Testing
 	//
-  public:
+public:
 	void TestInstance(void) const;
 
 	virtual size_t GetSize(void)
@@ -132,10 +129,10 @@ class MLR_I_TMesh : public MLRIndexedPrimitiveBase
 		return ret;
 	}
 
-  protected:
+protected:
 	size_t numOfTriangles;
-	Stuff::DynamicArrayOf<uint8_t> testList;
-	Stuff::DynamicArrayOf<Stuff::Plane> facePlanes;
+	std::vector<uint8_t> testList;
+	std::vector<Stuff::Plane> facePlanes;
 };
 
 #define ICO_X 0.525731112119133606f
@@ -146,5 +143,5 @@ extern uint32_t tindices[20][3];
 extern uint32_t triDrawn;
 MLR_I_TMesh* CreateIndexedTriCube_NoColor_NoLit(float, MLRState*);
 MLRShape* CreateIndexedTriIcosahedron_NoColor_NoLit(IcoInfo&, MLRState*);
-}
+} // namespace MidLevelRenderer
 #endif

@@ -18,10 +18,10 @@ MLRLight::ClassData* MLRLight::DefaultData = nullptr;
 //
 void MLRLight::InitializeClass()
 {
-	Verify(!DefaultData);
-	// Verify(gos_GetCurrentHeap() == StaticHeap);
-	DefaultData = new ClassData(MLRLightClassID, "MidLevelRenderer::MLRLight",
-		RegisteredClass::DefaultData);
+	_ASSERT(!DefaultData);
+	// _ASSERT(gos_GetCurrentHeap() == StaticHeap);
+	DefaultData =
+		new ClassData(MLRLightClassID, "MidLevelRenderer::MLRLight", RegisteredClass::DefaultData);
 	Register_Object(DefaultData);
 }
 
@@ -38,7 +38,7 @@ void MLRLight::TerminateClass()
 //
 MLRLight::MLRLight(ClassData* class_data) : RegisteredClass(class_data)
 {
-	// Verify(gos_GetCurrentHeap() == Heap);
+	// _ASSERT(gos_GetCurrentHeap() == Heap);
 	intensity	= 1.0f;
 	lightToWorld = LinearMatrix4D::Identity;
 	lightToShape = LinearMatrix4D::Identity;
@@ -47,12 +47,11 @@ MLRLight::MLRLight(ClassData* class_data) : RegisteredClass(class_data)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLRLight::MLRLight(
-	ClassData* class_data, Stuff::MemoryStream* stream, uint32_t version)
+MLRLight::MLRLight(ClassData* class_data, std::iostream stream, uint32_t version)
 	: RegisteredClass(class_data)
 {
 	Check_Object(stream);
-	// Verify(gos_GetCurrentHeap() == Heap);
+	// _ASSERT(gos_GetCurrentHeap() == Heap);
 	LinearMatrix4D matrix;
 	*stream >> intensity >> color >> matrix;
 	if (version >= 9)
@@ -68,11 +67,10 @@ MLRLight::MLRLight(
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLRLight::MLRLight(ClassData* class_data, Stuff::Page* page)
-	: RegisteredClass(class_data)
+MLRLight::MLRLight(ClassData* class_data, Stuff::Page* page) : RegisteredClass(class_data)
 {
 	Check_Object(page);
-	// Verify(gos_GetCurrentHeap() == Heap);
+	// _ASSERT(gos_GetCurrentHeap() == Heap);
 	lightName = page->GetName();
 	intensity = 1.0f;
 	page->GetEntry("Intensity", &intensity);
@@ -94,7 +92,7 @@ MLRLight::~MLRLight() {}
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLRLight* MLRLight::Make(Stuff::MemoryStream* stream, uint32_t version)
+MLRLight* MLRLight::Make(std::iostream stream, uint32_t version)
 {
 #ifdef _GAMEOS_HPP_
 	gos_PushCurrentHeap(Heap);
@@ -108,8 +106,7 @@ MLRLight* MLRLight::Make(Stuff::MemoryStream* stream, uint32_t version)
 		light = new MLRAmbientLight(stream, version);
 		break;
 	case InfiniteLight:
-		light = new MLRInfiniteLight(
-			MLRInfiniteLight::DefaultData, stream, version);
+		light = new MLRInfiniteLight(MLRInfiniteLight::DefaultData, stream, version);
 		break;
 	case PointLight:
 		light = new MLRPointLight(stream, version);
@@ -155,7 +152,7 @@ MLRLight* MLRLight::Make(Stuff::Page* page)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLRLight::Save(Stuff::MemoryStream* stream)
+void MLRLight::Save(std::iostream stream)
 {
 	// Check_Object(this);
 	Check_Object(stream);
@@ -199,7 +196,7 @@ void MLRLight::Write(Stuff::Page* page)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLRLight::TestInstance() { Verify(IsDerivedFrom(DefaultData)); }
+void MLRLight::TestInstance() { _ASSERT(IsDerivedFrom(DefaultData)); }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
@@ -219,10 +216,7 @@ void MLRLight::SetLightToWorldMatrix(const LinearMatrix4D& matrix)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLRLight::SetColor(float r, float g, float b)
-{
-	SetColor(RGBColor(r, b, b));
-}
+void MLRLight::SetColor(float r, float g, float b) { SetColor(RGBColor(r, b, b)); }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //

@@ -41,28 +41,26 @@ class MLR_I_DeT_PMesh : public MLR_I_PMesh
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Initialization
 	//
-  public:
+public:
 	static void __stdcall InitializeClass(void);
 	static void __stdcall TerminateClass(void);
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Constructors/Destructors
 	//
-  protected:
-	MLR_I_DeT_PMesh(
-		ClassData* class_data, Stuff::MemoryStream* stream, uint32_t version);
+protected:
+	MLR_I_DeT_PMesh(ClassData* class_data, std::iostream stream, uint32_t version);
 	~MLR_I_DeT_PMesh(void);
 
-  public:
+public:
 	MLR_I_DeT_PMesh(ClassData* class_data = MLR_I_DeT_PMesh::DefaultData);
 
-	static MLR_I_DeT_PMesh* Make(Stuff::MemoryStream* stream, uint32_t version);
+	static MLR_I_DeT_PMesh* Make(std::iostream stream, uint32_t version);
 
-	void Save(Stuff::MemoryStream* stream);
+	void Save(std::iostream stream);
 
-  public:
-	void Copy(MLR_I_PMesh*, MLRState detailState, float xOff, float yOff,
-		float xFac, float yFac);
+public:
+	void Copy(MLR_I_PMesh*, MLRState detailState, float xOff, float yOff, float xFac, float yFac);
 
 	void SetDetailData(float xOff, float yOff, float xFac, float yFac)
 	{
@@ -85,13 +83,12 @@ class MLR_I_DeT_PMesh : public MLR_I_PMesh
 	virtual uint32_t TransformAndClip(
 		Stuff::Matrix4D*, MLRClippingState, GOSVertexPool*, bool = false);
 
-	virtual void TransformNoClip(
-		Stuff::Matrix4D*, GOSVertexPool*, bool = false);
+	virtual void TransformNoClip(Stuff::Matrix4D*, GOSVertexPool*, bool = false);
 
 	virtual void SetReferenceState(const MLRState& _state, size_t pass = 0)
 	{
 		// Check_Object(this);
-		Verify((intptr_t(pass) >= 0) && pass < 2);
+		_ASSERT((intptr_t(pass) >= 0) && pass < 2);
 		if (pass == 0)
 		{
 			referenceState = _state;
@@ -140,13 +137,13 @@ class MLR_I_DeT_PMesh : public MLR_I_PMesh
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Class Data Support
 	//
-  public:
+public:
 	static ClassData* DefaultData;
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Testing
 	//
-  public:
+public:
 	void TestInstance(void) const;
 
 	virtual size_t GetSize(void)
@@ -156,16 +153,15 @@ class MLR_I_DeT_PMesh : public MLR_I_PMesh
 		return ret;
 	}
 
-  protected:
+protected:
 	bool detTextureVisible;
 	MLRState state2, referenceState2;
 	float noDetailDistance;
 	float xOffset, yOffset, xScale, yScale;
 };
 
-MLR_I_DeT_PMesh* CreateIndexedCube_NoColor_NoLit_DetTex(float radius, MLRState*,
-	MLRState*, float xOff, float yOff, float xFac, float yFac);
-MLRShape* CreateIndexedIcosahedron_NoColor_NoLit_DetTex(
-	IcoInfo&, MLRState*, MLRState*);
-}
+MLR_I_DeT_PMesh* CreateIndexedCube_NoColor_NoLit_DetTex(
+	float radius, MLRState*, MLRState*, float xOff, float yOff, float xFac, float yFac);
+MLRShape* CreateIndexedIcosahedron_NoColor_NoLit_DetTex(IcoInfo&, MLRState*, MLRState*);
+} // namespace MidLevelRenderer
 #endif

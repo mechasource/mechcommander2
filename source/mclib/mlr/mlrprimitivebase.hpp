@@ -7,7 +7,7 @@
 #ifndef MLRPRIMITIVEBASE_HPP
 #define MLRPRIMITIVEBASE_HPP
 
-#include <stuff/marray.hpp>
+//#include <stuff/marray.hpp>
 #include <stuff/vector2d.hpp>
 #include <stuff/vector4d.hpp>
 #include <stuff/color.hpp>
@@ -19,7 +19,7 @@ namespace Stuff
 class Line3D;
 class Normal3D;
 class ExtentBox;
-}
+} // namespace Stuff
 
 //#include <mlr/gosvertexpool.hpp>
 
@@ -37,18 +37,14 @@ struct ClipPolygon2
 	void Init(int32_t);
 	void Destroy(void);
 
-	Stuff::DynamicArrayOf<Stuff::Vector4D>
-		coords; // [Max_Number_Vertices_Per_Polygon]
+	std::vector<Stuff::Vector4D> coords; // [Max_Number_Vertices_Per_Polygon]
 #if COLOR_AS_DWORD
-	Stuff::DynamicArrayOf<uint32_t> colors; //[Max_Number_Vertices_Per_Polygon];
+	std::vector<uint32_t> colors; //[Max_Number_Vertices_Per_Polygon];
 #else
-	Stuff::DynamicArrayOf<Stuff::RGBAColor>
-		colors; //[Max_Number_Vertices_Per_Polygon];
+	std::vector<Stuff::RGBAColor> colors; //[Max_Number_Vertices_Per_Polygon];
 #endif
-	Stuff::DynamicArrayOf<Stuff::Vector2DScalar>
-		texCoords; //[2*Max_Number_Vertices_Per_Polygon];
-	Stuff::DynamicArrayOf<MLRClippingState>
-		clipPerVertex; //[Max_Number_Vertices_Per_Polygon];
+	std::vector<Stuff::Vector2DScalar> texCoords; //[2*Max_Number_Vertices_Per_Polygon];
+	std::vector<MLRClippingState> clipPerVertex;  //[Max_Number_Vertices_Per_Polygon];
 };
 
 class MLRPrimitiveBase__ClassData;
@@ -61,53 +57,48 @@ class MLRPrimitiveBase__ClassData;
 
 // typedef Stuff::Vector2DOf<float> Stuff::Vector2DScalar;
 
-class _declspec(novtable) MLRPrimitiveBase : public Stuff::RegisteredClass
+class _declspec(novtable) MLRPrimitiveBase // : public Stuff::RegisteredClass
 {
 	friend class MLRShape;
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Initialization
 	//
-  public:
+public:
+#if _CONSIDERED_OBSOLETE
 	static void __stdcall InitializeClass(void);
 	static void __stdcall TerminateClass(void);
 	typedef MLRPrimitiveBase__ClassData ClassData;
 	static ClassData* DefaultData;
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// Constructors/Destructors
-	//
-  protected:
-	MLRPrimitiveBase(
-		ClassData* class_data, Stuff::MemoryStream* stream, uint32_t version);
+	MLRPrimitiveBase(ClassData* class_data);
+protected:
+	MLRPrimitiveBase(ClassData* class_data, std::iostream& stream, uint32_t version);
+#endif
+
+protected:
 	~MLRPrimitiveBase(void);
 
-  public:
-	MLRPrimitiveBase(ClassData* class_data);
+public:
 
-	typedef MLRPrimitiveBase* (*Factory)(
-		Stuff::MemoryStream* stream, uint32_t version);
+	typedef MLRPrimitiveBase* (*Factory)(std::iostream stream, uint32_t version);
 
-	static MLRPrimitiveBase* Make(
-		Stuff::MemoryStream* stream, uint32_t version);
-	virtual void Save(Stuff::MemoryStream* stream);
+	static MLRPrimitiveBase* Make(std::iostream stream, uint32_t version);
+	virtual void Save(std::iostream stream);
 
-	// Subprimitves are units in which this geometry is split off
-	// ie. nr of polygons in a polygon mesh or number of tripstrips
-	// in a tristriped mesh, every of this subprimitves has another
-	// number which is type specific
-	// ie. number of vertices in a polygon or number of vertices in
-	// a tristrip
-	// the data for the coord/color/texcoord/normal or index
-	// ARE IN THIS ORDER
+	// Subprimitives are units in which this geometry is split off, ie. nr of 
+	// polygons in a polygon mesh or number of tripstrips in a  tristriped mesh, 
+	// every of this subprimitives has another/ number which is type specific
+	// ie. number of vertices in a polygon or number of vertices in a tristrip
+	// the data for the coord/color/texcoord/normal or index ARE IN THIS ORDER
 	virtual size_t GetNumPrimitives(void)
 	{
 		// Check_Object(this);
-		return lengths.GetLength();
+		return lengths.size();
 	}
 
-	virtual void SetSubprimitiveLengths(
-		puint8_t length_array, size_t subprimitive_count) = 0;
+	virtual void SetSubprimitiveLengths(puint8_t length_array, size_t subprimitive_count) = 0;
 
 	// returns the number of subprimitives
 	void GetSubprimitiveLengths(puint8_t* length_array, pint32_t);
@@ -144,15 +135,13 @@ class _declspec(novtable) MLRPrimitiveBase : public Stuff::RegisteredClass
 	size_t GetNumVertices(void)
 	{
 		// Check_Object(this);
-		return coords.GetLength();
+		return coords.size();
 	}
 
 	virtual void SetCoordData(const Stuff::Point3D* array, size_t point_count);
 	virtual void GetCoordData(Stuff::Point3D** array, psize_t point_count);
-	virtual void SetTexCoordData(const Stuff::Vector2DScalar* array,
-		size_t point_count, size_t pass = 0);
-	virtual void GetTexCoordData(
-		Stuff::Vector2DScalar** array, psize_t point_count, size_t pass = 0);
+	virtual void SetTexCoordData(const Stuff::Vector2DScalar* array, size_t point_count, size_t pass = 0);
+	virtual void GetTexCoordData(Stuff::Vector2DScalar** array, psize_t point_count, size_t pass = 0);
 
 	// is to call befor clipping, parameter: camera point
 	virtual int32_t FindBackFace(const Stuff::Point3D&)		   = 0;
@@ -193,9 +182,8 @@ class _declspec(novtable) MLRPrimitiveBase : public Stuff::RegisteredClass
 	virtual bool CastRay(Stuff::Line3D* line, Stuff::Normal3D* normal);
 	virtual void PaintMe(const Stuff::RGBAColor* paintMe) = 0;
 	virtual uint32_t TransformAndClip(
-		Stuff::Matrix4D*, MLRClippingState, GOSVertexPool*, bool = false) = 0;
-	virtual void TransformNoClip(
-		Stuff::Matrix4D*, GOSVertexPool*, bool = false) = 0;
+		Stuff::Matrix4D*, MLRClippingState, GOSVertexPool*, bool = false)		 = 0;
+	virtual void TransformNoClip(Stuff::Matrix4D*, GOSVertexPool*, bool = false) = 0;
 
 	virtual uint32_t GetNumPasses(void)
 	{
@@ -214,48 +202,49 @@ class _declspec(novtable) MLRPrimitiveBase : public Stuff::RegisteredClass
 	void SetClipCoord(Stuff::Point3D& point, size_t index)
 	{
 		// Check_Object(this);
-		Verify(clipExtraCoords->GetLength() > index);
-		(*clipExtraCoords)[index].x = point.x;
-		(*clipExtraCoords)[index].y = point.y;
-		(*clipExtraCoords)[index].z = point.z;
+		_ASSERT(clipExtraCoords.size() > index);
+		(clipExtraCoords)[index].x = point.x;
+		(clipExtraCoords)[index].y = point.y;
+		(clipExtraCoords)[index].z = point.z;
 	}
 	void FlashClipCoords(size_t num)
 	{
 		// Check_Object(this);
-		Verify(clipExtraCoords->GetLength() > num);
-		coords.SetLength(num);
-		for (size_t i = 0; i < num; i++)
+		_ASSERT(clipExtraCoords.size() > num);
+		coords.resize(num);
+		for (size_t i = 0u; i < num; i++)
 		{
-			coords[i].x = (*clipExtraCoords)[i].x;
-			coords[i].y = (*clipExtraCoords)[i].y;
-			coords[i].z = (*clipExtraCoords)[i].z;
+			coords[i].x = (clipExtraCoords)[i].x;
+			coords[i].y = (clipExtraCoords)[i].y;
+			coords[i].z = (clipExtraCoords)[i].z;
 		}
 	}
 	void SetClipTexCoord(Stuff::Vector2DScalar& uvs, size_t index)
 	{
 		// Check_Object(this);
-		Verify(clipExtraTexCoords->GetLength() > index);
-		Verify(MLRState::GetHasMaxUVs() ? (uvs[0] >= -100.0 && uvs[0] <= 100.0)
-										: 1);
-		Verify(MLRState::GetHasMaxUVs() ? (uvs[1] >= -100.0 && uvs[1] <= 100.0)
-										: 1);
-		(*clipExtraTexCoords)[index] = uvs;
+		_ASSERT(clipExtraTexCoords.size() > index);
+		_ASSERT(MLRState::GetHasMaxUVs() ? (uvs[0] >= -100.0 && uvs[0] <= 100.0) : 1);
+		_ASSERT(MLRState::GetHasMaxUVs() ? (uvs[1] >= -100.0 && uvs[1] <= 100.0) : 1);
+		(clipExtraTexCoords)[index] = uvs;
 	}
 	void FlashClipTexCoords(size_t num)
 	{
 		// Check_Object(this);
-		Verify(clipExtraTexCoords->GetLength() > num);
-		texCoords.SetLength(num);
+		// _ASSERT(clipExtraTexCoords.size() > num);	// ?
+
+		// texCoords.resize(num);
 		// TODO: solve V501 warning
-		Mem_Copy(texCoords.GetData(), clipExtraTexCoords->GetData(),
-			sizeof(Stuff::Vector2DScalar) * num,
-			sizeof(Stuff::Vector2DScalar) * num);
+		// Mem_Copy(texCoords.GetData(), clipExtraTexCoords->GetData(),
+		//	sizeof(Stuff::Vector2DScalar) * num, sizeof(Stuff::Vector2DScalar) * num);
+
+		for (auto i = 0u; i < num; i++) 
+			texCoords.push_back(clipExtraTexCoords[i]); 
 	}
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Reference counting
 	//
-  public:
+public:
 	void AttachReference(void)
 	{
 		// Check_Object(this);
@@ -264,7 +253,7 @@ class _declspec(novtable) MLRPrimitiveBase : public Stuff::RegisteredClass
 	void DetachReference(void)
 	{
 		// Check_Object(this);
-		Verify(referenceCount > 0);
+		_ASSERT(referenceCount > 0);
 		if ((--referenceCount) == 0)
 		{
 			Unregister_Object(this);
@@ -273,28 +262,28 @@ class _declspec(novtable) MLRPrimitiveBase : public Stuff::RegisteredClass
 	}
 	size_t GetReferenceCount(void) { return referenceCount; }
 
-  protected:
+protected:
 	size_t referenceCount;
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Testing
 	//
-  public:
+public:
 	void TestInstance(void) const;
 
 	virtual size_t GetSize(void)
 	{
 		// Check_Object(this);
 		size_t ret = 0;
-		ret += coords.GetSize();
-		ret += texCoords.GetSize();
-		ret += lengths.GetSize();
+		ret += coords.size();
+		ret += texCoords.size();
+		ret += lengths.size();
 		return ret;
 	}
 
 	void GetExtend(Stuff::ExtentBox* box);
 
-  protected:
+protected:
 	virtual void Transform(Stuff::Matrix4D*);
 
 	static ClipPolygon2* clipBuffer;
@@ -308,33 +297,26 @@ class _declspec(novtable) MLRPrimitiveBase : public Stuff::RegisteredClass
 	// int32_t numVertices; // number of verts for stats and vert arrays
 	// Replaced by GetNumVertices
 
-	Stuff::DynamicArrayOf<Stuff::Point3D>
-		coords; // Base address of coordinate list
-	Stuff::DynamicArrayOf<Stuff::Vector2DScalar>
-		texCoords; // Base address of texture coordinate list
+	std::vector<Stuff::Point3D> coords; // Base address of coordinate list
+	std::vector<Stuff::Vector2DScalar> texCoords; // Base address of texture coordinate list
 
-	static Stuff::DynamicArrayOf<Stuff::Vector4D>* transformedCoords;
+	static std::vector<Stuff::Vector4D>* transformedCoords;
 
-	Stuff::DynamicArrayOf<uint8_t> lengths; // List of strip lengths
+	std::vector<uint8_t> lengths; // List of strip lengths
 
 #if COLOR_AS_DWORD // clipExtraColors for the future generations !!!
-	static Stuff::DynamicArrayOf<uint32_t>*
-		clipExtraColors; // , Max_Number_Vertices_Per_Mesh
+	static std::vector<uint32_t> clipExtraColors;					// , Max_Number_Vertices_Per_Mesh
 #else
-	static Stuff::DynamicArrayOf<Stuff::RGBAColor>*
-		clipExtraColors; // , Max_Number_Vertices_Per_Mesh
+	static std::vector<Stuff::RGBAColor> clipExtraColors;			// , Max_Number_Vertices_Per_Mesh
 #endif
 
-	static Stuff::DynamicArrayOf<MLRClippingState>*
-		clipPerVertex; // , Max_Number_Vertices_Per_Mesh
-	static Stuff::DynamicArrayOf<Stuff::Vector4D>*
-		clipExtraCoords; // , Max_Number_Vertices_Per_Mesh
-	static Stuff::DynamicArrayOf<Stuff::Vector2DScalar>*
-		clipExtraTexCoords; // , Max_Number_Vertices_Per_Mesh
-	static Stuff::DynamicArrayOf<uint16_t>*
-		clipExtraLength; // , Max_Number_Primitives_Per_Frame
+	static std::vector<MLRClippingState> clipPerVertex;			// , Max_Number_Vertices_Per_Mesh
+	static std::vector<Stuff::Vector4D> clipExtraCoords;			// , Max_Number_Vertices_Per_Mesh
+	static std::vector<Stuff::Vector2DScalar> clipExtraTexCoords;	// , Max_Number_Vertices_Per_Mesh
+	static std::vector<uint16_t> clipExtraLength;					// , Max_Number_Primitives_Per_Frame
 
-	MLRState state, referenceState;
+	MLRState state;
+	MLRState referenceState;
 
 	uint32_t drawMode;
 
@@ -353,7 +335,7 @@ struct IcoInfo
 	PCSTR GetTypeName(void);
 };
 
-MLRShape* CreateIndexedIcosahedron(IcoInfo&, Stuff::DynamicArrayOf<MLRState>*);
+MLRShape* CreateIndexedIcosahedron(IcoInfo&, std::vector<MLRState>*);
 
 //##########################################################################
 //################### MLRPrimitiveBase__ClassData ####################
@@ -363,9 +345,9 @@ class MLRPrimitiveBase__ClassData : public Stuff::RegisteredClass::ClassData
 {
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	//
-  public:
-	MLRPrimitiveBase__ClassData(Stuff::RegisteredClass::ClassID class_id,
-		PCSTR class_name, Stuff::RegisteredClass::ClassData* parent_class,
+public:
+	MLRPrimitiveBase__ClassData(Stuff::RegisteredClass::ClassID class_id, PCSTR class_name,
+		Stuff::RegisteredClass::ClassData* parent_class,
 		MLRPrimitiveBase::Factory primitive_factory)
 		: RegisteredClass__ClassData(class_id, class_name, parent_class),
 		  primitiveFactory(primitive_factory)
@@ -376,7 +358,7 @@ class MLRPrimitiveBase__ClassData : public Stuff::RegisteredClass::ClassData
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	//
-  public:
+public:
 	void TestInstance(void);
 };
 
@@ -414,8 +396,8 @@ inline float GetBC(uint32_t nr, const Stuff::Vector4D& v4d)
 	return 0.0f;
 }
 
-inline void GetDoubleBC(uint32_t nr, float& result1, float& result2,
-	const Stuff::Vector4D& v4d1, const Stuff::Vector4D& v4d2)
+inline void GetDoubleBC(uint32_t nr, float& result1, float& result2, const Stuff::Vector4D& v4d1,
+	const Stuff::Vector4D& v4d2)
 {
 	switch (nr)
 	{
@@ -446,8 +428,7 @@ inline void GetDoubleBC(uint32_t nr, float& result1, float& result2,
 	}
 }
 
-inline float GetLerpFactor(
-	uint32_t nr, const Stuff::Vector4D& v4d1, const Stuff::Vector4D& v4d2)
+inline float GetLerpFactor(uint32_t nr, const Stuff::Vector4D& v4d1, const Stuff::Vector4D& v4d2)
 {
 	float result1 = 0.0f;
 	float result2 = 0.0f;
@@ -485,8 +466,8 @@ inline float GetLerpFactor(
 	{
 		return 0.0f;
 	}
-	Verify(!Stuff::Close_Enough(result1, result2, Stuff::SMALL * 0.1f));
+	_ASSERT(!Stuff::Close_Enough(result1, result2, Stuff::SMALL * 0.1f));
 	return result1 / (result1 - result2);
 }
-}
+} // namespace MidLevelRenderer
 #endif

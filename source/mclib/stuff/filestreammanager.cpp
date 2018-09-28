@@ -28,8 +28,7 @@ FileDependencies::~FileDependencies(void) {}
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-FileDependencies& FileDependencies::operator=(
-	const FileDependencies& dependencies)
+FileDependencies& FileDependencies::operator=(const FileDependencies& dependencies)
 {
 	// Check_Pointer(this);
 	Check_Object(&dependencies);
@@ -38,9 +37,7 @@ FileDependencies& FileDependencies::operator=(
 	if (len)
 	{
 		MemoryStream scanner(
-			static_cast<puint8_t>(dependencies.m_fileNameStream.GetPointer()) -
-				len,
-			len);
+			static_cast<puint8_t>(dependencies.m_fileNameStream.GetPointer()) - len, len);
 		m_fileNameStream.AllocateBytes(len);
 		m_fileNameStream << scanner;
 	}
@@ -49,7 +46,7 @@ FileDependencies& FileDependencies::operator=(
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void FileDependencies::AddDependency(FileStream* stream)
+void FileDependencies::AddDependency(std::fstream* stream)
 {
 	// Check_Object(this);
 	Check_Object(stream);
@@ -86,7 +83,7 @@ void FileDependencies::AddDependency(FileStream* stream)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void FileDependencies::AddDependencies(MemoryStream* dependencies)
+void FileDependencies::AddDependencies(std::iostream& dependencies)
 {
 	// Check_Object(this);
 	Check_Object(dependencies);
@@ -128,7 +125,7 @@ void FileDependencies::AddDependencies(const FileDependencies* dependencies)
 {
 	// Check_Object(this);
 	Check_Object(dependencies);
-	AddDependencies((MemoryStream*)&dependencies->m_fileNameStream);
+	AddDependencies((std::iostream&)&dependencies->m_fileNameStream);
 }
 
 //#############################################################################
@@ -147,8 +144,7 @@ FileStreamManager::~FileStreamManager(void) { PurgeFileCompareCache(); }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-bool FileStreamManager::CompareModificationDate(
-	const MString& file_name, int64_t time_stamp)
+bool FileStreamManager::CompareModificationDate(const std::wstring& file_name, int64_t time_stamp)
 {
 	// Check_Object(this);
 	Check_Object(&file_name);
@@ -196,16 +192,16 @@ bool FileStreamManager::CompareModificationDate(
 void FileStreamManager::PurgeFileCompareCache(void)
 {
 	// Check_Object(this);
-	TreeIteratorOf<FileStatPlug*, MString> cache(&compareCache);
+	TreeIteratorOf<FileStatPlug*, std::wstring> cache(&compareCache);
 	cache.DeletePlugs();
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MString* __stdcall Stuff::StripExtension(MString* file_name)
+std::wstring* __stdcall Stuff::StripExtension(std::wstring* file_name)
 {
 	Check_Object(file_name);
-	if (file_name->GetLength() == 0)
+	if (file_name.size() == 0)
 	{
 		return file_name;
 	}
@@ -221,10 +217,10 @@ MString* __stdcall Stuff::StripExtension(MString* file_name)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MString* __stdcall Stuff::IsolateDirectory(MString* file_name)
+std::wstring* __stdcall Stuff::IsolateDirectory(std::wstring* file_name)
 {
 	Check_Object(file_name);
-	if (file_name->GetLength() == 0)
+	if (file_name.size() == 0)
 	{
 		return file_name;
 	}
@@ -245,7 +241,7 @@ MString* __stdcall Stuff::IsolateDirectory(MString* file_name)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MString* __stdcall Stuff::StripDirectory(MString* file_name)
+std::wstring* __stdcall Stuff::StripDirectory(std::wstring* file_name)
 {
 	Check_Object(file_name);
 	PSTR p = strrchr(*file_name, '\\');

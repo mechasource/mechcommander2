@@ -167,7 +167,7 @@ typedef MasterComponent* MasterComponentPtr;
 class MasterComponent
 {
 
-  private:
+private:
 	int32_t masterID;							// unique ID for component
 	int32_t resourcePoints;						// resource cost of object
 	ComponentFormType form;						// form of component
@@ -178,14 +178,14 @@ class MasterComponent
 	char health;								// # of hits before destroyed
 	char criticalSpacesReq[NUM_BODY_LOCATIONS]; // # of critical spaces required
 												// in specific location
-	char disableLevel; // # of critical spaces to disable
+	char disableLevel;							// # of critical spaces to disable
 	uint8_t uses;
 	uint8_t techBase;
 	float CV; // CV for this component
 	ComponentStats stats;
 	uint32_t art;
 
-  public:
+public:
 	static MasterComponentPtr masterList;
 	static int32_t numComponents;
 	static int32_t armActuatorID;
@@ -193,7 +193,7 @@ class MasterComponent
 	static int32_t clanAntiMissileSystemID;
 	static int32_t innerSphereAntiMissileSystemID;
 
-  public:
+public:
 	PVOID operator new(size_t mySize);
 
 	void operator delete(PVOID us);
@@ -269,71 +269,41 @@ class MasterComponent
 
 	float getWeaponRecycleTime(void) { return (stats.weapon.recycleTime); }
 
-	void setWeaponRecycleTime(float recycleTime)
-	{
-		stats.weapon.recycleTime = recycleTime;
-	}
+	void setWeaponRecycleTime(float recycleTime) { stats.weapon.recycleTime = recycleTime; }
 
 	int32_t getWeaponAmmoAmount(void) { return (stats.weapon.ammoAmount); }
 
-	void setWeaponAmmoAmount(int32_t weaponAmmo)
-	{
-		stats.weapon.ammoAmount = weaponAmmo;
-	}
+	void setWeaponAmmoAmount(int32_t weaponAmmo) { stats.weapon.ammoAmount = weaponAmmo; }
 
 	uint32_t getWeaponAmmoType(void) { return (stats.weapon.ammoType); }
 
-	void setWeaponAmmoType(int32_t ammoType)
-	{
-		stats.weapon.ammoType = ammoType;
-	}
+	void setWeaponAmmoType(int32_t ammoType) { stats.weapon.ammoType = ammoType; }
 
 	uint32_t getWeaponAmmoMasterId(void) { return (stats.weapon.ammoMasterId); }
 
-	void setWeaponAmmoMasterId(int32_t ammoId)
-	{
-		stats.weapon.ammoMasterId = ammoId;
-	}
+	void setWeaponAmmoMasterId(int32_t ammoId) { stats.weapon.ammoMasterId = ammoId; }
 
 	int32_t getWeaponRange(void) { return (stats.weapon.range); }
 
-	void setWeaponRange(int32_t weaponRange)
-	{
-		stats.weapon.range = weaponRange;
-	}
+	void setWeaponRange(int32_t weaponRange) { stats.weapon.range = weaponRange; }
 
 	void clearWeaponFlags(void) { stats.weapon.flags = 0; }
 
-	bool getWeaponInferno(void)
-	{
-		return ((stats.weapon.flags & WEAPON_FLAG_INFERNO) != 0);
-	}
+	bool getWeaponInferno(void) { return ((stats.weapon.flags & WEAPON_FLAG_INFERNO) != 0); }
 
 	void setWeaponInferno(void) { stats.weapon.flags |= WEAPON_FLAG_INFERNO; }
 
-	bool getWeaponStreak(void)
-	{
-		return ((stats.weapon.flags & WEAPON_FLAG_STREAK) != 0);
-	}
+	bool getWeaponStreak(void) { return ((stats.weapon.flags & WEAPON_FLAG_STREAK) != 0); }
 
 	void setWeaponStreak(void) { stats.weapon.flags |= WEAPON_FLAG_STREAK; }
 
-	bool getWeaponLBX(void)
-	{
-		return ((stats.weapon.flags & WEAPON_FLAG_LBX) != 0);
-	}
+	bool getWeaponLBX(void) { return ((stats.weapon.flags & WEAPON_FLAG_LBX) != 0); }
 
 	void setWeaponLBX(void) { stats.weapon.flags |= WEAPON_FLAG_LBX; }
 
-	bool getWeaponArtillery(void)
-	{
-		return ((stats.weapon.flags & WEAPON_FLAG_ARTILLERY) != 0);
-	}
+	bool getWeaponArtillery(void) { return ((stats.weapon.flags & WEAPON_FLAG_ARTILLERY) != 0); }
 
-	void setWeaponArtillery(void)
-	{
-		stats.weapon.flags |= WEAPON_FLAG_ARTILLERY;
-	}
+	void setWeaponArtillery(void) { stats.weapon.flags |= WEAPON_FLAG_ARTILLERY; }
 
 	bool getCanClanUse(void) { return ((uses & COMPONENT_USE_CLAN) != 0); }
 
@@ -341,10 +311,7 @@ class MasterComponent
 
 	bool getCanMechUse(void) { return ((uses & COMPONENT_USE_MECH) != 0); }
 
-	bool getCanVehicleUse(void)
-	{
-		return ((uses & COMPONENT_USE_VEHICLE) != 0);
-	}
+	bool getCanVehicleUse(void) { return ((uses & COMPONENT_USE_VEHICLE) != 0); }
 
 	void clearUseFlags(void) { uses = 0; }
 
@@ -358,49 +325,31 @@ class MasterComponent
 
 	bool getClanTechBase(void) { return ((techBase & TECH_BASE_CLAN) != 0); }
 
-	bool getISTechBase(void)
-	{
-		return ((techBase & TECH_BASE_INNERSPHERE) != 0);
-	}
+	bool getISTechBase(void) { return ((techBase & TECH_BASE_INNERSPHERE) != 0); }
 
 	void setClanTechBase(void) { techBase = TECH_BASE_CLAN; }
 
 	void setISTechBase(void) { techBase = TECH_BASE_INNERSPHERE; }
 
-	void setBothTechBase(void)
-	{
-		techBase = TECH_BASE_INNERSPHERE + TECH_BASE_CLAN;
-	}
+	void setBothTechBase(void) { techBase = TECH_BASE_INNERSPHERE + TECH_BASE_CLAN; }
 
 	//		int32_t getWeaponType (void) {
 	//			return(stats.weapon.type);
 	//		}
 
-	int32_t getWeaponSpecialEffect(void)
-	{
-		return (stats.weapon.specialEffect);
-	}
+	int32_t getWeaponSpecialEffect(void) { return (stats.weapon.specialEffect); }
 
 	int32_t getAmmoPerTon(void) { return (stats.ammo.ammoPerTon); }
 
-	void setAmmoPerTon(int32_t ammoPerTon)
-	{
-		stats.ammo.ammoPerTon = ammoPerTon;
-	}
+	void setAmmoPerTon(int32_t ammoPerTon) { stats.ammo.ammoPerTon = ammoPerTon; }
 
 	float getJumpJetRangeMod(void) { return (stats.jumpjet.rangeMod); }
 
-	void setJumpJetRangeMod(float rangeMod)
-	{
-		stats.jumpjet.rangeMod = rangeMod;
-	}
+	void setJumpJetRangeMod(float rangeMod) { stats.jumpjet.rangeMod = rangeMod; }
 
 	float getAmmoExplosiveDamage(void) { return (stats.ammo.explosiveDamage); }
 
-	void setAmmoExplosiveDamage(float ammoDamage)
-	{
-		stats.ammo.explosiveDamage = ammoDamage;
-	}
+	void setAmmoExplosiveDamage(float ammoDamage) { stats.ammo.explosiveDamage = ammoDamage; }
 
 	float getSensorRange(void) { return (stats.sensor.range); }
 
@@ -434,10 +383,8 @@ class MasterComponent
 
 	void multiplyWeaponRanges(float factor);
 
-	static int32_t loadMasterList(
-		PSTR fileName, int32_t numComponents, float baseSensorRange);
-	static int32_t saveMasterList(
-		PSTR fileName, int32_t numComponents, float baseSensorRange);
+	static int32_t loadMasterList(PSTR fileName, int32_t numComponents, float baseSensorRange);
+	static int32_t saveMasterList(PSTR fileName, int32_t numComponents, float baseSensorRange);
 
 	static int32_t freeMasterList(void);
 

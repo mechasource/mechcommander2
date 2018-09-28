@@ -39,8 +39,7 @@ extern int32_t tileCacheMiss;
 //----------------------------------------------------
 struct TerrainTXM
 {
-	uint32_t
-		flags; // Tells me if this texture is a cement texture, has alpha, etc.
+	uint32_t flags;				 // Tells me if this texture is a cement texture, has alpha, etc.
 	uint32_t mcTextureNodeIndex; // Pointer to MCTextureNode which is used to
 								 // cache handles if necessary
 };
@@ -83,10 +82,9 @@ struct MC_OverlayType
 
 struct TransitionType
 {
-	uint32_t baseTXMIndex; // When we build transition, where did we stick it
-	uint32_t
-		transitionIndex;   // Code/Hash/Whatever to uniquely ID this transition.
-	uint32_t overlayIndex; // Overlays blended onto texture now.
+	uint32_t baseTXMIndex;	// When we build transition, where did we stick it
+	uint32_t transitionIndex; // Code/Hash/Whatever to uniquely ID this transition.
+	uint32_t overlayIndex;	// Overlays blended onto texture now.
 };
 
 //---------------------------------------------------------------------------
@@ -94,7 +92,7 @@ class TerrainTextures
 {
 	// Data Members
 	//-------------
-  protected:
+protected:
 	static int32_t numTxms;
 	TerrainTXM* textures;
 	static int32_t nextAvailable;
@@ -122,14 +120,14 @@ class TerrainTextures
 	bool quickLoad; // Checks for list o magic textures and then checks that
 					// each magic texture exists.
 	char* localBaseName;
-	File* listTransitionFile;
+	MechFile* listTransitionFile;
 
 	static bool terrainTexturesInstrumented;
 
-  public:
+public:
 	// Member Functions
 	//-----------------
-  protected:
+protected:
 	int32_t initTexture(int32_t typeNum);
 	void initMask(int32_t typeNum);
 	int32_t initDetail(int32_t typeNum, int32_t detailNum);
@@ -142,11 +140,10 @@ class TerrainTextures
 	int32_t textureFromMemoryAlpha(puint8_t ourRam, int32_t mipSize);
 
 	int32_t createTransition(uint32_t typeInfo, uint32_t overlayInfo = 0);
-	void combineTxm(
-		puint8_t dest, uint32_t binNumber, int32_t type, int32_t mipLevel);
+	void combineTxm(puint8_t dest, uint32_t binNumber, int32_t type, int32_t mipLevel);
 	void combineOverlayTxm(puint8_t dest, int32_t type, int32_t mipLevel);
 
-  public:
+public:
 	void init(void)
 	{
 		tileHeap	= nullptr;
@@ -208,16 +205,14 @@ class TerrainTextures
 
 	float getDetailFrameRate(int32_t typeInfo)
 	{
-		if ((typeInfo < numDetails) &&
-			details[typeInfo].frameRate > Stuff::SMALL)
+		if ((typeInfo < numDetails) && details[typeInfo].frameRate > Stuff::SMALL)
 			return (1.0f / details[typeInfo].frameRate);
 		return 0.066666667f; // 15 FPS
 	}
 
 	int32_t setOverlay(uint32_t overlayInfo);
 	int32_t getOverlayHandle(Overlays id, int32_t Offset);
-	void getOverlayInfoFromHandle(
-		int32_t handle, Overlays& id, uint32_t& Offset);
+	void getOverlayInfoFromHandle(int32_t handle, Overlays& id, uint32_t& Offset);
 
 	void purgeTransitions(void);
 
@@ -245,16 +240,14 @@ class TerrainTextures
 			return nullptr;
 		if (textures[texture].mcTextureNodeIndex == 0xffffffff)
 			return nullptr;
-		return (mcTextureManager->get_gosTextureHandle(
-			textures[texture].mcTextureNodeIndex));
+		return (mcTextureManager->get_gosTextureHandle(textures[texture].mcTextureNodeIndex));
 	}
 
 	uint32_t getTextureHandle(uint32_t texture)
 	{
 		if ((int32_t)texture >= nextAvailable)
 			return 0xffffffff;
-		mcTextureManager->get_gosTextureHandle(
-			textures[texture].mcTextureNodeIndex);
+		mcTextureManager->get_gosTextureHandle(textures[texture].mcTextureNodeIndex);
 		return (textures[texture].mcTextureNodeIndex);
 	}
 
@@ -264,16 +257,14 @@ class TerrainTextures
 			return nullptr;
 		if (textures[dTexture].mcTextureNodeIndex == 0xffffffff)
 			return nullptr;
-		return (mcTextureManager->get_gosTextureHandle(
-			textures[dTexture].mcTextureNodeIndex));
+		return (mcTextureManager->get_gosTextureHandle(textures[dTexture].mcTextureNodeIndex));
 	}
 
 	uint32_t getDetailHandle(uint32_t dTexture)
 	{
 		if ((int32_t)dTexture >= nextAvailable)
 			return nullptr;
-		mcTextureManager->get_gosTextureHandle(
-			textures[dTexture].mcTextureNodeIndex);
+		mcTextureManager->get_gosTextureHandle(textures[dTexture].mcTextureNodeIndex);
 		return (textures[dTexture].mcTextureNodeIndex);
 	}
 
@@ -287,14 +278,12 @@ class TerrainTextures
 
 	bool isCement(uint32_t typeInfo)
 	{
-		return (textures[typeInfo].flags & MC2_TERRAIN_CEMENT_FLAG) ==
-			   MC2_TERRAIN_CEMENT_FLAG;
+		return (textures[typeInfo].flags & MC2_TERRAIN_CEMENT_FLAG) == MC2_TERRAIN_CEMENT_FLAG;
 	}
 
 	bool isAlpha(uint32_t typeInfo)
 	{
-		return (textures[typeInfo].flags & MC2_TERRAIN_ALPHA_FLAG) ==
-			   MC2_TERRAIN_ALPHA_FLAG;
+		return (textures[typeInfo].flags & MC2_TERRAIN_ALPHA_FLAG) == MC2_TERRAIN_ALPHA_FLAG;
 	}
 
 	static void initializeStatistics(void);

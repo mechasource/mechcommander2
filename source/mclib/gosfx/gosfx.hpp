@@ -6,11 +6,11 @@
 
 #pragma once
 
-#include <stuff/style.hpp>
+// #include <stuff/style.hpp>
+#include <stuff/linearmatrix.hpp>
 
 namespace Stuff
 {
-class MemoryStream;
 class LinearMatrix4D;
 }
 
@@ -22,7 +22,7 @@ namespace gosFX
 // gosFX classes
 //--------------
 //
-typedef enum __gosFX_const
+enum __gosFX_const : uint32_t
 {
 	EffectClassID = Stuff::FirstgosFXClassID,
 	ParticleCloudClassID,
@@ -47,8 +47,8 @@ enum
 	CurrentGFXVersion = 17
 };
 
-int32_t __stdcall ReadGFXVersion(Stuff::MemoryStream* erf_stream);
-void __stdcall WriteGFXVersion(Stuff::MemoryStream* erf_stream);
+int32_t __stdcall ReadGFXVersion(std::iostream& erf_stream);
+void __stdcall WriteGFXVersion(std::iostream& erf_stream);
 
 void __stdcall InitializeClasses(void);
 void __stdcall TerminateClasses(void);
@@ -66,6 +66,6 @@ extern uint32_t Pert_Count;
 extern uint32_t Card_Count;
 extern uint32_t Shape_Count;
 extern uint32_t Profile_Count;
-}
+} // namespace gosFX
 
 //#include <gosfx/fcurve.hpp>

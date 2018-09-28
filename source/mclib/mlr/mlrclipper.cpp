@@ -17,8 +17,7 @@ using namespace MidLevelRenderer;
 
 //#############################################################################
 
-extern uint32_t gShowBirdView, gEnableDetailTexture, gEnableMultiTexture,
-	gEnableLightMaps;
+extern uint32_t gShowBirdView, gEnableDetailTexture, gEnableMultiTexture, gEnableLightMaps;
 
 DrawShapeInformation::DrawShapeInformation()
 {
@@ -31,8 +30,7 @@ DrawShapeInformation::DrawShapeInformation()
 	clippingFlags.SetClippingState(0);
 };
 
-DrawScalableShapeInformation::DrawScalableShapeInformation()
-	: DrawShapeInformation()
+DrawScalableShapeInformation::DrawScalableShapeInformation() : DrawShapeInformation()
 {
 	scaling = nullptr;
 	paintMe = nullptr;
@@ -69,10 +67,10 @@ MLRClipper::ClassData* MLRClipper::DefaultData = nullptr;
 //
 void MLRClipper::InitializeClass()
 {
-	Verify(!DefaultData);
-	// Verify(gos_GetCurrentHeap() == StaticHeap);
-	DefaultData = new ClassData(MLRClipperClassID,
-		"MidLevelRenderer::MLRClipper", RegisteredClass::DefaultData);
+	_ASSERT(!DefaultData);
+	// _ASSERT(gos_GetCurrentHeap() == StaticHeap);
+	DefaultData = new ClassData(
+		MLRClipperClassID, "MidLevelRenderer::MLRClipper", RegisteredClass::DefaultData);
 	Register_Object(DefaultData);
 }
 
@@ -87,10 +85,9 @@ void MLRClipper::TerminateClass()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLRClipper::MLRClipper(AndyDisplay* ad, MLRSorter* s)
-	: RegisteredClass(DefaultData), display(ad)
+MLRClipper::MLRClipper(AndyDisplay* ad, MLRSorter* s) : RegisteredClass(DefaultData), display(ad)
 {
-	////Verify(gos_GetCurrentHeap() == Heap);
+	////_ASSERT(gos_GetCurrentHeap() == Heap);
 	frameRate = 0;
 	usedTime  = 0.0f;
 	nowTime   = 0.0f;
@@ -114,8 +111,7 @@ MLRClipper::~MLRClipper()
 void MLRClipper::StartDraw(const Stuff::LinearMatrix4D& camera_to_world,
 	const Stuff::Matrix4D& clip_matrix,
 	const Stuff::RGBAColor& fog_color, // NOT USED ANYMORE
-	const Stuff::RGBAColor* background_color, const MLRState& default_state,
-	const float* z_value)
+	const Stuff::RGBAColor* background_color, const MLRState& default_state, const float* z_value)
 {
 	// Check_Object(this);
 	(void)fog_color;
@@ -126,10 +122,9 @@ void MLRClipper::StartDraw(const Stuff::LinearMatrix4D& camera_to_world,
 	{
 		gEnableDetailTexture = 0;
 	}
-	MLRState::SetAGPAvailable(
-		TRUE == gos_GetMachineInformation(gos_Info_HasAGPAvailable));
-	MLRState::SetMaxUV(static_cast<float>(
-		gos_GetMachineInformation(gos_Info_GetMaximumUVSize, 256)));
+	MLRState::SetAGPAvailable(TRUE == gos_GetMachineInformation(gos_Info_HasAGPAvailable));
+	MLRState::SetMaxUV(
+		static_cast<float>(gos_GetMachineInformation(gos_Info_GetMaximumUVSize, 256)));
 	if (MLRState::GetHasMaxUVs() && MLRState::GetMaxUV() < 128.0f)
 	{
 		gEnableLightMaps = 0;
@@ -137,11 +132,9 @@ void MLRClipper::StartDraw(const Stuff::LinearMatrix4D& camera_to_world,
 	if (gEnableMultiTexture != 0)
 	{
 		MLRState::SetMultitextureLightMap(
-			TRUE ==
-			gos_GetMachineInformation(gos_Info_CanMultitextureLightMap));
+			TRUE == gos_GetMachineInformation(gos_Info_CanMultitextureLightMap));
 		MLRState::SetMultitextureSpecularMap(
-			TRUE ==
-			gos_GetMachineInformation(gos_Info_CanMultitextureSpecularMap));
+			TRUE == gos_GetMachineInformation(gos_Info_CanMultitextureSpecularMap));
 	}
 	else
 	{
@@ -196,18 +189,15 @@ void MLRClipper::StartDraw(const Stuff::LinearMatrix4D& camera_to_world,
 	gos_SetRenderState(gos_State_TextureMapBlend, gos_BlendModulateAlpha);
 	gos_SetRenderState(gos_State_AlphaTest, 0);
 	gos_SetRenderState(gos_State_Fog, 0);
-	sorter->SetFarClipReciprocal(
-		(1.0f - clip_matrix(2, 2)) / clip_matrix(3, 2));
+	sorter->SetFarClipReciprocal((1.0f - clip_matrix(2, 2)) / clip_matrix(3, 2));
 	sorter->StartDraw(default_state);
 	cameraToWorldMatrix = camera_to_world;
 	worldToCameraMatrix.Invert(cameraToWorldMatrix);
 #ifdef LAB_ONLY
 	if (gShowBirdView)
 	{
-		DISABLE_WARNING_PUSH(
-			4640) // construction of local static object is not thread-safe
-		static Stuff::YawPitchRange Camera_Direction(
-			-Stuff::Pi_Over_6, 0.0f, 15.0f);
+		DISABLE_WARNING_PUSH(4640) // construction of local static object is not thread-safe
+		static Stuff::YawPitchRange Camera_Direction(-Stuff::Pi_Over_6, 0.0f, 15.0f);
 		static Stuff::Vector2DOf<float> Camera_Shift(0.0f, 0.0f);
 		static Stuff::LinearMatrix4D birdsEye = Stuff::LinearMatrix4D::Identity;
 		DISABLE_WARNING_POP
@@ -218,8 +208,7 @@ void MLRClipper::StartDraw(const Stuff::LinearMatrix4D& camera_to_world,
 		//
 		int32_t x_delta, y_delta;
 		uint32_t buttons;
-		gos_GetMouseInfo(
-			nullptr, nullptr, &x_delta, &y_delta, nullptr, &buttons);
+		gos_GetMouseInfo(nullptr, nullptr, &x_delta, &y_delta, nullptr, &buttons);
 		float x_speed = x_delta * 0.01f, y_speed = y_delta * 0.01f;
 		//
 		//------------------------------------------------------
@@ -252,16 +241,15 @@ void MLRClipper::StartDraw(const Stuff::LinearMatrix4D& camera_to_world,
 		if (status != KEY_FREE && status != KEY_RELEASED)
 		{
 			Camera_Direction.range *= 1.0f + 3.0f * y_speed;
-			Camera_Direction.range =
-				Camera_Direction.range > 0.0f ? Camera_Direction.range : 0.0f;
+			Camera_Direction.range = Camera_Direction.range > 0.0f ? Camera_Direction.range : 0.0f;
 		}
 		//
 		//----------------------
 		// Set the camera matrix
 		//----------------------
 		//
-		birdsEye.BuildRotation(Stuff::EulerAngles(
-			Camera_Direction.pitch, Camera_Direction.yaw, 0.0f));
+		birdsEye.BuildRotation(
+			Stuff::EulerAngles(Camera_Direction.pitch, Camera_Direction.yaw, 0.0f));
 		Stuff::UnitVector3D world_left;
 		Stuff::UnitVector3D world_up;
 		birdsEye.GetLocalLeftInWorld(&world_left);
@@ -276,11 +264,10 @@ void MLRClipper::StartDraw(const Stuff::LinearMatrix4D& camera_to_world,
 		// push the far clip out
 		float near_clip, far_clip, left_clip, right_clip, top_clip, bottom_clip;
 		Stuff::Matrix4D birdToClip;
-		clip_matrix.GetPerspective(&near_clip, &far_clip, &left_clip,
-			&right_clip, &top_clip, &bottom_clip);
-		birdToClip.SetPerspective(near_clip,
-			far_clip + 2 * Camera_Direction.range, left_clip, right_clip,
-			top_clip, bottom_clip);
+		clip_matrix.GetPerspective(
+			&near_clip, &far_clip, &left_clip, &right_clip, &top_clip, &bottom_clip);
+		birdToClip.SetPerspective(near_clip, far_clip + 2 * Camera_Direction.range, left_clip,
+			right_clip, top_clip, bottom_clip);
 		worldToClipMatrix.Multiply(worldToCameraMatrix, birdToClip);
 	}
 	else
@@ -301,8 +288,8 @@ void MLRClipper::StartDraw(const Stuff::LinearMatrix4D& camera_to_world,
 		float near_clip, far_clip, left_clip, right_clip, top_clip, bottom_clip;
 		Stuff::RGBAColor fruCol(0.0f, 0.5f, 0.0f, 0.5f);
 		MLRState fruState;
-		clip_matrix.GetPerspective(&near_clip, &far_clip, &left_clip,
-			&right_clip, &top_clip, &bottom_clip);
+		clip_matrix.GetPerspective(
+			&near_clip, &far_clip, &left_clip, &right_clip, &top_clip, &bottom_clip);
 		drawShapeInfo.shape = new MLRShape(1);
 		Register_Object(drawShapeInfo.shape);
 		fruState.SetTextureHandle(0);
@@ -320,8 +307,7 @@ void MLRClipper::StartDraw(const Stuff::LinearMatrix4D& camera_to_world,
 		fruState.SetAlphaMode(MLRState::AlphaInvAlphaMode);
 		fruState.SetPriority(MLRState::PriorityCount - 1);
 		MLRPrimitiveBase* primitive = CreateIndexedViewFrustrum_Color_NoLit(
-			near_clip, far_clip, left_clip, right_clip, top_clip, bottom_clip,
-			fruCol, &fruState);
+			near_clip, far_clip, left_clip, right_clip, top_clip, bottom_clip, fruCol, &fruState);
 		drawShapeInfo.shape->Add(primitive);
 		drawShapeInfo.clippingFlags.SetClippingState(0x3f);
 		drawShapeInfo.shapeToWorld = &cameraToWorldMatrix;
@@ -373,8 +359,8 @@ void MLRClipper::DrawShape(DrawShapeInformation* dInfo)
 	{
 		nrOfLightMaps = 0;
 	}
-	gos_GetViewport(&ViewportScalars::MulX, &ViewportScalars::MulY,
-		&ViewportScalars::AddX, &ViewportScalars::AddY);
+	gos_GetViewport(&ViewportScalars::MulX, &ViewportScalars::MulY, &ViewportScalars::AddX,
+		&ViewportScalars::AddY);
 #ifdef LAB_ONLY
 	if (gShowBirdView)
 	{
@@ -392,8 +378,7 @@ void MLRClipper::DrawShape(DrawShapeInformation* dInfo)
 	{
 		primitive = shape->allPrimitives[i];
 		Check_Object(primitive);
-		if (primitive->GetCurrentState().GetDrawNowMode() ==
-			MLRState::DrawNowOffMode)
+		if (primitive->GetCurrentState().GetDrawNowMode() == MLRState::DrawNowOffMode)
 		{
 			ToBeDrawnPrimitive* tbdp = sorter->GetCurrentTBDP();
 			Check_Pointer(tbdp);
@@ -404,8 +389,7 @@ void MLRClipper::DrawShape(DrawShapeInformation* dInfo)
 			Check_Object(&tbdp->shapeToClipMatrix);
 			tbdp->shapeToClipMatrix = shape->shapeToClipMatrix;
 			tbdp->worldToShape		= *shape->worldToShape;
-			Verify(dInfo->nrOfActiveLights <=
-				   Limits::Max_Number_Of_Lights_Per_Primitive);
+			_ASSERT(dInfo->nrOfActiveLights <= Limits::Max_Number_Of_Lights_Per_Primitive);
 			tbdp->nrOfActiveLights = dInfo->nrOfActiveLights;
 			for (j = 0; j < tbdp->nrOfActiveLights; j++)
 			{
@@ -418,18 +402,16 @@ void MLRClipper::DrawShape(DrawShapeInformation* dInfo)
 		{
 			if (nrOfLightMaps)
 			{
-				MLRLightMap::SetDrawData(&allVerticesToDraw,
-					&shape->shapeToClipMatrix, dInfo->clippingFlags,
-					dInfo->state);
+				MLRLightMap::SetDrawData(&allVerticesToDraw, &shape->shapeToClipMatrix,
+					dInfo->clippingFlags, dInfo->state);
 			}
 			if (primitive->FindBackFace(sp))
 			{
-				primitive->Lighting(
-					dInfo->activeLights, dInfo->nrOfActiveLights);
+				primitive->Lighting(dInfo->activeLights, dInfo->nrOfActiveLights);
 				if (dInfo->clippingFlags.GetClippingState() != 0)
 				{
-					if (primitive->TransformAndClip(&shape->shapeToClipMatrix,
-							dInfo->clippingFlags, &allVerticesToDraw))
+					if (primitive->TransformAndClip(
+							&shape->shapeToClipMatrix, dInfo->clippingFlags, &allVerticesToDraw))
 					{
 						if (primitive->GetVisible())
 						{
@@ -442,8 +424,7 @@ void MLRClipper::DrawShape(DrawShapeInformation* dInfo)
 				}
 				else
 				{
-					primitive->TransformNoClip(
-						&shape->shapeToClipMatrix, &allVerticesToDraw);
+					primitive->TransformNoClip(&shape->shapeToClipMatrix, &allVerticesToDraw);
 					for (j = 0; j < primitive->GetNumPasses(); j++)
 					{
 						sorter->DrawPrimitive(primitive, j);
@@ -451,8 +432,7 @@ void MLRClipper::DrawShape(DrawShapeInformation* dInfo)
 				}
 #ifdef LAB_ONLY
 				Set_Statistic(Number_Of_Primitives, Number_Of_Primitives + 1);
-				if (primitive->IsDerivedFrom(
-						MLRIndexedPrimitiveBase::DefaultData))
+				if (primitive->IsDerivedFrom(MLRIndexedPrimitiveBase::DefaultData))
 				{
 					Stuff::Point3D* coords;
 					puint16_t indices;
@@ -462,8 +442,8 @@ void MLRClipper::DrawShape(DrawShapeInformation* dInfo)
 					NumAllIndices += (uint32_t)nr;
 					primitive->GetCoordData(&coords, &nr);
 					NumAllVertices += (uint32_t)nr;
-					Set_Statistic(Index_Over_Vertex_Ratio,
-						(float)NumAllIndices / (float)NumAllVertices);
+					Set_Statistic(
+						Index_Over_Vertex_Ratio, (float)NumAllIndices / (float)NumAllVertices);
 				}
 #endif
 				if (nrOfLightMaps)
@@ -500,17 +480,15 @@ void MLRClipper::DrawScalableShape(DrawScalableShapeInformation* dInfo)
 		scale(1, 1)					= dInfo->scaling->y;
 		scale(2, 2)					= dInfo->scaling->z;
 		scaledShapeToWorld.Multiply(scale, *dInfo->shapeToWorld);
-		shape->shapeToClipMatrix.Multiply(
-			scaledShapeToWorld, worldToClipMatrix);
+		shape->shapeToClipMatrix.Multiply(scaledShapeToWorld, worldToClipMatrix);
 	}
 	else
 	{
-		shape->shapeToClipMatrix.Multiply(
-			*dInfo->shapeToWorld, worldToClipMatrix);
+		shape->shapeToClipMatrix.Multiply(*dInfo->shapeToWorld, worldToClipMatrix);
 	}
 	shape->worldToShape = nullptr;
-	gos_GetViewport(&ViewportScalars::MulX, &ViewportScalars::MulY,
-		&ViewportScalars::AddX, &ViewportScalars::AddY);
+	gos_GetViewport(&ViewportScalars::MulX, &ViewportScalars::MulY, &ViewportScalars::AddX,
+		&ViewportScalars::AddY);
 #ifdef LAB_ONLY
 	if (gShowBirdView)
 	{
@@ -527,13 +505,12 @@ void MLRClipper::DrawScalableShape(DrawScalableShapeInformation* dInfo)
 		}
 		if (dInfo->clippingFlags.GetClippingState() != 0)
 		{
-			if (primitive->TransformAndClip(&shape->shapeToClipMatrix,
-					dInfo->clippingFlags, &allVerticesToDraw))
+			if (primitive->TransformAndClip(
+					&shape->shapeToClipMatrix, dInfo->clippingFlags, &allVerticesToDraw))
 			{
 				if (primitive->GetVisible())
 				{
-					if (primitive->GetCurrentState().GetDrawNowMode() ==
-						MLRState::DrawNowOnMode)
+					if (primitive->GetCurrentState().GetDrawNowMode() == MLRState::DrawNowOnMode)
 					{
 						sorter->DrawPrimitive(primitive);
 					}
@@ -542,18 +519,15 @@ void MLRClipper::DrawScalableShape(DrawScalableShapeInformation* dInfo)
 						sorter->AddPrimitive(primitive);
 					}
 #ifdef LAB_ONLY
-					Set_Statistic(
-						Number_Of_Primitives, Number_Of_Primitives + 1);
+					Set_Statistic(Number_Of_Primitives, Number_Of_Primitives + 1);
 #endif
 				}
 			}
 		}
 		else
 		{
-			primitive->TransformNoClip(
-				&shape->shapeToClipMatrix, &allVerticesToDraw);
-			if (primitive->GetCurrentState().GetDrawNowMode() ==
-				MLRState::DrawNowOnMode)
+			primitive->TransformNoClip(&shape->shapeToClipMatrix, &allVerticesToDraw);
+			if (primitive->GetCurrentState().GetDrawNowMode() == MLRState::DrawNowOnMode)
 			{
 				sorter->DrawPrimitive(primitive);
 			}
@@ -587,10 +561,9 @@ void MLRClipper::DrawEffect(DrawEffectInformation* dInfo)
 		dInfo->clippingFlags = 0x3f;
 	}
 #endif
-	dInfo->effect->SetEffectToClipMatrix(
-		dInfo->effectToWorld, &worldToClipMatrix);
-	gos_GetViewport(&ViewportScalars::MulX, &ViewportScalars::MulY,
-		&ViewportScalars::AddX, &ViewportScalars::AddY);
+	dInfo->effect->SetEffectToClipMatrix(dInfo->effectToWorld, &worldToClipMatrix);
+	gos_GetViewport(&ViewportScalars::MulX, &ViewportScalars::MulY, &ViewportScalars::AddX,
+		&ViewportScalars::AddY);
 	dInfo->effect->Draw(dInfo, &allVerticesToDraw, sorter);
 	//
 	// End timing function
@@ -606,8 +579,8 @@ void MLRClipper::DrawScreenQuads(DrawScreenQuadsInformation* dInfo)
 	//
 	// Check_Object(this);
 	Check_Object(dInfo);
-	gos_GetViewport(&ViewportScalars::MulX, &ViewportScalars::MulY,
-		&ViewportScalars::AddX, &ViewportScalars::AddY);
+	gos_GetViewport(&ViewportScalars::MulX, &ViewportScalars::MulY, &ViewportScalars::AddX,
+		&ViewportScalars::AddY);
 	GOSVertex* vertices = allVerticesToDraw.GetActualVertexPool();
 	size_t i, j;
 	dInfo->currentNrOfQuads = 0;
@@ -619,17 +592,15 @@ void MLRClipper::DrawScreenQuads(DrawScreenQuadsInformation* dInfo)
 			for (; j < dInfo->currentNrOfQuads; j++)
 			{
 				size_t offset = (i << 2) + (j & 3);
-				Verify(dInfo->coords[offset].x >= 0.0f &&
-					   dInfo->coords[offset].x <= dInfo->coords[offset].w);
-				Verify(dInfo->coords[offset].y >= 0.0f &&
-					   dInfo->coords[offset].y <= dInfo->coords[offset].w);
-				Verify(dInfo->coords[offset].z >= 0.0f &&
-					   dInfo->coords[offset].z <= dInfo->coords[offset].w);
-				vertices[j].x =
-					(1.0f - dInfo->coords[offset].x) * ViewportScalars::MulX +
+				_ASSERT(dInfo->coords[offset].x >= 0.0f &&
+					dInfo->coords[offset].x <= dInfo->coords[offset].w);
+				_ASSERT(dInfo->coords[offset].y >= 0.0f &&
+					dInfo->coords[offset].y <= dInfo->coords[offset].w);
+				_ASSERT(dInfo->coords[offset].z >= 0.0f &&
+					dInfo->coords[offset].z <= dInfo->coords[offset].w);
+				vertices[j].x = (1.0f - dInfo->coords[offset].x) * ViewportScalars::MulX +
 					ViewportScalars::AddX;
-				vertices[j].y =
-					(1.0f - dInfo->coords[offset].y) * ViewportScalars::MulY +
+				vertices[j].y = (1.0f - dInfo->coords[offset].y) * ViewportScalars::MulY +
 					ViewportScalars::AddY;
 				vertices[j].z	= dInfo->coords[offset].z;
 				vertices[j].rhw  = dInfo->coords[offset].w;

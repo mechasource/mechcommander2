@@ -1,7 +1,7 @@
 //---------------------------------------------------------------------------
 //
 //	dbactor.h - This file contains the header for the Static ground object
-//appearance class
+// appearance class
 //
 //	MechCommander 2
 //
@@ -14,30 +14,14 @@
 
 //---------------------------------------------------------------------------
 // Include files
-#ifndef APPEAR_H
-#include "appear.h"
-#endif
+//#include "appear.h"
+//#include "apprtype.h"
+//#include "move.h"
+//#include "msl.h"
+//#include "ObjectAppearance.h"
+//#include <gosfx/gosfxheaders.hpp>
 
-#ifndef APPRTYPE_H
-#include "apprtype.h"
-#endif
-
-#ifndef MOVE_H
-#include "move.h"
-#endif
-#ifndef MSL_H
-#include "msl.h"
-#endif
-
-#ifndef OBJECTAPPEARANCE_H
-#include "ObjectAppearance.h"
-#endif
-
-#include <gosfx/gosfxheaders.hpp>
 //**************************************************************************************
-#ifndef NO_ERROR
-#define NO_ERROR 0
-#endif
 
 #define MAX_BD_ANIMATIONS 10
 //***********************************************************************
@@ -47,7 +31,7 @@
 //***********************************************************************
 class BldgAppearanceType : public AppearanceType
 {
-  public:
+public:
 	TG_TypeMultiShapePtr bldgShape[MAX_LODS];
 	float lodDistance[MAX_LODS];
 
@@ -77,7 +61,7 @@ class BldgAppearanceType : public AppearanceType
 	int32_t numWeaponNodes;
 	NodeData* nodeData;
 
-  public:
+public:
 	void init(void)
 	{
 		int32_t i = 0;
@@ -103,47 +87,41 @@ class BldgAppearanceType : public AppearanceType
 
 	int32_t getNumFrames(int32_t animationNum)
 	{
-		if ((animationNum >= 0) && (animationNum < MAX_BD_ANIMATIONS) &&
-			(bdAnimData[animationNum]))
+		if ((animationNum >= 0) && (animationNum < MAX_BD_ANIMATIONS) && (bdAnimData[animationNum]))
 			return bdAnimData[animationNum]->GetNumFrames(void);
 		return 0.0f;
 	}
 
 	float getFrameRate(int32_t animationNum)
 	{
-		if ((animationNum >= 0) && (animationNum < MAX_BD_ANIMATIONS) &&
-			(bdAnimData[animationNum]))
+		if ((animationNum >= 0) && (animationNum < MAX_BD_ANIMATIONS) && (bdAnimData[animationNum]))
 			return bdAnimData[animationNum]->GetFrameRate(void);
 		return 0.0f;
 	}
 
 	void setFrameRate(int32_t animationNum, float nFrameRate)
 	{
-		if ((animationNum >= 0) && (animationNum < MAX_BD_ANIMATIONS) &&
-			(bdAnimData[animationNum]))
+		if ((animationNum >= 0) && (animationNum < MAX_BD_ANIMATIONS) && (bdAnimData[animationNum]))
 			bdAnimData[animationNum]->SetFrameRate(nFrameRate);
 	}
 
 	bool isReversed(int32_t animationNum)
 	{
-		if ((animationNum >= 0) && (animationNum < MAX_BD_ANIMATIONS) &&
-			(bdAnimData[animationNum]))
+		if ((animationNum >= 0) && (animationNum < MAX_BD_ANIMATIONS) && (bdAnimData[animationNum]))
 			return bdReverse[animationNum];
 		return false;
 	}
 
 	bool isLooped(int32_t animationNum)
 	{
-		if ((animationNum >= 0) && (animationNum < MAX_BD_ANIMATIONS) &&
-			(bdAnimData[animationNum]))
+		if ((animationNum >= 0) && (animationNum < MAX_BD_ANIMATIONS) && (bdAnimData[animationNum]))
 			return bdAnimLoop[animationNum];
 		return false;
 	}
 
 	bool isRandom(int32_t animationNum)
 	{
-		if ((animationNum >= 0) && (animationNum < MAX_BD_ANIMATIONS) &&
-			(bdAnimData[animationNum]))
+		if ((animationNum >= 0) && (animationNum < MAX_BD_ANIMATIONS) && (bdAnimData[animationNum]))
 			return bdRandom[animationNum];
 		return false;
 	}
@@ -160,7 +138,7 @@ class BldgAppearanceType : public AppearanceType
 //***********************************************************************
 class BldgAppearance : public ObjectAppearance
 {
-  public:
+public:
 	BldgAppearanceType* appearType;
 	TG_MultiShapePtr bldgShape;
 	TG_MultiShapePtr bldgShadowShape;
@@ -216,9 +194,8 @@ class BldgAppearance : public ObjectAppearance
 	int32_t activityNodeId;
 	int32_t activityNode1Id;
 
-  public:
-	virtual void init(
-		AppearanceTypePtr tree = nullptr, GameObjectPtr obj = nullptr);
+public:
+	virtual void init(AppearanceTypePtr tree = nullptr, GameObjectPtr obj = nullptr);
 
 	virtual AppearanceTypePtr getAppearanceType(void) { return appearType; }
 
@@ -249,37 +226,32 @@ class BldgAppearance : public ObjectAppearance
 
 	virtual bool isMouseOver(float px, float py);
 
-	virtual void setObjectParameters(Stuff::Vector3D& pos, float rot,
-		int32_t selected, int32_t alignment, int32_t homeRelations);
+	virtual void setObjectParameters(Stuff::Vector3D& pos, float rot, int32_t selected,
+		int32_t alignment, int32_t homeRelations);
 
-	virtual void setMoverParameters(float turretRot, float lArmRot = 0.0f,
-		float rArmRot = 0.0f, bool isAirborne = false);
+	virtual void setMoverParameters(
+		float turretRot, float lArmRot = 0.0f, float rArmRot = 0.0f, bool isAirborne = false);
 
 	virtual void setObjStatus(int32_t oStatus);
 
 	virtual int32_t calcCellsCovered(Stuff::Vector3D& pos, pint16_t cellList);
 
-	virtual void markTerrain(
-		_ScenarioMapCellInfo* pInfo, int32_t type, int32_t counter);
+	virtual void markTerrain(_ScenarioMapCellInfo* pInfo, int32_t type, int32_t counter);
 
-	virtual int32_t markMoveMap(bool passable, int32_t* lineOfSightRect,
-		bool useheight = false, pint16_t cellList = nullptr);
+	virtual int32_t markMoveMap(bool passable, int32_t* lineOfSightRect, bool useheight = false,
+		pint16_t cellList = nullptr);
 
 	virtual void markLOS(bool clearIt = false);
 
 	void calcAdjCell(int32_t& row, int32_t& col);
 
-	virtual void scale(float scaleFactor)
-	{
-		bldgShape->ScaleShape(scaleFactor);
-	}
+	virtual void scale(float scaleFactor) { bldgShape->ScaleShape(scaleFactor); }
 
 	virtual bool playDestruction(void);
 
 	virtual float getRadius(void) { return OBBRadius; }
 
-	virtual void flashBuilding(
-		float duration, float flashDuration, uint32_t color);
+	virtual void flashBuilding(float duration, float flashDuration, uint32_t color);
 
 	virtual float getTopZ(void) { return highZ; }
 
@@ -293,17 +265,11 @@ class BldgAppearance : public ObjectAppearance
 
 	virtual bool isSelectable() { return !appearType->spinMe; }
 
-	virtual void setFilterState(bool state)
-	{
-		bldgShape->GetMultiType()->SetFilter(state);
-	}
+	virtual void setFilterState(bool state) { bldgShape->GetMultiType()->SetFilter(state); }
 
 	virtual void setIsHudElement(void) { bldgShape->SetIsHudElement(void); }
 
-	virtual bool getIsLit(void)
-	{
-		return (appearType->terrainLightRGB != 0xffffffff);
-	}
+	virtual bool getIsLit(void) { return (appearType->terrainLightRGB != 0xffffffff); }
 
 	virtual void setLightsOut(bool lightFlag) { forceLightsOut = lightFlag; }
 
@@ -341,7 +307,7 @@ class BldgAppearance : public ObjectAppearance
 //***********************************************************************
 class TreeAppearanceType : public AppearanceType
 {
-  public:
+public:
 	TG_TypeMultiShapePtr treeShape[MAX_LODS];
 	float lodDistance[MAX_LODS];
 
@@ -354,7 +320,7 @@ class TreeAppearanceType : public AppearanceType
 	TG_AnimateShapePtr treeAnimData[MAX_BD_ANIMATIONS];
 	bool isForestClump;
 
-  public:
+public:
 	void init(void)
 	{
 		int32_t i = 0;
@@ -386,7 +352,7 @@ class TreeAppearanceType : public AppearanceType
 //***********************************************************************
 class TreeAppearance : public ObjectAppearance
 {
-  public:
+public:
 	TreeAppearanceType* appearType;
 	TG_MultiShapePtr treeShape;
 	TG_MultiShapePtr treeShadowShape;
@@ -407,9 +373,8 @@ class TreeAppearance : public ObjectAppearance
 	uint32_t lightRGB;
 	uint32_t fogRGB;
 
-  public:
-	virtual void init(
-		AppearanceTypePtr tree = nullptr, GameObjectPtr obj = nullptr);
+public:
+	virtual void init(AppearanceTypePtr tree = nullptr, GameObjectPtr obj = nullptr);
 
 	virtual AppearanceTypePtr getAppearanceType(void) { return appearType; }
 
@@ -434,18 +399,15 @@ class TreeAppearance : public ObjectAppearance
 
 	virtual bool isMouseOver(float px, float py);
 
-	virtual void setObjectParameters(Stuff::Vector3D& pos, float rot,
-		int32_t selected, int32_t alignment, int32_t homeRelations);
+	virtual void setObjectParameters(Stuff::Vector3D& pos, float rot, int32_t selected,
+		int32_t alignment, int32_t homeRelations);
 
-	virtual void setMoverParameters(float pitchAngle, float lArmRot = 0.0f,
-		float rArmRot = 0.0f, bool isAirborne = false);
+	virtual void setMoverParameters(
+		float pitchAngle, float lArmRot = 0.0f, float rArmRot = 0.0f, bool isAirborne = false);
 
 	virtual void setObjStatus(int32_t oStatus);
 
-	virtual void scale(float scaleFactor)
-	{
-		treeShape->ScaleShape(scaleFactor);
-	}
+	virtual void scale(float scaleFactor) { treeShape->ScaleShape(scaleFactor); }
 
 	virtual float getRadius(void) { return OBBRadius; }
 
@@ -453,8 +415,7 @@ class TreeAppearance : public ObjectAppearance
 
 	virtual bool isForestClump(void) { return appearType->isForestClump; }
 
-	virtual void markTerrain(
-		_ScenarioMapCellInfo* pInfo, int32_t type, int32_t counter);
+	virtual void markTerrain(_ScenarioMapCellInfo* pInfo, int32_t type, int32_t counter);
 
 	virtual Stuff::Point3D getRootNodeCenter(void)
 	{

@@ -8,8 +8,8 @@
 //
 // This header contains the base classes for the GUI
 //
-// GUI is now single update driven.  An event comes in, the manager decides who
-// its for and passes the event down.  Eveything still know how to draw etc.
+// GUI is now single update driven. An event comes in, the manager decides who
+// its for and passes the event down. Everything still know how to draw etc.
 //
 // All drawing is done through gos_drawQuad and drawTriangle
 //
@@ -24,81 +24,96 @@
 //
 //--------------------------------------------------------------------------------------
 
+#pragma once
+
 #ifndef DBASEGUI_H
 #define DBASEGUI_H
 //--------------------------------------------------------------------------------------
 // Include Files
 //--------------------------------------------------------------------------------------
-#define gtINVALID -1
-#define gtBACKGROUND 0
-#define gtBUTTON 1
-#define gtTEXT 2
-#define gtHOTTEXT 3
-#define gtEDIT 4
-#define gtCHECKBOX 5
-#define gtSPINNER 6
-#define gtLISTBOX 7
-#define gtTABCTRL 8
-#define gtDRAGOBJECT 9
-#define gtMENU 10
-#define gtDIALOG 11
 
-#define aMSG_NOTHING -1
-#define aMSG_MOUSE_OVER 0
-#define aMSG_BUTTON_DOWN 1
-#define aMSG_BUTTON_UP 2
-#define aMSG_BUTTON_GRAY 3
-#define aMSG_MOUSE_MOVE 4
-#define aMSG_SELCHANGE 5
-#define aMSG_CANCEL 6
-#define aMSG_OK 7
+enum gtgui_const : int32_t
+{
+	gtINVALID	= -1,
+	gtBACKGROUND = 0,
+	gtBUTTON	 = 1,
+	gtTEXT		 = 2,
+	gtHOTTEXT	= 3,
+	gtEDIT		 = 4,
+	gtCHECKBOX   = 5,
+	gtSPINNER	= 6,
+	gtLISTBOX	= 7,
+	gtTABCTRL	= 8,
+	gtDRAGOBJECT = 9,
+	gtMENU		 = 10,
+	gtDIALOG	 = 11,
+};
 
-#define aBTN_NEWCAMPAIGN 0
-#define aBTN_LOADMISSION 1
-#define aBTN_SAVEMISSION 2
-#define aBTN_MULTIPLAYER 3
-#define aBTN_PREFERENCES 4
-#define aBTN_OPENINGCIN 5
-#define aBTN_QUIT 6
-#define aBTN_RETURNGAME 7
+enum amsg_const : int32_t
+{
+	aMSG_NOTHING	 = -1,
+	aMSG_MOUSE_OVER  = 0,
+	aMSG_BUTTON_DOWN = 1,
+	aMSG_BUTTON_UP   = 2,
+	aMSG_BUTTON_GRAY = 3,
+	aMSG_MOUSE_MOVE  = 4,
+	aMSG_SELCHANGE   = 5,
+	aMSG_CANCEL		 = 6,
+	aMSG_OK			 = 7,
+};
 
-// Status bar interface colors
-#define SD_YELLOW ((0x00) + (0xff << 8) + (0xff << 16) + (0xff << 24))
-#define SD_RED ((0x00) + (0x00 << 8) + (0xff << 16) + (0xff << 24))
-#define SD_GREEN ((0x00) + (0xff << 8) + (0x00 << 16) + (0xff << 24))
-#define SD_BLUE ((0xff) + (0x00 << 8) + (0x00 << 16) + (0xff << 24))
-#define SD_ORANGE ((0x00) + (0x7f << 8) + (0xff << 16) + (0xff << 24))
-#define SD_WHITE ((0xff) + (0xff << 8) + (0xff << 16) + (0xff << 24))
-#define SD_GRAY ((0x3f) + (0x3f << 8) + (0x3f << 16) + (0xff << 24))
-#define SD_BLACK ((0x00) + (0x00 << 8) + (0x00 << 16) + (0xff << 24))
+enum abtn_const : int32_t
+{
+	aBTN_NEWCAMPAIGN = 0,
+	aBTN_LOADMISSION = 1,
+	aBTN_SAVEMISSION = 2,
+	aBTN_MULTIPLAYER = 3,
+	aBTN_PREFERENCES = 4,
+	aBTN_OPENINGCIN  = 5,
+	aBTN_QUIT		 = 6,
+	aBTN_RETURNGAME  = 7,
+};
 
-#define SX_WHITE ((0xff) + (0xff << 8) + (0xff << 16) + (0xbf << 24))
-#define SX_CYAN ((0xff) + (0xff << 8) + (0x00 << 16) + (0xbf << 24))
-#define SX_YELLOW ((0x00) + (0xff << 8) + (0xff << 16) + (0xbf << 24))
-#define SX_RED ((0x00) + (0x00 << 8) + (0xff << 16) + (0xbf << 24))
-#define SX_GREEN ((0x00) + (0xff << 8) + (0x00 << 16) + (0xbf << 24))
-#define SX_BLUE ((0xff) + (0x00 << 8) + (0x00 << 16) + (0xbf << 24))
-#define SX_ORANGE ((0x00) + (0x7f << 8) + (0xff << 16) + (0xbf << 24))
-#define SX_GRAY ((0x3f) + (0x3f << 8) + (0x3f << 16) + (0xbf << 24))
-#define SX_BLACK ((0x00) + (0x00 << 8) + (0x00 << 16) + (0xbf << 24))
+//	Status bar interface colors
+enum statusbar_iface_colors_const : uint32_t
+{
+	SD_YELLOW = ((0x00) + (0xff << 8) + (0xff << 16) + (0xff << 24)),
+	SD_RED	= ((0x00) + (0x00 << 8) + (0xff << 16) + (0xff << 24)),
+	SD_GREEN  = ((0x00) + (0xff << 8) + (0x00 << 16) + (0xff << 24)),
+	SD_BLUE   = ((0xff) + (0x00 << 8) + (0x00 << 16) + (0xff << 24)),
+	SD_ORANGE = ((0x00) + (0x7f << 8) + (0xff << 16) + (0xff << 24)),
+	SD_WHITE  = ((0xff) + (0xff << 8) + (0xff << 16) + (0xff << 24)),
+	SD_GRAY   = ((0x3f) + (0x3f << 8) + (0x3f << 16) + (0xff << 24)),
+	SD_BLACK  = ((0x00) + (0x00 << 8) + (0x00 << 16) + (0xff << 24)),
 
-#define SB_YELLOW ((0x00) + (0xff << 8) + (0xff << 16) + (0x6f << 24))
-#define SB_RED ((0x00) + (0x00 << 8) + (0xff << 16) + (0x6f << 24))
-#define SB_GREEN ((0x00) + (0xff << 8) + (0x00 << 16) + (0x6f << 24))
-#define SB_BLUE ((0xff) + (0x00 << 8) + (0x00 << 16) + (0x6f << 24))
-#define SB_ORANGE ((0x00) + (0x7f << 8) + (0xff << 16) + (0x6f << 24))
-#define SB_WHITE ((0xff) + (0xff << 8) + (0xff << 16) + (0x6f << 24))
-#define SB_GRAY ((0x3f) + (0x3f << 8) + (0x3f << 16) + (0x6f << 24))
-#define SB_BLACK ((0x00) + (0x00 << 8) + (0x00 << 16) + (0x6f << 24))
+	SX_WHITE  = ((0xff) + (0xff << 8) + (0xff << 16) + (0xbf << 24)),
+	SX_CYAN   = ((0xff) + (0xff << 8) + (0x00 << 16) + (0xbf << 24)),
+	SX_YELLOW = ((0x00) + (0xff << 8) + (0xff << 16) + (0xbf << 24)),
+	SX_RED	= ((0x00) + (0x00 << 8) + (0xff << 16) + (0xbf << 24)),
+	SX_GREEN  = ((0x00) + (0xff << 8) + (0x00 << 16) + (0xbf << 24)),
+	SX_BLUE   = ((0xff) + (0x00 << 8) + (0x00 << 16) + (0xbf << 24)),
+	SX_ORANGE = ((0x00) + (0x7f << 8) + (0xff << 16) + (0xbf << 24)),
+	SX_GRAY   = ((0x3f) + (0x3f << 8) + (0x3f << 16) + (0xbf << 24)),
+	SX_BLACK  = ((0x00) + (0x00 << 8) + (0x00 << 16) + (0xbf << 24)),
 
-#define XP_YELLOW ((0x00) + (0xff << 8) + (0xff << 16) + (0x3f << 24))
-#define XP_RED ((0x00) + (0x00 << 8) + (0xff << 16) + (0x3f << 24))
-#define XP_GREEN ((0x00) + (0xff << 8) + (0x00 << 16) + (0x3f << 24))
-#define XP_BLUE ((0xff) + (0x00 << 8) + (0x00 << 16) + (0x3f << 24))
-#define XP_ORANGE ((0x00) + (0x7f << 8) + (0xff << 16) + (0x3f << 24))
-#define XP_WHITE ((0xff) + (0xff << 8) + (0xff << 16) + (0x3f << 24))
-#define XP_GRAY ((0x3f) + (0x3f << 8) + (0x3f << 16) + (0x3f << 24))
-#define XP_BLACK ((0x00) + (0x00 << 8) + (0x00 << 16) + (0x3f << 24))
+	SB_YELLOW = ((0x00) + (0xff << 8) + (0xff << 16) + (0x6f << 24)),
+	SB_RED	= ((0x00) + (0x00 << 8) + (0xff << 16) + (0x6f << 24)),
+	SB_GREEN  = ((0x00) + (0xff << 8) + (0x00 << 16) + (0x6f << 24)),
+	SB_BLUE   = ((0xff) + (0x00 << 8) + (0x00 << 16) + (0x6f << 24)),
+	SB_ORANGE = ((0x00) + (0x7f << 8) + (0xff << 16) + (0x6f << 24)),
+	SB_WHITE  = ((0xff) + (0xff << 8) + (0xff << 16) + (0x6f << 24)),
+	SB_GRAY   = ((0x3f) + (0x3f << 8) + (0x3f << 16) + (0x6f << 24)),
+	SB_BLACK  = ((0x00) + (0x00 << 8) + (0x00 << 16) + (0x6f << 24)),
+
+	XP_YELLOW = ((0x00) + (0xff << 8) + (0xff << 16) + (0x3f << 24)),
+	XP_RED	= ((0x00) + (0x00 << 8) + (0xff << 16) + (0x3f << 24)),
+	XP_GREEN  = ((0x00) + (0xff << 8) + (0x00 << 16) + (0x3f << 24)),
+	XP_BLUE   = ((0xff) + (0x00 << 8) + (0x00 << 16) + (0x3f << 24)),
+	XP_ORANGE = ((0x00) + (0x7f << 8) + (0xff << 16) + (0x3f << 24)),
+	XP_WHITE  = ((0xff) + (0xff << 8) + (0xff << 16) + (0x3f << 24)),
+	XP_GRAY   = ((0x3f) + (0x3f << 8) + (0x3f << 16) + (0x3f << 24)),
+	XP_BLACK  = ((0x00) + (0x00 << 8) + (0x00 << 16) + (0x3f << 24)),
+};
 
 //--------------------------------------------------------------------------------------
 #endif

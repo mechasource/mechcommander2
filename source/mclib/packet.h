@@ -10,44 +10,41 @@
 
 #ifndef PACKET_H
 #define PACKET_H
+
 //---------------------------------------------------------------------------
 // Include Files
 
-#ifndef DPACKET_H
-#include "dpacket.h"
-#endif
-
-#ifndef FILE_H
-#include "file.h"
-#endif
-
-#ifndef LZ_H
-#include "lz.h"
-#endif
+//#include "dpacket.h"
+//#include "file.h"
+//#include "lz.h"
 
 //---------------------------------------------------------------------------
 // Macro Definitions
-
-#define PACKET_FILE_VERSION 0xFEEDFACE
-#define NEW_PACKET_FLAG 0xFEEDFACE
+enum _packet_storage : uint32_t
+{
+	PACKET_FILE_VERSION = 0xFEEDFACE,
+	NEW_PACKET_FLAG		= 0xFEEDFACE
+};
 
 // 3 bits of type info
-
-#define STORAGE_TYPE_RAW 0x00L
-#define STORAGE_TYPE_FWF 0x01L  // file within file
-#define STORAGE_TYPE_LZD 0x02L  // LZ Compressed Packet
-#define STORAGE_TYPE_HF 0x03L   // Huffman Compressed Packet
-#define STORAGE_TYPE_ZLIB 0x04L // zLib Compressed Packet
-#define STORAGE_TYPE_NUL 0x07L  // nullptr packet.
+enum _packet_storage_type : uint32_t
+{
+	STORAGE_TYPE_RAW  = 0x00,
+	STORAGE_TYPE_FWF  = 0x01, // file within file
+	STORAGE_TYPE_LZD  = 0x02, // LZ Compressed Packet
+	STORAGE_TYPE_HF   = 0x03, // Huffman Compressed Packet
+	STORAGE_TYPE_ZLIB = 0x04, // zLib Compressed Packet
+	STORAGE_TYPE_NUL  = 0x07, // nullptr packet.
+};
+#define DEFAULT_PACKET_TYPE STORAGE_TYPE_RAW
 
 #define TYPE_SHIFT 29 // Bit position of masked type
-#define DEFAULT_PACKET_TYPE STORAGE_TYPE_RAW
-#define ANY_PACKET_TYPE 0x07
 #define OFFSET_MASK ((1L << TYPE_SHIFT) - 1L)
+#define ANY_PACKET_TYPE 0x07
 
-#define GetPacketType(offset) (((uint32_t)offset) >> TYPE_SHIFT)
+#define GetPacketType(offset) ((offset) >> TYPE_SHIFT)
 #define GetPacketOffset(offset) (offset & OFFSET_MASK)
-#define SetPacketType(offset, type) ((offset) + (int32_t(type) << TYPE_SHIFT))
+#define SetPacketType(offset, type) ((offset) + ((type) << TYPE_SHIFT))
 
 #define TABLE_ENTRY(p) ((2 + p) << 2) // ((1+p)*sizeof(int32_t))
 
@@ -55,11 +52,11 @@
 // Structure and Class Definitions
 
 //---------------------------------------------------------------------------
-class PacketFile : public File
+class PacketFile : public MechFile
 {
 	// Data Members
 	//-------------
-  protected:
+protected:
 	int32_t numPackets;
 	int32_t currentPacket;
 	int32_t packetSize;
@@ -74,22 +71,20 @@ class PacketFile : public File
 
 	// Member Functions
 	//-----------------
-  protected:
+protected:
 	void clear(void);
 	void atClose(void);
 	int32_t afterOpen(void);
 
-  public:
+public:
 	PacketFile(void);
 	~PacketFile(void);
 
-	virtual int32_t open(
-		PCSTR fName, FileMode _mode = READ, uint32_t numChildren = 50);
-	virtual int32_t open(
-		FilePtr _parent, size_t fileSize, uint32_t numChildren = 50);
+	virtual int32_t open(PCSTR fName, FileMode _mode = READ, uint32_t numChildren = 50);
+	virtual int32_t open(FilePtr _parent, size_t fileSize, uint32_t numChildren = 50);
 
 	virtual int32_t create(PCSTR fName);
-	virtual int32_t createWithCase(PSTR fName); // don't strlwr for me please!
+	virtual int32_t createWithCase(PSTR fName);
 	virtual void close(void);
 
 	void forceUseCheckSum(void) { usesCheckSum = true; }
@@ -119,10 +114,10 @@ class PacketFile : public File
 	//-------------------------------------------
 	// Functions to Write Packet Files
 	void reserve(int32_t count, bool withCheckSum = FALSE);
-	int32_t writePacket(int32_t packet, puint8_t buffer, int32_t nbytes,
-		uint8_t p_type = ANY_PACKET_TYPE);
-	int32_t insertPacket(int32_t packet, puint8_t buffer, int32_t nbytes,
-		uint8_t p_type = ANY_PACKET_TYPE);
+	int32_t writePacket(
+		int32_t packet, puint8_t buffer, int32_t nbytes, uint8_t p_type = ANY_PACKET_TYPE);
+	int32_t insertPacket(
+		int32_t packet, puint8_t buffer, int32_t nbytes, uint8_t p_type = ANY_PACKET_TYPE);
 	int32_t writePacket(int32_t packet, puint8_t buffer);
 };
 

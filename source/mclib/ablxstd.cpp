@@ -415,8 +415,7 @@ void execStdReturn(void)
 		TypePtr expressionTypePtr = execExpression();
 		//--------------------------
 		// Now, do the assignment...
-		if ((targetTypePtr == RealTypePtr) &&
-			(expressionTypePtr == IntegerTypePtr))
+		if ((targetTypePtr == RealTypePtr) && (expressionTypePtr == IntegerTypePtr))
 		{
 			//-------------------------
 			// integer assigned to real
@@ -431,8 +430,7 @@ void execStdReturn(void)
 			int32_t size = targetTypePtr->size;
 			memcpy(dest, src, size);
 		}
-		else if ((targetTypePtr == IntegerTypePtr) ||
-				 (targetTypePtr->form == FRM_ENUM))
+		else if ((targetTypePtr == IntegerTypePtr) || (targetTypePtr->form == FRM_ENUM))
 		{
 			//------------------------------------------------------
 			// Range check assignment to integer or enum subrange...
@@ -451,8 +449,8 @@ void execStdReturn(void)
 		// Preserve the return value, in case we need it for the calling user...
 		memcpy(&returnValue, targetPtr, sizeof(StackItem));
 		if (debugger)
-			debugger->traceDataStore(CurRoutineIdPtr, CurRoutineIdPtr->typePtr,
-				targetPtr, targetTypePtr);
+			debugger->traceDataStore(
+				CurRoutineIdPtr, CurRoutineIdPtr->typePtr, targetPtr, targetTypePtr);
 	}
 	//-----------------------
 	// Grab the semi-colon...
@@ -489,7 +487,7 @@ void execStdPrint(void)
 	else if (paramTypePtr == RealTypePtr)
 		sprintf(buffer, "%.4f", tos->real);
 	else if ((paramTypePtr->form == FRM_ARRAY) &&
-			 (paramTypePtr->info.array.elementTypePtr == CharTypePtr))
+		(paramTypePtr->info.array.elementTypePtr == CharTypePtr))
 		s = (PSTR)tos->address;
 	pop();
 	if (debugger)
@@ -514,7 +512,8 @@ void execStdPrint(void)
 	#endif
 			}
 			}
-	*/ else
+	*/
+	else
 	{
 #ifdef _DEBUG
 		ABLDebugPrintCallback(s);
@@ -564,7 +563,7 @@ TypePtr execStdConcat(void)
 		strcat(dest, buffer);
 	}
 	else if ((paramTypePtr->form == FRM_ARRAY) &&
-			 (paramTypePtr->info.array.elementTypePtr == CharTypePtr))
+		(paramTypePtr->info.array.elementTypePtr == CharTypePtr))
 		strcat(dest, (PSTR)tos->address);
 	tos->integer = 0;
 	getCodeToken();
@@ -706,8 +705,7 @@ void execStdFatal(void)
 	{
 		sprintf(message, "FATAL:  [%d] \"%s\"", code, s);
 		debugger->print(message);
-		sprintf(message, "   MODULE (%d) %s", CurModule->getId(),
-			CurModule->getName());
+		sprintf(message, "   MODULE (%d) %s", CurModule->getId(), CurModule->getName());
 		debugger->print(message);
 		sprintf(message, "   FILE %s", CurModule->getSourceFile(FileNumber));
 		debugger->print(message);
@@ -755,11 +753,9 @@ void execStdAssert(void)
 		{
 			sprintf(message, "ASSERT:  [%d] \"%s\"", code, s);
 			debugger->print(message);
-			sprintf(message, "   MODULE (%d) %s", CurModule->getId(),
-				CurModule->getName());
+			sprintf(message, "   MODULE (%d) %s", CurModule->getId(), CurModule->getName());
 			debugger->print(message);
-			sprintf(
-				message, "   FILE %s", CurModule->getSourceFile(FileNumber));
+			sprintf(message, "   FILE %s", CurModule->getSourceFile(FileNumber));
 			debugger->print(message);
 			sprintf(message, "   LINE %d", execLineNumber);
 			debugger->print(message);
@@ -807,8 +803,7 @@ void execStdResetOrders(void)
 	else if (scope == 1)
 	{
 		int32_t startIndex = CurRoutineIdPtr->defn.info.routine.orderCallIndex;
-		int32_t endIndex =
-			startIndex + CurRoutineIdPtr->defn.info.routine.numOrderCalls;
+		int32_t endIndex   = startIndex + CurRoutineIdPtr->defn.info.routine.numOrderCalls;
 		for (size_t i = startIndex; i < endIndex; i++)
 		{
 			uint8_t orderDWord   = (uint8_t)(i / 32);
@@ -850,8 +845,8 @@ void execStdSetState(void)
 			ModuleRegistry[CurFSM->getHandle()].stateHandles[stateHandle].state;
 		CurFSM->setPrevState(CurFSM->getState());
 		CurFSM->setState(stateFunction);
-		sprintf(SetStateDebugStr, "%s:%s, line %d", CurFSM->getFileName(),
-			stateFunction->name, execLineNumber);
+		sprintf(SetStateDebugStr, "%s:%s, line %d", CurFSM->getFileName(), stateFunction->name,
+			execLineNumber);
 		NewStateSet = true;
 	}
 }
@@ -910,36 +905,27 @@ void initStandardRoutines(void)
 	// Fatal and Assert will have hardcoded keys so we can look for
 	// 'em in the rest of the ABL code (example: ignore asserts if
 	// the assert_off option has been set).
+	enterStandardRoutine("fatal", RTN_FATAL, false, "iC", nullptr, execStdFatal);
+	enterStandardRoutine("assert", RTN_ASSERT, false, "biC", nullptr, execStdAssert);
 	enterStandardRoutine(
-		"fatal", RTN_FATAL, false, "iC", nullptr, execStdFatal);
+		"getstatehandle", RTN_GET_STATE_HANDLE, false, "C", "i", execStdGetStateHandle);
 	enterStandardRoutine(
-		"assert", RTN_ASSERT, false, "biC", nullptr, execStdAssert);
-	enterStandardRoutine("getstatehandle", RTN_GET_STATE_HANDLE, false, "C",
-		"i", execStdGetStateHandle);
-	enterStandardRoutine("getcurrentstatehandle", -1, false, nullptr, "i",
-		execStdGetCurrentStateHandle);
+		"getcurrentstatehandle", -1, false, nullptr, "i", execStdGetCurrentStateHandle);
 	enterStandardRoutine("abs", -1, false, "*", "r", execStdAbs);
 	enterStandardRoutine("sqrt", -1, false, "*", "r", execStdSqrt);
 	enterStandardRoutine("round", -1, false, "r", "i", execStdRound);
 	enterStandardRoutine("trunc", -1, false, "r", "i", execStdTrunc);
 	enterStandardRoutine("random", -1, false, "i", "i", execStdRandom);
-	enterStandardRoutine(
-		"seedrandom", -1, false, "i", nullptr, execStdSeedRandom);
-	enterStandardRoutine(
-		"setmaxloops", -1, false, "i", nullptr, execStdSetMaxLoops);
+	enterStandardRoutine("seedrandom", -1, false, "i", nullptr, execStdSeedRandom);
+	enterStandardRoutine("setmaxloops", -1, false, "i", nullptr, execStdSetMaxLoops);
 	enterStandardRoutine("fileopen", -1, false, "C", "i", execStdFileOpen);
-	enterStandardRoutine(
-		"filewrite", -1, false, "iC", nullptr, execStdFileWrite);
-	enterStandardRoutine(
-		"fileclose", -1, false, "i", nullptr, execStdFileClose);
+	enterStandardRoutine("filewrite", -1, false, "iC", nullptr, execStdFileWrite);
+	enterStandardRoutine("fileclose", -1, false, "i", nullptr, execStdFileClose);
 	enterStandardRoutine("getmodule", -1, false, "CC", "i", execStdGetModule);
-	enterStandardRoutine(
-		"resetorders", -1, false, "i", nullptr, execStdResetOrders);
+	enterStandardRoutine("resetorders", -1, false, "i", nullptr, execStdResetOrders);
 	enterStandardRoutine("setstate", -1, false, "i", nullptr, execStdSetState);
-	enterStandardRoutine(
-		"getfunctionhandle", -1, false, "C", "i", execStdGetFunctionHandle);
-	enterStandardRoutine(
-		"callfunction", -1, false, "i", nullptr, execStdCallFunction);
+	enterStandardRoutine("getfunctionhandle", -1, false, "C", "i", execStdGetFunctionHandle);
+	enterStandardRoutine("callfunction", -1, false, "i", nullptr, execStdCallFunction);
 	enterStandardRoutine("setflag", -1, false, "iib", "i", execStdSetFlag);
 	enterStandardRoutine("getflag", -1, false, "ii", "b", execStdGetFlag);
 }
@@ -964,8 +950,8 @@ TypePtr execStandardRoutineCall(SymTableNodePtr routineIdPtr, bool skipOrder)
 		if (key >= NumStandardFunctions)
 		{
 			char err[255];
-			sprintf(err, " ABL: Undefined ABL RoutineKey in %s:%d",
-				CurModule->getName(), execLineNumber);
+			sprintf(err, " ABL: Undefined ABL RoutineKey in %s:%d", CurModule->getName(),
+				execLineNumber);
 			ABL_Fatal(0, err);
 		}
 		if (FunctionInfoTable[key].numParams > 0)
@@ -976,8 +962,8 @@ TypePtr execStandardRoutineCall(SymTableNodePtr routineIdPtr, bool skipOrder)
 		else
 		{
 			char err[255];
-			sprintf(err, " ABL: Undefined ABL RoutineKey %d in %s:%d", key,
-				CurModule->getName(), execLineNumber);
+			sprintf(err, " ABL: Undefined ABL RoutineKey %d in %s:%d", key, CurModule->getName(),
+				execLineNumber);
 			ABL_Fatal(key, err);
 		}
 		getCodeToken();

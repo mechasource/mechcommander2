@@ -49,14 +49,13 @@ protected:
 
 public:
 	BitFlag(void)
-		: flagHeap(nullptr), numBitsPerFlag(0), rows(0), columns(0),
-		  maskValue(0), divValue(1), colWidth(1)
+		: flagHeap(nullptr), numBitsPerFlag(0), rows(0), columns(0), maskValue(0), divValue(1),
+		  colWidth(1)
 	{
 	}
 	~BitFlag(void) { destroy(); }
 
-	int32_t init(
-		uint32_t numRows, uint32_t numColumns, uint32_t initialValue = 0);
+	int32_t init(uint32_t numRows, uint32_t numColumns, uint32_t initialValue = 0);
 	void destroy();
 
 	void resetAll(uint32_t bits);
@@ -83,15 +82,12 @@ protected:
 	WINDOW* flagWindow;
 
 public:
-	ByteFlag(void)
-		: flagHeap(nullptr), rows(0), columns(0), flagPane(nullptr),
-		  flagWindow(nullptr)
+	ByteFlag(void) : flagHeap(nullptr), rows(0), columns(0), flagPane(nullptr), flagWindow(nullptr)
 	{
 	}
 	~ByteFlag(void) { destroy(); }
 
-	int32_t init(
-		uint32_t numRows, uint32_t numColumns, uint32_t initialValue = 0);
+	int32_t init(uint32_t numRows, uint32_t numColumns, uint32_t initialValue = 0);
 	void initTGA(PSTR tgaFileName);
 
 	void destroy(void);

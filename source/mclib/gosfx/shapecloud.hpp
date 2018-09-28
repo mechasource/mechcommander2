@@ -32,24 +32,22 @@ class ShapeCloud__Specification : public SpinningCloud__Specification
 	//----------------------------------------------------------------------
 	// Constructors/Destructors
 	//
-  protected:
-	ShapeCloud__Specification(
-		Stuff::MemoryStream* stream, uint32_t gfx_version);
+protected:
+	ShapeCloud__Specification(std::iostream stream, uint32_t gfx_version);
 
-  public:
+public:
 	ShapeCloud__Specification(MidLevelRenderer::MLRShape* shape);
 	~ShapeCloud__Specification(void);
 
-	void Save(Stuff::MemoryStream* stream);
+	void Save(std::iostream stream);
 
-	static ShapeCloud__Specification* Make(
-		Stuff::MemoryStream* stream, uint32_t gfx_version);
+	static ShapeCloud__Specification* Make(std::iostream stream, uint32_t gfx_version);
 
 	void Copy(ShapeCloud__Specification* spec);
 
 	void SetShape(MidLevelRenderer::MLRShape* shape);
 
-  protected:
+protected:
 	MidLevelRenderer::MLRShape* m_shape;
 	float m_radius;
 };
@@ -61,7 +59,7 @@ class ShapeCloud__Specification : public SpinningCloud__Specification
 
 class ShapeCloud__Particle : public SpinningCloud__Particle
 {
-  public:
+public:
 	Stuff::RGBAColor m_color;
 };
 
@@ -74,7 +72,7 @@ class ShapeCloud : public SpinningCloud
 	//----------------------------------------------------------------------------
 	// Class Registration Support
 	//
-  public:
+public:
 	static void __stdcall InitializeClass(void);
 	static void __stdcall TerminateClass(void);
 
@@ -84,10 +82,10 @@ class ShapeCloud : public SpinningCloud
 	//----------------------------------------------------------------------------
 	// Class Data Support
 	//
-  protected:
+protected:
 	ShapeCloud(Specification* spec, uint32_t flags);
 
-  public:
+public:
 	static ShapeCloud* Make(Specification* spec, uint32_t flags);
 
 	Specification* GetSpecification()
@@ -99,8 +97,7 @@ class ShapeCloud : public SpinningCloud
 	{
 		// Check_Object(this);
 		Check_Object(GetSpecification());
-		return Cast_Pointer(Particle*,
-			&m_data[index * GetSpecification()->m_particleClassSize]);
+		return Cast_Pointer(Particle*, &m_data[index * GetSpecification()->m_particleClassSize]);
 	}
 
 	static ClassData* DefaultData;
@@ -108,18 +105,18 @@ class ShapeCloud : public SpinningCloud
 	//----------------------------------------------------------------------------
 	// Testing
 	//
-  public:
+public:
 	void TestInstance(void) const;
 
 	//----------------------------------------------------------------------------
 	// API
 	//
-  protected:
-	bool AnimateParticle(uint32_t index,
-		const Stuff::LinearMatrix4D* world_to_new_local, Stuff::Time till);
+protected:
+	bool AnimateParticle(
+		uint32_t index, const Stuff::LinearMatrix4D* world_to_new_local, Stuff::Time till);
 	void CreateNewParticle(uint32_t index, Stuff::Point3D* translation);
 
-  public:
+public:
 	void Draw(DrawInfo* info);
 };
-}
+} // namespace gosFX

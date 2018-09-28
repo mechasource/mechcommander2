@@ -29,22 +29,14 @@ class OBB;
 
 class Sphere
 {
-  public:
+public:
 	Point3D center;
 	float radius;
 
 	Sphere() {}
-	Sphere(const Point3D& A_Point, float Radius)
-		: center(A_Point), radius(Radius)
-	{
-	}
-	Sphere(float X, float Y, float Z, float Radius)
-		: center(X, Y, Z), radius(Radius)
-	{
-	}
-	Sphere(const Sphere& sphere) : center(sphere.center), radius(sphere.radius)
-	{
-	}
+	Sphere(const Point3D& A_Point, float Radius) : center(A_Point), radius(Radius) {}
+	Sphere(float X, float Y, float Z, float Radius) : center(X, Y, Z), radius(Radius) {}
+	Sphere(const Sphere& sphere) : center(sphere.center), radius(sphere.radius) {}
 	explicit Sphere(const OBB& obb) { *this = obb; }
 
 	Sphere& operator=(const Sphere& sphere)
@@ -86,5 +78,5 @@ class Sphere
 #endif
 	void TestInstance(void) const {}
 };
-}
+} // namespace Stuff
 #endif

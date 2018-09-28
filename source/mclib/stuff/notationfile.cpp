@@ -17,7 +17,7 @@ using namespace Stuff;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-Macro::Macro(MString* macro, MString* replace) : Plug(DefaultData)
+Macro::Macro(std::wstring* macro, std::wstring* replace) : Plug(DefaultData)
 {
 	m_macro		  = *macro;
 	m_replacement = *replace;
@@ -36,8 +36,8 @@ void Macro::AddValue(MacroTree* macro_tree, PCSTR name, PCSTR value)
 	// Create MStrings for all this, and create a new plug
 	//----------------------------------------------------
 	//
-	MString ms_define(name);
-	MString ms_replace(value);
+	std::wstring ms_define(name);
+	std::wstring ms_replace(value);
 	Macro* mr_new = new Macro(&ms_define, &ms_replace);
 	Check_Object(mr_new);
 	//
@@ -57,8 +57,7 @@ void Macro::AddValue(MacroTree* macro_tree, PCSTR name, PCSTR value)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void Macro::ReplaceMacros(
-	MacroTree* macro_tree, PCSTR buffer, PSTR new_buf, size_t new_buf_size)
+void Macro::ReplaceMacros(MacroTree* macro_tree, PCSTR buffer, PSTR new_buf, size_t new_buf_size)
 {
 	//
 	//----------------------------------------------------
@@ -72,7 +71,7 @@ void Macro::ReplaceMacros(
 		{
 			*new_buf++ = *buffer++;
 			--new_buf_size;
-			Verify(new_buf_size > 0);
+			_ASSERT(new_buf_size > 0);
 		}
 		//
 		//--------------------------------------
@@ -81,7 +80,7 @@ void Macro::ReplaceMacros(
 		//
 		if (!*buffer)
 		{
-			Verify(new_buf_size > 0);
+			_ASSERT(new_buf_size > 0);
 			*new_buf = 0;
 			return;
 		}
@@ -93,7 +92,7 @@ void Macro::ReplaceMacros(
 		PCSTR p = strchr(buffer, ')');
 		if (!p)
 		{
-			Verify(new_buf_size > 0);
+			_ASSERT(new_buf_size > 0);
 			*new_buf = '\0';
 			return;
 		}
@@ -103,13 +102,13 @@ void Macro::ReplaceMacros(
 		//-------------------
 		//
 		size_t len = size_t(p - buffer - 2);
-		MString macro_name;
+		std::wstring macro_name;
 		macro_name.AllocateLength(len + 1);
 		PSTR t   = macro_name;
 		size_t i = 0;
 		for (p = buffer + 2; *p != ')'; ++p, ++i)
 		{
-			Verify(i < len);
+			_ASSERT(i < len);
 			t[i] = *p;
 		}
 		t[len] = '\0';
@@ -124,8 +123,7 @@ void Macro::ReplaceMacros(
 		if (macro && !macro->m_inUse)
 		{
 			macro->m_inUse = true;
-			ReplaceMacros(
-				macro_tree, macro->m_replacement, new_buf, new_buf_size);
+			ReplaceMacros(macro_tree, macro->m_replacement, new_buf, new_buf_size);
 			len = strlen(new_buf);
 			new_buf_size -= len;
 			new_buf += len;
@@ -149,7 +147,7 @@ NotationFile::NotationFile(PCSTR file_name, Type type) : m_pages(nullptr)
 	// See if we need to read stuff from a file
 	//-----------------------------------------
 	//
-	FileStream file_stream;
+	std::fstream file_stream;
 	if (gos_DoesFileExist(file_name))
 	{
 		file_stream.Open(file_name);
@@ -176,8 +174,7 @@ NotationFile::NotationFile(PCSTR file_name, Type type) : m_pages(nullptr)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-NotationFile::NotationFile(MemoryStream* memory_stream, MacroTree* macro_tree)
-	: m_pages(nullptr)
+NotationFile::NotationFile(std::iostream& memory_stream, MacroTree* macro_tree) : m_pages(nullptr)
 {
 	// Check_Pointer(this);
 	//
@@ -189,9 +186,9 @@ NotationFile::NotationFile(MemoryStream* memory_stream, MacroTree* macro_tree)
 	if (memory_stream)
 	{
 		Check_Object(memory_stream);
-		if (memory_stream->IsDerivedFrom(FileStream::DefaultData))
+		if (memory_stream->IsDerivedFrom(std::fstream::DefaultData))
 		{
-			FileStream* file_stream = Cast_Object(FileStream*, memory_stream);
+			std::fstream* file_stream = Cast_Object(std::fstream*, memory_stream);
 			m_fileDependencies.AddDependency(file_stream);
 			m_fileName = file_stream->GetFileName();
 		}
@@ -214,7 +211,7 @@ NotationFile::~NotationFile()
 	// Clear out the notepages
 	//------------------------
 	//
-	Verify(!IsChanged());
+	_ASSERT(!IsChanged());
 	PageIterator pages(&m_pages);
 	pages.DeletePlugs();
 }
@@ -225,8 +222,7 @@ void NotationFile::TestInstance(void) const {}
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void NotationFile::CommonConstruction(
-	MemoryStream* memory_stream, MacroTree* macro_tree)
+void NotationFile::CommonConstruction(std::iostream& memory_stream, MacroTree* macro_tree)
 {
 	// Check_Pointer(this);
 	//
@@ -245,8 +241,7 @@ void NotationFile::CommonConstruction(
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void NotationFile::Read(
-	MemoryStream* stream, MacroTree* macro_tree, Page** page, bool nested)
+void NotationFile::Read(std::iostream& stream, MacroTree* macro_tree, Page** page, bool nested)
 {
 	// Check_Object(this);
 	Check_Pointer(stream);
@@ -410,12 +405,11 @@ void NotationFile::Read(
 			else if ((q = strchr(p, '$')) != nullptr && q[1] == '(')
 			{
 #if defined(_ARMOR)
-				Verify(!macroed);
+				_ASSERT(!macroed);
 				macroed = true;
 #endif
 				char new_buf[MAX_LINE_SIZE];
-				Macro::ReplaceMacros(
-					macro_tree, buffer, new_buf, sizeof(new_buf));
+				Macro::ReplaceMacros(macro_tree, buffer, new_buf, sizeof(new_buf));
 				p = new_buf;
 				goto Parse;
 			}
@@ -443,7 +437,7 @@ void NotationFile::Read(
 	if (!orig_tree)
 	{
 		{
-			TreeIteratorOf<Macro*, MString> macros(macro_tree);
+			TreeIteratorOf<Macro*, std::wstring> macros(macro_tree);
 			macros.DeletePlugs();
 		}
 		Check_Object(macro_tree);
@@ -459,7 +453,7 @@ void NotationFile::Read(
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void NotationFile::Write(MemoryStream* stream)
+void NotationFile::Write(std::iostream& stream)
 {
 	// Check_Object(this);
 	Check_Object(stream);
@@ -489,7 +483,7 @@ void NotationFile::Save()
 	//
 	if (m_dirtyFlag && m_fileName.GetLength() > 0)
 	{
-		FileStream output(m_fileName, FileStream::WriteOnly);
+		std::fstream output(m_fileName, std::fstream::WriteOnly);
 		Write(&output);
 	}
 	IgnoreChanges();
@@ -505,7 +499,7 @@ void NotationFile::SaveAs(PCSTR file_name)
 	// If the file is dirty and has a filename, write it out
 	//------------------------------------------------------
 	//
-	FileStream output(file_name, FileStream::WriteOnly);
+	std::fstream output(file_name, std::fstream::WriteOnly);
 	m_fileName = output.GetFileName();
 	Write(&output);
 	IgnoreChanges();
@@ -514,7 +508,7 @@ void NotationFile::SaveAs(PCSTR file_name)
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void NotationFile::ProcessLine(
-	MemoryStream* stream, MacroTree* macro_tree, Page** notepage, PSTR buffer)
+	std::iostream& stream, MacroTree* macro_tree, Page** notepage, PSTR buffer)
 {
 	// Check_Object(this);
 	Check_Object(stream);
@@ -600,7 +594,7 @@ void NotationFile::ProcessLine(
 		{
 			NotationFile nested_file;
 			nested_file.Read(stream, macro_tree, nullptr, true);
-			DynamicMemoryStream file_buffer(5);
+			std::fstream file_buffer(5);
 			file_buffer << "{\r\n";
 			nested_file.Write(&file_buffer);
 			file_buffer << "}" << '\0';
@@ -612,8 +606,7 @@ void NotationFile::ProcessLine(
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void NotationFile::HandleBangStuff(
-	PSTR buffer, MacroTree* macro_tree, Page** page)
+void NotationFile::HandleBangStuff(PSTR buffer, MacroTree* macro_tree, Page** page)
 {
 	Check_Pointer(buffer);
 	Check_Pointer(page);
@@ -686,7 +679,7 @@ void NotationFile::HandleBangStuff(
 		// Now open it up
 		//---------------
 		//
-		FileStream input(file_name);
+		std::fstream input(file_name);
 		m_fileDependencies.AddDependency(&input);
 		Read(&input, macro_tree, page, false);
 	}

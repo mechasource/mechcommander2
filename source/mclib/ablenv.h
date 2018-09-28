@@ -38,7 +38,7 @@ typedef struct _SourceFile
 class UserFile
 {
 
-  public:
+public:
 	int32_t handle;
 	bool inUse;
 	char fileName[MAXLEN_FILENAME];
@@ -49,7 +49,7 @@ class UserFile
 
 	static UserFilePtr files[MAX_USER_FILES];
 
-  public:
+public:
 	PVOID operator new(size_t mySize);
 
 	void operator delete(PVOID us);
@@ -140,7 +140,7 @@ typedef ModuleEntry* ModuleEntryPtr;
 class ABLModule
 {
 
-  private:
+private:
 	int32_t id;
 	char name[MAX_ABLMODULE_NAME];
 	int32_t handle;
@@ -159,7 +159,7 @@ class ABLModule
 
 	// static int32_t numModules;
 
-  public:
+public:
 	PVOID operator new(size_t mySize);
 	void operator delete(PVOID us);
 
@@ -236,10 +236,7 @@ class ABLModule
 
 	WatchManagerPtr getWatchManager(void) { return (watchManager); }
 
-	BreakPointManagerPtr getBreakPointManager(void)
-	{
-		return (breakPointManager);
-	}
+	BreakPointManagerPtr getBreakPointManager(void) { return (breakPointManager); }
 
 	void setTrace(bool _trace)
 	{
@@ -257,11 +254,10 @@ class ABLModule
 	int32_t execute(ABLParamPtr paramList = nullptr);
 	int32_t execute(ABLParamPtr moduleParamList, SymTableNodePtr functionIdPtr);
 
-	SymTableNodePtr findSymbol(PSTR symbolName,
-		SymTableNodePtr curFunction = nullptr, bool searchLibraries = false);
+	SymTableNodePtr findSymbol(
+		PSTR symbolName, SymTableNodePtr curFunction = nullptr, bool searchLibraries = false);
 
-	SymTableNodePtr findFunction(
-		PSTR functionName, bool searchLibraries = false);
+	SymTableNodePtr findFunction(PSTR functionName, bool searchLibraries = false);
 
 	SymTableNodePtr findState(PSTR stateName);
 

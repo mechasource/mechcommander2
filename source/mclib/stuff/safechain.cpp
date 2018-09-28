@@ -28,9 +28,9 @@ MemoryBlock* SafeChainLink::AllocatedMemory = nullptr;
 //
 void SafeChainLink::InitializeClass(size_t block_count, size_t block_delta)
 {
-	Verify(!AllocatedMemory);
-	AllocatedMemory = new MemoryBlock(sizeof(SafeChainLink), block_count,
-		block_delta, "Stuff::SafeChainLink", ConnectionEngineHeap);
+	_ASSERT(!AllocatedMemory);
+	AllocatedMemory = new MemoryBlock(sizeof(SafeChainLink), block_count, block_delta,
+		"Stuff::SafeChainLink", ConnectionEngineHeap);
 }
 
 //
@@ -48,8 +48,8 @@ void SafeChainLink::TerminateClass()
 // SafeChainLink
 //###########################################################################
 //
-SafeChainLink::SafeChainLink(SafeChain* chain, Plug* plug,
-	SafeChainLink* nextSafeChainLink, SafeChainLink* prevSafeChainLink)
+SafeChainLink::SafeChainLink(SafeChain* chain, Plug* plug, SafeChainLink* nextSafeChainLink,
+	SafeChainLink* prevSafeChainLink)
 	: Link(chain, plug)
 {
 	//
@@ -236,8 +236,7 @@ SafeChainLink* SafeChain::InsertSafeChainLink(Plug* plug, SafeChainLink* link)
 	// Check_Object(this);
 	Check_Object(link);
 	Check_Object(plug);
-	SafeChainLink* new_link =
-		new SafeChainLink(this, plug, link, link->prevSafeChainLink);
+	SafeChainLink* new_link = new SafeChainLink(this, plug, link, link->prevSafeChainLink);
 	Register_Object(new_link);
 	Check_Object(head);
 	if (head == link)
@@ -457,8 +456,7 @@ void SafeChainIterator::Remove()
 void SafeChainIterator::InsertImplementation(Plug* plug)
 {
 	// Check_Object(this);
-	currentLink =
-		Cast_Object(SafeChain*, socket)->InsertSafeChainLink(plug, currentLink);
+	currentLink = Cast_Object(SafeChain*, socket)->InsertSafeChainLink(plug, currentLink);
 	Check_Object(currentLink);
 }
 

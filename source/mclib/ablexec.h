@@ -30,7 +30,7 @@
 #define ABL_PARAM_INTEGER 1
 #define ABL_PARAM_REAL 2
 
-typedef enum ABLStackItemType
+typedef enum ABLStackItemType : uint32_t
 {
 	ABL_STACKITEM_CHAR,
 	ABL_STACKITEM_INTEGER,
@@ -178,8 +178,7 @@ void freeData(SymTableNodePtr idPtr);
 void routineEntry(SymTableNodePtr routineIdPtr);
 void routineExit(SymTableNodePtr routineIdPtr);
 void execute(SymTableNodePtr routineIdPtr);
-void executeChild(
-	SymTableNodePtr routineIdPtr, SymTableNodePtr childRoutineIdPtr);
+void executeChild(SymTableNodePtr routineIdPtr, SymTableNodePtr childRoutineIdPtr);
 
 //******************
 // EXECSTMT routines

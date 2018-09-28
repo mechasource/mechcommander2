@@ -16,13 +16,12 @@
 //------------------------------------------------------------------------------
 //
 gosFX::ShapeCloud__Specification::ShapeCloud__Specification(
-	Stuff::MemoryStream* stream, uint32_t gfx_version)
-	: SpinningCloud__Specification(
-		  gosFX::ShapeCloudClassID, stream, gfx_version)
+	std::iostream stream, uint32_t gfx_version)
+	: SpinningCloud__Specification(gosFX::ShapeCloudClassID, stream, gfx_version)
 {
 	// Check_Pointer(this);
-	Verify(m_class == ShapeCloudClassID);
-	// Verify(gos_GetCurrentHeap() == Heap);
+	_ASSERT(m_class == ShapeCloudClassID);
+	// _ASSERT(gos_GetCurrentHeap() == Heap);
 	m_particleClassSize = sizeof(gosFX::ShapeCloud::Particle);
 	m_totalParticleSize = sizeof(gosFX::ShapeCloud::Particle);
 	//
@@ -30,8 +29,7 @@ gosFX::ShapeCloud__Specification::ShapeCloud__Specification(
 	// Load the shape
 	//---------------
 	//
-	m_shape = MidLevelRenderer::MLRShape::Make(
-		stream, MidLevelRenderer::ReadMLRVersion(stream));
+	m_shape = MidLevelRenderer::MLRShape::Make(stream, MidLevelRenderer::ReadMLRVersion(stream));
 	Register_Object(m_shape);
 	*stream >> m_radius;
 	//
@@ -43,15 +41,13 @@ gosFX::ShapeCloud__Specification::ShapeCloud__Specification(
 
 //------------------------------------------------------------------------------
 //
-gosFX::ShapeCloud__Specification::ShapeCloud__Specification(
-	MidLevelRenderer::MLRShape* shape)
+gosFX::ShapeCloud__Specification::ShapeCloud__Specification(MidLevelRenderer::MLRShape* shape)
 	: SpinningCloud__Specification(gosFX::ShapeCloudClassID)
 {
 	// Check_Pointer(this);
-	// Verify(gos_GetCurrentHeap() == Heap);
-	m_totalParticleSize = m_particleClassSize =
-		sizeof(gosFX::ShapeCloud::Particle);
-	m_shape = nullptr;
+	// _ASSERT(gos_GetCurrentHeap() == Heap);
+	m_totalParticleSize = m_particleClassSize = sizeof(gosFX::ShapeCloud::Particle);
+	m_shape									  = nullptr;
 	SetShape(shape);
 }
 
@@ -70,21 +66,20 @@ gosFX::ShapeCloud__Specification::~ShapeCloud__Specification()
 //------------------------------------------------------------------------------
 //
 gosFX::ShapeCloud__Specification* gosFX::ShapeCloud__Specification::Make(
-	Stuff::MemoryStream* stream, uint32_t gfx_version)
+	std::iostream stream, uint32_t gfx_version)
 {
 	Check_Object(stream);
 #ifdef _GAMEOS_HPP_
 	// gos_PushCurrentHeap(Heap);
 #endif
-	ShapeCloud__Specification* spec =
-		new gosFX::ShapeCloud__Specification(stream, gfx_version);
+	ShapeCloud__Specification* spec = new gosFX::ShapeCloud__Specification(stream, gfx_version);
 	// gos_PopCurrentHeap();
 	return spec;
 }
 
 //------------------------------------------------------------------------------
 //
-void gosFX::ShapeCloud__Specification::Save(Stuff::MemoryStream* stream)
+void gosFX::ShapeCloud__Specification::Save(std::iostream stream)
 {
 	// Check_Object(this);
 	Check_Object(stream);
@@ -113,8 +108,7 @@ void gosFX::ShapeCloud__Specification::Copy(ShapeCloud__Specification* spec)
 
 //------------------------------------------------------------------------------
 //
-void gosFX::ShapeCloud__Specification::SetShape(
-	MidLevelRenderer::MLRShape* shape)
+void gosFX::ShapeCloud__Specification::SetShape(MidLevelRenderer::MLRShape* shape)
 {
 	// Check_Object(this);
 	//
@@ -174,11 +168,10 @@ gosFX::ShapeCloud::ClassData* gosFX::ShapeCloud::DefaultData = nullptr;
 //
 void gosFX::ShapeCloud::InitializeClass()
 {
-	Verify(!DefaultData);
-	// Verify(gos_GetCurrentHeap() == Heap);
-	DefaultData = new ClassData(ShapeCloudClassID, "gosFX::ShapeCloud",
-		SpinningCloud::DefaultData, (Effect::Factory)&Make,
-		(Specification::Factory)&Specification::Make);
+	_ASSERT(!DefaultData);
+	// _ASSERT(gos_GetCurrentHeap() == Heap);
+	DefaultData = new ClassData(ShapeCloudClassID, "gosFX::ShapeCloud", SpinningCloud::DefaultData,
+		(Effect::Factory)&Make, (Specification::Factory)&Specification::Make);
 	Register_Object(DefaultData);
 }
 
@@ -196,7 +189,7 @@ void gosFX::ShapeCloud::TerminateClass()
 gosFX::ShapeCloud::ShapeCloud(Specification* spec, uint32_t flags)
 	: SpinningCloud(DefaultData, spec, flags)
 {
-	// Verify(gos_GetCurrentHeap() == Heap);
+	// _ASSERT(gos_GetCurrentHeap() == Heap);
 }
 
 //------------------------------------------------------------------------------
@@ -214,8 +207,7 @@ gosFX::ShapeCloud* gosFX::ShapeCloud::Make(Specification* spec, uint32_t flags)
 
 //------------------------------------------------------------------------------
 //
-void gosFX::ShapeCloud::CreateNewParticle(
-	uint32_t index, Stuff::Point3D* translation)
+void gosFX::ShapeCloud::CreateNewParticle(uint32_t index, Stuff::Point3D* translation)
 {
 	// Check_Object(this);
 	//
@@ -233,8 +225,8 @@ void gosFX::ShapeCloud::CreateNewParticle(
 
 //------------------------------------------------------------------------------
 //
-bool gosFX::ShapeCloud::AnimateParticle(uint32_t index,
-	const Stuff::LinearMatrix4D* world_to_new_local, Stuff::Time till)
+bool gosFX::ShapeCloud::AnimateParticle(
+	uint32_t index, const Stuff::LinearMatrix4D* world_to_new_local, Stuff::Time till)
 {
 	// Check_Object(this);
 	//
@@ -304,11 +296,9 @@ void gosFX::ShapeCloud::Draw(DrawInfo* info)
 				// Get the camera location into local space
 				//-----------------------------------------
 				//
-				Stuff::Point3D camera_in_world(
-					info->m_clipper->GetCameraToWorldMatrix());
+				Stuff::Point3D camera_in_world(info->m_clipper->GetCameraToWorldMatrix());
 				Stuff::Point3D camera_in_cloud;
-				camera_in_cloud.MultiplyByInverse(
-					camera_in_world, local_to_world);
+				camera_in_cloud.MultiplyByInverse(camera_in_world, local_to_world);
 				for (uint32_t i = 0; i < m_activeParticleCount; i++)
 				{
 					Particle* particle = GetParticle(i);
@@ -322,20 +312,17 @@ void gosFX::ShapeCloud::Draw(DrawInfo* info)
 					if (particle->m_age < 1.0f)
 					{
 						Stuff::Vector3D direction_in_cloud;
-						direction_in_cloud.Subtract(
-							camera_in_cloud, particle->m_localTranslation);
+						direction_in_cloud.Subtract(camera_in_cloud, particle->m_localTranslation);
 						Stuff::LinearMatrix4D shape_to_cloud;
 						shape_to_cloud.BuildRotation(particle->m_localRotation);
 						shape_to_cloud.AlignLocalAxisToWorldVector(
-							direction_in_cloud, Stuff::Z_Axis, Stuff::Y_Axis,
-							Stuff::X_Axis);
-						shape_to_cloud.BuildTranslation(
-							particle->m_localTranslation);
+							direction_in_cloud, Stuff::Z_Axis, Stuff::Y_Axis, Stuff::X_Axis);
+						shape_to_cloud.BuildTranslation(particle->m_localTranslation);
 						Stuff::LinearMatrix4D shape_to_world;
 						shape_to_world.Multiply(shape_to_cloud, local_to_world);
 						dinfo.shapeToWorld = &shape_to_world;
-						Stuff::Vector3D scale(particle->m_scale,
-							particle->m_scale, particle->m_scale);
+						Stuff::Vector3D scale(
+							particle->m_scale, particle->m_scale, particle->m_scale);
 						dinfo.scaling = &scale;
 						dinfo.paintMe = &particle->m_color;
 						info->m_clipper->DrawScalableShape(&dinfo);
@@ -354,11 +341,9 @@ void gosFX::ShapeCloud::Draw(DrawInfo* info)
 				// Get the camera location into local space
 				//-----------------------------------------
 				//
-				Stuff::Point3D camera_in_world(
-					info->m_clipper->GetCameraToWorldMatrix());
+				Stuff::Point3D camera_in_world(info->m_clipper->GetCameraToWorldMatrix());
 				Stuff::Point3D camera_in_cloud;
-				camera_in_cloud.MultiplyByInverse(
-					camera_in_world, local_to_world);
+				camera_in_cloud.MultiplyByInverse(camera_in_world, local_to_world);
 				for (uint32_t i = 0; i < m_activeParticleCount; i++)
 				{
 					Particle* particle = GetParticle(i);
@@ -372,20 +357,17 @@ void gosFX::ShapeCloud::Draw(DrawInfo* info)
 					if (particle->m_age < 1.0f)
 					{
 						Stuff::Vector3D direction_in_cloud;
-						direction_in_cloud.Subtract(
-							camera_in_cloud, particle->m_localTranslation);
+						direction_in_cloud.Subtract(camera_in_cloud, particle->m_localTranslation);
 						Stuff::LinearMatrix4D shape_to_cloud;
 						shape_to_cloud.BuildRotation(particle->m_localRotation);
 						shape_to_cloud.AlignLocalAxisToWorldVector(
-							direction_in_cloud, Stuff::Z_Axis, Stuff::X_Axis,
-							-1);
-						shape_to_cloud.BuildTranslation(
-							particle->m_localTranslation);
+							direction_in_cloud, Stuff::Z_Axis, Stuff::X_Axis, -1);
+						shape_to_cloud.BuildTranslation(particle->m_localTranslation);
 						Stuff::LinearMatrix4D shape_to_world;
 						shape_to_world.Multiply(shape_to_cloud, local_to_world);
 						dinfo.shapeToWorld = &shape_to_world;
-						Stuff::Vector3D scale(particle->m_scale,
-							particle->m_scale, particle->m_scale);
+						Stuff::Vector3D scale(
+							particle->m_scale, particle->m_scale, particle->m_scale);
 						dinfo.scaling = &scale;
 						dinfo.paintMe = &particle->m_color;
 						info->m_clipper->DrawScalableShape(&dinfo);
@@ -405,8 +387,7 @@ void gosFX::ShapeCloud::Draw(DrawInfo* info)
 			// Get the camera location into local space
 			//-----------------------------------------
 			//
-			Stuff::Point3D camera_in_world(
-				info->m_clipper->GetCameraToWorldMatrix());
+			Stuff::Point3D camera_in_world(info->m_clipper->GetCameraToWorldMatrix());
 			Stuff::Point3D camera_in_cloud;
 			camera_in_cloud.MultiplyByInverse(camera_in_world, local_to_world);
 			for (uint32_t i = 0; i < m_activeParticleCount; i++)
@@ -422,19 +403,16 @@ void gosFX::ShapeCloud::Draw(DrawInfo* info)
 				if (particle->m_age < 1.0f)
 				{
 					Stuff::Vector3D direction_in_cloud;
-					direction_in_cloud.Subtract(
-						camera_in_cloud, particle->m_localTranslation);
+					direction_in_cloud.Subtract(camera_in_cloud, particle->m_localTranslation);
 					Stuff::LinearMatrix4D shape_to_cloud;
 					shape_to_cloud.BuildRotation(particle->m_localRotation);
 					shape_to_cloud.AlignLocalAxisToWorldVector(
 						direction_in_cloud, Stuff::Z_Axis, Stuff::Y_Axis, -1);
-					shape_to_cloud.BuildTranslation(
-						particle->m_localTranslation);
+					shape_to_cloud.BuildTranslation(particle->m_localTranslation);
 					Stuff::LinearMatrix4D shape_to_world;
 					shape_to_world.Multiply(shape_to_cloud, local_to_world);
 					dinfo.shapeToWorld = &shape_to_world;
-					Stuff::Vector3D scale(particle->m_scale, particle->m_scale,
-						particle->m_scale);
+					Stuff::Vector3D scale(particle->m_scale, particle->m_scale, particle->m_scale);
 					dinfo.scaling = &scale;
 					dinfo.paintMe = &particle->m_color;
 					info->m_clipper->DrawScalableShape(&dinfo);
@@ -462,14 +440,12 @@ void gosFX::ShapeCloud::Draw(DrawInfo* info)
 				if (particle->m_age < 1.0f)
 				{
 					Stuff::LinearMatrix4D shape_to_cloud;
-					shape_to_cloud.BuildTranslation(
-						particle->m_localTranslation);
+					shape_to_cloud.BuildTranslation(particle->m_localTranslation);
 					shape_to_cloud.BuildRotation(particle->m_localRotation);
 					Stuff::LinearMatrix4D shape_to_world;
 					shape_to_world.Multiply(shape_to_cloud, local_to_world);
 					dinfo.shapeToWorld = &shape_to_world;
-					Stuff::Vector3D scale(particle->m_scale, particle->m_scale,
-						particle->m_scale);
+					Stuff::Vector3D scale(particle->m_scale, particle->m_scale, particle->m_scale);
 					dinfo.scaling = &scale;
 					dinfo.paintMe = &particle->m_color;
 					info->m_clipper->DrawScalableShape(&dinfo);
@@ -487,7 +463,4 @@ void gosFX::ShapeCloud::Draw(DrawInfo* info)
 
 //------------------------------------------------------------------------------
 //
-void gosFX::ShapeCloud::TestInstance(void) const
-{
-	Verify(IsDerivedFrom(DefaultData));
-}
+void gosFX::ShapeCloud::TestInstance(void) const { _ASSERT(IsDerivedFrom(DefaultData)); }

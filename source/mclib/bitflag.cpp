@@ -27,19 +27,18 @@
 
 #include <gameos.hpp>
 
-extern void AG_ellipse_draw(PANE* pane, int32_t xc, int32_t yc, int32_t width,
-	int32_t height, int32_t color);
-extern void AG_ellipse_fill(PANE* pane, int32_t xc, int32_t yc, int32_t width,
-	int32_t height, int32_t color);
-extern void AG_ellipse_fillXor(PANE* pane, int32_t xc, int32_t yc,
-	int32_t width, int32_t height, int32_t color);
-extern void AG_ellipse_fillOr(PANE* pane, int32_t xc, int32_t yc, int32_t width,
-	int32_t height, int32_t color);
+extern void AG_ellipse_draw(
+	PANE* pane, int32_t xc, int32_t yc, int32_t width, int32_t height, int32_t color);
+extern void AG_ellipse_fill(
+	PANE* pane, int32_t xc, int32_t yc, int32_t width, int32_t height, int32_t color);
+extern void AG_ellipse_fillXor(
+	PANE* pane, int32_t xc, int32_t yc, int32_t width, int32_t height, int32_t color);
+extern void AG_ellipse_fillOr(
+	PANE* pane, int32_t xc, int32_t yc, int32_t width, int32_t height, int32_t color);
 // extern void memclear(PVOID Dest,size_t Length);
 //------------------------------------------------------------------------
 // Class BitFlag
-int32_t BitFlag::init(
-	uint32_t numRows, uint32_t numColumns, uint32_t initialValue)
+int32_t BitFlag::init(uint32_t numRows, uint32_t numColumns, uint32_t initialValue)
 {
 	rows	   = numRows;
 	columns	= numColumns;
@@ -215,8 +214,7 @@ uint8_t BitFlag::getFlag(uint32_t r, uint32_t c)
 
 //------------------------------------------------------------------------
 // Class ByteFlag
-int32_t ByteFlag::init(
-	uint32_t numRows, uint32_t numColumns, uint32_t initialValue)
+int32_t ByteFlag::init(uint32_t numRows, uint32_t numColumns, uint32_t initialValue)
 {
 	rows	   = numRows;
 	columns	= numColumns;
@@ -247,7 +245,7 @@ int32_t ByteFlag::init(
 //------------------------------------------------------------------------
 void ByteFlag::initTGA(PSTR tgaFileName)
 {
-	File tgaFile;
+	MechFile tgaFile;
 #ifdef _DEBUG
 	int32_t result =
 #endif
@@ -313,8 +311,7 @@ void ByteFlag::setCircle(uint32_t x, uint32_t y, uint32_t radius, uint8_t value)
 }
 
 //------------------------------------------------------------------------
-void ByteFlag::clearCircle(
-	uint32_t x, uint32_t y, uint32_t radius, uint8_t value)
+void ByteFlag::clearCircle(uint32_t x, uint32_t y, uint32_t radius, uint8_t value)
 {
 	if (radius)
 		AG_ellipse_fillXor(flagPane, x, y, radius, radius, value);

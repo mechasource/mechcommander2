@@ -20,19 +20,19 @@ class EffectLibrary
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Initialization
 	//
-  public:
+public:
 	static void __stdcall InitializeClass(void);
 	static void __stdcall TerminateClass(void);
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Constructors/Destructors
 	//
-  public:
+public:
 	EffectLibrary(void);
 	~EffectLibrary(void);
 
-	void Load(Stuff::MemoryStream* stream);
-	void Save(Stuff::MemoryStream* stream);
+	void Load(std::iostream stream);
+	void Save(std::iostream stream);
 
 	enum MergeMode
 	{
@@ -41,19 +41,18 @@ class EffectLibrary
 		ReplaceNamedEffects
 	};
 
-	void Merge(EffectLibrary& source,
-		MergeMode merge_mode = (MergeMode)OnlyAddNewEffects);
+	void Merge(EffectLibrary& source, MergeMode merge_mode = (MergeMode)OnlyAddNewEffects);
 
 	static EffectLibrary* Instance;
 
-  protected:
+protected:
 	EffectLibrary(EffectLibrary& /*source*/) { STOP(("Shouldn't be called")); }
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Effect management
 	//
-  public:
-	Stuff::DynamicArrayOf<Effect::Specification*> m_effects;
+public:
+	std::vector<Effect::Specification*> m_effects;
 
 	Effect::Specification* Find(std::wstring& name);
 	Effect* MakeEffect(uint32_t index, uint32_t flags);
@@ -61,7 +60,7 @@ class EffectLibrary
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Testing
 	//
-  public:
+public:
 	void TestInstance(void) const {}
 };
-}
+} // namespace gosFX

@@ -64,22 +64,19 @@ extern ABLModulePtr CurLibrary;
 
 TokenCodeType followRoutineList[] = {TKN_SEMICOLON, TKN_EOF, TKN_NONE};
 
-TokenCodeType followDeclarationList[] = {
-	TKN_SEMICOLON, TKN_IDENTIFIER, TKN_EOF, TKN_NONE};
+TokenCodeType followDeclarationList[] = {TKN_SEMICOLON, TKN_IDENTIFIER, TKN_EOF, TKN_NONE};
 
-TokenCodeType followVariablesList[] = {
-	TKN_SEMICOLON, TKN_IDENTIFIER, TKN_EOF, TKN_NONE};
+TokenCodeType followVariablesList[] = {TKN_SEMICOLON, TKN_IDENTIFIER, TKN_EOF, TKN_NONE};
 
 TokenCodeType followVarBlockList[] = {
 	TKN_FUNCTION, TKN_ORDER, TKN_STATE, TKN_CODE, TKN_EOF, TKN_NONE};
 
-TokenCodeType followDimensionList[] = {
-	TKN_COMMA, TKN_RBRACKET, TKN_EOF, TKN_NONE};
+TokenCodeType followDimensionList[] = {TKN_COMMA, TKN_RBRACKET, TKN_EOF, TKN_NONE};
 
 TokenCodeType indexTypeStartList[] = {TKN_IDENTIFIER, TKN_NUMBER, TKN_NONE};
 
-TokenCodeType followIndexesList[] = {TKN_OF, TKN_IDENTIFIER, TKN_LPAREN,
-	TKN_PLUS, TKN_MINUS, TKN_NUMBER, TKN_SEMICOLON, TKN_EOF, TKN_NONE};
+TokenCodeType followIndexesList[] = {TKN_OF, TKN_IDENTIFIER, TKN_LPAREN, TKN_PLUS, TKN_MINUS,
+	TKN_NUMBER, TKN_SEMICOLON, TKN_EOF, TKN_NONE};
 
 //***************************************************************************
 // MISC. routines
@@ -125,22 +122,18 @@ void declarations(SymTableNodePtr routineIdPtr, bool allowFunctions)
 	//---------------------------------------------------
 	// Loop to process all of the function definitions...
 	if (allowFunctions)
-		while ((curToken == TKN_FUNCTION) || (curToken == TKN_ORDER) ||
-			   (curToken == TKN_STATE))
+		while ((curToken == TKN_FUNCTION) || (curToken == TKN_ORDER) || (curToken == TKN_STATE))
 		{
 			routine();
 			//---------------------
 			// Error synchronize...
-			synchronize(
-				followRoutineList, declarationStartList, statementStartList);
+			synchronize(followRoutineList, declarationStartList, statementStartList);
 			if (curToken == TKN_SEMICOLON)
 				getToken();
-			else if (tokenIn(declarationStartList) ||
-					 tokenIn(statementStartList))
+			else if (tokenIn(declarationStartList) || tokenIn(statementStartList))
 				syntaxError(ABL_ERR_SYNTAX_MISSING_SEMICOLON);
 		}
-	else if ((curToken == TKN_FUNCTION) || (curToken == TKN_ORDER) ||
-			 (curToken == TKN_STATE))
+	else if ((curToken == TKN_FUNCTION) || (curToken == TKN_ORDER) || (curToken == TKN_STATE))
 		syntaxError(ABL_ERR_SYNTAX_NO_FUNCTION_NESTING);
 }
 
@@ -164,8 +157,7 @@ void constDefinitions(void)
 		analyzeConstDefn(constantIdPtr);
 		//---------------------------------
 		// Error synchronize: should be a ;
-		synchronize(
-			followDeclarationList, declarationStartList, statementStartList);
+		synchronize(followDeclarationList, declarationStartList, statementStartList);
 		if (curToken == TKN_SEMICOLON)
 			getToken();
 		else if (tokenIn(declarationStartList) || tokenIn(statementStartList))
@@ -208,21 +200,17 @@ void doConst(SymTableNodePtr constantIdPtr)
 		if (curLiteral.type == LIT_INTEGER)
 		{
 			if (sign == TKN_PLUS)
-				constantIdPtr->defn.info.constant.value.integer =
-					curLiteral.value.integer;
+				constantIdPtr->defn.info.constant.value.integer = curLiteral.value.integer;
 			else
-				constantIdPtr->defn.info.constant.value.integer =
-					-(curLiteral.value.integer);
+				constantIdPtr->defn.info.constant.value.integer = -(curLiteral.value.integer);
 			constantIdPtr->typePtr = setType(IntegerTypePtr);
 		}
 		else
 		{
 			if (sign == TKN_PLUS)
-				constantIdPtr->defn.info.constant.value.real =
-					curLiteral.value.real;
+				constantIdPtr->defn.info.constant.value.real = curLiteral.value.real;
 			else
-				constantIdPtr->defn.info.constant.value.real =
-					-(curLiteral.value.real);
+				constantIdPtr->defn.info.constant.value.real = -(curLiteral.value.real);
 			constantIdPtr->typePtr = setType(RealTypePtr);
 		}
 	}
@@ -255,8 +243,7 @@ void doConst(SymTableNodePtr constantIdPtr)
 		else if (idPtr->typePtr == RealTypePtr)
 		{
 			if (sign == TKN_PLUS)
-				constantIdPtr->defn.info.constant.value.real =
-					idPtr->defn.info.constant.value.real;
+				constantIdPtr->defn.info.constant.value.real = idPtr->defn.info.constant.value.real;
 			else
 				constantIdPtr->defn.info.constant.value.real =
 					-(idPtr->defn.info.constant.value.real);
@@ -285,9 +272,8 @@ void doConst(SymTableNodePtr constantIdPtr)
 			syntaxError(ABL_ERR_SYNTAX_INVALID_CONSTANT);
 		if (strlen(curLiteral.value.string) == 1)
 		{
-			constantIdPtr->defn.info.constant.value.character =
-				curLiteral.value.string[0];
-			constantIdPtr->typePtr = setType(CharTypePtr);
+			constantIdPtr->defn.info.constant.value.character = curLiteral.value.string[0];
+			constantIdPtr->typePtr							  = setType(CharTypePtr);
 		}
 		else
 		{
@@ -295,10 +281,10 @@ void doConst(SymTableNodePtr constantIdPtr)
 			constantIdPtr->defn.info.constant.value.stringPtr =
 				(PSTR)ABLSymbolMallocCallback(length + 1);
 			if (!constantIdPtr->defn.info.constant.value.stringPtr)
-				ABL_Fatal(0, " ABL: Unable to AblSymbolHeap->malloc array "
-							 "string constant ");
-			strcpy(constantIdPtr->defn.info.constant.value.stringPtr,
-				curLiteral.value.string);
+				ABL_Fatal(0,
+					" ABL: Unable to AblSymbolHeap->malloc array "
+					"string constant ");
+			strcpy(constantIdPtr->defn.info.constant.value.stringPtr, curLiteral.value.string);
 			constantIdPtr->typePtr = makeStringType(length);
 		}
 	}
@@ -337,8 +323,7 @@ void typeDefinitions(void)
 		analyzeTypeDefn(typeIdPtr);
 		//---------------
 		// Error synch...
-		synchronize(
-			followDeclarationList, declarationStartList, statementStartList);
+		synchronize(followDeclarationList, declarationStartList, statementStartList);
 		if (curToken == TKN_SEMICOLON)
 			getToken();
 		else if (tokenIn(declarationStartList) || tokenIn(statementStartList))
@@ -373,8 +358,7 @@ TypePtr doType(void)
 				// Array type...
 				TypePtr typePtr = createType();
 				if (!typePtr)
-					ABL_Fatal(
-						0, " ABL: Unable to AblStackHeap->malloc array type ");
+					ABL_Fatal(0, " ABL: Unable to AblStackHeap->malloc array type ");
 				TypePtr elementTypePtr = typePtr;
 				do
 				{
@@ -386,23 +370,20 @@ TypePtr doType(void)
 						elementTypePtr->typeIdPtr = nullptr;
 						//----------------------------------------------
 						// All array indices must be integer, for now...
-						elementTypePtr->info.array.indexTypePtr =
-							setType(IntegerTypePtr);
+						elementTypePtr->info.array.indexTypePtr = setType(IntegerTypePtr);
 						//------------------------
 						// Read the index count...
 						switch (curToken)
 						{
 						case TKN_NUMBER:
 							if (curLiteral.type == LIT_INTEGER)
-								elementTypePtr->info.array.elementCount =
-									curLiteral.value.integer;
+								elementTypePtr->info.array.elementCount = curLiteral.value.integer;
 							else
 							{
-								elementTypePtr->form	  = FRM_NONE;
-								elementTypePtr->size	  = 0;
-								elementTypePtr->typeIdPtr = nullptr;
-								elementTypePtr->info.array.indexTypePtr =
-									nullptr;
+								elementTypePtr->form					= FRM_NONE;
+								elementTypePtr->size					= 0;
+								elementTypePtr->typeIdPtr				= nullptr;
+								elementTypePtr->info.array.indexTypePtr = nullptr;
 								syntaxError(ABL_ERR_SYNTAX_INVALID_INDEX_TYPE);
 							}
 							getToken();
@@ -412,8 +393,7 @@ TypePtr doType(void)
 							SymTableNodePtr idPtr;
 							searchAllSymTables(idPtr);
 							if (idPtr == nullptr)
-								syntaxError(
-									ABL_ERR_SYNTAX_UNDEFINED_IDENTIFIER);
+								syntaxError(ABL_ERR_SYNTAX_UNDEFINED_IDENTIFIER);
 							else if (idPtr->defn.key == DFN_CONST)
 							{
 								if (idPtr->typePtr == IntegerTypePtr)
@@ -421,22 +401,19 @@ TypePtr doType(void)
 										idPtr->defn.info.constant.value.integer;
 								else
 								{
-									elementTypePtr->form	  = FRM_NONE;
-									elementTypePtr->size	  = 0;
-									elementTypePtr->typeIdPtr = nullptr;
-									elementTypePtr->info.array.indexTypePtr =
-										nullptr;
-									syntaxError(
-										ABL_ERR_SYNTAX_INVALID_INDEX_TYPE);
+									elementTypePtr->form					= FRM_NONE;
+									elementTypePtr->size					= 0;
+									elementTypePtr->typeIdPtr				= nullptr;
+									elementTypePtr->info.array.indexTypePtr = nullptr;
+									syntaxError(ABL_ERR_SYNTAX_INVALID_INDEX_TYPE);
 								}
 							}
 							else
 							{
-								elementTypePtr->form	  = FRM_NONE;
-								elementTypePtr->size	  = 0;
-								elementTypePtr->typeIdPtr = nullptr;
-								elementTypePtr->info.array.indexTypePtr =
-									nullptr;
+								elementTypePtr->form					= FRM_NONE;
+								elementTypePtr->size					= 0;
+								elementTypePtr->typeIdPtr				= nullptr;
+								elementTypePtr->info.array.indexTypePtr = nullptr;
 								syntaxError(ABL_ERR_SYNTAX_INVALID_INDEX_TYPE);
 							}
 							getToken();
@@ -465,16 +442,14 @@ TypePtr doType(void)
 					// Create an array element type...
 					if (curToken == TKN_COMMA)
 					{
-						elementTypePtr =
-							elementTypePtr->info.array.elementTypePtr =
-								createType();
+						elementTypePtr = elementTypePtr->info.array.elementTypePtr = createType();
 						if (!elementTypePtr)
-							ABL_Fatal(0, " ABL: Unable to AblStackHeap->malloc "
-										 "array element Type ");
+							ABL_Fatal(0,
+								" ABL: Unable to AblStackHeap->malloc "
+								"array element Type ");
 					}
 				} while (curToken == TKN_COMMA);
-				ifTokenGetElseError(
-					TKN_RBRACKET, ABL_ERR_SYNTAX_MISSING_RBRACKET);
+				ifTokenGetElseError(TKN_RBRACKET, ABL_ERR_SYNTAX_MISSING_RBRACKET);
 				elementTypePtr->info.array.elementTypePtr = elementType;
 				typePtr->size							  = arraySize(typePtr);
 				elementType								  = typePtr;
@@ -548,8 +523,7 @@ TypePtr enumerationType(void)
 int32_t arraySize(TypePtr typePtr)
 {
 	if (typePtr->info.array.elementTypePtr->size == 0)
-		typePtr->info.array.elementTypePtr->size =
-			arraySize(typePtr->info.array.elementTypePtr);
+		typePtr->info.array.elementTypePtr->size = arraySize(typePtr->info.array.elementTypePtr);
 	if (typePtr->info.array.elementCount == -1)
 	{
 		//--------------------------------------------------------------
@@ -558,8 +532,7 @@ int32_t arraySize(TypePtr typePtr)
 		typePtr->size = typePtr->info.array.elementTypePtr->size;
 	}
 	else
-		typePtr->size = typePtr->info.array.elementCount *
-						typePtr->info.array.elementTypePtr->size;
+		typePtr->size = typePtr->info.array.elementCount * typePtr->info.array.elementTypePtr->size;
 	return (typePtr->size);
 }
 
@@ -569,8 +542,8 @@ int32_t arraySize(TypePtr typePtr)
 
 void varDeclarations(SymTableNodePtr routineIdPtr)
 {
-	varOrFieldDeclarations(routineIdPtr,
-		STACK_FRAME_HEADER_SIZE + routineIdPtr->defn.info.routine.paramCount);
+	varOrFieldDeclarations(
+		routineIdPtr, STACK_FRAME_HEADER_SIZE + routineIdPtr->defn.info.routine.paramCount);
 }
 
 //***************************************************************************
@@ -583,8 +556,7 @@ void varOrFieldDeclarations(SymTableNodePtr routineIdPtr, int32_t offset)
 	SymTableNodePtr lastIdPtr	 = nullptr;
 	SymTableNodePtr prevLastIdPtr = nullptr;
 	int32_t totalSize			  = 0;
-	while ((curToken == TKN_IDENTIFIER) || (curToken == TKN_ETERNAL) ||
-		   (curToken == TKN_STATIC))
+	while ((curToken == TKN_IDENTIFIER) || (curToken == TKN_ETERNAL) || (curToken == TKN_STATIC))
 	{
 		VariableType varType = VAR_TYPE_NORMAL;
 		if ((curToken == TKN_ETERNAL) || (curToken == TKN_STATIC))
@@ -672,11 +644,11 @@ void varOrFieldDeclarations(SymTableNodePtr routineIdPtr, int32_t offset)
 					StackItemPtr dataPtr = (StackItemPtr)stack + eternalOffset;
 					if (typePtr->form == FRM_ARRAY)
 					{
-						dataPtr->address =
-							(Address)ABLStackMallocCallback((size_t)size);
+						dataPtr->address = (Address)ABLStackMallocCallback((size_t)size);
 						if (!dataPtr->address)
-							ABL_Fatal(0, " ABL: Unable to AblStackHeap->malloc "
-										 "eternal array ");
+							ABL_Fatal(0,
+								" ABL: Unable to AblStackHeap->malloc "
+								"eternal array ");
 						memset(dataPtr->address, 0, size);
 						EternalVariablesSizes[eternalOffset] = size;
 					}
@@ -723,12 +695,10 @@ void varOrFieldDeclarations(SymTableNodePtr routineIdPtr, int32_t offset)
 		//---------------------
 		// Error synchronize...
 		if (varFlag)
-			synchronize(
-				followVariablesList, declarationStartList, statementStartList);
+			synchronize(followVariablesList, declarationStartList, statementStartList);
 		if (curToken == TKN_SEMICOLON)
 			getToken();
-		else if (varFlag &&
-				 (tokenIn(declarationStartList) || tokenIn(statementStartList)))
+		else if (varFlag && (tokenIn(declarationStartList) || tokenIn(statementStartList)))
 			syntaxError(ABL_ERR_SYNTAX_MISSING_SEMICOLON);
 	}
 	synchronize(followVarBlockList, nullptr, nullptr);

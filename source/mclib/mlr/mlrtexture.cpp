@@ -14,9 +14,9 @@ using namespace MidLevelRenderer;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLRTexture::MLRTexture(Stuff::MemoryStream* stream)
+MLRTexture::MLRTexture(std::iostream stream)
 {
-	// Verify(gos_GetCurrentHeap() == Heap);
+	// _ASSERT(gos_GetCurrentHeap() == Heap);
 	// Check_Pointer(this);
 	Check_Object(stream);
 	hint = 0;
@@ -24,10 +24,10 @@ MLRTexture::MLRTexture(Stuff::MemoryStream* stream)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLRTexture::MLRTexture(MLRTexturePool* tp, PCSTR texName, int32_t _instance,
-	int32_t handle, int32_t _hint)
+MLRTexture::MLRTexture(
+	MLRTexturePool* tp, PCSTR texName, int32_t _instance, int32_t handle, int32_t _hint)
 {
-	// Verify(gos_GetCurrentHeap() == Heap);
+	// _ASSERT(gos_GetCurrentHeap() == Heap);
 	thePool					= tp;
 	textureHandle			= handle;
 	textureName				= texName;
@@ -41,10 +41,9 @@ MLRTexture::MLRTexture(MLRTexturePool* tp, PCSTR texName, int32_t _instance,
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLRTexture::MLRTexture(
-	MLRTexturePool* tp, GOSImage* _image, int32_t handle, int32_t _hint)
+MLRTexture::MLRTexture(MLRTexturePool* tp, GOSImage* _image, int32_t handle, int32_t _hint)
 {
-	// Verify(gos_GetCurrentHeap() == Heap);
+	// _ASSERT(gos_GetCurrentHeap() == Heap);
 	thePool					= tp;
 	textureHandle			= handle;
 	image					= _image;
@@ -60,7 +59,7 @@ MLRTexture::MLRTexture(
 //
 void MLRTexture::TestInstance(void) const
 {
-	Verify((*thePool)[textureHandle]);
+	_ASSERT((*thePool)[textureHandle]);
 	Check_Object(image);
 }
 
@@ -69,7 +68,7 @@ void MLRTexture::TestInstance(void) const
 MLRTexture::MLRTexture(const MLRTexture& tex)
 {
 	Check_Object(&tex);
-	// Verify(gos_GetCurrentHeap() == Heap);
+	// _ASSERT(gos_GetCurrentHeap() == Heap);
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -85,7 +84,7 @@ MLRTexture::~MLRTexture()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLRTexture* MLRTexture::Make(Stuff::MemoryStream* stream)
+MLRTexture* MLRTexture::Make(std::iostream stream)
 {
 	Check_Object(stream);
 #ifdef _GAMEOS_HPP_
@@ -98,7 +97,7 @@ MLRTexture* MLRTexture::Make(Stuff::MemoryStream* stream)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLRTexture::Save(Stuff::MemoryStream* stream) {}
+void MLRTexture::Save(std::iostream stream) {}
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //

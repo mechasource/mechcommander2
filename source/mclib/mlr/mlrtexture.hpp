@@ -7,8 +7,8 @@
 #ifndef MLR_MLRTEXTURE_HPP
 #define MLR_MLRTEXTURE_HPP
 
-#include <stuff/memorystream.hpp>
-#include <stuff/mstring.hpp>
+// #include <stuff/memorystream.hpp>
+// #include <stuff/mstring.hpp>
 #include <stuff/affinematrix.hpp>
 
 namespace Stuff
@@ -32,20 +32,19 @@ class MLRTexture
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Constructors/Destructors
 	//
-  protected:
-	MLRTexture(Stuff::MemoryStream* stream);
+protected:
+	MLRTexture(std::iostream stream);
 
-  public:
-	MLRTexture(MLRTexturePool* pool, PCSTR name, int32_t instance,
-		int32_t handle, int32_t hint = 0);
-	MLRTexture(MLRTexturePool* pool, GOSImage* image, int32_t handle,
-		int32_t hint = 0);
+public:
+	MLRTexture(
+		MLRTexturePool* pool, PCSTR name, int32_t instance, int32_t handle, int32_t hint = 0);
+	MLRTexture(MLRTexturePool* pool, GOSImage* image, int32_t handle, int32_t hint = 0);
 	MLRTexture(const MLRTexture&);
 	~MLRTexture(void);
 
-	static MLRTexture* Make(Stuff::MemoryStream* stream);
+	static MLRTexture* Make(std::iostream stream);
 
-	void Save(Stuff::MemoryStream* stream);
+	void Save(std::iostream stream);
 
 	GOSImage* GetImage(pint32_t h = nullptr)
 	{
@@ -119,11 +118,11 @@ class MLRTexture
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Testing
 	//
-  public:
+public:
 	void TestInstance(void) const;
 
-  protected:
-	Stuff::MString textureName;
+protected:
+	std::wstring textureName;
 	int32_t textureNameHashValue;
 	int32_t instance;
 	int32_t textureHandle;
@@ -133,5 +132,5 @@ class MLRTexture
 	GOSImage* image;
 	MLRTexturePool* thePool;
 };
-}
+} // namespace MidLevelRenderer
 #endif

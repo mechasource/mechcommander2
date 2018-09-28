@@ -22,7 +22,7 @@ class AverageOf
 	: public Stuff::Signature
 #endif
 {
-  public:
+public:
 	//
 	//-----------------------------------------------------------------------
 	// Constructor, Destructor, Testing
@@ -35,7 +35,7 @@ class AverageOf
 	void TestInstance(void) const
 	{
 		Check_Pointer(array);
-		Verify(next < size);
+		_ASSERT(next < size);
 	}
 
 	//
@@ -82,7 +82,7 @@ class AverageOf
 	T CalculateLowerBound(void);
 	T CalculateUpperBound(void);
 
-  private:
+private:
 	//
 	//-----------------------------------------------------------------------
 	// Private data
@@ -120,7 +120,7 @@ template <class T> void AverageOf<T>::SetSize(size_t the_size, T initial)
 	for (size_t i = 0; i < size; i++)
 	{
 		Check_Pointer(array);
-		Verify(i < size);
+		_ASSERT(i < size);
 		array[i] = initial;
 	}
 }
@@ -137,12 +137,12 @@ template <class T> void AverageOf<T>::Add(T value)
 {
 	// Check_Object(this);
 	Check_Pointer(array);
-	Verify(next < size);
+	_ASSERT(next < size);
 	array[next] = value;
 	++next;
 	if (next >= size)
 	{
-		Verify(next == size);
+		_ASSERT(next == size);
 		next = 0;
 	}
 }
@@ -156,10 +156,10 @@ template <class T> T AverageOf<T>::CalculateAverage()
 	for (i = 0, accumulate = (T)0; i < size; i++)
 	{
 		Check_Pointer(array);
-		Verify(i < size);
+		_ASSERT(i < size);
 		accumulate += array[i];
 	}
-	Verify(!Small_Enough(static_cast<float>(size)));
+	_ASSERT(!Small_Enough(static_cast<float>(size)));
 	return (accumulate / static_cast<T>(size));
 }
 
@@ -169,20 +169,20 @@ template <class T> T AverageOf<T>::CalculateOlympicAverage()
 	// Check_Object(this);
 	size_t i;
 	T accumulate, min_value, max_value;
-	Verify(0 < size);
+	_ASSERT(0 < size);
 	min_value = array[0];
 	max_value = array[0];
 	for (i = 0, accumulate = (T)0; i < size; i++)
 	{
 		Check_Pointer(array);
-		Verify(i < size);
+		_ASSERT(i < size);
 		accumulate += array[i];
 		min_value = Min(array[i], min_value);
 		max_value = Max(array[i], max_value);
 	}
 	accumulate -= min_value;
 	accumulate -= max_value;
-	Verify(!Small_Enough(static_cast<float>(size - 2)));
+	_ASSERT(!Small_Enough(static_cast<float>(size - 2)));
 	return (accumulate / static_cast<T>(size - 2));
 }
 
@@ -218,12 +218,12 @@ template <class T> T AverageOf<T>::CalculateLowerBound()
 	// Check_Object(this);
 	size_t i;
 	T min_value;
-	Verify(0 < size);
+	_ASSERT(0 < size);
 	min_value = array[0];
 	for (i = 0; i < size; i++)
 	{
 		Check_Pointer(array);
-		Verify(i < size);
+		_ASSERT(i < size);
 		min_value = Min(array[i], min_value);
 	}
 	return min_value;
@@ -235,12 +235,12 @@ template <class T> T AverageOf<T>::CalculateUpperBound()
 	// Check_Object(this);
 	size_t i;
 	T max_value;
-	Verify(0 < size);
+	_ASSERT(0 < size);
 	max_value = array[0];
 	for (i = 0; i < size; i++)
 	{
 		Check_Pointer(array);
-		Verify(i < size);
+		_ASSERT(i < size);
 		max_value = Max(array[i], max_value);
 	}
 	return max_value;
@@ -256,7 +256,7 @@ class StaticAverageOf
 	: public Stuff::Signature
 #endif
 {
-  public:
+public:
 	//
 	//-----------------------------------------------------------------------
 	// Constructor, Destructor, Testing
@@ -305,7 +305,7 @@ class StaticAverageOf
 		return size;
 	}
 
-  private:
+private:
 	//
 	//-----------------------------------------------------------------------
 	// Private data
@@ -314,5 +314,5 @@ class StaticAverageOf
 	size_t size;
 	T total;
 };
-}
+} // namespace Stuff
 #endif

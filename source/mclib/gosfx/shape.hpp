@@ -31,20 +31,19 @@ class Shape__Specification : public Singleton__Specification
 	//----------------------------------------------------------------------
 	// Constructors/Destructors
 	//
-  protected:
-	Shape__Specification(Stuff::MemoryStream* stream, uint32_t gfx_version);
+protected:
+	Shape__Specification(std::iostream stream, uint32_t gfx_version);
 
-  public:
+public:
 	Shape__Specification(MidLevelRenderer::MLRShape* shape);
 	~Shape__Specification(void);
 
-	void Save(Stuff::MemoryStream* stream);
-	static Shape__Specification* Make(
-		Stuff::MemoryStream* stream, uint32_t gfx_version);
+	void Save(std::iostream stream);
+	static Shape__Specification* Make(std::iostream stream, uint32_t gfx_version);
 	void Copy(Shape__Specification* spec);
 	void SetShape(MidLevelRenderer::MLRShape* shape);
 
-  protected:
+protected:
 	MidLevelRenderer::MLRShape* m_shape;
 	float m_radius;
 };
@@ -58,7 +57,7 @@ class Shape : public Singleton
 	//----------------------------------------------------------------------------
 	// Class Registration Support
 	//
-  public:
+public:
 	static void __stdcall InitializeClass(void);
 	static void __stdcall TerminateClass(void);
 
@@ -67,10 +66,10 @@ class Shape : public Singleton
 	//----------------------------------------------------------------------------
 	// Class Data Support
 	//
-  protected:
+protected:
 	Shape(Specification* spec, uint32_t flags);
 
-  public:
+public:
 	static Shape* Make(Specification* spec, uint32_t flags);
 
 	Specification* GetSpecification(void)
@@ -84,13 +83,13 @@ class Shape : public Singleton
 	//----------------------------------------------------------------------------
 	// Testing
 	//
-  public:
+public:
 	void TestInstance(void) const;
 
 	//----------------------------------------------------------------------------
 	// API
 	//
-  public:
+public:
 	void Draw(DrawInfo* info);
 };
-}
+} // namespace gosFX

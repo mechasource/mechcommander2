@@ -44,9 +44,8 @@ bool NotationFile::TestClass()
 	PCSTR text_t			= "yes";
 	PCSTR text_f			= "no";
 	PCSTR string_value;
-	Page *page, *sub_page = nullptr, *page_1 = nullptr, *page_2 = nullptr,
-				*page_3 = nullptr, *page_5 = nullptr, *page_8 = nullptr,
-				*page_9 = nullptr;
+	Page *page, *sub_page = nullptr, *page_1 = nullptr, *page_2 = nullptr, *page_3 = nullptr,
+				*page_5 = nullptr, *page_8 = nullptr, *page_9 = nullptr;
 	PageIterator* pages;
 	//
 	//----------------------------------------

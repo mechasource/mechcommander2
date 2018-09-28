@@ -11,7 +11,7 @@
 //#include <gameos.hpp>
 #include <stuff/scalar.hpp>
 #include <stuff/obb.hpp>
-#include <stuff/mstring.hpp>
+// #include <stuff/mstring.hpp>
 #include <stuff/extentbox.hpp>
 
 using namespace Stuff;
@@ -91,12 +91,12 @@ ExtentBox& ExtentBox::Intersect(const ExtentBox& box_1, const ExtentBox& box_2)
 	// Check_Pointer(this);
 	Check_Object(&box_1);
 	Check_Object(&box_2);
-	Verify(box_1.minX <= box_2.maxX);
-	Verify(box_1.maxX >= box_2.minX);
-	Verify(box_1.minY <= box_2.maxY);
-	Verify(box_1.maxY >= box_2.minY);
-	Verify(box_1.minZ <= box_2.maxZ);
-	Verify(box_1.maxZ >= box_2.minZ);
+	_ASSERT(box_1.minX <= box_2.maxX);
+	_ASSERT(box_1.maxX >= box_2.minX);
+	_ASSERT(box_1.minY <= box_2.maxY);
+	_ASSERT(box_1.maxY >= box_2.minY);
+	_ASSERT(box_1.minZ <= box_2.maxZ);
+	_ASSERT(box_1.maxZ >= box_2.minZ);
 	minX = Max(box_1.minX, box_2.minX);
 	maxX = Min(box_1.maxX, box_2.maxX);
 	minY = Max(box_1.minY, box_2.minY);
@@ -157,8 +157,8 @@ bool ExtentBox::Contains(const Vector3D& point) const
 {
 	// Check_Object(this);
 	Check_Object(&point);
-	return minX <= point.x && maxX >= point.x && minY <= point.y &&
-		   maxY >= point.y && minZ <= point.z && maxZ >= point.z;
+	return minX <= point.x && maxX >= point.x && minY <= point.y && maxY >= point.y &&
+		minZ <= point.z && maxZ >= point.z;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -167,8 +167,8 @@ bool ExtentBox::Contains(const ExtentBox& box) const
 {
 	// Check_Object(this);
 	Check_Object(&box);
-	return minX <= box.minX && maxX >= box.maxX && minY <= box.minY &&
-		   maxY >= box.maxY && minZ <= box.minZ && maxZ >= box.maxZ;
+	return minX <= box.minX && maxX >= box.maxX && minY <= box.minY && maxY >= box.maxY &&
+		minZ <= box.minZ && maxZ >= box.maxZ;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -177,8 +177,8 @@ bool ExtentBox::Intersects(const ExtentBox& box) const
 {
 	// Check_Object(this);
 	Check_Object(&box);
-	return minX <= box.maxX && maxX >= box.minX && minY <= box.maxY &&
-		   maxY >= box.minY && minZ <= box.maxZ && maxZ >= box.minZ;
+	return minX <= box.maxX && maxX >= box.minX && minY <= box.maxY && maxY >= box.minY &&
+		minZ <= box.maxZ && maxZ >= box.minZ;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -194,10 +194,7 @@ void ExtentBox::GetCenterpoint(Point3D* point) const
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void ExtentBox::TestInstance(void) const
-{
-	Verify(minX <= maxX && minY <= maxY && minZ <= maxZ);
-}
+void ExtentBox::TestInstance(void) const { _ASSERT(minX <= maxX && minY <= maxY && minZ <= maxZ); }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
@@ -205,8 +202,8 @@ void ExtentBox::TestInstance(void) const
 void Spew(PCSTR group, const ExtentBox& box)
 {
 	Check_Object(&box);
-	SPEW((group, "[%f..%f,%f..%f,%f..%f]+", box.minX, box.maxX, box.minY,
-		box.maxY, box.minZ, box.maxZ));
+	SPEW((group, "[%f..%f,%f..%f,%f..%f]+", box.minX, box.maxX, box.minY, box.maxY, box.minZ,
+		box.maxZ));
 }
 #endif
 
@@ -218,27 +215,27 @@ void Stuff::Convert_From_Ascii(PCSTR str, ExtentBox* extent_box)
 {
 	Check_Pointer(str);
 	Check_Object(extent_box);
-	MString parse_string(str);
+	std::wstring parse_string(str);
 	Check_Object(&parse_string);
-	MString token	= parse_string.GetNthToken(0);
-	extent_box->minX = AtoF(token);
-	token			 = parse_string.GetNthToken(1);
-	extent_box->minY = AtoF(token);
-	token			 = parse_string.GetNthToken(2);
-	extent_box->minZ = AtoF(token);
-	token			 = parse_string.GetNthToken(3);
-	extent_box->maxX = AtoF(token);
-	token			 = parse_string.GetNthToken(4);
-	extent_box->maxY = AtoF(token);
-	token			 = parse_string.GetNthToken(5);
-	extent_box->maxZ = AtoF(token);
+	std::wstring token = parse_string.GetNthToken(0);
+	extent_box->minX   = AtoF(token);
+	token			   = parse_string.GetNthToken(1);
+	extent_box->minY   = AtoF(token);
+	token			   = parse_string.GetNthToken(2);
+	extent_box->minZ   = AtoF(token);
+	token			   = parse_string.GetNthToken(3);
+	extent_box->maxX   = AtoF(token);
+	token			   = parse_string.GetNthToken(4);
+	extent_box->maxY   = AtoF(token);
+	token			   = parse_string.GetNthToken(5);
+	extent_box->maxZ   = AtoF(token);
 	Check_Object(extent_box);
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void Stuff::Use_Scalar_In_Sorted_Array(DynamicArrayOf<float>* values,
-	float value, puint32_t max_index, uint32_t block_size, float threshold)
+void Stuff::Use_Scalar_In_Sorted_Array(std::vector<float>* values, float value, puint32_t max_index,
+	uint32_t block_size, float threshold)
 {
 	Check_Object(values);
 	Check_Pointer(max_index);
@@ -265,23 +262,22 @@ void Stuff::Use_Scalar_In_Sorted_Array(DynamicArrayOf<float>* values,
 			bottom = middle + 1;
 		}
 	}
-	Verify(top == bottom);
+	_ASSERT(top == bottom);
 	//
 	//-----------------------------------------------------------------------
 	// Since we got here, a new value must be added to the table.  First make
 	// room in the table
 	//-----------------------------------------------------------------------
 	//
-	if (*max_index == values->GetLength())
+	if (*max_index == values.size())
 	{
 		values->SetLength(*max_index + block_size);
 	}
 	uint32_t to_move = *max_index - bottom;
-	Verify(to_move <= *max_index);
+	_ASSERT(to_move <= *max_index);
 	if (to_move > 0)
 	{
-		memmove(&(*values)[bottom + 1], &(*values)[bottom],
-			to_move * sizeof(value));
+		memmove(&(*values)[bottom + 1], &(*values)[bottom], to_move * sizeof(value));
 	}
 	++(*max_index);
 	(*values)[bottom] = value;
@@ -289,8 +285,7 @@ void Stuff::Use_Scalar_In_Sorted_Array(DynamicArrayOf<float>* values,
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void Stuff::Find_Planes_Of_Boxes(
-	DynamicArrayOf<Plane>* planes, const DynamicArrayOf<ExtentBox>& boxes)
+void Stuff::Find_Planes_Of_Boxes(std::vector<Plane>* planes, const std::vector<ExtentBox>& boxes)
 {
 	Check_Object(planes);
 	Check_Object(&boxes);
@@ -299,15 +294,15 @@ void Stuff::Find_Planes_Of_Boxes(
 	// Figure out all the unique axis components used by the boxes
 	//------------------------------------------------------------
 	//
-	DynamicArrayOf<float> xs;
-	DynamicArrayOf<float> ys;
-	DynamicArrayOf<float> zs;
+	std::vector<float> xs;
+	std::vector<float> ys;
+	std::vector<float> zs;
 	uint32_t max_x = 0;
 	uint32_t max_y = 0;
 	uint32_t max_z = 0;
 	size_t count   = boxes.GetLength();
 	uint32_t i;
-	Verify(count > 0);
+	_ASSERT(count > 0);
 	for (i = 0; i < count; ++i)
 	{
 		Use_Scalar_In_Sorted_Array(&xs, boxes[i].minX, &max_x, 10);
@@ -332,7 +327,7 @@ void Stuff::Find_Planes_Of_Boxes(
 	Plane* plane = &(*planes)[0];
 	for (i = 0; i < max_x; ++i)
 	{
-		Verify(static_cast<uint32_t>(plane - &(*planes)[0]) < count);
+		_ASSERT(static_cast<uint32_t>(plane - &(*planes)[0]) < count);
 		plane->normal.x = 1.0f;
 		plane->normal.y = 0.0f;
 		plane->normal.z = 0.0f;
@@ -346,7 +341,7 @@ void Stuff::Find_Planes_Of_Boxes(
 	//
 	for (i = 0; i < max_y; ++i)
 	{
-		Verify(static_cast<uint32_t>(plane - &(*planes)[0]) < count);
+		_ASSERT(static_cast<uint32_t>(plane - &(*planes)[0]) < count);
 		plane->normal.x = 0.0f;
 		plane->normal.y = 1.0f;
 		plane->normal.z = 0.0f;
@@ -360,7 +355,7 @@ void Stuff::Find_Planes_Of_Boxes(
 	//
 	for (i = 0; i < max_z; ++i)
 	{
-		Verify(static_cast<uint32_t>(plane - &(*planes)[0]) < count);
+		_ASSERT(static_cast<uint32_t>(plane - &(*planes)[0]) < count);
 		plane->normal.x = 0.0f;
 		plane->normal.y = 0.0f;
 		plane->normal.z = 1.0f;

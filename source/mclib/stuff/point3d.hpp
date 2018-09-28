@@ -22,7 +22,7 @@ class Vector4D;
 
 class Point3D : public Vector3D
 {
-  public:
+public:
 	static const Point3D Identity; // ??? strange
 
 	//
@@ -151,6 +151,6 @@ class Point3D : public Vector3D
 
 	static bool TestClass(void);
 };
-}
+} // namespace Stuff
 // #include <stuff/affinematrix.hpp>
 #endif

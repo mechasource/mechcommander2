@@ -18,7 +18,7 @@
 //---------------------------------------------------------------------------
 class Element
 {
-  public:
+public:
 	float depth;
 	bool drawNormal;
 

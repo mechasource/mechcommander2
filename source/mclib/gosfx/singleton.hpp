@@ -22,16 +22,16 @@ class Singleton__Specification : public Effect__Specification
 	//----------------------------------------------------------------------
 	// Constructors/Destructors
 	//
-  protected:
-	Singleton__Specification(Stuff::RegisteredClass::ClassID class_id,
-		Stuff::MemoryStream* stream, uint32_t gfx_version);
+protected:
+	Singleton__Specification(Stuff::RegisteredClass::ClassID class_id, std::iostream stream,
+		uint32_t gfx_version);
 
-  public:
+public:
 	Singleton__Specification(Stuff::RegisteredClass::ClassID class_id);
 
 	void Copy(Singleton__Specification* spec);
 
-	void Save(Stuff::MemoryStream* stream);
+	void Save(std::iostream stream);
 
 	void BuildDefaults(void);
 
@@ -40,11 +40,10 @@ class Singleton__Specification : public Effect__Specification
 	//-------------------------------------------------------------------------
 	// FCurves
 	//
-  public:
-	SeededCurveOf<ComplexCurve, LinearCurve, Curve::e_ComplexLinearType> m_red,
-		m_green, m_blue, m_alpha;
-	SeededCurveOf<ComplexCurve, ComplexCurve, Curve::e_ComplexComplexType>
-		m_scale;
+public:
+	SeededCurveOf<ComplexCurve, LinearCurve, Curve::e_ComplexLinearType> m_red, m_green, m_blue,
+		m_alpha;
+	SeededCurveOf<ComplexCurve, ComplexCurve, Curve::e_ComplexComplexType> m_scale;
 
 	bool m_alignZUsingX, m_alignZUsingY;
 };
@@ -55,7 +54,7 @@ class Singleton__Specification : public Effect__Specification
 
 class _declspec(novtable) Singleton : public Effect
 {
-  public:
+public:
 	static void __stdcall InitializeClass(void);
 	static void __stdcall TerminateClass(void);
 
@@ -63,15 +62,15 @@ class _declspec(novtable) Singleton : public Effect
 
 	typedef Singleton__Specification Specification;
 
-  protected:
-	Stuff::DynamicArrayOf<char> m_data;
+protected:
+	std::vector<char> m_data;
 
 	Singleton(ClassData* class_data, Specification* spec, uint32_t flags);
 
 	//----------------------------------------------------------------------------
 	// Class Data Support
 	//
-  public:
+public:
 	Specification* GetSpecification()
 	{
 		// Check_Object(this);
@@ -81,17 +80,17 @@ class _declspec(novtable) Singleton : public Effect
 	//----------------------------------------------------------------------------
 	// API
 	//
-  public:
+public:
 	bool Execute(ExecuteInfo* info);
 
-  protected:
+protected:
 	Stuff::RGBAColor m_color;
 	float m_radius, m_scale;
 
 	//----------------------------------------------------------------------------
 	// Testing
 	//
-  public:
+public:
 	void TestInstance(void) const;
 };
-}
+} // namespace gosFX

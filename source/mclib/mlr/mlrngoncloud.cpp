@@ -19,10 +19,10 @@ extern uint32_t gShowClippedPolys;
 //#######################    MLRNGonCloud    ##################################
 //#############################################################################
 
-Stuff::DynamicArrayOf<MLRClippingState>* MLRNGonCloud::clipPerVertex;
-Stuff::DynamicArrayOf<Stuff::Vector4D>* MLRNGonCloud::clipExtraCoords;
-Stuff::DynamicArrayOf<Stuff::RGBAColor>* MLRNGonCloud::clipExtraColors;
-Stuff::DynamicArrayOf<int32_t>* MLRNGonCloud::clipExtraLength;
+std::vector<MLRClippingState>* MLRNGonCloud::clipPerVertex;
+std::vector<Stuff::Vector4D>* MLRNGonCloud::clipExtraCoords;
+std::vector<Stuff::RGBAColor>* MLRNGonCloud::clipExtraColors;
+std::vector<int32_t>* MLRNGonCloud::clipExtraLength;
 
 MLRNGonCloud::ClassData* MLRNGonCloud::DefaultData = nullptr;
 
@@ -30,22 +30,18 @@ MLRNGonCloud::ClassData* MLRNGonCloud::DefaultData = nullptr;
 //
 void MLRNGonCloud::InitializeClass()
 {
-	Verify(!DefaultData);
-	// Verify(gos_GetCurrentHeap() == StaticHeap);
-	DefaultData = new ClassData(MLRNGonCloudClassID,
-		"MidLevelRenderer::MLRNGonCloud", MLREffect::DefaultData);
+	_ASSERT(!DefaultData);
+	// _ASSERT(gos_GetCurrentHeap() == StaticHeap);
+	DefaultData = new ClassData(
+		MLRNGonCloudClassID, "MidLevelRenderer::MLRNGonCloud", MLREffect::DefaultData);
 	Register_Object(DefaultData);
-	clipPerVertex = new Stuff::DynamicArrayOf<MLRClippingState>(
-		Limits::Max_Number_Vertices_Per_Mesh);
+	clipPerVertex = new std::vector<MLRClippingState>(Limits::Max_Number_Vertices_Per_Mesh);
 	Register_Object(clipPerVertex);
-	clipExtraCoords = new Stuff::DynamicArrayOf<Stuff::Vector4D>(
-		Limits::Max_Number_Vertices_Per_Mesh);
+	clipExtraCoords = new std::vector<Stuff::Vector4D>(Limits::Max_Number_Vertices_Per_Mesh);
 	Register_Object(clipExtraCoords);
-	clipExtraColors = new Stuff::DynamicArrayOf<Stuff::RGBAColor>(
-		Limits::Max_Number_Vertices_Per_Mesh);
+	clipExtraColors = new std::vector<Stuff::RGBAColor>(Limits::Max_Number_Vertices_Per_Mesh);
 	Register_Object(clipExtraColors);
-	clipExtraLength = new Stuff::DynamicArrayOf<int32_t>(
-		Limits::Max_Number_Primitives_Per_Frame);
+	clipExtraLength = new std::vector<int32_t>(Limits::Max_Number_Primitives_Per_Frame);
 	Register_Object(clipExtraLength);
 }
 
@@ -68,14 +64,13 @@ void MLRNGonCloud::TerminateClass()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLRNGonCloud::MLRNGonCloud(uint32_t vertices, uint32_t nr)
-	: MLREffect(nr, DefaultData)
+MLRNGonCloud::MLRNGonCloud(uint32_t vertices, uint32_t nr) : MLREffect(nr, DefaultData)
 {
-	// Verify(gos_GetCurrentHeap() == Heap);
+	// _ASSERT(gos_GetCurrentHeap() == Heap);
 	usedNrOfNGons = nullptr;
 	numOfVertices = vertices;
 	// Check_Pointer(this);
-	Verify(vertices * nr <= Limits::Max_Number_Vertices_Per_Mesh);
+	_ASSERT(vertices * nr <= Limits::Max_Number_Vertices_Per_Mesh);
 	specialClipColors.SetLength(vertices);
 	drawMode = SortData::TriList;
 }
@@ -89,20 +84,20 @@ MLRNGonCloud::~MLRNGonCloud()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLRNGonCloud::SetData(pcsize_t count, const Stuff::Point3D* point_data,
-	const Stuff::RGBAColor* color_data)
+void MLRNGonCloud::SetData(
+	pcsize_t count, const Stuff::Point3D* point_data, const Stuff::RGBAColor* color_data)
 {
 	// Check_Pointer(this);
 	usedNrOfNGons = count;
-	Verify(*usedNrOfNGons <= maxNrOf);
+	_ASSERT(*usedNrOfNGons <= maxNrOf);
 	points = point_data;
 	colors = color_data;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLRNGonCloud::Draw(DrawEffectInformation* dInfo,
-	GOSVertexPool* allVerticesToDraw, MLRSorter* sorter)
+void MLRNGonCloud::Draw(
+	DrawEffectInformation* dInfo, GOSVertexPool* allVerticesToDraw, MLRSorter* sorter)
 {
 	// Check_Object(this);
 	worldToEffect.Invert(*dInfo->effectToWorld);
@@ -158,9 +153,8 @@ uint32_t MLRNGonCloud::Clip(MLRClippingState clippingFlags, GOSVertexPool* vt)
 				uint32_t outColor = GOSCopyColor(&colors[2 * i + 1]);
 				for (size_t z = 1; z < numOfVertices - 1; z++)
 				{
-					GOSCopyTriangleData(&gos_vertices[numGOSVertices],
-						transformedCoords->GetData(), j, z + j + 1, z + j,
-						true);
+					GOSCopyTriangleData(&gos_vertices[numGOSVertices], transformedCoords->GetData(),
+						j, z + j + 1, z + j, true);
 					gos_vertices[numGOSVertices].argb	 = inColor;
 					gos_vertices[numGOSVertices + 1].argb = outColor;
 					gos_vertices[numGOSVertices + 2].argb = outColor;
@@ -173,8 +167,7 @@ uint32_t MLRNGonCloud::Clip(MLRClippingState clippingFlags, GOSVertexPool* vt)
 		}
 		return visible;
 	}
-	int32_t myNumberUsedClipVertex, myNumberUsedClipIndex,
-		myNumberUsedClipLength;
+	int32_t myNumberUsedClipVertex, myNumberUsedClipIndex, myNumberUsedClipLength;
 	myNumberUsedClipVertex = 0;
 	myNumberUsedClipIndex  = 0;
 	myNumberUsedClipLength = 0;
@@ -224,8 +217,7 @@ uint32_t MLRNGonCloud::Clip(MLRClippingState clippingFlags, GOSVertexPool* vt)
 			}
 #endif
 		}
-		theAnd = theOr =
-			0; // ASSUME NO CLIPPING NEEDED FOR MC2.  Its just not done here!
+		theAnd = theOr = 0; // ASSUME NO CLIPPING NEEDED FOR MC2.  Its just not done here!
 		//
 		//-------------------------------------------------------------------
 		// If any bit is set for all vertices, then the polygon is completely
@@ -245,8 +237,8 @@ uint32_t MLRNGonCloud::Clip(MLRClippingState clippingFlags, GOSVertexPool* vt)
 			uint32_t outColor = GOSCopyColor(&colors[2 * i + 1]);
 			for (size_t z = 1; z < numOfVertices - 1; z++)
 			{
-				GOSCopyTriangleData(&gos_vertices[numGOSVertices],
-					transformedCoords->GetData(), j, z + j + 1, z + j, true);
+				GOSCopyTriangleData(&gos_vertices[numGOSVertices], transformedCoords->GetData(), j,
+					z + j + 1, z + j, true);
 				gos_vertices[numGOSVertices].argb	 = inColor;
 				gos_vertices[numGOSVertices + 1].argb = outColor;
 				gos_vertices[numGOSVertices + 2].argb = outColor;
@@ -295,9 +287,8 @@ uint32_t MLRNGonCloud::Clip(MLRClippingState clippingFlags, GOSVertexPool* vt)
 					// directly to the clipping buffer
 					//----------------------------------------------------
 					//
-					int32_t clipped_index =
-						myNumberUsedClipVertex + numberVerticesPerPolygon;
-					theTest = clipPerVertex[k];
+					int32_t clipped_index = myNumberUsedClipVertex + numberVerticesPerPolygon;
+					theTest				  = clipPerVertex[k];
 					if (theTest == 0)
 					{
 						clipExtraCoords[clipped_index] = transformedCoords[k];
@@ -334,7 +325,7 @@ uint32_t MLRNGonCloud::Clip(MLRClippingState clippingFlags, GOSVertexPool* vt)
 					//
 					else if (clipPerVertex[k1] != 0)
 					{
-						Verify(clipPerVertex[k1] == clipPerVertex[k]);
+						_ASSERT(clipPerVertex[k1] == clipPerVertex[k]);
 						continue;
 					}
 					//
@@ -360,9 +351,8 @@ uint32_t MLRNGonCloud::Clip(MLRClippingState clippingFlags, GOSVertexPool* vt)
 							// Find the clipping interval from bc0 to bc1
 							//-------------------------------------------
 							//
-							a = GetLerpFactor(l, (*transformedCoords)[k],
-								(*transformedCoords)[k1]);
-							Verify(a >= 0.0f && a <= 1.0f);
+							a = GetLerpFactor(l, (*transformedCoords)[k], (*transformedCoords)[k1]);
+							_ASSERT(a >= 0.0f && a <= 1.0f);
 							ct = l;
 							break;
 						}
@@ -423,14 +413,12 @@ uint32_t MLRNGonCloud::Clip(MLRClippingState clippingFlags, GOSVertexPool* vt)
 				// Point to the destination buffer
 				//--------------------------------
 				//
-				dstPolygon.coords = clipBuffer[dstBuffer].coords.GetData();
-				dstPolygon.colors = clipBuffer[dstBuffer].colors.GetData();
-				dstPolygon.texCoords =
-					clipBuffer[dstBuffer].texCoords.GetData();
-				dstPolygon.clipPerVertex =
-					clipBuffer[dstBuffer].clipPerVertex.GetData();
-				dstPolygon.flags  = srcPolygon.flags;
-				dstPolygon.length = 0;
+				dstPolygon.coords		 = clipBuffer[dstBuffer].coords.GetData();
+				dstPolygon.colors		 = clipBuffer[dstBuffer].colors.GetData();
+				dstPolygon.texCoords	 = clipBuffer[dstBuffer].texCoords.GetData();
+				dstPolygon.clipPerVertex = clipBuffer[dstBuffer].clipPerVertex.GetData();
+				dstPolygon.flags		 = srcPolygon.flags;
+				dstPolygon.length		 = 0;
 				//
 				//-----------------------------------------------------------
 				// Spin through each plane that clipped the primitive and use
@@ -453,7 +441,7 @@ uint32_t MLRNGonCloud::Clip(MLRClippingState clippingFlags, GOSVertexPool* vt)
 							//
 							for (k = 0; k < srcPolygon.length; k++)
 							{
-								k1 = (k + 1 < srcPolygon.length) ? k + 1 : 0;
+								k1		= (k + 1 < srcPolygon.length) ? k + 1 : 0;
 								theTest = srcPolygon.clipPerVertex[k];
 								//
 								//----------------------------------------------------
@@ -463,13 +451,10 @@ uint32_t MLRNGonCloud::Clip(MLRClippingState clippingFlags, GOSVertexPool* vt)
 								//
 								if (theTest.IsClipped(mask) == 0)
 								{
-									dstPolygon.coords[dstPolygon.length] =
-										srcPolygon.coords[k];
-									dstPolygon
-										.clipPerVertex[dstPolygon.length] =
+									dstPolygon.coords[dstPolygon.length] = srcPolygon.coords[k];
+									dstPolygon.clipPerVertex[dstPolygon.length] =
 										srcPolygon.clipPerVertex[k];
-									dstPolygon.colors[dstPolygon.length] =
-										srcPolygon.colors[k];
+									dstPolygon.colors[dstPolygon.length] = srcPolygon.colors[k];
 									dstPolygon.length++;
 									//
 									//-------------------------------------------------------
@@ -478,8 +463,7 @@ uint32_t MLRNGonCloud::Clip(MLRClippingState clippingFlags, GOSVertexPool* vt)
 									// so just move on to the next vertex
 									//-------------------------------------------------------
 									//
-									if (srcPolygon.clipPerVertex[k1].IsClipped(
-											mask) == 0)
+									if (srcPolygon.clipPerVertex[k1].IsClipped(mask) == 0)
 									{
 										continue;
 									}
@@ -494,14 +478,10 @@ uint32_t MLRNGonCloud::Clip(MLRClippingState clippingFlags, GOSVertexPool* vt)
 								// same space as the first vertex
 								//---------------------------------------------------------
 								//
-								else if (srcPolygon.clipPerVertex[k1].IsClipped(
-											 mask) != 0)
+								else if (srcPolygon.clipPerVertex[k1].IsClipped(mask) != 0)
 								{
-									Verify(
-										srcPolygon.clipPerVertex[k1].IsClipped(
-											mask) ==
-										srcPolygon.clipPerVertex[k].IsClipped(
-											mask));
+									_ASSERT(srcPolygon.clipPerVertex[k1].IsClipped(mask) ==
+										srcPolygon.clipPerVertex[k].IsClipped(mask));
 									continue;
 								}
 								//
@@ -511,19 +491,17 @@ uint32_t MLRNGonCloud::Clip(MLRClippingState clippingFlags, GOSVertexPool* vt)
 								//
 								bc0 = GetBC(l, srcPolygon.coords[k]);
 								bc1 = GetBC(l, srcPolygon.coords[k1]);
-								Verify(!Close_Enough(bc0, bc1));
+								_ASSERT(!Close_Enough(bc0, bc1));
 								a = bc0 / (bc0 - bc1);
-								Verify(a >= 0.0f && a <= 1.0f);
+								_ASSERT(a >= 0.0f && a <= 1.0f);
 								//
 								//------------------------------
 								// Lerp the homogeneous position
 								//------------------------------
 								//
 								dstPolygon.coords[dstPolygon.length].Lerp(
-									srcPolygon.coords[k], srcPolygon.coords[k1],
-									a);
-								DoCleanClipTrick(
-									dstPolygon.coords[dstPolygon.length], l);
+									srcPolygon.coords[k], srcPolygon.coords[k1], a);
+								DoCleanClipTrick(dstPolygon.coords[dstPolygon.length], l);
 								//
 								//----------------------------------------------------------
 								// If there are colors, lerp them in screen
@@ -531,16 +509,14 @@ uint32_t MLRNGonCloud::Clip(MLRClippingState clippingFlags, GOSVertexPool* vt)
 								//----------------------------------------------------------
 								//
 								dstPolygon.colors[dstPolygon.length].Lerp(
-									srcPolygon.colors[k], srcPolygon.colors[k1],
-									a);
+									srcPolygon.colors[k], srcPolygon.colors[k1], a);
 								//
 								//-------------------------------------
 								// We have to generate a new clip state
 								//-------------------------------------
 								//
-								dstPolygon.clipPerVertex[dstPolygon.length]
-									.Clip4dVertex(
-										&dstPolygon.coords[dstPolygon.length]);
+								dstPolygon.clipPerVertex[dstPolygon.length].Clip4dVertex(
+									&dstPolygon.coords[dstPolygon.length]);
 								//
 								//----------------------------------
 								// Bump the new polygon vertex count
@@ -554,22 +530,18 @@ uint32_t MLRNGonCloud::Clip(MLRClippingState clippingFlags, GOSVertexPool* vt)
 							// preparation for the next plane test
 							//-----------------------------------------------
 							//
-							srcPolygon.coords =
-								clipBuffer[dstBuffer].coords.GetData();
-							srcPolygon.colors =
-								clipBuffer[dstBuffer].colors.GetData();
+							srcPolygon.coords = clipBuffer[dstBuffer].coords.GetData();
+							srcPolygon.colors = clipBuffer[dstBuffer].colors.GetData();
 							//						srcPolygon.texCoords =
-							//clipBuffer[dstBuffer].texCoords.GetData();
+							// clipBuffer[dstBuffer].texCoords.GetData();
 							srcPolygon.clipPerVertex =
 								clipBuffer[dstBuffer].clipPerVertex.GetData();
 							srcPolygon.length = dstPolygon.length;
 							dstBuffer		  = !dstBuffer;
-							dstPolygon.coords =
-								clipBuffer[dstBuffer].coords.GetData();
-							dstPolygon.colors =
-								clipBuffer[dstBuffer].colors.GetData();
+							dstPolygon.coords = clipBuffer[dstBuffer].coords.GetData();
+							dstPolygon.colors = clipBuffer[dstBuffer].colors.GetData();
 							//						dstPolygon.texCoords =
-							//clipBuffer[dstBuffer].texCoords.GetData();
+							// clipBuffer[dstBuffer].texCoords.GetData();
 							dstPolygon.clipPerVertex =
 								clipBuffer[dstBuffer].clipPerVertex.GetData();
 							dstPolygon.length = 0;
@@ -584,7 +556,7 @@ uint32_t MLRNGonCloud::Clip(MLRClippingState clippingFlags, GOSVertexPool* vt)
 					theOr == theNewOr;
 					loop++;
 				} while (theNewOr != 0 && loop--);
-				Verify(theNewOr == 0);
+				_ASSERT(theNewOr == 0);
 				//
 				//--------------------------------------------------
 				// Move the most recent polygon into the clip buffer
@@ -620,10 +592,9 @@ uint32_t MLRNGonCloud::Clip(MLRClippingState clippingFlags, GOSVertexPool* vt)
 			int32_t stride = clipExtraLength[i];
 			for (k = 1; k < stride - 1; k++)
 			{
-				Verify((vt->GetLast() + 3 + numGOSVertices) < vt->GetLength());
-				GOSCopyTriangleData(&gos_vertices[numGOSVertices],
-					clipExtraCoords.GetData(), clipExtraColors.GetData(), j,
-					j + k + 1, j + k, true);
+				_ASSERT((vt->GetLast() + 3 + numGOSVertices) < vt.size());
+				GOSCopyTriangleData(&gos_vertices[numGOSVertices], clipExtraCoords.GetData(),
+					clipExtraColors.GetData(), j, j + k + 1, j + k, true);
 #ifdef LAB_ONLY
 				if (gShowClippedPolys)
 				{
@@ -662,6 +633,6 @@ void MLRNGonCloud::TestInstance(void) const
 	if (usedNrOfNGons)
 	{
 		Check_Pointer(usedNrOfNGons);
-		Verify(*usedNrOfNGons <= maxNrOf);
+		_ASSERT(*usedNrOfNGons <= maxNrOf);
 	}
 }

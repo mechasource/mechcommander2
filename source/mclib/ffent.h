@@ -15,7 +15,7 @@
 #pragma pack(1)
 typedef struct
 {
-	int32_t offset;
+	int32_t position;
 	char name[250];
 } FILEENTRY, *LPFILEENTRY;
 #pragma pack()

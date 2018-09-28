@@ -14,7 +14,7 @@
 
 class HashTestPlug : public Plug
 {
-  public:
+public:
 	int32_t value;
 
 	HashTestPlug(int32_t value);
@@ -23,7 +23,7 @@ class HashTestPlug : public Plug
 
 class HashTestNode : public Node
 {
-  public:
+public:
 	HashOf<HashTestPlug*, int32_t> hash1;
 	HashOf<HashTestPlug*, int32_t> hash2;
 
@@ -34,16 +34,12 @@ class HashTestNode : public Node
 	bool RunTest();
 };
 
-HashTestPlug::HashTestPlug(int32_t value) : Plug(DefaultData)
-{
-	this->value = value;
-}
+HashTestPlug::HashTestPlug(int32_t value) : Plug(DefaultData) { this->value = value; }
 
 HashTestPlug::~HashTestPlug() {}
 
 HashTestNode::HashTestNode()
-	: Node(DefaultData), hash1(TEST_COUNT / 2, this, true),
-	  hash2(TEST_COUNT / 2, this, true)
+	: Node(DefaultData), hash1(TEST_COUNT / 2, this, true), hash2(TEST_COUNT / 2, this, true)
 {
 }
 
@@ -63,8 +59,7 @@ bool Hash::ProfileClass()
 #endif
 	Test_Message("Hash::ProfileClass \n");
 	testNode.RunProfile();
-	SPEW((GROUP_STUFF_TEST, "Hash::ProfileClass elapsed = %f",
-		gos_GetHiResTime() - startTicks));
+	SPEW((GROUP_STUFF_TEST, "Hash::ProfileClass elapsed = %f", gos_GetHiResTime() - startTicks));
 	return true;
 }
 
@@ -119,8 +114,7 @@ bool HashTestNode::RunProfile()
 		hash1.AddValue(testPlug1, values[i]);
 		hash2.AddValue(testPlug1, values[i]);
 	}
-	SPEW((GROUP_STUFF_TEST, "HashTestNode::RunTest Create = %f",
-		gos_GetHiResTime() - startTicks));
+	SPEW((GROUP_STUFF_TEST, "HashTestNode::RunTest Create = %f", gos_GetHiResTime() - startTicks));
 	/*
 	 * Iterate over both sockets
 	 */
@@ -141,8 +135,7 @@ bool HashTestNode::RunProfile()
 		}
 		Test_Assumption(i == TEST_COUNT);
 	}
-	SPEW((GROUP_STUFF_TEST, "HashTestNode::RunTest Iterate = %f",
-		gos_GetHiResTime() - startTicks));
+	SPEW((GROUP_STUFF_TEST, "HashTestNode::RunTest Iterate = %f", gos_GetHiResTime() - startTicks));
 	/*
 	 * Find
 	 */
@@ -155,8 +148,7 @@ bool HashTestNode::RunProfile()
 			Test_Assumption(testPlug1 == testPlug2);
 		}
 	}
-	SPEW((GROUP_STUFF_TEST, "HashTestNode::RunTest Find = %f",
-		gos_GetHiResTime() - startTicks));
+	SPEW((GROUP_STUFF_TEST, "HashTestNode::RunTest Find = %f", gos_GetHiResTime() - startTicks));
 	/*
 	 * Destroy from hash1, verify with hash2
 	 */
@@ -174,8 +166,7 @@ bool HashTestNode::RunProfile()
 		Test_Assumption(i == TEST_COUNT);
 		Test_Assumption(iterator2.GetCurrent() == nullptr);
 	}
-	SPEW((GROUP_STUFF_TEST, "HashTestNode::RunTest Destroy = %f",
-		gos_GetHiResTime() - startTicks));
+	SPEW((GROUP_STUFF_TEST, "HashTestNode::RunTest Destroy = %f", gos_GetHiResTime() - startTicks));
 	return true;
 }
 

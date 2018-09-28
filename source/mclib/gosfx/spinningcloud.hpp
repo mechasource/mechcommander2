@@ -26,16 +26,16 @@ class SpinningCloud__Specification : public ParticleCloud__Specification
 	//----------------------------------------------------------------------
 	// Constructors/Destructors
 	//
-  protected:
+protected:
 	SpinningCloud__Specification(Stuff::RegisteredClass::ClassID class_id,
-		Stuff::MemoryStream* stream, uint32_t gfx_version);
+		std::iostream stream, uint32_t gfx_version);
 
-  public:
+public:
 	SpinningCloud__Specification(Stuff::RegisteredClass::ClassID class_id);
 
 	void Copy(SpinningCloud__Specification* spec);
 
-	void Save(Stuff::MemoryStream* stream);
+	void Save(std::iostream stream);
 
 	void BuildDefaults(void);
 
@@ -44,14 +44,11 @@ class SpinningCloud__Specification : public ParticleCloud__Specification
 	//-------------------------------------------------------------------------
 	// FCurves
 	//
-  public:
-	SeededCurveOf<ConstantCurve, LinearCurve, Curve::e_ConstantLinearType>
-		m_pSpin;
-	SeededCurveOf<ComplexCurve, ComplexCurve, Curve::e_ComplexComplexType>
-		m_pScale;
+public:
+	SeededCurveOf<ConstantCurve, LinearCurve, Curve::e_ConstantLinearType> m_pSpin;
+	SeededCurveOf<ComplexCurve, ComplexCurve, Curve::e_ComplexComplexType> m_pScale;
 
-	bool m_randomStartingRotation, m_alignYUsingVelocity, m_alignZUsingX,
-		m_alignZUsingY;
+	bool m_randomStartingRotation, m_alignYUsingVelocity, m_alignZUsingX, m_alignZUsingY;
 };
 
 //############################################################################
@@ -61,7 +58,7 @@ class SpinningCloud__Specification : public ParticleCloud__Specification
 
 class SpinningCloud__Particle : public ParticleCloud__Particle
 {
-  public:
+public:
 	Stuff::Vector3D m_angularVelocity;
 	Stuff::Point3D m_localTranslation, m_worldTranslation;
 	Stuff::UnitQuaternion m_localRotation, m_worldRotation;
@@ -77,7 +74,7 @@ class _declspec(novtable) SpinningCloud : public ParticleCloud
 	//----------------------------------------------------------------------------
 	// Class Registration Support
 	//
-  public:
+public:
 	static void __stdcall InitializeClass(void);
 	static void __stdcall TerminateClass(void);
 
@@ -86,14 +83,14 @@ class _declspec(novtable) SpinningCloud : public ParticleCloud
 	//----------------------------------------------------------------------------
 	// Class Data Support
 	//
-  public:
+public:
 	typedef SpinningCloud__Specification Specification;
 	typedef SpinningCloud__Particle Particle;
 
-  protected:
+protected:
 	SpinningCloud(ClassData* class_data, Specification* spec, uint32_t flags);
 
-  public:
+public:
 	Specification* GetSpecification()
 	{
 		// Check_Object(this);
@@ -103,25 +100,24 @@ class _declspec(novtable) SpinningCloud : public ParticleCloud
 	{
 		// Check_Object(this);
 		Check_Object(GetSpecification());
-		return Cast_Pointer(Particle*,
-			&m_data[index * GetSpecification()->m_particleClassSize]);
+		return Cast_Pointer(Particle*, &m_data[index * GetSpecification()->m_particleClassSize]);
 	}
 
 	//----------------------------------------------------------------------------
 	// Testing
 	//
-  public:
+public:
 	void TestInstance(void) const;
 
 	//----------------------------------------------------------------------------
 	// API
 	//
-  protected:
-	bool AnimateParticle(uint32_t index,
-		const Stuff::LinearMatrix4D* world_to_new_local, Stuff::Time till);
+protected:
+	bool AnimateParticle(
+		uint32_t index, const Stuff::LinearMatrix4D* world_to_new_local, Stuff::Time till);
 	void CreateNewParticle(uint32_t index, Stuff::Point3D* translation);
 
-  public:
+public:
 	bool Execute(ExecuteInfo* info);
 };
-}
+} // namespace gosFX

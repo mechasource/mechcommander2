@@ -22,9 +22,9 @@ MemoryBlock* SlotLink::AllocatedMemory = nullptr;
 //
 void SlotLink::InitializeClass(size_t block_count, size_t block_delta)
 {
-	Verify(!AllocatedMemory);
-	AllocatedMemory = new MemoryBlock(sizeof(SlotLink), block_count,
-		block_delta, "Stuff::SlotLink", ConnectionEngineHeap);
+	_ASSERT(!AllocatedMemory);
+	AllocatedMemory = new MemoryBlock(
+		sizeof(SlotLink), block_count, block_delta, "Stuff::SlotLink", ConnectionEngineHeap);
 }
 
 //
@@ -59,7 +59,7 @@ SlotLink::~SlotLink()
 	//-------------------------------------------------
 	//
 	Check_Object(slot);
-	Verify(slot->slotLink == this);
+	_ASSERT(slot->slotLink == this);
 	slot->slotLink = nullptr;
 	//
 	//------------------------------------------
@@ -142,7 +142,7 @@ void Slot::Remove()
 void Slot::AddImplementation(Plug* plug)
 {
 	// Check_Object(this);
-	Verify(slotLink == nullptr);
+	_ASSERT(slotLink == nullptr);
 	slotLink = new SlotLink(this, plug);
 	Register_Object(slotLink);
 }

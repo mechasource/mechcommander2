@@ -27,28 +27,26 @@ class MLR_I_DeT_TMesh : public MLR_I_TMesh
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Initialization
 	//
-  public:
+public:
 	static void __stdcall InitializeClass(void);
 	static void __stdcall TerminateClass(void);
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Constructors/Destructors
 	//
-  protected:
-	MLR_I_DeT_TMesh(
-		ClassData* class_data, Stuff::MemoryStream* stream, uint32_t version);
+protected:
+	MLR_I_DeT_TMesh(ClassData* class_data, std::iostream stream, uint32_t version);
 	~MLR_I_DeT_TMesh(void);
 
-  public:
+public:
 	MLR_I_DeT_TMesh(ClassData* class_data = MLR_I_DeT_TMesh::DefaultData);
 
-	static MLR_I_DeT_TMesh* Make(Stuff::MemoryStream* stream, uint32_t version);
+	static MLR_I_DeT_TMesh* Make(std::iostream stream, uint32_t version);
 
-	void Save(Stuff::MemoryStream* stream);
+	void Save(std::iostream stream);
 
-  public:
-	void Copy(MLR_I_TMesh*, MLRState detailState, float xOff, float yOff,
-		float xFac, float yFac);
+public:
+	void Copy(MLR_I_TMesh*, MLRState detailState, float xOff, float yOff, float xFac, float yFac);
 
 	bool Copy(MLR_I_DeT_PMesh* pmesh)
 	{
@@ -59,11 +57,11 @@ class MLR_I_DeT_TMesh : public MLR_I_TMesh
 		return false;
 	}
 
-	void SetDetailData(float xOff, float yOff, float xFac, float yFac,
-		float detailStart, float detailEnd);
+	void SetDetailData(
+		float xOff, float yOff, float xFac, float yFac, float detailStart, float detailEnd);
 
-	void GetDetailData(float& xOff, float& yOff, float& xFac, float& yFac,
-		float& dStart, float& dEnd)
+	void GetDetailData(
+		float& xOff, float& yOff, float& xFac, float& yFac, float& dStart, float& dEnd)
 	{
 		// Check_Object(this);
 		xOff   = xOffset;
@@ -77,13 +75,12 @@ class MLR_I_DeT_TMesh : public MLR_I_TMesh
 	virtual uint32_t TransformAndClip(
 		Stuff::Matrix4D*, MLRClippingState, GOSVertexPool*, bool = false);
 
-	virtual void TransformNoClip(
-		Stuff::Matrix4D*, GOSVertexPool*, bool = false);
+	virtual void TransformNoClip(Stuff::Matrix4D*, GOSVertexPool*, bool = false);
 
 	virtual void SetReferenceState(const MLRState& _state, size_t pass = 0)
 	{
 		// Check_Object(this);
-		Verify((intptr_t(pass) >= 0) && pass < 2);
+		_ASSERT((intptr_t(pass) >= 0) && pass < 2);
 		if (pass == 0)
 		{
 			referenceState = _state;
@@ -142,13 +139,13 @@ class MLR_I_DeT_TMesh : public MLR_I_TMesh
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Class Data Support
 	//
-  public:
+public:
 	static ClassData* DefaultData;
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Testing
 	//
-  public:
+public:
 	void TestInstance(void) const;
 
 	virtual size_t GetSize(void)
@@ -158,7 +155,7 @@ class MLR_I_DeT_TMesh : public MLR_I_TMesh
 		return ret;
 	}
 
-  protected:
+protected:
 	bool detTextureVisible;
 
 	MLRState state2, referenceState2;
@@ -170,9 +167,7 @@ class MLR_I_DeT_TMesh : public MLR_I_TMesh
 	GOSVertex2UV* gos_vertices2uv;
 };
 
-MLR_I_DeT_TMesh* CreateIndexedTriCube_NoColor_NoLit_DetTex(
-	float, MLRState*, MLRState*);
-MLRShape* CreateIndexedTriIcosahedron_NoColor_NoLit_DetTex(
-	IcoInfo&, MLRState*, MLRState*);
-}
+MLR_I_DeT_TMesh* CreateIndexedTriCube_NoColor_NoLit_DetTex(float, MLRState*, MLRState*);
+MLRShape* CreateIndexedTriIcosahedron_NoColor_NoLit_DetTex(IcoInfo&, MLRState*, MLRState*);
+} // namespace MidLevelRenderer
 #endif

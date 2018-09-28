@@ -18,14 +18,14 @@
 
 //***************************************************************************
 
-typedef enum UseType
+typedef enum UseType : uint32_t
 {
 	USE_EXPR,
 	USE_TARGET,
 	USE_REFPARAM
 } UseType;
 
-typedef enum BlockType
+typedef enum BlockType : uint32_t
 {
 	BLOCK_MODULE,
 	BLOCK_ROUTINE
@@ -66,8 +66,7 @@ void routine(void);
 SymTableNodePtr functionHeader(void);
 SymTableNodePtr formalParamList(int32_t* count, int32_t* totalSize);
 TypePtr routineCall(SymTableNodePtr routineIdPtr, int32_t paramCheckFlag);
-TypePtr declaredRoutineCall(
-	SymTableNodePtr routineIdPtr, int32_t paramCheckFlag);
+TypePtr declaredRoutineCall(SymTableNodePtr routineIdPtr, int32_t paramCheckFlag);
 void actualParamList(SymTableNodePtr routineIdPtr, int32_t paramCheckFlag);
 void block(SymTableNodePtr routineIdPtr);
 

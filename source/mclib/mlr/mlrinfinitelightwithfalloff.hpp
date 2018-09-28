@@ -18,18 +18,17 @@ namespace MidLevelRenderer
 
 class MLRInfiniteLightWithFalloff : public MLRLight
 {
-  public:
+public:
 	static void __stdcall InitializeClass(void);
 	static void __stdcall TerminateClass(void);
 
+	MLRInfiniteLightWithFalloff(ClassData* class_data = MLRInfiniteLightWithFalloff::DefaultData);
 	MLRInfiniteLightWithFalloff(
-		ClassData* class_data = MLRInfiniteLightWithFalloff::DefaultData);
-	MLRInfiniteLightWithFalloff(
-		ClassData* class_data, Stuff::MemoryStream* stream, uint32_t version);
+		ClassData* class_data, std::iostream stream, uint32_t version);
 	MLRInfiniteLightWithFalloff(ClassData* class_data, Stuff::Page* page);
 	~MLRInfiniteLightWithFalloff(void);
 
-	void Save(Stuff::MemoryStream* stream);
+	void Save(std::iostream stream);
 	void Write(Stuff::Page* page);
 
 	virtual void LightVertex(const MLRVertexData&);
@@ -63,7 +62,7 @@ class MLRInfiniteLightWithFalloff : public MLRLight
 	bool GetFalloff(const float& length, float& falloff)
 	{
 		// Check_Object(this);
-		Verify(length > 0.0f);
+		_ASSERT(length > 0.0f);
 		if (length <= innerRadius)
 		{
 			falloff = 1.0f;
@@ -73,7 +72,7 @@ class MLRInfiniteLightWithFalloff : public MLRLight
 		{
 			return false;
 		}
-		Verify(outerRadius - innerRadius > Stuff::SMALL);
+		_ASSERT(outerRadius - innerRadius > Stuff::SMALL);
 		falloff = (outerRadius - length) * oneOverDistance;
 		return true;
 	}
@@ -81,17 +80,17 @@ class MLRInfiniteLightWithFalloff : public MLRLight
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Class Data Support
 	//
-  public:
+public:
 	static ClassData* DefaultData;
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Testing
 	//
-  public:
+public:
 	void TestInstance(void);
 
-  protected:
+protected:
 	float innerRadius, outerRadius, oneOverDistance;
 };
-}
+} // namespace MidLevelRenderer
 #endif

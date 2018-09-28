@@ -31,24 +31,22 @@ class DebrisCloud__Specification : public Effect__Specification
 	//----------------------------------------------------------------------
 	// Constructors/Destructors
 	//
-  protected:
-	DebrisCloud__Specification(
-		Stuff::MemoryStream* stream, uint32_t gfx_version);
+protected:
+	DebrisCloud__Specification(std::iostream stream, uint32_t gfx_version);
 
-  public:
+public:
 	DebrisCloud__Specification(void);
 	~DebrisCloud__Specification(void);
 
-	void Save(Stuff::MemoryStream* stream);
+	void Save(std::iostream stream);
 
-	static DebrisCloud__Specification* Make(
-		Stuff::MemoryStream* stream, uint32_t gfx_version);
+	static DebrisCloud__Specification* Make(std::iostream stream, uint32_t gfx_version);
 
 	void Copy(DebrisCloud__Specification* spec);
 
-	void Load(Stuff::MemoryStream* stream);
+	void Load(std::iostream stream);
 
-	void LoadGeometry(Stuff::MemoryStream* stream);
+	void LoadGeometry(std::iostream stream);
 
 	void BuildDefaults(void);
 
@@ -57,33 +55,26 @@ class DebrisCloud__Specification : public Effect__Specification
 	//-------------------------------------------------------------------------
 	// FCurves
 	//
-  public:
+public:
 	ConstantCurve m_minimumDeviation;
 	SplineCurve m_maximumDeviation;
-	SeededCurveOf<ComplexCurve, ComplexCurve, Curve::e_ComplexComplexType>
-		m_startingSpeed;
-	SeededCurveOf<ComplexCurve, SplineCurve, Curve::e_ComplexSplineType>
-		m_pLifeSpan;
-	SeededCurveOf<ConstantCurve, LinearCurve, Curve::e_ConstantLinearType>
-		m_pEtherVelocityY;
-	SeededCurveOf<SplineCurve, LinearCurve, Curve::e_SplineLinearType>
-		m_pAccelerationY;
-	SeededCurveOf<ComplexCurve, ComplexCurve, Curve::e_ComplexComplexType>
-		m_pDrag;
-	SeededCurveOf<ComplexCurve, LinearCurve, Curve::e_ComplexLinearType>
-		m_pAlpha;
-	SeededCurveOf<ConstantCurve, LinearCurve, Curve::e_ConstantLinearType>
-		m_pSpin;
+	SeededCurveOf<ComplexCurve, ComplexCurve, Curve::e_ComplexComplexType> m_startingSpeed;
+	SeededCurveOf<ComplexCurve, SplineCurve, Curve::e_ComplexSplineType> m_pLifeSpan;
+	SeededCurveOf<ConstantCurve, LinearCurve, Curve::e_ConstantLinearType> m_pEtherVelocityY;
+	SeededCurveOf<SplineCurve, LinearCurve, Curve::e_SplineLinearType> m_pAccelerationY;
+	SeededCurveOf<ComplexCurve, ComplexCurve, Curve::e_ComplexComplexType> m_pDrag;
+	SeededCurveOf<ComplexCurve, LinearCurve, Curve::e_ComplexLinearType> m_pAlpha;
+	SeededCurveOf<ConstantCurve, LinearCurve, Curve::e_ConstantLinearType> m_pSpin;
 
 	//-------------------------------------------------------------------------
 	// Data
 	//
 	Stuff::Point3D centerOfForce;
 
-	Stuff::DynamicArrayOf<MidLevelRenderer::MLRShape*> debrisPieces;
-	Stuff::DynamicArrayOf<Stuff::Point3D> debrisPositions;
-	Stuff::DynamicArrayOf<Stuff::Sphere> debrisSpheres;
-	Stuff::DynamicArrayOf<float> debrisSeed;
+	std::vector<MidLevelRenderer::MLRShape*> debrisPieces;
+	std::vector<Stuff::Point3D> debrisPositions;
+	std::vector<Stuff::Sphere> debrisSpheres;
+	std::vector<float> debrisSeed;
 };
 
 //############################################################################
@@ -92,7 +83,7 @@ class DebrisCloud__Specification : public Effect__Specification
 
 class DebrisCloud__Particle
 {
-  public:
+public:
 	Stuff::LinearMatrix4D m_localToParent;
 
 	float m_age, m_ageRate, m_seed;
@@ -113,7 +104,7 @@ class DebrisCloud : public Effect
 	//----------------------------------------------------------------------------
 	// Class Registration Support
 	//
-  public:
+public:
 	static void __stdcall InitializeClass(void);
 	static void __stdcall TerminateClass(void);
 
@@ -123,10 +114,10 @@ class DebrisCloud : public Effect
 	//----------------------------------------------------------------------------
 	// Class Data Support
 	//
-  protected:
+protected:
 	DebrisCloud(Specification* spec, uint32_t flags);
 
-  public:
+public:
 	static DebrisCloud* Make(Specification* spec, uint32_t flags);
 
 	Specification* GetSpecification()
@@ -146,26 +137,25 @@ class DebrisCloud : public Effect
 	//----------------------------------------------------------------------------
 	// Testing
 	//
-  public:
+public:
 	void TestInstance(void) const;
 
 	//----------------------------------------------------------------------------
 	// API
 	//
-  protected:
+protected:
 	bool Execute(ExecuteInfo* info);
-	bool AnimateParticle(uint32_t index,
-		const Stuff::LinearMatrix4D* world_to_new_local, Stuff::Time till);
+	bool AnimateParticle(uint32_t index, const Stuff::LinearMatrix4D* world_to_new_local, Stuff::Time till);
 	virtual void DestroyParticle(uint32_t index);
 	void ComputeNewLinearVelocity(Particle* particle, float time_slice);
 
-  public:
+public:
 	void Start(ExecuteInfo* info);
 	void Kill(void);
 	bool HasFinished(void);
 	void Draw(DrawInfo* info);
 
-  protected:
-	Stuff::DynamicArrayOf<DebrisCloud__Particle> debrisPieces;
+protected:
+	std::vector<DebrisCloud__Particle> debrisPieces;
 };
-}
+} // namespace gosFX

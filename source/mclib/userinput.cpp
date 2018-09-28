@@ -173,8 +173,7 @@ void UserInput::update(void)
 	mouseWheelDelta *= -100;
 	//-------------------------------------
 	// Determine drag, double click states
-	if ((leftMouseButtonState == MC2_MOUSE_UP) &&
-		(lastLeftMouseButtonState == MC2_MOUSE_DOWN))
+	if ((leftMouseButtonState == MC2_MOUSE_UP) && (lastLeftMouseButtonState == MC2_MOUSE_DOWN))
 	{
 		//--------------------------------------------------------------------
 		// Just lifted the button.  Drags are OFF!  Double Click clock starts!
@@ -186,26 +185,22 @@ void UserInput::update(void)
 		leftMouseJustUp   = 1;
 		mouseLeftHeldTime = 0.f;
 	}
-	if ((leftMouseButtonState == MC2_MOUSE_UP) &&
-		(lastLeftMouseButtonState == MC2_MOUSE_UP))
+	if ((leftMouseButtonState == MC2_MOUSE_UP) && (lastLeftMouseButtonState == MC2_MOUSE_UP))
 	{
 		//--------------------------------------------
 		// We are still up.  Increment mouse up time.
 		mouseLeftUpTime += frameLength;
 		mouseLeftHeldTime = 0.f;
 	}
-	if (gos_GetKeyStatus(KEY_LMOUSE) ==
-		KEY_PRESSED /*code & 0x0001*/) // clicked
+	if (gos_GetKeyStatus(KEY_LMOUSE) == KEY_PRESSED /*code & 0x0001*/) // clicked
 	{
 		//-------------------------------------------------------------------------------
 		// We just clicked down.  If mouseUpTime is < threshold, this was a
 		// double click
-		if ((mouseLeftUpTime > 0.0) &&
-			(mouseLeftUpTime < mouseDblClickThreshold) && !bWasDouble)
+		if ((mouseLeftUpTime > 0.0) && (mouseLeftUpTime < mouseDblClickThreshold) && !bWasDouble)
 		{
 			leftDoubleClick = true;
-			mouseLeftUpTime =
-				0.f; // make sure if we hold it, we don't keep clicking
+			mouseLeftUpTime = 0.f; // make sure if we hold it, we don't keep clicking
 		}
 		else
 		{
@@ -235,8 +230,7 @@ void UserInput::update(void)
 		mouseLeftUpTime = 0;
 		mouseLeftHeldTime += frameLength;
 	}
-	if ((rightMouseButtonState == MC2_MOUSE_UP) &&
-		(lastRightMouseButtonState == MC2_MOUSE_DOWN))
+	if ((rightMouseButtonState == MC2_MOUSE_UP) && (lastRightMouseButtonState == MC2_MOUSE_DOWN))
 	{
 		//--------------------------------------------------------------------
 		// Just lifted the button.  Drags are OFF!  Double Click clock starts!
@@ -246,8 +240,7 @@ void UserInput::update(void)
 		rightMouseJustUp   = true;
 		mouseRightHeldTime = 0.f;
 	}
-	if ((rightMouseButtonState == MC2_MOUSE_UP) &&
-		(lastRightMouseButtonState == MC2_MOUSE_UP))
+	if ((rightMouseButtonState == MC2_MOUSE_UP) && (lastRightMouseButtonState == MC2_MOUSE_UP))
 	{
 		//--------------------------------------------
 		// We are still up.  Increment mouse up time.
@@ -287,15 +280,13 @@ void UserInput::update(void)
 		mouseRightUpTime = 0;
 		mouseRightHeldTime += frameLength;
 	}
-	if ((middleMouseButtonState == MC2_MOUSE_UP) &&
-		(lastMiddleMouseButtonState == MC2_MOUSE_DOWN))
+	if ((middleMouseButtonState == MC2_MOUSE_UP) && (lastMiddleMouseButtonState == MC2_MOUSE_DOWN))
 	{
 		//--------------------------------------------------------------------
 		// Just lifted the button.  Drags are OFF!  Double Click clock starts!
 		mouseMiddleUpTime = 0.0;
 	}
-	if ((middleMouseButtonState == MC2_MOUSE_UP) &&
-		(lastMiddleMouseButtonState == MC2_MOUSE_UP))
+	if ((middleMouseButtonState == MC2_MOUSE_UP) && (lastMiddleMouseButtonState == MC2_MOUSE_UP))
 	{
 		//--------------------------------------------
 		// We are still up.  Increment mouse up time.
@@ -336,10 +327,8 @@ void UserInput::update(void)
 		mc2IsInDisplayBackBuffer = true;
 		if (!mc2MouseData)
 		{
-			mc2MouseData =
-				(puint8_t)malloc(sizeof(uint32_t) * MOUSE_WIDTH * MOUSE_WIDTH);
-			memset(
-				mc2MouseData, 0, sizeof(uint32_t) * MOUSE_WIDTH * MOUSE_WIDTH);
+			mc2MouseData = (puint8_t)malloc(sizeof(uint32_t) * MOUSE_WIDTH * MOUSE_WIDTH);
+			memset(mc2MouseData, 0, sizeof(uint32_t) * MOUSE_WIDTH * MOUSE_WIDTH);
 		}
 		// Need to update the mouse in the mouse thread to inform it that the
 		// cursor
@@ -351,29 +340,25 @@ void UserInput::update(void)
 		uint32_t totalMouseFrames = cursors->getNumFrames(mouseState);
 		if (totalMouseFrames > 1)
 		{
-			int32_t framesPerRow =
-				cursors->cursorInfos[mouseState].textureWidth /
+			int32_t framesPerRow = cursors->cursorInfos[mouseState].textureWidth /
 				cursors->cursorInfos[mouseState].width();
 			int32_t iIndex = mouseFrame % framesPerRow;
 			int32_t jIndex = mouseFrame / framesPerRow;
 			float oldU	 = cursors->cursorInfos[mouseState].u;
 			float oldV	 = cursors->cursorInfos[mouseState].v;
-			float newU =
-				(.1f + oldU) / cursors->cursorInfos[mouseState].textureWidth +
+			float newU	 = (.1f + oldU) / cursors->cursorInfos[mouseState].textureWidth +
 				((float)iIndex * cursors->cursorInfos[mouseState].width() /
 					cursors->cursorInfos[mouseState].textureWidth);
-			float newV =
-				(.1f + oldV) / cursors->cursorInfos[mouseState].textureWidth +
+			float newV = (.1f + oldV) / cursors->cursorInfos[mouseState].textureWidth +
 				(float)jIndex * cursors->cursorInfos[mouseState].height() /
 					cursors->cursorInfos[mouseState].textureWidth;
-			float newU2 =
-				newU + (cursors->cursorInfos[mouseState].width() + .1) /
-						   cursors->cursorInfos[mouseState].textureWidth;
-			float newV2 =
-				newV + (cursors->cursorInfos[mouseState].height() + .1) /
-						   cursors->cursorInfos[mouseState].textureWidth;
-			cursors->cursorInfos[mouseState].setNewUVs(
-				newU, newV, newU2, newV2);
+			float newU2 = newU +
+				(cursors->cursorInfos[mouseState].width() + .1) /
+					cursors->cursorInfos[mouseState].textureWidth;
+			float newV2 = newV +
+				(cursors->cursorInfos[mouseState].height() + .1) /
+					cursors->cursorInfos[mouseState].textureWidth;
+			cursors->cursorInfos[mouseState].setNewUVs(newU, newV, newU2, newV2);
 			cursors->cursorInfos[mouseState].getData(mc2MouseData);
 			cursors->cursorInfos[mouseState].u = oldU;
 			cursors->cursorInfos[mouseState].v = oldV;
@@ -412,48 +397,42 @@ float smallTextureBRUVX[4] = {0.50, 1.00, 0.50, 1.00};
 float smallTextureBRUVY[4] = {0.50, 0.50, 1.00, 1.00};
 
 //---------------------------------------------------------------------------
-float mediumTextureTLUVX[16] = {0.00, 0.25, 0.50, 0.75, 0.00, 0.25, 0.50, 0.75,
-	0.00, 0.25, 0.50, 0.75, 0.00, 0.25, 0.50, 0.75};
+float mediumTextureTLUVX[16] = {
+	0.00, 0.25, 0.50, 0.75, 0.00, 0.25, 0.50, 0.75, 0.00, 0.25, 0.50, 0.75, 0.00, 0.25, 0.50, 0.75};
 
-float mediumTextureTLUVY[16] = {0.00, 0.00, 0.00, 0.00, 0.25, 0.25, 0.25, 0.25,
-	0.50, 0.50, 0.50, 0.50, 0.75, 0.75, 0.75, 0.75};
+float mediumTextureTLUVY[16] = {
+	0.00, 0.00, 0.00, 0.00, 0.25, 0.25, 0.25, 0.25, 0.50, 0.50, 0.50, 0.50, 0.75, 0.75, 0.75, 0.75};
 
-float mediumTextureBRUVX[16] = {0.25, 0.50, 0.75, 1.00, 0.25, 0.50, 0.75, 1.00,
-	0.25, 0.50, 0.75, 1.00, 0.25, 0.50, 0.75, 1.00};
+float mediumTextureBRUVX[16] = {
+	0.25, 0.50, 0.75, 1.00, 0.25, 0.50, 0.75, 1.00, 0.25, 0.50, 0.75, 1.00, 0.25, 0.50, 0.75, 1.00};
 
-float mediumTextureBRUVY[16] = {0.25, 0.25, 0.25, 0.25, 0.50, 0.50, 0.50, 0.50,
-	0.75, 0.75, 0.75, 0.75, 1.00, 1.00, 1.00, 1.00};
+float mediumTextureBRUVY[16] = {
+	0.25, 0.25, 0.25, 0.25, 0.50, 0.50, 0.50, 0.50, 0.75, 0.75, 0.75, 0.75, 1.00, 1.00, 1.00, 1.00};
 
 //---------------------------------------------------------------------------
-float largeTextureTLUVX[64] = {0.00, 0.125, 0.25, 0.375, 0.50, 0.625, 0.75,
-	0.875, 0.00, 0.125, 0.25, 0.375, 0.50, 0.625, 0.75, 0.875, 0.00, 0.125,
-	0.25, 0.375, 0.50, 0.625, 0.75, 0.875, 0.00, 0.125, 0.25, 0.375, 0.50,
-	0.625, 0.75, 0.875, 0.00, 0.125, 0.25, 0.375, 0.50, 0.625, 0.75, 0.875,
-	0.00, 0.125, 0.25, 0.375, 0.50, 0.625, 0.75, 0.875, 0.00, 0.125, 0.25,
-	0.375, 0.50, 0.625, 0.75, 0.875, 0.00, 0.125, 0.25, 0.375, 0.50, 0.625,
-	0.75, 0.875};
+float largeTextureTLUVX[64] = {0.00, 0.125, 0.25, 0.375, 0.50, 0.625, 0.75, 0.875, 0.00, 0.125,
+	0.25, 0.375, 0.50, 0.625, 0.75, 0.875, 0.00, 0.125, 0.25, 0.375, 0.50, 0.625, 0.75, 0.875, 0.00,
+	0.125, 0.25, 0.375, 0.50, 0.625, 0.75, 0.875, 0.00, 0.125, 0.25, 0.375, 0.50, 0.625, 0.75,
+	0.875, 0.00, 0.125, 0.25, 0.375, 0.50, 0.625, 0.75, 0.875, 0.00, 0.125, 0.25, 0.375, 0.50,
+	0.625, 0.75, 0.875, 0.00, 0.125, 0.25, 0.375, 0.50, 0.625, 0.75, 0.875};
 
-float largeTextureTLUVY[64] = {0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00,
-	0.125, 0.125, 0.125, 0.125, 0.125, 0.125, 0.125, 0.125, 0.25, 0.25, 0.25,
-	0.25, 0.25, 0.25, 0.25, 0.25, 0.375, 0.375, 0.375, 0.375, 0.375, 0.375,
-	0.375, 0.375, 0.50, 0.50, 0.50, 0.50, 0.50, 0.50, 0.50, 0.50, 0.625, 0.625,
-	0.625, 0.625, 0.625, 0.625, 0.625, 0.625, 0.75, 0.75, 0.75, 0.75, 0.75,
-	0.75, 0.75, 0.75, 0.875, 0.875, 0.875, 0.875, 0.875, 0.875, 0.875, 0.875};
+float largeTextureTLUVY[64] = {0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.125, 0.125, 0.125,
+	0.125, 0.125, 0.125, 0.125, 0.125, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.375, 0.375,
+	0.375, 0.375, 0.375, 0.375, 0.375, 0.375, 0.50, 0.50, 0.50, 0.50, 0.50, 0.50, 0.50, 0.50, 0.625,
+	0.625, 0.625, 0.625, 0.625, 0.625, 0.625, 0.625, 0.75, 0.75, 0.75, 0.75, 0.75, 0.75, 0.75, 0.75,
+	0.875, 0.875, 0.875, 0.875, 0.875, 0.875, 0.875, 0.875};
 
-float largeTextureBRUVX[64] = {0.125, 0.25, 0.375, 0.50, 0.625, 0.75, 0.875,
-	1.00, 0.125, 0.25, 0.375, 0.50, 0.625, 0.75, 0.875, 1.00, 0.125, 0.25,
-	0.375, 0.50, 0.625, 0.75, 0.875, 1.00, 0.125, 0.25, 0.375, 0.50, 0.625,
-	0.75, 0.875, 1.00, 0.125, 0.25, 0.375, 0.50, 0.625, 0.75, 0.875, 1.00,
-	0.125, 0.25, 0.375, 0.50, 0.625, 0.75, 0.875, 1.00, 0.125, 0.25, 0.375,
-	0.50, 0.625, 0.75, 0.875, 1.00, 0.125, 0.25, 0.375, 0.50, 0.625, 0.75,
-	0.875, 1.00};
+float largeTextureBRUVX[64] = {0.125, 0.25, 0.375, 0.50, 0.625, 0.75, 0.875, 1.00, 0.125, 0.25,
+	0.375, 0.50, 0.625, 0.75, 0.875, 1.00, 0.125, 0.25, 0.375, 0.50, 0.625, 0.75, 0.875, 1.00,
+	0.125, 0.25, 0.375, 0.50, 0.625, 0.75, 0.875, 1.00, 0.125, 0.25, 0.375, 0.50, 0.625, 0.75,
+	0.875, 1.00, 0.125, 0.25, 0.375, 0.50, 0.625, 0.75, 0.875, 1.00, 0.125, 0.25, 0.375, 0.50,
+	0.625, 0.75, 0.875, 1.00, 0.125, 0.25, 0.375, 0.50, 0.625, 0.75, 0.875, 1.00};
 
-float largeTextureBRUVY[64] = {0.125, 0.125, 0.125, 0.125, 0.125, 0.125, 0.125,
-	0.125, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.375, 0.375, 0.375,
-	0.375, 0.375, 0.375, 0.375, 0.375, 0.50, 0.50, 0.50, 0.50, 0.50, 0.50, 0.50,
-	0.50, 0.625, 0.625, 0.625, 0.625, 0.625, 0.625, 0.625, 0.625, 0.75, 0.75,
-	0.75, 0.75, 0.75, 0.75, 0.75, 0.75, 0.875, 0.875, 0.875, 0.875, 0.875,
-	0.875, 0.875, 0.875, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00};
+float largeTextureBRUVY[64] = {0.125, 0.125, 0.125, 0.125, 0.125, 0.125, 0.125, 0.125, 0.25, 0.25,
+	0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.375, 0.375, 0.375, 0.375, 0.375, 0.375, 0.375, 0.375,
+	0.50, 0.50, 0.50, 0.50, 0.50, 0.50, 0.50, 0.50, 0.625, 0.625, 0.625, 0.625, 0.625, 0.625, 0.625,
+	0.625, 0.75, 0.75, 0.75, 0.75, 0.75, 0.75, 0.75, 0.75, 0.875, 0.875, 0.875, 0.875, 0.875, 0.875,
+	0.875, 0.875, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00};
 
 //---------------------------------------------------------------------------
 void UserInput::setMouseScale(float scaleFactor)
@@ -478,31 +457,25 @@ void UserInput::render(void) // Last thing rendered.  Draws Mouse.
 			int32_t totalMouseFrames = cursors->getNumFrames(mouseState);
 			if (totalMouseFrames > 1)
 			{
-				int32_t framesPerRow =
-					cursors->cursorInfos[mouseState].textureWidth /
+				int32_t framesPerRow = cursors->cursorInfos[mouseState].textureWidth /
 					cursors->cursorInfos[mouseState].width();
 				int32_t iIndex = mouseFrame % framesPerRow;
 				int32_t jIndex = mouseFrame / framesPerRow;
 				float oldU	 = cursors->cursorInfos[mouseState].u;
 				float oldV	 = cursors->cursorInfos[mouseState].v;
-				float newU =
-					(.1f + oldU) /
-						cursors->cursorInfos[mouseState].textureWidth +
+				float newU	 = (.1f + oldU) / cursors->cursorInfos[mouseState].textureWidth +
 					((float)iIndex * cursors->cursorInfos[mouseState].width() /
 						cursors->cursorInfos[mouseState].textureWidth);
-				float newV = (.1f + oldV) /
-								 cursors->cursorInfos[mouseState].textureWidth +
-							 (float)jIndex *
-								 cursors->cursorInfos[mouseState].height() /
-								 cursors->cursorInfos[mouseState].textureWidth;
-				float newU2 =
-					newU + (cursors->cursorInfos[mouseState].width() + .1) /
-							   cursors->cursorInfos[mouseState].textureWidth;
-				float newV2 =
-					newV + (cursors->cursorInfos[mouseState].height() + .1) /
-							   cursors->cursorInfos[mouseState].textureWidth;
-				cursors->cursorInfos[mouseState].setNewUVs(
-					newU, newV, newU2, newV2);
+				float newV = (.1f + oldV) / cursors->cursorInfos[mouseState].textureWidth +
+					(float)jIndex * cursors->cursorInfos[mouseState].height() /
+						cursors->cursorInfos[mouseState].textureWidth;
+				float newU2 = newU +
+					(cursors->cursorInfos[mouseState].width() + .1) /
+						cursors->cursorInfos[mouseState].textureWidth;
+				float newV2 = newV +
+					(cursors->cursorInfos[mouseState].height() + .1) /
+						cursors->cursorInfos[mouseState].textureWidth;
+				cursors->cursorInfos[mouseState].setNewUVs(newU, newV, newU2, newV2);
 				cursors->cursorInfos[mouseState].render();
 				cursors->cursorInfos[mouseState].u = oldU;
 				cursors->cursorInfos[mouseState].v = oldV;

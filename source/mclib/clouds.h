@@ -44,7 +44,7 @@ class Clouds
 {
 	// Data Members
 	//--------------
-  protected:
+protected:
 	uint32_t mcTextureNodeIndex; // Pointer to MCTextureNode which is used to
 								 // cache handles if necessary
 	uint32_t gosTextureHandle;
@@ -55,7 +55,7 @@ class Clouds
 
 	CloudVertexPtr cloudVertices;
 
-  public:
+public:
 	void init(void)
 	{
 		mcTextureNodeIndex = gosTextureHandle = 0xffffffff;

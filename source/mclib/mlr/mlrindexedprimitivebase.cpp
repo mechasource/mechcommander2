@@ -3,37 +3,38 @@
 //===========================================================================//
 
 #include "stdinc.h"
-
 #include <mlr/mlrindexedprimitivebase.hpp>
 
-using namespace MidLevelRenderer;
+// using namespace MidLevelRenderer;
+
+namespace MidLevelRenderer
+{
+std::vector<uint16_t> clipExtraIndex;
+std::vector<uint16_t> indexOffset;
+} // namespace MidLevelRenderer
 
 //#############################################################################
 //#####################    MLRIndexedPrimitiveBase    #########################
 //#############################################################################
 
-DynamicArrayOf<uint16_t>* MLRIndexedPrimitiveBase::clipExtraIndex;
-
-MLRIndexedPrimitiveBase::ClassData* MLRIndexedPrimitiveBase::DefaultData =
-	nullptr;
-
-uint16_t* indexOffset;
-
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
+
+#if _CONSIDERED_OBSOLETE
+
+MLRIndexedPrimitiveBase::ClassData* MLRIndexedPrimitiveBase::DefaultData = nullptr;
+
 void MLRIndexedPrimitiveBase::InitializeClass()
 {
-	Verify(!DefaultData);
-	// Verify(gos_GetCurrentHeap() == StaticHeap);
+	_ASSERT(!DefaultData);
+	// _ASSERT(gos_GetCurrentHeap() == StaticHeap);
 	DefaultData = new ClassData(MLRIndexedPrimitiveBaseClassID,
-		"MidLevelRenderer::MLRIndexedPrimitiveBase",
-		MLRPrimitiveBase::DefaultData, nullptr);
+		"MidLevelRenderer::MLRIndexedPrimitiveBase", MLRPrimitiveBase::DefaultData, nullptr);
 	Register_Object(DefaultData);
-	clipExtraIndex =
-		new DynamicArrayOf<uint16_t>(Limits::Max_Number_Vertices_Per_Mesh);
-	Register_Pointer(clipExtraIndex);
-	indexOffset = new uint16_t[Limits::Max_Number_Vertices_Per_Mesh + 1];
-	Register_Pointer(indexOffset);
+	// clipExtraIndex = new std::vector<uint16_t>(Limits::Max_Number_Vertices_Per_Mesh);
+	// Register_Pointer(clipExtraIndex);
+	// indexOffset = new uint16_t[Limits::Max_Number_Vertices_Per_Mesh + 1];
+	// Register_Pointer(indexOffset);
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -42,8 +43,8 @@ void MLRIndexedPrimitiveBase::TerminateClass()
 {
 	Unregister_Pointer(clipExtraIndex);
 	delete clipExtraIndex;
-	Unregister_Pointer(indexOffset);
-	delete[] indexOffset;
+	// Unregister_Pointer(indexOffset);
+	// delete[] indexOffset;
 	Unregister_Object(DefaultData);
 	delete DefaultData;
 	DefaultData = nullptr;
@@ -52,12 +53,12 @@ void MLRIndexedPrimitiveBase::TerminateClass()
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 MLRIndexedPrimitiveBase::MLRIndexedPrimitiveBase(
-	ClassData* class_data, Stuff::MemoryStream* stream, uint32_t version)
+	ClassData* class_data, std::iostream stream, uint32_t version)
 	: MLRPrimitiveBase(class_data, stream, version)
 {
 	// Check_Pointer(this);
 	Check_Object(stream);
-	// Verify(gos_GetCurrentHeap() == Heap);
+	// _ASSERT(gos_GetCurrentHeap() == Heap);
 	switch (version)
 	{
 	case 1:
@@ -68,7 +69,7 @@ MLRIndexedPrimitiveBase::MLRIndexedPrimitiveBase(
 	break;
 	default:
 	{
-		MemoryStreamIO_Read(stream, &index);
+		MemoryStreamIO_Read(stream, &colorIndexes);
 	}
 	break;
 	}
@@ -76,22 +77,24 @@ MLRIndexedPrimitiveBase::MLRIndexedPrimitiveBase(
 	visibleIndexedVertices.SetLength(coords.GetLength());
 }
 
+#endif
+
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLRIndexedPrimitiveBase::Save(Stuff::MemoryStream* stream)
+void MLRIndexedPrimitiveBase::Save(std::iostream stream)
 {
 	// Check_Object(this);
 	Check_Object(stream);
 	MLRPrimitiveBase::Save(stream);
-	MemoryStreamIO_Write(stream, &index);
+	MemoryStreamIO_Write(stream, &colorIndexes);
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 MLRIndexedPrimitiveBase::MLRIndexedPrimitiveBase(ClassData* class_data)
-	: MLRPrimitiveBase(class_data), index(0)
+	: MLRPrimitiveBase(class_data), colorIndexes(0)
 {
-	// Verify(gos_GetCurrentHeap() == Heap);
+	// _ASSERT(gos_GetCurrentHeap() == Heap);
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -100,22 +103,18 @@ MLRIndexedPrimitiveBase::~MLRIndexedPrimitiveBase() {}
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLRIndexedPrimitiveBase::TestInstance(void) const
-{
-	Verify(IsDerivedFrom(DefaultData));
-}
+void MLRIndexedPrimitiveBase::TestInstance(void) const { _ASSERT(IsDerivedFrom(DefaultData)); }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLRIndexedPrimitiveBase::InitializeDrawPrimitive(
-	uint8_t vis, int32_t parameter)
+void MLRIndexedPrimitiveBase::InitializeDrawPrimitive(uint8_t vis, int32_t parameter)
 {
 	MLRPrimitiveBase::InitializeDrawPrimitive(vis, parameter);
-	gos_indices				  = nullptr;
-	numGOSIndices			  = -1;
+	// gos_indices = nullptr;
+	numGOSIndices			  = 0; // = -1;
 	visibleIndexedVerticesKey = false;
-	int32_t i, len = visibleIndexedVertices.GetLength();
-	for (i = 0; i < len; i++)
+	// size_t i, len = visibleIndexedVertices.size();
+	for (size_t i = 0u; i < visibleIndexedVertices.size(); i++)
 	{
 		visibleIndexedVertices[i] = 0;
 	}
@@ -127,13 +126,13 @@ void MLRIndexedPrimitiveBase::SetCoordData(const Point3D* data, size_t dataSize)
 {
 	// Check_Object(this);
 	Check_Pointer(data);
-	// Verify(gos_GetCurrentHeap() == Heap);
-	Verify(texCoords.GetLength() == 0 || dataSize == texCoords.GetLength());
+	// _ASSERT(gos_GetCurrentHeap() == Heap);
+	_ASSERT(texCoords.GetLength() == 0 || dataSize == texCoords.GetLength());
 #if defined(MAX_NUMBER_VERTICES)
-	Verify(dataSize <= MAX_NUMBER_VERTICES);
+	_ASSERT(dataSize <= MAX_NUMBER_VERTICES);
 #endif
 	coords.AssignData(data, dataSize);
-	if (index.GetLength() > size_t(0) &&
+	if (colorIndexes.GetLength() > size_t(0) &&
 		visibleIndexedVertices.GetLength() != (size_t)dataSize)
 	{
 		visibleIndexedVertices.SetLength(dataSize);
@@ -142,12 +141,11 @@ void MLRIndexedPrimitiveBase::SetCoordData(const Point3D* data, size_t dataSize)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLRIndexedPrimitiveBase::SetIndexData(
-	puint16_t index_array, int32_t index_count)
+void MLRIndexedPrimitiveBase::SetIndexData(puint16_t index_array, int32_t index_count)
 {
 	// Check_Object(this);
 	Check_Pointer(index_array);
-	// Verify(gos_GetCurrentHeap() == Heap);
+	// _ASSERT(gos_GetCurrentHeap() == Heap);
 	if (coords.GetLength() > 0)
 	{
 		visibleIndexedVertices.SetLength(coords.GetLength());
@@ -156,20 +154,19 @@ void MLRIndexedPrimitiveBase::SetIndexData(
 	int32_t len = coords.GetLength();
 	for (size_t i = 0; i < index_count; i++)
 	{
-		Verify(index_array[i] < len);
+		_ASSERT(index_array[i] < len);
 	}
 #endif
-	index.AssignData(index_array, index_count);
+	colorIndexes.AssignData(index_array, index_count);
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLRIndexedPrimitiveBase::GetIndexData(
-	puint16_t* index_array, pint32_t index_count)
+void MLRIndexedPrimitiveBase::GetIndexData(puint16_t* index_array, pint32_t index_count)
 {
 	// Check_Object(this);
-	*index_array = index.GetData();
-	*index_count = index.GetLength();
+	*index_array = colorIndexes.GetData();
+	*index_count = colorIndexes.GetLength();
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

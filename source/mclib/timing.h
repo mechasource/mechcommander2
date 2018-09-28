@@ -13,14 +13,12 @@
 // #include "dstd.h"
 
 //----------------------------------------------------------------------------------
-extern bool gamePaused;	// Is the game paused?
-extern int32_t turn;	   // What frame of the scenario is it?
-extern float frameLength;  // Duration of last frame in seconds.
-extern float scenarioTime; // Time scenario has been running.
-extern uint32_t
-	LastTimeGetTime; // Stores Interval since timeGetTime last called.
-extern bool
-	dynamicFrameTiming; // This flag determines if we are using frameLength
+extern bool gamePaused;			 // Is the game paused?
+extern int32_t turn;			 // What frame of the scenario is it?
+extern float frameLength;		 // Duration of last frame in seconds.
+extern float scenarioTime;		 // Time scenario has been running.
+extern uint32_t LastTimeGetTime; // Stores Interval since timeGetTime last called.
+extern bool dynamicFrameTiming;  // This flag determines if we are using frameLength
 // To time a frame.  This is FALSE when something
 // puches a frame length dramatically over 4fps.
 // Like a cache hit.  It insures all frames get played.
@@ -32,13 +30,13 @@ extern bool
 //----------------------------------------------------------------------------------
 class Timer
 {
-  protected:
+protected:
 	float startTime;
 	float currentTime;
 	bool expired;
 	bool updateWhilePaused;
 
-  public:
+public:
 	Timer(void) { init(void); }
 
 	~Timer(void) { destroy(void); }
@@ -83,10 +81,10 @@ typedef Timer* TimerPtr;
 //----------------------------------------------------------------------------------
 class TimerManager
 {
-  protected:
+protected:
 	Timer timers[MAX_TIMERS];
 
-  public:
+public:
 	TimerManager(void) { init(void); }
 
 	~TimerManager(void) { destroy(void); }

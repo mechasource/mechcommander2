@@ -29,7 +29,7 @@ class Ray3D
 	: public Stuff::Signature
 #endif
 {
-  public:
+public:
 	Point3D origin;
 	UnitVector3D direction;
 
@@ -91,8 +91,8 @@ class Ray3D
 	static bool TestClass(void);
 };
 
-float Find_Closest_Approach(const Point3D& origin1, const Vector3D& velocity1,
-	Point3D* result1, const Point3D& origin2, const Vector3D& velocity2,
-	Point3D* result2, float* time, bool* constant);
-}
+float Find_Closest_Approach(const Point3D& origin1, const Vector3D& velocity1, Point3D* result1,
+	const Point3D& origin2, const Vector3D& velocity2, Point3D* result2, float* time,
+	bool* constant);
+} // namespace Stuff
 #endif

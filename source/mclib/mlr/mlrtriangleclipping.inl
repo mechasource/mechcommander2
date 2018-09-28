@@ -16,18 +16,17 @@
 #include <mlr/gosvertexpool.hpp>
 
 extern uint32_t gEnableTextureSort, gShowClippedPolys, gEnableDetailTexture;
-extern puint16_t indexOffset;	// [MidLevelRenderer::Max_Number_Vertices_Per_Mesh]
+extern puint16_t indexOffset; // [MidLevelRenderer::Max_Number_Vertices_Per_Mesh]
 
 #define HUNT_CLIP_ERROR 0
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-CLASSNAME::TransformNoClip(Stuff::Matrix4D* mat, GOSVertexPool* vt, bool db)
+void CLASSNAME::TransformNoClip(Stuff::Matrix4D* mat, GOSVertexPool* vt, bool db)
 {
 	// Check_Object(this);
 	Check_Object(vt);
-	Verify(index.GetLength() > 0);
+	_ASSERT(index.GetLength() > 0);
 	Start_Timer(Transform_Time);
 	//	uint16_t stride;
 	size_t stride;
@@ -41,14 +40,14 @@ CLASSNAME::TransformNoClip(Stuff::Matrix4D* mat, GOSVertexPool* vt, bool db)
 		if (textureAnimation)
 		{
 			Stuff::AffineMatrix4D& textureMatrix = texture->GetTextureMatrix();
-			deltaU = textureMatrix(3, 0);
-			deltaV = textureMatrix(3, 1);
+			deltaU								 = textureMatrix(3, 0);
+			deltaV								 = textureMatrix(3, 1);
 		}
 	}
 	size_t i, j;
 #ifdef I_SAY_YES_TO_TERRAIN
 	float terrainUV[2];
-#endif	//	I_SAY_YES_TO_TERRAIN
+#endif //	I_SAY_YES_TO_TERRAIN
 #ifdef I_SAY_YES_TO_MULTI_TEXTURES
 	size_t m;
 	gos_PushCurrentHeap(StaticHeap);
@@ -58,28 +57,28 @@ CLASSNAME::TransformNoClip(Stuff::Matrix4D* mat, GOSVertexPool* vt, bool db)
 	{
 		tex2count[m] = 0;
 	}
-#endif	//	I_SAY_YES_TO_MULTI_TEXTURES
+#endif //	I_SAY_YES_TO_MULTI_TEXTURES
 	uint32_t numVertices = GetNumVertices();
-	gos_vertices = vt->GetActualVertexPool(db);
+	gos_vertices		 = vt->GetActualVertexPool(db);
 #ifdef I_SAY_YES_TO_DUAL_TEXTURES
 	size_t tex2count = 0;
-#endif	//	I_SAY_YES_TO_DUAL_TEXTURES
+#endif //	I_SAY_YES_TO_DUAL_TEXTURES
 #ifdef I_SAY_YES_TO_DETAIL_TEXTURES
 	float detailTexCoords[2];
-#endif	//	I_SAY_YES_TO_DETAIL_TEXTURES
+#endif //	I_SAY_YES_TO_DETAIL_TEXTURES
 #if defined(I_SAY_YES_TO_DUAL_TEXTURES) || defined(I_SAY_YES_TO_DETAIL_TEXTURES)
 	gos_vertices2uv = vt->GetActualVertexPool2UV(db);
 #endif
 	numGOSVertices = 0;
-	Verify(index.GetLength() > 0);
-	Verify(coords.GetLength() == visibleIndexedVertices.GetLength());
+	_ASSERT(index.GetLength() > 0);
+	_ASSERT(coords.GetLength() == visibleIndexedVertices.GetLength());
 	if (visibleIndexedVerticesKey == false)
 	{
 		FindVisibleVertices();
 	}
 #ifdef _ARMOR
 	memset(indexOffset, 0xff, Limits::Max_Number_Vertices_Per_Mesh * sizeof(uint16_t));
-#endif	//	_ARMOR
+#endif //	_ARMOR
 	for (j = 0, stride = 0; j < numVertices; j++)
 	{
 		if (visibleIndexedVertices[j] == 0)
@@ -92,87 +91,86 @@ CLASSNAME::TransformNoClip(Stuff::Matrix4D* mat, GOSVertexPool* vt, bool db)
 			Set_Statistic(TransformedVertices, TransformedVertices + 1);
 			if (db == false)
 			{
-				Verify(vt->GetLast() + numGOSVertices < Limits::Max_Number_Vertices_Per_Frame);
+				_ASSERT(vt->GetLast() + numGOSVertices < Limits::Max_Number_Vertices_Per_Frame);
 			}
 			else
 			{
-				Verify(numGOSVertices < 2 * Limits::Max_Number_Vertices_Per_Mesh);
+				_ASSERT(numGOSVertices < 2 * Limits::Max_Number_Vertices_Per_Mesh);
 			}
-#endif	//	LAB_ONLY
+#endif //	LAB_ONLY
 			ATLASSERT(j >= stride);
-			indexOffset[j] = static_cast<uint16_t>(j - stride); // *(pint32_t)(&indexOffset[j]) = (j - stride);
+			indexOffset[j] =
+				static_cast<uint16_t>(j - stride); // *(pint32_t)(&indexOffset[j]) = (j - stride);
 #ifdef I_SAY_YES_TO_TERRAIN
 			terrainUV[0] = borderPixelFun + (coords[j].x - minX) * xUVFac;
 			terrainUV[1] = borderPixelFun + (coords[j].z - minZ) * zUVFac;
-#endif	//	I_SAY_YES_TO_TERRAIN
+#endif //	I_SAY_YES_TO_TERRAIN
 #ifdef I_SAY_YES_TO_DUAL_TEXTURES
-			if (MLRState::GetMultitextureLightMap() == true && state.GetMultiTextureMode() != MLRState::MultiTextureOffMode)
+			if (MLRState::GetMultitextureLightMap() == true &&
+				state.GetMultiTextureMode() != MLRState::MultiTextureOffMode)
 			{
 				gos_vertices2uv[numGOSVertices].GOSTransformNoClip(
-					coords[j],
-					*mat,
-					&texCoords[j][0],
-					&texCoords[numVertices + j][0]
+					coords[j], *mat, &texCoords[j][0], &texCoords[numVertices + j][0]
 #if FOG_HACK
-					, state.GetFogMode()
-#endif	//	FOG_HACK
+					,
+					state.GetFogMode()
+#endif //	FOG_HACK
 				);
 #ifdef I_SAY_YES_TO_COLOR
 #if COLOR_AS_DWORD
 				gos_vertices2uv[numGOSVertices].argb = (*actualColors)[j];
-#else	//	COLOR_AS_DWORD
+#else  //	COLOR_AS_DWORD
 				gos_vertices2uv[numGOSVertices].argb = GOSCopyColor(&(*actualColors)[j]);
-#endif	//	COLOR_AS_DWORD
-#else	//	I_SAY_YES_TO_COLOR
+#endif //	COLOR_AS_DWORD
+#else  //	I_SAY_YES_TO_COLOR
 				gos_vertices2uv[numGOSVertices].argb = 0xffffffff;
-#endif	//	I_SAY_YES_TO_COLOR
+#endif //	I_SAY_YES_TO_COLOR
 			}
 			else
 			{
-				gos_vertices[numGOSVertices].GOSTransformNoClip(
-					coords[j],
-					*mat,
-					&texCoords[j][0]
+				gos_vertices[numGOSVertices].GOSTransformNoClip(coords[j], *mat, &texCoords[j][0]
 #if FOG_HACK
-					, state.GetFogMode()
-#endif	//	FOG_HACK
+					,
+					state.GetFogMode()
+#endif //	FOG_HACK
 				);
 				(*texCoords2)[tex2count++] = texCoords[numVertices + j];
 			}
 #else //	I_SAY_YES_TO_DUAL_TEXTURES
 #ifdef I_SAY_YES_TO_DETAIL_TEXTURES
 			if (MLRState::GetMultitextureLightMap() == true &&
-					state.GetMultiTextureMode() != MLRState::MultiTextureOffMode &&
-					gEnableDetailTexture == 1
-			   )
+				state.GetMultiTextureMode() != MLRState::MultiTextureOffMode &&
+				gEnableDetailTexture == 1)
 			{
 #ifdef I_SAY_YES_TO_TERRAIN2
 				detailTexCoords[0] = texCoords[j][0] * xScale;
 				detailTexCoords[1] = texCoords[j][1] * yScale;
 #else
-				detailTexCoords[0] = texCoords[j][0] * xScale + xOffset;
-				detailTexCoords[1] = texCoords[j][1] * yScale + yOffset;
+				detailTexCoords[0]					 = texCoords[j][0] * xScale + xOffset;
+				detailTexCoords[1]					 = texCoords[j][1] * yScale + yOffset;
 #endif
-				Verify(MLRState::GetHasMaxUVs() ? (detailTexCoords[0] >= -MLRState::GetMaxUV() && detailTexCoords[0] <= MLRState::GetMaxUV()) : 1);
-				Verify(MLRState::GetHasMaxUVs() ? (detailTexCoords[1] >= -MLRState::GetMaxUV() && detailTexCoords[1] <= MLRState::GetMaxUV()) : 1);
+				_ASSERT(MLRState::GetHasMaxUVs() ? (detailTexCoords[0] >= -MLRState::GetMaxUV() &&
+													  detailTexCoords[0] <= MLRState::GetMaxUV())
+												: 1);
+				_ASSERT(MLRState::GetHasMaxUVs() ? (detailTexCoords[1] >= -MLRState::GetMaxUV() &&
+													  detailTexCoords[1] <= MLRState::GetMaxUV())
+												: 1);
 				gos_vertices2uv[numGOSVertices].GOSTransformNoClip(
-					coords[j],
-					*mat,
-					&texCoords[j][0],
-					&detailTexCoords[0]
+					coords[j], *mat, &texCoords[j][0], &detailTexCoords[0]
 #if FOG_HACK
-					, state.GetFogMode()
-#endif	//	FOG_HACK
+					,
+					state.GetFogMode()
+#endif //	FOG_HACK
 				);
 #ifdef I_SAY_YES_TO_COLOR
 #if COLOR_AS_DWORD
 				gos_vertices2uv[numGOSVertices].argb = (*actualColors)[j];
-#else	//	COLOR_AS_DWORD
+#else  //	COLOR_AS_DWORD
 				gos_vertices2uv[numGOSVertices].argb = GOSCopyColor(&(*actualColors)[j]);
-#endif	//	COLOR_AS_DWORD
-#else	//	I_SAY_YES_TO_COLOR
+#endif //	COLOR_AS_DWORD
+#else  //	I_SAY_YES_TO_COLOR
 				gos_vertices2uv[numGOSVertices].argb = 0xffffffff;
-#endif	//	I_SAY_YES_TO_COLOR
+#endif //	I_SAY_YES_TO_COLOR
 				if (gos_vertices[j].rhw < fadeDetailEnd)
 				{
 					gos_vertices[j].argb &= 0x00ffffff;
@@ -181,34 +179,37 @@ CLASSNAME::TransformNoClip(Stuff::Matrix4D* mat, GOSVertexPool* vt, bool db)
 				{
 					if (gos_vertices[j].rhw < fadeDetailStart)
 					{
-						gos_vertices[j].argb &= ((Stuff::Truncate_Float_To_Word((gos_vertices[j].rhw - fadeDetailEnd) * fadeMultiplicator)) << 24) | 0x00ffffff;
+						gos_vertices[j].argb &=
+							((Stuff::Truncate_Float_To_Word(
+								 (gos_vertices[j].rhw - fadeDetailEnd) * fadeMultiplicator))
+								<< 24) |
+							0x00ffffff;
 					}
 				}
 			}
 			else
 #endif //	I_SAY_YES_TO_DETAIL_TEXTURES
 			{
-				gos_vertices[numGOSVertices].GOSTransformNoClip(
-					coords[j],
-					*mat,
+				gos_vertices[numGOSVertices].GOSTransformNoClip(coords[j], *mat,
 #ifdef I_SAY_YES_TO_TERRAIN
 					terrainUV
-#else	//	I_SAY_YES_TO_TERRAIN
+#else  //	I_SAY_YES_TO_TERRAIN
 					&texCoords[j][0]
-#endif	//	I_SAY_YES_TO_TERRAIN
+#endif //	I_SAY_YES_TO_TERRAIN
 #if FOG_HACK
-					, state.GetFogMode()
-#endif	//	FOG_HACK
+					,
+					state.GetFogMode()
+#endif //	FOG_HACK
 				);
 #ifdef I_SAY_YES_TO_COLOR
 #if COLOR_AS_DWORD
 				gos_vertices[numGOSVertices].argb = (*actualColors)[j];
-#else	//	COLOR_AS_DWORD
-				gos_vertices[numGOSVertices].argb = GOSCopyColor(&(*actualColors)[j]);
-#endif	//	COLOR_AS_DWORD
-#else	//	I_SAY_YES_TO_COLOR
+#else  //	COLOR_AS_DWORD
+				gos_vertices[numGOSVertices].argb	= GOSCopyColor(&(*actualColors)[j]);
+#endif //	COLOR_AS_DWORD
+#else  //	I_SAY_YES_TO_COLOR
 				gos_vertices[numGOSVertices].argb = 0xffffffff;
-#endif	//	I_SAY_YES_TO_COLOR
+#endif //	I_SAY_YES_TO_COLOR
 			}
 #endif //	I_SAY_YES_TO_DUAL_TEXTURES
 			if (textureAnimation)
@@ -221,36 +222,37 @@ CLASSNAME::TransformNoClip(Stuff::Matrix4D* mat, GOSVertexPool* vt, bool db)
 			{
 				extraMultiTexCoords[m][tex2count[m]++] = multiTexCoordsPointers[m][j];
 			}
-#endif	//	I_SAY_YES_TO_MULTI_TEXTURES
+#endif //	I_SAY_YES_TO_MULTI_TEXTURES
 			numGOSVertices++;
 		}
 	}
 #ifdef LAB_ONLY
 	Set_Statistic(NonClippedVertices, NonClippedVertices + numGOSVertices);
-#endif	//	LAB_ONLY
+#endif //	LAB_ONLY
 	Check_Object(vt);
 #ifdef I_SAY_YES_TO_DUAL_TEXTURES
-	if (MLRState::GetMultitextureLightMap() == false || state.GetMultiTextureMode() == MLRState::MultiTextureOffMode)
+	if (MLRState::GetMultitextureLightMap() == false ||
+		state.GetMultiTextureMode() == MLRState::MultiTextureOffMode)
 	{
-		Verify(tex2count == numGOSVertices);
+		_ASSERT(tex2count == numGOSVertices);
 		if (db == false)
 		{
-			Verify(vt->GetLast() + 2 * numGOSVertices < vt->GetLength());
+			_ASSERT(vt->GetLast() + 2 * numGOSVertices < vt.size());
 		}
 		else
 		{
-			Verify(2 * numGOSVertices < 2 * Limits::Max_Number_Vertices_Per_Mesh);
+			_ASSERT(2 * numGOSVertices < 2 * Limits::Max_Number_Vertices_Per_Mesh);
 		}
 		if (state2.GetTextureHandle())
 		{
 			MLRTexture* texture = (*MLRTexturePool::Instance)[state.GetTextureHandle()];
-			Verify(texture);
+			_ASSERT(texture);
 			textureAnimation = texture->GetAnimateTexture();
 			if (textureAnimation)
 			{
 				Stuff::AffineMatrix4D& textureMatrix = texture->GetTextureMatrix();
-				deltaU = textureMatrix(3, 0);
-				deltaV = textureMatrix(3, 1);
+				deltaU								 = textureMatrix(3, 0);
+				deltaV								 = textureMatrix(3, 1);
 			}
 		}
 		memcpy(gos_vertices + numGOSVertices, gos_vertices, numGOSVertices * sizeof(GOSVertex));
@@ -282,19 +284,20 @@ CLASSNAME::TransformNoClip(Stuff::Matrix4D* mat, GOSVertexPool* vt, bool db)
 			vt->Increase2UV(numGOSVertices);
 		}
 	}
-#else	//	I_SAY_YES_TO_DUAL_TEXTURES
+#else //	I_SAY_YES_TO_DUAL_TEXTURES
 #ifdef I_SAY_YES_TO_DETAIL_TEXTURES
 	if (gEnableDetailTexture == 1)
 	{
-		if (MLRState::GetMultitextureLightMap() == false || state.GetMultiTextureMode() == MLRState::MultiTextureOffMode)
+		if (MLRState::GetMultitextureLightMap() == false ||
+			state.GetMultiTextureMode() == MLRState::MultiTextureOffMode)
 		{
 			if (db == false)
 			{
-				Verify(vt->GetLast() + 2 * numGOSVertices < vt->GetLength());
+				_ASSERT(vt->GetLast() + 2 * numGOSVertices < vt.size());
 			}
 			else
 			{
-				Verify(2 * numGOSVertices < 2 * Limits::Max_Number_Vertices_Per_Mesh);
+				_ASSERT(2 * numGOSVertices < 2 * Limits::Max_Number_Vertices_Per_Mesh);
 			}
 			memcpy(gos_vertices + numGOSVertices, gos_vertices, numGOSVertices * sizeof(GOSVertex));
 			stride = 0;
@@ -304,11 +307,15 @@ CLASSNAME::TransformNoClip(Stuff::Matrix4D* mat, GOSVertexPool* vt, bool db)
 				gos_vertices[j].u = gos_vertices[i].u * xScale;
 				gos_vertices[j].v = gos_vertices[i].v * yScale;
 #else
-				gos_vertices[j].u = gos_vertices[i].u * xScale + xOffset;
-				gos_vertices[j].v = gos_vertices[i].v * yScale + yOffset;
+				gos_vertices[j].u					 = gos_vertices[i].u * xScale + xOffset;
+				gos_vertices[j].v					 = gos_vertices[i].v * yScale + yOffset;
 #endif
-				Verify(MLRState::GetHasMaxUVs() ? (gos_vertices[j].u >= -MLRState::GetMaxUV() && gos_vertices[j].u <= MLRState::GetMaxUV()) : 1);
-				Verify(MLRState::GetHasMaxUVs() ? (gos_vertices[j].v >= -MLRState::GetMaxUV() && gos_vertices[j].v <= MLRState::GetMaxUV()) : 1);
+				_ASSERT(MLRState::GetHasMaxUVs() ? (gos_vertices[j].u >= -MLRState::GetMaxUV() &&
+													  gos_vertices[j].u <= MLRState::GetMaxUV())
+												: 1);
+				_ASSERT(MLRState::GetHasMaxUVs() ? (gos_vertices[j].v >= -MLRState::GetMaxUV() &&
+													  gos_vertices[j].v <= MLRState::GetMaxUV())
+												: 1);
 				if (gos_vertices[j].rhw < fadeDetailEnd)
 				{
 					gos_vertices[j].argb &= 0x00ffffff;
@@ -318,7 +325,11 @@ CLASSNAME::TransformNoClip(Stuff::Matrix4D* mat, GOSVertexPool* vt, bool db)
 					stride++;
 					if (gos_vertices[j].rhw < fadeDetailStart)
 					{
-						gos_vertices[j].argb &= ((Stuff::Truncate_Float_To_Word((gos_vertices[j].rhw - fadeDetailEnd) * fadeMultiplicator)) << 24) | 0x00ffffff;
+						gos_vertices[j].argb &=
+							((Stuff::Truncate_Float_To_Word(
+								 (gos_vertices[j].rhw - fadeDetailEnd) * fadeMultiplicator))
+								<< 24) |
+							0x00ffffff;
 					}
 				}
 			}
@@ -350,24 +361,24 @@ CLASSNAME::TransformNoClip(Stuff::Matrix4D* mat, GOSVertexPool* vt, bool db)
 			vt->Increase(numGOSVertices);
 		}
 	}
-#else	//	I_SAY_YES_TO_DETAIL_TEXTURES
+#else  //	I_SAY_YES_TO_DETAIL_TEXTURES
 	if (db == false)
 	{
 		vt->Increase(numGOSVertices);
 	}
-#endif	//	I_SAY_YES_TO_DETAIL_TEXTURES
-#endif	//	I_SAY_YES_TO_DUAL_TEXTURES
+#endif //	I_SAY_YES_TO_DETAIL_TEXTURES
+#endif //	I_SAY_YES_TO_DUAL_TEXTURES
 #ifdef I_SAY_YES_TO_MULTI_TEXTURES
 	for (m = 1; m < currentNrOfPasses; m++)
 	{
-		Verify(tex2count[m] == numGOSVertices);
+		_ASSERT(tex2count[m] == numGOSVertices);
 		if (db == false)
 		{
-			Verify(vt->GetLast() + numGOSVertices < vt->GetLength());
+			_ASSERT(vt->GetLast() + numGOSVertices < vt.size());
 		}
 		else
 		{
-			Verify(numGOSVertices < 2 * Limits::Max_Number_Vertices_Per_Mesh);
+			_ASSERT(numGOSVertices < 2 * Limits::Max_Number_Vertices_Per_Mesh);
 		}
 		memcpy(gos_vertices + numGOSVertices, gos_vertices, numGOSVertices * sizeof(GOSVertex));
 		for (i = 0, j = numGOSVertices; i < numGOSVertices; i++, j++)
@@ -380,10 +391,10 @@ CLASSNAME::TransformNoClip(Stuff::Matrix4D* mat, GOSVertexPool* vt, bool db)
 			vt->Increase(numGOSVertices);
 		}
 	}
-#endif	//	I_SAY_YES_TO_MULTI_TEXTURES
-	gos_indices = vt->GetActualIndexPool(db);
+#endif //	I_SAY_YES_TO_MULTI_TEXTURES
+	gos_indices   = vt->GetActualIndexPool(db);
 	numGOSIndices = 0;
-	size_t ngi = 0;
+	size_t ngi	= 0;
 	for (i = 0, j = 0; i < numOfTriangles; j += 3, ++i)
 	{
 		if (testList[i] == 0)
@@ -392,17 +403,17 @@ CLASSNAME::TransformNoClip(Stuff::Matrix4D* mat, GOSVertexPool* vt, bool db)
 		}
 		if (db == false)
 		{
-			Verify((vt->GetLastIndex() + 3 + numGOSIndices) < vt->GetLength());
+			_ASSERT((vt->GetLastIndex() + 3 + numGOSIndices) < vt.size());
 		}
 		else
 		{
-			Verify(3 + numGOSIndices < 2 * Limits::Max_Number_Vertices_Per_Mesh);
+			_ASSERT(3 + numGOSIndices < 2 * Limits::Max_Number_Vertices_Per_Mesh);
 		}
-		Verify(indexOffset[index[j]] < numGOSVertices);
+		_ASSERT(indexOffset[index[j]] < numGOSVertices);
 		gos_indices[ngi++] = indexOffset[index[j]];
-		Verify(indexOffset[index[j + 2]] < numGOSVertices);
+		_ASSERT(indexOffset[index[j + 2]] < numGOSVertices);
 		gos_indices[ngi++] = indexOffset[index[j + 2]];
-		Verify(indexOffset[index[j + 1]] < numGOSVertices);
+		_ASSERT(indexOffset[index[j + 1]] < numGOSVertices);
 		gos_indices[ngi++] = indexOffset[index[j + 1]];
 	}
 	numGOSIndices = (uint16_t)ngi;
@@ -417,17 +428,19 @@ CLASSNAME::TransformNoClip(Stuff::Matrix4D* mat, GOSVertexPool* vt, bool db)
 
 static MLRClippingState theAnd, theOr, theTest;
 
-//	extern void _stdcall CheckVertices( gos_VERTEX* pVertexArray, uint32_t NumberVertices, bool PointsLines );
-//	extern void _stdcall CheckVertices1( gos_VERTEX_2UV* pVertexArray, uint32_t NumberVertices );
+//	extern void _stdcall CheckVertices( gos_VERTEX* pVertexArray, uint32_t NumberVertices, bool
+//PointsLines ); 	extern void _stdcall CheckVertices1( gos_VERTEX_2UV* pVertexArray, uint32_t
+//NumberVertices );
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Now it gets serious
-uint32_t CLASSNAME::TransformAndClip(Stuff::Matrix4D* mat, MLRClippingState clippingFlags, GOSVertexPool* vt, bool db)
+uint32_t CLASSNAME::TransformAndClip(
+	Stuff::Matrix4D* mat, MLRClippingState clippingFlags, GOSVertexPool* vt, bool db)
 {
 	// Check_Object(this);
 	Start_Timer(Transform_Time);
-	Verify(numOfTriangles == testList.GetLength());
-	Verify(clippingFlags.GetClippingState() != 0);
+	_ASSERT(numOfTriangles == testList.GetLength());
+	_ASSERT(clippingFlags.GetClippingState() != 0);
 	//
 	//--------------------------------------
 	// See if we don't have to draw anything
@@ -439,7 +452,7 @@ uint32_t CLASSNAME::TransformAndClip(Stuff::Matrix4D* mat, MLRClippingState clip
 		Stop_Timer(Transform_Time);
 		return visible;
 	}
-	Verify(index.GetLength() > 0);
+	_ASSERT(index.GetLength() > 0);
 	uint16_t l;
 	size_t i, j, k, ret = 0;
 	size_t len = coords.GetLength();
@@ -448,9 +461,9 @@ uint32_t CLASSNAME::TransformAndClip(Stuff::Matrix4D* mat, MLRClippingState clip
 		FindVisibleVertices();
 	}
 	Stuff::Vector4D* v4d = transformedCoords->GetData();
-	Stuff::Point3D* p3d = coords.GetData();
-	puint32_t cs = reinterpret_cast<puint32_t>(clipPerVertex->GetData());	// HAKKAPILITA
-	puint8_t viv = visibleIndexedVertices.GetData();
+	Stuff::Point3D* p3d  = coords.GetData();
+	puint32_t cs		 = reinterpret_cast<puint32_t>(clipPerVertex->GetData()); // HAKKAPILITA
+	puint8_t viv		 = visibleIndexedVertices.GetData();
 	for (i = 0; i < len; i++, p3d++, v4d++, cs++, viv++)
 	{
 		if (*viv == 0)
@@ -461,12 +474,12 @@ uint32_t CLASSNAME::TransformAndClip(Stuff::Matrix4D* mat, MLRClippingState clip
 		v4d->MultiplySetClip(*p3d, *mat, cs);
 #ifdef LAB_ONLY
 		Set_Statistic(TransformedVertices, TransformedVertices + 1);
-#endif	//	LAB_ONLY
-		//
-		//--------------------------------------------------------
-		// I claims all vertices are in. lets check it. who knows
-		//--------------------------------------------------------
-		//
+#endif //	LAB_ONLY
+	   //
+	   //--------------------------------------------------------
+	   // I claims all vertices are in. lets check it. who knows
+	   //--------------------------------------------------------
+	   //
 #ifdef LAB_ONLY
 		if ((*cs) == 0)
 		{
@@ -478,23 +491,23 @@ uint32_t CLASSNAME::TransformAndClip(Stuff::Matrix4D* mat, MLRClippingState clip
 				// I claims all vertices are in. lets check it. who knows
 				//--------------------------------------------------------
 				//
-				Verify(v4d->x >= 0.0f && v4d->x <= v4d->w);
-				Verify(v4d->y >= 0.0f && v4d->y <= v4d->w);
-				Verify(v4d->z >= 0.0f && v4d->z <= v4d->w);
+				_ASSERT(v4d->x >= 0.0f && v4d->x <= v4d->w);
+				_ASSERT(v4d->y >= 0.0f && v4d->y <= v4d->w);
+				_ASSERT(v4d->z >= 0.0f && v4d->z <= v4d->w);
 			}
-#endif	//	_ARMOR
+#endif //	_ARMOR
 			Set_Statistic(NonClippedVertices, NonClippedVertices + 1);
 		}
 		else
 		{
 			Set_Statistic(ClippedVertices, ClippedVertices + 1);
 		}
-#endif	//	LAB_ONLY
+#endif //	LAB_ONLY
 	}
 	Stop_Timer(Transform_Time);
 	Start_Timer(Clipping_Time);
 	size_t mask, k0, k1, ct = 0;
-	float a = 0.0f;
+	float a				  = 0.0f;
 	bool textureAnimation = false;
 	float deltaU = 0.0f, deltaV = 0.0f;
 	if (state.GetTextureHandle())
@@ -505,31 +518,31 @@ uint32_t CLASSNAME::TransformAndClip(Stuff::Matrix4D* mat, MLRClippingState clip
 		if (textureAnimation)
 		{
 			Stuff::AffineMatrix4D& textureMatrix = texture->GetTextureMatrix();
-			deltaU = textureMatrix(3, 0);
-			deltaV = textureMatrix(3, 1);
+			deltaU								 = textureMatrix(3, 0);
+			deltaV								 = textureMatrix(3, 1);
 		}
 	}
 #if defined(I_SAY_YES_TO_DUAL_TEXTURES) || defined(I_SAY_YES_TO_DETAIL_TEXTURES)
-	gos_vertices2uv = vt->GetActualVertexPool2UV(db);
+	gos_vertices2uv		   = vt->GetActualVertexPool2UV(db);
 	bool textureAnimation2 = false;
 	float deltaU2 = 0.0f, deltaV2 = 0.0f;
 	if (state2.GetTextureHandle())
 	{
 		MLRTexture* texture = (*MLRTexturePool::Instance)[state2.GetTextureHandle()];
-		Verify(texture);
+		_ASSERT(texture);
 		textureAnimation2 = texture->GetAnimateTexture();
 		if (textureAnimation2)
 		{
 			Stuff::AffineMatrix4D& textureMatrix = texture->GetTextureMatrix();
-			deltaU2 = textureMatrix(3, 0);
-			deltaV2 = textureMatrix(3, 1);
+			deltaU2								 = textureMatrix(3, 0);
+			deltaV2								 = textureMatrix(3, 1);
 		}
 	}
-#endif	//	I_SAY_YES_TO_DUAL_TEXTURES || I_SAY_YES_TO_DETAIL_TEXTURES
+#endif //	I_SAY_YES_TO_DUAL_TEXTURES || I_SAY_YES_TO_DETAIL_TEXTURES
 #ifdef I_SAY_YES_TO_DUAL_TEXTURES
-	size_t tex2count = 0;
+	size_t tex2count	 = 0;
 	uint32_t numVertices = GetNumVertices();
-#endif	//	I_SAY_YES_TO_DUAL_TEXTURES
+#endif //	I_SAY_YES_TO_DUAL_TEXTURES
 #ifdef I_SAY_YES_TO_MULTI_TEXTURES
 	size_t m;
 	gos_PushCurrentHeap(StaticHeap);
@@ -539,12 +552,12 @@ uint32_t CLASSNAME::TransformAndClip(Stuff::Matrix4D* mat, MLRClippingState clip
 	{
 		tex2count[m] = 0;
 	}
-#endif	//	I_SAY_YES_TO_MULTI_TEXTURES
-	size_t	myNumberUsedClipVertex, myNumberUsedClipIndex, myNumberUsedClipLength;
+#endif //	I_SAY_YES_TO_MULTI_TEXTURES
+	size_t myNumberUsedClipVertex, myNumberUsedClipIndex, myNumberUsedClipLength;
 	myNumberUsedClipVertex = 0;
-	myNumberUsedClipIndex = 0;
+	myNumberUsedClipIndex  = 0;
 	myNumberUsedClipLength = 0;
-	Verify(index.GetLength() > 0);
+	_ASSERT(index.GetLength() > 0);
 	//
 	//------------------------
 	// Handle the indexed case
@@ -556,7 +569,7 @@ uint32_t CLASSNAME::TransformAndClip(Stuff::Matrix4D* mat, MLRClippingState clip
 	// backfaced polygons
 	//-----------------------------------------------------------------
 	//
-	cs = reinterpret_cast<puint32_t>(clipPerVertex->GetData());	// Hack
+	cs = reinterpret_cast<puint32_t>(clipPerVertex->GetData()); // Hack
 	size_t index0, index1, index2;
 	for (i = 0, j = 0; i < numOfTriangles; j += 3, ++i)
 	{
@@ -575,7 +588,7 @@ uint32_t CLASSNAME::TransformAndClip(Stuff::Matrix4D* mat, MLRClippingState clip
 		//---------------------------------------------------------------
 		//
 		theAnd = cs[index0];
-		theOr = theAnd;
+		theOr  = theAnd;
 		theAnd &= (cs[index1] & cs[index2]);
 		theOr |= (cs[index1] | cs[index2]);
 		//
@@ -586,13 +599,13 @@ uint32_t CLASSNAME::TransformAndClip(Stuff::Matrix4D* mat, MLRClippingState clip
 		// accept of the polygon
 		//-------------------------------------------------------------------
 		//
-		theAnd = theOr = 0;		//ASSUME NO CLIPPING NEEDED FOR MC2.  Its just not done here!
+		theAnd = theOr = 0; // ASSUME NO CLIPPING NEEDED FOR MC2.  Its just not done here!
 		if (theAnd != 0)
 		{
 			testList[i] = 0;
 #ifdef LAB_ONLY
 			Set_Statistic(PolysClippedButOutside, PolysClippedButOutside + 1);
-#endif	//	LAB_ONLY
+#endif //	LAB_ONLY
 		}
 		else if (theOr == 0)
 		{
@@ -607,10 +620,10 @@ uint32_t CLASSNAME::TransformAndClip(Stuff::Matrix4D* mat, MLRClippingState clip
 			(*clipTexCoords)[index1][1] = borderPixelFun + (coords[index1].z - minZ) * zUVFac;
 			(*clipTexCoords)[index2][0] = borderPixelFun + (coords[index2].x - minX) * xUVFac;
 			(*clipTexCoords)[index2][1] = borderPixelFun + (coords[index2].z - minZ) * zUVFac;
-#endif	//	I_SAY_YES_TO_TERRAIN
+#endif //	I_SAY_YES_TO_TERRAIN
 #ifdef LAB_ONLY
 			Set_Statistic(PolysClippedButInside, PolysClippedButInside + 1);
-#endif	//	LAB_ONLY
+#endif //	LAB_ONLY
 		}
 		//
 		//-----------------------------------------------------------------
@@ -628,19 +641,19 @@ uint32_t CLASSNAME::TransformAndClip(Stuff::Matrix4D* mat, MLRClippingState clip
 			(*clipTexCoords)[index1][1] = borderPixelFun + (coords[index1].z - minZ) * zUVFac;
 			(*clipTexCoords)[index2][0] = borderPixelFun + (coords[index2].x - minX) * xUVFac;
 			(*clipTexCoords)[index2][1] = borderPixelFun + (coords[index2].z - minZ) * zUVFac;
-#endif	//	I_SAY_YES_TO_TERRAIN
-			//
-			//---------------------------------------------------------------
-			// Handle the case of a single clipping plane by stepping through
-			// the vertices and finding the edge it originates
-			//---------------------------------------------------------------
-			//
+#endif //	I_SAY_YES_TO_TERRAIN
+	   //
+	   //---------------------------------------------------------------
+	   // Handle the case of a single clipping plane by stepping through
+	   // the vertices and finding the edge it originates
+	   //---------------------------------------------------------------
+	   //
 			bool firstIsIn;
 			if (theOr.GetNumberOfSetBits() == 1)
 			{
 #ifdef LAB_ONLY
 				Set_Statistic(PolysClippedButOnePlane, PolysClippedButOnePlane + 1);
-#endif	//	LAB_ONLY
+#endif //	LAB_ONLY
 				for (k = j; k < j + 3; k++)
 				{
 					k0 = index[k];
@@ -651,32 +664,32 @@ uint32_t CLASSNAME::TransformAndClip(Stuff::Matrix4D* mat, MLRClippingState clip
 					// directly to the clipping buffer
 					//----------------------------------------------------
 					//
-					size_t clipped_index =
-						myNumberUsedClipVertex + numberVerticesPerPolygon;
-					theTest = cs[k0];
+					size_t clipped_index = myNumberUsedClipVertex + numberVerticesPerPolygon;
+					theTest				 = cs[k0];
 					if (theTest == 0)
 					{
-						firstIsIn = true;
+						firstIsIn						  = true;
 						(*clipExtraCoords)[clipped_index] = (*transformedCoords)[k0];
 #ifdef I_SAY_YES_TO_COLOR
-						Verify((*actualColors).GetLength() > 0);
+						_ASSERT((*actualColors).GetLength() > 0);
 						(*clipExtraColors)[clipped_index] = (*actualColors)[k0];
-#endif	//	I_SAY_YES_TO_COLOR
+#endif //	I_SAY_YES_TO_COLOR
 #ifdef I_SAY_YES_TO_TERRAIN
 						(*clipExtraTexCoords)[clipped_index] = (*clipTexCoords)[k0];
-#else	//	I_SAY_YES_TO_TERRAIN
-						Verify(texCoords.GetLength() > 0);
+#else  //	I_SAY_YES_TO_TERRAIN
+						_ASSERT(texCoords.GetLength() > 0);
 						(*clipExtraTexCoords)[clipped_index] = texCoords[k0];
-#endif	// I_SAY_YES_TO_TERRAIN
+#endif // I_SAY_YES_TO_TERRAIN
 #ifdef I_SAY_YES_TO_DUAL_TEXTURES
 						(*clipExtraTexCoords2)[clipped_index] = texCoords[k0 + numVertices];
 #endif
 #ifdef I_SAY_YES_TO_MULTI_TEXTURES
 						for (m = 1; m < currentNrOfPasses; m++)
 						{
-							clipExtraMultiTexCoords[m][clipped_index] = multiTexCoordsPointers[m][k0];
+							clipExtraMultiTexCoords[m][clipped_index] =
+								multiTexCoordsPointers[m][k0];
 						}
-#endif	//	I_SAY_YES_TO_MULTI_TEXTURES				
+#endif //	I_SAY_YES_TO_MULTI_TEXTURES
 						numberVerticesPerPolygon++;
 						clipped_index++;
 						//
@@ -705,7 +718,7 @@ uint32_t CLASSNAME::TransformAndClip(Stuff::Matrix4D* mat, MLRClippingState clip
 						firstIsIn = false;
 						if (cs[k1] != 0)
 						{
-							Verify(cs[k1] == cs[k0]);
+							_ASSERT(cs[k1] == cs[k0]);
 							continue;
 						}
 					}
@@ -727,7 +740,8 @@ uint32_t CLASSNAME::TransformAndClip(Stuff::Matrix4D* mat, MLRClippingState clip
 					{
 						if (theTest.IsClipped(mask))
 						{
-							//							GetDoubleBC(l, bc0, bc1, transformedCoords[k0], transformedCoords[k1]);
+							//							GetDoubleBC(l, bc0, bc1, transformedCoords[k0],
+							//transformedCoords[k1]);
 							//
 							//-------------------------------------------
 							// Find the clipping interval from bc0 to bc1
@@ -735,13 +749,15 @@ uint32_t CLASSNAME::TransformAndClip(Stuff::Matrix4D* mat, MLRClippingState clip
 							//
 							if (firstIsIn == true)
 							{
-								a = GetLerpFactor(l, (*transformedCoords)[k0], (*transformedCoords)[k1]);
+								a = GetLerpFactor(
+									l, (*transformedCoords)[k0], (*transformedCoords)[k1]);
 							}
 							else
 							{
-								a = GetLerpFactor(l, (*transformedCoords)[k1], (*transformedCoords)[k0]);
+								a = GetLerpFactor(
+									l, (*transformedCoords)[k1], (*transformedCoords)[k0]);
 							}
-							Verify(a >= 0.0f && a <= 1.0f);
+							_ASSERT(a >= 0.0f && a <= 1.0f);
 							ct = l;
 							break;
 						}
@@ -755,10 +771,7 @@ uint32_t CLASSNAME::TransformAndClip(Stuff::Matrix4D* mat, MLRClippingState clip
 					if (firstIsIn == true)
 					{
 						(*clipExtraCoords)[clipped_index].Lerp(
-							(*transformedCoords)[k0],
-							(*transformedCoords)[k1],
-							a
-						);
+							(*transformedCoords)[k0], (*transformedCoords)[k1], a);
 						DoClipTrick((*clipExtraCoords)[clipped_index], ct);
 						//
 						//----------------------------------------------------------
@@ -767,70 +780,44 @@ uint32_t CLASSNAME::TransformAndClip(Stuff::Matrix4D* mat, MLRClippingState clip
 						//----------------------------------------------------------
 						//
 #ifdef I_SAY_YES_TO_COLOR
-						Verify((*actualColors).GetLength() > 0);
+						_ASSERT((*actualColors).GetLength() > 0);
 #if COLOR_AS_DWORD
-						(*clipExtraColors)[clipped_index] = Color_DWORD_Lerp(
-																(*actualColors)[k0],
-																(*actualColors)[k1],
-																a
-															);
-#else	//	COLOR_AS_DWORD
+						(*clipExtraColors)[clipped_index] =
+							Color_DWORD_Lerp((*actualColors)[k0], (*actualColors)[k1], a);
+#else  //	COLOR_AS_DWORD
 						(*clipExtraColors)[clipped_index].Lerp(
-							(*actualColors)[k0],
-							(*actualColors)[k1],
-							a
-						);
-#endif	//	COLOR_AS_DWORD
-#endif	//	I_SAY_YES_TO_COLOR
-						//
-						//-----------------------------------------------------
-						// If there are texture uv's, we need to lerp them in a
-						// perspective correct manner
-						//-----------------------------------------------------
-						//
+							(*actualColors)[k0], (*actualColors)[k1], a);
+#endif //	COLOR_AS_DWORD
+#endif //	I_SAY_YES_TO_COLOR
+	   //
+	   //-----------------------------------------------------
+	   // If there are texture uv's, we need to lerp them in a
+	   // perspective correct manner
+	   //-----------------------------------------------------
+	   //
 #ifdef I_SAY_YES_TO_TERRAIN
-						(*clipExtraTexCoords)[clipped_index].Lerp
-						(
-							(*clipTexCoords)[k0],
-							(*clipTexCoords)[k1],
-							a
-						);
-#else	//	I_SAY_YES_TO_TERRAIN
-						Verify(texCoords.GetLength() > 0);
-						(*clipExtraTexCoords)[clipped_index].Lerp
-						(
-							texCoords[k0],
-							texCoords[k1],
-							a
-						);
-#endif	//	I_SAY_YES_TO_TERRAIN
+						(*clipExtraTexCoords)[clipped_index].Lerp(
+							(*clipTexCoords)[k0], (*clipTexCoords)[k1], a);
+#else  //	I_SAY_YES_TO_TERRAIN
+						_ASSERT(texCoords.GetLength() > 0);
+						(*clipExtraTexCoords)[clipped_index].Lerp(texCoords[k0], texCoords[k1], a);
+#endif //	I_SAY_YES_TO_TERRAIN
 #ifdef I_SAY_YES_TO_DUAL_TEXTURES
-						(*clipExtraTexCoords2)[clipped_index].Lerp
-						(
-							texCoords[k0 + numVertices],
-							texCoords[k1 + numVertices],
-							a
-						);
-#endif	//	I_SAY_YES_TO_DUAL_TEXTURES
+						(*clipExtraTexCoords2)[clipped_index].Lerp(
+							texCoords[k0 + numVertices], texCoords[k1 + numVertices], a);
+#endif //	I_SAY_YES_TO_DUAL_TEXTURES
 #ifdef I_SAY_YES_TO_MULTI_TEXTURES
 						for (m = 1; m < currentNrOfPasses; m++)
 						{
-							(*clipExtraMultiTexCoords)[m][clipped_index] .Lerp
-							(
-								multiTexCoordsPointers[m][k0],
-								multiTexCoordsPointers[m][k1],
-								a
-							);
+							(*clipExtraMultiTexCoords)[m][clipped_index].Lerp(
+								multiTexCoordsPointers[m][k0], multiTexCoordsPointers[m][k1], a);
 						}
-#endif	//	I_SAY_YES_TO_MULTI_TEXTURES
+#endif //	I_SAY_YES_TO_MULTI_TEXTURES
 					}
 					else
 					{
 						(*clipExtraCoords)[clipped_index].Lerp(
-							(*transformedCoords)[k1],
-							(*transformedCoords)[k0],
-							a
-						);
+							(*transformedCoords)[k1], (*transformedCoords)[k0], a);
 						DoClipTrick((*clipExtraCoords)[clipped_index], ct);
 						//
 						//----------------------------------------------------------
@@ -839,62 +826,39 @@ uint32_t CLASSNAME::TransformAndClip(Stuff::Matrix4D* mat, MLRClippingState clip
 						//----------------------------------------------------------
 						//
 #ifdef I_SAY_YES_TO_COLOR
-						Verify((*actualColors).GetLength() > 0);
+						_ASSERT((*actualColors).GetLength() > 0);
 #if COLOR_AS_DWORD
-						(*clipExtraColors)[clipped_index] = Color_DWORD_Lerp(
-																(*actualColors)[k1],
-																(*actualColors)[k0],
-																a
-															);
-#else	//	COLOR_AS_DWORD
+						(*clipExtraColors)[clipped_index] =
+							Color_DWORD_Lerp((*actualColors)[k1], (*actualColors)[k0], a);
+#else  //	COLOR_AS_DWORD
 						(*clipExtraColors)[clipped_index].Lerp(
-							(*actualColors)[k1],
-							(*actualColors)[k0],
-							a
-						);
-#endif	//	COLOR_AS_DWORD
-#endif	//	I_SAY_YES_TO_COLOR
-						//
-						//-----------------------------------------------------
-						// If there are texture uv's, we need to lerp them in a
-						// perspective correct manner
-						//-----------------------------------------------------
-						//
+							(*actualColors)[k1], (*actualColors)[k0], a);
+#endif //	COLOR_AS_DWORD
+#endif //	I_SAY_YES_TO_COLOR
+	   //
+	   //-----------------------------------------------------
+	   // If there are texture uv's, we need to lerp them in a
+	   // perspective correct manner
+	   //-----------------------------------------------------
+	   //
 #ifdef I_SAY_YES_TO_TERRAIN
-						(*clipExtraTexCoords)[clipped_index].Lerp
-						(
-							(*clipTexCoords)[k1],
-							(*clipTexCoords)[k0],
-							a
-						);
-#else	//	I_SAY_YES_TO_TERRAIN
-						Verify(texCoords.GetLength() > 0);
-						(*clipExtraTexCoords)[clipped_index].Lerp
-						(
-							texCoords[k1],
-							texCoords[k0],
-							a
-						);
-#endif	//	I_SAY_YES_TO_TERRAIN
+						(*clipExtraTexCoords)[clipped_index].Lerp(
+							(*clipTexCoords)[k1], (*clipTexCoords)[k0], a);
+#else  //	I_SAY_YES_TO_TERRAIN
+						_ASSERT(texCoords.GetLength() > 0);
+						(*clipExtraTexCoords)[clipped_index].Lerp(texCoords[k1], texCoords[k0], a);
+#endif //	I_SAY_YES_TO_TERRAIN
 #ifdef I_SAY_YES_TO_DUAL_TEXTURES
-						(*clipExtraTexCoords2)[clipped_index].Lerp
-						(
-							texCoords[k1 + numVertices],
-							texCoords[k0 + numVertices],
-							a
-						);
-#endif	//	I_SAY_YES_TO_DUAL_TEXTURES
+						(*clipExtraTexCoords2)[clipped_index].Lerp(
+							texCoords[k1 + numVertices], texCoords[k0 + numVertices], a);
+#endif //	I_SAY_YES_TO_DUAL_TEXTURES
 #ifdef I_SAY_YES_TO_MULTI_TEXTURES
 						for (m = 1; m < currentNrOfPasses; m++)
 						{
-							(*clipExtraMultiTexCoords)[m][clipped_index] .Lerp
-							(
-								multiTexCoordsPointers[m][k1],
-								multiTexCoordsPointers[m][k0],
-								a
-							);
+							(*clipExtraMultiTexCoords)[m][clipped_index].Lerp(
+								multiTexCoordsPointers[m][k1], multiTexCoordsPointers[m][k0], a);
 						}
-#endif	//	I_SAY_YES_TO_MULTI_TEXTURES
+#endif //	I_SAY_YES_TO_MULTI_TEXTURES
 					}
 					//
 					//--------------------------------
@@ -906,7 +870,7 @@ uint32_t CLASSNAME::TransformAndClip(Stuff::Matrix4D* mat, MLRClippingState clip
 				(*clipExtraLength)[myNumberUsedClipLength] = numberVerticesPerPolygon;
 #ifdef _ARMOR
 				(*clipExtraLength)[myNumberUsedClipLength] &= ~0x8000;
-#endif	//	_ARMOR
+#endif //	_ARMOR
 			}
 			//
 			//---------------------------------------------------------------
@@ -918,18 +882,18 @@ uint32_t CLASSNAME::TransformAndClip(Stuff::Matrix4D* mat, MLRClippingState clip
 			{
 #ifdef LAB_ONLY
 				Set_Statistic(PolysClippedButGOnePlane, PolysClippedButGOnePlane + 1);
-#endif	//	LAB_ONLY
+#endif //	LAB_ONLY
 				ClipData2 srcPolygon, dstPolygon;
 				uint8_t dstBuffer = 1;
 #ifndef I_SAY_YES_TO_TERRAIN
-				Verify(texCoords.GetLength() > 0);
-#endif	//	I_SAY_YES_TO_TERRAIN
+				_ASSERT(texCoords.GetLength() > 0);
+#endif //	I_SAY_YES_TO_TERRAIN
 				srcPolygon.coords = clipBuffer[dstBuffer].coords.GetData();
 #ifdef I_SAY_YES_TO_COLOR
-				Verify((*actualColors).GetLength() > 0);
+				_ASSERT((*actualColors).GetLength() > 0);
 				srcPolygon.colors = clipBuffer[dstBuffer].colors.GetData();
-#endif	//	I_SAY_YES_TO_COLOR
-				srcPolygon.texCoords = clipBuffer[dstBuffer].texCoords.GetData();
+#endif //	I_SAY_YES_TO_COLOR
+				srcPolygon.texCoords	 = clipBuffer[dstBuffer].texCoords.GetData();
 				srcPolygon.clipPerVertex = clipBuffer[dstBuffer].clipPerVertex.GetData();
 				//
 				//----------------------------------------------------------
@@ -938,28 +902,29 @@ uint32_t CLASSNAME::TransformAndClip(Stuff::Matrix4D* mat, MLRClippingState clip
 				//
 				for (k = j, l = 0; k < j + 3; k++, l++)
 				{
-					size_t indexK = index[k];
+					size_t indexK		 = index[k];
 					srcPolygon.coords[l] = (*transformedCoords)[indexK];
 #ifdef I_SAY_YES_TO_COLOR
 					srcPolygon.colors[l] = (*actualColors)[indexK];
-#endif	//	I_SAY_YES_TO_COLOR
+#endif //	I_SAY_YES_TO_COLOR
 #ifdef I_SAY_YES_TO_DUAL_TEXTURES
-					srcPolygon.texCoords[2 * l] = texCoords[indexK];
+					srcPolygon.texCoords[2 * l]		= texCoords[indexK];
 					srcPolygon.texCoords[2 * l + 1] = texCoords[indexK + numVertices];
-#else	//	I_SAY_YES_TO_DUAL_TEXTURES
+#else //	I_SAY_YES_TO_DUAL_TEXTURES
 #ifdef I_SAY_YES_TO_MULTI_TEXTURES
 					for (m = 0; m < currentNrOfPasses; m++)
 					{
-						srcPolygon.texCoords[currentNrOfPasses * l + m] = multiTexCoordsPointers[m][indexK];
+						srcPolygon.texCoords[currentNrOfPasses * l + m] =
+							multiTexCoordsPointers[m][indexK];
 					}
-#else	//	I_SAY_YES_TO_MULTI_TEXTURES
+#else //	I_SAY_YES_TO_MULTI_TEXTURES
 #ifdef I_SAY_YES_TO_TERRAIN
 					srcPolygon.texCoords[l] = (*clipTexCoords)[indexK];
-#else	//	I_SAY_YES_TO_TERRAIN
+#else  //	I_SAY_YES_TO_TERRAIN
 					srcPolygon.texCoords[l] = texCoords[indexK];
-#endif	//	I_SAY_YES_TO_TERRAIN
-#endif	//	I_SAY_YES_TO_MULTI_TEXTURES
-#endif	//	I_SAY_YES_TO_DUAL_TEXTURES
+#endif //	I_SAY_YES_TO_TERRAIN
+#endif //	I_SAY_YES_TO_MULTI_TEXTURES
+#endif //	I_SAY_YES_TO_DUAL_TEXTURES
 					srcPolygon.clipPerVertex[l] = (*clipPerVertex)[indexK];
 				}
 				srcPolygon.length = l;
@@ -968,14 +933,14 @@ uint32_t CLASSNAME::TransformAndClip(Stuff::Matrix4D* mat, MLRClippingState clip
 				// Point to the destination buffer
 				//--------------------------------
 				//
-				dstBuffer = 0;
+				dstBuffer		  = 0;
 				dstPolygon.coords = clipBuffer[dstBuffer].coords.GetData();
 #ifdef I_SAY_YES_TO_COLOR
 				dstPolygon.colors = clipBuffer[dstBuffer].colors.GetData();
-#endif	//	I_SAY_YES_TO_COLOR
-				dstPolygon.texCoords = clipBuffer[dstBuffer].texCoords.GetData();
+#endif //	I_SAY_YES_TO_COLOR
+				dstPolygon.texCoords	 = clipBuffer[dstBuffer].texCoords.GetData();
 				dstPolygon.clipPerVertex = clipBuffer[dstBuffer].clipPerVertex.GetData();
-				dstPolygon.length = 0;
+				dstPolygon.length		 = 0;
 				//
 				//-----------------------------------------------------------
 				// Spin through each plane that clipped the primitive and use
@@ -989,13 +954,11 @@ uint32_t CLASSNAME::TransformAndClip(Stuff::Matrix4D* mat, MLRClippingState clip
 				for (k = 0; k < srcPolygon.length; k++)
 				{
 					DEBUG_STREAM << setiosflags(ios::scientific) << setprecision(20)
-								 << srcPolygon.coords[k].x << " "
-								 << srcPolygon.coords[k].y << " "
-								 << srcPolygon.coords[k].z << " "
-								 << srcPolygon.coords[k].w << '\n';
+								 << srcPolygon.coords[k].x << " " << srcPolygon.coords[k].y << " "
+								 << srcPolygon.coords[k].z << " " << srcPolygon.coords[k].w << '\n';
 				}
 				DEBUG_STREAM << "TheOriginalOR: " << hex << theOr.GetClippingState() << dec << '\n';
-#endif	//	HUNT_CLIP_ERROR
+#endif //	HUNT_CLIP_ERROR
 				do
 				{
 					for (l = 0; l < MLRClippingState::NextBit; l++)
@@ -1009,10 +972,10 @@ uint32_t CLASSNAME::TransformAndClip(Stuff::Matrix4D* mat, MLRClippingState clip
 							//
 #if HUNT_CLIP_ERROR
 							DEBUG_STREAM << l << ": " << '\n';
-#endif	//	HUNT_CLIP_ERROR
+#endif //	HUNT_CLIP_ERROR
 							for (k = 0; k < srcPolygon.length; k++)
 							{
-								k1 = (k + 1) < srcPolygon.length ? k + 1 : 0;
+								k1		= (k + 1) < srcPolygon.length ? k + 1 : 0;
 								theTest = srcPolygon.clipPerVertex[k];
 								//
 								//----------------------------------------------------
@@ -1022,39 +985,38 @@ uint32_t CLASSNAME::TransformAndClip(Stuff::Matrix4D* mat, MLRClippingState clip
 								//
 								if (theTest.IsClipped(mask) == 0)
 								{
-									firstIsIn = true;
-									dstPolygon.coords[dstPolygon.length] =
-										srcPolygon.coords[k];
+									firstIsIn							 = true;
+									dstPolygon.coords[dstPolygon.length] = srcPolygon.coords[k];
 #if HUNT_CLIP_ERROR
-									DEBUG_STREAM << k << " goes " << setiosflags(ios::scientific) << setprecision(20)
-												 << srcPolygon.coords[k].x << " "
-												 << srcPolygon.coords[k].y << " "
+									DEBUG_STREAM << k << " goes " << setiosflags(ios::scientific)
+												 << setprecision(20) << srcPolygon.coords[k].x
+												 << " " << srcPolygon.coords[k].y << " "
 												 << srcPolygon.coords[k].z << " "
 												 << srcPolygon.coords[k].w << '\n';
-#endif	//	HUNT_CLIP_ERROR
+#endif //	HUNT_CLIP_ERROR
 									dstPolygon.clipPerVertex[dstPolygon.length] =
 										srcPolygon.clipPerVertex[k];
 #ifdef I_SAY_YES_TO_COLOR
-									dstPolygon.colors[dstPolygon.length] =
-										srcPolygon.colors[k];
-#endif	//	I_SAY_YES_TO_COLOR
+									dstPolygon.colors[dstPolygon.length] = srcPolygon.colors[k];
+#endif //	I_SAY_YES_TO_COLOR
 #ifdef I_SAY_YES_TO_DUAL_TEXTURES
 									dstPolygon.texCoords[2 * dstPolygon.length] =
 										srcPolygon.texCoords[2 * k];
 									dstPolygon.texCoords[2 * dstPolygon.length + 1] =
 										srcPolygon.texCoords[2 * k + 1];
-#else	//	I_SAY_YES_TO_DUAL_TEXTURES
+#else //	I_SAY_YES_TO_DUAL_TEXTURES
 #ifdef I_SAY_YES_TO_MULTI_TEXTURES
 									for (m = 0; m < currentNrOfPasses; m++)
 									{
-										dstPolygon.texCoords[currentNrOfPasses * dstPolygon.length + m] =
+										dstPolygon
+											.texCoords[currentNrOfPasses * dstPolygon.length + m] =
 											srcPolygon.texCoords[currentNrOfPasses * k + m];
 									}
-#else	//	I_SAY_YES_TO_MULTI_TEXTURES
+#else  //	I_SAY_YES_TO_MULTI_TEXTURES
 									dstPolygon.texCoords[dstPolygon.length] =
 										srcPolygon.texCoords[k];
-#endif	//	I_SAY_YES_TO_MULTI_TEXTURES
-#endif	//	I_SAY_YES_TO_DUAL_TEXTURES
+#endif //	I_SAY_YES_TO_MULTI_TEXTURES
+#endif //	I_SAY_YES_TO_DUAL_TEXTURES
 									dstPolygon.length++;
 									//
 									//-------------------------------------------------------
@@ -1082,10 +1044,8 @@ uint32_t CLASSNAME::TransformAndClip(Stuff::Matrix4D* mat, MLRClippingState clip
 									firstIsIn = false;
 									if (srcPolygon.clipPerVertex[k1].IsClipped(mask) != 0)
 									{
-										Verify(
-											srcPolygon.clipPerVertex[k1].IsClipped(mask)
-											== srcPolygon.clipPerVertex[k].IsClipped(mask)
-										);
+										_ASSERT(srcPolygon.clipPerVertex[k1].IsClipped(mask) ==
+											srcPolygon.clipPerVertex[k].IsClipped(mask));
 										continue;
 									}
 								}
@@ -1096,26 +1056,25 @@ uint32_t CLASSNAME::TransformAndClip(Stuff::Matrix4D* mat, MLRClippingState clip
 								//
 								if (firstIsIn == true)
 								{
-									a = GetLerpFactor(l, srcPolygon.coords[k], srcPolygon.coords[k1]);
-									Verify(a >= 0.0f && a <= 1.0f);
+									a = GetLerpFactor(
+										l, srcPolygon.coords[k], srcPolygon.coords[k1]);
+									_ASSERT(a >= 0.0f && a <= 1.0f);
 									//
 									//------------------------------
 									// Lerp the homogeneous position
 									//------------------------------
 									//
 									dstPolygon.coords[dstPolygon.length].Lerp(
-										srcPolygon.coords[k],
-										srcPolygon.coords[k1],
-										a
-									);
+										srcPolygon.coords[k], srcPolygon.coords[k1], a);
 #if HUNT_CLIP_ERROR
-									DEBUG_STREAM << "True " << a << " " << k << " " << k1 << " we get " << dstPolygon.length << '\n';
+									DEBUG_STREAM << "True " << a << " " << k << " " << k1
+												 << " we get " << dstPolygon.length << '\n';
 									DEBUG_STREAM << setiosflags(ios::scientific) << setprecision(20)
 												 << dstPolygon.coords[dstPolygon.length].x << " "
 												 << dstPolygon.coords[dstPolygon.length].y << " "
 												 << dstPolygon.coords[dstPolygon.length].z << " "
 												 << dstPolygon.coords[dstPolygon.length].w << '\n';
-#endif	//	HUNT_CLIP_ERROR
+#endif //	HUNT_CLIP_ERROR
 									DoClipTrick(dstPolygon.coords[dstPolygon.length], l);
 									//
 									//----------------------------------------------------------
@@ -1126,80 +1085,62 @@ uint32_t CLASSNAME::TransformAndClip(Stuff::Matrix4D* mat, MLRClippingState clip
 #ifdef I_SAY_YES_TO_COLOR
 #if COLOR_AS_DWORD
 									dstPolygon.colors[dstPolygon.length] = Color_DWORD_Lerp(
-											srcPolygon.colors[k],
-											srcPolygon.colors[k1],
-											a
-																		   );
-#else	//	COLOR_AS_DWORD
+										srcPolygon.colors[k], srcPolygon.colors[k1], a);
+#else  //	COLOR_AS_DWORD
 									dstPolygon.colors[dstPolygon.length].Lerp(
-										srcPolygon.colors[k],
-										srcPolygon.colors[k1],
-										a
-									);
-#endif	//	COLOR_AS_DWORD
-#endif	//	I_SAY_YES_TO_COLOR
-									//
-									//-----------------------------------------------------
-									// If there are texture uv's, we need to lerp them in a
-									// perspective correct manner
-									//-----------------------------------------------------
-									//
+										srcPolygon.colors[k], srcPolygon.colors[k1], a);
+#endif //	COLOR_AS_DWORD
+#endif //	I_SAY_YES_TO_COLOR
+	   //
+	   //-----------------------------------------------------
+	   // If there are texture uv's, we need to lerp them in a
+	   // perspective correct manner
+	   //-----------------------------------------------------
+	   //
 #ifdef I_SAY_YES_TO_DUAL_TEXTURES
-									dstPolygon.texCoords[2 * dstPolygon.length].Lerp
-									(
-										srcPolygon.texCoords[2 * k],
-										srcPolygon.texCoords[2 * k1],
-										a
-									);
-									dstPolygon.texCoords[2 * dstPolygon.length + 1].Lerp
-									(
+									dstPolygon.texCoords[2 * dstPolygon.length].Lerp(
+										srcPolygon.texCoords[2 * k], srcPolygon.texCoords[2 * k1],
+										a);
+									dstPolygon.texCoords[2 * dstPolygon.length + 1].Lerp(
 										srcPolygon.texCoords[2 * k + 1],
-										srcPolygon.texCoords[2 * k1 + 1],
-										a
-									);
-#else	//	I_SAY_YES_TO_DUAL_TEXTURES
+										srcPolygon.texCoords[2 * k1 + 1], a);
+#else //	I_SAY_YES_TO_DUAL_TEXTURES
 #ifdef I_SAY_YES_TO_MULTI_TEXTURES
 									for (m = 0; m < currentNrOfPasses; m++)
 									{
-										dstPolygon.texCoords[currentNrOfPasses * dstPolygon.length + m].Lerp
-										(
-											srcPolygon.texCoords[currentNrOfPasses * k + m],
-											srcPolygon.texCoords[currentNrOfPasses * k1 + m],
-											a
-										);
+										dstPolygon
+											.texCoords[currentNrOfPasses * dstPolygon.length + m]
+											.Lerp(srcPolygon.texCoords[currentNrOfPasses * k + m],
+												srcPolygon.texCoords[currentNrOfPasses * k1 + m],
+												a);
 									}
-#else	//	I_SAY_YES_TO_MULTI_TEXTURES
-									dstPolygon.texCoords[dstPolygon.length].Lerp
-									(
-										srcPolygon.texCoords[k],
-										srcPolygon.texCoords[k1],
-										a
-									);
-#endif	//	I_SAY_YES_TO_MULTI_TEXTURES
-#endif	//	I_SAY_YES_TO_DUAL_TEXTURES
+#else  //	I_SAY_YES_TO_MULTI_TEXTURES
+									dstPolygon.texCoords[dstPolygon.length].Lerp(
+										srcPolygon.texCoords[k], srcPolygon.texCoords[k1], a);
+#endif //	I_SAY_YES_TO_MULTI_TEXTURES
+#endif //	I_SAY_YES_TO_DUAL_TEXTURES
 								}
 								else
 								{
-									a = GetLerpFactor(l, srcPolygon.coords[k1], srcPolygon.coords[k]);
-									Verify(a >= 0.0f && a <= 1.0f);
+									a = GetLerpFactor(
+										l, srcPolygon.coords[k1], srcPolygon.coords[k]);
+									_ASSERT(a >= 0.0f && a <= 1.0f);
 									//
 									//------------------------------
 									// Lerp the homogeneous position
 									//------------------------------
 									//
 									dstPolygon.coords[dstPolygon.length].Lerp(
-										srcPolygon.coords[k1],
-										srcPolygon.coords[k],
-										a
-									);
+										srcPolygon.coords[k1], srcPolygon.coords[k], a);
 #if HUNT_CLIP_ERROR
-									DEBUG_STREAM << "False " << a << " " << k << " " << k1 << " we get " << dstPolygon.length << '\n';
+									DEBUG_STREAM << "False " << a << " " << k << " " << k1
+												 << " we get " << dstPolygon.length << '\n';
 									DEBUG_STREAM << setiosflags(ios::scientific) << setprecision(20)
 												 << dstPolygon.coords[dstPolygon.length].x << " "
 												 << dstPolygon.coords[dstPolygon.length].y << " "
 												 << dstPolygon.coords[dstPolygon.length].z << " "
 												 << dstPolygon.coords[dstPolygon.length].w << '\n';
-#endif	//	HUNT_CLIP_ERROR
+#endif //	HUNT_CLIP_ERROR
 									DoClipTrick(dstPolygon.coords[dstPolygon.length], l);
 									//
 									//----------------------------------------------------------
@@ -1210,64 +1151,47 @@ uint32_t CLASSNAME::TransformAndClip(Stuff::Matrix4D* mat, MLRClippingState clip
 #ifdef I_SAY_YES_TO_COLOR
 #if COLOR_AS_DWORD
 									dstPolygon.colors[dstPolygon.length] = Color_DWORD_Lerp(
-											srcPolygon.colors[k1],
-											srcPolygon.colors[k],
-											a
-																		   );
-#else	//	COLOR_AS_DWORD
+										srcPolygon.colors[k1], srcPolygon.colors[k], a);
+#else  //	COLOR_AS_DWORD
 									dstPolygon.colors[dstPolygon.length].Lerp(
-										srcPolygon.colors[k1],
-										srcPolygon.colors[k],
-										a
-									);
-#endif	//	COLOR_AS_DWORD
-#endif	//	I_SAY_YES_TO_COLOR
-									//
-									//-----------------------------------------------------
-									// If there are texture uv's, we need to lerp them in a
-									// perspective correct manner
-									//-----------------------------------------------------
-									//
+										srcPolygon.colors[k1], srcPolygon.colors[k], a);
+#endif //	COLOR_AS_DWORD
+#endif //	I_SAY_YES_TO_COLOR
+	   //
+	   //-----------------------------------------------------
+	   // If there are texture uv's, we need to lerp them in a
+	   // perspective correct manner
+	   //-----------------------------------------------------
+	   //
 #ifdef I_SAY_YES_TO_DUAL_TEXTURES
-									dstPolygon.texCoords[2 * dstPolygon.length].Lerp
-									(
-										srcPolygon.texCoords[2 * k1],
-										srcPolygon.texCoords[2 * k],
-										a
-									);
-									dstPolygon.texCoords[2 * dstPolygon.length + 1].Lerp
-									(
+									dstPolygon.texCoords[2 * dstPolygon.length].Lerp(
+										srcPolygon.texCoords[2 * k1], srcPolygon.texCoords[2 * k],
+										a);
+									dstPolygon.texCoords[2 * dstPolygon.length + 1].Lerp(
 										srcPolygon.texCoords[2 * k1 + 1],
-										srcPolygon.texCoords[2 * k + 1],
-										a
-									);
-#else	//	I_SAY_YES_TO_DUAL_TEXTURES
+										srcPolygon.texCoords[2 * k + 1], a);
+#else //	I_SAY_YES_TO_DUAL_TEXTURES
 #ifdef I_SAY_YES_TO_MULTI_TEXTURES
 									for (m = 0; m < currentNrOfPasses; m++)
 									{
-										dstPolygon.texCoords[currentNrOfPasses * dstPolygon.length + m].Lerp
-										(
-											srcPolygon.texCoords[currentNrOfPasses * k1 + m],
-											srcPolygon.texCoords[currentNrOfPasses * k + m],
-											a
-										);
+										dstPolygon
+											.texCoords[currentNrOfPasses * dstPolygon.length + m]
+											.Lerp(srcPolygon.texCoords[currentNrOfPasses * k1 + m],
+												srcPolygon.texCoords[currentNrOfPasses * k + m], a);
 									}
-#else	//	I_SAY_YES_TO_MULTI_TEXTURES
-									dstPolygon.texCoords[dstPolygon.length].Lerp
-									(
-										srcPolygon.texCoords[k1],
-										srcPolygon.texCoords[k],
-										a
-									);
-#endif	//	I_SAY_YES_TO_MULTI_TEXTURES
-#endif	//	I_SAY_YES_TO_DUAL_TEXTURES
+#else  //	I_SAY_YES_TO_MULTI_TEXTURES
+									dstPolygon.texCoords[dstPolygon.length].Lerp(
+										srcPolygon.texCoords[k1], srcPolygon.texCoords[k], a);
+#endif //	I_SAY_YES_TO_MULTI_TEXTURES
+#endif //	I_SAY_YES_TO_DUAL_TEXTURES
 								}
 								//
 								//-------------------------------------
 								// We have to generate a new clip state
 								//-------------------------------------
 								//
-								dstPolygon.clipPerVertex[dstPolygon.length].Clip4dVertex(&dstPolygon.coords[dstPolygon.length]);
+								dstPolygon.clipPerVertex[dstPolygon.length].Clip4dVertex(
+									&dstPolygon.coords[dstPolygon.length]);
 								//
 								//----------------------------------
 								// Bump the new polygon vertex count
@@ -1284,17 +1208,19 @@ uint32_t CLASSNAME::TransformAndClip(Stuff::Matrix4D* mat, MLRClippingState clip
 							srcPolygon.coords = clipBuffer[dstBuffer].coords.GetData();
 #ifdef I_SAY_YES_TO_COLOR
 							srcPolygon.colors = clipBuffer[dstBuffer].colors.GetData();
-#endif	//	I_SAY_YES_TO_COLOR
+#endif //	I_SAY_YES_TO_COLOR
 							srcPolygon.texCoords = clipBuffer[dstBuffer].texCoords.GetData();
-							srcPolygon.clipPerVertex = clipBuffer[dstBuffer].clipPerVertex.GetData();
+							srcPolygon.clipPerVertex =
+								clipBuffer[dstBuffer].clipPerVertex.GetData();
 							srcPolygon.length = dstPolygon.length;
-							dstBuffer = dstBuffer;
+							dstBuffer		  = dstBuffer;
 							dstPolygon.coords = clipBuffer[dstBuffer].coords.GetData();
 #ifdef I_SAY_YES_TO_COLOR
 							dstPolygon.colors = clipBuffer[dstBuffer].colors.GetData();
-#endif	//	I_SAY_YES_TO_COLOR
+#endif //	I_SAY_YES_TO_COLOR
 							dstPolygon.texCoords = clipBuffer[dstBuffer].texCoords.GetData();
-							dstPolygon.clipPerVertex = clipBuffer[dstBuffer].clipPerVertex.GetData();
+							dstPolygon.clipPerVertex =
+								clipBuffer[dstBuffer].clipPerVertex.GetData();
 							dstPolygon.length = 0;
 						}
 						mask = mask << 1;
@@ -1306,10 +1232,9 @@ uint32_t CLASSNAME::TransformAndClip(Stuff::Matrix4D* mat, MLRClippingState clip
 					}
 #if HUNT_CLIP_ERROR
 					DEBUG_STREAM << "TheOR: " << hex << theNewOr.GetClippingState() << dec << '\n';
-#endif	//	HUNT_CLIP_ERROR
+#endif //	HUNT_CLIP_ERROR
 					theOr = theNewOr;
-				}
-				while (theNewOr != 0 && loop--);
+				} while (theNewOr != 0 && loop--);
 				//
 				//--------------------------------------------------
 				// could not clip this rare case, just ignore it
@@ -1327,43 +1252,42 @@ uint32_t CLASSNAME::TransformAndClip(Stuff::Matrix4D* mat, MLRClippingState clip
 				//
 #if HUNT_CLIP_ERROR
 				DEBUG_STREAM << "Final: " << srcPolygon.length << '\n';
-#endif	//	HUNT_CLIP_ERROR
+#endif //	HUNT_CLIP_ERROR
 				for (k = 0; k < srcPolygon.length; k++)
 				{
 					size_t clipped_index = myNumberUsedClipVertex + k;
 #if HUNT_CLIP_ERROR
 					DEBUG_STREAM << setiosflags(ios::scientific) << setprecision(20)
-								 << srcPolygon.coords[k].x << " "
-								 << srcPolygon.coords[k].y << " "
-								 << srcPolygon.coords[k].z << " "
-								 << srcPolygon.coords[k].w << '\n';
-#endif	//	HUNT_CLIP_ERROR
+								 << srcPolygon.coords[k].x << " " << srcPolygon.coords[k].y << " "
+								 << srcPolygon.coords[k].z << " " << srcPolygon.coords[k].w << '\n';
+#endif //	HUNT_CLIP_ERROR
 					(*clipExtraCoords)[clipped_index] = srcPolygon.coords[k];
 #ifdef I_SAY_YES_TO_COLOR
 					(*clipExtraColors)[clipped_index] = srcPolygon.colors[k];
-#endif	//	I_SAY_YES_TO_COLOR
+#endif //	I_SAY_YES_TO_COLOR
 #ifdef I_SAY_YES_TO_DUAL_TEXTURES
-					(*clipExtraTexCoords)[clipped_index] = srcPolygon.texCoords[2 * k];
+					(*clipExtraTexCoords)[clipped_index]  = srcPolygon.texCoords[2 * k];
 					(*clipExtraTexCoords2)[clipped_index] = srcPolygon.texCoords[2 * k + 1];
-#else	//	I_SAY_YES_TO_DUAL_TEXTURES
+#else //	I_SAY_YES_TO_DUAL_TEXTURES
 #ifdef I_SAY_YES_TO_MULTI_TEXTURES
 					for (m = 0; m < currentNrOfPasses; m++)
 					{
-						(*clipExtraMultiTexCoords)[m][clipped_index] = srcPolygon.texCoords[currentNrOfPasses * k + m];
+						(*clipExtraMultiTexCoords)[m][clipped_index] =
+							srcPolygon.texCoords[currentNrOfPasses * k + m];
 					}
-#else	//	I_SAY_YES_TO_MULTI_TEXTURES
+#else  //	I_SAY_YES_TO_MULTI_TEXTURES
 					(*clipExtraTexCoords)[clipped_index] = srcPolygon.texCoords[k];
-#endif	//	I_SAY_YES_TO_MULTI_TEXTURES
-#endif	//	I_SAY_YES_TO_DUAL_TEXTURES
+#endif //	I_SAY_YES_TO_MULTI_TEXTURES
+#endif //	I_SAY_YES_TO_DUAL_TEXTURES
 				}
 				numberVerticesPerPolygon = srcPolygon.length;
 #if HUNT_CLIP_ERROR
 				DEBUG_STREAM << "---" << '\n';
-#endif	//	HUNT_CLIP_ERROR
+#endif //	HUNT_CLIP_ERROR
 				(*clipExtraLength)[myNumberUsedClipLength] = numberVerticesPerPolygon;
 #ifdef _ARMOR
 				(*clipExtraLength)[myNumberUsedClipLength] |= 0x8000;
-#endif	//	_ARMOR
+#endif //	_ARMOR
 			}
 			myNumberUsedClipVertex += numberVerticesPerPolygon;
 			myNumberUsedClipLength++;
@@ -1374,11 +1298,11 @@ uint32_t CLASSNAME::TransformAndClip(Stuff::Matrix4D* mat, MLRClippingState clip
 		}
 	}
 	Check_Object(vt);
-	gos_vertices = vt->GetActualVertexPool(db);
+	gos_vertices   = vt->GetActualVertexPool(db);
 	numGOSVertices = 0;
-	gos_indices = vt->GetActualIndexPool(db);
-	numGOSIndices = 0;
-	k = visibleIndexedVertices.GetLength();
+	gos_indices	= vt->GetActualIndexPool(db);
+	numGOSIndices  = 0;
+	k			   = visibleIndexedVertices.GetLength();
 	uint16_t strideIndex;
 	for (j = 0, strideIndex = 0; j < k; j++)
 	{
@@ -1390,97 +1314,92 @@ uint32_t CLASSNAME::TransformAndClip(Stuff::Matrix4D* mat, MLRClippingState clip
 		{
 			indexOffset[j] = static_cast<uint16_t>(j - strideIndex);
 #ifdef I_SAY_YES_TO_DUAL_TEXTURES
-			if (MLRState::GetMultitextureLightMap() == true && state.GetMultiTextureMode() != MLRState::MultiTextureOffMode)
+			if (MLRState::GetMultitextureLightMap() == true &&
+				state.GetMultiTextureMode() != MLRState::MultiTextureOffMode)
 			{
-				GOSCopyData(
-					&gos_vertices2uv[numGOSVertices],
-					transformedCoords->GetData(),
+				GOSCopyData(&gos_vertices2uv[numGOSVertices], transformedCoords->GetData(),
 #ifdef I_SAY_YES_TO_COLOR
 					actualColors->GetData(),
-#endif	//	I_SAY_YES_TO_COLOR
+#endif //	I_SAY_YES_TO_COLOR
 #ifdef I_SAY_YES_TO_TERRAIN
 					clipTexCoords->GetData(),
-#else	//	I_SAY_YES_TO_TERRAIN
+#else  //	I_SAY_YES_TO_TERRAIN
 					texCoords.GetData(),
-#endif	//	I_SAY_YES_TO_TERRAIN
-					texCoords.GetData() + numVertices,
-					j
+#endif //	I_SAY_YES_TO_TERRAIN
+					texCoords.GetData() + numVertices, j
 #if FOG_HACK
-					, state.GetFogMode()
-#endif	//	FOG_HACK
+					,
+					state.GetFogMode()
+#endif //	FOG_HACK
 				);
 				//				CheckVertices1( gos_vertices2uv+numGOSVertices, 1 );
 			}
 			else
 			{
-				GOSCopyData(
-					&gos_vertices[numGOSVertices],
-					transformedCoords->GetData(),
+				GOSCopyData(&gos_vertices[numGOSVertices], transformedCoords->GetData(),
 #ifdef I_SAY_YES_TO_COLOR
 					actualColors->GetData(),
-#endif	//	I_SAY_YES_TO_COLOR
+#endif //	I_SAY_YES_TO_COLOR
 #ifdef I_SAY_YES_TO_TERRAIN
 					clipTexCoords->GetData(),
-#else	//	I_SAY_YES_TO_TERRAIN
+#else  //	I_SAY_YES_TO_TERRAIN
 					texCoords.GetData(),
-#endif	//	I_SAY_YES_TO_TERRAIN
+#endif //	I_SAY_YES_TO_TERRAIN
 					j
 #if FOG_HACK
-					, state.GetFogMode()
-#endif	//	FOG_HACK
+					,
+					state.GetFogMode()
+#endif //	FOG_HACK
 				);
 				(*texCoords2)[tex2count++] = texCoords[numVertices + j];
 			}
-#else	//	I_SAY_YES_TO_DUAL_TEXTURES
+#else //	I_SAY_YES_TO_DUAL_TEXTURES
 #ifdef I_SAY_YES_TO_DETAIL_TEXTURES
 			if (MLRState::GetMultitextureLightMap() == true &&
-					state.GetMultiTextureMode() != MLRState::MultiTextureOffMode &&
-					gEnableDetailTexture == 1
-			   )
+				state.GetMultiTextureMode() != MLRState::MultiTextureOffMode &&
+				gEnableDetailTexture == 1)
 			{
-				GOSCopyData(
-					&gos_vertices2uv[numGOSVertices],
-					transformedCoords->GetData(),
+				GOSCopyData(&gos_vertices2uv[numGOSVertices], transformedCoords->GetData(),
 #ifdef I_SAY_YES_TO_COLOR
 					actualColors->GetData(),
-#endif	//	I_SAY_YES_TO_COLOR
+#endif //	I_SAY_YES_TO_COLOR
 #ifdef I_SAY_YES_TO_TERRAIN
 					clipTexCoords->GetData(),
-#else	//	I_SAY_YES_TO_TERRAIN
-					texCoords.GetData(),
-#endif	//	I_SAY_YES_TO_TERRAIN
+#else  //	I_SAY_YES_TO_TERRAIN
+					   texCoords.GetData(),
+#endif //	I_SAY_YES_TO_TERRAIN
 #ifdef I_SAY_YES_TO_TERRAIN
 					clipTexCoords->GetData(),
-#else	//	I_SAY_YES_TO_TERRAIN
-					texCoords.GetData(),
-#endif	//	I_SAY_YES_TO_TERRAIN
+#else  //	I_SAY_YES_TO_TERRAIN
+					   texCoords.GetData(),
+#endif //	I_SAY_YES_TO_TERRAIN
 					j
 #if FOG_HACK
-					, state.GetFogMode()
-#endif	//	FOG_HACK
+					,
+					state.GetFogMode()
+#endif //	FOG_HACK
 				);
 			}
 			else
-#endif	//	I_SAY_YES_TO_DETAIL_TEXTURES
+#endif //	I_SAY_YES_TO_DETAIL_TEXTURES
 			{
-				GOSCopyData(
-					&gos_vertices[numGOSVertices],
-					transformedCoords->GetData(),
+				GOSCopyData(&gos_vertices[numGOSVertices], transformedCoords->GetData(),
 #ifdef I_SAY_YES_TO_COLOR
 					actualColors->GetData(),
-#endif	//	I_SAY_YES_TO_COLOR
+#endif //	I_SAY_YES_TO_COLOR
 #ifdef I_SAY_YES_TO_TERRAIN
 					clipTexCoords->GetData(),
-#else	//	I_SAY_YES_TO_TERRAIN
+#else  //	I_SAY_YES_TO_TERRAIN
 					texCoords.GetData(),
-#endif	//	I_SAY_YES_TO_TERRAIN
+#endif //	I_SAY_YES_TO_TERRAIN
 					j
 #if FOG_HACK
-					, state.GetFogMode()
-#endif	//	FOG_HACK
+					,
+					state.GetFogMode()
+#endif //	FOG_HACK
 				);
 			}
-#endif	//	I_SAY_YES_TO_DUAL_TEXTURES
+#endif //	I_SAY_YES_TO_DUAL_TEXTURES
 			if (textureAnimation)
 			{
 				gos_vertices[numGOSVertices].u += deltaU;
@@ -1490,16 +1409,16 @@ uint32_t CLASSNAME::TransformAndClip(Stuff::Matrix4D* mat, MLRClippingState clip
 			if (gShowClippedPolys)
 			{
 				gos_vertices[numGOSVertices].argb = 0xff0000ff;
-				gos_vertices[numGOSVertices].u = 0.0f;
-				gos_vertices[numGOSVertices].v = 0.0f;
+				gos_vertices[numGOSVertices].u	= 0.0f;
+				gos_vertices[numGOSVertices].v	= 0.0f;
 			}
-#endif	//	LAB_ONLY
+#endif //	LAB_ONLY
 #ifdef I_SAY_YES_TO_MULTI_TEXTURES
 			for (m = 1; m < currentNrOfPasses; m++)
 			{
 				extraMultiTexCoords[m][tex2count[m]++] = multiTexCoordsPointers[m][j];
 			}
-#endif	//	I_SAY_YES_TO_MULTI_TEXTURES
+#endif //	I_SAY_YES_TO_MULTI_TEXTURES
 			numGOSVertices++;
 		}
 	}
@@ -1511,17 +1430,17 @@ uint32_t CLASSNAME::TransformAndClip(Stuff::Matrix4D* mat, MLRClippingState clip
 		}
 		if (db == false)
 		{
-			Verify((vt->GetLastIndex() + 3 + numGOSIndices) < vt->GetLength());
+			_ASSERT((vt->GetLastIndex() + 3 + numGOSIndices) < vt.size());
 		}
 		else
 		{
-			Verify(3 + numGOSIndices < 2 * Limits::Max_Number_Vertices_Per_Mesh);
+			_ASSERT(3 + numGOSIndices < 2 * Limits::Max_Number_Vertices_Per_Mesh);
 		}
-		Verify(indexOffset[index[j]] < numGOSVertices);
+		_ASSERT(indexOffset[index[j]] < numGOSVertices);
 		gos_indices[numGOSIndices] = indexOffset[index[j]];
-		Verify(indexOffset[index[j + 2]] < numGOSVertices);
+		_ASSERT(indexOffset[index[j + 2]] < numGOSVertices);
 		gos_indices[numGOSIndices + 1] = indexOffset[index[j + 2]];
-		Verify(indexOffset[index[j + 1]] < numGOSVertices);
+		_ASSERT(indexOffset[index[j + 1]] < numGOSVertices);
 		gos_indices[numGOSIndices + 2] = indexOffset[index[j + 1]];
 		numGOSIndices += 3;
 	}
@@ -1532,52 +1451,50 @@ uint32_t CLASSNAME::TransformAndClip(Stuff::Matrix4D* mat, MLRClippingState clip
 		{
 #ifdef _ARMOR
 			stride = static_cast<uint16_t>((*clipExtraLength)[i] & 0x7fff);
-#else	//	_ARMOR
+#else  //	_ARMOR
 			stride = (*clipExtraLength)[i];
-#endif	//	_ARMOR
+#endif //	_ARMOR
 			for (k = 1; k < stride - 1u; k++)
 			{
 				if (db == false)
 				{
-					Verify((vt->GetLast() + 3 + numGOSVertices) < vt->GetLength());
-					Verify((vt->GetLastIndex() + 3 + numGOSIndices) < vt->GetLength());
+					_ASSERT((vt->GetLast() + 3 + numGOSVertices) < vt.size());
+					_ASSERT((vt->GetLastIndex() + 3 + numGOSIndices) < vt.size());
 				}
 				else
 				{
-					Verify(3 + numGOSVertices < 2 * Limits::Max_Number_Vertices_Per_Mesh);
-					Verify(3 + numGOSIndices < 2 * Limits::Max_Number_Vertices_Per_Mesh);
+					_ASSERT(3 + numGOSVertices < 2 * Limits::Max_Number_Vertices_Per_Mesh);
+					_ASSERT(3 + numGOSIndices < 2 * Limits::Max_Number_Vertices_Per_Mesh);
 				}
 #ifdef I_SAY_YES_TO_DUAL_TEXTURES
-				if (MLRState::GetMultitextureLightMap() == true && state.GetMultiTextureMode() != MLRState::MultiTextureOffMode)
+				if (MLRState::GetMultitextureLightMap() == true &&
+					state.GetMultiTextureMode() != MLRState::MultiTextureOffMode)
 				{
 					GOSCopyTriangleData(
-						&gos_vertices2uv[numGOSVertices],
-						clipExtraCoords->GetData(),
+						&gos_vertices2uv[numGOSVertices], clipExtraCoords->GetData(),
 #ifdef I_SAY_YES_TO_COLOR
 						clipExtraColors->GetData(),
-#endif	//	I_SAY_YES_TO_COLOR
-						clipExtraTexCoords->GetData(),
-						clipExtraTexCoords2->GetData(),
-						j, j + k + 1, j + k
+#endif //	I_SAY_YES_TO_COLOR
+						clipExtraTexCoords->GetData(), clipExtraTexCoords2->GetData(), j, j + k + 1,
+						j + k
 #if FOG_HACK
-						, state.GetFogMode()
-#endif	//	FOG_HACK
+						,
+						state.GetFogMode()
+#endif //	FOG_HACK
 					);
 					//					CheckVertices1( gos_vertices2uv+numGOSVertices, 3 );
 				}
 				else
 				{
-					GOSCopyTriangleData(
-						&gos_vertices[numGOSVertices],
-						clipExtraCoords->GetData(),
+					GOSCopyTriangleData(&gos_vertices[numGOSVertices], clipExtraCoords->GetData(),
 #ifdef I_SAY_YES_TO_COLOR
 						clipExtraColors->GetData(),
-#endif	//	I_SAY_YES_TO_COLOR
-						clipExtraTexCoords->GetData(),
-						j, j + k + 1, j + k
+#endif //	I_SAY_YES_TO_COLOR
+						clipExtraTexCoords->GetData(), j, j + k + 1, j + k
 #if FOG_HACK
-						, state.GetFogMode()
-#endif	//	FOG_HACK
+						,
+						state.GetFogMode()
+#endif //	FOG_HACK
 					);
 					(*texCoords2)[tex2count++] = (*clipExtraTexCoords2)[j];
 					(*texCoords2)[tex2count++] = (*clipExtraTexCoords2)[j + k + 1];
@@ -1586,38 +1503,34 @@ uint32_t CLASSNAME::TransformAndClip(Stuff::Matrix4D* mat, MLRClippingState clip
 #else //	I_SAY_YES_TO_DUAL_TEXTURES
 #ifdef I_SAY_YES_TO_DETAIL_TEXTURES
 				if (MLRState::GetMultitextureLightMap() == true &&
-						state.GetMultiTextureMode() != MLRState::MultiTextureOffMode &&
-						gEnableDetailTexture == 1
-				   )
+					state.GetMultiTextureMode() != MLRState::MultiTextureOffMode &&
+					gEnableDetailTexture == 1)
 				{
 					GOSCopyTriangleData(
-						&gos_vertices2uv[numGOSVertices],
-						clipExtraCoords->GetData(),
+						&gos_vertices2uv[numGOSVertices], clipExtraCoords->GetData(),
 #ifdef I_SAY_YES_TO_COLOR
 						clipExtraColors->GetData(),
-#endif	//	I_SAY_YES_TO_COLOR
-						clipExtraTexCoords->GetData(),
-						clipExtraTexCoords->GetData(),
-						j, j + k + 1, j + k
+#endif //	I_SAY_YES_TO_COLOR
+						clipExtraTexCoords->GetData(), clipExtraTexCoords->GetData(), j, j + k + 1,
+						j + k
 #if FOG_HACK
-						, state.GetFogMode()
-#endif	//	FOG_HACK
+						,
+						state.GetFogMode()
+#endif //	FOG_HACK
 					);
 				}
 				else
-#endif	//	I_SAY_YES_TO_DETAIL_TEXTURES
+#endif //	I_SAY_YES_TO_DETAIL_TEXTURES
 				{
-					GOSCopyTriangleData(
-						&gos_vertices[numGOSVertices],
-						clipExtraCoords->GetData(),
+					GOSCopyTriangleData(&gos_vertices[numGOSVertices], clipExtraCoords->GetData(),
 #ifdef I_SAY_YES_TO_COLOR
 						clipExtraColors->GetData(),
-#endif	//	I_SAY_YES_TO_COLOR
-						clipExtraTexCoords->GetData(),
-						j, j + k + 1, j + k
+#endif //	I_SAY_YES_TO_COLOR
+						clipExtraTexCoords->GetData(), j, j + k + 1, j + k
 #if FOG_HACK
-						, state.GetFogMode()
-#endif	//	FOG_HACK
+						,
+						state.GetFogMode()
+#endif //	FOG_HACK
 					);
 				}
 #endif //	I_SAY_YES_TO_DUAL_TEXTURES
@@ -1635,30 +1548,30 @@ uint32_t CLASSNAME::TransformAndClip(Stuff::Matrix4D* mat, MLRClippingState clip
 				{
 					if ((*clipExtraLength)[i] & 0x8000)
 					{
-						gos_vertices[numGOSVertices].argb = 0xffff0000;
-						gos_vertices[numGOSVertices].u = 0.0f;
-						gos_vertices[numGOSVertices].v = 0.0f;
+						gos_vertices[numGOSVertices].argb	 = 0xffff0000;
+						gos_vertices[numGOSVertices].u		  = 0.0f;
+						gos_vertices[numGOSVertices].v		  = 0.0f;
 						gos_vertices[numGOSVertices + 1].argb = 0xffff0000;
-						gos_vertices[numGOSVertices + 1].u = 0.0f;
-						gos_vertices[numGOSVertices + 1].v = 0.0f;
+						gos_vertices[numGOSVertices + 1].u	= 0.0f;
+						gos_vertices[numGOSVertices + 1].v	= 0.0f;
 						gos_vertices[numGOSVertices + 2].argb = 0xffff0000;
-						gos_vertices[numGOSVertices + 2].u = 0.0f;
-						gos_vertices[numGOSVertices + 2].v = 0.0f;
+						gos_vertices[numGOSVertices + 2].u	= 0.0f;
+						gos_vertices[numGOSVertices + 2].v	= 0.0f;
 					}
 					else
 					{
-						gos_vertices[numGOSVertices].argb = 0xffff9999;
-						gos_vertices[numGOSVertices].u = 0.0f;
-						gos_vertices[numGOSVertices].v = 0.0f;
+						gos_vertices[numGOSVertices].argb	 = 0xffff9999;
+						gos_vertices[numGOSVertices].u		  = 0.0f;
+						gos_vertices[numGOSVertices].v		  = 0.0f;
 						gos_vertices[numGOSVertices + 1].argb = 0xffff9999;
-						gos_vertices[numGOSVertices + 1].u = 0.0f;
-						gos_vertices[numGOSVertices + 1].v = 0.0f;
+						gos_vertices[numGOSVertices + 1].u	= 0.0f;
+						gos_vertices[numGOSVertices + 1].v	= 0.0f;
 						gos_vertices[numGOSVertices + 2].argb = 0xffff9999;
-						gos_vertices[numGOSVertices + 2].u = 0.0f;
-						gos_vertices[numGOSVertices + 2].v = 0.0f;
+						gos_vertices[numGOSVertices + 2].u	= 0.0f;
+						gos_vertices[numGOSVertices + 2].v	= 0.0f;
 					}
 				}
-#endif	//	LAB_ONLY
+#endif //	LAB_ONLY
 #ifdef I_SAY_YES_TO_MULTI_TEXTURES
 				for (m = 1; m < currentNrOfPasses; m++)
 				{
@@ -1666,17 +1579,17 @@ uint32_t CLASSNAME::TransformAndClip(Stuff::Matrix4D* mat, MLRClippingState clip
 					extraMultiTexCoords[m][tex2count[m]++] = clipExtraMultiTexCoords[m][j + k + 1];
 					extraMultiTexCoords[m][tex2count[m]++] = clipExtraMultiTexCoords[m][j + k];
 				}
-#endif	//	I_SAY_YES_TO_MULTI_TEXTURES
+#endif //	I_SAY_YES_TO_MULTI_TEXTURES
 				if (db == false)
 				{
-					Verify((vt->GetLastIndex() + 3 + numGOSIndices) < vt->GetLength());
+					_ASSERT((vt->GetLastIndex() + 3 + numGOSIndices) < vt.size());
 				}
 				else
 				{
-					Verify(3 + numGOSIndices < 2 * Limits::Max_Number_Vertices_Per_Mesh);
+					_ASSERT(3 + numGOSIndices < 2 * Limits::Max_Number_Vertices_Per_Mesh);
 				}
-				Verify(numGOSIndices % 3 == 0);
-				gos_indices[numGOSIndices] = numGOSVertices;
+				_ASSERT(numGOSIndices % 3 == 0);
+				gos_indices[numGOSIndices]	 = numGOSVertices;
 				gos_indices[numGOSIndices + 1] = (uint16_t)(numGOSVertices + 1);
 				gos_indices[numGOSIndices + 2] = (uint16_t)(numGOSVertices + 2);
 				numGOSVertices += 3;
@@ -1686,19 +1599,20 @@ uint32_t CLASSNAME::TransformAndClip(Stuff::Matrix4D* mat, MLRClippingState clip
 		}
 #if HUNT_CLIP_ERROR
 		DEBUG_STREAM << "***" << endl << endl;
-#endif	//	HUNT_CLIP_ERROR
+#endif //	HUNT_CLIP_ERROR
 	}
 #ifdef I_SAY_YES_TO_DUAL_TEXTURES
-	if (MLRState::GetMultitextureLightMap() == false || state.GetMultiTextureMode() == MLRState::MultiTextureOffMode)
+	if (MLRState::GetMultitextureLightMap() == false ||
+		state.GetMultiTextureMode() == MLRState::MultiTextureOffMode)
 	{
-		Verify(tex2count == numGOSVertices);
+		_ASSERT(tex2count == numGOSVertices);
 		if (db == false)
 		{
-			Verify(vt->GetLast() + 2 * numGOSVertices < vt->GetLength());
+			_ASSERT(vt->GetLast() + 2 * numGOSVertices < vt.size());
 		}
 		else
 		{
-			Verify(2 * numGOSVertices < 2 * Limits::Max_Number_Vertices_Per_Mesh);
+			_ASSERT(2 * numGOSVertices < 2 * Limits::Max_Number_Vertices_Per_Mesh);
 		}
 		memcpy(gos_vertices + numGOSVertices, gos_vertices, numGOSVertices * sizeof(GOSVertex));
 		if (textureAnimation2)
@@ -1729,25 +1643,28 @@ uint32_t CLASSNAME::TransformAndClip(Stuff::Matrix4D* mat, MLRClippingState clip
 			vt->Increase2UV(numGOSVertices);
 		}
 	}
-#else	//	I_SAY_YES_TO_DUAL_TEXTURES
+#else //	I_SAY_YES_TO_DUAL_TEXTURES
 #ifdef I_SAY_YES_TO_DETAIL_TEXTURES
 	if (gEnableDetailTexture == 1)
 	{
 		if (MLRState::GetMultitextureLightMap() == true &&
-				state.GetMultiTextureMode() != MLRState::MultiTextureOffMode
-		   )
+			state.GetMultiTextureMode() != MLRState::MultiTextureOffMode)
 		{
 			for (i = 0; i < numGOSVertices; i++)
 			{
 #ifdef I_SAY_YES_TO_TERRAIN2
 				gos_vertices2uv[i].u2 = gos_vertices2uv[i].u1 * xScale;
 				gos_vertices2uv[i].v2 = gos_vertices2uv[i].v1 * yScale;
-#else	//	I_SAY_YES_TO_TERRAIN2
+#else  //	I_SAY_YES_TO_TERRAIN2
 				gos_vertices2uv[i].u2 = gos_vertices2uv[i].u1 * xScale + xOffset + deltaU2;
 				gos_vertices2uv[i].v2 = gos_vertices2uv[i].v1 * yScale + yOffset + deltaV2;
-#endif	//	I_SAY_YES_TO_TERRAIN2
-				Verify(MLRState::GetHasMaxUVs() ? (gos_vertices2uv[i].u2 >= -MLRState::GetMaxUV() && gos_vertices2uv[i].u2 <= MLRState::GetMaxUV()) : 1);
-				Verify(MLRState::GetHasMaxUVs() ? (gos_vertices2uv[i].v2 >= -MLRState::GetMaxUV() && gos_vertices2uv[i].v2 <= MLRState::GetMaxUV()) : 1);
+#endif //	I_SAY_YES_TO_TERRAIN2
+				_ASSERT(MLRState::GetHasMaxUVs() ? (gos_vertices2uv[i].u2 >= -MLRState::GetMaxUV() &&
+													  gos_vertices2uv[i].u2 <= MLRState::GetMaxUV())
+												: 1);
+				_ASSERT(MLRState::GetHasMaxUVs() ? (gos_vertices2uv[i].v2 >= -MLRState::GetMaxUV() &&
+													  gos_vertices2uv[i].v2 <= MLRState::GetMaxUV())
+												: 1);
 				if (gos_vertices2uv[i].rhw < fadeDetailEnd)
 				{
 					gos_vertices2uv[i].argb &= 0x00ffffff;
@@ -1756,7 +1673,11 @@ uint32_t CLASSNAME::TransformAndClip(Stuff::Matrix4D* mat, MLRClippingState clip
 				{
 					if (gos_vertices2uv[i].rhw < fadeDetailStart)
 					{
-						gos_vertices2uv[i].argb &= ((Stuff::Truncate_Float_To_Word((gos_vertices2uv[i].rhw - fadeDetailEnd) * fadeMultiplicator)) << 24) | 0x00ffffff;
+						gos_vertices2uv[i].argb &=
+							((Stuff::Truncate_Float_To_Word(
+								 (gos_vertices2uv[i].rhw - fadeDetailEnd) * fadeMultiplicator))
+								<< 24) |
+							0x00ffffff;
 					}
 				}
 			}
@@ -1769,11 +1690,11 @@ uint32_t CLASSNAME::TransformAndClip(Stuff::Matrix4D* mat, MLRClippingState clip
 		{
 			if (db == false)
 			{
-				Verify(vt->GetLast() + 2 * numGOSVertices < vt->GetLength());
+				_ASSERT(vt->GetLast() + 2 * numGOSVertices < vt.size());
 			}
 			else
 			{
-				Verify(2 * numGOSVertices < 2 * Limits::Max_Number_Vertices_Per_Mesh);
+				_ASSERT(2 * numGOSVertices < 2 * Limits::Max_Number_Vertices_Per_Mesh);
 			}
 			memcpy(gos_vertices + numGOSVertices, gos_vertices, numGOSVertices * sizeof(GOSVertex));
 			stride = 0;
@@ -1782,12 +1703,16 @@ uint32_t CLASSNAME::TransformAndClip(Stuff::Matrix4D* mat, MLRClippingState clip
 #ifdef I_SAY_YES_TO_TERRAIN2
 				gos_vertices[j].u = gos_vertices[i].u * xScale;
 				gos_vertices[j].v = gos_vertices[i].v * yScale;
-#else	//	I_SAY_YES_TO_TERRAIN2
-				gos_vertices[j].u = gos_vertices[i].u * xScale + xOffset + deltaU2;
-				gos_vertices[j].v = gos_vertices[i].v * yScale + yOffset + deltaV2;
-#endif	//	I_SAY_YES_TO_TERRAIN2
-				Verify(MLRState::GetHasMaxUVs() ? (gos_vertices[j].u >= -MLRState::GetMaxUV() && gos_vertices[j].u <= MLRState::GetMaxUV()) : 1);
-				Verify(MLRState::GetHasMaxUVs() ? (gos_vertices[j].v >= -MLRState::GetMaxUV() && gos_vertices[j].v <= MLRState::GetMaxUV()) : 1);
+#else  //	I_SAY_YES_TO_TERRAIN2
+				gos_vertices[j].u	 = gos_vertices[i].u * xScale + xOffset + deltaU2;
+				gos_vertices[j].v	 = gos_vertices[i].v * yScale + yOffset + deltaV2;
+#endif //	I_SAY_YES_TO_TERRAIN2
+				_ASSERT(MLRState::GetHasMaxUVs() ? (gos_vertices[j].u >= -MLRState::GetMaxUV() &&
+													  gos_vertices[j].u <= MLRState::GetMaxUV())
+												: 1);
+				_ASSERT(MLRState::GetHasMaxUVs() ? (gos_vertices[j].v >= -MLRState::GetMaxUV() &&
+													  gos_vertices[j].v <= MLRState::GetMaxUV())
+												: 1);
 				if (gos_vertices[j].rhw < fadeDetailEnd)
 				{
 					gos_vertices[j].argb &= 0x00ffffff;
@@ -1797,7 +1722,11 @@ uint32_t CLASSNAME::TransformAndClip(Stuff::Matrix4D* mat, MLRClippingState clip
 					stride++;
 					if (gos_vertices[j].rhw < fadeDetailStart)
 					{
-						gos_vertices[j].argb &= ((Stuff::Truncate_Float_To_Word((gos_vertices[j].rhw - fadeDetailEnd) * fadeMultiplicator)) << 24) | 0x00ffffff;
+						gos_vertices[j].argb &=
+							((Stuff::Truncate_Float_To_Word(
+								 (gos_vertices[j].rhw - fadeDetailEnd) * fadeMultiplicator))
+								<< 24) |
+							0x00ffffff;
 					}
 				}
 			}
@@ -1822,24 +1751,24 @@ uint32_t CLASSNAME::TransformAndClip(Stuff::Matrix4D* mat, MLRClippingState clip
 			vt->Increase(numGOSVertices);
 		}
 	}
-#else	//	I_SAY_YES_TO_DETAIL_TEXTURES
+#else  //	I_SAY_YES_TO_DETAIL_TEXTURES
 	if (db == false)
 	{
 		vt->Increase(numGOSVertices);
 	}
-#endif	//	I_SAY_YES_TO_DETAIL_TEXTURES
-#endif	//		//	I_SAY_YES_TO_DUAL_TEXTURES
+#endif //	I_SAY_YES_TO_DETAIL_TEXTURES
+#endif //		//	I_SAY_YES_TO_DUAL_TEXTURES
 #ifdef I_SAY_YES_TO_MULTI_TEXTURES
 	for (m = 1; m < currentNrOfPasses; m++)
 	{
-		Verify(tex2count[m] == numGOSVertices);
+		_ASSERT(tex2count[m] == numGOSVertices);
 		if (db == false)
 		{
-			Verify(vt->GetLast() + numGOSVertices < vt->GetLength());
+			_ASSERT(vt->GetLast() + numGOSVertices < vt.size());
 		}
 		else
 		{
-			Verify(numGOSVertices < 2 * Limits::Max_Number_Vertices_Per_Mesh);
+			_ASSERT(numGOSVertices < 2 * Limits::Max_Number_Vertices_Per_Mesh);
 		}
 		memcpy(gos_vertices + m * numGOSVertices, gos_vertices, numGOSVertices * sizeof(GOSVertex));
 		for (i = 0, j = numGOSVertices; i < numGOSVertices; i++, j++)
@@ -1852,7 +1781,7 @@ uint32_t CLASSNAME::TransformAndClip(Stuff::Matrix4D* mat, MLRClippingState clip
 			vt->Increase(numGOSVertices);
 		}
 	}
-#endif	//	I_SAY_YES_TO_MULTI_TEXTURES
+#endif //	I_SAY_YES_TO_MULTI_TEXTURES
 	if (db == false)
 	{
 		vt->IncreaseIndex(numGOSIndices);
@@ -1864,7 +1793,7 @@ uint32_t CLASSNAME::TransformAndClip(Stuff::Matrix4D* mat, MLRClippingState clip
 	else
 	{
 	}
-#if	0	//def	I_SAY_YES_TO_DUAL_TEXTURES
+#if 0  // def	I_SAY_YES_TO_DUAL_TEXTURES
 	if (MLRState::GetMultitextureLightMap() == true && state.GetMultiTextureMode() != MLRState::MultiTextureOffMode)
 	{
 		CheckVertices1(gos_vertices2uv, numGOSVertices);
@@ -1873,7 +1802,7 @@ uint32_t CLASSNAME::TransformAndClip(Stuff::Matrix4D* mat, MLRClippingState clip
 	{
 		CheckVertices(gos_vertices, numGOSVertices, false);
 	}
-#endif	//		//	I_SAY_YES_TO_DUAL_TEXTURES
+#endif //		//	I_SAY_YES_TO_DUAL_TEXTURES
 	Stop_Timer(Clipping_Time);
 	return ret;
 }

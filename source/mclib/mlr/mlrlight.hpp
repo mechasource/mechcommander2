@@ -9,9 +9,11 @@
 
 #include <stuff/linearmatrix.hpp>
 #include <stuff/color.hpp>
-#include <stuff/mstring.hpp>
+#include <stuff/registeredclass.hpp>
+// #include <stuff/mstring.hpp>
 #include <mlr/mlrstate.hpp>
 #include <mlr/mlr.hpp>
+
 
 namespace Stuff
 {
@@ -19,9 +21,8 @@ class Point3D;
 class Vector3D;
 class RGBAColor;
 class RGBColor;
-class MemoryStream;
 class Page;
-}
+} // namespace Stuff
 
 namespace MidLevelRenderer
 {
@@ -47,19 +48,18 @@ struct MLRVertexData
 
 class MLRLight : public Stuff::RegisteredClass
 {
-  public:
+public:
 	static void __stdcall InitializeClass(void);
 	static void __stdcall TerminateClass(void);
 
 	MLRLight(ClassData* class_data);
-	MLRLight(
-		ClassData* class_data, Stuff::MemoryStream* stream, uint32_t version);
+	MLRLight(ClassData* class_data, std::iostream stream, uint32_t version);
 	MLRLight(ClassData* class_data, Stuff::Page* page);
 	~MLRLight(void);
 
-	static MLRLight* Make(Stuff::MemoryStream* stream, uint32_t version);
+	static MLRLight* Make(std::iostream stream, uint32_t version);
 	static MLRLight* Make(Stuff::Page* page);
-	virtual void Save(Stuff::MemoryStream* stream);
+	virtual void Save(std::iostream stream);
 	virtual void Write(Stuff::Page* page);
 
 	enum LightType
@@ -159,12 +159,12 @@ class MLRLight : public Stuff::RegisteredClass
 		// Check_Object(this);
 		lightMask &= ~MLRState::TerrainLightingMode;
 	}
-	void SetName(PCSTR name)
+	void SetName(std::wstring& name)
 	{
 		// Check_Object(this);
 		lightName = name;
 	}
-	PCSTR GetName(void)
+	std::wstring& GetName(void)
 	{
 		// Check_Object(this);
 		return lightName;
@@ -173,22 +173,22 @@ class MLRLight : public Stuff::RegisteredClass
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Class Data Support
 	//
-  public:
+public:
 	static ClassData* DefaultData;
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Testing
 	//
-  public:
+public:
 	void TestInstance(void);
 
-  protected:
+protected:
 	float intensity;
 	Stuff::RGBColor color;
 	Stuff::LinearMatrix4D lightToWorld;
 	Stuff::LinearMatrix4D lightToShape;
 	uint32_t lightMask;
-	Stuff::MString lightName;
+	std::wstring lightName;
 };
-}
+} // namespace MidLevelRenderer
 #endif

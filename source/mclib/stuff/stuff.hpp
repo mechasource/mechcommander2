@@ -49,7 +49,7 @@ namespace Stuff
 {
 void __stdcall InitializeClasses(void);
 void __stdcall TerminateClasses(void);
-}
+} // namespace Stuff
 
 #define GROUP_STUFF "Stuff::"
 #define GROUP_STUFF_TEST "Stuff::Test"
@@ -66,12 +66,12 @@ void __stdcall TerminateClasses(void);
 #include <stuff/style.hpp>
 
 #include <stuff/registeredclass.hpp>
-#include <stuff/memorystream.hpp>
+// #include <stuff/memorystream.hpp>
 #include <stuff/memoryblock.hpp>
 #include <stuff/iterator.hpp>
 #include <stuff/plug.hpp>
 #include <stuff/link.hpp>
-#include <stuff/mstring.hpp>
+//#include <stuff/mstring.hpp>
 #include <stuff/socket.hpp>
 #include <stuff/safesocket.hpp>
 #include <stuff/sortedsocket.hpp>
@@ -82,7 +82,7 @@ void __stdcall TerminateClasses(void);
 #include <stuff/table.hpp>
 #include <stuff/tree.hpp>
 #include <stuff/hash.hpp>
-#include <stuff/marray.hpp>
+//#include <stuff/marray.hpp>
 
 #include <stuff/scalar.hpp>
 #include <stuff/angle.hpp>

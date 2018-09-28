@@ -9,7 +9,7 @@
 
 #include <stuff/point3d.hpp>
 #include <stuff/linearmatrix.hpp>
-#include <stuff/marray.hpp>
+//#include <stuff/marray.hpp>
 #include <mlr/mlrstate.hpp>
 #include <mlr/mlrclippingstate.hpp>
 #include <mlr/mlrtexturepool.hpp>
@@ -28,15 +28,11 @@ struct SortAlpha;
 
 class SortData
 {
-  public:
+public:
 	SortData(void)
+		: vertices(nullptr), indices(nullptr), numVertices(0), numIndices(0), type(TriList),
+		  texture2(0)
 	{
-		vertices	= nullptr;
-		numVertices = 0;
-		indices		= nullptr;
-		numIndices  = 0;
-		type		= TriList;
-		texture2	= 0;
 	}
 
 	void DrawTriList(void);
@@ -51,7 +47,7 @@ class SortData
 	int32_t LoadAlphaFromLineCloud(SortAlpha**);
 	int32_t LoadAlphaFromQuads(SortAlpha**);
 
-	enum
+	enum : uint32_t
 	{
 		TriList = 0,
 		TriIndexedList,
@@ -69,11 +65,11 @@ class SortData
 
 	MLRState state;
 	PVOID vertices;
-	uint32_t numVertices;
 	puint16_t indices;
-	int32_t numIndices;
-	int32_t type;
-	int32_t texture2;
+	uint32_t numVertices;
+	uint32_t numIndices;
+	uint32_t type;
+	uint32_t texture2;
 };
 
 class MLRPrimitiveBase;
@@ -110,22 +106,21 @@ class _declspec(novtable) MLRSorter : public Stuff::RegisteredClass
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Initialization
 	//
-  public:
+public:
 	static void __stdcall InitializeClass(void);
 	static void __stdcall TerminateClass(void);
 	static ClassData* DefaultData;
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// Constructors/Destructors
+	// Constructors/Destructor
 	//
-  public:
+public:
 	MLRSorter(ClassData* class_data, MLRTexturePool*);
 	~MLRSorter(void);
 
-	virtual void AddPrimitive(MLRPrimitiveBase*, uint32_t = 0) = 0;
-	virtual void AddEffect(MLREffect*, const MLRState&)		   = 0;
-	virtual void AddScreenQuads(
-		GOSVertex*, const DrawScreenQuadsInformation*) = 0;
+	virtual void AddPrimitive(MLRPrimitiveBase*, uint32_t = 0)				   = 0;
+	virtual void AddEffect(MLREffect*, const MLRState&)						   = 0;
+	virtual void AddScreenQuads(GOSVertex*, const DrawScreenQuadsInformation*) = 0;
 
 	virtual void AddSortRawData(SortData*) = 0;
 
@@ -150,12 +145,11 @@ class _declspec(novtable) MLRSorter : public Stuff::RegisteredClass
 	virtual void StartDraw(const MLRState& default_state);
 
 	// enter raw data
-	SortData* SetRawData(PVOID vertices, uint32_t numVertices,
-		const MLRState& state, cint32_t& mode, int32_t tex2 = 0);
-
-	SortData* SetRawIndexedData(PVOID vertices, uint32_t numVertices,
-		puint16_t indices, int32_t numIndices, const MLRState& state,
+	SortData* SetRawData(PVOID vertices, uint32_t numVertices, const MLRState& state,
 		cint32_t& mode, int32_t tex2 = 0);
+
+	SortData* SetRawIndexedData(PVOID vertices, uint32_t numVertices, puint16_t indices,
+		int32_t numIndices, const MLRState& state, cint32_t& mode, int32_t tex2 = 0);
 
 	SortData* SetRawData(MLRPrimitiveBase*, int32_t = 0);
 
@@ -175,7 +169,7 @@ class _declspec(novtable) MLRSorter : public Stuff::RegisteredClass
 	ToBeDrawnPrimitive* GetCurrentTBDP(size_t index)
 	{
 		// Check_Object(this);
-		Verify(index < lastUsedDraw);
+		_ASSERT(index < lastUsedDraw);
 		return &drawData[index];
 	}
 	void IncreaseTBDPCounter(void);
@@ -184,28 +178,26 @@ class _declspec(novtable) MLRSorter : public Stuff::RegisteredClass
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Testing
 	//
-  public:
+public:
 	void TestInstance(void) const;
 
-  protected:
+protected:
 	MLRState theCurrentState;
 	MLRTexturePool* texturePool;
 
 	int32_t lastUsedRaw;
-	Stuff::DynamicArrayOf<SortData>
-		rawDrawData; // Max_Number_Primitives_Per_Frame
+	std::vector<SortData> rawDrawData; // Max_Number_Primitives_Per_Frame
 
 	int32_t lastUsedInBucketNotDrawn[MLRState::PriorityCount];
 
 #ifdef CalDraw
 	size_t lastUsedDraw;
-	Stuff::DynamicArrayOf<ToBeDrawnPrimitive>
-		drawData; // Max_Number_Primitives_Per_Frame
-	Stuff::DynamicArrayOf<ToBeDrawnPrimitive*> priorityBucketsNotDrawn
-		[MLRState::PriorityCount]; //, Max_Number_Primitives_Per_Frame +
-								   //Max_Number_ScreenQuads_Per_Frame
+	std::vector<ToBeDrawnPrimitive> drawData; // Max_Number_Primitives_Per_Frame
+	std::vector<ToBeDrawnPrimitive*>
+		priorityBucketsNotDrawn[MLRState::PriorityCount]; //, Max_Number_Primitives_Per_Frame +
+														  // Max_Number_ScreenQuads_Per_Frame
 #endif
 	float farClipReciprocal;
 };
-}
+} // namespace MidLevelRenderer
 #endif

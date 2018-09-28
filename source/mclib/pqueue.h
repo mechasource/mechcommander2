@@ -28,7 +28,7 @@ typedef struct _PQNode
 class PriorityQueue
 {
 
-  protected:
+protected:
 	PQNode* pqList;
 	int32_t maxItems;
 	int32_t numItems;
@@ -38,7 +38,7 @@ class PriorityQueue
 
 	void upHeap(int32_t curIndex);
 
-  public:
+public:
 	void init(void)
 	{
 		pqList   = nullptr;

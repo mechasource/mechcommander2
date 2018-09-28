@@ -14,18 +14,16 @@ bool TG_Shape::PerPolySelect(float mouseX, float mouseY)
 {
 	if (!InEditor)
 	{
-		if (!listOfVertices || !listOfColors || !listOfShadowTVertices ||
-			!listOfTriangles || !listOfVisibleFaces || !listOfVisibleShadows ||
-			((lastTurnTransformed !=
-				(turn - 1)) /*&& (lastTurnTransformed != turn)*/))
+		if (!listOfVertices || !listOfColors || !listOfShadowTVertices || !listOfTriangles ||
+			!listOfVisibleFaces || !listOfVisibleShadows ||
+			((lastTurnTransformed != (turn - 1)) /*&& (lastTurnTransformed != turn)*/))
 			return false;
 	}
 	else
 	{
-		if (!listOfVertices || !listOfColors || !listOfShadowTVertices ||
-			!listOfTriangles || !listOfVisibleFaces || !listOfVisibleShadows ||
-			(/*(lastTurnTransformed != (turn-1)) &&*/ (
-				lastTurnTransformed != turn)))
+		if (!listOfVertices || !listOfColors || !listOfShadowTVertices || !listOfTriangles ||
+			!listOfVisibleFaces || !listOfVisibleShadows ||
+			(/*(lastTurnTransformed != (turn-1)) &&*/ (lastTurnTransformed != turn)))
 			return false;
 	}
 	TG_TypeShapePtr theShape = (TG_TypeShapePtr)myType;
@@ -33,8 +31,7 @@ bool TG_Shape::PerPolySelect(float mouseX, float mouseY)
 	{
 		if (listOfVisibleFaces[j] != 0xffffffff)
 		{
-			TG_TypeTriangle triType =
-				theShape->listOfTypeTriangles[listOfVisibleFaces[j]];
+			TG_TypeTriangle triType = theShape->listOfTypeTriangles[listOfVisibleFaces[j]];
 			Stuff::Point3D v0, v1, v2;
 			v0.x = listOfVertices[triType.Vertices[0]].x;
 			v0.y = listOfVertices[triType.Vertices[0]].y;
@@ -77,8 +74,7 @@ bool TG_Shape::PerPolySelect(float mouseX, float mouseY)
 			float B2	= (v2.x - v0.x);
 			float C2	= -B2 * (v2.y) - A2 * (v2.x);
 			float D2	= A2 * mouseX + B2 * mouseY + C2;
-			if ((sign(D0) == order) && (sign(D0) == sign(D1)) &&
-				(sign(D0) == sign(D2)))
+			if ((sign(D0) == order) && (sign(D0) == sign(D1)) && (sign(D0) == sign(D2)))
 				return true;
 		}
 	}

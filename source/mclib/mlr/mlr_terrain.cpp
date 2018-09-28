@@ -20,20 +20,18 @@ BitTrace* MLR_Terrain_Clip;
 
 MLR_Terrain::ClassData* MLR_Terrain::DefaultData = nullptr;
 
-DynamicArrayOf<Stuff::Vector2DScalar>* MLR_Terrain::clipTexCoords;
+std::vector<Stuff::Vector2DScalar>* MLR_Terrain::clipTexCoords;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void MLR_Terrain::InitializeClass()
 {
-	Verify(!DefaultData);
-	// Verify(gos_GetCurrentHeap() == StaticHeap);
-	DefaultData =
-		new ClassData(MLR_TerrainClassID, "MidLevelRenderer::MLR_Terrain",
-			MLR_I_DeT_TMesh::DefaultData, (MLRPrimitiveBase::Factory)&Make);
+	_ASSERT(!DefaultData);
+	// _ASSERT(gos_GetCurrentHeap() == StaticHeap);
+	DefaultData = new ClassData(MLR_TerrainClassID, "MidLevelRenderer::MLR_Terrain",
+		MLR_I_DeT_TMesh::DefaultData, (MLRPrimitiveBase::Factory)&Make);
 	Register_Object(DefaultData);
-	clipTexCoords = new DynamicArrayOf<Stuff::Vector2DScalar>(
-		Limits::Max_Number_Vertices_Per_Mesh);
+	clipTexCoords = new std::vector<Stuff::Vector2DScalar>(Limits::Max_Number_Vertices_Per_Mesh);
 	Register_Object(clipTexCoords);
 #if defined(TRACE_ENABLED) && defined(MLR_TRACE)
 	MLR_Terrain_Clip = new BitTrace("MLR_Terrain_Clip");
@@ -58,13 +56,12 @@ void MLR_Terrain::TerminateClass()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLR_Terrain::MLR_Terrain(
-	ClassData* class_data, Stuff::MemoryStream* stream, uint32_t version)
+MLR_Terrain::MLR_Terrain(ClassData* class_data, std::iostream stream, uint32_t version)
 	: MLR_I_DeT_TMesh(class_data, stream, version)
 {
 	// Check_Pointer(this);
 	Check_Pointer(stream);
-	// Verify(gos_GetCurrentHeap() == Heap);
+	// _ASSERT(gos_GetCurrentHeap() == Heap);
 	texCoords.SetLength(0);
 }
 
@@ -73,7 +70,7 @@ MLR_Terrain::MLR_Terrain(
 MLR_Terrain::MLR_Terrain(ClassData* class_data) : MLR_I_DeT_TMesh(class_data)
 {
 	// Check_Pointer(this);
-	// Verify(gos_GetCurrentHeap() == Heap);
+	// _ASSERT(gos_GetCurrentHeap() == Heap);
 	texCoords.SetLength(0);
 }
 
@@ -86,7 +83,7 @@ MLR_Terrain::~MLR_Terrain()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLR_Terrain* MLR_Terrain::Make(Stuff::MemoryStream* stream, uint32_t version)
+MLR_Terrain* MLR_Terrain::Make(std::iostream stream, uint32_t version)
 {
 	Check_Object(stream);
 #ifdef _GAMEOS_HPP_
@@ -99,7 +96,7 @@ MLR_Terrain* MLR_Terrain::Make(Stuff::MemoryStream* stream, uint32_t version)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLR_Terrain::Save(Stuff::MemoryStream* stream)
+void MLR_Terrain::Save(std::iostream stream)
 {
 	// Check_Object(this);
 	Check_Object(stream);
@@ -108,15 +105,11 @@ void MLR_Terrain::Save(Stuff::MemoryStream* stream)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLR_Terrain::TestInstance(void) const
-{
-	Verify(IsDerivedFrom(DefaultData));
-}
+void MLR_Terrain::TestInstance(void) const { _ASSERT(IsDerivedFrom(DefaultData)); }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLR_Terrain::SetUVData(
-	float bpf, float xmin, float xmax, float zmin, float zmax)
+void MLR_Terrain::SetUVData(float bpf, float xmin, float xmax, float zmin, float zmax)
 {
 	borderPixelFun = bpf;
 	minX		   = xmin;
@@ -169,8 +162,7 @@ MLRShape* MidLevelRenderer::CreateIndexedTriIcosahedron_TerrainTest(
 	MLRShape* ret = new MLRShape(20);
 	Register_Object(ret);
 	int32_t i, j, k;
-	uint32_t nrTri =
-		static_cast<uint32_t>(ceil(icoInfo.all * pow(4.0f, icoInfo.depth)));
+	uint32_t nrTri = static_cast<uint32_t>(ceil(icoInfo.all * pow(4.0f, icoInfo.depth)));
 	Point3D v[3];
 	if (3 * nrTri >= Limits::Max_Number_Vertices_Per_Mesh)
 	{
@@ -200,8 +192,7 @@ MLRShape* MidLevelRenderer::CreateIndexedTriIcosahedron_TerrainTest(
 			v[j].y = vdata[tindices[k][j]][1];
 			v[j].z = vdata[tindices[k][j]][2];
 		}
-		subdivide(
-			coords, v[0], v[1], v[2], icoInfo.depth, nrTri, icoInfo.radius);
+		subdivide(coords, v[0], v[1], v[2], icoInfo.depth, nrTri, icoInfo.radius);
 		mesh->SetSubprimitiveLengths(nullptr, nrTri);
 		if (icoInfo.indexed == true)
 		{

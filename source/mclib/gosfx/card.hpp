@@ -28,29 +28,25 @@ class Card__Specification : public Singleton__Specification
 	//----------------------------------------------------------------------
 	// Constructors/Destructors
 	//
-  protected:
-	Card__Specification(Stuff::MemoryStream* stream, uint32_t gfx_version);
+protected:
+	Card__Specification(std::iostream stream, uint32_t gfx_version);
 
-  public:
+public:
 	Card__Specification(void);
 
-	void Save(Stuff::MemoryStream* stream);
+	void Save(std::iostream stream);
 	void BuildDefaults(void);
 	bool IsDataValid(bool fix_data = false);
-	static Card__Specification* Make(
-		Stuff::MemoryStream* stream, uint32_t gfx_version);
+	static Card__Specification* Make(std::iostream stream, uint32_t gfx_version);
 	void Copy(Card__Specification* spec);
 
 	//-------------------------------------------------------------------------
 	// FCurves
 	//
-  public:
-	SeededCurveOf<ConstantCurve, ComplexCurve, Curve::e_ConstantComplexType>
-		m_halfHeight;
-	SeededCurveOf<ConstantCurve, ComplexCurve, Curve::e_ConstantComplexType>
-		m_aspectRatio;
-	SeededCurveOf<ComplexCurve, SplineCurve, Curve::e_ComplexSplineType>
-		m_index;
+public:
+	SeededCurveOf<ConstantCurve, ComplexCurve, Curve::e_ConstantComplexType> m_halfHeight;
+	SeededCurveOf<ConstantCurve, ComplexCurve, Curve::e_ConstantComplexType> m_aspectRatio;
+	SeededCurveOf<ComplexCurve, SplineCurve, Curve::e_ComplexSplineType> m_index;
 	ConstantCurve m_UOffset;
 	ConstantCurve m_VOffset;
 	ConstantCurve m_USize;
@@ -70,7 +66,7 @@ class Card : public Singleton
 	//----------------------------------------------------------------------------
 	// Class Registration Support
 	//
-  public:
+public:
 	static void __stdcall InitializeClass(void);
 	static void __stdcall TerminateClass(void);
 
@@ -79,7 +75,7 @@ class Card : public Singleton
 	//----------------------------------------------------------------------------
 	// Class Data Support
 	//
-  protected:
+protected:
 	Card(Specification* spec, uint32_t flags);
 	~Card(void);
 
@@ -91,7 +87,7 @@ class Card : public Singleton
 	Stuff::Vector2DOf<float> m_uvs[4];
 	pcsize_t m_cardCount;
 
-  public:
+public:
 	static Card* Make(Specification* spec, uint32_t flags);
 	Specification* GetSpecification(void)
 	{
@@ -104,16 +100,16 @@ class Card : public Singleton
 	//----------------------------------------------------------------------------
 	// Testing
 	//
-  public:
+public:
 	void TestInstance(void) const;
 
 	//----------------------------------------------------------------------------
 	// API
 	//
-  public:
+public:
 	void Start(ExecuteInfo* info);
 	bool Execute(ExecuteInfo* info);
 	void Draw(DrawInfo* info);
 	void Kill(void);
 };
-}
+} // namespace gosFX

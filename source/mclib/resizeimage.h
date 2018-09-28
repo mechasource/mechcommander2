@@ -169,14 +169,14 @@ double mitchellFilter(double t)
 		t = -t;
 	if (t < 1.0)
 	{
-		t = (((12.0 - 9.0 * B - 6.0 * C) * (t * tt)) +
-			 ((-18.0 + 12.0 * B + 6.0 * C) * tt) + (6.0 - 2.0 * B));
+		t = (((12.0 - 9.0 * B - 6.0 * C) * (t * tt)) + ((-18.0 + 12.0 * B + 6.0 * C) * tt) +
+			(6.0 - 2.0 * B));
 		return (t / 6.0);
 	}
 	else if (t < 2.0)
 	{
 		t = (((-1.0 * B - 6.0 * C) * (t * tt)) + ((6.0 * B + 30.0 * C) * tt) +
-			 ((-12.0 * B - 48.0 * C) * t) + (8.0 * B + 24.0 * C));
+			((-12.0 * B - 48.0 * C) * t) + (8.0 * B + 24.0 * C));
 		return (t / 6.0);
 	}
 	return 0.0;
@@ -306,8 +306,7 @@ void zoom(Image* dst, Image* src, double (*filter)(double t), double fwidth)
 			weight = 0.0;
 			for (j = 0; j < contrib[i].n; ++j)
 			{
-				weight +=
-					raster[contrib[i].p[j].pixel] * contrib[i].p[j].weight;
+				weight += raster[contrib[i].p[j].pixel] * contrib[i].p[j].weight;
 			}
 			putPixel(tmp, i, k, (float)CLAMP(weight, BLACK_PIXEL, WHITE_PIXEL));
 		}
@@ -399,8 +398,7 @@ void zoom(Image* dst, Image* src, double (*filter)(double t), double fwidth)
 			weight = 0.0;
 			for (j = 0; j < contrib[i].n; ++j)
 			{
-				weight +=
-					raster[contrib[i].p[j].pixel] * contrib[i].p[j].weight;
+				weight += raster[contrib[i].p[j].pixel] * contrib[i].p[j].weight;
 			}
 			putPixel(dst, k, i, (float)CLAMP(weight, BLACK_PIXEL, WHITE_PIXEL));
 		}

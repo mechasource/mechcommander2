@@ -10,7 +10,7 @@
 
 //#include <gameos.hpp>
 #include <stuff/scalar.hpp>
-#include <stuff/mstring.hpp>
+// #include <stuff/mstring.hpp>
 #include <stuff/polar.hpp>
 #include <stuff/affinematrix.hpp>
 #include <stuff/linearmatrix.hpp>
@@ -71,8 +71,7 @@ Vector3D& Vector3D::operator=(const YawPitchRange& polar)
 {
 	// Check_Object(this);
 	Check_Object(&polar);
-	Verify(Vector3D::Forward.z == 1.0f && Vector3D::Left.x == 1.0f &&
-		   Vector3D::Up.y == 1.0f);
+	_ASSERT(Vector3D::Forward.z == 1.0f && Vector3D::Left.x == 1.0f && Vector3D::Up.y == 1.0f);
 	SinCosPair azimuth(polar.yaw);
 	SinCosPair altitude(polar.pitch);
 	y		  = -polar.range * altitude.sine;
@@ -91,7 +90,7 @@ Vector3D& Vector3D::Multiply(const Vector3D& v, const AffineMatrix4D& m)
 	// Check_Pointer(this);
 	Check_Object(&v);
 	Check_Object(&m);
-	Verify(this != &v);
+	_ASSERT(this != &v);
 	x = v.x * m(0, 0) + v.y * m(1, 0) + v.z * m(2, 0);
 	y = v.x * m(0, 1) + v.y * m(1, 1) + v.z * m(2, 1);
 	z = v.x * m(0, 2) + v.y * m(1, 2) + v.z * m(2, 2);
@@ -102,13 +101,12 @@ Vector3D& Vector3D::Multiply(const Vector3D& v, const AffineMatrix4D& m)
 //###########################################################################
 //###########################################################################
 //
-Vector3D& Vector3D::MultiplyByInverse(
-	const Vector3D& v, const LinearMatrix4D& m)
+Vector3D& Vector3D::MultiplyByInverse(const Vector3D& v, const LinearMatrix4D& m)
 {
 	// Check_Pointer(this);
 	Check_Object(&v);
 	Check_Object(&m);
-	Verify(this != &v);
+	_ASSERT(this != &v);
 	x = v.x * m(0, 0) + v.y * m(0, 1) + v.z * m(0, 2);
 	y = v.x * m(1, 0) + v.y * m(1, 1) + v.z * m(1, 2);
 	z = v.x * m(2, 0) + v.y * m(2, 1) + v.z * m(2, 2);
@@ -137,7 +135,7 @@ void Stuff::Convert_From_Ascii(PCSTR str, Vector3D* vector_3D)
 {
 	Check_Pointer(str);
 	Check_Object(vector_3D);
-	MString parse_string(str);
+	std::wstring parse_string(str);
 	PCSTR token = parse_string.GetNthToken(0);
 	Check_Pointer(token);
 	vector_3D->x = AtoF(token);

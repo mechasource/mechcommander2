@@ -31,20 +31,19 @@ class SlotLink : public Link
 {
 	friend class Slot;
 
-  public:
-	static void InitializeClass(
-		size_t block_count = SlotLink_MemoryBlock_Allocation,
-		size_t block_delta = SlotLink_MemoryBlock_Allocation);
+public:
+	static void InitializeClass(size_t block_count = SlotLink_MemoryBlock_Allocation,
+		size_t block_delta						   = SlotLink_MemoryBlock_Allocation);
 	static void __stdcall TerminateClass(void);
 
-  public:
+public:
 	~SlotLink(void);
 
-  private:
+private:
 	SlotLink(Slot* slot, Plug* plug);
 
-  private:
-	static MemoryBlock* AllocatedMemory;
+private:
+	// static MemoryBlock* AllocatedMemory;
 
 	PVOID operator new(size_t) { return AllocatedMemory->New(); }
 	void operator delete(PVOID where) { AllocatedMemory->Delete(where); }
@@ -56,7 +55,7 @@ class Slot : public Socket
 {
 	friend class SlotLink;
 
-  public:
+public:
 	//
 	//--------------------------------------------------------------------
 	//--------------------------------------------------------------------
@@ -82,7 +81,7 @@ class Slot : public Socket
 	//
 	void Remove(void);
 
-  protected:
+protected:
 	//
 	//--------------------------------------------------------------------
 	//--------------------------------------------------------------------
@@ -93,7 +92,7 @@ class Slot : public Socket
 	void AddImplementation(Plug* plug);
 	Plug* GetCurrentPlug(void);
 
-  private:
+private:
 	//
 	//--------------------------------------------------------------------
 	// Private data
@@ -106,7 +105,7 @@ class Slot : public Socket
 
 template <class T> class SlotOf : public Slot
 {
-  public:
+public:
 	//
 	//--------------------------------------------------------------------
 	//--------------------------------------------------------------------
@@ -132,5 +131,5 @@ template <class T> class SlotOf : public Slot
 template <class T> SlotOf<T>::SlotOf(Node* node) : Slot(node) {}
 
 template <class T> SlotOf<T>::~SlotOf() {}
-}
+} // namespace Stuff
 #endif

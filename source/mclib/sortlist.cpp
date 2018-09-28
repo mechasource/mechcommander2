@@ -35,7 +35,7 @@ int32_t SortList::init(int32_t _numItems)
 	//-------------------------
 	// Create the sort list...
 	numItems = _numItems;
-	list = (SortListNode*)systemHeap->Malloc(sizeof(SortListNode) * numItems);
+	list	 = (SortListNode*)systemHeap->Malloc(sizeof(SortListNode) * numItems);
 	if (!list)
 		Fatal(0, " Unable to init sortList ");
 	return (list == nullptr);
@@ -91,11 +91,9 @@ void SortList::sort(bool descendingOrder)
 	//------------------------------------------------------------------
 	// For now, just use ANSI C's built-in qsort (ugly, but functional).
 	if (descendingOrder)
-		qsort((PVOID)list, (size_t)numItems, sizeof(SortListNode),
-			descendingCompare);
+		qsort((PVOID)list, (size_t)numItems, sizeof(SortListNode), descendingCompare);
 	else
-		qsort((PVOID)list, (size_t)numItems, sizeof(SortListNode),
-			ascendingCompare);
+		qsort((PVOID)list, (size_t)numItems, sizeof(SortListNode), ascendingCompare);
 }
 
 //---------------------------------------------------------------------------

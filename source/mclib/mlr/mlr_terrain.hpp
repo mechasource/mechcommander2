@@ -21,44 +21,42 @@ class MLR_Terrain : public MLR_I_DeT_TMesh
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Initialization
 	//
-  public:
+public:
 	static void __stdcall InitializeClass(void);
 	static void __stdcall TerminateClass(void);
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Constructors/Destructors
 	//
-  protected:
-	MLR_Terrain(
-		ClassData* class_data, Stuff::MemoryStream* stream, uint32_t version);
+protected:
+	MLR_Terrain(ClassData* class_data, std::iostream stream, uint32_t version);
 	~MLR_Terrain(void);
 
-  public:
+public:
 	MLR_Terrain(ClassData* class_data = MLR_Terrain::DefaultData);
 
-	static MLR_Terrain* Make(Stuff::MemoryStream* stream, uint32_t version);
+	static MLR_Terrain* Make(std::iostream stream, uint32_t version);
 
-	void Save(Stuff::MemoryStream* stream);
+	void Save(std::iostream stream);
 
-  public:
+public:
 	virtual uint32_t TransformAndClip(
 		Stuff::Matrix4D*, MLRClippingState, GOSVertexPool*, bool = false);
 
-	virtual void TransformNoClip(
-		Stuff::Matrix4D*, GOSVertexPool*, bool = false);
+	virtual void TransformNoClip(Stuff::Matrix4D*, GOSVertexPool*, bool = false);
 
 	void SetUVData(float, float, float, float, float);
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Class Data Support
 	//
-  public:
+public:
 	static ClassData* DefaultData;
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Testing
 	//
-  public:
+public:
 	void TestInstance(void) const;
 
 	virtual size_t GetSize(void)
@@ -68,15 +66,14 @@ class MLR_Terrain : public MLR_I_DeT_TMesh
 		return ret;
 	}
 
-  protected:
+protected:
 	float borderPixelFun;
 	float xUVFac, zUVFac, minX, minZ;
 
-	static Stuff::DynamicArrayOf<Stuff::Vector2DScalar>*
+	static std::vector<Stuff::Vector2DScalar>*
 		clipTexCoords; // , Max_Number_Vertices_Per_Mesh
 };
 
-MLRShape* CreateIndexedTriIcosahedron_TerrainTest(
-	IcoInfo&, MLRState*, MLRState*);
-}
+MLRShape* CreateIndexedTriIcosahedron_TerrainTest(IcoInfo&, MLRState*, MLRState*);
+} // namespace MidLevelRenderer
 #endif

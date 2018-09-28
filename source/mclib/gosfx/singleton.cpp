@@ -16,13 +16,12 @@
 //------------------------------------------------------------------------------
 //
 gosFX::Singleton__Specification::Singleton__Specification(
-	Stuff::RegisteredClass::ClassID class_id, Stuff::MemoryStream* stream,
-	uint32_t gfx_version)
+	Stuff::RegisteredClass::ClassID class_id, std::iostream stream, uint32_t gfx_version)
 	: Effect__Specification(class_id, stream, gfx_version)
 {
 	// Check_Pointer(this);
 	Check_Object(stream);
-	// Verify(gos_GetCurrentHeap() == Heap);
+	// _ASSERT(gos_GetCurrentHeap() == Heap);
 	//
 	//-------------------
 	// Load in the curves
@@ -38,17 +37,16 @@ gosFX::Singleton__Specification::Singleton__Specification(
 
 //------------------------------------------------------------------------------
 //
-gosFX::Singleton__Specification::Singleton__Specification(
-	Stuff::RegisteredClass::ClassID class_id)
+gosFX::Singleton__Specification::Singleton__Specification(Stuff::RegisteredClass::ClassID class_id)
 	: Effect__Specification(class_id)
 {
 	// Check_Pointer(this);
-	// Verify(gos_GetCurrentHeap() == Heap);
+	// _ASSERT(gos_GetCurrentHeap() == Heap);
 }
 
 //------------------------------------------------------------------------------
 //
-void gosFX::Singleton__Specification::Save(Stuff::MemoryStream* stream)
+void gosFX::Singleton__Specification::Save(std::iostream stream)
 {
 	// Check_Object(this);
 	Check_Object(stream);
@@ -144,10 +142,10 @@ gosFX::Singleton::ClassData* gosFX::Singleton::DefaultData = nullptr;
 //
 void gosFX::Singleton::InitializeClass()
 {
-	Verify(!DefaultData);
-	// Verify(gos_GetCurrentHeap() == Heap);
-	DefaultData = new ClassData(SingletonClassID, "gosFX::Singleton",
-		Effect::DefaultData, nullptr, nullptr);
+	_ASSERT(!DefaultData);
+	// _ASSERT(gos_GetCurrentHeap() == Heap);
+	DefaultData =
+		new ClassData(SingletonClassID, "gosFX::Singleton", Effect::DefaultData, nullptr, nullptr);
 	Register_Object(DefaultData);
 }
 
@@ -162,21 +160,17 @@ void gosFX::Singleton::TerminateClass()
 
 //------------------------------------------------------------------------------
 //
-gosFX::Singleton::Singleton(
-	ClassData* class_data, Specification* spec, uint32_t flags)
+gosFX::Singleton::Singleton(ClassData* class_data, Specification* spec, uint32_t flags)
 	: Effect(class_data, spec, flags)
 {
 	// Check_Pointer(this);
 	Check_Object(spec);
-	// Verify(gos_GetCurrentHeap() == Heap);
+	// _ASSERT(gos_GetCurrentHeap() == Heap);
 }
 
 //------------------------------------------------------------------------------
 //
-void gosFX::Singleton::TestInstance(void) const
-{
-	Verify(IsDerivedFrom(DefaultData));
-}
+void gosFX::Singleton::TestInstance(void) const { _ASSERT(IsDerivedFrom(DefaultData)); }
 
 //------------------------------------------------------------------------------
 //

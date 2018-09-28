@@ -5,14 +5,12 @@ extern enum { CPU_UNKNOWN, CPU_PENTIUM, CPU_MMX } Processor;
 // extern void memfill(PVOID Dest,int32_t Length);
 // extern void memclear(PVOID Dest,int32_t Length);
 
-void CopySprite(PANE* pane, PVOID texture, int32_t X, int32_t Y, int32_t Width,
-	int32_t Height, int32_t Flip, int32_t Shrink);
-void AG_shape_fill(PANE* pane, PVOID shape_table, int32_t shape_number,
-	int32_t hotX, int32_t hotY);
-void AG_shape_draw(PANE* pane, PVOID shape_table, int32_t shape_number,
-	int32_t hotX, int32_t hotY);
-void AG_shape_translate_fill(PANE* pane, PVOID shape_table,
-	int32_t shape_number, int32_t hotX, int32_t hotY);
+void CopySprite(PANE* pane, PVOID texture, int32_t X, int32_t Y, int32_t Width, int32_t Height,
+	int32_t Flip, int32_t Shrink);
+void AG_shape_fill(PANE* pane, PVOID shape_table, int32_t shape_number, int32_t hotX, int32_t hotY);
+void AG_shape_draw(PANE* pane, PVOID shape_table, int32_t shape_number, int32_t hotX, int32_t hotY);
+void AG_shape_translate_fill(
+	PANE* pane, PVOID shape_table, int32_t shape_number, int32_t hotX, int32_t hotY);
 extern uint32_t lookaside;
 
 int32_t SqrtCount = 0;
@@ -43,8 +41,7 @@ static uint32_t SourceWidth, tWidth, tHeight,
 	DestWidth; // Used for code optimizing
 static int64_t xmask = -1;
 static uint32_t tempXmax, tempXmin;
-static uint32_t minX, minY, maxY, maxX, SkipLeft, NewWidth, StartofLine,
-	StartofClip, EndofClip;
+static uint32_t minX, minY, maxY, maxX, SkipLeft, NewWidth, StartofLine, StartofClip, EndofClip;
 static uint32_t lines, paneX0, paneX1, paneY0, paneY1;
 static uintptr_t SourcePointer;
 static uintptr_t DestPointer;
@@ -53,9 +50,8 @@ static int32_t X, Y, X1;
 static PANE tempPANE;
 static WINDOW tempWINDOW;
 
-void AG_shape_transform(PANE* globalPane, PVOID shapeTable, int32_t frameNum,
-	int32_t hotX, int32_t hotY, PVOID tempBuffer, int32_t reverse,
-	int32_t scaleUp)
+void AG_shape_transform(PANE* globalPane, PVOID shapeTable, int32_t frameNum, int32_t hotX,
+	int32_t hotY, PVOID tempBuffer, int32_t reverse, int32_t scaleUp)
 {
 	_asm
 		{
@@ -106,26 +102,23 @@ void AG_shape_transform(PANE* globalPane, PVOID shapeTable, int32_t frameNum,
 	if (scaleUp)
 	{
 		if (reverse)
-			CopySprite(globalPane, tempBuffer, hotX - X1, hotY + Y, maxX, maxY,
-				reverse, scaleUp);
+			CopySprite(globalPane, tempBuffer, hotX - X1, hotY + Y, maxX, maxY, reverse, scaleUp);
 		else
-			CopySprite(globalPane, tempBuffer, hotX + X, hotY + Y, maxX, maxY,
-				reverse, scaleUp);
+			CopySprite(globalPane, tempBuffer, hotX + X, hotY + Y, maxX, maxY, reverse, scaleUp);
 	}
 	else
 	{
 		if (reverse)
-			CopySprite(globalPane, tempBuffer, hotX - (X1 >> 1),
-				hotY + (Y >> 1), maxX, maxY, reverse, scaleUp);
+			CopySprite(globalPane, tempBuffer, hotX - (X1 >> 1), hotY + (Y >> 1), maxX, maxY,
+				reverse, scaleUp);
 		else
-			CopySprite(globalPane, tempBuffer, hotX + (X >> 1), hotY + (Y >> 1),
-				maxX, maxY, reverse, scaleUp);
+			CopySprite(globalPane, tempBuffer, hotX + (X >> 1), hotY + (Y >> 1), maxX, maxY,
+				reverse, scaleUp);
 	}
 }
 
-void AG_shape_translate_transform(PANE* globalPane, PVOIDshapeTable,
-	int32_t frameNum, int32_t hotX, int32_t hotY, PVOIDtempBuffer,
-	int32_t reverse, int32_t scaleUp)
+void AG_shape_translate_transform(PANE* globalPane, PVOIDshapeTable, int32_t frameNum, int32_t hotX,
+	int32_t hotY, PVOIDtempBuffer, int32_t reverse, int32_t scaleUp)
 {
 	_asm
 		{
@@ -176,34 +169,29 @@ void AG_shape_translate_transform(PANE* globalPane, PVOIDshapeTable,
 	if (scaleUp)
 	{
 		if (reverse)
-			CopySprite(globalPane, tempBuffer, hotX - X1, hotY + Y, maxX, maxY,
-				reverse, scaleUp);
+			CopySprite(globalPane, tempBuffer, hotX - X1, hotY + Y, maxX, maxY, reverse, scaleUp);
 		else
-			CopySprite(globalPane, tempBuffer, hotX + X, hotY + Y, maxX, maxY,
-				reverse, scaleUp);
+			CopySprite(globalPane, tempBuffer, hotX + X, hotY + Y, maxX, maxY, reverse, scaleUp);
 	}
 	else
 	{
 		if (reverse)
-			CopySprite(globalPane, tempBuffer, hotX - (X1 >> 1),
-				hotY + (Y >> 1), maxX, maxY, reverse, scaleUp);
+			CopySprite(globalPane, tempBuffer, hotX - (X1 >> 1), hotY + (Y >> 1), maxX, maxY,
+				reverse, scaleUp);
 		else
-			CopySprite(globalPane, tempBuffer, hotX + (X >> 1), hotY + (Y >> 1),
-				maxX, maxY, reverse, scaleUp);
+			CopySprite(globalPane, tempBuffer, hotX + (X >> 1), hotY + (Y >> 1), maxX, maxY,
+				reverse, scaleUp);
 	}
 }
 
-void CopySprite(PANE* pane, PVOID texture, int32_t X, int32_t Y, int32_t Width,
-	int32_t Height, int32_t Flip, int32_t ScaleUp)
+void CopySprite(PANE* pane, PVOID texture, int32_t X, int32_t Y, int32_t Width, int32_t Height,
+	int32_t Flip, int32_t ScaleUp)
 {
 	DestWidth	  = pane->window->x_max + 1;
 	int32_t paneX0 = (pane->x0 < 0) ? 0 : pane->x0;
 	int32_t paneY0 = (pane->y0 < 0) ? 0 : pane->y0;
-	int32_t paneX1 =
-		(pane->x1 >= (int32_t)DestWidth) ? pane->window->x_max : pane->x1;
-	int32_t paneY1 = (pane->y1 >= (pane->window->y_max + 1))
-						 ? pane->window->y_max
-						 : pane->y1;
+	int32_t paneX1 = (pane->x1 >= (int32_t)DestWidth) ? pane->window->x_max : pane->x1;
+	int32_t paneY1 = (pane->y1 >= (pane->window->y_max + 1)) ? pane->window->y_max : pane->y1;
 	X += paneX0;
 	Y += paneY0;
 	SourcePointer = texture;
@@ -267,8 +255,8 @@ void CopySprite(PANE* pane, PVOID texture, int32_t X, int32_t Y, int32_t Width,
 		if (Y + (Height >> 1) > (paneY1 + 1))
 			Height = (paneY1 + 1 - Y) << 1;
 	}
-	if ((X >= paneX1) || (Y >= paneY1) || (X <= (paneX0 - Width)) ||
-		(Y <= (paneY0 - Height)) || (Width <= 0) || (Height <= 0))
+	if ((X >= paneX1) || (Y >= paneY1) || (X <= (paneX0 - Width)) || (Y <= (paneY0 - Height)) ||
+		(Width <= 0) || (Height <= 0))
 		return;
 	DestPointer = pane->window->buffer + X + Y * DestWidth;
 	tWidth		= Width;
@@ -496,8 +484,7 @@ void CopySprite(PANE* pane, PVOID texture, int32_t X, int32_t Y, int32_t Width,
 ; drawn.  The shape's hot spot will end up at the specified location.
 ;
 */
-void AG_shape_fill(PANE* pane, PVOIDshape_table, int32_t shape_number,
-	int32_t hotX, int32_t hotY)
+void AG_shape_fill(PANE* pane, PVOIDshape_table, int32_t shape_number, int32_t hotX, int32_t hotY)
 {
 	_asm
 	{
@@ -957,8 +944,8 @@ void AG_shape_fill(PANE* pane, PVOIDshape_table, int32_t shape_number,
 ;
 ;----------------------------------------------------------------------------
 */
-void AG_shape_translate_fill(PANE* pane, PVOIDshape_table, int32_t shape_number,
-	int32_t hotX, int32_t hotY)
+void AG_shape_translate_fill(
+	PANE* pane, PVOIDshape_table, int32_t shape_number, int32_t hotX, int32_t hotY)
 {
 	_asm
 	{

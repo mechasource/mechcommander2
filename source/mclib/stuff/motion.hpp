@@ -28,7 +28,7 @@ namespace Stuff
 
 class Motion3D
 {
-  public:
+public:
 	Vector3D linearMotion;
 	Vector3D angularMotion;
 
@@ -52,16 +52,9 @@ class Motion3D
 	//
 	Motion3D& operator=(const Motion3D& p);
 
-	friend bool Close_Enough(
-		const Motion3D& a1, const Motion3D& a2, float e = SMALL);
-	bool operator==(const Motion3D& a) const
-	{
-		return Close_Enough(*this, a, SMALL);
-	}
-	bool operator!=(const Motion3D& a) const
-	{
-		return !Close_Enough(*this, a, SMALL);
-	}
+	friend bool Close_Enough(const Motion3D& a1, const Motion3D& a2, float e = SMALL);
+	bool operator==(const Motion3D& a) const { return Close_Enough(*this, a, SMALL); }
+	bool operator!=(const Motion3D& a) const { return !Close_Enough(*this, a, SMALL); }
 
 	//
 	// Origin3D motion
@@ -77,20 +70,19 @@ class Motion3D
 	void TestInstance(void) const;
 	static bool TestClass(void);
 };
-}
+} // namespace Stuff
 
 namespace MemoryStreamIO
 {
-
-inline Stuff::MemoryStream& Read(
-	Stuff::MemoryStream* stream, Stuff::Motion3D* output)
+#if _CONSIDERED_TEMPORARILY_DISABLED
+inline std::istream& Read(std::istream& stream, Stuff::Motion3D* output)
 {
-	return stream->ReadBytes(output, sizeof(*output));
+	return stream.read(output, sizeof(*output));
 }
-inline Stuff::MemoryStream& Write(
-	Stuff::MemoryStream* stream, const Stuff::Motion3D* input)
+inline std::ostream& Write(std::ostream& stream, const Stuff::Motion3D* input)
 {
-	return stream->WriteBytes(input, sizeof(*input));
+	return stream.write(input, sizeof(*input));
 }
-}
+#endif
+} // namespace MemoryStreamIO
 #endif

@@ -23,7 +23,7 @@
 class GameDebugWindow
 {
 
-  public:
+public:
 	bool display;
 	int32_t pos[2];
 	char textBuffer[MAX_DEBUG_WINDOW_LINES][MAX_DEBUG_WINDOW_LINELEN];
@@ -33,7 +33,7 @@ class GameDebugWindow
 	static HGOSFONT3D font;
 	static int32_t fontHeight;
 
-  public:
+public:
 	PVOID operator new(size_t ourSize);
 
 	void operator delete(PVOID us);

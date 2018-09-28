@@ -12,6 +12,9 @@
 namespace MidLevelRenderer
 {
 
+extern std::vector<uint16_t> clipExtraIndex;
+extern std::vector<uint16_t> indexOffset;
+
 //##########################################################################
 //################### MLRIndexedPrimitiveBase ########################
 //##########################################################################
@@ -21,25 +24,25 @@ class MLRIndexedPrimitiveBase : public MLRPrimitiveBase
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Initialization
 	//
-  public:
+public:
+#if _CONSIDERED_OBSOLETE
 	static void __stdcall InitializeClass(void);
 	static void __stdcall TerminateClass(void);
 	static ClassData* DefaultData;
-
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Constructors/Destructors
 	//
-  protected:
-	MLRIndexedPrimitiveBase(
-		ClassData* class_data, Stuff::MemoryStream* stream, uint32_t version);
+protected:
+	MLRIndexedPrimitiveBase(ClassData* class_data, std::istream& stream, uint32_t version);
+	MLRIndexedPrimitiveBase(ClassData* class_data);
+#endif
+
+protected:
 	~MLRIndexedPrimitiveBase(void);
 
-  public:
-	MLRIndexedPrimitiveBase(ClassData* class_data);
-
-	static MLRIndexedPrimitiveBase* Make(
-		Stuff::MemoryStream* stream, uint32_t version);
-	virtual void Save(Stuff::MemoryStream* stream);
+public:
+	static MLRIndexedPrimitiveBase* Make(std::istream& stream, uint32_t version);
+	virtual void Save(std::ostream& stream);
 
 	virtual void InitializeDrawPrimitive(uint8_t, int32_t = 0);
 
@@ -49,13 +52,13 @@ class MLRIndexedPrimitiveBase : public MLRPrimitiveBase
 	virtual void SetIndexData(puint16_t index_array, size_t index_count);
 	virtual void GetIndexData(puint16_t* index_array, psize_t index_count);
 
-	virtual puint16_t GetGOSIndices(int32_t = 0)
+	virtual std::vector<uint16_t>& GetGOSIndices(uint16_t = 0)
 	{
 		// Check_Object(this);
 		return gos_indices;
 	}
 
-	int32_t GetNumGOSIndices(void)
+	uint16_t GetNumGOSIndices(void)
 	{
 		// Check_Object(this);
 		return numGOSIndices;
@@ -63,44 +66,43 @@ class MLRIndexedPrimitiveBase : public MLRPrimitiveBase
 
 	virtual void Transform(Stuff::Matrix4D*);
 
-	virtual void TransformNoClip(
-		Stuff::Matrix4D*, GOSVertexPool*, bool = false) = 0;
+	virtual void TransformNoClip(Stuff::Matrix4D*, GOSVertexPool*, bool = false) = 0;
 
 	void TheIndexer(size_t num)
 	{
 		// Check_Object(this);
-		index.SetLength(num);
-		for (uint16_t i = 0; i < num; i++)
+		colorIndexes.resize(num);
+		for (uint16_t i = 0u; i < num; i++)
 		{
-			index[i] = i;
+			colorIndexes[i] = i;
 		}
 	}
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Testing
 	//
-  public:
+public:
 	void TestInstance(void) const;
 
 	virtual size_t GetSize(void)
 	{
 		// Check_Object(this);
 		size_t ret = MLRPrimitiveBase::GetSize();
-		ret += visibleIndexedVertices.GetSize();
-		ret += index.GetSize();
+		ret += visibleIndexedVertices.size();
+		ret += colorIndexes.size();
 		return ret;
 	}
 
 	bool CheckIndicies(void);
 
-  protected:
+protected:
 	bool visibleIndexedVerticesKey;
-	Stuff::DynamicArrayOf<uint8_t> visibleIndexedVertices;
-	Stuff::DynamicArrayOf<uint16_t> index; // List of color indexes
-	static Stuff::DynamicArrayOf<uint16_t>*
-		clipExtraIndex; // , Max_Number_Vertices_Per_Mesh
-	puint16_t gos_indices;
+	std::vector<uint8_t> visibleIndexedVertices;
+	std::vector<uint16_t> colorIndexes;				// List of color indexes
+	std::vector<uint16_t> gos_indices;
+
+	//static std::vector<uint16_t> clipExtraIndex;	// , Max_Number_Vertices_Per_Mesh
 	uint16_t numGOSIndices;
 };
-}
+} // namespace MidLevelRenderer
 #endif

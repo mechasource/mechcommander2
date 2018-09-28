@@ -21,23 +21,22 @@ class MLRCardCloud : public MLREffect
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Initialization
 	//
-  public:
+public:
 	static void __stdcall InitializeClass(void);
 	static void __stdcall TerminateClass(void);
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Constructors/Destructors
 	//
-  public:
+public:
 	MLRCardCloud(uint32_t);
 	~MLRCardCloud(void);
 
 	void SetData(pcsize_t pcount, const Stuff::Point3D* point_data,
-		const Stuff::RGBAColor* color_data,
-		const Stuff::Vector2DScalar* uv_data);
+		const Stuff::RGBAColor* color_data, const Stuff::Vector2DScalar* uv_data);
 
-	void SetData(pcsize_t pcount, const Stuff::Point3D* point_data,
-		const Stuff::RGBAColor* color_data);
+	void SetData(
+		pcsize_t pcount, const Stuff::Point3D* point_data, const Stuff::RGBAColor* color_data);
 
 	void Draw(DrawEffectInformation*, GOSVertexPool*, MLRSorter*);
 
@@ -46,30 +45,28 @@ class MLRCardCloud : public MLREffect
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Class Data Support
 	//
-  public:
+public:
 	static ClassData* DefaultData;
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Testing
 	//
-  public:
+public:
 	void TestInstance(void) const;
 
-  protected:
+protected:
 	pcsize_t usedNrOfCards;
 
 	const Stuff::Vector2DScalar* texCoords;
 
-	static Stuff::DynamicArrayOf<MLRClippingState>*
-		clipPerVertex; // , Max_Number_Vertices_Per_Mesh
-	static Stuff::DynamicArrayOf<Stuff::Vector4D>*
+	static std::vector<MLRClippingState>* clipPerVertex; // , Max_Number_Vertices_Per_Mesh
+	static std::vector<Stuff::Vector4D>*
 		clipExtraCoords; // , Max_Number_Vertices_Per_Mesh
-	static Stuff::DynamicArrayOf<Stuff::RGBAColor>*
+	static std::vector<Stuff::RGBAColor>*
 		clipExtraColors; // , Max_Number_Vertices_Per_Mesh
-	static Stuff::DynamicArrayOf<Stuff::Vector2DScalar>*
-		clipExtraTexCoords; // , Max_Number_Vertices_Per_Mesh
-	static Stuff::DynamicArrayOf<uint32_t>*
-		clipExtraLength; // , Max_Number_Primitives_Per_Frame
+	static std::vector<Stuff::Vector2DScalar>*
+		clipExtraTexCoords;									 // , Max_Number_Vertices_Per_Mesh
+	static std::vector<uint32_t>* clipExtraLength; // , Max_Number_Primitives_Per_Frame
 };
-}
+} // namespace MidLevelRenderer
 #endif

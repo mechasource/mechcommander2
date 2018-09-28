@@ -29,11 +29,10 @@ MLR_I_C_DT_PMesh::ClassData* MLR_I_C_DT_PMesh::DefaultData = nullptr;
 //
 void MLR_I_C_DT_PMesh::InitializeClass()
 {
-	Verify(!DefaultData);
-	// Verify(gos_GetCurrentHeap() == StaticHeap);
-	DefaultData = new ClassData(MLR_I_C_DT_PMeshClassID,
-		"MidLevelRenderer::MLR_I_C_DT_PMesh", MLR_I_DT_PMesh::DefaultData,
-		(MLRPrimitiveBase::Factory)&Make);
+	_ASSERT(!DefaultData);
+	// _ASSERT(gos_GetCurrentHeap() == StaticHeap);
+	DefaultData = new ClassData(MLR_I_C_DT_PMeshClassID, "MidLevelRenderer::MLR_I_C_DT_PMesh",
+		MLR_I_DT_PMesh::DefaultData, (MLRPrimitiveBase::Factory)&Make);
 	Register_Object(DefaultData);
 #if defined(TRACE_ENABLED) && defined(MLR_TRACE)
 	MLR_I_C_DT_PMesh_Clip = new BitTrace("MLR_I_C_DT_PMesh_Clip");
@@ -56,13 +55,12 @@ void MLR_I_C_DT_PMesh::TerminateClass()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLR_I_C_DT_PMesh::MLR_I_C_DT_PMesh(
-	ClassData* class_data, Stuff::MemoryStream* stream, uint32_t version)
+MLR_I_C_DT_PMesh::MLR_I_C_DT_PMesh(ClassData* class_data, std::iostream stream, uint32_t version)
 	: MLR_I_DT_PMesh(class_data, stream, version)
 {
 	// Check_Pointer(this);
 	Check_Pointer(stream);
-	// Verify(gos_GetCurrentHeap() == Heap);
+	// _ASSERT(gos_GetCurrentHeap() == Heap);
 	switch (version)
 	{
 	case 1:
@@ -76,7 +74,7 @@ MLR_I_C_DT_PMesh::MLR_I_C_DT_PMesh(
 #if COLOR_AS_DWORD
 		MemoryStreamIO_Read(stream, &colors);
 #else
-		Stuff::DynamicArrayOf<uint32_t> smallColors;
+		std::vector<uint32_t> smallColors;
 		MemoryStreamIO_Read(stream, &smallColors);
 		size_t i, len = smallColors.GetLength();
 		colors.SetLength(len);
@@ -100,10 +98,9 @@ MLR_I_C_DT_PMesh::MLR_I_C_DT_PMesh(
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLR_I_C_DT_PMesh::MLR_I_C_DT_PMesh(ClassData* class_data)
-	: MLR_I_DT_PMesh(class_data), colors(0)
+MLR_I_C_DT_PMesh::MLR_I_C_DT_PMesh(ClassData* class_data) : MLR_I_DT_PMesh(class_data), colors(0)
 {
-	// Verify(gos_GetCurrentHeap() == Heap);
+	// _ASSERT(gos_GetCurrentHeap() == Heap);
 	// Check_Pointer(this);
 }
 
@@ -116,8 +113,7 @@ MLR_I_C_DT_PMesh::~MLR_I_C_DT_PMesh()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLR_I_C_DT_PMesh* MLR_I_C_DT_PMesh::Make(
-	Stuff::MemoryStream* stream, uint32_t version)
+MLR_I_C_DT_PMesh* MLR_I_C_DT_PMesh::Make(std::iostream stream, uint32_t version)
 {
 	Check_Object(stream);
 #if _CONSIDERED_OBSOLETE
@@ -132,7 +128,7 @@ MLR_I_C_DT_PMesh* MLR_I_C_DT_PMesh::Make(
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLR_I_C_DT_PMesh::Save(Stuff::MemoryStream* stream)
+void MLR_I_C_DT_PMesh::Save(std::iostream stream)
 {
 	// Check_Object(this);
 	Check_Object(stream);
@@ -140,7 +136,7 @@ void MLR_I_C_DT_PMesh::Save(Stuff::MemoryStream* stream)
 #if COLOR_AS_DWORD
 	MemoryStreamIO_Write(stream, &colors);
 #else
-	Stuff::DynamicArrayOf<uint32_t> smallColors;
+	std::vector<uint32_t> smallColors;
 	size_t i, len = colors.GetLength();
 	const Stuff::RGBAColor* data = colors.GetData();
 	smallColors.SetLength(len);
@@ -154,10 +150,7 @@ void MLR_I_C_DT_PMesh::Save(Stuff::MemoryStream* stream)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLR_I_C_DT_PMesh::TestInstance(void) const
-{
-	Verify(IsDerivedFrom(DefaultData));
-}
+void MLR_I_C_DT_PMesh::TestInstance(void) const { _ASSERT(IsDerivedFrom(DefaultData)); }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
@@ -171,8 +164,8 @@ void MLR_I_C_DT_PMesh::SetColorData(
 {
 	// Check_Object(this);
 	Check_Pointer(data);
-	Verify(coords.GetLength() == 0 || dataSize == coords.GetLength());
-	// Verify(texCoords.GetLength() == 0 || dataSize == texCoords.GetLength());
+	_ASSERT(coords.GetLength() == 0 || dataSize == coords.GetLength());
+	// _ASSERT(texCoords.GetLength() == 0 || dataSize == texCoords.GetLength());
 	colors.AssignData(data, dataSize);
 }
 
@@ -245,8 +238,7 @@ void MLR_I_C_DT_PMesh::PaintMe(
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 MLR_I_C_DT_PMesh* MidLevelRenderer::CreateIndexedCube_Color_NoLit_2Tex(
-	float half, Stuff::RGBAColor* eightColors, MLRState* state,
-	MLRState* state1)
+	float half, Stuff::RGBAColor* eightColors, MLRState* state, MLRState* state1)
 {
 #ifdef _GAMEOS_HPP_
 	gos_PushCurrentHeap(Heap);
@@ -373,8 +365,7 @@ MLRShape* MidLevelRenderer::CreateIndexedIcosahedron_Color_NoLit_2Tex(
 	MLRShape* ret = new MLRShape(20);
 	Register_Object(ret);
 	size_t i, j, k;
-	uint32_t nrTri =
-		static_cast<uint32_t>(ceil(icoInfo.all * pow(4.0f, icoInfo.depth)));
+	uint32_t nrTri = static_cast<uint32_t>(ceil(icoInfo.all * pow(4.0f, icoInfo.depth)));
 	Stuff::Point3D v[3];
 	if (3 * nrTri >= Limits::Max_Number_Vertices_Per_Mesh)
 	{
@@ -413,8 +404,7 @@ MLRShape* MidLevelRenderer::CreateIndexedIcosahedron_Color_NoLit_2Tex(
 			v[j].y = vdata[tindices[k][j]][1];
 			v[j].z = vdata[tindices[k][j]][2];
 		}
-		subdivide(
-			coords, v[0], v[1], v[2], icoInfo.depth, nrTri, icoInfo.radius);
+		subdivide(coords, v[0], v[1], v[2], icoInfo.depth, nrTri, icoInfo.radius);
 		mesh->SetSubprimitiveLengths(lengths, nrTri);
 		if (icoInfo.indexed == true)
 		{
@@ -465,12 +455,11 @@ MLRShape* MidLevelRenderer::CreateIndexedIcosahedron_Color_NoLit_2Tex(
 				{
 					for (i = 0; i < uniquePoints; i++)
 					{
-						texCoords[i] = Stuff::Vector2DScalar(
-							(1.0f + collapsedCoords[i].x) / 2.0f,
+						texCoords[i] = Stuff::Vector2DScalar((1.0f + collapsedCoords[i].x) / 2.0f,
 							(1.0f + collapsedCoords[i].y) / 2.0f);
-						texCoords[i + uniquePoints] = Stuff::Vector2DScalar(
-							(1.0f + collapsedCoords[i].x) / 2.0f,
-							(1.0f + collapsedCoords[i].z) / 2.0f);
+						texCoords[i + uniquePoints] =
+							Stuff::Vector2DScalar((1.0f + collapsedCoords[i].x) / 2.0f,
+								(1.0f + collapsedCoords[i].z) / 2.0f);
 					}
 				}
 				else
@@ -478,23 +467,21 @@ MLRShape* MidLevelRenderer::CreateIndexedIcosahedron_Color_NoLit_2Tex(
 					for (i = 0; i < nrTri; i++)
 					{
 						texCoords[3 * i] = Stuff::Vector2DScalar(
-							(1.0f + coords[3 * i].x) / 2.0f,
-							(1.0f + coords[3 * i].y) / 2.0f);
-						texCoords[3 * i + 1] = Stuff::Vector2DScalar(
-							(1.0f + coords[3 * i + 1].x) / 2.0f,
-							(1.0f + coords[3 * i + 1].y) / 2.0f);
-						texCoords[3 * i + 2] = Stuff::Vector2DScalar(
-							(1.0f + coords[3 * i + 2].x) / 2.0f,
-							(1.0f + coords[3 * i + 2].y) / 2.0f);
+							(1.0f + coords[3 * i].x) / 2.0f, (1.0f + coords[3 * i].y) / 2.0f);
+						texCoords[3 * i + 1] =
+							Stuff::Vector2DScalar((1.0f + coords[3 * i + 1].x) / 2.0f,
+								(1.0f + coords[3 * i + 1].y) / 2.0f);
+						texCoords[3 * i + 2] =
+							Stuff::Vector2DScalar((1.0f + coords[3 * i + 2].x) / 2.0f,
+								(1.0f + coords[3 * i + 2].y) / 2.0f);
 						texCoords[3 * i + nrTri] = Stuff::Vector2DScalar(
-							(1.0f + coords[3 * i].x) / 2.0f,
-							(1.0f + coords[3 * i].z) / 2.0f);
-						texCoords[3 * i + 1 + nrTri] = Stuff::Vector2DScalar(
-							(1.0f + coords[3 * i + 1].x) / 2.0f,
-							(1.0f + coords[3 * i + 1].z) / 2.0f);
-						texCoords[3 * i + 2 + nrTri] = Stuff::Vector2DScalar(
-							(1.0f + coords[3 * i + 2].x) / 2.0f,
-							(1.0f + coords[3 * i + 2].z) / 2.0f);
+							(1.0f + coords[3 * i].x) / 2.0f, (1.0f + coords[3 * i].z) / 2.0f);
+						texCoords[3 * i + 1 + nrTri] =
+							Stuff::Vector2DScalar((1.0f + coords[3 * i + 1].x) / 2.0f,
+								(1.0f + coords[3 * i + 1].z) / 2.0f);
+						texCoords[3 * i + 2 + nrTri] =
+							Stuff::Vector2DScalar((1.0f + coords[3 * i + 2].x) / 2.0f,
+								(1.0f + coords[3 * i + 2].z) / 2.0f);
 					}
 				}
 			}
@@ -511,10 +498,9 @@ MLRShape* MidLevelRenderer::CreateIndexedIcosahedron_Color_NoLit_2Tex(
 		{
 			for (i = 0; i < uniquePoints; i++)
 			{
-				colors[i] =
-					Stuff::RGBAColor((1.0f + collapsedCoords[i].x) / 2.0f,
-						(1.0f + collapsedCoords[i].y) / 2.0f,
-						(1.0f + collapsedCoords[i].z) / 2.0f, 1.0f);
+				colors[i] = Stuff::RGBAColor((1.0f + collapsedCoords[i].x) / 2.0f,
+					(1.0f + collapsedCoords[i].y) / 2.0f, (1.0f + collapsedCoords[i].z) / 2.0f,
+					1.0f);
 			}
 		}
 		else
@@ -522,8 +508,7 @@ MLRShape* MidLevelRenderer::CreateIndexedIcosahedron_Color_NoLit_2Tex(
 			for (i = 0; i < uniquePoints; i++)
 			{
 				colors[i] = Stuff::RGBAColor((1.0f + coords[i].x) / 2.0f,
-					(1.0f + coords[i].y) / 2.0f, (1.0f + coords[i].z) / 2.0f,
-					1.0f);
+					(1.0f + coords[i].y) / 2.0f, (1.0f + coords[i].z) / 2.0f, 1.0f);
 			}
 		}
 		mesh->SetColorData(colors, uniquePoints);

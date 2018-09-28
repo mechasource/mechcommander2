@@ -5,7 +5,10 @@
 //===========================================================================//
 
 #include "stdinc.h"
-#include "gosFXHeaders.hpp"
+
+#include "fcurve.hpp"
+
+//#include "gosFXHeaders.hpp"
 
 //##########################################################################
 //########################      Curve          #############################
@@ -16,76 +19,76 @@
 bool gosFX::Curve::IsComplex()
 {
 	// Check_Object(this);
-	return m_type == e_ComplexLinearType || m_type == e_ComplexComplexType ||
-		   m_type == e_ComplexSplineType || m_type == e_ConstantComplexType ||
-		   m_type == e_ConstantLinearType || m_type == e_ConstantSplineType ||
-		   m_type == e_SplineSplineType || m_type == e_SplineLinearType;
+
+	return static_cast<uint32_t>(m_type) &
+		(static_cast<uint32_t>(CurveType::e_ComplexLinearType) |
+			static_cast<uint32_t>(CurveType::e_ComplexComplexType) |
+			static_cast<uint32_t>(CurveType::e_ComplexSplineType) |
+			static_cast<uint32_t>(CurveType::e_ConstantComplexType) |
+			static_cast<uint32_t>(CurveType::e_ConstantLinearType) |
+			static_cast<uint32_t>(CurveType::e_ConstantSplineType) |
+			static_cast<uint32_t>(CurveType::e_SplineLinearType) |
+			static_cast<uint32_t>(CurveType::e_SplineSplineType));
 }
 
-void gosFX::Curve::Save(Stuff::MemoryStream* stream)
+void gosFX::Curve::Save(std::ostream& stream)
 {
 	// Check_Object(this);
 	switch (m_type)
 	{
-	case e_ComplexLinearType:
+	case CurveType::e_ComplexLinearType:
 	{
-		SeededCurveOf<ComplexCurve, LinearCurve, Curve::e_ComplexLinearType>*
-			SCurve = (SeededCurveOf<ComplexCurve, LinearCurve,
-				Curve::e_ComplexLinearType>*)this;
+		SeededCurveOf<ComplexCurve, LinearCurve, Curve::CurveType::e_ComplexLinearType>* SCurve =
+			(SeededCurveOf<ComplexCurve, LinearCurve, Curve::CurveType::e_ComplexLinearType>*)this;
 		SCurve->Save(stream);
 	}
 	break;
-	case e_ComplexComplexType:
+	case CurveType::e_ComplexComplexType:
 	{
-		SeededCurveOf<ComplexCurve, ComplexCurve, e_ComplexComplexType>*
-			SCurve = (SeededCurveOf<ComplexCurve, ComplexCurve,
-				e_ComplexComplexType>*)this;
+		SeededCurveOf<ComplexCurve, ComplexCurve, CurveType::e_ComplexComplexType>* SCurve =
+			(SeededCurveOf<ComplexCurve, ComplexCurve, CurveType::e_ComplexComplexType>*)this;
 		SCurve->Save(stream);
 	}
 	break;
-	case e_ComplexSplineType:
+	case CurveType::e_ComplexSplineType:
 	{
-		SeededCurveOf<ComplexCurve, SplineCurve, e_ComplexSplineType>* SCurve =
-			(SeededCurveOf<ComplexCurve, SplineCurve,
-				e_ComplexSplineType>*)this;
+		SeededCurveOf<ComplexCurve, SplineCurve, CurveType::e_ComplexSplineType>* SCurve =
+			(SeededCurveOf<ComplexCurve, SplineCurve, CurveType::e_ComplexSplineType>*)this;
 		SCurve->Save(stream);
 	}
 	break;
-	case e_ConstantComplexType:
+	case CurveType::e_ConstantComplexType:
 	{
-		SeededCurveOf<ConstantCurve, ComplexCurve, e_ConstantComplexType>*
-			SCurve = (SeededCurveOf<ConstantCurve, ComplexCurve,
-				e_ConstantComplexType>*)this;
+		SeededCurveOf<ConstantCurve, ComplexCurve, CurveType::e_ConstantComplexType>* SCurve =
+			(SeededCurveOf<ConstantCurve, ComplexCurve, CurveType::e_ConstantComplexType>*)this;
 		SCurve->Save(stream);
 	}
 	break;
-	case e_ConstantLinearType:
+	case CurveType::e_ConstantLinearType:
 	{
-		SeededCurveOf<ConstantCurve, LinearCurve, e_ConstantLinearType>*
-			SCurve = (SeededCurveOf<ConstantCurve, LinearCurve,
-				e_ConstantLinearType>*)this;
+		SeededCurveOf<ConstantCurve, LinearCurve, CurveType::e_ConstantLinearType>* SCurve =
+			(SeededCurveOf<ConstantCurve, LinearCurve, CurveType::e_ConstantLinearType>*)this;
 		SCurve->Save(stream);
 	}
 	break;
-	case e_ConstantSplineType:
+	case CurveType::e_ConstantSplineType:
 	{
-		SeededCurveOf<ConstantCurve, SplineCurve, e_ConstantSplineType>*
-			SCurve = (SeededCurveOf<ConstantCurve, SplineCurve,
-				e_ConstantSplineType>*)this;
+		SeededCurveOf<ConstantCurve, SplineCurve, CurveType::e_ConstantSplineType>* SCurve =
+			(SeededCurveOf<ConstantCurve, SplineCurve, CurveType::e_ConstantSplineType>*)this;
 		SCurve->Save(stream);
 	}
 	break;
-	case e_SplineLinearType:
+	case CurveType::e_SplineLinearType:
 	{
-		SeededCurveOf<SplineCurve, LinearCurve, e_SplineLinearType>* SCurve =
-			(SeededCurveOf<SplineCurve, LinearCurve, e_SplineLinearType>*)this;
+		SeededCurveOf<SplineCurve, LinearCurve, CurveType::e_SplineLinearType>* SCurve =
+			(SeededCurveOf<SplineCurve, LinearCurve, CurveType::e_SplineLinearType>*)this;
 		SCurve->Save(stream);
 	}
 	break;
-	case e_SplineSplineType:
+	case CurveType::e_SplineSplineType:
 	{
-		SeededCurveOf<SplineCurve, SplineCurve, e_SplineSplineType>* SCurve =
-			(SeededCurveOf<SplineCurve, SplineCurve, e_SplineSplineType>*)this;
+		SeededCurveOf<SplineCurve, SplineCurve, CurveType::e_SplineSplineType>* SCurve =
+			(SeededCurveOf<SplineCurve, SplineCurve, CurveType::e_SplineSplineType>*)this;
 		SCurve->Save(stream);
 	}
 	break;
@@ -94,70 +97,64 @@ void gosFX::Curve::Save(Stuff::MemoryStream* stream)
 	}
 }
 
-void gosFX::Curve::Load(Stuff::MemoryStream* stream, uint32_t gfx_version)
+void gosFX::Curve::Load(std::iostream stream, uint32_t gfx_version)
 {
 	// Check_Object(this);
 	switch (m_type)
 	{
-	case e_ComplexLinearType:
+	case CurveType::e_ComplexLinearType:
 	{
-		SeededCurveOf<ComplexCurve, LinearCurve, Curve::e_ComplexLinearType>*
-			SCurve = (SeededCurveOf<ComplexCurve, LinearCurve,
-				Curve::e_ComplexLinearType>*)this;
+		SeededCurveOf<ComplexCurve, LinearCurve, Curve::CurveType::e_ComplexLinearType>* SCurve =
+			(SeededCurveOf<ComplexCurve, LinearCurve, Curve::CurveType::e_ComplexLinearType>*)this;
 		SCurve->Load(stream, gfx_version);
 	}
 	break;
-	case e_ComplexComplexType:
+	case CurveType::e_ComplexComplexType:
 	{
-		SeededCurveOf<ComplexCurve, ComplexCurve, e_ComplexComplexType>*
-			SCurve = (SeededCurveOf<ComplexCurve, ComplexCurve,
-				e_ComplexComplexType>*)this;
+		SeededCurveOf<ComplexCurve, ComplexCurve, CurveType::e_ComplexComplexType>* SCurve =
+			(SeededCurveOf<ComplexCurve, ComplexCurve, CurveType::e_ComplexComplexType>*)this;
 		SCurve->Load(stream, gfx_version);
 	}
 	break;
-	case e_ComplexSplineType:
+	case CurveType::e_ComplexSplineType:
 	{
-		SeededCurveOf<ComplexCurve, SplineCurve, e_ComplexSplineType>* SCurve =
-			(SeededCurveOf<ComplexCurve, SplineCurve,
-				e_ComplexSplineType>*)this;
+		SeededCurveOf<ComplexCurve, SplineCurve, CurveType::e_ComplexSplineType>* SCurve =
+			(SeededCurveOf<ComplexCurve, SplineCurve, CurveType::e_ComplexSplineType>*)this;
 		SCurve->Load(stream, gfx_version);
 	}
 	break;
-	case e_ConstantComplexType:
+	case CurveType::e_ConstantComplexType:
 	{
-		SeededCurveOf<ConstantCurve, ComplexCurve, e_ConstantComplexType>*
-			SCurve = (SeededCurveOf<ConstantCurve, ComplexCurve,
-				e_ConstantComplexType>*)this;
+		SeededCurveOf<ConstantCurve, ComplexCurve, CurveType::e_ConstantComplexType>* SCurve =
+			(SeededCurveOf<ConstantCurve, ComplexCurve, CurveType::e_ConstantComplexType>*)this;
 		SCurve->Load(stream, gfx_version);
 	}
 	break;
-	case e_ConstantLinearType:
+	case CurveType::e_ConstantLinearType:
 	{
-		SeededCurveOf<ConstantCurve, LinearCurve, e_ConstantLinearType>*
-			SCurve = (SeededCurveOf<ConstantCurve, LinearCurve,
-				e_ConstantLinearType>*)this;
+		SeededCurveOf<ConstantCurve, LinearCurve, CurveType::e_ConstantLinearType>* SCurve =
+			(SeededCurveOf<ConstantCurve, LinearCurve, CurveType::e_ConstantLinearType>*)this;
 		SCurve->Load(stream, gfx_version);
 	}
 	break;
-	case e_ConstantSplineType:
+	case CurveType::e_ConstantSplineType:
 	{
-		SeededCurveOf<ConstantCurve, SplineCurve, e_ConstantSplineType>*
-			SCurve = (SeededCurveOf<ConstantCurve, SplineCurve,
-				e_ConstantSplineType>*)this;
+		SeededCurveOf<ConstantCurve, SplineCurve, CurveType::e_ConstantSplineType>* SCurve =
+			(SeededCurveOf<ConstantCurve, SplineCurve, CurveType::e_ConstantSplineType>*)this;
 		SCurve->Load(stream, gfx_version);
 	}
 	break;
-	case e_SplineLinearType:
+	case CurveType::e_SplineLinearType:
 	{
-		SeededCurveOf<SplineCurve, LinearCurve, e_SplineLinearType>* SCurve =
-			(SeededCurveOf<SplineCurve, LinearCurve, e_SplineLinearType>*)this;
+		SeededCurveOf<SplineCurve, LinearCurve, CurveType::e_SplineLinearType>* SCurve =
+			(SeededCurveOf<SplineCurve, LinearCurve, CurveType::e_SplineLinearType>*)this;
 		SCurve->Load(stream, gfx_version);
 	}
 	break;
-	case e_SplineSplineType:
+	case CurveType::e_SplineSplineType:
 	{
-		SeededCurveOf<SplineCurve, SplineCurve, e_SplineSplineType>* SCurve =
-			(SeededCurveOf<SplineCurve, SplineCurve, e_SplineSplineType>*)this;
+		SeededCurveOf<SplineCurve, SplineCurve, CurveType::e_SplineSplineType>* SCurve =
+			(SeededCurveOf<SplineCurve, SplineCurve, CurveType::e_SplineSplineType>*)this;
 		SCurve->Load(stream, gfx_version);
 	}
 	break;
@@ -171,65 +168,59 @@ void gosFX::Curve::SetSeedFlagIfComplex(bool vflag)
 	// Check_Object(this);
 	switch (m_type)
 	{
-	case e_ComplexLinearType:
+	case CurveType::e_ComplexLinearType:
 	{
-		SeededCurveOf<ComplexCurve, LinearCurve, Curve::e_ComplexLinearType>*
-			SCurve		 = (SeededCurveOf<ComplexCurve, LinearCurve,
-				  Curve::e_ComplexLinearType>*)this;
+		SeededCurveOf<ComplexCurve, LinearCurve, Curve::CurveType::e_ComplexLinearType>* SCurve =
+			(SeededCurveOf<ComplexCurve, LinearCurve, Curve::CurveType::e_ComplexLinearType>*)this;
 		SCurve->m_seeded = vflag;
 	}
 	break;
-	case e_ComplexComplexType:
+	case CurveType::e_ComplexComplexType:
 	{
-		SeededCurveOf<ComplexCurve, ComplexCurve, e_ComplexComplexType>*
-			SCurve		 = (SeededCurveOf<ComplexCurve, ComplexCurve,
-				  e_ComplexComplexType>*)this;
+		SeededCurveOf<ComplexCurve, ComplexCurve, CurveType::e_ComplexComplexType>* SCurve =
+			(SeededCurveOf<ComplexCurve, ComplexCurve, CurveType::e_ComplexComplexType>*)this;
 		SCurve->m_seeded = vflag;
 	}
 	break;
-	case e_ComplexSplineType:
+	case CurveType::e_ComplexSplineType:
 	{
-		SeededCurveOf<ComplexCurve, SplineCurve, e_ComplexSplineType>* SCurve =
-			(SeededCurveOf<ComplexCurve, SplineCurve,
-				e_ComplexSplineType>*)this;
+		SeededCurveOf<ComplexCurve, SplineCurve, CurveType::e_ComplexSplineType>* SCurve =
+			(SeededCurveOf<ComplexCurve, SplineCurve, CurveType::e_ComplexSplineType>*)this;
 		SCurve->m_seeded = vflag;
 	}
 	break;
-	case e_ConstantComplexType:
+	case CurveType::e_ConstantComplexType:
 	{
-		SeededCurveOf<ConstantCurve, ComplexCurve, e_ConstantComplexType>*
-			SCurve		 = (SeededCurveOf<ConstantCurve, ComplexCurve,
-				  e_ConstantComplexType>*)this;
+		SeededCurveOf<ConstantCurve, ComplexCurve, CurveType::e_ConstantComplexType>* SCurve =
+			(SeededCurveOf<ConstantCurve, ComplexCurve, CurveType::e_ConstantComplexType>*)this;
 		SCurve->m_seeded = vflag;
 	}
 	break;
-	case e_ConstantLinearType:
+	case CurveType::e_ConstantLinearType:
 	{
-		SeededCurveOf<ConstantCurve, LinearCurve, e_ConstantLinearType>*
-			SCurve		 = (SeededCurveOf<ConstantCurve, LinearCurve,
-				  e_ConstantLinearType>*)this;
+		SeededCurveOf<ConstantCurve, LinearCurve, CurveType::e_ConstantLinearType>* SCurve =
+			(SeededCurveOf<ConstantCurve, LinearCurve, CurveType::e_ConstantLinearType>*)this;
 		SCurve->m_seeded = vflag;
 	}
 	break;
-	case e_ConstantSplineType:
+	case CurveType::e_ConstantSplineType:
 	{
-		SeededCurveOf<ConstantCurve, SplineCurve, e_ConstantSplineType>*
-			SCurve		 = (SeededCurveOf<ConstantCurve, SplineCurve,
-				  e_ConstantSplineType>*)this;
+		SeededCurveOf<ConstantCurve, SplineCurve, CurveType::e_ConstantSplineType>* SCurve =
+			(SeededCurveOf<ConstantCurve, SplineCurve, CurveType::e_ConstantSplineType>*)this;
 		SCurve->m_seeded = vflag;
 	}
 	break;
-	case e_SplineLinearType:
+	case CurveType::e_SplineLinearType:
 	{
-		SeededCurveOf<SplineCurve, LinearCurve, e_SplineLinearType>* SCurve =
-			(SeededCurveOf<SplineCurve, LinearCurve, e_SplineLinearType>*)this;
+		SeededCurveOf<SplineCurve, LinearCurve, CurveType::e_SplineLinearType>* SCurve =
+			(SeededCurveOf<SplineCurve, LinearCurve, CurveType::e_SplineLinearType>*)this;
 		SCurve->m_seeded = vflag;
 	}
 	break;
-	case e_SplineSplineType:
+	case CurveType::e_SplineSplineType:
 	{
-		SeededCurveOf<SplineCurve, SplineCurve, e_SplineSplineType>* SCurve =
-			(SeededCurveOf<SplineCurve, SplineCurve, e_SplineSplineType>*)this;
+		SeededCurveOf<SplineCurve, SplineCurve, CurveType::e_SplineSplineType>* SCurve =
+			(SeededCurveOf<SplineCurve, SplineCurve, CurveType::e_SplineSplineType>*)this;
 		SCurve->m_seeded = vflag;
 	}
 	break;
@@ -243,65 +234,59 @@ int32_t gosFX::Curve::GetSeedFlagIfComplex()
 	// Check_Object(this);
 	switch (m_type)
 	{
-	case e_ComplexLinearType:
+	case CurveType::e_ComplexLinearType:
 	{
-		SeededCurveOf<ComplexCurve, LinearCurve, Curve::e_ComplexLinearType>*
-			SCurve = (SeededCurveOf<ComplexCurve, LinearCurve,
-				Curve::e_ComplexLinearType>*)this;
+		SeededCurveOf<ComplexCurve, LinearCurve, Curve::CurveType::e_ComplexLinearType>* SCurve =
+			(SeededCurveOf<ComplexCurve, LinearCurve, Curve::CurveType::e_ComplexLinearType>*)this;
 		return SCurve->m_seeded ? 1 : 0;
 	}
 	break;
-	case e_ComplexComplexType:
+	case CurveType::e_ComplexComplexType:
 	{
-		SeededCurveOf<ComplexCurve, ComplexCurve, e_ComplexComplexType>*
-			SCurve = (SeededCurveOf<ComplexCurve, ComplexCurve,
-				e_ComplexComplexType>*)this;
+		SeededCurveOf<ComplexCurve, ComplexCurve, CurveType::e_ComplexComplexType>* SCurve =
+			(SeededCurveOf<ComplexCurve, ComplexCurve, CurveType::e_ComplexComplexType>*)this;
 		return SCurve->m_seeded ? 1 : 0;
 	}
 	break;
-	case e_ComplexSplineType:
+	case CurveType::e_ComplexSplineType:
 	{
-		SeededCurveOf<ComplexCurve, SplineCurve, e_ComplexSplineType>* SCurve =
-			(SeededCurveOf<ComplexCurve, SplineCurve,
-				e_ComplexSplineType>*)this;
+		SeededCurveOf<ComplexCurve, SplineCurve, CurveType::e_ComplexSplineType>* SCurve =
+			(SeededCurveOf<ComplexCurve, SplineCurve, CurveType::e_ComplexSplineType>*)this;
 		return SCurve->m_seeded ? 1 : 0;
 	}
 	break;
-	case e_ConstantComplexType:
+	case CurveType::e_ConstantComplexType:
 	{
-		SeededCurveOf<ConstantCurve, ComplexCurve, e_ConstantComplexType>*
-			SCurve = (SeededCurveOf<ConstantCurve, ComplexCurve,
-				e_ConstantComplexType>*)this;
+		SeededCurveOf<ConstantCurve, ComplexCurve, CurveType::e_ConstantComplexType>* SCurve =
+			(SeededCurveOf<ConstantCurve, ComplexCurve, CurveType::e_ConstantComplexType>*)this;
 		return SCurve->m_seeded ? 1 : 0;
 	}
 	break;
-	case e_ConstantLinearType:
+	case CurveType::e_ConstantLinearType:
 	{
-		SeededCurveOf<ConstantCurve, LinearCurve, e_ConstantLinearType>*
-			SCurve = (SeededCurveOf<ConstantCurve, LinearCurve,
-				e_ConstantLinearType>*)this;
+		SeededCurveOf<ConstantCurve, LinearCurve, CurveType::e_ConstantLinearType>* SCurve =
+			(SeededCurveOf<ConstantCurve, LinearCurve, CurveType::e_ConstantLinearType>*)this;
 		return SCurve->m_seeded ? 1 : 0;
 	}
 	break;
-	case e_ConstantSplineType:
+	case CurveType::e_ConstantSplineType:
 	{
-		SeededCurveOf<ConstantCurve, SplineCurve, e_ConstantSplineType>*
-			SCurve = (SeededCurveOf<ConstantCurve, SplineCurve,
-				e_ConstantSplineType>*)this;
+		SeededCurveOf<ConstantCurve, SplineCurve, CurveType::e_ConstantSplineType>* SCurve =
+			(SeededCurveOf<ConstantCurve, SplineCurve, CurveType::e_ConstantSplineType>*)this;
 		return SCurve->m_seeded ? 1 : 0;
 	}
 	break;
-	case e_SplineLinearType:
+	case CurveType::e_SplineLinearType:
 	{
-		SeededCurveOf<SplineCurve, LinearCurve, e_SplineLinearType>* SCurve =
-			(SeededCurveOf<SplineCurve, LinearCurve, e_SplineLinearType>*)this;
+		SeededCurveOf<SplineCurve, LinearCurve, CurveType::e_SplineLinearType>* SCurve =
+			(SeededCurveOf<SplineCurve, LinearCurve, CurveType::e_SplineLinearType>*)this;
 		return SCurve->m_seeded ? 1 : 0;
 	}
 	break;
-	case e_SplineSplineType:
+	case CurveType::e_SplineSplineType:
 	{
-		SeededCurveOf<SplineCurve, SplineCurve, e_SplineSplineType>* SCurve =
-			(SeededCurveOf<SplineCurve, SplineCurve, e_SplineSplineType>*)this;
+		SeededCurveOf<SplineCurve, SplineCurve, CurveType::e_SplineSplineType>* SCurve =
+			(SeededCurveOf<SplineCurve, SplineCurve, CurveType::e_SplineSplineType>*)this;
 		return SCurve->m_seeded ? 1 : 0;
 	}
 	break;
@@ -316,110 +301,104 @@ float gosFX::Curve::ExpensiveCompute(float tme, int32_t curvenum)
 	// Check_Object(this);
 	switch (m_type)
 	{
-	case e_ConstantType:
+	case CurveType::e_ConstantType:
 	{
 		ConstantCurve* SCurve = (ConstantCurve*)this;
 		return SCurve->ComputeValue(tme, 0.0f);
 	}
 	break;
-	case e_LinearType:
+	case CurveType::e_LinearType:
 	{
 		LinearCurve* SCurve = (LinearCurve*)this;
 		return SCurve->ComputeValue(tme, 0.0f);
 	}
 	break;
-	case e_SplineType:
+	case CurveType::e_SplineType:
 	{
 		SplineCurve* SCurve = (SplineCurve*)this;
 		return SCurve->ComputeValue(tme, 0.0f);
 	}
 	break;
-	case e_ComplexType:
+	case CurveType::e_ComplexType:
 	{
 		ComplexCurve* SCurve = (ComplexCurve*)this;
 		return SCurve->ComputeValue(tme, 0.0f);
 	}
 	break;
-	case e_ComplexLinearType:
+	case CurveType::e_ComplexLinearType:
 	{
-		SeededCurveOf<ComplexCurve, LinearCurve, Curve::e_ComplexLinearType>*
-			SCurve = (SeededCurveOf<ComplexCurve, LinearCurve,
-				Curve::e_ComplexLinearType>*)this;
+		SeededCurveOf<ComplexCurve, LinearCurve, Curve::CurveType::e_ComplexLinearType>* SCurve =
+			(SeededCurveOf<ComplexCurve, LinearCurve, Curve::CurveType::e_ComplexLinearType>*)this;
 		if (curvenum == 0)
 			return SCurve->m_ageCurve.ExpensiveCompute(tme, curvenum);
 		else
 			return SCurve->m_seedCurve.ExpensiveCompute(tme, curvenum);
 	}
 	break;
-	case e_ComplexComplexType:
+	case CurveType::e_ComplexComplexType:
 	{
-		SeededCurveOf<ComplexCurve, ComplexCurve, e_ComplexComplexType>*
-			SCurve = (SeededCurveOf<ComplexCurve, ComplexCurve,
-				e_ComplexComplexType>*)this;
+		SeededCurveOf<ComplexCurve, ComplexCurve, CurveType::e_ComplexComplexType>* SCurve =
+			(SeededCurveOf<ComplexCurve, ComplexCurve, CurveType::e_ComplexComplexType>*)this;
 		if (curvenum == 0)
 			return SCurve->m_ageCurve.ExpensiveCompute(tme, curvenum);
 		else
 			return SCurve->m_seedCurve.ExpensiveCompute(tme, curvenum);
 	}
 	break;
-	case e_ComplexSplineType:
+	case CurveType::e_ComplexSplineType:
 	{
-		SeededCurveOf<ComplexCurve, SplineCurve, e_ComplexSplineType>* SCurve =
-			(SeededCurveOf<ComplexCurve, SplineCurve,
-				e_ComplexSplineType>*)this;
+		SeededCurveOf<ComplexCurve, SplineCurve, CurveType::e_ComplexSplineType>* SCurve =
+			(SeededCurveOf<ComplexCurve, SplineCurve, CurveType::e_ComplexSplineType>*)this;
 		if (curvenum == 0)
 			return SCurve->m_ageCurve.ExpensiveCompute(tme, curvenum);
 		else
 			return SCurve->m_seedCurve.ExpensiveCompute(tme, curvenum);
 	}
 	break;
-	case e_ConstantComplexType:
+	case CurveType::e_ConstantComplexType:
 	{
-		SeededCurveOf<ConstantCurve, ComplexCurve, e_ConstantComplexType>*
-			SCurve = (SeededCurveOf<ConstantCurve, ComplexCurve,
-				e_ConstantComplexType>*)this;
+		SeededCurveOf<ConstantCurve, ComplexCurve, CurveType::e_ConstantComplexType>* SCurve =
+			(SeededCurveOf<ConstantCurve, ComplexCurve, CurveType::e_ConstantComplexType>*)this;
 		if (curvenum == 0)
 			return SCurve->m_ageCurve.ExpensiveCompute(tme, curvenum);
 		else
 			return SCurve->m_seedCurve.ExpensiveCompute(tme, curvenum);
 	}
 	break;
-	case e_ConstantLinearType:
+	case CurveType::e_ConstantLinearType:
 	{
-		SeededCurveOf<ConstantCurve, LinearCurve, e_ConstantLinearType>*
-			SCurve = (SeededCurveOf<ConstantCurve, LinearCurve,
-				e_ConstantLinearType>*)this;
+		SeededCurveOf<ConstantCurve, LinearCurve, CurveType::e_ConstantLinearType>* SCurve =
+			(SeededCurveOf<ConstantCurve, LinearCurve, CurveType::e_ConstantLinearType>*)this;
 		if (curvenum == 0)
 			return SCurve->m_ageCurve.ExpensiveCompute(tme, curvenum);
 		else
 			return SCurve->m_seedCurve.ExpensiveCompute(tme, curvenum);
 	}
 	break;
-	case e_ConstantSplineType:
+	case CurveType::e_ConstantSplineType:
 	{
-		SeededCurveOf<ConstantCurve, SplineCurve, e_ConstantSplineType>*
-			SCurve = (SeededCurveOf<ConstantCurve, SplineCurve,
-				e_ConstantSplineType>*)this;
+		SeededCurveOf<ConstantCurve, SplineCurve, CurveType::e_ConstantSplineType>* SCurve =
+			(SeededCurveOf<ConstantCurve, SplineCurve, CurveType::e_ConstantSplineType>*)this;
 		if (curvenum == 0)
 			return SCurve->m_ageCurve.ExpensiveCompute(tme, curvenum);
 		else
 			return SCurve->m_seedCurve.ExpensiveCompute(tme, curvenum);
 	}
 	break;
-	case e_SplineLinearType:
+	case CurveType::e_SplineLinearType:
 	{
-		SeededCurveOf<SplineCurve, LinearCurve, e_SplineLinearType>* SCurve =
-			(SeededCurveOf<SplineCurve, LinearCurve, e_SplineLinearType>*)this;
+		SeededCurveOf<SplineCurve, LinearCurve, CurveType::e_SplineLinearType>* SCurve =
+			(SeededCurveOf<SplineCurve, LinearCurve, CurveType::e_SplineLinearType>*)this;
 		if (curvenum == 0)
 			return SCurve->m_ageCurve.ExpensiveCompute(tme, curvenum);
 		else
 			return SCurve->m_seedCurve.ExpensiveCompute(tme, curvenum);
 	}
 	break;
-	case e_SplineSplineType:
+	case CurveType::e_SplineSplineType:
 	{
-		SeededCurveOf<SplineCurve, SplineCurve, e_SplineSplineType>* SCurve =
-			(SeededCurveOf<SplineCurve, SplineCurve, e_SplineSplineType>*)this;
+		SeededCurveOf<SplineCurve, SplineCurve, CurveType::e_SplineSplineType>* SCurve =
+			(SeededCurveOf<SplineCurve, SplineCurve, CurveType::e_SplineSplineType>*)this;
 		if (curvenum == 0)
 			return SCurve->m_ageCurve.ExpensiveCompute(tme, curvenum);
 		else
@@ -432,118 +411,111 @@ float gosFX::Curve::ExpensiveCompute(float tme, int32_t curvenum)
 	return 0.0f;
 }
 
-void gosFX::Curve::ExpensiveComputeRange(
-	float* low, float* hi, int32_t curvenum)
+void gosFX::Curve::ExpensiveComputeRange(float* low, float* hi, int32_t curvenum)
 {
 	// Check_Object(this);
 	Check_Pointer(low);
 	Check_Pointer(hi);
 	switch (m_type)
 	{
-	case e_ConstantType:
+	case CurveType::e_ConstantType:
 	{
 		ConstantCurve* SCurve = (ConstantCurve*)this;
 		SCurve->ComputeRange(low, hi);
 	}
 	break;
-	case e_LinearType:
+	case CurveType::e_LinearType:
 	{
 		LinearCurve* SCurve = (LinearCurve*)this;
 		SCurve->ComputeRange(low, hi);
 	}
 	break;
-	case e_SplineType:
+	case CurveType::e_SplineType:
 	{
 		SplineCurve* SCurve = (SplineCurve*)this;
 		SCurve->ComputeRange(low, hi);
 	}
 	break;
-	case e_ComplexType:
+	case CurveType::e_ComplexType:
 	{
 		ComplexCurve* SCurve = (ComplexCurve*)this;
 		SCurve->ComputeRange(low, hi);
 	}
 	break;
-	case e_ComplexLinearType:
+	case CurveType::e_ComplexLinearType:
 	{
-		SeededCurveOf<ComplexCurve, LinearCurve, Curve::e_ComplexLinearType>*
-			SCurve = (SeededCurveOf<ComplexCurve, LinearCurve,
-				Curve::e_ComplexLinearType>*)this;
+		SeededCurveOf<ComplexCurve, LinearCurve, Curve::CurveType::e_ComplexLinearType>* SCurve =
+			(SeededCurveOf<ComplexCurve, LinearCurve, Curve::CurveType::e_ComplexLinearType>*)this;
 		if (curvenum == 0)
 			SCurve->m_ageCurve.ComputeRange(low, hi);
 		else
 			SCurve->m_seedCurve.ComputeRange(low, hi);
 	}
 	break;
-	case e_ComplexComplexType:
+	case CurveType::e_ComplexComplexType:
 	{
-		SeededCurveOf<ComplexCurve, ComplexCurve, e_ComplexComplexType>*
-			SCurve = (SeededCurveOf<ComplexCurve, ComplexCurve,
-				e_ComplexComplexType>*)this;
+		SeededCurveOf<ComplexCurve, ComplexCurve, CurveType::e_ComplexComplexType>* SCurve =
+			(SeededCurveOf<ComplexCurve, ComplexCurve, CurveType::e_ComplexComplexType>*)this;
 		if (curvenum == 0)
 			SCurve->m_ageCurve.ComputeRange(low, hi);
 		else
 			SCurve->m_seedCurve.ComputeRange(low, hi);
 	}
 	break;
-	case e_ComplexSplineType:
+	case CurveType::e_ComplexSplineType:
 	{
-		SeededCurveOf<ComplexCurve, SplineCurve, e_ComplexSplineType>* SCurve =
-			(SeededCurveOf<ComplexCurve, SplineCurve,
-				e_ComplexSplineType>*)this;
+		SeededCurveOf<ComplexCurve, SplineCurve, CurveType::e_ComplexSplineType>* SCurve =
+			(SeededCurveOf<ComplexCurve, SplineCurve, CurveType::e_ComplexSplineType>*)this;
 		if (curvenum == 0)
 			SCurve->m_ageCurve.ComputeRange(low, hi);
 		else
 			SCurve->m_seedCurve.ComputeRange(low, hi);
 	}
 	break;
-	case e_ConstantComplexType:
+	case CurveType::e_ConstantComplexType:
 	{
-		SeededCurveOf<ConstantCurve, ComplexCurve, e_ConstantComplexType>*
-			SCurve = (SeededCurveOf<ConstantCurve, ComplexCurve,
-				e_ConstantComplexType>*)this;
+		SeededCurveOf<ConstantCurve, ComplexCurve, CurveType::e_ConstantComplexType>* SCurve =
+			(SeededCurveOf<ConstantCurve, ComplexCurve, CurveType::e_ConstantComplexType>*)this;
 		if (curvenum == 0)
 			SCurve->m_ageCurve.ComputeRange(low, hi);
 		else
 			SCurve->m_seedCurve.ComputeRange(low, hi);
 	}
 	break;
-	case e_ConstantLinearType:
+	case CurveType::e_ConstantLinearType:
 	{
-		SeededCurveOf<ConstantCurve, LinearCurve, e_ConstantLinearType>*
-			SCurve = (SeededCurveOf<ConstantCurve, LinearCurve,
-				e_ConstantLinearType>*)this;
+		SeededCurveOf<ConstantCurve, LinearCurve, CurveType::e_ConstantLinearType>* SCurve =
+			(SeededCurveOf<ConstantCurve, LinearCurve, CurveType::e_ConstantLinearType>*)this;
 		if (curvenum == 0)
 			SCurve->m_ageCurve.ComputeRange(low, hi);
 		else
 			SCurve->m_seedCurve.ComputeRange(low, hi);
 	}
 	break;
-	case e_ConstantSplineType:
+	case CurveType::e_ConstantSplineType:
 	{
-		SeededCurveOf<ConstantCurve, SplineCurve, e_ConstantSplineType>*
-			SCurve = (SeededCurveOf<ConstantCurve, SplineCurve,
-				e_ConstantSplineType>*)this;
+		SeededCurveOf<ConstantCurve, SplineCurve, CurveType::e_ConstantSplineType>* SCurve =
+			(SeededCurveOf<ConstantCurve, SplineCurve, CurveType::e_ConstantSplineType>*)this;
 		if (curvenum == 0)
 			SCurve->m_ageCurve.ComputeRange(low, hi);
 		else
 			SCurve->m_seedCurve.ComputeRange(low, hi);
 	}
 	break;
-	case e_SplineLinearType:
+	case CurveType::e_SplineLinearType:
 	{
-		SeededCurveOf<SplineCurve, LinearCurve, e_SplineLinearType>* SCurve =
-			(SeededCurveOf<SplineCurve, LinearCurve, e_SplineLinearType>*)this;
+		SeededCurveOf<SplineCurve, LinearCurve, CurveType::e_SplineLinearType>* SCurve =
+			(SeededCurveOf<SplineCurve, LinearCurve, CurveType::e_SplineLinearType>*)this;
 		if (curvenum == 0)
 			SCurve->m_ageCurve.ComputeRange(low, hi);
 		else
 			SCurve->m_seedCurve.ComputeRange(low, hi);
 	}
 	break;
-	case e_SplineSplineType:
+	case CurveType::e_SplineSplineType:
 	{
-		SeededCurveOf<SplineCurve, SplineCurve, e_SplineSplineType>* SCurve =
-			(SeededCurveOf<SplineCurve, SplineCurve, e_SplineSplineType>*)this;
+		SeededCurveOf<SplineCurve, SplineCurve, CurveType::e_SplineSplineType>* SCurve =
+			(SeededCurveOf<SplineCurve, SplineCurve, CurveType::e_SplineSplineType>*)this;
 		if (curvenum == 0)
 			SCurve->m_ageCurve.ComputeRange(low, hi);
 		else
@@ -562,89 +534,83 @@ void gosFX::Curve::ExpensiveComputeRange(float* low, float* hi)
 	Check_Pointer(hi);
 	switch (m_type)
 	{
-	case e_ConstantType:
+	case CurveType::e_ConstantType:
 	{
 		ConstantCurve* SCurve = (ConstantCurve*)this;
 		SCurve->ComputeRange(low, hi);
 	}
 	break;
-	case e_LinearType:
+	case CurveType::e_LinearType:
 	{
 		LinearCurve* SCurve = (LinearCurve*)this;
 		SCurve->ComputeRange(low, hi);
 	}
 	break;
-	case e_SplineType:
+	case CurveType::e_SplineType:
 	{
 		SplineCurve* SCurve = (SplineCurve*)this;
 		SCurve->ComputeRange(low, hi);
 	}
 	break;
-	case e_ComplexType:
+	case CurveType::e_ComplexType:
 	{
 		ComplexCurve* SCurve = (ComplexCurve*)this;
 		SCurve->ComputeRange(low, hi);
 	}
 	break;
-	case e_ComplexLinearType:
+	case CurveType::e_ComplexLinearType:
 	{
-		SeededCurveOf<ComplexCurve, LinearCurve, Curve::e_ComplexLinearType>*
-			SCurve = (SeededCurveOf<ComplexCurve, LinearCurve,
-				Curve::e_ComplexLinearType>*)this;
+		SeededCurveOf<ComplexCurve, LinearCurve, Curve::CurveType::e_ComplexLinearType>* SCurve =
+			(SeededCurveOf<ComplexCurve, LinearCurve, Curve::CurveType::e_ComplexLinearType>*)this;
 		SCurve->ComputeRange(low, hi);
 	}
 	break;
-	case e_ComplexComplexType:
+	case CurveType::e_ComplexComplexType:
 	{
-		SeededCurveOf<ComplexCurve, ComplexCurve, e_ComplexComplexType>*
-			SCurve = (SeededCurveOf<ComplexCurve, ComplexCurve,
-				e_ComplexComplexType>*)this;
+		SeededCurveOf<ComplexCurve, ComplexCurve, CurveType::e_ComplexComplexType>* SCurve =
+			(SeededCurveOf<ComplexCurve, ComplexCurve, CurveType::e_ComplexComplexType>*)this;
 		SCurve->ComputeRange(low, hi);
 	}
 	break;
-	case e_ComplexSplineType:
+	case CurveType::e_ComplexSplineType:
 	{
-		SeededCurveOf<ComplexCurve, SplineCurve, e_ComplexSplineType>* SCurve =
-			(SeededCurveOf<ComplexCurve, SplineCurve,
-				e_ComplexSplineType>*)this;
+		SeededCurveOf<ComplexCurve, SplineCurve, CurveType::e_ComplexSplineType>* SCurve =
+			(SeededCurveOf<ComplexCurve, SplineCurve, CurveType::e_ComplexSplineType>*)this;
 		SCurve->ComputeRange(low, hi);
 	}
 	break;
-	case e_ConstantComplexType:
+	case CurveType::e_ConstantComplexType:
 	{
-		SeededCurveOf<ConstantCurve, ComplexCurve, e_ConstantComplexType>*
-			SCurve = (SeededCurveOf<ConstantCurve, ComplexCurve,
-				e_ConstantComplexType>*)this;
+		SeededCurveOf<ConstantCurve, ComplexCurve, CurveType::e_ConstantComplexType>* SCurve =
+			(SeededCurveOf<ConstantCurve, ComplexCurve, CurveType::e_ConstantComplexType>*)this;
 		SCurve->ComputeRange(low, hi);
 	}
 	break;
-	case e_ConstantLinearType:
+	case CurveType::e_ConstantLinearType:
 	{
-		SeededCurveOf<ConstantCurve, LinearCurve, e_ConstantLinearType>*
-			SCurve = (SeededCurveOf<ConstantCurve, LinearCurve,
-				e_ConstantLinearType>*)this;
+		SeededCurveOf<ConstantCurve, LinearCurve, CurveType::e_ConstantLinearType>* SCurve =
+			(SeededCurveOf<ConstantCurve, LinearCurve, CurveType::e_ConstantLinearType>*)this;
 		SCurve->ComputeRange(low, hi);
 	}
 	break;
-	case e_ConstantSplineType:
+	case CurveType::e_ConstantSplineType:
 	{
-		SeededCurveOf<ConstantCurve, SplineCurve, e_ConstantSplineType>*
-			SCurve = (SeededCurveOf<ConstantCurve, SplineCurve,
-				e_ConstantSplineType>*)this;
+		SeededCurveOf<ConstantCurve, SplineCurve, CurveType::e_ConstantSplineType>* SCurve =
+			(SeededCurveOf<ConstantCurve, SplineCurve, CurveType::e_ConstantSplineType>*)this;
 		SCurve->ComputeRange(low, hi);
 	}
 	break;
-	case e_SplineLinearType:
+	case CurveType::e_SplineLinearType:
 	{
-		SeededCurveOf<SplineCurve, LinearCurve, e_SplineLinearType>* SCurve =
-			(SeededCurveOf<SplineCurve, LinearCurve, e_SplineLinearType>*)this;
+		SeededCurveOf<SplineCurve, LinearCurve, CurveType::e_SplineLinearType>* SCurve =
+			(SeededCurveOf<SplineCurve, LinearCurve, CurveType::e_SplineLinearType>*)this;
 		SCurve->ComputeRange(low, hi);
 	}
 	break;
-	case e_SplineSplineType:
+	case CurveType::e_SplineSplineType:
 	{
-		SeededCurveOf<SplineCurve, SplineCurve, e_SplineSplineType>* SCurve =
-			(SeededCurveOf<SplineCurve, SplineCurve, e_SplineSplineType>*)this;
+		SeededCurveOf<SplineCurve, SplineCurve, CurveType::e_SplineSplineType>* SCurve =
+			(SeededCurveOf<SplineCurve, SplineCurve, CurveType::e_SplineSplineType>*)this;
 		SCurve->ComputeRange(low, hi);
 	}
 	break;
@@ -665,13 +631,13 @@ void gosFX::Curve::TranslateTo(float pos, int32_t curvenum)
 	// Check_Object(this);
 	switch (m_type)
 	{
-	case e_ConstantType:
+	case CurveType::e_ConstantType:
 	{
 		ConstantCurve* SCurve = (ConstantCurve*)this;
 		SCurve->SetCurve(pos);
 	}
 	break;
-	case e_LinearType:
+	case CurveType::e_LinearType:
 	{
 		LinearCurve* SCurve = (LinearCurve*)this;
 		float s;
@@ -679,7 +645,7 @@ void gosFX::Curve::TranslateTo(float pos, int32_t curvenum)
 		SCurve->SetCurve(pos, pos + s);
 	}
 	break;
-	case e_SplineType:
+	case CurveType::e_SplineType:
 	{
 		SplineCurve* SCurve = (SplineCurve*)this;
 		float v0, v1, s0, s1;
@@ -692,7 +658,7 @@ void gosFX::Curve::TranslateTo(float pos, int32_t curvenum)
 		SCurve->SetCurve(v0, s0, v1, s1);
 	}
 	break;
-	case e_ComplexType:
+	case CurveType::e_ComplexType:
 	{
 		ComplexCurve* SCurve = (ComplexCurve*)this;
 		float delta, x1, x2, y1, y2, slp;
@@ -712,90 +678,83 @@ void gosFX::Curve::TranslateTo(float pos, int32_t curvenum)
 		y1 = SCurve->ComputeValue(x1, 0.0f);
 		y1 += delta;
 		slp = (*SCurve)[key].m_slope;
-		(*SCurve)[SCurve->GetKeyCount() - 1].SetLinearKey(
-			x1, y1, y1 + slp * 0.1f, 0.1f);
+		(*SCurve)[SCurve->GetKeyCount() - 1].SetLinearKey(x1, y1, y1 + slp * 0.1f, 0.1f);
 	}
 	break;
-	case e_ComplexLinearType:
+	case CurveType::e_ComplexLinearType:
 	{
-		SeededCurveOf<ComplexCurve, LinearCurve, Curve::e_ComplexLinearType>*
-			SCurve = (SeededCurveOf<ComplexCurve, LinearCurve,
-				Curve::e_ComplexLinearType>*)this;
+		SeededCurveOf<ComplexCurve, LinearCurve, Curve::CurveType::e_ComplexLinearType>* SCurve =
+			(SeededCurveOf<ComplexCurve, LinearCurve, Curve::CurveType::e_ComplexLinearType>*)this;
 		if (curvenum == 0)
 			SCurve->m_ageCurve.TranslateTo(pos, curvenum);
 		else
 			SCurve->m_seedCurve.TranslateTo(pos, curvenum);
 	}
 	break;
-	case e_ComplexComplexType:
+	case CurveType::e_ComplexComplexType:
 	{
-		SeededCurveOf<ComplexCurve, ComplexCurve, e_ComplexComplexType>*
-			SCurve = (SeededCurveOf<ComplexCurve, ComplexCurve,
-				e_ComplexComplexType>*)this;
+		SeededCurveOf<ComplexCurve, ComplexCurve, CurveType::e_ComplexComplexType>* SCurve =
+			(SeededCurveOf<ComplexCurve, ComplexCurve, CurveType::e_ComplexComplexType>*)this;
 		if (curvenum == 0)
 			SCurve->m_ageCurve.TranslateTo(pos, curvenum);
 		else
 			SCurve->m_seedCurve.TranslateTo(pos, curvenum);
 	}
 	break;
-	case e_ComplexSplineType:
+	case CurveType::e_ComplexSplineType:
 	{
-		SeededCurveOf<ComplexCurve, SplineCurve, e_ComplexSplineType>* SCurve =
-			(SeededCurveOf<ComplexCurve, SplineCurve,
-				e_ComplexSplineType>*)this;
+		SeededCurveOf<ComplexCurve, SplineCurve, CurveType::e_ComplexSplineType>* SCurve =
+			(SeededCurveOf<ComplexCurve, SplineCurve, CurveType::e_ComplexSplineType>*)this;
 		if (curvenum == 0)
 			SCurve->m_ageCurve.TranslateTo(pos, curvenum);
 		else
 			SCurve->m_seedCurve.TranslateTo(pos, curvenum);
 	}
 	break;
-	case e_ConstantComplexType:
+	case CurveType::e_ConstantComplexType:
 	{
-		SeededCurveOf<ConstantCurve, ComplexCurve, e_ConstantComplexType>*
-			SCurve = (SeededCurveOf<ConstantCurve, ComplexCurve,
-				e_ConstantComplexType>*)this;
+		SeededCurveOf<ConstantCurve, ComplexCurve, CurveType::e_ConstantComplexType>* SCurve =
+			(SeededCurveOf<ConstantCurve, ComplexCurve, CurveType::e_ConstantComplexType>*)this;
 		if (curvenum == 0)
 			SCurve->m_ageCurve.TranslateTo(pos, curvenum);
 		else
 			SCurve->m_seedCurve.TranslateTo(pos, curvenum);
 	}
 	break;
-	case e_ConstantLinearType:
+	case CurveType::e_ConstantLinearType:
 	{
-		SeededCurveOf<ConstantCurve, LinearCurve, e_ConstantLinearType>*
-			SCurve = (SeededCurveOf<ConstantCurve, LinearCurve,
-				e_ConstantLinearType>*)this;
+		SeededCurveOf<ConstantCurve, LinearCurve, CurveType::e_ConstantLinearType>* SCurve =
+			(SeededCurveOf<ConstantCurve, LinearCurve, CurveType::e_ConstantLinearType>*)this;
 		if (curvenum == 0)
 			SCurve->m_ageCurve.TranslateTo(pos, curvenum);
 		else
 			SCurve->m_seedCurve.TranslateTo(pos, curvenum);
 	}
 	break;
-	case e_ConstantSplineType:
+	case CurveType::e_ConstantSplineType:
 	{
-		SeededCurveOf<ConstantCurve, SplineCurve, e_ConstantSplineType>*
-			SCurve = (SeededCurveOf<ConstantCurve, SplineCurve,
-				e_ConstantSplineType>*)this;
+		SeededCurveOf<ConstantCurve, SplineCurve, CurveType::e_ConstantSplineType>* SCurve =
+			(SeededCurveOf<ConstantCurve, SplineCurve, CurveType::e_ConstantSplineType>*)this;
 		if (curvenum == 0)
 			SCurve->m_ageCurve.TranslateTo(pos, curvenum);
 		else
 			SCurve->m_seedCurve.TranslateTo(pos, curvenum);
 	}
 	break;
-	case e_SplineLinearType:
+	case CurveType::e_SplineLinearType:
 	{
-		SeededCurveOf<SplineCurve, LinearCurve, e_SplineLinearType>* SCurve =
-			(SeededCurveOf<SplineCurve, LinearCurve, e_SplineLinearType>*)this;
+		SeededCurveOf<SplineCurve, LinearCurve, CurveType::e_SplineLinearType>* SCurve =
+			(SeededCurveOf<SplineCurve, LinearCurve, CurveType::e_SplineLinearType>*)this;
 		if (curvenum == 0)
 			SCurve->m_ageCurve.TranslateTo(pos, curvenum);
 		else
 			SCurve->m_seedCurve.TranslateTo(pos, curvenum);
 	}
 	break;
-	case e_SplineSplineType:
+	case CurveType::e_SplineSplineType:
 	{
-		SeededCurveOf<SplineCurve, SplineCurve, e_SplineSplineType>* SCurve =
-			(SeededCurveOf<SplineCurve, SplineCurve, e_SplineSplineType>*)this;
+		SeededCurveOf<SplineCurve, SplineCurve, CurveType::e_SplineSplineType>* SCurve =
+			(SeededCurveOf<SplineCurve, SplineCurve, CurveType::e_SplineSplineType>*)this;
 		if (curvenum == 0)
 			SCurve->m_ageCurve.TranslateTo(pos, curvenum);
 		else
@@ -812,13 +771,13 @@ void gosFX::Curve::TranslateBy(float delta, int32_t curvenum)
 	// Check_Object(this);
 	switch (m_type)
 	{
-	case e_ConstantType:
+	case CurveType::e_ConstantType:
 	{
 		ConstantCurve* SCurve = (ConstantCurve*)this;
 		SCurve->SetCurve(SCurve->ComputeValue(0.0f, 0.0f) + delta);
 	}
 	break;
-	case e_LinearType:
+	case CurveType::e_LinearType:
 	{
 		LinearCurve* SCurve = (LinearCurve*)this;
 		float s, v;
@@ -827,7 +786,7 @@ void gosFX::Curve::TranslateBy(float delta, int32_t curvenum)
 		SCurve->SetCurve(v + delta, v + delta + s);
 	}
 	break;
-	case e_SplineType:
+	case CurveType::e_SplineType:
 	{
 		SplineCurve* SCurve = (SplineCurve*)this;
 		float v0, v1, s0, s1;
@@ -840,7 +799,7 @@ void gosFX::Curve::TranslateBy(float delta, int32_t curvenum)
 		SCurve->SetCurve(v0, s0, v1, s1);
 	}
 	break;
-	case e_ComplexType:
+	case CurveType::e_ComplexType:
 	{
 		ComplexCurve* SCurve = (ComplexCurve*)this;
 		float x1, x2, y1, y2;
@@ -861,86 +820,80 @@ void gosFX::Curve::TranslateBy(float delta, int32_t curvenum)
 		(*SCurve)[SCurve->GetKeyCount() - 1].SetLinearKey(x1, y1, y1, 1.0f);
 	}
 	break;
-	case e_ComplexLinearType:
+	case CurveType::e_ComplexLinearType:
 	{
-		SeededCurveOf<ComplexCurve, LinearCurve, Curve::e_ComplexLinearType>*
-			SCurve = (SeededCurveOf<ComplexCurve, LinearCurve,
-				Curve::e_ComplexLinearType>*)this;
+		SeededCurveOf<ComplexCurve, LinearCurve, Curve::CurveType::e_ComplexLinearType>* SCurve =
+			(SeededCurveOf<ComplexCurve, LinearCurve, Curve::CurveType::e_ComplexLinearType>*)this;
 		if (curvenum == 0)
 			SCurve->m_ageCurve.TranslateBy(delta, curvenum);
 		else
 			SCurve->m_seedCurve.TranslateBy(delta, curvenum);
 	}
 	break;
-	case e_ComplexComplexType:
+	case CurveType::e_ComplexComplexType:
 	{
-		SeededCurveOf<ComplexCurve, ComplexCurve, e_ComplexComplexType>*
-			SCurve = (SeededCurveOf<ComplexCurve, ComplexCurve,
-				e_ComplexComplexType>*)this;
+		SeededCurveOf<ComplexCurve, ComplexCurve, CurveType::e_ComplexComplexType>* SCurve =
+			(SeededCurveOf<ComplexCurve, ComplexCurve, CurveType::e_ComplexComplexType>*)this;
 		if (curvenum == 0)
 			SCurve->m_ageCurve.TranslateBy(delta, curvenum);
 		else
 			SCurve->m_seedCurve.TranslateBy(delta, curvenum);
 	}
 	break;
-	case e_ComplexSplineType:
+	case CurveType::e_ComplexSplineType:
 	{
-		SeededCurveOf<ComplexCurve, SplineCurve, e_ComplexSplineType>* SCurve =
-			(SeededCurveOf<ComplexCurve, SplineCurve,
-				e_ComplexSplineType>*)this;
+		SeededCurveOf<ComplexCurve, SplineCurve, CurveType::e_ComplexSplineType>* SCurve =
+			(SeededCurveOf<ComplexCurve, SplineCurve, CurveType::e_ComplexSplineType>*)this;
 		if (curvenum == 0)
 			SCurve->m_ageCurve.TranslateBy(delta, curvenum);
 		else
 			SCurve->m_seedCurve.TranslateBy(delta, curvenum);
 	}
 	break;
-	case e_ConstantComplexType:
+	case CurveType::e_ConstantComplexType:
 	{
-		SeededCurveOf<ConstantCurve, ComplexCurve, e_ConstantComplexType>*
-			SCurve = (SeededCurveOf<ConstantCurve, ComplexCurve,
-				e_ConstantComplexType>*)this;
+		SeededCurveOf<ConstantCurve, ComplexCurve, CurveType::e_ConstantComplexType>* SCurve =
+			(SeededCurveOf<ConstantCurve, ComplexCurve, CurveType::e_ConstantComplexType>*)this;
 		if (curvenum == 0)
 			SCurve->m_ageCurve.TranslateBy(delta, curvenum);
 		else
 			SCurve->m_seedCurve.TranslateBy(delta, curvenum);
 	}
 	break;
-	case e_ConstantLinearType:
+	case CurveType::e_ConstantLinearType:
 	{
-		SeededCurveOf<ConstantCurve, LinearCurve, e_ConstantLinearType>*
-			SCurve = (SeededCurveOf<ConstantCurve, LinearCurve,
-				e_ConstantLinearType>*)this;
+		SeededCurveOf<ConstantCurve, LinearCurve, CurveType::e_ConstantLinearType>* SCurve =
+			(SeededCurveOf<ConstantCurve, LinearCurve, CurveType::e_ConstantLinearType>*)this;
 		if (curvenum == 0)
 			SCurve->m_ageCurve.TranslateBy(delta, curvenum);
 		else
 			SCurve->m_seedCurve.TranslateBy(delta, curvenum);
 	}
 	break;
-	case e_ConstantSplineType:
+	case CurveType::e_ConstantSplineType:
 	{
-		SeededCurveOf<ConstantCurve, SplineCurve, e_ConstantSplineType>*
-			SCurve = (SeededCurveOf<ConstantCurve, SplineCurve,
-				e_ConstantSplineType>*)this;
+		SeededCurveOf<ConstantCurve, SplineCurve, CurveType::e_ConstantSplineType>* SCurve =
+			(SeededCurveOf<ConstantCurve, SplineCurve, CurveType::e_ConstantSplineType>*)this;
 		if (curvenum == 0)
 			SCurve->m_ageCurve.TranslateBy(delta, curvenum);
 		else
 			SCurve->m_seedCurve.TranslateBy(delta, curvenum);
 	}
 	break;
-	case e_SplineLinearType:
+	case CurveType::e_SplineLinearType:
 	{
-		SeededCurveOf<SplineCurve, LinearCurve, e_SplineLinearType>* SCurve =
-			(SeededCurveOf<SplineCurve, LinearCurve, e_SplineLinearType>*)this;
+		SeededCurveOf<SplineCurve, LinearCurve, CurveType::e_SplineLinearType>* SCurve =
+			(SeededCurveOf<SplineCurve, LinearCurve, CurveType::e_SplineLinearType>*)this;
 		if (curvenum == 0)
 			SCurve->m_ageCurve.TranslateBy(delta, curvenum);
 		else
 			SCurve->m_seedCurve.TranslateBy(delta, curvenum);
 	}
 	break;
-	case e_SplineSplineType:
+	case CurveType::e_SplineSplineType:
 	{
-		SeededCurveOf<SplineCurve, SplineCurve, e_SplineSplineType>* SCurve =
-			(SeededCurveOf<SplineCurve, SplineCurve, e_SplineSplineType>*)this;
+		SeededCurveOf<SplineCurve, SplineCurve, CurveType::e_SplineSplineType>* SCurve =
+			(SeededCurveOf<SplineCurve, SplineCurve, CurveType::e_SplineSplineType>*)this;
 		if (curvenum == 0)
 			SCurve->m_ageCurve.TranslateBy(delta, curvenum);
 		else
@@ -963,14 +916,13 @@ void gosFX::Curve::AxisScale(float sfactor, float axis, int32_t curvenum)
 	// Check_Object(this);
 	switch (m_type)
 	{
-	case e_ConstantType:
+	case CurveType::e_ConstantType:
 	{
 		ConstantCurve* SCurve = (ConstantCurve*)this;
-		SCurve->SetCurve(
-			axis + (SCurve->ComputeValue(0.0f, 0.0f) - axis) * sfactor);
+		SCurve->SetCurve(axis + (SCurve->ComputeValue(0.0f, 0.0f) - axis) * sfactor);
 	}
 	break;
-	case e_LinearType:
+	case CurveType::e_LinearType:
 	{
 		LinearCurve* SCurve = (LinearCurve*)this;
 		float v0, v1;
@@ -981,7 +933,7 @@ void gosFX::Curve::AxisScale(float sfactor, float axis, int32_t curvenum)
 		SCurve->SetCurve(v0, v1);
 	}
 	break;
-	case e_SplineType:
+	case CurveType::e_SplineType:
 	{
 		SplineCurve* SCurve = (SplineCurve*)this;
 		float v0, v1, s0, s1;
@@ -996,7 +948,7 @@ void gosFX::Curve::AxisScale(float sfactor, float axis, int32_t curvenum)
 		SCurve->SetCurve(v0, s0, v1, s1);
 	}
 	break;
-	case e_ComplexType:
+	case CurveType::e_ComplexType:
 	{
 		ComplexCurve* SCurve = (ComplexCurve*)this;
 		float x1, x2, y1, y2;
@@ -1017,86 +969,80 @@ void gosFX::Curve::AxisScale(float sfactor, float axis, int32_t curvenum)
 		(*SCurve)[SCurve->GetKeyCount() - 1].SetLinearKey(x1, y1, y1, 1.0f);
 	}
 	break;
-	case e_ComplexLinearType:
+	case CurveType::e_ComplexLinearType:
 	{
-		SeededCurveOf<ComplexCurve, LinearCurve, Curve::e_ComplexLinearType>*
-			SCurve = (SeededCurveOf<ComplexCurve, LinearCurve,
-				Curve::e_ComplexLinearType>*)this;
+		SeededCurveOf<ComplexCurve, LinearCurve, Curve::CurveType::e_ComplexLinearType>* SCurve =
+			(SeededCurveOf<ComplexCurve, LinearCurve, Curve::CurveType::e_ComplexLinearType>*)this;
 		if (curvenum == 0)
 			SCurve->m_ageCurve.AxisScale(sfactor, axis, curvenum);
 		else
 			SCurve->m_seedCurve.AxisScale(sfactor, axis, curvenum);
 	}
 	break;
-	case e_ComplexComplexType:
+	case CurveType::e_ComplexComplexType:
 	{
-		SeededCurveOf<ComplexCurve, ComplexCurve, e_ComplexComplexType>*
-			SCurve = (SeededCurveOf<ComplexCurve, ComplexCurve,
-				e_ComplexComplexType>*)this;
+		SeededCurveOf<ComplexCurve, ComplexCurve, CurveType::e_ComplexComplexType>* SCurve =
+			(SeededCurveOf<ComplexCurve, ComplexCurve, CurveType::e_ComplexComplexType>*)this;
 		if (curvenum == 0)
 			SCurve->m_ageCurve.AxisScale(sfactor, axis, curvenum);
 		else
 			SCurve->m_seedCurve.AxisScale(sfactor, axis, curvenum);
 	}
 	break;
-	case e_ComplexSplineType:
+	case CurveType::e_ComplexSplineType:
 	{
-		SeededCurveOf<ComplexCurve, SplineCurve, e_ComplexSplineType>* SCurve =
-			(SeededCurveOf<ComplexCurve, SplineCurve,
-				e_ComplexSplineType>*)this;
+		SeededCurveOf<ComplexCurve, SplineCurve, CurveType::e_ComplexSplineType>* SCurve =
+			(SeededCurveOf<ComplexCurve, SplineCurve, CurveType::e_ComplexSplineType>*)this;
 		if (curvenum == 0)
 			SCurve->m_ageCurve.AxisScale(sfactor, axis, curvenum);
 		else
 			SCurve->m_seedCurve.AxisScale(sfactor, axis, curvenum);
 	}
 	break;
-	case e_ConstantComplexType:
+	case CurveType::e_ConstantComplexType:
 	{
-		SeededCurveOf<ConstantCurve, ComplexCurve, e_ConstantComplexType>*
-			SCurve = (SeededCurveOf<ConstantCurve, ComplexCurve,
-				e_ConstantComplexType>*)this;
+		SeededCurveOf<ConstantCurve, ComplexCurve, CurveType::e_ConstantComplexType>* SCurve =
+			(SeededCurveOf<ConstantCurve, ComplexCurve, CurveType::e_ConstantComplexType>*)this;
 		if (curvenum == 0)
 			SCurve->m_ageCurve.AxisScale(sfactor, axis, curvenum);
 		else
 			SCurve->m_seedCurve.AxisScale(sfactor, axis, curvenum);
 	}
 	break;
-	case e_ConstantLinearType:
+	case CurveType::e_ConstantLinearType:
 	{
-		SeededCurveOf<ConstantCurve, LinearCurve, e_ConstantLinearType>*
-			SCurve = (SeededCurveOf<ConstantCurve, LinearCurve,
-				e_ConstantLinearType>*)this;
+		SeededCurveOf<ConstantCurve, LinearCurve, CurveType::e_ConstantLinearType>* SCurve =
+			(SeededCurveOf<ConstantCurve, LinearCurve, CurveType::e_ConstantLinearType>*)this;
 		if (curvenum == 0)
 			SCurve->m_ageCurve.AxisScale(sfactor, axis, curvenum);
 		else
 			SCurve->m_seedCurve.AxisScale(sfactor, axis, curvenum);
 	}
 	break;
-	case e_ConstantSplineType:
+	case CurveType::e_ConstantSplineType:
 	{
-		SeededCurveOf<ConstantCurve, SplineCurve, e_ConstantSplineType>*
-			SCurve = (SeededCurveOf<ConstantCurve, SplineCurve,
-				e_ConstantSplineType>*)this;
+		SeededCurveOf<ConstantCurve, SplineCurve, CurveType::e_ConstantSplineType>* SCurve =
+			(SeededCurveOf<ConstantCurve, SplineCurve, CurveType::e_ConstantSplineType>*)this;
 		if (curvenum == 0)
 			SCurve->m_ageCurve.AxisScale(sfactor, axis, curvenum);
 		else
 			SCurve->m_seedCurve.AxisScale(sfactor, axis, curvenum);
 	}
 	break;
-	case e_SplineLinearType:
+	case CurveType::e_SplineLinearType:
 	{
-		SeededCurveOf<SplineCurve, LinearCurve, e_SplineLinearType>* SCurve =
-			(SeededCurveOf<SplineCurve, LinearCurve, e_SplineLinearType>*)this;
+		SeededCurveOf<SplineCurve, LinearCurve, CurveType::e_SplineLinearType>* SCurve =
+			(SeededCurveOf<SplineCurve, LinearCurve, CurveType::e_SplineLinearType>*)this;
 		if (curvenum == 0)
 			SCurve->m_ageCurve.AxisScale(sfactor, axis, curvenum);
 		else
 			SCurve->m_seedCurve.AxisScale(sfactor, axis, curvenum);
 	}
 	break;
-	case e_SplineSplineType:
+	case CurveType::e_SplineSplineType:
 	{
-		SeededCurveOf<SplineCurve, SplineCurve, e_SplineSplineType>* SCurve =
-			(SeededCurveOf<SplineCurve, SplineCurve, e_SplineSplineType>*)this;
+		SeededCurveOf<SplineCurve, SplineCurve, CurveType::e_SplineSplineType>* SCurve =
+			(SeededCurveOf<SplineCurve, SplineCurve, CurveType::e_SplineSplineType>*)this;
 		if (curvenum == 0)
 			SCurve->m_ageCurve.AxisScale(sfactor, axis, curvenum);
 		else
@@ -1113,10 +1059,10 @@ gosFX::Curve* gosFX::Curve::GetSubCurve(int32_t curvenum)
 	// Check_Object(this);
 	switch (m_type)
 	{
-	case e_ConstantType:
-	case e_LinearType:
-	case e_SplineType:
-	case e_ComplexType:
+	case CurveType::e_ConstantType:
+	case CurveType::e_LinearType:
+	case CurveType::e_SplineType:
+	case CurveType::e_ComplexType:
 	{
 		if (curvenum == 0)
 			return this;
@@ -1124,86 +1070,80 @@ gosFX::Curve* gosFX::Curve::GetSubCurve(int32_t curvenum)
 			return nullptr;
 	}
 	break;
-	case e_ComplexLinearType:
+	case CurveType::e_ComplexLinearType:
 	{
-		SeededCurveOf<ComplexCurve, LinearCurve, Curve::e_ComplexLinearType>*
-			SCurve = (SeededCurveOf<ComplexCurve, LinearCurve,
-				Curve::e_ComplexLinearType>*)this;
+		SeededCurveOf<ComplexCurve, LinearCurve, Curve::CurveType::e_ComplexLinearType>* SCurve =
+			(SeededCurveOf<ComplexCurve, LinearCurve, Curve::CurveType::e_ComplexLinearType>*)this;
 		if (curvenum == 0)
 			return &(SCurve->m_ageCurve);
 		else
 			return &(SCurve->m_seedCurve);
 	}
 	break;
-	case e_ComplexComplexType:
+	case CurveType::e_ComplexComplexType:
 	{
-		SeededCurveOf<ComplexCurve, ComplexCurve, e_ComplexComplexType>*
-			SCurve = (SeededCurveOf<ComplexCurve, ComplexCurve,
-				e_ComplexComplexType>*)this;
+		SeededCurveOf<ComplexCurve, ComplexCurve, CurveType::e_ComplexComplexType>* SCurve =
+			(SeededCurveOf<ComplexCurve, ComplexCurve, CurveType::e_ComplexComplexType>*)this;
 		if (curvenum == 0)
 			return &(SCurve->m_ageCurve);
 		else
 			return &(SCurve->m_seedCurve);
 	}
 	break;
-	case e_ComplexSplineType:
+	case CurveType::e_ComplexSplineType:
 	{
-		SeededCurveOf<ComplexCurve, SplineCurve, e_ComplexSplineType>* SCurve =
-			(SeededCurveOf<ComplexCurve, SplineCurve,
-				e_ComplexSplineType>*)this;
+		SeededCurveOf<ComplexCurve, SplineCurve, CurveType::e_ComplexSplineType>* SCurve =
+			(SeededCurveOf<ComplexCurve, SplineCurve, CurveType::e_ComplexSplineType>*)this;
 		if (curvenum == 0)
 			return &(SCurve->m_ageCurve);
 		else
 			return &(SCurve->m_seedCurve);
 	}
 	break;
-	case e_ConstantComplexType:
+	case CurveType::e_ConstantComplexType:
 	{
-		SeededCurveOf<ConstantCurve, ComplexCurve, e_ConstantComplexType>*
-			SCurve = (SeededCurveOf<ConstantCurve, ComplexCurve,
-				e_ConstantComplexType>*)this;
+		SeededCurveOf<ConstantCurve, ComplexCurve, CurveType::e_ConstantComplexType>* SCurve =
+			(SeededCurveOf<ConstantCurve, ComplexCurve, CurveType::e_ConstantComplexType>*)this;
 		if (curvenum == 0)
 			return &(SCurve->m_ageCurve);
 		else
 			return &(SCurve->m_seedCurve);
 	}
 	break;
-	case e_ConstantLinearType:
+	case CurveType::e_ConstantLinearType:
 	{
-		SeededCurveOf<ConstantCurve, LinearCurve, e_ConstantLinearType>*
-			SCurve = (SeededCurveOf<ConstantCurve, LinearCurve,
-				e_ConstantLinearType>*)this;
+		SeededCurveOf<ConstantCurve, LinearCurve, CurveType::e_ConstantLinearType>* SCurve =
+			(SeededCurveOf<ConstantCurve, LinearCurve, CurveType::e_ConstantLinearType>*)this;
 		if (curvenum == 0)
 			return &(SCurve->m_ageCurve);
 		else
 			return &(SCurve->m_seedCurve);
 	}
 	break;
-	case e_ConstantSplineType:
+	case CurveType::e_ConstantSplineType:
 	{
-		SeededCurveOf<ConstantCurve, SplineCurve, e_ConstantSplineType>*
-			SCurve = (SeededCurveOf<ConstantCurve, SplineCurve,
-				e_ConstantSplineType>*)this;
+		SeededCurveOf<ConstantCurve, SplineCurve, CurveType::e_ConstantSplineType>* SCurve =
+			(SeededCurveOf<ConstantCurve, SplineCurve, CurveType::e_ConstantSplineType>*)this;
 		if (curvenum == 0)
 			return &(SCurve->m_ageCurve);
 		else
 			return &(SCurve->m_seedCurve);
 	}
 	break;
-	case e_SplineLinearType:
+	case CurveType::e_SplineLinearType:
 	{
-		SeededCurveOf<SplineCurve, LinearCurve, e_SplineLinearType>* SCurve =
-			(SeededCurveOf<SplineCurve, LinearCurve, e_SplineLinearType>*)this;
+		SeededCurveOf<SplineCurve, LinearCurve, CurveType::e_SplineLinearType>* SCurve =
+			(SeededCurveOf<SplineCurve, LinearCurve, CurveType::e_SplineLinearType>*)this;
 		if (curvenum == 0)
 			return &(SCurve->m_ageCurve);
 		else
 			return &(SCurve->m_seedCurve);
 	}
 	break;
-	case e_SplineSplineType:
+	case CurveType::e_SplineSplineType:
 	{
-		SeededCurveOf<SplineCurve, SplineCurve, e_SplineSplineType>* SCurve =
-			(SeededCurveOf<SplineCurve, SplineCurve, e_SplineSplineType>*)this;
+		SeededCurveOf<SplineCurve, SplineCurve, CurveType::e_SplineSplineType>* SCurve =
+			(SeededCurveOf<SplineCurve, SplineCurve, CurveType::e_SplineSplineType>*)this;
 		if (curvenum == 0)
 			return &(SCurve->m_ageCurve);
 		else
@@ -1222,7 +1162,7 @@ gosFX::Curve* gosFX::Curve::GetSubCurve(int32_t curvenum)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void gosFX::ConstantCurve::Save(Stuff::MemoryStream* stream)
+void gosFX::ConstantCurve::Save(std::iostream stream)
 {
 	// Check_Object(this);
 	Check_Object(stream);
@@ -1231,8 +1171,7 @@ void gosFX::ConstantCurve::Save(Stuff::MemoryStream* stream)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void gosFX::ConstantCurve::Load(
-	Stuff::MemoryStream* stream, uint32_t gfx_version)
+void gosFX::ConstantCurve::Load(std::iostream stream, uint32_t gfx_version)
 {
 	// Check_Pointer(this);
 	Check_Object(stream);
@@ -1245,7 +1184,7 @@ void gosFX::ConstantCurve::Load(
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void gosFX::LinearCurve::Save(Stuff::MemoryStream* stream)
+void gosFX::LinearCurve::Save(std::iostream stream)
 {
 	// Check_Object(this);
 	Check_Object(stream);
@@ -1255,7 +1194,7 @@ void gosFX::LinearCurve::Save(Stuff::MemoryStream* stream)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void gosFX::LinearCurve::Load(Stuff::MemoryStream* stream, uint32_t gfx_version)
+void gosFX::LinearCurve::Load(std::iostream stream, uint32_t gfx_version)
 {
 	// Check_Pointer(this);
 	Check_Object(stream);
@@ -1321,7 +1260,7 @@ gosFX::SplineCurve& gosFX::SplineCurve::operator=(const SplineCurve& curve)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void gosFX::SplineCurve::Save(Stuff::MemoryStream* stream)
+void gosFX::SplineCurve::Save(std::iostream stream)
 {
 	// Check_Object(this);
 	Check_Object(stream);
@@ -1331,7 +1270,7 @@ void gosFX::SplineCurve::Save(Stuff::MemoryStream* stream)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void gosFX::SplineCurve::Load(Stuff::MemoryStream* stream, uint32_t gfx_version)
+void gosFX::SplineCurve::Load(std::iostream stream, uint32_t gfx_version)
 {
 	// Check_Pointer(this);
 	Check_Object(stream);
@@ -1371,7 +1310,7 @@ bool gosFX::SplineCurve::SetCurve(float v0, float s0, float v1, float s1)
 	m_slope = s0;
 	m_value = v0;
 	return (Stuff::Close_Enough(m_a + m_b + m_slope + m_value, v1) &&
-			Stuff::Close_Enough(3.0f * m_a + 2.0f * m_b + m_slope, s1));
+		Stuff::Close_Enough(3.0f * m_a + 2.0f * m_b + m_slope, s1));
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -1476,7 +1415,7 @@ bool gosFX::CurveKey::SetConstantKey(float key_time, float v)
 bool gosFX::CurveKey::SetLinearKey(float key_time, float v0, float v1, float dt)
 {
 	// Check_Object(this);
-	Verify(dt > Stuff::SMALL);
+	_ASSERT(dt > Stuff::SMALL);
 	m_time  = key_time;
 	m_slope = (v1 - v0) / dt;
 	m_value = v0;
@@ -1508,15 +1447,14 @@ void gosFX::CurveKey::ComputeRange(float* low, float* hi, float dt)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-gosFX::ComplexCurve::ComplexCurve() : Curve(e_ComplexType)
+gosFX::ComplexCurve::ComplexCurve() : Curve(CurveType::e_ComplexType)
 {
 	// Check_Pointer(this);
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-gosFX::ComplexCurve::ComplexCurve(const ComplexCurve& fcurve)
-	: Curve(e_ComplexType)
+gosFX::ComplexCurve::ComplexCurve(const ComplexCurve& fcurve) : Curve(CurveType::e_ComplexType)
 {
 	// Check_Pointer(this);
 	m_keys = fcurve.m_keys;
@@ -1524,9 +1462,8 @@ gosFX::ComplexCurve::ComplexCurve(const ComplexCurve& fcurve)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-gosFX::ComplexCurve::ComplexCurve(
-	Stuff::MemoryStream* stream, uint32_t gfx_version)
-	: Curve(e_ComplexType)
+gosFX::ComplexCurve::ComplexCurve(std::iostream stream, uint32_t gfx_version)
+	: Curve(CurveType::e_ComplexType)
 {
 	// Check_Pointer(this);
 	Check_Object(stream);
@@ -1544,7 +1481,7 @@ gosFX::ComplexCurve& gosFX::ComplexCurve::operator=(const ComplexCurve& fcurve)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void gosFX::ComplexCurve::Save(Stuff::MemoryStream* stream)
+void gosFX::ComplexCurve::Save(std::iostream stream)
 {
 	// Check_Object(this);
 	Check_Object(stream);
@@ -1553,8 +1490,7 @@ void gosFX::ComplexCurve::Save(Stuff::MemoryStream* stream)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void gosFX::ComplexCurve::Load(
-	Stuff::MemoryStream* stream, uint32_t gfx_version)
+void gosFX::ComplexCurve::Load(std::iostream stream, uint32_t gfx_version)
 {
 	// Check_Pointer(this);
 	Check_Object(stream);
@@ -1583,7 +1519,7 @@ void gosFX::ComplexCurve::Load(
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-int32_t gosFX::ComplexCurve::InsertKey(float m_time)
+int32_t gosFX::ComplexCurve::InsertKey(float time)
 {
 // Check_Object(this);
 #ifdef _GAMEOS_HPP_
@@ -1595,17 +1531,21 @@ int32_t gosFX::ComplexCurve::InsertKey(float m_time)
 	// key array and shift the m_keys after the insert point up one slot
 	//-----------------------------------------------------------------------
 	//
-	int32_t before	= GetKeyIndex(m_time);
-	int32_t key_count = m_keys.GetLength();
-	m_keys.SetLength(key_count + 1);
+	//#if _CONSIDERED_OBSOLETE
+	size_t before	= GetKeyIndex(time);
+	size_t key_count = m_keys.size();
+	m_keys.resize(key_count + 1);
 	for (size_t i = key_count - 1; i >= before; --i)
 		m_keys[i + 1] = m_keys[i];
+
 	CurveKey* key;
 	if (key_count > 0)
 		key = &(*this)[++before];
 	else
 		key = &(*this)[before];
 	Check_Object(key);
+	//#endif
+
 	//
 	//-----------------------------------------------------------------------
 	// If this is an insert as opposed to an append, we need to set the key
@@ -1615,11 +1555,11 @@ int32_t gosFX::ComplexCurve::InsertKey(float m_time)
 	//
 	if (before < key_count)
 	{
-		float t  = m_time - key->m_time;
+		float t  = time - key->m_time;
 		float v0 = key->ComputeValue(t);
 		t		 = key[1].m_time - key->m_time;
 		float v1 = key->ComputeValue(t);
-		key->SetLinearKey(m_time, v0, v1, key[1].m_time - m_time);
+		key->SetLinearKey(time, v0, v1, key[1].m_time - time);
 	}
 	//
 	//-----------------------------------------------------------------------
@@ -1629,12 +1569,12 @@ int32_t gosFX::ComplexCurve::InsertKey(float m_time)
 	//
 	else if (key_count > 0)
 	{
-		Verify(before == key_count);
-		float t  = m_time - key->m_time;
+		_ASSERT(before == key_count);
+		float t  = time - key->m_time;
 		float v0 = key->ComputeValue(t);
 		t += 1.0f;
 		float v1 = key->ComputeValue(t);
-		key->SetLinearKey(m_time, v0, v1, 1.0f);
+		key->SetLinearKey(time, v0, v1, 1.0f);
 	}
 	//
 	//-----------------------------------------------------------------
@@ -1642,7 +1582,7 @@ int32_t gosFX::ComplexCurve::InsertKey(float m_time)
 	//-----------------------------------------------------------------
 	//
 	else
-		key->SetConstantKey(m_time, 0.0f);
+		key->SetConstantKey(time, 0.0f);
 	//
 	//-------------------------
 	// Return the new key index
@@ -1657,7 +1597,7 @@ int32_t gosFX::ComplexCurve::InsertKey(float m_time)
 void gosFX::ComplexCurve::DeleteKey(int32_t index)
 {
 	// Check_Object(this);
-	Verify(index > 0 && index < m_keys.GetLength());
+	_ASSERT(index > 0 && index < m_keys.GetLength());
 #ifdef _GAMEOS_HPP_
 	// gos_PushCurrentHeap(Heap);
 #endif
@@ -1690,8 +1630,7 @@ void gosFX::ComplexCurve::DeleteKey(int32_t index)
 	//-------------------------------------------------
 	//
 	--key;
-	key->SetLinearKey(
-		key->m_time, key->m_value, v1, key[1].m_time - key->m_time);
+	key->SetLinearKey(key->m_time, key->m_value, v1, key[1].m_time - key->m_time);
 	m_keys.SetLength(key_count - 1);
 	// gos_PopCurrentHeap();
 }

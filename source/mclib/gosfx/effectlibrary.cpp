@@ -12,7 +12,7 @@ gosFX::EffectLibrary* gosFX::EffectLibrary::Instance = nullptr;
 
 //------------------------------------------------------------------------------
 //
-void gosFX::EffectLibrary::InitializeClass() { Verify(!Instance); }
+void gosFX::EffectLibrary::InitializeClass() { _ASSERT(!Instance); }
 
 //------------------------------------------------------------------------------
 //
@@ -30,7 +30,7 @@ void gosFX::EffectLibrary::TerminateClass()
 //
 gosFX::EffectLibrary::EffectLibrary()
 {
-	// Verify(gos_GetCurrentHeap() == Heap);
+	// _ASSERT(gos_GetCurrentHeap() == Heap);
 }
 
 //------------------------------------------------------------------------------
@@ -49,10 +49,10 @@ gosFX::EffectLibrary::~EffectLibrary()
 
 //------------------------------------------------------------------------------
 //
-void gosFX::EffectLibrary::Load(Stuff::MemoryStream* stream)
+void gosFX::EffectLibrary::Load(std::iostream stream)
 {
-	// Verify(gos_GetCurrentHeap() == Heap);
-	Verify(!m_effects.GetLength());
+	// _ASSERT(gos_GetCurrentHeap() == Heap);
+	_ASSERT(!m_effects.GetLength());
 	uint32_t version = ReadGFXVersion(stream);
 	uint32_t len;
 	*stream >> len;
@@ -67,7 +67,7 @@ void gosFX::EffectLibrary::Load(Stuff::MemoryStream* stream)
 
 //------------------------------------------------------------------------------
 //
-void gosFX::EffectLibrary::Save(Stuff::MemoryStream* stream)
+void gosFX::EffectLibrary::Save(std::iostream stream)
 {
 	WriteGFXVersion(stream);
 	*stream << m_effects.GetLength();
@@ -90,7 +90,7 @@ gosFX::Effect::Specification* gosFX::EffectLibrary::Find(std::wstring& name)
 			Check_Object(spec);
 			if (spec->m_name == name) // if(!_stricmp(spec->m_name, name))
 			{
-				Verify(spec->m_effectID == i);
+				_ASSERT(spec->m_effectID == i);
 				return spec;
 			}
 		}
@@ -104,8 +104,8 @@ gosFX::Effect* gosFX::EffectLibrary::MakeEffect(uint32_t index, uint32_t flags)
 {
 	gosFX::Effect::Specification* spec = m_effects[index];
 	Check_Object(spec);
-	gosFX::Effect::ClassData* data = Cast_Pointer(gosFX::Effect::ClassData*,
-		Stuff::RegisteredClass::FindClassData(spec->GetClassID()));
+	gosFX::Effect::ClassData* data = Cast_Pointer(
+		gosFX::Effect::ClassData*, Stuff::RegisteredClass::FindClassData(spec->GetClassID()));
 	Check_Object(data);
 	Check_Pointer(data->effectFactory);
 	return (*data->effectFactory)(spec, flags);

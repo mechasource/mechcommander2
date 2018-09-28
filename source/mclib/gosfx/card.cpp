@@ -13,13 +13,12 @@
 
 //------------------------------------------------------------------------------
 //
-gosFX::Card__Specification::Card__Specification(
-	Stuff::MemoryStream* stream, uint32_t gfx_version)
+gosFX::Card__Specification::Card__Specification(std::iostream stream, uint32_t gfx_version)
 	: Singleton__Specification(gosFX::CardClassID, stream, gfx_version)
 {
 	// Check_Pointer(this);
-	Verify(m_class == CardClassID);
-	// Verify(gos_GetCurrentHeap() == Heap);
+	_ASSERT(m_class == CardClassID);
+	// _ASSERT(gos_GetCurrentHeap() == Heap);
 	m_halfHeight.Load(stream, gfx_version);
 	m_aspectRatio.Load(stream, gfx_version);
 	//
@@ -33,8 +32,7 @@ gosFX::Card__Specification::Card__Specification(
 		m_index.m_ageCurve.SetCurve(0.0f);
 		m_index.m_seedCurve.SetCurve(1.0f);
 		m_index.m_seeded = false;
-		SeededCurveOf<ComplexCurve, LinearCurve, Curve::e_ComplexLinearType>
-			temp;
+		SeededCurveOf<ComplexCurve, LinearCurve, Curve::e_ComplexLinearType> temp;
 		temp.Load(stream, gfx_version);
 		float v = temp.ComputeValue(0.0f, 0.0f);
 		m_UOffset.SetCurve(v);
@@ -64,11 +62,10 @@ gosFX::Card__Specification::Card__Specification(
 
 //------------------------------------------------------------------------------
 //
-gosFX::Card__Specification::Card__Specification()
-	: Singleton__Specification(gosFX::CardClassID)
+gosFX::Card__Specification::Card__Specification() : Singleton__Specification(gosFX::CardClassID)
 {
 	// Check_Pointer(this);
-	// Verify(gos_GetCurrentHeap() == Heap);
+	// _ASSERT(gos_GetCurrentHeap() == Heap);
 	m_animated = false;
 	m_width	= 1;
 }
@@ -76,24 +73,22 @@ gosFX::Card__Specification::Card__Specification()
 //------------------------------------------------------------------------------
 //
 gosFX::Card__Specification* gosFX::Card__Specification::Make(
-	Stuff::MemoryStream* stream, uint32_t gfx_version)
+	std::iostream stream, uint32_t gfx_version)
 {
 	Check_Object(stream);
 #if _CONSIDERED_OBSOLETE
 	// gos_PushCurrentHeap(Heap);
-	Card__Specification* spec =
-		new gosFX::Card__Specification(stream, gfx_version);
+	Card__Specification* spec = new gosFX::Card__Specification(stream, gfx_version);
 	// gos_PopCurrentHeap();
 #else
-	Card__Specification* spec =
-		new gosFX::Card__Specification(stream, gfx_version);
+	Card__Specification* spec = new gosFX::Card__Specification(stream, gfx_version);
 #endif
 	return spec;
 }
 
 //------------------------------------------------------------------------------
 //
-void gosFX::Card__Specification::Save(Stuff::MemoryStream* stream)
+void gosFX::Card__Specification::Save(std::iostream stream)
 {
 	// Check_Object(this);
 	Check_Object(stream);
@@ -231,11 +226,10 @@ gosFX::Card::ClassData* gosFX::Card::DefaultData = nullptr;
 //
 void gosFX::Card::InitializeClass()
 {
-	Verify(!DefaultData);
-	// Verify(gos_GetCurrentHeap() == Heap);
-	DefaultData = new ClassData(CardClassID, "gosFX::Card",
-		Singleton::DefaultData, (Effect::Factory)&Make,
-		(Specification::Factory)&Specification::Make);
+	_ASSERT(!DefaultData);
+	// _ASSERT(gos_GetCurrentHeap() == Heap);
+	DefaultData = new ClassData(CardClassID, "gosFX::Card", Singleton::DefaultData,
+		(Effect::Factory)&Make, (Specification::Factory)&Specification::Make);
 	Register_Object(DefaultData);
 }
 
@@ -254,7 +248,7 @@ gosFX::Card::Card(Specification* spec, uint32_t flags)
 	: Singleton(DefaultData, spec, flags), m_cardCount(1)
 {
 	Check_Object(spec);
-	// Verify(gos_GetCurrentHeap() == Heap);
+	// _ASSERT(gos_GetCurrentHeap() == Heap);
 	// gos_PushCurrentHeap(MidLevelRenderer::Heap);
 	m_cardCloud = new MidLevelRenderer::MLRCardCloud(1);
 	Register_Object(m_cardCloud);
@@ -280,7 +274,7 @@ gosFX::Card* gosFX::Card::Make(Specification* spec, uint32_t flags)
 	Card* cloud = new gosFX::Card(spec, flags);
 	// gos_PopCurrentHeap();
 #else
-	Card* cloud = new gosFX::Card(spec, flags);
+	Card* cloud				  = new gosFX::Card(spec, flags);
 #endif
 	return cloud;
 }
@@ -339,10 +333,9 @@ bool gosFX::Card::Execute(ExecuteInfo* info)
 	//
 	if (spec->m_animated)
 	{
-		uint8_t columns = Stuff::Truncate_Float_To_Byte(
-			spec->m_index.ComputeValue(m_age, m_seed));
-		uint8_t rows = static_cast<uint8_t>(columns / spec->m_width);
-		columns		 = static_cast<uint8_t>(columns - rows * spec->m_width);
+		uint8_t columns = Stuff::Truncate_Float_To_Byte(spec->m_index.ComputeValue(m_age, m_seed));
+		uint8_t rows	= static_cast<uint8_t>(columns / spec->m_width);
+		columns			= static_cast<uint8_t>(columns - rows * spec->m_width);
 		//
 		//---------------------------
 		// Now compute the end points
@@ -426,8 +419,7 @@ void gosFX::Card::Draw(DrawInfo* info)
 	//
 	if (spec->m_alignZUsingX)
 	{
-		Stuff::Point3D camera_in_world(
-			info->m_clipper->GetCameraToWorldMatrix());
+		Stuff::Point3D camera_in_world(info->m_clipper->GetCameraToWorldMatrix());
 		Stuff::Point3D card_in_world(local_to_world);
 		Stuff::Vector3D look_at;
 		look_at.Subtract(camera_in_world, card_in_world);
@@ -435,8 +427,7 @@ void gosFX::Card::Draw(DrawInfo* info)
 			local_to_world.AlignLocalAxisToWorldVector(
 				look_at, Stuff::Z_Axis, Stuff::Y_Axis, Stuff::X_Axis);
 		else
-			local_to_world.AlignLocalAxisToWorldVector(
-				look_at, Stuff::Z_Axis, Stuff::X_Axis, -1);
+			local_to_world.AlignLocalAxisToWorldVector(look_at, Stuff::Z_Axis, Stuff::X_Axis, -1);
 	}
 	//
 	//-------------------------------------------------------
@@ -445,13 +436,11 @@ void gosFX::Card::Draw(DrawInfo* info)
 	//
 	else if (spec->m_alignZUsingY)
 	{
-		Stuff::Point3D camera_in_world(
-			info->m_clipper->GetCameraToWorldMatrix());
+		Stuff::Point3D camera_in_world(info->m_clipper->GetCameraToWorldMatrix());
 		Stuff::Point3D card_in_world(local_to_world);
 		Stuff::Vector3D look_at;
 		look_at.Subtract(camera_in_world, card_in_world);
-		local_to_world.AlignLocalAxisToWorldVector(
-			look_at, Stuff::Z_Axis, Stuff::Y_Axis, -1);
+		local_to_world.AlignLocalAxisToWorldVector(look_at, Stuff::Z_Axis, Stuff::Y_Axis, -1);
 	}
 	//
 	//---------------------
@@ -464,7 +453,4 @@ void gosFX::Card::Draw(DrawInfo* info)
 
 //------------------------------------------------------------------------------
 //
-void gosFX::Card::TestInstance(void) const
-{
-	Verify(IsDerivedFrom(DefaultData));
-}
+void gosFX::Card::TestInstance(void) const { _ASSERT(IsDerivedFrom(DefaultData)); }

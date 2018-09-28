@@ -18,10 +18,10 @@ MLRLookUpLight::ClassData* MLRLookUpLight::DefaultData = nullptr;
 //
 void MLRLookUpLight::InitializeClass()
 {
-	Verify(!DefaultData);
-	// Verify(gos_GetCurrentHeap() == StaticHeap);
-	DefaultData = new ClassData(MLRLookUpLightClassID,
-		"MidLevelRenderer::MLRLookUpLight", MLRInfiniteLight::DefaultData);
+	_ASSERT(!DefaultData);
+	// _ASSERT(gos_GetCurrentHeap() == StaticHeap);
+	DefaultData = new ClassData(
+		MLRLookUpLightClassID, "MidLevelRenderer::MLRLookUpLight", MLRInfiniteLight::DefaultData);
 	Check_Object(DefaultData);
 }
 
@@ -38,7 +38,7 @@ void MLRLookUpLight::TerminateClass()
 //
 MLRLookUpLight::MLRLookUpLight() : MLRInfiniteLight(DefaultData)
 {
-	// Verify(gos_GetCurrentHeap() == Heap);
+	// _ASSERT(gos_GetCurrentHeap() == Heap);
 	mapOrigin.x   = 0.0f;
 	mapOrigin.y   = 0.0f;
 	mapOrigin.z   = 0.0f;
@@ -52,11 +52,11 @@ MLRLookUpLight::MLRLookUpLight() : MLRInfiniteLight(DefaultData)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLRLookUpLight::MLRLookUpLight(Stuff::MemoryStream* stream, uint32_t version)
+MLRLookUpLight::MLRLookUpLight(std::iostream stream, uint32_t version)
 	: MLRInfiniteLight(DefaultData, stream, version)
 {
 	Check_Object(stream);
-	// Verify(gos_GetCurrentHeap() == Heap);
+	// _ASSERT(gos_GetCurrentHeap() == Heap);
 	*stream >> mapOrigin;
 	*stream >> mapZoneCountX >> mapZoneCountZ;
 	*stream >> zoneSizeX >> zoneSizeZ;
@@ -75,11 +75,10 @@ MLRLookUpLight::MLRLookUpLight(Stuff::MemoryStream* stream, uint32_t version)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLRLookUpLight::MLRLookUpLight(Stuff::Page* page)
-	: MLRInfiniteLight(DefaultData, page)
+MLRLookUpLight::MLRLookUpLight(Stuff::Page* page) : MLRInfiniteLight(DefaultData, page)
 {
 	Check_Object(page);
-	// Verify(gos_GetCurrentHeap() == Heap);
+	// _ASSERT(gos_GetCurrentHeap() == Heap);
 	maps = nullptr;
 	PCSTR data;
 	mapOrigin.x = 0.0f;
@@ -129,7 +128,7 @@ MLRLookUpLight::~MLRLookUpLight()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLRLookUpLight::Save(Stuff::MemoryStream* stream)
+void MLRLookUpLight::Save(std::iostream stream)
 {
 	// Check_Object(this);
 	Check_Object(stream);
@@ -153,13 +152,13 @@ void MLRLookUpLight::Write(Stuff::Page* page)
 	MLRInfiniteLight::Write(page);
 	char data[256];
 	sprintf(data, "%f %f %f", mapOrigin.x, mapOrigin.y, mapOrigin.z);
-	Verify(strlen(data) < sizeof(data));
+	_ASSERT(strlen(data) < sizeof(data));
 	page->SetEntry("MapOrigin", data);
 	sprintf(data, "%d %d", mapZoneCountX, mapZoneCountZ);
-	Verify(strlen(data) < sizeof(data));
+	_ASSERT(strlen(data) < sizeof(data));
 	page->SetEntry("MapSize", data);
 	sprintf(data, "%f %f", zoneSizeX, zoneSizeZ);
-	Verify(strlen(data) < sizeof(data));
+	_ASSERT(strlen(data) < sizeof(data));
 	page->SetEntry("ZoneSize", data);
 	page->SetEntry("MapName", mapName);
 }
@@ -192,11 +191,11 @@ void MLRLookUpLight::SetMapSizeAndName(int32_t x, int32_t z, PCSTR name)
 bool MLRLookUpLight::LoadMap()
 {
 	// Check_Object(this);
-	Stuff::FileStream element_stream(mapName);
+	std::fstream element_stream(mapName);
 	puint8_t map = new uint8_t[mapZoneCountX * mapZoneCountZ * 256 * 256];
 	Check_Pointer(map);
 	element_stream.ReadBytes(map, mapZoneCountX * mapZoneCountZ * 256 * 256);
-	Verify(maps == nullptr);
+	_ASSERT(maps == nullptr);
 	maps = new puint8_t[mapZoneCountX * mapZoneCountZ];
 	Check_Pointer(maps);
 	int32_t i, j, k;
@@ -215,8 +214,7 @@ bool MLRLookUpLight::LoadMap()
 		{
 			for (i = 0; i < mapZoneCountX; i++)
 			{
-				Mem_Copy(&maps[j * mapZoneCountX + i][k * 256], uptr, 256,
-					(256 - k) * 256);
+				Mem_Copy(&maps[j * mapZoneCountX + i][k * 256], uptr, 256, (256 - k) * 256);
 				uptr += 256;
 				//					&map[(256*j+k)*(mapZoneCountX*256) + i*256]
 			}
@@ -238,7 +236,7 @@ void MLRLookUpLight::SetLightToShapeMatrix(const LinearMatrix4D& worldToShape)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLRLookUpLight::TestInstance() { Verify(IsDerivedFrom(DefaultData)); }
+void MLRLookUpLight::TestInstance() { _ASSERT(IsDerivedFrom(DefaultData)); }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
@@ -253,17 +251,15 @@ void MLRLookUpLight::LightVertex(const MLRVertexData& vertexData)
 	float prep_z  = mapZoneCountZ * zoneSizeZ - worldPoint.z + mapOrigin.z;
 	int32_t map_x = Truncate_Float_To_Word(prep_x * one_Over_zoneSizeX);
 	int32_t map_z = Truncate_Float_To_Word(prep_z * one_Over_zoneSizeZ);
-	Verify(map_x >= 0 && map_x < mapZoneCountX);
-	Verify(map_z >= 0 && map_z < mapZoneCountZ);
-	int32_t off_x = Truncate_Float_To_Word(
-		(prep_x - map_x * zoneSizeX) * 256.0f * one_Over_zoneSizeX);
-	int32_t off_z = Truncate_Float_To_Word(
-		(prep_z - map_z * zoneSizeZ) * 256.0f * one_Over_zoneSizeZ);
-	Verify(off_x >= 0 && off_x < 256);
-	Verify(off_z >= 0 && off_z < 256);
-	float mapIntensity =
-		maps[map_z * mapZoneCountX + map_x][(off_z << 8) + off_x] *
-		One_Over_255;
+	_ASSERT(map_x >= 0 && map_x < mapZoneCountX);
+	_ASSERT(map_z >= 0 && map_z < mapZoneCountZ);
+	int32_t off_x =
+		Truncate_Float_To_Word((prep_x - map_x * zoneSizeX) * 256.0f * one_Over_zoneSizeX);
+	int32_t off_z =
+		Truncate_Float_To_Word((prep_z - map_z * zoneSizeZ) * 256.0f * one_Over_zoneSizeZ);
+	_ASSERT(off_x >= 0 && off_x < 256);
+	_ASSERT(off_z >= 0 && off_z < 256);
+	float mapIntensity = maps[map_z * mapZoneCountX + map_x][(off_z << 8) + off_x] * One_Over_255;
 	//
 	//-------------------------------------------------------------------
 	// Now we reduce the light level falling on the vertex based upon the

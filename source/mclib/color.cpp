@@ -38,7 +38,7 @@ int32_t numColorRGBTables = 0;
 //----------------------------------------------------------------------------------
 void initColorTables(void)
 {
-	stdfs::path colorPath;		// FullPathFileName colorPath;
+	stdfs::path colorPath; // FullPathFileName colorPath;
 	GetMcDataPath(colorPath, data_paths::cameraPath);
 	colorPath.append(L"colors.fit");
 
@@ -49,8 +49,7 @@ void initColorTables(void)
 	gosASSERT(result == NO_ERROR);
 	result = colorFile.readIdLong("NumTables", numColorRGBTables);
 	gosASSERT(result == NO_ERROR);
-	colorRGBLookup =
-		(puint32_t*)systemHeap->Malloc(sizeof(uint32_t*) * numColorRGBTables);
+	colorRGBLookup = (puint32_t*)systemHeap->Malloc(sizeof(uint32_t*) * numColorRGBTables);
 	gosASSERT(colorRGBLookup != nullptr);
 	memset(colorRGBLookup, 0, sizeof(uint32_t*) * numColorRGBTables);
 	for (size_t i = 0; i < numColorRGBTables; i++)
@@ -59,8 +58,7 @@ void initColorTables(void)
 		sprintf(tableBlock, "Table%d", i);
 		result = colorFile.seekBlock(tableBlock);
 		gosASSERT(result == NO_ERROR);
-		colorRGBLookup[i] =
-			(uint32_t*)systemHeap->Malloc(sizeof(uint32_t) * MAX_COLOR_ENTRIES);
+		colorRGBLookup[i] = (uint32_t*)systemHeap->Malloc(sizeof(uint32_t) * MAX_COLOR_ENTRIES);
 		gosASSERT(colorRGBLookup[i] != nullptr);
 		uint32_t* table = colorRGBLookup[i];
 		for (size_t j = 0; j < MAX_COLOR_ENTRIES; j++)

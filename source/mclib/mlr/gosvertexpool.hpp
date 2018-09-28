@@ -7,7 +7,7 @@
 #ifndef MLR_GOSVERTEXPOOL_HPP
 #define MLR_GOSVERTEXPOOL_HPP
 
-#include <stuff/marray.hpp>
+//#include <stuff/marray.hpp>
 #include <mlr/gosvertex.hpp>
 #include <mlr/gosvertex2uv.hpp>
 
@@ -22,7 +22,7 @@ namespace MidLevelRenderer
 
 class GOSVertexPool
 {
-  public:
+public:
 	GOSVertexPool(void);
 
 	void Reset(void);
@@ -46,9 +46,8 @@ class GOSVertexPool
 	{
 		// Check_Object(this);
 		lastUsed += add;
-		Verify(lastUsed < Limits::Max_Number_Vertices_Per_Frame);
-		MLRVertexLimitReached =
-			(lastUsed > (Limits::Max_Number_Vertices_Per_Frame - 2000));
+		_ASSERT(lastUsed < Limits::Max_Number_Vertices_Per_Frame);
+		MLRVertexLimitReached = (lastUsed > (Limits::Max_Number_Vertices_Per_Frame - 2000));
 		return lastUsed;
 	}
 
@@ -61,8 +60,7 @@ class GOSVertexPool
 		}
 		else
 		{
-			return (GOSVertex*)((PSTR)(vertices.GetData() + lastUsed) +
-								vertexAlignment);
+			return (GOSVertex*)((PSTR)(vertices.GetData() + lastUsed) + vertexAlignment);
 		}
 	}
 
@@ -85,7 +83,7 @@ class GOSVertexPool
 	{
 		// Check_Object(this);
 		lastUsed2uv += add;
-		Verify(lastUsed2uv < Limits::Max_Number_Vertices_Per_Frame);
+		_ASSERT(lastUsed2uv < Limits::Max_Number_Vertices_Per_Frame);
 		return lastUsed2uv;
 	}
 
@@ -98,8 +96,7 @@ class GOSVertexPool
 		}
 		else
 		{
-			return (GOSVertex2UV*)((PSTR)(vertices2uv.GetData() + lastUsed2uv) +
-								   vertexAlignment);
+			return (GOSVertex2UV*)((PSTR)(vertices2uv.GetData() + lastUsed2uv) + vertexAlignment);
 		}
 	}
 
@@ -116,21 +113,20 @@ class GOSVertexPool
 	{
 		// Check_Object(this);
 		lastUsedIndex += add;
-		Verify(lastUsedIndex < Limits::Max_Number_Vertices_Per_Frame);
+		_ASSERT(lastUsedIndex < Limits::Max_Number_Vertices_Per_Frame);
 		return lastUsedIndex;
 	}
 
-	puint16_t GetActualIndexPool(bool db = false)
+	puint16_t GetActualIndexPool(bool usedb = false)
 	{
 		// Check_Object(this);
-		if (db)
+		if (usedb)
 		{
 			return indicesDB.GetData();
 		}
 		else
 		{
-			return (puint16_t)(
-				(char*)(indices.GetData() + lastUsedIndex) + indicesAlignment);
+			return (puint16_t)((char*)(indices.GetData() + lastUsedIndex) + indicesAlignment);
 		}
 	}
 
@@ -139,12 +135,12 @@ class GOSVertexPool
 	//
 	void TestInstance(void)
 	{
-		Verify(lastUsed < Limits::Max_Number_Vertices_Per_Frame);
-		Verify(lastUsed2uv < Limits::Max_Number_Vertices_Per_Frame);
-		Verify(lastUsedIndex < Limits::Max_Number_Vertices_Per_Frame);
+		_ASSERT(lastUsed < Limits::Max_Number_Vertices_Per_Frame);
+		_ASSERT(lastUsed2uv < Limits::Max_Number_Vertices_Per_Frame);
+		_ASSERT(lastUsedIndex < Limits::Max_Number_Vertices_Per_Frame);
 	}
 
-  protected:
+protected:
 	uint32_t lastUsed;
 	uint32_t lastUsed2uv;
 	uint32_t lastUsedIndex;
@@ -152,24 +148,18 @@ class GOSVertexPool
 	uint32_t vertexAlignment2uv;
 	uint32_t indicesAlignment;
 
-	Stuff::DynamicArrayOf<GOSVertex>
-		vertices; // ,
-				  // Max_Number_Vertices_Per_Frame+4*Max_Number_ScreenQuads_Per_Frame
-	Stuff::DynamicArrayOf<GOSVertex2UV>
-		vertices2uv; // ,
-					 // Max_Number_Vertices_Per_Frame+4*Max_Number_ScreenQuads_Per_Frame
-	Stuff::DynamicArrayOf<uint16_t> indices; // , Max_Number_Vertices_Per_Frame
+	std::vector<GOSVertex> vertices;		// Max_Number_Vertices_Per_Frame+4*Max_Number_ScreenQuads_Per_Frame
+	std::vector<GOSVertex2UV> vertices2uv;	// , Max_Number_Vertices_Per_Frame+4*Max_Number_ScreenQuads_Per_Frame
+	std::vector<uint16_t> indices;			// , Max_Number_Vertices_Per_Frame
 
-	Stuff::DynamicArrayOf<GOSVertex>
-		verticesDB; // , Max_Number_Vertices_Per_Mesh
-	Stuff::DynamicArrayOf<GOSVertex2UV>
-		vertices2uvDB;						   // , Max_Number_Vertices_Per_Mesh
-	Stuff::DynamicArrayOf<uint16_t> indicesDB; // , Max_Number_Vertices_Per_Mesh
+	std::vector<GOSVertex> verticesDB;		// , Max_Number_Vertices_Per_Mesh
+	std::vector<GOSVertex2UV> vertices2uvDB;// , Max_Number_Vertices_Per_Mesh
+	std::vector<uint16_t> indicesDB;		// , Max_Number_Vertices_Per_Mesh
 
-  private:
+private:
 	GOSVertexPool(const GOSVertexPool&);
 };
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-}
+} // namespace MidLevelRenderer
 #endif

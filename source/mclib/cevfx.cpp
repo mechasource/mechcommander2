@@ -17,17 +17,15 @@
 #include "camera.h"
 #include "clip.h"
 
-extern void AG_shape_translate_transform(PANE* globalPane, PVOID shapeTable,
-	int32_t frameNum, int32_t hotX, int32_t hotY, PVOID tempBuffer,
-	int32_t reverse, int32_t scaleUp);
-extern void AG_shape_transform(PANE* globalPane, PVOID shapeTable,
-	int32_t frameNum, int32_t hotX, int32_t hotY, PVOID tempBuffer,
-	int32_t reverse, int32_t scaleUp);
+extern void AG_shape_translate_transform(PANE* globalPane, PVOID shapeTable, int32_t frameNum,
+	int32_t hotX, int32_t hotY, PVOID tempBuffer, int32_t reverse, int32_t scaleUp);
+extern void AG_shape_transform(PANE* globalPane, PVOID shapeTable, int32_t frameNum, int32_t hotX,
+	int32_t hotY, PVOID tempBuffer, int32_t reverse, int32_t scaleUp);
 extern void AG_shape_lookaside(puint8_t table);
-extern void AG_shape_draw(PANE* pane, PVOID shape_table, int32_t shape_number,
-	int32_t hotX, int32_t hotY);
-extern void AG_shape_translate_draw(PANE* pane, PVOID shape_table,
-	int32_t shape_number, int32_t hotX, int32_t hotY);
+extern void AG_shape_draw(
+	PANE* pane, PVOID shape_table, int32_t shape_number, int32_t hotX, int32_t hotY);
+extern void AG_shape_translate_draw(
+	PANE* pane, PVOID shape_table, int32_t shape_number, int32_t hotX, int32_t hotY);
 // void memclear(PVOID Dest,size_t Length);
 //---------------------------------------------------------------------------
 // Static Globals
@@ -38,8 +36,8 @@ puint8_t shapeBuffer128 = nullptr;
 puint8_t shapeBuffer256 = nullptr;
 
 //---------------------------------------------------------------------------
-VFXElement::VFXElement(puint8_t _shape, int32_t _x, int32_t _y, int32_t frame,
-	bool rev, puint8_t fTable, bool noScale, bool upScale)
+VFXElement::VFXElement(puint8_t _shape, int32_t _x, int32_t _y, int32_t frame, bool rev,
+	puint8_t fTable, bool noScale, bool upScale)
 	: Element(-_y)
 {
 	shapeTable  = _shape;
@@ -71,8 +69,8 @@ VFXElement::VFXElement(puint8_t _shape, int32_t _x, int32_t _y, int32_t frame,
 }
 
 //---------------------------------------------------------------------------
-VFXElement::VFXElement(puint8_t _shape, float _x, float _y, int32_t frame,
-	bool rev, puint8_t fTable, bool noScale, bool upScale)
+VFXElement::VFXElement(puint8_t _shape, float _x, float _y, int32_t frame, bool rev,
+	puint8_t fTable, bool noScale, bool upScale)
 	: Element(-_y)
 {
 	shapeTable  = _shape;
@@ -132,13 +130,13 @@ void VFXElement::draw(void)
 			if (fadeTable)
 			{
 				AG_shape_lookaside(fadeTable);
-				AG_shape_translate_transform(globalPane, shapeTable, frameNum,
-					x, y, tempBuffer, reverse, TRUE);
+				AG_shape_translate_transform(
+					globalPane, shapeTable, frameNum, x, y, tempBuffer, reverse, TRUE);
 			}
 			else
 			{
-				AG_shape_transform(globalPane, shapeTable, frameNum, x, y,
-					tempBuffer, reverse, TRUE);
+				AG_shape_transform(
+					globalPane, shapeTable, frameNum, x, y, tempBuffer, reverse, TRUE);
 			}
 		}
 	}
@@ -273,8 +271,8 @@ int32_t mechRGBLookup2[56] = {
 int32_t mechCmdr1PaletteLookup[256];
 
 //---------------------------------------------------------------------------
-void VFXShapeElement::init(puint8_t _shape, int32_t _x, int32_t _y,
-	int32_t frame, bool rev, uint32_t* fTable, float _z, float tZ)
+void VFXShapeElement::init(puint8_t _shape, int32_t _x, int32_t _y, int32_t frame, bool rev,
+	uint32_t* fTable, float _z, float tZ)
 {
 	gosASSERT(_shape != nullptr);
 	int32_t i = 0;
@@ -309,34 +307,34 @@ int32_t VFXShapeElement::getTextureHandle(int32_t height)
 		int32_t yRes		= textureSize & 0x0000ffff;
 		if ((xRes < 16) && (yRes < 16))
 		{
-			textureResult = gos_NewEmptyTexture(
-				gos_Texture_Keyed, "ShapeTable", 16, gosHint_DisableMipmap);
+			textureResult =
+				gos_NewEmptyTexture(gos_Texture_Keyed, "ShapeTable", 16, gosHint_DisableMipmap);
 		}
 		else if ((xRes < 32) && (yRes < 32))
 		{
-			textureResult = gos_NewEmptyTexture(
-				gos_Texture_Keyed, "ShapeTable", 32, gosHint_DisableMipmap);
+			textureResult =
+				gos_NewEmptyTexture(gos_Texture_Keyed, "ShapeTable", 32, gosHint_DisableMipmap);
 		}
 		else if ((xRes < 64) && (yRes < 64))
 		{
-			textureResult = gos_NewEmptyTexture(
-				gos_Texture_Keyed, "ShapeTable", 64, gosHint_DisableMipmap);
+			textureResult =
+				gos_NewEmptyTexture(gos_Texture_Keyed, "ShapeTable", 64, gosHint_DisableMipmap);
 		}
 		else if ((xRes < 128) && (yRes < 128))
 		{
-			textureResult = gos_NewEmptyTexture(
-				gos_Texture_Keyed, "ShapeTable", 128, gosHint_DisableMipmap);
+			textureResult =
+				gos_NewEmptyTexture(gos_Texture_Keyed, "ShapeTable", 128, gosHint_DisableMipmap);
 		}
 		else if ((xRes < 256) && (yRes < 256))
 		{
-			textureResult = gos_NewEmptyTexture(
-				gos_Texture_Keyed, "ShapeTable", 256, gosHint_DisableMipmap);
+			textureResult =
+				gos_NewEmptyTexture(gos_Texture_Keyed, "ShapeTable", 256, gosHint_DisableMipmap);
 		}
 	}
 	else
 	{
-		textureResult = gos_NewEmptyTexture(
-			gos_Texture_Keyed, "ShapeTable", height, gosHint_DisableMipmap);
+		textureResult =
+			gos_NewEmptyTexture(gos_Texture_Keyed, "ShapeTable", height, gosHint_DisableMipmap);
 	}
 	textureMemoryHandle = textureResult;
 	actualHeight		= height;
@@ -476,8 +474,8 @@ void VFXShapeElement::drawShape(void)
 		uyHS	   = float(textureWidth) * oldHSY / yRes;
 		xHS		   = uxHS * Camera::globalScaleFactor;
 		yHS		   = uyHS * Camera::globalScaleFactor;
-		AG_shape_transform(&gPane, shapeTable[i], frameNum[i], uxHS, uyHS,
-			tempBuffer, reverse[i], TRUE);
+		AG_shape_transform(
+			&gPane, shapeTable[i], frameNum[i], uxHS, uyHS, tempBuffer, reverse[i], TRUE);
 		i++;
 	}
 	//-------------------
@@ -559,9 +557,8 @@ void VFXShapeElement::draw(void)
 	gos_SetRenderState(gos_State_Specular, false);
 	gos_SetRenderState(gos_State_AlphaTest, TRUE);
 	gos_SetRenderState(gos_State_Texture, textureMemoryHandle);
-	if ((gVertex[0].z >= 0.0f) && (gVertex[0].z < 1.0f) &&
-		(gVertex[1].z >= 0.0f) && (gVertex[1].z < 1.0f) &&
-		(gVertex[2].z >= 0.0f) && (gVertex[2].z < 1.0f))
+	if ((gVertex[0].z >= 0.0f) && (gVertex[0].z < 1.0f) && (gVertex[1].z >= 0.0f) &&
+		(gVertex[1].z < 1.0f) && (gVertex[2].z >= 0.0f) && (gVertex[2].z < 1.0f))
 	{
 		//-----------------------------------------------------------------------------
 		// Reject Any triangle which has vertices off screeen in software for
@@ -587,9 +584,8 @@ void VFXShapeElement::draw(void)
 	gVertex[2].v	= 1.0;
 	gVertex[2].argb = lightRGB;
 	gVertex[2].frgb = fogRGB;
-	if ((gVertex[0].z >= 0.0f) && (gVertex[0].z < 1.0f) &&
-		(gVertex[1].z >= 0.0f) && (gVertex[1].z < 1.0f) &&
-		(gVertex[2].z >= 0.0f) && (gVertex[2].z < 1.0f))
+	if ((gVertex[0].z >= 0.0f) && (gVertex[0].z < 1.0f) && (gVertex[1].z >= 0.0f) &&
+		(gVertex[1].z < 1.0f) && (gVertex[2].z >= 0.0f) && (gVertex[2].z < 1.0f))
 	{
 		//-----------------------------------------------------------------------------
 		// Reject Any triangle which has vertices off screeen in software for
@@ -605,8 +601,8 @@ void VFXShapeElement::draw(void)
 
 //---------------------------------------------------------------------------
 // class TextureElement
-void TextureElement::init(uint32_t textureHandle, int32_t _x, int32_t _y,
-	int32_t hsx, int32_t hsy, float tW, float _z, float tZ)
+void TextureElement::init(uint32_t textureHandle, int32_t _x, int32_t _y, int32_t hsx, int32_t hsy,
+	float tW, float _z, float tZ)
 {
 	x					= _x;
 	y					= _y;
@@ -687,9 +683,8 @@ void TextureElement::draw(void)
 		gos_SetRenderState(gos_State_Filter, gos_FilterBiLinear);
 		gos_SetRenderState(gos_State_TextureAddress, gos_TextureClamp);
 	}
-	if ((gVertex[0].z >= 0.0f) && (gVertex[0].z < 1.0f) &&
-		(gVertex[1].z >= 0.0f) && (gVertex[1].z < 1.0f) &&
-		(gVertex[2].z >= 0.0f) && (gVertex[2].z < 1.0f))
+	if ((gVertex[0].z >= 0.0f) && (gVertex[0].z < 1.0f) && (gVertex[1].z >= 0.0f) &&
+		(gVertex[1].z < 1.0f) && (gVertex[2].z >= 0.0f) && (gVertex[2].z < 1.0f))
 	{
 		//-----------------------------------------------------------------------------
 		// Reject Any triangle which has vertices off screeen in software for
@@ -715,9 +710,8 @@ void TextureElement::draw(void)
 	gVertex[2].v	= 1.0;
 	gVertex[2].argb = lightRGB;
 	gVertex[2].frgb = fogRGB;
-	if ((gVertex[0].z >= 0.0f) && (gVertex[0].z < 1.0f) &&
-		(gVertex[1].z >= 0.0f) && (gVertex[1].z < 1.0f) &&
-		(gVertex[2].z >= 0.0f) && (gVertex[2].z < 1.0f))
+	if ((gVertex[0].z >= 0.0f) && (gVertex[0].z < 1.0f) && (gVertex[1].z >= 0.0f) &&
+		(gVertex[1].z < 1.0f) && (gVertex[2].z >= 0.0f) && (gVertex[2].z < 1.0f))
 	{
 		//-----------------------------------------------------------------------------
 		// Reject Any triangle which has vertices off screeen in software for
@@ -790,9 +784,8 @@ void PolygonQuadElement::draw(void)
 	// Clip and draw top triangle
 	gos_VERTEX gVertex[3];
 	memcpy(gVertex, vertices, sizeof(gos_VERTEX) * 3);
-	if ((gVertex[0].z >= 0.0f) && (gVertex[0].z < 1.0f) &&
-		(gVertex[1].z >= 0.0f) && (gVertex[1].z < 1.0f) &&
-		(gVertex[2].z >= 0.0f) && (gVertex[2].z < 1.0f))
+	if ((gVertex[0].z >= 0.0f) && (gVertex[0].z < 1.0f) && (gVertex[1].z >= 0.0f) &&
+		(gVertex[1].z < 1.0f) && (gVertex[2].z >= 0.0f) && (gVertex[2].z < 1.0f))
 	{
 		//-----------------------------------------------------------------------------
 		// Reject Any triangle which has vertices off screeen in software for
@@ -818,9 +811,8 @@ void PolygonQuadElement::draw(void)
 	gVertex[2].v	= vertices[3].v;
 	gVertex[2].argb = vertices[3].argb;
 	gVertex[2].frgb = vertices[3].frgb;
-	if ((gVertex[0].z >= 0.0f) && (gVertex[0].z < 1.0f) &&
-		(gVertex[1].z >= 0.0f) && (gVertex[1].z < 1.0f) &&
-		(gVertex[2].z >= 0.0f) && (gVertex[2].z < 1.0f))
+	if ((gVertex[0].z >= 0.0f) && (gVertex[0].z < 1.0f) && (gVertex[1].z >= 0.0f) &&
+		(gVertex[1].z < 1.0f) && (gVertex[2].z >= 0.0f) && (gVertex[2].z < 1.0f))
 	{
 		//-----------------------------------------------------------------------------
 		// Reject Any triangle which has vertices off screeen in software for
@@ -890,9 +882,8 @@ void PolygonTriElement::draw(void)
 	// Clip and draw top triangle
 	gos_VERTEX gVertex[3];
 	memcpy(gVertex, vertices, sizeof(gos_VERTEX) * 3);
-	if ((gVertex[0].z >= 0.0f) && (gVertex[0].z < 1.0f) &&
-		(gVertex[1].z >= 0.0f) && (gVertex[1].z < 1.0f) &&
-		(gVertex[2].z >= 0.0f) && (gVertex[2].z < 1.0f))
+	if ((gVertex[0].z >= 0.0f) && (gVertex[0].z < 1.0f) && (gVertex[1].z >= 0.0f) &&
+		(gVertex[1].z < 1.0f) && (gVertex[2].z >= 0.0f) && (gVertex[2].z < 1.0f))
 	{
 		//-----------------------------------------------------------------------------
 		// Reject Any triangle which has vertices off screeen in software for
@@ -904,8 +895,7 @@ void PolygonTriElement::draw(void)
 
 //---------------------------------------------------------------------------
 // class TexturedPolygonQuadElement : public PolygonQuadElement
-void TexturedPolygonQuadElement::init(
-	gos_VERTEX* v, uint32_t tHandle, bool writez, bool compz)
+void TexturedPolygonQuadElement::init(gos_VERTEX* v, uint32_t tHandle, bool writez, bool compz)
 {
 	PolygonQuadElement::init(v);
 	textureHandle = tHandle;
@@ -968,9 +958,8 @@ void TexturedPolygonQuadElement::draw(void)
 	// Clip and draw top triangle
 	gos_VERTEX gVertex[3];
 	memcpy(gVertex, vertices, sizeof(gos_VERTEX) * 3);
-	if ((gVertex[0].z >= 0.0f) && (gVertex[0].z < 1.0f) &&
-		(gVertex[1].z >= 0.0f) && (gVertex[1].z < 1.0f) &&
-		(gVertex[2].z >= 0.0f) && (gVertex[2].z < 1.0f))
+	if ((gVertex[0].z >= 0.0f) && (gVertex[0].z < 1.0f) && (gVertex[1].z >= 0.0f) &&
+		(gVertex[1].z < 1.0f) && (gVertex[2].z >= 0.0f) && (gVertex[2].z < 1.0f))
 	{
 		//-----------------------------------------------------------------------------
 		// Reject Any triangle which has vertices off screeen in software for
@@ -996,9 +985,8 @@ void TexturedPolygonQuadElement::draw(void)
 	gVertex[2].v	= vertices[3].v;
 	gVertex[2].argb = vertices[3].argb;
 	gVertex[2].frgb = vertices[3].frgb;
-	if ((gVertex[0].z >= 0.0f) && (gVertex[0].z < 1.0f) &&
-		(gVertex[1].z >= 0.0f) && (gVertex[1].z < 1.0f) &&
-		(gVertex[2].z >= 0.0f) && (gVertex[2].z < 1.0f))
+	if ((gVertex[0].z >= 0.0f) && (gVertex[0].z < 1.0f) && (gVertex[1].z >= 0.0f) &&
+		(gVertex[1].z < 1.0f) && (gVertex[2].z >= 0.0f) && (gVertex[2].z < 1.0f))
 	{
 		//-----------------------------------------------------------------------------
 		// Reject Any triangle which has vertices off screeen in software for
@@ -1067,9 +1055,8 @@ void TexturedPolygonTriElement::draw(void)
 	// Clip and draw top triangle
 	gos_VERTEX gVertex[3];
 	memcpy(gVertex, vertices, sizeof(gos_VERTEX) * 3);
-	if ((gVertex[0].z >= 0.0f) && (gVertex[0].z < 1.0f) &&
-		(gVertex[1].z >= 0.0f) && (gVertex[1].z < 1.0f) &&
-		(gVertex[2].z >= 0.0f) && (gVertex[2].z < 1.0f))
+	if ((gVertex[0].z >= 0.0f) && (gVertex[0].z < 1.0f) && (gVertex[1].z >= 0.0f) &&
+		(gVertex[1].z < 1.0f) && (gVertex[2].z >= 0.0f) && (gVertex[2].z < 1.0f))
 	{
 		//-----------------------------------------------------------------------------
 		// Reject Any triangle which has vertices off screeen in software for

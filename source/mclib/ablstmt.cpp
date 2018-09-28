@@ -60,10 +60,9 @@ extern int32_t NumOrderCalls;
 
 //--------
 // GLOBALS
-TokenCodeType FollowSwitchExpressionList[] = {
-	TKN_CASE, TKN_SEMICOLON, TKN_NONE};
-TokenCodeType FollowCaseLabelList[] = {TKN_COLON, TKN_SEMICOLON, TKN_NONE};
-TokenCodeType CaseLabelStartList[]  = {
+TokenCodeType FollowSwitchExpressionList[] = {TKN_CASE, TKN_SEMICOLON, TKN_NONE};
+TokenCodeType FollowCaseLabelList[]		   = {TKN_COLON, TKN_SEMICOLON, TKN_NONE};
+TokenCodeType CaseLabelStartList[]		   = {
 	TKN_IDENTIFIER, TKN_NUMBER, TKN_PLUS, TKN_MINUS, TKN_STRING, TKN_NONE};
 
 SymTableNodePtr forwardState(PSTR stateName);
@@ -229,11 +228,9 @@ void forStatement(void)
 
 //***************************************************************************
 
-TypePtr caseLabel(CaseItemPtr& caseItemHead, CaseItemPtr& caseItemTail,
-	int32_t& caseLabelCount)
+TypePtr caseLabel(CaseItemPtr& caseItemHead, CaseItemPtr& caseItemTail, int32_t& caseLabelCount)
 {
-	CaseItemPtr newCaseItem =
-		(CaseItemPtr)ABLStackMallocCallback(sizeof(CaseItem));
+	CaseItemPtr newCaseItem = (CaseItemPtr)ABLStackMallocCallback(sizeof(CaseItem));
 	if (!newCaseItem)
 		ABL_Fatal(0, " ABL: Unable to AblStackHeap->malloc case item ");
 	if (caseItemHead)
@@ -255,15 +252,13 @@ TypePtr caseLabel(CaseItemPtr& caseItemHead, CaseItemPtr& caseItemTail,
 	}
 	if (curToken == TKN_NUMBER)
 	{
-		SymTableNodePtr thisNode =
-			searchSymTable(tokenString, SymTableDisplay[1]);
+		SymTableNodePtr thisNode = searchSymTable(tokenString, SymTableDisplay[1]);
 		if (!thisNode)
 			thisNode = enterSymTable(tokenString, &SymTableDisplay[1]);
 		crunchSymTableNodePtr(thisNode);
 		if (curLiteral.type == LIT_INTEGER)
-			newCaseItem->labelValue = (sign == TKN_PLUS)
-										  ? curLiteral.value.integer
-										  : -curLiteral.value.integer;
+			newCaseItem->labelValue =
+				(sign == TKN_PLUS) ? curLiteral.value.integer : -curLiteral.value.integer;
 		else
 			syntaxError(ABL_ERR_SYNTAX_INVALID_CONSTANT);
 		return (IntegerTypePtr);
@@ -285,9 +280,8 @@ TypePtr caseLabel(CaseItemPtr& caseItemHead, CaseItemPtr& caseItemTail,
 		}
 		else if (idPtr->typePtr == IntegerTypePtr)
 		{
-			newCaseItem->labelValue =
-				(sign == TKN_PLUS ? idPtr->defn.info.constant.value.integer
-								  : -idPtr->defn.info.constant.value.integer);
+			newCaseItem->labelValue = (sign == TKN_PLUS ? idPtr->defn.info.constant.value.integer
+														: -idPtr->defn.info.constant.value.integer);
 			return (IntegerTypePtr);
 		}
 		else if (idPtr->typePtr == CharTypePtr)
@@ -321,16 +315,15 @@ TypePtr caseLabel(CaseItemPtr& caseItemHead, CaseItemPtr& caseItemTail,
 
 //---------------------------------------------------------------------------
 
-void caseBranch(CaseItemPtr& caseItemHead, CaseItemPtr& caseItemTail,
-	int32_t& caseLabelCount, TypePtr expressionType)
+void caseBranch(CaseItemPtr& caseItemHead, CaseItemPtr& caseItemTail, int32_t& caseLabelCount,
+	TypePtr expressionType)
 {
 	// static CaseItemPtr oldCaseItemTail = nullptr;
 	CaseItemPtr oldCaseItemTail = caseItemTail;
 	bool anotherLabel;
 	do
 	{
-		TypePtr labelType =
-			caseLabel(caseItemHead, caseItemTail, caseLabelCount);
+		TypePtr labelType = caseLabel(caseItemHead, caseItemTail, caseLabelCount);
 		if (expressionType != labelType)
 			syntaxError(ABL_ERR_SYNTAX_INCOMPATIBLE_TYPES);
 		getToken();
@@ -354,8 +347,7 @@ void caseBranch(CaseItemPtr& caseItemHead, CaseItemPtr& caseItemTail,
 	ifTokenGetElseError(TKN_COLON, ABL_ERR_SYNTAX_MISSING_COLON);
 	//-----------------------------------------------------------------
 	// Fill in the branch location for each CaseItem for this branch...
-	CaseItemPtr caseItem =
-		(!oldCaseItemTail ? caseItemHead : oldCaseItemTail->next);
+	CaseItemPtr caseItem = (!oldCaseItemTail ? caseItemHead : oldCaseItemTail->next);
 	// oldCaseItemTail = CaseItemTail;
 	while (caseItem)
 	{
@@ -392,8 +384,7 @@ void switchStatement(void)
 	//-----------------------------------------------------------------------------
 	// NOTE: If we have subranges in ABL, we'll have to check in the following
 	// line for a subrange, as well...
-	if (((expressionType->form != FRM_SCALAR) &&
-			(expressionType->form != FRM_ENUM)) ||
+	if (((expressionType->form != FRM_SCALAR) && (expressionType->form != FRM_ENUM)) ||
 		(expressionType == RealTypePtr))
 		syntaxError(ABL_ERR_SYNTAX_INCOMPATIBLE_TYPES);
 	synchronize(FollowSwitchExpressionList, nullptr, nullptr);
@@ -405,8 +396,7 @@ void switchStatement(void)
 	{
 		getToken();
 		if (tokenIn(CaseLabelStartList))
-			caseBranch(
-				caseItemHead, caseItemTail, caseLabelCount, expressionType);
+			caseBranch(caseItemHead, caseItemTail, caseLabelCount, expressionType);
 		//---------------------------------------------------
 		// Link another address marker at the end of the CASE
 		// branch to point to the end of the CASE block...
@@ -441,8 +431,7 @@ void transStatement(void)
 {
 	getToken();
 	ifTokenGetElseError(TKN_IDENTIFIER, ABL_ERR_MISSING_STATE_IDENTIFIER);
-	SymTableNodePtr IdPtr =
-		searchSymTableForState(wordString, SymTableDisplay[1]);
+	SymTableNodePtr IdPtr = searchSymTableForState(wordString, SymTableDisplay[1]);
 	if (!IdPtr)
 	{
 		// New symbol, so let's assume it's a state defined later. We'll make it
@@ -476,15 +465,12 @@ void statement(void)
 		//--------------------------------------------------------------
 		// First, do we have an assignment statement or a function call?
 		searchAndFindAllSymTables(IdPtr);
-		if ((IdPtr->defn.key ==
-				DFN_FUNCTION) /* || (IdPtr->defn.key == DFN_MODULE)*/)
+		if ((IdPtr->defn.key == DFN_FUNCTION) /* || (IdPtr->defn.key == DFN_MODULE)*/)
 		{
 			RoutineKey key = IdPtr->defn.info.routine.key;
-			if ((key == RTN_ASSERT) || (key == RTN_PRINT) ||
-				(key == RTN_CONCAT))
+			if ((key == RTN_ASSERT) || (key == RTN_PRINT) || (key == RTN_CONCAT))
 			{
-				bool uncrunch =
-					((key == RTN_ASSERT) && !AssertEnabled) ||
+				bool uncrunch = ((key == RTN_ASSERT) && !AssertEnabled) ||
 					((key == RTN_PRINT) && !PrintEnabled) ||
 					((key == RTN_CONCAT) && !StringFunctionsEnabled);
 				if (uncrunch)

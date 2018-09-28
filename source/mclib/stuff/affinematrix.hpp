@@ -37,7 +37,7 @@ class Vector3D;
 
 class AffineMatrix4D
 {
-  public:
+public:
 	static const AffineMatrix4D Identity;
 	float entries[12];
 
@@ -89,16 +89,9 @@ class AffineMatrix4D
 	//
 	// Comparison operators
 	//
-	friend bool Close_Enough(
-		const AffineMatrix4D& m1, const AffineMatrix4D& m2, float e = SMALL);
-	bool operator==(const AffineMatrix4D& a) const
-	{
-		return Close_Enough(*this, a, SMALL);
-	}
-	bool operator!=(const AffineMatrix4D& a) const
-	{
-		return !Close_Enough(*this, a, SMALL);
-	}
+	friend bool Close_Enough(const AffineMatrix4D& m1, const AffineMatrix4D& m2, float e = SMALL);
+	bool operator==(const AffineMatrix4D& a) const { return Close_Enough(*this, a, SMALL); }
+	bool operator!=(const AffineMatrix4D& a) const { return !Close_Enough(*this, a, SMALL); }
 
 	//
 	// Index operators
@@ -106,15 +99,15 @@ class AffineMatrix4D
 	float& operator()(size_t row, size_t column)
 	{
 		// Check_Pointer(this);
-		Verify(static_cast<uint32_t>(row) <= W_Axis);
-		Verify(static_cast<uint32_t>(column) <= Z_Axis);
+		_ASSERT(static_cast<uint32_t>(row) <= W_Axis);
+		_ASSERT(static_cast<uint32_t>(column) <= Z_Axis);
 		return entries[(column << 2) + row];
 	}
 	const float& operator()(size_t row, size_t column) const
 	{
 		// Check_Pointer(this);
-		Verify(static_cast<uint32_t>(row) <= W_Axis);
-		Verify(static_cast<uint32_t>(column) <= Z_Axis);
+		_ASSERT(static_cast<uint32_t>(row) <= W_Axis);
+		_ASSERT(static_cast<uint32_t>(column) <= Z_Axis);
 		return entries[(column << 2) + row];
 	}
 
@@ -262,17 +255,16 @@ class AffineMatrix4D
 	//
 	// Matrix Multiplication
 	//
-	inline AffineMatrix4D& Multiply(
-		const AffineMatrix4D& Source1, const AffineMatrix4D& Source2)
+	inline AffineMatrix4D& Multiply(const AffineMatrix4D& Source1, const AffineMatrix4D& Source2)
 	{
 		// Check_Pointer(this);
 		Check_Object(&Source1);
 		Check_Object(&Source2);
-		Verify(this != &Source1);
-		Verify(this != &Source2);
+		_ASSERT(this != &Source1);
+		_ASSERT(this != &Source2);
 		(void)Source1; // 4100
 		(void)Source2; // 4100
-#if USE_ASSEMBLER_CODE
+#if USE_INLINE_ASSEMBLER_CODE
 		float* f = entries;
 		_asm
 		{
@@ -514,42 +506,30 @@ class AffineMatrix4D
 				pop         esi
 		}
 #else
-		(*this)(0, 0) = Source1(0, 0) * Source2(0, 0) +
-						Source1(0, 1) * Source2(1, 0) +
-						Source1(0, 2) * Source2(2, 0);
-		(*this)(1, 0) = Source1(1, 0) * Source2(0, 0) +
-						Source1(1, 1) * Source2(1, 0) +
-						Source1(1, 2) * Source2(2, 0);
-		(*this)(2, 0) = Source1(2, 0) * Source2(0, 0) +
-						Source1(2, 1) * Source2(1, 0) +
-						Source1(2, 2) * Source2(2, 0);
-		(*this)(3, 0) = Source1(3, 0) * Source2(0, 0) +
-						Source1(3, 1) * Source2(1, 0) +
-						Source1(3, 2) * Source2(2, 0) + Source2(3, 0);
-		(*this)(0, 1) = Source1(0, 0) * Source2(0, 1) +
-						Source1(0, 1) * Source2(1, 1) +
-						Source1(0, 2) * Source2(2, 1);
-		(*this)(1, 1) = Source1(1, 0) * Source2(0, 1) +
-						Source1(1, 1) * Source2(1, 1) +
-						Source1(1, 2) * Source2(2, 1);
-		(*this)(2, 1) = Source1(2, 0) * Source2(0, 1) +
-						Source1(2, 1) * Source2(1, 1) +
-						Source1(2, 2) * Source2(2, 1);
-		(*this)(3, 1) = Source1(3, 0) * Source2(0, 1) +
-						Source1(3, 1) * Source2(1, 1) +
-						Source1(3, 2) * Source2(2, 1) + Source2(3, 1);
-		(*this)(0, 2) = Source1(0, 0) * Source2(0, 2) +
-						Source1(0, 1) * Source2(1, 2) +
-						Source1(0, 2) * Source2(2, 2);
-		(*this)(1, 2) = Source1(1, 0) * Source2(0, 2) +
-						Source1(1, 1) * Source2(1, 2) +
-						Source1(1, 2) * Source2(2, 2);
-		(*this)(2, 2) = Source1(2, 0) * Source2(0, 2) +
-						Source1(2, 1) * Source2(1, 2) +
-						Source1(2, 2) * Source2(2, 2);
-		(*this)(3, 2) = Source1(3, 0) * Source2(0, 2) +
-						Source1(3, 1) * Source2(1, 2) +
-						Source1(3, 2) * Source2(2, 2) + Source2(3, 2);
+		(*this)(0, 0) = Source1(0, 0) * Source2(0, 0) + Source1(0, 1) * Source2(1, 0) +
+			Source1(0, 2) * Source2(2, 0);
+		(*this)(1, 0) = Source1(1, 0) * Source2(0, 0) + Source1(1, 1) * Source2(1, 0) +
+			Source1(1, 2) * Source2(2, 0);
+		(*this)(2, 0) = Source1(2, 0) * Source2(0, 0) + Source1(2, 1) * Source2(1, 0) +
+			Source1(2, 2) * Source2(2, 0);
+		(*this)(3, 0) = Source1(3, 0) * Source2(0, 0) + Source1(3, 1) * Source2(1, 0) +
+			Source1(3, 2) * Source2(2, 0) + Source2(3, 0);
+		(*this)(0, 1) = Source1(0, 0) * Source2(0, 1) + Source1(0, 1) * Source2(1, 1) +
+			Source1(0, 2) * Source2(2, 1);
+		(*this)(1, 1) = Source1(1, 0) * Source2(0, 1) + Source1(1, 1) * Source2(1, 1) +
+			Source1(1, 2) * Source2(2, 1);
+		(*this)(2, 1) = Source1(2, 0) * Source2(0, 1) + Source1(2, 1) * Source2(1, 1) +
+			Source1(2, 2) * Source2(2, 1);
+		(*this)(3, 1) = Source1(3, 0) * Source2(0, 1) + Source1(3, 1) * Source2(1, 1) +
+			Source1(3, 2) * Source2(2, 1) + Source2(3, 1);
+		(*this)(0, 2) = Source1(0, 0) * Source2(0, 2) + Source1(0, 1) * Source2(1, 2) +
+			Source1(0, 2) * Source2(2, 2);
+		(*this)(1, 2) = Source1(1, 0) * Source2(0, 2) + Source1(1, 1) * Source2(1, 2) +
+			Source1(1, 2) * Source2(2, 2);
+		(*this)(2, 2) = Source1(2, 0) * Source2(0, 2) + Source1(2, 1) * Source2(1, 2) +
+			Source1(2, 2) * Source2(2, 2);
+		(*this)(3, 2) = Source1(3, 0) * Source2(0, 2) + Source1(3, 1) * Source2(1, 2) +
+			Source1(3, 2) * Source2(2, 2) + Source2(3, 2);
 #endif
 		return *this;
 	};
@@ -619,20 +599,19 @@ inline Point3D& Point3D::operator=(const AffineMatrix4D& m)
 	// Check_Object(this);
 	return *this;
 }
-}
+} // namespace Stuff
 
 namespace MemoryStreamIO
 {
-
-inline Stuff::MemoryStream& Read(
-	Stuff::MemoryStream* stream, Stuff::AffineMatrix4D* output)
+#if _CONSIDERED_TEMPORARILY_DISABLED
+inline std::istream& Read(std::istream& stream, Stuff::AffineMatrix4D* output)
 {
-	return stream->ReadBytes(output, sizeof(*output));
+	return stream.read(output, sizeof(*output));
 }
-inline Stuff::MemoryStream& Write(
-	Stuff::MemoryStream* stream, const Stuff::AffineMatrix4D* input)
+inline std::ostream& Write(std::ostream& stream, const Stuff::AffineMatrix4D* input)
 {
-	return stream->WriteBytes(input, sizeof(*input));
+	return stream.write(input, sizeof(*input));
 }
-}
+#endif
+} // namespace MemoryStreamIO
 #endif

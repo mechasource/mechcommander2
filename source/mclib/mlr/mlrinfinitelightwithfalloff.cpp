@@ -12,15 +12,14 @@ using namespace MidLevelRenderer;
 //###############    MLRInfiniteLightWithFalloff    ###########################
 //#############################################################################
 
-MLRInfiniteLightWithFalloff::ClassData*
-	MLRInfiniteLightWithFalloff::DefaultData = nullptr;
+MLRInfiniteLightWithFalloff::ClassData* MLRInfiniteLightWithFalloff::DefaultData = nullptr;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void MLRInfiniteLightWithFalloff::InitializeClass()
 {
-	Verify(!DefaultData);
-	// Verify(gos_GetCurrentHeap() == StaticHeap);
+	_ASSERT(!DefaultData);
+	// _ASSERT(gos_GetCurrentHeap() == StaticHeap);
 	DefaultData = new ClassData(MLRInfiniteLightWithFalloffClassID,
 		"MidLevelRenderer::MLRInfiniteLightWithFalloff", MLRLight::DefaultData);
 	Register_Object(DefaultData);
@@ -40,7 +39,7 @@ void MLRInfiniteLightWithFalloff::TerminateClass()
 MLRInfiniteLightWithFalloff::MLRInfiniteLightWithFalloff(ClassData* class_data)
 	: MLRLight(class_data)
 {
-	// Verify(gos_GetCurrentHeap() == Heap);
+	// _ASSERT(gos_GetCurrentHeap() == Heap);
 	lightMask		= MLRState::FaceLightingMode | MLRState::VertexLightingMode;
 	innerRadius		= 0.0f;
 	outerRadius		= 0.0f;
@@ -50,11 +49,11 @@ MLRInfiniteLightWithFalloff::MLRInfiniteLightWithFalloff(ClassData* class_data)
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 MLRInfiniteLightWithFalloff::MLRInfiniteLightWithFalloff(
-	ClassData* class_data, Stuff::MemoryStream* stream, uint32_t version)
+	ClassData* class_data, std::iostream stream, uint32_t version)
 	: MLRLight(class_data, stream, version)
 {
 	Check_Object(stream);
-	// Verify(gos_GetCurrentHeap() == Heap);
+	// _ASSERT(gos_GetCurrentHeap() == Heap);
 	lightMask = MLRState::FaceLightingMode | MLRState::VertexLightingMode;
 	float inner, outer;
 	*stream >> inner >> outer;
@@ -63,12 +62,11 @@ MLRInfiniteLightWithFalloff::MLRInfiniteLightWithFalloff(
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLRInfiniteLightWithFalloff::MLRInfiniteLightWithFalloff(
-	ClassData* class_data, Stuff::Page* page)
+MLRInfiniteLightWithFalloff::MLRInfiniteLightWithFalloff(ClassData* class_data, Stuff::Page* page)
 	: MLRLight(class_data, page)
 {
 	Check_Object(page);
-	// Verify(gos_GetCurrentHeap() == Heap);
+	// _ASSERT(gos_GetCurrentHeap() == Heap);
 	lightMask   = MLRState::FaceLightingMode | MLRState::VertexLightingMode;
 	float inner = 0.0f;
 	page->GetEntry("InnerRadius", &inner);
@@ -83,7 +81,7 @@ MLRInfiniteLightWithFalloff::~MLRInfiniteLightWithFalloff() {}
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLRInfiniteLightWithFalloff::Save(Stuff::MemoryStream* stream)
+void MLRInfiniteLightWithFalloff::Save(std::iostream stream)
 {
 	// Check_Object(this);
 	Check_Object(stream);
@@ -104,10 +102,7 @@ void MLRInfiniteLightWithFalloff::Write(Stuff::Page* page)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLRInfiniteLightWithFalloff::TestInstance()
-{
-	Verify(IsDerivedFrom(DefaultData));
-}
+void MLRInfiniteLightWithFalloff::TestInstance() { _ASSERT(IsDerivedFrom(DefaultData)); }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
@@ -144,7 +139,7 @@ void MLRInfiniteLightWithFalloff::LightVertex(const MLRVertexData& vertexData)
 	float cosine = -(light_z * (*vertexData.normal)) * intensity;
 	RGBColor light_color(color);
 	Point3D vertex_to_light;
-	Verify(GetFalloffDistance(vertex_to_light.x, vertex_to_light.y));
+	_ASSERT(GetFalloffDistance(vertex_to_light.x, vertex_to_light.y));
 	GetInShapePosition(vertex_to_light);
 	vertex_to_light -= *vertexData.point;
 	//

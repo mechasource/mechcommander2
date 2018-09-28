@@ -25,7 +25,7 @@
 //---------------------------------------------------------------------------
 class EllipseElement : public Element
 {
-  public:
+public:
 	gos_VERTEX location[5];
 	RECT clip;
 
@@ -35,8 +35,8 @@ class EllipseElement : public Element
 		memset(&clip, 0, sizeof(clip));
 	}
 
-	EllipseElement(Stuff::Vector2DOf<int32_t>& cnt,
-		Stuff::Vector2DOf<int32_t>& ortho, int32_t clr, int32_t depth);
+	EllipseElement(Stuff::Vector2DOf<int32_t>& cnt, Stuff::Vector2DOf<int32_t>& ortho, int32_t clr,
+		int32_t depth);
 
 	virtual void draw(void);
 
@@ -46,7 +46,7 @@ class EllipseElement : public Element
 
 	static void removeTextureHandle(void);
 
-  private:
+private:
 	static size_t s_textureHandle;
 };
 

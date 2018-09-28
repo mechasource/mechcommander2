@@ -58,8 +58,7 @@ Stuff::BitTrace::BitTrace(PCSTR name) : Trace(name, BitType)
 	activeLine = NextActiveLine++;
 	bitFlag	= (NextBit < 32) ? uint32_t(1 << NextBit++) : uint32_t(0);
 #if defined(USE_ACTIVE_PROFILE)
-	DEBUG_STREAM << name << " used trace line "
-				 << static_cast<int32_t>(activeLine) << "!\n";
+	DEBUG_STREAM << name << " used trace line " << static_cast<int32_t>(activeLine) << "!\n";
 	if (!IsLineValidImplementation(activeLine))
 	{
 		STOP(("Invalid active trace line!"));
@@ -73,8 +72,7 @@ Stuff::BitTrace::BitTrace(PCSTR name) : Trace(name, BitType)
 void Stuff::BitTrace::DumpTraceStatus()
 {
 	// Check_Object(this);
-	SPEW((GROUP_STUFF_TRACE, "%d = %d+", static_cast<int32_t>(activeLine),
-		traceUp));
+	SPEW((GROUP_STUFF_TRACE, "%d = %d+", static_cast<int32_t>(activeLine), traceUp));
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -122,8 +120,7 @@ void Stuff::BitTrace::PrintUsage(float usage)
 	// Check_Object(this);
 	SPEW((GROUP_STUFF_TRACE, "%4f%% CPU+", (usage * 100.0f)));
 #if defined(USE_ACTIVE_PROFILE)
-	SPEW((GROUP_STUFF_TRACE, " (active on line %d)",
-		static_cast<int32_t>(activeLine)));
+	SPEW((GROUP_STUFF_TRACE, " (active on line %d)", static_cast<int32_t>(activeLine)));
 #endif
 }
 
@@ -149,11 +146,11 @@ void Stuff::BitTrace::Set(void)
 #if defined(USE_TRACE_LOG)
 		// Check_Object(traceManager);
 		IncrementSampleCount();
-		MemoryStream* log = GetTraceLog();
+		std::iostream& log = GetTraceLog();
 		if (log)
 		{
 			Check_Object(log);
-			TraceSample* sample = Cast_Pointer(TraceSample*, log->GetPointer());
+			TraceSample* sample  = Cast_Pointer(TraceSample*, log->GetPointer());
 			sample->sampleLength = sizeof(*sample);
 			sample->sampleType   = TraceSample::GoingUp;
 			sample->traceNumber  = traceNumber;
@@ -178,7 +175,7 @@ void Stuff::BitTrace::Clear(void)
 #if defined(USE_TIME_ANALYSIS)
 		lastUpTime = now - lastActivity;
 #if 0 // HACK	
-		Verify(lastUpTime >= 0.0f)
+		_ASSERT(lastUpTime >= 0.0f)
 		totalUpTime += lastUpTime;
 #else
 		if (lastUpTime >= 0.0f)
@@ -190,11 +187,11 @@ void Stuff::BitTrace::Clear(void)
 #if defined(USE_TRACE_LOG)
 		// Check_Object(traceManager);
 		IncrementSampleCount();
-		MemoryStream* log = GetTraceLog();
+		std::iostream& log = GetTraceLog();
 		if (log)
 		{
 			Check_Object(log);
-			TraceSample* sample = Cast_Pointer(TraceSample*, log->GetPointer());
+			TraceSample* sample  = Cast_Pointer(TraceSample*, log->GetPointer());
 			sample->sampleLength = sizeof(*sample);
 			sample->sampleType   = TraceSample::GoingDown;
 			sample->traceNumber  = traceNumber;
@@ -210,7 +207,7 @@ void Stuff::BitTrace::Clear(void)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void Stuff::BitTrace::TestInstance(void) { Verify(traceUp >= 0); }
+void Stuff::BitTrace::TestInstance(void) { _ASSERT(traceUp >= 0); }
 
 //##########################################################################
 //########################    TraceManager    ##############################
@@ -220,7 +217,7 @@ Stuff::TraceManager* Stuff::TraceManager::Instance = nullptr;
 
 void Stuff::TraceManager::InitializeClass(void)
 {
-	Verify(!Stuff::TraceManager::Instance);
+	_ASSERT(!Stuff::TraceManager::Instance);
 	Stuff::TraceManager::Instance = new Stuff::TraceManager;
 	Register_Object(Stuff::TraceManager::Instance);
 }
@@ -254,8 +251,7 @@ Stuff::TraceManager::~TraceManager()
 	{
 		Check_Object(allocatedTraceLog);
 		allocatedTraceLog->Rewind();
-		TraceSample* samples =
-			Cast_Pointer(TraceSample*, allocatedTraceLog->GetPointer());
+		TraceSample* samples = Cast_Pointer(TraceSample*, allocatedTraceLog->GetPointer());
 		Unregister_Object(allocatedTraceLog);
 		delete allocatedTraceLog;
 		activeTraceLog = allocatedTraceLog = nullptr;
@@ -401,15 +397,13 @@ int32_t Stuff::TraceManager::SnapshotTimingAnalysis(bool print)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void Stuff::TraceManager::CreateTraceLog(
-	size_t max_trace_count, bool start_logging)
+void Stuff::TraceManager::CreateTraceLog(size_t max_trace_count, bool start_logging)
 {
 	// Check_Object(this);
-	Verify(!allocatedTraceLog);
+	_ASSERT(!allocatedTraceLog);
 	TraceSample* samples = new TraceSample[max_trace_count];
 	Register_Pointer(samples);
-	allocatedTraceLog =
-		new MemoryStream(samples, max_trace_count * sizeof(TraceSample));
+	allocatedTraceLog = new MemoryStream(samples, max_trace_count * sizeof(TraceSample));
 	Register_Object(allocatedTraceLog);
 	if (start_logging)
 	{
@@ -430,7 +424,7 @@ void Stuff::TraceManager::SaveTraceLog(PCSTR filename)
 		// Rewind the memory stream and save it out in a disk file
 		//--------------------------------------------------------
 		//
-		FileStream output(filename, FileStream::WriteOnly);
+		std::fstream output(filename, std::fstream::WriteOnly);
 		size_t size = allocatedTraceLog->GetBytesUsed();
 		if (size > 0)
 		{
@@ -484,8 +478,7 @@ void Stuff::TraceManager::SaveTraceLog(PCSTR filename)
 		//-------------------
 		//
 		output.Close();
-		TraceSample* samples =
-			Cast_Pointer(TraceSample*, allocatedTraceLog->GetPointer());
+		TraceSample* samples = Cast_Pointer(TraceSample*, allocatedTraceLog->GetPointer());
 		Unregister_Object(allocatedTraceLog);
 		delete allocatedTraceLog;
 		activeTraceLog = allocatedTraceLog = nullptr;
@@ -502,9 +495,8 @@ void Stuff::TraceManager::MarkTraceLog()
 	if (activeTraceLog)
 	{
 		Check_Object(activeTraceLog);
-		int64_t now = gos_GetHiResTime();
-		TraceSample* sample =
-			Cast_Pointer(TraceSample*, activeTraceLog->GetPointer());
+		int64_t now			 = gos_GetHiResTime();
+		TraceSample* sample  = Cast_Pointer(TraceSample*, activeTraceLog->GetPointer());
 		sample->sampleLength = sizeof(*sample);
 		sample->sampleType   = TraceSample::Marker;
 		sample->sampleTime   = now;
@@ -521,9 +513,8 @@ void Stuff::TraceManager::SuspendTraceLogging()
 	if (activeTraceLog)
 	{
 		Check_Object(activeTraceLog);
-		int64_t now = gos_GetHiResTime();
-		TraceSample* sample =
-			Cast_Pointer(TraceSample*, activeTraceLog->GetPointer());
+		int64_t now			 = gos_GetHiResTime();
+		TraceSample* sample  = Cast_Pointer(TraceSample*, activeTraceLog->GetPointer());
 		sample->sampleLength = sizeof(*sample);
 		sample->sampleType   = TraceSample::SuspendSampling;
 		sample->sampleTime   = now;
@@ -541,10 +532,9 @@ void Stuff::TraceManager::ResumeTraceLogging()
 	if (allocatedTraceLog && !activeTraceLog)
 	{
 		Check_Object(allocatedTraceLog);
-		activeTraceLog = allocatedTraceLog;
-		int64_t now	= gos_GetHiResTime();
-		TraceSample* sample =
-			Cast_Pointer(TraceSample*, activeTraceLog->GetPointer());
+		activeTraceLog		 = allocatedTraceLog;
+		int64_t now			 = gos_GetHiResTime();
+		TraceSample* sample  = Cast_Pointer(TraceSample*, activeTraceLog->GetPointer());
 		sample->sampleLength = sizeof(*sample);
 		sample->sampleType   = TraceSample::ResumeSampling;
 		sample->sampleTime   = now;

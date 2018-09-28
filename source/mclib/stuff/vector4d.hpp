@@ -25,6 +25,8 @@ void Spew(PCSTR group, const Stuff::Vector4D& vector);
 namespace Stuff
 {
 
+// XMVECTOR
+
 class AffineMatrix4D;
 class Matrix4D;
 
@@ -32,7 +34,7 @@ class Matrix4D;
 
 class Vector4D
 {
-  public:
+public:
 	float x;
 	float y;
 	float z;
@@ -101,24 +103,23 @@ class Vector4D
 	const float& operator[](size_t index) const
 	{
 		// Check_Pointer(this);
-		Verify(/*static_cast<uint32_t>*/ (index) <= W_Axis);
+		_ASSERT(/*static_cast<uint32_t>*/ (index) <= W_Axis);
 		return (&x)[index];
 	}
 	float& operator[](size_t index)
 	{
 		// Check_Pointer(this);
-		Verify(/*static_cast<uint32_t>*/ (index) <= W_Axis);
+		_ASSERT(/*static_cast<uint32_t>*/ (index) <= W_Axis);
 		return (&x)[index];
 	}
 
 	friend bool Small_Enough(const Vector4D& v, float e = SMALL);
-	bool operator!(void)const { return Small_Enough(*this); }
+	bool operator!(void) const { return Small_Enough(*this); }
 
 	//
 	// "Close-enough" comparison operators
 	//
-	friend bool Close_Enough(
-		const Vector4D& v1, const Vector4D& v2, float e = SMALL);
+	friend bool Close_Enough(const Vector4D& v1, const Vector4D& v2, float e = SMALL);
 	bool operator==(const Vector4D& v) const { return Close_Enough(*this, v); }
 	bool operator!=(const Vector4D& v) const { return !Close_Enough(*this, v); }
 
@@ -198,7 +199,7 @@ class Vector4D
 	{
 		// Check_Pointer(this);
 		Check_Object(&v);
-		Verify(!Small_Enough(scale));
+		_ASSERT(!Small_Enough(scale));
 		scale = 1.0f / scale;
 		x	 = v.x * scale;
 		y	 = v.y * scale;
@@ -213,10 +214,10 @@ class Vector4D
 		// Check_Pointer(this);
 		Check_Object(&v1);
 		Check_Object(&v2);
-		Verify(!Small_Enough(v1.x));
-		Verify(!Small_Enough(v1.y));
-		Verify(!Small_Enough(v1.z));
-		Verify(!Small_Enough(v1.w));
+		_ASSERT(!Small_Enough(v1.x));
+		_ASSERT(!Small_Enough(v1.y));
+		_ASSERT(!Small_Enough(v1.z));
+		_ASSERT(!Small_Enough(v1.w));
 		x = v1.x / v2.x;
 		y = v1.y / v2.y;
 		z = v1.z / v2.z;
@@ -246,7 +247,7 @@ class Vector4D
 		// Check_Pointer(this);
 		Check_Object(&v);
 		Check_Object(&m);
-#if USE_ASSEMBLER_CODE
+#if USE_INLINE_ASSEMBLER_CODE
 		float* f = &x;
 		_asm
 		{
@@ -354,15 +355,14 @@ class Vector4D
 		return *this;
 	}
 
-	Vector4D& MultiplySetClip(
-		const Point3D& v, const Matrix4D& m, puint32_t clipper);
+	Vector4D& MultiplySetClip(const Point3D& v, const Matrix4D& m, puint32_t clipper);
 	/*
 	{
 	//Check_Pointer(this);
 	Check_Object(&v);
 	Check_Object(&m);
 
-	#if USE_ASSEMBLER_CODE
+	#if USE_INLINE_ASSEMBLER_CODE
 	float *f = &x;
 	_asm {
 	mov         edx, m
@@ -508,13 +508,9 @@ class Vector4D
 	float GetLengthSquared(void) const { return operator*(*this); }
 	float GetLength(void) const { return Sqrt(GetLengthSquared()); }
 
-	float GetApproximateLength(void) const
-	{
-		return SqrtApproximate(GetLengthSquared());
-	}
+	float GetApproximateLength(void) const { return SqrtApproximate(GetLengthSquared()); }
 
-	Vector4D& Combine(
-		const Vector4D& v1, float t1, const Vector4D& v2, float t2)
+	Vector4D& Combine(const Vector4D& v1, float t1, const Vector4D& v2, float t2)
 	{
 		// Check_Pointer(this);
 		Check_Object(&v1);
@@ -544,5 +540,5 @@ class Vector4D
 	void TestInstance(void) const {}
 	static bool TestClass(void);
 };
-}
+} // namespace Stuff
 #endif

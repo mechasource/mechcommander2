@@ -61,7 +61,7 @@ class CraterManager
 {
 	// Data Members
 	//-------------
-  protected:
+protected:
 	HeapManagerPtr craterPosHeap;
 	UserHeapPtr craterShpHeap;
 
@@ -80,8 +80,8 @@ class CraterManager
 
 	// Member Functions
 	//-----------------
-  protected:
-  public:
+protected:
+public:
 	void init(void)
 	{
 		craterPosHeap	 = nullptr;
@@ -97,15 +97,13 @@ class CraterManager
 
 	CraterManager(void) { init(void); }
 
-	int32_t init(
-		int32_t numCraters, uint32_t craterTypeSize, PSTR craterFileName);
+	int32_t init(int32_t numCraters, uint32_t craterTypeSize, PSTR craterFileName);
 
 	~CraterManager(void) { destroy(void); }
 
 	void destroy(void);
 
-	int32_t addCrater(
-		int32_t craterType, Stuff::Vector3D& position, float rotation);
+	int32_t addCrater(int32_t craterType, Stuff::Vector3D& position, float rotation);
 
 	int32_t update(void);
 	void render(void);

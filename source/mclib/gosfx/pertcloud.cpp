@@ -12,12 +12,12 @@
 //------------------------------------------------------------------------------
 //
 gosFX::PertCloud__Specification::PertCloud__Specification(
-	Stuff::MemoryStream* stream, uint32_t gfx_version)
+	std::iostream stream, uint32_t gfx_version)
 	: SpinningCloud__Specification(gosFX::PertCloudClassID, stream, gfx_version)
 {
 	// Check_Pointer(this);
-	Verify(m_class == gosFX::PertCloudClassID);
-	// Verify(gos_GetCurrentHeap() == Heap);
+	_ASSERT(m_class == gosFX::PertCloudClassID);
+	// _ASSERT(gos_GetCurrentHeap() == Heap);
 	m_size.Load(stream, gfx_version);
 	m_perturbation.Load(stream, gfx_version);
 	m_pCenterRed.Load(stream, gfx_version);
@@ -25,11 +25,10 @@ gosFX::PertCloud__Specification::PertCloud__Specification(
 	m_pCenterBlue.Load(stream, gfx_version);
 	m_pCenterAlpha.Load(stream, gfx_version);
 	m_particleClassSize = sizeof(gosFX::PertCloud::Particle);
-	Verify(gfx_version > 5);
+	_ASSERT(gfx_version > 5);
 	*stream >> m_vertices;
-	m_totalParticleSize = sizeof(gosFX::PertCloud::Particle) +
-						  m_vertices * sizeof(Stuff::Point3D) +
-						  2 * sizeof(Stuff::RGBAColor);
+	m_totalParticleSize = sizeof(gosFX::PertCloud::Particle) + m_vertices * sizeof(Stuff::Point3D) +
+		2 * sizeof(Stuff::RGBAColor);
 }
 
 //------------------------------------------------------------------------------
@@ -38,32 +37,30 @@ gosFX::PertCloud__Specification::PertCloud__Specification(uint32_t sides)
 	: SpinningCloud__Specification(gosFX::PertCloudClassID)
 {
 	// Check_Pointer(this);
-	// Verify(gos_GetCurrentHeap() == Heap);
+	// _ASSERT(gos_GetCurrentHeap() == Heap);
 	m_particleClassSize = sizeof(gosFX::PertCloud::Particle);
 	m_vertices			= sides + 2;
-	m_totalParticleSize = sizeof(gosFX::PertCloud::Particle) +
-						  m_vertices * sizeof(Stuff::Point3D) +
-						  2 * sizeof(Stuff::RGBAColor);
+	m_totalParticleSize = sizeof(gosFX::PertCloud::Particle) + m_vertices * sizeof(Stuff::Point3D) +
+		2 * sizeof(Stuff::RGBAColor);
 }
 
 //------------------------------------------------------------------------------
 //
 gosFX::PertCloud__Specification* gosFX::PertCloud__Specification::Make(
-	Stuff::MemoryStream* stream, uint32_t gfx_version)
+	std::iostream stream, uint32_t gfx_version)
 {
 	Check_Object(stream);
 #ifdef _GAMEOS_HPP_
 	// gos_PushCurrentHeap(Heap);
 #endif
-	PertCloud__Specification* spec =
-		new gosFX::PertCloud__Specification(stream, gfx_version);
+	PertCloud__Specification* spec = new gosFX::PertCloud__Specification(stream, gfx_version);
 	// gos_PopCurrentHeap();
 	return spec;
 }
 
 //------------------------------------------------------------------------------
 //
-void gosFX::PertCloud__Specification::Save(Stuff::MemoryStream* stream)
+void gosFX::PertCloud__Specification::Save(std::iostream stream)
 {
 	// Check_Object(this);
 	Check_Object(stream);
@@ -167,10 +164,10 @@ gosFX::PertCloud::ClassData* gosFX::PertCloud::DefaultData = nullptr;
 //
 void gosFX::PertCloud::InitializeClass()
 {
-	Verify(!DefaultData);
-	DefaultData = new ClassData(gosFX::PertCloudClassID, "gosFX::PertCloud",
-		SpinningCloud::DefaultData, (Effect::Factory)&Make,
-		(Specification::Factory)&Specification::Make);
+	_ASSERT(!DefaultData);
+	DefaultData =
+		new ClassData(gosFX::PertCloudClassID, "gosFX::PertCloud", SpinningCloud::DefaultData,
+			(Effect::Factory)&Make, (Specification::Factory)&Specification::Make);
 	Register_Object(DefaultData);
 }
 
@@ -189,20 +186,18 @@ gosFX::PertCloud::PertCloud(Specification* spec, uint32_t flags)
 	: SpinningCloud(DefaultData, spec, flags)
 {
 	Check_Object(spec);
-	// Verify(gos_GetCurrentHeap() == Heap);
+	// _ASSERT(gos_GetCurrentHeap() == Heap);
 	// gos_PushCurrentHeap(MidLevelRenderer::Heap);
-	m_cloudImplementation = new MidLevelRenderer::MLRNGonCloud(
-		spec->m_vertices, spec->m_maxParticleCount);
+	m_cloudImplementation =
+		new MidLevelRenderer::MLRNGonCloud(spec->m_vertices, spec->m_maxParticleCount);
 	Register_Object(m_cloudImplementation);
 	// gos_PopCurrentHeap();
 	uint32_t index = spec->m_maxParticleCount * sizeof(Particle);
 	m_P_vertices   = Cast_Pointer(Stuff::Point3D*, &m_data[index]);
-	index +=
-		spec->m_vertices * spec->m_maxParticleCount * sizeof(Stuff::Point3D);
+	index += spec->m_vertices * spec->m_maxParticleCount * sizeof(Stuff::Point3D);
 	m_P_color = Cast_Pointer(Stuff::RGBAColor*, &m_data[index]);
 	m_cloudImplementation->SetData(
-		Cast_Pointer(pcsize_t, &m_activeParticleCount), m_P_vertices,
-		m_P_color);
+		Cast_Pointer(pcsize_t, &m_activeParticleCount), m_P_vertices, m_P_color);
 }
 
 //------------------------------------------------------------------------------
@@ -228,8 +223,8 @@ gosFX::PertCloud* gosFX::PertCloud::Make(Specification* spec, uint32_t flags)
 
 //------------------------------------------------------------------------------
 //
-bool gosFX::PertCloud::AnimateParticle(uint32_t index,
-	const Stuff::LinearMatrix4D* world_to_new_local, Stuff::Time till)
+bool gosFX::PertCloud::AnimateParticle(
+	uint32_t index, const Stuff::LinearMatrix4D* world_to_new_local, Stuff::Time till)
 {
 	// Check_Object(this);
 	//
@@ -267,8 +262,7 @@ bool gosFX::PertCloud::AnimateParticle(uint32_t index,
 
 //------------------------------------------------------------------------------
 //
-void gosFX::PertCloud::CreateNewParticle(
-	uint32_t index, Stuff::Point3D* translation)
+void gosFX::PertCloud::CreateNewParticle(uint32_t index, Stuff::Point3D* translation)
 {
 	// Check_Object(this);
 	//
@@ -278,7 +272,7 @@ void gosFX::PertCloud::CreateNewParticle(
 	//
 	SpinningCloud::CreateNewParticle(index, translation);
 	m_cloudImplementation->TurnOn(index);
-	Verify(m_cloudImplementation->IsOn(index));
+	_ASSERT(m_cloudImplementation->IsOn(index));
 	//
 	//--------------------
 	// Set up the particle
@@ -293,22 +287,20 @@ void gosFX::PertCloud::CreateNewParticle(
 	// Now we compute the geometry of the pert
 	//----------------------------------------
 	//
-	Verify(spec->m_vertices > 4);
-	float angle_between = Stuff::Two_Pi / (spec->m_vertices - 2);
-	float radius		= spec->m_size.ComputeValue(m_age, particle->m_seed);
-	int32_t even		= 1;
+	_ASSERT(spec->m_vertices > 4);
+	float angle_between		= Stuff::Two_Pi / (spec->m_vertices - 2);
+	float radius			= spec->m_size.ComputeValue(m_age, particle->m_seed);
+	int32_t even			= 1;
 	particle->m_vertices[0] = Stuff::Point3D::Identity;
 	float bound				= 0.0f;
 	int32_t j;
 	for (j = 1; j < spec->m_vertices - 1; j++)
 	{
-		float perturbance =
-			even * spec->m_perturbation.ComputeValue(m_age, particle->m_seed);
-		float temp = perturbance + radius;
-		particle->m_vertices[j] =
-			Stuff::Point3D(Stuff::Sin(j * angle_between) * temp,
-				Stuff::Cos(j * angle_between) * temp, perturbance);
-		perturbance = temp * temp + perturbance * perturbance;
+		float perturbance		= even * spec->m_perturbation.ComputeValue(m_age, particle->m_seed);
+		float temp				= perturbance + radius;
+		particle->m_vertices[j] = Stuff::Point3D(Stuff::Sin(j * angle_between) * temp,
+			Stuff::Cos(j * angle_between) * temp, perturbance);
+		perturbance				= temp * temp + perturbance * perturbance;
 		if (perturbance > bound)
 			bound = perturbance;
 		even = -even;
@@ -323,7 +315,7 @@ void gosFX::PertCloud::DestroyParticle(uint32_t index)
 {
 	SpinningCloud::DestroyParticle(index);
 	m_cloudImplementation->TurnOff(index);
-	Verify(!m_cloudImplementation->IsOn(index));
+	_ASSERT(!m_cloudImplementation->IsOn(index));
 }
 
 //------------------------------------------------------------------------------
@@ -364,11 +356,9 @@ void gosFX::PertCloud::Draw(DrawInfo* info)
 				// Get the camera location into local space
 				//-----------------------------------------
 				//
-				Stuff::Point3D camera_in_world(
-					info->m_clipper->GetCameraToWorldMatrix());
+				Stuff::Point3D camera_in_world(info->m_clipper->GetCameraToWorldMatrix());
 				Stuff::Point3D camera_in_cloud;
-				camera_in_cloud.MultiplyByInverse(
-					camera_in_world, local_to_world);
+				camera_in_cloud.MultiplyByInverse(camera_in_world, local_to_world);
 				//
 				//--------------------------------------
 				// Spin through all the active particles
@@ -386,15 +376,12 @@ void gosFX::PertCloud::Draw(DrawInfo* info)
 						//--------------------------------
 						//
 						Stuff::Vector3D direction_in_cloud;
-						direction_in_cloud.Subtract(
-							camera_in_cloud, particle->m_localTranslation);
+						direction_in_cloud.Subtract(camera_in_cloud, particle->m_localTranslation);
 						Stuff::LinearMatrix4D pert_to_cloud;
 						pert_to_cloud.BuildRotation(particle->m_localRotation);
 						pert_to_cloud.AlignLocalAxisToWorldVector(
-							direction_in_cloud, Stuff::Z_Axis, Stuff::Y_Axis,
-							Stuff::X_Axis);
-						pert_to_cloud.BuildTranslation(
-							particle->m_localTranslation);
+							direction_in_cloud, Stuff::Z_Axis, Stuff::Y_Axis, Stuff::X_Axis);
+						pert_to_cloud.BuildTranslation(particle->m_localTranslation);
 						//
 						//----------------------------------------------------
 						// Figure out the scale, then transform all the points
@@ -405,8 +392,7 @@ void gosFX::PertCloud::Draw(DrawInfo* info)
 						{
 							Stuff::Point3D scaled;
 							scaled.Multiply(particle->m_vertices[v], scale);
-							m_P_vertices[vert++].Multiply(
-								scaled, pert_to_cloud);
+							m_P_vertices[vert++].Multiply(scaled, pert_to_cloud);
 						}
 					}
 					else
@@ -425,11 +411,9 @@ void gosFX::PertCloud::Draw(DrawInfo* info)
 				// Get the camera location into local space
 				//-----------------------------------------
 				//
-				Stuff::Point3D camera_in_world(
-					info->m_clipper->GetCameraToWorldMatrix());
+				Stuff::Point3D camera_in_world(info->m_clipper->GetCameraToWorldMatrix());
 				Stuff::Point3D camera_in_cloud;
-				camera_in_cloud.MultiplyByInverse(
-					camera_in_world, local_to_world);
+				camera_in_cloud.MultiplyByInverse(camera_in_world, local_to_world);
 				//
 				//--------------------------------------
 				// Spin through all the active particles
@@ -447,15 +431,12 @@ void gosFX::PertCloud::Draw(DrawInfo* info)
 						//--------------------------------
 						//
 						Stuff::Vector3D direction_in_cloud;
-						direction_in_cloud.Subtract(
-							camera_in_cloud, particle->m_localTranslation);
+						direction_in_cloud.Subtract(camera_in_cloud, particle->m_localTranslation);
 						Stuff::LinearMatrix4D pert_to_cloud;
 						pert_to_cloud.BuildRotation(particle->m_localRotation);
 						pert_to_cloud.AlignLocalAxisToWorldVector(
-							direction_in_cloud, Stuff::Z_Axis, Stuff::X_Axis,
-							-1);
-						pert_to_cloud.BuildTranslation(
-							particle->m_localTranslation);
+							direction_in_cloud, Stuff::Z_Axis, Stuff::X_Axis, -1);
+						pert_to_cloud.BuildTranslation(particle->m_localTranslation);
 						//
 						//----------------------------------------------------
 						// Figure out the scale, then transform all the points
@@ -466,8 +447,7 @@ void gosFX::PertCloud::Draw(DrawInfo* info)
 						{
 							Stuff::Point3D scaled;
 							scaled.Multiply(particle->m_vertices[v], scale);
-							m_P_vertices[vert++].Multiply(
-								scaled, pert_to_cloud);
+							m_P_vertices[vert++].Multiply(scaled, pert_to_cloud);
 						}
 					}
 					else
@@ -487,8 +467,7 @@ void gosFX::PertCloud::Draw(DrawInfo* info)
 			// Get the camera location into local space
 			//-----------------------------------------
 			//
-			Stuff::Point3D camera_in_world(
-				info->m_clipper->GetCameraToWorldMatrix());
+			Stuff::Point3D camera_in_world(info->m_clipper->GetCameraToWorldMatrix());
 			Stuff::Point3D camera_in_cloud;
 			camera_in_cloud.MultiplyByInverse(camera_in_world, local_to_world);
 			//
@@ -508,14 +487,12 @@ void gosFX::PertCloud::Draw(DrawInfo* info)
 					//--------------------------------
 					//
 					Stuff::Vector3D direction_in_cloud;
-					direction_in_cloud.Subtract(
-						camera_in_cloud, particle->m_localTranslation);
+					direction_in_cloud.Subtract(camera_in_cloud, particle->m_localTranslation);
 					Stuff::LinearMatrix4D pert_to_cloud;
 					pert_to_cloud.BuildRotation(particle->m_localRotation);
 					pert_to_cloud.AlignLocalAxisToWorldVector(
 						direction_in_cloud, Stuff::Z_Axis, Stuff::Y_Axis, -1);
-					pert_to_cloud.BuildTranslation(
-						particle->m_localTranslation);
+					pert_to_cloud.BuildTranslation(particle->m_localTranslation);
 					//
 					//----------------------------------------------------
 					// Figure out the scale, then transform all the points
@@ -554,8 +531,7 @@ void gosFX::PertCloud::Draw(DrawInfo* info)
 					//
 					Stuff::LinearMatrix4D pert_to_cloud;
 					pert_to_cloud.BuildRotation(particle->m_localRotation);
-					pert_to_cloud.BuildTranslation(
-						particle->m_localTranslation);
+					pert_to_cloud.BuildTranslation(particle->m_localTranslation);
 					//
 					//----------------------------------------------------
 					// Figure out the scale, then transform all the points
@@ -585,7 +561,4 @@ void gosFX::PertCloud::Draw(DrawInfo* info)
 
 //------------------------------------------------------------------------------
 //
-void gosFX::PertCloud::TestInstance(void) const
-{
-	Verify(IsDerivedFrom(DefaultData));
-}
+void gosFX::PertCloud::TestInstance(void) const { _ASSERT(IsDerivedFrom(DefaultData)); }

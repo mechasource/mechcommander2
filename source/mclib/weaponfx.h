@@ -57,13 +57,13 @@ class WeaponEffects
 {
 	// Data Members
 	//-------------
-  protected:
+protected:
 	EffectData* effects;
 	int32_t numEffects;
 
 	// Member Functions
 	//----------------
-  public:
+public:
 	WeaponEffects(void) { init(void); }
 
 	~WeaponEffects(void) { destroy(void); }

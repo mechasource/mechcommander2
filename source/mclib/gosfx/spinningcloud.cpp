@@ -16,12 +16,11 @@
 //------------------------------------------------------------------------------
 //
 gosFX::SpinningCloud__Specification::SpinningCloud__Specification(
-	Stuff::RegisteredClass::ClassID class_id, Stuff::MemoryStream* stream,
-	uint32_t gfx_version)
+	Stuff::RegisteredClass::ClassID class_id, std::iostream stream, uint32_t gfx_version)
 	: ParticleCloud__Specification(class_id, stream, gfx_version)
 {
 	// Check_Pointer(this);
-	// Verify(gos_GetCurrentHeap() == Heap);
+	// _ASSERT(gos_GetCurrentHeap() == Heap);
 	//
 	//-----------------
 	// Load the fcurves
@@ -49,7 +48,7 @@ gosFX::SpinningCloud__Specification::SpinningCloud__Specification(
 	: ParticleCloud__Specification(class_id)
 {
 	// Check_Pointer(this);
-	// Verify(gos_GetCurrentHeap() == Heap);
+	// _ASSERT(gos_GetCurrentHeap() == Heap);
 	m_randomStartingRotation = false;
 	m_alignZUsingX			 = false;
 	m_alignZUsingY			 = false;
@@ -58,7 +57,7 @@ gosFX::SpinningCloud__Specification::SpinningCloud__Specification(
 
 //------------------------------------------------------------------------------
 //
-void gosFX::SpinningCloud__Specification::Save(Stuff::MemoryStream* stream)
+void gosFX::SpinningCloud__Specification::Save(std::iostream stream)
 {
 	// Check_Object(this);
 	Check_Object(stream);
@@ -110,8 +109,7 @@ bool gosFX::SpinningCloud__Specification::IsDataValid(bool fix_data)
 
 //------------------------------------------------------------------------------
 //
-void gosFX::SpinningCloud__Specification::Copy(
-	SpinningCloud__Specification* spec)
+void gosFX::SpinningCloud__Specification::Copy(SpinningCloud__Specification* spec)
 {
 	// Check_Object(this);
 	Check_Object(spec);
@@ -139,10 +137,10 @@ gosFX::SpinningCloud::ClassData* gosFX::SpinningCloud::DefaultData = nullptr;
 //
 void gosFX::SpinningCloud::InitializeClass()
 {
-	Verify(!DefaultData);
-	// Verify(gos_GetCurrentHeap() == Heap);
-	DefaultData = new ClassData(SpinningCloudClassID, "gosFX::SpinningCloud",
-		ParticleCloud::DefaultData, nullptr, nullptr);
+	_ASSERT(!DefaultData);
+	// _ASSERT(gos_GetCurrentHeap() == Heap);
+	DefaultData = new ClassData(
+		SpinningCloudClassID, "gosFX::SpinningCloud", ParticleCloud::DefaultData, nullptr, nullptr);
 	Register_Object(DefaultData);
 }
 
@@ -157,11 +155,10 @@ void gosFX::SpinningCloud::TerminateClass()
 
 //------------------------------------------------------------------------------
 //
-gosFX::SpinningCloud::SpinningCloud(
-	ClassData* class_data, Specification* spec, uint32_t flags)
+gosFX::SpinningCloud::SpinningCloud(ClassData* class_data, Specification* spec, uint32_t flags)
 	: ParticleCloud(class_data, spec, flags)
 {
-	// Verify(gos_GetCurrentHeap() == Heap);
+	// _ASSERT(gos_GetCurrentHeap() == Heap);
 }
 
 //------------------------------------------------------------------------------
@@ -192,8 +189,7 @@ bool gosFX::SpinningCloud::Execute(ExecuteInfo* info)
 	//
 	if (m_activeParticleCount > 0)
 	{
-		Stuff::ExtentBox box(
-			Stuff::Point3D::Identity, Stuff::Point3D::Identity);
+		Stuff::ExtentBox box(Stuff::Point3D::Identity, Stuff::Point3D::Identity);
 		uint32_t i = 0;
 		//
 		//-------------------------------------------------------------------
@@ -212,18 +208,12 @@ bool gosFX::SpinningCloud::Execute(ExecuteInfo* info)
 			//
 			if (particle->m_age < 1.0f)
 			{
-				box.maxX = particle->m_localTranslation.x +
-						   particle->m_radius * particle->m_scale;
-				box.minX = particle->m_localTranslation.x -
-						   particle->m_radius * particle->m_scale;
-				box.maxY = particle->m_localTranslation.y +
-						   particle->m_radius * particle->m_scale;
-				box.minY = particle->m_localTranslation.y -
-						   particle->m_radius * particle->m_scale;
-				box.maxZ = particle->m_localTranslation.z +
-						   particle->m_radius * particle->m_scale;
-				box.minZ = particle->m_localTranslation.z -
-						   particle->m_radius * particle->m_scale;
+				box.maxX = particle->m_localTranslation.x + particle->m_radius * particle->m_scale;
+				box.minX = particle->m_localTranslation.x - particle->m_radius * particle->m_scale;
+				box.maxY = particle->m_localTranslation.y + particle->m_radius * particle->m_scale;
+				box.minY = particle->m_localTranslation.y - particle->m_radius * particle->m_scale;
+				box.maxZ = particle->m_localTranslation.z + particle->m_radius * particle->m_scale;
+				box.minZ = particle->m_localTranslation.z - particle->m_radius * particle->m_scale;
 				break;
 			}
 		}
@@ -239,18 +229,18 @@ bool gosFX::SpinningCloud::Execute(ExecuteInfo* info)
 			if (particle->m_age < 1.0f)
 			{
 				Stuff::ExtentBox local_box;
-				local_box.minX = particle->m_localTranslation.x -
-								 particle->m_radius * particle->m_scale;
-				local_box.maxX = particle->m_localTranslation.x +
-								 particle->m_radius * particle->m_scale;
-				local_box.minY = particle->m_localTranslation.y -
-								 particle->m_radius * particle->m_scale;
-				local_box.maxY = particle->m_localTranslation.y +
-								 particle->m_radius * particle->m_scale;
-				local_box.minZ = particle->m_localTranslation.z -
-								 particle->m_radius * particle->m_scale;
-				local_box.maxZ = particle->m_localTranslation.z +
-								 particle->m_radius * particle->m_scale;
+				local_box.minX =
+					particle->m_localTranslation.x - particle->m_radius * particle->m_scale;
+				local_box.maxX =
+					particle->m_localTranslation.x + particle->m_radius * particle->m_scale;
+				local_box.minY =
+					particle->m_localTranslation.y - particle->m_radius * particle->m_scale;
+				local_box.maxY =
+					particle->m_localTranslation.y + particle->m_radius * particle->m_scale;
+				local_box.minZ =
+					particle->m_localTranslation.z - particle->m_radius * particle->m_scale;
+				local_box.maxZ =
+					particle->m_localTranslation.z + particle->m_radius * particle->m_scale;
 				box.Union(box, local_box);
 			}
 		}
@@ -259,20 +249,17 @@ bool gosFX::SpinningCloud::Execute(ExecuteInfo* info)
 		// Now, build a info->m_bounds around this box
 		//------------------------------------
 		//
-		Verify(box.maxX >= box.minX);
-		Verify(box.maxY >= box.minY);
-		Verify(box.maxZ >= box.minZ);
-		Stuff::OBB local_bounds	= Stuff::OBB::Identity;
-		local_bounds.axisExtents.x = 0.5f * (box.maxX - box.minX);
-		local_bounds.axisExtents.y = 0.5f * (box.maxY - box.minY);
-		local_bounds.axisExtents.z = 0.5f * (box.maxZ - box.minZ);
-		local_bounds.localToParent(3, 0) =
-			box.minX + local_bounds.axisExtents.x;
-		local_bounds.localToParent(3, 1) =
-			box.minY + local_bounds.axisExtents.y;
-		local_bounds.localToParent(3, 2) =
-			box.minZ + local_bounds.axisExtents.z;
-		local_bounds.sphereRadius = local_bounds.axisExtents.GetLength();
+		_ASSERT(box.maxX >= box.minX);
+		_ASSERT(box.maxY >= box.minY);
+		_ASSERT(box.maxZ >= box.minZ);
+		Stuff::OBB local_bounds			 = Stuff::OBB::Identity;
+		local_bounds.axisExtents.x		 = 0.5f * (box.maxX - box.minX);
+		local_bounds.axisExtents.y		 = 0.5f * (box.maxY - box.minY);
+		local_bounds.axisExtents.z		 = 0.5f * (box.maxZ - box.minZ);
+		local_bounds.localToParent(3, 0) = box.minX + local_bounds.axisExtents.x;
+		local_bounds.localToParent(3, 1) = box.minY + local_bounds.axisExtents.y;
+		local_bounds.localToParent(3, 2) = box.minZ + local_bounds.axisExtents.z;
+		local_bounds.sphereRadius		 = local_bounds.axisExtents.GetLength();
 		if (local_bounds.sphereRadius < Stuff::SMALL)
 			local_bounds.sphereRadius = 0.01f;
 		Stuff::OBB parent_bounds;
@@ -289,8 +276,7 @@ bool gosFX::SpinningCloud::Execute(ExecuteInfo* info)
 
 //------------------------------------------------------------------------------
 //
-void gosFX::SpinningCloud::CreateNewParticle(
-	uint32_t index, Stuff::Point3D* translation)
+void gosFX::SpinningCloud::CreateNewParticle(uint32_t index, Stuff::Point3D* translation)
 {
 	//
 	//---------------------------
@@ -326,16 +312,14 @@ void gosFX::SpinningCloud::CreateNewParticle(
 	if (spec->m_alignYUsingVelocity)
 	{
 		Stuff::LinearMatrix4D basis(true);
-		basis.AlignLocalAxisToWorldVector(particle->m_localLinearVelocity,
-			Stuff::Y_Axis, Stuff::X_Axis, Stuff::Z_Axis);
+		basis.AlignLocalAxisToWorldVector(
+			particle->m_localLinearVelocity, Stuff::Y_Axis, Stuff::X_Axis, Stuff::Z_Axis);
 		particle->m_localRotation = basis;
 	}
 	else if (spec->m_randomStartingRotation)
 	{
-		Stuff::EulerAngles rotation(
-			Stuff::Two_Pi * Stuff::Random::GetFraction(),
-			Stuff::Pi * Stuff::Random::GetFraction(),
-			Stuff::Two_Pi * Stuff::Random::GetFraction());
+		Stuff::EulerAngles rotation(Stuff::Two_Pi * Stuff::Random::GetFraction(),
+			Stuff::Pi * Stuff::Random::GetFraction(), Stuff::Two_Pi * Stuff::Random::GetFraction());
 		particle->m_localRotation = rotation;
 	}
 	else
@@ -344,8 +328,8 @@ void gosFX::SpinningCloud::CreateNewParticle(
 
 //------------------------------------------------------------------------------
 //
-bool gosFX::SpinningCloud::AnimateParticle(uint32_t index,
-	const Stuff::LinearMatrix4D* world_to_new_local, Stuff::Time till)
+bool gosFX::SpinningCloud::AnimateParticle(
+	uint32_t index, const Stuff::LinearMatrix4D* world_to_new_local, Stuff::Time till)
 {
 	// Check_Object(this);
 	//
@@ -474,10 +458,8 @@ bool gosFX::SpinningCloud::AnimateParticle(uint32_t index,
 	if (sim_mode == DynamicWorldSpaceSimulationMode)
 	{
 		Check_Object(world_to_new_local);
-		particle->m_localLinearVelocity.Multiply(
-			*velocity, *world_to_new_local);
-		particle->m_localTranslation.Multiply(
-			*translation, *world_to_new_local);
+		particle->m_localLinearVelocity.Multiply(*velocity, *world_to_new_local);
+		particle->m_localTranslation.Multiply(*translation, *world_to_new_local);
 		Stuff::LinearMatrix4D world_rot(*rotation);
 		Stuff::LinearMatrix4D local_rot;
 		local_rot.Multiply(world_rot, *world_to_new_local);
@@ -491,8 +473,8 @@ bool gosFX::SpinningCloud::AnimateParticle(uint32_t index,
 	if (spec->m_alignYUsingVelocity)
 	{
 		Stuff::LinearMatrix4D basis(true);
-		basis.AlignLocalAxisToWorldVector(particle->m_localLinearVelocity,
-			Stuff::Y_Axis, Stuff::X_Axis, Stuff::Z_Axis);
+		basis.AlignLocalAxisToWorldVector(
+			particle->m_localLinearVelocity, Stuff::Y_Axis, Stuff::X_Axis, Stuff::Z_Axis);
 		particle->m_localRotation = basis;
 	}
 	//
@@ -506,7 +488,4 @@ bool gosFX::SpinningCloud::AnimateParticle(uint32_t index,
 
 //------------------------------------------------------------------------------
 //
-void gosFX::SpinningCloud::TestInstance(void) const
-{
-	Verify(IsDerivedFrom(DefaultData));
-}
+void gosFX::SpinningCloud::TestInstance(void) const { _ASSERT(IsDerivedFrom(DefaultData)); }

@@ -81,8 +81,7 @@ void PacketFile::atClose(void)
 				tableEntry = seekTable[currentPacket];
 				if (GetPacketType(tableEntry) == STORAGE_TYPE_NUL)
 				{
-					seekTable[currentPacket] =
-						SetPacketType(endPtr, STORAGE_TYPE_NUL);
+					seekTable[currentPacket] = SetPacketType(endPtr, STORAGE_TYPE_NUL);
 				}
 				else
 				{
@@ -155,8 +154,7 @@ int32_t PacketFile::afterOpen(void)
 	{
 		if (numPackets && !seekTable)
 		{
-			seekTable =
-				(int32_t*)systemHeap->Malloc(numPackets * sizeof(int32_t));
+			seekTable = (int32_t*)systemHeap->Malloc(numPackets * sizeof(int32_t));
 			gosASSERT(seekTable != nullptr);
 			seek(sizeof(int32_t) * 2); // File Version & File Length
 			read(puint8_t(seekTable), (numPackets * sizeof(int32_t)));
@@ -179,7 +177,7 @@ PacketFile::~PacketFile(void) { close(); }
 //---------------------------------------------------------------------------
 int32_t PacketFile::open(PSTR fName, FileMode _mode, int32_t numChild)
 {
-	int32_t openResult = File::open(fName, _mode, numChild);
+	int32_t openResult = MechFile::open(fName, _mode, numChild);
 	if (openResult != NO_ERROR)
 	{
 		return (openResult);
@@ -191,7 +189,7 @@ int32_t PacketFile::open(PSTR fName, FileMode _mode, int32_t numChild)
 //---------------------------------------------------------------------------
 int32_t PacketFile::open(FilePtr _parent, uint32_t fileSize, int32_t numChild)
 {
-	int32_t result = File::open(_parent, fileSize, numChild);
+	int32_t result = MechFile::open(_parent, fileSize, numChild);
 	if (result != NO_ERROR)
 		return (result);
 	result = afterOpen();
@@ -201,7 +199,7 @@ int32_t PacketFile::open(FilePtr _parent, uint32_t fileSize, int32_t numChild)
 //---------------------------------------------------------------------------
 int32_t PacketFile::create(PSTR fName)
 {
-	int32_t openResult = File::create(fName);
+	int32_t openResult = MechFile::create(fName);
 	if (openResult != NO_ERROR)
 	{
 		return (openResult);
@@ -212,7 +210,7 @@ int32_t PacketFile::create(PSTR fName)
 
 int32_t PacketFile::createWithCase(PSTR fName)
 {
-	int32_t openResult = File::createWithCase(fName);
+	int32_t openResult = MechFile::createWithCase(fName);
 	if (openResult != NO_ERROR)
 	{
 		return (openResult);
@@ -225,7 +223,7 @@ int32_t PacketFile::createWithCase(PSTR fName)
 void PacketFile::close(void)
 {
 	atClose();
-	File::close();
+	MechFile::close();
 }
 
 //---------------------------------------------------------------------------
@@ -247,11 +245,9 @@ int32_t PacketFile::readPacketOffset(int32_t packet, int32_t* lastType)
 int32_t PacketFile::readPacket(int32_t packet, puint8_t buffer)
 {
 	int32_t result = 0;
-	if ((packet == -1) || (packet == currentPacket) ||
-		(seekPacket(packet) == NO_ERROR))
+	if ((packet == -1) || (packet == currentPacket) || (seekPacket(packet) == NO_ERROR))
 	{
-		if ((getStorageType() == STORAGE_TYPE_RAW) ||
-			(getStorageType() == STORAGE_TYPE_FWF))
+		if ((getStorageType() == STORAGE_TYPE_RAW) || (getStorageType() == STORAGE_TYPE_FWF))
 		{
 			seek(packetBase);
 			result = read(buffer, packetSize);
@@ -278,8 +274,8 @@ int32_t PacketFile::readPacket(int32_t packet, puint8_t buffer)
 				if (LZPacketBuffer)
 				{
 					read(LZPacketBuffer, (packetSize - sizeof(int32_t)));
-					int32_t decompLength = LZDecomp(
-						buffer, LZPacketBuffer, packetSize - sizeof(int32_t));
+					int32_t decompLength =
+						LZDecomp(buffer, LZPacketBuffer, packetSize - sizeof(int32_t));
 					if (decompLength != packetUnpackedSize)
 						result = 0;
 					else
@@ -306,10 +302,9 @@ int32_t PacketFile::readPacket(int32_t packet, puint8_t buffer)
 				{
 					read(LZPacketBuffer, (packetSize - sizeof(int32_t)));
 					uint32_t decompLength = LZPacketBufferSize;
-					int32_t decompResult  = uncompress(buffer, &decompLength,
-						 LZPacketBuffer, packetSize - sizeof(int32_t));
-					if ((decompResult != Z_OK) ||
-						((int32_t)decompLength != packetUnpackedSize))
+					int32_t decompResult  = uncompress(
+						 buffer, &decompLength, LZPacketBuffer, packetSize - sizeof(int32_t));
+					if ((decompResult != Z_OK) || ((int32_t)decompLength != packetUnpackedSize))
 						result = 0;
 					else
 						result = decompLength;
@@ -330,11 +325,9 @@ int32_t PacketFile::readPacket(int32_t packet, puint8_t buffer)
 int32_t PacketFile::readPackedPacket(int32_t packet, puint8_t buffer)
 {
 	int32_t result = 0;
-	if ((packet == -1) || (packet == currentPacket) ||
-		(seekPacket(packet) == NO_ERROR))
+	if ((packet == -1) || (packet == currentPacket) || (seekPacket(packet) == NO_ERROR))
 	{
-		if ((getStorageType() == STORAGE_TYPE_RAW) ||
-			(getStorageType() == STORAGE_TYPE_FWF))
+		if ((getStorageType() == STORAGE_TYPE_RAW) || (getStorageType() == STORAGE_TYPE_FWF))
 		{
 			seek(packetBase);
 			result = read(buffer, packetSize);
@@ -473,8 +466,7 @@ void PacketFile::reserve(int32_t count, bool useCheckSum)
 }
 
 //---------------------------------------------------------------------------
-int32_t PacketFile::writePacket(
-	int32_t packet, puint8_t buffer, int32_t nbytes, uint8_t pType)
+int32_t PacketFile::writePacket(int32_t packet, puint8_t buffer, int32_t nbytes, uint8_t pType)
 {
 	//--------------------------------------------------------
 	// This function writes the packet to the current end
@@ -488,8 +480,7 @@ int32_t PacketFile::writePacket(
 	// right now doesn't allow anything but same size.
 	int32_t result		= 0;
 	puint8_t workBuffer = nullptr;
-	if (pType == ANY_PACKET_TYPE || pType == STORAGE_TYPE_LZD ||
-		pType == STORAGE_TYPE_ZLIB)
+	if (pType == ANY_PACKET_TYPE || pType == STORAGE_TYPE_LZD || pType == STORAGE_TYPE_ZLIB)
 	{
 		if ((nbytes << 1) < 4096)
 			workBuffer = (puint8_t)malloc(4096);
@@ -505,8 +496,7 @@ int32_t PacketFile::writePacket(
 	// Code goes in here to pick the best compressed
 	// version of the packet.  Otherwise, default
 	// to RAW.
-	if ((pType == ANY_PACKET_TYPE) || (pType == STORAGE_TYPE_LZD) ||
-		(pType == STORAGE_TYPE_ZLIB))
+	if ((pType == ANY_PACKET_TYPE) || (pType == STORAGE_TYPE_LZD) || (pType == STORAGE_TYPE_ZLIB))
 	{
 		if (pType == ANY_PACKET_TYPE)
 			pType = STORAGE_TYPE_RAW;
@@ -517,18 +507,17 @@ int32_t PacketFile::writePacket(
 		uint32_t actualSize = nbytes << 1;
 		if (actualSize < 4096)
 			actualSize = 4096;
-		uint32_t workBufferSize  = actualSize;
-		uint32_t oldBufferSize   = nbytes;
-		int32_t compressedResult = compress2(
-			workBuffer, &workBufferSize, buffer, nbytes, Z_DEFAULT_COMPRESSION);
+		uint32_t workBufferSize = actualSize;
+		uint32_t oldBufferSize  = nbytes;
+		int32_t compressedResult =
+			compress2(workBuffer, &workBufferSize, buffer, nbytes, Z_DEFAULT_COMPRESSION);
 		if (compressedResult != Z_OK)
-			STOP(("Unable to write packet %d to file %s.  Error %d", packet,
-				fileName, compressedResult));
-		compressedResult =
-			uncompress(buffer, &oldBufferSize, workBuffer, nbytes);
+			STOP(("Unable to write packet %d to file %s.  Error %d", packet, m_fileName,
+				compressedResult));
+		compressedResult = uncompress(buffer, &oldBufferSize, workBuffer, nbytes);
 		if ((int32_t)oldBufferSize != nbytes)
-			STOP(("Packet size changed after compression.  Was %d is now %d",
-				nbytes, oldBufferSize));
+			STOP((
+				"Packet size changed after compression.  Was %d is now %d", nbytes, oldBufferSize));
 		if ((pType == STORAGE_TYPE_LZD) || (pType == STORAGE_TYPE_ZLIB) ||
 			((int32_t)workBufferSize < nbytes))
 		{
@@ -583,8 +572,7 @@ int32_t PacketFile::writePacket(
 
 #define DEFAULT_MAX_PACKET 65535
 //---------------------------------------------------------------------------
-int32_t PacketFile::insertPacket(
-	int32_t packet, puint8_t buffer, int32_t nbytes, uint8_t pType)
+int32_t PacketFile::insertPacket(int32_t packet, puint8_t buffer, int32_t nbytes, uint8_t pType)
 {
 	//--------------------------------------------------------
 	// This function writes the packet to the current end
@@ -647,7 +635,7 @@ int32_t PacketFile::insertPacket(
 	// Now close and reassign everything.
 	char ourFileName[250];
 	int32_t ourFileMode = 0;
-	strcpy(ourFileName, fileName);
+	strcpy(ourFileName, m_fileName);
 	ourFileMode = fileMode;
 	tmpFile.close();
 	close();

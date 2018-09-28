@@ -22,24 +22,20 @@ float scenarioTime		 = 0.0;
 uint32_t LastTimeGetTime = 0;
 bool dynamicFrameTiming  = TRUE;
 
-PSTR monthName[12] = {"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug",
-	"Sep", "Oct", "Nov", "Dec"};
+PSTR monthName[12] = {
+	"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
 
 //----------------------------------------------------------------------------------
 uint32_t MCTiming_GetTimeZoneInforation(PVOIDtimeData)
 {
 	// Get Time Zone information for this machine to calculate
 	// Astronomy correctly.
-	uint32_t daylightSavingsInfo =
-		GetTimeZoneInformation((TIME_ZONE_INFORMATION*)timeData);
+	uint32_t daylightSavingsInfo = GetTimeZoneInformation((TIME_ZONE_INFORMATION*)timeData);
 	return daylightSavingsInfo;
 }
 
 //----------------------------------------------------------------------------------
-uint32_t MCTiming_GetTimeZoneInformationSize(void)
-{
-	return sizeof(TIME_ZONE_INFORMATION);
-}
+uint32_t MCTiming_GetTimeZoneInformationSize(void) { return sizeof(TIME_ZONE_INFORMATION); }
 
 //----------------------------------------------------------------------------------
 void MC_SYSTEMTIME::copyFromSystemTime(PVOIDsystemTime)

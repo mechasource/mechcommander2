@@ -7,13 +7,13 @@
 #ifndef MLR_MLREFFECT_HPP
 #define MLR_MLREFFECT_HPP
 
-#include <stuff/marray.hpp>
 #include <stuff/vector2d.hpp>
 #include <stuff/vector4d.hpp>
 #include <stuff/color.hpp>
 #include <stuff/linearmatrix.hpp>
 #include <mlr/mlrclippingstate.hpp>
 
+//#include <stuff/marray.hpp>
 //#include <mlr/mlr.hpp>
 //#include <mlr/mlrstate.hpp>
 
@@ -25,14 +25,10 @@ struct EffectClipPolygon
 	void Init(void);
 	void Destroy(void);
 
-	Stuff::DynamicArrayOf<Stuff::Vector4D>
-		coords; //[Max_Number_Vertices_Per_Polygon];
-	Stuff::DynamicArrayOf<Stuff::RGBAColor>
-		colors; //[Max_Number_Vertices_Per_Polygon];
-	Stuff::DynamicArrayOf<Stuff::Vector2DScalar>
-		texCoords; //[Max_Number_Vertices_Per_Polygon];
-	Stuff::DynamicArrayOf<MLRClippingState>
-		clipPerVertex; //[Max_Number_Vertices_Per_Polygon];
+	std::vector<Stuff::Vector4D> coords;			//[Max_Number_Vertices_Per_Polygon];
+	std::vector<Stuff::RGBAColor> colors;			//[Max_Number_Vertices_Per_Polygon];
+	std::vector<Stuff::Vector2DScalar> texCoords; //[Max_Number_Vertices_Per_Polygon];
+	std::vector<MLRClippingState> clipPerVertex;  //[Max_Number_Vertices_Per_Polygon];
 };
 
 class DrawEffectInformation;
@@ -46,15 +42,15 @@ class MLRSorter;
 
 class MLREffect : public Stuff::RegisteredClass
 {
-  public:
+public:
 	static void __stdcall InitializeClass(void);
 	static void __stdcall TerminateClass(void);
 
 	MLREffect(uint32_t nr, ClassData* class_data);
 	~MLREffect(void);
 
-	virtual void SetData(pcsize_t pcount, const Stuff::Point3D* point_data,
-		const Stuff::RGBAColor* color_data) = 0;
+	virtual void SetData(
+		pcsize_t pcount, const Stuff::Point3D* point_data, const Stuff::RGBAColor* color_data) = 0;
 
 	virtual uint32_t GetType(uint32_t) { return 0; }
 
@@ -68,26 +64,26 @@ class MLREffect : public Stuff::RegisteredClass
 	void TurnOn(uint32_t nr)
 	{
 		// Check_Object(this);
-		Verify(nr < maxNrOf);
+		_ASSERT(nr < maxNrOf);
 		testList[nr] |= 2;
 	}
 	void TurnOff(uint32_t nr)
 	{
 		// Check_Object(this);
-		Verify(nr < maxNrOf);
+		_ASSERT(nr < maxNrOf);
 		testList[nr] &= ~2;
 	}
 	bool IsOn(size_t nr)
 	{
 		// Check_Object(this);
-		Verify(nr < maxNrOf);
+		_ASSERT(nr < maxNrOf);
 		return (testList[nr] & 2) ? true : false;
 	}
 
 	virtual uint32_t Clip(MLRClippingState, GOSVertexPool*) = 0;
 
-	void SetEffectToClipMatrix(const Stuff::LinearMatrix4D* effectToWorld,
-		const Stuff::Matrix4D* worldToClipMatrix)
+	void SetEffectToClipMatrix(
+		const Stuff::LinearMatrix4D* effectToWorld, const Stuff::Matrix4D* worldToClipMatrix)
 	{
 		// Check_Object(this);
 		effectToClipMatrix.Multiply(*effectToWorld, *worldToClipMatrix);
@@ -114,30 +110,30 @@ class MLREffect : public Stuff::RegisteredClass
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Class Data Support
 	//
-  public:
+public:
 	static ClassData* DefaultData;
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Testing
 	//
-  public:
+public:
 	void TestInstance(void) const {};
 
-  protected:
+protected:
 	static EffectClipPolygon* clipBuffer;
 
 	void TurnAllVisible(void);
 	void TurnAllInVisible(void);
-	void TurnVisible(uint32_t nr)
+	void TurnVisible(size_t nr)
 	{
 		// Check_Object(this);
-		Verify(nr < maxNrOf);
+		_ASSERT(nr < maxNrOf);
 		testList[nr] |= 1;
 	}
-	void TurnInVisible(uint32_t nr)
+	void TurnInVisible(size_t nr)
 	{
 		// Check_Object(this);
-		Verify(nr < maxNrOf);
+		_ASSERT(nr < maxNrOf);
 		testList[nr] &= ~1;
 	}
 	uint32_t visible;
@@ -145,8 +141,8 @@ class MLREffect : public Stuff::RegisteredClass
 
 	const Stuff::Point3D* points;
 	const Stuff::RGBAColor* colors;
-	static Stuff::DynamicArrayOf<Stuff::Vector4D>* transformedCoords;
-	Stuff::DynamicArrayOf<int32_t> testList;
+	static std::vector<Stuff::Vector4D>* transformedCoords;
+	std::vector<int32_t> testList;
 
 	uint32_t drawMode;
 
@@ -167,5 +163,5 @@ struct EffectClipData
 	uint32_t flags;
 	uint32_t length;
 };
-}
+} // namespace MidLevelRenderer
 #endif

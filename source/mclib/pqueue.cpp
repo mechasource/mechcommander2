@@ -87,8 +87,7 @@ void PriorityQueue::downHeap(int32_t curIndex)
 	while (curIndex <= numItems / 2)
 	{
 		int32_t nextIndex = curIndex << 1;
-		if ((nextIndex < numItems) &&
-			(pqList[nextIndex].key > pqList[nextIndex + 1].key))
+		if ((nextIndex < numItems) && (pqList[nextIndex].key > pqList[nextIndex + 1].key))
 			nextIndex++;
 		if (stopKey <= pqList[nextIndex].key)
 			break;

@@ -22,7 +22,7 @@ namespace Stuff
 
 class FileDependencies : public Stuff::Plug
 {
-  public:
+public:
 	FileDependencies(void);
 	FileDependencies(const FileDependencies& dependencies) : Plug(DefaultData)
 	{
@@ -36,9 +36,9 @@ class FileDependencies : public Stuff::Plug
 
 	void AddDependency(FileStream* stream);
 	void AddDependencies(const FileDependencies* dependencies);
-	void AddDependencies(MemoryStream* dependencies);
+	void AddDependencies(std::iostream& dependencies);
 
-	DynamicMemoryStream m_fileNameStream;
+	std::fstream m_fileNameStream;
 };
 
 //##########################################################################
@@ -54,7 +54,7 @@ class FileStreamManager
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Constructor, destructor, and testing
 	//
-  public:
+public:
 	FileStreamManager(void);
 	~FileStreamManager(void);
 
@@ -66,18 +66,18 @@ class FileStreamManager
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Utility functions
 	//
-  public:
+public:
 	void CleanUpAfterCompares(void);
 
-	bool CompareModificationDate(const MString& file_name, int64_t time_stamp);
+	bool CompareModificationDate(const std::wstring& file_name, int64_t time_stamp);
 	void PurgeFileCompareCache(void);
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Private data
 	//
-  protected:
+protected:
 	typedef Stuff::PlugOf<int64_t> FileStatPlug;
-	Stuff::TreeOf<FileStatPlug*, Stuff::MString> compareCache;
+	Stuff::TreeOf<FileStatPlug*, std::wstring> compareCache;
 };
-}
+} // namespace Stuff
 #endif

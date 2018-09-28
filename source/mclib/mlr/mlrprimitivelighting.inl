@@ -19,7 +19,7 @@ void CLASSNAME::Lighting(MLRLight* const* lights, uint32_t nrLights)
 	// If no lights or normals are specified, use the original vertex colors
 	//----------------------------------------------------------------------
 	//
-	actualColors = &colors;
+	actualColors		= &colors;
 	uint32_t state_mask = GetCurrentState().GetLightingMode();
 	if (nrLights == 0 || normals.GetLength() == 0 || state_mask == MLRState::LightingOffMode)
 		return;
@@ -31,9 +31,9 @@ void CLASSNAME::Lighting(MLRLight* const* lights, uint32_t nrLights)
 	//
 	if (state_mask & MLRState::VertexLightingMode)
 	{
-		Verify(colors.GetLength() == litColors.GetLength());
-		Verify(normals.GetLength() == colors.GetLength());
-		Verify(coords.GetLength() == colors.GetLength());
+		_ASSERT(colors.GetLength() == litColors.GetLength());
+		_ASSERT(normals.GetLength() == colors.GetLength());
+		_ASSERT(coords.GetLength() == colors.GetLength());
 		size_t i, k, len = colors.GetLength();
 		MLRVertexData vertexData;
 #if COLOR_AS_DWORD
@@ -46,16 +46,16 @@ void CLASSNAME::Lighting(MLRLight* const* lights, uint32_t nrLights)
 		// Now light the array of vertices
 		//--------------------------------
 		//
-		vertexData.point = &coords[0];
-		vertexData.color = &litColors[0];
+		vertexData.point  = &coords[0];
+		vertexData.color  = &litColors[0];
 		vertexData.normal = &normals[0];
 		for (k = 0; k < len; k++)
 		{
 			if (visibleIndexedVertices[k] != 0)
 			{
-				vertexData.color->red = 0.0f;
+				vertexData.color->red   = 0.0f;
 				vertexData.color->green = 0.0f;
-				vertexData.color->blue = 0.0f;
+				vertexData.color->blue  = 0.0f;
 				vertexData.color->alpha = color->alpha;
 				for (i = 0; i < nrLights; i++)
 				{
@@ -66,10 +66,8 @@ void CLASSNAME::Lighting(MLRLight* const* lights, uint32_t nrLights)
 						continue;
 					if (mask & MLRState::VertexLightingMode)
 					{
-						if (
-							GetCurrentState().GetBackFaceMode() != MLRState::BackFaceOffMode
-							|| light->GetLightType() == MLRLight::AmbientLight
-						)
+						if (GetCurrentState().GetBackFaceMode() != MLRState::BackFaceOffMode ||
+							light->GetLightType() == MLRLight::AmbientLight)
 						{
 							light->LightVertex(vertexData);
 							Set_Statistic(LitVertices, LitVertices + 1);

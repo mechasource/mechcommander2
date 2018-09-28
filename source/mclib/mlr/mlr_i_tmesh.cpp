@@ -25,18 +25,17 @@ extern uint32_t gEnableLightMaps;
 //#############################################################################
 
 MLR_I_TMesh::ClassData* MLR_I_TMesh::DefaultData = nullptr;
-extern DynamicArrayOf<Stuff::Vector2DScalar>* lightMapUVs;
-extern DynamicArrayOf<float>* lightMapSqFalloffs;
+extern std::vector<Stuff::Vector2DScalar>* lightMapUVs;
+extern std::vector<float>* lightMapSqFalloffs;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void MLR_I_TMesh::InitializeClass()
 {
-	Verify(!DefaultData);
-	// Verify(gos_GetCurrentHeap() == StaticHeap);
-	DefaultData = new ClassData(MLR_I_TMeshClassID,
-		"MidLevelRenderer::MLR_I_TMesh", MLRIndexedPrimitiveBase::DefaultData,
-		(MLRPrimitiveBase::Factory)&Make);
+	_ASSERT(!DefaultData);
+	// _ASSERT(gos_GetCurrentHeap() == StaticHeap);
+	DefaultData = new ClassData(MLR_I_TMeshClassID, "MidLevelRenderer::MLR_I_TMesh",
+		MLRIndexedPrimitiveBase::DefaultData, (MLRPrimitiveBase::Factory)&Make);
 	Register_Object(DefaultData);
 #if defined(TRACE_ENABLED) && defined(MLR_TRACE)
 	MLR_I_TMesh_Clip = new BitTrace("MLR_I_TMesh_Clip");
@@ -59,13 +58,12 @@ void MLR_I_TMesh::TerminateClass()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLR_I_TMesh::MLR_I_TMesh(
-	ClassData* class_data, Stuff::MemoryStream* stream, uint32_t version)
+MLR_I_TMesh::MLR_I_TMesh(ClassData* class_data, std::iostream stream, uint32_t version)
 	: MLRIndexedPrimitiveBase(class_data, stream, version)
 {
 	// Check_Pointer(this);
 	Check_Pointer(stream);
-	// Verify(gos_GetCurrentHeap() == Heap);
+	// _ASSERT(gos_GetCurrentHeap() == Heap);
 	numOfTriangles = index.GetLength() / 3;
 	facePlanes.SetLength(numOfTriangles);
 	testList.SetLength(numOfTriangles);
@@ -74,11 +72,10 @@ MLR_I_TMesh::MLR_I_TMesh(
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLR_I_TMesh::MLR_I_TMesh(ClassData* class_data)
-	: MLRIndexedPrimitiveBase(class_data)
+MLR_I_TMesh::MLR_I_TMesh(ClassData* class_data) : MLRIndexedPrimitiveBase(class_data)
 {
 	// Check_Pointer(this);
-	// Verify(gos_GetCurrentHeap() == Heap);
+	// _ASSERT(gos_GetCurrentHeap() == Heap);
 	drawMode = SortData::TriIndexedList;
 }
 
@@ -91,7 +88,7 @@ MLR_I_TMesh::~MLR_I_TMesh()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLR_I_TMesh* MLR_I_TMesh::Make(Stuff::MemoryStream* stream, uint32_t version)
+MLR_I_TMesh* MLR_I_TMesh::Make(std::iostream stream, uint32_t version)
 {
 	Check_Object(stream);
 #ifdef _GAMEOS_HPP_
@@ -104,7 +101,7 @@ MLR_I_TMesh* MLR_I_TMesh::Make(Stuff::MemoryStream* stream, uint32_t version)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLR_I_TMesh::Save(Stuff::MemoryStream* stream)
+void MLR_I_TMesh::Save(std::iostream stream)
 {
 	// Check_Object(this);
 	Check_Object(stream);
@@ -113,10 +110,7 @@ void MLR_I_TMesh::Save(Stuff::MemoryStream* stream)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLR_I_TMesh::TestInstance(void) const
-{
-	Verify(IsDerivedFrom(DefaultData));
-}
+void MLR_I_TMesh::TestInstance(void) const { _ASSERT(IsDerivedFrom(DefaultData)); }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
@@ -124,7 +118,7 @@ bool MLR_I_TMesh::Copy(MLR_I_PMesh* pMesh)
 {
 	// Check_Object(this);
 	Check_Object(pMesh);
-	// Verify(gos_GetCurrentHeap() == Heap);
+	// _ASSERT(gos_GetCurrentHeap() == Heap);
 	size_t len;
 	puint16_t _index;
 	Point3D* _coords;
@@ -163,11 +157,10 @@ void MLR_I_TMesh::FindFacePlanes()
 	// Check_Object(this);
 	int32_t i, j, numPrimitives = GetNumPrimitives();
 	Vector3D v;
-	Verify(index.GetLength() > 0);
+	_ASSERT(index.GetLength() > 0);
 	for (i = 0, j = 0; i < numPrimitives; ++i, j += 3)
 	{
-		facePlanes[i].BuildPlane(
-			coords[index[j]], coords[index[j + 1]], coords[index[j + 2]]);
+		facePlanes[i].BuildPlane(coords[index[j]], coords[index[j + 1]], coords[index[j + 2]]);
 		;
 	}
 }
@@ -225,7 +218,7 @@ void MLR_I_TMesh::ResetTestList()
 int32_t MLR_I_TMesh::FindVisibleVertices()
 {
 	// Check_Object(this);
-	Verify(index.GetLength() > 0);
+	_ASSERT(index.GetLength() > 0);
 	int32_t ret, i, j;
 	uint32_t* indices = (uint32_t*)index.GetData();
 	for (i = 0, j = 0, ret = 0; i < (numOfTriangles >> 1); ++i)
@@ -270,7 +263,7 @@ void
 {
 	// Check_Object(this);
 
-	Verify(index.GetLength() > 0);
+	_ASSERT(index.GetLength() > 0);
 	int32_t i, len = coords.GetLength();
 
 	if(visibleIndexedVerticesKey == false)
@@ -312,9 +305,9 @@ void
 // I claims all vertices are in. lets check it. who knows
 //--------------------------------------------------------
 //
-				Verify(v4d->x >= 0.0f && v4d->x <= v4d->w );
-				Verify(v4d->y >= 0.0f && v4d->y <= v4d->w );
-				Verify(v4d->z >= 0.0f && v4d->z <= v4d->w );
+				_ASSERT(v4d->x >= 0.0f && v4d->x <= v4d->w );
+				_ASSERT(v4d->y >= 0.0f && v4d->y <= v4d->w );
+				_ASSERT(v4d->z >= 0.0f && v4d->z <= v4d->w );
 			}
 #endif
 			Statistics::MLR_NonClippedVertices++;
@@ -371,8 +364,7 @@ void MLR_I_TMesh::Lighting(MLRLight* const* lights, int32_t nrLights)
 }
 
 extern RGBAColor errorColor;
-extern bool CheckForBigTriangles(
-	DynamicArrayOf<Stuff::Vector2DScalar>* lightMapUVs, int32_t stride);
+extern bool CheckForBigTriangles(std::vector<Stuff::Vector2DScalar>* lightMapUVs, int32_t stride);
 
 //---------------------------------------------------------------------------
 //
@@ -406,22 +398,21 @@ void MLR_I_TMesh::LightMapLighting(MLRLight* light)
 			}
 			f  = facePlanes[i].GetDistanceTo(lightPosInShape);
 			lm = false;
-			if (f > 0.0f && Cast_Object(MLRInfiniteLightWithFalloff*, light)
-									->GetFalloff(f, falloff) == true)
+			if (f > 0.0f &&
+				Cast_Object(MLRInfiniteLightWithFalloff*, light)->GetFalloff(f, falloff) == true)
 			{
 				rhf	= 1.0f / f;
 				matrix = LinearMatrix4D::Identity;
-				matrix.AlignLocalAxisToWorldVector(
-					facePlanes[i].normal, Z_Axis, X_Axis, Y_Axis);
+				matrix.AlignLocalAxisToWorldVector(facePlanes[i].normal, Z_Axis, X_Axis, Y_Axis);
 				matrix.GetLocalLeftInWorld(&left);
 				matrix.GetLocalUpInWorld(&up);
 				matrix.GetLocalForwardInWorld(&forward);
-				Verify(Small_Enough(up * left));
+				_ASSERT(Small_Enough(up * left));
 #if defined(_ARMOR)
 				float diff = forward * left;
-				Verify(Small_Enough(diff));
+				_ASSERT(Small_Enough(diff));
 				diff = up * forward;
-				Verify(Small_Enough(diff));
+				_ASSERT(Small_Enough(diff));
 #endif
 				Check_Object(&forward);
 				hitPoint.Multiply(forward, -f);
@@ -433,17 +424,13 @@ void MLR_I_TMesh::LightMapLighting(MLRLight* light)
 					vec -= hitPoint;
 					(*lightMapUVs)[k][0] = -(left * vec) * rhf;
 					(*lightMapUVs)[k][1] = -(up * vec) * rhf;
-					if ((*lightMapUVs)[k][0] >= -0.5f &&
-						(*lightMapUVs)[k][0] <= 0.5f &&
-						(*lightMapUVs)[k][1] >= -0.5f &&
-						(*lightMapUVs)[k][1] <= 0.5f)
+					if ((*lightMapUVs)[k][0] >= -0.5f && (*lightMapUVs)[k][0] <= 0.5f &&
+						(*lightMapUVs)[k][1] >= -0.5f && (*lightMapUVs)[k][1] <= 0.5f)
 					{
 						lm = true;
 					}
-					if ((*lightMapUVs)[k][0] < -bigUV ||
-						(*lightMapUVs)[k][0] > bigUV ||
-						(*lightMapUVs)[k][1] < -bigUV ||
-						(*lightMapUVs)[k][1] > bigUV)
+					if ((*lightMapUVs)[k][0] < -bigUV || (*lightMapUVs)[k][0] > bigUV ||
+						(*lightMapUVs)[k][1] < -bigUV || (*lightMapUVs)[k][1] > bigUV)
 					{
 						tooBig++;
 					}
@@ -453,8 +440,7 @@ void MLR_I_TMesh::LightMapLighting(MLRLight* light)
 			{
 				continue;
 			}
-			if (tooBig == 0 &&
-				(lm == true || CheckForBigTriangles(lightMapUVs, 3) == true))
+			if (tooBig == 0 && (lm == true || CheckForBigTriangles(lightMapUVs, 3) == true))
 			{
 				lightMap->SetPolygonMarker(0);
 				lightMap->AddUShort(3);
@@ -481,8 +467,7 @@ void MLR_I_TMesh::LightMapLighting(MLRLight* light)
 				}
 				for (k = 0; k < 3; k++)
 				{
-					lightMap->AddUVs((*lightMapUVs)[k][0] + 0.5f,
-						(*lightMapUVs)[k][1] + 0.5f);
+					lightMap->AddUVs((*lightMapUVs)[k][0] + 0.5f, (*lightMapUVs)[k][1] + 0.5f);
 					//				DEBUG_STREAM << k << " " << lightMapUVs[k][0] << "
 					//" << lightMapUVs[k][0] << "\n";
 				}
@@ -496,9 +481,8 @@ void MLR_I_TMesh::LightMapLighting(MLRLight* light)
 		Check_Object(lightMap);
 		lightMap->AddState(referenceState.GetPriority() + 1);
 		light->GetInShapePosition(matrix);
-		lightPosInShape = matrix;
-		float tanSpeadAngle =
-			Cast_Object(MLRSpotLight*, light)->GetTanSpreadAngle();
+		lightPosInShape		= matrix;
+		float tanSpeadAngle = Cast_Object(MLRSpotLight*, light)->GetTanSpreadAngle();
 #ifndef TOP_DOWN_ONLY
 		matrix.GetLocalLeftInWorld(&left);
 		matrix.GetLocalUpInWorld(&up);
@@ -508,7 +492,7 @@ void MLR_I_TMesh::LightMapLighting(MLRLight* light)
 		up		= UnitVector3D(1.0f, 0.0f, 0.0);
 		left	= UnitVector3D(0.0f, 0.0f, 1.0);
 #endif
-		Verify(Small_Enough(up * left));
+		_ASSERT(Small_Enough(up * left));
 		for (i = 0, j = 0, k = 0; i < len; i++, j += 3)
 		{
 			behindCount  = 0;
@@ -559,8 +543,8 @@ void MLR_I_TMesh::LightMapLighting(MLRLight* light)
 			{
 				maxZ = coords[index[j + 2]].z;
 			}
-			if (lightPosInShape.x > minX && lightPosInShape.x < maxX &&
-				lightPosInShape.z > minZ && lightPosInShape.z < maxZ)
+			if (lightPosInShape.x > minX && lightPosInShape.x < maxX && lightPosInShape.z > minZ &&
+				lightPosInShape.z < maxZ)
 			{
 				SPEW(("micgaert", "On Target !!"));
 			}
@@ -577,9 +561,8 @@ void MLR_I_TMesh::LightMapLighting(MLRLight* light)
 				   distance = -vec.y;
 #endif
 #if SPEW_AWAY
-				SPEW(("micgaert", "vertex%d = %f,%f,%f", k,
-					coords[index[k + j]].x, coords[index[k + j]].y,
-					coords[index[k + j]].z));
+				SPEW(("micgaert", "vertex%d = %f,%f,%f", k, coords[index[k + j]].x,
+					coords[index[k + j]].y, coords[index[k + j]].z));
 				SPEW(("micgaert", "distance = %f", distance));
 #endif
 				if (distance > SMALL)
@@ -589,8 +572,7 @@ void MLR_I_TMesh::LightMapLighting(MLRLight* light)
 					{
 						falloffCount++;
 					}
-					(*lightMapSqFalloffs)[k] =
-						falloff * falloff * light->GetIntensity();
+					(*lightMapSqFalloffs)[k] = falloff * falloff * light->GetIntensity();
 					oneOver
 #if 0
 							= 1.0f / (2.0f * distance * tanSpeadAngle);
@@ -615,20 +597,15 @@ void MLR_I_TMesh::LightMapLighting(MLRLight* light)
 				   (*lightMapUVs)[k][1] = -vec.z * oneOver;
 #endif
 #if SPEW_AWAY
-				SPEW(("micgaert", "uv%d = %f,%f", k, (*lightMapUVs)[k][0],
-					(*lightMapUVs)[k][1]));
+				SPEW(("micgaert", "uv%d = %f,%f", k, (*lightMapUVs)[k][0], (*lightMapUVs)[k][1]));
 #endif
-				if ((*lightMapUVs)[k][0] >= -0.5f &&
-					(*lightMapUVs)[k][0] <= 0.5f &&
-					(*lightMapUVs)[k][1] >= -0.5f &&
-					(*lightMapUVs)[k][1] <= 0.5f)
+				if ((*lightMapUVs)[k][0] >= -0.5f && (*lightMapUVs)[k][0] <= 0.5f &&
+					(*lightMapUVs)[k][1] >= -0.5f && (*lightMapUVs)[k][1] <= 0.5f)
 				{
 					lm = true;
 				}
-				if ((*lightMapUVs)[k][0] < -bigUV ||
-					(*lightMapUVs)[k][0] > bigUV ||
-					(*lightMapUVs)[k][1] < -bigUV ||
-					(*lightMapUVs)[k][1] > bigUV)
+				if ((*lightMapUVs)[k][0] < -bigUV || (*lightMapUVs)[k][0] > bigUV ||
+					(*lightMapUVs)[k][1] < -bigUV || (*lightMapUVs)[k][1] > bigUV)
 				{
 					tooBig++;
 				}
@@ -645,14 +622,12 @@ void MLR_I_TMesh::LightMapLighting(MLRLight* light)
 				}
 				for (k = 0; k < 3; k++)
 				{
-					lightMap->AddColor((*lightMapSqFalloffs)[k],
-						(*lightMapSqFalloffs)[k], (*lightMapSqFalloffs)[k],
-						1.0f);
+					lightMap->AddColor((*lightMapSqFalloffs)[k], (*lightMapSqFalloffs)[k],
+						(*lightMapSqFalloffs)[k], 1.0f);
 				}
 				for (k = 0; k < 3; k++)
 				{
-					lightMap->AddUVs((*lightMapUVs)[k][0] + 0.5f,
-						(*lightMapUVs)[k][1] + 0.5f);
+					lightMap->AddUVs((*lightMapUVs)[k][0] + 0.5f, (*lightMapUVs)[k][1] + 0.5f);
 					//				DEBUG_STREAM << k << " " << lightMapUVs[k][0] << "
 					//" << lightMapUVs[k][0] << "\n";
 				}
@@ -663,12 +638,11 @@ void MLR_I_TMesh::LightMapLighting(MLRLight* light)
 #if SPEW_AWAY
 			Vector3D vec = facePlanes[i].normal;
 			SPEW(("micgaert", "normal = %f,%f,%f", vec.x, vec.y, vec.z));
-			SPEW(("micgaert", "forward = %f,%f,%f", forward.x, forward.y,
-				forward.z));
+			SPEW(("micgaert", "forward = %f,%f,%f", forward.x, forward.y, forward.z));
 			SPEW(("micgaert", "left = %f,%f,%f", left.x, left.y, left.z));
 			SPEW(("micgaert", "up = %f,%f,%f", up.x, up.y, up.z));
-			SPEW(("micgaert", "light = %f,%f,%f\n", lightPosInShape.x,
-				lightPosInShape.y, lightPosInShape.z));
+			SPEW(("micgaert", "light = %f,%f,%f\n", lightPosInShape.x, lightPosInShape.y,
+				lightPosInShape.z));
 #endif
 #else
 			if (tooBig != 0)
@@ -710,8 +684,7 @@ void MLR_I_TMesh::LightMapLighting(MLRLight* light)
 				}
 			}
 			else if (behindCount == 0 &&
-					 (lm == true ||
-						 CheckForBigTriangles(&lightMapUVs, 3) == true))
+				(lm == true || CheckForBigTriangles(&lightMapUVs, 3) == true))
 			{
 				lightMap->SetPolygonMarker(1);
 				lightMap->AddUShort(3);
@@ -721,13 +694,12 @@ void MLR_I_TMesh::LightMapLighting(MLRLight* light)
 				}
 				for (k = 0; k < 3; k++)
 				{
-					lightMap->AddColor(lightMapSqFalloffs[k],
-						lightMapSqFalloffs[k], lightMapSqFalloffs[k], 1.0f);
+					lightMap->AddColor(
+						lightMapSqFalloffs[k], lightMapSqFalloffs[k], lightMapSqFalloffs[k], 1.0f);
 				}
 				for (k = 0; k < 3; k++)
 				{
-					lightMap->AddUVs(
-						lightMapUVs[k][0] + 0.5f, lightMapUVs[k][1] + 0.5f);
+					lightMap->AddUVs(lightMapUVs[k][0] + 0.5f, lightMapUVs[k][1] + 0.5f);
 					//				DEBUG_STREAM << k << " " << lightMapUVs[k][0] << "
 					//" << lightMapUVs[k][0] << "\n";
 				}
@@ -776,8 +748,7 @@ bool MLR_I_TMesh::CastRay(Line3D* line, Normal3D* normal)
 	//
 	int32_t poly_start = 0;
 	bool hit		   = false;
-	for (size_t polygon = 0; polygon < numOfTriangles;
-		 poly_start += 3, ++polygon)
+	for (size_t polygon = 0; polygon < numOfTriangles; poly_start += 3, ++polygon)
 	{
 		//
 		//---------------------------------
@@ -875,11 +846,11 @@ bool MLR_I_TMesh::CastRay(Line3D* line, Normal3D* normal)
 		//
 		if (Small_Enough(s1))
 		{
-			Verify(!Small_Enough(s2));
+			_ASSERT(!Small_Enough(s2));
 			float beta = s0 / s2;
 			if (beta >= 0.0f && beta < 1.0f)
 			{
-				Verify(!Small_Enough(t1));
+				_ASSERT(!Small_Enough(t1));
 				float alpha = (t0 - beta * t2) / t1;
 				local_hit   = (alpha >= 0.0f && alpha + beta <= 1.0f);
 			}
@@ -909,7 +880,7 @@ bool MLR_I_TMesh::CastRay(Line3D* line, Normal3D* normal)
 				normal->Negate(plane->normal);
 			else
 				*normal = plane->normal;
-			Verify(*normal * line->direction <= -SMALL);
+			_ASSERT(*normal * line->direction <= -SMALL);
 		}
 	}
 	//
@@ -922,8 +893,7 @@ bool MLR_I_TMesh::CastRay(Line3D* line, Normal3D* normal)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLR_I_TMesh* MidLevelRenderer::CreateIndexedTriCube_NoColor_NoLit(
-	float half, MLRState* state)
+MLR_I_TMesh* MidLevelRenderer::CreateIndexedTriCube_NoColor_NoLit(float half, MLRState* state)
 {
 #if 0
 	gos_PushCurrentHeap(Heap);
@@ -1027,8 +997,7 @@ MLRShape* MidLevelRenderer::CreateIndexedTriIcosahedron_NoColor_NoLit(
 	MLRShape* ret = new MLRShape(20);
 	Register_Object(ret);
 	int32_t i, j, k;
-	uint32_t nrTri =
-		static_cast<uint32_t>(ceil(icoInfo.all * pow(4.0f, icoInfo.depth)));
+	uint32_t nrTri = static_cast<uint32_t>(ceil(icoInfo.all * pow(4.0f, icoInfo.depth)));
 	Point3D v[3];
 	if (3 * nrTri >= Limits::Max_Number_Vertices_Per_Mesh)
 	{
@@ -1059,8 +1028,7 @@ MLRShape* MidLevelRenderer::CreateIndexedTriIcosahedron_NoColor_NoLit(
 			v[j].y = vdata[tindices[k][j]][1];
 			v[j].z = vdata[tindices[k][j]][2];
 		}
-		subdivide(
-			coords, v[0], v[1], v[2], icoInfo.depth, nrTri, icoInfo.radius);
+		subdivide(coords, v[0], v[1], v[2], icoInfo.depth, nrTri, icoInfo.radius);
 		mesh->SetSubprimitiveLengths(nullptr, nrTri);
 		if (icoInfo.indexed == true)
 		{
@@ -1111,8 +1079,7 @@ MLRShape* MidLevelRenderer::CreateIndexedTriIcosahedron_NoColor_NoLit(
 				{
 					for (i = 0; i < uniquePoints; i++)
 					{
-						texCoords[i] = Stuff::Vector2DScalar(
-							(1.0f + collapsedCoords[i].x) / 2.0f,
+						texCoords[i] = Stuff::Vector2DScalar((1.0f + collapsedCoords[i].x) / 2.0f,
 							(1.0f + collapsedCoords[i].y) / 2.0f);
 					}
 				}
@@ -1121,14 +1088,13 @@ MLRShape* MidLevelRenderer::CreateIndexedTriIcosahedron_NoColor_NoLit(
 					for (i = 0; i < nrTri; i++)
 					{
 						texCoords[3 * i] = Stuff::Vector2DScalar(
-							(1.0f + coords[3 * i].x) / 2.0f,
-							(1.0f + coords[3 * i].y) / 2.0f);
-						texCoords[3 * i + 1] = Stuff::Vector2DScalar(
-							(1.0f + coords[3 * i + 1].x) / 2.0f,
-							(1.0f + coords[3 * i + 1].y) / 2.0f);
-						texCoords[3 * i + 2] = Stuff::Vector2DScalar(
-							(1.0f + coords[3 * i + 2].x) / 2.0f,
-							(1.0f + coords[3 * i + 2].y) / 2.0f);
+							(1.0f + coords[3 * i].x) / 2.0f, (1.0f + coords[3 * i].y) / 2.0f);
+						texCoords[3 * i + 1] =
+							Stuff::Vector2DScalar((1.0f + coords[3 * i + 1].x) / 2.0f,
+								(1.0f + coords[3 * i + 1].y) / 2.0f);
+						texCoords[3 * i + 2] =
+							Stuff::Vector2DScalar((1.0f + coords[3 * i + 2].x) / 2.0f,
+								(1.0f + coords[3 * i + 2].y) / 2.0f);
 					}
 				}
 			}

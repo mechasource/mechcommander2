@@ -105,8 +105,7 @@ void checkRelationalOpTypes(TypePtr type1, TypePtr type2)
 {
 	if (type1 && type2)
 	{
-		if ((type1 == type2) &&
-			((type1->form == FRM_SCALAR) || (type1->form == FRM_ENUM)))
+		if ((type1 == type2) && ((type1->form == FRM_SCALAR) || (type1->form == FRM_ENUM)))
 			return;
 		if (((type1 == IntegerTypePtr) && (type2 == RealTypePtr)) ||
 			((type2 == IntegerTypePtr) && (type1 == RealTypePtr)))
@@ -242,21 +241,19 @@ TypePtr factor(void)
 	break;
 	case TKN_NUMBER:
 	{
-		SymTableNodePtr thisNode =
-			searchSymTable(tokenString, SymTableDisplay[1]);
+		SymTableNodePtr thisNode = searchSymTable(tokenString, SymTableDisplay[1]);
 		if (!thisNode)
 			thisNode = enterSymTable(tokenString, &SymTableDisplay[1]);
 		if (curLiteral.type == LIT_INTEGER)
 		{
-			thisNode->typePtr = IntegerTypePtr;
-			thisType		  = (TypePtr)(thisNode->typePtr);
-			thisNode->defn.info.constant.value.integer =
-				curLiteral.value.integer;
+			thisNode->typePtr						   = IntegerTypePtr;
+			thisType								   = (TypePtr)(thisNode->typePtr);
+			thisNode->defn.info.constant.value.integer = curLiteral.value.integer;
 		}
 		else
 		{
-			thisNode->typePtr = RealTypePtr;
-			thisType		  = (TypePtr)(thisNode->typePtr);
+			thisNode->typePtr						= RealTypePtr;
+			thisType								= (TypePtr)(thisNode->typePtr);
 			thisNode->defn.info.constant.value.real = curLiteral.value.real;
 		}
 		crunchSymTableNodePtr(thisNode);
@@ -268,28 +265,25 @@ TypePtr factor(void)
 		int32_t length = strlen(curLiteral.value.string);
 		if (EnterStateSymbol)
 		{
-			SymTableNodePtr stateSymbol = searchSymTableForState(
-				curLiteral.value.string, SymTableDisplay[1]);
+			SymTableNodePtr stateSymbol =
+				searchSymTableForState(curLiteral.value.string, SymTableDisplay[1]);
 			if (!stateSymbol)
 				forwardState(curLiteral.value.string);
 		}
-		SymTableNodePtr thisNode =
-			searchSymTableForString(tokenString, SymTableDisplay[1]);
+		SymTableNodePtr thisNode = searchSymTableForString(tokenString, SymTableDisplay[1]);
 		if (!thisNode) // {
 			thisNode = enterSymTable(tokenString, &SymTableDisplay[1]);
 		if (length == 1)
 		{
-			thisNode->defn.info.constant.value.character =
-				curLiteral.value.string[0];
-			thisType = CharTypePtr;
+			thisNode->defn.info.constant.value.character = curLiteral.value.string[0];
+			thisType									 = CharTypePtr;
 		}
 		else
 		{
 			thisNode->typePtr = thisType = makeStringType(length);
-			thisNode->info = (PSTR)ABLSymbolMallocCallback(length + 1);
+			thisNode->info				 = (PSTR)ABLSymbolMallocCallback(length + 1);
 			if (!thisNode->info)
-				ABL_Fatal(0,
-					" ABL: Unable to AblSymTableHeap->malloc string literal ");
+				ABL_Fatal(0, " ABL: Unable to AblSymTableHeap->malloc string literal ");
 			strcpy(thisNode->info, curLiteral.value.string);
 		}
 		//}
@@ -402,8 +396,7 @@ TypePtr simpleExpression(void)
 	//------------------------------------------------
 	// Grab the first term in the simple expression...
 	TypePtr resultType = term();
-	if (usedUnaryOp && (resultType != IntegerTypePtr) &&
-		(resultType != RealTypePtr))
+	if (usedUnaryOp && (resultType != IntegerTypePtr) && (resultType != RealTypePtr))
 		syntaxError(ABL_ERR_SYNTAX_INCOMPATIBLE_TYPES);
 	//---------------------------------------------------
 	// Continue to process all terms in the expression...

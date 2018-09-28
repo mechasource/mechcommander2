@@ -36,20 +36,17 @@ GOSVertex::GOSVertex()
 	frgb = 0xffffffff;
 }
 
-void GOSVertex::SetFogTableEntry(
-	int32_t entry, float nearFog, float farFog, float fogDensity)
+void GOSVertex::SetFogTableEntry(int32_t entry, float nearFog, float farFog, float fogDensity)
 {
 	float Fog;
-	Verify(farFog > nearFog);
+	_ASSERT(farFog > nearFog);
 	entry--;
 	GOSVertex::fogTable[entry][0] = 0;
 	for (size_t t1 = 0; t1 < 1024; t1++)
 	{
 		if (0.0f == fogDensity)
 		{
-			Fog = (farFog - t1) /
-				  (farFog -
-					  nearFog); // 0.0 = Linear fog table (from Start to End)
+			Fog = (farFog - t1) / (farFog - nearFog); // 0.0 = Linear fog table (from Start to End)
 		}
 		else
 		{
@@ -59,8 +56,7 @@ void GOSVertex::SetFogTableEntry(
 			}
 			else
 			{
-				Fog = (float)exp(
-					-((fogDensity - 1.0f) * t1) *
+				Fog = (float)exp(-((fogDensity - 1.0f) * t1) *
 					((fogDensity - 1.0f) * t1)); // 1.0->2.0 = FOG_EXP2
 			}
 		}
@@ -74,15 +70,15 @@ void GOSVertex::SetFogTableEntry(
 
 GOSVertexPool::GOSVertexPool(void)
 {
-	// //Verify(gos_GetCurrentHeap() == Heap);
+	// //_ASSERT(gos_GetCurrentHeap() == Heap);
 	lastUsed	  = 0;
 	lastUsed2uv   = 0;
 	lastUsedIndex = 0;
 	// gos_PushCurrentHeap(StaticHeap);
-	vertices.SetLength(Limits::Max_Number_Vertices_Per_Frame +
-					   4 * Limits::Max_Number_ScreenQuads_Per_Frame + 1);
-	vertices2uv.SetLength(Limits::Max_Number_Vertices_Per_Frame +
-						  4 * Limits::Max_Number_ScreenQuads_Per_Frame + 1);
+	vertices.SetLength(
+		Limits::Max_Number_Vertices_Per_Frame + 4 * Limits::Max_Number_ScreenQuads_Per_Frame + 1);
+	vertices2uv.SetLength(
+		Limits::Max_Number_Vertices_Per_Frame + 4 * Limits::Max_Number_ScreenQuads_Per_Frame + 1);
 	indices.SetLength(Limits::Max_Number_Vertices_Per_Frame + 16);
 	verticesDB.SetLength(2 * Limits::Max_Number_Vertices_Per_Mesh);
 	vertices2uvDB.SetLength(2 * Limits::Max_Number_Vertices_Per_Mesh);

@@ -52,8 +52,7 @@ void GameDebugWindow::setFont(PSTR fontFile)
 		gos_TextSetAttributes(font, 0xffffffff, 1.0, true, true, false, false);
 	}
 	uint32_t height, width;
-	gos_TextStringLength(&width, &height,
-		"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ");
+	gos_TextStringLength(&width, &height, "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ");
 	fontHeight = height;
 }
 

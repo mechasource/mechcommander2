@@ -20,7 +20,7 @@
 //#define MIN_INTEGER -2147483648
 //#define MAX_INTEGER 2147483647
 
-typedef enum __ablscan_const
+enum __ablscan_const : uint32_t
 {
 	TAB_SIZE		= 4,
 	MAX_DIGIT_COUNT = 20,
@@ -32,7 +32,7 @@ typedef enum __ablscan_const
 //------------
 // TOKEN CODES
 
-typedef enum TokenCodeType
+typedef enum TokenCodeType : uint32_t
 {
 	TKN_NONE,
 	TKN_IDENTIFIER,
@@ -113,7 +113,7 @@ typedef enum TokenCodeType
 	NUM_TOKENS
 } TokenCodeType;
 
-typedef enum CharCodeType
+typedef enum CharCodeType : uint32_t
 {
 	CHR_LETTER,
 	CHR_DIGIT,
@@ -133,7 +133,7 @@ typedef struct ReservedWord
 //------------------
 // LITERAL structure
 
-typedef enum LiteralType
+typedef enum LiteralType : uint32_t
 {
 	LIT_INTEGER,
 	LIT_REAL,
@@ -166,7 +166,7 @@ typedef CaseItem* CaseItemPtr;
 class ABLFile
 {
 
-  public:
+public:
 	PSTR fileName;
 	PVOID file;
 
@@ -174,19 +174,16 @@ class ABLFile
 	static int32_t(__stdcall* openCB)(PVOID* file, PSTR fName);
 	static int32_t(__stdcall* closeCB)(PVOID* file);
 	static bool(__stdcall* eofCB)(PVOID file);
-	static int32_t(__stdcall* readCB)(
-		PVOID file, puint8_t buffer, int32_t length);
+	static int32_t(__stdcall* readCB)(PVOID file, puint8_t buffer, int32_t length);
 	static int32_t(__stdcall* readLongCB)(PVOID file);
 	static int32_t(__stdcall* readStringCB)(PVOID file, puint8_t buffer);
-	static int32_t(__stdcall* readLineExCB)(
-		PVOID file, puint8_t buffer, int32_t maxLength);
-	static int32_t(__stdcall* writeCB)(
-		PVOID file, puint8_t buffer, int32_t length);
+	static int32_t(__stdcall* readLineExCB)(PVOID file, puint8_t buffer, int32_t maxLength);
+	static int32_t(__stdcall* writeCB)(PVOID file, puint8_t buffer, int32_t length);
 	static int32_t(__stdcall* writeByteCB)(PVOID file, uint8_t byte);
 	static int32_t(__stdcall* writeLongCB)(PVOID file, int32_t value);
 	static int32_t(__stdcall* writeStringCB)(PVOID file, PSTR buffer);
 
-  public:
+public:
 	PVOID operator new(size_t ourSize);
 	void operator delete(PVOID us);
 
@@ -237,8 +234,8 @@ void __stdcall getNumber(void);
 void __stdcall getString(void);
 void __stdcall getSpecial(void);
 bool __stdcall tokenIn(TokenCodeType* tokenList);
-void __stdcall synchronize(TokenCodeType* tokenList1, TokenCodeType* tokenList2,
-	TokenCodeType* tokenList3);
+void __stdcall synchronize(
+	TokenCodeType* tokenList1, TokenCodeType* tokenList2, TokenCodeType* tokenList3);
 bool __stdcall getSourceLine(void);
 void __stdcall printLine(PSTR line);
 void __stdcall initPageHeader(PSTR fileName);

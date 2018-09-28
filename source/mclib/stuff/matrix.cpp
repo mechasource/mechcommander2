@@ -125,9 +125,8 @@ Matrix4D& Matrix4D::BuildRotation(const UnitQuaternion& q)
 {
 	// Check_Pointer(this);
 	Check_Object(&q);
-	float a = q.x * q.y, b = q.y * q.z, c = q.z * q.x, d = q.w * q.x,
-		  e = q.w * q.y, f = q.w * q.z, g = q.w * q.w, h = q.x * q.x,
-		  i = q.y * q.y, j = q.z * q.z;
+	float a = q.x * q.y, b = q.y * q.z, c = q.z * q.x, d = q.w * q.x, e = q.w * q.y, f = q.w * q.z,
+		  g = q.w * q.w, h = q.x * q.x, i = q.y * q.y, j = q.z * q.z;
 	(*this)(0, 0) = g + h - i - j;
 	(*this)(1, 0) = 2.0f * (a - f);
 	(*this)(2, 0) = 2.0f * (c + e);
@@ -205,53 +204,37 @@ bool Stuff::Close_Enough(const Matrix4D& m1, const Matrix4D& m2, float e)
 //
 Matrix4D& Matrix4D::Multiply(const Matrix4D& Source1, const Matrix4D& Source2)
 {
-	(*this)(0, 0) =
-		Source1(0, 0) * Source2(0, 0) + Source1(0, 1) * Source2(1, 0) +
+	(*this)(0, 0) = Source1(0, 0) * Source2(0, 0) + Source1(0, 1) * Source2(1, 0) +
 		Source1(0, 2) * Source2(2, 0) + Source1(0, 3) * Source2(3, 0);
-	(*this)(1, 0) =
-		Source1(1, 0) * Source2(0, 0) + Source1(1, 1) * Source2(1, 0) +
+	(*this)(1, 0) = Source1(1, 0) * Source2(0, 0) + Source1(1, 1) * Source2(1, 0) +
 		Source1(1, 2) * Source2(2, 0) + Source1(1, 3) * Source2(3, 0);
-	(*this)(2, 0) =
-		Source1(2, 0) * Source2(0, 0) + Source1(2, 1) * Source2(1, 0) +
+	(*this)(2, 0) = Source1(2, 0) * Source2(0, 0) + Source1(2, 1) * Source2(1, 0) +
 		Source1(2, 2) * Source2(2, 0) + Source1(2, 3) * Source2(3, 0);
-	(*this)(3, 0) =
-		Source1(3, 0) * Source2(0, 0) + Source1(3, 1) * Source2(1, 0) +
+	(*this)(3, 0) = Source1(3, 0) * Source2(0, 0) + Source1(3, 1) * Source2(1, 0) +
 		Source1(3, 2) * Source2(2, 0) + Source1(3, 3) * Source2(3, 0);
-	(*this)(0, 1) =
-		Source1(0, 0) * Source2(0, 1) + Source1(0, 1) * Source2(1, 1) +
+	(*this)(0, 1) = Source1(0, 0) * Source2(0, 1) + Source1(0, 1) * Source2(1, 1) +
 		Source1(0, 2) * Source2(2, 1) + Source1(0, 3) * Source2(3, 1);
-	(*this)(1, 1) =
-		Source1(1, 0) * Source2(0, 1) + Source1(1, 1) * Source2(1, 1) +
+	(*this)(1, 1) = Source1(1, 0) * Source2(0, 1) + Source1(1, 1) * Source2(1, 1) +
 		Source1(1, 2) * Source2(2, 1) + Source1(1, 3) * Source2(3, 1);
-	(*this)(2, 1) =
-		Source1(2, 0) * Source2(0, 1) + Source1(2, 1) * Source2(1, 1) +
+	(*this)(2, 1) = Source1(2, 0) * Source2(0, 1) + Source1(2, 1) * Source2(1, 1) +
 		Source1(2, 2) * Source2(2, 1) + Source1(2, 3) * Source2(3, 1);
-	(*this)(3, 1) =
-		Source1(3, 0) * Source2(0, 1) + Source1(3, 1) * Source2(1, 1) +
+	(*this)(3, 1) = Source1(3, 0) * Source2(0, 1) + Source1(3, 1) * Source2(1, 1) +
 		Source1(3, 2) * Source2(2, 1) + Source1(3, 3) * Source2(3, 1);
-	(*this)(0, 2) =
-		Source1(0, 0) * Source2(0, 2) + Source1(0, 1) * Source2(1, 2) +
+	(*this)(0, 2) = Source1(0, 0) * Source2(0, 2) + Source1(0, 1) * Source2(1, 2) +
 		Source1(0, 2) * Source2(2, 2) + Source1(0, 3) * Source2(3, 2);
-	(*this)(1, 2) =
-		Source1(1, 0) * Source2(0, 2) + Source1(1, 1) * Source2(1, 2) +
+	(*this)(1, 2) = Source1(1, 0) * Source2(0, 2) + Source1(1, 1) * Source2(1, 2) +
 		Source1(1, 2) * Source2(2, 2) + Source1(1, 3) * Source2(3, 2);
-	(*this)(2, 2) =
-		Source1(2, 0) * Source2(0, 2) + Source1(2, 1) * Source2(1, 2) +
+	(*this)(2, 2) = Source1(2, 0) * Source2(0, 2) + Source1(2, 1) * Source2(1, 2) +
 		Source1(2, 2) * Source2(2, 2) + Source1(2, 3) * Source2(3, 2);
-	(*this)(3, 2) =
-		Source1(3, 0) * Source2(0, 2) + Source1(3, 1) * Source2(1, 2) +
+	(*this)(3, 2) = Source1(3, 0) * Source2(0, 2) + Source1(3, 1) * Source2(1, 2) +
 		Source1(3, 2) * Source2(2, 2) + Source1(3, 3) * Source2(3, 2);
-	(*this)(0, 3) =
-		Source1(0, 0) * Source2(0, 3) + Source1(0, 1) * Source2(1, 3) +
+	(*this)(0, 3) = Source1(0, 0) * Source2(0, 3) + Source1(0, 1) * Source2(1, 3) +
 		Source1(0, 2) * Source2(2, 3) + Source1(0, 3) * Source2(3, 3);
-	(*this)(1, 3) =
-		Source1(1, 0) * Source2(0, 3) + Source1(1, 1) * Source2(1, 3) +
+	(*this)(1, 3) = Source1(1, 0) * Source2(0, 3) + Source1(1, 1) * Source2(1, 3) +
 		Source1(1, 2) * Source2(2, 3) + Source1(1, 3) * Source2(3, 3);
-	(*this)(2, 3) =
-		Source1(2, 0) * Source2(0, 3) + Source1(2, 1) * Source2(1, 3) +
+	(*this)(2, 3) = Source1(2, 0) * Source2(0, 3) + Source1(2, 1) * Source2(1, 3) +
 		Source1(2, 2) * Source2(2, 3) + Source1(2, 3) * Source2(3, 3);
-	(*this)(3, 3) =
-		Source1(3, 0) * Source2(0, 3) + Source1(3, 1) * Source2(1, 3) +
+	(*this)(3, 3) = Source1(3, 0) * Source2(0, 3) + Source1(3, 1) * Source2(1, 3) +
 		Source1(3, 2) * Source2(2, 3) + Source1(3, 3) * Source2(3, 3);
 	return *this;
 }
@@ -260,44 +243,31 @@ Matrix4D& Matrix4D::Multiply(const Matrix4D& Source1, const Matrix4D& Source2)
 //###########################################################################
 //###########################################################################
 //
-Matrix4D& Matrix4D::Multiply(
-	const Matrix4D& Source1, const AffineMatrix4D& Source2)
+Matrix4D& Matrix4D::Multiply(const Matrix4D& Source1, const AffineMatrix4D& Source2)
 {
-	(*this)(0, 0) =
-		Source1(0, 0) * Source2(0, 0) + Source1(0, 1) * Source2(1, 0) +
+	(*this)(0, 0) = Source1(0, 0) * Source2(0, 0) + Source1(0, 1) * Source2(1, 0) +
 		Source1(0, 2) * Source2(2, 0) + Source1(0, 3) * Source2(3, 0);
-	(*this)(1, 0) =
-		Source1(1, 0) * Source2(0, 0) + Source1(1, 1) * Source2(1, 0) +
+	(*this)(1, 0) = Source1(1, 0) * Source2(0, 0) + Source1(1, 1) * Source2(1, 0) +
 		Source1(1, 2) * Source2(2, 0) + Source1(1, 3) * Source2(3, 0);
-	(*this)(2, 0) =
-		Source1(2, 0) * Source2(0, 0) + Source1(2, 1) * Source2(1, 0) +
+	(*this)(2, 0) = Source1(2, 0) * Source2(0, 0) + Source1(2, 1) * Source2(1, 0) +
 		Source1(2, 2) * Source2(2, 0) + Source1(2, 3) * Source2(3, 0);
-	(*this)(3, 0) =
-		Source1(3, 0) * Source2(0, 0) + Source1(3, 1) * Source2(1, 0) +
+	(*this)(3, 0) = Source1(3, 0) * Source2(0, 0) + Source1(3, 1) * Source2(1, 0) +
 		Source1(3, 2) * Source2(2, 0) + Source1(3, 3) * Source2(3, 0);
-	(*this)(0, 1) =
-		Source1(0, 0) * Source2(0, 1) + Source1(0, 1) * Source2(1, 1) +
+	(*this)(0, 1) = Source1(0, 0) * Source2(0, 1) + Source1(0, 1) * Source2(1, 1) +
 		Source1(0, 2) * Source2(2, 1) + Source1(0, 3) * Source2(3, 1);
-	(*this)(1, 1) =
-		Source1(1, 0) * Source2(0, 1) + Source1(1, 1) * Source2(1, 1) +
+	(*this)(1, 1) = Source1(1, 0) * Source2(0, 1) + Source1(1, 1) * Source2(1, 1) +
 		Source1(1, 2) * Source2(2, 1) + Source1(1, 3) * Source2(3, 1);
-	(*this)(2, 1) =
-		Source1(2, 0) * Source2(0, 1) + Source1(2, 1) * Source2(1, 1) +
+	(*this)(2, 1) = Source1(2, 0) * Source2(0, 1) + Source1(2, 1) * Source2(1, 1) +
 		Source1(2, 2) * Source2(2, 1) + Source1(2, 3) * Source2(3, 1);
-	(*this)(3, 1) =
-		Source1(3, 0) * Source2(0, 1) + Source1(3, 1) * Source2(1, 1) +
+	(*this)(3, 1) = Source1(3, 0) * Source2(0, 1) + Source1(3, 1) * Source2(1, 1) +
 		Source1(3, 2) * Source2(2, 1) + Source1(3, 3) * Source2(3, 1);
-	(*this)(0, 2) =
-		Source1(0, 0) * Source2(0, 2) + Source1(0, 1) * Source2(1, 2) +
+	(*this)(0, 2) = Source1(0, 0) * Source2(0, 2) + Source1(0, 1) * Source2(1, 2) +
 		Source1(0, 2) * Source2(2, 2) + Source1(0, 3) * Source2(3, 2);
-	(*this)(1, 2) =
-		Source1(1, 0) * Source2(0, 2) + Source1(1, 1) * Source2(1, 2) +
+	(*this)(1, 2) = Source1(1, 0) * Source2(0, 2) + Source1(1, 1) * Source2(1, 2) +
 		Source1(1, 2) * Source2(2, 2) + Source1(1, 3) * Source2(3, 2);
-	(*this)(2, 2) =
-		Source1(2, 0) * Source2(0, 2) + Source1(2, 1) * Source2(1, 2) +
+	(*this)(2, 2) = Source1(2, 0) * Source2(0, 2) + Source1(2, 1) * Source2(1, 2) +
 		Source1(2, 2) * Source2(2, 2) + Source1(2, 3) * Source2(3, 2);
-	(*this)(3, 2) =
-		Source1(3, 0) * Source2(0, 2) + Source1(3, 1) * Source2(1, 2) +
+	(*this)(3, 2) = Source1(3, 0) * Source2(0, 2) + Source1(3, 1) * Source2(1, 2) +
 		Source1(3, 2) * Source2(2, 2) + Source1(3, 3) * Source2(3, 2);
 	(*this)(0, 3) = Source1(0, 3);
 	(*this)(1, 3) = Source1(1, 3);
@@ -320,7 +290,7 @@ Matrix4D::Multiply(
 	//Check_Pointer(this);
 	Check_Object(&Source1);
 	Check_Object(&Source2);
-#if USE_ASSEMBLER_CODE
+#if USE_INLINE_ASSEMBLER_CODE
 	float* f = entries;
 	_asm
 	{
@@ -731,74 +701,48 @@ Matrix4D& Matrix4D::Multiply(const AffineMatrix4D& m1, const AffineMatrix4D& m2)
 
 Matrix4D& Matrix4D::Invert(const Matrix4D& Source)
 {
-	float m3344S3443 =
-		Source(2, 2) * Source(3, 3) - Source(2, 3) * Source(3, 2);
-	float m3244S3442 =
-		Source(2, 1) * Source(3, 3) - Source(2, 3) * Source(3, 1);
-	float m3243S3342 =
-		Source(2, 1) * Source(3, 2) - Source(2, 2) * Source(3, 1);
-	float m3144S3441 =
-		Source(2, 0) * Source(3, 3) - Source(2, 3) * Source(3, 0);
-	float m3143S3341 =
-		Source(2, 0) * Source(3, 2) - Source(2, 2) * Source(3, 0);
-	float m3142S3241 =
-		Source(2, 0) * Source(3, 1) - Source(2, 1) * Source(3, 0);
-	float m2344S2443 =
-		Source(1, 2) * Source(3, 3) - Source(1, 3) * Source(3, 2);
-	float m2244S2442 =
-		Source(1, 1) * Source(3, 3) - Source(1, 3) * Source(3, 1);
-	float m2243S2342 =
-		Source(1, 1) * Source(3, 2) - Source(1, 2) * Source(3, 1);
-	float m2144S2441 =
-		Source(1, 0) * Source(3, 3) - Source(1, 3) * Source(3, 0);
-	float m2143S2341 =
-		Source(1, 0) * Source(3, 2) - Source(1, 2) * Source(3, 0);
-	float m2142S2241 =
-		Source(1, 0) * Source(3, 1) - Source(1, 1) * Source(3, 0);
-	float m2334S2433 =
-		Source(1, 2) * Source(2, 3) - Source(1, 3) * Source(2, 2);
-	float m2234S2432 =
-		Source(1, 1) * Source(2, 3) - Source(1, 3) * Source(2, 1);
-	float m2233S2332 =
-		Source(1, 1) * Source(2, 2) - Source(1, 2) * Source(2, 1);
-	float m2134S2431 =
-		Source(1, 0) * Source(2, 3) - Source(1, 3) * Source(2, 0);
-	float m2133S2331 =
-		Source(1, 0) * Source(2, 2) - Source(1, 2) * Source(2, 0);
-	float m2132S2231 =
-		Source(1, 0) * Source(2, 1) - Source(1, 1) * Source(2, 0);
-	float A11 = Source(1, 1) * m3344S3443 - Source(1, 2) * m3244S3442 +
-				Source(1, 3) * m3243S3342;
-	float A12 = -(Source(1, 0) * m3344S3443 - Source(1, 2) * m3144S3441 +
-				  Source(1, 3) * m3143S3341);
-	float A13 = Source(1, 0) * m3244S3442 - Source(1, 1) * m3144S3441 +
-				Source(1, 3) * m3142S3241;
-	float A14 = -(Source(1, 0) * m3243S3342 - Source(1, 1) * m3143S3341 +
-				  Source(1, 2) * m3142S3241);
-	float A21 = -(Source(0, 1) * m3344S3443 - Source(0, 2) * m3244S3442 +
-				  Source(0, 3) * m3243S3342);
-	float A22 = Source(0, 0) * m3344S3443 - Source(0, 2) * m3144S3441 +
-				Source(0, 3) * m3143S3341;
-	float A23 = -(Source(0, 0) * m3244S3442 - Source(0, 1) * m3144S3441 +
-				  Source(0, 3) * m3142S3241);
-	float A24 = Source(0, 0) * m3243S3342 - Source(0, 1) * m3143S3341 +
-				Source(0, 2) * m3142S3241;
-	float A31 = Source(0, 1) * m2344S2443 - Source(0, 2) * m2244S2442 +
-				Source(0, 3) * m2243S2342;
-	float A32 = -(Source(0, 0) * m2344S2443 - Source(0, 2) * m2144S2441 +
-				  Source(0, 3) * m2143S2341);
-	float A33 = Source(0, 0) * m2244S2442 - Source(0, 1) * m2144S2441 +
-				Source(0, 3) * m2142S2241;
-	float A34 = -(Source(0, 0) * m2243S2342 - Source(0, 1) * m2143S2341 +
-				  Source(0, 2) * m2142S2241);
-	float A41 = -(Source(0, 1) * m2334S2433 - Source(0, 2) * m2234S2432 +
-				  Source(0, 3) * m2233S2332);
-	float A42 = Source(0, 0) * m2334S2433 - Source(0, 2) * m2134S2431 +
-				Source(0, 3) * m2133S2331;
-	float A43 = -(Source(0, 0) * m2234S2432 - Source(0, 1) * m2134S2431 +
-				  Source(0, 3) * m2132S2231);
-	float A44 = Source(0, 0) * m2233S2332 - Source(0, 1) * m2133S2331 +
-				Source(0, 2) * m2132S2231;
+	float m3344S3443 = Source(2, 2) * Source(3, 3) - Source(2, 3) * Source(3, 2);
+	float m3244S3442 = Source(2, 1) * Source(3, 3) - Source(2, 3) * Source(3, 1);
+	float m3243S3342 = Source(2, 1) * Source(3, 2) - Source(2, 2) * Source(3, 1);
+	float m3144S3441 = Source(2, 0) * Source(3, 3) - Source(2, 3) * Source(3, 0);
+	float m3143S3341 = Source(2, 0) * Source(3, 2) - Source(2, 2) * Source(3, 0);
+	float m3142S3241 = Source(2, 0) * Source(3, 1) - Source(2, 1) * Source(3, 0);
+	float m2344S2443 = Source(1, 2) * Source(3, 3) - Source(1, 3) * Source(3, 2);
+	float m2244S2442 = Source(1, 1) * Source(3, 3) - Source(1, 3) * Source(3, 1);
+	float m2243S2342 = Source(1, 1) * Source(3, 2) - Source(1, 2) * Source(3, 1);
+	float m2144S2441 = Source(1, 0) * Source(3, 3) - Source(1, 3) * Source(3, 0);
+	float m2143S2341 = Source(1, 0) * Source(3, 2) - Source(1, 2) * Source(3, 0);
+	float m2142S2241 = Source(1, 0) * Source(3, 1) - Source(1, 1) * Source(3, 0);
+	float m2334S2433 = Source(1, 2) * Source(2, 3) - Source(1, 3) * Source(2, 2);
+	float m2234S2432 = Source(1, 1) * Source(2, 3) - Source(1, 3) * Source(2, 1);
+	float m2233S2332 = Source(1, 1) * Source(2, 2) - Source(1, 2) * Source(2, 1);
+	float m2134S2431 = Source(1, 0) * Source(2, 3) - Source(1, 3) * Source(2, 0);
+	float m2133S2331 = Source(1, 0) * Source(2, 2) - Source(1, 2) * Source(2, 0);
+	float m2132S2231 = Source(1, 0) * Source(2, 1) - Source(1, 1) * Source(2, 0);
+	float A11 = Source(1, 1) * m3344S3443 - Source(1, 2) * m3244S3442 + Source(1, 3) * m3243S3342;
+	float A12 =
+		-(Source(1, 0) * m3344S3443 - Source(1, 2) * m3144S3441 + Source(1, 3) * m3143S3341);
+	float A13 = Source(1, 0) * m3244S3442 - Source(1, 1) * m3144S3441 + Source(1, 3) * m3142S3241;
+	float A14 =
+		-(Source(1, 0) * m3243S3342 - Source(1, 1) * m3143S3341 + Source(1, 2) * m3142S3241);
+	float A21 =
+		-(Source(0, 1) * m3344S3443 - Source(0, 2) * m3244S3442 + Source(0, 3) * m3243S3342);
+	float A22 = Source(0, 0) * m3344S3443 - Source(0, 2) * m3144S3441 + Source(0, 3) * m3143S3341;
+	float A23 =
+		-(Source(0, 0) * m3244S3442 - Source(0, 1) * m3144S3441 + Source(0, 3) * m3142S3241);
+	float A24 = Source(0, 0) * m3243S3342 - Source(0, 1) * m3143S3341 + Source(0, 2) * m3142S3241;
+	float A31 = Source(0, 1) * m2344S2443 - Source(0, 2) * m2244S2442 + Source(0, 3) * m2243S2342;
+	float A32 =
+		-(Source(0, 0) * m2344S2443 - Source(0, 2) * m2144S2441 + Source(0, 3) * m2143S2341);
+	float A33 = Source(0, 0) * m2244S2442 - Source(0, 1) * m2144S2441 + Source(0, 3) * m2142S2241;
+	float A34 =
+		-(Source(0, 0) * m2243S2342 - Source(0, 1) * m2143S2341 + Source(0, 2) * m2142S2241);
+	float A41 =
+		-(Source(0, 1) * m2334S2433 - Source(0, 2) * m2234S2432 + Source(0, 3) * m2233S2332);
+	float A42 = Source(0, 0) * m2334S2433 - Source(0, 2) * m2134S2431 + Source(0, 3) * m2133S2331;
+	float A43 =
+		-(Source(0, 0) * m2234S2432 - Source(0, 1) * m2134S2431 + Source(0, 3) * m2132S2231);
+	float A44 = Source(0, 0) * m2233S2332 - Source(0, 1) * m2133S2331 + Source(0, 2) * m2132S2231;
 	// Calc out the determinant.
 	float detA		 = Source(0, 0) * A11;
 	float detB		 = Source(0, 1) * A12;
@@ -842,14 +786,14 @@ Matrix4D& Matrix4D::Invert(const Matrix4D& Source)
 void Spew(PCSTR group, const Matrix4D& matrix)
 {
 	Check_Object(&matrix);
-	SPEW((group, "\n\t| %9f, %9f, %9f, %9f |", matrix(0, 0), matrix(0, 1),
-		matrix(0, 2), matrix(0, 3)));
-	SPEW((group, "\t| %9f, %9f, %9f, %9f |", matrix(1, 0), matrix(1, 1),
-		matrix(1, 2), matrix(1, 3)));
-	SPEW((group, "\t| %9f, %9f, %9f, %9f |", matrix(2, 0), matrix(2, 1),
-		matrix(2, 2), matrix(2, 3)));
-	SPEW((group, "\t| %9f, %9f, %9f, %9f |+", matrix(3, 0), matrix(3, 1),
-		matrix(3, 2), matrix(3, 3)));
+	SPEW((group, "\n\t| %9f, %9f, %9f, %9f |", matrix(0, 0), matrix(0, 1), matrix(0, 2),
+		matrix(0, 3)));
+	SPEW((
+		group, "\t| %9f, %9f, %9f, %9f |", matrix(1, 0), matrix(1, 1), matrix(1, 2), matrix(1, 3)));
+	SPEW((
+		group, "\t| %9f, %9f, %9f, %9f |", matrix(2, 0), matrix(2, 1), matrix(2, 2), matrix(2, 3)));
+	SPEW((group, "\t| %9f, %9f, %9f, %9f |+", matrix(3, 0), matrix(3, 1), matrix(3, 2),
+		matrix(3, 3)));
 }
 #endif
 
@@ -857,12 +801,12 @@ void Spew(PCSTR group, const Matrix4D& matrix)
 //###########################################################################
 //###########################################################################
 //
-void Matrix4D::SetPerspective(float near_clip, float far_clip, float left_clip,
-	float right_clip, float top_clip, float bottom_clip)
+void Matrix4D::SetPerspective(float near_clip, float far_clip, float left_clip, float right_clip,
+	float top_clip, float bottom_clip)
 {
-	Verify(far_clip - near_clip > SMALL);
-	Verify(left_clip - right_clip > SMALL);
-	Verify(top_clip - bottom_clip > SMALL);
+	_ASSERT(far_clip - near_clip > SMALL);
+	_ASSERT(left_clip - right_clip > SMALL);
+	_ASSERT(top_clip - bottom_clip > SMALL);
 	//
 	//-------------------------------------------------------
 	// Calculate the horizontal, vertical, and forward ranges
@@ -896,65 +840,51 @@ void Matrix4D::SetPerspective(float near_clip, float far_clip, float left_clip,
 	(*this)(3, 3)						= 0.0f;
 }
 
-void Matrix4D::GetPerspective(float* near_clip, float* far_clip,
-	float* left_clip, float* right_clip, float* top_clip,
-	float* bottom_clip) const
+void Matrix4D::GetPerspective(float* near_clip, float* far_clip, float* left_clip,
+	float* right_clip, float* top_clip, float* bottom_clip) const
 {
 	if (near_clip)
 	{
-		Verify(!Small_Enough((*this)(FORWARD_AXIS, FORWARD_AXIS)));
-		*near_clip =
-			-(*this)(3, FORWARD_AXIS) / (*this)(FORWARD_AXIS, FORWARD_AXIS);
+		_ASSERT(!Small_Enough((*this)(FORWARD_AXIS, FORWARD_AXIS)));
+		*near_clip = -(*this)(3, FORWARD_AXIS) / (*this)(FORWARD_AXIS, FORWARD_AXIS);
 	}
 	if (far_clip)
 	{
-		Verify(!Small_Enough((1.0f - (*this)(FORWARD_AXIS, FORWARD_AXIS))));
-		*far_clip = (*this)(3, FORWARD_AXIS) /
-					(1.0f - (*this)(FORWARD_AXIS, FORWARD_AXIS));
+		_ASSERT(!Small_Enough((1.0f - (*this)(FORWARD_AXIS, FORWARD_AXIS))));
+		*far_clip = (*this)(3, FORWARD_AXIS) / (1.0f - (*this)(FORWARD_AXIS, FORWARD_AXIS));
 	}
 	if (left_clip)
 	{
-		Verify(!Small_Enough((*this)(FORWARD_AXIS, FORWARD_AXIS) *
-							 (*this)(LEFT_AXIS, LEFT_AXIS)));
-		*left_clip = (((*this)(FORWARD_AXIS, LEFT_AXIS) - 1.0f) *
-						 (*this)(3, FORWARD_AXIS)) /
-					 ((*this)(FORWARD_AXIS, FORWARD_AXIS) *
-						 (*this)(LEFT_AXIS, LEFT_AXIS));
+		_ASSERT(!Small_Enough((*this)(FORWARD_AXIS, FORWARD_AXIS) * (*this)(LEFT_AXIS, LEFT_AXIS)));
+		*left_clip = (((*this)(FORWARD_AXIS, LEFT_AXIS) - 1.0f) * (*this)(3, FORWARD_AXIS)) /
+			((*this)(FORWARD_AXIS, FORWARD_AXIS) * (*this)(LEFT_AXIS, LEFT_AXIS));
 	}
 	if (right_clip)
 	{
-		Verify(!Small_Enough((*this)(FORWARD_AXIS, FORWARD_AXIS) *
-							 (*this)(LEFT_AXIS, LEFT_AXIS)));
-		*right_clip =
-			((*this)(FORWARD_AXIS, LEFT_AXIS) * (*this)(3, FORWARD_AXIS)) /
-			((*this)(FORWARD_AXIS, FORWARD_AXIS) *
-				(*this)(LEFT_AXIS, LEFT_AXIS));
+		_ASSERT(!Small_Enough((*this)(FORWARD_AXIS, FORWARD_AXIS) * (*this)(LEFT_AXIS, LEFT_AXIS)));
+		*right_clip = ((*this)(FORWARD_AXIS, LEFT_AXIS) * (*this)(3, FORWARD_AXIS)) /
+			((*this)(FORWARD_AXIS, FORWARD_AXIS) * (*this)(LEFT_AXIS, LEFT_AXIS));
 	}
 	if (top_clip)
 	{
-		Verify(!Small_Enough(
-			(*this)(UP_AXIS, UP_AXIS) * (*this)(FORWARD_AXIS, FORWARD_AXIS)));
-		*top_clip =
-			(((*this)(FORWARD_AXIS, UP_AXIS) - 1.0f) *
-				(*this)(3, FORWARD_AXIS)) /
+		_ASSERT(!Small_Enough((*this)(UP_AXIS, UP_AXIS) * (*this)(FORWARD_AXIS, FORWARD_AXIS)));
+		*top_clip = (((*this)(FORWARD_AXIS, UP_AXIS) - 1.0f) * (*this)(3, FORWARD_AXIS)) /
 			((*this)(UP_AXIS, UP_AXIS) * (*this)(FORWARD_AXIS, FORWARD_AXIS));
 	}
 	if (bottom_clip)
 	{
-		Verify(!Small_Enough(
-			(*this)(UP_AXIS, UP_AXIS) * (*this)(FORWARD_AXIS, FORWARD_AXIS)));
-		*bottom_clip =
-			((*this)(FORWARD_AXIS, UP_AXIS) * (*this)(3, FORWARD_AXIS)) /
+		_ASSERT(!Small_Enough((*this)(UP_AXIS, UP_AXIS) * (*this)(FORWARD_AXIS, FORWARD_AXIS)));
+		*bottom_clip = ((*this)(FORWARD_AXIS, UP_AXIS) * (*this)(3, FORWARD_AXIS)) /
 			((*this)(UP_AXIS, UP_AXIS) * (*this)(FORWARD_AXIS, FORWARD_AXIS));
 	}
 }
 
-void Matrix4D::SetPerspective(float near_clip, float far_clip,
-	const Radian& horizontal_fov, float height_to_width)
+void Matrix4D::SetPerspective(
+	float near_clip, float far_clip, const Radian& horizontal_fov, float height_to_width)
 {
-	Verify(far_clip - near_clip > SMALL);
-	Verify(horizontal_fov > SMALL);
-	Verify(height_to_width > SMALL);
+	_ASSERT(far_clip - near_clip > SMALL);
+	_ASSERT(horizontal_fov > SMALL);
+	_ASSERT(height_to_width > SMALL);
 	//
 	//-------------------------------------------------------------
 	// Calculate the near plane offsets to the side culling planes
@@ -965,12 +895,11 @@ void Matrix4D::SetPerspective(float near_clip, float far_clip,
 	SetPerspective(near_clip, far_clip, width, -width, height, -height);
 }
 
-void Matrix4D::GetPerspective(float* nearClip, float* farClip,
-	Radian* horizontal_fov, float* height_to_width) const
+void Matrix4D::GetPerspective(
+	float* nearClip, float* farClip, Radian* horizontal_fov, float* height_to_width) const
 {
 	float near_clip, far_clip, left_clip, right_clip, top_clip, bottom_clip;
-	GetPerspective(&near_clip, &far_clip, &left_clip, &right_clip, &top_clip,
-		&bottom_clip);
+	GetPerspective(&near_clip, &far_clip, &left_clip, &right_clip, &top_clip, &bottom_clip);
 	if (nearClip)
 	{
 		*nearClip = near_clip;
@@ -981,12 +910,12 @@ void Matrix4D::GetPerspective(float* nearClip, float* farClip,
 	}
 	if (horizontal_fov)
 	{
-		Verify(!Small_Enough(near_clip));
-		horizontal_fov->angle = 2.0f * (float)atan(left_clip / near_clip);
+		_ASSERT(!Small_Enough(near_clip));
+		horizontal_fov->m_angle = 2.0f * (float)atan(left_clip / near_clip);
 	}
 	if (height_to_width)
 	{
-		Verify(!Small_Enough(right_clip));
+		_ASSERT(!Small_Enough(right_clip));
 		*height_to_width = top_clip / left_clip;
 	}
 }

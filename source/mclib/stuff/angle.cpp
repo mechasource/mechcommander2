@@ -38,14 +38,14 @@ float Radian::Normalize(float Value)
 Radian& Radian::Normalize()
 {
 	// Check_Object(this);
-	angle = static_cast<float>(fmod(angle, Two_Pi));
-	if (angle > Pi)
+	m_angle = static_cast<float>(fmod(m_angle, Two_Pi));
+	if (m_angle > Pi)
 	{
-		angle -= Two_Pi;
+		m_angle -= Two_Pi;
 	}
-	else if (angle < -Pi)
+	else if (m_angle < -Pi)
 	{
-		angle += Two_Pi;
+		m_angle += Two_Pi;
 	}
 	return *this;
 }
@@ -60,8 +60,8 @@ Radian& Radian::Lerp(const Radian& a, const Radian& b, float t)
 	// Check_Pointer(this);
 	Check_Object(&a);
 	Check_Object(&b);
-	a1 = Radian::Normalize(a.angle);
-	a2 = Radian::Normalize(b.angle);
+	a1 = Radian::Normalize(a.m_angle);
+	a2 = Radian::Normalize(b.m_angle);
 	if (a2 - a1 > Pi)
 	{
 		a2 -= Two_Pi;
@@ -70,7 +70,7 @@ Radian& Radian::Lerp(const Radian& a, const Radian& b, float t)
 	{
 		a2 += Two_Pi;
 	}
-	angle = Stuff::Lerp(a1, a2, t);
+	m_angle = Stuff::Lerp(a1, a2, t);
 	return *this;
 }
 
@@ -80,7 +80,7 @@ SinCosPair::operator=(const Radian& radian)
 {
 	//Check_Pointer(this);
 	Check_Object(&radian);
-#if USE_ASSEMBLER_CODE
+#if USE_INLINE_ASSEMBLER_CODE
 	float* f = &sine;
 	_asm
 	{
@@ -115,7 +115,7 @@ SinCosPair::operator=(const Radian& radian)
 void Spew(PCSTR group, const Radian& angle)
 {
 	Check_Object(&angle);
-	SPEW((group, "%f rad+", angle.angle));
+	SPEW((group, "%f rad+", angle.m_angle));
 }
 
 //
@@ -125,7 +125,7 @@ void Spew(PCSTR group, const Radian& angle)
 void Spew(PCSTR group, const Degree& angle)
 {
 	Check_Object(&angle);
-	SPEW((group, "%f deg+", angle.angle));
+	SPEW((group, "%f deg+", angle.m_angle));
 }
 
 //

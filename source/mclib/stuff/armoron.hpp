@@ -24,29 +24,28 @@ namespace Stuff
 #endif
 
 #if _CONSIDERED_OBSOLETE
-#define Verify(c)                                                              \
-	do                                                                         \
-	{                                                                          \
-		if (Stuff::ArmorLevel > 0 && !(c))                                     \
-			PAUSE(("Failed " #c));                                             \
-	}                                                                          \
+#define _ASSERT(c)                                                                                  \
+	do                                                                                             \
+	{                                                                                              \
+		if (Stuff::ArmorLevel > 0 && !(c))                                                         \
+			PAUSE(("Failed " #c));                                                                 \
+	}                                                                                              \
 	SUPPRESS_WARNING(4127) while (0)
 #endif
-#define Verify(c) ATLASSERT(c)
+#define _ASSERT(c) ATLASSERT(c)
 
-#define Warn(c)                                                                \
-	do                                                                         \
-	{                                                                          \
-		if (Stuff::ArmorLevel > 0 && (c))                                      \
-			SPEW((0, #c));                                                     \
-	}                                                                          \
+#define Warn(c)                                                                                    \
+	do                                                                                             \
+	{                                                                                              \
+		if (Stuff::ArmorLevel > 0 && (c))                                                          \
+			SPEW((0, #c));                                                                         \
+	}                                                                                              \
 	SUPPRESS_WARNING(4127) while (0)
 
 #if defined(_M_IX86)
-#define Check_Pointer(p)                                                       \
-	Verify((p) && reinterpret_cast<size_t>(p) != Stuff::SNAN_NEGATIVE_LONG)
+#define Check_Pointer(p) _ASSERT((p) && reinterpret_cast<size_t>(p) != Stuff::SNAN_NEGATIVE_LONG)
 #else
-#define Check_Pointer(p) Verify(p)
+#define Check_Pointer(p) _ASSERT(p)
 #endif
 
 template <class T> T Cast_Pointer_Function(T p)
@@ -56,41 +55,41 @@ template <class T> T Cast_Pointer_Function(T p)
 	return p;
 }
 
-#define Cast_Pointer(type, ptr)                                                \
-	SUPPRESS_WARNING(4946)                                                 \
+#define Cast_Pointer(type, ptr)                                                                    \
+	SUPPRESS_WARNING(4946)                                                                         \
 	Stuff::Cast_Pointer_Function(reinterpret_cast<type>(ptr))
 
-#define Mem_Copy(destination, source, length, available)                       \
-	do                                                                         \
-	{                                                                          \
-		Check_Pointer(destination);                                            \
-		Check_Pointer(source);                                                 \
-		Verify((length) <= (available));                                       \
-		Verify((size_t)(abs(reinterpret_cast<PSTR>(destination) -              \
-							reinterpret_cast<PCSTR>(source))) >= length);      \
-		memcpy(destination, source, length);                                   \
-	}                                                                          \
+#define Mem_Copy(destination, source, length, available)                                           \
+	do                                                                                             \
+	{                                                                                              \
+		Check_Pointer(destination);                                                                \
+		Check_Pointer(source);                                                                     \
+		_ASSERT((length) <= (available));                                                           \
+		_ASSERT((size_t)(abs(reinterpret_cast<PSTR>(destination) -                                  \
+				   reinterpret_cast<PCSTR>(source))) >= length);                                   \
+		memcpy(destination, source, length);                                                       \
+	}                                                                                              \
 	SUPPRESS_WARNING(4127) while (0)
 
-#define Str_Copy(destination, source, available)                               \
-	do                                                                         \
-	{                                                                          \
-		Check_Pointer(destination);                                            \
-		Check_Pointer(source);                                                 \
-		Verify((strlen(source) + 1) <= (available));                           \
-		Verify(size_t(abs(destination - source)) >= (strlen(source) + 1));     \
-		strcpy_s(destination, available, source);                              \
-	}                                                                          \
+#define Str_Copy(destination, source, available)                                                   \
+	do                                                                                             \
+	{                                                                                              \
+		Check_Pointer(destination);                                                                \
+		Check_Pointer(source);                                                                     \
+		_ASSERT((strlen(source) + 1) <= (available));                                               \
+		_ASSERT(size_t(abs(destination - source)) >= (strlen(source) + 1));                         \
+		strcpy_s(destination, available, source);                                                  \
+	}                                                                                              \
 	SUPPRESS_WARNING(4127) while (0)
 
-#define Str_Cat(destination, source, available)                                \
-	do                                                                         \
-	{                                                                          \
-		Check_Pointer(destination);                                            \
-		Check_Pointer(source);                                                 \
-		Verify((strlen(destination) + strlen(source) + 1) <= (available));     \
-		strcat(destination, source);                                           \
-	}                                                                          \
+#define Str_Cat(destination, source, available)                                                    \
+	do                                                                                             \
+	{                                                                                              \
+		Check_Pointer(destination);                                                                \
+		Check_Pointer(source);                                                                     \
+		_ASSERT((strlen(destination) + strlen(source) + 1) <= (available));                         \
+		strcat(destination, source);                                                               \
+	}                                                                                              \
 	SUPPRESS_WARNING(4127) while (0)
 
 #define Check_Signature(p) Stuff::Is_Signature_Bad(p)
@@ -137,14 +136,13 @@ template <class T> T Cast_Object_Function(T p)
 	case 4:
 		Check_Signature(p);
 		p->TestInstance();
-		Verify(dynamic_cast<T>(p) != nullptr);
+		_ASSERT(dynamic_cast<T>(p) != nullptr);
 		break;
 	}
 	return p;
 }
 
-#define Cast_Object(type, ptr)                                                 \
-	Stuff::Cast_Object_Function(static_cast<type>(ptr))
-}
+#define Cast_Object(type, ptr) Stuff::Cast_Object_Function(static_cast<type>(ptr))
+} // namespace Stuff
 
 #endif

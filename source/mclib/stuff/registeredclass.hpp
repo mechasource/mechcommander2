@@ -10,16 +10,14 @@
 #ifndef _REGISTEREDCLASS_HPP_
 #define _REGISTEREDCLASS_HPP_
 
-#include <stuff/stuff.hpp>
-#include <stuff/style.hpp>
+//#include <stuff/stuff.hpp>
+//#include <stuff/style.hpp>
 #include <mechclassids.h>
 
 namespace Stuff
 {
 
-class MString;
 class RegisteredClass__ClassData;
-class MemoryStream;
 
 //##########################################################################
 //#######################    RegisteredClass    ############################
@@ -32,33 +30,33 @@ class RegisteredClass
 {
 	friend RegisteredClass__ClassData;
 
-  public:
+public:
 	static void InitializeClass(void);
 	static void TerminateClass(void);
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// ClassID enumeration
 	//
-  public:
+public:
 	typedef uint32_t ClassID;
 	typedef RegisteredClass__ClassData ClassData;
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Construction, destruction, saving
 	//
-  public:
+public:
 	virtual ~RegisteredClass(void) {}
 
-  protected:
+protected:
 	explicit RegisteredClass(ClassData* class_data);
 
-  private:
+private:
 	RegisteredClass(const RegisteredClass&);
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Class Data Support
 	//
-  public:
+public:
 	ClassData* GetClassData(void) const
 	{
 		// Check_Object(this);
@@ -71,41 +69,40 @@ class RegisteredClass
 	static ClassData* FindClassData(PCSTR name);
 	static ClassData* FindClassData(ClassID class_id)
 	{
-		Verify(class_id < static_cast<ClassID>(__stuff_classids::ClassIDCount));
+		_ASSERT(class_id < static_cast<ClassID>(__stuff_classids::ClassIDCount));
 		return ClassDataArray[class_id];
 	}
 	static ClassData* DefaultData;
 
-  protected:
+protected:
 	ClassData* classData;
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Accessors
 	//
-  public:
+public:
 	ClassID GetClassID(void) const;
 	PCSTR GetClassString(void) const;
 	static ClassID AllocateTemporaryClassID(void)
 	{
-		Verify(FirstTemporaryClassID < static_cast<ClassID>(__stuff_classids::ClassIDCount));
+		_ASSERT(FirstTemporaryClassID < static_cast<ClassID>(__stuff_classids::ClassIDCount));
 		return FirstTemporaryClassID++;
 	}
 
-  private:
-	  static ClassData* ClassDataArray[__stuff_classids::ClassIDCount];
+private:
+	static ClassData* ClassDataArray[__stuff_classids::ClassIDCount];
 	static ClassID FirstTemporaryClassID;
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Test support
 	//
-  public:
+public:
 	void TestInstance(void) const;
 };
 
 //##########################################################################
 //#####################    Receiver::ClassData    ##########################
 //##########################################################################
-
 class RegisteredClass__ClassData
 #if defined(_ARMOR)
 	: public Stuff::Signature
@@ -116,16 +113,16 @@ class RegisteredClass__ClassData
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Construction, destruction, testing
 	//
-  public:
-	RegisteredClass__ClassData(RegisteredClass::ClassID class_id,
-		PCSTR class_name, RegisteredClass__ClassData* parent = nullptr);
+public:
+	RegisteredClass__ClassData(RegisteredClass::ClassID class_id, PCSTR class_name,
+		RegisteredClass__ClassData* parent = nullptr);
 
 	~RegisteredClass__ClassData(void);
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Inheritance stuff
 	//
-  public:
+public:
 	bool IsDerivedFrom(RegisteredClass__ClassData* parent);
 
 	RegisteredClass::ClassID GetClassID(void)
@@ -144,31 +141,35 @@ class RegisteredClass__ClassData
 		return parentClass;
 	}
 
-  protected:
+protected:
 	void DeriveClass(RegisteredClass__ClassData* child);
-
 	RegisteredClass__ClassData* FindClassData(PCSTR name);
 
-	RegisteredClass::ClassID classID;
-	PCSTR className;
+	RegisteredClass__ClassData* parentClass;
+	RegisteredClass__ClassData* firstChildClass;
+	RegisteredClass__ClassData* nextSiblingClass;
 
-	RegisteredClass__ClassData *firstChildClass, *nextSiblingClass,
-		*parentClass;
+	PCSTR className;
+	union {
+		RegisteredClass::ClassID classID;
+		size_t padding;
+	};
+	
+
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Test support
 	//
-  public:
+public:
 	void TestInstance(void);
 };
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-inline bool RegisteredClass::IsDerivedFrom(
-	RegisteredClass__ClassData* parent) const
+inline bool RegisteredClass::IsDerivedFrom(RegisteredClass__ClassData* parent) const
 {
 	// Check_Object(this);
-	Check_Object(classData);
+	// Check_Object(classData);
 	return classData->IsDerivedFrom(parent);
 }
 
@@ -177,7 +178,7 @@ inline bool RegisteredClass::IsDerivedFrom(
 inline bool RegisteredClass::IsDerivedFrom(ClassID class_id) const
 {
 	// Check_Object(this);
-	Check_Object(classData);
+	// Check_Object(classData);
 	return classData->IsDerivedFrom(FindClassData(class_id));
 }
 
@@ -186,7 +187,7 @@ inline bool RegisteredClass::IsDerivedFrom(ClassID class_id) const
 inline bool RegisteredClass::IsDerivedFrom(PCSTR parent) const
 {
 	// Check_Object(this);
-	Check_Object(classData);
+	// Check_Object(classData);
 	return classData->IsDerivedFrom(FindClassData(parent));
 }
 
@@ -196,7 +197,7 @@ inline RegisteredClass::ClassID RegisteredClass::GetClassID(void) const
 {
 	// Check_Object(this);
 	RegisteredClass__ClassData* data = GetClassData();
-	Check_Object(data);
+	// Check_Object(data);
 	return data->GetClassID();
 }
 
@@ -206,5 +207,5 @@ inline RegisteredClass::ClassData* RegisteredClass::FindClassData(PCSTR name)
 {
 	return DefaultData->FindClassData(name);
 }
-}
+} // namespace Stuff
 #endif

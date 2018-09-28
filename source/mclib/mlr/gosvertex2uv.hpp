@@ -19,7 +19,7 @@ class Vector4D;
 class RGBAColor;
 class Point3D;
 class Matrix4D;
-}
+} // namespace Stuff
 
 #ifndef _GAMEOS_HPP_
 typedef struct _gos_VERTEX_2UV
@@ -27,10 +27,10 @@ typedef struct _gos_VERTEX_2UV
 	float x,
 		y; // Screen coords	- must be 0.0 to Environment.screenWidth/Height (no
 		   // clipping occurs unless gos_State_Clipping is true)
-	float z;   // 0.0 to 0.99999	- Used for visiblity check in ZBuffer (1.0 is
-			   // not valid)
-	float rhw; // 0.0 to 1.0		- reciprocal of homogeneous w - Used for
-			   // perspective correct textures, fog and clipping
+	float z;	   // 0.0 to 0.99999	- Used for visiblity check in ZBuffer (1.0 is
+				   // not valid)
+	float rhw;	 // 0.0 to 1.0		- reciprocal of homogeneous w - Used for
+				   // perspective correct textures, fog and clipping
 	uint32_t argb; // Vertex color and alpha (alpha of 255 means solid,
 				   // 0=transparent)
 	uint32_t frgb; // Specular color and fog
@@ -48,7 +48,7 @@ namespace MidLevelRenderer
 
 class GOSVertex2UV : public gos_VERTEX_2UV
 {
-  public:
+public:
 	GOSVertex2UV(void);
 
 	inline GOSVertex2UV& operator=(const GOSVertex2UV& V)
@@ -70,15 +70,15 @@ class GOSVertex2UV : public gos_VERTEX_2UV
 	inline GOSVertex2UV& operator=(const Stuff::Vector4D& v)
 	{
 		// Check_Pointer(this);
-		Verify(!Stuff::Small_Enough(v.w));
+		_ASSERT(!Stuff::Small_Enough(v.w));
 		//					Tell_Value(v);
 		rhw = 1.0f / v.w;
 		x   = v.x * rhw;
-		Verify(x >= 0.0f && x <= 1.0f);
+		_ASSERT(x >= 0.0f && x <= 1.0f);
 		y = v.y * rhw;
-		Verify(y >= 0.0f && y <= 1.0f);
+		_ASSERT(y >= 0.0f && y <= 1.0f);
 		z = v.z * rhw;
-		Verify(z >= 0.0f && z < 1.0f);
+		_ASSERT(z >= 0.0f && z < 1.0f);
 		return *this;
 	}
 
@@ -88,7 +88,7 @@ class GOSVertex2UV : public gos_VERTEX_2UV
 		//					DEBUG_STREAM << "c = <" << c.alpha << ", " << c.red << ",
 		//";
 		//					DEBUG_STREAM << c.green << ", " << c.blue << ">" <<
-		//endl;
+		// endl;
 		float f;
 		f = c.alpha * 255.99f;
 		Clamp(f, 0.0f, 255.f);
@@ -113,14 +113,14 @@ class GOSVertex2UV : public gos_VERTEX_2UV
 		return *this;
 	}
 
-	inline void GOSTransformNoClip(const Stuff::Point3D& v,
-		const Stuff::Matrix4D& m, float* uv1, float* uv2
+	inline void GOSTransformNoClip(
+		const Stuff::Point3D& v, const Stuff::Matrix4D& m, float* uv1, float* uv2
 #if FOG_HACK
 		,
 		uint32_t foggy
 #endif
 	);
-  protected:
+protected:
 };
 
 //#pragma warning (disable : 4725)
@@ -136,7 +136,7 @@ void GOSVertex2UV::GOSTransformNoClip(
 	// Check_Pointer(this);
 	Check_Object(&_v);
 	Check_Object(&m);
-#if USE_ASSEMBLER_CODE
+#if USE_INLINE_ASSEMBLER_CODE
 	float* f = &x;
 	_asm
 	{
@@ -245,7 +245,7 @@ void GOSVertex2UV::GOSTransformNoClip(
 	z   = _v.x * m(0, 2) + _v.y * m(1, 2) + _v.z * m(2, 2) + m(3, 2);
 	rhw = _v.x * m(0, 3) + _v.y * m(1, 3) + _v.z * m(2, 3) + m(3, 3);
 #endif
-#if 0 // USE_ASSEMBLER_CODE
+#if 0 // USE_INLINE_ASSEMBLER_CODE
 		_asm
 		{
 			;
@@ -284,8 +284,7 @@ void GOSVertex2UV::GOSTransformNoClip(
 #if FOG_HACK
 	if (foggy)
 	{
-		*((puint8_t)&frgb + 3) =
-			GOSVertex::fogTable[foggy - 1][Stuff::Truncate_Float_To_Word(rhw)];
+		*((puint8_t)&frgb + 3) = GOSVertex::fogTable[foggy - 1][Stuff::Truncate_Float_To_Word(rhw)];
 	}
 	else
 	{
@@ -293,18 +292,18 @@ void GOSVertex2UV::GOSTransformNoClip(
 	}
 #endif
 	rhw = 1.0f / rhw;
-	Verify(MLRState::GetHasMaxUVs() ? (uv1[0] < MLRState::GetMaxUV() &&
-										  uv1[0] > -MLRState::GetMaxUV())
-									: 1);
-	Verify(MLRState::GetHasMaxUVs() ? (uv1[1] < MLRState::GetMaxUV() &&
-										  uv1[1] > -MLRState::GetMaxUV())
-									: 1);
-	Verify(MLRState::GetHasMaxUVs() ? (uv2[0] < MLRState::GetMaxUV() &&
-										  uv2[0] > -MLRState::GetMaxUV())
-									: 1);
-	Verify(MLRState::GetHasMaxUVs() ? (uv2[1] < MLRState::GetMaxUV() &&
-										  uv2[1] > -MLRState::GetMaxUV())
-									: 1);
+	_ASSERT(MLRState::GetHasMaxUVs()
+			? (uv1[0] < MLRState::GetMaxUV() && uv1[0] > -MLRState::GetMaxUV())
+			: 1);
+	_ASSERT(MLRState::GetHasMaxUVs()
+			? (uv1[1] < MLRState::GetMaxUV() && uv1[1] > -MLRState::GetMaxUV())
+			: 1);
+	_ASSERT(MLRState::GetHasMaxUVs()
+			? (uv2[0] < MLRState::GetMaxUV() && uv2[0] > -MLRState::GetMaxUV())
+			: 1);
+	_ASSERT(MLRState::GetHasMaxUVs()
+			? (uv2[1] < MLRState::GetMaxUV() && uv2[1] > -MLRState::GetMaxUV())
+			: 1);
 	u1 = uv1[0];
 	v1 = uv1[1];
 	u2 = uv2[0];
@@ -313,13 +312,13 @@ void GOSVertex2UV::GOSTransformNoClip(
 	y  = y * rhw;
 	z  = z * rhw;
 #endif
-	Verify(rhw > Stuff::SMALL);
-	Verify(x >= 0.0f);
-	Verify(y >= 0.0f);
-	Verify(z >= 0.0f);
-	Verify(x <= 1.0f);
-	Verify(y <= 1.0f);
-	Verify(z < 1.0f);
+	_ASSERT(rhw > Stuff::SMALL);
+	_ASSERT(x >= 0.0f);
+	_ASSERT(y >= 0.0f);
+	_ASSERT(z >= 0.0f);
+	_ASSERT(x <= 1.0f);
+	_ASSERT(y <= 1.0f);
+	_ASSERT(z < 1.0f);
 	x = x * ViewportScalars::MulX + ViewportScalars::AddX;
 	y = y * ViewportScalars::MulY + ViewportScalars::AddY;
 }
@@ -328,18 +327,18 @@ void GOSVertex2UV::GOSTransformNoClip(
 //	the lines below will produce following functions:
 //
 //	bool GOSCopyData(GOSVertex2UV*, const Stuff::Vector4D*, const
-//Vector2DScalar*, const Vector2DScalar*, int32_t); 	bool
-//GOSCopyData(GOSVertex2UV*, const Stuff::Vector4D*, pcuint32_t , const
-//Vector2DScalar*, const Vector2DScalar*, int32_t); 	bool
-//GOSCopyData(GOSVertex2UV*, const Stuff::Vector4D*, const RGBAColor*, const
-//Vector2DScalar*, const Vector2DScalar*, int32_t);
+// Vector2DScalar*, const Vector2DScalar*, int32_t); 	bool
+// GOSCopyData(GOSVertex2UV*, const Stuff::Vector4D*, pcuint32_t , const
+// Vector2DScalar*, const Vector2DScalar*, int32_t); 	bool
+// GOSCopyData(GOSVertex2UV*, const Stuff::Vector4D*, const RGBAColor*, const
+// Vector2DScalar*, const Vector2DScalar*, int32_t);
 //
 //	bool GOSCopyTriangleData(GOSVertex2UV*, const Stuff::Vector4D*, const
-//Vector2DScalar*, const Vector2DScalar*, int32_t, int32_t, int32_t); 	bool
-//GOSCopyTriangleData(GOSVertex2UV*, const Stuff::Vector4D*, pcuint32_t , const
-//Vector2DScalar*, const Vector2DScalar*, int32_t, int32_t, int32_t); 	bool
-//GOSCopyTriangleData(GOSVertex2UV*, const Stuff::Vector4D*, const RGBAColor*,
-//const Vector2DScalar*, const Vector2DScalar*, int32_t, int32_t, int32_t);
+// Vector2DScalar*, const Vector2DScalar*, int32_t, int32_t, int32_t); 	bool
+// GOSCopyTriangleData(GOSVertex2UV*, const Stuff::Vector4D*, pcuint32_t , const
+// Vector2DScalar*, const Vector2DScalar*, int32_t, int32_t, int32_t); 	bool
+// GOSCopyTriangleData(GOSVertex2UV*, const Stuff::Vector4D*, const RGBAColor*,
+// const Vector2DScalar*, const Vector2DScalar*, int32_t, int32_t, int32_t);
 //#######################################################################################################################
 
 #define I_SAY_YES_TO_COLOR
@@ -357,5 +356,5 @@ void GOSVertex2UV::GOSTransformNoClip(
 #undef I_SAY_YES_TO_MULTI_TEXTURE
 
 // #define MLR_GOSVERTEXMANIPULATION_HPP
-}
+} // namespace MidLevelRenderer
 #endif

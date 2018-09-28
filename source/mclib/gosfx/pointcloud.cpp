@@ -17,13 +17,12 @@
 //------------------------------------------------------------------------------
 //
 gosFX::PointCloud__Specification::PointCloud__Specification(
-	Stuff::MemoryStream* stream, uint32_t gfx_version)
-	: ParticleCloud__Specification(
-		  gosFX::PointCloudClassID, stream, gfx_version)
+	std::iostream stream, uint32_t gfx_version)
+	: ParticleCloud__Specification(gosFX::PointCloudClassID, stream, gfx_version)
 {
 	// Check_Pointer(this);
-	Verify(m_class == PointCloudClassID);
-	// Verify(gos_GetCurrentHeap() == Heap);
+	_ASSERT(m_class == PointCloudClassID);
+	// _ASSERT(gos_GetCurrentHeap() == Heap);
 	m_totalParticleSize = gosFX::PointCloud::ParticleSize;
 	m_particleClassSize = sizeof(gosFX::PointCloud::Particle);
 }
@@ -34,7 +33,7 @@ gosFX::PointCloud__Specification::PointCloud__Specification()
 	: ParticleCloud__Specification(gosFX::PointCloudClassID)
 {
 	// Check_Pointer(this);
-	// Verify(gos_GetCurrentHeap() == Heap);
+	// _ASSERT(gos_GetCurrentHeap() == Heap);
 	m_totalParticleSize = gosFX::PointCloud::ParticleSize;
 	m_particleClassSize = sizeof(gosFX::PointCloud::Particle);
 }
@@ -42,14 +41,13 @@ gosFX::PointCloud__Specification::PointCloud__Specification()
 //------------------------------------------------------------------------------
 //
 gosFX::PointCloud__Specification* gosFX::PointCloud__Specification::Make(
-	Stuff::MemoryStream* stream, uint32_t gfx_version)
+	std::iostream stream, uint32_t gfx_version)
 {
 	Check_Object(stream);
 #ifdef _GAMEOS_HPP_
 	// gos_PushCurrentHeap(Heap);
 #endif
-	PointCloud__Specification* spec =
-		new gosFX::PointCloud__Specification(stream, gfx_version);
+	PointCloud__Specification* spec = new gosFX::PointCloud__Specification(stream, gfx_version);
 	// gos_PopCurrentHeap();
 	return spec;
 }
@@ -65,11 +63,10 @@ gosFX::PointCloud::ClassData* gosFX::PointCloud::DefaultData = nullptr;
 //
 void gosFX::PointCloud::InitializeClass()
 {
-	Verify(!DefaultData);
-	// Verify(gos_GetCurrentHeap() == Heap);
-	DefaultData = new ClassData(PointCloudClassID, "gosFX::PointCloud",
-		ParticleCloud::DefaultData, (Effect::Factory)&Make,
-		(Specification::Factory)&Specification::Make);
+	_ASSERT(!DefaultData);
+	// _ASSERT(gos_GetCurrentHeap() == Heap);
+	DefaultData = new ClassData(PointCloudClassID, "gosFX::PointCloud", ParticleCloud::DefaultData,
+		(Effect::Factory)&Make, (Specification::Factory)&Specification::Make);
 	Register_Object(DefaultData);
 }
 
@@ -88,10 +85,9 @@ gosFX::PointCloud::PointCloud(Specification* spec, uint32_t flags)
 	: ParticleCloud(DefaultData, spec, flags)
 {
 	Check_Object(spec);
-	// Verify(gos_GetCurrentHeap() == Heap);
+	// _ASSERT(gos_GetCurrentHeap() == Heap);
 	// gos_PushCurrentHeap(MidLevelRenderer::Heap);
-	m_cloudImplementation =
-		new MidLevelRenderer::MLRPointCloud(spec->m_maxParticleCount);
+	m_cloudImplementation = new MidLevelRenderer::MLRPointCloud(spec->m_maxParticleCount);
 	Register_Object(m_cloudImplementation);
 	// gos_PopCurrentHeap();
 	uint32_t index		 = spec->m_maxParticleCount * sizeof(Particle);
@@ -99,8 +95,7 @@ gosFX::PointCloud::PointCloud(Specification* spec, uint32_t flags)
 	index += spec->m_maxParticleCount * sizeof(Stuff::Point3D);
 	m_P_color = Cast_Pointer(Stuff::RGBAColor*, &m_data[index]);
 	m_cloudImplementation->SetData(
-		Cast_Pointer(pcsize_t, &m_activeParticleCount), m_P_localTranslation,
-		m_P_color);
+		Cast_Pointer(pcsize_t, &m_activeParticleCount), m_P_localTranslation, m_P_color);
 }
 
 //------------------------------------------------------------------------------
@@ -152,8 +147,7 @@ bool gosFX::PointCloud::Execute(ExecuteInfo* info)
 	//
 	if (m_activeParticleCount > 0)
 	{
-		Stuff::ExtentBox box(
-			Stuff::Point3D::Identity, Stuff::Point3D::Identity);
+		Stuff::ExtentBox box(Stuff::Point3D::Identity, Stuff::Point3D::Identity);
 		Stuff::Point3D* vertex = &m_P_localTranslation[0];
 		uint32_t i			   = 0;
 		//
@@ -215,20 +209,17 @@ bool gosFX::PointCloud::Execute(ExecuteInfo* info)
 		// Now, build a info->m_bounds around this box
 		//------------------------------------
 		//
-		Verify(box.maxX >= box.minX);
-		Verify(box.maxY >= box.minY);
-		Verify(box.maxZ >= box.minZ);
-		Stuff::OBB local_bounds	= Stuff::OBB::Identity;
-		local_bounds.axisExtents.x = 0.5f * (box.maxX - box.minX);
-		local_bounds.axisExtents.y = 0.5f * (box.maxY - box.minY);
-		local_bounds.axisExtents.z = 0.5f * (box.maxZ - box.minZ);
-		local_bounds.localToParent(3, 0) =
-			box.minX + local_bounds.axisExtents.x;
-		local_bounds.localToParent(3, 1) =
-			box.minY + local_bounds.axisExtents.y;
-		local_bounds.localToParent(3, 2) =
-			box.minZ + local_bounds.axisExtents.z;
-		local_bounds.sphereRadius = local_bounds.axisExtents.GetLength();
+		_ASSERT(box.maxX >= box.minX);
+		_ASSERT(box.maxY >= box.minY);
+		_ASSERT(box.maxZ >= box.minZ);
+		Stuff::OBB local_bounds			 = Stuff::OBB::Identity;
+		local_bounds.axisExtents.x		 = 0.5f * (box.maxX - box.minX);
+		local_bounds.axisExtents.y		 = 0.5f * (box.maxY - box.minY);
+		local_bounds.axisExtents.z		 = 0.5f * (box.maxZ - box.minZ);
+		local_bounds.localToParent(3, 0) = box.minX + local_bounds.axisExtents.x;
+		local_bounds.localToParent(3, 1) = box.minY + local_bounds.axisExtents.y;
+		local_bounds.localToParent(3, 2) = box.minZ + local_bounds.axisExtents.z;
+		local_bounds.sphereRadius		 = local_bounds.axisExtents.GetLength();
 		if (local_bounds.sphereRadius < Stuff::SMALL)
 			local_bounds.sphereRadius = 0.01f;
 		Stuff::OBB parent_bounds;
@@ -245,8 +236,7 @@ bool gosFX::PointCloud::Execute(ExecuteInfo* info)
 
 //------------------------------------------------------------------------------
 //
-void gosFX::PointCloud::CreateNewParticle(
-	uint32_t index, Stuff::Point3D* translation)
+void gosFX::PointCloud::CreateNewParticle(uint32_t index, Stuff::Point3D* translation)
 {
 	// Check_Object(this);
 	Check_Pointer(translation);
@@ -258,14 +248,14 @@ void gosFX::PointCloud::CreateNewParticle(
 	//
 	ParticleCloud::CreateNewParticle(index, translation);
 	m_cloudImplementation->TurnOn(index);
-	Verify(m_cloudImplementation->IsOn(index));
+	_ASSERT(m_cloudImplementation->IsOn(index));
 	m_P_localTranslation[index] = *translation;
 }
 
 //------------------------------------------------------------------------------
 //
-bool gosFX::PointCloud::AnimateParticle(uint32_t index,
-	const Stuff::LinearMatrix4D* world_to_new_local, Stuff::Time till)
+bool gosFX::PointCloud::AnimateParticle(
+	uint32_t index, const Stuff::LinearMatrix4D* world_to_new_local, Stuff::Time till)
 {
 	// Check_Object(this);
 	//
@@ -378,8 +368,7 @@ bool gosFX::PointCloud::AnimateParticle(uint32_t index,
 		Check_Object(world_to_new_local);
 		particle->m_localLinearVelocity.Multiply(
 			particle->m_worldLinearVelocity, *world_to_new_local);
-		m_P_localTranslation[index].Multiply(
-			particle->m_worldTranslation, *world_to_new_local);
+		m_P_localTranslation[index].Multiply(particle->m_worldTranslation, *world_to_new_local);
 	}
 	//
 	//------------------
@@ -400,7 +389,7 @@ void gosFX::PointCloud::DestroyParticle(uint32_t index)
 {
 	// Check_Object(this);
 	m_cloudImplementation->TurnOff(index);
-	Verify(!m_cloudImplementation->IsOn(index));
+	_ASSERT(!m_cloudImplementation->IsOn(index));
 	ParticleCloud::DestroyParticle(index);
 }
 
@@ -428,7 +417,4 @@ void gosFX::PointCloud::Draw(DrawInfo* info)
 
 //------------------------------------------------------------------------------
 //
-void gosFX::PointCloud::TestInstance(void) const
-{
-	Verify(IsDerivedFrom(DefaultData));
-}
+void gosFX::PointCloud::TestInstance(void) const { _ASSERT(IsDerivedFrom(DefaultData)); }

@@ -39,7 +39,7 @@ void Stuff::Is_Signature_Bad(const volatile Signature* p)
 {
 	if ((p) && reinterpret_cast<intptr_t>(p) != Stuff::SNAN_NEGATIVE_LONG)
 	{
-		Verify(!(reinterpret_cast<intptr_t>(p) & 3));
+		_ASSERT(!(reinterpret_cast<intptr_t>(p) & 3));
 		if (p->mark == Signature::Destroyed)
 			PAUSE(("Object has been destroyed"));
 		else if (p->mark != Signature::Valid)

@@ -13,7 +13,7 @@
 
 class ChainTestPlug : public Plug
 {
-  public:
+public:
 	int32_t value;
 
 	ChainTestPlug(int32_t value);
@@ -22,7 +22,7 @@ class ChainTestPlug : public Plug
 
 class ChainTestNode : public Node
 {
-  public:
+public:
 	int32_t receivedCommand;
 
 	ChainOf<ChainTestPlug*> chain1;
@@ -35,15 +35,11 @@ class ChainTestNode : public Node
 	bool RunTest();
 };
 
-ChainTestPlug::ChainTestPlug(int32_t value) : Plug(DefaultData)
-{
-	this->value = value;
-}
+ChainTestPlug::ChainTestPlug(int32_t value) : Plug(DefaultData) { this->value = value; }
 
 ChainTestPlug::~ChainTestPlug() {}
 
-ChainTestNode::ChainTestNode()
-	: Node(DefaultData), chain1(nullptr), chain2(this)
+ChainTestNode::ChainTestNode() : Node(DefaultData), chain1(nullptr), chain2(this)
 {
 	receivedCommand = 0;
 }
@@ -63,8 +59,7 @@ bool Chain::ProfileClass()
 #endif
 	Test_Message("Chain::ProfileClass\n");
 	testNode.RunProfile();
-	SPEW((GROUP_STUFF_TEST, "Chain::ProfileClass elapsed = %f",
-		gos_GetHiResTime() - startTicks));
+	SPEW((GROUP_STUFF_TEST, "Chain::ProfileClass elapsed = %f", gos_GetHiResTime() - startTicks));
 	return true;
 }
 
@@ -107,8 +102,7 @@ bool ChainTestNode::RunProfile()
 		chain1.Add(testPlug1);
 		chain2.Add(testPlug1);
 	}
-	SPEW((GROUP_STUFF_TEST, "ChainTestNode::RunTest Create = %f",
-		gos_GetHiResTime() - startTicks));
+	SPEW((GROUP_STUFF_TEST, "ChainTestNode::RunTest Create = %f", gos_GetHiResTime() - startTicks));
 	/*
 	 * Iterate over both sockets
 	 */
@@ -133,8 +127,8 @@ bool ChainTestNode::RunProfile()
 		}
 		Test_Assumption(i == TEST_COUNT);
 	}
-	SPEW((GROUP_STUFF_TEST, "ChainTestNode::RunTest Iterate = %f",
-		gos_GetHiResTime() - startTicks));
+	SPEW(
+		(GROUP_STUFF_TEST, "ChainTestNode::RunTest Iterate = %f", gos_GetHiResTime() - startTicks));
 	/*
 	 * Destroy from chain1, verify with chain2
 	 */
@@ -157,8 +151,8 @@ bool ChainTestNode::RunProfile()
 		Test_Assumption(iterator1.GetSize() == 0);
 		Test_Assumption(iterator2.GetSize() == 0);
 	}
-	SPEW((GROUP_STUFF_TEST, "ChainTestNode::RunTest Destroy = %f",
-		gos_GetHiResTime() - startTicks));
+	SPEW(
+		(GROUP_STUFF_TEST, "ChainTestNode::RunTest Destroy = %f", gos_GetHiResTime() - startTicks));
 	return true;
 }
 

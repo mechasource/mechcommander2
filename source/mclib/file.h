@@ -14,20 +14,9 @@
 
 #pragma once
 
-#ifndef FILE_H
-#define FILE_H
-
-//#include "dstd.h"
-//#include "dfile.h"
-//#include "dffile.h"
-//#include "heap.h"
-//#include <stdlib.h>
-//#include <stdio.h>
-//#include <fcntl.h>
-
 //---------------------------------------------------------------------------
 // enums
-typedef enum FileMode
+enum FileMode : uint32_t
 {
 	NOMODE = 0,
 	READ,
@@ -35,27 +24,20 @@ typedef enum FileMode
 	MC2_APPEND,
 	WRITE,
 	RDWRITE
-} FileMode;
+};
 
-typedef enum FileClass
+enum FileClass : uint32_t
 {
 	BASEFILE = 0,
 	INIFILE,
 	PACKETFILE,
 	CSVFILE
-} FileClass;
-
-//---------------------------------------------------------------------------
-// Function Declarations
-// Returns 1 if file is on HardDrive and 2 if file is in FastFile
-int32_t __stdcall fileExists(PSTR fName);
-int32_t __stdcall fileExistsOnCD(PSTR fName);
-bool __stdcall file1OlderThan2(PSTR file1, PSTR file2);
+};
 
 //---------------------------------------------------------------------------
 // Macro Definitions
 
-enum __file_constants
+enum __file_constants : uint32_t
 {
 	DISK_FULL_ERR			   = 0xBADF0001,
 	SHARE_ERR				   = 0xBADF0002,
@@ -79,63 +61,92 @@ enum __file_constants
 	COULD_NOT_MAP_FILE		   = 0xBADF0014,
 };
 
-class UserHeap;
-class FastFile;
-class File;
-typedef File* FilePtr;
+//---------------------------------------------------------------------------
+// Function Declarations
+// Returns 1 if file is on HardDrive and 2 if file is in FastFile
+// int32_t __stdcall fileExists(PSTR fName);
+// int32_t __stdcall fileExistsOnCD(PSTR fName);
+// bool __stdcall file1OlderThan2(PSTR file1, PSTR file2);
+
+// class UserHeap;
+// class FastFile;
+// class File;
+// typedef File* FilePtr;
 
 //---------------------------------------------------------------------------
 //									File
 //---------------------------------------------------------------------------
-class File
+
+class MechFile
 {
-	// Data Members
-	//--------------
 protected:
-	PSTR fileName;
-	FileMode fileMode;
-	int32_t handle;
-	FastFile* fastFile;
-	int32_t fastFileHandle;
-	size_t length;
-	size_t logicalPosition;
-	size_t bufferResult;
-	FilePtr* childList;
-	size_t numChildren;
-	size_t maxChildren;
-	FilePtr parent;
-	size_t parentOffset;
-	size_t physicalLength;
-	bool inRAM;
-	puint8_t fileImage;
+	std::wstring m_fileName;
+	std::filesystem::path m_path;
+	std::fstream m_stream;
+	std::unique_ptr<MechFile> m_parent;
+
+	// FileMode fileMode;
+	// int32_t handle;
+	// FastFile* fastFile;
+	// int32_t fastFileHandle;
+	// size_t length;
+	// size_t logicalPosition;
+	// size_t bufferResult;
+	// FilePtr* childList;
+	// size_t numChildren;
+	// size_t maxChildren;
+	// FilePtr parent;
+	// ptrdiff_t parentOffset;
+	// size_t physicalLength;
+	// bool inRAM;
+	// puint8_t fileImage;
 
 public:
-	static bool logFileTraffic;
-	static HRESULT lastError;
+	// static bool logFileTraffic;
+	// static HRESULT lastError;
 
 	// Member Functions
 	//------------------
-protected:
-	void setup(void);
-
 public:
-	PVOID operator new(size_t mySize);
-	void operator delete(PVOID us);
+	// PVOID operator new(size_t mySize);
+	// void operator delete(PVOID us);
 
-	File(void);
-	virtual ~File(void);
+	MechFile(void)
+	{
+		// fileMode		= NOMODE;
+		// handle			= -1;
+		// length			= 0;
+		// logicalPosition = 0;
+		// bufferResult	= 0;
+		// parent			= nullptr;
+		// parentOffset	= 0;
+		// physicalLength  = 0;
+		// childList		= nullptr;
+		// numChildren		= 0;
+		// inRAM			= false;
+		// fileImage		= nullptr;
+		// fastFile		= nullptr;
+	}
+	virtual ~MechFile(void) { close(); }
 
-	bool eof(void);
+	virtual HRESULT open(std::filesystem::path& path);
+	virtual HRESULT open(std::wstring& filename)
+	{
+		std::filesystem::path path(filename);
+		return open(path);
+	}
+	virtual HRESULT open(PWSTR pszFilename)
+	{
+		std::filesystem::path path(pszFilename);
+		return open(path);
+	}
 
-	virtual int32_t open(
-		PCSTR fName, FileMode _mode = READ, uint32_t numChildren = 50);
-	virtual int32_t open(
-		FilePtr _parent, size_t fileSize, uint32_t numChildren = 50);
-	/*virtual*/ int32_t open(
-		PCSTR buffer, size_t bufferLength); // for streaming from memory
+	// virtual HRESULT open(PCSTR fName, FileMode _mode = READ, uint32_t numChildren = 50);
+	// virtual int32_t open(FilePtr _parent, size_t fileSize, uint32_t numChildren = 50);
+	///*virtual*/ int32_t open(PCSTR buffer, size_t bufferLength); // for streaming from memory
 
 	virtual int32_t create(PCSTR fName);
-	virtual int32_t createWithCase(PSTR fName); // don't strlwr for me please!
+	virtual int32_t createWithCase(PSTR fName);
 
 	virtual void close(void);
 
@@ -144,13 +155,14 @@ public:
 	int32_t seek(int32_t pos, int32_t from = SEEK_SET);
 	void seekEnd(void);
 	void skip(int32_t bytesToSkip);
+	// bool eof(void) { return (logicalPosition >= getLength()); }
 
 	int32_t read(size_t pos, puint8_t buffer, size_t length);
 	int32_t read(puint8_t buffer, size_t length);
 
 	// Used to dig the LZ data directly out of the fastfiles.
 	// For textures.
-	int32_t readRAW(size_t*& buffer, UserHeap* heap);
+	int32_t readRAW(size_t*& buffer /*, UserHeap* heap*/);
 
 	uint8_t readByte(void);
 	int16_t readWord(void);
@@ -184,23 +196,15 @@ public:
 	size_t fileSize(void);
 	size_t getNumLines(void);
 
-	HRESULT getLastError(void) { return (lastError); }
-
-	size_t getLogicalPosition(void) { return logicalPosition; }
-
-	FilePtr getParent(void) { return parent; }
-
-	FileMode getFileMode(void) { return (fileMode); }
-
-	int32_t getFileHandle(void) { return (handle); }
-
+	// HRESULT getLastError(void) { return (lastError); }
+	// size_t getLogicalPosition(void) { return logicalPosition; }
+	// FilePtr getParent(void) { return m_parent; }
+	// FileMode getFileMode(void) { return (fileMode); }
+	// int32_t getFileHandle(void) { return (handle); }
 	time_t getFileMTime(void);
+	// int32_t addChild(FilePtr child);
+	// void removeChild(FilePtr child);
 
-	int32_t addChild(FilePtr child);
-	void removeChild(FilePtr child);
+protected:
+	void setup(void);
 };
-
-//---------------------------------------------------------------------------
-
-//---------------------------------------------------------------------------
-#endif

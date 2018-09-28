@@ -49,8 +49,7 @@ struct newShapeStruct
 //-----------------------------------------------------------
 // This one is called if the cameraScale is 100.  No drop
 // of any pixels.  Straight BLT to screen.
-int32_t VFX_nTile_draw(
-	PANE* pane, PVOIDtile, int32_t hotX, int32_t hotY, puint8_t fadeTable)
+int32_t VFX_nTile_draw(PANE* pane, PVOIDtile, int32_t hotX, int32_t hotY, puint8_t fadeTable)
 {
 	//-----------------------------------------
 	// Format of tile shape data is NEW!!
@@ -73,26 +72,20 @@ int32_t VFX_nTile_draw(
 	pwXMax				   = pane->window->x_max + 1;
 	int32_t paneX0		   = (pane->x0 < 0) ? 0 : pane->x0;
 	int32_t paneY0		   = (pane->y0 < 0) ? 0 : pane->y0;
-	int32_t paneX1 =
-		(pane->x1 >= (int32_t)pwXMax) ? pane->window->x_max : pane->x1;
-	int32_t paneY1 = (pane->y1 >= (pane->window->y_max + 1))
-						 ? pane->window->y_max
-						 : pane->y1;
+	int32_t paneX1		   = (pane->x1 >= (int32_t)pwXMax) ? pane->window->x_max : pane->x1;
+	int32_t paneY1	= (pane->y1 >= (pane->window->y_max + 1)) ? pane->window->y_max : pane->y1;
 	int32_t scanLines = tileInfo->numScanLines;
 	int32_t scanCol   = tileInfo->numScanColumns;
 	int32_t topLeftX  = (hotX + paneX0) - tileInfo->tileHotSpotX;
 	int32_t topLeftY =
-		(hotY + paneY0) -
-		tileInfo->tileHotSpotY; // In theory, tileHotSpotY is always zero!
-	if ((topLeftX >= paneX1) || (topLeftY >= paneY1) ||
-		(topLeftX <= (paneX0 - scanCol)) || (topLeftY <= (paneY0 - scanLines)))
+		(hotY + paneY0) - tileInfo->tileHotSpotY; // In theory, tileHotSpotY is always zero!
+	if ((topLeftX >= paneX1) || (topLeftY >= paneY1) || (topLeftX <= (paneX0 - scanCol)) ||
+		(topLeftY <= (paneY0 - scanLines)))
 		return (FULLY_CLIPPED);
 	puint8_t screenBuffer =
-		pane->window->buffer +
-		((topLeftY > paneY0) ? topLeftY * pwXMax : paneY0 * pwXMax);
+		pane->window->buffer + ((topLeftY > paneY0) ? topLeftY * pwXMax : paneY0 * pwXMax);
 	int32_t firstScanOffset = (topLeftY < paneY0) ? paneY0 - topLeftY : 0;
-	int32_t lastScanOffset =
-		((topLeftY + scanLines) > paneY1) ? paneY1 - topLeftY + 1 : scanLines;
+	int32_t lastScanOffset  = ((topLeftY + scanLines) > paneY1) ? paneY1 - topLeftY + 1 : scanLines;
 	yOffsetTable += firstScanOffset;
 	if ((topLeftX > paneX0) && ((topLeftX + scanCol) < paneX1))
 	{
@@ -283,8 +276,7 @@ int32_t VFX_nTile_draw(
 	{
 		uint32_t currentOffset = *yOffsetTable++;
 		uint32_t nextOffset	= *yOffsetTable++;
-		for (size_t scanLine = firstScanOffset; scanLine < lastScanOffset;
-			 scanLine++)
+		for (size_t scanLine = firstScanOffset; scanLine < lastScanOffset; scanLine++)
 		{
 			__asm {
 				mov esi, tile
@@ -421,16 +413,16 @@ int32_t VFX_shape_origin(PVOIDshape_table, int32_t shape_number)
 	__asm
 	{
 		mov esi, shape_table
-		add esi, 8			 // skip to offsets
+		add esi, 8 // skip to offsets
 
 		mov eax, shape_number // point to shape offset ptr
-		shl eax, 3			 // mul eax by sizeof 2 longs
+		shl eax, 3 // mul eax by sizeof 2 longs
 		add esi, eax
 
-		mov esi, [esi]		 // get shape offset ptr
-		add esi, shape_table  // add base address
+		mov esi, [esi] // get shape offset ptr
+		add esi, shape_table // add base address
 
-		mov eax, [esi+4]	// SHAPEHEADER.origin
+		mov eax, [esi+4] // SHAPEHEADER.origin
 
 		mov	result, eax
 	}
@@ -451,23 +443,23 @@ int32_t VFX_shape_resolution(PVOIDshape_table, int32_t shape_number)
 	__asm
 	{
 		mov esi, shape_table
-		add esi, 8			 // skip to offsets
+		add esi, 8 // skip to offsets
 
 
 		mov eax, shape_number // point to shape offset ptr
-		shl eax, 3			 // mul eax by sizeof 2 longs
+		shl eax, 3 // mul eax by sizeof 2 longs
 		add esi, eax
 
-		mov esi, [esi]		 // get shape offset ptr
-		add esi, shape_table  // add base address
+		mov esi, [esi] // get shape offset ptr
+		add esi, shape_table // add base address
 
-		mov eax, [esi+16]   // SHAPEHEADER.xmax  ;eax = xmax - xmin
-		sub eax, [esi+8]	// SHAPEHEADER.xmin
+		mov eax, [esi+16] // SHAPEHEADER.xmax  ;eax = xmax - xmin
+		sub eax, [esi+8] // SHAPEHEADER.xmin
 		inc eax //      + 1
 
-		mov ebx, [esi+20]   // SHAPEHEADER.ymax  ;ebx = ymax - ymin
-		sub ebx, [esi+12]   // SHAPEHEADER.ymin
-		inc ebx		 //      + 1
+		mov ebx, [esi+20] // SHAPEHEADER.ymax  ;ebx = ymax - ymin
+		sub ebx, [esi+12] // SHAPEHEADER.ymin
+		inc ebx //      + 1
 
 		shl eax, 16
 		and eax, 0xffff0000
@@ -492,19 +484,19 @@ int32_t VFX_shape_minxy(PVOIDshape_table, int32_t shape_number)
 	__asm
 	{
 		mov esi, shape_table
-		add esi, 8			 // skip to offsets
+		add esi, 8 // skip to offsets
 
 		mov eax, shape_number // point to shape offset ptr
-		shl eax, 3			 // mul eax by sizeof 2 longs
+		shl eax, 3 // mul eax by sizeof 2 longs
 		add esi, eax
 
-		mov esi, [esi]		 // get shape offset ptr
-		add esi, shape_table  // add base address
+		mov esi, [esi] // get shape offset ptr
+		add esi, shape_table // add base address
 
-		mov eax, [esi+8]	// SHAPEHEADER.xmin
+		mov eax, [esi+8] // SHAPEHEADER.xmin
 		shl eax, 16
 
-		mov ebx, [esi+12]   // SHAPEHEADER.ymin
+		mov ebx, [esi+12] // SHAPEHEADER.ymin
 		and eax, 0xffff0000
 		add eax, ebx
 
@@ -528,16 +520,16 @@ int32_t VFX_shape_bounds(PVOIDshape_table, int32_t shape_number)
 	__asm
 	{
 		mov esi, shape_table
-		add esi, 8			 // skip to offsets
+		add esi, 8 // skip to offsets
 
 		mov eax, shape_number // point to shape offset ptr
-		shl eax, 3			 // mul eax by sizeof 2 longs
+		shl eax, 3 // mul eax by sizeof 2 longs
 		add esi, eax
 
-		mov esi, [esi]		 // get shape offset ptr
-		add esi, shape_table  // add base address
+		mov esi, [esi] // get shape offset ptr
+		add esi, shape_table // add base address
 
-		mov eax, [esi]		 // Bounds is First Member of struct
+		mov eax, [esi] // Bounds is First Member of struct
 		mov boundsResult, eax
 	}
 	return boundsResult;
@@ -567,8 +559,8 @@ int32_t VFX_shape_count(PVOIDshape_table)
 //;----------------------------------------------------------------------------
 //;
 //; int32_t cdecl VFX_line_draw (PANE *panep, int32_t x0, int32_t y0, int32_t
-//x1, int32_t y1, ;                                                   int32_t
-//mode, int32_t parm);
+// x1, int32_t y1, ;                                                   int32_t
+// mode, int32_t parm);
 //;
 //; This function clips and draws a line to a pane.
 //;
@@ -599,7 +591,7 @@ int32_t VFX_shape_count(PVOIDshape_table)
 //;
 //; The callback function must use cdecl parameter passing, and its para-
 //; meter list must be (int32_t x, int32_t y).  The function's return type is
-//not ; important; VFX_line_draw() ignores the return value (if any).
+// not ; important; VFX_line_draw() ignores the return value (if any).
 //;
 //; VFX_line_draw() clips the line to the pane.  The locus of the clipped
 //; line is the same for all modes and is guaranteed to be identical to the
@@ -634,9 +626,9 @@ int32_t VFX_shape_count(PVOIDshape_table)
 //;       draws a line from (Px,Py) to (Qx,Qy) using the color HELIOTROPE.
 //;
 //;    VFX_line_draw (pane, Px, Py, Qx, Qy, TRANSLATE, (int32_t)
-//color_negative); ;       draws a line from (Px,Py) to (Qx,Qy) replacing each
-//pixel with its ;       color negative (as specified by the table
-//color_negative).
+// color_negative); ;       draws a line from (Px,Py) to (Qx,Qy) replacing each
+// pixel with its ;       color negative (as specified by the table
+// color_negative).
 //;
 //;    VFX_line_draw (pane, Px, Py, Qx, Qy, EXECUTE, (int32_t) DrawDiamond);
 //;       draws a line of diamonds from (Px,Py) to (Qx,Qy) using the
@@ -652,8 +644,8 @@ int32_t VFX_shape_count(PVOIDshape_table)
 //;
 //;----------------------------------------------------------------------------
 
-int32_t VFX_line_draw(PANE* panep, int32_t x0, int32_t y0, int32_t x1,
-	int32_t y1, int32_t mode, int32_t parm)
+int32_t VFX_line_draw(
+	PANE* panep, int32_t x0, int32_t y0, int32_t x1, int32_t y1, int32_t mode, int32_t parm)
 
 {
 	int32_t _dx, absdx, sgndx;
@@ -713,62 +705,61 @@ int32_t VFX_line_draw(PANE* panep, int32_t x0, int32_t y0, int32_t x1,
 			eax
 
 				cmp eax,
-			0 jg around1 mov eax,
-			0 around1 : mov _L,
-						eax
+			0 jg around1 mov eax, 0 around1 : mov _L,
+											  eax
 
-							mov eax,
-						[esi + 8] // y0 in Pane Coord
-						mov _CY,
-						eax
+												  mov eax,
+											  [esi + 8] // y0 in Pane Coord
+											  mov _CY,
+											  eax
 
-							cmp eax,
-						0 jg around2 mov eax,
-						0 around2 : mov _T,
-									eax
+												  cmp eax,
+											  0 jg around2 mov eax,
+											  0 around2 : mov _T,
+														  eax
 
-										mov eax,
-									[esi + 12] // X1 in Pane Coord
-									mov edx,
-									_W dec edx
+															  mov eax,
+														  [esi + 12] // X1 in Pane Coord
+														  mov edx,
+														  _W dec edx
 
-										cmp eax,
-									edx jl around3 mov eax,
-									edx around3 : mov _R,
-												  eax
-
-													  mov eax,
-												  [esi + 16] // y1 in Pane Coord
-												  mov edx,
-												  ecx dec edx cmp eax,
-												  edx jl around4 mov eax,
-												  edx around4
-			: mov _B,
+															  cmp eax,
+														  edx jl around3 mov eax,
+														  edx around3
+			: mov _R,
 			  eax
 
-				  // exit if pane is malformed or completely off window:
-				  //  if _B < &vname&_T, return bad pane
-				  //  if _R < &vname&_L, return bad pane
-
 				  mov eax,
-			  _R cmp eax,
-			  _L jl ReturnBadPane
+			  [esi + 16] // y1 in Pane Coord
+			  mov edx,
+			  ecx dec edx cmp eax,
+			  edx jl around4 mov eax,
+			  edx around4 : mov _B,
+							eax
 
-				  mov eax,
-			  _B cmp eax,
-			  _T jl ReturnBadPane
+								// exit if pane is malformed or completely off window:
+								//  if _B < &vname&_T, return bad pane
+								//  if _R < &vname&_L, return bad pane
 
-				  mov eax,
-			  [ebx] // Buffer in Window
-			  mov _A,
-			  eax
+								mov eax,
+							_R cmp eax,
+							_L jl ReturnBadPane
 
-				  jmp exit1
+								mov eax,
+							_B cmp eax,
+							_T jl ReturnBadPane
 
-					  ReturnBadWindow : mov eax,
-										-1
+								mov eax,
+							[ebx] // Buffer in Window
+							mov _A,
+							eax
 
-										jmp exit1
+								jmp exit1
+
+									ReturnBadWindow : mov eax,
+													  -1
+
+													  jmp exit1
 	}
 	__asm {
 
@@ -1591,7 +1582,9 @@ exit1:
 		----------------------------------------------------------------------------
 																				  // Ymajor:
 
-																				  // calculate count (ecx) = abs (y1_ - y0_) + 1
+																				  // calculate count
+																				  // (ecx) = abs
+																				  // (y1_ - y0_) + 1
 
 		mov     eax, y1_
 		sub     eax, y0_
@@ -1632,9 +1625,9 @@ exit1:
 
 		YmPdxDrawLoop:
 			 // REPEAT  LD_COPIES-1         //; repeat this code copies-1 times
-			// or 3 times!
+			 // or 3 times!
 
-				// YM_DRAW <adc>               //;   process a pixel
+			// YM_DRAW <adc>               //;   process a pixel
 		mov     [edi], al // [adr] = pixel
 
 		add     edx, ebx // accum += slope
@@ -1678,10 +1671,10 @@ exit1:
 		mov     eax, parm //; get translation table pointer
 		push    ebp //; preserve ebp
 		mov     ebp, ebx //; use ebp for slope to free up ebx
-		mov     ebx, eax //; table ptr must be in ebx for xlat
+		mov     ebx, eax			//; table ptr must be in ebx for xlat
 
 		YmPdxXlatLoop:
-			// REPEAT  LD_COPIES-1         //; repeat this code copies-1 times
+					// REPEAT  LD_COPIES-1         //; repeat this code copies-1 times
 			// or 3 Times  YM_XLAT <adc>               //;   process a pixel
 		mov     al, [edi] //; pixel = [adr]
 		xlat //; pixel = parm[pixel]
@@ -1771,10 +1764,10 @@ exit1:
 
 			//----------------------------------------------------------------------------
 			// YmNdxDraw:
-		mov     eax, parm // get line color
+		mov     eax, parm		// get line color
 
 		YmNdxDrawLoop:
-			// REPEAT  LD_COPIES-1         // repeat this code copies-1 times or
+					// REPEAT  LD_COPIES-1         // repeat this code copies-1 times or
 			// 3 times  YM_DRAW <sbb>               //   process a pixel
 		mov     [edi], al //; [adr] = pixel
 
@@ -1819,10 +1812,10 @@ exit1:
 		mov     eax, parm // get translation table pointer
 		push    ebp // preserve ebp
 		mov     ebp, ebx // use ebp for slope to free up ebx
-		mov     ebx, eax // table ptr must be in ebx for xlat
+		mov     ebx, eax			// table ptr must be in ebx for xlat
 
 		YmNdxXlatLoop:
-			// REPEAT  LD_COPIES-1         // repeat this code copies-1 times or
+					// REPEAT  LD_COPIES-1         // repeat this code copies-1 times or
 			// 3 times  YM_XLAT <sbb>               //   process a pixel
 		mov     al, [edi] //; pixel = [adr]
 		xlat //; pixel = parm[pixel]
@@ -1942,10 +1935,10 @@ exit1:
 
 			//----------------------------------------------------------------------------
 			// XmPdxDraw:
-		mov     eax, parm // get line color
+		mov     eax, parm		 // get line color
 
 		XmPdxDrawLoop:
-			// REPEAT  LD_COPIES-1         // repeat this code copies-1 times or
+					 // REPEAT  LD_COPIES-1         // repeat this code copies-1 times or
 			// 3 Times  XM_DRAW <inc>               //    process a pixel
 		mov     [edi], al // [adr] = pixel
 
@@ -2002,10 +1995,10 @@ exit1:
 		mov     eax, parm // get translation table pointer
 		push    ebp // preserve ebp
 		mov     ebp, ebx // use ebp for slope to free up ebx
-		mov     ebx, eax // table ptr must be in ebx for xlat
+		mov     ebx, eax			 // table ptr must be in ebx for xlat
 
 		XmPdxXlatLoop:
-			// REPEAT  LD_COPIES-1         // repeat this code copies-1 times or
+					 // REPEAT  LD_COPIES-1         // repeat this code copies-1 times or
 			// 3 times  XM_XLAT <inc>               //    process a pixel
 		mov     al, [edi] //; pixel = [adr]
 		xlat //; pixel = parm[pixel]
@@ -2105,10 +2098,10 @@ exit1:
 
 			//----------------------------------------------------------------------------
 			// XmNdxDraw:
-		mov     eax, parm // get line color
+		mov     eax, parm		 // get line color
 
 		XmNdxDrawLoop:
-			// REPEAT  LD_COPIES-1         // repeat this code copies-1 times or
+					 // REPEAT  LD_COPIES-1         // repeat this code copies-1 times or
 			// 3 times  XM_DRAW <dec>               //   process a pixel
 		mov     [edi], al //; [adr] = pixel
 
@@ -2165,10 +2158,10 @@ exit1:
 		mov     eax, parm // get translation table pointer
 		push    ebp // preserve ebp
 		mov     ebp, ebx // use ebp for slope to free up ebx
-		mov     ebx, eax // table ptr must be in ebx for xlat
+		mov     ebx, eax			 // table ptr must be in ebx for xlat
 
 		XmNdxXlatLoop:
-			// REPEAT  LD_COPIES-1         // repeat this code copies-1 times or
+					 // REPEAT  LD_COPIES-1         // repeat this code copies-1 times or
 			// 3 Times  XM_XLAT <dec>               //   process a pixel
 		mov     al, [edi] //; pixel = [adr]
 		xlat //; pixel = parm[pixel]
@@ -2423,7 +2416,9 @@ exit1:
 		----------------------------------------------------------------------------
 		Diagonal:
 
-																					  // calculate xystep (esi)
+																					  // calculate
+																					  // xystep
+																					  // (esi)
 
 		mov     esi, _W
 		xor     esi, sgndy
@@ -2450,7 +2445,7 @@ exit1:
 			// calculate adr (edi), address of first pixel = window_buffer +
 			// CP_W*y0 + x0
 
-				// GET_WINDOW_ADDRESS  x0_, y0_
+			// GET_WINDOW_ADDRESS  x0_, y0_
 		mov     eax, y0_
 		imul    _W
 		add     eax, _A
@@ -2467,10 +2462,10 @@ exit1:
 
 			//----------------------------------------------------------------------------
 			// StraightDraw:
-		mov     eax, parm // get line color
+		mov     eax, parm		// get line color
 
 		StraightLoop:
-			 // REPEAT  LD_COPIES-1         // repeat code copies-1 times or 3
+					// REPEAT  LD_COPIES-1         // repeat code copies-1 times or 3
 			// Times  ST_DRAW                     //   process a pixel
 		mov     [edi], al // [adr] = pixel
 
@@ -2508,10 +2503,10 @@ exit1:
 
 			//----------------------------------------------------------------------------
 		StraightXlat:
-		mov     ebx, parm // get pointer to translation table
+		mov     ebx, parm		// get pointer to translation table
 
 		StraightXlatLoop:
-			 // REPEAT  LD_COPIES-1         // repeat code copies-1 times or 3
+					// REPEAT  LD_COPIES-1         // repeat code copies-1 times or 3
 			// Times  SW_XLAT                     //   process a pixel
 		mov     al, [edi] //; pixel = [adr]
 		xlat //; pixel = parm[pixel]
@@ -2694,62 +2689,61 @@ int32_t VFX_pixel_write(PANE* panep, int32_t x, int32_t y, uint32_t color)
 			eax
 
 				cmp eax,
-			0 jg around1 mov eax,
-			0 around1 : mov _L,
-						eax
+			0 jg around1 mov eax, 0 around1 : mov _L,
+											  eax
 
-							mov eax,
-						[esi + 8] // y0 in Pane Coord
-						mov _CY,
-						eax
+												  mov eax,
+											  [esi + 8] // y0 in Pane Coord
+											  mov _CY,
+											  eax
 
-							cmp eax,
-						0 jg around2 mov eax,
-						0 around2 : mov _T,
-									eax
+												  cmp eax,
+											  0 jg around2 mov eax,
+											  0 around2 : mov _T,
+														  eax
 
-										mov eax,
-									[esi + 12] // X1 in Pane Coord
-									mov edx,
-									_W dec edx
+															  mov eax,
+														  [esi + 12] // X1 in Pane Coord
+														  mov edx,
+														  _W dec edx
 
-										cmp eax,
-									edx jl around3 mov eax,
-									edx around3 : mov _R,
-												  eax
-
-													  mov eax,
-												  [esi + 16] // y1 in Pane Coord
-												  mov edx,
-												  ecx dec edx cmp eax,
-												  edx jl around4 mov eax,
-												  edx around4
-			: mov _B,
+															  cmp eax,
+														  edx jl around3 mov eax,
+														  edx around3
+			: mov _R,
 			  eax
 
-				  // exit if pane is malformed or completely off window:
-				  //  if _B < &vname&_T, return bad pane
-				  //  if _R < &vname&_L, return bad pane
-
 				  mov eax,
-			  _R cmp eax,
-			  _L jl ReturnBadPane
+			  [esi + 16] // y1 in Pane Coord
+			  mov edx,
+			  ecx dec edx cmp eax,
+			  edx jl around4 mov eax,
+			  edx around4 : mov _B,
+							eax
 
-				  mov eax,
-			  _B cmp eax,
-			  _T jl ReturnBadPane
+								// exit if pane is malformed or completely off window:
+								//  if _B < &vname&_T, return bad pane
+								//  if _R < &vname&_L, return bad pane
 
-				  mov eax,
-			  [ebx] // Buffer in Window
-			  mov _A,
-			  eax
+								mov eax,
+							_R cmp eax,
+							_L jl ReturnBadPane
 
-				  jmp exit1
+								mov eax,
+							_B cmp eax,
+							_T jl ReturnBadPane
 
-					  ReturnBadWindow : mov eax,
-										-1
+								mov eax,
+							[ebx] // Buffer in Window
+							mov _A,
+							eax
 
-										jmp exit1
+								jmp exit1
+
+									ReturnBadWindow : mov eax,
+													  -1
+
+													  jmp exit1
 	}
 	__asm {
 
@@ -2889,62 +2883,61 @@ int32_t VFX_pixel_read(PANE* panep, int32_t x, int32_t y)
 			eax
 
 				cmp eax,
-			0 jg around1 mov eax,
-			0 around1 : mov _L,
-						eax
+			0 jg around1 mov eax, 0 around1 : mov _L,
+											  eax
 
-							mov eax,
-						[esi + 8] // y0 in Pane Coord
-						mov _CY,
-						eax
+												  mov eax,
+											  [esi + 8] // y0 in Pane Coord
+											  mov _CY,
+											  eax
 
-							cmp eax,
-						0 jg around2 mov eax,
-						0 around2 : mov _T,
-									eax
+												  cmp eax,
+											  0 jg around2 mov eax,
+											  0 around2 : mov _T,
+														  eax
 
-										mov eax,
-									[esi + 12] // X1 in Pane Coord
-									mov edx,
-									_W dec edx
+															  mov eax,
+														  [esi + 12] // X1 in Pane Coord
+														  mov edx,
+														  _W dec edx
 
-										cmp eax,
-									edx jl around3 mov eax,
-									edx around3 : mov _R,
-												  eax
-
-													  mov eax,
-												  [esi + 16] // y1 in Pane Coord
-												  mov edx,
-												  ecx dec edx cmp eax,
-												  edx jl around4 mov eax,
-												  edx around4
-			: mov _B,
+															  cmp eax,
+														  edx jl around3 mov eax,
+														  edx around3
+			: mov _R,
 			  eax
 
-				  // exit if pane is malformed or completely off window:
-				  //  if _B < &vname&_T, return bad pane
-				  //  if _R < &vname&_L, return bad pane
-
 				  mov eax,
-			  _R cmp eax,
-			  _L jl ReturnBadPane
+			  [esi + 16] // y1 in Pane Coord
+			  mov edx,
+			  ecx dec edx cmp eax,
+			  edx jl around4 mov eax,
+			  edx around4 : mov _B,
+							eax
 
-				  mov eax,
-			  _B cmp eax,
-			  _T jl ReturnBadPane
+								// exit if pane is malformed or completely off window:
+								//  if _B < &vname&_T, return bad pane
+								//  if _R < &vname&_L, return bad pane
 
-				  mov eax,
-			  [ebx] // Buffer in Window
-			  mov _A,
-			  eax
+								mov eax,
+							_R cmp eax,
+							_L jl ReturnBadPane
 
-				  jmp exit1
+								mov eax,
+							_B cmp eax,
+							_T jl ReturnBadPane
 
-					  ReturnBadWindow : mov eax,
-										-1
+								mov eax,
+							[ebx] // Buffer in Window
+							mov _A,
+							eax
 
-										jmp exit1
+								jmp exit1
+
+									ReturnBadWindow : mov eax,
+													  -1
+
+													  jmp exit1
 	}
 	__asm {
 

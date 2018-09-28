@@ -28,12 +28,12 @@ HGOSHEAP Stuff::ConnectionEngineHeap = nullptr;
 //
 void Plug::InitializeClass()
 {
-	Verify(!ConnectionEngineHeap);
-	ConnectionEngineHeap =
-		gos_CreateMemoryHeap("ConnectionEngine", 0, ParentClientHeap);
+	_ASSERT(!ConnectionEngineHeap);
+	ConnectionEngineHeap = gos_CreateMemoryHeap("ConnectionEngine", 0, ParentClientHeap);
 	Check_Pointer(ConnectionEngineHeap);
-	Verify(DefaultData == nullptr);
-	DefaultData = new ClassData(__stuff_attributeids::PlugClassID, "Stuff::Plug", RegisteredClass::DefaultData);
+	_ASSERT(DefaultData == nullptr);
+	DefaultData = new ClassData(
+		__stuff_attributeids::PlugClassID, "Stuff::Plug", RegisteredClass::DefaultData);
 	Register_Object(DefaultData);
 }
 
@@ -54,10 +54,7 @@ void Plug::TerminateClass()
 // Plug
 //#############################################################################
 //
-Plug::Plug(ClassData* class_data) : RegisteredClass(class_data)
-{
-	linkHead = nullptr;
-}
+Plug::Plug(ClassData* class_data) : RegisteredClass(class_data) { linkHead = nullptr; }
 
 //
 //###########################################################################
@@ -85,7 +82,7 @@ Plug::~Plug()
 //
 void Plug::TestInstance(void) const
 {
-	Verify(IsDerivedFrom(DefaultData));
+	_ASSERT(IsDerivedFrom(DefaultData));
 	if (linkHead != nullptr)
 	{
 		Check_Object(linkHead);
@@ -162,8 +159,7 @@ CollectionSize Plug::GetSocketCount()
 // PlugIterator
 //#############################################################################
 //
-PlugIterator::PlugIterator(
-	Plug* plug, RegisteredClass::ClassID class_to_iterate)
+PlugIterator::PlugIterator(Plug* plug, RegisteredClass::ClassID class_to_iterate)
 {
 	Check_Object(plug);
 	this->plug	 = plug;
@@ -384,8 +380,7 @@ void PlugIterator::NextNode()
 		if ((node = currentLink->socket->GetReleaseNode()) != nullptr)
 		{
 			Check_Object(node);
-			if (classToIterate == NullClassID ||
-				classToIterate == node->GetClassID())
+			if (classToIterate == NullClassID || classToIterate == node->GetClassID())
 			{
 				return;
 			}
@@ -411,8 +406,7 @@ void PlugIterator::PreviousNode()
 		if ((node = currentLink->socket->GetReleaseNode()) != nullptr)
 		{
 			Check_Object(node);
-			if (classToIterate == NullClassID ||
-				classToIterate == node->GetClassID())
+			if (classToIterate == NullClassID || classToIterate == node->GetClassID())
 			{
 				return;
 			}

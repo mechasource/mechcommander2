@@ -33,11 +33,10 @@ MLR_I_DeT_PMesh::ClassData* MLR_I_DeT_PMesh::DefaultData = nullptr;
 //
 void MLR_I_DeT_PMesh::InitializeClass()
 {
-	Verify(!DefaultData);
-	// Verify(gos_GetCurrentHeap() == StaticHeap);
-	DefaultData = new ClassData(MLR_I_DeT_PMeshClassID,
-		"MidLevelRenderer::MLR_I_DeT_PMesh", MLR_I_PMesh::DefaultData,
-		(MLRPrimitiveBase::Factory)&Make);
+	_ASSERT(!DefaultData);
+	// _ASSERT(gos_GetCurrentHeap() == StaticHeap);
+	DefaultData = new ClassData(MLR_I_DeT_PMeshClassID, "MidLevelRenderer::MLR_I_DeT_PMesh",
+		MLR_I_PMesh::DefaultData, (MLRPrimitiveBase::Factory)&Make);
 	Register_Object(DefaultData);
 #if defined(TRACE_ENABLED) && defined(MLR_TRACE)
 	MLR_I_DeT_PMesh_Clip = new BitTrace("MLR_I_DeT_PMesh_Clip");
@@ -60,13 +59,12 @@ void MLR_I_DeT_PMesh::TerminateClass()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLR_I_DeT_PMesh::MLR_I_DeT_PMesh(
-	ClassData* class_data, Stuff::MemoryStream* stream, uint32_t version)
+MLR_I_DeT_PMesh::MLR_I_DeT_PMesh(ClassData* class_data, std::iostream stream, uint32_t version)
 	: MLR_I_PMesh(class_data, stream, version)
 {
 	// Check_Pointer(this);
 	Check_Pointer(stream);
-	// Verify(gos_GetCurrentHeap() == Heap);
+	// _ASSERT(gos_GetCurrentHeap() == Heap);
 	referenceState2.Load(stream, version);
 	*stream >> xOffset >> yOffset >> xScale >> yScale;
 	noDetailDistance = 2 * xScale;
@@ -84,11 +82,10 @@ MLR_I_DeT_PMesh::MLR_I_DeT_PMesh(
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLR_I_DeT_PMesh::MLR_I_DeT_PMesh(ClassData* class_data)
-	: MLR_I_PMesh(class_data)
+MLR_I_DeT_PMesh::MLR_I_DeT_PMesh(ClassData* class_data) : MLR_I_PMesh(class_data)
 {
 	// Check_Pointer(this);
-	// Verify(gos_GetCurrentHeap() == Heap);
+	// _ASSERT(gos_GetCurrentHeap() == Heap);
 	noDetailDistance  = -1.0f;
 	detTextureVisible = true;
 	passes			  = 2;
@@ -96,8 +93,8 @@ MLR_I_DeT_PMesh::MLR_I_DeT_PMesh(ClassData* class_data)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLR_I_DeT_PMesh::Copy(MLR_I_PMesh*, MLRState detailState, float xOff,
-	float yOff, float xFac, float yFac)
+void MLR_I_DeT_PMesh::Copy(
+	MLR_I_PMesh*, MLRState detailState, float xOff, float yOff, float xFac, float yFac)
 {
 	// Check_Pointer(this);
 	(void)xOff;
@@ -117,8 +114,7 @@ MLR_I_DeT_PMesh::~MLR_I_DeT_PMesh()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLR_I_DeT_PMesh* MLR_I_DeT_PMesh::Make(
-	Stuff::MemoryStream* stream, uint32_t version)
+MLR_I_DeT_PMesh* MLR_I_DeT_PMesh::Make(std::iostream stream, uint32_t version)
 {
 	Check_Object(stream);
 #if _CONSIDERED_OBSOLETE
@@ -133,7 +129,7 @@ MLR_I_DeT_PMesh* MLR_I_DeT_PMesh::Make(
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLR_I_DeT_PMesh::Save(Stuff::MemoryStream* stream)
+void MLR_I_DeT_PMesh::Save(std::iostream stream)
 {
 	// Check_Object(this);
 	Check_Object(stream);
@@ -154,10 +150,7 @@ uint32_t MLR_I_DeT_PMesh::GetNumPasses()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLR_I_DeT_PMesh::TestInstance(void) const
-{
-	Verify(IsDerivedFrom(DefaultData));
-}
+void MLR_I_DeT_PMesh::TestInstance(void) const { _ASSERT(IsDerivedFrom(DefaultData)); }
 
 #define I_SAY_YES_TO_DETAIL_TEXTURES
 #undef I_SAY_YES_TO_DUAL_TEXTURES
@@ -188,8 +181,7 @@ void MLR_I_DeT_PMesh::TestInstance(void) const
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 MLR_I_DeT_PMesh* MidLevelRenderer::CreateIndexedCube_NoColor_NoLit_DetTex(
-	float half, MLRState* state, MLRState* state2, float xOff, float yOff,
-	float xFac, float yFac)
+	float half, MLRState* state, MLRState* state2, float xOff, float yOff, float xFac, float yFac)
 {
 #ifdef _GAMEOS_HPP_
 	gos_PushCurrentHeap(Heap);
@@ -317,8 +309,7 @@ MLRShape* MidLevelRenderer::CreateIndexedIcosahedron_NoColor_NoLit_DetTex(
 	MLRShape* ret = new MLRShape(20);
 	Register_Object(ret);
 	size_t i, j, k;
-	uint32_t nrTri =
-		static_cast<uint32_t>(ceil(icoInfo.all * pow(4.0f, icoInfo.depth)));
+	uint32_t nrTri = static_cast<uint32_t>(ceil(icoInfo.all * pow(4.0f, icoInfo.depth)));
 	Stuff::Point3D v[3];
 	if (3 * nrTri >= Limits::Max_Number_Vertices_Per_Mesh)
 	{
@@ -355,8 +346,7 @@ MLRShape* MidLevelRenderer::CreateIndexedIcosahedron_NoColor_NoLit_DetTex(
 			v[j].y = vdata[tindices[k][j]][1];
 			v[j].z = vdata[tindices[k][j]][2];
 		}
-		subdivide(
-			coords, v[0], v[1], v[2], icoInfo.depth, nrTri, icoInfo.radius);
+		subdivide(coords, v[0], v[1], v[2], icoInfo.depth, nrTri, icoInfo.radius);
 		mesh->SetSubprimitiveLengths(lengths, nrTri);
 		if (icoInfo.indexed == true)
 		{
@@ -407,8 +397,7 @@ MLRShape* MidLevelRenderer::CreateIndexedIcosahedron_NoColor_NoLit_DetTex(
 				{
 					for (i = 0; i < uniquePoints; i++)
 					{
-						texCoords[i] = Stuff::Vector2DScalar(
-							(1.0f + collapsedCoords[i].x) / 2.0f,
+						texCoords[i] = Stuff::Vector2DScalar((1.0f + collapsedCoords[i].x) / 2.0f,
 							(1.0f + collapsedCoords[i].y) / 2.0f);
 					}
 				}
@@ -417,14 +406,13 @@ MLRShape* MidLevelRenderer::CreateIndexedIcosahedron_NoColor_NoLit_DetTex(
 					for (i = 0; i < nrTri; i++)
 					{
 						texCoords[3 * i] = Stuff::Vector2DScalar(
-							(1.0f + coords[3 * i].x) / 2.0f,
-							(1.0f + coords[3 * i].y) / 2.0f);
-						texCoords[3 * i + 1] = Stuff::Vector2DScalar(
-							(1.0f + coords[3 * i + 1].x) / 2.0f,
-							(1.0f + coords[3 * i + 1].y) / 2.0f);
-						texCoords[3 * i + 2] = Stuff::Vector2DScalar(
-							(1.0f + coords[3 * i + 2].x) / 2.0f,
-							(1.0f + coords[3 * i + 2].y) / 2.0f);
+							(1.0f + coords[3 * i].x) / 2.0f, (1.0f + coords[3 * i].y) / 2.0f);
+						texCoords[3 * i + 1] =
+							Stuff::Vector2DScalar((1.0f + coords[3 * i + 1].x) / 2.0f,
+								(1.0f + coords[3 * i + 1].y) / 2.0f);
+						texCoords[3 * i + 2] =
+							Stuff::Vector2DScalar((1.0f + coords[3 * i + 2].x) / 2.0f,
+								(1.0f + coords[3 * i + 2].y) / 2.0f);
 					}
 				}
 			}

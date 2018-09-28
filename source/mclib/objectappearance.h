@@ -37,8 +37,8 @@ and tree appearance keep their common elements here
 
 typedef struct _NodeData
 {
-	char* nodeId; // Used to determine where jumpjets, smoke and weapon fire
-				  // come from.
+	char* nodeId;		// Used to determine where jumpjets, smoke and weapon fire
+						// come from.
 	int32_t weaponType; // What kind of weapon can use this node
 	bool isRArmNode;	// Used to stop firing from node when RArm is gone.
 	bool isLArmNode;	// Used to stop firing from node when LArm is gone.
@@ -50,7 +50,7 @@ ObjectAppearance:
 **************************************************************************************************/
 class ObjectAppearance : public Appearance
 {
-  public:
+public:
 	float lightIntensity;
 
 	Stuff::Vector2DOf<int32_t> shapeMin;
@@ -86,7 +86,7 @@ class ObjectAppearance : public Appearance
 
 	virtual ~ObjectAppearance() {}
 
-  protected:
+protected:
 	int32_t highlightColor;
 	ObjectAppearance()
 	{

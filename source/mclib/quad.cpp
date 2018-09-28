@@ -52,8 +52,7 @@ extern bool drawLOSGrid;
 //---------------------------------------------------------------------------
 //---------------------------------------------------------------------------
 // Class TerrainQuad
-int32_t TerrainQuad::init(
-	VertexPtr v0, VertexPtr v1, VertexPtr v2, VertexPtr v3)
+int32_t TerrainQuad::init(VertexPtr v0, VertexPtr v1, VertexPtr v2, VertexPtr v3)
 {
 	vertices[0] = v0;
 	vertices[1] = v1;
@@ -88,42 +87,38 @@ void TerrainQuad::setupTextures(void)
 	{
 		FullPathFileName mineTextureName;
 		mineTextureName.init(texturePath, "defaults\\mine_00", ".tga");
-		mineTextureHandle = mcTextureManager->loadTexture(mineTextureName,
-			gos_Texture_Alpha, gosHint_DisableMipmap | gosHint_DontShrink);
+		mineTextureHandle = mcTextureManager->loadTexture(
+			mineTextureName, gos_Texture_Alpha, gosHint_DisableMipmap | gosHint_DontShrink);
 	}
 	if (blownTextureHandle == 0xffffffff)
 	{
 		FullPathFileName mineTextureName;
 		mineTextureName.init(texturePath, "defaults\\minescorch_00", ".tga");
-		blownTextureHandle = mcTextureManager->loadTexture(mineTextureName,
-			gos_Texture_Alpha, gosHint_DisableMipmap | gosHint_DontShrink);
+		blownTextureHandle = mcTextureManager->loadTexture(
+			mineTextureName, gos_Texture_Alpha, gosHint_DisableMipmap | gosHint_DontShrink);
 	}
 	if (!Terrain::terrainTextures2)
 	{
 		if (uvMode == BOTTOMRIGHT)
 		{
-			int32_t clipped1 = vertices[0]->clipInfo + vertices[1]->clipInfo +
-							   vertices[2]->clipInfo;
-			int32_t clipped2 = vertices[0]->clipInfo + vertices[2]->clipInfo +
-							   vertices[3]->clipInfo;
+			int32_t clipped1 =
+				vertices[0]->clipInfo + vertices[1]->clipInfo + vertices[2]->clipInfo;
+			int32_t clipped2 =
+				vertices[0]->clipInfo + vertices[2]->clipInfo + vertices[3]->clipInfo;
 			if (clipped1 || clipped2)
 			{
 				{
 					terrainHandle = Terrain::terrainTextures->getTextureHandle(
 						(vertices[0]->pVertex->textureData & 0x0000ffff));
-					uint32_t terrainDetailData =
-						Terrain::terrainTextures->setDetail(1, 0);
+					uint32_t terrainDetailData = Terrain::terrainTextures->setDetail(1, 0);
 					if (terrainDetailData != 0xfffffff)
 						terrainDetailHandle =
-							Terrain::terrainTextures->getTextureHandle(
-								terrainDetailData);
+							Terrain::terrainTextures->getTextureHandle(terrainDetailData);
 					else
 						terrainDetailHandle = 0xffffffff;
 					overlayHandle = 0xffffffff;
-					mcTextureManager->addTriangle(
-						terrainHandle, MC2_ISTERRAIN | MC2_DRAWSOLID);
-					mcTextureManager->addTriangle(
-						terrainHandle, MC2_ISTERRAIN | MC2_DRAWSOLID);
+					mcTextureManager->addTriangle(terrainHandle, MC2_ISTERRAIN | MC2_DRAWSOLID);
+					mcTextureManager->addTriangle(terrainHandle, MC2_ISTERRAIN | MC2_DRAWSOLID);
 					mcTextureManager->addTriangle(
 						terrainDetailHandle, MC2_ISTERRAIN | MC2_DRAWALPHA);
 					mcTextureManager->addTriangle(
@@ -147,26 +142,19 @@ void TerrainQuad::setupTextures(void)
 							int32_t actualCellCol = tileC * terrain_const::MAPCELL_DIM + cellC;
 							uint32_t localResult  = 0;
 							if (GameMap->inBounds(actualCellRow, actualCellCol))
-								localResult = GameMap->getMine(
-									actualCellRow, actualCellCol);
+								localResult = GameMap->getMine(actualCellRow, actualCellCol);
 							if (localResult == 1)
 							{
-								mcTextureManager->get_gosTextureHandle(
-									mineTextureHandle);
-								mcTextureManager->addTriangle(
-									mineTextureHandle, MC2_DRAWALPHA);
-								mcTextureManager->addTriangle(
-									mineTextureHandle, MC2_DRAWALPHA);
+								mcTextureManager->get_gosTextureHandle(mineTextureHandle);
+								mcTextureManager->addTriangle(mineTextureHandle, MC2_DRAWALPHA);
+								mcTextureManager->addTriangle(mineTextureHandle, MC2_DRAWALPHA);
 								mineResult.setMine(cellPos, localResult);
 							}
 							else if (localResult == 2)
 							{
-								mcTextureManager->get_gosTextureHandle(
-									blownTextureHandle);
-								mcTextureManager->addTriangle(
-									blownTextureHandle, MC2_DRAWALPHA);
-								mcTextureManager->addTriangle(
-									blownTextureHandle, MC2_DRAWALPHA);
+								mcTextureManager->get_gosTextureHandle(blownTextureHandle);
+								mcTextureManager->addTriangle(blownTextureHandle, MC2_DRAWALPHA);
+								mcTextureManager->addTriangle(blownTextureHandle, MC2_DRAWALPHA);
 								mineResult.setMine(cellPos, localResult);
 							}
 						}
@@ -184,28 +172,24 @@ void TerrainQuad::setupTextures(void)
 		}
 		else
 		{
-			int32_t clipped1 = vertices[0]->clipInfo + vertices[1]->clipInfo +
-							   vertices[3]->clipInfo;
-			int32_t clipped2 = vertices[1]->clipInfo + vertices[2]->clipInfo +
-							   vertices[3]->clipInfo;
+			int32_t clipped1 =
+				vertices[0]->clipInfo + vertices[1]->clipInfo + vertices[3]->clipInfo;
+			int32_t clipped2 =
+				vertices[1]->clipInfo + vertices[2]->clipInfo + vertices[3]->clipInfo;
 			if (clipped1 || clipped2)
 			{
 				{
 					terrainHandle = Terrain::terrainTextures->getTextureHandle(
 						(vertices[0]->pVertex->textureData & 0x0000ffff));
-					uint32_t terrainDetailData =
-						Terrain::terrainTextures->setDetail(1, 0);
+					uint32_t terrainDetailData = Terrain::terrainTextures->setDetail(1, 0);
 					if (terrainDetailData != 0xfffffff)
 						terrainDetailHandle =
-							Terrain::terrainTextures->getTextureHandle(
-								terrainDetailData);
+							Terrain::terrainTextures->getTextureHandle(terrainDetailData);
 					else
 						terrainDetailHandle = 0xffffffff;
 					overlayHandle = 0xffffffff;
-					mcTextureManager->addTriangle(
-						terrainHandle, MC2_ISTERRAIN | MC2_DRAWSOLID);
-					mcTextureManager->addTriangle(
-						terrainHandle, MC2_ISTERRAIN | MC2_DRAWSOLID);
+					mcTextureManager->addTriangle(terrainHandle, MC2_ISTERRAIN | MC2_DRAWSOLID);
+					mcTextureManager->addTriangle(terrainHandle, MC2_ISTERRAIN | MC2_DRAWSOLID);
 					mcTextureManager->addTriangle(
 						terrainDetailHandle, MC2_ISTERRAIN | MC2_DRAWALPHA);
 					mcTextureManager->addTriangle(
@@ -229,26 +213,19 @@ void TerrainQuad::setupTextures(void)
 							int32_t actualCellCol = tileC * terrain_const::MAPCELL_DIM + cellC;
 							uint32_t localResult  = 0;
 							if (GameMap->inBounds(actualCellRow, actualCellCol))
-								localResult = GameMap->getMine(
-									actualCellRow, actualCellCol);
+								localResult = GameMap->getMine(actualCellRow, actualCellCol);
 							if (localResult == 1)
 							{
-								mcTextureManager->get_gosTextureHandle(
-									mineTextureHandle);
-								mcTextureManager->addTriangle(
-									mineTextureHandle, MC2_DRAWALPHA);
-								mcTextureManager->addTriangle(
-									mineTextureHandle, MC2_DRAWALPHA);
+								mcTextureManager->get_gosTextureHandle(mineTextureHandle);
+								mcTextureManager->addTriangle(mineTextureHandle, MC2_DRAWALPHA);
+								mcTextureManager->addTriangle(mineTextureHandle, MC2_DRAWALPHA);
 								mineResult.setMine(cellPos, localResult);
 							}
 							else if (localResult == 2)
 							{
-								mcTextureManager->get_gosTextureHandle(
-									blownTextureHandle);
-								mcTextureManager->addTriangle(
-									blownTextureHandle, MC2_DRAWALPHA);
-								mcTextureManager->addTriangle(
-									blownTextureHandle, MC2_DRAWALPHA);
+								mcTextureManager->get_gosTextureHandle(blownTextureHandle);
+								mcTextureManager->addTriangle(blownTextureHandle, MC2_DRAWALPHA);
+								mcTextureManager->addTriangle(blownTextureHandle, MC2_DRAWALPHA);
 								mineResult.setMine(cellPos, localResult);
 							}
 						}
@@ -269,10 +246,10 @@ void TerrainQuad::setupTextures(void)
 	{
 		if (uvMode == BOTTOMRIGHT)
 		{
-			int32_t clipped1 = vertices[0]->clipInfo + vertices[1]->clipInfo +
-							   vertices[2]->clipInfo;
-			int32_t clipped2 = vertices[0]->clipInfo + vertices[2]->clipInfo +
-							   vertices[3]->clipInfo;
+			int32_t clipped1 =
+				vertices[0]->clipInfo + vertices[1]->clipInfo + vertices[2]->clipInfo;
+			int32_t clipped2 =
+				vertices[0]->clipInfo + vertices[2]->clipInfo + vertices[3]->clipInfo;
 			if (clipped1 || clipped2)
 			{
 				isCement = Terrain::terrainTextures->isCement(
@@ -283,13 +260,10 @@ void TerrainQuad::setupTextures(void)
 				{
 					terrainHandle = Terrain::terrainTextures2->getTextureHandle(
 						vertices[0], vertices[2], &uvData);
-					terrainDetailHandle =
-						Terrain::terrainTextures2->getDetailHandle();
-					overlayHandle = 0xffffffff;
-					mcTextureManager->addTriangle(
-						terrainHandle, MC2_ISTERRAIN | MC2_DRAWSOLID);
-					mcTextureManager->addTriangle(
-						terrainHandle, MC2_ISTERRAIN | MC2_DRAWSOLID);
+					terrainDetailHandle = Terrain::terrainTextures2->getDetailHandle();
+					overlayHandle		= 0xffffffff;
+					mcTextureManager->addTriangle(terrainHandle, MC2_ISTERRAIN | MC2_DRAWSOLID);
+					mcTextureManager->addTriangle(terrainHandle, MC2_ISTERRAIN | MC2_DRAWSOLID);
 					if (terrainDetailHandle != 0xffffffff)
 					{
 						mcTextureManager->addTriangle(
@@ -305,43 +279,36 @@ void TerrainQuad::setupTextures(void)
 								 // so.  Draw overlay AFTER new terrain in same
 								 // square!!
 					{
-						overlayHandle =
-							Terrain::terrainTextures->getTextureHandle(
-								vertices[0]->pVertex->textureData & 0x0000ffff);
-						terrainHandle =
-							Terrain::terrainTextures2->getTextureHandle(
-								vertices[1], vertices[3], &uvData);
-						terrainDetailHandle =
-							Terrain::terrainTextures2->getDetailHandle();
-						mcTextureManager->addTriangle(
-							terrainHandle, MC2_ISTERRAIN | MC2_DRAWSOLID);
-						mcTextureManager->addTriangle(
-							terrainHandle, MC2_ISTERRAIN | MC2_DRAWSOLID);
+						overlayHandle = Terrain::terrainTextures->getTextureHandle(
+							vertices[0]->pVertex->textureData & 0x0000ffff);
+						terrainHandle = Terrain::terrainTextures2->getTextureHandle(
+							vertices[1], vertices[3], &uvData);
+						terrainDetailHandle = Terrain::terrainTextures2->getDetailHandle();
+						mcTextureManager->addTriangle(terrainHandle, MC2_ISTERRAIN | MC2_DRAWSOLID);
+						mcTextureManager->addTriangle(terrainHandle, MC2_ISTERRAIN | MC2_DRAWSOLID);
 						if (terrainDetailHandle != 0xffffffff)
 						{
-							mcTextureManager->addTriangle(terrainDetailHandle,
-								MC2_ISTERRAIN | MC2_DRAWALPHA);
-							mcTextureManager->addTriangle(terrainDetailHandle,
-								MC2_ISTERRAIN | MC2_DRAWALPHA);
+							mcTextureManager->addTriangle(
+								terrainDetailHandle, MC2_ISTERRAIN | MC2_DRAWALPHA);
+							mcTextureManager->addTriangle(
+								terrainDetailHandle, MC2_ISTERRAIN | MC2_DRAWALPHA);
 						}
-						mcTextureManager->addTriangle(overlayHandle,
-							MC2_ISTERRAIN | MC2_DRAWALPHA | MC2_ISCRATERS);
-						mcTextureManager->addTriangle(overlayHandle,
-							MC2_ISTERRAIN | MC2_DRAWALPHA | MC2_ISCRATERS);
+						mcTextureManager->addTriangle(
+							overlayHandle, MC2_ISTERRAIN | MC2_DRAWALPHA | MC2_ISCRATERS);
+						mcTextureManager->addTriangle(
+							overlayHandle, MC2_ISTERRAIN | MC2_DRAWALPHA | MC2_ISCRATERS);
 					}
 					else // Otherwise, its solid cement.  Save some draw
 						 // cycles!!
 					{
-						terrainHandle =
-							Terrain::terrainTextures->getTextureHandle(
-								vertices[0]->pVertex->textureData & 0x0000ffff);
-						terrainDetailHandle =
-							0xffffffff; // Cement has NO detail!!
-						overlayHandle = 0xffffffff;
-						mcTextureManager->addTriangle(terrainHandle,
-							MC2_ISTERRAIN | MC2_DRAWALPHA | MC2_ISCRATERS);
-						mcTextureManager->addTriangle(terrainHandle,
-							MC2_ISTERRAIN | MC2_DRAWALPHA | MC2_ISCRATERS);
+						terrainHandle = Terrain::terrainTextures->getTextureHandle(
+							vertices[0]->pVertex->textureData & 0x0000ffff);
+						terrainDetailHandle = 0xffffffff; // Cement has NO detail!!
+						overlayHandle		= 0xffffffff;
+						mcTextureManager->addTriangle(
+							terrainHandle, MC2_ISTERRAIN | MC2_DRAWALPHA | MC2_ISCRATERS);
+						mcTextureManager->addTriangle(
+							terrainHandle, MC2_ISTERRAIN | MC2_DRAWALPHA | MC2_ISCRATERS);
 					}
 				}
 				//--------------------------------------------------------------------
@@ -362,26 +329,19 @@ void TerrainQuad::setupTextures(void)
 							int32_t actualCellCol = tileC * terrain_const::MAPCELL_DIM + cellC;
 							uint32_t localResult  = 0;
 							if (GameMap->inBounds(actualCellRow, actualCellCol))
-								localResult = GameMap->getMine(
-									actualCellRow, actualCellCol);
+								localResult = GameMap->getMine(actualCellRow, actualCellCol);
 							if (localResult == 1)
 							{
-								mcTextureManager->get_gosTextureHandle(
-									mineTextureHandle);
-								mcTextureManager->addTriangle(
-									mineTextureHandle, MC2_DRAWALPHA);
-								mcTextureManager->addTriangle(
-									mineTextureHandle, MC2_DRAWALPHA);
+								mcTextureManager->get_gosTextureHandle(mineTextureHandle);
+								mcTextureManager->addTriangle(mineTextureHandle, MC2_DRAWALPHA);
+								mcTextureManager->addTriangle(mineTextureHandle, MC2_DRAWALPHA);
 								mineResult.setMine(cellPos, localResult);
 							}
 							else if (localResult == 2)
 							{
-								mcTextureManager->get_gosTextureHandle(
-									blownTextureHandle);
-								mcTextureManager->addTriangle(
-									blownTextureHandle, MC2_DRAWALPHA);
-								mcTextureManager->addTriangle(
-									blownTextureHandle, MC2_DRAWALPHA);
+								mcTextureManager->get_gosTextureHandle(blownTextureHandle);
+								mcTextureManager->addTriangle(blownTextureHandle, MC2_DRAWALPHA);
+								mcTextureManager->addTriangle(blownTextureHandle, MC2_DRAWALPHA);
 								mineResult.setMine(cellPos, localResult);
 							}
 						}
@@ -399,10 +359,10 @@ void TerrainQuad::setupTextures(void)
 		}
 		else
 		{
-			int32_t clipped1 = vertices[0]->clipInfo + vertices[1]->clipInfo +
-							   vertices[3]->clipInfo;
-			int32_t clipped2 = vertices[1]->clipInfo + vertices[2]->clipInfo +
-							   vertices[3]->clipInfo;
+			int32_t clipped1 =
+				vertices[0]->clipInfo + vertices[1]->clipInfo + vertices[3]->clipInfo;
+			int32_t clipped2 =
+				vertices[1]->clipInfo + vertices[2]->clipInfo + vertices[3]->clipInfo;
 			if (clipped1 || clipped2)
 			{
 				isCement = Terrain::terrainTextures->isCement(
@@ -413,13 +373,10 @@ void TerrainQuad::setupTextures(void)
 				{
 					terrainHandle = Terrain::terrainTextures2->getTextureHandle(
 						vertices[1], vertices[3], &uvData);
-					terrainDetailHandle =
-						Terrain::terrainTextures2->getDetailHandle();
-					overlayHandle = 0xffffffff;
-					mcTextureManager->addTriangle(
-						terrainHandle, MC2_ISTERRAIN | MC2_DRAWSOLID);
-					mcTextureManager->addTriangle(
-						terrainHandle, MC2_ISTERRAIN | MC2_DRAWSOLID);
+					terrainDetailHandle = Terrain::terrainTextures2->getDetailHandle();
+					overlayHandle		= 0xffffffff;
+					mcTextureManager->addTriangle(terrainHandle, MC2_ISTERRAIN | MC2_DRAWSOLID);
+					mcTextureManager->addTriangle(terrainHandle, MC2_ISTERRAIN | MC2_DRAWSOLID);
 					mcTextureManager->addTriangle(
 						terrainDetailHandle, MC2_ISTERRAIN | MC2_DRAWALPHA);
 					mcTextureManager->addTriangle(
@@ -432,40 +389,33 @@ void TerrainQuad::setupTextures(void)
 								 // so.  Draw overlay AFTER new terrain in same
 								 // square!!
 					{
-						overlayHandle =
-							Terrain::terrainTextures->getTextureHandle(
-								vertices[0]->pVertex->textureData & 0x0000ffff);
-						terrainHandle =
-							Terrain::terrainTextures2->getTextureHandle(
-								vertices[1], vertices[3], &uvData);
-						terrainDetailHandle =
-							Terrain::terrainTextures2->getDetailHandle();
-						mcTextureManager->addTriangle(
-							terrainHandle, MC2_ISTERRAIN | MC2_DRAWSOLID);
-						mcTextureManager->addTriangle(
-							terrainHandle, MC2_ISTERRAIN | MC2_DRAWSOLID);
+						overlayHandle = Terrain::terrainTextures->getTextureHandle(
+							vertices[0]->pVertex->textureData & 0x0000ffff);
+						terrainHandle = Terrain::terrainTextures2->getTextureHandle(
+							vertices[1], vertices[3], &uvData);
+						terrainDetailHandle = Terrain::terrainTextures2->getDetailHandle();
+						mcTextureManager->addTriangle(terrainHandle, MC2_ISTERRAIN | MC2_DRAWSOLID);
+						mcTextureManager->addTriangle(terrainHandle, MC2_ISTERRAIN | MC2_DRAWSOLID);
 						mcTextureManager->addTriangle(
 							terrainDetailHandle, MC2_ISTERRAIN | MC2_DRAWALPHA);
 						mcTextureManager->addTriangle(
 							terrainDetailHandle, MC2_ISTERRAIN | MC2_DRAWALPHA);
-						mcTextureManager->addTriangle(overlayHandle,
-							MC2_ISTERRAIN | MC2_DRAWALPHA | MC2_ISCRATERS);
-						mcTextureManager->addTriangle(overlayHandle,
-							MC2_ISTERRAIN | MC2_DRAWALPHA | MC2_ISCRATERS);
+						mcTextureManager->addTriangle(
+							overlayHandle, MC2_ISTERRAIN | MC2_DRAWALPHA | MC2_ISCRATERS);
+						mcTextureManager->addTriangle(
+							overlayHandle, MC2_ISTERRAIN | MC2_DRAWALPHA | MC2_ISCRATERS);
 					}
 					else // Otherwise, its solid cement.  Save some draw
 						 // cycles!!
 					{
-						terrainHandle =
-							Terrain::terrainTextures->getTextureHandle(
-								vertices[0]->pVertex->textureData & 0x0000ffff);
-						terrainDetailHandle =
-							0xffffffff; // Cement has NO detail!!
-						overlayHandle = 0xffffffff;
-						mcTextureManager->addTriangle(terrainHandle,
-							MC2_ISTERRAIN | MC2_DRAWALPHA | MC2_ISCRATERS);
-						mcTextureManager->addTriangle(terrainHandle,
-							MC2_ISTERRAIN | MC2_DRAWALPHA | MC2_ISCRATERS);
+						terrainHandle = Terrain::terrainTextures->getTextureHandle(
+							vertices[0]->pVertex->textureData & 0x0000ffff);
+						terrainDetailHandle = 0xffffffff; // Cement has NO detail!!
+						overlayHandle		= 0xffffffff;
+						mcTextureManager->addTriangle(
+							terrainHandle, MC2_ISTERRAIN | MC2_DRAWALPHA | MC2_ISCRATERS);
+						mcTextureManager->addTriangle(
+							terrainHandle, MC2_ISTERRAIN | MC2_DRAWALPHA | MC2_ISCRATERS);
 					}
 				}
 				//--------------------------------------------------------------------
@@ -486,26 +436,19 @@ void TerrainQuad::setupTextures(void)
 							int32_t actualCellCol = tileC * terrain_const::MAPCELL_DIM + cellC;
 							uint32_t localResult  = 0;
 							if (GameMap->inBounds(actualCellRow, actualCellCol))
-								localResult = GameMap->getMine(
-									actualCellRow, actualCellCol);
+								localResult = GameMap->getMine(actualCellRow, actualCellCol);
 							if (localResult == 1)
 							{
-								mcTextureManager->get_gosTextureHandle(
-									mineTextureHandle);
-								mcTextureManager->addTriangle(
-									mineTextureHandle, MC2_DRAWALPHA);
-								mcTextureManager->addTriangle(
-									mineTextureHandle, MC2_DRAWALPHA);
+								mcTextureManager->get_gosTextureHandle(mineTextureHandle);
+								mcTextureManager->addTriangle(mineTextureHandle, MC2_DRAWALPHA);
+								mcTextureManager->addTriangle(mineTextureHandle, MC2_DRAWALPHA);
 								mineResult.setMine(cellPos, localResult);
 							}
 							else if (localResult == 2)
 							{
-								mcTextureManager->get_gosTextureHandle(
-									blownTextureHandle);
-								mcTextureManager->addTriangle(
-									blownTextureHandle, MC2_DRAWALPHA);
-								mcTextureManager->addTriangle(
-									blownTextureHandle, MC2_DRAWALPHA);
+								mcTextureManager->get_gosTextureHandle(blownTextureHandle);
+								mcTextureManager->addTriangle(blownTextureHandle, MC2_DRAWALPHA);
+								mcTextureManager->addTriangle(blownTextureHandle, MC2_DRAWALPHA);
 								mineResult.setMine(cellPos, localResult);
 							}
 						}
@@ -524,23 +467,17 @@ void TerrainQuad::setupTextures(void)
 	}
 	//-----------------------------------------
 	// NEW(tm) water texture code here.
-	if ((vertices[0]->pVertex->water & 1) ||
-		(vertices[1]->pVertex->water & 1) ||
+	if ((vertices[0]->pVertex->water & 1) || (vertices[1]->pVertex->water & 1) ||
 		(vertices[2]->pVertex->water & 1) || (vertices[3]->pVertex->water & 1))
 	{
-		Stuff::Vector3D vertex3D(
-			vertices[0]->vx, vertices[0]->vy, Terrain::waterElevation);
+		Stuff::Vector3D vertex3D(vertices[0]->vx, vertices[0]->vy, Terrain::waterElevation);
 		Stuff::Vector4D screenPos;
-		int32_t clipped1 = vertices[0]->clipInfo + vertices[1]->clipInfo +
-						   vertices[2]->clipInfo;
-		int32_t clipped2 = vertices[0]->clipInfo + vertices[2]->clipInfo +
-						   vertices[3]->clipInfo;
+		int32_t clipped1 = vertices[0]->clipInfo + vertices[1]->clipInfo + vertices[2]->clipInfo;
+		int32_t clipped2 = vertices[0]->clipInfo + vertices[2]->clipInfo + vertices[3]->clipInfo;
 		if (uvMode != BOTTOMRIGHT)
 		{
-			clipped1 = vertices[0]->clipInfo + vertices[1]->clipInfo +
-					   vertices[3]->clipInfo;
-			clipped2 = vertices[1]->clipInfo + vertices[2]->clipInfo +
-					   vertices[3]->clipInfo;
+			clipped1 = vertices[0]->clipInfo + vertices[1]->clipInfo + vertices[3]->clipInfo;
+			clipped2 = vertices[1]->clipInfo + vertices[2]->clipInfo + vertices[3]->clipInfo;
 		}
 		float negCos = Terrain::frameCos * -1.0;
 		float ourCos = Terrain::frameCos;
@@ -558,12 +495,10 @@ void TerrainQuad::setupTextures(void)
 					vertices[0]->wAlpha = Terrain::frameCosAlpha;
 					ourCos				= Terrain::frameCos;
 				}
-				vertex3D.z	= ourCos + Terrain::waterElevation;
-				bool clipData = false;
-				clipData	  = eye->projectZ(vertex3D, screenPos);
-				bool isVisible =
-					Terrain::IsGameSelectTerrainPosition(vertex3D) ||
-					drawTerrainGrid;
+				vertex3D.z	 = ourCos + Terrain::waterElevation;
+				bool clipData  = false;
+				clipData	   = eye->projectZ(vertex3D, screenPos);
+				bool isVisible = Terrain::IsGameSelectTerrainPosition(vertex3D) || drawTerrainGrid;
 				if (!isVisible)
 				{
 					clipData				= false;
@@ -615,14 +550,12 @@ void TerrainQuad::setupTextures(void)
 					vertices[1]->wAlpha = Terrain::frameCosAlpha;
 					ourCos				= Terrain::frameCos;
 				}
-				vertex3D.z	= ourCos + Terrain::waterElevation;
-				vertex3D.x	= vertices[1]->vx;
-				vertex3D.y	= vertices[1]->vy;
-				bool clipData = false;
-				clipData	  = eye->projectZ(vertex3D, screenPos);
-				bool isVisible =
-					Terrain::IsGameSelectTerrainPosition(vertex3D) ||
-					drawTerrainGrid;
+				vertex3D.z	 = ourCos + Terrain::waterElevation;
+				vertex3D.x	 = vertices[1]->vx;
+				vertex3D.y	 = vertices[1]->vy;
+				bool clipData  = false;
+				clipData	   = eye->projectZ(vertex3D, screenPos);
+				bool isVisible = Terrain::IsGameSelectTerrainPosition(vertex3D) || drawTerrainGrid;
 				if (!isVisible)
 				{
 					clipData				= false;
@@ -674,14 +607,12 @@ void TerrainQuad::setupTextures(void)
 					vertices[2]->wAlpha = Terrain::frameCosAlpha;
 					ourCos				= Terrain::frameCos;
 				}
-				vertex3D.z	= ourCos + Terrain::waterElevation;
-				vertex3D.x	= vertices[2]->vx;
-				vertex3D.y	= vertices[2]->vy;
-				bool clipData = false;
-				clipData	  = eye->projectZ(vertex3D, screenPos);
-				bool isVisible =
-					Terrain::IsGameSelectTerrainPosition(vertex3D) ||
-					drawTerrainGrid;
+				vertex3D.z	 = ourCos + Terrain::waterElevation;
+				vertex3D.x	 = vertices[2]->vx;
+				vertex3D.y	 = vertices[2]->vy;
+				bool clipData  = false;
+				clipData	   = eye->projectZ(vertex3D, screenPos);
+				bool isVisible = Terrain::IsGameSelectTerrainPosition(vertex3D) || drawTerrainGrid;
 				if (!isVisible)
 				{
 					clipData				= false;
@@ -733,14 +664,12 @@ void TerrainQuad::setupTextures(void)
 					vertices[3]->wAlpha = Terrain::frameCosAlpha;
 					ourCos				= Terrain::frameCos;
 				}
-				vertex3D.z	= ourCos + Terrain::waterElevation;
-				vertex3D.x	= vertices[3]->vx;
-				vertex3D.y	= vertices[3]->vy;
-				bool clipData = false;
-				clipData	  = eye->projectZ(vertex3D, screenPos);
-				bool isVisible =
-					Terrain::IsGameSelectTerrainPosition(vertex3D) ||
-					drawTerrainGrid;
+				vertex3D.z	 = ourCos + Terrain::waterElevation;
+				vertex3D.x	 = vertices[3]->vx;
+				vertex3D.y	 = vertices[3]->vy;
+				bool clipData  = false;
+				clipData	   = eye->projectZ(vertex3D, screenPos);
+				bool isVisible = Terrain::IsGameSelectTerrainPosition(vertex3D) || drawTerrainGrid;
 				if (!isVisible)
 				{
 					clipData				= false;
@@ -782,28 +711,21 @@ void TerrainQuad::setupTextures(void)
 		{
 			if (!Terrain::terrainTextures2)
 			{
-				uint32_t waterDetailData =
-					Terrain::terrainTextures->setDetail(0, sprayFrame);
-				waterHandle = Terrain::terrainTextures->getTextureHandle(
-					MapData::WaterTXMData & 0x0000ffff);
-				waterDetailHandle = Terrain::terrainTextures->getDetailHandle(
-					waterDetailData & 0x0000ffff);
+				uint32_t waterDetailData = Terrain::terrainTextures->setDetail(0, sprayFrame);
+				waterHandle =
+					Terrain::terrainTextures->getTextureHandle(MapData::WaterTXMData & 0x0000ffff);
+				waterDetailHandle =
+					Terrain::terrainTextures->getDetailHandle(waterDetailData & 0x0000ffff);
 			}
 			else
 			{
-				waterHandle =
-					Terrain::terrainTextures2->getWaterTextureHandle();
-				waterDetailHandle =
-					Terrain::terrainTextures2->getWaterDetailHandle(sprayFrame);
+				waterHandle		  = Terrain::terrainTextures2->getWaterTextureHandle();
+				waterDetailHandle = Terrain::terrainTextures2->getWaterDetailHandle(sprayFrame);
 			}
-			mcTextureManager->addTriangle(
-				waterHandle, MC2_ISTERRAIN | MC2_DRAWALPHA);
-			mcTextureManager->addTriangle(
-				waterHandle, MC2_ISTERRAIN | MC2_DRAWALPHA);
-			mcTextureManager->addTriangle(
-				waterDetailHandle, MC2_ISTERRAIN | MC2_DRAWALPHA);
-			mcTextureManager->addTriangle(
-				waterDetailHandle, MC2_ISTERRAIN | MC2_DRAWALPHA);
+			mcTextureManager->addTriangle(waterHandle, MC2_ISTERRAIN | MC2_DRAWALPHA);
+			mcTextureManager->addTriangle(waterHandle, MC2_ISTERRAIN | MC2_DRAWALPHA);
+			mcTextureManager->addTriangle(waterDetailHandle, MC2_ISTERRAIN | MC2_DRAWALPHA);
+			mcTextureManager->addTriangle(waterDetailHandle, MC2_ISTERRAIN | MC2_DRAWALPHA);
 		}
 		else
 		{
@@ -831,9 +753,8 @@ void TerrainQuad::setupTextures(void)
 			if (Environment.Renderer != 3)
 			{
 				//------------------------------------------------------------
-				float lightIntensity =
-					vertices[0]->pVertex->vertexNormal * eye->lightDirection;
-				uint8_t shadow = vertices[0]->pVertex->shadow;
+				float lightIntensity = vertices[0]->pVertex->vertexNormal * eye->lightDirection;
+				uint8_t shadow		 = vertices[0]->pVertex->shadow;
 				if (shadow && lightIntensity > 0.2f)
 				{
 					lightIntensity = 0.2f;
@@ -863,8 +784,7 @@ void TerrainQuad::setupTextures(void)
 				{
 					specR = specG = specB = lighteningLevel;
 				}
-				vertices[0]->lightRGB =
-					lightb + (lightr << 16) + (lightg << 8) + (0xff << 24);
+				vertices[0]->lightRGB = lightb + (lightr << 16) + (lightg << 8) + (0xff << 24);
 				// First two light are already factored into the above
 				// equations!
 				for (size_t i = 2; i < eye->getNumTerrainLights(); i++)
@@ -881,24 +801,18 @@ void TerrainQuad::setupTextures(void)
 								Stuff::Point3D vertexToLight;
 								vertexToLight.x = vertices[0]->vx;
 								vertexToLight.y = vertices[0]->vy;
-								vertexToLight.z =
-									vertices[0]->pVertex->elevation;
+								vertexToLight.z = vertices[0]->pVertex->elevation;
 								vertexToLight -= thisLight->position;
-								float length =
-									vertexToLight.GetApproximateLength();
+								float length  = vertexToLight.GetApproximateLength();
 								float falloff = 1.0f;
 								if (thisLight->GetFalloff(length, falloff))
 								{
 									float red, green, blue;
-									red = float((thisLight->GetaRGB() >> 16) &
-												0x000000ff) *
-										  falloff;
-									green = float((thisLight->GetaRGB() >> 8) &
-												  0x000000ff) *
-											falloff;
-									blue = float((thisLight->GetaRGB()) &
-												 0x000000ff) *
-										   falloff;
+									red =
+										float((thisLight->GetaRGB() >> 16) & 0x000000ff) * falloff;
+									green =
+										float((thisLight->GetaRGB() >> 8) & 0x000000ff) * falloff;
+									blue = float((thisLight->GetaRGB()) & 0x000000ff) * falloff;
 									specR += (uint32_t)red;
 									specG += (uint32_t)green;
 									specB += (uint32_t)blue;
@@ -914,10 +828,8 @@ void TerrainQuad::setupTextures(void)
 					}
 				}
 			}
-			vertices[0]->lightRGB =
-				lightb + (lightr << 16) + (lightg << 8) + (0xff << 24);
-			vertices[0]->fogRGB =
-				(0xff << 24) + (specR << 16) + (specG << 8) + (specB);
+			vertices[0]->lightRGB = lightb + (lightr << 16) + (lightg << 8) + (0xff << 24);
+			vertices[0]->fogRGB   = (0xff << 24) + (specR << 16) + (specG << 8) + (specB);
 			// Fog
 			uint32_t fogResult = 0xff;
 			if (!(vertices[0]->calcThisFrame & 1))
@@ -926,8 +838,7 @@ void TerrainQuad::setupTextures(void)
 				{
 					if (vertices[0]->pVertex->elevation < fogStart)
 					{
-						float fogFactor =
-							fogStart - vertices[0]->pVertex->elevation;
+						float fogFactor = fogStart - vertices[0]->pVertex->elevation;
 						if (fogFactor < 0.0)
 						{
 							fogResult = 0xff;
@@ -952,8 +863,8 @@ void TerrainQuad::setupTextures(void)
 					{
 						fogResult = 0xff;
 					}
-					vertices[0]->fogRGB = (fogResult << 24) + (specR << 16) +
-										  (specG << 8) + (specB);
+					vertices[0]->fogRGB =
+						(fogResult << 24) + (specR << 16) + (specG << 8) + (specB);
 				}
 			}
 			//-------------------
@@ -964,8 +875,7 @@ void TerrainQuad::setupTextures(void)
 				uint32_t distFog = float2long(fogFactor * 255.0f);
 				if (distFog < fogResult)
 					fogResult = distFog;
-				vertices[0]->fogRGB =
-					(fogResult << 24) + (specR << 16) + (specG << 8) + (specB);
+				vertices[0]->fogRGB = (fogResult << 24) + (specR << 16) + (specG << 8) + (specB);
 			}
 			vertices[0]->calcThisFrame |= 1;
 		}
@@ -977,9 +887,8 @@ void TerrainQuad::setupTextures(void)
 			uint32_t lightr = 0xff, lightg = 0xff, lightb = 0xff;
 			if (Environment.Renderer != 3)
 			{
-				float lightIntensity =
-					vertices[1]->pVertex->vertexNormal * eye->lightDirection;
-				uint8_t shadow = vertices[1]->pVertex->shadow;
+				float lightIntensity = vertices[1]->pVertex->vertexNormal * eye->lightDirection;
+				uint8_t shadow		 = vertices[1]->pVertex->shadow;
 				if (shadow && lightIntensity > 0.2f)
 				{
 					lightIntensity = 0.2f;
@@ -1009,8 +918,7 @@ void TerrainQuad::setupTextures(void)
 				{
 					specR = specG = specB = lighteningLevel;
 				}
-				vertices[1]->lightRGB =
-					lightb + (lightr << 16) + (lightg << 8) + (0xff << 24);
+				vertices[1]->lightRGB = lightb + (lightr << 16) + (lightg << 8) + (0xff << 24);
 				// First two light are already factored into the above
 				// equations!
 				for (size_t i = 2; i < eye->getNumTerrainLights(); i++)
@@ -1027,24 +935,18 @@ void TerrainQuad::setupTextures(void)
 								Stuff::Point3D vertexToLight;
 								vertexToLight.x = vertices[1]->vx;
 								vertexToLight.y = vertices[1]->vy;
-								vertexToLight.z =
-									vertices[1]->pVertex->elevation;
+								vertexToLight.z = vertices[1]->pVertex->elevation;
 								vertexToLight -= thisLight->position;
-								float length =
-									vertexToLight.GetApproximateLength();
+								float length  = vertexToLight.GetApproximateLength();
 								float falloff = 1.0f;
 								if (thisLight->GetFalloff(length, falloff))
 								{
 									float red, green, blue;
-									red = float((thisLight->GetaRGB() >> 16) &
-												0x000000ff) *
-										  falloff;
-									green = float((thisLight->GetaRGB() >> 8) &
-												  0x000000ff) *
-											falloff;
-									blue = float((thisLight->GetaRGB()) &
-												 0x000000ff) *
-										   falloff;
+									red =
+										float((thisLight->GetaRGB() >> 16) & 0x000000ff) * falloff;
+									green =
+										float((thisLight->GetaRGB() >> 8) & 0x000000ff) * falloff;
+									blue = float((thisLight->GetaRGB()) & 0x000000ff) * falloff;
 									specR += (uint32_t)red;
 									specG += (uint32_t)green;
 									specB += (uint32_t)blue;
@@ -1060,10 +962,8 @@ void TerrainQuad::setupTextures(void)
 					}
 				}
 			}
-			vertices[1]->lightRGB =
-				lightb + (lightr << 16) + (lightg << 8) + (0xff << 24);
-			vertices[1]->fogRGB =
-				(0xff << 24) + (specR << 16) + (specG << 8) + (specB);
+			vertices[1]->lightRGB = lightb + (lightr << 16) + (lightg << 8) + (0xff << 24);
+			vertices[1]->fogRGB   = (0xff << 24) + (specR << 16) + (specG << 8) + (specB);
 			// Fog
 			uint32_t fogResult = 0xff;
 			if (Environment.Renderer != 3)
@@ -1072,8 +972,7 @@ void TerrainQuad::setupTextures(void)
 				{
 					if (vertices[1]->pVertex->elevation < fogStart)
 					{
-						float fogFactor =
-							fogStart - vertices[1]->pVertex->elevation;
+						float fogFactor = fogStart - vertices[1]->pVertex->elevation;
 						if (fogFactor < 0.0)
 						{
 							fogResult = 0xff;
@@ -1098,8 +997,8 @@ void TerrainQuad::setupTextures(void)
 					{
 						fogResult = 0xff;
 					}
-					vertices[1]->fogRGB = (fogResult << 24) + (specR << 16) +
-										  (specG << 8) + (specB);
+					vertices[1]->fogRGB =
+						(fogResult << 24) + (specR << 16) + (specG << 8) + (specB);
 				}
 			}
 			//-------------------
@@ -1110,8 +1009,7 @@ void TerrainQuad::setupTextures(void)
 				uint32_t distFog = float2long(fogFactor * 255.0);
 				if (distFog < fogResult)
 					fogResult = distFog;
-				vertices[1]->fogRGB =
-					(fogResult << 24) + (specR << 16) + (specG << 8) + (specB);
+				vertices[1]->fogRGB = (fogResult << 24) + (specR << 16) + (specG << 8) + (specB);
 			}
 			vertices[1]->calcThisFrame |= 1;
 		}
@@ -1123,9 +1021,8 @@ void TerrainQuad::setupTextures(void)
 			uint32_t lightr = 0xff, lightg = 0xff, lightb = 0xff;
 			if (Environment.Renderer != 3)
 			{
-				float lightIntensity =
-					vertices[2]->pVertex->vertexNormal * eye->lightDirection;
-				uint8_t shadow = vertices[2]->pVertex->shadow;
+				float lightIntensity = vertices[2]->pVertex->vertexNormal * eye->lightDirection;
+				uint8_t shadow		 = vertices[2]->pVertex->shadow;
 				if (shadow && lightIntensity > 0.2f)
 				{
 					lightIntensity = 0.2f;
@@ -1155,8 +1052,7 @@ void TerrainQuad::setupTextures(void)
 				{
 					specR = specG = specB = lighteningLevel;
 				}
-				vertices[2]->lightRGB =
-					lightb + (lightr << 16) + (lightg << 8) + (0xff << 24);
+				vertices[2]->lightRGB = lightb + (lightr << 16) + (lightg << 8) + (0xff << 24);
 				// First two light are already factored into the above
 				// equations!
 				for (size_t i = 2; i < eye->getNumTerrainLights(); i++)
@@ -1173,24 +1069,18 @@ void TerrainQuad::setupTextures(void)
 								Stuff::Point3D vertexToLight;
 								vertexToLight.x = vertices[2]->vx;
 								vertexToLight.y = vertices[2]->vy;
-								vertexToLight.z =
-									vertices[2]->pVertex->elevation;
+								vertexToLight.z = vertices[2]->pVertex->elevation;
 								vertexToLight -= thisLight->position;
-								float length =
-									vertexToLight.GetApproximateLength();
+								float length  = vertexToLight.GetApproximateLength();
 								float falloff = 1.0f;
 								if (thisLight->GetFalloff(length, falloff))
 								{
 									float red, green, blue;
-									red = float((thisLight->GetaRGB() >> 16) &
-												0x000000ff) *
-										  falloff;
-									green = float((thisLight->GetaRGB() >> 8) &
-												  0x000000ff) *
-											falloff;
-									blue = float((thisLight->GetaRGB()) &
-												 0x000000ff) *
-										   falloff;
+									red =
+										float((thisLight->GetaRGB() >> 16) & 0x000000ff) * falloff;
+									green =
+										float((thisLight->GetaRGB() >> 8) & 0x000000ff) * falloff;
+									blue = float((thisLight->GetaRGB()) & 0x000000ff) * falloff;
 									specR += (uint32_t)red;
 									specG += (uint32_t)green;
 									specB += (uint32_t)blue;
@@ -1206,10 +1096,8 @@ void TerrainQuad::setupTextures(void)
 					}
 				}
 			}
-			vertices[2]->lightRGB =
-				lightb + (lightr << 16) + (lightg << 8) + (0xff << 24);
-			vertices[2]->fogRGB =
-				(0xff << 24) + (specR << 16) + (specG << 8) + (specB);
+			vertices[2]->lightRGB = lightb + (lightr << 16) + (lightg << 8) + (0xff << 24);
+			vertices[2]->fogRGB   = (0xff << 24) + (specR << 16) + (specG << 8) + (specB);
 			// Fog
 			uint32_t fogResult = 0xff;
 			if (Environment.Renderer != 3)
@@ -1218,8 +1106,7 @@ void TerrainQuad::setupTextures(void)
 				{
 					if (vertices[2]->pVertex->elevation < fogStart)
 					{
-						float fogFactor =
-							fogStart - vertices[2]->pVertex->elevation;
+						float fogFactor = fogStart - vertices[2]->pVertex->elevation;
 						if ((fogFactor < 0.0) || (0.0 == (fogStart - fogFull)))
 						{
 							fogResult = 0xff;
@@ -1244,8 +1131,8 @@ void TerrainQuad::setupTextures(void)
 					{
 						fogResult = 0xff;
 					}
-					vertices[2]->fogRGB = (fogResult << 24) + (specR << 16) +
-										  (specG << 8) + (specB);
+					vertices[2]->fogRGB =
+						(fogResult << 24) + (specR << 16) + (specG << 8) + (specB);
 				}
 			}
 			//-------------------
@@ -1256,8 +1143,7 @@ void TerrainQuad::setupTextures(void)
 				uint32_t distFog = float2long(fogFactor * 255.0f);
 				if (distFog < fogResult)
 					fogResult = distFog;
-				vertices[2]->fogRGB =
-					(fogResult << 24) + (specR << 16) + (specG << 8) + (specB);
+				vertices[2]->fogRGB = (fogResult << 24) + (specR << 16) + (specG << 8) + (specB);
 			}
 			vertices[2]->calcThisFrame |= 1;
 		}
@@ -1269,9 +1155,8 @@ void TerrainQuad::setupTextures(void)
 			uint32_t lightr = 0xff, lightg = 0xff, lightb = 0xff;
 			if (Environment.Renderer != 3)
 			{
-				float lightIntensity =
-					vertices[3]->pVertex->vertexNormal * eye->lightDirection;
-				uint8_t shadow = vertices[3]->pVertex->shadow;
+				float lightIntensity = vertices[3]->pVertex->vertexNormal * eye->lightDirection;
+				uint8_t shadow		 = vertices[3]->pVertex->shadow;
 				if (shadow && lightIntensity > 0.2f)
 				{
 					lightIntensity = 0.2f;
@@ -1301,8 +1186,7 @@ void TerrainQuad::setupTextures(void)
 				{
 					specR = specG = specB = lighteningLevel;
 				}
-				vertices[3]->lightRGB =
-					lightb + (lightr << 16) + (lightg << 8) + (0xff << 24);
+				vertices[3]->lightRGB = lightb + (lightr << 16) + (lightg << 8) + (0xff << 24);
 				// First two light are already factored into the above
 				// equations!
 				for (size_t i = 2; i < eye->getNumTerrainLights(); i++)
@@ -1319,24 +1203,18 @@ void TerrainQuad::setupTextures(void)
 								Stuff::Point3D vertexToLight;
 								vertexToLight.x = vertices[3]->vx;
 								vertexToLight.y = vertices[3]->vy;
-								vertexToLight.z =
-									vertices[3]->pVertex->elevation;
+								vertexToLight.z = vertices[3]->pVertex->elevation;
 								vertexToLight -= thisLight->position;
-								float length =
-									vertexToLight.GetApproximateLength();
+								float length  = vertexToLight.GetApproximateLength();
 								float falloff = 1.0f;
 								if (thisLight->GetFalloff(length, falloff))
 								{
 									float red, green, blue;
-									red = float((thisLight->GetaRGB() >> 16) &
-												0x000000ff) *
-										  falloff;
-									green = float((thisLight->GetaRGB() >> 8) &
-												  0x000000ff) *
-											falloff;
-									blue = float((thisLight->GetaRGB()) &
-												 0x000000ff) *
-										   falloff;
+									red =
+										float((thisLight->GetaRGB() >> 16) & 0x000000ff) * falloff;
+									green =
+										float((thisLight->GetaRGB() >> 8) & 0x000000ff) * falloff;
+									blue = float((thisLight->GetaRGB()) & 0x000000ff) * falloff;
 									specR += (uint32_t)red;
 									specG += (uint32_t)green;
 									specB += (uint32_t)blue;
@@ -1352,10 +1230,8 @@ void TerrainQuad::setupTextures(void)
 					}
 				}
 			}
-			vertices[3]->lightRGB =
-				lightb + (lightr << 16) + (lightg << 8) + (0xff << 24);
-			vertices[3]->fogRGB =
-				(0xff << 24) + (specR << 16) + (specG << 8) + (specB);
+			vertices[3]->lightRGB = lightb + (lightr << 16) + (lightg << 8) + (0xff << 24);
+			vertices[3]->fogRGB   = (0xff << 24) + (specR << 16) + (specG << 8) + (specB);
 			// Fog
 			uint32_t fogResult = 0xff;
 			if (Environment.Renderer != 3)
@@ -1364,8 +1240,7 @@ void TerrainQuad::setupTextures(void)
 				{
 					if (vertices[3]->pVertex->elevation < fogStart)
 					{
-						float fogFactor =
-							fogStart - vertices[3]->pVertex->elevation;
+						float fogFactor = fogStart - vertices[3]->pVertex->elevation;
 						if (fogFactor < 0.0)
 						{
 							fogResult = 0xff;
@@ -1400,8 +1275,7 @@ void TerrainQuad::setupTextures(void)
 				uint32_t distFog = float2long(fogFactor * 255.0f);
 				if (distFog < fogResult)
 					fogResult = distFog;
-				vertices[3]->fogRGB =
-					(fogResult << 24) + (specR << 16) + (specG << 8) + (specB);
+				vertices[3]->fogRGB = (fogResult << 24) + (specR << 16) + (specG << 8) + (specB);
 			}
 			vertices[3]->calcThisFrame |= 1;
 		}
@@ -1426,8 +1300,7 @@ void TerrainQuad::draw(void)
 		float oldmaxU = 0.9921875f;
 		float oldminV = 0.0078125f;
 		float oldmaxV = 0.9921875f;
-		if (Terrain::terrainTextures2 &&
-			!(overlayHandle == 0xffffffff && isCement))
+		if (Terrain::terrainTextures2 && !(overlayHandle == 0xffffffff && isCement))
 		{
 			minU = uvData.minU;
 			minV = uvData.minV;
@@ -1449,12 +1322,9 @@ void TerrainQuad::draw(void)
 					Terrain::terrainTextures->isAlpha(
 						vertices[0]->pVertex->textureData & 0x0000ffff)))
 				lightRGB0 = lightRGB1 = lightRGB2 = 0xffffffff;
-			lightRGB0 =
-				vertices[0]->pVertex->selected ? SELECTION_COLOR : lightRGB0;
-			lightRGB1 =
-				vertices[1]->pVertex->selected ? SELECTION_COLOR : lightRGB1;
-			lightRGB2 =
-				vertices[2]->pVertex->selected ? SELECTION_COLOR : lightRGB2;
+			lightRGB0		= vertices[0]->pVertex->selected ? SELECTION_COLOR : lightRGB0;
+			lightRGB1		= vertices[1]->pVertex->selected ? SELECTION_COLOR : lightRGB1;
+			lightRGB2		= vertices[2]->pVertex->selected ? SELECTION_COLOR : lightRGB2;
 			gVertex[0].x	= vertices[0]->px;
 			gVertex[0].y	= vertices[0]->py;
 			gVertex[0].z	= vertices[0]->pz + TERRAIN_DEPTH_FUDGE;
@@ -1479,18 +1349,17 @@ void TerrainQuad::draw(void)
 			gVertex[2].v	= maxV;
 			gVertex[2].argb = lightRGB2;
 			gVertex[2].frgb = vertices[2]->fogRGB;
-			if ((gVertex[0].z >= 0.0f) && (gVertex[0].z < 1.0f) &&
-				(gVertex[1].z >= 0.0f) && (gVertex[1].z < 1.0f) &&
-				(gVertex[2].z >= 0.0f) && (gVertex[2].z < 1.0f))
+			if ((gVertex[0].z >= 0.0f) && (gVertex[0].z < 1.0f) && (gVertex[1].z >= 0.0f) &&
+				(gVertex[1].z < 1.0f) && (gVertex[2].z >= 0.0f) && (gVertex[2].z < 1.0f))
 			{
 				{
-					if ((terrainDetailHandle == 0xffffffff) &&
-						(overlayHandle == 0xffffffff) && isCement)
-						mcTextureManager->addVertices(terrainHandle, gVertex,
-							MC2_ISTERRAIN | MC2_DRAWALPHA | MC2_ISCRATERS);
+					if ((terrainDetailHandle == 0xffffffff) && (overlayHandle == 0xffffffff) &&
+						isCement)
+						mcTextureManager->addVertices(
+							terrainHandle, gVertex, MC2_ISTERRAIN | MC2_DRAWALPHA | MC2_ISCRATERS);
 					else
-						mcTextureManager->addVertices(terrainHandle, gVertex,
-							MC2_ISTERRAIN | MC2_DRAWSOLID);
+						mcTextureManager->addVertices(
+							terrainHandle, gVertex, MC2_ISTERRAIN | MC2_DRAWSOLID);
 					//--------------------------------------------------------------
 					// Draw the Overlay Texture if it exists.
 					if (useOverlayTexture && (overlayHandle != 0xffffffff))
@@ -1509,56 +1378,35 @@ void TerrainQuad::draw(void)
 						oVertex[0].argb = vertices[0]->lightRGB;
 						oVertex[1].argb = vertices[1]->lightRGB;
 						oVertex[2].argb = vertices[2]->lightRGB;
-						mcTextureManager->addVertices(overlayHandle, oVertex,
-							MC2_ISTERRAIN | MC2_DRAWALPHA | MC2_ISCRATERS);
+						mcTextureManager->addVertices(
+							overlayHandle, oVertex, MC2_ISTERRAIN | MC2_DRAWALPHA | MC2_ISCRATERS);
 					}
 					//----------------------------------------------------
 					// Draw the detail Texture
-					if (useWaterInterestTexture &&
-						(terrainDetailHandle != 0xffffffff))
+					if (useWaterInterestTexture && (terrainDetailHandle != 0xffffffff))
 					{
 						gos_VERTEX sVertex[3];
 						memcpy(sVertex, gVertex, sizeof(gos_VERTEX) * 3);
-						float tilingFactor =
-							Terrain::terrainTextures->getDetailTilingFactor(1);
+						float tilingFactor = Terrain::terrainTextures->getDetailTilingFactor(1);
 						if (Terrain::terrainTextures2)
-							tilingFactor = Terrain::terrainTextures2
-											   ->getDetailTilingFactor();
-						float oneOverTf =
-							tilingFactor / Terrain::worldUnitsMapSide;
-						sVertex[0].u =
-							(vertices[0]->vx - Terrain::mapTopLeft3d.x) *
-							oneOverTf;
-						sVertex[0].v =
-							(Terrain::mapTopLeft3d.y - vertices[0]->vy) *
-							oneOverTf;
-						sVertex[1].u =
-							(vertices[1]->vx - Terrain::mapTopLeft3d.x) *
-							oneOverTf;
-						sVertex[1].v =
-							(Terrain::mapTopLeft3d.y - vertices[1]->vy) *
-							oneOverTf;
-						sVertex[2].u =
-							(vertices[2]->vx - Terrain::mapTopLeft3d.x) *
-							oneOverTf;
-						sVertex[2].v =
-							(Terrain::mapTopLeft3d.y - vertices[2]->vy) *
-							oneOverTf;
-						if ((sVertex[0].u > MaxMinUV) ||
-							(sVertex[0].v > MaxMinUV) ||
-							(sVertex[1].u > MaxMinUV) ||
-							(sVertex[1].v > MaxMinUV) ||
-							(sVertex[2].u > MaxMinUV) ||
-							(sVertex[2].v > MaxMinUV))
+							tilingFactor = Terrain::terrainTextures2->getDetailTilingFactor();
+						float oneOverTf = tilingFactor / Terrain::worldUnitsMapSide;
+						sVertex[0].u	= (vertices[0]->vx - Terrain::mapTopLeft3d.x) * oneOverTf;
+						sVertex[0].v	= (Terrain::mapTopLeft3d.y - vertices[0]->vy) * oneOverTf;
+						sVertex[1].u	= (vertices[1]->vx - Terrain::mapTopLeft3d.x) * oneOverTf;
+						sVertex[1].v	= (Terrain::mapTopLeft3d.y - vertices[1]->vy) * oneOverTf;
+						sVertex[2].u	= (vertices[2]->vx - Terrain::mapTopLeft3d.x) * oneOverTf;
+						sVertex[2].v	= (Terrain::mapTopLeft3d.y - vertices[2]->vy) * oneOverTf;
+						if ((sVertex[0].u > MaxMinUV) || (sVertex[0].v > MaxMinUV) ||
+							(sVertex[1].u > MaxMinUV) || (sVertex[1].v > MaxMinUV) ||
+							(sVertex[2].u > MaxMinUV) || (sVertex[2].v > MaxMinUV))
 						{
 							// If any are out range, move 'em back in range by
 							// adjustfactor.
-							float maxU = fmax(
-								sVertex[0].u, fmax(sVertex[1].u, sVertex[2].u));
+							float maxU = fmax(sVertex[0].u, fmax(sVertex[1].u, sVertex[2].u));
 							maxU	   = floor(maxU - (MaxMinUV - 1.0f));
-							float maxV = fmax(
-								sVertex[0].v, fmax(sVertex[1].v, sVertex[2].v));
-							maxV = floor(maxV - (MaxMinUV - 1.0f));
+							float maxV = fmax(sVertex[0].v, fmax(sVertex[1].v, sVertex[2].v));
+							maxV	   = floor(maxV - (MaxMinUV - 1.0f));
 							sVertex[0].u -= maxU;
 							sVertex[1].u -= maxU;
 							sVertex[2].u -= maxU;
@@ -1569,11 +1417,10 @@ void TerrainQuad::draw(void)
 						// Light the Detail Texture
 						if (Terrain::terrainTextures2)
 						{
-							sVertex[0].argb		= sVertex[1].argb =
-								sVertex[2].argb = 0xffffffff;
+							sVertex[0].argb = sVertex[1].argb = sVertex[2].argb = 0xffffffff;
 						}
-						mcTextureManager->addVertices(terrainDetailHandle,
-							sVertex, MC2_ISTERRAIN | MC2_DRAWALPHA);
+						mcTextureManager->addVertices(
+							terrainDetailHandle, sVertex, MC2_ISTERRAIN | MC2_DRAWALPHA);
 					}
 				}
 			}
@@ -1590,8 +1437,7 @@ void TerrainQuad::draw(void)
 					Terrain::terrainTextures->isAlpha(
 						vertices[0]->pVertex->textureData & 0x0000ffff)))
 				lightRGB3 = 0xffffffff;
-			lightRGB3 =
-				vertices[3]->pVertex->selected ? SELECTION_COLOR : lightRGB3;
+			lightRGB3		= vertices[3]->pVertex->selected ? SELECTION_COLOR : lightRGB3;
 			gVertex[1].x	= gVertex[2].x;
 			gVertex[1].y	= gVertex[2].y;
 			gVertex[1].z	= gVertex[2].z;
@@ -1608,18 +1454,17 @@ void TerrainQuad::draw(void)
 			gVertex[2].v	= maxV;
 			gVertex[2].argb = lightRGB3;
 			gVertex[2].frgb = vertices[3]->fogRGB;
-			if ((gVertex[0].z >= 0.0f) && (gVertex[0].z < 1.0f) &&
-				(gVertex[1].z >= 0.0f) && (gVertex[1].z < 1.0f) &&
-				(gVertex[2].z >= 0.0f) && (gVertex[2].z < 1.0f))
+			if ((gVertex[0].z >= 0.0f) && (gVertex[0].z < 1.0f) && (gVertex[1].z >= 0.0f) &&
+				(gVertex[1].z < 1.0f) && (gVertex[2].z >= 0.0f) && (gVertex[2].z < 1.0f))
 			{
 				{
-					if ((terrainDetailHandle == 0xffffffff) &&
-						(overlayHandle == 0xffffffff) && isCement)
-						mcTextureManager->addVertices(terrainHandle, gVertex,
-							MC2_ISTERRAIN | MC2_DRAWALPHA | MC2_ISCRATERS);
+					if ((terrainDetailHandle == 0xffffffff) && (overlayHandle == 0xffffffff) &&
+						isCement)
+						mcTextureManager->addVertices(
+							terrainHandle, gVertex, MC2_ISTERRAIN | MC2_DRAWALPHA | MC2_ISCRATERS);
 					else
-						mcTextureManager->addVertices(terrainHandle, gVertex,
-							MC2_ISTERRAIN | MC2_DRAWSOLID);
+						mcTextureManager->addVertices(
+							terrainHandle, gVertex, MC2_ISTERRAIN | MC2_DRAWSOLID);
 					//--------------------------------------------------------------
 					// Draw the Overlay Texture if it exists.
 					if (useOverlayTexture && (overlayHandle != 0xffffffff))
@@ -1640,56 +1485,35 @@ void TerrainQuad::draw(void)
 						oVertex[0].argb = vertices[0]->lightRGB;
 						oVertex[1].argb = vertices[2]->lightRGB;
 						oVertex[2].argb = vertices[3]->lightRGB;
-						mcTextureManager->addVertices(overlayHandle, oVertex,
-							MC2_ISTERRAIN | MC2_DRAWALPHA | MC2_ISCRATERS);
+						mcTextureManager->addVertices(
+							overlayHandle, oVertex, MC2_ISTERRAIN | MC2_DRAWALPHA | MC2_ISCRATERS);
 					}
 					//----------------------------------------------------
 					// Draw the detail Texture
-					if (useWaterInterestTexture &&
-						(terrainDetailHandle != 0xffffffff))
+					if (useWaterInterestTexture && (terrainDetailHandle != 0xffffffff))
 					{
 						gos_VERTEX sVertex[3];
 						memcpy(sVertex, gVertex, sizeof(gos_VERTEX) * 3);
-						float tilingFactor =
-							Terrain::terrainTextures->getDetailTilingFactor(1);
+						float tilingFactor = Terrain::terrainTextures->getDetailTilingFactor(1);
 						if (Terrain::terrainTextures2)
-							tilingFactor = Terrain::terrainTextures2
-											   ->getDetailTilingFactor();
-						float oneOverTF =
-							tilingFactor / Terrain::worldUnitsMapSide;
-						sVertex[0].u =
-							(vertices[0]->vx - Terrain::mapTopLeft3d.x) *
-							oneOverTF;
-						sVertex[0].v =
-							(Terrain::mapTopLeft3d.y - vertices[0]->vy) *
-							oneOverTF;
-						sVertex[1].u =
-							(vertices[2]->vx - Terrain::mapTopLeft3d.x) *
-							oneOverTF;
-						sVertex[1].v =
-							(Terrain::mapTopLeft3d.y - vertices[2]->vy) *
-							oneOverTF;
-						sVertex[2].u =
-							(vertices[3]->vx - Terrain::mapTopLeft3d.x) *
-							oneOverTF;
-						sVertex[2].v =
-							(Terrain::mapTopLeft3d.y - vertices[3]->vy) *
-							oneOverTF;
-						if ((sVertex[0].u > MaxMinUV) ||
-							(sVertex[0].v > MaxMinUV) ||
-							(sVertex[1].u > MaxMinUV) ||
-							(sVertex[1].v > MaxMinUV) ||
-							(sVertex[2].u > MaxMinUV) ||
-							(sVertex[2].v > MaxMinUV))
+							tilingFactor = Terrain::terrainTextures2->getDetailTilingFactor();
+						float oneOverTF = tilingFactor / Terrain::worldUnitsMapSide;
+						sVertex[0].u	= (vertices[0]->vx - Terrain::mapTopLeft3d.x) * oneOverTF;
+						sVertex[0].v	= (Terrain::mapTopLeft3d.y - vertices[0]->vy) * oneOverTF;
+						sVertex[1].u	= (vertices[2]->vx - Terrain::mapTopLeft3d.x) * oneOverTF;
+						sVertex[1].v	= (Terrain::mapTopLeft3d.y - vertices[2]->vy) * oneOverTF;
+						sVertex[2].u	= (vertices[3]->vx - Terrain::mapTopLeft3d.x) * oneOverTF;
+						sVertex[2].v	= (Terrain::mapTopLeft3d.y - vertices[3]->vy) * oneOverTF;
+						if ((sVertex[0].u > MaxMinUV) || (sVertex[0].v > MaxMinUV) ||
+							(sVertex[1].u > MaxMinUV) || (sVertex[1].v > MaxMinUV) ||
+							(sVertex[2].u > MaxMinUV) || (sVertex[2].v > MaxMinUV))
 						{
 							// If any are out range, move 'em back in range by
 							// adjustfactor.
-							float maxU = fmax(
-								sVertex[0].u, fmax(sVertex[1].u, sVertex[2].u));
+							float maxU = fmax(sVertex[0].u, fmax(sVertex[1].u, sVertex[2].u));
 							maxU	   = floor(maxU - (MaxMinUV - 1.0f));
-							float maxV = fmax(
-								sVertex[0].v, fmax(sVertex[1].v, sVertex[2].v));
-							maxV = floor(maxV - (MaxMinUV - 1.0f));
+							float maxV = fmax(sVertex[0].v, fmax(sVertex[1].v, sVertex[2].v));
+							maxV	   = floor(maxV - (MaxMinUV - 1.0f));
 							sVertex[0].u -= maxU;
 							sVertex[1].u -= maxU;
 							sVertex[2].u -= maxU;
@@ -1700,11 +1524,10 @@ void TerrainQuad::draw(void)
 						// Light the Detail Texture
 						if (Terrain::terrainTextures2)
 						{
-							sVertex[0].argb		= sVertex[1].argb =
-								sVertex[2].argb = 0xffffffff;
+							sVertex[0].argb = sVertex[1].argb = sVertex[2].argb = 0xffffffff;
 						}
-						mcTextureManager->addVertices(terrainDetailHandle,
-							sVertex, MC2_ISTERRAIN | MC2_DRAWALPHA);
+						mcTextureManager->addVertices(
+							terrainDetailHandle, sVertex, MC2_ISTERRAIN | MC2_DRAWALPHA);
 					}
 				}
 			}
@@ -1722,12 +1545,9 @@ void TerrainQuad::draw(void)
 					Terrain::terrainTextures->isAlpha(
 						vertices[0]->pVertex->textureData & 0x0000ffff)))
 				lightRGB0 = lightRGB1 = lightRGB3 = 0xffffffff;
-			lightRGB0 =
-				vertices[0]->pVertex->selected ? SELECTION_COLOR : lightRGB0;
-			lightRGB1 =
-				vertices[1]->pVertex->selected ? SELECTION_COLOR : lightRGB1;
-			lightRGB3 =
-				vertices[3]->pVertex->selected ? SELECTION_COLOR : lightRGB3;
+			lightRGB0		= vertices[0]->pVertex->selected ? SELECTION_COLOR : lightRGB0;
+			lightRGB1		= vertices[1]->pVertex->selected ? SELECTION_COLOR : lightRGB1;
+			lightRGB3		= vertices[3]->pVertex->selected ? SELECTION_COLOR : lightRGB3;
 			gVertex[0].x	= vertices[0]->px;
 			gVertex[0].y	= vertices[0]->py;
 			gVertex[0].z	= vertices[0]->pz + TERRAIN_DEPTH_FUDGE;
@@ -1752,65 +1572,43 @@ void TerrainQuad::draw(void)
 			gVertex[2].v	= maxV;
 			gVertex[2].argb = lightRGB3;
 			gVertex[2].frgb = vertices[3]->fogRGB;
-			if ((gVertex[0].z >= 0.0f) && (gVertex[0].z < 1.0f) &&
-				(gVertex[1].z >= 0.0f) && (gVertex[1].z < 1.0f) &&
-				(gVertex[2].z >= 0.0f) && (gVertex[2].z < 1.0f))
+			if ((gVertex[0].z >= 0.0f) && (gVertex[0].z < 1.0f) && (gVertex[1].z >= 0.0f) &&
+				(gVertex[1].z < 1.0f) && (gVertex[2].z >= 0.0f) && (gVertex[2].z < 1.0f))
 			{
 				{
-					if ((terrainDetailHandle == 0xffffffff) &&
-						(overlayHandle == 0xffffffff) && isCement)
-						mcTextureManager->addVertices(terrainHandle, gVertex,
-							MC2_ISTERRAIN | MC2_DRAWALPHA | MC2_ISCRATERS);
+					if ((terrainDetailHandle == 0xffffffff) && (overlayHandle == 0xffffffff) &&
+						isCement)
+						mcTextureManager->addVertices(
+							terrainHandle, gVertex, MC2_ISTERRAIN | MC2_DRAWALPHA | MC2_ISCRATERS);
 					else
-						mcTextureManager->addVertices(terrainHandle, gVertex,
-							MC2_ISTERRAIN | MC2_DRAWSOLID);
+						mcTextureManager->addVertices(
+							terrainHandle, gVertex, MC2_ISTERRAIN | MC2_DRAWSOLID);
 					//----------------------------------------------------
 					// Draw the detail Texture
-					if (useWaterInterestTexture &&
-						(terrainDetailHandle != 0xffffffff))
+					if (useWaterInterestTexture && (terrainDetailHandle != 0xffffffff))
 					{
 						gos_VERTEX sVertex[3];
 						memcpy(sVertex, gVertex, sizeof(gos_VERTEX) * 3);
-						float tilingFactor =
-							Terrain::terrainTextures->getDetailTilingFactor(1);
+						float tilingFactor = Terrain::terrainTextures->getDetailTilingFactor(1);
 						if (Terrain::terrainTextures2)
-							tilingFactor = Terrain::terrainTextures2
-											   ->getDetailTilingFactor();
-						float oneOverTF =
-							tilingFactor / Terrain::worldUnitsMapSide;
-						sVertex[0].u =
-							(vertices[0]->vx - Terrain::mapTopLeft3d.x) *
-							oneOverTF;
-						sVertex[0].v =
-							(Terrain::mapTopLeft3d.y - vertices[0]->vy) *
-							oneOverTF;
-						sVertex[1].u =
-							(vertices[1]->vx - Terrain::mapTopLeft3d.x) *
-							oneOverTF;
-						sVertex[1].v =
-							(Terrain::mapTopLeft3d.y - vertices[1]->vy) *
-							oneOverTF;
-						sVertex[2].u =
-							(vertices[3]->vx - Terrain::mapTopLeft3d.x) *
-							oneOverTF;
-						sVertex[2].v =
-							(Terrain::mapTopLeft3d.y - vertices[3]->vy) *
-							oneOverTF;
-						if ((sVertex[0].u > MaxMinUV) ||
-							(sVertex[0].v > MaxMinUV) ||
-							(sVertex[1].u > MaxMinUV) ||
-							(sVertex[1].v > MaxMinUV) ||
-							(sVertex[2].u > MaxMinUV) ||
-							(sVertex[2].v > MaxMinUV))
+							tilingFactor = Terrain::terrainTextures2->getDetailTilingFactor();
+						float oneOverTF = tilingFactor / Terrain::worldUnitsMapSide;
+						sVertex[0].u	= (vertices[0]->vx - Terrain::mapTopLeft3d.x) * oneOverTF;
+						sVertex[0].v	= (Terrain::mapTopLeft3d.y - vertices[0]->vy) * oneOverTF;
+						sVertex[1].u	= (vertices[1]->vx - Terrain::mapTopLeft3d.x) * oneOverTF;
+						sVertex[1].v	= (Terrain::mapTopLeft3d.y - vertices[1]->vy) * oneOverTF;
+						sVertex[2].u	= (vertices[3]->vx - Terrain::mapTopLeft3d.x) * oneOverTF;
+						sVertex[2].v	= (Terrain::mapTopLeft3d.y - vertices[3]->vy) * oneOverTF;
+						if ((sVertex[0].u > MaxMinUV) || (sVertex[0].v > MaxMinUV) ||
+							(sVertex[1].u > MaxMinUV) || (sVertex[1].v > MaxMinUV) ||
+							(sVertex[2].u > MaxMinUV) || (sVertex[2].v > MaxMinUV))
 						{
 							// If any are out range, move 'em back in range by
 							// adjustfactor.
-							float maxU = fmax(
-								sVertex[0].u, fmax(sVertex[1].u, sVertex[2].u));
+							float maxU = fmax(sVertex[0].u, fmax(sVertex[1].u, sVertex[2].u));
 							maxU	   = floor(maxU - (MaxMinUV - 1.0f));
-							float maxV = fmax(
-								sVertex[0].v, fmax(sVertex[1].v, sVertex[2].v));
-							maxV = floor(maxV - (MaxMinUV - 1.0f));
+							float maxV = fmax(sVertex[0].v, fmax(sVertex[1].v, sVertex[2].v));
+							maxV	   = floor(maxV - (MaxMinUV - 1.0f));
 							sVertex[0].u -= maxU;
 							sVertex[1].u -= maxU;
 							sVertex[2].u -= maxU;
@@ -1821,11 +1619,10 @@ void TerrainQuad::draw(void)
 						// Light the Detail Texture
 						if (Terrain::terrainTextures2)
 						{
-							sVertex[0].argb		= sVertex[1].argb =
-								sVertex[2].argb = 0xffffffff;
+							sVertex[0].argb = sVertex[1].argb = sVertex[2].argb = 0xffffffff;
 						}
-						mcTextureManager->addVertices(terrainDetailHandle,
-							sVertex, MC2_ISTERRAIN | MC2_DRAWALPHA);
+						mcTextureManager->addVertices(
+							terrainDetailHandle, sVertex, MC2_ISTERRAIN | MC2_DRAWALPHA);
 					}
 					//--------------------------------------------------------------
 					// Draw the Overlay Texture if it exists.
@@ -1845,8 +1642,8 @@ void TerrainQuad::draw(void)
 						oVertex[0].argb = vertices[0]->lightRGB;
 						oVertex[1].argb = vertices[1]->lightRGB;
 						oVertex[2].argb = vertices[3]->lightRGB;
-						mcTextureManager->addVertices(overlayHandle, oVertex,
-							MC2_ISTERRAIN | MC2_DRAWALPHA | MC2_ISCRATERS);
+						mcTextureManager->addVertices(
+							overlayHandle, oVertex, MC2_ISTERRAIN | MC2_DRAWALPHA | MC2_ISCRATERS);
 					}
 				}
 			}
@@ -1862,8 +1659,7 @@ void TerrainQuad::draw(void)
 					Terrain::terrainTextures->isAlpha(
 						vertices[0]->pVertex->textureData & 0x0000ffff)))
 				lightRGB2 = 0xffffffff;
-			lightRGB2 =
-				vertices[2]->pVertex->selected ? SELECTION_COLOR : lightRGB2;
+			lightRGB2		= vertices[2]->pVertex->selected ? SELECTION_COLOR : lightRGB2;
 			gVertex[0].x	= gVertex[1].x;
 			gVertex[0].y	= gVertex[1].y;
 			gVertex[0].z	= gVertex[1].z;
@@ -1880,65 +1676,43 @@ void TerrainQuad::draw(void)
 			gVertex[1].v	= maxV;
 			gVertex[1].argb = lightRGB2;
 			gVertex[1].frgb = vertices[2]->fogRGB;
-			if ((gVertex[0].z >= 0.0f) && (gVertex[0].z < 1.0f) &&
-				(gVertex[1].z >= 0.0f) && (gVertex[1].z < 1.0f) &&
-				(gVertex[2].z >= 0.0f) && (gVertex[2].z < 1.0f))
+			if ((gVertex[0].z >= 0.0f) && (gVertex[0].z < 1.0f) && (gVertex[1].z >= 0.0f) &&
+				(gVertex[1].z < 1.0f) && (gVertex[2].z >= 0.0f) && (gVertex[2].z < 1.0f))
 			{
 				{
-					if ((terrainDetailHandle == 0xffffffff) &&
-						(overlayHandle == 0xffffffff) && isCement)
-						mcTextureManager->addVertices(terrainHandle, gVertex,
-							MC2_ISTERRAIN | MC2_DRAWALPHA | MC2_ISCRATERS);
+					if ((terrainDetailHandle == 0xffffffff) && (overlayHandle == 0xffffffff) &&
+						isCement)
+						mcTextureManager->addVertices(
+							terrainHandle, gVertex, MC2_ISTERRAIN | MC2_DRAWALPHA | MC2_ISCRATERS);
 					else
-						mcTextureManager->addVertices(terrainHandle, gVertex,
-							MC2_ISTERRAIN | MC2_DRAWSOLID);
+						mcTextureManager->addVertices(
+							terrainHandle, gVertex, MC2_ISTERRAIN | MC2_DRAWSOLID);
 					//----------------------------------------------------
 					// Draw the detail Texture
-					if (useWaterInterestTexture &&
-						(terrainDetailHandle != 0xffffffff))
+					if (useWaterInterestTexture && (terrainDetailHandle != 0xffffffff))
 					{
 						gos_VERTEX sVertex[3];
 						memcpy(sVertex, gVertex, sizeof(gos_VERTEX) * 3);
-						float tilingFactor =
-							Terrain::terrainTextures->getDetailTilingFactor(1);
+						float tilingFactor = Terrain::terrainTextures->getDetailTilingFactor(1);
 						if (Terrain::terrainTextures2)
-							tilingFactor = Terrain::terrainTextures2
-											   ->getDetailTilingFactor();
-						float oneOverTf =
-							tilingFactor / Terrain::worldUnitsMapSide;
-						sVertex[0].u =
-							(vertices[1]->vx - Terrain::mapTopLeft3d.x) *
-							oneOverTf;
-						sVertex[0].v =
-							(Terrain::mapTopLeft3d.y - vertices[1]->vy) *
-							oneOverTf;
-						sVertex[1].u =
-							(vertices[2]->vx - Terrain::mapTopLeft3d.x) *
-							oneOverTf;
-						sVertex[1].v =
-							(Terrain::mapTopLeft3d.y - vertices[2]->vy) *
-							oneOverTf;
-						sVertex[2].u =
-							(vertices[3]->vx - Terrain::mapTopLeft3d.x) *
-							oneOverTf;
-						sVertex[2].v =
-							(Terrain::mapTopLeft3d.y - vertices[3]->vy) *
-							oneOverTf;
-						if ((sVertex[0].u > MaxMinUV) ||
-							(sVertex[0].v > MaxMinUV) ||
-							(sVertex[1].u > MaxMinUV) ||
-							(sVertex[1].v > MaxMinUV) ||
-							(sVertex[2].u > MaxMinUV) ||
-							(sVertex[2].v > MaxMinUV))
+							tilingFactor = Terrain::terrainTextures2->getDetailTilingFactor();
+						float oneOverTf = tilingFactor / Terrain::worldUnitsMapSide;
+						sVertex[0].u	= (vertices[1]->vx - Terrain::mapTopLeft3d.x) * oneOverTf;
+						sVertex[0].v	= (Terrain::mapTopLeft3d.y - vertices[1]->vy) * oneOverTf;
+						sVertex[1].u	= (vertices[2]->vx - Terrain::mapTopLeft3d.x) * oneOverTf;
+						sVertex[1].v	= (Terrain::mapTopLeft3d.y - vertices[2]->vy) * oneOverTf;
+						sVertex[2].u	= (vertices[3]->vx - Terrain::mapTopLeft3d.x) * oneOverTf;
+						sVertex[2].v	= (Terrain::mapTopLeft3d.y - vertices[3]->vy) * oneOverTf;
+						if ((sVertex[0].u > MaxMinUV) || (sVertex[0].v > MaxMinUV) ||
+							(sVertex[1].u > MaxMinUV) || (sVertex[1].v > MaxMinUV) ||
+							(sVertex[2].u > MaxMinUV) || (sVertex[2].v > MaxMinUV))
 						{
 							// If any are out range, move 'em back in range by
 							// adjustfactor.
-							float maxU = fmax(
-								sVertex[0].u, fmax(sVertex[1].u, sVertex[2].u));
+							float maxU = fmax(sVertex[0].u, fmax(sVertex[1].u, sVertex[2].u));
 							maxU	   = floor(maxU - (MaxMinUV - 1.0f));
-							float maxV = fmax(
-								sVertex[0].v, fmax(sVertex[1].v, sVertex[2].v));
-							maxV = floor(maxV - (MaxMinUV - 1.0f));
+							float maxV = fmax(sVertex[0].v, fmax(sVertex[1].v, sVertex[2].v));
+							maxV	   = floor(maxV - (MaxMinUV - 1.0f));
 							sVertex[0].u -= maxU;
 							sVertex[1].u -= maxU;
 							sVertex[2].u -= maxU;
@@ -1949,11 +1723,10 @@ void TerrainQuad::draw(void)
 						// Light the Detail Texture
 						if (Terrain::terrainTextures2)
 						{
-							sVertex[0].argb		= sVertex[1].argb =
-								sVertex[2].argb = 0xffffffff;
+							sVertex[0].argb = sVertex[1].argb = sVertex[2].argb = 0xffffffff;
 						}
-						mcTextureManager->addVertices(terrainDetailHandle,
-							sVertex, MC2_ISTERRAIN | MC2_DRAWALPHA);
+						mcTextureManager->addVertices(
+							terrainDetailHandle, sVertex, MC2_ISTERRAIN | MC2_DRAWALPHA);
 					}
 					//--------------------------------------------------------------
 					// Draw the Overlay Texture if it exists.
@@ -1973,8 +1746,8 @@ void TerrainQuad::draw(void)
 						oVertex[0].argb = vertices[1]->lightRGB;
 						oVertex[1].argb = vertices[2]->lightRGB;
 						oVertex[2].argb = vertices[3]->lightRGB;
-						mcTextureManager->addVertices(overlayHandle, oVertex,
-							MC2_ISTERRAIN | MC2_DRAWALPHA | MC2_ISCRATERS);
+						mcTextureManager->addVertices(
+							overlayHandle, oVertex, MC2_ISTERRAIN | MC2_DRAWALPHA | MC2_ISCRATERS);
 					}
 				}
 			}
@@ -1998,10 +1771,8 @@ extern float cloudScrollY;
 //---------------------------------------------------------------------------
 void TerrainQuad::drawWater(void)
 {
-	float cloudOffsetX =
-		cos(360.0f * DEGREES_TO_RADS * 32.0f * cloudScrollX) * 0.1f;
-	float cloudOffsetY =
-		sin(360.0f * DEGREES_TO_RADS * 32.0f * cloudScrollY) * 0.1f;
+	float cloudOffsetX = cos(360.0f * DEGREES_TO_RADS * 32.0f * cloudScrollX) * 0.1f;
+	float cloudOffsetY = sin(360.0f * DEGREES_TO_RADS * 32.0f * cloudScrollY) * 0.1f;
 	float sprayOffsetX = cloudScrollX * 10.0f;
 	float sprayOffsetY = cloudScrollY * 10.0f;
 	// Gotta be able to run the untextured maps!!!
@@ -2010,10 +1781,9 @@ void TerrainQuad::drawWater(void)
 	if (Terrain::terrainTextures2)
 	{
 		oneOverWaterTF =
-			(Terrain::terrainTextures2->getWaterDetailTilingFactor() /
-				Terrain::worldUnitsMapSide);
-		oneOverTF = (Terrain::terrainTextures2->getWaterTextureTilingFactor() /
-					 Terrain::worldUnitsMapSide);
+			(Terrain::terrainTextures2->getWaterDetailTilingFactor() / Terrain::worldUnitsMapSide);
+		oneOverTF =
+			(Terrain::terrainTextures2->getWaterTextureTilingFactor() / Terrain::worldUnitsMapSide);
 	}
 	if (waterHandle != 0xffffffff)
 	{
@@ -2040,15 +1810,14 @@ void TerrainQuad::drawWater(void)
 		{
 			//--------------------------
 			// Top Triangle
-			gVertex[0].x	= vertices[0]->wx;
-			gVertex[0].y	= vertices[0]->wy;
-			gVertex[0].z	= vertices[0]->wz + TERRAIN_DEPTH_FUDGE;
-			gVertex[0].rhw  = vertices[0]->ww;
-			gVertex[0].u	= minU + cloudOffsetX;
-			gVertex[0].v	= minV + cloudOffsetY;
-			gVertex[0].argb = vertices[0]->pVertex->selected
-								  ? SELECTION_COLOR
-								  : vertices[0]->lightRGB;
+			gVertex[0].x   = vertices[0]->wx;
+			gVertex[0].y   = vertices[0]->wy;
+			gVertex[0].z   = vertices[0]->wz + TERRAIN_DEPTH_FUDGE;
+			gVertex[0].rhw = vertices[0]->ww;
+			gVertex[0].u   = minU + cloudOffsetX;
+			gVertex[0].v   = minV + cloudOffsetY;
+			gVertex[0].argb =
+				vertices[0]->pVertex->selected ? SELECTION_COLOR : vertices[0]->lightRGB;
 			gVertex[0].frgb = vertices[0]->fogRGB;
 			gVertex[1].x	= vertices[1]->wx;
 			gVertex[1].y	= vertices[1]->wy;
@@ -2056,9 +1825,8 @@ void TerrainQuad::drawWater(void)
 			gVertex[1].rhw  = vertices[1]->ww;
 			gVertex[1].u	= maxU + cloudOffsetX;
 			gVertex[1].v	= minV + cloudOffsetY;
-			gVertex[1].argb = vertices[1]->pVertex->selected
-								  ? SELECTION_COLOR
-								  : vertices[1]->lightRGB;
+			gVertex[1].argb =
+				vertices[1]->pVertex->selected ? SELECTION_COLOR : vertices[1]->lightRGB;
 			gVertex[1].frgb = vertices[1]->fogRGB;
 			gVertex[2].x	= vertices[2]->wx;
 			gVertex[2].y	= vertices[2]->wy;
@@ -2066,31 +1834,17 @@ void TerrainQuad::drawWater(void)
 			gVertex[2].rhw  = vertices[2]->ww;
 			gVertex[2].u	= maxU + cloudOffsetX;
 			gVertex[2].v	= maxV + cloudOffsetY;
-			gVertex[2].argb = vertices[2]->pVertex->selected
-								  ? SELECTION_COLOR
-								  : vertices[2]->lightRGB;
+			gVertex[2].argb =
+				vertices[2]->pVertex->selected ? SELECTION_COLOR : vertices[2]->lightRGB;
 			gVertex[2].frgb = vertices[2]->fogRGB;
-			gVertex[0].u =
-				(vertices[0]->vx - Terrain::mapTopLeft3d.x) * oneOverTF +
-				cloudOffsetX;
-			gVertex[0].v =
-				(Terrain::mapTopLeft3d.y - vertices[0]->vy) * oneOverTF +
-				cloudOffsetY;
-			gVertex[1].u =
-				(vertices[1]->vx - Terrain::mapTopLeft3d.x) * oneOverTF +
-				cloudOffsetX;
-			gVertex[1].v =
-				(Terrain::mapTopLeft3d.y - vertices[1]->vy) * oneOverTF +
-				cloudOffsetY;
-			gVertex[2].u =
-				(vertices[2]->vx - Terrain::mapTopLeft3d.x) * oneOverTF +
-				cloudOffsetX;
-			gVertex[2].v =
-				(Terrain::mapTopLeft3d.y - vertices[2]->vy) * oneOverTF +
-				cloudOffsetY;
-			if ((gVertex[0].z >= 0.0f) && (gVertex[0].z < 1.0f) &&
-				(gVertex[1].z >= 0.0f) && (gVertex[1].z < 1.0f) &&
-				(gVertex[2].z >= 0.0f) && (gVertex[2].z < 1.0f))
+			gVertex[0].u = (vertices[0]->vx - Terrain::mapTopLeft3d.x) * oneOverTF + cloudOffsetX;
+			gVertex[0].v = (Terrain::mapTopLeft3d.y - vertices[0]->vy) * oneOverTF + cloudOffsetY;
+			gVertex[1].u = (vertices[1]->vx - Terrain::mapTopLeft3d.x) * oneOverTF + cloudOffsetX;
+			gVertex[1].v = (Terrain::mapTopLeft3d.y - vertices[1]->vy) * oneOverTF + cloudOffsetY;
+			gVertex[2].u = (vertices[2]->vx - Terrain::mapTopLeft3d.x) * oneOverTF + cloudOffsetX;
+			gVertex[2].v = (Terrain::mapTopLeft3d.y - vertices[2]->vy) * oneOverTF + cloudOffsetY;
+			if ((gVertex[0].z >= 0.0f) && (gVertex[0].z < 1.0f) && (gVertex[1].z >= 0.0f) &&
+				(gVertex[1].z < 1.0f) && (gVertex[2].z >= 0.0f) && (gVertex[2].z < 1.0f))
 			{
 				{
 					//-----------------------------------------------------------------------------
@@ -2118,44 +1872,33 @@ void TerrainQuad::drawWater(void)
 							alphaMode2 = Terrain::alphaEdge;
 						}
 						if (vertices[0]->pVertex->elevation <=
-							(Terrain::waterElevation -
-								(MapData::alphaDepth * 3.0f)))
+							(Terrain::waterElevation - (MapData::alphaDepth * 3.0f)))
 						{
 							alphaMode0 = Terrain::alphaDeep;
 						}
 						if (vertices[1]->pVertex->elevation <=
-							(Terrain::waterElevation -
-								(MapData::alphaDepth * 3.0f)))
+							(Terrain::waterElevation - (MapData::alphaDepth * 3.0f)))
 						{
 							alphaMode1 = Terrain::alphaDeep;
 						}
 						if (vertices[2]->pVertex->elevation <=
-							(Terrain::waterElevation -
-								(MapData::alphaDepth * 3.0f)))
+							(Terrain::waterElevation - (MapData::alphaDepth * 3.0f)))
 						{
 							alphaMode2 = Terrain::alphaDeep;
 						}
-						gVertex[0].argb =
-							(vertices[0]->lightRGB & 0x00ffffff) + alphaMode0;
-						gVertex[1].argb =
-							(vertices[1]->lightRGB & 0x00ffffff) + alphaMode1;
-						gVertex[2].argb =
-							(vertices[2]->lightRGB & 0x00ffffff) + alphaMode2;
-						if ((gVertex[0].u > MaxMinUV) ||
-							(gVertex[0].v > MaxMinUV) ||
-							(gVertex[1].u > MaxMinUV) ||
-							(gVertex[1].v > MaxMinUV) ||
-							(gVertex[2].u > MaxMinUV) ||
-							(gVertex[2].v > MaxMinUV))
+						gVertex[0].argb = (vertices[0]->lightRGB & 0x00ffffff) + alphaMode0;
+						gVertex[1].argb = (vertices[1]->lightRGB & 0x00ffffff) + alphaMode1;
+						gVertex[2].argb = (vertices[2]->lightRGB & 0x00ffffff) + alphaMode2;
+						if ((gVertex[0].u > MaxMinUV) || (gVertex[0].v > MaxMinUV) ||
+							(gVertex[1].u > MaxMinUV) || (gVertex[1].v > MaxMinUV) ||
+							(gVertex[2].u > MaxMinUV) || (gVertex[2].v > MaxMinUV))
 						{
 							// If any are out range, move 'em back in range by
 							// adjustfactor.
-							float maxU = fmax(
-								gVertex[0].u, fmax(gVertex[1].u, gVertex[2].u));
+							float maxU = fmax(gVertex[0].u, fmax(gVertex[1].u, gVertex[2].u));
 							maxU	   = floor(maxU - (MaxMinUV - 1.0f));
-							float maxV = fmax(
-								gVertex[0].v, fmax(gVertex[1].v, gVertex[2].v));
-							maxV = floor(maxV - (MaxMinUV - 1.0f));
+							float maxV = fmax(gVertex[0].v, fmax(gVertex[1].v, gVertex[2].v));
+							maxV	   = floor(maxV - (MaxMinUV - 1.0f));
 							gVertex[0].u -= maxU;
 							gVertex[1].u -= maxU;
 							gVertex[2].u -= maxU;
@@ -2165,49 +1908,39 @@ void TerrainQuad::drawWater(void)
 						}
 						if (alphaMode0 + alphaMode1 + alphaMode2)
 						{
-							mcTextureManager->addVertices(waterHandle, gVertex,
-								MC2_ISTERRAIN | MC2_DRAWALPHA);
+							mcTextureManager->addVertices(
+								waterHandle, gVertex, MC2_ISTERRAIN | MC2_DRAWALPHA);
 						}
 					}
 					//----------------------------------------------------
 					// Draw the sky reflection on the water.
-					if (useWaterInterestTexture &&
-						(waterDetailHandle != 0xffffffff))
+					if (useWaterInterestTexture && (waterDetailHandle != 0xffffffff))
 					{
 						gos_VERTEX sVertex[3];
 						memcpy(sVertex, gVertex, sizeof(gos_VERTEX) * 3);
 						sVertex[0].u =
-							((vertices[0]->vx - Terrain::mapTopLeft3d.x) *
-								oneOverWaterTF) +
+							((vertices[0]->vx - Terrain::mapTopLeft3d.x) * oneOverWaterTF) +
 							sprayOffsetX;
 						sVertex[0].v =
-							((Terrain::mapTopLeft3d.y - vertices[0]->vy) *
-								oneOverWaterTF) +
+							((Terrain::mapTopLeft3d.y - vertices[0]->vy) * oneOverWaterTF) +
 							sprayOffsetY;
 						sVertex[1].u =
-							((vertices[1]->vx - Terrain::mapTopLeft3d.x) *
-								oneOverWaterTF) +
+							((vertices[1]->vx - Terrain::mapTopLeft3d.x) * oneOverWaterTF) +
 							sprayOffsetX;
 						sVertex[1].v =
-							((Terrain::mapTopLeft3d.y - vertices[1]->vy) *
-								oneOverWaterTF) +
+							((Terrain::mapTopLeft3d.y - vertices[1]->vy) * oneOverWaterTF) +
 							sprayOffsetY;
 						sVertex[2].u =
-							((vertices[2]->vx - Terrain::mapTopLeft3d.x) *
-								oneOverWaterTF) +
+							((vertices[2]->vx - Terrain::mapTopLeft3d.x) * oneOverWaterTF) +
 							sprayOffsetX;
 						sVertex[2].v =
-							((Terrain::mapTopLeft3d.y - vertices[2]->vy) *
-								oneOverWaterTF) +
+							((Terrain::mapTopLeft3d.y - vertices[2]->vy) * oneOverWaterTF) +
 							sprayOffsetY;
-						sVertex[0].argb =
-							(sVertex[0].argb & 0xff000000) + 0xffffff;
-						sVertex[1].argb =
-							(sVertex[1].argb & 0xff000000) + 0xffffff;
-						sVertex[2].argb =
-							(sVertex[2].argb & 0xff000000) + 0xffffff;
-						mcTextureManager->addVertices(waterDetailHandle,
-							sVertex, MC2_ISTERRAIN | MC2_DRAWALPHA);
+						sVertex[0].argb = (sVertex[0].argb & 0xff000000) + 0xffffff;
+						sVertex[1].argb = (sVertex[1].argb & 0xff000000) + 0xffffff;
+						sVertex[2].argb = (sVertex[2].argb & 0xff000000) + 0xffffff;
+						mcTextureManager->addVertices(
+							waterDetailHandle, sVertex, MC2_ISTERRAIN | MC2_DRAWALPHA);
 					}
 				}
 			}
@@ -2231,31 +1964,17 @@ void TerrainQuad::drawWater(void)
 			gVertex[2].rhw  = vertices[3]->ww;
 			gVertex[2].u	= minU + cloudOffsetX;
 			gVertex[2].v	= maxV + cloudOffsetY;
-			gVertex[2].argb = vertices[3]->pVertex->selected
-								  ? SELECTION_COLOR
-								  : vertices[3]->lightRGB;
+			gVertex[2].argb =
+				vertices[3]->pVertex->selected ? SELECTION_COLOR : vertices[3]->lightRGB;
 			gVertex[2].frgb = vertices[3]->fogRGB;
-			gVertex[0].u =
-				(vertices[0]->vx - Terrain::mapTopLeft3d.x) * oneOverTF +
-				cloudOffsetX;
-			gVertex[0].v =
-				(Terrain::mapTopLeft3d.y - vertices[0]->vy) * oneOverTF +
-				cloudOffsetY;
-			gVertex[1].u =
-				(vertices[2]->vx - Terrain::mapTopLeft3d.x) * oneOverTF +
-				cloudOffsetX;
-			gVertex[1].v =
-				(Terrain::mapTopLeft3d.y - vertices[2]->vy) * oneOverTF +
-				cloudOffsetY;
-			gVertex[2].u =
-				(vertices[3]->vx - Terrain::mapTopLeft3d.x) * oneOverTF +
-				cloudOffsetX;
-			gVertex[2].v =
-				(Terrain::mapTopLeft3d.y - vertices[3]->vy) * oneOverTF +
-				cloudOffsetY;
-			if ((gVertex[0].z >= 0.0f) && (gVertex[0].z < 1.0f) &&
-				(gVertex[1].z >= 0.0f) && (gVertex[1].z < 1.0f) &&
-				(gVertex[2].z >= 0.0f) && (gVertex[2].z < 1.0f))
+			gVertex[0].u = (vertices[0]->vx - Terrain::mapTopLeft3d.x) * oneOverTF + cloudOffsetX;
+			gVertex[0].v = (Terrain::mapTopLeft3d.y - vertices[0]->vy) * oneOverTF + cloudOffsetY;
+			gVertex[1].u = (vertices[2]->vx - Terrain::mapTopLeft3d.x) * oneOverTF + cloudOffsetX;
+			gVertex[1].v = (Terrain::mapTopLeft3d.y - vertices[2]->vy) * oneOverTF + cloudOffsetY;
+			gVertex[2].u = (vertices[3]->vx - Terrain::mapTopLeft3d.x) * oneOverTF + cloudOffsetX;
+			gVertex[2].v = (Terrain::mapTopLeft3d.y - vertices[3]->vy) * oneOverTF + cloudOffsetY;
+			if ((gVertex[0].z >= 0.0f) && (gVertex[0].z < 1.0f) && (gVertex[1].z >= 0.0f) &&
+				(gVertex[1].z < 1.0f) && (gVertex[2].z >= 0.0f) && (gVertex[2].z < 1.0f))
 			{
 				{
 					//-----------------------------------------------------------------------------
@@ -2283,44 +2002,33 @@ void TerrainQuad::drawWater(void)
 							alphaMode2 = Terrain::alphaEdge;
 						}
 						if (vertices[0]->pVertex->elevation <=
-							(Terrain::waterElevation -
-								(MapData::alphaDepth * 3.0f)))
+							(Terrain::waterElevation - (MapData::alphaDepth * 3.0f)))
 						{
 							alphaMode0 = Terrain::alphaDeep;
 						}
 						if (vertices[2]->pVertex->elevation <=
-							(Terrain::waterElevation -
-								(MapData::alphaDepth * 3.0f)))
+							(Terrain::waterElevation - (MapData::alphaDepth * 3.0f)))
 						{
 							alphaMode1 = Terrain::alphaDeep;
 						}
 						if (vertices[3]->pVertex->elevation <=
-							(Terrain::waterElevation -
-								(MapData::alphaDepth * 3.0f)))
+							(Terrain::waterElevation - (MapData::alphaDepth * 3.0f)))
 						{
 							alphaMode2 = Terrain::alphaDeep;
 						}
-						gVertex[0].argb =
-							(vertices[0]->lightRGB & 0x00ffffff) + alphaMode0;
-						gVertex[1].argb =
-							(vertices[2]->lightRGB & 0x00ffffff) + alphaMode1;
-						gVertex[2].argb =
-							(vertices[3]->lightRGB & 0x00ffffff) + alphaMode2;
-						if ((gVertex[0].u > MaxMinUV) ||
-							(gVertex[0].v > MaxMinUV) ||
-							(gVertex[1].u > MaxMinUV) ||
-							(gVertex[1].v > MaxMinUV) ||
-							(gVertex[2].u > MaxMinUV) ||
-							(gVertex[2].v > MaxMinUV))
+						gVertex[0].argb = (vertices[0]->lightRGB & 0x00ffffff) + alphaMode0;
+						gVertex[1].argb = (vertices[2]->lightRGB & 0x00ffffff) + alphaMode1;
+						gVertex[2].argb = (vertices[3]->lightRGB & 0x00ffffff) + alphaMode2;
+						if ((gVertex[0].u > MaxMinUV) || (gVertex[0].v > MaxMinUV) ||
+							(gVertex[1].u > MaxMinUV) || (gVertex[1].v > MaxMinUV) ||
+							(gVertex[2].u > MaxMinUV) || (gVertex[2].v > MaxMinUV))
 						{
 							// If any are out range, move 'em back in range by
 							// adjustfactor.
-							float maxU = fmax(
-								gVertex[0].u, fmax(gVertex[1].u, gVertex[2].u));
+							float maxU = fmax(gVertex[0].u, fmax(gVertex[1].u, gVertex[2].u));
 							maxU	   = floor(maxU - (MaxMinUV - 1.0f));
-							float maxV = fmax(
-								gVertex[0].v, fmax(gVertex[1].v, gVertex[2].v));
-							maxV = floor(maxV - (MaxMinUV - 1.0f));
+							float maxV = fmax(gVertex[0].v, fmax(gVertex[1].v, gVertex[2].v));
+							maxV	   = floor(maxV - (MaxMinUV - 1.0f));
 							gVertex[0].u -= maxU;
 							gVertex[1].u -= maxU;
 							gVertex[2].u -= maxU;
@@ -2330,49 +2038,39 @@ void TerrainQuad::drawWater(void)
 						}
 						if (alphaMode0 + alphaMode1 + alphaMode2)
 						{
-							mcTextureManager->addVertices(waterHandle, gVertex,
-								MC2_ISTERRAIN | MC2_DRAWALPHA);
+							mcTextureManager->addVertices(
+								waterHandle, gVertex, MC2_ISTERRAIN | MC2_DRAWALPHA);
 						}
 					}
 					//----------------------------------------------------
 					// Draw the sky reflection on the water.
-					if (useWaterInterestTexture &&
-						(waterDetailHandle != 0xffffffff))
+					if (useWaterInterestTexture && (waterDetailHandle != 0xffffffff))
 					{
 						gos_VERTEX sVertex[3];
 						memcpy(sVertex, gVertex, sizeof(gos_VERTEX) * 3);
 						sVertex[0].u =
-							((vertices[0]->vx - Terrain::mapTopLeft3d.x) *
-								oneOverWaterTF) +
+							((vertices[0]->vx - Terrain::mapTopLeft3d.x) * oneOverWaterTF) +
 							sprayOffsetX;
 						sVertex[0].v =
-							((Terrain::mapTopLeft3d.y - vertices[0]->vy) *
-								oneOverWaterTF) +
+							((Terrain::mapTopLeft3d.y - vertices[0]->vy) * oneOverWaterTF) +
 							sprayOffsetY;
 						sVertex[1].u =
-							((vertices[2]->vx - Terrain::mapTopLeft3d.x) *
-								oneOverWaterTF) +
+							((vertices[2]->vx - Terrain::mapTopLeft3d.x) * oneOverWaterTF) +
 							sprayOffsetX;
 						sVertex[1].v =
-							((Terrain::mapTopLeft3d.y - vertices[2]->vy) *
-								oneOverWaterTF) +
+							((Terrain::mapTopLeft3d.y - vertices[2]->vy) * oneOverWaterTF) +
 							sprayOffsetY;
 						sVertex[2].u =
-							((vertices[3]->vx - Terrain::mapTopLeft3d.x) *
-								oneOverWaterTF) +
+							((vertices[3]->vx - Terrain::mapTopLeft3d.x) * oneOverWaterTF) +
 							sprayOffsetX;
 						sVertex[2].v =
-							((Terrain::mapTopLeft3d.y - vertices[3]->vy) *
-								oneOverWaterTF) +
+							((Terrain::mapTopLeft3d.y - vertices[3]->vy) * oneOverWaterTF) +
 							sprayOffsetY;
-						sVertex[0].argb =
-							(sVertex[0].argb & 0xff000000) + 0xffffff;
-						sVertex[1].argb =
-							(sVertex[1].argb & 0xff000000) + 0xffffff;
-						sVertex[2].argb =
-							(sVertex[2].argb & 0xff000000) + 0xffffff;
-						mcTextureManager->addVertices(waterDetailHandle,
-							sVertex, MC2_ISTERRAIN | MC2_DRAWALPHA);
+						sVertex[0].argb = (sVertex[0].argb & 0xff000000) + 0xffffff;
+						sVertex[1].argb = (sVertex[1].argb & 0xff000000) + 0xffffff;
+						sVertex[2].argb = (sVertex[2].argb & 0xff000000) + 0xffffff;
+						mcTextureManager->addVertices(
+							waterDetailHandle, sVertex, MC2_ISTERRAIN | MC2_DRAWALPHA);
 					}
 				}
 			}
@@ -2389,9 +2087,8 @@ void TerrainQuad::drawWater(void)
 			;
 			gVertex[0].v = minV + cloudOffsetY;
 			;
-			gVertex[0].argb = vertices[0]->pVertex->selected
-								  ? SELECTION_COLOR
-								  : vertices[0]->lightRGB;
+			gVertex[0].argb =
+				vertices[0]->pVertex->selected ? SELECTION_COLOR : vertices[0]->lightRGB;
 			gVertex[0].frgb = vertices[0]->fogRGB;
 			gVertex[1].x	= vertices[1]->wx;
 			gVertex[1].y	= vertices[1]->wy;
@@ -2401,9 +2098,8 @@ void TerrainQuad::drawWater(void)
 			;
 			gVertex[1].v = minV + cloudOffsetY;
 			;
-			gVertex[1].argb = vertices[1]->pVertex->selected
-								  ? SELECTION_COLOR
-								  : vertices[1]->lightRGB;
+			gVertex[1].argb =
+				vertices[1]->pVertex->selected ? SELECTION_COLOR : vertices[1]->lightRGB;
 			gVertex[1].frgb = vertices[1]->fogRGB;
 			gVertex[2].x	= vertices[3]->wx;
 			gVertex[2].y	= vertices[3]->wy;
@@ -2413,31 +2109,17 @@ void TerrainQuad::drawWater(void)
 			;
 			gVertex[2].v = maxV + cloudOffsetY;
 			;
-			gVertex[2].argb = vertices[3]->pVertex->selected
-								  ? SELECTION_COLOR
-								  : vertices[3]->lightRGB;
+			gVertex[2].argb =
+				vertices[3]->pVertex->selected ? SELECTION_COLOR : vertices[3]->lightRGB;
 			gVertex[2].frgb = vertices[3]->fogRGB;
-			gVertex[0].u =
-				(vertices[0]->vx - Terrain::mapTopLeft3d.x) * oneOverTF +
-				cloudOffsetX;
-			gVertex[0].v =
-				(Terrain::mapTopLeft3d.y - vertices[0]->vy) * oneOverTF +
-				cloudOffsetY;
-			gVertex[1].u =
-				(vertices[1]->vx - Terrain::mapTopLeft3d.x) * oneOverTF +
-				cloudOffsetX;
-			gVertex[1].v =
-				(Terrain::mapTopLeft3d.y - vertices[1]->vy) * oneOverTF +
-				cloudOffsetY;
-			gVertex[2].u =
-				(vertices[3]->vx - Terrain::mapTopLeft3d.x) * oneOverTF +
-				cloudOffsetX;
-			gVertex[2].v =
-				(Terrain::mapTopLeft3d.y - vertices[3]->vy) * oneOverTF +
-				cloudOffsetY;
-			if ((gVertex[0].z >= 0.0f) && (gVertex[0].z < 1.0f) &&
-				(gVertex[1].z >= 0.0f) && (gVertex[1].z < 1.0f) &&
-				(gVertex[2].z >= 0.0f) && (gVertex[2].z < 1.0f))
+			gVertex[0].u = (vertices[0]->vx - Terrain::mapTopLeft3d.x) * oneOverTF + cloudOffsetX;
+			gVertex[0].v = (Terrain::mapTopLeft3d.y - vertices[0]->vy) * oneOverTF + cloudOffsetY;
+			gVertex[1].u = (vertices[1]->vx - Terrain::mapTopLeft3d.x) * oneOverTF + cloudOffsetX;
+			gVertex[1].v = (Terrain::mapTopLeft3d.y - vertices[1]->vy) * oneOverTF + cloudOffsetY;
+			gVertex[2].u = (vertices[3]->vx - Terrain::mapTopLeft3d.x) * oneOverTF + cloudOffsetX;
+			gVertex[2].v = (Terrain::mapTopLeft3d.y - vertices[3]->vy) * oneOverTF + cloudOffsetY;
+			if ((gVertex[0].z >= 0.0f) && (gVertex[0].z < 1.0f) && (gVertex[1].z >= 0.0f) &&
+				(gVertex[1].z < 1.0f) && (gVertex[2].z >= 0.0f) && (gVertex[2].z < 1.0f))
 			{
 				{
 					//-----------------------------------------------------------------------------
@@ -2465,44 +2147,33 @@ void TerrainQuad::drawWater(void)
 							alphaMode2 = Terrain::alphaEdge;
 						}
 						if (vertices[0]->pVertex->elevation <=
-							(Terrain::waterElevation -
-								(MapData::alphaDepth * 3.0f)))
+							(Terrain::waterElevation - (MapData::alphaDepth * 3.0f)))
 						{
 							alphaMode0 = Terrain::alphaDeep;
 						}
 						if (vertices[1]->pVertex->elevation <=
-							(Terrain::waterElevation -
-								(MapData::alphaDepth * 3.0f)))
+							(Terrain::waterElevation - (MapData::alphaDepth * 3.0f)))
 						{
 							alphaMode1 = Terrain::alphaDeep;
 						}
 						if (vertices[3]->pVertex->elevation <=
-							(Terrain::waterElevation -
-								(MapData::alphaDepth * 3.0f)))
+							(Terrain::waterElevation - (MapData::alphaDepth * 3.0f)))
 						{
 							alphaMode2 = Terrain::alphaDeep;
 						}
-						gVertex[0].argb =
-							(vertices[0]->lightRGB & 0x00ffffff) + alphaMode0;
-						gVertex[1].argb =
-							(vertices[1]->lightRGB & 0x00ffffff) + alphaMode1;
-						gVertex[2].argb =
-							(vertices[3]->lightRGB & 0x00ffffff) + alphaMode2;
-						if ((gVertex[0].u > MaxMinUV) ||
-							(gVertex[0].v > MaxMinUV) ||
-							(gVertex[1].u > MaxMinUV) ||
-							(gVertex[1].v > MaxMinUV) ||
-							(gVertex[2].u > MaxMinUV) ||
-							(gVertex[2].v > MaxMinUV))
+						gVertex[0].argb = (vertices[0]->lightRGB & 0x00ffffff) + alphaMode0;
+						gVertex[1].argb = (vertices[1]->lightRGB & 0x00ffffff) + alphaMode1;
+						gVertex[2].argb = (vertices[3]->lightRGB & 0x00ffffff) + alphaMode2;
+						if ((gVertex[0].u > MaxMinUV) || (gVertex[0].v > MaxMinUV) ||
+							(gVertex[1].u > MaxMinUV) || (gVertex[1].v > MaxMinUV) ||
+							(gVertex[2].u > MaxMinUV) || (gVertex[2].v > MaxMinUV))
 						{
 							// If any are out range, move 'em back in range by
 							// adjustfactor.
-							float maxU = fmax(
-								gVertex[0].u, fmax(gVertex[1].u, gVertex[2].u));
+							float maxU = fmax(gVertex[0].u, fmax(gVertex[1].u, gVertex[2].u));
 							maxU	   = floor(maxU - (MaxMinUV - 1.0f));
-							float maxV = fmax(
-								gVertex[0].v, fmax(gVertex[1].v, gVertex[2].v));
-							maxV = floor(maxV - (MaxMinUV - 1.0f));
+							float maxV = fmax(gVertex[0].v, fmax(gVertex[1].v, gVertex[2].v));
+							maxV	   = floor(maxV - (MaxMinUV - 1.0f));
 							gVertex[0].u -= maxU;
 							gVertex[1].u -= maxU;
 							gVertex[2].u -= maxU;
@@ -2512,49 +2183,39 @@ void TerrainQuad::drawWater(void)
 						}
 						if (alphaMode0 + alphaMode1 + alphaMode2)
 						{
-							mcTextureManager->addVertices(waterHandle, gVertex,
-								MC2_ISTERRAIN | MC2_DRAWALPHA);
+							mcTextureManager->addVertices(
+								waterHandle, gVertex, MC2_ISTERRAIN | MC2_DRAWALPHA);
 						}
 					}
 					//----------------------------------------------------
 					// Draw the sky reflection on the water.
-					if (useWaterInterestTexture &&
-						(waterDetailHandle != 0xffffffff))
+					if (useWaterInterestTexture && (waterDetailHandle != 0xffffffff))
 					{
 						gos_VERTEX sVertex[3];
 						memcpy(sVertex, gVertex, sizeof(gos_VERTEX) * 3);
 						sVertex[0].u =
-							((vertices[0]->vx - Terrain::mapTopLeft3d.x) *
-								oneOverWaterTF) +
+							((vertices[0]->vx - Terrain::mapTopLeft3d.x) * oneOverWaterTF) +
 							sprayOffsetX;
 						sVertex[0].v =
-							((Terrain::mapTopLeft3d.y - vertices[0]->vy) *
-								oneOverWaterTF) +
+							((Terrain::mapTopLeft3d.y - vertices[0]->vy) * oneOverWaterTF) +
 							sprayOffsetY;
 						sVertex[1].u =
-							((vertices[1]->vx - Terrain::mapTopLeft3d.x) *
-								oneOverWaterTF) +
+							((vertices[1]->vx - Terrain::mapTopLeft3d.x) * oneOverWaterTF) +
 							sprayOffsetX;
 						sVertex[1].v =
-							((Terrain::mapTopLeft3d.y - vertices[1]->vy) *
-								oneOverWaterTF) +
+							((Terrain::mapTopLeft3d.y - vertices[1]->vy) * oneOverWaterTF) +
 							sprayOffsetY;
 						sVertex[2].u =
-							((vertices[3]->vx - Terrain::mapTopLeft3d.x) *
-								oneOverWaterTF) +
+							((vertices[3]->vx - Terrain::mapTopLeft3d.x) * oneOverWaterTF) +
 							sprayOffsetX;
 						sVertex[2].v =
-							((Terrain::mapTopLeft3d.y - vertices[3]->vy) *
-								oneOverWaterTF) +
+							((Terrain::mapTopLeft3d.y - vertices[3]->vy) * oneOverWaterTF) +
 							sprayOffsetY;
-						sVertex[0].argb =
-							(sVertex[0].argb & 0xff000000) + 0xffffff;
-						sVertex[1].argb =
-							(sVertex[1].argb & 0xff000000) + 0xffffff;
-						sVertex[2].argb =
-							(sVertex[2].argb & 0xff000000) + 0xffffff;
-						mcTextureManager->addVertices(waterDetailHandle,
-							sVertex, MC2_ISTERRAIN | MC2_DRAWALPHA);
+						sVertex[0].argb = (sVertex[0].argb & 0xff000000) + 0xffffff;
+						sVertex[1].argb = (sVertex[1].argb & 0xff000000) + 0xffffff;
+						sVertex[2].argb = (sVertex[2].argb & 0xff000000) + 0xffffff;
+						mcTextureManager->addVertices(
+							waterDetailHandle, sVertex, MC2_ISTERRAIN | MC2_DRAWALPHA);
 					}
 				}
 			}
@@ -2579,31 +2240,17 @@ void TerrainQuad::drawWater(void)
 			;
 			gVertex[1].v = maxV + cloudOffsetY;
 			;
-			gVertex[1].argb = vertices[2]->pVertex->selected
-								  ? SELECTION_COLOR
-								  : vertices[2]->lightRGB;
+			gVertex[1].argb =
+				vertices[2]->pVertex->selected ? SELECTION_COLOR : vertices[2]->lightRGB;
 			gVertex[1].frgb = vertices[2]->fogRGB;
-			gVertex[0].u =
-				(vertices[1]->vx - Terrain::mapTopLeft3d.x) * oneOverTF +
-				cloudOffsetX;
-			gVertex[0].v =
-				(Terrain::mapTopLeft3d.y - vertices[1]->vy) * oneOverTF +
-				cloudOffsetY;
-			gVertex[1].u =
-				(vertices[2]->vx - Terrain::mapTopLeft3d.x) * oneOverTF +
-				cloudOffsetX;
-			gVertex[1].v =
-				(Terrain::mapTopLeft3d.y - vertices[2]->vy) * oneOverTF +
-				cloudOffsetY;
-			gVertex[2].u =
-				(vertices[3]->vx - Terrain::mapTopLeft3d.x) * oneOverTF +
-				cloudOffsetX;
-			gVertex[2].v =
-				(Terrain::mapTopLeft3d.y - vertices[3]->vy) * oneOverTF +
-				cloudOffsetY;
-			if ((gVertex[0].z >= 0.0f) && (gVertex[0].z < 1.0f) &&
-				(gVertex[1].z >= 0.0f) && (gVertex[1].z < 1.0f) &&
-				(gVertex[2].z >= 0.0f) && (gVertex[2].z < 1.0f))
+			gVertex[0].u = (vertices[1]->vx - Terrain::mapTopLeft3d.x) * oneOverTF + cloudOffsetX;
+			gVertex[0].v = (Terrain::mapTopLeft3d.y - vertices[1]->vy) * oneOverTF + cloudOffsetY;
+			gVertex[1].u = (vertices[2]->vx - Terrain::mapTopLeft3d.x) * oneOverTF + cloudOffsetX;
+			gVertex[1].v = (Terrain::mapTopLeft3d.y - vertices[2]->vy) * oneOverTF + cloudOffsetY;
+			gVertex[2].u = (vertices[3]->vx - Terrain::mapTopLeft3d.x) * oneOverTF + cloudOffsetX;
+			gVertex[2].v = (Terrain::mapTopLeft3d.y - vertices[3]->vy) * oneOverTF + cloudOffsetY;
+			if ((gVertex[0].z >= 0.0f) && (gVertex[0].z < 1.0f) && (gVertex[1].z >= 0.0f) &&
+				(gVertex[1].z < 1.0f) && (gVertex[2].z >= 0.0f) && (gVertex[2].z < 1.0f))
 			{
 				{
 					//-----------------------------------------------------------------------------
@@ -2631,44 +2278,33 @@ void TerrainQuad::drawWater(void)
 							alphaMode2 = Terrain::alphaEdge;
 						}
 						if (vertices[1]->pVertex->elevation <=
-							(Terrain::waterElevation -
-								(MapData::alphaDepth * 3.0f)))
+							(Terrain::waterElevation - (MapData::alphaDepth * 3.0f)))
 						{
 							alphaMode0 = Terrain::alphaDeep;
 						}
 						if (vertices[2]->pVertex->elevation <=
-							(Terrain::waterElevation -
-								(MapData::alphaDepth * 3.0f)))
+							(Terrain::waterElevation - (MapData::alphaDepth * 3.0f)))
 						{
 							alphaMode1 = Terrain::alphaDeep;
 						}
 						if (vertices[3]->pVertex->elevation <=
-							(Terrain::waterElevation -
-								(MapData::alphaDepth * 3.0f)))
+							(Terrain::waterElevation - (MapData::alphaDepth * 3.0f)))
 						{
 							alphaMode2 = Terrain::alphaDeep;
 						}
-						gVertex[0].argb =
-							(vertices[1]->lightRGB & 0x00ffffff) + alphaMode0;
-						gVertex[1].argb =
-							(vertices[2]->lightRGB & 0x00ffffff) + alphaMode1;
-						gVertex[2].argb =
-							(vertices[3]->lightRGB & 0x00ffffff) + alphaMode2;
-						if ((gVertex[0].u > MaxMinUV) ||
-							(gVertex[0].v > MaxMinUV) ||
-							(gVertex[1].u > MaxMinUV) ||
-							(gVertex[1].v > MaxMinUV) ||
-							(gVertex[2].u > MaxMinUV) ||
-							(gVertex[2].v > MaxMinUV))
+						gVertex[0].argb = (vertices[1]->lightRGB & 0x00ffffff) + alphaMode0;
+						gVertex[1].argb = (vertices[2]->lightRGB & 0x00ffffff) + alphaMode1;
+						gVertex[2].argb = (vertices[3]->lightRGB & 0x00ffffff) + alphaMode2;
+						if ((gVertex[0].u > MaxMinUV) || (gVertex[0].v > MaxMinUV) ||
+							(gVertex[1].u > MaxMinUV) || (gVertex[1].v > MaxMinUV) ||
+							(gVertex[2].u > MaxMinUV) || (gVertex[2].v > MaxMinUV))
 						{
 							// If any are out range, move 'em back in range by
 							// adjustfactor.
-							float maxU = fmax(
-								gVertex[0].u, fmax(gVertex[1].u, gVertex[2].u));
+							float maxU = fmax(gVertex[0].u, fmax(gVertex[1].u, gVertex[2].u));
 							maxU	   = floor(maxU - (MaxMinUV - 1.0f));
-							float maxV = fmax(
-								gVertex[0].v, fmax(gVertex[1].v, gVertex[2].v));
-							maxV = floor(maxV - (MaxMinUV - 1.0f));
+							float maxV = fmax(gVertex[0].v, fmax(gVertex[1].v, gVertex[2].v));
+							maxV	   = floor(maxV - (MaxMinUV - 1.0f));
 							gVertex[0].u -= maxU;
 							gVertex[1].u -= maxU;
 							gVertex[2].u -= maxU;
@@ -2678,49 +2314,39 @@ void TerrainQuad::drawWater(void)
 						}
 						if (alphaMode0 + alphaMode1 + alphaMode2)
 						{
-							mcTextureManager->addVertices(waterHandle, gVertex,
-								MC2_ISTERRAIN | MC2_DRAWALPHA);
+							mcTextureManager->addVertices(
+								waterHandle, gVertex, MC2_ISTERRAIN | MC2_DRAWALPHA);
 						}
 					}
 					//----------------------------------------------------
 					// Draw the sky reflection on the water.
-					if (useWaterInterestTexture &&
-						(waterDetailHandle != 0xffffffff))
+					if (useWaterInterestTexture && (waterDetailHandle != 0xffffffff))
 					{
 						gos_VERTEX sVertex[3];
 						memcpy(sVertex, gVertex, sizeof(gos_VERTEX) * 3);
 						sVertex[0].u =
-							((vertices[1]->vx - Terrain::mapTopLeft3d.x) *
-								oneOverWaterTF) +
+							((vertices[1]->vx - Terrain::mapTopLeft3d.x) * oneOverWaterTF) +
 							sprayOffsetX;
 						sVertex[0].v =
-							((Terrain::mapTopLeft3d.y - vertices[1]->vy) *
-								oneOverWaterTF) +
+							((Terrain::mapTopLeft3d.y - vertices[1]->vy) * oneOverWaterTF) +
 							sprayOffsetY;
 						sVertex[1].u =
-							((vertices[2]->vx - Terrain::mapTopLeft3d.x) *
-								oneOverWaterTF) +
+							((vertices[2]->vx - Terrain::mapTopLeft3d.x) * oneOverWaterTF) +
 							sprayOffsetX;
 						sVertex[1].v =
-							((Terrain::mapTopLeft3d.y - vertices[2]->vy) *
-								oneOverWaterTF) +
+							((Terrain::mapTopLeft3d.y - vertices[2]->vy) * oneOverWaterTF) +
 							sprayOffsetY;
 						sVertex[2].u =
-							((vertices[3]->vx - Terrain::mapTopLeft3d.x) *
-								oneOverWaterTF) +
+							((vertices[3]->vx - Terrain::mapTopLeft3d.x) * oneOverWaterTF) +
 							sprayOffsetX;
 						sVertex[2].v =
-							((Terrain::mapTopLeft3d.y - vertices[3]->vy) *
-								oneOverWaterTF) +
+							((Terrain::mapTopLeft3d.y - vertices[3]->vy) * oneOverWaterTF) +
 							sprayOffsetY;
-						sVertex[0].argb =
-							(sVertex[0].argb & 0xff000000) + 0xffffff;
-						sVertex[1].argb =
-							(sVertex[1].argb & 0xff000000) + 0xffffff;
-						sVertex[2].argb =
-							(sVertex[2].argb & 0xff000000) + 0xffffff;
-						mcTextureManager->addVertices(waterDetailHandle,
-							sVertex, MC2_ISTERRAIN | MC2_DRAWALPHA);
+						sVertex[0].argb = (sVertex[0].argb & 0xff000000) + 0xffffff;
+						sVertex[1].argb = (sVertex[1].argb & 0xff000000) + 0xffffff;
+						sVertex[2].argb = (sVertex[2].argb & 0xff000000) + 0xffffff;
+						mcTextureManager->addVertices(
+							waterDetailHandle, sVertex, MC2_ISTERRAIN | MC2_DRAWALPHA);
 					}
 				}
 			}
@@ -2733,16 +2359,12 @@ int32_t DrawDebugCells = 0;
 
 void TerrainQuad::drawLine(void)
 {
-	int32_t clipped1 =
-		vertices[0]->clipInfo + vertices[1]->clipInfo + vertices[2]->clipInfo;
-	int32_t clipped2 =
-		vertices[0]->clipInfo + vertices[2]->clipInfo + vertices[3]->clipInfo;
+	int32_t clipped1 = vertices[0]->clipInfo + vertices[1]->clipInfo + vertices[2]->clipInfo;
+	int32_t clipped2 = vertices[0]->clipInfo + vertices[2]->clipInfo + vertices[3]->clipInfo;
 	if (uvMode == BOTTOMLEFT)
 	{
-		clipped1 = vertices[0]->clipInfo + vertices[1]->clipInfo +
-				   vertices[3]->clipInfo;
-		clipped2 = vertices[1]->clipInfo + vertices[2]->clipInfo +
-				   vertices[3]->clipInfo;
+		clipped1 = vertices[0]->clipInfo + vertices[1]->clipInfo + vertices[3]->clipInfo;
+		clipped2 = vertices[1]->clipInfo + vertices[2]->clipInfo + vertices[3]->clipInfo;
 	}
 	//------------------------------------------------------------
 	// Draw the Tile block lines at depth just above base tiles.
@@ -2751,10 +2373,10 @@ void TerrainQuad::drawLine(void)
 	{
 		if (clipped1 != 0)
 		{
-			Stuff::Vector4D pos1(vertices[0]->px, vertices[0]->py,
-				vertices[0]->pz - 0.002f, 1.0f / vertices[0]->pw);
-			Stuff::Vector4D pos2(vertices[1]->px, vertices[1]->py,
-				vertices[1]->pz - 0.002f, 1.0f / vertices[1]->pw);
+			Stuff::Vector4D pos1(
+				vertices[0]->px, vertices[0]->py, vertices[0]->pz - 0.002f, 1.0f / vertices[0]->pw);
+			Stuff::Vector4D pos2(
+				vertices[1]->px, vertices[1]->py, vertices[1]->pz - 0.002f, 1.0f / vertices[1]->pw);
 			{
 				LineElement newElement(pos1, pos2, color, nullptr);
 				newElement.draw();
@@ -2780,10 +2402,10 @@ void TerrainQuad::drawLine(void)
 		}
 		if (clipped2 != 0)
 		{
-			Stuff::Vector4D pos1(vertices[0]->px, vertices[0]->py,
-				vertices[0]->pz - 0.002f, 1.0f / vertices[0]->pw);
-			Stuff::Vector4D pos2(vertices[2]->px, vertices[2]->py,
-				vertices[2]->pz - 0.002f, 1.0f / vertices[2]->pw);
+			Stuff::Vector4D pos1(
+				vertices[0]->px, vertices[0]->py, vertices[0]->pz - 0.002f, 1.0f / vertices[0]->pw);
+			Stuff::Vector4D pos2(
+				vertices[2]->px, vertices[2]->py, vertices[2]->pz - 0.002f, 1.0f / vertices[2]->pw);
 			{
 				LineElement newElement(pos1, pos2, color, nullptr);
 				newElement.draw();
@@ -2814,10 +2436,10 @@ void TerrainQuad::drawLine(void)
 	{
 		if (clipped1 != 0)
 		{
-			Stuff::Vector4D pos1(vertices[0]->px, vertices[0]->py,
-				vertices[0]->pz - 0.002f, 1.0f / vertices[0]->pw);
-			Stuff::Vector4D pos2(vertices[1]->px, vertices[1]->py,
-				vertices[1]->pz - 0.002f, 1.0f / vertices[1]->pw);
+			Stuff::Vector4D pos1(
+				vertices[0]->px, vertices[0]->py, vertices[0]->pz - 0.002f, 1.0f / vertices[0]->pw);
+			Stuff::Vector4D pos2(
+				vertices[1]->px, vertices[1]->py, vertices[1]->pz - 0.002f, 1.0f / vertices[1]->pw);
 			{
 				LineElement newElement(pos1, pos2, color, nullptr);
 				newElement.draw();
@@ -2845,10 +2467,10 @@ void TerrainQuad::drawLine(void)
 		}
 		if (clipped2 != 0)
 		{
-			Stuff::Vector4D pos1(vertices[1]->px, vertices[1]->py,
-				vertices[1]->pz - 0.002f, 1.0f / vertices[1]->pw);
-			Stuff::Vector4D pos2(vertices[2]->px, vertices[2]->py,
-				vertices[2]->pz - 0.002f, 1.0f / vertices[2]->pw);
+			Stuff::Vector4D pos1(
+				vertices[1]->px, vertices[1]->py, vertices[1]->pz - 0.002f, 1.0f / vertices[1]->pw);
+			Stuff::Vector4D pos2(
+				vertices[2]->px, vertices[2]->py, vertices[2]->pz - 0.002f, 1.0f / vertices[2]->pw);
 			{
 				LineElement newElement(pos1, pos2, color, nullptr);
 				newElement.draw();
@@ -2899,19 +2521,17 @@ void TerrainQuad::drawLine(void)
 					int32_t actualCellCol = tileC * terrain_const::MAPCELL_DIM + cellC;
 					MapCellPtr curCell	= nullptr;
 					if (GameMap->inBounds(actualCellRow, actualCellCol))
-						curCell =
-							GameMap->getCell(actualCellRow, actualCellCol);
-					if (!curCell || curCell->getDebug() ||
-						!curCell->getPassable() || curCell->getPathlock(0) ||
-						curCell->getDeepWater() || curCell->getShallowWater() ||
-						curCell->getForest())
+						curCell = GameMap->getCell(actualCellRow, actualCellCol);
+					if (!curCell || curCell->getDebug() || !curCell->getPassable() ||
+						curCell->getPathlock(0) || curCell->getDeepWater() ||
+						curCell->getShallowWater() || curCell->getForest())
 					{
 						Stuff::Vector4D pos1;
 						Stuff::Vector4D pos2;
 						Stuff::Vector4D pos3;
 						Stuff::Vector4D pos4;
-						Stuff::Vector3D thePoint(vertices[0]->vx,
-							vertices[0]->vy, vertices[0]->pVertex->elevation);
+						Stuff::Vector3D thePoint(
+							vertices[0]->vx, vertices[0]->vy, vertices[0]->pVertex->elevation);
 						thePoint.x += (cellC)*cellWidth;
 						thePoint.y -= (cellR)*cellWidth;
 						thePoint.z = land->getTerrainElevation(thePoint);
@@ -2990,15 +2610,12 @@ void TerrainQuad::drawLine(void)
 		int32_t tileC  = rowCol & 0x0000ffff;
 		int32_t cellR  = tileR * terrain_const::MAPCELL_DIM;
 		int32_t cellC  = tileC * terrain_const::MAPCELL_DIM;
-		for (size_t currentDoor = 0; currentDoor < GlobalMoveMap[0]->numDoors;
-			 currentDoor++)
+		for (size_t currentDoor = 0; currentDoor < GlobalMoveMap[0]->numDoors; currentDoor++)
 		{
 			if ((GlobalMoveMap[0]->doors[currentDoor].row >= cellR) &&
-				(GlobalMoveMap[0]->doors[currentDoor].row <
-					(cellR + terrain_const::MAPCELL_DIM)) &&
+				(GlobalMoveMap[0]->doors[currentDoor].row < (cellR + terrain_const::MAPCELL_DIM)) &&
 				(GlobalMoveMap[0]->doors[currentDoor].col >= cellC) &&
-				(GlobalMoveMap[0]->doors[currentDoor].col <
-					(cellC + terrain_const::MAPCELL_DIM)))
+				(GlobalMoveMap[0]->doors[currentDoor].col < (cellC + terrain_const::MAPCELL_DIM)))
 			{
 				Stuff::Vector4D pos1;
 				Stuff::Vector4D pos2;
@@ -3014,14 +2631,10 @@ void TerrainQuad::drawLine(void)
 				{
 					xLength = GlobalMoveMap[0]->doors[currentDoor].length;
 				}
-				Stuff::Vector3D thePoint(vertices[0]->vx, vertices[0]->vy,
-					vertices[0]->pVertex->elevation);
-				thePoint.x +=
-					(GlobalMoveMap[0]->doors[currentDoor].col - cellC) *
-					cellWidth;
-				thePoint.y -=
-					(GlobalMoveMap[0]->doors[currentDoor].row - cellR) *
-					cellWidth;
+				Stuff::Vector3D thePoint(
+					vertices[0]->vx, vertices[0]->vy, vertices[0]->pVertex->elevation);
+				thePoint.x += (GlobalMoveMap[0]->doors[currentDoor].col - cellC) * cellWidth;
+				thePoint.y -= (GlobalMoveMap[0]->doors[currentDoor].row - cellR) * cellWidth;
 				thePoint.z = land->getTerrainElevation(thePoint);
 				eye->projectZ(thePoint, pos4);
 				thePoint.x += (xLength)*cellWidth;
@@ -3061,16 +2674,12 @@ void TerrainQuad::drawLine(void)
 //-----------------------------------------------------------------------------------------------
 void TerrainQuad::drawLOSLine(void)
 {
-	int32_t clipped1 =
-		vertices[0]->clipInfo + vertices[1]->clipInfo + vertices[2]->clipInfo;
-	int32_t clipped2 =
-		vertices[0]->clipInfo + vertices[2]->clipInfo + vertices[3]->clipInfo;
+	int32_t clipped1 = vertices[0]->clipInfo + vertices[1]->clipInfo + vertices[2]->clipInfo;
+	int32_t clipped2 = vertices[0]->clipInfo + vertices[2]->clipInfo + vertices[3]->clipInfo;
 	if (uvMode == BOTTOMLEFT)
 	{
-		clipped1 = vertices[0]->clipInfo + vertices[1]->clipInfo +
-				   vertices[3]->clipInfo;
-		clipped2 = vertices[1]->clipInfo + vertices[2]->clipInfo +
-				   vertices[3]->clipInfo;
+		clipped1 = vertices[0]->clipInfo + vertices[1]->clipInfo + vertices[3]->clipInfo;
+		clipped2 = vertices[1]->clipInfo + vertices[2]->clipInfo + vertices[3]->clipInfo;
 	}
 	//------------------------------------------------------------
 	// Draw the Tile block lines at depth just above base tiles.
@@ -3095,16 +2704,15 @@ void TerrainQuad::drawLOSLine(void)
 					int32_t actualCellCol = tileC * terrain_const::MAPCELL_DIM + cellC;
 					MapCellPtr curCell	= nullptr;
 					if (GameMap->inBounds(actualCellRow, actualCellCol))
-						curCell =
-							GameMap->getCell(actualCellRow, actualCellCol);
+						curCell = GameMap->getCell(actualCellRow, actualCellCol);
 					if (curCell && curCell->getLocalHeight())
 					{
 						Stuff::Vector4D pos1;
 						Stuff::Vector4D pos2;
 						Stuff::Vector4D pos3;
 						Stuff::Vector4D pos4;
-						Stuff::Vector3D thePoint(vertices[0]->vx,
-							vertices[0]->vy, vertices[0]->pVertex->elevation);
+						Stuff::Vector3D thePoint(
+							vertices[0]->vx, vertices[0]->vy, vertices[0]->pVertex->elevation);
 						thePoint.x += (cellC)*cellWidth;
 						thePoint.y -= (cellR)*cellWidth;
 						thePoint.z = land->getTerrainElevation(thePoint);
@@ -3181,16 +2789,12 @@ void TerrainQuad::drawLOSLine(void)
 //---------------------------------------------------------------------------
 void TerrainQuad::drawDebugCellLine(void)
 {
-	int32_t clipped1 =
-		vertices[0]->clipInfo + vertices[1]->clipInfo + vertices[2]->clipInfo;
-	int32_t clipped2 =
-		vertices[0]->clipInfo + vertices[2]->clipInfo + vertices[3]->clipInfo;
+	int32_t clipped1 = vertices[0]->clipInfo + vertices[1]->clipInfo + vertices[2]->clipInfo;
+	int32_t clipped2 = vertices[0]->clipInfo + vertices[2]->clipInfo + vertices[3]->clipInfo;
 	if (uvMode == BOTTOMLEFT)
 	{
-		clipped1 = vertices[0]->clipInfo + vertices[1]->clipInfo +
-				   vertices[3]->clipInfo;
-		clipped2 = vertices[1]->clipInfo + vertices[2]->clipInfo +
-				   vertices[3]->clipInfo;
+		clipped1 = vertices[0]->clipInfo + vertices[1]->clipInfo + vertices[3]->clipInfo;
+		clipped2 = vertices[1]->clipInfo + vertices[2]->clipInfo + vertices[3]->clipInfo;
 	}
 	//------------------------------------------------------------
 	// Draw the Tile block lines at depth just above base tiles.
@@ -3198,10 +2802,10 @@ void TerrainQuad::drawDebugCellLine(void)
 	{
 		if (clipped1 != 0)
 		{
-			Stuff::Vector4D pos1(vertices[0]->px, vertices[0]->py, HUD_DEPTH,
-				1.0f / vertices[0]->pw);
-			Stuff::Vector4D pos2(vertices[1]->px, vertices[1]->py, HUD_DEPTH,
-				1.0f / vertices[1]->pw);
+			Stuff::Vector4D pos1(
+				vertices[0]->px, vertices[0]->py, HUD_DEPTH, 1.0f / vertices[0]->pw);
+			Stuff::Vector4D pos2(
+				vertices[1]->px, vertices[1]->py, HUD_DEPTH, 1.0f / vertices[1]->pw);
 			{
 				// LineElement newElement(pos1,pos2,color,nullptr);
 				// newElement.draw();
@@ -3225,10 +2829,10 @@ void TerrainQuad::drawDebugCellLine(void)
 		}
 		if (clipped2 != 0)
 		{
-			Stuff::Vector4D pos1(vertices[0]->px, vertices[0]->py, HUD_DEPTH,
-				1.0f / vertices[0]->pw);
-			Stuff::Vector4D pos2(vertices[2]->px, vertices[2]->py, HUD_DEPTH,
-				1.0f / vertices[2]->pw);
+			Stuff::Vector4D pos1(
+				vertices[0]->px, vertices[0]->py, HUD_DEPTH, 1.0f / vertices[0]->pw);
+			Stuff::Vector4D pos2(
+				vertices[2]->px, vertices[2]->py, HUD_DEPTH, 1.0f / vertices[2]->pw);
 			{
 				// LineElement newElement(pos1,pos2,color,nullptr);
 				// newElement.draw();
@@ -3255,10 +2859,10 @@ void TerrainQuad::drawDebugCellLine(void)
 	{
 		if (clipped1 != 0)
 		{
-			Stuff::Vector4D pos1(vertices[0]->px, vertices[0]->py, HUD_DEPTH,
-				1.0f / vertices[0]->pw);
-			Stuff::Vector4D pos2(vertices[1]->px, vertices[1]->py, HUD_DEPTH,
-				1.0f / vertices[1]->pw);
+			Stuff::Vector4D pos1(
+				vertices[0]->px, vertices[0]->py, HUD_DEPTH, 1.0f / vertices[0]->pw);
+			Stuff::Vector4D pos2(
+				vertices[1]->px, vertices[1]->py, HUD_DEPTH, 1.0f / vertices[1]->pw);
 			{
 				// LineElement newElement(pos1,pos2,color,nullptr);
 				// newElement.draw();
@@ -3282,10 +2886,10 @@ void TerrainQuad::drawDebugCellLine(void)
 		}
 		if (clipped2 != 0)
 		{
-			Stuff::Vector4D pos1(vertices[1]->px, vertices[1]->py, HUD_DEPTH,
-				1.0f / vertices[1]->pw);
-			Stuff::Vector4D pos2(vertices[2]->px, vertices[2]->py, HUD_DEPTH,
-				1.0f / vertices[2]->pw);
+			Stuff::Vector4D pos1(
+				vertices[1]->px, vertices[1]->py, HUD_DEPTH, 1.0f / vertices[1]->pw);
+			Stuff::Vector4D pos2(
+				vertices[2]->px, vertices[2]->py, HUD_DEPTH, 1.0f / vertices[2]->pw);
 			{
 				// LineElement newElement(pos1,pos2,color,nullptr);
 				// newElement.draw();
@@ -3332,16 +2936,15 @@ void TerrainQuad::drawDebugCellLine(void)
 					int32_t actualCellCol = tileC * terrain_const::MAPCELL_DIM + cellC;
 					MapCellPtr curCell	= nullptr;
 					if (GameMap->inBounds(actualCellRow, actualCellCol))
-						curCell =
-							GameMap->getCell(actualCellRow, actualCellCol);
+						curCell = GameMap->getCell(actualCellRow, actualCellCol);
 					if (!curCell || curCell->getDebug())
 					{
 						Stuff::Vector4D pos1;
 						Stuff::Vector4D pos2;
 						Stuff::Vector4D pos3;
 						Stuff::Vector4D pos4;
-						Stuff::Vector3D thePoint(vertices[0]->vx,
-							vertices[0]->vy, vertices[0]->pVertex->elevation);
+						Stuff::Vector3D thePoint(
+							vertices[0]->vx, vertices[0]->vy, vertices[0]->pVertex->elevation);
 						thePoint.x += (cellC)*cellWidth;
 						thePoint.y -= (cellR)*cellWidth;
 						thePoint.z = land->getTerrainElevation(thePoint);
@@ -3363,9 +2966,8 @@ void TerrainQuad::drawDebugCellLine(void)
 						}
 						else
 						{
-							static uint32_t debugColors[4] = {
-								0, XP_RED, XP_WHITE, XP_BLUE};
-							uint32_t cellDebugValue = curCell->getDebug();
+							static uint32_t debugColors[4] = {0, XP_RED, XP_WHITE, XP_BLUE};
+							uint32_t cellDebugValue		   = curCell->getDebug();
 							if (cellDebugValue)
 								color = debugColors[cellDebugValue];
 						}
@@ -3410,16 +3012,12 @@ void TerrainQuad::drawDebugCellLine(void)
 //---------------------------------------------------------------------------
 void TerrainQuad::drawMine(void)
 {
-	int32_t clipped1 =
-		vertices[0]->clipInfo + vertices[1]->clipInfo + vertices[2]->clipInfo;
-	int32_t clipped2 =
-		vertices[0]->clipInfo + vertices[2]->clipInfo + vertices[3]->clipInfo;
+	int32_t clipped1 = vertices[0]->clipInfo + vertices[1]->clipInfo + vertices[2]->clipInfo;
+	int32_t clipped2 = vertices[0]->clipInfo + vertices[2]->clipInfo + vertices[3]->clipInfo;
 	if (uvMode == BOTTOMLEFT)
 	{
-		clipped1 = vertices[0]->clipInfo + vertices[1]->clipInfo +
-				   vertices[3]->clipInfo;
-		clipped2 = vertices[1]->clipInfo + vertices[2]->clipInfo +
-				   vertices[3]->clipInfo;
+		clipped1 = vertices[0]->clipInfo + vertices[1]->clipInfo + vertices[3]->clipInfo;
+		clipped2 = vertices[1]->clipInfo + vertices[2]->clipInfo + vertices[3]->clipInfo;
 	}
 	//------------------------------------------------------------
 	// Draw Mines.
@@ -3449,8 +3047,8 @@ void TerrainQuad::drawMine(void)
 					// Dig the actual Vertex information out of the projected
 					// vertices already done. In this way, the draw requires
 					// only interpolation and not Giant Matrix multiplies.
-					Stuff::Vector3D thePoint(vertices[0]->vx, vertices[0]->vy,
-						vertices[0]->pVertex->elevation);
+					Stuff::Vector3D thePoint(
+						vertices[0]->vx, vertices[0]->vy, vertices[0]->pVertex->elevation);
 					thePoint.x += (cellC)*cellWidth;
 					thePoint.y -= (cellR)*cellWidth;
 					thePoint.z = land->getTerrainElevation(thePoint);
@@ -3500,12 +3098,10 @@ void TerrainQuad::drawMine(void)
 					sVertex[2].v					  = 0.999999999f;
 					sVertex[2].argb					  = vertices[3]->lightRGB;
 					sVertex[2].frgb					  = vertices[3]->fogRGB;
-					if ((gVertex[0].z >= 0.0f) && (gVertex[0].z < 1.0f) &&
-						(gVertex[1].z >= 0.0f) && (gVertex[1].z < 1.0f) &&
-						(gVertex[2].z >= 0.0f) && (gVertex[2].z < 1.0f) &&
-						(sVertex[0].z >= 0.0f) && (sVertex[0].z < 1.0f) &&
-						(sVertex[1].z >= 0.0f) && (sVertex[1].z < 1.0f) &&
-						(sVertex[2].z >= 0.0f) && (sVertex[2].z < 1.0f))
+					if ((gVertex[0].z >= 0.0f) && (gVertex[0].z < 1.0f) && (gVertex[1].z >= 0.0f) &&
+						(gVertex[1].z < 1.0f) && (gVertex[2].z >= 0.0f) && (gVertex[2].z < 1.0f) &&
+						(sVertex[0].z >= 0.0f) && (sVertex[0].z < 1.0f) && (sVertex[1].z >= 0.0f) &&
+						(sVertex[1].z < 1.0f) && (sVertex[2].z >= 0.0f) && (sVertex[2].z < 1.0f))
 					{
 						if (drawBlownMine)
 						{

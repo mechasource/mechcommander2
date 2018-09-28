@@ -26,7 +26,7 @@ class Line3D;
 
 class OBB
 {
-  public:
+public:
 	void TestInstance(void) const;
 
 	static OBB Identity;
@@ -42,7 +42,7 @@ class OBB
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Construction
 	//
-  public:
+public:
 	OBB() {}
 	OBB(const OBB& obb)
 		: localToParent(obb.localToParent), axisExtents(obb.axisExtents),
@@ -50,8 +50,7 @@ class OBB
 	{
 	}
 	OBB(const LinearMatrix4D& origin, const Vector3D& extents)
-		: localToParent(origin), axisExtents(extents),
-		  sphereRadius(extents.GetLength())
+		: localToParent(origin), axisExtents(extents), sphereRadius(extents.GetLength())
 	{
 	}
 	OBB(const LinearMatrix4D& origin, const Vector3D& extents, float radius)
@@ -62,7 +61,7 @@ class OBB
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Assignment
 	//
-  public:
+public:
 	OBB& operator=(const OBB& obb)
 	{
 		// Check_Pointer(this);
@@ -85,14 +84,14 @@ class OBB
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Transforms
 	//
-  public:
+public:
 	OBB& Multiply(const OBB& obb, const LinearMatrix4D& matrix);
 	inline OBB& MultiplySphereOnly(const OBB& obb, const LinearMatrix4D& matrix)
 	{
 		// Check_Pointer(this);
 		Check_Object(&obb);
 		Check_Object(&matrix);
-#if USE_ASSEMBLER_CODE
+#if USE_INLINE_ASSEMBLER_CODE
 		float* f = localToParent.entries;
 		_asm
 		{
@@ -165,17 +164,14 @@ class OBB
 		}
 #else
 		localToParent(3, 0) = obb.localToParent(3, 0) * matrix(0, 0) +
-							  obb.localToParent(3, 1) * matrix(1, 0) +
-							  obb.localToParent(3, 2) * matrix(2, 0) +
-							  matrix(3, 0);
+			obb.localToParent(3, 1) * matrix(1, 0) + obb.localToParent(3, 2) * matrix(2, 0) +
+			matrix(3, 0);
 		localToParent(3, 1) = obb.localToParent(3, 0) * matrix(0, 1) +
-							  obb.localToParent(3, 1) * matrix(1, 1) +
-							  obb.localToParent(3, 2) * matrix(2, 1) +
-							  matrix(3, 1);
+			obb.localToParent(3, 1) * matrix(1, 1) + obb.localToParent(3, 2) * matrix(2, 1) +
+			matrix(3, 1);
 		localToParent(3, 2) = obb.localToParent(3, 0) * matrix(0, 2) +
-							  obb.localToParent(3, 1) * matrix(1, 2) +
-							  obb.localToParent(3, 2) * matrix(2, 2) +
-							  matrix(3, 2);
+			obb.localToParent(3, 1) * matrix(1, 2) + obb.localToParent(3, 2) * matrix(2, 2) +
+			matrix(3, 2);
 #endif
 		sphereRadius = obb.sphereRadius;
 		return *this;
@@ -184,7 +180,7 @@ class OBB
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Intersection functions
 	//
-  public:
+public:
 	enum SeparatingAxis
 	{
 		NoSeparation = 0,
@@ -223,20 +219,19 @@ inline Sphere& Sphere::operator=(const OBB& obb)
 	radius = obb.sphereRadius;
 	return *this;
 }
-}
+} // namespace Stuff
 
 namespace MemoryStreamIO
 {
-
-inline Stuff::MemoryStream& Read(
-	Stuff::MemoryStream* stream, Stuff::OBB* output)
+#if _CONSIDERED_TEMPORARILY_DISABLED
+inline std::istream& Read(std::istream& stream, Stuff::OBB* output)
 {
-	return stream->ReadBytes(output, sizeof(*output));
+	return stream.read(output, sizeof(*output));
 }
-inline Stuff::MemoryStream& Write(
-	Stuff::MemoryStream* stream, const Stuff::OBB* input)
+inline std::ostream& Write(std::ostream& stream, const Stuff::OBB* input)
 {
-	return stream->WriteBytes(input, sizeof(*input));
+	return stream.write(input, sizeof(*input));
 }
-}
+#endif
+} // namespace MemoryStreamIO
 #endif

@@ -16,15 +16,12 @@
 #ifndef _GAMEOS_HPP_
 typedef struct _gos_VERTEX
 {
-	float x,
-		y; // Screen coords	- must be 0.0 to Environment.screenWidth/Height (no
-		   // clipping occurs unless gos_State_Clipping is true)
-	float z;   // 0.0 to 0.99999	- Used for visibility check in ZBuffer (1.0 is
-			   // not valid)
-	float rhw; // 0.0 to 1.0		- reciprocal of homogeneous w - Used for
-			   // perspective correct textures, fog and clipping
-	uint32_t argb; // Vertex color and alpha (alpha of 255 means solid,
-				   // 0=transparent)
+	float x, y;	// Screen coords    - must be 0.0 to Environment.screenWidth/Height (no clipping
+				   // occurs unless gos_State_Clipping is true)
+	float z;	   // 0.0 to 0.99999   - Used for visibility check in ZBuffer (1.0 is not valid)
+	float rhw;	 // 0.0 to 1.0       - reciprocal of homogeneous w - Used for perspective correct
+				   // textures, fog and clipping
+	uint32_t argb; // Vertex color and alpha (alpha of 255 means solid, 0=transparent)
 	uint32_t frgb; // Specular color and fog
 	float u, v;	// Texture coordinates
 } gos_VERTEX;
@@ -37,7 +34,7 @@ class Vector4D;
 class RGBAColor;
 class Point3D;
 class Matrix4D;
-}
+} // namespace Stuff
 
 namespace MidLevelRenderer
 {
@@ -48,7 +45,7 @@ namespace MidLevelRenderer
 
 class GOSVertex : public gos_VERTEX
 {
-  public:
+public:
 	GOSVertex(void);
 
 	static float farClipReciprocal;
@@ -67,18 +64,18 @@ class GOSVertex : public gos_VERTEX
 		return *this;
 	};
 
-	inline GOSVertex& operator=(const Stuff::Vector4D& v)
+	inline GOSVertex& operator=(const Stuff::Vector4D& v4d)
 	{
 		// Check_Pointer(this);
-		Verify(!Stuff::Small_Enough(v.w));
+		_ASSERT(!Stuff::Small_Enough(v4d.w));
 		//					Tell_Value(v);
-		rhw = 1.0f / v.w;
-		x   = v.x * rhw;
-		Verify(x >= 0.0f && x <= 1.0f);
-		y = v.y * rhw;
-		Verify(y >= 0.0f && y <= 1.0f);
-		z = v.z * rhw;
-		Verify(z >= 0.0f && z < 1.0f);
+		rhw = 1.0f / v4d.w;
+		x   = v4d.x * rhw;
+		_ASSERT(x >= 0.0f && x <= 1.0f);
+		y = v4d.y * rhw;
+		_ASSERT(y >= 0.0f && y <= 1.0f);
+		z = v4d.z * rhw;
+		_ASSERT(z >= 0.0f && z < 1.0f);
 		return *this;
 	}
 
@@ -88,7 +85,7 @@ class GOSVertex : public gos_VERTEX
 		//					DEBUG_STREAM << "c = <" << c.alpha << ", " << c.red << ",
 		//";
 		//					DEBUG_STREAM << c.green << ", " << c.blue << ">" <<
-		//endl;
+		// endl;
 		float f;
 		f = c.alpha * 255.99f;
 		Clamp(f, 0.0f, 255.f);
@@ -121,8 +118,7 @@ class GOSVertex : public gos_VERTEX
 		return *this;
 	}
 
-	inline void GOSTransformNoClip(
-		const Stuff::Point3D& v, const Stuff::Matrix4D& m, float* uv
+	inline void GOSTransformNoClip(const Stuff::Point3D& v, const Stuff::Matrix4D& m, float* uv
 #if FOG_HACK
 		,
 		uint32_t foggy
@@ -130,12 +126,12 @@ class GOSVertex : public gos_VERTEX
 	);
 
 #if FOG_HACK
-	static uint8_t GOSVertex::fogTable[Limits::Max_Number_Of_FogStates][1024];
+	static uint8_t fogTable[Limits::Max_Number_Of_FogStates][1024];
 	static void SetFogTableEntry(
 		int32_t entry, float fogNearClip, float fogFarClip, float fogDensity);
 #endif
 
-  protected:
+protected:
 };
 
 struct ViewportScalars
@@ -153,8 +149,7 @@ const float One_Over_256 = 1.0f / 256.0f;
 
 //#pragma warning (disable : 4725)
 
-void GOSVertex::GOSTransformNoClip(
-	const Stuff::Point3D& _v, const Stuff::Matrix4D& m, float* uv
+void GOSVertex::GOSTransformNoClip(const Stuff::Point3D& _v, const Stuff::Matrix4D& m, float* uv
 #if FOG_HACK
 	,
 	uint32_t foggy
@@ -165,7 +160,7 @@ void GOSVertex::GOSTransformNoClip(
 	// Check_Pointer(this);
 	Check_Object(&_v);
 	Check_Object(&m);
-#if USE_ASSEMBLER_CODE
+#if USE_INLINE_ASSEMBLER_CODE
 	float* f = &x;
 	_asm
 	{
@@ -273,7 +268,7 @@ void GOSVertex::GOSTransformNoClip(
 	z   = _v.x * m(0, 2) + _v.y * m(1, 2) + _v.z * m(2, 2) + m(3, 2);
 	rhw = _v.x * m(0, 3) + _v.y * m(1, 3) + _v.z * m(2, 3) + m(3, 3);
 #endif
-#if 0 // USE_ASSEMBLER_CODE
+#if 0 // USE_INLINE_ASSEMBLER_CODE
 		_asm
 		{
 			;
@@ -312,8 +307,7 @@ void GOSVertex::GOSTransformNoClip(
 #if FOG_HACK
 	if (foggy)
 	{
-		*((puint8_t)&frgb + 3) =
-			fogTable[foggy - 1][Stuff::Truncate_Float_To_Word(rhw)];
+		*((puint8_t)&frgb + 3) = fogTable[foggy - 1][Stuff::Truncate_Float_To_Word(rhw)];
 	}
 	else
 	{
@@ -321,25 +315,25 @@ void GOSVertex::GOSTransformNoClip(
 	}
 #endif
 	rhw = 1.0f / rhw;
-	Verify(MLRState::GetHasMaxUVs()
-			   ? (uv[0] < MLRState::GetMaxUV() && uv[0] > -MLRState::GetMaxUV())
-			   : 1);
-	Verify(MLRState::GetHasMaxUVs()
-			   ? (uv[1] < MLRState::GetMaxUV() && uv[1] > -MLRState::GetMaxUV())
-			   : 1);
+	_ASSERT(MLRState::GetHasMaxUVs()
+			? (uv[0] < MLRState::GetMaxUV() && uv[0] > -MLRState::GetMaxUV())
+			: 1);
+	_ASSERT(MLRState::GetHasMaxUVs()
+			? (uv[1] < MLRState::GetMaxUV() && uv[1] > -MLRState::GetMaxUV())
+			: 1);
 	u = uv[0];
 	v = uv[1];
 	x = x * rhw;
 	y = y * rhw;
 	z = z * rhw;
 #endif
-	Verify(rhw > Stuff::SMALL);
-	Verify(x >= 0.0f);
-	Verify(y >= 0.0f);
-	Verify(z >= 0.0f);
-	Verify(x <= 1.0f);
-	Verify(y <= 1.0f);
-	Verify(z < 1.0f);
+	_ASSERT(rhw > Stuff::SMALL);
+	_ASSERT(x >= 0.0f);
+	_ASSERT(y >= 0.0f);
+	_ASSERT(z >= 0.0f);
+	_ASSERT(x <= 1.0f);
+	_ASSERT(y <= 1.0f);
+	_ASSERT(z < 1.0f);
 	x = x * ViewportScalars::MulX + ViewportScalars::AddX;
 	y = y * ViewportScalars::MulY + ViewportScalars::AddY;
 }
@@ -349,7 +343,7 @@ inline uint32_t GOSCopyColor(const Stuff::RGBAColor* color)
 {
 	float f;
 	uint32_t argb = 0;
-#if USE_ASSEMBLER_CODE
+#if USE_INLINE_ASSEMBLER_CODE
 	_asm
 	{
 			fld     float_cheat
@@ -534,22 +528,22 @@ inline uint32_t Color_DWORD_Lerp(uint32_t _from, uint32_t _to, float _lerp)
 //	bool GOSCopyData(GOSVertex*, const Stuff::Vector4D*, int32_t);
 //	bool GOSCopyData(GOSVertex*, const Stuff::Vector4D*, pcuint32_t , int32_t);
 //	bool GOSCopyData(GOSVertex*, const Stuff::Vector4D*, const RGBAColor*,
-//int32_t); 	bool GOSCopyData(GOSVertex*, const Stuff::Vector4D*, const
-//Vector2DScalar*, int32_t); 	bool GOSCopyData(GOSVertex*, const
-//Stuff::Vector4D*, pcuint32_t , const Vector2DScalar*, int32_t); 	bool
-//GOSCopyData(GOSVertex*, const Stuff::Vector4D*, const RGBAColor*, const
-//Vector2DScalar*, int32_t);
+// int32_t); 	bool GOSCopyData(GOSVertex*, const Stuff::Vector4D*, const
+// Vector2DScalar*, int32_t); 	bool GOSCopyData(GOSVertex*, const
+// Stuff::Vector4D*, pcuint32_t , const Vector2DScalar*, int32_t); 	bool
+// GOSCopyData(GOSVertex*, const Stuff::Vector4D*, const RGBAColor*, const
+// Vector2DScalar*, int32_t);
 //
 //	bool GOSCopyTriangleData(GOSVertex*, const Stuff::Vector4D*, int32_t,
-//int32_t, int32_t); 	bool GOSCopyTriangleData(GOSVertex*, const
-//Stuff::Vector4D*, pcuint32_t , int32_t, int32_t, int32_t); 	bool
-//GOSCopyTriangleData(GOSVertex*, const Stuff::Vector4D*, const RGBAColor*,
-//int32_t, int32_t, int32_t); 	bool GOSCopyTriangleData(GOSVertex*, const
-//Stuff::Vector4D*, const Vector2DScalar*, int32_t, int32_t, int32_t); 	bool
-//GOSCopyTriangleData(GOSVertex*, const Stuff::Vector4D*, pcuint32_t , const
-//Vector2DScalar*, int32_t, int32_t, int32_t); 	bool
-//GOSCopyTriangleData(GOSVertex*, const Stuff::Vector4D*, const RGBAColor*,
-//const Vector2DScalar*, int32_t, int32_t, int32_t);
+// int32_t, int32_t); 	bool GOSCopyTriangleData(GOSVertex*, const
+// Stuff::Vector4D*, pcuint32_t , int32_t, int32_t, int32_t); 	bool
+// GOSCopyTriangleData(GOSVertex*, const Stuff::Vector4D*, const RGBAColor*,
+// int32_t, int32_t, int32_t); 	bool GOSCopyTriangleData(GOSVertex*, const
+// Stuff::Vector4D*, const Vector2DScalar*, int32_t, int32_t, int32_t); 	bool
+// GOSCopyTriangleData(GOSVertex*, const Stuff::Vector4D*, pcuint32_t , const
+// Vector2DScalar*, int32_t, int32_t, int32_t); 	bool
+// GOSCopyTriangleData(GOSVertex*, const Stuff::Vector4D*, const RGBAColor*,
+// const Vector2DScalar*, int32_t, int32_t, int32_t);
 //#######################################################################################################################
 
 // aaargh => create template?
@@ -576,5 +570,5 @@ inline uint32_t Color_DWORD_Lerp(uint32_t _from, uint32_t _to, float _lerp)
 #include <mlr/gosvertexmanipulation.inl>
 
 // #define MLR_GOSVERTEXMANIPULATION_HPP
-}
+} // namespace MidLevelRenderer
 #endif

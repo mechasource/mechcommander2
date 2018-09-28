@@ -23,32 +23,30 @@ class MLR_I_C_TMesh : public MLR_I_TMesh
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Initialization
 	//
-  public:
+public:
 	static void __stdcall InitializeClass(void);
 	static void __stdcall TerminateClass(void);
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Constructors/Destructors
 	//
-  protected:
-	MLR_I_C_TMesh(
-		ClassData* class_data, Stuff::MemoryStream* stream, uint32_t version);
+protected:
+	MLR_I_C_TMesh(ClassData* class_data, std::iostream stream, uint32_t version);
 	~MLR_I_C_TMesh(void);
 
-  public:
+public:
 	MLR_I_C_TMesh(ClassData* class_data = MLR_I_C_TMesh::DefaultData);
 
-	static MLR_I_C_TMesh* Make(Stuff::MemoryStream* stream, uint32_t version);
+	static MLR_I_C_TMesh* Make(std::iostream stream, uint32_t version);
 
-	void Save(Stuff::MemoryStream* stream);
+	void Save(std::iostream stream);
 
-  public:
+public:
 #if COLOR_AS_DWORD
 	virtual void SetColorData(pcuint32_t array, size_t point_count);
 	virtual void GetColorData(puint32_t* array, psize_t point_count);
 #else
-	virtual void SetColorData(
-		const Stuff::RGBAColor* array, size_t point_count);
+	virtual void SetColorData(const Stuff::RGBAColor* array, size_t point_count);
 	virtual void GetColorData(Stuff::RGBAColor** array, psize_t point_count);
 #endif
 
@@ -62,8 +60,7 @@ class MLR_I_C_TMesh : public MLR_I_TMesh
 	virtual uint32_t TransformAndClip(
 		Stuff::Matrix4D*, MLRClippingState, GOSVertexPool*, bool = false);
 
-	virtual void TransformNoClip(
-		Stuff::Matrix4D*, GOSVertexPool*, bool = false);
+	virtual void TransformNoClip(Stuff::Matrix4D*, GOSVertexPool*, bool = false);
 
 	bool Copy(MLR_I_C_PMesh*);
 
@@ -80,34 +77,34 @@ class MLR_I_C_TMesh : public MLR_I_TMesh
 #endif
 	{
 		// Check_Object(this);
-		Verify(clipExtraColors->GetLength() > index);
+		_ASSERT(clipExtraColors.size() > index);
 		(*clipExtraColors)[index] = color;
 	}
 
 	void FlashClipColors(size_t num)
 	{
 		// Check_Object(this);
-		Verify(clipExtraTexCoords->GetLength() > num);
+		_ASSERT(clipExtraTexCoords.size() > num);
 		colors.SetLength(num);
 		visibleIndexedVertices.SetLength(num);
 #if COLOR_AS_DWORD
-		Mem_Copy(colors.GetData(), clipExtraColors->GetData(),
-			sizeof(uint32_t) * num, sizeof(uint32_t) * num);
+		Mem_Copy(colors.GetData(), clipExtraColors->GetData(), sizeof(uint32_t) * num,
+			sizeof(uint32_t) * num);
 #else
-		Mem_Copy(colors.GetData(), clipExtraColors->GetData(),
-			sizeof(Stuff::RGBAColor) * num, sizeof(Stuff::RGBAColor) * num);
+		Mem_Copy(colors.GetData(), clipExtraColors->GetData(), sizeof(Stuff::RGBAColor) * num,
+			sizeof(Stuff::RGBAColor) * num);
 #endif
 	}
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Class Data Support
 	//
-  public:
+public:
 	static ClassData* DefaultData;
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Testing
 	//
-  public:
+public:
 	void TestInstance(void) const;
 
 	virtual size_t GetSize(void)
@@ -118,19 +115,18 @@ class MLR_I_C_TMesh : public MLR_I_TMesh
 		return ret;
 	}
 
-  protected:
+protected:
 #if COLOR_AS_DWORD
-	Stuff::DynamicArrayOf<uint32_t> colors; // Base address of color list
-	Stuff::DynamicArrayOf<uint32_t>* actualColors;
+	std::vector<uint32_t> colors; // Base address of color list
+	std::vector<uint32_t>* actualColors;
 #else
-	Stuff::DynamicArrayOf<Stuff::RGBAColor>
-		colors; // Base address of color list
-	Stuff::DynamicArrayOf<Stuff::RGBAColor>* actualColors;
+	std::vector<Stuff::RGBAColor> colors; // Base address of color list
+	std::vector<Stuff::RGBAColor>* actualColors;
 #endif
 };
 
 MLR_I_C_TMesh* CreateIndexedTriCube_Color_NoLit(float, MLRState*);
 MLRShape* CreateIndexedTriIcosahedron_Color_NoLit(IcoInfo&, MLRState*);
-}
+} // namespace MidLevelRenderer
 
 #endif // MLR_MLR_I_C_TMESH_HPP

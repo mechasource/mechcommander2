@@ -17,7 +17,7 @@ namespace Stuff
 
 class Line3D : public Ray3D
 {
-  public:
+public:
 	float length;
 
 	Line3D() {}
@@ -51,5 +51,5 @@ class Line3D : public Ray3D
 	float GetDistanceTo(const OBB& box);
 	float GetDistanceTo(const OBB& box, size_t* axis);
 };
-}
+} // namespace Stuff
 #endif

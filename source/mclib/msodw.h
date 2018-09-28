@@ -88,12 +88,10 @@ enum // EMsoCrashHandlerFlags  // msochf
 	msochfUnused			  = msoctdsUnused, // THESE MUST BE THE SAME
 	msochfCanRecoverDocuments = msoctdsRecover,
 
-	msochfObsoleteCanDebug = 0x00010001, // not used anymore
-	msochfCannotSneakyDebug =
-		0x00010002, // The "hidden" debug feature won't work
+	msochfObsoleteCanDebug  = 0x00010001, // not used anymore
+	msochfCannotSneakyDebug = 0x00010002, // The "hidden" debug feature won't work
 	msochfDefaultDontReport = 0x00010004,
-	msochReportingDisabled =
-		0x00010008, // User cannot change default reporting choice
+	msochReportingDisabled  = 0x00010008, // User cannot change default reporting choice
 };
 
 //
@@ -109,15 +107,15 @@ enum // EMsoCrashHandlerResults  // msochr
 
 enum // EDwBehaviorFlags
 {
-	fDwOfficeApp   = 0x00000001,
-	fDwNoReporting = 0x00000002, // don't report
-	fDwCheckSig	= 0x00000004, // checks the signatures of the App/Mod list
+	fDwOfficeApp	   = 0x00000001,
+	fDwNoReporting	 = 0x00000002, // don't report
+	fDwCheckSig		   = 0x00000004, // checks the signatures of the App/Mod list
 	fDwGiveAppResponse = 0x00000008, // hands szResponse to app on command line
 	fDwWhistler		   = 0x00000010, // Whistler's exception handler is caller
 	fDwUseIE		   = 0x00000020, // always launch w/ IE
 	fDwDeleteFiles	 = 0x00000040, // delete the additional files after use.
-	fDwHeadless = 0x00000080, // DW will auto-report. policy required to enable
-	fDwUseHKLM  = 0x00000100, // DW reg from HKLM instead of HKCU
+	fDwHeadless		   = 0x00000080, // DW will auto-report. policy required to enable
+	fDwUseHKLM		   = 0x00000100, // DW reg from HKLM instead of HKCU
 };
 
 typedef struct _DWSharedMem
@@ -159,8 +157,8 @@ typedef struct _DWSharedMem
 	int32_t iPingCurrent; // current count for the recovery progress bar
 	int32_t iPingEnd;	 // index for the end of the recovery progress bar
 
-	char szFormalAppName[DW_APPNAME_LENGTH]; // the app name for display to user
-											 // (ie "Microsoft Word")
+	char szFormalAppName[DW_APPNAME_LENGTH];   // the app name for display to user
+											   // (ie "Microsoft Word")
 	char szInformalAppName[DW_APPNAME_LENGTH]; // the app name for display to
 											   // user (ie "Word")
 	char szModuleFileName[DW_MAX_PATH];		   // The result of

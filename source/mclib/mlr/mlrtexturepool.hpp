@@ -7,7 +7,7 @@
 #ifndef MLR_MLRTEXTUREPOOL_HPP
 #define MLR_MLRTEXTUREPOOL_HPP
 
-#include <stuff/marray.hpp>
+//#include <stuff/marray.hpp>
 #include <mlr/mlrstate.hpp>
 #include <mlr/gosimagepool.hpp>
 
@@ -25,7 +25,7 @@ class MLRTexturePool : public Stuff::RegisteredClass
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Initialization
 	//
-  public:
+public:
 	static void __stdcall InitializeClass(void);
 	static void TerminateClass(void);
 	static ClassData* DefaultData;
@@ -33,20 +33,20 @@ class MLRTexturePool : public Stuff::RegisteredClass
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Constructors/Destructors
 	//
-  protected:
-	MLRTexturePool(Stuff::MemoryStream* stream);
+protected:
+	MLRTexturePool(std::iostream stream);
 
-  public:
+public:
 	// insDep == nr of lower bits used for image instancing
 	MLRTexturePool(GOSImagePool* image_pool, int32_t insDep = 3);
 	~MLRTexturePool(void);
 
-	static MLRTexturePool* Make(Stuff::MemoryStream* stream);
-	void Save(Stuff::MemoryStream* stream);
+	static MLRTexturePool* Make(std::iostream stream);
+	void Save(std::iostream stream);
 	MLRTexture* Add(PCSTR textureName, int32_t instance = 0);
 	MLRTexture* Add(GOSImage*);
-	MLRTexture* Add(PCSTR imageName, /*gos_TextureFormat*/ uint32_t format,
-		size_t size, /*gos_TextureHints*/ uint32_t hints)
+	MLRTexture* Add(PCSTR imageName, /*gos_TextureFormat*/ uint32_t format, size_t size,
+		/*gos_TextureHints*/ uint32_t hints)
 	{
 		return Add(imagePool->GetImage(imageName, format, size, hints));
 	}
@@ -59,7 +59,7 @@ class MLRTexturePool : public Stuff::RegisteredClass
 	MLRTexture* operator[](size_t index)
 	{
 		// Check_Object(this);
-		Verify(index - 1 < MLRState::TextureMask);
+		_ASSERT(index - 1 < MLRState::TextureMask);
 		return textureArray[index - 1];
 	}
 
@@ -107,10 +107,10 @@ class MLRTexturePool : public Stuff::RegisteredClass
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Testing
 	//
-  public:
+public:
 	void TestInstance(void) const {}
 
-  protected:
+protected:
 	bool unLoadedImages;
 	int32_t instanceDepth; // bits used for image instancing
 	int32_t instanceMax;   // max for image instancing
@@ -119,7 +119,7 @@ class MLRTexturePool : public Stuff::RegisteredClass
 	uint32_t lastHandle;
 	uint32_t storedTextures;
 
-	Stuff::StaticArrayOf<MLRTexture*, MLRState::TextureMask + 1> textureArray;
+	std::array<MLRTexture*, MLRState::TextureMask + 1> textureArray;
 
 	pint32_t freeHandle;
 	int32_t firstFreeHandle;
@@ -127,5 +127,5 @@ class MLRTexturePool : public Stuff::RegisteredClass
 
 	GOSImagePool* imagePool;
 };
-}
+} // namespace MidLevelRenderer
 #endif

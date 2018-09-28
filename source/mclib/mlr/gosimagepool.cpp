@@ -12,7 +12,7 @@ using namespace MidLevelRenderer;
 //
 GOSImagePool::GOSImagePool() : imageHash(4099, nullptr, true)
 {
-	// Verify(gos_GetCurrentHeap() == Heap);
+	// _ASSERT(gos_GetCurrentHeap() == Heap);
 	texturePath = "";
 }
 
@@ -20,7 +20,7 @@ GOSImagePool::GOSImagePool() : imageHash(4099, nullptr, true)
 //
 GOSImagePool::~GOSImagePool()
 {
-	HashIteratorOf<GOSImage*, MString> images(&imageHash);
+	HashIteratorOf<GOSImage*, std::wstring> images(&imageHash);
 	images.DeletePlugs();
 }
 
@@ -28,7 +28,7 @@ GOSImagePool::~GOSImagePool()
 //
 void GOSImagePool::UnLoadImages(void)
 {
-	HashIteratorOf<GOSImage*, MString> images(&imageHash);
+	HashIteratorOf<GOSImage*, std::wstring> images(&imageHash);
 	GOSImage* image = images.ReadAndNext();
 	while (image)
 	{
@@ -42,8 +42,8 @@ void GOSImagePool::UnLoadImages(void)
 GOSImage* GOSImagePool::GetImage(PCSTR image_name)
 {
 	// Check_Object(this);
-	MString imageName = image_name;
-	Verify(imageName.GetLength() > 0);
+	std::wstring imageName = image_name;
+	_ASSERT(imageName.GetLength() > 0);
 	//
 	//---------------------------
 	// Get the image for the name
@@ -66,12 +66,12 @@ GOSImage* GOSImagePool::GetImage(PCSTR image_name)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-GOSImage* GOSImagePool::GetImage(PCSTR image_name, gos_TextureFormat format,
-	int32_t size, gos_TextureHints hints)
+GOSImage* GOSImagePool::GetImage(
+	PCSTR image_name, gos_TextureFormat format, int32_t size, gos_TextureHints hints)
 {
 	// Check_Object(this);
-	MString imageName = image_name;
-	Verify(imageName.GetLength() > 0);
+	std::wstring imageName = image_name;
+	_ASSERT(imageName.GetLength() > 0);
 	//
 	//---------------------------
 	// Get the image for the name
@@ -84,7 +84,7 @@ GOSImage* GOSImagePool::GetImage(PCSTR image_name, gos_TextureFormat format,
 		gos_PushCurrentHeap(Heap);
 #endif
 		image = new GOSImage(image_name, hints);
-		Register_Object(image);
+		// Register_Object(image);
 		gos_PopCurrentHeap();
 		imageHash.AddValue(image, image->imageName);
 	}
@@ -93,7 +93,8 @@ GOSImage* GOSImagePool::GetImage(PCSTR image_name, gos_TextureFormat format,
 	{
 	}
 #endif
-	Check_Object(image);
+	// Check_Object(image);
+
 	return image;
 }
 
@@ -102,7 +103,7 @@ GOSImage* GOSImagePool::GetImage(PCSTR image_name, gos_TextureFormat format,
 void GOSImagePool::RemoveImage(GOSImage* image)
 {
 	// Check_Object(this);
-	Unregister_Object(image);
+	// Unregister_Object(image);
 	delete image;
 }
 
@@ -116,15 +117,14 @@ bool TGAFilePool::LoadImage(GOSImage* image, int32_t hint)
 {
 	if ((image->flags & GOSImage::Loaded) != 0)
 		return true;
-	MString file_name = texturePath;
+	std::wstring file_name = texturePath;
 	file_name += image->imageName;
 	file_name += ".tga";
 	PSTR fFileName = file_name;
 	if (((fFileName[0] != 'F') || (fFileName[0] != 'f')) &&
 		((fFileName[1] != 'X') || (fFileName[1] != 'x')))
 		hint |= gosHint_DisableMipmap;
-	uint32_t nodeIndex =
-		mcTextureManager->loadTexture(file_name, gos_Texture_Detect, hint);
+	uint32_t nodeIndex = mcTextureManager->loadTexture(file_name, gos_Texture_Detect, hint);
 	image->SetHandle(nodeIndex);
 	image->flags |= GOSImage::Loaded;
 	return ((image->flags & GOSImage::Loaded) != 0);

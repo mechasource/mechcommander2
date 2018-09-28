@@ -31,8 +31,8 @@
 
 extern bool hasGuardBand;
 //---------------------------------------------------------------------------
-LineElement::LineElement(Stuff::Vector4D& pos1, Stuff::Vector4D& pos2,
-	int32_t clr, puint8_t fTable, int32_t endClr)
+LineElement::LineElement(
+	Stuff::Vector4D& pos1, Stuff::Vector4D& pos2, int32_t clr, puint8_t fTable, int32_t endClr)
 	: Element(0L)
 {
 	startPos = pos1;
@@ -86,7 +86,7 @@ void LineElement::draw(void)
 			gos_SetRenderState(gos_State_TextureMapBlend, gos_BlendModulate);
 			gos_SetRenderState(gos_State_Filter, gos_FilterNone);
 			//			gos_SetRenderState( gos_State_TextureAddress,
-			//gos_TextureClamp );
+			// gos_TextureClamp );
 			gos_SetRenderState(gos_State_Texture, 0);
 		}
 		//--------------------------------
@@ -104,7 +104,7 @@ void LineElement::draw(void)
 			gos_SetRenderState(gos_State_TextureMapBlend, gos_BlendModulate);
 			gos_SetRenderState(gos_State_Filter, gos_FilterBiLinear);
 			//			gos_SetRenderState( gos_State_TextureAddress,
-			//gos_TextureClamp );
+			// gos_TextureClamp );
 			gos_SetRenderState(gos_State_Texture, 0);
 			if (!fadeTable)
 			{
@@ -121,8 +121,8 @@ void LineElement::draw(void)
 		// Reject Any triangle which has vertices off screeen in software for
 		// now. Do real cliping in geometry layer for software and hardware that
 		// needs it!
-		if ((gVertex[0].z >= 0.0f) && (gVertex[0].z < 1.0f) &&
-			(gVertex[1].z >= 0.0f) && (gVertex[1].z < 1.0f))
+		if ((gVertex[0].z >= 0.0f) && (gVertex[0].z < 1.0f) && (gVertex[1].z >= 0.0f) &&
+			(gVertex[1].z < 1.0f))
 		{
 			gos_DrawLines(gVertex, 2);
 		}

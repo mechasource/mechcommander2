@@ -18,12 +18,12 @@ namespace MidLevelRenderer
 
 class MLRAmbientLight : public MLRLight
 {
-  public:
+public:
 	static void __stdcall InitializeClass(void);
 	static void __stdcall TerminateClass(void);
 
 	MLRAmbientLight(void);
-	MLRAmbientLight(Stuff::MemoryStream* stream, uint32_t version);
+	MLRAmbientLight(std::iostream stream, uint32_t version);
 	MLRAmbientLight(Stuff::Page* page);
 	~MLRAmbientLight(void);
 
@@ -38,16 +38,16 @@ class MLRAmbientLight : public MLRLight
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Class Data Support
 	//
-  public:
+public:
 	static ClassData* DefaultData;
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Testing
 	//
-  public:
+public:
 	void TestInstance(void);
 
-  protected:
+protected:
 };
-}
+} // namespace MidLevelRenderer
 #endif

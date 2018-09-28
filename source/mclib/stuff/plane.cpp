@@ -29,7 +29,7 @@ void Plane::BuildPlane(const Point3D& p0, const Point3D& p1, const Point3D& p2)
 	v2.Subtract(p2, p1);
 	Vector3D axis;
 	axis.Cross(v1, v2);
-	Verify(!Small_Enough(axis.GetLength()));
+	_ASSERT(!Small_Enough(axis.GetLength()));
 	normal = axis;
 	offset = normal * p0;
 #if defined(_ARMOR)
@@ -41,14 +41,10 @@ void Plane::BuildPlane(const Point3D& p0, const Point3D& p1, const Point3D& p2)
 	// this way we still maintain proof up to 1e-4 of the offset value
 	//----------------------------------------------------------------
 	//
-	Verify(Close_Enough(offset, offset2,
-		Fabs(offset + offset2) > 200.0f
-			? SMALL * Fabs(offset + offset2) / 200.0f
-			: SMALL));
-	Verify(Close_Enough(offset, offset3,
-		Fabs(offset + offset3) > 200.0f
-			? SMALL * Fabs(offset + offset3) / 200.0f
-			: SMALL));
+	_ASSERT(Close_Enough(offset, offset2,
+		Fabs(offset + offset2) > 200.0f ? SMALL * Fabs(offset + offset2) / 200.0f : SMALL));
+	_ASSERT(Close_Enough(offset, offset3,
+		Fabs(offset + offset3) > 200.0f ? SMALL * Fabs(offset + offset3) / 200.0f : SMALL));
 #endif
 }
 
@@ -61,15 +57,11 @@ Plane& Plane::Multiply(const Plane& p, const LinearMatrix4D& m)
 	// Check_Pointer(this);
 	Check_Object(&p);
 	Check_Object(&m);
-	Verify(this != &p);
-	normal.x =
-		p.normal.x * m(0, 0) + p.normal.y * m(1, 0) + p.normal.z * m(2, 0);
-	normal.y =
-		p.normal.x * m(0, 1) + p.normal.y * m(1, 1) + p.normal.z * m(2, 1);
-	normal.z =
-		p.normal.x * m(0, 2) + p.normal.y * m(1, 2) + p.normal.z * m(2, 2);
-	offset =
-		normal.x * m(3, 0) + normal.y * m(3, 1) + normal.z * m(3, 2) + p.offset;
+	_ASSERT(this != &p);
+	normal.x = p.normal.x * m(0, 0) + p.normal.y * m(1, 0) + p.normal.z * m(2, 0);
+	normal.y = p.normal.x * m(0, 1) + p.normal.y * m(1, 1) + p.normal.z * m(2, 1);
+	normal.z = p.normal.x * m(0, 2) + p.normal.y * m(1, 2) + p.normal.z * m(2, 2);
+	offset   = normal.x * m(3, 0) + normal.y * m(3, 1) + normal.z * m(3, 2) + p.offset;
 	return *this;
 }
 
@@ -236,7 +228,7 @@ void Spew(PCSTR group, const Plane& plane)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-bool Plane::ComputeBestDividingPlane(DynamicArrayOf<Point3D>& points)
+bool Plane::ComputeBestDividingPlane(std::vector<Point3D>& points)
 {
 	Check_Object(&points);
 	//
@@ -245,7 +237,7 @@ bool Plane::ComputeBestDividingPlane(DynamicArrayOf<Point3D>& points)
 	//-----------------
 	//
 	size_t count = points.GetLength();
-	Verify(count > 1);
+	_ASSERT(count > 1);
 	Point3D sum = Point3D::Identity;
 	float xx	= 0.0f;
 	float xy	= 0.0f;
@@ -299,7 +291,7 @@ bool Plane::ComputeBestDividingPlane(DynamicArrayOf<Point3D>& points)
 	case Y_Axis:
 		if (yy < SMALL)
 			return false;
-		Verify(yy > SMALL);
+		_ASSERT(yy > SMALL);
 		direction.x = xy / yy;
 		direction.y = 1.0f;
 		direction.z = yz / yy;

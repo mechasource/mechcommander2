@@ -25,15 +25,12 @@ bool MemoryStream::TestClass()
 	SPEW((GROUP_STUFF_TEST, "Starting MemoryStream Single BitPacking Test..."));
 	Test_Assumption(SingeBitStreamTest(100));
 	SPEW((GROUP_STUFF_TEST, "Complete MemoryStream Single BitPacking Test!"));
-	SPEW(
-		(GROUP_STUFF_TEST, "Starting MemoryStream MultipleBitPacking Test..."));
+	SPEW((GROUP_STUFF_TEST, "Starting MemoryStream MultipleBitPacking Test..."));
 	// Test_Assumption(MultipleBitStreamTest(100));
 	SPEW((GROUP_STUFF_TEST, "Complete MemoryStream MultipleBitPacking Test!"));
-	SPEW((GROUP_STUFF_TEST,
-		"Starting MemoryStream Int/Float BitPacking Test..."));
+	SPEW((GROUP_STUFF_TEST, "Starting MemoryStream Int/Float BitPacking Test..."));
 	Test_Assumption(FloatIntBitStreamTest(1000));
-	SPEW(
-		(GROUP_STUFF_TEST, "Complete MemoryStream Int/Float BitPacking Test!"));
+	SPEW((GROUP_STUFF_TEST, "Complete MemoryStream Int/Float BitPacking Test!"));
 	return true;
 };
 
@@ -61,8 +58,7 @@ bool SingeBitStreamTest(size_t total_sections_to_write)
 	}
 	// calculate total byte depth.
 	int32_t total_number_of_bytes = (int32_t)(total_sections_to_write / 8.0f);
-	int32_t total_remainder_bits =
-		total_sections_to_write - (total_number_of_bytes * 8);
+	int32_t total_remainder_bits  = total_sections_to_write - (total_number_of_bytes * 8);
 	if (total_remainder_bits != 0)
 	{
 		total_number_of_bytes += 1;
@@ -82,7 +78,7 @@ bool SingeBitStreamTest(size_t total_sections_to_write)
 	}
 	for (i = 0; i < total_sections_to_write; ++i)
 	{
-		Verify(source_array_of_bools[i] == comp_array_of_bools[i]);
+		_ASSERT(source_array_of_bools[i] == comp_array_of_bools[i]);
 		Test_Assumption(source_array_of_bools[i] == comp_array_of_bools[i]);
 	}
 	Unregister_Pointer(big_byte_array);
@@ -98,7 +94,7 @@ bool SingeBitStreamTest(size_t total_sections_to_write)
 
 template <class T> class MinMaxHolderOf
 {
-  public:
+public:
 	T minValue;
 	T maxValue;
 	T value;
@@ -119,8 +115,7 @@ MinMaxHolderOf<int32_t>::MinMaxHolderOf()
 		SPEW((GROUP_STUFF_TEST, "Should never reach here"));
 		minValue -= 10;
 	}
-	value =
-		(int32_t)((Random::GetFraction() * (maxValue - minValue)) + minValue);
+	value = (int32_t)((Random::GetFraction() * (maxValue - minValue)) + minValue);
 }
 
 //#############################################################################
@@ -154,11 +149,9 @@ bool FloatIntBitStreamTest(size_t total_sections_to_write)
 	Register_Pointer(float_bit_depth);
 	pint32_t int_bit_depth = new int32_t[total_sections_to_write];
 	Register_Pointer(int_bit_depth);
-	MinMaxHolderOf<int32_t>* int_min_max =
-		new MinMaxHolderOf<int32_t>[total_sections_to_write];
+	MinMaxHolderOf<int32_t>* int_min_max = new MinMaxHolderOf<int32_t>[total_sections_to_write];
 	Register_Pointer(int_min_max);
-	MinMaxHolderOf<float>* float_min_max =
-		new MinMaxHolderOf<float>[total_sections_to_write];
+	MinMaxHolderOf<float>* float_min_max = new MinMaxHolderOf<float>[total_sections_to_write];
 	Register_Pointer(float_min_max);
 	int32_t i;
 	for (i = 0; i < total_sections_to_write; ++i)
@@ -196,12 +189,11 @@ bool FloatIntBitStreamTest(size_t total_sections_to_write)
 	for (i = 0; i < total_sections_to_write; ++i)
 	{
 		// write int32_t
-		bit_stream.WriteScaledIntToBits(int_min_max[i].value,
-			int_min_max[i].minValue, int_min_max[i].maxValue, int_bit_depth[i]);
+		bit_stream.WriteScaledIntToBits(int_min_max[i].value, int_min_max[i].minValue,
+			int_min_max[i].maxValue, int_bit_depth[i]);
 		// write float
-		bit_stream.WriteScaledFloatToBits(float_min_max[i].value,
-			float_min_max[i].minValue, float_min_max[i].maxValue,
-			float_bit_depth[i]);
+		bit_stream.WriteScaledFloatToBits(float_min_max[i].value, float_min_max[i].minValue,
+			float_min_max[i].maxValue, float_bit_depth[i]);
 		// write bit
 		bit_stream.WriteBit(source_array_of_bools[i]);
 	}
@@ -210,12 +202,11 @@ bool FloatIntBitStreamTest(size_t total_sections_to_write)
 	for (i = 0; i < total_sections_to_write; ++i)
 	{
 		// read int32_t
-		bit_stream.ReadBitsToScaledInt(comp_int_array[i],
-			int_min_max[i].minValue, int_min_max[i].maxValue, int_bit_depth[i]);
+		bit_stream.ReadBitsToScaledInt(
+			comp_int_array[i], int_min_max[i].minValue, int_min_max[i].maxValue, int_bit_depth[i]);
 		// read float
-		bit_stream.ReadBitsToScaledFloat(comp_float_array[i],
-			float_min_max[i].minValue, float_min_max[i].maxValue,
-			float_bit_depth[i]);
+		bit_stream.ReadBitsToScaledFloat(comp_float_array[i], float_min_max[i].minValue,
+			float_min_max[i].maxValue, float_bit_depth[i]);
 		// read bit
 		bit_stream.ReadBit(comp_array_of_bools[i]);
 	}
@@ -225,23 +216,21 @@ bool FloatIntBitStreamTest(size_t total_sections_to_write)
 	{
 		uint32_t buffer;
 		buffer				 = 0x00;
-		buffer				 = Scaled_Int_To_Bits(int_min_max[i].value,
-			  int_min_max[i].minValue, int_min_max[i].maxValue, int_bit_depth[i]);
-		convert_int_array[i] = Scaled_Int_From_Bits(buffer,
-			int_min_max[i].minValue, int_min_max[i].maxValue, int_bit_depth[i]);
+		buffer				 = Scaled_Int_To_Bits(int_min_max[i].value, int_min_max[i].minValue,
+			  int_min_max[i].maxValue, int_bit_depth[i]);
+		convert_int_array[i] = Scaled_Int_From_Bits(
+			buffer, int_min_max[i].minValue, int_min_max[i].maxValue, int_bit_depth[i]);
 		;
 		buffer = 0x00;
-		buffer = Scaled_Float_To_Bits(float_min_max[i].value,
-			float_min_max[i].minValue, float_min_max[i].maxValue,
-			float_bit_depth[i]);
-		convert_float_array[i] =
-			Scaled_Float_From_Bits(buffer, float_min_max[i].minValue,
-				float_min_max[i].maxValue, float_bit_depth[i]);
+		buffer = Scaled_Float_To_Bits(float_min_max[i].value, float_min_max[i].minValue,
+			float_min_max[i].maxValue, float_bit_depth[i]);
+		convert_float_array[i] = Scaled_Float_From_Bits(
+			buffer, float_min_max[i].minValue, float_min_max[i].maxValue, float_bit_depth[i]);
 	}
 	for (i = 0; i < total_sections_to_write; ++i)
 	{
-		Verify(convert_int_array[i] == comp_int_array[i]);
-		Verify(convert_float_array[i] == comp_float_array[i]);
+		_ASSERT(convert_int_array[i] == comp_int_array[i]);
+		_ASSERT(convert_float_array[i] == comp_float_array[i]);
 		Test_Assumption(convert_int_array[i] == comp_int_array[i]);
 		Test_Assumption(convert_float_array[i] == comp_float_array[i]);
 		Test_Assumption(source_array_of_bools[i] == comp_array_of_bools[i]);
@@ -309,14 +298,13 @@ bool MultipleBitStreamTest(size_t total_sections_to_write)
 		// mask off unused bits...
 		if (remainder_bits != 0)
 		{
-			byte_array[number_of_bytes - 1] = (uint8_t)(
-				byte_array[number_of_bytes - 1] >> (8 - remainder_bits));
+			byte_array[number_of_bytes - 1] =
+				(uint8_t)(byte_array[number_of_bytes - 1] >> (8 - remainder_bits));
 		}
 	}
 	// calculate total byte depth.
 	int32_t total_number_of_bytes = (int32_t)(total_bit_depth / 8.0f);
-	int32_t total_remainder_bits =
-		total_bit_depth - (total_number_of_bytes * 8);
+	int32_t total_remainder_bits  = total_bit_depth - (total_number_of_bytes * 8);
 	if (total_remainder_bits != 0)
 	{
 		total_number_of_bytes += 1;
@@ -358,34 +346,33 @@ bool MultipleBitStreamTest(size_t total_sections_to_write)
 		puint8_t copy_byte_array   = Cast_Pointer(puint8_t, &bits_to_read[i]);
 		SPEW((GROUP_STUFF_TEST, "%d\t---- Bit Depth : %d", i, bit_depth[i]));
 		// SPEW((GROUP_STUFF_TEST, "%d ---- Src Bit Value : +", i));
-		MString text = "\t---- Src Bit Value : ";
+		Stuff::MString text = "\t---- Src Bit Value : ";
 		for (byte_count = 0; byte_count < 8; ++byte_count)
 		{
 			// Test_Assumption(source_byte_array == copy_byte_array);
 			for (size_t bit_count = 7; bit_count > -1; --bit_count)
 			{
-				uint8_t bit_value =
-					(uint8_t)(source_byte_array[byte_count] >> bit_count);
+				uint8_t bit_value = (uint8_t)(source_byte_array[byte_count] >> bit_count);
 				bit_value &= 0x01;
 				// SPEW((GROUP_STUFF_TEST, "%d+", bit_value));
 				if (bit_value)
 				{
-					MString value = "1";
+					Stuff::MString value = "1";
 					text += value;
 				}
 				else
 				{
-					MString value = "0";
+					Stuff::MString value = "0";
 					text += value;
 				}
 				if (bit_count == 4)
 				{
 					// SPEW((GROUP_STUFF_TEST, "|+"));
-					MString value = "|";
+					Stuff::MString value = "|";
 					text += value;
 				}
 			}
-			MString value = " ";
+			Stuff::MString value = " ";
 			text += value;
 		}
 		SPEW((GROUP_STUFF_TEST, "%s", (PCSTR)text));
@@ -395,27 +382,26 @@ bool MultipleBitStreamTest(size_t total_sections_to_write)
 		{
 			for (size_t bit_count = 7; bit_count > -1; --bit_count)
 			{
-				uint8_t bit_value =
-					(uint8_t)(copy_byte_array[byte_count] >> bit_count);
+				uint8_t bit_value = (uint8_t)(copy_byte_array[byte_count] >> bit_count);
 				bit_value &= 0x01;
 				if (bit_value)
 				{
-					MString value = "1";
+					Stuff::MString value = "1";
 					text += value;
 				}
 				else
 				{
-					MString value = "0";
+					Stuff::MString value = "0";
 					text += value;
 				}
 				if (bit_count == 4)
 				{
 					// SPEW((GROUP_STUFF_TEST, "|+"));
-					MString value = "|";
+					Stuff::MString value = "|";
 					text += value;
 				}
 			}
-			MString value = " ";
+			Stuff::MString value = " ";
 			text += value;
 		}
 		SPEW((GROUP_STUFF_TEST, "%s", (PCSTR)text));
@@ -432,8 +418,7 @@ bool MultipleBitStreamTest(size_t total_sections_to_write)
 		}
 		for (byte_count = 0; byte_count < 8; ++byte_count)
 		{
-			Test_Assumption(
-				source_byte_array[byte_count] == copy_byte_array[byte_count]);
+			Test_Assumption(source_byte_array[byte_count] == copy_byte_array[byte_count]);
 		}
 		SPEW((GROUP_STUFF_TEST, ""));
 	}

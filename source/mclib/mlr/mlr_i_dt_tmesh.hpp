@@ -24,39 +24,36 @@ class MLR_I_DT_TMesh : public MLR_I_TMesh
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Initialization
 	//
-  public:
+public:
 	static void __stdcall InitializeClass(void);
 	static void __stdcall TerminateClass(void);
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Constructors/Destructors
 	//
-  protected:
-	MLR_I_DT_TMesh(
-		ClassData* class_data, Stuff::MemoryStream* stream, uint32_t version);
+protected:
+	MLR_I_DT_TMesh(ClassData* class_data, std::iostream stream, uint32_t version);
 	~MLR_I_DT_TMesh(void);
 
-  public:
+public:
 	MLR_I_DT_TMesh(ClassData* class_data = MLR_I_DT_TMesh::DefaultData);
 
-	static MLR_I_DT_TMesh* Make(Stuff::MemoryStream* stream, uint32_t version);
+	static MLR_I_DT_TMesh* Make(std::iostream stream, uint32_t version);
 
-	void Save(Stuff::MemoryStream* stream);
+	void Save(std::iostream stream);
 
-  public:
+public:
 	bool Copy(MLR_I_DT_PMesh* pmesh);
 
 	virtual uint32_t TransformAndClip(
 		Stuff::Matrix4D*, MLRClippingState, GOSVertexPool*, bool = false);
 
-	virtual void TransformNoClip(
-		Stuff::Matrix4D*, GOSVertexPool*, bool = false);
-	void SetTexCoordData(const Stuff::Vector2DScalar* array, size_t point_count,
-		size_t pass = 0);
+	virtual void TransformNoClip(Stuff::Matrix4D*, GOSVertexPool*, bool = false);
+	void SetTexCoordData(const Stuff::Vector2DScalar* array, size_t point_count, size_t pass = 0);
 	virtual void SetReferenceState(const MLRState& _state, size_t pass = 0)
 	{
 		// Check_Object(this);
-		Verify(pass < 2);
+		_ASSERT(pass < 2);
 		if (pass == 0)
 		{
 			referenceState = _state;
@@ -125,13 +122,13 @@ class MLR_I_DT_TMesh : public MLR_I_TMesh
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Class Data Support
 	//
-  public:
+public:
 	static ClassData* DefaultData;
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Testing
 	//
-  public:
+public:
 	void TestInstance(void) const;
 
 	virtual size_t GetSize(void)
@@ -141,22 +138,19 @@ class MLR_I_DT_TMesh : public MLR_I_TMesh
 		return ret;
 	}
 
-  protected:
+protected:
 	MLRState state2, referenceState2;
 
-	static Stuff::DynamicArrayOf<Stuff::Vector2DScalar>*
-		texCoords2; // Max_Number_Vertices_Per_Mesh
-	static Stuff::DynamicArrayOf<Stuff::Vector2DScalar>*
+	static std::vector<Stuff::Vector2DScalar>* texCoords2; // Max_Number_Vertices_Per_Mesh
+	static std::vector<Stuff::Vector2DScalar>*
 		clipExtraTexCoords2; // Max_Number_Vertices_Per_Mesh
 
 	GOSVertex2UV* gos_vertices2uv;
 	//		uint16_t	numGOSVertices2uv;
 };
 
-MLR_I_DT_TMesh* CreateIndexedTriCube_NoColor_NoLit_2Tex(
-	float, MLRState*, MLRState*);
+MLR_I_DT_TMesh* CreateIndexedTriCube_NoColor_NoLit_2Tex(float, MLRState*, MLRState*);
 
-MLRShape* CreateIndexedTriIcosahedron_NoColor_NoLit_2Tex(
-	IcoInfo&, MLRState*, MLRState*);
-}
+MLRShape* CreateIndexedTriIcosahedron_NoColor_NoLit_2Tex(IcoInfo&, MLRState*, MLRState*);
+} // namespace MidLevelRenderer
 #endif

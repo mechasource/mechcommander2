@@ -146,8 +146,7 @@ puint8_t HeapManager::getHeapPtr(void)
 //---------------------------------------------------------------------------
 int32_t HeapManager::createHeap(uint32_t memSize)
 {
-	heap =
-		(puint8_t)VirtualAlloc(nullptr, memSize, MEM_RESERVE, PAGE_READWRITE);
+	heap = (puint8_t)VirtualAlloc(nullptr, memSize, MEM_RESERVE, PAGE_READWRITE);
 	if (heap)
 	{
 		memReserved = TRUE;
@@ -175,8 +174,7 @@ int32_t HeapManager::commitHeap(uint32_t commitSize)
 	{
 		commitSize = memLeft;
 	}
-	puint8_t result =
-		(puint8_t)VirtualAlloc(heap, commitSize, MEM_COMMIT, PAGE_READWRITE);
+	puint8_t result = (puint8_t)VirtualAlloc(heap, commitSize, MEM_COMMIT, PAGE_READWRITE);
 	if (result == heap)
 	{
 		int32_t actualSize = commitSize;
@@ -282,14 +280,14 @@ int32_t UserHeap::init(uint32_t memSize, PSTR heapId, bool useGOS)
 		heapTop += memSize;
 		heapTop -= 16;
 		heapTop &= ~3; // Force top to be uint32_t boundary.
-		uint32_t heapBottom  = (uint32_t)heap;
-		heapStart			 = (HeapBlockPtr)heapBottom;
-		heapEnd				 = (HeapBlockPtr)heapTop;
-		heapStart->blockSize = heapTop - heapBottom;
-		heapStart->upperBlock = 0; // Nothing above this in memory.
-		heapEnd->blockSize = 1;	// Mark as last block.
-		heapEnd->previous = (HeapBlockPtr)0x1572; // Mark as last block.
-		heapEnd->upperBlock = (HeapBlockPtr)heapBottom;
+		uint32_t heapBottom   = (uint32_t)heap;
+		heapStart			  = (HeapBlockPtr)heapBottom;
+		heapEnd				  = (HeapBlockPtr)heapTop;
+		heapStart->blockSize  = heapTop - heapBottom;
+		heapStart->upperBlock = 0;					  // Nothing above this in memory.
+		heapEnd->blockSize	= 1;					  // Mark as last block.
+		heapEnd->previous	 = (HeapBlockPtr)0x1572; // Mark as last block.
+		heapEnd->upperBlock   = (HeapBlockPtr)heapBottom;
 		//--------------------------------
 		//	Set all free memory to -1.
 		// Any access before ready and Exception city.
@@ -312,7 +310,7 @@ int32_t UserHeap::init(uint32_t memSize, PSTR heapId, bool useGOS)
 	}
 	else
 	{
-		gosHeap = gos_CreateMemoryHeap(heapId, memSize, ParentClientHeap);
+		gosHeap			= gos_CreateMemoryHeap(heapId, memSize, ParentClientHeap);
 		useGOSGuardPage = true;
 		heapStart		= nullptr;
 		heapEnd			= nullptr;
@@ -348,7 +346,7 @@ void UserHeap::dumpRecordLog(void)
 {
 	if (recordArray)
 	{
-		File log;
+		MechFile log;
 		char msg[256];
 		sprintf(msg, "heapdump.%s.log", heapName);
 		log.create(msg);
@@ -356,22 +354,18 @@ void UserHeap::dumpRecordLog(void)
 		{
 			if (recordArray[i].ptr)
 			{
-				sprintf(msg, "Allocated block at DS:%08X, size = %u\n",
-					recordArray[i].ptr, recordArray[i].size);
+				sprintf(msg, "Allocated block at DS:%08X, size = %u\n", recordArray[i].ptr,
+					recordArray[i].size);
 				log.writeLine(msg);
-				PSTR addressName =
-					DecodeAddress(recordArray[i].stack[0], false);
-				sprintf(msg, "Call stack: %08X : %s", recordArray[i].stack[0],
-					addressName);
+				PSTR addressName = DecodeAddress(recordArray[i].stack[0], false);
+				sprintf(msg, "Call stack: %08X : %s", recordArray[i].stack[0], addressName);
 				log.writeLine(msg);
 				for (size_t j = 1; j < 12; j++)
 				{
 					if (recordArray[i].stack[j] == 0x0)
 						break;
-					PSTR addressName =
-						DecodeAddress(recordArray[i].stack[j], false);
-					sprintf(msg, "            %08X : %s",
-						recordArray[i].stack[j], addressName);
+					PSTR addressName = DecodeAddress(recordArray[i].stack[j], false);
+					sprintf(msg, "            %08X : %s", recordArray[i].stack[j], addressName);
 					log.writeLine(msg);
 				}
 				log.writeByte('\n');
@@ -449,8 +443,9 @@ uint32_t UserHeap::totalCoreLeft(void)
 		mov     ebx, localFirst
 		mov     edx, ebx // edx = is place holder for first node
 		}
-	BytesLoop : __asm
-				{
+	BytesLoop
+		: __asm
+		  {
 		mov     ebx, [ebx].next
 		add     eax, [ebx].blockSize
 		add		eax, ecx
@@ -459,12 +454,12 @@ uint32_t UserHeap::totalCoreLeft(void)
 		cmp     ebx, edx
 		jne     int16_t BytesLoop
 		jmp		int16_t DoneTC
-				}
-				error1 : __asm
-						 {
+		  }
+		  error1 : __asm
+				   {
 		xor		eax, eax
-						 }
-						 DoneTC : __asm
+				   }
+				   DoneTC : __asm
 	{
 		mov		result, eax
 	}
@@ -580,7 +575,7 @@ PVOID UserHeap::Malloc(uint32_t memSize)
 #endif
 	__asm
 		{
-		add     eax, 11   // force minimum allocation 8+3
+		add     eax, 11 // force minimum allocation 8+3
 		and 	al, 0xfc // NOT 3						//force dword alignment
 		cmp		eax, heapBlockSize
 		jae		int16_t SizeDone
@@ -603,7 +598,7 @@ SearchLoop:
 	__asm
 		{
 		mov     ecx, [ebx].blockSize
-		sub     ecx, eax				   // uint32_t math
+		sub     ecx, eax // uint32_t math
 		jnb     int16_t FoundBlock
 		mov     ebx, [ebx].next
 		cmp     edx, ebx
@@ -624,7 +619,7 @@ FoundBlock:
 		mov		blockOffs, ebx
 		cmp 	ecx, heapBlockSize // any memory left to reallocate?
 		jae		int16_t UnlinkNormal
-		or		[ebx].blockSize, 1			  // mark allocated
+		or		[ebx].blockSize, 1 // mark allocated
 	}
 	// This code is the unlink macro.
 	__asm
@@ -665,12 +660,12 @@ FoundBlock:
 	{
 		mov		edi, ebx
 		add		edi, [ebx].blockSize // edi -> lower block
-		add		[edi].upperBlock, ecx			   // update lower pointer to the new block
+		add		[edi].upperBlock, ecx // update lower pointer to the new block
 
 		mov		[ebx].blockSize, ecx
 		mov		edi, ebx
-		add		edi, ecx			   // edi -> newblock
-		or		al, 1			   // mark new block as allocated
+		add		edi, ecx // edi -> newblock
+		or		al, 1 // mark new block as allocated
 		mov		[edi].blockSize, eax
 		mov		[edi].upperBlock, ebx
 	}
@@ -691,16 +686,16 @@ FoundBlock:
 		mov		edi, [ebx].next
 
 		cmp		edi, [ebx].previous
-		jne		int16_t __Line1   // either 1 or two members in list
+		jne		int16_t __Line1 // either 1 or two members in list
 		cmp		edi, ebx
 		je		__Done // only one member in list
 
 				// else there are only two
 
-		mov		localFirstSort, ebx						   // assume we are the smaller block
+		mov		localFirstSort, ebx // assume we are the smaller block
 		cmp		ecx, [edi].blockSize
 		jbe		__Done // we were right
-		mov		localFirstSort, edi						   // else other guy is smaller
+		mov		localFirstSort, edi // else other guy is smaller
 		jmp		__Done
 		}
 __Line1: // else see if we are not in the correct order
@@ -722,7 +717,7 @@ __Line2:
 
 			// else we are less than guy to our left
 
-		cmp		ebx, edx		 // are we the first block in list?
+		cmp		ebx, edx // are we the first block in list?
 		je		int16_t __Done
 
 		__Line3: // else we must unlink our block, saving a pointer to lower
@@ -731,7 +726,7 @@ __Line2:
 		push	edi
 		push	ebx
 
-						 // Unlink Routine inline here
+				// Unlink Routine inline here
 
 		cmp		[ebx].next, ebx
 		jne		int16_t _ULine1
@@ -755,8 +750,8 @@ _ULine2:
 		{
 		mov		edi, [ebx].next // edi = ebx.next
 		mov		ebx, [ebx].previous
-		mov		[edi].previous, ebx		   // ebx.next.prev = ebx.prev
-		mov		[ebx].next, edi		   // ebx.prev.next = ebx.next
+		mov		[edi].previous, ebx // ebx.next.prev = ebx.prev
+		mov		[ebx].next, edi // ebx.prev.next = ebx.next
 		}
 _ULine3:
 	__asm
@@ -812,7 +807,7 @@ __FoundPlace: // esi-> first block, edi->second block, ebx -> us
 		mov		edi, edx
 		cmp		ecx, [edi].blockSize // see if we are now smallest
 		jae		int16_t __Done
-		mov		localFirstSort, ebx				// we are smallest
+		mov		localFirstSort, ebx // we are smallest
 		}
 __Done:
 	firstNearBlock = localFirstSort;
@@ -827,19 +822,18 @@ __Done:
 	//-----------------------------------------error handling
 	Alloc_zero : __asm {mov eax, ALLOC_ZERO jmp int16_t Alloc_error} Zero_Free
 		: __asm {mov eax, NULL_FREE_LIST jmp int16_t Alloc_error} Alloc_Overflow
-		: __asm {mov eax, ALLOC_OVERFLOW} Alloc_error
-		: __asm {mov errorResult, eax cmp mf,
-			  0
+		: __asm {mov eax, ALLOC_OVERFLOW} Alloc_error : __asm {mov errorResult, eax cmp mf,
+															0
 	//		cmp		[this].mallocFatals,0
 
 #ifdef CHECK_HEAP
-			  je noFatal
+															je noFatal
 #else
-			  jmp noFatal
+															jmp noFatal
 #endif
 
-		  } memCoreLeft = totalCoreLeft();
-	memTotalLeft		= coreLeft();
+														} memCoreLeft = totalCoreLeft();
+	memTotalLeft													  = coreLeft();
 	walkHeap(TRUE, false);
 	if (memSize)
 		STOP(("Heap %s is Out Of RAM.  HeapSize %d, CoreLeft %d, TotalLeft %d, "
@@ -963,13 +957,13 @@ int32_t UserHeap::Free(PVOIDmemBlock)
 		je	    int16_t Relink_needed // no block above this one
 
 		test    [edi].blockSize, 1
-		jne     int16_t Relink_needed  // block above is allocated
+		jne     int16_t Relink_needed // block above is allocated
 
 			// else just add size
 
 		mov     eax, [ebx].blockSize
 		and		eax, 0xfffffffe // NOT 1
-		add     [edi].blockSize, eax		   // add to size of above block
+		add     [edi].blockSize, eax // add to size of above block
 
 			// inform new lower neighbor about the change
 
@@ -992,16 +986,16 @@ int32_t UserHeap::Free(PVOIDmemBlock)
 		mov		edi, [ebx].next
 
 		cmp		edi, [ebx].previous
-		jne		int16_t __Line1   // either 1 or two members in list
+		jne		int16_t __Line1 // either 1 or two members in list
 		cmp		edi, ebx
 		je		__Done // only one member in list
 
 				// else there are only two
 
-		mov		localFirstSort, ebx						   // assume we are the smaller block
+		mov		localFirstSort, ebx // assume we are the smaller block
 		cmp		ecx, [edi].blockSize
 		jbe		__Done // we were right
-		mov		localFirstSort, edi						   // else other guy is smaller
+		mov		localFirstSort, edi // else other guy is smaller
 		jmp		__Done
 		}
 __Line1: // else see if we are not in the correct order
@@ -1023,7 +1017,7 @@ __Line2:
 
 			// else we are less than guy to our left
 
-		cmp		ebx, edx		 // are we the first block in list?
+		cmp		ebx, edx // are we the first block in list?
 		je		int16_t __Done
 
 		__Line3: // else we must unlink our block, saving a pointer to lower
@@ -1032,7 +1026,7 @@ __Line2:
 		push	edi
 		push	ebx
 
-						 // Unlink Routine inline here
+				// Unlink Routine inline here
 
 		cmp		[ebx].next, ebx
 		jne		int16_t _ULine1
@@ -1056,8 +1050,8 @@ _ULine2:
 		{
 		mov		edi, [ebx].next // edi = ebx.next
 		mov		ebx, [ebx].previous
-		mov		[edi].previous, ebx		   // ebx.next.prev = ebx.prev
-		mov		[ebx].next, edi		   // ebx.prev.next = ebx.next
+		mov		[edi].previous, ebx // ebx.next.prev = ebx.prev
+		mov		[ebx].next, edi // ebx.prev.next = ebx.next
 		}
 _ULine3:
 	__asm
@@ -1113,7 +1107,7 @@ __FoundPlace: // esi-> first block, edi->second block, ebx -> us
 		mov		edi, edx
 		cmp		ecx, [edi].blockSize // see if we are now smallest
 		jae		int16_t __Done
-		mov		localFirstSort, ebx				// we are smallest
+		mov		localFirstSort, ebx // we are smallest
 		}
 __Done:
 	firstNearBlock = localFirstSort;
@@ -1180,7 +1174,7 @@ void UserHeap::walkHeap(bool printIt, bool skipAllocated)
 	if (!walker || (heapState != NO_ERROR))
 		return;
 #ifdef _DEBUG
-	File logFile;
+	MechFile logFile;
 	logFile.create("walkdump.log");
 #endif
 	while (walker->blockSize != 1)
@@ -1211,8 +1205,7 @@ void UserHeap::walkHeap(bool printIt, bool skipAllocated)
 		}
 		if (valid && !(walker->blockSize & 1)) // if free block
 		{
-			valid = ((walker->previous->next == walker) &&
-					 (walker->next->previous == walker));
+			valid = ((walker->previous->next == walker) && (walker->next->previous == walker));
 		}
 		else if (!valid)
 		{
@@ -1239,8 +1232,7 @@ void UserHeap::walkHeap(bool printIt, bool skipAllocated)
 #ifdef _DEBUG
 			if (allocated)
 			{
-				sprintf(errMessage,
-					"Allocated block at DS:%08X, size = %u, owner at CS:%08X\n",
+				sprintf(errMessage, "Allocated block at DS:%08X, size = %u, owner at CS:%08X\n",
 					walker, (walker->blockSize & ~1), walker->previous);
 				//--------------------------------------------------------------------------------------------
 				// A size and/or address check can be put here to inspect the
@@ -1252,8 +1244,8 @@ void UserHeap::walkHeap(bool printIt, bool skipAllocated)
 			}
 			else
 			{
-				sprintf(errMessage, "Free block at DS:%08X, size = %u \n",
-					walker, (walker->blockSize & ~1));
+				sprintf(errMessage, "Free block at DS:%08X, size = %u \n", walker,
+					(walker->blockSize & ~1));
 			}
 #ifndef _CONSOLE
 			logFile.writeLine(errMessage);
@@ -1262,8 +1254,7 @@ void UserHeap::walkHeap(bool printIt, bool skipAllocated)
 #endif
 #else
 			sprintf(errMessage, "%s block at DS:%08X, size = %u \n",
-				(allocated) ? "Allocated" : "Free", walker,
-				(walker->blockSize & ~1));
+				(allocated) ? "Allocated" : "Free", walker, (walker->blockSize & ~1));
 #ifndef _CONSOLE
 			OutputDebugString(errMessage);
 #else
@@ -1364,8 +1355,8 @@ ULine2:
 		{
 		mov		edi, [ebx].next // edi = ebx.next
 		mov		ebx, [ebx].previous
-		mov		[edi].previous, ebx		   // ebx.next.prev = ebx.prev
-		mov		[ebx].next, edi		   // ebx.prev.next = ebx.next
+		mov		[edi].previous, ebx // ebx.next.prev = ebx.prev
+		mov		[ebx].next, edi // ebx.prev.next = ebx.next
 		}
 ULine3:
 	firstNearBlock = localFirst;
@@ -1388,8 +1379,7 @@ bool UserHeap::mergeWithLower(HeapBlockPtr block)
 				.upperBlock,
 		edi jne int16_t Fatal1 // else failed lower check
 			mov esi,
-		[edi].upperBlock or esi, esi je int16_t check_ok add esi,
-		[esi].blockSize and esi,
+		[edi].upperBlock or esi, esi je int16_t check_ok add esi, [esi].blockSize and esi,
 		0xfffffffe // NOT 1
 		cmp esi,
 		edi je int16_t check_ok} Fatal1 : walkHeap(FALSE, FALSE);
@@ -1402,19 +1392,19 @@ bool UserHeap::mergeWithLower(HeapBlockPtr block)
 check_ok:
 #endif
 	__asm {
-		and     ebx, 0xfffffffe			  // NOT 1					//make size be acurate
+		and     ebx, 0xfffffffe // NOT 1					//make size be acurate
 		mov     esi, ebx
-		add     esi, edi					  // esi = offset of lower neighbor
+		add     esi, edi // esi = offset of lower neighbor
 		mov     ecx, [esi].blockSize
 		test    ecx, 1
 		jne     int16_t NoMerge // lower block is allocated
-		add     ebx, ecx					  // ebx = new size of block
+		add     ebx, ecx // ebx = new size of block
 		mov     [edi].blockSize, ebx
-		or		[edi].blockSize, 1					  // dealloc() expects allocated block
+		or		[edi].blockSize, 1 // dealloc() expects allocated block
 		mov		eax, edi
-		add		ebx, eax					  // ebx -> new lower neigbor
-		mov		[ebx].upperBlock, edi					  // inform new neighbor about the change
-		mov     ebx, esi					  // ebx = offset of old lower neighbor
+		add		ebx, eax // ebx -> new lower neigbor
+		mov		[ebx].upperBlock, edi // inform new neighbor about the change
+		mov     ebx, esi // ebx = offset of old lower neighbor
 	}
 	// This is the UNLINK routine directly.
 	__asm
@@ -1497,26 +1487,25 @@ void HeapList::initializeStatistics()
 		StatisticFormat("MechCommander 2 Heaps");
 		StatisticFormat("======================");
 		StatisticFormat("");
-		AddStatistic("Total Memory", "bytes", gos_DWORD, &(totalSize),
+		AddStatistic("Total Memory", "bytes", gos_DWORD, &(totalSize), Stat_AutoReset | Stat_Total);
+		AddStatistic("Total Memory Core Left", "bytes", gos_DWORD, &(totalCoreLeft),
 			Stat_AutoReset | Stat_Total);
-		AddStatistic("Total Memory Core Left", "bytes", gos_DWORD,
-			&(totalCoreLeft), Stat_AutoReset | Stat_Total);
-		AddStatistic("Total Memory Left", "bytes", gos_DWORD, &(totalLeft),
-			Stat_AutoReset | Stat_Total);
+		AddStatistic(
+			"Total Memory Left", "bytes", gos_DWORD, &(totalLeft), Stat_AutoReset | Stat_Total);
 		StatisticFormat("");
 		StatisticFormat("");
 		for (size_t i = 0; i < 50; i++)
 		{
 			char heapString[255];
 			sprintf(heapString, "Heap %d - HeapSize", i);
-			AddStatistic(heapString, "bytes", gos_DWORD,
-				&(heapRecords[i].heapSize), Stat_AutoReset | Stat_Total);
+			AddStatistic(heapString, "bytes", gos_DWORD, &(heapRecords[i].heapSize),
+				Stat_AutoReset | Stat_Total);
 			sprintf(heapString, "Heap %d - TotalLeft", i);
-			AddStatistic(heapString, "bytes", gos_DWORD,
-				&(heapRecords[i].totalCoreLeft), Stat_AutoReset | Stat_Total);
+			AddStatistic(heapString, "bytes", gos_DWORD, &(heapRecords[i].totalCoreLeft),
+				Stat_AutoReset | Stat_Total);
 			sprintf(heapString, "Heap %d - CoreLeft", i);
-			AddStatistic(heapString, "bytes", gos_DWORD,
-				&(heapRecords[i].coreLeft), Stat_AutoReset | Stat_Total);
+			AddStatistic(heapString, "bytes", gos_DWORD, &(heapRecords[i].coreLeft),
+				Stat_AutoReset | Stat_Total);
 			StatisticFormat("");
 		}
 		heapInstrumented = true;
@@ -1529,17 +1518,13 @@ void HeapList::update(void)
 	totalSize = totalCoreLeft = totalLeft = 0;
 	for (size_t i = 0; i < 50; i++)
 	{
-		if (heapRecords[i].thisHeap &&
-			(heapRecords[i].thisHeap->heapType() == USER_HEAP))
+		if (heapRecords[i].thisHeap && (heapRecords[i].thisHeap->heapType() == USER_HEAP))
 		{
-			heapRecords[i].heapSize =
-				((UserHeapPtr)heapRecords[i].thisHeap)->tSize();
+			heapRecords[i].heapSize = ((UserHeapPtr)heapRecords[i].thisHeap)->tSize();
 			totalSize += heapRecords[i].heapSize;
-			heapRecords[i].coreLeft =
-				((UserHeapPtr)heapRecords[i].thisHeap)->coreLeft();
+			heapRecords[i].coreLeft = ((UserHeapPtr)heapRecords[i].thisHeap)->coreLeft();
 			totalLeft += heapRecords[i].coreLeft;
-			heapRecords[i].totalCoreLeft =
-				((UserHeapPtr)heapRecords[i].thisHeap)->totalCoreLeft();
+			heapRecords[i].totalCoreLeft = ((UserHeapPtr)heapRecords[i].thisHeap)->totalCoreLeft();
 			totalCoreLeft += heapRecords[i].totalCoreLeft;
 		}
 		else if (heapRecords[i].thisHeap)
@@ -1596,7 +1581,7 @@ int32_t longToText(PSTR result, int32_t num, uint32_t bufLen)
 }
 
 //--------------------------------------------------------------------------
-int32_t getStringFromMap(File& mapFile, uint32_t addr, PSTR result)
+int32_t getStringFromMap(MechFile& mapFile, uint32_t addr, PSTR result)
 {
 	//----------------------------------------
 	// Convert function address to raw offset
@@ -1650,9 +1635,9 @@ void HeapList::dumpLog(void)
 	//----------------------------------------------
 	// This function dumps information on each heap
 	// to a log file.
-	File logFile;
+	MechFile logFile;
 	logFile.create("heap.dump.log");
-	File mapFile;
+	MechFile mapFile;
 	int32_t mapResult = 0;
 #ifdef _DEBUG
 #ifdef TERRAINEDIT
@@ -1673,35 +1658,33 @@ void HeapList::dumpLog(void)
 		currentHeap = heapRecords[i].thisHeap;
 		if (currentHeap)
 		{
-			sprintf(msg,
-				"ListNo: %d     Heap: %d     Type: %d     Made by: %08X", i,
-				heapNumber, currentHeap->heapType(), currentHeap->owner());
+			sprintf(msg, "ListNo: %d     Heap: %d     Type: %d     Made by: %08X", i, heapNumber,
+				currentHeap->heapType(), currentHeap->owner());
 			logFile.writeLine(msg);
 			if (mapResult == NO_ERROR)
 			{
-				mapStringSize =
-					getStringFromMap(mapFile, currentHeap->owner(), mapInfo);
+				mapStringSize = getStringFromMap(mapFile, currentHeap->owner(), mapInfo);
 				if (mapStringSize)
 				{
 					sprintf(msg, "Made in Function : %s", mapInfo);
 					logFile.writeLine(msg);
 				}
 			}
-			sprintf(msg, "HeapSize: %d     HeapStart: %08X",
-				currentHeap->tSize(), currentHeap->getHeapPtr());
+			sprintf(msg, "HeapSize: %d     HeapStart: %08X", currentHeap->tSize(),
+				currentHeap->getHeapPtr());
 			logFile.writeLine(msg);
 			totalCommit += currentHeap->tSize();
 			if (currentHeap->heapType() == 1)
 			{
 				UserHeapPtr userHeap = (UserHeapPtr)currentHeap;
-				sprintf(msg, "TotalCoreLeft: %d     CoreLeft: %d",
-					userHeap->totalCoreLeft(), userHeap->coreLeft());
+				sprintf(msg, "TotalCoreLeft: %d     CoreLeft: %d", userHeap->totalCoreLeft(),
+					userHeap->coreLeft());
 				logFile.writeLine(msg);
 				sprintf(msg, "Frag Level: %f       PercentFree: %f",
-					(float(userHeap->coreLeft()) /
-						float(userHeap->totalCoreLeft())),
-					1.0 - (float(currentHeap->tSize() - userHeap->coreLeft()) /
-							  float(currentHeap->tSize())));
+					(float(userHeap->coreLeft()) / float(userHeap->totalCoreLeft())),
+					1.0 -
+						(float(currentHeap->tSize() - userHeap->coreLeft()) /
+							float(currentHeap->tSize())));
 				logFile.writeLine(msg);
 				totalFree += userHeap->coreLeft();
 			}
@@ -1716,8 +1699,8 @@ void HeapList::dumpLog(void)
 		sprintf(msg, "---------------------------");
 		logFile.writeLine(msg);
 	}
-	sprintf(msg, "Total Committed Memory: %d      Total Free in Commit: %d",
-		totalCommit, totalFree);
+	sprintf(
+		msg, "Total Committed Memory: %d      Total Free in Commit: %d", totalCommit, totalFree);
 	logFile.writeLine(msg);
 	sprintf(msg, "---------------------------");
 	logFile.writeLine(msg);

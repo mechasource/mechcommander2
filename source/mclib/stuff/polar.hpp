@@ -23,7 +23,7 @@ namespace Stuff
 
 class YawPitchRange
 {
-  public:
+public:
 	Radian yaw, pitch;
 	float range;
 
@@ -67,18 +67,11 @@ class YawPitchRange
 	// "Close-enough" comparators
 	//
 	friend bool Small_Enough(const YawPitchRange& a, float e = SMALL);
-	bool operator!(void)const { return Small_Enough(*this); }
+	bool operator!(void) const { return Small_Enough(*this); }
 
-	friend bool Close_Enough(
-		const YawPitchRange& a1, const YawPitchRange& a2, float e = SMALL);
-	bool operator==(const YawPitchRange& a) const
-	{
-		return Close_Enough(*this, a, SMALL);
-	}
-	bool operator!=(const YawPitchRange& a) const
-	{
-		return !Close_Enough(*this, a, SMALL);
-	}
+	friend bool Close_Enough(const YawPitchRange& a1, const YawPitchRange& a2, float e = SMALL);
+	bool operator==(const YawPitchRange& a) const { return Close_Enough(*this, a, SMALL); }
+	bool operator!=(const YawPitchRange& a) const { return !Close_Enough(*this, a, SMALL); }
 
 	//
 	// Support functions
@@ -93,5 +86,5 @@ class YawPitchRange
 	void TestInstance(void) const {}
 	static bool TestClass(void);
 };
-}
+} // namespace Stuff
 #endif

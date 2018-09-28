@@ -57,7 +57,7 @@ class TerrainQuad
 {
 	// Data Members
 	//-------------
-  public:
+public:
 	VertexPtr vertices[4]; // Pointers to vertices defining this tile.
 
 	uint32_t terrainHandle;		  // Handle to texture to draw.
@@ -75,9 +75,8 @@ class TerrainQuad
 	bool isCement; // Need to know if this tile is cement for a number of
 				   // reasons
 
-	static float rainLightLevel; // How much to darken terrain based on rain
-	static uint32_t
-		lighteningLevel; // How much to lighten terrain based on lightening.
+	static float rainLightLevel;	   // How much to darken terrain based on rain
+	static uint32_t lighteningLevel;   // How much to lighten terrain based on lightening.
 	static uint32_t mineTextureHandle; // Handle to the mine textures.
 	static uint32_t blownTextureHandle;
 
@@ -87,7 +86,7 @@ class TerrainQuad
 
 	// Member Functions
 	//-----------------
-  public:
+public:
 	void init(void)
 	{
 		for (size_t i = 0; i < 4; i++)

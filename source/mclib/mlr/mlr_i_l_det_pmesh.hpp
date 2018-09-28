@@ -21,36 +21,32 @@ class MLR_I_L_DeT_PMesh : public MLR_I_C_DeT_PMesh
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Initialization
 	//
-  public:
+public:
 	static void __stdcall InitializeClass(void);
 	static void __stdcall TerminateClass(void);
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Constructors/Destructors
 	//
-  protected:
-	MLR_I_L_DeT_PMesh(
-		ClassData* class_data, Stuff::MemoryStream* stream, uint32_t version);
+protected:
+	MLR_I_L_DeT_PMesh(ClassData* class_data, std::iostream stream, uint32_t version);
 	~MLR_I_L_DeT_PMesh(void);
 
-  public:
+public:
 	MLR_I_L_DeT_PMesh(ClassData* class_data = MLR_I_L_DeT_PMesh::DefaultData);
 
-	static MLR_I_L_DeT_PMesh* Make(
-		Stuff::MemoryStream* stream, uint32_t version);
+	static MLR_I_L_DeT_PMesh* Make(std::iostream stream, uint32_t version);
 
-	void Save(Stuff::MemoryStream* stream);
+	void Save(std::iostream stream);
 
-  public:
-	virtual void SetNormalData(
-		const Stuff::Vector3D* array, size_t point_count);
+public:
+	virtual void SetNormalData(const Stuff::Vector3D* array, size_t point_count);
 	virtual void GetNormalData(Stuff::Vector3D** array, psize_t point_count);
 
 #if COLOR_AS_DWORD
 	virtual void SetColorData(pcuint32_t array, size_t point_count);
 #else
-	virtual void SetColorData(
-		const Stuff::RGBAColor* array, size_t point_count);
+	virtual void SetColorData(const Stuff::RGBAColor* array, size_t point_count);
 #endif
 
 	virtual void Lighting(MLRLight* const*, uint32_t nrLights);
@@ -65,19 +61,18 @@ class MLR_I_L_DeT_PMesh : public MLR_I_C_DeT_PMesh
 	virtual uint32_t TransformAndClip(
 		Stuff::Matrix4D*, MLRClippingState, GOSVertexPool*, bool = false);
 
-	virtual void TransformNoClip(
-		Stuff::Matrix4D*, GOSVertexPool*, bool = false);
+	virtual void TransformNoClip(Stuff::Matrix4D*, GOSVertexPool*, bool = false);
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Class Data Support
 	//
-  public:
+public:
 	static ClassData* DefaultData;
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Testing
 	//
-  public:
+public:
 	void TestInstance(void) const;
 
 	virtual size_t GetSize(void)
@@ -89,22 +84,20 @@ class MLR_I_L_DeT_PMesh : public MLR_I_C_DeT_PMesh
 		return ret;
 	}
 
-  protected:
-	Stuff::DynamicArrayOf<Stuff::Vector3D>
-		normals; // Base address of normal list
+protected:
+	std::vector<Stuff::Vector3D> normals; // Base address of normal list
 
 #if COLOR_AS_DWORD
-	Stuff::DynamicArrayOf<uint32_t> litColors;
-	Stuff::DynamicArrayOf<uint32_t>* actualColors;
+	std::vector<uint32_t> litColors;
+	std::vector<uint32_t>* actualColors;
 #else
-	Stuff::DynamicArrayOf<Stuff::RGBAColor> litColors;
-	Stuff::DynamicArrayOf<Stuff::RGBAColor>* actualColors;
+	std::vector<Stuff::RGBAColor> litColors;
+	std::vector<Stuff::RGBAColor>* actualColors;
 #endif
 };
 
 // MLR_I_L_DeT_PMesh*
 // CreateIndexedCube(float, Stuff::RGBAColor*, Stuff::Vector3D*, MLRState*);
-MLRShape* CreateIndexedIcosahedron_Color_Lit_DetTex(
-	IcoInfo&, MLRState*, MLRState*);
-}
+MLRShape* CreateIndexedIcosahedron_Color_Lit_DetTex(IcoInfo&, MLRState*, MLRState*);
+} // namespace MidLevelRenderer
 #endif

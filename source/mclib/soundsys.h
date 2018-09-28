@@ -95,7 +95,7 @@ class SoundSystem
 {
 	// Data Members
 	//-------------
-  protected:
+protected:
 	bool channelInUse[MAX_DIGITAL_SAMPLES];
 	int32_t channelSampleId[MAX_DIGITAL_SAMPLES];
 	bool fadeDown[MAX_DIGITAL_SAMPLES];
@@ -145,8 +145,8 @@ class SoundSystem
 	int32_t lastSupportId;
 	HGOSAUDIO supportHandle;
 
-	uint32_t isRaining; // What sound FX should play as an ambient background
-						// loop.  Rain/Fire/Nothing, etc.
+	uint32_t isRaining;  // What sound FX should play as an ambient background
+						 // loop.  Rain/Fire/Nothing, etc.
 	uint32_t oldRaining; // Check if the old rain doesn't match new.  If so,
 						 // play new instead!
 
@@ -160,12 +160,12 @@ class SoundSystem
 	static float radioVolume;
 	static float bettyVolume;
 
-  public:
+public:
 	static int32_t largestSensorContact;
 
 	// Member Functions
 	//----------------
-  public:
+public:
 	SoundSystem(void) { init(void); }
 
 	~SoundSystem(void) { destroy(void); }
@@ -231,8 +231,7 @@ class SoundSystem
 	int32_t playBettySample(uint32_t bettySampleId);
 	void stopBettySample(void);
 
-	int32_t playSupportSample(
-		uint32_t supportSampleId, PSTR fileName = nullptr);
+	int32_t playSupportSample(uint32_t supportSampleId, PSTR fileName = nullptr);
 
 	void stopDigitalSample(uint32_t sampleHandleNumber);
 	void stopDigitalMusic(void);

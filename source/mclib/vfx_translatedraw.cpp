@@ -27,8 +27,7 @@ typedef struct SHAPEHEADER
 
 uint32_t lookaside;
 static uint32_t tempXmax, tempXmin;
-static uint32_t minX, minY, maxY, SkipLeft, NewWidth, StartofLine, StartofClip,
-	EndofClip;
+static uint32_t minX, minY, maxY, SkipLeft, NewWidth, StartofLine, StartofClip, EndofClip;
 static uint32_t lines, DestWidth, paneX0, paneX1, paneY0, paneY1;
 
 /*
@@ -46,8 +45,7 @@ static uint32_t lines, DestWidth, paneX0, paneX1, paneY0, paneY1;
 ; drawn.  The shape's hot spot will end up at the specified location.
 ;
 */
-void AG_shape_draw(PANE* pane, PVOIDshape_table, int32_t shape_number,
-	int32_t hotX, int32_t hotY)
+void AG_shape_draw(PANE* pane, PVOIDshape_table, int32_t shape_number, int32_t hotX, int32_t hotY)
 {
 	_asm
 	{
@@ -911,8 +909,8 @@ void AG_shape_lookaside(puint8_t table)
 ;
 ;----------------------------------------------------------------------------
 */
-void AG_shape_translate_draw(PANE* pane, PVOIDshape_table, int32_t shape_number,
-	int32_t hotX, int32_t hotY)
+void AG_shape_translate_draw(
+	PANE* pane, PVOIDshape_table, int32_t shape_number, int32_t hotX, int32_t hotY)
 {
 	_asm
 	{
@@ -1820,9 +1818,8 @@ void AG_shape_translate_draw(PANE* pane, PVOIDshape_table, int32_t shape_number,
 	shapeTable += 4;
 	shapeTable += (shape_number * 8);
 	int32_t shapeNumOffset = (int32_t)*shapeTable;
-	sprintf(msg, "SP: %08x  SF: %d  X: %d  Y:%d  V: %s  SN: %d  SOf: %d",
-		shape_table, shape_number, hotX, hotY, version, numShapes,
-		shapeNumOffset);
+	sprintf(msg, "SP: %08x  SF: %d  X: %d  Y:%d  V: %s  SN: %d  SOf: %d", shape_table, shape_number,
+		hotX, hotY, version, numShapes, shapeNumOffset);
 	Fatal(saveEdi, msg);
 #else
 	}

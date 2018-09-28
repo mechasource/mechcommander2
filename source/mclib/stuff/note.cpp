@@ -21,14 +21,14 @@ using namespace Stuff;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void Note::WriteNotation(MemoryStream* stream)
+void Note::WriteNotation(std::iostream& stream)
 {
 	// Check_Object(this);
 	Check_Object(stream);
 	if (m_name)
-		*stream << (PCSTR)m_name;
+		*stream << m_name;
 	if (m_text)
-		*stream << '=' << (PCSTR)m_text;
+		*stream << '=' << m_text;
 	*stream << "\r\n";
 }
 
@@ -51,7 +51,7 @@ void Note::SetEntry(int32_t value)
 	// Check_Object(this);
 	char contents[12];
 	_itoa_s(value, contents, _countof(contents), 10);
-	Verify(strlen(contents) < (_countof(contents)));
+	_ASSERT(strlen(contents) < (_countof(contents)));
 	SetEntry(contents);
 }
 
@@ -74,7 +74,7 @@ void Note::SetEntry(float value)
 	// Check_Object(this);
 	char contents[32];
 	sprintf_s(contents, _countof(contents), "%f", value);
-	Verify(strlen(contents) < sizeof(contents));
+	_ASSERT(strlen(contents) < sizeof(contents));
 	SetEntry(contents);
 }
 
@@ -87,8 +87,7 @@ void Note::GetEntry(bool* value)
 	PCSTR contents = nullptr;
 	GetEntry(&contents);
 	Check_Pointer(contents);
-	*value = (!_stricmp(contents, "true") || !_stricmp(contents, "yes") ||
-			  atoi(contents) != 0);
+	*value = (!_stricmp(contents, "true") || !_stricmp(contents, "yes") || atoi(contents) != 0);
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -108,16 +107,15 @@ void Note::GetEntry(Vector3D* value)
 	PCSTR contents = nullptr;
 	GetEntry(&contents);
 	Check_Pointer(contents);
-	int32_t count =
-		sscanf_s(contents, "%f %f %f", &value->x, &value->y, &value->z);
+	int32_t count = sscanf_s(contents, "%f %f %f", &value->x, &value->y, &value->z);
 	if (count != 3)
 	{
 		Page* page = m_page;
 		Check_Object(page);
 		NotationFile* file = page->m_notationFile;
 		Check_Object(file);
-		STOP(("%s: {[%s]%s=%s} is not a Vector!", file->GetFileName(),
-			page->m_name, m_name, contents));
+		STOP(("%s: {[%s]%s=%s} is not a Vector!", file->GetFileName(), page->m_name, m_name,
+			contents));
 	}
 }
 
@@ -128,9 +126,8 @@ void Note::SetEntry(const Vector3D& value)
 	// Check_Object(this);
 	static char contents[64];
 	int32_t temp;
-	temp = sprintf_s(
-		contents, _countof(contents), "%f %f %f", value.x, value.y, value.z);
-	Verify(temp < sizeof(contents));
+	temp = sprintf_s(contents, _countof(contents), "%f %f %f", value.x, value.y, value.z);
+	_ASSERT(temp < sizeof(contents));
 	SetEntry(contents);
 }
 
@@ -154,8 +151,8 @@ void Note::GetEntry(YawPitchRoll* value)
 		Check_Object(page);
 		NotationFile* file = page->m_notationFile;
 		Check_Object(file);
-		STOP(("%s: {[%s]%s=%s} is not a YawPitchRoll!", file->GetFileName(),
-			page->m_name, m_name, contents));
+		STOP(("%s: {[%s]%s=%s} is not a YawPitchRoll!", file->GetFileName(), page->m_name, m_name,
+			contents));
 	}
 	value->yaw *= Radians_Per_Degree;
 	value->pitch *= Radians_Per_Degree;
@@ -168,10 +165,9 @@ void Note::SetEntry(const YawPitchRoll& value)
 {
 	// Check_Object(this);
 	static char contents[32];
-	sprintf_s(contents, _countof(contents), "%f %f %f",
-		value.yaw * Degrees_Per_Radian, value.pitch * Degrees_Per_Radian,
-		value.roll * Degrees_Per_Radian);
-	Verify(strlen(contents) < sizeof(contents));
+	sprintf_s(contents, _countof(contents), "%f %f %f", value.yaw * Degrees_Per_Radian,
+		value.pitch * Degrees_Per_Radian, value.roll * Degrees_Per_Radian);
+	_ASSERT(strlen(contents) < sizeof(contents));
 	SetEntry(contents);
 }
 
@@ -196,8 +192,8 @@ void Note::GetEntry(UnitQuaternion* value)
 		Check_Object(page);
 		NotationFile* file = page->m_notationFile;
 		Check_Object(file);
-		STOP(("%s: {[%s]%s=%s} is not a UnitQuaternion!", file->GetFileName(),
-			page->m_name, m_name, contents));
+		STOP(("%s: {[%s]%s=%s} is not a UnitQuaternion!", file->GetFileName(), page->m_name, m_name,
+			contents));
 	}
 	ypr.yaw *= Radians_Per_Degree;
 	ypr.pitch *= Radians_Per_Degree;
@@ -212,10 +208,9 @@ void Note::SetEntry(const UnitQuaternion& value)
 	// Check_Object(this);
 	static char contents[32] = {0};
 	YawPitchRoll ypr(value);
-	Verify(strlen(contents) < sizeof(contents));
-	sprintf_s(contents, _countof(contents), "%f %f %f",
-		ypr.yaw * Degrees_Per_Radian, ypr.pitch * Degrees_Per_Radian,
-		ypr.roll * Degrees_Per_Radian);
+	_ASSERT(strlen(contents) < sizeof(contents));
+	sprintf_s(contents, _countof(contents), "%f %f %f", ypr.yaw * Degrees_Per_Radian,
+		ypr.pitch * Degrees_Per_Radian, ypr.roll * Degrees_Per_Radian);
 	SetEntry(contents);
 }
 
@@ -228,18 +223,17 @@ void Note::GetEntry(Motion3D* value)
 	PCSTR contents = nullptr;
 	GetEntry(&contents);
 	Check_Pointer(contents);
-	int32_t count = sscanf_s(contents, "%f %f %f %f %f %f",
-		&value->linearMotion.x, &value->linearMotion.y, &value->linearMotion.z,
-		&value->angularMotion.x, &value->angularMotion.y,
-		&value->angularMotion.z);
+	int32_t count = sscanf_s(contents, "%f %f %f %f %f %f", &value->linearMotion.x,
+		&value->linearMotion.y, &value->linearMotion.z, &value->angularMotion.x,
+		&value->angularMotion.y, &value->angularMotion.z);
 	if (count != 6)
 	{
 		Page* page = m_page;
 		Check_Object(page);
 		NotationFile* file = page->m_notationFile;
 		Check_Object(file);
-		STOP(("%s: {[%s]%s=%s} is not a Motion!", file->GetFileName(),
-			page->m_name, m_name, contents));
+		STOP(("%s: {[%s]%s=%s} is not a Motion!", file->GetFileName(), page->m_name, m_name,
+			contents));
 	}
 }
 
@@ -249,10 +243,10 @@ void Note::SetEntry(const Motion3D& value)
 {
 	// Check_Object(this);
 	static char contents[64];
-	sprintf_s(contents, _countof(contents), "%f %f %f %f %f %f",
-		value.linearMotion.x, value.linearMotion.y, value.linearMotion.z,
-		value.angularMotion.x, value.angularMotion.y, value.angularMotion.z);
-	Verify(strlen(contents) < sizeof(contents));
+	sprintf_s(contents, _countof(contents), "%f %f %f %f %f %f", value.linearMotion.x,
+		value.linearMotion.y, value.linearMotion.z, value.angularMotion.x, value.angularMotion.y,
+		value.angularMotion.z);
+	_ASSERT(strlen(contents) < sizeof(contents));
 	SetEntry(contents);
 }
 
@@ -265,16 +259,15 @@ void Note::GetEntry(RGBColor* value)
 	PCSTR contents = nullptr;
 	GetEntry(&contents);
 	Check_Pointer(contents);
-	int32_t count = sscanf_s(
-		contents, "%f %f %f", &value->red, &value->green, &value->blue);
+	int32_t count = sscanf_s(contents, "%f %f %f", &value->red, &value->green, &value->blue);
 	if (count != 3)
 	{
 		Page* page = m_page;
 		Check_Object(page);
 		NotationFile* file = page->m_notationFile;
 		Check_Object(file);
-		STOP(("%s: {[%s]%s=%s} is not an RGBColor!", file->GetFileName(),
-			page->m_name, m_name, contents));
+		STOP(("%s: {[%s]%s=%s} is not an RGBColor!", file->GetFileName(), page->m_name, m_name,
+			contents));
 	}
 }
 
@@ -284,9 +277,8 @@ void Note::SetEntry(const RGBColor& value)
 {
 	// Check_Object(this);
 	static char contents[32];
-	sprintf_s(contents, _countof(contents), "%f %f %f", value.red, value.green,
-		value.blue);
-	Verify(strlen(contents) < sizeof(contents));
+	sprintf_s(contents, _countof(contents), "%f %f %f", value.red, value.green, value.blue);
+	_ASSERT(strlen(contents) < sizeof(contents));
 	SetEntry(contents);
 }
 
@@ -299,8 +291,8 @@ void Note::GetEntry(RGBAColor* value)
 	PCSTR contents = nullptr;
 	GetEntry(&contents);
 	Check_Pointer(contents);
-	int32_t count = sscanf_s(contents, "%f %f %f %f", &value->red,
-		&value->green, &value->blue, &value->alpha);
+	int32_t count =
+		sscanf_s(contents, "%f %f %f %f", &value->red, &value->green, &value->blue, &value->alpha);
 	if (count == 3)
 		value->alpha = 1.0f;
 	if (count < 3)
@@ -309,8 +301,8 @@ void Note::GetEntry(RGBAColor* value)
 		Check_Object(page);
 		NotationFile* file = page->m_notationFile;
 		Check_Object(file);
-		STOP(("%s: {[%s]%s=%s} is not an RGBAColor!", file->GetFileName(),
-			page->m_name, m_name, contents));
+		STOP(("%s: {[%s]%s=%s} is not an RGBAColor!", file->GetFileName(), page->m_name, m_name,
+			contents));
 	}
 }
 
@@ -320,9 +312,9 @@ void Note::SetEntry(const RGBAColor& value)
 {
 	// Check_Object(this);
 	static char contents[48];
-	sprintf_s(contents, _countof(contents), "%f %f %f %f", value.red,
-		value.green, value.blue, value.alpha);
-	Verify(strlen(contents) < sizeof(contents));
+	sprintf_s(contents, _countof(contents), "%f %f %f %f", value.red, value.green, value.blue,
+		value.alpha);
+	_ASSERT(strlen(contents) < sizeof(contents));
 	SetEntry(contents);
 }
 
@@ -354,12 +346,10 @@ void Note::GetEntry(NotationFile* value)
 	//
 	else
 	{
-		MemoryStream stream(
-			const_cast<PSTR>(contents + 3), strlen(contents) - 3);
+		std::iostream stream(const_cast<PSTR>(contents + 3), strlen(contents) - 3);
 		NotationFile* parent_file = m_page->GetNotationFile();
 		Check_Object(parent_file);
-		value->m_fileDependencies.AddDependencies(
-			parent_file->GetFileDependencies());
+		value->m_fileDependencies.AddDependencies(parent_file->GetFileDependencies());
 		//
 		//-----------------------------------
 		// Figure out the name of the subfile
@@ -367,7 +357,7 @@ void Note::GetEntry(NotationFile* value)
 		//
 		if (parent_file->GetFileName())
 		{
-			MString name(parent_file->GetFileName());
+			std::wstring name(parent_file->GetFileName());
 			name += '[';
 			name += GetName();
 			name += ']';
@@ -404,7 +394,7 @@ void Note::SetEntry(NotationFile* value)
 	//
 	else
 	{
-		DynamicMemoryStream file_buffer(5);
+		std::fstream file_buffer(5);
 		file_buffer << "{\r\n";
 		value->Write(&file_buffer);
 		file_buffer << "}" << '\0';

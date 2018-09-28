@@ -28,18 +28,16 @@ class ShardCloud__Specification : public SpinningCloud__Specification
 	//----------------------------------------------------------------------
 	// Constructors/Destructors
 	//
-  protected:
-	ShardCloud__Specification(
-		Stuff::MemoryStream* stream, uint32_t gfx_version);
+protected:
+	ShardCloud__Specification(std::iostream stream, uint32_t gfx_version);
 
-  public:
+public:
 	ShardCloud__Specification(void);
 
-	static ShardCloud__Specification* Make(
-		Stuff::MemoryStream* stream, uint32_t gfx_version);
+	static ShardCloud__Specification* Make(std::iostream stream, uint32_t gfx_version);
 	void Copy(ShardCloud__Specification* spec);
 
-	void Save(Stuff::MemoryStream* stream);
+	void Save(std::iostream stream);
 
 	void BuildDefaults(void);
 
@@ -48,10 +46,9 @@ class ShardCloud__Specification : public SpinningCloud__Specification
 	//-------------------------------------------------------------------------
 	// FCurves
 	//
-  public:
+public:
 	SeededCurveOf<ComplexCurve, SplineCurve, Curve::e_ComplexSplineType> m_size;
-	SeededCurveOf<ConstantCurve, SplineCurve, Curve::e_ConstantSplineType>
-		m_angularity;
+	SeededCurveOf<ConstantCurve, SplineCurve, Curve::e_ConstantSplineType> m_angularity;
 };
 
 //############################################################################
@@ -61,7 +58,7 @@ class ShardCloud__Specification : public SpinningCloud__Specification
 
 class ShardCloud__Particle : public SpinningCloud__Particle
 {
-  public:
+public:
 	float m_angle;
 };
 
@@ -74,7 +71,7 @@ class ShardCloud : public SpinningCloud
 	//----------------------------------------------------------------------------
 	// Class Registration Support
 	//
-  public:
+public:
 	static void __stdcall InitializeClass(void);
 	static void __stdcall TerminateClass(void);
 
@@ -83,11 +80,10 @@ class ShardCloud : public SpinningCloud
 
 	enum
 	{
-		ParticleSize = sizeof(Particle) + 3 * sizeof(Stuff::Point3D) +
-					   3 * sizeof(Stuff::RGBAColor)
+		ParticleSize = sizeof(Particle) + 3 * sizeof(Stuff::Point3D) + 3 * sizeof(Stuff::RGBAColor)
 	};
 
-  protected:
+protected:
 	MidLevelRenderer::MLRTriangleCloud*
 		m_cloudImplementation; // point to an MLR triangle cloud by Michael
 	Stuff::Point3D* m_P_vertices;
@@ -96,10 +92,10 @@ class ShardCloud : public SpinningCloud
 	//----------------------------------------------------------------------------
 	// Class Data Support
 	//
-  protected:
+protected:
 	ShardCloud(Specification* spec, uint32_t flags);
 
-  public:
+public:
 	~ShardCloud(void);
 
 	static ShardCloud* Make(Specification* spec, uint32_t flags);
@@ -113,8 +109,7 @@ class ShardCloud : public SpinningCloud
 	{
 		// Check_Object(this);
 		Check_Object(GetSpecification());
-		return Cast_Pointer(Particle*,
-			&m_data[index * GetSpecification()->m_particleClassSize]);
+		return Cast_Pointer(Particle*, &m_data[index * GetSpecification()->m_particleClassSize]);
 	}
 
 	static ClassData* DefaultData;
@@ -122,19 +117,19 @@ class ShardCloud : public SpinningCloud
 	//----------------------------------------------------------------------------
 	// Testing
 	//
-  public:
+public:
 	void TestInstance(void) const;
 
 	//----------------------------------------------------------------------------
 	// API
 	//
-  protected:
-	bool AnimateParticle(uint32_t index,
-		const Stuff::LinearMatrix4D* world_to_new_local, Stuff::Time till);
+protected:
+	bool AnimateParticle(
+		uint32_t index, const Stuff::LinearMatrix4D* world_to_new_local, Stuff::Time till);
 	void CreateNewParticle(uint32_t index, Stuff::Point3D* translation);
 	void DestroyParticle(uint32_t index);
 
-  public:
+public:
 	void Draw(DrawInfo* info);
 };
-}
+} // namespace gosFX

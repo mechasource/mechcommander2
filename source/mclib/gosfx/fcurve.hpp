@@ -13,24 +13,22 @@ namespace gosFX
 
 class Curve
 {
-  public:
-	typedef enum CurveType
+public:
+	enum class CurveType : uint32_t
 	{
-		e_ConstantType,
-		e_LinearType,
-		e_SplineType,
-		e_ComplexType,
-		e_ComplexLinearType,
-		e_ComplexComplexType,
-		e_ComplexSplineType,
-		e_ConstantComplexType,
-		e_ConstantLinearType,
-		e_ConstantSplineType,
-		e_SplineLinearType,
-		e_SplineSplineType
-	} CurveType;
-
-	const CurveType m_type;
+		e_ConstantType			= (1 << 0),
+		e_LinearType			= (1 << 1),
+		e_SplineType			= (1 << 2),
+		e_ComplexType			= (1 << 3),
+		e_ComplexLinearType		= (1 << 4),
+		e_ComplexComplexType	= (1 << 5),
+		e_ComplexSplineType		= (1 << 6),
+		e_ConstantComplexType	= (1 << 7),
+		e_ConstantLinearType	= (1 << 8),
+		e_ConstantSplineType	= (1 << 9),
+		e_SplineLinearType		= (1 << 10),
+		e_SplineSplineType		= (1 << 11)
+	};
 
 	Curve(CurveType type) : m_type(type) {}
 
@@ -40,8 +38,8 @@ class Curve
 
 	void ExpensiveComputeRange(float* low, float* hi);
 
-	void Save(Stuff::MemoryStream* stream);
-	void Load(Stuff::MemoryStream* stream, uint32_t gfx_version);
+	void Save(std::ostream& stream);
+	void Load(std::istream& stream, uint32_t gfx_version);
 
 	float Mid(int32_t curvenum = 0);
 
@@ -62,6 +60,10 @@ class Curve
 	Curve* GetSubCurve(int32_t curvenum);
 
 	void TestInstance(void) const {}
+
+protected:
+	const CurveType m_type;
+
 };
 
 //######################################################################
@@ -70,10 +72,8 @@ class Curve
 
 class ConstantCurve : public Curve
 {
-  public:
-	float m_value;
-
-	ConstantCurve(CurveType type = e_ConstantType) : Curve(type) {}
+public:
+	ConstantCurve(CurveType type = CurveType::e_ConstantType) : Curve(type) {}
 
 	ConstantCurve& operator=(const ConstantCurve& curve)
 	{
@@ -81,8 +81,8 @@ class ConstantCurve : public Curve
 		return *this;
 	}
 
-	void Save(Stuff::MemoryStream* stream);
-	void Load(Stuff::MemoryStream* stream, uint32_t gfx_version);
+	void Save(std::ostream& stream);
+	void Load(std::iostream stream, uint32_t gfx_version);
 
 	//------------------------------------------------------
 	// for Set...Key(), true=math good, false=math unstable
@@ -108,11 +108,14 @@ class ConstantCurve : public Curve
 	void ComputeRange(float* low, float* hi)
 	{
 		// Check_Object(this);
-		Check_Pointer(low);
-		Check_Pointer(hi);
+		// Check_Pointer(low);
+		// Check_Pointer(hi);
 		if (hi && low)
 			*hi = *low = m_value;
 	}
+
+protected:
+	float m_value;
 };
 
 //######################################################################
@@ -121,10 +124,10 @@ class ConstantCurve : public Curve
 
 class LinearCurve : public ConstantCurve
 {
-  public:
-	float m_slope;
 
-	LinearCurve(CurveType type = e_LinearType) : ConstantCurve(type) {}
+public:
+
+	LinearCurve(CurveType typ = CurveType::e_LinearType) : ConstantCurve(typ) {}
 
 	LinearCurve& operator=(const LinearCurve& curve)
 	{
@@ -133,8 +136,8 @@ class LinearCurve : public ConstantCurve
 		return *this;
 	}
 
-	void Save(Stuff::MemoryStream* stream);
-	void Load(Stuff::MemoryStream* stream, uint32_t gfx_version);
+	void Save(std::ostream& stream);
+	void Load(std::iostream stream, uint32_t gfx_version);
 
 	//------------------------------------------------------
 	// for Set...Key(), true=math good, false=math unstable
@@ -154,6 +157,9 @@ class LinearCurve : public ConstantCurve
 	}
 
 	void ComputeRange(float* low, float* hi);
+
+protected:
+	float m_slope;
 };
 
 //######################################################################
@@ -162,15 +168,15 @@ class LinearCurve : public ConstantCurve
 
 class SplineCurve : public LinearCurve
 {
-  public:
+public:
 	float m_a, m_b;
 
-	SplineCurve() : LinearCurve(e_SplineType) {}
+	SplineCurve() : LinearCurve(CurveType::e_SplineType) {}
 
 	SplineCurve& operator=(const SplineCurve& curve);
 
-	void Save(Stuff::MemoryStream* stream);
-	void Load(Stuff::MemoryStream* stream, uint32_t gfx_version);
+	void Save(std::ostream& stream);
+	void Load(std::iostream stream, uint32_t gfx_version);
 
 	//------------------------------------------------------
 	// for Set...Key(), true=math good, false=math unstable
@@ -199,7 +205,7 @@ class SplineCurve : public LinearCurve
 
 class CurveKey
 {
-  public:
+public:
 	float m_time, m_slope, m_value;
 
 	//------------------------------------------------------
@@ -230,41 +236,42 @@ class CurveKey
 
 class ComplexCurve : public Curve
 {
-  protected:
-	Stuff::DynamicArrayOf<CurveKey> m_keys;
+protected:
+	std::vector<CurveKey> m_keys;
 
-  public:
+public:
 	ComplexCurve(void);
 	ComplexCurve(const ComplexCurve& fcurve);
-	ComplexCurve(Stuff::MemoryStream* stream, uint32_t gfx_version);
+	ComplexCurve(std::iostream stream, uint32_t gfx_version);
 
 	ComplexCurve& operator=(const ComplexCurve& fcurve);
 
-	void Save(Stuff::MemoryStream* stream);
-	void Load(Stuff::MemoryStream* stream, uint32_t gfx_version);
+	void Save(std::ostream& stream);
+	void Load(std::iostream stream, uint32_t gfx_version);
 
 	//-----------------------------------------------------------------
 	// Warning:  both index of and pointer to CurveKey's are volitile
 	//           client code should store neither between transactions
 	//-----------------------------------------------------------------
 
-	CurveKey& operator[](int32_t index)
+	CurveKey& operator[](size_t ix)
 	{
 		// Check_Object(this);
-		return m_keys[index];
+		return m_keys[ix];
 	}
-	size_t GetKeyCount()
+	size_t GetKeyCount(void)
 	{
 		// Check_Object(this);
-		return m_keys.GetLength(void);
+		return m_keys.size();
 	}
-	int32_t GetKeyIndex(float time)
+	size_t GetKeyIndex(float time)
 	{
 		// Check_Object(this);
-		for (auto i = 0; i < m_keys.GetLength(); ++i)
-			if (m_keys[i].m_time > time)
-				break;
-		return --i;
+		for (size_t i = 0; i < m_keys.size(); ++i) {
+			if (m_keys[i].m_time > time) {
+				return --i;
+			}
+		}
 	}
 
 	int32_t InsertKey(float time);
@@ -293,20 +300,18 @@ class ComplexCurve : public Curve
 //#####################    SeededCurveOf    ############################
 //######################################################################
 
-template <class C, class S, Curve::CurveType type>
-class SeededCurveOf : public Curve
+template <class C, class S, Curve::CurveType type> class SeededCurveOf : public Curve
 {
-  public:
+public:
 	C m_ageCurve;
 	S m_seedCurve;
 	bool m_seeded;
 
 	SeededCurveOf() : Curve(type) {}
 
-	SeededCurveOf<C, S, type>& operator=(
-		const SeededCurveOf<C, S, type>& curve);
-	void Save(Stuff::MemoryStream* stream);
-	void Load(Stuff::MemoryStream* stream, uint32_t gfx_version);
+	SeededCurveOf<C, S, type>& operator=(const SeededCurveOf<C, S, type>& curve);
+	void Save(std::ostream& stream);
+	void Load(std::iostream stream, uint32_t gfx_version);
 
 	float ComputeValue(float age, float seed)
 	{
@@ -321,7 +326,7 @@ class SeededCurveOf : public Curve
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Testing
 	//
-  public:
+public:
 	void TestInstance(void) const {}
 };
 
@@ -340,22 +345,21 @@ SeededCurveOf<C, S, type>& SeededCurveOf<C, S, type>::operator=(
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 template <class C, class S, Curve::CurveType type>
-void SeededCurveOf<C, S, type>::Save(Stuff::MemoryStream* stream)
+void SeededCurveOf<C, S, type>::Save(std::ostream& stream)
 {
 	m_ageCurve.Save(stream);
 	m_seedCurve.Save(stream);
-	*stream << m_seeded;
+	stream << m_seeded;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 template <class C, class S, Curve::CurveType type>
-void SeededCurveOf<C, S, type>::Load(
-	Stuff::MemoryStream* stream, uint32_t gfx_version)
+void SeededCurveOf<C, S, type>::Load(std::iostream stream, uint32_t gfx_version)
 {
 	m_ageCurve.Load(stream, gfx_version);
 	m_seedCurve.Load(stream, gfx_version);
-	*stream >> m_seeded;
+	stream >> m_seeded;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -384,4 +388,4 @@ void SeededCurveOf<C, S, type>::ComputeRange(float* low, float* hi)
 	else if (temp > *hi)
 		*hi = temp;
 }
-}
+} // namespace gosFX

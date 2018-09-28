@@ -142,8 +142,7 @@ protected:
 public:
 	FullPathFileName(void) {}
 
-	FullPathFileName(
-		std::wstring& dir_path, std::wstring& name, std::wstring& ext)
+	FullPathFileName(std::wstring& dir_path, std::wstring& name, std::wstring& ext)
 	{
 		init(dir_path, name, ext);
 	}

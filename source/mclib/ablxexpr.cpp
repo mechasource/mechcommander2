@@ -63,8 +63,8 @@ extern DebuggerPtr debugger;
 
 //***************************************************************************
 
-inline void promoteOperandsToReal(StackItemPtr operand1Ptr, TypePtr type1Ptr,
-	StackItemPtr operand2Ptr, TypePtr type2Ptr)
+inline void promoteOperandsToReal(
+	StackItemPtr operand1Ptr, TypePtr type1Ptr, StackItemPtr operand2Ptr, TypePtr type2Ptr)
 {
 	if (type1Ptr == IntegerTypePtr)
 		operand1Ptr->real = (float)(operand1Ptr->integer);
@@ -88,11 +88,9 @@ TypePtr execSubscripts(TypePtr typePtr)
 			pop();
 			//-------------------------
 			// Range check the index...
-			if ((subscriptValue < 0) ||
-				(subscriptValue >= typePtr->info.array.elementCount))
+			if ((subscriptValue < 0) || (subscriptValue >= typePtr->info.array.elementCount))
 				runtimeError(ABL_ERR_RUNTIME_VALUE_OUT_OF_RANGE);
-			tos->address +=
-				(subscriptValue * typePtr->info.array.elementTypePtr->size);
+			tos->address += (subscriptValue * typePtr->info.array.elementTypePtr->size);
 			if (codeToken == TKN_COMMA)
 				typePtr = typePtr->info.array.elementTypePtr;
 		} while (codeToken == TKN_COMMA);
@@ -167,8 +165,7 @@ TypePtr execVariable(SymTableNodePtr idPtr, UseType use)
 	if (idPtr->defn.key == DFN_REFPARAM)
 		if (typePtr->form != FRM_ARRAY) /* && (typePtr->form != FRM_RECORD)*/
 			dataPtr = (StackItemPtr)dataPtr->address;
-	ABL_Assert(
-		dataPtr != nullptr, 0, " ABL.execVariable(): dataPtr is nullptr ");
+	ABL_Assert(dataPtr != nullptr, 0, " ABL.execVariable(): dataPtr is nullptr ");
 	//-----------------------------------------------------
 	// Now, push the address of the variable's data area...
 	if ((typePtr->form == FRM_ARRAY) /*|| (typePtr->form == FRM_RECORD)*/)
@@ -198,8 +195,7 @@ TypePtr execVariable(SymTableNodePtr idPtr, UseType use)
 	//		b) it reresents a parameter passed by reference;
 	//		c) it's the address of an array or record;
 	// Otherwise, replace the address with the value it points to.
-	if ((use != USE_TARGET) && (use != USE_REFPARAM) &&
-		(typePtr->form != FRM_ARRAY))
+	if ((use != USE_TARGET) && (use != USE_REFPARAM) && (typePtr->form != FRM_ARRAY))
 	{
 		if ((typePtr == IntegerTypePtr) || (typePtr->form == FRM_ENUM))
 		{
@@ -215,8 +211,7 @@ TypePtr execVariable(SymTableNodePtr idPtr, UseType use)
 		if ((use != USE_TARGET) && (use != USE_REFPARAM))
 		{
 			if (typePtr->form == FRM_ARRAY)
-				debugger->traceDataFetch(
-					idPtr, typePtr, (StackItemPtr)tos->address);
+				debugger->traceDataFetch(idPtr, typePtr, (StackItemPtr)tos->address);
 			else
 				debugger->traceDataFetch(idPtr, typePtr, tos);
 		}
@@ -311,9 +306,8 @@ TypePtr execTerm(void)
 	TypePtr resultTypePtr = execFactor();
 	//----------------------------------------------
 	// Process the factors separated by operators...
-	while ((codeToken == TKN_STAR) || (codeToken == TKN_FSLASH) ||
-		   (codeToken == TKN_DIV) || (codeToken == TKN_MOD) ||
-		   (codeToken == TKN_AND))
+	while ((codeToken == TKN_STAR) || (codeToken == TKN_FSLASH) || (codeToken == TKN_DIV) ||
+		(codeToken == TKN_MOD) || (codeToken == TKN_AND))
 	{
 		op = codeToken;
 		getCodeToken();
@@ -329,22 +323,19 @@ TypePtr execTerm(void)
 			switch (op)
 			{
 			case TKN_STAR:
-				if ((resultTypePtr == IntegerTypePtr) &&
-					(type2Ptr == IntegerTypePtr))
+				if ((resultTypePtr == IntegerTypePtr) && (type2Ptr == IntegerTypePtr))
 				{
 					//-----------------------------
 					// Both operands are integer...
-					operand1Ptr->integer =
-						operand1Ptr->integer * operand2Ptr->integer;
-					resultTypePtr = IntegerTypePtr;
+					operand1Ptr->integer = operand1Ptr->integer * operand2Ptr->integer;
+					resultTypePtr		 = IntegerTypePtr;
 				}
 				else
 				{
 					//----------------------------------------------------------------
 					// Both operands are real, or one is real and the other
 					// integer...
-					promoteOperandsToReal(
-						operand1Ptr, resultTypePtr, operand2Ptr, type2Ptr);
+					promoteOperandsToReal(operand1Ptr, resultTypePtr, operand2Ptr, type2Ptr);
 					operand1Ptr->real = operand1Ptr->real * operand2Ptr->real;
 					resultTypePtr	 = RealTypePtr;
 				}
@@ -354,8 +345,7 @@ TypePtr execTerm(void)
 				// Both operands are real, or one is real and the other an
 				// integer. We probably want this same token to be used for
 				// integers, as opposed to using the DIV token...
-				if ((resultTypePtr == IntegerTypePtr) &&
-					(type2Ptr == IntegerTypePtr))
+				if ((resultTypePtr == IntegerTypePtr) && (type2Ptr == IntegerTypePtr))
 				{
 					//-----------------------------
 					// Both operands are integer...
@@ -369,8 +359,7 @@ TypePtr execTerm(void)
 #endif
 					}
 					else
-						operand1Ptr->integer =
-							operand1Ptr->integer / operand2Ptr->integer;
+						operand1Ptr->integer = operand1Ptr->integer / operand2Ptr->integer;
 					resultTypePtr = IntegerTypePtr;
 				}
 				else
@@ -378,8 +367,7 @@ TypePtr execTerm(void)
 					//----------------------------------------------------------------
 					// Both operands are real, or one is real and the other
 					// integer...
-					promoteOperandsToReal(
-						operand1Ptr, resultTypePtr, operand2Ptr, type2Ptr);
+					promoteOperandsToReal(operand1Ptr, resultTypePtr, operand2Ptr, type2Ptr);
 					if (operand2Ptr->real == 0.0)
 #ifdef _DEBUG
 						runtimeError(ABL_ERR_RUNTIME_DIVISION_BY_ZERO);
@@ -388,8 +376,7 @@ TypePtr execTerm(void)
 						operand1Ptr->real = 0.0;
 #endif
 					else
-						operand1Ptr->real =
-							operand1Ptr->real / operand2Ptr->real;
+						operand1Ptr->real = operand1Ptr->real / operand2Ptr->real;
 					resultTypePtr = RealTypePtr;
 				}
 				break;
@@ -407,11 +394,9 @@ TypePtr execTerm(void)
 				else
 				{
 					if (op == TKN_DIV)
-						operand1Ptr->integer =
-							operand1Ptr->integer / operand2Ptr->integer;
+						operand1Ptr->integer = operand1Ptr->integer / operand2Ptr->integer;
 					else
-						operand1Ptr->integer =
-							operand1Ptr->integer % operand2Ptr->integer;
+						operand1Ptr->integer = operand1Ptr->integer % operand2Ptr->integer;
 				}
 				resultTypePtr = IntegerTypePtr;
 				break;
@@ -445,8 +430,7 @@ TypePtr execSimpleExpression(void)
 		else
 			tos->real = -(tos->real);
 	}
-	while ((codeToken == TKN_PLUS) || (codeToken == TKN_MINUS) ||
-		   (codeToken == TKN_OR))
+	while ((codeToken == TKN_PLUS) || (codeToken == TKN_MINUS) || (codeToken == TKN_OR))
 	{
 		TokenCodeType op = codeToken;
 		getCodeToken();
@@ -458,15 +442,12 @@ TypePtr execSimpleExpression(void)
 			operand1Ptr->integer = operand1Ptr->integer || operand2Ptr->integer;
 			resultTypePtr		 = BooleanTypePtr;
 		}
-		else if ((resultTypePtr == IntegerTypePtr) &&
-				 (type2Ptr == IntegerTypePtr))
+		else if ((resultTypePtr == IntegerTypePtr) && (type2Ptr == IntegerTypePtr))
 		{
 			if (op == TKN_PLUS)
-				operand1Ptr->integer =
-					operand1Ptr->integer + operand2Ptr->integer;
+				operand1Ptr->integer = operand1Ptr->integer + operand2Ptr->integer;
 			else
-				operand1Ptr->integer =
-					operand1Ptr->integer - operand2Ptr->integer;
+				operand1Ptr->integer = operand1Ptr->integer - operand2Ptr->integer;
 			resultTypePtr = IntegerTypePtr;
 		}
 		else
@@ -474,8 +455,7 @@ TypePtr execSimpleExpression(void)
 			//-------------------------------------------------------------------
 			// Both operands are real, or one is real and the other is
 			// integer...
-			promoteOperandsToReal(
-				operand1Ptr, resultTypePtr, operand2Ptr, type2Ptr);
+			promoteOperandsToReal(operand1Ptr, resultTypePtr, operand2Ptr, type2Ptr);
 			if (op == TKN_PLUS)
 				operand1Ptr->real = operand1Ptr->real + operand2Ptr->real;
 			else
@@ -504,9 +484,8 @@ TypePtr execExpression(void)
 	//-----------------------------------------------------------
 	// If there is a relational operator, save it and process the
 	// second simple expression...
-	if ((codeToken == TKN_EQUALEQUAL) || (codeToken == TKN_LT) ||
-		(codeToken == TKN_GT) || (codeToken == TKN_NE) ||
-		(codeToken == TKN_LE) || (codeToken == TKN_GE))
+	if ((codeToken == TKN_EQUALEQUAL) || (codeToken == TKN_LT) || (codeToken == TKN_GT) ||
+		(codeToken == TKN_NE) || (codeToken == TKN_LE) || (codeToken == TKN_GE))
 	{
 		op = codeToken;
 		getCodeToken();
@@ -517,8 +496,7 @@ TypePtr execExpression(void)
 		operand2Ptr = tos;
 		//-----------------------------------------------------
 		// Both operands are integer, boolean or enumeration...
-		if (((resultTypePtr == IntegerTypePtr) &&
-				(type2Ptr == IntegerTypePtr)) ||
+		if (((resultTypePtr == IntegerTypePtr) && (type2Ptr == IntegerTypePtr)) ||
 			(resultTypePtr->form == FRM_ENUM))
 		{
 			switch (op)
@@ -568,7 +546,7 @@ TypePtr execExpression(void)
 			}
 		}
 		else if ((resultTypePtr->form == FRM_ARRAY) &&
-				 (resultTypePtr->info.array.elementTypePtr == CharTypePtr))
+			(resultTypePtr->info.array.elementTypePtr == CharTypePtr))
 		{
 			//----------------------------------------
 			// Strings. For now, always return true...
@@ -576,8 +554,7 @@ TypePtr execExpression(void)
 		}
 		else if ((resultTypePtr == RealTypePtr) || (type2Ptr == RealTypePtr))
 		{
-			promoteOperandsToReal(
-				operand1Ptr, resultTypePtr, operand2Ptr, type2Ptr);
+			promoteOperandsToReal(operand1Ptr, resultTypePtr, operand2Ptr, type2Ptr);
 			switch (op)
 			{
 			case TKN_EQUALEQUAL:

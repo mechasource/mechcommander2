@@ -24,7 +24,7 @@
 
 //---------------------------------------------------------------------------
 // enums
-enum __inifile_constants
+enum __inifile_constants : uint32_t
 {
 	BLOCK_NOT_FOUND				  = 0xFADA0000,
 	ID_NOT_FOUND				  = 0xFADA0001,
@@ -60,27 +60,24 @@ struct IniBlockNode
 
 //---------------------------------------------------------------------------
 //									FitIniFile
-class FitIniFile : public File
+class FitIniFile : public MechFile
 {
 	// Data Members
 	//--------------
 protected:
-	std::unique_ptr<IniBlockNode> m_fileBlocks;	// Data for blocks to speed up file
-	PSTR		m_currentBlockId;				// Id of current block
-	size_t		m_totalBlocks;					// Total number of blocks in file
-	size_t		m_currentBlockOffset;			// Offset into file of block start
-	size_t		m_currentBlockSize;				// Length of current block
+	std::unique_ptr<IniBlockNode> m_fileBlocks; // Data for blocks to speed up file
+	PSTR m_currentBlockId;						// Id of current block
+	size_t m_totalBlocks;						// Total number of blocks in file
+	size_t m_currentBlockOffset;				// Offset into file of block start
+	size_t m_currentBlockSize;					// Length of current block
 
 public:
-	FitIniFile(void) : 
-		m_currentBlockId(nullptr), m_totalBlocks(0), m_currentBlockOffset(0),
-		m_currentBlockSize(0)
+	FitIniFile(void)
+		: m_currentBlockId(nullptr), m_totalBlocks(0), m_currentBlockOffset(0),
+		  m_currentBlockSize(0)
 	{
 	}
-	virtual ~FitIniFile(void) 
-	{
-		close();
-	}
+	virtual ~FitIniFile(void) { close(); }
 
 	// Member Functions
 	//------------------
@@ -132,10 +129,8 @@ protected:
 	int32_t copyString(PSTR dest, PSTR src, size_t bufLen);
 
 public:
-	virtual int32_t open(
-		PCSTR fName, FileMode _mode = READ, uint32_t numChildren = 50);
-	virtual int32_t open(
-		FilePtr _parent, size_t fileSize, uint32_t numChildren = 50);
+	virtual int32_t open(PCSTR fName, FileMode _mode = READ, uint32_t numChildren = 50);
+	virtual int32_t open(FilePtr _parent, size_t fileSize, uint32_t numChildren = 50);
 
 	virtual int32_t create(PCSTR fName);
 	virtual int32_t createWithCase(PSTR fName);
@@ -150,8 +145,12 @@ public:
 	HRESULT readIdDouble(PCSTR varName, double& value);
 
 	HRESULT readIdBoolean(PCSTR varName, bool& value);
-	HRESULT readIdLong(PCSTR varName, int32_t& value);
-	HRESULT readIdULong(PCSTR varName, uint32_t& value);
+
+	HRESULT readIdLong(PCSTR varName, long32_t& value);
+	HRESULT readIdULong(PCSTR varName, ulong32_t& value);
+
+	HRESULT readIdInt(PCSTR varName, int32_t& value);
+	HRESULT readIdUInt(PCSTR varName, uint32_t& value);
 
 	HRESULT readIdShort(PCSTR varName, int16_t& value);
 	HRESULT readIdUShort(PCSTR varName, uint16_t& value);
@@ -166,52 +165,36 @@ public:
 	HRESULT readIdFloatArray(PCSTR varName, float* result, size_t numElements);
 
 	HRESULT readIdLongArray(PCSTR varName, pint32_t result, size_t numElements);
-	HRESULT readIdULongArray(
-		PCSTR varName, puint32_t result, size_t numElements);
+	HRESULT readIdULongArray(PCSTR varName, puint32_t result, size_t numElements);
 
-	HRESULT readIdShortArray(
-		PCSTR varName, pint16_t result, size_t numElements);
-	HRESULT readIdUShortArray(
-		PCSTR varName, puint16_t result, size_t numElements);
+	HRESULT readIdShortArray(PCSTR varName, pint16_t result, size_t numElements);
+	HRESULT readIdUShortArray(PCSTR varName, puint16_t result, size_t numElements);
 
 	HRESULT readIdCharArray(PCSTR varName, pint8_t result, size_t numElements);
-	HRESULT readIdUCharArray(
-		PCSTR varName, puint8_t result, size_t numElements);
+	HRESULT readIdUCharArray(PCSTR varName, puint8_t result, size_t numElements);
 
 	size_t getIdFloatArrayElements(PCSTR varName);
-
 	size_t getIdLongArrayElements(PCSTR varName);
 	size_t getIdULongArrayElements(PCSTR varName);
-
 	size_t getIdShortArrayElements(PCSTR varName);
 	size_t getIdUShortArrayElements(PCSTR varName);
-
 	size_t getIdCharArrayElements(PCSTR varName);
 	size_t getIdUCharArrayElements(PCSTR varName);
 
 	HRESULT writeBlock(PCSTR blockId);
-
 	HRESULT writeIdFloat(PCSTR varName, float value);
-
 	HRESULT writeIdBoolean(PCSTR varName, bool value);
 	HRESULT writeIdLong(PCSTR varName, int32_t value);
 	HRESULT writeIdULong(PCSTR varName, uint32_t value);
-
 	HRESULT writeIdShort(PCSTR varName, int16_t value);
 	HRESULT writeIdUShort(PCSTR varName, uint16_t value);
-
 	HRESULT writeIdChar(PCSTR varName, int8_t value);
 	HRESULT writeIdUChar(PCSTR varName, uint8_t value);
-
 	HRESULT writeIdString(PCSTR varName, PCSTR result);
-
 	HRESULT writeIdFloatArray(PCSTR varName, float* parray, size_t numElements);
-	HRESULT writeIdLongArray(
-		PCSTR varName, pint32_t parray, size_t numElements);
-	HRESULT writeIdUShortArray(
-		PCSTR varName, puint16_t parray, size_t numElements);
-	HRESULT writeIdUCharArray(
-		PCSTR varName, puint8_t parray, size_t numElements);
+	HRESULT writeIdLongArray(PCSTR varName, pint32_t parray, size_t numElements);
+	HRESULT writeIdUShortArray(PCSTR varName, puint16_t parray, size_t numElements);
+	HRESULT writeIdUCharArray(PCSTR varName, puint8_t parray, size_t numElements);
 };
 
 //---------------------------------------------------------------------------

@@ -11,14 +11,17 @@
 //############################################################################
 
 #include "stdinc.h"
-#include "gosFXHeaders.hpp"
+
+#include "effect.hpp"
+
+//#include "gosFXHeaders.hpp"
 
 //------------------------------------------------------------------------------
 //
 gosFX::Event::Event(const Event& event) : Plug(DefaultData)
 {
 	// Check_Pointer(this);
-	// Verify(gos_GetCurrentHeap() == Heap);
+	// _ASSERT(gos_GetCurrentHeap() == Heap);
 	m_time	 = event.m_time;
 	m_flags	= event.m_flags;
 	m_effectID = event.m_effectID;
@@ -26,19 +29,17 @@ gosFX::Event::Event(const Event& event) : Plug(DefaultData)
 
 //------------------------------------------------------------------------------
 //
-gosFX::Event::Event(Stuff::MemoryStream* stream, uint32_t gfx_version)
-	: Plug(DefaultData)
+gosFX::Event::Event(std::iostream stream, uint32_t gfx_version) : Plug(DefaultData)
 {
 	// Check_Pointer(this);
 	Check_Object(stream);
-	// Verify(gos_GetCurrentHeap() == Heap);
+	// _ASSERT(gos_GetCurrentHeap() == Heap);
 	*stream >> m_time >> m_flags >> m_effectID >> m_localToParent;
 }
 
 //------------------------------------------------------------------------------
 //
-gosFX::Event* gosFX::Event::Make(
-	Stuff::MemoryStream* stream, uint32_t gfx_version)
+gosFX::Event* gosFX::Event::Make(std::iostream stream, uint32_t gfx_version)
 {
 	Check_Object(stream);
 #ifdef _GAMEOS_HPP_
@@ -51,7 +52,7 @@ gosFX::Event* gosFX::Event::Make(
 
 //------------------------------------------------------------------------------
 //
-void gosFX::Event::Save(Stuff::MemoryStream* stream)
+void gosFX::Event::Save(std::iostream stream)
 {
 	// Check_Object(this);
 	*stream << m_time << m_flags << m_effectID << m_localToParent;
@@ -64,13 +65,12 @@ void gosFX::Event::Save(Stuff::MemoryStream* stream)
 //------------------------------------------------------------------------------
 //
 gosFX::Effect__Specification::Effect__Specification(
-	Stuff::RegisteredClass::ClassID class_id, Stuff::MemoryStream* stream,
-	uint32_t gfx_version)
+	Stuff::RegisteredClass::ClassID class_id, std::iostream stream, uint32_t gfx_version)
 	: m_events(nullptr)
 {
 	// Check_Pointer(this);
 	Check_Object(stream);
-	// Verify(gos_GetCurrentHeap() == Heap);
+	// _ASSERT(gos_GetCurrentHeap() == Heap);
 	if (gfx_version < 9)
 	{
 		STOP(("This version of gosFX is no longer supported"));
@@ -108,8 +108,7 @@ gosFX::Effect__Specification::Effect__Specification(
 	if (gfx_version < 14)
 	{
 		m_state.SetRenderPermissionMask(
-			m_state.GetRenderPermissionMask() |
-			MidLevelRenderer::MLRState::TextureMask);
+			m_state.GetRenderPermissionMask() | MidLevelRenderer::MLRState::TextureMask);
 	}
 	if (m_state.GetAlphaMode() != MidLevelRenderer::MLRState::OneZeroMode &&
 		m_state.GetPriority() < MidLevelRenderer::MLRState::AlphaPriority)
@@ -118,12 +117,11 @@ gosFX::Effect__Specification::Effect__Specification(
 
 //------------------------------------------------------------------------------
 //
-gosFX::Effect__Specification::Effect__Specification(
-	Stuff::RegisteredClass::ClassID class_id)
+gosFX::Effect__Specification::Effect__Specification(Stuff::RegisteredClass::ClassID class_id)
 	: m_events(nullptr)
 {
 	// Check_Pointer(this);
-	// Verify(gos_GetCurrentHeap() == Heap);
+	// _ASSERT(gos_GetCurrentHeap() == Heap);
 	m_class = class_id;
 }
 
@@ -132,14 +130,14 @@ gosFX::Effect__Specification::Effect__Specification(
 gosFX::Effect__Specification::~Effect__Specification()
 {
 	// Check_Pointer(this);
-	Stuff::ChainIteratorOf<Event*> events(&m_events);
-	events.DeletePlugs();
+	// Stuff::ChainIteratorOf<Event*> events(&m_events);
+	// events.DeletePlugs();
 }
 
 //------------------------------------------------------------------------------
 //
 gosFX::Effect__Specification* gosFX::Effect__Specification::Make(
-	Stuff::MemoryStream* stream, uint32_t gfx_version)
+	std::iostream stream, uint32_t gfx_version)
 {
 	Check_Object(stream);
 #ifdef _GAMEOS_HPP_
@@ -185,31 +183,29 @@ bool gosFX::Effect__Specification::IsDataValid(bool fix_data)
 //------------------------------------------------------------------------------
 //
 gosFX::Effect__Specification* gosFX::Effect__Specification::Create(
-	Stuff::MemoryStream* stream, uint32_t gfx_version)
+	std::iostream stream, uint32_t gfx_version)
 {
 	Check_Object(stream);
 	Stuff::RegisteredClass::ClassID class_id;
 	*stream >> class_id;
 	gosFX::Effect::ClassData* class_data =
-		Cast_Pointer(gosFX::Effect::ClassData*,
-			Stuff::RegisteredClass::FindClassData(class_id));
+		Cast_Pointer(gosFX::Effect::ClassData*, Stuff::RegisteredClass::FindClassData(class_id));
 	Check_Object(class_data);
 	Check_Pointer(class_data->specificationFactory);
-	gosFX::Effect__Specification* spec =
-		(*class_data->specificationFactory)(stream, gfx_version);
+	gosFX::Effect__Specification* spec = (*class_data->specificationFactory)(stream, gfx_version);
 	Register_Object(spec);
 	return spec;
 }
 
 //------------------------------------------------------------------------------
 //
-void gosFX::Effect__Specification::Save(Stuff::MemoryStream* stream)
+void gosFX::Effect__Specification::Save(std::iostream stream)
 {
 	// Check_Object(this);
 	*stream << m_class << m_name;
-	Stuff::ChainIteratorOf<Event*> events(&m_events);
-	uint32_t count = events.GetSize();
-	*stream << count;
+	std::list<Event*> events(m_events); // Stuff::ChainIteratorOf<Event*> events(&m_events);
+	size_t count = events.size();
+	stream << count;
 	Event* event;
 	while ((event = events.ReadAndNext()) != nullptr)
 	{
@@ -232,16 +228,17 @@ void gosFX::Effect__Specification::Copy(Effect__Specification* spec)
 #ifdef _GAMEOS_HPP_
 	// gos_PushCurrentHeap(Heap);
 #endif
-	Verify(spec->m_class == m_class);
+	_ASSERT(spec->m_class == m_class);
 	m_name = spec->m_name;
 	//
 	//----------------------------------------------
 	// Copy the events after delete our current ones
 	//----------------------------------------------
 	//
-	Stuff::ChainIteratorOf<Event*> old_events(&m_events);
-	old_events.DeletePlugs();
-	Stuff::ChainIteratorOf<Event*> new_events(&spec->m_events);
+	std::list<Event*> old_events(m_events); // Stuff::ChainIteratorOf<Event*> old_events(&m_events);
+	// old_events.DeletePlugs();
+	std::list<Event*> new_events(
+		spec->m_events); // Stuff::ChainIteratorOf<Event*> new_events(&spec->m_events);
 	Event* event;
 	while ((event = new_events.ReadAndNext()) != nullptr)
 	{
@@ -268,14 +265,14 @@ void gosFX::Effect__Specification::AdoptEvent(Event* event)
 {
 	// Check_Object(this);
 	Check_Object(event);
-	Verify(event->m_time >= 0.0f && event->m_time <= 1.0f);
-	// Verify(gos_GetCurrentHeap() == Heap);
+	_ASSERT(event->m_time >= 0.0f && event->m_time <= 1.0f);
+	// _ASSERT(gos_GetCurrentHeap() == Heap);
 	//
 	//-----------------------------------------------------------
 	// The event must be inserted into the chain in order of time
 	//-----------------------------------------------------------
 	//
-	Stuff::ChainIteratorOf<Event*> events(&m_events);
+	std::list<Event*> events(m_events); // Stuff::ChainIteratorOf<Event*> events(&m_events);
 	Event* insert = nullptr;
 	while ((insert = events.GetCurrent()) != nullptr)
 	{
@@ -301,10 +298,10 @@ gosFX::Effect::ClassData* gosFX::Effect::DefaultData = nullptr;
 //
 void gosFX::Effect::InitializeClass()
 {
-	Verify(!DefaultData);
-	// Verify(gos_GetCurrentHeap() == Heap);
-	DefaultData = new ClassData(EffectClassID, "gosFX::Effect",
-		Node::DefaultData, &Make, &Specification::Make);
+	_ASSERT(!DefaultData);
+	// _ASSERT(gos_GetCurrentHeap() == Heap);
+	DefaultData = new ClassData(
+		EffectClassID, "gosFX::Effect", Node::DefaultData, &Make, &Specification::Make);
 	Register_Object(DefaultData);
 }
 
@@ -319,13 +316,12 @@ void gosFX::Effect::TerminateClass()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-gosFX::Effect::Effect(
-	ClassData* class_data, Specification* spec, uint32_t flags)
+gosFX::Effect::Effect(ClassData* class_data, Specification* spec, uint32_t flags)
 	: Node(class_data), m_children(nullptr), m_event(&spec->m_events)
 {
 	// Check_Pointer(this);
 	Check_Object(spec);
-	// Verify(gos_GetCurrentHeap() == Heap);
+	// _ASSERT(gos_GetCurrentHeap() == Heap);
 	m_specification = spec;
 	m_age			= 0.0f;
 	m_flags			= flags;
@@ -357,10 +353,7 @@ gosFX::Effect* gosFX::Effect::Make(Specification* spec, uint32_t flags)
 
 //------------------------------------------------------------------------------
 //
-void gosFX::Effect::TestInstance(void) const
-{
-	Verify(IsDerivedFrom(DefaultData));
-}
+void gosFX::Effect::TestInstance(void) const { _ASSERT(IsDerivedFrom(DefaultData)); }
 
 //------------------------------------------------------------------------------
 //
@@ -385,9 +378,8 @@ void gosFX::Effect::Start(ExecuteInfo* info)
 	// If no seed was provided, pick one randomly
 	//-------------------------------------------
 	//
-	m_seed =
-		(info->m_seed == -1.0f) ? Stuff::Random::GetFraction() : info->m_seed;
-	Verify(m_seed >= 0.0f && m_seed <= 1.0f);
+	m_seed = (info->m_seed == -1.0f) ? Stuff::Random::GetFraction() : info->m_seed;
+	_ASSERT(m_seed >= 0.0f && m_seed <= 1.0f);
 	//
 	//--------------------------------------------------------------------
 	// Figure out how int32_t the emitter will live and its initial age based
@@ -406,7 +398,7 @@ void gosFX::Effect::Start(ExecuteInfo* info)
 	{
 		m_age	 = info->m_age;
 		m_ageRate = info->m_ageRate;
-		Verify(m_age >= 0.0f && m_age <= 1.0f);
+		_ASSERT(m_age >= 0.0f && m_age <= 1.0f);
 	}
 	//
 	//--------------------
@@ -430,7 +422,7 @@ bool gosFX::Effect::Execute(ExecuteInfo* info)
 {
 	// Check_Object(this);
 	Check_Pointer(info);
-	Verify(IsExecuted());
+	_ASSERT(IsExecuted());
 #ifdef _GAMEOS_HPP_
 	// gos_PushCurrentHeap(Heap);
 #endif
@@ -441,7 +433,7 @@ bool gosFX::Effect::Execute(ExecuteInfo* info)
 	//
 	if (info->m_seed != -1.0f)
 	{
-		Verify(info->m_seed >= 0.0f && info->m_seed < 1.0f);
+		_ASSERT(info->m_seed >= 0.0f && info->m_seed < 1.0f);
 		m_seed = info->m_seed;
 	}
 	//
@@ -449,9 +441,8 @@ bool gosFX::Effect::Execute(ExecuteInfo* info)
 	// Figure out the new age and clear the bounds
 	//--------------------------------------------
 	//
-	float age =
-		m_age + static_cast<float>(info->m_time - m_lastRan) * m_ageRate;
-	Verify(age >= 0.0f && age >= m_age);
+	float age = m_age + static_cast<float>(info->m_time - m_lastRan) * m_ageRate;
+	_ASSERT(age >= 0.0f && age >= m_age);
 	*info->m_bounds = Stuff::OBB::Identity;
 	//
 	//--------------------------------
@@ -480,13 +471,12 @@ bool gosFX::Effect::Execute(ExecuteInfo* info)
 		uint32_t flags = ExecuteFlag;
 		if ((event->m_flags & SimulationModeMask) == ParentSimulationMode)
 		{
-			Verify((m_flags & SimulationModeMask) != ParentSimulationMode);
+			_ASSERT((m_flags & SimulationModeMask) != ParentSimulationMode);
 			flags |= m_flags & SimulationModeMask;
 		}
 		else
 			flags |= event->m_flags & SimulationModeMask;
-		Effect* effect =
-			EffectLibrary::Instance->MakeEffect(event->m_effectID, flags);
+		Effect* effect = EffectLibrary::Instance->MakeEffect(event->m_effectID, flags);
 		Register_Object(effect);
 		m_children.Add(effect);
 		m_event.Next();
@@ -496,11 +486,9 @@ bool gosFX::Effect::Execute(ExecuteInfo* info)
 		//---------------------------------------------
 		//
 		effect->m_localToParent = event->m_localToParent;
-		float min_seed =
-			m_specification->m_minimumChildSeed.ComputeValue(m_age, m_seed);
+		float min_seed			= m_specification->m_minimumChildSeed.ComputeValue(m_age, m_seed);
 		float seed_range =
-			m_specification->m_maximumChildSeed.ComputeValue(m_age, m_seed) -
-			min_seed;
+			m_specification->m_maximumChildSeed.ComputeValue(m_age, m_seed) - min_seed;
 		float seed = Stuff::Random::GetFraction() * seed_range + min_seed;
 		Clamp(seed, 0.0f, 1.0f);
 		ExecuteInfo local_info(info->m_time, &m_localToWorld, nullptr, seed);
@@ -651,5 +639,5 @@ bool gosFX::Effect::HasFinished()
 
 void gosFX::Effect__ClassData::TestInstance()
 {
-	Verify(IsDerivedFrom(gosFX::Effect::DefaultData));
+	_ASSERT(IsDerivedFrom(gosFX::Effect::DefaultData));
 }

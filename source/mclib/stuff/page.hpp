@@ -33,13 +33,13 @@ class Page : public Plug
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Constructor/Destructors
 	//
-  protected:
+protected:
 	Page(NotationFile* notation_file);
 	~Page(void);
 
 	NotationFile* m_notationFile;
 
-  public:
+public:
 	NotationFile* GetNotationFile(void)
 	{
 		// Check_Object(this);
@@ -49,7 +49,7 @@ class Page : public Plug
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Page functions
 	//
-  public:
+public:
 	void SetName(PCSTR pagename)
 	{
 		// Check_Object(this);
@@ -62,10 +62,10 @@ class Page : public Plug
 		return m_name;
 	}
 
-	void WriteNotes(MemoryStream* stream);
+	void WriteNotes(std::iostream& stream);
 
-  protected:
-	MString m_name;
+protected:
+	std::wstring m_name;
 
 	void SetDirty(void)
 	{
@@ -77,7 +77,7 @@ class Page : public Plug
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Entry access
 	//
-  public:
+public:
 	bool IsEmpty(void)
 	{
 		// Check_Object(this);
@@ -107,13 +107,13 @@ class Page : public Plug
 	void DeleteNote(PCSTR entryname);
 	void DeleteAllNotes(void);
 
-  protected:
+protected:
 	ChainOf<Note*> m_notes;
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// string access
 	//
-  public:
+public:
 	bool GetEntry(PCSTR entryname, PCSTR* contents, bool required = false);
 	void SetEntry(PCSTR entryname, PCSTR contents);
 	void AppendEntry(PCSTR entryname, PCSTR contents);
@@ -121,7 +121,7 @@ class Page : public Plug
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// int32_t access
 	//
-  public:
+public:
 	bool GetEntry(PCSTR entryname, pint32_t value, bool required = false);
 	void SetEntry(PCSTR entryname, int32_t value);
 	void AppendEntry(PCSTR entryname, int32_t value);
@@ -129,7 +129,7 @@ class Page : public Plug
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// scalar access
 	//
-  public:
+public:
 	bool GetEntry(PCSTR entryname, float* value, bool required = false);
 	void SetEntry(PCSTR entryname, float value);
 	void AppendEntry(PCSTR entryname, float value);
@@ -137,7 +137,7 @@ class Page : public Plug
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// bool access
 	//
-  public:
+public:
 	bool GetEntry(PCSTR entryname, bool* value, bool required = false);
 	void SetEntry(PCSTR entryname, bool value);
 	void AppendEntry(PCSTR entryname, bool value);
@@ -145,7 +145,7 @@ class Page : public Plug
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Vector3D access
 	//
-  public:
+public:
 	bool GetEntry(PCSTR entryname, Vector3D* value, bool required = false);
 	void SetEntry(PCSTR entryname, const Vector3D& value);
 	void AppendEntry(PCSTR entryname, const Vector3D& value);
@@ -153,7 +153,7 @@ class Page : public Plug
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// YawPitchRoll access
 	//
-  public:
+public:
 	bool GetEntry(PCSTR entryname, YawPitchRoll* value, bool required = false);
 	void SetEntry(PCSTR entryname, const YawPitchRoll& value);
 	void AppendEntry(PCSTR entryname, const YawPitchRoll& value);
@@ -161,16 +161,15 @@ class Page : public Plug
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// UnitQuaternion access
 	//
-  public:
-	bool GetEntry(
-		PCSTR entryname, UnitQuaternion* value, bool required = false);
+public:
+	bool GetEntry(PCSTR entryname, UnitQuaternion* value, bool required = false);
 	void SetEntry(PCSTR entryname, const UnitQuaternion& value);
 	void AppendEntry(PCSTR entryname, const UnitQuaternion& value);
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Motion3D access
 	//
-  public:
+public:
 	bool GetEntry(PCSTR entryname, Motion3D* value, bool required = false);
 	void SetEntry(PCSTR entryname, const Motion3D& value);
 	void AppendEntry(PCSTR entryname, const Motion3D& value);
@@ -178,7 +177,7 @@ class Page : public Plug
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// RGBColor access
 	//
-  public:
+public:
 	bool GetEntry(PCSTR entryname, RGBColor* value, bool required = false);
 	void SetEntry(PCSTR entryname, const RGBColor& value);
 	void AppendEntry(PCSTR entryname, const RGBColor& value);
@@ -186,7 +185,7 @@ class Page : public Plug
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// RGBAColor access
 	//
-  public:
+public:
 	bool GetEntry(PCSTR entryname, RGBAColor* value, bool required = false);
 	void SetEntry(PCSTR entryname, const RGBAColor& value);
 	void AppendEntry(PCSTR entryname, const RGBAColor& value);
@@ -194,13 +193,13 @@ class Page : public Plug
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// NotationFile access
 	//
-  public:
+public:
 	bool GetEntry(PCSTR entryname, NotationFile* value, bool required = false);
 	void SetEntry(PCSTR entryname, NotationFile* value);
 	void AppendEntry(PCSTR entryname, NotationFile* value);
 
-  public:
+public:
 	void TestInstance(void) const;
 };
-}
+} // namespace Stuff
 #endif

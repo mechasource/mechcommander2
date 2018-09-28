@@ -28,18 +28,17 @@ class PertCloud__Specification : public SpinningCloud__Specification
 	//----------------------------------------------------------------------
 	// Constructors/Destructors
 	//
-  protected:
-	PertCloud__Specification(Stuff::MemoryStream* stream, uint32_t gfx_version);
+protected:
+	PertCloud__Specification(std::iostream stream, uint32_t gfx_version);
 
-  public:
+public:
 	PertCloud__Specification(uint32_t sides);
 
-	static PertCloud__Specification* Make(
-		Stuff::MemoryStream* stream, uint32_t gfx_version);
+	static PertCloud__Specification* Make(std::iostream stream, uint32_t gfx_version);
 
 	void Copy(PertCloud__Specification* spec);
 
-	void Save(Stuff::MemoryStream* stream);
+	void Save(std::iostream stream);
 
 	void BuildDefaults(void);
 
@@ -48,12 +47,11 @@ class PertCloud__Specification : public SpinningCloud__Specification
 	//-------------------------------------------------------------------------
 	// FCurves
 	//
-  public:
+public:
 	SeededCurveOf<ComplexCurve, SplineCurve, Curve::e_ComplexSplineType> m_size;
-	SeededCurveOf<ConstantCurve, SplineCurve, Curve::e_ConstantSplineType>
-		m_perturbation;
-	SeededCurveOf<ComplexCurve, LinearCurve, Curve::e_ComplexLinearType>
-		m_pCenterRed, m_pCenterGreen, m_pCenterBlue, m_pCenterAlpha;
+	SeededCurveOf<ConstantCurve, SplineCurve, Curve::e_ConstantSplineType> m_perturbation;
+	SeededCurveOf<ComplexCurve, LinearCurve, Curve::e_ComplexLinearType> m_pCenterRed,
+		m_pCenterGreen, m_pCenterBlue, m_pCenterAlpha;
 
 	uint32_t m_vertices;
 };
@@ -65,9 +63,8 @@ class PertCloud__Specification : public SpinningCloud__Specification
 
 class PertCloud__Particle : public SpinningCloud__Particle
 {
-  public:
-	Stuff::Point3D
-		m_vertices[MidLevelRenderer::Limits::Max_Number_Of_NGon_Vertices];
+public:
+	Stuff::Point3D m_vertices[MidLevelRenderer::Limits::Max_Number_Of_NGon_Vertices];
 };
 
 //############################################################################
@@ -79,26 +76,25 @@ class PertCloud : public SpinningCloud
 	//----------------------------------------------------------------------------
 	// Class Registration Support
 	//
-  public:
+public:
 	static void __stdcall InitializeClass(void);
 	static void __stdcall TerminateClass(void);
 
 	typedef PertCloud__Specification Specification;
 	typedef PertCloud__Particle Particle;
 
-  protected:
-	MidLevelRenderer::MLRNGonCloud*
-		m_cloudImplementation; // Pert to an MLR Pert cloud by Jim
+protected:
+	MidLevelRenderer::MLRNGonCloud* m_cloudImplementation; // Pert to an MLR Pert cloud by Jim
 	Stuff::Point3D* m_P_vertices;
 	Stuff::RGBAColor* m_P_color;
 
 	//----------------------------------------------------------------------------
 	// Class Data Support
 	//
-  protected:
+protected:
 	PertCloud(Specification* spec, uint32_t flags);
 
-  public:
+public:
 	~PertCloud(void);
 
 	static PertCloud* Make(Specification* spec, uint32_t flags);
@@ -112,8 +108,7 @@ class PertCloud : public SpinningCloud
 	{
 		// Check_Object(this);
 		Check_Object(GetSpecification());
-		return Cast_Pointer(Particle*,
-			&m_data[index * GetSpecification()->m_particleClassSize]);
+		return Cast_Pointer(Particle*, &m_data[index * GetSpecification()->m_particleClassSize]);
 	}
 
 	static ClassData* DefaultData;
@@ -121,19 +116,19 @@ class PertCloud : public SpinningCloud
 	//----------------------------------------------------------------------------
 	// Testing
 	//
-  public:
+public:
 	void TestInstance(void) const;
 
 	//----------------------------------------------------------------------------
 	// API
 	//
-  protected:
-	bool AnimateParticle(uint32_t index,
-		const Stuff::LinearMatrix4D* world_to_new_local, Stuff::Time till);
+protected:
+	bool AnimateParticle(
+		uint32_t index, const Stuff::LinearMatrix4D* world_to_new_local, Stuff::Time till);
 	void CreateNewParticle(uint32_t index, Stuff::Point3D* translation);
 	void DestroyParticle(uint32_t index);
 
-  public:
+public:
 	void Draw(DrawInfo* info);
 };
-}
+} // namespace gosFX

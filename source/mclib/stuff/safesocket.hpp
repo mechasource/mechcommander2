@@ -32,16 +32,16 @@ class SafeSocket : public Socket
 {
 	friend class SafeIterator;
 
-  public:
+public:
 	~SafeSocket(void);
 	void TestInstance(void);
 
-  protected:
+protected:
 	explicit SafeSocket(Node* node);
 
 	void SendIteratorMemo(IteratorMemo memo, PVOID content);
 
-  private:
+private:
 	SafeIterator* iteratorHead;
 };
 
@@ -51,18 +51,18 @@ class SafeIterator : public SocketIterator
 {
 	friend class SafeSocket;
 
-  public:
+public:
 	~SafeIterator(void);
 	void TestInstance(void) const;
 
-  protected:
+protected:
 	explicit SafeIterator(SafeSocket* safeSocket);
 
-  private:
+private:
 	virtual void ReceiveMemo(IteratorMemo memo, PVOID content);
 
 	SafeIterator* nextIterator;
 	SafeIterator* prevIterator;
 };
-}
+} // namespace Stuff
 #endif

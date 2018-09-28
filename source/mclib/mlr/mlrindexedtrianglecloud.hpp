@@ -21,21 +21,43 @@ class MLRIndexedTriangleCloud : public MLRTriangleCloud
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Initialization
 	//
-  public:
+public:
 	static void __stdcall InitializeClass(void);
 	static void __stdcall TerminateClass(void);
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Constructors/Destructors
 	//
-  public:
-	MLRIndexedTriangleCloud(int32_t);
-	~MLRIndexedTriangleCloud(void);
+public:
+	MLRIndexedTriangleCloud(uint32_t nr) : MLRTriangleCloud(nr)
+	{
+		// _ASSERT(gos_GetCurrentHeap() == Heap);
+		usedNrOfPoints = nullptr;
+		// Check_Pointer(this);
+		drawMode = SortData::TriIndexedList;
+	}
+	~MLRIndexedTriangleCloud(void)
+	{
+		// Check_Object(this);
+	}
 
-	void SetData(pcsize_t tri_count, pcsize_t point_count,
-		pcuint16_t index_data, const Stuff::Point3D* point_data,
-		const Stuff::RGBAColor* color_data,
-		const Stuff::Vector2DScalar* uv_data);
+	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	//
+	MLRIndexedTriangleCloud::MLRIndexedTriangleCloud(uint32_t nr) : MLRTriangleCloud(nr)
+	{
+		// _ASSERT(gos_GetCurrentHeap() == Heap);
+		usedNrOfPoints = nullptr;
+		// Check_Pointer(this);
+		drawMode = SortData::TriIndexedList;
+	}
+
+	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	//
+	MLRIndexedTriangleCloud::~MLRIndexedTriangleCloud(void)
+
+		void SetData(pcsize_t tri_count, pcsize_t point_count, pcuint16_t index_data,
+			const Stuff::Point3D* point_data, const Stuff::RGBAColor* color_data,
+			const Stuff::Vector2DScalar* uv_data);
 
 	void Draw(DrawEffectInformation*, GOSVertexPool*, MLRSorter*);
 
@@ -56,28 +78,27 @@ class MLRIndexedTriangleCloud : public MLRTriangleCloud
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Class Data Support
 	//
-  public:
+public:
 	static ClassData* DefaultData;
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Testing
 	//
-  public:
+public:
 	void TestInstance(void) const;
 
-  protected:
+protected:
 	pcsize_t usedNrOfPoints;
 	pcuint16_t index;
 	const Stuff::Vector2DScalar* texCoords;
 
-	static Stuff::DynamicArrayOf<Stuff::Vector2DScalar>*
-		clipExtraTexCoords; // , Max_Number_Vertices_Per_Mesh
-	static Stuff::DynamicArrayOf<uint16_t>*
-		clipExtraIndex; // , Max_Number_Vertices_Per_Mesh
-	static Stuff::DynamicArrayOf<uint8_t>* visibleIndexedVertices;
+	static std::vector<Stuff::Vector2DScalar>*
+		clipExtraTexCoords;									// , Max_Number_Vertices_Per_Mesh
+	static std::vector<uint16_t>* clipExtraIndex; // , Max_Number_Vertices_Per_Mesh
+	static std::vector<uint8_t>* visibleIndexedVertices;
 
 	puint16_t gos_indices;
 	uint16_t numGOSIndices;
 };
-}
+} // namespace MidLevelRenderer
 #endif

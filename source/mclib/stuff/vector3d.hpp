@@ -31,7 +31,7 @@ class Point3D;
 class UnitQuaternion;
 class YawPitchRange;
 
-typedef enum Axes
+enum Axes : uint32_t
 {
 	X_Axis,
 	Y_Axis,
@@ -98,7 +98,7 @@ typedef enum Axes
 
 class Vector3D
 {
-  public:
+public:
 	float x;
 	float y;
 	float z;
@@ -148,18 +148,11 @@ class Vector3D
 		Check_Object(&v);
 		return v.GetLengthSquared() <= e;
 	}
-	bool operator!(void)const { return Small_Enough(*this, SMALL); }
+	bool operator!(void) const { return Small_Enough(*this, SMALL); }
 
-	friend bool Close_Enough(
-		const Vector3D& v1, const Vector3D& v2, float e = SMALL);
-	bool operator==(const Vector3D& v) const
-	{
-		return Close_Enough(*this, v, SMALL);
-	}
-	bool operator!=(const Vector3D& v) const
-	{
-		return !Close_Enough(*this, v, SMALL);
-	}
+	friend bool Close_Enough(const Vector3D& v1, const Vector3D& v2, float e = SMALL);
+	bool operator==(const Vector3D& v) const { return Close_Enough(*this, v, SMALL); }
+	bool operator!=(const Vector3D& v) const { return !Close_Enough(*this, v, SMALL); }
 
 	void TestInstance(void) const {}
 
@@ -172,13 +165,13 @@ class Vector3D
 	const float& operator[](size_t index) const
 	{
 		// Check_Pointer(this);
-		Verify(static_cast<uint32_t>(index) <= Z_Axis);
+		_ASSERT(static_cast<uint32_t>(index) <= Z_Axis);
 		return (&x)[index];
 	}
 	float& operator[](size_t index)
 	{
 		// Check_Pointer(this);
-		Verify(static_cast<uint32_t>(index) <= Z_Axis);
+		_ASSERT(static_cast<uint32_t>(index) <= Z_Axis);
 		return (&x)[index];
 	}
 
@@ -272,8 +265,8 @@ class Vector3D
 		// Check_Pointer(this);
 		Check_Object(&v1);
 		Check_Object(&v2);
-		Verify(this != &v1);
-		Verify(this != &v2);
+		_ASSERT(this != &v1);
+		_ASSERT(this != &v2);
 #if defined(LEFT_HANDED_COORDINATES)
 		x = v2.y * v1.z - v2.z * v1.y;
 		y = v2.z * v1.x - v2.x * v1.z;
@@ -295,9 +288,9 @@ class Vector3D
 		Check_Object(&p1);
 		Check_Object(&p2);
 		Check_Object(&p3);
-		Verify(this != &p1);
-		Verify(this != &p2);
-		Verify(this != &p3);
+		_ASSERT(this != &p1);
+		_ASSERT(this != &p2);
+		_ASSERT(this != &p3);
 #if defined(LEFT_HANDED_COORDINATES)
 		x = (p3.y - p2.y) * (p1.z - p2.z) - (p3.z - p2.z) * (p1.y - p2.y);
 		y = (p3.z - p2.z) * (p1.x - p2.x) - (p3.x - p2.x) * (p1.z - p2.z);
@@ -337,7 +330,7 @@ class Vector3D
 	{
 		// Check_Pointer(this);
 		Check_Object(&v);
-		Verify(!Small_Enough(scale));
+		_ASSERT(!Small_Enough(scale));
 		scale = 1.0f / scale;
 		x	 = v.x * scale;
 		y	 = v.y * scale;
@@ -351,9 +344,9 @@ class Vector3D
 		// Check_Pointer(this);
 		Check_Object(&v1);
 		Check_Object(&v2);
-		Verify(!Small_Enough(v2.x));
-		Verify(!Small_Enough(v2.y));
-		Verify(!Small_Enough(v2.z));
+		_ASSERT(!Small_Enough(v2.x));
+		_ASSERT(!Small_Enough(v2.y));
+		_ASSERT(!Small_Enough(v2.z));
 		x = v1.x / v2.x;
 		y = v1.y / v2.y;
 		z = v1.z / v2.z;
@@ -382,17 +375,14 @@ class Vector3D
 	}
 	float GetLength(void) const { return Sqrt(GetLengthSquared()); }
 
-	float GetApproximateLength(void) const
-	{
-		return SqrtApproximate(GetLengthSquared());
-	}
+	float GetApproximateLength(void) const { return SqrtApproximate(GetLengthSquared()); }
 
 	Vector3D& Normalize(const Vector3D& v)
 	{
 		// Check_Object(this);
 		Check_Object(&v);
 		float len = v.GetLength();
-		Verify(!Small_Enough(len));
+		_ASSERT(!Small_Enough(len));
 		len = 1.0f / len;
 		x   = v.x * len;
 		y   = v.y * len;
@@ -400,8 +390,7 @@ class Vector3D
 		return *this;
 	}
 
-	Vector3D& Combine(
-		const Vector3D& v1, float t1, const Vector3D& v2, float t2)
+	Vector3D& Combine(const Vector3D& v1, float t1, const Vector3D& v2, float t2)
 	{
 		// Check_Pointer(this);
 		Check_Object(&v1);
@@ -440,20 +429,19 @@ class Vector3D
 //~~~~~~~~~~~~~~~~~~~~~~~~~~ Vector3D functions ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 void Convert_From_Ascii(PCSTR str, Vector3D* vector_3D);
-}
+} // namespace Stuff
 
 namespace MemoryStreamIO
 {
-
-inline Stuff::MemoryStream& Read(
-	Stuff::MemoryStream* stream, Stuff::Vector3D* output)
+#if _CONSIDERED_TEMPORARILY_DISABLED
+inline std::istream& Read(std::istream& stream, Stuff::Vector3D* output)
 {
-	return stream->ReadBytes(output, sizeof(*output));
+	return stream.read(output, sizeof(*output));
 }
-inline Stuff::MemoryStream& Write(
-	Stuff::MemoryStream* stream, const Stuff::Vector3D* input)
+inline std::ostream& Write(std::ostream& stream, const Stuff::Vector3D* input)
 {
-	return stream->WriteBytes(input, sizeof(*input));
+	return stream.write(input, sizeof(*input));
 }
-}
+#endif
+} // namespace MemoryStreamIO
 #endif

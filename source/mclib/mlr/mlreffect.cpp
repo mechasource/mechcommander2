@@ -15,7 +15,7 @@ using namespace MidLevelRenderer;
 
 void EffectClipPolygon::Init(void)
 {
-	// Verify(gos_GetCurrentHeap() == StaticHeap);
+	// _ASSERT(gos_GetCurrentHeap() == StaticHeap);
 	coords.SetLength(Limits::Max_Number_Vertices_Per_Polygon);
 	colors.SetLength(Limits::Max_Number_Vertices_Per_Polygon);
 	texCoords.SetLength(Limits::Max_Number_Vertices_Per_Polygon);
@@ -36,19 +36,18 @@ void EffectClipPolygon::Destroy(void)
 
 MLREffect::ClassData* MLREffect::DefaultData = nullptr;
 EffectClipPolygon* MLREffect::clipBuffer;
-Stuff::DynamicArrayOf<Stuff::Vector4D>* MLREffect::transformedCoords;
+std::vector<Stuff::Vector4D>* MLREffect::transformedCoords;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void MLREffect::InitializeClass(void)
 {
-	Verify(!DefaultData);
-	// Verify(gos_GetCurrentHeap() == StaticHeap);
-	DefaultData = new ClassData(MLREffectClassID, "MidLevelRenderer::MLREffect",
-		RegisteredClass::DefaultData);
+	_ASSERT(!DefaultData);
+	// _ASSERT(gos_GetCurrentHeap() == StaticHeap);
+	DefaultData = new ClassData(
+		MLREffectClassID, "MidLevelRenderer::MLREffect", RegisteredClass::DefaultData);
 	Register_Object(DefaultData);
-	transformedCoords = new Stuff::DynamicArrayOf<Stuff::Vector4D>(
-		Limits::Max_Number_Vertices_Per_Mesh);
+	transformedCoords = new std::vector<Stuff::Vector4D>(Limits::Max_Number_Vertices_Per_Mesh);
 	Register_Object(transformedCoords);
 	clipBuffer = new EffectClipPolygon[2];
 	Register_Pointer(clipBuffer);
@@ -73,10 +72,9 @@ void MLREffect::TerminateClass(void)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLREffect::MLREffect(uint32_t nr, ClassData* class_data)
-	: RegisteredClass(class_data)
+MLREffect::MLREffect(uint32_t nr, ClassData* class_data) : RegisteredClass(class_data)
 {
-	// Verify(gos_GetCurrentHeap() == Heap);
+	// _ASSERT(gos_GetCurrentHeap() == Heap);
 	visible = 0;
 	maxNrOf = nr;
 	testList.SetLength(maxNrOf);

@@ -12,15 +12,13 @@ using namespace MidLevelRenderer;
 //#########################    MLRClippingState    ############################
 //#############################################################################
 
-uint32_t MLRClippingState::numberBitsLookUpTable[MLRClippingState::ClipMask +
-												 1] = {0, 1, 1, 2, 1, 2, 2, 3,
-	1, 2, 2, 3, 2, 3, 3, 4, 1, 2, 2, 3, 2, 3, 3, 4, 2, 3, 3, 4, 3, 4, 4, 5, 1,
-	2, 2, 3, 2, 3, 3, 4, 2, 3, 3, 4, 3, 4, 4, 5, 2, 3, 3, 4, 3, 4, 4, 5, 3, 4,
-	4, 5, 4, 5, 5, 6};
+uint32_t MLRClippingState::numberBitsLookUpTable[MLRClippingState::ClipMask + 1] = {0, 1, 1, 2, 1,
+	2, 2, 3, 1, 2, 2, 3, 2, 3, 3, 4, 1, 2, 2, 3, 2, 3, 3, 4, 2, 3, 3, 4, 3, 4, 4, 5, 1, 2, 2, 3, 2,
+	3, 3, 4, 2, 3, 3, 4, 3, 4, 4, 5, 2, 3, 3, 4, 3, 4, 4, 5, 3, 4, 4, 5, 4, 5, 5, 6};
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLRClippingState::Save(Stuff::MemoryStream* stream)
+void MLRClippingState::Save(std::iostream stream)
 {
 	// Check_Object(this);
 	Check_Object(stream);
@@ -34,7 +32,7 @@ void MLRClippingState::Save(Stuff::MemoryStream* stream)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLRClippingState::Load(Stuff::MemoryStream* stream)
+void MLRClippingState::Load(std::iostream stream)
 {
 	// Check_Object(this);
 	Check_Object(stream);

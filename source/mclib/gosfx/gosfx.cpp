@@ -22,18 +22,16 @@ uint32_t gosFX::Profile_Count;
 
 static Stuff::LinearMatrix4D Effect_Into_Motion_data(true);
 static Stuff::LinearMatrix4D Effect_Against_Motion_data(true);
-const Stuff::LinearMatrix4D& gosFX::Effect_Into_Motion =
-	Effect_Into_Motion_data;
-const Stuff::LinearMatrix4D& gosFX::Effect_Against_Motion =
-	Effect_Against_Motion_data;
+const Stuff::LinearMatrix4D& gosFX::Effect_Into_Motion	= Effect_Into_Motion_data;
+const Stuff::LinearMatrix4D& gosFX::Effect_Against_Motion = Effect_Against_Motion_data;
 
 //-----------------------------------------------------------------------------
 //
 
 void __stdcall gosFX::InitializeClasses(void)
 {
-	Verify(FirstFreegosFXClassID <= Stuff::LastgosFXClassID);
-	// Verify(!Heap);
+	_ASSERT(FirstFreegosFXClassID <= Stuff::LastgosFXClassID);
+	// _ASSERT(!Heap);
 	// Heap = gos_CreateMemoryHeap("gosFX", 0, ParentClientHeap);
 	// Check_Pointer(Heap);
 	// gos_PushCurrentHeap(Heap);
@@ -74,8 +72,7 @@ void __stdcall gosFX::InitializeClasses(void)
 	AddStatistic("Perts", "prims", gos_DWORD, &Pert_Count, Stat_AutoReset);
 	AddStatistic("Cards", "prims", gos_DWORD, &Card_Count, Stat_AutoReset);
 	AddStatistic("Shapes", "prims", gos_DWORD, &Shape_Count, Stat_AutoReset);
-	AddStatistic(
-		"Profiles", "prims", gos_DWORD, &Profile_Count, Stat_AutoReset);
+	AddStatistic("Profiles", "prims", gos_DWORD, &Profile_Count, Stat_AutoReset);
 }
 
 //-----------------------------------------------------------------------------
@@ -108,12 +105,12 @@ void __stdcall gosFX::TerminateClasses(void)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-int32_t gosFX::ReadGFXVersion(Stuff::MemoryStream* erf_stream)
+int32_t gosFX::ReadGFXVersion(std::iostream erf_stream)
 {
 	Check_Object(erf_stream);
 	int32_t erf_signature;
 	*erf_stream >> erf_signature;
-	Verify(erf_signature == 'GFX#');
+	_ASSERT(erf_signature == 'GFX#');
 	uint32_t version;
 	*erf_stream >> version;
 	if (version > CurrentGFXVersion)
@@ -123,7 +120,7 @@ int32_t gosFX::ReadGFXVersion(Stuff::MemoryStream* erf_stream)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void gosFX::WriteGFXVersion(Stuff::MemoryStream* erf_stream)
+void gosFX::WriteGFXVersion(std::iostream erf_stream)
 {
 	Check_Object(erf_stream);
 	*erf_stream << 'GFX#' << static_cast<int32_t>(CurrentGFXVersion);

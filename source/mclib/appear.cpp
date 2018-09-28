@@ -10,43 +10,27 @@
 // Include Files
 #include "stdinc.h"
 
-#ifndef APPEAR_H
 #include "appear.h"
-#endif
 
-#ifndef CAMERA_H
-#include "camera.h"
-#endif
-
-#ifndef APPRTYPE_H
-#include "apprtype.h"
-#endif
-
-#ifndef DBASEGUI_H
-#include "dbasegui.h"
-#endif
-
-#ifndef CELINE_H
-#include "celine.h"
-#endif
-
-#ifndef CEVFX_H
-#include "cevfx.h"
-#endif
+//#include "camera.h"
+//#include "apprtype.h"
+//#include "dbasegui.h"
+//#include "celine.h"
+//#include "cevfx.h"
 
 //#ifndef FONT_H
 //#include "Font.h"
 //#endif
 
-extern bool useFog;
+// extern bool useFog;
 
+#if _CONSIDERED_OBSOLETE
 //---------------------------------------------------------------------------
 // class Appearance
 PVOID Appearance::operator new(size_t mySize)
 {
 	PVOID result = nullptr;
-	if (AppearanceTypeList::appearanceHeap &&
-		AppearanceTypeList::appearanceHeap->heapReady())
+	if (AppearanceTypeList::appearanceHeap && AppearanceTypeList::appearanceHeap->heapReady())
 	{
 		result = AppearanceTypeList::appearanceHeap->Malloc(mySize);
 	}
@@ -57,45 +41,43 @@ PVOID Appearance::operator new(size_t mySize)
 void Appearance::operator delete(PVOID us)
 {
 	int32_t result;
-	if (AppearanceTypeList::appearanceHeap &&
-		AppearanceTypeList::appearanceHeap->heapReady())
+	if (AppearanceTypeList::appearanceHeap && AppearanceTypeList::appearanceHeap->heapReady())
 	{
 		result = AppearanceTypeList::appearanceHeap->Free(us);
 	}
 }
+#endif
 
 //---------------------------------------------------------------------------
 void Appearance::drawTextHelp(PSTR text, uint32_t color)
 {
 	uint32_t width, height;
 	Stuff::Vector4D moveHere;
+
 	moveHere = screenPos;
-	gos_TextSetAttributes(
-		gosFontHandle, 0, gosFontScale, false, true, false, false);
+	gos_TextSetAttributes(gosFontHandle, 0, gosFontScale, false, true, false, false);
 	gos_TextStringLength(&width, &height, text);
 	moveHere.y = lowerRight.y + 10.0f;
 	moveHere.x -= width / 2;
 	moveHere.z = width;
 	moveHere.w = height;
-	globalFloatHelp->setFloatHelp(
-		text, moveHere, color, SD_BLACK, 1.0f, true, false, false, false);
+	globalFloatHelp->setFloatHelp(text, moveHere, color, SD_BLACK, 1.0f, true, false, false, false);
 }
 
 void Appearance::drawTextHelp(PSTR text) { drawTextHelp(text, SD_GREEN); }
+
 void Appearance::drawPilotName(PSTR text, uint32_t color)
 {
 	uint32_t width, height;
 	Stuff::Vector4D moveHere;
 	moveHere = screenPos;
-	gos_TextSetAttributes(
-		gosFontHandle, 0, gosFontScale, false, true, false, false);
+	gos_TextSetAttributes(gosFontHandle, 0, gosFontScale, false, true, false, false);
 	gos_TextStringLength(&width, &height, text);
 	moveHere.y = lowerRight.y + 10.0f + height;
 	moveHere.x -= width / 2;
 	moveHere.z = width;
 	moveHere.w = height;
-	globalFloatHelp->setFloatHelp(
-		text, moveHere, color, SD_BLACK, 1.0f, true, false, false, false);
+	globalFloatHelp->setFloatHelp(text, moveHere, color, SD_BLACK, 1.0f, true, false, false, false);
 }
 
 //---------------------------------------------------------------------------
@@ -358,8 +340,8 @@ void DrawBox(float l, float t, float r, float b)
 	}
 }
 
-void Appearance::drawIcon(uint32_t bmpHandle, uint32_t bmpWidth,
-	uint32_t bmpHeight, uint32_t color, uint32_t where)
+void Appearance::drawIcon(
+	uint32_t bmpHandle, uint32_t bmpWidth, uint32_t bmpHeight, uint32_t color, uint32_t where)
 {
 	// ignoring where for now
 	float offset	 = 8.0 * eye->getScaleFactor();
@@ -399,7 +381,7 @@ void Appearance::drawBars(void)
 	float trueWidth  = WIDTH * eye->getScaleFactor() * 2;
 	float trueHeight = HEIGHT * eye->getScaleFactor();
 	float topY		 = upperLeft.y - offset - trueHeight;
-	float leftX = floor((upperLeft.x + lowerRight.x) / 2.f - trueWidth / 2);
+	float leftX		 = floor((upperLeft.x + lowerRight.x) / 2.f - trueWidth / 2);
 	uint32_t color;
 	if (barStatus > 1.0f)
 		barStatus = 1.0f;
@@ -454,8 +436,7 @@ void Appearance::drawBars(void)
 	newElement.init(vertices);
 	gos_SetRenderState(gos_State_Fog, 0);
 	newElement.draw();
-	DrawBox(
-		vertices[0].x, vertices[0].y, (leftX + trueWidth + 1.0), vertices[2].y);
+	DrawBox(vertices[0].x, vertices[0].y, (leftX + trueWidth + 1.0), vertices[2].y);
 	uint32_t fogColor = eye->fogColor;
 	//-----------------------------------------------------
 	// FOG time.  Set Render state to FOG on!

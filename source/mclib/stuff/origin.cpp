@@ -51,7 +51,7 @@ bool Stuff::Close_Enough(const Origin3D& a1, const Origin3D& a2, float e)
 	Check_Object(&a1);
 	Check_Object(&a2);
 	return Close_Enough(a1.linearPosition, a2.linearPosition, e) &&
-		   Close_Enough(a1.angularPosition, a2.angularPosition, e);
+		Close_Enough(a1.angularPosition, a2.angularPosition, e);
 }
 
 #if 0
@@ -69,7 +69,7 @@ Origin3D::AddScaled(
 	//Check_Pointer(this);
 	Check_Object(&source);
 	Check_Object(&delta);
-	Verify(t >= 0.0f);
+	_ASSERT(t >= 0.0f);
 	linearPosition.AddScaled(source.linearPosition, delta.linearMotion, t);
 	angularPosition.AddScaled(source.angularPosition, delta.angularMotion, t);
 	return *this;

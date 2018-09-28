@@ -35,7 +35,7 @@
 //#include <stuff/matrix.hpp>
 //#include <stuff/matrixstack.hpp>
 //#include <stuff/memoryblock.hpp>
-//#include <stuff/memorystream.hpp>
+//// #include <stuff/memorystream.hpp>
 //#include <stuff/motion.hpp>
 //#include <stuff/mstring.hpp>
 //#include <stuff/namelist.hpp>

@@ -19,7 +19,7 @@ namespace Stuff
 class LinearMatrix4D;
 class RGBAColor;
 class Vector4D;
-}
+} // namespace Stuff
 
 namespace MidLevelRenderer
 {
@@ -32,7 +32,7 @@ class DrawShapeInformation
 	: public Stuff::Signature
 #endif
 {
-  public:
+public:
 	DrawShapeInformation(void);
 
 	MLRShape* shape;
@@ -49,7 +49,7 @@ class DrawShapeInformation
 
 class DrawScalableShapeInformation : public DrawShapeInformation
 {
-  public:
+public:
 	DrawScalableShapeInformation(void);
 	const Stuff::Vector3D* scaling;
 	const Stuff::RGBAColor* paintMe;
@@ -64,7 +64,7 @@ class DrawEffectInformation
 	: public Stuff::Signature
 #endif
 {
-  public:
+public:
 	DrawEffectInformation(void);
 
 	MLREffect* effect;
@@ -84,7 +84,7 @@ class DrawScreenQuadsInformation
 	: public Stuff::Signature
 #endif
 {
-  public:
+public:
 	DrawScreenQuadsInformation(void);
 
 	const Stuff::Vector4D* coords;
@@ -105,7 +105,7 @@ class DrawScreenQuadsInformation
 
 class MLRClipper : public Stuff::RegisteredClass
 {
-  public:
+public:
 	static void __stdcall InitializeClass(void);
 	static void __stdcall TerminateClass(void);
 
@@ -114,8 +114,7 @@ class MLRClipper : public Stuff::RegisteredClass
 	~MLRClipper(void);
 
 	//	lets begin the dance
-	void StartDraw(const Stuff::LinearMatrix4D& camera_to_world,
-		const Stuff::Matrix4D& clip_matrix,
+	void StartDraw(const Stuff::LinearMatrix4D& camera_to_world, const Stuff::Matrix4D& clip_matrix,
 		const Stuff::RGBAColor& fog_color, // NOT USED ANYMORE
 		const Stuff::RGBAColor* background_color, const MLRState& default_state,
 		const float* z_value);
@@ -190,16 +189,16 @@ class MLRClipper : public Stuff::RegisteredClass
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Class Data Support
 	//
-  public:
+public:
 	static ClassData* DefaultData;
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Testing
 	//
-  public:
+public:
 	void TestInstance(void) const {};
 
-  protected:
+protected:
 	//	statistics and time
 	uint32_t frameRate;
 	float usedTime;
@@ -220,5 +219,5 @@ class MLRClipper : public Stuff::RegisteredClass
 
 	GOSVertexPool allVerticesToDraw;
 };
-}
+} // namespace MidLevelRenderer
 #endif

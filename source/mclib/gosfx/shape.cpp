@@ -15,32 +15,29 @@
 
 //------------------------------------------------------------------------------
 //
-gosFX::Shape__Specification::Shape__Specification(
-	Stuff::MemoryStream* stream, uint32_t gfx_version)
+gosFX::Shape__Specification::Shape__Specification(std::iostream stream, uint32_t gfx_version)
 	: Singleton__Specification(gosFX::ShapeClassID, stream, gfx_version)
 {
 	// Check_Pointer(this);
-	Verify(m_class == ShapeClassID);
-	// Verify(gos_GetCurrentHeap() == Heap);
+	_ASSERT(m_class == ShapeClassID);
+	// _ASSERT(gos_GetCurrentHeap() == Heap);
 	//
 	//---------------
 	// Load the shape
 	//---------------
 	//
-	m_shape = MidLevelRenderer::MLRShape::Make(
-		stream, MidLevelRenderer::ReadMLRVersion(stream));
+	m_shape = MidLevelRenderer::MLRShape::Make(stream, MidLevelRenderer::ReadMLRVersion(stream));
 	Register_Object(m_shape);
 	*stream >> m_radius;
 }
 
 //------------------------------------------------------------------------------
 //
-gosFX::Shape__Specification::Shape__Specification(
-	MidLevelRenderer::MLRShape* shape)
+gosFX::Shape__Specification::Shape__Specification(MidLevelRenderer::MLRShape* shape)
 	: Singleton__Specification(gosFX::ShapeClassID)
 {
 	// Check_Pointer(this);
-	// Verify(gos_GetCurrentHeap() == Heap);
+	// _ASSERT(gos_GetCurrentHeap() == Heap);
 	m_shape = nullptr;
 	SetShape(shape);
 }
@@ -60,21 +57,20 @@ gosFX::Shape__Specification::~Shape__Specification()
 //------------------------------------------------------------------------------
 //
 gosFX::Shape__Specification* gosFX::Shape__Specification::Make(
-	Stuff::MemoryStream* stream, uint32_t gfx_version)
+	std::iostream stream, uint32_t gfx_version)
 {
 	Check_Object(stream);
 #ifdef _GAMEOS_HPP_
 	// gos_PushCurrentHeap(Heap);
 #endif
-	Shape__Specification* spec =
-		new gosFX::Shape__Specification(stream, gfx_version);
+	Shape__Specification* spec = new gosFX::Shape__Specification(stream, gfx_version);
 	// gos_PopCurrentHeap();
 	return spec;
 }
 
 //------------------------------------------------------------------------------
 //
-void gosFX::Shape__Specification::Save(Stuff::MemoryStream* stream)
+void gosFX::Shape__Specification::Save(std::iostream stream)
 {
 	// Check_Object(this);
 	Check_Object(stream);
@@ -162,11 +158,10 @@ gosFX::Shape::ClassData* gosFX::Shape::DefaultData = nullptr;
 //
 void gosFX::Shape::InitializeClass()
 {
-	Verify(!DefaultData);
-	// Verify(gos_GetCurrentHeap() == Heap);
-	DefaultData = new ClassData(ShapeClassID, "gosFX::Shape",
-		Singleton::DefaultData, (Effect::Factory)&Make,
-		(Specification::Factory)&Specification::Make);
+	_ASSERT(!DefaultData);
+	// _ASSERT(gos_GetCurrentHeap() == Heap);
+	DefaultData = new ClassData(ShapeClassID, "gosFX::Shape", Singleton::DefaultData,
+		(Effect::Factory)&Make, (Specification::Factory)&Specification::Make);
 	Register_Object(DefaultData);
 }
 
@@ -181,10 +176,9 @@ void gosFX::Shape::TerminateClass()
 
 //------------------------------------------------------------------------------
 //
-gosFX::Shape::Shape(Specification* spec, uint32_t flags)
-	: Singleton(DefaultData, spec, flags)
+gosFX::Shape::Shape(Specification* spec, uint32_t flags) : Singleton(DefaultData, spec, flags)
 {
-	// Verify(gos_GetCurrentHeap() == Heap);
+	// _ASSERT(gos_GetCurrentHeap() == Heap);
 	m_radius = spec->m_radius;
 }
 
@@ -236,8 +230,7 @@ void gosFX::Shape::Draw(DrawInfo* info)
 	//
 	if (spec->m_alignZUsingX)
 	{
-		Stuff::Point3D camera_in_world(
-			info->m_clipper->GetCameraToWorldMatrix());
+		Stuff::Point3D camera_in_world(info->m_clipper->GetCameraToWorldMatrix());
 		Stuff::Point3D card_in_world(local_to_world);
 		Stuff::Vector3D look_at;
 		look_at.Subtract(camera_in_world, card_in_world);
@@ -245,8 +238,7 @@ void gosFX::Shape::Draw(DrawInfo* info)
 			local_to_world.AlignLocalAxisToWorldVector(
 				look_at, Stuff::Z_Axis, Stuff::Y_Axis, Stuff::X_Axis);
 		else
-			local_to_world.AlignLocalAxisToWorldVector(
-				look_at, Stuff::Z_Axis, Stuff::X_Axis, -1);
+			local_to_world.AlignLocalAxisToWorldVector(look_at, Stuff::Z_Axis, Stuff::X_Axis, -1);
 	}
 	//
 	//-------------------------------------------------------
@@ -255,13 +247,11 @@ void gosFX::Shape::Draw(DrawInfo* info)
 	//
 	else if (spec->m_alignZUsingY)
 	{
-		Stuff::Point3D camera_in_world(
-			info->m_clipper->GetCameraToWorldMatrix());
+		Stuff::Point3D camera_in_world(info->m_clipper->GetCameraToWorldMatrix());
 		Stuff::Point3D card_in_world(local_to_world);
 		Stuff::Vector3D look_at;
 		look_at.Subtract(camera_in_world, card_in_world);
-		local_to_world.AlignLocalAxisToWorldVector(
-			look_at, Stuff::Z_Axis, Stuff::Y_Axis, -1);
+		local_to_world.AlignLocalAxisToWorldVector(look_at, Stuff::Z_Axis, Stuff::Y_Axis, -1);
 	}
 	//
 	//----------------------------
@@ -274,7 +264,4 @@ void gosFX::Shape::Draw(DrawInfo* info)
 
 //------------------------------------------------------------------------------
 //
-void gosFX::Shape::TestInstance(void) const
-{
-	Verify(IsDerivedFrom(DefaultData));
-}
+void gosFX::Shape::TestInstance(void) const { _ASSERT(IsDerivedFrom(DefaultData)); }

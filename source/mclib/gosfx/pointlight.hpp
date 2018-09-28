@@ -23,7 +23,7 @@ class LightManager
 	: public Stuff::Signature
 #endif
 {
-  public:
+public:
 	static LightManager* Instance;
 
 	virtual Light* MakePointLight(PCSTR light_map = nullptr);
@@ -51,25 +51,23 @@ class PointLight__Specification : public Effect__Specification
 	//----------------------------------------------------------------------
 	// Constructors/Destructors
 	//
-  protected:
-	PointLight__Specification(
-		Stuff::MemoryStream* stream, uint32_t gfx_version);
+protected:
+	PointLight__Specification(std::iostream stream, uint32_t gfx_version);
 
-  public:
+public:
 	PointLight__Specification(void);
 
 	void Copy(PointLight__Specification* spec);
-	void Save(Stuff::MemoryStream* stream);
+	void Save(std::iostream stream);
 	void BuildDefaults(void);
 	bool IsDataValid(bool fix_data = false);
 
-	static PointLight__Specification* Make(
-		Stuff::MemoryStream* stream, uint32_t gfx_version);
+	static PointLight__Specification* Make(std::iostream stream, uint32_t gfx_version);
 
 	//-------------------------------------------------------------------------
 	// FCurves
 	//
-  public:
+public:
 	ComplexCurve m_red;
 	ComplexCurve m_green;
 	ComplexCurve m_blue;
@@ -78,7 +76,7 @@ class PointLight__Specification : public Effect__Specification
 	SplineCurve m_outerRadius;
 
 	bool m_twoSided;
-	std::wstring m_lightMap; // Stuff::MString	m_lightMap;
+	std::wstring m_lightMap; // std::wstring	m_lightMap;
 };
 
 //############################################################################
@@ -87,7 +85,7 @@ class PointLight__Specification : public Effect__Specification
 
 class PointLight : public Effect
 {
-  public:
+public:
 	static void __stdcall InitializeClass(void);
 	static void TerminateClass(void);
 
@@ -98,14 +96,14 @@ class PointLight : public Effect
 	static PointLight* Make(Specification* spec, uint32_t flags);
 	~PointLight(void);
 
-  protected:
+protected:
 	PointLight(Specification* spec, uint32_t flags);
 	Light* m_light;
 
 	//----------------------------------------------------------------------------
 	// Class Data Support
 	//
-  public:
+public:
 	Specification* GetSpecification(void)
 	{
 		// Check_Object(this);
@@ -115,7 +113,7 @@ class PointLight : public Effect
 	//----------------------------------------------------------------------------
 	// API
 	//
-  public:
+public:
 	void Start(ExecuteInfo* info);
 	bool Execute(ExecuteInfo* info);
 	void Kill(void);
@@ -123,7 +121,7 @@ class PointLight : public Effect
 	//----------------------------------------------------------------------------
 	// Testing
 	//
-  public:
+public:
 	void TestInstance(void) const;
 };
-}
+} // namespace gosFX

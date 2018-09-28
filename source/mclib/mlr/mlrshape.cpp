@@ -18,10 +18,9 @@ MLRShape::ClassData* MLRShape::DefaultData = nullptr;
 //
 void MLRShape::InitializeClass()
 {
-	Verify(!DefaultData);
-	// Verify(gos_GetCurrentHeap() == StaticHeap);
-	DefaultData = new ClassData(
-		MLRShapeClassID, "MidLevelRenderer::MLRShape", Plug::DefaultData);
+	_ASSERT(!DefaultData);
+	// _ASSERT(gos_GetCurrentHeap() == StaticHeap);
+	DefaultData = new ClassData(MLRShapeClassID, "MidLevelRenderer::MLRShape", Plug::DefaultData);
 	Register_Object(DefaultData);
 }
 
@@ -36,12 +35,11 @@ void MLRShape::TerminateClass()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLRShape::MLRShape(Stuff::MemoryStream* stream, uint32_t version)
-	: Plug(DefaultData)
+MLRShape::MLRShape(std::iostream stream, uint32_t version) : Plug(DefaultData)
 {
 	// Check_Pointer(this);
 	Check_Object(stream);
-	// Verify(gos_GetCurrentHeap() == Heap);
+	// _ASSERT(gos_GetCurrentHeap() == Heap);
 	*stream >> numPrimitives;
 	int32_t i;
 	allPrimitives.SetLength(numPrimitives);
@@ -125,8 +123,8 @@ MLRShape::MLRShape(Stuff::MemoryStream* stream, uint32_t version)
 		{
 			RegisteredClass::ClassID class_id;
 			*stream >> class_id;
-			MLRPrimitiveBase::ClassData* class_data = Cast_Pointer(
-				MLRPrimitiveBase::ClassData*, FindClassData(class_id));
+			MLRPrimitiveBase::ClassData* class_data =
+				Cast_Pointer(MLRPrimitiveBase::ClassData*, FindClassData(class_id));
 			Check_Object(class_data);
 			pt = (*class_data->primitiveFactory)(stream, version);
 			Register_Object(pt);
@@ -170,19 +168,16 @@ MLRShape::MLRShape(Stuff::MemoryStream* stream, uint32_t version)
 					{
 						pt = new MLR_I_TMesh;
 						Register_Object(pt);
-						Cast_Pointer(MLR_I_TMesh*, pt)
-							->Copy(Cast_Pointer(MLR_I_PMesh*, pt_old));
+						Cast_Pointer(MLR_I_TMesh*, pt)->Copy(Cast_Pointer(MLR_I_PMesh*, pt_old));
 					}
-					else if (pt->GetClassData() ==
-							 MLR_I_L_DT_PMesh::DefaultData)
+					else if (pt->GetClassData() == MLR_I_L_DT_PMesh::DefaultData)
 					{
 						pt = new MLR_I_L_DT_TMesh;
 						Register_Object(pt);
 						Cast_Pointer(MLR_I_L_DT_TMesh*, pt)
 							->Copy(Cast_Pointer(MLR_I_L_DT_PMesh*, pt_old));
 					}
-					else if (pt->GetClassData() ==
-							 MLR_I_C_DT_PMesh::DefaultData)
+					else if (pt->GetClassData() == MLR_I_C_DT_PMesh::DefaultData)
 					{
 						pt = new MLR_I_C_DT_TMesh;
 						Register_Object(pt);
@@ -196,16 +191,14 @@ MLRShape::MLRShape(Stuff::MemoryStream* stream, uint32_t version)
 						Cast_Pointer(MLR_I_DT_TMesh*, pt)
 							->Copy(Cast_Pointer(MLR_I_DT_PMesh*, pt_old));
 					}
-					else if (pt->GetClassData() ==
-							 MLR_I_L_DeT_PMesh::DefaultData)
+					else if (pt->GetClassData() == MLR_I_L_DeT_PMesh::DefaultData)
 					{
 						pt = new MLR_I_L_DeT_TMesh;
 						Register_Object(pt);
 						Cast_Pointer(MLR_I_L_DeT_TMesh*, pt)
 							->Copy(Cast_Pointer(MLR_I_L_DeT_PMesh*, pt_old));
 					}
-					else if (pt->GetClassData() ==
-							 MLR_I_C_DeT_PMesh::DefaultData)
+					else if (pt->GetClassData() == MLR_I_C_DeT_PMesh::DefaultData)
 					{
 						pt = new MLR_I_C_DeT_TMesh;
 						Register_Object(pt);
@@ -234,7 +227,7 @@ MLRShape::MLRShape(Stuff::MemoryStream* stream, uint32_t version)
 //
 MLRShape::MLRShape(int32_t nr) : Plug(DefaultData), allPrimitives(nr ? nr : 4)
 {
-	// Verify(gos_GetCurrentHeap() == Heap);
+	// _ASSERT(gos_GetCurrentHeap() == Heap);
 	numPrimitives  = 0;
 	referenceCount = 1;
 }
@@ -251,12 +244,12 @@ MLRShape::~MLRShape()
 		allPrimitives[i] = nullptr;
 		pt->DetachReference();
 	}
-	Verify(referenceCount == 0);
+	_ASSERT(referenceCount == 0);
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLRShape* MLRShape::Make(Stuff::MemoryStream* stream, uint32_t version)
+MLRShape* MLRShape::Make(std::iostream stream, uint32_t version)
 {
 	Check_Object(stream);
 #ifdef _GAMEOS_HPP_
@@ -269,7 +262,7 @@ MLRShape* MLRShape::Make(Stuff::MemoryStream* stream, uint32_t version)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLRShape::Save(Stuff::MemoryStream* stream)
+void MLRShape::Save(std::iostream stream)
 {
 	// Check_Object(this);
 	Check_Object(stream);
@@ -287,8 +280,7 @@ void MLRShape::Save(Stuff::MemoryStream* stream)
 void MLRShape::Add(MLRPrimitiveBase* p)
 {
 	// Check_Object(this);
-	if (numPrimitives >= allPrimitives.GetLength() ||
-		allPrimitives.GetLength() == 0)
+	if (numPrimitives >= allPrimitives.GetLength() || allPrimitives.GetLength() == 0)
 	{
 #ifdef _GAMEOS_HPP_
 		gos_PushCurrentHeap(Heap);
@@ -322,11 +314,9 @@ int32_t MLRShape::GetNumDrawnTriangles()
 	for (i = 0; i < numPrimitives; i++)
 	{
 		Check_Object(allPrimitives[i]);
-		if (allPrimitives[i]->IsDerivedFrom(
-				MLRIndexedPrimitiveBase::DefaultData))
+		if (allPrimitives[i]->IsDerivedFrom(MLRIndexedPrimitiveBase::DefaultData))
 		{
-			j = (Cast_Pointer(MLRIndexedPrimitiveBase*, allPrimitives[i]))
-					->GetNumGOSIndices();
+			j = (Cast_Pointer(MLRIndexedPrimitiveBase*, allPrimitives[i]))->GetNumGOSIndices();
 		}
 		else
 		{
@@ -345,7 +335,7 @@ int32_t MLRShape::GetNumDrawnTriangles()
 MLRPrimitiveBase* MLRShape::Find(int32_t i)
 {
 	// Check_Object(this);
-	Verify(i < numPrimitives);
+	_ASSERT(i < numPrimitives);
 	return allPrimitives[i];
 }
 
@@ -440,8 +430,7 @@ int32_t MLRShape::Insert(MLRPrimitiveBase* p, int32_t nr)
 		Add(p);
 		return numPrimitives;
 	}
-	if (numPrimitives >= allPrimitives.GetLength() ||
-		allPrimitives.GetLength() == 0)
+	if (numPrimitives >= allPrimitives.GetLength() || allPrimitives.GetLength() == 0)
 	{
 #ifdef _GAMEOS_HPP_
 		gos_PushCurrentHeap(Heap);
@@ -462,8 +451,7 @@ int32_t MLRShape::Insert(MLRPrimitiveBase* p, int32_t nr)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLRShape::InitializePrimitives(
-	uint8_t vis, const MLRState& master, int32_t parameter)
+void MLRShape::InitializePrimitives(uint8_t vis, const MLRState& master, int32_t parameter)
 {
 	// Check_Object(this);
 	int32_t i;
@@ -562,8 +550,8 @@ int32_t
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MLRShape::Lighting(const LinearMatrix4D& WorldToShape,
-	MLRLight* const* lights, int32_t nrLights)
+void MLRShape::Lighting(
+	const LinearMatrix4D& WorldToShape, MLRLight* const* lights, int32_t nrLights)
 {
 	// Check_Object(this);
 	Check_Object(&WorldToShape);

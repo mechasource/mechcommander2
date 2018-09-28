@@ -1,5 +1,5 @@
 /*******************************************************************************
- Copyright (c) 2011-2014, Jerker Back. All rights reserved.
+ Copyright (c) 2011-2014, Jerker Beck. All rights reserved.
 
  Permission to use, copy, modify, and distribute this software for any
  purpose with or without fee is hereby granted, provided that the following
@@ -28,7 +28,7 @@
 
  MechCommander 2 source code
 
- 2014-08-22 jerker_back, created
+ 2014-08-22 Jerker Beck, created
 
  $LastChangedBy$
 
@@ -46,7 +46,7 @@ namespace Stuff
 //-------------------------
 // ClassID reserved blocks
 //-------------------------
-enum class __stuff_classids : uint32_t
+enum __stuff_classids : uint32_t
 {
 	FirstStuffClassID = 0,
 	StuffClassIDCount = 64,
@@ -58,8 +58,7 @@ enum class __stuff_classids : uint32_t
 
 	FirstElementRendererClassID,
 	ElementRendererClassIDCount = 64,
-	LastElementRendererClassID =
-		FirstElementRendererClassID + ElementRendererClassIDCount - 1,
+	LastElementRendererClassID  = FirstElementRendererClassID + ElementRendererClassIDCount - 1,
 
 	FirstProxyClassID,
 	ProxyClassIDCount = 64,
@@ -67,8 +66,7 @@ enum class __stuff_classids : uint32_t
 
 	FirstElementProxyClassID,
 	ElementProxyClassIDCount = 64,
-	LastElementProxyClassID =
-		FirstElementProxyClassID + ElementProxyClassIDCount - 1,
+	LastElementProxyClassID  = FirstElementProxyClassID + ElementProxyClassIDCount - 1,
 
 	FirstMGProxyClassID,
 	MGProxyClassIDCount = 64,
@@ -84,8 +82,7 @@ enum class __stuff_classids : uint32_t
 
 	FirstWindowsAdeptClassID,
 	WindowsAdeptClassIDCount = 32,
-	LastWindowsAdeptClassID =
-		FirstWindowsAdeptClassID + WindowsAdeptClassIDCount - 1,
+	LastWindowsAdeptClassID  = FirstWindowsAdeptClassID + WindowsAdeptClassIDCount - 1,
 
 	FirstGOSAdeptClassID,
 	GOSAdeptClassIDCount = 16,
@@ -105,7 +102,7 @@ enum class __stuff_classids : uint32_t
 
 	FirstMAXProxiesClassID,
 	MAXProxiesClassIDCount = 16,
-	LastMAXProxiesClassID = FirstMAXProxiesClassID + MAXProxiesClassIDCount - 1,
+	LastMAXProxiesClassID  = FirstMAXProxiesClassID + MAXProxiesClassIDCount - 1,
 
 	FirstMW4ClassID,
 	MW4ClassIDCount = 256,
@@ -135,7 +132,7 @@ enum class __stuff_classids : uint32_t
 // Stuff classes
 //--------------
 //
-enum class __stuff_attributeids : uint32_t
+enum __stuff_attributeids : uint32_t
 {
 	//
 	//-------------------------
@@ -173,7 +170,7 @@ enum class __stuff_attributeids : uint32_t
 	RGBAColorClassID,
 	FirstFreeStuffClassID
 };
-}
+} // namespace Stuff
 
 namespace MidLevelRenderer
 {
@@ -183,7 +180,7 @@ namespace MidLevelRenderer
 // Stuff classes
 //--------------
 //
-enum class __mlr_classids : uint32_t
+enum __mlr_classids : uint32_t
 {
 	MLRStateClassID = Stuff::__stuff_classids::FirstMLRClassID,
 	MLRClippingStateClassID,
@@ -247,6 +244,6 @@ enum class __mlr_classids : uint32_t
 
 	FirstFreeMLRClassID
 };
-}
+} // namespace MidLevelRenderer
 
 #endif

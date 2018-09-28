@@ -14,25 +14,23 @@
 class FixedLengthString;
 
 // JJ Fix-A-Roo
-typedef LPDIRECT3DVERTEXBUFFER7(__stdcall* GETDXFUNC)(
-	LPDIRECT3DVERTEXBUFFER7, LPDIRECT3DDEVICE7);
+typedef LPDIRECT3DVERTEXBUFFER7(__stdcall* GETDXFUNC)(LPDIRECT3DVERTEXBUFFER7, LPDIRECT3DDEVICE7);
 extern GETDXFUNC g_pGetDXVB;
 
 //
-cint32_t MAX_MESSAGE_SIZE = 65536; // Maximum total error message size
-cint32_t MAX_BUG_NOTES	= 1024;  // Maximum characters entered as bug notes
-cint32_t MAX_LINE_LENGTH =
-	256; // Maximum characters per line in a file (shown as error line)
-cint32_t MAX_SUBJECT_LENGTH = 128; // Maximum length of email subject
-cint32_t MAX_RAID_DESC = 2048; // Maximum length of the Raid description (may
-							   // need to be longer to accomodate RTF info)
+cint32_t MAX_MESSAGE_SIZE   = 65536; // Maximum total error message size
+cint32_t MAX_BUG_NOTES		= 1024;  // Maximum characters entered as bug notes
+cint32_t MAX_LINE_LENGTH	= 256;   // Maximum characters per line in a file (shown as error line)
+cint32_t MAX_SUBJECT_LENGTH = 128;   // Maximum length of email subject
+cint32_t MAX_RAID_DESC		= 2048;  // Maximum length of the Raid description (may
+									 // need to be longer to accomodate RTF info)
 
 extern uint32_t DisableErrors;
 extern volatile uint16_t FPUControl; // Current FPU control word
 extern uint16_t FPUDefault;			 // Default FPU control word
 extern uint32_t ShowFrame;
-extern float L2SpeedR, L2SpeedW, L2SpeedRW, MainSpeedR, MainSpeedW, MainSpeedRW,
-	VidMemR, VidMemW, VidMemRW, AGPMemR, AGPMemW, AGPMemRW;
+extern float L2SpeedR, L2SpeedW, L2SpeedRW, MainSpeedR, MainSpeedW, MainSpeedRW, VidMemR, VidMemW,
+	VidMemRW, AGPMemR, AGPMemW, AGPMemRW;
 extern char SpeedBuffer[16]; // ASCII MHz
 extern float ProcessorSpeed; // Processor speed
 extern char LogBuffer[2048];
@@ -78,8 +76,7 @@ extern int32_t ScreenImageSize;
 PSTR __stdcall GetFullErrorMessage(HWND hwnd);
 void __stdcall WriteBitStream(uint32_t Value, uint32_t Bits, int32_t Type);
 PSTR __stdcall GetBugNotes(HWND hwnd);
-PSTR __stdcall SendMail(
-	HWND Window, PSTR Subject, PSTR Text, PSTR Bitmap, PSTR LogFile);
+PSTR __stdcall SendMail(HWND Window, PSTR Subject, PSTR Text, PSTR Bitmap, PSTR LogFile);
 uint32_t __stdcall ReadBitStream(uint32_t Bits, int32_t Type);
 void __stdcall InitLogging(void);
 void __stdcall DeleteLogging(void);
@@ -131,8 +128,7 @@ void __stdcall ScanCards(FixedLengthString& Buffer);
 void __stdcall InitExceptionHandler(PSTR CommandLine);
 void __stdcall DestroyImageHlp(void);
 PSTR __stdcall GetSymbolFromAddress(PSTR Buffer, size_t Address);
-PSTR __stdcall GetLocationFromAddress(
-	PIMAGEHLP_LINE pline, PSTR Buffer, size_t Address);
+PSTR __stdcall GetLocationFromAddress(PIMAGEHLP_LINE pline, PSTR Buffer, size_t Address);
 void __stdcall InitStackWalk(LPSTACKFRAME sf, PCONTEXT Context);
 int32_t __stdcall WalkStack(LPSTACKFRAME sf);
 
@@ -160,8 +156,7 @@ extern int32_t ErrorFlags;
 extern PSTR ErrorTitle;
 extern PSTR ErrorMessage;
 extern PSTR ErrorMessageTitle;
-extern volatile int32_t
-	ProcessingError; // Renentrancy test flag for assert error routine
+extern volatile int32_t ProcessingError; // Renentrancy test flag for assert error routine
 extern PSTR ErrorExceptionText;
 extern puint8_t GotScreenImage; // Pointer to buffer containing screen image
 								// (always 24 bit bmp)
@@ -171,15 +166,12 @@ extern int32_t ErrorFlags, ErrorReturn;
 extern NTSTATUS __stdcall ProcessException(PEXCEPTION_POINTERS ep);
 extern PSTR __stdcall ErrorNumberToMessage(int32_t hResult);
 extern PSTR __stdcall Hex8Number(int32_t Number);
-extern void __stdcall GetProcessorDetails(
-	LPSTACKFRAME sf, FixedLengthString& Buffer);
+extern void __stdcall GetProcessorDetails(LPSTACKFRAME sf, FixedLengthString& Buffer);
 extern void __stdcall GetMachineDetails(FixedLengthString& Buffer);
-extern PSTR __stdcall GetLineFromFile(
-	PSTR tempLine, PSTR FileName, int32_t LineNumber);
+extern PSTR __stdcall GetLineFromFile(PSTR tempLine, PSTR FileName, int32_t LineNumber);
 extern puint8_t __stdcall GrabScreenImage(void);
 extern void __stdcall GetDirectXDetails(FixedLengthString& Buffer);
-extern void __stdcall GetGameDetails(
-	FixedLengthString& Buffer, uint32_t ErrorFlags);
+extern void __stdcall GetGameDetails(FixedLengthString& Buffer, uint32_t ErrorFlags);
 extern void __stdcall DoDetailedDialog(void);
 extern void __stdcall DoSimpleDialog(void);
 extern void __stdcall DoColorDialog(void);
@@ -252,8 +244,7 @@ typedef struct _LogHeader
 
 extern LogHeader LogInfo;
 extern uint32_t LogLoops;
-extern uint32_t
-	FrameNumber; // When recording=current frame, playback=last frame
+extern uint32_t FrameNumber; // When recording=current frame, playback=last frame
 extern uint32_t Debounce;
 
 extern void __stdcall EndLogging(void);
@@ -263,9 +254,8 @@ extern void __stdcall CheckLogInSync(void);
 //
 // Size of blocks of memory allocated for logs
 //
-#define LOGBLOCKSIZE                                                           \
-	(1024 * 1024 * 4) // 4 Meg of log data maximum (About 10 minutes at 60f/s)
-#define LOGVERSION 11 // Current version number of log file
+#define LOGBLOCKSIZE (1024 * 1024 * 4) // 4 Meg of log data maximum (About 10 minutes at 60f/s)
+#define LOGVERSION 11				   // Current version number of log file
 
 extern bool AllowFail;
 extern volatile bool SpewSilence; // Set to disable all spews

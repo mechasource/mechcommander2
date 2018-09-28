@@ -8,7 +8,7 @@
 
 class SoundMixer
 {
-  public:
+public:
 	WAVEFORMATEX m_waveFormatEx;
 
 	float m_dopplerFactor, m_rolloffFactor, m_distanceFactor;
@@ -28,7 +28,7 @@ class SoundMixer
 
 	bool m_changed;
 
-  public:
+public:
 	SoundMixer(void);
 	virtual ~SoundMixer(void);
 	virtual void GetHardwareData(void);

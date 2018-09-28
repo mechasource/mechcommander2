@@ -12,15 +12,15 @@
 
 class FIDPSession : public ListItem
 {
-  protected:
+protected:
 	DPSESSIONDESC2 SessionDescriptor;
 	char Name[MAXNAMELEN];
 	char Password[MAXNAMELEN];
 
-  public:
+public:
 	int32_t ID;
 
-  public:
+public:
 	FIDPSession(int32_t id = 0);
 	FIDPSession(DPSESSIONDESC2 sdesc, int32_t id);
 	FIDPSession(FIDPSession& session);
@@ -31,24 +31,15 @@ class FIDPSession : public ListItem
 
 	DPSESSIONDESC2* GetSessionDescriptor() { return &SessionDescriptor; }
 
-	inline void SetNumPlayers(int32_t nplayers)
-	{
-		SessionDescriptor.dwCurrentPlayers = nplayers;
-	}
+	inline void SetNumPlayers(int32_t nplayers) { SessionDescriptor.dwCurrentPlayers = nplayers; }
 
-	inline void SetMaxPlayers(int32_t maxplayers)
-	{
-		SessionDescriptor.dwMaxPlayers = maxplayers;
-	}
+	inline void SetMaxPlayers(int32_t maxplayers) { SessionDescriptor.dwMaxPlayers = maxplayers; }
 
 	void SetName(PSTR name);
 
 	void SetPassword(PSTR password);
 
-	inline int32_t GetNumPlayers()
-	{
-		return SessionDescriptor.dwCurrentPlayers;
-	}
+	inline int32_t GetNumPlayers() { return SessionDescriptor.dwCurrentPlayers; }
 
 	inline int32_t GetMaxPlayers() { return SessionDescriptor.dwMaxPlayers; }
 
@@ -63,10 +54,7 @@ class FIDPSession : public ListItem
 		return SessionDescriptor.dwFlags & DPSESSION_PASSWORDREQUIRED;
 	}
 
-	inline BOOL IsLocked()
-	{
-		return SessionDescriptor.dwFlags & DPSESSION_NEWPLAYERSDISABLED;
-	}
+	inline BOOL IsLocked() { return SessionDescriptor.dwFlags & DPSESSION_NEWPLAYERSDISABLED; }
 
 	inline void Lock()
 	{

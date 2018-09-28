@@ -24,8 +24,7 @@ extern PCSTR GAMELIST_KEY_PASSWORD_PROTECTED;
 extern PCSTR GAMELIST_KEY_PASSWORD;
 extern PCSTR GAMELIST_KEY_BROWSER_HANDLE;
 extern PCSTR GAMELIST_KEY_PING;
-extern PCSTR
-	GAMELIST_KEY_GAME_TYPE; // rules for game (ctf, team fortress, etc...)
+extern PCSTR GAMELIST_KEY_GAME_TYPE;   // rules for game (ctf, team fortress, etc...)
 extern PCSTR GAMELIST_KEY_UPDATE_TIME; // whether the game was updated or not in
 									   // the last EnumSessions
 extern PCSTR GAMELIST_KEY_PROTOCOL;
@@ -59,8 +58,7 @@ extern PCSTR INVALID_PING_STR;
 #define NETFLAGS_STATSTRACKING_FLAG 0x00000200
 #define NETFLAGS_PURESERVER_FLAG 0x00000400
 #define NETFLAGS_LOCKED_FLAG 0x00000800
-#define NETFLAGS_NOPING_FLAG                                                   \
-	0x00001000 // mdm - indicates browsers shouldn't ping the game
+#define NETFLAGS_NOPING_FLAG 0x00001000 // mdm - indicates browsers shouldn't ping the game
 
 #define INVALID_PING_VAL -1
 
@@ -118,10 +116,10 @@ typedef PVOID POSITION; // for use by CList
 */
 template <class CItem> class CList
 {
-  protected:
+protected:
 	class CListNode
 	{
-	  public:
+	public:
 		CItem m_Item;
 		CListNode* m_pNext;
 		CListNode* m_pPrev;
@@ -138,7 +136,7 @@ template <class CItem> class CList
 	CListNode* m_pHead;
 	CListNode* m_pTail;
 
-  public:
+public:
 	CList(void);
 	~CList(void);
 	bool IsEmpty(void);
@@ -177,7 +175,7 @@ class IndexedTableView;
 
 class TableList
 {
-  public:
+public:
 	enum
 	{
 		INVALID_ID = -1
@@ -191,7 +189,7 @@ class TableList
 	// to inherit from it :-(.
 	class ExtraData
 	{
-	  public:
+	public:
 		virtual ~ExtraData() {}
 
 		PVOID operator new(size_t size);
@@ -253,8 +251,7 @@ class TableList
 	// misc operations
 	int32_t GetTotalCount(void); // total number of table items
 	bool Exists(PCSTR id);
-	void EnumerateAll(
-		CHash<TableItem, PCSTR>::PFITERCALLBACK pfnCB, PVOID cookie);
+	void EnumerateAll(CHash<TableItem, PCSTR>::PFITERCALLBACK pfnCB, PVOID cookie);
 	PCSTR GetIDFromField(PCSTR key, PCSTR val);
 	PCSTR GetIDFromField(PCSTR key,
 		int32_t val); // compares iVal
@@ -269,7 +266,7 @@ class TableList
 
 	static FieldItem* FindField(FieldList& pList, PCSTR key);
 
-  protected:
+protected:
 	// hash table stuff
 	static uint32_t HashLPSTR(PCSTR Key);
 	static bool HashCompare(TableItem* obj, PCSTR key);
@@ -284,8 +281,7 @@ class TableList
 	void FreeFieldItem(FieldItem* pItem);
 	TableItem* FindItem(PCSTR id);
 	static PCSTR FindFieldVal(FieldList& pList, PCSTR key);
-	static bool ForEachFindField(
-		TableItem* tableItem, MTListNodeHandle handle, PVOID pThis);
+	static bool ForEachFindField(TableItem* tableItem, MTListNodeHandle handle, PVOID pThis);
 
 	// this is the callback required for the m_Items.RemoveAll() call in
 	// the RemoveAll function.
@@ -305,7 +301,7 @@ class TableList
 	IndexedTableView* m_IndexedView; // make list later if we want multiple
 									 // views to be possible
 
-  private:
+private:
 	// Friends
 	friend IndexedTableView;
 };
@@ -315,7 +311,7 @@ typedef TableList PlayerList;
 
 class GameList : public TableList
 {
-  public:
+public:
 	GameList(void);
 	virtual ~GameList(void);
 
@@ -340,11 +336,11 @@ class GameList : public TableList
 	void operator delete(PVOID ptr);
 	void operator delete[](PVOID ptr);
 
-  public:
+public:
 	// protected type definitions
 	class GameExtraData : public TableList::ExtraData
 	{
-	  public:
+	public:
 		virtual ~GameExtraData(void);
 
 		PSTR name;
@@ -356,7 +352,7 @@ class GameList : public TableList
 		void operator delete[](PVOID ptr);
 	};
 
-  protected:
+protected:
 	virtual void FreeTableItem(TableItem* pItem);
 
 	char m_ReferenceGameID[255];
@@ -379,7 +375,7 @@ class GameList : public TableList
 
 class TableItemFilter
 {
-  public:
+public:
 	// Types
 
 	enum FilterType
@@ -391,7 +387,7 @@ class TableItemFilter
 		FT_EXCLUDE_ANY  // exclude if any filter criterion match
 	};
 
-  public:
+public:
 	// Methods
 
 	TableItemFilter(void);
@@ -409,7 +405,7 @@ class TableItemFilter
 
 	virtual void ClearAllFilters(void);
 
-  protected:
+protected:
 	// Types
 
 	enum FilterItemType
@@ -426,11 +422,11 @@ class TableItemFilter
 		PSTR strVal;	  // string value
 	};
 
-  protected:
+protected:
 	// Member Functions
 	void FreeFilterItem(FilterItem* item);
 
-  protected:
+protected:
 	// Data
 
 	FilterType m_FilterType;
@@ -439,7 +435,7 @@ class TableItemFilter
 
 class GameListFilter : public TableItemFilter
 {
-  public:
+public:
 	// Types
 
 	enum StatusFlag
@@ -449,7 +445,7 @@ class GameListFilter : public TableItemFilter
 		SF_SECURE			  = 4
 	};
 
-  public:
+public:
 	// Methods
 
 	GameListFilter(void);
@@ -491,7 +487,7 @@ class GameListFilter : public TableItemFilter
 	void EnableClanFilter(bool val);
 	bool GetClanFilterEnabled(void) const;
 
-  private:
+private:
 	// Data
 
 	// pings
@@ -517,7 +513,7 @@ class GameListFilter : public TableItemFilter
 
 class IndexedTableView
 {
-  public:
+public:
 	// Types
 
 	enum SortOrderType
@@ -528,7 +524,7 @@ class IndexedTableView
 		DESCENDING_ALPHABETICAL
 	};
 
-  public:
+public:
 	// Methods
 
 	IndexedTableView(TableList* list);
@@ -536,8 +532,7 @@ class IndexedTableView
 
 	// callback methods
 	void CreateEntryNotify(TableList::TableItem& item);
-	void SetFieldNotify(
-		TableList::TableItem& item, TableList::FieldItem& field);
+	void SetFieldNotify(TableList::TableItem& item, TableList::FieldItem& field);
 	void RemoveFieldNotify(TableList::TableItem* item, PCSTR key);
 	void RemoveNotify(TableList::TableItem& item);
 
@@ -577,7 +572,7 @@ class IndexedTableView
 	void operator delete(PVOID ptr);
 	void operator delete[](PVOID ptr);
 
-  private:
+private:
 	// Types
 	struct SortStruct
 	{
@@ -587,7 +582,7 @@ class IndexedTableView
 
 	typedef SortStruct* SortVec;
 
-  protected:
+protected:
 	// Methods
 	void Add(TableList::TableItem& item);
 	void GrowSorted(void);
@@ -595,10 +590,9 @@ class IndexedTableView
 	int32_t GetSortedIndex(TableList::TableItem* item);
 	void QSort(SortVec& sortVec, int32_t first, int32_t last);
 
-	static bool HashForEachCB(
-		TableList::TableItem* item, MTListNodeHandle h, PVOID context);
+	static bool HashForEachCB(TableList::TableItem* item, MTListNodeHandle h, PVOID context);
 
-  private:
+private:
 	// Data
 	TableList* m_TableList;
 	TableItemFilter* m_Filter;
@@ -623,10 +617,9 @@ class IndexedTableView
 	// mdm - used to remember which item is selected in the list
 	PSTR m_Selection;
 	// mdm - true if the list has been changed but not resorted
-	double m_LastSortTime; // gos_GetHiResTime() from the last sort
-	double
-		m_ResortFrequency; // maximum frequency at which we will resort the list
-	bool m_bSortDirty; // true if the list has been marked as needing sorting
+	double m_LastSortTime;	// gos_GetHiResTime() from the last sort
+	double m_ResortFrequency; // maximum frequency at which we will resort the list
+	bool m_bSortDirty;		  // true if the list has been marked as needing sorting
 };
 
 } // namespace Browse

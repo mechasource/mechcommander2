@@ -23,15 +23,11 @@ class GosEventIdMgr
 	static size_t ListSize;
 	static int32_t ListSpace;
 
-  public:
+public:
 	static void Resize(void);
 	static uint32_t IdToEntry(uint32_t id) { return id & 0x000FFFFF; }
-	static uint32_t EntryToId(uint32_t entry, int32_t type)
-	{
-		return entry | (type << 20);
-	}
-	static uint32_t AssignId(
-		GosLogRef::EventType type, PSTR name, PSTR filename, int32_t lineno)
+	static uint32_t EntryToId(uint32_t entry, int32_t type) { return entry | (type << 20); }
+	static uint32_t AssignId(GosLogRef::EventType type, PSTR name, PSTR filename, int32_t lineno)
 	{
 		if (!ListSpace)
 			Resize(void);
@@ -45,10 +41,7 @@ class GosEventIdMgr
 		NextEntry++;
 		return pInfo->m_id;
 	}
-	static PSTR EventName(uint32_t id)
-	{
-		return pEventInfo[IdToEntry(id)].m_pName;
-	}
+	static PSTR EventName(uint32_t id) { return pEventInfo[IdToEntry(id)].m_pName; }
 	static void Cleanup(void);
 };
 

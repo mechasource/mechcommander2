@@ -8,12 +8,12 @@
 
 class gosLink
 {
-  public:
+public:
 	gosLink* Next;
 	gosLink* Prev;
 	PVOID linkData;
 
-  public:
+public:
 	gosLink()
 	{
 		linkData = 0;
@@ -36,11 +36,11 @@ class gosLink
 
 template <class T> class LinkedList
 {
-  public:
+public:
 	gosLink* m_Head;
 	int32_t m_Size;
 
-  public:
+public:
 	LinkedList()
 	{
 		m_Head = 0;
@@ -145,11 +145,11 @@ template <class T> class LinkedList
 
 template <class T> class LinkedListIterator
 {
-  public:
+public:
 	gosLink* m_Iterator;
 	LinkedList<T>* m_List;
 
-  public:
+public:
 	LinkedListIterator(LinkedList<T>* list)
 	{
 		m_Iterator = list->m_Head;

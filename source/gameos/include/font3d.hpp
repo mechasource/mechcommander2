@@ -14,7 +14,8 @@
 //
 // Original FontEdit program
 //
-typedef struct
+
+typedef struct D3DFontData
 {
 	uint32_t dwSig; // 0x46443344
 	uint32_t dwWidth;
@@ -33,7 +34,7 @@ typedef struct
 //
 // FontEdit 4.0+
 //
-typedef struct
+typedef struct D3DFontData1
 {
 	uint32_t dwSig; // 0x46443344
 	char szFaceName[64];
@@ -43,13 +44,13 @@ typedef struct
 	int32_t iTextureCount;
 	uint32_t dwFontHeight; // height in pixels of the resulatant font
 	uint8_t bTexture[256]; // indicate which texture each character is on
-	uint8_t bX[256]; // indicates x position of each character on it's texture
-	uint8_t bY[256]; // indicates y position of each character on it's texture
-	uint8_t bW[256]; // indicates width of each character in the texture
-	signed char cA[256]; // indicates amount of space to add before each
-						 // character (may be -)
-	signed char cC[256]; // indicates amount of space to add after each
-						 // character (may be -)
+	uint8_t bX[256];	   // indicates x position of each character on it's texture
+	uint8_t bY[256];	   // indicates y position of each character on it's texture
+	uint8_t bW[256];	   // indicates width of each character in the texture
+	signed char cA[256];   // indicates amount of space to add before each
+						   // character (may be -)
+	signed char cC[256];   // indicates amount of space to add after each
+						   // character (may be -)
 } D3DFontData1;
 
 typedef struct
@@ -63,19 +64,19 @@ typedef struct
 
 typedef struct _FontInfo
 {
-	uint32_t MagicNumber;	// Valid font check
-	_FontInfo* pNext;		 // Pointer to next font
-	uint32_t ReferenceCount; // Reference count
-	char FontFile[MAX_PATH]; // Path name of font texture
-	uint32_t StartLine;		 // texture line where font starts
-	int32_t CharCount;		 // number of chars in font (valid range 33 to 256)
-	uint32_t TextureSize;	// Width and Height of texture
-	float rhSize;			 // 1.0 / Size
-	uint32_t TexturePitch;   // Pitch of texture
-	int32_t Width;			 // Width of font grid
-	int32_t Height;			 // Height of font grid
-	uint32_t Across;		 // Number of characters across one line
-	uint32_t Aliased; // True if 4444 texture (may be aliased - else 1555 keyed)
+	uint32_t MagicNumber;		   // Valid font check
+	struct _FontInfo* pNext;	   // Pointer to next font
+	uint32_t ReferenceCount;	   // Reference count
+	char FontFile[MAX_PATH];	   // Path name of font texture
+	uint32_t StartLine;			   // texture line where font starts
+	int32_t CharCount;			   // number of chars in font (valid range 33 to 256)
+	uint32_t TextureSize;		   // Width and Height of texture
+	float rhSize;				   // 1.0 / Size
+	uint32_t TexturePitch;		   // Pitch of texture
+	int32_t Width;				   // Width of font grid
+	int32_t Height;				   // Height of font grid
+	uint32_t Across;			   // Number of characters across one line
+	uint32_t Aliased;			   // True if 4444 texture (may be aliased - else 1555 keyed)
 	uint32_t FromTextureHandle;	// True is from a texture handle
 	uint8_t BlankPixels[256 - 32]; // Empty pixels before character
 	uint8_t UsedPixels[256 - 32];  // Width of character
@@ -84,9 +85,9 @@ typedef struct _FontInfo
 	uint8_t TopOffset[256 - 32];	 // Offset from top (number of blank lines)
 	uint8_t RealHeight[256 - 32];	// Height of character
 	uint8_t TextureHandle[256 - 32]; // Which texture handle to use
-	uint32_t NumberOfTextures; // Number of texture handles used (normally 1)
-	HFONT hFontTTF;			   // handle to a GDI font
-	uint32_t Texture[8];	   // Texture handle array
+	uint32_t NumberOfTextures;		 // Number of texture handles used (normally 1)
+	HFONT hFontTTF;					 // handle to a GDI font
+	uint32_t Texture[8];			 // Texture handle array
 } FontInfo;
 
 void __stdcall Init3DFont(void);

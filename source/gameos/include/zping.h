@@ -5,7 +5,7 @@
 class CZonePing
 {
 	// CZonePing
-  public:
+public:
 	CZonePing(void);
 	~CZonePing(void);
 
@@ -15,9 +15,8 @@ class CZonePing
 	void operator delete[](PVOID ptr);
 
 	// IZonePing
-  public:
-	typedef void PingCallbackFunc(
-		uint32_t inet, uint32_t latency, PVOID context);
+public:
+	typedef void PingCallbackFunc(uint32_t inet, uint32_t latency, PVOID context);
 
 	int32_t __stdcall StartupServer(void);
 	virtual HRESULT __stdcall StartupClient(uint32_t ping_interval_sec);
@@ -27,13 +26,12 @@ class CZonePing
 	virtual HRESULT __stdcall Remove(uint32_t inet);
 	virtual HRESULT __stdcall RemoveAll(void);
 	virtual HRESULT __stdcall Lookup(uint32_t inet, uint32_t* pLatency);
-	virtual HRESULT __stdcall RegisterCallback(
-		uint32_t inet, PingCallbackFunc* pfn, PVOID context);
+	virtual HRESULT __stdcall RegisterCallback(uint32_t inet, PingCallbackFunc* pfn, PVOID context);
 
-  private:
+private:
 	class ZonePing
 	{
-	  public:
+	public:
 		ZonePing(uint32_t inet = 0);
 
 		enum PINGSTATE
@@ -61,12 +59,9 @@ class CZonePing
 		ZonePing* m_pNext;
 	};
 
-  protected:
+protected:
 	ZonePing* FindNextItem(ZonePing* pPing, bool* bWrapped);
-	inline uint32_t GetListIndex(uint32_t inet)
-	{
-		return (inet & 0x000000FF) % m_PingIntervalSec;
-	}
+	inline uint32_t GetListIndex(uint32_t inet) { return (inet & 0x000000FF) % m_PingIntervalSec; }
 
 	void ScanForMissed(void);
 

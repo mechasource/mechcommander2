@@ -22,7 +22,7 @@
 
 class FIDPPlayer : public ListItem
 {
-  protected:
+protected:
 	char shortName[128];
 	char longName[256];
 	uint32_t playerID;
@@ -42,7 +42,7 @@ class FIDPPlayer : public ListItem
 	// the receive thread and the main thread at once.a
 	CRITICAL_SECTION playerCriticalSection;
 
-  public:
+public:
 	// sendCount is used for guaranteed messages.  It
 	// is always between 0 and 255 and it represents
 	// the next message sent to this player

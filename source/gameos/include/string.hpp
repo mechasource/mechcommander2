@@ -14,7 +14,7 @@
 //
 class FixedLengthString
 {
-  private:
+private:
 	//
 	// Data
 	//
@@ -24,7 +24,7 @@ class FixedLengthString
 	//
 	// Visible stuff
 	//
-  public:
+public:
 	//
 	// Constructor
 	//
@@ -70,10 +70,7 @@ class FixedLengthString
 	//
 	// Strings can be initialized by other FixedLengthStrings
 	//
-	inline FixedLengthString& operator=(const FixedLengthString&)
-	{
-		return *this;
-	}
+	inline FixedLengthString& operator=(const FixedLengthString&) { return *this; }
 	//
 	// Strings can be initialized by PSTR strings
 	//

@@ -13,7 +13,7 @@
 #define MAX_SOUNDCHANNELS 32
 class SoundChannel
 {
-  public:
+public:
 	float m_fVolume, m_fPanning, m_fFrequency;
 	uint32_t m_currentProperties;
 	uint32_t m_oldProperties;
@@ -48,7 +48,7 @@ class SoundChannel
 	gosAudio_ResourceType m_resourceType;
 	char m_resourceName[128];
 
-  public:
+public:
 	SoundChannel(void);
 	virtual ~SoundChannel(void);
 	virtual void Reset(uint32_t chan);

@@ -11,7 +11,7 @@
 //
 class DS3DSoundChannel
 {
-  public:
+public:
 	LPDIRECTSOUNDBUFFER m_Buffer;
 	LPDIRECTSOUND3DBUFFER m_Buffer3D;
 	DSBCAPS m_dsbCaps;
@@ -45,7 +45,7 @@ class DS3DSoundChannel
 	gosAudio_ResourceType m_resourceType;
 	char m_resourceName[128];
 
-  public:
+public:
 	DS3DSoundChannel(void);
 	~DS3DSoundChannel(void);
 	void Reset(uint32_t chan);

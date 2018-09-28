@@ -9,18 +9,18 @@
 
 class ListItem
 {
-  public:
+public:
 	virtual ~ListItem() {}
 };
 
 template <class T> class FLink
 {
-  public:
+public:
 	FLink<T>* Next;
 	T* linkData;
 	ListItem* castedData;
 
-  public:
+public:
 	FLink()
 	{
 		linkData = nullptr;
@@ -39,12 +39,12 @@ template <class T> class FLink
 
 template <class T> class FLinkedList
 {
-  protected:
+protected:
 	FLink<T>* m_Tail;
 	FLink<T>* m_Iterator;
 	int32_t m_Size;
 
-  public:
+public:
 	friend class FLink;
 
 	FLink<T>* m_Head;
@@ -259,11 +259,11 @@ template <class T> class FLinkedList
 
 template <class T> class FListIterator
 {
-  protected:
+protected:
 	FLinkedList<T>* myList;
 	FLink<T>* current;
 
-  public:
+public:
 	FListIterator<T>(FLinkedList<T>* list)
 	{
 		myList  = list;
@@ -282,7 +282,7 @@ template <class T> class FListIterator
 		current = myList->m_Head;
 	}
 
-  public:
+public:
 	T* Next()
 	{
 		gosASSERT(current != nullptr);

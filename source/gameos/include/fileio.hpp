@@ -31,8 +31,8 @@ typedef struct _MemoryMappedFiles
 	HANDLE hFileMapping;	   // Mapping handle
 	puint8_t pFile;			   // Pointer to start of data
 	size_t Size;			   // Size of data
-	size_t RefCount;	 // Reference count (number of times a file is opened)
-	char Name[MAX_PATH]; // Copy of the file name
+	size_t RefCount;		   // Reference count (number of times a file is opened)
+	char Name[MAX_PATH];	   // Copy of the file name
 
 } MemoryMappedFiles;
 

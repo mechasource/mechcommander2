@@ -46,7 +46,7 @@ struct CMTListNode
 #define CLEAR_NODE_DELETED(pNode) (pNode->m_DeletedAndIdx &= IDX_MASK)
 #define IS_NODE_DELETED(pNode) (pNode->m_DeletedAndIdx & DELETED_MASK)
 #define GET_NODE_IDX(pNode) (pNode->m_DeletedAndIdx & IDX_MASK)
-#define SET_NODE_IDX(pNode, idx)                                               \
+#define SET_NODE_IDX(pNode, idx)                                                                   \
 	(pNode->m_DeletedAndIdx = (pNode->m_DeletedAndIdx & DELETED_MASK) | idx)
 
 #pragma pack(pop)
@@ -62,7 +62,7 @@ typedef CMTListNode* MTListNodeHandle;
 
 template <class T, class K> class CHash
 {
-  public:
+public:
 	//
 	// Callback typedefs
 	//
@@ -75,9 +75,8 @@ template <class T, class K> class CHash
 	//
 	// Constructor and destructor
 	//
-	CHash(PFHASHFUNC HashFunc, PFCOMPAREFUNC CompareFunc,
-		PFGETFUNC GetFunc = nullptr, uint16_t NumBuckets = 256,
-		uint16_t NumLocks = 16);
+	CHash(PFHASHFUNC HashFunc, PFCOMPAREFUNC CompareFunc, PFGETFUNC GetFunc = nullptr,
+		uint16_t NumBuckets = 256, uint16_t NumLocks = 16);
 	~CHash(void);
 
 	//
@@ -105,15 +104,14 @@ template <class T, class K> class CHash
 	//
 	// Removes specified node from table.
 	//
-	void DeleteNode(MTListNodeHandle node, PFDELFUNC pfDelete = nullptr,
-		PVOID Cookie = nullptr);
+	void DeleteNode(MTListNodeHandle node, PFDELFUNC pfDelete = nullptr, PVOID Cookie = nullptr);
 
 	//
 	// Marks node as deleted without locking the table. It can be
 	// called from within the iterator callback (see ForEach).
 	//
-	void MarkNodeDeleted(MTListNodeHandle node, PFDELFUNC pfDelete = nullptr,
-		PVOID Cookie = nullptr);
+	void MarkNodeDeleted(
+		MTListNodeHandle node, PFDELFUNC pfDelete = nullptr, PVOID Cookie = nullptr);
 
 	//
 	// Callback iterator. Returns false if the iterator was prematurely
@@ -143,7 +141,7 @@ template <class T, class K> class CHash
 	void operator delete(PVOID ptr);
 	void operator delete[](PVOID ptr);
 
-  protected:
+protected:
 	typedef uint32_t (*PFHASHFUNC)(K);
 	typedef bool (*PFCOMPAREFUNC)(T*, K);
 	typedef bool (*PFITERCALLBACK)(T*, MTListNodeHandle, PVOID);
@@ -165,8 +163,8 @@ template <class T, class K> class CHash
 ///////////////////////////////////////////////////////////////////////////////
 
 template <class T, class K>
-inline CHash<T, K>::CHash(PFHASHFUNC HashFunc, PFCOMPAREFUNC CompareFunc,
-	PFGETFUNC GetFunc, uint16_t NumBuckets, uint16_t NumLocks)
+inline CHash<T, K>::CHash(PFHASHFUNC HashFunc, PFCOMPAREFUNC CompareFunc, PFGETFUNC GetFunc,
+	uint16_t NumBuckets, uint16_t NumLocks)
 {
 	CMTListNode* pBucket;
 	uint16_t i;
@@ -215,8 +213,7 @@ inline CHash<T, K>::CHash(PFHASHFUNC HashFunc, PFCOMPAREFUNC CompareFunc,
 		pBucket->m_Prev = pBucket;
 		pBucket->m_Data = nullptr;
 		SET_NODE_IDX(pBucket, i);
-		MARK_NODE_DELETED(
-			pBucket); // unusual but it simplifies the lookup routines
+		MARK_NODE_DELETED(pBucket); // unusual but it simplifies the lookup routines
 	}
 }
 
@@ -242,8 +239,7 @@ template <class T, class K> inline CHash<T, K>::~CHash()
 	m_Buckets = nullptr;
 }
 
-template <class T, class K>
-inline MTListNodeHandle CHash<T, K>::Add(K Key, T* Object)
+template <class T, class K> inline MTListNodeHandle CHash<T, K>::Add(K Key, T* Object)
 {
 	CMTListNode* node;
 	uint16_t idx		 = (uint16_t)m_HashFunc(Key) & m_BucketMask;
@@ -340,8 +336,7 @@ template <class T, class K> inline T* CHash<T, K>::Delete(K Key)
 }
 
 template <class T, class K>
-inline void CHash<T, K>::DeleteNode(
-	MTListNodeHandle node, PFDELFUNC pfDelete, PVOID Cookie)
+inline void CHash<T, K>::DeleteNode(MTListNodeHandle node, PFDELFUNC pfDelete, PVOID Cookie)
 {
 	ASSERT(GET_NODE_IDX(node) < m_NumBuckets);
 	if (pfDelete && node->m_Data)
@@ -358,8 +353,7 @@ inline void CHash<T, K>::DeleteNode(
 }
 
 template <class T, class K>
-inline void CHash<T, K>::MarkNodeDeleted(
-	MTListNodeHandle node, PFDELFUNC pfDelete, PVOID Cookie)
+inline void CHash<T, K>::MarkNodeDeleted(MTListNodeHandle node, PFDELFUNC pfDelete, PVOID Cookie)
 {
 	if (!IS_NODE_DELETED(node))
 	{
@@ -400,8 +394,7 @@ inline bool CHash<T, K>::ForEach(PFITERCALLBACK pfCallback, PVOID Cookie)
 	return true;
 }
 
-template <class T, class K>
-inline void CHash<T, K>::RemoveAll(PFDELFUNC pfDelete, PVOID Cookie)
+template <class T, class K> inline void CHash<T, K>::RemoveAll(PFDELFUNC pfDelete, PVOID Cookie)
 {
 	CMTListNode* pBucket;
 	CMTListNode* node;

@@ -16,7 +16,7 @@
 
 class NetworkMessageContainer
 {
-  public:
+public:
 	// If receiving a message {receiverId} is accessed to see if the message was
 	// sent to a group in which the player belongs, to all players, or directly
 	// to this player.

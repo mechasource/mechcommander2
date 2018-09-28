@@ -19,8 +19,7 @@ void __stdcall InvalidateVertexBuffers(void);
 void __stdcall ReCreateVertexBuffers(void);
 
 // IME displays directly to backbuffer, that's why it's in DXRasterizer.hpp
-void __stdcall RenderIMEToBackBuffer(
-	int32_t POS_X, int32_t POS_Y, float FONTHEIGHT);
+void __stdcall RenderIMEToBackBuffer(int32_t POS_X, int32_t POS_Y, float FONTHEIGHT);
 
 // Variables for gamma correction
 extern uint8_t GammaTable[256];
@@ -37,44 +36,38 @@ extern DDSURFACEDESC2 BackBufferddsd;
 extern uint32_t AllowBrightness;
 extern uint32_t AllowContrast;
 
-HRESULT __stdcall CheckEnumProc(
-	DDPIXELFORMAT* ddpfPixelFormat, PVOID lpContext);
-extern void __stdcall CopyBackBuffer(
-	LPDIRECTDRAWSURFACE7 Dest, LPDIRECTDRAWSURFACE7 Source);
+HRESULT __stdcall CheckEnumProc(DDPIXELFORMAT* ddpfPixelFormat, PVOID lpContext);
+extern void __stdcall CopyBackBuffer(LPDIRECTDRAWSURFACE7 Dest, LPDIRECTDRAWSURFACE7 Source);
 
 //
 // Compatibility flags for different video cards
 //
 typedef enum __compatibilityconst
 {
-	SceneRenderer  = 1,		 // Scene based renderer (PowerVR, Kyro etc...)
-	NoAlphaTest	= 1 << 1, // Disable alpha test (conflicts with other modes)
-	NoTriLinear	= 1 << 2, // Do not attempt trilinear filtering
-	NoTripleBuffer = 1 << 3, // Do not attempt triple buffering
-	DefaultBltNotFlip = 1 << 4, // In full screen mode, use BLT
-	NoFog			  = 1 << 5, // Do not attempt fog
-	TextureOffset	 = 1 << 6, // Riva 128 needs a texture offset for fonts
-	BrokenAlphaTest   = 1 << 7, // ATI Rage cards cannot do Alpha test without
-								// ALPHABLEND being enabled
-	RenderEqualZ =
-		1 << 8, // Render bit depth must equal Z bit depth (nVidia cards)
-	NoParallelism = 1 << 9, // Lock the back buffer after rendering (Voodoo3 -
-							// queueing up too many blits)
-	BadMouse   = 1 << 10,   // Card can never used GDI mouse
-	LowEndCard = 1 << 11,   // This is a 'low end' card - the application can
-							// request this is not supported in hardware
-							// (Environment.DisableLowEndCard)
-	NoMipMap			 = 1 << 12, // Disable mipmaps
-	Bad4444				 = 1 << 13, // Disable 4444 textures  (Chromatic Mpact)
-	BadAGP				 = 1 << 14, // Disable AGP textures   (Chromatic Mpact)
-	NoDisablePerspective = 1 << 15, // Disable perspective correct disable.
-	LimitTextureSize =
-		1 << 16, // Limit texture size to 256*256 to correct bad caps
-	ForceSquareTextures = 1 << 17, // Do not allow non-square textures
-	NoStretchTexture =
-		1 << 18, // Force system memory stretch blit to square up textures
-	AllowLowMemoryCard =
-		1 << 19, // Allow card to bypass low texture memory test (Voodoo2)
+	SceneRenderer	 = 1,			 // Scene based renderer (PowerVR, Kyro etc...)
+	NoAlphaTest		  = 1 << 1,		 // Disable alpha test (conflicts with other modes)
+	NoTriLinear		  = 1 << 2,		 // Do not attempt trilinear filtering
+	NoTripleBuffer	= 1 << 3,		 // Do not attempt triple buffering
+	DefaultBltNotFlip = 1 << 4,		 // In full screen mode, use BLT
+	NoFog			  = 1 << 5,		 // Do not attempt fog
+	TextureOffset	 = 1 << 6,		 // Riva 128 needs a texture offset for fonts
+	BrokenAlphaTest   = 1 << 7,		 // ATI Rage cards cannot do Alpha test without
+									 // ALPHABLEND being enabled
+	RenderEqualZ  = 1 << 8,			 // Render bit depth must equal Z bit depth (nVidia cards)
+	NoParallelism = 1 << 9,			 // Lock the back buffer after rendering (Voodoo3 -
+									 // queueing up too many blits)
+	BadMouse   = 1 << 10,			 // Card can never used GDI mouse
+	LowEndCard = 1 << 11,			 // This is a 'low end' card - the application can
+									 // request this is not supported in hardware
+									 // (Environment.DisableLowEndCard)
+	NoMipMap			  = 1 << 12, // Disable mipmaps
+	Bad4444				  = 1 << 13, // Disable 4444 textures  (Chromatic Mpact)
+	BadAGP				  = 1 << 14, // Disable AGP textures   (Chromatic Mpact)
+	NoDisablePerspective  = 1 << 15, // Disable perspective correct disable.
+	LimitTextureSize	  = 1 << 16, // Limit texture size to 256*256 to correct bad caps
+	ForceSquareTextures   = 1 << 17, // Do not allow non-square textures
+	NoStretchTexture	  = 1 << 18, // Force system memory stretch blit to square up textures
+	AllowLowMemoryCard	= 1 << 19, // Allow card to bypass low texture memory test (Voodoo2)
 	NoMultitexture		  = 1 << 20, // Disable multitexture blending modes
 	Disable1024x768		  = 1 << 21, // Disable 1024*768 mode
 	DisableTextureDeletes = 1 << 22, // Try not to delete textures
@@ -100,11 +93,9 @@ typedef struct CardInfo
 {
 	uint32_t VendorID; // Vendor ID, ie: S3=0x5333
 	uint32_t DeviceID; // Device ID, ie: ATI Rage=0x4750
-	uint32_t
-		DriverH; // High and Low dword of driver version number (Windows 9x)
+	uint32_t DriverH;  // High and Low dword of driver version number (Windows 9x)
 	uint32_t DriverL;
-	uint32_t
-		NTDriverH; // High and Low dword of driver version number (Windows 2000)
+	uint32_t NTDriverH; // High and Low dword of driver version number (Windows 2000)
 	uint32_t NTDriverL;
 	PSTR VendorName;			 // Friendly name for Vendor
 	PSTR CardName;				 // Friendly name for card type
@@ -120,31 +111,28 @@ typedef struct DeviceInfo
 {
 	GUID DeviceGUID;
 	DDDEVICEIDENTIFIER2 DDid; // Use DDid.szDescription for the readable name
-	uint32_t
-		Empty; // Bug in GetDeviceIdentifier - it overwrites the next 4 bytes!
+	uint32_t Empty;			  // Bug in GetDeviceIdentifier - it overwrites the next 4 bytes!
 	DDCAPS DDCaps;
 	D3DDEVICEDESC7 D3DCaps;
 	char FourCC[16 * 4];			  // First 16 FourCC codes
 	DDPIXELFORMAT TextureFormats[16]; // First 16 texture formats (ends in 0)
-	uint16_t Modes16[16 * 2];   // First 16, 16 bit screen modes above 640*480
-	uint16_t Refresh16[16];		// Refresh rates for above modes
-	uint16_t Modes32[16 * 2];   // First 16, 32 bit screen modes above 640*480
-	uint16_t Refresh32[16];		// Refresh rates for above modes
-	DDPIXELFORMAT ZFormats[16]; // First 16 Z Buffer formats
+	uint16_t Modes16[16 * 2];		  // First 16, 16 bit screen modes above 640*480
+	uint16_t Refresh16[16];			  // Refresh rates for above modes
+	uint16_t Modes32[16 * 2];		  // First 16, 32 bit screen modes above 640*480
+	uint16_t Refresh32[16];			  // Refresh rates for above modes
+	DDPIXELFORMAT ZFormats[16];		  // First 16 Z Buffer formats
 	uint32_t TotalVid;
 	uint32_t TotalLocalTex;
 	uint32_t TotalTex;
-	uint32_t MultitextureLightMap;	// Lightmap support
-	uint32_t MultitextureSpecularMap; // Specular support
-	uint32_t MultitextureDetail;	  // Detail support
-	uint32_t
-		MultitextureLightMapFilter; // Lightmap support (1=Disable trilinear)
-	uint32_t
-		MultitextureSpecularMapFilter; // Specular support (1=Disable trilinear)
-	uint32_t MultitextureDetailFilter; // Detail support (1=Disable trilinear)
-	uint32_t CurrentCard; // Which entry in the KnownCard array. (-1=Unknown)
-	uint8_t Failed60Hz;   // Set to only try full screen 60Hz once
-	uint8_t LinearMemory; // Set if linear memory, not rectangular
+	uint32_t MultitextureLightMap;			// Lightmap support
+	uint32_t MultitextureSpecularMap;		// Specular support
+	uint32_t MultitextureDetail;			// Detail support
+	uint32_t MultitextureLightMapFilter;	// Lightmap support (1=Disable trilinear)
+	uint32_t MultitextureSpecularMapFilter; // Specular support (1=Disable trilinear)
+	uint32_t MultitextureDetailFilter;		// Detail support (1=Disable trilinear)
+	uint32_t CurrentCard;					// Which entry in the KnownCard array. (-1=Unknown)
+	uint8_t Failed60Hz;						// Set to only try full screen 60Hz once
+	uint8_t LinearMemory;					// Set if linear memory, not rectangular
 	uint8_t _padding1[2];
 	int32_t MaxRefreshRate; // Maximum refresh rate
 	PSTR CurrentVendor;		// If vendor known, point to name, else 0
@@ -224,10 +212,8 @@ void __stdcall DirectDrawInstall(void);
 void __stdcall ShowFrameGraphs(void);
 void __stdcall DirectDrawUninstall(void);
 void __stdcall DirectDrawCreateDDObject(void);
-BOOL __stdcall DirectDrawEnumerateCallback(
-	GUID* lpGUID, PSTR, PSTR, PVOID lpContext);
-HRESULT __stdcall DirectDrawEnumDisplayModesCallback(
-	LPDDSURFACEDESC2 pddsd, PVOID lpContext);
+BOOL __stdcall DirectDrawEnumerateCallback(GUID* lpGUID, PSTR, PSTR, PVOID lpContext);
+HRESULT __stdcall DirectDrawEnumDisplayModesCallback(LPDDSURFACEDESC2 pddsd, PVOID lpContext);
 void __stdcall DirectDrawCreateAllBuffers(void);
 void __stdcall EnterWindowMode(void);
 void __stdcall EnterFullScreenMode(void);

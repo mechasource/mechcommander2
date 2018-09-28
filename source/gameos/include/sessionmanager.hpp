@@ -92,7 +92,7 @@ typedef struct _DPAddressInfo
 // Otherwise, one of the ConnectThruXXX functions must be called.
 //
 //	Once connected, the user can either Host or Join a session.  To host a
-//session,
+// session,
 // simply create a temporary session object and pass it into the HostSession()
 // function. To join a session, the user must get a GUID from the list of
 // sessions returned by the GetSessions() function, then call JoinSession() with
@@ -121,7 +121,7 @@ typedef struct _DPAddressInfo
 
 class SessionManager
 {
-  public:
+public:
 	FLinkedList<FIDPSession> listOfSessions;
 	FLinkedList<FIDPPlayer> listOfPlayers;
 	FLinkedList<FIDPMessage> listOfEmptyMessages;
@@ -157,8 +157,8 @@ class SessionManager
 	BOOL launchedFromLobby; // TRUE if this app was launched through a DPlay
 							// lobby.
 	BOOL lobbyChecked;		// TRUE if we have initialized launchedFromLobby.
-	BOOL inReceiveThread; // TRUE while in ReceiveThread, FALSE while in another
-						  // thread.
+	BOOL inReceiveThread;   // TRUE while in ReceiveThread, FALSE while in another
+							// thread.
 	BOOL DisabledCallerID;
 	BOOL CallerIDChanged[6];
 
@@ -221,13 +221,12 @@ class SessionManager
 		return wSetSessionDesc(dplay4, ss->GetSessionDescriptor(void), 0);
 	}
 
-	void SendVerifyMessage(
-		int32_t player_number, FIDPMessage* msg, int32_t send_count);
+	void SendVerifyMessage(int32_t player_number, FIDPMessage* msg, int32_t send_count);
 
 	void EnumeratePlayers(FIDPSession* session);
 
-	void AddPlayerOrGroup(uint32_t dwPlayerType, DPID dpId, DPID dpIdParent,
-		LPDPNAME dpnName, uint32_t dwFlags);
+	void AddPlayerOrGroup(
+		uint32_t dwPlayerType, DPID dpId, DPID dpIdParent, LPDPNAME dpnName, uint32_t dwFlags);
 
 	// DeletePlayerOrGroup is called when a player or group leaves the
 	// game -- after calling AppCallback.  It actually deletes this player
@@ -256,23 +255,22 @@ class SessionManager
 
 	FIDPMessage* GetMessageFromEmptyQueue(void);
 
-  public:
+public:
 	// Returns the session in the listOfSessions with a matching guid
 	// or nullptr if there is no match.
 	FIDPSession* FindMatchingSession(LPGUID pguid);
 
-  private:
+private:
 	// Functions called by the Callbacks.  These functions are
 	// essentially the callbacks for enumerating connections,
 	// sessions, players, and groups.  However, since the callback
 	// itself cannot be a member function of a class, the callback
 	// bounces the message into the class using the lpContext member.
-	BOOL FAR PASCAL AddConnection(LPCGUID lpguidSP, PVOID lpConnection,
-		uint32_t dwConnectionSize, LPCDPNAME lpName, uint32_t dwFlags,
-		PVOID lpContext);
+	BOOL FAR PASCAL AddConnection(LPCGUID lpguidSP, PVOID lpConnection, uint32_t dwConnectionSize,
+		LPCDPNAME lpName, uint32_t dwFlags, PVOID lpContext);
 
-	BOOL FAR PASCAL AddSession(LPCDPSESSIONDESC2 lpThisSD,
-		puint32_t lpdwTimeOut, uint32_t dwFlags, PVOID lpContext);
+	BOOL FAR PASCAL AddSession(
+		LPCDPSESSIONDESC2 lpThisSD, puint32_t lpdwTimeOut, uint32_t dwFlags, PVOID lpContext);
 
 	BOOL FAR PASCAL NewPlayerEnumeration(
 		DPID dp_id, uint32_t dwPlayerType, LPCDPNAME lpName, uint32_t dwFlags);
@@ -283,8 +281,7 @@ class SessionManager
 
 	// RTHandleNewGuaranteedMessage is called to handle an incoming guaranteed
 	// message in the receive thread.
-	void RTHandleNewGuaranteedMessage(
-		FIDPMessage* message_info, FIDPPlayer* sending_player);
+	void RTHandleNewGuaranteedMessage(FIDPMessage* message_info, FIDPPlayer* sending_player);
 
 	// returns a DPID from a player number
 	DPID RTGetIDFromPlayerNumber(int32_t pn);
@@ -296,8 +293,8 @@ class SessionManager
 	void HandlePreSystemMessage(FIDPMessage* msg);
 	void HandlePostSystemMessage(FIDPMessage* msg);
 
-	void SetupMessageSendCounts(FIGuaranteedMessageHeader* message,
-		FLinkedList<FIDPPlayer>* player_list);
+	void SetupMessageSendCounts(
+		FIGuaranteedMessageHeader* message, FLinkedList<FIDPPlayer>* player_list);
 
 	// SendPreIDGuaranteedMessages is called once when the new player
 	// gets a list of player numbers and the server ID.
@@ -308,7 +305,7 @@ class SessionManager
 	// player gets the next one in line.
 	void GivePlayerAnID(FIDPPlayer* player);
 
-  public:
+public:
 	SessionManager(GUID app_guid);
 
 	virtual ~SessionManager(void);
@@ -316,14 +313,13 @@ class SessionManager
 	virtual void destroy(void);
 
 	friend BOOL FAR PASCAL DPSessionMgrSessionsCallback(
-		LPCDPSESSIONDESC2 lpSessionDesc, puint32_t lpdwTimeOut,
-		uint32_t dwFlags, PVOID lpContext);
+		LPCDPSESSIONDESC2 lpSessionDesc, puint32_t lpdwTimeOut, uint32_t dwFlags, PVOID lpContext);
 
-	friend BOOL FAR PASCAL EnumPlayersCallback(DPID dpId, uint32_t dwPlayerType,
-		LPCDPNAME lpName, uint32_t dwFlags, PVOID lpContext);
+	friend BOOL FAR PASCAL EnumPlayersCallback(
+		DPID dpId, uint32_t dwPlayerType, LPCDPNAME lpName, uint32_t dwFlags, PVOID lpContext);
 
-	friend BOOL FAR PASCAL EnumGroupsCallback(DPID dpId, uint32_t dwPlayerType,
-		LPCDPNAME lpName, uint32_t dwFlags, PVOID lpContext);
+	friend BOOL FAR PASCAL EnumGroupsCallback(
+		DPID dpId, uint32_t dwPlayerType, LPCDPNAME lpName, uint32_t dwFlags, PVOID lpContext);
 
 	friend uint32_t WINAPI SessionManagerReceiveThread(PVOID lpThreadParameter);
 
@@ -333,8 +329,7 @@ class SessionManager
 
 	// InitializeConnection is called by one of the following functions
 	// to allow the user to bypass the crappy windows dialogs.
-	int32_t InitializeConnection(
-		DPCOMPOUNDADDRESSELEMENT* compound_address, int32_t n_items);
+	int32_t InitializeConnection(DPCOMPOUNDADDRESSELEMENT* compound_address, int32_t n_items);
 
 	int32_t Dial(void);
 	void CancelDialing(void);
@@ -345,8 +340,7 @@ class SessionManager
 
 	// If we were launched from a lobby, SetupLobbyConnection creates
 	// a protocol, session, and player to start the game.
-	uint32_t SetupLobbyConnection(
-		LPVOIDCALLBACK create_callback, LPVOIDCALLBACK destroy_callback);
+	uint32_t SetupLobbyConnection(LPVOIDCALLBACK create_callback, LPVOIDCALLBACK destroy_callback);
 
 	// returns the name of the modem at index or nullptr if index
 	// is greater than the # of modems.
@@ -370,8 +364,8 @@ class SessionManager
 	// LeaveSession kills the current player and removes him from the session.
 	int32_t LeaveSession(void);
 
-	void CreateGroup(LPDPID id, PSTR name, PVOID data = nullptr,
-		uint32_t size = 0, uint32_t flags = 0);
+	void CreateGroup(
+		LPDPID id, PSTR name, PVOID data = nullptr, uint32_t size = 0, uint32_t flags = 0);
 
 	void SetGroupData(DPID id, PVOID data, uint32_t size, uint32_t flags = 0);
 
@@ -398,19 +392,16 @@ class SessionManager
 	void SendMessageToGroupGuaranteed(
 		DPID group_id, FIGuaranteedMessageHeader* message, uint32_t size);
 
-	void SendMessageToPlayerGuaranteed(DPID player_id,
-		FIGuaranteedMessageHeader* message, uint32_t size,
-		BOOL set_send_count = TRUE);
+	void SendMessageToPlayerGuaranteed(DPID player_id, FIGuaranteedMessageHeader* message,
+		uint32_t size, BOOL set_send_count = TRUE);
 
-	void SendMessageToServerGuaranteed(
-		FIGuaranteedMessageHeader* message, uint32_t size);
+	void SendMessageToServerGuaranteed(FIGuaranteedMessageHeader* message, uint32_t size);
 
 	void BroadcastMessage(FIMessageHeader* message, uint32_t size);
 
 	void SendMessageToServer(FIMessageHeader* message, uint32_t size);
 
-	HRESULT SendMessage(
-		DPID group_or_player_id, FIMessageHeader* message, uint32_t size);
+	HRESULT SendMessage(DPID group_or_player_id, FIMessageHeader* message, uint32_t size);
 
 	HRESULT SendGOSMessage(NetworkMessageContainer& message_info);
 

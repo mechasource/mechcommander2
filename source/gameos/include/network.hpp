@@ -78,9 +78,8 @@ bool __stdcall gos_ConnectZoneMatch(PSTR IPAddress, uint16_t port);
 // 3=Failed
 // 4=Waiting for answer
 //
-int32_t __stdcall gos_CreateGame(PSTR GameName, PSTR PlayerName,
-	int32_t MaxPlayers, PSTR GamePassword = 0, bool Secure = 0,
-	PSTR UserPassword = 0, uint32_t dwFlags = 0);
+int32_t __stdcall gos_CreateGame(PSTR GameName, PSTR PlayerName, int32_t MaxPlayers,
+	PSTR GamePassword = 0, bool Secure = 0, PSTR UserPassword = 0, uint32_t dwFlags = 0);
 
 //
 // Join the game specified
@@ -93,8 +92,8 @@ int32_t __stdcall gos_CreateGame(PSTR GameName, PSTR PlayerName,
 // 5=Invalid password
 // 6=Too many players in the game
 //
-int32_t __stdcall gos_JoinGame(PSTR GameName, PSTR PlayerName,
-	PSTR GamePassword = 0, PSTR UserPassword = 0);
+int32_t __stdcall gos_JoinGame(
+	PSTR GameName, PSTR PlayerName, PSTR GamePassword = 0, PSTR UserPassword = 0);
 
 //
 // Functionality: If connected to a network protocol, gos_Disconnect resets the
@@ -162,7 +161,7 @@ class ServerBrowser
 {
 	friend class ServerBrowserMonitor;
 
-  public:
+public:
 	//
 	// called by GameOS
 	//
@@ -197,17 +196,16 @@ class ServerBrowser
 
 	ServerBrowser() : m_bDelete(false) { ; }
 
-  protected:
+protected:
 	//
 	// server browsers should implement these members, and they will
 	// be called by GameOS at various times
 	//
 
 	// general use
-	virtual bool __stdcall Initialize(void) = 0;
-	virtual bool __stdcall Disconnect(void) = 0;
-	virtual bool __stdcall Release(
-		void) = 0; // disconnect, unregister, and free
+	virtual bool __stdcall Initialize(void)		 = 0;
+	virtual bool __stdcall Disconnect(void)		 = 0;
+	virtual bool __stdcall Release(void)		 = 0; // disconnect, unregister, and free
 	virtual int32_t __stdcall GetStatus(void)	= 0;
 	virtual PCSTR __stdcall GetDescription(void) = 0;
 	virtual bool __stdcall Synchronize(void)	 = 0; // called every frame
@@ -221,8 +219,7 @@ class ServerBrowser
 	virtual bool __stdcall GetNetStatus(void)			  = 0;
 
 	// for browsers
-	virtual bool __stdcall PrepareJoinGame(
-		PCSTR szGameName, PVOID* ppDPlay) = 0;
+	virtual bool __stdcall PrepareJoinGame(PCSTR szGameName, PVOID* ppDPlay) = 0;
 
 	//
 	// server browsers can call these members
@@ -230,7 +227,7 @@ class ServerBrowser
 	bool __stdcall Register(void);
 	bool __stdcall Unregister(void);
 
-  public:
+public:
 	//
 	// the browser handle is a unique string to
 	// differentiate one server browser from
@@ -238,10 +235,10 @@ class ServerBrowser
 	//
 	PCSTR __stdcall GetBrowserHandle(void) { return m_szHandle; }
 
-  protected:
+protected:
 	bool m_bDelete;
 
-  private:
+private:
 	static ServerBrowser* m_pHead;
 	static Browse::GameList* m_pGameList;
 	ServerBrowser* m_pNext;
@@ -266,23 +263,19 @@ class ServerAdvertiser
 {
 	friend class ServerBrowserMonitor;
 
-  public:
+public:
 	//
 	// called by GameOS
 	//
 	static bool __stdcall InitializeAll(void);
 	static bool __stdcall SynchronizeAll(void);
-	static bool __stdcall CreateGameAll(PCSTR szGameName, PCSTR szPlayerName,
-		int32_t MaxPlayers, PCSTR szPassword, const GUID& guidInstance,
-		uint32_t dwFlags);
-	static bool __stdcall AddPlayerAll(
-		uint32_t dwItemID, PCSTR szPlayerName, bool bBot = false);
+	static bool __stdcall CreateGameAll(PCSTR szGameName, PCSTR szPlayerName, int32_t MaxPlayers,
+		PCSTR szPassword, const GUID& guidInstance, uint32_t dwFlags);
+	static bool __stdcall AddPlayerAll(uint32_t dwItemID, PCSTR szPlayerName, bool bBot = false);
 	static bool __stdcall DisconnectAll(void);
-	static bool __stdcall RemovePlayerAll(
-		uint32_t dwItemID, PCSTR szPlayerName, bool bBot);
+	static bool __stdcall RemovePlayerAll(uint32_t dwItemID, PCSTR szPlayerName, bool bBot);
 	static bool __stdcall ReleaseAll(void);
-	static bool __stdcall AdvertiseItem(
-		uint32_t dwPlayer, PCSTR szName, PCSTR szValue);
+	static bool __stdcall AdvertiseItem(uint32_t dwPlayer, PCSTR szName, PCSTR szValue);
 	static uint32_t __stdcall GetFlagsAllAdvertisers(void);
 	static bool __stdcall SetFlagsAllAdvertisers(uint32_t dwFlags);
 
@@ -290,28 +283,25 @@ class ServerAdvertiser
 
 	ServerAdvertiser() : m_bDelete(false) { ; }
 
-  protected:
+protected:
 	// general use
-	virtual bool __stdcall Initialize(void) = 0;
-	virtual bool __stdcall Disconnect(void) = 0;
-	virtual bool __stdcall Release(
-		void) = 0; // disconnect, unregister, and free
+	virtual bool __stdcall Initialize(void)		 = 0;
+	virtual bool __stdcall Disconnect(void)		 = 0;
+	virtual bool __stdcall Release(void)		 = 0; // disconnect, unregister, and free
 	virtual PCSTR __stdcall GetDescription(void) = 0;
 	virtual bool __stdcall Synchronize(void)	 = 0; // called every frame
 	// for every active
 	// browser or server
 
 	// for servers
-	virtual bool __stdcall CreateGame(PCSTR szGameName, PCSTR szPlayerName,
-		int32_t MaxPlayers, PCSTR szPassword, const GUID& guidInstance,
-		uint32_t dwFlags) = 0;
+	virtual bool __stdcall CreateGame(PCSTR szGameName, PCSTR szPlayerName, int32_t MaxPlayers,
+		PCSTR szPassword, const GUID& guidInstance, uint32_t dwFlags) = 0;
 	virtual bool __stdcall CreatePlayer(
 		uint32_t dwItemID, PCSTR szPlayerName, bool bBot = false) = 0;
 	virtual bool __stdcall RemovePlayer(
-		uint32_t dwItemID, PCSTR szPlayerName, bool bBot = false) = 0;
-	virtual bool __stdcall SetItemValue(
-		uint32_t dwPlayer, PCSTR szName, PCSTR szValue) = 0;
-	virtual bool __stdcall SetFlags(uint32_t dwFlags)   = 0;
+		uint32_t dwItemID, PCSTR szPlayerName, bool bBot = false)						= 0;
+	virtual bool __stdcall SetItemValue(uint32_t dwPlayer, PCSTR szName, PCSTR szValue) = 0;
+	virtual bool __stdcall SetFlags(uint32_t dwFlags)									= 0;
 
 	//
 	// server browsers can call these members
@@ -321,7 +311,7 @@ class ServerAdvertiser
 
 	bool m_bDelete;
 
-  private:
+private:
 	static ServerAdvertiser* m_pHead;
 	static bool s_bAdvertiseOK;
 	static uint32_t m_dwFlags;

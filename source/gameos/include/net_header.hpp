@@ -67,8 +67,8 @@ typedef struct _ListOfGames
 	struct _ListOfGames* pNext;		  // Pointer to next in chain
 	DPSESSIONDESC2 SessionDescriptor; // Session description
 	ListOfNames* pPlayers;			  // Pointer to list of player names
-	bool bIPX;	// whether the game is hosted with IPX or not (TCP/IP)
-	char Name[1]; // Name
+	bool bIPX;						  // whether the game is hosted with IPX or not (TCP/IP)
+	char Name[1];					  // Name
 } ListOfGames;
 
 //
@@ -246,21 +246,19 @@ void __stdcall CheckProtocols(void);
 void __stdcall ReceivePackets(void);
 void __stdcall GetCurrentPlayers(void);
 void __stdcall AddGOSMessage(Messages* pMessage);
-BOOL __stdcall EnumSessionsCallback(LPCDPSESSIONDESC2 lpSessionDesc,
-	puint32_t lpdwTimeOut, uint32_t dwFlags, PVOID lpContext);
-BOOL __stdcall EnumJoinSessionCallback(LPCDPSESSIONDESC2 lpSessionDesc,
-	puint32_t lpdwTimeOut, uint32_t dwFlags, PVOID lpContext);
-BOOL __stdcall EnumPlayersCallback(DPID dpId, uint32_t dwPlayerType,
-	LPCDPNAME lpName, uint32_t dwFlags, LPVOID lpContext);
+BOOL __stdcall EnumSessionsCallback(
+	LPCDPSESSIONDESC2 lpSessionDesc, puint32_t lpdwTimeOut, uint32_t dwFlags, PVOID lpContext);
+BOOL __stdcall EnumJoinSessionCallback(
+	LPCDPSESSIONDESC2 lpSessionDesc, puint32_t lpdwTimeOut, uint32_t dwFlags, PVOID lpContext);
+BOOL __stdcall EnumPlayersCallback(
+	DPID dpId, uint32_t dwPlayerType, LPCDPNAME lpName, uint32_t dwFlags, LPVOID lpContext);
 BOOL __stdcall ModemCallback(
 	REFGUID guidDataType, uint32_t dwDataSize, LPCVOID lpData, PVOID lpContext);
 BOOL __stdcall TCPIPCallback(
 	REFGUID guidDataType, uint32_t dwDataSize, LPCVOID lpData, PVOID lpContext);
 void __stdcall WaitTillQueueEmpty(void);
-void __stdcall AddPlayerToGame(
-	ListOfNames** pListOfPlayers, PSTR Name, DPID dpId);
-void __stdcall RemovePlayerFromGame(
-	ListOfNames** pListOfPlayers, PSTR Name, DPID dpId);
+void __stdcall AddPlayerToGame(ListOfNames** pListOfPlayers, PSTR Name, DPID dpId);
+void __stdcall RemovePlayerFromGame(ListOfNames** pListOfPlayers, PSTR Name, DPID dpId);
 PSTR __stdcall GetName10(uint32_t Id);
 void __stdcall UpdateNetworkDebugInfo(void);
 PSTR __stdcall DecodeIPAddress(DPLCONNECTION* pConnection);
@@ -339,7 +337,7 @@ typedef struct tagPACKETQUEUE
 //========================================================================
 class OutboundWindow
 {
-  public:
+public:
 	static cint32_t m_WindowSize;
 	static const double m_ResendTime;
 
@@ -356,7 +354,7 @@ class OutboundWindow
 	void operator delete(PVOID ptr) { gos_Free(ptr); }
 	void operator delete[](PVOID ptr) { gos_Free(ptr); }
 
-  public:
+public:
 	double m_TimeLastPacketSent;
 	uint16_t m_NextPacketNumberToSend;
 	uint16_t m_LastPacketWeReceived;

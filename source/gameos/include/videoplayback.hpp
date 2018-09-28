@@ -9,7 +9,7 @@
 
 typedef struct gos_Video
 {
-  public:
+public:
 	PSTR m_lpPath;
 
 	static HGOSHEAP m_videoHeap;
@@ -43,7 +43,7 @@ typedef struct gos_Video
 	STREAM_TIME m_lastKnownTime;
 	STREAM_TIME m_nextFrameTime;
 
-  public:
+public:
 	gos_Video(PSTR path, bool texture);
 	~gos_Video(void);
 	bool Update(void);
@@ -54,8 +54,7 @@ typedef struct gos_Video
 	void Restore(void);
 	void Release(void);
 	void SetLocation(uint32_t, uint32_t);
-	void OpenMMStream(
-		PCSTR pszFileName, IDirectDraw* pDD, IMultiMediaStream** ppMMStream);
+	void OpenMMStream(PCSTR pszFileName, IDirectDraw* pDD, IMultiMediaStream** ppMMStream);
 } gos_Video;
 
 void __stdcall VideoManagerInstall(void);
@@ -66,5 +65,5 @@ void __stdcall VideoManagerRestore(void);
 void __stdcall VideoManagerUninstall(void);
 void __stdcall VideoManagerUpdate(void);
 void __stdcall VideoManagerFF(double sec);
-void __stdcall OpenMMStream(PCSTR pszFileName, IDirectDraw* pDD,
-	IMultiMediaStream** ppMMStream, IBasicAudio** ppBasicAudio);
+void __stdcall OpenMMStream(PCSTR pszFileName, IDirectDraw* pDD, IMultiMediaStream** ppMMStream,
+	IBasicAudio** ppBasicAudio);

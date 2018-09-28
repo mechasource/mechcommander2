@@ -31,9 +31,9 @@ extern uint32_t WantRVRAM;
 extern uint32_t WantSW;
 extern uint32_t WantSW1;
 extern uint32_t WantHW;
-extern uint32_t FrameAdvance; // Used to step or fast forward through scripts
-extern uint32_t OldFreeze;	// Old value of gFreezeLogic
-extern uint32_t OldRender;	// Old value of gStopRendering;
+extern uint32_t FrameAdvance;			// Used to step or fast forward through scripts
+extern uint32_t OldFreeze;				// Old value of gFreezeLogic
+extern uint32_t OldRender;				// Old value of gStopRendering;
 extern uint32_t PerfCounterSelected;
 extern int32_t PerfYStart, PerfYEnd;
 extern uint32_t DoUpdateWindow;
@@ -51,10 +51,8 @@ extern float DebuggerTexelOffset;
 extern int32_t DBWheelDelta;
 extern uint32_t gShowMemoryUseage; // 2=Enable at next frame, 1=show data, 0=Do
 								   // not show data
-extern uint32_t
-	gShowWSUseage; // 2=Enable at next frame, 1=show data, 0=Do not show data
-extern uint32_t
-	gShowFTOLUseage; // 2=Enable at next frame, 1=show data, 0=Do not show data
+extern uint32_t gShowWSUseage;	 // 2=Enable at next frame, 1=show data, 0=Do not show data
+extern uint32_t gShowFTOLUseage;   // 2=Enable at next frame, 1=show data, 0=Do not show data
 extern uint32_t gShowALLUseage;
 extern gos_VERTEX Graph[512];
 extern uint32_t gScreenBMP;
@@ -62,8 +60,7 @@ extern uint32_t gScreenBMP;
 void __stdcall WalkStack(
 	uint32_t* RoutineAddresses, uint32_t NumberOfLevels, uint32_t IgnoreLevels);
 PSTR __stdcall DecodeAddress(uint32_t Address, uint8_t brief /* = true*/);
-void __stdcall DrawLines(
-	int32_t X1, int32_t Y1, int32_t X2, int32_t Y2, uint32_t Color);
+void __stdcall DrawLines(int32_t X1, int32_t Y1, int32_t X2, int32_t Y2, uint32_t Color);
 
 typedef struct _MenuItem
 {
@@ -72,8 +69,7 @@ typedef struct _MenuItem
 	uint32_t(__stdcall* Callback)(PSTR Name, uint32_t MenuFunction);
 	void(__stdcall* Routine)(void); // Sub menu list pointer
 	uint8_t(__stdcall* Greyed)(void);
-	uint8_t(__stdcall* CheckMark)(
-		void); // 0 When no check mark routine, 1 when sub menu
+	uint8_t(__stdcall* CheckMark)(void); // 0 When no check mark routine, 1 when sub menu
 	PSTR FullName;
 	PSTR Name;
 } MenuItem;
@@ -222,8 +218,7 @@ extern uint32_t ChessTexture;	// The chess texture
 extern uint32_t MipColorTexture; // The mipmap colored texture
 extern uint32_t gForceAlphaBlending;
 extern uint32_t gUseGameSpew;
-extern uint32_t
-	gControlsActive; // Allow controls for the game during the debugger
+extern uint32_t gControlsActive;  // Allow controls for the game during the debugger
 extern uint32_t gGameLogicActive; // Allow game logic to run when debugger up
 extern uint32_t gStopSystem;	  // Stop whole system in debugger
 extern uint32_t gFrameGraph;
@@ -231,8 +226,7 @@ extern uint32_t gStopGameRendering;
 extern uint32_t gStopRendering; // Stop rendering
 extern uint32_t gFreezeLogic;   // Stop rendering
 extern uint32_t gShowLFControls;
-extern uint8_t NoDebuggerStats; // When 0 Stats and spews are active during
-								// GameOS functions like debugger
+extern bool		NoDebuggerStats; // When 0 Stats and spews are active during GameOS functions like debugger
 extern uint32_t gEnableRS;
 extern uint32_t gTextureOverrun;
 extern uint32_t gDisableLighting;
@@ -266,8 +260,8 @@ void __stdcall InitDebugger(void);
 void __stdcall EndRenderMode(void);
 void __stdcall DestroyDebugger(void);
 void __stdcall SpewToDebugger(PSTR Message);
-int32_t __stdcall GetMipmapUsed(uint32_t Handle, pgos_VERTEX Pickv1,
-	pgos_VERTEX Pickv2, pgos_VERTEX Pickv3);
+int32_t __stdcall GetMipmapUsed(
+	uint32_t Handle, pgos_VERTEX Pickv1, pgos_VERTEX Pickv2, pgos_VERTEX Pickv3);
 void __stdcall ShowFrameGraphs(void);
 void __stdcall UpdateDebugMouse(void);
 void __stdcall UpdateDebugWindow(void);

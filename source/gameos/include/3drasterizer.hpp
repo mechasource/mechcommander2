@@ -37,8 +37,10 @@ typedef struct _VertexBuffer
 	struct _VertexBuffer* pNext;
 	LPDIRECT3DVERTEXBUFFER7 vBuffer; // D3D handle
 #if defined(LAB_ONLY)
-	LPDIRECT3DVERTEXBUFFER7 DebugvBuffer; // D3D handle to a system memory vertex buffer for debugging D3DTLVERTEX data
-	LPDIRECT3DVERTEXBUFFER7 CopyvBuffer; // D3D handle to a system memory vertex buffer for debugging (Readable copy of D3DVERTEX data)
+	LPDIRECT3DVERTEXBUFFER7
+	DebugvBuffer; // D3D handle to a system memory vertex buffer for debugging D3DTLVERTEX data
+	LPDIRECT3DVERTEXBUFFER7 CopyvBuffer; // D3D handle to a system memory vertex buffer for
+										 // debugging (Readable copy of D3DVERTEX data)
 #endif
 	uint32_t NumberVertices; // Number of vertices when created
 	uint8_t Locked;			 // True when locked
@@ -83,7 +85,8 @@ void __stdcall Save3DState(void);
 void __stdcall Restore3DState(void);
 void __stdcall ReInit3D(void);
 void __stdcall Destroy3D(void);
-void __stdcall CheckVertices(pgos_VERTEX pVertexArray, uint32_t NumberVertices, uint8_t PointsLines = 0);
+void __stdcall CheckVertices(
+	pgos_VERTEX pVertexArray, uint32_t NumberVertices, uint8_t PointsLines = 0);
 void __stdcall CheckVertices2(pgos_VERTEX_2UV pVertexArray, uint32_t NumberVertices);
 void __stdcall CheckVertices3(pgos_VERTEX_3UV pVertexArray, uint32_t NumberVertices);
 void __stdcall DebugTriangle(pgos_VERTEX v1, pgos_VERTEX v2, pgos_VERTEX v3);
@@ -160,22 +163,21 @@ extern int32_t HasModulateAlpha; // Can MODULATEALPHA
 extern int32_t HasAdd;			 // Can ADD
 extern int32_t HasMipMap;		 // Can do mip mapping
 
-extern int32_t
-	HasMaxUV; // There is a maximum UV coord for this render mode (and texture)
-extern float MaxUCoord; // The maximum u coord (for current texture)//
-extern float MinUCoord; // The minimum u coord (for current texture)// Various
-						// renderstates based on the capabilities of the current
-						// video card
-extern float MaxVCoord; // The maximum v coord (for current texture)//
-extern float MinVCoord; // The minimum v coord (for current texture)// Various
-						// renderstates based on the capabilities of the current
-						// video card
+extern int32_t HasMaxUV; // There is a maximum UV coord for this render mode (and texture)
+extern float MaxUCoord;  // The maximum u coord (for current texture)//
+extern float MinUCoord;  // The minimum u coord (for current texture)// Various
+						 // renderstates based on the capabilities of the current
+						 // video card
+extern float MaxVCoord;  // The maximum v coord (for current texture)//
+extern float MinVCoord;  // The minimum v coord (for current texture)// Various
+						 // renderstates based on the capabilities of the current
+						 // video card
 
 // Various modes the renderer can be in
 typedef enum RenderModeType
 {
-	Normal = 0,			  // Normal rendering
-	WireframeGlobalColor, // Only wireframe, no texture, global wireframe color
+	Normal = 0,				// Normal rendering
+	WireframeGlobalColor,   // Only wireframe, no texture, global wireframe color
 	WireframeGlobalTexture, // Global wireframe color ontop of texture
 	ExamineScene,			// Examine, zoom into scene mode
 	ExamineMipmaps,			// Examine Mipmaps mode

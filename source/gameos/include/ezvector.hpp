@@ -6,7 +6,7 @@
 
 class EZVector
 {
-  public:
+public:
 	union {
 		float m[3];
 		struct
@@ -17,7 +17,7 @@ class EZVector
 		};
 	};
 
-  public:
+public:
 	EZVector(void);
 	EZVector(float, float, float);
 	EZVector(EZVector* v);

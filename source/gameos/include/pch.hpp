@@ -18,14 +18,12 @@
 //
 // Error groups for SPEW
 //
-#define GROUP_FILES "GameOS_Files"   // File functions
-#define GROUP_MEMORY "GameOS_Memory" // Leak notification only
-#define GROUP_MEMORYVERBOSE                                                    \
-	"GameOS_MemoryVerbose"			   // Heap create / destroy functions
-#define GROUP_TEXTURE "GameOS_Texture" // Texture enumeration and creation
+#define GROUP_FILES "GameOS_Files"				   // File functions
+#define GROUP_MEMORY "GameOS_Memory"			   // Leak notification only
+#define GROUP_MEMORYVERBOSE "GameOS_MemoryVerbose" // Heap create / destroy functions
+#define GROUP_TEXTURE "GameOS_Texture"			   // Texture enumeration and creation
 #define GROUP_GAMEOS "GameOS_Core"
-#define GROUP_NETWORK                                                          \
-	"GameOS_Network" // Networking messages (DPlay layer is lower level)
+#define GROUP_NETWORK "GameOS_Network" // Networking messages (DPlay layer is lower level)
 #define GROUP_DIRECTX "GameOS_DirectX"
 #define GROUP_DIRECTDRAW "GameOS_DirectDraw"
 #define GROUP_DIRECT3D "GameOS_Direct3D"
@@ -71,14 +69,14 @@
 //#pragma warning( disable: 4100 )	// unreferenced formal parameter
 //#pragma warning( disable: 4102 )	// unreferenced labels
 //#pragma warning( disable: 4127 )	// conditional expression is constant eg:
-//While(1) #pragma warning( disable: 4201 )	// nameless struct/union #pragma
-//warning( disable: 4245 )	// conversion from 'cint32_t' to 'uint32_t',
-//signed/uint32_t mismatch #pragma warning( disable: 4355 )	// this used in base
-//initializers #pragma warning( disable: 4511 )	// no copy constructor #pragma
-//warning( disable: 4512 )	// no assignment operator #pragma warning( disable:
-//4514 )	// unreferenced inline function has been removed #pragma warning(
-//disable: 4702 )	// Unreachable code #pragma warning( disable: 4710 )	//
-//inline not expanded #pragma warning( disable: 4711 )	// auto-inline selection
+// While(1) #pragma warning( disable: 4201 )	// nameless struct/union #pragma
+// warning( disable: 4245 )	// conversion from 'cint32_t' to 'uint32_t',
+// signed/uint32_t mismatch #pragma warning( disable: 4355 )	// this used in base
+// initializers #pragma warning( disable: 4511 )	// no copy constructor #pragma
+// warning( disable: 4512 )	// no assignment operator #pragma warning( disable:
+// 4514 )	// unreferenced inline function has been removed #pragma warning(
+// disable: 4702 )	// Unreachable code #pragma warning( disable: 4710 )	//
+// inline not expanded #pragma warning( disable: 4711 )	// auto-inline selection
 //
 // Common synonyms
 //
@@ -149,10 +147,10 @@ typedef float real;
 // Reads time stamp into an int64_t, End finds difference
 //
 //#define GetTimeStampStart(x) { _asm push eax  _asm push edx _asm rdtsc __asm
-//mov dword ptr x,eax __asm mov dword ptr x+4,edx _asm pop edx _asm pop eax}
+// mov dword ptr x,eax __asm mov dword ptr x+4,edx _asm pop edx _asm pop eax}
 //#define GetTimeStampEnd(x) {  _asm push eax _asm push edx _asm rdtsc __asm sub
-//eax,dword ptr x __asm sbb edx,dword ptr x+4 __asm mov dword ptr x,eax __asm
-//mov dword ptr x+4,edx _asm pop edx _asm pop eax}
+// eax,dword ptr x __asm sbb edx,dword ptr x+4 __asm mov dword ptr x,eax __asm
+// mov dword ptr x+4,edx _asm pop edx _asm pop eax}
 //
 // Faster float to int32_t  (Always rounds to nearest)  ie: -2.7 goes to 3
 //

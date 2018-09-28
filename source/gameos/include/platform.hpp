@@ -14,7 +14,6 @@ typedef enum PlatformType
 } PlatformType;
 extern PlatformType Platform;
 
-extern void _stdcall RunFromOtherApp(
-	HINSTANCE hInstance, HWND hWnd, PSTR pCmdLine);
-extern int32_t _stdcall RunFromWinMain(HINSTANCE hInstance,
-	HINSTANCE hPrevInstance, PSTR pCmdLine, int32_t nCmdShow);
+extern void _stdcall RunFromOtherApp(HINSTANCE hInstance, HWND hWnd, PSTR pCmdLine);
+extern int32_t _stdcall RunFromWinMain(
+	HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR pCmdLine, int32_t nCmdShow);

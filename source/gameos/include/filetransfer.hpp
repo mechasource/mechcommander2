@@ -18,10 +18,10 @@
 
 class FileTransferInfo : public ListItem
 {
-  private:
+private:
 	PVOID dataForMessages;
 
-  public:
+public:
 	// static data that must be initialized before this class
 	// can be used
 	static CHUNKSIZE;
@@ -49,9 +49,8 @@ class FileTransferInfo : public ListItem
 	// PVOID operator new(size_t class_size);
 	// void operator delete(PVOID us);
 
-	FileTransferInfo(DPID this_player_id, DPID receiver_id, PSTR file_name,
-		PSTR file_path, uint32_t size = 0,
-		TransferType transfer_direction = FTSend);
+	FileTransferInfo(DPID this_player_id, DPID receiver_id, PSTR file_name, PSTR file_path,
+		uint32_t size = 0, TransferType transfer_direction = FTSend);
 
 	virtual ~FileTransferInfo(void);
 
@@ -69,10 +68,7 @@ class FileTransferInfo : public ListItem
 
 	void SetID(int32_t id) { fileID = id; }
 
-	void SetCallback(LPFILESENT_CALLBACK callback)
-	{
-		callbackFunction = callback;
-	}
+	void SetCallback(LPFILESENT_CALLBACK callback) { callbackFunction = callback; }
 
 	// AllocateBeginTransferMessage creates a new message with information
 	// that tells the receiver that a message is on its way.

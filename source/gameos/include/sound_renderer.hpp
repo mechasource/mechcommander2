@@ -75,7 +75,7 @@ void __stdcall SoundRendererContinue(void);
 void __stdcall SoundRendererFF(double sec);
 bool __stdcall IsValidSoundResource(HGOSAUDIO gosAudio);
 
-void __stdcall TimeFunc(uint32_t uTimerID, uint32_t uMsg, uint32_t dwUser,
-	uint32_t dw1, uint32_t dw2);
+void __stdcall TimeFunc(
+	uint32_t uTimerID, uint32_t uMsg, uint32_t dwUser, uint32_t dw1, uint32_t dw2);
 
 void __stdcall SoundRendererNotify(void);

@@ -15,11 +15,11 @@
 
 class FIMessageHeader
 {
-  protected:
+protected:
 	uint16_t flags;
 
 #ifdef _ARMOR
-  public:
+public:
 	uint16_t packetNumber;
 #endif
 
@@ -37,7 +37,7 @@ class FIMessageHeader
 		GuaranteedFlag = 1 << GuaranteedBit
 	};
 
-  public:
+public:
 	FIMessageHeader() { flags = 0; }
 
 	void Init() { flags = 0; }
@@ -82,7 +82,7 @@ class FIMessageHeader
 
 class MessageTagger
 {
-  public:
+public:
 	uint8_t sendCounts[MAXPLAYERS];
 
 	inline void Clear()
@@ -97,7 +97,7 @@ class MessageTagger
 
 class FIGuaranteedMessageHeader : public FIMessageHeader, public MessageTagger
 {
-  public:
+public:
 	// Constructor just calls Clear
 	FIGuaranteedMessageHeader() : FIMessageHeader(), MessageTagger()
 	{
@@ -116,34 +116,34 @@ class FIGuaranteedMessageHeader : public FIMessageHeader, public MessageTagger
 //#pragma warning (disable : 4200)
 class FIGenericGuaranteedMessage : public FIGuaranteedMessageHeader
 {
-  private:
+private:
 	// Keep the constructor private because we don't want
 	// anyone to call it when there is an undefined size
 	// for the class.
 	FIGenericGuaranteedMessage() : FIGuaranteedMessageHeader() {}
 
-  public:
+public:
 	uint8_t buffer[0];
 };
 
 class FIGenericMessage : public FIMessageHeader
 {
-  private:
+private:
 	// Keep the constructor private because we don't want
 	// anyone to call it when there is an undefined size
 	// for the class.
 	FIGenericMessage() : FIMessageHeader() {}
 
-  public:
+public:
 	uint8_t buffer[0];
 };
 
 class FIVerifyCluster : public FIMessageHeader
 {
-  protected:
+protected:
 	FIVerifyCluster() : FIMessageHeader() {}
 
-  public:
+public:
 	uint8_t n_messages;
 	MessageTagger message[0];
 
@@ -157,14 +157,11 @@ class FIVerifyCluster : public FIMessageHeader
 
 class FIPlayerIDMessage : public FIGuaranteedMessageHeader
 {
-  public:
+public:
 	uint32_t playerID[MAXPLAYERS];
 	uint8_t serverIndex;
 
-	FIPlayerIDMessage() : FIGuaranteedMessageHeader()
-	{
-		SetType(FIDP_MSG_PLAYERID);
-	}
+	FIPlayerIDMessage() : FIGuaranteedMessageHeader() { SetType(FIDP_MSG_PLAYERID); }
 
 	int32_t GetPlayerNumber(uint32_t player_id)
 	{
@@ -184,19 +181,16 @@ class FIPlayerIDMessage : public FIGuaranteedMessageHeader
 
 class FIPlayersInGroupMessage : public FIGuaranteedMessageHeader
 {
-  public:
+public:
 	uint32_t groupID;
 	uint32_t playerID[MAXPLAYERS];
 
-	FIPlayersInGroupMessage() : FIGuaranteedMessageHeader()
-	{
-		SetType(FIDP_MSG_PLAYERS_IN_GROUP);
-	}
+	FIPlayersInGroupMessage() : FIGuaranteedMessageHeader() { SetType(FIDP_MSG_PLAYERS_IN_GROUP); }
 };
 
 class FIServerIDMessage : public FIGuaranteedMessageHeader
 {
-  public:
+public:
 	uint32_t serverID;
 
 	FIServerIDMessage(uint32_t server_id) : FIGuaranteedMessageHeader()
@@ -212,7 +206,7 @@ class FIServerIDMessage : public FIGuaranteedMessageHeader
 
 class FIDPMessage : public NetworkMessageContainer, public ListItem
 {
-  public:
+public:
 	uint32_t time;
 	uint32_t bufferSize;
 

@@ -22,7 +22,7 @@
 
 class ListFriendlyDPID : public ListItem
 {
-  public:
+public:
 	DPID ID;
 
 	ListFriendlyDPID(DPID id) { ID = id; }
@@ -36,7 +36,7 @@ class ListFriendlyDPID : public ListItem
 
 class FIDPGroup : public ListItem
 {
-  protected:
+protected:
 	DPID groupID;
 	DPID parentGroupID;
 	char shortName[64];
@@ -47,17 +47,14 @@ class FIDPGroup : public ListItem
 	uint32_t dataSize;
 	FLinkedList<ListFriendlyDPID> playerIDList;
 
-  public:
+public:
 	// Constructor and destructor
 	FIDPGroup(void);
 	FIDPGroup(DPID id, DPID parent_id, LPCDPNAME name, uint32_t flags);
 
 	virtual ~FIDPGroup(void);
 
-	inline FLinkedList<ListFriendlyDPID>* GetPlayerList()
-	{
-		return &playerIDList;
-	}
+	inline FLinkedList<ListFriendlyDPID>* GetPlayerList() { return &playerIDList; }
 
 	BOOL AddPlayer(DPID& id);
 

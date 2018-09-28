@@ -27,10 +27,8 @@ enum gosMusic_Command
 enum gosMusic_PlayMode
 {
 	gosMusic_PlayOnce, // Play the channel's resource once and then end
-	gosMusic_Loop,	 // Continually play the channel's resource, looping after
-					   // each iteration
-	gosMusic_Pause,	// Pause the sound, a Continue will resume the sound from
-					   // where it was paused
+	gosMusic_Loop,	 // Continually play the channel's resource, looping after each iteration
+	gosMusic_Pause,	// Pause the sound, a Continue will resume the sound from where it was paused
 	gosMusic_Continue, // SET ONLY: continue a sound that was paused.
 	gosMusic_Stop,	 // Silence the channel and stop processing the resource
 };
@@ -46,10 +44,10 @@ typedef struct _gosMusic_Info
 	PSTR lpstrPath;				   // string specified path to data
 	gosMusic_PlayMode ePlayMode;   // the play mode (see above)
 	gosMusic_PlayMode ePlayStatus; // the play mode (see above)
-	float fDurationSec; // read-only duration of video (hundredth of a second)
-	float fSoFarSec;	// current play position (hundredth of a second)
-	float fVolume;		// current volume from 0 to 1
-	float fPanning;		// current volume from -1 to 1
+	float fDurationSec;			   // read-only duration of video (hundredth of a second)
+	float fSoFarSec;			   // current play position (hundredth of a second)
+	float fVolume;				   // current volume from 0 to 1
+	float fPanning;				   // current volume from -1 to 1
 } gosMusic_ResourceInfo;
 
 //////////////////////////////////////////////////////////////////////////////////
@@ -58,18 +56,15 @@ typedef struct _gosMusic_Info
 //
 void __stdcall gosMusic_CreateResource(HGOSMUSIC* Handle, PSTR filename);
 void __stdcall gosMusic_DestroyResource(HGOSMUSIC* Handle);
-void __stdcall gosMusic_GetResourceInfo(
-	HGOSMUSIC Handle, gosMusic_ResourceInfo* gmi);
+void __stdcall gosMusic_GetResourceInfo(HGOSMUSIC Handle, gosMusic_ResourceInfo* gmi);
 
-void __stdcall gosMusic_SetPlayMode(
-	HGOSMUSIC Handle, enum gosMusic_PlayMode gmpm);
+void __stdcall gosMusic_SetPlayMode(HGOSMUSIC Handle, enum gosMusic_PlayMode gmpm);
 gosMusic_PlayMode __stdcall gosMusic_GetPlayMode(HGOSMUSIC Handle);
-void __stdcall gosMusic_Command(
-	HGOSMUSIC Handle, enum gosMusic_Command gmc, float x, float y = 0.0f);
+void __stdcall gosMusic_Command(HGOSMUSIC Handle, enum gosMusic_Command gmc, float x, float y = 0.0f);
 
 struct gos_Music
 {
-  public:
+public:
 	static bool gos_Music::m_hasDirectShow;
 
 	IMultiMediaStream* m_pMMStream;
@@ -87,7 +82,7 @@ struct gos_Music
 	gos_Music* m_pNext;
 	HANDLE phEOS;
 
-  public:
+public:
 	gos_Music(PSTR path);
 	~gos_Music(void);
 	void OpenMMStream(void);
@@ -108,5 +103,5 @@ void MusicManagerUninstall(void);
 
 void MusicManagerUpdate(void);
 
-void OpenMMStream(PCSTR pszFileName, IDirectDraw* pDD,
-	IMultiMediaStream** ppMMStream, IBasicAudio** ppBasicAudio);
+void OpenMMStream(PCSTR pszFileName, IDirectDraw* pDD, IMultiMediaStream** ppMMStream,
+	IBasicAudio** ppBasicAudio);

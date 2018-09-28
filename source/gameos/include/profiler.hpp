@@ -52,8 +52,8 @@ __inline void __stdcall SetHistory(Stat* pStat, int32_t GraphHead, float Value)
 	pStat->History[GraphHead * StatsInBlock] = Value;
 }
 
-extern Stat* pStatistics;  // Pointer to chain of statistics
-extern uint32_t GraphHead; // Pointer to current element in statistics History
+extern Stat* pStatistics;		  // Pointer to chain of statistics
+extern uint32_t GraphHead;		  // Pointer to current element in statistics History
 extern uint32_t NumberStatistics; // Entries in statistic list
 extern Stat* GraphsActive[20];	// Number of frame graphs active
 extern uint32_t NumberGraphsActive;

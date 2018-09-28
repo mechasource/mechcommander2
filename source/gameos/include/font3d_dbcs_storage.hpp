@@ -25,10 +25,10 @@ typedef struct _paneTextures
 
 class gos_DBCS
 {
-  protected:
+protected:
 	int32_t m_RefCount; // used for whether to always cache
 
-  public:
+public:
 	uint32_t m_height, m_width, m_latticeX, m_latticeY, m_color;
 
 	quad* m_pListOfQuads;
@@ -54,7 +54,7 @@ class gos_DBCS
 	bool m_FontBold;
 	uint32_t m_FontColor;
 
-  public:
+public:
 	gos_DBCS(PCSTR msg, int32_t w, int32_t h, bool cc);
 	~gos_DBCS(void);
 	void Render(void);
@@ -73,8 +73,8 @@ class gos_DBCS
 	void Fill(float r, float g, float b, float a);
 
 	uint32_t AddTexture(uint32_t Size);
-	void AddQuad(uint32_t X, uint32_t Y, uint32_t Width, uint32_t Height,
-		uint32_t Texture, uint32_t U, uint32_t V, uint32_t TextureSize);
+	void AddQuad(uint32_t X, uint32_t Y, uint32_t Width, uint32_t Height, uint32_t Texture,
+		uint32_t U, uint32_t V, uint32_t TextureSize);
 
 	void AddRef(void) { m_RefCount++; }
 	void Release(void)

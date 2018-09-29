@@ -15,25 +15,11 @@
 // Include Files
 // #include <mclib.h>
 
-#ifndef DMOVEMGR_H
 #include "dmovemgr.h"
-#endif
-
-#ifndef TERRAIN_H
-#include <terrain.h>
-#endif
-
-#ifndef DOBJCLASS_H
+#include "terrain.h"
 #include "dobjclass.h"
-#endif
-
-#ifndef DOBJBLCK_H
 #include "dobjblck.h"
-#endif
-
-#ifndef DGAMELOG_H
 #include "dgamelog.h"
-#endif
 
 #include <gameos.hpp>
 

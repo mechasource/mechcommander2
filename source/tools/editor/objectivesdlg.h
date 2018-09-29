@@ -4,8 +4,7 @@
 
 #pragma once
 
-#if !defined(                                                                  \
-	AFX_OBJECTIVESDLG_H__2D45CD01_42FA_4FF0_AB18_BBBAA9B0E3A5__INCLUDED_)
+#if !defined(AFX_OBJECTIVESDLG_H__2D45CD01_42FA_4FF0_AB18_BBBAA9B0E3A5__INCLUDED_)
 #define AFX_OBJECTIVESDLG_H__2D45CD01_42FA_4FF0_AB18_BBBAA9B0E3A5__INCLUDED_
 
 //#include "objective.h"
@@ -16,7 +15,7 @@
 class ObjectivesDlg : public CDialog
 {
 	// Construction
-  public:
+public:
 	ObjectivesDlg(CWnd* pParent = nullptr); // standard constructor
 
 	CObjectives m_ModifiedObjectives;
@@ -38,12 +37,12 @@ class ObjectivesDlg : public CDialog
 	// Overrides
 	// ClassWizard generated virtual function overrides
 	//{{AFX_VIRTUAL(ObjectivesDlg)
-  protected:
+protected:
 	virtual void DoDataExchange(CDataExchange* pDX); // DDX/DDV support
 													 //}}AFX_VIRTUAL
 
 	// Implementation
-  protected:
+protected:
 	// Generated message map functions
 	//{{AFX_MSG(ObjectivesDlg)
 	afx_msg void OnObjectivesAddButton(void);

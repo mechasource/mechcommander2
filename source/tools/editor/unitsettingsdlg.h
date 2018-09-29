@@ -4,8 +4,7 @@
 
 #pragma once
 
-#if !defined(                                                                  \
-	AFX_UNITSETTINGSDLG_H__66842972_D1C0_48E8_8DF6_930ED43A3896__INCLUDED_)
+#if !defined(AFX_UNITSETTINGSDLG_H__66842972_D1C0_48E8_8DF6_930ED43A3896__INCLUDED_)
 #define AFX_UNITSETTINGSDLG_H__66842972_D1C0_48E8_8DF6_930ED43A3896__INCLUDED_
 
 /////////////////////////////////////////////////////////////////////////////
@@ -18,9 +17,8 @@ class Unit;
 
 class UnitSettingsDlg : public CDialog
 {
-  public:
-	UnitSettingsDlg(
-		EList<Unit*, Unit*>&, ActionUndoMgr& undoMgr); // standard constructor
+public:
+	UnitSettingsDlg(EList<Unit*, Unit*>&, ActionUndoMgr& undoMgr); // standard constructor
 
 	//{{AFX_DATA(UnitSettingsDlg)
 	enum
@@ -37,12 +35,12 @@ class UnitSettingsDlg : public CDialog
 	//}}AFX_DATA
 
 	//{{AFX_VIRTUAL(UnitSettingsDlg)
-  protected:
+protected:
 	virtual void DoDataExchange(CDataExchange* pDX); // DDX/DDV support
 													 //}}AFX_VIRTUAL
 
 	// Implementation
-  protected:
+protected:
 	void DoColorBox(CWnd* pWnd);
 
 	//{{AFX_MSG(UnitSettingsDlg)

@@ -4,8 +4,7 @@
 
 #pragma once
 
-#if !defined(                                                                  \
-	AFX_VIEWCONDITIONORACTIONDLG_H__9A818E75_A25C_4F93_9BC7_F990A52B8CD8__INCLUDED_)
+#if !defined(AFX_VIEWCONDITIONORACTIONDLG_H__9A818E75_A25C_4F93_9BC7_F990A52B8CD8__INCLUDED_)
 #define AFX_VIEWCONDITIONORACTIONDLG_H__9A818E75_A25C_4F93_9BC7_F990A52B8CD8__INCLUDED_
 
 /////////////////////////////////////////////////////////////////////////////
@@ -14,7 +13,7 @@
 class ViewConditionOrActionDlg : public CDialog
 {
 	// Construction
-  public:
+public:
 	ViewConditionOrActionDlg(CWnd* pParent = nullptr); // standard constructor
 
 	// Dialog Data
@@ -29,12 +28,12 @@ class ViewConditionOrActionDlg : public CDialog
 	// Overrides
 	// ClassWizard generated virtual function overrides
 	//{{AFX_VIRTUAL(ViewConditionOrActionDlg)
-  protected:
+protected:
 	virtual void DoDataExchange(CDataExchange* pDX); // DDX/DDV support
 													 //}}AFX_VIRTUAL
 
 	// Implementation
-  protected:
+protected:
 	// Generated message map functions
 	//{{AFX_MSG(ViewConditionOrActionDlg)
 	// NOTE: the ClassWizard will add member functions here

@@ -16,9 +16,8 @@ TargetAreaDlg.h		: Interface for the TargetAreaDlg component.
 
 class TargetAreaDlg : public CDialog
 {
-  public:
-	TargetAreaDlg(
-		float& targetCenterX, float& targetCenterY, float& targetRadius);
+public:
+	TargetAreaDlg(float& targetCenterX, float& targetCenterY, float& targetRadius);
 
 	BOOL OnCommand(WPARAM wParam,
 		LPARAM lParam); // called by child controls to inform of an event
@@ -29,7 +28,7 @@ class TargetAreaDlg : public CDialog
 
 	BOOL OnInitDialog(void);
 
-  private:
+private:
 	typedef CDialog inherited;
 
 	// suppressing these

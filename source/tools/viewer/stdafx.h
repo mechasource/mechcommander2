@@ -8,8 +8,8 @@
 #define STRICT
 #endif
 
-#define DISABLE_WARNING_PUSH(x)                                                \
-	__pragma(warning(push));                                                   \
+#define DISABLE_WARNING_PUSH(x)                                                                    \
+	__pragma(warning(push));                                                                       \
 	__pragma(warning(disable : x))
 #define DISABLE_WARNING_POP __pragma(warning(pop))
 #define ATL_ADD_LIBRARY(x) __pragma(comment(lib, x))
@@ -93,8 +93,7 @@ inline HINSTANCE SetResourceInstance(_In_ HINSTANCE hInstance)
 #endif
 }
 
-inline void AddCreateWndData(
-	_Inout_ ATL::_AtlCreateWndData* pData, _In_ void* pObject)
+inline void AddCreateWndData(_Inout_ ATL::_AtlCreateWndData* pData, _In_ void* pObject)
 {
 #if (_ATL_VER >= 0x0700)
 	ATL::_AtlWinModule.AddCreateWndData(pData, pObject);

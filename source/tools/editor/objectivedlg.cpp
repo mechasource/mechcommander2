@@ -127,7 +127,7 @@ static void syncConditionsListWithListBox(
 	const CObjective::condition_list_type* pConditionList, CListBox* pList)
 {
 	pList->ResetContent();
-	EString tmpStr;
+	std::wstring tmpStr;
 	CObjective::condition_list_type::EConstIterator it = pConditionList->Begin();
 	while (!it.IsDone())
 	{
@@ -141,7 +141,7 @@ static void syncActionsListWithListBox(
 	const CObjective::action_list_type* pActionList, CListBox* pList)
 {
 	pList->ResetContent();
-	EString tmpStr;
+	std::wstring tmpStr;
 	CObjective::action_list_type::EConstIterator it = pActionList->Begin();
 	while (!it.IsDone())
 	{
@@ -466,7 +466,7 @@ BOOL ObjectiveDlg::OnInitDialog()
 			comboBoxItems.Append(MOVE_ALL_SURVIVING_MECHS_TO_AREA);
 			comboBoxItems.Append(BOOLEAN_FLAG_IS_SET);
 			comboBoxItems.Append(ELAPSED_MISSION_TIME);
-			EString tmpEStr;
+			std::wstring tmpEStr;
 			CConditionSpeciesList::EConstIterator it = comboBoxItems.Begin();
 			while (!it.IsDone())
 			{
@@ -484,7 +484,7 @@ BOOL ObjectiveDlg::OnInitDialog()
 			actionComboBoxItems.Append(DISPLAY_RESOURCE_TEXT_MESSAGE);
 			actionComboBoxItems.Append(SET_BOOLEAN_FLAG);
 			actionComboBoxItems.Append(MAKE_NEW_TECHNOLOGY_AVAILABLE);
-			EString tmpEStr;
+			std::wstring tmpEStr;
 			CActionSpeciesList::EConstIterator it = actionComboBoxItems.Begin();
 			while (!it.IsDone())
 			{
@@ -517,7 +517,7 @@ BOOL ObjectiveDlg::OnInitDialog()
 			failureConditionComboBoxItems.Append(MOVE_ALL_SURVIVING_MECHS_TO_AREA);
 			failureConditionComboBoxItems.Append(BOOLEAN_FLAG_IS_SET);
 			failureConditionComboBoxItems.Append(ELAPSED_MISSION_TIME);
-			EString tmpEStr;
+			std::wstring tmpEStr;
 			CConditionSpeciesList::EConstIterator it = failureConditionComboBoxItems.Begin();
 			while (!it.IsDone())
 			{
@@ -535,7 +535,7 @@ BOOL ObjectiveDlg::OnInitDialog()
 			failureActionComboBoxItems.Append(DISPLAY_RESOURCE_TEXT_MESSAGE);
 			failureActionComboBoxItems.Append(SET_BOOLEAN_FLAG);
 			failureActionComboBoxItems.Append(MAKE_NEW_TECHNOLOGY_AVAILABLE);
-			EString tmpEStr;
+			std::wstring tmpEStr;
 			CActionSpeciesList::EConstIterator it = failureActionComboBoxItems.Begin();
 			while (!it.IsDone())
 			{
@@ -1073,7 +1073,7 @@ void ObjectiveDlg::OnObjectiveViewConditionButton()
 		(m_ModifiedObjective.Count() > nSelectionIndex))
 	{
 		CObjective::condition_list_type::EConstIterator it = m_ModifiedObjective.Begin();
-		EString tmpEStr = (*it)->Description() + "  " + (*it)->InstanceDescription();
+		std::wstring tmpEStr = (*it)->Description() + "  " + (*it)->InstanceDescription();
 		ViewConditionOrActionDlg viewDlg;
 		viewDlg.m_Edit = tmpEStr.Data();
 		viewDlg.DoModal();
@@ -1087,7 +1087,7 @@ void ObjectiveDlg::OnObjectiveViewActionButton()
 		(m_ModifiedObjective.m_actionList.Count() > nSelectionIndex))
 	{
 		CObjective::action_list_type::EConstIterator it = m_ModifiedObjective.m_actionList.Begin();
-		EString tmpEStr = (*it)->Description() + "  " + (*it)->InstanceDescription();
+		std::wstring tmpEStr = (*it)->Description() + "  " + (*it)->InstanceDescription();
 		ViewConditionOrActionDlg viewDlg;
 		viewDlg.m_Edit = tmpEStr.Data();
 		viewDlg.DoModal();
@@ -1102,7 +1102,7 @@ void ObjectiveDlg::OnObjectiveViewFailureConditionButton()
 	{
 		CObjective::condition_list_type::EConstIterator it =
 			m_ModifiedObjective.m_failureConditionList.Begin();
-		EString tmpEStr = (*it)->Description() + "  " + (*it)->InstanceDescription();
+		std::wstring tmpEStr = (*it)->Description() + "  " + (*it)->InstanceDescription();
 		ViewConditionOrActionDlg viewDlg;
 		viewDlg.m_Edit = tmpEStr.Data();
 		viewDlg.DoModal();
@@ -1117,7 +1117,7 @@ void ObjectiveDlg::OnObjectiveViewFailureActionButton()
 	{
 		CObjective::action_list_type::EConstIterator it =
 			m_ModifiedObjective.m_failureActionList.Begin();
-		EString tmpEStr = (*it)->Description() + "  " + (*it)->InstanceDescription();
+		std::wstring tmpEStr = (*it)->Description() + "  " + (*it)->InstanceDescription();
 		ViewConditionOrActionDlg viewDlg;
 		viewDlg.m_Edit = tmpEStr.Data();
 		viewDlg.DoModal();

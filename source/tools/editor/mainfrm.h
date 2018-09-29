@@ -16,37 +16,37 @@
 class MainFrame : public CFrameWnd
 {
 
-  public:
+public:
 	MainFrame(void);
 
-  protected:
+protected:
 	DECLARE_DYNAMIC(MainFrame)
 
 	// Attributes
-  public:
+public:
 	// Operations
-  public:
+public:
 	// Overrides
 	// ClassWizard generated virtual function overrides
 	//{{AFX_VIRTUAL(MainFrame)
-  public:
+public:
 	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
-	virtual BOOL OnCmdMsg(uint32_t nID, int32_t nCode, PVOID pExtra,
-		AFX_CMDHANDLERINFO* pHandlerInfo);
+	virtual BOOL OnCmdMsg(
+		uint32_t nID, int32_t nCode, PVOID pExtra, AFX_CMDHANDLERINFO* pHandlerInfo);
 
-  protected:
+protected:
 	virtual LRESULT WindowProc(uint32_t message, WPARAM wParam, LPARAM lParam);
 	//}}AFX_VIRTUAL
 
 	// Implementation
-  public:
+public:
 	virtual ~MainFrame(void);
 #ifdef _DEBUG
 	virtual void AssertValid(void) const;
 	virtual void Dump(CDumpContext& dc) const;
 #endif
 
-  public: // control bar embedded members
+public: // control bar embedded members
 	CStatusBar m_wndStatusBar;
 	/*CToolBar    m_wndToolBar;*/
 	CReBar m_wndReBar;
@@ -54,7 +54,7 @@ class MainFrame : public CFrameWnd
 	EditorInterface m_wndView;
 
 	// Generated message map functions
-  protected:
+protected:
 	//{{AFX_MSG(MainFrame)
 	afx_msg int32_t OnCreate(LPCREATESTRUCT lpCreateStruct);
 	afx_msg void OnSetFocus(CWnd* pOldWnd);

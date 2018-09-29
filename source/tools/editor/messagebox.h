@@ -27,11 +27,9 @@ inline int32_t EMessageBox(int32_t MessageID, int32_t CaptionID, uint32_t dwS)
 	char bufferCaption[512];
 	cLoadString(MessageID, buffer, 512, gameResourceHandle);
 	cLoadString(CaptionID, bufferCaption, 512, gameResourceHandle);
-	if (EditorInterface::instance() &&
-		EditorInterface::instance()->ThisIsInitialized())
+	if (EditorInterface::instance() && EditorInterface::instance()->ThisIsInitialized())
 	{
-		return EditorInterface::instance()->MessageBoxA(
-			buffer, bufferCaption, dwS);
+		return EditorInterface::instance()->MessageBoxA(buffer, bufferCaption, dwS);
 	}
 	else
 	{

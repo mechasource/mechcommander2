@@ -2337,7 +2337,7 @@ void CPlayer::DefaultTeam(int32_t team)
 bool CPlayer::Read(FitIniFile* missionFile, int32_t playerNum)
 {
 	int32_t result = 0;
-	EString tmpStr;
+	std::wstring tmpStr;
 	tmpStr.Format("Player%d", playerNum);
 	result = missionFile->seekBlock(tmpStr.Data());
 	result = sReadIdWholeNum(missionFile, "DefaultTeam", m_defaultTeam);
@@ -2346,7 +2346,7 @@ bool CPlayer::Read(FitIniFile* missionFile, int32_t playerNum)
 
 bool CPlayer::Save(FitIniFile* missionFile, int32_t playerNum)
 {
-	EString tmpStr;
+	std::wstring tmpStr;
 	tmpStr.Format("Player%d", playerNum);
 	missionFile->writeBlock(tmpStr.Data());
 	missionFile->writeIdULong("DefaultTeam", DefaultTeam());

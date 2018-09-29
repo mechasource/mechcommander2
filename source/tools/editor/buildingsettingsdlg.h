@@ -4,8 +4,7 @@
 
 #pragma once
 
-#if !defined(                                                                  \
-	AFX_BUILDINGSETTINGSDLG_H__66842972_D1C0_48E8_8DF6_930ED43A3896__INCLUDED_)
+#if !defined(AFX_BUILDINGSETTINGSDLG_H__66842972_D1C0_48E8_8DF6_930ED43A3896__INCLUDED_)
 #define AFX_BUILDINGSETTINGSDLG_H__66842972_D1C0_48E8_8DF6_930ED43A3896__INCLUDED_
 
 /////////////////////////////////////////////////////////////////////////////
@@ -18,7 +17,7 @@ class EditorObject;
 
 class BuildingSettingsDlg : public CDialog
 {
-  public:
+public:
 	BuildingSettingsDlg(EList<EditorObject*, EditorObject*>&,
 		ActionUndoMgr& undoMgr); // standard constructor
 
@@ -37,12 +36,12 @@ class BuildingSettingsDlg : public CDialog
 	//}}AFX_DATA
 
 	//{{AFX_VIRTUAL(BuildingSettingsDlg)
-  protected:
+protected:
 	virtual void DoDataExchange(CDataExchange* pDX); // DDX/DDV support
 													 //}}AFX_VIRTUAL
 
 	// Implementation
-  protected:
+protected:
 	void DoColorBox(CWnd* pWnd);
 
 	//{{AFX_MSG(BuildingSettingsDlg)

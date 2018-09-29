@@ -19,7 +19,7 @@ UserHeapPtr guiHeap	= nullptr;
 
 float MaxMinUV = 8.0f;
 
-Stuff::MemoryStream* effectStream = nullptr;
+std::iostream effectStream = nullptr;
 
 uint32_t systemHeapSize = 8192000;
 uint32_t guiHeapSize	= 1023999;
@@ -268,7 +268,7 @@ void InitializeGameEngine()
 	puint8_t effectsData = (puint8_t)systemHeap->Malloc(effectsSize);
 	effectFile.read(effectsData, effectsSize);
 	effectFile.close();
-	effectStream = new Stuff::MemoryStream(effectsData, effectsSize);
+	effectStream = new std::iostream(effectsData, effectsSize);
 	gosFX::EffectLibrary::Instance->Load(effectStream);
 	gosFX::LightManager::Instance = new gosFX::LightManager();
 	gos_PopCurrentHeap();

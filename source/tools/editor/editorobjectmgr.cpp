@@ -1765,7 +1765,7 @@ bool EditorObjectMgr::saveMechs(FitIniFile& file)
 						mates[mateIndex] = 0;
 					}
 				}
-				EString commanderBlock;
+				std::wstring commanderBlock;
 				commanderBlock.Format("Commander%ldGroup:%ld", playerNum, lanceGroup);
 				file.writeBlock(commanderBlock.Data());
 				file.writeIdLongArray("Mates", &(mates[0]), 12);

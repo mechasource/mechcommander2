@@ -4,8 +4,7 @@
 
 #pragma once
 
-#if !defined(                                                                  \
-	AFX_USERTEXTEDIT_H__5C5823FE_6B1B_469D_B5E8_223BE4A723AD__INCLUDED_)
+#if !defined(AFX_USERTEXTEDIT_H__5C5823FE_6B1B_469D_B5E8_223BE4A723AD__INCLUDED_)
 #define AFX_USERTEXTEDIT_H__5C5823FE_6B1B_469D_B5E8_223BE4A723AD__INCLUDED_
 
 /////////////////////////////////////////////////////////////////////////////
@@ -14,7 +13,7 @@
 class CUserTextEdit : public CDialog
 {
 	// Construction
-  public:
+public:
 	CUserTextEdit(CWnd* pParent = nullptr); // standard constructor
 	void UpdateTextDisplay(void);
 
@@ -35,12 +34,12 @@ class CUserTextEdit : public CDialog
 	// Overrides
 	// ClassWizard generated virtual function overrides
 	//{{AFX_VIRTUAL(CUserTextEdit)
-  protected:
+protected:
 	virtual void DoDataExchange(CDataExchange* pDX); // DDX/DDV support
 													 //}}AFX_VIRTUAL
 
 	// Implementation
-  protected:
+protected:
 	// Generated message map functions
 	//{{AFX_MSG(CUserTextEdit)
 	afx_msg void OnUserTextEditEnterTextButton(void);

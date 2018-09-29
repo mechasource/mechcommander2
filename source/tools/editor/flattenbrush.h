@@ -22,16 +22,15 @@ FlattenBrush:
 
 class FlattenBrush : public Brush
 {
-  public:
+public:
 	FlattenBrush(void);
 	virtual ~FlattenBrush(void);
 
 	virtual bool beginPaint(void);
 	virtual Action* endPaint(void);
-	virtual bool paint(
-		Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY);
-	virtual bool canPaint(Stuff::Vector3D& worldPos, int32_t screenX,
-		int32_t screenY, int32_t flags)
+	virtual bool paint(Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY);
+	virtual bool canPaint(
+		Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY, int32_t flags)
 	{
 		return true;
 	}
@@ -41,7 +40,7 @@ class FlattenBrush : public Brush
 	Action* applyHeightToSelection(float height);
 	float getAverageHeightOfSelection();
 
-  private:
+private:
 	ActionPaintTile* pCurAction;
 	void flattenVertex(int32_t row, int32_t col, float val);
 };

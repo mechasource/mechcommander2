@@ -31,7 +31,7 @@ class ObjectAppearance;
 
 class EditorObject
 {
-  public:
+public:
 	EditorObject(void);
 	virtual ~EditorObject(void);
 	EditorObject(const EditorObject&);
@@ -43,16 +43,10 @@ class EditorObject
 	void operator delete(PVOID us);
 
 	void select(bool bSelect);
-	inline bool isSelected(void) const
-	{
-		return appearInfo->appearance->selected ? true : false;
-	}
+	inline bool isSelected(void) const { return appearInfo->appearance->selected ? true : false; }
 
 	void setAlignment(int32_t align);
-	inline int32_t getAlignment(void) const
-	{
-		return appearInfo->appearance->teamId;
-	}
+	inline int32_t getAlignment(void) const { return appearInfo->appearance->teamId; }
 
 	uint32_t getColor(void) const;
 	int32_t getID(void) const { return id; }
@@ -72,10 +66,7 @@ class EditorObject
 
 	PCSTR getDisplayName(void) const;
 
-	const Stuff::Vector3D& getPosition(void) const
-	{
-		return appearance()->position;
-	}
+	const Stuff::Vector3D& getPosition(void) const { return appearance()->position; }
 
 	void markTerrain(_ScenarioMapCellInfo* pInfo, int32_t type, int32_t counter)
 	{
@@ -85,10 +76,7 @@ class EditorObject
 	void setAppearance(int32_t Group, int32_t indexInGroup);
 
 	ObjectAppearance* appearance(void) { return appearInfo->appearance; }
-	const ObjectAppearance* appearance(void) const
-	{
-		return appearInfo->appearance;
-	}
+	const ObjectAppearance* appearance(void) const { return appearInfo->appearance; }
 
 	int32_t getForestID(void) const { return forestId; }
 	void setForestID(int32_t newID) { forestId = newID; }
@@ -96,7 +84,7 @@ class EditorObject
 	void setScale(int32_t newScale) { scale = newScale; }
 	int32_t getScale() const { return scale; }
 
-  protected:
+protected:
 	struct AppearanceInfo
 	{
 		ObjectAppearance* appearance;
@@ -130,7 +118,7 @@ class EditorObject
 class Pilot
 {
 
-  public:
+public:
 	Pilot(void) { info = 0; }
 
 	static void initPilots(void);
@@ -170,7 +158,7 @@ class Brain
 
 	char brainName[256];
 
-  public:
+public:
 	Brain(void)
 	{
 		numStaticVars = numCells = 0;
@@ -203,7 +191,7 @@ class CUnitList;
 
 class Unit : public EditorObject
 {
-  public:
+public:
 	Unit(int32_t alignment);
 	Unit(const Unit& src);
 	Unit& operator=(const Unit& src);
@@ -232,14 +220,8 @@ class Unit : public EditorObject
 	void getColors(uint32_t& base, uint32_t& color1, uint32_t& color2) const;
 	void setColors(uint32_t base, uint32_t color1, uint32_t color2);
 
-	bool getSelfRepairBehaviorEnabled(void) const
-	{
-		return selfRepairBehaviorEnabled;
-	}
-	void setSelfRepairBehaviorEnabled(bool val)
-	{
-		selfRepairBehaviorEnabled = val;
-	}
+	bool getSelfRepairBehaviorEnabled(void) const { return selfRepairBehaviorEnabled; }
+	void setSelfRepairBehaviorEnabled(bool val) { selfRepairBehaviorEnabled = val; }
 
 	inline Pilot* getPilot(void) { return &pilot; }
 
@@ -250,9 +232,8 @@ class Unit : public EditorObject
 	uint32_t tmpNumAlternativeInstances;
 	uint32_t tmpAlternativeStartIndex;
 
-  protected:
-	bool save(FitIniFile* file, int32_t WarriorNumber, int32_t controlDataType,
-		PSTR objectProfile);
+protected:
+	bool save(FitIniFile* file, int32_t WarriorNumber, int32_t controlDataType, PSTR objectProfile);
 
 	Brain brain;
 	bool selfRepairBehaviorEnabled;
@@ -273,7 +254,7 @@ class Unit : public EditorObject
 //*************************************************************************************************
 class DropZone : public EditorObject
 {
-  public:
+public:
 	DropZone(const Stuff::Vector3D& position, int32_t alignment, bool bVTol);
 	DropZone& operator=(const DropZone& src)
 	{
@@ -287,13 +268,13 @@ class DropZone : public EditorObject
 
 	bool isVTol(void) { return bVTol; }
 
-  private:
+private:
 	bool bVTol;
 };
 
 class NavMarker : public EditorObject
 {
-  public:
+public:
 	NavMarker(void);
 	virtual EditorObject* Clone(void) { return (new NavMarker(*this)); }
 	virtual bool save(FitIniFile* file, int32_t number);

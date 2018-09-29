@@ -80,16 +80,16 @@ enum
 } Processor = CPU_PENTIUM; // Needs to be set when GameOS supports ProcessorID
 						   // -- MECHCMDR2
 
-bool reloadBounds = false;
+bool reloadBounds		  = false;
 int32_t ObjectTextureSize = 128;
-//char missionName[1024];
+// char missionName[1024];
 float gosFontScale = 1.0;
 
 float doubleClickThreshold;
 float dragThreshold;
 
-//uint32_t gosResourceHandle = 0;
-HGOSFONT3D gosFontHandle   = nullptr;
+// uint32_t gosResourceHandle = 0;
+HGOSFONT3D gosFontHandle = nullptr;
 
 bool quitGame = false;
 
@@ -103,7 +103,7 @@ PSTR ExceptionGameMsg = "";
 bool justResaveAllMaps = 0;
 bool useLOSAngle	   = 0;
 
-Stuff::MemoryStream* effectStream = nullptr;
+std::iostream effectStream = nullptr;
 extern MidLevelRenderer::MLRClipper* theClipper;
 
 Mechlopedia* pMechlopedia;
@@ -426,7 +426,7 @@ void __stdcall InitializeGameEngine()
 	puint8_t effectsData = (puint8_t)systemHeap->Malloc(effectsSize);
 	effectFile.read(effectsData, effectsSize);
 	effectFile.close();
-	effectStream = new Stuff::MemoryStream(effectsData, effectsSize);
+	effectStream = new std::iostream(effectsData, effectsSize);
 	gosFX::EffectLibrary::Instance->Load(effectStream);
 	gosFX::LightManager::Instance = new gosFX::LightManager();
 	gos_PopCurrentHeap();

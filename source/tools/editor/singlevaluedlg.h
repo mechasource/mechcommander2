@@ -21,7 +21,7 @@ HeightDlg:
 **************************************************************************************************/
 class SingleValueDlg : public CDialog
 {
-  public:
+public:
 	SingleValueDlg(int32_t captionID, int32_t staticTextID, int32_t val = 0);
 	virtual ~SingleValueDlg(void);
 	virtual void Init(void);
@@ -39,7 +39,7 @@ class SingleValueDlg : public CDialog
 		return TRUE;
 	}
 
-  private:
+private:
 	char staticText[256];
 	char caption[256];
 

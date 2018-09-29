@@ -38,8 +38,8 @@ extern bool DebuggerActive;
 // this class handles and routes all messages...
 class EditorInterface : public CWnd
 {
-  private:
-  public:
+private:
+public:
 	static EditorInterface* instance() { return s_instance; }
 
 	EditorInterface(void);
@@ -68,12 +68,9 @@ class EditorInterface : public CWnd
 
 	int32_t RefractalizeTerrain(int32_t threshold);
 
-	virtual void handleLeftButtonDown(
-		int32_t PosX, int32_t PosY); // mouse button down
-	virtual void handleLeftButtonDbl(int32_t PosX, int32_t PosY) {
-	} // mouse button dbl click
-	virtual void handleLeftButtonUp(
-		int32_t PosX, int32_t PosY); // pop ups etc need this
+	virtual void handleLeftButtonDown(int32_t PosX, int32_t PosY);  // mouse button down
+	virtual void handleLeftButtonDbl(int32_t PosX, int32_t PosY) {} // mouse button dbl click
+	virtual void handleLeftButtonUp(int32_t PosX, int32_t PosY);	// pop ups etc need this
 	virtual void handleKeyDown(int32_t Key);
 	virtual void handleMouseMove(int32_t PosX, int32_t PosY);
 
@@ -122,15 +119,15 @@ class EditorInterface : public CWnd
 	ActionUndoMgr undoMgr;
 
 	//{{AFX_VIRTUAL(EditorInterface)
-  public:
+public:
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
 
-  protected:
+protected:
 	virtual LRESULT WindowProc(uint32_t message, WPARAM wParam, LPARAM lParam);
 	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
 	//}}AFX_VIRTUAL
 
-  protected:
+protected:
 	//{{AFX_MSG(EditorInterface)
 	afx_msg int32_t OnCreate(LPCREATESTRUCT lpCreateStruct);
 	afx_msg void OnLButtonDown(uint32_t nFlags, CPoint point);
@@ -141,12 +138,9 @@ class EditorInterface : public CWnd
 	afx_msg void OnRButtonDown(uint32_t nFlags, CPoint point);
 	afx_msg void OnRButtonUp(uint32_t nFlags, CPoint point);
 	afx_msg BOOL OnMouseWheel(uint32_t nFlags, int16_t zDelta, CPoint pt);
-	afx_msg void OnHScroll(
-		uint32_t nSBCode, uint32_t nPos, CScrollBar* pScrollBar);
-	afx_msg void OnVScroll(
-		uint32_t nSBCode, uint32_t nPos, CScrollBar* pScrollBar);
-	afx_msg void OnSysKeyDown(
-		uint32_t nChar, uint32_t nRepCnt, uint32_t nFlags);
+	afx_msg void OnHScroll(uint32_t nSBCode, uint32_t nPos, CScrollBar* pScrollBar);
+	afx_msg void OnVScroll(uint32_t nSBCode, uint32_t nPos, CScrollBar* pScrollBar);
+	afx_msg void OnSysKeyDown(uint32_t nChar, uint32_t nRepCnt, uint32_t nFlags);
 	afx_msg void OnLButtonDblClk(uint32_t nFlags, CPoint point);
 	afx_msg void OnPaint(void);
 	afx_msg void OnViewRefreshtacmap(void);
@@ -173,7 +167,7 @@ class EditorInterface : public CWnd
 
 	afx_msg void OnCommand(WPARAM wParam);
 
-  private:
+private:
 	// Message handlers
 	int32_t Undo(void);
 	int32_t Redo(void);
@@ -297,7 +291,7 @@ class EditorInterface : public CWnd
 
 class Editor // simply holds everything else
 {
-  public:
+public:
 	EditorObjectMgr objectMgr;
 	EditorData data;
 
@@ -317,7 +311,7 @@ class Editor // simply holds everything else
 
 class TeamsAction : public Action
 {
-  public:
+public:
 	TeamsAction() : Action() {}
 	TeamsAction(const CTeams& teams) : Action() { PreviousTeams(teams); }
 	virtual ~TeamsAction() {}
@@ -326,7 +320,7 @@ class TeamsAction : public Action
 	CTeams PreviousTeams(void);
 	void PreviousTeams(const CTeams& teams);
 
-  private:
+private:
 	CTeams m_previousTeams;
 };
 

@@ -25,15 +25,14 @@ LinkBrush:
 **************************************************************************************************/
 class LinkBrush : public Brush
 {
-  public:
+public:
 	LinkBrush(bool bLink);
 	virtual ~LinkBrush(void);
 	virtual bool beginPaint(void);
 	virtual Action* endPaint(void);
-	virtual bool paint(
-		Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY);
-	virtual bool canPaint(Stuff::Vector3D& worldPos, int32_t screenX,
-		int32_t screenY, int32_t flags);
+	virtual bool paint(Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY);
+	virtual bool canPaint(
+		Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY, int32_t flags);
 	virtual bool canPaintSelection() { return false; }
 	virtual void render(int32_t screenX, int32_t screenY);
 
@@ -42,8 +41,7 @@ class LinkBrush : public Brush
 	bool bLink;
 
 	bool unPaint(Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY);
-	bool canUnPaint(Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY,
-		int32_t flags);
+	bool canUnPaint(Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY, int32_t flags);
 
 	struct LinkInfo
 	{
@@ -64,7 +62,7 @@ class LinkBrush : public Brush
 	class LinkAction : public Action
 	{
 
-	  public:
+	public:
 		LinkAction(void);
 		~LinkAction() {}
 

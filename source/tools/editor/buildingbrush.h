@@ -32,23 +32,22 @@ BuildingBrush:
 **************************************************************************************************/
 class BuildingBrush : public Brush
 {
-  public:
+public:
 	BuildingBrush(int32_t group, int32_t indexInGroup, int32_t Alignment);
 	virtual ~BuildingBrush(void);
 
 	virtual bool beginPaint(void);
 	virtual Action* endPaint(void);
-	virtual bool paint(
-		Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY);
-	virtual bool canPaint(Stuff::Vector3D& worldPos, int32_t screenX,
-		int32_t screenY, int32_t flags);
+	virtual bool paint(Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY);
+	virtual bool canPaint(
+		Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY, int32_t flags);
 	virtual void render(int32_t ScreenMouseX, int32_t ScreenMouseY);
 	virtual void update(int32_t screenX, int32_t screenY);
 	void rotateBrush(int32_t direction);
 
 	class BuildingAction : public Action
 	{
-	  public:
+	public:
 		virtual ~BuildingAction(void) {}
 		virtual bool redo(void);
 		virtual bool undo(void);
@@ -57,7 +56,7 @@ class BuildingBrush : public Brush
 #if _CONSIDERED_OBSOLETE
 		class OBJ_INFO_PTR_LIST : public EList<EditorObject*, EditorObject*>
 		{
-		  public:
+		public:
 			~OBJ_INFO_PTR_LIST(void)
 			{
 				EIterator it;
@@ -68,12 +67,12 @@ class BuildingBrush : public Brush
 			}
 		};
 #endif
-	  private:
+	private:
 		typedef std::list<EditorObject*> OBJ_INFO_PTR_LIST;
 		OBJ_INFO_PTR_LIST objInfoPtrList;
 	};
 
-  protected:
+protected:
 	// suppression
 	BuildingBrush(const BuildingBrush& buildingBrush);
 	BuildingBrush& operator=(const BuildingBrush& buildingBrush);

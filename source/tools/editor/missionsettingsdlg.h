@@ -4,8 +4,7 @@
 
 #pragma once
 
-#if !defined(                                                                  \
-	AFX_MISSIONSETTINGSDLG_H__5A7645E1_81E6_419B_9FBD_C269597F248C__INCLUDED_)
+#if !defined(AFX_MISSIONSETTINGSDLG_H__5A7645E1_81E6_419B_9FBD_C269597F248C__INCLUDED_)
 #define AFX_MISSIONSETTINGSDLG_H__5A7645E1_81E6_419B_9FBD_C269597F248C__INCLUDED_
 
 /////////////////////////////////////////////////////////////////////////////
@@ -14,7 +13,7 @@
 class MissionSettingsDlg : public CDialog
 {
 	// Construction
-  public:
+public:
 	MissionSettingsDlg(CWnd* pParent = nullptr); // standard constructor
 
 	void UpdateMissionNameDisplay(void);
@@ -78,12 +77,12 @@ class MissionSettingsDlg : public CDialog
 	// Overrides
 	// ClassWizard generated virtual function overrides
 	//{{AFX_VIRTUAL(MissionSettingsDlg)
-  protected:
+protected:
 	virtual void DoDataExchange(CDataExchange* pDX); // DDX/DDV support
 													 //}}AFX_VIRTUAL
 
 	// Implementation
-  protected:
+protected:
 	// Generated message map functions
 	//{{AFX_MSG(MissionSettingsDlg)
 	virtual BOOL OnInitDialog(void);

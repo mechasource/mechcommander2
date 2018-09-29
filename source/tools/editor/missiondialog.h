@@ -4,8 +4,7 @@
 
 #pragma once
 
-#if !defined(                                                                  \
-	AFX_MISSIONDIALOG_H__7B092FC7_3350_44B4_881D_79E7AF47E4DA__INCLUDED_)
+#if !defined(AFX_MISSIONDIALOG_H__7B092FC7_3350_44B4_881D_79E7AF47E4DA__INCLUDED_)
 #define AFX_MISSIONDIALOG_H__7B092FC7_3350_44B4_881D_79E7AF47E4DA__INCLUDED_
 
 /////////////////////////////////////////////////////////////////////////////
@@ -14,7 +13,7 @@
 class CMissionDialog : public CDialog
 {
 	// Construction
-  public:
+public:
 	CMissionDialog(CWnd* pParent = nullptr); // standard constructor
 
 	// Dialog Data
@@ -36,12 +35,12 @@ class CMissionDialog : public CDialog
 	// Overrides
 	// ClassWizard generated virtual function overrides
 	//{{AFX_VIRTUAL(CMissionDialog)
-  protected:
+protected:
 	virtual void DoDataExchange(CDataExchange* pDX); // DDX/DDV support
 													 //}}AFX_VIRTUAL
 
 	// Implementation
-  protected:
+protected:
 	// Generated message map functions
 	//{{AFX_MSG(CMissionDialog)
 	afx_msg void OnMiMissionFileBrowseButton(void);

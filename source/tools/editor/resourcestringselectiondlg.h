@@ -4,8 +4,7 @@
 
 #pragma once
 
-#if !defined(                                                                  \
-	AFX_RESOURCESTRINGSELECTIONDLG_H__90F375DF_47EA_4C33_A4EB_281A4DADDC12__INCLUDED_)
+#if !defined(AFX_RESOURCESTRINGSELECTIONDLG_H__90F375DF_47EA_4C33_A4EB_281A4DADDC12__INCLUDED_)
 #define AFX_RESOURCESTRINGSELECTIONDLG_H__90F375DF_47EA_4C33_A4EB_281A4DADDC12__INCLUDED_
 
 //#include <elist.h>
@@ -16,7 +15,7 @@
 class ResourceStringSelectionDlg : public CDialog
 {
 	// Construction
-  public:
+public:
 	ResourceStringSelectionDlg(CWnd* pParent = nullptr); // standard constructor
 
 	int32_t m_BottomOfIDRange;
@@ -35,12 +34,12 @@ class ResourceStringSelectionDlg : public CDialog
 	// Overrides
 	// ClassWizard generated virtual function overrides
 	//{{AFX_VIRTUAL(ResourceStringSelectionDlg)
-  protected:
+protected:
 	virtual void DoDataExchange(CDataExchange* pDX); // DDX/DDV support
 													 //}}AFX_VIRTUAL
 
 	// Implementation
-  protected:
+protected:
 	class CIntList : public EList<int32_t, int32_t>
 	{
 	};

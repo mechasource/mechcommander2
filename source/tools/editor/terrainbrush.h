@@ -16,7 +16,7 @@ textures
 
 class TerrainBrush : public Brush
 {
-  public:
+public:
 	inline TerrainBrush(int32_t Type)
 	{
 		if (Type == -1)
@@ -43,8 +43,7 @@ class TerrainBrush : public Brush
 		pAction			   = nullptr;
 		return pRetAction;
 	}
-	virtual bool paint(
-		Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY)
+	virtual bool paint(Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY)
 	{
 		int32_t tileC;
 		int32_t tileR;
@@ -59,15 +58,15 @@ class TerrainBrush : public Brush
 		}
 		return false;
 	}
-	virtual bool canPaint(Stuff::Vector3D& worldPos, int32_t screenX,
-		int32_t screenY, int32_t flags)
+	virtual bool canPaint(
+		Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY, int32_t flags)
 	{
 		return true;
 	}
 
 	virtual Action* applyToSelection(void);
 
-  private:
+private:
 	// SUPPRESS THESE!
 	TerrainBrush(const TerrainBrush& TerrainBrush);
 	TerrainBrush& operator=(const TerrainBrush& TerrainBrush);

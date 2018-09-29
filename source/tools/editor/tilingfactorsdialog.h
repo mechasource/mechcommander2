@@ -4,8 +4,7 @@
 
 #pragma once
 
-#if !defined(                                                                  \
-	AFX_TILINGFACTORSDIALOG_H__6448B5D2_29B1_452A_AE46_4E493B6C5EE6__INCLUDED_)
+#if !defined(AFX_TILINGFACTORSDIALOG_H__6448B5D2_29B1_452A_AE46_4E493B6C5EE6__INCLUDED_)
 #define AFX_TILINGFACTORSDIALOG_H__6448B5D2_29B1_452A_AE46_4E493B6C5EE6__INCLUDED_
 
 /////////////////////////////////////////////////////////////////////////////
@@ -14,7 +13,7 @@
 class TilingFactorsDialog : public CDialog
 {
 	// Construction
-  public:
+public:
 	TilingFactorsDialog(CWnd* pParent = nullptr); // standard constructor
 
 	// Dialog Data
@@ -31,12 +30,12 @@ class TilingFactorsDialog : public CDialog
 	// Overrides
 	// ClassWizard generated virtual function overrides
 	//{{AFX_VIRTUAL(TilingFactorsDialog)
-  protected:
+protected:
 	virtual void DoDataExchange(CDataExchange* pDX); // DDX/DDV support
 													 //}}AFX_VIRTUAL
 
 	// Implementation
-  protected:
+protected:
 	// Generated message map functions
 	//{{AFX_MSG(TilingFactorsDialog)
 	// NOTE: the ClassWizard will add member functions here

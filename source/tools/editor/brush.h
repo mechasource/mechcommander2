@@ -24,15 +24,14 @@ class Map;
 class Brush
 {
 
-  public:
+public:
 	Brush(void) {}
 	virtual ~Brush(void) {}
-	virtual bool beginPaint(void)  = 0;
-	virtual Action* endPaint(void) = 0;
-	virtual bool paint(
-		Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY) = 0;
-	virtual bool canPaint(Stuff::Vector3D& /*worldPos*/, int32_t /*screenX*/,
-		int32_t /*screenY*/, int32_t /*flags*/)
+	virtual bool beginPaint(void)													= 0;
+	virtual Action* endPaint(void)													= 0;
+	virtual bool paint(Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY) = 0;
+	virtual bool canPaint(
+		Stuff::Vector3D& /*worldPos*/, int32_t /*screenX*/, int32_t /*screenY*/, int32_t /*flags*/)
 	{
 		return true;
 	}
@@ -42,6 +41,6 @@ class Brush
 	virtual void render(int32_t /*screenX*/, int32_t /*screenY*/) {}
 	virtual void update(int32_t /*screenX*/, int32_t /*screenY*/) {}
 
-  private:
+private:
 };
 #endif // BRUSH_H_

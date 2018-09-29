@@ -19,7 +19,7 @@ class ActionPaintTile;
 
 class OverlayBrush : public Brush
 {
-  public:
+public:
 	OverlayBrush(int32_t Type, int32_t Offset = 0)
 	{
 		type	= (Overlays)Type;
@@ -28,21 +28,18 @@ class OverlayBrush : public Brush
 	}
 	virtual ~OverlayBrush() {}
 
-	virtual void render(int32_t ScreenMousex, int32_t ScreenMouseY) {
-	} // need to figure this out
+	virtual void render(int32_t ScreenMousex, int32_t ScreenMouseY) {} // need to figure this out
 
-	virtual bool canPaint(
-		Stuff::Vector3D&, int32_t screenX, int32_t screenY, int32_t& flags)
+	virtual bool canPaint(Stuff::Vector3D&, int32_t screenX, int32_t screenY, int32_t& flags)
 	{
 		return true;
 	}
-	virtual bool paint(
-		Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY);
+	virtual bool paint(Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY);
 
 	bool beginPaint(void); // not doing anything yet
 	Action* endPaint(void);
 
-  private:
+private:
 	OverlayBrush(const OverlayBrush& verlayBrush);
 	OverlayBrush& operator=(const OverlayBrush& verlayBrush);
 	OverlayBrush(void);
@@ -55,7 +52,7 @@ class OverlayBrush : public Brush
 
 	ActionPaintTile* pAction;
 
-  public:
+public:
 };
 
 //*************************************************************************************************

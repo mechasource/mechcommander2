@@ -18,7 +18,7 @@ SunDlg:
 **************************************************************************************************/
 class SunDlg : public CDialog
 {
-  public:
+public:
 	SunDlg(void);
 	virtual void Init(void);
 	void DoDataExchange(CDataExchange* pDX);
@@ -26,7 +26,7 @@ class SunDlg : public CDialog
 	// virtual	void OnCommand(Window *wnd,int32_t nCommand);
 	// virtual void OnOwnerDraw( ODSTRUCT* odStruct );
 
-  public:
+public:
 	float yaw;
 	float pitch;
 
@@ -49,7 +49,7 @@ class SunDlg : public CDialog
 	//{{AFX_VIRTUAL(SunDlg)
 	//}}AFX_VIRTUAL
 
-  protected:
+protected:
 	//{{AFX_MSG(SunDlg)
 	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, uint32_t nCtlColor);
 	afx_msg void OnAmbientButton(void);

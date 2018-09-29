@@ -4,8 +4,7 @@
 
 #pragma once
 
-#if !defined(                                                                  \
-	AFX_EDITFORESTDLG_H__DDB46B57_6D01_4DAF_8296_C5003400222B__INCLUDED_)
+#if !defined(AFX_EDITFORESTDLG_H__DDB46B57_6D01_4DAF_8296_C5003400222B__INCLUDED_)
 #define AFX_EDITFORESTDLG_H__DDB46B57_6D01_4DAF_8296_C5003400222B__INCLUDED_
 
 /////////////////////////////////////////////////////////////////////////////
@@ -14,7 +13,7 @@
 class EditForestDlg : public CDialog
 {
 	// Construction
-  public:
+public:
 	EditForestDlg(CWnd* pParent = nullptr); // standard constructor
 
 	// Dialog Data
@@ -30,12 +29,12 @@ class EditForestDlg : public CDialog
 	// Overrides
 	// ClassWizard generated virtual function overrides
 	//{{AFX_VIRTUAL(EditForestDlg)
-  protected:
+protected:
 	virtual void DoDataExchange(CDataExchange* pDX); // DDX/DDV support
 													 //}}AFX_VIRTUAL
 
 	// Implementation
-  protected:
+protected:
 	// Generated message map functions
 	//{{AFX_MSG(EditForestDlg)
 	virtual void OnOK(void);

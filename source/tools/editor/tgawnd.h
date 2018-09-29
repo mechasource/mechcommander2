@@ -20,7 +20,7 @@
 class TGAWnd : public CStatic
 {
 	// Construction
-  public:
+public:
 	TGAWnd(void);
 	void SetTGAFileName(const CString& str);
 	void SetTGAFileData(puint8_t data, int32_t size);
@@ -30,10 +30,10 @@ class TGAWnd : public CStatic
 	//{{AFX_VIRTUAL(TGAWnd)
 	//}}AFX_VIRTUAL
 
-  public:
+public:
 	virtual ~TGAWnd(void);
 
-  protected:
+protected:
 	//{{AFX_MSG(TGAWnd)
 	afx_msg void OnPaint(void);
 	//}}AFX_MSG
@@ -59,7 +59,7 @@ TACMapTGA:
 **************************************************************************************************/
 class TacMapTGA : public TGAWnd
 {
-  public:
+public:
 	afx_msg void OnPaint(void);
 	void refreshBmp(void);
 	DECLARE_MESSAGE_MAP()

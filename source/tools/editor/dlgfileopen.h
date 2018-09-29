@@ -11,7 +11,7 @@ DlgFileOpen.h		: Interface for the DlgFileOpen component.
 #define DLGFILEOPEN_H
 
 //#include "editormessages.h"		// only for the definition of ids_ok and
-//ids_cancel
+// ids_cancel
 
 /**************************************************************************************************
 CLASS DESCRIPTION  this is a fileOpenDlg ...
@@ -20,7 +20,7 @@ DlgFileOpen:
 
 class DlgFileOpen : public CDialog
 {
-  public:
+public:
 	DlgFileOpen(PCSTR directoryName, PCSTR extension, bool bSave);
 	DlgFileOpen(const DlgFileOpen& lgFileOpen);
 
@@ -36,7 +36,7 @@ class DlgFileOpen : public CDialog
 	PCSTR getFileName(void) const { return fileName; }
 	PCSTR getExtension(void) const { return extension; }
 
-  private:
+private:
 	// HELPER FUNCTIONS
 	void init(void); // I think I'll hard wire the file name here
 
@@ -50,7 +50,7 @@ class DlgFileOpen : public CDialog
 	//{{AFX_VIRTUAL(DlgFileOpen)
 	//}}AFX_VIRTUAL
 
-  protected:
+protected:
 	//{{AFX_MSG(DlgFileOpen)
 	virtual BOOL OnInitDialog(void);
 	afx_msg void OnSelchangeFileopenFilelist(void);

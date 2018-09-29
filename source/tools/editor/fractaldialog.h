@@ -16,7 +16,7 @@ refractalize terrain settings
 
 class FractalDlg : public CDialog
 {
-  public:
+public:
 	// Construction
 	FractalDlg(CWnd* pParent = nullptr); // standard constructor
 
@@ -32,7 +32,7 @@ class FractalDlg : public CDialog
 	};
 	virtual void DoDataExchange(CDataExchange* pDX); // DDX/DDV support
 
-  private:
+private:
 	uint8_t m_threshold;
 	uint8_t m_noise;
 };

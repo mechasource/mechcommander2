@@ -22,22 +22,21 @@ MineBrush:
 **************************************************************************************************/
 class MineBrush : public Brush
 {
-  public:
+public:
 	MineBrush() { pAction = nullptr; }
 	virtual ~MineBrush() {}
 	virtual bool beginPaint(void);
 	virtual Action* endPaint(void);
-	virtual bool paint(
-		Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY);
-	virtual bool canPaint(Stuff::Vector3D& worldPos, int32_t screenX,
-		int32_t screenY, int32_t flags);
+	virtual bool paint(Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY);
+	virtual bool canPaint(
+		Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY, int32_t flags);
 	virtual bool canPaintSelection();
 	virtual Action* applyToSelection(void);
 
-  private:
+private:
 	class MineAction : public Action
 	{
-	  public:
+	public:
 		virtual ~MineAction() {}
 		virtual bool redo(void);
 		virtual bool undo(void);

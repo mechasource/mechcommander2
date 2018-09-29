@@ -20,22 +20,21 @@ typedef EList<EditorObject*, EditorObject*> EditorObjectPointerList;
 
 class ObjectSelectionBrush : public Brush
 {
-  public:
+public:
 	ObjectSelectionBrush(void);
 	virtual ~ObjectSelectionBrush(void);
 	virtual bool beginPaint(void);
 	virtual Action* endPaint(void);
-	virtual bool paint(
-		Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY);
-	virtual bool canPaint(Stuff::Vector3D& worldPos, int32_t screenX,
-		int32_t screenY, int32_t flags)
+	virtual bool paint(Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY);
+	virtual bool canPaint(
+		Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY, int32_t flags)
 	{
 		return true;
 	}
 	virtual void render(int32_t screenX, int32_t screenY);
 	EditorObjectPointerList selectedObjectPointerList(void);
 
-  private:
+private:
 	// suppressed
 	ObjectSelectionBrush(const ObjectSelectionBrush& electionBrush);
 	ObjectSelectionBrush& operator=(const ObjectSelectionBrush& electionBrush);

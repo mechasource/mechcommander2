@@ -4,8 +4,7 @@
 
 #pragma once
 
-#if !defined(                                                                  \
-	AFX_PLAYERSETTINGSDLG_H__E406C43E_70BF_49B1_A3E1_5305FF16D93B__INCLUDED_)
+#if !defined(AFX_PLAYERSETTINGSDLG_H__E406C43E_70BF_49B1_A3E1_5305FF16D93B__INCLUDED_)
 #define AFX_PLAYERSETTINGSDLG_H__E406C43E_70BF_49B1_A3E1_5305FF16D93B__INCLUDED_
 
 /////////////////////////////////////////////////////////////////////////////
@@ -14,7 +13,7 @@
 class PlayerSettingsDlg : public CDialog
 {
 	// Construction
-  public:
+public:
 	PlayerSettingsDlg(CWnd* pParent = nullptr); // standard constructor
 
 	// Dialog Data
@@ -33,12 +32,12 @@ class PlayerSettingsDlg : public CDialog
 	// Overrides
 	// ClassWizard generated virtual function overrides
 	//{{AFX_VIRTUAL(PlayerSettingsDlg)
-  protected:
+protected:
 	virtual void DoDataExchange(CDataExchange* pDX); // DDX/DDV support
 													 //}}AFX_VIRTUAL
 
 	// Implementation
-  protected:
+protected:
 	// Generated message map functions
 	//{{AFX_MSG(PlayerSettingsDlg)
 	virtual BOOL OnInitDialog(void);

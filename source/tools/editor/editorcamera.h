@@ -33,7 +33,7 @@ class EditorCamera : public Camera
 {
 	// Data Members
 	//-------------
-  public:
+public:
 	AppearancePtr compass;
 	AppearancePtr theSky;
 	bool drawCompass;
@@ -84,12 +84,10 @@ class EditorCamera : public Camera
 		calculateProjectionConstants(void);
 		TG_Shape::SetViewport(viewMulX, viewMulY, viewAddX, viewAddY);
 		globalScaleFactor = getScaleFactor(void);
-		globalScaleFactor *=
-			viewMulX / Environment.screenWidth; // Scale Mechs to ScreenRES
+		globalScaleFactor *= viewMulX / Environment.screenWidth; // Scale Mechs to ScreenRES
 		//-----------------------------------------------
 		// Set Ambient for this pass of rendering
-		uint32_t lightRGB =
-			(ambientRed << 16) + (ambientGreen << 8) + ambientBlue;
+		uint32_t lightRGB = (ambientRed << 16) + (ambientGreen << 8) + ambientBlue;
 		eye->setLightColor(1, lightRGB);
 		eye->setLightIntensity(1, 1.0);
 		MidLevelRenderer::MLRState default_state;
@@ -98,16 +96,14 @@ class EditorCamera : public Camera
 		default_state.SetTextureCorrectionOn(void);
 		default_state.SetZBufferCompareOn(void);
 		default_state.SetZBufferWriteOn(void);
-		default_state.SetFilterMode(
-			MidLevelRenderer::MLRState::BiLinearFilterMode);
+		default_state.SetFilterMode(MidLevelRenderer::MLRState::BiLinearFilterMode);
 		float z = 1.0f;
 		Stuff::RGBAColor fColor;
 		fColor.red						  = (float)((fogColor >> 16) & 0xff);
 		fColor.green					  = (float)((fogColor >> 8) & 0xff);
 		fColor.blue						  = (float)((fogColor)&0xff);
 		MidLevelRenderer::PerspectiveMode = usePerspective;
-		theClipper->StartDraw(
-			cameraOrigin, cameraToClip, fColor, &fColor, default_state, &z);
+		theClipper->StartDraw(cameraOrigin, cameraToClip, fColor, &fColor, default_state, &z);
 		MidLevelRenderer::GOSVertex::farClipReciprocal =
 			(1.0f - cameraToClip(2, 2)) / cameraToClip(3, 2);
 		if (active && turn > 1)
@@ -121,17 +117,14 @@ class EditorCamera : public Camera
 			// about this.  Heidi, override this function in EditorCamera  and
 			// have your objectManager draw.
 			if (!s_bSensorMapEnabled)
-				EditorObjectMgr::instance()->render(
-					void); // render all other objects
+				EditorObjectMgr::instance()->render(void); // render all other objects
 			land->renderWater(void);
 			if (!s_bSensorMapEnabled && useShadows)
-				EditorObjectMgr::instance()->renderShadows(
-					void); // render all other objects
+				EditorObjectMgr::instance()->renderShadows(void); // render all other objects
 			if (!drawOldWay)
 			{
 				if (compass && (turn > 3) && drawCompass)
-					compass->render(
-						-1); // Force this to zBuffer in front of everything
+					compass->render(-1); // Force this to zBuffer in front of everything
 			}
 			if (!drawOldWay)
 				mcTextureManager->renderLists(void);
@@ -178,18 +171,14 @@ class EditorCamera : public Camera
 	{
 		// calculate new near and far plane distance based on
 		// Current altitude above terrain.
-		float anglePercent = (projectionAngle - MIN_PERSPECTIVE) /
-							 (MAX_PERSPECTIVE - MIN_PERSPECTIVE);
-		float testMax =
-			Camera::AltitudeMaximumLo +
-			((Camera::AltitudeMaximumHi - Camera::AltitudeMaximumLo) *
-				anglePercent);
-		float altitudePercent =
-			(cameraAltitude - AltitudeMinimum) / (testMax - AltitudeMinimum);
+		float anglePercent =
+			(projectionAngle - MIN_PERSPECTIVE) / (MAX_PERSPECTIVE - MIN_PERSPECTIVE);
+		float testMax = Camera::AltitudeMaximumLo +
+			((Camera::AltitudeMaximumHi - Camera::AltitudeMaximumLo) * anglePercent);
+		float altitudePercent = (cameraAltitude - AltitudeMinimum) / (testMax - AltitudeMinimum);
 		Camera::NearPlaneDistance =
 			MinNearPlane + ((MaxNearPlane - MinNearPlane) * altitudePercent);
-		Camera::FarPlaneDistance =
-			MinFarPlane + ((MaxFarPlane - MinFarPlane) * altitudePercent);
+		Camera::FarPlaneDistance = MinFarPlane + ((MaxFarPlane - MinFarPlane) * altitudePercent);
 		if (!compass && (turn > 3)) // Create it!
 		{
 			// Gotta check for the list too because a NEW map has no objects on
@@ -211,8 +200,7 @@ class EditorCamera : public Camera
 			// Startup the SKYBox
 			int32_t appearanceType					= (GENERIC_APPR_TYPE << 24);
 			AppearanceTypePtr genericAppearanceType = nullptr;
-			genericAppearanceType =
-				appearanceTypeList->getAppearance(appearanceType, "skybox");
+			genericAppearanceType = appearanceTypeList->getAppearance(appearanceType, "skybox");
 			if (!genericAppearanceType)
 			{
 				char msg[1024];
@@ -222,10 +210,8 @@ class EditorCamera : public Camera
 			theSky = new GenericAppearance;
 			gosASSERT(theSky != nullptr);
 			//--------------------------------------------------------------
-			gosASSERT(genericAppearanceType->getAppearanceClass() ==
-					  GENERIC_APPR_TYPE);
-			theSky->init(
-				(GenericAppearanceType*)genericAppearanceType, nullptr);
+			gosASSERT(genericAppearanceType->getAppearanceClass() == GENERIC_APPR_TYPE);
+			theSky->init((GenericAppearanceType*)genericAppearanceType, nullptr);
 			theSky->setSkyNumber(EditorData::instance->TheSkyNumber());
 			oldSkyNumber = EditorData::instance->TheSkyNumber(void);
 		}
@@ -238,8 +224,8 @@ class EditorCamera : public Camera
 		int32_t result = Camera::update(void);
 		if ((cameraLineChanged + 10) < turn)
 		{
-			if (userInput->getKeyDown(KEY_BACKSLASH) && !userInput->ctrl() &&
-				!userInput->alt() && !userInput->shift())
+			if (userInput->getKeyDown(KEY_BACKSLASH) && !userInput->ctrl() && !userInput->alt() &&
+				!userInput->shift())
 			{
 				drawCompass ^= true;
 				cameraLineChanged = turn;
@@ -263,8 +249,7 @@ class EditorCamera : public Camera
 			compass->setVisibility(true, true);
 			compass->setFilterState(true);
 			compass->setIsHudElement(void);
-			compass->update(
-				void); // Force it to try and draw or stuff will not work!
+			compass->update(void); // Force it to try and draw or stuff will not work!
 			if (theSky)
 			{
 				Stuff::Vector3D pos = getPosition(void);
@@ -276,8 +261,7 @@ class EditorCamera : public Camera
 				theSky->setVisibility(true, true);
 				theSky->setFilterState(true);
 				theSky->setIsHudElement(void);
-				theSky->update(
-					void); // Force it to try and draw or stuff will not work!
+				theSky->update(void); // Force it to try and draw or stuff will not work!
 			}
 			useFog	 = oldFog;
 			useShadows = oldShadows;

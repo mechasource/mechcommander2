@@ -4,8 +4,7 @@
 
 #pragma once
 
-#if !defined(                                                                  \
-	AFX_OBJECTIVEDLG_H__2D6B2B2E_16F8_43B2_9534_A2DC1672352F__INCLUDED_)
+#if !defined(AFX_OBJECTIVEDLG_H__2D6B2B2E_16F8_43B2_9534_A2DC1672352F__INCLUDED_)
 #define AFX_OBJECTIVEDLG_H__2D6B2B2E_16F8_43B2_9534_A2DC1672352F__INCLUDED_
 
 //#include "objective.h"
@@ -16,7 +15,7 @@
 class ObjectiveDlg : public CDialog
 {
 	// Construction
-  public:
+public:
 	ObjectiveDlg(CWnd* pParent = nullptr); // standard constructor
 	void LoadDialogValues(void);
 	void SaveDialogValues(void);
@@ -39,12 +38,10 @@ class ObjectiveDlg : public CDialog
 	int32_t nFailureConditionSpeciesSelectionIndex;
 	int32_t nFailureActionSpeciesSelectionIndex;
 
-	class CConditionSpeciesList
-		: public EList<condition_species_type, condition_species_type>
+	class CConditionSpeciesList : public EList<condition_species_type, condition_species_type>
 	{
 	};
-	class CActionSpeciesList
-		: public EList<action_species_type, action_species_type>
+	class CActionSpeciesList : public EList<action_species_type, action_species_type>
 	{
 	};
 	CConditionSpeciesList comboBoxItems;
@@ -96,12 +93,12 @@ class ObjectiveDlg : public CDialog
 	// Overrides
 	// ClassWizard generated virtual function overrides
 	//{{AFX_VIRTUAL(ObjectiveDlg)
-  protected:
+protected:
 	virtual void DoDataExchange(CDataExchange* pDX); // DDX/DDV support
 													 //}}AFX_VIRTUAL
 
 	// Implementation
-  protected:
+protected:
 	// Generated message map functions
 	//{{AFX_MSG(ObjectiveDlg)
 	virtual BOOL OnInitDialog(void);

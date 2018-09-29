@@ -4,8 +4,7 @@
 
 #pragma once
 
-#if !defined(                                                                  \
-	AFX_NEWSINGLEMISSION_H__B7294D0A_D020_48C8_B409_E2EA0323998E__INCLUDED_)
+#if !defined(AFX_NEWSINGLEMISSION_H__B7294D0A_D020_48C8_B409_E2EA0323998E__INCLUDED_)
 #define AFX_NEWSINGLEMISSION_H__B7294D0A_D020_48C8_B409_E2EA0323998E__INCLUDED_
 
 /////////////////////////////////////////////////////////////////////////////
@@ -14,7 +13,7 @@
 class NewSingleMission : public CDialog
 {
 	// Construction
-  public:
+public:
 	NewSingleMission(CWnd* pParent = nullptr); // standard constructor
 
 	// Dialog Data
@@ -29,12 +28,12 @@ class NewSingleMission : public CDialog
 	// Overrides
 	// ClassWizard generated virtual function overrides
 	//{{AFX_VIRTUAL(NewSingleMission)
-  protected:
+protected:
 	virtual void DoDataExchange(CDataExchange* pDX); // DDX/DDV support
 													 //}}AFX_VIRTUAL
 
 	// Implementation
-  protected:
+protected:
 	// Generated message map functions
 	//{{AFX_MSG(NewSingleMission)
 	afx_msg void OnLoadMission(void);

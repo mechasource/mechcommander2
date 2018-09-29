@@ -13,11 +13,11 @@ class EditorInterface;
 
 class MainMenu : public Window
 {
-  protected:
+protected:
 	bool bEndModal;
 	EditorInterface* m_pEditorInterface;
 
-  public:
+public:
 	Menu* pMenu;
 
 	MainMenu(EditorInterface* pEditorInterface);

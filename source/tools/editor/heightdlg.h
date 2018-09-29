@@ -20,7 +20,7 @@ HeightDlg:
 **************************************************************************************************/
 class HeightDlg : public CDialog
 {
-  public:
+public:
 	HeightDlg(int32_t min = 0, int32_t max = 0);
 	void Init(void);
 	void OnOK(void);
@@ -37,7 +37,7 @@ class HeightDlg : public CDialog
 		return TRUE;
 	}
 
-  private:
+private:
 	int32_t min;
 	int32_t max;
 };

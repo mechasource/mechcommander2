@@ -21,7 +21,7 @@ class EditorObject;
 class BuildingLink
 {
 
-  public:
+public:
 	BuildingLink(const EditorObject* pParent);
 	BuildingLink(const BuildingLink& Link);
 	BuildingLink& operator=(const BuildingLink&);
@@ -33,22 +33,19 @@ class BuildingLink
 	bool RemoveObject(const EditorObject*);
 	const Stuff::Vector3D& GetParentPosition(void) const;
 	void SetParentPosition(const Stuff::Vector3D& pos);
-	int32_t GetChildrenPositions(
-		Stuff::Vector3D*, int32_t MaxNumberOfPoints) const;
+	int32_t GetChildrenPositions(Stuff::Vector3D*, int32_t MaxNumberOfPoints) const;
 	bool AddChild(const EditorObject* pObject);
 	void SetParentAlignment(int32_t alignment);
 	void FixHeights(void);
 
-	static bool TypeCanBeParent(
-		const EditorObject*); // type gotten from building mgr
-	static bool CanLink(
-		const EditorObject* pParent, const EditorObject* pChild);
+	static bool TypeCanBeParent(const EditorObject*); // type gotten from building mgr
+	static bool CanLink(const EditorObject* pParent, const EditorObject* pChild);
 
 	bool operator==(const BuildingLink& Src) const;
 
 	void render(void);
 
-  private:
+private:
 	struct Info
 	{
 		Info(void) : m_ID(0), ppos(0) {}

@@ -62,7 +62,7 @@ static void syncObjectivesListWithListBox(const CObjectives* pObjectives, CListB
 	CObjectives::EConstIterator it = pObjectives->Begin();
 	while (!it.IsDone())
 	{
-		EString tmpEStr;
+		std::wstring tmpEStr;
 		tmpEStr = _TEXT("[");
 		if (1 == (*it)->Priority())
 		{

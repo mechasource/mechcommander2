@@ -15,7 +15,7 @@
 class CGroupDialog : public CDialog
 {
 	// Construction
-  public:
+public:
 	CGroupDialog(CWnd* pParent = nullptr); // standard constructor
 
 	int32_t m_TuneNumber;
@@ -39,12 +39,12 @@ class CGroupDialog : public CDialog
 	// Overrides
 	// ClassWizard generated virtual function overrides
 	//{{AFX_VIRTUAL(CGroupDialog)
-  protected:
+protected:
 	virtual void DoDataExchange(CDataExchange* pDX); // DDX/DDV support
 													 //}}AFX_VIRTUAL
 
 	// Implementation
-  protected:
+protected:
 	// Generated message map functions
 	//{{AFX_MSG(CGroupDialog)
 	afx_msg void OnGrOperationFileBrowseButton(void);

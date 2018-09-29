@@ -23,7 +23,7 @@ forest:
 class Forest
 {
 
-  public:
+public:
 	Forest(int32_t newID);
 	Forest(const Forest& src);
 
@@ -42,7 +42,7 @@ class Forest
 
 	int32_t getID(void) const { return ID; }
 
-  private:
+private:
 	int32_t ID;
 	CString fileName;
 	CString name;

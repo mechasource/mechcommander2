@@ -4,14 +4,12 @@
 
 #pragma once
 
-#if !defined(                                                                  \
-	AFX_BOOLEANFLAGISSETDIALOG_H__08B5296B_F425_414C_92EE_86E619EC994B__INCLUDED_)
+#if !defined(AFX_BOOLEANFLAGISSETDIALOG_H__08B5296B_F425_414C_92EE_86E619EC994B__INCLUDED_)
 #define AFX_BOOLEANFLAGISSETDIALOG_H__08B5296B_F425_414C_92EE_86E619EC994B__INCLUDED_
 
 /////////////////////////////////////////////////////////////////////////////
 // CBooleanFlagIsSetDialog dialog
-DISABLE_WARNING_PUSH(
-	4626) // assignment operator could not be generated (due to MFC design)
+DISABLE_WARNING_PUSH(4626) // assignment operator could not be generated (due to MFC design)
 class CBooleanFlagIsSetDialog : public CDialog
 {
 	// Construction

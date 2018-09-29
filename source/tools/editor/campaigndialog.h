@@ -4,8 +4,7 @@
 
 #pragma once
 
-#if !defined(                                                                  \
-	AFX_CAMPAIGNDIALOG_H__911BFC1D_2B46_40F8_A288_1E0BDB371BDE__INCLUDED_)
+#if !defined(AFX_CAMPAIGNDIALOG_H__911BFC1D_2B46_40F8_A288_1E0BDB371BDE__INCLUDED_)
 #define AFX_CAMPAIGNDIALOG_H__911BFC1D_2B46_40F8_A288_1E0BDB371BDE__INCLUDED_
 
 //#include "campaigneditor.h"
@@ -17,7 +16,7 @@
 class CCampaignDialog : public CDialog
 {
 	// Construction
-  public:
+public:
 	CCampaignDialog(CWnd* pParent = nullptr); // standard constructor
 
 	CCampaignData m_CampaignData;
@@ -48,12 +47,12 @@ class CCampaignDialog : public CDialog
 	// Overrides
 	// ClassWizard generated virtual function overrides
 	//{{AFX_VIRTUAL(CCampaignDialog)
-  protected:
+protected:
 	virtual void DoDataExchange(CDataExchange* pDX); // DDX/DDV support
 													 //}}AFX_VIRTUAL
 
 	// Implementation
-  protected:
+protected:
 	// Generated message map functions
 	//{{AFX_MSG(CCampaignDialog)
 	afx_msg void OnCaFinalVideoBrowseButton(void);

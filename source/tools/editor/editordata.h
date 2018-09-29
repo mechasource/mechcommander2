@@ -28,14 +28,8 @@ public:
 		m_alignment = alignment;
 		m_objectives.Alignment(m_alignment);
 	}
-	bool Read(FitIniFile* missionFile)
-	{
-		return m_objectives.Read(missionFile);
-	}
-	bool Save(FitIniFile* missionFile)
-	{
-		return m_objectives.Save(missionFile);
-	}
+	bool Read(FitIniFile* missionFile) { return m_objectives.Read(missionFile); }
+	bool Save(FitIniFile* missionFile) { return m_objectives.Save(missionFile); }
 	CObjectives& ObjectivesRef() { return m_objectives; }
 	void handleObjectInvalidation(const EditorObject* pObj)
 	{
@@ -47,8 +41,7 @@ public:
 	}
 	bool RestoreObjectPointerReferencesFromNotedPositions()
 	{
-		return m_objectives.RestoreObjectPointerReferencesFromNotedPositions(
-			void);
+		return m_objectives.RestoreObjectPointerReferencesFromNotedPositions(void);
 	}
 	bool ThereAreObjectivesWithNoConditions()
 	{
@@ -117,10 +110,7 @@ public:
 	int32_t sensors;
 	int32_t time;
 
-	void clear()
-	{
-		largeArtillery = smallArtillery = cameraDrones = sensors = time = 0;
-	}
+	void clear() { largeArtillery = smallArtillery = cameraDrones = sensors = time = 0; }
 	MissionSettings() { clear(void); }
 
 	bool save(FitIniFile* file);
@@ -138,11 +128,10 @@ public:
 	static bool clear(void);
 
 	// makes a terrain from a height map.
-	static bool initTerrainFromTGA(int32_t mapSize, int32_t min = 0,
-		int32_t max = 512, int32_t terrain = 0);
+	static bool initTerrainFromTGA(
+		int32_t mapSize, int32_t min = 0, int32_t max = 512, int32_t terrain = 0);
 	static bool initTerrainFromPCV(PCSTR fileName);
-	static bool reassignHeightsFromTGA(
-		PCSTR fileName, int32_t min, int32_t max);
+	static bool reassignHeightsFromTGA(PCSTR fileName, int32_t min, int32_t max);
 
 	bool save(PCSTR fileName, bool quickSave = false);
 	bool quickSave(PCSTR fileName);
@@ -153,32 +142,26 @@ public:
 	static PCSTR getMapName() { return strlen(mapName) ? mapName : 0; }
 	static void updateTitleBar(void);
 
-	EString MissionName() { return m_missionName; }
-	void MissionName(EString missionName) { m_missionName = missionName; }
+	std::wstring MissionName() { return m_missionName; }
+	void MissionName(std::wstring missionName) { m_missionName = missionName; }
 
-	bool MissionNameUseResourceString()
-	{
-		return m_missionNameUseResourceString;
-	}
+	bool MissionNameUseResourceString() { return m_missionNameUseResourceString; }
 	void MissionNameUseResourceString(bool missionNameUseResourceString)
 	{
 		m_missionNameUseResourceString = missionNameUseResourceString;
 	}
 
-	int32_t MissionNameResourceStringID()
-	{
-		return m_missionNameResourceStringID;
-	}
+	int32_t MissionNameResourceStringID() { return m_missionNameResourceStringID; }
 	void MissionNameResourceStringID(int32_t missionNameResourceStringID)
 	{
 		m_missionNameResourceStringID = missionNameResourceStringID;
 	}
 
-	EString Author() { return m_author; }
-	void Author(EString author) { m_author = author; }
+	std::wstring Author() { return m_author; }
+	void Author(std::wstring author) { m_author = author; }
 
-	EString Blurb() { return m_blurb; }
-	void Blurb(EString blurb) { m_blurb = blurb; }
+	std::wstring Blurb() { return m_blurb; }
+	void Blurb(std::wstring blurb) { m_blurb = blurb; }
 
 	bool BlurbUseResourceString() { return m_blurbUseResourceString; }
 	void BlurbUseResourceString(bool blurbUseResourceString)
@@ -192,8 +175,8 @@ public:
 		m_blurbResourceStringID = blurbResourceStringID;
 	}
 
-	EString Blurb2() { return m_blurb2; }
-	void Blurb2(EString blurb2) { m_blurb2 = blurb2; }
+	std::wstring Blurb2() { return m_blurb2; }
+	void Blurb2(std::wstring blurb2) { m_blurb2 = blurb2; }
 
 	bool Blurb2UseResourceString() { return m_blurb2UseResourceString; }
 	void Blurb2UseResourceString(bool blurb2UseResourceString)
@@ -211,10 +194,7 @@ public:
 	void TimeLimit(float timeLimit) { m_timeLimit = timeLimit; }
 
 	float DropWeightLimit() { return m_dropWeightLimit; }
-	void DropWeightLimit(float dropWeightLimit)
-	{
-		m_dropWeightLimit = dropWeightLimit;
-	}
+	void DropWeightLimit(float dropWeightLimit) { m_dropWeightLimit = dropWeightLimit; }
 
 	int32_t InitialResourcePoints() { return m_initialResourcePoints; }
 	void InitialResourcePoints(int32_t initialResourcePoints)
@@ -226,10 +206,7 @@ public:
 	void CBills(int32_t newCBills) { m_CBills = newCBills; }
 
 	bool IsSinglePlayer() { return m_isSinglePlayer; }
-	void IsSinglePlayer(bool isSinglePlayer)
-	{
-		m_isSinglePlayer = isSinglePlayer;
-	}
+	void IsSinglePlayer(bool isSinglePlayer) { m_isSinglePlayer = isSinglePlayer; }
 
 	int32_t MaxTeams() { return m_maxTeams; }
 	void MaxTeams(int32_t maxTeams)
@@ -249,11 +226,8 @@ public:
 	int32_t ScenarioTune() { return m_scenarioTune; }
 	void ScenarioTune(int32_t scenarioTune) { m_scenarioTune = scenarioTune; }
 
-	EString VideoFilename() { return m_videoFilename; }
-	void VideoFilename(EString videoFilename)
-	{
-		m_videoFilename = videoFilename;
-	}
+	std::wstring VideoFilename() { return m_videoFilename; }
+	void VideoFilename(std::wstring videoFilename) { m_videoFilename = videoFilename; }
 
 	int32_t NumRandomRPbuildings() { return m_numRandomRPbuildings; }
 	void NumRandomRPbuildings(int32_t numRandomRPbuildings)
@@ -261,8 +235,8 @@ public:
 		m_numRandomRPbuildings = numRandomRPbuildings;
 	}
 
-	EString DownloadURL() { return m_downloadURL; }
-	void DownloadURL(EString downloadURL) { m_downloadURL = downloadURL; }
+	std::wstring DownloadURL() { return m_downloadURL; }
+	void DownloadURL(std::wstring downloadURL) { m_downloadURL = downloadURL; }
 
 	int32_t MissionType() { return m_missionType; }
 	void MissionType(int32_t missionType) { m_missionType = missionType; }
@@ -315,10 +289,7 @@ public:
 		m_salvageCraftEnabledDefault = salvageCraftEnabledDefault;
 	}
 
-	bool ResourceBuildingsEnabledDefault()
-	{
-		return m_resourceBuildingsEnabledDefault;
-	}
+	bool ResourceBuildingsEnabledDefault() { return m_resourceBuildingsEnabledDefault; }
 	void ResourceBuildingsEnabledDefault(bool resourceBuildingsEnabledDefault)
 	{
 		m_resourceBuildingsEnabledDefault = resourceBuildingsEnabledDefault;
@@ -330,10 +301,7 @@ public:
 		m_noVariantsEnabledDefault = noVariantsEnabledDefault;
 	}
 
-	bool ArtilleryPieceEnabledDefault()
-	{
-		return m_artilleryPieceEnabledDefault;
-	}
+	bool ArtilleryPieceEnabledDefault() { return m_artilleryPieceEnabledDefault; }
 	void ArtilleryPieceEnabledDefault(bool artilleryPieceEnabledDefault)
 	{
 		m_artilleryPieceEnabledDefault = artilleryPieceEnabledDefault;
@@ -350,10 +318,7 @@ public:
 	void MaxRaindrops(int32_t maxRaindrops) { m_maxRaindrops = maxRaindrops; }
 
 	float StartingRainLevel() { return m_startingRainLevel; }
-	void StartingRainLevel(float startingRainLevel)
-	{
-		m_startingRainLevel = startingRainLevel;
-	}
+	void StartingRainLevel(float startingRainLevel) { m_startingRainLevel = startingRainLevel; }
 
 	float ChanceOfRain() { return m_chanceOfRain; }
 	void ChanceOfRain(float chanceOfRain) { m_chanceOfRain = chanceOfRain; }
@@ -369,10 +334,7 @@ public:
 	void TheSkyNumber(int32_t theSkyNumber) { m_theSkyNumber = theSkyNumber; }
 
 	bool MissionNeedsSaving() { return m_missionNeedsSaving; }
-	void MissionNeedsSaving(bool missionNeedsSaving)
-	{
-		m_missionNeedsSaving = missionNeedsSaving;
-	}
+	void MissionNeedsSaving(bool missionNeedsSaving) { m_missionNeedsSaving = missionNeedsSaving; }
 
 	bool DetailTextureNeedsSaving() { return m_detailTextureNeedsSaving; }
 	void DetailTextureNeedsSaving(bool detailTextureNeedsSaving)
@@ -386,10 +348,7 @@ public:
 		m_waterTextureNeedsSaving = waterTextureNeedsSaving;
 	}
 
-	bool WaterDetailTextureNeedsSaving()
-	{
-		return m_waterDetailTextureNeedsSaving;
-	}
+	bool WaterDetailTextureNeedsSaving() { return m_waterDetailTextureNeedsSaving; }
 	void WaterDetailTextureNeedsSaving(bool waterDetailTextureNeedsSaving)
 	{
 		m_waterDetailTextureNeedsSaving = waterDetailTextureNeedsSaving;
@@ -417,14 +376,14 @@ private:
 	EditorData(const EditorData& editorData);
 	bool saveTacMap(PacketFile* file, int32_t whichPacket);
 
-	EString m_missionName;
+	std::wstring m_missionName;
 	bool m_missionNameUseResourceString;
 	int32_t m_missionNameResourceStringID;
-	EString m_author;
-	EString m_blurb;
+	std::wstring m_author;
+	std::wstring m_blurb;
 	bool m_blurbUseResourceString;
 	int32_t m_blurbResourceStringID;
-	EString m_blurb2;
+	std::wstring m_blurb2;
 	bool m_blurb2UseResourceString;
 	int32_t m_blurb2ResourceStringID;
 	float m_timeLimit;
@@ -437,9 +396,9 @@ private:
 	CTeams m_teams;
 	CPlayers m_players;
 	int32_t m_scenarioTune;
-	EString m_videoFilename;
+	std::wstring m_videoFilename;
 	int32_t m_numRandomRPbuildings;
-	EString m_downloadURL;
+	std::wstring m_downloadURL;
 	int32_t m_missionType;
 
 	/*defaults for multiplayer options*/

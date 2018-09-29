@@ -9,8 +9,8 @@
 
 #pragma once
 
-#define DISABLE_WARNING_PUSH(x)                                                \
-	__pragma(warning(push));                                                   \
+#define DISABLE_WARNING_PUSH(x)                                                                    \
+	__pragma(warning(push));                                                                       \
 	__pragma(warning(disable : x))
 #define DISABLE_WARNING_POP __pragma(warning(pop))
 #define SUPPRESS_WARNING(x) __pragma(warning(suppress : x))
@@ -36,13 +36,12 @@
 
 // temporary disable warnings when compiling with -Wall
 #pragma warning(push)
-#pragma warning(                                                               \
-	disable : 4191 4263 4264 4266 4350 4365 4626 4668 4917 4986 4987) // this is
-																	  // for
-																	  // Visual
-																	  // Studio
-																	  // 2013
-																	  // MFC
+#pragma warning(disable : 4191 4263 4264 4266 4350 4365 4626 4668 4917 4986 4987) // this is
+																				  // for
+																				  // Visual
+																				  // Studio
+																				  // 2013
+																				  // MFC
 #include <string>
 #include <vector>
 #include <list>
@@ -73,7 +72,7 @@
 // MechCommander GameOS :/
 // #include "mfcplatform.hpp"
 
-#pragma comment(linker,                                                        \
+#pragma comment(linker,                                                                            \
 	"/manifestdependency:\"type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
 
 #ifndef _CONSIDERED_OBSOLETE

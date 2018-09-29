@@ -24,10 +24,10 @@ class BuildingLink;
 
 class EditorObjectMgr
 {
-  private:
+private:
 	struct Building;
 
-  public:
+public:
 	static EditorObjectMgr* instance() { return s_instance; }
 
 	enum BuildingType
@@ -57,7 +57,7 @@ class EditorObjectMgr
 
 	class EDITOR_OBJECT_LIST : public EList<EditorObject*, EditorObject*>
 	{
-	  public:
+	public:
 		void AddUnique(EditorObject* item)
 		{
 			if ((0 < Count()) && (INVALID_ITERATOR != Find(item)))
@@ -91,17 +91,15 @@ class EditorObjectMgr
 	void init(PCSTR bldgListFileName, PCSTR objectFileName);
 
 	EditorObject* addBuilding(const Stuff::Vector3D& position, uint32_t group,
-		uint32_t indexWithinGroup, int32_t alignment, float rotation = 0.0,
-		float height	 = 1.0,
+		uint32_t indexWithinGroup, int32_t alignment, float rotation = 0.0, float height = 1.0,
 		bool bSnapToCell = true); // returns nullptr if failure
 
 	bool addBuilding(EditorObject* pObjectThatWeWillCopy);
 
-	EditorObject* addDropZone(const Stuff::Vector3D& position,
-		int32_t alignment, bool bVTol); // returns nullptr if failure
+	EditorObject* addDropZone(const Stuff::Vector3D& position, int32_t alignment,
+		bool bVTol); // returns nullptr if failure
 
-	bool deleteBuilding(
-		const EditorObject* pInfo); // should only be one building in a spot
+	bool deleteBuilding(const EditorObject* pInfo); // should only be one building in a spot
 	bool deleteObject(const EditorObject* pInfo)
 	{
 		return deleteBuilding(pInfo); // only object FOR NOW
@@ -124,28 +122,24 @@ class EditorObjectMgr
 
 	EditorObject* getBuilding(const EditorObject& building);
 
-	bool canAddBuilding(const Stuff::Vector3D& position, float rotation,
-		uint32_t group, uint32_t indexWithinGroup);
+	bool canAddBuilding(
+		const Stuff::Vector3D& position, float rotation, uint32_t group, uint32_t indexWithinGroup);
 
-	bool canAddDropZone(
-		const Stuff::Vector3D& position, int32_t alignment, bool bVTol);
+	bool canAddDropZone(const Stuff::Vector3D& position, int32_t alignment, bool bVTol);
 
 	int32_t getBuildingGroupCount(void) const; // mechs count too!
 	int32_t getNumberBuildingsInGroup(int32_t Group) const;
 	void getBuildingGroupNames(PCSTR* names, int32_t& numberOfNames) const;
-	void getNamesOfObjectsInGroup(
-		PCSTR groupName, PCSTR* names, int32_t& numberOfNames) const;
-	void getBuildingNamesInGroup(
-		int32_t Group, PCSTR* names, int32_t& numberOfNames) const;
+	void getNamesOfObjectsInGroup(PCSTR groupName, PCSTR* names, int32_t& numberOfNames) const;
+	void getBuildingNamesInGroup(int32_t Group, PCSTR* names, int32_t& numberOfNames) const;
 	int32_t getNumberOfVariants(int32_t group, int32_t indexInGroup) const;
-	void getVariantNames(int32_t group, int32_t indexInGroup, PCSTR* names,
-		int32_t& numberOfNames) const;
+	void getVariantNames(
+		int32_t group, int32_t indexInGroup, PCSTR* names, int32_t& numberOfNames) const;
 	PCSTR getGroupName(int32_t group) const;
 	PCSTR getObjectName(int32_t ID) const;
 
 	int32_t getUnitGroupCount(void) const;
-	void getUnitGroupNames(
-		PCSTR* names, pint32_t IDs, int32_t& numberOfNames) const;
+	void getUnitGroupNames(PCSTR* names, pint32_t IDs, int32_t& numberOfNames) const;
 
 	bool save(PacketFile& file, int32_t whichPacket);
 	bool load(PacketFile& file, int32_t whichPacket);
@@ -178,8 +172,7 @@ class EditorObjectMgr
 	inline static uint32_t getIndexInGroup(int32_t id);
 	inline int32_t getAppearanceType(int32_t ID);
 
-	bool getBuildingFromID(
-		int32_t fitID, uint32_t& group, uint32_t& index, bool canBeMech);
+	bool getBuildingFromID(int32_t fitID, uint32_t& group, uint32_t& index, bool canBeMech);
 
 	void unselectAll(void);
 	void select(const Stuff::Vector4D& pos1, const Stuff::Vector4D& pos2);
@@ -204,8 +197,7 @@ class EditorObjectMgr
 	// LINKS!
 	BuildingLink* getLinkWithParent(const EditorObject* pObj);
 	BuildingLink* getLinkWithChild(const EditorObject* pObj);
-	BuildingLink* getLinkWithBuilding(
-		const EditorObject* pObj); // parent or child
+	BuildingLink* getLinkWithBuilding(const EditorObject* pObj); // parent or child
 	void addLink(BuildingLink*);
 	void deleteLink(BuildingLink*);
 
@@ -218,8 +210,7 @@ class EditorObjectMgr
 	inline PCSTR getTGAFileName(int32_t ID) const;
 	inline uint32_t getTacMapColor(int32_t ID) const;
 
-	typedef EList<EditorObject*, EditorObject*>
-		BUILDING_LIST; // buildings on the map
+	typedef EList<EditorObject*, EditorObject*> BUILDING_LIST; // buildings on the map
 	typedef EList<Unit*, Unit*> UNIT_LIST;
 
 	void getSelectedUnits(UNIT_LIST&);
@@ -239,7 +230,7 @@ class EditorObjectMgr
 	int32_t getForests(Forest** pForests, int32_t& count);
 	void selectForest(int32_t ID);
 
-  private:
+private:
 	struct Building
 	{
 		char name[64];
@@ -269,8 +260,7 @@ class EditorObjectMgr
 		EList<Building, Building&> buildings;
 	};
 
-	typedef EList<EditorObject*, EditorObject*>
-		BUILDING_LIST; // buildings on the map
+	typedef EList<EditorObject*, EditorObject*> BUILDING_LIST; // buildings on the map
 	typedef EList<Unit*, Unit*> UNIT_LIST;
 	typedef EList<Group, Group&> GROUP_LIST;
 	typedef EList<BuildingLink*, BuildingLink*> LINK_LIST;
@@ -293,31 +283,22 @@ class EditorObjectMgr
 											  // marked as selected
 
 	// HELPERS
-	int32_t ExtractNextString(
-		puint8_t& pFileLine, PSTR pBuffer, int32_t bufferLength);
+	int32_t ExtractNextString(puint8_t& pFileLine, PSTR pBuffer, int32_t bufferLength);
 	int32_t ExtractNextInt(puint8_t& pFileLine);
 	float ExtractNextFloat(puint8_t& pFileLine);
 
 	int32_t getType(uint32_t group, uint32_t indexWithinGroup);
-	void getRandomTreeFromGroup(
-		int32_t treeGroup, int32_t& group, int32_t& index);
+	void getRandomTreeFromGroup(int32_t treeGroup, int32_t& group, int32_t& index);
 
 	void doForest(const Forest& forest);
 
 	uint32_t nextAvailableSquadNum;
 
-	static EditorObjectMgr*
-		s_instance; // the one and only instance of this object
+	static EditorObjectMgr* s_instance; // the one and only instance of this object
 };
 
-inline uint32_t EditorObjectMgr::getGroup(int32_t id)
-{
-	return ((id >> 16) & 0x00ff);
-}
-inline uint32_t EditorObjectMgr::getIndexInGroup(int32_t id)
-{
-	return ((id >> 8) & 0x00ff);
-}
+inline uint32_t EditorObjectMgr::getGroup(int32_t id) { return ((id >> 16) & 0x00ff); }
+inline uint32_t EditorObjectMgr::getIndexInGroup(int32_t id) { return ((id >> 8) & 0x00ff); }
 inline EditorObjectMgr::BuildingType EditorObjectMgr::getSpecialType(int32_t ID)
 {
 	return groups[getGroup(ID)].buildings[getIndexInGroup(ID)].specialType;
@@ -330,9 +311,8 @@ inline bool EditorObjectMgr::isAlignable(int32_t ID)
 
 inline int32_t EditorObjectMgr::getAppearanceType(int32_t ID)
 {
-	return groups[getGroup(ID)]
-		.buildings[getIndexInGroup(ID)]
-		.appearanceType->getAppearanceClass(void);
+	return groups[getGroup(ID)].buildings[getIndexInGroup(ID)].appearanceType->getAppearanceClass(
+		void);
 }
 
 inline int32_t EditorObjectMgr::getObjectTypeNum(int32_t ID)

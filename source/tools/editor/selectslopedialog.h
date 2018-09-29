@@ -4,8 +4,7 @@
 
 #pragma once
 
-#if !defined(                                                                  \
-	AFX_SELECTSLOPEDIALOG_H__49EB9E50_A5AD_4B8C_925A_7D0CD9AD616B__INCLUDED_)
+#if !defined(AFX_SELECTSLOPEDIALOG_H__49EB9E50_A5AD_4B8C_925A_7D0CD9AD616B__INCLUDED_)
 #define AFX_SELECTSLOPEDIALOG_H__49EB9E50_A5AD_4B8C_925A_7D0CD9AD616B__INCLUDED_
 
 /////////////////////////////////////////////////////////////////////////////
@@ -14,7 +13,7 @@
 class SelectSlopeDialog : public CDialog
 {
 	// Construction
-  public:
+public:
 	SelectSlopeDialog(CWnd* pParent = nullptr); // standard constructor
 
 	// Dialog Data
@@ -30,12 +29,12 @@ class SelectSlopeDialog : public CDialog
 	// Overrides
 	// ClassWizard generated virtual function overrides
 	//{{AFX_VIRTUAL(SelectSlopeDialog)
-  protected:
+protected:
 	virtual void DoDataExchange(CDataExchange* pDX); // DDX/DDV support
 													 //}}AFX_VIRTUAL
 
 	// Implementation
-  protected:
+protected:
 	// Generated message map functions
 	//{{AFX_MSG(SelectSlopeDialog)
 	// NOTE: the ClassWizard will add member functions here

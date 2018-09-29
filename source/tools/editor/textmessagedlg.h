@@ -4,8 +4,7 @@
 
 #pragma once
 
-#if !defined(                                                                  \
-	AFX_TEXTMESSAGEDLG_H__0B7C2BD0_F277_4D66_9FF8_2169FF65ABC2__INCLUDED_)
+#if !defined(AFX_TEXTMESSAGEDLG_H__0B7C2BD0_F277_4D66_9FF8_2169FF65ABC2__INCLUDED_)
 #define AFX_TEXTMESSAGEDLG_H__0B7C2BD0_F277_4D66_9FF8_2169FF65ABC2__INCLUDED_
 
 /////////////////////////////////////////////////////////////////////////////
@@ -14,7 +13,7 @@
 class TextMessageDlg : public CDialog
 {
 	// Construction
-  public:
+public:
 	TextMessageDlg(CWnd* pParent = nullptr); // standard constructor
 
 	// Dialog Data
@@ -29,12 +28,12 @@ class TextMessageDlg : public CDialog
 	// Overrides
 	// ClassWizard generated virtual function overrides
 	//{{AFX_VIRTUAL(TextMessageDlg)
-  protected:
+protected:
 	virtual void DoDataExchange(CDataExchange* pDX); // DDX/DDV support
 													 //}}AFX_VIRTUAL
 
 	// Implementation
-  protected:
+protected:
 	// Generated message map functions
 	//{{AFX_MSG(TextMessageDlg)
 	// NOTE: the ClassWizard will add member functions here

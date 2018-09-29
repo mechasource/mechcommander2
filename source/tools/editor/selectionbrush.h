@@ -18,30 +18,27 @@ class EditorObject;
 
 class SelectionBrush : public Brush
 {
-  public:
+public:
 	SelectionBrush(bool Area, int32_t radius);
 	virtual ~SelectionBrush(void);
 	virtual bool beginPaint(void);
 	virtual Action* endPaint(void);
-	virtual bool paint(
-		Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY);
-	virtual bool canPaint(Stuff::Vector3D& worldPos, int32_t screenX,
-		int32_t screenY, int32_t flags)
+	virtual bool paint(Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY);
+	virtual bool canPaint(
+		Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY, int32_t flags)
 	{
 		return true;
 	}
 	virtual void render(int32_t screenX, int32_t screenY);
-	bool paintSmooth(Stuff::Vector3D& worldPos, int32_t screenX,
-		int32_t screenY, int32_t radius);
+	bool paintSmooth(Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY, int32_t radius);
 
-  private:
+private:
 	// suppressed
 	SelectionBrush(const SelectionBrush& electionBrush);
 	SelectionBrush& operator=(const SelectionBrush& electionBrush);
-	static float calcNewHeight(
-		int32_t vertexRow, int32_t vertexCol, float screenDeltaY);
-	bool paintSmoothArea(Stuff::Vector3D& worldPos, int32_t screenX,
-		int32_t screenY, float radiusX, float radiusY, int32_t j, int32_t i);
+	static float calcNewHeight(int32_t vertexRow, int32_t vertexCol, float screenDeltaY);
+	bool paintSmoothArea(Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY, float radiusX,
+		float radiusY, int32_t j, int32_t i);
 
 	Stuff::Vector4D lastPos;
 	Stuff::Vector3D firstWorldPos;

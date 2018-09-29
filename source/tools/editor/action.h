@@ -22,14 +22,14 @@ class Action;
 class Action
 {
 
-  public:
+public:
 	virtual ~Action(void) {}
 	virtual bool redo(void) = 0;
 	virtual bool undo(void) = 0;
 	Action& operator		=(const Action& src);
 	PCWSTR getDescription(void) { return m_strDescription.c_str(void); }
 
-  protected:
+protected:
 	std::wstring m_strDescription;
 
 	// suppressed
@@ -50,7 +50,7 @@ typedef struct VertexInfo
 	uint32_t textureData;
 	float elevation;
 
-  private:
+private:
 	// make sure the list class doesn't try and use this
 	VertexInfo& operator=(const VertexInfo&);
 
@@ -61,7 +61,7 @@ typedef struct VertexInfo
 // it here
 class ActionPaintTile : public Action
 {
-  public:
+public:
 	ActionPaintTile(void) {}
 
 	// virtual overrides
@@ -76,14 +76,14 @@ class ActionPaintTile : public Action
 	void addVertexInfo(VertexInfo&);
 	bool getOldHeight(uint32_t row, uint32_t column, float& oldHeight);
 
-  private:
+private:
 	typedef std::list<VertexInfo /*, const VertexInfo& */> VERTEX_INFO_LIST;
 	VERTEX_INFO_LIST vertexInfoList;
 };
 
 class ModifyBuildingAction : public Action
 {
-  public:
+public:
 	virtual ~ModifyBuildingAction(void);
 	virtual bool redo(void);
 	virtual bool undo(void);
@@ -92,7 +92,7 @@ class ModifyBuildingAction : public Action
 	virtual bool isNotNull(void) { return (!buildingCopyPtrs.empty()); }
 	virtual void updateNotedObjectPositions(void);
 
-  private:
+private:
 	typedef std::list<EditorObject* /*, EditorObject**/> OBJ_INFO_PTR_LIST;
 	typedef std::list<ObjectAppearance /*, ObjectAppearance&*/> OBJ_APPEAR_LIST;
 
@@ -108,7 +108,7 @@ class ModifyBuildingAction : public Action
 class ActionUndoMgr
 {
 
-  public:
+public:
 	ActionUndoMgr(void);
 	~ActionUndoMgr(void);
 
@@ -128,7 +128,7 @@ class ActionUndoMgr
 
 	static ActionUndoMgr* instance;
 
-  private:
+private:
 	typedef std::list<Action* /*, Action**/> ACTION_LIST;
 	typedef uint32_t ACTION_POS;
 

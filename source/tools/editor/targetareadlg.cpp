@@ -44,7 +44,7 @@ BOOL TargetAreaDlg::OnInitDialog()
 	assert(m_pCancelButton);
 	m_pOKButton = (CButton*)GetDlgItem(IDOK);
 	assert(m_pOKButton);
-	EString tmpStr;
+	std::wstring tmpStr;
 	tmpStr.Format("%.3f", (*m_pTargetCenterX));
 	m_pTargetCenterXEditBox->SetWindowText(tmpStr.Data());
 	tmpStr.Format("%.3f", (*m_pTargetCenterY));

@@ -21,7 +21,7 @@
 HINSTANCE hInst			   = nullptr;
 uint32_t gosResourceHandle = 0;
 
-Stuff::MemoryStream* effectStream = nullptr;
+std::iostream effectStream = nullptr;
 
 extern char CDInstallPath[];
 

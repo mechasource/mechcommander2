@@ -17,7 +17,7 @@ user input fog settings
 class FogDlg : public CDialog
 {
 	// Construction
-  public:
+public:
 	FogDlg(CWnd* pParent = nullptr); // standard constructor
 
 	// Dialog Data
@@ -36,12 +36,12 @@ class FogDlg : public CDialog
 	// Overrides
 	// ClassWizard generated virtual function overrides
 	//{{AFX_VIRTUAL(FogDlg)
-  protected:
+protected:
 	virtual void DoDataExchange(CDataExchange* pDX); // DDX/DDV support
 													 //}}AFX_VIRTUAL
 
 	// Implementation
-  protected:
+protected:
 	// Generated message map functions
 	//{{AFX_MSG(FogDlg)
 	afx_msg void OnChangeBlue1(void);

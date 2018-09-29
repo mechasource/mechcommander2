@@ -15,22 +15,21 @@ component.
 
 class PointerSelectObjectDlg : public CDialog
 {
-  private:
+private:
 	bool m_bTimerIsReset;
 
-  public:
+public:
 	PointerSelectObjectDlg(void);
 	PointerSelectObjectDlg(int32_t x, int32_t y);
 	virtual ~PointerSelectObjectDlg(void);
 
 	BOOL OnCommand(WPARAM wParam,
 		LPARAM lParam); // called by child controls to inform of an event
-	virtual BOOL OnWndMsg(
-		uint32_t message, WPARAM wParam, LPARAM lParam, LRESULT* pResult);
+	virtual BOOL OnWndMsg(uint32_t message, WPARAM wParam, LPARAM lParam, LRESULT* pResult);
 	BOOL OnInitDialog(void);
 	uint32_t OnNcHitTest(CPoint point);
 
-  private:
+private:
 	typedef CDialog inherited;
 
 	// suppressing these

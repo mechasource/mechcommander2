@@ -15,22 +15,21 @@ down the space bar, this thing lets you scroll around
 
 class DragTool : public Brush
 {
-  public:
+public:
 	DragTool(void);
 	virtual ~DragTool(void);
 
 	virtual bool beginPaint(void);
 	virtual Action* endPaint(void);
-	virtual bool paint(
-		Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY);
-	virtual bool canPaint(Stuff::Vector3D& worldPos, int32_t screenX,
-		int32_t screenY, int32_t flags)
+	virtual bool paint(Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY);
+	virtual bool canPaint(
+		Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY, int32_t flags)
 	{
 		return true;
 	}
 	virtual bool canPaintSelection() { return false; }
 
-  private:
+private:
 	int32_t lastX;
 	int32_t lastY;
 };

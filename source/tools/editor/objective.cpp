@@ -31,12 +31,12 @@ Objective.cpp			: Implementation of the Objective component.
 
 #include <assert.h>
 
-static bool ESLoadString(int32_t resourceID, EString& targetStr)
+static bool ESLoadString(int32_t resourceID, std::wstring& targetStr)
 {
 	char szTmp[16384 /*max string length*/];
 	cLoadString(resourceID, szTmp, 16384 /*max string length*/);
 	targetStr = szTmp;
-	EString tmpStr;
+	std::wstring tmpStr;
 	tmpStr.Format("mc2res.dll:%d Not defined", resourceID);
 	if (0 == strcmp(tmpStr.Data(), szTmp))
 	{
@@ -158,9 +158,9 @@ bool CObjectiveCondition::operator==(const CObjectiveCondition& rhs) const
 	return retval;
 }
 
-EString CDestroyAllEnemyUnits::Description()
+std::wstring CDestroyAllEnemyUnits::Description()
 {
-	EString retval = "DestroyAllEnemyUnits"; /* needs to be put somewhere localizable */
+	std::wstring retval = "DestroyAllEnemyUnits"; /* needs to be put somewhere localizable */
 	ESLoadString(IDS_DestroyAllEnemyUnits, retval);
 	return retval;
 }
@@ -209,16 +209,16 @@ bool CNumberOfEnemyUnitsObjectiveCondition::EditDialog()
 	return (IDOK == ret);
 }
 
-EString CNumberOfEnemyUnitsObjectiveCondition::InstanceDescription()
+std::wstring CNumberOfEnemyUnitsObjectiveCondition::InstanceDescription()
 {
-	EString tmpEStr;
+	std::wstring tmpEStr;
 	tmpEStr.Format("%d", m_num);
 	return tmpEStr;
 }
 
-EString CDestroyNumberOfEnemyUnits::Description()
+std::wstring CDestroyNumberOfEnemyUnits::Description()
 {
-	EString retval = "DestroyNumberOfEnemyUnits"; /* needs to be put somewhere localizable */
+	std::wstring retval = "DestroyNumberOfEnemyUnits"; /* needs to be put somewhere localizable */
 	ESLoadString(IDS_DestroyNumberOfEnemyUnits, retval);
 	return retval;
 }
@@ -308,9 +308,9 @@ bool CSpecificUnitObjectiveCondition::EditDialog()
 	return (IDOK == ret);
 }
 
-EString CSpecificUnitObjectiveCondition::InstanceDescription()
+std::wstring CSpecificUnitObjectiveCondition::InstanceDescription()
 {
-	EString tmpEStr;
+	std::wstring tmpEStr;
 	Stuff::Vector3D pos = m_pUnit->getPosition();
 	PCSTR szDisplayName = m_pUnit->getDisplayName(); // nb: localization
 	assert(szDisplayName);
@@ -364,9 +364,9 @@ bool CSpecificEnemyUnitObjectiveCondition::EditDialog()
 	return (IDOK == ret);
 }
 
-EString CDestroySpecificEnemyUnit::Description()
+std::wstring CDestroySpecificEnemyUnit::Description()
 {
-	EString retval = "DestroySpecificEnemyUnit"; /* needs to be put somewhere localizable */
+	std::wstring retval = "DestroySpecificEnemyUnit"; /* needs to be put somewhere localizable */
 	ESLoadString(IDS_DestroySpecificEnemyUnit, retval);
 	return retval;
 }
@@ -451,9 +451,9 @@ bool CSpecificStructureObjectiveCondition::EditDialog()
 	return (IDOK == ret);
 }
 
-EString CSpecificStructureObjectiveCondition::InstanceDescription()
+std::wstring CSpecificStructureObjectiveCondition::InstanceDescription()
 {
-	EString tmpEStr;
+	std::wstring tmpEStr;
 	Stuff::Vector3D pos = m_pBuilding->getPosition();
 	PCSTR szDisplayName = m_pBuilding->getDisplayName(); // nb: localization
 	assert(szDisplayName);
@@ -495,96 +495,96 @@ bool CSpecificStructureObjectiveCondition::RestoreObjectPointerReferencesFromNot
 	return true;
 }
 
-EString CDestroySpecificStructure::Description()
+std::wstring CDestroySpecificStructure::Description()
 {
-	EString retval = "DestroySpecificStructure"; /* needs to be put somewhere localizable */
+	std::wstring retval = "DestroySpecificStructure"; /* needs to be put somewhere localizable */
 	ESLoadString(IDS_DestroySpecificStructure, retval);
 	return retval;
 }
 
-EString CCaptureOrDestroyAllEnemyUnits::Description()
+std::wstring CCaptureOrDestroyAllEnemyUnits::Description()
 {
-	EString retval = "CaptureOrDestroyAllEnemyUnits"; /* needs to be put
+	std::wstring retval = "CaptureOrDestroyAllEnemyUnits"; /* needs to be put
 														 somewhere localizable
 													   */
 	ESLoadString(IDS_CaptureOrDestroyAllEnemyUnits, retval);
 	return retval;
 }
 
-EString CCaptureOrDestroyNumberOfEnemyUnits::Description()
+std::wstring CCaptureOrDestroyNumberOfEnemyUnits::Description()
 {
-	EString retval = "CaptureOrDestroyNumberOfEnemyUnits"; /* needs to be put
+	std::wstring retval = "CaptureOrDestroyNumberOfEnemyUnits"; /* needs to be put
 															  somewhere
 															  localizable */
 	ESLoadString(IDS_CaptureOrDestroyNumberOfEnemyUnits, retval);
 	return retval;
 }
 
-EString CCaptureOrDestroySpecificEnemyUnit::Description()
+std::wstring CCaptureOrDestroySpecificEnemyUnit::Description()
 {
-	EString retval = "CaptureOrDestroySpecificEnemyUnit"; /* needs to be put
+	std::wstring retval = "CaptureOrDestroySpecificEnemyUnit"; /* needs to be put
 															 somewhere
 															 localizable */
 	ESLoadString(IDS_CaptureOrDestroySpecificEnemyUnit, retval);
 	return retval;
 }
 
-EString CCaptureOrDestroySpecificStructure::Description()
+std::wstring CCaptureOrDestroySpecificStructure::Description()
 {
-	EString retval = "CaptureOrDestroySpecificStructure"; /* needs to be put
+	std::wstring retval = "CaptureOrDestroySpecificStructure"; /* needs to be put
 															 somewhere
 															 localizable */
 	ESLoadString(IDS_CaptureOrDestroySpecificStructure, retval);
 	return retval;
 }
 
-EString CDeadOrFledAllEnemyUnits::Description()
+std::wstring CDeadOrFledAllEnemyUnits::Description()
 {
-	EString retval = "DeadOrFledAllEnemyUnits"; /* needs to be put somewhere localizable */
+	std::wstring retval = "DeadOrFledAllEnemyUnits"; /* needs to be put somewhere localizable */
 	ESLoadString(IDS_DeadOrFledAllEnemyUnits, retval);
 	return retval;
 }
 
-EString CDeadOrFledNumberOfEnemyUnits::Description()
+std::wstring CDeadOrFledNumberOfEnemyUnits::Description()
 {
-	EString retval = "DeadOrFledNumberOfEnemyUnits"; /* needs to be put
+	std::wstring retval = "DeadOrFledNumberOfEnemyUnits"; /* needs to be put
 														somewhere localizable */
 	ESLoadString(IDS_DeadOrFledNumberOfEnemyUnits, retval);
 	return retval;
 }
 
-EString CDeadOrFledSpecificEnemyUnit::Description()
+std::wstring CDeadOrFledSpecificEnemyUnit::Description()
 {
-	EString retval = "DeadOrFledSpecificEnemyUnit"; /* needs to be put somewhere
+	std::wstring retval = "DeadOrFledSpecificEnemyUnit"; /* needs to be put somewhere
 													   localizable */
 	ESLoadString(IDS_DeadOrFledSpecificEnemyUnit, retval);
 	return retval;
 }
 
-EString CCaptureUnit::Description()
+std::wstring CCaptureUnit::Description()
 {
-	EString retval = "CaptureSpecificUnit"; /* needs to be put somewhere localizable */
+	std::wstring retval = "CaptureSpecificUnit"; /* needs to be put somewhere localizable */
 	ESLoadString(IDS_CaptureSpecificUnit, retval);
 	return retval;
 }
 
-EString CCaptureStructure::Description()
+std::wstring CCaptureStructure::Description()
 {
-	EString retval = "CaptureSpecificStructure"; /* needs to be put somewhere localizable */
+	std::wstring retval = "CaptureSpecificStructure"; /* needs to be put somewhere localizable */
 	ESLoadString(IDS_CaptureSpecificStructure, retval);
 	return retval;
 }
 
-EString CGuardSpecificUnit::Description()
+std::wstring CGuardSpecificUnit::Description()
 {
-	EString retval = "GuardSpecificUnit"; /* needs to be put somewhere localizable */
+	std::wstring retval = "GuardSpecificUnit"; /* needs to be put somewhere localizable */
 	ESLoadString(IDS_GuardSpecificUnit, retval);
 	return retval;
 }
 
-EString CGuardSpecificStructure::Description()
+std::wstring CGuardSpecificStructure::Description()
 {
-	EString retval = "GuardSpecificStructure"; /* needs to be put somewhere localizable */
+	std::wstring retval = "GuardSpecificStructure"; /* needs to be put somewhere localizable */
 	ESLoadString(IDS_GuardSpecificStructure, retval);
 	return retval;
 }
@@ -641,39 +641,39 @@ bool CAreaObjectiveCondition::EditDialog()
 	return (IDOK == ret);
 }
 
-EString CAreaObjectiveCondition::InstanceDescription()
+std::wstring CAreaObjectiveCondition::InstanceDescription()
 {
-	EString tmpEStr;
+	std::wstring tmpEStr;
 	tmpEStr.Format(
 		"x: %.3f, y: %.3f, radius: %.3f", m_targetCenterX, m_targetCenterY, m_targetRadius);
 	return tmpEStr;
 }
 
-EString CMoveAnyUnitToArea::Description()
+std::wstring CMoveAnyUnitToArea::Description()
 {
-	EString retval = "MoveAnyUnitToArea"; /* needs to be put somewhere localizable */
+	std::wstring retval = "MoveAnyUnitToArea"; /* needs to be put somewhere localizable */
 	ESLoadString(IDS_MoveAnyUnitToArea, retval);
 	return retval;
 }
 
-EString CMoveAllUnitsToArea::Description()
+std::wstring CMoveAllUnitsToArea::Description()
 {
-	EString retval = "MoveAllUnitsToArea"; /* needs to be put somewhere localizable */
+	std::wstring retval = "MoveAllUnitsToArea"; /* needs to be put somewhere localizable */
 	ESLoadString(IDS_MoveAllUnitsToArea, retval);
 	return retval;
 }
 
-EString CMoveAllSurvivingUnitsToArea::Description()
+std::wstring CMoveAllSurvivingUnitsToArea::Description()
 {
-	EString retval = "MoveAllSurvivingUnitsToArea"; /* needs to be put somewhere
+	std::wstring retval = "MoveAllSurvivingUnitsToArea"; /* needs to be put somewhere
 													   localizable */
 	ESLoadString(IDS_MoveAllSurvivingUnitsToArea, retval);
 	return retval;
 }
 
-EString CMoveAllSurvivingMechsToArea::Description()
+std::wstring CMoveAllSurvivingMechsToArea::Description()
 {
-	EString retval = "MoveAllSurvivingMechsToArea"; /* needs to be put somewhere
+	std::wstring retval = "MoveAllSurvivingMechsToArea"; /* needs to be put somewhere
 													   localizable */
 	ESLoadString(IDS_MoveAllSurvivingMechsToArea, retval);
 	return retval;
@@ -749,16 +749,16 @@ bool CBooleanFlagIsSet::EditDialog()
 	}
 }
 
-EString CBooleanFlagIsSet::Description()
+std::wstring CBooleanFlagIsSet::Description()
 {
-	EString retval = "BooleanFlagIsSet"; /* needs to be put somewhere localizable */
+	std::wstring retval = "BooleanFlagIsSet"; /* needs to be put somewhere localizable */
 	ESLoadString(IDS_BooleanFlagIsSet, retval);
 	return retval;
 }
 
-EString CBooleanFlagIsSet::InstanceDescription()
+std::wstring CBooleanFlagIsSet::InstanceDescription()
 {
-	EString tmpEStr;
+	std::wstring tmpEStr;
 	tmpEStr.Format("flag name: %s, value: %d", m_flagID.Data(), m_value);
 	return tmpEStr;
 }
@@ -809,16 +809,16 @@ bool CElapsedMissionTime::EditDialog()
 	}
 }
 
-EString CElapsedMissionTime::Description()
+std::wstring CElapsedMissionTime::Description()
 {
-	EString retval = "ElapsedMissionTime"; /* needs to be put somewhere localizable */
+	std::wstring retval = "ElapsedMissionTime"; /* needs to be put somewhere localizable */
 	ESLoadString(IDS_ElapsedMissionTime, retval);
 	return retval;
 }
 
-EString CElapsedMissionTime::InstanceDescription()
+std::wstring CElapsedMissionTime::InstanceDescription()
 {
-	EString tmpEStr;
+	std::wstring tmpEStr;
 	tmpEStr.Format("%f seconds", m_time);
 	return tmpEStr;
 }
@@ -906,16 +906,16 @@ bool CPlayBIK::EditDialog()
 	}
 }
 
-EString CPlayBIK::Description()
+std::wstring CPlayBIK::Description()
 {
-	EString retval = "PlayBIK"; /* needs to be put somewhere localizable */
+	std::wstring retval = "PlayBIK"; /* needs to be put somewhere localizable */
 	ESLoadString(IDS_PlayBIK, retval);
 	return retval;
 }
 
-EString CPlayBIK::InstanceDescription()
+std::wstring CPlayBIK::InstanceDescription()
 {
-	EString tmpEStr;
+	std::wstring tmpEStr;
 	tmpEStr.Format("%s", m_pathname.Data());
 	return tmpEStr;
 }
@@ -994,16 +994,16 @@ bool CPlayWAV::EditDialog()
 	}
 }
 
-EString CPlayWAV::Description()
+std::wstring CPlayWAV::Description()
 {
-	EString retval = "PlayWAV"; /* needs to be put somewhere localizable */
+	std::wstring retval = "PlayWAV"; /* needs to be put somewhere localizable */
 	ESLoadString(IDS_PlayWAV, retval);
 	return retval;
 }
 
-EString CPlayWAV::InstanceDescription()
+std::wstring CPlayWAV::InstanceDescription()
 {
-	EString tmpEStr;
+	std::wstring tmpEStr;
 	tmpEStr.Format("%s", m_pathname.Data());
 	return tmpEStr;
 }
@@ -1054,16 +1054,16 @@ bool CDisplayTextMessage::EditDialog()
 	return false;
 }
 
-EString CDisplayTextMessage::Description()
+std::wstring CDisplayTextMessage::Description()
 {
-	EString retval = "DisplayTextMessage"; /* needs to be put somewhere localizable */
+	std::wstring retval = "DisplayTextMessage"; /* needs to be put somewhere localizable */
 	ESLoadString(IDS_DisplayTextMessage, retval);
 	return retval;
 }
 
-EString CDisplayTextMessage::InstanceDescription()
+std::wstring CDisplayTextMessage::InstanceDescription()
 {
-	EString tmpEStr;
+	std::wstring tmpEStr;
 	tmpEStr.Format("%s", m_message.Data());
 	return tmpEStr;
 }
@@ -1115,19 +1115,19 @@ bool CDisplayResourceTextMessage::EditDialog()
 	return false;
 }
 
-EString CDisplayResourceTextMessage::Description()
+std::wstring CDisplayResourceTextMessage::Description()
 {
-	EString retval = "DisplayResourceTextMessage"; /* needs to be put somewhere localizable
-													*/
+	std::wstring retval = "DisplayResourceTextMessage"; /* needs to be put somewhere localizable
+														 */
 	ESLoadString(IDS_DisplayResourceTextMessage, retval);
 	return retval;
 }
 
-EString CDisplayResourceTextMessage::InstanceDescription()
+std::wstring CDisplayResourceTextMessage::InstanceDescription()
 {
-	EString resourceText;
+	std::wstring resourceText;
 	ESLoadString(m_resourceStringID, resourceText);
-	EString tmpEStr;
+	std::wstring tmpEStr;
 	tmpEStr.Format("%d: %s", m_resourceStringID, resourceText.Data());
 	return tmpEStr;
 }
@@ -1202,16 +1202,16 @@ bool CSetBooleanFlag::EditDialog()
 	}
 }
 
-EString CSetBooleanFlag::Description()
+std::wstring CSetBooleanFlag::Description()
 {
-	EString retval = "SetBooleanFlag"; /* needs to be put somewhere localizable */
+	std::wstring retval = "SetBooleanFlag"; /* needs to be put somewhere localizable */
 	ESLoadString(IDS_SetBooleanFlag, retval);
 	return retval;
 }
 
-EString CSetBooleanFlag::InstanceDescription()
+std::wstring CSetBooleanFlag::InstanceDescription()
 {
-	EString tmpEStr;
+	std::wstring tmpEStr;
 	tmpEStr.Format("flag name: %s, value: %d", m_flagID.Data(), m_value);
 	return tmpEStr;
 }
@@ -1293,17 +1293,17 @@ bool CMakeNewTechnologyAvailable::EditDialog()
 	}
 }
 
-EString CMakeNewTechnologyAvailable::Description()
+std::wstring CMakeNewTechnologyAvailable::Description()
 {
-	EString retval = "MakeNewTechnologyAvailable"; /* needs to be put somewhere localizable
-													*/
+	std::wstring retval = "MakeNewTechnologyAvailable"; /* needs to be put somewhere localizable
+														 */
 	ESLoadString(IDS_MakeNewTechnologyAvailable, retval);
 	return retval;
 }
 
-EString CMakeNewTechnologyAvailable::InstanceDescription()
+std::wstring CMakeNewTechnologyAvailable::InstanceDescription()
 {
-	EString tmpEStr;
+	std::wstring tmpEStr;
 	tmpEStr.Format("%s", m_purchaseFilePathname.Data());
 	return tmpEStr;
 }
@@ -1494,11 +1494,11 @@ CObjectiveCondition* CObjective::new_CObjectiveCondition(
 	return retval;
 }
 
-EString CObjective::DescriptionOfConditionSpecies(condition_species_type conditionSpecies)
+std::wstring CObjective::DescriptionOfConditionSpecies(condition_species_type conditionSpecies)
 {
 	CString CStr;
 	CStr.LoadString(IDS_UNIMPLEMENTED_CONDITION);
-	EString retval;
+	std::wstring retval;
 	retval = CStr.GetBuffer(0);
 	CObjectiveCondition* tmpCondition =
 		new_CObjectiveCondition(conditionSpecies, 0 /*dummy alignment*/);
@@ -1542,11 +1542,11 @@ CObjectiveAction* CObjective::new_CObjectiveAction(
 	return retval;
 }
 
-EString CObjective::DescriptionOfActionSpecies(action_species_type actionSpecies)
+std::wstring CObjective::DescriptionOfActionSpecies(action_species_type actionSpecies)
 {
 	CString CStr;
 	CStr.LoadString(IDS_UNIMPLEMENTED_ACTION);
-	EString retval;
+	std::wstring retval;
 	retval						= CStr.GetBuffer(0);
 	CObjectiveAction* tmpAction = new_CObjectiveAction(actionSpecies, 0 /*dummy alignment*/);
 	if (0 != tmpAction)
@@ -2200,9 +2200,9 @@ static BOOL CSLoadString(int32_t resourceID, CString& targetStr)
 	return (!0);
 }
 
-EString CObjective::LocalizedTitle(void) const
+std::wstring CObjective::LocalizedTitle(void) const
 {
-	EString retval;
+	std::wstring retval;
 	if (TitleUseResourceString())
 	{
 		CString CStr;
@@ -2216,9 +2216,9 @@ EString CObjective::LocalizedTitle(void) const
 	return retval;
 }
 
-EString CObjective::LocalizedDescription(void) const
+std::wstring CObjective::LocalizedDescription(void) const
 {
-	EString retval;
+	std::wstring retval;
 	if (DescriptionUseResourceString())
 	{
 		CString CStr;

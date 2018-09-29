@@ -26,21 +26,20 @@ Eraser:
 
 class Eraser : public Brush
 {
-  public:
+public:
 	Eraser() { pCurAction = nullptr; }
 
 	virtual bool beginPaint(void);
 	virtual Action* endPaint(void);
-	virtual bool paint(
-		Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY);
-	virtual bool canPaint(Stuff::Vector3D& worldPos, int32_t screenX,
-		int32_t screenY, int32_t flags);
+	virtual bool paint(Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY);
+	virtual bool canPaint(
+		Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY, int32_t flags);
 	virtual Action* applyToSelection(void);
 
-  private:
+private:
 	class EraserAction : public ActionPaintTile
 	{
-	  public:
+	public:
 		EraserAction() { teamsActionIsSet = false; }
 
 		virtual bool undo(void);

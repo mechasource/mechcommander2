@@ -66,7 +66,7 @@ BOOL ChooseUnitDlg::OnInitDialog()
 		EditorObjectMgr::UNIT_LIST::EConstIterator it = m_unitList.Begin();
 		while (!it.IsDone())
 		{
-			EString tmpEStr;
+			std::wstring tmpEStr;
 			Stuff::Vector3D pos = (*it)->getPosition();
 			PCSTR szDisplayName = (*it)->getDisplayName(); // nb: localization
 			assert(szDisplayName);

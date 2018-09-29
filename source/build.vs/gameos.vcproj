@@ -1170,11 +1170,19 @@
 					>
 				</File>
 				<File
+					RelativePath="..\gameos\lib\x86\gameos\font3d.c"
+					>
+				</File>
+				<File
 					RelativePath="..\gameos\lib\x86\gameos\libraries.c"
 					>
 				</File>
 				<File
 					RelativePath="..\gameos\lib\x86\gameos\memorymanager.c"
+					>
+				</File>
+				<File
+					RelativePath="..\gameos\lib\x86\gameos\registry.c"
 					>
 				</File>
 				<File
@@ -1301,10 +1309,6 @@
 				</File>
 				<File
 					RelativePath="..\gameos\include\fileio.hpp"
-					>
-				</File>
-				<File
-					RelativePath="..\gameos\include\filestream.hpp"
 					>
 				</File>
 				<File

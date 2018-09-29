@@ -1063,14 +1063,6 @@
 						>
 					</File>
 					<File
-						RelativePath="..\mclib\dappear.h"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\daprtype.h"
-						>
-					</File>
-					<File
 						RelativePath="..\mclib\genactor.h"
 						>
 					</File>
@@ -1132,30 +1124,6 @@
 					>
 					<File
 						RelativePath="..\mclib\csvfile.h"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\dcsvfile.h"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\dffile.h"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\dfile.h"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\dgamelog.h"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\dinifile.h"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\dpacket.h"
 						>
 					</File>
 					<File
@@ -1276,23 +1244,23 @@
 					>
 				</File>
 			</Filter>
-		</Filter>
-		<Filter
-			Name="Resources"
-			Filter="rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms"
-			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}"
-			>
 			<Filter
-				Name="mclib"
+				Name="Resources"
+				Filter="rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms"
+				UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}"
 				>
-				<File
-					RelativePath="..\mclib\$(TargetName).rc"
+				<Filter
+					Name="mclib"
 					>
-				</File>
-				<File
-					RelativePath="..\mclib\resource.h"
-					>
-				</File>
+					<File
+						RelativePath="..\mclib\$(TargetName).rc"
+						>
+					</File>
+					<File
+						RelativePath="..\mclib\resource.h"
+						>
+					</File>
+				</Filter>
 			</Filter>
 		</Filter>
 		<Filter

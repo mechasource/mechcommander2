@@ -6,7 +6,7 @@
 	>
 	<Tool
 		Name="VCCLCompilerTool"
-		AdditionalIncludeDirectories=".;$(IntDir);$(mech_inc);$(mclib_dir);$(gameos_dir)/include;$(pch_dir)"
+		AdditionalIncludeDirectories=".;$(IntDir);$(mech_inc);$(mclib_dir);$(gameos_dir)/include;$(pch_dir);$(mc2res_dir)"
 	/>
 	<Tool
 		Name="VCLinkerTool"
@@ -15,7 +15,7 @@
 	<Tool
 		Name="VCResourceCompilerTool"
 		PreprocessorDefinitions="APP_NAME=\&quot;$(TargetName)\&quot;;PLATFORM=$(PlatformName);$(PlatformName)"
-		AdditionalIncludeDirectories="$(mc2res_dir);$(IntDir)"
+		AdditionalIncludeDirectories=".;$(IntDir);$(mc2res_dir)"
 	/>
 	<UserMacro
 		Name="gameos_dir"

@@ -552,6 +552,18 @@
 				Name="common"
 				>
 				<File
+					RelativePath="..\include\dplay.h"
+					>
+				</File>
+				<File
+					RelativePath="..\include\ijl.h"
+					>
+				</File>
+				<File
+					RelativePath="..\include\mechclassids.h"
+					>
+				</File>
+				<File
 					RelativePath="..\include\mechresources.h"
 					>
 				</File>

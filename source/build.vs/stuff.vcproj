@@ -350,14 +350,6 @@
 			Filter="cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx"
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
-			<File
-				RelativePath=".\appmain.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\appwin.cpp"
-				>
-			</File>
 			<Filter
 				Name="stuff"
 				>
@@ -472,38 +464,10 @@
 				<Filter
 					Name="Memory Allocation"
 					>
-					<File
-						RelativePath="..\mclib\stuff\matrixstack.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\stuff\memoryblock.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\stuff\mstring.cpp"
-						>
-					</File>
 				</Filter>
 				<Filter
 					Name="Connection Engine"
 					>
-					<File
-						RelativePath="..\mclib\stuff\chain.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\stuff\iterator.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\stuff\link.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\stuff\node.cpp"
-						>
-					</File>
 					<File
 						RelativePath="..\mclib\stuff\plug.cpp"
 						>
@@ -551,22 +515,182 @@
 					<File
 						RelativePath="..\mclib\stuff\database.cpp"
 						>
+						<FileConfiguration
+							Name="Debug|Win32"
+							ExcludedFromBuild="true"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Debug|x64"
+							ExcludedFromBuild="true"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Release|Win32"
+							ExcludedFromBuild="true"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Release|x64"
+							ExcludedFromBuild="true"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+							/>
+						</FileConfiguration>
 					</File>
 					<File
 						RelativePath="..\mclib\stuff\filestream.cpp"
 						>
+						<FileConfiguration
+							Name="Debug|Win32"
+							ExcludedFromBuild="true"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Debug|x64"
+							ExcludedFromBuild="true"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Release|Win32"
+							ExcludedFromBuild="true"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Release|x64"
+							ExcludedFromBuild="true"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+							/>
+						</FileConfiguration>
 					</File>
 					<File
 						RelativePath="..\mclib\stuff\filestreammanager.cpp"
 						>
+						<FileConfiguration
+							Name="Debug|Win32"
+							ExcludedFromBuild="true"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Debug|x64"
+							ExcludedFromBuild="true"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Release|Win32"
+							ExcludedFromBuild="true"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Release|x64"
+							ExcludedFromBuild="true"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+							/>
+						</FileConfiguration>
 					</File>
 					<File
 						RelativePath="..\mclib\stuff\memorystream.cpp"
 						>
+						<FileConfiguration
+							Name="Debug|Win32"
+							ExcludedFromBuild="true"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Debug|x64"
+							ExcludedFromBuild="true"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Release|Win32"
+							ExcludedFromBuild="true"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Release|x64"
+							ExcludedFromBuild="true"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+							/>
+						</FileConfiguration>
 					</File>
 					<File
 						RelativePath="..\mclib\stuff\namelist.cpp"
 						>
+						<FileConfiguration
+							Name="Debug|Win32"
+							ExcludedFromBuild="true"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Debug|x64"
+							ExcludedFromBuild="true"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Release|Win32"
+							ExcludedFromBuild="true"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Release|x64"
+							ExcludedFromBuild="true"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+							/>
+						</FileConfiguration>
 					</File>
 					<File
 						RelativePath="..\mclib\stuff\notationfile.cpp"
@@ -1493,10 +1617,6 @@
 			<Filter
 				Name="not used"
 				>
-				<File
-					RelativePath="..\mclib\stuff\hash.cpp"
-					>
-				</File>
 			</Filter>
 		</Filter>
 		<Filter
@@ -1504,10 +1624,6 @@
 			Filter="h;hh;hpp;hxx;hm;inl;inc;xsd"
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
-			<File
-				RelativePath=".\appwin.h"
-				>
-			</File>
 			<Filter
 				Name="stuff"
 				>
@@ -1638,62 +1754,10 @@
 				<Filter
 					Name="Memory Allocation"
 					>
-					<File
-						RelativePath="..\mclib\stuff\auto_container.hpp"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\stuff\auto_ptr.hpp"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\stuff\initialized_ptr.hpp"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\stuff\marray.hpp"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\stuff\matrixstack.hpp"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\stuff\memoryblock.hpp"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\stuff\mstring.hpp"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\stuff\noncopyable.hpp"
-						>
-					</File>
 				</Filter>
 				<Filter
 					Name="Connection Engine"
 					>
-					<File
-						RelativePath="..\mclib\stuff\chain.hpp"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\stuff\hash.hpp"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\stuff\iterator.hpp"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\stuff\link.hpp"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\stuff\node.hpp"
-						>
-					</File>
 					<File
 						RelativePath="..\mclib\stuff\plug.hpp"
 						>
@@ -1718,30 +1782,10 @@
 						RelativePath="..\mclib\stuff\socket.hpp"
 						>
 					</File>
-					<File
-						RelativePath="..\mclib\stuff\sortedchain.hpp"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\stuff\sortedsocket.hpp"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\stuff\table.hpp"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\stuff\tree.hpp"
-						>
-					</File>
 				</Filter>
 				<Filter
 					Name="Stream Functions"
 					>
-					<File
-						RelativePath="..\mclib\stuff\database.hpp"
-						>
-					</File>
 					<File
 						RelativePath="..\mclib\stuff\filestream.hpp"
 						>

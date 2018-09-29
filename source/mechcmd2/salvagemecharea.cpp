@@ -87,12 +87,10 @@ SalvageMechScreen::~SalvageMechScreen()
 
 int32_t __cdecl sortMechs(PCVOID pW1, PCVOID pW2)
 {
-	BattleMech* p1 = *(BattleMech**)pW1;
-	BattleMech* p2 = *(BattleMech**)pW2;
-	LogisticsVariant* pV1 =
-		LogisticsData::instance->getVariant(p1->variantName);
-	LogisticsVariant* pV2 =
-		LogisticsData::instance->getVariant(p2->variantName);
+	BattleMech* p1		  = *(BattleMech**)pW1;
+	BattleMech* p2		  = *(BattleMech**)pW2;
+	LogisticsVariant* pV1 = LogisticsData::instance->getVariant(p1->variantName);
+	LogisticsVariant* pV2 = LogisticsData::instance->getVariant(p2->variantName);
 	if (pV1 && pV2)
 	{
 		int32_t cost1 = pV1->getCost();
@@ -107,8 +105,8 @@ int32_t __cdecl sortMechs(PCVOID pW1, PCVOID pW2)
 
 void SalvageMechScreen::init(FitIniFile* file)
 {
-	LogisticsScreen::init(*file, "SalvageAreaStatic", "SalvageAreaText",
-		"SalvageAreaRect", "SalvageAreaButton");
+	LogisticsScreen::init(
+		*file, "SalvageAreaStatic", "SalvageAreaText", "SalvageAreaRect", "SalvageAreaButton");
 	SalvageListItem::init(file);
 	for (size_t i = 0; i < buttonCount; i++)
 	{
@@ -127,8 +125,7 @@ void SalvageMechScreen::init(FitIniFile* file)
 	for (i = 0; i < ObjectManager->numMechs; i++)
 	{
 		BattleMech* pMech = ObjectManager->getMech(i);
-		if (pMech->isDisabled() && !pMech->isDestroyed() &&
-			pMech->moveLevel != 2)
+		if (pMech->isDisabled() && !pMech->isDestroyed() && pMech->moveLevel != 2)
 			pSortedMechs[count++] = pMech;
 	}
 	qsort(pSortedMechs, count, sizeof(BattleMech*), sortMechs);
@@ -220,8 +217,7 @@ void SalvageMechScreen::update()
 	if (curCount && curCount + frameLength < countDownTime)
 	{
 		curCount += frameLength;
-		float curAmount =
-			previousAmount - (curCount / countDownTime * previousAmount);
+		float curAmount = previousAmount - (curCount / countDownTime * previousAmount);
 		amount += curAmount;
 		color = 0xffc8e100;
 		if (curAmount > 0)
@@ -316,8 +312,7 @@ SalvageListItem::SalvageListItem(BattleMech* pMech)
 	icon = new MechIcon();
 	icon->init(pMech);
 	icon->update();
-	((Mech3DAppearance*)pMech->getAppearance())
-		->getPaintScheme(psRed, psGreen, psBlue);
+	((Mech3DAppearance*)pMech->getAppearance())->getPaintScheme(psRed, psGreen, psBlue);
 	normalAnim	= *s_normalAnim;
 	pressedAnim   = *s_pressedAnim;
 	highlightAnim = *s_highlightAnim;
@@ -381,8 +376,7 @@ void SalvageListItem::update()
 		{
 			if (userInput->isLeftClick())
 			{
-				SalvageMechArea::instance->setMech(
-					pVariant, psBlue, psGreen, psRed);
+				SalvageMechArea::instance->setMech(pVariant, psBlue, psGreen, psRed);
 				soundSystem->playDigitalSample(LOG_WRONGBUTTON);
 			}
 		}
@@ -395,8 +389,7 @@ void SalvageListItem::update()
 		{
 			if (userInput->isLeftClick())
 			{
-				SalvageMechArea::instance->setMech(
-					pVariant, psBlue, psGreen, psRed);
+				SalvageMechArea::instance->setMech(pVariant, psBlue, psGreen, psRed);
 			}
 		}
 	}
@@ -406,8 +399,7 @@ void SalvageListItem::update()
 		{
 			if (userInput->isLeftClick())
 			{
-				SalvageMechArea::instance->setMech(
-					pVariant, psBlue, psGreen, psRed);
+				SalvageMechArea::instance->setMech(pVariant, psBlue, psGreen, psRed);
 				pressedAnim.begin();
 			}
 			// here's where you'd do the highlight thing
@@ -430,8 +422,7 @@ void SalvageListItem::update()
 			if (!pressedAnim.isAnimating())
 			{
 				pressedAnim.begin();
-				SalvageMechArea::instance->setMech(
-					pVariant, psBlue, psGreen, psRed);
+				SalvageMechArea::instance->setMech(pVariant, psBlue, psGreen, psRed);
 			}
 			pressedAnim.update();
 		}
@@ -443,11 +434,9 @@ void SalvageListItem::update()
 void SalvageListItem::render()
 {
 	aObject::render();
-	icon->renderUnitIcon(iconRect.left + location[0].x + 3,
-		iconRect.top + location[0].y + 5, iconRect.right + location[0].x,
-		iconRect.bottom + location[0].y);
-	int32_t color =
-		state == HIGHLITE ? highlightAnim.getColor() : normalAnim.getColor();
+	icon->renderUnitIcon(iconRect.left + location[0].x + 3, iconRect.top + location[0].y + 5,
+		iconRect.right + location[0].x, iconRect.bottom + location[0].y);
+	int32_t color = state == HIGHLITE ? highlightAnim.getColor() : normalAnim.getColor();
 	if (state == SELECTED)
 		color = pressedAnim.getColor();
 	if (state == DISABLED)
@@ -528,19 +517,18 @@ void SalvageMechArea::update()
 	loadoutListBox.update();
 	mechCamera.update();
 }
-void SalvageMechArea::setMech(
-	LogisticsVariant* pMech, int32_t red, int32_t green, int32_t blue)
+void SalvageMechArea::setMech(LogisticsVariant* pMech, int32_t red, int32_t green, int32_t blue)
 {
 	if (pMech == unit)
 		return;
 	loadoutListBox.setMech(pMech);
 	if (pMech)
 	{
-		EString fileName = pMech->getFileName();
-		int32_t index	= fileName.Find('.');
-		fileName		 = fileName.Left(index);
-		index			 = fileName.ReverseFind('\\');
-		fileName		 = fileName.Right(fileName.Length() - index - 1);
+		std::wstring fileName = pMech->getFileName();
+		int32_t index		  = fileName.Find('.');
+		fileName			  = fileName.Left(index);
+		index				  = fileName.ReverseFind('\\');
+		fileName			  = fileName.Right(fileName.Length() - index - 1);
 		mechCamera.setMech(fileName, red, green, blue);
 		textObjects[NAME_TEXTID].setText(pMech->getName());
 		char text[256];
@@ -553,15 +541,11 @@ void SalvageMechArea::setMech(
 		sprintf(text, "%ld", pMech->getJumpRange() * 25);
 		textObjects[JUMP_TEXTID].setText(text);
 		int32_t tmpColor;
-		textObjects[RANGE_TEXTID].setText(
-			pMech->getOptimalRangeString(tmpColor));
+		textObjects[RANGE_TEXTID].setText(pMech->getOptimalRangeString(tmpColor));
 		textObjects[RANGE_TEXTID].setColor((tmpColor));
-		attributeMeters[0].setValue(
-			((float)pMech->getArmor()) / MAX_ARMOR_RANGE);
-		attributeMeters[1].setValue(
-			((float)pMech->getSpeed()) / MAX_SPEED_RANGE);
-		attributeMeters[2].setValue(
-			((float)pMech->getJumpRange() * 25.0f) / MAX_JUMP_RANGE);
+		attributeMeters[0].setValue(((float)pMech->getArmor()) / MAX_ARMOR_RANGE);
+		attributeMeters[1].setValue(((float)pMech->getSpeed()) / MAX_SPEED_RANGE);
+		attributeMeters[2].setValue(((float)pMech->getJumpRange() * 25.0f) / MAX_JUMP_RANGE);
 	}
 	else
 	{

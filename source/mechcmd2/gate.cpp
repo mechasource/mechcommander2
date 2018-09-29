@@ -154,10 +154,9 @@ bool GateType::handleCollision(GameObjectPtr collidee, GameObjectPtr collider)
 	{
 		Stuff::Vector3D colliderRangeV3;
 		colliderRangeV3.Subtract(gate->getPosition(), collider->getPosition());
-		float colliderRange = colliderRangeV3.x * colliderRangeV3.x +
-							  colliderRangeV3.y * colliderRangeV3.y;
-		if ((collider->getTeamId() == gate->getTeamId()) ||
-			(gate->getTeamId() == -1))
+		float colliderRange =
+			colliderRangeV3.x * colliderRangeV3.x + colliderRangeV3.y * colliderRangeV3.y;
+		if ((collider->getTeamId() == gate->getTeamId()) || (gate->getTeamId() == -1))
 		{
 			if (collider->isDisabled() || collider->isDestroyed())
 			{
@@ -187,10 +186,7 @@ bool GateType::handleCollision(GameObjectPtr collidee, GameObjectPtr collider)
 }
 
 //---------------------------------------------------------------------------
-bool GateType::handleDestruction(GameObjectPtr collidee, GameObjectPtr collider)
-{
-	return (FALSE);
-}
+bool GateType::handleDestruction(GameObjectPtr collidee, GameObjectPtr collider) { return (FALSE); }
 
 //---------------------------------------------------------------------------
 // class Gate
@@ -232,12 +228,9 @@ int32_t Gate::update(void)
 		// if not, find parent in ObjMgr and get its pointer.
 		if ((parentId != 0xffffffff) && (parentId != 0))
 		{
-			parent = ObjectManager
-						 ->findByCellPosition(
-							 (parentId >> 16), (parentId & 0x0000ffff))
+			parent = ObjectManager->findByCellPosition((parentId >> 16), (parentId & 0x0000ffff))
 						 ->getWatchID();
-			ObjectManager->getByWatchID(parent)->setFlag(
-				OBJECT_FLAG_CAPTURABLE, true);
+			ObjectManager->getByWatchID(parent)->setFlag(OBJECT_FLAG_CAPTURABLE, true);
 			gosASSERT(parent != 0);
 		}
 	}
@@ -268,12 +261,10 @@ int32_t Gate::update(void)
 			!ObjectManager->getByWatchID(parent)->isDestroyed() &&
 			(ObjectManager->getByWatchID(parent)->getTeamId() != getTeamId()))
 		{
-			if ((ObjectManager->getByWatchID(parent)->getTeamId() !=
-					Team::home->getId()) &&
+			if ((ObjectManager->getByWatchID(parent)->getTeamId() != Team::home->getId()) &&
 				(turn > 5) && (getTeamId() != -1))
 				soundSystem->playBettySample(BETTY_BUILDING_RECAPTURED);
-			int32_t parentTeamID =
-				ObjectManager->getByWatchID(parent)->getTeamId();
+			int32_t parentTeamID = ObjectManager->getByWatchID(parent)->getTeamId();
 			setTeamId(parentTeamID, false);
 		}
 		if (parent && (!ObjectManager->getByWatchID(parent)->isDisabled()) &&
@@ -283,9 +274,10 @@ int32_t Gate::update(void)
 		}
 		//-----------------------------------------------
 		// Handle parent disabled or destroyed or asleep
-		if (parent && (ObjectManager->getByWatchID(parent)->isDisabled() ||
-						  ObjectManager->getByWatchID(parent)->isDestroyed() ||
-						  !ObjectManager->getByWatchID(parent)->getAwake()))
+		if (parent &&
+			(ObjectManager->getByWatchID(parent)->isDisabled() ||
+				ObjectManager->getByWatchID(parent)->isDestroyed() ||
+				!ObjectManager->getByWatchID(parent)->getAwake()))
 		{
 			//--------------------------------------------------
 			// Lock gate CLOSED if its parent is dead
@@ -302,16 +294,13 @@ int32_t Gate::update(void)
 		{
 			bool inView = appearance->recalcBounds();
 			// this has to be done before we set the object parameters.
-			if (parent &&
-				(!ObjectManager->getByWatchID(parent)->isDisabled()) &&
+			if (parent && (!ObjectManager->getByWatchID(parent)->isDisabled()) &&
 				ObjectManager->getByWatchID(parent)->getTargeted())
 			{
 				setTargeted(true);
 			}
-			appearance->setObjectParameters(position,
-				((ObjectAppearance*)appearance)->rotation, drawFlags,
-				getTeamId(),
-				Team::getRelation(getTeamId(), Team::home->getId()));
+			appearance->setObjectParameters(position, ((ObjectAppearance*)appearance)->rotation,
+				drawFlags, getTeamId(), Team::getRelation(getTeamId(), Team::home->getId()));
 			//------------------------------------------------
 			// MUST update appearance every frame or animation goes HINKY!
 			// Appearance update now checks inView and does NOT run transform
@@ -341,11 +330,9 @@ void Gate::blowAnyOffendingObject(void)
 	{
 		Stuff::Vector3D objectRangeV3;
 		objectRangeV3.Subtract(getPosition(), closestObject->getPosition());
-		float objectRange = objectRangeV3.x * objectRangeV3.x +
-							objectRangeV3.y * objectRangeV3.y;
+		float objectRange = objectRangeV3.x * objectRangeV3.x + objectRangeV3.y * objectRangeV3.y;
 		float littleRadius =
-			(getLittleExtent() +
-				closestObject->getObjectType()->getExtentRadius());
+			(getLittleExtent() + closestObject->getObjectType()->getExtentRadius());
 		littleRadius *= littleRadius;
 		if (objectRange < littleRadius)
 		{
@@ -355,17 +342,15 @@ void Gate::blowAnyOffendingObject(void)
 			shot.init(nullptr, -3, 250.00, 0, 0);
 			for (size_t i = 0; i < 10; i++)
 			{
-				shot.hitLocation = closestObject->calcHitLocation(
-					nullptr, -1, ATTACKSOURCE_ARTILLERY, 0);
+				shot.hitLocation =
+					closestObject->calcHitLocation(nullptr, -1, ATTACKSOURCE_ARTILLERY, 0);
 				closestObject->handleWeaponHit(&shot, (MPlayer != nullptr));
 			}
 			//--------------------
 			// Gate must die too.
 			shot.init(nullptr, -3,
-				((GateTypePtr)(ObjectManager->getObjectType(typeHandle)))
-						->getDamageLvl() +
-					5,
-				0, 0);
+				((GateTypePtr)(ObjectManager->getObjectType(typeHandle)))->getDamageLvl() + 5, 0,
+				0);
 			handleWeaponHit(&shot, (MPlayer != nullptr));
 		}
 	}
@@ -424,7 +409,7 @@ void Gate::openGate(void)
 					opened = closing = opening = false;
 					blowAnyOffendingObject(); // Check if something is "inside"
 											  // gate
-					// If so, blow it and the gate.
+											  // If so, blow it and the gate.
 				}
 				else
 				{
@@ -534,8 +519,8 @@ int32_t Gate::setTeamId(int32_t _teamId, bool setup)
 		else
 			teamId = _teamId; // Otherwise we were set to either -1, 0 or 1.
 	}
-	static uint32_t highLight[8] = {0x00007f00, 0x007f0000, 0x0000007f,
-		0x0000007f, 0x0000007f, 0x0000007f, 0x0000007f, 0x0000007f};
+	static uint32_t highLight[8] = {0x00007f00, 0x007f0000, 0x0000007f, 0x0000007f, 0x0000007f,
+		0x0000007f, 0x0000007f, 0x0000007f};
 	if (turn > 10)
 		appearance->flashBuilding(5.0, 0.5, highLight[teamId]);
 	setSubAreasTeamId(_teamId);
@@ -579,22 +564,18 @@ void Gate::render(void)
 		if (((GateTypePtr)getObjectType())->gateTypeName < IDS_MC2_STRING_START)
 		{
 			appearance->setObjectNameId(
-				((GateTypePtr)getObjectType())->gateTypeName +
-				IDS_MC2_STRING_START);
+				((GateTypePtr)getObjectType())->gateTypeName + IDS_MC2_STRING_START);
 		}
 		else
 		{
-			appearance->setObjectNameId(
-				((GateTypePtr)getObjectType())->gateTypeName);
+			appearance->setObjectNameId(((GateTypePtr)getObjectType())->gateTypeName);
 		}
 		windowsVisible = turn;
 		appearance->setVisibility(true, true);
 		appearance->render();
 	}
-	setSelected(
-		false); // ALWAYS reset the selected flags.  GUI needs this to work!
-	setTargeted(
-		false); // ALWAYS do it here, too!  Otherwise things may draw FUNNY!
+	setSelected(false); // ALWAYS reset the selected flags.  GUI needs this to work!
+	setTargeted(false); // ALWAYS do it here, too!  Otherwise things may draw FUNNY!
 }
 
 //---------------------------------------------------------------------------
@@ -632,14 +613,12 @@ void Gate::init(bool create, ObjectTypePtr _type)
 		//------------------------------------------------------
 		// LOAD a dummy appearance until real ones are available
 		// for this building!
-		appearanceType = (BLDG_TYPE << 24);
-		buildingAppearanceType =
-			appearanceTypeList->getAppearance(appearanceType, "TESTBLDG");
+		appearanceType		   = (BLDG_TYPE << 24);
+		buildingAppearanceType = appearanceTypeList->getAppearance(appearanceType, "TESTBLDG");
 	}
 	else
 	{
-		buildingAppearanceType =
-			appearanceTypeList->getAppearance(appearanceType, appearName);
+		buildingAppearanceType = appearanceTypeList->getAppearance(appearanceType, appearName);
 		if (!buildingAppearanceType)
 		{
 			char msg[1024];
@@ -652,10 +631,9 @@ void Gate::init(bool create, ObjectTypePtr _type)
 	//--------------------------------------------------------------
 	// The only appearance type for buildings is MLR_APPEARANCE.
 	gosASSERT(buildingAppearanceType->getAppearanceClass() == BLDG_TYPE);
-	appearance->init(
-		(BldgAppearanceType*)buildingAppearanceType, (GameObjectPtr)this);
-	objectClass = GATE;
-	reasonToOpen = false; // Always reset the electric eye
+	appearance->init((BldgAppearanceType*)buildingAppearanceType, (GameObjectPtr)this);
+	objectClass	= GATE;
+	reasonToOpen   = false; // Always reset the electric eye
 	lastMarkedOpen = false;
 	if (((GateTypePtr)_type)->openRadius != 0.0)
 		_type->setExtentRadius(((GateTypePtr)_type)->openRadius);
@@ -678,8 +656,7 @@ void Gate::setDamage(float newDamage)
 }
 
 //---------------------------------------------------------------------------
-int32_t Gate::handleWeaponHit(
-	WeaponShotInfoPtr shotInfo, bool addMultiplayChunk)
+int32_t Gate::handleWeaponHit(WeaponShotInfoPtr shotInfo, bool addMultiplayChunk)
 {
 	if (!shotInfo)
 		return (NO_ERROR);
@@ -754,18 +731,14 @@ void Gate::destroyGate(void)
 //---------------------------------------------------------------------------
 float Gate::getLittleExtent(void)
 {
-	return (((GateTypePtr)(ObjectManager->getObjectType(typeHandle)))
-				->littleExtent);
+	return (((GateTypePtr)(ObjectManager->getObjectType(typeHandle)))->littleExtent);
 }
 
 //---------------------------------------------------------------------------
 bool Gate::isLinked(void) { return (parent != 0); }
 
 //---------------------------------------------------------------------------
-GameObjectPtr Gate::getParent(void)
-{
-	return (ObjectManager->getByWatchID(parent));
-}
+GameObjectPtr Gate::getParent(void) { return (ObjectManager->getByWatchID(parent)); }
 
 //---------------------------------------------------------------------------
 void Gate::setParentId(uint32_t pId) { parentId = pId; }
@@ -784,8 +757,7 @@ void Gate::Save(PacketFilePtr file, int32_t packetNum)
 	GateData data;
 	CopyTo(&data);
 	// PacketNum incremented in ObjectManager!!
-	file->writePacket(
-		packetNum, (puint8_t)&data, sizeof(GateData), STORAGE_TYPE_ZLIB);
+	file->writePacket(packetNum, (puint8_t)&data, sizeof(GateData), STORAGE_TYPE_ZLIB);
 }
 
 //***************************************************************************

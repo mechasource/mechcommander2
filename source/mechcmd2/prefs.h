@@ -11,7 +11,7 @@
 
 class CPrefs
 {
-  public:
+public:
 	CPrefs(void);
 	int32_t load(PCSTR pFileName = "options");
 	int32_t save(void);
@@ -21,7 +21,7 @@ class CPrefs
 	void setNewUnit(PCSTR pNewUnit);
 	void setNewIP(PCSTR pNewIP);
 
-  public:
+public:
 	int32_t DigitalMasterVolume;
 	int32_t MusicVolume;
 	int32_t sfxVolume;

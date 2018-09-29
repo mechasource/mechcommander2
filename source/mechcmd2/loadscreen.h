@@ -27,7 +27,7 @@ LoadScreen:
 **************************************************************************************************/
 class LoadScreenWrapper : public LogisticsScreen
 {
-  public:
+public:
 	LoadScreenWrapper(void);
 
 	virtual ~LoadScreenWrapper(void);
@@ -48,7 +48,7 @@ class LoadScreenWrapper : public LogisticsScreen
 
 class LoadScreen : public LogisticsScreen
 {
-  public:
+public:
 	LoadScreen(void);
 	virtual ~LoadScreen(void);
 
@@ -63,7 +63,7 @@ class LoadScreen : public LogisticsScreen
 
 	static void changeRes(FitIniFile& file);
 
-  private:
+private:
 	LoadScreen(const LoadScreen& src);
 	LoadScreen& operator=(const LoadScreen& oadScreen);
 

@@ -22,7 +22,7 @@
 
 //----------------------------------------------------------------------------------
 // Macro Definitions
-enum class player_mission : uint32_t 
+enum class player_mission : uint32_t
 {
 	mis_PLAYING,
 	mis_PLAYER_LOST_BIG,
@@ -45,27 +45,27 @@ struct Part
 {
 	GameObjectWatchID objectWID; // Pointer to my physical incarnation
 	uint32_t objNumber;			 // What kind of object am I?
-	uint32_t baseColor; // Base color of mech -- Overrides the RED in RGB
-	uint32_t highlightColor1; // First Highlight Color -- Overrides the GREEN in RGB
-	uint32_t highlightColor2; // Second Highlight Color -- Overrides the BLUE in RGB
-	int32_t active;		 // Am I currently awake?
-	int32_t exists;		 // Am I currently in Existance?
-	bool destroyed;		 // Have I been destroyed for this scenario?
-	Stuff::Vector3D position; // Where do I start?  (relative to area)
-	float velocity;			  // How fast am I going?
-	float rotation;			  // Which direction am I facing?
-	uint32_t gestureId;		  // What gesture do I start in?
-	char alignment;			  // Who do I fight for?
-	char teamId;			  // Which team am I on?
-	int32_t commanderID;	  // Used when setting up multiplayer
-	char squadId;			  // Which team am I on?
-	char myIcon;		  // If set, start with Icon on Screen for this part.
-	uint32_t controlType; // How am I controlled?
-	uint32_t controlDataType; // What data do you need to control me?
-	char profileName[9];	  // Name of Object Profile file.
-	uint32_t pilot;			  // Name of Pilot File.
-	bool captureable;		  // Is this a capturable "enemy" mech?
-	uint32_t variantNum;	  // Variant number of the Part.
+	uint32_t baseColor;			 // Base color of mech -- Overrides the RED in RGB
+	uint32_t highlightColor1;	// First Highlight Color -- Overrides the GREEN in RGB
+	uint32_t highlightColor2;	// Second Highlight Color -- Overrides the BLUE in RGB
+	int32_t active;				 // Am I currently awake?
+	int32_t exists;				 // Am I currently in Existance?
+	bool destroyed;				 // Have I been destroyed for this scenario?
+	Stuff::Vector3D position;	// Where do I start?  (relative to area)
+	float velocity;				 // How fast am I going?
+	float rotation;				 // Which direction am I facing?
+	uint32_t gestureId;			 // What gesture do I start in?
+	char alignment;				 // Who do I fight for?
+	char teamId;				 // Which team am I on?
+	int32_t commanderID;		 // Used when setting up multiplayer
+	char squadId;				 // Which team am I on?
+	char myIcon;				 // If set, start with Icon on Screen for this part.
+	uint32_t controlType;		 // How am I controlled?
+	uint32_t controlDataType;	// What data do you need to control me?
+	char profileName[9];		 // Name of Object Profile file.
+	uint32_t pilot;				 // Name of Pilot File.
+	bool captureable;			 // Is this a capturable "enemy" mech?
+	uint32_t variantNum;		 // Variant number of the Part.
 
 	void Save(FitIniFilePtr file, int32_t partNum);
 	void Load(FitIniFilePtr file, int32_t partNum);
@@ -224,12 +224,10 @@ public:
 
 	Mission(void) { init(void); }
 
-	bool calcComplexDropZones(
-		PSTR missionName, char dropZoneList[MAX_MC_PLAYERS]);
+	bool calcComplexDropZones(PSTR missionName, char dropZoneList[MAX_MC_PLAYERS]);
 
-	void init(PSTR missionName, int32_t loadType, int32_t dropZoneID,
-		Stuff::Vector3D* dropZoneList, char commandersToLoad[8][3],
-		int32_t numMoversPerCommander);
+	void init(PSTR missionName, int32_t loadType, int32_t dropZoneID, Stuff::Vector3D* dropZoneList,
+		char commandersToLoad[8][3], int32_t numMoversPerCommander);
 
 	static void initBareMinimum(void);
 
@@ -253,10 +251,7 @@ public:
 
 	PartPtr getPart(int32_t partNumber) { return (&parts[partNumber]); }
 
-	int32_t getPartTeamId(int32_t partNumber)
-	{
-		return (parts[partNumber].teamId);
-	}
+	int32_t getPartTeamId(int32_t partNumber) { return (parts[partNumber].teamId); }
 
 	GameObjectPtr getPartObject(int32_t partNumber)
 	{
@@ -264,8 +259,7 @@ public:
 			return nullptr;
 		if (!ObjectManager)
 			return (nullptr);
-		return ((GameObjectPtr)ObjectManager->getByWatchID(
-			parts[partNumber].objectWID));
+		return ((GameObjectPtr)ObjectManager->getByWatchID(parts[partNumber].objectWID));
 	}
 
 	int32_t addMover(MoverInitData* moveSpec);
@@ -274,13 +268,12 @@ public:
 
 	int32_t removeMover(MoverPtr mover);
 
-	void tradeMover(MoverPtr mover, int32_t newTeamID, int32_t newCommanderID,
-		PSTR pilotFileName, PSTR brainFileName);
+	void tradeMover(MoverPtr mover, int32_t newTeamID, int32_t newCommanderID, PSTR pilotFileName,
+		PSTR brainFileName);
 
 	void createPartObject(int32_t objectId, MoverPtr mover);
 
-	void createMissionObject(
-		int32_t partId); // Moves object from holding area to real world.
+	void createMissionObject(int32_t partId); // Moves object from holding area to real world.
 
 	ABLModulePtr getBrain(void) { return (missionBrain); }
 
@@ -299,8 +292,7 @@ public:
 	int32_t setObjectiveType(int32_t objectiveNum, ObjectiveType type);
 	ObjectiveType checkObjectiveType(int32_t objectiveNum);
 
-	void setObjectivePos(
-		int32_t objectiveNum, float realX, float realY, float realZ);
+	void setObjectivePos(int32_t objectiveNum, float realX, float realY, float realZ);
 
 	void setupBonus(void);
 

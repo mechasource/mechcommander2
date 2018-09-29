@@ -47,9 +47,9 @@ uint32_t CollisionSystem::maxCollisions	= 0;
 //------------------------------------------------------------------------------
 int32_t GlobalCollisionAlert::init(uint32_t maxCollisionAlerts)
 {
-	maxAlerts		= maxCollisionAlerts;
-	collisionAlerts = (CollisionAlertRecordPtr)systemHeap->Malloc(
-		sizeof(CollisionAlertRecord) * maxAlerts);
+	maxAlerts = maxCollisionAlerts;
+	collisionAlerts =
+		(CollisionAlertRecordPtr)systemHeap->Malloc(sizeof(CollisionAlertRecord) * maxAlerts);
 	gosASSERT(collisionAlerts != nullptr);
 	purgeRecords();
 	return (NO_ERROR);
@@ -127,8 +127,7 @@ void GlobalCollisionAlert::purgeRecords(void)
 PVOID CollisionGrid::operator new(size_t mySize)
 {
 	PVOID result = nullptr;
-	if (CollisionSystem::collisionHeap &&
-		CollisionSystem::collisionHeap->heapReady())
+	if (CollisionSystem::collisionHeap && CollisionSystem::collisionHeap->heapReady())
 		result = CollisionSystem::collisionHeap->Malloc(mySize);
 	return (result);
 }
@@ -136,8 +135,7 @@ PVOID CollisionGrid::operator new(size_t mySize)
 //------------------------------------------------------------------------------
 void CollisionGrid::operator delete(PVOID us)
 {
-	if (CollisionSystem::collisionHeap &&
-		CollisionSystem::collisionHeap->heapReady())
+	if (CollisionSystem::collisionHeap && CollisionSystem::collisionHeap->heapReady())
 		CollisionSystem::collisionHeap->Free(us);
 }
 
@@ -156,17 +154,11 @@ int32_t CollisionGrid::init(Stuff::Vector3D& newOrigin)
 		maxObjects	= CollisionSystem::maxObjects;
 		gridSize	  = sizeof(CollisionGridNodePtr) * xGridWidth * yGridWidth;
 		nodeSize	  = sizeof(CollisionGridNode) * maxObjects;
-		if (CollisionSystem::collisionHeap &&
-			CollisionSystem::collisionHeap->heapReady())
-			grid =
-				(CollisionGridNodePtr*)CollisionSystem::collisionHeap->Malloc(
-					gridSize);
+		if (CollisionSystem::collisionHeap && CollisionSystem::collisionHeap->heapReady())
+			grid = (CollisionGridNodePtr*)CollisionSystem::collisionHeap->Malloc(gridSize);
 		gosASSERT(grid != nullptr);
-		if (CollisionSystem::collisionHeap &&
-			CollisionSystem::collisionHeap->heapReady())
-			nodes =
-				(CollisionGridNodePtr)CollisionSystem::collisionHeap->Malloc(
-					nodeSize);
+		if (CollisionSystem::collisionHeap && CollisionSystem::collisionHeap->heapReady())
+			nodes = (CollisionGridNodePtr)CollisionSystem::collisionHeap->Malloc(nodeSize);
 		gosASSERT(nodes != nullptr);
 		gridXOffset = ((xGridWidth + 1) * maxGridRadius) / 2;
 		gridYOffset = ((yGridWidth + 1) * maxGridRadius) / 2;
@@ -189,8 +181,7 @@ void CollisionGrid::destroy(void)
 {
 	if (gridIsGo)
 	{
-		if (CollisionSystem::collisionHeap &&
-			CollisionSystem::collisionHeap->heapReady())
+		if (CollisionSystem::collisionHeap && CollisionSystem::collisionHeap->heapReady())
 		{
 			CollisionSystem::collisionHeap->Free(nodes);
 			nodes = nullptr;
@@ -247,9 +238,8 @@ int32_t CollisionGrid::add(GameObjectPtr object)
 		if (gy >= gridYCheck)
 			gy = gridYCheck - 1;
 		gy /= maxGridRadius;
-		uint32_t gridIndex =
-			float2long(gx - 0.5f) + float2long(gy - 0.5f) * xGridWidth;
-		int32_t result = add(gridIndex, object);
+		uint32_t gridIndex = float2long(gx - 0.5f) + float2long(gy - 0.5f) * xGridWidth;
+		int32_t result	 = add(gridIndex, object);
 		return result;
 	}
 	return NO_ERROR;
@@ -332,20 +322,13 @@ void CollisionGrid::checkGrid(GameObjectPtr obj1, CollisionGridNodePtr area)
 			//-------------------------------------------------------------
 			// CULL collisions between things which can never collide here
 			//------------------------------------------------------------
-			if ((obj1->getObjectClass() == TURRET) &&
-					(obj2->getObjectClass() == TURRET) ||
-				(obj1->getObjectClass() == GATE) &&
-					(obj2->getObjectClass() == GATE) ||
-				(obj1->getObjectClass() == GATE) &&
-					(obj2->getObjectClass() == TURRET) ||
-				(obj1->getObjectClass() == TURRET) &&
-					(obj2->getObjectClass() == GATE) ||
-				(obj1->getObjectClass() == TURRET) &&
-					(obj2->getObjectClass() == TREE) ||
-				(obj1->getObjectClass() == TREE) &&
-					(obj2->getObjectClass() == TURRET) ||
-				(obj1->getObjectClass() == EXPLOSION) &&
-					(obj2->getObjectClass() == EXPLOSION))
+			if ((obj1->getObjectClass() == TURRET) && (obj2->getObjectClass() == TURRET) ||
+				(obj1->getObjectClass() == GATE) && (obj2->getObjectClass() == GATE) ||
+				(obj1->getObjectClass() == GATE) && (obj2->getObjectClass() == TURRET) ||
+				(obj1->getObjectClass() == TURRET) && (obj2->getObjectClass() == GATE) ||
+				(obj1->getObjectClass() == TURRET) && (obj2->getObjectClass() == TREE) ||
+				(obj1->getObjectClass() == TREE) && (obj2->getObjectClass() == TURRET) ||
+				(obj1->getObjectClass() == EXPLOSION) && (obj2->getObjectClass() == EXPLOSION))
 			{
 			}
 			else
@@ -379,8 +362,8 @@ int32_t CollisionSystem::init(FitIniFile* scenarioFile)
 	gridRadius	= 200;
 	maxObjects	= 300;
 	maxCollisions = 100;
-	warningDist = 250.0; // This is in world Units!!!
-	alertTime   = 2.5;   // This is in seconds
+	warningDist   = 250.0; // This is in world Units!!!
+	alertTime	 = 2.5;   // This is in seconds
 	collisionHeap = new UserHeap;
 	gosASSERT(collisionHeap != nullptr);
 	int32_t result = collisionHeap->init(65535);
@@ -421,9 +404,8 @@ void CollisionSystem::checkObjects(void)
 #else
 	//---------------------------------------------------------
 	// Convert to Glenn's Magical New Object System!
-	ObjectQueueNodePtr objList =
-		objectList->getHeadList(); // Start with the default list.
-	ObjectNodePtr objNode						= nullptr;
+	ObjectQueueNodePtr objList = objectList->getHeadList(); // Start with the default list.
+	ObjectNodePtr objNode	  = nullptr;
 	uint32_t objectsPerList[MAX_LISTS_TO_CHECK] = {0, 0, 0};
 	while (objList && (currentList < MAX_LISTS_TO_CHECK))
 	{
@@ -471,8 +453,7 @@ void CollisionSystem::detectCollision(GameObjectPtr obj1, GameObjectPtr obj2)
 	//---------------------------------------------------------
 	// Convert to Glenn's Magical New Object System!
 	// Need some way to know this is a MOVER/Collider!
-	if ((obj1->getObjectClass() < EXPLOSION) &&
-		(obj2->getObjectClass() < EXPLOSION))
+	if ((obj1->getObjectClass() < EXPLOSION) && (obj2->getObjectClass() < EXPLOSION))
 	{
 		//---------------------------------------------------------------
 		// Objects have to be in the same move plane in order to collide.
@@ -506,7 +487,7 @@ void CollisionSystem::detectCollision(GameObjectPtr obj1, GameObjectPtr obj2)
 		Stuff::Vector3D obj2Pos = obj2->getPosition();
 		Stuff::Vector3D pos;
 		pos.Subtract(obj2Pos, obj1Pos);
-		pos.z = 0.0; // Ignore Elevation.  May cause explosion/artillery f-ups!
+		pos.z		  = 0.0; // Ignore Elevation.  May cause explosion/artillery f-ups!
 		float distMag = pos.x * pos.x + pos.y * pos.y; // pos.magnitude();
 		float dist0   = obj1->getExtentRadius();
 		float dist1   = obj2->getExtentRadius();
@@ -524,8 +505,7 @@ void CollisionSystem::detectCollision(GameObjectPtr obj1, GameObjectPtr obj2)
 }
 
 //------------------------------------------------------------------------------
-void CollisionSystem::detectStaticCollision(
-	GameObjectPtr obj1, GameObjectPtr obj2)
+void CollisionSystem::detectStaticCollision(GameObjectPtr obj1, GameObjectPtr obj2)
 {
 	float timeOfClosest = 0.0;
 	//--------------------------------------------------------
@@ -549,8 +529,7 @@ void CollisionSystem::detectStaticCollision(
 		if (obj1->isMover() && (obj2->getObjectClass() != TREE) &&
 			(obj2->getObjectClass() != TERRAINOBJECT))
 		{
-			if (!(obj2->isSpecialBuilding()) &&
-				(obj2->getObjectClass() != BRIDGE))
+			if (!(obj2->isSpecialBuilding()) && (obj2->getObjectClass() != BRIDGE))
 			{
 				int32_t obj1Pos[2] = {0, 0};
 				obj1->getCellPosition(obj1Pos[0], obj1Pos[1]);
@@ -564,8 +543,7 @@ void CollisionSystem::detectStaticCollision(
 
 //------------------------------------------------------------------------------
 
-void CollisionSystem::checkExtents(
-	GameObjectPtr obj1, GameObjectPtr obj2, float time)
+void CollisionSystem::checkExtents(GameObjectPtr obj1, GameObjectPtr obj2, float time)
 {
 	//---------------------------------------------------------
 	// We may not need any more information for MechCommander2
@@ -591,12 +569,9 @@ void CollisionSystem::checkExtents(
 		return;
 	if ((obj1->getMoveLevel() == 2) || (obj2->getMoveLevel() == 2))
 	{
-		if ((obj1->getMoveLevel() != obj2->getMoveLevel()) &&
-			(obj1->getObjectClass() != TURRET) &&
-			(obj2->getObjectClass() != TURRET) &&
-			(obj1->getObjectClass() != ARTILLERY) &&
-			(obj2->getObjectClass() != ARTILLERY) &&
-			(obj1->getObjectClass() != EXPLOSION) &&
+		if ((obj1->getMoveLevel() != obj2->getMoveLevel()) && (obj1->getObjectClass() != TURRET) &&
+			(obj2->getObjectClass() != TURRET) && (obj1->getObjectClass() != ARTILLERY) &&
+			(obj2->getObjectClass() != ARTILLERY) && (obj1->getObjectClass() != EXPLOSION) &&
 			(obj2->getObjectClass() != EXPLOSION))
 			return;
 	}
@@ -695,8 +670,7 @@ float CollisionSystem::timeToImpact(GameObjectPtr obj1, GameObjectPtr obj2)
 			Stuff::Vector3D dist;
 			vel *= timeOfClosest;
 			dist.Add(pos, vel);
-			float distMag =
-				dist.x * dist.x + dist.y * dist.y; // dist.magnitude();
+			float distMag = dist.x * dist.x + dist.y * dist.y; // dist.magnitude();
 			if (distMag < maxDist)
 			{
 				//------------------------------------------------

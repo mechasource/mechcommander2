@@ -132,12 +132,9 @@ void MPConnectionType::init(FitIniFile* file)
 	}
 	connectionType = 0;
 	buttons[indexOfButtonWithID(FIRST_BUTTON_ID + 1)].press(
-		!((1 == connectionType) || (2 == connectionType) ||
-			(3 == connectionType)));
-	buttons[indexOfButtonWithID(FIRST_BUTTON_ID + 2)].press(
-		1 == connectionType);
-	buttons[indexOfButtonWithID(FIRST_BUTTON_ID + 3)].press(
-		2 == connectionType);
+		!((1 == connectionType) || (2 == connectionType) || (3 == connectionType)));
+	buttons[indexOfButtonWithID(FIRST_BUTTON_ID + 2)].press(1 == connectionType);
+	buttons[indexOfButtonWithID(FIRST_BUTTON_ID + 3)].press(2 == connectionType);
 	switch (connectionType)
 	{
 	case 1:
@@ -299,12 +296,9 @@ int32_t MPConnectionType::handleMessage(uint32_t message, uint32_t who)
 		case FIRST_BUTTON_ID + 2:
 		case FIRST_BUTTON_ID + 3:
 			buttons[indexOfButtonWithID(FIRST_BUTTON_ID + 1)].press(
-				!((1 == connectionType) || (2 == connectionType) ||
-					(3 == connectionType)));
-			buttons[indexOfButtonWithID(FIRST_BUTTON_ID + 2)].press(
-				1 == connectionType);
-			buttons[indexOfButtonWithID(FIRST_BUTTON_ID + 3)].press(
-				2 == connectionType);
+				!((1 == connectionType) || (2 == connectionType) || (3 == connectionType)));
+			buttons[indexOfButtonWithID(FIRST_BUTTON_ID + 2)].press(1 == connectionType);
+			buttons[indexOfButtonWithID(FIRST_BUTTON_ID + 3)].press(2 == connectionType);
 			return 1;
 			break;
 		}
@@ -381,8 +375,7 @@ void aZonePanel::update()
 		LogisticsOKDialog::instance()->update();
 		if (LogisticsOKDialog::instance()->isDone())
 		{
-			if (LogisticsOKDialog::instance()->getStatus() ==
-				LogisticsScreen::YES)
+			if (LogisticsOKDialog::instance()->getStatus() == LogisticsScreen::YES)
 			{
 				pParentScreen->handleMessage(
 					ZONE_PANEL_FIRST_BUTTON_ID, ZONE_PANEL_FIRST_BUTTON_ID);
@@ -548,14 +541,12 @@ void aTcpipPanel::update()
 					if (sessionCount)
 					{
 						bConnectingDlg = 0;
-						retVal		   = MPlayer->joinSession(
-							&pSessions[0], prefs.playerName[0]);
+						retVal		   = MPlayer->joinSession(&pSessions[0], prefs.playerName[0]);
 						if (!retVal)
 						{
-							pParentScreen->handleMessage(
-								1, TCPIP_PANEL_FIRST_BUTTON_ID);
+							pParentScreen->handleMessage(1, TCPIP_PANEL_FIRST_BUTTON_ID);
 							MPlayer->endSessionScan();
-							EString ipAddress;
+							std::wstring ipAddress;
 							comboBox.EditBox().getEntry(ipAddress);
 							prefs.setNewIP(ipAddress);
 							prefs.save();
@@ -628,8 +619,7 @@ void aTcpipPanel::update()
 				break;
 			}
 			LogisticsOneButtonDialog::instance()->end();
-			LogisticsOneButtonDialog::instance()->setText(
-				errorID, IDS_DIALOG_OK, IDS_DIALOG_OK);
+			LogisticsOneButtonDialog::instance()->setText(errorID, IDS_DIALOG_OK, IDS_DIALOG_OK);
 			LogisticsOneButtonDialog::instance()->setFont(fontID);
 			LogisticsOneButtonDialog::instance()->begin();
 			bConnectingDlg = 0;
@@ -650,7 +640,7 @@ void aTcpipPanel::update()
 			bExpanded = 0;
 	}
 	// grey out button if inavlid...
-	EString str;
+	std::wstring str;
 	comboBox.EditBox().getEntry(str);
 	bool bValid = 1;
 	if (str.Length())
@@ -746,7 +736,7 @@ int32_t aTcpipPanel::handleMessage(uint32_t message, uint32_t who)
 		char text[256];
 		char Display[256];
 		cLoadString(IDS_MP_CON_MODEM_CONNECTING, text, 255);
-		EString str;
+		std::wstring str;
 		comboBox.EditBox().getEntry(str);
 		sprintf(Display, text, (PCSTR)str);
 		LogisticsOneButtonDialog::instance()->setText(Display);
@@ -754,8 +744,7 @@ int32_t aTcpipPanel::handleMessage(uint32_t message, uint32_t who)
 		if (MPlayer->beginSessionScan((PSTR)(PCSTR)str))
 		{
 			LogisticsOneButtonDialog::instance()->setText(
-				IDS_MP_CONNECT_ERROR_NO_CONNECTION, IDS_DIALOG_OK,
-				IDS_DIALOG_OK);
+				IDS_MP_CONNECT_ERROR_NO_CONNECTION, IDS_DIALOG_OK, IDS_DIALOG_OK);
 		}
 		connectingTime = 0.f;
 		break;

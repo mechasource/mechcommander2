@@ -25,7 +25,7 @@ class aAnimButton;
 class aButton;
 class aEdit;
 class aAnimObject;
-}
+} // namespace mechgui
 
 namespace mechgui
 {
@@ -58,16 +58,15 @@ class LogisticsScreen : public aObject
 		GOTOSPLASH
 	};
 
-  public:
+public:
 	LogisticsScreen(void);
 	virtual ~LogisticsScreen(void);
 	LogisticsScreen(const LogisticsScreen& src);
 	LogisticsScreen& operator=(const LogisticsScreen& src);
 
-  protected:
-	void init(FitIniFile& file, PCSTR staticName, PCSTR textName,
-		PCSTR rectName, PCSTR buttonName, PCSTR editName = "Edit",
-		PCSTR animObjectName = "AnimObject", uint32_t neverFlush = 0);
+protected:
+	void init(FitIniFile& file, PCSTR staticName, PCSTR textName, PCSTR rectName, PCSTR buttonName,
+		PCSTR editName = "Edit", PCSTR animObjectName = "AnimObject", uint32_t neverFlush = 0);
 
 	virtual void update(void);
 	virtual void render(void);
@@ -101,7 +100,7 @@ class LogisticsScreen : public aObject
 
 	void clear(void); // remove everything
 
-  protected:
+protected:
 	aObject* statics;
 	aRect* rects;
 	int32_t rectCount;
@@ -123,16 +122,16 @@ class LogisticsScreen : public aObject
 	float fadeOutTime;
 	float fadeTime;
 
-  protected:
+protected:
 	int32_t status;
 	int32_t fadeOutMaxColor;
 	int32_t helpTextArrayID;
 
-  private:
+private:
 	void copyData(const LogisticsScreen&);
 	void destroy(void);
 };
-}
+} // namespace mechgui
 
 //*************************************************************************************************
 #endif // end of file ( LogisticsScreen.h )

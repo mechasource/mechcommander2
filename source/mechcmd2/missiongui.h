@@ -69,7 +69,7 @@ class MissionInterfaceManager
 	//
 	// Essentially, this is the iface of MechCommander 2
 
-  public:
+public:
 	typedef int32_t (MissionInterfaceManager::*COMMAND)(void);
 
 	struct Command
@@ -86,7 +86,7 @@ class MissionInterfaceManager
 	static Command* getCommands() { return commands; }
 	static int32_t* getOldKeys() { return OldKeys; }
 
-  protected:
+protected:
 	static int32_t mouseX;
 	static int32_t mouseY;
 	static gosEnum_KeyIndex WAYPOINT_KEY;
@@ -170,7 +170,7 @@ class MissionInterfaceManager
 
 	static MissionInterfaceManager* s_instance;
 
-  public:
+public:
 	MissionInterfaceManager(void) { init(void); }
 
 	~MissionInterfaceManager(void) { destroy(void); }
@@ -190,16 +190,13 @@ class MissionInterfaceManager
 
 	void initMechs() { controlGui.initMechs(void); }
 
-	PCSTR getSupportVehicleNameFromID(int32_t ID)
-	{
-		return controlGui.getVehicleNameFromID(ID);
-	}
+	PCSTR getSupportVehicleNameFromID(int32_t ID) { return controlGui.getVehicleNameFromID(ID); }
 
 	void addMover(MoverPtr mover) { controlGui.addMover(mover); }
 	void removeMover(MoverPtr mover) { controlGui.removeMover(mover); }
 
-	int32_t update(bool bLeftClick, bool bRightClick, int32_t mouseX,
-		int32_t mouseY, GameObject* pTarget,
+	int32_t update(bool bLeftClick, bool bRightClick, int32_t mouseX, int32_t mouseY,
+		GameObject* pTarget,
 		bool bLOS); // check for each key in the list
 
 	void updateVTol(void);
@@ -220,25 +217,20 @@ class MissionInterfaceManager
 	bool canRepair(GameObject* pMover);
 	bool canRepairBay(GameObject* bay);
 
-	void setMechRecovered(int32_t teamID, bool set)
-	{
-		mechRecovered[teamID] = set;
-	}
+	void setMechRecovered(int32_t teamID, bool set) { mechRecovered[teamID] = set; }
 
-	void updateOldStyle(bool shiftDn, bool altDn, bool ctrlDn, bool bGui,
-		bool lineOfSight, bool passable, int32_t moverCount,
-		int32_t nonMoverCount);
-	void updateAOEStyle(bool shiftDn, bool altDn, bool ctrlDn, bool bGui,
-		bool lineOfSight, bool passable, int32_t moverCount,
-		int32_t nonMoverCount);
+	void updateOldStyle(bool shiftDn, bool altDn, bool ctrlDn, bool bGui, bool lineOfSight,
+		bool passable, int32_t moverCount, int32_t nonMoverCount);
+	void updateAOEStyle(bool shiftDn, bool altDn, bool ctrlDn, bool bGui, bool lineOfSight,
+		bool passable, int32_t moverCount, int32_t nonMoverCount);
 
 	static int32_t saveHotKeys(FitIniFile& file);
 	static int32_t loadHotKeys(FitIniFile& file);
 
-	static int32_t setHotKey(int32_t whichCommand, gosEnum_KeyIndex key,
-		bool bShift, bool bControl, bool bAlt);
-	int32_t getHotKey(int32_t whichCommand, gosEnum_KeyIndex& newKey,
-		bool& bShift, bool& bControl, bool& bAlt);
+	static int32_t setHotKey(
+		int32_t whichCommand, gosEnum_KeyIndex key, bool bShift, bool bControl, bool bAlt);
+	int32_t getHotKey(
+		int32_t whichCommand, gosEnum_KeyIndex& newKey, bool& bShift, bool& bControl, bool& bAlt);
 	bool hotKeyIsPressed(int32_t whichCommand);
 
 	int32_t setWayPointKey(gosEnum_KeyIndex key);
@@ -260,12 +252,11 @@ class MissionInterfaceManager
 	void doGuard(GameObject* pObj);
 	int32_t toggleHotKeys(void);
 	void beginVtol(int32_t supportID, int32_t commanderID = 0,
-		Stuff::Vector3D* reinforcePos = nullptr,
-		MoverPtr salvageTarget		  = nullptr);
+		Stuff::Vector3D* reinforcePos = nullptr, MoverPtr salvageTarget = nullptr);
 
 	// Tutorial Stuff goes here.
-	bool startAnimation(int32_t buttonId, bool isButton, bool isPressed,
-		float timeToScroll, int32_t numFlashes);
+	bool startAnimation(
+		int32_t buttonId, bool isButton, bool isPressed, float timeToScroll, int32_t numFlashes);
 	void setTutorialText(PCSTR text);
 
 	bool isInCalloutAnimation() { return animationRunning; }
@@ -276,10 +267,10 @@ class MissionInterfaceManager
 	void Save(FitIniFilePtr file);
 	void Load(FitIniFilePtr file);
 
-  private:
+private:
 	void makeForceGroup(int32_t forceGroup);
-	bool moveCameraAround(bool lineOfSight, bool passable, bool ctrl, bool bGui,
-		int32_t moverCount, int32_t nonMoverCount);
+	bool moveCameraAround(bool lineOfSight, bool passable, bool ctrl, bool bGui, int32_t moverCount,
+		int32_t nonMoverCount);
 	bool canJump(void); // selected units can jump
 	bool canJumpToWPos(void);
 	void doDrag(bool bGui);
@@ -417,11 +408,10 @@ class MissionInterfaceManager
 
 	bool canAddVehicle(const Stuff::Vector3D& pos);
 	bool canRecover(const Stuff::Vector3D& pos);
-	int32_t makeNoTargetCursor(bool passable, bool lineOfSight, bool ctrl,
-		bool bGui, int32_t moverCount, int32_t nonMoverCount);
+	int32_t makeNoTargetCursor(bool passable, bool lineOfSight, bool ctrl, bool bGui,
+		int32_t moverCount, int32_t nonMoverCount);
 	int32_t makeRangeCursor(bool LOS);
-	int32_t makeTargetCursor(
-		bool lineOfSight, int32_t moverCount, int32_t nonMoverCount);
+	int32_t makeTargetCursor(bool lineOfSight, int32_t moverCount, int32_t nonMoverCount);
 	int32_t makeMoveCursor(bool bLineOfSite);
 	int32_t makeJumpCursor(bool bLineOfSite);
 	int32_t makeRunCursor(bool bLineOfSite);

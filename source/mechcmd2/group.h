@@ -115,10 +115,7 @@ public:
 
 	virtual MoverPtr getPoint(void);
 
-	virtual void setDisbandOnNoPoint(bool setting)
-	{
-		disbandOnNoPoint = setting;
-	}
+	virtual void setDisbandOnNoPoint(bool setting) { disbandOnNoPoint = setting; }
 
 	virtual bool getDisbandOnNoPoint(void) { return (disbandOnNoPoint); }
 
@@ -136,24 +133,22 @@ public:
 
 	int32_t calcMoveGoals(Stuff::Vector3D goal, Stuff::Vector3D* goalList);
 
-	int32_t calcJumpGoals(Stuff::Vector3D goal, Stuff::Vector3D* goalList,
-		GameObjectPtr DFATarget = nullptr);
+	int32_t calcJumpGoals(
+		Stuff::Vector3D goal, Stuff::Vector3D* goalList, GameObjectPtr DFATarget = nullptr);
 
 	//----------------
 	// Tactical Orders
 
-	virtual int32_t handleTacticalOrder(TacticalOrder tacOrder,
-		int32_t priority, Stuff::Vector3D* jumpGoalList = nullptr,
-		bool queueGroupOrder = false);
+	virtual int32_t handleTacticalOrder(TacticalOrder tacOrder, int32_t priority,
+		Stuff::Vector3D* jumpGoalList = nullptr, bool queueGroupOrder = false);
 
-	int32_t orderMoveToPoint(bool setTacOrder, int32_t origin,
-		Stuff::Vector3D location, uint32_t params);
+	int32_t orderMoveToPoint(
+		bool setTacOrder, int32_t origin, Stuff::Vector3D location, uint32_t params);
 
-	int32_t orderMoveToObject(bool setTacOrder, int32_t origin,
-		GameObjectPtr target, int32_t fromArea, uint32_t params);
+	int32_t orderMoveToObject(
+		bool setTacOrder, int32_t origin, GameObjectPtr target, int32_t fromArea, uint32_t params);
 
-	int32_t orderTraversePath(
-		int32_t origin, WayPathPtr wayPath, uint32_t params);
+	int32_t orderTraversePath(int32_t origin, WayPathPtr wayPath, uint32_t params);
 
 	int32_t orderPatrolPath(int32_t origin, WayPathPtr wayPath);
 
@@ -161,9 +156,9 @@ public:
 
 	int32_t orderPowerUp(int32_t origin);
 
-	int32_t orderAttackObject(int32_t origin, GameObjectPtr target,
-		int32_t attackType, int32_t attackMethod, int32_t attackRange,
-		int32_t aimLocation, int32_t fromArea, uint32_t params);
+	int32_t orderAttackObject(int32_t origin, GameObjectPtr target, int32_t attackType,
+		int32_t attackMethod, int32_t attackRange, int32_t aimLocation, int32_t fromArea,
+		uint32_t params);
 
 	int32_t orderWithdraw(int32_t origin, Stuff::Vector3D location);
 
@@ -183,14 +178,13 @@ public:
 
 	void handleMateFiredWeapon(uint32_t mateWID);
 
-	static void sortMovers(
-		int32_t numMoversInGroup, MoverPtr* moverList, Stuff::Vector3D dest);
+	static void sortMovers(int32_t numMoversInGroup, MoverPtr* moverList, Stuff::Vector3D dest);
 
 	static int32_t calcMoveGoals(
 		Stuff::Vector3D goal, int32_t numMovers, Stuff::Vector3D* goalList);
 
-	static int32_t calcJumpGoals(Stuff::Vector3D goal, int32_t numMovers,
-		Stuff::Vector3D* goalList, GameObjectPtr DFATarget);
+	static int32_t calcJumpGoals(Stuff::Vector3D goal, int32_t numMovers, Stuff::Vector3D* goalList,
+		GameObjectPtr DFATarget);
 
 	//----------------
 	// Save Load

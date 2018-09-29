@@ -21,7 +21,7 @@ MPHostGame.h			: Interface for the MPHostGame component.
 
 class aStyle5TextListItem : public aTextListItem
 {
-  public:
+public:
 	aStyle5TextListItem()
 	{
 		hasAnimation = false;
@@ -30,7 +30,7 @@ class aStyle5TextListItem : public aTextListItem
 	virtual int32_t init(FitIniFile* file, PCSTR blockName);
 	virtual void render(void);
 
-  protected:
+protected:
 	bool hasAnimation;
 	aAnimGroup animGroup;
 	int32_t normalColor;
@@ -38,7 +38,7 @@ class aStyle5TextListItem : public aTextListItem
 
 class MPHostGame : public LogisticsDialog
 {
-  public:
+public:
 	MPHostGame(void);
 	virtual ~MPHostGame(void);
 
@@ -51,7 +51,7 @@ class MPHostGame : public LogisticsDialog
 	virtual void update(void);
 	virtual int32_t handleMessage(uint32_t, uint32_t);
 
-  private:
+private:
 	//	aEdit		nameEntry;
 	//	aRect		nameEntryOutline;
 	bool bShowDlg;

@@ -93,8 +93,7 @@ void MPGameBrowser::init(FitIniFile* file)
 										 doesn't do the seekBlock itself*/
 		gameList.init(&PNfile, "GameList");
 		gameList.SelectItem(0);
-		gameList.init(rects[0].left(), rects[0].top(), rects[0].width(),
-			rects[0].height());
+		gameList.init(rects[0].left(), rects[0].top(), rects[0].width(), rects[0].height());
 		gameList.setOrange(true);
 		templateItem.init(&PNfile, "GameListItem");
 		for (size_t i = 0; i < 256; i++)
@@ -114,7 +113,7 @@ void MPGameBrowser::begin()
 	{
 		MPlayer->closeSession();
 		//		MPlayer->leaveSession(); // make sure I'm not hosting or already
-		//in a game....
+		// in a game....
 		MPlayer->beginSessionScan(nullptr);
 		MPlayer->setMode(MULTIPLAYER_MODE_BROWSER);
 	}
@@ -187,8 +186,7 @@ int32_t MPGameBrowser::handleMessage(uint32_t message, uint32_t who)
 					if (MPlayer)
 					{
 						int32_t retVal = MPlayer->joinSession(
-							(MC2Session*)pItem->getSession(),
-							&prefs.playerName[0][0]);
+							(MC2Session*)pItem->getSession(), &prefs.playerName[0][0]);
 						if (retVal == MPLAYER_NO_ERR)
 						{
 							MPlayer->setMode(MULTIPLAYER_MODE_PARAMETERS);
@@ -197,8 +195,7 @@ int32_t MPGameBrowser::handleMessage(uint32_t message, uint32_t who)
 						else
 						{
 							int32_t errorID = IDS_MP_CONNECT_NO_SESSION;
-							int32_t fontID =
-								IDS_MP_CONNECT_ERROR_NO_SESSION_FONT;
+							int32_t fontID  = IDS_MP_CONNECT_ERROR_NO_SESSION_FONT;
 							// display a dialog about why this can't happen....
 							switch (retVal)
 							{
@@ -208,8 +205,7 @@ int32_t MPGameBrowser::handleMessage(uint32_t message, uint32_t who)
 								break;
 							case MPLAYER_ERR_NO_CONNECTION:
 								errorID = IDS_MP_CONNECT_ERROR_NO_CONNECTION;
-								fontID =
-									IDS_MP_CONNECT_ERROR_NO_CONNECTION_FONT;
+								fontID  = IDS_MP_CONNECT_ERROR_NO_CONNECTION_FONT;
 								break;
 							case MPLAYER_ERR_SESSION_IN_PROGRESS:
 								errorID = IDS_MP_CONNECT_ERROR_IN_PROGRESS;
@@ -221,8 +217,7 @@ int32_t MPGameBrowser::handleMessage(uint32_t message, uint32_t who)
 								break;
 							case MPLAYER_ERR_BAD_VERSION:
 								errorID = IDS_MP_CONNECTION_ERROR_WRONG_VERSION;
-								fontID =
-									IDS_MP_CONNECTION_ERROR_WRONG_VERSION_FONT;
+								fontID  = IDS_MP_CONNECTION_ERROR_WRONG_VERSION_FONT;
 								break;
 							case MPLAYER_ERR_SESSION_FULL:
 								errorID = IDS_MP_CONNECTION_ERROR_FULL;
@@ -232,8 +227,7 @@ int32_t MPGameBrowser::handleMessage(uint32_t message, uint32_t who)
 							LogisticsOneButtonDialog::instance()->begin();
 							LogisticsOneButtonDialog::instance()->setText(
 								errorID, IDS_DIALOG_OK, IDS_DIALOG_OK);
-							LogisticsOneButtonDialog::instance()->setFont(
-								fontID);
+							LogisticsOneButtonDialog::instance()->setFont(fontID);
 							bShowErrorDlg = true;
 						}
 					}
@@ -326,8 +320,7 @@ void MPGameBrowser::update()
 			for (size_t j = 0; j < gameList.GetItemCount(); j++)
 			{
 				aGameListItem* pItem = (aGameListItem*)gameList.GetItem(j);
-				int32_t res			 = _stricmp(
-					 pItem->getText(sortOrder), items[i].getText(sortOrder));
+				int32_t res = _stricmp(pItem->getText(sortOrder), items[i].getText(sortOrder));
 				if ((bSortUpward && res > 0) || (!bSortUpward && res < 0))
 				{
 					gameList.InsertItem(&items[i], j);
@@ -452,7 +445,7 @@ int32_t aGameListItem::init(FitIniFile* file, PCSTR blockName)
 	int32_t height = 0;
 	file->readIdLong("Width", width);
 	file->readIdLong("Height", height);
-	EString graphicBlockName;
+	std::wstring graphicBlockName;
 	graphicBlockName += "Static0";
 	allTechGraphic.init(file, graphicBlockName.Data());
 	if (allTechGraphic.height() + 5 > height)
@@ -463,7 +456,7 @@ int32_t aGameListItem::init(FitIniFile* file, PCSTR blockName)
 	{
 		width = allTechGraphic.globalRight() - globalX();
 	}
-	EString textBlockName;
+	std::wstring textBlockName;
 	textBlockName = "Text0";
 	gameName.init(file, textBlockName.Data());
 	if (gameName.height() > height)
@@ -504,7 +497,7 @@ int32_t aGameListItem::init(FitIniFile* file, PCSTR blockName)
 	{
 		// width = latency.globalRight() - globalX();
 	}
-	EString rectBlockName;
+	std::wstring rectBlockName;
 	rectBlockName = "Rect0";
 	allTechRect.init(file, rectBlockName.Data());
 	if (allTechRect.height() > height)

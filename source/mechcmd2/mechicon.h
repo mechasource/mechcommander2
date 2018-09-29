@@ -26,7 +26,7 @@ MechIcon:
 class PilotIcon
 {
 
-  public:
+public:
 	static const int32_t DEAD_PILOT_INDEX;
 
 	PilotIcon(void);
@@ -37,7 +37,7 @@ class PilotIcon
 	void setTextureIndex(int32_t newIndex) { pilotTextureIndex = newIndex; }
 	void render(float left, float top, float right, float bottom);
 
-  private:
+private:
 	uint32_t pilotTextureIndex;
 
 	static float pilotIconX;
@@ -53,15 +53,14 @@ class PilotIcon
 
 class ForceGroupIcon
 {
-  public:
+public:
 	ForceGroupIcon(void);
 	virtual ~ForceGroupIcon(void);
 
 	virtual void update() = 0;
 	virtual void render(void);
 	void renderUnitIcon(float left, float top, float right, float bottom);
-	virtual void renderUnitIconBack(
-		float left, float top, float right, float bottom);
+	virtual void renderUnitIconBack(float left, float top, float right, float bottom);
 	void renderPilotIcon(float left, float top, float right, float bottom);
 	virtual bool init(Mover* pMover) { return false; }
 	void init(void);
@@ -89,7 +88,7 @@ class ForceGroupIcon
 	}
 	bool isAnimatingDeath() { return deathAnimationTime ? 1 : 0; }
 
-  protected:
+protected:
 	static int32_t damageColors[4][3];
 
 	static uint32_t s_textureHandle[5];
@@ -152,7 +151,7 @@ class ForceGroupIcon
 
 class MechIcon : public ForceGroupIcon
 {
-  public:
+public:
 	MechIcon() {}
 	~MechIcon() {}
 
@@ -161,11 +160,10 @@ class MechIcon : public ForceGroupIcon
 
 	static TGAFileHeader* s_MechTextures;
 
-	void doDraw(
-		PSTR newDamage, PSTR oldDamage, uint32_t handle, uint32_t where);
+	void doDraw(PSTR newDamage, PSTR oldDamage, uint32_t handle, uint32_t where);
 	virtual void setDrawBack(bool bSet);
 
-  private:
+private:
 	char damage[8];
 	char backDamage[8];
 	bool init(int32_t whichIndex);
@@ -174,20 +172,17 @@ class MechIcon : public ForceGroupIcon
 
 class VehicleIcon : public ForceGroupIcon
 {
-  public:
+public:
 	VehicleIcon() {}
 	~VehicleIcon() {}
 
-	virtual void renderUnitIconBack(
-		float left, float top, float right, float bottom)
-	{
-	}
+	virtual void renderUnitIconBack(float left, float top, float right, float bottom) {}
 	virtual void update(void);
 	virtual bool init(Mover* pMover);
 
 	static TGAFileHeader* s_VehicleTextures;
 
-  private:
+private:
 	char damage[5];
 };
 

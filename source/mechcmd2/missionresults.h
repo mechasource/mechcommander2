@@ -28,7 +28,7 @@ class PilotReviewScreen;
 
 class MissionResults
 {
-  public:
+public:
 	MissionResults(void);
 	~MissionResults(void);
 
@@ -48,7 +48,7 @@ class MissionResults
 	//
 	static bool FirstTimeResults;
 
-  private:
+private:
 	SalvageMechScreen* pSalvageScreen;
 	PilotReviewScreen* pPilotScreen;
 	MPStats mpStats;

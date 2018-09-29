@@ -39,8 +39,7 @@ void VFXAppearanceType::init(FilePtr apprFile, uint32_t fileSize)
 	// Once the Ini File is loaded, we need to create the Shape set for this
 	// type.
 	numPackets  = spriteManager->getShapePackets(getAppearanceFileNum());
-	textureList = (TGATexturePtr*)spriteManager->mallocDataRAM(
-		sizeof(TGATexture*) * numPackets);
+	textureList = (TGATexturePtr*)spriteManager->mallocDataRAM(sizeof(TGATexture*) * numPackets);
 	gosASSERT(textureList != nullptr);
 	// memclear(textureList,sizeof(TGATexture *)*numPackets);
 	memset(textureList, 0, sizeof(TGATexture*) * numPackets);
@@ -81,8 +80,7 @@ int32_t VFXAppearanceType::loadIniFile(FilePtr apprFile, uint32_t fileSize)
 	gosASSERT(result == NO_ERROR);
 	result = VFXAppearanceFile.readIdUChar("NumStates", numStates);
 	gosASSERT(result == NO_ERROR);
-	actorStateData =
-		(ActorData*)spriteManager->mallocDataRAM(sizeof(ActorData) * numStates);
+	actorStateData = (ActorData*)spriteManager->mallocDataRAM(sizeof(ActorData) * numStates);
 	gosASSERT(actorStateData != nullptr);
 	// memclear(actorStateData,sizeof(ActorData)*MAX_ACTOR_STATES);
 	memset(actorStateData, 0, sizeof(ActorData) * MAX_ACTOR_STATES);
@@ -96,26 +94,21 @@ int32_t VFXAppearanceType::loadIniFile(FilePtr apprFile, uint32_t fileSize)
 		result = VFXAppearanceFile.readIdUChar("State", tempState);
 		gosASSERT(result == NO_ERROR);
 		actorStateData[curState].state = (ActorState)tempState;
-		result						   = VFXAppearanceFile.readIdULong(
-			"NumFrames", actorStateData[curState].numFrames);
+		result = VFXAppearanceFile.readIdULong("NumFrames", actorStateData[curState].numFrames);
 		gosASSERT(result == NO_ERROR);
-		result = VFXAppearanceFile.readIdFloat(
-			"FrameRate", actorStateData[curState].frameRate);
+		result = VFXAppearanceFile.readIdFloat("FrameRate", actorStateData[curState].frameRate);
 		gosASSERT(result == NO_ERROR);
 		result = VFXAppearanceFile.readIdULong(
 			"BasePacketNumber", actorStateData[curState].basePacketNumber);
 		gosASSERT(result == NO_ERROR);
-		result = VFXAppearanceFile.readIdUChar(
-			"NumRotations", actorStateData[curState].numRotations);
+		result =
+			VFXAppearanceFile.readIdUChar("NumRotations", actorStateData[curState].numRotations);
 		gosASSERT(result == NO_ERROR);
-		result = VFXAppearanceFile.readIdUChar(
-			"Symmetrical", actorStateData[curState].symmetrical);
+		result = VFXAppearanceFile.readIdUChar("Symmetrical", actorStateData[curState].symmetrical);
 		gosASSERT(result == NO_ERROR);
-		result = VFXAppearanceFile.readIdLong(
-			"TextureSize", actorStateData[curState].textureSize);
+		result = VFXAppearanceFile.readIdLong("TextureSize", actorStateData[curState].textureSize);
 		gosASSERT(result == NO_ERROR);
-		result = VFXAppearanceFile.readIdLong(
-			"TextureHS", actorStateData[curState].textureHS);
+		result = VFXAppearanceFile.readIdLong("TextureHS", actorStateData[curState].textureHS);
 		gosASSERT(result == NO_ERROR);
 	}
 	VFXAppearanceFile.close();
@@ -126,8 +119,8 @@ int32_t VFXAppearanceType::loadIniFile(FilePtr apprFile, uint32_t fileSize)
 // This function is the meat and potatoes of this class.  The Mech actor class
 // will use this function to find the gesture it is currently interested in
 // drawing.  This function will handle ALL caching.
-TGATexturePtr VFXAppearanceType::getTexture(ActorState shapeId, int32_t rot,
-	int32_t currFrame, float& frameRate, bool& mirror)
+TGATexturePtr VFXAppearanceType::getTexture(
+	ActorState shapeId, int32_t rot, int32_t currFrame, float& frameRate, bool& mirror)
 {
 	bool mirrorOn = FALSE;
 	mirror		  = FALSE;
@@ -153,8 +146,7 @@ TGATexturePtr VFXAppearanceType::getTexture(ActorState shapeId, int32_t rot,
 	// counter-clockwise
 	//	int32_t rotation = (int32_t)(rot / (360.0 /
 	//(actorStateData[shapeId].numRotations)));
-	int32_t rotation = float2short(
-		(1.0 / 360.0) * (rot * (actorStateData[shapeId].numRotations)));
+	int32_t rotation = float2short((1.0 / 360.0) * (rot * (actorStateData[shapeId].numRotations)));
 	//-------------------------------------------------------------------
 	// Using the information provided, figure out which packet we really
 	// want and check to see if the Gesture is cached.  If it is, return it
@@ -164,9 +156,7 @@ TGATexturePtr VFXAppearanceType::getTexture(ActorState shapeId, int32_t rot,
 	// If no memory is left in this Sprite's cache, mark as free any block not
 	// used recently.  LRU cache.
 	int32_t packetNum = actorStateData[shapeId].basePacketNumber;
-	packetNum +=
-		rotation *
-		actorStateData[shapeId].numFrames; // Each frame is its own packet NOW!
+	packetNum += rotation * actorStateData[shapeId].numFrames; // Each frame is its own packet NOW!
 	packetNum += currFrame;
 	//-------------------------------------------------------------------
 	// There weren't enough packets in the shape file.  Give em nothing.
@@ -180,9 +170,9 @@ TGATexturePtr VFXAppearanceType::getTexture(ActorState shapeId, int32_t rot,
 	//-------------------------------------------------
 	// We have to cache something in at this point.
 	// Be sure the frame length knows about it.
-	dynamicFrameTiming	 = FALSE;
-	textureList[packetNum] = spriteManager->getTextureData(
-		getAppearanceFileNum(), packetNum, turn, this);
+	dynamicFrameTiming = FALSE;
+	textureList[packetNum] =
+		spriteManager->getTextureData(getAppearanceFileNum(), packetNum, turn, this);
 	return ((TGATexturePtr)(textureList[packetNum]));
 }
 
@@ -191,7 +181,7 @@ void VFXAppearanceType::destroy(void)
 {
 	//---------------------------------------------------------------------------------------------
 	//-- If we are going away, inform ALL of the shapes in the cache that their
-	//owner is nullptr now.
+	// owner is nullptr now.
 	//-- Next dumpLRU will purge these FIRST!!
 	for (size_t i = 0; i < numPackets; i++)
 	{
@@ -238,8 +228,8 @@ bool VFXAppearance::isMouseOver(float px, float py)
 {
 	if (inView)
 	{
-		if ((px <= lowerRight.x) && (py <= lowerRight.y) &&
-			(px >= upperLeft.x) && (py >= upperLeft.y))
+		if ((px <= lowerRight.x) && (py <= lowerRight.y) && (px >= upperLeft.x) &&
+			(py >= upperLeft.y))
 		{
 			return inView;
 		}
@@ -262,8 +252,7 @@ bool VFXAppearance::recalcBounds(void)
 	if (eye)
 	{
 		Stuff::Vector3D topPosition(position);
-		topPosition.z +=
-			appearType->actorStateData[currentShapeTypeId].textureSize;
+		topPosition.z += appearType->actorStateData[currentShapeTypeId].textureSize;
 		eye->projectZ(topPosition, tempPos);
 		topZ = tempPos.z;
 		eye->projectZ(position, screenPos);
@@ -280,9 +269,7 @@ bool VFXAppearance::recalcBounds(void)
 				//------------------------------------------------------------------------
 				// Now, figure out what the upperLeft and lowerRight coordinates
 				// are and draw these as extents if we are selected.
-				shapeMin.x   = -(appearType->actorStateData[currentShapeTypeId]
-									 .textureSize >>
-								 1);
+				shapeMin.x   = -(appearType->actorStateData[currentShapeTypeId].textureSize >> 1);
 				shapeMin.y   = shapeMin.x;
 				shapeMax.x   = -(shapeMin.x);
 				shapeMax.y   = shapeMax.x;
@@ -293,16 +280,13 @@ bool VFXAppearance::recalcBounds(void)
 			}
 			else
 			{
-				upperLeft.x = tempPos.x + (appearType->typeUpperLeftX * scale);
-				upperLeft.y = tempPos.y + (appearType->typeUpperLeftY * scale);
-				lowerRight.x =
-					tempPos.x + (appearType->typeLowerRightX * scale);
-				lowerRight.y =
-					tempPos.y + (appearType->typeLowerRightY * scale);
+				upperLeft.x  = tempPos.x + (appearType->typeUpperLeftX * scale);
+				upperLeft.y  = tempPos.y + (appearType->typeUpperLeftY * scale);
+				lowerRight.x = tempPos.x + (appearType->typeLowerRightX * scale);
+				lowerRight.y = tempPos.y + (appearType->typeLowerRightY * scale);
 			}
 		}
-		if ((lowerRight.x >= 0) && (lowerRight.y >= 0) &&
-			(upperLeft.x <= eye->getScreenResX()) &&
+		if ((lowerRight.x >= 0) && (lowerRight.y >= 0) && (upperLeft.x <= eye->getScreenResX()) &&
 			(upperLeft.y <= eye->getScreenResY()))
 		{
 			inView = TRUE;
@@ -312,8 +296,7 @@ bool VFXAppearance::recalcBounds(void)
 }
 
 //-----------------------------------------------------------------------------
-void VFXAppearance::setObjectParameters(
-	Stuff::Vector3D& pos, float rot, int32_t sel)
+void VFXAppearance::setObjectParameters(Stuff::Vector3D& pos, float rot, int32_t sel)
 {
 	position = pos;
 	rotation = rot;
@@ -328,8 +311,8 @@ int32_t VFXAppearance::render(int32_t depthFixup)
 	// First step is figure out where we are and cache the appropriate shapes
 	bool oldMirror   = FALSE;
 	float tFrameRate = 0.0;
-	currentTexture   = appearType->getTexture(
-		  currentShapeTypeId, rotation, currentFrame, tFrameRate, oldMirror);
+	currentTexture =
+		appearType->getTexture(currentShapeTypeId, rotation, currentFrame, tFrameRate, oldMirror);
 	if (currentFrame < 0)
 		currentFrame = 0;
 	TextureElement newElement;
@@ -340,17 +323,14 @@ int32_t VFXAppearance::render(int32_t depthFixup)
 		// Add this shape to element list for sorting.
 		newElement.init(currentTexture->textureHandle, screenPos.x, screenPos.y,
 			(appearType->actorStateData[currentShapeTypeId].textureHS >> 16),
-			(appearType->actorStateData[currentShapeTypeId].textureHS &
-				0x0000ffff),
-			appearType->actorStateData[currentShapeTypeId].textureSize, topZ,
-			screenPos.z);
+			(appearType->actorStateData[currentShapeTypeId].textureHS & 0x0000ffff),
+			appearType->actorStateData[currentShapeTypeId].textureSize, topZ, screenPos.z);
 		uint8_t lightr, lightg, lightb, visible, seen;
-		lightIntensity = land->getTerrainLight(position, visible, seen);
-		lightr		   = eye->getLightRed(lightIntensity, visible, seen);
-		lightg		   = eye->getLightGreen(lightIntensity, visible, seen);
-		lightb		   = eye->getLightBlue(lightIntensity, visible, seen);
-		uint32_t lightRGB =
-			lightb + (lightr << 16) + (lightg << 8) + (0xff << 24);
+		lightIntensity	= land->getTerrainLight(position, visible, seen);
+		lightr			  = eye->getLightRed(lightIntensity, visible, seen);
+		lightg			  = eye->getLightGreen(lightIntensity, visible, seen);
+		lightb			  = eye->getLightBlue(lightIntensity, visible, seen);
+		uint32_t lightRGB = lightb + (lightr << 16) + (lightg << 8) + (0xff << 24);
 		newElement.setLight(lightRGB);
 		newElement.draw();
 		shapesOK = TRUE;
@@ -373,10 +353,8 @@ void VFXAppearance::setDamageLvl(uint32_t dmg)
 	realBuildingDamage = TRUE;
 	if (dmg)
 	{
-		uint32_t totalFrames1 =
-			appearType->actorStateData[ACTOR_STATE_BLOWING_UP1].numFrames;
-		uint32_t totalFrames2 =
-			appearType->actorStateData[ACTOR_STATE_BLOWING_UP2].numFrames;
+		uint32_t totalFrames1 = appearType->actorStateData[ACTOR_STATE_BLOWING_UP1].numFrames;
+		uint32_t totalFrames2 = appearType->actorStateData[ACTOR_STATE_BLOWING_UP2].numFrames;
 		if ((dmg >= (totalFrames1 + totalFrames2)))
 		{
 			setTypeId(ACTOR_STATE_DESTROYED);
@@ -421,13 +399,11 @@ int32_t VFXAppearance::update(void)
 	// Must update animation frame numbers, even if not visible!!
 	// Make sure animation runs no faster than frameRate fps.
 	// Moved to here to make game work.
-	uint32_t anyFrames =
-		appearType->actorStateData[currentShapeTypeId].numFrames;
+	uint32_t anyFrames = appearType->actorStateData[currentShapeTypeId].numFrames;
 	if (anyFrames > 1)
 	{
 		int32_t frameInc = 0;
-		float frameRate =
-			appearType->actorStateData[currentShapeTypeId].frameRate;
+		float frameRate  = appearType->actorStateData[currentShapeTypeId].frameRate;
 		//------------------------------------------------------
 		// Make sure animation runs no faster than frameRate fps.
 		float frameRateOverOne = (1.0 / frameRate);
@@ -441,9 +417,8 @@ int32_t VFXAppearance::update(void)
 		if (frameInc)
 		{
 			currentFrame += frameInc;
-			uint32_t totalFrames =
-				appearType->actorStateData[currentShapeTypeId].numFrames;
-			uint8_t loop = 1;
+			uint32_t totalFrames = appearType->actorStateData[currentShapeTypeId].numFrames;
+			uint8_t loop		 = 1;
 			if ((currentFrame >= totalFrames) && (loop) && (endFrame == -1))
 			{
 				currentFrame %= totalFrames;

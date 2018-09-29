@@ -175,7 +175,7 @@ extern float loadProgress;
 extern char TeamRelations[MAX_TEAMS][MAX_TEAMS];
 
 ByteFlag* VisibleBits = nullptr; // What can currently be seen
-ByteFlag* SeenBits = nullptr;	// What HAS been seen
+ByteFlag* SeenBits	= nullptr; // What HAS been seen
 
 UserHeapPtr missionHeap = nullptr;
 
@@ -219,9 +219,9 @@ extern PriorityQueuePtr openList;
 // Macro used for statistic timing of main functions
 //
 #ifdef LAB_ONLY
-#define ProfileTime(x, y)                                                      \
-	x = GetCycles();                                                           \
-	y;                                                                         \
+#define ProfileTime(x, y)                                                                          \
+	x = GetCycles();                                                                               \
+	y;                                                                                             \
 	x = GetCycles() - x;
 extern int64_t MCTimeTerrainUpdate;
 extern int64_t MCTimeCameraUpdate;
@@ -327,44 +327,44 @@ int32_t Mission::update(void)
 		if ((missionLineChanged + 50) < turn)
 		{
 #ifndef FINAL
-			if (userInput->getKeyDown(KEY_X) && userInput->ctrl() &&
-				!userInput->alt() && !userInput->shift())
+			if (userInput->getKeyDown(KEY_X) && userInput->ctrl() && !userInput->alt() &&
+				!userInput->shift())
 			{
 				useCollisions ^= true;
 				missionLineChanged = turn;
 			}
-			if (userInput->getKeyDown(KEY_X) && userInput->ctrl() &&
-				userInput->alt() && userInput->shift())
+			if (userInput->getKeyDown(KEY_X) && userInput->ctrl() && userInput->alt() &&
+				userInput->shift())
 			{
 				saveInMissionSave  = true;
 				missionLineChanged = turn;
 			}
-			if (userInput->getKeyDown(KEY_Z) && userInput->ctrl() &&
-				userInput->alt() && userInput->shift())
+			if (userInput->getKeyDown(KEY_Z) && userInput->ctrl() && userInput->alt() &&
+				userInput->shift())
 			{
 				loadInMissionSave  = true;
 				missionLineChanged = turn;
 			}
-			if (userInput->getKeyDown(KEY_Y) && userInput->ctrl() &&
-				!userInput->alt() && !userInput->shift())
+			if (userInput->getKeyDown(KEY_Y) && userInput->ctrl() && !userInput->alt() &&
+				!userInput->shift())
 			{
 				DisplayCameraAngle ^= true;
 				missionLineChanged = turn;
 			}
-			if (userInput->getKeyDown(KEY_N) && userInput->ctrl() &&
-				!userInput->alt() && !userInput->shift())
+			if (userInput->getKeyDown(KEY_N) && userInput->ctrl() && !userInput->alt() &&
+				!userInput->shift())
 			{
 				useSensors ^= true;
 				missionLineChanged = turn;
 			}
-			if (userInput->getKeyDown(KEY_P) && userInput->ctrl() &&
-				userInput->alt() && userInput->shift())
+			if (userInput->getKeyDown(KEY_P) && userInput->ctrl() && userInput->alt() &&
+				userInput->shift())
 			{
 				LogisticsData::instance->setResourcePoints(100000);
 				missionLineChanged = turn;
 			}
-			if (userInput->getKeyDown(KEY_R) && userInput->ctrl() &&
-				userInput->alt() && userInput->shift())
+			if (userInput->getKeyDown(KEY_R) && userInput->ctrl() && userInput->alt() &&
+				userInput->shift())
 			{
 				if (forcedFrameRate == -1.0f)
 					forcedFrameRate = 2.0f;
@@ -376,8 +376,8 @@ int32_t Mission::update(void)
 					forcedFrameRate = -1.0f;
 				missionLineChanged = turn;
 			}
-			if (userInput->getKeyDown(KEY_C) && userInput->ctrl() &&
-				userInput->alt() && userInput->shift())
+			if (userInput->getKeyDown(KEY_C) && userInput->ctrl() && userInput->alt() &&
+				userInput->shift())
 			{
 				neverEndingStory   = true;
 				missionLineChanged = turn;
@@ -425,7 +425,7 @@ int32_t Mission::update(void)
 		// live with that...
 		//		if (MPlayer && (MPlayer->startTime >= 0.0))
 		//			runningTime = (float)(gos_GetElapsedTime()) -
-		//MPlayer->startTime; 		else if (MPlayer && (scenarioTime > 10.0))
+		// MPlayer->startTime; 		else if (MPlayer && (scenarioTime > 10.0))
 		//			Fatal(MissionStartTime, " runningTime is not working...why?
 		//"); 		if (MPlayer) 			actualTime = runningTime; 		else
 		// Try ALWAYS using SCENARIO Time.  This has been specially coded to be
@@ -483,8 +483,7 @@ int32_t Mission::update(void)
 		if (useSensors && (!missionInterface->isPaused() || MPlayer))
 			ProfileTime(MCTimeSensorUpdate, SensorManager->update());
 		if (useCollisions && (!missionInterface->isPaused() || MPlayer))
-			ProfileTime(
-				MCTimeCollisionUpdate, ObjectManager->updateCollisions());
+			ProfileTime(MCTimeCollisionUpdate, ObjectManager->updateCollisions());
 		if (missionBrain)
 		{
 			if (!missionInterface->isPaused() || MPlayer)
@@ -506,8 +505,7 @@ int32_t Mission::update(void)
 			{
 				MoverPtr mover = ObjectManager->getMover(i);
 				if (mover->getCommanderId() == Commander::home->getId())
-					if (!mover->isDisabled() && !mover->isDestroyed() &&
-						mover->isOnGUI())
+					if (!mover->isDisabled() && !mover->isDestroyed() && mover->isOnGUI())
 					{
 						playerForceAllDead = false;
 						break;
@@ -552,8 +550,7 @@ int32_t Mission::update(void)
 					{
 						MoverPtr mover = ObjectManager->getMover(i);
 						if (mover->getCommanderId() == Commander::home->getId())
-							if (!mover->isDisabled() && !mover->isDestroyed() &&
-								mover->isOnGUI())
+							if (!mover->isDisabled() && !mover->isDestroyed() && mover->isOnGUI())
 							{
 								playerForceAllDead = false;
 								break;
@@ -563,7 +560,7 @@ int32_t Mission::update(void)
 					{
 						terminationResult		  = mis_PLAYER_LOST_BIG;
 						terminationCounterStarted = true;
-						missionTerminationTime = actualTime + 5.0 /*seconds*/;
+						missionTerminationTime	= actualTime + 5.0 /*seconds*/;
 					}
 				}
 			}
@@ -579,7 +576,7 @@ int32_t Mission::update(void)
 					if (MPlayer->calcMissionStatus())
 					{
 						terminationCounterStarted = true;
-						missionTerminationTime = actualTime + 5.0 /*seconds*/;
+						missionTerminationTime	= actualTime + 5.0 /*seconds*/;
 						if (MPlayer->playerInfo[MPlayer->commanderID].winner)
 							terminationResult = mis_PLAYER_WIN_BIG;
 						else
@@ -597,17 +594,15 @@ int32_t Mission::update(void)
 							{
 								if (OS_SUCCESSFUL == status)
 								{
-									terminationResult = mis_PLAYER_WIN_BIG;
+									terminationResult		  = mis_PLAYER_WIN_BIG;
 									terminationCounterStarted = true;
-									missionTerminationTime =
-										actualTime + 5.0 /*seconds*/;
+									missionTerminationTime	= actualTime + 5.0 /*seconds*/;
 								}
 								else
 								{
-									terminationResult = mis_PLAYER_LOST_BIG;
+									terminationResult		  = mis_PLAYER_LOST_BIG;
 									terminationCounterStarted = true;
-									missionTerminationTime =
-										actualTime + 5.0 /*seconds*/;
+									missionTerminationTime	= actualTime + 5.0 /*seconds*/;
 								}
 							}
 						}
@@ -617,25 +612,24 @@ int32_t Mission::update(void)
 		}
 		if (!MPlayer && !terminationCounterStarted)
 		{
-			if ((m_timeLimit != -1.0f) && (actualTime > m_timeLimit) &&
-				!neverEndingStory)
+			if ((m_timeLimit != -1.0f) && (actualTime > m_timeLimit) && !neverEndingStory)
 			{
 				terminationResult		  = mis_PLAYER_LOST_BIG;
 				terminationCounterStarted = true;
 				missionTerminationTime	= actualTime + 5.0 /*seconds*/;
 			}
 		}
-		if (userInput->getKeyDown(KEY_F) && !userInput->ctrl() &&
-			userInput->alt() && !userInput->shift())
+		if (userInput->getKeyDown(KEY_F) && !userInput->ctrl() && userInput->alt() &&
+			!userInput->shift())
 		{
 			showFrameRate ^= true;
 			missionLineChanged = turn;
 		}
 #ifndef FINAL
-		bool cheatWin  = (userInput->getKeyDown(KEY_W) && userInput->shift() &&
-						  userInput->ctrl() && userInput->alt());
-		bool cheatLose = (userInput->getKeyDown(KEY_L) && userInput->shift() &&
-						  userInput->ctrl() && userInput->alt());
+		bool cheatWin  = (userInput->getKeyDown(KEY_W) && userInput->shift() && userInput->ctrl() &&
+			 userInput->alt());
+		bool cheatLose = (userInput->getKeyDown(KEY_L) && userInput->shift() && userInput->ctrl() &&
+			userInput->alt());
 		if (cheatWin)
 			scenarioResult = mis_PLAYER_WIN_BIG;
 		else if (cheatLose)
@@ -660,31 +654,25 @@ int32_t Mission::update(void)
 			Stuff::Vector4D moveHere;
 			moveHere.x = 0.0f;
 			moveHere.y = 0.0f;
-			gos_TextSetAttributes(
-				gosFontHandle, 0, gosFontScale, false, true, false, false);
+			gos_TextSetAttributes(gosFontHandle, 0, gosFontScale, false, true, false, false);
 			gos_TextStringLength(&width, &height, text);
 			moveHere.z = width;
 			moveHere.w = height;
-			globalFloatHelp->setFloatHelp(text, moveHere, SD_GREEN, XP_BLACK,
-				1.0f, true, false, false, false);
+			globalFloatHelp->setFloatHelp(
+				text, moveHere, SD_GREEN, XP_BLACK, 1.0f, true, false, false, false);
 		}
 #endif
 #ifdef LAB_ONLY
-		MCTimeMissionTotal =
-			MCTimeTerrainUpdate + MCTimeCameraUpdate + MCTimeWeatherUpdate +
-			MCTimePathManagerUpdate + MCTimeRunBrainUpdate + MCTimePath1Update +
-			MCTimePath2Update + MCTimePath3Update + MCTimePath4Update +
-			MCTimePath5Update + MCTimeCalcPath1Update + MCTimeCalcPath2Update +
-			MCTimeCalcPath3Update + MCTimeCalcPath4Update +
-			MCTimeCalcPath5Update + MCTimeCalcGoal1Update +
-			MCTimeCalcGoal2Update + MCTimeCalcGoal3Update +
-			MCTimeCalcGoal4Update + MCTimeCalcGoal5Update +
-			MCTimeCalcGoal6Update + MCTimeTerrainGeometry +
-			MCTimeInterfaceUpdate + MCTimeCraterUpdate +
-			MCTimeTXMManagerUpdate + MCTimeSensorUpdate + MCTimeLOSUpdate +
-			MCTimeCollisionUpdate + MCTimeMissionScript +
-			MCTimeTerrainObjectsUpdate + MCTimeMechsUpdate +
-			MCTimeVehiclesUpdate + MCTimeTurretsUpdate + MCTimeAllElseUpdate;
+		MCTimeMissionTotal = MCTimeTerrainUpdate + MCTimeCameraUpdate + MCTimeWeatherUpdate +
+			MCTimePathManagerUpdate + MCTimeRunBrainUpdate + MCTimePath1Update + MCTimePath2Update +
+			MCTimePath3Update + MCTimePath4Update + MCTimePath5Update + MCTimeCalcPath1Update +
+			MCTimeCalcPath2Update + MCTimeCalcPath3Update + MCTimeCalcPath4Update +
+			MCTimeCalcPath5Update + MCTimeCalcGoal1Update + MCTimeCalcGoal2Update +
+			MCTimeCalcGoal3Update + MCTimeCalcGoal4Update + MCTimeCalcGoal5Update +
+			MCTimeCalcGoal6Update + MCTimeTerrainGeometry + MCTimeInterfaceUpdate +
+			MCTimeCraterUpdate + MCTimeTXMManagerUpdate + MCTimeSensorUpdate + MCTimeLOSUpdate +
+			MCTimeCollisionUpdate + MCTimeMissionScript + MCTimeTerrainObjectsUpdate +
+			MCTimeMechsUpdate + MCTimeVehiclesUpdate + MCTimeTurretsUpdate + MCTimeAllElseUpdate;
 #endif
 	}
 	return scenarioResult;
@@ -833,17 +821,13 @@ void InitDifficultySettings(FitIniFile* gameSystemFile)
 {
 	int32_t result = gameSystemFile->seekBlock("DifficultySettings");
 	gosASSERT(result == NO_ERROR);
-	result =
-		gameSystemFile->readIdLongArray("PlayerSkills", globalPlayerSkills, 4);
+	result = gameSystemFile->readIdLongArray("PlayerSkills", globalPlayerSkills, 4);
 	gosASSERT(result == NO_ERROR);
-	result =
-		gameSystemFile->readIdLongArray("EnemySkills", globalEnemySkills, 4);
+	result = gameSystemFile->readIdLongArray("EnemySkills", globalEnemySkills, 4);
 	gosASSERT(result == NO_ERROR);
-	result = gameSystemFile->readIdLongArray(
-		"PlayerWeapons", globalPlayerWeapons, 4);
+	result = gameSystemFile->readIdLongArray("PlayerWeapons", globalPlayerWeapons, 4);
 	gosASSERT(result == NO_ERROR);
-	result =
-		gameSystemFile->readIdLongArray("EnemyWeapons", globalEnemyWeapons, 4);
+	result = gameSystemFile->readIdLongArray("EnemyWeapons", globalEnemyWeapons, 4);
 	gosASSERT(result == NO_ERROR);
 }
 //--------------------------------------------------
@@ -856,33 +840,29 @@ extern float WeaponRange[];		 // MOVER
 extern float DefaultAttackRange; // MOVER
 float baseSensorRange = 0.0;
 extern int32_t visualRangeTable[];
-extern uint8_t godMode;   // Can I simply see everything, enemy and friendly?
-uint8_t revealTacMap = 0; // Is Tacmap always revealed?
-uint8_t footPrints = 0;   // Do we use/draw footprints?
-bool CantTouchThis = false;
-int32_t tonnageDivisor =
-	1.0; // Amount we divide tons under drop weight by to calc resource bonus
-int32_t resourcesPerTonDivided = 0; // Tons per above divided number
-float MineDamage = 0.0;				// Damage mine does per tile
-float MineSplashDamage = 0.0;	// Damage mine explosion does to all in tile.
-float MineSplashRange  = 0.0;	// Range of Splash Damage
-int32_t MineExplosion = -1;		 // Object ID of mine explosion
-int32_t MineLayThrottle = 0;	 // Throttle setting of mine Layer
-int32_t MineSweepThrottle = 0;   // Throttle setting of mine sweeper
-float StrikeWaitTime	 = 0.0f; // Time between aerospace Spotter strike calls
-float StrikeTimeToImpact = 0.0f; // Time it takes air strike to come in.
-float MineWaitTime =
-	0.0; // Time Mine Layer must sit in Tile before mine is laid.
-int32_t totalSmokeSpheres = 0; // Maximum number of smoke spheres in world.
-int32_t totalSmokeShapeSize =
-	0; // Amount we allocate to smoke heap for spheres/textures.
-int32_t maxFiresBurning = 0; // Maximum number of fires allowed in world.
-float maxFireBurnTime =
-	0.0;			   // Maximum time a fire can be burning before it dies out.
-bool force64MB = TRUE; // Do we have between 64 and 32 Mb of memory?
-bool force32Mb = FALSE;		  // Do we have 32Mb of memory only?
-float InfluenceRadius = -1.0; // Capture Radius
-float InfluenceTime   = 0.0;  // Time inside to Capture
+extern uint8_t godMode;		// Can I simply see everything, enemy and friendly?
+uint8_t revealTacMap   = 0; // Is Tacmap always revealed?
+uint8_t footPrints	 = 0; // Do we use/draw footprints?
+bool CantTouchThis	 = false;
+int32_t tonnageDivisor = 1.0; // Amount we divide tons under drop weight by to calc resource bonus
+int32_t resourcesPerTonDivided = 0;		// Tons per above divided number
+float MineDamage			   = 0.0;   // Damage mine does per tile
+float MineSplashDamage		   = 0.0;   // Damage mine explosion does to all in tile.
+float MineSplashRange		   = 0.0;   // Range of Splash Damage
+int32_t MineExplosion		   = -1;	// Object ID of mine explosion
+int32_t MineLayThrottle		   = 0;		// Throttle setting of mine Layer
+int32_t MineSweepThrottle	  = 0;		// Throttle setting of mine sweeper
+float StrikeWaitTime		   = 0.0f;  // Time between aerospace Spotter strike calls
+float StrikeTimeToImpact	   = 0.0f;  // Time it takes air strike to come in.
+float MineWaitTime			   = 0.0;   // Time Mine Layer must sit in Tile before mine is laid.
+int32_t totalSmokeSpheres	  = 0;		// Maximum number of smoke spheres in world.
+int32_t totalSmokeShapeSize	= 0;		// Amount we allocate to smoke heap for spheres/textures.
+int32_t maxFiresBurning		   = 0;		// Maximum number of fires allowed in world.
+float maxFireBurnTime		   = 0.0;   // Maximum time a fire can be burning before it dies out.
+bool force64MB				   = TRUE;  // Do we have between 64 and 32 Mb of memory?
+bool force32Mb				   = FALSE; // Do we have 32Mb of memory only?
+float InfluenceRadius		   = -1.0;  // Capture Radius
+float InfluenceTime			   = 0.0;   // Time inside to Capture
 //----------------------------------------------------------------------------------
 void Mission::createPartObject(int32_t partIndex, MoverPtr mover)
 {
@@ -903,10 +883,8 @@ void Mission::createPartObject(int32_t partIndex, MoverPtr mover)
 	// world and we can command it!
 	if (parts[partIndex].objectWID == 0)
 	{
-		ObjectTypePtr objType =
-			ObjectManager->getObjectType(parts[partIndex].objNumber);
-		Assert(objType != nullptr, partIndex,
-			" Mission.createPartObject: unable to get objType ");
+		ObjectTypePtr objType = ObjectManager->getObjectType(parts[partIndex].objNumber);
+		Assert(objType != nullptr, partIndex, " Mission.createPartObject: unable to get objType ");
 		parts[partIndex].objectWID = mover->getWatchID();
 		mover->init(true, objType);
 		mover->setAwake(parts[partIndex].active ? true : false);
@@ -928,16 +906,15 @@ void Mission::createPartObject(int32_t partIndex, MoverPtr mover)
 		case GROUNDVEHICLE:
 		case ELEMENTAL:
 		{
-			if (ObjectTypeManager::objectFile->seekPacket(
-					parts[partIndex].objNumber) == NO_ERROR)
+			if (ObjectTypeManager::objectFile->seekPacket(parts[partIndex].objNumber) == NO_ERROR)
 			{
 				//--------------------------------------------------------
 				// All new code here.  This will ask the objectType it is
 				// loading what kind of objectType it is and create it
 				// based on that instead of objTypeNum.
 				FitIniFile profileFile;
-				int32_t result = profileFile.open(ObjectTypeManager::objectFile,
-					ObjectTypeManager::objectFile->getPacketSize());
+				int32_t result = profileFile.open(
+					ObjectTypeManager::objectFile, ObjectTypeManager::objectFile->getPacketSize());
 				if (result != NO_ERROR)
 					STOP((" Mission.createPartObject: can't open file "));
 				if (result == NO_ERROR)
@@ -978,21 +955,18 @@ void Mission::createPartObject(int32_t partIndex, MoverPtr mover)
 			AppearancePtr myActor = mover->getAppearance();
 			if (MPlayer)
 				myActor->resetPaintScheme(
-					MPlayer->colors[MPlayer->playerInfo[mover->commanderId]
-										.stripeColor],
-					MPlayer->colors[MPlayer->playerInfo[mover->commanderId]
-										.stripeColor],
+					MPlayer->colors[MPlayer->playerInfo[mover->commanderId].stripeColor],
+					MPlayer->colors[MPlayer->playerInfo[mover->commanderId].stripeColor],
 					MPlayer->colors[MPlayer->playerInfo[mover->commanderId]
 										.baseColor[BASECOLOR_TEAM]]);
 			else
 			{
 				if (mover->getCommanderId() == Commander::home->getId())
-					myActor->resetPaintScheme(prefs.highlightColor,
-						prefs.highlightColor, prefs.baseColor);
+					myActor->resetPaintScheme(
+						prefs.highlightColor, prefs.highlightColor, prefs.baseColor);
 				else
 					myActor->resetPaintScheme(parts[partIndex].highlightColor1,
-						parts[partIndex].highlightColor2,
-						parts[partIndex].baseColor);
+						parts[partIndex].highlightColor2, parts[partIndex].baseColor);
 				// myActor->setGesture(parts[partIndex].gestureId);  DOn't do
 				// this unless you want the mechs to start shutdown and power up!
 			}
@@ -1003,21 +977,18 @@ void Mission::createPartObject(int32_t partIndex, MoverPtr mover)
 			AppearancePtr myActor = mover->getAppearance();
 			if (MPlayer)
 				myActor->resetPaintScheme(
-					MPlayer->colors[MPlayer->playerInfo[mover->commanderId]
-										.stripeColor],
-					MPlayer->colors[MPlayer->playerInfo[mover->commanderId]
-										.stripeColor],
+					MPlayer->colors[MPlayer->playerInfo[mover->commanderId].stripeColor],
+					MPlayer->colors[MPlayer->playerInfo[mover->commanderId].stripeColor],
 					MPlayer->colors[MPlayer->playerInfo[mover->commanderId]
 										.baseColor[BASECOLOR_TEAM]]);
 			else
 			{
 				if (mover->getCommanderId() == Commander::home->getId())
-					myActor->resetPaintScheme(prefs.highlightColor,
-						prefs.highlightColor, prefs.baseColor);
+					myActor->resetPaintScheme(
+						prefs.highlightColor, prefs.highlightColor, prefs.baseColor);
 				else
 					myActor->resetPaintScheme(parts[partIndex].highlightColor1,
-						parts[partIndex].highlightColor2,
-						parts[partIndex].baseColor);
+						parts[partIndex].highlightColor2, parts[partIndex].baseColor);
 				// myActor->setGesture(parts[partIndex].gestureId);  DOn't do
 				// this unless you want the mechs to start shutdown and power up!
 			}
@@ -1031,14 +1002,13 @@ void Mission::createPartObject(int32_t partIndex, MoverPtr mover)
 		// parts[i].object->setIdNumber(i);
 		if (MPlayer)
 		{
-			MPlayer->addToMoverRoster((MoverPtr)ObjectManager->getByWatchID(
-				parts[partIndex].objectWID));
+			MPlayer->addToMoverRoster(
+				(MoverPtr)ObjectManager->getByWatchID(parts[partIndex].objectWID));
 			MPlayer->addToPlayerMoverRoster(parts[partIndex].commanderID,
-				(MoverPtr)ObjectManager->getByWatchID(
-					parts[partIndex].objectWID));
+				(MoverPtr)ObjectManager->getByWatchID(parts[partIndex].objectWID));
 			if (parts[partIndex].commanderID == MPlayer->commanderID)
-				MPlayer->addToLocalMovers((MoverPtr)ObjectManager->getByWatchID(
-					parts[partIndex].objectWID));
+				MPlayer->addToLocalMovers(
+					(MoverPtr)ObjectManager->getByWatchID(parts[partIndex].objectWID));
 		}
 		if (parts[partIndex].exists)
 		{
@@ -1098,10 +1068,8 @@ int32_t Mission::addMover(MoverInitData* moverSpec)
 	// ONLY if we overrode the data in logistics!!
 	if (moverSpec->overrideLoadedPilot)
 	{
-		pilot->skills[MWS_GUNNERY] = pilot->skillRank[MWS_GUNNERY] =
-			moverSpec->gunnerySkill;
-		pilot->skills[MWS_PILOTING] = pilot->skillRank[MWS_PILOTING] =
-			moverSpec->pilotingSkill;
+		pilot->skills[MWS_GUNNERY] = pilot->skillRank[MWS_GUNNERY] = moverSpec->gunnerySkill;
+		pilot->skills[MWS_PILOTING] = pilot->skillRank[MWS_PILOTING] = moverSpec->pilotingSkill;
 		memcpy(pilot->specialtySkills, moverSpec->specialtySkills,
 			sizeof(bool) * NUM_SPECIALTY_SKILLS);
 		pilot->calcRank();
@@ -1122,8 +1090,7 @@ int32_t Mission::addMover(MoverInitData* moverSpec)
 		pilot->setBrainName(moverSpec->brainFileName);
 		brainFullFileName.init(warriorPath, moverSpec->brainFileName, ".abl");
 	}
-	int32_t moduleHandle =
-		ABLi_preProcess(brainFullFileName, &numErrors, &numLinesProcessed);
+	int32_t moduleHandle = ABLi_preProcess(brainFullFileName, &numErrors, &numLinesProcessed);
 	gosASSERT(moduleHandle >= 0);
 	pilot->setBrain(moduleHandle);
 	/*
@@ -1186,17 +1153,15 @@ int32_t Mission::addMover(MoverInitData* moverSpec)
 			case GROUNDVEHICLE:
 			case ELEMENTAL:
 			{
-				if (ObjectTypeManager::objectFile->seekPacket(
-						moverSpec->objNumber) == NO_ERROR)
+				if (ObjectTypeManager::objectFile->seekPacket(moverSpec->objNumber) == NO_ERROR)
 				{
 					//--------------------------------------------------------
 					// All new code here.  This will ask the objectType it is
 					// loading what kind of objectType it is and create it
 					// based on that instead of objTypeNum.
 					FitIniFile profileFile;
-					int32_t result =
-						profileFile.open(ObjectTypeManager::objectFile,
-							ObjectTypeManager::objectFile->getPacketSize());
+					int32_t result = profileFile.open(ObjectTypeManager::objectFile,
+						ObjectTypeManager::objectFile->getPacketSize());
 					if (result != NO_ERROR)
 						STOP((" Mission.createPartObject: can't open file "));
 					if (result == NO_ERROR)
@@ -1219,8 +1184,7 @@ int32_t Mission::addMover(MoverInitData* moverSpec)
 			if (moverSpec->controlType == CONTROL_PLAYER)
 				mover->setControl(CONTROL_PLAYER);
 			else if (MPlayer)
-				mover->setControl(
-					MPlayer->isServer() ? CONTROL_AI : CONTROL_NET);
+				mover->setControl(MPlayer->isServer() ? CONTROL_AI : CONTROL_NET);
 			else
 				mover->setControl(CONTROL_AI);
 			mover->setPosition(moverSpec->position);
@@ -1235,8 +1199,8 @@ int32_t Mission::addMover(MoverInitData* moverSpec)
 				//-----------------------------------------
 				// Make sure the pilot paints his Mech!!
 				AppearancePtr myActor = mover->getAppearance();
-				myActor->resetPaintScheme(moverSpec->highlightColor1,
-					moverSpec->highlightColor2, moverSpec->baseColor);
+				myActor->resetPaintScheme(
+					moverSpec->highlightColor1, moverSpec->highlightColor2, moverSpec->baseColor);
 				// myActor->setGesture(moverSpec->gestureID);  Don't do this
 				// unless you want things to start shutdown and power up!
 			}
@@ -1244,8 +1208,8 @@ int32_t Mission::addMover(MoverInitData* moverSpec)
 			case GROUNDVEHICLE:
 			{
 				AppearancePtr myActor = mover->getAppearance();
-				myActor->resetPaintScheme(moverSpec->highlightColor1,
-					moverSpec->highlightColor2, moverSpec->baseColor);
+				myActor->resetPaintScheme(
+					moverSpec->highlightColor1, moverSpec->highlightColor2, moverSpec->baseColor);
 			}
 			break;
 			case ELEMENTAL:
@@ -1269,8 +1233,7 @@ int32_t Mission::addMover(MoverInitData* moverSpec)
 			// If we're not playing multiplayer, make sure all home commander
 			// movers have their localMoverId set to 0, so the iface can at
 			// least check if a mover is player controlled...
-			if (!MPlayer &&
-				(Commander::home->getId() == moverSpec->commanderID))
+			if (!MPlayer && (Commander::home->getId() == moverSpec->commanderID))
 				mover->setLocalMoverId(0);
 			ObjectManager->modifyMoverLists(mover, MOVERLIST_ADD);
 			Team::teams[moverSpec->teamID]->addToRoster(mover);
@@ -1292,8 +1255,7 @@ int32_t Mission::addMover(MoverInitData* moverSpec)
 				if (mover->getObjectClass() != BATTLEMECH)
 					STOP(("LogisticsMech was not a MECH!!"));
 				((BattleMechPtr)mover)
-					->resetComponents(
-						moverSpec->numComponents, moverSpec->components);
+					->resetComponents(moverSpec->numComponents, moverSpec->components);
 			}
 			return (mover->getHandle());
 		}
@@ -1337,8 +1299,7 @@ int32_t Mission::addMover(MoverInitData* moveSpec, LogisticsMech* mechData)
 	mData.overrideLoadedPilot = moveSpec->overrideLoadedPilot;
 	mData.gunnerySkill		  = moveSpec->gunnerySkill;
 	mData.pilotingSkill		  = moveSpec->pilotingSkill;
-	memcpy(mData.specialtySkills, moveSpec->specialtySkills,
-		sizeof(bool) * NUM_SPECIALTY_SKILLS);
+	memcpy(mData.specialtySkills, moveSpec->specialtySkills, sizeof(bool) * NUM_SPECIALTY_SKILLS);
 	int32_t moverHandle = addMover(&mData);
 	// Now take the moverHandle and change the component data to match Heidi's
 	// passed logisticsMech.
@@ -1350,8 +1311,7 @@ int32_t Mission::addMover(MoverInitData* moveSpec, LogisticsMech* mechData)
 	int32_t* componentList  = nullptr;
 	if (totalComponents)
 	{
-		componentList =
-			(int32_t*)systemHeap->Malloc(sizeof(int32_t) * totalComponents);
+		componentList	  = (int32_t*)systemHeap->Malloc(sizeof(int32_t) * totalComponents);
 		int32_t otherCount = totalComponents;
 		mechData->getComponents(otherCount, componentList);
 		if (otherCount != totalComponents)
@@ -1376,8 +1336,8 @@ int32_t Mission::removeMover(MoverPtr mover)
 	return (0);
 }
 //---------------------------------------------------------------------------
-void Mission::tradeMover(MoverPtr mover, int32_t newTeamID,
-	int32_t newCommanderID, PSTR pilotFileName, PSTR brainFileName)
+void Mission::tradeMover(MoverPtr mover, int32_t newTeamID, int32_t newCommanderID,
+	PSTR pilotFileName, PSTR brainFileName)
 {
 	missionInterface->removeMover(mover);
 	if (MPlayer)
@@ -1389,8 +1349,7 @@ void Mission::tradeMover(MoverPtr mover, int32_t newTeamID,
 	{
 		char realPilotName[256];
 		strcpy(realPilotName, &(pilotFileName[MPlayer ? 4 : 3]));
-		LogisticsPilot* lPilot =
-			LogisticsData::instance->getPilot(realPilotName);
+		LogisticsPilot* lPilot = LogisticsData::instance->getPilot(realPilotName);
 		mover->loadPilot(pilotFileName, brainFileName, lPilot);
 	}
 	ObjectManager->tradeMover(mover, newTeamID, newCommanderID);
@@ -1408,8 +1367,7 @@ void Mission::tradeMover(MoverPtr mover, int32_t newTeamID,
 	}
 }
 //----------------------------------------------------------------------------
-bool Mission::calcComplexDropZones(
-	PSTR missionName, char dropZoneCID[MAX_MC_PLAYERS])
+bool Mission::calcComplexDropZones(PSTR missionName, char dropZoneCID[MAX_MC_PLAYERS])
 {
 	for (size_t p = 0; p < MAX_MC_PLAYERS; p++)
 		dropZoneCID[p] = -1;
@@ -1451,7 +1409,7 @@ bool Mission::calcComplexDropZones(
 			if ((teamID < 0) || (teamID >= MAX_TEAMS))
 				STOP(("Mission.calcComplexDropZones: bad teamID"));
 			char commanderID = -1;
-			result = missionFile->readIdChar("CommanderId", commanderID);
+			result			 = missionFile->readIdChar("CommanderId", commanderID);
 			if (result != NO_ERROR)
 			{
 				int32_t cID;
@@ -1486,8 +1444,7 @@ bool Mission::calcComplexDropZones(
 	// We know everything's good, so hand out the drop zones...
 	for (i = 0; i < MAX_MC_PLAYERS; i++)
 	{
-		int32_t index =
-			RandomNumber(teamSize[MPlayer->playerInfo[i].team][0]--);
+		int32_t index = RandomNumber(teamSize[MPlayer->playerInfo[i].team][0]--);
 		for (size_t j = 0; j < MAX_MC_PLAYERS; j++)
 			if (dropZoneSetup[j] == MPlayer->playerInfo[i].team)
 			{
@@ -1539,8 +1496,7 @@ bool IsGateOpen(int32_t objectWID)
 }
 //----------------------------------------------------------------------------
 void Mission::init(PSTR missionName, int32_t loadType, int32_t dropZoneID,
-	Stuff::Vector3D* dropZoneList, char commandersToLoad[8][3],
-	int32_t numMoversPerCommander)
+	Stuff::Vector3D* dropZoneList, char commandersToLoad[8][3], int32_t numMoversPerCommander)
 {
 	neverEndingStory  = false;
 	invulnerableON	= false;
@@ -1550,14 +1506,12 @@ void Mission::init(PSTR missionName, int32_t loadType, int32_t dropZoneID,
 	// systemHeap->dumpRecordLog();
 	loadProgress = 0.0f;
 	loadProgress = 1.0f;
-	if ((loadType == MISSION_LOAD_SP_QUICKSTART) ||
-		(loadType == MISSION_LOAD_SP_LOGISTICS))
+	if ((loadType == MISSION_LOAD_SP_QUICKSTART) || (loadType == MISSION_LOAD_SP_LOGISTICS))
 	{
-		char teamRelationsForSP[MAX_TEAMS][MAX_TEAMS] = {
-			{0, 2, 1, 2, 2, 2, 2, 2}, {2, 0, 2, 2, 2, 2, 2, 2},
-			{1, 2, 0, 2, 2, 2, 2, 2}, {2, 2, 2, 0, 2, 2, 2, 2},
-			{2, 2, 2, 2, 0, 2, 2, 2}, {2, 2, 2, 2, 2, 0, 2, 2},
-			{2, 2, 2, 2, 2, 2, 0, 2}, {2, 2, 2, 2, 2, 2, 2, 0}};
+		char teamRelationsForSP[MAX_TEAMS][MAX_TEAMS] = {{0, 2, 1, 2, 2, 2, 2, 2},
+			{2, 0, 2, 2, 2, 2, 2, 2}, {1, 2, 0, 2, 2, 2, 2, 2}, {2, 2, 2, 0, 2, 2, 2, 2},
+			{2, 2, 2, 2, 0, 2, 2, 2}, {2, 2, 2, 2, 2, 0, 2, 2}, {2, 2, 2, 2, 2, 2, 0, 2},
+			{2, 2, 2, 2, 2, 2, 2, 0}};
 		for (size_t i = 0; i < MAX_TEAMS; i++)
 			for (size_t j = 0; j < MAX_TEAMS; j++)
 			{
@@ -1567,11 +1521,10 @@ void Mission::init(PSTR missionName, int32_t loadType, int32_t dropZoneID,
 	}
 	else
 	{
-		char teamRelationsForMP[MAX_TEAMS][MAX_TEAMS] = {
-			{0, 2, 2, 2, 2, 2, 2, 2}, {2, 0, 2, 2, 2, 2, 2, 2},
-			{2, 2, 0, 2, 2, 2, 2, 2}, {2, 2, 2, 0, 2, 2, 2, 2},
-			{2, 2, 2, 2, 0, 2, 2, 2}, {2, 2, 2, 2, 2, 0, 2, 2},
-			{2, 2, 2, 2, 2, 2, 0, 2}, {2, 2, 2, 2, 2, 2, 2, 0}};
+		char teamRelationsForMP[MAX_TEAMS][MAX_TEAMS] = {{0, 2, 2, 2, 2, 2, 2, 2},
+			{2, 0, 2, 2, 2, 2, 2, 2}, {2, 2, 0, 2, 2, 2, 2, 2}, {2, 2, 2, 0, 2, 2, 2, 2},
+			{2, 2, 2, 2, 0, 2, 2, 2}, {2, 2, 2, 2, 2, 0, 2, 2}, {2, 2, 2, 2, 2, 2, 0, 2},
+			{2, 2, 2, 2, 2, 2, 2, 0}};
 		for (size_t i = 0; i < MAX_TEAMS; i++)
 			for (size_t j = 0; j < MAX_TEAMS; j++)
 			{
@@ -1616,16 +1569,15 @@ void Mission::init(PSTR missionName, int32_t loadType, int32_t dropZoneID,
 	gosASSERT(result == NO_ERROR);
 	WeaponRanges[WEAPON_RANGE_SHORT][0] = span[0];
 	WeaponRanges[WEAPON_RANGE_SHORT][1] = span[1];
-	result = gameSystemFile->readIdFloatArray("Medium", span, 2);
+	result								= gameSystemFile->readIdFloatArray("Medium", span, 2);
 	gosASSERT(result == NO_ERROR);
 	WeaponRanges[WEAPON_RANGE_MEDIUM][0] = span[0];
 	WeaponRanges[WEAPON_RANGE_MEDIUM][1] = span[1];
-	result = gameSystemFile->readIdFloatArray("Long", span, 2);
+	result								 = gameSystemFile->readIdFloatArray("Long", span, 2);
 	gosASSERT(result == NO_ERROR);
 	WeaponRanges[WEAPON_RANGE_LONG][0] = span[0];
 	WeaponRanges[WEAPON_RANGE_LONG][1] = span[1];
-	result							   = gameSystemFile->readIdFloatArray(
-		"OptimalRangePoints", OptimalRangePoints, 5);
+	result = gameSystemFile->readIdFloatArray("OptimalRangePoints", OptimalRangePoints, 5);
 	gosASSERT(result == NO_ERROR);
 	for (size_t i = 0; i < 5; i++)
 		for (size_t j = 0; j < 3; j++)
@@ -1640,33 +1592,27 @@ void Mission::init(PSTR missionName, int32_t loadType, int32_t dropZoneID,
 	result = gameSystemFile->readIdFloat("MaxVisualRange", maxVisualRange);
 	gosASSERT(result == NO_ERROR);
 	MaxVisualRadius = maxVisualRange * 1.4142;
-	result = gameSystemFile->readIdFloat("FireVisualRange", fireVisualRange);
+	result			= gameSystemFile->readIdFloat("FireVisualRange", fireVisualRange);
 	gosASSERT(result == NO_ERROR);
-	result =
-		gameSystemFile->readIdULong("MaxTreeLOSBlock", MaxTreeLOSCellBlock);
+	result = gameSystemFile->readIdULong("MaxTreeLOSBlock", MaxTreeLOSCellBlock);
 	if (result != NO_ERROR)
 		MaxTreeLOSCellBlock = 5;
-	result = gameSystemFile->readIdFloatArray(
-		"WeaponRange", WeaponRange, NUM_FIRERANGES);
+	result = gameSystemFile->readIdFloatArray("WeaponRange", WeaponRange, NUM_FIRERANGES);
 	gosASSERT(result == NO_ERROR);
-	result =
-		gameSystemFile->readIdFloat("DefaultAttackRange", DefaultAttackRange);
+	result = gameSystemFile->readIdFloat("DefaultAttackRange", DefaultAttackRange);
 	if (result != NO_ERROR)
 		DefaultAttackRange = 75.0;
 	result = gameSystemFile->readIdFloat("BaseSensorRange", baseSensorRange);
 	gosASSERT(result == NO_ERROR);
-	result = gameSystemFile->readIdLongArray(
-		"VisualRangeTable", visualRangeTable, 256);
+	result = gameSystemFile->readIdLongArray("VisualRangeTable", visualRangeTable, 256);
 	gosASSERT(result == NO_ERROR);
-	result = gameSystemFile->readIdFloat(
-		"BaseHeadShotElevation", BaseHeadShotElevation);
+	result = gameSystemFile->readIdFloat("BaseHeadShotElevation", BaseHeadShotElevation);
 	if (result != NO_ERROR)
 		BaseHeadShotElevation = 1.0f;
 	int32_t forestMoveCost;
 	result = gameSystemFile->readIdLong("ForestMoveCost", forestMoveCost);
 	gosASSERT(result == NO_ERROR);
-	result = gameSystemFile->readIdFloat(
-		"MaxUnitExtractDistance", MaxExtractUnitDistance);
+	result = gameSystemFile->readIdFloat("MaxUnitExtractDistance", MaxExtractUnitDistance);
 	if (result != NO_ERROR)
 		MaxExtractUnitDistance = 1280.0f; // Ten Tiles away
 	//----------------------------------------------------------------------
@@ -1693,8 +1639,7 @@ void Mission::init(PSTR missionName, int32_t loadType, int32_t dropZoneID,
 		footPrints = 1;
 	result = gameSystemFile->readIdLong("BonusTonnageDivisor", tonnageDivisor);
 	gosASSERT(result == NO_ERROR);
-	result =
-		gameSystemFile->readIdLong("BonusPointsPerTon", resourcesPerTonDivided);
+	result = gameSystemFile->readIdLong("BonusPointsPerTon", resourcesPerTonDivided);
 	gosASSERT(result == NO_ERROR);
 #ifndef FINAL
 	result = gameSystemFile->readIdFloat("CheatHitDamage", CheatHitDamage);
@@ -1737,15 +1682,13 @@ void Mission::init(PSTR missionName, int32_t loadType, int32_t dropZoneID,
 	gosASSERT(result == NO_ERROR);
 	result = gameSystemFile->readIdFloat("StrikeWaitTime", StrikeWaitTime);
 	gosASSERT(result == NO_ERROR);
-	result =
-		gameSystemFile->readIdFloat("StrikeTimeToImpact", StrikeTimeToImpact);
+	result = gameSystemFile->readIdFloat("StrikeTimeToImpact", StrikeTimeToImpact);
 	gosASSERT(result == NO_ERROR);
 	result = gameSystemFile->seekBlock("Smoke");
 	gosASSERT(result == NO_ERROR);
 	result = gameSystemFile->readIdLong("MaxSmokeSpheres", totalSmokeSpheres);
 	gosASSERT(result == NO_ERROR);
-	result =
-		gameSystemFile->readIdLong("TotalSmokeShapeSize", totalSmokeShapeSize);
+	result = gameSystemFile->readIdLong("TotalSmokeShapeSize", totalSmokeShapeSize);
 	gosASSERT(result == NO_ERROR);
 	result = gameSystemFile->seekBlock("Fire");
 	gosASSERT(result == NO_ERROR);
@@ -1881,7 +1824,7 @@ void Mission::init(PSTR missionName, int32_t loadType, int32_t dropZoneID,
 				result		= missionFile->readIdChar("TeamId", teamID);
 				gosASSERT(result == NO_ERROR);
 				char commanderID = -1;
-				result = missionFile->readIdChar("CommanderId", commanderID);
+				result			 = missionFile->readIdChar("CommanderId", commanderID);
 				if (result != NO_ERROR)
 				{
 					int32_t cID;
@@ -1895,8 +1838,8 @@ void Mission::init(PSTR missionName, int32_t loadType, int32_t dropZoneID,
 					// Since dropZoneList is not nullptr, we know this was not
 					// started from the command-line...
 					int32_t origCommanderID = commanderID;
-					commanderID = commandersToLoad[origCommanderID][0];
-					teamID		= commandersToLoad[origCommanderID][1];
+					commanderID				= commandersToLoad[origCommanderID][0];
+					teamID					= commandersToLoad[origCommanderID][1];
 				}
 				if (commanderID > maxCommanderID)
 					maxCommanderID = commanderID;
@@ -1922,8 +1865,8 @@ void Mission::init(PSTR missionName, int32_t loadType, int32_t dropZoneID,
 		Commander::home = Commander::commanders[MultiPlayCommanderId];
 		for (size_t i = 0; i <= maxCommanderID; i++)
 			if (MPlayer->playerInfo[i].commanderID > -1)
-				Commander::commanders[MPlayer->playerInfo[i].commanderID]
-					->setTeam(Team::teams[MPlayer->playerInfo[i].team]);
+				Commander::commanders[MPlayer->playerInfo[i].commanderID]->setTeam(
+					Team::teams[MPlayer->playerInfo[i].team]);
 	}
 	else
 	{
@@ -1945,16 +1888,13 @@ void Mission::init(PSTR missionName, int32_t loadType, int32_t dropZoneID,
 		Mover::triggerAreaMgr = nullptr;
 	}
 	Mover::triggerAreaMgr = new TriggerAreaManager;
-	Assert(Mover::triggerAreaMgr != nullptr, 0,
-		" Mossion.init: unable to init triggerAreaMgr ");
+	Assert(Mover::triggerAreaMgr != nullptr, 0, " Mossion.init: unable to init triggerAreaMgr ");
 	//-----------------------------------
 	// Setup the Sensor System Manager...
 	SensorManager = new SensorSystemManager;
-	Assert(
-		SensorManager != nullptr, 0, " Unable to init sensor system manager ");
+	Assert(SensorManager != nullptr, 0, " Unable to init sensor system manager ");
 	result = SensorManager->init(true);
-	Assert(
-		result == NO_ERROR, result, " could not start Sensor System Manager ");
+	Assert(result == NO_ERROR, result, " could not start Sensor System Manager ");
 	result = missionFile->seekBlock("DropZone0");
 	if (result == NO_ERROR) // lets not enforce drop zones for now
 	{
@@ -1986,21 +1926,18 @@ void Mission::init(PSTR missionName, int32_t loadType, int32_t dropZoneID,
 		numRPoints = MPlayer->missionSettings.resourcePoints;
 		for (size_t i = 0; i < MAX_MC_PLAYERS; i++)
 		{
-			MPlayer->playerInfo[i].resourcePoints =
-				MPlayer->missionSettings.resourcePoints;
-			MPlayer->playerInfo[i].resourcePointsGained = 0;
-			MPlayer->playerInfo[i].resourcePointsAtStart =
-				MPlayer->missionSettings.resourcePoints;
+			MPlayer->playerInfo[i].resourcePoints		 = MPlayer->missionSettings.resourcePoints;
+			MPlayer->playerInfo[i].resourcePointsGained  = 0;
+			MPlayer->playerInfo[i].resourcePointsAtStart = MPlayer->missionSettings.resourcePoints;
 		}
 	}
 	LogisticsData::instance->setResourcePoints(numRPoints);
 	if (MPlayer)
 	{
-		result = missionFile->readIdULong(
-			"NumRandomRPbuildings", MPlayer->numRandomResourceBuildings);
+		result =
+			missionFile->readIdULong("NumRandomRPbuildings", MPlayer->numRandomResourceBuildings);
 	}
-	craterManager =
-		(CraterManagerPtr)missionHeap->Malloc(sizeof(CraterManager));
+	craterManager = (CraterManagerPtr)missionHeap->Malloc(sizeof(CraterManager));
 	gosASSERT(craterManager != nullptr);
 	result = craterManager->init(1000, 20479, "feet");
 	gosASSERT(result == NO_ERROR);
@@ -2029,8 +1966,7 @@ void Mission::init(PSTR missionName, int32_t loadType, int32_t dropZoneID,
 	x				 = GetCycles();
 	MCTimeObjectLoad = x - x1;
 #endif
-	int32_t terrainInitResult =
-		land->init(&pakFile, 0, GameVisibleVertices, loadProgress, 20.0);
+	int32_t terrainInitResult = land->init(&pakFile, 0, GameVisibleVertices, loadProgress, 20.0);
 	if (terrainInitResult != NO_ERROR)
 	{
 		STOP(("Could not load terrain.  Probably size was wrong!"));
@@ -2043,11 +1979,10 @@ void Mission::init(PSTR missionName, int32_t loadType, int32_t dropZoneID,
 	land->load(missionFile);
 	loadProgress = 36.0f;
 	//	land->recalcWater();		//Should have already been done in the
-	//editor
+	// editor
 	//----------------------------------------------------
 	// Start GameMap for Movement System
-	Assert(SimpleMovePathRange > 20, SimpleMovePathRange,
-		" Simple MovePath Range too small ");
+	Assert(SimpleMovePathRange > 20, SimpleMovePathRange, " Simple MovePath Range too small ");
 	MOVE_init(SimpleMovePathRange);
 	if (pakFile.seekPacket(4) == NO_ERROR)
 	{
@@ -2055,8 +1990,7 @@ void Mission::init(PSTR missionName, int32_t loadType, int32_t dropZoneID,
 		{
 			MOVE_readData(&pakFile, 4);
 			if (GlobalMoveMap[0]->badLoad)
-				Fatal(0,
-					" Mission.init: old version of move data (re-save map) ");
+				Fatal(0, " Mission.init: old version of move data (re-save map) ");
 			GameMap->placeMoversCallback			 = PlaceMovers;
 			GlobalMoveMap[0]->isGateDisabledCallback = IsGateDisabled;
 			GlobalMoveMap[1]->isGateDisabledCallback = IsGateDisabled;
@@ -2068,15 +2002,13 @@ void Mission::init(PSTR missionName, int32_t loadType, int32_t dropZoneID,
 		else
 			STOP(("Mission has not movement Data.  QuickSaved Map?"));
 	}
-	PathFindMap[SECTOR_PATHMAP]->blockedDoorCallback = GetBlockedDoorCells;
-	PathFindMap[SECTOR_PATHMAP]->placeStationaryMoversCallback =
-		PlaceStationaryMovers;
-	PathFindMap[SIMPLE_PATHMAP]->placeStationaryMoversCallback =
-		PlaceStationaryMovers;
-	PathFindMap[SECTOR_PATHMAP]->forestCost = forestMoveCost;
-	PathFindMap[SIMPLE_PATHMAP]->forestCost = forestMoveCost;
-	PathManager								= new MovePathManager;
-	loadProgress							= 40.0f;
+	PathFindMap[SECTOR_PATHMAP]->blockedDoorCallback		   = GetBlockedDoorCells;
+	PathFindMap[SECTOR_PATHMAP]->placeStationaryMoversCallback = PlaceStationaryMovers;
+	PathFindMap[SIMPLE_PATHMAP]->placeStationaryMoversCallback = PlaceStationaryMovers;
+	PathFindMap[SECTOR_PATHMAP]->forestCost					   = forestMoveCost;
+	PathFindMap[SIMPLE_PATHMAP]->forestCost					   = forestMoveCost;
+	PathManager												   = new MovePathManager;
+	loadProgress											   = 40.0f;
 #ifdef LAB_ONLY
 	x			   = GetCycles();
 	MCTimeMoveLoad = x - x1;
@@ -2086,18 +2018,15 @@ void Mission::init(PSTR missionName, int32_t loadType, int32_t dropZoneID,
 	int32_t numErrors, numLinesProcessed;
 	FullPathFileName libraryFileName;
 	libraryFileName.init(missionPath, "orders", ".abx");
-	ABLModulePtr library =
-		ABLi_loadLibrary(libraryFileName, &numErrors, &numLinesProcessed);
+	ABLModulePtr library = ABLi_loadLibrary(libraryFileName, &numErrors, &numLinesProcessed);
 	gosASSERT(library != nullptr);
 	FullPathFileName libraryFileName1;
 	libraryFileName1.init(missionPath, "miscfunc", ".abx");
-	library =
-		ABLi_loadLibrary(libraryFileName1, &numErrors, &numLinesProcessed);
+	library = ABLi_loadLibrary(libraryFileName1, &numErrors, &numLinesProcessed);
 	gosASSERT(library != nullptr);
 	FullPathFileName libraryFileName2;
 	libraryFileName2.init(missionPath, "corebrain", ".abx");
-	library =
-		ABLi_loadLibrary(libraryFileName2, &numErrors, &numLinesProcessed);
+	library = ABLi_loadLibrary(libraryFileName2, &numErrors, &numLinesProcessed);
 	gosASSERT(library != nullptr);
 	//---------------------------
 	// Load the mission script...
@@ -2109,8 +2038,7 @@ void Mission::init(PSTR missionName, int32_t loadType, int32_t dropZoneID,
 	gosASSERT(result == NO_ERROR);
 	FullPathFileName brainFileName;
 	brainFileName.init(missionPath, missionScriptName, ".abl");
-	missionScriptHandle =
-		ABLi_preProcess(brainFileName, &numErrors, &numLinesProcessed);
+	missionScriptHandle = ABLi_preProcess(brainFileName, &numErrors, &numLinesProcessed);
 	gosASSERT(missionScriptHandle >= 0);
 	missionBrain = new ABLModule;
 	gosASSERT(missionBrain != nullptr);
@@ -2147,12 +2075,11 @@ void Mission::init(PSTR missionName, int32_t loadType, int32_t dropZoneID,
 			//-------------------------
 			// Find the warrior to load
 			result = missionFile->seekBlock(warriorName);
-			Assert(
-				result == NO_ERROR, i, " Could not find Warrior Number Block ");
+			Assert(result == NO_ERROR, i, " Could not find Warrior Number Block ");
 			char warriorFile[100];
 			result = missionFile->readIdString("Profile", warriorFile, 99);
-			Assert(result == NO_ERROR, 0,
-				" Could not find Warrior Profile in Warrior Number Block ");
+			Assert(
+				result == NO_ERROR, 0, " Could not find Warrior Profile in Warrior Number Block ");
 			MechWarriorPtr pilot = MechWarrior::newWarrior();
 			if (!pilot)
 				STOP(("Too many pilots in this mission!"));
@@ -2189,8 +2116,7 @@ void Mission::init(PSTR missionName, int32_t loadType, int32_t dropZoneID,
 				pilot->setBrainName(moduleName);
 				brainFileName.init(warriorPath, moduleName, ".abl");
 			}
-			int32_t moduleHandle =
-				ABLi_preProcess(brainFileName, &numErrors, &numLinesProcessed);
+			int32_t moduleHandle = ABLi_preProcess(brainFileName, &numErrors, &numLinesProcessed);
 			gosASSERT(moduleHandle >= 0);
 #ifdef _DEBUG
 			int32_t error =
@@ -2205,8 +2131,7 @@ void Mission::init(PSTR missionName, int32_t loadType, int32_t dropZoneID,
 		// Load the brain parameter file and load 'em for each warrior...
 		for (uint32_t i = 1; i <= numWarriors; i++)
 		{
-			result = MechWarrior::warriorList[i]->loadBrainParameters(
-				missionFile, i);
+			result = MechWarrior::warriorList[i]->loadBrainParameters(missionFile, i);
 			// Assert(result == NO_ERROR, result, " Could not load Warrior Brain
 			// Parameters ");
 		}
@@ -2278,8 +2203,7 @@ void Mission::init(PSTR missionName, int32_t loadType, int32_t dropZoneID,
 			result = missionFile->readIdLongArray(
 				"IndicesOfAlternatives", alternatives, MAX_ALTERNATIVES);
 			int32_t numAlternatives = 0;
-			for (numAlternatives = 0; numAlternatives < MAX_ALTERNATIVES;
-				 numAlternatives++)
+			for (numAlternatives = 0; numAlternatives < MAX_ALTERNATIVES; numAlternatives++)
 				if (alternatives[numAlternatives] == -1)
 					break;
 			if (maxAlternatives[squadIndex] < numAlternatives)
@@ -2364,22 +2288,17 @@ void Mission::init(PSTR missionName, int32_t loadType, int32_t dropZoneID,
 #endif
 			//------------------------------------------------------------------
 			// Find out what kind of object this is.
-			result =
-				missionFile->readIdULong("ObjectNumber", parts[i].objNumber);
+			result = missionFile->readIdULong("ObjectNumber", parts[i].objNumber);
 			gosASSERT(result == NO_ERROR);
 			//-------------------------------------------------
 			// Read in the data needed to control the object...
-			result =
-				missionFile->readIdULong("ControlType", parts[i].controlType);
+			result = missionFile->readIdULong("ControlType", parts[i].controlType);
 			gosASSERT(result == NO_ERROR);
-			result = missionFile->readIdULong(
-				"ControlDataType", parts[i].controlDataType);
+			result = missionFile->readIdULong("ControlDataType", parts[i].controlDataType);
 			gosASSERT(result == NO_ERROR);
-			result = missionFile->readIdString(
-				"ObjectProfile", parts[i].profileName, 9);
+			result = missionFile->readIdString("ObjectProfile", parts[i].profileName, 9);
 			gosASSERT(result == NO_ERROR);
-			result =
-				missionFile->readIdULong("VariantNumber", parts[i].variantNum);
+			result = missionFile->readIdULong("VariantNumber", parts[i].variantNum);
 			if (result != NO_ERROR)
 				parts[i].variantNum = 0; // FOR NOW!!!!!!!!!!!!!!!!
 			// MAKE a REAL error when Heidi fixes editor.
@@ -2400,7 +2319,7 @@ void Mission::init(PSTR missionName, int32_t loadType, int32_t dropZoneID,
 			result = missionFile->readIdFloat("PositionY", parts[i].position.y);
 			gosASSERT(result == NO_ERROR);
 			parts[i].position.z = -1.0;
-			result = missionFile->readIdFloat("Rotation", parts[i].rotation);
+			result				= missionFile->readIdFloat("Rotation", parts[i].rotation);
 			gosASSERT(result == NO_ERROR);
 			result = missionFile->readIdChar("TeamId", parts[i].teamId);
 			gosASSERT(result == NO_ERROR);
@@ -2415,8 +2334,7 @@ void Mission::init(PSTR missionName, int32_t loadType, int32_t dropZoneID,
 			result	 = missionFile->readIdChar("CommanderId", cmdId);
 			if (result != NO_ERROR)
 			{
-				result = missionFile->readIdLong(
-					"CommanderId", parts[i].commanderID);
+				result = missionFile->readIdLong("CommanderId", parts[i].commanderID);
 				gosASSERT(result == NO_ERROR);
 			}
 			else
@@ -2441,19 +2359,17 @@ void Mission::init(PSTR missionName, int32_t loadType, int32_t dropZoneID,
 				}
 			}
 			parts[i].gestureId = 2; // this has never changed
-			result = missionFile->readIdULong("BaseColor", parts[i].baseColor);
+			result			   = missionFile->readIdULong("BaseColor", parts[i].baseColor);
 			if (result != NO_ERROR || MPlayer)
 				parts[i].baseColor = prefs.baseColor;
-			result = missionFile->readIdULong(
-				"HighlightColor1", parts[i].highlightColor1);
+			result = missionFile->readIdULong("HighlightColor1", parts[i].highlightColor1);
 			if (result != NO_ERROR || MPlayer)
 				parts[i].highlightColor1 = prefs.highlightColor;
-			result = missionFile->readIdULong(
-				"HighlightColor2", parts[i].highlightColor2);
+			result = missionFile->readIdULong("HighlightColor2", parts[i].highlightColor2);
 			if (result != NO_ERROR || MPlayer)
 				parts[i].highlightColor2 = prefs.highlightColor;
 			parts[i].velocity = 0;
-			result = missionFile->readIdLong("Active", parts[i].active);
+			result			  = missionFile->readIdLong("Active", parts[i].active);
 			gosASSERT(result == NO_ERROR);
 			result = missionFile->readIdLong("Exists", parts[i].exists);
 			gosASSERT(result == NO_ERROR);
@@ -2470,8 +2386,7 @@ void Mission::init(PSTR missionName, int32_t loadType, int32_t dropZoneID,
 			gosASSERT(result == NO_ERROR);
 			result = missionFile->readIdChar("MyIcon", parts[i].myIcon);
 			gosASSERT(result == NO_ERROR);
-			result =
-				missionFile->readIdBoolean("Captureable", parts[i].captureable);
+			result = missionFile->readIdBoolean("Captureable", parts[i].captureable);
 			if (result != NO_ERROR)
 				parts[i].captureable = FALSE;
 			float increment = 5.0f / (numParts + 1);
@@ -2486,8 +2401,7 @@ void Mission::init(PSTR missionName, int32_t loadType, int32_t dropZoneID,
 	int32_t numVehicles = 0;
 	for (i = 1; i < (numParts + 1); i++)
 	{
-		ObjectTypePtr objType =
-			ObjectManager->loadObjectType(parts[i].objNumber);
+		ObjectTypePtr objType = ObjectManager->loadObjectType(parts[i].objNumber);
 		if (!objType)
 			objType = ObjectManager->getObjectType(parts[i].objNumber);
 		if (objType)
@@ -2519,12 +2433,10 @@ void Mission::init(PSTR missionName, int32_t loadType, int32_t dropZoneID,
 	ObjectManager->countTerrainObjects(&pakFile,
 		(numMechs + MAX_TEAMS * MAX_REINFORCEMENTS_PER_TEAM) +
 			(numVehicles +
-				MAX_TEAMS *
-					MAX_REINFORCEMENTS_PER_TEAM) /* + ObjectManager->maxElementals*/
+				MAX_TEAMS * MAX_REINFORCEMENTS_PER_TEAM) /* + ObjectManager->maxElementals*/
 			+ 1);
 	loadProgress = 58.0f;
-	ObjectManager->setNumObjects(
-		numMechs, numVehicles, 0, -1, -1, -1, 100, 50, 0, 130, -1);
+	ObjectManager->setNumObjects(numMechs, numVehicles, 0, -1, -1, -1, 100, 50, 0, 130, -1);
 	//-------------------------
 	// Load the mech objects...
 	int32_t curMech	= 0;
@@ -2543,16 +2455,14 @@ void Mission::init(PSTR missionName, int32_t loadType, int32_t dropZoneID,
 					loadEm = false;
 			if (loadEm)
 			{
-				ObjectTypePtr objType =
-					ObjectManager->getObjectType(parts[i].objNumber);
+				ObjectTypePtr objType = ObjectManager->getObjectType(parts[i].objNumber);
 				if (objType)
 					switch (objType->getObjectTypeClass())
 					{
 					case BATTLEMECH_TYPE:
 						if (parts[i].teamId == t)
 						{
-							BattleMechPtr mech =
-								ObjectManager->getMech(curMech++);
+							BattleMechPtr mech = ObjectManager->getMech(curMech++);
 							createPartObject(i, mech);
 							float increment = 10.0f / (numParts + 1);
 							loadProgress += increment;
@@ -2561,8 +2471,7 @@ void Mission::init(PSTR missionName, int32_t loadType, int32_t dropZoneID,
 					case VEHICLE_TYPE:
 						if (parts[i].teamId == t)
 						{
-							GroundVehiclePtr vehicle =
-								ObjectManager->getVehicle(curVehicle++);
+							GroundVehiclePtr vehicle = ObjectManager->getVehicle(curVehicle++);
 							createPartObject(i, vehicle);
 							float increment = 10.0f / (numParts + 1);
 							loadProgress += increment;
@@ -2572,8 +2481,7 @@ void Mission::init(PSTR missionName, int32_t loadType, int32_t dropZoneID,
 			}
 			else
 			{
-				MechWarrior::freeWarrior(
-					MechWarrior::warriorList[parts[i].pilot]);
+				MechWarrior::freeWarrior(MechWarrior::warriorList[parts[i].pilot]);
 			}
 		}
 #ifdef LAB_ONLY
@@ -2589,7 +2497,7 @@ void Mission::init(PSTR missionName, int32_t loadType, int32_t dropZoneID,
 	//----------------------------------------------
 	// Read in the Mission Time Limit.
 	{
-		m_timeLimit = -1.0f /*seconds  IF -1.0 mission never times out!!! -fs*/;
+		m_timeLimit	= -1.0f /*seconds  IF -1.0 mission never times out!!! -fs*/;
 		int32_t result = 0;
 		result		   = missionFile->seekBlock("MissionSettings");
 		if (NO_ERROR == result)
@@ -2641,8 +2549,7 @@ void Mission::init(PSTR missionName, int32_t loadType, int32_t dropZoneID,
 #endif
 	//----------------------------
 	// Read in Commander Groups...
-	for (size_t curCommanderId = 0; curCommanderId < MAX_MC_PLAYERS;
-		 curCommanderId++)
+	for (size_t curCommanderId = 0; curCommanderId < MAX_MC_PLAYERS; curCommanderId++)
 	{
 		int32_t numGroups = 0;
 		char headingStr[128];
@@ -2656,29 +2563,22 @@ void Mission::init(PSTR missionName, int32_t loadType, int32_t dropZoneID,
 			// Read in the Group Mates...
 			bool pointSet = FALSE;
 			int32_t groupMates[MAX_MOVERGROUP_COUNT_START];
-			result = missionFile->readIdLongArray(
-				"Mates", groupMates, MAX_MOVERGROUP_COUNT_START);
-			Assert(result == NO_ERROR, result,
-				" could not find Mates in Group in Scenario File ");
-			for (size_t curMate = 0; curMate < MAX_MOVERGROUP_COUNT_START;
-				 curMate++)
+			result = missionFile->readIdLongArray("Mates", groupMates, MAX_MOVERGROUP_COUNT_START);
+			Assert(result == NO_ERROR, result, " could not find Mates in Group in Scenario File ");
+			for (size_t curMate = 0; curMate < MAX_MOVERGROUP_COUNT_START; curMate++)
 			{
-				if ((groupMates[curMate] > 0) &&
-					parts[groupMates[curMate]].objectWID)
+				if ((groupMates[curMate] > 0) && parts[groupMates[curMate]].objectWID)
 				{
 					ObjectManager->setPartId(
-						ObjectManager->getByWatchID(
-							parts[groupMates[curMate]].objectWID),
-						commandersToLoad[curCommanderId][0], numGroups,
-						curMate);
+						ObjectManager->getByWatchID(parts[groupMates[curMate]].objectWID),
+						commandersToLoad[curCommanderId][0], numGroups, curMate);
 					Commander::commanders[commandersToLoad[curCommanderId][0]]
 						->getGroup(numGroups)
 						->add((MoverPtr)ObjectManager->getByWatchID(
 							parts[groupMates[curMate]].objectWID));
 					if (!pointSet)
 					{
-						Commander::commanders[commandersToLoad[curCommanderId]
-															  [0]]
+						Commander::commanders[commandersToLoad[curCommanderId][0]]
 							->getGroup(numGroups)
 							->selectPoint(true);
 						pointSet = true;
@@ -2686,8 +2586,7 @@ void Mission::init(PSTR missionName, int32_t loadType, int32_t dropZoneID,
 				}
 			}
 			numGroups++;
-			sprintf(
-				headingStr, "Commander%dGroup:%d", curCommanderId, numGroups);
+			sprintf(headingStr, "Commander%dGroup:%d", curCommanderId, numGroups);
 			result = missionFile->seekBlock(headingStr);
 		}
 	}
@@ -2760,12 +2659,12 @@ void Mission::init(PSTR missionName, int32_t loadType, int32_t dropZoneID,
 	// Close all walls and open gates and landbridges...
 	//	GameObjectPtr wallObjects[MAX_WALL_OBJECTS];
 	//	int32_t numWalls = ObjectManager->getSpecificObjects(BUILDING,
-	//BUILDING_SUBTYPE_WALL, wallObjects, MAX_WALL_OBJECTS); 	for (i = 0; i <
-	//numWalls; i++)
+	// BUILDING_SUBTYPE_WALL, wallObjects, MAX_WALL_OBJECTS); 	for (i = 0; i <
+	// numWalls; i++)
 	//		((BuildingPtr)wallObjects[i])->closeSubAreas();
 	//	int32_t numLandBridges = ObjectManager->getSpecificObjects(BUILDING,
-	//BUILDING_SUBTYPE_LANDBRIDGE, wallObjects, MAX_WALL_OBJECTS); 	for (i = 0;
-	//i < numLandBridges; i++)
+	// BUILDING_SUBTYPE_LANDBRIDGE, wallObjects, MAX_WALL_OBJECTS); 	for (i = 0;
+	// i < numLandBridges; i++)
 	//		((BuildingPtr)wallObjects[i])->openSubAreas();
 	//	for (i = 0; i < ObjectManager->getNumGates(); i++) {
 	//		GatePtr gate = ObjectManager->getGate(i);
@@ -2808,8 +2707,7 @@ void Mission::start(void)
 	active = true;
 	for (size_t i = 0; i < NumGameObjectsToDisplay; i++)
 		DEBUGWINS_setGameObject(
-			-1, ObjectManager->getByWatchID(
-					parts[GameObjectWindowList[i]].objectWID));
+			-1, ObjectManager->getByWatchID(parts[GameObjectWindowList[i]].objectWID));
 }
 //----------------------------------------------------------------------------------
 void Mission::initTGLForMission()
@@ -3081,10 +2979,9 @@ void Mission::destroy(bool initLogistics)
 		}
 	}
 	//	userInput->mouseOff();
-	active = FALSE;
-	scenarioResult =
-		mis_PLAYING; // We've completed the mission.  Set it back to playing!
-	GeneralAlarm = false;
+	active		   = FALSE;
+	scenarioResult = mis_PLAYING; // We've completed the mission.  Set it back to playing!
+	GeneralAlarm   = false;
 	EllipseElement::removeTextureHandle();
 	// The flush below will remove this one.
 	Mover::holdFireIconHandle = 0;
@@ -3152,8 +3049,7 @@ float Mission::checkObjectiveTimer(int32_t objectiveNum)
 	return (timeLeft);
 }
 //----------------------------------------------------------------------------------
-int32_t Mission::setObjectiveStatus(
-	int32_t objectiveNum, ObjectiveStatus status)
+int32_t Mission::setObjectiveStatus(int32_t objectiveNum, ObjectiveStatus status)
 {
 	gosASSERT((objectiveNum >= 0) || objectiveNum < (int32_t)numObjectives);
 	if (objectives)
@@ -3168,8 +3064,8 @@ bool Mission::checkObjectiveSuccess(void)
 	bool result   = false;
 	if (Team::home->objectives.Count())
 	{
-		for (CObjectives::EIterator iter = Team::home->objectives.Begin();
-			 !iter.IsDone(); iter++, count++)
+		for (CObjectives::EIterator iter = Team::home->objectives.Begin(); !iter.IsDone();
+			 iter++, count++)
 		{
 			// Must iterate through ALL objectives and check.
 			result |= (*iter)->StatusChangedSuccess();
@@ -3185,8 +3081,8 @@ bool Mission::checkObjectiveFailed(void)
 	bool result   = false;
 	if (Team::home->objectives.Count())
 	{
-		for (CObjectives::EIterator iter = Team::home->objectives.Begin();
-			 !iter.IsDone(); iter++, count++)
+		for (CObjectives::EIterator iter = Team::home->objectives.Begin(); !iter.IsDone();
+			 iter++, count++)
 		{
 			// Must iterate through ALL objectives and check.
 			result |= (*iter)->StatusChangedFailed();
@@ -3201,8 +3097,8 @@ ObjectiveStatus Mission::checkObjectiveStatus(int32_t objectiveNum)
 	int32_t count = 0;
 	if (Team::home->objectives.Count())
 	{
-		for (CObjectives::EIterator iter = Team::home->objectives.Begin();
-			 !iter.IsDone(); iter++, count++)
+		for (CObjectives::EIterator iter = Team::home->objectives.Begin(); !iter.IsDone();
+			 iter++, count++)
 		{
 			if (count == objectiveNum)
 			{
@@ -3230,8 +3126,7 @@ ObjectiveType Mission::checkObjectiveType(int32_t objectiveNum)
 	return (result);
 }
 //----------------------------------------------------------------------------------
-void Mission::setObjectivePos(
-	int32_t objectiveNum, float realX, float realY, float realZ)
+void Mission::setObjectivePos(int32_t objectiveNum, float realX, float realY, float realZ)
 {
 	gosASSERT((objectiveNum >= 0) || objectiveNum < (int32_t)numObjectives);
 	if (objectives)

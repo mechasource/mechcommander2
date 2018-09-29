@@ -57,13 +57,13 @@ class Radio
 {
 	// Data Members
 	//-------------
-  protected:
+protected:
 	MechWarriorPtr owner;
 	bool enabled;
 	bool ammoOutPlayed;
 	int32_t radioID;
 
-  public:
+public:
 	static PacketFilePtr noiseFile;
 	static RadioPtr radioList[MAX_RADIOS]; // Warriors no longer delete their
 										   // radios.  We do when the
@@ -79,7 +79,7 @@ class Radio
 
 	// Member Functions
 	//-----------------
-  public:
+public:
 	PVOID operator new(size_t mySize);
 	void operator delete(PVOID us);
 

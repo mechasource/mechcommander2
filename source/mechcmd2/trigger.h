@@ -40,11 +40,11 @@ typedef struct
 class TriggerAreaManager
 {
 
-  public:
+public:
 	TriggerArea triggerAreas[MAX_TRIGGER_AREAS];
 	uint8_t map[MAX_MAP_CELL_WIDTH / 3][MAX_MAP_CELL_WIDTH / 3];
 
-  public:
+public:
 	PVOID operator new(size_t mySize);
 
 	void operator delete(PVOID us);
@@ -64,8 +64,8 @@ class TriggerAreaManager
 
 	~TriggerAreaManager(void) { destroy(void); }
 
-	int32_t add(int32_t ULrow, int32_t ULcol, int32_t LRrow, int32_t LRcol,
-		int32_t type, int32_t param);
+	int32_t add(
+		int32_t ULrow, int32_t ULcol, int32_t LRrow, int32_t LRcol, int32_t type, int32_t param);
 
 	void remove(int32_t areaHandle);
 

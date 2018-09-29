@@ -544,8 +544,7 @@ public:
 
 #define MAX_ATTACK_CELLRANGE 30
 #define MAX_ATTACK_INCREMENTS 32
-#define RANGED_CELLS_DIM                                                       \
-	(MAX_ATTACK_CELLRANGE * 2 + 1) * (MAX_ATTACK_CELLRANGE * 2 + 1)
+#define RANGED_CELLS_DIM (MAX_ATTACK_CELLRANGE * 2 + 1) * (MAX_ATTACK_CELLRANGE * 2 + 1)
 
 typedef struct _MoverData : public GameObjectData
 {
@@ -730,7 +729,7 @@ public:
 	float pilotCheckDamageTally; // damage points taken since last pilot check
 
 	BodyLocation body[MAX_MOVER_BODY_LOCATIONS]; // body parts of this mech
-	char numBodyLocations; // should be set based upon mover type
+	char numBodyLocations;						 // should be set based upon mover type
 	int32_t fieldedCV;
 
 	int32_t attackRange; // attack range
@@ -738,8 +737,7 @@ public:
 	bool salvaged;
 
 	// Armor
-	ArmorLocation
-		armor[MAX_MOVER_ARMOR_LOCATIONS]; // armor locations of this mover
+	ArmorLocation armor[MAX_MOVER_ARMOR_LOCATIONS]; // armor locations of this mover
 	char numArmorLocations;
 	char longName[MAXLEN_MECH_LONGNAME]; // Used by logistics (and the
 										 // interface) to get int32_t name.
@@ -773,9 +771,8 @@ public:
 	float optimalRange;			  // current optimum attack range
 	int32_t numFunctionalWeapons; // takes into account damage, etc.
 
-	char numAntiMissileSystems; // number of anti-missile systems
-	uint8_t
-		antiMissileSystem[MAX_ANTI_MISSILE_SYSTEMS]; // anti-missile system list
+	char numAntiMissileSystems;							 // number of anti-missile systems
+	uint8_t antiMissileSystem[MAX_ANTI_MISSILE_SYSTEMS]; // anti-missile system list
 
 	// Engine
 	float engineBlowTime;
@@ -816,7 +813,7 @@ public:
 	char lastGesture;
 
 	//		AppearancePtr		appearance;						// pointer to the
-	//Actor  which  is the appearance.
+	// Actor  which  is the appearance.
 	MoverControl control;   // control settings for this mover
 	MoverDynamics dynamics; // dynamics settings for this mover
 
@@ -824,11 +821,11 @@ public:
 	// uint32_t				netPlayerId;
 	char netPlayerName[MAXLEN_NET_PLAYER_NAME]; // netPlayerName is the player
 												// who owns this mover
-	int32_t localMoverId;	// if >= 0, is locally controlled
-	int32_t netRosterIndex;  // used for mover id in net packets
-	StatusChunk statusChunk; // last status chunk built/received
-	bool newMoveChunk;		 // set if last movechunk not yet processed
-	MoveChunk moveChunk;	 // last move chunk built/received
+	int32_t localMoverId;						// if >= 0, is locally controlled
+	int32_t netRosterIndex;						// used for mover id in net packets
+	StatusChunk statusChunk;					// last status chunk built/received
+	bool newMoveChunk;							// set if last movechunk not yet processed
+	MoveChunk moveChunk;						// last move chunk built/received
 	int32_t numWeaponFireChunks[2];
 	uint32_t weaponFireChunks[2][MAX_WEAPONFIRE_CHUNKS];
 	int32_t numCriticalHitChunks[2];
@@ -842,11 +839,10 @@ public:
 	bool exploding;
 	bool withdrawing;
 
-	float yieldTimeLeft; // How much time do I have left to wait
-	Stuff::Vector3D
-		lastValidPosition; // Last valid move path point I've been to
-	char pivotDirection;   // Used in pivotTo(): -1 = not pivoting
-	float lastHustleTime;  // last time we had to hustle (on bridge, etc.)
+	float yieldTimeLeft;			   // How much time do I have left to wait
+	Stuff::Vector3D lastValidPosition; // Last valid move path point I've been to
+	char pivotDirection;			   // Used in pivotTo(): -1 = not pivoting
+	float lastHustleTime;			   // last time we had to hustle (on bridge, etc.)
 
 	static int32_t numMovers;
 	static SortListPtr sortList;
@@ -908,10 +904,10 @@ public:
 
 	bool pathLocks; // For movers which can be stepped on.  They do NOT lock!
 	bool isOnGui;   // For movers which start out on player team but not on gui.
-				  // Like raven in 0103
+					// Like raven in 0103
 
-	int32_t conStat; // Contact status stored for this frame, for this machine
-	float fadeTime;  // Time between fade from LOS to non-LOS
+	int32_t conStat;	// Contact status stored for this frame, for this machine
+	float fadeTime;		// Time between fade from LOS to non-LOS
 	uint8_t alphaValue; // Current Fade value;
 	int32_t causeOfDeath;
 
@@ -930,10 +926,7 @@ public:
 
 	virtual void destroy(void);
 
-	virtual void init(bool create, ObjectTypePtr objType)
-	{
-		GameObject::init(create, objType);
-	}
+	virtual void init(bool create, ObjectTypePtr objType) { GameObject::init(create, objType); }
 
 	virtual int32_t init(FitIniFile* objProfile) { return (NO_ERROR); }
 
@@ -985,10 +978,7 @@ public:
 
 	virtual Stuff::Vector3D getVelocity(void) { return (velocity); }
 
-	virtual void setVelocity(Stuff::Vector3D& newVelocity)
-	{
-		velocity = newVelocity;
-	}
+	virtual void setVelocity(Stuff::Vector3D& newVelocity) { velocity = newVelocity; }
 
 	virtual float getSpeed(void) { return (velocity.GetLength()); }
 
@@ -1024,8 +1014,7 @@ public:
 	//			frame = newFrame;
 	//		}
 
-	virtual Stuff::Vector3D relativePosition(
-		float angle, float radius, uint32_t flags);
+	virtual Stuff::Vector3D relativePosition(float angle, float radius, uint32_t flags);
 
 	int32_t calcLineOfSightView(int32_t range);
 
@@ -1053,8 +1042,8 @@ public:
 		selectionIndex = newSelectionIndex;
 	}
 
-	virtual int32_t handleTacticalOrder(TacticalOrder tacOrder,
-		int32_t priority = 1, bool queuePlayerOrder = false);
+	virtual int32_t handleTacticalOrder(
+		TacticalOrder tacOrder, int32_t priority = 1, bool queuePlayerOrder = false);
 
 	virtual AppearancePtr getAppearance(void) { return (appearance); }
 
@@ -1079,10 +1068,7 @@ public:
 
 	virtual int32_t checkShortRangeCollision(void) { return (NO_ACTION); }
 
-	virtual void setOverlayWeightClass(int32_t overlayClass)
-	{
-		overlayWeightClass = overlayClass;
-	}
+	virtual void setOverlayWeightClass(int32_t overlayClass) { overlayWeightClass = overlayClass; }
 
 	virtual int32_t getOverlayWeightClass(void) { return (overlayWeightClass); }
 
@@ -1145,8 +1131,7 @@ public:
 
 	virtual void setPilotHandle(int32_t _pilotHandle);
 
-	virtual void loadPilot(
-		PSTR pilotFileName, PSTR brainFileName, LogisticsPilot* lPilot);
+	virtual void loadPilot(PSTR pilotFileName, PSTR brainFileName, LogisticsPilot* lPilot);
 
 	virtual void setCommanderId(int32_t _commanderId);
 
@@ -1162,8 +1147,7 @@ public:
 
 	int32_t getTeamRosterIndex(void) { return (teamRosterIndex); }
 
-	virtual int32_t getContacts(
-		int32_t* contactList, int32_t contactCriteria, int32_t sortType);
+	virtual int32_t getContacts(int32_t* contactList, int32_t contactCriteria, int32_t sortType);
 
 	int32_t getContactStatus(int32_t scanningTeamID, bool includingAllies);
 
@@ -1193,35 +1177,25 @@ public:
 
 	int32_t getNetRosterIndex(void) { return (netRosterIndex); }
 
-	int32_t getNumWeaponFireChunks(int32_t which)
-	{
-		return (numWeaponFireChunks[which]);
-	}
+	int32_t getNumWeaponFireChunks(int32_t which) { return (numWeaponFireChunks[which]); }
 
 	int32_t clearWeaponFireChunks(int32_t which);
 
 	int32_t addWeaponFireChunk(int32_t which, WeaponFireChunkPtr chunk);
 
-	int32_t addWeaponFireChunks(
-		int32_t which, uint32_t* packedChunkBuffer, int32_t numChunks);
+	int32_t addWeaponFireChunks(int32_t which, uint32_t* packedChunkBuffer, int32_t numChunks);
 
-	int32_t grabWeaponFireChunks(
-		int32_t which, uint32_t* packedChunkBuffer, int32_t maxChunks);
+	int32_t grabWeaponFireChunks(int32_t which, uint32_t* packedChunkBuffer, int32_t maxChunks);
 
 	virtual int32_t updateWeaponFireChunks(int32_t which);
 
-	int32_t getNumCriticalHitChunks(int32_t which)
-	{
-		return (numCriticalHitChunks[which]);
-	}
+	int32_t getNumCriticalHitChunks(int32_t which) { return (numCriticalHitChunks[which]); }
 
 	int32_t clearCriticalHitChunks(int32_t which);
 
-	int32_t addCriticalHitChunk(
-		int32_t which, int32_t bodyLocation, int32_t criticalSpace);
+	int32_t addCriticalHitChunk(int32_t which, int32_t bodyLocation, int32_t criticalSpace);
 
-	int32_t addCriticalHitChunks(
-		int32_t which, puint8_t packedChunkBuffer, int32_t numChunks);
+	int32_t addCriticalHitChunks(int32_t which, puint8_t packedChunkBuffer, int32_t numChunks);
 
 	int32_t grabCriticalHitChunks(int32_t which, puint8_t packedChunkBuffer);
 
@@ -1233,8 +1207,7 @@ public:
 
 	int32_t addRadioChunk(int32_t which, uint8_t msg);
 
-	int32_t addRadioChunks(
-		int32_t which, puint8_t packedChunkBuffer, int32_t numChunks);
+	int32_t addRadioChunks(int32_t which, puint8_t packedChunkBuffer, int32_t numChunks);
 
 	int32_t grabRadioChunks(int32_t which, puint8_t packedChunkBuffer);
 
@@ -1244,10 +1217,7 @@ public:
 
 	virtual int32_t buildStatusChunk(void) { return (NO_ERROR); }
 
-	virtual int32_t handleStatusChunk(int32_t updateAge, uint32_t chunk)
-	{
-		return (NO_ERROR);
-	}
+	virtual int32_t handleStatusChunk(int32_t updateAge, uint32_t chunk) { return (NO_ERROR); }
 
 	virtual MoveChunkPtr getMoveChunk(void) { return (&moveChunk); }
 
@@ -1257,8 +1227,7 @@ public:
 
 	void setMoveChunk(MovePathPtr path, MoveChunkPtr chunk);
 
-	void playMessage(
-		RadioMessageType messageId, bool propogateIfMultiplayer = false);
+	void playMessage(RadioMessageType messageId, bool propogateIfMultiplayer = false);
 
 	virtual int32_t calcCV(bool calcMax = false) { return (0); }
 
@@ -1272,8 +1241,7 @@ public:
 
 	//		virtual void getDamageClass (int32_t& damageClass, bool& shutDown);
 
-	virtual bool refit(
-		float pointsAvailable, float& pointsUsed, bool ammoOnly = false);
+	virtual bool refit(float pointsAvailable, float& pointsUsed, bool ammoOnly = false);
 
 	float calcRecoverPrice(void);
 
@@ -1283,8 +1251,7 @@ public:
 
 	int32_t getInventoryMax(int32_t itemIndex)
 	{
-		return (MasterComponent::masterList[inventory[itemIndex].masterID]
-					.getHealth());
+		return (MasterComponent::masterList[inventory[itemIndex].masterID].getHealth());
 	}
 
 	virtual int32_t getBodyState(void) { return (-1); }
@@ -1292,8 +1259,7 @@ public:
 	int32_t getSensorMax(void)
 	{
 		if (sensor > -1)
-			return (MasterComponent::masterList[inventory[sensor].masterID]
-						.getHealth());
+			return (MasterComponent::masterList[inventory[sensor].masterID].getHealth());
 		else
 			return (0);
 	}
@@ -1308,10 +1274,7 @@ public:
 
 	float getVisualRange(void);
 
-	float getLastWeaponEffectivenessCalc(void)
-	{
-		return (lastWeaponEffectivenessCalc);
-	}
+	float getLastWeaponEffectivenessCalc(void) { return (lastWeaponEffectivenessCalc); }
 
 	float getLastOptimalRangeCalc(void) { return (lastOptimalRangeCalc); }
 
@@ -1337,44 +1300,36 @@ public:
 
 	int32_t analyzeContact(int32_t contactType, uint32_t contactHandle);
 
-	int32_t scanBattlefield(
-		int32_t quadrant, int32_t contactType, int32_t potentialContactType);
+	int32_t scanBattlefield(int32_t quadrant, int32_t contactType, int32_t potentialContactType);
 
 	virtual Stuff::Vector3D calcOffsetMoveGoal(Stuff::Vector3D target);
 
-	virtual int32_t calcGlobalPath(GlobalPathStep* globalPath,
-		GameObjectPtr obj, Stuff::Vector3D* location, bool useClosedAreas);
+	virtual int32_t calcGlobalPath(GlobalPathStep* globalPath, GameObjectPtr obj,
+		Stuff::Vector3D* location, bool useClosedAreas);
 
-	virtual int32_t calcMoveGoal(GameObjectPtr target,
-		Stuff::Vector3D moveCenter, float moveRadius, Stuff::Vector3D moveGoal,
-		int32_t selectionIndex, Stuff::Vector3D& newGoal, int32_t numValidAreas,
-		pint16_t validAreas, uint32_t moveParams);
+	virtual int32_t calcMoveGoal(GameObjectPtr target, Stuff::Vector3D moveCenter, float moveRadius,
+		Stuff::Vector3D moveGoal, int32_t selectionIndex, Stuff::Vector3D& newGoal,
+		int32_t numValidAreas, pint16_t validAreas, uint32_t moveParams);
 
-	virtual int32_t calcMovePath(MovePathPtr path, int32_t pathType,
-		Stuff::Vector3D start, Stuff::Vector3D goal, int32_t* goalCell,
-		uint32_t moveParams = MOVEPARAM_NONE);
+	virtual int32_t calcMovePath(MovePathPtr path, int32_t pathType, Stuff::Vector3D start,
+		Stuff::Vector3D goal, int32_t* goalCell, uint32_t moveParams = MOVEPARAM_NONE);
 
-	virtual int32_t calcEscapePath(MovePathPtr path, Stuff::Vector3D start,
-		Stuff::Vector3D goal, int32_t* goalCell, uint32_t moveParams,
-		Stuff::Vector3D& escapeGoal);
+	virtual int32_t calcEscapePath(MovePathPtr path, Stuff::Vector3D start, Stuff::Vector3D goal,
+		int32_t* goalCell, uint32_t moveParams, Stuff::Vector3D& escapeGoal);
 
-	virtual int32_t calcMovePath(MovePathPtr path, Stuff::Vector3D start,
-		int32_t thruArea[2], int32_t goalDoor, Stuff::Vector3D finalGoal,
-		Stuff::Vector3D* goalWorldPos, int32_t* goalCell,
-		uint32_t moveParams = MOVEPARAM_NONE);
+	virtual int32_t calcMovePath(MovePathPtr path, Stuff::Vector3D start, int32_t thruArea[2],
+		int32_t goalDoor, Stuff::Vector3D finalGoal, Stuff::Vector3D* goalWorldPos,
+		int32_t* goalCell, uint32_t moveParams = MOVEPARAM_NONE);
 
-	virtual float weaponLocked(
-		int32_t weaponIndex, Stuff::Vector3D targetPosition);
+	virtual float weaponLocked(int32_t weaponIndex, Stuff::Vector3D targetPosition);
 
-	virtual bool weaponInRange(
-		int32_t weaponIndex, float metersToTarget, float buffer);
+	virtual bool weaponInRange(int32_t weaponIndex, float metersToTarget, float buffer);
 
 	virtual int32_t getWeaponsReady(int32_t* list, int32_t listSize);
 
 	virtual int32_t getWeaponsLocked(int32_t* list, int32_t listSize);
 
-	virtual int32_t getWeaponsInRange(
-		int32_t* list, int32_t listSize, float orderFireRange);
+	virtual int32_t getWeaponsInRange(int32_t* list, int32_t listSize, float orderFireRange);
 
 	virtual int32_t getWeaponShots(int32_t weaponIndex);
 
@@ -1439,15 +1394,14 @@ public:
 
 	virtual bool needsRefit(void);
 
-	virtual int32_t sortWeapons(int32_t* weaponList, int32_t* valueList,
-		int32_t listSize, int32_t sortType, bool skillCheck);
+	virtual int32_t sortWeapons(int32_t* weaponList, int32_t* valueList, int32_t listSize,
+		int32_t sortType, bool skillCheck);
 
-	virtual float calcAttackChance(GameObjectPtr target, int32_t aimLocation,
-		float targetTime, int32_t weaponIndex, float modifiers, int32_t* range,
+	virtual float calcAttackChance(GameObjectPtr target, int32_t aimLocation, float targetTime,
+		int32_t weaponIndex, float modifiers, int32_t* range,
 		Stuff::Vector3D* targetPoint = nullptr);
 
-	virtual float calcAttackModifier(
-		GameObjectPtr target, int32_t weaponIndex, bool skillCheck)
+	virtual float calcAttackModifier(GameObjectPtr target, int32_t weaponIndex, bool skillCheck)
 	{
 		return (0.0);
 	}
@@ -1457,15 +1411,9 @@ public:
 		return (&MasterComponent::masterList[inventory[itemIndex].masterID]);
 	}
 
-	virtual bool hitInventoryItem(int32_t itemIndex, bool setupOnly = FALSE)
-	{
-		return (false);
-	}
+	virtual bool hitInventoryItem(int32_t itemIndex, bool setupOnly = FALSE) { return (false); }
 
-	bool isInventoryDisabled(int32_t itemIndex)
-	{
-		return (inventory[itemIndex].disabled);
-	}
+	bool isInventoryDisabled(int32_t itemIndex) { return (inventory[itemIndex].disabled); }
 
 	virtual void disable(uint32_t cause);
 
@@ -1477,42 +1425,33 @@ public:
 
 	virtual void calcCriticalHit(int32_t hitLocation) {}
 
-	virtual bool injureBodyLocation(int32_t bodyLocation, float damage)
-	{
-		return (false);
-	}
+	virtual bool injureBodyLocation(int32_t bodyLocation, float damage) { return (false); }
 
 	virtual void ammoExplosion(int32_t ammoIndex);
 
-	virtual int32_t fireWeapon(GameObjectPtr target, float targetTime,
-		int32_t weaponIndex, int32_t attackType, int32_t aimLocation,
-		Stuff::Vector3D* targetPoint, float& damageDone)
+	virtual int32_t fireWeapon(GameObjectPtr target, float targetTime, int32_t weaponIndex,
+		int32_t attackType, int32_t aimLocation, Stuff::Vector3D* targetPoint, float& damageDone)
 	{
 		return (NO_ERROR);
 	}
 
 	virtual int32_t handleWeaponFire(int32_t weaponIndex, GameObjectPtr target,
-		Stuff::Vector3D* targetPoint, bool hit, float entryAngle,
-		int32_t numMissiles, int32_t hitLocation)
+		Stuff::Vector3D* targetPoint, bool hit, float entryAngle, int32_t numMissiles,
+		int32_t hitLocation)
 	{
 		return (NO_ERROR);
 	}
 
-	virtual void printFireWeaponDebugInfo(GameObjectPtr target,
-		Stuff::Vector3D* targetPoint, int32_t chance, int32_t aimLocation,
-		int32_t roll, WeaponShotInfo* shotInfo);
+	virtual void printFireWeaponDebugInfo(GameObjectPtr target, Stuff::Vector3D* targetPoint,
+		int32_t chance, int32_t aimLocation, int32_t roll, WeaponShotInfo* shotInfo);
 
 	virtual void printHandleWeaponHitDebugInfo(WeaponShotInfo* shotInfo);
 
-	virtual float relFacingDelta(
-		Stuff::Vector3D goalPos, Stuff::Vector3D targetPos);
+	virtual float relFacingDelta(Stuff::Vector3D goalPos, Stuff::Vector3D targetPos);
 
 	virtual float relFacingTo(Stuff::Vector3D goal, int32_t bodyLocation = -1);
 
-	virtual float relViewFacingTo(Stuff::Vector3D goal)
-	{
-		return (GameObject::relFacingTo(goal));
-	}
+	virtual float relViewFacingTo(Stuff::Vector3D goal) { return (GameObject::relFacingTo(goal)); }
 
 	bool canMoveHere(Stuff::Vector3D worldPos);
 
@@ -1526,8 +1465,7 @@ public:
 
 	virtual bool canJump(void) { return (false); }
 
-	virtual float getJumpRange(
-		int32_t* numOffsets = nullptr, int32_t* jumpCost = nullptr)
+	virtual float getJumpRange(int32_t* numOffsets = nullptr, int32_t* jumpCost = nullptr)
 	{
 		if (numOffsets)
 			*numOffsets = 8;
@@ -1536,10 +1474,7 @@ public:
 		return (0.0);
 	}
 
-	virtual bool isJumping(Stuff::Vector3D* jumpGoal = nullptr)
-	{
-		return (false);
-	}
+	virtual bool isJumping(Stuff::Vector3D* jumpGoal = nullptr) { return (false); }
 
 	virtual bool isMineSweeper(void) { return (false); }
 
@@ -1555,8 +1490,7 @@ public:
 
 	virtual float calcModerateSpeed(void) { return (0.0); }
 
-	virtual int32_t calcSpriteSpeed(
-		float speed, uint32_t flags, int32_t& state, int32_t& throttle)
+	virtual int32_t calcSpriteSpeed(float speed, uint32_t flags, int32_t& state, int32_t& throttle)
 	{
 		state	= 0;
 		throttle = 100;
@@ -1584,8 +1518,8 @@ public:
 
 	virtual PSTR getIfaceName(void) { return ("No Name"); }
 
-	void drawSensorTextHelp(float screenX, float screenY, int32_t resID,
-		uint32_t color, bool drawBOLD);
+	void drawSensorTextHelp(
+		float screenX, float screenY, int32_t resID, uint32_t color, bool drawBOLD);
 
 	virtual SensorSystem* getSensorSystem() { return sensorSystem; }
 

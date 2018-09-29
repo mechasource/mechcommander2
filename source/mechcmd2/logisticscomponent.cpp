@@ -142,8 +142,7 @@ int32_t LogisticsComponent::init(PSTR dataLine)
 	if (*pBuffer)
 	{
 		pictureFileName =
-			new char[strlen(pBuffer) +
-					 1]; // Forgot the nullptr all over the place did we?
+			new char[strlen(pBuffer) + 1]; // Forgot the nullptr all over the place did we?
 		strcpy(pictureFileName, pBuffer);
 	}
 	stringID	 = extractInt(pLine);
@@ -152,14 +151,12 @@ int32_t LogisticsComponent::init(PSTR dataLine)
 	iconY		 = extractInt(pLine);
 	char nameBuffer[256];
 	cLoadString(stringID, nameBuffer, 256);
-	name = flavorText =
-		new char[strlen(nameBuffer) + 1]; // Lets not forget the nullptr!!!
+	name = flavorText = new char[strlen(nameBuffer) + 1]; // Lets not forget the nullptr!!!
 	strcpy(name, nameBuffer);
 	return ID;
 }
 
-int32_t LogisticsComponent::extractString(
-	PSTR& pFileLine, PSTR pBuffer, int32_t bufferLength)
+int32_t LogisticsComponent::extractString(PSTR& pFileLine, PSTR pBuffer, int32_t bufferLength)
 {
 	*pBuffer = 0;
 	int32_t i;
@@ -229,10 +226,8 @@ bool LogisticsComponent::compare(LogisticsComponent* second, int32_t type)
 
 bool LogisticsComponent::isWeapon()
 {
-	return Type == COMPONENT_FORM_WEAPON ||
-		   Type == COMPONENT_FORM_WEAPON_ENERGY ||
-		   Type == COMPONENT_FORM_WEAPON_BALLISTIC ||
-		   Type == COMPONENT_FORM_WEAPON_MISSILE;
+	return Type == COMPONENT_FORM_WEAPON || Type == COMPONENT_FORM_WEAPON_ENERGY ||
+		Type == COMPONENT_FORM_WEAPON_BALLISTIC || Type == COMPONENT_FORM_WEAPON_MISSILE;
 }
 
 //*************************************************************************************************

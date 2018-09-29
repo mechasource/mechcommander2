@@ -23,7 +23,7 @@ class aButton;
 
 class aColorPicker : public aObject
 {
-  public:
+public:
 	aColorPicker(void);
 
 	virtual int32_t init(int32_t xPos, int32_t yPos, int32_t w, int32_t h);
@@ -39,7 +39,7 @@ class aColorPicker : public aObject
 	void setColor1(int32_t color);
 	int32_t getColor1(void) const { return color1; }
 
-  protected:
+protected:
 	aRect mainRect;
 
 	aText tab0text;
@@ -63,7 +63,7 @@ class aColorPicker : public aObject
 
 class aStyle1TextListItem : public aTextListItem
 {
-  public:
+public:
 	aStyle1TextListItem()
 	{
 		hasAnimation = false;
@@ -72,7 +72,7 @@ class aStyle1TextListItem : public aTextListItem
 	virtual int32_t init(FitIniFile* file, PCSTR blockName);
 	virtual void render(void);
 
-  protected:
+protected:
 	bool hasAnimation;
 	aAnimGroup animGroup;
 	int32_t normalColor;
@@ -80,19 +80,19 @@ class aStyle1TextListItem : public aTextListItem
 
 class aInsigniaListItem : public aListItem
 {
-  public:
+public:
 	aInsigniaListItem() { ; }
 	virtual int32_t init(FitIniFile* file, PCSTR blockName);
 	virtual void update(void);
 
-  protected:
+protected:
 	aObject graphic;
 	aStyle1TextListItem text;
 };
 
 class MPSetupXScreen : public LogisticsScreen
 {
-  public:
+public:
 	MPSetupXScreen(void);
 	virtual ~MPSetupXScreen(void);
 
@@ -114,7 +114,7 @@ class MPSetupXScreen : public LogisticsScreen
 	PVOID pDirectTcpipScreen;
 	PVOID pModem2ModemScreen;
 
-  private:
+private:
 	int32_t indexOfButtonWithID(int32_t id);
 
 	aComboBox playerNameComboBox;

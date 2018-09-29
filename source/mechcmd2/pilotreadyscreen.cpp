@@ -50,8 +50,8 @@ void PilotReadyScreen::init(FitIniFile* file)
 {
 	mechDisplay.init();
 	// init button, texts, statics, rects
-	LogisticsScreen::init(*file, "PilotReadyStatic", "PilotReadyTextEntry",
-		"PilotReadyRect", "PilotReadyButton");
+	LogisticsScreen::init(
+		*file, "PilotReadyStatic", "PilotReadyTextEntry", "PilotReadyRect", "PilotReadyButton");
 	// initialize little icons
 	FitIniFile iconFile;
 	char path[256];
@@ -90,8 +90,7 @@ void PilotReadyScreen::init(FitIniFile* file)
 	attributeMeters[1].init(file, "AttributeMeter1");
 	for (size_t i = 0; i < buttonCount; i++)
 		buttons[i].setMessageOnRelease();
-	pilotListBox.init(
-		rects[0].left(), rects[0].top(), rects[0].width(), rects[0].height());
+	pilotListBox.init(rects[0].left(), rects[0].top(), rects[0].width(), rects[0].height());
 	FullPathFileName tmpPath;
 	tmpPath.init(artPath, "mcl_pr_availablepilotentry", ".fit");
 	FitIniFile tmpFile;
@@ -177,9 +176,8 @@ void PilotReadyScreen::begin()
 	{
 		pilots[i]->setUsed(0);
 	}
-	for (EList<LogisticsMech*, LogisticsMech*>::EIterator iter =
-			 mechList.Begin();
-		 !iter.IsDone(); iter++)
+	for (EList<LogisticsMech*, LogisticsMech*>::EIterator iter = mechList.Begin(); !iter.IsDone();
+		 iter++)
 	{
 		if ((*iter)->getForceGroup())
 		{
@@ -209,8 +207,7 @@ void PilotReadyScreen::begin()
 	}
 	else
 	{
-		LogisticsPilotListBoxItem* pItem =
-			(LogisticsPilotListBoxItem*)pilotListBox.GetItem(0);
+		LogisticsPilotListBoxItem* pItem = (LogisticsPilotListBoxItem*)pilotListBox.GetItem(0);
 		if (pItem)
 		{
 			pilotListBox.SelectItem(0);
@@ -264,9 +261,8 @@ void PilotReadyScreen::render(int32_t xOffset, int32_t yOffset)
 	if (launchFadeTime)
 	{
 		launchFadeTime += frameLength;
-		int32_t color =
-			interpolateColor(0x00000000, 0x7f000000, launchFadeTime / .5f);
-		RECT rect = {0, 0, Environment.screenWidth, Environment.screenHeight};
+		int32_t color = interpolateColor(0x00000000, 0x7f000000, launchFadeTime / .5f);
+		RECT rect	 = {0, 0, Environment.screenWidth, Environment.screenHeight};
 		drawRect(rect, color);
 	}
 	if (MPlayer && ChatWindow::instance())
@@ -305,10 +301,8 @@ void PilotReadyScreen::update()
 				newSel = i;
 			else if (pIcons[i].isSelected())
 				oldSel = i;
-			bool bInside = pIcons[i].pointInside(
-				userInput->getMouseX(), userInput->getMouseY());
-			if (userInput->isLeftDoubleClick() && bInside &&
-				pIcons[i].getMech())
+			bool bInside = pIcons[i].pointInside(userInput->getMouseX(), userInput->getMouseY());
+			if (userInput->isLeftDoubleClick() && bInside && pIcons[i].getMech())
 			{
 				removeSelectedPilot();
 			}
@@ -317,9 +311,8 @@ void PilotReadyScreen::update()
 				newRightSel = i;
 			}
 			else if (userInput->isLeftDrag() && bInside &&
-					 pIcons[i].pointInside(userInput->getMouseDragX(),
-						 userInput->getMouseDragY()) &&
-					 pIcons[i].getMech())
+				pIcons[i].pointInside(userInput->getMouseDragX(), userInput->getMouseDragY()) &&
+				pIcons[i].getMech())
 			{
 				beginDrag(pIcons[i].getMech()->getPilot());
 				pIcons[i].dimPilot(true);
@@ -346,12 +339,13 @@ void PilotReadyScreen::update()
 			setMech(pIcons[newRightSel].getMech());
 		}
 		int32_t curSel = newSel == -1 ? oldSel : newSel;
-		if (!MPlayer || !ChatWindow::instance()->pointInside(
-							userInput->getMouseX(), userInput->getMouseY()))
+		if (!MPlayer ||
+			!ChatWindow::instance()->pointInside(userInput->getMouseX(), userInput->getMouseY()))
 			LogisticsScreen::update();
 		if (mechSelected &&
-			(!MPlayer || !ChatWindow::instance()->pointInside(
-							 userInput->getMouseX(), userInput->getMouseY())))
+			(!MPlayer ||
+				!ChatWindow::instance()->pointInside(
+					userInput->getMouseX(), userInput->getMouseY())))
 		{
 			if (userInput->getMouseY() > 317)
 			{
@@ -393,8 +387,7 @@ void PilotReadyScreen::update()
 			LogisticsMechIcon* pSelIcon = 0;
 			for (size_t i = 0; i < ICON_COUNT; i++)
 			{
-				if (pIcons[i].pointInside(
-						userInput->getMouseX(), userInput->getMouseY()) &&
+				if (pIcons[i].pointInside(userInput->getMouseX(), userInput->getMouseY()) &&
 					pIcons[i].getMech())
 				{
 					pSelIcon = &pIcons[i];
@@ -427,8 +420,7 @@ int32_t PilotReadyScreen::handleMessage(uint32_t message, uint32_t who)
 			if (pInfo)
 			{
 				PCSTR name = pInfo->name;
-				MPlayer->sendPlayerActionChat(
-					nullptr, name, IDS_MP_PLAYER_READY);
+				MPlayer->sendPlayerActionChat(nullptr, name, IDS_MP_PLAYER_READY);
 			}
 			pilotListBox.SelectItem(-1);
 			launchFadeTime = .0001f;
@@ -461,8 +453,7 @@ void PilotReadyScreen::addSelectedPilot()
 		pItem = pilotListBox.GetItem(index);
 	if (pItem)
 	{
-		LogisticsPilot* pPilot =
-			((LogisticsPilotListBoxItem*)pItem)->getPilot();
+		LogisticsPilot* pPilot = ((LogisticsPilotListBoxItem*)pItem)->getPilot();
 		if (pPilot)
 		{
 			for (size_t i = 0; i < ICON_COUNT; i++)
@@ -501,8 +492,7 @@ void PilotReadyScreen::addSelectedPilot()
 		pItem = pilotListBox.GetItem(index + 1);
 	if (pItem && bFound)
 	{
-		LogisticsPilot* pPilot =
-			((LogisticsPilotListBoxItem*)pItem)->getPilot();
+		LogisticsPilot* pPilot = ((LogisticsPilotListBoxItem*)pItem)->getPilot();
 		if (pPilot)
 		{
 			setPilot(pPilot);
@@ -544,8 +534,7 @@ void PilotReadyScreen::removeSelectedPilot()
 					if (index != -1)
 					{
 						LogisticsPilotListBoxItem* pItem =
-							(LogisticsPilotListBoxItem*)pilotListBox.GetItem(
-								index);
+							(LogisticsPilotListBoxItem*)pilotListBox.GetItem(index);
 						if (pItem)
 						{
 							LogisticsPilot* pPilot =
@@ -620,7 +609,7 @@ void PilotReadyScreen::setPilot(LogisticsPilot* pPilot)
 		strcat(fileName, "MCL_PR_");
 		strcat(fileName, pPilot->getName());
 		strcat(fileName, ".tga");
-		EString str = fileName;
+		std::wstring str = fileName;
 		str.MakeLower();
 		statics[67].setTexture(str);
 		statics[67].setColor(0xffffffff);
@@ -644,7 +633,7 @@ void PilotReadyScreen::setPilot(LogisticsPilot* pPilot)
 		attributeMeters[1].setValue(pCurPilot->getPiloting() / 80.f);
 		sprintf(number, "%ld", pCurPilot->getMechKills());
 		textObjects[7].setText(number);
-		EString name = pCurPilot->getName();
+		std::wstring name = pCurPilot->getName();
 		name.MakeUpper();
 		textObjects[8].setText(name);
 		int32_t count = 32;
@@ -658,16 +647,13 @@ void PilotReadyScreen::setPilot(LogisticsPilot* pPilot)
 			if (i < count)
 			{
 				textObjects[9 + i].setText(specialtySkills[i]);
-				textObjects[9 + i].resize(textObjects[9 + i].width(),
-					textObjects[9 + i].font.height());
+				textObjects[9 + i].resize(
+					textObjects[9 + i].width(), textObjects[9 + i].font.height());
 				textObjects[9 + i].setHelpID(skillIDs[i] + IDS_SPECIALTY_HELP1);
-				skillIcons[i] =
-					specialtySkillIcons[MechWarrior::skillTypes[skillIDs[i]]];
-				skillIcons[i].resize(
-					skillLocations[i].right - skillLocations[i].left,
+				skillIcons[i] = specialtySkillIcons[MechWarrior::skillTypes[skillIDs[i]]];
+				skillIcons[i].resize(skillLocations[i].right - skillLocations[i].left,
 					skillLocations[i].bottom - skillLocations[i].top);
-				skillIcons[i].moveTo(
-					skillLocations[i].left, skillLocations[i].top);
+				skillIcons[i].moveTo(skillLocations[i].left, skillLocations[i].top);
 				skillIcons[i].setColor(0xffffffff);
 				skillIcons[i].setHelpID(skillIDs[i] + IDS_SPECIALTY_HELP1);
 			}
@@ -686,12 +672,11 @@ void PilotReadyScreen::setPilot(LogisticsPilot* pPilot)
 		{
 			if (medals[i])
 			{
-				medalIcons[i].moveTo(medalLocations[medalCount].left,
-					medalLocations[medalCount].top);
-				medalIcons[i].resize(medalLocations[medalCount].right -
-										 medalLocations[medalCount].left,
-					medalLocations[medalCount].bottom -
-						medalLocations[medalCount].top);
+				medalIcons[i].moveTo(
+					medalLocations[medalCount].left, medalLocations[medalCount].top);
+				medalIcons[i].resize(
+					medalLocations[medalCount].right - medalLocations[medalCount].left,
+					medalLocations[medalCount].bottom - medalLocations[medalCount].top);
 				medalIcons[i].setColor(0xffffffff);
 				medalCount++;
 				medalIcons[i].showGUIWindow(true);

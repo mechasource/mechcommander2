@@ -28,7 +28,7 @@
 class ObjectType
 {
 
-  protected:
+protected:
 	ObjectTypeNumber objTypeNum;	  // What exactly am I?
 	int32_t numUsers;				  // How many people love me?
 	int32_t objectTypeClass;		  // What type am I?
@@ -41,24 +41,24 @@ class ObjectType
 	bool keepMe;					  // Do not EVER cache this objType out.
 	int32_t iconNumber;				  // my index into the big strip o' icons
 	int32_t teamId;					  // DEfault for this type
-	uint8_t subType; // if building, what type of building? etc.
+	uint8_t subType;				  // if building, what type of building? etc.
 
-  public:
+public:
 	PVOID operator new(size_t ourSize);
 	void operator delete(PVOID us);
 
 	void init(void)
 	{
-		objectClass		= INVALID;
-		objectTypeClass = -1; // This is an invalid_object
+		objectClass		 = INVALID;
+		objectTypeClass  = -1; // This is an invalid_object
 		destroyedObject  = -1;
 		explosionObject  = -1;
 		potentialContact = false;
-		extentRadius = 0; // Nothing can hit me if this is zero.
-		keepMe	 = false;
-		iconNumber = -1; // defaults to no icon
-		appearName = nullptr;
-		subType	= 0;
+		extentRadius	 = 0; // Nothing can hit me if this is zero.
+		keepMe			 = false;
+		iconNumber		 = -1; // defaults to no icon
+		appearName		 = nullptr;
+		subType			 = 0;
 	}
 
 	ObjectType(void) { init(void); }
@@ -117,16 +117,13 @@ class ObjectType
 
 	uint8_t getSubType(void) { return (subType); }
 
-	virtual bool handleCollision(
-		GameObjectPtr collidee, GameObjectPtr collider);
+	virtual bool handleCollision(GameObjectPtr collidee, GameObjectPtr collider);
 
-	virtual bool handleDestruction(
-		GameObjectPtr collidee, GameObjectPtr collider);
+	virtual bool handleDestruction(GameObjectPtr collidee, GameObjectPtr collider);
 
 	virtual float getBurnTime(void) { return (0.0); }
 
-	void createExplosion(
-		Stuff::Vector3D& position, float dmg = 0.0, float rad = 0.0);
+	void createExplosion(Stuff::Vector3D& position, float dmg = 0.0, float rad = 0.0);
 };
 
 //---------------------------------------------------------------------------
@@ -134,7 +131,7 @@ class ObjectType
 class ObjectTypeManager
 {
 
-  public:
+public:
 	int32_t numObjectTypes;
 	ObjectTypePtr* table;
 
@@ -150,13 +147,13 @@ class ObjectTypeManager
 	static int32_t wallMediumTypeHandle;
 	static int32_t wallLightTypeHandle;
 
-  public:
+public:
 	void init(void) {}
 
 	ObjectTypeManager(void) { init(void); }
 
-	int32_t init(PSTR objectFileName, int32_t objectTypeCacheSize,
-		int32_t objectCacheSize, int32_t maxObjectTypes = 1024);
+	int32_t init(PSTR objectFileName, int32_t objectTypeCacheSize, int32_t objectCacheSize,
+		int32_t maxObjectTypes = 1024);
 
 	void destroy(void);
 
@@ -166,8 +163,7 @@ class ObjectTypeManager
 
 	void remove(ObjectTypePtr ptr);
 
-	ObjectTypePtr load(ObjectTypeNumber objTypeNum, bool noCacheOut = true,
-		bool forceLoad = false);
+	ObjectTypePtr load(ObjectTypeNumber objTypeNum, bool noCacheOut = true, bool forceLoad = false);
 
 	ObjectTypePtr get(ObjectTypeNumber objTypeNum, bool loadIt = true);
 

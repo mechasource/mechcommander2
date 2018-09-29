@@ -27,7 +27,7 @@ class MainMenu;
 
 class MissionBegin
 {
-  public:
+public:
 	// Tutorial - SAVE with savegame, please!!
 	static bool FirstTimePurchase;
 	static bool FirstTimeMechLab;
@@ -54,8 +54,7 @@ class MissionBegin
 
 	int32_t getCurrentScreenId(
 		void); // Returns screen ID as a function of curScreenX and curScreenY
-	bool startAnimation(
-		int32_t bId, bool isButton, float scrollTime, int32_t nFlashes);
+	bool startAnimation(int32_t bId, bool isButton, float scrollTime, int32_t nFlashes);
 
 	bool isInCalloutAnimation() { return animationRunning; }
 
@@ -63,7 +62,7 @@ class MissionBegin
 
 	void restartMPlayer(PCSTR playerName);
 
-  private:
+private:
 	bool bDone;
 	bool bReadyToLoad;
 
@@ -78,8 +77,7 @@ class MissionBegin
 	bool bMultiplayer;
 
 	LogisticsScreen* multiplayerScreens[5 /*dim screen X*/][3 /*dim screen Y*/];
-	LogisticsScreen* singlePlayerScreens[5 /*dim screen X*/]
-										[3 /*dim screen Y*/];
+	LogisticsScreen* singlePlayerScreens[5 /*dim screen X*/][3 /*dim screen Y*/];
 	LogisticsScreen* screens[5 /*dim screen X*/][3 /*dim screen Y*/];
 	LogisticsScreen* placeHolderScreen;
 

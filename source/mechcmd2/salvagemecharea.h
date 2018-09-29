@@ -29,19 +29,18 @@ SalvageMechArea:
 **************************************************************************************************/
 class SalvageMechArea : public LogisticsScreen
 {
-  public:
+public:
 	static SalvageMechArea* instance;
 	SalvageMechArea(void);
 	virtual ~SalvageMechArea(void);
 
 	void init(FitIniFile* file);
-	void setMech(
-		LogisticsVariant* pMech, int32_t red, int32_t green, int32_t blue);
+	void setMech(LogisticsVariant* pMech, int32_t red, int32_t green, int32_t blue);
 
 	virtual void render(int32_t xOffset, int32_t yOffset);
 	virtual void update(void);
 
-  protected:
+protected:
 	LogisticsVariant* unit;
 
 	AttributeMeter attributeMeters[3];
@@ -51,7 +50,7 @@ class SalvageMechArea : public LogisticsScreen
 
 class SalvageMechScreen : public LogisticsScreen
 {
-  public:
+public:
 	SalvageMechScreen(void);
 	virtual ~SalvageMechScreen(void);
 
@@ -66,7 +65,7 @@ class SalvageMechScreen : public LogisticsScreen
 
 	bool bDone;
 
-  private:
+private:
 	aListBox salvageListBox;
 
 	SalvageMechArea selMechArea;
@@ -81,7 +80,7 @@ class SalvageMechScreen : public LogisticsScreen
 
 class SalvageListItem : public aListItem
 {
-  public:
+public:
 	virtual void render(void);
 	virtual void update(void);
 
@@ -95,7 +94,7 @@ class SalvageListItem : public aListItem
 
 	SalvageListItem(BattleMech* pUnit);
 
-  private:
+private:
 	static aAnimButton* templateCheckButton;
 	static aText* mechNameText;
 	static aText* variantNameText;

@@ -86,11 +86,9 @@ public:
 
 	virtual GameObjectPtr createInstance(void);
 
-	virtual bool handleCollision(
-		GameObjectPtr collidee, GameObjectPtr collider);
+	virtual bool handleCollision(GameObjectPtr collidee, GameObjectPtr collider);
 
-	virtual bool handleDestruction(
-		GameObjectPtr collidee, GameObjectPtr collider);
+	virtual bool handleDestruction(GameObjectPtr collidee, GameObjectPtr collider);
 };
 
 //---------------------------------------------------------------------------
@@ -194,11 +192,9 @@ public:
 
 	int32_t updateAnimations(void);
 
-	virtual int32_t handleWeaponHit(
-		WeaponShotInfoPtr shotInfo, bool addMultiplayChunk = false);
+	virtual int32_t handleWeaponHit(WeaponShotInfoPtr shotInfo, bool addMultiplayChunk = false);
 
-	virtual void setDamage(
-		float newDamage); // Damage encodes which groundtile to use, too.
+	virtual void setDamage(float newDamage); // Damage encodes which groundtile to use, too.
 
 	virtual int32_t kill(void) { return (NO_ERROR); }
 
@@ -233,8 +229,7 @@ public:
 		if (appearance)
 			hsPos.z += appearance->getTopZ() * 0.5f;
 		BuildingTypePtr bldgType = ((BuildingTypePtr)getObjectType());
-		if ((bldgType->lookoutTowerRange > 0.0f) ||
-			(bldgType->sensorRange > 0.0f))
+		if ((bldgType->lookoutTowerRange > 0.0f) || (bldgType->sensorRange > 0.0f))
 		{
 			hsPos.z = position.z + 75.0f;
 		}
@@ -243,10 +238,7 @@ public:
 
 	virtual float getDestructLevel(void) { return (getDamageLevel() - damage); }
 
-	virtual void setRefitBuddy(GameObjectWatchID objWID)
-	{
-		refitBuddyWID = objWID;
-	}
+	virtual void setRefitBuddy(GameObjectWatchID objWID) { refitBuddyWID = objWID; }
 
 	virtual void openFootPrint(void);
 
@@ -284,17 +276,11 @@ public:
 
 	virtual float getAppearRadius(void) { return appearance->getRadius(void); }
 
-	virtual bool canBeCaptured(void)
-	{
-		return ((BuildingTypePtr)getObjectType())->capturable;
-	}
+	virtual bool canBeCaptured(void) { return ((BuildingTypePtr)getObjectType())->capturable; }
 
 	virtual bool isSelectable() { return appearance->isSelectable(void); }
 
-	virtual bool isPowerSource(void)
-	{
-		return ((BuildingTypePtr)getObjectType())->powerSource;
-	}
+	virtual bool isPowerSource(void) { return ((BuildingTypePtr)getObjectType())->powerSource; }
 
 	virtual bool isLit(void)
 	{
@@ -313,10 +299,8 @@ public:
 		//				(bldgType->getObjTypeNum() ==
 		// GENERIC_INDESTRUCTIBLE_RESOURCE_BUILDING_OBJNUM))
 		//				return(true);
-		if ((bldgType->perimeterAlarmRange > 0.0f) &&
-				(bldgType->perimeterAlarmTimer > 0.0f) ||
-			(bldgType->lookoutTowerRange > 0.0f) ||
-			(bldgType->sensorRange > 0.0f))
+		if ((bldgType->perimeterAlarmRange > 0.0f) && (bldgType->perimeterAlarmTimer > 0.0f) ||
+			(bldgType->lookoutTowerRange > 0.0f) || (bldgType->sensorRange > 0.0f))
 		{
 			return true;
 		}
@@ -333,10 +317,7 @@ public:
 		return false;
 	}
 
-	virtual float getRefitPoints(void)
-	{
-		return getDamageLevel() - getDamage(void);
-	}
+	virtual float getRefitPoints(void) { return getDamageLevel() - getDamage(void); }
 
 	virtual bool burnRefitPoints(float pointsToBurn);
 

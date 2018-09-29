@@ -189,8 +189,8 @@ void LoadScreen::changeRes(FitIniFile& outFile)
 		waitingForPlayersMemory = (TGAFileHeader*)new char[size];
 		tgaFile.read((puint8_t)waitingForPlayersMemory, tgaFile.fileSize());
 		flipTopToBottom((puint8_t)(waitingForPlayersMemory + 1),
-			waitingForPlayersMemory->pixel_depth,
-			waitingForPlayersMemory->width, waitingForPlayersMemory->height);
+			waitingForPlayersMemory->pixel_depth, waitingForPlayersMemory->width,
+			waitingForPlayersMemory->height);
 	}
 }
 
@@ -269,8 +269,7 @@ LoadScreen::~LoadScreen()
 	if (waitingForPlayersMemory)
 		delete[] waitingForPlayersMemory;
 	animIndices				= nullptr;
-	waitingForPlayersMemory = progressBackground = progressTextureMemory =
-		mergedTexture							 = nullptr;
+	waitingForPlayersMemory = progressBackground = progressTextureMemory = mergedTexture = nullptr;
 }
 
 void LoadScreen::begin()
@@ -292,8 +291,8 @@ void LoadScreen::begin()
 }
 void LoadScreen::init(FitIniFile& file, uint32_t neverFlush)
 {
-	LogisticsScreen::init(file, "Static", "Text", "Rect", "Button", "Edit",
-		"AnimObject", neverFlush);
+	LogisticsScreen::init(
+		file, "Static", "Text", "Rect", "Button", "Edit", "AnimObject", neverFlush);
 	file.seekBlock("AnimationTopOut");
 	outAnims[0].init(&file, "");
 	file.seekBlock("AnimationBottomOut");
@@ -426,15 +425,14 @@ void ProgressTimer(RECT& WinRect, DDSURFACEDESC2& mouseSurfaceDesc)
 		int32_t destWidth		  = LoadScreen::progressBackground->width;
 		int32_t destHeight		  = LoadScreen::progressBackground->height;
 		float widthIncPerProgress = (float)destWidth * 0.01f;
-		int32_t* pLSrc  = (int32_t*)(LoadScreen::progressBackground + 1);
-		int32_t* pLDest = (int32_t*)(LoadScreen::mergedTexture + 1);
+		int32_t* pLSrc			  = (int32_t*)(LoadScreen::progressBackground + 1);
+		int32_t* pLDest			  = (int32_t*)(LoadScreen::mergedTexture + 1);
 		// merge background and current progress together...
 		for (size_t i = 0; i < 2; i++)
 		{
 			for (size_t y = 0; y < destHeight; y++)
 			{
-				for (size_t x = 0; x < LoadScreen::progressBackground->width;
-					 x++)
+				for (size_t x = 0; x < LoadScreen::progressBackground->width; x++)
 				{
 					if (x < destWidth)
 						*pLDest++ = *pLSrc++;
@@ -476,9 +474,8 @@ void ProgressTimer(RECT& WinRect, DDSURFACEDESC2& mouseSurfaceDesc)
 	int32_t destHeight = destBottom - destY;
 	for (size_t y = 0; y < destHeight; y++)
 	{
-		puint8_t pSrc = pMem + y * srcWidth * srcDepth;
-		puint8_t pDest =
-			(puint8_t)mouseSurfaceDesc.lpSurface +
+		puint8_t pSrc  = pMem + y * srcWidth * srcDepth;
+		puint8_t pDest = (puint8_t)mouseSurfaceDesc.lpSurface +
 			destX * mouseSurfaceDesc.ddpfPixelFormat.dwRGBBitCount / 8 +
 			((destY + y) * mouseSurfaceDesc.lPitch);
 		for (size_t x = 0; x < destWidth; x++)
@@ -509,8 +506,7 @@ void ProgressTimer(RECT& WinRect, DDSURFACEDESC2& mouseSurfaceDesc)
 			else if (mouseSurfaceDesc.ddpfPixelFormat.dwRGBBitCount == 16)
 			{
 				bool in555Mode = false;
-				if (GetNumberOfBits(
-						mouseSurfaceDesc.ddpfPixelFormat.dwGBitMask) == 5)
+				if (GetNumberOfBits(mouseSurfaceDesc.ddpfPixelFormat.dwGBitMask) == 5)
 					in555Mode = true;
 				if (!baseAlpha)
 				{

@@ -28,10 +28,10 @@ class GateType : public ObjectType
 {
 	// Data Members
 	//-------------
-  protected:
+protected:
 	uint32_t dmgLevel;
 
-  public:
+public:
 	uint32_t blownEffectId;
 	uint32_t normalEffectId;
 	uint32_t damageEffectId;
@@ -56,7 +56,7 @@ class GateType : public ObjectType
 
 	// Member Functions
 	//-----------------
-  public:
+public:
 	void init(void)
 	{
 		ObjectType::init(void);
@@ -83,10 +83,8 @@ class GateType : public ObjectType
 
 	virtual GameObjectPtr createInstance(void);
 
-	virtual bool handleCollision(
-		GameObjectPtr collidee, GameObjectPtr collider);
-	virtual bool handleDestruction(
-		GameObjectPtr collidee, GameObjectPtr collider);
+	virtual bool handleCollision(GameObjectPtr collidee, GameObjectPtr collider);
+	virtual bool handleDestruction(GameObjectPtr collidee, GameObjectPtr collider);
 };
 
 //---------------------------------------------------------------------------
@@ -118,7 +116,7 @@ class Gate : public TerrainObject
 {
 	// Data Members
 	//-------------
-  public:
+public:
 	char teamId;
 
 	bool lockedOpen;
@@ -142,7 +140,7 @@ class Gate : public TerrainObject
 
 	// Member Functions
 	//-----------------
-  public:
+public:
 	void init(bool create) {}
 
 	Gate(void) : TerrainObject()
@@ -170,8 +168,7 @@ class Gate : public TerrainObject
 
 	virtual void init(bool create, ObjectTypePtr _type);
 
-	virtual int32_t handleWeaponHit(
-		WeaponShotInfoPtr shotInfo, bool addMultiplayChunk = FALSE);
+	virtual int32_t handleWeaponHit(WeaponShotInfoPtr shotInfo, bool addMultiplayChunk = FALSE);
 
 	virtual int32_t setTeamId(int32_t _teamId, bool setup);
 
@@ -234,10 +231,7 @@ class Gate : public TerrainObject
 
 	virtual void setParentId(uint32_t pId);
 
-	virtual int32_t getDescription()
-	{
-		return ((GateType*)getObjectType())->buildingDescriptionID;
-	}
+	virtual int32_t getDescription() { return ((GateType*)getObjectType())->buildingDescriptionID; }
 
 	virtual void setDamage(float newDamage);
 

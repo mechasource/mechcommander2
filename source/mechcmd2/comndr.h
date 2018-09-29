@@ -42,7 +42,7 @@ typedef struct _StaticCommanderData
 class Commander
 {
 
-  public:
+public:
 	int32_t id;
 	TeamPtr team;
 	MoverGroupPtr groups[MAX_MOVERGROUPS];
@@ -51,7 +51,7 @@ class Commander
 	static CommanderPtr commanders[MAX_COMMANDERS];
 	static CommanderPtr home;
 
-  public:
+public:
 	PVOID operator new(size_t ourSize);
 	void operator delete(PVOID us);
 
@@ -75,13 +75,9 @@ class Commander
 
 	virtual void setTeam(TeamPtr _team) { team = _team; }
 
-	virtual MoverGroupPtr getGroup(int32_t groupNumber)
-	{
-		return (groups[groupNumber]);
-	}
+	virtual MoverGroupPtr getGroup(int32_t groupNumber) { return (groups[groupNumber]); }
 
-	int32_t setGroup(
-		int32_t id, int32_t numMates, MoverPtr* moverList, int32_t point);
+	int32_t setGroup(int32_t id, int32_t numMates, MoverPtr* moverList, int32_t point);
 
 	void setLocalMoverId(int32_t localMoverId);
 

@@ -49,8 +49,7 @@ void GameTacMap::init(puint8_t bitmapData, size_t dataSize)
 	TGAFileHeader* pHeader = (TGAFileHeader*)bitmapData;
 	bmpWidth			   = pHeader->width;
 	bmpHeight			   = pHeader->height;
-	textureHandle		   = gos_NewTextureFromMemory(
-		 gos_Texture_Solid, ".tga", bitmapData, dataSize, 0);
+	textureHandle = gos_NewTextureFromMemory(gos_Texture_Solid, ".tga", bitmapData, dataSize, 0);
 	char path[256];
 	strcpy(path, artPath);
 	strcat(path, "viewingrect.tga");
@@ -76,12 +75,9 @@ void GameTacMap::update()
 		screen.y -= top;
 		Stuff::Vector3D world;
 		tacMapToWorld(screen, width, height, world);
-		if (MissionInterfaceManager::instance()
-				->getControlGui()
-				->isAddingAirstrike() &&
-			MissionInterfaceManager::instance()
-				->getControlGui()
-				->isButtonPressed(ControlGui::SENSOR_PROBE))
+		if (MissionInterfaceManager::instance()->getControlGui()->isAddingAirstrike() &&
+			MissionInterfaceManager::instance()->getControlGui()->isButtonPressed(
+				ControlGui::SENSOR_PROBE))
 			MissionInterfaceManager::instance()->doMove(world);
 		else
 		{
@@ -150,8 +146,7 @@ void GameTacMap::render()
 	//-----------------------------------------------------------
 	// Render the objective markers
 	int32_t count = 0;
-	for (EList<CObjective*, CObjective*>::EIterator iter =
-			 Team::home->objectives.Begin();
+	for (EList<CObjective*, CObjective*>::EIterator iter = Team::home->objectives.Begin();
 		 !iter.IsDone(); iter++)
 	{
 		// We are there.  Start flashing.
@@ -227,8 +222,7 @@ void GameTacMap::render()
 	gos_SetRenderState(gos_State_TextureAddress, gos_TextureWrap);
 	gos_SetRenderState(gos_State_ZCompare, 0);
 	gos_SetRenderState(gos_State_ZWrite, 0);
-	uint32_t gosTextureHandle =
-		mcTextureManager->get_gosTextureHandle(viewRectHandle);
+	uint32_t gosTextureHandle = mcTextureManager->get_gosTextureHandle(viewRectHandle);
 	gos_SetRenderState(gos_State_Texture, gosTextureHandle);
 	gos_DrawQuads(&corners[0], 4);
 	uint32_t colors[MAX_MOVERS];
@@ -250,8 +244,7 @@ void GameTacMap::render()
 				SensorSystem* pSensor = pSys->sensors[j];
 				if (!pSensor)
 					continue;
-				if (pSensor->owner->isDestroyed() ||
-					pSensor->owner->isDisabled() ||
+				if (pSensor->owner->isDestroyed() || pSensor->owner->isDisabled() ||
 					pSensor->owner->getStatus() == OBJECT_STATUS_SHUTDOWN)
 					continue;
 				if (pSensor->getRange() < 1.1 || pSensor->broken)
@@ -259,21 +252,17 @@ void GameTacMap::render()
 				if (!pSensor->owner->getTeam())
 					continue;
 				ObjectClass objClass = pSensor->owner->getObjectClass();
-				uint32_t colorBlip =
-					pSensor->owner->getSelected() ? 0xff4bff4b : 0xff00cc00;
-				uint32_t colorRing = 0xff00cc00;
+				uint32_t colorBlip   = pSensor->owner->getSelected() ? 0xff4bff4b : 0xff00cc00;
+				uint32_t colorRing   = 0xff00cc00;
 				if (pSensor->owner->getTeam()->isNeutral(Team::home))
 				{
-					colorBlip =
-						pSensor->owner->getSelected() ? 0xff4c4cff : 0xff0000ff;
+					colorBlip = pSensor->owner->getSelected() ? 0xff4c4cff : 0xff0000ff;
 					colorRing = 0xff0000ff;
 				}
-				else if (pSensor->owner->getTeam()->isEnemy(
-							 Team::home)) // enemy
+				else if (pSensor->owner->getTeam()->isEnemy(Team::home)) // enemy
 				{
 					{
-						colorBlip = pSensor->owner->getSelected() ? 0xffff3f3f
-																  : 0xffff0000;
+						colorBlip = pSensor->owner->getSelected() ? 0xffff3f3f : 0xffff0000;
 						colorRing = 0xffff0000;
 					}
 				}
@@ -306,24 +295,20 @@ void GameTacMap::render()
 	for (i = 0; i < (ObjectManager->numMovers); i++)
 	{
 		MoverPtr mover = ObjectManager->getMover(i);
-		if (mover && mover->getExists() &&
-			!(mover->isDestroyed() || mover->isDisabled()))
+		if (mover && mover->getExists() && !(mover->isDestroyed() || mover->isDisabled()))
 		{
 			SensorSystem* pSensor = mover->getSensorSystem();
 			float range			  = pSensor ? pSensor->getRange() : 0;
-			int32_t contactStatus =
-				mover->getContactStatus(Team::home->getId(), true);
+			int32_t contactStatus = mover->getContactStatus(Team::home->getId(), true);
 			if (mover->getTeamId() == Team::home->id)
 			{
 				if (mover->getCommanderId() == Commander::home->getId())
 				{
 					if (mover->isOnGUI())
 					{
-						colorBlip =
-							mover->getSelected() ? 0xff4bff4b : 0xff00cc00;
-						mover->getStatus() == OBJECT_STATUS_SHUTDOWN
-							? colorRing = 0
-							: colorRing = 0xff00cc00;
+						colorBlip = mover->getSelected() ? 0xff4bff4b : 0xff00cc00;
+						mover->getStatus() == OBJECT_STATUS_SHUTDOWN ? colorRing = 0
+																	 : colorRing = 0xff00cc00;
 					}
 					else
 						continue;
@@ -331,29 +316,21 @@ void GameTacMap::render()
 				else
 				{
 					if (mover->isOnGUI() &&
-						land->IsGameSelectTerrainPosition(
-							mover->getPosition()) &&
-						mover->pathLocks)
+						land->IsGameSelectTerrainPosition(mover->getPosition()) && mover->pathLocks)
 					{
-						colorBlip =
-							mover->getSelected() ? 0xff4b4bff : 0xff0000cc;
-						mover->getStatus() == OBJECT_STATUS_SHUTDOWN
-							? colorRing = 0
-							: colorRing = 0xff0000cc;
+						colorBlip = mover->getSelected() ? 0xff4b4bff : 0xff0000cc;
+						mover->getStatus() == OBJECT_STATUS_SHUTDOWN ? colorRing = 0
+																	 : colorRing = 0xff0000cc;
 					}
 					else
 						continue;
 				}
 			}
-			else if (ShowMovers ||
-					 (MPlayer &&
-						 MPlayer->allUnitsDestroyed[MPlayer->commanderID]) ||
-					 ((mover->getTeamId() != Team::home->id) &&
-						 (contactStatus != CONTACT_NONE) &&
-						 (mover->getStatus() != OBJECT_STATUS_SHUTDOWN) &&
-						 (!mover->hasNullSignature()) &&
-						 (mover->getEcmRange() <=
-							 0.0f))) // Do not draw ECM mechs!!)
+			else if (ShowMovers || (MPlayer && MPlayer->allUnitsDestroyed[MPlayer->commanderID]) ||
+				((mover->getTeamId() != Team::home->id) && (contactStatus != CONTACT_NONE) &&
+					(mover->getStatus() != OBJECT_STATUS_SHUTDOWN) &&
+					(!mover->hasNullSignature()) &&
+					(mover->getEcmRange() <= 0.0f))) // Do not draw ECM mechs!!)
 			{
 				// Not on our side.  Draw by contact status
 				colorBlip = mover->getSelected() ? 0xffff3f3f : 0xffff0000;
@@ -416,16 +393,14 @@ void GameTacMap::initBuildings(puint8_t data, int32_t size)
 	}
 }
 
-void GameTacMap::drawSensor(
-	const Stuff::Vector3D& pos, float radius, int32_t color)
+void GameTacMap::drawSensor(const Stuff::Vector3D& pos, float radius, int32_t color)
 {
 	if (color == 0)
 		return;
 	gos_VERTEX sqare[4];
 	if (radius > 1)
 		radius += land->metersPerCell * 6.f; // a little fudge
-	radius *= ((float)(right - left)) /
-			  (land->metersPerCell * land->realVerticesMapSide * 3.f);
+	radius *= ((float)(right - left)) / (land->metersPerCell * land->realVerticesMapSide * 3.f);
 	for (size_t i = 0; i < 4; ++i)
 	{
 		sqare[i].z	= 0;
@@ -453,8 +428,7 @@ void GameTacMap::drawSensor(
 	circle.draw();
 }
 
-void GameTacMap::drawBlip(
-	const Stuff::Vector3D& pos, int32_t color, int32_t type)
+void GameTacMap::drawBlip(const Stuff::Vector3D& pos, int32_t color, int32_t type)
 {
 	if (color == 0)
 		return;

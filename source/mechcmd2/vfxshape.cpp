@@ -56,8 +56,7 @@ void Shape::destroy(void)
 
 #define STUPID_OFFSET 6
 //----------------------------------------------------------------------------
-int32_t Shape::init(
-	puint8_t fileBlock, AppearanceTypePtr myOwner, int32_t shapeSize)
+int32_t Shape::init(puint8_t fileBlock, AppearanceTypePtr myOwner, int32_t shapeSize)
 {
 	//-----------------------------------------------------------------
 	// Everything in the below comment is a LIE!!!
@@ -73,8 +72,7 @@ int32_t Shape::init(
 	if ((*(pint32_t)fileBlock != *(pint32_t) "1.10"))
 	{
 		stupidHeader = fileBlock;
-		frameList	= fileBlock +
-					STUPID_OFFSET; // You can talk to GDoren about this one!!!
+		frameList	= fileBlock + STUPID_OFFSET; // You can talk to GDoren about this one!!!
 	}
 	else
 	{
@@ -95,8 +93,7 @@ int32_t Shape::init(
 			frameList = nullptr;
 			return (-3);
 		}
-		int32_t minOffset =
-			8 + (numFrames * 8); // The first shape MUST be this far in or WRONG
+		int32_t minOffset = 8 + (numFrames * 8); // The first shape MUST be this far in or WRONG
 		if (minOffset != *testOffset)
 		{
 			frameList = nullptr;

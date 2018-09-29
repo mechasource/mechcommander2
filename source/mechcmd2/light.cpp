@@ -76,8 +76,7 @@ bool LightType::handleCollision(GameObjectPtr collidee, GameObjectPtr collider)
 
 //---------------------------------------------------------------------------
 
-bool LightType::handleDestruction(
-	GameObjectPtr collidee, GameObjectPtr collider)
+bool LightType::handleDestruction(GameObjectPtr collidee, GameObjectPtr collider)
 {
 	//----------------------------
 	// No destroy'n light, either!
@@ -124,8 +123,7 @@ void Light::render(void)
 {
 	if (gamePaused)
 		onScreen();
-	if (!getFlag(OBJECT_FLAG_JUSTCREATED) && (windowsVisible == turn) &&
-		!getFlag(OBJECT_FLAG_DONE))
+	if (!getFlag(OBJECT_FLAG_JUSTCREATED) && (windowsVisible == turn) && !getFlag(OBJECT_FLAG_DONE))
 	{
 #ifdef USE_LIGHT_APPEARANCE
 		lightAppearance->render(LIGHT_DEPTH_FIXUP);
@@ -149,9 +147,8 @@ void Light::init(bool create, ObjectTypePtr _type)
 	//-------------------------------------------------------------
 	// The appearance is initialized here using data from the type
 #ifdef USE_LIGHT_APPEARANCE
-	uint32_t appearanceType = _type->getAppearanceTypeNum();
-	AppearanceTypePtr lightAppearanceType =
-		appearanceTypeList->getAppearance(appearanceType);
+	uint32_t appearanceType				  = _type->getAppearanceTypeNum();
+	AppearanceTypePtr lightAppearanceType = appearanceTypeList->getAppearance(appearanceType);
 	if (!lightAppearanceType)
 		return (NO_APPEARANCE_TYPE_FOR_EXPL);
 	//--------------------------------------------------------------
@@ -162,8 +159,8 @@ void Light::init(bool create, ObjectTypePtr _type)
 		lightAppearance = new VFXAppearance;
 		if (!lightAppearance)
 			return (NO_APPEARANCE_FOR_EXPL);
-		result = lightAppearance->init(
-			(VFXAppearanceType*)lightAppearanceType, (GameObjectPtr)this);
+		result =
+			lightAppearance->init((VFXAppearanceType*)lightAppearanceType, (GameObjectPtr)this);
 		if (result != NO_ERROR)
 			return (result);
 	}

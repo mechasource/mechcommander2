@@ -44,8 +44,7 @@ int32_t MPPrefs::init(FitIniFile& file)
 	LogisticsScreen::init(file, "Static", "Text", "Rect", "Button");
 	for (size_t i = 0; i < buttonCount; i++)
 	{
-		if (buttons[i].getID() != MP_PREFS_BASE &&
-			buttons[i].getID() != MP_PREFS_STRIPE)
+		if (buttons[i].getID() != MP_PREFS_BASE && buttons[i].getID() != MP_PREFS_STRIPE)
 			buttons[i].setMessageOnRelease();
 		int32_t id = buttons[i].getID();
 		if (id != MB_MSG_NEXT && id != MB_MSG_PREV && id != MB_MSG_MAINMENU)
@@ -59,8 +58,7 @@ int32_t MPPrefs::init(FitIniFile& file)
 	int32_t count = 0;
 	file.readIdLong("ComboBoxCount", count);
 	char blockName[256];
-	PCSTR headers[3] = {
-		"PlayerNameComboBox", "UnitNameComboBox", "UnitInsigniaComboBox"};
+	PCSTR headers[3] = {"PlayerNameComboBox", "UnitNameComboBox", "UnitInsigniaComboBox"};
 	for (i = 0; i < count; i++)
 	{
 		sprintf(blockName, "ComboBox%ld", i);
@@ -94,8 +92,7 @@ int32_t MPPrefs::init(FitIniFile& file)
 		comboBox[i].EditBox().allowIME(0);
 	}
 	comboBox[2].EditBox().setReadOnly(true);
-	camera.init(
-		rects[2].left(), rects[2].top(), rects[2].right(), rects[2].bottom());
+	camera.init(rects[2].left(), rects[2].top(), rects[2].right(), rects[2].bottom());
 	status = NEXT;
 	return 0;
 }
@@ -142,8 +139,7 @@ void MPPrefs::begin()
 		if ((findResult.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) == 0)
 		{
 			aBmpListItem* pItem = new aBmpListItem;
-			sprintf(
-				path, "data\\multiplayer\\insignia\\%s", findResult.cFileName);
+			sprintf(path, "data\\multiplayer\\insignia\\%s", findResult.cFileName);
 			if (!pItem->setBmp(findResult.cFileName))
 			{
 				delete pItem;
@@ -174,8 +170,7 @@ void MPPrefs::begin()
 	const MC2Player* players = MPlayer->getPlayers(playerCount);
 	for (i = 0; i < playerCount; i++)
 	{
-		if (players[i].teamSeniority > mySeniority &&
-			players[i].team == player->team)
+		if (players[i].teamSeniority > mySeniority && players[i].team == player->team)
 		{
 			bMostSenior = false;
 		}
@@ -192,10 +187,8 @@ void MPPrefs::begin()
 		getButton(MP_PREFS_BASE)->press(true);
 		getButton(MP_PREFS_STRIPE)->press(0);
 	}
-	camera.setMech("Bushwacker",
-		MPlayer->colors[player->baseColor[BASECOLOR_SELF]],
-		MPlayer->colors[player->stripeColor],
-		MPlayer->colors[player->stripeColor]);
+	camera.setMech("Bushwacker", MPlayer->colors[player->baseColor[BASECOLOR_SELF]],
+		MPlayer->colors[player->stripeColor], MPlayer->colors[player->stripeColor]);
 	camera.zoomIn(1.5);
 }
 void MPPrefs::end()
@@ -213,8 +206,7 @@ void MPPrefs::update()
 	const MC2Player* players = MPlayer->getPlayers(playerCount);
 	for (size_t i = 0; i < playerCount; i++)
 	{
-		if (players[i].teamSeniority > mySeniority &&
-			players[i].team == player->team)
+		if (players[i].teamSeniority > mySeniority && players[i].team == player->team)
 		{
 			bMostSenior = false;
 		}
@@ -225,8 +217,7 @@ void MPPrefs::update()
 	}
 	else
 		getButton(MP_PREFS_BASE)->disable(false);
-	if (!ChatWindow::instance()->pointInside(
-			userInput->getMouseX(), userInput->getMouseY()))
+	if (!ChatWindow::instance()->pointInside(userInput->getMouseX(), userInput->getMouseY()))
 		LogisticsScreen::update();
 	camera.update();
 	int32_t oldSel = comboBox[2].GetSelectedItem();
@@ -242,10 +233,9 @@ void MPPrefs::update()
 	int32_t newSel = comboBox[2].GetSelectedItem();
 	if (newSel != oldSel && newSel != -1)
 	{
-		aBmpListItem* pItem =
-			(aBmpListItem*)(comboBox[2].ListBox().GetItem(newSel));
-		PCSTR pName		 = pItem->getBmp();
-		MC2Player* pInfo = MPlayer->getPlayerInfo(MPlayer->commanderID);
+		aBmpListItem* pItem = (aBmpListItem*)(comboBox[2].ListBox().GetItem(newSel));
+		PCSTR pName			= pItem->getBmp();
+		MC2Player* pInfo	= MPlayer->getPlayerInfo(MPlayer->commanderID);
 		strcpy(pInfo->insigniaFile, pName);
 		MPlayer->sendPlayerUpdate(0, 5, -1);
 		FullPathFileName path;
@@ -267,8 +257,7 @@ void MPPrefs::update()
 	{
 		for (size_t j = FIRST_COLOR_RECT; j < LAST_COLOR_RECT + 1; j++)
 		{
-			if (rects[j].pointInside(
-					userInput->getMouseX(), userInput->getMouseY()))
+			if (rects[j].pointInside(userInput->getMouseX(), userInput->getMouseY()))
 			{
 				// OK, figure out if this is remotely viable....
 				// x out colors that are already taken
@@ -301,7 +290,7 @@ void MPPrefs::setColor(uint32_t color)
 	}
 	// GD:MPlayer->setPlayerBaseColor( MPlayer->commanderID, getColorIndex(
 	// color ) );
-	MC2Player* player = MPlayer->getPlayerInfo(MPlayer->commanderID);
+	MC2Player* player						= MPlayer->getPlayerInfo(MPlayer->commanderID);
 	player->baseColor[BASECOLOR_PREFERENCE] = getColorIndex(color);
 	MPlayer->sendPlayerUpdate(0, 6, -1);
 	// GD:camera.setMech( "Bushwacker", color,
@@ -314,8 +303,8 @@ void MPPrefs::setHighlightColor(uint32_t color)
 	MC2Player* player   = MPlayer->getPlayerInfo(MPlayer->commanderID);
 	player->stripeColor = getColorIndex(color);
 	MPlayer->sendPlayerUpdate(0, 6, -1);
-	camera.setMech("Bushwacker",
-		MPlayer->colors[player->baseColor[BASECOLOR_PREFERENCE]], color, color);
+	camera.setMech(
+		"Bushwacker", MPlayer->colors[player->baseColor[BASECOLOR_PREFERENCE]], color, color);
 	camera.zoomIn(1.5);
 }
 
@@ -329,8 +318,7 @@ char MPPrefs::getColorIndex(uint32_t color)
 	return 0;
 }
 
-void MPPrefs::updateBaseColors(
-	const MC2Player* players, int32_t playerCount, bool bDrawRect)
+void MPPrefs::updateBaseColors(const MC2Player* players, int32_t playerCount, bool bDrawRect)
 {
 	if (getButton(MP_PREFS_BASE)->isPressed())
 	{
@@ -340,13 +328,11 @@ void MPPrefs::updateBaseColors(
 			{
 				for (size_t j = FIRST_COLOR_RECT; j < LAST_COLOR_RECT + 1; j++)
 				{
-					if (MPlayer->colors[players[i]
-											.baseColor[BASECOLOR_PREFERENCE]] ==
+					if (MPlayer->colors[players[i].baseColor[BASECOLOR_PREFERENCE]] ==
 						rects[j].getColor())
 					{
-						RECT rect = {rects[j].globalX() - 1,
-							rects[j].globalY() - 1, rects[j].right(),
-							rects[j].bottom()};
+						RECT rect = {rects[j].globalX() - 1, rects[j].globalY() - 1,
+							rects[j].right(), rects[j].bottom()};
 						if (bDrawRect)
 							drawEmptyRect(rect, 0xffffffff, 0xffffffff);
 						break;
@@ -361,8 +347,7 @@ void MPPrefs::updateBaseColors(
 							rects[j].getColor() &&
 						bDrawRect)
 					{
-						statics[21].moveTo(
-							rects[j].globalX(), rects[j].globalY());
+						statics[21].moveTo(rects[j].globalX(), rects[j].globalY());
 						statics[21].render();
 						break;
 					}
@@ -371,12 +356,10 @@ void MPPrefs::updateBaseColors(
 		}
 	}
 	MC2Player* pInfo = MPlayer->getPlayerInfo(MPlayer->commanderID);
-	rects[BASE_RECT].setColor(
-		MPlayer->colors[pInfo->baseColor[BASECOLOR_PREFERENCE]]);
+	rects[BASE_RECT].setColor(MPlayer->colors[pInfo->baseColor[BASECOLOR_PREFERENCE]]);
 }
 
-void MPPrefs::updateStripeColors(
-	const MC2Player* players, int32_t playerCount, bool bDrawRect)
+void MPPrefs::updateStripeColors(const MC2Player* players, int32_t playerCount, bool bDrawRect)
 {
 	if (getButton(MP_PREFS_STRIPE)->isPressed())
 	{
@@ -386,12 +369,10 @@ void MPPrefs::updateStripeColors(
 			{
 				for (size_t j = FIRST_COLOR_RECT; j < LAST_COLOR_RECT + 1; j++)
 				{
-					if (MPlayer->colors[players[i].stripeColor] ==
-						rects[j].getColor())
+					if (MPlayer->colors[players[i].stripeColor] == rects[j].getColor())
 					{
-						RECT rect = {rects[j].globalX() - 1,
-							rects[j].globalY() - 1, rects[j].right(),
-							rects[j].bottom()};
+						RECT rect = {rects[j].globalX() - 1, rects[j].globalY() - 1,
+							rects[j].right(), rects[j].bottom()};
 						if (bDrawRect)
 							drawEmptyRect(rect, 0xffffffff, 0xffffffff);
 						break;
@@ -421,8 +402,7 @@ void MPPrefs ::render(int32_t OffsetX, int32_t OffsetY)
 				pObject = &comboBox[i];
 		}
 		// x out colors that are already taken
-		bool bRect =
-			(pObject == &comboBox[2] || pObject == &comboBox[1]) ? 0 : 1;
+		bool bRect = (pObject == &comboBox[2] || pObject == &comboBox[1]) ? 0 : 1;
 		int32_t playerCount;
 		const MC2Player* players = MPlayer->getPlayers(playerCount);
 		updateBaseColors(players, playerCount, bRect);
@@ -472,7 +452,7 @@ int32_t MPPrefs::handleMessage(uint32_t message, uint32_t who)
 void MPPrefs::saveSettings()
 {
 	// check and see if name has changed
-	EString txt;
+	std::wstring txt;
 	comboBox[0].EditBox().getEntry(txt);
 	if (txt != prefs.playerName[0])
 	{
@@ -493,8 +473,7 @@ void MPPrefs::saveSettings()
 	int32_t index = comboBox[2].GetSelectedItem();
 	if (index != -1)
 	{
-		aBmpListItem* pItem =
-			(aBmpListItem*)(comboBox[2].ListBox().GetItem(index));
+		aBmpListItem* pItem = (aBmpListItem*)(comboBox[2].ListBox().GetItem(index));
 		if (pItem)
 		{
 			PCSTR pName = pItem->getBmp();
@@ -504,8 +483,7 @@ void MPPrefs::saveSettings()
 	}
 	//	if ( MPlayer->isHost() )
 	{
-		prefs.baseColor =
-			MPlayer->colors[pInfo->baseColor[BASECOLOR_PREFERENCE]];
+		prefs.baseColor		 = MPlayer->colors[pInfo->baseColor[BASECOLOR_PREFERENCE]];
 		prefs.highlightColor = MPlayer->colors[pInfo->stripeColor];
 	}
 	MPlayer->sendPlayerUpdate(0, 5, -1);
@@ -542,8 +520,7 @@ int32_t aBmpListItem::setBmp(PCSTR pFileName)
 	if (NO_ERROR == file.open(path))
 	{
 		file.read((puint8_t)&header, sizeof(header));
-		if (header.width != 32 || header.height != 32 ||
-			header.pixel_depth < 24)
+		if (header.width != 32 || header.height != 32 || header.pixel_depth < 24)
 			return 0;
 	}
 	else

@@ -26,7 +26,7 @@ LogisticsMechDisplay:
 **************************************************************************************************/
 class LogisticsMechDisplay : public LogisticsScreen
 {
-  public:
+public:
 	LogisticsMechDisplay(void);
 
 	virtual ~LogisticsMechDisplay(void);
@@ -36,7 +36,7 @@ class LogisticsMechDisplay : public LogisticsScreen
 	int32_t init();
 	void setMech(LogisticsMech* pMech, bool bFromLB = 0);
 
-  private:
+private:
 	LogisticsMech* pCurMech;
 	AttributeMeter attributeMeters[3];
 	SimpleCamera mechCamera;

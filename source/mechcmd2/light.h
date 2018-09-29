@@ -31,11 +31,11 @@
 class LightType : public ObjectType
 {
 
-  public:
+public:
 	bool oneShotFlag;
 	float altitudeOffset;
 
-  public:
+public:
 	void init(void) { ObjectType::init(void); }
 
 	LightType(void) { init(void); }
@@ -47,10 +47,8 @@ class LightType : public ObjectType
 
 	virtual void destroy(void);
 	virtual GameObjectPtr createInstance(void);
-	virtual bool handleCollision(
-		GameObjectPtr collidee, GameObjectPtr collider);
-	virtual bool handleDestruction(
-		GameObjectPtr collidee, GameObjectPtr collider);
+	virtual bool handleCollision(GameObjectPtr collidee, GameObjectPtr collider);
+	virtual bool handleDestruction(GameObjectPtr collidee, GameObjectPtr collider);
 };
 
 //---------------------------------------------------------------------------
@@ -58,7 +56,7 @@ class LightType : public ObjectType
 class Light : public GameObject
 {
 
-  public:
+public:
 	virtual void init(bool create);
 
 	Light(void) : GameObject() { init(true); }

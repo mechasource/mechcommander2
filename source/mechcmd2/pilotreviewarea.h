@@ -30,14 +30,14 @@ PilotReviewARea:
 // holds the dead and active pilots
 class PilotListBox : public aListBox
 {
-  public:
+public:
 	PilotListBox(void);
 	virtual int32_t AddItem(aListItem* item);
 	virtual void update(void);
 
 	bool isDone() { return bDone; }
 
-  private:
+private:
 	float timeSinceStart;
 	int32_t curItem;
 	int32_t oldScroll;
@@ -49,7 +49,7 @@ class PilotListBox : public aListBox
 // this screen shows up after the salvage screen
 class PilotReviewScreen : public LogisticsScreen
 {
-  public:
+public:
 	PilotReviewScreen(void);
 	virtual ~PilotReviewScreen(void);
 
@@ -66,7 +66,7 @@ class PilotReviewScreen : public LogisticsScreen
 	static PilotPromotionArea* s_curPromotion;
 	static PilotReviewScreen* instance;
 
-  private:
+private:
 	PilotListBox pilotListBox;
 	aAnimation entryAnim;
 	aAnimation exitAnim;
@@ -75,7 +75,7 @@ class PilotReviewScreen : public LogisticsScreen
 // base class for dead, and active pilot list box items
 class PilotListItem : public aListItem
 {
-  public:
+public:
 	PilotListItem()
 	{
 		currentTime = -1.f;
@@ -86,7 +86,7 @@ class PilotListItem : public aListItem
 	virtual bool isDone() = 0; // implement this yourself
 	virtual void update(void);
 
-  protected:
+protected:
 	float currentTime;
 	bool bDone;
 };
@@ -94,7 +94,7 @@ class PilotListItem : public aListItem
 // list box item for dead pilots
 class DeadPilotListItem : public PilotListItem
 {
-  public:
+public:
 	virtual void render(void);
 	virtual void update(void);
 	virtual bool isDone(void);
@@ -107,7 +107,7 @@ class DeadPilotListItem : public PilotListItem
 
 	DeadPilotListItem(LogisticsPilot* pUnit);
 
-  private:
+private:
 	friend class PilotReviewScreen;
 
 	LogisticsPilot* pPilot;
@@ -133,7 +133,7 @@ class DeadPilotListItem : public PilotListItem
 // pilots that weren't killed
 class ActivePilotListItem : public PilotListItem
 {
-  public:
+public:
 	virtual void render(void);
 	virtual void update(void);
 	virtual bool isDone(void);
@@ -146,7 +146,7 @@ class ActivePilotListItem : public PilotListItem
 
 	float flashTime(void);
 
-  protected:
+protected:
 	AttributeMeter attributeMeters[2];
 	static AttributeMeter* s_attributeMeters[2];
 
@@ -199,7 +199,7 @@ class ActivePilotListItem : public PilotListItem
 
 class PilotPromotionArea : public LogisticsScreen
 {
-  public:
+public:
 	bool isDone(void);
 	void init(FitIniFile& file);
 	virtual void render(void);
@@ -210,7 +210,7 @@ class PilotPromotionArea : public LogisticsScreen
 
 	aListBox* getSkillListBox() { return &skillListBox; }
 
-  private:
+private:
 	AttributeMeter attributeMeters[2];
 
 	LogisticsScreen areaLeft;
@@ -231,7 +231,7 @@ class PilotPromotionArea : public LogisticsScreen
 // specialty skills each show up in here
 class SpecialtyListItem : public aListItem
 {
-  public:
+public:
 	virtual void render(void);
 	virtual void update(void);
 
@@ -245,7 +245,7 @@ class SpecialtyListItem : public aListItem
 	int32_t getID(void);
 	SpecialtyListItem(int32_t ID);
 
-  private:
+private:
 	static aButton* s_radioButton;
 	static aObject* s_skillIcons[4];
 	static aAnimation* s_highlightAnim;

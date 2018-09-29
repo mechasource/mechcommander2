@@ -55,8 +55,7 @@ void MPAddAIPlayer::init(FitIniFile* file)
 			int32_t column;
 			for (column = 0; column < 3; column += 1)
 			{
-				g_focusManager->registerDropList(
-					mechSelectionDropLists[row][column]);
+				g_focusManager->registerDropList(mechSelectionDropLists[row][column]);
 			}
 		}
 	}
@@ -95,7 +94,7 @@ void MPAddAIPlayer::init(FitIniFile* file)
 		for (i = 0; i < listItemCount; i += 1)
 		{
 			pTmp2 = new aStyle4TextListItem;
-			EString tmpStr;
+			std::wstring tmpStr;
 			tmpStr.Format("Text%d", i);
 			pTmp2->init(&PNfile, tmpStr.Data());
 			experienceDropList.AddItem(pTmp2);
@@ -123,7 +122,7 @@ void MPAddAIPlayer::init(FitIniFile* file)
 		for (i = 0; i < listItemCount; i += 1)
 		{
 			pTmp2 = new aStyle4TextListItem;
-			EString tmpStr;
+			std::wstring tmpStr;
 			tmpStr.Format("Text%d", i);
 			pTmp2->init(&PNfile, tmpStr.Data());
 			factionDropList.AddItem(pTmp2);
@@ -148,8 +147,7 @@ void MPAddAIPlayer::init(FitIniFile* file)
 					Assert(0, 0, error);
 					return;
 				}
-				mechSelectionDropLists[row][column].init(
-					&PNfile, "MechSelectionComboBox");
+				mechSelectionDropLists[row][column].init(&PNfile, "MechSelectionComboBox");
 				PNfile.seekBlock("Texts");
 				int32_t listItemCount = 0;
 				PNfile.readIdLong("Textcount", listItemCount);
@@ -158,7 +156,7 @@ void MPAddAIPlayer::init(FitIniFile* file)
 				for (i = 0; i < listItemCount; i += 1)
 				{
 					pTmp2 = new aStyle4TextListItem;
-					EString tmpStr;
+					std::wstring tmpStr;
 					tmpStr.Format("Text%d", i);
 					pTmp2->init(&PNfile, tmpStr.Data());
 					mechSelectionDropLists[row][column].AddItem(pTmp2);
@@ -194,8 +192,7 @@ void MPAddAIPlayer::render(int32_t xOffset, int32_t yOffset)
 			}
 		}
 		/*make sure that that the control that has the focus is not obscured*/
-		aObject* pControlThatHasTheFocus =
-			focusManager.pControlThatHasTheFocus();
+		aObject* pControlThatHasTheFocus = focusManager.pControlThatHasTheFocus();
 		if (pControlThatHasTheFocus)
 		{
 			pControlThatHasTheFocus->render();

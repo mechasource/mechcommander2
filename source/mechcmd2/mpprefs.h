@@ -25,7 +25,7 @@ MPPrefs:
 **************************************************************************************************/
 class MPPrefs : public LogisticsScreen
 {
-  public:
+public:
 	MPPrefs(void);
 	virtual ~MPPrefs(void);
 
@@ -44,7 +44,7 @@ class MPPrefs : public LogisticsScreen
 	void setMechColors(uint32_t base,
 		uint32_t highlight); // called by MPlayer when it resets a color
 
-  private:
+private:
 	MPPrefs(const MPPrefs& src);
 	MPPrefs& operator=(const MPPrefs& PPrefs);
 
@@ -53,10 +53,8 @@ class MPPrefs : public LogisticsScreen
 	aObject insigniaBmp; // the one inside the combo box...
 
 	// HELPERS
-	void updateStripeColors(
-		const _MC2Player* players, int32_t playerCount, bool bDrawRect);
-	void updateBaseColors(
-		const _MC2Player* players, int32_t playerCount, bool bDrawRect);
+	void updateStripeColors(const _MC2Player* players, int32_t playerCount, bool bDrawRect);
+	void updateBaseColors(const _MC2Player* players, int32_t playerCount, bool bDrawRect);
 	char getColorIndex(uint32_t color);
 	void setColor(uint32_t color);
 	void setHighlightColor(uint32_t color);
@@ -66,14 +64,14 @@ class MPPrefs : public LogisticsScreen
 
 class aBmpListItem : public aListItem
 {
-  public:
+public:
 	int32_t setBmp(PCSTR pFileName);
 	PCSTR getBmp() { return fileName; }
 
-  private:
+private:
 	aObject bmp;
 
-	EString fileName;
+	std::wstring fileName;
 };
 
 //*************************************************************************************************

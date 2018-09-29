@@ -44,8 +44,7 @@ void LogisticsMechDisplay::render(int32_t xOffset, int32_t yOffset)
 	componentListBox.move(xOffset, yOffset);
 	componentListBox.render();
 	componentListBox.move(-xOffset, -yOffset);
-	if (xOffset == 0 &&
-		yOffset == 0) // don't draw until we're done animating in or out
+	if (xOffset == 0 && yOffset == 0) // don't draw until we're done animating in or out
 		mechCamera.render();
 	for (size_t i = 0; i < 3; i++)
 	{
@@ -67,16 +66,14 @@ int32_t LogisticsMechDisplay::init()
 		return 0;
 	}
 	LogisticsScreen::init(file, "Static", "Text", "Rect", "Button");
-	mechCamera.init(
-		rects[1].left(), rects[2].top(), rects[2].left(), rects[2].bottom());
+	mechCamera.init(rects[1].left(), rects[2].top(), rects[2].left(), rects[2].bottom());
 	char blockName[64];
 	for (size_t i = 0; i < 3; i++)
 	{
 		sprintf(blockName, "AttributeMeter%ld", i);
 		attributeMeters[i].init(&file, blockName);
 	}
-	componentListBox.init(
-		rects[0].left(), rects[0].top(), rects[0].width(), rects[0].height());
+	componentListBox.init(rects[0].left(), rects[0].top(), rects[0].width(), rects[0].height());
 	return 1;
 }
 
@@ -94,12 +91,10 @@ void LogisticsMechDisplay::setMech(LogisticsMech* pMech, bool bFromLB)
 			char text[64];
 			char tmpStr[64];
 			cLoadString(IDS_MB_MECH_WEIGHT, tmpStr, 63);
-			sprintf(text, tmpStr, pCurMech->getMaxWeight(),
-				(PCSTR)pCurMech->getMechClass());
+			sprintf(text, tmpStr, pCurMech->getMaxWeight(), (PCSTR)pCurMech->getMechClass());
 			textObjects[3].setText(text);
 			int32_t tmpColor;
-			textObjects[2].setText(
-				pCurMech->getVariant()->getOptimalRangeString(tmpColor));
+			textObjects[2].setText(pCurMech->getVariant()->getOptimalRangeString(tmpColor));
 			textObjects[2].setColor(tmpColor);
 			sprintf(text, "%ld", pCurMech->getArmor());
 			textObjects[4].setText(text);
@@ -109,15 +104,14 @@ void LogisticsMechDisplay::setMech(LogisticsMech* pMech, bool bFromLB)
 			textObjects[6].setText(text);
 			attributeMeters[0].setValue(pCurMech->getArmor() / MAX_ARMOR_RANGE);
 			attributeMeters[1].setValue(pCurMech->getSpeed() / MAX_SPEED_RANGE);
-			attributeMeters[2].setValue(
-				pCurMech->getJumpRange() * 25 / MAX_JUMP_RANGE);
-			EString fileName = pMech->getFileName();
-			int32_t index	= fileName.Find('.');
-			fileName		 = fileName.Left(index);
-			index			 = fileName.ReverseFind('\\');
-			fileName		 = fileName.Right(fileName.Length() - index - 1);
-			mechCamera.setMech(fileName, prefs.baseColor, prefs.highlightColor,
-				prefs.highlightColor);
+			attributeMeters[2].setValue(pCurMech->getJumpRange() * 25 / MAX_JUMP_RANGE);
+			std::wstring fileName = pMech->getFileName();
+			int32_t index		  = fileName.Find('.');
+			fileName			  = fileName.Left(index);
+			index				  = fileName.ReverseFind('\\');
+			fileName			  = fileName.Right(fileName.Length() - index - 1);
+			mechCamera.setMech(
+				fileName, prefs.baseColor, prefs.highlightColor, prefs.highlightColor);
 			mechCamera.setScale(pMech->getVariant()->getChassis()->getScale());
 			componentListBox.setMech(pCurMech->getVariant());
 		}

@@ -24,7 +24,7 @@ LogisticsMissionInfo:
 **************************************************************************************************/
 class LogisticsMissionInfo
 {
-  public:
+public:
 	LogisticsMissionInfo(void);
 	~LogisticsMissionInfo(void);
 
@@ -47,9 +47,9 @@ class LogisticsMissionInfo
 
 	int32_t getCurrentMissionId(void);
 
-	const EString& getCurrentPurchaseFile(void) const;
-	const EString& getCurrentMission(void) const { return currentMissionName; }
-	const EString& getLastMission(void) const { return lastMissionName; }
+	const std::wstring& getCurrentPurchaseFile(void) const;
+	const std::wstring& getCurrentMission(void) const { return currentMissionName; }
+	const std::wstring& getLastMission(void) const { return lastMissionName; }
 
 	int32_t getCurrentDropWeight(void) const;
 	PCSTR getCurrentVideo(void) const;
@@ -64,11 +64,8 @@ class LogisticsMissionInfo
 	void incrementCBills(int32_t amount) { CBills += amount; }
 	void decrementCBills(int32_t amount) { CBills -= amount; }
 
-	const EString& getCampaignName() const { return campaignName; }
-	const EString& getCampaignDisplayName(void) const
-	{
-		return campaignDisplayName;
-	}
+	const std::wstring& getCampaignName() const { return campaignName; }
+	const std::wstring& getCampaignDisplayName(void) const { return campaignDisplayName; }
 
 	bool campaignOver(void) const;
 
@@ -105,21 +102,18 @@ class LogisticsMissionInfo
 
 	int32_t getCurrentMissionNumber() { return currentMission; }
 
-	void setCurrentMissionNumber(int32_t cMission)
-	{
-		currentMission = cMission;
-	}
+	void setCurrentMissionNumber(int32_t cMission) { currentMission = cMission; }
 
-  private:
+private:
 	class MissionInfo
 	{
-	  public:
+	public:
 		~MissionInfo(void);
-		EString missionDescriptiveName;
-		EString fileName;
-		EString description;
-		EString purchaseFileName;
-		EString videoName;
+		std::wstring missionDescriptiveName;
+		std::wstring fileName;
+		std::wstring description;
+		std::wstring purchaseFileName;
+		std::wstring videoName;
 		bool mandatory;
 		bool completePrevious;
 		bool completed;
@@ -146,12 +140,12 @@ class LogisticsMissionInfo
 
 	class MissionGroup
 	{
-	  public:
+	public:
 		int32_t numberToBeCompleted;
-		EString videoFileName;
-		EString operationFileName;
-		EString bigVideoName;
-		EString ablBrainName;
+		std::wstring videoFileName;
+		std::wstring operationFileName;
+		std::wstring bigVideoName;
+		std::wstring ablBrainName;
 		int32_t logisticsTuneId;
 		MISSION_LIST infos;
 		bool bigVideoShown;
@@ -160,17 +154,17 @@ class LogisticsMissionInfo
 
 	// DATA
 
-	EString campaignName;
-	EString campaignDisplayName;
-	EString playerName;
-	EString currentMissionName;
-	EString finalVideoName;
+	std::wstring campaignName;
+	std::wstring campaignDisplayName;
+	std::wstring playerName;
+	std::wstring currentMissionName;
+	std::wstring finalVideoName;
 	int32_t currentStage;
 	int32_t currentMission;
 
 	int32_t lastStage;
 	int32_t lastMission;
-	EString lastMissionName;
+	std::wstring lastMissionName;
 
 	MissionGroup* groups;
 	int32_t groupCount;
@@ -183,8 +177,7 @@ class LogisticsMissionInfo
 	FILE_LIST additionalPurchaseFiles;
 
 	LogisticsMissionInfo::MissionInfo* getPreviousMission(void);
-	void readMissionInfo(
-		FitIniFile& file, LogisticsMissionInfo::MissionInfo* pInfo);
+	void readMissionInfo(FitIniFile& file, LogisticsMissionInfo::MissionInfo* pInfo);
 
 	// HELPER FUNCTIONS
 };

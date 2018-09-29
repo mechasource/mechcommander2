@@ -59,11 +59,11 @@ void aAnimation::copyData(const aAnimation& src)
 
 int32_t aAnimation::init(FitIniFile* file, PCSTR headerName)
 {
-	EString strToCheck = headerName;
+	std::wstring strToCheck = headerName;
 	strToCheck += "AnimationTimeStamps";
 	if (NO_ERROR != file->readIdLong(strToCheck, infoCount))
 	{
-		EString strToCheck = headerName;
+		std::wstring strToCheck = headerName;
 		strToCheck += "NumTimeStamps";
 		file->readIdLong(strToCheck, infoCount);
 	}
@@ -105,8 +105,7 @@ int32_t aAnimation::init(FitIniFile* file, PCSTR headerName)
 				else
 				{
 					strToCheck.Format("%s%s%ld", headerName, "ScaleY", i);
-					if (NO_ERROR !=
-						file->readIdFloat(strToCheck, infos[i].scaleY))
+					if (NO_ERROR != file->readIdFloat(strToCheck, infos[i].scaleY))
 					{
 						infos[i].scaleY = 1.0f;
 					}
@@ -290,9 +289,8 @@ uint32_t aAnimation::getColor(float time) const
 	float t0, t1;
 	if (infoCount && (time > infos[infoCount - 1].time) && bLoops)
 	{
-		float numCycles =
-			infos[infoCount - 1].time ? time / infos[infoCount - 1].time : 0;
-		int32_t numCyc = (int32_t)numCycles;
+		float numCycles = infos[infoCount - 1].time ? time / infos[infoCount - 1].time : 0;
+		int32_t numCyc  = (int32_t)numCycles;
 		time -= ((float)numCyc * infos[infoCount - 1].time);
 	}
 	t1 = t0		   = 0.f;
@@ -350,8 +348,7 @@ int32_t aAnimation::initWithBlockName(FitIniFile* file, PCSTR blockName)
 	if (NO_ERROR != file->seekBlock(blockName))
 	{
 		char errorStr[255];
-		sprintf(errorStr, "couldn't find block %s in file %s", blockName,
-			file->getFilename());
+		sprintf(errorStr, "couldn't find block %s in file %s", blockName, file->getFilename());
 		Assert(0, 0, errorStr);
 		return -1;
 	}
@@ -372,8 +369,7 @@ int32_t aAnimGroup::init(FitIniFile* file, PCSTR blockName)
 	if (NO_ERROR != file->seekBlock(blockName))
 	{
 		char errorStr[255];
-		sprintf(errorStr, "couldn't find block %s in file %s", blockName,
-			file->getFilename());
+		sprintf(errorStr, "couldn't find block %s in file %s", blockName, file->getFilename());
 		Assert(0, 0, errorStr);
 		return -1;
 	}

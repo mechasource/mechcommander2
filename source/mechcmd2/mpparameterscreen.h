@@ -26,7 +26,7 @@ struct _MC2Player;
 
 class aStyle2TextListItem : public aTextListItem
 {
-  public:
+public:
 	aStyle2TextListItem()
 	{
 		hasAnimation = false;
@@ -35,7 +35,7 @@ class aStyle2TextListItem : public aTextListItem
 	virtual int32_t init(FitIniFile* file, PCSTR blockName);
 	virtual void render(void);
 
-  protected:
+protected:
 	bool hasAnimation;
 	aAnimGroup animGroup;
 	int32_t normalColor;
@@ -43,7 +43,7 @@ class aStyle2TextListItem : public aTextListItem
 
 class aPlayerParams : public aObject
 {
-  public:
+public:
 	aPlayerParams(void);
 	~aPlayerParams(void);
 	aPlayerParams& operator=(const aPlayerParams& src);
@@ -67,7 +67,7 @@ class aPlayerParams : public aObject
 
 	void disableReadyButton(void);
 
-  protected:
+protected:
 	aAnimButton CBillsSpinnerUpButton;
 	aAnimButton CBillsSpinnerDownButton;
 	aAnimButton ReadyButton;
@@ -85,7 +85,7 @@ class aPlayerParams : public aObject
 
 	aStyle2TextListItem templateItem;
 
-	EString insigniaName;
+	std::wstring insigniaName;
 	aEdit edit;
 
 	bool bHasFocus;
@@ -100,7 +100,7 @@ class CListOfDropListPointers : public EList<aDropList*, aDropList*>
 
 class CFocusManager
 {
-  public:
+public:
 	enum control_species_data_type
 	{
 		CS_NONE,
@@ -112,11 +112,10 @@ class CFocusManager
 	PVOID registerDropList(aDropList& DropList);
 	void unregisterDropList(aDropList& DropList);
 	void update(void);
-	bool somebodyHasTheFocus(
-		void); /*this is distinct from the keyboard input focus*/
+	bool somebodyHasTheFocus(void); /*this is distinct from the keyboard input focus*/
 	aObject* pControlThatHasTheFocus(void);
 
-  private:
+private:
 	control_species_data_type speciesOfTheControlWhichHasTheFocus;
 	aDropList* pDropListThatHasTheFocus;
 	CListOfDropListPointers listOfDropListPointers;
@@ -124,7 +123,7 @@ class CFocusManager
 
 class MPParameterScreen : public LogisticsScreen
 {
-  public:
+public:
 	MPParameterScreen(void);
 	virtual ~MPParameterScreen(void);
 
@@ -146,7 +145,7 @@ class MPParameterScreen : public LogisticsScreen
 
 	static MPParameterScreen* s_instance;
 
-  private:
+private:
 	int32_t indexOfButtonWithID(int32_t id);
 
 	int32_t chatToSend;
@@ -165,7 +164,7 @@ class MPParameterScreen : public LogisticsScreen
 	bool bErrorDlg;
 	bool bBootDlg;
 	bool bDisconnectDlg;
-	EString mapName;
+	std::wstring mapName;
 	int32_t bootPlayerID;
 
 	bool bMapInfoDlg;

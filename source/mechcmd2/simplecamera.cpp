@@ -110,8 +110,7 @@ void SimpleCamera::render(int32_t xOffset, int32_t yOffset)
 		calculateProjectionConstants();
 		TG_Shape::SetViewport(viewMulX, viewMulY, viewAddX, viewAddY);
 		globalScaleFactor = getScaleFactor();
-		globalScaleFactor *=
-			viewMulX / Environment.screenWidth; // Scale Mechs to ScreenRES
+		globalScaleFactor *= viewMulX / Environment.screenWidth; // Scale Mechs to ScreenRES
 		//-----------------------------------------------
 		setLightColor(1, 0xffffffff);
 		setLightIntensity(1, 1.0);
@@ -121,16 +120,14 @@ void SimpleCamera::render(int32_t xOffset, int32_t yOffset)
 		default_state.SetTextureCorrectionOn();
 		default_state.SetZBufferCompareOn();
 		default_state.SetZBufferWriteOn();
-		default_state.SetFilterMode(
-			MidLevelRenderer::MLRState::BiLinearFilterMode);
+		default_state.SetFilterMode(MidLevelRenderer::MLRState::BiLinearFilterMode);
 		Stuff::RGBAColor fColor;
 		fColor.red						  = 0;
 		fColor.green					  = 0;
 		fColor.blue						  = 0;
 		float z							  = 1.0;
 		MidLevelRenderer::PerspectiveMode = usePerspective;
-		theClipper->StartDraw(
-			cameraOrigin, cameraToClip, fColor, &fColor, default_state, &z);
+		theClipper->StartDraw(cameraOrigin, cameraToClip, fColor, &fColor, default_state, &z);
 		MidLevelRenderer::GOSVertex::farClipReciprocal =
 			(1.0f - cameraToClip(2, 2)) / cameraToClip(3, 2);
 		//--------------------------------
@@ -221,7 +218,7 @@ int32_t SimpleCamera::update()
 		float tmp				= -mechPos.y / 2.f;
 		mechPos.y				= -mechPos.z / 2.f;
 		mechPos.z				= tmp;
-		float rotation = frameLength * rotationIncrement + pObject->rotation;
+		float rotation			= frameLength * rotationIncrement + pObject->rotation;
 		pObject->setObjectParameters(mechPos, rotation, 0, 0, 0);
 		pObject->update();
 		pObject->setVisibility(true, true);
@@ -261,13 +258,11 @@ void SimpleCamera::setMech(
 	// COUNT DOES NOT INCREASE!
 	Mech3DAppearanceType* appearanceType = nullptr;
 	if (fileExists(path))
-		appearanceType =
-			(Mech3DAppearanceType*)appearanceTypeList->getAppearance(
-				MECH_TYPE << 24, (PSTR)testName);
+		appearanceType = (Mech3DAppearanceType*)appearanceTypeList->getAppearance(
+			MECH_TYPE << 24, (PSTR)testName);
 	else
-		appearanceType =
-			(Mech3DAppearanceType*)appearanceTypeList->getAppearance(
-				MECH_TYPE << 24, (PSTR)NoPathFileName);
+		appearanceType = (Mech3DAppearanceType*)appearanceTypeList->getAppearance(
+			MECH_TYPE << 24, (PSTR)NoPathFileName);
 	pObject = new Mech3DAppearance;
 	pObject->init(appearanceType);
 	pObject->setGestureGoal(2);
@@ -278,8 +273,7 @@ void SimpleCamera::setMech(
 	ZoomTight();
 }
 
-void SimpleCamera::setVehicle(
-	PCSTR fileName, int32_t base, int32_t highlight, int32_t h2)
+void SimpleCamera::setVehicle(PCSTR fileName, int32_t base, int32_t highlight, int32_t h2)
 {
 	shapeScale	= 0.0f;
 	bIsComponent  = 0;
@@ -305,8 +299,8 @@ void SimpleCamera::setVehicle(
 	// COUNT DOES NOT INCREASE!
 	GVAppearanceType* appearanceType = nullptr;
 	if (fileExists(path))
-		appearanceType = (GVAppearanceType*)appearanceTypeList->getAppearance(
-			GV_TYPE << 24, (PSTR)testName);
+		appearanceType =
+			(GVAppearanceType*)appearanceTypeList->getAppearance(GV_TYPE << 24, (PSTR)testName);
 	else
 		appearanceType = (GVAppearanceType*)appearanceTypeList->getAppearance(
 			GV_TYPE << 24, (PSTR)NoPathFileName);
@@ -342,12 +336,12 @@ void SimpleCamera::setComponent(PCSTR fileName)
 	BldgAppearanceType* appearanceType = nullptr;
 	if (fileExists(path))
 	{
-		appearanceType = (BldgAppearanceType*)appearanceTypeList->getAppearance(
-			BLDG_TYPE << 24, (PSTR)testName);
+		appearanceType =
+			(BldgAppearanceType*)appearanceTypeList->getAppearance(BLDG_TYPE << 24, (PSTR)testName);
 	}
 	else
-		appearanceType = (BldgAppearanceType*)appearanceTypeList->getAppearance(
-			BLDG_TYPE << 24, (PSTR)fileName);
+		appearanceType =
+			(BldgAppearanceType*)appearanceTypeList->getAppearance(BLDG_TYPE << 24, (PSTR)fileName);
 	// MUST ALWAYS CALL GET, EVEN IF WE HAVE AN APPEARANCE TYPE OR REFERENCE
 	// COUNT DOES NOT INCREASE!
 	pObject = new BldgAppearance;
@@ -374,8 +368,7 @@ void SimpleCamera::setObject(
 {
 	if (!pFileName || !strlen(pFileName))
 	{
-		if (appearanceTypeList &&
-			appearanceTypeList->pointerCanBeDeleted(pObject))
+		if (appearanceTypeList && appearanceTypeList->pointerCanBeDeleted(pObject))
 			delete pObject;
 		pObject = nullptr;
 		return;

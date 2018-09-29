@@ -22,14 +22,14 @@ class GameCamera : public Camera
 {
 	// Data Members
 	//-------------
-  protected:
+protected:
 	GameObjectPtr targetObject;
 	AppearancePtr compass;
 	bool drawCompass;
 
 	float lastShadowLightPitch;
 
-  public:
+public:
 	virtual void init(void)
 	{
 		Camera::init(void);

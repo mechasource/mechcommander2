@@ -77,19 +77,16 @@ void Commander::destroy(void)
 		groups[i] = nullptr;
 	}
 	numCommanders--;
-	Assert(numCommanders >= 0, numCommanders,
-		" Commander.destroy: numCommanders is neg ");
+	Assert(numCommanders >= 0, numCommanders, " Commander.destroy: numCommanders is neg ");
 }
 
 //---------------------------------------------------------------------------
 
-int32_t Commander::setGroup(
-	int32_t id, int32_t numMates, MoverPtr* moverList, int32_t point)
+int32_t Commander::setGroup(int32_t id, int32_t numMates, MoverPtr* moverList, int32_t point)
 {
 	// First, does the unit currently have objects set up there already?
 	// If so, we need to determine
-	Assert((id >= 0) && (id < MAX_MOVERGROUPS), 0,
-		" Commander::bad id in setGroup ");
+	Assert((id >= 0) && (id < MAX_MOVERGROUPS), 0, " Commander::bad id in setGroup ");
 	MoverGroupPtr curGroup = groups[id];
 	Assert(curGroup != nullptr, 0, " Commander::setGroup has null group ");
 	//-----------------------------------------------
@@ -145,8 +142,7 @@ void Commander::eject(void)
 			if (mover->getObjectClass() == BATTLEMECH)
 			{
 				if (mover->getPilot())
-					mover->getPilot()->orderEject(
-						false, true, ORDER_ORIGIN_COMMANDER);
+					mover->getPilot()->orderEject(false, true, ORDER_ORIGIN_COMMANDER);
 			}
 			else
 			{
@@ -174,8 +170,8 @@ int32_t Commander::Save(PacketFilePtr file, int32_t packetNum)
 	StaticCommanderData staticData;
 	staticData.numCommanders   = numCommanders;
 	staticData.homeCommanderId = home->getId();
-	file->writePacket(packetNum, (puint8_t)&staticData,
-		sizeof(StaticCommanderData), STORAGE_TYPE_RAW);
+	file->writePacket(
+		packetNum, (puint8_t)&staticData, sizeof(StaticCommanderData), STORAGE_TYPE_RAW);
 	packetNum++;
 	for (size_t i = 0; i < numCommanders; i++)
 	{
@@ -189,8 +185,7 @@ int32_t Commander::Save(PacketFilePtr file, int32_t packetNum)
 			data.teamId = Team::home->getId();
 		for (size_t j = 0; j < MAX_MOVERGROUPS; j++)
 			commanders[i]->groups[j]->copyTo(data.groups[j]);
-		file->writePacket(packetNum, (puint8_t)&data, sizeof(CommanderData),
-			STORAGE_TYPE_RAW);
+		file->writePacket(packetNum, (puint8_t)&data, sizeof(CommanderData), STORAGE_TYPE_RAW);
 		packetNum++;
 	}
 	return packetNum;

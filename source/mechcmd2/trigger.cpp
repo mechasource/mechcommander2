@@ -26,8 +26,8 @@ void TriggerAreaManager::destroy(void) {}
 
 //---------------------------------------------------------------------------
 
-int32_t TriggerAreaManager::add(int32_t ULrow, int32_t ULcol, int32_t LRrow,
-	int32_t LRcol, int32_t type, int32_t param)
+int32_t TriggerAreaManager::add(
+	int32_t ULrow, int32_t ULcol, int32_t LRrow, int32_t LRcol, int32_t type, int32_t param)
 {
 	for (size_t i = 1; i < MAX_TRIGGER_AREAS; i++)
 		if (triggerAreas[i].type == TRIGGER_AREA_NONE)
@@ -79,10 +79,7 @@ void TriggerAreaManager::remove(int32_t areaHandle)
 
 //---------------------------------------------------------------------------
 
-void TriggerAreaManager::reset(int32_t areaHandle)
-{
-	triggerAreas[areaHandle].hit = false;
-}
+void TriggerAreaManager::reset(int32_t areaHandle) { triggerAreas[areaHandle].hit = false; }
 
 //---------------------------------------------------------------------------
 
@@ -112,8 +109,7 @@ void TriggerAreaManager::setHit(MoverPtr mover)
 						case TRIGGER_AREA_MOVER:
 							if (triggerAreas[i].param > 0)
 							{
-								if (mover->getWatchID() ==
-									triggerAreas[i].param)
+								if (mover->getWatchID() == triggerAreas[i].param)
 									triggerAreas[i].hit = true;
 							}
 							else
@@ -132,15 +128,13 @@ void TriggerAreaManager::setHit(MoverPtr mover)
 								triggerAreas[i].hit = true;
 							break;
 						case TRIGGER_AREA_COMMANDER:
-							if (mover->getCommanderId() ==
-								triggerAreas[i].param)
+							if (mover->getCommanderId() == triggerAreas[i].param)
 								triggerAreas[i].hit = true;
 							break;
 						}
 	}
 #else
-	int32_t areaHandle =
-		map[mover->cellPositionRow / 3][mover->cellPositionCol / 3];
+	int32_t areaHandle = map[mover->cellPositionRow / 3][mover->cellPositionCol / 3];
 	if (areaHandle > 0)
 	{
 		switch (triggerAreas[areaHandle].type)

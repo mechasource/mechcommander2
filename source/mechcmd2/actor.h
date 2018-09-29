@@ -39,11 +39,9 @@ enum ActorState
 struct ActorData
 {
 	ActorState state;
-	uint8_t
-		symmetrical; // are second-half rotations flip versions of first half?
-	uint8_t numRotations; // number of rotations (including flips)
-	uint32_t
-		numFrames; // number of frames for this gesture (if -1, does not exist)
+	uint8_t symmetrical;	   // are second-half rotations flip versions of first half?
+	uint8_t numRotations;	  // number of rotations (including flips)
+	uint32_t numFrames;		   // number of frames for this gesture (if -1, does not exist)
 	uint32_t basePacketNumber; // Where in packet file does this gesture start.
 	float frameRate;		   // intended frame rate of playback
 	int32_t textureSize;	   // Length of one edge of texture.
@@ -59,7 +57,7 @@ struct ActorData
 //-----------------------------------------------------------------------
 class VFXAppearanceType : public AppearanceType
 {
-  public:
+public:
 	ActorData* actorStateData;
 	TGATexturePtr* textureList; // These go nullptr when a texture is cached
 								// out.
@@ -67,7 +65,7 @@ class VFXAppearanceType : public AppearanceType
 	uint32_t textureMemoryHandle;
 	uint8_t numStates;
 
-  public:
+public:
 	void init(void)
 	{
 		actorStateData = nullptr;
@@ -86,8 +84,8 @@ class VFXAppearanceType : public AppearanceType
 
 	//----------------------------------------------
 	// This routine is where the magic happens.
-	TGATexturePtr getTexture(ActorState shapeId, int32_t rot, int32_t currFrame,
-		float& frameRate, bool& mirror);
+	TGATexturePtr getTexture(
+		ActorState shapeId, int32_t rot, int32_t currFrame, float& frameRate, bool& mirror);
 
 	int32_t loadIniFile(FilePtr appearFile, uint32_t fileSize);
 
@@ -112,10 +110,9 @@ class VFXAppearanceType : public AppearanceType
 //-----------------------------------------------------------------------
 class VFXAppearance : public Appearance
 {
-  public:
+public:
 	VFXAppearanceType* appearType;
-	TGATexturePtr
-		currentTexture; // OK because we make sure each frame before we draw it.
+	TGATexturePtr currentTexture; // OK because we make sure each frame before we draw it.
 	uint32_t currentFrame;
 	float currentRotation;
 
@@ -143,9 +140,8 @@ class VFXAppearance : public Appearance
 	int32_t selected;
 	int32_t alignment;
 
-  public:
-	virtual void init(
-		AppearanceTypePtr tree = nullptr, GameObjectPtr obj = nullptr);
+public:
+	virtual void init(AppearanceTypePtr tree = nullptr, GameObjectPtr obj = nullptr);
 
 	VFXAppearance(void) { init(void); }
 

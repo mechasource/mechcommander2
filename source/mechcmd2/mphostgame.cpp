@@ -138,8 +138,7 @@ void MPHostGame::end()
 void MPHostGame::render(int32_t xOffset, int32_t yOffset)
 {
 	LogisticsDialog::render();
-	if ((0 == xOffset) && (0 == yOffset) && enterAnim.isDone() &&
-		!exitAnim.isAnimating())
+	if ((0 == xOffset) && (0 == yOffset) && enterAnim.isDone() && !exitAnim.isAnimating())
 	{
 		//		numPlayersDropList.render();
 		for (size_t i = 0; i < staticCount; i++)
@@ -162,7 +161,7 @@ int32_t MPHostGame::handleMessage(uint32_t message, uint32_t who)
 	enterAnim.end();
 	if (status == YES)
 	{
-		EString tmp;
+		std::wstring tmp;
 		//		numPlayersDropList.EditBox().getEntry(tmp);
 		//		int32_t maxPlayers = atoi( tmp );
 		edits[0].getEntry(tmp);
@@ -174,8 +173,7 @@ int32_t MPHostGame::handleMessage(uint32_t message, uint32_t who)
 			LogisticsOneButtonDialog::instance()->begin();
 			LogisticsOneButtonDialog::instance()->setText(
 				IDS_ERROR_NOT_CONNECTED, IDS_DIALOG_OK, IDS_DIALOG_OK);
-			LogisticsOneButtonDialog::instance()->setFont(
-				IDS_MP_CONNECT_ERROR_NO_CONNECTION_FONT);
+			LogisticsOneButtonDialog::instance()->setFont(IDS_MP_CONNECT_ERROR_NO_CONNECTION_FONT);
 			bShowDlg = true;
 		}
 	}
@@ -199,7 +197,7 @@ void MPHostGame::update()
 	LogisticsDialog::update();
 	helpTextID		 = 0;
 	helpTextHeaderID = 0;
-	EString tmp;
+	std::wstring tmp;
 	edits[0].getEntry(tmp);
 	int32_t len = tmp.Length();
 	if (len >= 1)

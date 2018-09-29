@@ -21,7 +21,7 @@ ChatWindow:
 
 class ChatMessageItem : public aListItem
 {
-  public:
+public:
 	ChatMessageItem(void);
 	void setPlayerColor(int32_t color);
 	void setTextColor(int32_t color);
@@ -29,7 +29,7 @@ class ChatMessageItem : public aListItem
 	int32_t setText(PCSTR text); // returns number of lines
 	int32_t getLineCount() { return lineCount; }
 
-  private:
+private:
 	aText name;
 	aText playerText;
 	aRect playerRect;
@@ -38,13 +38,13 @@ class ChatMessageItem : public aListItem
 
 class ChatWidget : public LogisticsScreen // the one that obscures....
 {
-  public:
+public:
 	ChatWidget(void);
 	virtual ~ChatWidget(void);
 
 	void init(void);
 
-  private:
+private:
 	friend class ChatWindow;
 	aListBox listBox;
 
@@ -54,7 +54,7 @@ class ChatWidget : public LogisticsScreen // the one that obscures....
 
 class ChatWindow : public LogisticsScreen
 {
-  public:
+public:
 	ChatWindow(void);
 	virtual ~ChatWindow(void);
 
@@ -71,7 +71,7 @@ class ChatWindow : public LogisticsScreen
 	virtual bool pointInside(int32_t xPos, int32_t yPos);
 	bool isExpanded(void);
 
-  private:
+private:
 	static ChatWindow* s_instance;
 
 	aListBox listBox;
@@ -83,9 +83,8 @@ class ChatWindow : public LogisticsScreen
 	int32_t curItem;
 	int32_t maxItems;
 
-	static void refillListBox(aListBox& listBox, PSTR* chatTexts,
-		int32_t* playerIDs, ChatMessageItem* pItems, int32_t& curItem,
-		int32_t itemCount, int32_t maxCount);
+	static void refillListBox(aListBox& listBox, PSTR* chatTexts, int32_t* playerIDs,
+		ChatMessageItem* pItems, int32_t& curItem, int32_t itemCount, int32_t maxCount);
 };
 
 //*************************************************************************************************

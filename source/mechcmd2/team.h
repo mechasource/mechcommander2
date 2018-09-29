@@ -51,7 +51,7 @@ typedef struct _TeamStaticData
 class Team
 {
 
-  public:
+public:
 	//-------------
 	// general info
 	int32_t id;
@@ -72,7 +72,7 @@ class Team
 	static char relations[MAX_TEAMS][MAX_TEAMS];
 	static bool noPain[MAX_TEAMS];
 
-  public:
+public:
 	virtual void init(void);
 
 	Team(void) { init(void); }
@@ -103,11 +103,10 @@ class Team
 
 	bool isCapturing(GameObjectWatchID targetWID, GameObjectWatchID exceptWID);
 
-	bool isContact(
-		GameObjectPtr looker, MoverPtr mover, int32_t contactCriteria);
+	bool isContact(GameObjectPtr looker, MoverPtr mover, int32_t contactCriteria);
 
-	virtual int32_t getContacts(GameObjectPtr looker, int32_t* contactList,
-		int32_t contactCriteria, int32_t sortType);
+	virtual int32_t getContacts(
+		GameObjectPtr looker, int32_t* contactList, int32_t contactCriteria, int32_t sortType);
 
 	bool hasSensorContact(int32_t teamID);
 
@@ -125,14 +124,12 @@ class Team
 
 	~Team(void) { destroy(void); }
 
-	static bool lineOfSight(float startLocal, int32_t mCellRow,
-		int32_t mCellCol, float endLocal, int32_t tCellRow, int32_t tCellCol,
-		int32_t teamId, float targetRadius, float startRadius = 0.0f,
-		bool checkVisibleBits = true);
-
-	static bool lineOfSight(Stuff::Vector3D myPos,
-		Stuff::Vector3D targetPosition, int32_t teamId, float targetRadius,
+	static bool lineOfSight(float startLocal, int32_t mCellRow, int32_t mCellCol, float endLocal,
+		int32_t tCellRow, int32_t tCellCol, int32_t teamId, float targetRadius,
 		float startRadius = 0.0f, bool checkVisibleBits = true);
+
+	static bool lineOfSight(Stuff::Vector3D myPos, Stuff::Vector3D targetPosition, int32_t teamId,
+		float targetRadius, float startRadius = 0.0f, bool checkVisibleBits = true);
 
 	//-------------------------------------------
 	// Can anyone on my team see this position?
@@ -141,8 +138,8 @@ class Team
 
 	void markRadiusSeen(Stuff::Vector3D& location, float radius);
 
-	void markRadiusSeenToTeams(Stuff::Vector3D& location, float radius = -1,
-		bool shrinkForNight = false);
+	void markRadiusSeenToTeams(
+		Stuff::Vector3D& location, float radius = -1, bool shrinkForNight = false);
 
 	void markSeen(Stuff::Vector3D& location, float specialUnitExpand);
 

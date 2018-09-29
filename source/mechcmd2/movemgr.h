@@ -39,7 +39,7 @@ typedef struct _PathQueueRec
 class MovePathManager
 {
 
-  public:
+public:
 	PathQueueRec pool[MAX_MOVERS];
 	PathQueueRecPtr queueFront;
 	PathQueueRecPtr queueEnd;
@@ -48,7 +48,7 @@ class MovePathManager
 	static int32_t peakPaths;
 	static int32_t sourceTally[50];
 
-  public:
+public:
 	PVOID operator new(size_t ourSize);
 
 	void operator delete(PVOID us);
@@ -65,8 +65,7 @@ class MovePathManager
 
 	PathQueueRecPtr remove(MechWarriorPtr pilot);
 
-	void request(MechWarriorPtr pilot, int32_t selectionIndex,
-		uint32_t moveParams, int32_t source);
+	void request(MechWarriorPtr pilot, int32_t selectionIndex, uint32_t moveParams, int32_t source);
 
 	void calcPath(void);
 

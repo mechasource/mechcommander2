@@ -25,7 +25,7 @@ MissionBriefingScreen:
 **************************************************************************************************/
 class MissionBriefingScreen : public LogisticsScreen
 {
-  public:
+public:
 	MissionBriefingScreen(void);
 	virtual ~MissionBriefingScreen(void);
 
@@ -38,10 +38,10 @@ class MissionBriefingScreen : public LogisticsScreen
 
 	static int32_t getMissionTGA(PCSTR missionName);
 
-  private:
+private:
 	aObject* objectiveButtons[MAX_OBJECTIVES];
 	aObject dropZoneButton;
-	EString objectiveModels[MAX_OBJECTIVES];
+	std::wstring objectiveModels[MAX_OBJECTIVES];
 	int32_t modelTypes[MAX_OBJECTIVES];
 	float modelScales[MAX_OBJECTIVES];
 	int32_t modelColors[MAX_OBJECTIVES][3];
@@ -49,8 +49,8 @@ class MissionBriefingScreen : public LogisticsScreen
 
 	int32_t addLBItem(PCSTR itemName, uint32_t color, int32_t ID);
 	int32_t addItem(int32_t ID, uint32_t color, int32_t LBid);
-	void addObjectiveButton(float fMakerX, float fMarkerY, int32_t count,
-		int32_t priority, float mapWidth, float mapHeight, bool display);
+	void addObjectiveButton(float fMakerX, float fMarkerY, int32_t count, int32_t priority,
+		float mapWidth, float mapHeight, bool display);
 	void setupDropZone(float fX, float fY, float mapWidth, float mapHeight);
 
 	float runTime;

@@ -25,7 +25,7 @@ class OptionsXScreen;
 
 class OptionsScreenWrapper
 {
-  public:
+public:
 	enum status_type
 	{
 		opt_INACTIVE,
@@ -46,7 +46,7 @@ class OptionsScreenWrapper
 	void end(void);
 	bool isDone() { return (!isActive); }
 
-  private:
+private:
 	OptionsXScreen* pOptionsScreen;
 	bool isActive;
 };

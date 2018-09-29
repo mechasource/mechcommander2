@@ -48,16 +48,16 @@ enum Medals
 
 class LogisticsPilot
 {
-  public:
+public:
 	int32_t init(PSTR fileName);
 	LogisticsPilot(void);
 	~LogisticsPilot(void);
 
-	const EString& getName(void) const { return name; }
-	const EString& getAudio(void) const { return audio; }
-	const EString& getVideo(void) const { return video; }
+	const std::wstring& getName(void) const { return name; }
+	const std::wstring& getAudio(void) const { return audio; }
+	const std::wstring& getVideo(void) const { return video; }
 	int32_t getRank(void) const { return rank; }
-	const EString& getIconFile(void) const { return iconFile; }
+	const std::wstring& getIconFile(void) const { return iconFile; }
 	float getGunnery(void) const { return gunnery; }
 	float getPiloting(void) const { return piloting; }
 	int32_t getMechKills(void) const { return mechKills; }
@@ -94,7 +94,7 @@ class LogisticsPilot
 	int32_t turnAverageIntoRank(float avg);
 
 	static PCSTR getSkillText(int32_t skillID);
-	const EString& getFileName() { return fileName; }
+	const std::wstring& getFileName() { return fileName; }
 
 	int32_t save(FitIniFile& file, int32_t count);
 	int32_t load(FitIniFile& file);
@@ -115,12 +115,12 @@ class LogisticsPilot
 	uint32_t id;
 	EList<ForceGroupIcon*, ForceGroupIcon*> killedIcons;
 
-  private:
-	EString name;
-	EString audio;
-	EString video;
+private:
+	std::wstring name;
+	std::wstring audio;
+	std::wstring video;
 	int32_t rank;
-	EString iconFile; // or file name?
+	std::wstring iconFile; // or file name?
 	float gunnery;
 	float piloting;
 	int32_t mechKills;
@@ -139,7 +139,7 @@ class LogisticsPilot
 	bool specialtySkills[NUM_SPECIALTY_SKILLS];
 
 	static char skillTexts[][255];
-	EString fileName;
+	std::wstring fileName;
 
 	bool medals[MAX_MEDAL];
 	bool medalsLastMission[MAX_MEDAL];

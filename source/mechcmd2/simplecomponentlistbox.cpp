@@ -39,8 +39,7 @@ void ComponentListBox::setMech(LogisticsVariant* pMech)
 		int32_t ECM	= pMech->getECM();
 		if (sensor > 0)
 		{
-			aTextListItem* textItem =
-				new aTextListItem(IDS_SALVAGE_AREA_COMPONENTS);
+			aTextListItem* textItem = new aTextListItem(IDS_SALVAGE_AREA_COMPONENTS);
 			textItem->setText(32000 + sensor);
 			textItem->setColor(0xffc29b00);
 			textItem->setHelpID(IDS_HELP_COMP0 + sensor);
@@ -48,8 +47,7 @@ void ComponentListBox::setMech(LogisticsVariant* pMech)
 		}
 		if (ECM > 0)
 		{
-			aTextListItem* textItem =
-				new aTextListItem(IDS_SALVAGE_AREA_COMPONENTS);
+			aTextListItem* textItem = new aTextListItem(IDS_SALVAGE_AREA_COMPONENTS);
 			textItem->setText(32000 + ECM);
 			textItem->setColor(0xffc29b00);
 			textItem->setHelpID(IDS_HELP_COMP0 + ECM);
@@ -70,16 +68,15 @@ void ComponentListBox::setVehicle(LogisticsVehicle* pVeh)
 	}
 }
 
-void ComponentListBox::setComponents(
-	int32_t componentCount, LogisticsComponent** components)
+void ComponentListBox::setComponents(int32_t componentCount, LogisticsComponent** components)
 {
 	LogisticsComponent* finalList[64];
 	int32_t finalListCount[64];
 	//		int32_t stringIDs[4] = { IDS_SHORT, IDS_MEDIUM, IDS_LONG,
-	//IDS_COMPONENT};
+	// IDS_COMPONENT};
 	int32_t colors[4] = {0xff6E7C00, 0xff005392, 0xffA21600, 0xffc29b00};
 	//		int32_t headerColors[4] = { 0xFFC8E100, 0xff0091FF, 0xFFFF0000,
-	//0xffFF8A00 };
+	// 0xffFF8A00 };
 	int32_t i, j, k;
 	for (i = 0; i < 4; i++) // do int16_t, medium int32_t
 	{
@@ -111,24 +108,23 @@ void ComponentListBox::setComponents(
 		}
 		if (finalList[0])
 		{
-			EString str;
+			std::wstring str;
 			// add the header
 			// no more headers, keeping code just in case
 			//				aTextListItem* textItem = new aTextListItem(
-			//IDS_SALVAGE_AREA_COMPONENTS ); 				textItem->setText(
-			//stringIDs[i] ); 				textItem->setColor( headerColors[i]
+			// IDS_SALVAGE_AREA_COMPONENTS ); 				textItem->setText(
+			// stringIDs[i] ); 				textItem->setColor( headerColors[i]
 			//); 				AddItem( textItem );
 			// add each componet
 			for (j = 0; j < 64; j++)
 			{
 				if (!finalList[j])
 					break;
-				aTextListItem* textItem =
-					new aTextListItem(IDS_SALVAGE_AREA_COMPONENTS);
+				aTextListItem* textItem = new aTextListItem(IDS_SALVAGE_AREA_COMPONENTS);
 				if (finalList[j]->getType() != COMPONENT_FORM_JUMPJET)
 				{
-					str.Format("%ld/%ld %s", finalListCount[j],
-						finalListCount[j], finalList[j]->getName());
+					str.Format("%ld/%ld %s", finalListCount[j], finalListCount[j],
+						finalList[j]->getName());
 					textItem->setText(str);
 				}
 				else

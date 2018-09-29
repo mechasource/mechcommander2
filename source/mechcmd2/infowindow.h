@@ -28,7 +28,7 @@ InfoWindow:
 **************************************************************************************************/
 class InfoWindow
 {
-  public:
+public:
 	InfoWindow(void);
 	~InfoWindow(void);
 
@@ -36,7 +36,7 @@ class InfoWindow
 	void update(void);
 	void render(void);
 
-  private:
+private:
 	float scrollPos;
 	float scrollLength;
 	float infoLength;

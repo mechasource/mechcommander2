@@ -41,7 +41,7 @@
 class ArtilleryChunk
 {
 
-  public:
+public:
 	char commanderId;
 	char strikeType;
 	int32_t cellRC[2];
@@ -49,7 +49,7 @@ class ArtilleryChunk
 
 	uint32_t data;
 
-  public:
+public:
 	PVOID operator new(size_t mySize);
 
 	void operator delete(PVOID us);
@@ -70,8 +70,7 @@ class ArtilleryChunk
 
 	~ArtilleryChunk(void) { destroy(void); }
 
-	void build(int32_t commanderId, int32_t strikeType,
-		Stuff::Vector3D location, int32_t seconds);
+	void build(int32_t commanderId, int32_t strikeType, Stuff::Vector3D location, int32_t seconds);
 
 	void pack(void);
 
@@ -85,7 +84,7 @@ class ArtilleryChunk
 class ArtilleryType : public ObjectType
 {
 
-  public:
+public:
 	puint8_t frameList;  // Pointer to JMiles shape file binary
 	uint32_t frameCount; // Number of frames in shape file
 	uint32_t startFrame; // Frame in List to start with.
@@ -119,7 +118,7 @@ class ArtilleryType : public ObjectType
 
 	int32_t minArtilleryHeadRange;
 
-  public:
+public:
 	void init(void);
 
 	ArtilleryType(void) { init(void); }
@@ -134,11 +133,9 @@ class ArtilleryType : public ObjectType
 
 	virtual GameObjectPtr createInstance(void);
 
-	virtual bool handleCollision(
-		GameObjectPtr collidee, GameObjectPtr collider);
+	virtual bool handleCollision(GameObjectPtr collidee, GameObjectPtr collider);
 
-	virtual bool handleDestruction(
-		GameObjectPtr collidee, GameObjectPtr collider);
+	virtual bool handleDestruction(GameObjectPtr collidee, GameObjectPtr collider);
 };
 
 //***************************************************************************
@@ -176,7 +173,7 @@ class Artillery : public GameObject
 	//-------------
 	// Data Members
 
-  public:
+public:
 	char artilleryType;
 	char teamId;
 	char commanderId;
@@ -196,7 +193,7 @@ class Artillery : public GameObject
 
 	// Member Functions
 	//-----------------
-  public:
+public:
 	virtual void init(bool create);
 
 	virtual void init(bool create, int32_t _artilleryType);
@@ -215,8 +212,7 @@ class Artillery : public GameObject
 
 	virtual void setSensorRange(float range);
 
-	void setSensorData(
-		TeamPtr team, float sensorTime = -1.0, float range = -1.0);
+	void setSensorData(TeamPtr team, float sensorTime = -1.0, float range = -1.0);
 
 	void setJustCreated(void);
 
@@ -267,8 +263,7 @@ class Artillery : public GameObject
 
 	virtual TeamPtr getTeam(void);
 
-	virtual int32_t handleWeaponHit(
-		WeaponShotInfoPtr shotInfo, bool addMultiplayChunk = false);
+	virtual int32_t handleWeaponHit(WeaponShotInfoPtr shotInfo, bool addMultiplayChunk = false);
 
 	virtual void handleStaticCollision(void);
 
@@ -280,12 +275,12 @@ class Artillery : public GameObject
 };
 
 //---------------------------------------------------------------------------
-extern void CallArtillery(int32_t commanderId, int32_t strikeType,
-	Stuff::Vector3D strikeLoc, int32_t secondsToImpact, bool randomOffset);
+extern void CallArtillery(int32_t commanderId, int32_t strikeType, Stuff::Vector3D strikeLoc,
+	int32_t secondsToImpact, bool randomOffset);
 
 extern void IfaceCallStrike(int32_t strikeID, Stuff::Vector3D* strikeLoc,
-	GameObjectPtr strikeTarget, bool playerStrike = true,
-	bool clanStrike = false, float timeToImpact = -1.00);
+	GameObjectPtr strikeTarget, bool playerStrike = true, bool clanStrike = false,
+	float timeToImpact = -1.00);
 
 //---------------------------------------------------------------------------
 #endif

@@ -85,8 +85,8 @@ struct OldObjData
 	int16_t vertexNumber;		 // Vertex Number in Block.
 	int16_t blockNumber;		 // Which terrain Block.
 	uint32_t damage;			 // Damage
-	float positionX; // Where, physically is object.  TOO DAMNED HARD TO
-					 // CALCULATE!!!!!!!!
+	float positionX;			 // Where, physically is object.  TOO DAMNED HARD TO
+								 // CALCULATE!!!!!!!!
 	float positionY;
 };
 #endif
@@ -115,7 +115,7 @@ class ObjectBlockManager
 {
 	// Data Members
 	//-------------
-  protected:
+protected:
 	uint32_t terrainObjectHeapSize; // Size of TerrainObject Heap
 	UserHeapPtr terrainObjectHeap;  // Pointer to Heap.
 
@@ -129,10 +129,10 @@ class ObjectBlockManager
 
 	// Member Functions
 	//-----------------
-  protected:
+protected:
 	int32_t setupObjectQueue(uint32_t blockNum, uint32_t blockSize);
 
-  public:
+public:
 	void init(void)
 	{
 		terrainObjectHeapSize = 0;
@@ -159,15 +159,11 @@ class ObjectBlockManager
 
 	void destroyAllObjects(void);
 
-	ObjectQueueNodePtr getObjectList(int32_t idNum)
-	{
-		return objectQueues[idNum];
-	}
+	ObjectQueueNodePtr getObjectList(int32_t idNum) { return objectQueues[idNum]; }
 
 #ifdef TERRAINEDIT
-	int32_t addObject(ObjectTypeNumber objNum, vector_2d& pOffset,
-		vector_2d& numbers, vector_3d& position, int32_t dmg = 0,
-		int32_t expTime = -1);
+	int32_t addObject(ObjectTypeNumber objNum, vector_2d& pOffset, vector_2d& numbers,
+		vector_3d& position, int32_t dmg = 0, int32_t expTime = -1);
 	int32_t removeObject(BaseObjectPtr deadObject);
 #endif
 };

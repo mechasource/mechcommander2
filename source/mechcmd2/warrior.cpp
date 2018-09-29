@@ -140,17 +140,15 @@ float FireOddsTable[NUM_FIREODDS] = {20.0, 35.0, 50.0, 65.0, 80.0};
 PSTR pilotAlarmFunctionName[NUM_PILOT_ALARMS] = {"handletargetofweaponfire",
 	"handlehitbyweaponfire", "handledamagetakenrate", "handledeathofmate",
 	"handlecripplingoffriendlyvehicle", "handledestructionoffriendlyvehicle",
-	"handleincapacitationofvehicle", "handledestructionofvehicle",
-	"handlewithdraw", "handleattackorder", "handlecollision",
-	"handleguardbreach", "handlekilledtarget", "handlematefiredweapon",
-	"handleplayerorder", "handlenomovepath", "handlegateclosing",
+	"handleincapacitationofvehicle", "handledestructionofvehicle", "handlewithdraw",
+	"handleattackorder", "handlecollision", "handleguardbreach", "handlekilledtarget",
+	"handlematefiredweapon", "handleplayerorder", "handlenomovepath", "handlegateclosing",
 	"handlefiredweapon", "handlenewmover"};
 
 char ProfessionalismOffsetTable[NUM_OFFSET_RANGES][2] = {
 	{10, 10}, {20, 5}, {30, 0}, {40, 5}, {100, -10}};
 
-char DecorumOffsetTable[NUM_OFFSET_RANGES][2] = {
-	{10, 10}, {20, 5}, {30, 0}, {40, 5}, {100, -10}};
+char DecorumOffsetTable[NUM_OFFSET_RANGES][2] = {{10, 10}, {20, 5}, {30, 0}, {40, 5}, {100, -10}};
 
 char AmmoConservationModifiers[2][2] = {{50, -5}, {20, -10}};
 
@@ -159,9 +157,9 @@ PSTR SkillsTable[NUM_SKILLS] = {"Piloting", "Sensors", "Gunnery"};
 //-----------------------------------------------
 // First column is ThreatRating, second column is
 // for Inner Sphere, third column is Clan...
-float ThreatRatingEffect[8][3] = {{0.5f, -1.0f, 0.0f}, {0.75f, -0.2f, 0.0f},
-	{1.0f, 0.0f, 0.0f}, {1.25f, 0.0f, 0.0f}, {1.5f, 0.0f, 0.0f},
-	{2.0f, 0.1f, 0.0f}, {2.25f, 0.2f, -0.1f}, {1000000.0f, 0.2f, -1.0f}};
+float ThreatRatingEffect[8][3] = {{0.5f, -1.0f, 0.0f}, {0.75f, -0.2f, 0.0f}, {1.0f, 0.0f, 0.0f},
+	{1.25f, 0.0f, 0.0f}, {1.5f, 0.0f, 0.0f}, {2.0f, 0.1f, 0.0f}, {2.25f, 0.2f, -0.1f},
+	{1000000.0f, 0.2f, -1.0f}};
 
 float BrainUpdateFrequency		= 2.25;
 float MovementUpdateFrequency   = 5.0;
@@ -177,19 +175,17 @@ float SkillWeightings[NUM_SKILLS] = {1.0, 1.0, 1.0};
 float WarriorRankScale[NUM_WARRIOR_RANKS] = {50.0, 60.0, 70.0, 79.0, 999.0};
 
 PSTR SpecialtySkillsTable[NUM_SPECIALTY_SKILLS] = {
-	"LightMechSpecialist", "LaserSpecialist", "LightACSpecialist",
-	"MediumACSpecialist", "SRMSpecialist", "SmallArmsSpecialist",
-	"SensorProfileSpecialist",
+	"LightMechSpecialist", "LaserSpecialist", "LightACSpecialist", "MediumACSpecialist",
+	"SRMSpecialist", "SmallArmsSpecialist", "SensorProfileSpecialist",
 	"ToughnessSpecialist", // Thoughness Specialty
 
-	"MediumMechSpecialist", "PulseLaserSpecialist", "ERLaserSpecialist",
-	"LRMSpecialist",
+	"MediumMechSpecialist", "PulseLaserSpecialist", "ERLaserSpecialist", "LRMSpecialist",
 	"Scout",	// Scouting Specialty
 	"LongJump", // Jump Jet Specialty
 
 	"HevayMechSpecialist", // Heavy mech Specialty
-	"PPCSpecialist", "HeavyACSpecialist", "ShortRangeSpecialist",
-	"MediumRangeSpecialist", "LongRangeSpecialist",
+	"PPCSpecialist", "HeavyACSpecialist", "ShortRangeSpecialist", "MediumRangeSpecialist",
+	"LongRangeSpecialist",
 
 	"AssaultMechSpecialist", "GaussSpecialist",
 	"SharpShooter", // Sharpshooter specialty
@@ -198,14 +194,13 @@ PSTR SpecialtySkillsTable[NUM_SPECIALTY_SKILLS] = {
 SortListPtr MechWarrior::sortList		   = nullptr;
 int32_t MechWarrior::numWarriors		   = 0;
 int32_t MechWarrior::numWarriorsInCombat   = 0;
-bool MechWarrior::brainsEnabled[MAX_TEAMS] = {
-	true, true, true, true, true, true, true, true};
-float MechWarrior::minSkill			 = 1;
-float MechWarrior::maxSkill			 = 100;
-int32_t MechWarrior::increaseCap	 = 100;
-float MechWarrior::maxVisualRadius   = 100.0;
-int32_t MechWarrior::curEventID		 = 0;
-int32_t MechWarrior::curEventTrigger = 0;
+bool MechWarrior::brainsEnabled[MAX_TEAMS] = {true, true, true, true, true, true, true, true};
+float MechWarrior::minSkill				   = 1;
+float MechWarrior::maxSkill				   = 100;
+int32_t MechWarrior::increaseCap		   = 100;
+float MechWarrior::maxVisualRadius		   = 100.0;
+int32_t MechWarrior::curEventID			   = 0;
+int32_t MechWarrior::curEventTrigger	   = 0;
 MechWarrior* MechWarrior::warriorList[MAX_WARRIORS];
 
 int32_t LastMoveCalcErr		 = 0;
@@ -289,10 +284,7 @@ void SeedRandomNumbers(void) { srand((uint32_t)time(nullptr)); }
 
 //---------------------------------------------------------------------------
 
-int32_t SignedRandomNumber(int32_t range)
-{
-	return (RandomNumber(range << 1) - range);
-}
+int32_t SignedRandomNumber(int32_t range) { return (RandomNumber(range << 1) - range); }
 
 //---------------------------------------------------------------------------
 
@@ -334,8 +326,7 @@ int32_t TargetPriorityList::insert(int32_t index, TargetPriorityPtr priority)
 	{
 		//------------------
 		// shift 'em down...
-		memmove(&list[index + 1], &list[index],
-			(size - index) * sizeof(TargetPriority));
+		memmove(&list[index + 1], &list[index], (size - index) * sizeof(TargetPriority));
 	}
 	memcpy(&list[index], priority, sizeof(TargetPriority));
 	size++;
@@ -352,8 +343,7 @@ void TargetPriorityList::remove(int32_t index)
 		{
 			//----------------
 			// shift 'em up...
-			memmove(&list[index], &list[index + 1],
-				(size - index - 1) * sizeof(TargetPriority));
+			memmove(&list[index], &list[index + 1], (size - index - 1) * sizeof(TargetPriority));
 		}
 		size--;
 	}
@@ -361,8 +351,7 @@ void TargetPriorityList::remove(int32_t index)
 
 //---------------------------------------------------------------------------
 
-int32_t TargetPriorityList::calcAction(
-	MechWarriorPtr pilot, GameObjectPtr target)
+int32_t TargetPriorityList::calcAction(MechWarriorPtr pilot, GameObjectPtr target)
 {
 	if (target->isMover())
 	{
@@ -395,8 +384,8 @@ int32_t TargetPriorityList::calcAction(
 
 //---------------------------------------------------------------------------
 
-int32_t TargetPriorityList::calcTarget(MechWarriorPtr pilot,
-	Stuff::Vector3D location, int32_t contactCriteria, int32_t& action)
+int32_t TargetPriorityList::calcTarget(
+	MechWarriorPtr pilot, Stuff::Vector3D location, int32_t contactCriteria, int32_t& action)
 {
 	if (!pilot->getTeam())
 		return (0);
@@ -414,8 +403,7 @@ int32_t TargetPriorityList::calcTarget(MechWarriorPtr pilot,
 			// param 2 = contact criteria
 			GameObjectPtr obj = nullptr;
 			if (list[i].params[0])
-				obj = (GameObjectPtr)ObjectManager->findByPartId(
-					list[i].params[0]);
+				obj = (GameObjectPtr)ObjectManager->findByPartId(list[i].params[0]);
 			//---------------------------------------------------
 			// HACK! For now, we will not target unarmed movers...
 			list[i].params[2] += CONTACT_CRITERIA_ARMED;
@@ -442,14 +430,13 @@ int32_t TargetPriorityList::calcTarget(MechWarriorPtr pilot,
 			*/
 			if (obj)
 			{
-				if (pilot->getVehicle()->distanceFrom(obj->getPosition()) <
-					list[i].params[1])
+				if (pilot->getVehicle()->distanceFrom(obj->getPosition()) < list[i].params[1])
 				{
 					if (list[i].params[2] && obj->isMover() &&
 						(!obj->isMarine() || (obj->getTeam() != Team::home)))
 					{
-						if (pilot->getTeam()->isContact(pilot->getVehicle(),
-								(MoverPtr)obj, list[i].params[2]))
+						if (pilot->getTeam()->isContact(
+								pilot->getVehicle(), (MoverPtr)obj, list[i].params[2]))
 						{
 							action = calcAction(pilot, obj);
 							return (obj->getWatchID());
@@ -468,8 +455,7 @@ int32_t TargetPriorityList::calcTarget(MechWarriorPtr pilot,
 			// param 2 = contact criteria
 			GameObjectPtr obj = nullptr;
 			if (list[i].params[0])
-				obj = (GameObjectPtr)ObjectManager->findByPartId(
-					list[i].params[0]);
+				obj = (GameObjectPtr)ObjectManager->findByPartId(list[i].params[0]);
 			//---------------------------------------------------
 			// HACK! For now, we will not target unarmed movers...
 			list[i].params[2] += CONTACT_CRITERIA_ARMED;
@@ -485,13 +471,10 @@ int32_t TargetPriorityList::calcTarget(MechWarriorPtr pilot,
 					float smallestDistance = 999999.0;
 					for (size_t i = 0; i < numContacts; i++)
 					{
-						GameObjectPtr contact =
-							ObjectManager->get(contactList[i]);
-						if (!contact->isMarine() ||
-							(contact->getTeam() != Team::home))
+						GameObjectPtr contact = ObjectManager->get(contactList[i]);
+						if (!contact->isMarine() || (contact->getTeam() != Team::home))
 						{
-							float dist = pilot->getVehicle()->distanceFrom(
-								contact->getPosition());
+							float dist = pilot->getVehicle()->distanceFrom(contact->getPosition());
 							if (dist < smallestDistance)
 							{
 								obj				 = contact;
@@ -502,19 +485,19 @@ int32_t TargetPriorityList::calcTarget(MechWarriorPtr pilot,
 				}
 				else
 				{
-					Fatal(0, " TargetPriorityList.calcTarget: bad criteria for "
-							 "mover target ");
+					Fatal(0,
+						" TargetPriorityList.calcTarget: bad criteria for "
+						"mover target ");
 				}
 			}
 			if (obj && obj->isMover())
 			{
-				if (pilot->getVehicle()->distanceFrom(obj->getPosition()) <
-					list[i].params[1])
+				if (pilot->getVehicle()->distanceFrom(obj->getPosition()) < list[i].params[1])
 				{
 					if (list[i].params[2])
 					{
-						if (pilot->getTeam()->isContact(pilot->getVehicle(),
-								(MoverPtr)obj, list[i].params[2]))
+						if (pilot->getTeam()->isContact(
+								pilot->getVehicle(), (MoverPtr)obj, list[i].params[2]))
 						{
 							action = calcAction(pilot, obj);
 							return (obj->getWatchID());
@@ -534,8 +517,7 @@ int32_t TargetPriorityList::calcTarget(MechWarriorPtr pilot,
 			// alignment.
 			GameObjectPtr obj = nullptr;
 			if (list[i].params[0])
-				obj = (GameObjectPtr)ObjectManager->findByPartId(
-					list[i].params[0]);
+				obj = (GameObjectPtr)ObjectManager->findByPartId(list[i].params[0]);
 			if (!obj)
 			{
 				// select best gameobject that fits params
@@ -544,18 +526,15 @@ int32_t TargetPriorityList::calcTarget(MechWarriorPtr pilot,
 					//----------------------------------------------
 					// for now, return the closest enemy building...
 					float smallestDistance = 999999.0;
-					for (size_t j = 0; j < ObjectManager->getNumBuildings();
-						 j++)
+					for (size_t j = 0; j < ObjectManager->getNumBuildings(); j++)
 					{
 						BuildingPtr building = ObjectManager->getBuilding(j);
 						if (building->isEnemy(pilot->getTeam()))
-							if (building->getObjectType()->getSubType() !=
-								BUILDING_SUBTYPE_WALL)
+							if (building->getObjectType()->getSubType() != BUILDING_SUBTYPE_WALL)
 								if (!building->isDestroyed())
 								{
 									float dist =
-										pilot->getVehicle()->distanceFrom(
-											building->getPosition());
+										pilot->getVehicle()->distanceFrom(building->getPosition());
 									if (dist < smallestDistance)
 									{
 										obj				 = building;
@@ -566,14 +545,14 @@ int32_t TargetPriorityList::calcTarget(MechWarriorPtr pilot,
 				}
 				else
 				{
-					Fatal(0, " TargetPriorityList.calcTarget: bad criteria for "
-							 "mover target ");
+					Fatal(0,
+						" TargetPriorityList.calcTarget: bad criteria for "
+						"mover target ");
 				}
 			}
 			if (obj)
 			{
-				if (pilot->getVehicle()->distanceFrom(obj->getPosition()) <
-					list[i].params[1])
+				if (pilot->getVehicle()->distanceFrom(obj->getPosition()) < list[i].params[1])
 					return (obj->getWatchID());
 			}
 		}
@@ -607,8 +586,7 @@ int32_t TargetPriorityList::calcTarget(MechWarriorPtr pilot,
 					disengageCenter = pilot->getVehicle()->getPosition();
 				else
 					disengageCenter =
-						pilot->getVehicle()
-							->getPosition(); // FOR NOW... should ref point list
+						pilot->getVehicle()->getPosition(); // FOR NOW... should ref point list
 				targetPosition = target->getPosition();
 				Stuff::Vector3D delta;
 				delta.x				   = disengageCenter.x - targetPosition.x;
@@ -619,8 +597,8 @@ int32_t TargetPriorityList::calcTarget(MechWarriorPtr pilot,
 				{
 					if (list[i].params[2] && target->isMover())
 					{
-						if (pilot->getTeam()->isContact(pilot->getVehicle(),
-								(MoverPtr)target, list[i].params[2]))
+						if (pilot->getTeam()->isContact(
+								pilot->getVehicle(), (MoverPtr)target, list[i].params[2]))
 						{
 							action = calcAction(pilot, target);
 							return (target->getWatchID());
@@ -643,14 +621,11 @@ int32_t TargetPriorityList::calcTarget(MechWarriorPtr pilot,
 			GameObjectPtr closestTurret = nullptr;
 			for (size_t i = 0; i < ObjectManager->getNumTurrets(); i++)
 			{
-				GameObjectPtr turret =
-					(GameObjectPtr)ObjectManager->getTurret(i);
+				GameObjectPtr turret = (GameObjectPtr)ObjectManager->getTurret(i);
 				if (!turret->getTeam()->isFriendly(
-						pilot
-							->getTeam()) /* && turret->isCaptureable(pilot->getTeam()->getId())*/)
+						pilot->getTeam()) /* && turret->isCaptureable(pilot->getTeam()->getId())*/)
 				{
-					float distance = pilot->getVehicle()->distanceFrom(
-						turret->getPosition());
+					float distance = pilot->getVehicle()->distanceFrom(turret->getPosition());
 					if (distance < shortestDistance)
 					{
 						shortestDistance = distance;
@@ -660,8 +635,8 @@ int32_t TargetPriorityList::calcTarget(MechWarriorPtr pilot,
 			}
 			if (closestTurret)
 			{
-				if (pilot->getVehicle()->distanceFrom(
-						closestTurret->getPosition()) < list[i].params[1])
+				if (pilot->getVehicle()->distanceFrom(closestTurret->getPosition()) <
+					list[i].params[1])
 				{
 					action = calcAction(pilot, closestTurret);
 					return (closestTurret->getWatchID());
@@ -679,13 +654,12 @@ int32_t TargetPriorityList::calcTarget(MechWarriorPtr pilot,
 			GameObjectPtr closestControl = nullptr;
 			for (size_t i = 0; i < ObjectManager->getNumTurretControls(); i++)
 			{
-				GameObjectPtr turretControl =
-					(GameObjectPtr)ObjectManager->getTurretControl(i);
+				GameObjectPtr turretControl = (GameObjectPtr)ObjectManager->getTurretControl(i);
 				if (!turretControl->getTeam()->isFriendly(pilot->getTeam()) &&
 					turretControl->isCaptureable(pilot->getTeam()->getId()))
 				{
-					float distance = pilot->getVehicle()->distanceFrom(
-						turretControl->getPosition());
+					float distance =
+						pilot->getVehicle()->distanceFrom(turretControl->getPosition());
 					if (distance < shortestDistance)
 					{
 						shortestDistance = distance;
@@ -711,13 +685,11 @@ int32_t TargetPriorityList::calcTarget(MechWarriorPtr pilot,
 			GameObjectPtr closestControl = nullptr;
 			for (size_t i = 0; i < ObjectManager->getNumGateControls(); i++)
 			{
-				GameObjectPtr gateControl =
-					(GameObjectPtr)ObjectManager->getGateControl(i);
+				GameObjectPtr gateControl = (GameObjectPtr)ObjectManager->getGateControl(i);
 				if (!gateControl->getTeam()->isFriendly(pilot->getTeam()) &&
 					gateControl->isCaptureable(pilot->getTeam()->getId()))
 				{
-					float distance = pilot->getVehicle()->distanceFrom(
-						gateControl->getPosition());
+					float distance = pilot->getVehicle()->distanceFrom(gateControl->getPosition());
 					if (distance < shortestDistance)
 					{
 						shortestDistance = distance;
@@ -1006,16 +978,14 @@ int32_t MechWarrior::init(FitIniFile* warriorFile)
 	result = warriorFile->readIdUChar("OldPilot", oldPilot);
 	if (result != NO_ERROR)
 		oldPilot = 0;
-	result = warriorFile->readIdString(
-		"pilotAudio", audioStr, MAXLEN_PILOT_AUDIO - 1);
+	result = warriorFile->readIdString("pilotAudio", audioStr, MAXLEN_PILOT_AUDIO - 1);
 	if (result != NO_ERROR)
 	{
 		radio = nullptr; // No pilot Audio, so no radio.
 	}
 	else
 	{
-		result = warriorFile->readIdString(
-			"pilotVideo", videoStr, MAXLEN_PILOT_VIDEO - 1);
+		result = warriorFile->readIdString("pilotVideo", videoStr, MAXLEN_PILOT_VIDEO - 1);
 		if (result != NO_ERROR)
 		{
 			videoStr[0] = '\0';
@@ -1131,10 +1101,9 @@ int32_t MechWarrior::init(FitIniFile* warriorFile)
 	result = warriorFile->readIdChar("Wounds", wnds);
 	if (result != NO_ERROR)
 		return (result);
-	wounds		 = (float)wnds;
-	int32_t roll = RandomNumber(100);
-	escapesThruEjection =
-		((roll <= (getSkill(MWS_PILOTING) + 30)) && (roll < 95));
+	wounds				= (float)wnds;
+	int32_t roll		= RandomNumber(100);
+	escapesThruEjection = ((roll <= (getSkill(MWS_PILOTING) + 30)) && (roll < 95));
 	if (MPlayer || isToughnessSpecialist())
 		escapesThruEjection = true;
 	enableTacOrderQueue();
@@ -1267,8 +1236,7 @@ void MechWarrior::radioMessage(int32_t message, bool propogateIfMultiplayer)
 				radioLog.lastMessageTime > (scenarioTime - 10.0))
 				return;
 			radioLog.lastMessageTime = scenarioTime;
-			radioLog.lastMessage =
-				radio->playMessage((RadioMessageType)message);
+			radioLog.lastMessage	 = radio->playMessage((RadioMessageType)message);
 			radioLog.lastMessageType = (RadioMessageType)message;
 		}
 		// According to Derek this never happens.  ONLY your pilots speak!!
@@ -1460,8 +1428,7 @@ int32_t MechWarrior::getAggressiveness(bool current)
 
 bool MechWarrior::enableTacOrderQueue(void)
 {
-	if ((MAX_QUEUED_TACORDERS - TacOrderQueuePos) <
-		MAX_QUEUED_TACORDERS_PER_WARRIOR)
+	if ((MAX_QUEUED_TACORDERS - TacOrderQueuePos) < MAX_QUEUED_TACORDERS_PER_WARRIOR)
 		return (false);
 	tacOrderQueue = &TacOrderQueue[TacOrderQueuePos];
 	TacOrderQueuePos += MAX_QUEUED_TACORDERS_PER_WARRIOR;
@@ -1479,8 +1446,7 @@ int32_t MechWarrior::addQueuedTacOrder(TacticalOrder tacOrder)
 	}
 	if (numTacOrdersQueued == MAX_QUEUED_TACORDERS_PER_WARRIOR)
 		return (2);
-	tacOrderQueue[numTacOrdersQueued].moveMode =
-		tacOrder.moveParams.wayPath.mode[0];
+	tacOrderQueue[numTacOrdersQueued].moveMode = tacOrder.moveParams.wayPath.mode[0];
 	if (tacOrder.moveParams.wayPath.mode[0] == TRAVEL_MODE_SLOW)
 		tacOrderQueue[numTacOrdersQueued].marker =
 			getWayPointMarker(tacOrder.getWayPoint(0), "WalkWayPoint");
@@ -1490,8 +1456,8 @@ int32_t MechWarrior::addQueuedTacOrder(TacticalOrder tacOrder)
 	else if (tacOrder.moveParams.wayPath.mode[0] == TRAVEL_MODE_JUMP)
 		tacOrderQueue[numTacOrdersQueued].marker =
 			getWayPointMarker(tacOrder.getWayPoint(0), "JumpWayPoint");
-	tacOrderQueue[numTacOrdersQueued].point  = tacOrder.getWayPoint(0);
-	tacOrderQueue[numTacOrdersQueued].tactic = tacOrder.attackParams.tactic;
+	tacOrderQueue[numTacOrdersQueued].point			= tacOrder.getWayPoint(0);
+	tacOrderQueue[numTacOrdersQueued].tactic		= tacOrder.attackParams.tactic;
 	tacOrderQueue[numTacOrdersQueued].packedData[0] = tacOrder.data[0];
 	tacOrderQueue[numTacOrdersQueued].packedData[1] = tacOrder.data[1];
 	numTacOrdersQueued++;
@@ -1499,8 +1465,7 @@ int32_t MechWarrior::addQueuedTacOrder(TacticalOrder tacOrder)
 	{
 		if (!newTacOrderReceived[ORDERSTATE_PLAYER])
 		{
-			if (!curPlayerOrderFromQueue ||
-				(curTacOrder.origin != ORDER_ORIGIN_PLAYER))
+			if (!curPlayerOrderFromQueue || (curTacOrder.origin != ORDER_ORIGIN_PLAYER))
 			{
 				//--------------------------------------------------------------------
 				// First queued order just given, so begin executing it
@@ -1525,7 +1490,7 @@ int32_t MechWarrior::removeQueuedTacOrder(TacticalOrderPtr tacOrder)
 	tacOrder->data[0]	 = tacOrderQueue[tacOrderQueueIndex].packedData[0];
 	tacOrder->data[1]	 = tacOrderQueue[tacOrderQueueIndex].packedData[1];
 	Stuff::Vector3D point = tacOrderQueue[tacOrderQueueIndex].point;
-	TacticType tactic = (TacticType)tacOrderQueue[tacOrderQueueIndex].tactic;
+	TacticType tactic	 = (TacticType)tacOrderQueue[tacOrderQueueIndex].tactic;
 	if (tacOrderQueue[tacOrderQueueIndex].marker)
 		delete tacOrderQueue[tacOrderQueueIndex].marker;
 	tacOrderQueue[tacOrderQueueIndex].marker = 0;
@@ -1552,8 +1517,7 @@ int32_t MechWarrior::getNextQueuedTacOrder(TacticalOrderPtr tacOrder)
 	tacOrder->data[1] = tacOrderQueue[tacOrderQueueIndex].packedData[1];
 	tacOrder->unpack();
 	tacOrder->setWayPoint(0, tacOrderQueue[tacOrderQueueIndex].point);
-	tacOrder->attackParams.tactic =
-		(TacticType)tacOrderQueue[tacOrderQueueIndex].tactic;
+	tacOrder->attackParams.tactic = (TacticType)tacOrderQueue[tacOrderQueueIndex].tactic;
 	tacOrderQueueIndex++;
 	if (tacOrderQueueIndex >= numTacOrdersQueued)
 		tacOrderQueueIndex = 0;
@@ -1562,8 +1526,7 @@ int32_t MechWarrior::getNextQueuedTacOrder(TacticalOrderPtr tacOrder)
 
 //---------------------------------------------------------------------------
 
-int32_t MechWarrior::peekQueuedTacOrder(
-	int32_t index, TacticalOrderPtr tacOrder)
+int32_t MechWarrior::peekQueuedTacOrder(int32_t index, TacticalOrderPtr tacOrder)
 {
 	if (!tacOrderQueue)
 		return (1);
@@ -1692,8 +1655,7 @@ void MechWarrior::updateClientOrderQueue(int32_t curTacOrderId)
 	lastTacOrderId = curTacOrderId;
 	while (peekResult == 0)
 	{
-		int32_t compareResult =
-			compareTacOrderId(nextTacOrder.getId(), curTacOrderId);
+		int32_t compareResult = compareTacOrderId(nextTacOrder.getId(), curTacOrderId);
 		if (compareResult < 0)
 		{
 			removeQueuedTacOrder(&nextTacOrder);
@@ -1730,8 +1692,7 @@ void MechWarrior::setMainGoal(
 
 //---------------------------------------------------------------------------
 
-int32_t MechWarrior::getMainGoal(
-	GameObjectPtr& obj, Stuff::Vector3D& location, float& radius)
+int32_t MechWarrior::getMainGoal(GameObjectPtr& obj, Stuff::Vector3D& location, float& radius)
 {
 	obj = nullptr;
 	if (mainGoalObjectWID)
@@ -1816,8 +1777,7 @@ int32_t MechWarrior::checkSkill(int32_t skillId, float factor)
 	// the check succeeded.
 	numSkillUses[skillId][COMBAT_STAT_MISSION]++;
 	skillPoints[skillId] += SkillTry[skillId];
-	int32_t successMargin =
-		(int32_t)(getSkill(skillId) * factor) - RandomNumber(100) - 1;
+	int32_t successMargin = (int32_t)(getSkill(skillId) * factor) - RandomNumber(100) - 1;
 	if (successMargin >= 0 && skillId != MWS_SENSORS)
 	{
 		numSkillSuccesses[skillId][COMBAT_STAT_MISSION]++;
@@ -1884,12 +1844,11 @@ bool MechWarrior::injure(float numWounds, bool checkEject)
 
 void MechWarrior::eject(void)
 {
-	if ((status != WARRIOR_STATUS_NORMAL) &&
-		(status != WARRIOR_STATUS_WITHDRAWING))
+	if ((status != WARRIOR_STATUS_NORMAL) && (status != WARRIOR_STATUS_WITHDRAWING))
 		return;
 	if (wounds < 6)
-		wounds++; // Pilots take one point on ejection.  Only if won't kill
-				  // them?
+		wounds++;	// Pilots take one point on ejection.  Only if won't kill
+					 // them?
 	if (wounds >= 6) // Nope, eject 'em with one point and they die!
 	{
 		radioMessage(RADIO_DEATH);
@@ -1985,8 +1944,7 @@ int32_t MechWarrior::setBrain(int32_t brainHandle)
 			//-----------------------------------------
 			// Set up the pilot alarm callback table...
 			for (size_t i = 0; i < NUM_PILOT_ALARMS; i++)
-				brainAlarmCallback[i] =
-					brain->findFunction(pilotAlarmFunctionName[i], true);
+				brainAlarmCallback[i] = brain->findFunction(pilotAlarmFunctionName[i], true);
 		}
 	}
 	return (brainErr);
@@ -2033,9 +1991,8 @@ int32_t MechWarrior::runBrain(void)
 	if (useGoalPlan)
 	{
 		TacticalOrder tacOrder;
-		int32_t result =
-			calcTacOrder(mainGoalAction, mainGoalObjectWID, mainGoalLocation,
-				mainGoalControlRadius, 0, 1, 150.0, 300, tacOrder);
+		int32_t result = calcTacOrder(mainGoalAction, mainGoalObjectWID, mainGoalLocation,
+			mainGoalControlRadius, 0, 1, 150.0, 300, tacOrder);
 		if (result == 0)
 		{
 			if (tacOrder.code != TACTICAL_ORDER_NONE)
@@ -2108,8 +2065,7 @@ void MechWarrior::updateAttackerStatus(uint32_t attackerWID, float time)
 
 //---------------------------------------------------------------------------
 
-GameObjectPtr MechWarrior::calcTurretThreats(
-	float threatRange, int32_t minThreat)
+GameObjectPtr MechWarrior::calcTurretThreats(float threatRange, int32_t minThreat)
 {
 	if (minThreat < 1)
 		minThreat = 1;
@@ -2127,8 +2083,7 @@ GameObjectPtr MechWarrior::calcTurretThreats(
 		{
 			turretThreat[i] += turret->getThreatRating();
 			if (turret->parent) // Pop-up turrets do NOT have parents!!
-				turretControlThreat[(
-					(BuildingPtr)ObjectManager->getByWatchID(turret->parent))
+				turretControlThreat[((BuildingPtr)ObjectManager->getByWatchID(turret->parent))
 										->listID] += turret->getThreatRating();
 		}
 	}
@@ -2136,8 +2091,7 @@ GameObjectPtr MechWarrior::calcTurretThreats(
 	for (i = 0; i < ObjectManager->getNumTurretControls(); i++)
 	{
 		BuildingPtr controlBuilding = ObjectManager->getTurretControl(i);
-		float distance =
-			getVehicle()->distanceFrom(controlBuilding->getPosition());
+		float distance				= getVehicle()->distanceFrom(controlBuilding->getPosition());
 		if (distance > threatRange)
 			turretControlThreat[i] = 0;
 		if (controlBuilding->getTeam() == getTeam())
@@ -2152,8 +2106,7 @@ GameObjectPtr MechWarrior::calcTurretThreats(
 			// It's a threat, and big enough to consider...
 			if (biggestThreat == -1)
 				biggestThreat = i;
-			else if (turretControlThreat[i] >
-					 turretControlThreat[biggestThreat])
+			else if (turretControlThreat[i] > turretControlThreat[biggestThreat])
 				biggestThreat = i;
 		}
 	}
@@ -2203,8 +2156,7 @@ GameObjectPtr MechWarrior::getLastTarget(void)
 	GameObjectPtr target = ObjectManager->getByWatchID(lastTargetWID);
 	if (target)
 	{
-		bool clearTarget =
-			target->isDestroyed() ||
+		bool clearTarget = target->isDestroyed() ||
 			(target->isDisabled() && !lastTargetObliterate) ||
 			(target->isFriendly(getVehicle()) && !lastTargetFriendly);
 		if (clearTarget)
@@ -2225,17 +2177,14 @@ GameObjectPtr MechWarrior::getLastTarget(void)
 
 //---------------------------------------------------------------------------
 
-void MechWarrior::setLastTarget(
-	GameObjectPtr target, bool obliterate, bool conserveAmmo)
+void MechWarrior::setLastTarget(GameObjectPtr target, bool obliterate, bool conserveAmmo)
 {
-	Assert(getVehicle() != nullptr, vehicleWID,
-		" MechWarrior.setLastTarget: nullptr vehicle ");
+	Assert(getVehicle() != nullptr, vehicleWID, " MechWarrior.setLastTarget: nullptr vehicle ");
 	if (getCommander() == Commander::home)
 	{
 		if (lastTargetWID)
 		{
-			GameObjectPtr lastTarget =
-				ObjectManager->getByWatchID(lastTargetWID);
+			GameObjectPtr lastTarget = ObjectManager->getByWatchID(lastTargetWID);
 			if (lastTarget)
 				lastTarget->decrementAttackers();
 		}
@@ -2266,10 +2215,7 @@ GameObjectPtr MechWarrior::getAttackTarget(void)
 
 //---------------------------------------------------------------------------
 
-void MechWarrior::setCurrentTarget(GameObjectPtr target)
-{
-	setLastTarget(target);
-}
+void MechWarrior::setCurrentTarget(GameObjectPtr target) { setLastTarget(target); }
 
 //---------------------------------------------------------------------------
 
@@ -2342,8 +2288,7 @@ uint32_t MechWarrior::getSituationGuardObjectPartId(void)
 
 //---------------------------------------------------------------------------
 
-int32_t MechWarrior::setMoveGoal(
-	uint32_t type, Stuff::Vector3D* location, GameObjectPtr obj)
+int32_t MechWarrior::setMoveGoal(uint32_t type, Stuff::Vector3D* location, GameObjectPtr obj)
 {
 	moveOrders.goalType = type;
 	switch (type)
@@ -2393,8 +2338,7 @@ void MechWarrior::pausePath(void)
 void MechWarrior::resumePath(void)
 {
 	if (moveOrders.path[0])
-		moveOrders.path[0]->numSteps =
-			moveOrders.path[0]->numStepsWhenNotPaused;
+		moveOrders.path[0]->numSteps = moveOrders.path[0]->numStepsWhenNotPaused;
 }
 
 //---------------------------------------------------------------------------
@@ -2419,8 +2363,7 @@ void MechWarrior::rethinkPath(uint32_t strategy)
 			moveOrders.path[0]->numSteps = 0;
 			//-----------------------------------------------
 			// If you got here, you care about pathlocking...
-			uint32_t params = MOVEPARAM_RECALC | MOVEPARAM_AVOID_PATHLOCKS |
-							  MOVEPARAM_FACE_TARGET;
+			uint32_t params = MOVEPARAM_RECALC | MOVEPARAM_AVOID_PATHLOCKS | MOVEPARAM_FACE_TARGET;
 			if (curTacOrder.moveParams.jump)
 				params |= MOVEPARAM_JUMP;
 			requestMovePath(curTacOrder.selectionIndex, params, 2);
@@ -2458,8 +2401,7 @@ void MechWarrior::rethinkPath(uint32_t strategy)
 			moveOrders.path[0]->numSteps = 0;
 			//-----------------------------------------------
 			// If you got here, you care about pathlocking...
-			uint32_t params = MOVEPARAM_RECALC | MOVEPARAM_AVOID_PATHLOCKS |
-							  MOVEPARAM_FACE_TARGET;
+			uint32_t params = MOVEPARAM_RECALC | MOVEPARAM_AVOID_PATHLOCKS | MOVEPARAM_FACE_TARGET;
 			if (curTacOrder.moveParams.jump)
 				params |= MOVEPARAM_JUMP;
 			requestMovePath(curTacOrder.selectionIndex, params, 3);
@@ -2483,10 +2425,9 @@ float MechWarrior::getMoveDistanceLeft(void)
 			// Ultimately, we should have a pre-calced distanceToGoal field
 			// for each door-to-door link which we can use as an estimate.
 			// For now, we can just assume 100.0 meters per area...
-			distanceLeft +=
-				(float)(moveOrders.globalPath[curPath->globalStep]
-							.costToGoal); // ((moveOrders.numGlobalSteps -
-										  // curPath->globalStep) * 50.0);
+			distanceLeft += (float)(moveOrders.globalPath[curPath->globalStep]
+										.costToGoal); // ((moveOrders.numGlobalSteps -
+													  // curPath->globalStep) * 50.0);
 		}
 	}
 	return (distanceLeft);
@@ -2506,8 +2447,8 @@ bool MechWarrior::isJumping(Stuff::Vector3D* jumpGoal)
 
 MovePathPtr MechWarrior::getMovePath(void)
 {
-	Assert((moveOrders.path[0] != nullptr) && (moveOrders.path[1] != nullptr),
-		0, " nullptr move paths ");
+	Assert((moveOrders.path[0] != nullptr) && (moveOrders.path[1] != nullptr), 0,
+		" nullptr move paths ");
 	if (moveOrders.path[0]->numStepsWhenNotPaused == 0)
 	{
 		clearMovePath(0);
@@ -2522,9 +2463,9 @@ MovePathPtr MechWarrior::getMovePath(void)
 							if (lookAhead > 3)
 								lookAhead = 3;
 							for (size_t i = lookAhead; i > 0; i--) {
-								float distanceFromPt = myVehicle->distanceFrom(moveOrders.path[0]->stepList[i].destination);
-								if (distanceFromPt <= MapCellDiagonal)
-									break;
+								float distanceFromPt =
+			   myVehicle->distanceFrom(moveOrders.path[0]->stepList[i].destination); if
+			   (distanceFromPt <= MapCellDiagonal) break;
 							}
 							moveOrders.path[0]->curStep = i;
 						}
@@ -2576,16 +2517,14 @@ MovePathPtr MechWarrior::getMovePath(void)
 				moveOrders.yieldTime  = -1.0;
 				moveOrders.yieldState = 0;
 			}
-			setMoveGoal((target ? target->getWatchID() : MOVEGOAL_LOCATION),
-				&(moveOrders.path[0]->goal));
-			if (moveOrders.path[0]->globalStep ==
-				(moveOrders.numGlobalSteps - 1))
+			setMoveGoal(
+				(target ? target->getWatchID() : MOVEGOAL_LOCATION), &(moveOrders.path[0]->goal));
+			if (moveOrders.path[0]->globalStep == (moveOrders.numGlobalSteps - 1))
 			{
 				// if (moveOrders[which].path[0]->selectionIndex > 0) {
 				moveOrders.globalGoalLocation =
 					moveOrders.path[0]
-						->stepList[moveOrders.path[0]->numStepsWhenNotPaused -
-								   1]
+						->stepList[moveOrders.path[0]->numStepsWhenNotPaused - 1]
 						.destination;
 				curTacOrder.setWayPoint(0, moveOrders.globalGoalLocation);
 				//}
@@ -2650,8 +2589,7 @@ void MechWarrior::setMoveGlobalPath(GlobalPathStepPtr path, int32_t numSteps)
 
 //---------------------------------------------------------------------------
 
-void MechWarrior::requestMovePath(
-	int32_t selectionIndex, uint32_t moveParams, int32_t source)
+void MechWarrior::requestMovePath(int32_t selectionIndex, uint32_t moveParams, int32_t source)
 {
 	PathManager->request(this, selectionIndex, moveParams, source);
 }
@@ -2691,9 +2629,8 @@ int32_t MechWarrior::calcMovePath(int32_t selectionIndex, uint32_t moveParams)
 	}
 	int32_t posCellR, posCellC;
 	land->worldToCell(start, posCellR, posCellC);
-	int32_t startArea =
-		GlobalMoveMap[myVehicle->getMoveLevel()]->calcArea(posCellR, posCellC);
-	bool escapeTile = ((moveParams & MOVEPARAM_ESCAPE_TILE) != 0);
+	int32_t startArea = GlobalMoveMap[myVehicle->getMoveLevel()]->calcArea(posCellR, posCellC);
+	bool escapeTile   = ((moveParams & MOVEPARAM_ESCAPE_TILE) != 0);
 	Stuff::Vector3D goal;
 	GameObjectPtr goalObject;
 	uint32_t goalType = getMoveGoal(&goal, &goalObject);
@@ -2787,13 +2724,12 @@ int32_t MechWarrior::calcMovePath(int32_t selectionIndex, uint32_t moveParams)
 				moveParams |= MOVEPARAM_PLAYER;
 			startTime = GetCycles();
 			if (myVehicle->moveRadius > 0.0)
-				result = myVehicle->calcMoveGoal(target, myVehicle->moveCenter,
-					myVehicle->moveRadius, goal, selectionIndex, goal,
-					lastGoalPathSize, lastGoalPath, moveParams);
+				result =
+					myVehicle->calcMoveGoal(target, myVehicle->moveCenter, myVehicle->moveRadius,
+						goal, selectionIndex, goal, lastGoalPathSize, lastGoalPath, moveParams);
 			else
-				result = myVehicle->calcMoveGoal(target, goal, -1.0, goal,
-					selectionIndex, goal, lastGoalPathSize, lastGoalPath,
-					moveParams);
+				result = myVehicle->calcMoveGoal(target, goal, -1.0, goal, selectionIndex, goal,
+					lastGoalPathSize, lastGoalPath, moveParams);
 #ifdef LAB_ONLY
 			MCTimePath1Update += (GetCycles() - startTime);
 #endif
@@ -2811,8 +2747,7 @@ int32_t MechWarrior::calcMovePath(int32_t selectionIndex, uint32_t moveParams)
 		{
 			//------------------------------
 			// Do stuff here, then return...
-			Assert(pathNum == 0, pathNum,
-				" Warrior.calcMovePath: escapePath should be pathNum 0 ");
+			Assert(pathNum == 0, pathNum, " Warrior.calcMovePath: escapePath should be pathNum 0 ");
 			moveOrders.pathType = MOVEPATH_SIMPLE;
 			myVehicle->updatePathLock(false);
 			if ((curTacOrder.code == TACTICAL_ORDER_ATTACK_OBJECT) &&
@@ -2826,9 +2761,8 @@ int32_t MechWarrior::calcMovePath(int32_t selectionIndex, uint32_t moveParams)
 			if (myVehicle->getObjectClass() != ELEMENTAL)
 				moveParams |= MOVEPARAM_AVOID_PATHLOCKS;
 			Stuff::Vector3D escapeGoal;
-			int32_t numSteps = myVehicle->calcEscapePath(
-				moveOrders.path[pathNum], start, goal, nullptr,
-				moveParams | MOVEPARAM_STATIONARY_MOVERS, escapeGoal);
+			int32_t numSteps = myVehicle->calcEscapePath(moveOrders.path[pathNum], start, goal,
+				nullptr, moveParams | MOVEPARAM_STATIONARY_MOVERS, escapeGoal);
 			if (ramObject && ramObject->isMover())
 				((MoverPtr)ramObject)->updatePathLock(true);
 			myVehicle->updatePathLock(true);
@@ -2839,14 +2773,12 @@ int32_t MechWarrior::calcMovePath(int32_t selectionIndex, uint32_t moveParams)
 				// Found escape path from this BAD tile...
 				moveOrders.path[pathNum]->numSteps				= numSteps;
 				moveOrders.path[pathNum]->numStepsWhenNotPaused = numSteps;
-				moveOrders.globalGoalLocation = moveOrders.path[pathNum]
-													->stepList[numSteps - 1]
-													.destination;
+				moveOrders.globalGoalLocation =
+					moveOrders.path[pathNum]->stepList[numSteps - 1].destination;
 				curTacOrder.setWayPoint(0, moveOrders.globalGoalLocation);
 				if (target)
 					moveOrders.path[pathNum]->target = target->getPosition();
-				setMoveGoal(
-					(target ? target->getWatchID() : MOVEGOAL_LOCATION), &goal);
+				setMoveGoal((target ? target->getWatchID() : MOVEGOAL_LOCATION), &goal);
 				moveOrders.nextUpdate = scenarioTime + MovementUpdateFrequency;
 				if (pathNum == 0)
 				{
@@ -2877,8 +2809,7 @@ int32_t MechWarrior::calcMovePath(int32_t selectionIndex, uint32_t moveParams)
 			return (LastMoveCalcErr);
 		}
 		bool faceTarget = (moveParams & MOVEPARAM_FACE_TARGET) != 0;
-		if ((myVehicle->distanceFrom(goal) < Mover::marginOfError[1]) &&
-			!faceTarget)
+		if ((myVehicle->distanceFrom(goal) < Mover::marginOfError[1]) && !faceTarget)
 		{
 			clearMoveGoal();
 			LastMoveCalcErr = MOVEPATH_ERR_ALREADY_THERE;
@@ -2905,12 +2836,9 @@ int32_t MechWarrior::calcMovePath(int32_t selectionIndex, uint32_t moveParams)
 			if (colDiff <= SimpleMovePathRange)
 				doQuickMove = true;
 		}
-		bool startAreaOpen =
-			(startArea >= 0) &&
+		bool startAreaOpen = (startArea >= 0) &&
 			(GlobalMoveMap[myVehicle->getMoveLevel()]->areas[startArea].open ||
-				GlobalMoveMap[myVehicle->getMoveLevel()]
-					->areas[startArea]
-					.offMap);
+				GlobalMoveMap[myVehicle->getMoveLevel()]->areas[startArea].offMap);
 		if (doQuickMove)
 		{
 			moveOrders.pathType = MOVEPATH_SIMPLE;
@@ -2926,9 +2854,8 @@ int32_t MechWarrior::calcMovePath(int32_t selectionIndex, uint32_t moveParams)
 			if (myVehicle->getObjectClass() != ELEMENTAL)
 				moveParams |= MOVEPARAM_AVOID_PATHLOCKS;
 			startTime		 = GetCycles();
-			int32_t numSteps = myVehicle->calcMovePath(moveOrders.path[pathNum],
-				MOVEPATH_SIMPLE, start, goal, nullptr,
-				moveParams | MOVEPARAM_STATIONARY_MOVERS);
+			int32_t numSteps = myVehicle->calcMovePath(moveOrders.path[pathNum], MOVEPATH_SIMPLE,
+				start, goal, nullptr, moveParams | MOVEPARAM_STATIONARY_MOVERS);
 #ifdef LAB_ONLY
 			MCTimePath2Update += (GetCycles() - startTime);
 #endif
@@ -2941,8 +2868,7 @@ int32_t MechWarrior::calcMovePath(int32_t selectionIndex, uint32_t moveParams)
 			{
 				//---------------------------------------------
 				// We're supposed to stop early on this path...
-				numSteps -= (selectionIndex / GroupMoveTrailLen[1] *
-							 GroupMoveTrailLen[0]);
+				numSteps -= (selectionIndex / GroupMoveTrailLen[1] * GroupMoveTrailLen[0]);
 				if (numSteps <= 0)
 				{
 					//----------------------------------------------------
@@ -2957,27 +2883,23 @@ int32_t MechWarrior::calcMovePath(int32_t selectionIndex, uint32_t moveParams)
 			{
 				moveOrders.path[pathNum]->numSteps				= numSteps;
 				moveOrders.path[pathNum]->numStepsWhenNotPaused = numSteps;
-				moveOrders.globalGoalLocation = moveOrders.path[pathNum]
-													->stepList[numSteps - 1]
-													.destination;
+				moveOrders.globalGoalLocation =
+					moveOrders.path[pathNum]->stepList[numSteps - 1].destination;
 				curTacOrder.setWayPoint(0, moveOrders.globalGoalLocation);
 				if (target)
 					moveOrders.path[pathNum]->target = target->getPosition();
-				setMoveGoal(
-					(target ? target->getWatchID() : MOVEGOAL_LOCATION), &goal);
+				setMoveGoal((target ? target->getWatchID() : MOVEGOAL_LOCATION), &goal);
 				moveOrders.nextUpdate = scenarioTime + MovementUpdateFrequency;
 			}
 			else if (!foundPath && (startArea == -1))
 			{
-				Assert(pathNum == 0, pathNum,
-					" Warrior.calcMovePath: pathNum should be 0 ");
+				Assert(pathNum == 0, pathNum, " Warrior.calcMovePath: pathNum should be 0 ");
 				//----------------------------------------------------------------------
 				// Starting on a non-area (i.e. bad:) tile, so try to find a SR
 				// escape route to a cell that has a LR route to our desired
 				// goal (or is within the same area as the goal's area)...
 				TacticalOrder alarmTacOrder;
-				alarmTacOrder.init(
-					ORDER_ORIGIN_SELF, TACTICAL_ORDER_MOVETO_POINT, false);
+				alarmTacOrder.init(ORDER_ORIGIN_SELF, TACTICAL_ORDER_MOVETO_POINT, false);
 				alarmTacOrder.setWayPoint(0, goal);
 				alarmTacOrder.moveParams.escapeTile = true;
 				alarmTacOrder.moveParams.wait		= false;
@@ -3007,8 +2929,7 @@ int32_t MechWarrior::calcMovePath(int32_t selectionIndex, uint32_t moveParams)
 			moveOrders.globalGoalLocation = goal;
 			curTacOrder.setWayPoint(0, moveOrders.globalGoalLocation);
 			int32_t goalArea =
-				GlobalMoveMap[myVehicle->getMoveLevel()]->calcArea(
-					goalCellR, goalCellC);
+				GlobalMoveMap[myVehicle->getMoveLevel()]->calcArea(goalCellR, goalCellC);
 			int32_t numSteps = -1;
 			if (startAreaOpen)
 			{
@@ -3016,38 +2937,32 @@ int32_t MechWarrior::calcMovePath(int32_t selectionIndex, uint32_t moveParams)
 				// Team::home))
 				if (useGoalPlan)
 					if (myVehicle->numFunctionalWeapons > 0)
-						GlobalMoveMap[myVehicle->getMoveLevel()]
-							->useClosedAreas = true;
-				GlobalMoveMap[myVehicle->getMoveLevel()]->moverTeamID =
-					myVehicle->getTeamId();
-				startTime = GetCycles();
+						GlobalMoveMap[myVehicle->getMoveLevel()]->useClosedAreas = true;
+				GlobalMoveMap[myVehicle->getMoveLevel()]->moverTeamID = myVehicle->getTeamId();
+				startTime											  = GetCycles();
 				if (GlobalMap::logEnabled)
 				{
 					static char s[256];
-					sprintf(s, "[%.2f] calcPath: [%05d]%s", scenarioTime,
-						myVehicle->getPartId(), myVehicle->getName());
+					sprintf(s, "[%.2f] calcPath: [%05d]%s", scenarioTime, myVehicle->getPartId(),
+						myVehicle->getName());
 					GlobalMap::writeLog(s);
 				}
-				numSteps = GlobalMoveMap[myVehicle->getMoveLevel()]->calcPath(
-					startArea, goalArea, moveOrders.globalPath, posCellR,
-					posCellC, goalCellR, goalCellC);
+				numSteps = GlobalMoveMap[myVehicle->getMoveLevel()]->calcPath(startArea, goalArea,
+					moveOrders.globalPath, posCellR, posCellC, goalCellR, goalCellC);
 #ifdef LAB_ONLY
 				MCTimePath3Update += (GetCycles() - startTime);
 #endif
-				GlobalMoveMap[myVehicle->getMoveLevel()]->useClosedAreas =
-					false;
+				GlobalMoveMap[myVehicle->getMoveLevel()]->useClosedAreas = false;
 			}
 			if (numSteps == -1)
 			{
-				Assert(pathNum == 0, pathNum,
-					" Warrior.calcMovePath: pathNum should be 0 ");
+				Assert(pathNum == 0, pathNum, " Warrior.calcMovePath: pathNum should be 0 ");
 				//----------------------------------------------------------------------
 				// Starting on a non-area (i.e. bad:) tile, so try to find a SR
 				// escape route to a cell that has a LR route to our desired
 				// goal (or is within the same area as the goal's area)...
 				TacticalOrder alarmTacOrder;
-				alarmTacOrder.init(
-					ORDER_ORIGIN_SELF, TACTICAL_ORDER_MOVETO_POINT, false);
+				alarmTacOrder.init(ORDER_ORIGIN_SELF, TACTICAL_ORDER_MOVETO_POINT, false);
 				alarmTacOrder.setWayPoint(0, goal);
 				alarmTacOrder.moveParams.escapeTile = true;
 				alarmTacOrder.moveParams.wait		= false;
@@ -3109,16 +3024,14 @@ int32_t MechWarrior::calcMovePath(int32_t selectionIndex, uint32_t moveParams)
 		int32_t prevGoalDoor = -1;
 		if ((curGlobalStep > 0) && (curGlobalStep < (numGlobalSteps - 1)))
 		{
-			GlobalPathStep prevGlobalStep =
-				moveOrders.globalPath[curGlobalStep - 1];
-			prevThruArea = moveOrders.globalPath[curGlobalStep - 1].thruArea;
-			prevGoalDoor = moveOrders.globalPath[curGlobalStep - 1].goalDoor;
-			land->cellToWorld(
-				prevGlobalStep.goalCell[0], prevGlobalStep.goalCell[1], start);
+			GlobalPathStep prevGlobalStep = moveOrders.globalPath[curGlobalStep - 1];
+			prevThruArea				  = moveOrders.globalPath[curGlobalStep - 1].thruArea;
+			prevGoalDoor				  = moveOrders.globalPath[curGlobalStep - 1].goalDoor;
+			land->cellToWorld(prevGlobalStep.goalCell[0], prevGlobalStep.goalCell[1], start);
 		}
 		GlobalPathStepPtr globalStep = &moveOrders.globalPath[curGlobalStep];
-		GlobalMapDoorPtr globalDoor  = &GlobalMoveMap[myVehicle->getMoveLevel()]
-										   ->doors[globalStep->goalDoor];
+		GlobalMapDoorPtr globalDoor =
+			&GlobalMoveMap[myVehicle->getMoveLevel()]->doors[globalStep->goalDoor];
 		if (curGlobalStep < (numGlobalSteps - 1))
 			if (!globalDoor->open)
 			{
@@ -3126,8 +3039,8 @@ int32_t MechWarrior::calcMovePath(int32_t selectionIndex, uint32_t moveParams)
 				setMoveWayPath(nullptr, 0);
 				setMoveTimeOfLastStep(scenarioTime);
 				setMoveGlobalPath(nullptr, 0);
-				PathManager->request(this, selectionIndex,
-					MOVEPARAM_RECALC + MOVEPARAM_FACE_TARGET, 19);
+				PathManager->request(
+					this, selectionIndex, MOVEPARAM_RECALC + MOVEPARAM_FACE_TARGET, 19);
 				triggerAlarm(PILOT_ALARM_NO_MOVEPATH, LastMoveCalcErr);
 				return (LastMoveCalcErr);
 			}
@@ -3161,9 +3074,9 @@ int32_t MechWarrior::calcMovePath(int32_t selectionIndex, uint32_t moveParams)
 				thruArea[1] = moveOrders.globalPath[curGlobalStep + 1].thruArea;
 				goalDoor	= moveOrders.globalPath[curGlobalStep + 1].goalDoor;
 			}
-			numSteps = myVehicle->calcMovePath(moveOrders.path[pathNum], start,
-				thruArea, goalDoor, moveOrders.globalGoalLocation, &goal,
-				globalStep->goalCell, moveParams | MOVEPARAM_STATIONARY_MOVERS);
+			numSteps = myVehicle->calcMovePath(moveOrders.path[pathNum], start, thruArea, goalDoor,
+				moveOrders.globalGoalLocation, &goal, globalStep->goalCell,
+				moveParams | MOVEPARAM_STATIONARY_MOVERS);
 #ifdef LAB_ONLY
 			MCTimePath4Update += (GetCycles() - startTime);
 #endif
@@ -3188,9 +3101,8 @@ int32_t MechWarrior::calcMovePath(int32_t selectionIndex, uint32_t moveParams)
 			if (myVehicle->getObjectClass() != ELEMENTAL)
 				moveParams |= MOVEPARAM_AVOID_PATHLOCKS;
 			startTime = GetCycles();
-			numSteps  = myVehicle->calcMovePath(moveOrders.path[pathNum],
-				 MOVEPATH_COMPLEX, start, goal, globalStep->goalCell,
-				 moveParams | MOVEPARAM_STATIONARY_MOVERS);
+			numSteps  = myVehicle->calcMovePath(moveOrders.path[pathNum], MOVEPATH_COMPLEX, start,
+				 goal, globalStep->goalCell, moveParams | MOVEPARAM_STATIONARY_MOVERS);
 #ifdef LAB_ONLY
 			MCTimePath5Update += (GetCycles() - startTime);
 #endif
@@ -3204,8 +3116,7 @@ int32_t MechWarrior::calcMovePath(int32_t selectionIndex, uint32_t moveParams)
 				{
 					//---------------------------------------------
 					// We're supposed to stop early on this path...
-					numSteps -= (selectionIndex / GroupMoveTrailLen[1] *
-								 GroupMoveTrailLen[0]);
+					numSteps -= (selectionIndex / GroupMoveTrailLen[1] * GroupMoveTrailLen[0]);
 					if (numSteps <= 0)
 					{
 						//----------------------------------------------------
@@ -3218,19 +3129,16 @@ int32_t MechWarrior::calcMovePath(int32_t selectionIndex, uint32_t moveParams)
 					if (pathNum == 0)
 					{
 						moveOrders.globalGoalLocation =
-							moveOrders.path[pathNum]
-								->stepList[numSteps - 1]
-								.destination;
-						curTacOrder.setWayPoint(
-							0, moveOrders.globalGoalLocation);
+							moveOrders.path[pathNum]->stepList[numSteps - 1].destination;
+						curTacOrder.setWayPoint(0, moveOrders.globalGoalLocation);
 					}
 				}
 				curGlobalStep++;
 			}
 		}
 		else if (curGlobalStep != (numGlobalSteps - 1))
-			STOP((" Mechwarrior.calcMovePath: bad global step (%d/%d)",
-				curGlobalStep, numGlobalSteps));
+			STOP((" Mechwarrior.calcMovePath: bad global step (%d/%d)", curGlobalStep,
+				numGlobalSteps));
 		if (numSteps > 0)
 		{
 			//			Assert(!isWaitingForPoint() || (pathNum != 0), 0, " fudge
@@ -3242,8 +3150,7 @@ int32_t MechWarrior::calcMovePath(int32_t selectionIndex, uint32_t moveParams)
 			{
 				if (target)
 					moveOrders.path[pathNum]->target = target->getPosition();
-				setMoveGoal(
-					(target ? target->getWatchID() : MOVEGOAL_LOCATION), &goal);
+				setMoveGoal((target ? target->getWatchID() : MOVEGOAL_LOCATION), &goal);
 			}
 			// moveOrders[ORDER_CURRENT].nextUpdate  = scenarioTime +
 			// MovementUpdateFrequency;
@@ -3266,7 +3173,7 @@ int32_t MechWarrior::calcMovePath(int32_t selectionIndex, uint32_t moveParams)
 		}
 	}
 	else if ((moveOrders.pathType != MOVEPATH_SIMPLE) &&
-			 (moveOrders.pathType != MOVEPATH_UNDEFINED))
+		(moveOrders.pathType != MOVEPATH_UNDEFINED))
 		Fatal(0, " Bad Move Path Type ");
 	if (pathNum == 0)
 	{
@@ -3312,8 +3219,7 @@ bool MechWarrior::getNextWayPoint(Stuff::Vector3D& nextPoint, bool incWayPoint)
 			// curTacOrder.moveParams.wayPath.points[1] = nextPoint.y;
 			// curTacOrder.moveParams.wayPath.points[2] = nextPoint.z;
 			moveOrders.curWayPt = nextWayPt;
-			if (curTacOrder.moveParams.wayPath.mode[nextWayPt] ==
-				TRAVEL_MODE_FAST)
+			if (curTacOrder.moveParams.wayPath.mode[nextWayPt] == TRAVEL_MODE_FAST)
 				setMoveRun(true);
 			else
 				setMoveRun(false);
@@ -3360,8 +3266,7 @@ bool MechWarrior::getNextWayPoint(Stuff::Vector3D& nextPoint, bool incWayPoint)
 			// curTacOrder.moveParams.wayPath.points[2] = nextPoint.z;
 			moveOrders.curWayDir = nextWayDir;
 			moveOrders.curWayPt  = nextWayPt;
-			if (curTacOrder.moveParams.wayPath.mode[nextWayPt] ==
-				TRAVEL_MODE_FAST)
+			if (curTacOrder.moveParams.wayPath.mode[nextWayPt] == TRAVEL_MODE_FAST)
 				setMoveRun(true);
 			else
 				setMoveRun(false);
@@ -3407,13 +3312,11 @@ int32_t MechWarrior::calcWeaponsStatus(
 				weaponList[curWeapon] = WEAPON_STATUS_OUT_OF_AMMO;
 			else
 			{
-				if (!myVehicle->weaponInRange(
-						weaponIndex, distanceToTarget, MapCellDiagonal))
+				if (!myVehicle->weaponInRange(weaponIndex, distanceToTarget, MapCellDiagonal))
 					weaponList[curWeapon] = WEAPON_STATUS_OUT_OF_RANGE;
 				else
 				{
-					float relAngle =
-						myVehicle->weaponLocked(weaponIndex, targetPosition);
+					float relAngle  = myVehicle->weaponLocked(weaponIndex, targetPosition);
 					float fireArc   = myVehicle->getFireArc();
 					bool lineOfFire = false;
 					// ALWAYS do the SIMPLE calculation first.  If they have
@@ -3423,30 +3326,26 @@ int32_t MechWarrior::calcWeaponsStatus(
 					else
 						lineOfFire = myVehicle->lineOfSight(targetPosition);
 					// Indirect fire weapons can fire if ANYONE can see target!
-					if (!lineOfFire &&
-						myVehicle->getWeaponIndirectFire(weaponIndex))
+					if (!lineOfFire && myVehicle->getWeaponIndirectFire(weaponIndex))
 					{
 						if (!myVehicle->getTeam())
 							lineOfFire = false;
 						else if (target)
 							lineOfFire = myVehicle->getTeam()->teamLineOfSight(
-								target->getLOSPosition(),
-								target->getAppearRadius());
+								target->getLOSPosition(), target->getAppearRadius());
 						else
 							lineOfFire = myVehicle->getTeam()->teamLineOfSight(
 								targetPosition, CELL_DISTANCE);
 					}
-					if (!lineOfFire || (relAngle < -fireArc) ||
-						(relAngle > fireArc))
+					if (!lineOfFire || (relAngle < -fireArc) || (relAngle > fireArc))
 						weaponList[curWeapon] = WEAPON_STATUS_NOT_LOCKED;
 					else
 					{
 						int32_t aimLocation = -1;
 						if (curTacOrder.isCombatOrder())
 							aimLocation = curTacOrder.attackParams.aimLocation;
-						float odds = myVehicle->calcAttackChance(target,
-							aimLocation, scenarioTime, weaponIndex, 0.0,
-							nullptr, targetPoint);
+						float odds = myVehicle->calcAttackChance(target, aimLocation, scenarioTime,
+							weaponIndex, 0.0, nullptr, targetPoint);
 						if (odds < 1.0)
 							weaponList[curWeapon] = WEAPON_STATUS_NO_CHANCE;
 						else
@@ -3468,8 +3367,7 @@ void MechWarrior::printWeaponsStatus(PSTR s)
 {
 	if (weaponsStatusResult == WEAPONS_STATUS_OUT_OF_RANGE)
 		sprintf(s, "Out of Range");
-	else if (getCurrentTarget() &&
-			 !getVehicle()->lineOfSight(getCurrentTarget()))
+	else if (getCurrentTarget() && !getVehicle()->lineOfSight(getCurrentTarget()))
 		sprintf(s, "No Line-of-sight");
 	else if (weaponsStatusResult == WEAPONS_STATUS_CANNOT_FIRE)
 		sprintf(s, "Cannot Fire");
@@ -3479,17 +3377,15 @@ void MechWarrior::printWeaponsStatus(PSTR s)
 	{
 		int32_t tally[6]	  = {0, 0, 0, 0, 0, 0};
 		int32_t numWithChance = 0;
-		for (size_t curWeapon = 0; curWeapon < getVehicle()->numWeapons;
-			 curWeapon++)
+		for (size_t curWeapon = 0; curWeapon < getVehicle()->numWeapons; curWeapon++)
 		{
 			if (weaponsStatus[curWeapon] < 0)
 				tally[weaponsStatus[curWeapon] + 6]++;
 			else if (weaponsStatus[curWeapon] > 0)
 				numWithChance++;
 		}
-		sprintf(s, "#=%02d(%02d),RD=%02d,RN=%02d,LK=%02d,CH=%02d,AM=%02d",
-			getVehicle()->numWeapons, numWithChance, tally[5], tally[3],
-			tally[2], tally[1], tally[4]);
+		sprintf(s, "#=%02d(%02d),RD=%02d,RN=%02d,LK=%02d,CH=%02d,AM=%02d", getVehicle()->numWeapons,
+			numWithChance, tally[5], tally[3], tally[2], tally[1], tally[4]);
 	}
 }
 
@@ -3534,8 +3430,7 @@ int32_t MechWarrior::combatDecisionTree(void)
 			// having to figure out how to pass the friggering flag around.
 			if (MPlayer && MPlayer->isServer())
 			{
-				if (myVehicle->isGuardTower() &&
-					!(myVehicle->suppressionFire) &&
+				if (myVehicle->isGuardTower() && !(myVehicle->suppressionFire) &&
 					(curTacOrder.attackParams.method == ATTACKMETHOD_RANGED) &&
 					(curTacOrder.attackParams.range == FIRERANGE_CURRENT) &&
 					(curTacOrder.attackParams.pursue == false))
@@ -3568,8 +3463,7 @@ int32_t MechWarrior::combatDecisionTree(void)
 		if (debugFlags & WARRIOR_DEBUG_FLAG_COMBAT)
 		{
 			char s[128];
-			sprintf(s, "%s (%.2f) has no attack target.\n", callsign,
-				getSituationFireRange());
+			sprintf(s, "%s (%.2f) has no attack target.\n", callsign, getSituationFireRange());
 			debugPrint(s, true);
 		}
 #endif
@@ -3583,8 +3477,8 @@ int32_t MechWarrior::combatDecisionTree(void)
 			if (debugFlags & WARRIOR_DEBUG_FLAG_COMBAT)
 			{
 				char s[128];
-				sprintf(s, "%s (%.2f) has a destroyed target.\n", callsign,
-					getSituationFireRange());
+				sprintf(
+					s, "%s (%.2f) has a destroyed target.\n", callsign, getSituationFireRange());
 				debugPrint(s, true);
 			}
 #endif
@@ -3596,8 +3490,7 @@ int32_t MechWarrior::combatDecisionTree(void)
 			if (debugFlags & WARRIOR_DEBUG_FLAG_COMBAT)
 			{
 				char s[128];
-				sprintf(s, "%s (%.2f) has a disabled target.\n", callsign,
-					getSituationFireRange());
+				sprintf(s, "%s (%.2f) has a disabled target.\n", callsign, getSituationFireRange());
 				debugPrint(s, true);
 			}
 #endif
@@ -3610,8 +3503,7 @@ int32_t MechWarrior::combatDecisionTree(void)
 		char s[512];
 		if (!myVehicle->canFireWeapons())
 		{
-			sprintf(s, "%s's (%.2f) vehicle cannot fire now.\n", callsign,
-				getSituationFireRange());
+			sprintf(s, "%s's (%.2f) vehicle cannot fire now.\n", callsign, getSituationFireRange());
 			debugPrint(s, true);
 		}
 		else if (weaponsStatusResult < 1)
@@ -3619,16 +3511,14 @@ int32_t MechWarrior::combatDecisionTree(void)
 			switch (weaponsStatusResult)
 			{
 			case WEAPONS_STATUS_CANNOT_FIRE:
-				sprintf(s, "%s's (%.2f) vehicle cannot fire now.", callsign,
-					getSituationFireRange());
+				sprintf(
+					s, "%s's (%.2f) vehicle cannot fire now.", callsign, getSituationFireRange());
 				break;
 			case WEAPONS_STATUS_NO_TARGET:
-				sprintf(s, "%s (%.2f) has no target.\n", callsign,
-					getSituationFireRange());
+				sprintf(s, "%s (%.2f) has no target.\n", callsign, getSituationFireRange());
 				break;
 			case WEAPONS_STATUS_OUT_OF_RANGE:
-				sprintf(s, "%s (%.2f) out of range.\n", callsign,
-					getSituationFireRange());
+				sprintf(s, "%s (%.2f) out of range.\n", callsign, getSituationFireRange());
 				break;
 			case 0:
 			{
@@ -3656,9 +3546,9 @@ int32_t MechWarrior::combatDecisionTree(void)
 				sprintf(s,
 					"%s (%.2f) has no shot: %d !ready, %d !ammo, %d !inrange, "
 					"%d !locked, %d !chance, %d hot\n",
-					callsign, getSituationFireRange(), numWeaponsNotReady,
-					numWeaponsOutOfAmmo, numWeaponsOutOfRange,
-					numWeaponsNotLocked, numWeaponsNoChance, numWeaponsTooHot);
+					callsign, getSituationFireRange(), numWeaponsNotReady, numWeaponsOutOfAmmo,
+					numWeaponsOutOfRange, numWeaponsNotLocked, numWeaponsNoChance,
+					numWeaponsTooHot);
 			}
 			break;
 			default:
@@ -3695,14 +3585,12 @@ int32_t MechWarrior::combatDecisionTree(void)
 		// Track how much damage I've done to the target when weapons finally
 		// hit. If I've done enough to blow the target, STOP firing!!
 		float damageDoneToTarget = 0.0f;
-		for (size_t curWeapon = 0; curWeapon < myVehicle->numWeapons;
-			 curWeapon++)
+		for (size_t curWeapon = 0; curWeapon < myVehicle->numWeapons; curWeapon++)
 		{
 			int32_t weaponIndex = myVehicle->numOther + curWeapon;
 			if (weaponsStatus[curWeapon] > 0)
 			{
-				if (!target || (target && (damageDoneToTarget <
-											  target->getDestructLevel())))
+				if (!target || (target && (damageDoneToTarget < target->getDestructLevel())))
 				{
 					if (attackType != ATTACK_CONSERVING_AMMO ||
 						myVehicle->getWeaponIsEnergy(weaponIndex))
@@ -3710,8 +3598,8 @@ int32_t MechWarrior::combatDecisionTree(void)
 						float dmgDone = 0.0f;
 						if (NO_ERROR ==
 							myVehicle->fireWeapon(target, targetTime,
-								myVehicle->numOther + curWeapon, attackType,
-								aimLocation, targetPoint, dmgDone))
+								myVehicle->numOther + curWeapon, attackType, aimLocation,
+								targetPoint, dmgDone))
 							cantConserve = FALSE;
 						firedWeapon = true;
 						damageDoneToTarget += dmgDone;
@@ -3729,8 +3617,7 @@ int32_t MechWarrior::combatDecisionTree(void)
 	if (cantConserve) // probably a lie
 	{
 		for (size_t curWeapon = myVehicle->numOther;
-			 curWeapon < myVehicle->numOther + myVehicle->numWeapons;
-			 curWeapon++)
+			 curWeapon < myVehicle->numOther + myVehicle->numWeapons; curWeapon++)
 		{
 			if (myVehicle->getWeaponShots(curWeapon) == UNLIMITED_SHOTS &&
 				myVehicle->isWeaponWorking(curWeapon))
@@ -3835,11 +3722,11 @@ Stuff::Vector3D MechWarrior::calcWithdrawGoal(float withdrawRange)
 	// withdrawing (but will fix after we know this first works with just one
 	// team:)
 	if ((teamId == INNER_SPHERE_TEAM_ID) || (teamId == ALLIED_TEAM_ID))
-		escapeVector = GetClanTeam->calcEscapeVector(
-			(MoverPtr(BaseObjectPtr(vehicle))), withdrawRange);
+		escapeVector =
+			GetClanTeam->calcEscapeVector((MoverPtr(BaseObjectPtr(vehicle))), withdrawRange);
 	else
-		escapeVector = GetInnerSphereTeam->calcEscapeVector(
-			(MoverPtr(BaseObjectPtr(vehicle))), withdrawRange);
+		escapeVector =
+			GetInnerSphereTeam->calcEscapeVector((MoverPtr(BaseObjectPtr(vehicle))), withdrawRange);
 	MoverPtr myVehicle = (MoverPtr(BaseObjectPtr(vehicle)));
 	Assert(myVehicle != nullptr, 0, " Warrior has nullptr Vehicle ");
 	if (escapeVector.magnitude() == 0.0)
@@ -4028,8 +3915,7 @@ bool MechWarrior::movementDecisionTree(void)
 	movementUpdate = scenarioTime + MovementUpdateFrequency;
 	//	if (myVehicle->isSelected())
 	//		OutputDebugString("DebugMe\n");
-	if ((curTacOrder.code == TACTICAL_ORDER_NONE) ||
-		(curTacOrder.code == TACTICAL_ORDER_STOP))
+	if ((curTacOrder.code == TACTICAL_ORDER_NONE) || (curTacOrder.code == TACTICAL_ORDER_STOP))
 	{
 		GameObjectPtr target = getLastTarget();
 		if (target)
@@ -4037,8 +3923,7 @@ bool MechWarrior::movementDecisionTree(void)
 		return (true);
 	}
 	if (getVehicle()->attackRange == FIRERANGE_CURRENT)
-		if (!curTacOrder.isMoveOrder() &&
-			(curTacOrder.code != TACTICAL_ORDER_CAPTURE))
+		if (!curTacOrder.isMoveOrder() && (curTacOrder.code != TACTICAL_ORDER_CAPTURE))
 		{
 			GameObjectPtr target = getLastTarget();
 			if (target)
@@ -4069,7 +3954,7 @@ bool MechWarrior::movementDecisionTree(void)
 			curTacOrder.execute(this, msg);
 		}
 		else if ((curTacOrder.code == TACTICAL_ORDER_MOVETO_OBJECT) ||
-				 (curTacOrder.code == TACTICAL_ORDER_CAPTURE))
+			(curTacOrder.code == TACTICAL_ORDER_CAPTURE))
 		{
 			GameObjectPtr moveTarget = curTacOrder.getTarget();
 			//-------------------------------------------------
@@ -4094,13 +3979,13 @@ bool MechWarrior::movementDecisionTree(void)
 					else
 					{
 						Stuff::Vector3D objectPos = moveTarget->getPosition();
-						targetPos = getVehicle()->calcOffsetMoveGoal(objectPos);
+						targetPos				  = getVehicle()->calcOffsetMoveGoal(objectPos);
 					}
 				}
 				else
 				{
 					Stuff::Vector3D objectPos = moveTarget->getPosition();
-					targetPos = getVehicle()->calcOffsetMoveGoal(objectPos);
+					targetPos				  = getVehicle()->calcOffsetMoveGoal(objectPos);
 				}
 			}
 			setMoveGoal(moveTarget->getWatchID(), &targetPos, moveTarget);
@@ -4108,8 +3993,8 @@ bool MechWarrior::movementDecisionTree(void)
 			if (curTacOrder.moveParams.jump)
 				params |= MOVEPARAM_JUMP;
 			if (!moveTarget->isMover())
-				requestMovePath(curTacOrder.selectionIndex,
-					params | MOVEPARAM_STEP_ADJACENT_TARGET, 7);
+				requestMovePath(
+					curTacOrder.selectionIndex, params | MOVEPARAM_STEP_ADJACENT_TARGET, 7);
 			else
 				requestMovePath(curTacOrder.selectionIndex, params, 8);
 		}
@@ -4132,8 +4017,7 @@ bool MechWarrior::movementDecisionTree(void)
 					params |= MOVEPARAM_JUMP;
 				requestMovePath(curTacOrder.selectionIndex, params, 9);
 			}
-			else if (/*!getAttackPursuit() && */ !curTacOrder.attackParams
-						 .pursue)
+			else if (/*!getAttackPursuit() && */ !curTacOrder.attackParams.pursue)
 				setMoveStateGoal(MOVESTATE_PIVOT_TARGET);
 			else
 			{
@@ -4150,16 +4034,13 @@ bool MechWarrior::movementDecisionTree(void)
 							recalcPath = true;
 							moveParams = MOVEPARAM_SOMEWHERE_ELSE;
 						}
-				float distanceToTarget =
-					myVehicle->distanceFrom(targetPosition);
+				float distanceToTarget   = myVehicle->distanceFrom(targetPosition);
 				float desiredAttackRange = myVehicle->getOrderedFireRange();
-				float attackRangeDelta = distanceToTarget - desiredAttackRange;
-				float recalcDelta =
-					Terrain::worldUnitsPerVertex * metersPerWorldUnit;
+				float attackRangeDelta   = distanceToTarget - desiredAttackRange;
+				float recalcDelta		 = Terrain::worldUnitsPerVertex * metersPerWorldUnit;
 				if ((curTacOrder.attackParams.tactic != TACTIC_STOP_AND_FIRE) &&
 					(curTacOrder.attackParams.tactic != TACTIC_TURRET) &&
-					((attackRangeDelta > recalcDelta) ||
-						(attackRangeDelta < -recalcDelta)))
+					((attackRangeDelta > recalcDelta) || (attackRangeDelta < -recalcDelta)))
 				{
 					//----------------------------------------
 					// Try to maintain attack range...
@@ -4167,7 +4048,7 @@ bool MechWarrior::movementDecisionTree(void)
 					moveParams = MOVEPARAM_SOMEWHERE_ELSE;
 				}
 				else if ((curTacOrder.attackParams.tactic != TACTIC_TURRET) &&
-						 (weaponsStatusResult == WEAPONS_STATUS_OUT_OF_RANGE))
+					(weaponsStatusResult == WEAPONS_STATUS_OUT_OF_RANGE))
 				{
 					recalcPath = true;
 					moveParams = MOVEPARAM_SOMEWHERE_ELSE;
@@ -4201,18 +4082,15 @@ bool MechWarrior::movementDecisionTree(void)
 						if (weaponsStatusResult == 0)
 						{
 							if ((target && !myVehicle->lineOfSight(target)) ||
-								(!target &&
-									!myVehicle->lineOfSight(targetPosition)))
+								(!target && !myVehicle->lineOfSight(targetPosition)))
 							{
 								recalcPath = true;
 								moveParams = MOVEPARAM_SOMEWHERE_ELSE;
 							}
-							else if ((numWeaponsNotReady > 0) ||
-									 (numWeaponsNotLocked > 0) ||
-									 (numWeaponsTooHot > 0))
+							else if ((numWeaponsNotReady > 0) || (numWeaponsNotLocked > 0) ||
+								(numWeaponsTooHot > 0))
 							{
-								if ((getMovePath()->numSteps == 0) &&
-									!getMoveTwisting())
+								if ((getMovePath()->numSteps == 0) && !getMoveTwisting())
 									setMoveStateGoal(MOVESTATE_PIVOT_TARGET);
 							}
 							else
@@ -4232,13 +4110,10 @@ bool MechWarrior::movementDecisionTree(void)
 							}
 							else if (numWeaponsNotReady == 0)
 							{
-								if ((numWeaponsNotLocked > 0) ||
-									(numWeaponsTooHot > 0))
+								if ((numWeaponsNotLocked > 0) || (numWeaponsTooHot > 0))
 								{
-									if ((getMovePath()->numSteps == 0) &&
-										!getMoveTwisting())
-										setMoveStateGoal(
-											MOVESTATE_PIVOT_TARGET);
+									if ((getMovePath()->numSteps == 0) && !getMoveTwisting())
+										setMoveStateGoal(MOVESTATE_PIVOT_TARGET);
 								}
 								else
 								{
@@ -4251,13 +4126,10 @@ bool MechWarrior::movementDecisionTree(void)
 						if (weaponsStatusResult == 0)
 							if (numWeaponsNotReady == 0)
 							{
-								if ((numWeaponsNotLocked > 0) ||
-									(numWeaponsTooHot > 0))
+								if ((numWeaponsNotLocked > 0) || (numWeaponsTooHot > 0))
 								{
-									if ((getMovePath()->numSteps == 0) &&
-										!getMoveTwisting())
-										setMoveStateGoal(
-											MOVESTATE_PIVOT_TARGET);
+									if ((getMovePath()->numSteps == 0) && !getMoveTwisting())
+										setMoveStateGoal(MOVESTATE_PIVOT_TARGET);
 								}
 								else
 								{
@@ -4268,34 +4140,28 @@ bool MechWarrior::movementDecisionTree(void)
 						break;
 					}
 				}
-				if (!recalcPath &&
-					(curTacOrder.attackParams.tactic != TACTIC_STOP_AND_FIRE))
+				if (!recalcPath && (curTacOrder.attackParams.tactic != TACTIC_STOP_AND_FIRE))
 					if (keepMoving && curTacOrder.moveParams.keepMoving)
 						if (RandomNumber(100) < 60)
 						{
 							recalcPath = true;
-							moveParams = MOVEPARAM_SOMEWHERE_ELSE +
-										 MOVEPARAM_RANDOM_OPTIMAL;
+							moveParams = MOVEPARAM_SOMEWHERE_ELSE + MOVEPARAM_RANDOM_OPTIMAL;
 						}
-				if (recalcPath &&
-					(curTacOrder.attackParams.tactic != TACTIC_TURRET))
+				if (recalcPath && (curTacOrder.attackParams.tactic != TACTIC_TURRET))
 				{
 					//					setMoveStateGoal(MOVESTATE_FORWARD);
 					if (target)
 					{
-						setMoveGoal(
-							target->getWatchID(), &targetPosition, target);
+						setMoveGoal(target->getWatchID(), &targetPosition, target);
 						if (curTacOrder.moveParams.jump)
 							moveParams |= MOVEPARAM_JUMP;
 						requestMovePath(curTacOrder.selectionIndex,
-							moveParams | MOVEPARAM_INIT | MOVEPARAM_FACE_TARGET,
-							10);
+							moveParams | MOVEPARAM_INIT | MOVEPARAM_FACE_TARGET, 10);
 					}
 					else
 					{
 						setMoveGoal(MOVEGOAL_LOCATION, &targetPosition);
-						uint32_t params =
-							MOVEPARAM_INIT | MOVEPARAM_FACE_TARGET;
+						uint32_t params = MOVEPARAM_INIT | MOVEPARAM_FACE_TARGET;
 						if (curTacOrder.moveParams.jump)
 							params |= MOVEPARAM_JUMP;
 						requestMovePath(curTacOrder.selectionIndex, params, 11);
@@ -4312,8 +4178,8 @@ bool MechWarrior::movementDecisionTree(void)
 	}
 	else if (goalType == MOVEGOAL_LOCATION)
 	{
-		if (!isYielding() && !isJumping() && !getMoveTwisting() &&
-			!isWaitingForPoint() && (getMovePath()->numSteps == 0))
+		if (!isYielding() && !isJumping() && !getMoveTwisting() && !isWaitingForPoint() &&
+			(getMovePath()->numSteps == 0))
 		{
 			//---------------------------------------------
 			// We may be so close that we don't need a move
@@ -4340,8 +4206,7 @@ bool MechWarrior::movementDecisionTree(void)
 			Stuff::Vector3D targetPos = goalObject->getPosition();
 			if (!curTacOrder.isCombatOrder())
 			{
-				if (distance_from(targetPos, moveOrders.goalObjectPosition) >
-					50.0)
+				if (distance_from(targetPos, moveOrders.goalObjectPosition) > 50.0)
 				{
 					Stuff::Vector3D pos = goalObject->getPosition();
 					setMoveGoal(goalObject->getWatchID(), &pos, goalObject);
@@ -4373,8 +4238,7 @@ bool MechWarrior::movementDecisionTree(void)
 					// range has changed...
 					if (target->isMover())
 					{
-						if (((MoverPtr)target)
-								->getLastWeaponEffectivenessCalc() >
+						if (((MoverPtr)target)->getLastWeaponEffectivenessCalc() >
 							myVehicle->getLastOptimalRangeCalc())
 							if (myVehicle->calcFireRanges())
 							{
@@ -4387,28 +4251,21 @@ bool MechWarrior::movementDecisionTree(void)
 						if (getMovePath()->numSteps > 0)
 							return (true);
 					}
-					float distanceToTarget =
-						myVehicle->distanceFrom(target->getPosition());
+					float distanceToTarget   = myVehicle->distanceFrom(target->getPosition());
 					float desiredAttackRange = myVehicle->getOrderedFireRange();
-					float attackRangeDelta =
-						distanceToTarget - desiredAttackRange;
-					float recalcDelta =
-						Terrain::worldUnitsPerVertex * metersPerWorldUnit;
-					if ((curTacOrder.attackParams.tactic !=
-							TACTIC_STOP_AND_FIRE) &&
+					float attackRangeDelta   = distanceToTarget - desiredAttackRange;
+					float recalcDelta		 = Terrain::worldUnitsPerVertex * metersPerWorldUnit;
+					if ((curTacOrder.attackParams.tactic != TACTIC_STOP_AND_FIRE) &&
 						(curTacOrder.attackParams.tactic != TACTIC_TURRET) &&
-						((attackRangeDelta > recalcDelta) ||
-							(attackRangeDelta < -recalcDelta)))
+						((attackRangeDelta > recalcDelta) || (attackRangeDelta < -recalcDelta)))
 					{
 						//----------------------------------------
 						// Try to maintain attack range...
 						recalcPath = true;
 						moveParams = MOVEPARAM_SOMEWHERE_ELSE;
 					}
-					else if ((curTacOrder.attackParams.tactic !=
-								 TACTIC_TURRET) &&
-							 (weaponsStatusResult ==
-								 WEAPONS_STATUS_OUT_OF_RANGE))
+					else if ((curTacOrder.attackParams.tactic != TACTIC_TURRET) &&
+						(weaponsStatusResult == WEAPONS_STATUS_OUT_OF_RANGE))
 					{
 						recalcPath = true;
 						moveParams = MOVEPARAM_SOMEWHERE_ELSE;
@@ -4446,17 +4303,14 @@ bool MechWarrior::movementDecisionTree(void)
 									recalcPath = true;
 									moveParams = MOVEPARAM_SOMEWHERE_ELSE;
 								}
-								else if ((numWeaponsNotReady > 0) ||
-										 (numWeaponsTooHot > 0) ||
-										 (numWeaponsNotLocked > 0))
+								else if ((numWeaponsNotReady > 0) || (numWeaponsTooHot > 0) ||
+									(numWeaponsNotLocked > 0))
 								{
 									//-----------------------------------------------------------
 									// If we already have a path, don't pivot,
 									// finish the move...
-									if ((getMovePath()->numSteps == 0) &&
-										!getMoveTwisting())
-										setMoveStateGoal(
-											MOVESTATE_PIVOT_TARGET);
+									if ((getMovePath()->numSteps == 0) && !getMoveTwisting())
+										setMoveStateGoal(MOVESTATE_PIVOT_TARGET);
 								}
 								else
 								{
@@ -4474,19 +4328,15 @@ bool MechWarrior::movementDecisionTree(void)
 								}
 								else if (numWeaponsNotReady == 0)
 								{
-									if ((numWeaponsNotLocked > 0) ||
-										(numWeaponsTooHot > 0))
+									if ((numWeaponsNotLocked > 0) || (numWeaponsTooHot > 0))
 									{
-										if ((getMovePath()->numSteps == 0) &&
-											!getMoveTwisting())
-											setMoveStateGoal(
-												MOVESTATE_PIVOT_TARGET);
+										if ((getMovePath()->numSteps == 0) && !getMoveTwisting())
+											setMoveStateGoal(MOVESTATE_PIVOT_TARGET);
 									}
 									else
 									{
 										recalcPath = true;
-										moveParams =
-											MOVEPARAM_STEP_TOWARD_TARGET;
+										moveParams = MOVEPARAM_STEP_TOWARD_TARGET;
 									}
 								}
 							break;
@@ -4494,13 +4344,10 @@ bool MechWarrior::movementDecisionTree(void)
 							if (weaponsStatusResult == 0)
 								if (numWeaponsNotReady == 0)
 								{
-									if ((numWeaponsNotLocked > 0) ||
-										(numWeaponsTooHot > 0))
+									if ((numWeaponsNotLocked > 0) || (numWeaponsTooHot > 0))
 									{
-										if ((getMovePath()->numSteps == 0) &&
-											!getMoveTwisting())
-											setMoveStateGoal(
-												MOVESTATE_PIVOT_TARGET);
+										if ((getMovePath()->numSteps == 0) && !getMoveTwisting())
+											setMoveStateGoal(MOVESTATE_PIVOT_TARGET);
 									}
 									else
 									{
@@ -4512,18 +4359,15 @@ bool MechWarrior::movementDecisionTree(void)
 						}
 					}
 					//--added 6/3/01 by GD
-					if (!recalcPath && (curTacOrder.attackParams.tactic !=
-										   TACTIC_STOP_AND_FIRE))
+					if (!recalcPath && (curTacOrder.attackParams.tactic != TACTIC_STOP_AND_FIRE))
 						if (keepMoving && curTacOrder.moveParams.keepMoving)
 							if (RandomNumber(100) < 60)
 							{
 								recalcPath = true;
-								moveParams = MOVEPARAM_SOMEWHERE_ELSE +
-											 MOVEPARAM_RANDOM_OPTIMAL;
+								moveParams = MOVEPARAM_SOMEWHERE_ELSE + MOVEPARAM_RANDOM_OPTIMAL;
 							}
 					//--
-					if (recalcPath &&
-						(curTacOrder.attackParams.tactic != TACTIC_TURRET))
+					if (recalcPath && (curTacOrder.attackParams.tactic != TACTIC_TURRET))
 					{
 						//						setMoveStateGoal(MOVESTATE_FORWARD);
 						Stuff::Vector3D pos = target->getPosition();
@@ -4531,8 +4375,7 @@ bool MechWarrior::movementDecisionTree(void)
 						if (curTacOrder.moveParams.jump)
 							moveParams |= MOVEPARAM_JUMP;
 						requestMovePath(curTacOrder.selectionIndex,
-							moveParams | MOVEPARAM_INIT | MOVEPARAM_FACE_TARGET,
-							14);
+							moveParams | MOVEPARAM_INIT | MOVEPARAM_FACE_TARGET, 14);
 					}
 				}
 			}
@@ -4597,9 +4440,8 @@ void MechWarrior::clearCurTacOrder(bool updateTacOrder)
 		}
 		if (newTacOrder.code != TACTICAL_ORDER_NONE)
 		{
-			Assert((moveOrders.path[0] != nullptr) &&
-					   (moveOrders.path[1] != nullptr),
-				0, " bad warrior path ");
+			Assert((moveOrders.path[0] != nullptr) && (moveOrders.path[1] != nullptr), 0,
+				" bad warrior path ");
 			MovePathPtr tempPath[2];
 			for (size_t i = 0; i < 2; i++)
 			{
@@ -4627,16 +4469,13 @@ void MechWarrior::clearCurTacOrder(bool updateTacOrder)
 					switch (newTacOrder.code)
 					{
 					case TACTICAL_ORDER_MOVETO_POINT:
-						setMainGoal(
-							GOAL_ACTION_MOVE, nullptr, &movePoint, -1.0);
+						setMainGoal(GOAL_ACTION_MOVE, nullptr, &movePoint, -1.0);
 						break;
 					case TACTICAL_ORDER_ATTACK_OBJECT:
-						setMainGoal(GOAL_ACTION_ATTACK, newTacOrder.getTarget(),
-							nullptr, -1.0);
+						setMainGoal(GOAL_ACTION_ATTACK, newTacOrder.getTarget(), nullptr, -1.0);
 						break;
 					case TACTICAL_ORDER_CAPTURE:
-						setMainGoal(GOAL_ACTION_CAPTURE,
-							newTacOrder.getTarget(), nullptr, 400.0);
+						setMainGoal(GOAL_ACTION_CAPTURE, newTacOrder.getTarget(), nullptr, 400.0);
 						break;
 					default:
 						// setMainGoal(GOAL_ACTION_NONE, nullptr, nullptr,
@@ -4661,8 +4500,7 @@ bool MechWarrior::anyPlayerInCombat(void)
 	{
 		if (warriorList[i] &&
 			(warriorList[i]->getVehicle() &&
-				(warriorList[i]->getVehicle()->getCommanderId() ==
-					Commander::home->getId())) &&
+				(warriorList[i]->getVehicle()->getCommanderId() == Commander::home->getId())) &&
 			(warriorList[i]->getCurrentTarget()))
 		{
 			return true;
@@ -4722,9 +4560,8 @@ int32_t MechWarrior::triggerAlarm(int32_t alarmCode, uint32_t triggerId)
 		return (-1);
 	if (alarmHistory[alarmCode].numTriggers == MAX_ALARM_TRIGGERS)
 		return (-1);
-	alarm[alarmCode].trigger[alarm[alarmCode].numTriggers++] = triggerId;
-	alarmHistory[alarmCode].trigger[alarmHistory[alarmCode].numTriggers++] =
-		triggerId;
+	alarm[alarmCode].trigger[alarm[alarmCode].numTriggers++]			   = triggerId;
+	alarmHistory[alarmCode].trigger[alarmHistory[alarmCode].numTriggers++] = triggerId;
 	return (NO_ERROR);
 }
 
@@ -4747,8 +4584,7 @@ int32_t MechWarrior::getEventHistory(int32_t alarmCode, int32_t* paramList)
 	{
 		for (size_t i = 0; i < alarmHistory[alarmCode].numTriggers; i++)
 		{
-			GameObjectPtr obj =
-				ObjectManager->getByWatchID(alarmHistory[alarmCode].trigger[i]);
+			GameObjectPtr obj = ObjectManager->getByWatchID(alarmHistory[alarmCode].trigger[i]);
 			if (obj)
 				paramList[numValidTriggers++] = obj->getPartId();
 		}
@@ -4758,12 +4594,10 @@ int32_t MechWarrior::getEventHistory(int32_t alarmCode, int32_t* paramList)
 	{
 		for (size_t i = 0; i < alarmHistory[alarmCode].numTriggers; i++)
 			if (alarmHistory[alarmCode].trigger[i] < 0)
-				paramList[numValidTriggers++] =
-					alarmHistory[alarmCode].trigger[i];
+				paramList[numValidTriggers++] = alarmHistory[alarmCode].trigger[i];
 			else
 			{
-				GameObjectPtr obj = ObjectManager->getByWatchID(
-					alarmHistory[alarmCode].trigger[i]);
+				GameObjectPtr obj = ObjectManager->getByWatchID(alarmHistory[alarmCode].trigger[i]);
 				if (obj)
 					paramList[numValidTriggers++] = obj->getPartId();
 			}
@@ -4784,8 +4618,7 @@ int32_t MechWarrior::getNextEventHistory(int32_t* paramList)
 {
 	if (curEventID < NUM_PILOT_ALARMS)
 	{
-		while ((curEventID < NUM_PILOT_ALARMS) &&
-			   (alarmHistory[curEventID].numTriggers == 0))
+		while ((curEventID < NUM_PILOT_ALARMS) && (alarmHistory[curEventID].numTriggers == 0))
 			curEventID++;
 		if (curEventID < NUM_PILOT_ALARMS)
 		{
@@ -4861,15 +4694,13 @@ int32_t MechWarrior::handleAlarm(int32_t alarmCode, uint32_t triggerId)
 
 int32_t MechWarrior::getAlarmTriggers(int32_t alarmCode, uint32_t* triggerList)
 {
-	memcpy(triggerList, alarm[alarmCode].trigger,
-		sizeof(uint32_t) * alarm[alarmCode].numTriggers);
+	memcpy(triggerList, alarm[alarmCode].trigger, sizeof(uint32_t) * alarm[alarmCode].numTriggers);
 	return (alarm[alarmCode].numTriggers);
 }
 
 //---------------------------------------------------------------------------
 
-int32_t MechWarrior::getAlarmTriggersHistory(
-	int32_t alarmCode, uint32_t* triggerList)
+int32_t MechWarrior::getAlarmTriggersHistory(int32_t alarmCode, uint32_t* triggerList)
 {
 	memcpy(triggerList, alarmHistory[alarmCode].trigger,
 		sizeof(uint32_t) * alarmHistory[alarmCode].numTriggers);
@@ -4878,10 +4709,7 @@ int32_t MechWarrior::getAlarmTriggersHistory(
 
 //---------------------------------------------------------------------------
 
-void MechWarrior::clearAlarm(int32_t alarmCode)
-{
-	alarm[alarmCode].numTriggers = 0;
-}
+void MechWarrior::clearAlarm(int32_t alarmCode) { alarm[alarmCode].numTriggers = 0; }
 
 //---------------------------------------------------------------------------
 
@@ -4893,10 +4721,7 @@ void MechWarrior::clearAlarms(void)
 
 //---------------------------------------------------------------------------
 
-void MechWarrior::clearAlarmHistory(int32_t alarmCode)
-{
-	alarmHistory[alarmCode].numTriggers = 0;
-}
+void MechWarrior::clearAlarmHistory(int32_t alarmCode) { alarmHistory[alarmCode].numTriggers = 0; }
 
 //---------------------------------------------------------------------------
 
@@ -5095,8 +4920,7 @@ int32_t MechWarrior::mainDecisionTree(void)
 	}
 	//---------------------------------------
 	// Is the current tac order accomplished?
-	if ((curTacOrder.code != TACTICAL_ORDER_NONE) &&
-		(curTacOrder.status(this) == TACORDER_SUCCESS))
+	if ((curTacOrder.code != TACTICAL_ORDER_NONE) && (curTacOrder.status(this) == TACORDER_SUCCESS))
 	{
 		bool playerOrderQueued = false;
 		if ((orderState == ORDERSTATE_PLAYER) && tacOrderQueueExecuting)
@@ -5109,23 +4933,20 @@ int32_t MechWarrior::mainDecisionTree(void)
 	}
 	//------------------------------------------------------
 	// If we're without orders now, let's record the time...
-	if (underHomeCommand() && (curTacOrder.code == TACTICAL_ORDER_NONE) &&
-		(timeOfLastOrders < 0.0))
+	if (underHomeCommand() && (curTacOrder.code == TACTICAL_ORDER_NONE) && (timeOfLastOrders < 0.0))
 		timeOfLastOrders = scenarioTime;
 	//-----------------------------------------------
 	// Update Weapons Status, if needed this frame...
 	if ((brainUpdate <= scenarioTime) || (combatUpdate <= scenarioTime) ||
 		(movementUpdate <= scenarioTime))
 	{
-		GameObjectPtr target =
-			getCurrentTarget(); // getAttackTarget(ORDER_CURRENT);
+		GameObjectPtr target = getCurrentTarget(); // getAttackTarget(ORDER_CURRENT);
 		if (target)
 			weaponsStatusResult = calcWeaponsStatus(target, weaponsStatus);
 		else if (curTacOrder.code == TACTICAL_ORDER_ATTACK_POINT)
 		{
 			Stuff::Vector3D pos = getAttackTargetPoint();
-			weaponsStatusResult =
-				calcWeaponsStatus(target, weaponsStatus, &pos);
+			weaponsStatusResult = calcWeaponsStatus(target, weaponsStatus, &pos);
 		}
 	}
 	//-------------------------------------------------------------------------------------
@@ -5146,8 +4967,7 @@ int32_t MechWarrior::mainDecisionTree(void)
 		if (clearTarget)
 		{
 			setLastTarget(nullptr);
-			if ((curTacOrder.code == TACTICAL_ORDER_ATTACK_OBJECT) &&
-				(target == tacOrderTarget))
+			if ((curTacOrder.code == TACTICAL_ORDER_ATTACK_OBJECT) && (target == tacOrderTarget))
 			{
 				clearCurTacOrder();
 				target		   = nullptr;
@@ -5155,13 +4975,11 @@ int32_t MechWarrior::mainDecisionTree(void)
 			}
 		}
 	}
-	if ((curTacOrder.code == TACTICAL_ORDER_ATTACK_OBJECT) &&
-		(target != tacOrderTarget))
+	if ((curTacOrder.code == TACTICAL_ORDER_ATTACK_OBJECT) && (target != tacOrderTarget))
 		setLastTarget(tacOrderTarget);
 	//----------------------
 	// Update pilot brain...
-	if ((brainUpdate <= scenarioTime) &&
-		((teamId == -1) || brainsEnabled[teamId]))
+	if ((brainUpdate <= scenarioTime) && ((teamId == -1) || brainsEnabled[teamId]))
 	{
 		runBrain();
 		brainUpdate += BrainUpdateFrequency;
@@ -5281,12 +5099,10 @@ int32_t MechWarrior::mainDecisionTree(void)
 					setMainGoal(GOAL_ACTION_MOVE, nullptr, &movePoint, -1.0);
 					break;
 				case TACTICAL_ORDER_ATTACK_OBJECT:
-					setMainGoal(GOAL_ACTION_ATTACK, newTacOrder.getTarget(),
-						nullptr, -1.0);
+					setMainGoal(GOAL_ACTION_ATTACK, newTacOrder.getTarget(), nullptr, -1.0);
 					break;
 				case TACTICAL_ORDER_CAPTURE:
-					setMainGoal(GOAL_ACTION_CAPTURE, newTacOrder.getTarget(),
-						nullptr, 400.0);
+					setMainGoal(GOAL_ACTION_CAPTURE, newTacOrder.getTarget(), nullptr, 400.0);
 					break;
 				default:
 					// setMainGoal(GOAL_ACTION_NONE, nullptr, nullptr, -1.0);
@@ -5318,10 +5134,7 @@ void MechWarrior::setDebugFlag(uint32_t flag, bool on)
 
 //---------------------------------------------------------------------------
 
-bool MechWarrior::getDebugFlag(uint32_t flag)
-{
-	return ((debugFlags & flag) != 0);
-}
+bool MechWarrior::getDebugFlag(uint32_t flag) { return ((debugFlags & flag) != 0); }
 
 //---------------------------------------------------------------------------
 
@@ -5349,27 +5162,23 @@ void MechWarrior::debugOrders(void)
 		sprintf(s, "CURRENT ORDERS: Wait");
 		break;
 	case TACTICAL_ORDER_MOVETO_POINT:
-		sprintf(s, "CURRENT ORDERS: Move to (%.2f, %.2f, %.2f)",
-			curTacOrder.getWayPoint(0).x, curTacOrder.getWayPoint(0).y,
-			curTacOrder.getWayPoint(0).z);
+		sprintf(s, "CURRENT ORDERS: Move to (%.2f, %.2f, %.2f)", curTacOrder.getWayPoint(0).x,
+			curTacOrder.getWayPoint(0).y, curTacOrder.getWayPoint(0).z);
 		break;
 	case TACTICAL_ORDER_MOVETO_OBJECT:
 	{
 		GameObjectPtr obj = ObjectManager->getByWatchID(curTacOrder.targetWID);
-		sprintf(
-			s, "CURRENT ORDERS: Move To Object %d", obj ? obj->getPartId() : 0);
+		sprintf(s, "CURRENT ORDERS: Move To Object %d", obj ? obj->getPartId() : 0);
 	}
 	break;
 	case TACTICAL_ORDER_JUMPTO_POINT:
-		sprintf(s, "CURRENT ORDERS: Jump to (%.2f, %.2f, %.2f)",
-			curTacOrder.getWayPoint(0).x, curTacOrder.getWayPoint(0).y,
-			curTacOrder.getWayPoint(0).z);
+		sprintf(s, "CURRENT ORDERS: Jump to (%.2f, %.2f, %.2f)", curTacOrder.getWayPoint(0).x,
+			curTacOrder.getWayPoint(0).y, curTacOrder.getWayPoint(0).z);
 		break;
 	case TACTICAL_ORDER_JUMPTO_OBJECT:
 	{
 		GameObjectPtr obj = ObjectManager->getByWatchID(curTacOrder.targetWID);
-		sprintf(
-			s, "CURRENT ORDERS: Jump To Object %d", obj ? obj->getPartId() : 0);
+		sprintf(s, "CURRENT ORDERS: Jump To Object %d", obj ? obj->getPartId() : 0);
 	}
 	break;
 	case TACTICAL_ORDER_TRAVERSE_PATH:
@@ -5405,8 +5214,7 @@ void MechWarrior::debugOrders(void)
 	case TACTICAL_ORDER_ATTACK_OBJECT:
 	{
 		GameObjectPtr obj = ObjectManager->getByWatchID(curTacOrder.targetWID);
-		sprintf(
-			s, "CURRENT ORDERS: Attack Object %d", obj ? obj->getPartId() : 0);
+		sprintf(s, "CURRENT ORDERS: Attack Object %d", obj ? obj->getPartId() : 0);
 	}
 	break;
 	case TACTICAL_ORDER_HOLD_FIRE:
@@ -5421,17 +5229,13 @@ void MechWarrior::debugOrders(void)
 	}
 	debugPrint(s);
 	GameObjectPtr target = getCurrentTarget();
-	sprintf(
-		s, "     CURRENT TARGET: Object %d", target ? target->getPartId() : 0);
+	sprintf(s, "     CURRENT TARGET: Object %d", target ? target->getPartId() : 0);
 	debugPrint(s);
 }
 
 //---------------------------------------------------------------------------
 
-void MechWarrior::setMoveSpeedType(int32_t type)
-{
-	moveOrders.speedType = type;
-}
+void MechWarrior::setMoveSpeedType(int32_t type) { moveOrders.speedType = type; }
 
 //---------------------------------------------------------------------------
 
@@ -5516,15 +5320,13 @@ int32_t MechWarrior::coreMoveTo(Stuff::Vector3D location, uint32_t params)
 	tacOrder.moveParams.wayPath.points[1] = location.y;
 	tacOrder.moveParams.wayPath.points[2] = location.z;
 	tacOrder.selectionIndex				  = -1;
-	tacOrder.moveParams.wayPath.mode[0] =
-		(run ? TRAVEL_MODE_FAST : TRAVEL_MODE_SLOW);
-	tacOrder.moveParams.wait = wait;
-	tacOrder.moveParams.mode =
-		(layMines ? MOVE_MODE_MINELAYING : MOVE_MODE_NORMAL);
-	tacOrder.moveParams.escapeTile = escape;
-	tacOrder.moveParams.jump	   = jump;
-	tacOrder.moveParams.keepMoving = keepMoving;
-	int32_t result				   = tacOrder.status(this);
+	tacOrder.moveParams.wayPath.mode[0]   = (run ? TRAVEL_MODE_FAST : TRAVEL_MODE_SLOW);
+	tacOrder.moveParams.wait			  = wait;
+	tacOrder.moveParams.mode			  = (layMines ? MOVE_MODE_MINELAYING : MOVE_MODE_NORMAL);
+	tacOrder.moveParams.escapeTile		  = escape;
+	tacOrder.moveParams.jump			  = jump;
+	tacOrder.moveParams.keepMoving		  = keepMoving;
+	int32_t result						  = tacOrder.status(this);
 	if (result == TACORDER_SUCCESS)
 		return (1);
 	if (curTacOrder.equals(&tacOrder))
@@ -5592,15 +5394,13 @@ int32_t MechWarrior::coreMoveToObject(GameObjectPtr object, uint32_t params)
 	tacOrder.moveParams.wayPath.points[0] = goal.x;
 	tacOrder.moveParams.wayPath.points[1] = goal.y;
 	tacOrder.moveParams.wayPath.points[2] = goal.z;
-	tacOrder.moveParams.wayPath.mode[0] =
-		(run ? TRAVEL_MODE_FAST : TRAVEL_MODE_SLOW);
-	tacOrder.moveParams.faceObject = faceObject;
-	tacOrder.moveParams.wait	   = false;
-	tacOrder.moveParams.mode =
-		(layMines ? MOVE_MODE_MINELAYING : MOVE_MODE_NORMAL);
-	tacOrder.moveParams.jump	   = jump;
-	tacOrder.moveParams.keepMoving = keepMoving;
-	int32_t result				   = tacOrder.status(this);
+	tacOrder.moveParams.wayPath.mode[0]   = (run ? TRAVEL_MODE_FAST : TRAVEL_MODE_SLOW);
+	tacOrder.moveParams.faceObject		  = faceObject;
+	tacOrder.moveParams.wait			  = false;
+	tacOrder.moveParams.mode			  = (layMines ? MOVE_MODE_MINELAYING : MOVE_MODE_NORMAL);
+	tacOrder.moveParams.jump			  = jump;
+	tacOrder.moveParams.keepMoving		  = keepMoving;
+	int32_t result						  = tacOrder.status(this);
 	if (result == TACORDER_SUCCESS)
 		return (1);
 	if (curTacOrder.equals(&tacOrder))
@@ -5739,8 +5539,8 @@ int32_t MechWarrior::corePower(bool powerUp)
 			return (1);
 	}
 	TacticalOrder tacOrder;
-	tacOrder.init(ORDER_ORIGIN_COMMANDER,
-		powerUp ? TACTICAL_ORDER_POWERUP : TACTICAL_ORDER_POWERDOWN, false);
+	tacOrder.init(
+		ORDER_ORIGIN_COMMANDER, powerUp ? TACTICAL_ORDER_POWERUP : TACTICAL_ORDER_POWERDOWN, false);
 	int32_t result = tacOrder.status(this);
 	if (result == TACORDER_SUCCESS)
 		return (1);
@@ -5849,8 +5649,7 @@ int32_t MechWarrior::coreAttack(GameObjectPtr target, uint32_t params)
 		tactic = TACTIC_JOUST;
 		break;
 	}
-	if ((getVehicle()->numWeapons == 0) &&
-		(attackMethod != ATTACKMETHOD_RAMMING))
+	if ((getVehicle()->numWeapons == 0) && (attackMethod != ATTACKMETHOD_RAMMING))
 	{
 		clearAttackOrders();
 		return (1);
@@ -5865,8 +5664,7 @@ int32_t MechWarrior::coreAttack(GameObjectPtr target, uint32_t params)
 	if (!target)
 		return (1);
 	TacticalOrder tacOrder;
-	tacOrder.init((OrderOriginType)ORDER_ORIGIN_COMMANDER,
-		TACTICAL_ORDER_ATTACK_OBJECT, false);
+	tacOrder.init((OrderOriginType)ORDER_ORIGIN_COMMANDER, TACTICAL_ORDER_ATTACK_OBJECT, false);
 	tacOrder.targetWID				  = target->getWatchID();
 	tacOrder.attackParams.method	  = (AttackMethod)attackMethod;
 	tacOrder.attackParams.aimLocation = aimLocation;
@@ -5926,30 +5724,28 @@ int32_t MechWarrior::coreCapture(GameObjectPtr object, uint32_t params)
 	}
 	if (!getTeam())
 		return (1);
-	if (!object || !object->isCaptureable(getTeam()->getId()) ||
-		object->isFriendly(getVehicle()))
+	if (!object || !object->isCaptureable(getTeam()->getId()) || object->isFriendly(getVehicle()))
 		return (1);
 	//-------------------------------------------------------------------------
 	// Once Goal Planning is in, this should deal with the blockers rather than
 	// abort the order...
 	//	GameObjectPtr blockerList[MAX_MOVERS];
 	//	int32_t numBlockers = object->getCaptureBlocker(getVehicle(),
-	//blockerList); 	if (numBlockers) 		return(1);
+	// blockerList); 	if (numBlockers) 		return(1);
 	bool run		= ((params & TACORDER_PARAM_RUN) != 0);
 	bool jump		= ((params & TACORDER_PARAM_JUMP) != 0);
 	bool faceObject = ((params & TACORDER_PARAM_FACE_OBJECT) != 0);
 	TacticalOrder tacOrder;
 	tacOrder.init(ORDER_ORIGIN_COMMANDER, TACTICAL_ORDER_CAPTURE, false);
-	tacOrder.targetWID			 = object->getWatchID();
-	tacOrder.selectionIndex		 = -1;
-	tacOrder.moveParams.fromArea = -1;
-	tacOrder.moveParams.wayPath.mode[0] =
-		(run ? TRAVEL_MODE_FAST : TRAVEL_MODE_SLOW);
-	tacOrder.moveParams.faceObject = faceObject;
-	tacOrder.moveParams.wait	   = false;
-	tacOrder.moveParams.keepMoving = false;
-	tacOrder.moveParams.jump	   = jump;
-	int32_t result				   = tacOrder.status(this);
+	tacOrder.targetWID					= object->getWatchID();
+	tacOrder.selectionIndex				= -1;
+	tacOrder.moveParams.fromArea		= -1;
+	tacOrder.moveParams.wayPath.mode[0] = (run ? TRAVEL_MODE_FAST : TRAVEL_MODE_SLOW);
+	tacOrder.moveParams.faceObject		= faceObject;
+	tacOrder.moveParams.wait			= false;
+	tacOrder.moveParams.keepMoving		= false;
+	tacOrder.moveParams.jump			= jump;
+	int32_t result						= tacOrder.status(this);
 	if (result == TACORDER_SUCCESS)
 		return (1);
 	if (curTacOrder.equals(&tacOrder))
@@ -5973,8 +5769,7 @@ int32_t MechWarrior::coreScan(GameObjectPtr object, uint32_t params)
 		// return true. Otherwise, return false.
 		if (object->isMover())
 		{
-			if (getTeam()->isContact(
-					getVehicle(), (MoverPtr)object, (int32_t)params))
+			if (getTeam()->isContact(getVehicle(), (MoverPtr)object, (int32_t)params))
 			{
 				coreScanTargetWID = object->getWatchID();
 				return (coreScanTargetWID);
@@ -5995,8 +5790,7 @@ int32_t MechWarrior::coreScan(GameObjectPtr object, uint32_t params)
 		// Scan for anything matching the criteria...
 		Stuff::Vector3D myPosition = getVehicle()->getPosition();
 		int32_t action			   = -1;
-		coreScanTargetWID =
-			targetPriorityList.calcTarget(this, myPosition, params, action);
+		coreScanTargetWID = targetPriorityList.calcTarget(this, myPosition, params, action);
 		return (coreScanTargetWID);
 	}
 	return (coreScanTargetWID = 0);
@@ -6058,10 +5852,7 @@ int32_t MechWarrior::coreWithdraw(Stuff::Vector3D location, uint32_t params)
 
 //---------------------------------------------------------------------------
 
-int32_t MechWarrior::coreSetState(int32_t stateID, bool thinkAgain)
-{
-	return (0);
-}
+int32_t MechWarrior::coreSetState(int32_t stateID, bool thinkAgain) { return (0); }
 
 //---------------------------------------------------------------------------
 // CORE TACTICAL ORDERS
@@ -6109,9 +5900,8 @@ int32_t MechWarrior::orderStop(bool unitOrder, bool setTacOrder)
 
 //---------------------------------------------------------------------------
 
-int32_t MechWarrior::orderMoveToPoint(bool unitOrder, bool setTacOrder,
-	int32_t origin, Stuff::Vector3D location, int32_t selectionIndex,
-	uint32_t params)
+int32_t MechWarrior::orderMoveToPoint(bool unitOrder, bool setTacOrder, int32_t origin,
+	Stuff::Vector3D location, int32_t selectionIndex, uint32_t params)
 {
 	bool jump	 = ((params & TACORDER_PARAM_JUMP) != 0);
 	bool run	  = ((params & TACORDER_PARAM_RUN) != 0);
@@ -6119,20 +5909,17 @@ int32_t MechWarrior::orderMoveToPoint(bool unitOrder, bool setTacOrder,
 	bool layMines = ((params & TACORDER_PARAM_LAY_MINES) != 0);
 	bool escape   = ((params & TACORDER_PARAM_ESCAPE_TILE) != 0);
 	TacticalOrder tacOrder;
-	tacOrder.init(
-		(OrderOriginType)origin, TACTICAL_ORDER_MOVETO_POINT, unitOrder);
+	tacOrder.init((OrderOriginType)origin, TACTICAL_ORDER_MOVETO_POINT, unitOrder);
 	tacOrder.moveParams.wayPath.points[0] = location.x;
 	tacOrder.moveParams.wayPath.points[1] = location.y;
 	tacOrder.moveParams.wayPath.points[2] = location.z;
 	tacOrder.selectionIndex				  = selectionIndex;
-	tacOrder.moveParams.wayPath.mode[0] =
-		(run ? TRAVEL_MODE_FAST : TRAVEL_MODE_SLOW);
-	tacOrder.moveParams.wait = wait;
-	tacOrder.moveParams.mode =
-		(layMines ? MOVE_MODE_MINELAYING : MOVE_MODE_NORMAL);
-	tacOrder.moveParams.escapeTile = escape;
-	tacOrder.moveParams.jump	   = jump;
-	int32_t result				   = tacOrder.status(this);
+	tacOrder.moveParams.wayPath.mode[0]   = (run ? TRAVEL_MODE_FAST : TRAVEL_MODE_SLOW);
+	tacOrder.moveParams.wait			  = wait;
+	tacOrder.moveParams.mode			  = (layMines ? MOVE_MODE_MINELAYING : MOVE_MODE_NORMAL);
+	tacOrder.moveParams.escapeTile		  = escape;
+	tacOrder.moveParams.jump			  = jump;
+	int32_t result						  = tacOrder.status(this);
 	if (result == TACORDER_SUCCESS)
 		return (TACORDER_SUCCESS);
 	// clearMoveOrders(which);
@@ -6160,10 +5947,8 @@ int32_t MechWarrior::orderMoveToPoint(bool unitOrder, bool setTacOrder,
 	if (setTacOrder && (origin == ORDER_ORIGIN_PLAYER))
 		if (!unitOrder || (getPoint() == getVehicle()))
 			moveParams |= MOVEPARAM_RADIO_RESULT;
-	PathManager->request(
-		this, selectionIndex, moveParams, setTacOrder ? 21 : 23);
-	if (setTacOrder && (result == TACORDER_FAILURE) &&
-		(origin == ORDER_ORIGIN_COMMANDER))
+	PathManager->request(this, selectionIndex, moveParams, setTacOrder ? 21 : 23);
+	if (setTacOrder && (result == TACORDER_FAILURE) && (origin == ORDER_ORIGIN_COMMANDER))
 		setGeneralTacOrder(tacOrder);
 	return (result);
 }
@@ -6180,9 +5965,8 @@ void MechWarrior::clearMovePath(int32_t pathNum)
 	}
 }
 
-int32_t MechWarrior::orderMoveToObject(bool unitOrder, bool setTacOrder,
-	int32_t origin, GameObjectPtr target, int32_t fromArea,
-	int32_t selectionIndex, uint32_t params)
+int32_t MechWarrior::orderMoveToObject(bool unitOrder, bool setTacOrder, int32_t origin,
+	GameObjectPtr target, int32_t fromArea, int32_t selectionIndex, uint32_t params)
 {
 	bool jump		= ((params & TACORDER_PARAM_JUMP) != 0);
 	bool run		= ((params & TACORDER_PARAM_RUN) != 0);
@@ -6205,39 +5989,36 @@ int32_t MechWarrior::orderMoveToObject(bool unitOrder, bool setTacOrder,
 		{
 			BuildingPtr building = (BuildingPtr)target;
 			int32_t goalRow = 0, goalCol = 0;
-			bool foundGoal = building->calcAdjacentAreaCell(
-				getVehicle()->moveLevel, fromArea, goalRow, goalCol);
+			bool foundGoal =
+				building->calcAdjacentAreaCell(getVehicle()->moveLevel, fromArea, goalRow, goalCol);
 			if (foundGoal)
 				land->cellToWorld(goalRow, goalCol, goal);
 			else
 			{
 				Stuff::Vector3D objectPos = target->getPosition();
-				goal = getVehicle()->calcOffsetMoveGoal(objectPos);
+				goal					  = getVehicle()->calcOffsetMoveGoal(objectPos);
 			}
 		}
 		else
 		{
 			Stuff::Vector3D objectPos = target->getPosition();
-			goal = getVehicle()->calcOffsetMoveGoal(objectPos);
+			goal					  = getVehicle()->calcOffsetMoveGoal(objectPos);
 		}
 	}
 	TacticalOrder tacOrder;
-	tacOrder.init(
-		(OrderOriginType)origin, TACTICAL_ORDER_MOVETO_OBJECT, unitOrder);
+	tacOrder.init((OrderOriginType)origin, TACTICAL_ORDER_MOVETO_OBJECT, unitOrder);
 	tacOrder.targetWID					  = target->getWatchID();
 	tacOrder.selectionIndex				  = selectionIndex;
 	tacOrder.moveParams.fromArea		  = fromArea;
 	tacOrder.moveParams.wayPath.points[0] = goal.x;
 	tacOrder.moveParams.wayPath.points[1] = goal.y;
 	tacOrder.moveParams.wayPath.points[2] = goal.z;
-	tacOrder.moveParams.wayPath.mode[0] =
-		(run ? TRAVEL_MODE_FAST : TRAVEL_MODE_SLOW);
-	tacOrder.moveParams.faceObject = faceObject;
-	tacOrder.moveParams.wait	   = false;
-	tacOrder.moveParams.mode =
-		(layMines ? MOVE_MODE_MINELAYING : MOVE_MODE_NORMAL);
-	tacOrder.moveParams.jump = jump;
-	int32_t result			 = tacOrder.status(this);
+	tacOrder.moveParams.wayPath.mode[0]   = (run ? TRAVEL_MODE_FAST : TRAVEL_MODE_SLOW);
+	tacOrder.moveParams.faceObject		  = faceObject;
+	tacOrder.moveParams.wait			  = false;
+	tacOrder.moveParams.mode			  = (layMines ? MOVE_MODE_MINELAYING : MOVE_MODE_NORMAL);
+	tacOrder.moveParams.jump			  = jump;
+	int32_t result						  = tacOrder.status(this);
 	if (result == TACORDER_SUCCESS)
 		return (TACORDER_SUCCESS);
 	//-----------------------------------
@@ -6266,16 +6047,15 @@ int32_t MechWarrior::orderMoveToObject(bool unitOrder, bool setTacOrder,
 			moveParams |= MOVEPARAM_RADIO_RESULT;
 	requestMovePath(selectionIndex, moveParams, 16);
 	moveOrders.goalObjectPosition = target->getPosition();
-	if (setTacOrder && (result == TACORDER_FAILURE) &&
-		(origin == ORDER_ORIGIN_COMMANDER))
+	if (setTacOrder && (result == TACORDER_FAILURE) && (origin == ORDER_ORIGIN_COMMANDER))
 		setGeneralTacOrder(tacOrder);
 	return (result);
 }
 
 //---------------------------------------------------------------------------
 
-int32_t MechWarrior::orderJumpToPoint(bool unitOrder, bool setTacOrder,
-	int32_t origin, Stuff::Vector3D location, int32_t selectionIndex)
+int32_t MechWarrior::orderJumpToPoint(bool unitOrder, bool setTacOrder, int32_t origin,
+	Stuff::Vector3D location, int32_t selectionIndex)
 {
 	MoverPtr myVehicle = getVehicle();
 	if (myVehicle->getJumpRange() < myVehicle->distanceFrom(location))
@@ -6288,8 +6068,7 @@ int32_t MechWarrior::orderJumpToPoint(bool unitOrder, bool setTacOrder,
 			return (TACORDER_SUCCESS);
 	}
 	TacticalOrder tacOrder;
-	tacOrder.init(
-		(OrderOriginType)origin, TACTICAL_ORDER_JUMPTO_POINT, unitOrder);
+	tacOrder.init((OrderOriginType)origin, TACTICAL_ORDER_JUMPTO_POINT, unitOrder);
 	tacOrder.selectionIndex				  = selectionIndex;
 	tacOrder.moveParams.wayPath.points[0] = location.x;
 	tacOrder.moveParams.wayPath.points[1] = location.y;
@@ -6305,16 +6084,15 @@ int32_t MechWarrior::orderJumpToPoint(bool unitOrder, bool setTacOrder,
 		clearAttackOrders();
 		// setLastTarget(nullptr);
 	}
-	if (setTacOrder && (result == TACORDER_FAILURE) &&
-		(origin == ORDER_ORIGIN_COMMANDER))
+	if (setTacOrder && (result == TACORDER_FAILURE) && (origin == ORDER_ORIGIN_COMMANDER))
 		setGeneralTacOrder(tacOrder);
 	return (TACORDER_SUCCESS);
 }
 
 //---------------------------------------------------------------------------
 
-int32_t MechWarrior::orderJumpToObject(bool unitOrder, bool setTacOrder,
-	int32_t origin, GameObjectPtr target, int32_t selectionIndex)
+int32_t MechWarrior::orderJumpToObject(
+	bool unitOrder, bool setTacOrder, int32_t origin, GameObjectPtr target, int32_t selectionIndex)
 {
 	MoverPtr myVehicle		 = getVehicle();
 	Stuff::Vector3D location = target->getPosition();
@@ -6333,8 +6111,7 @@ int32_t MechWarrior::orderJumpToObject(bool unitOrder, bool setTacOrder,
 			return (TACORDER_SUCCESS);
 	}
 	TacticalOrder tacOrder;
-	tacOrder.init(
-		(OrderOriginType)origin, TACTICAL_ORDER_JUMPTO_POINT, unitOrder);
+	tacOrder.init((OrderOriginType)origin, TACTICAL_ORDER_JUMPTO_POINT, unitOrder);
 	tacOrder.selectionIndex				  = selectionIndex;
 	tacOrder.moveParams.wayPath.points[0] = location.x;
 	tacOrder.moveParams.wayPath.points[1] = location.y;
@@ -6350,25 +6127,22 @@ int32_t MechWarrior::orderJumpToObject(bool unitOrder, bool setTacOrder,
 		clearMoveOrders();
 		clearAttackOrders();
 	}
-	if (setTacOrder && (result == TACORDER_FAILURE) &&
-		(origin == ORDER_ORIGIN_COMMANDER))
+	if (setTacOrder && (result == TACORDER_FAILURE) && (origin == ORDER_ORIGIN_COMMANDER))
 		setGeneralTacOrder(tacOrder);
 	return (TACORDER_SUCCESS);
 }
 
 //---------------------------------------------------------------------------
 
-int32_t MechWarrior::orderTraversePath(bool unitOrder, bool setTacOrder,
-	int32_t origin, WayPathPtr wayPath, uint32_t params)
+int32_t MechWarrior::orderTraversePath(
+	bool unitOrder, bool setTacOrder, int32_t origin, WayPathPtr wayPath, uint32_t params)
 {
 	bool layMines = ((params & TACORDER_PARAM_LAY_MINES) != 0);
 	TacticalOrder tacOrder;
-	tacOrder.init(
-		(OrderOriginType)origin, TACTICAL_ORDER_TRAVERSE_PATH, unitOrder);
+	tacOrder.init((OrderOriginType)origin, TACTICAL_ORDER_TRAVERSE_PATH, unitOrder);
 	memcpy(&tacOrder.moveParams.wayPath, wayPath, sizeof(WayPath));
-	tacOrder.moveParams.mode =
-		(layMines ? MOVE_MODE_MINELAYING : MOVE_MODE_NORMAL);
-	int32_t result = tacOrder.status(this);
+	tacOrder.moveParams.mode = (layMines ? MOVE_MODE_MINELAYING : MOVE_MODE_NORMAL);
+	int32_t result			 = tacOrder.status(this);
 	if (result == TACORDER_SUCCESS)
 		return (TACORDER_SUCCESS);
 	Stuff::Vector3D location;
@@ -6382,8 +6156,7 @@ int32_t MechWarrior::orderTraversePath(bool unitOrder, bool setTacOrder,
 	if (setTacOrder)
 		clearAttackOrders();
 	requestMovePath(-1, MOVEPARAM_INIT | MOVEPARAM_FACE_TARGET, 17);
-	if (setTacOrder && (result == TACORDER_FAILURE) &&
-		(origin == ORDER_ORIGIN_COMMANDER))
+	if (setTacOrder && (result == TACORDER_FAILURE) && (origin == ORDER_ORIGIN_COMMANDER))
 		setGeneralTacOrder(tacOrder);
 	return (result);
 }
@@ -6394,8 +6167,7 @@ int32_t MechWarrior::orderPatrolPath(
 	bool unitOrder, bool setTacOrder, int32_t origin, WayPathPtr wayPath)
 {
 	TacticalOrder tacOrder;
-	tacOrder.init(
-		(OrderOriginType)origin, TACTICAL_ORDER_PATROL_PATH, unitOrder);
+	tacOrder.init((OrderOriginType)origin, TACTICAL_ORDER_PATROL_PATH, unitOrder);
 	memcpy(&tacOrder.moveParams.wayPath, wayPath, sizeof(WayPath));
 	int32_t result = tacOrder.status(this);
 	if (result == TACORDER_SUCCESS)
@@ -6411,8 +6183,7 @@ int32_t MechWarrior::orderPatrolPath(
 	if (setTacOrder)
 		clearAttackOrders();
 	requestMovePath(-1, MOVEPARAM_INIT | MOVEPARAM_FACE_TARGET, 18);
-	if (setTacOrder && (result == TACORDER_FAILURE) &&
-		(origin == ORDER_ORIGIN_COMMANDER))
+	if (setTacOrder && (result == TACORDER_FAILURE) && (origin == ORDER_ORIGIN_COMMANDER))
 		setGeneralTacOrder(tacOrder);
 	return (result);
 }
@@ -6506,9 +6277,9 @@ int32_t orderUseOrbitRange(int32_t type, float range) { return (1); }
 
 //---------------------------------------------------------------------------
 
-int32_t MechWarrior::orderAttackObject(bool unitOrder, int32_t origin,
-	GameObjectPtr target, int32_t type, int32_t method, int32_t range,
-	int32_t aimLocation, int32_t fromArea, uint32_t params)
+int32_t MechWarrior::orderAttackObject(bool unitOrder, int32_t origin, GameObjectPtr target,
+	int32_t type, int32_t method, int32_t range, int32_t aimLocation, int32_t fromArea,
+	uint32_t params)
 {
 	bool run		= ((params & TACORDER_PARAM_RUN) != 0);
 	bool jump		= ((params & TACORDER_PARAM_JUMP) != 0);
@@ -6561,8 +6332,7 @@ int32_t MechWarrior::orderAttackObject(bool unitOrder, int32_t origin,
 		return (TACORDER_SUCCESS);
 	}
 	TacticalOrder tacOrder;
-	tacOrder.init(
-		(OrderOriginType)origin, TACTICAL_ORDER_ATTACK_OBJECT, unitOrder);
+	tacOrder.init((OrderOriginType)origin, TACTICAL_ORDER_ATTACK_OBJECT, unitOrder);
 	tacOrder.targetWID				  = target->getWatchID();
 	tacOrder.attackParams.type		  = (AttackType)type;
 	tacOrder.attackParams.method	  = (AttackMethod)method;
@@ -6629,15 +6399,13 @@ int32_t MechWarrior::orderAttackObject(bool unitOrder, int32_t origin,
 
 //---------------------------------------------------------------------------
 
-int32_t MechWarrior::orderAttackPoint(bool unitOrder, int32_t origin,
-	Stuff::Vector3D location, int32_t type, int32_t method, int32_t range,
-	uint32_t params)
+int32_t MechWarrior::orderAttackPoint(bool unitOrder, int32_t origin, Stuff::Vector3D location,
+	int32_t type, int32_t method, int32_t range, uint32_t params)
 {
 	bool pursue = ((params & TACORDER_PARAM_PURSUE) != 0);
 	bool jump   = ((params & TACORDER_PARAM_JUMP) != 0);
 	TacticalOrder tacOrder;
-	tacOrder.init(
-		(OrderOriginType)origin, TACTICAL_ORDER_ATTACK_POINT, unitOrder);
+	tacOrder.init((OrderOriginType)origin, TACTICAL_ORDER_ATTACK_POINT, unitOrder);
 	tacOrder.attackParams.type		  = (AttackType)type;
 	tacOrder.attackParams.method	  = (AttackMethod)method;
 	tacOrder.attackParams.range		  = (FireRangeType)range;
@@ -6652,8 +6420,7 @@ int32_t MechWarrior::orderAttackPoint(bool unitOrder, int32_t origin,
 	//------------------------------------------------------------
 	// If we also want to pursue it, set up the move order here...
 	if (pursue)
-		orderMoveToPoint(
-			unitOrder, false, origin, location, -1 /*unitMateId*/, params);
+		orderMoveToPoint(unitOrder, false, origin, location, -1 /*unitMateId*/, params);
 	else
 		clearMoveOrders();
 	//------------------------------------------------------------
@@ -6691,8 +6458,7 @@ int32_t MechWarrior::orderAttackPoint(bool unitOrder, int32_t origin,
 
 //---------------------------------------------------------------------------
 
-int32_t MechWarrior::orderWithdraw(
-	bool unitOrder, int32_t origin, Stuff::Vector3D location)
+int32_t MechWarrior::orderWithdraw(bool unitOrder, int32_t origin, Stuff::Vector3D location)
 {
 	TacticalOrder tacOrder;
 	tacOrder.init((OrderOriginType)origin, TACTICAL_ORDER_WITHDRAW, unitOrder);
@@ -6700,8 +6466,7 @@ int32_t MechWarrior::orderWithdraw(
 	tacOrder.moveParams.wayPath.points[1] = location.y;
 	tacOrder.moveParams.wayPath.points[2] = location.z;
 	location							  = calcWithdrawGoal();
-	int32_t result						  = orderMoveToPoint(
-		   unitOrder, true, origin, location, -1, TACORDER_PARAM_RUN);
+	int32_t result = orderMoveToPoint(unitOrder, true, origin, location, -1, TACORDER_PARAM_RUN);
 	MoverPtr myVehicle = getVehicle();
 	Assert(myVehicle != nullptr, 0, " orderWithdraw:Warrior has no Vehicle ");
 	myVehicle->withdrawing = true;
@@ -6713,8 +6478,7 @@ int32_t MechWarrior::orderWithdraw(
 
 //---------------------------------------------------------------------------
 
-int32_t MechWarrior::orderEject(
-	bool unitOrder, bool setTacOrder, int32_t origin)
+int32_t MechWarrior::orderEject(bool unitOrder, bool setTacOrder, int32_t origin)
 {
 	TacticalOrder tacOrder;
 	tacOrder.init((OrderOriginType)origin, TACTICAL_ORDER_EJECT, unitOrder);
@@ -6740,20 +6504,18 @@ int32_t MechWarrior::orderUseFireOdds(int32_t odds)
 
 //---------------------------------------------------------------------------
 
-int32_t MechWarrior::orderRefit(
-	int32_t origin, GameObjectPtr target, uint32_t params)
+int32_t MechWarrior::orderRefit(int32_t origin, GameObjectPtr target, uint32_t params)
 {
 	if (!target || target->getObjectClass() != BATTLEMECH)
 		return (TACORDER_SUCCESS);
 	bool run = ((params & TACORDER_PARAM_RUN) != 0);
 	TacticalOrder tacOrder;
 	tacOrder.init((OrderOriginType)origin, TACTICAL_ORDER_REFIT, false);
-	tacOrder.targetWID		= target->getWatchID();
-	tacOrder.selectionIndex = -1;
-	tacOrder.moveParams.wayPath.mode[0] =
-		(run ? TRAVEL_MODE_FAST : TRAVEL_MODE_SLOW);
-	tacOrder.moveParams.faceObject = true;
-	tacOrder.moveParams.wait	   = false;
+	tacOrder.targetWID					= target->getWatchID();
+	tacOrder.selectionIndex				= -1;
+	tacOrder.moveParams.wayPath.mode[0] = (run ? TRAVEL_MODE_FAST : TRAVEL_MODE_SLOW);
+	tacOrder.moveParams.faceObject		= true;
+	tacOrder.moveParams.wait			= false;
 	if (origin == ORDER_ORIGIN_COMMANDER)
 		setGeneralTacOrder(tacOrder);
 	return (NO_ERROR);
@@ -6761,20 +6523,18 @@ int32_t MechWarrior::orderRefit(
 
 //---------------------------------------------------------------------------
 
-int32_t MechWarrior::orderRecover(
-	int32_t origin, GameObjectPtr target, uint32_t params)
+int32_t MechWarrior::orderRecover(int32_t origin, GameObjectPtr target, uint32_t params)
 {
 	if (!target || target->getObjectClass() != BATTLEMECH)
 		return (TACORDER_SUCCESS);
 	bool run = ((params & TACORDER_PARAM_RUN) != 0);
 	TacticalOrder tacOrder;
 	tacOrder.init((OrderOriginType)origin, TACTICAL_ORDER_RECOVER, false);
-	tacOrder.targetWID		= target->getWatchID();
-	tacOrder.selectionIndex = -1;
-	tacOrder.moveParams.wayPath.mode[0] =
-		(run ? TRAVEL_MODE_FAST : TRAVEL_MODE_SLOW);
-	tacOrder.moveParams.faceObject = true;
-	tacOrder.moveParams.wait	   = false;
+	tacOrder.targetWID					= target->getWatchID();
+	tacOrder.selectionIndex				= -1;
+	tacOrder.moveParams.wayPath.mode[0] = (run ? TRAVEL_MODE_FAST : TRAVEL_MODE_SLOW);
+	tacOrder.moveParams.faceObject		= true;
+	tacOrder.moveParams.wait			= false;
 	if (origin == ORDER_ORIGIN_COMMANDER)
 		setGeneralTacOrder(tacOrder);
 	return (NO_ERROR);
@@ -6782,11 +6542,9 @@ int32_t MechWarrior::orderRecover(
 
 //---------------------------------------------------------------------------
 
-int32_t MechWarrior::orderGetFixed(
-	int32_t origin, GameObjectPtr target, uint32_t params)
+int32_t MechWarrior::orderGetFixed(int32_t origin, GameObjectPtr target, uint32_t params)
 {
-	if (!target || target->getObjectClass() != TREEBUILDING &&
-					   target->getRefitPoints() <= 0.0)
+	if (!target || target->getObjectClass() != TREEBUILDING && target->getRefitPoints() <= 0.0)
 		return (TACORDER_SUCCESS);
 #ifdef USE_BUILDINGS
 	if ((getVehicle()->getObjectClass() == BATTLEMECH &&
@@ -6798,12 +6556,11 @@ int32_t MechWarrior::orderGetFixed(
 	bool run = ((params & TACORDER_PARAM_RUN) != 0);
 	TacticalOrder tacOrder;
 	tacOrder.init((OrderOriginType)origin, TACTICAL_ORDER_GETFIXED, false);
-	tacOrder.targetWID		= target->getWatchID();
-	tacOrder.selectionIndex = -1;
-	tacOrder.moveParams.wayPath.mode[0] =
-		(run ? TRAVEL_MODE_FAST : TRAVEL_MODE_SLOW);
-	tacOrder.moveParams.faceObject = true;
-	tacOrder.moveParams.wait	   = false;
+	tacOrder.targetWID					= target->getWatchID();
+	tacOrder.selectionIndex				= -1;
+	tacOrder.moveParams.wayPath.mode[0] = (run ? TRAVEL_MODE_FAST : TRAVEL_MODE_SLOW);
+	tacOrder.moveParams.faceObject		= true;
+	tacOrder.moveParams.wait			= false;
 	if (origin == ORDER_ORIGIN_COMMANDER)
 		setGeneralTacOrder(tacOrder);
 	return (NO_ERROR);
@@ -6811,8 +6568,7 @@ int32_t MechWarrior::orderGetFixed(
 
 //---------------------------------------------------------------------------
 
-int32_t MechWarrior::orderLoadIntoCarrier(
-	int32_t origin, GameObjectPtr target, uint32_t params)
+int32_t MechWarrior::orderLoadIntoCarrier(int32_t origin, GameObjectPtr target, uint32_t params)
 {
 #ifdef USE_ELEMENTALS
 	if ((getVehicle()->getObjectClass() != ELEMENTAL) || !target ||
@@ -6822,14 +6578,12 @@ int32_t MechWarrior::orderLoadIntoCarrier(
 #endif
 	bool run = ((params & TACORDER_PARAM_RUN) != 0);
 	TacticalOrder tacOrder;
-	tacOrder.init(
-		(OrderOriginType)origin, TACTICAL_ORDER_LOAD_INTO_CARRIER, false);
-	tacOrder.targetWID		= target->getWatchID();
-	tacOrder.selectionIndex = -1;
-	tacOrder.moveParams.wayPath.mode[0] =
-		(run ? TRAVEL_MODE_FAST : TRAVEL_MODE_SLOW);
-	tacOrder.moveParams.faceObject = true;
-	tacOrder.moveParams.wait	   = false;
+	tacOrder.init((OrderOriginType)origin, TACTICAL_ORDER_LOAD_INTO_CARRIER, false);
+	tacOrder.targetWID					= target->getWatchID();
+	tacOrder.selectionIndex				= -1;
+	tacOrder.moveParams.wayPath.mode[0] = (run ? TRAVEL_MODE_FAST : TRAVEL_MODE_SLOW);
+	tacOrder.moveParams.faceObject		= true;
+	tacOrder.moveParams.wait			= false;
 	if (origin == ORDER_ORIGIN_COMMANDER)
 		setGeneralTacOrder(tacOrder);
 	return (NO_ERROR);
@@ -6846,11 +6600,9 @@ int32_t MechWarrior::orderDeployElementals(int32_t origin, uint32_t params)
 #endif
 	bool run = ((params & TACORDER_PARAM_RUN) != 0);
 	TacticalOrder tacOrder;
-	tacOrder.init(
-		(OrderOriginType)origin, TACTICAL_ORDER_DEPLOY_ELEMENTALS, false);
-	tacOrder.moveParams.wayPath.mode[0] =
-		(run ? TRAVEL_MODE_FAST : TRAVEL_MODE_SLOW);
-	tacOrder.moveParams.wait = false;
+	tacOrder.init((OrderOriginType)origin, TACTICAL_ORDER_DEPLOY_ELEMENTALS, false);
+	tacOrder.moveParams.wayPath.mode[0] = (run ? TRAVEL_MODE_FAST : TRAVEL_MODE_SLOW);
+	tacOrder.moveParams.wait			= false;
 	if (origin == ORDER_ORIGIN_COMMANDER)
 		setGeneralTacOrder(tacOrder);
 	return (NO_ERROR);
@@ -6862,21 +6614,19 @@ int32_t MechWarrior::orderCapture(
 	int32_t origin, GameObjectPtr target, int32_t fromArea, uint32_t params)
 {
 	if (!target || /*!target->isCaptureable(getTeam()->getId()) ||*/
-				   target->isFriendly(getVehicle()) ||
-		target->getCaptureBlocker(getVehicle()) != nullptr)
+		target->isFriendly(getVehicle()) || target->getCaptureBlocker(getVehicle()) != nullptr)
 		return (1);
 	bool run  = ((params & TACORDER_PARAM_RUN) != 0);
 	bool jump = ((params & TACORDER_PARAM_JUMP) != 0);
 	TacticalOrder tacOrder;
 	tacOrder.init((OrderOriginType)origin, TACTICAL_ORDER_CAPTURE, false);
-	tacOrder.targetWID		= target->getWatchID();
-	tacOrder.selectionIndex = -1;
-	tacOrder.moveParams.wayPath.mode[0] =
-		(run ? TRAVEL_MODE_FAST : TRAVEL_MODE_SLOW);
-	tacOrder.moveParams.faceObject = true;
-	tacOrder.moveParams.wait	   = false;
-	tacOrder.moveParams.fromArea   = fromArea;
-	tacOrder.moveParams.jump	   = jump;
+	tacOrder.targetWID					= target->getWatchID();
+	tacOrder.selectionIndex				= -1;
+	tacOrder.moveParams.wayPath.mode[0] = (run ? TRAVEL_MODE_FAST : TRAVEL_MODE_SLOW);
+	tacOrder.moveParams.faceObject		= true;
+	tacOrder.moveParams.wait			= false;
+	tacOrder.moveParams.fromArea		= fromArea;
+	tacOrder.moveParams.jump			= jump;
 	if (origin == ORDER_ORIGIN_COMMANDER)
 		setGeneralTacOrder(tacOrder);
 	return (NO_ERROR);
@@ -7020,10 +6770,7 @@ int32_t MechWarrior::handleFriendlyVehicleCrippled(void) { return (NO_ERROR); }
 
 //---------------------------------------------------------------------------
 
-int32_t MechWarrior::handleFriendlyVehicleDestruction(void)
-{
-	return (NO_ERROR);
-}
+int32_t MechWarrior::handleFriendlyVehicleDestruction(void) { return (NO_ERROR); }
 
 //---------------------------------------------------------------------------
 
@@ -7326,8 +7073,7 @@ void MechWarrior::updateMissionSkills()
 }
 
 //---------------------------------------------------------------------------
-int32_t MechWarrior::loadBrainParameters(
-	FitIniFile* brainFile, int32_t warriorId)
+int32_t MechWarrior::loadBrainParameters(FitIniFile* brainFile, int32_t warriorId)
 {
 	if (!brain)
 		Fatal(0, " Warrior.loadBrainParameters: nullptr brain ");
@@ -7343,7 +7089,7 @@ int32_t MechWarrior::loadBrainParameters(
 	if (result != NO_ERROR)
 		return (result);
 	int32_t numStaticVars = 0;
-	result = brainFile->readIdLong("NumStaticVars", numStaticVars);
+	result				  = brainFile->readIdLong("NumStaticVars", numStaticVars);
 	if (result != NO_ERROR)
 		return (result);
 	for (size_t i = 0; i < numCells; i++)
@@ -7524,12 +7270,11 @@ void MechWarrior::updateDrawWaypointPath()
 		for (size_t i = 0; i < numTacOrdersQueued; i++)
 		{
 			tacOrderQueue[i].marker->setObjectParameters(tacOrderQueue[i].point,
-				((ObjectAppearance*)tacOrderQueue[i].marker)->rotation, false,
-				0, 0);
+				((ObjectAppearance*)tacOrderQueue[i].marker)->rotation, false, 0, 0);
 			tacOrderQueue[i].marker->recalcBounds();
 			//------------------------------------------------
 			tacOrderQueue[i].marker->update();
-			float zPos = land->getTerrainElevation(tacOrderQueue[i].point);
+			float zPos				 = land->getTerrainElevation(tacOrderQueue[i].point);
 			tacOrderQueue[i].point.z = zPos;
 		}
 	}
@@ -7606,8 +7351,7 @@ void MechWarrior::shutdown(void)
 	}
 }
 
-BldgAppearance* MechWarrior::getWayPointMarker(
-	const Stuff::Vector3D& pos, PSTR name)
+BldgAppearance* MechWarrior::getWayPointMarker(const Stuff::Vector3D& pos, PSTR name)
 {
 	int32_t appearanceType = (BLDG_TYPE << 24);
 	AppearanceTypePtr buildingAppearanceType =
@@ -7617,10 +7361,8 @@ BldgAppearance* MechWarrior::getWayPointMarker(
 	//--------------------------------------------------------------
 	// The only appearance type for buildings is MLR_APPEARANCE.
 	gosASSERT(buildingAppearanceType->getAppearanceClass() == BLDG_TYPE);
-	appearance->init(
-		(BldgAppearanceType*)buildingAppearanceType, (GameObjectPtr)this);
-	appearance->setObjectParameters(
-		(const_cast<Stuff::Vector3D&>(pos)), 0, 1, 0, 0);
+	appearance->init((BldgAppearanceType*)buildingAppearanceType, (GameObjectPtr)this);
+	appearance->setObjectParameters((const_cast<Stuff::Vector3D&>(pos)), 0, 1, 0, 0);
 	appearance->recalcBounds();
 	appearance->update();
 	return appearance;
@@ -7628,15 +7370,14 @@ BldgAppearance* MechWarrior::getWayPointMarker(
 
 //---------------------------------------------------------------------------
 
-int32_t MechWarrior::calcTacOrder(int32_t goalAction, int32_t goalWID,
-	Stuff::Vector3D goalLocation, float controlRadius, int32_t aggressiveness,
-	int32_t searchDepth, float turretRange, int32_t turretThreat,
-	TacticalOrder& newTacOrder)
+int32_t MechWarrior::calcTacOrder(int32_t goalAction, int32_t goalWID, Stuff::Vector3D goalLocation,
+	float controlRadius, int32_t aggressiveness, int32_t searchDepth, float turretRange,
+	int32_t turretThreat, TacticalOrder& newTacOrder)
 {
 	if (getCommander() == Commander::home)
 		STOP(("Mechwarrior.runBrain: player pilot using goalplanning"));
 	bool canCapture = ((getVehicle()->getObjectClass() != GROUNDVEHICLE) &&
-					   (getVehicle()->moveType != MOVETYPE_AIR));
+		(getVehicle()->moveType != MOVETYPE_AIR));
 	//--------------------------------------------------------------------
 	// If we have no goal, we may want to at least assess turret threat...
 	bool alreadyAssessedTurrets = false;
@@ -7647,8 +7388,7 @@ int32_t MechWarrior::calcTacOrder(int32_t goalAction, int32_t goalWID,
 			// if (getLastTarget())
 			//	if (getLastTarget()->getThreatRating() > turretThreat)
 			//		turretThreat = getLastTarget()->getThreatRating();
-			GameObjectPtr turretTarget =
-				calcTurretThreats(turretRange, turretThreat);
+			GameObjectPtr turretTarget = calcTurretThreats(turretRange, turretThreat);
 			if (turretTarget)
 			{
 				if (turretTarget->getObjectClass() == TURRET)
@@ -7710,8 +7450,7 @@ int32_t MechWarrior::calcTacOrder(int32_t goalAction, int32_t goalWID,
 				{
 				case BUILDING:
 					if (currentTarget->getFlag(OBJECT_FLAG_CONTROLBUILDING))
-						currentAction =
-							GOAL_ACTION_ATTACK; // CONTROL_ACTION_CAPTURE;
+						currentAction = GOAL_ACTION_ATTACK; // CONTROL_ACTION_CAPTURE;
 					break;
 				case TURRET:
 					currentAction = GOAL_ACTION_ATTACK;
@@ -7727,8 +7466,7 @@ int32_t MechWarrior::calcTacOrder(int32_t goalAction, int32_t goalWID,
 			if (getLastTarget())
 				if (getLastTarget()->getThreatRating() > turretThreat)
 					turretThreat = getLastTarget()->getThreatRating();
-		GameObjectPtr turretTarget =
-			calcTurretThreats(turretRange, turretThreat);
+		GameObjectPtr turretTarget = calcTurretThreats(turretRange, turretThreat);
 		if (turretTarget)
 		{
 			if (turretTarget->getObjectClass() == TURRET)
@@ -7736,8 +7474,7 @@ int32_t MechWarrior::calcTacOrder(int32_t goalAction, int32_t goalWID,
 			else if (turretTarget->getCaptureBlocker(getVehicle()))
 				goalAction = GOAL_ACTION_ATTACK;
 			else
-				currentAction =
-					canCapture ? GOAL_ACTION_CAPTURE : GOAL_ACTION_ATTACK;
+				currentAction = canCapture ? GOAL_ACTION_CAPTURE : GOAL_ACTION_ATTACK;
 			currentWID = turretTarget->getWatchID();
 			currentLocation.Zero();
 			currentTarget = turretTarget;
@@ -7753,21 +7490,18 @@ int32_t MechWarrior::calcTacOrder(int32_t goalAction, int32_t goalWID,
 		newestTacOrder = curTacOrder;
 	if (!canCapture)
 		if (currentAction == GOAL_ACTION_CAPTURE)
-			STOP((
-				"Mechwarrior.calcTacOrder: vehicle cannot capture")); // currentAction
-																	  // =
-																	  // GOAL_ACTION_ATTACK;
+			STOP(("Mechwarrior.calcTacOrder: vehicle cannot capture")); // currentAction
+																		// =
+																		// GOAL_ACTION_ATTACK;
 	newTacOrder.init(ORDER_ORIGIN_COMMANDER, TACTICAL_ORDER_NONE);
 	if (currentAction == GOAL_ACTION_MOVE)
 	{
 		GlobalPathStep globalPath[50];
 		int32_t numSteps = 0;
 		if (currentTarget)
-			numSteps = getVehicle()->calcGlobalPath(
-				globalPath, currentTarget, nullptr, true);
+			numSteps = getVehicle()->calcGlobalPath(globalPath, currentTarget, nullptr, true);
 		else
-			numSteps = getVehicle()->calcGlobalPath(
-				globalPath, nullptr, &currentLocation, true);
+			numSteps = getVehicle()->calcGlobalPath(globalPath, nullptr, &currentLocation, true);
 		if (numSteps > 0)
 		{
 			lastGoalPathSize = numSteps;
@@ -7778,53 +7512,44 @@ int32_t MechWarrior::calcTacOrder(int32_t goalAction, int32_t goalWID,
 		// What's the next subgoal to overcome before we can move on?
 		for (size_t i = 0; i < numSteps; i++)
 		{
-			GlobalMapAreaPtr area = &GlobalMoveMap[getVehicle()->moveLevel]
-										 ->areas[globalPath[i].thruArea];
+			GlobalMapAreaPtr area =
+				&GlobalMoveMap[getVehicle()->moveLevel]->areas[globalPath[i].thruArea];
 			if (area->type == AREA_TYPE_GATE)
 			{
-				GatePtr gate =
-					(GatePtr)ObjectManager->getByWatchID(area->ownerWID);
-				if (gate && !gate->isDestroyed() &&
-					(gate->getTeam() != getTeam()))
+				GatePtr gate = (GatePtr)ObjectManager->getByWatchID(area->ownerWID);
+				if (gate && !gate->isDestroyed() && (gate->getTeam() != getTeam()))
 				{
-					GameObjectPtr controlBuilding =
-						ObjectManager->getByWatchID(gate->parent);
+					GameObjectPtr controlBuilding = ObjectManager->getByWatchID(gate->parent);
 					if (canCapture && controlBuilding && (searchDepth > 0))
 					{
 						Stuff::Vector3D tempLocation;
 						tempLocation.Zero();
 						int32_t result = calcTacOrder(GOAL_ACTION_CAPTURE,
-							controlBuilding->getWatchID(), tempLocation, -1.0,
-							aggressiveness, searchDepth - 1, -1.0, 0,
-							newTacOrder);
+							controlBuilding->getWatchID(), tempLocation, -1.0, aggressiveness,
+							searchDepth - 1, -1.0, 0, newTacOrder);
 						return (result);
 					}
 					else
 					{
-						newTacOrder.init(
-							orderOrigin, TACTICAL_ORDER_ATTACK_OBJECT);
+						newTacOrder.init(orderOrigin, TACTICAL_ORDER_ATTACK_OBJECT);
 						newTacOrder.subOrder			= true;
 						newTacOrder.targetWID			= gate->getWatchID();
 						newTacOrder.attackParams.type   = ATTACK_TO_DESTROY;
 						newTacOrder.attackParams.method = ATTACKMETHOD_RANGED;
 						newTacOrder.attackParams.range  = FIRERANGE_OPTIMAL;
-						newTacOrder.attackParams.tactic =
-							newestTacOrder.attackParams.tactic;
+						newTacOrder.attackParams.tactic = newestTacOrder.attackParams.tactic;
 						newTacOrder.attackParams.pursue = true;
 						newTacOrder.moveParams.wayPath.mode[0] =
 							newestTacOrder.moveParams.wayPath.mode[0];
-						newTacOrder.moveParams.jump =
-							newestTacOrder.moveParams.jump;
-						newTacOrder.moveParams.keepMoving =
-							newestTacOrder.moveParams.keepMoving;
+						newTacOrder.moveParams.jump		  = newestTacOrder.moveParams.jump;
+						newTacOrder.moveParams.keepMoving = newestTacOrder.moveParams.keepMoving;
 						return (0);
 					}
 				}
 			}
 			else if (area->type == AREA_TYPE_WALL)
 			{
-				BuildingPtr wall =
-					(BuildingPtr)ObjectManager->getByWatchID(area->ownerWID);
+				BuildingPtr wall = (BuildingPtr)ObjectManager->getByWatchID(area->ownerWID);
 				if (wall && (!wall->isDestroyed()))
 				{
 					newTacOrder.init(orderOrigin, TACTICAL_ORDER_ATTACK_OBJECT);
@@ -7833,15 +7558,12 @@ int32_t MechWarrior::calcTacOrder(int32_t goalAction, int32_t goalWID,
 					newTacOrder.attackParams.type   = ATTACK_TO_DESTROY;
 					newTacOrder.attackParams.method = ATTACKMETHOD_RANGED;
 					newTacOrder.attackParams.range  = FIRERANGE_OPTIMAL;
-					newTacOrder.attackParams.tactic =
-						newestTacOrder.attackParams.tactic;
+					newTacOrder.attackParams.tactic = newestTacOrder.attackParams.tactic;
 					newTacOrder.attackParams.pursue = true;
 					newTacOrder.moveParams.wayPath.mode[0] =
 						newestTacOrder.moveParams.wayPath.mode[0];
-					newTacOrder.moveParams.jump =
-						newestTacOrder.moveParams.jump;
-					newTacOrder.moveParams.keepMoving =
-						newestTacOrder.moveParams.keepMoving;
+					newTacOrder.moveParams.jump		  = newestTacOrder.moveParams.jump;
+					newTacOrder.moveParams.keepMoving = newestTacOrder.moveParams.keepMoving;
 					return (0);
 				}
 			}
@@ -7873,53 +7595,47 @@ int32_t MechWarrior::calcTacOrder(int32_t goalAction, int32_t goalWID,
 						land->cellToWorld(goalRow, goalCol, goal);
 					else
 					{
-						Stuff::Vector3D objectPos =
-							currentTarget->getPosition();
-						goal = getVehicle()->calcOffsetMoveGoal(objectPos);
+						Stuff::Vector3D objectPos = currentTarget->getPosition();
+						goal					  = getVehicle()->calcOffsetMoveGoal(objectPos);
 					}
 				}
 				else
 				{
 					Stuff::Vector3D objectPos = currentTarget->getPosition();
-					goal = getVehicle()->calcOffsetMoveGoal(objectPos);
+					goal					  = getVehicle()->calcOffsetMoveGoal(objectPos);
 				}
 			}
 			newTacOrder.init(orderOrigin, TACTICAL_ORDER_MOVETO_OBJECT);
-			newTacOrder.subOrder			= true;
-			newTacOrder.targetWID			= currentTarget->getWatchID();
-			newTacOrder.selectionIndex		= -1;
-			newTacOrder.moveParams.fromArea = fromArea;
+			newTacOrder.subOrder					 = true;
+			newTacOrder.targetWID					 = currentTarget->getWatchID();
+			newTacOrder.selectionIndex				 = -1;
+			newTacOrder.moveParams.fromArea			 = fromArea;
 			newTacOrder.moveParams.wayPath.points[0] = goal.x;
 			newTacOrder.moveParams.wayPath.points[1] = goal.y;
 			newTacOrder.moveParams.wayPath.points[2] = goal.z;
-			newTacOrder.moveParams.wayPath.mode[0] =
-				newestTacOrder.moveParams.wayPath.mode[0];
-			newTacOrder.moveParams.faceObject = true;
-			newTacOrder.moveParams.wait		  = false;
-			newTacOrder.moveParams.mode		  = MOVE_MODE_NORMAL;
-			newTacOrder.moveParams.jump		  = newestTacOrder.moveParams.jump;
-			newTacOrder.moveParams.keepMoving =
-				newestTacOrder.moveParams.keepMoving;
+			newTacOrder.moveParams.wayPath.mode[0]   = newestTacOrder.moveParams.wayPath.mode[0];
+			newTacOrder.moveParams.faceObject		 = true;
+			newTacOrder.moveParams.wait				 = false;
+			newTacOrder.moveParams.mode				 = MOVE_MODE_NORMAL;
+			newTacOrder.moveParams.jump				 = newestTacOrder.moveParams.jump;
+			newTacOrder.moveParams.keepMoving		 = newestTacOrder.moveParams.keepMoving;
 		}
 		else
 		{
 			newTacOrder.init(orderOrigin, TACTICAL_ORDER_MOVETO_POINT);
 			newTacOrder.subOrder = true;
 			newTacOrder.setWayPoint(0, currentLocation);
-			newTacOrder.moveParams.wayPath.mode[0] =
-				newestTacOrder.moveParams.wayPath.mode[0];
-			newTacOrder.moveParams.wait = false;
-			newTacOrder.moveParams.mode = MOVE_MODE_NORMAL;
-			newTacOrder.moveParams.jump = newestTacOrder.moveParams.jump;
-			newTacOrder.moveParams.keepMoving =
-				newestTacOrder.moveParams.keepMoving;
+			newTacOrder.moveParams.wayPath.mode[0] = newestTacOrder.moveParams.wayPath.mode[0];
+			newTacOrder.moveParams.wait			   = false;
+			newTacOrder.moveParams.mode			   = MOVE_MODE_NORMAL;
+			newTacOrder.moveParams.jump			   = newestTacOrder.moveParams.jump;
+			newTacOrder.moveParams.keepMoving	  = newestTacOrder.moveParams.keepMoving;
 		}
 	}
 	else if (currentAction == GOAL_ACTION_ATTACK)
 	{
 		GlobalPathStep globalPath[50];
-		int32_t numSteps = getVehicle()->calcGlobalPath(
-			globalPath, currentTarget, nullptr, true);
+		int32_t numSteps = getVehicle()->calcGlobalPath(globalPath, currentTarget, nullptr, true);
 		if (numSteps > 0)
 		{
 			lastGoalPathSize = numSteps;
@@ -7930,53 +7646,44 @@ int32_t MechWarrior::calcTacOrder(int32_t goalAction, int32_t goalWID,
 		// What's the next subgoal to overcome before we can move on?
 		for (size_t i = 0; i < numSteps; i++)
 		{
-			GlobalMapAreaPtr area = &GlobalMoveMap[getVehicle()->moveLevel]
-										 ->areas[globalPath[i].thruArea];
+			GlobalMapAreaPtr area =
+				&GlobalMoveMap[getVehicle()->moveLevel]->areas[globalPath[i].thruArea];
 			if (area->type == AREA_TYPE_GATE)
 			{
-				GatePtr gate =
-					(GatePtr)ObjectManager->getByWatchID(area->ownerWID);
-				if (gate && !gate->isDestroyed() &&
-					(gate->getTeam() != getTeam()))
+				GatePtr gate = (GatePtr)ObjectManager->getByWatchID(area->ownerWID);
+				if (gate && !gate->isDestroyed() && (gate->getTeam() != getTeam()))
 				{
-					GameObjectPtr controlBuilding =
-						ObjectManager->getByWatchID(gate->parent);
+					GameObjectPtr controlBuilding = ObjectManager->getByWatchID(gate->parent);
 					if (canCapture && controlBuilding && (searchDepth > 0))
 					{
 						Stuff::Vector3D tempLocation;
 						tempLocation.Zero();
 						int32_t result = calcTacOrder(GOAL_ACTION_CAPTURE,
-							controlBuilding->getWatchID(), tempLocation, -1.0,
-							aggressiveness, searchDepth - 1, -1.0, 0,
-							newTacOrder);
+							controlBuilding->getWatchID(), tempLocation, -1.0, aggressiveness,
+							searchDepth - 1, -1.0, 0, newTacOrder);
 						return (result);
 					}
 					else
 					{
-						newTacOrder.init(
-							orderOrigin, TACTICAL_ORDER_ATTACK_OBJECT);
+						newTacOrder.init(orderOrigin, TACTICAL_ORDER_ATTACK_OBJECT);
 						newTacOrder.subOrder			= true;
 						newTacOrder.targetWID			= gate->getWatchID();
 						newTacOrder.attackParams.type   = ATTACK_TO_DESTROY;
 						newTacOrder.attackParams.method = ATTACKMETHOD_RANGED;
 						newTacOrder.attackParams.range  = FIRERANGE_OPTIMAL;
-						newTacOrder.attackParams.tactic =
-							newestTacOrder.attackParams.tactic;
+						newTacOrder.attackParams.tactic = newestTacOrder.attackParams.tactic;
 						newTacOrder.attackParams.pursue = true;
 						newTacOrder.moveParams.wayPath.mode[0] =
 							newestTacOrder.moveParams.wayPath.mode[0];
-						newTacOrder.moveParams.jump =
-							newestTacOrder.moveParams.jump;
-						newTacOrder.moveParams.keepMoving =
-							newestTacOrder.moveParams.keepMoving;
+						newTacOrder.moveParams.jump		  = newestTacOrder.moveParams.jump;
+						newTacOrder.moveParams.keepMoving = newestTacOrder.moveParams.keepMoving;
 						return (0);
 					}
 				}
 			}
 			else if (area->type == AREA_TYPE_WALL)
 			{
-				BuildingPtr wall =
-					(BuildingPtr)ObjectManager->getByWatchID(area->ownerWID);
+				BuildingPtr wall = (BuildingPtr)ObjectManager->getByWatchID(area->ownerWID);
 				if (wall && (!wall->isDestroyed()))
 				{
 					newTacOrder.init(orderOrigin, TACTICAL_ORDER_ATTACK_OBJECT);
@@ -7985,15 +7692,12 @@ int32_t MechWarrior::calcTacOrder(int32_t goalAction, int32_t goalWID,
 					newTacOrder.attackParams.type   = ATTACK_TO_DESTROY;
 					newTacOrder.attackParams.method = ATTACKMETHOD_RANGED;
 					newTacOrder.attackParams.range  = FIRERANGE_OPTIMAL;
-					newTacOrder.attackParams.tactic =
-						newestTacOrder.attackParams.tactic;
+					newTacOrder.attackParams.tactic = newestTacOrder.attackParams.tactic;
 					newTacOrder.attackParams.pursue = true;
 					newTacOrder.moveParams.wayPath.mode[0] =
 						newestTacOrder.moveParams.wayPath.mode[0];
-					newTacOrder.moveParams.jump =
-						newestTacOrder.moveParams.jump;
-					newTacOrder.moveParams.keepMoving =
-						newestTacOrder.moveParams.keepMoving;
+					newTacOrder.moveParams.jump		  = newestTacOrder.moveParams.jump;
+					newTacOrder.moveParams.keepMoving = newestTacOrder.moveParams.keepMoving;
 					return (0);
 				}
 			}
@@ -8004,18 +7708,16 @@ int32_t MechWarrior::calcTacOrder(int32_t goalAction, int32_t goalWID,
 		if (currentTarget->isDisabled())
 			return (1);
 		newTacOrder.init(orderOrigin, TACTICAL_ORDER_ATTACK_OBJECT);
-		newTacOrder.subOrder			= true;
-		newTacOrder.targetWID			= currentTarget->getWatchID();
-		newTacOrder.attackParams.type   = ATTACK_TO_DESTROY;
-		newTacOrder.attackParams.method = ATTACKMETHOD_RANGED;
-		newTacOrder.attackParams.range  = FIRERANGE_OPTIMAL;
-		newTacOrder.attackParams.tactic = newestTacOrder.attackParams.tactic;
-		newTacOrder.attackParams.pursue = true;
-		newTacOrder.moveParams.wayPath.mode[0] =
-			newestTacOrder.moveParams.wayPath.mode[0];
-		newTacOrder.moveParams.jump = newestTacOrder.moveParams.jump;
-		newTacOrder.moveParams.keepMoving =
-			newestTacOrder.moveParams.keepMoving;
+		newTacOrder.subOrder				   = true;
+		newTacOrder.targetWID				   = currentTarget->getWatchID();
+		newTacOrder.attackParams.type		   = ATTACK_TO_DESTROY;
+		newTacOrder.attackParams.method		   = ATTACKMETHOD_RANGED;
+		newTacOrder.attackParams.range		   = FIRERANGE_OPTIMAL;
+		newTacOrder.attackParams.tactic		   = newestTacOrder.attackParams.tactic;
+		newTacOrder.attackParams.pursue		   = true;
+		newTacOrder.moveParams.wayPath.mode[0] = newestTacOrder.moveParams.wayPath.mode[0];
+		newTacOrder.moveParams.jump			   = newestTacOrder.moveParams.jump;
+		newTacOrder.moveParams.keepMoving	  = newestTacOrder.moveParams.keepMoving;
 	}
 	else if (currentAction == GOAL_ACTION_CAPTURE)
 	{
@@ -8027,8 +7729,7 @@ int32_t MechWarrior::calcTacOrder(int32_t goalAction, int32_t goalWID,
 			// float distanceToGoal =
 			// getVehicle()->distanceFrom(currentTarget->getPosition());
 			GameObjectPtr blockerList[MAX_MOVERS];
-			int32_t numBlockers =
-				currentTarget->getCaptureBlocker(getVehicle(), blockerList);
+			int32_t numBlockers = currentTarget->getCaptureBlocker(getVehicle(), blockerList);
 			if (numBlockers > 0)
 			{
 				//-----------------------------------------------------
@@ -8068,8 +7769,8 @@ int32_t MechWarrior::calcTacOrder(int32_t goalAction, int32_t goalWID,
 				//}
 			}
 			GlobalPathStep globalPath[50];
-			int32_t numSteps = getVehicle()->calcGlobalPath(
-				globalPath, currentTarget, nullptr, true);
+			int32_t numSteps =
+				getVehicle()->calcGlobalPath(globalPath, currentTarget, nullptr, true);
 			if (numSteps > 0)
 			{
 				lastGoalPathSize = numSteps;
@@ -8080,44 +7781,36 @@ int32_t MechWarrior::calcTacOrder(int32_t goalAction, int32_t goalWID,
 			// What's the next subgoal to overcome before we can move on?
 			for (size_t i = 0; i < numSteps; i++)
 			{
-				GlobalMapAreaPtr area = &GlobalMoveMap[getVehicle()->moveLevel]
-											 ->areas[globalPath[i].thruArea];
+				GlobalMapAreaPtr area =
+					&GlobalMoveMap[getVehicle()->moveLevel]->areas[globalPath[i].thruArea];
 				if (area->type == AREA_TYPE_GATE)
 				{
-					GatePtr gate =
-						(GatePtr)ObjectManager->getByWatchID(area->ownerWID);
-					if (gate && !gate->isDestroyed() &&
-						(gate->getTeam() != getTeam()))
+					GatePtr gate = (GatePtr)ObjectManager->getByWatchID(area->ownerWID);
+					if (gate && !gate->isDestroyed() && (gate->getTeam() != getTeam()))
 					{
-						GameObjectPtr controlBuilding =
-							ObjectManager->getByWatchID(gate->parent);
+						GameObjectPtr controlBuilding = ObjectManager->getByWatchID(gate->parent);
 						if (controlBuilding && (searchDepth > 0))
 						{
 							Stuff::Vector3D tempLocation;
 							tempLocation.Zero();
-							calcTacOrder(GOAL_ACTION_CAPTURE,
-								controlBuilding->getWatchID(), tempLocation,
-								-1.0, aggressiveness, searchDepth - 1, -1.0, 0,
+							calcTacOrder(GOAL_ACTION_CAPTURE, controlBuilding->getWatchID(),
+								tempLocation, -1.0, aggressiveness, searchDepth - 1, -1.0, 0,
 								newTacOrder);
 							return (0);
 						}
 						else
 						{
-							newTacOrder.init(
-								orderOrigin, TACTICAL_ORDER_ATTACK_OBJECT);
-							newTacOrder.subOrder		  = true;
-							newTacOrder.targetWID		  = gate->getWatchID();
-							newTacOrder.attackParams.type = ATTACK_TO_DESTROY;
-							newTacOrder.attackParams.method =
-								ATTACKMETHOD_RANGED;
-							newTacOrder.attackParams.range = FIRERANGE_OPTIMAL;
-							newTacOrder.attackParams.tactic =
-								newestTacOrder.attackParams.tactic;
+							newTacOrder.init(orderOrigin, TACTICAL_ORDER_ATTACK_OBJECT);
+							newTacOrder.subOrder			= true;
+							newTacOrder.targetWID			= gate->getWatchID();
+							newTacOrder.attackParams.type   = ATTACK_TO_DESTROY;
+							newTacOrder.attackParams.method = ATTACKMETHOD_RANGED;
+							newTacOrder.attackParams.range  = FIRERANGE_OPTIMAL;
+							newTacOrder.attackParams.tactic = newestTacOrder.attackParams.tactic;
 							newTacOrder.attackParams.pursue = true;
 							newTacOrder.moveParams.wayPath.mode[0] =
 								newestTacOrder.moveParams.wayPath.mode[0];
-							newTacOrder.moveParams.jump =
-								newestTacOrder.moveParams.jump;
+							newTacOrder.moveParams.jump = newestTacOrder.moveParams.jump;
 							newTacOrder.moveParams.keepMoving =
 								newestTacOrder.moveParams.keepMoving;
 							return (0);
@@ -8126,42 +7819,35 @@ int32_t MechWarrior::calcTacOrder(int32_t goalAction, int32_t goalWID,
 				}
 				else if (area->type == AREA_TYPE_WALL)
 				{
-					BuildingPtr wall = (BuildingPtr)ObjectManager->getByWatchID(
-						area->ownerWID);
+					BuildingPtr wall = (BuildingPtr)ObjectManager->getByWatchID(area->ownerWID);
 					if (wall && (!wall->isDestroyed()))
 					{
-						newTacOrder.init(
-							orderOrigin, TACTICAL_ORDER_ATTACK_OBJECT);
+						newTacOrder.init(orderOrigin, TACTICAL_ORDER_ATTACK_OBJECT);
 						newTacOrder.subOrder			= true;
 						newTacOrder.targetWID			= wall->getWatchID();
 						newTacOrder.attackParams.type   = ATTACK_TO_DESTROY;
 						newTacOrder.attackParams.method = ATTACKMETHOD_RANGED;
 						newTacOrder.attackParams.range  = FIRERANGE_OPTIMAL;
-						newTacOrder.attackParams.tactic =
-							newestTacOrder.attackParams.tactic;
+						newTacOrder.attackParams.tactic = newestTacOrder.attackParams.tactic;
 						newTacOrder.attackParams.pursue = true;
 						newTacOrder.moveParams.wayPath.mode[0] =
 							newestTacOrder.moveParams.wayPath.mode[0];
-						newTacOrder.moveParams.jump =
-							newestTacOrder.moveParams.jump;
-						newTacOrder.moveParams.keepMoving =
-							newestTacOrder.moveParams.keepMoving;
+						newTacOrder.moveParams.jump		  = newestTacOrder.moveParams.jump;
+						newTacOrder.moveParams.keepMoving = newestTacOrder.moveParams.keepMoving;
 						return (0);
 					}
 				}
 			}
 			newTacOrder.init(orderOrigin, TACTICAL_ORDER_CAPTURE);
-			newTacOrder.subOrder			= true;
-			newTacOrder.targetWID			= currentTarget->getWatchID();
-			newTacOrder.attackParams.type   = ATTACK_NONE;
-			newTacOrder.attackParams.method = ATTACKMETHOD_RAMMING;
-			newTacOrder.attackParams.pursue = true;
-			newTacOrder.moveParams.fromArea = globalPath[numSteps - 2].thruArea;
-			newTacOrder.moveParams.wayPath.mode[0] =
-				newestTacOrder.moveParams.wayPath.mode[0];
-			newTacOrder.moveParams.jump = newestTacOrder.moveParams.jump;
-			newTacOrder.moveParams.keepMoving =
-				newestTacOrder.moveParams.keepMoving;
+			newTacOrder.subOrder				   = true;
+			newTacOrder.targetWID				   = currentTarget->getWatchID();
+			newTacOrder.attackParams.type		   = ATTACK_NONE;
+			newTacOrder.attackParams.method		   = ATTACKMETHOD_RAMMING;
+			newTacOrder.attackParams.pursue		   = true;
+			newTacOrder.moveParams.fromArea		   = globalPath[numSteps - 2].thruArea;
+			newTacOrder.moveParams.wayPath.mode[0] = newestTacOrder.moveParams.wayPath.mode[0];
+			newTacOrder.moveParams.jump			   = newestTacOrder.moveParams.jump;
+			newTacOrder.moveParams.keepMoving	  = newestTacOrder.moveParams.keepMoving;
 		}
 		else if (controlRadius > 0.0)
 		{
@@ -8176,8 +7862,7 @@ int32_t MechWarrior::calcTacOrder(int32_t goalAction, int32_t goalWID,
 			if (nextTarget)
 				if (nextTarget->getObjectClass() == TURRET)
 					if (getVehicle()->isEnemy(nextTarget->getTeam()))
-						if (mainTarget /*getVehicle()*/->distanceFrom(
-								nextTarget->getPosition()) <=
+						if (mainTarget /*getVehicle()*/->distanceFrom(nextTarget->getPosition()) <=
 							((Turret*)nextTarget)->maxRange)
 							noTargetSelected = false;
 			if (noTargetSelected)
@@ -8190,8 +7875,8 @@ int32_t MechWarrior::calcTacOrder(int32_t goalAction, int32_t goalWID,
 					Turret* turret = ObjectManager->getTurret(i);
 					if (!turret->isDisabled())
 						if (getVehicle()->isEnemy(turret->getTeam()))
-							if (mainTarget /*getVehicle()*/->distanceFrom(
-									turret->getPosition()) <= turret->maxRange)
+							if (mainTarget /*getVehicle()*/->distanceFrom(turret->getPosition()) <=
+								turret->maxRange)
 							{
 								nextTarget		 = turret;
 								noTargetSelected = false;
@@ -8206,8 +7891,8 @@ int32_t MechWarrior::calcTacOrder(int32_t goalAction, int32_t goalWID,
 				// control range?
 				if (nextTarget)
 					if (nextTarget->isMover())
-						if (mainTarget /*getVehicle()*/->distanceFrom(
-								nextTarget->getPosition()) <= controlRadius)
+						if (mainTarget /*getVehicle()*/->distanceFrom(nextTarget->getPosition()) <=
+							controlRadius)
 							noTargetSelected = false;
 			}
 			if (noTargetSelected)
@@ -8222,14 +7907,12 @@ int32_t MechWarrior::calcTacOrder(int32_t goalAction, int32_t goalWID,
 					MoverPtr mover = ObjectManager->getMover(i);
 					if (getVehicle()->isEnemy(mover->getTeam()))
 						if (!mover->isDisabled())
-							if (mainTarget /*getVehicle()*/->distanceFrom(
-									mover->getPosition()) <= controlRadius)
-								if (mover->getThreatRating() >
-									biggestThreatRating)
+							if (mainTarget /*getVehicle()*/->distanceFrom(mover->getPosition()) <=
+								controlRadius)
+								if (mover->getThreatRating() > biggestThreatRating)
 								{
-									biggestThreatRating =
-										mover->getThreatRating();
-									biggestMoverThreat = mover;
+									biggestThreatRating = mover->getThreatRating();
+									biggestMoverThreat  = mover;
 								}
 				}
 				nextTarget = biggestMoverThreat;
@@ -8238,27 +7921,25 @@ int32_t MechWarrior::calcTacOrder(int32_t goalAction, int32_t goalWID,
 			{
 				if (nextTarget->getObjectClass() == TURRET)
 				{
-					GameObjectPtr turretControl = ObjectManager->getByWatchID(
-						((TurretPtr)nextTarget)->parent);
+					GameObjectPtr turretControl =
+						ObjectManager->getByWatchID(((TurretPtr)nextTarget)->parent);
 					if (turretControl &&
-						(mainTarget /*getVehicle()*/->distanceFrom(
-							 turretControl->getPosition()) < controlRadius))
+						(mainTarget /*getVehicle()*/->distanceFrom(turretControl->getPosition()) <
+							controlRadius))
 						if (!turretControl->isDisabled())
 						{
 							Stuff::Vector3D tempLocation;
 							tempLocation.Zero();
-							calcTacOrder(GOAL_ACTION_CAPTURE,
-								turretControl->getWatchID(), tempLocation, -1.0,
-								aggressiveness, searchDepth - 1, -1.0, 0,
+							calcTacOrder(GOAL_ACTION_CAPTURE, turretControl->getWatchID(),
+								tempLocation, -1.0, aggressiveness, searchDepth - 1, -1.0, 0,
 								newTacOrder);
 							return (0);
 						}
 				}
 				Stuff::Vector3D tempLocation;
 				tempLocation.Zero();
-				calcTacOrder(GOAL_ACTION_ATTACK, nextTarget->getWatchID(),
-					tempLocation, -1.0, aggressiveness, searchDepth, -1.0, 0,
-					newTacOrder);
+				calcTacOrder(GOAL_ACTION_ATTACK, nextTarget->getWatchID(), tempLocation, -1.0,
+					aggressiveness, searchDepth, -1.0, 0, newTacOrder);
 				return (0);
 			}
 		}
@@ -8267,7 +7948,7 @@ int32_t MechWarrior::calcTacOrder(int32_t goalAction, int32_t goalWID,
 	{
 	}
 	//	int32_t numBlockers = controlObject->getCaptureBlocker (GameObjectPtr
-	//capturingMover, GameObjectPtr* blockerList) {
+	// capturingMover, GameObjectPtr* blockerList) {
 	return (0);
 }
 
@@ -8295,8 +7976,7 @@ void MechWarrior::logPilots(GameLogPtr log)
 			char s[256];
 			sprintf(s, "pilot = (%d)%s", i, mover->getPilot()->getName());
 			log->write(s);
-			sprintf(s, "     vehicle = (%d)%s", mover->getPartId(),
-				mover->getName());
+			sprintf(s, "     vehicle = (%d)%s", mover->getPartId(), mover->getName());
 			log->write(s);
 		}
 	}
@@ -8330,20 +8010,18 @@ void MechWarrior::copyToData(MechWarriorData& data)
 	data.notMineYet				 = notMineYet;
 	data.teamId					 = teamId;
 	data.vehicleWID				 = vehicleWID;
-	memcpy(data.numSkillUses, numSkillUses,
-		sizeof(int32_t) * NUM_SKILLS * NUM_COMBAT_STATS);
-	memcpy(data.numSkillSuccesses, numSkillSuccesses,
-		sizeof(int32_t) * NUM_SKILLS * NUM_COMBAT_STATS);
-	memcpy(data.numMechKills, numMechKills,
-		sizeof(int32_t) * NUM_VEHICLE_CLASSES * NUM_COMBAT_STATS);
+	memcpy(data.numSkillUses, numSkillUses, sizeof(int32_t) * NUM_SKILLS * NUM_COMBAT_STATS);
+	memcpy(
+		data.numSkillSuccesses, numSkillSuccesses, sizeof(int32_t) * NUM_SKILLS * NUM_COMBAT_STATS);
+	memcpy(
+		data.numMechKills, numMechKills, sizeof(int32_t) * NUM_VEHICLE_CLASSES * NUM_COMBAT_STATS);
 	memcpy(data.numPhysicalAttacks, numPhysicalAttacks,
 		sizeof(int32_t) * NUM_PHYSICAL_ATTACKS * NUM_COMBAT_STATS);
 	memcpy(data.skillRank, skillRank, sizeof(float) * NUM_SKILLS);
 	memcpy(data.skillPoints, skillPoints, sizeof(float) * NUM_SKILLS);
 	memcpy(data.originalSkills, originalSkills, sizeof(char) * NUM_SKILLS);
 	memcpy(data.startingSkills, startingSkills, sizeof(char) * NUM_SKILLS);
-	memcpy(data.specialtySkills, specialtySkills,
-		sizeof(bool) * NUM_SPECIALTY_SKILLS);
+	memcpy(data.specialtySkills, specialtySkills, sizeof(bool) * NUM_SPECIALTY_SKILLS);
 	memcpy(data.killed, killed, sizeof(GameObjectWatchID) * (MAX_MOVERS / 3));
 	data.numKilled		  = numKilled;
 	data.descID			  = descID;
@@ -8358,8 +8036,7 @@ void MechWarrior::copyToData(MechWarriorData& data)
 	data.brainUpdate	= brainUpdate;
 	data.combatUpdate   = combatUpdate;
 	data.movementUpdate = movementUpdate;
-	memcpy(data.weaponsStatus, weaponsStatus,
-		sizeof(int32_t) * MAX_WEAPONS_PER_MOVER);
+	memcpy(data.weaponsStatus, weaponsStatus, sizeof(int32_t) * MAX_WEAPONS_PER_MOVER);
 	data.weaponsStatusResult   = weaponsStatusResult;
 	data.useGoalPlan		   = useGoalPlan;
 	data.mainGoalAction		   = mainGoalAction;
@@ -8368,8 +8045,7 @@ void MechWarrior::copyToData(MechWarriorData& data)
 	data.mainGoalControlRadius = mainGoalControlRadius;
 	data.lastGoalPathSize	  = lastGoalPathSize;
 	memcpy(data.lastGoalPath, lastGoalPath, sizeof(int16_t) * MAX_GLOBAL_PATH);
-	memcpy(data.newTacOrderReceived, newTacOrderReceived,
-		sizeof(bool) * NUM_ORDERSTATES);
+	memcpy(data.newTacOrderReceived, newTacOrderReceived, sizeof(bool) * NUM_ORDERSTATES);
 	memcpy(data.tacOrder, tacOrder, sizeof(TacticalOrder) * NUM_ORDERSTATES);
 	data.lastTacOrder = lastTacOrder;
 	data.curTacOrder  = curTacOrder;
@@ -8442,20 +8118,18 @@ void MechWarrior::copyFromData(MechWarriorData& data)
 	notMineYet				= data.notMineYet;
 	teamId					= data.teamId;
 	vehicleWID				= data.vehicleWID;
-	memcpy(numSkillUses, data.numSkillUses,
-		sizeof(int32_t) * NUM_SKILLS * NUM_COMBAT_STATS);
-	memcpy(numSkillSuccesses, data.numSkillSuccesses,
-		sizeof(int32_t) * NUM_SKILLS * NUM_COMBAT_STATS);
-	memcpy(numMechKills, data.numMechKills,
-		sizeof(int32_t) * NUM_VEHICLE_CLASSES * NUM_COMBAT_STATS);
+	memcpy(numSkillUses, data.numSkillUses, sizeof(int32_t) * NUM_SKILLS * NUM_COMBAT_STATS);
+	memcpy(
+		numSkillSuccesses, data.numSkillSuccesses, sizeof(int32_t) * NUM_SKILLS * NUM_COMBAT_STATS);
+	memcpy(
+		numMechKills, data.numMechKills, sizeof(int32_t) * NUM_VEHICLE_CLASSES * NUM_COMBAT_STATS);
 	memcpy(numPhysicalAttacks, data.numPhysicalAttacks,
 		sizeof(int32_t) * NUM_PHYSICAL_ATTACKS * NUM_COMBAT_STATS);
 	memcpy(skillRank, data.skillRank, sizeof(float) * NUM_SKILLS);
 	memcpy(skillPoints, data.skillPoints, sizeof(float) * NUM_SKILLS);
 	memcpy(originalSkills, data.originalSkills, sizeof(char) * NUM_SKILLS);
 	memcpy(startingSkills, data.startingSkills, sizeof(char) * NUM_SKILLS);
-	memcpy(specialtySkills, data.specialtySkills,
-		sizeof(bool) * NUM_SPECIALTY_SKILLS);
+	memcpy(specialtySkills, data.specialtySkills, sizeof(bool) * NUM_SPECIALTY_SKILLS);
 	memcpy(killed, data.killed, sizeof(GameObjectWatchID) * (MAX_MOVERS / 3));
 	numKilled		 = data.numKilled;
 	descID			 = data.descID;
@@ -8470,8 +8144,7 @@ void MechWarrior::copyFromData(MechWarriorData& data)
 	brainUpdate	= data.brainUpdate;
 	combatUpdate   = data.combatUpdate;
 	movementUpdate = data.movementUpdate;
-	memcpy(weaponsStatus, data.weaponsStatus,
-		sizeof(int32_t) * MAX_WEAPONS_PER_MOVER);
+	memcpy(weaponsStatus, data.weaponsStatus, sizeof(int32_t) * MAX_WEAPONS_PER_MOVER);
 	weaponsStatusResult   = data.weaponsStatusResult;
 	useGoalPlan			  = data.useGoalPlan;
 	mainGoalAction		  = data.mainGoalAction;
@@ -8480,8 +8153,7 @@ void MechWarrior::copyFromData(MechWarriorData& data)
 	mainGoalControlRadius = data.mainGoalControlRadius;
 	lastGoalPathSize	  = data.lastGoalPathSize;
 	memcpy(lastGoalPath, data.lastGoalPath, sizeof(int16_t) * MAX_GLOBAL_PATH);
-	memcpy(newTacOrderReceived, data.newTacOrderReceived,
-		sizeof(bool) * NUM_ORDERSTATES);
+	memcpy(newTacOrderReceived, data.newTacOrderReceived, sizeof(bool) * NUM_ORDERSTATES);
 	memcpy(tacOrder, data.tacOrder, sizeof(TacticalOrder) * NUM_ORDERSTATES);
 	lastTacOrder = data.lastTacOrder;
 	curTacOrder  = data.curTacOrder;
@@ -8502,14 +8174,11 @@ void MechWarrior::copyFromData(MechWarriorData& data)
 		// movemode data.
 		tacOrderQueue[i].marker = nullptr;
 		if (tacOrderQueue[i].moveMode == TRAVEL_MODE_SLOW)
-			tacOrderQueue[i].marker =
-				getWayPointMarker(tacOrderQueue[i].point, "WalkWayPoint");
+			tacOrderQueue[i].marker = getWayPointMarker(tacOrderQueue[i].point, "WalkWayPoint");
 		else if (tacOrderQueue[i].moveMode == TRAVEL_MODE_FAST)
-			tacOrderQueue[i].marker =
-				getWayPointMarker(tacOrderQueue[i].point, "RunWayPoint");
+			tacOrderQueue[i].marker = getWayPointMarker(tacOrderQueue[i].point, "RunWayPoint");
 		else if (tacOrderQueue[i].moveMode == TRAVEL_MODE_JUMP)
-			tacOrderQueue[i].marker =
-				getWayPointMarker(tacOrderQueue[i].point, "JumpWayPoint");
+			tacOrderQueue[i].marker = getWayPointMarker(tacOrderQueue[i].point, "JumpWayPoint");
 	}
 	tacOrderQueueIndex  = data.tacOrderQueueIndex;
 	nextTacOrderId		= data.nextTacOrderId;
@@ -8551,8 +8220,7 @@ void MechWarrior::init(MechWarriorData data)
 		//-----------------------------------------
 		// Set up the pilot alarm callback table...
 		for (size_t i = 0; i < NUM_PILOT_ALARMS; i++)
-			brainAlarmCallback[i] =
-				brain->findFunction(pilotAlarmFunctionName[i], true);
+			brainAlarmCallback[i] = brain->findFunction(pilotAlarmFunctionName[i], true);
 	}
 	else
 	{
@@ -8564,8 +8232,7 @@ void MechWarrior::init(MechWarriorData data)
 	brainFileName.init(warriorPath, brainStr, ".abl");
 	if (brainStr[0])
 	{
-		int32_t moduleHandle =
-			ABLi_preProcess(brainFileName, &numErrors, &numLinesProcessed);
+		int32_t moduleHandle = ABLi_preProcess(brainFileName, &numErrors, &numLinesProcessed);
 		gosASSERT(moduleHandle >= 0);
 		int32_t error = setBrain(moduleHandle);
 		gosASSERT(error == 0);
@@ -8594,8 +8261,7 @@ void MechWarrior::save(PacketFilePtr file, int32_t packetNum)
 {
 	MechWarriorData warriorData;
 	copyToData(warriorData);
-	file->writePacket(packetNum, (puint8_t)&warriorData, sizeof(warriorData),
-		STORAGE_TYPE_ZLIB);
+	file->writePacket(packetNum, (puint8_t)&warriorData, sizeof(warriorData), STORAGE_TYPE_ZLIB);
 }
 
 //---------------------------------------------------------------------------
@@ -8611,8 +8277,8 @@ int32_t MechWarrior::Save(PacketFilePtr file, int32_t packetNum)
 	staticData.maxVisualRadius = maxVisualRadius;
 	staticData.curEventID	  = curEventID;
 	staticData.curEventTrigger = curEventTrigger;
-	file->writePacket(packetNum, (puint8_t)&staticData,
-		sizeof(StaticMechWarriorData), STORAGE_TYPE_RAW);
+	file->writePacket(
+		packetNum, (puint8_t)&staticData, sizeof(StaticMechWarriorData), STORAGE_TYPE_RAW);
 	packetNum++;
 	for (size_t i = 0; i < numWarriors; i++)
 	{

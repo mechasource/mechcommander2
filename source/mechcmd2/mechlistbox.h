@@ -31,7 +31,7 @@ MechListBox:
 #define ANIMATION_COUNT 4
 class MechListBoxItem : public aListItem
 {
-  public:
+public:
 	virtual ~MechListBoxItem(void);
 	MechListBoxItem(LogisticsMech* pMech, int32_t count);
 
@@ -47,7 +47,7 @@ class MechListBoxItem : public aListItem
 	bool bOrange;
 	static bool bAddCalledThisFrame;
 
-  private:
+private:
 	static MechListBoxItem* s_templateItem;
 
 	aAnimGroup animations[2][ANIMATION_COUNT];
@@ -88,7 +88,7 @@ class MechListBoxItem : public aListItem
 
 class MechListBox : public aListBox
 {
-  public:
+public:
 	MechListBox(bool deleteIfNoInventory, bool bIncludeForceGroup);
 
 	void setScrollBarOrange(void);
@@ -114,7 +114,7 @@ class MechListBox : public aListBox
 
 	void setOrange(bool bOrange);
 
-  private:
+private:
 	static bool s_DrawCBills;
 
 	MechListBox(const MechListBox& src);

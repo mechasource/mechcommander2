@@ -101,8 +101,7 @@ int32_t Radio::playMessage(RadioMessageType msgType)
 		return (NO_PLAY);
 	if (!owner)
 		return (NO_PLAY);
-	if (!soundSystem->checkMessage(
-			owner, messageInfo[msgType].priority, msgType))
+	if (!soundSystem->checkMessage(owner, messageInfo[msgType].priority, msgType))
 		return (NO_PLAY);
 	if ((msgType == RADIO_AMMO_OUT) && ammoOutPlayed)
 		return (NO_PLAY);
@@ -167,16 +166,14 @@ int32_t Radio::playMessage(RadioMessageType msgType)
 	{
 		if (messagesFile[radioID]->seekPacket(callsign) == NO_ERROR)
 		{
-			uint32_t messageSize = messagesFile[radioID]->getPacketSize();
-			msgData->data[fragmentNum] =
-				(puint8_t)radioHeap->Malloc(messageSize);
+			uint32_t messageSize	   = messagesFile[radioID]->getPacketSize();
+			msgData->data[fragmentNum] = (puint8_t)radioHeap->Malloc(messageSize);
 			if (!msgData->data[fragmentNum])
 			{
 				radioHeap->Free(msgData);
 				return (NO_PLAY);
 			}
-			messagesFile[radioID]->readPacket(
-				callsign, msgData->data[fragmentNum]);
+			messagesFile[radioID]->readPacket(callsign, msgData->data[fragmentNum]);
 			msgData->dataSize[fragmentNum] = messageSize;
 			fragmentNum++;
 		}
@@ -195,8 +192,7 @@ int32_t Radio::playMessage(RadioMessageType msgType)
 			radioHeap->Free(msgData);
 			return (NO_PLAY);
 		}
-		messagesFile[radioID]->readPacket(
-			msgData->msgId, msgData->data[fragmentNum]);
+		messagesFile[radioID]->readPacket(msgData->msgId, msgData->data[fragmentNum]);
 		msgData->dataSize[fragmentNum] = messageSize;
 		if (noiseFile->seekPacket(msgData->noiseId) == NO_ERROR)
 		{

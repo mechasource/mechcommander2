@@ -51,8 +51,7 @@ MissionSelectionScreen::~MissionSelectionScreen()
 
 void MissionSelectionScreen::init(FitIniFile* file)
 {
-	LogisticsScreen::init(
-		*file, "CMStatic", "CMTextEntry", "CMRect", "CMButton");
+	LogisticsScreen::init(*file, "CMStatic", "CMTextEntry", "CMRect", "CMButton");
 	for (size_t i = 0; i < buttonCount; i++)
 		buttons[i].setMessageOnRelease();
 	missionCount = 0;
@@ -111,8 +110,7 @@ void MissionSelectionScreen::update()
 {
 	if (!playedLogisticsTune)
 	{
-		soundSystem->playDigitalMusic(
-			LogisticsData::instance->getCurrentMissionTune());
+		soundSystem->playDigitalMusic(LogisticsData::instance->getCurrentMissionTune());
 		playedLogisticsTune = true;
 	}
 	if (bStop)
@@ -154,8 +152,7 @@ void MissionSelectionScreen::update()
 	if (pressedButton != -1)
 	{
 		operationScreen.textObjects[0].setText(
-			LogisticsData::instance->getMissionFriendlyName(
-				missionNames[pressedButton]));
+			LogisticsData::instance->getMissionFriendlyName(missionNames[pressedButton]));
 		//		if ( highlightColor )
 		//			operationScreen.textObjects[0].setColor( highlightColor );
 	}
@@ -225,10 +222,9 @@ void MissionSelectionScreen::begin()
 			LogisticsData::instance->setVideoShown();
 		}
 	}
-	missionCount = MAX_MISSIONS_IN_GROUP;
-	int32_t result =
-		LogisticsData::instance->getCurrentMissions(missionNames, missionCount);
-	EString selMissionName = LogisticsData::instance->getCurrentMission();
+	missionCount   = MAX_MISSIONS_IN_GROUP;
+	int32_t result = LogisticsData::instance->getCurrentMissions(missionNames, missionCount);
+	std::wstring selMissionName = LogisticsData::instance->getCurrentMission();
 	gosASSERT(result == NO_ERROR);
 	bool bPressed = 0;
 	for (size_t i = 0; i < missionCount; i++)
@@ -283,8 +279,7 @@ void MissionSelectionScreen::end()
 
 int32_t MissionSelectionScreen::handleMessage(uint32_t msg, uint32_t who)
 {
-	if (who >= MSG_FIRST_MISSION &&
-		who < MSG_FIRST_MISSION + MAX_MISSIONS_IN_GROUP)
+	if (who >= MSG_FIRST_MISSION && who < MSG_FIRST_MISSION + MAX_MISSIONS_IN_GROUP)
 	{
 		setMission(who - MSG_FIRST_MISSION);
 	}
@@ -341,29 +336,29 @@ void MissionSelectionScreen::updateListBox()
 {
 	missionDescriptionListBox.removeAllItems(true);
 	aTextListItem* pEntry = new aTextListItem(IDS_MN_LB_FONT);
-	pEntry->resize(missionDescriptionListBox.width() -
-					   missionDescriptionListBox.getScrollBarWidth() - 2,
+	pEntry->resize(
+		missionDescriptionListBox.width() - missionDescriptionListBox.getScrollBarWidth() - 2,
 		pEntry->height());
 	pEntry->setText(IDS_MN_DIVIDER);
 	pEntry->setColor(0xffC66600);
 	missionDescriptionListBox.AddItem(pEntry);
 	pEntry = new aTextListItem(IDS_MN_LB_FONT);
-	pEntry->resize(missionDescriptionListBox.width() -
-					   missionDescriptionListBox.getScrollBarWidth() - 2,
+	pEntry->resize(
+		missionDescriptionListBox.width() - missionDescriptionListBox.getScrollBarWidth() - 2,
 		pEntry->height());
 	pEntry->setText(LogisticsData::instance->getCurrentMissionFriendlyName());
 	pEntry->setColor(0xffC66600);
 	missionDescriptionListBox.AddItem(pEntry);
 	pEntry = new aTextListItem(IDS_MN_LB_FONT);
-	pEntry->resize(missionDescriptionListBox.width() -
-					   missionDescriptionListBox.getScrollBarWidth() - 2,
+	pEntry->resize(
+		missionDescriptionListBox.width() - missionDescriptionListBox.getScrollBarWidth() - 2,
 		pEntry->height());
 	pEntry->setText(IDS_MN_DIVIDER);
 	pEntry->setColor(0xffC66600);
 	missionDescriptionListBox.AddItem(pEntry);
 	pEntry = new aTextListItem(IDS_MN_LB_FONT);
-	pEntry->resize(missionDescriptionListBox.width() -
-					   missionDescriptionListBox.getScrollBarWidth() - 2,
+	pEntry->resize(
+		missionDescriptionListBox.width() - missionDescriptionListBox.getScrollBarWidth() - 2,
 		pEntry->height());
 	pEntry->setText(LogisticsData::instance->getCurrentMissionDescription());
 	pEntry->setColor(0xffC66600);

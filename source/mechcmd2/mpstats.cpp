@@ -144,8 +144,7 @@ void MPStats::update()
 {
 	if (status == RUNNING && !statics[15].getColor())
 	{
-		int32_t textureHandle =
-			MissionBriefingScreen::getMissionTGA(MPlayer->missionSettings.map);
+		int32_t textureHandle = MissionBriefingScreen::getMissionTGA(MPlayer->missionSettings.map);
 		statics[15].setTexture(textureHandle);
 		statics[15].setUVs(0, 127, 127, 0);
 		statics[15].setColor(0xffffffff);
@@ -169,8 +168,7 @@ void MPStats::update()
 		{
 			if (i < playerCount)
 			{
-				entries[i].setData(
-					sorted[i], winnerColor, !scoreShown[sorted[i]->team]);
+				entries[i].setData(sorted[i], winnerColor, !scoreShown[sorted[i]->team]);
 				scoreShown[sorted[i]->team] = true;
 				entries[i].showGUIWindow(true);
 			}
@@ -183,12 +181,11 @@ void MPStats::update()
 		LogisticsVariantDialog::instance()->update();
 		if (LogisticsVariantDialog::instance()->getStatus() == YES)
 		{
-			EString str = LogisticsVariantDialog::instance()->getFileName();
+			std::wstring str = LogisticsVariantDialog::instance()->getFileName();
 			FullPathFileName oldPath;
 			FullPathFileName newPath;
 			newPath.init("data\\multiplayer\\transcripts\\", str, ".txt");
-			oldPath.init(
-				"data\\multiplayer\\transcripts\\", "transcript", ".txt");
+			oldPath.init("data\\multiplayer\\transcripts\\", "transcript", ".txt");
 			LogisticsVariantDialog::instance()->end();
 			CopyFile(oldPath, newPath, 0);
 			bSavingStats = 0;
@@ -208,8 +205,7 @@ void MPStats::update()
 			bHostLeftDlg = 0;
 		}
 	}
-	else if (!ChatWindow::instance()->pointInside(
-				 userInput->getMouseX(), userInput->getMouseY()))
+	else if (!ChatWindow::instance()->pointInside(userInput->getMouseX(), userInput->getMouseY()))
 		LogisticsScreen::update();
 	if (ChatWindow::instance())
 		ChatWindow::instance()->update();
@@ -221,8 +217,7 @@ void MPStats::setHostLeftDlg(PCSTR hostName)
 	char formatStr[256];
 	cLoadString(IDS_PLAYER_LEFT, leaveStr, 255);
 	sprintf(formatStr, leaveStr, hostName);
-	LogisticsOneButtonDialog::instance()->setText(
-		IDS_PLAYER_LEFT, IDS_DIALOG_OK, IDS_DIALOG_OK);
+	LogisticsOneButtonDialog::instance()->setText(IDS_PLAYER_LEFT, IDS_DIALOG_OK, IDS_DIALOG_OK);
 	LogisticsOneButtonDialog::instance()->setText(formatStr);
 	LogisticsOneButtonDialog::instance()->begin();
 	bHostLeftDlg = true;
@@ -231,10 +226,7 @@ void MPStats::setHostLeftDlg(PCSTR hostName)
 //*************************************************************************************************
 MPStatsEntry::MPStatsEntry() { overlayColor = 0; }
 
-void MPStatsEntry::render(int32_t x, int32_t y)
-{
-	LogisticsScreen::render(x, y);
-}
+void MPStatsEntry::render(int32_t x, int32_t y) { LogisticsScreen::render(x, y); }
 
 MPStatsEntry::~MPStatsEntry() {}
 
@@ -251,15 +243,14 @@ void MPStatsEntry::init()
 		return;
 	}
 	LogisticsScreen::init(file, "Static", "Text", "Rect", "Button", "Edit");
-	aObject::init(rects[2].left(), rects[2].top(),
-		rects[5].right() - rects[0].left(), rects[2].height());
+	aObject::init(
+		rects[2].left(), rects[2].top(), rects[5].right() - rects[0].left(), rects[2].height());
 	overlayColor = 0;
 }
 
 void MPStatsEntry::setData(const MC2Player* data, bool bShowScore)
 {
-	int32_t color =
-		data ? MPlayer->colors[data->baseColor[BASECOLOR_TEAM]] : 0x00000000;
+	int32_t color	  = data ? MPlayer->colors[data->baseColor[BASECOLOR_TEAM]] : 0x00000000;
 	int32_t color2	 = data ? MPlayer->colors[data->stripeColor] : 0x00000000;
 	int32_t scoreColor = 0xffffffff;
 	if (data && MPlayer->allUnitsDestroyed[data->commanderID])
@@ -267,10 +258,7 @@ void MPStatsEntry::setData(const MC2Player* data, bool bShowScore)
 	rects[0].setColor(color2);
 	rects[1].setColor(color);
 	int32_t textColor = 0xff000000;
-	if (((color & 0xff) + ((color & 0xff00) >> 8) +
-			((color & 0xff0000) >> 16)) /
-			3 <
-		85)
+	if (((color & 0xff) + ((color & 0xff00) >> 8) + ((color & 0xff0000) >> 16)) / 3 < 85)
 		textColor = 0xffffffff;
 	if (!data)
 	{
@@ -293,8 +281,7 @@ void MPStatsEntry::setData(const MC2Player* data, bool bShowScore)
 		textObjects[1].setText(team);
 		// score needs to do here
 		sprintf(team, "%ld", data->score);
-		if (MPlayer->missionSettings.missionType ==
-			MISSION_TYPE_KING_OF_THE_HILL)
+		if (MPlayer->missionSettings.missionType == MISSION_TYPE_KING_OF_THE_HILL)
 		{
 			sprintf(team, "%ld:%.2ld", data->score / 60, data->score % 60);
 		}
@@ -325,7 +312,7 @@ void MPStatsResultsEntry::render(int32_t x, int32_t y)
 	// if ( overlayColor )
 	//{
 	//	RECT rect = { textObjects[5].left(), rects[0].top(), rects[5].right(),
-	//rects[0].y() + rects[0].height() }; 	drawRect( rect, overlayColor );
+	// rects[0].y() + rects[0].height() }; 	drawRect( rect, overlayColor );
 	//}
 }
 
@@ -345,8 +332,7 @@ void MPStatsResultsEntry::init()
 	aObject::init(0, 0, rects[0].width(), rects[0].height());
 }
 
-void MPStatsResultsEntry::setData(
-	const MC2Player* data, uint32_t laurelColor, bool bShowScore)
+void MPStatsResultsEntry::setData(const MC2Player* data, uint32_t laurelColor, bool bShowScore)
 {
 	rects[4].setColor(MPlayer->colors[data->baseColor[BASECOLOR_TEAM]]);
 	rects[2].setColor(MPlayer->colors[data->stripeColor]);
@@ -356,10 +342,7 @@ void MPStatsResultsEntry::setData(
 		overlayColor = 0;
 	int32_t color	 = MPlayer->colors[data->baseColor[BASECOLOR_TEAM]];
 	int32_t textColor = 0xff000000;
-	if (((color & 0xff) + ((color & 0xff00) >> 8) +
-			((color & 0xff0000) >> 16)) /
-			3 <
-		85)
+	if (((color & 0xff) + ((color & 0xff00) >> 8) + ((color & 0xff0000) >> 16)) / 3 < 85)
 		textColor = 0xffffffff;
 	textObjects[3].setText(data->name);
 	textObjects[4].setText(data->unitName);
@@ -402,14 +385,12 @@ void MPStatsResultsEntry::setData(
 	}
 	else
 	{
-		TGAFileHeader* pData =
-			(TGAFileHeader*)MPlayer->insigniaList[data->commanderID];
+		TGAFileHeader* pData = (TGAFileHeader*)MPlayer->insigniaList[data->commanderID];
 		if (pData)
 		{
 			int32_t size = pData->pixel_depth / 8;
-			int32_t ID =
-				mcTextureManager->textureFromMemory((uint32_t*)(pData + 1),
-					gos_Texture_Solid, 0, pData->width, size);
+			int32_t ID   = mcTextureManager->textureFromMemory(
+				  (uint32_t*)(pData + 1), gos_Texture_Solid, 0, pData->width, size);
 			statics[0].setTexture(ID);
 			statics[0].setUVs(0, 32, 32, 0);
 		}

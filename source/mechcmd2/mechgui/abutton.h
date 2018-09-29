@@ -18,7 +18,7 @@ class FitIniFile;
 
 class aButton : public aObject
 {
-  public:
+public:
 	aButton(void);
 	int32_t init(int32_t xPos, int32_t yPos, int32_t w, int32_t h);
 	void destroy(void);
@@ -66,7 +66,7 @@ class aButton : public aObject
 		HIDDEN
 	};
 
-  protected:
+protected:
 	struct aButtonData
 	{
 		int32_t ID;
@@ -101,13 +101,13 @@ class aButton : public aObject
 
 	static void makeUVs(gos_VERTEX* vertices, int32_t State, aButtonData& data);
 
-  private:
+private:
 	void copyData(const aButton& src);
 };
 
 class aAnimButton : public aButton
 {
-  public:
+public:
 	aAnimButton(void);
 	void init(FitIniFile& file, PCSTR headerName, HGOSFONT3D font = 0);
 	virtual void update(void);
@@ -118,12 +118,12 @@ class aAnimButton : public aButton
 	aAnimButton& operator=(const aAnimButton& src);
 	aAnimButton(const aAnimButton& src);
 
-	void setAnimationInfo(aAnimation* normal, aAnimation* highlight,
-		aAnimation* pressed, aAnimation* disabled);
+	void setAnimationInfo(
+		aAnimation* normal, aAnimation* highlight, aAnimation* pressed, aAnimation* disabled);
 
 	void animateChildren(bool bAnimate) { bAnimateChildren = bAnimate; }
 
-  private:
+private:
 	aAnimation normalData;
 	aAnimation highlightData;
 	aAnimation pressedData;

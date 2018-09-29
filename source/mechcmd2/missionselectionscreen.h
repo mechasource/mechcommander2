@@ -21,7 +21,7 @@ class FitIniFile;
 class MissionSelectionScreen : public LogisticsScreen
 {
 
-  public:
+public:
 	MissionSelectionScreen(void);
 	virtual ~MissionSelectionScreen(void);
 	virtual void render(int32_t xOffset, int32_t yOffset);
@@ -31,7 +31,7 @@ class MissionSelectionScreen : public LogisticsScreen
 	void init(FitIniFile* file);
 	virtual int32_t handleMessage(uint32_t, uint32_t);
 
-  private:
+private:
 	LogisticsScreen operationScreen;
 
 	MC2MoviePtr bMovie;

@@ -52,7 +52,7 @@ struct ButtonData
 
 class ControlButton
 {
-  public:
+public:
 	gos_VERTEX location[4];
 	int32_t ID;
 
@@ -70,9 +70,8 @@ class ControlButton
 	void setColor(uint32_t newColor);
 	static void makeUVs(gos_VERTEX* vertices, int32_t State, ButtonData& data);
 
-	static void initButtons(FitIniFile& file, int32_t buttonCount,
-		ControlButton* buttons, ButtonData* buttonData, PCSTR str,
-		aFont* font = 0);
+	static void initButtons(FitIniFile& file, int32_t buttonCount, ControlButton* buttons,
+		ButtonData* buttonData, PCSTR str, aFont* font = 0);
 
 	enum States
 	{
@@ -87,7 +86,7 @@ class ControlButton
 class ControlGui
 {
 
-  public:
+public:
 	static ControlGui* instance;
 
 	static int32_t hiResOffsetX;
@@ -98,10 +97,7 @@ class ControlGui
 	bool inRegion(int32_t mouseX, int32_t mouseY, bool bPaused);
 	void render(bool bPaused);
 	void update(bool bPaused, bool bLOS);
-	void initTacMapBuildings(puint8_t data, int32_t size)
-	{
-		tacMap.initBuildings(data, size);
-	}
+	void initTacMapBuildings(puint8_t data, int32_t size) { tacMap.initBuildings(data, size); }
 	void initTacMap(puint8_t data, int32_t size) { tacMap.init(data, size); }
 	void initMechs(void);
 	void unPressAllVehicleButtons(void);
@@ -134,8 +130,7 @@ class ControlGui
 	bool isChatting() { return bChatting; }
 
 	// TUTORIAL
-	bool animateTacMap(
-		int32_t buttonId, float timeToScroll, int32_t numFlashes);
+	bool animateTacMap(int32_t buttonId, float timeToScroll, int32_t numFlashes);
 	bool pushButton(int32_t buttonId);
 	bool flashRPTotal(int32_t numFlashes);
 
@@ -214,25 +209,18 @@ class ControlGui
 	bool isAddingVehicle() { return addingVehicle; }
 	bool isAddingAirstrike() { return addingArtillery; }
 	bool isAddingSalvage() { return addingSalvage; }
-	bool isButtonPressed(int32_t ID)
-	{
-		return getButton(ID)->state & ControlButton::PRESSED;
-	}
+	bool isButtonPressed(int32_t ID) { return getButton(ID)->state & ControlButton::PRESSED; }
 	bool getMines(void);
 	bool getSalvage(void);
 	bool getRepair(void);
 	bool getGuardTower(void);
 	void switchTabs(int32_t direction);
-	void renderObjective(
-		CObjective* pObjective, int32_t xPos, int32_t yPos, bool bDrawTotal);
+	void renderObjective(CObjective* pObjective, int32_t xPos, int32_t yPos, bool bDrawTotal);
 	void renderMissionStatus(bool bRender) { renderStatusInfo = bRender; }
 
 	int32_t getCurrentRange(void);
 	void pressInfoButton() { handleClick(INFO_COMMAND); }
-	bool infoButtonPressed()
-	{
-		return getButton(INFO_COMMAND)->state & ControlButton::PRESSED;
-	}
+	bool infoButtonPressed() { return getButton(INFO_COMMAND)->state & ControlButton::PRESSED; }
 
 	void showServerMissing(void);
 
@@ -262,8 +250,7 @@ class ControlGui
 
 	void setRolloverHelpText(uint32_t textID);
 
-	void setChatText(PCSTR playerName, PCSTR message, uint32_t backgroundColor,
-		uint32_t textColor);
+	void setChatText(PCSTR playerName, PCSTR message, uint32_t backgroundColor, uint32_t textColor);
 	void toggleChat(bool setTeamOnly);
 	void eatChatKey(void);
 	void cancelInfo(void);
@@ -276,7 +263,7 @@ class ControlGui
 		int32_t color;
 	};
 
-  private:
+private:
 	struct ChatInfo
 	{
 		char playerName[32];
@@ -404,7 +391,7 @@ class ControlGui
 	bool chatIsTeamOnly;
 	bool bServerWarningShown;
 
-  public:
+public:
 	RectInfo* getRect(int32_t id)
 	{
 		if ((id >= 0) && (id < rectCount))

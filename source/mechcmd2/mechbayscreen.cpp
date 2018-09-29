@@ -46,17 +46,15 @@ MechBayScreen::~MechBayScreen()
 void MechBayScreen::init(FitIniFile* file)
 {
 	// init button, texts, statics, rects
-	LogisticsScreen::init(*file, "MechBayStatic", "MechBayTextEntry",
-		"MechBayRect", "MechBayButton");
+	LogisticsScreen::init(
+		*file, "MechBayStatic", "MechBayTextEntry", "MechBayRect", "MechBayButton");
 	// initialize the list box
 	mechListBox.init();
 	mechListBox.setHelpID(IDS_HELP_MECHSTORAGE);
-	loadoutListBox.init(
-		rects[3].left(), rects[3].top(), rects[3].width(), rects[3].height());
+	loadoutListBox.init(rects[3].left(), rects[3].top(), rects[3].width(), rects[3].height());
 	// fill the mech list box
 	((aObject*)&mechListBox)
-		->init(rects[0].left(), rects[0].top(), rects[0].width(),
-			rects[0].height());
+		->init(rects[0].left(), rects[0].top(), rects[0].width(), rects[0].height());
 	// initialize little icons
 	FitIniFile iconFile;
 	char path[256];
@@ -103,8 +101,7 @@ void MechBayScreen::init(FitIniFile* file)
 	file->seekBlock("weightRemoveAnimation");
 	removeWeightAnim.init(file, "");
 	file->seekBlock("FRectAnim");
-	mechCamera->init(
-		rects[1].left(), rects[1].top(), rects[2].right(), rects[1].bottom());
+	mechCamera->init(rects[1].left(), rects[1].top(), rects[2].right(), rects[1].bottom());
 	for (size_t i = 0; i < buttonCount; i++)
 		buttons[i].setMessageOnRelease();
 	textObjects[7].setText("");
@@ -133,9 +130,8 @@ void MechBayScreen::begin()
 	// initialize both the inventory and icon lists
 	EList<LogisticsMech*, LogisticsMech*> mechList;
 	LogisticsData::instance->getInventory(mechList);
-	for (EList<LogisticsMech*, LogisticsMech*>::EIterator iter =
-			 mechList.Begin();
-		 !iter.IsDone(); iter++)
+	for (EList<LogisticsMech*, LogisticsMech*>::EIterator iter = mechList.Begin(); !iter.IsDone();
+		 iter++)
 	{
 		if (*iter == pCurMech)
 			bCurMechIsValid = true;
@@ -144,9 +140,8 @@ void MechBayScreen::begin()
 			bool bFound = 0;
 			for (size_t i = 0; i < mechListBox.GetItemCount(); i++)
 			{
-				if (((MechListBoxItem*)mechListBox.GetItem(i))
-						->getMech()
-						->getVariant() == (*iter)->getVariant())
+				if (((MechListBoxItem*)mechListBox.GetItem(i))->getMech()->getVariant() ==
+					(*iter)->getVariant())
 					bFound = true;
 			}
 			if (!bFound)
@@ -346,25 +341,21 @@ void MechBayScreen::update()
 			{
 				if (bLeft)
 				{
-					LogisticsData::instance->removeMechFromForceGroup(
-						pDragMech, false);
-					LogisticsData::instance->addMechToForceGroup(
-						pDragMech, forceGroupCount + 1);
+					LogisticsData::instance->removeMechFromForceGroup(pDragMech, false);
+					LogisticsData::instance->addMechToForceGroup(pDragMech, forceGroupCount + 1);
 					forceGroupCount++;
 					reinitMechs();
 				}
 				else
 				{
-					if (0 == LogisticsData::instance->getVariantsInInventory(
-								 pDragMech->getVariant(), 0))
+					if (0 ==
+						LogisticsData::instance->getVariantsInInventory(pDragMech->getVariant(), 0))
 					{
-						MechListBoxItem* item =
-							new MechListBoxItem(pDragMech, 0);
-						int32_t index = mechListBox.AddItem(item);
+						MechListBoxItem* item = new MechListBoxItem(pDragMech, 0);
+						int32_t index		  = mechListBox.AddItem(item);
 						mechListBox.SelectItem(index);
 					}
-					LogisticsData::instance->removeMechFromForceGroup(
-						pDragMech, true);
+					LogisticsData::instance->removeMechFromForceGroup(pDragMech, true);
 					forceGroupCount--;
 					reinitMechs();
 					removeWeightAmount = pDragMech->getMaxWeight();
@@ -383,16 +374,14 @@ void MechBayScreen::update()
 				}
 				else
 				{
-					if (0 == LogisticsData::instance->getVariantsInInventory(
-								 pDragMech->getVariant(), 0))
+					if (0 ==
+						LogisticsData::instance->getVariantsInInventory(pDragMech->getVariant(), 0))
 					{
-						MechListBoxItem* item =
-							new MechListBoxItem(pDragMech, 0);
-						int32_t index = mechListBox.AddItem(item);
+						MechListBoxItem* item = new MechListBoxItem(pDragMech, 0);
+						int32_t index		  = mechListBox.AddItem(item);
 						mechListBox.SelectItem(index);
 					}
-					LogisticsData::instance->removeMechFromForceGroup(
-						pDragMech, true);
+					LogisticsData::instance->removeMechFromForceGroup(pDragMech, true);
 					reinitMechs();
 				}
 			}
@@ -410,15 +399,13 @@ void MechBayScreen::update()
 			newSel = i;
 		else if (pIcons[i].isSelected())
 			oldSel = i;
-		bool bInside = pIcons[i].pointInside(
-			userInput->getMouseX(), userInput->getMouseY());
+		bool bInside = pIcons[i].pointInside(userInput->getMouseX(), userInput->getMouseY());
 		if (bInside && userInput->isLeftDoubleClick() && pIcons[i].getMech())
 		{
 			removeMech = i;
 		}
 		else if (userInput->isLeftDrag() &&
-				 pIcons[i].pointInside(
-					 userInput->getMouseDragX(), userInput->getMouseDragY()))
+			pIcons[i].pointInside(userInput->getMouseDragX(), userInput->getMouseDragY()))
 		{
 			beginDrag(pIcons[i].getMech());
 		}
@@ -433,8 +420,8 @@ void MechBayScreen::update()
 	{
 		removeSelectedMech();
 	}
-	if (!MPlayer || !ChatWindow::instance()->pointInside(
-						userInput->getMouseX(), userInput->getMouseY()))
+	if (!MPlayer ||
+		!ChatWindow::instance()->pointInside(userInput->getMouseX(), userInput->getMouseY()))
 		LogisticsScreen::update();
 	if (newSel == -1 && oldSel == -1)
 	{
@@ -464,8 +451,8 @@ void MechBayScreen::update()
 	if (pTmp)
 		setMech(pTmp, 0);
 	// update buttons!
-	if (newSel == -1 || !LogisticsData::instance->canAddMechToForceGroup(
-							mechListBox.getCurrentMech()))
+	if (newSel == -1 ||
+		!LogisticsData::instance->canAddMechToForceGroup(mechListBox.getCurrentMech()))
 	{
 		// disable the add button
 		getButton(MB_MSG_ADD)->disable(1);
@@ -539,11 +526,11 @@ void MechBayScreen::addSelectedMech()
 {
 	if (mechListBox.getCurrentMech())
 	{
-		if (!LogisticsData::instance->canAddMechToForceGroup(
-				mechListBox.getCurrentMech()))
+		if (!LogisticsData::instance->canAddMechToForceGroup(mechListBox.getCurrentMech()))
 			return;
-		if (NO_ERROR != LogisticsData::instance->addMechToForceGroup(
-							mechListBox.getCurrentMech(), forceGroupCount + 1))
+		if (NO_ERROR !=
+			LogisticsData::instance->addMechToForceGroup(
+				mechListBox.getCurrentMech(), forceGroupCount + 1))
 		{
 			// its already in the force group, add probably called 2x'2
 			return;
@@ -582,8 +569,7 @@ void MechBayScreen::removeSelectedMech()
 			LogisticsMech* pMech = pIcons[i].getMech();
 			if (!pMech)
 				return;
-			if (0 == LogisticsData::instance->getVariantsInInventory(
-						 pMech->getVariant(), 0))
+			if (0 == LogisticsData::instance->getVariantsInInventory(pMech->getVariant(), 0))
 			{
 				MechListBoxItem* item = new MechListBoxItem(pMech, 0);
 				mechListBox.AddItem(item);
@@ -607,10 +593,8 @@ void MechBayScreen::removeSelectedMech()
 	}
 	for (; i < ICON_COUNT - 1; i++)
 	{
-		LogisticsData::instance->removeMechFromForceGroup(
-			pIcons[i + 1].getMech(), false);
-		LogisticsData::instance->addMechToForceGroup(
-			pIcons[i + 1].getMech(), i + 1);
+		LogisticsData::instance->removeMechFromForceGroup(pIcons[i + 1].getMech(), false);
+		LogisticsData::instance->addMechToForceGroup(pIcons[i + 1].getMech(), i + 1);
 	}
 	reinitMechs();
 	if (!forceGroupCount)
@@ -627,13 +611,12 @@ void MechBayScreen::setMech(LogisticsMech* pMech, bool bCommandFromLB)
 	if (pMech)
 	{
 		loadoutListBox.setMech(pMech->getVariant());
-		EString fileName = pMech->getFileName();
-		int32_t index	= fileName.Find('.');
-		fileName		 = fileName.Left(index);
-		index			 = fileName.ReverseFind('\\');
-		fileName		 = fileName.Right(fileName.Length() - index - 1);
-		mechCamera->setMech(fileName, prefs.baseColor, prefs.highlightColor,
-			prefs.highlightColor);
+		std::wstring fileName = pMech->getFileName();
+		int32_t index		  = fileName.Find('.');
+		fileName			  = fileName.Left(index);
+		index				  = fileName.ReverseFind('\\');
+		fileName			  = fileName.Right(fileName.Length() - index - 1);
+		mechCamera->setMech(fileName, prefs.baseColor, prefs.highlightColor, prefs.highlightColor);
 		mechCamera->setScale(pMech->getVariant()->getChassis()->getScale());
 	}
 	else
@@ -650,13 +633,11 @@ void MechBayScreen::setMech(LogisticsMech* pMech, bool bCommandFromLB)
 		char str[64];
 		// weight
 		cLoadString(IDS_MB_MECH_WEIGHT, tmpStr, 63);
-		sprintf(str, tmpStr, pCurMech->getMaxWeight(),
-			(PCSTR)pCurMech->getMechClass());
+		sprintf(str, tmpStr, pCurMech->getMaxWeight(), (PCSTR)pCurMech->getMechClass());
 		textObjects[7].setText(str);
 		// firing range
 		int32_t tmpColor;
-		textObjects[14].setText(
-			pCurMech->getVariant()->getOptimalRangeString(tmpColor));
+		textObjects[14].setText(pCurMech->getVariant()->getOptimalRangeString(tmpColor));
 		textObjects[14].setColor(tmpColor);
 		// armor
 		int32_t armor = pCurMech->getArmor();
@@ -704,8 +685,7 @@ void MechBayScreen::beginDrag(LogisticsMech* pMech)
 		userInput->getMouseY() - dragIcon.height() / 2);
 	pDragMech = pMech;
 	// figure out where the mech came from
-	if (mechListBox.pointInside(
-			userInput->getMouseDragX(), userInput->getMouseDragY()))
+	if (mechListBox.pointInside(userInput->getMouseDragX(), userInput->getMouseDragY()))
 	{
 		if (pMech->getForceGroup())
 		{
@@ -717,16 +697,14 @@ void MechBayScreen::beginDrag(LogisticsMech* pMech)
 			pDragMech = 0;
 			return;
 		}
-		LogisticsData::instance->addMechToForceGroup(
-			pMech, forceGroupCount + 1);
+		LogisticsData::instance->addMechToForceGroup(pMech, forceGroupCount + 1);
 		dragLeft = 0;
 	}
 	else
 	{
 		for (size_t i = 0; i < ICON_COUNT; i++)
 		{
-			if (pIcons[i].pointInside(
-					userInput->getMouseDragX(), userInput->getMouseDragY()))
+			if (pIcons[i].pointInside(userInput->getMouseDragX(), userInput->getMouseDragY()))
 			{
 				forceGroupCount--;
 				// select the next one
@@ -741,8 +719,7 @@ void MechBayScreen::beginDrag(LogisticsMech* pMech)
 				{
 					LogisticsData::instance->removeMechFromForceGroup(
 						pIcons[i + 1].getMech(), false);
-					LogisticsData::instance->addMechToForceGroup(
-						pIcons[i + 1].getMech(), i + 1);
+					LogisticsData::instance->addMechToForceGroup(pIcons[i + 1].getMech(), i + 1);
 					pIcons[i].setMech(pIcons[i + 1].getMech());
 					pIcons[i].setPilot(pIcons[i + 1].getPilot());
 				}
@@ -787,9 +764,8 @@ void MechBayScreen::reinitMechs()
 	// initialize both the inventory and icon lists
 	EList<LogisticsMech*, LogisticsMech*> mechList;
 	LogisticsData::instance->getInventory(mechList);
-	for (EList<LogisticsMech*, LogisticsMech*>::EIterator iter =
-			 mechList.Begin();
-		 !iter.IsDone(); iter++)
+	for (EList<LogisticsMech*, LogisticsMech*>::EIterator iter = mechList.Begin(); !iter.IsDone();
+		 iter++)
 	{
 		if ((*iter)->getForceGroup())
 		{

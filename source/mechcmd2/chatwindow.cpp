@@ -64,8 +64,7 @@ int32_t ChatWindow::initInstance()
 		return false;
 	}
 	LogisticsScreen::init(file, "Static", "Text", "Rect", "Button", "Edit");
-	listBox.init(
-		rects[1].left(), rects[1].top(), rects[1].width(), rects[1].height());
+	listBox.init(rects[1].left(), rects[1].top(), rects[1].width(), rects[1].height());
 	listBox.setSpaceBetweenItems(0);
 	chatWidget.init();
 	for (size_t i = 0; i < buttonCount; i++)
@@ -95,8 +94,7 @@ int32_t ChatWindow::handleMessage(uint32_t, uint32_t who)
 {
 	if (who == MP_CHAT_HELPTOGGLE)
 	{
-		if (getButton(MP_CHAT_HELPTOGGLE)->isPressed() &&
-			getButton(MP_CHAT_EXPAND)->isPressed())
+		if (getButton(MP_CHAT_HELPTOGGLE)->isPressed() && getButton(MP_CHAT_EXPAND)->isPressed())
 		{
 			getButton(MP_CHAT_EXPAND)->press(0);
 		}
@@ -134,8 +132,8 @@ void ChatWindow::render(int32_t xOffset, int32_t yOffset)
 	LogisticsScreen::render(xOffset, yOffset);
 	if (getButton(MP_CHAT_EXPAND)->isPressed())
 	{
-		RECT rect = {edits[0].globalX(), edits[0].globalY(),
-			listBox.globalRight(), edits[0].globalBottom()};
+		RECT rect = {
+			edits[0].globalX(), edits[0].globalY(), listBox.globalRight(), edits[0].globalBottom()};
 		drawRect(rect, 0xff000000);
 		chatWidget.render(xOffset, yOffset);
 		edits[0].move(xOffset, yOffset);
@@ -144,8 +142,8 @@ void ChatWindow::render(int32_t xOffset, int32_t yOffset)
 	}
 	else if (!getButton(MP_CHAT_HELPTOGGLE)->isPressed())
 	{
-		RECT rect = {edits[0].globalX(), edits[0].globalY(),
-			listBox.globalRight(), edits[0].globalBottom()};
+		RECT rect = {
+			edits[0].globalX(), edits[0].globalY(), listBox.globalRight(), edits[0].globalBottom()};
 		drawRect(rect, 0xff000000);
 		edits[0].move(xOffset, yOffset);
 		edits[0].render();
@@ -177,22 +175,20 @@ void ChatWindow::update()
 	int32_t playerIDs[MAX_STORED_CHATS];
 	int32_t count = MAX_STORED_CHATS;
 	MPlayer->getChatMessages(chatTexts, playerIDs, count);
-	refillListBox(
-		listBox, chatTexts, playerIDs, listItems, curItem, count, maxItems);
-	refillListBox(chatWidget.listBox, chatTexts, playerIDs,
-		chatWidget.listItems, chatWidget.curItem, count, 128);
+	refillListBox(listBox, chatTexts, playerIDs, listItems, curItem, count, maxItems);
+	refillListBox(chatWidget.listBox, chatTexts, playerIDs, chatWidget.listItems,
+		chatWidget.curItem, count, 128);
 	// now do the same for the chat widget....
 	LogisticsScreen::update();
 	if (bEnterPressed)
 	{
 		if (bFocused)
 		{
-			EString text;
+			std::wstring text;
 			edits[0].getEntry(text);
-			int32_t team =
-				getButton(MP_CHAT_TEAMONLY)->isPressed()
-					? MPlayer->getPlayerInfo(MPlayer->commanderID)->team
-					: -1;
+			int32_t team = getButton(MP_CHAT_TEAMONLY)->isPressed()
+				? MPlayer->getPlayerInfo(MPlayer->commanderID)->team
+				: -1;
 			if (text.Length())
 			{
 				MPlayer->sendChat(0, team, (PSTR)(PCSTR)text);
@@ -210,9 +206,8 @@ void ChatWindow::update()
 	}
 }
 
-void ChatWindow::refillListBox(aListBox& listBox, PSTR* chatTexts,
-	int32_t* playerIDs, ChatMessageItem* pItems, int32_t& curItem,
-	int32_t itemCount, int32_t maxCount)
+void ChatWindow::refillListBox(aListBox& listBox, PSTR* chatTexts, int32_t* playerIDs,
+	ChatMessageItem* pItems, int32_t& curItem, int32_t itemCount, int32_t maxCount)
 {
 	int32_t linesToAdd = 0;
 	for (size_t i = 0; i < itemCount && i < maxCount; i++)
@@ -235,8 +230,7 @@ void ChatWindow::refillListBox(aListBox& listBox, PSTR* chatTexts,
 			pItems[item].setPlayerName(player->name);
 		int32_t lineCount = pItems[item].setText(chatTexts[i]);
 		linesToAdd += lineCount;
-		pItems[item].setTextColor(
-			(playerIDs[i] & 0x10000000) ? 0xff41c700 : 0xffffffff);
+		pItems[item].setTextColor((playerIDs[i] & 0x10000000) ? 0xff41c700 : 0xffffffff);
 		pItems[item].moveTo(0, 0);
 	}
 	int32_t curLinesInListBox = 0;
@@ -290,8 +284,7 @@ void ChatWidget::init()
 		return;
 	}
 	LogisticsScreen::init(file, "Static", "Text", "Rect", "Button", "Edit");
-	listBox.init(
-		rects[2].left(), rects[2].top(), rects[2].width(), rects[2].height());
+	listBox.init(rects[2].left(), rects[2].top(), rects[2].width(), rects[2].height());
 	listBox.setSpaceBetweenItems(0);
 }
 
@@ -345,19 +338,13 @@ int32_t ChatMessageItem::setText(PCSTR pText)
 void ChatMessageItem::setPlayerColor(int32_t newColor)
 {
 	playerRect.setColor(newColor);
-	if (((newColor & 0xff) + ((newColor & 0xff00) >> 8) +
-			((newColor & 0xff0000) >> 16)) /
-			3 <
-		85)
+	if (((newColor & 0xff) + ((newColor & 0xff00) >> 8) + ((newColor & 0xff0000) >> 16)) / 3 < 85)
 		name.setColor(0xffffffff);
 	else
 		name.setColor(0xff000000);
 }
 
-void ChatMessageItem::setTextColor(int32_t newColor)
-{
-	playerText.setColor(newColor);
-}
+void ChatMessageItem::setTextColor(int32_t newColor) { playerText.setColor(newColor); }
 
 //*************************************************************************************************
 // end of file ( ChatWindow.cpp )

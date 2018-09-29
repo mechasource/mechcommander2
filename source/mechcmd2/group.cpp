@@ -189,8 +189,7 @@ MoverPtr MoverGroup::getPoint(void)
 
 MoverPtr MoverGroup::getMover(int32_t i)
 {
-	MoverPtr mover =
-		dynamic_cast<MoverPtr>(ObjectManager->getByWatchID(moverWIDs[i]));
+	MoverPtr mover = dynamic_cast<MoverPtr>(ObjectManager->getByWatchID(moverWIDs[i]));
 	if (!mover)
 		Fatal(0, " MoverGroup.getMover: nullptr mover ");
 	return (mover);
@@ -263,15 +262,13 @@ void MoverGroup::addToGUI(bool visible)
 {
 #ifdef USE_IFACE
 	for (size_t i = 0; i < numMovers; i++)
-		theInterface->AddMech(
-			movers[i]->getPartId(), id, movers[i]->getAwake(), visible);
+		theInterface->AddMech(movers[i]->getPartId(), id, movers[i]->getAwake(), visible);
 #endif
 }
 
 //---------------------------------------------------------------------------
 
-inline bool inMapBounds(
-	int32_t r, int32_t c, int32_t mapHeight, int32_t mapWidth)
+inline bool inMapBounds(int32_t r, int32_t c, int32_t mapHeight, int32_t mapWidth)
 {
 	return ((r >= 0) && (r < mapHeight) && (c >= 0) && (c < mapWidth));
 }
@@ -281,19 +278,18 @@ inline bool inMapBounds(
 #define JUMPMAP_TILE_DIM 3
 #define JUMPMAP_CELL_DIM terrain_const::MAPCELL_DIM* JUMPMAP_TILE_DIM
 
-char CellSpiralIncrement[JUMPMAP_CELL_DIM * JUMPMAP_CELL_DIM * 2] = {-1, 0, 0,
-	1, 1, 0, 1, 0, 0, -1, 0, -1, -1, 0, -1, 0,
+char CellSpiralIncrement[JUMPMAP_CELL_DIM * JUMPMAP_CELL_DIM * 2] = {-1, 0, 0, 1, 1, 0, 1, 0, 0, -1,
+	0, -1, -1, 0, -1, 0,
 
-	-1, 0, 0, 1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 0, 1, 0, 0, -1, 0, -1, 0, -1, 0, -1,
-	-1, 0, -1, 0, -1, 0, -1, 0,
+	-1, 0, 0, 1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 0, 1, 0, 0, -1, 0, -1, 0, -1, 0, -1, -1, 0, -1, 0, -1,
+	0, -1, 0,
 
-	-1, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0,
-	-1, 0, -1, 0, -1, 0, -1, 0, -1, 0, -1, -1, 0, -1, 0, -1, 0, -1, 0, -1, 0,
-	-1, 0,
+	-1, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, -1, 0, -1, 0, -1, 0,
+	-1, 0, -1, 0, -1, -1, 0, -1, 0, -1, 0, -1, 0, -1, 0, -1, 0,
 
-	-1, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1,
-	0, 1, 0, 1, 0, 1, 0, 0, -1, 0, -1, 0, -1, 0, -1, 0, -1, 0, -1, 0, -1, 0, -1,
-	-1, 0, -1, 0, -1, 0, -1, 0, -1, 0, -1, 0, -1, 0, -1, 0};
+	-1, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0,
+	0, -1, 0, -1, 0, -1, 0, -1, 0, -1, 0, -1, 0, -1, 0, -1, -1, 0, -1, 0, -1, 0, -1, 0, -1, 0, -1,
+	0, -1, 0, -1, 0};
 
 //---------------------------------------------------------------------------
 
@@ -335,8 +331,7 @@ int32_t MoverGroup::calcMoveGoals(
 		return 0;
 	if (!goalMap)
 	{
-		goalMap = (GoalMapNode*)systemHeap->Malloc(
-			sizeof(GoalMapNode) * GOALMAP_DIM * GOALMAP_DIM);
+		goalMap = (GoalMapNode*)systemHeap->Malloc(sizeof(GoalMapNode) * GOALMAP_DIM * GOALMAP_DIM);
 		if (!goalMap)
 			Fatal(0, " MoverGroup.calcMoveGoals: unable to malloc goalMap ");
 	}
@@ -347,14 +342,11 @@ int32_t MoverGroup::calcMoveGoals(
 	for (size_t r = 0; r < GOALMAP_DIM; r++)
 		for (size_t c = 0; c < GOALMAP_DIM; c++)
 		{
-			if (!inMapBounds(topLeftRow + r, topLeftCol + c, GameMap->height,
-					GameMap->width))
+			if (!inMapBounds(topLeftRow + r, topLeftCol + c, GameMap->height, GameMap->width))
 				continue;
 			int32_t index = r * GOALMAP_DIM + c;
 			goalMap[index].cost =
-				GameMap->getPassable(topLeftRow + r, topLeftCol + c)
-					? 100
-					: COST_BLOCKED;
+				GameMap->getPassable(topLeftRow + r, topLeftCol + c) ? 100 : COST_BLOCKED;
 			goalMap[index].flags = GOALFLAG_AVAILABLE + GOALFLAG_NO_NEIGHBORS;
 			goalMap[index].g	 = 0;
 		}
@@ -401,23 +393,22 @@ int32_t MoverGroup::calcMoveGoals(
 				if (bestMapNode->flags & GOALFLAG_AVAILABLE)
 				{
 					bestMapNode->clearFlag(GOALFLAG_AVAILABLE);
-					land->cellToWorld(topLeftRow + curRow, topLeftCol + curCol,
-						goalList[numGoalsFound++]);
+					land->cellToWorld(
+						topLeftRow + curRow, topLeftCol + curCol, goalList[numGoalsFound++]);
 					markNeighbors = true;
 				}
 		if (numGoalsFound == numMovers)
 			break;
 		if (markNeighbors)
 		{
-			static int32_t cellShift[8][2] = {{-1, 0}, {-1, 1}, {0, 1}, {1, 1},
-				{1, 0}, {1, -1}, {0, -1}, {-1, -1}};
+			static int32_t cellShift[8][2] = {
+				{-1, 0}, {-1, 1}, {0, 1}, {1, 1}, {1, 0}, {1, -1}, {0, -1}, {-1, -1}};
 			for (size_t i = 0; i < 8; i++)
 			{
 				int32_t nRow = curRow + cellShift[i][0];
 				int32_t nCol = curRow + cellShift[i][1];
 				if (inMapBounds(nRow, nCol, GOALMAP_DIM, GOALMAP_DIM))
-					goalMap[nRow * GOALMAP_DIM + nCol].clearFlag(
-						GOALFLAG_NO_NEIGHBORS);
+					goalMap[nRow * GOALMAP_DIM + nCol].clearFlag(GOALFLAG_NO_NEIGHBORS);
 			}
 		}
 		int32_t bestNodeG = bestMapNode->g;
@@ -436,13 +427,11 @@ int32_t MoverGroup::calcMoveGoals(
 			// If it's on the map, check it...
 			if (inMapBounds(succRow, succCol, GOALMAP_DIM, GOALMAP_DIM))
 			{
-				GoalMapNode* succMapNode =
-					&goalMap[succRow * GOALMAP_DIM + succCol];
+				GoalMapNode* succMapNode = &goalMap[succRow * GOALMAP_DIM + succCol];
 				if (succMapNode->cost < COST_BLOCKED)
 				{
 					int32_t succNodeG = bestNodeG + succMapNode->cost;
-					if ((succMapNode->flags &
-							(GOALFLAG_OPEN + GOALFLAG_CLOSED)) == 0)
+					if ((succMapNode->flags & (GOALFLAG_OPEN + GOALFLAG_CLOSED)) == 0)
 					{
 						//-------------------------------------------------
 						// This node is neither OPEN nor CLOSED, so toss it
@@ -468,8 +457,8 @@ int32_t MoverGroup::calcMoveGoals(
 
 #define DEBUGJUMPGOALS TRUE
 
-int32_t MoverGroup::calcJumpGoals(Stuff::Vector3D goal, int32_t numMovers,
-	Stuff::Vector3D* goalList, GameObjectPtr DFATarget)
+int32_t MoverGroup::calcJumpGoals(
+	Stuff::Vector3D goal, int32_t numMovers, Stuff::Vector3D* goalList, GameObjectPtr DFATarget)
 {
 	int32_t numJumping = 0;
 	//-----------------------------
@@ -549,23 +538,21 @@ int32_t MoverGroup::calcJumpGoals(Stuff::Vector3D goal, int32_t numMovers,
 	for (size_t i = 0; i < moverCount; i++)
 	{
 		MoverPtr mover = ObjectManager->getMover(i);
-		if ((mover->getObjectClass() != ELEMENTAL) && (mover != DFATarget) &&
-			!mover->isDisabled())
+		if ((mover->getObjectClass() != ELEMENTAL) && (mover != DFATarget) && !mover->isDisabled())
 		{
 			int32_t mapCellRow, mapCellCol;
 			mover->getCellPosition(mapCellRow, mapCellCol);
 			mapCellRow -= mapCellUL[0];
 			mapCellCol -= mapCellUL[1];
-			if (inMapBounds(
-					mapCellRow, mapCellCol, JUMPMAP_CELL_DIM, JUMPMAP_CELL_DIM))
+			if (inMapBounds(mapCellRow, mapCellCol, JUMPMAP_CELL_DIM, JUMPMAP_CELL_DIM))
 				jumpMap[mapCellRow][mapCellCol] = -2;
 		}
 	}
 #ifdef _DEBUG
 #if DEBUGJUMPGOALS
 	char debugStr[256];
-	sprintf(debugStr, "GROUP JUMP(%.2f,%.2f,%.2f)--UL = %d,%d: ", goal.x,
-		goal.y, goal.z, mapCellUL[0], mapCellUL[1]);
+	sprintf(debugStr, "GROUP JUMP(%.2f,%.2f,%.2f)--UL = %d,%d: ", goal.x, goal.y, goal.z,
+		mapCellUL[0], mapCellUL[1]);
 #endif
 #endif
 	//-----------------------------------------------------------------
@@ -587,8 +574,8 @@ int32_t MoverGroup::calcJumpGoals(Stuff::Vector3D goal, int32_t numMovers,
 				//----------------------------------
 				// Found an open cell, so take it...
 				jumpMap[curCellRow][curCellCol] = i;
-				land->cellToWorld(mapCellUL[0] + curCellRow,
-					mapCellUL[1] + curCellCol, goalList[i]);
+				land->cellToWorld(
+					mapCellUL[0] + curCellRow, mapCellUL[1] + curCellCol, goalList[i]);
 				numJumping++;
 				notFound = false;
 #ifdef _DEBUG
@@ -605,8 +592,7 @@ int32_t MoverGroup::calcJumpGoals(Stuff::Vector3D goal, int32_t numMovers,
 				// Go to the next cell in our search...
 				do
 				{
-					if (spiralIndex ==
-						(JUMPMAP_CELL_DIM * JUMPMAP_CELL_DIM * 2))
+					if (spiralIndex == (JUMPMAP_CELL_DIM * JUMPMAP_CELL_DIM * 2))
 					{
 						goalList[i].x = -99999.0;
 						goalList[i].y = -99999.0;
@@ -616,8 +602,7 @@ int32_t MoverGroup::calcJumpGoals(Stuff::Vector3D goal, int32_t numMovers,
 					}
 					curCellRow += CellSpiralIncrement[spiralIndex++];
 					curCellCol += CellSpiralIncrement[spiralIndex++];
-				} while (!inMapBounds(curCellRow, curCellCol, JUMPMAP_CELL_DIM,
-					JUMPMAP_CELL_DIM));
+				} while (!inMapBounds(curCellRow, curCellCol, JUMPMAP_CELL_DIM, JUMPMAP_CELL_DIM));
 			}
 		}
 	}
@@ -634,8 +619,8 @@ int32_t MoverGroup::calcJumpGoals(
 
 //---------------------------------------------------------------------------
 
-int32_t MoverGroup::handleTacticalOrder(TacticalOrder tacOrder,
-	int32_t priority, Stuff::Vector3D* jumpGoalList, bool queueGroupOrder)
+int32_t MoverGroup::handleTacticalOrder(
+	TacticalOrder tacOrder, int32_t priority, Stuff::Vector3D* jumpGoalList, bool queueGroupOrder)
 {
 	if (numMovers == 0)
 		return (NO_ERROR);
@@ -655,8 +640,7 @@ int32_t MoverGroup::handleTacticalOrder(TacticalOrder tacOrder,
 			tacOrder.code						= TACTICAL_ORDER_JUMPTO_OBJECT;
 			tacOrder.moveParams.wait			= false;
 			tacOrder.moveParams.wayPath.mode[0] = TRAVEL_MODE_SLOW;
-			GameObjectPtr target =
-				ObjectManager->getByWatchID(tacOrder.targetWID);
+			GameObjectPtr target				= ObjectManager->getByWatchID(tacOrder.targetWID);
 			Assert(tacOrder.targetWID != 0, 0, " DFA AttackObject WID is 0 ");
 			if (!target)
 				return (NO_ERROR);
@@ -680,8 +664,9 @@ int32_t MoverGroup::handleTacticalOrder(TacticalOrder tacOrder,
 	case TACTICAL_ORDER_MOVETO_POINT:
 	case TACTICAL_ORDER_MOVETO_OBJECT:
 	{
-		Fatal(0, "Need to support jumpGoalList (and goalList) for MOVETO as "
-				 "well in mc2 ");
+		Fatal(0,
+			"Need to support jumpGoalList (and goalList) for MOVETO as "
+			"well in mc2 ");
 		isMove = true;
 		//-----------------------------------------------------------
 		// Sort by distance to destination. Their selectionIndex will
@@ -806,8 +791,7 @@ int32_t MoverGroup::handleTacticalOrder(TacticalOrder tacOrder,
 					tacOrder.setWayPoint(0, location);
 				else if (isJump)
 					tacOrder.setWayPoint(0, goalList[i]);
-				tacOrder.delayedTime =
-					scenarioTime + (mover->selectionIndex * DelayedOrderTime);
+				tacOrder.delayedTime = scenarioTime + (mover->selectionIndex * DelayedOrderTime);
 			}
 			switch (tacOrder.origin)
 			{
@@ -848,48 +832,42 @@ int32_t MoverGroup::orderMoveToPoint(
 	int32_t result = TACORDER_FAILURE;
 	for (size_t i = 0; i < numMovers; i++)
 	{
-		Assert(getMover(i) != nullptr, 0,
-			" MoverGroup.orderMoveToPoint: nullptr mover ");
+		Assert(getMover(i) != nullptr, 0, " MoverGroup.orderMoveToPoint: nullptr mover ");
 		MechWarriorPtr pilot = getMover(i)->getPilot();
 		if (pilot)
-			result = pilot->orderMoveToPoint(
-				true, setTacOrder, origin, location, -1, params);
+			result = pilot->orderMoveToPoint(true, setTacOrder, origin, location, -1, params);
 	}
 	return (result);
 }
 
 //---------------------------------------------------------------------------
 
-int32_t MoverGroup::orderMoveToObject(bool setTacOrder, int32_t origin,
-	GameObjectPtr target, int32_t fromArea, uint32_t params)
+int32_t MoverGroup::orderMoveToObject(
+	bool setTacOrder, int32_t origin, GameObjectPtr target, int32_t fromArea, uint32_t params)
 {
 	int32_t result = TACORDER_FAILURE;
 	for (size_t i = 0; i < numMovers; i++)
 	{
-		Assert(getMover(i) != nullptr, 0,
-			" MoverGroup.orderMoveToObject: nullptr mover ");
-		MechWarriorPtr pilot = getMover(i)->getPilot();
-		if (pilot)
-			result = pilot->orderMoveToObject(
-				true, setTacOrder, origin, target, fromArea, -1, params);
-	}
-	return (result);
-}
-
-//---------------------------------------------------------------------------
-
-int32_t MoverGroup::orderTraversePath(
-	int32_t origin, WayPathPtr wayPath, uint32_t params)
-{
-	int32_t result = TACORDER_FAILURE;
-	for (size_t i = 0; i < numMovers; i++)
-	{
-		Assert(getMover(i) != nullptr, 0,
-			" MoverGroup.orderTraversePath: nullptr mover ");
+		Assert(getMover(i) != nullptr, 0, " MoverGroup.orderMoveToObject: nullptr mover ");
 		MechWarriorPtr pilot = getMover(i)->getPilot();
 		if (pilot)
 			result =
-				pilot->orderTraversePath(true, true, origin, wayPath, params);
+				pilot->orderMoveToObject(true, setTacOrder, origin, target, fromArea, -1, params);
+	}
+	return (result);
+}
+
+//---------------------------------------------------------------------------
+
+int32_t MoverGroup::orderTraversePath(int32_t origin, WayPathPtr wayPath, uint32_t params)
+{
+	int32_t result = TACORDER_FAILURE;
+	for (size_t i = 0; i < numMovers; i++)
+	{
+		Assert(getMover(i) != nullptr, 0, " MoverGroup.orderTraversePath: nullptr mover ");
+		MechWarriorPtr pilot = getMover(i)->getPilot();
+		if (pilot)
+			result = pilot->orderTraversePath(true, true, origin, wayPath, params);
 	}
 	return (result);
 }
@@ -901,8 +879,7 @@ int32_t MoverGroup::orderPatrolPath(int32_t origin, WayPathPtr wayPath)
 	int32_t result = TACORDER_FAILURE;
 	for (size_t i = 0; i < numMovers; i++)
 	{
-		Assert(getMover(i) != nullptr, 0,
-			" MoverGroup.orderPatrolPath: nullptr mover ");
+		Assert(getMover(i) != nullptr, 0, " MoverGroup.orderPatrolPath: nullptr mover ");
 		MechWarriorPtr pilot = getMover(i)->getPilot();
 		if (pilot)
 			result = pilot->orderPatrolPath(true, true, origin, wayPath);
@@ -917,8 +894,7 @@ int32_t MoverGroup::orderPowerDown(int32_t origin)
 	int32_t result = TACORDER_FAILURE;
 	for (size_t i = 0; i < numMovers; i++)
 	{
-		Assert(getMover(i) != nullptr, 0,
-			" MoverGroup.orderPowerDown: nullptr mover ");
+		Assert(getMover(i) != nullptr, 0, " MoverGroup.orderPowerDown: nullptr mover ");
 		MechWarriorPtr pilot = getMover(i)->getPilot();
 		if (pilot)
 			result = pilot->orderPowerDown(true, origin);
@@ -933,8 +909,7 @@ int32_t MoverGroup::orderPowerUp(int32_t origin)
 	int32_t result = TACORDER_FAILURE;
 	for (size_t i = 0; i < numMovers; i++)
 	{
-		Assert(getMover(i) != nullptr, 0,
-			" MoverGroup.orderPowerUp: nullptr mover ");
+		Assert(getMover(i) != nullptr, 0, " MoverGroup.orderPowerUp: nullptr mover ");
 		MechWarriorPtr pilot = getMover(i)->getPilot();
 		if (pilot)
 			result = pilot->orderPowerUp(true, origin);
@@ -944,19 +919,18 @@ int32_t MoverGroup::orderPowerUp(int32_t origin)
 
 //---------------------------------------------------------------------------
 
-int32_t MoverGroup::orderAttackObject(int32_t origin, GameObjectPtr target,
-	int32_t attackType, int32_t attackMethod, int32_t attackRange,
-	int32_t aimLocation, int32_t fromArea, uint32_t params)
+int32_t MoverGroup::orderAttackObject(int32_t origin, GameObjectPtr target, int32_t attackType,
+	int32_t attackMethod, int32_t attackRange, int32_t aimLocation, int32_t fromArea,
+	uint32_t params)
 {
 	int32_t result = TACORDER_FAILURE;
 	for (size_t i = 0; i < numMovers; i++)
 	{
-		Assert(getMover(i) != nullptr, 0,
-			" MoverGroup.orderAttackObject: nullptr mover ");
+		Assert(getMover(i) != nullptr, 0, " MoverGroup.orderAttackObject: nullptr mover ");
 		MechWarriorPtr pilot = getMover(i)->getPilot();
 		if (pilot)
-			result = pilot->orderAttackObject(true, origin, target, attackType,
-				attackMethod, attackRange, aimLocation, fromArea, params);
+			result = pilot->orderAttackObject(true, origin, target, attackType, attackMethod,
+				attackRange, aimLocation, fromArea, params);
 	}
 	return (result);
 }
@@ -968,8 +942,7 @@ int32_t MoverGroup::orderWithdraw(int32_t origin, Stuff::Vector3D location)
 	int32_t result = TACORDER_FAILURE;
 	for (size_t i = 0; i < numMovers; i++)
 	{
-		Assert(getMover(i) != nullptr, 0,
-			" MoverGroup.orderWithdraw: nullptr mover ");
+		Assert(getMover(i) != nullptr, 0, " MoverGroup.orderWithdraw: nullptr mover ");
 		MechWarriorPtr pilot = getMover(i)->getPilot();
 		if (pilot)
 			result = pilot->orderWithdraw(true, origin, location);
@@ -984,8 +957,7 @@ int32_t MoverGroup::orderEject(int32_t origin)
 	int32_t result = TACORDER_FAILURE;
 	for (size_t i = 0; i < numMovers; i++)
 	{
-		Assert(getMover(i) != nullptr, 0,
-			" MoverGroup.orderEject: nullptr mover ");
+		Assert(getMover(i) != nullptr, 0, " MoverGroup.orderEject: nullptr mover ");
 		MechWarriorPtr pilot = getMover(i)->getPilot();
 		if (pilot)
 			result = pilot->orderEject(true, true, origin);
@@ -1051,8 +1023,7 @@ void MoverGroup::copyTo(MoverGroupData& data)
 {
 	data.id		   = id;
 	data.numMovers = numMovers;
-	memcpy(data.moverWIDs, moverWIDs,
-		sizeof(GameObjectWatchID) * MAX_MOVERGROUP_COUNT);
+	memcpy(data.moverWIDs, moverWIDs, sizeof(GameObjectWatchID) * MAX_MOVERGROUP_COUNT);
 	data.pointWID		  = pointWID;
 	data.disbandOnNoPoint = disbandOnNoPoint;
 }
@@ -1062,8 +1033,7 @@ void MoverGroup::init(MoverGroupData& data)
 {
 	id		  = data.id;
 	numMovers = data.numMovers;
-	memcpy(moverWIDs, data.moverWIDs,
-		sizeof(GameObjectWatchID) * MAX_MOVERGROUP_COUNT);
+	memcpy(moverWIDs, data.moverWIDs, sizeof(GameObjectWatchID) * MAX_MOVERGROUP_COUNT);
 	pointWID		 = data.pointWID;
 	disbandOnNoPoint = data.disbandOnNoPoint;
 }

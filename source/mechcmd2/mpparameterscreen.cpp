@@ -67,8 +67,8 @@ GUID NO_VERSION_GUID = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 
 };
 
-PCSTR pPurchaseFiles[5] = {"purchase_Steiner", "purchase_Davion",
-	"purchase_Liao", "purchase_Clan", "purchase_All"};
+PCSTR pPurchaseFiles[5] = {
+	"purchase_Steiner", "purchase_Davion", "purchase_Liao", "purchase_Clan", "purchase_All"};
 
 MPParameterScreen::MPParameterScreen()
 {
@@ -120,15 +120,15 @@ void MPParameterScreen::init(FitIniFile* file)
 		for (size_t i = 0; i < buttonCount; i++)
 		{
 			int32_t id = buttons[i].getID();
-			if ((id < MP_INCREMENT_DROPWEIGHT || id > MP_DECREMENT_RP) &&
-				id != MP_LOCKGAME && id != MP_BOOTPLAYER)
+			if ((id < MP_INCREMENT_DROPWEIGHT || id > MP_DECREMENT_RP) && id != MP_LOCKGAME &&
+				id != MP_BOOTPLAYER)
 				buttons[i].setMessageOnRelease();
 			if (buttons[i].getID() == 0)
 			{
 				buttons[i].setID(FIRST_BUTTON_ID + i);
 			}
-			if (id != MB_MSG_NEXT && id != MB_MSG_PREV &&
-				id != MP_PLAYER_PREFS && id != MB_MSG_MAINMENU)
+			if (id != MB_MSG_NEXT && id != MB_MSG_PREV && id != MP_PLAYER_PREFS &&
+				id != MB_MSG_MAINMENU)
 			{
 				buttons[i].setPressFX(LOG_VIDEOBUTTONS);
 				buttons[i].setHighlightFX(LOG_DIGITALHIGHLIGHT);
@@ -141,8 +141,7 @@ void MPParameterScreen::init(FitIniFile* file)
 	for (size_t i = 1; i < MAX_MC_PLAYERS; i++)
 	{
 		playerParameters[i] = playerParameters[0];
-		curY =
-			i * (playerParameters[i].bottom() - playerParameters[i].top() + 5);
+		curY				= i * (playerParameters[i].bottom() - playerParameters[i].top() + 5);
 		playerParameters[i].move(0, curY);
 	}
 	FullPathFileName path;
@@ -182,8 +181,7 @@ void MPParameterScreen::begin()
 	bDisconnectDlg = 0;
 	MPlayer->initParametersScreen();
 	if (MPlayer->isHost())
-		setMission(MPlayer->missionSettings.map,
-			(status != UP && status != NEXT) ? 1 : 0);
+		setMission(MPlayer->missionSettings.map, (status != UP && status != NEXT) ? 1 : 0);
 	else
 		setMissionClientOnly(MPlayer->missionSettings.map);
 	delayTime	= 0.f;
@@ -355,8 +353,7 @@ int32_t MPParameterScreen::handleMessage(uint32_t message, uint32_t who)
 			{
 				if (playerParameters[i].isSelected())
 				{
-					if (MPlayer->commanderID ==
-						playerParameters[i].getCommanderID())
+					if (MPlayer->commanderID == playerParameters[i].getCommanderID())
 					{
 						soundSystem->playDigitalSample(LOG_WRONGBUTTON);
 						return 0;
@@ -499,10 +496,7 @@ int32_t MPParameterScreen::handleMessage(uint32_t message, uint32_t who)
 	return 0;
 }
 
-void MPParameterScreen::initializeMap(PCSTR fileName)
-{
-	s_instance->setMission(fileName, true);
-}
+void MPParameterScreen::initializeMap(PCSTR fileName) { s_instance->setMission(fileName, true); }
 
 void MPParameterScreen::setMission(PCSTR fileName, bool resetData)
 {
@@ -521,20 +515,16 @@ void MPParameterScreen::setMission(PCSTR fileName, bool resetData)
 		int32_t result = 0;
 		char missionName[256];
 		result = missionFile.seekBlock("MissionSettings");
-		Assert(result == NO_ERROR, 0,
-			"Coudln't find the mission settings block in the mission file");
+		Assert(
+			result == NO_ERROR, 0, "Coudln't find the mission settings block in the mission file");
 		bool bRes;
-		result =
-			missionFile.readIdBoolean("MissionNameUseResourceString", bRes);
-		Assert(result == NO_ERROR, 0,
-			"couldn't find the MissionNameUseResourceString");
+		result = missionFile.readIdBoolean("MissionNameUseResourceString", bRes);
+		Assert(result == NO_ERROR, 0, "couldn't find the MissionNameUseResourceString");
 		if (bRes)
 		{
 			uint32_t lRes;
-			result =
-				missionFile.readIdULong("MissionNameResourceStringID", lRes);
-			Assert(result == NO_ERROR, 0,
-				"couldn't find the MissionNameResourceStringID");
+			result = missionFile.readIdULong("MissionNameResourceStringID", lRes);
+			Assert(result == NO_ERROR, 0, "couldn't find the MissionNameResourceStringID");
 			cLoadString(lRes, missionName, 255);
 		}
 		else
@@ -545,48 +535,44 @@ void MPParameterScreen::setMission(PCSTR fileName, bool resetData)
 		gosASSERT(strlen(missionName) < MAXLEN_MAP_NAME);
 		strcpy(MPlayer->missionSettings.map, fileName);
 		strcpy(MPlayer->missionSettings.name, missionName);
-		result = missionFile.readIdLong(
-			"ResourcePoints", MPlayer->missionSettings.resourcePoints);
-		result = missionFile.readIdLong(
-			"AdditionalCBills", MPlayer->missionSettings.defaultCBills);
+		result = missionFile.readIdLong("ResourcePoints", MPlayer->missionSettings.resourcePoints);
+		result = missionFile.readIdLong("AdditionalCBills", MPlayer->missionSettings.defaultCBills);
 		if (MPlayer->isHost())
 			MPlayer->redistributeRP();
 		float fTmp;
-		result = missionFile.readIdFloat("DropWeightLimit", fTmp);
+		result								= missionFile.readIdFloat("DropWeightLimit", fTmp);
 		MPlayer->missionSettings.dropWeight = fTmp;
-		result								= missionFile.readIdFloat(
-			 "TimeLimit", MPlayer->missionSettings.timeLimit);
+		result = missionFile.readIdFloat("TimeLimit", MPlayer->missionSettings.timeLimit);
 		if (result != NO_ERROR)
 			MPlayer->missionSettings.timeLimit = -1.f;
-		result = missionFile.readIdBoolean("UnlimitedAmmoEnabledDefault",
-			MPlayer->missionSettings.unlimitedAmmo);
+		result = missionFile.readIdBoolean(
+			"UnlimitedAmmoEnabledDefault", MPlayer->missionSettings.unlimitedAmmo);
 		result = missionFile.readIdBoolean(
 			"NoVariantsEnabledDefault", MPlayer->missionSettings.variants);
 		MPlayer->missionSettings.variants ^= 1;
-		result = missionFile.readIdBoolean(
-			"AllTechEnabledDefault", MPlayer->missionSettings.allTech);
+		result =
+			missionFile.readIdBoolean("AllTechEnabledDefault", MPlayer->missionSettings.allTech);
 		result = missionFile.readIdBoolean(
 			"AirStrikesEnabledDefault", MPlayer->missionSettings.airStrike);
-		result = missionFile.readIdBoolean("ArtilleryPieceEnabledDefault",
-			MPlayer->missionSettings.guardTower);
-		result = missionFile.readIdBoolean("RepairVehicleEnabledDefault",
-			MPlayer->missionSettings.repairVehicle);
-		result = missionFile.readIdBoolean("SalvageCraftEnabledDefault",
-			MPlayer->missionSettings.recoveryTeam);
+		result = missionFile.readIdBoolean(
+			"ArtilleryPieceEnabledDefault", MPlayer->missionSettings.guardTower);
+		result = missionFile.readIdBoolean(
+			"RepairVehicleEnabledDefault", MPlayer->missionSettings.repairVehicle);
+		result = missionFile.readIdBoolean(
+			"SalvageCraftEnabledDefault", MPlayer->missionSettings.recoveryTeam);
 		result = missionFile.readIdBoolean(
 			"SensorProbesEnabledDefault", MPlayer->missionSettings.sensorProbe);
 		result = missionFile.readIdBoolean(
 			"ScoutCoptersEnabledDefault", MPlayer->missionSettings.scoutCopter);
 		result = missionFile.readIdBoolean(
 			"MineLayersEnabledDefault", MPlayer->missionSettings.mineLayer);
-		result = missionFile.readIdBoolean("ResourceBuildingsEnabledDefault",
-			MPlayer->missionSettings.resourceBuilding);
+		result = missionFile.readIdBoolean(
+			"ResourceBuildingsEnabledDefault", MPlayer->missionSettings.resourceBuilding);
 		result = missionFile.readIdBoolean(
 			"ScoutCoptersEnabledDefault", MPlayer->missionSettings.scoutCopter);
-		result = missionFile.readIdBoolean("RPsForMechsEnabledDefault",
-			MPlayer->missionSettings.resourceForMechs);
-		result = missionFile.readIdString(
-			"DownloadURL", MPlayer->missionSettings.url, 255);
+		result = missionFile.readIdBoolean(
+			"RPsForMechsEnabledDefault", MPlayer->missionSettings.resourceForMechs);
+		result = missionFile.readIdString("DownloadURL", MPlayer->missionSettings.url, 255);
 		uint32_t lTmp;
 		if (NO_ERROR == missionFile.readIdULong("MaximumNumberOfTeams", lTmp))
 			MPlayer->missionSettings.maxTeams = lTmp;
@@ -597,7 +583,7 @@ void MPParameterScreen::setMission(PCSTR fileName, bool resetData)
 		else
 			MPlayer->missionSettings.maxPlayers = 8;
 		uint32_t tmp;
-		result = missionFile.readIdULong("MissionType", tmp);
+		result								 = missionFile.readIdULong("MissionType", tmp);
 		MPlayer->missionSettings.missionType = tmp;
 		// divvy up the cBills!
 		mapName = MPlayer->missionSettings.map;
@@ -626,8 +612,7 @@ int32_t __cdecl sortPlayers(PCVOID p1, PCVOID p2)
 
 void MPParameterScreen::update()
 {
-	if (MPlayer->commanderID <
-		0) // don't do anything until we've been initalized
+	if (MPlayer->commanderID < 0) // don't do anything until we've been initalized
 		return;
 	if (VERSION_STATUS_UNKNOWN == MPlayer->getVersionStatus())
 	{
@@ -650,8 +635,7 @@ void MPParameterScreen::update()
 		else
 		{
 			LogisticsOneButtonDialog::instance()->setText(
-				IDS_MP_CONNECTION_ERROR_WRONG_VERSION, IDS_DIALOG_OK,
-				IDS_DIALOG_OK);
+				IDS_MP_CONNECTION_ERROR_WRONG_VERSION, IDS_DIALOG_OK, IDS_DIALOG_OK);
 			LogisticsOneButtonDialog::instance()->begin();
 			bErrorDlg = true;
 		}
@@ -702,17 +686,14 @@ void MPParameterScreen::update()
 		if (getButton(MB_MSG_NEXT)->isEnabled())
 		{
 			getButton(50 /*MB_MSG_NEXT*/)->press(0);
-			int32_t faction =
-				MPlayer->getPlayerInfo(MPlayer->commanderID)->faction;
+			int32_t faction = MPlayer->getPlayerInfo(MPlayer->commanderID)->faction;
 			if (faction < 0)
 				faction = 0;
 			if (MPlayer->missionSettings.allTech)
 				LogisticsData::instance->setPurchaseFile(pPurchaseFiles[4]);
 			else
-				LogisticsData::instance->setPurchaseFile(
-					pPurchaseFiles[faction]);
-			LogisticsData::instance->setCurrentMission(
-				MPlayer->missionSettings.map);
+				LogisticsData::instance->setPurchaseFile(pPurchaseFiles[faction]);
+			LogisticsData::instance->setCurrentMission(MPlayer->missionSettings.map);
 			MPlayer->sendMissionSetup(0, 6, nullptr);
 			status = NEXT;
 		}
@@ -728,8 +709,7 @@ void MPParameterScreen::update()
 	{
 		FullPathFileName path;
 		path.init(missionPath, MPlayer->missionSettings.map, ".pak");
-		if (!fileExists(
-				path)) // disable the ready button if the map isn't around...
+		if (!fileExists(path)) // disable the ready button if the map isn't around...
 		{
 			getButton(MAP_INFO)->disable(true);
 		}
@@ -738,8 +718,8 @@ void MPParameterScreen::update()
 			getButton(MAP_INFO)->disable(false);
 			if (!statics[15].getColor())
 			{
-				int32_t textureHandle = MissionBriefingScreen::getMissionTGA(
-					MPlayer->missionSettings.map);
+				int32_t textureHandle =
+					MissionBriefingScreen::getMissionTGA(MPlayer->missionSettings.map);
 				if (textureHandle)
 				{
 					statics[15].setTexture(textureHandle);
@@ -857,8 +837,7 @@ void MPParameterScreen::update()
 			{
 				checkVersionClientOnly(MPlayer->missionSettings.map);
 			}
-			if (MPlayer->playerInfo[MPlayer->commanderID]
-					.leftSession) // I've been booted!
+			if (MPlayer->playerInfo[MPlayer->commanderID].leftSession) // I've been booted!
 			{
 				if (status != GOTOSPLASH)
 				{
@@ -867,8 +846,7 @@ void MPParameterScreen::update()
 				}
 				return;
 			}
-			for (size_t i = MP_INCREMENT_DROPWEIGHT; i < MP_DECREMENT_RP + 1;
-				 i++)
+			for (size_t i = MP_INCREMENT_DROPWEIGHT; i < MP_DECREMENT_RP + 1; i++)
 			{
 				aButton* pButton = getButton(i);
 				if (pButton)
@@ -891,17 +869,14 @@ void MPParameterScreen::update()
 			getButton(MP_BOOTPLAYER)->showGUIWindow(false);
 			if (MPlayer->startLoading || MPlayer->startLogistics)
 			{
-				int32_t faction =
-					MPlayer->getPlayerInfo(MPlayer->commanderID)->faction;
+				int32_t faction = MPlayer->getPlayerInfo(MPlayer->commanderID)->faction;
 				if (faction < 0)
 					faction = 0;
 				if (MPlayer->missionSettings.allTech)
 					LogisticsData::instance->setPurchaseFile(pPurchaseFiles[4]);
 				else
-					LogisticsData::instance->setPurchaseFile(
-						pPurchaseFiles[faction]);
-				LogisticsData::instance->setCurrentMission(
-					MPlayer->missionSettings.map);
+					LogisticsData::instance->setPurchaseFile(pPurchaseFiles[faction]);
+				LogisticsData::instance->setCurrentMission(MPlayer->missionSettings.map);
 				status = NEXT;
 				return;
 			}
@@ -916,12 +891,9 @@ void MPParameterScreen::update()
 		{
 			// make sure King of the hill missions have a time limit
 			if (MPlayer->missionSettings.timeLimit < 60 &&
-				(MPlayer->missionSettings.missionType ==
-						MISSION_TYPE_KING_OF_THE_HILL ||
-					MPlayer->missionSettings.missionType ==
-						MISSION_TYPE_LAST_MAN_ON_THE_HILL ||
-					MPlayer->missionSettings.missionType ==
-						MISSION_TYPE_TERRITORIES))
+				(MPlayer->missionSettings.missionType == MISSION_TYPE_KING_OF_THE_HILL ||
+					MPlayer->missionSettings.missionType == MISSION_TYPE_LAST_MAN_ON_THE_HILL ||
+					MPlayer->missionSettings.missionType == MISSION_TYPE_TERRITORIES))
 			{
 				MPlayer->missionSettings.timeLimit = 300;
 			}
@@ -934,8 +906,7 @@ void MPParameterScreen::update()
 				MPlayer->missionSettings.defaultCBills = 50000;
 				MPlayer->redistributeRP();
 			}
-			for (size_t i = MP_INCREMENT_DROPWEIGHT; i < MP_RP_FORMMECHS + 1;
-				 i++)
+			for (size_t i = MP_INCREMENT_DROPWEIGHT; i < MP_RP_FORMMECHS + 1; i++)
 			{
 				aButton* pButton = getButton(i);
 				if (pButton)
@@ -952,14 +923,12 @@ void MPParameterScreen::update()
 			{
 				if (userInput->isLeftClick() &&
 					getButton(MB_MSG_NEXT)
-						->pointInside(
-							userInput->getMouseX(), userInput->getMouseY()))
+						->pointInside(userInput->getMouseX(), userInput->getMouseY()))
 				{
 					char errorStr[256];
 					LogisticsOneButtonDialog::instance()->setText(
 						IDS_PLAYER_LEFT, IDS_DIALOG_OK, IDS_DIALOG_OK);
-					cLoadString(
-						IDS_MP_PARAM_ERROR_TOO_MANY_PLAYERS, errorStr, 255);
+					cLoadString(IDS_MP_PARAM_ERROR_TOO_MANY_PLAYERS, errorStr, 255);
 					LogisticsOneButtonDialog::instance()->setText(errorStr);
 					LogisticsOneButtonDialog::instance()->begin();
 					bErrorDlg = true;
@@ -999,8 +968,7 @@ void MPParameterScreen::update()
 			{
 				if (playerParameters[i].hasFocus())
 				{
-					if (playerParameters[i].getCommanderID() ==
-						MPlayer->commanderID)
+					if (playerParameters[i].getCommanderID() == MPlayer->commanderID)
 						getButton(MP_BOOTPLAYER)->disable(true);
 				}
 			}
@@ -1011,8 +979,7 @@ void MPParameterScreen::update()
 			if (edits[i].hasFocus())
 				oldEditFocus = i;
 		}
-		if (!ChatWindow::instance()->pointInside(
-				userInput->getMouseX(), userInput->getMouseY()))
+		if (!ChatWindow::instance()->pointInside(userInput->getMouseX(), userInput->getMouseY()))
 		{
 			LogisticsScreen::update();
 		}
@@ -1021,7 +988,7 @@ void MPParameterScreen::update()
 			bEditHasFocus = true;
 			if (!edits[oldEditFocus].hasFocus())
 			{
-				EString text;
+				std::wstring text;
 				edits[oldEditFocus].getEntry(text);
 				int32_t val = atoi(text);
 				switch (oldEditFocus)
@@ -1093,8 +1060,8 @@ void MPParameterScreen::update()
 			for (i = 0; i < playerCount; i++)
 			{
 				//				if (
-				//!ChatWindow::instance()->pointInside(userInput->getMouseX(),
-				//userInput->getMouseY() ) )
+				//! ChatWindow::instance()->pointInside(userInput->getMouseX(),
+				// userInput->getMouseY() ) )
 				playerParameters[i].update();
 				bReady &= sortedPlayers[i]->ready;
 				if (!MPlayer->missionSettings.quickStart)
@@ -1148,18 +1115,16 @@ void MPParameterScreen::update()
 			textObjects[1].setText(MPlayer->missionSettings.name);
 			//			cLoadString( IDS_MP_LM_MAP_LIST_TYPE, tmp, 255 );
 			//			cLoadString( IDS_MP_LM_TYPE0 +
-			//MPlayer->missionSettings.missionType, tmp2, 127 );
+			// MPlayer->missionSettings.missionType, tmp2, 127 );
 			//			sprintf( text, tmp, tmp2 );
 			//			textObjects[7].setText( text );
-			sprintf(
-				text, "%ldk", MPlayer->missionSettings.defaultCBills / 1000);
+			sprintf(text, "%ldk", MPlayer->missionSettings.defaultCBills / 1000);
 			if (!edits[1].hasFocus())
 				edits[1].setEntry(text);
 			sprintf(text, "%ld", MPlayer->missionSettings.resourcePoints);
 			if (!edits[3].hasFocus())
 				edits[3].setEntry(text);
-			sprintf(
-				text, "%.0lf", fabs(MPlayer->missionSettings.timeLimit / 60.f));
+			sprintf(text, "%.0lf", fabs(MPlayer->missionSettings.timeLimit / 60.f));
 			if (!edits[2].hasFocus())
 			{
 				if (MPlayer->missionSettings.timeLimit / 60.f <= 0)
@@ -1242,8 +1207,7 @@ void MPParameterScreen::setMissionClientOnly(PCSTR pNewMapName)
 		char tmp[256];
 		char final[1024];
 		cLoadString(IDS_MP_PARAM_NO_MAP, tmp, 255);
-		sprintf(final, tmp, MPlayer->missionSettings.map,
-			MPlayer->missionSettings.url);
+		sprintf(final, tmp, MPlayer->missionSettings.map, MPlayer->missionSettings.url);
 		LogisticsOKDialog::instance()->setFont(IDS_MP_PARAM_NO_MAP_FONT);
 		LogisticsOKDialog::instance()->setText(final);
 		LogisticsOKDialog::instance()->begin();
@@ -1318,8 +1282,7 @@ void MPParameterScreen::setHostLeftDlg(PCSTR playerName)
 	char formatStr[256];
 	cLoadString(IDS_PLAYER_LEFT, leaveStr, 255);
 	sprintf(formatStr, leaveStr, playerName);
-	LogisticsOneButtonDialog::instance()->setText(
-		IDS_PLAYER_LEFT, IDS_DIALOG_OK, IDS_DIALOG_OK);
+	LogisticsOneButtonDialog::instance()->setText(IDS_PLAYER_LEFT, IDS_DIALOG_OK, IDS_DIALOG_OK);
 	LogisticsOneButtonDialog::instance()->setText(formatStr);
 	LogisticsOneButtonDialog::instance()->begin();
 	bHostLeftDlg = true;
@@ -1528,8 +1491,8 @@ void aPlayerParams::init(FitIniFile* pFile, PCSTR blockNameParam)
 			pTmp2  = new aStyle2TextListItem;
 			*pTmp2 = templateItem;
 			pTmp2->setText(IDS_FACTION0 + i);
-			pTmp2->resize(factionDropList.width() -
-							  factionDropList.ListBox().getScrollBarWidth() - 8,
+			pTmp2->resize(
+				factionDropList.width() - factionDropList.ListBox().getScrollBarWidth() - 8,
 				pTmp2->height());
 			pTmp2->sizeToText();
 			factionDropList.AddItem(pTmp2);
@@ -1606,10 +1569,8 @@ void aPlayerParams::update()
 	if (userInput->isLeftClick())
 	{
 		if (pointInside(userInput->getMouseX(), userInput->getMouseY()) ||
-			factionDropList.pointInside(
-				userInput->getMouseX(), userInput->getMouseY()) ||
-			teamNumberDropList.pointInside(
-				userInput->getMouseX(), userInput->getMouseY()))
+			factionDropList.pointInside(userInput->getMouseX(), userInput->getMouseY()) ||
+			teamNumberDropList.pointInside(userInput->getMouseX(), userInput->getMouseY()))
 			bHasFocus = true;
 		else
 			bHasFocus = false;
@@ -1624,8 +1585,8 @@ void aPlayerParams::update()
 			pTmp2  = new aStyle2TextListItem;
 			*pTmp2 = templateItem;
 			pTmp2->setText(IDS_FACTION0 + 5);
-			pTmp2->resize(factionDropList.width() -
-							  factionDropList.ListBox().getScrollBarWidth() - 8,
+			pTmp2->resize(
+				factionDropList.width() - factionDropList.ListBox().getScrollBarWidth() - 8,
 				pTmp2->height());
 			pTmp2->sizeToText();
 			factionDropList.AddItem(pTmp2);
@@ -1642,8 +1603,8 @@ void aPlayerParams::update()
 			pTmp2  = new aStyle2TextListItem;
 			*pTmp2 = templateItem;
 			pTmp2->setText(IDS_FACTION0 + i);
-			pTmp2->resize(factionDropList.width() -
-							  factionDropList.ListBox().getScrollBarWidth() - 8,
+			pTmp2->resize(
+				factionDropList.width() - factionDropList.ListBox().getScrollBarWidth() - 8,
 				pTmp2->height());
 			pTmp2->sizeToText();
 			factionDropList.AddItem(pTmp2);
@@ -1689,8 +1650,7 @@ void aPlayerParams::update()
 			FullPathFileName path;
 			path.init(missionPath, MPlayer->missionSettings.map, ".fit");
 			if (!fileExists(path) ||
-				MPParameterScreen::getGUIDFromFile(
-					MPlayer->missionSettings.map) !=
+				MPParameterScreen::getGUIDFromFile(MPlayer->missionSettings.map) !=
 					MPlayer->missionSettings.mapGuid) // disable the ready
 													  // button if the map isn't
 													  // around...
@@ -1742,7 +1702,7 @@ void aPlayerParams::update()
 	int32_t newSel	 = teamNumberDropList.GetSelectedItem();
 	int32_t newFaction = factionDropList.GetSelectedItem();
 	bool bNewReady	 = ReadyButton.isPressed();
-	EString cBillsText;
+	std::wstring cBillsText;
 	edit.getEntry(cBillsText);
 	int32_t newCBills = 0;
 	if (cBillsText.Length())
@@ -1760,8 +1720,7 @@ void aPlayerParams::update()
 		edit.setEntry(text);
 		MPParameterScreen::resetCheckBoxes();
 	}
-	else if ((oldSel != newSel) || (oldFaction != newFaction) ||
-			 (bOldReady != bNewReady))
+	else if ((oldSel != newSel) || (oldFaction != newFaction) || (bOldReady != bNewReady))
 	{
 		// send out new info....
 		if (MPlayer)
@@ -1813,10 +1772,7 @@ void aPlayerParams::setData(const _MC2Player* data)
 	commanderID		  = data->commanderID;
 	int32_t textColor = 0xff000000;
 	int32_t newColor  = MPlayer->colors[data->baseColor[BASECOLOR_TEAM]];
-	if (((newColor & 0xff) + ((newColor & 0xff00) >> 8) +
-			((newColor & 0xff0000) >> 16)) /
-			3 <
-		85)
+	if (((newColor & 0xff) + ((newColor & 0xff00) >> 8) + ((newColor & 0xff0000) >> 16)) / 3 < 85)
 		textColor = 0xffffffff;
 	if (textObjects)
 	{
@@ -1850,8 +1806,7 @@ void aPlayerParams::setData(const _MC2Player* data)
 	if (!teamNumberDropList.IsExpanded())
 	{
 		int32_t oldSel = teamNumberDropList.ListBox().GetSelectedItem();
-		if (teamNumberDropList.ListBox().GetItemCount() !=
-			MPlayer->missionSettings.maxTeams)
+		if (teamNumberDropList.ListBox().GetItemCount() != MPlayer->missionSettings.maxTeams)
 		{
 			teamNumberDropList.ListBox().removeAllItems(true);
 			for (size_t i = 0; i < MPlayer->missionSettings.maxTeams; i++)
@@ -1861,8 +1816,7 @@ void aPlayerParams::setData(const _MC2Player* data)
 				sprintf(tmpStr, "%ld", i + 1);
 				*pTmp2 = templateItem;
 				pTmp2->setText(tmpStr);
-				pTmp2->resize(
-					teamNumberDropList.width() -
+				pTmp2->resize(teamNumberDropList.width() -
 						teamNumberDropList.ListBox().getScrollBarWidth() - 8,
 					pTmp2->height());
 				pTmp2->sizeToText();
@@ -1917,10 +1871,7 @@ int32_t aPlayerParams::handleMessage(uint32_t message, uint32_t who)
 
 void aPlayerParams::render() { aObject::render(); }
 
-void aPlayerParams::move(float offsetX, float offsetY)
-{
-	aObject::move(offsetX, offsetY);
-}
+void aPlayerParams::move(float offsetX, float offsetY) { aObject::move(offsetX, offsetY); }
 
 int32_t aStyle2TextListItem::init(FitIniFile* file, PCSTR blockName)
 {
@@ -2022,13 +1973,10 @@ void CFocusManager::update()
 		}
 		speciesOfTheControlWhichHasTheFocus = CS_NONE;
 		/*check the droplists to see the pointer was clicked in one of them*/
-		CListOfDropListPointers::EIterator DropListIter =
-			listOfDropListPointers.Begin();
+		CListOfDropListPointers::EIterator DropListIter = listOfDropListPointers.Begin();
 		while (!DropListIter.IsDone())
 		{
-			if ((*DropListIter)
-					->pointInside(
-						userInput->getMouseX(), userInput->getMouseY()))
+			if ((*DropListIter)->pointInside(userInput->getMouseX(), userInput->getMouseY()))
 			{
 				pDropListThatHasTheFocus			= (*DropListIter);
 				speciesOfTheControlWhichHasTheFocus = CS_DROPLIST;

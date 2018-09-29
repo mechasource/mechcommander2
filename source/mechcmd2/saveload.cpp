@@ -254,8 +254,8 @@ void Mission::save(PCSTR saveFileName)
 	mc2UseAsyncMouse = true;
 	AsynFunc		 = ProgressTimer;
 	// Get the campaign name for the campaign we are currently playing.
-	EString campaignName = LogisticsData::instance->getCampaignName();
-	PCSTR cmpName		 = campaignName.Data();
+	std::wstring campaignName = LogisticsData::instance->getCampaignName();
+	PCSTR cmpName			  = campaignName.Data();
 	// Open the Save File.
 	// Assume path is correct when we get here.
 	PacketFile saveFile;
@@ -264,11 +264,10 @@ void Mission::save(PCSTR saveFileName)
 	// A thousand packets ought to get it!!
 	saveFile.reserve(20000);
 	uint32_t currentPacket = 0;
-	saveFile.writePacket(currentPacket, (puint8_t)versionStamp,
-		strlen(versionStamp) + 1, STORAGE_TYPE_RAW);
+	saveFile.writePacket(
+		currentPacket, (puint8_t)versionStamp, strlen(versionStamp) + 1, STORAGE_TYPE_RAW);
 	currentPacket++;
-	saveFile.writePacket(currentPacket, (puint8_t)cmpName, strlen(cmpName) + 1,
-		STORAGE_TYPE_RAW);
+	saveFile.writePacket(currentPacket, (puint8_t)cmpName, strlen(cmpName) + 1, STORAGE_TYPE_RAW);
 	currentPacket++;
 	loadProgress = 3.0f;
 	// Mission Settings
@@ -289,8 +288,7 @@ void Mission::save(PCSTR saveFileName)
 	tempFile.writeBlock("MissionSettings");
 	tempFile.writeIdString("MissionName", missionFileName);
 	tempFile.writeIdFloat("TimeLimit", m_timeLimit);
-	tempFile.writeIdLong(
-		"ResourcePoints", LogisticsData::instance->getResourcePoints());
+	tempFile.writeIdLong("ResourcePoints", LogisticsData::instance->getResourcePoints());
 	tempFile.writeIdUCHAR("scenarioTuneNum", missionTuneNum);
 	tempFile.writeIdLong("OperationId", operationId);
 	tempFile.writeIdLong("MissionId", missionId);
@@ -409,8 +407,7 @@ void Mission::save(PCSTR saveFileName)
 	// Save the CurrentMission number in logistics cause Heidi don't save it
 	// with logisticsData.
 	int32_t currentMissionNum = LogisticsData::instance->getCurrentMissionNum();
-	saveFile.writePacket(
-		currentPacket, (puint8_t)&currentMissionNum, 4, STORAGE_TYPE_RAW);
+	saveFile.writePacket(currentPacket, (puint8_t)&currentMissionNum, 4, STORAGE_TYPE_RAW);
 	currentPacket++;
 	//-------------------------------------------------------------------------------------------
 	saveFile.writePacket(currentPacket, (puint8_t) "END", 4, STORAGE_TYPE_RAW);
@@ -554,8 +551,8 @@ void Mission::load(PCSTR loadFileName)
 	loadFile.readPacket(currentPacket, (puint8_t)(campName));
 	currentPacket++;
 	// Get the campaign name for the campaign we are currently playing.
-	EString campaignName = LogisticsData::instance->getCampaignName();
-	PCSTR cmpName		 = campaignName.Data();
+	std::wstring campaignName = LogisticsData::instance->getCampaignName();
+	PCSTR cmpName			  = campaignName.Data();
 	/*
 	if (_stricmp(campName,cmpName) != 0)
 	{
@@ -604,16 +601,15 @@ void Mission::load(PCSTR loadFileName)
 	gosASSERT(result == NO_ERROR);
 	WeaponRanges[WEAPON_RANGE_SHORT][0] = span[0];
 	WeaponRanges[WEAPON_RANGE_SHORT][1] = span[1];
-	result = gameSystemFile->readIdFloatArray("Medium", span, 2);
+	result								= gameSystemFile->readIdFloatArray("Medium", span, 2);
 	gosASSERT(result == NO_ERROR);
 	WeaponRanges[WEAPON_RANGE_MEDIUM][0] = span[0];
 	WeaponRanges[WEAPON_RANGE_MEDIUM][1] = span[1];
-	result = gameSystemFile->readIdFloatArray("Long", span, 2);
+	result								 = gameSystemFile->readIdFloatArray("Long", span, 2);
 	gosASSERT(result == NO_ERROR);
 	WeaponRanges[WEAPON_RANGE_LONG][0] = span[0];
 	WeaponRanges[WEAPON_RANGE_LONG][1] = span[1];
-	result							   = gameSystemFile->readIdFloatArray(
-		"OptimalRangePoints", OptimalRangePoints, 5);
+	result = gameSystemFile->readIdFloatArray("OptimalRangePoints", OptimalRangePoints, 5);
 	gosASSERT(result == NO_ERROR);
 	for (size_t i = 0; i < 5; i++)
 		for (size_t j = 0; j < 3; j++)
@@ -628,22 +624,18 @@ void Mission::load(PCSTR loadFileName)
 	result = gameSystemFile->readIdFloat("MaxVisualRange", maxVisualRange);
 	gosASSERT(result == NO_ERROR);
 	MaxVisualRadius = maxVisualRange * 1.4142;
-	result = gameSystemFile->readIdFloat("FireVisualRange", fireVisualRange);
+	result			= gameSystemFile->readIdFloat("FireVisualRange", fireVisualRange);
 	gosASSERT(result == NO_ERROR);
-	result = gameSystemFile->readIdFloatArray(
-		"WeaponRange", WeaponRange, NUM_FIRERANGES);
+	result = gameSystemFile->readIdFloatArray("WeaponRange", WeaponRange, NUM_FIRERANGES);
 	gosASSERT(result == NO_ERROR);
-	result =
-		gameSystemFile->readIdFloat("DefaultAttackRange", DefaultAttackRange);
+	result = gameSystemFile->readIdFloat("DefaultAttackRange", DefaultAttackRange);
 	if (result != NO_ERROR)
 		DefaultAttackRange = 75.0;
 	result = gameSystemFile->readIdFloat("BaseSensorRange", baseSensorRange);
 	gosASSERT(result == NO_ERROR);
-	result = gameSystemFile->readIdLongArray(
-		"VisualRangeTable", visualRangeTable, 256);
+	result = gameSystemFile->readIdLongArray("VisualRangeTable", visualRangeTable, 256);
 	gosASSERT(result == NO_ERROR);
-	result = gameSystemFile->readIdFloat(
-		"BaseHeadShotElevation", BaseHeadShotElevation);
+	result = gameSystemFile->readIdFloat("BaseHeadShotElevation", BaseHeadShotElevation);
 	if (result != NO_ERROR)
 		BaseHeadShotElevation = 1.0f;
 	int32_t forestMoveCost;
@@ -673,8 +665,7 @@ void Mission::load(PCSTR loadFileName)
 		footPrints = 1;
 	result = gameSystemFile->readIdLong("BonusTonnageDivisor", tonnageDivisor);
 	gosASSERT(result == NO_ERROR);
-	result =
-		gameSystemFile->readIdLong("BonusPointsPerTon", resourcesPerTonDivided);
+	result = gameSystemFile->readIdLong("BonusPointsPerTon", resourcesPerTonDivided);
 	gosASSERT(result == NO_ERROR);
 #ifndef FINAL
 	result = gameSystemFile->readIdFloat("CheatHitDamage", CheatHitDamage);
@@ -711,15 +702,13 @@ void Mission::load(PCSTR loadFileName)
 	gosASSERT(result == NO_ERROR);
 	result = gameSystemFile->readIdFloat("StrikeWaitTime", StrikeWaitTime);
 	gosASSERT(result == NO_ERROR);
-	result =
-		gameSystemFile->readIdFloat("StrikeTimeToImpact", StrikeTimeToImpact);
+	result = gameSystemFile->readIdFloat("StrikeTimeToImpact", StrikeTimeToImpact);
 	gosASSERT(result == NO_ERROR);
 	result = gameSystemFile->seekBlock("Smoke");
 	gosASSERT(result == NO_ERROR);
 	result = gameSystemFile->readIdLong("MaxSmokeSpheres", totalSmokeSpheres);
 	gosASSERT(result == NO_ERROR);
-	result =
-		gameSystemFile->readIdLong("TotalSmokeShapeSize", totalSmokeShapeSize);
+	result = gameSystemFile->readIdLong("TotalSmokeShapeSize", totalSmokeShapeSize);
 	gosASSERT(result == NO_ERROR);
 	result = gameSystemFile->seekBlock("Fire");
 	gosASSERT(result == NO_ERROR);
@@ -819,8 +808,7 @@ void Mission::load(PCSTR loadFileName)
 		STOP(("Mission ABL Script missing from In-Mission Save"));
 	else
 	{
-		result =
-			missionFile.readIdString("ScenarioScript", missionScriptName, 79);
+		result = missionFile.readIdString("ScenarioScript", missionScriptName, 79);
 		if (result != NO_ERROR)
 			missionScriptName[0] = 0;
 	}
@@ -831,8 +819,7 @@ void Mission::load(PCSTR loadFileName)
 	int32_t numErrors, numLinesProcessed;
 	FullPathFileName libraryFileName;
 	libraryFileName.init(missionPath, "orders", ".abx");
-	int32_t err =
-		ABLi_loadLibrary(libraryFileName, &numErrors, &numLinesProcessed);
+	int32_t err = ABLi_loadLibrary(libraryFileName, &numErrors, &numLinesProcessed);
 	gosASSERT(err == NO_ERROR);
 	libraryFileName.init(missionPath, "miscfunc", ".abx");
 	err = ABLi_loadLibrary(libraryFileName, &numErrors, &numLinesProcessed);
@@ -840,8 +827,7 @@ void Mission::load(PCSTR loadFileName)
 	err = ABLi_loadLibrary(libraryFileName, &numErrors, &numLinesProcessed);
 	FullPathFileName brainFileName;
 	brainFileName.init(missionPath, missionScriptName, ".abl");
-	missionScriptHandle =
-		ABLi_preProcess(brainFileName, &numErrors, &numLinesProcessed);
+	missionScriptHandle = ABLi_preProcess(brainFileName, &numErrors, &numLinesProcessed);
 	gosASSERT(missionScriptHandle >= 0);
 	missionBrain = new ABLModule;
 	gosASSERT(missionBrain != nullptr);
@@ -859,8 +845,7 @@ void Mission::load(PCSTR loadFileName)
 		STOP(("Mission.Load: unable to init triggerAreaMgr "));
 	//-----------------------------------------
 	// Startup the Crater Manager.
-	craterManager =
-		(CraterManagerPtr)missionHeap->Malloc(sizeof(CraterManager));
+	craterManager = (CraterManagerPtr)missionHeap->Malloc(sizeof(CraterManager));
 	gosASSERT(craterManager != nullptr);
 	result = craterManager->init(1000, 20479, "feet");
 	gosASSERT(result == NO_ERROR);
@@ -883,9 +868,8 @@ void Mission::load(PCSTR loadFileName)
 	gosASSERT(result == NO_ERROR);
 	land = new Terrain;
 	gosASSERT(land != nullptr);
-	loadProgress = 15.0f;
-	int32_t terrainInitResult =
-		land->init(&pakFile, 0, GameVisibleVertices, loadProgress, 15.0);
+	loadProgress			  = 15.0f;
+	int32_t terrainInitResult = land->init(&pakFile, 0, GameVisibleVertices, loadProgress, 15.0);
 	if (terrainInitResult != NO_ERROR)
 	{
 		STOP(("Could not load terrain.  Probably size was wrong!"));
@@ -895,8 +879,7 @@ void Mission::load(PCSTR loadFileName)
 	loadProgress = 38.0f;
 	//----------------------------------------------------
 	// Start GameMap for Movement System
-	Assert(SimpleMovePathRange > 20, SimpleMovePathRange,
-		" Simple MovePath Range too small ");
+	Assert(SimpleMovePathRange > 20, SimpleMovePathRange, " Simple MovePath Range too small ");
 	MOVE_init(SimpleMovePathRange);
 	if (loadFile.seekPacket(currentPacket) == NO_ERROR)
 	{
@@ -917,15 +900,13 @@ void Mission::load(PCSTR loadFileName)
 		else
 			STOP(("Mission has no movement Data.  QuickSaved Map"));
 	}
-	PathFindMap[SECTOR_PATHMAP]->blockedDoorCallback = GetBlockedDoorCells;
-	PathFindMap[SECTOR_PATHMAP]->placeStationaryMoversCallback =
-		PlaceStationaryMovers;
-	PathFindMap[SIMPLE_PATHMAP]->placeStationaryMoversCallback =
-		PlaceStationaryMovers;
-	PathFindMap[SECTOR_PATHMAP]->forestCost = forestMoveCost;
-	PathFindMap[SIMPLE_PATHMAP]->forestCost = forestMoveCost;
-	PathManager								= new MovePathManager;
-	loadProgress							= 40.0f;
+	PathFindMap[SECTOR_PATHMAP]->blockedDoorCallback		   = GetBlockedDoorCells;
+	PathFindMap[SECTOR_PATHMAP]->placeStationaryMoversCallback = PlaceStationaryMovers;
+	PathFindMap[SIMPLE_PATHMAP]->placeStationaryMoversCallback = PlaceStationaryMovers;
+	PathFindMap[SECTOR_PATHMAP]->forestCost					   = forestMoveCost;
+	PathFindMap[SIMPLE_PATHMAP]->forestCost					   = forestMoveCost;
+	PathManager												   = new MovePathManager;
+	loadProgress											   = 40.0f;
 	//----------------------
 	// Load ABL Libraries...
 	// ASS U ME that these are loaded when I call ABLi_Load
@@ -1005,22 +986,17 @@ void Mission::load(PCSTR loadFileName)
 			gosASSERT(result == NO_ERROR);
 			//------------------------------------------------------------------
 			// Find out what kind of object this is.
-			result =
-				missionFile.readIdULong("ObjectNumber", parts[i].objNumber);
+			result = missionFile.readIdULong("ObjectNumber", parts[i].objNumber);
 			gosASSERT(result == NO_ERROR);
 			//-------------------------------------------------
 			// Read in the data needed to control the object...
-			result =
-				missionFile.readIdULong("ControlType", parts[i].controlType);
+			result = missionFile.readIdULong("ControlType", parts[i].controlType);
 			gosASSERT(result == NO_ERROR);
-			result = missionFile.readIdULong(
-				"ControlDataType", parts[i].controlDataType);
+			result = missionFile.readIdULong("ControlDataType", parts[i].controlDataType);
 			gosASSERT(result == NO_ERROR);
-			result = missionFile.readIdString(
-				"ObjectProfile", parts[i].profileName, 9);
+			result = missionFile.readIdString("ObjectProfile", parts[i].profileName, 9);
 			gosASSERT(result == NO_ERROR);
-			result =
-				missionFile.readIdULong("ObjectVariant", parts[i].variantNum);
+			result = missionFile.readIdULong("ObjectVariant", parts[i].variantNum);
 			if (result != NO_ERROR)
 				parts[i].variantNum = 0; // FOR NOW!!!!!!!!!!!!!!!!
 			// MAKE a REAL error when Heidi fixes editor.
@@ -1034,7 +1010,7 @@ void Mission::load(PCSTR loadFileName)
 			result = missionFile.readIdFloat("PositionY", parts[i].position.y);
 			gosASSERT(result == NO_ERROR);
 			parts[i].position.z = -1.0;
-			result = missionFile.readIdFloat("Rotation", parts[i].rotation);
+			result				= missionFile.readIdFloat("Rotation", parts[i].rotation);
 			gosASSERT(result == NO_ERROR);
 			result = missionFile.readIdChar("TeamId", parts[i].teamId);
 			gosASSERT(result == NO_ERROR);
@@ -1042,8 +1018,7 @@ void Mission::load(PCSTR loadFileName)
 			result	 = missionFile.readIdChar("CommanderId", cmdId);
 			if (result != NO_ERROR)
 			{
-				result =
-					missionFile.readIdLong("CommanderId", parts[i].commanderID);
+				result = missionFile.readIdLong("CommanderId", parts[i].commanderID);
 				gosASSERT(result == NO_ERROR);
 			}
 			else
@@ -1051,19 +1026,17 @@ void Mission::load(PCSTR loadFileName)
 				parts[i].commanderID = cmdId;
 			}
 			parts[i].gestureId = 2; // this has never changed
-			result = missionFile.readIdULong("BaseColor", parts[i].baseColor);
+			result			   = missionFile.readIdULong("BaseColor", parts[i].baseColor);
 			if (result != NO_ERROR)
 				parts[i].baseColor = 0xffffffff;
-			result = missionFile.readIdULong(
-				"HighlightColor1", parts[i].highlightColor1);
+			result = missionFile.readIdULong("HighlightColor1", parts[i].highlightColor1);
 			if (result != NO_ERROR)
 				parts[i].highlightColor1 = 0xffffffff;
-			result = missionFile.readIdULong(
-				"HighlightColor2", parts[i].highlightColor2);
+			result = missionFile.readIdULong("HighlightColor2", parts[i].highlightColor2);
 			if (result != NO_ERROR)
 				parts[i].highlightColor2 = 0xffffffff;
 			parts[i].velocity = 0;
-			result = missionFile.readIdLong("Active", parts[i].active);
+			result			  = missionFile.readIdLong("Active", parts[i].active);
 			gosASSERT(result == NO_ERROR);
 			result = missionFile.readIdLong("Exists", parts[i].exists);
 			gosASSERT(result == NO_ERROR);
@@ -1078,8 +1051,7 @@ void Mission::load(PCSTR loadFileName)
 			}
 			result = missionFile.readIdChar("MyIcon", parts[i].myIcon);
 			gosASSERT(result == NO_ERROR);
-			result =
-				missionFile.readIdBoolean("Captureable", parts[i].captureable);
+			result = missionFile.readIdBoolean("Captureable", parts[i].captureable);
 			if (result != NO_ERROR)
 				parts[i].captureable = FALSE;
 		}
@@ -1094,11 +1066,9 @@ void Mission::load(PCSTR loadFileName)
 	//-----------------------------------
 	// Setup the Sensor System Manager...
 	SensorManager = new SensorSystemManager;
-	Assert(
-		SensorManager != nullptr, 0, " Unable to init sensor system manager ");
+	Assert(SensorManager != nullptr, 0, " Unable to init sensor system manager ");
 	result = SensorManager->init(true);
-	Assert(
-		result == NO_ERROR, result, " could not start Sensor System Manager ");
+	Assert(result == NO_ERROR, result, " could not start Sensor System Manager ");
 	//-----------------------------------------
 	// Object Manager
 	// Save numbers of objects in all object lists in game

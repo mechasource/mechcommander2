@@ -35,8 +35,7 @@ extern bool useHighObjectDetail;
 
 extern int32_t GameVisibleVertices;
 
-extern volatile bool
-	mc2UseAsyncMouse; // Should mouse draw and update in separate thread?
+extern volatile bool mc2UseAsyncMouse; // Should mouse draw and update in separate thread?
 
 extern uint32_t gEnableDetailTexture;
 
@@ -99,8 +98,7 @@ int32_t CPrefs::load(PCSTR pFileName)
 		{
 			// store volume settings in global variable since soundsystem
 			// does not exist yet.  These will be set in SoundSystem::init()
-			result = prefsFile->readIdLong(
-				"DigitalMasterVolume", DigitalMasterVolume);
+			result = prefsFile->readIdLong("DigitalMasterVolume", DigitalMasterVolume);
 			if (result != NO_ERROR)
 				DigitalMasterVolume = 255;
 			result = prefsFile->readIdLong("MusicVolume", MusicVolume);
@@ -118,19 +116,16 @@ int32_t CPrefs::load(PCSTR pFileName)
 			result = prefsFile->readIdBoolean("Shadows", useShadows);
 			if (result != NO_ERROR)
 				useShadows = true;
-			result = prefsFile->readIdBoolean(
-				"DetailTexture", useWaterInterestTexture);
+			result = prefsFile->readIdBoolean("DetailTexture", useWaterInterestTexture);
 			if (result != NO_ERROR)
 				useWaterInterestTexture = true;
-			result = prefsFile->readIdBoolean(
-				"HighObjectDetail", useHighObjectDetail);
+			result = prefsFile->readIdBoolean("HighObjectDetail", useHighObjectDetail);
 			if (result != NO_ERROR)
 				useHighObjectDetail = true;
 			result = prefsFile->readIdLong("Difficulty", GameDifficulty);
 			if (result != NO_ERROR)
 				GameDifficulty = 1;
-			result =
-				prefsFile->readIdBoolean("UnlimitedAmmo", useUnlimitedAmmo);
+			result = prefsFile->readIdBoolean("UnlimitedAmmo", useUnlimitedAmmo);
 			if (result != NO_ERROR)
 				useUnlimitedAmmo = true;
 			result = prefsFile->readIdLong("Rasterizer", renderer);
@@ -142,18 +137,14 @@ int32_t CPrefs::load(PCSTR pFileName)
 			// Used ONLY if they are using a below minSpec Primary with an above
 			// minSpec secondary.
 			if ((renderer >= 0) && (renderer < 3) &&
-				(gos_GetMachineInformation(
-					 gos_Info_GetDeviceLocalMemory, renderer) +
-					gos_GetMachineInformation(
-						gos_Info_GetDeviceAGPMemory, renderer)) < 6291456)
+				(gos_GetMachineInformation(gos_Info_GetDeviceLocalMemory, renderer) +
+					gos_GetMachineInformation(gos_Info_GetDeviceAGPMemory, renderer)) < 6291456)
 			{
 				int32_t testRender = 0;
 				while (testRender < 3)
 				{
-					if ((gos_GetMachineInformation(
-							 gos_Info_GetDeviceLocalMemory, testRender) +
-							gos_GetMachineInformation(
-								gos_Info_GetDeviceAGPMemory, testRender)) >=
+					if ((gos_GetMachineInformation(gos_Info_GetDeviceLocalMemory, testRender) +
+							gos_GetMachineInformation(gos_Info_GetDeviceAGPMemory, testRender)) >=
 						6291456)
 						break;
 					testRender++;
@@ -174,30 +165,24 @@ int32_t CPrefs::load(PCSTR pFileName)
 			result = prefsFile->readIdLong("Brightness", gammaLevel);
 			if (result != NO_ERROR)
 				gammaLevel = 0;
-			result = prefsFile->readIdBoolean(
-				"useLeftRightMouseProfile", useLeftRightMouseProfile);
+			result = prefsFile->readIdBoolean("useLeftRightMouseProfile", useLeftRightMouseProfile);
 			if (result != NO_ERROR)
 				useLeftRightMouseProfile = true;
 			char blockName[64];
 			for (size_t i = 0; i < 10; i++)
 			{
 				sprintf(blockName, "PlayerName%ld", i);
-				result =
-					prefsFile->readIdString(blockName, &playerName[i][0], 255);
+				result = prefsFile->readIdString(blockName, &playerName[i][0], 255);
 				if (result != NO_ERROR && i == 0)
 				{
-					result = prefsFile->readIdString(
-						"PlayerName", &playerName[0][0], 255);
-					result = prefsFile->readIdString(
-						"UnitName", &unitName[0][0], 255);
+					result = prefsFile->readIdString("PlayerName", &playerName[0][0], 255);
+					result = prefsFile->readIdString("UnitName", &unitName[0][0], 255);
 					break;
 				}
 				sprintf(blockName, "IPAddress%ld", i);
-				result =
-					prefsFile->readIdString(blockName, &ipAddresses[i][0], 255);
+				result = prefsFile->readIdString(blockName, &ipAddresses[i][0], 255);
 				sprintf(blockName, "UnitName%ld", i);
-				result =
-					prefsFile->readIdString(blockName, &unitName[i][0], 255);
+				result = prefsFile->readIdString(blockName, &unitName[i][0], 255);
 			}
 			result = prefsFile->readIdLong("BaseColor", baseColor);
 			if (result != NO_ERROR)
@@ -212,14 +197,12 @@ int32_t CPrefs::load(PCSTR pFileName)
 			{
 				pilotVideos = true;
 			}
-			result =
-				prefsFile->readIdBoolean("UseLocalShadows", useLocalShadows);
+			result = prefsFile->readIdBoolean("UseLocalShadows", useLocalShadows);
 			if (result != NO_ERROR)
 			{
 				useLocalShadows = true;
 			}
-			result = prefsFile->readIdBoolean(
-				"UseNonWeaponEffects", useNonWeaponEffects);
+			result = prefsFile->readIdBoolean("UseNonWeaponEffects", useNonWeaponEffects);
 			if (result != NO_ERROR)
 			{
 				useNonWeaponEffects = 0;
@@ -237,8 +220,7 @@ int32_t CPrefs::load(PCSTR pFileName)
 				bitDepth = 0;
 			if (bitDepth && (renderer == 3))
 				bitDepth = 0;
-			result =
-				prefsFile->readIdBoolean("SaveTranscripts", saveTranscripts);
+			result = prefsFile->readIdBoolean("SaveTranscripts", saveTranscripts);
 			result = prefsFile->readIdBoolean("Tutorials", tutorials);
 			if (result != NO_ERROR)
 				tutorials = true;
@@ -278,29 +260,24 @@ int32_t CPrefs::save()
 		int32_t prefsBlockResult =
 #endif
 			prefsFile->writeBlock("MechCommander2");
-		gosASSERT(prefsBlockResult ==
-				  strlen("\r\n[") + strlen("MechCommander2") + strlen("]\r\n"));
+		gosASSERT(prefsBlockResult == strlen("\r\n[") + strlen("MechCommander2") + strlen("]\r\n"));
 		{
-			result = prefsFile->writeIdLong(
-				"DigitalMasterVolume", DigitalMasterVolume);
+			result = prefsFile->writeIdLong("DigitalMasterVolume", DigitalMasterVolume);
 			result = prefsFile->writeIdLong("MusicVolume", MusicVolume);
 			result = prefsFile->writeIdLong("RadioVolume", RadioVolume);
 			result = prefsFile->writeIdLong("SFXVolume", sfxVolume);
 			result = prefsFile->writeIdLong("BettyVolume", BettyVolume);
 			result = prefsFile->writeIdBoolean("Shadows", useShadows);
-			result = prefsFile->writeIdBoolean(
-				"DetailTexture", useWaterInterestTexture);
-			result = prefsFile->writeIdBoolean(
-				"HighObjectDetail", useHighObjectDetail);
+			result = prefsFile->writeIdBoolean("DetailTexture", useWaterInterestTexture);
+			result = prefsFile->writeIdBoolean("HighObjectDetail", useHighObjectDetail);
 			result = prefsFile->writeIdLong("Difficulty", GameDifficulty);
-			result =
-				prefsFile->writeIdBoolean("UnlimitedAmmo", useUnlimitedAmmo);
+			result = prefsFile->writeIdBoolean("UnlimitedAmmo", useUnlimitedAmmo);
 			result = prefsFile->writeIdLong("Rasterizer", renderer);
 			result = prefsFile->writeIdLong("Resolution", resolution);
 			result = prefsFile->writeIdBoolean("FullScreen", fullScreen);
 			result = prefsFile->writeIdLong("Brightness", gammaLevel);
-			result = prefsFile->writeIdBoolean(
-				"useLeftRightMouseProfile", useLeftRightMouseProfile);
+			result =
+				prefsFile->writeIdBoolean("useLeftRightMouseProfile", useLeftRightMouseProfile);
 			char blockName[64];
 			for (size_t i = 0; i < 10; i++)
 			{
@@ -309,23 +286,19 @@ int32_t CPrefs::save()
 				sprintf(blockName, "UnitName%ld", i);
 				result = prefsFile->writeIdString(blockName, &unitName[i][0]);
 				sprintf(blockName, "IPAddress%ld", i);
-				result =
-					prefsFile->writeIdString(blockName, &ipAddresses[i][0]);
+				result = prefsFile->writeIdString(blockName, &ipAddresses[i][0]);
 			}
 			result = prefsFile->writeIdLong("BaseColor", baseColor);
 			result = prefsFile->writeIdLong("Highlightcolor", highlightColor);
 			result = prefsFile->writeIdLong("faction", faction);
 			result = prefsFile->writeIdString("InsigniaFile", insigniaFile);
 			result = prefsFile->writeIdBoolean("PilotVideos", pilotVideos);
-			result =
-				prefsFile->writeIdBoolean("UseLocalShadows", useLocalShadows);
-			result = prefsFile->writeIdBoolean(
-				"UseNonWeaponEffects", useNonWeaponEffects);
+			result = prefsFile->writeIdBoolean("UseLocalShadows", useLocalShadows);
+			result = prefsFile->writeIdBoolean("UseNonWeaponEffects", useNonWeaponEffects);
 			result = prefsFile->writeIdBoolean("AsyncMouse", asyncMouse);
 			result = prefsFile->writeIdLong("FogPos", fogPos);
 			result = prefsFile->writeIdChar("BitDepth", bitDepth);
-			result =
-				prefsFile->writeIdBoolean("SaveTranscripts", saveTranscripts);
+			result = prefsFile->writeIdBoolean("SaveTranscripts", saveTranscripts);
 			result = prefsFile->writeIdBoolean("Tutorials", tutorials);
 		}
 	}
@@ -392,64 +365,64 @@ int32_t CPrefs::applyPrefs(bool applyRes)
 		switch (resolution)
 		{
 		case 0: // 640by480
-			if ((gos_GetMachineInformation(
-					 gos_Info_ValidMode, renderer, 640, 480, bitDepth) == 0) &&
+			if ((gos_GetMachineInformation(gos_Info_ValidMode, renderer, 640, 480, bitDepth) ==
+					0) &&
 				(bitDepth == 32))
 				bitDepth = 16;
 			if (renderer == 3)
-				gos_SetScreenMode(640, 480, bitDepth, 0, 0, 0, true,
-					localFullScreen, 0, localWindow, 0, localRenderer);
+				gos_SetScreenMode(640, 480, bitDepth, 0, 0, 0, true, localFullScreen, 0,
+					localWindow, 0, localRenderer);
 			else
-				gos_SetScreenMode(640, 480, bitDepth, renderer, 0, 0, 0,
-					localFullScreen, 0, localWindow, 0, localRenderer);
+				gos_SetScreenMode(640, 480, bitDepth, renderer, 0, 0, 0, localFullScreen, 0,
+					localWindow, 0, localRenderer);
 			break;
 		case 1: // 800by600
-			if ((gos_GetMachineInformation(
-					 gos_Info_ValidMode, renderer, 800, 600, bitDepth) == 0) &&
+			if ((gos_GetMachineInformation(gos_Info_ValidMode, renderer, 800, 600, bitDepth) ==
+					0) &&
 				(bitDepth == 32))
 				bitDepth = 16;
 			if (renderer == 3)
-				gos_SetScreenMode(800, 600, bitDepth, 0, 0, 0, true,
-					localFullScreen, 0, localWindow, 0, localRenderer);
+				gos_SetScreenMode(800, 600, bitDepth, 0, 0, 0, true, localFullScreen, 0,
+					localWindow, 0, localRenderer);
 			else
-				gos_SetScreenMode(800, 600, bitDepth, renderer, 0, 0, 0,
-					localFullScreen, 0, localWindow, 0, localRenderer);
+				gos_SetScreenMode(800, 600, bitDepth, renderer, 0, 0, 0, localFullScreen, 0,
+					localWindow, 0, localRenderer);
 			break;
 		case 2: // 1024by768
-			if ((gos_GetMachineInformation(
-					 gos_Info_ValidMode, renderer, 1024, 768, bitDepth) == 0) &&
+			if ((gos_GetMachineInformation(gos_Info_ValidMode, renderer, 1024, 768, bitDepth) ==
+					0) &&
 				(bitDepth == 32))
 				bitDepth = 16;
 			if (renderer == 3)
-				gos_SetScreenMode(1024, 768, bitDepth, 0, 0, 0, true,
-					localFullScreen, 0, localWindow, 0, localRenderer);
+				gos_SetScreenMode(1024, 768, bitDepth, 0, 0, 0, true, localFullScreen, 0,
+					localWindow, 0, localRenderer);
 			else
-				gos_SetScreenMode(1024, 768, bitDepth, renderer, 0, 0, 0,
-					localFullScreen, 0, localWindow, 0, localRenderer);
+				gos_SetScreenMode(1024, 768, bitDepth, renderer, 0, 0, 0, localFullScreen, 0,
+					localWindow, 0, localRenderer);
 			break;
 		case 3: // 1280by1024
-			if ((gos_GetMachineInformation(gos_Info_ValidMode, renderer, 1280,
-					 1024, bitDepth) == 0) &&
+			if ((gos_GetMachineInformation(gos_Info_ValidMode, renderer, 1280, 1024, bitDepth) ==
+					0) &&
 				(bitDepth == 32))
 				bitDepth = 16;
 			if (renderer == 3)
-				gos_SetScreenMode(1280, 1024, bitDepth, 0, 0, 0, true,
-					localFullScreen, 0, localWindow, 0, localRenderer);
+				gos_SetScreenMode(1280, 1024, bitDepth, 0, 0, 0, true, localFullScreen, 0,
+					localWindow, 0, localRenderer);
 			else
-				gos_SetScreenMode(1280, 1024, bitDepth, renderer, 0, 0, 0,
-					localFullScreen, 0, localWindow, 0, localRenderer);
+				gos_SetScreenMode(1280, 1024, bitDepth, renderer, 0, 0, 0, localFullScreen, 0,
+					localWindow, 0, localRenderer);
 			break;
 		case 4: // 1600by1200
-			if ((gos_GetMachineInformation(gos_Info_ValidMode, renderer, 1600,
-					 1200, bitDepth) == 0) &&
+			if ((gos_GetMachineInformation(gos_Info_ValidMode, renderer, 1600, 1200, bitDepth) ==
+					0) &&
 				(bitDepth == 32))
 				bitDepth = 16;
 			if (renderer == 3)
-				gos_SetScreenMode(1600, 1200, 16, 0, 0, 0, true,
-					localFullScreen, 0, localWindow, 0, localRenderer);
+				gos_SetScreenMode(1600, 1200, 16, 0, 0, 0, true, localFullScreen, 0, localWindow, 0,
+					localRenderer);
 			else
-				gos_SetScreenMode(1600, 1200, 16, renderer, 0, 0, 0,
-					localFullScreen, 0, localWindow, 0, localRenderer);
+				gos_SetScreenMode(1600, 1200, 16, renderer, 0, 0, 0, localFullScreen, 0,
+					localWindow, 0, localRenderer);
 			break;
 		}
 	}

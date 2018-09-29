@@ -56,16 +56,14 @@ int32_t Mechlopedia::init()
 	}
 	LogisticsScreen::init(file, "Static", "Text", "Rect", "Button");
 	buttons[buttonCount - 1].setMessageOnRelease();
-	listBox.init(
-		rects[0].left(), rects[0].top(), rects[0].width(), rects[0].height());
+	listBox.init(rects[0].left(), rects[0].top(), rects[0].width(), rects[0].height());
 	listBox.setOrange(true);
 	Mechlopedia::MechScreen* pMechScreen = new Mechlopedia::MechScreen;
 	pMechScreen->setListBox(&listBox);
 	pMechScreen->setVehicle(false);
 	pMechScreen->init();
-	subScreens[0] = pMechScreen;
-	Mechlopedia::BuildingScreen* pBuildingScreen =
-		new Mechlopedia::BuildingScreen;
+	subScreens[0]								 = pMechScreen;
+	Mechlopedia::BuildingScreen* pBuildingScreen = new Mechlopedia::BuildingScreen;
 	pBuildingScreen->setListBox(&listBox);
 	pBuildingScreen->init();
 	subScreens[1]							 = pBuildingScreen;
@@ -77,15 +75,13 @@ int32_t Mechlopedia::init()
 	pMechScreen->setVehicle(true);
 	pMechScreen->setListBox(&listBox);
 	pMechScreen->init();
-	subScreens[2] = pMechScreen;
-	Mechlopedia::PersonalityScreen* pPersScreen =
-		new Mechlopedia::PersonalityScreen;
+	subScreens[2]								= pMechScreen;
+	Mechlopedia::PersonalityScreen* pPersScreen = new Mechlopedia::PersonalityScreen;
 	pPersScreen->setListBox(&listBox);
 	pPersScreen->init();
 	pPersScreen->setIsHistory(false);
-	subScreens[4] = pPersScreen;
-	Mechlopedia::PersonalityScreen* pHistroyScreen =
-		new Mechlopedia::PersonalityScreen;
+	subScreens[4]								   = pPersScreen;
+	Mechlopedia::PersonalityScreen* pHistroyScreen = new Mechlopedia::PersonalityScreen;
 	pHistroyScreen->setListBox(&listBox);
 	pHistroyScreen->init();
 	pHistroyScreen->setIsHistory(true);
@@ -150,8 +146,7 @@ int32_t Mechlopedia::SubScreen::init(FitIniFile& file)
 	LogisticsScreen::init(file, "Static", "Text", "Rect", "Button");
 	for (size_t i = 0; i < buttonCount; i++)
 		buttons[i].setMessageOnRelease();
-	descriptionListBox.init(
-		rects[0].left(), rects[0].top(), rects[0].width(), rects[0].height());
+	descriptionListBox.init(rects[0].left(), rects[0].top(), rects[0].width(), rects[0].height());
 	descriptionListBox.move(285, 58);
 	descriptionListBox.setDisabledFX(-1);
 	descriptionListBox.setHighlightFX(-1);
@@ -211,17 +206,15 @@ void Mechlopedia::MechScreen::init()
 		return;
 	}
 	SubScreen::init(file);
-	compListBox.init(
-		rects[2].left(), rects[2].top(), rects[2].width(), rects[2].height());
+	compListBox.init(rects[2].left(), rects[2].top(), rects[2].width(), rects[2].height());
 	compListBox.move(285, 58);
-	statsListBox.init(
-		rects[1].left(), rects[1].top(), rects[1].width(), rects[1].height());
+	statsListBox.init(rects[1].left(), rects[1].top(), rects[1].width(), rects[1].height());
 	statsListBox.move(285, 58);
 	statsListBox.setDisabledFX(-1);
 	statsListBox.setHighlightFX(-1);
 	statsListBox.setPressFX(-1);
-	camera.init(statics[4].left() + 285, statics[4].top() + 58,
-		statics[4].right() + 285, statics[4].bottom() + 58);
+	camera.init(statics[4].left() + 285, statics[4].top() + 58, statics[4].right() + 285,
+		statics[4].bottom() + 58);
 	statics[4].setColor(0);
 	textObjects[0].setText("");
 }
@@ -258,12 +251,11 @@ void Mechlopedia::MechScreen::begin()
 			MechlopediaListItem* pEntry = new MechlopediaListItem();
 			char name[256];
 			cLoadString(pVehicles[i]->getNameID(), name, 255);
-			EString text = name;
+			std::wstring text = name;
 			text.MakeUpper();
 			pEntry->setText(text);
 			pEntry->resize(
-				groupListBox->width() - groupListBox->getScrollBarWidth() - 18,
-				pEntry->height());
+				groupListBox->width() - groupListBox->getScrollBarWidth() - 18, pEntry->height());
 			bool bFound = 0;
 			for (j = 0; j < groupListBox->GetItemCount(); j++)
 			{
@@ -281,12 +273,11 @@ void Mechlopedia::MechScreen::begin()
 		for (i = 0; i < copterCount; i++)
 		{
 			MechlopediaListItem* pEntry = new MechlopediaListItem();
-			EString text				= pCopters[i]->getName();
+			std::wstring text			= pCopters[i]->getName();
 			text.MakeUpper();
 			pEntry->setText(text);
 			pEntry->resize(
-				groupListBox->width() - groupListBox->getScrollBarWidth() - 18,
-				pEntry->height());
+				groupListBox->width() - groupListBox->getScrollBarWidth() - 18, pEntry->height());
 			bool bFound = 0;
 			for (j = 0; j < groupListBox->GetItemCount(); j++)
 			{
@@ -330,8 +321,7 @@ void Mechlopedia::MechScreen::begin()
 			MechlopediaListItem* pEntry = new MechlopediaListItem();
 			pEntry->setText(pChassis[i]->getChassisName());
 			pEntry->resize(
-				groupListBox->width() - groupListBox->getScrollBarWidth() - 18,
-				pEntry->height());
+				groupListBox->width() - groupListBox->getScrollBarWidth() - 18, pEntry->height());
 			groupListBox->AddItem(pEntry);
 		}
 	}
@@ -357,7 +347,7 @@ void Mechlopedia::MechScreen::select(aTextListItem* pItem)
 	PCSTR pText = pItem->getText();
 	if (!bIsVehicle)
 	{
-		EString name = pText;
+		std::wstring name = pText;
 		name += " Prime";
 		LogisticsVariant* pChassis = LogisticsData::instance->getVariant(name);
 		setMech(pChassis, 1);
@@ -369,8 +359,7 @@ void Mechlopedia::MechScreen::select(aTextListItem* pItem)
 			setVehicle(pVehicle);
 		else // copter
 		{
-			LogisticsVariant* pMech =
-				LogisticsData::instance->getVariant(pText);
+			LogisticsVariant* pMech = LogisticsData::instance->getVariant(pText);
 			if (pMech)
 				setMech(pMech, 0);
 		}
@@ -393,21 +382,20 @@ void Mechlopedia::MechScreen::setVehicle(LogisticsVehicle* pVehicle)
 	int32_t descID = pVehicle->getEncyclopediaID();
 	char text[256];
 	cLoadString(pVehicle->getNameID(), text, 255);
-	EString tmpStr = text;
+	std::wstring tmpStr = text;
 	tmpStr.MakeUpper();
 	descriptionListBox.removeAllItems(true);
 	aTextListItem* pItem = new aTextListItem(IDS_EN_LISTBOX_FONT);
 	pItem->forceToTop(true);
-	pItem->resize(descriptionListBox.width() -
-					  descriptionListBox.getScrollBarWidth() - 16,
-		pItem->height());
+	pItem->resize(
+		descriptionListBox.width() - descriptionListBox.getScrollBarWidth() - 16, pItem->height());
 	pItem->setText(descID);
 	pItem->sizeToText();
 	pItem->setColor(0xff005392);
 	descriptionListBox.AddItem(pItem);
 	compListBox.setVehicle(pVehicle);
-	camera.setVehicle(pVehicle->getFileName(), prefs.baseColor,
-		prefs.highlightColor, prefs.highlightColor);
+	camera.setVehicle(
+		pVehicle->getFileName(), prefs.baseColor, prefs.highlightColor, prefs.highlightColor);
 	camera.setScale(pVehicle->getScale());
 	textObjects[0].setText(tmpStr);
 	statsListBox.removeAllItems(true);
@@ -454,28 +442,26 @@ void Mechlopedia::MechScreen::setVehicle(LogisticsVehicle* pVehicle)
 	statsListBox.AddItem(pItem);
 }
 
-void Mechlopedia::MechScreen::setMech(
-	LogisticsVariant* pChassis, bool bShowJump)
+void Mechlopedia::MechScreen::setMech(LogisticsVariant* pChassis, bool bShowJump)
 {
 	if (!pChassis)
 		return;
 	int32_t descID = pChassis->getEncyclopediaID();
 	descriptionListBox.removeAllItems(true);
 	aTextListItem* pItem = new aTextListItem(IDS_EN_LISTBOX_FONT);
-	pItem->resize(descriptionListBox.width() -
-					  descriptionListBox.getScrollBarWidth() - 16,
-		pItem->height());
+	pItem->resize(
+		descriptionListBox.width() - descriptionListBox.getScrollBarWidth() - 16, pItem->height());
 	pItem->setText(descID);
 	pItem->sizeToText();
 	pItem->setColor(0xff005392);
 	pItem->forceToTop(true);
 	descriptionListBox.AddItem(pItem);
 	compListBox.setMech(pChassis);
-	camera.setMech(pChassis->getFileName(), prefs.baseColor,
-		prefs.highlightColor, prefs.highlightColor);
+	camera.setMech(
+		pChassis->getFileName(), prefs.baseColor, prefs.highlightColor, prefs.highlightColor);
 	char name[256];
 	cLoadString(pChassis->getChassisName(), name, 255);
-	EString upper = name;
+	std::wstring upper = name;
 	upper.MakeUpper();
 	textObjects[0].setText(upper);
 	statsListBox.removeAllItems(true);
@@ -549,11 +535,10 @@ void Mechlopedia::WeaponScreen::init()
 		Assert(0, 0, errorStr);
 	}
 	SubScreen::init(file);
-	statsListBox.init(
-		rects[2].left(), rects[2].top(), rects[2].right(), rects[2].bottom());
+	statsListBox.init(rects[2].left(), rects[2].top(), rects[2].right(), rects[2].bottom());
 	statsListBox.move(285, 58);
-	camera.init(statics[4].left() + 285, statics[4].top() + 58,
-		statics[4].right() + 285, statics[4].bottom() + 58);
+	camera.init(statics[4].left() + 285, statics[4].top() + 58, statics[4].right() + 285,
+		statics[4].bottom() + 58);
 	statics[4].setColor(0);
 	textObjects[0].setText("");
 }
@@ -574,8 +559,7 @@ void Mechlopedia::WeaponScreen::render()
 
 void Mechlopedia::WeaponScreen::select(aTextListItem* pEntry)
 {
-	LogisticsComponent* pComponent =
-		LogisticsData::instance->getComponent(pEntry->getID());
+	LogisticsComponent* pComponent = LogisticsData::instance->getComponent(pEntry->getID());
 	setWeapon(pComponent);
 }
 
@@ -596,13 +580,12 @@ void Mechlopedia::WeaponScreen::begin()
 	for (size_t i = 0; i < count; i++)
 	{
 		MechlopediaListItem* pItem = new MechlopediaListItem();
-		EString text			   = comps[i]->getName();
+		std::wstring text		   = comps[i]->getName();
 		text.MakeUpper();
 		pItem->setText(text);
 		pItem->setID(comps[i]->getID());
 		pItem->resize(
-			groupListBox->width() - groupListBox->getScrollBarWidth() - 18,
-			pItem->height());
+			groupListBox->width() - groupListBox->getScrollBarWidth() - 18, pItem->height());
 		groupListBox->AddItem(pItem);
 	}
 	aTextListItem* pEntry = (aTextListItem*)groupListBox->GetItem(0);
@@ -621,16 +604,15 @@ void Mechlopedia::WeaponScreen::setWeapon(LogisticsComponent* pComponent)
 	statsListBox.removeAllItems(true);
 	descriptionListBox.removeAllItems(true);
 	// set header
-	EString name = pComponent->getName();
+	std::wstring name = pComponent->getName();
 	name.MakeUpper();
 	textObjects[0].setText(name);
 	// set description
 	aTextListItem* pEntry = new aTextListItem(IDS_EN_WEAPON_FONT);
 	pEntry->setColor(0xff005392);
 	pEntry->setText(pComponent->getHelpID());
-	pEntry->resize(descriptionListBox.width() -
-					   descriptionListBox.getScrollBarWidth() - 16,
-		pEntry->height());
+	pEntry->resize(
+		descriptionListBox.width() - descriptionListBox.getScrollBarWidth() - 16, pEntry->height());
 	pEntry->sizeToText();
 	pEntry->forceToTop(true);
 	descriptionListBox.AddItem(pEntry);
@@ -719,11 +701,10 @@ void Mechlopedia::WeaponScreen::setWeapon(LogisticsComponent* pComponent)
 	float oldMidX = (rects[1].right() + rects[1].left()) / 2.f;
 	float oldMidY = (rects[1].bottom() + rects[1].top()) / 2.f;
 	statics[9].setTexture(path);
-	statics[9].resize(sizeX * LogisticsComponent::XICON_FACTOR,
-		sizeY * LogisticsComponent::YICON_FACTOR);
+	statics[9].resize(
+		sizeX * LogisticsComponent::XICON_FACTOR, sizeY * LogisticsComponent::YICON_FACTOR);
 	statics[9].setUVs(0.f, 0.f, sizeX * 48.f, sizeY * 32.f);
-	statics[9].moveTo(
-		oldMidX - .5 * statics[9].width(), oldMidY - .5 * statics[9].height());
+	statics[9].moveTo(oldMidX - .5 * statics[9].width(), oldMidY - .5 * statics[9].height());
 	camera.setComponent(pComponent->getPictureFileName());
 	camera.setScale(1.5);
 }
@@ -765,20 +746,18 @@ void Mechlopedia::PersonalityScreen::begin()
 		MechlopediaListItem* pItem = new MechlopediaListItem();
 		char text[256];
 		cLoadString(FirstID + i, text, 255);
-		EString upper = text;
+		std::wstring upper = text;
 		upper.MakeUpper();
 		pItem->setText(upper);
 		pItem->setID(i);
 		pItem->resize(
-			groupListBox->width() - groupListBox->getScrollBarWidth() - 18,
-			pItem->height());
+			groupListBox->width() - groupListBox->getScrollBarWidth() - 18, pItem->height());
 		bool bAdded = 0;
 		if (!bIsHistory) // turns out we need to sort 'em
 		{
 			for (size_t j = 0; j < groupListBox->GetItemCount(); j++)
 			{
-				MechlopediaListItem* pTmpItem =
-					(MechlopediaListItem*)groupListBox->GetItem(j);
+				MechlopediaListItem* pTmpItem = (MechlopediaListItem*)groupListBox->GetItem(j);
 				if (upper.Compare(pTmpItem->getText(), 1) < 0)
 				{
 					groupListBox->InsertItem(pItem, j);
@@ -805,15 +784,12 @@ void Mechlopedia::PersonalityScreen::select(aTextListItem* pEntry)
 {
 	int32_t ID = pEntry->getID();
 	descriptionListBox.removeAllItems(true);
-	int32_t PictureID =
-		bIsHistory ? IDS_HISTORY_PICTURE0 : IDS_PERSONALITY_PICTURE0;
-	int32_t DescriptionID =
-		bIsHistory ? IDS_HISTORY_DESCRIPTION_0 : IDS_PERONSALITY_DESCRIPTION0;
-	aTextListItem* pItem = new aTextListItem(IDS_EN_WEAPON_FONT);
+	int32_t PictureID	 = bIsHistory ? IDS_HISTORY_PICTURE0 : IDS_PERSONALITY_PICTURE0;
+	int32_t DescriptionID = bIsHistory ? IDS_HISTORY_DESCRIPTION_0 : IDS_PERONSALITY_DESCRIPTION0;
+	aTextListItem* pItem  = new aTextListItem(IDS_EN_WEAPON_FONT);
 	pItem->setColor(0xff005392);
-	pItem->resize(descriptionListBox.width() -
-					  descriptionListBox.getScrollBarWidth() - 16,
-		pEntry->height());
+	pItem->resize(
+		descriptionListBox.width() - descriptionListBox.getScrollBarWidth() - 16, pEntry->height());
 	pItem->setText(DescriptionID + ID);
 	pItem->sizeToText();
 	pItem->forceToTop(true);
@@ -859,8 +835,7 @@ void MechlopediaListItem::init()
 	}
 }
 
-MechlopediaListItem::MechlopediaListItem()
-	: aAnimTextListItem(IDS_EN_LISTBOX_FONT)
+MechlopediaListItem::MechlopediaListItem() : aAnimTextListItem(IDS_EN_LISTBOX_FONT)
 {
 	if (s_templateItem && this != s_templateItem)
 	{
@@ -887,15 +862,14 @@ void Mechlopedia::BuildingScreen::init()
 		return;
 	}
 	SubScreen::init(file);
-	compListBox.init(
-		rects[2].left(), rects[2].top(), rects[2].width(), rects[2].height());
+	compListBox.init(rects[2].left(), rects[2].top(), rects[2].width(), rects[2].height());
 	compListBox.move(285, 58);
-	camera.init(statics[4].left() + 285, statics[4].top() + 58,
-		statics[4].right() + 285, statics[4].bottom() + 58);
+	camera.init(statics[4].left() + 285, statics[4].top() + 58, statics[4].right() + 285,
+		statics[4].bottom() + 58);
 	statics[4].setColor(0);
 	textObjects[0].setText("");
-	descriptionListBox.init(rects[1].left() + 285, rects[1].top() + 58,
-		rects[1].width(), rects[1].height());
+	descriptionListBox.init(
+		rects[1].left() + 285, rects[1].top() + 58, rects[1].width(), rects[1].height());
 }
 void Mechlopedia::BuildingScreen::update()
 {
@@ -920,23 +894,21 @@ void Mechlopedia::BuildingScreen::begin()
 	{
 		char tmp[256];
 		cLoadString(pBldgs[i]->nameID, tmp, 255);
-		EString str = tmp;
+		std::wstring str = tmp;
 		str.MakeUpper();
-		EString liao = "Liao ";
+		std::wstring liao = "Liao ";
 		str.Remove(liao);
 		liao = "LIAO ";
 		str.Remove(liao);
 		bool bFound = 0;
 		for (size_t j = 0; j < groupListBox->GetItemCount(); j++)
 		{
-			if (_stricmp(str,
-					((aTextListItem*)groupListBox->GetItem(j))->getText()) < 0)
+			if (_stricmp(str, ((aTextListItem*)groupListBox->GetItem(j))->getText()) < 0)
 			{
 				MechlopediaListItem* pItem = new MechlopediaListItem();
 				pItem->setText(str);
 				pItem->setID(pBldgs[i]->nameID);
-				pItem->resize(groupListBox->width() -
-								  groupListBox->getScrollBarWidth() - 18,
+				pItem->resize(groupListBox->width() - groupListBox->getScrollBarWidth() - 18,
 					pItem->height());
 				groupListBox->InsertItem(pItem, j);
 				bFound = true;
@@ -949,8 +921,7 @@ void Mechlopedia::BuildingScreen::begin()
 			pItem->setText(str);
 			pItem->setID(pBldgs[i]->nameID);
 			pItem->resize(
-				groupListBox->width() - groupListBox->getScrollBarWidth() - 18,
-				pItem->height());
+				groupListBox->width() - groupListBox->getScrollBarWidth() - 18, pItem->height());
 			groupListBox->AddItem(pItem);
 		}
 	}
@@ -961,15 +932,14 @@ void Mechlopedia::BuildingScreen::select(aTextListItem* pEntry)
 {
 	if (!pEntry)
 		return;
-	LogisticsData::Building* pBldg =
-		LogisticsData::instance->getBuilding(pEntry->getID());
+	LogisticsData::Building* pBldg = LogisticsData::instance->getBuilding(pEntry->getID());
 	if (pBldg)
 	{
 		char name[256];
 		cLoadString(pBldg->nameID, name, 255);
-		EString tmpStr = name;
+		std::wstring tmpStr = name;
 		tmpStr.MakeUpper();
-		EString liao = "LIAO ";
+		std::wstring liao = "LIAO ";
 		tmpStr.Remove(liao);
 		textObjects[0].setText(tmpStr);
 		cLoadString(IDS_EN_BUILDING_WEIGHT, name, 255);
@@ -978,8 +948,7 @@ void Mechlopedia::BuildingScreen::select(aTextListItem* pEntry)
 		textObjects[1].setText(formatted);
 		descriptionListBox.removeAllItems(true);
 		aTextListItem* pItem = new aTextListItem(IDS_EN_LISTBOX_FONT);
-		pItem->resize(descriptionListBox.width() -
-						  descriptionListBox.getScrollBarWidth() - 16,
+		pItem->resize(descriptionListBox.width() - descriptionListBox.getScrollBarWidth() - 16,
 			pItem->height());
 		pItem->setText(pBldg->encycloID);
 		pItem->sizeToText();
@@ -996,8 +965,7 @@ void Mechlopedia::BuildingScreen::select(aTextListItem* pEntry)
 			int32_t ID = pBldg->componentIDs[i];
 			if (ID)
 			{
-				LogisticsComponent* pComp =
-					LogisticsData::instance->getComponent(ID);
+				LogisticsComponent* pComp = LogisticsData::instance->getComponent(ID);
 				if (pComp)
 				{
 					pComps[count++] = pComp;

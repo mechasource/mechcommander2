@@ -24,7 +24,7 @@ class GameSoundSystem : public SoundSystem
 {
 	// Data Members
 	//-------------
-  protected:
+protected:
 	RadioData* currentMessage;			   // Radio message playing.
 	uint32_t messagesInQueue;			   // Radio messages waiting to play.
 	RadioData* queue[MAX_QUEUED_MESSAGES]; // Radio message queue.
@@ -37,7 +37,7 @@ class GameSoundSystem : public SoundSystem
 
 	// Member Functions
 	//----------------
-  public:
+public:
 	GameSoundSystem(void) { init(void); }
 
 	~GameSoundSystem(void) { destroy(void); }
@@ -64,8 +64,7 @@ class GameSoundSystem : public SoundSystem
 
 	void purgeSoundSystem(void); // This will shutdown all active sound.
 	void removeQueuedMessage(int32_t msgNumber);
-	bool checkMessage(
-		MechWarriorPtr pilot, byte priority, uint32_t messageType);
+	bool checkMessage(MechWarriorPtr pilot, byte priority, uint32_t messageType);
 	int32_t queueRadioMessage(RadioData* msgData);
 	void moveFromQueueToPlaying(void);
 	void removeCurrentMessage(void);

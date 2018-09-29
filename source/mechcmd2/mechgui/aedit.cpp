@@ -20,9 +20,8 @@ aEdit.cpp			: Implementation of the aEdit component of the GUI library.
 
 #define ENTRY_MAX_CHARS 1000
 #define ENTRY_MARGIN 4.f
-#define HalfColorValue(color)                                                  \
-	(((color >> 1) & 0x007f0000) | ((color >> 1) & 0x00007f00) |               \
-		((color >> 1) & 0x0000007f))
+#define HalfColorValue(color)                                                                      \
+	(((color >> 1) & 0x007f0000) | ((color >> 1) & 0x00007f00) | ((color >> 1) & 0x0000007f))
 
 static int32_t acp = 0;
 static bool g_bUseLangDll;
@@ -56,11 +55,9 @@ aEdit::aEdit()
 			if (acp != 949) // other than Korean version, reduce color value by
 							// half so that composition string can be seen
 			{
-				g_ia.compColorTargetConv =
-					HalfColorValue(g_ia.compColorTargetConv);
-				g_ia.compColorTargetNotConv =
-					HalfColorValue(g_ia.compColorTargetNotConv);
-				g_ia.compColorInputErr = HalfColorValue(g_ia.compColorInputErr);
+				g_ia.compColorTargetConv	= HalfColorValue(g_ia.compColorTargetConv);
+				g_ia.compColorTargetNotConv = HalfColorValue(g_ia.compColorTargetNotConv);
+				g_ia.compColorInputErr		= HalfColorValue(g_ia.compColorInputErr);
 			}
 		}
 	}
@@ -162,8 +159,7 @@ void aEdit::handleKeyboard()
 		if (!handleFormattingKeys(key))
 		{
 			// hack to eat control keys, must be a real way to do this
-			if (((key & 0x00ff) + ((key & 0x00ff) << 8) + 0x4000) == key &&
-				key != 0x00006e2e)
+			if (((key & 0x00ff) + ((key & 0x00ff) << 8) + 0x4000) == key && key != 0x00006e2e)
 				return;
 			key &= 0x00ff;
 			// this does happen when IME is enabled.
@@ -202,16 +198,13 @@ void aEdit::handleKeyboard()
 				return;
 			if (!bWierdChars)
 			{
-				if ((key == '\\') || (key == ':') || (key == '*') ||
-					(key == '\'') || (key == '.') || (key == ',') ||
-					(key == '/') || (key == '<') || (key == '>') ||
+				if ((key == '\\') || (key == ':') || (key == '*') || (key == '\'') ||
+					(key == '.') || (key == ',') || (key == '/') || (key == '<') || (key == '>') ||
 					(key == '?') || (key == '"') || (key == '|'))
 					return;
 			}
 			// is there space to insert a character?
-			if (text.Length() - labs(nInsertion2 - nInsertion1) +
-					(key2 ? 1 : 0) >=
-				nLimit)
+			if (text.Length() - labs(nInsertion2 - nInsertion1) + (key2 ? 1 : 0) >= nLimit)
 			{
 				sndSystem->playDigitalSample(LOG_WRONGBUTTON);
 				gos_FinalizeStringIME();
@@ -269,7 +262,7 @@ void aEdit::render()
 	if (!isShowing())
 		return;
 	aObject::render();
-	EString textToDraw = text;
+	std::wstring textToDraw = text;
 	textToDraw += ' '; // have to do this for loc, some fonts are getting
 					   // clipped in millenium
 	// draw selection range
@@ -284,15 +277,13 @@ void aEdit::render()
 			if (isleadbyte(nMax - 2))
 				nMax -= 2;
 		}
-		int32_t nXSelStart =
-			(int32_t)(globalX() + charXPos(nMin) - nLeftOffset + ENTRY_MARGIN);
-		int32_t nXSelEnd =
-			(int32_t)(globalX() + charXPos(nMax) - nLeftOffset + ENTRY_MARGIN);
+		int32_t nXSelStart = (int32_t)(globalX() + charXPos(nMin) - nLeftOffset + ENTRY_MARGIN);
+		int32_t nXSelEnd   = (int32_t)(globalX() + charXPos(nMax) - nLeftOffset + ENTRY_MARGIN);
 		if (nXSelStart < globalX())
 			nXSelStart = globalX();
 		if (nXSelEnd > globalX() + width())
 			nXSelEnd = globalX() + width();
-		RECT rect = {(int32_t)nXSelStart, (int32_t)globalY(), (int32_t)nXSelEnd,
+		RECT rect		  = {(int32_t)nXSelStart, (int32_t)globalY(), (int32_t)nXSelEnd,
 			(int32_t)(globalY() + height())};
 		int32_t startChar = 0;
 		if (nLeftOffset)
@@ -302,18 +293,16 @@ void aEdit::render()
 		}
 		if (text.Length())
 		{
-			font.render(&textToDraw[startChar],
-				(int32_t)(globalX() + ENTRY_MARGIN), (int32_t)globalY(),
-				(int32_t)width(), (int32_t)height(), textColor, 0, 0);
+			font.render(&textToDraw[startChar], (int32_t)(globalX() + ENTRY_MARGIN),
+				(int32_t)globalY(), (int32_t)width(), (int32_t)height(), textColor, 0, 0);
 		}
 		drawRect(rect, highlightColor);
 		if (text.Length())
 		{
 			char tmp		 = textToDraw[nMax];
 			textToDraw[nMax] = nullptr;
-			font.render(&textToDraw[nMin], (int32_t)nXSelStart,
-				(int32_t)globalY(), nXSelEnd, (int32_t)height(), selectedColor,
-				0, 0);
+			font.render(&textToDraw[nMin], (int32_t)nXSelStart, (int32_t)globalY(), nXSelEnd,
+				(int32_t)height(), selectedColor, 0, 0);
 			textToDraw[nMax] = tmp;
 		}
 	}
@@ -327,33 +316,30 @@ void aEdit::render()
 		}
 		if (textToDraw.Length())
 		{
-			font.render(&textToDraw[startChar],
-				(int32_t)(globalX() + ENTRY_MARGIN), (int32_t)globalY(),
-				(int32_t)width(), (int32_t)height(), textColor, 0, 0);
+			font.render(&textToDraw[startChar], (int32_t)(globalX() + ENTRY_MARGIN),
+				(int32_t)globalY(), (int32_t)width(), (int32_t)height(), textColor, 0, 0);
 		}
 		else
 		{
-			font.render("", (int32_t)(globalX() + ENTRY_MARGIN),
-				(int32_t)globalY(), (int32_t)width(), (int32_t)height(),
-				textColor, 0, 0);
+			font.render("", (int32_t)(globalX() + ENTRY_MARGIN), (int32_t)globalY(),
+				(int32_t)width(), (int32_t)height(), textColor, 0, 0);
 		}
 	}
 	if (bFocus && bAllowIME)
 	{
-		gos_TextSetRegion(globalX() + ENTRY_MARGIN, globalY(),
-			globalX() + width(), globalY() + height() - 1);
+		gos_TextSetRegion(
+			globalX() + ENTRY_MARGIN, globalY(), globalX() + width(), globalY() + height() - 1);
 		int32_t pos = charXPos(nInsertion1);
 		if (acp == 949 && nInsertion1 > nInsertion2 &&
 			gos_GetMachineInformation(gos_Info_GetIMEStatus))
 			pos = charXPos(nInsertion2);
-		gos_PositionIME(
-			globalX() + pos - nLeftOffset + ENTRY_MARGIN, globalY());
+		gos_PositionIME(globalX() + pos - nLeftOffset + ENTRY_MARGIN, globalY());
 	}
 	drawCursor();
 }
 
-void aEdit::getEntry(EString& str) { str = text; }
-void aEdit::setEntry(const EString& str, uint8_t byHighlight)
+void aEdit::getEntry(std::wstring& str) { str = text; }
+void aEdit::setEntry(const std::wstring& str, uint8_t byHighlight)
 {
 	text = str;
 	if (byHighlight)
@@ -386,20 +372,17 @@ void aEdit::setFocus(bool bHasFocus)
 			g_ia.compColorInput		= textColor;
 			g_ia.compColorConverted = textColor;
 			g_ia.compColorText		= textColor;
-			if (acp !=
-				949) // other than Korean version, reduce color value by half
+			if (acp != 949) // other than Korean version, reduce color value by half
 			{
-				g_ia.compColorInput = HalfColorValue(g_ia.compColorInput);
-				g_ia.compColorConverted =
-					HalfColorValue(g_ia.compColorConverted);
-				g_ia.compColorInputErr = HalfColorValue(g_ia.compColorInputErr);
+				g_ia.compColorInput		= HalfColorValue(g_ia.compColorInput);
+				g_ia.compColorConverted = HalfColorValue(g_ia.compColorConverted);
+				g_ia.compColorInputErr  = HalfColorValue(g_ia.compColorInputErr);
 			}
 		}
 		gos_SetIMEAppearance(&g_ia);
 		if (!bIMEInitialized)
 		{
-			if (acp == 932 || acp == 874 || acp == 936 || acp == 949 ||
-				acp == 950)
+			if (acp == 932 || acp == 874 || acp == 936 || acp == 949 || acp == 950)
 			{
 				// only want to do this if using IME
 				resize(width() - height() - 2, height());
@@ -444,9 +427,8 @@ void aEdit::backSpace(int32_t nPosition)
 	nCharCount = 1;
 	if (nPosition > 1)
 	{
-		puint8_t pPrev =
-			_mbsdec((pcuint8_t)(PCSTR)text, (pcuint8_t)(PCSTR)text + nPosition);
-		nCharCount = (pcuint8_t)(PCSTR)text + nPosition - pPrev;
+		puint8_t pPrev = _mbsdec((pcuint8_t)(PCSTR)text, (pcuint8_t)(PCSTR)text + nPosition);
+		nCharCount	 = (pcuint8_t)(PCSTR)text + nPosition - pPrev;
 	}
 	text.Remove(nPosition - nCharCount, nPosition - 1);
 	nInsertion2 = nInsertion1 = nPosition - nCharCount;
@@ -523,10 +505,9 @@ bool aEdit::handleFormattingKeys(int32_t keycode)
 				int32_t decrementCount = 1;
 				if (nInsertion2 > 1)
 				{
-					puint8_t pPrev = _mbsdec((pcuint8_t)(PCSTR)text,
-						(pcuint8_t)(PCSTR)text + nInsertion2);
-					decrementCount =
-						(pcuint8_t)(PCSTR)text + nInsertion2 - pPrev;
+					puint8_t pPrev =
+						_mbsdec((pcuint8_t)(PCSTR)text, (pcuint8_t)(PCSTR)text + nInsertion2);
+					decrementCount = (pcuint8_t)(PCSTR)text + nInsertion2 - pPrev;
 				}
 				nInsertion2 -= decrementCount;
 			}
@@ -534,17 +515,15 @@ bool aEdit::handleFormattingKeys(int32_t keycode)
 		else
 		{
 			if (nInsertion1 != nInsertion2)
-				nInsertion1 =
-					nInsertion1 < nInsertion2 ? nInsertion1 : nInsertion2;
+				nInsertion1 = nInsertion1 < nInsertion2 ? nInsertion1 : nInsertion2;
 			else if (nInsertion1)
 			{
 				int32_t decrementCount = 1;
 				if (nInsertion1 > 1)
 				{
-					puint8_t pPrev = _mbsdec((pcuint8_t)(PCSTR)text,
-						(pcuint8_t)(PCSTR)text + nInsertion2);
-					decrementCount =
-						(pcuint8_t)(PCSTR)text + nInsertion2 - pPrev;
+					puint8_t pPrev =
+						_mbsdec((pcuint8_t)(PCSTR)text, (pcuint8_t)(PCSTR)text + nInsertion2);
+					decrementCount = (pcuint8_t)(PCSTR)text + nInsertion2 - pPrev;
 				}
 				nInsertion1 -= decrementCount;
 			}
@@ -561,8 +540,7 @@ bool aEdit::handleFormattingKeys(int32_t keycode)
 		else
 		{
 			if (nInsertion1 != nInsertion2)
-				nInsertion1 =
-					nInsertion1 > nInsertion2 ? nInsertion1 : nInsertion2;
+				nInsertion1 = nInsertion1 > nInsertion2 ? nInsertion1 : nInsertion2;
 			else if (nInsertion1 < text.Length())
 				nInsertion1 += charLength(nInsertion1);
 			nInsertion2 = nInsertion1;

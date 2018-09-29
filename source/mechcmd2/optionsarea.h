@@ -23,7 +23,7 @@ class CPrefs;
 
 class OptionsXScreen : public LogisticsScreen
 {
-  public:
+public:
 	OptionsXScreen(void);
 	virtual ~OptionsXScreen(void);
 
@@ -37,7 +37,7 @@ class OptionsXScreen : public LogisticsScreen
 
 	bool bDone;
 
-  private:
+private:
 	int32_t indexOfButtonWithID(int32_t id);
 
 	LogisticsScreen* tabAreas[4];
@@ -47,7 +47,7 @@ class OptionsXScreen : public LogisticsScreen
 
 class ScrollX : public aObject
 {
-  public:
+public:
 	ScrollX(void);
 	int32_t init(aButton* pLeft, aButton* pRight, aButton* pTab);
 	virtual void update(void);
@@ -64,8 +64,7 @@ class ScrollX : public aObject
 	}
 	int32_t SetScrollPage(int32_t newInc)
 	{
-		pageInc =
-			(float)newInc; // amount you move if you click on the bar itself
+		pageInc = (float)newInc; // amount you move if you click on the bar itself
 	}
 	void ScrollUp(void);
 	void ScrollPageUp(void);
@@ -74,7 +73,7 @@ class ScrollX : public aObject
 	void SetScroll(int32_t newScrollPos);
 	void Enable(bool enable);
 
-  private:
+private:
 	void ResizeAreas(void);
 
 	aButton* buttons[3];
@@ -89,7 +88,7 @@ class ScrollX : public aObject
 class OptionsGraphics : public LogisticsScreen
 {
 
-  public:
+public:
 	void init(int32_t xOffset, int32_t yOffset);
 	virtual void render(void);
 	virtual void update(void);
@@ -99,7 +98,7 @@ class OptionsGraphics : public LogisticsScreen
 
 	virtual int32_t handleMessage(uint32_t message, uint32_t fromWho);
 
-  private:
+private:
 	aDropList resolutionList;
 	aDropList cardList;
 	bool bExpanded;
@@ -107,7 +106,7 @@ class OptionsGraphics : public LogisticsScreen
 
 class OptionsAudio : public LogisticsScreen
 {
-  public:
+public:
 	void init(int32_t xOffset, int32_t yOffset);
 	virtual void render(void);
 	virtual void update(void);
@@ -117,14 +116,14 @@ class OptionsAudio : public LogisticsScreen
 
 	virtual int32_t handleMessage(uint32_t message, uint32_t fromWho);
 
-  private:
+private:
 	ScrollX scrollBars[5];
 };
 
 class OptionsHotKeys : public LogisticsScreen
 {
 
-  public:
+public:
 	void init(int32_t xOffset, int32_t yOffset);
 	virtual void render(void);
 	virtual void update(void);
@@ -134,7 +133,7 @@ class OptionsHotKeys : public LogisticsScreen
 
 	virtual int32_t handleMessage(uint32_t message, uint32_t fromWho);
 
-  private:
+private:
 	static void makeKeyString(int32_t hotKey, PSTR buffer);
 	static int32_t makeInputKeyString(int32_t& hotKey, PSTR buffer);
 
@@ -145,7 +144,7 @@ class OptionsHotKeys : public LogisticsScreen
 
 class OptionsGamePlay : public LogisticsScreen
 {
-  public:
+public:
 	void init(int32_t xOffset, int32_t yOffset);
 	virtual void render(void);
 	virtual void update(void);
@@ -157,13 +156,13 @@ class OptionsGamePlay : public LogisticsScreen
 
 	void resetCamera(void);
 
-  private:
+private:
 	SimpleCamera camera;
 };
 
 class HotKeyListItem : public aListItem
 {
-  public:
+public:
 	static void init(void);
 	virtual void render(void);
 	virtual void update(void);
@@ -180,7 +179,7 @@ class HotKeyListItem : public aListItem
 	int32_t getCommand(void) const { return command; }
 	int32_t getHotKey(void) const { return hotKey; }
 
-  private:
+private:
 	aText description;
 	aText text;
 	aAnimGroup animations[3];

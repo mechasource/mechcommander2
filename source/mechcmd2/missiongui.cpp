@@ -119,8 +119,8 @@ static PSTR terrainStr[NUM_TERRAIN_TYPES] = {
 
 extern void testKeyStuff();
 
-extern int32_t helpTextHeaderID;
-extern int32_t helpTextID;
+extern uint32_t helpTextHeaderID;
+extern uint32_t helpTextID;
 extern CPrefs prefs;
 
 extern bool invulnerableON;
@@ -161,7 +161,7 @@ int32_t MissionInterfaceManager::mouseX						 = 0;
 int32_t MissionInterfaceManager::mouseY						 = 0;
 GameObject* MissionInterfaceManager::target					 = nullptr;
 MissionInterfaceManager* MissionInterfaceManager::s_instance = nullptr;
-gosEnum_KeyIndex MissionInterfaceManager::WAYPOINT_KEY = (gosEnum_KeyIndex)-1;
+gosEnum_KeyIndex MissionInterfaceManager::WAYPOINT_KEY		 = (gosEnum_KeyIndex)-1;
 
 extern bool drawTerrainTiles;
 extern bool drawTerrainOverlays;
@@ -176,9 +176,8 @@ extern bool useFaceLighting;
 extern bool useVertexLighting;
 extern bool renderTGLShapes;
 extern bool useLeftRightMouseProfile;
-bool drawGUIOn = true; // Used to shut off GUI for Screen Shots and Movie Mode
-bool toggledGUI =
-	true; // Used to tell if I shut the GUI off or if its in movieMode
+bool drawGUIOn	 = true; // Used to shut off GUI for Screen Shots and Movie Mode
+bool toggledGUI	= true; // Used to tell if I shut the GUI off or if its in movieMode
 int32_t lightState = 0;
 extern bool ShowMovers;
 extern bool CullPathAreas;
@@ -189,169 +188,127 @@ bool paintingMyVtol = false;
 
 int32_t MissionInterfaceManager::OldKeys[MAX_COMMAND] = {-1};
 
-MissionInterfaceManager::Command
-	MissionInterfaceManager::commands[MAX_COMMAND] = {KEY_S,
-		mState_SHRTRNG_ATTACK, mState_SHRTRNG_LOS, false,
-		&MissionInterfaceManager::attackShort,
-		&MissionInterfaceManager::defaultAttack, 43200, KEY_M,
-		mState_MEDRNG_ATTACK, mState_MEDRNG_LOS, false,
-		&MissionInterfaceManager::attackMedium,
-		&MissionInterfaceManager::defaultAttack, 43201, KEY_L,
-		mState_LONGRNG_ATTACK, mState_LONGRNG_LOS, false,
-		&MissionInterfaceManager::attackLong,
-		&MissionInterfaceManager::defaultAttack, 43202, KEY_A,
-		mState_ENERGY_WEAPONS, mState_ENERGY_WEAPONS_LOS, false,
-		&MissionInterfaceManager::energyWeapons,
-		&MissionInterfaceManager::energyWeapons, 43204, KEY_D,
-		mState_GENERIC_ATTACK, mState_ATTACK_LOS, false,
-		&MissionInterfaceManager::defaultAttack, 0, -1, KEY_J, mState_JUMP1,
-		mState_JUMP_LOS, false, &MissionInterfaceManager::jump,
-		&MissionInterfaceManager::stopJump, 43205, KEY_J | WAYPT,
-		mState_JUMPWAYPT, mState_JUMPWAYPT_LOS, false,
-		&MissionInterfaceManager::jump, &MissionInterfaceManager::stopJump, -1,
-		KEY_C, mState_CURPOS_ATTACK, mState_CURPOS_ATTACK_LOS, false,
-		&MissionInterfaceManager::fireFromCurrentPos,
-		&MissionInterfaceManager::stopFireFromCurrentPos, 43206, KEY_G,
-		mState_GUARD, mState_GUARD, false, &MissionInterfaceManager::guard,
-		&MissionInterfaceManager::stopGuard, 43207, KEY_W,
-		mState_ENERGY_WEAPONS, mState_ENERGY_WEAPONS_LOS, false,
-		&MissionInterfaceManager::conserveAmmo, 0, -1, KEY_E, -1, -1, false,
-		&MissionInterfaceManager::selectVisible, 0, 43209, KEY_F, -1, -1, false,
-		&MissionInterfaceManager::forceShot, 0, 43210, KEY_HOME, -1, -1, true,
-		&MissionInterfaceManager::cameraNormal, 0, -1, KEY_F2, -1, -1, true,
-		&MissionInterfaceManager::cameraDefault, 0, -1, KEY_F3, -1, -1, true,
-		&MissionInterfaceManager::cameraMaxIn, 0, -1, KEY_F4, -1, -1, true,
-		&MissionInterfaceManager::cameraTight, 0, -1, KEY_F5, -1, -1, true,
-		&MissionInterfaceManager::cameraFour, 0, -1, KEY_F2 | CTRL, -1, -1,
-		true, &MissionInterfaceManager::cameraAssign0, 0, -1, KEY_F3 | CTRL, -1,
-		-1, true, &MissionInterfaceManager::cameraAssign1, 0, -1, KEY_F4 | CTRL,
-		-1, -1, true, &MissionInterfaceManager::cameraAssign2, 0, -1,
-		KEY_F5 | CTRL, -1, -1, true, &MissionInterfaceManager::cameraAssign3, 0,
-		-1, KEY_NUMPAD2, mState_DONT, mState_AIMED_ATTACK_LOS, false,
-		&MissionInterfaceManager::aimLeg, 0, 43211, KEY_NUMPAD5, mState_DONT,
-		mState_AIMED_ATTACK_LOS, false, &MissionInterfaceManager::aimArm, 0,
-		43212, KEY_NUMPAD8, mState_DONT, mState_AIMED_ATTACK_LOS, false,
-		&MissionInterfaceManager::aimHead, 0, 43213, KEY_BACK, -1, -1, false,
-		&MissionInterfaceManager::removeCommand, 0, 43214, KEY_NEXT | 0x100, -1,
-		-1, false, &MissionInterfaceManager::powerDown, 0, 43215,
-		KEY_PRIOR | 0x100, -1, -1, false, &MissionInterfaceManager::powerUp, 0,
-		43216, KEY_END | 0x100, mState_EJECT, mState_EJECT, false,
-		&MissionInterfaceManager::eject, 0, 43217, KEY_SPACE, mState_RUN,
-		mState_RUN_LOS, false, &MissionInterfaceManager::changeSpeed,
-		&MissionInterfaceManager::stopChangeSpeed, 43218, KEY_SPACE | WAYPT,
-		mState_RUNWAYPT, mState_RUNWAYPT_LOS, false,
-		&MissionInterfaceManager::changeSpeed,
-		&MissionInterfaceManager::stopChangeSpeed, -1, KEY_UP | 0x100, -1, -1,
-		false, &MissionInterfaceManager::scrollUp, 0, IDS_HOTKEY_TRACKU,
-		KEY_DOWN | 0x100, -1, -1, false, &MissionInterfaceManager::scrollDown,
-		0, IDS_HOTKEY_TRACKD, KEY_LEFT | 0x100, -1, -1, false,
-		&MissionInterfaceManager::scrollLeft, 0, IDS_HOTKEY_TRACKL,
-		KEY_RIGHT | 0x100, -1, -1, false, &MissionInterfaceManager::scrollRight,
-		0, IDS_HOTKEY_TRACKR, KEY_SUBTRACT, -1, -1, false,
-		&MissionInterfaceManager::zoomOut, 0, 43225, KEY_MINUS, -1, -1, false,
-		&MissionInterfaceManager::zoomOut, 0, -1, KEY_ADD, -1, -1, false,
-		&MissionInterfaceManager::zoomIn, 0, 43224, SHIFT | KEY_EQUALS, -1, -1,
-		false, &MissionInterfaceManager::zoomIn, 0, -1,
-		KEY_LEFT | SHIFT | 0x100, -1, -1, false,
-		&MissionInterfaceManager::rotateLeft, 0, IDS_HOTKEY_ROTATEL,
-		KEY_RIGHT | SHIFT | 0x100, -1, -1, false,
-		&MissionInterfaceManager::rotateRight, 0, IDS_HOTKEY_ROTATER,
-		KEY_UP | SHIFT | 0x100, -1, -1, false, &MissionInterfaceManager::tiltUp,
-		0, IDS_HOTKEY_TILTU, KEY_DOWN | SHIFT | 0x100, -1, -1, false,
-		&MissionInterfaceManager::tiltDown, 0, IDS_HOTKEY_TILTD,
-		KEY_HOME | 0x100, -1, -1, false, &MissionInterfaceManager::centerCamera,
-		0, -1, KEY_LEFT | CTRL, -1, -1, false,
-		&MissionInterfaceManager::rotateLightLeft, 0, -1, KEY_RIGHT | CTRL, -1,
-		-1, false, &MissionInterfaceManager::rotateLightRight, 0, -1,
-		KEY_UP | CTRL, -1, -1, false, &MissionInterfaceManager::rotateLightUp,
-		0, -1, KEY_DOWN | CTRL, -1, -1, false,
-		&MissionInterfaceManager::rotateLightDown, 0, -1, KEY_T | CTRL | ALT,
-		-1, -1, true, &MissionInterfaceManager::drawTerrain, 0, -1,
-		KEY_O | CTRL | ALT, -1, -1, true,
-		&MissionInterfaceManager::drawOverlays, 0, -1, KEY_B | CTRL | ALT, -1,
-		-1, true, &MissionInterfaceManager::drawBuildings, 0, -1,
-		CTRL | ALT | KEY_G, -1, -1, true, &MissionInterfaceManager::showGrid, 0,
-		-1, CTRL | ALT | KEY_Q, -1, -1, true,
-		&MissionInterfaceManager::recalcLights, 0, -1, CTRL | ALT | KEY_C, -1,
-		-1, true, &MissionInterfaceManager::drawClouds, 0, -1,
-		CTRL | ALT | KEY_F, -1, -1, true, &MissionInterfaceManager::drawFog, 0,
-		-1, CTRL | ALT | KEY_P, -1, -1, true,
-		&MissionInterfaceManager::usePerspective, 0, -1, CTRL | ALT | KEY_S, -1,
-		-1, true, &MissionInterfaceManager::drawTGLShapes, 0, -1,
-		CTRL | ALT | KEY_V, -1, -1, true,
-		&MissionInterfaceManager::drawWaterEffects, 0, -1, CTRL | ALT | KEY_W,
-		-1, -1, true, &MissionInterfaceManager::recalcWater, 0, -1,
-		CTRL | ALT | KEY_D, -1, -1, true, &MissionInterfaceManager::drawShadows,
-		0, -1, CTRL | ALT | KEY_L, -1, -1, true,
-		&MissionInterfaceManager::changeLighting, 0, -1, CTRL | ALT | KEY_Z, -1,
-		-1, true, &MissionInterfaceManager::toggleGUI, 0, -1, KEY_V, -1, -1,
-		true, &MissionInterfaceManager::vehicleCommand, 0, 43222, KEY_F9, -1,
-		-1, true, &MissionInterfaceManager::showObjectives, 0, 43226,
-		KEY_ESCAPE, -1, -1, true, &MissionInterfaceManager::togglePause, 0,
-		43234, KEY_F1, -1, -1, true, &MissionInterfaceManager::toggleHotKeys, 0,
-		-1, KEY_P, -1, -1, true, &MissionInterfaceManager::togglePause, 0, -1,
-		KEY_TAB, -1, -1, true, &MissionInterfaceManager::switchTab, 0, -1,
-		KEY_TAB | SHIFT, -1, -1, true,
-		&MissionInterfaceManager::reverseSwitchTab, 0, -1, KEY_I, -1, -1, true,
-		&MissionInterfaceManager::infoCommand,
-		&MissionInterfaceManager::infoButtonReleased, 43219, KEY_N, -1, -1,
-		true, &MissionInterfaceManager::gotoNextNavMarker, 0, -1, KEY_MULTIPLY,
-		mState_UNCERTAIN_AIRSTRIKE, mState_AIRSTRIKE, true,
-		&MissionInterfaceManager::sendAirstrike, 0, 43220, KEY_DIVIDE,
-		mState_SENSORSTRIKE, mState_SENSORSTRIKE, true,
-		&MissionInterfaceManager::sendSensorStrike, 0, 43221, KEY_BACKSLASH, -1,
-		-1, true, &MissionInterfaceManager::toggleCompass, 0, 43223,
-		ALT | KEY_SLASH, -1, -1, false,
-		&MissionInterfaceManager::quickDebugInfo, 0, -1,
-		ALT | SHIFT | KEY_SLASH, -1, -1, false,
-		&MissionInterfaceManager::setGameObjectWindow, 0, -1,
-		ALT | CTRL | KEY_1, -1, -1, false,
-		&MissionInterfaceManager::pageGameObjectWindow1, 0, -1,
-		ALT | CTRL | KEY_2, -1, -1, false,
-		&MissionInterfaceManager::pageGameObjectWindow2, 0, -1,
-		ALT | CTRL | KEY_3, -1, -1, false,
-		&MissionInterfaceManager::pageGameObjectWindow3, 0, -1, ALT | KEY_1, -1,
-		-1, false, &MissionInterfaceManager::jumpToDebugGameObject1, 0, -1,
-		ALT | KEY_2, -1, -1, false,
-		&MissionInterfaceManager::jumpToDebugGameObject2, 0, -1, ALT | KEY_3,
-		-1, -1, false, &MissionInterfaceManager::jumpToDebugGameObject3, 0, -1,
-		ALT | KEY_T, -1, -1, false, &MissionInterfaceManager::teleport, 0, -1,
-		ALT | KEY_W, -1, -1, false, &MissionInterfaceManager::toggleDebugWins,
-		0, -1, ALT | KEY_M, -1, -1, false, &MissionInterfaceManager::showMovers,
-		0, -1, ALT | KEY_C, -1, -1, false,
-		&MissionInterfaceManager::cullPathAreas, 0, -1, ALT | KEY_Z, -1, -1,
-		false, &MissionInterfaceManager::zeroHPrime, 0, -1, ALT | KEY_A, -1, -1,
-		false, &MissionInterfaceManager::calcValidAreaTable, 0, -1, ALT | KEY_G,
-		-1, -1, false, &MissionInterfaceManager::globalMapLog, 0, -1,
-		ALT | KEY_B, -1, -1, false, &MissionInterfaceManager::brainDead, 0, -1,
-		ALT | KEY_P, -1, -1, false, &MissionInterfaceManager::goalPlan, 0, -1,
-		ALT | KEY_V, -1, -1, false, &MissionInterfaceManager::showVictim, 0, -1,
-		ALT | CTRL | KEY_P, -1, -1, false,
-		&MissionInterfaceManager::enemyGoalPlan, 0, -1, ALT | KEY_4, -1, -1,
-		false, &MissionInterfaceManager::damageObject1, 0, -1, ALT | KEY_5, -1,
-		-1, false, &MissionInterfaceManager::damageObject2, 0, -1, ALT | KEY_6,
-		-1, -1, false, &MissionInterfaceManager::damageObject3, 0, -1,
-		ALT | KEY_7, -1, -1, false, &MissionInterfaceManager::damageObject4, 0,
-		-1, ALT | KEY_8, -1, -1, false, &MissionInterfaceManager::damageObject5,
-		0, -1, ALT | KEY_9, -1, -1, false,
-		&MissionInterfaceManager::damageObject6, 0, -1, ALT | KEY_0, -1, -1,
-		false, &MissionInterfaceManager::damageObject0, 0, -1,
-		// ALT | KEY_8,	-1, -1,					false,
-		// &MissionInterfaceManager::damageObject8, 0, -1,  ALT | KEY_9,	-1, -1,
-		// false,		&MissionInterfaceManager::damageObject9, 0, -1,  ALT |
-		// KEY_0,	-1, -1,					false,
-		// &MissionInterfaceManager::damageObject0, 0, -1,
-		KEY_H, -1, -1, true, &MissionInterfaceManager::toggleHoldPosition, 0,
-		-1, KEY_RETURN, -1, -1, true, &MissionInterfaceManager::handleChatKey,
-		0, IDS_HOTKEY_CHAT, SHIFT | KEY_RETURN, -1, -1, true,
-		&MissionInterfaceManager::handleTeamChatKey, 0, IDS_HOTKEY_CHAT_TEAM,
-		KEY_E | SHIFT, -1, -1, false,
-		&MissionInterfaceManager::addVisibleToSelection, 0, -1, KEY_EQUALS, -1,
-		-1, false, &MissionInterfaceManager::zoomIn, 0, -1, ALT | KEY_PERIOD,
-		-1, -1, false, &MissionInterfaceManager::rotateObjectLeft, 0, -1,
-		ALT | KEY_COMMA, -1, -1, false,
-		&MissionInterfaceManager::rotateObjectRight, 0, -1, KEY_PAUSE, -1, -1,
-		true, &MissionInterfaceManager::togglePause, 0, -1
+MissionInterfaceManager::Command MissionInterfaceManager::commands[MAX_COMMAND] = {KEY_S,
+	mState_SHRTRNG_ATTACK, mState_SHRTRNG_LOS, false, &MissionInterfaceManager::attackShort,
+	&MissionInterfaceManager::defaultAttack, 43200, KEY_M, mState_MEDRNG_ATTACK, mState_MEDRNG_LOS,
+	false, &MissionInterfaceManager::attackMedium, &MissionInterfaceManager::defaultAttack, 43201,
+	KEY_L, mState_LONGRNG_ATTACK, mState_LONGRNG_LOS, false, &MissionInterfaceManager::attackLong,
+	&MissionInterfaceManager::defaultAttack, 43202, KEY_A, mState_ENERGY_WEAPONS,
+	mState_ENERGY_WEAPONS_LOS, false, &MissionInterfaceManager::energyWeapons,
+	&MissionInterfaceManager::energyWeapons, 43204, KEY_D, mState_GENERIC_ATTACK, mState_ATTACK_LOS,
+	false, &MissionInterfaceManager::defaultAttack, 0, -1, KEY_J, mState_JUMP1, mState_JUMP_LOS,
+	false, &MissionInterfaceManager::jump, &MissionInterfaceManager::stopJump, 43205, KEY_J | WAYPT,
+	mState_JUMPWAYPT, mState_JUMPWAYPT_LOS, false, &MissionInterfaceManager::jump,
+	&MissionInterfaceManager::stopJump, -1, KEY_C, mState_CURPOS_ATTACK, mState_CURPOS_ATTACK_LOS,
+	false, &MissionInterfaceManager::fireFromCurrentPos,
+	&MissionInterfaceManager::stopFireFromCurrentPos, 43206, KEY_G, mState_GUARD, mState_GUARD,
+	false, &MissionInterfaceManager::guard, &MissionInterfaceManager::stopGuard, 43207, KEY_W,
+	mState_ENERGY_WEAPONS, mState_ENERGY_WEAPONS_LOS, false, &MissionInterfaceManager::conserveAmmo,
+	0, -1, KEY_E, -1, -1, false, &MissionInterfaceManager::selectVisible, 0, 43209, KEY_F, -1, -1,
+	false, &MissionInterfaceManager::forceShot, 0, 43210, KEY_HOME, -1, -1, true,
+	&MissionInterfaceManager::cameraNormal, 0, -1, KEY_F2, -1, -1, true,
+	&MissionInterfaceManager::cameraDefault, 0, -1, KEY_F3, -1, -1, true,
+	&MissionInterfaceManager::cameraMaxIn, 0, -1, KEY_F4, -1, -1, true,
+	&MissionInterfaceManager::cameraTight, 0, -1, KEY_F5, -1, -1, true,
+	&MissionInterfaceManager::cameraFour, 0, -1, KEY_F2 | CTRL, -1, -1, true,
+	&MissionInterfaceManager::cameraAssign0, 0, -1, KEY_F3 | CTRL, -1, -1, true,
+	&MissionInterfaceManager::cameraAssign1, 0, -1, KEY_F4 | CTRL, -1, -1, true,
+	&MissionInterfaceManager::cameraAssign2, 0, -1, KEY_F5 | CTRL, -1, -1, true,
+	&MissionInterfaceManager::cameraAssign3, 0, -1, KEY_NUMPAD2, mState_DONT,
+	mState_AIMED_ATTACK_LOS, false, &MissionInterfaceManager::aimLeg, 0, 43211, KEY_NUMPAD5,
+	mState_DONT, mState_AIMED_ATTACK_LOS, false, &MissionInterfaceManager::aimArm, 0, 43212,
+	KEY_NUMPAD8, mState_DONT, mState_AIMED_ATTACK_LOS, false, &MissionInterfaceManager::aimHead, 0,
+	43213, KEY_BACK, -1, -1, false, &MissionInterfaceManager::removeCommand, 0, 43214,
+	KEY_NEXT | 0x100, -1, -1, false, &MissionInterfaceManager::powerDown, 0, 43215,
+	KEY_PRIOR | 0x100, -1, -1, false, &MissionInterfaceManager::powerUp, 0, 43216, KEY_END | 0x100,
+	mState_EJECT, mState_EJECT, false, &MissionInterfaceManager::eject, 0, 43217, KEY_SPACE,
+	mState_RUN, mState_RUN_LOS, false, &MissionInterfaceManager::changeSpeed,
+	&MissionInterfaceManager::stopChangeSpeed, 43218, KEY_SPACE | WAYPT, mState_RUNWAYPT,
+	mState_RUNWAYPT_LOS, false, &MissionInterfaceManager::changeSpeed,
+	&MissionInterfaceManager::stopChangeSpeed, -1, KEY_UP | 0x100, -1, -1, false,
+	&MissionInterfaceManager::scrollUp, 0, IDS_HOTKEY_TRACKU, KEY_DOWN | 0x100, -1, -1, false,
+	&MissionInterfaceManager::scrollDown, 0, IDS_HOTKEY_TRACKD, KEY_LEFT | 0x100, -1, -1, false,
+	&MissionInterfaceManager::scrollLeft, 0, IDS_HOTKEY_TRACKL, KEY_RIGHT | 0x100, -1, -1, false,
+	&MissionInterfaceManager::scrollRight, 0, IDS_HOTKEY_TRACKR, KEY_SUBTRACT, -1, -1, false,
+	&MissionInterfaceManager::zoomOut, 0, 43225, KEY_MINUS, -1, -1, false,
+	&MissionInterfaceManager::zoomOut, 0, -1, KEY_ADD, -1, -1, false,
+	&MissionInterfaceManager::zoomIn, 0, 43224, SHIFT | KEY_EQUALS, -1, -1, false,
+	&MissionInterfaceManager::zoomIn, 0, -1, KEY_LEFT | SHIFT | 0x100, -1, -1, false,
+	&MissionInterfaceManager::rotateLeft, 0, IDS_HOTKEY_ROTATEL, KEY_RIGHT | SHIFT | 0x100, -1, -1,
+	false, &MissionInterfaceManager::rotateRight, 0, IDS_HOTKEY_ROTATER, KEY_UP | SHIFT | 0x100, -1,
+	-1, false, &MissionInterfaceManager::tiltUp, 0, IDS_HOTKEY_TILTU, KEY_DOWN | SHIFT | 0x100, -1,
+	-1, false, &MissionInterfaceManager::tiltDown, 0, IDS_HOTKEY_TILTD, KEY_HOME | 0x100, -1, -1,
+	false, &MissionInterfaceManager::centerCamera, 0, -1, KEY_LEFT | CTRL, -1, -1, false,
+	&MissionInterfaceManager::rotateLightLeft, 0, -1, KEY_RIGHT | CTRL, -1, -1, false,
+	&MissionInterfaceManager::rotateLightRight, 0, -1, KEY_UP | CTRL, -1, -1, false,
+	&MissionInterfaceManager::rotateLightUp, 0, -1, KEY_DOWN | CTRL, -1, -1, false,
+	&MissionInterfaceManager::rotateLightDown, 0, -1, KEY_T | CTRL | ALT, -1, -1, true,
+	&MissionInterfaceManager::drawTerrain, 0, -1, KEY_O | CTRL | ALT, -1, -1, true,
+	&MissionInterfaceManager::drawOverlays, 0, -1, KEY_B | CTRL | ALT, -1, -1, true,
+	&MissionInterfaceManager::drawBuildings, 0, -1, CTRL | ALT | KEY_G, -1, -1, true,
+	&MissionInterfaceManager::showGrid, 0, -1, CTRL | ALT | KEY_Q, -1, -1, true,
+	&MissionInterfaceManager::recalcLights, 0, -1, CTRL | ALT | KEY_C, -1, -1, true,
+	&MissionInterfaceManager::drawClouds, 0, -1, CTRL | ALT | KEY_F, -1, -1, true,
+	&MissionInterfaceManager::drawFog, 0, -1, CTRL | ALT | KEY_P, -1, -1, true,
+	&MissionInterfaceManager::usePerspective, 0, -1, CTRL | ALT | KEY_S, -1, -1, true,
+	&MissionInterfaceManager::drawTGLShapes, 0, -1, CTRL | ALT | KEY_V, -1, -1, true,
+	&MissionInterfaceManager::drawWaterEffects, 0, -1, CTRL | ALT | KEY_W, -1, -1, true,
+	&MissionInterfaceManager::recalcWater, 0, -1, CTRL | ALT | KEY_D, -1, -1, true,
+	&MissionInterfaceManager::drawShadows, 0, -1, CTRL | ALT | KEY_L, -1, -1, true,
+	&MissionInterfaceManager::changeLighting, 0, -1, CTRL | ALT | KEY_Z, -1, -1, true,
+	&MissionInterfaceManager::toggleGUI, 0, -1, KEY_V, -1, -1, true,
+	&MissionInterfaceManager::vehicleCommand, 0, 43222, KEY_F9, -1, -1, true,
+	&MissionInterfaceManager::showObjectives, 0, 43226, KEY_ESCAPE, -1, -1, true,
+	&MissionInterfaceManager::togglePause, 0, 43234, KEY_F1, -1, -1, true,
+	&MissionInterfaceManager::toggleHotKeys, 0, -1, KEY_P, -1, -1, true,
+	&MissionInterfaceManager::togglePause, 0, -1, KEY_TAB, -1, -1, true,
+	&MissionInterfaceManager::switchTab, 0, -1, KEY_TAB | SHIFT, -1, -1, true,
+	&MissionInterfaceManager::reverseSwitchTab, 0, -1, KEY_I, -1, -1, true,
+	&MissionInterfaceManager::infoCommand, &MissionInterfaceManager::infoButtonReleased, 43219,
+	KEY_N, -1, -1, true, &MissionInterfaceManager::gotoNextNavMarker, 0, -1, KEY_MULTIPLY,
+	mState_UNCERTAIN_AIRSTRIKE, mState_AIRSTRIKE, true, &MissionInterfaceManager::sendAirstrike, 0,
+	43220, KEY_DIVIDE, mState_SENSORSTRIKE, mState_SENSORSTRIKE, true,
+	&MissionInterfaceManager::sendSensorStrike, 0, 43221, KEY_BACKSLASH, -1, -1, true,
+	&MissionInterfaceManager::toggleCompass, 0, 43223, ALT | KEY_SLASH, -1, -1, false,
+	&MissionInterfaceManager::quickDebugInfo, 0, -1, ALT | SHIFT | KEY_SLASH, -1, -1, false,
+	&MissionInterfaceManager::setGameObjectWindow, 0, -1, ALT | CTRL | KEY_1, -1, -1, false,
+	&MissionInterfaceManager::pageGameObjectWindow1, 0, -1, ALT | CTRL | KEY_2, -1, -1, false,
+	&MissionInterfaceManager::pageGameObjectWindow2, 0, -1, ALT | CTRL | KEY_3, -1, -1, false,
+	&MissionInterfaceManager::pageGameObjectWindow3, 0, -1, ALT | KEY_1, -1, -1, false,
+	&MissionInterfaceManager::jumpToDebugGameObject1, 0, -1, ALT | KEY_2, -1, -1, false,
+	&MissionInterfaceManager::jumpToDebugGameObject2, 0, -1, ALT | KEY_3, -1, -1, false,
+	&MissionInterfaceManager::jumpToDebugGameObject3, 0, -1, ALT | KEY_T, -1, -1, false,
+	&MissionInterfaceManager::teleport, 0, -1, ALT | KEY_W, -1, -1, false,
+	&MissionInterfaceManager::toggleDebugWins, 0, -1, ALT | KEY_M, -1, -1, false,
+	&MissionInterfaceManager::showMovers, 0, -1, ALT | KEY_C, -1, -1, false,
+	&MissionInterfaceManager::cullPathAreas, 0, -1, ALT | KEY_Z, -1, -1, false,
+	&MissionInterfaceManager::zeroHPrime, 0, -1, ALT | KEY_A, -1, -1, false,
+	&MissionInterfaceManager::calcValidAreaTable, 0, -1, ALT | KEY_G, -1, -1, false,
+	&MissionInterfaceManager::globalMapLog, 0, -1, ALT | KEY_B, -1, -1, false,
+	&MissionInterfaceManager::brainDead, 0, -1, ALT | KEY_P, -1, -1, false,
+	&MissionInterfaceManager::goalPlan, 0, -1, ALT | KEY_V, -1, -1, false,
+	&MissionInterfaceManager::showVictim, 0, -1, ALT | CTRL | KEY_P, -1, -1, false,
+	&MissionInterfaceManager::enemyGoalPlan, 0, -1, ALT | KEY_4, -1, -1, false,
+	&MissionInterfaceManager::damageObject1, 0, -1, ALT | KEY_5, -1, -1, false,
+	&MissionInterfaceManager::damageObject2, 0, -1, ALT | KEY_6, -1, -1, false,
+	&MissionInterfaceManager::damageObject3, 0, -1, ALT | KEY_7, -1, -1, false,
+	&MissionInterfaceManager::damageObject4, 0, -1, ALT | KEY_8, -1, -1, false,
+	&MissionInterfaceManager::damageObject5, 0, -1, ALT | KEY_9, -1, -1, false,
+	&MissionInterfaceManager::damageObject6, 0, -1, ALT | KEY_0, -1, -1, false,
+	&MissionInterfaceManager::damageObject0, 0, -1,
+	// ALT | KEY_8,	-1, -1,					false,
+	// &MissionInterfaceManager::damageObject8, 0, -1,  ALT | KEY_9,	-1, -1,
+	// false,		&MissionInterfaceManager::damageObject9, 0, -1,  ALT |
+	// KEY_0,	-1, -1,					false,
+	// &MissionInterfaceManager::damageObject0, 0, -1,
+	KEY_H, -1, -1, true, &MissionInterfaceManager::toggleHoldPosition, 0, -1, KEY_RETURN, -1, -1,
+	true, &MissionInterfaceManager::handleChatKey, 0, IDS_HOTKEY_CHAT, SHIFT | KEY_RETURN, -1, -1,
+	true, &MissionInterfaceManager::handleTeamChatKey, 0, IDS_HOTKEY_CHAT_TEAM, KEY_E | SHIFT, -1,
+	-1, false, &MissionInterfaceManager::addVisibleToSelection, 0, -1, KEY_EQUALS, -1, -1, false,
+	&MissionInterfaceManager::zoomIn, 0, -1, ALT | KEY_PERIOD, -1, -1, false,
+	&MissionInterfaceManager::rotateObjectLeft, 0, -1, ALT | KEY_COMMA, -1, -1, false,
+	&MissionInterfaceManager::rotateObjectRight, 0, -1, KEY_PAUSE, -1, -1, true,
+	&MissionInterfaceManager::togglePause, 0, -1
 
 };
 
@@ -402,8 +359,8 @@ void MissionInterfaceManager::init(void)
 
 #define TACMAP_ID 0
 #define FLASH_JUMPERS 31798
-bool MissionInterfaceManager::startAnimation(int32_t buttonId, bool isButton,
-	bool isPressed, float timeToScroll, int32_t numFlashes)
+bool MissionInterfaceManager::startAnimation(
+	int32_t buttonId, bool isButton, bool isPressed, float timeToScroll, int32_t numFlashes)
 {
 	if (animationRunning)
 		return false;
@@ -493,13 +450,11 @@ void MissionInterfaceManager::update(void)
 			}
 			userInput->setMouseCursor(mState_TUTORIALS);
 			// Get button position.
-			float buttonPosX =
-				(targetButton->location[0].x + targetButton->location[1].x +
-					targetButton->location[2].x + targetButton->location[3].x) *
+			float buttonPosX = (targetButton->location[0].x + targetButton->location[1].x +
+								   targetButton->location[2].x + targetButton->location[3].x) *
 				0.25f;
-			float buttonPosY =
-				(targetButton->location[0].y + targetButton->location[1].y +
-					targetButton->location[2].y + targetButton->location[3].y) *
+			float buttonPosY = (targetButton->location[0].y + targetButton->location[1].y +
+								   targetButton->location[2].y + targetButton->location[3].y) *
 				0.25f;
 			//-------------------
 			// Mouse Checks Next
@@ -507,14 +462,11 @@ void MissionInterfaceManager::update(void)
 			float realMouseY = userInput->realMouseY();
 			if (timeLeftToScroll > 0.0f)
 			{
-				float xDistLeft = buttonPosX - realMouseX;
-				float yDistLeft = buttonPosY - realMouseY;
-				float xDistThisFrame =
-					xDistLeft / timeLeftToScroll * frameLength;
-				float yDistThisFrame =
-					yDistLeft / timeLeftToScroll * frameLength;
-				userInput->setMousePos(
-					realMouseX + xDistThisFrame, realMouseY + yDistThisFrame);
+				float xDistLeft		 = buttonPosX - realMouseX;
+				float yDistLeft		 = buttonPosY - realMouseY;
+				float xDistThisFrame = xDistLeft / timeLeftToScroll * frameLength;
+				float yDistThisFrame = yDistLeft / timeLeftToScroll * frameLength;
+				userInput->setMousePos(realMouseX + xDistThisFrame, realMouseY + yDistThisFrame);
 				timeLeftToScroll -= frameLength;
 			}
 			else
@@ -526,15 +478,13 @@ void MissionInterfaceManager::update(void)
 					buttonFlashTime += frameLength;
 					if (buttonFlashTime > .5f)
 					{
-						controlGui.getButton(targetButtonId)
-							->setColor(0xffffffff);
+						controlGui.getButton(targetButtonId)->setColor(0xffffffff);
 						buttonFlashTime = 0.0f;
 						buttonNumFlashes--;
 					}
 					else if (buttonFlashTime > .25f)
 					{
-						controlGui.getButton(targetButtonId)
-							->setColor(0xff7f7f7f);
+						controlGui.getButton(targetButtonId)->setColor(0xff7f7f7f);
 					}
 				}
 				else
@@ -550,32 +500,26 @@ void MissionInterfaceManager::update(void)
 		}
 		else
 		{
-			ControlGui::RectInfo* targetButton =
-				controlGui.getRect(targetButtonId);
+			ControlGui::RectInfo* targetButton = controlGui.getRect(targetButtonId);
 			if (!targetButton)
 			{
 				animationRunning = false;
 			}
 			userInput->setMouseCursor(mState_TUTORIALS);
 			// Get button position.
-			float buttonPosX =
-				(targetButton->rect.left + targetButton->rect.right) * 0.5f;
-			float buttonPosY =
-				(targetButton->rect.top + targetButton->rect.bottom) * 0.5f;
+			float buttonPosX = (targetButton->rect.left + targetButton->rect.right) * 0.5f;
+			float buttonPosY = (targetButton->rect.top + targetButton->rect.bottom) * 0.5f;
 			//-------------------
 			// Mouse Checks Next
 			float realMouseX = userInput->realMouseX();
 			float realMouseY = userInput->realMouseY();
 			if (timeLeftToScroll > 0.0f)
 			{
-				float xDistLeft = buttonPosX - realMouseX;
-				float yDistLeft = buttonPosY - realMouseY;
-				float xDistThisFrame =
-					xDistLeft / timeLeftToScroll * frameLength;
-				float yDistThisFrame =
-					yDistLeft / timeLeftToScroll * frameLength;
-				userInput->setMousePos(
-					realMouseX + xDistThisFrame, realMouseY + yDistThisFrame);
+				float xDistLeft		 = buttonPosX - realMouseX;
+				float yDistLeft		 = buttonPosY - realMouseY;
+				float xDistThisFrame = xDistLeft / timeLeftToScroll * frameLength;
+				float yDistThisFrame = yDistLeft / timeLeftToScroll * frameLength;
+				userInput->setMousePos(realMouseX + xDistThisFrame, realMouseY + yDistThisFrame);
 				timeLeftToScroll -= frameLength;
 			}
 			else
@@ -612,8 +556,7 @@ void MissionInterfaceManager::update(void)
 	if (guiFrozen)
 	{
 		userInput->setMouseCursor(mState_TUTORIALS);
-		userInput->setMousePos(
-			Environment.screenWidth * 0.5f, Environment.screenHeight * 0.5f);
+		userInput->setMousePos(Environment.screenWidth * 0.5f, Environment.screenHeight * 0.5f);
 		controlGui.update(isPaused() && !isPausedWithoutMenu(), false);
 		return;
 	}
@@ -723,8 +666,7 @@ void MissionInterfaceManager::update(void)
 	mouseY	= userInput->getMouseY();
 	bool bGui = false;
 	// check and see if its in the control area
-	if (controlGui.inRegion(
-			mouseX, mouseY, isPaused() && !isPausedWithoutMenu()))
+	if (controlGui.inRegion(mouseX, mouseY, isPaused() && !isPausedWithoutMenu()))
 	{
 		bGui = true;
 		if (userInput->isLeftClick() && !userInput->isLeftDrag())
@@ -758,11 +700,10 @@ void MissionInterfaceManager::update(void)
 	// update buttons and stuff, even if not in region, it draws objectives and
 	// stuff
 	controlGui.update(isPaused() && !isPausedWithoutMenu(), lineOfSight);
-	bool leftClicked = (!userInput->isLeftDrag() && !userInput->isRightDrag() &&
-						userInput->isLeftClick());
+	bool leftClicked =
+		(!userInput->isLeftDrag() && !userInput->isRightDrag() && userInput->isLeftClick());
 	bool rightClicked =
-		(!userInput->isLeftDrag() && !userInput->wasRightDrag() &&
-			userInput->rightMouseReleased());
+		(!userInput->isLeftDrag() && !userInput->wasRightDrag() && userInput->rightMouseReleased());
 	bool bLeftDouble = userInput->isLeftDoubleClick();
 	updateTarget(bGui);
 	//------------------------------------
@@ -778,20 +719,17 @@ void MissionInterfaceManager::update(void)
 		"TIME: %06d, MOUSE: [%d, %d] %d,%d,%d (%.2f, %.2f, %.2f), PATHMGR: "
 		"%02d(%02d)",
 		(int32_t)scenarioTime, row, col, GlobalMoveMap[0]->calcArea(row, col),
-		GlobalMoveMap[1]->calcArea(row, col),
-		GlobalMoveMap[2]->calcArea(row, col), wPos.x, wPos.y, wPos.z,
-		PathManager->numPaths, PathManager->peakPaths);
+		GlobalMoveMap[1]->calcArea(row, col), GlobalMoveMap[2]->calcArea(row, col), wPos.x, wPos.y,
+		wPos.z, PathManager->numPaths, PathManager->peakPaths);
 	if (MPlayer)
 	{
 		char mpStr[256];
 		if (MPlayer->isServer())
-			sprintf(mpStr, ", MULTIPLAY: %s-(%d)SERVER {%d,%d}",
-				MPlayer->getPlayerName(), MPlayer->commanderID,
-				MPlayer->maxReceiveLoad, MPlayer->maxReceiveSize);
+			sprintf(mpStr, ", MULTIPLAY: %s-(%d)SERVER {%d,%d}", MPlayer->getPlayerName(),
+				MPlayer->commanderID, MPlayer->maxReceiveLoad, MPlayer->maxReceiveSize);
 		else
-			sprintf(mpStr, ", MULTIPLAY: %s-(%d)CLIENT {%d,%d}",
-				MPlayer->getPlayerName(), MPlayer->commanderID,
-				MPlayer->maxReceiveLoad, MPlayer->maxReceiveSize);
+			sprintf(mpStr, ", MULTIPLAY: %s-(%d)CLIENT {%d,%d}", MPlayer->getPlayerName(),
+				MPlayer->commanderID, MPlayer->maxReceiveLoad, MPlayer->maxReceiveSize);
 		strcat(DebugStatusBarString, mpStr);
 	}
 	if (EnemiesGoalPlan)
@@ -808,8 +746,7 @@ void MissionInterfaceManager::update(void)
 		strcat(DebugStatusBarString, " [GLOBAL LOG]");
 	if (!MechWarrior::brainsEnabled[1])
 		strcat(DebugStatusBarString, " [BRAINDEAD: 1]");
-	if (bLeftDouble && target && target->isMover() &&
-		target->getTeam() == Team::home)
+	if (bLeftDouble && target && target->isMover() && target->getTeam() == Team::home)
 	{
 		int32_t forceGroup = -1;
 		for (size_t i = 0; i < 10; i++)
@@ -830,8 +767,7 @@ void MissionInterfaceManager::update(void)
 	for (size_t i = 0; i < pTeam->getRosterSize(); i++)
 	{
 		Mover* pMover = (Mover*)pTeam->getMover(i);
-		if (pMover->isSelected() &&
-			pMover->getCommander()->getId() == Commander::home->getId())
+		if (pMover->isSelected() && pMover->getCommander()->getId() == Commander::home->getId())
 		{
 			if (pMover->maxMoveSpeed)
 			{
@@ -847,26 +783,21 @@ void MissionInterfaceManager::update(void)
 		if (WAYPOINT_KEY == -1)
 			WAYPOINT_KEY = KEY_LCONTROL;
 		commandClicked = rightClicked;
-		selectClicked  = !bLeftDouble && !lastUpdateDoubleClick &&
-						userInput->leftMouseReleased() &&
-						!userInput->getKeyDown(KEY_T) && !isDragging;
+		selectClicked  = !bLeftDouble && !lastUpdateDoubleClick && userInput->leftMouseReleased() &&
+			!userInput->getKeyDown(KEY_T) && !isDragging;
 		cameraClicked = gos_GetKeyStatus(KEY_LMENU) == KEY_HELD;
-		if (moveCameraAround(
-				lineOfSight, passable, ctrlDn, bGui, moverCount, nonMoverCount))
+		if (moveCameraAround(lineOfSight, passable, ctrlDn, bGui, moverCount, nonMoverCount))
 		{
 			bool leftClicked =
-				(!userInput->isLeftDrag() && !userInput->isRightDrag() &&
-					userInput->isLeftClick());
-			bool rightClicked =
-				(!userInput->isLeftDrag() && !userInput->wasRightDrag() &&
-					userInput->rightMouseReleased());
+				(!userInput->isLeftDrag() && !userInput->isRightDrag() && userInput->isLeftClick());
+			bool rightClicked = (!userInput->isLeftDrag() && !userInput->wasRightDrag() &&
+				userInput->rightMouseReleased());
 			// deal with the hot keys
-			update(
-				leftClicked, rightClicked, mouseX, mouseY, target, lineOfSight);
+			update(leftClicked, rightClicked, mouseX, mouseY, target, lineOfSight);
 			return;
 		}
-		updateAOEStyle(shiftDn, altDn, ctrlDn, bGui, lineOfSight, passable,
-			moverCount, nonMoverCount);
+		updateAOEStyle(
+			shiftDn, altDn, ctrlDn, bGui, lineOfSight, passable, moverCount, nonMoverCount);
 	}
 	else // using mc1 style
 	{
@@ -875,29 +806,24 @@ void MissionInterfaceManager::update(void)
 		cameraClicked  = userInput->isRightDrag();
 		if (WAYPOINT_KEY == -1)
 			WAYPOINT_KEY = KEY_LCONTROL;
-		if (moveCameraAround(
-				lineOfSight, passable, ctrlDn, bGui, moverCount, nonMoverCount))
+		if (moveCameraAround(lineOfSight, passable, ctrlDn, bGui, moverCount, nonMoverCount))
 		{
 			bool leftClicked =
-				(!userInput->isLeftDrag() && !userInput->isRightDrag() &&
-					userInput->isLeftClick());
-			bool rightClicked =
-				(!userInput->isLeftDrag() && !userInput->isRightDrag() &&
-					userInput->isRightClick());
+				(!userInput->isLeftDrag() && !userInput->isRightDrag() && userInput->isLeftClick());
+			bool rightClicked = (!userInput->isLeftDrag() && !userInput->isRightDrag() &&
+				userInput->isRightClick());
 			// deal with the hot keys
-			update(
-				leftClicked, rightClicked, mouseX, mouseY, target, lineOfSight);
+			update(leftClicked, rightClicked, mouseX, mouseY, target, lineOfSight);
 			return;
 		}
-		updateOldStyle(shiftDn, altDn, ctrlDn, bGui, lineOfSight, passable,
-			moverCount, nonMoverCount);
+		updateOldStyle(
+			shiftDn, altDn, ctrlDn, bGui, lineOfSight, passable, moverCount, nonMoverCount);
 	}
 	for (i = 0; i < Team::home->getRosterSize(); i++)
 	{
 		Mover* pMover	  = (Mover*)Team::home->getMover(i);
 		MechWarrior* pilot = pMover->getPilot();
-		if (pilot &&
-			pMover->getCommander()->getId() == Commander::home->getId())
+		if (pilot && pMover->getCommander()->getId() == Commander::home->getId())
 		{
 			GameObject* pTmpTarget = pilot->getCurrentTarget();
 			if (pTmpTarget && (i < MAX_ICONS)) // Must check this because old
@@ -910,8 +836,8 @@ void MissionInterfaceManager::update(void)
 		}
 	}
 	if (!bLeftDouble &&
-		!(lastUpdateDoubleClick && userInput->getMouseLeftButtonState() ==
-									   MC2_MOUSE_DOWN)) // check for the hold )
+		!(lastUpdateDoubleClick &&
+			userInput->getMouseLeftButtonState() == MC2_MOUSE_DOWN)) // check for the hold )
 		lastUpdateDoubleClick = false;
 	updateRollovers();
 }
@@ -928,8 +854,7 @@ void MissionInterfaceManager::updateVTol()
 		{
 			if (vehicleID[vtolNum] != 147) // We are the standard vtol.
 			{
-				if (!vehicleDropped[vtolNum] &&
-					(vTol[vtolNum]->currentFrame >= 145))
+				if (!vehicleDropped[vtolNum] && (vTol[vtolNum]->currentFrame >= 145))
 				{
 					vehicleDropped[vtolNum] = true;
 					soundSystem->playDigitalSample(VTOL_DROP, vPos[vtolNum]);
@@ -946,8 +871,8 @@ void MissionInterfaceManager::updateVTol()
 							// This will get the other machines to enable the
 							// mover...
 							MPlayer->sendReinforcement(vehicleID[vtolNum],
-								MPlayer->reinforcements[commanderID][0],
-								"noname", commanderID, vPos[vtolNum], 2);
+								MPlayer->reinforcements[commanderID][0], "noname", commanderID,
+								vPos[vtolNum], 2);
 						}
 					}
 					else
@@ -978,18 +903,14 @@ void MissionInterfaceManager::updateVTol()
 							STOP(("updateVTOL: bad vtolNum"));
 						if (MPlayer->reinforcements[vtolNum][0] < 0)
 							STOP(("updateVTOL: bad reinforcement"));
-						MoverPtr mover =
-							MPlayer->moverRoster
-								[MPlayer->reinforcements[vtolNum][0]];
+						MoverPtr mover = MPlayer->moverRoster[MPlayer->reinforcements[vtolNum][0]];
 						if (mover)
 						{
 							TacticalOrder tacOrder;
-							tacOrder.init(ORDER_ORIGIN_PLAYER,
-								TACTICAL_ORDER_POWERUP, true);
+							tacOrder.init(ORDER_ORIGIN_PLAYER, TACTICAL_ORDER_POWERUP, true);
 							tacOrder.pack(nullptr, nullptr);
 							if (!MPlayer->isServer())
-								MPlayer->sendPlayerOrder(
-									&tacOrder, false, 1, &mover);
+								MPlayer->sendPlayerOrder(&tacOrder, false, 1, &mover);
 							else
 								mover->handleTacticalOrder(tacOrder);
 						}
@@ -997,8 +918,7 @@ void MissionInterfaceManager::updateVTol()
 					}
 					else if (reinforcement)
 					{
-						reinforcement->getPilot()->orderPowerUp(
-							true, ORDER_ORIGIN_SELF);
+						reinforcement->getPilot()->orderPowerUp(true, ORDER_ORIGIN_SELF);
 						reinforcement = nullptr;
 					}
 					if (!MPlayer || vtolNum == MPlayer->commanderID)
@@ -1031,8 +951,7 @@ void MissionInterfaceManager::updateVTol()
 						wakePos.x = -dustPos.x;
 						wakePos.y = dustPos.z;
 						wakePos.z = dustPos.y;
-						shapeOrigin.BuildRotation(
-							Stuff::EulerAngles(0.0f, 0.0f, 0.0f));
+						shapeOrigin.BuildRotation(Stuff::EulerAngles(0.0f, 0.0f, 0.0f));
 						shapeOrigin.BuildTranslation(wakePos);
 						gosFX::Effect::ExecuteInfo info(
 							(Stuff::Time)scenarioTime, &shapeOrigin, nullptr);
@@ -1041,12 +960,10 @@ void MissionInterfaceManager::updateVTol()
 						recoveryBeam[vtolNum]->Start(&info);
 					}
 					// Actually the Karnov Deploy Sound Effect!
-					soundSystem->playDigitalSample(
-						RADAR_HUM, vTol[vtolNum]->position, false);
+					soundSystem->playDigitalSample(RADAR_HUM, vTol[vtolNum]->position, false);
 				}
-				else if ((vTol[vtolNum]->getCurrentGestureId() == 0) &&
-						 !mechRecovered[vtolNum] && mechToRecover[vtolNum] &&
-						 !mechToRecover[vtolNum]->isDestroyed())
+				else if ((vTol[vtolNum]->getCurrentGestureId() == 0) && !mechRecovered[vtolNum] &&
+					mechToRecover[vtolNum] && !mechToRecover[vtolNum]->isDestroyed())
 				{
 					if (scenarioTime > vTolTime[vtolNum] + Mover::recoverTime)
 					{
@@ -1060,8 +977,8 @@ void MissionInterfaceManager::updateVTol()
 								// the mover...
 								MPlayer->sendReinforcement(vehicleID[vtolNum],
 									MPlayer->reinforcements[vtolNum][1],
-									MPlayer->reinforcementPilot[vtolNum],
-									vtolNum, vPos[vtolNum], 5);
+									MPlayer->reinforcementPilot[vtolNum], vtolNum, vPos[vtolNum],
+									5);
 							}
 							else
 								doIt = false;
@@ -1073,35 +990,24 @@ void MissionInterfaceManager::updateVTol()
 							// -fs
 							// STAY in recover until its done.  I know it
 							// shouldn't be possible but trust me, its happening.
-							while (
-								((MoverPtr)mechToRecover[vtolNum])->recover() ==
-								false)
+							while (((MoverPtr)mechToRecover[vtolNum])->recover() == false)
 								;
 							if (mechToRecover[vtolNum]->isDisabled())
 							{
-								mechToRecover[vtolNum]->setStatus(
-									OBJECT_STATUS_SHUTDOWN, true);
-								mechToRecover[vtolNum]
-									->getSensorSystem()
-									->broken = false;
-								((MoverPtr)mechToRecover[vtolNum])->timeLeft =
-									1.0f;
-								((MoverPtr)mechToRecover[vtolNum])->exploding =
-									false;
+								mechToRecover[vtolNum]->setStatus(OBJECT_STATUS_SHUTDOWN, true);
+								mechToRecover[vtolNum]->getSensorSystem()->broken = false;
+								((MoverPtr)mechToRecover[vtolNum])->timeLeft	  = 1.0f;
+								((MoverPtr)mechToRecover[vtolNum])->exploding	 = false;
 							}
 							PSTR newPilotName = nullptr;
 							if (MPlayer)
-								newPilotName =
-									MPlayer->reinforcementPilot[vtolNum];
+								newPilotName = MPlayer->reinforcementPilot[vtolNum];
 							else
-								newPilotName =
-									(PSTR)LogisticsData::instance->getBestPilot(
-										mechToRecover[vtolNum]->tonnage);
+								newPilotName = (PSTR)LogisticsData::instance->getBestPilot(
+									mechToRecover[vtolNum]->tonnage);
 							mission->tradeMover(mechToRecover[vtolNum],
-								Commander::commanders[vtolNum]
-									->getTeam()
-									->getId(),
-								vtolNum, newPilotName, "pbrain");
+								Commander::commanders[vtolNum]->getTeam()->getId(), vtolNum,
+								newPilotName, "pbrain");
 							mechRecovered[vtolNum] = true;
 							mechToRecover[vtolNum]->getPilot()->orderPowerUp(
 								true, ORDER_ORIGIN_SELF);
@@ -1111,14 +1017,13 @@ void MissionInterfaceManager::updateVTol()
 					}
 				}
 				else if ((vTol[vtolNum]->getCurrentGestureId() == 0) &&
-						 (mechRecovered[vtolNum] ||
-							 mechToRecover[vtolNum]->isDestroyed()) &&
-						 (!vTol[vtolNum]->getInTransition()))
+					(mechRecovered[vtolNum] || mechToRecover[vtolNum]->isDestroyed()) &&
+					(!vTol[vtolNum]->getInTransition()))
 				{
 					vTol[vtolNum]->setGesture(2); // Fly Away!!
 				}
 				else if ((vTol[vtolNum]->getCurrentGestureId() == 2) &&
-						 (!vTol[vtolNum]->getInTransition()))
+					(!vTol[vtolNum]->getInTransition()))
 				{
 					paintingVtol[vtolNum] = 0;
 					delete vTol[vtolNum];
@@ -1149,14 +1054,12 @@ void MissionInterfaceManager::updateVTol()
 								// MPlayer->playerInfo[vtolNum].resourcePoints
 								// += 10000;
 								Stuff::Vector3D pos;
-								MPlayer->sendReinforcement(
-									10000, 0, "noname", vtolNum, pos, 6);
+								MPlayer->sendReinforcement(10000, 0, "noname", vtolNum, pos, 6);
 							}
 						}
 						else
 							LogisticsData::instance->setResourcePoints(
-								LogisticsData::instance->getResourcePoints() +
-								10000);
+								LogisticsData::instance->getResourcePoints() + 10000);
 					}
 					if (!MPlayer || vtolNum == MPlayer->commanderID)
 						controlGui.unPressAllVehicleButtons();
@@ -1241,10 +1144,9 @@ void MissionInterfaceManager::updateTarget(bool bGui)
 		if (bGui)
 			target = 0;
 		else if (target->isMover() && !ShowMovers &&
-				 !(MPlayer && MPlayer->allUnitsDestroyed[MPlayer->commanderID]))
+			!(MPlayer && MPlayer->allUnitsDestroyed[MPlayer->commanderID]))
 		{
-			if ((target->getTeamId() != Team::home->getId()) &&
-				!target->isDisabled() &&
+			if ((target->getTeamId() != Team::home->getId()) && !target->isDisabled() &&
 				(((Mover*)target)->conStat < CONTACT_SENSOR_QUALITY_1))
 				target = nullptr;
 		}
@@ -1278,17 +1180,15 @@ void MissionInterfaceManager::drawWayPointPaths()
 	for (size_t i = 0; i < pTeam->getRosterSize(); i++)
 	{
 		Mover* pMover = (Mover*)pTeam->getMover(i);
-		if (pMover->isSelected() &&
-			pMover->getCommander()->getId() == Commander::home->getId())
+		if (pMover->isSelected() && pMover->getCommander()->getId() == Commander::home->getId())
 		{
 			pMover->updateDrawWaypointPath();
 		}
 	}
 }
 
-void MissionInterfaceManager::updateOldStyle(bool shiftDn, bool altDn,
-	bool ctrlDn, bool bGui, bool lineOfSight, bool passable, int32_t moverCount,
-	int32_t nonMoverCount)
+void MissionInterfaceManager::updateOldStyle(bool shiftDn, bool altDn, bool ctrlDn, bool bGui,
+	bool lineOfSight, bool passable, int32_t moverCount, int32_t nonMoverCount)
 {
 	printDebugInfo();
 	// We're probably going to use this alot!
@@ -1303,10 +1203,9 @@ void MissionInterfaceManager::updateOldStyle(bool shiftDn, bool altDn,
 	}
 	int32_t mState   = userInput->getMouseCursor();
 	bool leftClicked = (!userInput->isLeftDrag() && !userInput->isRightDrag() &&
-						userInput->isLeftClick() && !lastUpdateDoubleClick);
+		userInput->isLeftClick() && !lastUpdateDoubleClick);
 	bool rightClicked =
-		(!userInput->isLeftDrag() && !userInput->isRightDrag() &&
-			userInput->isRightClick());
+		(!userInput->isLeftDrag() && !userInput->isRightDrag() && userInput->isRightClick());
 	// deal with the hot keys
 	if (update(leftClicked, rightClicked, mouseX, mouseY, target, lineOfSight))
 		return;
@@ -1326,21 +1225,18 @@ void MissionInterfaceManager::updateOldStyle(bool shiftDn, bool altDn,
 	Team* pTeam = Team::home;
 	if (target) // if there is a target, make the appropritate cursor
 	{
-		userInput->setMouseCursor(
-			makeTargetCursor(lineOfSight, moverCount, nonMoverCount));
+		userInput->setMouseCursor(makeTargetCursor(lineOfSight, moverCount, nonMoverCount));
 	}
 	else // make a move cursor
 	{
-		userInput->setMouseCursor(makeNoTargetCursor(
-			passable, lineOfSight, ctrlDn, bGui, moverCount, nonMoverCount));
+		userInput->setMouseCursor(
+			makeNoTargetCursor(passable, lineOfSight, ctrlDn, bGui, moverCount, nonMoverCount));
 	}
 	if (userInput->leftMouseReleased() && !userInput->wasLeftDrag() && !bGui &&
 		!lastUpdateDoubleClick) // move on the mouse ups
 	{
-		if ((controlGui.isAddingVehicle() && !paintingVtol[commanderID] &&
-				canAddVehicle(wPos)) ||
-			(controlGui.isAddingSalvage() && !paintingVtol[commanderID] &&
-				canRecover(wPos)))
+		if ((controlGui.isAddingVehicle() && !paintingVtol[commanderID] && canAddVehicle(wPos)) ||
+			(controlGui.isAddingSalvage() && !paintingVtol[commanderID] && canRecover(wPos)))
 		{
 			// Target has already been confirmed  as a mover(BattleMech) by
 			// canRecover OR it doesn't matter because the canAddVehicle part of
@@ -1348,21 +1244,18 @@ void MissionInterfaceManager::updateOldStyle(bool shiftDn, bool altDn,
 			// because we only use it for salvage craft. Need to pass this in so
 			// that Multiplayer can pass it in.
 			beginVtol(-1, commanderID, nullptr,
-				(MoverPtr)
-					target); // In Single player, this should always be zero?
+				(MoverPtr)target); // In Single player, this should always be zero?
 			return;
 		}
 		else if ((controlGui.isAddingVehicle() && !paintingVtol[commanderID] &&
 					 !canAddVehicle(wPos)) ||
-				 (controlGui.isAddingSalvage() && !paintingVtol[commanderID] &&
-					 !canRecover(wPos)))
+			(controlGui.isAddingSalvage() && !paintingVtol[commanderID] && !canRecover(wPos)))
 		{
 			soundSystem->playDigitalSample(INVALID_GUI);
 			return;
 		}
-		else if (controlGui.isAddingAirstrike() &&
-				 !paintingVtol[commanderID]) // if we're painting the vtol,
-											 // carry on
+		else if (controlGui.isAddingAirstrike() && !paintingVtol[commanderID]) // if we're painting
+																			   // the vtol, carry on
 		{
 			addAirstrike();
 			return;
@@ -1405,8 +1298,7 @@ void MissionInterfaceManager::updateOldStyle(bool shiftDn, bool altDn,
 			if (target->isMover() &&
 				(target->getTeamId() == Team::home->getId() ||
 					CONTACT_VISUAL ==
-						((Mover*)target)
-							->getContactStatus(Team::home->getId(), true) ||
+						((Mover*)target)->getContactStatus(Team::home->getId(), true) ||
 					target->isDisabled()))
 			{
 				controlGui.setInfoWndMover((Mover*)target);
@@ -1417,15 +1309,13 @@ void MissionInterfaceManager::updateOldStyle(bool shiftDn, bool altDn,
 			{
 				doGuard(target);
 			}
-			else if (target->getTeamId() == Team::home->getId() &&
-					 !target->isDisabled())
+			else if (target->getTeamId() == Team::home->getId() && !target->isDisabled())
 			{
 				//--------------------------------------------------------------------
 				// User wants to select the guy we are on.  If he did
 				// it with a shift, add him.  If not, whack all and just add
 				// target!
-				if (shiftDn &&
-					target->getCommanderId() == Commander::home->getId())
+				if (shiftDn && target->getCommanderId() == Commander::home->getId())
 				{
 					bool alreadyThere = false;
 					//-------------------------------------------
@@ -1434,8 +1324,7 @@ void MissionInterfaceManager::updateOldStyle(bool shiftDn, bool altDn,
 					{
 						Mover* pMover = (Mover*)pTeam->getMover(i);
 						if (pMover == target && pMover->isSelected() &&
-							pMover->getCommander()->getId() ==
-								Commander::home->getId())
+							pMover->getCommander()->getId() == Commander::home->getId())
 							alreadyThere = true;
 					}
 					if (!alreadyThere && !target->isDisabled())
@@ -1451,23 +1340,19 @@ void MissionInterfaceManager::updateOldStyle(bool shiftDn, bool altDn,
 					doSalvage();
 				else if (controlGui.getGuardTower())
 					doGuardTower();
-				else if (target->getTeam() &&
-						 Team::home->isFriendly(target->getTeam()) &&
-						 target->getFlag(OBJECT_FLAG_CANREFIT) &&
-						 target->getFlag(OBJECT_FLAG_MECHBAY) &&
-						 canRepairBay(target))
+				else if (target->getTeam() && Team::home->isFriendly(target->getTeam()) &&
+					target->getFlag(OBJECT_FLAG_CANREFIT) && target->getFlag(OBJECT_FLAG_MECHBAY) &&
+					canRepairBay(target))
 					doRepairBay(target);
-				else if (controlGui.isSelectingInfoObject() &&
-						 target->isMover())
+				else if (controlGui.isSelectingInfoObject() && target->isMover())
 					controlGui.setInfoWndMover((Mover*)target);
 				else if (target->isMover() && !target->isDisabled() &&
-						 target->getCommanderId() == Commander::home->getId())
+					target->getCommanderId() == Commander::home->getId())
 				{
 					for (size_t i = 0; i < pTeam->getRosterSize(); i++)
 					{
 						Mover* pMover = (Mover*)pTeam->getMover(i);
-						if (pMover->getCommander()->getId() ==
-							Commander::home->getId())
+						if (pMover->getCommander()->getId() == Commander::home->getId())
 						{
 							pMover->setSelected(false);
 						}
@@ -1482,8 +1367,7 @@ void MissionInterfaceManager::updateOldStyle(bool shiftDn, bool altDn,
 				if (controlGui.getGuard()) // trying to guard invalid thing,
 										   // cancel guard
 					controlGui.toggleGuard();
-				else if (userInput->getMouseCursor() == mState_INFO &&
-						 target->isMover())
+				else if (userInput->getMouseCursor() == mState_INFO && target->isMover())
 					controlGui.setInfoWndMover((Mover*)target);
 				else if (!target->isDisabled() && !bForcedShot && !bAimedShot)
 					doAttack();
@@ -1491,9 +1375,8 @@ void MissionInterfaceManager::updateOldStyle(bool shiftDn, bool altDn,
 		}
 	}
 }
-void MissionInterfaceManager::updateAOEStyle(bool shiftDn, bool altDn,
-	bool ctrlDn, bool bGui, bool lineOfSight, bool passable, int32_t moverCount,
-	int32_t nonMoverCount)
+void MissionInterfaceManager::updateAOEStyle(bool shiftDn, bool altDn, bool ctrlDn, bool bGui,
+	bool lineOfSight, bool passable, int32_t moverCount, int32_t nonMoverCount)
 {
 	printDebugInfo();
 	// We're probably going to use this alot!
@@ -1506,12 +1389,11 @@ void MissionInterfaceManager::updateAOEStyle(bool shiftDn, bool altDn,
 		//		if ( makePatrolPath() )
 		//			return;
 	}
-	int32_t mState   = userInput->getMouseCursor();
-	bool leftClicked = (!userInput->isLeftDrag() && !userInput->isRightDrag() &&
-						userInput->isLeftClick());
+	int32_t mState = userInput->getMouseCursor();
+	bool leftClicked =
+		(!userInput->isLeftDrag() && !userInput->isRightDrag() && userInput->isLeftClick());
 	bool rightClicked =
-		(!userInput->isLeftDrag() && !userInput->wasRightDrag() &&
-			userInput->rightMouseReleased());
+		(!userInput->isLeftDrag() && !userInput->wasRightDrag() && userInput->rightMouseReleased());
 	// deal with the hot keys
 	if (update(leftClicked, rightClicked, mouseX, mouseY, target, lineOfSight))
 		return;
@@ -1531,21 +1413,18 @@ void MissionInterfaceManager::updateAOEStyle(bool shiftDn, bool altDn,
 	Team* pTeam = Team::home;
 	if (target) // if there is a target, make the appropritate cursor
 	{
-		userInput->setMouseCursor(
-			makeTargetCursor(lineOfSight, moverCount, nonMoverCount));
+		userInput->setMouseCursor(makeTargetCursor(lineOfSight, moverCount, nonMoverCount));
 	}
 	else // make a move cursor
 	{
-		userInput->setMouseCursor(makeNoTargetCursor(
-			passable, lineOfSight, ctrlDn, bGui, moverCount, nonMoverCount));
+		userInput->setMouseCursor(
+			makeNoTargetCursor(passable, lineOfSight, ctrlDn, bGui, moverCount, nonMoverCount));
 	}
 	if (userInput->rightMouseReleased() && !userInput->wasRightDrag() &&
 		!bGui) // move on the mouse ups
 	{
-		if ((controlGui.isAddingVehicle() && !paintingVtol[commanderID] &&
-				canAddVehicle(wPos)) ||
-			(controlGui.isAddingSalvage() && !paintingVtol[commanderID] &&
-				canRecover(wPos)))
+		if ((controlGui.isAddingVehicle() && !paintingVtol[commanderID] && canAddVehicle(wPos)) ||
+			(controlGui.isAddingSalvage() && !paintingVtol[commanderID] && canRecover(wPos)))
 		{
 			// Target has already been confirmed  as a mover(BattleMech) by
 			// canRecover OR it doesn't matter because the canAddVehicle part of
@@ -1553,21 +1432,18 @@ void MissionInterfaceManager::updateAOEStyle(bool shiftDn, bool altDn,
 			// because we only use it for salvage craft. Need to pass this in so
 			// that Multiplayer can pass it in.
 			beginVtol(-1, commanderID, nullptr,
-				(MoverPtr)
-					target); // In Single player, this should always be zero?
+				(MoverPtr)target); // In Single player, this should always be zero?
 			return;
 		}
 		else if ((controlGui.isAddingVehicle() && !paintingVtol[commanderID] &&
 					 !canAddVehicle(wPos)) ||
-				 (controlGui.isAddingSalvage() && !paintingVtol[commanderID] &&
-					 !canRecover(wPos)))
+			(controlGui.isAddingSalvage() && !paintingVtol[commanderID] && !canRecover(wPos)))
 		{
 			soundSystem->playDigitalSample(INVALID_GUI);
 			return;
 		}
-		else if (controlGui.isAddingAirstrike() &&
-				 !paintingVtol[commanderID]) // if we're painting the vtol,
-											 // carry on
+		else if (controlGui.isAddingAirstrike() && !paintingVtol[commanderID]) // if we're painting
+																			   // the vtol, carry on
 		{
 			addAirstrike();
 			return;
@@ -1610,10 +1486,9 @@ void MissionInterfaceManager::updateAOEStyle(bool shiftDn, bool altDn,
 			doRepair(target);
 		else if (controlGui.getGuardTower())
 			doGuardTower();
-		else if (target->getTeam() &&
-				 Team::home->isFriendly(target->getTeam()) &&
-				 target->getFlag(OBJECT_FLAG_CANREFIT) &&
-				 target->getFlag(OBJECT_FLAG_MECHBAY) && canRepairBay(target))
+		else if (target->getTeam() && Team::home->isFriendly(target->getTeam()) &&
+			target->getFlag(OBJECT_FLAG_CANREFIT) && target->getFlag(OBJECT_FLAG_MECHBAY) &&
+			canRepairBay(target))
 			doRepairBay(target);
 		else if (controlGui.getSalvage() && canSalvage(target))
 			doSalvage();
@@ -1629,10 +1504,8 @@ void MissionInterfaceManager::updateAOEStyle(bool shiftDn, bool altDn,
 		// We clicked on a target.  If mouse cursor is normal, we want to select
 		// a friendly.  if the mouse cursor is some form of attack, attack the
 		// target.
-		if ((controlGui.isAddingVehicle() && !paintingVtol[commanderID] &&
-				canAddVehicle(wPos)) ||
-			(controlGui.isAddingSalvage() && !paintingVtol[commanderID] &&
-				canRecover(wPos)))
+		if ((controlGui.isAddingVehicle() && !paintingVtol[commanderID] && canAddVehicle(wPos)) ||
+			(controlGui.isAddingSalvage() && !paintingVtol[commanderID] && canRecover(wPos)))
 		{
 			// Target has already been confirmed  as a mover(BattleMech) by
 			// canRecover. OR it doesn't matter because the canAddVehicle part
@@ -1640,21 +1513,18 @@ void MissionInterfaceManager::updateAOEStyle(bool shiftDn, bool altDn,
 			// because we only use it for salvage craft. Need to pass this in so
 			// that Multiplayer can pass it in.
 			beginVtol(-1, commanderID, nullptr,
-				(MoverPtr)
-					target); // In Single player, this should always be zero?
+				(MoverPtr)target); // In Single player, this should always be zero?
 			return;
 		}
 		else if ((controlGui.isAddingVehicle() && !paintingVtol[commanderID] &&
 					 !canAddVehicle(wPos)) ||
-				 (controlGui.isAddingSalvage() && !paintingVtol[commanderID] &&
-					 !canRecover(wPos)))
+			(controlGui.isAddingSalvage() && !paintingVtol[commanderID] && !canRecover(wPos)))
 		{
 			soundSystem->playDigitalSample(INVALID_GUI);
 			return;
 		}
-		else if (controlGui.isAddingAirstrike() &&
-				 !paintingVtol[commanderID]) // if we're painting the vtol,
-											 // carry on
+		else if (controlGui.isAddingAirstrike() && !paintingVtol[commanderID]) // if we're painting
+																			   // the vtol, carry on
 		{
 			addAirstrike();
 			return;
@@ -1664,14 +1534,12 @@ void MissionInterfaceManager::updateAOEStyle(bool shiftDn, bool altDn,
 			if (target->isMover() &&
 				(target->getTeamId() == Team::home->getId() ||
 					CONTACT_VISUAL ==
-						((Mover*)target)
-							->getContactStatus(Team::home->getId(), true) ||
+						((Mover*)target)->getContactStatus(Team::home->getId(), true) ||
 					target->isDisabled()))
 			{
 				controlGui.setInfoWndMover((Mover*)target);
 			}
-			if (target->getCommanderId() == Commander::home->getId() &&
-				!target->isDisabled())
+			if (target->getCommanderId() == Commander::home->getId() && !target->isDisabled())
 			{
 				//--------------------------------------------------------------------
 				// User wants to select the guy we are on.  If he did
@@ -1686,8 +1554,7 @@ void MissionInterfaceManager::updateAOEStyle(bool shiftDn, bool altDn,
 					{
 						Mover* pMover = (Mover*)pTeam->getMover(i);
 						if (pMover == target && pMover->isSelected() &&
-							pMover->getCommander()->getId() ==
-								Commander::home->getId())
+							pMover->getCommander()->getId() == Commander::home->getId())
 							alreadyThere = true;
 					}
 					if (!alreadyThere && !target->isDisabled())
@@ -1700,8 +1567,7 @@ void MissionInterfaceManager::updateAOEStyle(bool shiftDn, bool altDn,
 					for (size_t i = 0; i < pTeam->getRosterSize(); i++)
 					{
 						Mover* pMover = (Mover*)pTeam->getMover(i);
-						if (pMover->getCommander()->getId() ==
-							Commander::home->getId())
+						if (pMover->getCommander()->getId() == Commander::home->getId())
 						{
 							pMover->setSelected(false);
 						}
@@ -1729,8 +1595,7 @@ void MissionInterfaceManager::updateWaypoints(void)
 		for (size_t i = 0; i < pTeam->getRosterSize(); i++)
 		{
 			Mover* pMover = (Mover*)pTeam->getMover(i);
-			if (pMover->isSelected() &&
-				pMover->getCommander()->getId() == Commander::home->getId())
+			if (pMover->isSelected() && pMover->getCommander()->getId() == Commander::home->getId())
 			{
 				pMover->updateDrawWaypointPath();
 			}
@@ -1738,9 +1603,8 @@ void MissionInterfaceManager::updateWaypoints(void)
 	}
 }
 
-int32_t MissionInterfaceManager::update(bool leftClickedClick,
-	bool rightClickedClick, int32_t MouseX, int32_t MouseY, GameObject* pTarget,
-	bool bLOS)
+int32_t MissionInterfaceManager::update(bool leftClickedClick, bool rightClickedClick,
+	int32_t MouseX, int32_t MouseY, GameObject* pTarget, bool bLOS)
 {
 	bool shiftDn = userInput->shift();
 	bool ctrlDn  = userInput->ctrl();
@@ -1762,15 +1626,13 @@ int32_t MissionInterfaceManager::update(bool leftClickedClick,
 		for (size_t i = 0; i < pTeam->getRosterSize(); i++)
 		{
 			Mover* pMover = (Mover*)pTeam->getMover(i);
-			if (pMover->isSelected() &&
-				!pMover->getPilot()->getExecutingTacOrderQueue() &&
+			if (pMover->isSelected() && !pMover->getPilot()->getExecutingTacOrderQueue() &&
 				pMover->getCommander()->getId() == Commander::home->getId())
 			{
 				if (MPlayer && !MPlayer->isServer())
 				{
 					TacticalOrder tacOrder;
-					tacOrder.init(
-						ORDER_ORIGIN_PLAYER, TACTICAL_ORDER_WAYPOINTS_DONE);
+					tacOrder.init(ORDER_ORIGIN_PLAYER, TACTICAL_ORDER_WAYPOINTS_DONE);
 					tacOrder.pack(nullptr, nullptr);
 					MPlayer->sendPlayerOrder(&tacOrder, false, 1, &pMover);
 				}
@@ -1822,25 +1684,21 @@ int32_t MissionInterfaceManager::update(bool leftClickedClick,
 				continue;
 			// got this far, call the command
 			if (commands[i].key != -1)
-				userInput->setMouseCursor(
-					bLOS ? commands[i].cursorLOS : commands[i].cursor);
+				userInput->setMouseCursor(bLOS ? commands[i].cursorLOS : commands[i].cursor);
 			if (!commands[i].singleClick)
 			{
 				if ((this->*commands[i].function)())
 					bRetVal = 1;
 			}
-			else if (gos_GetKeyStatus((gosEnum_KeyIndex)(key & 0x000fffff)) !=
-					 KEY_HELD)
+			else if (gos_GetKeyStatus((gosEnum_KeyIndex)(key & 0x000fffff)) != KEY_HELD)
 			{
-				if (this->commands[i].function &&
-					(this->*commands[i].function)())
+				if (this->commands[i].function && (this->*commands[i].function)())
 					bRetVal = 1;
 				terrainLineChanged = turn;
 			}
 		}
-		else if (gos_GetKeyStatus(gosEnum_KeyIndex(key & 0x000fffff)) ==
-					 KEY_RELEASED &&
-				 commands[i].releaseFunction)
+		else if (gos_GetKeyStatus(gosEnum_KeyIndex(key & 0x000fffff)) == KEY_RELEASED &&
+			commands[i].releaseFunction)
 		{
 			if ((this->*commands[i].releaseFunction)())
 				bRetVal = 1;
@@ -1857,9 +1715,8 @@ void MissionInterfaceManager::doAttack()
 		return; // don't do if in waypoint mode
 	}
 	TacticalOrder tacOrder;
-	bool bCapture = target->isCaptureable(Team::home->getId());
-	bool bFireFromCurrentPos =
-		controlGui.getCurrentRange() == FIRERANGE_CURRENT ? 1 : 0;
+	bool bCapture			 = target->isCaptureable(Team::home->getId());
+	bool bFireFromCurrentPos = controlGui.getCurrentRange() == FIRERANGE_CURRENT ? 1 : 0;
 	if (controlGui.getFireFromCurrentPos())
 		bFireFromCurrentPos = true;
 	if (!bCapture)
@@ -1889,8 +1746,7 @@ void MissionInterfaceManager::doAttack()
 		for (size_t i = 0; i < Team::home->getRosterSize(); i++)
 		{
 			Mover* pMover = (Mover*)Team::home->getMover(i);
-			if (pMover->isSelected() &&
-				pMover->getCommander()->getId() == Commander::home->getId())
+			if (pMover->isSelected() && pMover->getCommander()->getId() == Commander::home->getId())
 			{
 				if ((pMover->getObjectClass() == BATTLEMECH) &&
 					(pMover->getMoveType() == MOVETYPE_GROUND))
@@ -1925,8 +1781,7 @@ void MissionInterfaceManager::doAttack()
 	for (size_t i = 0; i < pTeam->getRosterSize(); i++)
 	{
 		Mover* pMover = (Mover*)pTeam->getMover(i);
-		if (pMover->isSelected() &&
-			pMover->getCommander()->getId() == Commander::home->getId())
+		if (pMover->isSelected() && pMover->getCommander()->getId() == Commander::home->getId())
 		{
 			tacOrder.attackParams.range = (FireRangeType)pMover->attackRange;
 			if (pMover->attackRange == FIRERANGE_CURRENT)
@@ -2021,8 +1876,7 @@ void MissionInterfaceManager::doJump()
 		if (canJump)
 		{
 			TacticalOrder tacOrder;
-			tacOrder.init(
-				ORDER_ORIGIN_PLAYER, TACTICAL_ORDER_JUMPTO_POINT, false);
+			tacOrder.init(ORDER_ORIGIN_PLAYER, TACTICAL_ORDER_JUMPTO_POINT, false);
 			tacOrder.moveParams.wait			= false;
 			tacOrder.moveParams.wayPath.mode[0] = TRAVEL_MODE_JUMP;
 			tacOrder.setWayPoint(0, wPos);
@@ -2124,8 +1978,7 @@ int32_t MissionInterfaceManager::addVisibleToSelection()
 		if (ObjectManager->moverInRect(i, dragStart, dragEnd))
 		{
 			GameObjectPtr mover = ObjectManager->getMover(i);
-			if (mover &&
-				(mover->getCommanderId() == Commander::home->getId()) &&
+			if (mover && (mover->getCommanderId() == Commander::home->getId()) &&
 				!mover->isDisabled())
 			{
 				mover->setSelected(true);
@@ -2150,10 +2003,8 @@ int32_t MissionInterfaceManager::aimLeg()
 				userInput->setMouseCursor(mState_DONT);
 				return 1;
 			}
-			else if (pMech->body[MECH_BODY_LOCATION_LLEG].damageState ==
-						 IS_DAMAGE_DESTROYED &&
-					 pMech->body[MECH_BODY_LOCATION_RLEG].damageState ==
-						 IS_DAMAGE_DESTROYED)
+			else if (pMech->body[MECH_BODY_LOCATION_LLEG].damageState == IS_DAMAGE_DESTROYED &&
+				pMech->body[MECH_BODY_LOCATION_RLEG].damageState == IS_DAMAGE_DESTROYED)
 			{
 				userInput->setMouseCursor(mState_DONT);
 				return 1;
@@ -2164,19 +2015,16 @@ int32_t MissionInterfaceManager::aimLeg()
 			else
 			{
 				TacticalOrder tacOrder;
-				tacOrder.init(
-					ORDER_ORIGIN_PLAYER, TACTICAL_ORDER_ATTACK_OBJECT);
+				tacOrder.init(ORDER_ORIGIN_PLAYER, TACTICAL_ORDER_ATTACK_OBJECT);
 				tacOrder.targetWID			 = target->getWatchID();
 				tacOrder.attackParams.type   = ATTACK_TO_DESTROY;
 				tacOrder.attackParams.method = ATTACKMETHOD_RANGED;
 				tacOrder.attackParams.range  = FIRERANGE_OPTIMAL;
-				tacOrder.attackParams.pursue =
-					controlGui.getFireFromCurrentPos() ? false : true;
+				tacOrder.attackParams.pursue = controlGui.getFireFromCurrentPos() ? false : true;
 				tacOrder.moveParams.wayPath.mode[0] =
 					controlGui.getWalk() ? TRAVEL_MODE_SLOW : TRAVEL_MODE_FAST;
 				bool bRight =
-					pMech->body[MECH_BODY_LOCATION_LLEG].damageState ==
-					IS_DAMAGE_DESTROYED;
+					pMech->body[MECH_BODY_LOCATION_LLEG].damageState == IS_DAMAGE_DESTROYED;
 				tacOrder.attackParams.aimLocation =
 					bRight ? MECH_BODY_LOCATION_RLEG : MECH_BODY_LOCATION_LLEG;
 				tacOrder.pack(nullptr, nullptr);
@@ -2207,13 +2055,11 @@ int32_t MissionInterfaceManager::aimArm()
 			tacOrder.targetWID			 = target->getWatchID();
 			tacOrder.attackParams.type   = ATTACK_TO_DESTROY;
 			tacOrder.attackParams.method = ATTACKMETHOD_RANGED;
-			tacOrder.attackParams.pursue =
-				controlGui.getFireFromCurrentPos() ? false : true;
-			tacOrder.attackParams.range = FIRERANGE_OPTIMAL;
+			tacOrder.attackParams.pursue = controlGui.getFireFromCurrentPos() ? false : true;
+			tacOrder.attackParams.range  = FIRERANGE_OPTIMAL;
 			tacOrder.moveParams.wayPath.mode[0] =
 				controlGui.getWalk() ? TRAVEL_MODE_SLOW : TRAVEL_MODE_FAST;
-			bool bRight = pMech->body[MECH_BODY_LOCATION_LARM].damageState ==
-						  IS_DAMAGE_DESTROYED;
+			bool bRight = pMech->body[MECH_BODY_LOCATION_LARM].damageState == IS_DAMAGE_DESTROYED;
 			tacOrder.attackParams.aimLocation =
 				bRight ? MECH_BODY_LOCATION_RARM : MECH_BODY_LOCATION_LARM;
 			tacOrder.pack(nullptr, nullptr);
@@ -2228,10 +2074,8 @@ int32_t MissionInterfaceManager::aimArm()
 			userInput->setMouseCursor(mState_DONT);
 			return 1;
 		}
-		else if (pMech->body[MECH_BODY_LOCATION_LARM].damageState ==
-					 IS_DAMAGE_DESTROYED &&
-				 pMech->body[MECH_BODY_LOCATION_RARM].damageState ==
-					 IS_DAMAGE_DESTROYED)
+		else if (pMech->body[MECH_BODY_LOCATION_LARM].damageState == IS_DAMAGE_DESTROYED &&
+			pMech->body[MECH_BODY_LOCATION_RARM].damageState == IS_DAMAGE_DESTROYED)
 		{
 			userInput->setMouseCursor(mState_DONT);
 			return 1;
@@ -2256,14 +2100,12 @@ int32_t MissionInterfaceManager::aimHead()
 			if (anySelectedWithoutAreaEffect() && commandClicked)
 			{
 				TacticalOrder tacOrder;
-				tacOrder.init(
-					ORDER_ORIGIN_PLAYER, TACTICAL_ORDER_ATTACK_OBJECT);
+				tacOrder.init(ORDER_ORIGIN_PLAYER, TACTICAL_ORDER_ATTACK_OBJECT);
 				tacOrder.targetWID			 = target->getWatchID();
 				tacOrder.attackParams.type   = ATTACK_TO_DESTROY;
 				tacOrder.attackParams.method = ATTACKMETHOD_RANGED;
-				tacOrder.attackParams.pursue =
-					controlGui.getFireFromCurrentPos() ? false : true;
-				tacOrder.attackParams.range = FIRERANGE_OPTIMAL;
+				tacOrder.attackParams.pursue = controlGui.getFireFromCurrentPos() ? false : true;
+				tacOrder.attackParams.range  = FIRERANGE_OPTIMAL;
 				tacOrder.moveParams.wayPath.mode[0] =
 					controlGui.getWalk() ? TRAVEL_MODE_SLOW : TRAVEL_MODE_FAST;
 				tacOrder.attackParams.aimLocation = MECH_BODY_LOCATION_HEAD;
@@ -2279,8 +2121,7 @@ int32_t MissionInterfaceManager::aimHead()
 				userInput->setMouseCursor(mState_DONT);
 				return 1;
 			}
-			else if (pMech->body[MECH_BODY_LOCATION_HEAD].damageState ==
-					 IS_DAMAGE_DESTROYED)
+			else if (pMech->body[MECH_BODY_LOCATION_HEAD].damageState == IS_DAMAGE_DESTROYED)
 			{
 				userInput->setMouseCursor(mState_DONT);
 				return 1;
@@ -2338,8 +2179,8 @@ int32_t MissionInterfaceManager::stopChangeSpeed()
 }
 int32_t MissionInterfaceManager::eject()
 {
-	if (target && target->isMover() &&
-		target->getCommanderId() == Commander::home->getId() && !invulnerableON)
+	if (target && target->isMover() && target->getCommanderId() == Commander::home->getId() &&
+		!invulnerableON)
 	{
 		if (commandClicked)
 		{
@@ -2347,8 +2188,7 @@ int32_t MissionInterfaceManager::eject()
 		}
 		userInput->setMouseCursor(mState_EJECT);
 	}
-	else if (!controlGui.forceGroupBar.inRegion(
-				 userInput->getMouseX(), userInput->getMouseY()))
+	else if (!controlGui.forceGroupBar.inRegion(userInput->getMouseX(), userInput->getMouseY()))
 		userInput->setMouseCursor(mState_XEJECT);
 	return 1;
 }
@@ -2378,8 +2218,7 @@ int32_t MissionInterfaceManager::snsAirStrike()
 	return 1;
 }
 
-Stuff::Vector3D MissionInterfaceManager::makeAirStrikeTarget(
-	const Stuff::Vector3D& pos)
+Stuff::Vector3D MissionInterfaceManager::makeAirStrikeTarget(const Stuff::Vector3D& pos)
 {
 	Stuff::Vector3D newPos = pos;
 	/*	bool 	lineOfSight = Team::home->teamLineOfSight(pos);
@@ -2490,12 +2329,10 @@ int32_t MissionInterfaceManager::handleOrders(TacticalOrder& order)
 		for (size_t i = 0; i < pTeam->getRosterSize(); i++)
 		{
 			Mover* pMover = pTeam->getMover(i);
-			if (pMover->isSelected() &&
-				pMover->getCommander()->getId() == Commander::home->getId())
+			if (pMover->isSelected() && pMover->getCommander()->getId() == Commander::home->getId())
 				numMovers++;
 		}
-		MoverGroup::calcJumpGoals(
-			order.getWayPoint(0), numMovers, moveGoals, nullptr);
+		MoverGroup::calcJumpGoals(order.getWayPoint(0), numMovers, moveGoals, nullptr);
 		isMoveOrder = true;
 	}
 	else if (order.code == TACTICAL_ORDER_MOVETO_POINT)
@@ -2503,8 +2340,7 @@ int32_t MissionInterfaceManager::handleOrders(TacticalOrder& order)
 		for (size_t i = 0; i < pTeam->getRosterSize(); i++)
 		{
 			Mover* pMover = pTeam->getMover(i);
-			if (pMover->isSelected() &&
-				pMover->getCommander()->getId() == Commander::home->getId())
+			if (pMover->isSelected() && pMover->getCommander()->getId() == Commander::home->getId())
 				numMovers++;
 		}
 		MoverGroup::calcMoveGoals(order.getWayPoint(0), numMovers, moveGoals);
@@ -2514,8 +2350,7 @@ int32_t MissionInterfaceManager::handleOrders(TacticalOrder& order)
 	for (size_t i = 0; i < pTeam->getRosterSize(); i++)
 	{
 		Mover* pMover = (Mover*)pTeam->getMover(i);
-		if (pMover->isSelected() &&
-			pMover->getCommander()->getId() == Commander::home->getId())
+		if (pMover->isSelected() && pMover->getCommander()->getId() == Commander::home->getId())
 		{
 			//---------------------------------------------------------------------
 			// Helper function--perhaps this should just be a part of the mover
@@ -2527,8 +2362,8 @@ int32_t MissionInterfaceManager::handleOrders(TacticalOrder& order)
 			}
 			if (MPlayer && !MPlayer->isServer())
 			{
-				MPlayer->sendPlayerOrder(&order, false, 1, &pMover, 0, nullptr,
-					userInput->getKeyDown(WAYPOINT_KEY));
+				MPlayer->sendPlayerOrder(
+					&order, false, 1, &pMover, 0, nullptr, userInput->getKeyDown(WAYPOINT_KEY));
 				// pMover->getPilot()->setExecutingQueue(false);
 				// pMover->getPilot()->addQueuedTacOrder(order);
 			}
@@ -2804,8 +2639,7 @@ void MissionInterfaceManager::init(FitIniFilePtr loader)
 	float newThreshold = missionDragThreshold / Environment.screenHeight;
 	userInput->setMouseDragThreshold(newThreshold);
 	float missionDblClkThreshold;
-	result = loader->readIdFloat(
-		"MouseDoubleClickThreshold", missionDblClkThreshold);
+	result = loader->readIdFloat("MouseDoubleClickThreshold", missionDblClkThreshold);
 	gosASSERT(result == NO_ERROR);
 	userInput->setMouseDoubleClickThreshold(missionDblClkThreshold);
 	swapResolutions();
@@ -2971,8 +2805,7 @@ void MissionInterfaceManager::render(void)
 			drawHotKeys();
 			return;
 		}
-		if (turn >
-			3 /*&& !controlGui.inRegion(userInput->getMouseX(), userInput->getMouseY())*/)
+		if (turn > 3 /*&& !controlGui.inRegion(userInput->getMouseX(), userInput->getMouseY())*/)
 		{
 #ifdef DRAW_CURSOR_CROSSHAIRS
 			Stuff::Vector4D cursorPos;
@@ -3016,8 +2849,8 @@ void MissionInterfaceManager::render(void)
 				Distance.Subtract(objPosition, eyePosition);
 				float eyeDistance = Distance.GetApproximateLength();
 				float scaleFactor = 0.0f;
-				scaleFactor = eyeDistance / (Camera::MaxClipDistance * 2.0f);
-				scaleFactor = 1.5f - scaleFactor;
+				scaleFactor		  = eyeDistance / (Camera::MaxClipDistance * 2.0f);
+				scaleFactor		  = 1.5f - scaleFactor;
 				userInput->setMouseScale(scaleFactor);
 			}
 		}
@@ -3074,21 +2907,16 @@ void MissionInterfaceManager::printDebugInfo()
 		land->worldToCell(wPos, row, col);
 		char debugString[256];
 		if (target)
-			sprintf(debugString,
-				"POS = %s(%c) %d,%d [%d, %d] (%.4f, %.4f, %.4f) OBJ = %s\n",
+			sprintf(debugString, "POS = %s(%c) %d,%d [%d, %d] (%.4f, %.4f, %.4f) OBJ = %s\n",
 				terrainStr[GameMap->getTerrain(row, col)],
-				GameMap->getPassable(row, col) ? 'T' : 'F',
-				GlobalMoveMap[0]->calcArea(row, col),
-				GlobalMoveMap[1]->calcArea(row, col), row, col, wPos.x, wPos.y,
-				wPos.z, target->getName());
+				GameMap->getPassable(row, col) ? 'T' : 'F', GlobalMoveMap[0]->calcArea(row, col),
+				GlobalMoveMap[1]->calcArea(row, col), row, col, wPos.x, wPos.y, wPos.z,
+				target->getName());
 		else
-			sprintf(debugString,
-				"POS = %s(%c) %d,%d [%d, %d] (%.4f, %.4f, %.4f)\n",
+			sprintf(debugString, "POS = %s(%c) %d,%d [%d, %d] (%.4f, %.4f, %.4f)\n",
 				terrainStr[GameMap->getTerrain(row, col)],
-				GameMap->getPassable(row, col) ? 'T' : 'F',
-				GlobalMoveMap[0]->calcArea(row, col),
-				GlobalMoveMap[1]->calcArea(row, col), row, col, wPos.x, wPos.y,
-				wPos.z);
+				GameMap->getPassable(row, col) ? 'T' : 'F', GlobalMoveMap[0]->calcArea(row, col),
+				GlobalMoveMap[1]->calcArea(row, col), row, col, wPos.x, wPos.y, wPos.z);
 		DEBUGWINS_print(debugString);
 	}
 }
@@ -3100,8 +2928,7 @@ void MissionInterfaceManager::doMove(const Stuff::Vector3D& pos)
 		doGuardTower();
 		return;
 	}*/
-	if (controlGui.isAddingAirstrike() &&
-		controlGui.isButtonPressed(ControlGui::SENSOR_PROBE))
+	if (controlGui.isAddingAirstrike() && controlGui.isButtonPressed(ControlGui::SENSOR_PROBE))
 	{
 		// tmp hack
 		Stuff::Vector3D tmp = wPos;
@@ -3140,8 +2967,7 @@ bool MissionInterfaceManager::makePatrolPath()
 	for (size_t i = 0; i < pTeam->getRosterSize(); i++)
 	{
 		Mover* pMover = (Mover*)pTeam->getMover(i);
-		if (pMover->isSelected() &&
-			pMover->getPilot()->getNumTacOrdersQueued() &&
+		if (pMover->isSelected() && pMover->getPilot()->getNumTacOrdersQueued() &&
 			pMover->getCommander()->getId() == Commander::home->getId())
 		{
 			if (pMover->isCloseToFirstTacOrder(wPos))
@@ -3180,18 +3006,15 @@ int32_t MissionInterfaceManager::forceShot()
 	if (commandClicked)
 	{
 		TacticalOrder tacOrder;
-		tacOrder.init(ORDER_ORIGIN_PLAYER, target
-											   ? TACTICAL_ORDER_ATTACK_OBJECT
-											   : TACTICAL_ORDER_ATTACK_POINT);
+		tacOrder.init(ORDER_ORIGIN_PLAYER,
+			target ? TACTICAL_ORDER_ATTACK_OBJECT : TACTICAL_ORDER_ATTACK_POINT);
 		tacOrder.targetWID = target ? target->getWatchID() : 0;
 		if (!target)
 			tacOrder.attackParams.targetPoint = wPos;
-		tacOrder.attackParams.type =
-			bEnergyWeapons ? ATTACK_CONSERVING_AMMO : ATTACK_TO_DESTROY;
+		tacOrder.attackParams.type   = bEnergyWeapons ? ATTACK_CONSERVING_AMMO : ATTACK_TO_DESTROY;
 		tacOrder.attackParams.method = ATTACKMETHOD_RANGED;
 		tacOrder.attackParams.range  = (FireRangeType)FIRERANGE_OPTIMAL;
-		tacOrder.attackParams.pursue =
-			controlGui.getFireFromCurrentPos() ? false : true;
+		tacOrder.attackParams.pursue = controlGui.getFireFromCurrentPos() ? false : true;
 		tacOrder.moveParams.wayPath.mode[0] =
 			controlGui.getWalk() ? TRAVEL_MODE_SLOW : TRAVEL_MODE_FAST;
 		soundSystem->playDigitalSample(BUTTON5);
@@ -3203,8 +3026,7 @@ int32_t MissionInterfaceManager::forceShot()
 	return 0;
 }
 
-void MissionInterfaceManager::selectForceGroup(
-	int32_t forceGroup, bool deselect)
+void MissionInterfaceManager::selectForceGroup(int32_t forceGroup, bool deselect)
 {
 	Team* pTeam		  = Team::home;
 	bool bAllSelected = deselect ? false : true;
@@ -3225,9 +3047,8 @@ void MissionInterfaceManager::selectForceGroup(
 		for (size_t i = 0; i < pTeam->getRosterSize(); i++)
 		{
 			Mover* pMover = (Mover*)pTeam->getMover(i);
-			if (pMover && pMover->isInUnitGroup(forceGroup) &&
-				!pMover->isDisabled() && !pMover->isSelected() &&
-				pMover->isOnGUI() &&
+			if (pMover && pMover->isInUnitGroup(forceGroup) && !pMover->isDisabled() &&
+				!pMover->isSelected() && pMover->isOnGUI() &&
 				(pMover->getCommander()->getId() == Commander::home->getId()))
 			{
 				bAllSelected = false;
@@ -3237,9 +3058,8 @@ void MissionInterfaceManager::selectForceGroup(
 	for (size_t i = 0; i < pTeam->getRosterSize(); i++)
 	{
 		Mover* pMover = (Mover*)pTeam->getMover(i);
-		if (pMover && pMover->isInUnitGroup(forceGroup) &&
-			!pMover->isDisabled() && pMover->isOnGUI() &&
-			(pMover->getCommander()->getId() == Commander::home->getId()))
+		if (pMover && pMover->isInUnitGroup(forceGroup) && !pMover->isDisabled() &&
+			pMover->isOnGUI() && (pMover->getCommander()->getId() == Commander::home->getId()))
 			pMover->setSelected(!bAllSelected);
 	}
 }
@@ -3249,8 +3069,7 @@ void MissionInterfaceManager::makeForceGroup(int32_t forceGroup)
 	for (size_t i = 0; i < pTeam->getRosterSize(); i++)
 	{
 		Mover* pMover = (Mover*)pTeam->getMover(i);
-		if (pMover &&
-			(pMover->getCommander()->getId() == Commander::home->getId()))
+		if (pMover && (pMover->getCommander()->getId() == Commander::home->getId()))
 		{
 			if (pMover->isInUnitGroup(forceGroup))
 				pMover->removeFromUnitGroup(forceGroup);
@@ -3259,8 +3078,7 @@ void MissionInterfaceManager::makeForceGroup(int32_t forceGroup)
 	for (i = 0; i < pTeam->getRosterSize(); i++)
 	{
 		Mover* pMover = (Mover*)pTeam->getMover(i);
-		if (pMover &&
-			(pMover->getCommander()->getId() == Commander::home->getId()))
+		if (pMover && (pMover->getCommander()->getId() == Commander::home->getId()))
 		{
 			if (pMover->isSelected())
 				pMover->addToUnitGroup(forceGroup);
@@ -3268,19 +3086,18 @@ void MissionInterfaceManager::makeForceGroup(int32_t forceGroup)
 	}
 }
 
-bool MissionInterfaceManager::moveCameraAround(bool lineOfSight, bool passable,
-	bool ctrl, bool bGui, int32_t moverCount, int32_t nonMoverCount)
+bool MissionInterfaceManager::moveCameraAround(bool lineOfSight, bool passable, bool ctrl,
+	bool bGui, int32_t moverCount, int32_t nonMoverCount)
 {
 	bool bRetVal = 0;
 	bool middleClicked =
-		(!userInput->isLeftDrag() && !userInput->isRightDrag() &&
-			userInput->isMiddleClick());
+		(!userInput->isLeftDrag() && !userInput->isRightDrag() && userInput->isMiddleClick());
 	if ((useLeftRightMouseProfile &&
 			((userInput->isLeftClick() && userInput->getKeyDown(KEY_T)) ||
 				userInput->isLeftDoubleClick()) &&
 			target) ||
-		(!useLeftRightMouseProfile && userInput->isRightClick() &&
-			!userInput->isRightDrag() && target) &&
+		(!useLeftRightMouseProfile && userInput->isRightClick() && !userInput->isRightDrag() &&
+			target) &&
 			!bGui)
 	{
 		if (eye)
@@ -3327,13 +3144,11 @@ bool MissionInterfaceManager::moveCameraAround(bool lineOfSight, bool passable,
 	}
 	if (attilaRZAxis < -ATTILA_THRESHOLD)
 	{
-		eye->rotateLeft(rotationInc * fabs(attilaRZAxis) * frameLength *
-						ATTILA_ROTATION_FACTOR);
+		eye->rotateLeft(rotationInc * fabs(attilaRZAxis) * frameLength * ATTILA_ROTATION_FACTOR);
 	}
 	if (attilaRZAxis > ATTILA_THRESHOLD)
 	{
-		eye->rotateRight(rotationInc * fabs(attilaRZAxis) * frameLength *
-						 ATTILA_ROTATION_FACTOR);
+		eye->rotateRight(rotationInc * fabs(attilaRZAxis) * frameLength * ATTILA_ROTATION_FACTOR);
 	}
 	//------------------------------------------------
 	// Right drag is camera rotation and tilt now.
@@ -3382,11 +3197,10 @@ bool MissionInterfaceManager::moveCameraAround(bool lineOfSight, bool passable,
 				zoomChoiceIn();
 			}
 			if (target)
-				userInput->setMouseCursor(
-					makeTargetCursor(lineOfSight, moverCount, nonMoverCount));
+				userInput->setMouseCursor(makeTargetCursor(lineOfSight, moverCount, nonMoverCount));
 			else
-				userInput->setMouseCursor(makeNoTargetCursor(passable,
-					lineOfSight, ctrl, bGui, moverCount, nonMoverCount));
+				userInput->setMouseCursor(makeNoTargetCursor(
+					passable, lineOfSight, ctrl, bGui, moverCount, nonMoverCount));
 			bRetVal = 1;
 		}
 		return bRetVal;
@@ -3408,11 +3222,10 @@ bool MissionInterfaceManager::moveCameraAround(bool lineOfSight, bool passable,
 			zoomChoiceIn();
 		}
 		if (target)
-			userInput->setMouseCursor(
-				makeTargetCursor(lineOfSight, moverCount, nonMoverCount));
+			userInput->setMouseCursor(makeTargetCursor(lineOfSight, moverCount, nonMoverCount));
 		else
-			userInput->setMouseCursor(makeNoTargetCursor(
-				passable, lineOfSight, ctrl, bGui, moverCount, nonMoverCount));
+			userInput->setMouseCursor(
+				makeNoTargetCursor(passable, lineOfSight, ctrl, bGui, moverCount, nonMoverCount));
 		bRetVal = 1;
 	}
 	//-----------------------------------------------------------------
@@ -3433,8 +3246,7 @@ bool MissionInterfaceManager::canJump()
 	while ((i < pTeam->getRosterSize()))
 	{
 		Mover* pMover = (Mover*)pTeam->getMover(i);
-		if (pMover->isSelected() &&
-			pMover->getCommander()->getId() == Commander::home->getId())
+		if (pMover->isSelected() && pMover->getCommander()->getId() == Commander::home->getId())
 		{
 			if (!pMover->canJump())
 			{
@@ -3464,14 +3276,12 @@ bool MissionInterfaceManager::canJumpToWPos()
 		while ((i < pTeam->getRosterSize()))
 		{
 			Mover* pMover = (Mover*)pTeam->getMover(i);
-			if (pMover->isSelected() &&
-				pMover->getCommander()->getId() == Commander::home->getId())
+			if (pMover->isSelected() && pMover->getCommander()->getId() == Commander::home->getId())
 			{
 				if (pMover->canJump())
 				{
 					TacticalOrder lastQueuedTacOrder;
-					int32_t err = pMover->getPilot()->peekQueuedTacOrder(
-						-1, &lastQueuedTacOrder);
+					int32_t err = pMover->getPilot()->peekQueuedTacOrder(-1, &lastQueuedTacOrder);
 					Stuff::Vector3D lastWayPoint;
 					if (err)
 						lastWayPoint = pMover->getPosition();
@@ -3500,8 +3310,7 @@ void MissionInterfaceManager::doDrag(bool bGui)
 	//---------------------------------------------------------------------------
 	// Check if we wanted to select all visible.  If so, do it!
 	//	if ( ((GetAsyncKeyState( VK_LBUTTON ))) && !bGui && !cameraClicked )
-	if (((gos_GetKeyStatus(KEY_LMOUSE) == KEY_PRESSED)) && !bGui &&
-		!cameraClicked && !dragStart.x)
+	if (((gos_GetKeyStatus(KEY_LMOUSE) == KEY_PRESSED)) && !bGui && !cameraClicked && !dragStart.x)
 	{
 		dragStart.x = wPos.x;
 		dragStart.y = wPos.y;
@@ -3509,8 +3318,8 @@ void MissionInterfaceManager::doDrag(bool bGui)
 		isDragging  = 0;
 	}
 	else if ((gos_GetKeyStatus(KEY_LMOUSE) == KEY_HELD) && !isDragging &&
-			 (!(dragStart.x == 0.f && dragStart.y == 0.f) &&
-				 (dragStart.x != wPos.x && dragStart.y != wPos.y)))
+		(!(dragStart.x == 0.f && dragStart.y == 0.f) &&
+			(dragStart.x != wPos.x && dragStart.y != wPos.y)))
 	{
 		isDragging = TRUE;
 		dragEnd.x  = mouseX;
@@ -3539,8 +3348,8 @@ void MissionInterfaceManager::doDrag(bool bGui)
 				screenStart.y		= screenPos.y;
 				GameObjectPtr mover = ObjectManager->getMover(i);
 				if (ObjectManager->moverInRect(i, screenStart, dragEnd) &&
-					mover->getCommanderId() == Commander::home->getId() &&
-					count < MAX_ICONS && !mover->isDisabled())
+					mover->getCommanderId() == Commander::home->getId() && count < MAX_ICONS &&
+					!mover->isDisabled())
 				{
 					objsInRect[count] = mover;
 					count++;
@@ -3588,8 +3397,7 @@ bool MissionInterfaceManager::canAddVehicle(const Stuff::Vector3D& pos)
 	{
 		if (Team::home->teamLineOfSight(pos, 0.0f))
 		{
-			if (GameMap->getPassable(pos) &&
-				(!land->getWater((Stuff::Vector3D)pos)))
+			if (GameMap->getPassable(pos) && (!land->getWater((Stuff::Vector3D)pos)))
 				return true;
 			else
 				return false;
@@ -3611,8 +3419,8 @@ bool MissionInterfaceManager::canRecover(const Stuff::Vector3D& pos)
 	{
 		if (Team::home->teamLineOfSight(pos, 0.0f))
 		{
-			if (target && (target->getObjectClass() == BATTLEMECH) &&
-				target->isDisabled() && !target->isDestroyed())
+			if (target && (target->getObjectClass() == BATTLEMECH) && target->isDisabled() &&
+				!target->isDestroyed())
 				return true;
 			else
 				return false;
@@ -3662,16 +3470,13 @@ int32_t MissionInterfaceManager::makeTargetCursor(
 	}
 	else if (controlGui.isAddingAirstrike() && !paintingVtol[commanderID])
 	{
-		if (controlGui.getButton(ControlGui::SENSOR_PROBE)->state ==
-			ControlButton::PRESSED)
+		if (controlGui.getButton(ControlGui::SENSOR_PROBE)->state == ControlButton::PRESSED)
 		{
-			currentCursor =
-				lineOfSight ? mState_SENSORSTRIKE : mState_UNCERTAIN_AIRSTRIKE;
+			currentCursor = lineOfSight ? mState_SENSORSTRIKE : mState_UNCERTAIN_AIRSTRIKE;
 		}
 		else
 		{
-			currentCursor =
-				lineOfSight ? mState_AIRSTRIKE : mState_UNCERTAIN_AIRSTRIKE;
+			currentCursor = lineOfSight ? mState_AIRSTRIKE : mState_UNCERTAIN_AIRSTRIKE;
 		}
 		return currentCursor;
 	}
@@ -3711,8 +3516,7 @@ int32_t MissionInterfaceManager::makeTargetCursor(
 		for (size_t i = 0; i < Team::home->getRosterSize(); i++)
 		{
 			Mover* pMvr = Team::home->getMover(i);
-			if (pMvr->isSelected() &&
-				pMvr->getCommander()->getId() == Commander::home->getId())
+			if (pMvr->isSelected() && pMvr->getCommander()->getId() == Commander::home->getId())
 			{
 				if ((pMvr->getObjectClass() == BATTLEMECH) &&
 					(pMvr->getMoveType() == MOVETYPE_GROUND))
@@ -3772,13 +3576,10 @@ int32_t MissionInterfaceManager::makeTargetCursor(
 	case TREE:
 	case TERRAINOBJECT:
 	{
-		if (target->getObjectType()->getSubType() ==
-			BUILDING_SUBTYPE_LANDBRIDGE)
+		if (target->getObjectType()->getSubType() == BUILDING_SUBTYPE_LANDBRIDGE)
 		{
 			// Check if forcing fire or fire from current.  If so, shoot away.
-			if (gos_GetKeyStatus(
-					(gosEnum_KeyIndex)commands[FORCE_FIRE_KEY].key) ==
-					KEY_HELD ||
+			if (gos_GetKeyStatus((gosEnum_KeyIndex)commands[FORCE_FIRE_KEY].key) == KEY_HELD ||
 				controlGui.getFireFromCurrentPos())
 			{
 				target->setTargeted(true);
@@ -3796,8 +3597,7 @@ int32_t MissionInterfaceManager::makeTargetCursor(
 					land->worldToCell(wPos, cellR, cellC);
 					passable = GameMap->getPassable(cellR, cellC);
 				}
-				return makeNoTargetCursor(
-					passable, lineOfSight, 0, 0, moverCount, nonMoverCount);
+				return makeNoTargetCursor(passable, lineOfSight, 0, 0, moverCount, nonMoverCount);
 			}
 		}
 		//------------------------------------------------------------------
@@ -3805,8 +3605,7 @@ int32_t MissionInterfaceManager::makeTargetCursor(
 		target->setTargeted(true);
 		TeamPtr targetTeam = target->getTeam();
 		if (targetTeam && Team::home->isFriendly(targetTeam) &&
-			target->getFlag(OBJECT_FLAG_CANREFIT) &&
-			target->getFlag(OBJECT_FLAG_MECHBAY))
+			target->getFlag(OBJECT_FLAG_CANREFIT) && target->getFlag(OBJECT_FLAG_MECHBAY))
 		{
 			if (canRepairBay(target))
 			{
@@ -3817,23 +3616,19 @@ int32_t MissionInterfaceManager::makeTargetCursor(
 				currentCursor = mState_XREPAIR;
 			}
 		}
-		else if (targetTeam && !controlGui.getGuard() &&
-				 Team::home->isFriendly(targetTeam) &&
-				 gos_GetKeyStatus(
-					 (gosEnum_KeyIndex)commands[FORCE_FIRE_KEY].key) !=
-					 KEY_HELD // not forcing fire
-				 && controlGui.getCurrentRange() ==
-						FIRERANGE_OPTIMAL) // range attacks now are force fire
+		else if (targetTeam && !controlGui.getGuard() && Team::home->isFriendly(targetTeam) &&
+			gos_GetKeyStatus((gosEnum_KeyIndex)commands[FORCE_FIRE_KEY].key) !=
+				KEY_HELD // not forcing fire
+			&&
+			controlGui.getCurrentRange() == FIRERANGE_OPTIMAL) // range attacks now are force fire
 		{
-			return makeNoTargetCursor(
-				false, lineOfSight, 0, 0, moverCount, nonMoverCount);
+			return makeNoTargetCursor(false, lineOfSight, 0, 0, moverCount, nonMoverCount);
 		}
 	}
 	break;
 	case BRIDGE:
 		target = nullptr;
-		return makeNoTargetCursor(
-			false, lineOfSight, 0, 0, moverCount, nonMoverCount);
+		return makeNoTargetCursor(false, lineOfSight, 0, 0, moverCount, nonMoverCount);
 		break;
 	case DEBRIS:
 	{
@@ -3848,10 +3643,9 @@ int32_t MissionInterfaceManager::makeTargetCursor(
 		if (target)
 			target->setTargeted(true);
 	}
-	else if (gos_GetKeyStatus((gosEnum_KeyIndex)commands[FORCE_FIRE_KEY].key) ==
-				 KEY_HELD ||
-			 (controlGui.getCurrentRange() != FIRERANGE_OPTIMAL &&
-				 controlGui.getCurrentRange() != FIRERANGE_CURRENT))
+	else if (gos_GetKeyStatus((gosEnum_KeyIndex)commands[FORCE_FIRE_KEY].key) == KEY_HELD ||
+		(controlGui.getCurrentRange() != FIRERANGE_OPTIMAL &&
+			controlGui.getCurrentRange() != FIRERANGE_CURRENT))
 	{
 		currentCursor = makeRangeCursor(lineOfSight);
 	}
@@ -3867,33 +3661,28 @@ int32_t MissionInterfaceManager::makeRangeCursor(bool lineOfSight)
 	switch (currentRange)
 	{
 	case FIRERANGE_SHORT:
-		currentCursor =
-			lineOfSight ? mState_SHRTRNG_LOS : mState_SHRTRNG_ATTACK;
+		currentCursor = lineOfSight ? mState_SHRTRNG_LOS : mState_SHRTRNG_ATTACK;
 		break;
 	case FIRERANGE_MEDIUM:
 		currentCursor = lineOfSight ? mState_MEDRNG_LOS : mState_MEDRNG_ATTACK;
 		break;
 	case FIRERANGE_LONG:
-		currentCursor =
-			lineOfSight ? mState_LONGRNG_LOS : mState_LONGRNG_ATTACK;
+		currentCursor = lineOfSight ? mState_LONGRNG_LOS : mState_LONGRNG_ATTACK;
 		break;
 	case FIRERANGE_OPTIMAL:
 		currentCursor = lineOfSight ? mState_ATTACK_LOS : mState_GENERIC_ATTACK;
 		break;
 	case FIRERANGE_CURRENT:
-		currentCursor =
-			lineOfSight ? mState_CURPOS_ATTACK_LOS : mState_CURPOS_ATTACK;
+		currentCursor = lineOfSight ? mState_CURPOS_ATTACK_LOS : mState_CURPOS_ATTACK;
 		break;
 	}
 	if (controlGui.getFireFromCurrentPos())
-		currentCursor =
-			lineOfSight ? mState_CURPOS_ATTACK_LOS : mState_CURPOS_ATTACK;
+		currentCursor = lineOfSight ? mState_CURPOS_ATTACK_LOS : mState_CURPOS_ATTACK;
 	return currentCursor;
 }
 
-int32_t MissionInterfaceManager::makeNoTargetCursor(bool passable,
-	bool lineOfSight, bool bCtrl, bool bGui, int32_t moverCount,
-	int32_t nonMoverCount)
+int32_t MissionInterfaceManager::makeNoTargetCursor(bool passable, bool lineOfSight, bool bCtrl,
+	bool bGui, int32_t moverCount, int32_t nonMoverCount)
 {
 	//-------------------------------------------------------------------------
 	// We are not over enything.  Switch to move cursor based on input.
@@ -3922,20 +3711,17 @@ int32_t MissionInterfaceManager::makeNoTargetCursor(bool passable,
 	}
 	else if (controlGui.isAddingAirstrike() && !paintingVtol[commanderID])
 	{
-		if (bGui && (!controlGui.isOverTacMap() ||
-						!controlGui.isButtonPressed(ControlGui::SENSOR_PROBE)))
+		if (bGui &&
+			(!controlGui.isOverTacMap() || !controlGui.isButtonPressed(ControlGui::SENSOR_PROBE)))
 			cursorType = mState_NORMAL;
 		else
 		{
-			if (controlGui.getButton(ControlGui::SENSOR_PROBE)->state ==
-				ControlButton::PRESSED)
+			if (controlGui.getButton(ControlGui::SENSOR_PROBE)->state == ControlButton::PRESSED)
 			{
-				cursorType = lineOfSight ? mState_SENSORSTRIKE
-										 : mState_UNCERTAIN_AIRSTRIKE;
+				cursorType = lineOfSight ? mState_SENSORSTRIKE : mState_UNCERTAIN_AIRSTRIKE;
 			}
 			else
-				cursorType =
-					lineOfSight ? mState_AIRSTRIKE : mState_UNCERTAIN_AIRSTRIKE;
+				cursorType = lineOfSight ? mState_AIRSTRIKE : mState_UNCERTAIN_AIRSTRIKE;
 		}
 		return cursorType;
 	}
@@ -3970,11 +3756,9 @@ int32_t MissionInterfaceManager::makeNoTargetCursor(bool passable,
 		{
 			cursorType = lineOfSight ? mState_WALKWAYPT_LOS : mState_WALKWAYPT;
 			if (controlGui.getRun())
-				cursorType =
-					lineOfSight ? mState_RUNWAYPT_LOS : mState_RUNWAYPT;
+				cursorType = lineOfSight ? mState_RUNWAYPT_LOS : mState_RUNWAYPT;
 			else if (controlGui.getJump())
-				cursorType =
-					lineOfSight ? mState_JUMPWAYPT_LOS : mState_JUMPWAYPT;
+				cursorType = lineOfSight ? mState_JUMPWAYPT_LOS : mState_JUMPWAYPT;
 		}
 		return cursorType;
 	}
@@ -3983,8 +3767,7 @@ int32_t MissionInterfaceManager::makeNoTargetCursor(bool passable,
 		if (canJumpToWPos())
 		{
 			if (bCtrl)
-				cursorType =
-					lineOfSight ? mState_JUMPWAYPT_LOS : mState_JUMPWAYPT;
+				cursorType = lineOfSight ? mState_JUMPWAYPT_LOS : mState_JUMPWAYPT;
 			else
 				cursorType = makeJumpCursor(lineOfSight);
 			controlGui.setRolloverHelpText(IDS_UNIT_HELP);
@@ -4056,14 +3839,13 @@ void MissionInterfaceManager::addAirstrike()
 
 //-----------------------------------------------------------------------------
 
-MoverPtr BringInReinforcement(int32_t vehicleID, int32_t rosterIndex,
-	int32_t commanderID, Stuff::Vector3D pos, bool exists)
+MoverPtr BringInReinforcement(
+	int32_t vehicleID, int32_t rosterIndex, int32_t commanderID, Stuff::Vector3D pos, bool exists)
 {
 	MoverInitData data;
 	memset(&data, 0, sizeof(data));
 	PSTR vehicleFile =
-		(PSTR)MissionInterfaceManager::instance()->getSupportVehicleNameFromID(
-			vehicleID);
+		(PSTR)MissionInterfaceManager::instance()->getSupportVehicleNameFromID(vehicleID);
 	if (!vehicleFile)
 	{
 		char s[1024];
@@ -4092,7 +3874,7 @@ MoverPtr BringInReinforcement(int32_t vehicleID, int32_t rosterIndex,
 		MC2Player* pInfo = MPlayer->getPlayerInfo(commanderID);
 		if (pInfo)
 		{
-			data.baseColor = MPlayer->colors[pInfo->baseColor[BASECOLOR_TEAM]];
+			data.baseColor		 = MPlayer->colors[pInfo->baseColor[BASECOLOR_TEAM]];
 			data.highlightColor1 = MPlayer->colors[pInfo->stripeColor];
 			data.highlightColor2 = MPlayer->colors[pInfo->stripeColor];
 		}
@@ -4120,8 +3902,8 @@ MoverPtr BringInReinforcement(int32_t vehicleID, int32_t rosterIndex,
 void MissionInterfaceManager::addVehicle(const Stuff::Vector3D& pos)
 {
 	//	LogisticsPilot* pPilot =
-	//LogisticsData::instance->getFirstAvailablePilot(); 	PCSTR pChar =
-	//pPilot->getFileName(); 	if ( !pChar ) 		return;
+	// LogisticsData::instance->getFirstAvailablePilot(); 	PCSTR pChar =
+	// pPilot->getFileName(); 	if ( !pChar ) 		return;
 	// Check if vehicleFile is nullptr.  If it is, simply get it.
 	// Can happen if we get here BEFORE beginVtol?
 	// Happens when we select a vehicle which costs exactly the number of points
@@ -4131,16 +3913,15 @@ void MissionInterfaceManager::addVehicle(const Stuff::Vector3D& pos)
 	//
 	// -fs
 	if (!vehicleFile)
-		vehicleFile =
-			controlGui.getVehicleName(vehicleID[Commander::home->getId()]);
+		vehicleFile = controlGui.getVehicleName(vehicleID[Commander::home->getId()]);
 	if (!vehicleFile)
 		return;
-	reinforcement = BringInReinforcement(vehicleID[Commander::home->getId()],
-		255, Commander::home->getId(), pos, true);
+	reinforcement = BringInReinforcement(
+		vehicleID[Commander::home->getId()], 255, Commander::home->getId(), pos, true);
 }
 
-void MissionInterfaceManager::beginVtol(int32_t supportID, int32_t commanderID,
-	Stuff::Vector3D* reinforcePos, MoverPtr salvageTarget)
+void MissionInterfaceManager::beginVtol(
+	int32_t supportID, int32_t commanderID, Stuff::Vector3D* reinforcePos, MoverPtr salvageTarget)
 {
 	Stuff::Vector3D vtolPos = wPos;
 	if (reinforcePos)
@@ -4167,8 +3948,7 @@ void MissionInterfaceManager::beginVtol(int32_t supportID, int32_t commanderID,
 	}
 	if (!vTol[commanderID])
 	{
-		if (vehicleID[commanderID] !=
-			147) // NOT a recovery vehicle.  Standard VTOL
+		if (vehicleID[commanderID] != 147) // NOT a recovery vehicle.  Standard VTOL
 		{
 			if (supportID == -1)
 			{
@@ -4177,8 +3957,8 @@ void MissionInterfaceManager::beginVtol(int32_t supportID, int32_t commanderID,
 				if (MPlayer && !reinforcePos)
 				{
 					vPos[commanderID] = vtolPos;
-					MPlayer->sendReinforcement(vehicleID[commanderID], 255,
-						"noone", commanderID, vPos[commanderID], 0);
+					MPlayer->sendReinforcement(
+						vehicleID[commanderID], 255, "noone", commanderID, vPos[commanderID], 0);
 					return;
 				}
 			}
@@ -4188,8 +3968,7 @@ void MissionInterfaceManager::beginVtol(int32_t supportID, int32_t commanderID,
 			vTol[commanderID]->init(appearanceType);
 			if (!dustCloud[commanderID] && prefs.useNonWeaponEffects)
 			{
-				if (strcmp(weaponEffects->GetEffectName(VTOL_DUST_CLOUD),
-						"NONE") != 0)
+				if (strcmp(weaponEffects->GetEffectName(VTOL_DUST_CLOUD), "NONE") != 0)
 				{
 					//--------------------------------------------
 					// Yes, load it on up.
@@ -4200,12 +3979,10 @@ void MissionInterfaceManager::beginVtol(int32_t supportID, int32_t commanderID,
 							weaponEffects->GetEffectName(VTOL_DUST_CLOUD));
 					if (gosEffectSpec)
 					{
-						dustCloud[commanderID] =
-							gosFX::EffectLibrary::Instance->MakeEffect(
-								gosEffectSpec->m_effectID, flags);
+						dustCloud[commanderID] = gosFX::EffectLibrary::Instance->MakeEffect(
+							gosEffectSpec->m_effectID, flags);
 						gosASSERT(dustCloud[commanderID] != nullptr);
-						MidLevelRenderer::MLRTexturePool::Instance
-							->LoadImages();
+						MidLevelRenderer::MLRTexturePool::Instance->LoadImages();
 					}
 				}
 			}
@@ -4215,20 +3992,18 @@ void MissionInterfaceManager::beginVtol(int32_t supportID, int32_t commanderID,
 		{
 			if (supportID == -1)
 			{
-				if (MPlayer &&
-					!reinforcePos) // Probably same as above here, too.
+				if (MPlayer && !reinforcePos) // Probably same as above here, too.
 				{
 					vPos[commanderID] = vtolPos;
 					if (!salvageTarget)
 						STOP(("MissionGUI.beginvtol: null target PASSED IN."));
 					PSTR newPilotName =
-						(PSTR)LogisticsData::instance->getBestPilot(
-							salvageTarget->tonnage);
+						(PSTR)LogisticsData::instance->getBestPilot(salvageTarget->tonnage);
 					if (vehicleID[commanderID] != 147)
 						STOP(("missiongui.beginvtol: bad vehicleID"));
 					MPlayer->sendReinforcement(vehicleID[commanderID],
-						salvageTarget->netRosterIndex, newPilotName,
-						commanderID, vPos[commanderID], 3);
+						salvageTarget->netRosterIndex, newPilotName, commanderID, vPos[commanderID],
+						3);
 					return;
 				}
 			}
@@ -4238,16 +4013,14 @@ void MissionInterfaceManager::beginVtol(int32_t supportID, int32_t commanderID,
 			vTol[commanderID]->init(appearanceType);
 			if (MPlayer)
 				mechToRecover[commanderID] =
-					MPlayer
-						->moverRoster[MPlayer->reinforcements[commanderID][1]];
+					MPlayer->moverRoster[MPlayer->reinforcements[commanderID][1]];
 			else
 				mechToRecover[commanderID] = salvageTarget;
 			mechRecovered[commanderID] =
 				false; // Need to know when mech is done so Karnov can fly away.
 			if (!dustCloud[commanderID] && prefs.useNonWeaponEffects)
 			{
-				if (strcmp(weaponEffects->GetEffectName(KARNOV_DUST_CLOUD),
-						"NONE") != 0)
+				if (strcmp(weaponEffects->GetEffectName(KARNOV_DUST_CLOUD), "NONE") != 0)
 				{
 					//--------------------------------------------
 					// Yes, load it on up.
@@ -4258,19 +4031,16 @@ void MissionInterfaceManager::beginVtol(int32_t supportID, int32_t commanderID,
 							weaponEffects->GetEffectName(KARNOV_DUST_CLOUD));
 					if (gosEffectSpec)
 					{
-						dustCloud[commanderID] =
-							gosFX::EffectLibrary::Instance->MakeEffect(
-								gosEffectSpec->m_effectID, flags);
+						dustCloud[commanderID] = gosFX::EffectLibrary::Instance->MakeEffect(
+							gosEffectSpec->m_effectID, flags);
 						gosASSERT(dustCloud[commanderID] != nullptr);
-						MidLevelRenderer::MLRTexturePool::Instance
-							->LoadImages();
+						MidLevelRenderer::MLRTexturePool::Instance->LoadImages();
 					}
 				}
 			}
 			if (!recoveryBeam[commanderID])
 			{
-				if (strcmp(weaponEffects->GetEffectName(KARNOV_RECOVERY_BEAM),
-						"NONE") != 0)
+				if (strcmp(weaponEffects->GetEffectName(KARNOV_RECOVERY_BEAM), "NONE") != 0)
 				{
 					//--------------------------------------------
 					// Yes, load it on up.
@@ -4281,12 +4051,10 @@ void MissionInterfaceManager::beginVtol(int32_t supportID, int32_t commanderID,
 							weaponEffects->GetEffectName(KARNOV_RECOVERY_BEAM));
 					if (gosEffectSpec)
 					{
-						recoveryBeam[commanderID] =
-							gosFX::EffectLibrary::Instance->MakeEffect(
-								gosEffectSpec->m_effectID, flags);
+						recoveryBeam[commanderID] = gosFX::EffectLibrary::Instance->MakeEffect(
+							gosEffectSpec->m_effectID, flags);
 						gosASSERT(recoveryBeam[commanderID] != nullptr);
-						MidLevelRenderer::MLRTexturePool::Instance
-							->LoadImages();
+						MidLevelRenderer::MLRTexturePool::Instance->LoadImages();
 					}
 				}
 			}
@@ -4314,16 +4082,12 @@ void MissionInterfaceManager::beginVtol(int32_t supportID, int32_t commanderID,
 		}
 	}
 	Stuff::Vector3D newPos = vtolPos;
-	float rotation =
-		0.f; // this needs to be pointing 180 degrees from drop point
+	float rotation		   = 0.f; // this needs to be pointing 180 degrees from drop point
 	if (vehicleID[commanderID] == 147)
 	{
 		// Move wPos to be over the cockpit of the downed mech.
-		if (mechToRecover[commanderID] &&
-			mechToRecover[commanderID]->appearance)
-			newPos =
-				mechToRecover[commanderID]->appearance->getNodeNamePosition(
-					"cockpit");
+		if (mechToRecover[commanderID] && mechToRecover[commanderID]->appearance)
+			newPos = mechToRecover[commanderID]->appearance->getNodeNamePosition("cockpit");
 	}
 	if (vehicleID[commanderID] != 147)
 		soundSystem->playDigitalSample(VTOL_ANIMATE, newPos);
@@ -4338,8 +4102,7 @@ void MissionInterfaceManager::beginVtol(int32_t supportID, int32_t commanderID,
 	if (vehicleID[commanderID] != 147)
 		vTol[commanderID]->setGesture(0); // Start Animation at beginning
 	else
-		vTol[commanderID]->setGesture(
-			1); // Start Animation with Landing -- KARNOV
+		vTol[commanderID]->setGesture(1); // Start Animation with Landing -- KARNOV
 	if (dustCloud[commanderID])
 	{
 		Stuff::LinearMatrix4D shapeOrigin;
@@ -4352,8 +4115,7 @@ void MissionInterfaceManager::beginVtol(int32_t supportID, int32_t commanderID,
 		wakePos.z = dustPos.y;
 		shapeOrigin.BuildRotation(Stuff::EulerAngles(0.0f, 0.0f, 0.0f));
 		shapeOrigin.BuildTranslation(wakePos);
-		gosFX::Effect::ExecuteInfo info(
-			(Stuff::Time)scenarioTime, &shapeOrigin, nullptr);
+		gosFX::Effect::ExecuteInfo info((Stuff::Time)scenarioTime, &shapeOrigin, nullptr);
 		dustCloud[commanderID]->SetLoopOff();
 		dustCloud[commanderID]->SetExecuteOn();
 		dustCloud[commanderID]->Start(&info);
@@ -4369,11 +4131,10 @@ void MissionInterfaceManager::beginVtol(int32_t supportID, int32_t commanderID,
 bool MissionInterfaceManager::canSalvage(GameObject* pMover)
 {
 	bool lineOfSight = Team::home->teamLineOfSight(pMover->getPosition(), 0.0f);
-	return (controlGui.forceGroupBar.getIconCount() < MAX_ICONS &&
-			   target->isDisabled() && lineOfSight &&
-			   target->getObjectClass() == BATTLEMECH)
-			   ? 1
-			   : 0;
+	return (controlGui.forceGroupBar.getIconCount() < MAX_ICONS && target->isDisabled() &&
+			   lineOfSight && target->getObjectClass() == BATTLEMECH)
+		? 1
+		: 0;
 }
 
 void MissionInterfaceManager::doSalvage()
@@ -4416,8 +4177,7 @@ bool MissionInterfaceManager::canRepair(GameObject* pMover)
 				watchID = -1;
 		}
 	}
-	if (((Mover*)pMover)->needsRefit() ||
-		(((Mover*)pMover)->refitBuddyWID == watchID && watchID))
+	if (((Mover*)pMover)->needsRefit() || (((Mover*)pMover)->refitBuddyWID == watchID && watchID))
 		return true;
 	return 0;
 }
@@ -4538,10 +4298,7 @@ int32_t MissionInterfaceManager::togglePauseWithoutMenu()
 
 bool MissionInterfaceManager::isPaused() { return bPaused; }
 
-bool MissionInterfaceManager::isPausedWithoutMenu()
-{
-	return bPausedWithoutMenu;
-}
+bool MissionInterfaceManager::isPausedWithoutMenu() { return bPausedWithoutMenu; }
 
 void MissionInterfaceManager::swapResolutions()
 {
@@ -4577,8 +4334,8 @@ int32_t MissionInterfaceManager::infoButtonReleased()
 }
 int32_t MissionInterfaceManager::energyWeapons()
 {
-	if (gos_GetKeyStatus((gosEnum_KeyIndex)(
-			commands[ENERGY_WEAPON_INDEX].key & 0x0000ffff)) == KEY_HELD)
+	if (gos_GetKeyStatus((gosEnum_KeyIndex)(commands[ENERGY_WEAPON_INDEX].key & 0x0000ffff)) ==
+		KEY_HELD)
 		bEnergyWeapons = 1;
 	else
 		bEnergyWeapons = 0;
@@ -4597,8 +4354,7 @@ int32_t MissionInterfaceManager::sendLargeAirstrike()
 int32_t MissionInterfaceManager::gotoNextNavMarker()
 {
 	// need to find the next nav marker....
-	for (CObjectives::EIterator iter = Team::home->objectives.Begin();
-		 !iter.IsDone(); iter++)
+	for (CObjectives::EIterator iter = Team::home->objectives.Begin(); !iter.IsDone(); iter++)
 	{
 		if ((*iter)->Status(Team::home->objectives) == OS_UNDETERMINED &&
 			(*iter)->DisplayMarker() == NAV)
@@ -4614,8 +4370,7 @@ int32_t MissionInterfaceManager::gotoNextNavMarker()
 			path.run	  = true;
 			path.next	 = nullptr;
 			TacticalOrder tacOrder;
-			tacOrder.init(
-				ORDER_ORIGIN_PLAYER, TACTICAL_ORDER_MOVETO_POINT, false);
+			tacOrder.init(ORDER_ORIGIN_PLAYER, TACTICAL_ORDER_MOVETO_POINT, false);
 			tacOrder.initWayPath(&path);
 			tacOrder.moveParams.wait = false;
 			tacOrder.moveParams.wayPath.mode[0] =
@@ -4655,24 +4410,18 @@ int32_t MissionInterfaceManager::quickDebugInfo()
 				GameMap->getPassable(row, col) ? 'T' : 'F',
 				GameMap->getForest(row, col) ? 'T' : 'F',
 				GlobalMoveMap[target->getMoveLevel()]->calcArea(row, col),
-				GameMap->getShallowWater(row, col)
-					? 1
-					: (GameMap->getDeepWater(row, col) ? 2 : 0),
-				row, col, wPos.x, wPos.y, wPos.z, PathManager->numPaths,
-				PathManager->peakPaths, target->getName());
+				GameMap->getShallowWater(row, col) ? 1 : (GameMap->getDeepWater(row, col) ? 2 : 0),
+				row, col, wPos.x, wPos.y, wPos.z, PathManager->numPaths, PathManager->peakPaths,
+				target->getName());
 		else
 			sprintf(debugString,
 				"INFO = %s(%c%c) %d(W%d) [%d, %d] (%.4f, %.4f, %.4f) "
 				"#Pth=%d(%d)\n",
 				terrainStr[GameMap->getTerrain(row, col)],
 				GameMap->getPassable(row, col) ? 'T' : 'F',
-				GameMap->getForest(row, col) ? 'T' : 'F',
-				GlobalMoveMap[0]->calcArea(row, col),
-				GameMap->getShallowWater(row, col)
-					? 1
-					: (GameMap->getDeepWater(row, col) ? 2 : 0),
-				row, col, wPos.x, wPos.y, wPos.z, PathManager->numPaths,
-				PathManager->peakPaths);
+				GameMap->getForest(row, col) ? 'T' : 'F', GlobalMoveMap[0]->calcArea(row, col),
+				GameMap->getShallowWater(row, col) ? 1 : (GameMap->getDeepWater(row, col) ? 2 : 0),
+				row, col, wPos.x, wPos.y, wPos.z, PathManager->numPaths, PathManager->peakPaths);
 		DEBUGWINS_print(debugString);
 		sprintf(debugString, "REQ =");
 		char s[10];
@@ -4803,8 +4552,7 @@ int32_t MissionInterfaceManager::toggleDebugWins()
 	if ((lastTime + 0.5) < gos_GetElapsedTime())
 	{
 		debugWinsState			   = (++debugWinsState % 6);
-		bool debugStateFlags[6][7] = {
-			{false, false, false, false, false, false, false},
+		bool debugStateFlags[6][7] = {{false, false, false, false, false, false, false},
 			{false, false, false, false, false, true, false},
 			{false, false, false, false, false, true, true},
 			{false, true, true, true, false, true, true},
@@ -4878,8 +4626,7 @@ int32_t MissionInterfaceManager::teleport()
 		for (size_t i = 0; i < pTeam->getRosterSize(); i++)
 		{
 			Mover* mover = pTeam->getMover(i);
-			if (mover->isSelected() &&
-				mover->getCommander()->getId() == Commander::home->getId())
+			if (mover->isSelected() && mover->getCommander()->getId() == Commander::home->getId())
 				numMovers++;
 		}
 		MoverGroup::calcMoveGoals(wPos, numMovers, moveGoals);
@@ -4887,8 +4634,7 @@ int32_t MissionInterfaceManager::teleport()
 		for (i = 0; i < pTeam->getRosterSize(); i++)
 		{
 			Mover* mover = (Mover*)pTeam->getMover(i);
-			if (mover->isSelected() &&
-				mover->getCommander()->getId() == Commander::home->getId())
+			if (mover->isSelected() && mover->getCommander()->getId() == Commander::home->getId())
 				((MoverPtr)mover)->setTeleportPosition(moveGoals[numMovers++]);
 		}
 		lastTime = gos_GetElapsedTime();
@@ -4944,20 +4690,17 @@ int32_t MissionInterfaceManager::goalPlan()
 		for (size_t i = 0; i < pTeam->getRosterSize(); i++)
 		{
 			Mover* mover = pTeam->getMover(i);
-			if (mover->isSelected() &&
-				mover->getCommander()->getId() == Commander::home->getId())
+			if (mover->isSelected() && mover->getCommander()->getId() == Commander::home->getId())
 				numMovers++;
 		}
 		for (i = 0; i < pTeam->getRosterSize(); i++)
 		{
 			Mover* mover = (Mover*)pTeam->getMover(i);
-			if (mover->isSelected() &&
-				mover->getCommander()->getId() == Commander::home->getId())
+			if (mover->isSelected() && mover->getCommander()->getId() == Commander::home->getId())
 			{
 				((MoverPtr)mover)
 					->getPilot()
-					->setUseGoalPlan(
-						!((MoverPtr)mover)->getPilot()->getUseGoalPlan());
+					->setUseGoalPlan(!((MoverPtr)mover)->getPilot()->getUseGoalPlan());
 				((MoverPtr)mover)
 					->getPilot()
 					->setMainGoal(GOAL_ACTION_NONE, nullptr, nullptr, -1.0);
@@ -5001,10 +4744,8 @@ int32_t MissionInterfaceManager::showVictim()
 	{
 		if (DebugGameObject[0] && DebugGameObject[0]->isMover())
 		{
-			GameObjectPtr targetObj = ((MoverPtr)DebugGameObject[0])
-										  ->getPilot()
-										  ->getCurTacOrder()
-										  ->getTarget();
+			GameObjectPtr targetObj =
+				((MoverPtr)DebugGameObject[0])->getPilot()->getCurTacOrder()->getTarget();
 			if (targetObj)
 				DEBUGWINS_setGameObject(-1, targetObj);
 		}
@@ -5022,8 +4763,7 @@ void damageObject(GameObjectPtr victim, float damage)
 	case BATTLEMECH:
 	case GROUNDVEHICLE:
 		shot.init(nullptr, -2, damage,
-			victim->calcHitLocation(nullptr, -1, ATTACKSOURCE_WEAPONFIRE, 0),
-			0);
+			victim->calcHitLocation(nullptr, -1, ATTACKSOURCE_WEAPONFIRE, 0), 0);
 		victim->handleWeaponHit(&shot, (MPlayer != nullptr));
 		break;
 	default:
@@ -5190,8 +4930,7 @@ bool MissionInterfaceManager::selectionIsHelicopters()
 	for (size_t i = 0; i < pTeam->getRosterSize(); i++)
 	{
 		Mover* pMover = (Mover*)pTeam->getMover(i);
-		if (pMover->isSelected() &&
-			pMover->getCommander()->getId() == Commander::home->getId())
+		if (pMover->isSelected() && pMover->getCommander()->getId() == Commander::home->getId())
 		{
 			if (pMover->getMoveType() != MOVETYPE_AIR)
 			{
@@ -5235,15 +4974,14 @@ int32_t MissionInterfaceManager::loadHotKeys(FitIniFile& file)
 		int32_t tmp;
 		file.readIdLong("WayPointKey", tmp);
 		WAYPOINT_KEY = gosEnum_KeyIndex(tmp);
-		file.readIdBoolean(
-			"UseLeftRightMouseProfile", useLeftRightMouseProfile);
+		file.readIdBoolean("UseLeftRightMouseProfile", useLeftRightMouseProfile);
 		return 0;
 	}
 	return -1;
 }
 
-int32_t MissionInterfaceManager::setHotKey(int32_t whichCommand,
-	gosEnum_KeyIndex newKey, bool bShift, bool bControl, bool bAlt)
+int32_t MissionInterfaceManager::setHotKey(
+	int32_t whichCommand, gosEnum_KeyIndex newKey, bool bShift, bool bControl, bool bAlt)
 {
 	gosASSERT(whichCommand < MAX_COMMAND);
 	int32_t oldKey = commands[whichCommand].key;
@@ -5261,8 +4999,7 @@ int32_t MissionInterfaceManager::setHotKey(int32_t whichCommand,
 		// change corresponding waypoint keys
 		for (size_t i = 0; i < MAX_COMMAND; i++)
 		{
-			if (((commands[i].key & 0x0000ffff) == oldKey) &&
-				(commands[i].key & WAYPT))
+			if (((commands[i].key & 0x0000ffff) == oldKey) && (commands[i].key & WAYPT))
 			{
 				commands[i].key = key | WAYPT;
 			}
@@ -5272,8 +5009,8 @@ int32_t MissionInterfaceManager::setHotKey(int32_t whichCommand,
 	return 0;
 }
 
-int32_t MissionInterfaceManager::getHotKey(int32_t whichCommand,
-	gosEnum_KeyIndex& newKey, bool& bShift, bool& bControl, bool& bAlt)
+int32_t MissionInterfaceManager::getHotKey(
+	int32_t whichCommand, gosEnum_KeyIndex& newKey, bool& bShift, bool& bControl, bool& bAlt)
 {
 	gosASSERT(whichCommand < MAX_COMMAND);
 	int32_t key = commands[whichCommand].key;
@@ -5297,14 +5034,8 @@ int32_t MissionInterfaceManager::setWayPointKey(gosEnum_KeyIndex key)
 void MissionInterfaceManager::setAOEStyle() { useLeftRightMouseProfile = true; }
 void MissionInterfaceManager::setMCStyle() { useLeftRightMouseProfile = false; }
 
-bool MissionInterfaceManager::isAOEStyle()
-{
-	return useLeftRightMouseProfile == true;
-}
-bool MissionInterfaceManager::isMCStyle()
-{
-	return useLeftRightMouseProfile == false;
-}
+bool MissionInterfaceManager::isAOEStyle() { return useLeftRightMouseProfile == true; }
+bool MissionInterfaceManager::isMCStyle() { return useLeftRightMouseProfile == false; }
 
 void MissionInterfaceManager::doEject(GameObject* who)
 {
@@ -5378,11 +5109,9 @@ void MissionInterfaceManager::drawHotKeys()
 	return;
 }
 
-void MissionInterfaceManager::drawHotKey(
-	PCSTR keyString, PCSTR descString, int32_t x, int32_t y)
+void MissionInterfaceManager::drawHotKey(PCSTR keyString, PCSTR descString, int32_t x, int32_t y)
 {
-	hotKeyFont.render(
-		keyString, 0, y, x, Environment.screenHeight, 0xffffffff, 0, 1);
+	hotKeyFont.render(keyString, 0, y, x, Environment.screenHeight, 0xffffffff, 0, 1);
 	hotKeyFont.render(descString, x + (10 * Environment.screenWidth / 640.f), y,
 		Environment.screenWidth, Environment.screenHeight, 0xffffffff, 0, 0);
 }
@@ -5392,8 +5121,7 @@ void MissionInterfaceManager::doGuardTower()
 	for (size_t i = 0; i < Team::home->getRosterSize(); i++)
 	{
 		Mover* pMover = Team::home->getMover(i);
-		if (pMover->isSelected() &&
-			pMover->getCommander()->getId() == Commander::home->getId())
+		if (pMover->isSelected() && pMover->getCommander()->getId() == Commander::home->getId())
 		{
 			pMover->suppressionFire = true;
 		}
@@ -5404,14 +5132,13 @@ void MissionInterfaceManager::doGuardTower()
 	// : TACTICAL_ORDER_ATTACK_POINT);  tacOrder.targetWID = target ?
 	// target->getWatchID() : 0;  if ( !target )
 	tacOrder.attackParams.targetPoint = wPos;
-	tacOrder.attackParams.type =
-		bEnergyWeapons ? ATTACK_CONSERVING_AMMO : ATTACK_TO_DESTROY;
-	tacOrder.attackParams.method   = ATTACKMETHOD_RANGED;
-	tacOrder.attackParams.range	= FIRERANGE_CURRENT;
-	tacOrder.attackParams.pursue   = false;
-	tacOrder.moveParams.faceObject = true;
-	tacOrder.moveParams.fromArea   = -1;
-	tacOrder.moveParams.wait	   = false;
+	tacOrder.attackParams.type		  = bEnergyWeapons ? ATTACK_CONSERVING_AMMO : ATTACK_TO_DESTROY;
+	tacOrder.attackParams.method	  = ATTACKMETHOD_RANGED;
+	tacOrder.attackParams.range		  = FIRERANGE_CURRENT;
+	tacOrder.attackParams.pursue	  = false;
+	tacOrder.moveParams.faceObject	= true;
+	tacOrder.moveParams.fromArea	  = -1;
+	tacOrder.moveParams.wait		  = false;
 	handleOrders(tacOrder);
 	controlGui.setDefaultSpeed();
 }
@@ -5434,8 +5161,8 @@ int32_t MissionInterfaceManager::handleTeamChatKey()
 	return 1;
 }
 
-float slopeTest[8] = {0.09849140f, 0.30334668f, 0.53451114f, 0.82067879f,
-	1.21850353f, 1.87086841f, 3.29655821f, 10.15317039f};
+float slopeTest[8] = {0.09849140f, 0.30334668f, 0.53451114f, 0.82067879f, 1.21850353f, 1.87086841f,
+	3.29655821f, 10.15317039f};
 int32_t MissionInterfaceManager::makeMoveCursor(bool bLineOfSite)
 {
 	int32_t rotation = calcRotation();
@@ -5473,8 +5200,7 @@ int32_t MissionInterfaceManager::calcRotation()
 	for (size_t i = 0; i < Team::home->getRosterSize(); i++)
 	{
 		Mover* pMover = Team::home->getMover(i);
-		if (pMover->isSelected() &&
-			pMover->getCommander()->getId() == Commander::home->getId())
+		if (pMover->isSelected() && pMover->getCommander()->getId() == Commander::home->getId())
 		{
 			pos.x += pMover->getPosition().x;
 			pos.y += pMover->getPosition().y;
@@ -5532,8 +5258,7 @@ int32_t MissionInterfaceManager::calcRotation()
 	// Do it the MC1 way!
 	float slope = 0.0f;
 	if (fabs(screenPosGoal.x - screenPosMover.x) > Stuff::SMALL)
-		slope = fabs(screenPosGoal.y - screenPosMover.y) /
-				fabs(screenPosGoal.x - screenPosMover.x);
+		slope = fabs(screenPosGoal.y - screenPosMover.y) / fabs(screenPosGoal.x - screenPosMover.x);
 	int32_t counter  = 0;
 	int32_t rotation = 0;
 	while (slope > slopeTest[counter] && counter < 8)
@@ -5577,8 +5302,7 @@ void MissionInterfaceManager::Save(FitIniFilePtr file)
 		file->writeIdFloat("VtolPosZ", vPos[vtolNum].z);
 		file->writeIdLong("VehicleID", vehicleID[vtolNum]);
 		if (mechToRecover[vtolNum])
-			file->writeIdLong(
-				"SalvageMechWID", mechToRecover[vtolNum]->getWatchID());
+			file->writeIdLong("SalvageMechWID", mechToRecover[vtolNum]->getWatchID());
 		else
 			file->writeIdLong("SalvageMechWID", 0);
 		file->writeIdLong("VTOLFrame", vTol[vtolNum]->currentFrame);
@@ -5626,13 +5350,11 @@ void MissionInterfaceManager::Load(FitIniFilePtr file)
 		vehicleFile = controlGui.getVehicleNameFromID(vehicleID[vtolNum]);
 		//		if ( !vTol[vtolNum] )
 		{
-			if (vehicleID[vtolNum] !=
-				147) // NOT a recovery vehicle.  Standard VTOL
+			if (vehicleID[vtolNum] != 147) // NOT a recovery vehicle.  Standard VTOL
 			{
 				if (!dustCloud[commanderID] && prefs.useNonWeaponEffects)
 				{
-					if (strcmp(weaponEffects->GetEffectName(VTOL_DUST_CLOUD),
-							"NONE") != 0)
+					if (strcmp(weaponEffects->GetEffectName(VTOL_DUST_CLOUD), "NONE") != 0)
 					{
 						//--------------------------------------------
 						// Yes, load it on up.
@@ -5643,12 +5365,10 @@ void MissionInterfaceManager::Load(FitIniFilePtr file)
 								weaponEffects->GetEffectName(VTOL_DUST_CLOUD));
 						if (gosEffectSpec)
 						{
-							dustCloud[commanderID] =
-								gosFX::EffectLibrary::Instance->MakeEffect(
-									gosEffectSpec->m_effectID, flags);
+							dustCloud[commanderID] = gosFX::EffectLibrary::Instance->MakeEffect(
+								gosEffectSpec->m_effectID, flags);
 							gosASSERT(dustCloud[commanderID] != nullptr);
-							MidLevelRenderer::MLRTexturePool::Instance
-								->LoadImages();
+							MidLevelRenderer::MLRTexturePool::Instance->LoadImages();
 						}
 					}
 				}
@@ -5661,8 +5381,7 @@ void MissionInterfaceManager::Load(FitIniFilePtr file)
 													// away.
 				if (!dustCloud[commanderID] && prefs.useNonWeaponEffects)
 				{
-					if (strcmp(weaponEffects->GetEffectName(KARNOV_DUST_CLOUD),
-							"NONE") != 0)
+					if (strcmp(weaponEffects->GetEffectName(KARNOV_DUST_CLOUD), "NONE") != 0)
 					{
 						//--------------------------------------------
 						// Yes, load it on up.
@@ -5670,24 +5389,19 @@ void MissionInterfaceManager::Load(FitIniFilePtr file)
 						Check_Object(gosFX::EffectLibrary::Instance);
 						gosFX::Effect::Specification* gosEffectSpec =
 							gosFX::EffectLibrary::Instance->Find(
-								weaponEffects->GetEffectName(
-									KARNOV_DUST_CLOUD));
+								weaponEffects->GetEffectName(KARNOV_DUST_CLOUD));
 						if (gosEffectSpec)
 						{
-							dustCloud[commanderID] =
-								gosFX::EffectLibrary::Instance->MakeEffect(
-									gosEffectSpec->m_effectID, flags);
+							dustCloud[commanderID] = gosFX::EffectLibrary::Instance->MakeEffect(
+								gosEffectSpec->m_effectID, flags);
 							gosASSERT(dustCloud[commanderID] != nullptr);
-							MidLevelRenderer::MLRTexturePool::Instance
-								->LoadImages();
+							MidLevelRenderer::MLRTexturePool::Instance->LoadImages();
 						}
 					}
 				}
 				if (!recoveryBeam[commanderID])
 				{
-					if (strcmp(
-							weaponEffects->GetEffectName(KARNOV_RECOVERY_BEAM),
-							"NONE") != 0)
+					if (strcmp(weaponEffects->GetEffectName(KARNOV_RECOVERY_BEAM), "NONE") != 0)
 					{
 						//--------------------------------------------
 						// Yes, load it on up.
@@ -5695,16 +5409,13 @@ void MissionInterfaceManager::Load(FitIniFilePtr file)
 						Check_Object(gosFX::EffectLibrary::Instance);
 						gosFX::Effect::Specification* gosEffectSpec =
 							gosFX::EffectLibrary::Instance->Find(
-								weaponEffects->GetEffectName(
-									KARNOV_RECOVERY_BEAM));
+								weaponEffects->GetEffectName(KARNOV_RECOVERY_BEAM));
 						if (gosEffectSpec)
 						{
-							recoveryBeam[commanderID] =
-								gosFX::EffectLibrary::Instance->MakeEffect(
-									gosEffectSpec->m_effectID, flags);
+							recoveryBeam[commanderID] = gosFX::EffectLibrary::Instance->MakeEffect(
+								gosEffectSpec->m_effectID, flags);
 							gosASSERT(recoveryBeam[commanderID] != nullptr);
-							MidLevelRenderer::MLRTexturePool::Instance
-								->LoadImages();
+							MidLevelRenderer::MLRTexturePool::Instance->LoadImages();
 						}
 					}
 				}
@@ -5741,10 +5452,8 @@ void MissionInterfaceManager::Load(FitIniFilePtr file)
 		else
 			soundSystem->playDigitalSample(SALVAGE_CRAFT, vPos[commanderID]);
 		Stuff::Vector3D newPos = vPos[commanderID];
-		float rotation =
-			0.f; // this needs to be pointing 180 degrees from drop point
-		vTol[commanderID]->setObjectParameters(
-			newPos, 0, false, Team::home->id, 0);
+		float rotation		   = 0.f; // this needs to be pointing 180 degrees from drop point
+		vTol[commanderID]->setObjectParameters(newPos, 0, false, Team::home->id, 0);
 		// eye->update();
 		vTol[commanderID]->update();
 		vTol[commanderID]->setInView(true);
@@ -5762,8 +5471,7 @@ void MissionInterfaceManager::Load(FitIniFilePtr file)
 			wakePos.z = dustPos.y;
 			shapeOrigin.BuildRotation(Stuff::EulerAngles(0.0f, 0.0f, 0.0f));
 			shapeOrigin.BuildTranslation(wakePos);
-			gosFX::Effect::ExecuteInfo info(
-				(Stuff::Time)scenarioTime, &shapeOrigin, nullptr);
+			gosFX::Effect::ExecuteInfo info((Stuff::Time)scenarioTime, &shapeOrigin, nullptr);
 			dustCloud[commanderID]->SetLoopOff();
 			dustCloud[commanderID]->SetExecuteOn();
 			dustCloud[commanderID]->Start(&info);
@@ -5847,12 +5555,10 @@ void MissionInterfaceManager::updateRollovers()
 		case mState_CURPOS_ATTACK:
 		case mState_CURPOS_ATTACK_LOS:
 			helpTextID = 0;
-			if (gos_GetKeyStatus(
-					(gosEnum_KeyIndex)commands[FORCE_FIRE_KEY].key) == KEY_HELD)
+			if (gos_GetKeyStatus((gosEnum_KeyIndex)commands[FORCE_FIRE_KEY].key) == KEY_HELD)
 				controlGui.setRolloverHelpText(IDS_FORCE_FIRE_CURSOR_LEFT_HELP);
 			else
-				controlGui.setRolloverHelpText(
-					IDS_FIRE_FROM_CURRENT_POSITION_CURSOR_LEFT_HELP);
+				controlGui.setRolloverHelpText(IDS_FIRE_FROM_CURRENT_POSITION_CURSOR_LEFT_HELP);
 			break;
 		case mState_SHRTRNG_ATTACK:
 		case mState_SHRTRNG_LOS:

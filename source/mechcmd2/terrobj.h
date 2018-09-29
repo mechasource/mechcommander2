@@ -43,7 +43,7 @@ typedef enum
 class TerrainObjectType : public ObjectType
 {
 
-  public:
+public:
 	char subType;
 	float damageLevel;
 	int32_t collisionOffsetX;
@@ -55,7 +55,7 @@ class TerrainObjectType : public ObjectType
 	float explRad;
 	uint32_t fireTypeHandle;
 
-  public:
+public:
 	void init(void);
 
 	TerrainObjectType(void)
@@ -82,11 +82,9 @@ class TerrainObjectType : public ObjectType
 
 	virtual float getBurnTime(void) { return (0.0); }
 
-	virtual bool handleCollision(
-		GameObjectPtr collidee, GameObjectPtr collider);
+	virtual bool handleCollision(GameObjectPtr collidee, GameObjectPtr collider);
 
-	virtual bool handleDestruction(
-		GameObjectPtr collidee, GameObjectPtr collider);
+	virtual bool handleDestruction(GameObjectPtr collidee, GameObjectPtr collider);
 };
 
 //---------------------------------------------------------------------------
@@ -115,7 +113,7 @@ typedef struct _TerrainObjectData : public GameObjectData
 class TerrainObject : public GameObject
 {
 
-  public:
+public:
 	float damage;
 	int32_t vertexNumber;
 	int32_t blockNumber;
@@ -136,7 +134,7 @@ class TerrainObject : public GameObject
 
 	static int32_t cellArray[9];
 
-  public:
+public:
 	virtual void init(bool create)
 	{
 		objectClass = TERRAINOBJECT;
@@ -184,14 +182,12 @@ class TerrainObject : public GameObject
 
 	virtual void init(bool create, ObjectTypePtr objType);
 
-	virtual int32_t handleWeaponHit(
-		WeaponShotInfoPtr shotInfo, bool addMultiplayChunk = false);
+	virtual int32_t handleWeaponHit(WeaponShotInfoPtr shotInfo, bool addMultiplayChunk = false);
 
-	virtual void setTerrainPosition(const Stuff::Vector3D& position,
-		const Stuff::Vector2DOf<int32_t>& numbers);
+	virtual void setTerrainPosition(
+		const Stuff::Vector3D& position, const Stuff::Vector2DOf<int32_t>& numbers);
 
-	virtual void setDamage(
-		int32_t newDamage); // Damage encodes which groundtile to use, too.
+	virtual void setDamage(int32_t newDamage); // Damage encodes which groundtile to use, too.
 
 	virtual void setRotation(float rot);
 
@@ -206,10 +202,7 @@ class TerrainObject : public GameObject
 
 	virtual float getStatusRating(void);
 
-	int32_t getSubType(void)
-	{
-		return (((TerrainObjectTypePtr)getObjectType())->subType);
-	}
+	int32_t getSubType(void) { return (((TerrainObjectTypePtr)getObjectType())->subType); }
 
 	virtual int32_t kill(void)
 	{
@@ -219,8 +212,7 @@ class TerrainObject : public GameObject
 
 	bool isVisible(void);
 
-	virtual int32_t getLineOfSightNodes(
-		int32_t eyeCellRow, int32_t eyeCellCol, int32_t* cells);
+	virtual int32_t getLineOfSightNodes(int32_t eyeCellRow, int32_t eyeCellCol, int32_t* cells);
 
 	virtual bool isTerrainObject(void) { return (true); }
 
@@ -234,18 +226,14 @@ class TerrainObject : public GameObject
 
 	virtual float getAppearRadius(void) { return appearance->getRadius(void); }
 
-	virtual void setPowerSupply(GameObjectPtr power)
-	{
-		powerSupply = power->getWatchID(void);
-	}
+	virtual void setPowerSupply(GameObjectPtr power) { powerSupply = power->getWatchID(void); }
 
 	virtual void calcCellFootprint(Stuff::Vector3D& pos);
 
 	virtual bool calcAdjacentAreaCell(
 		int32_t moveLevel, int32_t areaID, int32_t& adjRow, int32_t& adjCol);
 
-	void calcSubAreas(
-		int32_t numCells, int16_t cells[MAX_GAME_OBJECT_CELLS][2]);
+	void calcSubAreas(int32_t numCells, int16_t cells[MAX_GAME_OBJECT_CELLS][2]);
 
 	void markMoveMap(bool passable);
 

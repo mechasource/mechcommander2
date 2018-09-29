@@ -159,8 +159,7 @@ void MPLoadMap::addFile(PCSTR pFileName, bool bSeedSingle)
 				aLocalizedListItem* pEntry = new aLocalizedListItem();
 				*pEntry					   = templateItem;
 				pEntry->resize(
-					mapList.width() - mapList.getScrollBarWidth() - 30,
-					pEntry->height());
+					mapList.width() - mapList.getScrollBarWidth() - 30, pEntry->height());
 				pEntry->setHiddenText(pFileName);
 				char missionDisplayName[256];
 				strcpy(missionDisplayName, "");
@@ -179,8 +178,7 @@ void MPLoadMap::addFile(PCSTR pFileName, bool bSeedSingle)
 					// now go looking for the appropriate header
 					for (size_t i = 0; i < mapList.GetItemCount(); i++)
 					{
-						if (mapList.GetItem(i)->getID() - IDS_MP_LM_TYPE0 ==
-							type)
+						if (mapList.GetItem(i)->getID() - IDS_MP_LM_TYPE0 == type)
 						{
 							pEntry->move(10, 0);
 							mapList.InsertItem(pEntry, i + 1);
@@ -189,12 +187,10 @@ void MPLoadMap::addFile(PCSTR pFileName, bool bSeedSingle)
 					}
 					if (!bFound)
 					{
-						aLocalizedListItem* pHeaderEntry =
-							new aLocalizedListItem();
-						*pHeaderEntry = templateItem;
+						aLocalizedListItem* pHeaderEntry = new aLocalizedListItem();
+						*pHeaderEntry					 = templateItem;
 						pHeaderEntry->setText(IDS_MP_LM_TYPE0 + type);
-						pHeaderEntry->resize(
-							mapList.width() - mapList.getScrollBarWidth() - 30,
+						pHeaderEntry->resize(mapList.width() - mapList.getScrollBarWidth() - 30,
 							pHeaderEntry->height());
 						pHeaderEntry->sizeToText();
 						pHeaderEntry->setID(IDS_MP_LM_TYPE0 + type);
@@ -240,11 +236,11 @@ void MPLoadMap::seedFromCampaign()
 {
 	char searchStr[255];
 	cLoadString(IDS_AUTOSAVE_NAME, searchStr, 255);
-	EString finalStr;
+	std::wstring finalStr;
 	finalStr = "*.fit";
 	FullPathFileName findPath;
 	findPath.init(savePath, finalStr, ".fit");
-	EString newestFile;
+	std::wstring newestFile;
 	int32_t groupCount   = -1;
 	int32_t missionCount = -1;
 	FitIniFile tmpFile;
@@ -322,19 +318,14 @@ void MPLoadMap::seedFromCampaign()
 							if (NO_ERROR == campaignFile.seekBlock(blockName))
 							{
 								char tmpFileName[255];
-								campaignFile.readIdString(
-									"FileName", tmpFileName, 255);
-								aLocalizedListItem* pEntry =
-									new aLocalizedListItem();
-								*pEntry = templateItem;
-								pEntry->resize(mapList.width() -
-												   mapList.getScrollBarWidth() -
-												   20,
+								campaignFile.readIdString("FileName", tmpFileName, 255);
+								aLocalizedListItem* pEntry = new aLocalizedListItem();
+								*pEntry					   = templateItem;
+								pEntry->resize(mapList.width() - mapList.getScrollBarWidth() - 20,
 									pEntry->height());
 								pEntry->setHiddenText(tmpFileName);
 								char displayName[256];
-								getMapNameFromFile(
-									tmpFileName, displayName, 255);
+								getMapNameFromFile(tmpFileName, displayName, 255);
 								pEntry->setText(displayName);
 								pEntry->sizeToText();
 								mapList.AddItem(pEntry);
@@ -377,8 +368,7 @@ void MPLoadMap::render(int32_t, int32_t)
 	}
 	RECT rect = {0, 0, Environment.screenWidth, Environment.screenHeight};
 	drawRect(rect, color);
-	if ((!enterAnim.isAnimating() || enterAnim.isDone()) &&
-		!exitAnim.isAnimating())
+	if ((!enterAnim.isAnimating() || enterAnim.isDone()) && !exitAnim.isAnimating())
 	{
 		mapList.render();
 	}
@@ -417,14 +407,10 @@ int32_t MPLoadMap::handleMessage(uint32_t message, uint32_t who)
 			getButton(FIRST_BUTTON_ID + 2)->press(0);
 			connectionType = 0;
 			buttons[indexOfButtonWithID(FIRST_BUTTON_ID + 2)].press(
-				!((1 == connectionType) || (2 == connectionType) ||
-					(3 == connectionType)));
-			buttons[indexOfButtonWithID(FIRST_BUTTON_ID + 3)].press(
-				1 == connectionType);
-			buttons[indexOfButtonWithID(FIRST_BUTTON_ID + 4)].press(
-				2 == connectionType);
-			buttons[indexOfButtonWithID(FIRST_BUTTON_ID + 5)].press(
-				3 == connectionType);
+				!((1 == connectionType) || (2 == connectionType) || (3 == connectionType)));
+			buttons[indexOfButtonWithID(FIRST_BUTTON_ID + 3)].press(1 == connectionType);
+			buttons[indexOfButtonWithID(FIRST_BUTTON_ID + 4)].press(2 == connectionType);
+			buttons[indexOfButtonWithID(FIRST_BUTTON_ID + 5)].press(3 == connectionType);
 			return 1;
 		}
 		break;
@@ -468,8 +454,7 @@ void MPLoadMap::updateMapInfo()
 		FitIniFile file;
 		FullPathFileName path;
 		PCSTR fileName = ((aTextListItem*)mapList.GetItem(sel))->getText();
-		selMapName =
-			((aLocalizedListItem*)mapList.GetItem(sel))->getHiddenText();
+		selMapName	 = ((aLocalizedListItem*)mapList.GetItem(sel))->getHiddenText();
 		path.init(missionPath, selMapName, ".fit");
 		if (NO_ERROR == file.open(path))
 		{
@@ -490,8 +475,7 @@ void MPLoadMap::updateMapInfo()
 			{
 				file.readIdString("MissionName", missionName, 255);
 			}
-			int32_t textureHandle =
-				MissionBriefingScreen::getMissionTGA(selMapName);
+			int32_t textureHandle = MissionBriefingScreen::getMissionTGA(selMapName);
 			statics[18].setTexture(textureHandle);
 			statics[18].setUVs(0, 127, 127, 0);
 			statics[18].setColor(0xffffffff);
@@ -522,11 +506,11 @@ void MPLoadMap::updateMapInfo()
 			blurb[0]	   = 0;
 			int32_t result = file.readIdString("Blurb2", blurb, 1023);
 			bool tmpBool   = false;
-			result = file.readIdBoolean("Blurb2UseResourceString", tmpBool);
+			result		   = file.readIdBoolean("Blurb2UseResourceString", tmpBool);
 			if (NO_ERROR == result && tmpBool)
 			{
 				uint32_t tmpInt = 0;
-				result = file.readIdULong("Blurb2ResourceStringID", tmpInt);
+				result			= file.readIdULong("Blurb2ResourceStringID", tmpInt);
 				if (NO_ERROR == result)
 				{
 					cLoadString(tmpInt, blurb, 1024);
@@ -545,8 +529,7 @@ void MPLoadMap::updateMapInfo()
 	}
 }
 
-void MPLoadMap::getMapNameFromFile(
-	PCSTR pFileName, PSTR missionName, int32_t bufferLength)
+void MPLoadMap::getMapNameFromFile(PCSTR pFileName, PSTR missionName, int32_t bufferLength)
 {
 	FullPathFileName path;
 	path.init(missionPath, pFileName, ".fit");
@@ -558,8 +541,7 @@ void MPLoadMap::getMapNameFromFile(
 		Assert(0, 0, errorStr);
 	}
 	int32_t result = file.seekBlock("MissionSettings");
-	Assert(result == NO_ERROR, 0,
-		"Coudln't find the mission settings block in the mission file");
+	Assert(result == NO_ERROR, 0, "Coudln't find the mission settings block in the mission file");
 	missionName[0] = 0;
 	bool bRes	  = 0;
 	result		   = file.readIdBoolean("MissionNameUseResourceString", bRes);
@@ -569,8 +551,7 @@ void MPLoadMap::getMapNameFromFile(
 	{
 		uint32_t lRes;
 		result = file.readIdULong("MissionNameResourceStringID", lRes);
-		Assert(result == NO_ERROR, 0,
-			"couldn't find the MissionNameResourceStringID");
+		Assert(result == NO_ERROR, 0, "couldn't find the MissionNameResourceStringID");
 		cLoadString(lRes, missionName, bufferLength);
 	}
 	else

@@ -148,8 +148,7 @@ void LogisticsMechIcon::render(int32_t xOffset, int32_t yOffset)
 	}
 	if (!pMech)
 		return;
-	int32_t color =
-		animations[outlineID].getCurrentColor(animations[outlineID].getState());
+	int32_t color = animations[outlineID].getCurrentColor(animations[outlineID].getState());
 	outline.setColor(color);
 	outline.render(xOffset, yOffset);
 	xOffset += outline.globalX();
@@ -169,8 +168,7 @@ void LogisticsMechIcon::renderObject(
 	int32_t color = 0xffffffff;
 	if (animIndex != -1)
 	{
-		color = animations[animIndex].getCurrentColor(
-			animations[animIndex].getState());
+		color = animations[animIndex].getCurrentColor(animations[animIndex].getState());
 	}
 	obj.setColor(color);
 	obj.render(xOffset, yOffset);
@@ -189,8 +187,7 @@ void LogisticsMechIcon::update()
 	}
 	if (outline.pointInside(x, y))
 	{
-		if ((userInput->isLeftClick() || userInput->isLeftDoubleClick()) &&
-			getMech())
+		if ((userInput->isLeftClick() || userInput->isLeftDoubleClick()) && getMech())
 		{
 			for (size_t i = 0; i < ICON_ANIM_COUNT; i++)
 			{

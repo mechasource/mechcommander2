@@ -147,90 +147,52 @@ void Mission::initializeStatistics()
 	StatisticFormat("MechCommander 2 GameLogic");
 	StatisticFormat("=========================");
 	StatisticFormat("");
-	AddStatistic(
-		"Terrain Update", "%", gos_timedata, (PVOID)&MCTimeTerrainUpdate, 0);
-	AddStatistic(
-		"Camera Update", "%", gos_timedata, (PVOID)&MCTimeCameraUpdate, 0);
-	AddStatistic(
-		"Weather Update", "%", gos_timedata, (PVOID)&MCTimeWeatherUpdate, 0);
-	AddStatistic("RunBrain Path Update", "%", gos_timedata,
-		(PVOID)&MCTimeRunBrainUpdate, 0);
-	AddStatistic("PathManager Update", "%", gos_timedata,
-		(PVOID)&MCTimePathManagerUpdate, 0);
-	AddStatistic(
-		"   Path1 Update", "%", gos_timedata, (PVOID)&MCTimePath1Update, 0);
-	AddStatistic(
-		"   Path2 Update", "%", gos_timedata, (PVOID)&MCTimePath2Update, 0);
-	AddStatistic(
-		"   Path3 Update", "%", gos_timedata, (PVOID)&MCTimePath3Update, 0);
-	AddStatistic(
-		"   Path4 Update", "%", gos_timedata, (PVOID)&MCTimePath4Update, 0);
-	AddStatistic(
-		"   Path5 Update", "%", gos_timedata, (PVOID)&MCTimePath5Update, 0);
-	AddStatistic("   CalcPath1 Update", "%", gos_timedata,
-		(PVOID)&MCTimeCalcPath1Update, 0);
-	AddStatistic("   CalcPath2 Update", "%", gos_timedata,
-		(PVOID)&MCTimeCalcPath2Update, 0);
-	AddStatistic("   CalcPath3 Update", "%", gos_timedata,
-		(PVOID)&MCTimeCalcPath3Update, 0);
-	AddStatistic("   CalcPath4 Update", "%", gos_timedata,
-		(PVOID)&MCTimeCalcPath4Update, 0);
-	AddStatistic("   CalcPath5 Update", "%", gos_timedata,
-		(PVOID)&MCTimeCalcPath5Update, 0);
-	AddStatistic("   CalcGoal1 Update", "%", gos_timedata,
-		(PVOID)&MCTimeCalcGoal1Update, 0);
-	AddStatistic("   CalcGoal2 Update", "%", gos_timedata,
-		(PVOID)&MCTimeCalcGoal2Update, 0);
-	AddStatistic("   CalcGoal3 Update", "%", gos_timedata,
-		(PVOID)&MCTimeCalcGoal3Update, 0);
-	AddStatistic("   CalcGoal4 Update", "%", gos_timedata,
-		(PVOID)&MCTimeCalcGoal4Update, 0);
-	AddStatistic("   CalcGoal5 Update", "%", gos_timedata,
-		(PVOID)&MCTimeCalcGoal5Update, 0);
-	AddStatistic("   CalcGoal6 Update", "%", gos_timedata,
-		(PVOID)&MCTimeCalcGoal6Update, 0);
-	AddStatistic("Terrain Geometry", "%", gos_timedata,
-		(PVOID)&MCTimeTerrainGeometry, 0);
-	AddStatistic("Interface Update", "%", gos_timedata,
-		(PVOID)&MCTimeInterfaceUpdate, 0);
-	AddStatistic(
-		"Crater Update", "%", gos_timedata, (PVOID)&MCTimeCraterUpdate, 0);
-	AddStatistic(
-		"TXM Mgr Update", "%", gos_timedata, (PVOID)&MCTimeTXMManagerUpdate, 0);
-	AddStatistic(
-		"Sensor Update", "%", gos_timedata, (PVOID)&MCTimeSensorUpdate, 0);
+	AddStatistic("Terrain Update", "%", gos_timedata, (PVOID)&MCTimeTerrainUpdate, 0);
+	AddStatistic("Camera Update", "%", gos_timedata, (PVOID)&MCTimeCameraUpdate, 0);
+	AddStatistic("Weather Update", "%", gos_timedata, (PVOID)&MCTimeWeatherUpdate, 0);
+	AddStatistic("RunBrain Path Update", "%", gos_timedata, (PVOID)&MCTimeRunBrainUpdate, 0);
+	AddStatistic("PathManager Update", "%", gos_timedata, (PVOID)&MCTimePathManagerUpdate, 0);
+	AddStatistic("   Path1 Update", "%", gos_timedata, (PVOID)&MCTimePath1Update, 0);
+	AddStatistic("   Path2 Update", "%", gos_timedata, (PVOID)&MCTimePath2Update, 0);
+	AddStatistic("   Path3 Update", "%", gos_timedata, (PVOID)&MCTimePath3Update, 0);
+	AddStatistic("   Path4 Update", "%", gos_timedata, (PVOID)&MCTimePath4Update, 0);
+	AddStatistic("   Path5 Update", "%", gos_timedata, (PVOID)&MCTimePath5Update, 0);
+	AddStatistic("   CalcPath1 Update", "%", gos_timedata, (PVOID)&MCTimeCalcPath1Update, 0);
+	AddStatistic("   CalcPath2 Update", "%", gos_timedata, (PVOID)&MCTimeCalcPath2Update, 0);
+	AddStatistic("   CalcPath3 Update", "%", gos_timedata, (PVOID)&MCTimeCalcPath3Update, 0);
+	AddStatistic("   CalcPath4 Update", "%", gos_timedata, (PVOID)&MCTimeCalcPath4Update, 0);
+	AddStatistic("   CalcPath5 Update", "%", gos_timedata, (PVOID)&MCTimeCalcPath5Update, 0);
+	AddStatistic("   CalcGoal1 Update", "%", gos_timedata, (PVOID)&MCTimeCalcGoal1Update, 0);
+	AddStatistic("   CalcGoal2 Update", "%", gos_timedata, (PVOID)&MCTimeCalcGoal2Update, 0);
+	AddStatistic("   CalcGoal3 Update", "%", gos_timedata, (PVOID)&MCTimeCalcGoal3Update, 0);
+	AddStatistic("   CalcGoal4 Update", "%", gos_timedata, (PVOID)&MCTimeCalcGoal4Update, 0);
+	AddStatistic("   CalcGoal5 Update", "%", gos_timedata, (PVOID)&MCTimeCalcGoal5Update, 0);
+	AddStatistic("   CalcGoal6 Update", "%", gos_timedata, (PVOID)&MCTimeCalcGoal6Update, 0);
+	AddStatistic("Terrain Geometry", "%", gos_timedata, (PVOID)&MCTimeTerrainGeometry, 0);
+	AddStatistic("Interface Update", "%", gos_timedata, (PVOID)&MCTimeInterfaceUpdate, 0);
+	AddStatistic("Crater Update", "%", gos_timedata, (PVOID)&MCTimeCraterUpdate, 0);
+	AddStatistic("TXM Mgr Update", "%", gos_timedata, (PVOID)&MCTimeTXMManagerUpdate, 0);
+	AddStatistic("Sensor Update", "%", gos_timedata, (PVOID)&MCTimeSensorUpdate, 0);
 	AddStatistic("LOS Update", "%", gos_timedata, (PVOID)&MCTimeLOSUpdate, 0);
-	AddStatistic("Collision Update", "%", gos_timedata,
-		(PVOID)&MCTimeCollisionUpdate, 0);
-	AddStatistic(
-		"Mission Script", "%", gos_timedata, (PVOID)&MCTimeMissionScript, 0);
-	AddStatistic("Multiplayer Update", "%", gos_timedata,
-		(PVOID)&MCTimeMultiplayerUpdate, 0);
+	AddStatistic("Collision Update", "%", gos_timedata, (PVOID)&MCTimeCollisionUpdate, 0);
+	AddStatistic("Mission Script", "%", gos_timedata, (PVOID)&MCTimeMissionScript, 0);
+	AddStatistic("Multiplayer Update", "%", gos_timedata, (PVOID)&MCTimeMultiplayerUpdate, 0);
 	StatisticFormat("=========================");
-	AddStatistic("TerrainObject Update", "%", gos_timedata,
-		(PVOID)&MCTimeTerrainObjectsUpdate, 0);
-	AddStatistic("TerrainObject T&L", "%", gos_timedata,
-		(PVOID)&MCTimeTerrainObjectsTL, 0);
-	AddStatistic(
-		"Mech Update", "%", gos_timedata, (PVOID)&MCTimeMechsUpdate, 0);
+	AddStatistic("TerrainObject Update", "%", gos_timedata, (PVOID)&MCTimeTerrainObjectsUpdate, 0);
+	AddStatistic("TerrainObject T&L", "%", gos_timedata, (PVOID)&MCTimeTerrainObjectsTL, 0);
+	AddStatistic("Mech Update", "%", gos_timedata, (PVOID)&MCTimeMechsUpdate, 0);
 	AddStatistic("Mech T&L", "%", gos_timedata, (PVOID)&MCTimeMechsTL, 0);
-	AddStatistic(
-		"Vehicle Update", "%", gos_timedata, (PVOID)&MCTimeVehiclesUpdate, 0);
+	AddStatistic("Vehicle Update", "%", gos_timedata, (PVOID)&MCTimeVehiclesUpdate, 0);
 	AddStatistic("Vehicle T&L", "%", gos_timedata, (PVOID)&MCTimeVehiclesTL, 0);
-	AddStatistic(
-		"Turret Update", "%", gos_timedata, (PVOID)&MCTimeTurretsUpdate, 0);
+	AddStatistic("Turret Update", "%", gos_timedata, (PVOID)&MCTimeTurretsUpdate, 0);
 	AddStatistic("Turret T&L", "%", gos_timedata, (PVOID)&MCTimeTurretsTL, 0);
-	AddStatistic("Everything else Update", "%", gos_timedata,
-		(PVOID)&MCTimeAllElseUpdate, 0);
+	AddStatistic("Everything else Update", "%", gos_timedata, (PVOID)&MCTimeAllElseUpdate, 0);
 	StatisticFormat("=========================");
-	AddStatistic(
-		"Total Mission Time", "%", gos_timedata, (PVOID)&MCTimeMissionTotal, 0);
+	AddStatistic("Total Mission Time", "%", gos_timedata, (PVOID)&MCTimeMissionTotal, 0);
 	StatisticFormat("=========================");
-	AddStatistic(
-		"Total LOS Calc Time", "%", gos_timedata, (PVOID)&MCTimeLOSCalc, 0);
+	AddStatistic("Total LOS Calc Time", "%", gos_timedata, (PVOID)&MCTimeLOSCalc, 0);
 	StatisticFormat("=========================");
-	AddStatistic("Total Anim Calc Time", "%", gos_timedata,
-		(PVOID)&MCTimeAnimationCalc, 0);
+	AddStatistic("Total Anim Calc Time", "%", gos_timedata, (PVOID)&MCTimeAnimationCalc, 0);
 	statisticsInitialized = true;
 	HeapList::initializeStatistics();
 	TerrainTextures::initializeStatistics();

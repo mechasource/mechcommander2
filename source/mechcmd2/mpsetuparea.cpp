@@ -119,7 +119,7 @@ void MPSetupXScreen::init(FitIniFile* file)
 		for (i = 0; i < listItemCount; i += 1)
 		{
 			pTmp2 = new aInsigniaListItem;
-			EString tmpStr;
+			std::wstring tmpStr;
 			tmpStr.Format("ListItem%d", i);
 			pTmp2->init(&PNfile, tmpStr.Data());
 			insigniaDropList.AddItem(pTmp2);
@@ -131,57 +131,57 @@ void MPSetupXScreen::init(FitIniFile* file)
 	/* these string are to be moved to the string table */
 	if (1 <= textCount)
 	{
-		EString str = "MULTIPLAYER SETUP";
+		std::wstring str = "MULTIPLAYER SETUP";
 		textObjects[0].setText(str);
 	}
 	if (2 <= textCount)
 	{
-		EString str = "PLAYER NAME";
+		std::wstring str = "PLAYER NAME";
 		textObjects[1].setText(str);
 	}
 	if (3 <= textCount)
 	{
-		EString str = "UNIT NAME";
+		std::wstring str = "UNIT NAME";
 		textObjects[2].setText(str);
 	}
 	if (4 <= textCount)
 	{
-		EString str = "UNIT INSIGNIA";
+		std::wstring str = "UNIT INSIGNIA";
 		textObjects[3].setText(str);
 	}
 	if (5 <= textCount)
 	{
-		EString str = "PLAYER COLORS";
+		std::wstring str = "PLAYER COLORS";
 		textObjects[4].setText(str);
 	}
 	if (6 <= textCount)
 	{
-		EString str = "HELP TEXT";
+		std::wstring str = "HELP TEXT";
 		textObjects[5].setText(str);
 	}
 	if (7 <= textCount)
 	{
-		EString str = "CONNECTION TYPE";
+		std::wstring str = "CONNECTION TYPE";
 		textObjects[6].setText(str);
 	}
 	if (8 <= textCount)
 	{
-		EString str = "connection type info";
+		std::wstring str = "connection type info";
 		textObjects[7].setText(str);
 	}
 	if (9 <= textCount)
 	{
-		EString str = "PLAYER NAME...";
+		std::wstring str = "PLAYER NAME...";
 		textObjects[8].setText(str);
 	}
 	if (10 <= textCount)
 	{
-		EString str = "UNIT NAME...";
+		std::wstring str = "UNIT NAME...";
 		textObjects[9].setText(str);
 	}
 	if (11 <= textCount)
 	{
-		EString str = "INSIGNIA NAME...";
+		std::wstring str = "INSIGNIA NAME...";
 		textObjects[10].setText(str);
 	}
 	unitNameComboBox.setFocus(false);
@@ -201,12 +201,10 @@ void MPSetupXScreen::begin()
 	buttonIndex2 = indexOfButtonWithID(FIRST_BUTTON_ID + 3);
 	buttonIndex3 = indexOfButtonWithID(FIRST_BUTTON_ID + 4);
 	buttonIndex4 = indexOfButtonWithID(FIRST_BUTTON_ID + 5);
-	if ((0 <= buttonIndex) && (0 <= buttonIndex2) && (0 <= buttonIndex3) &&
-		(0 <= buttonIndex4))
+	if ((0 <= buttonIndex) && (0 <= buttonIndex2) && (0 <= buttonIndex3) && (0 <= buttonIndex4))
 	{
 		buttons[buttonIndex].press(
-			!((1 == connectionType) || (2 == connectionType) ||
-				(3 == connectionType)));
+			!((1 == connectionType) || (2 == connectionType) || (3 == connectionType)));
 		buttons[buttonIndex2].press(1 == connectionType);
 		buttons[buttonIndex3].press(2 == connectionType);
 		buttons[buttonIndex4].press(3 == connectionType);
@@ -231,8 +229,7 @@ void MPSetupXScreen::render(int32_t xOffset, int32_t yOffset)
 		if (!bPaintSchemeInitialized)
 		{
 			bPaintSchemeInitialized = true;
-			mechCamera.getObjectAppearance()->resetPaintScheme(
-				baseColor, stripeColor, 0xfff0f0f0);
+			mechCamera.getObjectAppearance()->resetPaintScheme(baseColor, stripeColor, 0xfff0f0f0);
 		}
 		/*combo boxes need to be rendered after anything they might obscure*/
 		insigniaDropList.render();
@@ -289,14 +286,10 @@ int32_t MPSetupXScreen::handleMessage(uint32_t message, uint32_t who)
 			getButton(FIRST_BUTTON_ID + 2)->press(0);
 			connectionType = 0;
 			buttons[indexOfButtonWithID(FIRST_BUTTON_ID + 2)].press(
-				!((1 == connectionType) || (2 == connectionType) ||
-					(3 == connectionType)));
-			buttons[indexOfButtonWithID(FIRST_BUTTON_ID + 3)].press(
-				1 == connectionType);
-			buttons[indexOfButtonWithID(FIRST_BUTTON_ID + 4)].press(
-				2 == connectionType);
-			buttons[indexOfButtonWithID(FIRST_BUTTON_ID + 5)].press(
-				3 == connectionType);
+				!((1 == connectionType) || (2 == connectionType) || (3 == connectionType)));
+			buttons[indexOfButtonWithID(FIRST_BUTTON_ID + 3)].press(1 == connectionType);
+			buttons[indexOfButtonWithID(FIRST_BUTTON_ID + 4)].press(2 == connectionType);
+			buttons[indexOfButtonWithID(FIRST_BUTTON_ID + 5)].press(3 == connectionType);
 			return 1;
 		}
 		break;
@@ -304,14 +297,10 @@ int32_t MPSetupXScreen::handleMessage(uint32_t message, uint32_t who)
 		{
 			connectionType = 1;
 			buttons[indexOfButtonWithID(FIRST_BUTTON_ID + 2)].press(
-				!((1 == connectionType) || (2 == connectionType) ||
-					(3 == connectionType)));
-			buttons[indexOfButtonWithID(FIRST_BUTTON_ID + 3)].press(
-				1 == connectionType);
-			buttons[indexOfButtonWithID(FIRST_BUTTON_ID + 4)].press(
-				2 == connectionType);
-			buttons[indexOfButtonWithID(FIRST_BUTTON_ID + 5)].press(
-				3 == connectionType);
+				!((1 == connectionType) || (2 == connectionType) || (3 == connectionType)));
+			buttons[indexOfButtonWithID(FIRST_BUTTON_ID + 3)].press(1 == connectionType);
+			buttons[indexOfButtonWithID(FIRST_BUTTON_ID + 4)].press(2 == connectionType);
+			buttons[indexOfButtonWithID(FIRST_BUTTON_ID + 5)].press(3 == connectionType);
 			return 1;
 		}
 		break;
@@ -319,14 +308,10 @@ int32_t MPSetupXScreen::handleMessage(uint32_t message, uint32_t who)
 		{
 			connectionType = 2;
 			buttons[indexOfButtonWithID(FIRST_BUTTON_ID + 2)].press(
-				!((1 == connectionType) || (2 == connectionType) ||
-					(3 == connectionType)));
-			buttons[indexOfButtonWithID(FIRST_BUTTON_ID + 3)].press(
-				1 == connectionType);
-			buttons[indexOfButtonWithID(FIRST_BUTTON_ID + 4)].press(
-				2 == connectionType);
-			buttons[indexOfButtonWithID(FIRST_BUTTON_ID + 5)].press(
-				3 == connectionType);
+				!((1 == connectionType) || (2 == connectionType) || (3 == connectionType)));
+			buttons[indexOfButtonWithID(FIRST_BUTTON_ID + 3)].press(1 == connectionType);
+			buttons[indexOfButtonWithID(FIRST_BUTTON_ID + 4)].press(2 == connectionType);
+			buttons[indexOfButtonWithID(FIRST_BUTTON_ID + 5)].press(3 == connectionType);
 			return 1;
 		}
 		break;
@@ -334,14 +319,10 @@ int32_t MPSetupXScreen::handleMessage(uint32_t message, uint32_t who)
 		{
 			connectionType = 3;
 			buttons[indexOfButtonWithID(FIRST_BUTTON_ID + 2)].press(
-				!((1 == connectionType) || (2 == connectionType) ||
-					(3 == connectionType)));
-			buttons[indexOfButtonWithID(FIRST_BUTTON_ID + 3)].press(
-				1 == connectionType);
-			buttons[indexOfButtonWithID(FIRST_BUTTON_ID + 4)].press(
-				2 == connectionType);
-			buttons[indexOfButtonWithID(FIRST_BUTTON_ID + 5)].press(
-				3 == connectionType);
+				!((1 == connectionType) || (2 == connectionType) || (3 == connectionType)));
+			buttons[indexOfButtonWithID(FIRST_BUTTON_ID + 3)].press(1 == connectionType);
+			buttons[indexOfButtonWithID(FIRST_BUTTON_ID + 4)].press(2 == connectionType);
+			buttons[indexOfButtonWithID(FIRST_BUTTON_ID + 5)].press(3 == connectionType);
 			return 1;
 		}
 		break;
@@ -374,13 +355,11 @@ void MPSetupXScreen::update()
 	unitNameComboBox.update();
 	playerNameComboBox.update();
 	colorPicker.update();
-	if ((colorPicker.getColor0() != baseColor) ||
-		(colorPicker.getColor1() != stripeColor))
+	if ((colorPicker.getColor0() != baseColor) || (colorPicker.getColor1() != stripeColor))
 	{
 		baseColor   = colorPicker.getColor0();
 		stripeColor = colorPicker.getColor1();
-		mechCamera.getObjectAppearance()->resetPaintScheme(
-			baseColor, stripeColor, 0xfff0f0f0);
+		mechCamera.getObjectAppearance()->resetPaintScheme(baseColor, stripeColor, 0xfff0f0f0);
 	}
 	mechCamera.update();
 	if (userInput->isLeftClick())
@@ -440,14 +419,14 @@ void aColorPicker::init(FitIniFile* file, PCSTR blockName)
 	file->readIdLong("Width", width);
 	file->readIdLong("Height", height);
 	init(x, y, width, height);
-	EString blockname;
+	std::wstring blockname;
 	blockname = "ColorPickerMainRect";
 	mainRect.init(file, blockname.Data());
 	file->seekBlock("ColorPickerTab0");
 	blockname = "Tab0Text";
 	tab0text.init(file, blockname.Data());
 	{
-		EString str = "BASE COLOR";
+		std::wstring str = "BASE COLOR";
 		tab0text.setText(str);
 	}
 	activeTab = 0;
@@ -463,7 +442,7 @@ void aColorPicker::init(FitIniFile* file, PCSTR blockName)
 	blockname = "Tab1Text";
 	tab1text.init(file, blockname.Data());
 	{
-		EString str = "STRIPE COLOR";
+		std::wstring str = "STRIPE COLOR";
 		tab1text.setText(str);
 	}
 	blockname = "Tab1ColorOutlineRect";
@@ -496,18 +475,15 @@ void aColorPicker::destroy() { aObject::destroy(); }
 static const float rhatx = 1.0;  // cos(0/*degrees*/ * DEGREES_TO_RADS);
 static const float rhaty = 0.0;  // sin(0/*degrees*/ * DEGREES_TO_RADS);
 static const float ghatx = -0.5; // cos(120/*degrees*/ * DEGREES_TO_RADS);
-static const float ghaty =
-	0.86602540378443864676372317075294f; // sin(120/*degrees*/ *
-										 // DEGREES_TO_RADS);
+static const float ghaty = 0.86602540378443864676372317075294f; // sin(120/*degrees*/ *
+																// DEGREES_TO_RADS);
 static const float bhatx = -0.5; // cos(240/*degrees*/ * DEGREES_TO_RADS);
-static const float bhaty =
-	-0.86602540378443864676372317075294f; // sin(240/*degrees*/ *
-										  // DEGREES_TO_RADS);
+static const float bhaty = -0.86602540378443864676372317075294f; // sin(240/*degrees*/ *
+																 // DEGREES_TO_RADS);
 static const float two_pi = 6.283185307179586476925286766559f;
 
 /* all params range from 0.0 to 1.0 */
-static void rgb2hsi(
-	float r, float g, float b, float& hue, float& saturation, float& intensity)
+static void rgb2hsi(float r, float g, float b, float& hue, float& saturation, float& intensity)
 {
 	intensity = (r + g + b) / 3.0;
 	if (0.0 >= intensity)
@@ -536,8 +512,7 @@ static void rgb2hsi(
 	hue /= two_pi;
 }
 
-static void hsi2rgb(
-	float hue, float saturation, float intensity, float& r, float& g, float& b)
+static void hsi2rgb(float hue, float saturation, float intensity, float& r, float& g, float& b)
 {
 	float thue = hue;
 	if ((1.0f / 3.0f) > hue)
@@ -564,9 +539,7 @@ static void hsi2rgb(
 			 * lazy to make sure. */
 			denominator = 0.000001f;
 		}
-		g = ((b * bhaty + tib * rhaty) * chatx -
-				(b * bhatx + tib * rhatx) * chaty) /
-			denominator;
+		g = ((b * bhaty + tib * rhaty) * chatx - (b * bhatx + tib * rhatx) * chaty) / denominator;
 		r = tib - g;
 	}
 	if ((1.0f / 3.0f) > hue)
@@ -641,22 +614,19 @@ int32_t aColorPicker::handleMessage(uint32_t message, uint32_t who)
 			if ((aMSG_LEFTMOUSEDOWN == message) ||
 				((aMSG_MOUSEMOVE == message) && (userInput->isLeftDrag())))
 			{
-				int32_t cx				 = userInput->getMouseX();
-				int32_t cy				 = userInput->getMouseY();
-				int32_t colorPlaneRadius = 0.5 * colorPlaneStatic.width();
-				int32_t colorPlaneCenterX =
-					colorPlaneStatic.x() + colorPlaneRadius;
-				int32_t colorPlaneCenterY =
-					colorPlaneStatic.y() + colorPlaneRadius;
-				float dx   = cx - colorPlaneCenterX;
-				float dy   = cy - colorPlaneCenterY;
-				int32_t d2 = dx * dx + dy * dy;
+				int32_t cx				  = userInput->getMouseX();
+				int32_t cy				  = userInput->getMouseY();
+				int32_t colorPlaneRadius  = 0.5 * colorPlaneStatic.width();
+				int32_t colorPlaneCenterX = colorPlaneStatic.x() + colorPlaneRadius;
+				int32_t colorPlaneCenterY = colorPlaneStatic.y() + colorPlaneRadius;
+				float dx				  = cx - colorPlaneCenterX;
+				float dy				  = cy - colorPlaneCenterY;
+				int32_t d2				  = dx * dx + dy * dy;
 				if ((colorPlaneRadius * colorPlaneRadius) > d2)
 				{
-					float saturation =
-						sqrt((float)d2) / (float)colorPlaneRadius;
-					float hue		= (atan2(-dy, dx) / two_pi) + 0.5;
-					float intensity = 0.99f;
+					float saturation = sqrt((float)d2) / (float)colorPlaneRadius;
+					float hue		 = (atan2(-dy, dx) / two_pi) + 0.5;
+					float intensity  = 0.99f;
 					float R, G, B;
 					hsi2rgb(hue, saturation, intensity, R, G, B);
 					if (R > 0.99f)
@@ -683,10 +653,8 @@ int32_t aColorPicker::handleMessage(uint32_t message, uint32_t who)
 					{
 						B = 0.0f;
 					}
-					int32_t newColor = 0xff000000 |
-									   (((int32_t)(R * 255.0)) << 16) |
-									   (((int32_t)(G * 255.0)) << 8) |
-									   (((int32_t)(B * 255.0)) << 0);
+					int32_t newColor = 0xff000000 | (((int32_t)(R * 255.0)) << 16) |
+						(((int32_t)(G * 255.0)) << 8) | (((int32_t)(B * 255.0)) << 0);
 					// if (tab0Button.isPressed()) {
 					if (0 == activeTab)
 					{
@@ -706,10 +674,7 @@ int32_t aColorPicker::handleMessage(uint32_t message, uint32_t who)
 
 void aColorPicker::render() { aObject::render(); }
 
-void aColorPicker::move(float offsetX, float offsetY)
-{
-	aObject::move(offsetX, offsetY);
-}
+void aColorPicker::move(float offsetX, float offsetY) { aObject::move(offsetX, offsetY); }
 
 void aColorPicker::setColor0(int32_t color)
 {
@@ -776,7 +741,7 @@ int32_t aInsigniaListItem::init(FitIniFile* file, PCSTR blockName)
 	int32_t width, height;
 	file->readIdLong("Width", width);
 	file->readIdLong("Height", height);
-	EString graphicBlockName = blockName;
+	std::wstring graphicBlockName = blockName;
 	graphicBlockName += "Static";
 	graphic.init(file, graphicBlockName.Data());
 	if (graphic.height() > height)
@@ -787,7 +752,7 @@ int32_t aInsigniaListItem::init(FitIniFile* file, PCSTR blockName)
 	{
 		width = graphic.width();
 	}
-	EString textBlockName = blockName;
+	std::wstring textBlockName = blockName;
 	textBlockName += "Text";
 	text.init(file, textBlockName.Data());
 	if (text.height() > height)

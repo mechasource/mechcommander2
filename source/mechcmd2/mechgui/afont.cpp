@@ -4,16 +4,9 @@
 
 #include "stdinc.h"
 #include <mechgui/afont.h>
-#include <mclib.h>
-#include <mbstring.h>
 
-aFont::aFont()
-{
-	gosFont		= 0;
-	fontName[0] = 0;
-	resID		= 0;
-	size		= 1;
-}
+//#include <mclib.h>
+//#include <mbstring.h>
 
 int32_t aFont::init(PCSTR newFontName)
 {
@@ -191,11 +184,10 @@ void aFont::destroy()
 	fontName[0] = 0;
 }
 
-void aFont::render(PCSTR text, int32_t xPos, int32_t yPos, int32_t areaWidth,
-	int32_t areaHeight, uint32_t color, bool bBold, int32_t alignment)
+void aFont::render(PCSTR text, int32_t xPos, int32_t yPos, int32_t areaWidth, int32_t areaHeight,
+	uint32_t color, bool bBold, int32_t alignment)
 {
-	gos_TextSetAttributes(
-		gosFont, color, size, true, true, bBold, false, alignment);
+	gos_TextSetAttributes(gosFont, color, size, true, true, bBold, false, alignment);
 	if (areaWidth < 1)
 	{
 		if (alignment == 1)
@@ -267,3 +259,33 @@ void aFont::copyData(const aFont& src)
 		size = src.size;
 	}
 }
+
+gos_TextSetAttributes(_FontInfo*, ulong, float, bool, bool, bool, bool, ulong, bool);
+gos_TextSetPosition(int, int);
+gos_TextGetPrintPosition(int*, int*);
+gos_TextSetRegion(int, int, int, int);
+gos_TextStringLength(ulong*, ulong*, char const*, ...);
+FontDrawQuad(bool);
+gos_TextDrawBackground(int, int, int, int, ulong);
+GetChrSize(int*, int*, uchar);
+IgnoreEmbedded(uchar*);
+GetNextWordLen(uchar*);
+GetNextLineLen(uchar*, uchar**);
+gos_ChrDraw(uchar);
+SetupFontRenderstates(void);
+gos_TextDraw(char const*, ...);
+gos_TextDrawV(char const*, char*);
+HandleTags(char**);
+float2long(float);
+CTexInfo::Width(void);
+
+InternalFunctionStop(char const*, ...);
+ErrorHandler(x, x);
+GDIGetStringLen(char*, ulong*, ulong*);
+gos_PopRenderStates(void);
+gos_DrawQuads(gos_VERTEX*, int);
+gos_SetRenderState(gos_RenderState, int);
+gos_PushRenderStates(void);
+GetCycles(void);
+gos_GetFullPathName(char*, char const*);
+TextDrawDBCS(char*);

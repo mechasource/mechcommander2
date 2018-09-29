@@ -23,7 +23,7 @@ LogisticsMechIcon:
 class LogisticsMechIcon
 {
 
-  public:
+public:
 	LogisticsMechIcon(void);
 	~LogisticsMechIcon(void);
 
@@ -50,10 +50,7 @@ class LogisticsMechIcon
 	float width(void) const { return outline.width(void); }
 	float height(void) const { return outline.height(void); }
 
-	bool pointInside(int32_t x, int32_t y) const
-	{
-		return outline.pointInside(x, y);
-	}
+	bool pointInside(int32_t x, int32_t y) const { return outline.pointInside(x, y); }
 
 	void dimPilot(bool bDim);
 	void setHelpID(int32_t newID) { helpID = newID; }
@@ -62,7 +59,7 @@ class LogisticsMechIcon
 
 	static LogisticsMechIcon* s_pTemplateIcon;
 
-  private:
+private:
 	LogisticsMechIcon& operator=(const LogisticsMechIcon& src);
 	LogisticsMechIcon(const LogisticsMechIcon& src);
 
@@ -88,8 +85,7 @@ class LogisticsMechIcon
 	int32_t helpID;
 	bool bDisabled;
 
-	void renderObject(
-		aObject& obj, int32_t color, int32_t xOffset, int32_t yOffset);
+	void renderObject(aObject& obj, int32_t color, int32_t xOffset, int32_t yOffset);
 	static void assignAnimation(FitIniFile& file, int32_t& number);
 };
 

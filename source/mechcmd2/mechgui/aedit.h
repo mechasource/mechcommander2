@@ -36,7 +36,7 @@ aEdit:
 **************************************************************************************************/
 class aEdit : public aObject
 {
-  public:
+public:
 	aEdit(int32_t fontID);
 	virtual ~aEdit(void);
 	aEdit(void); // really need a font for this to work
@@ -47,8 +47,8 @@ class aEdit : public aObject
 
 	void renderWithDropShadow(void);
 
-	void getEntry(EString& str);
-	void setEntry(const EString& str, uint8_t byHighlight = 0);
+	void getEntry(std::wstring& str);
+	void setEntry(const std::wstring& str, uint8_t byHighlight = 0);
 	void limitEntry(int32_t nNewLimit) { nLimit = nNewLimit; }
 	void setFocus(bool bHasFocus);
 	void setFont(int32_t fontID);
@@ -97,7 +97,7 @@ class aEdit : public aObject
 
 	void allowIME(bool bAllow) { bAllowIME = bAllow; }
 
-  private:
+private:
 	aEdit(const aEdit&);
 
 	// HELPER FUNCTIONS
@@ -129,7 +129,7 @@ class aEdit : public aObject
 	int32_t nLeftOffset;
 	float cursorTime;
 	bool bMouseDown;
-	EString text;
+	std::wstring text;
 	aFont font;
 	bool bFocus;
 	uint32_t dwStyleFlags;

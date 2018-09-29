@@ -46,12 +46,12 @@ class GlobalCollisionAlert
 {
 	// Data Members
 	//-------------
-  protected:
+protected:
 	CollisionAlertRecordPtr collisionAlerts;
 	uint32_t maxAlerts;
 	uint32_t nextRecord;
 
-  public:
+public:
 	GlobalCollisionAlert(void)
 	{
 		collisionAlerts = nullptr;
@@ -64,8 +64,7 @@ class GlobalCollisionAlert
 
 	~GlobalCollisionAlert(void) { destroy(void); }
 
-	int32_t addRecord(
-		GameObjectPtr obj1, GameObjectPtr obj2, float distance, float time);
+	int32_t addRecord(GameObjectPtr obj1, GameObjectPtr obj2, float distance, float time);
 
 	CollisionAlertRecordPtr findAlert(
 		GameObjectPtr object, CollisionAlertRecordPtr startRecord = nullptr);
@@ -80,7 +79,7 @@ class CollisionGrid
 {
 	// Data Members
 	//-------------
-  protected:
+protected:
 	uint32_t xGridWidth; // Number of gridNodes in x direction
 	uint32_t yGridWidth; // Number of gridNodes in y direction
 	// In theory we would need a z but not for a mech game!!
@@ -89,12 +88,9 @@ class CollisionGrid
 
 	uint32_t maxObjects; // Max number of objects in world.
 
-	CollisionGridNodePtr
-		giantObjects; // Collection of objects larger than maxGridRadius
-	CollisionGridNodePtr*
-		grid; // Pointer to array of gridNodes layed out in space
-	CollisionGridNodePtr
-		nodes; // Actual grid nodes available to layout in space.
+	CollisionGridNodePtr giantObjects; // Collection of objects larger than maxGridRadius
+	CollisionGridNodePtr* grid;		   // Pointer to array of gridNodes layed out in space
+	CollisionGridNodePtr nodes;		   // Actual grid nodes available to layout in space.
 
 	uint32_t nextAvailableNode; // next node in nodes which can be used.
 	Stuff::Vector3D gridOrigin; // Center point of the grid.
@@ -112,7 +108,7 @@ class CollisionGrid
 
 	// Member Functions
 	//-----------------
-  public:
+public:
 	PVOID operator new(size_t mySize);
 	void operator delete(PVOID us);
 
@@ -158,10 +154,10 @@ class CollisionSystem
 {
 	// Data Members
 	//-------------
-  protected:
+protected:
 	CollisionGridPtr collisionGrid;
 
-  public:
+public:
 	static uint32_t xGridSize;
 	static uint32_t yGridSize;
 	static uint32_t gridRadius;
@@ -171,16 +167,16 @@ class CollisionSystem
 
 	float warningDist; // Distance to worry about int16_t term collision
 					   // avoidance (in World Units!!)
-	float alertTime; // Time to worry about int16_t term collision avoidance.
+	float alertTime;   // Time to worry about int16_t term collision avoidance.
 
 	static UserHeapPtr collisionHeap;
 
 	// Member Functions
 	//-----------------
-  protected:
+protected:
 	CollisionRecordPtr findNextPending(void);
 
-  public:
+public:
 	PVOID operator new(size_t mySize);
 	void operator delete(PVOID us);
 
@@ -202,8 +198,7 @@ class CollisionSystem
 
 	float timeToImpact(GameObjectPtr obj1, GameObjectPtr obj2);
 
-	static void checkExtents(
-		GameObjectPtr obj1, GameObjectPtr obj2, float time);
+	static void checkExtents(GameObjectPtr obj1, GameObjectPtr obj2, float time);
 };
 
 extern CollisionSystem* collisionSystem;

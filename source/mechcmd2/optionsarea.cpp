@@ -109,8 +109,8 @@ int32_t OptionsXScreen::indexOfButtonWithID(int32_t id)
 void OptionsXScreen::init(FitIniFile* file)
 {
 	LogisticsScreen::init(*file, "Static", "Text", "Rect", "Button", "Edit");
-	PCSTR fileNames[4]		   = {"mcl_optionsgraphics", "mcl_optionsaudio",
-		"mcl_optionsgameplay", "mcl_optionshotkeys"};
+	PCSTR fileNames[4] = {
+		"mcl_optionsgraphics", "mcl_optionsaudio", "mcl_optionsgameplay", "mcl_optionshotkeys"};
 	OptionsGraphics* pGraphics = new OptionsGraphics;
 	tabAreas[0]				   = pGraphics;
 	OptionsAudio* pAudio	   = new OptionsAudio;
@@ -284,12 +284,10 @@ typedef struct
 	int32_t bitDepth;
 } ResModes;
 
-ResModes resModes[10] = {640, 480, 16, 640, 480, 32, 800, 600, 16, 800, 600, 32,
-	1024, 768, 16, 1024, 768, 32, 1280, 1024, 16, 1280, 1024, 32, 1600, 1200,
-	16, 1600, 1200, 32};
+ResModes resModes[10] = {640, 480, 16, 640, 480, 32, 800, 600, 16, 800, 600, 32, 1024, 768, 16,
+	1024, 768, 32, 1280, 1024, 16, 1280, 1024, 32, 1600, 1200, 16, 1600, 1200, 32};
 
-bool availableMode[10] = {
-	true, true, true, true, true, true, true, true, true, true};
+bool availableMode[10] = {true, true, true, true, true, true, true, true, true, true};
 
 void OptionsGraphics::init(int32_t xOffset, int32_t yOffset)
 {
@@ -310,11 +308,10 @@ void OptionsGraphics::init(int32_t xOffset, int32_t yOffset)
 	resolutionList.ListBox().setOrange(true);
 	for (size_t i = IDS_RESOLUTION0; i < IDS_RESOLUTION9 + 1; i++)
 	{
-		if (1 != gos_GetMachineInformation(gos_Info_ValidMode,
-					 Environment.FullScreenDevice,
-					 resModes[i - IDS_RESOLUTION0].xRes,
-					 resModes[i - IDS_RESOLUTION0].yRes,
-					 resModes[i - IDS_RESOLUTION0].bitDepth))
+		if (1 !=
+			gos_GetMachineInformation(gos_Info_ValidMode, Environment.FullScreenDevice,
+				resModes[i - IDS_RESOLUTION0].xRes, resModes[i - IDS_RESOLUTION0].yRes,
+				resModes[i - IDS_RESOLUTION0].bitDepth))
 		{
 			availableMode[i - IDS_RESOLUTION0] = false;
 		}
@@ -357,11 +354,9 @@ void OptionsGraphics::init(int32_t xOffset, int32_t yOffset)
 		&& (gos_GetMachineInformation(gos_Info_GetDeviceDeviceID,i) == 0x0002))
 			minTextureRam = 4096000;
 		*/
-		if (gos_GetMachineInformation(gos_Info_GetDeviceLocalMemory, i) >=
-			minTextureRam)
+		if (gos_GetMachineInformation(gos_Info_GetDeviceLocalMemory, i) >= minTextureRam)
 		{
-			PSTR deviceName =
-				(PSTR)gos_GetMachineInformation(gos_Info_GetDeviceName, i);
+			PSTR deviceName = (PSTR)gos_GetMachineInformation(gos_Info_GetDeviceName, i);
 			// Save name to other string here.
 			cardList.AddItem(deviceName, 0xffffffff);
 			if (Environment.FullScreenDevice == i)
@@ -375,9 +370,9 @@ void OptionsGraphics::init(int32_t xOffset, int32_t yOffset)
 	// Turns out, its the same for both.
 	// Environment.Renderer tells you what device you are currently using as
 	// follows: 	If the value is 0 or 1 you are using the default device or the
-	//primary display adapter (One and the same always) 	If the value is 2
-	//you are using the second video card. 	If the value is 3 you are using
-	//BLADE software renderer.  If you set the values to any of the above, you
+	// primary display adapter (One and the same always) 	If the value is 2
+	// you are using the second video card. 	If the value is 3 you are using
+	// BLADE software renderer.  If you set the values to any of the above, you
 	// will switch to that device.
 	for (i = 0; i < buttonCount; i++)
 	{
@@ -431,8 +426,7 @@ void OptionsGraphics::update()
 			resolutionList.update(); // don't want to call 2x's
 	}
 	else if (userInput->isLeftClick() &&
-			 resolutionList.pointInside(
-				 userInput->getMouseX(), userInput->getMouseY()))
+		resolutionList.pointInside(userInput->getMouseX(), userInput->getMouseY()))
 	{
 		soundSystem->playDigitalSample(LOG_WRONGBUTTON);
 	}
@@ -452,8 +446,8 @@ void OptionsGraphics::end()
 	prefs.useNonWeaponEffects	 = getButton(MSG_NON_WEAPON)->isPressed();
 	prefs.useLocalShadows		  = getButton(MSG_LOCAL_SHADOWS)->isPressed();
 	prefs.asyncMouse			  = getButton(MSG_ASYNC_MOUSE)->isPressed();
-	prefs.renderer = getButton(MSG_HARDWARE_RASTERIZER)->isPressed() ? 0 : 3;
-	int32_t sel	= resolutionList.GetSelectedItem();
+	prefs.renderer				  = getButton(MSG_HARDWARE_RASTERIZER)->isPressed() ? 0 : 3;
+	int32_t sel					  = resolutionList.GetSelectedItem();
 	if (sel > -1)
 	{
 		int32_t actualSel = -1;
@@ -542,8 +536,7 @@ void OptionsAudio::init(int32_t xOffset, int32_t yOffset)
 	}
 	for (i = 0; i < 5; i++)
 	{
-		scrollBars[i].init(
-			&buttons[i * 2], &buttons[i * 2 + 1], &buttons[i + 11]);
+		scrollBars[i].init(&buttons[i * 2], &buttons[i * 2 + 1], &buttons[i + 11]);
 		addChild(&scrollBars[i]);
 		scrollBars[i].move(-x(), -y());
 		scrollBars[i].SetScrollMax(255);
@@ -674,15 +667,14 @@ int32_t OptionsGamePlay::handleMessage(uint32_t message, uint32_t fromWho)
 void OptionsGamePlay::render()
 {
 	LogisticsScreen::render();
-	int32_t colorToMatch = getButton(MSG_BASE)->isPressed()
-							   ? rects[36].getColor()
-							   : rects[37].getColor();
+	int32_t colorToMatch =
+		getButton(MSG_BASE)->isPressed() ? rects[36].getColor() : rects[37].getColor();
 	for (size_t i = 4; i < 36; i++)
 	{
 		if (rects[i].getColor() == colorToMatch)
 		{
-			RECT tmp = {rects[i].globalX() - 2, rects[i].globalY() - 2,
-				rects[i].globalRight() + 1, rects[i].globalBottom() + 1};
+			RECT tmp = {rects[i].globalX() - 2, rects[i].globalY() - 2, rects[i].globalRight() + 1,
+				rects[i].globalBottom() + 1};
 			drawEmptyRect(tmp, 0xffffffff, 0xffffffff);
 			break;
 		}
@@ -702,8 +694,7 @@ void OptionsGamePlay::update()
 	{
 		for (size_t i = 4; i < 36; i++)
 		{
-			if (rects[i].pointInside(
-					userInput->getMouseX(), userInput->getMouseY()))
+			if (rects[i].pointInside(userInput->getMouseX(), userInput->getMouseY()))
 			{
 				pRect->setColor(rects[i].getColor());
 				bChanged = 1;
@@ -712,8 +703,8 @@ void OptionsGamePlay::update()
 		}
 	}
 	if (bChanged)
-		camera.setMech("Bushwacker", rects[36].getColor(), rects[37].getColor(),
-			rects[37].getColor());
+		camera.setMech(
+			"Bushwacker", rects[36].getColor(), rects[37].getColor(), rects[37].getColor());
 }
 
 void OptionsGamePlay::begin()
@@ -730,8 +721,7 @@ void OptionsGamePlay::begin()
 	}
 	else
 	{
-		camera.setMech("Bushwacker", prefs.baseColor, prefs.highlightColor,
-			prefs.highlightColor);
+		camera.setMech("Bushwacker", prefs.baseColor, prefs.highlightColor, prefs.highlightColor);
 	}
 }
 
@@ -780,8 +770,7 @@ void OptionsGamePlay::reset(const CPrefs& newPrefs)
 
 void OptionsHotKeys::init(int32_t xOffset, int32_t yOffset)
 {
-	hotKeyList.init(
-		rects[0].x(), rects[0].y(), rects[0].width(), rects[0].height());
+	hotKeyList.init(rects[0].x(), rects[0].y(), rects[0].width(), rects[0].height());
 	helpTextArrayID = 2;
 	HotKeyListItem::init();
 	hotKeyList.setOrange(true);
@@ -820,8 +809,7 @@ void OptionsHotKeys::update()
 		if (LogisticsOKDialog::instance()->isDone())
 		{
 			bShowDlg = 0;
-			if (LogisticsDialog::YES ==
-				LogisticsOKDialog::instance()->getStatus())
+			if (LogisticsDialog::YES == LogisticsOKDialog::instance()->getStatus())
 			{
 				char keysString[256];
 				keysString[0] = 0;
@@ -830,28 +818,21 @@ void OptionsHotKeys::update()
 				int32_t oldKey = -1;
 				if (index > -1)
 				{
-					HotKeyListItem* pItemToSet =
-						(HotKeyListItem*)hotKeyList.GetItem(index);
+					HotKeyListItem* pItemToSet = (HotKeyListItem*)hotKeyList.GetItem(index);
 					// now I've got to find the other one with th new key and
 					// set it to the old key
 					for (size_t i = 0; i < hotKeyList.GetItemCount(); i++)
 					{
-						HotKeyListItem* pTmpItem =
-							(HotKeyListItem*)hotKeyList.GetItem(i);
-						if (pTmpItem->getHotKey() == curHotKey &&
-							pTmpItem != pItemToSet)
+						HotKeyListItem* pTmpItem = (HotKeyListItem*)hotKeyList.GetItem(i);
+						if (pTmpItem->getHotKey() == curHotKey && pTmpItem != pItemToSet)
 						{
 							// first we've got to see if we can set to the
 							// default
-							int32_t* defaultKeys =
-								MissionInterfaceManager::getOldKeys();
-							int32_t defaultKey =
-								defaultKeys[pTmpItem->getCommand()];
-							for (size_t j = 0; j < hotKeyList.GetItemCount();
-								 j++)
+							int32_t* defaultKeys = MissionInterfaceManager::getOldKeys();
+							int32_t defaultKey   = defaultKeys[pTmpItem->getCommand()];
+							for (size_t j = 0; j < hotKeyList.GetItemCount(); j++)
 							{
-								HotKeyListItem* pCheckItem =
-									(HotKeyListItem*)hotKeyList.GetItem(j);
+								HotKeyListItem* pCheckItem = (HotKeyListItem*)hotKeyList.GetItem(j);
 								if (pCheckItem->getHotKey() == defaultKey)
 								{
 									defaultKey = -1;
@@ -898,13 +879,11 @@ void OptionsHotKeys::update()
 				// check and see if anyone else is using this one...
 				for (size_t i = 0; i < hotKeyList.GetItemCount(); i++)
 				{
-					HotKeyListItem* pTmpItem =
-						(HotKeyListItem*)hotKeyList.GetItem(i);
+					HotKeyListItem* pTmpItem = (HotKeyListItem*)hotKeyList.GetItem(i);
 					if (pTmpItem->getHotKey() == curHotKey && pTmpItem != pItem)
 					{
 						LogisticsOKDialog::instance()->setText(
-							IDS_OPTIONS_HOTKEY_ERROR, IDS_DIALOG_NO,
-							IDS_DIALOG_YES);
+							IDS_OPTIONS_HOTKEY_ERROR, IDS_DIALOG_NO, IDS_DIALOG_YES);
 						LogisticsOKDialog::instance()->begin();
 						bShowDlg = true;
 					}
@@ -1001,9 +980,8 @@ void OptionsHotKeys::end()
 		{
 			int32_t Command = pItem->getCommand();
 			int32_t Key		= pItem->getHotKey();
-			MissionInterfaceManager::setHotKey(Command,
-				(gosEnum_KeyIndex)(Key & 0x000ffff), Key & SHIFT, Key & CTRL,
-				Key & ALT);
+			MissionInterfaceManager::setHotKey(
+				Command, (gosEnum_KeyIndex)(Key & 0x000ffff), Key & SHIFT, Key & CTRL, Key & ALT);
 		}
 	}
 	bShowDlg = 0;
@@ -1021,9 +999,8 @@ void OptionsHotKeys::reset(bool useOld)
 	cLoadString(IDS_SHIFT, shift, 31);
 	cLoadString(IDS_CONTROL, control, 31);
 	cLoadString(IDS_ALT, alt, 31);
-	MissionInterfaceManager::Command* commands =
-		MissionInterfaceManager::getCommands();
-	int32_t* oldKeys = MissionInterfaceManager::getOldKeys();
+	MissionInterfaceManager::Command* commands = MissionInterfaceManager::getCommands();
+	int32_t* oldKeys						   = MissionInterfaceManager::getOldKeys();
 	for (size_t i = 0; i < MAX_COMMAND; i++)
 	{
 		if (commands[i].hotKeyDescriptionText != -1)
@@ -1055,8 +1032,7 @@ ScrollX::ScrollX()
 
 int32_t ScrollX::init(aButton* pLeft, aButton* pRight, aButton* pTab)
 {
-	aObject::init(pLeft->globalX(), pLeft->top(),
-		pRight->globalRight() - pLeft->globalX(),
+	aObject::init(pLeft->globalX(), pLeft->top(), pRight->globalRight() - pLeft->globalX(),
 		pRight->bottom() - pRight->top());
 	buttons[0] = pLeft;
 	buttons[1] = pRight;
@@ -1109,11 +1085,10 @@ void ScrollX::update()
 	int32_t mouseY = userInput->getMouseY();
 	if (userInput->isLeftDrag() && lastX) // dragging the little tab
 	{
-		float delta =
-			(float)mouseX - (buttons[0]->globalX() + buttons[0]->width());
+		float delta = (float)mouseX - (buttons[0]->globalX() + buttons[0]->width());
 		// figure out what this translates to
-		float physicalRange = width() - buttons[0]->width() -
-							  buttons[1]->width() - buttons[2]->width();
+		float physicalRange =
+			width() - buttons[0]->width() - buttons[1]->width() - buttons[2]->width();
 		float RealRange = scrollMax;
 		if (!physicalRange)
 			physicalRange = RealRange;
@@ -1127,28 +1102,23 @@ void ScrollX::update()
 	}
 	else if (pointInside(mouseX, mouseY))
 	{
-		if (userInput->isLeftClick() ||
-			gos_GetKeyStatus(KEY_LMOUSE) == KEY_HELD)
+		if (userInput->isLeftClick() || gos_GetKeyStatus(KEY_LMOUSE) == KEY_HELD)
 		{
 			lastX = 0;
 			if (buttons[2]->pointInside(mouseX, mouseY) &&
-				buttons[2]->pointInside(
-					userInput->getMouseDragX(), userInput->getMouseDragY()))
+				buttons[2]->pointInside(userInput->getMouseDragX(), userInput->getMouseDragY()))
 				lastX = mouseX;
 			else if (getParent())
 			{
 				buttons[2]->press(0);
 				if (!buttons[0]->pointInside(mouseX, mouseY) &&
 					!buttons[1]->pointInside(mouseX, mouseY) &&
-					pointInside(
-						userInput->getMouseDragX(), userInput->getMouseDragY()))
+					pointInside(userInput->getMouseDragX(), userInput->getMouseDragY()))
 				{
-					float physicalRange = width() - buttons[0]->width() -
-										  buttons[1]->width() -
-										  buttons[2]->width();
+					float physicalRange =
+						width() - buttons[0]->width() - buttons[1]->width() - buttons[2]->width();
 					float RealRange = scrollMax;
-					float delta		= (float)mouseX -
-								  (buttons[0]->globalX() + buttons[0]->width());
+					float delta		= (float)mouseX - (buttons[0]->globalX() + buttons[0]->width());
 					// if above the thumb, page up, otherwise page down
 					if (mouseY < buttons[2]->top())
 					{
@@ -1202,12 +1172,11 @@ void ScrollX::ResizeAreas(void)
 	float range, position;
 	if (scrollMax == 0)
 		return;
-	range = width() - buttons[0]->width() - buttons[1]->width() -
-			buttons[2]->width() - 4.f; // one scrollwidth for buttons, one for
-									   // tab. 2 for lines at either end.
+	range = width() - buttons[0]->width() - buttons[1]->width() - buttons[2]->width() -
+		4.f;								  // one scrollwidth for buttons, one for
+											  // tab. 2 for lines at either end.
 	position = range * scrollPos / scrollMax; //	center of scroll tab;
-	buttons[2]->moveTo(
-		globalX() + position + buttons[0]->width() + 2, globalY() + 1);
+	buttons[2]->moveTo(globalX() + position + buttons[0]->width() + 2, globalY() + 1);
 }
 
 void ScrollX::Enable(bool enable)

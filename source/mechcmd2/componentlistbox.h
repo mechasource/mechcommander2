@@ -29,7 +29,7 @@ ComponentListBox:
 // complex list box items, icons and all
 class ComponentListItem : public aListItem
 {
-  public:
+public:
 	ComponentListItem(LogisticsComponent* pComp);
 	virtual ~ComponentListItem(void);
 
@@ -41,7 +41,7 @@ class ComponentListItem : public aListItem
 
 	void update(void);
 
-  private:
+private:
 	friend class ComponentIconListBox;
 
 	static ComponentListItem* s_templateItem;
@@ -73,7 +73,7 @@ class ComponentListItem : public aListItem
 class ComponentIconListBox : public aListBox
 {
 
-  public:
+public:
 	ComponentIconListBox(void);
 	virtual ~ComponentIconListBox(void);
 	void setType(int32_t Type, int32_t orThisType, int32_t orThis);
@@ -84,7 +84,7 @@ class ComponentIconListBox : public aListBox
 
 	static ComponentIconListBox* s_instance;
 
-  private:
+private:
 	ComponentIconListBox(const ComponentIconListBox& src);
 	ComponentIconListBox& operator=(const ComponentIconListBox& src);
 

@@ -72,7 +72,7 @@ typedef GoalLink* GoalLinkPtr;
 class GoalObject
 {
 
-  public:
+public:
 	bool used;
 	GoalType type;
 	uint16_t id;
@@ -84,7 +84,7 @@ class GoalObject
 	GoalObjectPtr prev;
 	GoalPathFindInfo pathInfo;
 
-  public:
+public:
 	PVOID operator new(size_t ourSize);
 
 	void operator delete(PVOID us);
@@ -99,8 +99,7 @@ class GoalObject
 
 	void initObject(PSTR name, GameObjectPtr obj);
 
-	void initRegion(PSTR name, int32_t minRow, int32_t minCol, int32_t maxRow,
-		int32_t maxCol);
+	void initRegion(PSTR name, int32_t minRow, int32_t minCol, int32_t maxRow, int32_t maxCol);
 
 	void addLink(GoalObjectPtr gobject, GoalLinkType linkType);
 
@@ -110,7 +109,7 @@ class GoalObject
 class GoalManager
 {
 
-  public:
+public:
 	int32_t numGoalObjects;
 	GoalObjectPtr goalObjects;
 	int32_t goalObjectPoolSize;
@@ -120,7 +119,7 @@ class GoalManager
 	pint16_t fillStack;
 	int32_t fillStackIndex;
 
-  public:
+public:
 	PVOID operator new(size_t ourSize);
 
 	void operator delete(PVOID us);
@@ -143,17 +142,15 @@ class GoalManager
 
 	void calcRegions(void);
 
-	int32_t addLinks(
-		GoalObjectPtr gobject, int32_t numObjs, GameObjectPtr* objList);
+	int32_t addLinks(GoalObjectPtr gobject, int32_t numObjs, GameObjectPtr* objList);
 
 	// int32_t setControl (GoalObjectPtr controller, GoalObjectPtr controllee);
 
-	GoalObjectPtr addRegion(GoalObjectPtr parent, GoalLinkType linkType,
-		PSTR name, int32_t minRow, int32_t minCol, int32_t maxRow,
-		int32_t maxCol);
+	GoalObjectPtr addRegion(GoalObjectPtr parent, GoalLinkType linkType, PSTR name, int32_t minRow,
+		int32_t minCol, int32_t maxRow, int32_t maxCol);
 
-	GoalObjectPtr addObject(GoalObjectPtr parent, GoalLinkType linkType,
-		PSTR name, GameObjectPtr object);
+	GoalObjectPtr addObject(
+		GoalObjectPtr parent, GoalLinkType linkType, PSTR name, GameObjectPtr object);
 
 	void clear(void);
 

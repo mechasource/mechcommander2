@@ -82,10 +82,10 @@ protected:
 
 	RainDrops* rainDrops; // Pointer to data for the drops.
 
-	float rainTrend;  // Either plus 1.0f or minus 1.0f.  Based on raining more
-					  // or less then it was.
-	float rainFactor; // Increase/decrease in rainLevel per second based on
-					  // rainTrend.
+	float rainTrend;		// Either plus 1.0f or minus 1.0f.  Based on raining more
+							// or less then it was.
+	float rainFactor;		// Increase/decrease in rainLevel per second based on
+							// rainTrend.
 	float rainLightLevel;   // Matches the rainLevel but moves slowly per frame
 							// slow light fades out.
 	float rainUpdateTime;   // Time until next RainTrend check in seconds.

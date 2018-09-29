@@ -34,11 +34,11 @@
 class TurretType : public ObjectType
 {
 
-  protected:
+protected:
 	float damageLevel;
 	// uint32_t	dmgLevelClosed;
 
-  public:
+public:
 	uint32_t blownEffectId;
 	uint32_t normalEffectId;
 	uint32_t damageEffectId;
@@ -60,7 +60,7 @@ class TurretType : public ObjectType
 	int32_t turretTypeName;
 	int32_t buildingDescriptionID;
 
-  public:
+public:
 	void init(void)
 	{
 		ObjectType::init(void);
@@ -72,13 +72,12 @@ class TurretType : public ObjectType
 		damageEffectId  = 0xFFFFFFFF;
 		explDmg = explRad = 0.0;
 		baseTonnage		  = 0.0;
-		weaponMasterId[0] = weaponMasterId[1] = weaponMasterId[2] =
-			weaponMasterId[3]				  = -1;
-		pilotSkill							  = 0;
-		punch								  = 0.0;
-		turretYawRate						  = 0.0;
-		turretTypeName						  = 0;
-		LOSFactor							  = 1.0f;
+		weaponMasterId[0] = weaponMasterId[1] = weaponMasterId[2] = weaponMasterId[3] = -1;
+		pilotSkill																	  = 0;
+		punch																		  = 0.0;
+		turretYawRate																  = 0.0;
+		turretTypeName																  = 0;
+		LOSFactor																	  = 1.0f;
 	}
 
 	TurretType(void) { init(void); }
@@ -95,11 +94,9 @@ class TurretType : public ObjectType
 
 	virtual GameObjectPtr createInstance(void);
 
-	virtual bool handleCollision(
-		GameObjectPtr collidee, GameObjectPtr collider);
+	virtual bool handleCollision(GameObjectPtr collidee, GameObjectPtr collider);
 
-	virtual bool handleDestruction(
-		GameObjectPtr collidee, GameObjectPtr collider);
+	virtual bool handleDestruction(GameObjectPtr collidee, GameObjectPtr collider);
 };
 
 //---------------------------------------------------------------------------
@@ -126,7 +123,7 @@ typedef struct _TurretData : public TerrainObjectData
 class Turret : public TerrainObject
 {
 
-  public:
+public:
 	char teamId;
 	float turretRotation;
 	bool didReveal;
@@ -152,7 +149,7 @@ class Turret : public TerrainObject
 
 	static bool turretsEnabled[MAX_TEAMS];
 
-  public:
+public:
 	void init(bool create);
 
 	Turret(void) : TerrainObject() { init(true); }
@@ -181,8 +178,7 @@ class Turret : public TerrainObject
 
 	virtual void init(bool create, ObjectTypePtr _type);
 
-	virtual int32_t handleWeaponHit(
-		WeaponShotInfoPtr shotInfo, bool addMultiplayChunk = false);
+	virtual int32_t handleWeaponHit(WeaponShotInfoPtr shotInfo, bool addMultiplayChunk = false);
 
 	int32_t getNetRosterIndex(void) { return (netRosterIndex); }
 
@@ -210,24 +206,19 @@ class Turret : public TerrainObject
 
 	bool isWeaponStreak(int32_t weaponId);
 
-	float calcAttackChance(
-		GameObjectPtr target, int32_t* range, int32_t weaponId);
+	float calcAttackChance(GameObjectPtr target, int32_t* range, int32_t weaponId);
 
 	void recordWeaponFireTime(int32_t weaponId);
 
 	void startWeaponRecycle(int32_t weaponId);
 
-	int32_t getNumWeaponFireChunks(int32_t which)
-	{
-		return (numWeaponFireChunks[which]);
-	}
+	int32_t getNumWeaponFireChunks(int32_t which) { return (numWeaponFireChunks[which]); }
 
 	int32_t clearWeaponFireChunks(int32_t which);
 
 	int32_t addWeaponFireChunk(int32_t which, WeaponFireChunkPtr chunk);
 
-	int32_t addWeaponFireChunks(
-		int32_t which, uint32_t* packedChunkBuffer, int32_t numChunks);
+	int32_t addWeaponFireChunks(int32_t which, uint32_t* packedChunkBuffer, int32_t numChunks);
 
 	int32_t grabWeaponFireChunks(int32_t which, uint32_t* packedChunkBuffer);
 
@@ -240,19 +231,15 @@ class Turret : public TerrainObject
 	virtual float relFacingTo(Stuff::Vector3D goal, int32_t bodyLocation = -1);
 
 	int32_t handleWeaponFire(int32_t weaponIndex, GameObjectPtr target,
-		Stuff::Vector3D* targetPoint, bool hit, float entryAngle,
-		int32_t numMissiles, int32_t hitLocation);
+		Stuff::Vector3D* targetPoint, bool hit, float entryAngle, int32_t numMissiles,
+		int32_t hitLocation);
 
-	virtual void printFireWeaponDebugInfo(GameObjectPtr target,
-		Stuff::Vector3D* targetPoint, int32_t chance, int32_t roll,
-		WeaponShotInfo* shotInfo);
+	virtual void printFireWeaponDebugInfo(GameObjectPtr target, Stuff::Vector3D* targetPoint,
+		int32_t chance, int32_t roll, WeaponShotInfo* shotInfo);
 
 	virtual void printHandleWeaponHitDebugInfo(WeaponShotInfo* shotInfo);
 
-	float getLittleExtent(void)
-	{
-		return (((TurretTypePtr)getObjectType())->littleExtent);
-	}
+	float getLittleExtent(void) { return (((TurretTypePtr)getObjectType())->littleExtent); }
 
 	virtual bool isLinked(void);
 

@@ -45,8 +45,8 @@ ComponentListItem::ComponentListItem(LogisticsComponent* pComp)
 		FullPathFileName path;
 		path.init(artPath, pFile, "tga");
 		icon.setTexture(path);
-		icon.resize(sizeX * LogisticsComponent::XICON_FACTOR,
-			sizeY * LogisticsComponent::YICON_FACTOR);
+		icon.resize(
+			sizeX * LogisticsComponent::XICON_FACTOR, sizeY * LogisticsComponent::YICON_FACTOR);
 		icon.setUVs(0.f, 0.f, sizeX * 48.f, sizeY * 32.f);
 		// figure out the difference between this thing's size and
 		// the template objects
@@ -54,13 +54,11 @@ ComponentListItem::ComponentListItem(LogisticsComponent* pComp)
 		int32_t deltaX = icon.width() - s_templateItem->icon.width();
 		// resize outlines and icon outlines
 		outline.resize(outline.width(), outline.height() + deltaY);
-		iconOutline.resize(
-			iconOutline.width() + deltaX, iconOutline.height() + deltaY);
+		iconOutline.resize(iconOutline.width() + deltaX, iconOutline.height() + deltaY);
 		disabledText.resize(outline.width(), outline.height());
 		disabledText.moveTo(0, 0);
 		disabledText.alignment = 3;
-		aObject::init(
-			outline.left(), outline.top(), outline.width(), outline.height());
+		aObject::init(outline.left(), outline.top(), outline.width(), outline.height());
 		addChild(&icon);
 		addChild(&name);
 		addChild(&costText);
@@ -74,8 +72,7 @@ ComponentListItem::ComponentListItem(LogisticsComponent* pComp)
 			{
 				for (size_t j = 0; j < COMP_ANIMATION_COUNT; j++)
 				{
-					if (s_templateItem->pChildAnims[i] ==
-						&s_templateItem->animations[j])
+					if (s_templateItem->pChildAnims[i] == &s_templateItem->animations[j])
 					{
 						pChildAnims[i] = &animations[j];
 					}
@@ -117,8 +114,8 @@ int32_t ComponentListItem::init(FitIniFile& file)
 	return 0;
 }
 
-void ComponentListItem::assignAnimation(FitIniFile& file, int32_t whichChild,
-	char animNames[COMP_ANIMATION_COUNT][32], aObject* object)
+void ComponentListItem::assignAnimation(
+	FitIniFile& file, int32_t whichChild, char animNames[COMP_ANIMATION_COUNT][32], aObject* object)
 {
 	s_templateItem->pChildAnims[whichChild] = 0;
 	char tmpAnimName[32];
@@ -127,8 +124,7 @@ void ComponentListItem::assignAnimation(FitIniFile& file, int32_t whichChild,
 	{
 		if (_stricmp(animNames[i], tmpAnimName) == 0)
 		{
-			s_templateItem->pChildAnims[whichChild] =
-				&s_templateItem->animations[i];
+			s_templateItem->pChildAnims[whichChild] = &s_templateItem->animations[i];
 			break;
 		}
 	}
@@ -144,15 +140,13 @@ void ComponentListItem::render()
 	outline.render();
 	iconOutline.moveTo(globalX() + s_templateItem->iconOutline.left(),
 		globalY() + s_templateItem->iconOutline.top());
-	iconOutline.setColor(
-		animations[0].getCurrentColor(animations[0].getState()));
+	iconOutline.setColor(animations[0].getCurrentColor(animations[0].getState()));
 	iconOutline.render();
 	for (size_t i = 0; i < 6; i++)
 	{
 		if (pChildAnims[i])
 		{
-			int32_t color =
-				pChildAnims[i]->getCurrentColor(pChildAnims[i]->getState());
+			int32_t color = pChildAnims[i]->getCurrentColor(pChildAnims[i]->getState());
 			child(i)->setColor(color);
 		}
 	}
@@ -195,8 +189,9 @@ void ComponentListItem::update()
 					animations[i].setState(aAnimGroup::PRESSED);
 				}
 			}
-			if (isInside && ComponentIconListBox::s_instance->pointInside(
-								userInput->getMouseX(), userInput->getMouseY()))
+			if (isInside &&
+				ComponentIconListBox::s_instance->pointInside(
+					userInput->getMouseX(), userInput->getMouseY()))
 			{
 				::helpTextID = IDS_HELP_COMP0 + pComponent->getID();
 			}
@@ -220,16 +215,15 @@ void ComponentListItem::update()
 		if (!bCanAdd)
 		{
 			if (userInput->isLeftDrag() && isInside &&
-				pointInside(
-					userInput->getMouseDragX(), userInput->getMouseDragY()) &&
+				pointInside(userInput->getMouseDragX(), userInput->getMouseDragY()) &&
 				ComponentIconListBox::s_instance->pointInside(
 					userInput->getMouseX(), userInput->getMouseY()))
 				startDrag();
 		}
 	}
 	else if (isInside && !bCanAdd &&
-			 ComponentIconListBox::s_instance->pointInside(
-				 userInput->getMouseX(), userInput->getMouseY()))
+		ComponentIconListBox::s_instance->pointInside(
+			userInput->getMouseX(), userInput->getMouseY()))
 	{
 		if (animations[0].getState() != aAnimGroup::HIGHLIGHT)
 		{
@@ -252,8 +246,9 @@ void ComponentListItem::update()
 	else
 	{
 		state = DISABLED;
-		if (isInside && ComponentIconListBox::s_instance->pointInside(
-							userInput->getMouseX(), userInput->getMouseY()))
+		if (isInside &&
+			ComponentIconListBox::s_instance->pointInside(
+				userInput->getMouseX(), userInput->getMouseY()))
 			::helpTextID = IDS_HELP_COMP0 + pComponent->getID();
 		if ((userInput->isLeftClick() && isInside &&
 				ComponentIconListBox::s_instance->pointInside(
@@ -289,19 +284,12 @@ void ComponentListItem::doAdd()
 	MechLabScreen::instance()->addComponent(pComponent, x, y);
 }
 
-void ComponentListItem::setComponent()
-{
-	MechLabScreen::instance()->setComponent(pComponent, 1);
-}
+void ComponentListItem::setComponent() { MechLabScreen::instance()->setComponent(pComponent, 1); }
 
-void ComponentListItem::startDrag()
-{
-	MechLabScreen::instance()->beginDrag(pComponent);
-}
+void ComponentListItem::startDrag() { MechLabScreen::instance()->beginDrag(pComponent); }
 //*************************************************************************************************
 
-void ComponentIconListBox::setType(
-	int32_t newType, int32_t otherNewType, int32_t orThis)
+void ComponentIconListBox::setType(int32_t newType, int32_t otherNewType, int32_t orThis)
 {
 	if (newType == type && itemCount)
 		return;
@@ -322,7 +310,7 @@ void ComponentIconListBox::setType(
 			masterComponentList.Append(pItem);
 		}
 		//	for ( EList< ComponentListItem*, ComponentListItem* >::EIterator
-		//iter = masterComponentList.Begin(); 	!iter.IsDone(); iter++ )
+		// iter = masterComponentList.Begin(); 	!iter.IsDone(); iter++ )
 		//	{
 		///		delete *iter;
 		//		turn++;
@@ -411,21 +399,18 @@ LogisticsComponent* ComponentIconListBox::getComponent()
 
 void ComponentIconListBox::addSortedItem(ComponentListItem* pItem)
 {
-	int32_t size = pItem->getComponent()->getComponentHeight() *
-				   pItem->getComponent()->getComponentWidth();
+	int32_t size =
+		pItem->getComponent()->getComponentHeight() * pItem->getComponent()->getComponentWidth();
 	for (size_t i = 0; i < itemCount; i++)
 	{
-		LogisticsComponent* pTmp =
-			((ComponentListItem*)items[i])->getComponent();
-		int32_t tmpSize =
-			pTmp->getComponentHeight() * pTmp->getComponentWidth();
+		LogisticsComponent* pTmp = ((ComponentListItem*)items[i])->getComponent();
+		int32_t tmpSize			 = pTmp->getComponentHeight() * pTmp->getComponentWidth();
 		if (size > tmpSize)
 		{
 			InsertItem(pItem, i);
 			return;
 		}
-		else if (size == tmpSize && _stricmp(pItem->getComponent()->getName(),
-										pTmp->getName()) < 0)
+		else if (size == tmpSize && _stricmp(pItem->getComponent()->getName(), pTmp->getName()) < 0)
 		{
 			InsertItem(pItem, i);
 			return;

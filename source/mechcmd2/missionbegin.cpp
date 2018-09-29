@@ -48,12 +48,11 @@ bool MissionBegin::FirstTimeMechLab  = true;
 
 MissionBegin::MissionBegin()
 {
-	memset(screens, 0,
-		sizeof(LogisticsScreen*) * 5 /*dim screen X*/ * 3 /*dim screen Y*/);
-	memset(singlePlayerScreens, 0,
-		sizeof(LogisticsScreen*) * 5 /*dim screen X*/ * 3 /*dim screen Y*/);
-	memset(multiplayerScreens, 0,
-		sizeof(LogisticsScreen*) * 5 /*dim screen X*/ * 3 /*dim screen Y*/);
+	memset(screens, 0, sizeof(LogisticsScreen*) * 5 /*dim screen X*/ * 3 /*dim screen Y*/);
+	memset(
+		singlePlayerScreens, 0, sizeof(LogisticsScreen*) * 5 /*dim screen X*/ * 3 /*dim screen Y*/);
+	memset(
+		multiplayerScreens, 0, sizeof(LogisticsScreen*) * 5 /*dim screen X*/ * 3 /*dim screen Y*/);
 	curScreenX		  = -1;
 	curScreenY		  = 1;
 	mainMenu		  = nullptr;
@@ -92,8 +91,7 @@ MissionBegin::~MissionBegin()
 	}
 }
 
-bool MissionBegin::startAnimation(
-	int32_t bId, bool isButton, float scrollTime, int32_t nFlashes)
+bool MissionBegin::startAnimation(int32_t bId, bool isButton, float scrollTime, int32_t nFlashes)
 {
 	if (animationRunning)
 		return false;
@@ -130,8 +128,7 @@ void MissionBegin::begin()
 	if (brainfile && fileExists(brainFileName))
 	{
 		int32_t numErrors, numLinesProcessed;
-		logisticsScriptHandle =
-			ABLi_preProcess(brainFileName, &numErrors, &numLinesProcessed);
+		logisticsScriptHandle = ABLi_preProcess(brainFileName, &numErrors, &numLinesProcessed);
 		gosASSERT(logisticsScriptHandle >= 0);
 		logisticsBrain = new ABLModule;
 		gosASSERT(logisticsBrain != nullptr);
@@ -156,14 +153,14 @@ void MissionBegin::begin()
 	if (Environment.fullScreen && prefs.fullScreen)
 		localFullScreen = false;
 	if (prefs.renderer == 3)
-		gos_SetScreenMode(800, 600, 16, 0, 0, 0, true, localFullScreen, 0,
-			localWindow, 0, localRenderer);
+		gos_SetScreenMode(
+			800, 600, 16, 0, 0, 0, true, localFullScreen, 0, localWindow, 0, localRenderer);
 	else if (prefs.bitDepth)
-		gos_SetScreenMode(800, 600, 32, prefs.renderer, 0, 0, 0,
-			localFullScreen, 0, localWindow, 0, localRenderer);
+		gos_SetScreenMode(800, 600, 32, prefs.renderer, 0, 0, 0, localFullScreen, 0, localWindow, 0,
+			localRenderer);
 	else
-		gos_SetScreenMode(800, 600, 16, prefs.renderer, 0, 0, 0,
-			localFullScreen, 0, localWindow, 0, localRenderer);
+		gos_SetScreenMode(800, 600, 16, prefs.renderer, 0, 0, 0, localFullScreen, 0, localWindow, 0,
+			localRenderer);
 	if (mainMenu) // already initialized
 	{
 		curScreenX = 0;
@@ -440,8 +437,7 @@ PCSTR MissionBegin::update()
 				}
 				return LogisticsData::instance->getCurrentBigVideo();
 			}
-			else if (LogisticsScreen::MULTIPLAYERRESTART ==
-					 mainMenu->getStatus())
+			else if (LogisticsScreen::MULTIPLAYERRESTART == mainMenu->getStatus())
 			{
 				LogisticsScreen* pCurScreen = screens[curScreenX][curScreenY];
 				if (pCurScreen)
@@ -516,24 +512,20 @@ PCSTR MissionBegin::update()
 				{
 					userInput->setMouseCursor(mState_TUTORIALS);
 					// Get button position.
-					float buttonPosX =
-						(targetButton->left() + targetButton->right()) * 0.5f;
-					float buttonPosY =
-						(targetButton->top() + targetButton->bottom()) * 0.5f;
+					float buttonPosX = (targetButton->left() + targetButton->right()) * 0.5f;
+					float buttonPosY = (targetButton->top() + targetButton->bottom()) * 0.5f;
 					//-------------------
 					// Mouse Checks Next
 					float realMouseX = userInput->realMouseX();
 					float realMouseY = userInput->realMouseY();
 					if (timeLeftToScroll > 0.0f)
 					{
-						float xDistLeft = buttonPosX - realMouseX;
-						float yDistLeft = buttonPosY - realMouseY;
-						float xDistThisFrame =
-							xDistLeft / timeLeftToScroll * frameLength;
-						float yDistThisFrame =
-							yDistLeft / timeLeftToScroll * frameLength;
-						userInput->setMousePos(realMouseX + xDistThisFrame,
-							realMouseY + yDistThisFrame);
+						float xDistLeft		 = buttonPosX - realMouseX;
+						float yDistLeft		 = buttonPosY - realMouseY;
+						float xDistThisFrame = xDistLeft / timeLeftToScroll * frameLength;
+						float yDistThisFrame = yDistLeft / timeLeftToScroll * frameLength;
+						userInput->setMousePos(
+							realMouseX + xDistThisFrame, realMouseY + yDistThisFrame);
 						timeLeftToScroll -= frameLength;
 					}
 					else
@@ -545,15 +537,13 @@ PCSTR MissionBegin::update()
 							buttonFlashTime += frameLength;
 							if (buttonFlashTime > .5f)
 							{
-								pCurScreen->getButton(targetButtonId)
-									->setColor(0xffffffff);
+								pCurScreen->getButton(targetButtonId)->setColor(0xffffffff);
 								buttonFlashTime = 0.0f;
 								buttonNumFlashes--;
 							}
 							else if (buttonFlashTime > .25f)
 							{
-								pCurScreen->getButton(targetButtonId)
-									->setColor(0xff7f7f7f);
+								pCurScreen->getButton(targetButtonId)->setColor(0xff7f7f7f);
 							}
 						}
 						else
@@ -561,8 +551,7 @@ PCSTR MissionBegin::update()
 							// Flashing is done.  We now return you to your
 							// regularly scheduled program.
 							animationRunning = false;
-							pCurScreen->getButton(targetButtonId)
-								->setColor(0xffffffff);
+							pCurScreen->getButton(targetButtonId)->setColor(0xffffffff);
 						}
 					}
 				}
@@ -578,24 +567,20 @@ PCSTR MissionBegin::update()
 				{
 					userInput->setMouseCursor(mState_TUTORIALS);
 					// Get button position.
-					float buttonPosX =
-						(targetButton->left() + targetButton->right()) * 0.5f;
-					float buttonPosY =
-						(targetButton->top() + targetButton->bottom()) * 0.5f;
+					float buttonPosX = (targetButton->left() + targetButton->right()) * 0.5f;
+					float buttonPosY = (targetButton->top() + targetButton->bottom()) * 0.5f;
 					//-------------------
 					// Mouse Checks Next
 					float realMouseX = userInput->realMouseX();
 					float realMouseY = userInput->realMouseY();
 					if (timeLeftToScroll > 0.0f)
 					{
-						float xDistLeft = buttonPosX - realMouseX;
-						float yDistLeft = buttonPosY - realMouseY;
-						float xDistThisFrame =
-							xDistLeft / timeLeftToScroll * frameLength;
-						float yDistThisFrame =
-							yDistLeft / timeLeftToScroll * frameLength;
-						userInput->setMousePos(realMouseX + xDistThisFrame,
-							realMouseY + yDistThisFrame);
+						float xDistLeft		 = buttonPosX - realMouseX;
+						float yDistLeft		 = buttonPosY - realMouseY;
+						float xDistThisFrame = xDistLeft / timeLeftToScroll * frameLength;
+						float yDistThisFrame = yDistLeft / timeLeftToScroll * frameLength;
+						userInput->setMousePos(
+							realMouseX + xDistThisFrame, realMouseY + yDistThisFrame);
 						timeLeftToScroll -= frameLength;
 					}
 					else
@@ -607,15 +592,13 @@ PCSTR MissionBegin::update()
 							buttonFlashTime += frameLength;
 							if (buttonFlashTime > .5f)
 							{
-								pCurScreen->getRect(targetButtonId)
-									->setColor(0xff000000);
+								pCurScreen->getRect(targetButtonId)->setColor(0xff000000);
 								buttonFlashTime = 0.0f;
 								buttonNumFlashes--;
 							}
 							else if (buttonFlashTime > .25f)
 							{
-								pCurScreen->getRect(targetButtonId)
-									->setColor(0xffffffff);
+								pCurScreen->getRect(targetButtonId)->setColor(0xffffffff);
 							}
 						}
 						else
@@ -623,8 +606,7 @@ PCSTR MissionBegin::update()
 							// Flashing is done.  We now return you to your
 							// regularly scheduled program.
 							animationRunning = false;
-							pCurScreen->getRect(targetButtonId)
-								->setColor(0xff000000);
+							pCurScreen->getRect(targetButtonId)->setColor(0xff000000);
 						}
 					}
 				}
@@ -659,8 +641,7 @@ PCSTR MissionBegin::update()
 				{
 					if (MPlayer) // different rules for multiplayer
 					{
-						if (dynamic_cast<MPParameterScreen*>(
-								screens[curScreenX][curScreenY]))
+						if (dynamic_cast<MPParameterScreen*>(screens[curScreenX][curScreenY]))
 						{
 							if (curScreenX == 2)
 							{
@@ -677,8 +658,7 @@ PCSTR MissionBegin::update()
 					}
 					if (screens[curScreenX + 1][curScreenY])
 					{
-						if (screens[curScreenX + 1][curScreenY] ==
-							placeHolderScreen)
+						if (screens[curScreenX + 1][curScreenY] == placeHolderScreen)
 							curScreenX++;
 						screens[curScreenX + 1][curScreenY]->begin();
 					}
@@ -697,8 +677,7 @@ PCSTR MissionBegin::update()
 				pCurScreen->end();
 				if (screens[curScreenX - 1][curScreenY])
 				{
-					if (screens[curScreenX - 1][curScreenY] ==
-						placeHolderScreen)
+					if (screens[curScreenX - 1][curScreenY] == placeHolderScreen)
 						curScreenX--;
 					screens[curScreenX - 1][curScreenY]->begin();
 				}
@@ -752,8 +731,7 @@ PCSTR MissionBegin::update()
 					bDone = true;
 				}
 			}
-			else if (pCurScreen->getStatus() ==
-					 LogisticsScreen::SKIPONEPREVIOUS)
+			else if (pCurScreen->getStatus() == LogisticsScreen::SKIPONEPREVIOUS)
 			{
 				pCurScreen->end();
 				if (screens[curScreenX - 1 - 1][curScreenY])
@@ -979,13 +957,9 @@ void MissionBegin::beginMPlayer()
 				if (multiplayerScreens[i][j])
 				{
 					if (multiplayerScreens[i][j]->getButton(MB_MSG_NEXT))
-						multiplayerScreens[i][j]
-							->getButton(MB_MSG_NEXT)
-							->setPressFX(-1);
+						multiplayerScreens[i][j]->getButton(MB_MSG_NEXT)->setPressFX(-1);
 					if (multiplayerScreens[i][j]->getButton(MB_MSG_PREV))
-						multiplayerScreens[i][j]
-							->getButton(MB_MSG_PREV)
-							->setPressFX(-1);
+						multiplayerScreens[i][j]->getButton(MB_MSG_PREV)->setPressFX(-1);
 					if (multiplayerScreens[i][j]->getButton(MB_MSG_MAINMENU))
 						multiplayerScreens[i][j]
 							->getButton(MB_MSG_MAINMENU)
@@ -1044,8 +1018,7 @@ void MissionBegin::restartMPlayer(PCSTR playerName)
 		screens[curScreenX][curScreenY]->begin();
 		if (playerName)
 		{
-			((MPParameterScreen*)screens[curScreenX][curScreenY])
-				->setHostLeftDlg(playerName);
+			((MPParameterScreen*)screens[curScreenX][curScreenY])->setHostLeftDlg(playerName);
 		}
 	}
 }

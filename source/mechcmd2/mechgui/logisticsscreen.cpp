@@ -27,9 +27,8 @@ LogisticsScreen::LogisticsScreen()
 	edits		= 0;
 	textObjects = 0;
 	animObjects = 0;
-	staticCount = rectCount = buttonCount = textCount = editCount =
-		animObjectsCount							  = 0;
-	helpTextArrayID									  = -1;
+	staticCount = rectCount = buttonCount = textCount = editCount = animObjectsCount = 0;
+	helpTextArrayID																	 = -1;
 	fadeInTime = fadeOutTime = fadeTime = 0;
 	fadeOutMaxColor						= 0xff000000;
 }
@@ -70,9 +69,8 @@ void LogisticsScreen::clear()
 
 //-------------------------------------------------------------------------------------------------
 
-void LogisticsScreen::init(FitIniFile& file, PCSTR staticName, PCSTR textName,
-	PCSTR rectName, PCSTR buttonName, PCSTR editName, PCSTR animObjectName,
-	uint32_t neverFlush)
+void LogisticsScreen::init(FitIniFile& file, PCSTR staticName, PCSTR textName, PCSTR rectName,
+	PCSTR buttonName, PCSTR editName, PCSTR animObjectName, uint32_t neverFlush)
 {
 	clear();
 	char blockName[256];
@@ -235,7 +233,7 @@ void LogisticsScreen::update()
 	{
 		if (::helpTextID)
 		{
-			EString helpText;
+			std::wstring helpText;
 			char tmp[1024];
 			//	if ( helpTextHeaderID )
 			//	{
@@ -284,8 +282,7 @@ void LogisticsScreen::render()
 	int32_t i;
 	for (i = 0; i < rectCount; i++)
 	{
-		if (!rects[i].bOutline &&
-			((rects[i].getColor() & 0xff000000) == 0xff000000))
+		if (!rects[i].bOutline && ((rects[i].getColor() & 0xff000000) == 0xff000000))
 			rects[i].render();
 	}
 	for (i = 0; i < staticCount; i++)
@@ -314,17 +311,15 @@ void LogisticsScreen::render()
 	if (fadeOutTime)
 	{
 		fadeTime += frameLength;
-		int32_t color =
-			interpolateColor(0, fadeOutMaxColor, fadeTime / fadeOutTime);
-		RECT rect = {0, 0, Environment.screenWidth, Environment.screenHeight};
+		int32_t color = interpolateColor(0, fadeOutMaxColor, fadeTime / fadeOutTime);
+		RECT rect	 = {0, 0, Environment.screenWidth, Environment.screenHeight};
 		drawRect(rect, color);
 	}
 	else if (fadeInTime && fadeInTime > fadeTime)
 	{
 		fadeTime += frameLength;
-		int32_t color =
-			interpolateColor(fadeOutMaxColor, 0, fadeTime / fadeInTime);
-		RECT rect = {0, 0, Environment.screenWidth, Environment.screenHeight};
+		int32_t color = interpolateColor(fadeOutMaxColor, 0, fadeTime / fadeInTime);
+		RECT rect	 = {0, 0, Environment.screenWidth, Environment.screenHeight};
 		drawRect(rect, color);
 	}
 }
@@ -350,8 +345,7 @@ void LogisticsScreen::render(int32_t xOffset, int32_t yOffset)
 	int32_t i;
 	for (i = 0; i < rectCount; i++)
 	{
-		if (!rects[i].bOutline &&
-			((rects[i].getColor() & 0xff000000) == 0xff000000))
+		if (!rects[i].bOutline && ((rects[i].getColor() & 0xff000000) == 0xff000000))
 		{
 			rects[i].move(xOffset, yOffset);
 			rects[i].render();
@@ -411,14 +405,14 @@ void LogisticsScreen::render(int32_t xOffset, int32_t yOffset)
 	{
 		fadeTime += frameLength;
 		int32_t color = interpolateColor(0, 0xff000000, fadeTime / fadeOutTime);
-		RECT rect = {0, 0, Environment.screenWidth, Environment.screenHeight};
+		RECT rect	 = {0, 0, Environment.screenWidth, Environment.screenHeight};
 		drawRect(rect, color);
 	}
 	else if (fadeInTime && fadeInTime > fadeTime)
 	{
 		fadeTime += frameLength;
 		int32_t color = interpolateColor(0xff000000, 0, fadeTime / fadeInTime);
-		RECT rect = {0, 0, Environment.screenWidth, Environment.screenHeight};
+		RECT rect	 = {0, 0, Environment.screenWidth, Environment.screenHeight};
 		drawRect(rect, color);
 	}
 }

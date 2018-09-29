@@ -40,8 +40,8 @@ controlGui.cpp			: Implementation of the controlGui component.
 
 ControlGui* ControlGui::instance = 0;
 
-extern int32_t helpTextHeaderID;
-extern int32_t helpTextID;
+extern uint32_t helpTextHeaderID;
+extern uint32_t helpTextID;
 
 extern bool neverEndingStory;
 
@@ -75,8 +75,7 @@ extern bool paintingMyVtol;
 
 int32_t __cdecl sortStats(PCVOID pPlayer1, PCVOID pPlayer2);
 
-int32_t ControlGui::vehicleCosts[LAST_VEHICLE] = {
-	7000, 8000, 2000, 6000, 2000, 4000, 10000, 0};
+int32_t ControlGui::vehicleCosts[LAST_VEHICLE] = {7000, 8000, 2000, 6000, 2000, 4000, 10000, 0};
 
 PCSTR ControlGui::vehicleNames[5] = {
 	"repairTruck", "scout", "minelayer", "pv20600",
@@ -94,8 +93,7 @@ uint32_t ControlGui::RUN   = 0x01;
 uint32_t ControlGui::GUARD = 0x02;
 uint32_t ControlGui::JUMP  = 0x04;
 
-MoveInfo ControlGui::objectiveMoveInfo[OBJECTVE_MOVE_COUNT] = {
-	0.0f, -640, 0.0f, 0};
+MoveInfo ControlGui::objectiveMoveInfo[OBJECTVE_MOVE_COUNT] = {0.0f, -640, 0.0f, 0};
 
 MoveInfo ControlGui::missionResultsMoveInfo[RESULTS_MOVE_COUNT] = {
 
@@ -225,8 +223,7 @@ bool ControlGui::flashRPTotal(int32_t numFlashes)
 	return true;
 }
 
-bool ControlGui::animateTacMap(
-	int32_t buttonId, float timeToScroll, int32_t numFlashes)
+bool ControlGui::animateTacMap(int32_t buttonId, float timeToScroll, int32_t numFlashes)
 {
 	return tacMap.animate(abs(buttonId), numFlashes);
 }
@@ -316,8 +313,8 @@ void ControlGui::render(bool bPaused)
 			}
 			int32_t width = timerFont.width(buffer);
 			drawShadowText(color, 0x00000000, timerFont.getTempHandle(),
-				timerRect.rect.left - width, timerRect.rect.top, true, buffer,
-				0, guiFont.getSize());
+				timerRect.rect.left - width, timerRect.rect.top, true, buffer, 0,
+				guiFont.getSize());
 			for (size_t i = 0; i < timerInfoCount; i++)
 				timerInfos[i].render();
 		}
@@ -349,16 +346,12 @@ void ControlGui::render(bool bPaused)
 			}
 			else if (tabFlashTime > .25)
 			{
-				float scaleX = Environment.screenWidth <= 1024
-								   ? Environment.screenWidth
-								   : 1024;
-				float scaleY = Environment.screenHeight <= 768
-								   ? Environment.screenHeight
-								   : 768;
-				RECT rect = {51 * scaleX / 640.f + ControlGui::hiResOffsetX,
-					317 * scaleY / 480.f + ControlGui::hiResOffsetY,
-					74 * scaleX / 640.f + ControlGui::hiResOffsetX,
-					337 * scaleY / 480.f + ControlGui::hiResOffsetY};
+				float scaleX = Environment.screenWidth <= 1024 ? Environment.screenWidth : 1024;
+				float scaleY = Environment.screenHeight <= 768 ? Environment.screenHeight : 768;
+				RECT rect	= {51 * scaleX / 640.f + ControlGui::hiResOffsetX,
+					   317 * scaleY / 480.f + ControlGui::hiResOffsetY,
+					   74 * scaleX / 640.f + ControlGui::hiResOffsetX,
+					   337 * scaleY / 480.f + ControlGui::hiResOffsetY};
 				drawRect(rect, 0xff000000);
 			}
 		}
@@ -390,8 +383,7 @@ void ControlGui::startObjectives(bool bStart)
 		{
 			if (i - 1 < playerCount)
 			{
-				mpStats[i].setData(
-					sorted[i - 1], !scoreShown[sorted[i - 1]->team]);
+				mpStats[i].setData(sorted[i - 1], !scoreShown[sorted[i - 1]->team]);
 				scoreShown[sorted[i - 1]->team] = true;
 				mpStats[i].showGUIWindow(true);
 			}
@@ -419,10 +411,10 @@ void ControlGui::renderResults()
 			{
 				t0 = missionResultsMoveInfo[j].time;
 				t1 = missionResultsMoveInfo[j + 1].time;
-				p0 = (missionResultsMoveInfo[j].position) *
-					 ((float)Environment.screenWidth) / 640.f;
-				p1 = (missionResultsMoveInfo[j + 1].position) *
-					 ((float)Environment.screenWidth) / 640.f;
+				p0 =
+					(missionResultsMoveInfo[j].position) * ((float)Environment.screenWidth) / 640.f;
+				p1 = (missionResultsMoveInfo[j + 1].position) * ((float)Environment.screenWidth) /
+					640.f;
 				break;
 			}
 		}
@@ -431,18 +423,16 @@ void ControlGui::renderResults()
 		{
 			float dT			  = resultsTime - t0;
 			float currentPosition = p0 + dT * ((p1 - p0) / (t1 - t0));
-			delta = currentPosition - missionStatusInfos[0].location[0].y;
+			delta				  = currentPosition - missionStatusInfos[0].location[0].y;
 		}
 		else
 		{
 			delta = missionResultsMoveInfo[OBJECTVE_MOVE_COUNT - 1].position -
-					missionStatusInfos[0].location[0].y;
+				missionStatusInfos[0].location[0].y;
 			// grey down the screen
-			RECT rect = {
-				0, 0, Environment.screenWidth, Environment.screenHeight};
+			RECT rect = {0, 0, Environment.screenWidth, Environment.screenHeight};
 			drawEmptyRect(rect, 0x44000000);
-			if (resultsTime <
-				missionResultsMoveInfo[OBJECTVE_MOVE_COUNT - 1].time + .25)
+			if (resultsTime < missionResultsMoveInfo[OBJECTVE_MOVE_COUNT - 1].time + .25)
 				startObjectives(1);
 		}
 		for (size_t i = 0; i < missionStatusInfoCount; i++)
@@ -464,23 +454,18 @@ void ControlGui::renderResults()
 			else
 				cLoadString(IDS_MISSION_FAILED, text, 256);
 		}
-		gos_TextDrawBackground(missionStatusRect.rect.left,
-			missionStatusRect.rect.top, missionStatusRect.rect.right,
-			missionStatusRect.rect.bottom, 0xff000000);
-		missionResultsFont.render(text, missionStatusRect.rect.left,
-			missionStatusRect.rect.top,
+		gos_TextDrawBackground(missionStatusRect.rect.left, missionStatusRect.rect.top,
+			missionStatusRect.rect.right, missionStatusRect.rect.bottom, 0xff000000);
+		missionResultsFont.render(text, missionStatusRect.rect.left, missionStatusRect.rect.top,
 			missionStatusRect.rect.right - missionStatusRect.rect.left,
-			missionStatusRect.rect.bottom - missionStatusRect.rect.top,
-			missionStatusRect.color, 0, 3);
-		float fadeTime = objectiveTime -
-						 objectiveMoveInfo[OBJECTVE_MOVE_COUNT - 1].time -
-						 3.0f - Team::home->objectives.Count();
+			missionStatusRect.rect.bottom - missionStatusRect.rect.top, missionStatusRect.color, 0,
+			3);
+		float fadeTime = objectiveTime - objectiveMoveInfo[OBJECTVE_MOVE_COUNT - 1].time - 3.0f -
+			Team::home->objectives.Count();
 		if (!neverEndingStory && (fadeTime > 0.f))
 		{
-			int32_t color =
-				interpolateColor(0x00000000, 0xff000000, fadeTime / 1.0f);
-			RECT rect = {
-				0, 0, Environment.screenWidth, Environment.screenHeight};
+			int32_t color = interpolateColor(0x00000000, 0xff000000, fadeTime / 1.0f);
+			RECT rect	 = {0, 0, Environment.screenWidth, Environment.screenHeight};
 			drawRect(rect, color);
 		}
 	}
@@ -494,8 +479,7 @@ void ControlGui::RenderObjectives()
 	{
 		if (renderStatusInfo)
 		{
-			if (resultsTime <
-				.24f) // don't start objectives until mission results is done
+			if (resultsTime < .24f) // don't start objectives until mission results is done
 			{
 				memset(playedObjectiveClick, 0, sizeof(bool) * 100);
 				return;
@@ -513,10 +497,8 @@ void ControlGui::RenderObjectives()
 			{
 				t0 = objectiveMoveInfo[j].time;
 				t1 = objectiveMoveInfo[j + 1].time;
-				p0 = (objectiveMoveInfo[j].position) *
-					 ((float)Environment.screenWidth) / 640.f;
-				p1 = (objectiveMoveInfo[j + 1].position) *
-					 ((float)Environment.screenWidth) / 640.f;
+				p0 = (objectiveMoveInfo[j].position) * ((float)Environment.screenWidth) / 640.f;
+				p1 = (objectiveMoveInfo[j + 1].position) * ((float)Environment.screenWidth) / 640.f;
 				break;
 			}
 		}
@@ -525,12 +507,12 @@ void ControlGui::RenderObjectives()
 		{
 			float dT			  = objectiveTime - t0;
 			float currentPosition = p0 + dT * ((p1 - p0) / (t1 - t0));
-			delta = currentPosition - objectiveInfos[0].location[0].x;
+			delta				  = currentPosition - objectiveInfos[0].location[0].x;
 		}
 		else
 		{
 			delta = objectiveMoveInfo[OBJECTVE_MOVE_COUNT - 1].position -
-					objectiveInfos[0].location[0].x;
+				objectiveInfos[0].location[0].x;
 		}
 		// draw little edge pieces
 		for (size_t i = 0; i < objectiveInfoCount - 3; i++)
@@ -543,8 +525,7 @@ void ControlGui::RenderObjectives()
 			OBJECTIVEHEADERLEFT += delta;
 			OBJECTIVESLEFT += delta;
 		}
-		if (MPlayer &&
-			MPlayer->missionSettings.missionType != MISSION_TYPE_OTHER)
+		if (MPlayer && MPlayer->missionSettings.missionType != MISSION_TYPE_OTHER)
 		{
 			renderPlayerStatus(delta);
 			return;
@@ -552,28 +533,24 @@ void ControlGui::RenderObjectives()
 		// draw "Primary"
 		char buffer[256];
 		cLoadString(IDS_PRIMARY, buffer, 245);
-		drawShadowText(0xffffffff, 0xff000000, guiFont.getTempHandle(),
-			OBJECTIVEHEADERLEFT, OBJECTIVESTOP, 1, buffer, 0,
-			guiFont.getSize());
+		drawShadowText(0xffffffff, 0xff000000, guiFont.getTempHandle(), OBJECTIVEHEADERLEFT,
+			OBJECTIVESTOP, 1, buffer, 0, guiFont.getSize());
 		// draw primary objectives
 		uint32_t pos = OBJECTIVESTOP;
 		pos += OBJECTIVESSKIP;
 		float objectiveCount = -objectiveMoveInfo[OBJECTVE_MOVE_COUNT - 1].time;
 		int32_t sum			 = 0;
 		int32_t objectiveNum = 0;
-		for (EList<CObjective*, CObjective*>::EIterator iter =
-				 Team::home->objectives.Begin();
+		for (EList<CObjective*, CObjective*>::EIterator iter = Team::home->objectives.Begin();
 			 !iter.IsDone(); iter++)
 		{
 			if (((*iter)->IsActive()) && (!(*iter)->IsHiddenTrigger()) &&
 				(1 == (*iter)->Priority()))
 			{
 				bool bTotal =
-					renderStatusInfo &&
-					objectiveCount < objectiveTime; // drawing one per second
+					renderStatusInfo && objectiveCount < objectiveTime; // drawing one per second
 				renderObjective((*iter), OBJECTIVESLEFT, pos, bTotal);
-				if ((*iter)->Status(Team::home->objectives) == OS_SUCCESSFUL &&
-					bTotal)
+				if ((*iter)->Status(Team::home->objectives) == OS_SUCCESSFUL && bTotal)
 				{
 					sum += (*iter)->ResourcePoints();
 					if (!playedObjectiveClick[objectiveNum])
@@ -591,8 +568,8 @@ void ControlGui::RenderObjectives()
 		// draw "Secondary"
 		cLoadString(IDS_SECONDARY, buffer, 245);
 		pos += OBJEECTIVESHEADERSKIP;
-		drawShadowText(0xffffffff, 0xff000000, guiFont.getTempHandle(),
-			OBJECTIVEHEADERLEFT, pos, 1, buffer, 0, guiFont.getSize());
+		drawShadowText(0xffffffff, 0xff000000, guiFont.getTempHandle(), OBJECTIVEHEADERLEFT, pos, 1,
+			buffer, 0, guiFont.getSize());
 		// draw secondary objectives
 		for (iter = Team::home->objectives.Begin(); !iter.IsDone(); iter++)
 		{
@@ -601,11 +578,9 @@ void ControlGui::RenderObjectives()
 			{
 				pos += OBJECTIVESSKIP;
 				bool bTotal =
-					renderStatusInfo &&
-					objectiveCount < objectiveTime; // drawing one per second
+					renderStatusInfo && objectiveCount < objectiveTime; // drawing one per second
 				renderObjective((*iter), OBJECTIVESLEFT, pos, bTotal);
-				if ((*iter)->Status(Team::home->objectives) == OS_SUCCESSFUL &&
-					bTotal)
+				if ((*iter)->Status(Team::home->objectives) == OS_SUCCESSFUL && bTotal)
 				{
 					sum += (*iter)->ResourcePoints();
 					if (!playedObjectiveClick[objectiveNum])
@@ -627,8 +602,7 @@ void ControlGui::RenderObjectives()
 			sprintf(total, total2, sum);
 			uint32_t width = guiFont.width(total);
 			drawShadowText(0xffffffff, 0xff000000, guiFont.getTempHandle(),
-				OBJECTIVESTOTALRIGHT - width, pos, 0, total, 0,
-				guiFont.getSize());
+				OBJECTIVESTOTALRIGHT - width, pos, 0, total, 0, guiFont.getSize());
 		}
 	}
 }
@@ -696,21 +670,16 @@ void ControlGui::renderObjective(
 	CObjective* pObjective, int32_t xPos, int32_t yPos, bool bDrawTotal)
 {
 	// draw description
-	int32_t color =
-		pObjective->Status(Team::home->objectives) == OS_FAILED
-			? 0xffc61c00
-			: (pObjective->Status(Team::home->objectives) == OS_SUCCESSFUL
-					  ? 0xff41c700
-					  : 0xffffc600);
+	int32_t color = pObjective->Status(Team::home->objectives) == OS_FAILED
+		? 0xffc61c00
+		: (pObjective->Status(Team::home->objectives) == OS_SUCCESSFUL ? 0xff41c700 : 0xffffc600);
 	gosASSERT(pObjective->IsActive());
 	if (pObjective->ActivateOnFlag() &&
-		(20.0 /*seconds*/ /*arbitrary*/ >
-			(mission->actualTime - pObjective->ActivationTime())))
+		(20.0 /*seconds*/ /*arbitrary*/ > (mission->actualTime - pObjective->ActivationTime())))
 	{
 		/* flash the objective text */
-		int32_t tempI =
-			(int32_t)(2.0 /*Hz*/ /*flash frequency*/ *
-					  (mission->actualTime - pObjective->ActivationTime()));
+		int32_t tempI = (int32_t)(
+			2.0 /*Hz*/ /*flash frequency*/ * (mission->actualTime - pObjective->ActivationTime()));
 		int32_t parity = (tempI % 2);
 		if (0 == parity)
 		{
@@ -728,10 +697,9 @@ void ControlGui::renderObjective(
 		int32_t descWidth;
 		int32_t dotWidth;
 		char total[64];
-		int32_t amount =
-			pObjective->Status(Team::home->objectives) == OS_SUCCESSFUL
-				? pObjective->ResourcePoints()
-				: 0;
+		int32_t amount = pObjective->Status(Team::home->objectives) == OS_SUCCESSFUL
+			? pObjective->ResourcePoints()
+			: 0;
 		sprintf(total, "%ld", amount);
 		width = guiFont.width(total);
 		// draw total
@@ -739,16 +707,15 @@ void ControlGui::renderObjective(
 			OBJECTIVESTOTALRIGHT - width, yPos, 0, total, 0, guiFont.getSize());
 		// draw .............
 		uint32_t tmpULong1, tmpULong2;
-		gos_TextStringLength(
-			&tmpULong1, &tmpULong2, pObjective->LocalizedDescription());
+		gos_TextStringLength(&tmpULong1, &tmpULong2, pObjective->LocalizedDescription());
 		descWidth = (int32_t)tmpULong1;
 		height	= (int32_t)tmpULong2;
 		gos_TextStringLength(&tmpULong1, &tmpULong2, "....................");
 		dotWidth = (int32_t)tmpULong1;
 		height   = (int32_t)tmpULong2;
 		gosASSERT(0 < dotWidth);
-		float dotRealWidth = (((float)dotWidth) / 20.f);
-		float totalLength  = (OBJECTIVESTOTALRIGHT - width - xPos - descWidth);
+		float dotRealWidth   = (((float)dotWidth) / 20.f);
+		float totalLength	= (OBJECTIVESTOTALRIGHT - width - xPos - descWidth);
 		int32_t numberOfDots = ((float)totalLength) / dotRealWidth;
 		if (3 > numberOfDots)
 		{
@@ -760,56 +727,40 @@ void ControlGui::renderObjective(
 		dots[i]				 = 0;
 		float dotFinalLength = dotRealWidth * (float)(numberOfDots - 2);
 		drawShadowText(color, 0xff000000, guiFont.getTempHandle(),
-			OBJECTIVESTOTALRIGHT - width - dotFinalLength, yPos, 0, dots, 0,
-			guiFont.getSize());
+			OBJECTIVESTOTALRIGHT - width - dotFinalLength, yPos, 0, dots, 0, guiFont.getSize());
 	}
 	// draw little boxes and check marks
 	float height = objectiveInfos[objectiveInfoCount - 3].location[2].y -
-				   objectiveInfos[objectiveInfoCount - 3].location[0].y;
-	objectiveInfos[objectiveInfoCount - 3].location[0].y =
-		yPos + OBJECTIVEBOXSKIP;
-	objectiveInfos[objectiveInfoCount - 3].location[3].y =
-		yPos + OBJECTIVEBOXSKIP;
-	objectiveInfos[objectiveInfoCount - 3].location[1].y =
-		yPos + OBJECTIVEBOXSKIP + height;
-	objectiveInfos[objectiveInfoCount - 3].location[2].y =
-		yPos + OBJECTIVEBOXSKIP + height;
+		objectiveInfos[objectiveInfoCount - 3].location[0].y;
+	objectiveInfos[objectiveInfoCount - 3].location[0].y = yPos + OBJECTIVEBOXSKIP;
+	objectiveInfos[objectiveInfoCount - 3].location[3].y = yPos + OBJECTIVEBOXSKIP;
+	objectiveInfos[objectiveInfoCount - 3].location[1].y = yPos + OBJECTIVEBOXSKIP + height;
+	objectiveInfos[objectiveInfoCount - 3].location[2].y = yPos + OBJECTIVEBOXSKIP + height;
 	int32_t x = objectiveInfos[objectiveInfoCount - 3].location[0].x;
-	objectiveInfos[objectiveInfoCount - 3].setLocation(
-		x, yPos + OBJECTIVEBOXSKIP);
+	objectiveInfos[objectiveInfoCount - 3].setLocation(x, yPos + OBJECTIVEBOXSKIP);
 	objectiveInfos[objectiveInfoCount - 3].render();
 	if (pObjective->Status(Team::home->objectives) == OS_FAILED)
 	{
 		float height = objectiveInfos[objectiveInfoCount - 1].location[2].y -
-					   objectiveInfos[objectiveInfoCount - 1].location[0].y;
-		objectiveInfos[objectiveInfoCount - 1].location[0].y =
-			yPos + OBJECTIVECHECKSKIP;
-		objectiveInfos[objectiveInfoCount - 1].location[3].y =
-			yPos + OBJECTIVECHECKSKIP;
-		objectiveInfos[objectiveInfoCount - 1].location[1].y =
-			yPos + OBJECTIVECHECKSKIP + height;
-		objectiveInfos[objectiveInfoCount - 1].location[2].y =
-			yPos + OBJECTIVECHECKSKIP + height;
+			objectiveInfos[objectiveInfoCount - 1].location[0].y;
+		objectiveInfos[objectiveInfoCount - 1].location[0].y = yPos + OBJECTIVECHECKSKIP;
+		objectiveInfos[objectiveInfoCount - 1].location[3].y = yPos + OBJECTIVECHECKSKIP;
+		objectiveInfos[objectiveInfoCount - 1].location[1].y = yPos + OBJECTIVECHECKSKIP + height;
+		objectiveInfos[objectiveInfoCount - 1].location[2].y = yPos + OBJECTIVECHECKSKIP + height;
 		int32_t x = objectiveInfos[objectiveInfoCount - 1].location[0].x;
-		objectiveInfos[objectiveInfoCount - 1].setLocation(
-			x, yPos + OBJECTIVECHECKSKIP);
+		objectiveInfos[objectiveInfoCount - 1].setLocation(x, yPos + OBJECTIVECHECKSKIP);
 		objectiveInfos[objectiveInfoCount - 1].render();
 	}
 	else if (pObjective->Status(Team::home->objectives) == OS_SUCCESSFUL)
 	{
 		float height = objectiveInfos[objectiveInfoCount - 2].location[2].y -
-					   objectiveInfos[objectiveInfoCount - 2].location[0].y;
-		objectiveInfos[objectiveInfoCount - 2].location[0].y =
-			yPos + OBJECTIVECHECKSKIP;
-		objectiveInfos[objectiveInfoCount - 2].location[3].y =
-			yPos + OBJECTIVECHECKSKIP;
-		objectiveInfos[objectiveInfoCount - 2].location[1].y =
-			yPos + OBJECTIVECHECKSKIP + height;
-		objectiveInfos[objectiveInfoCount - 2].location[2].y =
-			yPos + OBJECTIVECHECKSKIP + height;
+			objectiveInfos[objectiveInfoCount - 2].location[0].y;
+		objectiveInfos[objectiveInfoCount - 2].location[0].y = yPos + OBJECTIVECHECKSKIP;
+		objectiveInfos[objectiveInfoCount - 2].location[3].y = yPos + OBJECTIVECHECKSKIP;
+		objectiveInfos[objectiveInfoCount - 2].location[1].y = yPos + OBJECTIVECHECKSKIP + height;
+		objectiveInfos[objectiveInfoCount - 2].location[2].y = yPos + OBJECTIVECHECKSKIP + height;
 		int32_t x = objectiveInfos[objectiveInfoCount - 2].location[0].x;
-		objectiveInfos[objectiveInfoCount - 2].setLocation(
-			x, yPos + OBJECTIVECHECKSKIP);
+		objectiveInfos[objectiveInfoCount - 2].setLocation(x, yPos + OBJECTIVECHECKSKIP);
 		objectiveInfos[objectiveInfoCount - 2].render();
 	}
 }
@@ -843,10 +794,8 @@ void ControlGui::update(bool bPaused, bool bLOS)
 	// also going to initialize buttons here
 	for (size_t i = LAST_COMMAND - 1; i > -1; i--)
 	{
-		if (buttons[i].location[0].x <= mouseX &&
-			mouseX <= buttons[i].location[2].x &&
-			mouseY >= buttons[i].location[0].y &&
-			mouseY <= buttons[i].location[1].y)
+		if (buttons[i].location[0].x <= mouseX && mouseX <= buttons[i].location[2].x &&
+			mouseY >= buttons[i].location[0].y && mouseY <= buttons[i].location[1].y)
 		{
 			if (buttons[i].state != ControlButton::HIDDEN)
 			{
@@ -855,10 +804,8 @@ void ControlGui::update(bool bPaused, bool bLOS)
 				bMouseInButton   = true;
 				int32_t lastX	= mouseX - userInput->getMouseXDelta();
 				int32_t lastY	= mouseY - userInput->getMouseYDelta();
-				if (buttons[i].location[0].x > lastX ||
-					lastX > buttons[i].location[2].x ||
-					lastY < buttons[i].location[0].y ||
-					lastY > buttons[i].location[1].y)
+				if (buttons[i].location[0].x > lastX || lastX > buttons[i].location[2].x ||
+					lastY < buttons[i].location[0].y || lastY > buttons[i].location[1].y)
 				{
 					soundSystem->playDigitalSample(LOG_HIGHLIGHTBUTTONS);
 				}
@@ -896,15 +843,13 @@ void ControlGui::update(bool bPaused, bool bLOS)
 	for (i = 0; i < pTeam->getRosterSize(); ++i)
 	{
 		Mover* pMover = (Mover*)pTeam->getMover(i);
-		if (pMover->isSelected() &&
-			pMover->getCommander()->getId() == Commander::home->getId())
+		if (pMover->isSelected() && pMover->getCommander()->getId() == Commander::home->getId())
 		{
 			//	if ( !isSelectingebject() )
 			{
 				bMineLayer &= ((pMover->isMineLayer()) ? 1 : 0);
 				bSalvage &= (pMover->isRecover() ? 1 : 0);
-				bRepair &=
-					(pMover->isRefit() && pMover->getRefitPoints() ? 1 : 0);
+				bRepair &= (pMover->isRefit() && pMover->getRefitPoints() ? 1 : 0);
 				bGuardTower &= (pMover->maxMoveSpeed ? 0 : 1);
 				if (bGuardTower)
 					bPressGuardTower &= pMover->suppressionFire;
@@ -1102,10 +1047,8 @@ bool ControlGui::inRegion(int32_t mouseX, int32_t mouseY, bool bPaused)
 {
 	for (size_t i = 0; i < LAST_COMMAND; i++)
 	{
-		if ((buttons[i].location[0].x) <= mouseX &&
-			buttons[i].location[3].x >= mouseX &&
-			buttons[i].location[0].y <= mouseY &&
-			buttons[i].location[1].y >= mouseY)
+		if ((buttons[i].location[0].x) <= mouseX && buttons[i].location[3].x >= mouseX &&
+			buttons[i].location[0].y <= mouseY && buttons[i].location[1].y >= mouseY)
 			return true;
 	}
 	for (i = 0; i < staticCount; i++)
@@ -1115,10 +1058,8 @@ bool ControlGui::inRegion(int32_t mouseX, int32_t mouseY, bool bPaused)
 	}
 	for (i = 0; i < rectCount; i++)
 	{
-		if ((rectInfos[i].rect.left) <= mouseX &&
-			rectInfos[i].rect.right >= mouseX &&
-			rectInfos[i].rect.top <= mouseY &&
-			rectInfos[i].rect.bottom >= mouseY)
+		if ((rectInfos[i].rect.left) <= mouseX && rectInfos[i].rect.right >= mouseX &&
+			rectInfos[i].rect.top <= mouseY && rectInfos[i].rect.bottom >= mouseY)
 			return true;
 	}
 	if (bPaused && pauseWnd->inRect(mouseX, mouseY))
@@ -1221,8 +1162,7 @@ void ControlGui::setRange(int32_t Range)
 	for (size_t i = 0; i < pTeam->getRosterSize(); ++i)
 	{
 		Mover* pMover = pTeam->getMover(i);
-		if (pMover->isSelected() &&
-			pMover->getCommander()->getId() == Commander::home->getId())
+		if (pMover->isSelected() && pMover->getCommander()->getId() == Commander::home->getId())
 		{
 			pMover->attackRange = Range;
 			// only want to apply to future order
@@ -1238,8 +1178,7 @@ int32_t ControlGui::getCurrentRange()
 	for (size_t i = 0; i < pTeam->getRosterSize(); ++i)
 	{
 		Mover* pMover = pTeam->getMover(i);
-		if (pMover->isSelected() &&
-			pMover->getCommander()->getId() == Commander::home->getId())
+		if (pMover->isSelected() && pMover->getCommander()->getId() == Commander::home->getId())
 		{
 			if (range != -1 && range != pMover->attackRange)
 			{
@@ -1256,8 +1195,7 @@ void ControlButton::render()
 {
 	if (state != HIDDEN)
 	{
-		uint32_t gosID =
-			mcTextureManager->get_gosTextureHandle(data->textureHandle);
+		uint32_t gosID = mcTextureManager->get_gosTextureHandle(data->textureHandle);
 		gos_SetRenderState(gos_State_Texture, gosID);
 		gos_SetRenderState(gos_State_AlphaMode, gos_Alpha_AlphaInvAlpha);
 		gos_SetRenderState(gos_State_Filter, gos_FilterNone);
@@ -1270,9 +1208,8 @@ void ControlButton::render()
 			cLoadString(data->textID, buffer, 256);
 			uint32_t height = data->textFont.height();
 			data->textFont.render(buffer, location[0].x,
-				(location[0].y + location[2].y) / 2 - height / 2 + 1,
-				location[2].x - location[0].x, location[2].y - location[0].y,
-				data->textColors[state], 0, 2);
+				(location[0].y + location[2].y) / 2 - height / 2 + 1, location[2].x - location[0].x,
+				location[2].y - location[0].y, data->textColors[state], 0, 2);
 		}
 	}
 }
@@ -1464,8 +1401,7 @@ void ControlGui::doStop()
 	for (size_t i = 0; i < pTeam->getRosterSize(); i++)
 	{
 		Mover* pMover = (Mover*)pTeam->getMover(i);
-		if (pMover->isSelected() &&
-			pMover->getCommander()->getId() == Commander::home->getId())
+		if (pMover->isSelected() && pMover->getCommander()->getId() == Commander::home->getId())
 		{
 			tacOrder.attackParams.range = (FireRangeType)pMover->attackRange;
 			tacOrder.pack(nullptr, nullptr);
@@ -1490,13 +1426,9 @@ void ControlGui::doStop()
 	setDefaultSpeed();
 }
 
-void ControlGui::toggleFireFromCurrentPos()
-{
-	fireFromCurrentPos = !fireFromCurrentPos;
-}
+void ControlGui::toggleFireFromCurrentPos() { fireFromCurrentPos = !fireFromCurrentPos; }
 
-void ControlButton::makeUVs(
-	gos_VERTEX* vertices, int32_t State, ButtonData& data)
+void ControlButton::makeUVs(gos_VERTEX* vertices, int32_t State, ButtonData& data)
 {
 	float left = data.stateCoords[State][0];
 	float top  = data.stateCoords[State][1];
@@ -1512,43 +1444,34 @@ void ControlButton::makeUVs(
 	{
 		if (data.textureRotated)
 		{
-			vertices[0].u =
-				right / (float)data.fileWidth + (.1f / (float)data.fileWidth);
+			vertices[0].u = right / (float)data.fileWidth + (.1f / (float)data.fileWidth);
 			;
-			vertices[1].u =
-				left / (float)data.fileWidth + (.1f / (float)data.fileWidth);
+			vertices[1].u = left / (float)data.fileWidth + (.1f / (float)data.fileWidth);
 			;
-			vertices[2].u =
-				left / (float)data.fileWidth + (.1f / (float)data.fileWidth);
-			vertices[3].u =
-				right / (float)data.fileWidth + (.1f / (float)data.fileWidth);
-			vertices[0].v =
-				top / (float)data.fileHeight + (.1f / (float)data.fileWidth);
+			vertices[2].u = left / (float)data.fileWidth + (.1f / (float)data.fileWidth);
+			vertices[3].u = right / (float)data.fileWidth + (.1f / (float)data.fileWidth);
+			vertices[0].v = top / (float)data.fileHeight + (.1f / (float)data.fileWidth);
 			;
-			vertices[1].v =
-				top / (float)data.fileHeight + (.1f / (float)data.fileWidth);
+			vertices[1].v = top / (float)data.fileHeight + (.1f / (float)data.fileWidth);
 			;
-			vertices[2].v = bottom / (float)data.fileHeight +
-							(.1f / (float)data.fileHeight);
+			vertices[2].v = bottom / (float)data.fileHeight + (.1f / (float)data.fileHeight);
 			;
-			vertices[3].v = bottom / (float)data.fileHeight +
-							(.1f / (float)data.fileHeight);
+			vertices[3].v = bottom / (float)data.fileHeight + (.1f / (float)data.fileHeight);
 			;
 		}
 		else
 		{
 			{
-				vertices[0].u = vertices[1].u = left / (float)data.fileWidth +
-												(.1f / (float)data.fileWidth);
+				vertices[0].u = vertices[1].u =
+					left / (float)data.fileWidth + (.1f / (float)data.fileWidth);
 				;
-				vertices[2].u = vertices[3].u = right / (float)data.fileWidth +
-												(.1f / (float)data.fileWidth);
-				vertices[0].v = vertices[3].v = top / (float)data.fileHeight +
-												(.1f / (float)data.fileWidth);
+				vertices[2].u = vertices[3].u =
+					right / (float)data.fileWidth + (.1f / (float)data.fileWidth);
+				vertices[0].v = vertices[3].v =
+					top / (float)data.fileHeight + (.1f / (float)data.fileWidth);
 				;
 				vertices[1].v = vertices[2].v =
-					bottom / (float)data.fileHeight +
-					(.1f / (float)data.fileHeight);
+					bottom / (float)data.fileHeight + (.1f / (float)data.fileHeight);
 			}
 		}
 	}
@@ -1579,8 +1502,8 @@ void ControlGui::updateVehicleTab(int32_t mouseX, int32_t mouseY, bool bLOS)
 				{
 					mouseInVehicleStopButton = true;
 				}
-				if (userInput->leftMouseReleased() &&
-					!userInput->isLeftDrag() && !userInput->wasLeftDrag() &&
+				if (userInput->leftMouseReleased() && !userInput->isLeftDrag() &&
+					!userInput->wasLeftDrag() &&
 					!(vehicleButtons[i].state & ControlButton::PRESSED))
 				{
 					{
@@ -1598,15 +1521,13 @@ void ControlGui::updateVehicleTab(int32_t mouseX, int32_t mouseY, bool bLOS)
 		}
 		if (vehicleButtons[i].ID != STOP_VEHICLE)
 		{
-			if (vehicleCosts[i] >
-					LogisticsData::instance->getResourcePoints() &&
-				(!addingVehicle &&
-					!(vehicleButtons[i].state & ControlButton::PRESSED)))
+			if (vehicleCosts[i] > LogisticsData::instance->getResourcePoints() &&
+				(!addingVehicle && !(vehicleButtons[i].state & ControlButton::PRESSED)))
 			{
 				vehicleButtons[i].disable(true);
 			}
 			else if ((addingArtillery || addingVehicle || addingSalvage) &&
-					 !(vehicleButtons[i].state & ControlButton::PRESSED))
+				!(vehicleButtons[i].state & ControlButton::PRESSED))
 				vehicleButtons[i].disable(true);
 			else
 				vehicleButtons[i].disable(false);
@@ -1639,8 +1560,7 @@ void ControlGui::updateVehicleTab(int32_t mouseX, int32_t mouseY, bool bLOS)
 	if (LogisticsData::instance) // turn off things that aren't allowed in
 								 // mplayer
 	{
-		bool disableAll =
-			(MPlayer && MPlayer->allUnitsDestroyed[MPlayer->commanderID]);
+		bool disableAll = (MPlayer && MPlayer->allUnitsDestroyed[MPlayer->commanderID]);
 		if (disableAll)
 		{
 			getButton(LARGE_AIRSTRIKE)->disable(true);
@@ -1681,13 +1601,11 @@ void ControlGui::renderVehicleTab()
 		int32_t color = vehicleButtons[i].isEnabled() ? 0xff005392 : 0xff7f7f7f;
 		if (vehicleButtons[i].state & ControlButton::PRESSED)
 		{
-			ControlButton::makeUVs(vehicleButtons[i].location,
-				ControlButton::ENABLED, *vehicleButtons[i].data);
+			ControlButton::makeUVs(
+				vehicleButtons[i].location, ControlButton::ENABLED, *vehicleButtons[i].data);
 			cost	  = vehicleCosts[i];
-			RECT rect = {vehicleButtons[i].location[0].x,
-				vehicleButtons[i].location[0].y,
-				vehicleButtons[i].location[2].x,
-				vehicleButtons[i].location[2].y};
+			RECT rect = {vehicleButtons[i].location[0].x, vehicleButtons[i].location[0].y,
+				vehicleButtons[i].location[2].x, vehicleButtons[i].location[2].y};
 			vehicleButtons[i].render();
 			drawEmptyRect(rect, 0xffffffff, 0xffffffff);
 			color = 0xffffffff;
@@ -1695,15 +1613,12 @@ void ControlGui::renderVehicleTab()
 		if (vehicleCosts[i])
 		{
 			// need to draw cost under the button
-			int32_t left = float2long(vehicleButtons[i].location[0].x);
-			int32_t top =
-				float2long(vehicleButtons[i].location[2].y + TEXT_SKIP);
-			int32_t right = float2long(vehicleButtons[i].location[2].x);
-			int32_t bottom =
-				float2long(vehicleButtons[i].location[2].y + 30 + TEXT_SKIP);
+			int32_t left   = float2long(vehicleButtons[i].location[0].x);
+			int32_t top	= float2long(vehicleButtons[i].location[2].y + TEXT_SKIP);
+			int32_t right  = float2long(vehicleButtons[i].location[2].x);
+			int32_t bottom = float2long(vehicleButtons[i].location[2].y + 30 + TEXT_SKIP);
 			sprintf(buffer, "%ld", vehicleCosts[i]);
-			vehicleFont.render(
-				buffer, left, top, right - left, bottom - top, color, 0, 2);
+			vehicleFont.render(buffer, left, top, right - left, bottom - top, color, 0, 2);
 		}
 	}
 	int32_t left = RPLEFT;
@@ -1711,8 +1626,7 @@ void ControlGui::renderVehicleTab()
 	// draw in RP
 	char originalStr[256];
 	cLoadString(IDS_RP, originalStr, 256);
-	sprintf(buffer, originalStr,
-		(int32_t)LogisticsData::instance->getResourcePoints());
+	sprintf(buffer, originalStr, (int32_t)LogisticsData::instance->getResourcePoints());
 	// We are there.  Start flashing.
 	/// TUTORIAL!!!
 	if (rpNumFlashes)
@@ -1738,8 +1652,7 @@ void ControlGui::handleVehicleClick(int32_t ID)
 {
 	if (getButton(ID)->state & ControlButton::HIDDEN)
 		return;
-	if (getButton(ID)->state &
-		ControlButton::DISABLED) // ignore disabled button
+	if (getButton(ID)->state & ControlButton::DISABLED) // ignore disabled button
 	{
 		// need to play sound here
 		soundSystem->playDigitalSample(INVALID_GUI);
@@ -1769,8 +1682,7 @@ void ControlGui::handleVehicleClick(int32_t ID)
 				if (MPlayer)
 				{
 					Stuff::Vector3D pos;
-					MPlayer->sendReinforcement(
-						-cost, 0, "noname", MPlayer->commanderID, pos, 6);
+					MPlayer->sendReinforcement(-cost, 0, "noname", MPlayer->commanderID, pos, 6);
 				}
 			}
 		}
@@ -1810,10 +1722,8 @@ void ControlGui::handleVehicleClick(int32_t ID)
 			LogisticsData::instance->addResourcePoints(cost);
 			if (MPlayer)
 			{
-				MPlayer->playerInfo[MPlayer->commanderID].resourcePoints +=
-					cost;
-				MPlayer->playerInfo[MPlayer->commanderID]
-					.resourcePointsGained += cost;
+				MPlayer->playerInfo[MPlayer->commanderID].resourcePoints += cost;
+				MPlayer->playerInfo[MPlayer->commanderID].resourcePointsGained += cost;
 				if (!MPlayer->isHost())
 				{
 					MPlayer->sendPlayerUpdate(0, 5, MPlayer->commanderID);
@@ -1915,18 +1825,16 @@ void ControlGui::renderHelpText()
 		width  = helpFont.width(buffer);
 		height = helpFont.height(buffer, width);
 		gos_TextStringLength(&width, &height, buffer);
-		gos_TextSetRegion(HELPAREA_LEFT, HELPAREA_BOTTOM - 3 * height,
-			Environment.screenWidth, Environment.screenHeight);
-		drawShadowText(0xffffffff, 0xff000000, helpFont.getTempHandle(),
-			HELPAREA_LEFT, HELPAREA_BOTTOM - height, true, buffer, false,
-			helpFont.getSize());
+		gos_TextSetRegion(HELPAREA_LEFT, HELPAREA_BOTTOM - 3 * height, Environment.screenWidth,
+			Environment.screenHeight);
+		drawShadowText(0xffffffff, 0xff000000, helpFont.getTempHandle(), HELPAREA_LEFT,
+			HELPAREA_BOTTOM - height, true, buffer, false, helpFont.getSize());
 		if (helpTextHeaderID)
 		{
 			cLoadString(helpTextHeaderID, buffer, 1024);
 			int32_t yPos = HELPAREA_BOTTOM - height;
-			drawShadowText(0xffffffff, 0xff000000, helpFont.getTempHandle(),
-				HELPAREA_LEFT, yPos - height, 1, buffer, true,
-				helpFont.getSize());
+			drawShadowText(0xffffffff, 0xff000000, helpFont.getTempHandle(), HELPAREA_LEFT,
+				yPos - height, 1, buffer, true, helpFont.getSize());
 		}
 	}
 }
@@ -1955,8 +1863,7 @@ void ControlGui::setInfoWndMover(Mover* pMover)
 		// unpress the info button
 		gosEnum_KeyIndex key;
 		bool bC, bA, bS;
-		MissionInterfaceManager::instance()->getHotKey(
-			INFO_COMMAND_INDEX, key, bS, bC, bA);
+		MissionInterfaceManager::instance()->getHotKey(INFO_COMMAND_INDEX, key, bS, bC, bA);
 		if (gos_GetKeyStatus(key) != KEY_HELD)
 			getButton(INFO_COMMAND)->press(0);
 	}
@@ -2009,8 +1916,8 @@ bool ControlGui::getVehicleCommand()
 	return false;
 }
 
-void ControlButton::initButtons(FitIniFile& buttonFile, int32_t buttonCount,
-	ControlButton* Buttons, ButtonData* Data, PCSTR str, aFont* font)
+void ControlButton::initButtons(FitIniFile& buttonFile, int32_t buttonCount, ControlButton* Buttons,
+	ButtonData* Data, PCSTR str, aFont* font)
 {
 	char path[256];
 	for (size_t i = 0; i < buttonCount; ++i)
@@ -2067,8 +1974,7 @@ void ControlButton::initButtons(FitIniFile& buttonFile, int32_t buttonCount,
 			strcat(file, Buttons[i].data->fileName);
 			strcat(file, ".tga");
 			_strlwr(file);
-			int32_t ID = mcTextureManager->loadTexture(
-				file, gos_Texture_Alpha, 0, 0, 0x2);
+			int32_t ID	= mcTextureManager->loadTexture(file, gos_Texture_Alpha, 0, 0, 0x2);
 			int32_t gosID = mcTextureManager->get_gosTextureHandle(ID);
 			TEXTUREPTR textureData;
 			gos_LockTexture(gosID, 0, 0, &textureData);
@@ -2077,36 +1983,26 @@ void ControlButton::initButtons(FitIniFile& buttonFile, int32_t buttonCount,
 			Buttons[i].data->fileWidth	 = textureData.Width;
 			Buttons[i].data->fileHeight	= Buttons[i].data->fileWidth;
 		}
-		if (NO_ERROR != buttonFile.readIdLong(
-							"UNormal", Buttons[i].data->stateCoords[0][0]))
+		if (NO_ERROR != buttonFile.readIdLong("UNormal", Buttons[i].data->stateCoords[0][0]))
 			Buttons[i].data->stateCoords[0][0] = -1.f;
-		if (NO_ERROR != buttonFile.readIdLong(
-							"VNormal", Buttons[i].data->stateCoords[0][1]))
+		if (NO_ERROR != buttonFile.readIdLong("VNormal", Buttons[i].data->stateCoords[0][1]))
 			Buttons[i].data->stateCoords[0][1] = -1.f;
-		if (NO_ERROR != buttonFile.readIdLong(
-							"UPressed", Buttons[i].data->stateCoords[1][0]))
+		if (NO_ERROR != buttonFile.readIdLong("UPressed", Buttons[i].data->stateCoords[1][0]))
 			Buttons[i].data->stateCoords[1][0] = -1.f;
-		if (NO_ERROR != buttonFile.readIdLong(
-							"VPressed", Buttons[i].data->stateCoords[1][1]))
+		if (NO_ERROR != buttonFile.readIdLong("VPressed", Buttons[i].data->stateCoords[1][1]))
 			Buttons[i].data->stateCoords[1][1] = -1.f;
-		if (NO_ERROR != buttonFile.readIdLong(
-							"UDisabled", Buttons[i].data->stateCoords[2][0]))
+		if (NO_ERROR != buttonFile.readIdLong("UDisabled", Buttons[i].data->stateCoords[2][0]))
 			Buttons[i].data->stateCoords[2][0] = -1.f;
-		if (NO_ERROR != buttonFile.readIdLong(
-							"VDisabled", Buttons[i].data->stateCoords[2][1]))
+		if (NO_ERROR != buttonFile.readIdLong("VDisabled", Buttons[i].data->stateCoords[2][1]))
 			Buttons[i].data->stateCoords[2][1] = -1.f;
-		if (NO_ERROR != buttonFile.readIdLong(
-							"UAmbiguous", Buttons[i].data->stateCoords[3][0]))
+		if (NO_ERROR != buttonFile.readIdLong("UAmbiguous", Buttons[i].data->stateCoords[3][0]))
 		{
-			if (NO_ERROR != buttonFile.readIdLong("UHighlight",
-								Buttons[i].data->stateCoords[3][0]))
+			if (NO_ERROR != buttonFile.readIdLong("UHighlight", Buttons[i].data->stateCoords[3][0]))
 				Buttons[i].data->stateCoords[3][0] = -1.f;
 		}
-		if (NO_ERROR != buttonFile.readIdLong(
-							"VAmbiguous", Buttons[i].data->stateCoords[3][1]))
+		if (NO_ERROR != buttonFile.readIdLong("VAmbiguous", Buttons[i].data->stateCoords[3][1]))
 		{
-			if (NO_ERROR != buttonFile.readIdLong("VHighlight",
-								Buttons[i].data->stateCoords[3][1]))
+			if (NO_ERROR != buttonFile.readIdLong("VHighlight", Buttons[i].data->stateCoords[3][1]))
 				Buttons[i].data->stateCoords[3][1] = -1.f;
 		}
 		buttonFile.readIdLong("UWidth", Buttons[i].data->textureWidth);
@@ -2172,8 +2068,7 @@ void ControlGui::initStatics(FitIniFile& file)
 	rpCallout.rect.bottom = RPTOP;
 	if (NO_ERROR != file.seekBlock("Objectives"))
 	{
-		Assert(0, 0,
-			"couldn't find the objective block in the button layout file");
+		Assert(0, 0, "couldn't find the objective block in the button layout file");
 	}
 	file.readIdLong("ObjStaticCount", objectiveInfoCount);
 	file.readIdLong("ObjectiveLeft", OBJECTIVESLEFT);
@@ -2198,8 +2093,7 @@ void ControlGui::initStatics(FitIniFile& file)
 	objectiveInfoCount = i;
 	if (NO_ERROR != file.seekBlock("VideoWindow"))
 	{
-		Assert(0, 0,
-			"couldn't find th videoWindow block in the button layout file");
+		Assert(0, 0, "couldn't find th videoWindow block in the button layout file");
 	}
 	file.readIdLong("VideoStaticCount", videoInfoCount);
 	file.readIdLong("left", videoRect.left);
@@ -2388,8 +2282,7 @@ void ControlGui::swapResolutions(int32_t resolution)
 	{
 		for (size_t i = 0; i < buttonCount; i++)
 		{
-			uint32_t gosID = mcTextureManager->get_gosTextureHandle(
-				buttonData[i].textureHandle);
+			uint32_t gosID = mcTextureManager->get_gosTextureHandle(buttonData[i].textureHandle);
 			mcTextureManager->removeTexture(gosID);
 		}
 	}
@@ -2397,8 +2290,7 @@ void ControlGui::swapResolutions(int32_t resolution)
 	{
 		for (size_t i = 0; i < LAST_VEHICLE; i++)
 		{
-			uint32_t gosID = mcTextureManager->get_gosTextureHandle(
-				vehicleData[i].textureHandle);
+			uint32_t gosID = mcTextureManager->get_gosTextureHandle(vehicleData[i].textureHandle);
 			mcTextureManager->removeTexture(gosID);
 		}
 	}
@@ -2407,8 +2299,7 @@ void ControlGui::swapResolutions(int32_t resolution)
 	if (!buttonData)
 		buttonData = new ButtonData[buttonCount];
 	memset(buttonData, 0, buttonCount * sizeof(ButtonData));
-	ControlButton::initButtons(
-		buttonFile, buttonCount, buttons, buttonData, "Button");
+	ControlButton::initButtons(buttonFile, buttonCount, buttons, buttonData, "Button");
 	// getButton( REPAIR )->setColor( 0 );
 	getButton(SALVAGE)->setColor(0);
 	result = buttonFile.seekBlock("VehicleButtons");
@@ -2423,8 +2314,7 @@ void ControlGui::swapResolutions(int32_t resolution)
 	if (!vehicleData)
 		vehicleData = new ButtonData[buttonCount];
 	memset(vehicleData, 0, buttonCount * sizeof(ButtonData));
-	ControlButton::initButtons(
-		buttonFile, buttonCount, vehicleButtons, vehicleData, "Vehicle");
+	ControlButton::initButtons(buttonFile, buttonCount, vehicleButtons, vehicleData, "Vehicle");
 	getButton(TACMAP_TAB)->press(true);
 	initStatics(buttonFile);
 	initRects(buttonFile);
@@ -2527,8 +2417,7 @@ void ControlButton::toggle()
 
 bool ControlGui::resultsDone()
 {
-	if ((renderStatusInfo &&
-			objectiveTime > Team::home->objectives.Count() + 4))
+	if ((renderStatusInfo && objectiveTime > Team::home->objectives.Count() + 4))
 	{
 		// need to empty out force group bar now...
 		forceGroupBar.removeAll();
@@ -2571,30 +2460,20 @@ void ControlGui::toggleHoldPosition()
 		for (size_t i = 0; i < Team::home->getRosterSize(); i++)
 		{
 			Mover* pMover = Team::home->getMover(i);
-			if (pMover->isSelected() &&
-				pMover->getCommander()->getId() == Commander::home->getId())
+			if (pMover->isSelected() && pMover->getCommander()->getId() == Commander::home->getId())
 			{
-				if (pMover->getPilot()->getCurTacOrder()->code !=
-					TACTICAL_ORDER_NONE)
+				if (pMover->getPilot()->getCurTacOrder()->code != TACTICAL_ORDER_NONE)
 				{
 					pMover->getPilot()->getCurTacOrder()->attackParams.range =
 						(FireRangeType)pMover->attackRange;
 					if (pMover->attackRange == FIRERANGE_CURRENT)
-						pMover->getPilot()
-							->getCurTacOrder()
-							->attackParams.pursue = false;
+						pMover->getPilot()->getCurTacOrder()->attackParams.pursue = false;
 					else if (getFireFromCurrentPos())
-						pMover->getPilot()
-							->getCurTacOrder()
-							->attackParams.pursue = false;
+						pMover->getPilot()->getCurTacOrder()->attackParams.pursue = false;
 					else
-						pMover->getPilot()
-							->getCurTacOrder()
-							->attackParams.pursue = true;
-					pMover->getPilot()->getCurTacOrder()->pack(
-						nullptr, nullptr);
-					pMover->handleTacticalOrder(
-						*pMover->getPilot()->getCurTacOrder());
+						pMover->getPilot()->getCurTacOrder()->attackParams.pursue = true;
+					pMover->getPilot()->getCurTacOrder()->pack(nullptr, nullptr);
+					pMover->handleTacticalOrder(*pMover->getPilot()->getCurTacOrder());
 				}
 			}
 		}
@@ -2620,13 +2499,11 @@ void ControlGui::toggleChat(bool isTeamOnly)
 	bChatting ^= 1;
 	if (!bChatting && MPlayer) // over -- broadcast messages
 	{
-		EString tmp;
+		std::wstring tmp;
 		personalEdit.getEntry(tmp);
 		if (tmp.Length())
 		{
-			char team = chatIsTeamOnly
-							? MPlayer->getPlayerInfo(MPlayer->commanderID)->team
-							: -1;
+			char team = chatIsTeamOnly ? MPlayer->getPlayerInfo(MPlayer->commanderID)->team : -1;
 			MPlayer->sendChat(0, team, (PSTR)(PCSTR)tmp);
 		}
 		personalEdit.setFocus(0);
@@ -2648,8 +2525,7 @@ void ControlGui::eatChatKey()
 		personalEdit.setFocus(false);
 }
 
-void ControlGui::setChatText(
-	PCSTR playerName, PCSTR message, uint32_t color, uint32_t chatColor)
+void ControlGui::setChatText(PCSTR playerName, PCSTR message, uint32_t color, uint32_t chatColor)
 {
 	for (size_t i = 0; i < MAX_CHAT_COUNT - 1; i++)
 	{
@@ -2663,8 +2539,8 @@ void ControlGui::setChatText(
 	strcpy(chatInfos[i].playerName, playerName);
 	chatInfos[i].time		   = scenarioTime;
 	chatInfos[i].chatTextColor = chatColor;
-	int32_t totalHeight = chatEdit.font.height(message, chatEdit.width());
-	int32_t lineHeight  = chatEdit.font.height("A", chatEdit.width());
+	int32_t totalHeight		   = chatEdit.font.height(message, chatEdit.width());
+	int32_t lineHeight		   = chatEdit.font.height("A", chatEdit.width());
 	chatInfos[i].messageLength = totalHeight / lineHeight;
 	if (chatInfos[i].messageLength > 1)
 		chatInfos[i].messageLength--;
@@ -2682,18 +2558,15 @@ void ControlGui::renderChatText()
 		playerNameEdit.setColor(0xff007f00);
 		if (MPlayer)
 		{
-			MC2Player* pInfo = MPlayer->getPlayerInfo(MPlayer->commanderID);
-			int32_t color = MPlayer->colors[pInfo->baseColor[BASECOLOR_TEAM]];
+			MC2Player* pInfo  = MPlayer->getPlayerInfo(MPlayer->commanderID);
+			int32_t color	 = MPlayer->colors[pInfo->baseColor[BASECOLOR_TEAM]];
 			int32_t textColor = 0xff000000;
-			if (((color & 0xff) + ((color & 0xff00) >> 8) +
-					((color & 0xff0000) >> 16)) /
-					3 <
-				85)
+			if (((color & 0xff) + ((color & 0xff00) >> 8) + ((color & 0xff0000) >> 16)) / 3 < 85)
 				textColor = 0xffffffff;
 			playerNameEdit.setColor(color);
 			playerNameEdit.setTextColor(textColor);
 			int32_t width = playerNameEdit.getFontObject()->width(pInfo->name) +
-							playerNameEdit.getFontObject()->width(" ");
+				playerNameEdit.getFontObject()->width(" ");
 			playerNameEdit.resize(width + 8, playerNameEdit.height());
 			playerNameEdit.setEntry(pInfo->name);
 			personalEdit.move(playerNameEdit.right() - personalEdit.left(), 0);
@@ -2708,13 +2581,11 @@ void ControlGui::renderChatText()
 	int32_t curTime   = scenarioTime;
 	for (size_t i = MAX_CHAT_COUNT - 1; i > -1; i--)
 	{
-		if (chatInfos[i].messageLength &&
-			curTime - chatInfos[i].time < CHAT_DISPLAY_TIME)
+		if (chatInfos[i].messageLength && curTime - chatInfos[i].time < CHAT_DISPLAY_TIME)
 		{
 			lineCount += chatInfos[i].messageLength;
 		}
-		if (lineCount > MAX_CHAT_COUNT ||
-			curTime - chatInfos[i].time > CHAT_DISPLAY_TIME)
+		if (lineCount > MAX_CHAT_COUNT || curTime - chatInfos[i].time > CHAT_DISPLAY_TIME)
 			break;
 	}
 	i++;
@@ -2739,28 +2610,23 @@ void ControlGui::renderChatText()
 			{
 				int32_t color	 = chatInfos[i].backgroundColor;
 				int32_t textColor = 0xff000000;
-				if (((color & 0xff) + ((color & 0xff00) >> 8) +
-						((color & 0xff0000) >> 16)) /
-						3 <
+				if (((color & 0xff) + ((color & 0xff00) >> 8) + ((color & 0xff0000) >> 16)) / 3 <
 					85)
 					textColor = 0xffffffff;
-				chatEdit.resize(chatEdit.width(),
-					(chatEdit.height() + 2) * chatInfos[i].messageLength);
+				chatEdit.resize(
+					chatEdit.width(), (chatEdit.height() + 2) * chatInfos[i].messageLength);
 				playerNameEdit.setColor(color);
 				playerNameEdit.setTextColor(textColor);
 				playerNameEdit.move(0, curLine * (height + 1));
-				int32_t width = playerNameEdit.getFontObject()->width(
-									chatInfos[i].playerName) +
-								playerNameEdit.getFontObject()->width(" ");
+				int32_t width = playerNameEdit.getFontObject()->width(chatInfos[i].playerName) +
+					playerNameEdit.getFontObject()->width(" ");
 				playerNameEdit.resize(width + 8, playerNameEdit.height());
 				playerNameEdit.setEntry(chatInfos[i].playerName);
 				chatEdit.setText(chatInfos[i].message);
 				chatEdit.setColor(chatInfos[i].chatTextColor);
-				chatEdit.move(playerNameEdit.right() - chatEdit.left() + 4,
-					curLine * (height + 1));
+				chatEdit.move(playerNameEdit.right() - chatEdit.left() + 4, curLine * (height + 1));
 				int32_t oldHeight = chatEdit.font.height();
-				chatEdit.resize(
-					chatEdit.width(), chatInfos->messageLength * oldHeight);
+				chatEdit.resize(chatEdit.width(), chatInfos->messageLength * oldHeight);
 				playerNameEdit.render();
 				chatEdit.render();
 				chatEdit.resize(chatEdit.width(), oldHeight);
@@ -2800,17 +2666,13 @@ bool ControlGui::playPilotVideo(MechWarrior* pPilot, char movieCode)
 	return forceGroupBar.setPilotVideo(fileName, pPilot);
 }
 
-void ControlGui::endPilotVideo()
-{
-	forceGroupBar.setPilotVideo(nullptr, nullptr);
-}
+void ControlGui::endPilotVideo() { forceGroupBar.setPilotVideo(nullptr, nullptr); }
 
 void ControlGui::cancelInfo()
 {
 	gosEnum_KeyIndex key;
 	bool bC, bA, bS;
-	MissionInterfaceManager::instance()->getHotKey(
-		INFO_COMMAND_INDEX, key, bS, bC, bA);
+	MissionInterfaceManager::instance()->getHotKey(INFO_COMMAND_INDEX, key, bS, bC, bA);
 	if (gos_GetKeyStatus(key) != KEY_HELD)
 		getButton(INFO_COMMAND)->press(0);
 }

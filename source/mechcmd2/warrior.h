@@ -331,11 +331,11 @@ typedef TargetPriority* TargetPriorityPtr;
 class TargetPriorityList
 {
 
-  public:
+public:
 	int32_t size;
 	TargetPriority list[MAX_TARGET_PRIORITIES];
 
-  public:
+public:
 	PVOID operator new(size_t ourSize);
 
 	void operator delete(PVOID us);
@@ -354,8 +354,8 @@ class TargetPriorityList
 
 	int32_t calcAction(MechWarriorPtr pilot, GameObjectPtr target);
 
-	int32_t calcTarget(MechWarriorPtr pilot, Stuff::Vector3D location,
-		int32_t contactCriteria, int32_t& action);
+	int32_t calcTarget(
+		MechWarriorPtr pilot, Stuff::Vector3D location, int32_t contactCriteria, int32_t& action);
 };
 
 //---------------------------------------------------------------------------
@@ -393,26 +393,24 @@ typedef struct _MoveOrders
 	// order parameters
 	float time;
 	char origin;
-	int32_t speedType;				 // best, max, slow, moderate
-	float speedVelocity;			 // based upon speedType (m/s)
-	char speedState;				 // based upon speedVelocity (walk, etc.)
-	char speedThrottle;				 // if speedState is walk, else ignored
-	uint32_t goalType;				 // is there no goal, a location or object?
-	GameObjectWatchID goalObjectWID; // if our goal is an object...
-	Stuff::Vector3D
-		goalObjectPosition;		  // object's position at time of path calc
-	Stuff::Vector3D goalLocation; // goal location, if any
+	int32_t speedType;					// best, max, slow, moderate
+	float speedVelocity;				// based upon speedType (m/s)
+	char speedState;					// based upon speedVelocity (walk, etc.)
+	char speedThrottle;					// if speedState is walk, else ignored
+	uint32_t goalType;					// is there no goal, a location or object?
+	GameObjectWatchID goalObjectWID;	// if our goal is an object...
+	Stuff::Vector3D goalObjectPosition; // object's position at time of path calc
+	Stuff::Vector3D goalLocation;		// goal location, if any
 	//----------------------
 	// pathfinding guts/data
 	float nextUpdate;
 	bool newGoal;
-	Stuff::Vector3D wayPath[MAX_WAYPTS]; // if this move order has a way path...
-	char numWayPts;						 // how many way points?
-	char curWayPt;						 // current goal waypoint
-	char curWayDir; // waypath direction: 1 = forward, -1 = backward
-	char pathType;  // "quick" path or global/int32_t-range?
-	Stuff::Vector3D
-		originalGlobalGoal[2]; // 0 = original final goal, 1 = actual final goal
+	Stuff::Vector3D wayPath[MAX_WAYPTS];   // if this move order has a way path...
+	char numWayPts;						   // how many way points?
+	char curWayPt;						   // current goal waypoint
+	char curWayDir;						   // waypath direction: 1 = forward, -1 = backward
+	char pathType;						   // "quick" path or global/int32_t-range?
+	Stuff::Vector3D originalGlobalGoal[2]; // 0 = original final goal, 1 = actual final goal
 	Stuff::Vector3D globalGoalLocation;
 	GlobalPathStep globalPath[MAX_GLOBAL_PATH];
 	char numGlobalSteps;
@@ -437,26 +435,24 @@ typedef struct _SaveableMoveOrders
 	// order parameters
 	float time;
 	char origin;
-	int32_t speedType;				 // best, max, slow, moderate
-	float speedVelocity;			 // based upon speedType (m/s)
-	char speedState;				 // based upon speedVelocity (walk, etc.)
-	char speedThrottle;				 // if speedState is walk, else ignored
-	uint32_t goalType;				 // is there no goal, a location or object?
-	GameObjectWatchID goalObjectWID; // if our goal is an object...
-	Stuff::Vector3D
-		goalObjectPosition;		  // object's position at time of path calc
-	Stuff::Vector3D goalLocation; // goal location, if any
+	int32_t speedType;					// best, max, slow, moderate
+	float speedVelocity;				// based upon speedType (m/s)
+	char speedState;					// based upon speedVelocity (walk, etc.)
+	char speedThrottle;					// if speedState is walk, else ignored
+	uint32_t goalType;					// is there no goal, a location or object?
+	GameObjectWatchID goalObjectWID;	// if our goal is an object...
+	Stuff::Vector3D goalObjectPosition; // object's position at time of path calc
+	Stuff::Vector3D goalLocation;		// goal location, if any
 	//----------------------
 	// pathfinding guts/data
 	float nextUpdate;
 	bool newGoal;
-	Stuff::Vector3D wayPath[MAX_WAYPTS]; // if this move order has a way path...
-	char numWayPts;						 // how many way points?
-	char curWayPt;						 // current goal waypoint
-	char curWayDir; // waypath direction: 1 = forward, -1 = backward
-	char pathType;  // "quick" path or global/int32_t-range?
-	Stuff::Vector3D
-		originalGlobalGoal[2]; // 0 = original final goal, 1 = actual final goal
+	Stuff::Vector3D wayPath[MAX_WAYPTS];   // if this move order has a way path...
+	char numWayPts;						   // how many way points?
+	char curWayPt;						   // current goal waypoint
+	char curWayDir;						   // waypath direction: 1 = forward, -1 = backward
+	char pathType;						   // "quick" path or global/int32_t-range?
+	Stuff::Vector3D originalGlobalGoal[2]; // 0 = original final goal, 1 = actual final goal
 	Stuff::Vector3D globalGoalLocation;
 	GlobalPathStep globalPath[MAX_GLOBAL_PATH];
 	char numGlobalSteps;
@@ -491,8 +487,7 @@ typedef struct _SaveableMoveOrders
 		originalGlobalGoal[0] = orders.originalGlobalGoal[0];
 		originalGlobalGoal[1] = orders.originalGlobalGoal[1];
 		globalGoalLocation	= orders.globalGoalLocation;
-		memcpy(globalPath, orders.globalPath,
-			sizeof(GlobalPathStep) * MAX_GLOBAL_PATH);
+		memcpy(globalPath, orders.globalPath, sizeof(GlobalPathStep) * MAX_GLOBAL_PATH);
 		numGlobalSteps   = orders.numGlobalSteps;
 		curGlobalStep	= orders.curGlobalStep;
 		path[0]			 = *(orders.path[0]);
@@ -527,8 +522,7 @@ typedef struct _SaveableMoveOrders
 		orders.originalGlobalGoal[0] = originalGlobalGoal[0];
 		orders.originalGlobalGoal[1] = originalGlobalGoal[1];
 		orders.globalGoalLocation	= globalGoalLocation;
-		memcpy(orders.globalPath, globalPath,
-			sizeof(GlobalPathStep) * MAX_GLOBAL_PATH);
+		memcpy(orders.globalPath, globalPath, sizeof(GlobalPathStep) * MAX_GLOBAL_PATH);
 		orders.numGlobalSteps = numGlobalSteps;
 		orders.curGlobalStep  = curGlobalStep;
 		for (size_t i = 0; i < 2; i++)
@@ -554,11 +548,9 @@ typedef struct _AttackOrders
 {
 	float time;
 	char origin;
-	int32_t type; // to kill, to disable, etc.
-	GameObjectWatchID
-		targetWID; // current object targeted for attack, if attacking object
-	Stuff::Vector3D
-		targetPoint; // target location targeted for attack, if attacking point
+	int32_t type;				 // to kill, to disable, etc.
+	GameObjectWatchID targetWID; // current object targeted for attack, if attacking object
+	Stuff::Vector3D targetPoint; // target location targeted for attack, if attacking point
 	int32_t aimLocation;
 	bool pursue; // does this attack entail a move order too?
 	int32_t tactic;
@@ -691,9 +683,8 @@ typedef struct _MechWarriorData
 	int32_t descID;	// Used by Logistics to Desc.
 	int32_t nameIndex; // Used by Logistics to Desc.
 
-	float timeOfLastOrders; // when I ask for orders
-	AttackerRec
-		attackers[MAX_ATTACKERS]; // should never have more than 12 attackers...
+	float timeOfLastOrders;				  // when I ask for orders
+	AttackerRec attackers[MAX_ATTACKERS]; // should never have more than 12 attackers...
 	int32_t numAttackers;
 	float attackRadius;
 
@@ -774,7 +765,7 @@ typedef struct _StaticMechWarriorData
 class MechWarrior
 {
 
-  protected:
+protected:
 	// Misc.
 	bool used;
 	char name[MAXLEN_PILOT_NAME];
@@ -808,7 +799,7 @@ class MechWarrior
 	int32_t teamId;
 	GameObjectWatchID vehicleWID; // Must point to a Mover
 
-  public:
+public:
 	// Combat Stats and History
 	int32_t numSkillUses[NUM_SKILLS][NUM_COMBAT_STATS];
 	int32_t numSkillSuccesses[NUM_SKILLS][NUM_COMBAT_STATS];
@@ -827,11 +818,10 @@ class MechWarrior
 	int32_t nameIndex; // Used by Logistics to Desc.
 	static SpecialtySkillType skillTypes[NUM_SPECIALTY_SKILLS];
 
-  protected:
+protected:
 	// AI
-	float timeOfLastOrders; // when I ask for orders
-	AttackerRec
-		attackers[MAX_ATTACKERS]; // should never have more than 12 attackers...
+	float timeOfLastOrders;				  // when I ask for orders
+	AttackerRec attackers[MAX_ATTACKERS]; // should never have more than 12 attackers...
 	int32_t numAttackers;
 	float attackRadius;
 	static SortListPtr sortList;
@@ -906,7 +896,7 @@ class MechWarrior
 
 	// MechWarriorPtr next;
 
-  public:
+public:
 	static int32_t numWarriors;
 	static int32_t numWarriorsInCombat;
 	static bool brainsEnabled[MAX_TEAMS];
@@ -922,7 +912,7 @@ class MechWarrior
 
 	static BldgAppearance* wayPointMarkers[3];
 
-  public:
+public:
 	PVOID operator new(size_t ourSize);
 	void operator delete(PVOID us);
 
@@ -966,17 +956,13 @@ class MechWarrior
 
 	int32_t getPaintScheme(void) { return paintScheme; }
 
-	void setPaintScheme(int32_t newPaintScheme)
-	{
-		paintScheme = newPaintScheme;
-	}
+	void setPaintScheme(int32_t newPaintScheme) { paintScheme = newPaintScheme; }
 
 	RadioPtr getRadio(void) { return radio; }
 
 	void radioMessage(int32_t message, bool propogateIfMultiplayer = false);
 
-	void cancelRadioMessage(
-		int32_t message, bool propogateIfMultiplayer = false);
+	void cancelRadioMessage(int32_t message, bool propogateIfMultiplayer = false);
 
 	uint32_t getLastMessage(void) { return radioLog.lastMessage; }
 
@@ -1002,10 +988,7 @@ class MechWarrior
 		return (numSkillSuccesses[skillId][skillStat]);
 	}
 
-	void incNumSkillUses(int32_t skillStat, int32_t skillId)
-	{
-		numSkillUses[skillId][skillStat]++;
-	}
+	void incNumSkillUses(int32_t skillStat, int32_t skillId) { numSkillUses[skillId][skillStat]++; }
 
 	void incNumSkillSuccesses(int32_t skillStat, int32_t skillId)
 	{
@@ -1014,10 +997,7 @@ class MechWarrior
 
 	int32_t getProfessionalism(void) { return (professionalism); }
 
-	int32_t getProfessionalismModifier(void)
-	{
-		return (professionalismModifier);
-	}
+	int32_t getProfessionalismModifier(void) { return (professionalismModifier); }
 
 	int32_t getDecorum(void) { return (decorum); }
 
@@ -1029,10 +1009,7 @@ class MechWarrior
 
 	void setCourage(uint8_t _courage) { courage = _courage; }
 
-	int32_t getTeamworkModifier(void)
-	{
-		return (professionalismModifier + decorumModifier);
-	}
+	int32_t getTeamworkModifier(void) { return (professionalismModifier + decorumModifier); }
 
 	float getWounds(void) { return (wounds); }
 
@@ -1046,9 +1023,8 @@ class MechWarrior
 
 	bool hasEjected(void)
 	{
-		return (status == WARRIOR_STATUS_EJECTED ||
-				status == WARRIOR_STATUS_MIA ||
-				status == WARRIOR_STATUS_CAPTURED);
+		return (status == WARRIOR_STATUS_EJECTED || status == WARRIOR_STATUS_MIA ||
+			status == WARRIOR_STATUS_CAPTURED);
 	}
 
 	void setEscapesThruEjection(bool escapes) { escapesThruEjection = escapes; }
@@ -1063,10 +1039,7 @@ class MechWarrior
 
 	void setNotMineYet(bool result) { notMineYet = result; }
 
-	bool getSpecialtySkill(int32_t whichSkill)
-	{
-		return (specialtySkills[whichSkill]);
-	}
+	bool getSpecialtySkill(int32_t whichSkill) { return (specialtySkills[whichSkill]); }
 
 	//---------------------------------
 	// Specialty Skills
@@ -1196,11 +1169,9 @@ class MechWarrior
 
 	bool getUseGoalPlan(void) { return (useGoalPlan); }
 
-	void setMainGoal(int32_t action, GameObjectPtr obj,
-		Stuff::Vector3D* location, float range);
+	void setMainGoal(int32_t action, GameObjectPtr obj, Stuff::Vector3D* location, float range);
 
-	int32_t getMainGoal(
-		GameObjectPtr& obj, Stuff::Vector3D& location, float& range);
+	int32_t getMainGoal(GameObjectPtr& obj, Stuff::Vector3D& location, float& range);
 
 	int32_t getNumTacOrdersQueued(void) { return (numTacOrdersQueued); }
 
@@ -1211,10 +1182,7 @@ class MechWarrior
 
 	void setExecutingQueue(bool setting) { tacOrderQueueExecuting = setting; }
 
-	void setTacOrderQueueLooping(bool setting)
-	{
-		tacOrderQueueLooping = setting;
-	}
+	void setTacOrderQueueLooping(bool setting) { tacOrderQueueLooping = setting; }
 
 	bool getExecutingTacOrderQueue(void) { return (tacOrderQueueExecuting); }
 
@@ -1303,10 +1271,7 @@ class MechWarrior
 
 	void setAttackRadius(float radius) { attackRadius = radius; }
 
-	void setIntegerMemory(int32_t index, int32_t val)
-	{
-		memory[index].integer = val;
-	}
+	void setIntegerMemory(int32_t index, int32_t val) { memory[index].integer = val; }
 
 	void setRealMemory(int32_t index, float val) { memory[index].real = val; }
 
@@ -1322,8 +1287,7 @@ class MechWarrior
 
 	int32_t scanOwnVehicle(void);
 
-	void lobotomy(
-		void); // Whacks the ABL brain and just blindly follows last order.
+	void lobotomy(void); // Whacks the ABL brain and just blindly follows last order.
 
 	//-----------
 	// Tac Orders
@@ -1332,10 +1296,7 @@ class MechWarrior
 
 	TacticalOrderPtr getLastTacOrder(void) { return (&lastTacOrder); }
 
-	TacticalOrderPtr getTacOrder(int32_t _orderState)
-	{
-		return (&tacOrder[_orderState]);
-	}
+	TacticalOrderPtr getTacOrder(int32_t _orderState) { return (&tacOrder[_orderState]); }
 
 	int32_t getOrderState(void) { return (orderState); }
 
@@ -1362,11 +1323,9 @@ class MechWarrior
 
 	int32_t getMoveSpeedThrottle(void) { return (moveOrders.speedThrottle); }
 
-	int32_t setMoveGoal(
-		uint32_t type, Stuff::Vector3D* location, GameObjectPtr obj = nullptr);
+	int32_t setMoveGoal(uint32_t type, Stuff::Vector3D* location, GameObjectPtr obj = nullptr);
 
-	uint32_t getMoveGoal(
-		Stuff::Vector3D* location = nullptr, GameObjectPtr* obj = nullptr);
+	uint32_t getMoveGoal(Stuff::Vector3D* location = nullptr, GameObjectPtr* obj = nullptr);
 
 	bool getMoveGlobalGoal(Stuff::Vector3D& location)
 	{
@@ -1403,15 +1362,9 @@ class MechWarrior
 
 	MovePathPtr getMovePath(void);
 
-	void setMoveGoalObjectPos(Stuff::Vector3D pos)
-	{
-		moveOrders.goalObjectPosition = pos;
-	}
+	void setMoveGoalObjectPos(Stuff::Vector3D pos) { moveOrders.goalObjectPosition = pos; }
 
-	Stuff::Vector3D getMoveGoalObjectPos(void)
-	{
-		return (moveOrders.goalObjectPosition);
-	}
+	Stuff::Vector3D getMoveGoalObjectPos(void) { return (moveOrders.goalObjectPosition); }
 
 	void setMoveRun(bool run) { moveOrders.run = run; }
 
@@ -1453,20 +1406,11 @@ class MechWarrior
 
 	bool isYielding(void) { return (moveOrders.yieldTime > -1.0); }
 
-	void setMoveWaitForPointTime(float time)
-	{
-		moveOrders.waitForPointTime = time;
-	}
+	void setMoveWaitForPointTime(float time) { moveOrders.waitForPointTime = time; }
 
-	float getMoveWaitForPointTime(void)
-	{
-		return (moveOrders.waitForPointTime);
-	}
+	float getMoveWaitForPointTime(void) { return (moveOrders.waitForPointTime); }
 
-	bool isWaitingForPoint(void)
-	{
-		return (moveOrders.waitForPointTime > -1.0);
-	}
+	bool isWaitingForPoint(void) { return (moveOrders.waitForPointTime > -1.0); }
 
 	float getMoveDistanceLeft(void);
 
@@ -1488,16 +1432,11 @@ class MechWarrior
 
 	int32_t getMoveCurGlobalStep(void) { return (moveOrders.curGlobalStep); }
 
-	int32_t getMovePathGlobalStep(void)
-	{
-		return (moveOrders.path[0]->globalStep);
-	}
+	int32_t getMovePathGlobalStep(void) { return (moveOrders.path[0]->globalStep); }
 
-	void requestMovePath(
-		int32_t selectionIndex, uint32_t moveParams, int32_t source);
+	void requestMovePath(int32_t selectionIndex, uint32_t moveParams, int32_t source);
 
-	int32_t calcMovePath(
-		int32_t selectionIndex, uint32_t moveParams = MOVEPARAM_NONE);
+	int32_t calcMovePath(int32_t selectionIndex, uint32_t moveParams = MOVEPARAM_NONE);
 
 	int32_t calcMoveSpeedState(void)
 	{
@@ -1532,8 +1471,7 @@ class MechWarrior
 
 	GameObjectPtr getLastTarget(void);
 
-	void setLastTarget(
-		GameObjectPtr target, bool obliterate = false, bool conserveAmmo = 0);
+	void setLastTarget(GameObjectPtr target, bool obliterate = false, bool conserveAmmo = 0);
 
 	float getLastTargetTime(void) { return (lastTargetTime); }
 
@@ -1547,22 +1485,13 @@ class MechWarrior
 
 	bool getAttackPursuit(void) { return (attackOrders.pursue); }
 
-	void setAttackAimLocation(int32_t location)
-	{
-		attackOrders.aimLocation = location;
-	}
+	void setAttackAimLocation(int32_t location) { attackOrders.aimLocation = location; }
 
 	int32_t getAttackAimLocation(void) { return (attackOrders.aimLocation); }
 
-	void setAttackTargetPoint(Stuff::Vector3D location)
-	{
-		attackOrders.targetPoint = location;
-	}
+	void setAttackTargetPoint(Stuff::Vector3D location) { attackOrders.targetPoint = location; }
 
-	Stuff::Vector3D getAttackTargetPoint(void)
-	{
-		return (attackOrders.targetPoint);
-	}
+	Stuff::Vector3D getAttackTargetPoint(void) { return (attackOrders.targetPoint); }
 
 	float getAttackTargetTime(void) { return (attackOrders.targetTime); }
 
@@ -1579,39 +1508,21 @@ class MechWarrior
 
 	void setSituationMode(int32_t mode) { situationOrders.mode = mode; }
 
-	float getSituationDefFormation(void)
-	{
-		return (situationOrders.defFormation);
-	}
+	float getSituationDefFormation(void) { return (situationOrders.defFormation); }
 
-	void setSituationDefFormation(float distance)
-	{
-		situationOrders.defFormation = distance;
-	}
+	void setSituationDefFormation(float distance) { situationOrders.defFormation = distance; }
 
-	float getSituationCurFormation(void)
-	{
-		return (situationOrders.curFormation);
-	}
+	float getSituationCurFormation(void) { return (situationOrders.curFormation); }
 
-	void setSituationCurFormation(float distance)
-	{
-		situationOrders.curFormation = distance;
-	}
+	void setSituationCurFormation(float distance) { situationOrders.curFormation = distance; }
 
 	bool getSituationOpenFire(void) { return (situationOrders.openFire); }
 
-	void setSituationOpenFire(bool openFire)
-	{
-		situationOrders.openFire = openFire;
-	}
+	void setSituationOpenFire(bool openFire) { situationOrders.openFire = openFire; }
 
 	float getSituationFireRange(void) { return (situationOrders.fireRange); }
 
-	void setSituationFireRange(float range)
-	{
-		situationOrders.fireRange = range;
-	}
+	void setSituationFireRange(float range) { situationOrders.fireRange = range; }
 
 	float getSituationFireOdds(void) { return (situationOrders.fireOdds); }
 
@@ -1648,8 +1559,8 @@ class MechWarrior
 	// Command/Observation
 	int32_t executeTacticalOrder(TacticalOrderPtr order = nullptr);
 
-	int32_t calcWeaponsStatus(GameObjectPtr target, int32_t* weaponList,
-		Stuff::Vector3D* targetPoint = nullptr);
+	int32_t calcWeaponsStatus(
+		GameObjectPtr target, int32_t* weaponList, Stuff::Vector3D* targetPoint = nullptr);
 
 	void printWeaponsStatus(PSTR s);
 
@@ -1661,8 +1572,7 @@ class MechWarrior
 
 	bool movementDecisionTree(void);
 
-	void collisionAlert(
-		GameObjectPtr obstacle, float distance, float timeToImpact);
+	void collisionAlert(GameObjectPtr obstacle, float distance, float timeToImpact);
 
 	int32_t triggerAlarm(int32_t alarmCode, uint32_t triggerId = 0);
 
@@ -1710,11 +1620,11 @@ class MechWarrior
 
 	void initTargetPriorities(void);
 
-	int32_t setTargetPriority(int32_t index, int32_t type, int32_t param1,
-		int32_t param2, int32_t param3);
+	int32_t setTargetPriority(
+		int32_t index, int32_t type, int32_t param1, int32_t param2, int32_t param3);
 
-	int32_t insertTargetPriority(int32_t index, int32_t type, int32_t param1,
-		int32_t param2, int32_t param3);
+	int32_t insertTargetPriority(
+		int32_t index, int32_t type, int32_t param1, int32_t param2, int32_t param3);
 
 	int32_t setBrainState(int32_t newState);
 
@@ -1752,8 +1662,8 @@ class MechWarrior
 	//----------------
 	// Core Tac Orders
 
-	int32_t orderWait(bool unitOrder, int32_t origin,
-		int32_t seconds = 1969000.0, bool clearLastTarget = false);
+	int32_t orderWait(
+		bool unitOrder, int32_t origin, int32_t seconds = 1969000.0, bool clearLastTarget = false);
 
 	int32_t orderStop(bool unitOrder, bool setTacOrder);
 
@@ -1773,11 +1683,10 @@ class MechWarrior
 	int32_t orderJumpToObject(bool unitOrder, bool setTacOrder, int32_t origin,
 		GameObjectPtr target, int32_t selectionIndex = -1);
 
-	int32_t orderTraversePath(bool unitOrder, bool setTacOrder, int32_t origin,
-		WayPathPtr wayPath, uint32_t params = TACORDER_PARAM_NONE);
+	int32_t orderTraversePath(bool unitOrder, bool setTacOrder, int32_t origin, WayPathPtr wayPath,
+		uint32_t params = TACORDER_PARAM_NONE);
 
-	int32_t orderPatrolPath(
-		bool unitOrder, bool setTacOrder, int32_t origin, WayPathPtr wayPath);
+	int32_t orderPatrolPath(bool unitOrder, bool setTacOrder, int32_t origin, WayPathPtr wayPath);
 
 	int32_t orderPowerUp(bool unitOrder, int32_t origin);
 
@@ -1793,39 +1702,34 @@ class MechWarrior
 
 	int32_t orderUseOrbitRange(int32_t type, float range);
 
-	int32_t orderAttackObject(bool unitOrder, int32_t origin,
-		GameObjectPtr target, int32_t type, int32_t method, int32_t range,
-		int32_t aimLocation = -1, int32_t fromArea = -1,
+	int32_t orderAttackObject(bool unitOrder, int32_t origin, GameObjectPtr target, int32_t type,
+		int32_t method, int32_t range, int32_t aimLocation = -1, int32_t fromArea = -1,
 		uint32_t params = TACORDER_PARAM_NONE);
 
-	int32_t orderAttackPoint(bool unitOrder, int32_t origin,
-		Stuff::Vector3D location, int32_t type, int32_t method, int32_t range,
-		uint32_t params = TACORDER_PARAM_NONE);
+	int32_t orderAttackPoint(bool unitOrder, int32_t origin, Stuff::Vector3D location, int32_t type,
+		int32_t method, int32_t range, uint32_t params = TACORDER_PARAM_NONE);
 
-	int32_t orderWithdraw(
-		bool unitOrder, int32_t origin, Stuff::Vector3D location);
+	int32_t orderWithdraw(bool unitOrder, int32_t origin, Stuff::Vector3D location);
 
 	int32_t orderEject(bool unitOrder, bool setTacOrder, int32_t origin);
 
 	// int32_t orderUseFireOdds (int32_t odds);
 
-	int32_t orderRefit(int32_t origin, GameObjectPtr target,
+	int32_t orderRefit(int32_t origin, GameObjectPtr target, uint32_t params = TACORDER_PARAM_NONE);
+
+	int32_t orderRecover(
+		int32_t origin, GameObjectPtr target, uint32_t params = TACORDER_PARAM_NONE);
+
+	int32_t orderGetFixed(
+		int32_t origin, GameObjectPtr target, uint32_t params = TACORDER_PARAM_NONE);
+
+	int32_t orderLoadIntoCarrier(
+		int32_t origin, GameObjectPtr target, uint32_t params = TACORDER_PARAM_NONE);
+
+	int32_t orderDeployElementals(int32_t origin, uint32_t params = TACORDER_PARAM_NONE);
+
+	int32_t orderCapture(int32_t origin, GameObjectPtr target, int32_t fromArea = -1,
 		uint32_t params = TACORDER_PARAM_NONE);
-
-	int32_t orderRecover(int32_t origin, GameObjectPtr target,
-		uint32_t params = TACORDER_PARAM_NONE);
-
-	int32_t orderGetFixed(int32_t origin, GameObjectPtr target,
-		uint32_t params = TACORDER_PARAM_NONE);
-
-	int32_t orderLoadIntoCarrier(int32_t origin, GameObjectPtr target,
-		uint32_t params = TACORDER_PARAM_NONE);
-
-	int32_t orderDeployElementals(
-		int32_t origin, uint32_t params = TACORDER_PARAM_NONE);
-
-	int32_t orderCapture(int32_t origin, GameObjectPtr target,
-		int32_t fromArea = -1, uint32_t params = TACORDER_PARAM_NONE);
 
 	//--------------
 	// Combat Events
@@ -1888,8 +1792,7 @@ class MechWarrior
 			if (s == nullptr)
 				debugStrings[stringNum][0] = nullptr;
 			else
-				strncpy(
-					debugStrings[stringNum], s, MAXLEN_PILOT_DEBUG_STRING - 1);
+				strncpy(debugStrings[stringNum], s, MAXLEN_PILOT_DEBUG_STRING - 1);
 	}
 
 	PSTR getDebugString(int32_t stringNum)
@@ -1899,9 +1802,8 @@ class MechWarrior
 		return (nullptr);
 	}
 
-	int32_t calcTacOrder(int32_t goalAction, int32_t goalWID,
-		Stuff::Vector3D goalLocation, float controlRange,
-		int32_t aggressiveness, int32_t searchDepth, float turretRange,
+	int32_t calcTacOrder(int32_t goalAction, int32_t goalWID, Stuff::Vector3D goalLocation,
+		float controlRange, int32_t aggressiveness, int32_t searchDepth, float turretRange,
 		int32_t turretThreat, TacticalOrder& tacOrder);
 
 	static void initGoalManager(int32_t poolSize);

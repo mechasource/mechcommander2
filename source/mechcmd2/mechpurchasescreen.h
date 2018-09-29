@@ -30,7 +30,7 @@ MechPurchaseScreen:
 **************************************************************************************************/
 class MechPurchaseScreen : public LogisticsScreen
 {
-  public:
+public:
 	static MechPurchaseScreen* instance() { return s_instance; }
 
 	MechPurchaseScreen(void);
@@ -47,7 +47,7 @@ class MechPurchaseScreen : public LogisticsScreen
 	void beginDrag(LogisticsMech* pMech);
 	virtual int32_t handleMessage(uint32_t, uint32_t);
 
-  private:
+private:
 	MechPurchaseScreen(const MechPurchaseScreen& src);
 	MechPurchaseScreen& operator=(const MechPurchaseScreen& echPurchaseScreen);
 

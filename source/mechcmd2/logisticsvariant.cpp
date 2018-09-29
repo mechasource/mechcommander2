@@ -181,8 +181,7 @@ LogisticsVariant::LogisticsVariant()
 	fileID		  = 0;
 }
 
-LogisticsVariant::LogisticsVariant(
-	const LogisticsChassis* pChassis, bool Designer)
+LogisticsVariant::LogisticsVariant(const LogisticsChassis* pChassis, bool Designer)
 {
 	chassis			= const_cast<LogisticsChassis*>(pChassis);
 	availableToUser = 1;
@@ -248,8 +247,7 @@ bool LogisticsVariant::operator==(const LogisticsVariant& src)
 		return 0;
 	for (size_t i = 0; i < componentCount; ++i)
 	{
-		if (components[i].component->getID() !=
-			src.components[i].component->getID())
+		if (components[i].component->getID() != src.components[i].component->getID())
 		{
 			return 0;
 		}
@@ -259,8 +257,7 @@ bool LogisticsVariant::operator==(const LogisticsVariant& src)
 	return 1;
 }
 
-int32_t LogisticsVariant::init(
-	CSVFile* file, LogisticsChassis* pChassis, int32_t Variant)
+int32_t LogisticsVariant::init(CSVFile* file, LogisticsChassis* pChassis, int32_t Variant)
 {
 	bDesignerMech  = true;
 	int32_t offset = 97 * Variant;
@@ -285,11 +282,9 @@ int32_t LogisticsVariant::init(
 	for (i = 26; i < 97; i++)
 	{
 		int32_t componentID;
-		if (NO_ERROR == file->readLong(offset + i, 5, componentID) &&
-			componentID != 0xff)
+		if (NO_ERROR == file->readLong(offset + i, 5, componentID) && componentID != 0xff)
 		{
-			LogisticsComponent* pComp =
-				LogisticsData::instance->getComponent(componentID);
+			LogisticsComponent* pComp = LogisticsData::instance->getComponent(componentID);
 			if (pComp)
 			{
 				file->readLong(offset + i, 4, yLocs[componentCount]);
@@ -311,9 +306,8 @@ int32_t LogisticsVariant::init(
 					if (!addComponent(pComps[i]->getID(), xLocs[i], yLocs[i]))
 					{
 						char errorString[256];
-						sprintf(errorString,
-							"Couldn't add component with id %ld",
-							pComponent->getID());
+						sprintf(
+							errorString, "Couldn't add component with id %ld", pComponent->getID());
 					}
 				}
 			}
@@ -322,15 +316,13 @@ int32_t LogisticsVariant::init(
 	return 0;
 }
 
-bool LogisticsVariant::addComponent(
-	int32_t idFromFitFile, int32_t& x, int32_t& y)
+bool LogisticsVariant::addComponent(int32_t idFromFitFile, int32_t& x, int32_t& y)
 {
-	LogisticsComponent* pComponent =
-		LogisticsData::instance->getComponent(idFromFitFile);
+	LogisticsComponent* pComponent = LogisticsData::instance->getComponent(idFromFitFile);
 	if (!pComponent)
 	{
 		//	Assert( 0, idFromFitFile, "couldn't find the component in the fit
-		//file\n" );
+		// file\n" );
 		delete pComponent;
 		return false;
 	}
@@ -340,7 +332,7 @@ bool LogisticsVariant::addComponent(
 		x = y = -2;
 	}
 	else if (pComponent->getType() == COMPONENT_FORM_ECM ||
-			 pComponent->getType() == COMPONENT_FORM_SENSOR)
+		pComponent->getType() == COMPONENT_FORM_SENSOR)
 	{
 		components[componentCount].location = HEAD;
 		x = y = -3;
@@ -354,8 +346,7 @@ bool LogisticsVariant::addComponent(
 		{
 			for (size_t j = 0; j < chassis->componentAreaHeight && x == -1; j++)
 			{
-				for (size_t i = 0; i < chassis->componentAreaWidth && x == -1;
-					 i++)
+				for (size_t i = 0; i < chassis->componentAreaWidth && x == -1; i++)
 				{
 					bool bAdd = true;
 					for (size_t l = 0; l < componentHeight; ++l)
@@ -432,10 +423,7 @@ int32_t LogisticsVariant::getWeight(void) const
 	return baseWeight;
 }
 
-const EString& LogisticsVariant::getMechClass(void) const
-{
-	return chassis->mechClass;
-}
+const std::wstring& LogisticsVariant::getMechClass(void) const { return chassis->mechClass; }
 
 int32_t LogisticsVariant::getMaxJumpRange(void) const { return 5; }
 
@@ -479,10 +467,7 @@ int32_t LogisticsVariant::getArmor() const
 
 int32_t LogisticsVariant::getSpeed(void) const { return chassis->speed; }
 
-int32_t LogisticsVariant::getDisplaySpeed(void) const
-{
-	return chassis->getDisplaySpeed();
-}
+int32_t LogisticsVariant::getDisplaySpeed(void) const { return chassis->getDisplaySpeed(); }
 int32_t LogisticsVariant::getMaxHeat(void) const
 {
 	int32_t heat = 0;
@@ -516,8 +501,7 @@ int32_t LogisticsVariant::canAddComponent(
 			return COMPONENT_SLOT_FULL;
 		return 0;
 	}
-	else if (x == -2 &&
-			 y == -2) // trying to put something illegal in jump jet slot
+	else if (x == -2 && y == -2) // trying to put something illegal in jump jet slot
 		return COMPONENT_SLOT_FULL;
 	if (x != -1 && y != -1)
 	{
@@ -525,8 +509,7 @@ int32_t LogisticsVariant::canAddComponent(
 		{
 			for (size_t j = 0; j < pComponent->getComponentHeight(); j++)
 			{
-				if (getComponentAtLocation(x + i, y + j) ||
-					x + i >= chassis->componentAreaWidth ||
+				if (getComponentAtLocation(x + i, y + j) || x + i >= chassis->componentAreaWidth ||
 					j + y >= chassis->componentAreaHeight)
 					return COMPONENT_SLOT_FULL;
 			}
@@ -541,11 +524,9 @@ int32_t LogisticsVariant::canAddComponent(
 				if (!getComponentAtLocation(i, j))
 				{
 					bool bAdd = true;
-					for (size_t l = 0; l < pComponent->getComponentHeight();
-						 ++l)
+					for (size_t l = 0; l < pComponent->getComponentHeight(); ++l)
 					{
-						for (size_t k = 0; k < pComponent->getComponentWidth();
-							 ++k)
+						for (size_t k = 0; k < pComponent->getComponentWidth(); ++k)
 						{
 							if (getComponentAtLocation(i + k, j + l) ||
 								(i + k >= chassis->componentAreaWidth) ||
@@ -604,8 +585,7 @@ const LogisticsChassis::ComponentInfo* LogisticsVariant::getComponentAtLocation(
 		{
 			for (size_t k = 0; k < pComponent->getComponentWidth(); ++k)
 			{
-				if (components[i].xCoord + k == x &&
-					components[i].yCoord + j == y)
+				if (components[i].xCoord + k == x && components[i].yCoord + j == y)
 				{
 					return &components[i];
 				}
@@ -643,8 +623,8 @@ bool LogisticsVariant::hasSensor(void) const
 	return false;
 }
 
-int32_t LogisticsVariant::getComponentsWithLocation(int32_t& count,
-	int32_t* IDArray, int32_t* xLocationArray, int32_t* yLocationArray)
+int32_t LogisticsVariant::getComponentsWithLocation(
+	int32_t& count, int32_t* IDArray, int32_t* xLocationArray, int32_t* yLocationArray)
 {
 	if (count < componentCount)
 		return NEED_BIGGER_ARRAY;
@@ -671,12 +651,10 @@ int32_t LogisticsVariant::getComponents(int32_t& count, int32_t* array)
 int32_t LogisticsVariant::removeComponent(int32_t xCoord, int32_t yCoord)
 {
 	LogisticsChassis::ComponentInfo* info =
-		const_cast<LogisticsChassis::ComponentInfo*>(
-			getComponentAtLocation(xCoord, yCoord));
+		const_cast<LogisticsChassis::ComponentInfo*>(getComponentAtLocation(xCoord, yCoord));
 	if (!info)
 		return -1;
-	if (info->component &&
-		info->component->getType() == COMPONENT_FORM_HEATSINK)
+	if (info->component && info->component->getType() == COMPONENT_FORM_HEATSINK)
 	{
 		if (getMaxHeat() - info->component->getDamage() < getHeat())
 			return INSUFFICIENT_HEAT;
@@ -688,8 +666,7 @@ int32_t LogisticsVariant::removeComponent(int32_t xCoord, int32_t yCoord)
 		if (&components[i] == info)
 		{
 			memmove(&components[i], &components[i + 1],
-				(componentCount - (i + 1)) *
-					sizeof(LogisticsChassis::ComponentInfo));
+				(componentCount - (i + 1)) * sizeof(LogisticsChassis::ComponentInfo));
 			break;
 		}
 	}
@@ -741,8 +718,7 @@ int32_t LogisticsVariant::save(FitIniFile& file, int32_t counter)
 
 void LogisticsVariant::setName(PCSTR pName) { variantName = pName; }
 
-int32_t LogisticsVariant::getComponents(
-	int32_t& count, LogisticsComponent** array)
+int32_t LogisticsVariant::getComponents(int32_t& count, LogisticsComponent** array)
 {
 	if (count < componentCount)
 		return NEED_BIGGER_ARRAY;
@@ -768,8 +744,7 @@ LogisticsComponent* LogisticsVariant::getCompAtLocation(
 	return 0;
 }
 
-int32_t LogisticsVariant::getComponentLocation(
-	LogisticsComponent* pComp, int32_t& x, int32_t& y)
+int32_t LogisticsVariant::getComponentLocation(LogisticsComponent* pComp, int32_t& x, int32_t& y)
 {
 	const LogisticsChassis::ComponentInfo* pInfo = getComponentAtLocation(x, y);
 	x = y = -1;
@@ -808,13 +783,10 @@ int32_t LogisticsVariant::getOptimalRangeString(int32_t& color) const
 			float damageTimeRating = components[i].component->getDamage();
 			if (components[i].component->getRecycleTime())
 				damageTimeRating = components[i].component->getDamage() /
-								   components[i].component->getRecycleTime();
-			rangeDamage[components[i].component->getRangeType()] +=
-				damageTimeRating;
-			if (rangeDamage[components[i].component->getRangeType()] >
-				maxDamage)
-				maxDamage =
-					rangeDamage[components[i].component->getRangeType()];
+					components[i].component->getRecycleTime();
+			rangeDamage[components[i].component->getRangeType()] += damageTimeRating;
+			if (rangeDamage[components[i].component->getRangeType()] > maxDamage)
+				maxDamage = rangeDamage[components[i].component->getRangeType()];
 		}
 	}
 	for (i = 0; i < 3; i++)
@@ -895,8 +867,7 @@ void LogisticsVehicle::init(FitIniFile& file)
 		{
 			uint8_t fitID;
 			file.readIdUChar("MasterID", fitID);
-			LogisticsComponent* pComponent =
-				LogisticsData::instance->getComponent(fitID);
+			LogisticsComponent* pComponent = LogisticsData::instance->getComponent(fitID);
 			if (pComponent)
 			{
 				components[componentCount].component = pComponent;
@@ -908,8 +879,7 @@ void LogisticsVehicle::init(FitIniFile& file)
 	}
 }
 
-int32_t LogisticsVehicle::getComponents(
-	int32_t& count, LogisticsComponent** array)
+int32_t LogisticsVehicle::getComponents(int32_t& count, LogisticsComponent** array)
 {
 	gosASSERT(componentCount <= count);
 	for (size_t i = 0; i < componentCount; ++i)

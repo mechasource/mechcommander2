@@ -23,7 +23,7 @@ cuint32_t MAX_TEXTURES_NEEDED = 6;
 //--------------------------------------------------------------------------
 class MC2Movie
 {
-  public:
+public:
 	MC2Movie(void)
 	{
 		MC2Surface = nullptr;
@@ -100,12 +100,11 @@ class MC2Movie
 
 	PSTR getMovieName(void) { return m_MC2Name; }
 
-  protected:
-	uint32_t*
-		MC2Surface; // Extra surface used if MC2 Movie is larger then 256x256
+protected:
+	uint32_t* MC2Surface; // Extra surface used if MC2 Movie is larger then 256x256
 	uint32_t mc2TextureNodeIndex[MAX_TEXTURES_NEEDED]; // Handles to textures
 													   // for MC2 movie data.
-	RECT MC2Rect; // Physical Location on screen for MC2 movie.
+	RECT MC2Rect;									   // Physical Location on screen for MC2 movie.
 
 	uint32_t numWide;			// Number of textures wide display is
 	uint32_t numHigh;			// Number of textures high the display is
@@ -115,13 +114,13 @@ class MC2Movie
 
 	uint32_t singleTextureSize; // Size of the single texture.  Fit it to
 								// smallest texture we can use.
-	bool stillPlaying; // Is MC2 movie over?
+	bool stillPlaying;			// Is MC2 movie over?
 
 	bool separateWAVE; // Tells us if this MC2 movie has a separate soundtrack.
 	bool soundStarted; // If this MC2 movie has a separate soundtrack, this
 					   // tells us when to start it.
-	char* waveName;  // Name of the wavefile.
-	char* m_MC2Name; // Name of the Movie.
+	char* waveName;	// Name of the wavefile.
+	char* m_MC2Name;   // Name of the Movie.
 
 	void BltMovieFrame(void); // Actually moves frame data from MC2 movie to
 							  // surface and/or texture(s)

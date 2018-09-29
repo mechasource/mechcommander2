@@ -120,8 +120,7 @@ void aListBox::update()
 		int32_t i;
 		for (i = 0; i < itemCount; i++)
 		{
-			if (bInside && items[i]->pointInside(mouseX, mouseY) &&
-				items[i]->isShowing() &&
+			if (bInside && items[i]->pointInside(mouseX, mouseY) && items[i]->isShowing() &&
 				items[i]->getState() != aListItem::DISABLED)
 			{
 				if (userInput->isLeftClick())
@@ -135,8 +134,7 @@ void aListBox::update()
 					iHighlight = i;
 				}
 			}
-			if (items[i]->globalBottom() > globalTop() &&
-				items[i]->globalTop() < globalBottom())
+			if (items[i]->globalBottom() > globalTop() && items[i]->globalTop() < globalBottom())
 			{
 				items[i]->showGUIWindow(1);
 			}
@@ -152,16 +150,14 @@ void aListBox::update()
 				items[i]->setState(aListItem::SELECTED);
 				itemSelected = i;
 			}
-			else if (iHighlight == i &&
-					 items[i]->getState() != aListItem::SELECTED)
+			else if (iHighlight == i && items[i]->getState() != aListItem::SELECTED)
 			{
 				if (items[i]->getState() != aListItem::HIGHLITE)
 					sndSystem->playDigitalSample(highlightSFX);
 				items[i]->setState(aListItem::HIGHLITE);
 			}
-			else if ((iSel != -1 ||
-						 items[i]->getState() != aListItem::SELECTED) &&
-					 items[i]->getState() != aListItem::DISABLED)
+			else if ((iSel != -1 || items[i]->getState() != aListItem::SELECTED) &&
+				items[i]->getState() != aListItem::DISABLED)
 				items[i]->setState(aListItem::ENABLED);
 			items[i]->update();
 		}
@@ -234,8 +230,7 @@ void aListBox::render()
 		bool bItemOutOfRange = 0;
 		for (size_t i = 0; i < itemCount; i++)
 		{
-			if (items[i]->globalBottom() > globalTop() &&
-				items[i]->globalTop() < globalBottom())
+			if (items[i]->globalBottom() > globalTop() && items[i]->globalTop() < globalBottom())
 			{
 				items[i]->render();
 				if (items[i]->globalTop() < globalTop())
@@ -260,8 +255,7 @@ void aListBox::render()
 		// draw black box above this
 		if (bTop || bBottom)
 		{
-			RECT rect = {globalX(), globalY() - topHeight, globalX() + width(),
-				globalY()};
+			RECT rect = {globalX(), globalY() - topHeight, globalX() + width(), globalY()};
 			if (bTop)
 				drawRect(rect, 0xff000000);
 			rect.top	= globalY() + height() + 1;
@@ -299,13 +293,11 @@ int32_t aListBox::AddItem(aListItem* add)
 	float lastY = globalY() + topSkip;
 	if (itemCount)
 	{
-		lastY = items[itemCount - 1]->globalY() +
-				items[itemCount - 1]->height() + skipAmount;
+		lastY = items[itemCount - 1]->globalY() + items[itemCount - 1]->height() + skipAmount;
 	}
 	items[itemCount++] = add;
 	add->moveTo(lastX, lastY);
-	if (add->globalRight() >
-		globalRight()) // can't have it hanging over the edge
+	if (add->globalRight() > globalRight()) // can't have it hanging over the edge
 	{
 		float shrink = globalRight() - add->globalRight();
 		add->resize(add->width() + shrink, add->height());
@@ -314,8 +306,7 @@ int32_t aListBox::AddItem(aListItem* add)
 	{
 		int32_t itemsTotalHeight = 0;
 		if (items)
-			itemsTotalHeight =
-				items[itemCount - 1]->bottom() - items[0]->top() + skipAmount;
+			itemsTotalHeight = items[itemCount - 1]->bottom() - items[0]->top() + skipAmount;
 		if (itemsTotalHeight > scrollBar->height())
 			scrollBar->SetScrollMax(itemsTotalHeight - scrollBar->height());
 		else
@@ -351,8 +342,7 @@ int32_t aListBox::InsertItem(aListItem* itemString, int32_t where)
 	}
 	itemString->moveTo(lastX, lastY);
 	itemString->showGUIWindow(true);
-	if (itemString->globalRight() >
-		globalRight()) // can't have it hanging over the edge
+	if (itemString->globalRight() > globalRight()) // can't have it hanging over the edge
 	{
 		float shrink = globalRight() - itemString->globalRight();
 		itemString->resize(itemString->width() + shrink, itemString->height());
@@ -433,16 +423,14 @@ int32_t aListBox::SelectItem(int32_t itemNumber)
 		if (pItem)
 		{
 			pItem->setState(aListItem::SELECTED);
-			if (!pItem->isShowing() ||
-				pItem->globalY() + pItem->height() > globalY() + height() ||
+			if (!pItem->isShowing() || pItem->globalY() + pItem->height() > globalY() + height() ||
 				pItem->globalY() + pItem->height() < globalY())
 			{
-				int32_t newPos =
-					(pItem->globalY() + pItem->height() - globalY()) -
+				int32_t newPos = (pItem->globalY() + pItem->height() - globalY()) -
 					scrollBar->height() + scrollBar->GetScrollPos();
 				scrollBar->SetScroll(newPos); //				float itemY =
-											  //pItem->globalY() +
-											  //pItem->height();
+											  // pItem->globalY() +
+											  // pItem->height();
 			}
 		}
 	}
@@ -472,8 +460,7 @@ void aListBox::scroll(int32_t amount)
 	if (amount < 0 && items[0]->globalY() > globalY()) // no need to scroll
 		return;
 	else if (amount > 0 &&
-			 (items[itemCount - 1]->globalY() +
-				 items[itemCount - 1]->height()) < (globalY() + height()))
+		(items[itemCount - 1]->globalY() + items[itemCount - 1]->height()) < (globalY() + height()))
 		return;
 	for (size_t i = 0; i < itemCount; i++)
 	{
@@ -549,8 +536,7 @@ aDropList& aDropList::operator=(const aDropList& src)
 		}
 	}
 	addChild(&listBox);
-	listBox.init(rects[2].globalX(), rects[2].globalY(), rects[2].width(),
-		listBoxMaxHeight);
+	listBox.init(rects[2].globalX(), rects[2].globalY(), rects[2].width(), listBoxMaxHeight);
 	listBox.setOrange(true);
 	addChild(&expandButton);
 	expandButton = src.expandButton;
@@ -585,8 +571,7 @@ int32_t aDropList::init(FitIniFile* file, PCSTR blockName)
 	}
 	listBoxMaxHeight = rects[2].height();
 	// rects[2].resize(rects[2].width(), rects[1].height());
-	listBox.init(rects[2].globalX(), rects[2].globalY(), rects[2].width(),
-		listBoxMaxHeight);
+	listBox.init(rects[2].globalX(), rects[2].globalY(), rects[2].width(), listBoxMaxHeight);
 	rects[2].showGUIWindow(false);
 	listBox.showGUIWindow(false);
 	if (width < rects[1].width())
@@ -661,12 +646,11 @@ void aDropList::render()
 			if (pListItem)
 			{
 				float l, t, w, h;
-				l = pListItem->globalLeft();
-				t = pListItem->globalTop();
-				w = pListItem->width();
-				h = pListItem->height();
-				float availableWidth =
-					(expandButton.globalLeft() - 1) - (globalLeft() + 1);
+				l					 = pListItem->globalLeft();
+				t					 = pListItem->globalTop();
+				w					 = pListItem->width();
+				h					 = pListItem->height();
+				float availableWidth = (expandButton.globalLeft() - 1) - (globalLeft() + 1);
 				if ((0 < availableWidth) && (w > availableWidth))
 				{
 					pListItem->resize(availableWidth, h);
@@ -717,8 +701,7 @@ void aDropList::update()
 			// lose focus if appropriate
 			if (ListBox().isShowing() &&
 				(!pointInside(userInput->getMouseX(), userInput->getMouseY()) ||
-					(ListBox().pointInside(
-						 userInput->getMouseX(), userInput->getMouseY()) &&
+					(ListBox().pointInside(userInput->getMouseX(), userInput->getMouseY()) &&
 						!ListBox().pointInScrollBar(
 							userInput->getMouseX(), userInput->getMouseY()))))
 			{
@@ -783,9 +766,7 @@ int32_t aDropList::AddItem(aListItem* itemString)
 {
 	int32_t retval = ListBox().AddItem(itemString);
 	float newHeight =
-		(itemString->height() + ListBox().getSpaceBetweenItems()) *
-			ListBox().GetItemCount() +
-		4;
+		(itemString->height() + ListBox().getSpaceBetweenItems()) * ListBox().GetItemCount() + 4;
 	if (newHeight > listBoxMaxHeight)
 	{
 		newHeight = listBoxMaxHeight;
@@ -898,8 +879,7 @@ int32_t aComboBox::init(FitIniFile* file, PCSTR blockName)
 	expandButton.setDisabledFX(LOG_WRONGBUTTON);
 	listBoxMaxHeight = rects[2].height();
 	// rects[2].resize(rects[2].width(), entry.height());
-	listBox.init(rects[2].globalX(), rects[2].globalY(), rects[2].width(),
-		listBoxMaxHeight);
+	listBox.init(rects[2].globalX(), rects[2].globalY(), rects[2].width(), listBoxMaxHeight);
 	rects[2].showGUIWindow(false);
 	listBox.showGUIWindow(false);
 	if (width < entry.width())
@@ -967,12 +947,10 @@ void aComboBox::update()
 			}
 			// lose focus if appropriate
 			else if (ListBox().isShowing() &&
-					 (!pointInside(
-						  userInput->getMouseX(), userInput->getMouseY()) ||
-						 (ListBox().pointInside(
-							 userInput->getMouseX(), userInput->getMouseY())) &&
-							 !ListBox().pointInScrollBar(userInput->getMouseX(),
-								 userInput->getMouseY())))
+				(!pointInside(userInput->getMouseX(), userInput->getMouseY()) ||
+					(ListBox().pointInside(userInput->getMouseX(), userInput->getMouseY())) &&
+						!ListBox().pointInScrollBar(
+							userInput->getMouseX(), userInput->getMouseY())))
 			{
 				listBox.showGUIWindow(false);
 				rects[2].showGUIWindow(false);
@@ -980,10 +958,9 @@ void aComboBox::update()
 		}
 		if (0 <= ListBox().GetSelectedItem())
 		{
-			selectionIndex		 = ListBox().GetSelectedItem();
-			aListItem* pListItem = ListBox().GetItem(selectionIndex);
-			aTextListItem* pTextListItem =
-				dynamic_cast<aTextListItem*>(pListItem);
+			selectionIndex				 = ListBox().GetSelectedItem();
+			aListItem* pListItem		 = ListBox().GetItem(selectionIndex);
+			aTextListItem* pTextListItem = dynamic_cast<aTextListItem*>(pListItem);
 			if (0 != pTextListItem)
 			{
 				entry.setEntry(pTextListItem->getText());
@@ -1048,8 +1025,7 @@ bool aComboBox::pointInside(int32_t xPos, int32_t yPos) const
 
 int32_t aComboBox::AddItem(aListItem* itemString)
 {
-	float newHeight =
-		(itemString->height() + (float)ListBox().getSpaceBetweenItems()) *
+	float newHeight = (itemString->height() + (float)ListBox().getSpaceBetweenItems()) *
 			((float)ListBox().GetItemCount() + 1) +
 		4;
 	if (newHeight > listBoxMaxHeight)
@@ -1127,8 +1103,7 @@ void aTextListItem::render()
 		return;
 	float y			= location[2].y - location[0].y;
 	float tmpHeight = font.height();
-	if (y > tmpHeight && font.height(text, width()) <= tmpHeight &&
-		!bForceToTop)
+	if (y > tmpHeight && font.height(text, width()) <= tmpHeight && !bForceToTop)
 	{
 		y = (location[2].y + location[0].y) / 2.f - tmpHeight / 2.f;
 	}
@@ -1169,10 +1144,7 @@ void aTextListItem::init(FitIniFile& file, PCSTR blockName)
 
 //////////////////////////////////////////////////////////////////
 
-aAnimTextListItem::aAnimTextListItem(const aAnimTextListItem& src)
-{
-	CopyData(src);
-}
+aAnimTextListItem::aAnimTextListItem(const aAnimTextListItem& src) { CopyData(src); }
 aAnimTextListItem& aAnimTextListItem::operator=(const aAnimTextListItem& src)
 {
 	if (&src != this)

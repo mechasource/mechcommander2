@@ -66,13 +66,11 @@
 #include "warrior.h"
 #endif
 
-char Team::relations[MAX_TEAMS][MAX_TEAMS] = {
-	{0, 2, RELATION_NEUTRAL, 2, 2, 2, 2, 2}, {2, 0, 2, 2, 2, 2, 2, 2},
-	{RELATION_NEUTRAL, 2, 0, 2, 2, 2, 2, 2}, {2, 2, 2, 0, 2, 2, 2, 2},
-	{2, 2, 2, 2, 0, 2, 2, 2}, {2, 2, 2, 2, 2, 0, 2, 2},
-	{2, 2, 2, 2, 2, 2, 0, 2}, {2, 2, 2, 2, 2, 2, 2, 0}};
-bool Team::noPain[MAX_TEAMS] = {
-	false, false, false, false, false, false, false, false};
+char Team::relations[MAX_TEAMS][MAX_TEAMS] = {{0, 2, RELATION_NEUTRAL, 2, 2, 2, 2, 2},
+	{2, 0, 2, 2, 2, 2, 2, 2}, {RELATION_NEUTRAL, 2, 0, 2, 2, 2, 2, 2}, {2, 2, 2, 0, 2, 2, 2, 2},
+	{2, 2, 2, 2, 0, 2, 2, 2}, {2, 2, 2, 2, 2, 0, 2, 2}, {2, 2, 2, 2, 2, 2, 0, 2},
+	{2, 2, 2, 2, 2, 2, 2, 0}};
+bool Team::noPain[MAX_TEAMS] = {false, false, false, false, false, false, false, false};
 
 int32_t Team::numTeams		   = 0;
 TeamPtr Team::home			   = nullptr;
@@ -218,17 +216,15 @@ void Team::removeFromRoster(MoverPtr mover)
 
 //---------------------------------------------------------------------------
 
-bool Team::isContact(
-	GameObjectPtr looker, MoverPtr mover, int32_t contactCriteria)
+bool Team::isContact(GameObjectPtr looker, MoverPtr mover, int32_t contactCriteria)
 {
-	return (SensorManager->getTeamSensor(id)->meetsCriteria(
-		looker, mover, contactCriteria));
+	return (SensorManager->getTeamSensor(id)->meetsCriteria(looker, mover, contactCriteria));
 }
 
 //---------------------------------------------------------------------------
 
-int32_t Team::getContacts(GameObjectPtr looker, int32_t* contactList,
-	int32_t contactCriteria, int32_t sortType)
+int32_t Team::getContacts(
+	GameObjectPtr looker, int32_t* contactList, int32_t contactCriteria, int32_t sortType)
 {
 	return (SensorManager->getTeamSensor(id)->getContacts(
 		looker, contactList, contactCriteria, sortType));
@@ -297,8 +293,7 @@ void Team::eject(void)
 		if (mover)
 		{
 			if (mover->getObjectClass() == BATTLEMECH)
-				mover->getPilot()->orderEject(
-					false, true, ORDER_ORIGIN_COMMANDER);
+				mover->getPilot()->orderEject(false, true, ORDER_ORIGIN_COMMANDER);
 			else
 			{
 				WeaponShotInfo shot;
@@ -330,11 +325,11 @@ void Team::destroyTargets(void)
 				for (size_t i = 0; i < 100; i++)
 				{
 					if (RollDice(30))
-						shot.hitLocation = target->calcHitLocation(
-							nullptr, -1, ATTACKSOURCE_DFA, 0);
+						shot.hitLocation =
+							target->calcHitLocation(nullptr, -1, ATTACKSOURCE_DFA, 0);
 					else
-						shot.hitLocation = target->calcHitLocation(
-							nullptr, -1, ATTACKSOURCE_ARTILLERY, 0);
+						shot.hitLocation =
+							target->calcHitLocation(nullptr, -1, ATTACKSOURCE_ARTILLERY, 0);
 					if (MPlayer)
 					{
 						target->handleWeaponHit(&shot, true);
@@ -356,10 +351,8 @@ bool Team::isTargeting(GameObjectWatchID targetWID, GameObjectWatchID exceptWID)
 		{
 			if (roster[i] == exceptWID)
 				continue;
-			MoverPtr mover =
-				dynamic_cast<MoverPtr>(ObjectManager->getByWatchID(roster[i]));
-			Assert(mover != nullptr, roster[i],
-				" Team.isTargeting: nullptr mover ");
+			MoverPtr mover = dynamic_cast<MoverPtr>(ObjectManager->getByWatchID(roster[i]));
+			Assert(mover != nullptr, roster[i], " Team.isTargeting: nullptr mover ");
 			MechWarriorPtr pilot = mover->getPilot();
 			if (pilot)
 			{
@@ -371,10 +364,8 @@ bool Team::isTargeting(GameObjectWatchID targetWID, GameObjectWatchID exceptWID)
 	else
 		for (size_t i = 0; i < rosterSize; i++)
 		{
-			MoverPtr mover =
-				dynamic_cast<MoverPtr>(ObjectManager->getByWatchID(roster[i]));
-			Assert(mover != nullptr, roster[i],
-				" Team.isTargeting: nullptr mover ");
+			MoverPtr mover = dynamic_cast<MoverPtr>(ObjectManager->getByWatchID(roster[i]));
+			Assert(mover != nullptr, roster[i], " Team.isTargeting: nullptr mover ");
 			MechWarriorPtr pilot = mover->getPilot();
 			if (pilot)
 			{
@@ -395,13 +386,10 @@ bool Team::isCapturing(GameObjectWatchID targetWID, GameObjectWatchID exceptWID)
 		{
 			if (roster[i] == exceptWID)
 				continue;
-			MoverPtr mover =
-				dynamic_cast<MoverPtr>(ObjectManager->getByWatchID(roster[i]));
-			Assert(mover != nullptr, roster[i],
-				" Team.isTargeting: nullptr mover ");
+			MoverPtr mover = dynamic_cast<MoverPtr>(ObjectManager->getByWatchID(roster[i]));
+			Assert(mover != nullptr, roster[i], " Team.isTargeting: nullptr mover ");
 			MechWarriorPtr pilot = mover->getPilot();
-			if (pilot &&
-				(pilot->getCurTacOrder()->code == TACTICAL_ORDER_CAPTURE))
+			if (pilot && (pilot->getCurTacOrder()->code == TACTICAL_ORDER_CAPTURE))
 			{
 				GameObjectPtr target = pilot->getCurTacOrder()->getTarget();
 				if (target && (target->getWatchID() == targetWID))
@@ -411,13 +399,10 @@ bool Team::isCapturing(GameObjectWatchID targetWID, GameObjectWatchID exceptWID)
 	else
 		for (size_t i = 0; i < rosterSize; i++)
 		{
-			MoverPtr mover =
-				dynamic_cast<MoverPtr>(ObjectManager->getByWatchID(roster[i]));
-			Assert(mover != nullptr, roster[i],
-				" Team.isTargeting: nullptr mover ");
+			MoverPtr mover = dynamic_cast<MoverPtr>(ObjectManager->getByWatchID(roster[i]));
+			Assert(mover != nullptr, roster[i], " Team.isTargeting: nullptr mover ");
 			MechWarriorPtr pilot = mover->getPilot();
-			if (pilot &&
-				(pilot->getCurTacOrder()->code == TACTICAL_ORDER_CAPTURE))
+			if (pilot && (pilot->getCurTacOrder()->code == TACTICAL_ORDER_CAPTURE))
 			{
 				GameObjectPtr target = pilot->getCurTacOrder()->getTarget();
 				if (target && (target->getWatchID() == targetWID))
@@ -439,20 +424,17 @@ void Team::markRadiusSeen(Stuff::Vector3D& location, float radius)
 
 //---------------------------------------------------------------------------
 
-void Team::markRadiusSeenToTeams(
-	Stuff::Vector3D& location, float radius, bool shrinkForNight)
+void Team::markRadiusSeenToTeams(Stuff::Vector3D& location, float radius, bool shrinkForNight)
 {
 	if (radius < 0.0)
 		radius = fireVisualRange;
 	if (shrinkForNight)
 		radius -= (radius * 0.25f);
-	bool didTeam[MAX_TEAMS] = {
-		false, false, false, false, false, false, false, false};
+	bool didTeam[MAX_TEAMS] = {false, false, false, false, false, false, false, false};
 	for (size_t i = 0; i < ObjectManager->getNumMovers(); i++)
 	{
 		MoverPtr mover = ObjectManager->getMover(i);
-		if (mover->getTeam() && !didTeam[mover->getTeamId()] &&
-			!isFriendly(mover->getTeam()))
+		if (mover->getTeam() && !didTeam[mover->getTeamId()] && !isFriendly(mover->getTeam()))
 		{
 			Stuff::Vector3D result;
 			result.x   = location.x - mover->getPosition().x;
@@ -803,10 +785,9 @@ bool Team::teamLineOfSight(Stuff::Vector3D tPos, float extRad)
 			float baseElevation = MapData::waterDepth;
 			if (MapData::waterDepth < Terrain::userMin)
 				baseElevation = Terrain::userMin;
-			float altitude = obj->getPosition().z - baseElevation;
-			float altitudeIntegerRange =
-				(Terrain::userMax - baseElevation) * 0.00390625f;
-			int32_t altLevel = 0;
+			float altitude			   = obj->getPosition().z - baseElevation;
+			float altitudeIntegerRange = (Terrain::userMax - baseElevation) * 0.00390625f;
+			int32_t altLevel		   = 0;
 			if (altitudeIntegerRange > Stuff::SMALL)
 				altLevel = altitude / altitudeIntegerRange;
 			if (altLevel < 0)
@@ -824,16 +805,14 @@ bool Team::teamLineOfSight(Stuff::Vector3D tPos, float extRad)
 			}
 			if (dist <= (radius * 25.0f * worldUnitsPerMeter))
 			{
-				if (lineOfSight(
-						obj->getLOSPosition(), tPos, id, extRad, 0.0f, false))
+				if (lineOfSight(obj->getLOSPosition(), tPos, id, extRad, 0.0f, false))
 					return true;
 			}
 		}
 	}
 	//-------------------------------------------------------------------------
 	// Check the lookout towers now.  You can find them in special Buildings!!
-	for (size_t spBuilding = 0; spBuilding < ObjectManager->numSpecialBuildings;
-		 spBuilding++)
+	for (size_t spBuilding = 0; spBuilding < ObjectManager->numSpecialBuildings; spBuilding++)
 	{
 		if (ObjectManager->specialBuildings[spBuilding] &&
 			ObjectManager->specialBuildings[spBuilding]->getExists() &&
@@ -852,10 +831,9 @@ bool Team::teamLineOfSight(Stuff::Vector3D tPos, float extRad)
 				float baseElevation = MapData::waterDepth;
 				if (MapData::waterDepth < Terrain::userMin)
 					baseElevation = Terrain::userMin;
-				float altitude = obj->getPosition().z - baseElevation;
-				float altitudeIntegerRange =
-					(Terrain::userMax - baseElevation) * 0.00390625f;
-				int32_t altLevel = 0;
+				float altitude			   = obj->getPosition().z - baseElevation;
+				float altitudeIntegerRange = (Terrain::userMax - baseElevation) * 0.00390625f;
+				int32_t altLevel		   = 0;
 				if (altitudeIntegerRange > Stuff::SMALL)
 					altLevel = altitude / altitudeIntegerRange;
 				if (altLevel < 0)
@@ -873,8 +851,8 @@ bool Team::teamLineOfSight(Stuff::Vector3D tPos, float extRad)
 				}
 				if (dist <= (radius * 25.0f * worldUnitsPerMeter))
 				{
-					if (lineOfSight(obj->getLOSPosition(), tPos, id, 0.0f,
-							obj->getAppearRadius(), false))
+					if (lineOfSight(
+							obj->getLOSPosition(), tPos, id, 0.0f, obj->getAppearRadius(), false))
 						return true;
 				}
 			}
@@ -892,9 +870,8 @@ int64_t MCTimeLOSCalc = 0;
 #ifdef USE_OLD_LOS
 
 //---------------------------------------------------------------------------
-bool Team::lineOfSight(float startLocal, int32_t mCellRow, int32_t mCellCol,
-	int32_t tCellRow, int32_t tCellCol, int32_t teamId, float extRad,
-	bool checkVisibleBits)
+bool Team::lineOfSight(float startLocal, int32_t mCellRow, int32_t mCellCol, int32_t tCellRow,
+	int32_t tCellCol, int32_t teamId, float extRad, bool checkVisibleBits)
 {
 #ifdef LAB_ONLY
 	int64_t x = GetCycles();
@@ -905,8 +882,7 @@ bool Team::lineOfSight(float startLocal, int32_t mCellRow, int32_t mCellCol,
 	// TILE HACK...
 	int32_t tileRow = tCellRow / 3;
 	int32_t tileCol = tCellCol / 3;
-	if ((teamId < 0) ||
-		(teamId >= MAX_TEAMS)) // Not on any team.  It can see everything!
+	if ((teamId < 0) || (teamId >= MAX_TEAMS)) // Not on any team.  It can see everything!
 		return true;
 	if (checkVisibleBits)
 	{
@@ -928,8 +904,7 @@ bool Team::lineOfSight(float startLocal, int32_t mCellRow, int32_t mCellCol,
 		}
 		if (!losResult)
 		{
-			visbBits[2] =
-				Terrain::VisibleBits->getFlag(tileRow + 1, tileCol + 1);
+			visbBits[2] = Terrain::VisibleBits->getFlag(tileRow + 1, tileCol + 1);
 			if (visbBits[2] & teamMask)
 				losResult = true;
 		}
@@ -986,8 +961,7 @@ bool Team::lineOfSight(float startLocal, int32_t mCellRow, int32_t mCellCol,
 			bool colDone = false, rowDone = false;
 			while (!colDone || !rowDone)
 			{
-				if (fabs(startCellRow - endCellRow) >
-					lastRow) // DO NOT INCLUDE LAST CELL!!!!!
+				if (fabs(startCellRow - endCellRow) > lastRow) // DO NOT INCLUDE LAST CELL!!!!!
 				{
 					startCellRow += rowLength;
 				}
@@ -996,8 +970,7 @@ bool Team::lineOfSight(float startLocal, int32_t mCellRow, int32_t mCellCol,
 					//					startCellRow = (endCellRow - lastRow);
 					rowDone = true;
 				}
-				if (fabs(startCellCol - endCellCol) >
-					lastCol) // DO NOT INCLUDE LAST CELL!!!!!
+				if (fabs(startCellCol - endCellCol) > lastCol) // DO NOT INCLUDE LAST CELL!!!!!
 				{
 					startCellCol += colLength;
 				}
@@ -1010,9 +983,8 @@ bool Team::lineOfSight(float startLocal, int32_t mCellRow, int32_t mCellCol,
 				int32_t startCellC = startCellCol;
 				int32_t startCellR = startCellRow;
 				land->getCellPos(startCellR, startCellC, currentPos);
-				float localElev =
-					(worldUnitsPerMeter * 4.0f *
-						(float)GameMap->getLocalHeight(startCellR, startCellC));
+				float localElev = (worldUnitsPerMeter * 4.0f *
+					(float)GameMap->getLocalHeight(startCellR, startCellC));
 				currentPos.z += localElev;
 				if (startHeight + startLocal < currentPos.z)
 				{
@@ -1027,8 +999,8 @@ bool Team::lineOfSight(float startLocal, int32_t mCellRow, int32_t mCellCol,
 						Stuff::Vector4D lineStart, lineEnd;
 						eye->projectZ(realStart, lineStart);
 						eye->projectZ(endPos, lineEnd);
-						debugLines[currentLineElement++] = new LineElement(
-							lineStart, lineEnd, SD_RED, nullptr, -1);
+						debugLines[currentLineElement++] =
+							new LineElement(lineStart, lineEnd, SD_RED, nullptr, -1);
 					}
 #endif
 					return false;
@@ -1066,9 +1038,9 @@ bool Team::lineOfSight(float startLocal, int32_t mCellRow, int32_t mCellCol,
 #define ACCURACY_ADJUST 1.5f
 const float HALF_CELL_DIST = (128.0f / 6.0f);
 //---------------------------------------------------------------------------
-bool Team::lineOfSight(float startLocal, int32_t mCellRow, int32_t mCellCol,
-	float endLocal, int32_t tCellRow, int32_t tCellCol, int32_t teamId,
-	float extRad, float startExtRad, bool checkVisibleBits)
+bool Team::lineOfSight(float startLocal, int32_t mCellRow, int32_t mCellCol, float endLocal,
+	int32_t tCellRow, int32_t tCellCol, int32_t teamId, float extRad, float startExtRad,
+	bool checkVisibleBits)
 {
 #ifdef LAB_ONLY
 	int64_t x = GetCycles();
@@ -1079,8 +1051,7 @@ bool Team::lineOfSight(float startLocal, int32_t mCellRow, int32_t mCellCol,
 	// TILE HACK...
 	int32_t tileRow = tCellRow / 3;
 	int32_t tileCol = tCellCol / 3;
-	if ((teamId < 0) ||
-		(teamId >= MAX_TEAMS)) // Not on any team.  It can see everything!
+	if ((teamId < 0) || (teamId >= MAX_TEAMS)) // Not on any team.  It can see everything!
 		return true;
 #if 0 // Don't need to check this anymore.  We do a distance check outside of
 	  // this function.
@@ -1148,10 +1119,9 @@ bool Team::lineOfSight(float startLocal, int32_t mCellRow, int32_t mCellCol,
 		length *= ACCURACY_ADJUST;
 		if (length > Stuff::SMALL)
 		{
-			float colLength = (endPos.x - startPos.x) / length;
-			float rowLength = (endPos.y - startPos.y) / length;
-			float heightLen =
-				(endPos.z - startPos.z) / (length + ACCURACY_ADJUST);
+			float colLength			   = (endPos.x - startPos.x) / length;
+			float rowLength			   = (endPos.y - startPos.y) / length;
+			float heightLen			   = (endPos.z - startPos.z) / (length + ACCURACY_ADJUST);
 			Stuff::Vector3D currentPos = startPos;
 			currentPos.z			   = land->getTerrainElevation(currentPos);
 			int32_t maxDistIter		   = (length - 0.5f);
@@ -1177,9 +1147,8 @@ bool Team::lineOfSight(float startLocal, int32_t mCellRow, int32_t mCellCol,
 				startHeight += heightLen;
 				int32_t curCellRow, curCellCol;
 				land->worldToCell(currentPos, curCellRow, curCellCol);
-				float localElev =
-					(worldUnitsPerMeter * 4.0f *
-						(float)GameMap->getLocalHeight(curCellRow, curCellCol));
+				float localElev  = (worldUnitsPerMeter * 4.0f *
+					 (float)GameMap->getLocalHeight(curCellRow, curCellCol));
 				float thisHeight = currentPos.z + localElev;
 				// First, check if we are now inside the extent radius of the
 				// thing we are calcing LOS to.
@@ -1213,8 +1182,8 @@ bool Team::lineOfSight(float startLocal, int32_t mCellRow, int32_t mCellCol,
 							Stuff::Vector4D lineStart, lineEnd;
 							eye->projectZ(realStart, lineStart);
 							eye->projectZ(endPos, lineEnd);
-							debugLines[currentLineElement++] = new LineElement(
-								lineStart, lineEnd, SD_RED, nullptr, -1);
+							debugLines[currentLineElement++] =
+								new LineElement(lineStart, lineEnd, SD_RED, nullptr, -1);
 						}
 #endif
 						return false;
@@ -1246,8 +1215,8 @@ bool Team::lineOfSight(float startLocal, int32_t mCellRow, int32_t mCellCol,
 #endif
 
 //---------------------------------------------------------------------------
-bool Team::lineOfSight(Stuff::Vector3D position, Stuff::Vector3D targetPosition,
-	int32_t teamId, float extRad, float startExtRad, bool checkVisibleBits)
+bool Team::lineOfSight(Stuff::Vector3D position, Stuff::Vector3D targetPosition, int32_t teamId,
+	float extRad, float startExtRad, bool checkVisibleBits)
 {
 	int32_t posCellR, posCellC;
 	int32_t tarCellR, tarCellC;
@@ -1257,8 +1226,8 @@ bool Team::lineOfSight(Stuff::Vector3D position, Stuff::Vector3D targetPosition,
 	float localStart = position.z - elev;
 	elev			 = land->getTerrainElevation(targetPosition);
 	float localEnd   = targetPosition.z - elev;
-	return (lineOfSight(localStart, posCellR, posCellC, localEnd, tarCellR,
-		tarCellC, teamId, extRad, startExtRad, checkVisibleBits));
+	return (lineOfSight(localStart, posCellR, posCellC, localEnd, tarCellR, tarCellC, teamId,
+		extRad, startExtRad, checkVisibleBits));
 }
 
 //***************************************************************************
@@ -1275,21 +1244,17 @@ int32_t Team::Save(PacketFilePtr file, int32_t packetNum)
 	TeamStaticData staticData;
 	staticData.numTeams   = numTeams;
 	staticData.homeTeamId = home->getId();
-	memcpy(
-		staticData.relations, relations, sizeof(char) * MAX_TEAMS * MAX_TEAMS);
+	memcpy(staticData.relations, relations, sizeof(char) * MAX_TEAMS * MAX_TEAMS);
 	memcpy(staticData.noPain, noPain, sizeof(bool) * MAX_TEAMS);
-	file->writePacket(packetNum, (puint8_t)&staticData, sizeof(TeamStaticData),
-		STORAGE_TYPE_RAW);
+	file->writePacket(packetNum, (puint8_t)&staticData, sizeof(TeamStaticData), STORAGE_TYPE_RAW);
 	packetNum++;
 	for (size_t i = 0; i < numTeams; i++)
 	{
 		TeamData data;
 		data.id			= teams[i]->getId();
 		data.rosterSize = teams[i]->rosterSize;
-		memcpy(data.roster, teams[i]->roster,
-			sizeof(GameObjectWatchID) * MAX_MOVERS_PER_TEAM);
-		file->writePacket(
-			packetNum, (puint8_t)&data, sizeof(TeamData), STORAGE_TYPE_RAW);
+		memcpy(data.roster, teams[i]->roster, sizeof(GameObjectWatchID) * MAX_MOVERS_PER_TEAM);
+		file->writePacket(packetNum, (puint8_t)&data, sizeof(TeamData), STORAGE_TYPE_RAW);
 		packetNum++;
 	}
 	return packetNum;
@@ -1302,8 +1267,7 @@ int32_t Team::Load(PacketFilePtr file, int32_t packetNum)
 	file->readPacket(packetNum, (puint8_t)&staticData);
 	packetNum++;
 	numTeams = staticData.numTeams;
-	memcpy(
-		relations, staticData.relations, sizeof(char) * MAX_TEAMS * MAX_TEAMS);
+	memcpy(relations, staticData.relations, sizeof(char) * MAX_TEAMS * MAX_TEAMS);
 	memcpy(noPain, staticData.noPain, sizeof(bool) * MAX_TEAMS);
 	for (size_t i = 0; i < numTeams; i++)
 	{
@@ -1316,8 +1280,7 @@ int32_t Team::Load(PacketFilePtr file, int32_t packetNum)
 		numTeams--;
 		teams[i]->init(data.id);
 		teams[i]->rosterSize = data.rosterSize;
-		memcpy(teams[i]->roster, data.roster,
-			sizeof(GameObjectWatchID) * MAX_MOVERS_PER_TEAM);
+		memcpy(teams[i]->roster, data.roster, sizeof(GameObjectWatchID) * MAX_MOVERS_PER_TEAM);
 		if (data.id == staticData.homeTeamId)
 			home = teams[i];
 	}

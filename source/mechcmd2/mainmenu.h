@@ -36,7 +36,7 @@ MainMenu:
 **************************************************************************************************/
 class SplashIntro : public LogisticsScreen
 {
-  public:
+public:
 	SplashIntro() {}
 	virtual ~SplashIntro() {}
 
@@ -45,7 +45,7 @@ class SplashIntro : public LogisticsScreen
 
 class MainMenu : public LogisticsScreen
 {
-  public:
+public:
 	MainMenu(void);
 	virtual ~MainMenu(void);
 
@@ -65,7 +65,7 @@ class MainMenu : public LogisticsScreen
 
 	static bool bDrawMechlopedia;
 
-  private:
+private:
 	MainMenu& operator=(const MainMenu& ainMenu);
 	MainMenu(const MainMenu& src);
 

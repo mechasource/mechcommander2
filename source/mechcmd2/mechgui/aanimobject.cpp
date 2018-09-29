@@ -22,8 +22,7 @@ aAnimObject& aAnimObject::operator=(const aAnimObject& src)
 	return *this;
 }
 
-int32_t aAnimObject::init(
-	FitIniFile* file, PCSTR blockName, uint32_t neverFlush)
+int32_t aAnimObject::init(FitIniFile* file, PCSTR blockName, uint32_t neverFlush)
 {
 	aObject::init(file, blockName, neverFlush);
 	int32_t color = 0xffffffff;

@@ -22,7 +22,7 @@ class LogisticsMechIcon;
 class PilotReadyScreen : public LogisticsScreen
 {
 
-  public:
+public:
 	static PilotReadyScreen* instance() { return s_instance; }
 	PilotReadyScreen(void);
 	virtual ~PilotReadyScreen(void);
@@ -41,7 +41,7 @@ class PilotReadyScreen : public LogisticsScreen
 	void setMech(LogisticsMech* pMech);
 	void addSelectedPilot(void);
 
-  private:
+private:
 	LogisticsPilot* pCurPilot;
 	LogisticsPilot* pDragPilot;
 	LogisticsMechIcon* pIcons;

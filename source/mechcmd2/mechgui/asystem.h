@@ -81,7 +81,7 @@ extern int32_t helpTextHeaderID;
 
 class aBaseObject
 {
-  public:
+public:
 	virtual void render(void) {}
 	virtual void update(void) {}
 };
@@ -90,7 +90,7 @@ class aBaseObject
 class aObject : public aBaseObject
 {
 
-  public:
+public:
 	aObject(void);
 	virtual ~aObject(void);
 	aObject(const aObject& src);
@@ -117,8 +117,7 @@ class aObject : public aBaseObject
 	void setUVs(float u1, float v1, float u2, float v2);
 	void setColor(uint32_t color, bool bRecurse = 0); // color the vertices
 
-	void init(
-		FitIniFile* file, PCSTR block, uint32_t neverFlush = 0); // for statics
+	void init(FitIniFile* file, PCSTR block, uint32_t neverFlush = 0); // for statics
 
 	aObject* getParent(void)
 	{
@@ -137,8 +136,7 @@ class aObject : public aBaseObject
 	virtual aObject* findObject(int32_t xPos, int32_t yPos);
 	virtual int32_t handleMessage(uint32_t, uint32_t) { return 0; }
 	virtual bool pointInside(int32_t xPos, int32_t yPos) const;
-	bool rectIntersect(
-		int32_t top, int32_t left, int32_t bottom, int32_t right) const;
+	bool rectIntersect(int32_t top, int32_t left, int32_t bottom, int32_t right) const;
 	bool rectIntersect(const RECT& testRect) const;
 
 	aObject* children(void);
@@ -153,8 +151,7 @@ class aObject : public aBaseObject
 	void showGUIWindow(bool show) { showWindow = show; }
 	bool isShowing(void) const { return showWindow; }
 
-	void FillBox(
-		int16_t left, int16_t top, int16_t bottom, int16_t right, char color);
+	void FillBox(int16_t left, int16_t top, int16_t bottom, int16_t right, char color);
 	void SetBit(int32_t xpos, int32_t ypos, char value);
 	void removeAllChildren(bool bDelete = 0);
 	virtual void move(float offsetX, float offsetY);
@@ -173,7 +170,7 @@ class aObject : public aBaseObject
 
 	float bottom(void) { return y() + height(void); }
 
-  protected:
+protected:
 	gos_VERTEX location[4];
 
 	uint32_t textureHandle;
@@ -198,7 +195,7 @@ aRect needs to able to be a child of an aObject. Perhaps bounding box and
 parent/child support should be part of aBaseObject. */
 class aRect : public aObject
 {
-  public:
+public:
 	aRect(void);
 	virtual ~aRect(void) {}
 
@@ -215,7 +212,7 @@ class aRect : public aObject
 
 class aText : public aObject
 {
-  public:
+public:
 	aText(void);
 	aText(const aText& src);
 	aText& operator=(const aText& src);
@@ -235,9 +232,9 @@ class aText : public aObject
 
 	virtual bool pointInside(int32_t xPos, int32_t yPos) const;
 
-  private:
+private:
 	void CopyData(const aText& src);
 };
-}
+} // namespace mechgui
 
 #endif // ASYSTEM_H

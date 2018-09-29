@@ -40,7 +40,7 @@ mechlopedia:
 
 class Mechlopedia : public LogisticsScreen
 {
-  public:
+public:
 	Mechlopedia(void);
 	virtual ~Mechlopedia(void);
 
@@ -50,14 +50,14 @@ class Mechlopedia : public LogisticsScreen
 	virtual void render(void);
 	virtual void begin(void);
 
-  private:
+private:
 	LogisticsScreen* subScreens[6];
 	int32_t currentScreen;
 	aListBox listBox;
 
 	class SubScreen : public LogisticsScreen
 	{
-	  public:
+	public:
 		void setListBox(aListBox* pLB) { groupListBox = pLB; }
 		int32_t init(FitIniFile& file);
 		virtual void update(void);
@@ -66,7 +66,7 @@ class Mechlopedia : public LogisticsScreen
 
 		virtual void setVehicle(bool bVehicle) {}
 
-	  protected:
+	protected:
 		aListBox* groupListBox;
 		aListBox descriptionListBox;
 		SimpleCamera camera;
@@ -75,7 +75,7 @@ class Mechlopedia : public LogisticsScreen
 	class MechScreen : public SubScreen
 	{
 
-	  public:
+	public:
 		void init(void);
 		virtual void update(void);
 		virtual void render(void);
@@ -87,7 +87,7 @@ class Mechlopedia : public LogisticsScreen
 		virtual void setVehicle(bool bVehicle) { bIsVehicle = bVehicle; }
 		void setVehicle(LogisticsVehicle* pVehicle);
 
-	  private:
+	private:
 		ComponentListBox compListBox;
 		aListBox statsListBox;
 		bool bIsVehicle;
@@ -96,7 +96,7 @@ class Mechlopedia : public LogisticsScreen
 	class WeaponScreen : public SubScreen
 	{
 
-	  public:
+	public:
 		void init(void);
 		virtual void update(void);
 		virtual void render(void);
@@ -105,13 +105,13 @@ class Mechlopedia : public LogisticsScreen
 		virtual void select(aTextListItem* pEntry);
 		void setWeapon(LogisticsComponent* pWeapon);
 
-	  private:
+	private:
 		aListBox statsListBox;
 	};
 
 	class PersonalityScreen : public SubScreen
 	{
-	  public:
+	public:
 		void init(void);
 		virtual void update(void);
 		virtual void render(void);
@@ -121,13 +121,13 @@ class Mechlopedia : public LogisticsScreen
 
 		void setIsHistory(bool bTrue) { bIsHistory = bTrue; }
 
-	  private:
+	private:
 		bool bIsHistory;
 	};
 
 	class BuildingScreen : public SubScreen
 	{
-	  public:
+	public:
 		void init(void);
 		virtual void update(void);
 		virtual void render(void);
@@ -135,7 +135,7 @@ class Mechlopedia : public LogisticsScreen
 
 		virtual void select(aTextListItem* pEntry);
 
-	  private:
+	private:
 		ComponentListBox compListBox;
 	};
 
@@ -145,13 +145,13 @@ class Mechlopedia : public LogisticsScreen
 /////////////////////////////////////////////////////
 class MechlopediaListItem : public aAnimTextListItem
 {
-  public:
+public:
 	MechlopediaListItem(void);
 	virtual void render(void);
 
 	static void init();
 
-  private:
+private:
 	aObject bmp;
 	aAnimGroup bmpAnim;
 

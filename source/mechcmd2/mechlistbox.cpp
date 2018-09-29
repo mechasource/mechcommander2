@@ -139,8 +139,8 @@ MechListBoxItem::MechListBoxItem(LogisticsMech* pRefMech, int32_t count)
 	char text[32];
 	sprintf(text, "%ld", pMech->getCost());
 	costText.setText(text);
-	mechCount = LogisticsData::instance->getVariantsInInventory(
-		pRefMech->getVariant(), bIncludeForceGroup);
+	mechCount =
+		LogisticsData::instance->getVariantsInInventory(pRefMech->getVariant(), bIncludeForceGroup);
 	sprintf(text, "%ld", mechCount);
 	countText.setText(text);
 	MechListBox::initIcon(pRefMech, mechIcon);
@@ -259,8 +259,8 @@ void MechListBoxItem::update()
 		mechCount = 0;
 		return;
 	}
-	mechCount = LogisticsData::instance->getVariantsInInventory(
-		pMech->getVariant(), bIncludeForceGroup);
+	mechCount =
+		LogisticsData::instance->getVariantsInInventory(pMech->getVariant(), bIncludeForceGroup);
 	if (oldMechCount != mechCount)
 	{
 		animTime = .0001f;
@@ -312,8 +312,7 @@ void MechListBoxItem::update()
 		for (size_t i = 0; i < ANIMATION_COUNT; i++)
 			animations[bOrange][i].setState(aAnimGroup::NORMAL);
 	}
-	if (userInput->isLeftDoubleClick() && isInside &&
-		state != aListItem::DISABLED && isShowing())
+	if (userInput->isLeftDoubleClick() && isInside && state != aListItem::DISABLED && isShowing())
 		doAdd();
 	aObject::update();
 }
@@ -352,11 +351,9 @@ void MechListBoxItem::render()
 		mechIcon.setColor(0xa0000000);
 		mechIcon.render();
 	}
-	outline.setColor(animations[bOrange][2].getCurrentColor(
-		animations[bOrange][2].getState()));
+	outline.setColor(animations[bOrange][2].getCurrentColor(animations[bOrange][2].getState()));
 	outline.render(location[0].x, location[0].y);
-	line.setColor(animations[bOrange][2].getCurrentColor(
-		animations[bOrange][2].getState()));
+	line.setColor(animations[bOrange][2].getCurrentColor(animations[bOrange][2].getState()));
 	line.render(location[0].x, location[0].y);
 }
 
@@ -410,7 +407,7 @@ int32_t MechListBox::AddItem(aListItem* itemString)
 {
 	itemString->setID(ID);
 	MechListBoxItem* pItem = dynamic_cast<MechListBoxItem*>(itemString);
-	EString addedName;
+	std::wstring addedName;
 	char tmp[256];
 	cLoadString(pItem->getMech()->getChassisName(), tmp, 255);
 	addedName = tmp;
@@ -423,43 +420,36 @@ int32_t MechListBox::AddItem(aListItem* itemString)
 			pItem->countText.setColor(0);
 			pItem->countText.showGUIWindow(0);
 		}
-		EString chassisName;
+		std::wstring chassisName;
 		for (size_t i = 0; i < itemCount; i++)
 		{
 			int32_t ID = ((MechListBoxItem*)items[i])->pMech->getChassisName();
 			char tmpChassisName[256];
 			cLoadString(ID, tmpChassisName, 255);
 			chassisName = tmpChassisName;
-			if (((MechListBoxItem*)items[i])->pMech->getMaxWeight() <
-				pItem->pMech->getMaxWeight())
+			if (((MechListBoxItem*)items[i])->pMech->getMaxWeight() < pItem->pMech->getMaxWeight())
 			{
 				return InsertItem(itemString, i);
 				break;
 			}
 			else if (((MechListBoxItem*)items[i])->pMech->getMaxWeight() ==
-						 pItem->pMech->getMaxWeight() &&
-					 chassisName.Compare(addedName) > 0)
+					pItem->pMech->getMaxWeight() &&
+				chassisName.Compare(addedName) > 0)
 			{
 				return InsertItem(itemString, i);
 			}
 			else if (((MechListBoxItem*)items[i])->pMech->getMaxWeight() ==
-						 pItem->pMech->getMaxWeight() &&
-					 chassisName.Compare(addedName) == 0 &&
-					 ((MechListBoxItem*)itemString)
-							 ->pMech->getName()
-							 .Find("Prime") != -1)
+					pItem->pMech->getMaxWeight() &&
+				chassisName.Compare(addedName) == 0 &&
+				((MechListBoxItem*)itemString)->pMech->getName().Find("Prime") != -1)
 			{
 				return InsertItem(itemString, i);
 			}
 			else if (((MechListBoxItem*)items[i])->pMech->getMaxWeight() ==
-						 pItem->pMech->getMaxWeight() &&
-					 chassisName.Compare(addedName) == 0 &&
-					 (((MechListBoxItem*)items[i])
-							 ->pMech->getName()
-							 .Find("Prime") == -1) &&
-					 ((MechListBoxItem*)items[i])
-							 ->pMech->getName()
-							 .Compare(pItem->pMech->getName()) > 0)
+					pItem->pMech->getMaxWeight() &&
+				chassisName.Compare(addedName) == 0 &&
+				(((MechListBoxItem*)items[i])->pMech->getName().Find("Prime") == -1) &&
+				((MechListBoxItem*)items[i])->pMech->getName().Compare(pItem->pMech->getName()) > 0)
 			{
 				return InsertItem(itemString, i);
 			}
@@ -492,8 +482,7 @@ void MechListBox::disableItemsThatCostMoreThanRP()
 	bool bDisabledSel = 0;
 	for (size_t i = 0; i < itemCount; i++)
 	{
-		if (((MechListBoxItem*)items[i])->pMech->getCost() >
-			LogisticsData::instance->getCBills())
+		if (((MechListBoxItem*)items[i])->pMech->getCost() > LogisticsData::instance->getCBills())
 		{
 			items[i]->setState(aListItem::DISABLED);
 			if (itemSelected == i)
@@ -526,8 +515,7 @@ void MechListBox::disableItemsThatCanNotGoInFG()
 	bool bDisabledSel = 0;
 	for (size_t i = 0; i < itemCount; i++)
 	{
-		if (!LogisticsData::instance->canAddMechToForceGroup(
-				((MechListBoxItem*)items[i])->pMech))
+		if (!LogisticsData::instance->canAddMechToForceGroup(((MechListBoxItem*)items[i])->pMech))
 		{
 			if (itemSelected == i)
 				bDisabledSel = true;

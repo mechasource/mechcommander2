@@ -28,7 +28,7 @@ MPAddAIPlayer.h			: Interface for the MPAddAIPlayer component.
 
 class aStyle4TextListItem : public aTextListItem
 {
-  public:
+public:
 	aStyle4TextListItem()
 	{
 		hasAnimation = false;
@@ -37,7 +37,7 @@ class aStyle4TextListItem : public aTextListItem
 	virtual int32_t init(FitIniFile* file, PCSTR blockName);
 	virtual void render(void);
 
-  protected:
+protected:
 	bool hasAnimation;
 	aAnimGroup animGroup;
 	int32_t normalColor;
@@ -45,7 +45,7 @@ class aStyle4TextListItem : public aTextListItem
 
 class MPAddAIPlayer : public LogisticsScreen
 {
-  public:
+public:
 	MPAddAIPlayer(void);
 	virtual ~MPAddAIPlayer(void);
 
@@ -58,7 +58,7 @@ class MPAddAIPlayer : public LogisticsScreen
 	virtual void update(void);
 	virtual int32_t handleMessage(uint32_t, uint32_t);
 
-  private:
+private:
 	aEdit nameEntry;
 	aRect nameEntryOutline;
 	aDropList experienceDropList;

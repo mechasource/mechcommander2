@@ -36,7 +36,7 @@ class SimpleCamera;
 class MechBayScreen : public LogisticsScreen
 {
 
-  public:
+public:
 	static MechBayScreen* instance() { return s_instance; }
 	MechBayScreen(void);
 	virtual ~MechBayScreen(void);
@@ -51,7 +51,7 @@ class MechBayScreen : public LogisticsScreen
 	void setMech(LogisticsMech* pMech, bool bCommandFromLB = true);
 	void beginDrag(LogisticsMech* pMech);
 
-  private:
+private:
 	LogisticsMech* pCurMech;
 	LogisticsMech* pDragMech;
 	LogisticsMechIcon* pIcons;

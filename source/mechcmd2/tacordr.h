@@ -216,7 +216,7 @@ typedef struct _TacOrderAttackParams
 class TacticalOrder
 {
 
-  public:
+public:
 	int32_t id;
 	float time;
 	float delayedTime;
@@ -239,7 +239,7 @@ class TacticalOrder
 	uint32_t groupFlags;
 	uint32_t data[2];
 
-  public:
+public:
 	PVOID operator new(size_t ourSize);
 	void operator delete(PVOID us);
 
@@ -268,8 +268,7 @@ class TacticalOrder
 
 	void init(void);
 
-	void init(OrderOriginType _origin, TacticalOrderCode _code,
-		bool _unitOrder = false);
+	void init(OrderOriginType _origin, TacticalOrderCode _code, bool _unitOrder = false);
 
 	void initWayPath(LocationNodePtr path);
 
@@ -319,8 +318,8 @@ class TacticalOrder
 
 	void setGroupFlag(int32_t localMoverId, bool set);
 
-	int32_t getGroup(int32_t commanderID, MoverPtr* moverList, MoverPtr* point,
-		int32_t sortType = 0);
+	int32_t getGroup(
+		int32_t commanderID, MoverPtr* moverList, MoverPtr* point, int32_t sortType = 0);
 
 	void setStage(int32_t newStage) { stage = (char)newStage; }
 

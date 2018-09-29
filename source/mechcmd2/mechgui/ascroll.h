@@ -15,7 +15,7 @@ namespace mechgui
 
 class mcScrollButton : public aAnimButton
 {
-  public:
+public:
 	virtual void render(void);
 
 	uint32_t lightEdge;
@@ -25,7 +25,7 @@ class mcScrollButton : public aAnimButton
 
 class aScrollBar : public aObject
 {
-  public:
+public:
 	aScrollBar(void);
 
 	virtual int32_t init(int32_t xPos, int32_t yPos, int32_t w, int32_t h);
@@ -54,7 +54,7 @@ class aScrollBar : public aObject
 	void SetScroll(int32_t newScrollPos);
 	void Enable(bool enable);
 
-  protected:
+protected:
 	float scrollMax;
 	float scrollPos;
 	aAnimButton topButton;
@@ -70,17 +70,17 @@ class aScrollBar : public aObject
 
 class mcScrollBar : public aScrollBar
 {
-  public:
+public:
 	int32_t init(int32_t xPos, int32_t yPos, int32_t w, int32_t h);
 	virtual void resize(int32_t w, int32_t h);
 
 	void setOrange(void);
 	void setGreen(void);
 
-  private:
+private:
 	aAnimation orangeInfo[4];
 	aAnimation greenInfo[4];
 };
-}
+} // namespace mechgui
 
 #endif

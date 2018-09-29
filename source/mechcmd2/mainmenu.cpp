@@ -178,11 +178,11 @@ void MainMenu::begin()
 		if (Environment.screenWidth != 800)
 		{
 			if (prefs.renderer == 3)
-				gos_SetScreenMode(800, 600, 16, 0, 0, 0, true, localFullScreen,
-					0, localWindow, 0, localRenderer);
+				gos_SetScreenMode(
+					800, 600, 16, 0, 0, 0, true, localFullScreen, 0, localWindow, 0, localRenderer);
 			else
-				gos_SetScreenMode(800, 600, 16, prefs.renderer, 0, 0, 0,
-					localFullScreen, 0, localWindow, 0, localRenderer);
+				gos_SetScreenMode(800, 600, 16, prefs.renderer, 0, 0, 0, localFullScreen, 0,
+					localWindow, 0, localRenderer);
 		}
 	}
 }
@@ -290,8 +290,7 @@ int32_t MainMenu::handleMessage(uint32_t what, uint32_t who)
 			beginAnim.end();
 			endResult = NEXT;
 			soundSystem->playDigitalSample(LOG_MAINMENUBUTTON);
-			soundSystem->playDigitalMusic(
-				LogisticsData::instance->getCurrentMissionTune());
+			soundSystem->playDigitalMusic(LogisticsData::instance->getCurrentMissionTune());
 		}
 	}
 	break;
@@ -353,8 +352,7 @@ int32_t MainMenu::handleMessage(uint32_t what, uint32_t who)
 			file.open(path);
 			LogisticsLegalDialog::init(file);
 		}
-		LogisticsLegalDialog::instance()->setText(
-			IDS_DIALOG_OK, IDS_DIALOG_OK, IDS_DIALOG_OK);
+		LogisticsLegalDialog::instance()->setText(IDS_DIALOG_OK, IDS_DIALOG_OK, IDS_DIALOG_OK);
 		// Needs to be this int32_t for LOC!
 		// -fs
 		char realText[2048];
@@ -390,8 +388,7 @@ void MainMenu::skipIntro()
 
 void MainMenu::update()
 {
-	if (bDrawBackground || MPlayer ||
-		LogisticsData::instance->isSingleMission())
+	if (bDrawBackground || MPlayer || LogisticsData::instance->isSingleMission())
 	{
 		getButton(MM_MSG_SAVE)->disable(true);
 	}
@@ -401,8 +398,7 @@ void MainMenu::update()
 	if (introMovie)
 	{
 		userInput->mouseOff();
-		if (userInput->getKeyDown(KEY_SPACE) ||
-			userInput->getKeyDown(KEY_ESCAPE) ||
+		if (userInput->getKeyDown(KEY_SPACE) || userInput->getKeyDown(KEY_ESCAPE) ||
 			userInput->getKeyDown(KEY_LMOUSE))
 		{
 			introMovie->stop();
@@ -441,8 +437,7 @@ void MainMenu::update()
 	}
 	if (bOptions)
 	{
-		OptionsScreenWrapper::status_type result =
-			optionsScreenWrapper->update();
+		OptionsScreenWrapper::status_type result = optionsScreenWrapper->update();
 		if (result == OptionsScreenWrapper::opt_DONE)
 		{
 			optionsScreenWrapper->end();
@@ -453,8 +448,7 @@ void MainMenu::update()
 	if ((bSave || bLoad || bLoadCampaign) && endAnim.isDone())
 	{
 		LogisticsSaveDialog::instance()->update();
-		if (LogisticsSaveDialog::instance()->getStatus() ==
-				LogisticsScreen::YES &&
+		if (LogisticsSaveDialog::instance()->getStatus() == LogisticsScreen::YES &&
 			LogisticsSaveDialog::instance()->isDone())
 		{
 			char name[1024];
@@ -508,9 +502,8 @@ void MainMenu::update()
 				file.close();
 			}
 		}
-		else if (LogisticsSaveDialog::instance()->getStatus() ==
-					 LogisticsScreen::NO &&
-				 LogisticsSaveDialog::instance()->isDone())
+		else if (LogisticsSaveDialog::instance()->getStatus() == LogisticsScreen::NO &&
+			LogisticsSaveDialog::instance()->isDone())
 		{
 			LogisticsSaveDialog::instance()->end();
 			bSave = bLoad = bLoadCampaign = 0;
@@ -547,15 +540,13 @@ void MainMenu::update()
 	{
 		LogisticsOKDialog::instance()->update();
 		{
-			if (LogisticsOKDialog::instance()->getStatus() ==
-				LogisticsScreen::YES)
+			if (LogisticsOKDialog::instance()->getStatus() == LogisticsScreen::YES)
 			{
 				soundSystem->playDigitalSample(LOG_EXITGAME);
 				gos_TerminateApplication();
 				promptToQuit = 0;
 			}
-			else if (LogisticsOKDialog::instance()->getStatus() ==
-					 LogisticsScreen::NO)
+			else if (LogisticsOKDialog::instance()->getStatus() == LogisticsScreen::NO)
 			{
 				if (LogisticsOKDialog::instance()->isDone())
 					promptToQuit = 0;
@@ -617,8 +608,7 @@ void MainMenu::update()
 			{
 				intro.update();
 				background.update();
-				if (userInput->getKeyDown(KEY_ESCAPE) ||
-					(Environment.Renderer == 3))
+				if (userInput->getKeyDown(KEY_ESCAPE) || (Environment.Renderer == 3))
 				{
 					introOver = true;
 					userInput->mouseOn();
@@ -679,8 +669,7 @@ void MainMenu::render()
 			float endTime = beginAnim.getMaxTime();
 			if (endTime)
 			{
-				color =
-					interpolateColor(0x00000000, 0x7f000000, time / endTime);
+				color = interpolateColor(0x00000000, 0x7f000000, time / endTime);
 			}
 		}
 		else if (endAnim.isAnimating() /*&& !endAnim.isDone()*/)
@@ -691,8 +680,7 @@ void MainMenu::render()
 			float endTime = endAnim.getMaxTime();
 			if (endTime && (time <= endTime))
 			{
-				color =
-					interpolateColor(0x7f000000, 0x00000000, time / endTime);
+				color = interpolateColor(0x7f000000, 0x00000000, time / endTime);
 			}
 		}
 		RECT rect = {0, 0, Environment.screenWidth, Environment.screenHeight};
@@ -712,9 +700,8 @@ void MainMenu::render()
 	}
 	if (!xDelta && !yDelta)
 	{
-		drawShadowText(0xffc66600, 0xff000000,
-			textObjects[1].font.getTempHandle(), textObjects[1].globalX(),
-			textObjects[1].globalTop(), textObjects[1].globalRight(),
+		drawShadowText(0xffc66600, 0xff000000, textObjects[1].font.getTempHandle(),
+			textObjects[1].globalX(), textObjects[1].globalTop(), textObjects[1].globalRight(),
 			textObjects[1].globalBottom(), true, textObjects[1].text, false,
 			textObjects[1].font.getSize(), 1, 1);
 	}
@@ -746,8 +733,7 @@ void MainMenu::setHostLeftDlg(PCSTR playerName)
 	char formatStr[256];
 	cLoadString(IDS_PLAYER_LEFT, leaveStr, 255);
 	sprintf(formatStr, leaveStr, playerName);
-	LogisticsOneButtonDialog::instance()->setText(
-		IDS_PLAYER_LEFT, IDS_DIALOG_OK, IDS_DIALOG_OK);
+	LogisticsOneButtonDialog::instance()->setText(IDS_PLAYER_LEFT, IDS_DIALOG_OK, IDS_DIALOG_OK);
 	LogisticsOneButtonDialog::instance()->setText(formatStr);
 	if (MPlayer && MPlayer->playerInfo[MPlayer->commanderID].booted)
 	{

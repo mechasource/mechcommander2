@@ -22,14 +22,14 @@
 //---------------------------------------------------------------------------------
 class Shape
 {
-  public:
+public:
 	puint8_t frameList; // This is binary image of VFX file
 	puint8_t stupidHeader;
 	uint32_t lastTurnUsed;
 	Shape* next;
 	AppearanceTypePtr owner;
 
-  public:
+public:
 	void init(void)
 	{
 		frameList = stupidHeader = nullptr;

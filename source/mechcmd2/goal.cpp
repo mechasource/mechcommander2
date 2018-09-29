@@ -181,10 +181,8 @@ void GoalManager::setup(int32_t poolSize)
 {
 	goalObjectPoolSize = poolSize;
 	if (goalObjectPoolSize < 10)
-		Fatal(0,
-			" GoalManager.setup: goalObjectPoolSize must be greater than 10 ");
-	goalObjectPool = (GoalObjectPtr)missionHeap->Malloc(
-		sizeof(GoalObject) * goalObjectPoolSize);
+		Fatal(0, " GoalManager.setup: goalObjectPoolSize must be greater than 10 ");
+	goalObjectPool = (GoalObjectPtr)missionHeap->Malloc(sizeof(GoalObject) * goalObjectPoolSize);
 	clear();
 }
 
@@ -259,8 +257,7 @@ bool GoalManager::fillWallGateRegion(int32_t row, int32_t col, int32_t region)
 	recurseCount++;
 	//----------------------------------------------------------------------
 	// It is assumed that the bridge is erected over non-passable terrain...
-	if ((row < 0) || (row >= GameMap->height) || (col < 0) ||
-		(col >= GameMap->width))
+	if ((row < 0) || (row >= GameMap->height) || (col < 0) || (col >= GameMap->width))
 		return (false);
 	if (!GameMap->getWall(row, col) && !GameMap->getGate(row, col))
 		return (false);
@@ -269,8 +266,7 @@ bool GoalManager::fillWallGateRegion(int32_t row, int32_t col, int32_t region)
 	{
 		int32_t adjR = row + adjCell[dir][0];
 		int32_t adjC = col + adjCell[dir][1];
-		if ((adjR >= 0) && (adjR < GameMap->height) && (adjC >= 0) &&
-			(adjC < GameMap->width))
+		if ((adjR >= 0) && (adjR < GameMap->height) && (adjC >= 0) && (adjC < GameMap->width))
 			if (regionMap[adjR][adjC] == -1)
 				fillWallGateRegion(adjR, adjC, region);
 	}
@@ -284,7 +280,7 @@ bool GoalManager::fillRegion(int32_t row, int32_t col, int32_t region)
 #if 1
 	//	int32_t overlay = GameMap->getOverlay(row, col);
 	//	if ((overlay == OVERLAY_WATER_BRIDGE_EW) || (overlay ==
-	//OVERLAY_WATER_BRIDGE_NS)) 		return(false);
+	// OVERLAY_WATER_BRIDGE_NS)) 		return(false);
 	if (GameMap->getWall(row, col) || GameMap->getGate(row, col))
 		return (false);
 	if (!GameMap->getPassable(row, col))
@@ -301,12 +297,11 @@ bool GoalManager::fillRegion(int32_t row, int32_t col, int32_t region)
 		int32_t col  = fillStack[--fillStackIndex];
 		int32_t row  = fillStack[--fillStackIndex];
 		bool filling = true;
-		if ((row < 0) || (row >= GameMap->height) || (col < 0) ||
-			(col >= GameMap->width))
+		if ((row < 0) || (row >= GameMap->height) || (col < 0) || (col >= GameMap->width))
 			filling = false;
 		//		int32_t overlay = GameMap->getOverlay(row, col);
 		//		if ((overlay == OVERLAY_WATER_BRIDGE_EW) || (overlay ==
-		//OVERLAY_WATER_BRIDGE_NS)) 			filling = false;
+		// OVERLAY_WATER_BRIDGE_NS)) 			filling = false;
 		if (GameMap->getWall(row, col) || GameMap->getGate(row, col))
 			filling = false;
 		if (!GameMap->getPassable(row, col))
@@ -339,14 +334,12 @@ bool GoalManager::fillRegion(int32_t row, int32_t col, int32_t region)
 	}
 	return (true);
 #else
-	if ((row < 0) || (row >= GameMap->height) || (col < 0) ||
-		(col >= GameMap->width))
+	if ((row < 0) || (row >= GameMap->height) || (col < 0) || (col >= GameMap->width))
 		return (false);
 	//----------------------------------------------------------------------
 	// If we hit a bridge cell, politely stop expanding this area into it...
 	int32_t overlay = GameMap->getOverlay(row, col);
-	if ((overlay == OVERLAY_WATER_BRIDGE_EW) ||
-		(overlay == OVERLAY_WATER_BRIDGE_NS))
+	if ((overlay == OVERLAY_WATER_BRIDGE_EW) || (overlay == OVERLAY_WATER_BRIDGE_NS))
 		return (false);
 	if (GameMap->getWall(row, col) || GameMap->getGate(row, col))
 		return (false);
@@ -360,8 +353,7 @@ bool GoalManager::fillRegion(int32_t row, int32_t col, int32_t region)
 	{
 		int32_t adjR = row + adjCell[dir][0];
 		int32_t adjC = col + adjCell[dir][1];
-		if ((adjR >= 0) && (adjR < GameMap->height) && (adjC >= 0) &&
-			(adjC < GameMap->width))
+		if ((adjR >= 0) && (adjR < GameMap->height) && (adjC >= 0) && (adjC < GameMap->width))
 			if (regionMap[adjR][adjC] == -1)
 				fillRegion(adjR, adjC, region);
 	}
@@ -466,9 +458,8 @@ int32_t GoalManager::setControl (ObstaclePtr controller, ObstaclePtr controllee)
 */
 //---------------------------------------------------------------------------
 
-GoalObjectPtr GoalManager::addRegion(GoalObjectPtr parent,
-	GoalLinkType linkType, PSTR name, int32_t minRow, int32_t minCol,
-	int32_t maxRow, int32_t maxCol)
+GoalObjectPtr GoalManager::addRegion(GoalObjectPtr parent, GoalLinkType linkType, PSTR name,
+	int32_t minRow, int32_t minCol, int32_t maxRow, int32_t maxCol)
 {
 	GoalObjectPtr newRegion = newGoalObject();
 	newRegion->initRegion(name, minRow, minCol, maxRow, maxCol);
@@ -481,8 +472,8 @@ GoalObjectPtr GoalManager::addRegion(GoalObjectPtr parent,
 
 //---------------------------------------------------------------------------
 
-GoalObjectPtr GoalManager::addObject(GoalObjectPtr parent,
-	GoalLinkType linkType, PSTR name, GameObjectPtr object)
+GoalObjectPtr GoalManager::addObject(
+	GoalObjectPtr parent, GoalLinkType linkType, PSTR name, GameObjectPtr object)
 {
 	GoalObjectPtr newObject = newGoalObject();
 	newObject->initObject(name, object);
@@ -516,24 +507,21 @@ GoalObjectPtr GoalManager::calcGoal(int32_t startCell[2], int32_t goalCell[2])
 
 //---------------------------------------------------------------------------
 
-GoalObjectPtr GoalManager::calcGoal(
-	GameObjectPtr attacker, GameObjectPtr target)
+GoalObjectPtr GoalManager::calcGoal(GameObjectPtr attacker, GameObjectPtr target)
 {
 	return (nullptr);
 }
 
 //---------------------------------------------------------------------------
 
-GoalObjectPtr GoalManager::calcGoal(
-	GameObjectPtr attacker, Stuff::Vector3D location)
+GoalObjectPtr GoalManager::calcGoal(GameObjectPtr attacker, Stuff::Vector3D location)
 {
 	return (nullptr);
 }
 
 //---------------------------------------------------------------------------
 
-GoalObjectPtr GoalManager::calcGoal(
-	Stuff::Vector3D start, Stuff::Vector3D location)
+GoalObjectPtr GoalManager::calcGoal(Stuff::Vector3D start, Stuff::Vector3D location)
 {
 	int32_t startCell[2], locationCell[2];
 	land->worldToCell(start, startCell[0], startCell[1]);

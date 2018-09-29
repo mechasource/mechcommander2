@@ -19,8 +19,7 @@ KeyboardRef.cpp			: Implementation of the KeyboardRef component.
 #define WAYPT 0x20000000
 
 KeyboardRef::KeyboardRef()
-	: listItemTemplate(IDS_KEYBOARD_REF_FONT),
-	  listItemTemplate2(IDS_KEYBOARD_REF_FONT)
+	: listItemTemplate(IDS_KEYBOARD_REF_FONT), listItemTemplate2(IDS_KEYBOARD_REF_FONT)
 {
 }
 
@@ -58,8 +57,7 @@ int32_t KeyboardRef::init()
 	FitIniFile file;
 	file.open(path);
 	LogisticsScreen::init(file, "Static", "Text", "Rect", "Button");
-	listBox.init(
-		rects[2].left(), rects[2].top(), rects[2].width(), rects[2].height());
+	listBox.init(rects[2].left(), rects[2].top(), rects[2].width(), rects[2].height());
 	file.close();
 	path.init(artPath, "mcui_keyref_entry", ".fit");
 	file.open(path);

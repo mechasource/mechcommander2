@@ -33,7 +33,7 @@ struct MoveInfo
 
 class PauseWindow
 {
-  public:
+public:
 	PauseWindow(void);
 	~PauseWindow(void);
 
@@ -61,7 +61,7 @@ class PauseWindow
 		RETURN	 = 6
 	};
 
-  private:
+private:
 	ControlButton* buttons;
 	ButtonData* buttonData;
 	int32_t buttonCount;

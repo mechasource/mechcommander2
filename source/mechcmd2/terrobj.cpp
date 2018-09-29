@@ -216,8 +216,7 @@ int32_t TerrainObjectType::init(FilePtr objFile, uint32_t fileSize)
 
 //---------------------------------------------------------------------------
 
-bool TerrainObjectType::handleCollision(
-	GameObjectPtr collidee, GameObjectPtr collider)
+bool TerrainObjectType::handleCollision(GameObjectPtr collidee, GameObjectPtr collider)
 {
 	if (MPlayer && !MPlayer->isServer())
 		return (true);
@@ -233,8 +232,7 @@ bool TerrainObjectType::handleCollision(
 		case EXPLOSION:
 		case BATTLEMECH:
 		case GROUNDVEHICLE:
-			if (!collider->isMover() ||
-				(collider->isMover() && ((MoverPtr)collider)->pathLocks))
+			if (!collider->isMover() || (collider->isMover() && ((MoverPtr)collider)->pathLocks))
 			{
 				WeaponShotInfo shot;
 				shot.init(0, -1, collidee->getDamageLevel(), 0, 0);
@@ -257,16 +255,13 @@ bool TerrainObjectType::handleCollision(
 		case EXPLOSION:
 		case BATTLEMECH:
 		case GROUNDVEHICLE:
-			if (!collider->isMover() ||
-				(collider->isMover() && ((MoverPtr)collider)->pathLocks))
+			if (!collider->isMover() || (collider->isMover() && ((MoverPtr)collider)->pathLocks))
 			{
 				TerrainObjectPtr tree = (TerrainObjectPtr)collidee;
-				if (!tree->getFlag(OBJECT_FLAG_FALLEN) &&
-					!tree->getFlag(OBJECT_FLAG_FALLING))
+				if (!tree->getFlag(OBJECT_FLAG_FALLEN) && !tree->getFlag(OBJECT_FLAG_FALLING))
 				{
 					tree->setFlag(OBJECT_FLAG_FALLING, true);
-					float fallAngle =
-						collidee->relFacingTo(collider->getPosition());
+					float fallAngle = collidee->relFacingTo(collider->getPosition());
 					collidee->rotate(fallAngle, 0.0f);
 					//------------------------------------------------------
 					// Tree has fallen.  You may no longer collide with it.
@@ -308,8 +303,7 @@ bool TerrainObjectType::handleCollision(
 
 //---------------------------------------------------------------------------
 
-bool TerrainObjectType::handleDestruction(
-	GameObjectPtr collidee, GameObjectPtr collider)
+bool TerrainObjectType::handleDestruction(GameObjectPtr collidee, GameObjectPtr collider)
 {
 	TerrainObjectPtr me = (TerrainObjectPtr)collidee;
 	if (me->getObjectType()->getSubType() == TERROBJ_FOREST)
@@ -342,8 +336,8 @@ void TerrainObject::updateDebugWindow(GameDebugWindow* debugWindow)
 	}
 	else
 		debugWindow->print("<no name>");
-	sprintf(s, "team: %d, handle: %d, partID: %d %s", getTeamId(), getHandle(),
-		getPartId(), getFlag(OBJECT_FLAG_CAPTURABLE) ? "[C]" : " ");
+	sprintf(s, "team: %d, handle: %d, partID: %d %s", getTeamId(), getHandle(), getPartId(),
+		getFlag(OBJECT_FLAG_CAPTURABLE) ? "[C]" : " ");
 	debugWindow->print(s);
 	sprintf(s, "objType: %d", getObjectType()->whatAmI());
 	debugWindow->print(s);
@@ -352,8 +346,8 @@ void TerrainObject::updateDebugWindow(GameDebugWindow* debugWindow)
 	sprintf(s, "pos: [%d, %d](area = %d)", cellPositionRow, cellPositionCol,
 		GlobalMoveMap[0]->calcArea(cellPositionRow, cellPositionCol));
 	debugWindow->print(s);
-	sprintf(s, "footprint:[%d,%d]:[%d,%d]", cellFootprint[0], cellFootprint[1],
-		cellFootprint[2], cellFootprint[3]);
+	sprintf(s, "footprint:[%d,%d]:[%d,%d]", cellFootprint[0], cellFootprint[1], cellFootprint[2],
+		cellFootprint[3]);
 	debugWindow->print(s);
 	if (numSubAreas0 > 0)
 	{
@@ -418,8 +412,7 @@ PSTR TerrainObject::getName(void)
 	*/
 	if (((ObjectAppearance*)appearance)->objectNameId != -1)
 	{
-		cLoadString(
-			((ObjectAppearance*)appearance)->objectNameId, lastName, 254);
+		cLoadString(((ObjectAppearance*)appearance)->objectNameId, lastName, 254);
 		return (lastName);
 	}
 	return (nullptr);
@@ -447,8 +440,7 @@ int32_t TerrainObject::update(void)
 	{
 		setFlag(OBJECT_FLAG_JUSTCREATED, false);
 		setFlag(OBJECT_FLAG_TILECHANGED, false);
-		TerrainObjectTypePtr type =
-			(TerrainObjectTypePtr)ObjectManager->getObjectType(typeHandle);
+		TerrainObjectTypePtr type = (TerrainObjectTypePtr)ObjectManager->getObjectType(typeHandle);
 		switch (type->subType)
 		{
 		case TERROBJ_NONE:
@@ -478,8 +470,8 @@ int32_t TerrainObject::update(void)
 	}
 	//-------------------------------------------
 	// Handle power out.
-	if (powerSupply && (ObjectManager->getByWatchID(powerSupply)->getStatus() ==
-						   OBJECT_STATUS_DESTROYED))
+	if (powerSupply &&
+		(ObjectManager->getByWatchID(powerSupply)->getStatus() == OBJECT_STATUS_DESTROYED))
 		appearance->setLightsOut(true);
 	if (appearance)
 	{
@@ -488,8 +480,7 @@ int32_t TerrainObject::update(void)
 			if (fallRate == 0.0f)
 			{
 				if (useSound && soundSystem)
-					soundSystem->playDigitalSample(
-						TREEFALL, getPosition(), true);
+					soundSystem->playDigitalSample(TREEFALL, getPosition(), true);
 				fallRate = TREE_FALL_RATE;
 			}
 			else
@@ -588,10 +579,8 @@ void TerrainObject::render(void)
 				bldgDustPoofEffect->Draw(&drawInfo);
 		}
 	}
-	setSelected(
-		false); // ALWAYS reset the selected flags.  GUI needs this to work!
-	setTargeted(
-		false); // ALWAYS do it here, too!  Otherwise things may draw FUNNY!
+	setSelected(false); // ALWAYS reset the selected flags.  GUI needs this to work!
+	setTargeted(false); // ALWAYS do it here, too!  Otherwise things may draw FUNNY!
 }
 
 //---------------------------------------------------------------------------
@@ -603,10 +592,8 @@ void TerrainObject::renderShadows(void)
 	{
 		appearance->renderShadows();
 	}
-	setSelected(
-		false); // ALWAYS reset the selected flags.  GUI needs this to work!
-	setTargeted(
-		false); // ALWAYS do it here, too!  Otherwise things may draw FUNNY!
+	setSelected(false); // ALWAYS reset the selected flags.  GUI needs this to work!
+	setTargeted(false); // ALWAYS do it here, too!  Otherwise things may draw FUNNY!
 }
 
 //---------------------------------------------------------------------------
@@ -685,14 +672,12 @@ void TerrainObject::init(bool create, ObjectTypePtr objType)
 			//------------------------------------------------------
 			// LOAD a dummy appearance until real ones are available
 			// for this building!
-			terrainObjectAppearanceType =
-				appearanceTypeList->getAppearance(appearanceType, "TREE");
+			terrainObjectAppearanceType = appearanceTypeList->getAppearance(appearanceType, "TREE");
 			gosASSERT(terrainObjectAppearanceType != nullptr);
 		}
 		appearance = new TreeAppearance;
 		gosASSERT(appearance != nullptr);
-		appearance->init((TreeAppearanceType*)terrainObjectAppearanceType,
-			(GameObjectPtr)this);
+		appearance->init((TreeAppearanceType*)terrainObjectAppearanceType, (GameObjectPtr)this);
 	}
 	else
 	{
@@ -721,10 +706,8 @@ void TerrainObject::init(bool create, ObjectTypePtr objType)
 		gosASSERT(appearance != nullptr);
 		//--------------------------------------------------------------
 		// The only appearance type for buildings is MLR_APPEARANCE.
-		gosASSERT(
-			terrainObjectAppearanceType->getAppearanceClass() == BLDG_TYPE);
-		appearance->init((BldgAppearanceType*)terrainObjectAppearanceType,
-			(GameObjectPtr)this);
+		gosASSERT(terrainObjectAppearanceType->getAppearanceClass() == BLDG_TYPE);
+		appearance->init((BldgAppearanceType*)terrainObjectAppearanceType, (GameObjectPtr)this);
 	}
 	if (objType->getExtentRadius() > 0.0)
 		setTangible(true);
@@ -765,8 +748,7 @@ void TerrainObject::lightOnFire(float timeToBurn) {}
 
 #define DUST_POOF_ID 32
 //---------------------------------------------------------------------------
-int32_t TerrainObject::handleWeaponHit(
-	WeaponShotInfoPtr shotInfo, bool addMultiplayChunk)
+int32_t TerrainObject::handleWeaponHit(WeaponShotInfoPtr shotInfo, bool addMultiplayChunk)
 {
 	if (!shotInfo)
 		return (NO_ERROR);
@@ -795,8 +777,7 @@ int32_t TerrainObject::handleWeaponHit(
 				appearance->recalcBounds();
 				appearance->update();
 				appearance->markLOS();
-				if (!shotInfo->attackerWID &&
-					(shotInfo->masterId == -1)) // Somebody stepped on me.
+				if (!shotInfo->attackerWID && (shotInfo->masterId == -1)) // Somebody stepped on me.
 				{
 					//--------------------------------------------
 					// Play a Dust Poof.
@@ -809,13 +790,11 @@ int32_t TerrainObject::handleWeaponHit(
 								weaponEffects->GetEffectName(DUST_POOF_ID));
 						if (gosEffectSpec)
 						{
-							bldgDustPoofEffect =
-								gosFX::EffectLibrary::Instance->MakeEffect(
-									gosEffectSpec->m_effectID, flags);
+							bldgDustPoofEffect = gosFX::EffectLibrary::Instance->MakeEffect(
+								gosEffectSpec->m_effectID, flags);
 							gosASSERT(bldgDustPoofEffect != nullptr);
 						}
-						MidLevelRenderer::MLRTexturePool::Instance
-							->LoadImages();
+						MidLevelRenderer::MLRTexturePool::Instance->LoadImages();
 					}
 					if (bldgDustPoofEffect)
 					{
@@ -825,8 +804,7 @@ int32_t TerrainObject::handleWeaponHit(
 						actualPosition.x = -position.x;
 						actualPosition.y = position.z;
 						actualPosition.z = position.y;
-						shapeOrigin.BuildRotation(
-							Stuff::EulerAngles(0.0f, 0.0f, 0.0f));
+						shapeOrigin.BuildRotation(Stuff::EulerAngles(0.0f, 0.0f, 0.0f));
 						shapeOrigin.BuildTranslation(actualPosition);
 						gosFX::Effect::ExecuteInfo info(
 							(Stuff::Time)scenarioTime, &shapeOrigin, nullptr);
@@ -871,8 +849,7 @@ int32_t TerrainObject::handleWeaponHit(
 				type->createExplosion(position, 0, 0);
 				setStatus(OBJECT_STATUS_DESTROYED);
 				if (type->subType == TERROBJ_WALL_LIGHT)
-					soundSystem->playDigitalSample(
-						BREAKINGFENCE, getPosition(), true);
+					soundSystem->playDigitalSample(BREAKINGFENCE, getPosition(), true);
 			}
 			setDamage(curDamage);
 			break;
@@ -928,14 +905,10 @@ void TerrainObject::calcCellFootprint(Stuff::Vector3D& pos)
 		cellFootprint[1] = minCol;
 		cellFootprint[2] = maxRow;
 		cellFootprint[3] = maxCol;
-		land->cellToWorld(
-			cellFootprint[0], cellFootprint[1], vectorFootprint[0]);
-		land->cellToWorld(
-			cellFootprint[0], cellFootprint[3], vectorFootprint[1]);
-		land->cellToWorld(
-			cellFootprint[2], cellFootprint[3], vectorFootprint[2]);
-		land->cellToWorld(
-			cellFootprint[2], cellFootprint[1], vectorFootprint[3]);
+		land->cellToWorld(cellFootprint[0], cellFootprint[1], vectorFootprint[0]);
+		land->cellToWorld(cellFootprint[0], cellFootprint[3], vectorFootprint[1]);
+		land->cellToWorld(cellFootprint[2], cellFootprint[3], vectorFootprint[2]);
+		land->cellToWorld(cellFootprint[2], cellFootprint[1], vectorFootprint[3]);
 	}
 	else
 	{
@@ -952,8 +925,7 @@ void TerrainObject::calcCellFootprint(Stuff::Vector3D& pos)
 
 //---------------------------------------------------------------------------
 
-int32_t TerrainObject::getLineOfSightNodes(
-	int32_t eyeCellRow, int32_t eyeCellCol, int32_t* cells)
+int32_t TerrainObject::getLineOfSightNodes(int32_t eyeCellRow, int32_t eyeCellCol, int32_t* cells)
 {
 	cells[0] = cellFootprint[0];
 	cells[1] = cellFootprint[1];
@@ -968,8 +940,7 @@ int32_t TerrainObject::getLineOfSightNodes(
 
 //---------------------------------------------------------------------------
 
-void TerrainObject::calcSubAreas(
-	int32_t numCells, int16_t cells[MAX_GAME_OBJECT_CELLS][2])
+void TerrainObject::calcSubAreas(int32_t numCells, int16_t cells[MAX_GAME_OBJECT_CELLS][2])
 {
 	numCellsCovered = numCells;
 	if (numCellsCovered)
@@ -1002,11 +973,9 @@ void TerrainObject::calcSubAreas(
 			{
 				if (!subAreas0)
 				{
-					subAreas0 =
-						(pint16_t)ObjectTypeManager::objectCache->Malloc(
-							sizeof(int16_t) * MAX_SPECIAL_SUB_AREAS);
-					memset(
-						subAreas0, 0, sizeof(int16_t) * MAX_SPECIAL_SUB_AREAS);
+					subAreas0 = (pint16_t)ObjectTypeManager::objectCache->Malloc(
+						sizeof(int16_t) * MAX_SPECIAL_SUB_AREAS);
+					memset(subAreas0, 0, sizeof(int16_t) * MAX_SPECIAL_SUB_AREAS);
 				}
 				subAreas0[numSubAreas0++] = area;
 			}
@@ -1029,11 +998,9 @@ void TerrainObject::calcSubAreas(
 			{
 				if (!subAreas1)
 				{
-					subAreas1 =
-						(pint16_t)ObjectTypeManager::objectCache->Malloc(
-							sizeof(int16_t) * MAX_SPECIAL_SUB_AREAS);
-					memset(
-						subAreas1, 0, sizeof(int16_t) * MAX_SPECIAL_SUB_AREAS);
+					subAreas1 = (pint16_t)ObjectTypeManager::objectCache->Malloc(
+						sizeof(int16_t) * MAX_SPECIAL_SUB_AREAS);
+					memset(subAreas1, 0, sizeof(int16_t) * MAX_SPECIAL_SUB_AREAS);
 				}
 				subAreas1[numSubAreas1++] = area;
 			}
@@ -1104,8 +1071,7 @@ bool TerrainObject::calcAdjacentAreaCell(
 		{
 			int32_t cellRow = *curCoord++;
 			int32_t cellCol = *curCoord++;
-			int32_t adjArea =
-				GlobalMoveMap[moveLevel]->calcArea(cellRow - 1, cellCol);
+			int32_t adjArea = GlobalMoveMap[moveLevel]->calcArea(cellRow - 1, cellCol);
 			if (adjArea > -1)
 			{
 				adjRow = cellRow - 1;
@@ -1142,8 +1108,7 @@ bool TerrainObject::calcAdjacentAreaCell(
 		{
 			int32_t cellRow = *curCoord++;
 			int32_t cellCol = *curCoord++;
-			int32_t adjArea =
-				GlobalMoveMap[moveLevel]->calcArea(cellRow - 1, cellCol);
+			int32_t adjArea = GlobalMoveMap[moveLevel]->calcArea(cellRow - 1, cellCol);
 			if (adjArea == areaID)
 			{
 				adjRow = cellRow - 1;
@@ -1182,8 +1147,7 @@ void TerrainObject::Save(PacketFilePtr file, int32_t packetNum)
 	TerrainObjectData data;
 	CopyTo(&data);
 	// PacketNum incremented in ObjectManager!!
-	file->writePacket(packetNum, (puint8_t)&data, sizeof(TerrainObjectData),
-		STORAGE_TYPE_ZLIB);
+	file->writePacket(packetNum, (puint8_t)&data, sizeof(TerrainObjectData), STORAGE_TYPE_ZLIB);
 }
 
 //***************************************************************************
@@ -1200,22 +1164,18 @@ void TerrainObject::CopyTo(TerrainObjectData* data)
 	data->numSubAreas0 = numSubAreas0;
 	data->numSubAreas1 = numSubAreas1;
 	if (subAreas0)
-		memcpy(data->subAreas0, subAreas0,
-			sizeof(int16_t) * MAX_SPECIAL_SUB_AREAS);
+		memcpy(data->subAreas0, subAreas0, sizeof(int16_t) * MAX_SPECIAL_SUB_AREAS);
 	else
 		memset(data->subAreas0, 0, sizeof(int16_t) * MAX_SPECIAL_SUB_AREAS);
 	if (subAreas1)
-		memcpy(data->subAreas1, subAreas1,
-			sizeof(int16_t) * MAX_SPECIAL_SUB_AREAS);
+		memcpy(data->subAreas1, subAreas1, sizeof(int16_t) * MAX_SPECIAL_SUB_AREAS);
 	else
 		memset(data->subAreas1, 0, sizeof(int16_t) * MAX_SPECIAL_SUB_AREAS);
 	data->listID		  = listID;
 	data->numCellsCovered = numCellsCovered;
 	if (numCellsCovered >= 162)
-		STOP(("Object %d covers too many cells in Save/Load!!",
-			getObjectType()->getObjTypeNum()));
-	memcpy(data->cellsCovered, cellsCovered,
-		sizeof(int16_t) * numCellsCovered * 2);
+		STOP(("Object %d covers too many cells in Save/Load!!", getObjectType()->getObjTypeNum()));
+	memcpy(data->cellsCovered, cellsCovered, sizeof(int16_t) * numCellsCovered * 2);
 	GameObject::CopyTo(dynamic_cast<GameObjectData*>(data));
 }
 
@@ -1237,24 +1197,20 @@ void TerrainObject::Load(TerrainObjectData* data)
 	{
 		subAreas0 = (pint16_t)ObjectTypeManager::objectCache->Malloc(
 			sizeof(int16_t) * MAX_SPECIAL_SUB_AREAS);
-		memcpy(subAreas0, data->subAreas0,
-			sizeof(int16_t) * MAX_SPECIAL_SUB_AREAS);
+		memcpy(subAreas0, data->subAreas0, sizeof(int16_t) * MAX_SPECIAL_SUB_AREAS);
 	}
 	if (numSubAreas1)
 	{
 		subAreas1 = (pint16_t)ObjectTypeManager::objectCache->Malloc(
 			sizeof(int16_t) * MAX_SPECIAL_SUB_AREAS);
-		memcpy(subAreas1, data->subAreas1,
-			sizeof(int16_t) * MAX_SPECIAL_SUB_AREAS);
+		memcpy(subAreas1, data->subAreas1, sizeof(int16_t) * MAX_SPECIAL_SUB_AREAS);
 	}
 	listID			= data->listID;
 	numCellsCovered = data->numCellsCovered;
 	if (numCellsCovered)
 	{
-		cellsCovered =
-			(pint16_t)systemHeap->Malloc(sizeof(int16_t) * numCellsCovered * 2);
-		memcpy(cellsCovered, data->cellsCovered,
-			sizeof(int16_t) * numCellsCovered * 2);
+		cellsCovered = (pint16_t)systemHeap->Malloc(sizeof(int16_t) * numCellsCovered * 2);
+		memcpy(cellsCovered, data->cellsCovered, sizeof(int16_t) * numCellsCovered * 2);
 	}
 }
 

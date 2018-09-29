@@ -26,13 +26,13 @@ typedef enum __mpconnectiontype_const
 
 class aZonePanel : public aObject
 {
-  public:
+public:
 	void init(FitIniFile* pFile, LogisticsScreen* pParent);
 	virtual int32_t handleMessage(uint32_t, uint32_t);
 	virtual void update(void);
 	virtual void render(void);
 
-  private:
+private:
 	LogisticsScreen* pParentScreen;
 
 	aAnimButton button;
@@ -43,16 +43,13 @@ class aZonePanel : public aObject
 
 class aLanPanel : public aObject
 {
-  public:
-	aLanPanel(LogisticsScreen& refParentScreenParam)
-	{
-		pParentScreen = &refParentScreenParam;
-	}
+public:
+	aLanPanel(LogisticsScreen& refParentScreenParam) { pParentScreen = &refParentScreenParam; }
 	void init(FitIniFile* pFile);
 	virtual int32_t handleMessage(uint32_t, uint32_t);
 	virtual void update(void);
 
-  private:
+private:
 	LogisticsScreen* pParentScreen;
 	aAnimButton button0;
 	aAnimButton button1;
@@ -61,7 +58,7 @@ class aLanPanel : public aObject
 
 class aTcpipPanel : public aObject
 {
-  public:
+public:
 	aTcpipPanel(LogisticsScreen& refParentScreenParam)
 	{
 		pParentScreen  = &refParentScreenParam;
@@ -74,7 +71,7 @@ class aTcpipPanel : public aObject
 	virtual void render(void);
 	virtual void begin(void);
 
-  private:
+private:
 	int32_t getNum(PSTR pStr, int32_t index1, int32_t index2);
 	LogisticsScreen* pParentScreen;
 	aAnimButton button0;
@@ -92,7 +89,7 @@ class aTcpipPanel : public aObject
 
 class MPConnectionType : public LogisticsScreen
 {
-  public:
+public:
 	MPConnectionType(void);
 	virtual ~MPConnectionType(void);
 
@@ -113,7 +110,7 @@ class MPConnectionType : public LogisticsScreen
 	PVOID pMPPlaceHolderScreen;
 	PVOID pMPHostGame;
 
-  private:
+private:
 	int32_t indexOfButtonWithID(int32_t id);
 
 	aZonePanel zonePanel;
@@ -128,7 +125,7 @@ class MPConnectionType : public LogisticsScreen
 
 class MPPlaceHolderScreen : public LogisticsScreen
 {
-  public:
+public:
 	// MPPlaceHolderScreen(void);
 	// virtual ~MPPlaceHolderScreen(void);
 
@@ -168,7 +165,7 @@ class MPPlaceHolderScreen : public LogisticsScreen
 	virtual void render() { render(0, 0); }
 	// virtual void update(void);
 
-  private:
+private:
 };
 
 //*************************************************************************************************

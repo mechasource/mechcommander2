@@ -31,7 +31,7 @@ ForceGroupBar:
 **************************************************************************************************/
 class ForceGroupBar
 {
-  public:
+public:
 	ForceGroupBar(void);
 	~ForceGroupBar(void);
 
@@ -54,7 +54,7 @@ class ForceGroupBar
 
 	bool flashJumpers(int32_t numFlashes);
 
-  private:
+private:
 	static float iconWidth;
 	static float iconHeight;
 	static int32_t iconsPerRow;

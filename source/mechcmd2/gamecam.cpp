@@ -120,8 +120,7 @@ void GameCamera::render(void)
 	eye->setLightColor(1, lightRGB);
 	eye->setLightIntensity(1, 1.0);
 	MidLevelRenderer::PerspectiveMode = usePerspective;
-	theClipper->StartDraw(
-		cameraOrigin, cameraToClip, fColor, &fColor, default_state, &z);
+	theClipper->StartDraw(cameraOrigin, cameraToClip, fColor, &fColor, default_state, &z);
 	MidLevelRenderer::GOSVertex::farClipReciprocal =
 		(1.0f - cameraToClip(2, 2)) / cameraToClip(3, 2);
 	if (active && turn > 1)
@@ -132,7 +131,7 @@ void GameCamera::render(void)
 			theSky->render(1);
 		land->render(); // render the Terrain
 		if (Environment.Renderer != 3)
-			craterManager->render(); // render the craters and footprints
+			craterManager->render();			 // render the craters and footprints
 		ObjectManager->render(true, true, true); // render all other objects
 		land->renderWater();					 // Draw Water Last!
 		if (useShadows && Environment.Renderer != 3)
@@ -142,8 +141,7 @@ void GameCamera::render(void)
 		if (!drawOldWay && !inMovieMode)
 		{
 			if (compass && (turn > 3) && drawCompass)
-				compass->render(
-					-1); // Force this to zBuffer in front of everything
+				compass->render(-1); // Force this to zBuffer in front of everything
 		}
 		if (!drawOldWay)
 			mcTextureManager->renderLists(); // This sends triangles down to the
@@ -333,9 +331,9 @@ int32_t GameCamera::activate(void)
 	{
 		int32_t i  = 0;
 		firstMover = ObjectManager->getMover(i);
-		while (firstMover && ((firstMover->getCommander()->getId() !=
-								  Commander::home->getId()) ||
-								 !firstMover->isOnGUI()))
+		while (firstMover &&
+			((firstMover->getCommander()->getId() != Commander::home->getId()) ||
+				!firstMover->isOnGUI()))
 		{
 			i++;
 			if (i == ObjectManager->getNumMovers())
@@ -358,8 +356,7 @@ int32_t GameCamera::activate(void)
 	// Startup the SKYBox
 	int32_t appearanceType					= (GENERIC_APPR_TYPE << 24);
 	AppearanceTypePtr genericAppearanceType = nullptr;
-	genericAppearanceType =
-		appearanceTypeList->getAppearance(appearanceType, "skybox");
+	genericAppearanceType = appearanceTypeList->getAppearance(appearanceType, "skybox");
 	if (!genericAppearanceType)
 	{
 		char msg[1024];
@@ -384,8 +381,7 @@ inline GameObjectPtr getCamObject(int32_t partId, bool existsOnly)
 		obj = ObjectManager->findByPartId(partId);
 	if (existsOnly)
 	{
-		if (obj && obj->getExists() &&
-				(obj->getCommanderId() == Commander::home->getId()) ||
+		if (obj && obj->getExists() && (obj->getCommanderId() == Commander::home->getId()) ||
 			(Team::home->teamLineOfSight(obj->getLOSPosition(), 0.0f)))
 			return (obj);
 		return (nullptr);
@@ -401,8 +397,7 @@ int32_t GameCamera::update(void)
 	if (lookTargetObject != -1)
 		targetObject = getCamObject(lookTargetObject, true);
 	if (targetObject && targetObject->getExists() &&
-		((targetObject->getCommanderId() == Commander::home->getId()) ||
-			!targetObject->isMover() ||
+		((targetObject->getCommanderId() == Commander::home->getId()) || !targetObject->isMover() ||
 			(targetObject->isMover() &&
 				((Mover*)targetObject)->conStat >= CONTACT_SENSOR_QUALITY_1)))
 	{
@@ -414,41 +409,36 @@ int32_t GameCamera::update(void)
 	}
 	// Force CameraAltitude to be less than max based on angle.  This keeps poly
 	// load relatively even
-	float anglePercent = (projectionAngle - MIN_PERSPECTIVE) /
-						 (MAX_PERSPECTIVE - MIN_PERSPECTIVE);
-	float testMax = Camera::AltitudeMaximumLo +
-					((Camera::AltitudeMaximumHi - Camera::AltitudeMaximumLo) *
-						anglePercent);
+	float anglePercent = (projectionAngle - MIN_PERSPECTIVE) / (MAX_PERSPECTIVE - MIN_PERSPECTIVE);
+	float testMax	  = Camera::AltitudeMaximumLo +
+		((Camera::AltitudeMaximumHi - Camera::AltitudeMaximumLo) * anglePercent);
 	if (cameraAltitude > testMax)
 		cameraAltitude = testMax;
 	if ((cameraAltitude < testMax) && (cameraAltitudeDesired > testMax))
 		cameraAltitude = testMax;
 	// calculate new near and far plane distance based on
 	// Current altitude above terrain.
-	float altitudePercent =
-		(cameraAltitude - AltitudeMinimum) / (testMax - AltitudeMinimum);
-	Camera::NearPlaneDistance =
-		MinNearPlane + ((MaxNearPlane - MinNearPlane) * altitudePercent);
-	Camera::FarPlaneDistance =
-		MinFarPlane + ((MaxFarPlane - MinFarPlane) * altitudePercent);
-	if (userInput->getKeyDown(KEY_LBRACKET) && userInput->ctrl() &&
-		userInput->alt() && !userInput->shift())
+	float altitudePercent	 = (cameraAltitude - AltitudeMinimum) / (testMax - AltitudeMinimum);
+	Camera::NearPlaneDistance = MinNearPlane + ((MaxNearPlane - MinNearPlane) * altitudePercent);
+	Camera::FarPlaneDistance  = MinFarPlane + ((MaxFarPlane - MinFarPlane) * altitudePercent);
+	if (userInput->getKeyDown(KEY_LBRACKET) && userInput->ctrl() && userInput->alt() &&
+		!userInput->shift())
 	{
 		useLOSAngle ^= true;
 	}
 #ifdef DEBUG_CAMERA
-	if (userInput->getKeyDown(KEY_RBRACKET) && userInput->ctrl() &&
-		userInput->alt() && !userInput->shift())
+	if (userInput->getKeyDown(KEY_RBRACKET) && userInput->ctrl() && userInput->alt() &&
+		!userInput->shift())
 	{
 		Camera::NearPlaneDistance += 10.0f;
 	}
-	if (userInput->getKeyDown(KEY_APOSTROPHE) && userInput->ctrl() &&
-		userInput->alt() && !userInput->shift())
+	if (userInput->getKeyDown(KEY_APOSTROPHE) && userInput->ctrl() && userInput->alt() &&
+		!userInput->shift())
 	{
 		Camera::FarPlaneDistance -= 1005.00f;
 	}
-	if (userInput->getKeyDown(KEY_SEMICOLON) && userInput->ctrl() &&
-		userInput->alt() && !userInput->shift())
+	if (userInput->getKeyDown(KEY_SEMICOLON) && userInput->ctrl() && userInput->alt() &&
+		!userInput->shift())
 	{
 		Camera::FarPlaneDistance += 1005.0f;
 	}
@@ -459,8 +449,7 @@ int32_t GameCamera::update(void)
 	Stuff::Vector4D moveHere;
 	moveHere.x = 10.0f;
 	moveHere.y = 10.0f;
-	gos_TextSetAttributes(
-		gosFontHandle, 0, gosFontScale, false, true, false, false);
+	gos_TextSetAttributes(gosFontHandle, 0, gosFontScale, false, true, false, false);
 	gos_TextStringLength(&width, &height, text);
 	moveHere.z = width;
 	moveHere.w = height;
@@ -482,19 +471,17 @@ int32_t GameCamera::update(void)
 		sprintf(text,
 			"Camera Angle: %f degrees    Camera Altitude: %f    "
 			"CameraPosition: X=%f Y=%f Z=%f   CameraRotation: %f",
-			projectionAngle, cameraAltitude, position.x, position.y, position.z,
-			cameraRotation);
+			projectionAngle, cameraAltitude, position.x, position.y, position.z, cameraRotation);
 		uint32_t width, height;
 		Stuff::Vector4D moveHere;
 		moveHere.x = 10.0f;
 		moveHere.y = 10.0f;
-		gos_TextSetAttributes(
-			gosFontHandle, 0, gosFontScale, false, true, false, false);
+		gos_TextSetAttributes(gosFontHandle, 0, gosFontScale, false, true, false, false);
 		gos_TextStringLength(&width, &height, text);
 		moveHere.z = width;
 		moveHere.w = height;
-		globalFloatHelp->setFloatHelp(text, moveHere, SD_GREEN, SD_BLACK, 1.0f,
-			true, false, false, false);
+		globalFloatHelp->setFloatHelp(
+			text, moveHere, SD_GREEN, SD_BLACK, 1.0f, true, false, false, false);
 	}
 	if (!compass) // Create it!
 	{

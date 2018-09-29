@@ -18,16 +18,16 @@ class ObjectAppearance;
 
 class SimpleCamera : public Camera
 {
-  public:
+public:
 	SimpleCamera(void);
 	~SimpleCamera(void);
 
-	void setMech(PCSTR fileName, int32_t base = 0xffff7e00,
-		int32_t highlight = 0xffff7e00, int32_t h2 = 0xffbcbcbc);
+	void setMech(PCSTR fileName, int32_t base = 0xffff7e00, int32_t highlight = 0xffff7e00,
+		int32_t h2 = 0xffbcbcbc);
 	void setComponent(PCSTR fileName);
 	void setBuilding(PCSTR fileName);
-	void setVehicle(PCSTR vehicle, int32_t base = 0xffff7e00,
-		int32_t highlight = 0xffff7e00, int32_t h2 = 0xffbcbcbc);
+	void setVehicle(PCSTR vehicle, int32_t base = 0xffff7e00, int32_t highlight = 0xffff7e00,
+		int32_t h2 = 0xffbcbcbc);
 	ObjectAppearance* getObjectAppearance(void) const { return pObject; }
 
 	void init(float left, float right, float top, float bottom);
@@ -45,12 +45,12 @@ class SimpleCamera : public Camera
 
 	void setInMission(void) { bIsInMission = true; }
 
-	void setColors(int32_t base = 0xffff7e00, int32_t highlight = 0xffff7e00,
-		int32_t h2 = 0xffbcbcbc);
+	void setColors(
+		int32_t base = 0xffff7e00, int32_t highlight = 0xffff7e00, int32_t h2 = 0xffbcbcbc);
 
 	float bounds[4];
 
-  private:
+private:
 	ObjectAppearance* pObject;
 	Camera* oldCam;
 	float rotation;

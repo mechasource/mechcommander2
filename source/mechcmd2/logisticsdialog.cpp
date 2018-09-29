@@ -175,8 +175,7 @@ int32_t LogisticsOKDialog::init(FitIniFile& file)
 	if (!s_instance)
 	{
 		s_instance = new LogisticsOKDialog;
-		((LogisticsScreen*)s_instance)
-			->init(file, "Static", "Text", "Rect", "Button", "Edit");
+		((LogisticsScreen*)s_instance)->init(file, "Static", "Text", "Rect", "Button", "Edit");
 		file.seekBlock("EnterAnim");
 		s_instance->enterAnim.init(&file, "");
 		file.seekBlock("LeaveAnim");
@@ -200,18 +199,14 @@ int32_t LogisticsOKDialog::handleMessage(uint32_t, uint32_t who)
 
 //-------------------------------------------------------------------------------------------------
 
-void LogisticsOKDialog::setText(
-	int32_t textID, int32_t CancelButton, int32_t OKButton)
+void LogisticsOKDialog::setText(int32_t textID, int32_t CancelButton, int32_t OKButton)
 {
 	textObjects[0].setText(textID);
 	buttons[0].setText(CancelButton);
 	buttons[1].setText(OKButton);
 }
 
-void LogisticsOKDialog::setText(PCSTR mainText)
-{
-	textObjects[0].setText(mainText);
-}
+void LogisticsOKDialog::setText(PCSTR mainText) { textObjects[0].setText(mainText); }
 
 //-------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------
@@ -230,8 +225,7 @@ int32_t LogisticsOneButtonDialog::init(FitIniFile& file)
 	if (!s_instance)
 	{
 		s_instance = new LogisticsOneButtonDialog;
-		((LogisticsScreen*)s_instance)
-			->init(file, "Static", "Text", "Rect", "Button", "Edit");
+		((LogisticsScreen*)s_instance)->init(file, "Static", "Text", "Rect", "Button", "Edit");
 		file.seekBlock("EnterAnim");
 		s_instance->enterAnim.init(&file, "");
 		file.seekBlock("LeaveAnim");
@@ -250,8 +244,7 @@ int32_t LogisticsLegalDialog::init(FitIniFile& file)
 	if (!s_instance)
 	{
 		s_instance = new LogisticsLegalDialog;
-		((LogisticsScreen*)s_instance)
-			->init(file, "Static", "Text", "Rect", "Button", "Edit");
+		((LogisticsScreen*)s_instance)->init(file, "Static", "Text", "Rect", "Button", "Edit");
 		file.seekBlock("EnterAnim");
 		s_instance->enterAnim.init(&file, "");
 		file.seekBlock("LeaveAnim");
@@ -274,18 +267,14 @@ int32_t LogisticsOneButtonDialog::handleMessage(uint32_t, uint32_t who)
 
 //-------------------------------------------------------------------------------------------------
 
-void LogisticsOneButtonDialog::setText(
-	int32_t textID, int32_t CancelButton, int32_t OKButton)
+void LogisticsOneButtonDialog::setText(int32_t textID, int32_t CancelButton, int32_t OKButton)
 {
 	textObjects[0].setText(textID);
 	buttons[0].setText(CancelButton);
 	//	buttons[1].setText( OKButton );
 }
 
-void LogisticsOneButtonDialog::setText(PCSTR mainText)
-{
-	textObjects[0].setText(mainText);
-}
+void LogisticsOneButtonDialog::setText(PCSTR mainText) { textObjects[0].setText(mainText); }
 
 //-------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------
@@ -304,22 +293,20 @@ int32_t LogisticsSaveDialog::init(FitIniFile& file)
 	if (!s_instance)
 	{
 		s_instance = new LogisticsSaveDialog();
-		((LogisticsScreen*)s_instance)
-			->init(file, "Static", "Text", "Rect", "Button");
+		((LogisticsScreen*)s_instance)->init(file, "Static", "Text", "Rect", "Button");
 		file.seekBlock("InAnim");
 		s_instance->enterAnim.init(&file, "");
 		file.seekBlock("OutAnim");
 		s_instance->exitAnim.init(&file, "");
-		s_instance->gameListBox.init(s_instance->rects[1].globalX(),
-			s_instance->rects[1].globalY(), s_instance->rects[1].width(),
-			s_instance->rects[1].height());
+		s_instance->gameListBox.init(s_instance->rects[1].globalX(), s_instance->rects[1].globalY(),
+			s_instance->rects[1].width(), s_instance->rects[1].height());
 		s_instance->gameListBox.setTopSkip(3);
 		s_instance->gameListBox.setOrange(true);
 		for (size_t i = 0; i < s_instance->buttonCount; i++)
 			s_instance->buttons[i].setMessageOnRelease();
 		s_instance->templateItem.init(&file, "AnimText");
-		s_instance->templateItem.resize(s_instance->gameListBox.width() - 30,
-			s_instance->templateItem.height());
+		s_instance->templateItem.resize(
+			s_instance->gameListBox.width() - 30, s_instance->templateItem.height());
 		for (i = 0; i < s_instance->editCount; i++)
 		{
 			s_instance->edits[i].allowWierdChars(0);
@@ -427,23 +414,21 @@ void LogisticsSaveDialog::initDialog(PCSTR path, bool bCampaign)
 			{
 				aLocalizedListItem* pEntry = new aLocalizedListItem();
 				*pEntry					   = s_instance->templateItem;
-				PSTR pExt = strstr(findResult.cFileName, ".fit");
+				PSTR pExt				   = strstr(findResult.cFileName, ".fit");
 				if (!pExt)
 				{
 					pExt = (strstr(findResult.cFileName, ".FIT"));
 				}
 				if (pExt)
 					*pExt = nullptr;
-				if (!bCampaign &&
-					isCorrectVersionSaveGame(findResult.cFileName))
+				if (!bCampaign && isCorrectVersionSaveGame(findResult.cFileName))
 					pEntry->setText(findResult.cFileName);
 				else if (bCampaign)
 					pEntry->setText(findResult.cFileName);
 				if (bCampaign)
 				{
 					char campaignName[1024];
-					readCampaignNameFromFile(
-						findResult.cFileName, campaignName, 1023);
+					readCampaignNameFromFile(findResult.cFileName, campaignName, 1023);
 					pEntry->setText(campaignName);
 				}
 				if (bCampaign || isCorrectVersionSaveGame(findResult.cFileName))
@@ -511,8 +496,7 @@ bool LogisticsSaveDialog::isCorrectVersionSaveGame(PSTR fileName)
 	return false;
 }
 
-void LogisticsSaveDialog::readCampaignNameFromFile(
-	PSTR fileName, PSTR resultName, int32_t len)
+void LogisticsSaveDialog::readCampaignNameFromFile(PSTR fileName, PSTR resultName, int32_t len)
 {
 	FullPathFileName path;
 	path.init(campaignPath, fileName, ".fit");
@@ -524,8 +508,7 @@ void LogisticsSaveDialog::readCampaignNameFromFile(
 		Assert(0, 0, errorStr);
 	}
 	int32_t result = file.seekBlock("Campaign");
-	Assert(result == NO_ERROR, 0,
-		"Coudln't find the mission settings block in the mission file");
+	Assert(result == NO_ERROR, 0, "Coudln't find the mission settings block in the mission file");
 	resultName[0] = 0;
 	int32_t lName = 0;
 	result		  = file.readIdLong("NameID", lName);
@@ -554,28 +537,27 @@ void LogisticsSaveDialog::update()
 		bDone = true;
 	buttons[2].disable(0);
 	buttons[0].disable(0);
-	EString fileName;
+	std::wstring fileName;
 	edits[0].getEntry(fileName);
 	if (bCampaign)
 	{
 		fileName.Empty();
-		EString displayName;
+		std::wstring displayName;
 		edits[0].getEntry(displayName);
 		{
 			/*if there is a selected item and it matches the text in the
 			 * editbox, then use that selected item*/
 			aLocalizedListItem* pSelectedItem = 0;
 			int32_t selectedIndex			  = gameListBox.GetSelectedItem();
-			if ((0 <= selectedIndex) &&
-				(gameListBox.GetItemCount() > selectedIndex))
+			if ((0 <= selectedIndex) && (gameListBox.GetItemCount() > selectedIndex))
 			{
-				pSelectedItem = dynamic_cast<aLocalizedListItem*>(
-					gameListBox.GetItem(selectedIndex));
+				pSelectedItem =
+					dynamic_cast<aLocalizedListItem*>(gameListBox.GetItem(selectedIndex));
 			}
 			if (pSelectedItem)
 			{
-				if (0 == displayName.Compare(pSelectedItem->getText(),
-							 false /*not case sensitive*/))
+				if (0 ==
+					displayName.Compare(pSelectedItem->getText(), false /*not case sensitive*/))
 				{
 					fileName = pSelectedItem->getHiddenText();
 				}
@@ -591,8 +573,7 @@ void LogisticsSaveDialog::update()
 			{
 				aLocalizedListItem* pItem =
 					dynamic_cast<aLocalizedListItem*>(gameListBox.GetItem(i));
-				if (displayName.Compare(
-						pItem->getText(), false /*not case sensitive*/) == 0)
+				if (displayName.Compare(pItem->getText(), false /*not case sensitive*/) == 0)
 				{
 					fileName = pItem->getHiddenText();
 					break;
@@ -669,8 +650,7 @@ void LogisticsSaveDialog::update()
 	gameListBox.update();
 	if (userInput->isLeftClick())
 	{
-		if (gameListBox.pointInside(
-				userInput->getMouseX(), userInput->getMouseY()))
+		if (gameListBox.pointInside(userInput->getMouseX(), userInput->getMouseY()))
 		{
 			// get selected item
 			int32_t item = gameListBox.GetSelectedItem();
@@ -680,19 +660,15 @@ void LogisticsSaveDialog::update()
 				{
 					gameListBox.GetItem(i)->setColor(edits[0].getColor());
 				}
-				gameListBox.GetItem(item)->setColor(
-					edits[0].getHighlightColor());
-				PCSTR text =
-					((aTextListItem*)gameListBox.GetItem(item))->getText();
+				gameListBox.GetItem(item)->setColor(edits[0].getHighlightColor());
+				PCSTR text = ((aTextListItem*)gameListBox.GetItem(item))->getText();
 				edits[0].setEntry(text);
-				selectedName = ((aLocalizedListItem*)gameListBox.GetItem(item))
-								   ->getHiddenText();
+				selectedName = ((aLocalizedListItem*)gameListBox.GetItem(item))->getHiddenText();
 				// update mission info
 				updateMissionInfo();
 			}
 		}
-		else if (edits[0].pointInside(
-					 userInput->getMouseX(), userInput->getMouseY()))
+		else if (edits[0].pointInside(userInput->getMouseX(), userInput->getMouseY()))
 		{
 			gameListBox.SelectItem(-1);
 			for (size_t i = 0; i < gameListBox.GetItemCount(); i++)
@@ -775,10 +751,8 @@ void LogisticsSaveDialog::updateMissionInfo()
 		strcat(real, "\n");
 		time_t time	= file.getFileMTime();
 		struct tm* ptm = localtime(&time);
-		PSTR timeStr =
-			gos_GetFormattedTime(ptm->tm_hour, ptm->tm_min, ptm->tm_sec);
-		PSTR dateStr = gos_GetFormattedDate(
-			0, ptm->tm_year + 1900, ptm->tm_mon + 1, ptm->tm_mday);
+		PSTR timeStr   = gos_GetFormattedTime(ptm->tm_hour, ptm->tm_min, ptm->tm_sec);
+		PSTR dateStr = gos_GetFormattedDate(0, ptm->tm_year + 1900, ptm->tm_mon + 1, ptm->tm_mday);
 		cLoadString(IDS_DIALOG_TIME, tmp2, 255);
 		sprintf(tmp, tmp2, dateStr, timeStr);
 		strcat(real, tmp);
@@ -890,19 +864,16 @@ int32_t LogisticsSaveDialog::handleMessage(uint32_t what, uint32_t who)
 {
 	if (YES == who)
 	{
-		EString str;
+		std::wstring str;
 		edits[0].getEntry(str);
 		bool bFound = 0;
 		// look and see if you are overwriting anything here...
 		for (size_t i = 0; i < gameListBox.GetItemCount(); i++)
 		{
-			if (str.Compare(
-					((aLocalizedListItem*)gameListBox.GetItem(i))->getText(),
-					0) == 0)
+			if (str.Compare(((aLocalizedListItem*)gameListBox.GetItem(i))->getText(), 0) == 0)
 			{
 				// do prompt here
-				selectedName = ((aLocalizedListItem*)gameListBox.GetItem(i))
-								   ->getHiddenText();
+				selectedName = ((aLocalizedListItem*)gameListBox.GetItem(i))->getHiddenText();
 				char str[256];
 				cLoadString(IDS_DIALOG_OVERWRITE_PROMPT, str, 255);
 				char promptString[256];
@@ -939,12 +910,11 @@ int32_t LogisticsSaveDialog::handleMessage(uint32_t what, uint32_t who)
 	{
 		if (gameListBox.GetItemCount())
 		{
-			EString tmpName;
+			std::wstring tmpName;
 			edits[0].getEntry(tmpName);
 			for (size_t i = 0; i < gameListBox.GetItemCount(); i++)
 			{
-				PCSTR pFileName = ((aLocalizedListItem*)gameListBox.GetItem(i))
-									  ->getHiddenText();
+				PCSTR pFileName = ((aLocalizedListItem*)gameListBox.GetItem(i))->getHiddenText();
 				if (tmpName.Compare(pFileName, 0) == 0)
 				{
 					selectedName = pFileName;
@@ -971,8 +941,7 @@ int32_t LogisticsSaveDialog::handleMessage(uint32_t what, uint32_t who)
 //-------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------
 
-LogisticsVariantDialog::LogisticsVariantDialog()
-	: templateItem(IDS_DIALOG_LB_FONT)
+LogisticsVariantDialog::LogisticsVariantDialog() : templateItem(IDS_DIALOG_LB_FONT)
 {
 	if (!s_instance)
 		s_instance = this;
@@ -991,8 +960,7 @@ int32_t LogisticsVariantDialog::init(FitIniFile& file)
 	enterAnim.init(&file, "");
 	file.seekBlock("OutAnim");
 	exitAnim.init(&file, "");
-	gameListBox.init(rects[1].globalX(), rects[1].globalY(), rects[1].width(),
-		rects[1].height());
+	gameListBox.init(rects[1].globalX(), rects[1].globalY(), rects[1].width(), rects[1].height());
 	gameListBox.setOrange(true);
 	for (size_t i = 0; i < buttonCount; i++)
 		buttons[i].setMessageOnRelease();
@@ -1052,9 +1020,8 @@ void LogisticsVariantDialog::initTranscript()
 			if ((findResult.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) == 0 &&
 				_stricmp(findResult.cFileName, "transcript.txt") != 0)
 			{
-				aAnimTextListItem* pEntry =
-					new aAnimTextListItem(IDS_DIALOG_LIST_FONT);
-				*pEntry = s_instance->templateItem;
+				aAnimTextListItem* pEntry = new aAnimTextListItem(IDS_DIALOG_LIST_FONT);
+				*pEntry					  = s_instance->templateItem;
 				pEntry->setText(findResult.cFileName);
 				pEntry->setColor(edits[0].getColor());
 				gameListBox.AddItem(pEntry);
@@ -1075,9 +1042,8 @@ void LogisticsVariantDialog::initVariantList()
 		int32_t bValid = 0;
 		for (size_t i = 0; i < count; i++)
 		{
-			aAnimTextListItem* pEntry =
-				new aAnimTextListItem(IDS_DIALOG_LIST_FONT);
-			*pEntry = s_instance->templateItem;
+			aAnimTextListItem* pEntry = new aAnimTextListItem(IDS_DIALOG_LIST_FONT);
+			*pEntry					  = s_instance->templateItem;
 			pEntry->setText(pNames[i]);
 			pEntry->setColor(edits[0].getColor());
 			gameListBox.AddItem(pEntry);
@@ -1130,8 +1096,7 @@ void LogisticsVariantDialog::update()
 			if (bTranscript)
 			{
 				FullPathFileName path;
-				path.init(
-					"data\\multiplayer\\transcripts\\", selectedName, ".txt");
+				path.init("data\\multiplayer\\transcripts\\", selectedName, ".txt");
 				DeleteFile(path);
 				initTranscript();
 			}
@@ -1154,8 +1119,7 @@ void LogisticsVariantDialog::update()
 	gameListBox.update();
 	if (userInput->isLeftClick())
 	{
-		if (gameListBox.pointInside(
-				userInput->getMouseX(), userInput->getMouseY()))
+		if (gameListBox.pointInside(userInput->getMouseX(), userInput->getMouseY()))
 		{
 			// get selected item
 			int32_t item = gameListBox.GetSelectedItem();
@@ -1165,16 +1129,13 @@ void LogisticsVariantDialog::update()
 				{
 					gameListBox.GetItem(i)->setColor(edits[0].getColor());
 				}
-				gameListBox.GetItem(item)->setColor(
-					edits[0].getHighlightColor());
-				PCSTR text =
-					((aTextListItem*)gameListBox.GetItem(item))->getText();
+				gameListBox.GetItem(item)->setColor(edits[0].getHighlightColor());
+				PCSTR text = ((aTextListItem*)gameListBox.GetItem(item))->getText();
 				edits[0].setEntry(text);
 				selectedName = text;
 			}
 		}
-		else if (edits[0].pointInside(
-					 userInput->getMouseX(), userInput->getMouseY()))
+		else if (edits[0].pointInside(userInput->getMouseX(), userInput->getMouseY()))
 		{
 			gameListBox.SelectItem(-1);
 			for (size_t i = 0; i < gameListBox.GetItemCount(); i++)
@@ -1183,10 +1144,9 @@ void LogisticsVariantDialog::update()
 			}
 		}
 	}
-	EString text;
+	std::wstring text;
 	edits[0].getEntry(text);
-	if ((!bTranscript && !LogisticsData.instance->canReplaceVariant(text)) ||
-		!text.Length())
+	if ((!bTranscript && !LogisticsData.instance->canReplaceVariant(text)) || !text.Length())
 	{
 		buttons[2].disable(1);
 	}
@@ -1275,9 +1235,7 @@ int32_t LogisticsVariantDialog::handleMessage(uint32_t what, uint32_t who)
 		// look and see if you are overwriting anything here...
 		for (size_t i = 0; i < gameListBox.GetItemCount(); i++)
 		{
-			if (selectedName.Compare(
-					((aTextListItem*)gameListBox.GetItem(i))->getText(), 0) ==
-				0)
+			if (selectedName.Compare(((aTextListItem*)gameListBox.GetItem(i))->getText(), 0) == 0)
 			{
 				// do prompt here
 				char str[256];
@@ -1369,8 +1327,7 @@ void LogisticsAcceptVariantDialog::update()
 	gameListBox.update();
 	if (userInput->isLeftClick())
 	{
-		if (gameListBox.pointInside(
-				userInput->getMouseX(), userInput->getMouseY()))
+		if (gameListBox.pointInside(userInput->getMouseX(), userInput->getMouseY()))
 		{
 			// get selected item
 			int32_t item = gameListBox.GetSelectedItem();
@@ -1380,16 +1337,13 @@ void LogisticsAcceptVariantDialog::update()
 				{
 					gameListBox.GetItem(i)->setColor(edits[0].getColor());
 				}
-				gameListBox.GetItem(item)->setColor(
-					edits[0].getHighlightColor());
-				PCSTR text =
-					((aTextListItem*)gameListBox.GetItem(item))->getText();
+				gameListBox.GetItem(item)->setColor(edits[0].getHighlightColor());
+				PCSTR text = ((aTextListItem*)gameListBox.GetItem(item))->getText();
 				edits[0].setEntry(text);
 				selectedName = text;
 			}
 		}
-		else if (edits[0].pointInside(
-					 userInput->getMouseX(), userInput->getMouseY()))
+		else if (edits[0].pointInside(userInput->getMouseX(), userInput->getMouseY()))
 		{
 			gameListBox.SelectItem(-1);
 			for (size_t i = 0; i < gameListBox.GetItemCount(); i++)
@@ -1398,7 +1352,7 @@ void LogisticsAcceptVariantDialog::update()
 			}
 		}
 	}
-	EString text;
+	std::wstring text;
 	edits[0].getEntry(text);
 	if (!LogisticsData.instance->canReplaceVariant(text))
 	{
@@ -1539,7 +1493,7 @@ void LogisticsMapInfoDialog::setMap(PCSTR pFileName)
 		if (NO_ERROR == result && tmpBool)
 		{
 			uint32_t tmpInt = 0;
-			result = file.readIdULong("Blurb2ResourceStringID", tmpInt);
+			result			= file.readIdULong("Blurb2ResourceStringID", tmpInt);
 			if (NO_ERROR == result)
 			{
 				cLoadString(tmpInt, blurb, 1024);

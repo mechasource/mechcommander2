@@ -42,8 +42,7 @@ MissionBriefingScreen::~MissionBriefingScreen()
 			objectiveButtons[i] = nullptr;
 		}
 	}
-	missionListBox
-		.destroy(); // NO Default destructor for aListBox.  Just call destroy.
+	missionListBox.destroy(); // NO Default destructor for aListBox.  Just call destroy.
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -53,8 +52,7 @@ void MissionBriefingScreen::init(FitIniFile* file)
 	LogisticsScreen::init(*file, "Static", "Text", "Rect", "Button");
 	for (size_t i = 0; i < buttonCount; i++)
 		buttons[i].setMessageOnRelease();
-	missionListBox.init(
-		rects[1].left(), rects[1].top(), rects[1].width(), rects[1].height());
+	missionListBox.init(rects[1].left(), rects[1].top(), rects[1].width(), rects[1].height());
 	missionListBox.setPressFX(-1);
 	missionListBox.setHighlightFX(-1);
 	missionListBox.setDisabledFX(-1);
@@ -99,8 +97,7 @@ void MissionBriefingScreen::update()
 		for (size_t i = 0; i < MAX_OBJECTIVES; i++)
 		{
 			if (objectiveButtons[i] &&
-				objectiveButtons[i]->pointInside(
-					userInput->getMouseX(), userInput->getMouseY()))
+				objectiveButtons[i]->pointInside(userInput->getMouseX(), userInput->getMouseY()))
 			{
 				// find the item that has this objective
 				for (size_t j = 0; j < missionListBox.GetItemCount(); j++)
@@ -129,16 +126,15 @@ void MissionBriefingScreen::update()
 			{
 				missionListBox.GetItem(i)->setColor(0xffffffff);
 				if (objectiveButtons[missionListBox.GetItem(i)->getID()])
-					objectiveButtons[missionListBox.GetItem(i)->getID()]
-						->setColor(0xffffffff);
+					objectiveButtons[missionListBox.GetItem(i)->getID()]->setColor(0xffffffff);
 			}
 		}
 		if (ID != -1)
 		{
 			if (objectiveModels[ID].Length())
 			{
-				camera.setObject(objectiveModels[ID], modelTypes[ID],
-					modelColors[ID][0], modelColors[ID][1], modelColors[ID][2]);
+				camera.setObject(objectiveModels[ID], modelTypes[ID], modelColors[ID][0],
+					modelColors[ID][1], modelColors[ID][2]);
 				camera.setScale(modelScales[ID]);
 				soundSystem->playDigitalSample(LOG_VIDEOBUTTONS);
 				statics[35].showGUIWindow(0);
@@ -153,8 +149,7 @@ void MissionBriefingScreen::update()
 				objectiveButtons[ID]->setColor(0xffff0000);
 		}
 	}
-	if (!bClicked &&
-		runTime > 3.0) // every second switch selection until user clicks
+	if (!bClicked && runTime > 3.0) // every second switch selection until user clicks
 	{
 		runTime = 0;
 		// turn old sel back into white
@@ -190,8 +185,8 @@ void MissionBriefingScreen::update()
 				missionListBox.GetItem(selItem)->setColor(0xffff0000);
 				if (objectiveButtons[ID])
 					objectiveButtons[ID]->setColor(0xffff0000);
-				camera.setObject(objectiveModels[ID], modelTypes[ID],
-					modelColors[ID][0], modelColors[ID][1], modelColors[ID][2]);
+				camera.setObject(objectiveModels[ID], modelTypes[ID], modelColors[ID][0],
+					modelColors[ID][1], modelColors[ID][2]);
 				camera.setScale(modelScales[ID]);
 				if (objectiveModels[ID].Length())
 					statics[35].showGUIWindow(0);
@@ -206,13 +201,12 @@ void MissionBriefingScreen::update()
 		}
 	}
 	camera.update();
-	if (!MPlayer || !ChatWindow::instance()->pointInside(
-						userInput->getMouseX(), userInput->getMouseY()))
+	if (!MPlayer ||
+		!ChatWindow::instance()->pointInside(userInput->getMouseX(), userInput->getMouseY()))
 		LogisticsScreen::update();
 	if (MPlayer && ChatWindow::instance())
 	{
-		if (ChatWindow::instance()->pointInside(
-				userInput->getMouseX(), userInput->getMouseY()))
+		if (ChatWindow::instance()->pointInside(userInput->getMouseX(), userInput->getMouseY()))
 			textObjects[helpTextArrayID].setText("");
 		ChatWindow::instance()->update();
 	}
@@ -230,8 +224,7 @@ int32_t MissionBriefingScreen::getMissionTGA(PCSTR missionName)
 	{
 		// big hack here for some reason we can open files while they're being
 		// transferred.
-		HANDLE hFile =
-			CreateFile(path, GENERIC_READ, 0, nullptr, OPEN_EXISTING, 0, 0);
+		HANDLE hFile  = CreateFile(path, GENERIC_READ, 0, nullptr, OPEN_EXISTING, 0, 0);
 		int32_t error = GetLastError();
 		if (hFile == INVALID_HANDLE_VALUE)
 			return 0;
@@ -250,8 +243,7 @@ int32_t MissionBriefingScreen::getMissionTGA(PCSTR missionName)
 			TGAFileHeader* pHeader = (TGAFileHeader*)mem;
 			int32_t bmpWidth	   = pHeader->width;
 			int32_t bmpHeight	  = pHeader->height;
-			flipTopToBottom((puint8_t)(pHeader + 1), pHeader->pixel_depth,
-				bmpWidth, bmpHeight);
+			flipTopToBottom((puint8_t)(pHeader + 1), pHeader->pixel_depth, bmpWidth, bmpHeight);
 			// set up the texture
 			int32_t tmpMapTextureHandle = mcTextureManager->textureFromMemory(
 				(uint32_t*)(pHeader + 1), gos_Texture_Solid, 0, bmpWidth);
@@ -270,7 +262,7 @@ void MissionBriefingScreen::begin()
 	statics[VIDEO_SCREEN].setColor(0);
 	memset(objectiveButtons, 0, sizeof(aObject*) * MAX_OBJECTIVES);
 	// need to set up all pertinent mission info
-	EString missionName			= LogisticsData::instance->getCurrentMission();
+	std::wstring missionName	= LogisticsData::instance->getCurrentMission();
 	int32_t tmpMapTextureHandle = getMissionTGA(missionName);
 	statics[MAP_INDEX].setTexture(tmpMapTextureHandle);
 	statics[MAP_INDEX].setUVs(0, 127, 127, 0);
@@ -284,18 +276,15 @@ void MissionBriefingScreen::begin()
 	addItem(IDS_MN_DIVIDER, 0xff005392, -1);
 	fitFile.seekBlock("MissionSettings");
 	int32_t result = fitFile.seekBlock("MissionSettings");
-	Assert(result == NO_ERROR, 0,
-		"Coudln't find the mission settings block in the mission file");
+	Assert(result == NO_ERROR, 0, "Coudln't find the mission settings block in the mission file");
 	bool bRes;
 	result = fitFile.readIdBoolean("MissionNameUseResourceString", bRes);
-	Assert(result == NO_ERROR, 0,
-		"couldn't find the MissionNameUseResourceString");
+	Assert(result == NO_ERROR, 0, "couldn't find the MissionNameUseResourceString");
 	if (bRes)
 	{
 		uint32_t ulRes;
 		result = fitFile.readIdULong("MissionNameResourceStringID", ulRes);
-		Assert(result == NO_ERROR, 0,
-			"couldn't find the MissionNameResourceStringID");
+		Assert(result == NO_ERROR, 0, "couldn't find the MissionNameResourceStringID");
 		addItem(ulRes, 0xff005392, -1);
 	}
 	else
@@ -340,18 +329,16 @@ void MissionBriefingScreen::begin()
 			{
 				if (pObjective->Priority() == j)
 				{
-					addObjectiveButton(pObjective->MarkerX(),
-						pObjective->MarkerY(), buttonCount,
-						pObjective->Priority(), fabs(terrainExtentX),
-						fabs(terrainExtentY), pObjective->DisplayMarker());
+					addObjectiveButton(pObjective->MarkerX(), pObjective->MarkerY(), buttonCount,
+						pObjective->Priority(), fabs(terrainExtentX), fabs(terrainExtentY),
+						pObjective->DisplayMarker());
 					if (j == 0)
 					{
 						bHasSecondary = true;
 						if (i == 0)
 							addItem(IDS_MN_DIVIDER, 0xff005392, -1);
 					}
-					addLBItem((pObjective->LocalizedDescription()).Data(),
-						0xffffffff, count);
+					addLBItem((pObjective->LocalizedDescription()).Data(), 0xffffffff, count);
 					objectiveModels[count] = (pObjective->ModelName()).Data();
 					modelTypes[count]	  = pObjective->ModelType();
 					modelColors[count][0]  = pObjective->ModelBaseColor();
@@ -410,8 +397,7 @@ void MissionBriefingScreen::begin()
 	status = RUNNING;
 }
 
-void MissionBriefingScreen::setupDropZone(
-	float fX, float fY, float mapWidth, float mapHeight)
+void MissionBriefingScreen::setupDropZone(float fX, float fY, float mapWidth, float mapHeight)
 {
 	dropZoneButton = statics[BUTTON_TEXT];
 	float bmpX	 = statics[MAP_INDEX].width();
@@ -428,9 +414,8 @@ void MissionBriefingScreen::setupDropZone(
 	dropZoneButton.showGUIWindow(true);
 }
 
-void MissionBriefingScreen::addObjectiveButton(float fX, float fY,
-	int32_t count, int32_t priority, float mapWidth, float mapHeight,
-	bool display)
+void MissionBriefingScreen::addObjectiveButton(float fX, float fY, int32_t count, int32_t priority,
+	float mapWidth, float mapHeight, bool display)
 {
 	float lineOffset = 0;
 	if (priority == 1)
@@ -490,8 +475,7 @@ int32_t MissionBriefingScreen::addLBItem(PCSTR text, uint32_t color, int32_t ID)
 	aTextListItem* pEntry = new aTextListItem(IDS_MN_LB_FONT);
 	pEntry->setID(ID);
 	pEntry->resize(
-		missionListBox.width() - missionListBox.getScrollBarWidth() - 10,
-		pEntry->height());
+		missionListBox.width() - missionListBox.getScrollBarWidth() - 10, pEntry->height());
 	pEntry->setText(text);
 	pEntry->setColor(color);
 	pEntry->sizeToText();
@@ -504,8 +488,7 @@ int32_t MissionBriefingScreen::addItem(int32_t ID, uint32_t color, int32_t LBid)
 	aTextListItem* pEntry = new aTextListItem(IDS_MN_LB_FONT);
 	pEntry->setID(LBid);
 	pEntry->resize(
-		missionListBox.width() - missionListBox.getScrollBarWidth() - 10,
-		pEntry->height());
+		missionListBox.width() - missionListBox.getScrollBarWidth() - 10, pEntry->height());
 	pEntry->setText(ID);
 	pEntry->setColor(color);
 	return missionListBox.AddItem(pEntry);

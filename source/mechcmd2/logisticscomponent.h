@@ -16,7 +16,7 @@ class File;
 
 class LogisticsComponent
 {
-  public:
+public:
 	static int32_t XICON_FACTOR; // multiplier for width and height of icons
 	static int32_t YICON_FACTOR;
 
@@ -70,7 +70,7 @@ class LogisticsComponent
 
 	WEAPON_RANGE getRangeType(void) const { return rangeType; }
 
-  private:
+private:
 	int32_t ID;   // index into csv
 	int32_t Type; // defined in csv
 	int32_t stringID;

@@ -108,8 +108,8 @@ extern bool GeneralAlarm;
 
 inline float agsqrt(float _a, float _b) { return sqrt(_a * _a + _b * _b); }
 
-uint32_t WallType[18] = {26, 125, 152, 154, 156, 158, 160, 161, 162, 202, 204,
-	206, 231, 232, 233, 286, 287, 288};
+uint32_t WallType[18] = {
+	26, 125, 152, 154, 156, 158, 160, 161, 162, 202, 204, 206, 231, 232, 233, 286, 287, 288};
 
 #define BRIDGE_TYPE 607
 
@@ -227,8 +227,7 @@ int32_t BuildingType::init(FilePtr objFile, uint32_t fileSize)
 	result = bldgFile.readIdLong("ResourcePoints", resourcePoints);
 	if (result != NO_ERROR)
 		resourcePoints = 0;
-	result = bldgFile.readIdBoolean(
-		"ImpassableWhenDestroyed", marksImpassableWhenDestroyed);
+	result = bldgFile.readIdBoolean("ImpassableWhenDestroyed", marksImpassableWhenDestroyed);
 	if (result != NO_ERROR)
 		marksImpassableWhenDestroyed = true;
 	result = bldgFile.readIdBoolean("Capturable", capturable);
@@ -276,8 +275,7 @@ int32_t BuildingType::init(FilePtr objFile, uint32_t fileSize)
 
 //---------------------------------------------------------------------------
 
-bool BuildingType::handleCollision(
-	GameObjectPtr collidee, GameObjectPtr collider)
+bool BuildingType::handleCollision(GameObjectPtr collidee, GameObjectPtr collider)
 {
 	if (MPlayer && !MPlayer->isServer())
 		return (true);
@@ -315,8 +313,7 @@ bool BuildingType::handleCollision(
 
 //---------------------------------------------------------------------------
 
-bool BuildingType::handleDestruction(
-	GameObjectPtr collidee, GameObjectPtr collider)
+bool BuildingType::handleDestruction(GameObjectPtr collidee, GameObjectPtr collider)
 {
 	return (false);
 }
@@ -568,17 +565,12 @@ int32_t Building::updateAnimations(void)
 				case 3:
 				case 4: // DO NOTHING!!  We are in position.
 				{
-					GameObjectPtr refitMech =
-						ObjectManager->getByWatchID(refitBuddyWID);
-					if (refitMech &&
-						(refitMech->getStatus() == OBJECT_STATUS_SHUTDOWN))
+					GameObjectPtr refitMech = ObjectManager->getByWatchID(refitBuddyWID);
+					if (refitMech && (refitMech->getStatus() == OBJECT_STATUS_SHUTDOWN))
 					{
-						if (((BuildingTypePtr)getObjectType())
-								->activityEffectId != 0xffffffff)
+						if (((BuildingTypePtr)getObjectType())->activityEffectId != 0xffffffff)
 							appearance->startActivity(
-								((BuildingTypePtr)getObjectType())
-									->activityEffectId,
-								true);
+								((BuildingTypePtr)getObjectType())->activityEffectId, true);
 					}
 					else
 					{
@@ -589,33 +581,27 @@ int32_t Building::updateAnimations(void)
 				case 0:
 					if (!appearance->getInTransition())
 					{
-						GameObjectPtr refitMech =
-							ObjectManager->getByWatchID(refitBuddyWID);
+						GameObjectPtr refitMech = ObjectManager->getByWatchID(refitBuddyWID);
 						if (refitMech)
 						{
 							Stuff::Vector3D distance;
-							distance.Subtract(
-								refitMech->getPosition(), getPosition());
+							distance.Subtract(refitMech->getPosition(), getPosition());
 							float dist = distance.GetApproximateLength();
 							if (dist <= 128.0f)
 							{
-								if (refitMech &&
-									(refitMech->getTonnage() <= 40.0f))
+								if (refitMech && (refitMech->getTonnage() <= 40.0f))
 								{
 									appearance->setGesture(1);
 								}
-								else if (refitMech &&
-										 (refitMech->getTonnage() <= 60.0f))
+								else if (refitMech && (refitMech->getTonnage() <= 60.0f))
 								{
 									appearance->setGesture(2);
 								}
-								else if (refitMech &&
-										 (refitMech->getTonnage() <= 80.0f))
+								else if (refitMech && (refitMech->getTonnage() <= 80.0f))
 								{
 									appearance->setGesture(3);
 								}
-								else if (refitMech &&
-										 (refitMech->getTonnage() <= 100.0f))
+								else if (refitMech && (refitMech->getTonnage() <= 100.0f))
 								{
 									appearance->setGesture(4);
 								}
@@ -663,16 +649,14 @@ int32_t Building::update(void)
 	if (getFlag(OBJECT_FLAG_JUSTCREATED))
 	{
 		setFlag(OBJECT_FLAG_JUSTCREATED, false);
-		BuildingTypePtr type =
-			(BuildingTypePtr)ObjectManager->getObjectType(typeHandle);
+		BuildingTypePtr type = (BuildingTypePtr)ObjectManager->getObjectType(typeHandle);
 		//-------------------------------------------------------
 		// OK, now use the sprite Bounds to calculate the extent
 		// Radius so that nobody has to enter it!
 		if (type->getExtentRadius() < 0.0)
 		{
 			Stuff::Vector4D diagonalSize;
-			diagonalSize.Subtract(
-				appearance->upperLeft, appearance->lowerRight);
+			diagonalSize.Subtract(appearance->upperLeft, appearance->lowerRight);
 			float actualSize = diagonalSize.GetLength();
 			actualSize /= worldUnitsPerMeter;
 			actualSize *= 1.25;
@@ -685,13 +669,10 @@ int32_t Building::update(void)
 		// if not, find parent in ObjMgr and get its pointer.
 		if ((parentId != 0xffffffff) && (parentId != 0))
 		{
-			parent = ObjectManager
-						 ->findByCellPosition(
-							 (parentId >> 16), (parentId & 0x0000ffff))
+			parent = ObjectManager->findByCellPosition((parentId >> 16), (parentId & 0x0000ffff))
 						 ->getWatchID();
 			if (ObjectManager->getByWatchID(parent)->canBeCaptured())
-				ObjectManager->getByWatchID(parent)->setFlag(
-					OBJECT_FLAG_CAPTURABLE, true);
+				ObjectManager->getByWatchID(parent)->setFlag(OBJECT_FLAG_CAPTURABLE, true);
 			gosASSERT(parent != 0);
 		}
 	}
@@ -719,8 +700,7 @@ int32_t Building::update(void)
 		{
 			// Play something close by sound FX
 			soundSystem->playDigitalSample(PING_SFX);
-			if (proximityTimer >
-				((BuildingTypePtr)getObjectType())->perimeterAlarmTimer)
+			if (proximityTimer > ((BuildingTypePtr)getObjectType())->perimeterAlarmTimer)
 			{
 				// Set GeneralAlarm to TRUE.
 				// It can NEVER go false unless ABL sets it back!!
@@ -731,21 +711,17 @@ int32_t Building::update(void)
 		if (appearance)
 		{
 			updateAnimations();
-			if (parent &&
-				(!ObjectManager->getByWatchID(parent)->isDisabled()) &&
+			if (parent && (!ObjectManager->getByWatchID(parent)->isDisabled()) &&
 				ObjectManager->getByWatchID(parent)
 					->getTargeted()) // must do before we set selection
 			{
 				setTargeted(true);
 			}
-			appearance->setObjectParameters(position,
-				((ObjectAppearance*)appearance)->rotation, drawFlags,
-				getTeamId(),
-				Team::getRelation(getTeamId(), Team::home->getId()));
+			appearance->setObjectParameters(position, ((ObjectAppearance*)appearance)->rotation,
+				drawFlags, getTeamId(), Team::getRelation(getTeamId(), Team::home->getId()));
 			bool inView = appearance->recalcBounds();
 			//------------------------------------------------
-			if (getObjectType()->getObjTypeNum() ==
-				GENERIC_DESTRUCTIBLE_RESOURCE_BUILDING_OBJNUM)
+			if (getObjectType()->getObjTypeNum() == GENERIC_DESTRUCTIBLE_RESOURCE_BUILDING_OBJNUM)
 			{
 				// We are a random resource building.  Mark the terrain under us
 				// impassable.
@@ -767,12 +743,9 @@ int32_t Building::update(void)
 					(getStatus() != OBJECT_STATUS_DISABLED) &&
 					!((BuildingTypePtr)getObjectType())->mechBay)
 				{
-					if (((BuildingTypePtr)getObjectType())->activityEffectId !=
-						0xffffffff)
+					if (((BuildingTypePtr)getObjectType())->activityEffectId != 0xffffffff)
 						appearance->startActivity(
-							((BuildingTypePtr)getObjectType())
-								->activityEffectId,
-							true);
+							((BuildingTypePtr)getObjectType())->activityEffectId, true);
 				}
 			}
 		}
@@ -791,22 +764,17 @@ int32_t Building::update(void)
 			{
 				//
 				// Find out what vertex we are in the terrain.
-				int32_t mx = (float2long(position.x) >> 7) +
-							 Terrain::halfVerticesMapSide;
-				int32_t my = Terrain::halfVerticesMapSide -
-							 ((float2long(position.y) >> 7) + 1);
+				int32_t mx = (float2long(position.x) >> 7) + Terrain::halfVerticesMapSide;
+				int32_t my = Terrain::halfVerticesMapSide - ((float2long(position.y) >> 7) + 1);
 				Overlays oType;
 				uint32_t offset;
 				Terrain::mapData->getOverlay(my, mx, oType, offset);
 				if (oType == OBRIDGE)
-					Terrain::mapData->setOverlay(
-						my, mx, DAMAGED_BRIDGE, offset);
+					Terrain::mapData->setOverlay(my, mx, DAMAGED_BRIDGE, offset);
 			}
-			if (!((BuildingTypePtr)getObjectType())
-					 ->marksImpassableWhenDestroyed)
+			if (!((BuildingTypePtr)getObjectType())->marksImpassableWhenDestroyed)
 			{
-				if (getObjectType()->getSubType() ==
-					BUILDING_SUBTYPE_LANDBRIDGE)
+				if (getObjectType()->getSubType() == BUILDING_SUBTYPE_LANDBRIDGE)
 					closeSubAreas();
 				else
 					openSubAreas();
@@ -817,19 +785,17 @@ int32_t Building::update(void)
 	}
 	//-------------------------------------------
 	// Handle power out.
-	if (powerSupply && (ObjectManager->getByWatchID(powerSupply)->getStatus() ==
-						   OBJECT_STATUS_DESTROYED))
+	if (powerSupply &&
+		(ObjectManager->getByWatchID(powerSupply)->getStatus() == OBJECT_STATUS_DESTROYED))
 		appearance->setLightsOut(true);
 	//---------------------------------------
 	// Handle Lookout tower
-	if ((((BuildingTypePtr)getObjectType())->lookoutTowerRange > 0.0f) &&
-		getTeam() &&
+	if ((((BuildingTypePtr)getObjectType())->lookoutTowerRange > 0.0f) && getTeam() &&
 		(!parent ||
 			(parent && !ObjectManager->getByWatchID(parent)->isDisabled() &&
 				!ObjectManager->getByWatchID(parent)->isDestroyed())))
 	{
-		float lookoutRange =
-			((BuildingTypePtr)getObjectType())->lookoutTowerRange;
+		float lookoutRange = ((BuildingTypePtr)getObjectType())->lookoutTowerRange;
 		getTeam()->markSeen(position, lookoutRange);
 	}
 	//-------------------------------------------
@@ -850,18 +816,17 @@ int32_t Building::update(void)
 		(ObjectManager->getByWatchID(parent)->getTeamId() != getTeamId()))
 	{
 		// if building recaptured play a sound
-		if ((ObjectManager->getByWatchID(parent)->getTeamId() !=
-				Team::home->getId()) &&
+		if ((ObjectManager->getByWatchID(parent)->getTeamId() != Team::home->getId()) &&
 			(turn > 5) && (getTeamId() != -1))
 			soundSystem->playBettySample(BETTY_BUILDING_RECAPTURED);
-		setTeamId(
-			ObjectManager->getByWatchID(parent)->getTeam()->getId(), false);
+		setTeamId(ObjectManager->getByWatchID(parent)->getTeam()->getId(), false);
 	}
 	//-----------------------------------------------
 	// Handle parent disabled or destroyed or asleep
-	if (parent && (ObjectManager->getByWatchID(parent)->isDisabled() ||
-					  ObjectManager->getByWatchID(parent)->isDestroyed() ||
-					  !ObjectManager->getByWatchID(parent)->getAwake()))
+	if (parent &&
+		(ObjectManager->getByWatchID(parent)->isDisabled() ||
+			ObjectManager->getByWatchID(parent)->isDestroyed() ||
+			!ObjectManager->getByWatchID(parent)->getAwake()))
 	{
 		//--------------------------------------------------
 		// Put the child to sleep.  DO NOT DESTROY CHILD!
@@ -915,8 +880,7 @@ int32_t Building::setTeamId(int32_t _teamId, bool setup)
 		if (MPlayer)
 		{
 			if (MPlayer->isServer())
-				MPlayer->sendReinforcement(
-					((BuildingTypePtr)getObjectType())->resourcePoints, 0,
+				MPlayer->sendReinforcement(((BuildingTypePtr)getObjectType())->resourcePoints, 0,
 					"noname", commanderId, getPosition(), 6);
 			// MPlayer->playerInfo[commanderId].resourcePoints +=
 			// ((BuildingTypePtr)getObjectType())->resourcePoints;
@@ -940,8 +904,7 @@ int32_t Building::setTeamId(int32_t _teamId, bool setup)
 	// If this is a multiplayer resource building, reset it to a neutral team...
 	if (MPlayer)
 	{
-		if (getObjectType()->getObjTypeNum() ==
-			GENERIC_INDESTRUCTIBLE_RESOURCE_BUILDING_OBJNUM)
+		if (getObjectType()->getObjTypeNum() == GENERIC_INDESTRUCTIBLE_RESOURCE_BUILDING_OBJNUM)
 		{
 			teamId		= -1;
 			commanderId = -1;
@@ -1000,16 +963,13 @@ bool Building::isCaptureable(int32_t capturingTeamID)
 	//	if (MPlayer)
 	//		return(getFlag(OBJECT_FLAG_CAPTURABLE) && !isDestroyed());
 	//	else
-	return (getFlag(OBJECT_FLAG_CAPTURABLE) && getAwake() &&
-			(getTeamId() != capturingTeamID) && !isDestroyed());
+	return (getFlag(OBJECT_FLAG_CAPTURABLE) && getAwake() && (getTeamId() != capturingTeamID) &&
+		!isDestroyed());
 }
 
 //---------------------------------------------------------------------------
 
-void Building::setCommanderId(int32_t _commanderId)
-{
-	commanderId = _commanderId;
-}
+void Building::setCommanderId(int32_t _commanderId) { commanderId = _commanderId; }
 
 //---------------------------------------------------------------------------
 
@@ -1049,26 +1009,21 @@ void Building::render(void)
 			appearance->setBarColor(color);
 			appearance->setBarStatus(barStatus);
 		}
-		if (((BuildingTypePtr)getObjectType())->buildingTypeName <
-			IDS_MC2_STRING_START)
+		if (((BuildingTypePtr)getObjectType())->buildingTypeName < IDS_MC2_STRING_START)
 		{
 			appearance->setObjectNameId(
-				((BuildingTypePtr)getObjectType())->buildingTypeName +
-				IDS_MC2_STRING_START);
+				((BuildingTypePtr)getObjectType())->buildingTypeName + IDS_MC2_STRING_START);
 		}
 		else
 		{
-			appearance->setObjectNameId(
-				((BuildingTypePtr)getObjectType())->buildingTypeName);
+			appearance->setObjectNameId(((BuildingTypePtr)getObjectType())->buildingTypeName);
 		}
 		windowsVisible = turn;
 		appearance->setVisibility(true, true);
 		appearance->render();
 	}
-	setSelected(
-		false); // ALWAYS reset the selected flags.  GUI needs this to work!
-	setTargeted(
-		false); // ALWAYS do it here, too!  Otherwise things may draw FUNNY!
+	setSelected(false); // ALWAYS reset the selected flags.  GUI needs this to work!
+	setTargeted(false); // ALWAYS do it here, too!  Otherwise things may draw FUNNY!
 }
 
 //---------------------------------------------------------------------------
@@ -1076,8 +1031,7 @@ PSTR Building::getName(void)
 {
 	if (((BuildingTypePtr)getObjectType())->buildingTypeName != -1)
 	{
-		cLoadString(((BuildingTypePtr)getObjectType())->buildingTypeName,
-			lastName, 254);
+		cLoadString(((BuildingTypePtr)getObjectType())->buildingTypeName, lastName, 254);
 		return (lastName);
 	}
 	return (nullptr);
@@ -1165,14 +1119,12 @@ void Building::init(bool create, ObjectTypePtr objType)
 		//------------------------------------------------------
 		// LOAD a dummy appearance until real ones are available
 		// for this building!
-		appearanceType = (BLDG_TYPE << 24);
-		buildingAppearanceType =
-			appearanceTypeList->getAppearance(appearanceType, "TESTBLDG");
+		appearanceType		   = (BLDG_TYPE << 24);
+		buildingAppearanceType = appearanceTypeList->getAppearance(appearanceType, "TESTBLDG");
 	}
 	else
 	{
-		buildingAppearanceType =
-			appearanceTypeList->getAppearance(appearanceType, appearName);
+		buildingAppearanceType = appearanceTypeList->getAppearance(appearanceType, appearName);
 		if (!buildingAppearanceType)
 		{
 			char msg[1024];
@@ -1185,8 +1137,7 @@ void Building::init(bool create, ObjectTypePtr objType)
 	//--------------------------------------------------------------
 	// The only appearance type for buildings is MLR_APPEARANCE.
 	gosASSERT(buildingAppearanceType->getAppearanceClass() == BLDG_TYPE);
-	appearance->init(
-		(BldgAppearanceType*)buildingAppearanceType, (GameObjectPtr)this);
+	appearance->init((BldgAppearanceType*)buildingAppearanceType, (GameObjectPtr)this);
 #if USE_FORESTS
 	if (((BldgAppearance*)appearance)->isForestClump())
 		getObjectType()->setSubType(BUILDING_SUBTYPE_FOREST);
@@ -1248,22 +1199,19 @@ void Building::createBuildingMarines(void)
 					//--------------------------------------------------------------------
 					// We must create the vehicle for the pilot and then
 					// lobotomize him!!
-					ElementalPtr vehiclePilot =
-						(ElementalPtr)createObject(DefaultPilotId);
+					ElementalPtr vehiclePilot = (ElementalPtr)createObject(DefaultPilotId);
 					if (!vehiclePilot)
 						Fatal(-1, " Couldnt create Marine for Building ");
 					vehiclePilot->setAwake(TRUE);
 					//----------------------------------------------
 					// Load the profile data into the game object...
 					FullPathFileName objFullProfileName;
-					objFullProfileName.init(
-						profilePath, marineProfileName, ".fit");
+					objFullProfileName.init(profilePath, marineProfileName, ".fit");
 					FitIniFile profileFile;
 					int32_t result = profileFile.open(objFullProfileName);
 					if (result != NO_ERROR)
 					{
-						Fatal(
-							result, " Unable to open Vehicle Marine Profile ");
+						Fatal(result, " Unable to open Vehicle Marine Profile ");
 					}
 					//-------------------------------------------
 					// <deleted really obnoxious Glenn Slam>
@@ -1283,8 +1231,7 @@ void Building::createBuildingMarines(void)
 					// Apply a random factor to the position.  You must Love me
 					// Glenn!!!
 					vector_3d randomPosition;
-					randomPosition.init(
-						type->getExtentRadius(), type->getExtentRadius(), 0);
+					randomPosition.init(type->getExtentRadius(), type->getExtentRadius(), 0);
 					randomPosition = randomPosition.get_random_vec();
 					vehiclePilot->setPosition(position + randomPosition);
 					//------------------------------------------
@@ -1326,8 +1273,7 @@ void Building::createBuildingMarines(void)
 					if (getAlignment() == CLANS)
 						objectList->addToList(clanMechList, vehiclePilot);
 					else
-						objectList->addToList(
-							innerSphereMechList, vehiclePilot);
+						objectList->addToList(innerSphereMechList, vehiclePilot);
 					vehiclePilot->setPotentialContact(POTCONTACT_LEVEL_NONE);
 					vehiclePilot->setExists(TRUE);
 					//---------------------------------------------------------------
@@ -1338,8 +1284,8 @@ void Building::createBuildingMarines(void)
 					pilot->clearMoveOrders();
 					vector_3d location;
 					location.zero();
-					pilot->orderMoveToPoint(FALSE, TRUE, ORDER_ORIGIN_PLAYER,
-						location, -1, TACORDER_PARAM_RUN);
+					pilot->orderMoveToPoint(
+						FALSE, TRUE, ORDER_ORIGIN_PLAYER, location, -1, TACORDER_PARAM_RUN);
 					numCreated++;
 					if (numCreated == totalMarines)
 						return;
@@ -1352,8 +1298,7 @@ void Building::createBuildingMarines(void)
 
 //---------------------------------------------------------------------------
 
-int32_t Building::handleWeaponHit(
-	WeaponShotInfoPtr shotInfo, bool addMultiplayChunk)
+int32_t Building::handleWeaponHit(WeaponShotInfoPtr shotInfo, bool addMultiplayChunk)
 {
 	if (!shotInfo)
 		return (NO_ERROR);
@@ -1363,8 +1308,7 @@ int32_t Building::handleWeaponHit(
 		// Generic HQs are indestructible...
 		if (getObjectType()->getObjTypeNum() == GENERIC_HQ_BUILDING_OBJNUM)
 			return (NO_ERROR);
-		if (getObjectType()->getObjTypeNum() ==
-			GENERIC_INDESTRUCTIBLE_RESOURCE_BUILDING_OBJNUM)
+		if (getObjectType()->getObjTypeNum() == GENERIC_INDESTRUCTIBLE_RESOURCE_BUILDING_OBJNUM)
 			return (NO_ERROR);
 		MPlayer->addWeaponHitChunk(this, shotInfo);
 	}
@@ -1379,20 +1323,17 @@ int32_t Building::handleWeaponHit(
 			bool blowItUp = false;
 			if (getFlag(OBJECT_FLAG_ANIMATED))
 			{
-				if (!getFlag(OBJECT_FLAG_FALLEN) &&
-					!getFlag(OBJECT_FLAG_FALLING))
+				if (!getFlag(OBJECT_FLAG_FALLEN) && !getFlag(OBJECT_FLAG_FALLING))
 				{
 					setFlag(OBJECT_FLAG_FALLING, true);
 					setTangible(false);
 					setStatus(OBJECT_STATUS_DESTROYED);
 					appearance->stopActivity();
-					GameObjectPtr attacker =
-						ObjectManager->getByWatchID(shotInfo->attackerWID);
+					GameObjectPtr attacker = ObjectManager->getByWatchID(shotInfo->attackerWID);
 					if (attacker && attacker->isMover())
 						((MoverPtr)attacker)
 							->getPilot()
-							->triggerAlarm(
-								PILOT_ALARM_KILLED_TARGET, getWatchID());
+							->triggerAlarm(PILOT_ALARM_KILLED_TARGET, getWatchID());
 					if (sensorSystem)
 						sensorSystem->disable();
 					blowItUp = true;
@@ -1417,12 +1358,12 @@ int32_t Building::handleWeaponHit(
 				// ONLY if the building has no special MAGIC gos FX version!
 				Stuff::Vector3D hitNodePos = appearance->getHitNode();
 				if (!appearance->playDestruction())
-					ObjectManager->createExplosion(BUILDING_EXPLOSION_ID,
-						nullptr, hitNodePos, explDamage, explRadius);
+					ObjectManager->createExplosion(
+						BUILDING_EXPLOSION_ID, nullptr, hitNodePos, explDamage, explRadius);
 				else // Play the sound effect and do splash damage but don't
 					 // draw any effect.  We are playing a magical GosFX one!!
-					ObjectManager->createExplosion(EMPTY_EXPLOSION_ID, nullptr,
-						hitNodePos, explDamage, explRadius);
+					ObjectManager->createExplosion(
+						EMPTY_EXPLOSION_ID, nullptr, hitNodePos, explDamage, explRadius);
 #if 0
 				if(type->marksImpassableWhenDestroyed)
 					appearance->markMoveMap(true, nullptr);
@@ -1435,8 +1376,7 @@ int32_t Building::handleWeaponHit(
 				appearance->markLOS();
 				if (!type->marksImpassableWhenDestroyed)
 				{
-					if (getObjectType()->getSubType() ==
-						BUILDING_SUBTYPE_LANDBRIDGE)
+					if (getObjectType()->getSubType() == BUILDING_SUBTYPE_LANDBRIDGE)
 						closeSubAreas();
 					else
 						openSubAreas();
@@ -1453,13 +1393,12 @@ int32_t Building::handleWeaponHit(
 				if (CombatLog)
 				{
 					char s[1024];
-					sprintf(s, "[%.2f] building.destroyed: [%05d]%s",
-						scenarioTime, this->getPartId(), this->getName());
+					sprintf(s, "[%.2f] building.destroyed: [%05d]%s", scenarioTime,
+						this->getPartId(), this->getName());
 					CombatLog->write(s);
 					CombatLog->write(" ");
 				}
-				if (getObjectType()->getSubType() ==
-					BUILDING_SUBTYPE_LANDBRIDGE)
+				if (getObjectType()->getSubType() == BUILDING_SUBTYPE_LANDBRIDGE)
 				{
 					// Check each mover to see if any cell they are standing on
 					// went impassable.  If so,
@@ -1481,8 +1420,7 @@ int32_t Building::handleWeaponHit(
 							if (pMover && pMover->getExists())
 							{
 								int32_t cellRow, cellCol;
-								land->worldToCell(
-									pMover->getPosition(), cellRow, cellCol);
+								land->worldToCell(pMover->getPosition(), cellRow, cellCol);
 								if ((cellCol == c) && (cellRow == r))
 								{
 									// DIE DIE DIE
@@ -1490,8 +1428,8 @@ int32_t Building::handleWeaponHit(
 									{
 										WeaponShotInfo shotInfo;
 										shotInfo.init(nullptr, 160, 50.0f,
-											pMover->calcHitLocation(nullptr, -1,
-												ATTACKSOURCE_WEAPONFIRE, 0),
+											pMover->calcHitLocation(
+												nullptr, -1, ATTACKSOURCE_WEAPONFIRE, 0),
 											0);
 										pMover->handleWeaponHit(&shotInfo);
 										if (MPlayer && MPlayer->isServer())
@@ -1524,10 +1462,7 @@ float Building::getDamageLevel(void)
 bool Building::isLinked(void) { return (parent != nullptr); }
 
 //---------------------------------------------------------------------------
-GameObjectPtr Building::getParent(void)
-{
-	return (ObjectManager->getByWatchID(parent));
-}
+GameObjectPtr Building::getParent(void) { return (ObjectManager->getByWatchID(parent)); }
 
 //---------------------------------------------------------------------------
 void Building::setParentId(uint32_t pId) { parentId = pId; }
@@ -1538,8 +1473,7 @@ void Building::Save(PacketFilePtr file, int32_t packetNum)
 	BuildingData data;
 	CopyTo(&data);
 	// PacketNum incremented in ObjectManager!!
-	file->writePacket(
-		packetNum, (puint8_t)&data, sizeof(BuildingData), STORAGE_TYPE_ZLIB);
+	file->writePacket(packetNum, (puint8_t)&data, sizeof(BuildingData), STORAGE_TYPE_ZLIB);
 }
 
 //***************************************************************************

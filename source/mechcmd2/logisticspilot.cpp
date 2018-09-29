@@ -120,10 +120,7 @@ PCSTR LogisticsPilot::getSkillText(int32_t skillID)
 	return skillTexts[skillID];
 }
 
-int32_t LogisticsPilot::getNumberMissions(void) const
-{
-	return missionsCompleted;
-}
+int32_t LogisticsPilot::getNumberMissions(void) const { return missionsCompleted; }
 
 int32_t LogisticsPilot::save(FitIniFile& file, int32_t which)
 {
@@ -167,8 +164,7 @@ int32_t LogisticsPilot::load(FitIniFile& file)
 	file.readIdLong("VehicleKills", vehicleKills);
 	file.readIdLong("InfantryKills", infantryKills);
 	file.readIdLong("MissionsCompleted", missionsCompleted);
-	int32_t result =
-		file.readIdUCHARArray("MissionsPlayed", missionsPlayed, MAX_MISSIONS);
+	int32_t result = file.readIdUCHARArray("MissionsPlayed", missionsPlayed, MAX_MISSIONS);
 	if (result != NO_ERROR)
 		memset(missionsPlayed, 0, sizeof(uint8_t) * MAX_MISSIONS);
 	file.readIdBoolean("Dead", bDead);
@@ -191,8 +187,7 @@ int32_t LogisticsPilot::load(FitIniFile& file)
 void LogisticsPilot::clearIcons()
 {
 	// clear out the old ones
-	for (EList<ForceGroupIcon*, ForceGroupIcon*>::EIterator iter =
-			 killedIcons.Begin();
+	for (EList<ForceGroupIcon*, ForceGroupIcon*>::EIterator iter = killedIcons.Begin();
 		 !iter.IsDone(); iter++)
 	{
 		delete (*iter);
@@ -204,8 +199,7 @@ int32_t LogisticsPilot::update(MechWarrior* pWarrior)
 {
 #ifndef VIEWER
 	// clear out the old ones
-	for (EList<ForceGroupIcon*, ForceGroupIcon*>::EIterator iter =
-			 killedIcons.Begin();
+	for (EList<ForceGroupIcon*, ForceGroupIcon*>::EIterator iter = killedIcons.Begin();
 		 !iter.IsDone(); iter++)
 	{
 		delete (*iter);
@@ -214,8 +208,7 @@ int32_t LogisticsPilot::update(MechWarrior* pWarrior)
 	missionsCompleted++;
 	int32_t missionJustPlayed = LogisticsData::instance->getCurrentMissionId();
 	if ((missionJustPlayed < 0) || (missionJustPlayed > MAX_MISSIONS))
-		STOP(
-			("Logistics thinks last mission played was %d", missionJustPlayed));
+		STOP(("Logistics thinks last mission played was %d", missionJustPlayed));
 	missionsPlayed[missionJustPlayed] = 1;
 	if (pWarrior->getStatus() == WARRIOR_STATUS_DEAD)
 	{
@@ -241,18 +234,12 @@ int32_t LogisticsPilot::update(MechWarrior* pWarrior)
 		newPiloting = 4.f;
 		piloting += newPiloting;
 	}
-	infantryKills +=
-		pWarrior->numMechKills[VEHICLE_CLASS_ELEMENTAL][COMBAT_STAT_MISSION];
-	mechKills +=
-		pWarrior->numMechKills[VEHICLE_CLASS_LIGHTMECH][COMBAT_STAT_MISSION];
-	mechKills +=
-		pWarrior->numMechKills[VEHICLE_CLASS_MEDIUMMECH][COMBAT_STAT_MISSION];
-	mechKills +=
-		pWarrior->numMechKills[VEHICLE_CLASS_HEAVYMECH][COMBAT_STAT_MISSION];
-	mechKills +=
-		pWarrior->numMechKills[VEHICLE_CLASS_ASSAULTMECH][COMBAT_STAT_MISSION];
-	vehicleKills +=
-		pWarrior->numMechKills[VEHICLE_CLASS_GROUND][COMBAT_STAT_MISSION];
+	infantryKills += pWarrior->numMechKills[VEHICLE_CLASS_ELEMENTAL][COMBAT_STAT_MISSION];
+	mechKills += pWarrior->numMechKills[VEHICLE_CLASS_LIGHTMECH][COMBAT_STAT_MISSION];
+	mechKills += pWarrior->numMechKills[VEHICLE_CLASS_MEDIUMMECH][COMBAT_STAT_MISSION];
+	mechKills += pWarrior->numMechKills[VEHICLE_CLASS_HEAVYMECH][COMBAT_STAT_MISSION];
+	mechKills += pWarrior->numMechKills[VEHICLE_CLASS_ASSAULTMECH][COMBAT_STAT_MISSION];
+	vehicleKills += pWarrior->numMechKills[VEHICLE_CLASS_GROUND][COMBAT_STAT_MISSION];
 	rank				  = pWarrior->getRank();
 	int32_t deadMechCount = 0;
 	for (size_t i = 0; i < pWarrior->numKilled; i++)
@@ -297,18 +284,14 @@ int32_t LogisticsPilot::update(MechWarrior* pWarrior)
 	// Check for the campaign ribbons and medals.
 	// NOTE: NONE of these should be awarded UNLESS we are playing the shipping
 	// campaign.
-	int32_t anySteinerPlayed =
-		missionsPlayed[0] + missionsPlayed[1] + missionsPlayed[2] +
-		missionsPlayed[3] + missionsPlayed[4] + missionsPlayed[5] +
-		missionsPlayed[6] + missionsPlayed[7] + missionsPlayed[8];
-	int32_t anyLiaoPlayed = missionsPlayed[9] + missionsPlayed[10] +
-							missionsPlayed[11] + missionsPlayed[12] +
-							missionsPlayed[13] + missionsPlayed[14] +
-							missionsPlayed[15] + missionsPlayed[16];
-	int32_t anyDavionPlayed = missionsPlayed[17] + missionsPlayed[18] +
-							  missionsPlayed[19] + missionsPlayed[20] +
-							  missionsPlayed[21] + missionsPlayed[22] +
-							  missionsPlayed[23];
+	int32_t anySteinerPlayed = missionsPlayed[0] + missionsPlayed[1] + missionsPlayed[2] +
+		missionsPlayed[3] + missionsPlayed[4] + missionsPlayed[5] + missionsPlayed[6] +
+		missionsPlayed[7] + missionsPlayed[8];
+	int32_t anyLiaoPlayed = missionsPlayed[9] + missionsPlayed[10] + missionsPlayed[11] +
+		missionsPlayed[12] + missionsPlayed[13] + missionsPlayed[14] + missionsPlayed[15] +
+		missionsPlayed[16];
+	int32_t anyDavionPlayed = missionsPlayed[17] + missionsPlayed[18] + missionsPlayed[19] +
+		missionsPlayed[20] + missionsPlayed[21] + missionsPlayed[22] + missionsPlayed[23];
 	bool allSteinerPlayed = (anySteinerPlayed == 9);
 	bool allLiaoPlayed	= (anyLiaoPlayed == 8);
 	bool allDavionPlayed  = (anyDavionPlayed == 7);

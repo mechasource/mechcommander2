@@ -180,8 +180,8 @@ extern GlobalMapPtr GlobalMoveMap[3];
 extern bool CantTouchThis;
 
 extern WeaponFireChunk CurMoverWeaponFireChunk;
-extern void DebugWeaponFireChunk(WeaponFireChunkPtr chunk1,
-	WeaponFireChunkPtr chunk2, GameObjectPtr attacker);
+extern void DebugWeaponFireChunk(
+	WeaponFireChunkPtr chunk1, WeaponFireChunkPtr chunk2, GameObjectPtr attacker);
 
 extern int32_t StatusChunkUnpackErr;
 extern float worldUnitsPerMeter;
@@ -192,11 +192,10 @@ bool invulnerableON = false;
 
 //**********************************************************************************
 
-int32_t NumLocationCriticalSpaces[NUM_BODY_LOCATIONS] = {
-	NUM_CRITICAL_SPACES_HEAD, NUM_CRITICAL_SPACES_CTORSO,
-	NUM_CRITICAL_SPACES_LTORSO, NUM_CRITICAL_SPACES_RTORSO,
-	NUM_CRITICAL_SPACES_LARM, NUM_CRITICAL_SPACES_RARM,
-	NUM_CRITICAL_SPACES_LLEG, NUM_CRITICAL_SPACES_RLEG};
+int32_t NumLocationCriticalSpaces[NUM_BODY_LOCATIONS] = {NUM_CRITICAL_SPACES_HEAD,
+	NUM_CRITICAL_SPACES_CTORSO, NUM_CRITICAL_SPACES_LTORSO, NUM_CRITICAL_SPACES_RTORSO,
+	NUM_CRITICAL_SPACES_LARM, NUM_CRITICAL_SPACES_RARM, NUM_CRITICAL_SPACES_LLEG,
+	NUM_CRITICAL_SPACES_RLEG};
 
 int32_t MechHitSectionTable[NUM_ATTACKSOURCES] = {
 	MECH_HIT_SECTION_MIDDLE, // Weapon Fire
@@ -325,14 +324,13 @@ extern float DisableAttackModifier;
 extern float DisableGunneryModifier;
 extern float SalvageAttackModifier;
 
-int32_t adjClippedCell[8][2] = {
-	{0, 0}, {0, 2}, {2, 2}, {2, 4}, {4, 4}, {4, 6}, {6, 6}, {6, 0}};
+int32_t adjClippedCell[8][2] = {{0, 0}, {0, 2}, {2, 2}, {2, 4}, {4, 4}, {4, 6}, {6, 6}, {6, 0}};
 
 float MechClassScale[NUM_MECH_CLASSES] = {0.0, 15.0, 40.0, 75.0, 200.0};
 
 float RankVersusChassisCombatModifier[NUM_WARRIOR_RANKS][NUM_MECH_CLASSES] = {
-	{0.0, 0.0, -5.0, -15.0, -25.0}, {0.0, 5.0, 0.0, -5.0, -15.0},
-	{0.0, 10.0, 5.0, 0.0, -5.0}, {0.0, 15.0, 10.0, 5.0, 0.0}};
+	{0.0, 0.0, -5.0, -15.0, -25.0}, {0.0, 5.0, 0.0, -5.0, -15.0}, {0.0, 10.0, 5.0, 0.0, -5.0},
+	{0.0, 15.0, 10.0, 5.0, 0.0}};
 
 float WeaponFireJumpTime = 3.0;
 extern float WeaponFireModifiers[NUM_WEAPONFIRE_MODIFIERS];
@@ -356,8 +354,7 @@ char CriticalHitTable[4] = {
 	100 // Head\Limb Destroyed or 3 Hits if Torso
 };
 
-int32_t TargetMoveModifierTable[5][2] = {
-	{6, 0}, {12, 1}, {18, 2}, {27, 3}, {999, 4}};
+int32_t TargetMoveModifierTable[5][2] = {{6, 0}, {12, 1}, {18, 2}, {27, 3}, {999, 4}};
 
 float MechClassWeights[NUM_MECH_CLASSES] = {0.0, 35.0, 55.0, 75.0, 100.0};
 
@@ -377,8 +374,7 @@ float BodyStateHeat[NUM_MECH_STATES] = {
 };
 #endif
 
-char MechHitLocationTable[NUM_MECH_HIT_SECTIONS * NUM_MECH_HIT_ARCS *
-						  NUM_MECH_ARMOR_LOCATIONS] = {
+char MechHitLocationTable[NUM_MECH_HIT_SECTIONS * NUM_MECH_HIT_ARCS * NUM_MECH_ARMOR_LOCATIONS] = {
 	30, 20, 25, 25, 0, 0, 0, 0, 0, 0, 0,  // Top Front
 	30, 0, 0, 0, 0, 0, 0, 0, 20, 25, 25,  // Top Rear
 	20, 15, 25, 0, 0, 0, 0, 0, 15, 25, 0, // Top Left
@@ -393,10 +389,9 @@ char MechHitLocationTable[NUM_MECH_HIT_SECTIONS * NUM_MECH_HIT_ARCS *
 	0, 0, 0, 0, 0, 0, 0, 100, 0, 0, 0	 // Bottom Right
 };
 
-char MechTransferHitTable[NUM_MECH_BODY_LOCATIONS] = {MECH_BODY_LOCATION_CTORSO,
-	-1, MECH_BODY_LOCATION_CTORSO, MECH_BODY_LOCATION_CTORSO,
-	MECH_BODY_LOCATION_LTORSO, MECH_BODY_LOCATION_RTORSO,
-	MECH_BODY_LOCATION_LTORSO, MECH_BODY_LOCATION_RTORSO};
+char MechTransferHitTable[NUM_MECH_BODY_LOCATIONS] = {MECH_BODY_LOCATION_CTORSO, -1,
+	MECH_BODY_LOCATION_CTORSO, MECH_BODY_LOCATION_CTORSO, MECH_BODY_LOCATION_LTORSO,
+	MECH_BODY_LOCATION_RTORSO, MECH_BODY_LOCATION_LTORSO, MECH_BODY_LOCATION_RTORSO};
 
 char MechArmorToBodyLocation[NUM_MECH_ARMOR_LOCATIONS] = {
 	MECH_BODY_LOCATION_HEAD,
@@ -414,10 +409,9 @@ char MechArmorToBodyLocation[NUM_MECH_ARMOR_LOCATIONS] = {
 
 int32_t MechPilotCheckConditions[2] = {25, 25};
 
-int32_t MechPilotCheckTerrainEffect[64] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-	0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-	0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-	0, 0};
+int32_t MechPilotCheckTerrainEffect[64] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+	0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+	0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 
 #ifdef USEHEAT
 int32_t HeatInjuryTable[2][2] = {{15, 1}, {26, 2}};
@@ -467,16 +461,13 @@ int32_t BattleMech::loadGameSystem(FitIniFilePtr mechFile)
 	result		   = mechFile->seekBlock("Mech:Class");
 	if (result != NO_ERROR)
 		return (result);
-	result = mechFile->readIdFloat(
-		"MaxLightMech", MechClassWeights[MECH_CLASS_LIGHT]);
+	result = mechFile->readIdFloat("MaxLightMech", MechClassWeights[MECH_CLASS_LIGHT]);
 	if (result != NO_ERROR)
 		return (result);
-	result = mechFile->readIdFloat(
-		"MaxHeavyMech", MechClassWeights[MECH_CLASS_MEDIUM]);
+	result = mechFile->readIdFloat("MaxHeavyMech", MechClassWeights[MECH_CLASS_MEDIUM]);
 	if (result != NO_ERROR)
 		return (result);
-	result = mechFile->readIdFloat(
-		"MaxHeavyMech", MechClassWeights[MECH_CLASS_HEAVY]);
+	result = mechFile->readIdFloat("MaxHeavyMech", MechClassWeights[MECH_CLASS_HEAVY]);
 	if (result != NO_ERROR)
 		return (result);
 	result = mechFile->seekBlock("Mech:Movement");
@@ -503,19 +494,18 @@ int32_t BattleMech::loadGameSystem(FitIniFilePtr mechFile)
 	result			 = mechFile->readIdFloat("CrashYieldTime", crashYield);
 	if (result == NO_ERROR)
 		DefaultMechCrashYieldTime = crashYield;
-	result = mechFile->readIdLongArray("PilotCheckConditions",
-		MechPilotCheckConditions, NUM_MECH_PILOT_CHECK_CONDITIONS);
+	result = mechFile->readIdLongArray(
+		"PilotCheckConditions", MechPilotCheckConditions, NUM_MECH_PILOT_CHECK_CONDITIONS);
 	if (result != NO_ERROR)
 		return (result);
-	result = mechFile->readIdLongArray(
-		"PilotCheckTerrainEffect", MechPilotCheckTerrainEffect, 64);
+	result = mechFile->readIdLongArray("PilotCheckTerrainEffect", MechPilotCheckTerrainEffect, 64);
 	if (result != NO_ERROR)
 		return (result);
 	result = mechFile->seekBlock("Mech:FireWeapon");
 	if (result != NO_ERROR)
 		return (result);
-	result = mechFile->readIdLongArray(
-		"AttackerMoveModifier", AttackerMoveModifier, NUM_MECH_STATES);
+	result =
+		mechFile->readIdLongArray("AttackerMoveModifier", AttackerMoveModifier, NUM_MECH_STATES);
 	if (result != NO_ERROR)
 		return (result);
 	result = mechFile->readIdCharArray("HitLocationTable", MechHitLocationTable,
@@ -523,8 +513,7 @@ int32_t BattleMech::loadGameSystem(FitIniFilePtr mechFile)
 	if (result != NO_ERROR)
 		return (result);
 	int32_t longData[5 * 2];
-	result =
-		mechFile->readIdLongArray("TargetMoveModifierTable", longData, 5 * 2);
+	result = mechFile->readIdLongArray("TargetMoveModifierTable", longData, 5 * 2);
 	if (result != NO_ERROR)
 		return (result);
 	for (size_t i = 0; i < 5; i++)
@@ -538,8 +527,8 @@ int32_t BattleMech::loadGameSystem(FitIniFilePtr mechFile)
 	result = mechFile->readIdCharArray("CriticalHitTable", CriticalHitTable, 4);
 	if (result != NO_ERROR)
 		return (result);
-	result = mechFile->readIdCharArray(
-		"MechTransferHitTable", MechTransferHitTable, NUM_BODY_LOCATIONS);
+	result =
+		mechFile->readIdCharArray("MechTransferHitTable", MechTransferHitTable, NUM_BODY_LOCATIONS);
 	if (result != NO_ERROR)
 		return (result);
 	result = mechFile->readIdLong("MechSalvageChance", MechSalvageChance);
@@ -548,15 +537,13 @@ int32_t BattleMech::loadGameSystem(FitIniFilePtr mechFile)
 	result = mechFile->seekBlock("Mech:Collision");
 	if (result != NO_ERROR)
 		return (result);
-	result =
-		mechFile->readIdFloat("collisionThreshold", mechCollisionThreshold);
+	result = mechFile->readIdFloat("collisionThreshold", mechCollisionThreshold);
 	if (result != NO_ERROR)
 		return (result);
 	result = mechFile->readIdFloat("objectThreshold", objectCollisionThreshold);
 	if (result != NO_ERROR)
 		return (result);
-	result =
-		mechFile->readIdFloat("tonnageThreshold", tonnageCollisionThreshold);
+	result = mechFile->readIdFloat("tonnageThreshold", tonnageCollisionThreshold);
 	if (result != NO_ERROR)
 		return (result);
 	result = mechFile->readIdFloat("treeDeflection", treeDeflection);
@@ -640,11 +627,10 @@ int32_t BattleMechType::init(FilePtr objFile, uint32_t fileSize)
 	// Now, read in the max internal structure for each body location...
 	// Reader reads rows from 1 just like spreadsheet.
 	// Row 4, Cols 2,4,6,8,10,12,14,16
-	for (size_t curLocation = 0; curLocation < NUM_BODY_LOCATIONS;
-		 curLocation++)
+	for (size_t curLocation = 0; curLocation < NUM_BODY_LOCATIONS; curLocation++)
 	{
-		result = mechCSVFile.readUCHAR(17, stupidNewSageColumns[curLocation],
-			maxInternalStructure[curLocation]);
+		result = mechCSVFile.readUCHAR(
+			17, stupidNewSageColumns[curLocation], maxInternalStructure[curLocation]);
 		if (result != NO_ERROR)
 			return (result);
 	}
@@ -666,8 +652,7 @@ void BattleMechType::destroy(void) { ObjectType::destroy(); }
 
 //----------------------------------------------------------------------------------
 
-bool BattleMechType::handleCollision(
-	GameObjectPtr collidee, GameObjectPtr collider)
+bool BattleMechType::handleCollision(GameObjectPtr collidee, GameObjectPtr collider)
 {
 	//---------------------------------------------
 	// The default reaction of any object in the world
@@ -734,8 +719,7 @@ bool BattleMechType::handleCollision(
 			//---------------------------------------------
 			// Train will take care of administering damage from this
 			// collision...
-			soundSystem->playDigitalSample(
-				MECH_COLLIDE, collidee->getPosition());
+			soundSystem->playDigitalSample(MECH_COLLIDE, collidee->getPosition());
 			return (false);
 		}
 	}
@@ -747,23 +731,19 @@ bool BattleMechType::handleCollision(
 				TACTICAL_ORDER_ATTACK_OBJECT)
 				((MoverPtr)collider)
 					->getPilot()
-					->numPhysicalAttacks[PHYSICAL_ATTACK_RAM]
-										[COMBAT_STAT_MISSION]++;
+					->numPhysicalAttacks[PHYSICAL_ATTACK_RAM][COMBAT_STAT_MISSION]++;
 			else if (((MoverPtr)collider)->getPilot()->getCurTacOrder()->code ==
-					 TACTICAL_ORDER_JUMPTO_POINT)
+				TACTICAL_ORDER_JUMPTO_POINT)
 			{
-				if (mech->getPilot()->getCurTacOrder()->getJumpTarget() ==
-					collidee)
-					mech->getPilot()->numPhysicalAttacks[PHYSICAL_ATTACK_DFA]
-														[COMBAT_STAT_MISSION]++;
+				if (mech->getPilot()->getCurTacOrder()->getJumpTarget() == collidee)
+					mech->getPilot()
+						->numPhysicalAttacks[PHYSICAL_ATTACK_DFA][COMBAT_STAT_MISSION]++;
 			}
 		}
 		colliderJumping = ((BattleMechPtr)collider)->isJumping();
-		if (!colliderJumping &&
-			(((BattleMechPtr)collider)->lastJumpTime >= 0.0))
+		if (!colliderJumping && (((BattleMechPtr)collider)->lastJumpTime >= 0.0))
 		{
-			float timeSinceLanding =
-				scenarioTime - ((BattleMechPtr)collider)->lastJumpTime;
+			float timeSinceLanding = scenarioTime - ((BattleMechPtr)collider)->lastJumpTime;
 			//((BattleMechPtr)collider)->lastJumpTime = -1.0;
 			colliderJumping = (timeSinceLanding < 0.5);
 		}
@@ -771,11 +751,9 @@ bool BattleMechType::handleCollision(
 	{
 		//--------------------------
 		// Was a jump involved here?
-		if (!collideeJumping &&
-			(((BattleMechPtr)collidee)->lastJumpTime >= 0.0))
+		if (!collideeJumping && (((BattleMechPtr)collidee)->lastJumpTime >= 0.0))
 		{
-			float timeSinceLanding =
-				scenarioTime - ((BattleMechPtr)collidee)->lastJumpTime;
+			float timeSinceLanding = scenarioTime - ((BattleMechPtr)collidee)->lastJumpTime;
 			((BattleMechPtr)collidee)->lastJumpTime = -1.0;
 			collideeJumping							= (timeSinceLanding < 0.5);
 		}
@@ -791,21 +769,15 @@ bool BattleMechType::handleCollision(
 			collide = true;
 		else
 		{
-			GameObjectPtr collideeRamTarget = ((MoverPtr)collidee)
-												  ->getPilot()
-												  ->getCurTacOrder()
-												  ->getRamTarget();
-			GameObjectPtr colliderRamTarget = ((MoverPtr)collider)
-												  ->getPilot()
-												  ->getCurTacOrder()
-												  ->getRamTarget();
-			collide = ((collideeRamTarget == collider) ||
-					   (colliderRamTarget == collidee));
+			GameObjectPtr collideeRamTarget =
+				((MoverPtr)collidee)->getPilot()->getCurTacOrder()->getRamTarget();
+			GameObjectPtr colliderRamTarget =
+				((MoverPtr)collider)->getPilot()->getCurTacOrder()->getRamTarget();
+			collide = ((collideeRamTarget == collider) || (colliderRamTarget == collidee));
 		}
 		if (collide)
-			collide = ((collidee->getCollisionFreeFromWID() !=
-						   collider->getWatchID()) ||
-					   (collidee->getCollisionFreeTime() < scenarioTime));
+			collide = ((collidee->getCollisionFreeFromWID() != collider->getWatchID()) ||
+				(collidee->getCollisionFreeTime() < scenarioTime));
 		if (collide)
 		{
 			//----------------------------------------------------------------------
@@ -851,8 +823,8 @@ bool BattleMechType::handleCollision(
 					// First, the collidee...
 					// I jumped on the below, therefore, my legs should be
 					// preferentially damaged!!!
-					int32_t hitLocation = collidee->calcHitLocation(
-						collider, -1, ATTACKSOURCE_MINE, 0);
+					int32_t hitLocation =
+						collidee->calcHitLocation(collider, -1, ATTACKSOURCE_MINE, 0);
 					if (sameTeam)
 						shotInfo.init(collider->getWatchID(), -1,
 							collider->getTonnage() / 100.0 + 0.5, hitLocation,
@@ -864,8 +836,7 @@ bool BattleMechType::handleCollision(
 					collidee->handleWeaponHit(&shotInfo, (MPlayer != nullptr));
 					//----------------------
 					// Next, the collider...
-					hitLocation = collider->calcHitLocation(
-						collidee, -1, ATTACKSOURCE_DFA, 0);
+					hitLocation = collider->calcHitLocation(collidee, -1, ATTACKSOURCE_DFA, 0);
 					if (sameTeam)
 						shotInfo.init(collidee->getWatchID(), -1,
 							collider->getTonnage() / 100.0 + 0.5, hitLocation,
@@ -876,20 +847,18 @@ bool BattleMechType::handleCollision(
 							collider->relFacingTo(collidee->getPosition()));
 					collider->handleWeaponHit(&shotInfo, (MPlayer != nullptr));
 					Stuff::Vector3D tmpPosition = collider->getPosition();
-					ObjectManager->createExplosion(
-						DFA_BOOM_EFFECT, nullptr, tmpPosition);
+					ObjectManager->createExplosion(DFA_BOOM_EFFECT, nullptr, tmpPosition);
 				}
 			}
 			else
 			{
 				if (!sameTeam)
 				{
-					int32_t hitLocation = collidee->calcHitLocation(
-						collider, -1, ATTACKSOURCE_COLLISION, 0);
+					int32_t hitLocation =
+						collidee->calcHitLocation(collider, -1, ATTACKSOURCE_COLLISION, 0);
 					WeaponShotInfo shotInfo;
-					shotInfo.init(collider->getWatchID(), -1,
-						collider->getTonnage() / 10.0 + 0.5, hitLocation,
-						collidee->relFacingTo(collider->getPosition()));
+					shotInfo.init(collider->getWatchID(), -1, collider->getTonnage() / 10.0 + 0.5,
+						hitLocation, collidee->relFacingTo(collider->getPosition()));
 					collidee->handleWeaponHit(&shotInfo, (MPlayer != nullptr));
 					collidee->handleWeaponHit(&shotInfo, (MPlayer != nullptr));
 				}
@@ -902,8 +871,7 @@ bool BattleMechType::handleCollision(
 			}
 			//---------------------------------------------
 			if (!sameTeam && (collidee->getWindowsVisible() == turn))
-				soundSystem->playDigitalSample(
-					MECH_COLLIDE, collidee->getPosition());
+				soundSystem->playDigitalSample(MECH_COLLIDE, collidee->getPosition());
 			return (false);
 		}
 	}
@@ -932,14 +900,12 @@ bool BattleMechType::handleCollision(
 			float turnAround   = 0.0;
 			float tonnageClass = collidee->getTonnage();
 			if (tonnageClass < tonnageCollisionThreshold)
-				turnAround =
-					(tonnageCollisionThreshold / tonnageClass) * treeDeflection;
+				turnAround = (tonnageCollisionThreshold / tonnageClass) * treeDeflection;
 			if (turnAround > 0.0)
 				collidee->rotate(turnAround);
 			//---------------------------------------------
 			if (collidee->getWindowsVisible() == turn)
-				soundSystem->playDigitalSample(
-					MECH_COLLIDE, collidee->getPosition());
+				soundSystem->playDigitalSample(MECH_COLLIDE, collidee->getPosition());
 			return (false);
 		}
 	}
@@ -950,8 +916,7 @@ bool BattleMechType::handleCollision(
 
 //-----------------------------------------------------------------------------------
 
-bool BattleMechType::handleDestruction(
-	GameObjectPtr collidee, GameObjectPtr collider)
+bool BattleMechType::handleDestruction(GameObjectPtr collidee, GameObjectPtr collider)
 {
 	//-------------------------------------------------------------------
 	// BUG ALERT!!!!!!!!!
@@ -998,8 +963,8 @@ bool BattleMechType::handleDestruction(
 			mech->timeLeft = 0.8f;
 		//------------------------------------------
 		// Let the pilot know we are about to die...
-		mech->getPilot()->handleAlarm(PILOT_ALARM_VEHICLE_DESTROYED,
-			collider ? collider->getWatchID() : 0);
+		mech->getPilot()->handleAlarm(
+			PILOT_ALARM_VEHICLE_DESTROYED, collider ? collider->getWatchID() : 0);
 		// ONLY the server may DESTROY a mech.  All other clients must await the
 		// statusChunk!!
 		if (!MPlayer || (MPlayer && MPlayer->isServer()))
@@ -1020,8 +985,8 @@ bool BattleMechType::handleDestruction(
 		if (CombatLog)
 		{
 			char s[1024];
-			sprintf(s, "[%.2f] mech.destroyed HD: [%05d]%s", scenarioTime,
-				mech->getPartId(), mech->getName());
+			sprintf(s, "[%.2f] mech.destroyed HD: [%05d]%s", scenarioTime, mech->getPartId(),
+				mech->getName());
 			CombatLog->write(s);
 			CombatLog->write(" ");
 		}
@@ -1059,10 +1024,8 @@ void BattleMech::handleStaticCollision(void)
 		int32_t blockNumber  = 0;
 		int32_t vertexNumber = 0;
 		getBlockAndVertexNumber(blockNumber, vertexNumber);
-		int32_t numCollidables =
-			ObjectManager->getObjBlockNumCollidables(blockNumber);
-		int32_t terrainObjHandle =
-			ObjectManager->getObjBlockFirstHandle(blockNumber);
+		int32_t numCollidables		 = ObjectManager->getObjBlockNumCollidables(blockNumber);
+		int32_t terrainObjHandle	 = ObjectManager->getObjBlockFirstHandle(blockNumber);
 		int32_t colliderBlockNumber  = -1;
 		int32_t colliderVertexNumber = -1;
 		for (size_t i = 0; i < numCollidables; i++)
@@ -1075,8 +1038,7 @@ void BattleMech::handleStaticCollision(void)
 			case TREEBUILDING:
 			case TERRAINOBJECT:
 			case BUILDING:
-				terrainObj->getBlockAndVertexNumber(
-					colliderBlockNumber, colliderVertexNumber);
+				terrainObj->getBlockAndVertexNumber(colliderBlockNumber, colliderVertexNumber);
 				isTangible = terrainObj->getTangible();
 				break;
 			case CAMERADRONE:
@@ -1191,10 +1153,8 @@ void BattleMech::init(bool create, ObjectTypePtr _type)
 	//-------------------------------------------------
 	// Set some mech traits based upon the Mech Type...
 	BattleMechTypePtr mechT = (BattleMechTypePtr)_type;
-	for (size_t curLocation = 0; curLocation < NUM_BODY_LOCATIONS;
-		 curLocation++)
-		body[curLocation].maxInternalStructure =
-			mechT->maxInternalStructure[curLocation];
+	for (size_t curLocation = 0; curLocation < NUM_BODY_LOCATIONS; curLocation++)
+		body[curLocation].maxInternalStructure = mechT->maxInternalStructure[curLocation];
 	crashAvoidSelf = mechT->crashAvoidSelf;
 	crashAvoidPath = mechT->crashAvoidPath;
 	crashBlockSelf = mechT->crashBlockSelf;
@@ -1218,8 +1178,7 @@ void BattleMech::init(bool create, ObjectTypePtr _type)
 	{
 		//------------------------------------------------
 		// This mech probably is not done.  Use the MADCAT
-		mechAppearanceType =
-			appearanceTypeList->getAppearance(appearanceType, "MADCAT");
+		mechAppearanceType = appearanceTypeList->getAppearance(appearanceType, "MADCAT");
 	}
 	//------------------------------------------------------------
 	// Ultimately, try to re-use rather then keep re-allocating...
@@ -1244,47 +1203,41 @@ float BattleMech::getStatusRating(void)
 {
 	//-------------------------------
 	// calculate Weapon effectiveness
-	float weaponEffect =
-		(float)weaponEffectiveness / (float)maxWeaponEffectiveness;
+	float weaponEffect = (float)weaponEffectiveness / (float)maxWeaponEffectiveness;
 	//----------------
 	// Calculate armor
-	float armorHead = armor[MECH_ARMOR_LOCATION_HEAD].curArmor /
-						  armor[MECH_ARMOR_LOCATION_HEAD].maxArmor * 0.6 +
-					  0.4;
+	float armorHead =
+		armor[MECH_ARMOR_LOCATION_HEAD].curArmor / armor[MECH_ARMOR_LOCATION_HEAD].maxArmor * 0.6 +
+		0.4;
 	float armorCTorso = armor[MECH_ARMOR_LOCATION_CTORSO].curArmor /
-							armor[MECH_ARMOR_LOCATION_CTORSO].maxArmor * 0.5 +
-						0.5;
-	if (armor[MECH_ARMOR_LOCATION_CTORSO].curArmor >
-		armor[MECH_ARMOR_LOCATION_RCTORSO].curArmor)
+			armor[MECH_ARMOR_LOCATION_CTORSO].maxArmor * 0.5 +
+		0.5;
+	if (armor[MECH_ARMOR_LOCATION_CTORSO].curArmor > armor[MECH_ARMOR_LOCATION_RCTORSO].curArmor)
 		armorCTorso = armor[MECH_ARMOR_LOCATION_RCTORSO].curArmor /
-						  armor[MECH_ARMOR_LOCATION_RCTORSO].maxArmor * 0.5 +
-					  0.5;
+				armor[MECH_ARMOR_LOCATION_RCTORSO].maxArmor * 0.5 +
+			0.5;
 	float curTorso = armor[MECH_ARMOR_LOCATION_RLTORSO].curArmor +
-					 armor[MECH_ARMOR_LOCATION_LTORSO].curArmor +
-					 armor[MECH_ARMOR_LOCATION_RRTORSO].curArmor +
-					 armor[MECH_ARMOR_LOCATION_RTORSO].curArmor;
+		armor[MECH_ARMOR_LOCATION_LTORSO].curArmor + armor[MECH_ARMOR_LOCATION_RRTORSO].curArmor +
+		armor[MECH_ARMOR_LOCATION_RTORSO].curArmor;
 	float maxTorso = armor[MECH_ARMOR_LOCATION_RLTORSO].maxArmor +
-					 armor[MECH_ARMOR_LOCATION_LTORSO].maxArmor +
-					 armor[MECH_ARMOR_LOCATION_RRTORSO].maxArmor +
-					 armor[MECH_ARMOR_LOCATION_RTORSO].maxArmor;
+		armor[MECH_ARMOR_LOCATION_LTORSO].maxArmor + armor[MECH_ARMOR_LOCATION_RRTORSO].maxArmor +
+		armor[MECH_ARMOR_LOCATION_RTORSO].maxArmor;
 	float armorTorso = curTorso / maxTorso * 0.25 + 0.75;
-	float curArm	 = armor[MECH_ARMOR_LOCATION_LARM].curArmor +
-				   armor[MECH_ARMOR_LOCATION_RARM].curArmor;
-	float maxArm = armor[MECH_ARMOR_LOCATION_LARM].maxArmor +
-				   armor[MECH_ARMOR_LOCATION_RARM].maxArmor;
+	float curArm =
+		armor[MECH_ARMOR_LOCATION_LARM].curArmor + armor[MECH_ARMOR_LOCATION_RARM].curArmor;
+	float maxArm =
+		armor[MECH_ARMOR_LOCATION_LARM].maxArmor + armor[MECH_ARMOR_LOCATION_RARM].maxArmor;
 	float armorArm = curArm / maxArm * 0.25 + 0.75;
-	float curLeg   = armor[MECH_ARMOR_LOCATION_LLEG].curArmor +
-				   armor[MECH_ARMOR_LOCATION_RLEG].curArmor;
-	float maxLeg = armor[MECH_ARMOR_LOCATION_LLEG].maxArmor +
-				   armor[MECH_ARMOR_LOCATION_RLEG].maxArmor;
-	float armorLeg = curLeg / maxLeg * 0.25 + 0.75;
-	float armorEffect =
-		armorHead * armorCTorso * armorTorso * armorArm * armorLeg;
+	float curLeg =
+		armor[MECH_ARMOR_LOCATION_LLEG].curArmor + armor[MECH_ARMOR_LOCATION_RLEG].curArmor;
+	float maxLeg =
+		armor[MECH_ARMOR_LOCATION_LLEG].maxArmor + armor[MECH_ARMOR_LOCATION_RLEG].maxArmor;
+	float armorLeg	= curLeg / maxLeg * 0.25 + 0.75;
+	float armorEffect = armorHead * armorCTorso * armorTorso * armorArm * armorLeg;
 	//-----------------------
 	// Calculate pilot Wounds
-	float pilotWoundTable[7] = {
-		1.00f, 0.95f, 0.85f, 0.75f, 0.50f, 0.30f, 0.00f};
-	float pilotEffect = pilotWoundTable[(int32_t)getPilot()->getWounds()];
+	float pilotWoundTable[7] = {1.00f, 0.95f, 0.85f, 0.75f, 0.50f, 0.30f, 0.00f};
+	float pilotEffect		 = pilotWoundTable[(int32_t)getPilot()->getWounds()];
 	if (isDestroyed() || isDisabled())
 		pilotEffect = 0.0;
 	float rating = weaponEffect * armorEffect * pilotEffect;
@@ -1293,10 +1246,7 @@ float BattleMech::getStatusRating(void)
 
 //----------------------------------------------------------------------------------
 
-void BattleMech::setControl(ControlType ctrlType)
-{
-	control.init(ctrlType, CONTROL_DATA_MECH);
-}
+void BattleMech::setControl(ControlType ctrlType) { control.init(ctrlType, CONTROL_DATA_MECH); }
 
 //----------------------------------------------------------------------------------
 int32_t BattleMech::init(uint32_t variantNum)
@@ -1332,7 +1282,7 @@ int32_t BattleMech::init(uint32_t variantNum)
 	uint8_t speed;
 	mechFile->readUCHAR(7, 5, speed);
 	maxMoveSpeed = (float)speed;
-	result = mechFile->readString(23 + (97 * variantNum), 2, variantName, 63);
+	result		 = mechFile->readString(23 + (97 * variantNum), 2, variantName, 63);
 	if (result == 1)
 	{
 		PAUSE(("Variant Number %d does not exist for mech %s.  Please set "
@@ -1340,8 +1290,7 @@ int32_t BattleMech::init(uint32_t variantNum)
 			variantNum, csvName));
 		variantNum = 0;
 		variantID  = 0;
-		result =
-			mechFile->readString(23 + (97 * variantNum), 2, variantName, 63);
+		result	 = mechFile->readString(23 + (97 * variantNum), 2, variantName, 63);
 		if (result == 1)
 			STOP(("Can't even find Variant 0 for mech %s", csvName));
 	}
@@ -1390,20 +1339,16 @@ int32_t BattleMech::init(uint32_t variantNum)
 	//-----------------------------------------------------
 	// Read in the mech's non-weapon/non-ammo components...
 	int32_t realItemNum = 0;
-	memset(ItemLocationToInvLocation, 0xff,
-		sizeof(int32_t) * MAX_MOVER_INVENTORY_ITEMS);
+	memset(ItemLocationToInvLocation, 0xff, sizeof(int32_t) * MAX_MOVER_INVENTORY_ITEMS);
 	// Read in everything but weapons and AMMO
 	for (size_t curItem = 0; curItem < MAX_MOVER_INVENTORY_ITEMS; curItem++)
 	{
-		mechFile->readUCHAR((26 + (97 * variantNum)) + curItem, 5,
-			inventory[realItemNum].masterID);
-		if (inventory[realItemNum].masterID &&
-			(inventory[realItemNum].masterID != 255))
+		mechFile->readUCHAR((26 + (97 * variantNum)) + curItem, 5, inventory[realItemNum].masterID);
+		if (inventory[realItemNum].masterID && (inventory[realItemNum].masterID != 255))
 		{
 			//---------------------------------------------------------------
 			// If the component is a JumpJet, increment our jump jet count...
-			switch (MasterComponent::masterList[inventory[realItemNum].masterID]
-						.getForm())
+			switch (MasterComponent::masterList[inventory[realItemNum].masterID].getForm())
 			{
 			case COMPONENT_FORM_JUMPJET:
 				numJumpJets = 5;
@@ -1421,8 +1366,7 @@ int32_t BattleMech::init(uint32_t variantNum)
 			case COMPONENT_FORM_HEATSINK:
 				numOther++;
 				inventory[realItemNum].health =
-					MasterComponent::masterList[inventory[realItemNum].masterID]
-						.getHealth();
+					MasterComponent::masterList[inventory[realItemNum].masterID].getHealth();
 				inventory[realItemNum].disabled		= false;
 				inventory[realItemNum].amount		= 1;
 				inventory[realItemNum].ammoIndex	= -1;
@@ -1452,29 +1396,24 @@ int32_t BattleMech::init(uint32_t variantNum)
 	// NOW read in the weapons.
 	for (curItem = 0; curItem < MAX_MOVER_INVENTORY_ITEMS; curItem++)
 	{
-		mechFile->readUCHAR((26 + (97 * variantNum)) + curItem, 5,
-			inventory[realItemNum].masterID);
-		if (inventory[realItemNum].masterID &&
-			(inventory[realItemNum].masterID != 255))
+		mechFile->readUCHAR((26 + (97 * variantNum)) + curItem, 5, inventory[realItemNum].masterID);
+		if (inventory[realItemNum].masterID && (inventory[realItemNum].masterID != 255))
 		{
 			//---------------------------------------------------------------
 			// If the component is a JumpJet, increment our jump jet count...
 			int32_t sourceWeaponType;
-			if (MasterComponent::masterList[inventory[realItemNum].masterID]
-					.getForm() == COMPONENT_FORM_WEAPON_MISSILE)
+			if (MasterComponent::masterList[inventory[realItemNum].masterID].getForm() ==
+				COMPONENT_FORM_WEAPON_MISSILE)
 				sourceWeaponType = MECH3D_WEAPONTYPE_MISSILE;
-			else if (MasterComponent::masterList[inventory[realItemNum]
-													 .masterID]
-						 .getForm() == COMPONENT_FORM_WEAPON_BALLISTIC)
+			else if (MasterComponent::masterList[inventory[realItemNum].masterID].getForm() ==
+				COMPONENT_FORM_WEAPON_BALLISTIC)
 				sourceWeaponType = MECH3D_WEAPONTYPE_BALLISTIC;
-			else if (MasterComponent::masterList[inventory[realItemNum]
-													 .masterID]
-						 .getForm() == COMPONENT_FORM_WEAPON_ENERGY)
+			else if (MasterComponent::masterList[inventory[realItemNum].masterID].getForm() ==
+				COMPONENT_FORM_WEAPON_ENERGY)
 				sourceWeaponType = MECH3D_WEAPONTYPE_ENERGY;
 			else
 				sourceWeaponType = MECH3D_WEAPONTYPE_ANY;
-			switch (MasterComponent::masterList[inventory[realItemNum].masterID]
-						.getForm())
+			switch (MasterComponent::masterList[inventory[realItemNum].masterID].getForm())
 			{
 			case COMPONENT_FORM_JUMPJET:
 			case COMPONENT_FORM_COCKPIT:
@@ -1498,25 +1437,21 @@ int32_t BattleMech::init(uint32_t variantNum)
 			case COMPONENT_FORM_WEAPON_MISSILE:
 				numWeapons++;
 				inventory[realItemNum].health =
-					MasterComponent::masterList[inventory[realItemNum].masterID]
-						.getHealth();
-				inventory[realItemNum].disabled  = false;
-				inventory[realItemNum].amount	= 1;
-				inventory[realItemNum].ammoIndex = -1;
-				inventory[realItemNum].facing =
-					appearance->getWeaponNode(sourceWeaponType);
+					MasterComponent::masterList[inventory[realItemNum].masterID].getHealth();
+				inventory[realItemNum].disabled		 = false;
+				inventory[realItemNum].amount		 = 1;
+				inventory[realItemNum].ammoIndex	 = -1;
+				inventory[realItemNum].facing		 = appearance->getWeaponNode(sourceWeaponType);
 				inventory[realItemNum].readyTime	 = 0.0;
 				inventory[realItemNum].bodyLocation  = 255;
 				inventory[realItemNum].effectiveness = (int16_t)(
-					MasterComponent::masterList[inventory[realItemNum].masterID]
-						.getWeaponDamage() *
+					MasterComponent::masterList[inventory[realItemNum].masterID].getWeaponDamage() *
 					10.0 / // damage over 10 seconds
 					MasterComponent::masterList[inventory[realItemNum].masterID]
 						.getWeaponRecycleTime());
 				inventory[realItemNum].effectiveness *=
-					WeaponRanges[MasterComponent::masterList
-									 [inventory[realItemNum].masterID]
-										 .getWeaponRange()][1] /
+					WeaponRanges[MasterComponent::masterList[inventory[realItemNum].masterID]
+									 .getWeaponRange()][1] /
 					24;
 				ItemLocationToInvLocation[curItem] = realItemNum;
 				realItemNum++;
@@ -1532,15 +1467,12 @@ int32_t BattleMech::init(uint32_t variantNum)
 	// NOW read in the AMMO
 	for (curItem = 0; curItem < MAX_MOVER_INVENTORY_ITEMS; curItem++)
 	{
-		mechFile->readUCHAR((26 + (97 * variantNum)) + curItem, 5,
-			inventory[realItemNum].masterID);
-		if (inventory[realItemNum].masterID &&
-			(inventory[realItemNum].masterID != 255))
+		mechFile->readUCHAR((26 + (97 * variantNum)) + curItem, 5, inventory[realItemNum].masterID);
+		if (inventory[realItemNum].masterID && (inventory[realItemNum].masterID != 255))
 		{
 			//---------------------------------------------------------------
 			// If the component is a JumpJet, increment our jump jet count...
-			switch (MasterComponent::masterList[inventory[realItemNum].masterID]
-						.getForm())
+			switch (MasterComponent::masterList[inventory[realItemNum].masterID].getForm())
 			{
 			case COMPONENT_FORM_JUMPJET:
 			case COMPONENT_FORM_COCKPIT:
@@ -1567,8 +1499,7 @@ int32_t BattleMech::init(uint32_t variantNum)
 			case COMPONENT_FORM_AMMO:
 				numAmmos++;
 				inventory[realItemNum].health =
-					MasterComponent::masterList[inventory[realItemNum].masterID]
-						.getHealth();
+					MasterComponent::masterList[inventory[realItemNum].masterID].getHealth();
 				inventory[realItemNum].disabled		= false;
 				inventory[realItemNum].amount		= 1;
 				inventory[realItemNum].ammoIndex	= -1;
@@ -1582,14 +1513,11 @@ int32_t BattleMech::init(uint32_t variantNum)
 				//
 				// Ammo per ton is always fully stocked.  I.e. always -1 or 255
 				inventory[realItemNum].amount =
-					MasterComponent::masterList[inventory[realItemNum].masterID]
-						.getAmmoPerTon();
-				inventory[realItemNum].ammoIndex = -1;
-				inventory[realItemNum].startAmount =
-					inventory[realItemNum].amount;
+					MasterComponent::masterList[inventory[realItemNum].masterID].getAmmoPerTon();
+				inventory[realItemNum].ammoIndex   = -1;
+				inventory[realItemNum].startAmount = inventory[realItemNum].amount;
 				inventory[realItemNum].health =
-					MasterComponent::masterList[inventory[realItemNum].masterID]
-						.getHealth();
+					MasterComponent::masterList[inventory[realItemNum].masterID].getHealth();
 				inventory[realItemNum].disabled		= false;
 				inventory[realItemNum].readyTime	= 0.0;
 				inventory[realItemNum].bodyLocation = 255;
@@ -1601,18 +1529,17 @@ int32_t BattleMech::init(uint32_t variantNum)
 	}
 	//------------------------------------------------------------
 	// Now, read in the component layout for each body location...
-	for (size_t curLocation = 0; curLocation < NUM_MECH_BODY_LOCATIONS;
-		 curLocation++)
+	for (size_t curLocation = 0; curLocation < NUM_MECH_BODY_LOCATIONS; curLocation++)
 	{
 		body[curLocation].CASE = true; // ALL MC2 Mechs have CASE everywhere.
 		uint8_t internalStructure;
-		mechFile->readUCHAR(114 + (97 * variantNum),
-			stupidNewSageColumns[curLocation], internalStructure);
+		mechFile->readUCHAR(
+			114 + (97 * variantNum), stupidNewSageColumns[curLocation], internalStructure);
 		body[curLocation].curInternalStructure = internalStructure;
 		//---------------------------------------------------------
 		// Now, determine the damage state for the body location...
-		float damageLevel = (float)body[curLocation].curInternalStructure /
-							body[curLocation].maxInternalStructure;
+		float damageLevel =
+			(float)body[curLocation].curInternalStructure / body[curLocation].maxInternalStructure;
 		if (damageLevel <= 0.0)
 			body[curLocation].damageState = IS_DAMAGE_DESTROYED;
 		else if (damageLevel <= 0.5)
@@ -1624,8 +1551,8 @@ int32_t BattleMech::init(uint32_t variantNum)
 		for (size_t curSpace = 0; curSpace < numSpaces; curSpace++)
 		{
 			uint8_t spaceData;
-			mechFile->readUCHAR((102 + (97 * variantNum)) + curSpace,
-				stupidNewSageColumns[curLocation], spaceData);
+			mechFile->readUCHAR(
+				(102 + (97 * variantNum)) + curSpace, stupidNewSageColumns[curLocation], spaceData);
 			spaceData = ItemLocationToInvLocation[spaceData];
 			body[curLocation].criticalSpaces[curSpace].inventoryID = spaceData;
 			body[curLocation].criticalSpaces[curSpace].hit =
@@ -1640,13 +1567,10 @@ int32_t BattleMech::init(uint32_t variantNum)
 				//--------------------------------------------------------
 				// The following line assumes the "new" crit hit system...
 				body[curLocation].totalSpaces +=
-					MasterComponent::masterList[inventory[spaceData].masterID]
-						.getSize();
+					MasterComponent::masterList[inventory[spaceData].masterID].getSize();
 				//--------------------------------------------------------
 				// Preserve critical component indices for quick access...
-				switch (
-					MasterComponent::masterList[inventory[spaceData].masterID]
-						.getForm())
+				switch (MasterComponent::masterList[inventory[spaceData].masterID].getForm())
 				{
 				case COMPONENT_FORM_COCKPIT:
 					cockpit = spaceData;
@@ -1659,8 +1583,7 @@ int32_t BattleMech::init(uint32_t variantNum)
 					sensorSystem = SensorManager->newSensor();
 					sensorSystem->setOwner(this);
 					sensorSystem->setRange(
-						MasterComponent::masterList[inventory[sensor].masterID]
-							.getSensorRange());
+						MasterComponent::masterList[inventory[sensor].masterID].getSensorRange());
 					break;
 				case COMPONENT_FORM_HEATSINK:
 					inventory[spaceData].bodyLocation = curLocation;
@@ -1690,16 +1613,14 @@ int32_t BattleMech::init(uint32_t variantNum)
 					inventory[spaceData].bodyLocation = curLocation;
 					break;
 				case COMPONENT_FORM_ACTUATOR:
-					if (inventory[spaceData].masterID ==
-						MasterComponent::armActuatorID)
+					if (inventory[spaceData].masterID == MasterComponent::armActuatorID)
 					{
 						if (curLocation == MECH_BODY_LOCATION_LARM)
 							actuator[ACTUATOR_LSHOULDER] = spaceData;
 						else if (curLocation == MECH_BODY_LOCATION_RARM)
 							actuator[ACTUATOR_RSHOULDER] = spaceData;
 					}
-					else if (inventory[spaceData].masterID ==
-							 MasterComponent::legActuatorID)
+					else if (inventory[spaceData].masterID == MasterComponent::legActuatorID)
 					{
 						if (curLocation == MECH_BODY_LOCATION_LLEG)
 							actuator[ACTUATOR_LHIP] = spaceData;
@@ -1737,16 +1658,14 @@ int32_t BattleMech::init(uint32_t variantNum)
 		for (size_t ammoIndex = 0; ammoIndex < numAmmoTypes; ammoIndex++)
 		{
 			if ((int32_t)MasterComponent::masterList[inventory[item].masterID]
-					.getWeaponAmmoMasterId() ==
-				ammoTypeTotal[ammoIndex].masterId)
+					.getWeaponAmmoMasterId() == ammoTypeTotal[ammoIndex].masterId)
 			{
 				inventory[item].ammoIndex = ammoIndex;
 				break;
 			}
 		}
 	}
-	for (item = numOther + numWeapons;
-		 item < (numOther + numWeapons + numAmmos); item++)
+	for (item = numOther + numWeapons; item < (numOther + numWeapons + numAmmos); item++)
 	{
 		//----------------------------------------------------------
 		// Each weapon should point to its appropriate ammo total in
@@ -1762,17 +1681,13 @@ int32_t BattleMech::init(uint32_t variantNum)
 	}
 	for (item = 0; item < numOther; item++)
 	{
-		if ((inventory[item].masterID ==
-				MasterComponent::clanAntiMissileSystemID) ||
-			(inventory[item].masterID ==
-				MasterComponent::innerSphereAntiMissileSystemID))
+		if ((inventory[item].masterID == MasterComponent::clanAntiMissileSystemID) ||
+			(inventory[item].masterID == MasterComponent::innerSphereAntiMissileSystemID))
 		{
 			for (size_t ammoIndex = 0; ammoIndex < numAmmoTypes; ammoIndex++)
 			{
-				if ((int32_t)
-						MasterComponent::masterList[inventory[item].masterID]
-							.getWeaponAmmoMasterId() ==
-					ammoTypeTotal[ammoIndex].masterId)
+				if ((int32_t)MasterComponent::masterList[inventory[item].masterID]
+						.getWeaponAmmoMasterId() == ammoTypeTotal[ammoIndex].masterId)
 				{
 					inventory[item].ammoIndex = ammoIndex;
 					break;
@@ -1787,48 +1702,37 @@ int32_t BattleMech::init(uint32_t variantNum)
 		float totalArmorPoints = ARMOR_POINTS_PER_NEWARMOR * numArmorComponents;
 		float armorPercent	 = ARMOR_HEAD_PERCENT * totalArmorPoints;
 		armor[MECH_ARMOR_LOCATION_HEAD].maxArmor += armorPercent;
-		armor[MECH_ARMOR_LOCATION_HEAD].curArmor =
-			armor[MECH_ARMOR_LOCATION_HEAD].maxArmor;
-		armorPercent = ARMOR_CTORSO_PERCENT * totalArmorPoints;
+		armor[MECH_ARMOR_LOCATION_HEAD].curArmor = armor[MECH_ARMOR_LOCATION_HEAD].maxArmor;
+		armorPercent							 = ARMOR_CTORSO_PERCENT * totalArmorPoints;
 		armor[MECH_ARMOR_LOCATION_CTORSO].maxArmor += armorPercent;
-		armor[MECH_ARMOR_LOCATION_CTORSO].curArmor =
-			armor[MECH_ARMOR_LOCATION_CTORSO].maxArmor;
-		armorPercent = ARMOR_LTORSO_PERCENT * totalArmorPoints;
+		armor[MECH_ARMOR_LOCATION_CTORSO].curArmor = armor[MECH_ARMOR_LOCATION_CTORSO].maxArmor;
+		armorPercent							   = ARMOR_LTORSO_PERCENT * totalArmorPoints;
 		armor[MECH_ARMOR_LOCATION_LTORSO].maxArmor += armorPercent;
-		armor[MECH_ARMOR_LOCATION_LTORSO].curArmor =
-			armor[MECH_ARMOR_LOCATION_LTORSO].maxArmor;
-		armorPercent = ARMOR_RTORSO_PERCENT * totalArmorPoints;
+		armor[MECH_ARMOR_LOCATION_LTORSO].curArmor = armor[MECH_ARMOR_LOCATION_LTORSO].maxArmor;
+		armorPercent							   = ARMOR_RTORSO_PERCENT * totalArmorPoints;
 		armor[MECH_ARMOR_LOCATION_RTORSO].maxArmor += armorPercent;
-		armor[MECH_ARMOR_LOCATION_RTORSO].curArmor =
-			armor[MECH_ARMOR_LOCATION_RTORSO].maxArmor;
-		armorPercent = ARMOR_LARM_PERCENT * totalArmorPoints;
+		armor[MECH_ARMOR_LOCATION_RTORSO].curArmor = armor[MECH_ARMOR_LOCATION_RTORSO].maxArmor;
+		armorPercent							   = ARMOR_LARM_PERCENT * totalArmorPoints;
 		armor[MECH_ARMOR_LOCATION_LARM].maxArmor += armorPercent;
-		armor[MECH_ARMOR_LOCATION_LARM].curArmor =
-			armor[MECH_ARMOR_LOCATION_LARM].maxArmor;
-		armorPercent = ARMOR_RARM_PERCENT * totalArmorPoints;
+		armor[MECH_ARMOR_LOCATION_LARM].curArmor = armor[MECH_ARMOR_LOCATION_LARM].maxArmor;
+		armorPercent							 = ARMOR_RARM_PERCENT * totalArmorPoints;
 		armor[MECH_ARMOR_LOCATION_RARM].maxArmor += armorPercent;
-		armor[MECH_ARMOR_LOCATION_RARM].curArmor =
-			armor[MECH_ARMOR_LOCATION_RARM].maxArmor;
-		armorPercent = ARMOR_LLEG_PERCENT * totalArmorPoints;
+		armor[MECH_ARMOR_LOCATION_RARM].curArmor = armor[MECH_ARMOR_LOCATION_RARM].maxArmor;
+		armorPercent							 = ARMOR_LLEG_PERCENT * totalArmorPoints;
 		armor[MECH_ARMOR_LOCATION_LLEG].maxArmor += armorPercent;
-		armor[MECH_ARMOR_LOCATION_LLEG].curArmor =
-			armor[MECH_ARMOR_LOCATION_LLEG].maxArmor;
-		armorPercent = ARMOR_RLEG_PERCENT * totalArmorPoints;
+		armor[MECH_ARMOR_LOCATION_LLEG].curArmor = armor[MECH_ARMOR_LOCATION_LLEG].maxArmor;
+		armorPercent							 = ARMOR_RLEG_PERCENT * totalArmorPoints;
 		armor[MECH_ARMOR_LOCATION_RLEG].maxArmor += armorPercent;
-		armor[MECH_ARMOR_LOCATION_RLEG].curArmor =
-			armor[MECH_ARMOR_LOCATION_RLEG].maxArmor;
-		armorPercent = ARMOR_RCTORSO_PERCENT * totalArmorPoints;
+		armor[MECH_ARMOR_LOCATION_RLEG].curArmor = armor[MECH_ARMOR_LOCATION_RLEG].maxArmor;
+		armorPercent							 = ARMOR_RCTORSO_PERCENT * totalArmorPoints;
 		armor[MECH_ARMOR_LOCATION_RCTORSO].maxArmor += armorPercent;
-		armor[MECH_ARMOR_LOCATION_RCTORSO].curArmor =
-			armor[MECH_ARMOR_LOCATION_RCTORSO].maxArmor;
-		armorPercent = ARMOR_RLTORSO_PERCENT * totalArmorPoints;
+		armor[MECH_ARMOR_LOCATION_RCTORSO].curArmor = armor[MECH_ARMOR_LOCATION_RCTORSO].maxArmor;
+		armorPercent								= ARMOR_RLTORSO_PERCENT * totalArmorPoints;
 		armor[MECH_ARMOR_LOCATION_RLTORSO].maxArmor += armorPercent;
-		armor[MECH_ARMOR_LOCATION_RLTORSO].curArmor =
-			armor[MECH_ARMOR_LOCATION_RLTORSO].maxArmor;
-		armorPercent = ARMOR_RRTORSO_PERCENT * totalArmorPoints;
+		armor[MECH_ARMOR_LOCATION_RLTORSO].curArmor = armor[MECH_ARMOR_LOCATION_RLTORSO].maxArmor;
+		armorPercent								= ARMOR_RRTORSO_PERCENT * totalArmorPoints;
 		armor[MECH_ARMOR_LOCATION_RRTORSO].maxArmor += armorPercent;
-		armor[MECH_ARMOR_LOCATION_RRTORSO].curArmor =
-			armor[MECH_ARMOR_LOCATION_RRTORSO].maxArmor;
+		armor[MECH_ARMOR_LOCATION_RRTORSO].curArmor = armor[MECH_ARMOR_LOCATION_RRTORSO].maxArmor;
 	}
 	//---------------------------------------------------------------------------
 	// We need to set the status states for legs and torso based upon our
@@ -1848,9 +1752,8 @@ int32_t BattleMech::init(uint32_t variantNum)
 	chassisClass = getMechClass();
 	// logistics data needs to be initialized if you're going to get values
 	LogisticsData::instance->init();
-	cBills = 10;
-	LogisticsVariant* mechVariant =
-		LogisticsData::instance->getVariant(variantName);
+	cBills						  = 10;
+	LogisticsVariant* mechVariant = LogisticsData::instance->getVariant(variantName);
 	if (mechVariant)
 		cBills = mechVariant->getCost();
 	mechFile->close();
@@ -1866,86 +1769,84 @@ typedef struct _LogisticsMasterLocationTableEntry
 	int32_t slotNumber; // Starting at zero!
 } LogisticsMasterLocationTableEntry;
 
-LogisticsMasterLocationTableEntry
-	logisticsTable[MAX_MOVER_INVENTORY_ITEMS] =
-		{
-			false, MECH_BODY_LOCATION_CTORSO, 0, // 0-Always Fusion Engine
-			false, MECH_BODY_LOCATION_CTORSO, 1, // 1-Always Gyroscope
-			false, MECH_BODY_LOCATION_LARM, 1,   // 2-Always Arm Actuator
-			false, MECH_BODY_LOCATION_RARM, 1,   // 3-Always Arm Actuator
-			false, MECH_BODY_LOCATION_LLEG, 1,   // 4-Always Leg Actuator
-			false, MECH_BODY_LOCATION_RLEG, 1,   // 5-Always Leg Actuator
-			false, MECH_BODY_LOCATION_HEAD, 0,   // 6-Always COckpit
-			false, MECH_BODY_LOCATION_HEAD, 1,   // 7-Always Life Support
-			false, MECH_BODY_LOCATION_LARM, 0,   // 8-Always Shoulder
-			false, MECH_BODY_LOCATION_RARM, 0,   // 9-Always Shoulder
-			false, MECH_BODY_LOCATION_LLEG, 0,   // 10-Always Hip
-			false, MECH_BODY_LOCATION_RLEG, 0,   // 11-Always Hip
-			false, MECH_BODY_LOCATION_HEAD, 2,   // 12-Sensor
-											   // -Change back to true to be able
-											   // to replace these.
-			false, MECH_BODY_LOCATION_HEAD,
-			3, // 13-Other Electronic Warfare Component
-			false, MECH_BODY_LOCATION_HEAD,
-			4, // 14-Other Electronic Warfare Component
-			false, MECH_BODY_LOCATION_HEAD,
-			5, // 15-Other Electronic Warfare Component
-			true, MECH_BODY_LOCATION_LLEG, 3,	// 16-JumpJet
-			false, MECH_BODY_LOCATION_LLEG, 4,   // 17-Always NOTHING
-			false, MECH_BODY_LOCATION_LLEG, 5,   // 18-Always NOTHING
-			false, MECH_BODY_LOCATION_RLEG, 3,   // 19-Always NOTHING
-			false, MECH_BODY_LOCATION_RLEG, 4,   // 20-Always NOTHING
-			false, MECH_BODY_LOCATION_RLEG, 5,   // 21-Always NOTHING
-			true, MECH_BODY_LOCATION_LARM, 4,	// 22-Weapon or Ammo	- 22
-			true, MECH_BODY_LOCATION_LTORSO, 0,  // 38-Weapon or Ammo - 23
-			true, MECH_BODY_LOCATION_CTORSO, 2,  // 62-Weapon or Ammo - 24
-			true, MECH_BODY_LOCATION_RTORSO, 0,  // 50-Weapon or Ammo - 25
-			true, MECH_BODY_LOCATION_RARM, 4,	// 30-Weapon or Ammo - 26
-			true, MECH_BODY_LOCATION_LARM, 5,	// 23-Weapon or Ammo - 27
-			true, MECH_BODY_LOCATION_LTORSO, 1,  // 39-Weapon or Ammo - 28
-			true, MECH_BODY_LOCATION_CTORSO, 3,  // 63-Weapon or Ammo - 29
-			true, MECH_BODY_LOCATION_RTORSO, 1,  // 51-Weapon or Ammo - 30
-			true, MECH_BODY_LOCATION_RARM, 5,	// 31-Weapon or Ammo - 31
-			true, MECH_BODY_LOCATION_LARM, 6,	// 24-Weapon or Ammo - 32
-			true, MECH_BODY_LOCATION_LTORSO, 2,  // 40-Weapon or Ammo - 33
-			true, MECH_BODY_LOCATION_CTORSO, 4,  // 64-Weapon or Ammo - 34
-			true, MECH_BODY_LOCATION_RTORSO, 2,  // 52-Weapon or Ammo - 35
-			true, MECH_BODY_LOCATION_RARM, 6,	// 32-Weapon or Ammo - 36
-			true, MECH_BODY_LOCATION_LARM, 7,	// 25-Weapon or Ammo - 37
-			true, MECH_BODY_LOCATION_LTORSO, 3,  // 41-Weapon or Ammo - 38
-			true, MECH_BODY_LOCATION_CTORSO, 5,  // 65-Weapon or Ammo - 39
-			true, MECH_BODY_LOCATION_RTORSO, 3,  // 53-Weapon or Ammo - 40
-			true, MECH_BODY_LOCATION_RARM, 7,	// 33-Weapon or Ammo - 41
-			true, MECH_BODY_LOCATION_LARM, 8,	// 26-Weapon or Ammo - 42
-			true, MECH_BODY_LOCATION_LTORSO, 4,  // 42-Weapon or Ammo - 43
-			true, MECH_BODY_LOCATION_CTORSO, 6,  // 66-Weapon or Ammo - 44
-			true, MECH_BODY_LOCATION_RTORSO, 4,  // 54-Weapon or Ammo - 45
-			true, MECH_BODY_LOCATION_RARM, 8,	// 34-Weapon or Ammo - 46
-			true, MECH_BODY_LOCATION_LARM, 9,	// 27-Weapon or Ammo - 47
-			true, MECH_BODY_LOCATION_LTORSO, 5,  // 43-Weapon or Ammo - 48
-			true, MECH_BODY_LOCATION_CTORSO, 7,  // 67-Weapon or Ammo - 49
-			true, MECH_BODY_LOCATION_RTORSO, 5,  // 55-Weapon or Ammo - 50
-			true, MECH_BODY_LOCATION_RARM, 9,	// 35-Weapon or Ammo - 51
-			true, MECH_BODY_LOCATION_LARM, 10,   // 28-Weapon or Ammo- 52
-			true, MECH_BODY_LOCATION_LTORSO, 6,  // 44-Weapon or Ammo - 53
-			true, MECH_BODY_LOCATION_CTORSO, 8,  // 68-Weapon or Ammo - 54
-			true, MECH_BODY_LOCATION_RTORSO, 6,  // 56-Weapon or Ammo - 55
-			true, MECH_BODY_LOCATION_RARM, 10,   // 36-Weapon or Ammo- 56
-			true, MECH_BODY_LOCATION_LARM, 11,   // 29-Weapon or Ammo- 57
-			true, MECH_BODY_LOCATION_LTORSO, 7,  // 45-Weapon or Ammo - 58
-			true, MECH_BODY_LOCATION_CTORSO, 9,  // 69-Weapon or Ammo - 59
-			true, MECH_BODY_LOCATION_RTORSO, 7,  // 57-Weapon or Ammo - 60
-			true, MECH_BODY_LOCATION_RARM, 11,   // 37-Weapon or Ammo- 61
-			true, MECH_BODY_LOCATION_LTORSO, 8,  // 46-Weapon or Ammo - 62
-			true, MECH_BODY_LOCATION_CTORSO, 10, // 70-Weapon or Ammo - 63
-			true, MECH_BODY_LOCATION_RTORSO, 8,  // 58-Weapon or Ammo - 64
-			true, MECH_BODY_LOCATION_LTORSO, 9,  // 47-Weapon or Ammo - 65
-			true, MECH_BODY_LOCATION_CTORSO, 11, // 71-Weapon or Ammo  - 66
-			true, MECH_BODY_LOCATION_RTORSO, 9,  // 59-Weapon or Ammo - 67
-			true, MECH_BODY_LOCATION_LTORSO, 10, // 48-Weapon or Ammo - 68
-			true, MECH_BODY_LOCATION_RTORSO, 10, // 60-Weapon or Ammo - 69
-			true, MECH_BODY_LOCATION_LTORSO, 11, // 49-Weapon or Ammo - 70
-			true, MECH_BODY_LOCATION_RTORSO, 11  // 61-Weapon or Ammo - 71
+LogisticsMasterLocationTableEntry logisticsTable[MAX_MOVER_INVENTORY_ITEMS] = {
+	false, MECH_BODY_LOCATION_CTORSO, 0, // 0-Always Fusion Engine
+	false, MECH_BODY_LOCATION_CTORSO, 1, // 1-Always Gyroscope
+	false, MECH_BODY_LOCATION_LARM, 1,   // 2-Always Arm Actuator
+	false, MECH_BODY_LOCATION_RARM, 1,   // 3-Always Arm Actuator
+	false, MECH_BODY_LOCATION_LLEG, 1,   // 4-Always Leg Actuator
+	false, MECH_BODY_LOCATION_RLEG, 1,   // 5-Always Leg Actuator
+	false, MECH_BODY_LOCATION_HEAD, 0,   // 6-Always COckpit
+	false, MECH_BODY_LOCATION_HEAD, 1,   // 7-Always Life Support
+	false, MECH_BODY_LOCATION_LARM, 0,   // 8-Always Shoulder
+	false, MECH_BODY_LOCATION_RARM, 0,   // 9-Always Shoulder
+	false, MECH_BODY_LOCATION_LLEG, 0,   // 10-Always Hip
+	false, MECH_BODY_LOCATION_RLEG, 0,   // 11-Always Hip
+	false, MECH_BODY_LOCATION_HEAD, 2,   // 12-Sensor
+										 // -Change back to true to be able
+										 // to replace these.
+	false, MECH_BODY_LOCATION_HEAD,
+	3, // 13-Other Electronic Warfare Component
+	false, MECH_BODY_LOCATION_HEAD,
+	4, // 14-Other Electronic Warfare Component
+	false, MECH_BODY_LOCATION_HEAD,
+	5,									 // 15-Other Electronic Warfare Component
+	true, MECH_BODY_LOCATION_LLEG, 3,	// 16-JumpJet
+	false, MECH_BODY_LOCATION_LLEG, 4,   // 17-Always NOTHING
+	false, MECH_BODY_LOCATION_LLEG, 5,   // 18-Always NOTHING
+	false, MECH_BODY_LOCATION_RLEG, 3,   // 19-Always NOTHING
+	false, MECH_BODY_LOCATION_RLEG, 4,   // 20-Always NOTHING
+	false, MECH_BODY_LOCATION_RLEG, 5,   // 21-Always NOTHING
+	true, MECH_BODY_LOCATION_LARM, 4,	// 22-Weapon or Ammo	- 22
+	true, MECH_BODY_LOCATION_LTORSO, 0,  // 38-Weapon or Ammo - 23
+	true, MECH_BODY_LOCATION_CTORSO, 2,  // 62-Weapon or Ammo - 24
+	true, MECH_BODY_LOCATION_RTORSO, 0,  // 50-Weapon or Ammo - 25
+	true, MECH_BODY_LOCATION_RARM, 4,	// 30-Weapon or Ammo - 26
+	true, MECH_BODY_LOCATION_LARM, 5,	// 23-Weapon or Ammo - 27
+	true, MECH_BODY_LOCATION_LTORSO, 1,  // 39-Weapon or Ammo - 28
+	true, MECH_BODY_LOCATION_CTORSO, 3,  // 63-Weapon or Ammo - 29
+	true, MECH_BODY_LOCATION_RTORSO, 1,  // 51-Weapon or Ammo - 30
+	true, MECH_BODY_LOCATION_RARM, 5,	// 31-Weapon or Ammo - 31
+	true, MECH_BODY_LOCATION_LARM, 6,	// 24-Weapon or Ammo - 32
+	true, MECH_BODY_LOCATION_LTORSO, 2,  // 40-Weapon or Ammo - 33
+	true, MECH_BODY_LOCATION_CTORSO, 4,  // 64-Weapon or Ammo - 34
+	true, MECH_BODY_LOCATION_RTORSO, 2,  // 52-Weapon or Ammo - 35
+	true, MECH_BODY_LOCATION_RARM, 6,	// 32-Weapon or Ammo - 36
+	true, MECH_BODY_LOCATION_LARM, 7,	// 25-Weapon or Ammo - 37
+	true, MECH_BODY_LOCATION_LTORSO, 3,  // 41-Weapon or Ammo - 38
+	true, MECH_BODY_LOCATION_CTORSO, 5,  // 65-Weapon or Ammo - 39
+	true, MECH_BODY_LOCATION_RTORSO, 3,  // 53-Weapon or Ammo - 40
+	true, MECH_BODY_LOCATION_RARM, 7,	// 33-Weapon or Ammo - 41
+	true, MECH_BODY_LOCATION_LARM, 8,	// 26-Weapon or Ammo - 42
+	true, MECH_BODY_LOCATION_LTORSO, 4,  // 42-Weapon or Ammo - 43
+	true, MECH_BODY_LOCATION_CTORSO, 6,  // 66-Weapon or Ammo - 44
+	true, MECH_BODY_LOCATION_RTORSO, 4,  // 54-Weapon or Ammo - 45
+	true, MECH_BODY_LOCATION_RARM, 8,	// 34-Weapon or Ammo - 46
+	true, MECH_BODY_LOCATION_LARM, 9,	// 27-Weapon or Ammo - 47
+	true, MECH_BODY_LOCATION_LTORSO, 5,  // 43-Weapon or Ammo - 48
+	true, MECH_BODY_LOCATION_CTORSO, 7,  // 67-Weapon or Ammo - 49
+	true, MECH_BODY_LOCATION_RTORSO, 5,  // 55-Weapon or Ammo - 50
+	true, MECH_BODY_LOCATION_RARM, 9,	// 35-Weapon or Ammo - 51
+	true, MECH_BODY_LOCATION_LARM, 10,   // 28-Weapon or Ammo- 52
+	true, MECH_BODY_LOCATION_LTORSO, 6,  // 44-Weapon or Ammo - 53
+	true, MECH_BODY_LOCATION_CTORSO, 8,  // 68-Weapon or Ammo - 54
+	true, MECH_BODY_LOCATION_RTORSO, 6,  // 56-Weapon or Ammo - 55
+	true, MECH_BODY_LOCATION_RARM, 10,   // 36-Weapon or Ammo- 56
+	true, MECH_BODY_LOCATION_LARM, 11,   // 29-Weapon or Ammo- 57
+	true, MECH_BODY_LOCATION_LTORSO, 7,  // 45-Weapon or Ammo - 58
+	true, MECH_BODY_LOCATION_CTORSO, 9,  // 69-Weapon or Ammo - 59
+	true, MECH_BODY_LOCATION_RTORSO, 7,  // 57-Weapon or Ammo - 60
+	true, MECH_BODY_LOCATION_RARM, 11,   // 37-Weapon or Ammo- 61
+	true, MECH_BODY_LOCATION_LTORSO, 8,  // 46-Weapon or Ammo - 62
+	true, MECH_BODY_LOCATION_CTORSO, 10, // 70-Weapon or Ammo - 63
+	true, MECH_BODY_LOCATION_RTORSO, 8,  // 58-Weapon or Ammo - 64
+	true, MECH_BODY_LOCATION_LTORSO, 9,  // 47-Weapon or Ammo - 65
+	true, MECH_BODY_LOCATION_CTORSO, 11, // 71-Weapon or Ammo  - 66
+	true, MECH_BODY_LOCATION_RTORSO, 9,  // 59-Weapon or Ammo - 67
+	true, MECH_BODY_LOCATION_LTORSO, 10, // 48-Weapon or Ammo - 68
+	true, MECH_BODY_LOCATION_RTORSO, 10, // 60-Weapon or Ammo - 69
+	true, MECH_BODY_LOCATION_LTORSO, 11, // 49-Weapon or Ammo - 70
+	true, MECH_BODY_LOCATION_RTORSO, 11  // 61-Weapon or Ammo - 71
 };
 
 #define JUMPJET_SLOT 16
@@ -1953,8 +1854,7 @@ LogisticsMasterLocationTableEntry
 #define ELECTRONIC_SLOT 13
 #define WEAPONAMMO_SLOT 17
 //----------------------------------------------------------------------------------
-void BattleMech::resetComponents(
-	int32_t totalComponents, int32_t* componentList)
+void BattleMech::resetComponents(int32_t totalComponents, int32_t* componentList)
 {
 	//------------------------------------------------------------
 	// Create a master component list for this mech.
@@ -1962,8 +1862,7 @@ void BattleMech::resetComponents(
 	// Add back in all of the components logistics replaced.
 	// Put in the right body locations using the above table.
 	int32_t localMasterComponentList[MAX_MOVER_INVENTORY_ITEMS];
-	memset(localMasterComponentList, 0xff,
-		sizeof(int32_t) * MAX_MOVER_INVENTORY_ITEMS);
+	memset(localMasterComponentList, 0xff, sizeof(int32_t) * MAX_MOVER_INVENTORY_ITEMS);
 	// Copy current itemList to localLists
 	// Remove all logistics replacable components
 	for (size_t item = 0; item < MAX_MOVER_INVENTORY_ITEMS; item++)
@@ -2002,48 +1901,37 @@ void BattleMech::resetComponents(
 		float totalArmorPoints = ARMOR_POINTS_PER_NEWARMOR * numArmorComponents;
 		int32_t armorPercent   = ARMOR_HEAD_PERCENT * totalArmorPoints;
 		armor[MECH_ARMOR_LOCATION_HEAD].maxArmor -= armorPercent;
-		armor[MECH_ARMOR_LOCATION_HEAD].curArmor =
-			armor[MECH_ARMOR_LOCATION_HEAD].maxArmor;
-		armorPercent = ARMOR_CTORSO_PERCENT * totalArmorPoints;
+		armor[MECH_ARMOR_LOCATION_HEAD].curArmor = armor[MECH_ARMOR_LOCATION_HEAD].maxArmor;
+		armorPercent							 = ARMOR_CTORSO_PERCENT * totalArmorPoints;
 		armor[MECH_ARMOR_LOCATION_CTORSO].maxArmor -= armorPercent;
-		armor[MECH_ARMOR_LOCATION_CTORSO].curArmor =
-			armor[MECH_ARMOR_LOCATION_CTORSO].maxArmor;
-		armorPercent = ARMOR_LTORSO_PERCENT * totalArmorPoints;
+		armor[MECH_ARMOR_LOCATION_CTORSO].curArmor = armor[MECH_ARMOR_LOCATION_CTORSO].maxArmor;
+		armorPercent							   = ARMOR_LTORSO_PERCENT * totalArmorPoints;
 		armor[MECH_ARMOR_LOCATION_LTORSO].maxArmor -= armorPercent;
-		armor[MECH_ARMOR_LOCATION_LTORSO].curArmor =
-			armor[MECH_ARMOR_LOCATION_LTORSO].maxArmor;
-		armorPercent = ARMOR_RTORSO_PERCENT * totalArmorPoints;
+		armor[MECH_ARMOR_LOCATION_LTORSO].curArmor = armor[MECH_ARMOR_LOCATION_LTORSO].maxArmor;
+		armorPercent							   = ARMOR_RTORSO_PERCENT * totalArmorPoints;
 		armor[MECH_ARMOR_LOCATION_RTORSO].maxArmor -= armorPercent;
-		armor[MECH_ARMOR_LOCATION_RTORSO].curArmor =
-			armor[MECH_ARMOR_LOCATION_RTORSO].maxArmor;
-		armorPercent = ARMOR_LARM_PERCENT * totalArmorPoints;
+		armor[MECH_ARMOR_LOCATION_RTORSO].curArmor = armor[MECH_ARMOR_LOCATION_RTORSO].maxArmor;
+		armorPercent							   = ARMOR_LARM_PERCENT * totalArmorPoints;
 		armor[MECH_ARMOR_LOCATION_LARM].maxArmor -= armorPercent;
-		armor[MECH_ARMOR_LOCATION_LARM].curArmor =
-			armor[MECH_ARMOR_LOCATION_LARM].maxArmor;
-		armorPercent = ARMOR_RARM_PERCENT * totalArmorPoints;
+		armor[MECH_ARMOR_LOCATION_LARM].curArmor = armor[MECH_ARMOR_LOCATION_LARM].maxArmor;
+		armorPercent							 = ARMOR_RARM_PERCENT * totalArmorPoints;
 		armor[MECH_ARMOR_LOCATION_RARM].maxArmor -= armorPercent;
-		armor[MECH_ARMOR_LOCATION_RARM].curArmor =
-			armor[MECH_ARMOR_LOCATION_RARM].maxArmor;
-		armorPercent = ARMOR_LLEG_PERCENT * totalArmorPoints;
+		armor[MECH_ARMOR_LOCATION_RARM].curArmor = armor[MECH_ARMOR_LOCATION_RARM].maxArmor;
+		armorPercent							 = ARMOR_LLEG_PERCENT * totalArmorPoints;
 		armor[MECH_ARMOR_LOCATION_LLEG].maxArmor -= armorPercent;
-		armor[MECH_ARMOR_LOCATION_LLEG].curArmor =
-			armor[MECH_ARMOR_LOCATION_LLEG].maxArmor;
-		armorPercent = ARMOR_RLEG_PERCENT * totalArmorPoints;
+		armor[MECH_ARMOR_LOCATION_LLEG].curArmor = armor[MECH_ARMOR_LOCATION_LLEG].maxArmor;
+		armorPercent							 = ARMOR_RLEG_PERCENT * totalArmorPoints;
 		armor[MECH_ARMOR_LOCATION_RLEG].maxArmor -= armorPercent;
-		armor[MECH_ARMOR_LOCATION_RLEG].curArmor =
-			armor[MECH_ARMOR_LOCATION_RLEG].maxArmor;
-		armorPercent = ARMOR_RCTORSO_PERCENT * totalArmorPoints;
+		armor[MECH_ARMOR_LOCATION_RLEG].curArmor = armor[MECH_ARMOR_LOCATION_RLEG].maxArmor;
+		armorPercent							 = ARMOR_RCTORSO_PERCENT * totalArmorPoints;
 		armor[MECH_ARMOR_LOCATION_RCTORSO].maxArmor -= armorPercent;
-		armor[MECH_ARMOR_LOCATION_RCTORSO].curArmor =
-			armor[MECH_ARMOR_LOCATION_RCTORSO].maxArmor;
-		armorPercent = ARMOR_RLTORSO_PERCENT * totalArmorPoints;
+		armor[MECH_ARMOR_LOCATION_RCTORSO].curArmor = armor[MECH_ARMOR_LOCATION_RCTORSO].maxArmor;
+		armorPercent								= ARMOR_RLTORSO_PERCENT * totalArmorPoints;
 		armor[MECH_ARMOR_LOCATION_RLTORSO].maxArmor -= armorPercent;
-		armor[MECH_ARMOR_LOCATION_RLTORSO].curArmor =
-			armor[MECH_ARMOR_LOCATION_RLTORSO].maxArmor;
-		armorPercent = ARMOR_RRTORSO_PERCENT * totalArmorPoints;
+		armor[MECH_ARMOR_LOCATION_RLTORSO].curArmor = armor[MECH_ARMOR_LOCATION_RLTORSO].maxArmor;
+		armorPercent								= ARMOR_RRTORSO_PERCENT * totalArmorPoints;
 		armor[MECH_ARMOR_LOCATION_RRTORSO].maxArmor -= armorPercent;
-		armor[MECH_ARMOR_LOCATION_RRTORSO].curArmor =
-			armor[MECH_ARMOR_LOCATION_RRTORSO].maxArmor;
+		armor[MECH_ARMOR_LOCATION_RRTORSO].curArmor = armor[MECH_ARMOR_LOCATION_RRTORSO].maxArmor;
 	}
 	int32_t numNewArmors   = 0;
 	numJumpJets			   = 0;
@@ -2065,8 +1953,7 @@ void BattleMech::resetComponents(
 		case COMPONENT_FORM_ACTUATOR:
 		case COMPONENT_FORM_ENGINE:
 			// If any of these are in Heidi's list its REALLY BAD
-			STOP(("Invalid component added in Logistics %d",
-				componentList[newItems]));
+			STOP(("Invalid component added in Logistics %d", componentList[newItems]));
 			break;
 		case COMPONENT_FORM_SENSOR:
 			localMasterComponentList[SENSOR_SLOT] = componentList[newItems];
@@ -2074,8 +1961,7 @@ void BattleMech::resetComponents(
 		case COMPONENT_FORM_ECM:
 		case COMPONENT_FORM_PROBE:
 		case COMPONENT_FORM_JAMMER:
-			localMasterComponentList[ELECTRONIC_SLOT + numElectronics] =
-				componentList[newItems];
+			localMasterComponentList[ELECTRONIC_SLOT + numElectronics] = componentList[newItems];
 			numElectronics++;
 			if (numElectronics > 3)
 				STOP(("TOO many electronic warfare components on this mech"));
@@ -2085,16 +1971,13 @@ void BattleMech::resetComponents(
 		case COMPONENT_FORM_WEAPON_BALLISTIC:
 		case COMPONENT_FORM_WEAPON_MISSILE:
 		case COMPONENT_FORM_AMMO:
-			localMasterComponentList[WEAPONAMMO_SLOT + numWeaponsAmmo] =
-				componentList[newItems];
+			localMasterComponentList[WEAPONAMMO_SLOT + numWeaponsAmmo] = componentList[newItems];
 			numWeaponsAmmo++;
 			// Heidi does not give me ammo.  Add manually here.
-			if (MasterComponent::masterList[componentList[newItems]]
-					.getWeaponAmmoMasterId())
+			if (MasterComponent::masterList[componentList[newItems]].getWeaponAmmoMasterId())
 			{
 				localMasterComponentList[WEAPONAMMO_SLOT + numWeaponsAmmo] =
-					MasterComponent::masterList[componentList[newItems]]
-						.getWeaponAmmoMasterId();
+					MasterComponent::masterList[componentList[newItems]].getWeaponAmmoMasterId();
 				numWeaponsAmmo++;
 			}
 			if (numWeaponsAmmo > 54)
@@ -2113,19 +1996,16 @@ void BattleMech::resetComponents(
 	//-----------------------------------------------------
 	// Read in the mech's non-weapon/non-ammo components...
 	int32_t realItemNum = 0;
-	memset(ItemLocationToInvLocation, 0xff,
-		sizeof(int32_t) * MAX_MOVER_INVENTORY_ITEMS);
+	memset(ItemLocationToInvLocation, 0xff, sizeof(int32_t) * MAX_MOVER_INVENTORY_ITEMS);
 	// Read in everything but weapons and AMMO
 	for (size_t curItem = 0; curItem < MAX_MOVER_INVENTORY_ITEMS; curItem++)
 	{
 		inventory[realItemNum].masterID = localMasterComponentList[curItem];
-		if (inventory[realItemNum].masterID &&
-			(inventory[realItemNum].masterID != 255))
+		if (inventory[realItemNum].masterID && (inventory[realItemNum].masterID != 255))
 		{
 			//---------------------------------------------------------------
 			// If the component is a JumpJet, increment our jump jet count...
-			switch (MasterComponent::masterList[inventory[realItemNum].masterID]
-						.getForm())
+			switch (MasterComponent::masterList[inventory[realItemNum].masterID].getForm())
 			{
 			case COMPONENT_FORM_JUMPJET:
 				numJumpJets = 5;
@@ -2144,8 +2024,7 @@ void BattleMech::resetComponents(
 			case COMPONENT_FORM_HEATSINK:
 				numOther++;
 				inventory[realItemNum].health =
-					MasterComponent::masterList[inventory[realItemNum].masterID]
-						.getHealth();
+					MasterComponent::masterList[inventory[realItemNum].masterID].getHealth();
 				inventory[realItemNum].disabled		= false;
 				inventory[realItemNum].amount		= 1;
 				inventory[realItemNum].ammoIndex	= -1;
@@ -2170,29 +2049,25 @@ void BattleMech::resetComponents(
 	for (curItem = 0; curItem < MAX_MOVER_INVENTORY_ITEMS; curItem++)
 	{
 		inventory[realItemNum].masterID = localMasterComponentList[curItem];
-		if (inventory[realItemNum].masterID &&
-			(inventory[realItemNum].masterID != 255))
+		if (inventory[realItemNum].masterID && (inventory[realItemNum].masterID != 255))
 		{
 			//---------------------------------------------------------------
 			// If the component is a JumpJet, increment our jump jet count...
 			int32_t sourceWeaponType;
-			if (MasterComponent::masterList[inventory[realItemNum].masterID]
-					.getForm() == COMPONENT_FORM_WEAPON_MISSILE)
+			if (MasterComponent::masterList[inventory[realItemNum].masterID].getForm() ==
+				COMPONENT_FORM_WEAPON_MISSILE)
 				sourceWeaponType = MECH3D_WEAPONTYPE_MISSILE;
-			else if (MasterComponent::masterList[inventory[realItemNum]
-													 .masterID]
-						 .getForm() == COMPONENT_FORM_WEAPON_BALLISTIC)
+			else if (MasterComponent::masterList[inventory[realItemNum].masterID].getForm() ==
+				COMPONENT_FORM_WEAPON_BALLISTIC)
 				sourceWeaponType = MECH3D_WEAPONTYPE_BALLISTIC;
-			else if (MasterComponent::masterList[inventory[realItemNum]
-													 .masterID]
-						 .getForm() == COMPONENT_FORM_WEAPON_ENERGY)
+			else if (MasterComponent::masterList[inventory[realItemNum].masterID].getForm() ==
+				COMPONENT_FORM_WEAPON_ENERGY)
 				sourceWeaponType = MECH3D_WEAPONTYPE_ENERGY;
 			else
 				sourceWeaponType = MECH3D_WEAPONTYPE_ANY;
 			//---------------------------------------------------------------
 			// If the component is a JumpJet, increment our jump jet count...
-			switch (MasterComponent::masterList[inventory[realItemNum].masterID]
-						.getForm())
+			switch (MasterComponent::masterList[inventory[realItemNum].masterID].getForm())
 			{
 			case COMPONENT_FORM_JUMPJET:
 			case COMPONENT_FORM_COCKPIT:
@@ -2216,25 +2091,21 @@ void BattleMech::resetComponents(
 			case COMPONENT_FORM_WEAPON_MISSILE:
 				numWeapons++;
 				inventory[realItemNum].health =
-					MasterComponent::masterList[inventory[realItemNum].masterID]
-						.getHealth();
-				inventory[realItemNum].disabled  = false;
-				inventory[realItemNum].amount	= 1;
-				inventory[realItemNum].ammoIndex = -1;
-				inventory[realItemNum].facing =
-					appearance->getWeaponNode(sourceWeaponType);
+					MasterComponent::masterList[inventory[realItemNum].masterID].getHealth();
+				inventory[realItemNum].disabled		 = false;
+				inventory[realItemNum].amount		 = 1;
+				inventory[realItemNum].ammoIndex	 = -1;
+				inventory[realItemNum].facing		 = appearance->getWeaponNode(sourceWeaponType);
 				inventory[realItemNum].readyTime	 = 0.0;
 				inventory[realItemNum].bodyLocation  = 255;
 				inventory[realItemNum].effectiveness = (int16_t)(
-					MasterComponent::masterList[inventory[realItemNum].masterID]
-						.getWeaponDamage() *
+					MasterComponent::masterList[inventory[realItemNum].masterID].getWeaponDamage() *
 					10.0 / // damage over 10 seconds
 					MasterComponent::masterList[inventory[realItemNum].masterID]
 						.getWeaponRecycleTime());
 				inventory[realItemNum].effectiveness *=
-					WeaponRanges[MasterComponent::masterList
-									 [inventory[realItemNum].masterID]
-										 .getWeaponRange()][1] /
+					WeaponRanges[MasterComponent::masterList[inventory[realItemNum].masterID]
+									 .getWeaponRange()][1] /
 					24;
 				ItemLocationToInvLocation[curItem] = realItemNum;
 				realItemNum++;
@@ -2251,13 +2122,11 @@ void BattleMech::resetComponents(
 	for (curItem = 0; curItem < MAX_MOVER_INVENTORY_ITEMS; curItem++)
 	{
 		inventory[realItemNum].masterID = localMasterComponentList[curItem];
-		if (inventory[realItemNum].masterID &&
-			(inventory[realItemNum].masterID != 255))
+		if (inventory[realItemNum].masterID && (inventory[realItemNum].masterID != 255))
 		{
 			//---------------------------------------------------------------
 			// If the component is a JumpJet, increment our jump jet count...
-			switch (MasterComponent::masterList[inventory[realItemNum].masterID]
-						.getForm())
+			switch (MasterComponent::masterList[inventory[realItemNum].masterID].getForm())
 			{
 			case COMPONENT_FORM_JUMPJET:
 			case COMPONENT_FORM_COCKPIT:
@@ -2284,8 +2153,7 @@ void BattleMech::resetComponents(
 			case COMPONENT_FORM_AMMO:
 				numAmmos++;
 				inventory[realItemNum].health =
-					MasterComponent::masterList[inventory[realItemNum].masterID]
-						.getHealth();
+					MasterComponent::masterList[inventory[realItemNum].masterID].getHealth();
 				inventory[realItemNum].disabled		= false;
 				inventory[realItemNum].amount		= 1;
 				inventory[realItemNum].ammoIndex	= -1;
@@ -2299,14 +2167,11 @@ void BattleMech::resetComponents(
 				//
 				// Ammo per ton is always fully stocked.  I.e. always -1 or 255
 				inventory[realItemNum].amount =
-					MasterComponent::masterList[inventory[realItemNum].masterID]
-						.getAmmoPerTon();
-				inventory[realItemNum].ammoIndex = -1;
-				inventory[realItemNum].startAmount =
-					inventory[realItemNum].amount;
+					MasterComponent::masterList[inventory[realItemNum].masterID].getAmmoPerTon();
+				inventory[realItemNum].ammoIndex   = -1;
+				inventory[realItemNum].startAmount = inventory[realItemNum].amount;
 				inventory[realItemNum].health =
-					MasterComponent::masterList[inventory[realItemNum].masterID]
-						.getHealth();
+					MasterComponent::masterList[inventory[realItemNum].masterID].getHealth();
 				inventory[realItemNum].disabled		= false;
 				inventory[realItemNum].readyTime	= 0.0;
 				inventory[realItemNum].bodyLocation = 255;
@@ -2323,48 +2188,37 @@ void BattleMech::resetComponents(
 		float totalArmorPoints = ARMOR_POINTS_PER_NEWARMOR * numNewArmors;
 		float armorPercent	 = ARMOR_HEAD_PERCENT * totalArmorPoints;
 		armor[MECH_ARMOR_LOCATION_HEAD].maxArmor += armorPercent;
-		armor[MECH_ARMOR_LOCATION_HEAD].curArmor =
-			armor[MECH_ARMOR_LOCATION_HEAD].maxArmor;
-		armorPercent = ARMOR_CTORSO_PERCENT * totalArmorPoints;
+		armor[MECH_ARMOR_LOCATION_HEAD].curArmor = armor[MECH_ARMOR_LOCATION_HEAD].maxArmor;
+		armorPercent							 = ARMOR_CTORSO_PERCENT * totalArmorPoints;
 		armor[MECH_ARMOR_LOCATION_CTORSO].maxArmor += armorPercent;
-		armor[MECH_ARMOR_LOCATION_CTORSO].curArmor =
-			armor[MECH_ARMOR_LOCATION_CTORSO].maxArmor;
-		armorPercent = ARMOR_LTORSO_PERCENT * totalArmorPoints;
+		armor[MECH_ARMOR_LOCATION_CTORSO].curArmor = armor[MECH_ARMOR_LOCATION_CTORSO].maxArmor;
+		armorPercent							   = ARMOR_LTORSO_PERCENT * totalArmorPoints;
 		armor[MECH_ARMOR_LOCATION_LTORSO].maxArmor += armorPercent;
-		armor[MECH_ARMOR_LOCATION_LTORSO].curArmor =
-			armor[MECH_ARMOR_LOCATION_LTORSO].maxArmor;
-		armorPercent = ARMOR_RTORSO_PERCENT * totalArmorPoints;
+		armor[MECH_ARMOR_LOCATION_LTORSO].curArmor = armor[MECH_ARMOR_LOCATION_LTORSO].maxArmor;
+		armorPercent							   = ARMOR_RTORSO_PERCENT * totalArmorPoints;
 		armor[MECH_ARMOR_LOCATION_RTORSO].maxArmor += armorPercent;
-		armor[MECH_ARMOR_LOCATION_RTORSO].curArmor =
-			armor[MECH_ARMOR_LOCATION_RTORSO].maxArmor;
-		armorPercent = ARMOR_LARM_PERCENT * totalArmorPoints;
+		armor[MECH_ARMOR_LOCATION_RTORSO].curArmor = armor[MECH_ARMOR_LOCATION_RTORSO].maxArmor;
+		armorPercent							   = ARMOR_LARM_PERCENT * totalArmorPoints;
 		armor[MECH_ARMOR_LOCATION_LARM].maxArmor += armorPercent;
-		armor[MECH_ARMOR_LOCATION_LARM].curArmor =
-			armor[MECH_ARMOR_LOCATION_LARM].maxArmor;
-		armorPercent = ARMOR_RARM_PERCENT * totalArmorPoints;
+		armor[MECH_ARMOR_LOCATION_LARM].curArmor = armor[MECH_ARMOR_LOCATION_LARM].maxArmor;
+		armorPercent							 = ARMOR_RARM_PERCENT * totalArmorPoints;
 		armor[MECH_ARMOR_LOCATION_RARM].maxArmor += armorPercent;
-		armor[MECH_ARMOR_LOCATION_RARM].curArmor =
-			armor[MECH_ARMOR_LOCATION_RARM].maxArmor;
-		armorPercent = ARMOR_LLEG_PERCENT * totalArmorPoints;
+		armor[MECH_ARMOR_LOCATION_RARM].curArmor = armor[MECH_ARMOR_LOCATION_RARM].maxArmor;
+		armorPercent							 = ARMOR_LLEG_PERCENT * totalArmorPoints;
 		armor[MECH_ARMOR_LOCATION_LLEG].maxArmor += armorPercent;
-		armor[MECH_ARMOR_LOCATION_LLEG].curArmor =
-			armor[MECH_ARMOR_LOCATION_LLEG].maxArmor;
-		armorPercent = ARMOR_RLEG_PERCENT * totalArmorPoints;
+		armor[MECH_ARMOR_LOCATION_LLEG].curArmor = armor[MECH_ARMOR_LOCATION_LLEG].maxArmor;
+		armorPercent							 = ARMOR_RLEG_PERCENT * totalArmorPoints;
 		armor[MECH_ARMOR_LOCATION_RLEG].maxArmor += armorPercent;
-		armor[MECH_ARMOR_LOCATION_RLEG].curArmor =
-			armor[MECH_ARMOR_LOCATION_RLEG].maxArmor;
-		armorPercent = ARMOR_RCTORSO_PERCENT * totalArmorPoints;
+		armor[MECH_ARMOR_LOCATION_RLEG].curArmor = armor[MECH_ARMOR_LOCATION_RLEG].maxArmor;
+		armorPercent							 = ARMOR_RCTORSO_PERCENT * totalArmorPoints;
 		armor[MECH_ARMOR_LOCATION_RCTORSO].maxArmor += armorPercent;
-		armor[MECH_ARMOR_LOCATION_RCTORSO].curArmor =
-			armor[MECH_ARMOR_LOCATION_RCTORSO].maxArmor;
-		armorPercent = ARMOR_RLTORSO_PERCENT * totalArmorPoints;
+		armor[MECH_ARMOR_LOCATION_RCTORSO].curArmor = armor[MECH_ARMOR_LOCATION_RCTORSO].maxArmor;
+		armorPercent								= ARMOR_RLTORSO_PERCENT * totalArmorPoints;
 		armor[MECH_ARMOR_LOCATION_RLTORSO].maxArmor += armorPercent;
-		armor[MECH_ARMOR_LOCATION_RLTORSO].curArmor =
-			armor[MECH_ARMOR_LOCATION_RLTORSO].maxArmor;
-		armorPercent = ARMOR_RRTORSO_PERCENT * totalArmorPoints;
+		armor[MECH_ARMOR_LOCATION_RLTORSO].curArmor = armor[MECH_ARMOR_LOCATION_RLTORSO].maxArmor;
+		armorPercent								= ARMOR_RRTORSO_PERCENT * totalArmorPoints;
 		armor[MECH_ARMOR_LOCATION_RRTORSO].maxArmor += armorPercent;
-		armor[MECH_ARMOR_LOCATION_RRTORSO].curArmor =
-			armor[MECH_ARMOR_LOCATION_RRTORSO].maxArmor;
+		armor[MECH_ARMOR_LOCATION_RRTORSO].curArmor = armor[MECH_ARMOR_LOCATION_RRTORSO].maxArmor;
 	}
 	//---------------------------------------------------------------
 	// Reset the quick Access components in case they removed them in logistics.
@@ -2372,8 +2226,7 @@ void BattleMech::resetComponents(
 	jumpJets = 255;
 	//------------------------------------------------------------
 	// Now, read in the component layout for each body location...
-	for (size_t curLocation = 0; curLocation < NUM_MECH_BODY_LOCATIONS;
-		 curLocation++)
+	for (size_t curLocation = 0; curLocation < NUM_MECH_BODY_LOCATIONS; curLocation++)
 	{
 		body[curLocation].CASE = true; // ALL MC2 Mechs have CASE everywhere.
 		// Internal Structure is ALREADY set!
@@ -2385,8 +2238,7 @@ void BattleMech::resetComponents(
 		{
 			// Find out where in the space table this location lies.
 			uint8_t spaceData = 0xff;
-			for (size_t curTable = 0; curTable < MAX_MOVER_INVENTORY_ITEMS;
-				 curTable++)
+			for (size_t curTable = 0; curTable < MAX_MOVER_INVENTORY_ITEMS; curTable++)
 			{
 				if ((logisticsTable[curTable].bodyLocation == curLocation) &&
 					(logisticsTable[curTable].slotNumber == curSpace))
@@ -2409,13 +2261,10 @@ void BattleMech::resetComponents(
 				//--------------------------------------------------------
 				// The following line assumes the "new" crit hit system...
 				body[curLocation].totalSpaces +=
-					MasterComponent::masterList[inventory[spaceData].masterID]
-						.getSize();
+					MasterComponent::masterList[inventory[spaceData].masterID].getSize();
 				//--------------------------------------------------------
 				// Preserve critical component indices for quick access...
-				switch (
-					MasterComponent::masterList[inventory[spaceData].masterID]
-						.getForm())
+				switch (MasterComponent::masterList[inventory[spaceData].masterID].getForm())
 				{
 				case COMPONENT_FORM_COCKPIT:
 					cockpit = spaceData;
@@ -2462,16 +2311,14 @@ void BattleMech::resetComponents(
 					inventory[spaceData].bodyLocation = curLocation;
 					break;
 				case COMPONENT_FORM_ACTUATOR:
-					if (inventory[spaceData].masterID ==
-						MasterComponent::armActuatorID)
+					if (inventory[spaceData].masterID == MasterComponent::armActuatorID)
 					{
 						if (curLocation == MECH_BODY_LOCATION_LARM)
 							actuator[ACTUATOR_LSHOULDER] = spaceData;
 						else if (curLocation == MECH_BODY_LOCATION_RARM)
 							actuator[ACTUATOR_RSHOULDER] = spaceData;
 					}
-					else if (inventory[spaceData].masterID ==
-							 MasterComponent::legActuatorID)
+					else if (inventory[spaceData].masterID == MasterComponent::legActuatorID)
 					{
 						if (curLocation == MECH_BODY_LOCATION_LLEG)
 							actuator[ACTUATOR_LHIP] = spaceData;
@@ -2509,16 +2356,14 @@ void BattleMech::resetComponents(
 		for (size_t ammoIndex = 0; ammoIndex < numAmmoTypes; ammoIndex++)
 		{
 			if ((int32_t)MasterComponent::masterList[inventory[item].masterID]
-					.getWeaponAmmoMasterId() ==
-				ammoTypeTotal[ammoIndex].masterId)
+					.getWeaponAmmoMasterId() == ammoTypeTotal[ammoIndex].masterId)
 			{
 				inventory[item].ammoIndex = ammoIndex;
 				break;
 			}
 		}
 	}
-	for (item = numOther + numWeapons;
-		 item < (numOther + numWeapons + numAmmos); item++)
+	for (item = numOther + numWeapons; item < (numOther + numWeapons + numAmmos); item++)
 	{
 		//----------------------------------------------------------
 		// Each weapon should point to its appropriate ammo total in
@@ -2534,17 +2379,13 @@ void BattleMech::resetComponents(
 	}
 	for (item = 0; item < numOther; item++)
 	{
-		if ((inventory[item].masterID ==
-				MasterComponent::clanAntiMissileSystemID) ||
-			(inventory[item].masterID ==
-				MasterComponent::innerSphereAntiMissileSystemID))
+		if ((inventory[item].masterID == MasterComponent::clanAntiMissileSystemID) ||
+			(inventory[item].masterID == MasterComponent::innerSphereAntiMissileSystemID))
 		{
 			for (size_t ammoIndex = 0; ammoIndex < numAmmoTypes; ammoIndex++)
 			{
-				if ((int32_t)
-						MasterComponent::masterList[inventory[item].masterID]
-							.getWeaponAmmoMasterId() ==
-					ammoTypeTotal[ammoIndex].masterId)
+				if ((int32_t)MasterComponent::masterList[inventory[item].masterID]
+						.getWeaponAmmoMasterId() == ammoTypeTotal[ammoIndex].masterId)
 				{
 					inventory[item].ammoIndex = ammoIndex;
 					break;
@@ -2566,9 +2407,8 @@ void BattleMech::resetComponents(
 
 int32_t BattleMech::init(FitIniFile* mechFile)
 {
-	PSTR BodyLocationBlockString[NUM_BODY_LOCATIONS] = {"Head", "CenterTorso",
-		"LeftTorso", "RightTorso", "LeftArm", "RightArm", "LeftLeg",
-		"RightLeg"};
+	PSTR BodyLocationBlockString[NUM_BODY_LOCATIONS] = {"Head", "CenterTorso", "LeftTorso",
+		"RightTorso", "LeftArm", "RightArm", "LeftLeg", "RightLeg"};
 	//-----------------------
 	// Read in the mech data.
 	int32_t result = mechFile->seekBlock("Header");
@@ -2613,8 +2453,7 @@ int32_t BattleMech::init(FitIniFile* mechFile)
 	status = cStatus;
 	result = mechFile->readIdBoolean("NotMineYet", notMineYet);
 	if (result != NO_ERROR)
-		notMineYet =
-			true; // We weren't written by logistics.  I.E. Not mine Yet.
+		notMineYet = true; // We weren't written by logistics.  I.E. Not mine Yet.
 #ifdef USEHEAT
 	result = mechFile->seekBlock("HeatSinks");
 	if (result != NO_ERROR)
@@ -2666,48 +2505,37 @@ int32_t BattleMech::init(FitIniFile* mechFile)
 	result = mechFile->seekBlock("MaxArmorPoints");
 	if (result != NO_ERROR)
 		return (result);
-	result =
-		mechFile->readIdUChar("Head", armor[MECH_ARMOR_LOCATION_HEAD].maxArmor);
+	result = mechFile->readIdUChar("Head", armor[MECH_ARMOR_LOCATION_HEAD].maxArmor);
 	if (result != NO_ERROR)
 		return (result);
-	result = mechFile->readIdUChar(
-		"CenterTorso", armor[MECH_ARMOR_LOCATION_CTORSO].maxArmor);
+	result = mechFile->readIdUChar("CenterTorso", armor[MECH_ARMOR_LOCATION_CTORSO].maxArmor);
 	if (result != NO_ERROR)
 		return (result);
-	result = mechFile->readIdUChar(
-		"LeftTorso", armor[MECH_ARMOR_LOCATION_LTORSO].maxArmor);
+	result = mechFile->readIdUChar("LeftTorso", armor[MECH_ARMOR_LOCATION_LTORSO].maxArmor);
 	if (result != NO_ERROR)
 		return (result);
-	result = mechFile->readIdUChar(
-		"RightTorso", armor[MECH_ARMOR_LOCATION_RTORSO].maxArmor);
+	result = mechFile->readIdUChar("RightTorso", armor[MECH_ARMOR_LOCATION_RTORSO].maxArmor);
 	if (result != NO_ERROR)
 		return (result);
-	result = mechFile->readIdUChar(
-		"LeftArm", armor[MECH_ARMOR_LOCATION_LARM].maxArmor);
+	result = mechFile->readIdUChar("LeftArm", armor[MECH_ARMOR_LOCATION_LARM].maxArmor);
 	if (result != NO_ERROR)
 		return (result);
-	result = mechFile->readIdUChar(
-		"RightArm", armor[MECH_ARMOR_LOCATION_RARM].maxArmor);
+	result = mechFile->readIdUChar("RightArm", armor[MECH_ARMOR_LOCATION_RARM].maxArmor);
 	if (result != NO_ERROR)
 		return (result);
-	result = mechFile->readIdUChar(
-		"LeftLeg", armor[MECH_ARMOR_LOCATION_LLEG].maxArmor);
+	result = mechFile->readIdUChar("LeftLeg", armor[MECH_ARMOR_LOCATION_LLEG].maxArmor);
 	if (result != NO_ERROR)
 		return (result);
-	result = mechFile->readIdUChar(
-		"RightLeg", armor[MECH_ARMOR_LOCATION_RLEG].maxArmor);
+	result = mechFile->readIdUChar("RightLeg", armor[MECH_ARMOR_LOCATION_RLEG].maxArmor);
 	if (result != NO_ERROR)
 		return (result);
-	result = mechFile->readIdUChar(
-		"RearCenterTorso", armor[MECH_ARMOR_LOCATION_RCTORSO].maxArmor);
+	result = mechFile->readIdUChar("RearCenterTorso", armor[MECH_ARMOR_LOCATION_RCTORSO].maxArmor);
 	if (result != NO_ERROR)
 		return (result);
-	result = mechFile->readIdUChar(
-		"RearLeftTorso", armor[MECH_ARMOR_LOCATION_RLTORSO].maxArmor);
+	result = mechFile->readIdUChar("RearLeftTorso", armor[MECH_ARMOR_LOCATION_RLTORSO].maxArmor);
 	if (result != NO_ERROR)
 		return (result);
-	result = mechFile->readIdUChar(
-		"RearRightTorso", armor[MECH_ARMOR_LOCATION_RRTORSO].maxArmor);
+	result = mechFile->readIdUChar("RearRightTorso", armor[MECH_ARMOR_LOCATION_RRTORSO].maxArmor);
 	if (result != NO_ERROR)
 		return (result);
 	result = mechFile->seekBlock("CurArmorPoints");
@@ -2718,31 +2546,31 @@ int32_t BattleMech::init(FitIniFile* mechFile)
 	if (result != NO_ERROR)
 		return (result);
 	armor[MECH_ARMOR_LOCATION_HEAD].curArmor = currentArmor;
-	result = mechFile->readIdUChar("CenterTorso", currentArmor);
+	result									 = mechFile->readIdUChar("CenterTorso", currentArmor);
 	if (result != NO_ERROR)
 		return (result);
 	armor[MECH_ARMOR_LOCATION_CTORSO].curArmor = currentArmor;
-	result = mechFile->readIdUChar("LeftTorso", currentArmor);
+	result									   = mechFile->readIdUChar("LeftTorso", currentArmor);
 	if (result != NO_ERROR)
 		return (result);
 	armor[MECH_ARMOR_LOCATION_LTORSO].curArmor = currentArmor;
-	result = mechFile->readIdUChar("RightTorso", currentArmor);
+	result									   = mechFile->readIdUChar("RightTorso", currentArmor);
 	if (result != NO_ERROR)
 		return (result);
 	armor[MECH_ARMOR_LOCATION_RTORSO].curArmor = currentArmor;
-	result = mechFile->readIdUChar("LeftArm", currentArmor);
+	result									   = mechFile->readIdUChar("LeftArm", currentArmor);
 	if (result != NO_ERROR)
 		return (result);
 	armor[MECH_ARMOR_LOCATION_LARM].curArmor = currentArmor;
-	result = mechFile->readIdUChar("RightArm", currentArmor);
+	result									 = mechFile->readIdUChar("RightArm", currentArmor);
 	if (result != NO_ERROR)
 		return (result);
 	armor[MECH_ARMOR_LOCATION_RARM].curArmor = currentArmor;
-	result = mechFile->readIdUChar("LeftLeg", currentArmor);
+	result									 = mechFile->readIdUChar("LeftLeg", currentArmor);
 	if (result != NO_ERROR)
 		return (result);
 	armor[MECH_ARMOR_LOCATION_LLEG].curArmor = currentArmor;
-	result = mechFile->readIdUChar("RightLeg", currentArmor);
+	result									 = mechFile->readIdUChar("RightLeg", currentArmor);
 	if (result != NO_ERROR)
 		return (result);
 	armor[MECH_ARMOR_LOCATION_RLEG].curArmor = currentArmor;
@@ -2774,8 +2602,7 @@ int32_t BattleMech::init(FitIniFile* mechFile)
 	if (result != NO_ERROR)
 		return (result);
 	if ((numOther + numWeapons + numAmmos) > MAX_MOVER_INVENTORY_ITEMS)
-		Fatal(numOther + numWeapons + numAmmos,
-			" Battlemech.init: too many inventory items ");
+		Fatal(numOther + numWeapons + numAmmos, " Battlemech.init: too many inventory items ");
 	numAntiMissileSystems = 0;
 	//-----------------------------------------------------
 	// Read in the mech's non-weapon/non-ammo components...
@@ -2791,8 +2618,7 @@ int32_t BattleMech::init(FitIniFile* mechFile)
 		if (result != NO_ERROR)
 			return (result);
 		inventory[curItem].health =
-			MasterComponent::masterList[inventory[curItem].masterID]
-				.getHealth();
+			MasterComponent::masterList[inventory[curItem].masterID].getHealth();
 		inventory[curItem].disabled		= false;
 		inventory[curItem].amount		= 1;
 		inventory[curItem].ammoIndex	= -1;
@@ -2803,8 +2629,7 @@ int32_t BattleMech::init(FitIniFile* mechFile)
 #endif
 		//---------------------------------------------------------------
 		// If the component is a JumpJet, increment our jump jet count...
-		switch (
-			MasterComponent::masterList[inventory[curItem].masterID].getForm())
+		switch (MasterComponent::masterList[inventory[curItem].masterID].getForm())
 		{
 		case COMPONENT_FORM_JUMPJET:
 			numJumpJets = 5;
@@ -2827,28 +2652,23 @@ int32_t BattleMech::init(FitIniFile* mechFile)
 		result = mechFile->readIdUChar("MasterID", inventory[curItem].masterID);
 		if (result != NO_ERROR)
 			return (result);
-		result =
-			mechFile->readIdUChar("FacesForward", inventory[curItem].facing);
+		result = mechFile->readIdUChar("FacesForward", inventory[curItem].facing);
 		if (result != NO_ERROR)
 			return (result);
 		inventory[curItem].health =
-			MasterComponent::masterList[inventory[curItem].masterID]
-				.getHealth();
+			MasterComponent::masterList[inventory[curItem].masterID].getHealth();
 		inventory[curItem].disabled		= false;
 		inventory[curItem].amount		= 1;
 		inventory[curItem].ammoIndex	= -1;
 		inventory[curItem].readyTime	= 0.0;
 		inventory[curItem].bodyLocation = 255;
 		inventory[curItem].effectiveness =
-			(int16_t)(MasterComponent::masterList[inventory[curItem].masterID]
-						  .getWeaponDamage() *
-					  10.0 / // damage over 10 seconds
-					  MasterComponent::masterList[inventory[curItem].masterID]
-						  .getWeaponRecycleTime());
+			(int16_t)(MasterComponent::masterList[inventory[curItem].masterID].getWeaponDamage() *
+				10.0 / // damage over 10 seconds
+				MasterComponent::masterList[inventory[curItem].masterID].getWeaponRecycleTime());
 		inventory[curItem].effectiveness *=
-			WeaponRanges
-				[MasterComponent::masterList[inventory[curItem].masterID]
-						.getWeaponRange()][1] /
+			WeaponRanges[MasterComponent::masterList[inventory[curItem].masterID].getWeaponRange()]
+						[1] /
 			24;
 		//-------------------------------------
 		// Cache in the weapon special effect.
@@ -2884,15 +2704,13 @@ int32_t BattleMech::init(FitIniFile* mechFile)
 		// component table...
 		if (itemAmount == -1)
 			inventory[curItem].amount =
-				MasterComponent::masterList[inventory[curItem].masterID]
-					.getAmmoPerTon();
+				MasterComponent::masterList[inventory[curItem].masterID].getAmmoPerTon();
 		else
 			inventory[curItem].amount = itemAmount;
 		inventory[curItem].ammoIndex   = -1;
 		inventory[curItem].startAmount = inventory[curItem].amount;
 		inventory[curItem].health =
-			MasterComponent::masterList[inventory[curItem].masterID]
-				.getHealth();
+			MasterComponent::masterList[inventory[curItem].masterID].getHealth();
 		inventory[curItem].disabled		= false;
 		inventory[curItem].readyTime	= 0.0;
 		inventory[curItem].bodyLocation = 255;
@@ -2903,8 +2721,7 @@ int32_t BattleMech::init(FitIniFile* mechFile)
 	}
 	//------------------------------------------------------------
 	// Now, read in the component layout for each body location...
-	for (size_t curLocation = 0; curLocation < NUM_MECH_BODY_LOCATIONS;
-		 curLocation++)
+	for (size_t curLocation = 0; curLocation < NUM_MECH_BODY_LOCATIONS; curLocation++)
 	{
 		result = mechFile->seekBlock(BodyLocationBlockString[curLocation]);
 		if (result != NO_ERROR)
@@ -2915,19 +2732,17 @@ int32_t BattleMech::init(FitIniFile* mechFile)
 			return (result);
 		body[curLocation].CASE = caseHere ? true : false;
 		uint8_t internalStructure;
-		result =
-			mechFile->readIdUChar("CurInternalStructure", internalStructure);
+		result = mechFile->readIdUChar("CurInternalStructure", internalStructure);
 		if (result != NO_ERROR)
 			return (result);
 		body[curLocation].curInternalStructure = internalStructure;
-		result								   = mechFile->readIdUChar(
-			"HotSpotNumber", body[curLocation].hotSpotNumber);
+		result = mechFile->readIdUChar("HotSpotNumber", body[curLocation].hotSpotNumber);
 		if (result != NO_ERROR)
 			return (result);
 		//---------------------------------------------------------
 		// Now, determine the damage state for the body location...
-		float damageLevel = (float)body[curLocation].curInternalStructure /
-							body[curLocation].maxInternalStructure;
+		float damageLevel =
+			(float)body[curLocation].curInternalStructure / body[curLocation].maxInternalStructure;
 		if (damageLevel <= 0.0)
 			body[curLocation].damageState = IS_DAMAGE_DESTROYED;
 		else if (damageLevel <= 0.5)
@@ -2944,26 +2759,20 @@ int32_t BattleMech::init(FitIniFile* mechFile)
 			result = mechFile->readIdUCHARArray(componentString, spaceData, 2);
 			if (result != NO_ERROR)
 				return (result);
-			body[curLocation].criticalSpaces[curSpace].inventoryID =
-				spaceData[0];
-			body[curLocation].criticalSpaces[curSpace].hit =
-				spaceData[1] ? true : false;
+			body[curLocation].criticalSpaces[curSpace].inventoryID = spaceData[0];
+			body[curLocation].criticalSpaces[curSpace].hit		   = spaceData[1] ? true : false;
 			if (spaceData[0] < 255)
 			{
 #ifdef _DEBUG
 				char msg[256];
-				sprintf(
-					msg, " Bad Mech Profile : %s ", mechFile->getFilename());
-				Assert(spaceData[0] < numOther + numWeapons + numAmmos,
-					spaceData[0], msg);
+				sprintf(msg, " Bad Mech Profile : %s ", mechFile->getFilename());
+				Assert(spaceData[0] < numOther + numWeapons + numAmmos, spaceData[0], msg);
 #endif
 				inventory[spaceData[0]].bodyLocation = curLocation;
 				//--------------------------------------------------------
 				// The following line assumes the "new" crit hit system...
 				body[curLocation].totalSpaces +=
-					MasterComponent::masterList[inventory[spaceData[0]]
-													.masterID]
-						.getSize();
+					MasterComponent::masterList[inventory[spaceData[0]].masterID].getSize();
 #if 0
 				if(body[curLocation].totalSpaces > NumLocationCriticalSpaces[curLocation])
 				{
@@ -2974,9 +2783,7 @@ int32_t BattleMech::init(FitIniFile* mechFile)
 #endif
 				//--------------------------------------------------------
 				// Preserve critical component indices for quick access...
-				switch (MasterComponent::masterList[inventory[spaceData[0]]
-														.masterID]
-							.getForm())
+				switch (MasterComponent::masterList[inventory[spaceData[0]].masterID].getForm())
 				{
 				case COMPONENT_FORM_COCKPIT:
 					cockpit = spaceData[0];
@@ -2989,8 +2796,7 @@ int32_t BattleMech::init(FitIniFile* mechFile)
 					sensorSystem = SensorManager->newSensor();
 					sensorSystem->setOwner(this);
 					sensorSystem->setRange(
-						MasterComponent::masterList[inventory[sensor].masterID]
-							.getSensorRange());
+						MasterComponent::masterList[inventory[sensor].masterID].getSensorRange());
 					break;
 				case COMPONENT_FORM_HEATSINK:
 					inventory[spaceData[0]].bodyLocation = curLocation;
@@ -3013,24 +2819,21 @@ int32_t BattleMech::init(FitIniFile* mechFile)
 						// Add to Anti-Missile System list for fast reference...
 						if (numAntiMissileSystems == MAX_ANTI_MISSILE_SYSTEMS)
 							Fatal(0, "Too many Anti-Missile Systems");
-						antiMissileSystem[numAntiMissileSystems++] =
-							spaceData[0];
+						antiMissileSystem[numAntiMissileSystems++] = spaceData[0];
 					}
 					break;
 				case COMPONENT_FORM_WEAPON_MISSILE:
 					inventory[spaceData[0]].bodyLocation = curLocation;
 					break;
 				case COMPONENT_FORM_ACTUATOR:
-					if (inventory[spaceData[0]].masterID ==
-						MasterComponent::armActuatorID)
+					if (inventory[spaceData[0]].masterID == MasterComponent::armActuatorID)
 					{
 						if (curLocation == MECH_BODY_LOCATION_LARM)
 							actuator[ACTUATOR_LSHOULDER] = spaceData[0];
 						else if (curLocation == MECH_BODY_LOCATION_RARM)
 							actuator[ACTUATOR_RSHOULDER] = spaceData[0];
 					}
-					else if (inventory[spaceData[0]].masterID ==
-							 MasterComponent::legActuatorID)
+					else if (inventory[spaceData[0]].masterID == MasterComponent::legActuatorID)
 					{
 						if (curLocation == MECH_BODY_LOCATION_LLEG)
 							actuator[ACTUATOR_LHIP] = spaceData[0];
@@ -3068,16 +2871,14 @@ int32_t BattleMech::init(FitIniFile* mechFile)
 		for (size_t ammoIndex = 0; ammoIndex < numAmmoTypes; ammoIndex++)
 		{
 			if ((int32_t)MasterComponent::masterList[inventory[item].masterID]
-					.getWeaponAmmoMasterId() ==
-				ammoTypeTotal[ammoIndex].masterId)
+					.getWeaponAmmoMasterId() == ammoTypeTotal[ammoIndex].masterId)
 			{
 				inventory[item].ammoIndex = ammoIndex;
 				break;
 			}
 		}
 	}
-	for (item = numOther + numWeapons;
-		 item < (numOther + numWeapons + numAmmos); item++)
+	for (item = numOther + numWeapons; item < (numOther + numWeapons + numAmmos); item++)
 	{
 		//----------------------------------------------------------
 		// Each weapon should point to its appropriate ammo total in
@@ -3093,17 +2894,13 @@ int32_t BattleMech::init(FitIniFile* mechFile)
 	}
 	for (item = 0; item < numOther; item++)
 	{
-		if ((inventory[item].masterID ==
-				MasterComponent::clanAntiMissileSystemID) ||
-			(inventory[item].masterID ==
-				MasterComponent::innerSphereAntiMissileSystemID))
+		if ((inventory[item].masterID == MasterComponent::clanAntiMissileSystemID) ||
+			(inventory[item].masterID == MasterComponent::innerSphereAntiMissileSystemID))
 		{
 			for (size_t ammoIndex = 0; ammoIndex < numAmmoTypes; ammoIndex++)
 			{
-				if ((int32_t)
-						MasterComponent::masterList[inventory[item].masterID]
-							.getWeaponAmmoMasterId() ==
-					ammoTypeTotal[ammoIndex].masterId)
+				if ((int32_t)MasterComponent::masterList[inventory[item].masterID]
+						.getWeaponAmmoMasterId() == ammoTypeTotal[ammoIndex].masterId)
 				{
 					inventory[item].ammoIndex = ammoIndex;
 					break;
@@ -3114,8 +2911,8 @@ int32_t BattleMech::init(FitIniFile* mechFile)
 #ifdef USEHEAT
 	//---------------------------
 	// Calc the leg heat sinks...
-	curLegHeatSinks = calcHeatSinks(MECH_BODY_LOCATION_RLEG, true) +
-					  calcHeatSinks(MECH_BODY_LOCATION_LLEG, true);
+	curLegHeatSinks =
+		calcHeatSinks(MECH_BODY_LOCATION_RLEG, true) + calcHeatSinks(MECH_BODY_LOCATION_LLEG, true);
 #endif
 	//------------------------------------------------------------------------------
 	// Now that we've loaded inventory, let's set aside which weapon has the
@@ -3254,9 +3051,7 @@ int32_t BattleMech::calcCV(bool calcMax)
 	int32_t numComponents = numWeapons + numAmmos + numOther;
 	for (size_t itemIndex = 0; itemIndex < numComponents; itemIndex++)
 		if (calcMax || !inventory[itemIndex].disabled)
-			totalCV +=
-				MasterComponent::masterList[inventory[itemIndex].masterID]
-					.getCV();
+			totalCV += MasterComponent::masterList[inventory[itemIndex].masterID].getCV();
 	return ((int32_t)totalCV);
 }
 
@@ -3332,8 +3127,7 @@ void BattleMech::pilotingCheck(uint32_t situation, float modifier)
 	//-----------------
 	// Is gyro damaged?
 	if (gyro >= (numOther + numWeapons + numAmmos))
-		STOP(("Gyro Was not loaded correctly and would have crashed here %d",
-			gyro));
+		STOP(("Gyro Was not loaded correctly and would have crashed here %d", gyro));
 	int32_t gyroHealth = inventory[gyro].health;
 	if (gyroHealth == 0)
 		pilotRoll += 100.0;
@@ -3425,8 +3219,7 @@ void BattleMech::updateHeat(void)
 	}
 	//---------------------
 	// Apply weapon heat...
-	for (size_t weaponIndex = numOther; weaponIndex < (numOther + numWeapons);
-		 weaponIndex++)
+	for (size_t weaponIndex = numOther; weaponIndex < (numOther + numWeapons); weaponIndex++)
 		if (inventory[weaponIndex].readyTime > scenarioTime)
 		{
 			//------------------------------------------
@@ -3470,8 +3263,7 @@ void BattleMech::updateHeat(void)
 		{
 			if (status == OBJECT_STATUS_SHUTDOWN)
 			{
-				if ((pilot->getCurTacOrder()->code !=
-						TACTICAL_ORDER_POWERDOWN) &&
+				if ((pilot->getCurTacOrder()->code != TACTICAL_ORDER_POWERDOWN) &&
 					(pilot->getCurTacOrder()->code != TACTICAL_ORDER_POWERUP))
 				{
 					//-------------------------------------------
@@ -3494,14 +3286,12 @@ void BattleMech::updateHeat(void)
 				// This should set a flag a in ControlData to inform the update
 				// to blow the ammo!! In this way, we can still play network
 				// MechCommander.
-				if (RandomNumber(100) <
-					HeatEffectTable[heatIndex - 1].ammoExplosionChance)
+				if (RandomNumber(100) < HeatEffectTable[heatIndex - 1].ammoExplosionChance)
 				{
 					int32_t numExplodables = 0;
 					int32_t ammoList[100];
 					for (size_t ammoIndex = numOther + numWeapons;
-						 ammoIndex < (numOther + numWeapons + numAmmos);
-						 ammoIndex++)
+						 ammoIndex < (numOther + numWeapons + numAmmos); ammoIndex++)
 					{
 						if (!inventory[ammoIndex].disabled)
 							ammoList[numExplodables++] = ammoIndex;
@@ -3510,9 +3300,8 @@ void BattleMech::updateHeat(void)
 					{
 						MechControlDataPtr mechCtrlData =
 							(MechControlDataPtr)(control->controlData);
-						mechCtrlData->blowAmmo = true;
-						mechCtrlData->ammoLocation =
-							ammoList[RandomNumber(numExplodables)];
+						mechCtrlData->blowAmmo	 = true;
+						mechCtrlData->ammoLocation = ammoList[RandomNumber(numExplodables)];
 					}
 				}
 			}
@@ -3537,10 +3326,9 @@ void BattleMech::destroy(void)
 
 int32_t BattleMech::getResourcePointValue(void)
 {
-	int32_t resourcePointsForMechs[15][2] = {{30, 1500}, {35, 1750}, {40, 2000},
-		{45, 2250}, {50, 3000}, {55, 3300}, {60, 3600}, {65, 3900}, {70, 4200},
-		{75, 5250}, {80, 5600}, {85, 5950}, {90, 6300}, {95, 6650},
-		{100, 7000}};
+	int32_t resourcePointsForMechs[15][2] = {{30, 1500}, {35, 1750}, {40, 2000}, {45, 2250},
+		{50, 3000}, {55, 3300}, {60, 3600}, {65, 3900}, {70, 4200}, {75, 5250}, {80, 5600},
+		{85, 5950}, {90, 6300}, {95, 6650}, {100, 7000}};
 	for (size_t i = 0; i < 15; i++)
 		if (tonnage <= resourcePointsForMechs[i][0])
 			return (resourcePointsForMechs[i][1]);
@@ -3572,20 +3360,18 @@ void BattleMech::mineCheck(void)
 			//  Mark this tile as empty.  (we just set the mine off!!)
 			GameMap->setMine(cellPositionRow, cellPositionCol, 2);
 			if (MPlayer)
-				MPlayer->addMineChunk(
-					cellPositionRow, cellPositionCol, 1, 2, 2);
+				MPlayer->addMineChunk(cellPositionRow, cellPositionCol, 1, 2, 2);
 			pilot->clearCurTacOrder(); // Force the pilot to recalc based on new
 									   // data.
 			//---------------------------
 			// Mine here, deal with it...
 			Stuff::Vector3D explosionPosition;
 			explosionPosition = getPosition();
-			ObjectManager->createExplosion(MINE_EXPLOSION_ID, nullptr,
-				explosionPosition, MineSplashDamage,
-				MineSplashRange * worldUnitsPerMeter);
+			ObjectManager->createExplosion(MINE_EXPLOSION_ID, nullptr, explosionPosition,
+				MineSplashDamage, MineSplashRange * worldUnitsPerMeter);
 			WeaponShotInfo shot;
-			shot.init(nullptr, -2, MineDamage,
-				calcHitLocation(nullptr, -1, ATTACKSOURCE_MINE, 0), 0);
+			shot.init(
+				nullptr, -2, MineDamage, calcHitLocation(nullptr, -1, ATTACKSOURCE_MINE, 0), 0);
 			handleWeaponHit(&shot, (MPlayer != nullptr));
 		}
 	}
@@ -3699,8 +3485,7 @@ bool BattleMech::pivotTo(void)
 	if (MPlayer && !MPlayer->isServer())
 		isRunning = moveChunk.run;
 	else
-		isRunning = (pilot->getMovePath()->numStepsWhenNotPaused > 0) &&
-					pilot->getMoveRun();
+		isRunning = (pilot->getMovePath()->numStepsWhenNotPaused > 0) && pilot->getMoveRun();
 	bool hasTarget = false;
 	Stuff::Vector3D targetPosition;
 	GameObjectPtr target	= pilot->getCurrentTarget();
@@ -3719,24 +3504,20 @@ bool BattleMech::pivotTo(void)
 	}
 	if (moveState == MOVESTATE_PIVOT_FORWARD)
 	{
-		if ((moveStateGoal == MOVESTATE_PIVOT_FORWARD) ||
-			(moveStateGoal == MOVESTATE_FORWARD))
+		if ((moveStateGoal == MOVESTATE_PIVOT_FORWARD) || (moveStateGoal == MOVESTATE_FORWARD))
 		{
 			//----------------------------------------------------------
 			// We want to pivot forward (if we have a path to follow)...
-			if ((path->numStepsWhenNotPaused > 0) &&
-				(path->curStep < path->numStepsWhenNotPaused))
+			if ((path->numStepsWhenNotPaused > 0) && (path->curStep < path->numStepsWhenNotPaused))
 			{
-				Stuff::Vector3D wayPt =
-					path->stepList[path->curStep].destination;
+				Stuff::Vector3D wayPt = path->stepList[path->curStep].destination;
 				appearance->setGestureGoal(MECH_STATE_STANDING);
 				control.settings.mech.throttle = 100;
 				float relFacingToWayPt		   = relFacingTo(wayPt);
 				if ((relFacingToWayPt < -5.0) || (relFacingToWayPt > 5.0))
 				{
 					float turnRate = -relFacingToWayPt;
-					float maxRate =
-						tonnageTurnRate[int32_t(tonnage)] * frameLength;
+					float maxRate  = tonnageTurnRate[int32_t(tonnage)] * frameLength;
 					if (turnRate < 0.0f)
 						maxRate = -maxRate;
 					if (fabs(turnRate) > maxRate)
@@ -3766,16 +3547,13 @@ bool BattleMech::pivotTo(void)
 	}
 	else if (moveState == MOVESTATE_PIVOT_REVERSE)
 	{
-		if ((moveStateGoal == MOVESTATE_PIVOT_REVERSE) ||
-			(moveStateGoal == MOVESTATE_REVERSE))
+		if ((moveStateGoal == MOVESTATE_PIVOT_REVERSE) || (moveStateGoal == MOVESTATE_REVERSE))
 		{
 			//----------------------------------------------------------
 			// We want to pivot forward (if we have a path to follow)...
-			if ((path->numStepsWhenNotPaused > 0) &&
-				(path->curStep < path->numStepsWhenNotPaused))
+			if ((path->numStepsWhenNotPaused > 0) && (path->curStep < path->numStepsWhenNotPaused))
 			{
-				Stuff::Vector3D wayPt =
-					path->stepList[path->curStep].destination;
+				Stuff::Vector3D wayPt = path->stepList[path->curStep].destination;
 				appearance->setGestureGoal(MECH_STATE_STANDING);
 				control.settings.mech.throttle = 100;
 				float relFacingToWayPt		   = relFacingTo(wayPt);
@@ -3804,8 +3582,7 @@ bool BattleMech::pivotTo(void)
 							turnRate = 180.0 - relFacingToWayPt;
 					}
 					//------------------------------------------------------------------------
-					float maxRate =
-						tonnageTurnRate[int32_t(tonnage)] * frameLength;
+					float maxRate = tonnageTurnRate[int32_t(tonnage)] * frameLength;
 					if (fabs(turnRate) > maxRate)
 					{
 						if (turnRate > 0)
@@ -3827,8 +3604,7 @@ bool BattleMech::pivotTo(void)
 					if (moveStateGoal == MOVESTATE_REVERSE)
 						pilot->setMoveState(MOVESTATE_REVERSE);
 					else
-						pilot->setMoveStateGoal(
-							MOVESTATE_FORWARD /*MOVESTATE_STAND*/);
+						pilot->setMoveStateGoal(MOVESTATE_FORWARD /*MOVESTATE_STAND*/);
 				}
 			}
 			else
@@ -3857,7 +3633,7 @@ bool BattleMech::pivotTo(void)
 			if ((relFacingToTarget < -fireArc) || (relFacingToTarget > fireArc))
 			{
 				float turnRate = -relFacingToTarget;
-				float maxRate = tonnageTurnRate[int32_t(tonnage)] * frameLength;
+				float maxRate  = tonnageTurnRate[int32_t(tonnage)] * frameLength;
 				if (fabs(turnRate) > maxRate)
 				{
 					if (turnRate > 0)
@@ -3963,8 +3739,7 @@ void BattleMech::updateMoveStateGoal(void)
 		}
 		else
 		{
-			if (pilot->getMoveRun() ||
-				(legStatus == LEG_STATUS_IMPAIRED_LEFT) ||
+			if (pilot->getMoveRun() || (legStatus == LEG_STATUS_IMPAIRED_LEFT) ||
 				(legStatus == LEG_STATUS_IMPAIRED_RIGHT))
 			{
 				pilot->setMoveStateGoal(MOVESTATE_FORWARD);
@@ -3977,13 +3752,11 @@ void BattleMech::updateMoveStateGoal(void)
 		{
 			//------------------------------------------------
 			// Check if we want to go forward or in reverse...
-			if ((path->numStepsWhenNotPaused > 0) &&
-				(path->curStep < path->numStepsWhenNotPaused))
+			if ((path->numStepsWhenNotPaused > 0) && (path->curStep < path->numStepsWhenNotPaused))
 			{
-				Stuff::Vector3D wayPt =
-					path->stepList[path->curStep].destination;
-				float facingDelta  = relFacingDelta(wayPt, targetPosition);
-				float totalFireArc = getFireArc() + dynamics.max.mech.torsoYaw;
+				Stuff::Vector3D wayPt = path->stepList[path->curStep].destination;
+				float facingDelta	 = relFacingDelta(wayPt, targetPosition);
+				float totalFireArc	= getFireArc() + dynamics.max.mech.torsoYaw;
 				int32_t moveStateGoal = pilot->getMoveStateGoal();
 				if (moveStateGoal == MOVESTATE_FORWARD)
 				{
@@ -4019,8 +3792,7 @@ void BattleMech::updateMoveStateGoal(void)
 			pilot->setMoveStateGoal(MOVESTATE_FORWARD);
 	}
 	else if ((moveStateGoal != MOVESTATE_PIVOT_TARGET) &&
-			 (moveStateGoal != MOVESTATE_PIVOT_FORWARD) &&
-			 (moveStateGoal != MOVESTATE_PIVOT_REVERSE))
+		(moveStateGoal != MOVESTATE_PIVOT_FORWARD) && (moveStateGoal != MOVESTATE_PIVOT_REVERSE))
 	{
 		if (!hasTarget && (path->numStepsWhenNotPaused == 0))
 			pilot->setMoveStateGoal(MOVESTATE_FORWARD);
@@ -4033,8 +3805,8 @@ void BattleMech::updateMoveStateGoal(void)
 float DistanceToWaypoint;
 
 bool BattleMech::updateMovePath(float& newRotate, char& newThrottleSetting,
-	int32_t& newGestureStateGoal, int32_t& newMoveState, int32_t& minThrottle,
-	int32_t& maxThrottle, float& facingRotate)
+	int32_t& newGestureStateGoal, int32_t& newMoveState, int32_t& minThrottle, int32_t& maxThrottle,
+	float& facingRotate)
 {
 	DistanceToWaypoint		   = 9999.0;
 	MovePathPtr path		   = pilot->getMovePath();
@@ -4046,8 +3818,7 @@ bool BattleMech::updateMovePath(float& newRotate, char& newThrottleSetting,
 #if DEBUG_MECH_UPDATE
 	if (selected)
 	{
-		int32_t area =
-			GlobalMoveMap->calcArea(objPosition->tileRow, objPosition->tileCol);
+		int32_t area = GlobalMoveMap->calcArea(objPosition->tileRow, objPosition->tileCol);
 		char debugStr[256];
 		sprintf(debugStr, "Area = %d\n", area);
 		OutputDebugString(debugStr);
@@ -4060,16 +3831,14 @@ bool BattleMech::updateMovePath(float& newRotate, char& newThrottleSetting,
 	bool aheadOfPointVehicle = false;
 	bool stopForPointVehicle = false;
 	MoverPtr pointVehicle	= (MoverPtr)pilot->getPoint();
-	bool hasGroupMoveOrder =
-		(curOrder->isGroupOrder() && curOrder->isMoveOrder());
-	if (!allowedToRun && !hustle && pointVehicle &&
-		!pointVehicle->isDisabled() && (pointVehicle != this) &&
-		hasGroupMoveOrder)
+	bool hasGroupMoveOrder   = (curOrder->isGroupOrder() && curOrder->isMoveOrder());
+	if (!allowedToRun && !hustle && pointVehicle && !pointVehicle->isDisabled() &&
+		(pointVehicle != this) && hasGroupMoveOrder)
 	{
 		MechWarriorPtr pointPilot   = pointVehicle->getPilot();
 		float pointDistanceFromGoal = pointPilot->getMoveDistanceLeft();
 		float myDistanceFromGoal	= pilot->getMoveDistanceLeft();
-		aheadOfPointVehicle = (myDistanceFromGoal < pointDistanceFromGoal);
+		aheadOfPointVehicle			= (myDistanceFromGoal < pointDistanceFromGoal);
 		if (aheadOfPointVehicle)
 		{
 			allowedToRun = false;
@@ -4112,8 +3881,7 @@ bool BattleMech::updateMovePath(float& newRotate, char& newThrottleSetting,
 	// legStatus to begin with. For now, we'll handle all cases here...
 	bool goalReached = false;
 	if ((legStatus == LEG_STATUS_NORMAL) || (legStatus == LEG_STATUS_HURTING) ||
-		(legStatus == LEG_STATUS_IMPAIRED_LEFT) ||
-		(legStatus == LEG_STATUS_IMPAIRED_RIGHT))
+		(legStatus == LEG_STATUS_IMPAIRED_LEFT) || (legStatus == LEG_STATUS_IMPAIRED_RIGHT))
 	{
 		if (path->numSteps > 0)
 		{
@@ -4123,8 +3891,7 @@ bool BattleMech::updateMovePath(float& newRotate, char& newThrottleSetting,
 				goalReached = true;
 			else
 			{
-				Stuff::Vector3D wayPt =
-					path->stepList[path->curStep].destination;
+				Stuff::Vector3D wayPt = path->stepList[path->curStep].destination;
 				//---------------------------------------------------------
 				// Let's record our last valid position, in case we need to
 				// crawl back from impassable terrain we get knocked onto.
@@ -4160,8 +3927,7 @@ bool BattleMech::updateMovePath(float& newRotate, char& newThrottleSetting,
 					pilot->setMoveTimeOfLastStep(scenarioTime);
 					if (path->curStep < path->numSteps)
 					{
-						int32_t curDir =
-							path->stepList[path->curStep].direction;
+						int32_t curDir = path->stepList[path->curStep].direction;
 						if (curDir > 7)
 						{
 							//--------------------------
@@ -4193,10 +3959,9 @@ bool BattleMech::updateMovePath(float& newRotate, char& newThrottleSetting,
 				{
 					//---------------------------------------------
 					// First, rotate the mech's body (if moving)...
-					float relFacingToWayPt =
-						relFacingTo(wayPt, MECH_BODY_LOCATION_LLEG);
-					int32_t moveState	 = pilot->getMoveState();
-					int32_t moveStateGoal = pilot->getMoveStateGoal();
+					float relFacingToWayPt = relFacingTo(wayPt, MECH_BODY_LOCATION_LLEG);
+					int32_t moveState	  = pilot->getMoveState();
+					int32_t moveStateGoal  = pilot->getMoveStateGoal();
 					if (moveState == MOVESTATE_FORWARD)
 					{
 						if (moveStateGoal == MOVESTATE_FORWARD)
@@ -4217,22 +3982,18 @@ bool BattleMech::updateMovePath(float& newRotate, char& newThrottleSetting,
 							}
 							else
 								newGestureStateGoal = MECH_STATE_WALKING;
-							if ((relFacingToWayPt < -5.0) ||
-								(relFacingToWayPt > 5.0))
+							if ((relFacingToWayPt < -5.0) || (relFacingToWayPt > 5.0))
 							{
 								//-----------------------------------------------
 								// We can and will shift facing to
 								// destination... Don't know that we need to
 								// force walk to turn!! -fs
-								newRotate = -relFacingToWayPt;
-								float maxRate =
-									tonnageTurnRate[int32_t(tonnage)] *
-									frameLength;
+								newRotate	 = -relFacingToWayPt;
+								float maxRate = tonnageTurnRate[int32_t(tonnage)] * frameLength;
 								if (fabs(newRotate) > maxRate)
 								{
 									if (fabs(newRotate) < 50.0f)
-										newThrottleSetting =
-											100.0f - fabs(newRotate);
+										newThrottleSetting = 100.0f - fabs(newRotate);
 									else
 										newThrottleSetting = 0.0f;
 									if (newRotate > 0.0)
@@ -4244,10 +4005,8 @@ bool BattleMech::updateMovePath(float& newRotate, char& newThrottleSetting,
 								{
 									//------------------------------------
 									// Try to attain current goal speed...
-									newThrottleSetting =
-										pilot->calcMoveSpeedThrottle(
-											getBodyState(),
-											control.settings.mech.throttle);
+									newThrottleSetting = pilot->calcMoveSpeedThrottle(
+										getBodyState(), control.settings.mech.throttle);
 								}
 							}
 							else
@@ -4259,9 +4018,8 @@ bool BattleMech::updateMovePath(float& newRotate, char& newThrottleSetting,
 							// Stop, and pivot fully reverse to next path
 							// step...
 							//((MechActor*)appearance)->forceStop();
-							pilot
-								->pausePath(); // pilot->getMovePath()->numSteps
-											   // = 0;
+							pilot->pausePath(); // pilot->getMovePath()->numSteps
+												// = 0;
 							newMoveState = MOVESTATE_PIVOT_REVERSE;
 						}
 						else if (moveStateGoal == MOVESTATE_PIVOT_FORWARD)
@@ -4270,9 +4028,8 @@ bool BattleMech::updateMovePath(float& newRotate, char& newThrottleSetting,
 							// Stop, and pivot fully forward to next path
 							// step...
 							//((MechActor*)appearance)->forceStop();
-							pilot
-								->pausePath(); // pilot->getMovePath()->numSteps
-											   // = 0;
+							pilot->pausePath(); // pilot->getMovePath()->numSteps
+												// = 0;
 							newMoveState = MOVESTATE_PIVOT_FORWARD;
 						}
 						else if (moveStateGoal == MOVESTATE_PIVOT_REVERSE)
@@ -4281,9 +4038,8 @@ bool BattleMech::updateMovePath(float& newRotate, char& newThrottleSetting,
 							// Stop, and pivot fully reverse to next path
 							// step...
 							//((MechActor*)appearance)->forceStop();
-							pilot
-								->pausePath(); // pilot->getMovePath()->numSteps
-											   // = 0;
+							pilot->pausePath(); // pilot->getMovePath()->numSteps
+												// = 0;
 							newMoveState = MOVESTATE_PIVOT_REVERSE;
 						}
 						else
@@ -4291,11 +4047,9 @@ bool BattleMech::updateMovePath(float& newRotate, char& newThrottleSetting,
 							//--------
 							// Stop...
 							//((MechActor*)appearance)->forceStop();
-							pilot
-								->pausePath(); // pilot->getMovePath()->numSteps
-											   // = 0;
-							newMoveState =
-								MOVESTATE_FORWARD /*MOVESTATE_STAND*/;
+							pilot->pausePath(); // pilot->getMovePath()->numSteps
+												// = 0;
+							newMoveState = MOVESTATE_FORWARD /*MOVESTATE_STAND*/;
 						}
 					}
 					else if (moveState == MOVESTATE_REVERSE)
@@ -4306,9 +4060,8 @@ bool BattleMech::updateMovePath(float& newRotate, char& newThrottleSetting,
 							// Stop, and pivot fully forward to next path
 							// step...
 							//((MechActor*)appearance)->forceStop();
-							pilot
-								->pausePath(); // pilot->getMovePath()->numSteps
-											   // = 0;
+							pilot->pausePath(); // pilot->getMovePath()->numSteps
+												// = 0;
 							newMoveState = MOVESTATE_PIVOT_FORWARD;
 						}
 						else if (moveStateGoal == MOVESTATE_REVERSE)
@@ -4324,13 +4077,11 @@ bool BattleMech::updateMovePath(float& newRotate, char& newThrottleSetting,
 							// We can and will shift facing to destination...
 							// Don't know that we need to force walk to turn!!
 							// -fs
-							float maxRate =
-								tonnageTurnRate[int32_t(tonnage)] * frameLength;
+							float maxRate = tonnageTurnRate[int32_t(tonnage)] * frameLength;
 							if (fabs(newRotate) > maxRate)
 							{
 								if (fabs(newRotate) < 50.0f)
-									newThrottleSetting =
-										100.0f - fabs(newRotate);
+									newThrottleSetting = 100.0f - fabs(newRotate);
 								else
 									newThrottleSetting = 0.0f;
 								if (newRotate > 0.0)
@@ -4342,9 +4093,8 @@ bool BattleMech::updateMovePath(float& newRotate, char& newThrottleSetting,
 							{
 								//------------------------------------
 								// Try to attain current goal speed...
-								newThrottleSetting =
-									pilot->calcMoveSpeedThrottle(getBodyState(),
-										control.settings.mech.throttle);
+								newThrottleSetting = pilot->calcMoveSpeedThrottle(
+									getBodyState(), control.settings.mech.throttle);
 							}
 						}
 						else if (moveStateGoal == MOVESTATE_PIVOT_FORWARD)
@@ -4353,9 +4103,8 @@ bool BattleMech::updateMovePath(float& newRotate, char& newThrottleSetting,
 							// Stop, and pivot fully forward to next path
 							// step...
 							//((MechActor*)appearance)->forceStop();
-							pilot
-								->pausePath(); // pilot->getMovePath()->numSteps
-											   // = 0;
+							pilot->pausePath(); // pilot->getMovePath()->numSteps
+												// = 0;
 							newMoveState = MOVESTATE_PIVOT_FORWARD;
 						}
 						else if (moveStateGoal == MOVESTATE_PIVOT_REVERSE)
@@ -4364,9 +4113,8 @@ bool BattleMech::updateMovePath(float& newRotate, char& newThrottleSetting,
 							// Stop, and pivot fully reverse to next path
 							// step...
 							//((MechActor*)appearance)->forceStop();
-							pilot
-								->pausePath(); // pilot->getMovePath()->numSteps
-											   // = 0;
+							pilot->pausePath(); // pilot->getMovePath()->numSteps
+												// = 0;
 							newMoveState = MOVESTATE_PIVOT_REVERSE;
 						}
 						else
@@ -4374,11 +4122,9 @@ bool BattleMech::updateMovePath(float& newRotate, char& newThrottleSetting,
 							//--------
 							// Stop...
 							//((MechActor*)appearance)->forceStop();
-							pilot
-								->pausePath(); // pilot->getMovePath()->numSteps
-											   // = 0;
-							newMoveState =
-								MOVESTATE_FORWARD /*MOVESTATE_STAND*/;
+							pilot->pausePath(); // pilot->getMovePath()->numSteps
+												// = 0;
+							newMoveState = MOVESTATE_FORWARD /*MOVESTATE_STAND*/;
 						}
 					}
 					else
@@ -4389,18 +4135,16 @@ bool BattleMech::updateMovePath(float& newRotate, char& newThrottleSetting,
 							(moveStateGoal == MOVESTATE_PIVOT_FORWARD))
 						{
 							//((MechActor*)appearance)->forceStop();
-							pilot
-								->pausePath(); // pilot->getMovePath()->numSteps
-											   // = 0;
+							pilot->pausePath(); // pilot->getMovePath()->numSteps
+												// = 0;
 							newMoveState = MOVESTATE_PIVOT_FORWARD;
 						}
 						else if ((moveStateGoal == MOVESTATE_REVERSE) ||
-								 (moveStateGoal == MOVESTATE_PIVOT_REVERSE))
+							(moveStateGoal == MOVESTATE_PIVOT_REVERSE))
 						{
 							//((MechActor*)appearance)->forceStop();
-							pilot
-								->pausePath(); // pilot->getMovePath()->numSteps
-											   // = 0;
+							pilot->pausePath(); // pilot->getMovePath()->numSteps
+												// = 0;
 							newMoveState = MOVESTATE_PIVOT_REVERSE;
 						}
 					}
@@ -4426,8 +4170,7 @@ bool BattleMech::updateMovePath(float& newRotate, char& newThrottleSetting,
 		// Did we finish just a local part of a global path?
 		if (pilot->getMovePathType() == MOVEPATH_COMPLEX)
 		{
-			if (pilot->getMovePathGlobalStep() <
-				(pilot->getMoveNumGlobalSteps() - 1))
+			if (pilot->getMovePathGlobalStep() < (pilot->getMoveNumGlobalSteps() - 1))
 			{
 				//-----------------------------------------------------------
 				// We've reached the end of our current int16_t-range path, but
@@ -4443,8 +4186,7 @@ bool BattleMech::updateMovePath(float& newRotate, char& newThrottleSetting,
 
 //---------------------------------------------------------------------------
 
-void BattleMech::setNextMovePath(
-	char& newThrottleSetting, int32_t& newGestureStateGoal)
+void BattleMech::setNextMovePath(char& newThrottleSetting, int32_t& newGestureStateGoal)
 {
 	//----------------------------------------
 	// If this is only an intermediate path,
@@ -4456,8 +4198,8 @@ void BattleMech::setNextMovePath(
 	{
 		pilot->setMoveGoal(MOVEGOAL_LOCATION, &nextWayPoint);
 		TacticalOrderPtr curTacOrder = pilot->getCurTacOrder();
-		pilot->requestMovePath(curTacOrder->selectionIndex,
-			MOVEPARAM_FACE_TARGET /*+MOVEPARAM_INIT*/, 1);
+		pilot->requestMovePath(
+			curTacOrder->selectionIndex, MOVEPARAM_FACE_TARGET /*+MOVEPARAM_INIT*/, 1);
 	}
 	else
 	{
@@ -4486,11 +4228,10 @@ void BattleMech::updateTorso(float newRotatePerSec)
 	rotateValues[1]		 = torsoRotation;
 	rotateValues[2]		 = newRotatePerSec;
 	if (target)
-		torsoRelFacing = relFacingTo(target->getPosition()) + torsoRotation +
-						 newRotatePerSec;
+		torsoRelFacing = relFacingTo(target->getPosition()) + torsoRotation + newRotatePerSec;
 	else if (pilot->getCurTacOrder()->code == TACTICAL_ORDER_ATTACK_POINT)
-		torsoRelFacing = relFacingTo(pilot->getAttackTargetPoint()) +
-						 torsoRotation + newRotatePerSec;
+		torsoRelFacing =
+			relFacingTo(pilot->getAttackTargetPoint()) + torsoRotation + newRotatePerSec;
 	else
 		torsoRelFacing = torsoRotation;
 	rotateValues[3] = torsoRelFacing;
@@ -4542,8 +4283,7 @@ void BattleMech::updateTorso(float newRotatePerSec)
 //---------------------------------------------------------------------------
 
 void BattleMech::setControlSettings(float& newRotate, char& newThrottleSetting,
-	int32_t& newGestureStateGoal, int32_t& minThrottle, int32_t& maxThrottle,
-	float& facingRotate)
+	int32_t& newGestureStateGoal, int32_t& minThrottle, int32_t& maxThrottle, float& facingRotate)
 {
 	//-----------------------------------------
 	// Clean up and handle any jump settings...
@@ -4565,8 +4305,7 @@ void BattleMech::setControlSettings(float& newRotate, char& newThrottleSetting,
 	{
 		if (statusChunk.jumpOrder && !inJump)
 		{
-			land->cellToWorld(statusChunk.targetCellRC[0],
-				statusChunk.targetCellRC[1], jumpGoal);
+			land->cellToWorld(statusChunk.targetCellRC[0], statusChunk.targetCellRC[1], jumpGoal);
 			if (distanceFrom(jumpGoal) > 8.0)
 			{
 				newGestureStateGoal = 6;
@@ -4579,9 +4318,9 @@ void BattleMech::setControlSettings(float& newRotate, char& newThrottleSetting,
 		if (pilot->getCurTacOrder()->isJumpOrder() && !inJump)
 		{
 			newGestureStateGoal = 6;
-			jumpGoal.x = pilot->getCurTacOrder()->moveParams.wayPath.points[0];
-			jumpGoal.y = pilot->getCurTacOrder()->moveParams.wayPath.points[1];
-			jumpGoal.z = pilot->getCurTacOrder()->moveParams.wayPath.points[2];
+			jumpGoal.x			= pilot->getCurTacOrder()->moveParams.wayPath.points[0];
+			jumpGoal.y			= pilot->getCurTacOrder()->moveParams.wayPath.points[1];
+			jumpGoal.z			= pilot->getCurTacOrder()->moveParams.wayPath.points[2];
 			appearance->setJumpParameters(jumpGoal);
 		}
 	}
@@ -4634,8 +4373,8 @@ void BattleMech::updateMovement(void)
 	NewRotation			= 0.0;
 	if (disableThisFrame)
 	{
-		int32_t fallGesture = RandomNumber(2) ? MECH_STATE_FALLEN_FORWARD
-											  : MECH_STATE_FALLEN_BACKWARD;
+		int32_t fallGesture =
+			RandomNumber(2) ? MECH_STATE_FALLEN_FORWARD : MECH_STATE_FALLEN_BACKWARD;
 		if (hitFromBehindThisFrame)
 			fallGesture = MECH_STATE_FALLEN_FORWARD;
 		else if (hitFromFrontThisFrame)
@@ -4703,8 +4442,7 @@ void BattleMech::updateMovement(void)
 		sensorSystem->setShutdown(false);
 		return;
 	}
-	if ((status == OBJECT_STATUS_SHUTTING_DOWN) ||
-		(status == OBJECT_STATUS_SHUTDOWN) ||
+	if ((status == OBJECT_STATUS_SHUTTING_DOWN) || (status == OBJECT_STATUS_SHUTDOWN) ||
 		(status == OBJECT_STATUS_DISABLED))
 		return;
 	if (isCaptured())
@@ -4713,8 +4451,8 @@ void BattleMech::updateMovement(void)
 		return;
 	if (failedPilotingCheck && (getMoveType() != MOVETYPE_AIR))
 	{
-		int32_t fallGesture = RandomNumber(2) ? MECH_STATE_FALLEN_FORWARD
-											  : MECH_STATE_FALLEN_BACKWARD;
+		int32_t fallGesture =
+			RandomNumber(2) ? MECH_STATE_FALLEN_FORWARD : MECH_STATE_FALLEN_BACKWARD;
 		if (hitFromBehindThisFrame)
 			fallGesture = MECH_STATE_FALLEN_FORWARD;
 		else if (hitFromFrontThisFrame)
@@ -4734,15 +4472,14 @@ void BattleMech::updateMovement(void)
 	int32_t newMoveState		= -1;
 	char newThrottleSetting		= -1;
 	bool goalReached			= false;
-	goalReached =
-		updateMovePath(newRotate, newThrottleSetting, newGestureStateGoal,
-			newMoveState, minThrottle, maxThrottle, facingRotate);
+	goalReached = updateMovePath(newRotate, newThrottleSetting, newGestureStateGoal, newMoveState,
+		minThrottle, maxThrottle, facingRotate);
 	if (goalReached)
 		setNextMovePath(newThrottleSetting, newGestureStateGoal);
 	if (newMoveState != -1)
 		pilot->setMoveState(newMoveState);
-	setControlSettings(newRotate, newThrottleSetting, newGestureStateGoal,
-		minThrottle, maxThrottle, facingRotate);
+	setControlSettings(
+		newRotate, newThrottleSetting, newGestureStateGoal, minThrottle, maxThrottle, facingRotate);
 	updateMoveStateGoal();
 	NewRotation = newRotate;
 }
@@ -4752,8 +4489,7 @@ void BattleMech::updateMovement(void)
 //---------------------------------------------------------------------------
 
 bool BattleMech::netUpdateMovePath(float& newRotate, char& newThrottleSetting,
-	int32_t& newGestureStateGoal, int32_t& newMoveState, int32_t& minThrottle,
-	int32_t& maxThrottle)
+	int32_t& newGestureStateGoal, int32_t& newMoveState, int32_t& minThrottle, int32_t& maxThrottle)
 {
 	DistanceToWaypoint		   = 9999.0;
 	MovePathPtr path		   = pilot->getMovePath();
@@ -4763,8 +4499,7 @@ bool BattleMech::netUpdateMovePath(float& newRotate, char& newThrottleSetting,
 	newRotate				   = 0.0;
 	bool goalReached		   = false;
 	if ((legStatus == LEG_STATUS_NORMAL) || (legStatus == LEG_STATUS_HURTING) ||
-		(legStatus == LEG_STATUS_IMPAIRED_LEFT) ||
-		(legStatus == LEG_STATUS_IMPAIRED_RIGHT))
+		(legStatus == LEG_STATUS_IMPAIRED_LEFT) || (legStatus == LEG_STATUS_IMPAIRED_RIGHT))
 	{
 		if (path->numSteps > 0)
 		{
@@ -4774,8 +4509,7 @@ bool BattleMech::netUpdateMovePath(float& newRotate, char& newThrottleSetting,
 				goalReached = true;
 			else
 			{
-				Stuff::Vector3D wayPt =
-					path->stepList[path->curStep].destination;
+				Stuff::Vector3D wayPt = path->stepList[path->curStep].destination;
 				//---------------------------------------------------------
 				// Let's record our last valid position, in case we need to
 				// crawl back from impassable terrain we get knocked onto.
@@ -4797,8 +4531,7 @@ bool BattleMech::netUpdateMovePath(float& newRotate, char& newThrottleSetting,
 					pilot->setMoveTimeOfLastStep(scenarioTime);
 					if (path->curStep < path->numSteps)
 					{
-						int32_t curDir =
-							path->stepList[path->curStep].direction;
+						int32_t curDir = path->stepList[path->curStep].direction;
 						if (!MPlayer && (curDir > 7))
 						{
 							//--------------------------
@@ -4830,10 +4563,9 @@ bool BattleMech::netUpdateMovePath(float& newRotate, char& newThrottleSetting,
 				{
 					//---------------------------------------------
 					// First, rotate the mech's body (if moving)...
-					float relFacingToWayPt =
-						relFacingTo(wayPt, MECH_BODY_LOCATION_LLEG);
-					int32_t moveState	 = pilot->getMoveState();
-					int32_t moveStateGoal = pilot->getMoveStateGoal();
+					float relFacingToWayPt = relFacingTo(wayPt, MECH_BODY_LOCATION_LLEG);
+					int32_t moveState	  = pilot->getMoveState();
+					int32_t moveStateGoal  = pilot->getMoveStateGoal();
 					if (moveState == MOVESTATE_FORWARD)
 					{
 						if (moveStateGoal == MOVESTATE_FORWARD)
@@ -4857,17 +4589,14 @@ bool BattleMech::netUpdateMovePath(float& newRotate, char& newThrottleSetting,
 							}
 							else
 								newGestureStateGoal = MECH_STATE_WALKING;
-							if ((relFacingToWayPt < -5.0) ||
-								(relFacingToWayPt > 5.0))
+							if ((relFacingToWayPt < -5.0) || (relFacingToWayPt > 5.0))
 							{
 								//-----------------------------------------------
 								// We can and will shift facing to
 								// destination... Don't know that we need to
 								// force walk to turn!! -fs
-								newRotate = -relFacingToWayPt;
-								float maxRate =
-									tonnageTurnRate[int32_t(tonnage)] *
-									frameLength;
+								newRotate	 = -relFacingToWayPt;
+								float maxRate = tonnageTurnRate[int32_t(tonnage)] * frameLength;
 								if (fabs(newRotate) > maxRate)
 								{
 									if (newRotate > 0.0)
@@ -4877,15 +4606,12 @@ bool BattleMech::netUpdateMovePath(float& newRotate, char& newThrottleSetting,
 								}
 								else
 								{
-									if (newGestureStateGoal ==
-										MECH_STATE_WALKING)
+									if (newGestureStateGoal == MECH_STATE_WALKING)
 									{
 										//------------------------------------
 										// Try to attain current goal speed...
-										newThrottleSetting =
-											pilot->calcMoveSpeedThrottle(
-												getBodyState(),
-												control.settings.mech.throttle);
+										newThrottleSetting = pilot->calcMoveSpeedThrottle(
+											getBodyState(), control.settings.mech.throttle);
 									}
 								}
 							}
@@ -4896,9 +4622,8 @@ bool BattleMech::netUpdateMovePath(float& newRotate, char& newThrottleSetting,
 							// Stop, and pivot fully reverse to next path
 							// step...
 							//((MechActor*)appearance)->forceStop();
-							pilot
-								->pausePath(); // pilot->getMovePath()->numSteps
-											   // = 0;
+							pilot->pausePath(); // pilot->getMovePath()->numSteps
+												// = 0;
 							newMoveState = MOVESTATE_PIVOT_REVERSE;
 						}
 						else if (moveStateGoal == MOVESTATE_PIVOT_FORWARD)
@@ -4907,9 +4632,8 @@ bool BattleMech::netUpdateMovePath(float& newRotate, char& newThrottleSetting,
 							// Stop, and pivot fully forward to next path
 							// step...
 							//((MechActor*)appearance)->forceStop();
-							pilot
-								->pausePath(); // pilot->getMovePath()->numSteps
-											   // = 0;
+							pilot->pausePath(); // pilot->getMovePath()->numSteps
+												// = 0;
 							newMoveState = MOVESTATE_PIVOT_FORWARD;
 						}
 						else if (moveStateGoal == MOVESTATE_PIVOT_REVERSE)
@@ -4918,9 +4642,8 @@ bool BattleMech::netUpdateMovePath(float& newRotate, char& newThrottleSetting,
 							// Stop, and pivot fully reverse to next path
 							// step...
 							//((MechActor*)appearance)->forceStop();
-							pilot
-								->pausePath(); // pilot->getMovePath()->numSteps
-											   // = 0;
+							pilot->pausePath(); // pilot->getMovePath()->numSteps
+												// = 0;
 							newMoveState = MOVESTATE_PIVOT_REVERSE;
 						}
 						else
@@ -4928,11 +4651,9 @@ bool BattleMech::netUpdateMovePath(float& newRotate, char& newThrottleSetting,
 							//--------
 							// Stop...
 							//((MechActor*)appearance)->forceStop();
-							pilot
-								->pausePath(); // pilot->getMovePath()->numSteps
-											   // = 0;
-							newMoveState =
-								MOVESTATE_FORWARD /*MOVESTATE_STAND*/;
+							pilot->pausePath(); // pilot->getMovePath()->numSteps
+												// = 0;
+							newMoveState = MOVESTATE_FORWARD /*MOVESTATE_STAND*/;
 						}
 					}
 					else if (moveState == MOVESTATE_REVERSE)
@@ -4943,9 +4664,8 @@ bool BattleMech::netUpdateMovePath(float& newRotate, char& newThrottleSetting,
 							// Stop, and pivot fully forward to next path
 							// step...
 							//((MechActor*)appearance)->forceStop();
-							pilot
-								->pausePath(); // pilot->getMovePath()->numSteps
-											   // = 0;
+							pilot->pausePath(); // pilot->getMovePath()->numSteps
+												// = 0;
 							newMoveState = MOVESTATE_PIVOT_FORWARD;
 						}
 						else if (moveStateGoal == MOVESTATE_REVERSE)
@@ -4993,24 +4713,21 @@ bool BattleMech::netUpdateMovePath(float& newRotate, char& newThrottleSetting,
 								newRotate = -(relFacingToWayPt + 180.0);
 							else
 								newRotate = -(relFacingToWayPt - 180.0);
-							float maxRate =
-								tonnageTurnRate[int32_t(tonnage)] * frameLength;
+							float maxRate = tonnageTurnRate[int32_t(tonnage)] * frameLength;
 							if (fabs(newRotate) > maxRate)
 							{
 								if (newRotate > 0.0)
 									newRotate = maxRate;
 								else
 									newRotate = -maxRate;
-								newThrottleSetting =
-									control.settings.mech.throttle - 10;
+								newThrottleSetting = control.settings.mech.throttle - 10;
 							}
 							else
 							{
 								//------------------------------------
 								// Try to attain current goal speed...
-								newThrottleSetting =
-									pilot->calcMoveSpeedThrottle(getBodyState(),
-										control.settings.mech.throttle);
+								newThrottleSetting = pilot->calcMoveSpeedThrottle(
+									getBodyState(), control.settings.mech.throttle);
 								// newThrottleSetting = data->throttleSetting +
 								// 10;
 							}
@@ -5021,9 +4738,8 @@ bool BattleMech::netUpdateMovePath(float& newRotate, char& newThrottleSetting,
 							// Stop, and pivot fully forward to next path
 							// step...
 							//((MechActor*)appearance)->forceStop();
-							pilot
-								->pausePath(); // pilot->getMovePath()->numSteps
-											   // = 0;
+							pilot->pausePath(); // pilot->getMovePath()->numSteps
+												// = 0;
 							newMoveState = MOVESTATE_PIVOT_FORWARD;
 						}
 						else if (moveStateGoal == MOVESTATE_PIVOT_REVERSE)
@@ -5032,9 +4748,8 @@ bool BattleMech::netUpdateMovePath(float& newRotate, char& newThrottleSetting,
 							// Stop, and pivot fully reverse to next path
 							// step...
 							//((MechActor*)appearance)->forceStop();
-							pilot
-								->pausePath(); // pilot->getMovePath()->numSteps
-											   // = 0;
+							pilot->pausePath(); // pilot->getMovePath()->numSteps
+												// = 0;
 							newMoveState = MOVESTATE_PIVOT_REVERSE;
 						}
 						else
@@ -5042,11 +4757,9 @@ bool BattleMech::netUpdateMovePath(float& newRotate, char& newThrottleSetting,
 							//--------
 							// Stop...
 							//((MechActor*)appearance)->forceStop();
-							pilot
-								->pausePath(); // pilot->getMovePath()->numSteps
-											   // = 0;
-							newMoveState =
-								MOVESTATE_FORWARD /*MOVESTATE_STAND*/;
+							pilot->pausePath(); // pilot->getMovePath()->numSteps
+												// = 0;
+							newMoveState = MOVESTATE_FORWARD /*MOVESTATE_STAND*/;
 						}
 					}
 					else
@@ -5057,18 +4770,16 @@ bool BattleMech::netUpdateMovePath(float& newRotate, char& newThrottleSetting,
 							(moveStateGoal == MOVESTATE_PIVOT_FORWARD))
 						{
 							//((MechActor*)appearance)->forceStop();
-							pilot
-								->pausePath(); // pilot->getMovePath()->numSteps
-											   // = 0;
+							pilot->pausePath(); // pilot->getMovePath()->numSteps
+												// = 0;
 							newMoveState = MOVESTATE_PIVOT_FORWARD;
 						}
 						else if ((moveStateGoal == MOVESTATE_REVERSE) ||
-								 (moveStateGoal == MOVESTATE_PIVOT_REVERSE))
+							(moveStateGoal == MOVESTATE_PIVOT_REVERSE))
 						{
 							//((MechActor*)appearance)->forceStop();
-							pilot
-								->pausePath(); // pilot->getMovePath()->numSteps
-											   // = 0;
+							pilot->pausePath(); // pilot->getMovePath()->numSteps
+												// = 0;
 							newMoveState = MOVESTATE_PIVOT_REVERSE;
 						}
 					}
@@ -5099,7 +4810,7 @@ void BattleMech::netUpdateMovement(void)
 	int32_t maxThrottle = 100;
 	int32_t bodyState   = getBodyState();
 	MovePathPtr path	= pilot->getMovePath();
-	bool atEndOfPath = (path->curStep == (path->numSteps - 1)); // was >=
+	bool atEndOfPath	= (path->curStep == (path->numSteps - 1)); // was >=
 	Stuff::Vector3D wayPt;
 	float distanceFromWayPt = 1000000.0;
 	if ((path->curStep > -1) && (path->curStep < path->numSteps))
@@ -5107,8 +4818,8 @@ void BattleMech::netUpdateMovement(void)
 		wayPt			  = path->stepList[path->curStep].destination;
 		distanceFromWayPt = distanceFrom(wayPt);
 	}
-	if (moveChunk.moving && /*(path->numStepsWhenNotPaused > 0) &&*/ (
-								bodyState == MECH_STATUSCHUNK_BODYSTATE_PARKED))
+	if (moveChunk.moving &&
+		/*(path->numStepsWhenNotPaused > 0) &&*/ (bodyState == MECH_STATUSCHUNK_BODYSTATE_PARKED))
 		startUpThisFrame = true;
 	//	MECH_STATUSCHUNK_BODYSTATE_NORMAL,
 	//	MECH_STATUSCHUNK_BODYSTATE_STANDING,
@@ -5185,8 +4896,8 @@ void BattleMech::netUpdateMovement(void)
 	}
 	if (disableThisFrame)
 	{
-		int32_t fallGesture = RandomNumber(2) ? MECH_STATE_FALLEN_FORWARD
-											  : MECH_STATE_FALLEN_BACKWARD;
+		int32_t fallGesture =
+			RandomNumber(2) ? MECH_STATE_FALLEN_FORWARD : MECH_STATE_FALLEN_BACKWARD;
 		if (hitFromBehindThisFrame)
 			fallGesture = MECH_STATE_FALLEN_FORWARD;
 		else if (hitFromFrontThisFrame)
@@ -5218,8 +4929,7 @@ void BattleMech::netUpdateMovement(void)
 		control.settings.mech.throttle = maxThrottle;
 		return;
 	}
-	if ((status == OBJECT_STATUS_SHUTTING_DOWN) ||
-		(status == OBJECT_STATUS_SHUTDOWN) ||
+	if ((status == OBJECT_STATUS_SHUTTING_DOWN) || (status == OBJECT_STATUS_SHUTDOWN) ||
 		(status == OBJECT_STATUS_DISABLED))
 		return;
 	if (isCaptured())
@@ -5235,12 +4945,12 @@ void BattleMech::netUpdateMovement(void)
 	int32_t newMoveState		= -1;
 	char newThrottleSetting		= -1;
 	bool goalReached			= false;
-	goalReached = netUpdateMovePath(newRotate, newThrottleSetting,
-		newGestureStateGoal, newMoveState, minThrottle, maxThrottle);
+	goalReached					= netUpdateMovePath(
+		newRotate, newThrottleSetting, newGestureStateGoal, newMoveState, minThrottle, maxThrottle);
 	if (newMoveState != -1)
 		pilot->setMoveState(newMoveState);
-	setControlSettings(newRotate, newThrottleSetting, newGestureStateGoal,
-		minThrottle, maxThrottle, newRotate);
+	setControlSettings(
+		newRotate, newThrottleSetting, newGestureStateGoal, minThrottle, maxThrottle, newRotate);
 	// updateTorso(newRotate);
 	updateMoveStateGoal();
 	NewRotation = newRotate;
@@ -5342,17 +5052,17 @@ bool BattleMech::crashAvoidanceSystem(void)
 	int32_t dir			= path->getDirection(path->curStep);
 	if ((dir == 1) || (dir == 3) || (dir == 5) || (dir == 7))
 	{
-		bool firstCornerClipped  = getAdjacentCellPathLocked((moveLevel == 2),
-			 cellPositionRow, cellPositionCol, adjClippedCell[dir][0]);
-		bool secondCornerClipped = getAdjacentCellPathLocked((moveLevel == 2),
-			cellPositionRow, cellPositionCol, adjClippedCell[dir][1]);
-		clippingCorner			 = (firstCornerClipped && secondCornerClipped);
+		bool firstCornerClipped = getAdjacentCellPathLocked(
+			(moveLevel == 2), cellPositionRow, cellPositionCol, adjClippedCell[dir][0]);
+		bool secondCornerClipped = getAdjacentCellPathLocked(
+			(moveLevel == 2), cellPositionRow, cellPositionCol, adjClippedCell[dir][1]);
+		clippingCorner = (firstCornerClipped && secondCornerClipped);
 	}
 	// bool stepOnMover = getPathLocked(tileR, tileC, cellR, cellC,
 	// crashAvoidSelf);
-	bool nearingMover = getPathRangeLock(crashAvoidPath, &reachedEnd);
-	bool pathBlocked  = getPathRangeBlocked(crashAvoidPath, &blockReachedEnd);
-	bool pathLocked   = /*stepOnMover ||*/ nearingMover;
+	bool nearingMover	= getPathRangeLock(crashAvoidPath, &reachedEnd);
+	bool pathBlocked	 = getPathRangeBlocked(crashAvoidPath, &blockReachedEnd);
+	bool pathLocked		 = /*stepOnMover ||*/ nearingMover;
 	int32_t stepIntoGate = (path->crossesClosedGate(-1, 2) > 0);
 	if (pilot->isYielding())
 	{
@@ -5458,17 +5168,13 @@ void BattleMech::updatePlayerControl(void)
 	//-----------------------------------------------------------------
 	// Poll the joystick and keyboards here so player can control mech.
 	if (userInput->getKeyDown(KEY_T))
-		control.settings.mech.rotate =
-			tonnageTurnRate[int32_t(tonnage)] / 4.0 * frameLength;
+		control.settings.mech.rotate = tonnageTurnRate[int32_t(tonnage)] / 4.0 * frameLength;
 	if (userInput->getKeyDown(KEY_Y))
-		control.settings.mech.rotate =
-			-tonnageTurnRate[int32_t(tonnage)] / 4.0 * frameLength;
+		control.settings.mech.rotate = -tonnageTurnRate[int32_t(tonnage)] / 4.0 * frameLength;
 	if (userInput->getKeyDown(KEY_DIVIDE))
-		control.settings.mech.rotateTorso =
-			dynamics.max.mech.torsoYawRate / 4.0 * frameLength;
+		control.settings.mech.rotateTorso = dynamics.max.mech.torsoYawRate / 4.0 * frameLength;
 	if (userInput->getKeyDown(KEY_MULTIPLY))
-		control.settings.mech.rotateTorso =
-			-dynamics.max.mech.torsoYawRate / 4.0 * frameLength;
+		control.settings.mech.rotateTorso = -dynamics.max.mech.torsoYawRate / 4.0 * frameLength;
 	if (userInput->getKeyDown(KEY_NEXT))
 	{
 		appearance->setNextFrame();
@@ -5482,8 +5188,7 @@ void BattleMech::updatePlayerControl(void)
 		appearance->setSingleStepMode();
 	}
 	if (userInput->getKeyDown(KEY_U))
-		control.settings.mech.rotateLeftArm =
-			tonnageTurnRate[int32_t(tonnage)] / 4.0 * frameLength;
+		control.settings.mech.rotateLeftArm = tonnageTurnRate[int32_t(tonnage)] / 4.0 * frameLength;
 	if (userInput->getKeyDown(KEY_I))
 		control.settings.mech.rotateLeftArm =
 			-tonnageTurnRate[int32_t(tonnage)] / 4.0 * frameLength;
@@ -5557,10 +5262,8 @@ void BattleMech::updateDynamics(void)
 	if (appearance)
 	{
 		if ((control.settings.mech.gestureGoal != -1) ||
-			((control.settings.mech.gestureGoal == 7) &&
-				(getMoveType() != MOVETYPE_AIR)) ||
-			((control.settings.mech.gestureGoal == 8) &&
-				(getMoveType() != MOVETYPE_AIR)))
+			((control.settings.mech.gestureGoal == 7) && (getMoveType() != MOVETYPE_AIR)) ||
+			((control.settings.mech.gestureGoal == 8) && (getMoveType() != MOVETYPE_AIR)))
 			appearance->setGestureGoal(control.settings.mech.gestureGoal);
 	}
 	//--------------------------------------------------------------------
@@ -5600,14 +5303,12 @@ void BattleMech::updateDynamics(void)
 			newRightArmRotation = -tonnageTurnRate[int32_t(tonnage)];
 			rightArmYawRate		= 0.0;
 		}
-		if ((newRightArmRotation + rightArmYawRate) >
-			tonnageTurnRate[int32_t(tonnage)])
+		if ((newRightArmRotation + rightArmYawRate) > tonnageTurnRate[int32_t(tonnage)])
 		{
 			newRightArmRotation = tonnageTurnRate[int32_t(tonnage)];
 			rightArmYawRate		= 0.0;
 		}
-		if ((newRightArmRotation + rightArmYawRate) <
-			-tonnageTurnRate[int32_t(tonnage)])
+		if ((newRightArmRotation + rightArmYawRate) < -tonnageTurnRate[int32_t(tonnage)])
 		{
 			newRightArmRotation = -tonnageTurnRate[int32_t(tonnage)];
 			rightArmYawRate		= 0.0;
@@ -5630,14 +5331,12 @@ void BattleMech::updateDynamics(void)
 			newLeftArmRotation = tonnageTurnRate[int32_t(tonnage)];
 			leftArmYawRate	 = 0.0;
 		}
-		if ((newLeftArmRotation + leftArmYawRate) <
-			-tonnageTurnRate[int32_t(tonnage)])
+		if ((newLeftArmRotation + leftArmYawRate) < -tonnageTurnRate[int32_t(tonnage)])
 		{
 			newLeftArmRotation = -tonnageTurnRate[int32_t(tonnage)];
 			leftArmYawRate	 = 0.0;
 		}
-		if ((newLeftArmRotation + leftArmYawRate) >
-			tonnageTurnRate[int32_t(tonnage)])
+		if ((newLeftArmRotation + leftArmYawRate) > tonnageTurnRate[int32_t(tonnage)])
 		{
 			newLeftArmRotation = tonnageTurnRate[int32_t(tonnage)];
 			leftArmYawRate	 = 0.0;
@@ -5739,8 +5438,7 @@ int32_t BattleMech::update(void)
 				sensorSystem->broken = true;
 			}
 		}
-		if ((status == OBJECT_STATUS_SHUTDOWN) ||
-			(status == OBJECT_STATUS_SHUTTING_DOWN))
+		if ((status == OBJECT_STATUS_SHUTDOWN) || (status == OBJECT_STATUS_SHUTTING_DOWN))
 			appearance->setGestureGoal(MECH_STATE_PARKED);
 		if (getAwake() && !isDisabled() && getTeam() && !godMode)
 		{
@@ -5773,12 +5471,9 @@ int32_t BattleMech::update(void)
 		if (!isDisabled())
 		{
 			MoverPtr ramTarget = nullptr;
-			if ((getPilot()->getCurTacOrder()->code ==
-					TACTICAL_ORDER_ATTACK_OBJECT) &&
-				(getPilot()->getCurTacOrder()->attackParams.method ==
-					ATTACKMETHOD_RAMMING))
-				ramTarget =
-					(MoverPtr)getPilot()->getCurTacOrder()->getRamTarget();
+			if ((getPilot()->getCurTacOrder()->code == TACTICAL_ORDER_ATTACK_OBJECT) &&
+				(getPilot()->getCurTacOrder()->attackParams.method == ATTACKMETHOD_RAMMING))
+				ramTarget = (MoverPtr)getPilot()->getCurTacOrder()->getRamTarget();
 			if (ramTarget)
 				ramTarget->updatePathLock(false);
 			emergencyStop = crashAvoidanceSystem();
@@ -5835,8 +5530,7 @@ int32_t BattleMech::update(void)
 			setVelocity(vel);
 			newPosition.Add(position, vel);
 			newPosition.z = land->getTerrainElevation(newPosition);
-			if ((getMoveType() == MOVETYPE_AIR) &&
-				(newPosition.z < MapData::waterDepth))
+			if ((getMoveType() == MOVETYPE_AIR) && (newPosition.z < MapData::waterDepth))
 				newPosition.z = MapData::waterDepth;
 		}
 		else
@@ -5856,8 +5550,7 @@ int32_t BattleMech::update(void)
 				// If we're too far from where we should be, perhaps we should
 				// just warp to it...
 				Stuff::Vector3D correctPos;
-				land->cellToWorld(moveChunk.stepPos[0][0],
-					moveChunk.stepPos[0][1], correctPos);
+				land->cellToWorld(moveChunk.stepPos[0][0], moveChunk.stepPos[0][1], correctPos);
 				correctPos.z		   = 0.0;
 				Stuff::Vector3D curPos = position;
 				curPos.z			   = 0.0;
@@ -5865,8 +5558,7 @@ int32_t BattleMech::update(void)
 				float posDelta = curPos.GetLength();
 				if (posDelta > MPlayer->warpFactor)
 					newPosition = correctPos;
-				if (!GameMap->inBounds(
-						moveChunk.stepPos[0][0], moveChunk.stepPos[0][1]))
+				if (!GameMap->inBounds(moveChunk.stepPos[0][0], moveChunk.stepPos[0][1]))
 					Fatal(0, " mech.update: newMoveChunk stepPos not on map! ");
 			}
 			newMoveChunk = false;
@@ -5895,10 +5587,8 @@ int32_t BattleMech::update(void)
 		bool inView = appearance->recalcBounds();
 		if (inView)
 			windowsVisible = turn;
-		if (withdrawing && !inView &&
-			(pilot->getStatus() != WARRIOR_STATUS_WITHDRAWN))
-			ObjectManager->getObjectType(typeHandle)
-				->handleDestruction(this, nullptr);
+		if (withdrawing && !inView && (pilot->getStatus() != WARRIOR_STATUS_WITHDRAWN))
+			ObjectManager->getObjectType(typeHandle)->handleDestruction(this, nullptr);
 		if (appearance)
 		{
 			MovePathPtr path = pilot->getMovePath();
@@ -5907,8 +5597,7 @@ int32_t BattleMech::update(void)
 				brake = false;
 			appearance->setBrake(brake);
 			if ((pilot->getCurrentTarget()) ||
-				(pilot->getCurTacOrder()->code ==
-					TACTICAL_ORDER_ATTACK_OBJECT) ||
+				(pilot->getCurTacOrder()->code == TACTICAL_ORDER_ATTACK_OBJECT) ||
 				(pilot->getCurTacOrder()->code == TACTICAL_ORDER_ATTACK_POINT))
 				appearance->setCombatMode(true);
 			else
@@ -5974,10 +5663,9 @@ int32_t BattleMech::update(void)
 				// DO NOT play disable effect if pilot is dead!!
 				if (getPilot()->alive())
 				{
-					Stuff::Vector3D cockpitPos =
-						appearance->getNodeNamePosition("cockpit");
-					ObjectManager->createExplosion(MECH_DISABLE_EXPLOSION_ID,
-						nullptr, cockpitPos, 0.0f, 0.0f);
+					Stuff::Vector3D cockpitPos = appearance->getNodeNamePosition("cockpit");
+					ObjectManager->createExplosion(
+						MECH_DISABLE_EXPLOSION_ID, nullptr, cockpitPos, 0.0f, 0.0f);
 				}
 				appearance->startSmoking(-1);
 				exploding = true;
@@ -6034,11 +5722,9 @@ int32_t BattleMech::update(void)
 			{
 				//-------------------------------------------------------
 				// Blow the Mech and leave a crater.
-				Stuff::Vector3D cockpitPos =
-					appearance->getNodeNamePosition("cockpit");
+				Stuff::Vector3D cockpitPos = appearance->getNodeNamePosition("cockpit");
 				if (getMoveType() != MOVETYPE_AIR)
-					ObjectManager->createExplosion(MECH_EXPLOSION_ID, nullptr,
-						cockpitPos,
+					ObjectManager->createExplosion(MECH_EXPLOSION_ID, nullptr, cockpitPos,
 						((BattleMechTypePtr)getObjectType())->explDmg,
 						((BattleMechTypePtr)getObjectType())->explRad);
 				else
@@ -6047,10 +5733,8 @@ int32_t BattleMech::update(void)
 				craterManager->addCrater(CRATER_4, position, RandomNumber(180));
 				exploding = true;
 			}
-			else if (((timeLeft < -2.5f) && !mechRemoved &&
-						 (getMoveType() != MOVETYPE_AIR)) ||
-					 ((timeLeft < -1.5f) && !mechRemoved &&
-						 (getMoveType() == MOVETYPE_AIR)))
+			else if (((timeLeft < -2.5f) && !mechRemoved && (getMoveType() != MOVETYPE_AIR)) ||
+				((timeLeft < -1.5f) && !mechRemoved && (getMoveType() == MOVETYPE_AIR)))
 			{
 				mechRemoved = true;
 			}
@@ -6095,8 +5779,7 @@ int32_t BattleMech::update(void)
 		else
 			homeRelations = 1;
 	}
-	appearance->setObjectParameters(
-		position, rotation, drawFlags, getTeamId(), homeRelations);
+	appearance->setObjectParameters(position, rotation, drawFlags, getTeamId(), homeRelations);
 	if (getMoveType() == MOVETYPE_AIR)
 		appearance->setMoverParameters(torsoRotation, 0.0f, 0.0f, true);
 	else
@@ -6124,8 +5807,7 @@ int32_t BattleMech::update(void)
 	{
 		//---------------------------------------------------------------
 		conStat = getContactStatus(Team::home->getId(), true);
-		if ((conStat == CONTACT_VISUAL) || isDestroyed() || isDisabled() ||
-			ShowMovers ||
+		if ((conStat == CONTACT_VISUAL) || isDestroyed() || isDisabled() || ShowMovers ||
 			(MPlayer && MPlayer->allUnitsDestroyed[MPlayer->commanderID]))
 		{
 			if (alphaValue != 0xff)
@@ -6206,8 +5888,7 @@ int32_t BattleMech::update(void)
 	appearance->setBarColor(color);
 	appearance->setBarStatus(barStatus);
 	// Must make room for holdFireIcons on HUD if this mech might need one!
-	if (isOnGui && !mechRemoved && (attackRange == FIRERANGE_CURRENT) &&
-		!isDisabled())
+	if (isOnGui && !mechRemoved && (attackRange == FIRERANGE_CURRENT) && !isDisabled())
 	{
 		mcTextureManager->addTriangle(holdFireIconHandle, MC2_ISHUDLMNT);
 		mcTextureManager->addTriangle(holdFireIconHandle, MC2_ISHUDLMNT);
@@ -6226,8 +5907,7 @@ void BattleMech::render(void)
 			//---------------------------------------------------------------
 			// Sensor contact is now same as during update.
 			int32_t cStat = conStat;
-			if ((cStat == CONTACT_VISUAL) || isDestroyed() || isDisabled() ||
-				ShowMovers ||
+			if ((cStat == CONTACT_VISUAL) || isDestroyed() || isDisabled() || ShowMovers ||
 				(MPlayer && MPlayer->allUnitsDestroyed[MPlayer->commanderID]))
 			{
 				float barStatus = getTotalEffectiveness();
@@ -6270,20 +5950,20 @@ void BattleMech::render(void)
 				{
 					if (tonnage < 40)
 						drawSensorTextHelp(appearance->getScreenPos().x,
-							appearance->getScreenPos().y + 20.0f,
-							IDS_SENSOR_LIGHT_MECH, SD_RED, false);
+							appearance->getScreenPos().y + 20.0f, IDS_SENSOR_LIGHT_MECH, SD_RED,
+							false);
 					else if (tonnage < 65)
 						drawSensorTextHelp(appearance->getScreenPos().x,
-							appearance->getScreenPos().y + 20.0f,
-							IDS_SENSOR_MEDIUM_MECH, SD_RED, false);
+							appearance->getScreenPos().y + 20.0f, IDS_SENSOR_MEDIUM_MECH, SD_RED,
+							false);
 					else if (tonnage < 80)
 						drawSensorTextHelp(appearance->getScreenPos().x,
-							appearance->getScreenPos().y + 20.0f,
-							IDS_SENSOR_HEAVY_MECH, SD_RED, false);
+							appearance->getScreenPos().y + 20.0f, IDS_SENSOR_HEAVY_MECH, SD_RED,
+							false);
 					else
 						drawSensorTextHelp(appearance->getScreenPos().x,
-							appearance->getScreenPos().y + 20.0f,
-							IDS_SENSOR_ASSAULT_MECH, SD_RED, false);
+							appearance->getScreenPos().y + 20.0f, IDS_SENSOR_ASSAULT_MECH, SD_RED,
+							false);
 				}
 			}
 			else if (cStat == CONTACT_SENSOR_QUALITY_4)
@@ -6293,8 +5973,7 @@ void BattleMech::render(void)
 				appearance->render();
 				if (appearance->canBeSeen())
 					drawSensorTextHelp(appearance->getScreenPos().x,
-						appearance->getScreenPos().y + 20.0f, descID, SD_RED,
-						false);
+						appearance->getScreenPos().y + 20.0f, descID, SD_RED, false);
 			}
 		}
 		else
@@ -6324,10 +6003,8 @@ void BattleMech::render(void)
 				appearance->setVisibility(true, true);
 				appearance->setSensorLevel(0);
 				appearance->render();
-				if (attackRange == FIRERANGE_CURRENT && !isDisabled() &&
-					appearance->canBeSeen())
-					appearance->drawIcon(
-						holdFireIconHandle, 5, 5, color | 0xff000000);
+				if (attackRange == FIRERANGE_CURRENT && !isDisabled() && appearance->canBeSeen())
+					appearance->drawIcon(holdFireIconHandle, 5, 5, color | 0xff000000);
 			}
 		}
 	}
@@ -6343,14 +6020,13 @@ void BattleMech::render(void)
 				if (i != (path->numSteps - 1))
 				{
 					Stuff::Vector3D startPos = path->stepList[i].destination;
-					Stuff::Vector3D endPos = path->stepList[i + 1].destination;
-					startPos.z = land->getTerrainElevation(startPos);
-					endPos.z   = land->getTerrainElevation(endPos);
+					Stuff::Vector3D endPos   = path->stepList[i + 1].destination;
+					startPos.z				 = land->getTerrainElevation(startPos);
+					endPos.z				 = land->getTerrainElevation(endPos);
 					eye->projectZ(startPos, lineStart);
 					eye->projectZ(endPos, lineEnd);
 					lineStart.z = lineEnd.z = HUD_DEPTH;
-					LineElement newElement(
-						lineStart, lineEnd, SD_BLUE, nullptr, -1);
+					LineElement newElement(lineStart, lineEnd, SD_BLUE, nullptr, -1);
 					newElement.draw();
 				}
 			}
@@ -6365,8 +6041,7 @@ void BattleMech::renderShadows(void)
 	if (Terrain::IsGameSelectTerrainPosition(position))
 	{
 		if ((appearance->getCurrentGestureId() == 14) ||
-			(appearance->getCurrentGestureId() == 15) ||
-			(appearance->getCurrentGestureId() >= 21))
+			(appearance->getCurrentGestureId() == 15) || (appearance->getCurrentGestureId() >= 21))
 		{
 			return; // No shadows on a fall!
 		}
@@ -6449,9 +6124,9 @@ bool BattleMech::isWeaponReady(int32_t weaponIndex)
 {
 	//	int32_t bodyLocation = inventory[weaponIndex].bodyLocation;
 	//	if ((bodyLocation == MECH_BODY_LOCATION_LARM) &&
-	//inventory[actuator[ACTUATOR_LSHOULDER]].disabled) 		return(false);
+	// inventory[actuator[ACTUATOR_LSHOULDER]].disabled) 		return(false);
 	//	else if ((bodyLocation == MECH_BODY_LOCATION_RARM) &&
-	//inventory[actuator[ACTUATOR_RSHOULDER]].disabled) 		return(false);
+	// inventory[actuator[ACTUATOR_RSHOULDER]].disabled) 		return(false);
 	//	else
 	if (inventory[weaponIndex].disabled || !(inventory[weaponIndex].health))
 		return (false);
@@ -6462,24 +6137,23 @@ bool BattleMech::isWeaponReady(int32_t weaponIndex)
 
 //---------------------------------------------------------------------------
 
-float BattleMech::calcAttackChance(GameObjectPtr target, int32_t aimLocation,
-	float targetTime, int32_t weaponIndex, float modifiers, int32_t* range,
-	Stuff::Vector3D* targetPoint)
+float BattleMech::calcAttackChance(GameObjectPtr target, int32_t aimLocation, float targetTime,
+	int32_t weaponIndex, float modifiers, int32_t* range, Stuff::Vector3D* targetPoint)
 {
 	if ((weaponIndex < numOther) || (weaponIndex >= numOther + numWeapons))
 		return (-1000.0);
 	//	if (pilot)
 	//		modifiers +=
-	//RankVersusChassisCombatModifier[pilot->getRank()][chassisClass];
-	float attackChance = Mover::calcAttackChance(target, aimLocation,
-		targetTime, weaponIndex, modifiers, range, targetPoint);
+	// RankVersusChassisCombatModifier[pilot->getRank()][chassisClass];
+	float attackChance = Mover::calcAttackChance(
+		target, aimLocation, targetTime, weaponIndex, modifiers, range, targetPoint);
 	return (attackChance);
 }
 
 //---------------------------------------------------------------------------
 
-int32_t BattleMech::calcHitLocation(GameObjectPtr attacker, int32_t weaponIndex,
-	int32_t attackSource, int32_t attackType)
+int32_t BattleMech::calcHitLocation(
+	GameObjectPtr attacker, int32_t weaponIndex, int32_t attackSource, int32_t attackType)
 {
 	//---------------------------------------------------------------------
 	// Need to use the Line-of-fire params to calc section and arc of hit.
@@ -6522,10 +6196,8 @@ int32_t BattleMech::calcHitLocation(GameObjectPtr attacker, int32_t weaponIndex,
 	// Roll, and see where it hits...
 	int32_t locationRoll = RandomNumber(100);
 	int32_t startEntry =
-		section * (NUM_MECH_ARMOR_LOCATIONS * NUM_MECH_HIT_ARCS) +
-		(arc * NUM_MECH_ARMOR_LOCATIONS);
-	for (armorLocation = 0; armorLocation < NUM_MECH_ARMOR_LOCATIONS;
-		 armorLocation++)
+		section * (NUM_MECH_ARMOR_LOCATIONS * NUM_MECH_HIT_ARCS) + (arc * NUM_MECH_ARMOR_LOCATIONS);
+	for (armorLocation = 0; armorLocation < NUM_MECH_ARMOR_LOCATIONS; armorLocation++)
 	{
 		if (locationRoll < MechHitLocationTable[startEntry + armorLocation])
 			break;
@@ -6538,8 +6210,8 @@ int32_t BattleMech::calcHitLocation(GameObjectPtr attacker, int32_t weaponIndex,
 
 int32_t BattleMech::transferHitLocation(int32_t hitLocation)
 {
-	Assert((hitLocation >= 0) && (hitLocation < NUM_MECH_BODY_LOCATIONS),
-		hitLocation, " BattleMech.transferHitLocation: bad hitLocation ");
+	Assert((hitLocation >= 0) && (hitLocation < NUM_MECH_BODY_LOCATIONS), hitLocation,
+		" BattleMech.transferHitLocation: bad hitLocation ");
 	return (MechTransferHitTable[hitLocation]);
 }
 
@@ -6595,8 +6267,9 @@ bool BattleMech::handleEjection(void)
 	// If there is no new point, all units must be blown away.
 	// How do we want to handle this?
 	//	}
-	if (pilot && ((pilot->getStatus() == WARRIOR_STATUS_NORMAL) ||
-					 (pilot->getStatus() == WARRIOR_STATUS_WITHDRAWING)))
+	if (pilot &&
+		((pilot->getStatus() == WARRIOR_STATUS_NORMAL) ||
+			(pilot->getStatus() == WARRIOR_STATUS_WITHDRAWING)))
 	{
 		//----------------
 		// First, eject...
@@ -6611,8 +6284,7 @@ bool BattleMech::handleEjection(void)
 		if (CombatLog)
 		{
 			char s[1024];
-			sprintf(s, "[%.2f] mech.Ejected HE: [%05d]%s", scenarioTime,
-				getPartId(), getName());
+			sprintf(s, "[%.2f] mech.Ejected HE: [%05d]%s", scenarioTime, getPartId(), getName());
 			CombatLog->write(s);
 			CombatLog->write(" ");
 		}
@@ -6661,10 +6333,8 @@ bool BattleMech::hitInventoryItem(int32_t itemIndex, bool setupOnly)
 	case COMPONENT_FORM_SENSOR:
 		break;
 	case COMPONENT_FORM_ACTUATOR:
-		if ((bodyLocation == MECH_BODY_LOCATION_LLEG) ||
-			(MECH_BODY_LOCATION_RLEG))
-			pilotingCheck(
-				0); // pilotCheckModifier += PilotCheckModifierTable[0];
+		if ((bodyLocation == MECH_BODY_LOCATION_LLEG) || (MECH_BODY_LOCATION_RLEG))
+			pilotingCheck(0); // pilotCheckModifier += PilotCheckModifierTable[0];
 		break;
 	case COMPONENT_FORM_ENGINE:
 		break;
@@ -6689,8 +6359,7 @@ bool BattleMech::hitInventoryItem(int32_t itemIndex, bool setupOnly)
 	case COMPONENT_FORM_BULK:
 		break;
 	}
-	if (getInventoryDamage(itemIndex) >=
-		MasterComponent::masterList[masterID].getDisableLevel())
+	if (getInventoryDamage(itemIndex) >= MasterComponent::masterList[masterID].getDisableLevel())
 	{
 		//---------------------------------------
 		// Component is disabled with this hit...
@@ -6735,8 +6404,7 @@ bool BattleMech::hitInventoryItem(int32_t itemIndex, bool setupOnly)
 			break;
 		case COMPONENT_FORM_HEATSINK:
 #ifdef USEHEAT
-			if ((inventory[itemIndex].bodyLocation ==
-					MECH_BODY_LOCATION_LLEG) ||
+			if ((inventory[itemIndex].bodyLocation == MECH_BODY_LOCATION_LLEG) ||
 				(inventory[itemIndex].bodyLocation == MECH_BODY_LOCATION_RLEG))
 				curLegHeatSinks--;
 			disabledHeatSinks++;
@@ -6816,8 +6484,7 @@ bool BattleMech::hitInventoryItem(int32_t itemIndex, bool setupOnly)
 			//----------------------------------------------
 			// Play critical Hit effect here.
 			Stuff::Vector3D smokePos = appearance->getNodePosition(0);
-			ObjectManager->createExplosion(
-				MECH_CRITICAL_HIT_ID, nullptr, smokePos);
+			ObjectManager->createExplosion(MECH_CRITICAL_HIT_ID, nullptr, smokePos);
 			appearance->startSmoking(1);
 			playedCriticalHit = true;
 		}
@@ -6839,19 +6506,16 @@ void BattleMech::destroyBodyLocation(int32_t bodyLocation)
 	body[bodyLocation].curInternalStructure = 0;
 	body[bodyLocation].damageState			= IS_DAMAGE_DESTROYED;
 	armor[bodyLocation].curArmor			= 0;
-	if ((bodyLocation == MECH_BODY_LOCATION_LLEG) ||
-		(bodyLocation == MECH_BODY_LOCATION_RLEG))
+	if ((bodyLocation == MECH_BODY_LOCATION_LLEG) || (bodyLocation == MECH_BODY_LOCATION_RLEG))
 	{
 		calcLegStatus();
 		//----------------
 		// Force a fall...
-		pilotingCheck(
-			PILOTCHECK_SITUATION_NONE, 100.0); // pilotCheckModifier += 1000;
+		pilotingCheck(PILOTCHECK_SITUATION_NONE, 100.0); // pilotCheckModifier += 1000;
 	}
 	else if (bodyLocation == MECH_BODY_LOCATION_CTORSO)
 		calcTorsoStatus();
-	for (size_t curSpace = 0;
-		 curSpace < NumLocationCriticalSpaces[bodyLocation]; curSpace++)
+	for (size_t curSpace = 0; curSpace < NumLocationCriticalSpaces[bodyLocation]; curSpace++)
 	{
 		if (!body[bodyLocation].criticalSpaces[curSpace].hit)
 			if (body[bodyLocation].criticalSpaces[curSpace].inventoryID != 255)
@@ -6861,8 +6525,7 @@ void BattleMech::destroyBodyLocation(int32_t bodyLocation)
 				// if ((form != COMPONENT_FORM_BULK) && (form !=
 				// COMPONENT_FORM_CASE)) {
 				body[bodyLocation].criticalSpaces[curSpace].hit = true;
-				hitInventoryItem(
-					body[bodyLocation].criticalSpaces[curSpace].inventoryID);
+				hitInventoryItem(body[bodyLocation].criticalSpaces[curSpace].inventoryID);
 				//}
 			}
 	}
@@ -6879,8 +6542,7 @@ void BattleMech::destroyBodyLocation(int32_t bodyLocation)
 			//------------------
 			// Should explode...
 			pilot->handleAlarm(PILOT_ALARM_VEHICLE_INCAPACITATED, 0);
-			ObjectManager->getObjectType(typeHandle)
-				->handleDestruction(this, nullptr);
+			ObjectManager->getObjectType(typeHandle)->handleDestruction(this, nullptr);
 		}
 		else
 		{
@@ -6934,14 +6596,12 @@ void BattleMech::calcCriticalHit(int32_t hitLocation)
 			for (hitSpace = 0; hitSpace < numBodySpaces; hitSpace++)
 			{
 				numSpaces = 0;
-				if (body[bodyLocation].criticalSpaces[hitSpace].inventoryID <
-					255)
-					numSpaces = MasterComponent::masterList
-									[inventory[body[bodyLocation]
-												   .criticalSpaces[hitSpace]
-												   .inventoryID]
-											.masterID]
-										.getSize();
+				if (body[bodyLocation].criticalSpaces[hitSpace].inventoryID < 255)
+					numSpaces =
+						MasterComponent::masterList
+							[inventory[body[bodyLocation].criticalSpaces[hitSpace].inventoryID]
+									.masterID]
+								.getSize();
 				if (critHitRoll < numSpaces)
 					break;
 				else
@@ -6952,13 +6612,11 @@ void BattleMech::calcCriticalHit(int32_t hitLocation)
 				return;
 			//				STOP(("Bad bodyLocation in CriticalHit
 			//%d",bodyLocation));
-			if (hitSpace < 0 ||
-				hitSpace >= NumLocationCriticalSpaces[bodyLocation])
+			if (hitSpace < 0 || hitSpace >= NumLocationCriticalSpaces[bodyLocation])
 				return;
 			//				STOP(("Bad Critical Hit Space %d",hitSpace));
 			body[bodyLocation].criticalSpaces[hitSpace].hit = 1;
-			hitInventoryItem(
-				body[bodyLocation].criticalSpaces[hitSpace].inventoryID);
+			hitInventoryItem(body[bodyLocation].criticalSpaces[hitSpace].inventoryID);
 			if (MPlayer)
 				addCriticalHitChunk(CHUNK_SEND, bodyLocation, hitSpace);
 		}
@@ -6978,8 +6636,7 @@ void BattleMech::handleCriticalHit(int32_t bodyLocation, int32_t criticalSpace)
 	if (criticalSpace == 15)
 		destroyBodyLocation(bodyLocation);
 	else
-		hitInventoryItem(
-			body[bodyLocation].criticalSpaces[criticalSpace].inventoryID);
+		hitInventoryItem(body[bodyLocation].criticalSpaces[criticalSpace].inventoryID);
 }
 
 //---------------------------------------------------------------------------
@@ -7033,8 +6690,7 @@ int32_t BattleMech::buildStatusChunk(void)
 				if (curTarget->isMover())
 				{
 					statusChunk.targetType = STATUSCHUNK_TARGET_MOVER;
-					statusChunk.targetId =
-						((MoverPtr)curTarget)->getNetRosterIndex();
+					statusChunk.targetId   = ((MoverPtr)curTarget)->getNetRosterIndex();
 				}
 				else if (curTarget->isTerrainObject())
 				{
@@ -7079,8 +6735,7 @@ int32_t BattleMech::handleStatusChunk(int32_t updateAge, uint32_t chunk)
 			{
 			case STATUSCHUNK_TARGET_MOVER:
 				if (MPlayer->moverRoster[statusChunk.targetId])
-					lastTargetId =
-						MPlayer->moverRoster[statusChunk.targetId]->getPartId();
+					lastTargetId = MPlayer->moverRoster[statusChunk.targetId]->getPartId();
 				break;
 			case STATUSCHUNK_TARGET_TERRAIN:
 			case STATUSCHUNK_TARGET_SPECIAL:
@@ -7190,8 +6845,7 @@ int32_t BattleMech::handleMoveChunk(uint32_t chunk)
 bool BattleMech::injureBodyLocation(int32_t bodyLocation, float damage)
 {
 	BodyLocationPtr location = &body[bodyLocation];
-	if ((bodyLocation == MECH_BODY_LOCATION_CTORSO) &&
-		(centerTorsoBlowTime < 0.0))
+	if ((bodyLocation == MECH_BODY_LOCATION_CTORSO) && (centerTorsoBlowTime < 0.0))
 		centerTorsoBlowTime = scenarioTime;
 	if (damage > location->curInternalStructure)
 		location->curInternalStructure = 0;
@@ -7200,13 +6854,12 @@ bool BattleMech::injureBodyLocation(int32_t bodyLocation, float damage)
 	if (location->curInternalStructure > 0)
 	{
 		float damageLevel = (float)body[bodyLocation].curInternalStructure /
-							body[bodyLocation].maxInternalStructure;
+			body[bodyLocation].maxInternalStructure;
 		if (damageLevel <= 0.5)
 			body[bodyLocation].damageState = IS_DAMAGE_PARTIAL;
 		else
 			body[bodyLocation].damageState = IS_DAMAGE_NONE;
-		if ((bodyLocation == MECH_BODY_LOCATION_LLEG) ||
-			(bodyLocation == MECH_BODY_LOCATION_RLEG))
+		if ((bodyLocation == MECH_BODY_LOCATION_LLEG) || (bodyLocation == MECH_BODY_LOCATION_RLEG))
 			calcLegStatus();
 		else if (bodyLocation == MECH_BODY_LOCATION_CTORSO)
 			calcTorsoStatus();
@@ -7224,8 +6877,7 @@ bool BattleMech::injureBodyLocation(int32_t bodyLocation, float damage)
 
 //---------------------------------------------------------------------------
 
-float BattleMech::weaponLocked(
-	int32_t weaponIndex, Stuff::Vector3D targetPosition)
+float BattleMech::weaponLocked(int32_t weaponIndex, Stuff::Vector3D targetPosition)
 {
 	return (relFacingTo(targetPosition, inventory[weaponIndex].bodyLocation));
 }
@@ -7262,8 +6914,7 @@ bool weaponsLockedWithApproach(vector_3d goalPos, vector_3d targetPos, bool forw
 
 //---------------------------------------------------------------------------
 
-int32_t BattleMech::handleWeaponHit(
-	WeaponShotInfoPtr shotInfo, bool addMultiplayChunk)
+int32_t BattleMech::handleWeaponHit(WeaponShotInfoPtr shotInfo, bool addMultiplayChunk)
 {
 	bool localInvulnerable = false;
 	if (invulnerableON && Team::home == getTeam())
@@ -7297,8 +6948,7 @@ int32_t BattleMech::handleWeaponHit(
 		if (getMoveType() == MOVETYPE_GROUND)
 		{
 			damageAfterDisabled += shotInfo->damage;
-			if (damageAfterDisabled >
-				((BattleMechTypePtr)getObjectType())->destructDamage)
+			if (damageAfterDisabled > ((BattleMechTypePtr)getObjectType())->destructDamage)
 			{
 				// Once the server does this, the status chunk will update the
 				// clients!!
@@ -7313,8 +6963,8 @@ int32_t BattleMech::handleWeaponHit(
 					if (CombatLog)
 					{
 						char s[1024];
-						sprintf(s, "[%.2f] mech.destroyed HWH: [%05d]%s",
-							scenarioTime, getPartId(), getName());
+						sprintf(s, "[%.2f] mech.destroyed HWH: [%05d]%s", scenarioTime, getPartId(),
+							getName());
 						CombatLog->write(s);
 						CombatLog->write(" ");
 					}
@@ -7340,8 +6990,8 @@ int32_t BattleMech::handleWeaponHit(
 			if (CombatLog)
 			{
 				char s[1024];
-				sprintf(s, "[%.2f] helicopter.destroyed: [%05d]%s",
-					scenarioTime, getPartId(), getName());
+				sprintf(s, "[%.2f] helicopter.destroyed: [%05d]%s", scenarioTime, getPartId(),
+					getName());
 				CombatLog->write(s);
 				CombatLog->write(" ");
 			}
@@ -7357,8 +7007,7 @@ int32_t BattleMech::handleWeaponHit(
 	isAmmoExplosion				 = (shotInfo->masterId == -4);
 	if (shotInfo->masterId > 0)
 		isAmmoExplosion =
-			(MasterComponent::masterList[shotInfo->masterId].getForm() ==
-				COMPONENT_FORM_AMMO);
+			(MasterComponent::masterList[shotInfo->masterId].getForm() == COMPONENT_FORM_AMMO);
 	// pilotCheckModifier += (shotInfo->damage * PilotingCheckFactor);
 	//---------------------------------------------------
 	// Tally the damage for rate check and pilot check...
@@ -7367,11 +7016,9 @@ int32_t BattleMech::handleWeaponHit(
 	//---------------------------------
 	// Did the hit cause us to stumble?
 	float torsoEntryAngle = shotInfo->entryAngle + torsoRotation;
-	if ((torsoEntryAngle >= -90.0 /*-45.0*/) &&
-		(torsoEntryAngle <= 90.0 /*45.0*/))
+	if ((torsoEntryAngle >= -90.0 /*-45.0*/) && (torsoEntryAngle <= 90.0 /*45.0*/))
 		hitFromFrontThisFrame = true;
-	else if ((torsoEntryAngle <= -91.0 /*-135.0*/) ||
-			 (torsoEntryAngle >= 91.0 /*135.0*/))
+	else if ((torsoEntryAngle <= -91.0 /*-135.0*/) || (torsoEntryAngle >= 91.0 /*135.0*/))
 		hitFromBehindThisFrame = true;
 	//-----------------------------------
 	// First, what type of hit is this...
@@ -7416,8 +7063,7 @@ int32_t BattleMech::handleWeaponHit(
 	{
 		if (shotInfo->damage > armor[shotInfo->hitLocation].curArmor)
 		{
-			shotInfo->setDamage(
-				shotInfo->damage - armor[shotInfo->hitLocation].curArmor);
+			shotInfo->setDamage(shotInfo->damage - armor[shotInfo->hitLocation].curArmor);
 			armor[shotInfo->hitLocation].curArmor = 0;
 			if (!armorHoled)
 				pilot->radioMessage(RADIO_ARMORHOLE);
@@ -7430,11 +7076,8 @@ int32_t BattleMech::handleWeaponHit(
 			{
 				if (shotInfo->damage >= body[bodyLocation].curInternalStructure)
 				{
-					shotInfo->setDamage(
-						shotInfo->damage -
-						body[bodyLocation].curInternalStructure);
-					injureBodyLocation(
-						bodyLocation, body[bodyLocation].curInternalStructure);
+					shotInfo->setDamage(shotInfo->damage - body[bodyLocation].curInternalStructure);
+					injureBodyLocation(bodyLocation, body[bodyLocation].curInternalStructure);
 					if (shotInfo->damage > 0)
 					{
 						if ((bodyLocation == MECH_BODY_LOCATION_CTORSO) ||
@@ -7451,15 +7094,14 @@ int32_t BattleMech::handleWeaponHit(
 						else
 						{
 							WeaponShotInfo newShotInfo = *shotInfo;
-							newShotInfo.hitLocation	= transferHitLocation(
-								   bodyLocation /*shotInfo->hitLocation*/);
+							newShotInfo.hitLocation =
+								transferHitLocation(bodyLocation /*shotInfo->hitLocation*/);
 							if (MPlayer)
 							{
 								if (MPlayer->isServer())
 								{
 									if (CombatLog)
-										CombatLog->write(
-											"     HIT TRANSFER 1...");
+										CombatLog->write("     HIT TRANSFER 1...");
 									handleWeaponHit(&newShotInfo, true);
 								}
 							}
@@ -7489,10 +7131,8 @@ int32_t BattleMech::handleWeaponHit(
 		{
 			if (shotInfo->damage >= body[bodyLocation].curInternalStructure)
 			{
-				shotInfo->setDamage(
-					shotInfo->damage - body[bodyLocation].curInternalStructure);
-				injureBodyLocation(
-					bodyLocation, body[bodyLocation].curInternalStructure);
+				shotInfo->setDamage(shotInfo->damage - body[bodyLocation].curInternalStructure);
+				injureBodyLocation(bodyLocation, body[bodyLocation].curInternalStructure);
 				if (shotInfo->damage > 0)
 				{
 					if (isAmmoExplosion && body[bodyLocation].CASE)
@@ -7534,15 +7174,14 @@ int32_t BattleMech::handleWeaponHit(
 						else
 						{
 							WeaponShotInfo newShotInfo = *shotInfo;
-							newShotInfo.hitLocation	= transferHitLocation(
-								   bodyLocation /*shotInfo->hitLocation*/);
+							newShotInfo.hitLocation =
+								transferHitLocation(bodyLocation /*shotInfo->hitLocation*/);
 							if (MPlayer)
 							{
 								if (MPlayer->isServer())
 								{
 									if (CombatLog)
-										CombatLog->write(
-											"     HIT TRANSFER 2...");
+										CombatLog->write("     HIT TRANSFER 2...");
 									handleWeaponHit(&newShotInfo, true);
 								}
 							}
@@ -7602,8 +7241,8 @@ int32_t BattleMech::handleWeaponHit(
 				else
 				{
 					WeaponShotInfo newShotInfo = *shotInfo;
-					newShotInfo.hitLocation	= transferHitLocation(
-						   bodyLocation /*shotInfo->hitLocation*/);
+					newShotInfo.hitLocation =
+						transferHitLocation(bodyLocation /*shotInfo->hitLocation*/);
 					if (MPlayer)
 					{
 						if (MPlayer->isServer())
@@ -7647,11 +7286,9 @@ int32_t BattleMech::handleWeaponHit(
 	if (attacker)
 	{
 		if (shotInfo->masterId > -1)
-			pilot->triggerAlarm(
-				PILOT_ALARM_HIT_BY_WEAPONFIRE, attacker->getWatchID());
+			pilot->triggerAlarm(PILOT_ALARM_HIT_BY_WEAPONFIRE, attacker->getWatchID());
 		else if (shotInfo->masterId == -4)
-			pilot->triggerAlarm(
-				PILOT_ALARM_HIT_BY_WEAPONFIRE, attacker->getWatchID());
+			pilot->triggerAlarm(PILOT_ALARM_HIT_BY_WEAPONFIRE, attacker->getWatchID());
 		else
 			pilot->triggerAlarm(PILOT_ALARM_COLLISION, attacker->getWatchID());
 	}
@@ -7664,8 +7301,7 @@ int32_t BattleMech::handleWeaponHit(
 			//------------------------------------------------------------
 			// If no attacker and a negative weapon masterId, then it must
 			// be a mine or artillery...
-			pilot->triggerAlarm(
-				PILOT_ALARM_HIT_BY_WEAPONFIRE, shotInfo->masterId);
+			pilot->triggerAlarm(PILOT_ALARM_HIT_BY_WEAPONFIRE, shotInfo->masterId);
 		}
 		else
 			pilot->triggerAlarm(PILOT_ALARM_HIT_BY_WEAPONFIRE, 0);
@@ -7683,28 +7319,22 @@ int32_t BattleMech::handleWeaponHit(
 	{
 		if (attacker && attacker->isMover())
 		{
-			((MoverPtr)attacker)
-				->getPilot()
-				->triggerAlarm(PILOT_ALARM_KILLED_TARGET, getWatchID());
+			((MoverPtr)attacker)->getPilot()->triggerAlarm(PILOT_ALARM_KILLED_TARGET, getWatchID());
 			if (!killed && MPlayer && MPlayer->isServer())
 			{
 				if (moveType != MOVETYPE_AIR)
 				{
 					if (MPlayer->missionSettings.resourceForMechs)
 						if (attacker->getCommanderId() != getCommanderId())
-							MPlayer->sendReinforcement(getResourcePointValue(),
-								0, "noname", attacker->getCommanderId(),
-								attacker->getPosition(), 6);
+							MPlayer->sendReinforcement(getResourcePointValue(), 0, "noname",
+								attacker->getCommanderId(), attacker->getPosition(), 6);
 					// MPlayer->playerInfo[attacker->getCommanderId()].resourcePoints
 					// += getResourcePointValue();
-					if (MPlayer->missionSettings.missionType ==
-						MISSION_TYPE_ELIMINATION)
+					if (MPlayer->missionSettings.missionType == MISSION_TYPE_ELIMINATION)
 					{
 						if (attacker->getCommanderId() != getCommanderId())
 							MPlayer->addTeamScore(
-								MPlayer->playerInfo[attacker->getCommanderId()]
-									.team,
-								cBills / 100);
+								MPlayer->playerInfo[attacker->getCommanderId()].team, cBills / 100);
 					}
 				}
 				int32_t attackerCID = attacker->getCommanderId();
@@ -7712,8 +7342,7 @@ int32_t BattleMech::handleWeaponHit(
 					attackerCID = ((MoverPtr)attacker)->prevCommanderId;
 				if ((attackerCID == -1) || (attackerCID == getCommanderId()))
 					attackerCID = MAX_MC_PLAYERS;
-				MPlayer->addKillLossChunk(
-					attackerCID, !lost ? getCommanderId() : MAX_MC_PLAYERS);
+				MPlayer->addKillLossChunk(attackerCID, !lost ? getCommanderId() : MAX_MC_PLAYERS);
 				lost   = true;
 				killed = true;
 			}
@@ -7726,19 +7355,15 @@ int32_t BattleMech::handleWeaponHit(
 				{
 					if (MPlayer->missionSettings.resourceForMechs)
 						if (attacker->getCommanderId() != getCommanderId())
-							MPlayer->sendReinforcement(getResourcePointValue(),
-								0, "noname", attacker->getCommanderId(),
-								attacker->getPosition(), 6);
+							MPlayer->sendReinforcement(getResourcePointValue(), 0, "noname",
+								attacker->getCommanderId(), attacker->getPosition(), 6);
 					// MPlayer->playerInfo[attacker->getCommanderId()].resourcePoints
 					// += getResourcePointValue();
-					if (MPlayer->missionSettings.missionType ==
-						MISSION_TYPE_ELIMINATION)
+					if (MPlayer->missionSettings.missionType == MISSION_TYPE_ELIMINATION)
 					{
 						if (attacker->getCommanderId() != getCommanderId())
 							MPlayer->addTeamScore(
-								MPlayer->playerInfo[attacker->getCommanderId()]
-									.team,
-								cBills / 100);
+								MPlayer->playerInfo[attacker->getCommanderId()].team, cBills / 100);
 					}
 				}
 				int32_t attackerCID = attacker->getCommanderId();
@@ -7746,8 +7371,7 @@ int32_t BattleMech::handleWeaponHit(
 					attackerCID = ((MoverPtr)attacker)->prevCommanderId;
 				if ((attackerCID == -1) || (attackerCID == getCommanderId()))
 					attackerCID = MAX_MC_PLAYERS;
-				MPlayer->addKillLossChunk(
-					attackerCID, !lost ? getCommanderId() : MAX_MC_PLAYERS);
+				MPlayer->addKillLossChunk(attackerCID, !lost ? getCommanderId() : MAX_MC_PLAYERS);
 				lost   = true;
 				killed = true;
 			}
@@ -7759,16 +7383,13 @@ int32_t BattleMech::handleWeaponHit(
 
 //---------------------------------------------------------------------------
 
-int32_t BattleMech::fireWeapon(GameObjectPtr target, float targetTime,
-	int32_t weaponIndex, int32_t attackType, int32_t aimLocation,
-	Stuff::Vector3D* targetPoint, float& dmgDone)
+int32_t BattleMech::fireWeapon(GameObjectPtr target, float targetTime, int32_t weaponIndex,
+	int32_t attackType, int32_t aimLocation, Stuff::Vector3D* targetPoint, float& dmgDone)
 {
 	//	if (getTeam() != Team::home)
 	//		return(1);
-	if ((status == OBJECT_STATUS_SHUTDOWN) ||
-		(status == OBJECT_STATUS_SHUTTING_DOWN) ||
-		(status == OBJECT_STATUS_DISABLED) ||
-		(status == OBJECT_STATUS_DESTROYED))
+	if ((status == OBJECT_STATUS_SHUTDOWN) || (status == OBJECT_STATUS_SHUTTING_DOWN) ||
+		(status == OBJECT_STATUS_DISABLED) || (status == OBJECT_STATUS_DESTROYED))
 		return (1);
 	if ((getBodyState() == MECH_STATUSCHUNK_BODYSTATE_PARKED) ||
 		(getBodyState() == MECH_STATUSCHUNK_BODYSTATE_FALLEN_FORWARD) ||
@@ -7821,8 +7442,7 @@ int32_t BattleMech::fireWeapon(GameObjectPtr target, float targetTime,
 	}
 	else
 		return (4);
-	bool inRange =
-		weaponInRange(weaponIndex, distanceToTarget, MapCellDiagonal);
+	bool inRange = weaponInRange(weaponIndex, distanceToTarget, MapCellDiagonal);
 	//-----------------------------------------
 	// Let's make sure the target's in range...
 	if (MPlayer)
@@ -7847,11 +7467,11 @@ int32_t BattleMech::fireWeapon(GameObjectPtr target, float targetTime,
 	// And see if its recycle time is Green.  If not, just return, we'll shoot
 	// again!
 	int32_t sourceHotSpot;
-	if (MasterComponent::masterList[inventory[weaponIndex].masterID]
-			.getForm() == COMPONENT_FORM_WEAPON_MISSILE)
+	if (MasterComponent::masterList[inventory[weaponIndex].masterID].getForm() ==
+		COMPONENT_FORM_WEAPON_MISSILE)
 		sourceHotSpot = MECH3D_WEAPONTYPE_MISSILE;
-	else if (MasterComponent::masterList[inventory[weaponIndex].masterID]
-				 .getForm() == COMPONENT_FORM_WEAPON_BALLISTIC)
+	else if (MasterComponent::masterList[inventory[weaponIndex].masterID].getForm() ==
+		COMPONENT_FORM_WEAPON_BALLISTIC)
 		sourceHotSpot = MECH3D_WEAPONTYPE_BALLISTIC;
 	else
 		sourceHotSpot = MECH3D_WEAPONTYPE_ENERGY;
@@ -7867,8 +7487,7 @@ int32_t BattleMech::fireWeapon(GameObjectPtr target, float targetTime,
 	int32_t targetHotSpot = 0;
 	if (target && target->getAppearance())
 	{
-		targetHotSpot =
-			target->getAppearance()->getWeaponNode(MECH3D_WEAPONTYPE_ANY);
+		targetHotSpot = target->getAppearance()->getWeaponNode(MECH3D_WEAPONTYPE_ANY);
 	}
 	//-------------------------------------------
 	float entryAngle = 0.0;
@@ -7877,8 +7496,7 @@ int32_t BattleMech::fireWeapon(GameObjectPtr target, float targetTime,
 	// int32_t weaponType =
 	// MasterComponent::masterList[inventory[weaponIndex].masterID].getWeaponType();
 	bool isStreakMissile =
-		MasterComponent::masterList[inventory[weaponIndex].masterID]
-			.getWeaponStreak();
+		MasterComponent::masterList[inventory[weaponIndex].masterID].getWeaponStreak();
 	int32_t range;
 	int32_t attackChance = (int32_t)calcAttackChance(
 		target, aimLocation, targetTime, weaponIndex, 0.0, &range, targetPoint);
@@ -7934,15 +7552,14 @@ int32_t BattleMech::fireWeapon(GameObjectPtr target, float targetTime,
 		}
 		//------------
 		// Attack hit.
-		if (MasterComponent::masterList[inventory[weaponIndex].masterID]
-				.getForm() == COMPONENT_FORM_WEAPON_MISSILE)
+		if (MasterComponent::masterList[inventory[weaponIndex].masterID].getForm() ==
+			COMPONENT_FORM_WEAPON_MISSILE)
 		{
 			//---------------------------------------------------------
 			// It's a missile weapon. We need to determine how many hit
 			// (and missed) the target, and in how many clusters...
 			int32_t missileAmount =
-				MasterComponent::masterList[inventory[weaponIndex].masterID]
-					.getWeaponAmmoAmount();
+				MasterComponent::masterList[inventory[weaponIndex].masterID].getWeaponAmmoAmount();
 			int32_t numMissiles = 0;
 			if (isStreakMissile)
 				numMissiles = missileAmount;
@@ -7956,9 +7573,8 @@ int32_t BattleMech::fireWeapon(GameObjectPtr target, float targetTime,
 			}
 			//--------------------------------------------------------
 			// a MissileGen Object is ALL missiles--clusters no more:)
-			uint8_t effectType =
-				MasterComponent::masterList[inventory[weaponIndex].masterID]
-					.getWeaponSpecialEffect();
+			uint8_t effectType = MasterComponent::masterList[inventory[weaponIndex].masterID]
+									 .getWeaponSpecialEffect();
 			//--------------------------------------------------
 			// Need to know which hotspot this comes from.
 			// Also need to know which hotspot this is going to.
@@ -7976,12 +7592,10 @@ int32_t BattleMech::fireWeapon(GameObjectPtr target, float targetTime,
 			WeaponShotInfo curShotInfo;
 			curShotInfo.init(getWatchID(), inventory[weaponIndex].masterID,
 				numMissiles *
-					MasterComponent::masterList[inventory[weaponIndex].masterID]
-						.getWeaponDamage(),
+					MasterComponent::masterList[inventory[weaponIndex].masterID].getWeaponDamage(),
 				hitLocation, entryAngle);
-			Assert(((float)((int32_t)(curShotInfo.damage / 0.25)) * 0.25) ==
-					   curShotInfo.damage,
-				0, " WeaponHitChunk.build: damage round error ");
+			Assert(((float)((int32_t)(curShotInfo.damage / 0.25)) * 0.25) == curShotInfo.damage, 0,
+				" WeaponHitChunk.build: damage round error ");
 			dmgDone = curShotInfo.damage;
 			//-------------------------------------------------------------------------
 			// If I'm in a multiplayer game and I'm the server, record this
@@ -7993,27 +7607,26 @@ int32_t BattleMech::fireWeapon(GameObjectPtr target, float targetTime,
 				if (target)
 				{
 					if (target->isMover())
-						chunk.buildMoverTarget(target, weaponIndex - numOther,
-							true, entryAngle, numMissiles, hitLocation);
+						chunk.buildMoverTarget(target, weaponIndex - numOther, true, entryAngle,
+							numMissiles, hitLocation);
 					else if (target->getObjectClass() == CAMERADRONE)
-						chunk.buildCameraDroneTarget(target,
-							weaponIndex - numOther, true, entryAngle,
-							numMissiles);
+						chunk.buildCameraDroneTarget(
+							target, weaponIndex - numOther, true, entryAngle, numMissiles);
 					else
-						chunk.buildTerrainTarget(
-							target, weaponIndex - numOther, true, numMissiles);
+						chunk.buildTerrainTarget(target, weaponIndex - numOther, true, numMissiles);
 				}
 				else
-					chunk.buildLocationTarget(*targetPoint,
-						weaponIndex - numOther, true, numMissiles);
+					chunk.buildLocationTarget(
+						*targetPoint, weaponIndex - numOther, true, numMissiles);
 				chunk.pack(this);
 				WeaponFireChunk chunk2;
 				chunk2.init();
 				chunk2.data = chunk.data;
 				chunk2.unpack(this);
 				if (!chunk.equalTo(&chunk2))
-					Fatal(0, " Mech.fireWeapon: Bad WeaponFireChunk (save "
-							 "wfchunk.dbg file now) ");
+					Fatal(0,
+						" Mech.fireWeapon: Bad WeaponFireChunk (save "
+						"wfchunk.dbg file now) ");
 				addWeaponFireChunk(CHUNK_SEND, &chunk);
 				LogWeaponFireChunk(&chunk, this, target);
 			}
@@ -8030,9 +7643,8 @@ int32_t BattleMech::fireWeapon(GameObjectPtr target, float targetTime,
 					land->worldToCell(*targetPoint, cellRow, cellCol);
 					if (GameMap->getMine(cellRow, cellCol) == 1)
 					{
-						ObjectManager->createExplosion(MINE_EXPLOSION_ID,
-							nullptr, *targetPoint, MineSplashDamage,
-							MineSplashRange * worldUnitsPerMeter);
+						ObjectManager->createExplosion(MINE_EXPLOSION_ID, nullptr, *targetPoint,
+							MineSplashDamage, MineSplashRange * worldUnitsPerMeter);
 						GameMap->setMine(cellRow, cellCol, 2);
 					}
 				}
@@ -8040,16 +7652,14 @@ int32_t BattleMech::fireWeapon(GameObjectPtr target, float targetTime,
 			else
 			{
 				if (target)
-					weaponFX->connect(this, target, &curShotInfo, sourceHotSpot,
-						targetHotSpot);
+					weaponFX->connect(this, target, &curShotInfo, sourceHotSpot, targetHotSpot);
 				else
 				{
-					weaponFX->connect(
-						this, *targetPoint, &curShotInfo, sourceHotSpot);
+					weaponFX->connect(this, *targetPoint, &curShotInfo, sourceHotSpot);
 					// pilot->clearCurTacOrder();
 				}
-				printFireWeaponDebugInfo(target, targetPoint, attackChance,
-					aimLocation, hitRoll, &curShotInfo);
+				printFireWeaponDebugInfo(
+					target, targetPoint, attackChance, aimLocation, hitRoll, &curShotInfo);
 			}
 		}
 		else
@@ -8068,8 +7678,7 @@ int32_t BattleMech::fireWeapon(GameObjectPtr target, float targetTime,
 			Assert(hitLocation != -2, 1, " Mech.FireWeapon: Bad Hit Location ");
 			WeaponShotInfo shotInfo;
 			shotInfo.init(getWatchID(), inventory[weaponIndex].masterID,
-				MasterComponent::masterList[inventory[weaponIndex].masterID]
-					.getWeaponDamage(),
+				MasterComponent::masterList[inventory[weaponIndex].masterID].getWeaponDamage(),
 				hitLocation, entryAngle);
 			dmgDone = shotInfo.damage;
 			//-------------------------------------------------------------------------
@@ -8082,16 +7691,14 @@ int32_t BattleMech::fireWeapon(GameObjectPtr target, float targetTime,
 				if (target)
 				{
 					if (target->isMover())
-						chunk.buildMoverTarget(target, weaponIndex - numOther,
-							true, entryAngle, 0, hitLocation);
+						chunk.buildMoverTarget(
+							target, weaponIndex - numOther, true, entryAngle, 0, hitLocation);
 					else
-						chunk.buildTerrainTarget(
-							target, weaponIndex - numOther, true, 0);
+						chunk.buildTerrainTarget(target, weaponIndex - numOther, true, 0);
 				}
 				else
 				{
-					chunk.buildLocationTarget(
-						*targetPoint, weaponIndex - numOther, true, 0);
+					chunk.buildLocationTarget(*targetPoint, weaponIndex - numOther, true, 0);
 				}
 				chunk.pack(this);
 				WeaponFireChunk chunk2;
@@ -8099,14 +7706,14 @@ int32_t BattleMech::fireWeapon(GameObjectPtr target, float targetTime,
 				chunk2.data = chunk.data;
 				chunk2.unpack(this);
 				if (!chunk.equalTo(&chunk2))
-					Fatal(0, " Mech.fireWeapon: Bad WeaponFireChunk (save "
-							 "wfchunk.dbg file now) ");
+					Fatal(0,
+						" Mech.fireWeapon: Bad WeaponFireChunk (save "
+						"wfchunk.dbg file now) ");
 				addWeaponFireChunk(CHUNK_SEND, &chunk);
 				LogWeaponFireChunk(&chunk, this, target);
 			}
-			uint8_t effectType =
-				MasterComponent::masterList[inventory[weaponIndex].masterID]
-					.getWeaponSpecialEffect();
+			uint8_t effectType = MasterComponent::masterList[inventory[weaponIndex].masterID]
+									 .getWeaponSpecialEffect();
 			weaponFX = ObjectManager->createWeaponBolt(effectType);
 			if (!weaponFX)
 			{
@@ -8118,9 +7725,8 @@ int32_t BattleMech::fireWeapon(GameObjectPtr target, float targetTime,
 					land->worldToCell(*targetPoint, cellRow, cellCol);
 					if (GameMap->getMine(cellRow, cellCol) == 1)
 					{
-						ObjectManager->createExplosion(MINE_EXPLOSION_ID,
-							nullptr, *targetPoint, MineSplashDamage,
-							MineSplashRange * worldUnitsPerMeter);
+						ObjectManager->createExplosion(MINE_EXPLOSION_ID, nullptr, *targetPoint,
+							MineSplashDamage, MineSplashRange * worldUnitsPerMeter);
 						GameMap->setMine(cellRow, cellCol, 2);
 					}
 				}
@@ -8129,18 +7735,16 @@ int32_t BattleMech::fireWeapon(GameObjectPtr target, float targetTime,
 			{
 				if (target)
 				{
-					weaponFX->connect(
-						this, target, &shotInfo, sourceHotSpot, targetHotSpot);
+					weaponFX->connect(this, target, &shotInfo, sourceHotSpot, targetHotSpot);
 				}
 				else
 				{
 					//--------------------------------
 					// Hit the target point/terrain...
-					weaponFX->connect(
-						this, *targetPoint, &shotInfo, sourceHotSpot);
+					weaponFX->connect(this, *targetPoint, &shotInfo, sourceHotSpot);
 				}
-				printFireWeaponDebugInfo(target, targetPoint, attackChance,
-					aimLocation, hitRoll, &shotInfo);
+				printFireWeaponDebugInfo(
+					target, targetPoint, attackChance, aimLocation, hitRoll, &shotInfo);
 			}
 			if (!target)
 			{
@@ -8164,15 +7768,14 @@ int32_t BattleMech::fireWeapon(GameObjectPtr target, float targetTime,
 			}
 			//----------------------------------------------------
 			// Miss, so check for possible miss resolution here...
-			if (MasterComponent::masterList[inventory[weaponIndex].masterID]
-					.getForm() == COMPONENT_FORM_WEAPON_MISSILE)
+			if (MasterComponent::masterList[inventory[weaponIndex].masterID].getForm() ==
+				COMPONENT_FORM_WEAPON_MISSILE)
 			{
 				//---------------------------------------------------------
 				// It's a missile weapon. We need to determine how many hit
 				// (and missed) the target, and in how many clusters...
-				int32_t missileAmount =
-					MasterComponent::masterList[inventory[weaponIndex].masterID]
-						.getWeaponAmmoAmount();
+				int32_t missileAmount = MasterComponent::masterList[inventory[weaponIndex].masterID]
+											.getWeaponAmmoAmount();
 				int32_t numMissiles = ((float)missileAmount / 2.0) + 0.5;
 				if (numMissiles < 1)
 					numMissiles = 1;
@@ -8183,15 +7786,13 @@ int32_t BattleMech::fireWeapon(GameObjectPtr target, float targetTime,
 					//-----------------------------------------------
 					// No more clusters!
 					WeaponShotInfo curShotInfo;
-					curShotInfo.init(getWatchID(),
-						inventory[weaponIndex].masterID,
+					curShotInfo.init(getWatchID(), inventory[weaponIndex].masterID,
 						numMissiles *
-							MasterComponent::masterList[inventory[weaponIndex]
-															.masterID]
+							MasterComponent::masterList[inventory[weaponIndex].masterID]
 								.getWeaponDamage(),
 						-1, entryAngle);
-					Assert(((float)((int32_t)(curShotInfo.damage / 0.25)) *
-							   0.25) == curShotInfo.damage,
+					Assert(((float)((int32_t)(curShotInfo.damage / 0.25)) * 0.25) ==
+							curShotInfo.damage,
 						0, " WeaponHitChunk.build: damage round error ");
 					//-------------------------------------------------------------------------------------------
 					// If we missed, pick sights away from the target and check
@@ -8204,35 +7805,30 @@ int32_t BattleMech::fireWeapon(GameObjectPtr target, float targetTime,
 					else if (targetPoint)
 						positionOffset = *targetPoint;
 					positionOffset.x += missRadius;
-					positionOffset.z =
-						land->getTerrainElevation(positionOffset);
-					bool canSeeHit = lineOfSight(positionOffset, true);
+					positionOffset.z = land->getTerrainElevation(positionOffset);
+					bool canSeeHit   = lineOfSight(positionOffset, true);
 					if (!canSeeHit)
 					{
 						positionOffset.x -= (missRadius * 2.0f);
-						positionOffset.z =
-							land->getTerrainElevation(positionOffset);
-						canSeeHit = lineOfSight(positionOffset, true);
+						positionOffset.z = land->getTerrainElevation(positionOffset);
+						canSeeHit		 = lineOfSight(positionOffset, true);
 						if (!canSeeHit)
 						{
 							positionOffset.x += missRadius;
 							positionOffset.y += missRadius;
-							positionOffset.z =
-								land->getTerrainElevation(positionOffset);
-							canSeeHit = lineOfSight(positionOffset, true);
+							positionOffset.z = land->getTerrainElevation(positionOffset);
+							canSeeHit		 = lineOfSight(positionOffset, true);
 							if (!canSeeHit)
 							{
 								positionOffset.y -= (missRadius * 2.0f);
-								positionOffset.z =
-									land->getTerrainElevation(positionOffset);
-								canSeeHit = lineOfSight(positionOffset, true);
+								positionOffset.z = land->getTerrainElevation(positionOffset);
+								canSeeHit		 = lineOfSight(positionOffset, true);
 								if (!canSeeHit)
 								{
 									// OK, no miss location is visible.  Hit the
 									// target with ZERO damage!!
-									curShotInfo.init(getWatchID(),
-										inventory[weaponIndex].masterID, 0.0f,
-										-1, entryAngle);
+									curShotInfo.init(getWatchID(), inventory[weaponIndex].masterID,
+										0.0f, -1, entryAngle);
 								}
 							}
 						}
@@ -8244,23 +7840,23 @@ int32_t BattleMech::fireWeapon(GameObjectPtr target, float targetTime,
 					{
 						WeaponFireChunk chunk;
 						chunk.init();
-						chunk.buildLocationTarget(positionOffset,
-							weaponIndex - numOther, false, numMissiles);
+						chunk.buildLocationTarget(
+							positionOffset, weaponIndex - numOther, false, numMissiles);
 						chunk.pack(this);
 						WeaponFireChunk chunk2;
 						chunk2.init();
 						chunk2.data = chunk.data;
 						chunk2.unpack(this);
 						if (!chunk.equalTo(&chunk2))
-							Fatal(0, " Mech.fireWeapon: Bad WeaponFireChunk "
-									 "(save wfchunk.dbg file now) ");
+							Fatal(0,
+								" Mech.fireWeapon: Bad WeaponFireChunk "
+								"(save wfchunk.dbg file now) ");
 						addWeaponFireChunk(CHUNK_SEND, &chunk);
 						LogWeaponFireChunk(&chunk, this, target);
 					}
 					//-------------------------------------------------------------------
 					uint8_t effectType =
-						MasterComponent::masterList[inventory[weaponIndex]
-														.masterID]
+						MasterComponent::masterList[inventory[weaponIndex].masterID]
 							.getWeaponSpecialEffect();
 					weaponFX = ObjectManager->createWeaponBolt(effectType);
 					if (!weaponFX)
@@ -8271,8 +7867,8 @@ int32_t BattleMech::fireWeapon(GameObjectPtr target, float targetTime,
 						land->worldToCell(positionOffset, cellRow, cellCol);
 						if (GameMap->getMine(cellRow, cellCol) == 1)
 						{
-							ObjectManager->createExplosion(MINE_EXPLOSION_ID,
-								nullptr, positionOffset, MineSplashDamage,
+							ObjectManager->createExplosion(MINE_EXPLOSION_ID, nullptr,
+								positionOffset, MineSplashDamage,
 								MineSplashRange * worldUnitsPerMeter);
 							GameMap->setMine(cellRow, cellCol, 2);
 						}
@@ -8281,17 +7877,15 @@ int32_t BattleMech::fireWeapon(GameObjectPtr target, float targetTime,
 					{
 						if (canSeeHit) // miss location is in LOS.  Hit the
 									   // ground
-							weaponFX->connect(this, positionOffset,
-								&curShotInfo, sourceHotSpot);
+							weaponFX->connect(this, positionOffset, &curShotInfo, sourceHotSpot);
 						else if (target) // Miss location is NOT in LOS.  Hit
 										 // Target with ZERO damage!!!
-							weaponFX->connect(
-								this, target, &curShotInfo, sourceHotSpot);
+							weaponFX->connect(this, target, &curShotInfo, sourceHotSpot);
 						// OTHERWISE, we tried to hit the ground but we can't
 						// see the location we shot at.
 						// DRAW NO WEAPON EFFECT!!!!
-						printFireWeaponDebugInfo(target, &positionOffset,
-							attackChance, aimLocation, hitRoll, &curShotInfo);
+						printFireWeaponDebugInfo(target, &positionOffset, attackChance, aimLocation,
+							hitRoll, &curShotInfo);
 					}
 				}
 			}
@@ -8302,8 +7896,7 @@ int32_t BattleMech::fireWeapon(GameObjectPtr target, float targetTime,
 				// For now, always use a laser effect...
 				WeaponShotInfo shotInfo;
 				shotInfo.init(getWatchID(), inventory[weaponIndex].masterID,
-					MasterComponent::masterList[inventory[weaponIndex].masterID]
-						.getWeaponDamage(),
+					MasterComponent::masterList[inventory[weaponIndex].masterID].getWeaponDamage(),
 					-1, entryAngle);
 				//-------------------------------------------------------------------------------------------
 				// If we missed, pick sights away from the target and check LOS
@@ -8321,29 +7914,25 @@ int32_t BattleMech::fireWeapon(GameObjectPtr target, float targetTime,
 				if (!canSeeHit)
 				{
 					positionOffset.x -= (missRadius * 2.0f);
-					positionOffset.z =
-						land->getTerrainElevation(positionOffset);
-					canSeeHit = lineOfSight(positionOffset, true);
+					positionOffset.z = land->getTerrainElevation(positionOffset);
+					canSeeHit		 = lineOfSight(positionOffset, true);
 					if (!canSeeHit)
 					{
 						positionOffset.x += missRadius;
 						positionOffset.y += missRadius;
-						positionOffset.z =
-							land->getTerrainElevation(positionOffset);
-						canSeeHit = lineOfSight(positionOffset, true);
+						positionOffset.z = land->getTerrainElevation(positionOffset);
+						canSeeHit		 = lineOfSight(positionOffset, true);
 						if (!canSeeHit)
 						{
 							positionOffset.y -= (missRadius * 2.0f);
-							positionOffset.z =
-								land->getTerrainElevation(positionOffset);
-							canSeeHit = lineOfSight(positionOffset, true);
+							positionOffset.z = land->getTerrainElevation(positionOffset);
+							canSeeHit		 = lineOfSight(positionOffset, true);
 							if (!canSeeHit)
 							{
 								// OK, no miss location is visible.  Hit the
 								// target with ZERO damage!!
-								shotInfo.init(getWatchID(),
-									inventory[weaponIndex].masterID, 0.0f, -1,
-									entryAngle);
+								shotInfo.init(getWatchID(), inventory[weaponIndex].masterID, 0.0f,
+									-1, entryAngle);
 							}
 						}
 					}
@@ -8355,22 +7944,21 @@ int32_t BattleMech::fireWeapon(GameObjectPtr target, float targetTime,
 				{
 					WeaponFireChunk chunk;
 					chunk.init();
-					chunk.buildLocationTarget(
-						positionOffset, weaponIndex - numOther, false, 0);
+					chunk.buildLocationTarget(positionOffset, weaponIndex - numOther, false, 0);
 					chunk.pack(this);
 					WeaponFireChunk chunk2;
 					chunk2.init();
 					chunk2.data = chunk.data;
 					chunk2.unpack(this);
 					if (!chunk.equalTo(&chunk2))
-						Fatal(0, " Mech.fireWeapon: Bad WeaponFireChunk (save "
-								 "wfchunk.dbg file now) ");
+						Fatal(0,
+							" Mech.fireWeapon: Bad WeaponFireChunk (save "
+							"wfchunk.dbg file now) ");
 					addWeaponFireChunk(CHUNK_SEND, &chunk);
 					LogWeaponFireChunk(&chunk, this, target);
 				}
-				uint8_t effectType =
-					MasterComponent::masterList[inventory[weaponIndex].masterID]
-						.getWeaponSpecialEffect();
+				uint8_t effectType = MasterComponent::masterList[inventory[weaponIndex].masterID]
+										 .getWeaponSpecialEffect();
 				weaponFX = ObjectManager->createWeaponBolt(effectType);
 				if (!weaponFX)
 				{
@@ -8380,23 +7968,20 @@ int32_t BattleMech::fireWeapon(GameObjectPtr target, float targetTime,
 					land->worldToCell(positionOffset, cellRow, cellCol);
 					if (GameMap->getMine(cellRow, cellCol) == 1)
 					{
-						ObjectManager->createExplosion(MINE_EXPLOSION_ID,
-							nullptr, positionOffset, MineSplashDamage,
-							MineSplashRange * worldUnitsPerMeter);
+						ObjectManager->createExplosion(MINE_EXPLOSION_ID, nullptr, positionOffset,
+							MineSplashDamage, MineSplashRange * worldUnitsPerMeter);
 						GameMap->setMine(cellRow, cellCol, 2);
 					}
 				}
 				else
 				{
 					if (canSeeHit) // miss location is in LOS.  Hit the ground
-						weaponFX->connect(
-							this, positionOffset, &shotInfo, sourceHotSpot);
+						weaponFX->connect(this, positionOffset, &shotInfo, sourceHotSpot);
 					else if (target) // Miss location is NOT in LOS.  Hit Target
 									 // with ZERO damage!!!
-						weaponFX->connect(
-							this, target, &shotInfo, sourceHotSpot);
-					printFireWeaponDebugInfo(target, &positionOffset,
-						attackChance, aimLocation, hitRoll, &shotInfo);
+						weaponFX->connect(this, target, &shotInfo, sourceHotSpot);
+					printFireWeaponDebugInfo(
+						target, &positionOffset, attackChance, aimLocation, hitRoll, &shotInfo);
 				}
 			}
 		}
@@ -8405,11 +7990,9 @@ int32_t BattleMech::fireWeapon(GameObjectPtr target, float targetTime,
 	// Trigger the WEAPON TARGET event. For now, this assumes the target
 	// KNOWS we were targeting him. Of course, the target wouldn't always
 	// be aware of this, would they?
-	pilot->triggerAlarm(
-		PILOT_ALARM_FIRED_WEAPON, target ? target->getWatchID() : 0);
+	pilot->triggerAlarm(PILOT_ALARM_FIRED_WEAPON, target ? target->getWatchID() : 0);
 	if (targetPilot)
-		targetPilot->triggerAlarm(
-			PILOT_ALARM_TARGET_OF_WEAPONFIRE, getWatchID());
+		targetPilot->triggerAlarm(PILOT_ALARM_TARGET_OF_WEAPONFIRE, getWatchID());
 	timeSinceFiredLast = 0.0f;
 	if (getGroup())
 		getGroup()->handleMateFiredWeapon(getWatchID());
@@ -8420,8 +8003,8 @@ int32_t BattleMech::fireWeapon(GameObjectPtr target, float targetTime,
 //---------------------------------------------------------------------------
 
 int32_t BattleMech::handleWeaponFire(int32_t weaponIndex, GameObjectPtr target,
-	Stuff::Vector3D* targetPoint, bool hit, float entryAngle,
-	int32_t numMissiles, int32_t hitLocation)
+	Stuff::Vector3D* targetPoint, bool hit, float entryAngle, int32_t numMissiles,
+	int32_t hitLocation)
 {
 	//--------------------------------------------------------
 	// If it's already been fired, assume the ammo is there...
@@ -8432,18 +8015,17 @@ int32_t BattleMech::handleWeaponFire(int32_t weaponIndex, GameObjectPtr target,
 	// Weapon must recycle...
 	startWeaponRecycle(weaponIndex);
 	bool isStreakMissile =
-		MasterComponent::masterList[inventory[weaponIndex].masterID]
-			.getWeaponStreak();
+		MasterComponent::masterList[inventory[weaponIndex].masterID].getWeaponStreak();
 	WeaponBoltPtr weaponFX = nullptr;
 	//----------------------------------------------------
 	// Need to know which hotspot this comes from.
 	// Also need to know which hotspot this is going to.
 	int32_t sourceHotSpot;
-	if (MasterComponent::masterList[inventory[weaponIndex].masterID]
-			.getForm() == COMPONENT_FORM_WEAPON_MISSILE)
+	if (MasterComponent::masterList[inventory[weaponIndex].masterID].getForm() ==
+		COMPONENT_FORM_WEAPON_MISSILE)
 		sourceHotSpot = MECH3D_WEAPONTYPE_MISSILE;
-	else if (MasterComponent::masterList[inventory[weaponIndex].masterID]
-				 .getForm() == COMPONENT_FORM_WEAPON_BALLISTIC)
+	else if (MasterComponent::masterList[inventory[weaponIndex].masterID].getForm() ==
+		COMPONENT_FORM_WEAPON_BALLISTIC)
 		sourceHotSpot = MECH3D_WEAPONTYPE_BALLISTIC;
 	else
 		sourceHotSpot = MECH3D_WEAPONTYPE_ENERGY;
@@ -8455,8 +8037,7 @@ int32_t BattleMech::handleWeaponFire(int32_t weaponIndex, GameObjectPtr target,
 	int32_t targetHotSpot = 0;
 	if (target && target->getAppearance())
 	{
-		targetHotSpot =
-			target->getAppearance()->getWeaponNode(MECH3D_WEAPONTYPE_ANY);
+		targetHotSpot = target->getAppearance()->getWeaponNode(MECH3D_WEAPONTYPE_ANY);
 	}
 	if (hit)
 	{
@@ -8468,17 +8049,16 @@ int32_t BattleMech::handleWeaponFire(int32_t weaponIndex, GameObjectPtr target,
 			// We're taking the shot, so reduce our ammo inventory...
 			deductWeaponShot(weaponIndex);
 		}
-		if (MasterComponent::masterList[inventory[weaponIndex].masterID]
-				.getForm() == COMPONENT_FORM_WEAPON_MISSILE)
+		if (MasterComponent::masterList[inventory[weaponIndex].masterID].getForm() ==
+			COMPONENT_FORM_WEAPON_MISSILE)
 		{
 			//---------------------------------------------------------
 			// It's a missile weapon. We need to determine how many hit
 			// (and missed) the target, and in how many clusters...
 			//------------------
 			// Clusters no more!
-			uint8_t effectType =
-				MasterComponent::masterList[inventory[weaponIndex].masterID]
-					.getWeaponSpecialEffect();
+			uint8_t effectType = MasterComponent::masterList[inventory[weaponIndex].masterID]
+									 .getWeaponSpecialEffect();
 			if (numMissiles > 0)
 			{
 				//-------------------------------------------------------------------
@@ -8495,37 +8075,32 @@ int32_t BattleMech::handleWeaponFire(int32_t weaponIndex, GameObjectPtr target,
 						land->worldToCell(*targetPoint, cellRow, cellCol);
 						if (GameMap->getMine(cellRow, cellCol) == 1)
 						{
-							ObjectManager->createExplosion(MINE_EXPLOSION_ID,
-								nullptr, *targetPoint, MineSplashDamage,
-								MineSplashRange * worldUnitsPerMeter);
+							ObjectManager->createExplosion(MINE_EXPLOSION_ID, nullptr, *targetPoint,
+								MineSplashDamage, MineSplashRange * worldUnitsPerMeter);
 							GameMap->setMine(cellRow, cellCol, 2);
 						}
 					}
 				}
 				else
 				{
-					Assert(hitLocation != -2, TargetRolo,
-						" Mech.handleWeaponFire: Bad Hit Location ");
+					Assert(
+						hitLocation != -2, TargetRolo, " Mech.handleWeaponFire: Bad Hit Location ");
 					//--------------------------------------
 					// For now, always use a bullet effect...
 					WeaponShotInfo curShotInfo;
-					curShotInfo.init(getWatchID(),
-						inventory[weaponIndex].masterID,
+					curShotInfo.init(getWatchID(), inventory[weaponIndex].masterID,
 						numMissiles *
-							MasterComponent::masterList[inventory[weaponIndex]
-															.masterID]
+							MasterComponent::masterList[inventory[weaponIndex].masterID]
 								.getWeaponDamage(),
 						hitLocation, entryAngle);
-					Assert(((float)((int32_t)(curShotInfo.damage / 0.25)) *
-							   0.25) == curShotInfo.damage,
+					Assert(((float)((int32_t)(curShotInfo.damage / 0.25)) * 0.25) ==
+							curShotInfo.damage,
 						0, " WeaponHitChunk.build: damage round error ");
 					if (target)
-						weaponFX->connect(this, target, &curShotInfo,
-							sourceHotSpot, targetHotSpot);
+						weaponFX->connect(this, target, &curShotInfo, sourceHotSpot, targetHotSpot);
 					else
 					{
-						weaponFX->connect(
-							this, *targetPoint, &curShotInfo, sourceHotSpot);
+						weaponFX->connect(this, *targetPoint, &curShotInfo, sourceHotSpot);
 						//-----------------------------
 						// Now, cancel the tac order...
 						// pilot->clearCurTacOrder();
@@ -8540,12 +8115,10 @@ int32_t BattleMech::handleWeaponFire(int32_t weaponIndex, GameObjectPtr target,
 			// For now, always use a laser effect...
 			WeaponShotInfo shotInfo;
 			shotInfo.init(getWatchID(), inventory[weaponIndex].masterID,
-				MasterComponent::masterList[inventory[weaponIndex].masterID]
-					.getWeaponDamage(),
+				MasterComponent::masterList[inventory[weaponIndex].masterID].getWeaponDamage(),
 				hitLocation, entryAngle);
-			uint8_t effectType =
-				MasterComponent::masterList[inventory[weaponIndex].masterID]
-					.getWeaponSpecialEffect();
+			uint8_t effectType = MasterComponent::masterList[inventory[weaponIndex].masterID]
+									 .getWeaponSpecialEffect();
 			weaponFX = ObjectManager->createWeaponBolt(effectType);
 			if (!weaponFX)
 			{
@@ -8557,9 +8130,8 @@ int32_t BattleMech::handleWeaponFire(int32_t weaponIndex, GameObjectPtr target,
 					land->worldToCell(*targetPoint, cellRow, cellCol);
 					if (GameMap->getMine(cellRow, cellCol) == 1)
 					{
-						ObjectManager->createExplosion(MINE_EXPLOSION_ID,
-							nullptr, *targetPoint, MineSplashDamage,
-							MineSplashRange * worldUnitsPerMeter);
+						ObjectManager->createExplosion(MINE_EXPLOSION_ID, nullptr, *targetPoint,
+							MineSplashDamage, MineSplashRange * worldUnitsPerMeter);
 						GameMap->setMine(cellRow, cellCol, 2);
 					}
 				}
@@ -8567,12 +8139,10 @@ int32_t BattleMech::handleWeaponFire(int32_t weaponIndex, GameObjectPtr target,
 			else
 			{
 				if (target)
-					weaponFX->connect(
-						this, target, &shotInfo, sourceHotSpot, targetHotSpot);
+					weaponFX->connect(this, target, &shotInfo, sourceHotSpot, targetHotSpot);
 				else
 				{
-					weaponFX->connect(
-						this, *targetPoint, &shotInfo, sourceHotSpot);
+					weaponFX->connect(this, *targetPoint, &shotInfo, sourceHotSpot);
 					//-----------------------------
 					// Now, cancel the tac order...
 					// pilot->clearCurTacOrder();
@@ -8604,16 +8174,15 @@ int32_t BattleMech::handleWeaponFire(int32_t weaponIndex, GameObjectPtr target,
 		}
 		//----------------------------------------------------
 		// Miss, so check for possible miss resolution here...
-		if (MasterComponent::masterList[inventory[weaponIndex].masterID]
-				.getForm() == COMPONENT_FORM_WEAPON_MISSILE)
+		if (MasterComponent::masterList[inventory[weaponIndex].masterID].getForm() ==
+			COMPONENT_FORM_WEAPON_MISSILE)
 		{
 			if (numMissiles)
 			{
 				//------------------
 				// Clusters no more!
-				uint8_t effectType =
-					MasterComponent::masterList[inventory[weaponIndex].masterID]
-						.getWeaponSpecialEffect();
+				uint8_t effectType = MasterComponent::masterList[inventory[weaponIndex].masterID]
+										 .getWeaponSpecialEffect();
 				weaponFX = ObjectManager->createWeaponBolt(effectType);
 				if (!weaponFX)
 				{
@@ -8625,9 +8194,8 @@ int32_t BattleMech::handleWeaponFire(int32_t weaponIndex, GameObjectPtr target,
 						land->worldToCell(*targetPoint, cellRow, cellCol);
 						if (GameMap->getMine(cellRow, cellCol) == 1)
 						{
-							ObjectManager->createExplosion(MINE_EXPLOSION_ID,
-								nullptr, *targetPoint, MineSplashDamage,
-								MineSplashRange * worldUnitsPerMeter);
+							ObjectManager->createExplosion(MINE_EXPLOSION_ID, nullptr, *targetPoint,
+								MineSplashDamage, MineSplashRange * worldUnitsPerMeter);
 							GameMap->setMine(cellRow, cellCol, 2);
 						}
 					}
@@ -8635,18 +8203,15 @@ int32_t BattleMech::handleWeaponFire(int32_t weaponIndex, GameObjectPtr target,
 				else
 				{
 					WeaponShotInfo curShotInfo;
-					curShotInfo.init(getWatchID(),
-						inventory[weaponIndex].masterID,
+					curShotInfo.init(getWatchID(), inventory[weaponIndex].masterID,
 						numMissiles *
-							MasterComponent::masterList[inventory[weaponIndex]
-															.masterID]
+							MasterComponent::masterList[inventory[weaponIndex].masterID]
 								.getWeaponDamage(),
 						-1, entryAngle);
-					Assert(((float)((int32_t)(curShotInfo.damage / 0.25)) *
-							   0.25) == curShotInfo.damage,
+					Assert(((float)((int32_t)(curShotInfo.damage / 0.25)) * 0.25) ==
+							curShotInfo.damage,
 						0, " WeaponHitChunk.build: damage round error ");
-					weaponFX->connect(
-						this, *targetPoint, &curShotInfo, sourceHotSpot);
+					weaponFX->connect(this, *targetPoint, &curShotInfo, sourceHotSpot);
 				}
 			}
 		}
@@ -8657,12 +8222,10 @@ int32_t BattleMech::handleWeaponFire(int32_t weaponIndex, GameObjectPtr target,
 			// For now, always use a laser effect...
 			WeaponShotInfo shotInfo;
 			shotInfo.init(getWatchID(), inventory[weaponIndex].masterID,
-				MasterComponent::masterList[inventory[weaponIndex].masterID]
-					.getWeaponDamage(),
-				-1, entryAngle);
-			uint8_t effectType =
-				MasterComponent::masterList[inventory[weaponIndex].masterID]
-					.getWeaponSpecialEffect();
+				MasterComponent::masterList[inventory[weaponIndex].masterID].getWeaponDamage(), -1,
+				entryAngle);
+			uint8_t effectType = MasterComponent::masterList[inventory[weaponIndex].masterID]
+									 .getWeaponSpecialEffect();
 			weaponFX = ObjectManager->createWeaponBolt(effectType);
 			if (!weaponFX)
 			{
@@ -8674,9 +8237,8 @@ int32_t BattleMech::handleWeaponFire(int32_t weaponIndex, GameObjectPtr target,
 					land->worldToCell(*targetPoint, cellRow, cellCol);
 					if (GameMap->getMine(cellRow, cellCol) == 1)
 					{
-						ObjectManager->createExplosion(MINE_EXPLOSION_ID,
-							nullptr, *targetPoint, MineSplashDamage,
-							MineSplashRange * worldUnitsPerMeter);
+						ObjectManager->createExplosion(MINE_EXPLOSION_ID, nullptr, *targetPoint,
+							MineSplashDamage, MineSplashRange * worldUnitsPerMeter);
 						GameMap->setMine(cellRow, cellCol, 2);
 					}
 				}
@@ -8696,8 +8258,7 @@ int32_t BattleMech::handleWeaponFire(int32_t weaponIndex, GameObjectPtr target,
 	{
 		targetPilot = ((MoverPtr)target)->getPilot();
 		targetPilot->updateAttackerStatus(getWatchID(), scenarioTime);
-		targetPilot->triggerAlarm(
-			PILOT_ALARM_TARGET_OF_WEAPONFIRE, getWatchID());
+		targetPilot->triggerAlarm(PILOT_ALARM_TARGET_OF_WEAPONFIRE, getWatchID());
 	}
 	if (getGroup())
 		getGroup()->handleMateFiredWeapon(getWatchID());
@@ -8741,8 +8302,7 @@ float BattleMech::calcModerateSpeed(void)
 
 //---------------------------------------------------------------------------
 
-int32_t BattleMech::calcSpriteSpeed(
-	float speed, uint32_t flags, int32_t& state, int32_t& throttle)
+int32_t BattleMech::calcSpriteSpeed(float speed, uint32_t flags, int32_t& state, int32_t& throttle)
 {
 	state	= MECH_STATE_RUNNING;
 	throttle = 100;
@@ -8795,32 +8355,28 @@ bool BattleMech::isCaptureable(int32_t capturingTeamID)
 	// The following seems wrong, but we've opted to leave it so we don't upset
 	// the BETA gods. This function should never get called anyway, we
 	// think...hehe...3/20/01
-	return (getFlag(OBJECT_FLAG_CAPTURABLE) && (getTeam() == Team::home) &&
-			!isDestroyed());
+	return (getFlag(OBJECT_FLAG_CAPTURABLE) && (getTeam() == Team::home) && !isDestroyed());
 }
 
 //---------------------------------------------------------------------------
 float BattleMech::calcMaxTargetDamage(void)
 {
 	float damage = 0;
-	for (size_t curWeapon = numOther; curWeapon < numWeapons + numOther;
-		 curWeapon++)
+	for (size_t curWeapon = numOther; curWeapon < numWeapons + numOther; curWeapon++)
 	{
 		int32_t numClusters, clusterSize;
 		float thisDamage;
 		numClusters = clusterSize = 1;
-		if (MasterComponent::masterList[inventory[curWeapon].masterID]
-				.getForm() == COMPONENT_FORM_WEAPON_MISSILE)
+		if (MasterComponent::masterList[inventory[curWeapon].masterID].getForm() ==
+			COMPONENT_FORM_WEAPON_MISSILE)
 		{
 			//---------------------------------------------------------
 			// It's a missile weapon. We need to determine how many hit
 			// (and missed) the target, and in how many clusters...
 			int32_t numMissiles =
-				MasterComponent::masterList[inventory[curWeapon].masterID]
-					.getWeaponAmmoAmount() /
+				MasterComponent::masterList[inventory[curWeapon].masterID].getWeaponAmmoAmount() /
 				2;
-			switch (MasterComponent::masterList[inventory[curWeapon].masterID]
-						.getWeaponAmmoType())
+			switch (MasterComponent::masterList[inventory[curWeapon].masterID].getWeaponAmmoType())
 			{
 			case WEAPON_AMMO_SRM:
 				numClusters = numMissiles / ClusterSizeSRM;
@@ -8837,11 +8393,9 @@ float BattleMech::calcMaxTargetDamage(void)
 			};
 		}
 		thisDamage = clusterSize * numClusters *
-					 MasterComponent::masterList[inventory[curWeapon].masterID]
-						 .getWeaponDamage() *
-					 10;
-		thisDamage /= MasterComponent::masterList[inventory[curWeapon].masterID]
-						  .getWeaponRecycleTime();
+			MasterComponent::masterList[inventory[curWeapon].masterID].getWeaponDamage() * 10;
+		thisDamage /=
+			MasterComponent::masterList[inventory[curWeapon].masterID].getWeaponRecycleTime();
 		thisDamage *= 100; // 100% chance to hit
 		if (thisDamage > 0)
 			damage += thisDamage;
@@ -8856,9 +8410,9 @@ bool BattleMech::isWeaponWorking(int32_t weaponIndex)
 {
 	// int32_t bodyLocation = inventory[weaponIndex].bodyLocation;
 	//	if ((bodyLocation == MECH_BODY_LOCATION_LARM) &&
-	//inventory[actuator[ACTUATOR_LSHOULDER]].disabled) 		return(false);
+	// inventory[actuator[ACTUATOR_LSHOULDER]].disabled) 		return(false);
 	//	else if ((bodyLocation == MECH_BODY_LOCATION_RARM) &&
-	//inventory[actuator[ACTUATOR_RSHOULDER]].disabled) 		return(false);
+	// inventory[actuator[ACTUATOR_RSHOULDER]].disabled) 		return(false);
 	//	else
 	if (inventory[weaponIndex].disabled)
 		return (false);
@@ -8872,8 +8426,8 @@ float BattleMech::getTotalEffectiveness(void)
 {
 	float weaponEffect, result;
 	float curCTorso, maxCTorso, armorCTorso;
-	float maxHead, curHead, armorHead, armorEffect, curArm, maxArm, armorArm,
-		curLeg, maxLeg, armorLeg;
+	float maxHead, curHead, armorHead, armorEffect, curArm, maxArm, armorArm, curLeg, maxLeg,
+		armorLeg;
 	float curTorso, maxTorso, armorTorso, pilotEffect;
 	//-------------------------------------------------------------------------
 	// calculate Weapon effectiveness
@@ -8907,26 +8461,25 @@ float BattleMech::getTotalEffectiveness(void)
 		}
 		armorCTorso = curCTorso / maxCTorso * 0.5 + (0.5);
 		curTorso	= armor[MECH_ARMOR_LOCATION_RLTORSO].curArmor +
-				   armor[MECH_ARMOR_LOCATION_LTORSO].curArmor +
-				   armor[MECH_ARMOR_LOCATION_RRTORSO].curArmor +
-				   armor[MECH_ARMOR_LOCATION_RTORSO].curArmor;
+			armor[MECH_ARMOR_LOCATION_LTORSO].curArmor +
+			armor[MECH_ARMOR_LOCATION_RRTORSO].curArmor +
+			armor[MECH_ARMOR_LOCATION_RTORSO].curArmor;
 		maxTorso = armor[MECH_ARMOR_LOCATION_RLTORSO].maxArmor +
-				   armor[MECH_ARMOR_LOCATION_LTORSO].maxArmor +
-				   armor[MECH_ARMOR_LOCATION_RRTORSO].maxArmor +
-				   armor[MECH_ARMOR_LOCATION_RTORSO].maxArmor;
+			armor[MECH_ARMOR_LOCATION_LTORSO].maxArmor +
+			armor[MECH_ARMOR_LOCATION_RRTORSO].maxArmor +
+			armor[MECH_ARMOR_LOCATION_RTORSO].maxArmor;
 		armorTorso = curTorso / maxTorso * 0.25 + (0.75);
-		curArm	 = armor[MECH_ARMOR_LOCATION_LARM].curArmor +
-				 armor[MECH_ARMOR_LOCATION_RARM].curArmor;
-		maxArm = armor[MECH_ARMOR_LOCATION_LARM].maxArmor +
-				 armor[MECH_ARMOR_LOCATION_RARM].maxArmor;
+		curArm =
+			armor[MECH_ARMOR_LOCATION_LARM].curArmor + armor[MECH_ARMOR_LOCATION_RARM].curArmor;
+		maxArm =
+			armor[MECH_ARMOR_LOCATION_LARM].maxArmor + armor[MECH_ARMOR_LOCATION_RARM].maxArmor;
 		armorArm = curArm / maxArm * 0.25 + (0.75);
-		curLeg   = armor[MECH_ARMOR_LOCATION_LLEG].curArmor +
-				 armor[MECH_ARMOR_LOCATION_RLEG].curArmor;
-		maxLeg = armor[MECH_ARMOR_LOCATION_LLEG].maxArmor +
-				 armor[MECH_ARMOR_LOCATION_RLEG].maxArmor;
-		armorLeg = curArm / maxArm * 0.4 + (0.6);
-		armorEffect =
-			armorHead * armorCTorso * armorTorso * armorArm * armorLeg;
+		curLeg =
+			armor[MECH_ARMOR_LOCATION_LLEG].curArmor + armor[MECH_ARMOR_LOCATION_RLEG].curArmor;
+		maxLeg =
+			armor[MECH_ARMOR_LOCATION_LLEG].maxArmor + armor[MECH_ARMOR_LOCATION_RLEG].maxArmor;
+		armorLeg	= curArm / maxArm * 0.4 + (0.6);
+		armorEffect = armorHead * armorCTorso * armorTorso * armorArm * armorLeg;
 	}
 	float pilotWoundTable[7] = {1.0, 0.95f, 0.85f, 0.75f, 0.50f, 0.30f, 0.00};
 	uint32_t pilotWounds	 = float2long(getPilot()->getWounds());
@@ -8940,16 +8493,13 @@ float BattleMech::getTotalEffectiveness(void)
 //---------------------------------------------------------------------------
 void BattleMech::damageLoadedComponents(void)
 {
-	for (size_t curLocation = 0; curLocation < NUM_MECH_BODY_LOCATIONS;
-		 curLocation++)
+	for (size_t curLocation = 0; curLocation < NUM_MECH_BODY_LOCATIONS; curLocation++)
 	{
 		int32_t numSpaces = NumLocationCriticalSpaces[curLocation];
 		for (size_t curSpace = 0; curSpace < numSpaces; curSpace++)
 		{
 			if (body[curLocation].criticalSpaces[curSpace].hit)
-				hitInventoryItem(
-					body[curLocation].criticalSpaces[curSpace].inventoryID,
-					true);
+				hitInventoryItem(body[curLocation].criticalSpaces[curSpace].inventoryID, true);
 		}
 	}
 }
@@ -8960,8 +8510,7 @@ void BattleMech::Save(PacketFilePtr file, int32_t packetNum)
 	MechData data;
 	CopyTo(&data);
 	// PacketNum incremented in ObjectManager!!
-	file->writePacket(
-		packetNum, (puint8_t)&data, sizeof(MechData), STORAGE_TYPE_ZLIB);
+	file->writePacket(packetNum, (puint8_t)&data, sizeof(MechData), STORAGE_TYPE_ZLIB);
 }
 
 //***************************************************************************
@@ -9063,8 +8612,7 @@ void BattleMech::Load(MechData* data)
 	sensorSystem = SensorManager->newSensor();
 	sensorSystem->setOwner(this);
 	sensorSystem->setRange(
-		MasterComponent::masterList[inventory[sensor].masterID]
-			.getSensorRange());
+		MasterComponent::masterList[inventory[sensor].masterID].getSensorRange());
 	SensorManager->addTeamSensor(teamId, sensorSystem);
 	if (!data->sensorOK)
 		sensorSystem->broken = true;
@@ -9073,37 +8621,24 @@ void BattleMech::Load(MechData* data)
 //***************************************************************************
 void BattleMech::repairAll(void)
 {
-	armor[MECH_ARMOR_LOCATION_HEAD].curArmor =
-		armor[MECH_ARMOR_LOCATION_HEAD].maxArmor;
-	armor[MECH_ARMOR_LOCATION_CTORSO].curArmor =
-		armor[MECH_ARMOR_LOCATION_CTORSO].maxArmor;
-	armor[MECH_ARMOR_LOCATION_LTORSO].curArmor =
-		armor[MECH_ARMOR_LOCATION_LTORSO].maxArmor;
-	armor[MECH_ARMOR_LOCATION_RTORSO].curArmor =
-		armor[MECH_ARMOR_LOCATION_RTORSO].maxArmor;
-	armor[MECH_ARMOR_LOCATION_LARM].curArmor =
-		armor[MECH_ARMOR_LOCATION_LARM].maxArmor;
-	armor[MECH_ARMOR_LOCATION_RARM].curArmor =
-		armor[MECH_ARMOR_LOCATION_RARM].maxArmor;
-	armor[MECH_ARMOR_LOCATION_LLEG].curArmor =
-		armor[MECH_ARMOR_LOCATION_LLEG].maxArmor;
-	armor[MECH_ARMOR_LOCATION_RLEG].curArmor =
-		armor[MECH_ARMOR_LOCATION_RLEG].maxArmor;
-	armor[MECH_ARMOR_LOCATION_RCTORSO].curArmor =
-		armor[MECH_ARMOR_LOCATION_RCTORSO].maxArmor;
-	armor[MECH_ARMOR_LOCATION_RLTORSO].curArmor =
-		armor[MECH_ARMOR_LOCATION_RLTORSO].maxArmor;
-	armor[MECH_ARMOR_LOCATION_RRTORSO].curArmor =
-		armor[MECH_ARMOR_LOCATION_RRTORSO].maxArmor;
+	armor[MECH_ARMOR_LOCATION_HEAD].curArmor	= armor[MECH_ARMOR_LOCATION_HEAD].maxArmor;
+	armor[MECH_ARMOR_LOCATION_CTORSO].curArmor  = armor[MECH_ARMOR_LOCATION_CTORSO].maxArmor;
+	armor[MECH_ARMOR_LOCATION_LTORSO].curArmor  = armor[MECH_ARMOR_LOCATION_LTORSO].maxArmor;
+	armor[MECH_ARMOR_LOCATION_RTORSO].curArmor  = armor[MECH_ARMOR_LOCATION_RTORSO].maxArmor;
+	armor[MECH_ARMOR_LOCATION_LARM].curArmor	= armor[MECH_ARMOR_LOCATION_LARM].maxArmor;
+	armor[MECH_ARMOR_LOCATION_RARM].curArmor	= armor[MECH_ARMOR_LOCATION_RARM].maxArmor;
+	armor[MECH_ARMOR_LOCATION_LLEG].curArmor	= armor[MECH_ARMOR_LOCATION_LLEG].maxArmor;
+	armor[MECH_ARMOR_LOCATION_RLEG].curArmor	= armor[MECH_ARMOR_LOCATION_RLEG].maxArmor;
+	armor[MECH_ARMOR_LOCATION_RCTORSO].curArmor = armor[MECH_ARMOR_LOCATION_RCTORSO].maxArmor;
+	armor[MECH_ARMOR_LOCATION_RLTORSO].curArmor = armor[MECH_ARMOR_LOCATION_RLTORSO].maxArmor;
+	armor[MECH_ARMOR_LOCATION_RRTORSO].curArmor = armor[MECH_ARMOR_LOCATION_RRTORSO].maxArmor;
 	//------------------------------------------------------------
 	// Now, read in the component layout for each body location...
-	for (size_t curLocation = 0; curLocation < NUM_MECH_BODY_LOCATIONS;
-		 curLocation++)
+	for (size_t curLocation = 0; curLocation < NUM_MECH_BODY_LOCATIONS; curLocation++)
 	{
-		body[curLocation].curInternalStructure =
-			body[curLocation].maxInternalStructure;
-		body[curLocation].damageState = IS_DAMAGE_NONE;
-		int32_t numSpaces			  = NumLocationCriticalSpaces[curLocation];
+		body[curLocation].curInternalStructure = body[curLocation].maxInternalStructure;
+		body[curLocation].damageState		   = IS_DAMAGE_NONE;
+		int32_t numSpaces					   = NumLocationCriticalSpaces[curLocation];
 		for (size_t curSpace = 0; curSpace < numSpaces; curSpace++)
 		{
 			body[curLocation].criticalSpaces[curSpace].hit = false;

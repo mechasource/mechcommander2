@@ -40,10 +40,7 @@ void LogisticsPilotListBox::update()
 
 //-------------------------------------------------------------------------------------------------
 
-LogisticsPilotListBoxItem::~LogisticsPilotListBoxItem()
-{
-	removeAllChildren(0);
-}
+LogisticsPilotListBoxItem::~LogisticsPilotListBoxItem() { removeAllChildren(0); }
 
 LogisticsPilotListBoxItem::LogisticsPilotListBoxItem(LogisticsPilot* pNewPilot)
 {
@@ -51,8 +48,7 @@ LogisticsPilotListBoxItem::LogisticsPilotListBoxItem(LogisticsPilot* pNewPilot)
 	state  = ENABLED;
 	if (!s_templateItem)
 		return;
-	aObject::init(0, 0, s_templateItem->outline.width(),
-		s_templateItem->outline.height());
+	aObject::init(0, 0, s_templateItem->outline.width(), s_templateItem->outline.height());
 	outline  = s_templateItem->outline;
 	line	 = s_templateItem->line;
 	nameText = s_templateItem->nameText;
@@ -72,7 +68,7 @@ LogisticsPilotListBoxItem::LogisticsPilotListBoxItem(LogisticsPilot* pNewPilot)
 	addChild(&outline);
 	addChild(&line);
 	addChild(&pilotOutline);
-	EString name = pPilot->getName();
+	std::wstring name = pPilot->getName();
 	name.MakeUpper();
 	nameText.setText(name);
 	// ACE not continguous with other ranks.  Added too late!
@@ -88,8 +84,7 @@ int32_t LogisticsPilotListBoxItem::init(FitIniFile* file)
 {
 	if (!s_templateItem)
 		s_templateItem = new LogisticsPilotListBoxItem(nullptr);
-	memset(s_templateItem->pChildAnimations, 0,
-		sizeof(aAnimGroup*) * PILOT_LIST_BOX_CHILD_COUNT);
+	memset(s_templateItem->pChildAnimations, 0, sizeof(aAnimGroup*) * PILOT_LIST_BOX_CHILD_COUNT);
 	s_templateItem->nameText.init(file, "Text0");
 	setAnimation(*file, 0);
 	s_templateItem->rankText.init(file, "Text1");
@@ -119,9 +114,8 @@ void LogisticsPilotListBoxItem::setAnimation(FitIniFile& file, int32_t whichOne)
 		{
 			if (isdigit(animationText[i]))
 			{
-				animationText[i + 1] = nullptr;
-				s_templateItem->pChildAnimations[whichOne] =
-					atoi(&animationText[i]);
+				animationText[i + 1]					   = nullptr;
+				s_templateItem->pChildAnimations[whichOne] = atoi(&animationText[i]);
 				return;
 			}
 		}
@@ -135,8 +129,7 @@ void LogisticsPilotListBoxItem::render()
 	{
 		int32_t newColor = 0xffffffff;
 		if (pChildAnimations[i] != -1)
-			newColor = animations[pChildAnimations[i]].getCurrentColor(
-				(aAnimGroup::STATE)state);
+			newColor = animations[pChildAnimations[i]].getCurrentColor((aAnimGroup::STATE)state);
 		pChildren[i]->setColor(newColor, 1);
 		pChildren[i]->render();
 	}
@@ -223,8 +216,7 @@ void LogisticsPilotListBox::makeUVs(LogisticsPilot* pPilot, aObject& icon)
 int32_t LogisticsPilotListBox::AddItem(aListItem* pNewItem)
 {
 	scrollBar->setOrange();
-	LogisticsPilotListBoxItem* pItem =
-		dynamic_cast<LogisticsPilotListBoxItem*>(pNewItem);
+	LogisticsPilotListBoxItem* pItem = dynamic_cast<LogisticsPilotListBoxItem*>(pNewItem);
 	if (pItem)
 	{
 		LogisticsPilot* pPilot = pItem->getPilot();
@@ -235,8 +227,7 @@ int32_t LogisticsPilotListBox::AddItem(aListItem* pNewItem)
 			if (pTmpItem)
 			{
 				// do not put in twice.
-				if (pPilot->getName().Compare(
-						pTmpItem->getPilot()->getName()) == 0)
+				if (pPilot->getName().Compare(pTmpItem->getPilot()->getName()) == 0)
 				{
 					delete pItem;
 					return -1;
@@ -247,15 +238,12 @@ int32_t LogisticsPilotListBox::AddItem(aListItem* pNewItem)
 				}
 				else if (pPilot->getRank() == pTmpItem->getPilot()->getRank())
 				{
-					if (pPilot->getGunnery() >
-						pTmpItem->getPilot()->getGunnery())
+					if (pPilot->getGunnery() > pTmpItem->getPilot()->getGunnery())
 					{
 						return InsertItem(pItem, i);
 					}
-					else if (pPilot->getGunnery() ==
-								 pTmpItem->getPilot()->getGunnery() &&
-							 pPilot->getName().Compare(
-								 pTmpItem->getPilot()->getName()) < 0)
+					else if (pPilot->getGunnery() == pTmpItem->getPilot()->getGunnery() &&
+						pPilot->getName().Compare(pTmpItem->getPilot()->getName()) < 0)
 					{
 						return InsertItem(pItem, i);
 					}
@@ -271,8 +259,7 @@ void LogisticsPilotListBox::removePilot(LogisticsPilot* pPilot)
 {
 	for (size_t i = 0; i < itemCount; i++)
 	{
-		LogisticsPilotListBoxItem* pItem =
-			dynamic_cast<LogisticsPilotListBoxItem*>(items[i]);
+		LogisticsPilotListBoxItem* pItem = dynamic_cast<LogisticsPilotListBoxItem*>(items[i]);
 		if (pItem && pItem->getPilot() == pPilot)
 		{
 			RemoveItem(pItem, true);

@@ -29,7 +29,7 @@ class aButton;
 
 class aStyle7TextListItem : public aTextListItem
 {
-  public:
+public:
 	aStyle7TextListItem()
 	{
 		hasAnimation = false;
@@ -38,7 +38,7 @@ class aStyle7TextListItem : public aTextListItem
 	virtual int32_t init(FitIniFile* file, PCSTR blockName);
 	virtual void render(void);
 
-  protected:
+protected:
 	bool hasAnimation;
 	aAnimGroup animGroup;
 	int32_t normalColor;
@@ -46,7 +46,7 @@ class aStyle7TextListItem : public aTextListItem
 
 class MPDirectTcpip : public LogisticsScreen
 {
-  public:
+public:
 	MPDirectTcpip(void);
 	virtual ~MPDirectTcpip(void);
 
@@ -61,7 +61,7 @@ class MPDirectTcpip : public LogisticsScreen
 
 	bool bDone;
 
-  private:
+private:
 	int32_t indexOfButtonWithID(int32_t id);
 
 	aComboBox ipAddressComboBox;

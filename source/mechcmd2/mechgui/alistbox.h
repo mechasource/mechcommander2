@@ -22,7 +22,7 @@ namespace mechgui
 
 class aListItem : public aObject
 {
-  public:
+public:
 	enum State
 	{
 		ENABLED = 0,
@@ -47,15 +47,14 @@ class aListItem : public aObject
 	virtual bool isChecked() { return false; }
 	virtual void setCheck(bool) {}
 
-  protected:
+protected:
 	State state;
 };
 
 class aTextListItem : public aListItem
 {
-  public:
-	aTextListItem(
-		HGOSFONT3D newFont); // need the font, so we can determine the size
+public:
+	aTextListItem(HGOSFONT3D newFont); // need the font, so we can determine the size
 	aTextListItem(const aFont& newFont);
 	aTextListItem(int32_t fontResID);
 
@@ -73,12 +72,12 @@ class aTextListItem : public aListItem
 
 	void forceToTop(bool bForce) { bForceToTop = bForce; }
 
-  protected:
+protected:
 	aTextListItem() {}
 	void init(int32_t fontResID);
 
 	aFont font;
-	EString text;
+	std::wstring text;
 	int32_t alignment;
 
 	bool bForceToTop;
@@ -87,7 +86,7 @@ class aTextListItem : public aListItem
 class aAnimTextListItem : public aTextListItem
 {
 
-  public:
+public:
 	aAnimTextListItem(HGOSFONT3D newFont) : aTextListItem(newFont) {}
 	aAnimTextListItem(const aFont& newFont) : aTextListItem(newFont) {}
 	aAnimTextListItem(int32_t fontResID) : aTextListItem(fontResID) {}
@@ -99,14 +98,14 @@ class aAnimTextListItem : public aTextListItem
 	virtual void render(void);
 	virtual void update(void);
 
-  protected:
+protected:
 	aAnimGroup animInfo;
 	void CopyData(const aAnimTextListItem& src);
 };
 
 class aLocalizedListItem : public aAnimTextListItem
 {
-  public:
+public:
 	aLocalizedListItem(void);
 	virtual int32_t init(FitIniFile* file, PCSTR blockName);
 	virtual void render(void);
@@ -114,13 +113,13 @@ class aLocalizedListItem : public aAnimTextListItem
 	void setHiddenText(PCSTR pText) { hiddenText = pText; }
 	PCSTR getHiddenText() const { return hiddenText; }
 
-  protected:
-	EString hiddenText;
+protected:
+	std::wstring hiddenText;
 };
 
 class aListBox : public aObject
 {
-  public:
+public:
 	aListBox(void);
 
 	virtual int32_t init(int32_t xPos, int32_t yPos, int32_t w, int32_t h);
@@ -169,7 +168,7 @@ class aListBox : public aObject
 	bool pointInScrollBar(int32_t mouseX, int32_t mouseY);
 	float getScrollPos() { return scrollBar ? scrollBar->GetScrollPos() : 0; }
 
-  protected:
+protected:
 	int32_t itemCount;
 	int32_t itemSelected;
 	int32_t skipAmount;
@@ -192,7 +191,7 @@ class aListBox : public aObject
 whereas in an aComboBox they do (well, selectable items do).*/
 class aDropList : public aObject
 {
-  public:
+public:
 	aDropList(void);
 
 	virtual int32_t init(FitIniFile* file, PCSTR blockName);
@@ -225,7 +224,7 @@ class aDropList : public aObject
 
 	aDropList& operator=(const aDropList&);
 
-  protected:
+protected:
 	aRect* rects;
 	int32_t rectCount;
 	aAnimButton expandButton;
@@ -241,7 +240,7 @@ class aDropList : public aObject
 
 class aComboBox : public aObject
 {
-  public:
+public:
 	aComboBox(void);
 	~aComboBox(){};
 
@@ -268,7 +267,7 @@ class aComboBox : public aObject
 
 	void setFocus(bool bFocus) { EditBox().setFocus(bFocus); }
 
-  protected:
+protected:
 	aEdit entry;
 	aRect* rects;
 	int32_t rectCount;
@@ -280,6 +279,6 @@ class aComboBox : public aObject
 	aComboBox(const aComboBox&);
 	aAnimTextListItem templateItem;
 };
-}
+} // namespace mechgui
 
 #endif

@@ -53,7 +53,7 @@ void Weather::load(FitIniFile* missionFile)
 	if (result == NO_ERROR)
 	{
 		weatherActive = true;
-		result = missionFile->readIdULong("MaxRainDrops", totalRainDrops);
+		result		  = missionFile->readIdULong("MaxRainDrops", totalRainDrops);
 		if (result != NO_ERROR)
 			totalRainDrops = 500;
 		if (totalRainDrops > 500)
@@ -72,8 +72,7 @@ void Weather::load(FitIniFile* missionFile)
 			baseRainChance = 0;
 		if (baseRainChance > 100)
 			baseRainChance = 100;
-		result = missionFile->readIdFloat(
-			"BaseLighteningChance", baseLighteningChance);
+		result = missionFile->readIdFloat("BaseLighteningChance", baseLighteningChance);
 		if (result != NO_ERROR)
 			baseLighteningChance = BASE_LIGHTENING_CHANCE;
 		if (baseLighteningChance < 0.0f)
@@ -91,7 +90,7 @@ void Weather::init(FitIniFilePtr missionFile)
 	if (result == NO_ERROR)
 	{
 		weatherActive = true;
-		result = missionFile->readIdULong("MaxRainDrops", totalRainDrops);
+		result		  = missionFile->readIdULong("MaxRainDrops", totalRainDrops);
 		if (result != NO_ERROR)
 			totalRainDrops = 500;
 		if (totalRainDrops > 500)
@@ -110,8 +109,7 @@ void Weather::init(FitIniFilePtr missionFile)
 			baseRainChance = 0;
 		if (baseRainChance > 100)
 			baseRainChance = 100;
-		result = missionFile->readIdFloat(
-			"BaseLighteningChance", baseLighteningChance);
+		result = missionFile->readIdFloat("BaseLighteningChance", baseLighteningChance);
 		if (result != NO_ERROR)
 			baseLighteningChance = BASE_LIGHTENING_CHANCE;
 		if (baseLighteningChance < 0.0f)
@@ -129,15 +127,13 @@ void Weather::init(FitIniFilePtr missionFile)
 }
 
 //----------------------------------------------------------------------------------
-void Weather::init(
-	uint32_t maxDrops, float startingRain, float brChance, float ltChance)
+void Weather::init(uint32_t maxDrops, float startingRain, float brChance, float ltChance)
 {
 	totalRainDrops   = maxDrops;
 	currentRainDrops = 0;
 	if (maxDrops)
 	{
-		rainDrops =
-			(RainDrops*)systemHeap->Malloc(sizeof(RainDrops) * maxDrops);
+		rainDrops = (RainDrops*)systemHeap->Malloc(sizeof(RainDrops) * maxDrops);
 		gosASSERT(rainDrops != nullptr);
 		for (size_t i = 0; i < totalRainDrops; i++)
 			rainDrops[i].init();
@@ -242,8 +238,7 @@ void Weather::update(void)
 			{
 				//-----------------------
 				// Did lightening flash?
-				float baseLighteningFlashChance =
-					BASE_LIGHTENING_CHANCE * rainLevel * 100;
+				float baseLighteningFlashChance = BASE_LIGHTENING_CHANCE * rainLevel * 100;
 				if (RollDice(baseLighteningFlashChance))
 				{
 					lighteningLevel = 64.0f + float(RandomNumber(192));
@@ -279,13 +274,11 @@ void Weather::update(void)
 				{
 					if (RollDice(50))
 					{
-						lighteningDropoff =
-							-RandomNumber(BASE_LIGHTENING_FALLOFF);
+						lighteningDropoff = -RandomNumber(BASE_LIGHTENING_FALLOFF);
 					}
 					else
 					{
-						lighteningDropoff =
-							RandomNumber(BASE_LIGHTENING_FALLOFF * 0.33f);
+						lighteningDropoff = RandomNumber(BASE_LIGHTENING_FALLOFF * 0.33f);
 					}
 				}
 				else
@@ -350,19 +343,14 @@ void Weather::update(void)
 				{
 					Stuff::Vector3D positionOffset;
 					positionOffset.x =
-						RandomNumber(BASE_RAIN_RANDOM_POS_FACTOR * 2) -
-						BASE_RAIN_RANDOM_POS_FACTOR;
+						RandomNumber(BASE_RAIN_RANDOM_POS_FACTOR * 2) - BASE_RAIN_RANDOM_POS_FACTOR;
 					positionOffset.y =
-						RandomNumber(BASE_RAIN_RANDOM_POS_FACTOR * 2) -
-						BASE_RAIN_RANDOM_POS_FACTOR;
+						RandomNumber(BASE_RAIN_RANDOM_POS_FACTOR * 2) - BASE_RAIN_RANDOM_POS_FACTOR;
 					positionOffset.z =
-						RandomNumber(BASE_RAIN_RANDOM_HGT_FACTOR * 2) -
-						BASE_RAIN_RANDOM_HGT_FACTOR;
+						RandomNumber(BASE_RAIN_RANDOM_HGT_FACTOR * 2) - BASE_RAIN_RANDOM_HGT_FACTOR;
 					rainDrops[i].position.Add(startPos, positionOffset);
-					rainDrops[i].length =
-						BASE_RAIN_LENGTH +
-						RandomNumber(BASE_RAIN_RANDOM_LEN_FACTOR * 2) -
-						BASE_RAIN_RANDOM_LEN_FACTOR;
+					rainDrops[i].length = BASE_RAIN_LENGTH +
+						RandomNumber(BASE_RAIN_RANDOM_LEN_FACTOR * 2) - BASE_RAIN_RANDOM_LEN_FACTOR;
 				}
 			}
 			currentRainDrops = newRainDrops;
@@ -377,19 +365,14 @@ void Weather::update(void)
 				Stuff::Vector3D positionOffset;
 				// This raindrop has hit the ground.  Recycle him.
 				positionOffset.x =
-					RandomNumber(BASE_RAIN_RANDOM_POS_FACTOR * 2) -
-					BASE_RAIN_RANDOM_POS_FACTOR;
+					RandomNumber(BASE_RAIN_RANDOM_POS_FACTOR * 2) - BASE_RAIN_RANDOM_POS_FACTOR;
 				positionOffset.y =
-					RandomNumber(BASE_RAIN_RANDOM_POS_FACTOR * 2) -
-					BASE_RAIN_RANDOM_POS_FACTOR;
+					RandomNumber(BASE_RAIN_RANDOM_POS_FACTOR * 2) - BASE_RAIN_RANDOM_POS_FACTOR;
 				positionOffset.z =
-					RandomNumber(BASE_RAIN_RANDOM_HGT_FACTOR * 2) -
-					BASE_RAIN_RANDOM_HGT_FACTOR;
+					RandomNumber(BASE_RAIN_RANDOM_HGT_FACTOR * 2) - BASE_RAIN_RANDOM_HGT_FACTOR;
 				rainDrops[i].position.Add(startPos, positionOffset);
-				rainDrops[i].length =
-					BASE_RAIN_LENGTH +
-					RandomNumber(BASE_RAIN_RANDOM_LEN_FACTOR * 2) -
-					BASE_RAIN_RANDOM_LEN_FACTOR;
+				rainDrops[i].length = BASE_RAIN_LENGTH +
+					RandomNumber(BASE_RAIN_RANDOM_LEN_FACTOR * 2) - BASE_RAIN_RANDOM_LEN_FACTOR;
 			}
 		}
 	}
@@ -413,8 +396,7 @@ void Weather::render(void)
 		return;
 	if (rainLevel >= 1.0f)
 	{
-		float ambientFactor =
-			eye->ambientRed + eye->ambientBlue + eye->ambientGreen;
+		float ambientFactor = eye->ambientRed + eye->ambientBlue + eye->ambientGreen;
 		ambientFactor /= 3.0f;
 		if (ambientFactor < 170.0f)
 			ambientFactor += ambientFactor * 0.5f;
@@ -446,9 +428,8 @@ void Weather::render(void)
 				onScreen = eye->projectZ(botPos, screen2);
 				if (onScreen)
 				{
-					uint8_t amb = ambientFactor * (1.0f - screen1.z);
-					uint32_t rainColor =
-						(amb << 24) + (0xff << 16) + (0xff << 8) + (0xff);
+					uint8_t amb		   = ambientFactor * (1.0f - screen1.z);
+					uint32_t rainColor = (amb << 24) + (0xff << 16) + (0xff << 8) + (0xff);
 					// Gotta draw this one!
 					gos_VERTEX sVertices[2];
 					sVertices[0].x   = screen1.x;

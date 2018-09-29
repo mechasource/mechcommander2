@@ -27,7 +27,7 @@ LogisticsPilotListBox:
 
 class LogisticsPilotListBoxItem : public aListItem
 {
-  public:
+public:
 	static int32_t LogisticsPilotListBoxItem::init(FitIniFile* file);
 	LogisticsPilotListBoxItem(LogisticsPilot* pPilot);
 
@@ -38,7 +38,7 @@ class LogisticsPilotListBoxItem : public aListItem
 
 	LogisticsPilot* getPilot() { return pPilot; }
 
-  private:
+private:
 	aText nameText;
 	aText rankText;
 	aObject icon;
@@ -60,7 +60,7 @@ class LogisticsPilotListBoxItem : public aListItem
 
 class LogisticsPilotListBox : public aListBox
 {
-  public:
+public:
 	LogisticsPilotListBox(void);
 	virtual ~LogisticsPilotListBox(void);
 
@@ -71,7 +71,7 @@ class LogisticsPilotListBox : public aListBox
 
 	void removePilot(LogisticsPilot* pPilot);
 
-  private:
+private:
 	LogisticsPilotListBox(const LogisticsPilotListBox& src);
 
 	// HELPER FUNCTIONS

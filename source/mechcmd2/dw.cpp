@@ -58,8 +58,7 @@ HRESULT __fastcall AnsiToUnicode(LPCSTR pszA, LPOLESTR* ppszW)
 	if (nullptr == *ppszW)
 		return E_OUTOFMEMORY;
 	// Covert to Unicode.
-	if (0 ==
-		MultiByteToWideChar(CP_ACP, 0, pszA, cCharacters, *ppszW, cCharacters))
+	if (0 == MultiByteToWideChar(CP_ACP, 0, pszA, cCharacters, *ppszW, cCharacters))
 	{
 		dwError = GetLastError();
 		free(*ppszW);
@@ -106,8 +105,8 @@ int32_t WINAPI DwExceptionFilter(LPEXCEPTION_POINTERS pep)
 	memset(&sa, 0, sizeof(SECURITY_ATTRIBUTES));
 	sa.nLength		  = sizeof(SECURITY_ATTRIBUTES);
 	sa.bInheritHandle = TRUE;
-	hFileMap = CreateFileMapping(INVALID_HANDLE_VALUE, &sa, PAGE_READWRITE, 0,
-		sizeof(DWSharedMem), nullptr);
+	hFileMap		  = CreateFileMapping(
+		 INVALID_HANDLE_VALUE, &sa, PAGE_READWRITE, 0, sizeof(DWSharedMem), nullptr);
 	if (hFileMap == nullptr)
 	{
 		// At this point, call the GameOS exception handler and convert the pep
@@ -115,8 +114,7 @@ int32_t WINAPI DwExceptionFilter(LPEXCEPTION_POINTERS pep)
 		ProcessException(pep);
 		return 1;
 	}
-	pdwsm = (DWSharedMem*)MapViewOfFile(
-		hFileMap, FILE_MAP_READ | FILE_MAP_WRITE, 0, 0, 0);
+	pdwsm = (DWSharedMem*)MapViewOfFile(hFileMap, FILE_MAP_READ | FILE_MAP_WRITE, 0, 0, 0);
 	if (pdwsm == nullptr)
 	{
 		// At this point, call the GameOS exception handler and convert the pep
@@ -128,8 +126,8 @@ int32_t WINAPI DwExceptionFilter(LPEXCEPTION_POINTERS pep)
 	hEventAlive = CreateEvent(&sa, FALSE, FALSE, nullptr);
 	hEventDone  = CreateEvent(&sa, FALSE, FALSE, nullptr);
 	hMutex		= CreateMutex(&sa, FALSE, nullptr);
-	if (!DuplicateHandle(GetCurrentProcess(), GetCurrentProcess(),
-			GetCurrentProcess(), &pdwsm->hProc, PROCESS_ALL_ACCESS, TRUE, 0))
+	if (!DuplicateHandle(GetCurrentProcess(), GetCurrentProcess(), GetCurrentProcess(),
+			&pdwsm->hProc, PROCESS_ALL_ACCESS, TRUE, 0))
 	{
 		// At this point, call the GameOS exception handler and convert the pep
 		// to the data they need!
@@ -163,7 +161,7 @@ int32_t WINAPI DwExceptionFilter(LPEXCEPTION_POINTERS pep)
 	strcat(pdwsm->szRegSubPath, Environment.applicationName);
 //	strcpy(pdwsm->szLCIDKeyValue, "");
 //	strcpy(pdwsm->szPIDRegKey, "HKLM\\Software\\Microsoft\\Internet
-//Explorer\\Registration\\DigitalProductID");
+// Explorer\\Registration\\DigitalProductID");
 #if defined(FINAL) || defined(EXTERNAL)
 	strcpy(pdwsm->szServer, "watson.microsoft.com");
 #else
@@ -174,8 +172,7 @@ int32_t WINAPI DwExceptionFilter(LPEXCEPTION_POINTERS pep)
 	// OK, I kinda know now.  These are DLLs that Watson can check for goodness
 	// at crash time. COOL, because the end user might have mucked with the EXE
 	// or data and this allows us to report that information back to the server.
-	memcpy(pdwsm->wzDotDataDlls, L"mc2res.dll\0editores.dll\0",
-		24 * sizeof(WCHAR));
+	memcpy(pdwsm->wzDotDataDlls, L"mc2res.dll\0editores.dll\0", 24 * sizeof(WCHAR));
 	GetModuleFileNameA(nullptr, pdwsm->szModuleFileName, DW_MAX_PATH);
 	// Additional Files for MechCommander?  Should there be any?  Log files,
 	// etc.
@@ -189,14 +186,12 @@ int32_t WINAPI DwExceptionFilter(LPEXCEPTION_POINTERS pep)
 	if (Environment.fullScreen && hWindow)
 		EnterWindowMode();
 	if (CreateProcessA(nullptr, szCommandLine, nullptr, nullptr, TRUE,
-			CREATE_DEFAULT_ERROR_MODE | NORMAL_PRIORITY_CLASS, nullptr, nullptr,
-			&si, &pi))
+			CREATE_DEFAULT_ERROR_MODE | NORMAL_PRIORITY_CLASS, nullptr, nullptr, &si, &pi))
 	{
 		fDwRunning = TRUE;
 		while (fDwRunning)
 		{
-			if (WaitForSingleObject(hEventAlive, DW_TIMEOUT_VALUE * 100) ==
-				WAIT_OBJECT_0)
+			if (WaitForSingleObject(hEventAlive, DW_TIMEOUT_VALUE * 100) == WAIT_OBJECT_0)
 			{
 				if (WaitForSingleObject(hEventDone, 1) == WAIT_OBJECT_0)
 				{
@@ -208,8 +203,7 @@ int32_t WINAPI DwExceptionFilter(LPEXCEPTION_POINTERS pep)
 			dw = WaitForSingleObject(hMutex, DW_TIMEOUT_VALUE);
 			if (dw == WAIT_TIMEOUT)
 			{
-				fDwRunning =
-					FALSE; // either DW's hung or crashed, we must carry on
+				fDwRunning = FALSE; // either DW's hung or crashed, we must carry on
 			}
 			else if (dw == WAIT_ABANDONED)
 			{

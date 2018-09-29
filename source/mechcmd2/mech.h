@@ -89,11 +89,10 @@ extern float metersPerWorldUnit;
 #define MECH_GESTURE_JUMP 20		 // Jump
 #define MECH_GESTURE_ROLLOVER 21	 // Rollover from FallBack to FallForward
 #define MECH_GESTURE_GETUP 22		 // Get up from FallForward
-#define MECH_GESTURE_FALLEN_F                                                  \
+#define MECH_GESTURE_FALLEN_F                                                                      \
 	23 // Fallen Forward (Single Frame, mech on
 	   // ground)
-#define MECH_GESTURE_FALLEN_B                                                  \
-	24 // Fallen Backward (Single Frame, mech on ground)
+#define MECH_GESTURE_FALLEN_B 24 // Fallen Backward (Single Frame, mech on ground)
 
 #define NO_APPEARANCE_FOR_MECH 0xFFFA0001
 #define NO_RAM_FOR_DYNAMICS_TYPE 0xFFFA0002
@@ -247,11 +246,9 @@ public:
 
 	~BattleMechType(void) { destroy(void); }
 
-	virtual bool handleCollision(
-		GameObjectPtr collidee, GameObjectPtr collider);
+	virtual bool handleCollision(GameObjectPtr collidee, GameObjectPtr collider);
 
-	virtual bool handleDestruction(
-		GameObjectPtr collidee, GameObjectPtr collider);
+	virtual bool handleDestruction(GameObjectPtr collidee, GameObjectPtr collider);
 };
 
 //---------------------------------------------------------------------------
@@ -366,7 +363,7 @@ public:
 
 	float pivotTurnRate;
 
-	bool playedJumpSFX; // Have I played the Jump SOund EFfect for this jump?
+	bool playedJumpSFX;		// Have I played the Jump SOund EFfect for this jump?
 	bool playedCriticalHit; // Have I played a critical hit explosion this
 							// frame?
 
@@ -374,14 +371,14 @@ public:
 
 	char longName[MAXLEN_MECH_LONGNAME]; // Used by logistics (and the
 										 // interface) to get int32_t name.
-	int32_t pilotNum; // Used by logistics to restore pilot on return.
+	int32_t pilotNum;					 // Used by logistics to restore pilot on return.
 
 	bool captureable;
 	bool notMineYet; // Used by logsitics to drop this mech if mission lost.
 
 	int32_t descID; // Used by Logistics to Desc.
 	//		int32_t				variant;						// Now we have three
-	//longs  storing  a bytes worth of data well done SJ
+	// longs  storing  a bytes worth of data well done SJ
 
 	float damageThisFrame; // How much damage have we taken this frame.
 	bool sentCrippledMsg;  // Have I already announced that I'm gimped?
@@ -444,23 +441,19 @@ public:
 	virtual bool isCrippled(void)
 	{
 		return ((legStatus == LEG_STATUS_IMPAIRED_RIGHT) ||
-				(legStatus == LEG_STATUS_IMPAIRED_LEFT) ||
-				(legStatus == LEG_STATUS_DESTROYED));
+			(legStatus == LEG_STATUS_IMPAIRED_LEFT) || (legStatus == LEG_STATUS_DESTROYED));
 	}
 
-	virtual int32_t calcHitLocation(GameObjectPtr attacker, int32_t weaponIndex,
-		int32_t attackSource, int32_t attackType);
+	virtual int32_t calcHitLocation(
+		GameObjectPtr attacker, int32_t weaponIndex, int32_t attackSource, int32_t attackType);
 
-	virtual int32_t handleWeaponHit(
-		WeaponShotInfoPtr shotInfo, bool addMultiplayChunk = false);
+	virtual int32_t handleWeaponHit(WeaponShotInfoPtr shotInfo, bool addMultiplayChunk = false);
 
-	virtual float weaponLocked(
-		int32_t weaponIndex, Stuff::Vector3D targetPosition);
+	virtual float weaponLocked(int32_t weaponIndex, Stuff::Vector3D targetPosition);
 
 	virtual float getWeaponHeat(int32_t weaponIndex)
 	{
-		return (MasterComponent::masterList[inventory[weaponIndex].masterID]
-					.getWeaponHeat());
+		return (MasterComponent::masterList[inventory[weaponIndex].masterID].getWeaponHeat());
 	}
 
 	virtual void pilotingCheck(uint32_t situation = 0, float modifier = 0.0);
@@ -473,20 +466,17 @@ public:
 
 	void updateMoveStateGoal(void);
 
-	bool updateMovePath(float& newRotate, char& newThrottleSetting,
-		int32_t& newGestureStateGoal, int32_t& newMoveState,
-		int32_t& minThrottle, int32_t& maxThrottle, float& facingRotate);
+	bool updateMovePath(float& newRotate, char& newThrottleSetting, int32_t& newGestureStateGoal,
+		int32_t& newMoveState, int32_t& minThrottle, int32_t& maxThrottle, float& facingRotate);
 
-	bool netUpdateMovePath(float& newRotate, char& newThrottleSetting,
-		int32_t& newGestureStateGoal, int32_t& newMoveState,
-		int32_t& minThrottle, int32_t& maxThrottle);
+	bool netUpdateMovePath(float& newRotate, char& newThrottleSetting, int32_t& newGestureStateGoal,
+		int32_t& newMoveState, int32_t& minThrottle, int32_t& maxThrottle);
 
-	void setNextMovePath(
-		char& newThrottleSetting, int32_t& newGestureStateGoal);
+	void setNextMovePath(char& newThrottleSetting, int32_t& newGestureStateGoal);
 
 	void setControlSettings(float& newRotate, char& newThrottleSetting,
-		int32_t& newGestureStateGoal, int32_t& minThrottle,
-		int32_t& maxThrottle, float& facingRotate);
+		int32_t& newGestureStateGoal, int32_t& minThrottle, int32_t& maxThrottle,
+		float& facingRotate);
 
 	void updateTorso(float newRotate);
 
@@ -502,8 +492,8 @@ public:
 
 	virtual bool isWeaponReady(int32_t weaponIndex);
 
-	virtual float calcAttackChance(GameObjectPtr target, int32_t aimLocation,
-		float targetTime, int32_t weaponIndex, float modifiers, int32_t* range,
+	virtual float calcAttackChance(GameObjectPtr target, int32_t aimLocation, float targetTime,
+		int32_t weaponIndex, float modifiers, int32_t* range,
 		Stuff::Vector3D* targetPoint = nullptr);
 
 	virtual float getTotalEffectiveness(void);
@@ -529,12 +519,11 @@ public:
 	virtual bool injureBodyLocation(int32_t bodyLocation, float damage);
 
 	virtual int32_t handleWeaponFire(int32_t weaponIndex, GameObjectPtr target,
-		Stuff::Vector3D* targetPoint, bool hit, float entryAngle,
-		int32_t numMissiles, int32_t hitLocation);
+		Stuff::Vector3D* targetPoint, bool hit, float entryAngle, int32_t numMissiles,
+		int32_t hitLocation);
 
-	virtual int32_t fireWeapon(GameObjectPtr target, float targetTime,
-		int32_t weaponIndex, int32_t attackType, int32_t aimLocation,
-		Stuff::Vector3D* targetPoint, float& damageDone);
+	virtual int32_t fireWeapon(GameObjectPtr target, float targetTime, int32_t weaponIndex,
+		int32_t attackType, int32_t aimLocation, Stuff::Vector3D* targetPoint, float& damageDone);
 
 	virtual float relFacingTo(Stuff::Vector3D goal, int32_t bodyLocation = -1);
 
@@ -566,9 +555,7 @@ public:
 
 	int32_t getActuatorMax(int32_t actuatorId)
 	{
-		return (MasterComponent::masterList[inventory[actuator[actuatorId]]
-												.masterID]
-					.getHealth());
+		return (MasterComponent::masterList[inventory[actuator[actuatorId]].masterID].getHealth());
 	}
 
 	int32_t getActuatorHealth(int32_t actuatorId)
@@ -583,32 +570,22 @@ public:
 	bool isTorso(int32_t bodyLocation)
 	{
 		return ((bodyLocation >= MECH_BODY_LOCATION_CTORSO) &&
-				(bodyLocation <= MECH_BODY_LOCATION_RTORSO));
+			(bodyLocation <= MECH_BODY_LOCATION_RTORSO));
 	}
 
 	int32_t transferHitLocation(int32_t hitLocation);
 
-	bool inTransitionGestureState(void)
-	{
-		return (appearance->getInTransition());
-	}
+	bool inTransitionGestureState(void) { return (appearance->getInTransition()); }
 
-	int32_t setGestureStateGoal(int32_t state)
-	{
-		return (appearance->setGestureGoal(state));
-	}
+	int32_t setGestureStateGoal(int32_t state) { return (appearance->setGestureGoal(state)); }
 
 	int32_t getGestureFramesLeft(void)
 	{
-		return (appearance->getNumFramesInGesture(
-					appearance->getCurrentGestureGoal()) -
-				appearance->getFrameNumber());
+		return (appearance->getNumFramesInGesture(appearance->getCurrentGestureGoal()) -
+			appearance->getFrameNumber());
 	}
 
-	bool isStanding(void)
-	{
-		return (appearance->getOldGestureGoal() == MECH_STATE_STANDING);
-	}
+	bool isStanding(void) { return (appearance->getOldGestureGoal() == MECH_STATE_STANDING); }
 
 	bool isWalking(int32_t* throttle = nullptr)
 	{
@@ -617,22 +594,15 @@ public:
 		return (appearance->getOldGestureGoal() == MECH_STATE_WALKING);
 	}
 
-	bool isRunning(void)
-	{
-		return (appearance->getOldGestureGoal() == MECH_STATE_RUNNING);
-	}
+	bool isRunning(void) { return (appearance->getOldGestureGoal() == MECH_STATE_RUNNING); }
 
 	virtual bool isJumping(Stuff::Vector3D* jumpGoal = nullptr);
 
-	bool isReversing(void)
-	{
-		return (appearance->getOldGestureGoal() == MECH_STATE_REVERSE);
-	}
+	bool isReversing(void) { return (appearance->getOldGestureGoal() == MECH_STATE_REVERSE); }
 
 	bool isFallen(void)
 	{
-		return (
-			(appearance->getOldGestureGoal() == MECH_STATE_FALLEN_BACKWARD) ||
+		return ((appearance->getOldGestureGoal() == MECH_STATE_FALLEN_BACKWARD) ||
 			(appearance->getOldGestureGoal() == MECH_STATE_FALLEN_FORWARD));
 	}
 
@@ -647,8 +617,8 @@ public:
 
 	bool canLimp(void)
 	{
-		return ((legStatus == LEG_STATUS_IMPAIRED_LEFT) ||
-				(legStatus == LEG_STATUS_IMPAIRED_RIGHT));
+		return (
+			(legStatus == LEG_STATUS_IMPAIRED_LEFT) || (legStatus == LEG_STATUS_IMPAIRED_RIGHT));
 	}
 
 	bool canMove(void) { return (legStatus != LEG_STATUS_DESTROYED); }
@@ -657,8 +627,7 @@ public:
 
 	virtual bool canJump(void) { return (numJumpJets > 0); }
 
-	virtual float getJumpRange(
-		int32_t* numOffsets = nullptr, int32_t* jumpCost = nullptr);
+	virtual float getJumpRange(int32_t* numOffsets = nullptr, int32_t* jumpCost = nullptr);
 
 	virtual bool handleFall(bool forward);
 
@@ -670,13 +639,9 @@ public:
 
 	float calcModerateSpeed(void);
 
-	int32_t calcSpriteSpeed(
-		float speed, uint32_t flags, int32_t& state, int32_t& throttle);
+	int32_t calcSpriteSpeed(float speed, uint32_t flags, int32_t& state, int32_t& throttle);
 
-	void forceTorsoAlign(void)
-	{
-		torsoRotation = rightArmRotation = leftArmRotation = 0.0;
-	}
+	void forceTorsoAlign(void) { torsoRotation = rightArmRotation = leftArmRotation = 0.0; }
 
 	~BattleMech(void) { destroy(void); }
 
@@ -702,10 +667,7 @@ public:
 
 	void resetComponents(int32_t totalComponents, int32_t* componentList);
 
-	virtual float getLOSFactor(void)
-	{
-		return (((BattleMechType*)getObjectType())->LOSFactor);
-	}
+	virtual float getLOSFactor(void) { return (((BattleMechType*)getObjectType())->LOSFactor); }
 
 	virtual void startShutDown(void);
 

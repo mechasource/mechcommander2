@@ -75,7 +75,7 @@ void MPDirectTcpip::init(FitIniFile* file)
 		for (i = 0; i < 15; i += 1)
 		{
 			pTmp2 = new aStyle7TextListItem;
-			EString tmpStr;
+			std::wstring tmpStr;
 			tmpStr.Format("Text0");
 			pTmp2->init(&PNfile, tmpStr.Data());
 			ipAddressComboBox.AddItem(pTmp2);

@@ -23,7 +23,7 @@ class aButton;
 
 class MPLoadMap : public LogisticsDialog
 {
-  public:
+public:
 	MPLoadMap(void);
 	virtual ~MPLoadMap(void);
 
@@ -40,10 +40,9 @@ class MPLoadMap : public LogisticsDialog
 
 	PCSTR getMapFileName() { return selMapName; }
 
-	static void getMapNameFromFile(
-		PCSTR pFileName, PSTR pBuffer, int32_t bufferLength);
+	static void getMapNameFromFile(PCSTR pFileName, PSTR pBuffer, int32_t bufferLength);
 
-  private:
+private:
 	int32_t indexOfButtonWithID(int32_t id);
 	void seedDialog(bool bSeedSingle);
 	void seedFromCampaign(void);
@@ -51,7 +50,7 @@ class MPLoadMap : public LogisticsDialog
 	aListBox mapList;
 	aLocalizedListItem templateItem;
 
-	EString selMapName;
+	std::wstring selMapName;
 
 	bool bIsSingle;
 

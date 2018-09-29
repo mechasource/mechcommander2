@@ -26,7 +26,7 @@ class aButton;
 
 class aStyle3TextListItem : public aTextListItem
 {
-  public:
+public:
 	aStyle3TextListItem()
 	{
 		hasAnimation = false;
@@ -35,7 +35,7 @@ class aStyle3TextListItem : public aTextListItem
 	virtual int32_t init(FitIniFile* file, PCSTR blockName);
 	virtual void render(void);
 
-  protected:
+protected:
 	bool hasAnimation;
 	aAnimGroup animGroup;
 	int32_t normalColor;
@@ -43,7 +43,7 @@ class aStyle3TextListItem : public aTextListItem
 
 class aGameListItem : public aListItem
 {
-  public:
+public:
 	aGameListItem(void);
 	virtual int32_t init(FitIniFile* file, PCSTR blockName);
 	virtual void update(void);
@@ -57,7 +57,7 @@ class aGameListItem : public aListItem
 
 	aGameListItem& operator=(const aGameListItem&);
 
-  protected:
+protected:
 	MC2Session session;
 	aObject allTechGraphic;
 	aStyle3TextListItem gameName;
@@ -74,7 +74,7 @@ class aGameListItem : public aListItem
 
 class MPGameBrowser : public LogisticsScreen
 {
-  public:
+public:
 	MPGameBrowser(void);
 	virtual ~MPGameBrowser(void);
 
@@ -87,7 +87,7 @@ class MPGameBrowser : public LogisticsScreen
 	virtual void update(void);
 	virtual int32_t handleMessage(uint32_t, uint32_t);
 
-  private:
+private:
 	int32_t indexOfButtonWithID(int32_t id);
 
 	aListBox gameList;

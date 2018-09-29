@@ -30,7 +30,7 @@ class MissionBegin;
 //----------------------------------------------------------------------------------
 class Logistics
 {
-  protected:
+protected:
 	bool active; // Am I currently in control?
 
 	int32_t logisticsState;
@@ -41,7 +41,7 @@ class Logistics
 	MissionResults* missionResults;
 	MissionBegin* missionBegin;
 
-  public:
+public:
 	Logistics(void) { init(void); }
 
 	~Logistics(void) { destroy(void); }
@@ -62,7 +62,7 @@ class Logistics
 
 	void start(int32_t logState); // Actually Starts execution of logistics in
 								  // state Specified
-	void stop(void); // Guess what this does!
+	void stop(void);			  // Guess what this does!
 
 	int32_t update(void);
 
@@ -85,7 +85,7 @@ class Logistics
 
 	MC2MoviePtr bMovie;
 
-  private:
+private:
 	void initializeLogData(void);
 	bool bMissionLoaded;
 	int32_t lastMissionResult;

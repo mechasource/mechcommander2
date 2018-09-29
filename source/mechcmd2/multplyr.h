@@ -250,7 +250,7 @@ typedef struct _MissionSettings
 	char map[MAXLEN_MAP_NAME];  // file name
 	char name[MAXLEN_MAP_DESC]; // displayNmae
 	GUID mapGuid;				// Insures maps are the same version!!
-	char url[256]; /// GLENN, you probably want this somewhere else....
+	char url[256];				/// GLENN, you probably want this somewhere else....
 	int32_t defaultCBills;
 	int32_t resourcePoints;
 	float timeLimit;
@@ -343,11 +343,11 @@ public:
 
 	void buildMissionScriptMessage(int32_t messageCode, int32_t messageParam);
 
-	void buildArtillery(int32_t artilleryType, int32_t teamId,
-		Stuff::Vector3D location, int32_t seconds);
+	void buildArtillery(
+		int32_t artilleryType, int32_t teamId, Stuff::Vector3D location, int32_t seconds);
 
-	void buildMine(int32_t tileR, int32_t tileC, int32_t teamId,
-		int32_t mineState, int32_t explosionType);
+	void buildMine(
+		int32_t tileR, int32_t tileC, int32_t teamId, int32_t mineState, int32_t explosionType);
 
 	void buildTerrainFire(GameObjectPtr object, int32_t seconds);
 
@@ -1270,8 +1270,7 @@ public:
 	int32_t insigniaSizeList[MAX_MC_PLAYERS];
 	// int32_t				maxPlayers;						// max number of players
 	// allowed in session
-	MC2Player
-		playerInfo[MAX_MC_PLAYERS]; // list of players--indexed by commanderID
+	MC2Player playerInfo[MAX_MC_PLAYERS]; // list of players--indexed by commanderID
 
 	bool playerReady[MAX_MC_PLAYERS];
 	bool inSessionScreen[MAX_MC_PLAYERS];
@@ -1421,8 +1420,8 @@ public:
 
 	int32_t bootPlayer(NETPLAYER bootedPlayer);
 
-	void sendMessage(NETPLAYER player, PVOID data, size_t dataSize,
-		bool guaranteed, bool toSelf = true);
+	void sendMessage(
+		NETPLAYER player, PVOID data, size_t dataSize, bool guaranteed, bool toSelf = true);
 
 	bool hostGame(PSTR sessionName, PSTR playerName, int32_t nPlayers);
 
@@ -1493,11 +1492,11 @@ public:
 	//		int32_t addTerrainAlignmentChunk (GameObjectPtr object, int32_t
 	// alignment);
 
-	int32_t addArtilleryChunk(int32_t artilleryType, int32_t teamId,
-		Stuff::Vector3D location, int32_t seconds);
+	int32_t addArtilleryChunk(
+		int32_t artilleryType, int32_t teamId, Stuff::Vector3D location, int32_t seconds);
 
-	int32_t addMineChunk(int32_t tileR, int32_t tileC, int32_t teamId,
-		int32_t mineState, int32_t explosionType);
+	int32_t addMineChunk(
+		int32_t tileR, int32_t tileC, int32_t teamId, int32_t mineState, int32_t explosionType);
 
 	int32_t addLightOnFireChunk(GameObjectPtr object, int32_t seconds);
 
@@ -1547,8 +1546,7 @@ public:
 
 	void handlePlayerUpdate(NETPLAYER sender, MCMSG_PlayerUpdate* msg);
 
-	void handleMissionSettingsUpdate(
-		NETPLAYER sender, MCMSG_MissionSettingsUpdate* msg);
+	void handleMissionSettingsUpdate(NETPLAYER sender, MCMSG_MissionSettingsUpdate* msg);
 
 	void handlePlayerInfo(NETPLAYER sender, MCMSG_PlayerInfo* msg);
 
@@ -1586,27 +1584,22 @@ public:
 
 	void handleTurretUpdate(NETPLAYER sender, MCMSG_TurretUpdate* msg);
 
-	void handleMoverWeaponFireUpdate(
-		NETPLAYER sender, MCMSG_MoverWeaponFireUpdate* msg);
+	void handleMoverWeaponFireUpdate(NETPLAYER sender, MCMSG_MoverWeaponFireUpdate* msg);
 
-	void handleTurretWeaponFireUpdate(
-		NETPLAYER sender, MCMSG_TurretWeaponFireUpdate* msg);
+	void handleTurretWeaponFireUpdate(NETPLAYER sender, MCMSG_TurretWeaponFireUpdate* msg);
 
-	void handleMoverCriticalUpdate(
-		NETPLAYER sender, MCMSG_MoverCriticalUpdate* msg);
+	void handleMoverCriticalUpdate(NETPLAYER sender, MCMSG_MoverCriticalUpdate* msg);
 
 	void handleWeaponHitUpdate(NETPLAYER sender, MCMSG_WeaponHitUpdate* msg);
 
 	void handleWorldUpdate(NETPLAYER sender, MCMSG_WorldUpdate* msg);
 
 	void sendChat(NETPLAYER receiver, char team, PSTR chatString);
-	void sendPlayerActionChat(
-		NETPLAYER receiver, PCSTR playerName, uint32_t resID);
+	void sendPlayerActionChat(NETPLAYER receiver, PCSTR playerName, uint32_t resID);
 
 	void sendPlayerCID(NETPLAYER receiver, uint8_t subType, char CID);
 
-	void sendPlayerUpdate(
-		NETPLAYER receiver, int32_t stage, int32_t commanderID);
+	void sendPlayerUpdate(NETPLAYER receiver, int32_t stage, int32_t commanderID);
 
 	void sendMissionSettingsUpdate(NETPLAYER receiver);
 
@@ -1616,11 +1609,9 @@ public:
 
 	void sendPlayerSetup(void);
 
-	void sendPlayerInsignia(
-		PSTR insigniaFileName, puint8_t insigniaData, int32_t insigniaDataSize);
+	void sendPlayerInsignia(PSTR insigniaFileName, puint8_t insigniaData, int32_t insigniaDataSize);
 
-	void sendMissionSetup(
-		NETPLAYER receiver, int32_t stage, CompressedMech* mechData);
+	void sendMissionSetup(NETPLAYER receiver, int32_t stage, CompressedMech* mechData);
 
 	void sendStartPlanning(void);
 
@@ -1628,25 +1619,23 @@ public:
 
 	void sendEndMission(int32_t result);
 
-	void sendReinforcement(int32_t vehicleID, int32_t rosterIndex,
-		char pilotName[16], int32_t commanderID, Stuff::Vector3D pos,
-		uint8_t stage);
+	void sendReinforcement(int32_t vehicleID, int32_t rosterIndex, char pilotName[16],
+		int32_t commanderID, Stuff::Vector3D pos, uint8_t stage);
 
 	void sendNewServer(void);
 
 	void sendLeaveSession(char subType, char commanderID);
 
-	void sendPlayerOrder(TacticalOrderPtr tacOrder, bool needsSelection,
-		int32_t numMovers, MoverPtr* moverList, int32_t numGroups = 0,
-		MoverGroupPtr* groupList = nullptr, bool queuedOrder = false);
+	void sendPlayerOrder(TacticalOrderPtr tacOrder, bool needsSelection, int32_t numMovers,
+		MoverPtr* moverList, int32_t numGroups = 0, MoverGroupPtr* groupList = nullptr,
+		bool queuedOrder = false);
 
 	void sendHoldPosition(void);
 
 	void sendPlayerMoverGroup(
 		int32_t groupId, int32_t numMovers, MoverPtr* moverList, int32_t point);
 
-	void sendPlayerArtillery(
-		int32_t strikeType, Stuff::Vector3D location, int32_t seconds);
+	void sendPlayerArtillery(int32_t strikeType, Stuff::Vector3D location, int32_t seconds);
 
 	int32_t sendPing(void);
 

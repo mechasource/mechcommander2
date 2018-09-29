@@ -197,10 +197,7 @@ bool FireType::handleCollision(GameObjectPtr collidee, GameObjectPtr collider)
 
 //---------------------------------------------------------------------------
 
-bool FireType::handleDestruction(GameObjectPtr collidee, GameObjectPtr collider)
-{
-	return (FALSE);
-}
+bool FireType::handleDestruction(GameObjectPtr collidee, GameObjectPtr collider) { return (FALSE); }
 
 //***************************************************************************
 // EXPLOSION TYPE class
@@ -290,8 +287,7 @@ int32_t ExplosionType::init(FilePtr objFile, uint32_t fileSize)
 
 //---------------------------------------------------------------------------
 
-bool ExplosionType::handleCollision(
-	GameObjectPtr collidee, GameObjectPtr collider)
+bool ExplosionType::handleCollision(GameObjectPtr collidee, GameObjectPtr collider)
 {
 	if (MPlayer && !MPlayer->isServer())
 		return (false);
@@ -312,8 +308,8 @@ bool ExplosionType::handleCollision(
 			shot.init(nullptr, -1, damageAmount, 0, 0);
 			while (damageLeft > 0.0)
 			{
-				shot.hitLocation = collider->calcHitLocation(
-					collidee, -1, ATTACKSOURCE_ARTILLERY, 0);
+				shot.hitLocation =
+					collider->calcHitLocation(collidee, -1, ATTACKSOURCE_ARTILLERY, 0);
 				collider->handleWeaponHit(&shot, (MPlayer != nullptr));
 				damageLeft -= ((CarnagePtr)collidee)->info.explosion.chunkSize;
 			}
@@ -386,8 +382,7 @@ bool ExplosionType::handleCollision(
 
 //---------------------------------------------------------------------------
 
-bool ExplosionType::handleDestruction(
-	GameObjectPtr collidee, GameObjectPtr collider)
+bool ExplosionType::handleDestruction(GameObjectPtr collidee, GameObjectPtr collider)
 {
 	//-------------------------------------------------------
 	// The laser ceases to exist when its effect is done.
@@ -440,10 +435,7 @@ void Carnage::init(CarnageEnumType _carnageType)
 }
 
 //---------------------------------------------------------------------------
-GameObjectPtr Carnage::getOwner(void)
-{
-	return (ObjectManager->getByWatchID(ownerWID));
-}
+GameObjectPtr Carnage::getOwner(void) { return (ObjectManager->getByWatchID(ownerWID)); }
 
 //---------------------------------------------------------------------------
 void Carnage::handleStaticCollision(void)
@@ -461,32 +453,27 @@ void Carnage::handleStaticCollision(void)
 		// this one.  Problems arise when on Block border.  Handle it.
 		int32_t topLeftBlockNumber = blockNumber - Terrain::blocksMapSide - 1;
 		int32_t currentBlockNumber = topLeftBlockNumber;
-		int32_t totalBlocks = Terrain::blocksMapSide * Terrain::blocksMapSide;
+		int32_t totalBlocks		   = Terrain::blocksMapSide * Terrain::blocksMapSide;
 		for (size_t i = 0; i < 3; i++)
 		{
 			for (size_t j = 0; j < 3; j++)
 			{
-				if ((currentBlockNumber >= 0) &&
-					(currentBlockNumber < totalBlocks))
+				if ((currentBlockNumber >= 0) && (currentBlockNumber < totalBlocks))
 				{
 					int32_t numObjectsInBlock =
-						ObjectManager->getObjBlockNumObjects(
-							currentBlockNumber);
-					for (size_t objIndex = 0; objIndex < numObjectsInBlock;
-						 objIndex++)
+						ObjectManager->getObjBlockNumObjects(currentBlockNumber);
+					for (size_t objIndex = 0; objIndex < numObjectsInBlock; objIndex++)
 					{
-						GameObjectPtr obj = ObjectManager->getObjBlockObject(
-							currentBlockNumber, objIndex);
-						if (obj->getExists() &&
-							(obj->getObjectClass() != GATE) &&
+						GameObjectPtr obj =
+							ObjectManager->getObjBlockObject(currentBlockNumber, objIndex);
+						if (obj->getExists() && (obj->getObjectClass() != GATE) &&
 							(obj->getObjectClass() != TURRET))
 							ObjectManager->detectStaticCollision(this, obj);
 					}
 				}
 				currentBlockNumber++;
 			}
-			currentBlockNumber =
-				topLeftBlockNumber + (Terrain::blocksMapSide * (i + 1));
+			currentBlockNumber = topLeftBlockNumber + (Terrain::blocksMapSide * (i + 1));
 		}
 		//-------------------------------------------------------
 		// MUST figure out radius to set off mines in CELLS now.
@@ -521,9 +508,8 @@ void Carnage::handleStaticCollision(void)
 								{
 									MPlayer->addMineChunk(i, j, 1, 2, 2);
 								}
-								ObjectManager->createExplosion(
-									MINE_EXPLOSION_ID, nullptr, minePosition,
-									MineSplashDamage,
+								ObjectManager->createExplosion(MINE_EXPLOSION_ID, nullptr,
+									minePosition, MineSplashDamage,
 									MineSplashRange * worldUnitsPerMeter);
 							}
 						}
@@ -600,8 +586,7 @@ int32_t Carnage::update(void)
 			shapeOrigin.BuildTranslation(actualPosition);
 			if (gosEffect && gosEffect->IsExecuted())
 			{
-				gosFX::Effect::ExecuteInfo info(
-					(Stuff::Time)scenarioTime, &shapeOrigin, nullptr);
+				gosFX::Effect::ExecuteInfo info((Stuff::Time)scenarioTime, &shapeOrigin, nullptr);
 				gosEffect->Start(&info);
 			}
 			setExists(true);
@@ -609,21 +594,17 @@ int32_t Carnage::update(void)
 			// If just created, play our sound effect...
 			if (((ExplosionTypePtr)getObjectType())->soundEffectId != -1)
 				soundSystem->playDigitalSample(
-					((ExplosionTypePtr)getObjectType())->soundEffectId,
-					position, true);
+					((ExplosionTypePtr)getObjectType())->soundEffectId, position, true);
 			if (((ExplosionTypePtr)getObjectType())->duration > 0.0f)
 			{
 				// Explosion Has Point Light Source
 				// Make and Init it here.
 				pointLight = (TG_LightPtr)systemHeap->Malloc(sizeof(TG_Light));
 				pointLight->init(TG_LIGHT_POINT);
-				pointLight->SetaRGB(
-					((ExplosionTypePtr)getObjectType())->lightRGB);
+				pointLight->SetaRGB(((ExplosionTypePtr)getObjectType())->lightRGB);
 				intensity = ((ExplosionTypePtr)getObjectType())->maxIntensity;
-				outRadius =
-					((ExplosionTypePtr)getObjectType())->lightOutMaxRadius;
-				inRadius =
-					((ExplosionTypePtr)getObjectType())->lightMaxMaxRadius;
+				outRadius = ((ExplosionTypePtr)getObjectType())->lightOutMaxRadius;
+				inRadius  = ((ExplosionTypePtr)getObjectType())->lightMaxMaxRadius;
 				pointLight->SetIntensity(intensity);
 				pointLight->SetFalloffDistances(inRadius, outRadius);
 				lightId  = eye->addWorldLight(pointLight);
@@ -651,24 +632,18 @@ int32_t Carnage::update(void)
 		{
 			if (duration > 0.0f)
 			{
-				float timeFactor =
-					duration / ((ExplosionTypePtr)getObjectType())->duration;
-				intensity =
-					((ExplosionTypePtr)getObjectType())->minIntensity +
+				float timeFactor = duration / ((ExplosionTypePtr)getObjectType())->duration;
+				intensity		 = ((ExplosionTypePtr)getObjectType())->minIntensity +
 					(((ExplosionTypePtr)getObjectType())->maxIntensity -
 						((ExplosionTypePtr)getObjectType())->minIntensity) *
 						timeFactor;
-				outRadius =
-					((ExplosionTypePtr)getObjectType())->lightOutMinRadius +
+				outRadius = ((ExplosionTypePtr)getObjectType())->lightOutMinRadius +
 					(((ExplosionTypePtr)getObjectType())->lightOutMaxRadius -
-						((ExplosionTypePtr)getObjectType())
-							->lightOutMinRadius) *
+						((ExplosionTypePtr)getObjectType())->lightOutMinRadius) *
 						timeFactor;
-				inRadius =
-					((ExplosionTypePtr)getObjectType())->lightMinMaxRadius +
+				inRadius = ((ExplosionTypePtr)getObjectType())->lightMinMaxRadius +
 					(((ExplosionTypePtr)getObjectType())->lightMaxMaxRadius -
-						((ExplosionTypePtr)getObjectType())
-							->lightMinMaxRadius) *
+						((ExplosionTypePtr)getObjectType())->lightMinMaxRadius) *
 						timeFactor;
 				pointLight->SetIntensity(intensity);
 				pointLight->SetFalloffDistances(inRadius, outRadius);
@@ -680,8 +655,7 @@ int32_t Carnage::update(void)
 				pointLight->direction = ourPosition;
 				Stuff::LinearMatrix4D lightToWorldMatrix;
 				lightToWorldMatrix.BuildTranslation(ourPosition);
-				lightToWorldMatrix.BuildRotation(
-					Stuff::EulerAngles(0.0f, 0.0f, 0.0f));
+				lightToWorldMatrix.BuildRotation(Stuff::EulerAngles(0.0f, 0.0f, 0.0f));
 				pointLight->SetLightToWorld(&lightToWorldMatrix);
 				pointLight->SetPosition(&position);
 			}
@@ -715,8 +689,7 @@ int32_t Carnage::update(void)
 			shapeOrigin.BuildTranslation(actualPosition);
 			localToWorld.Multiply(shapeOrigin, gosFX::Effect_Into_Motion);
 			Stuff::OBB boundingBox;
-			gosFX::Effect::ExecuteInfo info(
-				(Stuff::Time)scenarioTime, &shapeOrigin, &boundingBox);
+			gosFX::Effect::ExecuteInfo info((Stuff::Time)scenarioTime, &shapeOrigin, &boundingBox);
 			bool result = gosEffect->Execute(&info);
 			if (!result)
 			{
@@ -757,8 +730,7 @@ void Carnage::render(void)
 	}
 	else if (carnageType == CARNAGE_EXPLOSION)
 	{
-		if (gosEffect && gosEffect->IsExecuted() &&
-			!getFlag(OBJECT_FLAG_JUSTCREATED))
+		if (gosEffect && gosEffect->IsExecuted() && !getFlag(OBJECT_FLAG_JUSTCREATED))
 		{
 			gosFX::Effect::DrawInfo drawInfo;
 			drawInfo.m_clipper = theClipper;
@@ -823,7 +795,7 @@ void Carnage::init(bool create, ObjectTypePtr _type)
 	else if (carnageType == CARNAGE_EXPLOSION)
 	{
 		info.explosion.chunkSize = ((ExplosionType*)_type)->chunkSize;
-		info.explosion.timer = ((ExplosionType*)_type)->delayUntilCollidable;
+		info.explosion.timer	 = ((ExplosionType*)_type)->delayUntilCollidable;
 		if (_stricmp(weaponEffects->GetEffectName(effectId), "NONE") != 0)
 		{
 			//--------------------------------------------------------------
@@ -833,10 +805,9 @@ void Carnage::init(bool create, ObjectTypePtr _type)
 			uint32_t flags = gosFX::Effect::ExecuteFlag;
 			Check_Object(gosFX::EffectLibrary::Instance);
 			gosFX::Effect::Specification* gosEffectSpec =
-				gosFX::EffectLibrary::Instance->Find(
-					weaponEffects->GetEffectName(effectId));
-			gosEffect = gosFX::EffectLibrary::Instance->MakeEffect(
-				gosEffectSpec->m_effectID, flags);
+				gosFX::EffectLibrary::Instance->Find(weaponEffects->GetEffectName(effectId));
+			gosEffect =
+				gosFX::EffectLibrary::Instance->MakeEffect(gosEffectSpec->m_effectID, flags);
 			gosASSERT(gosEffect != nullptr);
 			MidLevelRenderer::MLRTexturePool::Instance->LoadImages();
 		}
@@ -850,8 +821,7 @@ void Carnage::Save(PacketFilePtr file, int32_t packetNum)
 	CarnageData data;
 	CopyTo(&data);
 	// PacketNum incremented in ObjectManager!!
-	file->writePacket(
-		packetNum, (puint8_t)&data, sizeof(CarnageData), STORAGE_TYPE_ZLIB);
+	file->writePacket(packetNum, (puint8_t)&data, sizeof(CarnageData), STORAGE_TYPE_ZLIB);
 }
 
 //---------------------------------------------------------------------------

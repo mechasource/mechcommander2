@@ -7,19 +7,23 @@
 // #define ATTRIBUTEMETER_CPP
 
 #include "stdinc.h"
+
 #include "utilities.h"
 #include "attributemeter.h"
 #include "file.h"
 #include "inifile.h"
+#include "mathfunc.h"
+#include "userinput.h"
+
 //#include <mclib.h>
 
-extern int32_t helpTextID;
-extern int32_t helpTextHeaderID;
+extern uint32_t helpTextID;
+extern uint32_t helpTextHeaderID;
 
 bool AttributeMeter::pointInside(int32_t mouseX, int32_t mouseY) const
 {
-	if ((outsideRect.left) <= mouseX && outsideRect.right >= mouseX &&
-		outsideRect.top <= mouseY && outsideRect.bottom >= mouseY)
+	if ((outsideRect.left) <= mouseX && outsideRect.right >= mouseX && outsideRect.top <= mouseY &&
+		outsideRect.bottom >= mouseY)
 		return true;
 	return false;
 }
@@ -35,14 +39,14 @@ void AttributeMeter::render() { render(0, 0); }
 
 void AttributeMeter::render(int32_t xOffset, int32_t yOffset)
 {
-	int32_t i;
+	uint32_t i;
 	if (!bShow)
 		return;
-	float barCount	= percent * numBars;
-	int32_t nBarCount = (int32_t)barCount;
-	float remainder   = addedPercent * numBars + (barCount - float(nBarCount));
-	int32_t nAddedCount = (int32_t)remainder;
-	RECT tmpOutside		= outsideRect;
+	float barCount		 = percent * numBars;
+	uint32_t nBarCount   = static_cast<uint32_t>(barCount);
+	float remainder		 = (addedPercent * numBars) + (barCount - nBarCount);
+	uint32_t nAddedCount = static_cast<uint32_t>(remainder);
+	RECT tmpOutside		 = outsideRect;
 	tmpOutside.left += xOffset;
 	tmpOutside.right += xOffset;
 	tmpOutside.top += yOffset;
@@ -54,21 +58,19 @@ void AttributeMeter::render(int32_t xOffset, int32_t yOffset)
 	tmpRect.right  = tmpRect.left + unitWidth;
 	tmpRect.top	= outsideRect.top + 2 * skipWidth + yOffset;
 	tmpRect.bottom = outsideRect.bottom - 2 * skipWidth + yOffset;
-	int32_t color  = colorMin;
+	uint32_t color = colorMin;
 	tmpRect.bottom += skipWidth;
 	for (i = 0; i < nBarCount; i++)
 	{
 		drawRect(tmpRect, color);
-		color =
-			interpolateColor(colorMin, colorMax, ((float)i) / (float)numBars);
+		color = interpolateColor(colorMin, colorMax, static_cast<float>(i / numBars));
 		tmpRect.left += unitWidth + skipWidth;
 		tmpRect.right = tmpRect.left + unitWidth;
 	}
-	for (i = 0; i < nAddedCount; i++)
+	for (i = 0u; i < nAddedCount; i++)
 	{
 		drawRect(tmpRect, color);
-		color = interpolateColor(
-			addedColorMin, addedColorMax, ((float)i) / (float)numBars);
+		color = interpolateColor(addedColorMin, addedColorMax, static_cast<float>(i / numBars));
 		tmpRect.left += unitWidth + skipWidth;
 		tmpRect.right = tmpRect.left + unitWidth;
 	}
@@ -86,10 +88,11 @@ void AttributeMeter::init(FitIniFile* file, PCSTR headerName)
 {
 	if (NO_ERROR != file->seekBlock(headerName))
 	{
+#if _CONSIDERED_OBSOLETE
 		char errorTxt[256];
-		sprintf(errorTxt, "couldn't find block %s in file %s", headerName,
-			file->getFilename());
-		Assert(0, 0, errorTxt);
+		sprintf(errorTxt, "couldn't find block %s in file %s", headerName, file->getFilename());
+		ASSERT(0, 0, errorTxt);
+#endif
 		return;
 	}
 	if (NO_ERROR == file->readIdLong("left", outsideRect.left))
@@ -102,7 +105,7 @@ void AttributeMeter::init(FitIniFile* file, PCSTR headerName)
 	{
 		file->readIdLong("XLocation", outsideRect.left);
 		file->readIdLong("YLocation", outsideRect.top);
-		int32_t tmp;
+		long32_t tmp;
 		file->readIdLong("Width", tmp);
 		outsideRect.right = outsideRect.left + tmp;
 		file->readIdLong("Height", tmp);
@@ -110,15 +113,15 @@ void AttributeMeter::init(FitIniFile* file, PCSTR headerName)
 	}
 	file->readIdLong("UnitWidth", unitWidth);
 	file->readIdLong("Skip", skipWidth);
-	file->readIdLong("NumberUnits", numBars);
-	file->readIdLong("Color", rectColor);
-	file->readIdLong("HelpDesc", helpID);
-	int32_t tmp;
-	if (NO_ERROR == file->readIdLong("ColorMin", tmp))
+	file->readIdUInt("NumberUnits", numBars);
+	file->readIdUInt("Color", rectColor);
+	file->readIdUInt("HelpDesc", helpID);
+	uint32_t tmp;
+	if (NO_ERROR == file->readIdUInt("ColorMin", tmp))
 	{
 		colorMin = tmp;
 	}
-	if (NO_ERROR == file->readIdLong("ColorMax", tmp))
+	if (NO_ERROR == file->readIdUInt("ColorMax", tmp))
 	{
 		colorMax = tmp;
 	}

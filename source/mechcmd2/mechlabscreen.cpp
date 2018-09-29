@@ -26,9 +26,8 @@ MechLabScreen* MechLabScreen::s_instance			   = 0;
 LogisticsVariantDialog* MechLabScreen::saveDlg		   = 0;
 LogisticsAcceptVariantDialog* MechLabScreen::acceptDlg = 0;
 
-RECT MechLabScreen::sensorRects[4] = {35, 126, 35 + 64, 126 + 64, 35, 126,
-	35 + 79, 126 + 64, 35, 126, 35 + 94, 126 + 64, 249, 126, 249 + 79,
-	126 + 64};
+RECT MechLabScreen::sensorRects[4] = {35, 126, 35 + 64, 126 + 64, 35, 126, 35 + 79, 126 + 64, 35,
+	126, 35 + 94, 126 + 64, 249, 126, 249 + 79, 126 + 64};
 
 int32_t MechLabScreen::sensorHelpIDs[4] = {
 	IDS_HELP_COMP14, IDS_HELP_COMP15, IDS_HELP_COMP17, IDS_HELP_COMP38};
@@ -83,8 +82,7 @@ int32_t MechLabScreen::init(FitIniFile& file)
 		return -1;
 	ComponentListItem::init(file);
 	LogisticsScreen::init(file, "Static", "Text", "Rect", "Button");
-	componentListBox.init(
-		rects[2].left(), rects[2].top(), rects[2].width(), rects[2].height());
+	componentListBox.init(rects[2].left(), rects[2].top(), rects[2].width(), rects[2].height());
 	componentListBox.setHighlightFX(-1); // want to do this by hand.
 	saveDlg   = new LogisticsVariantDialog;
 	acceptDlg = new LogisticsAcceptVariantDialog;
@@ -147,18 +145,14 @@ int32_t MechLabScreen::init(FitIniFile& file)
 	variantList.ListBox().setOrange(true);
 	variantList.setParent(this);
 	variantList.setHelpID(IDS_HELP_MC_VARIANT_DROP_DOWN_LIST_BOX);
-	camera.init(
-		rects[4].left(), rects[4].top(), rects[4].right(), rects[4].bottom());
+	camera.init(rects[4].left(), rects[4].top(), rects[4].right(), rects[4].bottom());
 	getButton(COMPONENT_FORM_WEAPON_ENERGY)->setPressFX(LOG_VIDEOBUTTONS);
 	getButton(COMPONENT_FORM_WEAPON_BALLISTIC)->setPressFX(LOG_VIDEOBUTTONS);
 	getButton(COMPONENT_FORM_WEAPON_MISSILE)->setPressFX(LOG_VIDEOBUTTONS);
 	getButton(COMPONENT_FORM_JUMPJET)->setPressFX(LOG_VIDEOBUTTONS);
-	getButton(COMPONENT_FORM_WEAPON_ENERGY)
-		->setHighlightFX(LOG_DIGITALHIGHLIGHT);
-	getButton(COMPONENT_FORM_WEAPON_BALLISTIC)
-		->setHighlightFX(LOG_DIGITALHIGHLIGHT);
-	getButton(COMPONENT_FORM_WEAPON_MISSILE)
-		->setHighlightFX(LOG_DIGITALHIGHLIGHT);
+	getButton(COMPONENT_FORM_WEAPON_ENERGY)->setHighlightFX(LOG_DIGITALHIGHLIGHT);
+	getButton(COMPONENT_FORM_WEAPON_BALLISTIC)->setHighlightFX(LOG_DIGITALHIGHLIGHT);
+	getButton(COMPONENT_FORM_WEAPON_MISSILE)->setHighlightFX(LOG_DIGITALHIGHLIGHT);
 	getButton(COMPONENT_FORM_JUMPJET)->setHighlightFX(LOG_DIGITALHIGHLIGHT);
 	// initialize the selection rectangles
 	for (i = 0; i < 5; i++)
@@ -170,22 +164,19 @@ int32_t MechLabScreen::init(FitIniFile& file)
 			if (fileExists(path))
 			{
 				selRects[j][i].setTexture(path);
-				selRects[j][i].resize(
-					(j + 1) * LogisticsComponent::XICON_FACTOR,
+				selRects[j][i].resize((j + 1) * LogisticsComponent::XICON_FACTOR,
 					(i + 1) * LogisticsComponent::YICON_FACTOR);
 				// now need to set the UV's
-				selRects[j][i].setUVs(
-					0, 0, selRects[j][i].width(), selRects[j][i].height());
+				selRects[j][i].setUVs(0, 0, selRects[j][i].width(), selRects[j][i].height());
 			}
 		}
 	}
 	path.init(artPath, "mcl_mc_jumpjets_selection", ".tga");
 	selJumpJetRect.setTexture(path);
-	selJumpJetRect.resize(2 * LogisticsComponent::XICON_FACTOR,
-		2 * LogisticsComponent::YICON_FACTOR);
+	selJumpJetRect.resize(
+		2 * LogisticsComponent::XICON_FACTOR, 2 * LogisticsComponent::YICON_FACTOR);
 	// now need to set the UV's
-	selJumpJetRect.setUVs(
-		0, 0, selJumpJetRect.width(), selJumpJetRect.height());
+	selJumpJetRect.setUVs(0, 0, selJumpJetRect.width(), selJumpJetRect.height());
 	return true;
 }
 
@@ -203,21 +194,17 @@ void MechLabScreen::begin()
 		int32_t maxCount		= 0;
 		LogisticsVariant** pVar = nullptr;
 		int32_t addedCount		= 0;
-		LogisticsData::instance->getChassisVariants(
-			pVariant->getChassis(), pVar, maxCount);
+		LogisticsData::instance->getChassisVariants(pVariant->getChassis(), pVar, maxCount);
 		if (maxCount)
 		{
 			maxCount++;
-			pVar = (LogisticsVariant**)_alloca(
-				maxCount * sizeof(LogisticsVariant*));
-			LogisticsData::instance->getChassisVariants(
-				pVariant->getChassis(), pVar, maxCount);
+			pVar = (LogisticsVariant**)_alloca(maxCount * sizeof(LogisticsVariant*));
+			LogisticsData::instance->getChassisVariants(pVariant->getChassis(), pVar, maxCount);
 			for (size_t i = 0; i < maxCount; i++)
 			{
 				if (pVar[i]->allComponentsAvailable())
 				{
-					variantList.AddItem(
-						pVar[i]->getName(), rects[1].getColor());
+					variantList.AddItem(pVar[i]->getName(), rects[1].getColor());
 					if (pVar[i]->getName().Compare(pVariant->getName()) == 0)
 					{
 						variantList.SelectItem(i);
@@ -244,7 +231,7 @@ void MechLabScreen::begin()
 		strcpy(path, artPath);
 		strcat(path, "MCL_MC_");
 		char mechName[64];
-		EString fileName = pVariant->getFileName();
+		std::wstring fileName = pVariant->getFileName();
 		_splitpath(fileName, nullptr, nullptr, mechName, nullptr);
 		strcat(path, mechName);
 		strcat(path, "_B.tga");
@@ -257,8 +244,7 @@ void MechLabScreen::begin()
 		strcat(path, "_A.tga");
 		CharLower(path);
 		statics[50].setTexture(path);
-		for (i = COMPONENT_FORM_WEAPON_ENERGY; i < COMPONENT_FORM_JUMPJET + 1;
-			 i++)
+		for (i = COMPONENT_FORM_WEAPON_ENERGY; i < COMPONENT_FORM_JUMPJET + 1; i++)
 		{
 			aButton* pButton = getButton(i);
 			if (pButton)
@@ -300,8 +286,7 @@ void MechLabScreen::update()
 		{
 			if (pCurDialog->getStatus() == YES)
 			{
-				LogisticsData::instance->acceptMechModifications(
-					pCurDialog->getFileName());
+				LogisticsData::instance->acceptMechModifications(pCurDialog->getFileName());
 				pCurDialog->end();
 				status   = UP;
 				bSaveDlg = 0;
@@ -329,8 +314,8 @@ void MechLabScreen::update()
 														 // list box
 	for (size_t i = 0; i < MECH_LAB_ATTRIBUTE_METER_COUNT; i++)
 		attributeMeters[i].update();
-	if (!MPlayer || !ChatWindow::instance()->pointInside(
-						userInput->getMouseX(), userInput->getMouseY()))
+	if (!MPlayer ||
+		!ChatWindow::instance()->pointInside(userInput->getMouseX(), userInput->getMouseY()))
 		LogisticsScreen::update();
 	updateDiagramInput();
 	variantList.update();
@@ -353,8 +338,7 @@ void MechLabScreen::update()
 				if (sensorRects[i].left <= userInput->getMouseX() &&
 					sensorRects[i].right >= userInput->getMouseX() &&
 					sensorRects[i].top <= userInput->getMouseY() &&
-					sensorRects[i].bottom >= userInput->getMouseY() &&
-					!helpTextID)
+					sensorRects[i].bottom >= userInput->getMouseY() && !helpTextID)
 				{
 					helpTextID = sensorHelpIDs[i];
 					break;
@@ -368,7 +352,7 @@ void MechLabScreen::update()
 		textObjects[helpTextArrayID].setText(helpTextID);
 	}
 	// see if the variant changed
-	EString tmp;
+	std::wstring tmp;
 	variantList.EditBox().getEntry(tmp);
 	if (varName.Compare(tmp) != 0)
 	{
@@ -391,11 +375,9 @@ void MechLabScreen::update()
 			bool bFound = 0;
 			for (size_t i = 0; i < componentListBox.GetItemCount(); i++)
 			{
-				if (componentListBox.GetItem(i)->getState() !=
-						aListItem::DISABLED &&
+				if (componentListBox.GetItem(i)->getState() != aListItem::DISABLED &&
 					!canAddComponent(
-						((ComponentListItem*)componentListBox.GetItem(i))
-							->getComponent()))
+						((ComponentListItem*)componentListBox.GetItem(i))->getComponent()))
 				{
 					bFound = 1;
 					break;
@@ -434,8 +416,7 @@ void MechLabScreen::update()
 	if (curCount && curCount + frameLength < countDownTime)
 	{
 		curCount += frameLength;
-		float curAmount =
-			previousAmount - (curCount / countDownTime * previousAmount);
+		float curAmount = previousAmount - (curCount / countDownTime * previousAmount);
 		costChange += curAmount;
 		color = 0xffa21600;
 		if (curAmount > 0)
@@ -488,14 +469,12 @@ void MechLabScreen::updateDiagramInput()
 				y2 = y + pDragComponent->getComponentHeight();
 				if (x2 > pVariant->getComponentAreaWidth())
 				{
-					x = pVariant->getComponentAreaWidth() -
-						pDragComponent->getComponentWidth();
+					x  = pVariant->getComponentAreaWidth() - pDragComponent->getComponentWidth();
 					x2 = pVariant->getComponentAreaWidth();
 				}
 				if (y2 > pVariant->getComponentAreaHeight())
 				{
-					y = pVariant->getComponentAreaHeight() -
-						pDragComponent->getComponentHeight();
+					y  = pVariant->getComponentAreaHeight() - pDragComponent->getComponentHeight();
 					y2 = pVariant->getComponentAreaHeight();
 				}
 			}
@@ -510,18 +489,15 @@ void MechLabScreen::updateDiagramInput()
 			if (selRect)
 				selRect->moveTo(tmpX, tmpY);
 			// highlight text if appropriate
-			LogisticsComponent* pComp =
-				pVariant->getCompAtLocation(x, y, tmpX, tmpY);
+			LogisticsComponent* pComp = pVariant->getCompAtLocation(x, y, tmpX, tmpY);
 			if (pComp)
 			{
 				int32_t compX, compY, compX2, compY2;
 				diagramToScreen(tmpX, tmpY, compX, compY);
 				diagramToScreen(tmpX + pComp->getComponentWidth(),
 					tmpY + pComp->getComponentHeight(), compX2, compY2);
-				if ((compX <= userInput->getMouseX() &&
-						compX2 >= userInput->getMouseX() &&
-						compY <= userInput->getMouseY() &&
-						compY2 >= userInput->getMouseY()) ||
+				if ((compX <= userInput->getMouseX() && compX2 >= userInput->getMouseX() &&
+						compY <= userInput->getMouseY() && compY2 >= userInput->getMouseY()) ||
 					tmpX == -2)
 				{
 					::helpTextID = IDS_HELP_COMP0 + pComp->getID();
@@ -530,26 +506,22 @@ void MechLabScreen::updateDiagramInput()
 		}
 		else if (selRect)
 		{
-			selRect->moveTo(
-				rects[6].left() + rects[6].width() / 2 - selRect->width() / 2,
+			selRect->moveTo(rects[6].left() + rects[6].width() / 2 - selRect->width() / 2,
 				rects[6].top() + rects[6].height() / 2 - selRect->height() / 2);
 		}
 		// check for jump jet hot text
 		if (x == -2 && y == -2)
 		{
 			int32_t tmpX, tmpY;
-			LogisticsComponent* pComp =
-				pVariant->getCompAtLocation(x, y, tmpX, tmpY);
+			LogisticsComponent* pComp = pVariant->getCompAtLocation(x, y, tmpX, tmpY);
 			if (pComp)
 			{
 				int32_t compX, compY, compX2, compY2;
 				diagramToScreen(tmpX, tmpY, compX, compY);
 				diagramToScreen(tmpX + pComp->getComponentWidth(),
 					tmpY + pComp->getComponentHeight(), compX2, compY2);
-				if ((compX <= userInput->getMouseX() &&
-						compX2 >= userInput->getMouseX() &&
-						compY <= userInput->getMouseY() &&
-						compY2 >= userInput->getMouseY()) ||
+				if ((compX <= userInput->getMouseX() && compX2 >= userInput->getMouseX() &&
+						compY <= userInput->getMouseY() && compY2 >= userInput->getMouseY()) ||
 					tmpX == -2)
 				{
 					::helpTextID = IDS_HELP_COMP0 + pComp->getID();
@@ -558,8 +530,7 @@ void MechLabScreen::updateDiagramInput()
 		}
 		if (pDragComponent)
 		{
-			if (NO_ERROR == pVariant->canAddComponent(pDragComponent, x, y) &&
-				x != -1 && y != -1)
+			if (NO_ERROR == pVariant->canAddComponent(pDragComponent, x, y) && x != -1 && y != -1)
 			{
 				selRect->setColor(0xffffffff);
 			}
@@ -572,8 +543,7 @@ void MechLabScreen::updateDiagramInput()
 			getMouseDiagramCoords(i, j);
 			if (i != -1 && j != -1)
 			{
-				LogisticsComponent* pComp =
-					pVariant->getCompAtLocation(i, j, selI, selJ);
+				LogisticsComponent* pComp = pVariant->getCompAtLocation(i, j, selI, selJ);
 				if (pComp && pComp == pSelectedComponent)
 				{
 					if (canRemoveComponent(pComp))
@@ -598,10 +568,9 @@ void MechLabScreen::updateDiagramInput()
 			getMouseDiagramCoords(tmpI, tmpJ);
 			if (tmpI != -1 && tmpJ != -1)
 			{
-				selI = tmpI;
-				selJ = tmpJ;
-				LogisticsComponent* pComp =
-					pVariant->getCompAtLocation(tmpI, tmpJ, selI, selJ);
+				selI					  = tmpI;
+				selJ					  = tmpJ;
+				LogisticsComponent* pComp = pVariant->getCompAtLocation(tmpI, tmpJ, selI, selJ);
 				if (pComp)
 				{
 					if (canRemoveComponent(pComp))
@@ -622,10 +591,9 @@ void MechLabScreen::updateDiagramInput()
 			getMouseDiagramCoords(tmpI, tmpJ);
 			if (tmpI != -1 && tmpJ != -1)
 			{
-				selI = tmpI;
-				selJ = tmpJ;
-				LogisticsComponent* pComp =
-					pVariant->getCompAtLocation(tmpI, tmpJ, selI, selJ);
+				selI					  = tmpI;
+				selJ					  = tmpJ;
+				LogisticsComponent* pComp = pVariant->getCompAtLocation(tmpI, tmpJ, selI, selJ);
 				if (pComp)
 				{
 					pSelectedComponent = pComp;
@@ -666,8 +634,7 @@ void MechLabScreen::render(int32_t xOffset, int32_t yOffset)
 		int32_t width = pVariant->getComponentAreaWidth();
 		int32_t minX  = rects[7 + 6 - width].left();
 		int32_t maxY  = rects[7].bottom();
-		int32_t minY  = maxY - pVariant->getComponentAreaHeight() *
-								  LogisticsComponent::YICON_FACTOR;
+		int32_t minY = maxY - pVariant->getComponentAreaHeight() * LogisticsComponent::YICON_FACTOR;
 		// draw little component slots
 		int32_t x = minX;
 		int32_t y = minY;
@@ -695,16 +662,14 @@ void MechLabScreen::render(int32_t xOffset, int32_t yOffset)
 			if (pSelectedComponent->getType() == COMPONENT_FORM_JUMPJET)
 			{
 				tmpRect = &selJumpJetRect;
-				selJumpJetRect.moveTo(
-					rects[6].left() + xOffset, rects[6].top() + yOffset);
+				selJumpJetRect.moveTo(rects[6].left() + xOffset, rects[6].top() + yOffset);
 			}
 			else
 			{
 				int32_t left, right;
 				diagramToScreen(i, j, left, right);
-				tmpRect =
-					&selRects[pSelectedComponent->getComponentWidth() - 1]
-							 [pSelectedComponent->getComponentHeight() - 1];
+				tmpRect = &selRects[pSelectedComponent->getComponentWidth() - 1]
+								   [pSelectedComponent->getComponentHeight() - 1];
 				tmpRect->moveTo(left + xOffset, right + yOffset);
 			}
 			if (!pDragComponent && tmpRect)
@@ -787,8 +752,7 @@ void MechLabScreen::updateHeatMeter()
 	else
 		sprintf(text, "%ld/", curHeat);
 	textObjects[12].setText(text);
-	attributeMeters[MECH_LAB_ATTRIBUTE_METER_COUNT - 4].setValue(
-		fCurHeat / (float)maxHeat);
+	attributeMeters[MECH_LAB_ATTRIBUTE_METER_COUNT - 4].setValue(fCurHeat / (float)maxHeat);
 }
 
 void MechLabScreen::updateArmorMeter()
@@ -832,20 +796,18 @@ void MechLabScreen::updateArmorMeter()
 	char text[64];
 	sprintf(text, "%ld/%ld", curarmor, maxarmor);
 	textObjects[11].setText(text);
-	attributeMeters[MECH_LAB_ATTRIBUTE_METER_COUNT - 3].setValue(
-		fCurarmor / (float)maxarmor);
+	attributeMeters[MECH_LAB_ATTRIBUTE_METER_COUNT - 3].setValue(fCurarmor / (float)maxarmor);
 }
 
 void MechLabScreen::swapVariant()
 {
 	// variant changed
 	variantList.EditBox().getEntry(varName);
-	LogisticsVariant* pNewVariant =
-		LogisticsData::instance->getVariant(varName);
+	LogisticsVariant* pNewVariant = LogisticsData::instance->getVariant(varName);
 	if (pVariant && pNewVariant)
 	{
-		EString oldName = pVariant->getName();
-		*pVariant		= *pNewVariant;
+		std::wstring oldName = pVariant->getName();
+		*pVariant			 = *pNewVariant;
 		pVariant->setName(oldName);
 	}
 	updateDiagram();
@@ -878,12 +840,10 @@ int32_t MechLabScreen::handleMessage(uint32_t msg, uint32_t who)
 		else
 		{
 			// see if it's the same as the current variant...
-			LogisticsVariant* pCurVar =
-				LogisticsData::instance->getVariant(varName);
+			LogisticsVariant* pCurVar = LogisticsData::instance->getVariant(varName);
 			if (pCurVar && *pCurVar == *pVariant)
 			{
-				LogisticsData::instance->acceptMechModificationsUseOldVariant(
-					pCurVar->getName());
+				LogisticsData::instance->acceptMechModificationsUseOldVariant(pCurVar->getName());
 				status = UP;
 			}
 			else
@@ -908,8 +868,7 @@ int32_t MechLabScreen::handleMessage(uint32_t msg, uint32_t who)
 	case COMPONENT_FORM_WEAPON_ENERGY:
 	case COMPONENT_FORM_WEAPON_BALLISTIC:
 	case COMPONENT_FORM_WEAPON_MISSILE:
-		for (i = COMPONENT_FORM_WEAPON_ENERGY; i < COMPONENT_FORM_JUMPJET + 1;
-			 i++)
+		for (i = COMPONENT_FORM_WEAPON_ENERGY; i < COMPONENT_FORM_JUMPJET + 1; i++)
 		{
 			aButton* pButton = getButton(i);
 			if (pButton)
@@ -921,8 +880,7 @@ int32_t MechLabScreen::handleMessage(uint32_t msg, uint32_t who)
 		componentListBox.setType(who, -1, -1);
 		break;
 	case COMPONENT_FORM_JUMPJET:
-		for (i = COMPONENT_FORM_WEAPON_ENERGY; i < COMPONENT_FORM_JUMPJET + 1;
-			 i++)
+		for (i = COMPONENT_FORM_WEAPON_ENERGY; i < COMPONENT_FORM_JUMPJET + 1; i++)
 		{
 			aButton* pButton = getButton(i);
 			if (pButton)
@@ -931,8 +889,8 @@ int32_t MechLabScreen::handleMessage(uint32_t msg, uint32_t who)
 			}
 		}
 		getButton(who)->press(1);
-		componentListBox.setType(COMPONENT_FORM_JUMPJET, COMPONENT_FORM_BULK,
-			COMPONENT_FORM_HEATSINK);
+		componentListBox.setType(
+			COMPONENT_FORM_JUMPJET, COMPONENT_FORM_BULK, COMPONENT_FORM_HEATSINK);
 		break;
 	case MB_MSG_ADD:
 	{
@@ -958,11 +916,9 @@ int32_t MechLabScreen::handleMessage(uint32_t msg, uint32_t who)
 	return 0;
 }
 
-void MechLabScreen::setComponent(
-	LogisticsComponent* pComponent, bool bMessageFromLB)
+void MechLabScreen::setComponent(LogisticsComponent* pComponent, bool bMessageFromLB)
 {
-	if (bMessageFromLB &&
-		canAddComponent(pComponent)) // if they clicked on a disabled item
+	if (bMessageFromLB && canAddComponent(pComponent)) // if they clicked on a disabled item
 	{
 		componentListBox.SelectItem(-1);
 		selI = selJ		   = -1;
@@ -993,8 +949,7 @@ void MechLabScreen::setComponent(
 			textObjects[7].setColor(0xff005392);
 			rects[16].setHelpID(IDS_HELP_PM_JUMP);
 			// set up heat
-			attributeMeters[7].setValue(
-				pCurComponent->getHeat() / LogisticsComponent::MAX_HEAT);
+			attributeMeters[7].setValue(pCurComponent->getHeat() / LogisticsComponent::MAX_HEAT);
 			attributeMeters[7].showGUIWindow(true);
 			sprintf(text, "%.1lf", pCurComponent->getHeat());
 			textObjects[15].setText(text);
@@ -1027,8 +982,7 @@ void MechLabScreen::setComponent(
 			attributeMeters[7].showGUIWindow(0);
 			// set up heat, negative heat is stored in the damage area of heat
 			// sinks, god knows why
-			attributeMeters[8].setValue(
-				pCurComponent->getDamage() / LogisticsComponent::MAX_HEAT);
+			attributeMeters[8].setValue(pCurComponent->getDamage() / LogisticsComponent::MAX_HEAT);
 			attributeMeters[8].showGUIWindow(true);
 			sprintf(text, "+%.1lf", pCurComponent->getDamage());
 			textObjects[16].setText(text);
@@ -1076,8 +1030,7 @@ void MechLabScreen::setComponent(
 		{
 			int32_t rangeColors[3] = {0xff6e7c00, 0xff005392, 0xffa21600};
 			showJumpJetItems(0);
-			textObjects[7].setText(
-				pCurComponent->getRangeType() + IDS_SHORT_RANGE);
+			textObjects[7].setText(pCurComponent->getRangeType() + IDS_SHORT_RANGE);
 			textObjects[7].setColor(rangeColors[pCurComponent->getRangeType()]);
 			attributeMeters[0].showGUIWindow(true);
 			attributeMeters[0].setValue(
@@ -1087,8 +1040,7 @@ void MechLabScreen::setComponent(
 			if (pCurComponent->getRecycleTime())
 			{
 				attributeMeters[1].setValue(
-					(10.f / pCurComponent->getRecycleTime()) /
-					LogisticsComponent::MAX_RECYCLE);
+					(10.f / pCurComponent->getRecycleTime()) / LogisticsComponent::MAX_RECYCLE);
 				sprintf(text, "%.1lf", 10.f / pCurComponent->getRecycleTime());
 				textObjects[9].setText(text);
 			}
@@ -1098,8 +1050,7 @@ void MechLabScreen::setComponent(
 				sprintf(text, "%.1lf", 0.f);
 				textObjects[9].setText(text);
 			}
-			attributeMeters[2].setValue(
-				pCurComponent->getHeat() / LogisticsComponent::MAX_HEAT);
+			attributeMeters[2].setValue(pCurComponent->getHeat() / LogisticsComponent::MAX_HEAT);
 			sprintf(text, "%.1lf", pCurComponent->getHeat());
 			textObjects[10].setText(text);
 			attributeMeters[7].showGUIWindow(false);
@@ -1107,8 +1058,7 @@ void MechLabScreen::setComponent(
 			{
 				sprintf(text, "%ld", pCurComponent->getAmmo());
 				textObjects[13].setText(text);
-				attributeMeters[3].setValue(
-					((float)pCurComponent->getAmmo()) / 164.f);
+				attributeMeters[3].setValue(((float)pCurComponent->getAmmo()) / 164.f);
 			}
 			else
 				textObjects[13].setText("");
@@ -1187,14 +1137,12 @@ int32_t MechLabScreen::canAddComponent(LogisticsComponent* pComponent)
 	return retVal;
 }
 
-int32_t MechLabScreen::addComponent(
-	LogisticsComponent* pComponent, int32_t& x, int32_t& y)
+int32_t MechLabScreen::addComponent(LogisticsComponent* pComponent, int32_t& x, int32_t& y)
 {
 	if (!pComponent)
 		return -1;
 	int32_t retVal = -1;
-	if (pComponent->getHeat() ||
-		pComponent->getType() == COMPONENT_FORM_HEATSINK)
+	if (pComponent->getHeat() || pComponent->getType() == COMPONENT_FORM_HEATSINK)
 	{
 		oldHeat = pVariant->getHeat();
 		if (pComponent->getType() == COMPONENT_FORM_HEATSINK)
@@ -1231,8 +1179,8 @@ void MechLabScreen::beginDrag(LogisticsComponent* pComponent)
 			FullPathFileName path;
 			path.init(artPath, pFile, "tga");
 			dragIcon.setTexture(path);
-			dragIcon.resize(sizeX * LogisticsComponent::XICON_FACTOR,
-				sizeY * LogisticsComponent::YICON_FACTOR);
+			dragIcon.resize(
+				sizeX * LogisticsComponent::XICON_FACTOR, sizeY * LogisticsComponent::YICON_FACTOR);
 			dragIcon.setUVs(0.f, 0.f, sizeX * 48.f, sizeY * 32.f);
 			dragIcon.setColor(0xffffffff);
 			selRect = &selRects[sizeX - 1][sizeY - 1];
@@ -1298,8 +1246,7 @@ void MechLabScreen::getMouseDiagramCoords(int32_t& x, int32_t& y)
 	getMouseDiagramCoords(mouseX, mouseY, x, y);
 }
 
-void MechLabScreen::getMouseDiagramCoords(
-	int32_t screenX, int32_t screenY, int32_t& x, int32_t& y)
+void MechLabScreen::getMouseDiagramCoords(int32_t screenX, int32_t screenY, int32_t& x, int32_t& y)
 {
 	x = -1;
 	y = -1;
@@ -1313,9 +1260,8 @@ void MechLabScreen::getMouseDiagramCoords(
 	int32_t mouseX = screenX;
 	int32_t mouseY = screenY;
 	// are we in the right area?
-	if (mouseX >= rects[6].left() && mouseX <= rects[6].right() &&
-		mouseY >= rects[6].top() && mouseY <= rects[6].bottom() &&
-		pVariant->getChassis()->jumpJetsAllowed())
+	if (mouseX >= rects[6].left() && mouseX <= rects[6].right() && mouseY >= rects[6].top() &&
+		mouseY <= rects[6].bottom() && pVariant->getChassis()->jumpJetsAllowed())
 	{
 		x = -2;
 		y = -2;
@@ -1330,8 +1276,7 @@ void MechLabScreen::getMouseDiagramCoords(
 	}
 }
 
-void MechLabScreen::diagramToScreen(
-	int32_t i, int32_t j, int32_t& x, int32_t& y)
+void MechLabScreen::diagramToScreen(int32_t i, int32_t j, int32_t& x, int32_t& y)
 {
 	if (i == -2 && j == -2)
 	{
@@ -1361,8 +1306,7 @@ void MechLabScreen::updateDiagram()
 	int32_t width = pVariant->getComponentAreaWidth();
 	int32_t minX  = rects[7 + 6 - width].left();
 	int32_t maxY  = rects[7].bottom();
-	int32_t minY  = maxY - pVariant->getComponentAreaHeight() *
-							  LogisticsComponent::YICON_FACTOR;
+	int32_t minY  = maxY - pVariant->getComponentAreaHeight() * LogisticsComponent::YICON_FACTOR;
 	int32_t IDArray[128];
 	int32_t xLocs[128];
 	int32_t yLocs[128];
@@ -1370,10 +1314,9 @@ void MechLabScreen::updateDiagram()
 	pVariant->getComponentsWithLocation(componentCount, IDArray, xLocs, yLocs);
 	for (size_t i = 0; i < componentCount; i++)
 	{
-		LogisticsComponent* pComponent =
-			LogisticsData::instance->getComponent(IDArray[i]);
-		int32_t xLoc = minX + xLocs[i] * LogisticsComponent::XICON_FACTOR;
-		int32_t yLoc = minY + yLocs[i] * LogisticsComponent::YICON_FACTOR;
+		LogisticsComponent* pComponent = LogisticsData::instance->getComponent(IDArray[i]);
+		int32_t xLoc				   = minX + xLocs[i] * LogisticsComponent::XICON_FACTOR;
+		int32_t yLoc				   = minY + yLocs[i] * LogisticsComponent::YICON_FACTOR;
 		if (pComponent->getType() == COMPONENT_FORM_JUMPJET)
 		{
 			xLoc = rects[6].left();
@@ -1385,8 +1328,8 @@ void MechLabScreen::updateDiagram()
 		FullPathFileName path;
 		path.init(artPath, pFile, "tga");
 		componentIcons[i].setTexture(path);
-		componentIcons[i].resize(sizeX * LogisticsComponent::XICON_FACTOR,
-			sizeY * LogisticsComponent::YICON_FACTOR);
+		componentIcons[i].resize(
+			sizeX * LogisticsComponent::XICON_FACTOR, sizeY * LogisticsComponent::YICON_FACTOR);
 		componentIcons[i].setUVs(0.f, 0.f, sizeX * 48.f, sizeY * 32.f);
 		componentIcons[i].moveTo(xLoc, yLoc);
 		componentIcons[i].setColor(0xffffffff);
@@ -1421,8 +1364,7 @@ int32_t MechLabScreen::selectFirstDiagramComponent()
 	{
 		for (size_t i = 0; i < pVariant->getComponentAreaWidth(); i++)
 		{
-			LogisticsComponent* pComp =
-				pVariant->getCompAtLocation(i, j, selI, selJ);
+			LogisticsComponent* pComp = pVariant->getCompAtLocation(i, j, selI, selJ);
 			if (pComp)
 			{
 				count++;

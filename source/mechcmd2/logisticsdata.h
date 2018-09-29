@@ -24,7 +24,7 @@ class PacketFile;
 class LogisticsData
 {
 
-  public:
+public:
 	struct Building;
 
 	LogisticsData(void);
@@ -45,11 +45,10 @@ class LogisticsData
 
 	void setPilotUnused(PCSTR pPilot);
 
-	int32_t getVariantsInInventory(
-		LogisticsVariant* pVar, bool bIncludeForceGroup);
+	int32_t getVariantsInInventory(LogisticsVariant* pVar, bool bIncludeForceGroup);
 	int32_t getPlayerVariantNames(PCSTR*, int32_t& count);
-	int32_t getChassisVariants(const LogisticsChassis* pChassis,
-		LogisticsVariant** pVar, int32_t& count);
+	int32_t getChassisVariants(
+		const LogisticsChassis* pChassis, LogisticsVariant** pVar, int32_t& count);
 
 	LogisticsVariant* getVariant(int32_t ID);
 	LogisticsVariant* getVariant(PCSTR mechName);
@@ -60,8 +59,8 @@ class LogisticsData
 	LogisticsMech* getMech(PCSTR MechName, PCSTR pilotName);
 	LogisticsMech* getMechWithoutForceGroup(LogisticsMech* clone);
 
-	void addMechToInventory(LogisticsVariant* pVar, LogisticsPilot* pPilot,
-		int32_t ForceGrup, bool bSubtractPts = 0);
+	void addMechToInventory(
+		LogisticsVariant* pVar, LogisticsPilot* pPilot, int32_t ForceGrup, bool bSubtractPts = 0);
 
 	int32_t createInstanceID(LogisticsVariant* pVar);
 	LogisticsPilot* getFirstAvailablePilot(void);
@@ -70,9 +69,8 @@ class LogisticsData
 
 	void removeMechsInForceGroup(
 		void); // takes mechs that are in the force group out of the inventory
-	void addMechToInventory(LogisticsVariant* pVar, int32_t addToForceGroup,
-		LogisticsPilot*, uint32_t color1 = 0xffffffff,
-		uint32_t color2 = 0xffffffff, uint32_t color3 = 0xffffffff);
+	void addMechToInventory(LogisticsVariant* pVar, int32_t addToForceGroup, LogisticsPilot*,
+		uint32_t color1 = 0xffffffff, uint32_t color2 = 0xffffffff, uint32_t color3 = 0xffffffff);
 	void removeMechFromInventory(PCSTR mechName, PCSTR pilotName);
 
 	int32_t addMechToForceGroup(LogisticsMech* pMech, int32_t slot);
@@ -101,8 +99,7 @@ class LogisticsData
 	void addCBills(int32_t amount);
 	void decrementCBills(int32_t amount);
 
-	int32_t comparePilots(
-		LogisticsPilot* p1, LogisticsPilot* p2, int32_t weight);
+	int32_t comparePilots(LogisticsPilot* p1, LogisticsPilot* p2, int32_t weight);
 	int32_t getCurrentDropWeight(void) const;
 	int32_t getMaxDropWeight(void) const;
 
@@ -111,9 +108,9 @@ class LogisticsData
 	void setMissionCompleted(void);
 	int32_t updateAvailability(void);
 
-	const EString& getCurrentMission(void) const;
-	const EString& getLastMission(void) const;
-	int32_t setCurrentMission(const EString& missionName);
+	const std::wstring& getCurrentMission(void) const;
+	const std::wstring& getLastMission(void) const;
+	int32_t setCurrentMission(const std::wstring& missionName);
 	void setSingleMission(PCSTR pName);
 	bool isSingleMission(void);
 	int32_t getCurrentMissionTune(void);
@@ -142,8 +139,7 @@ class LogisticsData
 	void setCurrentMissionNum(int32_t cMission);
 	int32_t getCurrentMissionNum(void);
 
-	int32_t getAvailableComponents(
-		LogisticsComponent** pComps, int32_t& maxCount);
+	int32_t getAvailableComponents(LogisticsComponent** pComps, int32_t& maxCount);
 	int32_t getAllComponents(LogisticsComponent** pComps, int32_t& maxCount);
 	PCSTR getCurrentOperationFileName(void);
 	PCSTR getCurrentVideoFileName(void);
@@ -158,7 +154,7 @@ class LogisticsData
 
 	int32_t acceptMechModificationsUseOldVariant(PCSTR name);
 
-	const EString& getCampaignName(void) const;
+	const std::wstring& getCampaignName(void) const;
 
 	int32_t setCurrentMission(PCSTR missionName);
 
@@ -211,7 +207,7 @@ class LogisticsData
 		float scale;
 	};
 
-  private:
+private:
 	bool bNewMechs;
 	bool bNewPilots;
 	bool bNewWeapons;

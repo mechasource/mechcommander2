@@ -117,8 +117,7 @@ PSTR GetGameInformation() { return (ExceptionGameMsg); }
 
 void UpdateRenderers()
 {
-	hasGuardBand =
-		gos_GetMachineInformation(gos_Info_HasGuardBandClipping) != 0;
+	hasGuardBand = gos_GetMachineInformation(gos_Info_HasGuardBandClipping) != 0;
 	//---------------------------------------------------------------------------------
 	// Doesn't work.  Always returns 0 for TNT in Win2K build 2183 with 3.55
 	// detonator  Assume worst case is +/- 8.0 for now.  MaxMinUV =
@@ -126,8 +125,7 @@ void UpdateRenderers()
 	uint32_t bColor = 0x0;
 	if (eye)
 		bColor = eye->fogColor;
-	gos_SetupViewport(
-		1, 1.0, 1, bColor, 0.0, 0.0, 1.0, 1.0); // ALWAYS FULL SCREEN for now
+	gos_SetupViewport(1, 1.0, 1, bColor, 0.0, 0.0, 1.0, 1.0); // ALWAYS FULL SCREEN for now
 	gos_SetRenderState(gos_State_Filter, gos_FilterBiLinear);
 	gos_SetRenderState(gos_State_AlphaMode, gos_Alpha_AlphaInvAlpha);
 	gos_SetRenderState(gos_State_AlphaTest, TRUE);
@@ -177,13 +175,11 @@ void InitializeGameEngine()
 			systemFile->seekBlock("systemHeap");
 		gosASSERT(systemBlockResult == NO_ERROR);
 		{
-			int32_t result =
-				systemFile->readIdULong("systemHeapSize", systemHeapSize);
+			int32_t result = systemFile->readIdULong("systemHeapSize", systemHeapSize);
 			gosASSERT(result == NO_ERROR);
 			result = systemFile->readIdULong("guiHeapSize", guiHeapSize);
 			gosASSERT(result == NO_ERROR);
-			result =
-				systemFile->readIdULong("logisticsHeapSize", logisticsHeapSize);
+			result = systemFile->readIdULong("logisticsHeapSize", logisticsHeapSize);
 			gosASSERT(result == NO_ERROR);
 		}
 #ifdef _DEBUG
@@ -192,8 +188,7 @@ void InitializeGameEngine()
 			systemFile->seekBlock("systemPaths");
 		gosASSERT(systemPathResult == NO_ERROR);
 		{
-			int32_t result =
-				systemFile->readIdString("terrainPath", terrainPath, 79);
+			int32_t result = systemFile->readIdString("terrainPath", terrainPath, 79);
 			gosASSERT(result == NO_ERROR);
 			result = systemFile->readIdString("artPath", artPath, 79);
 			gosASSERT(result == NO_ERROR);
@@ -219,8 +214,7 @@ void InitializeGameEngine()
 			gosASSERT(result == NO_ERROR);
 			result = systemFile->readIdString("profilePath", profilePath, 79);
 			gosASSERT(result == NO_ERROR);
-			result =
-				systemFile->readIdString("interfacepath", interfacePath, 79);
+			result = systemFile->readIdString("interfacepath", interfacePath, 79);
 			gosASSERT(result == NO_ERROR);
 			result = systemFile->readIdString("moviepath", moviePath, 79);
 			gosASSERT(result == NO_ERROR);
@@ -237,21 +231,18 @@ void InitializeGameEngine()
 			systemFile->seekBlock("FastFiles");
 		gosASSERT(fastFileResult == NO_ERROR);
 		{
-			int32_t result =
-				systemFile->readIdLong("NumFastFiles", maxFastFiles);
+			int32_t result = systemFile->readIdLong("NumFastFiles", maxFastFiles);
 			if (result != NO_ERROR)
 				maxFastFiles = 0;
 			if (maxFastFiles)
 			{
-				fastFiles =
-					(FastFile**)malloc(maxFastFiles * sizeof(FastFile*));
+				fastFiles = (FastFile**)malloc(maxFastFiles * sizeof(FastFile*));
 				memset(fastFiles, 0, maxFastFiles * sizeof(FastFile*));
 				int32_t fileNum = 0;
 				char fastFileId[10];
 				char fileName[100];
 				sprintf(fastFileId, "File%d", fileNum);
-				while (systemFile->readIdString(fastFileId, fileName, 99) ==
-					   NO_ERROR)
+				while (systemFile->readIdString(fastFileId, fileName, 99) == NO_ERROR)
 				{
 					FastFileInit(fileName);
 					fileNum++;
@@ -296,7 +287,7 @@ void InitializeGameEngine()
 		{
 			int32_t filterSetting;
 			HRESULT result = prefs->readIdLong("FilterState", filterSetting);
-			
+
 			if (SUCCEEDED(result))
 			{
 				switch (filterSetting)
@@ -330,8 +321,7 @@ void InitializeGameEngine()
 				gammaLevel = 0;
 			// store volume settings in global variable since soundsystem
 			// does not exist yet.  These will be set in SoundSystem::init()
-			result =
-				prefs->readIdLong("DigitalMasterVolume", DigitalMasterVolume);
+			result = prefs->readIdLong("DigitalMasterVolume", DigitalMasterVolume);
 			if (result != NO_ERROR)
 				DigitalMasterVolume = 255;
 			result = prefs->readIdLong("MusicVolume", MusicVolume);
@@ -343,8 +333,7 @@ void InitializeGameEngine()
 			result = prefs->readIdLong("SFXVolume", SFXVolume);
 			if (result != NO_ERROR)
 				SFXVolume = 64;
-			result = prefs->readIdFloat(
-				"DoubleClickThreshold", doubleClickThreshold);
+			result = prefs->readIdFloat("DoubleClickThreshold", doubleClickThreshold);
 			if (result != NO_ERROR)
 				doubleClickThreshold = 0.2f;
 			result = prefs->readIdLong("DragThreshold", dragThreshold);
@@ -425,8 +414,7 @@ void InitializeGameEngine()
 	//---------------------------------------------------------
 	// Start the Mission, Scenario and Logistics classes here
 	logistics = new Logistics;
-	logistics->start(
-		log_SPLASH); // Always start with logistics in Splash Screen Mode
+	logistics->start(log_SPLASH); // Always start with logistics in Splash Screen Mode
 }
 
 //---------------------------------------------------------------------------
@@ -557,8 +545,7 @@ int32_t textToLong(PSTR num)
 		int32_t numDigits = strlen(hexOffset) - 1;
 		for (size_t i = 0; i <= numDigits; i++)
 		{
-			if (!isalnum(hexOffset[i]) ||
-				(isalpha(hexOffset[i]) && toupper(hexOffset[i]) > 'F'))
+			if (!isalnum(hexOffset[i]) || (isalpha(hexOffset[i]) && toupper(hexOffset[i]) > 'F'))
 			{
 				hexOffset[i] = 0; // we've reach a "wrong" character. Either
 								  // start of a comment or something illegal.
@@ -635,8 +622,8 @@ void GetGameOSEnvironment(PSTR CommandLine)
 	Environment.directoryPath   = "Logistics";
 	Environment.debugLog		= "";					  //;		"DebugLog.txt";
 	Environment.spew			= "GameOS_ScriptsOUtput"; //"GameOS_Texture
-														  //GameOS_DirectDraw
-														  //GameOS_Direct3D ";
+														  // GameOS_DirectDraw
+														  // GameOS_Direct3D ";
 	Environment.TimeStampSpew		 = 0;
 	Environment.GetGameInformation   = GetGameInformation;
 	Environment.UpdateRenderers		 = UpdateRenderers;

@@ -40,7 +40,7 @@ MechLabScreen:
 **************************************************************************************************/
 class MechLabScreen : public LogisticsScreen
 {
-  public:
+public:
 	MechLabScreen(void);
 	virtual ~MechLabScreen(void);
 
@@ -54,8 +54,7 @@ class MechLabScreen : public LogisticsScreen
 	virtual int32_t handleMessage(uint32_t, uint32_t);
 
 	void setComponent(LogisticsComponent* pComponent, bool bMessageFromLB = 0);
-	int32_t addComponent(
-		LogisticsComponent* pComponent, int32_t& x, int32_t& y);
+	int32_t addComponent(LogisticsComponent* pComponent, int32_t& x, int32_t& y);
 	void beginDrag(LogisticsComponent* pComponent);
 	void endDrag();
 
@@ -65,7 +64,7 @@ class MechLabScreen : public LogisticsScreen
 
 	bool canRemoveComponent(LogisticsComponent* pComp);
 
-  private:
+private:
 	MechLabScreen(const MechLabScreen& src);
 	MechLabScreen& operator=(const MechLabScreen& echLabScreen);
 	static MechLabScreen* s_instance;
@@ -110,7 +109,7 @@ class MechLabScreen : public LogisticsScreen
 
 	SimpleCamera camera;
 
-	EString varName;
+	std::wstring varName;
 
 	static RECT sensorRects[4];
 	static int32_t sensorHelpIDs[4];
@@ -132,8 +131,7 @@ class MechLabScreen : public LogisticsScreen
 
 	// HELPER FUNCTIONS
 	void getMouseDiagramCoords(int32_t& x, int32_t& y);
-	void getMouseDiagramCoords(
-		int32_t screenX, int32_t screenY, int32_t& x, int32_t& y);
+	void getMouseDiagramCoords(int32_t screenX, int32_t screenY, int32_t& x, int32_t& y);
 
 	void diagramToScreen(int32_t i, int32_t j, int32_t& x, int32_t& y);
 	int32_t selectFirstDiagramComponent(void);

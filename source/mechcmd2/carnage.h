@@ -54,7 +54,7 @@ class Carnage : public GameObject
 	//-------------
 	// Data Members
 
-  public:
+public:
 	CarnageEnumType carnageType;
 	GameObjectWatchID ownerWID;
 	CarnageInfo info;
@@ -77,7 +77,7 @@ class Carnage : public GameObject
 	//-----------------
 	// member Functions
 
-  public:
+public:
 	virtual void init(bool create);
 
 	Carnage(void) : GameObject() { init(true); }
@@ -152,7 +152,7 @@ class FireType : public ObjectType
 	//-------------
 	// Data Members
 
-  public:
+public:
 	float damageLevel;
 	uint32_t soundEffectId;
 	uint32_t lightObjectId;
@@ -177,7 +177,7 @@ class FireType : public ObjectType
 	//-----------------
 	// Member Functions
 
-  public:
+public:
 	void init(void)
 	{
 		ObjectType::init(void);
@@ -208,18 +208,16 @@ class FireType : public ObjectType
 
 	virtual GameObjectPtr createInstance(void);
 
-	virtual bool handleCollision(
-		GameObjectPtr collidee, GameObjectPtr collider);
+	virtual bool handleCollision(GameObjectPtr collidee, GameObjectPtr collider);
 
-	virtual bool handleDestruction(
-		GameObjectPtr collidee, GameObjectPtr collider);
+	virtual bool handleDestruction(GameObjectPtr collidee, GameObjectPtr collider);
 };
 
 //---------------------------------------------------------------------------
 
 class ExplosionType : public ObjectType
 {
-  public:
+public:
 	float damageLevel;
 	uint32_t soundEffectId;
 	uint32_t lightObjectId;
@@ -236,7 +234,7 @@ class ExplosionType : public ObjectType
 	float duration;
 	float delayUntilCollidable;
 
-  public:
+public:
 	void init(void)
 	{
 		ObjectType::init(void);
@@ -269,11 +267,9 @@ class ExplosionType : public ObjectType
 
 	virtual GameObjectPtr createInstance(void);
 
-	virtual bool handleCollision(
-		GameObjectPtr collidee, GameObjectPtr collider);
+	virtual bool handleCollision(GameObjectPtr collidee, GameObjectPtr collider);
 
-	virtual bool handleDestruction(
-		GameObjectPtr collidee, GameObjectPtr collider);
+	virtual bool handleDestruction(GameObjectPtr collidee, GameObjectPtr collider);
 };
 
 #endif

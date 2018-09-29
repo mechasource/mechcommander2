@@ -31,7 +31,7 @@ class WeaponBoltType : public ObjectType
 {
 	// Data Members
 	//-------------
-  public:
+public:
 	int32_t fireSoundFX;
 	int32_t hitEffectObjNum;
 	int32_t missEffectObjNum;
@@ -74,14 +74,14 @@ class WeaponBoltType : public ObjectType
 
 	// Member Functions
 	//-----------------
-  public:
+public:
 	void init(void)
 	{
 		ObjectType::init(void);
 		objectTypeClass = WEAPONBOLT_TYPE;
 		objectClass		= WEAPONBOLT;
-		fireSoundFX = hitEffectObjNum = missEffectObjNum = lightEffectObjNum =
-			fireEffect = trailEffect = 0;
+		fireSoundFX = hitEffectObjNum = missEffectObjNum = lightEffectObjNum = fireEffect =
+			trailEffect														 = 0;
 		frontRGB = middleRGB = backRGB = midEdgeRGB = 0;
 		projLength = bulgeLength = bulgeWidth = velocity = 0.0;
 		boltAlpha = edgeAlpha = 0xff;
@@ -115,10 +115,8 @@ class WeaponBoltType : public ObjectType
 	// This functions creates lights for the below bolts
 	TG_LightPtr getLight(void);
 
-	virtual bool handleCollision(
-		GameObjectPtr collidee, GameObjectPtr collider);
-	virtual bool handleDestruction(
-		GameObjectPtr collidee, GameObjectPtr collider);
+	virtual bool handleCollision(GameObjectPtr collidee, GameObjectPtr collider);
+	virtual bool handleDestruction(GameObjectPtr collidee, GameObjectPtr collider);
 };
 
 //---------------------------------------------------------------------------
@@ -156,7 +154,7 @@ class WeaponBolt : public GameObject
 {
 	// Data Members
 	//-------------
-  protected:
+protected:
 	GameObjectWatchID ownerWID;
 	int32_t hotSpotNumber;
 
@@ -196,7 +194,7 @@ class WeaponBolt : public GameObject
 
 	// Member Functions
 	//-----------------
-  public:
+public:
 	virtual void init(bool create) {}
 
 	WeaponBolt(void) : GameObject()
@@ -253,9 +251,8 @@ class WeaponBolt : public GameObject
 	void setTarget(GameObjectPtr who);
 	void setTargetPosition(Stuff::Vector3D pos);
 
-	void connect(GameObjectPtr source, GameObjectPtr dest,
-		WeaponShotInfo* shotInfo = nullptr, int32_t sourceHS = 0,
-		int32_t targetHS = 0)
+	void connect(GameObjectPtr source, GameObjectPtr dest, WeaponShotInfo* shotInfo = nullptr,
+		int32_t sourceHS = 0, int32_t targetHS = 0)
 	{
 		ownerWID	  = source->getWatchID(void);
 		targetWID	 = dest->getWatchID(void);
@@ -281,8 +278,7 @@ class WeaponBolt : public GameObject
 			(((WeaponBoltTypePtr)getObjectType())->areaEffectRad > 0.0f))
 		{
 			Stuff::Vector3D targetLoc;
-			targetLoc =
-				ObjectManager->getByWatchID(targetWID)->getPosition(void);
+			targetLoc = ObjectManager->getByWatchID(targetWID)->getPosition(void);
 			setTargetPosition(targetLoc);
 			targetWID = 0;
 		}
@@ -292,8 +288,7 @@ class WeaponBolt : public GameObject
 			myOwner->appearance->setWeaponNodeRecycle(
 				sourceHS, ((WeaponBoltTypePtr)getObjectType())->beamDuration);
 		else
-			myOwner->appearance->setWeaponNodeRecycle(
-				sourceHS, BASE_NODE_RECYCLE_TIME);
+			myOwner->appearance->setWeaponNodeRecycle(sourceHS, BASE_NODE_RECYCLE_TIME);
 	}
 
 	void connect(GameObjectPtr source, Stuff::Vector3D targetLoc,
@@ -311,8 +306,7 @@ class WeaponBolt : public GameObject
 			myOwner->appearance->setWeaponNodeRecycle(
 				sourceHS, ((WeaponBoltTypePtr)getObjectType())->beamDuration);
 		else
-			myOwner->appearance->setWeaponNodeRecycle(
-				sourceHS, BASE_NODE_RECYCLE_TIME);
+			myOwner->appearance->setWeaponNodeRecycle(sourceHS, BASE_NODE_RECYCLE_TIME);
 	}
 
 	virtual void Save(PacketFilePtr file, int32_t packetNum);

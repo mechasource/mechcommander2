@@ -22,7 +22,7 @@ KeyboardRef:
 **************************************************************************************************/
 class KeyboardRef : public LogisticsScreen
 {
-  public:
+public:
 	KeyboardRef(void);
 	virtual ~KeyboardRef(void);
 
@@ -36,7 +36,7 @@ class KeyboardRef : public LogisticsScreen
 
 	virtual int32_t handleMessage(uint32_t, uint32_t);
 
-  private:
+private:
 	KeyboardRef(const KeyboardRef& src);
 	// HELPER FUNCTIONS
 

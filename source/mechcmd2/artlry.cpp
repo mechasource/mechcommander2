@@ -92,8 +92,8 @@ extern bool MLRVertexLimitReached;
 // MISC
 //***************************************************************************
 
-void CallArtillery(int32_t commanderID, int32_t strikeType,
-	Stuff::Vector3D strikeLoc, int32_t secondsToImpact, bool randomOff)
+void CallArtillery(int32_t commanderID, int32_t strikeType, Stuff::Vector3D strikeLoc,
+	int32_t secondsToImpact, bool randomOff)
 {
 	//-------------------------------------------------------------------
 	// If this commander already has 10 strikes going and I'm the server,
@@ -102,8 +102,7 @@ void CallArtillery(int32_t commanderID, int32_t strikeType,
 	for (size_t i = 0; i < ObjectManager->getNumArtillery(); i++)
 	{
 		ArtilleryPtr artillery = ObjectManager->getArtillery(i);
-		if (artillery && artillery->getExists() &&
-			(artillery->getCommanderId() == commanderID))
+		if (artillery && artillery->getExists() && (artillery->getCommanderId() == commanderID))
 			numArtillery++;
 	}
 	if (numArtillery >= 10)
@@ -111,16 +110,14 @@ void CallArtillery(int32_t commanderID, int32_t strikeType,
 		if (MPlayer && MPlayer->isServer())
 			return;
 	}
-	ArtilleryPtr artilleryStrike =
-		ObjectManager->createArtillery(strikeType, strikeLoc);
+	ArtilleryPtr artilleryStrike = ObjectManager->createArtillery(strikeType, strikeLoc);
 	if (artilleryStrike)
 	{
 		artilleryStrike->iFacePosition = strikeLoc;
 		artilleryStrike->setPosition(strikeLoc);
 		//-----------------------------------------------------------
 		// alignment only really matters for sensor & camera strikes.
-		artilleryStrike->setTeamId(
-			Commander::commanders[commanderID]->getTeam()->getId(), true);
+		artilleryStrike->setTeamId(Commander::commanders[commanderID]->getTeam()->getId(), true);
 		artilleryStrike->setCommanderId(commanderID);
 		//-----------------------------------------------------------
 		// Set Time to Impact here.  Only if timeToImpact is != -1.0
@@ -136,14 +133,12 @@ void CallArtillery(int32_t commanderID, int32_t strikeType,
 		// We must be server if we got here...
 		if (MPlayer)
 		{
-			if ((strikeType == ARTILLERY_SMALL) ||
-				(strikeType == ARTILLERY_LARGE))
+			if ((strikeType == ARTILLERY_SMALL) || (strikeType == ARTILLERY_LARGE))
 				MPlayer->numAirStrikesUsed[commanderID]++;
 			else
 				MPlayer->numSensorProbesUsed[commanderID]++;
 			if (MPlayer->isServer())
-				MPlayer->addArtilleryChunk(
-					commanderID, strikeType, strikeLoc, secondsToImpact);
+				MPlayer->addArtilleryChunk(commanderID, strikeType, strikeLoc, secondsToImpact);
 		}
 		artilleryStrike->update(); // call this so if in pause mode, there is
 								   // something to draw
@@ -152,9 +147,8 @@ void CallArtillery(int32_t commanderID, int32_t strikeType,
 
 //---------------------------------------------------------------------------
 
-void IfaceCallStrike(int32_t strikeID, Stuff::Vector3D* strikeLoc,
-	GameObjectPtr strikeTarget, bool playerStrike, bool clanStrike,
-	float timeToImpact)
+void IfaceCallStrike(int32_t strikeID, Stuff::Vector3D* strikeLoc, GameObjectPtr strikeTarget,
+	bool playerStrike, bool clanStrike, float timeToImpact)
 {
 	if ((strikeID != ARTILLERY_LARGE) && (strikeID != ARTILLERY_SMALL) &&
 		(strikeID != ARTILLERY_SENSOR))
@@ -176,8 +170,9 @@ void IfaceCallStrike(int32_t strikeID, Stuff::Vector3D* strikeLoc,
 	else if (clanStrike)
 	{
 		if (MPlayer)
-			Fatal(0, " Iface.CallStrike: Need more info than clanStrike in "
-					 "MPlayer ");
+			Fatal(0,
+				" Iface.CallStrike: Need more info than clanStrike in "
+				"MPlayer ");
 		//------------------------------------------------------------
 		// In campaign game, clans can strike into unrevealed terrain.
 		bRandom		= Team::teams[1]->teamLineOfSight(*strikeLoc, 0.0f) ? 0 : 1;
@@ -202,19 +197,16 @@ void IfaceCallStrike(int32_t strikeID, Stuff::Vector3D* strikeLoc,
 	{
 		if (MPlayer->isServer())
 		{
-			CallArtillery(commanderID, strikeID, strikeLocation,
-				secondsToImpact, bRandom);
+			CallArtillery(commanderID, strikeID, strikeLocation, secondsToImpact, bRandom);
 		}
 		else
 		{
-			MPlayer->sendPlayerArtillery(
-				strikeID, strikeLocation, secondsToImpact);
+			MPlayer->sendPlayerArtillery(strikeID, strikeLocation, secondsToImpact);
 		}
 	}
 	else
 	{
-		CallArtillery(
-			commanderID, strikeID, strikeLocation, secondsToImpact, bRandom);
+		CallArtillery(commanderID, strikeID, strikeLocation, secondsToImpact, bRandom);
 	}
 }
 
@@ -235,8 +227,8 @@ void ArtilleryChunk::operator delete(PVOID us) { systemHeap->Free(us); }
 
 //---------------------------------------------------------------------------
 
-void ArtilleryChunk::build(int32_t _commanderId, int32_t _strikeType,
-	Stuff::Vector3D location, int32_t _seconds)
+void ArtilleryChunk::build(
+	int32_t _commanderId, int32_t _strikeType, Stuff::Vector3D location, int32_t _seconds)
 {
 	commanderId = _commanderId;
 	strikeType  = _strikeType;
@@ -353,8 +345,7 @@ int32_t ArtilleryType::init(FilePtr objFile, uint32_t fileSize)
 	if (result != NO_ERROR)
 		return (result);
 	char artillerySpriteName[80];
-	result =
-		miFile.readIdString("ArtillerySpriteName", artillerySpriteName, 79);
+	result = miFile.readIdString("ArtillerySpriteName", artillerySpriteName, 79);
 	if (result != NO_ERROR)
 		return (result);
 	result = miFile.readIdULong("FrameCount", frameCount);
@@ -410,14 +401,11 @@ int32_t ArtilleryType::init(FilePtr objFile, uint32_t fileSize)
 		result = miFile.readIdLong("NumExplosions", numExplosions);
 		if (result != NO_ERROR)
 			return (result);
-		explosionOffsetX =
-			(float*)systemHeap->Malloc(sizeof(float) * numExplosions);
+		explosionOffsetX = (float*)systemHeap->Malloc(sizeof(float) * numExplosions);
 		gosASSERT(explosionOffsetX != nullptr);
-		explosionOffsetY =
-			(float*)systemHeap->Malloc(sizeof(float) * numExplosions);
+		explosionOffsetY = (float*)systemHeap->Malloc(sizeof(float) * numExplosions);
 		gosASSERT(explosionOffsetY != nullptr);
-		explosionDelay =
-			(float*)systemHeap->Malloc(sizeof(float) * numExplosions);
+		explosionDelay = (float*)systemHeap->Malloc(sizeof(float) * numExplosions);
 		gosASSERT(explosionDelay != nullptr);
 		for (size_t i = 0; i < numExplosions; i++)
 		{
@@ -435,8 +423,7 @@ int32_t ArtilleryType::init(FilePtr objFile, uint32_t fileSize)
 			if (result != NO_ERROR)
 				return (result);
 		}
-		result = miFile.readIdLong(
-			"ExplosionsPerExplosion", numExplosionsPerExplosion);
+		result = miFile.readIdLong("ExplosionsPerExplosion", numExplosionsPerExplosion);
 		if (result != NO_ERROR)
 			return (result);
 		result = miFile.readIdLong("ExplosionRandomOffsetX", explosionRandomX);
@@ -445,8 +432,7 @@ int32_t ArtilleryType::init(FilePtr objFile, uint32_t fileSize)
 		result = miFile.readIdLong("ExplosionRandomOffsetY", explosionRandomY);
 		if (result != NO_ERROR)
 			return (result);
-		result =
-			miFile.readIdLong("MinArtilleryHeadRange", minArtilleryHeadRange);
+		result = miFile.readIdLong("MinArtilleryHeadRange", minArtilleryHeadRange);
 		if (result != NO_ERROR)
 			minArtilleryHeadRange = 5.0;
 	}
@@ -461,8 +447,7 @@ int32_t ArtilleryType::init(FilePtr objFile, uint32_t fileSize)
 }
 
 //---------------------------------------------------------------------------
-bool ArtilleryType::handleCollision(
-	GameObjectPtr collidee, GameObjectPtr collider)
+bool ArtilleryType::handleCollision(GameObjectPtr collidee, GameObjectPtr collider)
 {
 	if (MPlayer && !MPlayer->isServer())
 		return (false);
@@ -470,9 +455,8 @@ bool ArtilleryType::handleCollision(
 	// Artillery counts as damage IF AND ONLY IF the artillery
 	// strike arrives during the collision time.  At all other
 	// times, the artillery doesn't matter.
-	ArtilleryPtr artillery = (ArtilleryPtr)collidee;
-	ArtilleryTypePtr artilleryType =
-		(ArtilleryTypePtr)artillery->getObjectType();
+	ArtilleryPtr artillery		   = (ArtilleryPtr)collidee;
+	ArtilleryTypePtr artilleryType = (ArtilleryTypePtr)artillery->getObjectType();
 	if (artillery->getFlag(OBJECT_FLAG_BOOM))
 	{
 		//---------------------
@@ -482,8 +466,7 @@ bool ArtilleryType::handleCollision(
 		distance.z = 0.0; // Do NOT use elevation!!!  Will make it look like its
 						  // not WORKING!!!!
 		float range = distance.GetLength() * metersPerWorldUnit;
-		if ((collider->getObjectClass() == GATE) ||
-			(collider->getObjectClass() == TURRET))
+		if ((collider->getObjectClass() == GATE) || (collider->getObjectClass() == TURRET))
 		{
 			switch (collider->getObjectClass())
 			{
@@ -492,14 +475,12 @@ bool ArtilleryType::handleCollision(
 				//---------------------------------------------------
 				// An explosion may NOT damage a gate or turret unless
 				// is is within the "little" extent radius.
-				float littleExtent =
-					((GatePtr)collider)->getLittleExtent() * metersPerWorldUnit;
+				float littleExtent = ((GatePtr)collider)->getLittleExtent() * metersPerWorldUnit;
 				if (littleExtent < range)
 				{
 					float realRange = range - littleExtent;
 					if (realRange >
-						((ArtilleryTypePtr)artillery->getObjectType())
-							->nominalMajorRange)
+						((ArtilleryTypePtr)artillery->getObjectType())->nominalMajorRange)
 						return FALSE;
 				}
 			}
@@ -509,8 +490,7 @@ bool ArtilleryType::handleCollision(
 				//---------------------------------------------------
 				// An explosion may NOT damage a gate or turret unless
 				// is is within the "little" extent radius.
-				float littleExtent = ((TurretPtr)collider)->getLittleExtent() *
-									 metersPerWorldUnit;
+				float littleExtent = ((TurretPtr)collider)->getLittleExtent() * metersPerWorldUnit;
 				if (littleExtent < range)
 				{
 					float realRange = range - littleExtent;
@@ -522,8 +502,8 @@ bool ArtilleryType::handleCollision(
 			}
 		}
 		else if ((collider->getObjectClass() == BATTLEMECH) &&
-				 (((MoverPtr)collider)->getMoveType() == MOVETYPE_AIR) &&
-				 (collider->getStatus() != OBJECT_STATUS_SHUTDOWN))
+			(((MoverPtr)collider)->getMoveType() == MOVETYPE_AIR) &&
+			(collider->getStatus() != OBJECT_STATUS_SHUTDOWN))
 		{
 			// DO Nothing.  Helicopters are immune.
 			return false;
@@ -535,18 +515,15 @@ bool ArtilleryType::handleCollision(
 		for (size_t i = 0; i < numHits; i++)
 		{
 			WeaponShotInfo shot;
-			shot.init(
-				collidee->getWatchID(), -3, artilleryType->nominalDamage, 0, 0);
+			shot.init(collidee->getWatchID(), -3, artilleryType->nominalDamage, 0, 0);
 			if (collider->isMover())
 			{
 				if (range <= minArtilleryHeadRange)
-					shot.hitLocation = collider->calcHitLocation(
-						collidee, -1, ATTACKSOURCE_DFA, 0);
+					shot.hitLocation = collider->calcHitLocation(collidee, -1, ATTACKSOURCE_DFA, 0);
 				else
-					shot.hitLocation = collider->calcHitLocation(
-						collidee, -1, ATTACKSOURCE_ARTILLERY, 0);
-				shot.setEntryAngle(
-					collider->relFacingTo(collidee->getPosition()));
+					shot.hitLocation =
+						collider->calcHitLocation(collidee, -1, ATTACKSOURCE_ARTILLERY, 0);
+				shot.setEntryAngle(collider->relFacingTo(collidee->getPosition()));
 			}
 			collider->handleWeaponHit(&shot, (MPlayer != nullptr));
 		}
@@ -555,8 +532,7 @@ bool ArtilleryType::handleCollision(
 }
 
 //---------------------------------------------------------------------------
-bool ArtilleryType::handleDestruction(
-	GameObjectPtr collidee, GameObjectPtr collider)
+bool ArtilleryType::handleDestruction(GameObjectPtr collidee, GameObjectPtr collider)
 {
 	//-------------------------------------------------------
 	// Artillery goes away when it hits.  Nothing happens as
@@ -633,9 +609,8 @@ void Artillery::handleStaticCollision(void)
 						{
 							MPlayer->addMineChunk(i, j, 1, 2, 2);
 						}
-						ObjectManager->createExplosion(MINE_EXPLOSION_ID,
-							nullptr, minePosition, MineSplashDamage,
-							MineSplashRange * worldUnitsPerMeter);
+						ObjectManager->createExplosion(MINE_EXPLOSION_ID, nullptr, minePosition,
+							MineSplashDamage, MineSplashRange * worldUnitsPerMeter);
 					}
 				}
 			}
@@ -653,22 +628,19 @@ void Artillery::handleStaticCollision(void)
 		// this one.  Problems arise when on Block border.  Handle it.
 		int32_t topLeftBlockNumber = blockNumber - Terrain::blocksMapSide - 1;
 		int32_t currentBlockNumber = topLeftBlockNumber;
-		int32_t totalBlocks = Terrain::blocksMapSide * Terrain::blocksMapSide;
+		int32_t totalBlocks		   = Terrain::blocksMapSide * Terrain::blocksMapSide;
 		for (i = 0; i < 3; i++)
 		{
 			for (size_t j = 0; j < 3; j++)
 			{
-				if ((currentBlockNumber >= 0) &&
-					(currentBlockNumber < totalBlocks))
+				if ((currentBlockNumber >= 0) && (currentBlockNumber < totalBlocks))
 				{
 					int32_t numObjectsInBlock =
-						ObjectManager->getObjBlockNumObjects(
-							currentBlockNumber);
-					for (size_t objIndex = 0; objIndex < numObjectsInBlock;
-						 objIndex++)
+						ObjectManager->getObjBlockNumObjects(currentBlockNumber);
+					for (size_t objIndex = 0; objIndex < numObjectsInBlock; objIndex++)
 					{
-						GameObjectPtr obj = ObjectManager->getObjBlockObject(
-							currentBlockNumber, objIndex);
+						GameObjectPtr obj =
+							ObjectManager->getObjBlockObject(currentBlockNumber, objIndex);
 						if (!obj)
 							STOP(("Object Number %d in terrain Block %d was "
 								  "nullptr!",
@@ -679,8 +651,7 @@ void Artillery::handleStaticCollision(void)
 				}
 				currentBlockNumber++;
 			}
-			currentBlockNumber =
-				topLeftBlockNumber + (Terrain::blocksMapSide * (i + 1));
+			currentBlockNumber = topLeftBlockNumber + (Terrain::blocksMapSide * (i + 1));
 		}
 	}
 }
@@ -703,8 +674,7 @@ void Artillery::setJustCreated(void)
 		{
 			int32_t cellR, cellC;
 			land->worldToCell(position, cellR, cellC);
-			if (GameMap->getDeepWater(cellR, cellC) ||
-				GameMap->getShallowWater(cellR, cellC))
+			if (GameMap->getDeepWater(cellR, cellC) || GameMap->getShallowWater(cellR, cellC))
 				effectId--;
 		}
 		// Create the GOSFX here.
@@ -715,12 +685,11 @@ void Artillery::setJustCreated(void)
 			uint32_t flags = gosFX::Effect::ExecuteFlag;
 			Check_Object(gosFX::EffectLibrary::Instance);
 			gosFX::Effect::Specification* gosEffectSpec =
-				gosFX::EffectLibrary::Instance->Find(
-					weaponEffects->GetEffectName(effectId));
+				gosFX::EffectLibrary::Instance->Find(weaponEffects->GetEffectName(effectId));
 			if (gosEffectSpec)
 			{
-				hitEffect = gosFX::EffectLibrary::Instance->MakeEffect(
-					gosEffectSpec->m_effectID, flags);
+				hitEffect =
+					gosFX::EffectLibrary::Instance->MakeEffect(gosEffectSpec->m_effectID, flags);
 				gosASSERT(hitEffect != nullptr);
 				MidLevelRenderer::MLRTexturePool::Instance->LoadImages();
 			}
@@ -732,15 +701,14 @@ void Artillery::setJustCreated(void)
 			uint32_t flags = gosFX::Effect::ExecuteFlag;
 			Check_Object(gosFX::EffectLibrary::Instance);
 			gosFX::Effect::Specification* gosEffectSpec =
-				gosFX::EffectLibrary::Instance->Find(
-					weaponEffects->GetEffectName(JET_CONTRAIL_ID));
+				gosFX::EffectLibrary::Instance->Find(weaponEffects->GetEffectName(JET_CONTRAIL_ID));
 			if (gosEffectSpec)
 			{
 				// leftContrail =
 				// gosFX::EffectLibrary::Instance->MakeEffect(gosEffectSpec->m_effectID,
 				// flags);  gosASSERT(leftContrail != nullptr);
-				rightContrail = gosFX::EffectLibrary::Instance->MakeEffect(
-					gosEffectSpec->m_effectID, flags);
+				rightContrail =
+					gosFX::EffectLibrary::Instance->MakeEffect(gosEffectSpec->m_effectID, flags);
 				gosASSERT(rightContrail != nullptr);
 				MidLevelRenderer::MLRTexturePool::Instance->LoadImages();
 			}
@@ -750,8 +718,7 @@ void Artillery::setJustCreated(void)
 			SensorSystemPtr sensor		  = SensorManager->newSensor();
 			info.strike.sensorSystemIndex = sensor->id;
 			setSensorData(getTeam());
-			if ((info.strike.timeToBlind == 0.0f) &&
-				!getFlag(OBJECT_FLAG_SENSORS_GOING))
+			if ((info.strike.timeToBlind == 0.0f) && !getFlag(OBJECT_FLAG_SENSORS_GOING))
 			{
 				if (hitEffect)
 				{
@@ -760,8 +727,7 @@ void Artillery::setJustCreated(void)
 					actualPosition.x = -position.x;
 					actualPosition.y = position.z;
 					actualPosition.z = position.y;
-					shapeOrigin.BuildRotation(
-						Stuff::EulerAngles(0.0f, 0.0f, 0.0f));
+					shapeOrigin.BuildRotation(Stuff::EulerAngles(0.0f, 0.0f, 0.0f));
 					shapeOrigin.BuildTranslation(actualPosition);
 					gosFX::Effect::ExecuteInfo info(
 						(Stuff::Time)scenarioTime, &shapeOrigin, nullptr);
@@ -808,8 +774,7 @@ int32_t Artillery::update(void)
 			shapeOrigin.BuildRotation(Stuff::EulerAngles(0.0f, 0.0f, 0.0f));
 			shapeOrigin.BuildTranslation(actualPosition);
 			Stuff::OBB boundingBox;
-			gosFX::Effect::ExecuteInfo info(
-				(Stuff::Time)scenarioTime, &shapeOrigin, &boundingBox);
+			gosFX::Effect::ExecuteInfo info((Stuff::Time)scenarioTime, &shapeOrigin, &boundingBox);
 			bool result = hitEffect->Execute(&info);
 			if (!result)
 			{
@@ -842,9 +807,8 @@ int32_t Artillery::update(void)
 	{
 		bool oldShadows = useShadows;
 		useShadows		= false;
-		appearance->setObjectParameters(iFacePosition,
-			((ObjectAppearance*)appearance)->rotation, false, getTeamId(),
-			Team::getRelation(getTeamId(), Team::home->getId()));
+		appearance->setObjectParameters(iFacePosition, ((ObjectAppearance*)appearance)->rotation,
+			false, getTeamId(), Team::getRelation(getTeamId(), Team::home->getId()));
 		appearance->recalcBounds();
 		appearance->update();
 		useShadows = oldShadows;
@@ -863,31 +827,27 @@ int32_t Artillery::update(void)
 		if (rightContrail && rightContrail->IsExecuted())
 		{
 			Stuff::LinearMatrix4D shapeOrigin;
-			Stuff::Vector3D lPosition =
-				bomber->getNodeNamePosition("activity_node");
+			Stuff::Vector3D lPosition = bomber->getNodeNamePosition("activity_node");
 			Stuff::Point3D actualPosition;
 			actualPosition.x = -lPosition.x;
 			actualPosition.y = lPosition.z;
 			actualPosition.z = lPosition.y;
 			shapeOrigin.BuildRotation(Stuff::EulerAngles(0.0f, 0.0f, 0.0f));
 			shapeOrigin.BuildTranslation(actualPosition);
-			gosFX::Effect::ExecuteInfo info(
-				(Stuff::Time)scenarioTime, &shapeOrigin, nullptr);
+			gosFX::Effect::ExecuteInfo info((Stuff::Time)scenarioTime, &shapeOrigin, nullptr);
 			rightContrail->Start(&info);
 		}
 		if (leftContrail && leftContrail->IsExecuted())
 		{
 			Stuff::LinearMatrix4D shapeOrigin;
-			Stuff::Vector3D lPosition =
-				bomber->getDustNodePosition(GV_LEFT_DUST_ID);
+			Stuff::Vector3D lPosition = bomber->getDustNodePosition(GV_LEFT_DUST_ID);
 			Stuff::Point3D actualPosition;
 			actualPosition.x = -lPosition.x;
 			actualPosition.y = lPosition.z;
 			actualPosition.z = lPosition.y;
 			shapeOrigin.BuildRotation(Stuff::EulerAngles(0.0f, 0.0f, 0.0f));
 			shapeOrigin.BuildTranslation(actualPosition);
-			gosFX::Effect::ExecuteInfo info(
-				(Stuff::Time)scenarioTime, &shapeOrigin, nullptr);
+			gosFX::Effect::ExecuteInfo info((Stuff::Time)scenarioTime, &shapeOrigin, nullptr);
 			leftContrail->Start(&info);
 		}
 	}
@@ -900,8 +860,7 @@ int32_t Artillery::update(void)
 		bomber->update();
 		if (bomber && leftContrail && leftContrail->IsExecuted())
 		{
-			Stuff::Vector3D lPosition =
-				bomber->getDustNodePosition(GV_LEFT_DUST_ID);
+			Stuff::Vector3D lPosition = bomber->getDustNodePosition(GV_LEFT_DUST_ID);
 			Stuff::Point3D actualPosition;
 			actualPosition.x = -lPosition.x;
 			actualPosition.y = lPosition.z;
@@ -910,14 +869,12 @@ int32_t Artillery::update(void)
 			shapeOrigin.BuildRotation(Stuff::EulerAngles(0.0f, 0.0f, 0.0f));
 			shapeOrigin.BuildTranslation(actualPosition);
 			Stuff::OBB boundingBox;
-			gosFX::Effect::ExecuteInfo info(
-				(Stuff::Time)scenarioTime, &shapeOrigin, &boundingBox);
+			gosFX::Effect::ExecuteInfo info((Stuff::Time)scenarioTime, &shapeOrigin, &boundingBox);
 			leftContrail->Execute(&info);
 		}
 		if (bomber && rightContrail && rightContrail->IsExecuted())
 		{
-			Stuff::Vector3D lPosition =
-				bomber->getNodeNamePosition("activity_node");
+			Stuff::Vector3D lPosition = bomber->getNodeNamePosition("activity_node");
 			Stuff::Point3D actualPosition;
 			actualPosition.x = -lPosition.x;
 			actualPosition.y = lPosition.z;
@@ -926,8 +883,7 @@ int32_t Artillery::update(void)
 			shapeOrigin.BuildRotation(Stuff::EulerAngles(0.0f, 0.0f, 0.0f));
 			shapeOrigin.BuildTranslation(actualPosition);
 			Stuff::OBB boundingBox;
-			gosFX::Effect::ExecuteInfo info(
-				(Stuff::Time)scenarioTime, &shapeOrigin, &boundingBox);
+			gosFX::Effect::ExecuteInfo info((Stuff::Time)scenarioTime, &shapeOrigin, &boundingBox);
 			rightContrail->Execute(&info);
 		}
 	}
@@ -955,8 +911,7 @@ int32_t Artillery::update(void)
 			actualPosition.z = position.y;
 			shapeOrigin.BuildRotation(Stuff::EulerAngles(0.0f, 0.0f, 0.0f));
 			shapeOrigin.BuildTranslation(actualPosition);
-			gosFX::Effect::ExecuteInfo info(
-				(Stuff::Time)scenarioTime, &shapeOrigin, nullptr);
+			gosFX::Effect::ExecuteInfo info((Stuff::Time)scenarioTime, &shapeOrigin, nullptr);
 			hitEffect->Start(&info);
 		}
 		//------------------------------------------------
@@ -971,8 +926,7 @@ int32_t Artillery::update(void)
 			shapeOrigin.BuildRotation(Stuff::EulerAngles(0.0f, 0.0f, 0.0f));
 			shapeOrigin.BuildTranslation(actualPosition);
 			Stuff::OBB boundingBox;
-			gosFX::Effect::ExecuteInfo info(
-				(Stuff::Time)scenarioTime, &shapeOrigin, &boundingBox);
+			gosFX::Effect::ExecuteInfo info((Stuff::Time)scenarioTime, &shapeOrigin, &boundingBox);
 			bool result = hitEffect->Execute(&info);
 			if (!result)
 			{
@@ -990,24 +944,20 @@ int32_t Artillery::update(void)
 	if ((info.strike.timeToBlind > 0.0) && getFlag(OBJECT_FLAG_SENSORS_GOING))
 	{
 		info.strike.timeToBlind -= frameLength;
-		info.strike.sensorRange =
-			info.strike.timeToBlind / type->nominalSensorTime;
+		info.strike.sensorRange = info.strike.timeToBlind / type->nominalSensorTime;
 		info.strike.sensorRange *= type->nominalSensorRange;
 		info.strike.sensorRange *= worldUnitsPerMeter;
-		SensorSystemPtr sensor =
-			SensorManager->getSensor(info.strike.sensorSystemIndex);
+		SensorSystemPtr sensor = SensorManager->getSensor(info.strike.sensorSystemIndex);
 		Assert(sensor != nullptr, 0, " Artillery.update: nullptr sensor ");
 		sensor->setRange(info.strike.sensorRange * metersPerWorldUnit);
 		//--------------------------------------
 		// Actual scan is done in team update...
 	}
-	else if ((info.strike.timeToBlind <= 0.0) &&
-			 getFlag(OBJECT_FLAG_SENSORS_GOING))
+	else if ((info.strike.timeToBlind <= 0.0) && getFlag(OBJECT_FLAG_SENSORS_GOING))
 	{
 		//---------------------------------------------------
 		// All done, return FALSE;
-		SensorSystemPtr sensor =
-			SensorManager->getSensor(info.strike.sensorSystemIndex);
+		SensorSystemPtr sensor = SensorManager->getSensor(info.strike.sensorSystemIndex);
 		SensorManager->removeTeamSensor(getTeam()->getId(), sensor);
 		SensorManager->freeSensor(sensor);
 		return (0);
@@ -1036,8 +986,7 @@ int32_t Artillery::update(void)
 			shapeOrigin.BuildRotation(Stuff::EulerAngles(0.0f, 0.0f, 0.0f));
 			shapeOrigin.BuildTranslation(actualPosition);
 			Stuff::OBB boundingBox;
-			gosFX::Effect::ExecuteInfo xinfo(
-				(Stuff::Time)scenarioTime, &shapeOrigin, &boundingBox);
+			gosFX::Effect::ExecuteInfo xinfo((Stuff::Time)scenarioTime, &shapeOrigin, &boundingBox);
 			bool result = hitEffect->Execute(&xinfo);
 			if (!result)
 			{
@@ -1104,8 +1053,7 @@ bool Artillery::recalcBounds(CameraPtr myEye)
 			eye->projectZ(position, screenPos);
 			Stuff::Vector4D iFaceScreen;
 			eye->projectZ(iFacePosition, iFaceScreen);
-			if ((screenPos.x >= 0) && (screenPos.y >= 0) &&
-					(screenPos.x <= eye->getScreenResX()) &&
+			if ((screenPos.x >= 0) && (screenPos.y >= 0) && (screenPos.x <= eye->getScreenResX()) &&
 					(screenPos.y <= eye->getScreenResY()) ||
 				((iFaceScreen.x >= 0) && (iFaceScreen.y >= 0) &&
 					(iFaceScreen.x <= eye->getScreenResX()) &&
@@ -1131,10 +1079,7 @@ TeamPtr Artillery::getTeam(void)
 }
 
 //---------------------------------------------------------------------------
-void Artillery::setCommanderId(int32_t _commanderId)
-{
-	commanderId = _commanderId;
-}
+void Artillery::setCommanderId(int32_t _commanderId) { commanderId = _commanderId; }
 
 //---------------------------------------------------------------------------
 int32_t Artillery::setTeamId(int32_t _teamId, bool setup)
@@ -1174,8 +1119,7 @@ bool Artillery::isNeutral(TeamPtr team)
 //---------------------------------------------------------------------------
 void Artillery::setSensorRange(float range)
 {
-	SensorSystemPtr sensor =
-		SensorManager->getSensor(info.strike.sensorSystemIndex);
+	SensorSystemPtr sensor = SensorManager->getSensor(info.strike.sensorSystemIndex);
 	if (sensor)
 		sensor->setRange(range);
 }
@@ -1187,8 +1131,7 @@ void Artillery::setSensorData(TeamPtr team, float sensorTime, float range)
 		info.strike.timeToBlind = sensorTime;
 	if (range != -1.0)
 		info.strike.sensorRange = range;
-	SensorSystemPtr sensor =
-		SensorManager->getSensor(info.strike.sensorSystemIndex);
+	SensorSystemPtr sensor = SensorManager->getSensor(info.strike.sensorSystemIndex);
 	Assert(sensor != nullptr, info.strike.sensorSystemIndex,
 		" Artillery.setSensorData: nullptr sensor ");
 	sensor->setOwner(this);
@@ -1232,8 +1175,7 @@ void Artillery::render(void)
 		}
 		if ((!MPlayer && (info.strike.timeToImpact > 0.f)) ||
 			(MPlayer && info.strike.timeToImpact > 0.f &&
-				((teamId == Team::home->getId()) ||
-					info.strike.timeToImpact < 3.0f)))
+				((teamId == Team::home->getId()) || info.strike.timeToImpact < 3.0f)))
 		{
 			// We are drawing the timer.
 			// Draw it.
@@ -1253,15 +1195,14 @@ void Artillery::render(void)
 			uint32_t width, height;
 			Stuff::Vector4D moveHere;
 			eye->projectZ(iFacePosition, moveHere);
-			gos_TextSetAttributes(
-				gosFontHandle, 0, gosFontScale, false, false, false, false);
+			gos_TextSetAttributes(gosFontHandle, 0, gosFontScale, false, false, false, false);
 			gos_TextStringLength(&width, &height, text);
 			moveHere.y += 10.0f;
 			moveHere.x -= width / 2;
 			moveHere.z = width;
 			moveHere.w = height;
-			globalFloatHelp->setFloatHelp(text, moveHere, SD_GREEN, 0x0,
-				gosFontScale, false, false, false, false);
+			globalFloatHelp->setFloatHelp(
+				text, moveHere, SD_GREEN, 0x0, gosFontScale, false, false, false, false);
 			if (appearance->canBeSeen())
 			{
 				windowsVisible = turn;
@@ -1289,8 +1230,7 @@ void Artillery::render(void)
 		drawInfo.m_clippingFlags = 0x0;
 		if (leftContrail)
 		{
-			Stuff::Vector3D lPosition =
-				bomber->getDustNodePosition(GV_LEFT_DUST_ID);
+			Stuff::Vector3D lPosition = bomber->getDustNodePosition(GV_LEFT_DUST_ID);
 			Stuff::Point3D actualPosition;
 			actualPosition.x = -lPosition.x;
 			actualPosition.y = lPosition.z;
@@ -1304,8 +1244,7 @@ void Artillery::render(void)
 		}
 		if (rightContrail)
 		{
-			Stuff::Vector3D lPosition =
-				bomber->getNodeNamePosition("activity_node");
+			Stuff::Vector3D lPosition = bomber->getNodeNamePosition("activity_node");
 			Stuff::Point3D actualPosition;
 			actualPosition.x = -lPosition.x;
 			actualPosition.y = lPosition.z;
@@ -1321,8 +1260,7 @@ void Artillery::render(void)
 }
 
 //---------------------------------------------------------------------------
-int32_t Artillery::handleWeaponHit(
-	WeaponShotInfoPtr shotInfo, bool addMultiplayChunk)
+int32_t Artillery::handleWeaponHit(WeaponShotInfoPtr shotInfo, bool addMultiplayChunk)
 {
 	return (NO_ERROR);
 }
@@ -1396,14 +1334,12 @@ void Artillery::init(bool create, ObjectTypePtr _type)
 			//------------------------------------------------------
 			// LOAD a dummy appearance until real ones are available
 			// for this building!
-			appearanceType = (BLDG_TYPE << 24);
-			buildingAppearanceType =
-				appearanceTypeList->getAppearance(appearanceType, "TESTBLDG");
+			appearanceType		   = (BLDG_TYPE << 24);
+			buildingAppearanceType = appearanceTypeList->getAppearance(appearanceType, "TESTBLDG");
 		}
 		else
 		{
-			buildingAppearanceType =
-				appearanceTypeList->getAppearance(appearanceType, appearName);
+			buildingAppearanceType = appearanceTypeList->getAppearance(appearanceType, appearName);
 			if (!buildingAppearanceType)
 			{
 				char msg[1024];
@@ -1416,8 +1352,7 @@ void Artillery::init(bool create, ObjectTypePtr _type)
 		//--------------------------------------------------------------
 		// The only appearance type for buildings is MLR_APPEARANCE.
 		gosASSERT(buildingAppearanceType->getAppearanceClass() == BLDG_TYPE);
-		appearance->init(
-			(BldgAppearanceType*)buildingAppearanceType, (GameObjectPtr)this);
+		appearance->init((BldgAppearanceType*)buildingAppearanceType, (GameObjectPtr)this);
 		//--------------------------------------------------------------
 		appearanceType = (GV_TYPE << 24);
 		AppearanceTypePtr bomberAppearanceType =
@@ -1433,8 +1368,7 @@ void Artillery::init(bool create, ObjectTypePtr _type)
 				STOP((" Artillery.init: unable to create appearance for "
 					  "Shilone"));
 			//-----------------------------------------------------------------
-			bomber->init(
-				(GVAppearanceType*)bomberAppearanceType, (GameObjectPtr)this);
+			bomber->init((GVAppearanceType*)bomberAppearanceType, (GameObjectPtr)this);
 		}
 		bombRunStarted = false;
 	}
@@ -1460,14 +1394,12 @@ void Artillery::init(bool create, ObjectTypePtr _type)
 			//------------------------------------------------------
 			// LOAD a dummy appearance until real ones are available
 			// for this building!
-			appearanceType = (BLDG_TYPE << 24);
-			buildingAppearanceType =
-				appearanceTypeList->getAppearance(appearanceType, "TESTBLDG");
+			appearanceType		   = (BLDG_TYPE << 24);
+			buildingAppearanceType = appearanceTypeList->getAppearance(appearanceType, "TESTBLDG");
 		}
 		else
 		{
-			buildingAppearanceType =
-				appearanceTypeList->getAppearance(appearanceType, appearName);
+			buildingAppearanceType = appearanceTypeList->getAppearance(appearanceType, appearName);
 			if (!buildingAppearanceType)
 			{
 				char msg[1024];
@@ -1480,8 +1412,7 @@ void Artillery::init(bool create, ObjectTypePtr _type)
 		//--------------------------------------------------------------
 		// The only appearance type for buildings is MLR_APPEARANCE.
 		gosASSERT(buildingAppearanceType->getAppearanceClass() == BLDG_TYPE);
-		appearance->init(
-			(BldgAppearanceType*)buildingAppearanceType, (GameObjectPtr)this);
+		appearance->init((BldgAppearanceType*)buildingAppearanceType, (GameObjectPtr)this);
 		//--------------------------------------------------------------
 		appearanceType = (GV_TYPE << 24);
 		AppearanceTypePtr bomberAppearanceType =
@@ -1497,8 +1428,7 @@ void Artillery::init(bool create, ObjectTypePtr _type)
 				STOP((" Artillery.init: unable to create appearance for "
 					  "Shilone"));
 			//-----------------------------------------------------------------
-			bomber->init(
-				(GVAppearanceType*)bomberAppearanceType, (GameObjectPtr)this);
+			bomber->init((GVAppearanceType*)bomberAppearanceType, (GameObjectPtr)this);
 		}
 		bombRunStarted = false;
 	}
@@ -1524,14 +1454,12 @@ void Artillery::init(bool create, ObjectTypePtr _type)
 			//------------------------------------------------------
 			// LOAD a dummy appearance until real ones are available
 			// for this building!
-			appearanceType = (BLDG_TYPE << 24);
-			buildingAppearanceType =
-				appearanceTypeList->getAppearance(appearanceType, "TESTBLDG");
+			appearanceType		   = (BLDG_TYPE << 24);
+			buildingAppearanceType = appearanceTypeList->getAppearance(appearanceType, "TESTBLDG");
 		}
 		else
 		{
-			buildingAppearanceType =
-				appearanceTypeList->getAppearance(appearanceType, appearName);
+			buildingAppearanceType = appearanceTypeList->getAppearance(appearanceType, appearName);
 			if (!buildingAppearanceType)
 			{
 				char msg[1024];
@@ -1544,8 +1472,7 @@ void Artillery::init(bool create, ObjectTypePtr _type)
 		//--------------------------------------------------------------
 		// The only appearance type for buildings is MLR_APPEARANCE.
 		gosASSERT(buildingAppearanceType->getAppearanceClass() == BLDG_TYPE);
-		appearance->init(
-			(BldgAppearanceType*)buildingAppearanceType, (GameObjectPtr)this);
+		appearance->init((BldgAppearanceType*)buildingAppearanceType, (GameObjectPtr)this);
 	}
 	break;
 	}
@@ -1557,8 +1484,7 @@ void Artillery::Save(PacketFilePtr file, int32_t packetNum)
 	ArtilleryData data;
 	CopyTo(&data);
 	// PacketNum incremented in ObjectManager!!
-	file->writePacket(
-		packetNum, (puint8_t)&data, sizeof(ArtilleryData), STORAGE_TYPE_ZLIB);
+	file->writePacket(packetNum, (puint8_t)&data, sizeof(ArtilleryData), STORAGE_TYPE_ZLIB);
 }
 
 //---------------------------------------------------------------------------
@@ -1590,14 +1516,12 @@ void Artillery::Load(ArtilleryData* data)
 	// if we're not a true artillery round, we're a sensor probe.
 	// This checks to see if we've hit yet.
 	// If not, create the impact effect and move on.
-	if ((data->info.strike.sensorRange != 0.0f) &&
-		(data->info.strike.timeToImpact <= 0.0) &&
+	if ((data->info.strike.sensorRange != 0.0f) && (data->info.strike.timeToImpact <= 0.0) &&
 		!getFlag(OBJECT_FLAG_SENSORS_GOING))
 	{
 		int32_t cellR, cellC;
 		land->worldToCell(position, cellR, cellC);
-		if (GameMap->getDeepWater(cellR, cellC) ||
-			GameMap->getShallowWater(cellR, cellC))
+		if (GameMap->getDeepWater(cellR, cellC) || GameMap->getShallowWater(cellR, cellC))
 			effectId--;
 		// Create the GOSFX here.
 		if (strcmp(weaponEffects->GetEffectName(effectId), "NONE") != 0)
@@ -1607,12 +1531,11 @@ void Artillery::Load(ArtilleryData* data)
 			uint32_t flags = gosFX::Effect::ExecuteFlag;
 			Check_Object(gosFX::EffectLibrary::Instance);
 			gosFX::Effect::Specification* gosEffectSpec =
-				gosFX::EffectLibrary::Instance->Find(
-					weaponEffects->GetEffectName(effectId));
+				gosFX::EffectLibrary::Instance->Find(weaponEffects->GetEffectName(effectId));
 			if (gosEffectSpec)
 			{
-				hitEffect = gosFX::EffectLibrary::Instance->MakeEffect(
-					gosEffectSpec->m_effectID, flags);
+				hitEffect =
+					gosFX::EffectLibrary::Instance->MakeEffect(gosEffectSpec->m_effectID, flags);
 				gosASSERT(hitEffect != nullptr);
 				MidLevelRenderer::MLRTexturePool::Instance->LoadImages();
 			}
@@ -1626,8 +1549,7 @@ void Artillery::Load(ArtilleryData* data)
 			actualPosition.z = position.y;
 			shapeOrigin.BuildRotation(Stuff::EulerAngles(0.0f, 0.0f, 0.0f));
 			shapeOrigin.BuildTranslation(actualPosition);
-			gosFX::Effect::ExecuteInfo info(
-				(Stuff::Time)scenarioTime, &shapeOrigin, nullptr);
+			gosFX::Effect::ExecuteInfo info((Stuff::Time)scenarioTime, &shapeOrigin, nullptr);
 			hitEffect->Start(&info);
 		}
 	}
@@ -1642,12 +1564,11 @@ void Artillery::Load(ArtilleryData* data)
 			uint32_t flags = gosFX::Effect::ExecuteFlag;
 			Check_Object(gosFX::EffectLibrary::Instance);
 			gosFX::Effect::Specification* gosEffectSpec =
-				gosFX::EffectLibrary::Instance->Find(
-					weaponEffects->GetEffectName(effectId));
+				gosFX::EffectLibrary::Instance->Find(weaponEffects->GetEffectName(effectId));
 			if (gosEffectSpec)
 			{
-				hitEffect = gosFX::EffectLibrary::Instance->MakeEffect(
-					gosEffectSpec->m_effectID, flags);
+				hitEffect =
+					gosFX::EffectLibrary::Instance->MakeEffect(gosEffectSpec->m_effectID, flags);
 				gosASSERT(hitEffect != nullptr);
 				MidLevelRenderer::MLRTexturePool::Instance->LoadImages();
 			}

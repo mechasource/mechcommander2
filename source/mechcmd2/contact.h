@@ -29,16 +29,15 @@
 class ContactInfo
 {
 
-  public:
+public:
 	uint8_t contactStatus[MAX_TEAMS];
 	// uint8_t				allContactStatus[MAX_TEAMS];
-	uint8_t
-		contactCount[MAX_TEAMS];  // How many mechs/vehicles have me on sensors?
-	uint8_t sensors[MAX_SENSORS]; // index into sensor's contact list
-	uint16_t teams[MAX_TEAMS];	// index into team's contact list
+	uint8_t contactCount[MAX_TEAMS]; // How many mechs/vehicles have me on sensors?
+	uint8_t sensors[MAX_SENSORS];	// index into sensor's contact list
+	uint16_t teams[MAX_TEAMS];		 // index into team's contact list
 	uint8_t teamSpotter[MAX_TEAMS];
 
-  public:
+public:
 	PVOID operator new(size_t mySize);
 
 	void operator delete(PVOID us);
@@ -77,17 +76,11 @@ class ContactInfo
 
 	int32_t getContactCount(int32_t teamId) { return (contactCount[teamId]); }
 
-	void setSensor(int32_t sensor, int32_t contactIndex)
-	{
-		sensors[sensor] = contactIndex;
-	}
+	void setSensor(int32_t sensor, int32_t contactIndex) { sensors[sensor] = contactIndex; }
 
 	int32_t getSensor(int32_t sensor) { return (sensors[sensor]); }
 
-	void setTeam(int32_t teamId, int32_t contactIndex)
-	{
-		teams[teamId] = contactIndex;
-	}
+	void setTeam(int32_t teamId, int32_t contactIndex) { teams[teamId] = contactIndex; }
 
 	int32_t getTeam(int32_t teamId) { return (teams[teamId]); }
 };
@@ -105,7 +98,7 @@ typedef struct _ECMInfo
 class SensorSystem
 {
 
-  public:
+public:
 	int32_t id;
 	TeamSensorSystemPtr master;
 	int32_t masterIndex;
@@ -133,7 +126,7 @@ class SensorSystem
 	static float scanFrequency;
 	static SortListPtr sortList;
 
-  public:
+public:
 	PVOID operator new(size_t ourSize);
 
 	void operator delete(PVOID us);
@@ -200,8 +193,7 @@ class SensorSystem
 
 	void updateScan(bool forceUpdate = false);
 
-	int32_t getTeamContacts(
-		int32_t* contactList, int32_t contactCriteria, int32_t sortType);
+	int32_t getTeamContacts(int32_t* contactList, int32_t contactCriteria, int32_t sortType);
 
 	void setLOSCapability(bool flag) { hasLOSCapability = flag; }
 };
@@ -213,7 +205,7 @@ class SensorSystem
 class TeamSensorSystem
 {
 
-  public:
+public:
 	int32_t teamId;
 	int32_t nextContactId;
 	int32_t numContactUpdatesPerPass;
@@ -232,7 +224,7 @@ class TeamSensorSystem
 
 	static bool homeTeamInContact;
 
-  public:
+public:
 	PVOID operator new(size_t ourSize);
 
 	void operator delete(PVOID us);
@@ -253,13 +245,12 @@ class TeamSensorSystem
 
 	void decNumEnemyContacts(void);
 
-	void addContact(SensorSystemPtr sensor, MoverPtr contact,
-		int32_t contactIndex, int32_t contactStatus);
+	void addContact(
+		SensorSystemPtr sensor, MoverPtr contact, int32_t contactIndex, int32_t contactStatus);
 
 	SensorSystemPtr findBestSpotter(MoverPtr contact, int32_t* status);
 
-	void modifyContact(
-		SensorSystemPtr sensor, MoverPtr contact, int32_t contactStatus);
+	void modifyContact(SensorSystemPtr sensor, MoverPtr contact, int32_t contactStatus);
 
 	void removeContact(SensorSystemPtr sensor, MoverPtr contact);
 
@@ -273,13 +264,12 @@ class TeamSensorSystem
 
 	bool hasSensorContact(int32_t teamID);
 
-	int32_t getContacts(GameObjectPtr looker, int32_t* contactList,
-		int32_t contactCriteria, int32_t sortType);
+	int32_t getContacts(
+		GameObjectPtr looker, int32_t* contactList, int32_t contactCriteria, int32_t sortType);
 
 	int32_t getContactStatus(MoverPtr mover, bool includingAllies);
 
-	bool meetsCriteria(
-		GameObjectPtr looker, MoverPtr mover, int32_t contactCriteria);
+	bool meetsCriteria(GameObjectPtr looker, MoverPtr mover, int32_t contactCriteria);
 
 	void scanBattlefield(void);
 
@@ -300,7 +290,7 @@ class SensorSystemManager
 	//-------------
 	// Data Members
 
-  protected:
+protected:
 	int32_t freeSensors;		 // How many sensors are currently free
 	SensorSystemPtr* sensorPool; // Pool of ALL sensors
 	SensorSystemPtr freeList;	// List of available sensors
@@ -310,14 +300,14 @@ class SensorSystemManager
 	int32_t teamToUpdate;
 	static float updateFrequency;
 
-  public:
+public:
 	static bool enemyInLOS; // Flag is set every frame that I can see someone on
 							// sensors or visually.
 
 	//-----------------
 	// Member Functions
 
-  public:
+public:
 	PVOID operator new(size_t ourSize);
 	void operator delete(PVOID us);
 
@@ -340,10 +330,7 @@ class SensorSystemManager
 
 	int32_t init(bool debug);
 
-	TeamSensorSystemPtr getTeamSensor(int32_t teamId)
-	{
-		return (teamSensors[teamId]);
-	}
+	TeamSensorSystemPtr getTeamSensor(int32_t teamId) { return (teamSensors[teamId]); }
 
 	SensorSystemPtr newSensor(void);
 
@@ -352,9 +339,7 @@ class SensorSystemManager
 	SensorSystemPtr getSensor(int32_t id)
 	{
 		if ((id < 0) || (id >= MAX_SENSORS))
-			STOP((
-				"Tried to access Sensor outside of range.  Tried to access: %d",
-				id));
+			STOP(("Tried to access Sensor outside of range.  Tried to access: %d", id));
 		return (sensorPool[id]);
 	}
 

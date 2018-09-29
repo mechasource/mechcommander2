@@ -22,7 +22,7 @@ MPStats:
 **************************************************************************************************/
 class MPStatsEntry : public LogisticsScreen
 {
-  public:
+public:
 	MPStatsEntry(void);
 	virtual ~MPStatsEntry(void);
 
@@ -39,7 +39,7 @@ class MPStatsEntry : public LogisticsScreen
 
 class MPStatsResultsEntry : public LogisticsScreen
 {
-  public:
+public:
 	MPStatsResultsEntry(void);
 	virtual ~MPStatsResultsEntry(void);
 	virtual void render(int32_t x, int32_t y);
@@ -51,7 +51,7 @@ class MPStatsResultsEntry : public LogisticsScreen
 
 class MPStats : public LogisticsScreen
 {
-  public:
+public:
 	MPStats(void);
 	virtual ~MPStats(void);
 
@@ -67,7 +67,7 @@ class MPStats : public LogisticsScreen
 
 	void setHostLeftDlg(PCSTR hostName);
 
-  private:
+private:
 	MPStats(const MPStats& src);
 
 	MPStatsResultsEntry entries[MAX_MC_PLAYERS];

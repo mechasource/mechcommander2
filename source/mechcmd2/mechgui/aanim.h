@@ -16,7 +16,7 @@ class FitIniFile;
 class aAnimation
 {
 
-  public:
+public:
 	aAnimation(void);
 	~aAnimation(void);
 	aAnimation(const aAnimation&);
@@ -51,7 +51,7 @@ class aAnimation
 	float getCurrentTime() { return currentTime; }
 	float getMaxTime(void);
 
-  protected:
+protected:
 	float currentTime;
 
 	struct MoveInfo
@@ -71,14 +71,14 @@ class aAnimation
 	float direction;
 	bool bLoops;
 
-  private:
+private:
 	void copyData(const aAnimation&);
 };
 
 // animations for the states we use everywhere
 class aAnimGroup
 {
-  public:
+public:
 	enum STATE
 	{
 		NORMAL			 = 0,
@@ -102,7 +102,7 @@ class aAnimGroup
 	float getCurrnetScale(STATE) const;
 	void update(void);
 
-  private:
+private:
 	aAnimation animations[MAX_ANIMATION_STATE];
 	STATE curState;
 };

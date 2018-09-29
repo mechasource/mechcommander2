@@ -36,7 +36,8 @@ extern uint32_t gEnableParallel;
 // global implemented functions in this module listed in headers
 void __stdcall RegistryManagerInstall();
 void __stdcall RegistryManagerUninstall();
-void __stdcall gos_LoadDataFromRegistry(PSTR valuename, PBYTE pdata, puint32_t pcbdata, bool ishklm);
+void __stdcall gos_LoadDataFromRegistry(
+	PSTR valuename, PBYTE pdata, puint32_t pcbdata, bool ishklm);
 void __stdcall gos_SaveDataToRegistry(PSTR keyname, PBYTE pdata, uint32_t cbdata);
 void __stdcall gos_SaveStringToRegistry(PSTR keyname, PBYTE pdata, uint32_t cbdata);
 PSTR __stdcall ReadRegistry(PSTR keyname, PSTR valuename, bool ishklm);
@@ -63,7 +64,6 @@ typedef struct RegDebuggerOptions
 	uint32_t TextureOverrun;
 	uint32_t ShowAverage;
 } RegDebuggerOptions;
-
 
 /******************************************************************************/
 /// <summary>
@@ -125,7 +125,8 @@ void __stdcall RegistryManagerInstall(void)
 		status = ::RegOpenKeyA(HKEY_LOCAL_MACHINE, RegistryKey, &hkey);
 		if (status == ERROR_SUCCESS)
 		{
-			status = ::RegQueryValueExA(hkey, Environment.version, nullptr, nullptr, pdata, &cbdata);
+			status =
+				::RegQueryValueExA(hkey, Environment.version, nullptr, nullptr, pdata, &cbdata);
 			::RegCloseKey(hkey);
 			if ((status != ERROR_SUCCESS) || (data != 1)) // ?
 			{
@@ -138,7 +139,8 @@ void __stdcall RegistryManagerInstall(void)
 	data   = 0;
 	pdata  = reinterpret_cast<PBYTE>(&data);
 
-	hFile = ::CreateFileA(_pgmptr, GENERIC_READ, FILE_SHARE_READ, nullptr, OPEN_EXISTING, 0, nullptr);
+	hFile =
+		::CreateFileA(_pgmptr, GENERIC_READ, FILE_SHARE_READ, nullptr, OPEN_EXISTING, 0, nullptr);
 	::GetFileTime(hFile, nullptr, nullptr, &exedate);
 	::CloseHandle(hFile);
 
@@ -153,9 +155,11 @@ void __stdcall RegistryManagerInstall(void)
 	// cbdata = 4;
 	WindowStartY = 0x80000000;
 	gos_LoadDataFromRegistry("Window_Y", reinterpret_cast<PBYTE>(&WindowStartY), &cbdata, false);
-	if (WindowStartX > GetDeviceCaps(DesktopDC, HORZRES)) // Width, in millimeters, of the physical screen
+	if (WindowStartX >
+		GetDeviceCaps(DesktopDC, HORZRES)) // Width, in millimeters, of the physical screen
 		WindowStartX = 0x80000000;
-	if (WindowStartY > GetDeviceCaps(DesktopDC, VERTRES)) // Height, in millimeters, of the physical screen
+	if (WindowStartY >
+		GetDeviceCaps(DesktopDC, VERTRES)) // Height, in millimeters, of the physical screen
 		WindowStartY = 0x80000000;
 
 	PerfCounterSelected = static_cast<uint32_t>(-1); // 0xffffffff
@@ -175,9 +179,11 @@ void __stdcall RegistryManagerInstall(void)
 		cbdata = 32;
 		gos_LoadDataFromRegistry("DebuggerGraphs", ProfileFlags, &cbdata, false);
 		// cbdata = 32;
-		gos_LoadDataFromRegistry("DebuggerGraphMode", reinterpret_cast<PBYTE>(&GraphMode), &cbdata, false);
+		gos_LoadDataFromRegistry(
+			"DebuggerGraphMode", reinterpret_cast<PBYTE>(&GraphMode), &cbdata, false);
 		// cbdata = 32;
-		gos_LoadDataFromRegistry("DebuggerGraphInfo", reinterpret_cast<PBYTE>(&ShowColorInfo), &cbdata, false);
+		gos_LoadDataFromRegistry(
+			"DebuggerGraphInfo", reinterpret_cast<PBYTE>(&ShowColorInfo), &cbdata, false);
 	}
 
 	cbdata = 32;
@@ -185,18 +191,18 @@ void __stdcall RegistryManagerInstall(void)
 	pdata  = reinterpret_cast<PBYTE>(&data);
 	gos_LoadDataFromRegistry("DebuggerOptions", pdata, &cbdata, false);
 
-	gGameLogicActive        = data & 1;
-	gControlsActive         = (data >> 1) & 1;
-	gStopSystem             = (data >> 2) & 1;
-	gFrameGraph             = (data >> 3) & 1;
-	gEnableParallel         = (data >> 4) & 1;
-	NoDebuggerStats         = (data >> 5) & 1;
-	gShowGraphsAsTime       = (data >> 6) & 1;
-	gShowGraphBackground    = (uint8_t)data >> 8;
-	gShowLFControls         = (data >> 9) & 1;
-	gNoGraph                = (data >> 10) & 1;
-	gTextureOverrun         = (data >> 11) & 1;
-	gShowAverage            = (data >> 12) & 1;
+	gGameLogicActive	 = data & 1;
+	gControlsActive		 = (data >> 1) & 1;
+	gStopSystem			 = (data >> 2) & 1;
+	gFrameGraph			 = (data >> 3) & 1;
+	gEnableParallel		 = (data >> 4) & 1;
+	NoDebuggerStats		 = (data >> 5) & 1;
+	gShowGraphsAsTime	= (data >> 6) & 1;
+	gShowGraphBackground = (uint8_t)data >> 8;
+	gShowLFControls		 = (data >> 9) & 1;
+	gNoGraph			 = (data >> 10) & 1;
+	gTextureOverrun		 = (data >> 11) & 1;
+	gShowAverage		 = (data >> 12) & 1;
 }
 
 /******************************************************************************/
@@ -250,7 +256,8 @@ void __stdcall RegistryManagerUninstall(void)
 	gos_SaveDataToRegistry("DebuggerGraphMode", &GraphMode, 4u);
 	gos_SaveDataToRegistry("DebuggerGraphInfo", &ShowColorInfo, 4u);
 
-	hfile = ::CreateFileA(_pgmptr, GENERIC_READ, FILE_SHARE_READ, nullptr, OPEN_EXISTING, 0, nullptr);
+	hfile =
+		::CreateFileA(_pgmptr, GENERIC_READ, FILE_SHARE_READ, nullptr, OPEN_EXISTING, 0, nullptr);
 	::GetFileTime(hfile, nullptr, nullptr, &exedate);
 	::CloseHandle(hfile);
 	gos_SaveDataToRegistry("ExeDate", reinterpret_cast<PBYTE>(&exedate), 4u);

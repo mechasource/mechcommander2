@@ -3,7 +3,7 @@
 
  MechCommander 2 source code
 
- 2014-07-24 jerker_back, created
+ 2014-07-24 Jerker Beck, created
 
  $LastChangedBy$
 
@@ -26,12 +26,15 @@
 
 #ifdef _MSC_VER
 #define DISABLE_WARNING_PUSH(x)                                                                    \
-	__pragma(warning(push)); __pragma(warning(disable : x))
+	__pragma(warning(push));                                                                       \
+	__pragma(warning(disable : x))
 #define DISABLE_WARNING_POP __pragma(warning(pop))
+#define SUPPRESS_WARNING(x) __pragma(warning(suppress : x))
 #define ADD_LIBRARY(x) __pragma(comment(lib, x))
 #else
 #define DISABLE_WARNING_PUSH
 #define DISABLE_WARNING_POP
+#define SUPPRESS_WARNING(x)
 #define ADD_LIBRARY
 #endif
 
@@ -39,40 +42,46 @@
 #define _ATL_NO_AUTOMATIC_NAMESPACE
 #define _ATL_CSTRING_EXPLICIT_CONSTRUCTORS
 #define ATL_NO_ASSERT_ON_DESTROY_NONEXISTENT_WINDOW
-#define DIRECTINPUT_VERSION         0x0800
+#define DIRECTINPUT_VERSION 0x0800
 
 // #define _CRT_SECURE_NO_WARNINGS 1
 
-// disable useless warnings when compiling with -Wall
-#pragma warning(disable : 4514 4710 4711)
-// comment out for diagnostic messages
-#pragma warning(disable : 4266 4625 4820)
-
 // temporary disable warnings when compiling with -Wall
-DISABLE_WARNING_PUSH(4191 4350 4365 4774 4571 4623 4626 5026 5027 5039 4514 4710 4711 4625 4820 26439 26495)
+DISABLE_WARNING_PUSH(4191 4350 4355 4365 4774 4571 4619 4623 4626 4946 5026 5027 5039 5040 4514 4710 4711 4625 4820 26439 26495)
 #include <cstdlib>
 #include <cstddef>
 #include <cstdint>
 #include <cstdio>
 #include <cmath>
+#include <cassert>
 #include <limits>
 #include <algorithm>
 #include <utility>
-#include <string>
-#include <iostream>
-#include <sstream>
-#include <iosfwd>
+#include <initializer_list>
 #include <iterator>
-#include <exception>
-#include <stdexcept>
+#include <string>
 #include <vector>
 #include <set>
 #include <map>
+#include <iostream>
+#include <fstream>
+#include <sstream>
+#include <iosfwd>
+#include <exception>
+#include <stdexcept>
+#include <functional>
+#include <filesystem>
+#include <comdef.h>
 #include <crtdbg.h>
 #include <cppunittest.h>
+// Concurrency
+#include <agents.h>
+#include <amp.h>
 DISABLE_WARNING_POP
 
-DISABLE_WARNING_PUSH(4191 4365 5039 5045 6011)
+namespace stdfs = std::filesystem;
+
+DISABLE_WARNING_PUSH(4061 4191 4365 5039 5045 6011 6387 28251)
 #include <atlbase.h>
 #include <imagehlp.h>
 #include <mmsystem.h>
@@ -82,18 +91,46 @@ DISABLE_WARNING_PUSH(4191 4365 5039 5045 6011)
 #include <dsound.h>
 #include <dinput.h>
 #include <mmstream.h>
+#include <directxmath.h>
+#include <d2d1_2.h>
+#include <d3d11_2.h>
+#include <dwrite_2.h>
+#include <d3d12.h>
+#include <wincodec.h>
+#include <uianimation.h>
+#include <dcompanimation.h>
 DISABLE_WARNING_POP
+
+DISABLE_WARNING_PUSH(4061 4127 4365 4514 4571 4625 4626 4820 4946 5026 5027 6326 28020)
+#include <nlohmann/json.hpp>
+DISABLE_WARNING_POP
+// namespace json = nlohmann::json;
 
 #include <mechtypes.h>
 
-#define MECH_IMPEXP	extern "C"
-#define MECH_CALL	__stdcall
+// disable useless warnings when compiling with -Wall
+//#pragma warning(disable : 4514 4710 4711)
+// comment out for diagnostic messages
+//#pragma warning(disable : 4266 4625 4820)
+
+#pragma warning(disable : 4514)	// unreferenced inline function has been removed
+#pragma warning(disable : 4626)	// assignment operator was implicitly defined as deleted
+#pragma warning(disable : 5027) // move assignment operator was implicitly defined as deleted
+
+#ifdef _DEBUG
+#define NODEFAULT _ASSERT(0)
+#else
+#define NODEFAULT __assume(0)
+#endif
+
+#define MECH_IMPEXP extern "C"
+#define MECH_CALL __stdcall
 
 // mechcmd2
 #ifdef _DEBUG
 // _ARMOR;LAB_ONLY;USE_PROTOTYPES;STRICT;WIN32;_DEBUG;_WINDOWS;BUGLOG
-#define _ARMOR 1
-#define LAB_ONLY 1
+//#define _ARMOR 1
+//#define LAB_ONLY 1
 #else
 // NDEBUG;_WINDOWS;WIN32;NOMINMAX;FINAL
 // NDEBUG;LAB_ONLY;_WINDOWS;WIN32;NOMINMAX;BUGLOG	- profile
@@ -101,115 +138,15 @@ DISABLE_WARNING_POP
 // #define FINAL
 #endif
 
-namespace Utilities
-{
-
-// HRESULT WINAPI FormatCLSID(_Out_writes_(nCharacters) PWCHAR pszCLSID,_In_
-// size_t nCharacters,_In_ REFGUID clsid);  HRESULT WINAPI
-// PrivateUpdateRegistry(_In_ BOOL bRegister,_In_ uint32_t nID,_In_ REFGUID
-// clsid,_In_ REFGUID libid,_In_opt_ uint32_t dwOleMisc,_In_opt_
-// ATL::_ATL_REGMAP_ENTRY* pregMap);
-
-// ModuleHelper - helper functions for ATL3 and ATL7 module classes (modified
-// from WTL)
-namespace ModuleHelper
-{
-inline HINSTANCE GetModuleInstance(void)
-{
-#if (_ATL_VER >= 0x0700)
-	return ATL::_AtlBaseModule.GetModuleInstance();
-#else
-	return ATL::_pModule->GetModuleInstance();
-#endif
-}
-
-inline HINSTANCE GetResourceInstance(void)
-{
-#if (_ATL_VER >= 0x0700)
-	return ATL::_AtlBaseModule.GetResourceInstance();
-#else
-	return ATL::_pModule->GetResourceInstance();
-#endif
-}
-
-inline HINSTANCE SetResourceInstance(_In_ HINSTANCE hInstance)
-{
-#if (_ATL_VER >= 0x0700)
-	return ATL::_AtlBaseModule.SetResourceInstance(hInstance);
-#else
-	return ATL::_pModule->SetResourceInstance(hInstance);
-#endif
-}
-
-inline void AddCreateWndData(
-	_Inout_ ATL::_AtlCreateWndData* pData, _In_ PVOID pObject)
-{
-#if (_ATL_VER >= 0x0700)
-	ATL::_AtlWinModule.AddCreateWndData(pData, pObject);
-#else
-	ATL::_pModule->AddCreateWndData(pData, pObject);
-#endif
-}
-
-inline PVOID ExtractCreateWndData(void)
-{
-#if (_ATL_VER >= 0x0700)
-	return ATL::_AtlWinModule.ExtractCreateWndData();
-#else
-	return ATL::_pModule->ExtractCreateWndData();
-#endif
-}
-
-inline void AtlTerminate(void)
-{
-#if (_ATL_VER >= 0x0700)
-	return ATL::_AtlWinModule.Term();
-#else
-	return ATL::_pModule->Term();
-#endif
-}
-
-#if (_ATL_VER >= 0x0700)
-inline ATL::CAtlModule* GetModulePtr(void) { return ATL::_pAtlModule; }
-#else
-inline ATL::CComModule* GetModulePtr(void) { return ATL::_pModule; }
-#endif
-
-inline bool AtlInitFailed(void)
-{
-#if (_ATL_VER >= 0x0700)
-	return ATL::CAtlBaseModule::m_bInitFailed;
-#else
-	return ATL::_bInitFailed;
-#endif
-}
-
-inline void AtlSetTraceLevel(_In_ uint32_t nLevel)
-{
-#if defined _DEBUG && (_ATL_VER >= 0x0700)
-	ATL::CTrace::SetLevel(nLevel);
-#else
-	UNREFERENCED_PARAMETER(nLevel);
-#endif
-}
-
-}; // namespace ModuleHelper
-}; // namespace Utilities
-
-using namespace Utilities;
-
-#ifndef _CONSIDERED_OBSOLETE
+#define USE_INLINE_ASSEMBLER_CODE 0
+#define _CONSIDERED_TEMPORARILY_DISABLED  0
 #define _CONSIDERED_OBSOLETE 0
-#endif
-#ifndef _CONSIDERED_UNSUPPORTED
 #define _CONSIDERED_UNSUPPORTED 0
-#endif
-#ifndef _CONSIDERED_DISABLED
 #define _CONSIDERED_DISABLED 0
-#endif
+#define _CONSIDERED_UNUSED 0
 
 //#ifdef _MSC_VER
 //#pragma comment(linker,"/manifestdependency:\"type='win32'
-//name='Microsoft.Windows.Common-Controls' version='6.0.0.0'
-//processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
+// name='Microsoft.Windows.Common-Controls' version='6.0.0.0'
+// processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
 //#endif

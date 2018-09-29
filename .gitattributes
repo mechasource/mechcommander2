@@ -29,6 +29,7 @@ CMakeLists.txt text eol=lf
 *.dat text eol=crlf
 *.abl text eol=crlf
 *.fit text eol=crlf
+*.lua text eol=lf
 
 *.dll binary
 *.exe binary

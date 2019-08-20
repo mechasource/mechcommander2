@@ -6,16 +6,29 @@
 	>
 	<Tool
 		Name="VCCLCompilerTool"
+		AdditionalOptions="-Wall -MP -sdl -guard:cf -Zo -std:c++latest -permissive- -Zc:__cplusplus -Zc:externConstexpr -Zc:inline -Zc:throwingNew"
 		AdditionalIncludeDirectories=".;$(IntDir);$(mech_inc);$(mclib_dir);$(gameos_dir)/include;$(pch_dir);$(mc2res_dir)"
+		PreprocessorDefinitions=""
 	/>
 	<Tool
 		Name="VCLinkerTool"
-		AdditionalLibraryDirectories="$(OutDir)"
+		AdditionalOptions="-ignore:4199 -pdbcompress"
+		AdditionalDependencies=""
+		Version="1.0"
+		AdditionalLibraryDirectories="$(OutDir);$(IntDir)"
 	/>
 	<Tool
 		Name="VCResourceCompilerTool"
-		PreprocessorDefinitions="APP_NAME=\&quot;$(TargetName)\&quot;;PLATFORM=$(PlatformName);$(PlatformName)"
+		PreprocessorDefinitions="PLATFORM=$(PlatformName);PROJECTNAME=L\&quot;$(ProjectName)\&quot;;TARGETFILENAME=L\&quot;$(TargetFileName)\&quot;;TARGETEXT=L\&quot;$(TargetExt)\&quot;"
 		AdditionalIncludeDirectories=".;$(IntDir);$(mc2res_dir)"
+	/>
+    <Tool
+		Name="VCMIDLTool"
+		GenerateStublessProxies="true"
+		TypeLibraryName="$(IntDir)$(TargetName).tlb"
+		HeaderFileName="$(IntDir)$(TargetName)_i.h"
+		InterfaceIdentifierFileName="$(IntDir)$(TargetName)_i.c"
+		ProxyFileName="$(IntDir)$(TargetName)_p.c"
 	/>
 	<UserMacro
 		Name="gameos_dir"
